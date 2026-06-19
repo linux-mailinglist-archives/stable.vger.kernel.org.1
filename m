@@ -1,61 +1,55 @@
-Return-Path: <stable+bounces-267425-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-267424-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id DGR5GnNjNWpguwYAu9opvQ
-	(envelope-from <stable+bounces-267425-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 19 Jun 2026 17:42:43 +0200
+	id YXuVLIphNWp/ugYAu9opvQ
+	(envelope-from <stable+bounces-267424-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 19 Jun 2026 17:34:34 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD5D06A6C70
-	for <lists+stable@lfdr.de>; Fri, 19 Jun 2026 17:42:42 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id A7B126A6BB1
+	for <lists+stable@lfdr.de>; Fri, 19 Jun 2026 17:34:33 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=sntech.de header.s=gloria202408 header.b=wIA9tFqF;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-267425-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-267425-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=quarantine) header.from=sntech.de;
+	dkim=pass header.d=seu.edu.cn header.s=default header.b=MtPrZGsc;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-267424-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-267424-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=none) header.from=seu.edu.cn;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id AC96E305BB68
-	for <lists+stable@lfdr.de>; Fri, 19 Jun 2026 15:37:24 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 61C7A302D571
+	for <lists+stable@lfdr.de>; Fri, 19 Jun 2026 15:30:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0FD903A9DA9;
-	Fri, 19 Jun 2026 15:37:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DFDEB3B2FE6;
+	Fri, 19 Jun 2026 15:30:02 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from gloria.sntech.de (gloria.sntech.de [185.11.138.130])
+Received: from mail-m155101.qiye.163.com (mail-m155101.qiye.163.com [101.71.155.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C10A378D89
-	for <stable@vger.kernel.org>; Fri, 19 Jun 2026 15:37:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50D9C396579;
+	Fri, 19 Jun 2026 15:29:58 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781883443; cv=none; b=BPQEC6ur1sXDzjpfpQvL4bdIzoQ7reWN2Ck+X04X3c3o/+jNdNfJKjB0JYkHT8Kd//qUOlRPNaDTU3iAYITx4yrQDcf48zNq5LHVbMVIXXe1hYBbL53R7cAl3cU8HnTyUWxtwwPyy31LUxRnFP7L4KrvN8OJIPsk4RXrKxaCCnM=
+	t=1781883002; cv=none; b=a5Zvo5gmbRXVwZ9mc5i5oAeaDd5LZ9CHvCCCYayKs3RITnmyzwoIgQ1Srj7QP3ktNB8JrTFyBSg+4DXNbIHjrSg75u4EDQUDsNSwEM2JHqPOZ1CPVcMpV+gBSU7UETWn8k0jWGU3o0iFYxI/ZAvZQtL5164sfv+SDmq/vC0NMa8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781883443; c=relaxed/simple;
-	bh=Zs7e/+O4mz2zf91CtUdd5caxIJ1n7vj5Kj6VbFfzWvY=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=nFnch7EwIsXE97fqcpOSOBCguhx1oKm3uDfLVl9hbhnMyqtxcOWd5J57gf7jd9eKkPExf57SgjRAdvtLgCdMupPnVYFjEE+39+9TfHV3f3S2Ipo4eoP9ntD05OcEo7KHfJvPe8pY1ei1J93MzunLlVHPPkGibwkbqQMTRxIhmPY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=sntech.de; spf=pass smtp.mailfrom=sntech.de; dkim=pass (2048-bit key) header.d=sntech.de header.i=@sntech.de header.b=wIA9tFqF; arc=none smtp.client-ip=185.11.138.130
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=sntech.de;
-	s=gloria202408; h=Content-Transfer-Encoding:MIME-Version:Message-ID:Date:
-	Subject:Cc:To:From:Reply-To:Content-Type:In-Reply-To:References;
-	bh=mW289Z+7jmnr8kVloQNZjJyZyeJzqp7Kag8AVGpjeEQ=; b=wIA9tFqFDPH7lnkFAtKyGL7ueI
-	Jh/22Y5Od/IY9FVOKUBSEg+tB+kq6YWfSO+NmICkhyX7J099GPL7hhGFGj5lFyiCcApm/ZBNr19r8
-	ofpA5FdFQyaEHGcaNcq6BcKsBOHtzIBFvxzUXqCHUeiBW0GU/EMKhHqXFAB/3edL9aSYhipxRMoUz
-	UGP8y5HXvu7O6ADZ1/gUFvb4MRU7VYJEvQaRbsk5qnmLlqYrGRzWcflBvRpb24ye4B/4llTm6LSsu
-	VBOzyx31pV+Okb6WtV3+L8acQcNr8EfziejXL0CMiXj8M7iAnS6j6z6lOoqYxC8EQmeQ8B6lhLW9Q
-	wZSFgigA==;
-From: Heiko Stuebner <heiko@sntech.de>
-To: stable@vger.kernel.org
-Cc: heiko@sntech.de,
-	quentin.schulz@cherry.de,
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-	Willem de Bruijn <willemb@google.com>,
-	Jason Xing <kerneljasonxing@gmail.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Heiko Stuebner <heiko.stuebner@cherry.de>
-Subject: [PATCH 6.12.y] net: Drop the lock in skb_may_tx_timestamp()
-Date: Fri, 19 Jun 2026 17:20:12 +0200
-Message-ID: <20260619152012.2016837-1-heiko@sntech.de>
-X-Mailer: git-send-email 2.53.0
+	s=arc-20240116; t=1781883002; c=relaxed/simple;
+	bh=VsKpYWkrPrAShCSa+mRwramheD17KC+6QII5dFUPgtQ=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=ZrGHm2o6PTb2AJP6IfpbA+HZgM8RBjfEf76NgFcoiVkkdlp4lcsEXDQMY0b/HpTvroMWxMPCstvzGjMnw5CwKzVNqzxcI7BbFIUvXk3XbjCxavzUX1bHuMMztvyJFAP6AWB3K51yZV1zVsJXhrWZcue2W8lsdt2B/HlobRdbuQk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=seu.edu.cn; spf=pass smtp.mailfrom=seu.edu.cn; dkim=pass (1024-bit key) header.d=seu.edu.cn header.i=@seu.edu.cn header.b=MtPrZGsc; arc=none smtp.client-ip=101.71.155.101
+Received: from PC-202605011814.localdomain (unknown [223.112.146.162])
+	by smtp.qiye.163.com (Hmail) with ESMTP id 430a44df4;
+	Fri, 19 Jun 2026 23:24:46 +0800 (GMT+08:00)
+From: Runyu Xiao <runyu.xiao@seu.edu.cn>
+To: Linus Walleij <linus.walleij@linaro.org>,
+	Bartosz Golaszewski <brgl@kernel.org>
+Cc: Thierry Reding <thierry.reding@gmail.com>,
+	Jonathan Hunter <jonathanh@nvidia.com>,
+	linux-gpio@vger.kernel.org,
+	linux-tegra@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Runyu Xiao <runyu.xiao@seu.edu.cn>,
+	stable@vger.kernel.org
+Subject: [PATCH] gpio: tegra: do not call pinctrl for GPIO direction
+Date: Fri, 19 Jun 2026 23:24:39 +0800
+Message-Id: <20260619152439.1239561-1-runyu.xiao@seu.edu.cn>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -63,154 +57,140 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-HM-Tid: 0a9ee07c0a8503a1kunm1ff7fdfad2af6
+X-HM-MType: 10
+X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
+	tZV1koWUFITzdXWRgWCB1ZQUpXWS1ZQUlXWQ8JGhUIEh9ZQVlDSx4eVkweGB4dSB4ZSkpOH1YeHw
+	5VEwETFhoSFyQUDg9ZV1kYEgtZQVlJSUhVSkpJVUpPTVVKTUlZV1kWGg8SFR0UWUFZT0tIVUpLSE
+	pOTE5VSktLVUpCS0tZBg++
+DKIM-Signature: a=rsa-sha256;
+	b=MtPrZGscOiib643Wr3JQC5FZp1KPCD/FhaAj3xRQIe8Cdw8BmNcI05z3Sm4tdB5Q7C9kVuCkLrr9n1QXZEbF4l7teLPlMeTUrtWkeqFTf2gshywzIFDoJfne69g9oINpQPot+fCEGGI/xrlH1lcZNxclWS8sv5roVMJW4wpOF4k=; s=default; c=relaxed/relaxed; d=seu.edu.cn; v=1;
+	bh=BIgECSojf9+nQYsdS2ayF9Cu03BcvfJ+idAbu5gQmoQ=;
+	h=date:mime-version:subject:message-id:from;
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [0.84 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[seu.edu.cn,none];
 	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[sntech.de,quarantine];
-	R_DKIM_ALLOW(-0.20)[sntech.de:s=gloria202408];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[seu.edu.cn:s=default];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-267424-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[sntech.de,cherry.de,linutronix.de,google.com,gmail.com,redhat.com];
-	TAGGED_FROM(0.00)[bounces-267425-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[3];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[gmail.com,nvidia.com,vger.kernel.org,seu.edu.cn];
 	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:heiko@sntech.de,m:quentin.schulz@cherry.de,m:bigeasy@linutronix.de,m:willemb@google.com,m:kerneljasonxing@gmail.com,m:edumazet@google.com,m:pabeni@redhat.com,m:heiko.stuebner@cherry.de,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[heiko@sntech.de,stable@vger.kernel.org];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_SENDER(0.00)[runyu.xiao@seu.edu.cn,stable@vger.kernel.org];
+	FORGED_RECIPIENTS(0.00)[m:linus.walleij@linaro.org,m:brgl@kernel.org,m:thierry.reding@gmail.com,m:jonathanh@nvidia.com,m:linux-gpio@vger.kernel.org,m:linux-tegra@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:runyu.xiao@seu.edu.cn,m:stable@vger.kernel.org,m:thierryreding@gmail.com,s:lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[heiko@sntech.de,stable@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[runyu.xiao@seu.edu.cn,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[sntech.de:+];
+	DKIM_TRACE(0.00)[seu.edu.cn:+];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	RCPT_COUNT_SEVEN(0.00)[9];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,cherry.de:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,vger.kernel.org:from_smtp,seu.edu.cn:dkim,seu.edu.cn:email,seu.edu.cn:mid,seu.edu.cn:from_mime]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: CD5D06A6C70
+X-Rspamd-Queue-Id: A7B126A6BB1
 
-From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+tegra_gpio_direction_input() and tegra_gpio_direction_output() already
+program the GPIO controller direction registers directly. The additional
+pinctrl_gpio_direction_input/output() calls do not add a Tegra pinctrl
+operation, because the Tegra pinmux ops provide GPIO request/free
+handling but no gpio_set_direction hook.
 
-[ Upstream commit 983512f3a87fd8dc4c94dfa6b596b6e57df5aad7 ]
+The extra call still enters the pinctrl core and takes pctldev->mutex.
+Shared GPIO users can call the direction path while holding their
+per-line spinlock, so this otherwise redundant pinctrl direction call can
+sleep in an atomic context.
 
-skb_may_tx_timestamp() may acquire sock::sk_callback_lock. The lock must
-not be taken in IRQ context, only softirq is okay. A few drivers receive
-the timestamp via a dedicated interrupt and complete the TX timestamp
-from that handler. This will lead to a deadlock if the lock is already
-write-locked on the same CPU.
+This was found by our static analysis tool and then confirmed by manual
+review of tegra_gpio_probe(), the Tegra GPIO direction callbacks and the
+Tegra pinctrl ops. The reviewed path has a default non-sleeping
+struct gpio_chip while the direction callback still enters the pinctrl
+mutex path.
 
-Taking the lock can be avoided. The socket (pointed by the skb) will
-remain valid until the skb is released. The ->sk_socket and ->file
-member will be set to NULL once the user closes the socket which may
-happen before the timestamp arrives.
-If we happen to observe the pointer while the socket is closing but
-before the pointer is set to NULL then we may use it because both
-pointer (and the file's cred member) are RCU freed.
+A directed runtime validation kept the same non-sleeping chip registration
+and drove:
 
-Drop the lock. Use READ_ONCE() to obtain the individual pointer. Add a
-matching WRITE_ONCE() where the pointer are cleared.
+  gpio_shared_proxy_direction_output()
+  gpiod_direction_output_raw_commit()
+  tegra_gpio_direction_output()
+  pinctrl_gpio_direction_output()
 
-Link: https://lore.kernel.org/all/20260205145104.iWinkXHv@linutronix.de
-Fixes: b245be1f4db1a ("net-timestamp: no-payload only sysctl")
-Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Reviewed-by: Willem de Bruijn <willemb@google.com>
-Reviewed-by: Jason Xing <kerneljasonxing@gmail.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Link: https://patch.msgid.link/20260220183858.N4ERjFW6@linutronix.de
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-[adapted sk_set_socket() in include/net/sock.h to fix the conflict  from
- not having commit 5d6b58c932ec ("net: lockless sock_i_ino()") and the
- additional previous changes required by it.
- It comes down to just now having the lines of
-    if (sock) {
-            WRITE_ONCE(sk->sk_uid, SOCK_INODE(sock)->i_uid);
-            WRITE_ONCE(sk->sk_ino, SOCK_INODE(sock)->i_ino);
-    }
- below the changed line.
- I've tested this on a device running an nfs-root and did some
- additional network stress-testing.]
-Signed-off-by: Heiko Stuebner <heiko.stuebner@cherry.de>
+Lockdep reported a sleep-in-atomic warning with the shared GPIO spinlock
+held and pinctrl_get_device_gpio_range() plus tegra_gpio_direction_output()
+on the stack.
+
+Do not mark the whole chip as can_sleep to paper over this: can_sleep
+describes whether get()/set() may sleep, and Tegra value access is MMIO.
+Remove the redundant pinctrl direction calls and keep pinctrl involvement
+in the existing request/free path.
+
+Fixes: 11da90541283 ("gpio: tegra: Fix offset of pinctrl calls")
+Cc: stable@vger.kernel.org
+Signed-off-by: Runyu Xiao <runyu.xiao@seu.edu.cn>
 ---
- include/net/sock.h |  2 +-
- net/core/skbuff.c  | 23 ++++++++++++++++++-----
- net/socket.c       |  2 +-
- 3 files changed, 20 insertions(+), 7 deletions(-)
+ drivers/gpio/gpio-tegra.c | 18 ++----------------
+ 1 file changed, 2 insertions(+), 16 deletions(-)
 
-diff --git a/include/net/sock.h b/include/net/sock.h
-index 0d77a87929f9..dffbaaa7fe49 100644
---- a/include/net/sock.h
-+++ b/include/net/sock.h
-@@ -2040,7 +2040,7 @@ static inline int sk_rx_queue_get(const struct sock *sk)
- 
- static inline void sk_set_socket(struct sock *sk, struct socket *sock)
+diff --git a/drivers/gpio/gpio-tegra.c b/drivers/gpio/gpio-tegra.c
+index 15a5762a82c2..590e81c1e4d1 100644
+--- a/drivers/gpio/gpio-tegra.c
++++ b/drivers/gpio/gpio-tegra.c
+@@ -172,18 +172,11 @@ static int tegra_gpio_direction_input(struct gpio_chip *chip,
+ 				      unsigned int offset)
  {
--	sk->sk_socket = sock;
-+	WRITE_ONCE(sk->sk_socket, sock);
+ 	struct tegra_gpio_info *tgi = gpiochip_get_data(chip);
+-	int ret;
+ 
+ 	tegra_gpio_mask_write(tgi, GPIO_MSK_OE(tgi, offset), offset, 0);
+ 	tegra_gpio_enable(tgi, offset);
+ 
+-	ret = pinctrl_gpio_direction_input(chip, offset);
+-	if (ret < 0)
+-		dev_err(tgi->dev,
+-			"Failed to set pinctrl input direction of GPIO %d: %d",
+-			 chip->base + offset, ret);
+-
+-	return ret;
++	return 0;
  }
  
- static inline wait_queue_head_t *sk_sleep(struct sock *sk)
-diff --git a/net/core/skbuff.c b/net/core/skbuff.c
-index 4be699bd3a17..fede3aa3ddbc 100644
---- a/net/core/skbuff.c
-+++ b/net/core/skbuff.c
-@@ -5525,15 +5525,28 @@ static void __skb_complete_tx_timestamp(struct sk_buff *skb,
- 
- static bool skb_may_tx_timestamp(struct sock *sk, bool tsonly)
+ static int tegra_gpio_direction_output(struct gpio_chip *chip,
+@@ -191,19 +184,12 @@ static int tegra_gpio_direction_output(struct gpio_chip *chip,
+ 				       int value)
  {
--	bool ret;
-+	struct socket *sock;
-+	struct file *file;
-+	bool ret = false;
+ 	struct tegra_gpio_info *tgi = gpiochip_get_data(chip);
+-	int ret;
  
- 	if (likely(READ_ONCE(sysctl_tstamp_allow_data) || tsonly))
- 		return true;
+ 	tegra_gpio_set(chip, offset, value);
+ 	tegra_gpio_mask_write(tgi, GPIO_MSK_OE(tgi, offset), offset, 1);
+ 	tegra_gpio_enable(tgi, offset);
  
--	read_lock_bh(&sk->sk_callback_lock);
--	ret = sk->sk_socket && sk->sk_socket->file &&
--	      file_ns_capable(sk->sk_socket->file, &init_user_ns, CAP_NET_RAW);
--	read_unlock_bh(&sk->sk_callback_lock);
-+	/* The sk pointer remains valid as long as the skb is. The sk_socket and
-+	 * file pointer may become NULL if the socket is closed. Both structures
-+	 * (including file->cred) are RCU freed which means they can be accessed
-+	 * within a RCU read section.
-+	 */
-+	rcu_read_lock();
-+	sock = READ_ONCE(sk->sk_socket);
-+	if (!sock)
-+		goto out;
-+	file = READ_ONCE(sock->file);
-+	if (!file)
-+		goto out;
-+	ret = file_ns_capable(file, &init_user_ns, CAP_NET_RAW);
-+out:
-+	rcu_read_unlock();
- 	return ret;
+-	ret = pinctrl_gpio_direction_output(chip, offset);
+-	if (ret < 0)
+-		dev_err(tgi->dev,
+-			"Failed to set pinctrl output direction of GPIO %d: %d",
+-			 chip->base + offset, ret);
+-
+-	return ret;
++	return 0;
  }
  
-diff --git a/net/socket.c b/net/socket.c
-index 5c5dd9f6605a..723bc3a1ba5c 100644
---- a/net/socket.c
-+++ b/net/socket.c
-@@ -652,7 +652,7 @@ static void __sock_release(struct socket *sock, struct inode *inode)
- 		iput(SOCK_INODE(sock));
- 		return;
- 	}
--	sock->file = NULL;
-+	WRITE_ONCE(sock->file, NULL);
- }
- 
- /**
+ static int tegra_gpio_get_direction(struct gpio_chip *chip,
 -- 
-2.53.0
+2.34.1
 
 
