@@ -1,196 +1,204 @@
-Return-Path: <stable+bounces-267424-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-267423-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id YXuVLIphNWp/ugYAu9opvQ
-	(envelope-from <stable+bounces-267424-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 19 Jun 2026 17:34:34 +0200
+	id cac1On9hNWp2ugYAu9opvQ
+	(envelope-from <stable+bounces-267423-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 19 Jun 2026 17:34:23 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A7B126A6BB1
-	for <lists+stable@lfdr.de>; Fri, 19 Jun 2026 17:34:33 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 03B0C6A6BA7
+	for <lists+stable@lfdr.de>; Fri, 19 Jun 2026 17:34:23 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=seu.edu.cn header.s=default header.b=MtPrZGsc;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-267424-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-267424-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=none) header.from=seu.edu.cn;
-	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=pPynJzpX;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-267423-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-267423-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("subspace.kernel.org:s=arc-20240116:i=2")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 61C7A302D571
-	for <lists+stable@lfdr.de>; Fri, 19 Jun 2026 15:30:42 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 395DC30489F2
+	for <lists+stable@lfdr.de>; Fri, 19 Jun 2026 15:30:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DFDEB3B2FE6;
-	Fri, 19 Jun 2026 15:30:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 662E53AE188;
+	Fri, 19 Jun 2026 15:29:29 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-m155101.qiye.163.com (mail-m155101.qiye.163.com [101.71.155.101])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f43.google.com (mail-ej1-f43.google.com [209.85.218.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50D9C396579;
-	Fri, 19 Jun 2026 15:29:58 +0000 (UTC)
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781883002; cv=none; b=a5Zvo5gmbRXVwZ9mc5i5oAeaDd5LZ9CHvCCCYayKs3RITnmyzwoIgQ1Srj7QP3ktNB8JrTFyBSg+4DXNbIHjrSg75u4EDQUDsNSwEM2JHqPOZ1CPVcMpV+gBSU7UETWn8k0jWGU3o0iFYxI/ZAvZQtL5164sfv+SDmq/vC0NMa8=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781883002; c=relaxed/simple;
-	bh=VsKpYWkrPrAShCSa+mRwramheD17KC+6QII5dFUPgtQ=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=ZrGHm2o6PTb2AJP6IfpbA+HZgM8RBjfEf76NgFcoiVkkdlp4lcsEXDQMY0b/HpTvroMWxMPCstvzGjMnw5CwKzVNqzxcI7BbFIUvXk3XbjCxavzUX1bHuMMztvyJFAP6AWB3K51yZV1zVsJXhrWZcue2W8lsdt2B/HlobRdbuQk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=seu.edu.cn; spf=pass smtp.mailfrom=seu.edu.cn; dkim=pass (1024-bit key) header.d=seu.edu.cn header.i=@seu.edu.cn header.b=MtPrZGsc; arc=none smtp.client-ip=101.71.155.101
-Received: from PC-202605011814.localdomain (unknown [223.112.146.162])
-	by smtp.qiye.163.com (Hmail) with ESMTP id 430a44df4;
-	Fri, 19 Jun 2026 23:24:46 +0800 (GMT+08:00)
-From: Runyu Xiao <runyu.xiao@seu.edu.cn>
-To: Linus Walleij <linus.walleij@linaro.org>,
-	Bartosz Golaszewski <brgl@kernel.org>
-Cc: Thierry Reding <thierry.reding@gmail.com>,
-	Jonathan Hunter <jonathanh@nvidia.com>,
-	linux-gpio@vger.kernel.org,
-	linux-tegra@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Runyu Xiao <runyu.xiao@seu.edu.cn>,
-	stable@vger.kernel.org
-Subject: [PATCH] gpio: tegra: do not call pinctrl for GPIO direction
-Date: Fri, 19 Jun 2026 23:24:39 +0800
-Message-Id: <20260619152439.1239561-1-runyu.xiao@seu.edu.cn>
-X-Mailer: git-send-email 2.34.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD6E33ABD9D
+	for <stable@vger.kernel.org>; Fri, 19 Jun 2026 15:29:27 +0000 (UTC)
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1781882969; cv=pass; b=KEcRd4g2coaj5RNiG+Y6rYhhghXxI0ZnlUM4+LaM/ZjvxYVOjtvjPtLHR1Kgsu3fxI2IhEzKVu8jCDP34kz5seuDY+9oid5krEQmldQw17lt18ls/2Di4R7ozKtI83h4WG0u7Bdp/2vGl2/aHt7ubyUu5dv+pc/FLIuLVyCRzLY=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1781882969; c=relaxed/simple;
+	bh=TbLxyaDOtwX8lHN9/56pnNOqdgfU2UehfvSBMDPX2PE=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=WtT2utagXSVFb8eoACEIGrfxQNiphMPVrsK7IpiWZSIlOERYd3U0gDAy4FDRf9Ff1NBy7hfwsHK0rv40gc6fZMuS9Rl7E2DAkbp8xapFHKso8LUlUyanv4a9WIldHKrI6qrtvwkye+5UIFGYbQSL3Iw9v/ilpckrEnGGawQiz34=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=pPynJzpX; arc=pass smtp.client-ip=209.85.218.43
+Received: by mail-ej1-f43.google.com with SMTP id a640c23a62f3a-c07ea058c0cso337403266b.2
+        for <stable@vger.kernel.org>; Fri, 19 Jun 2026 08:29:27 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1781882966; cv=none;
+        d=google.com; s=arc-20240605;
+        b=M1BJDc2mymHVVb/nIWptiTJnBQg8YJoXXcKjNw20yLorQG1qtgqKm/X8nR2raJcFU8
+         iawNgtqxZxadYfxoHTkmnYncJC+d6Tvht2yg0NAYSFA3TCKFKPKZRQmMERTynIBbHwz+
+         Y7DiZkbz6zHwP9DRNRbO22Ju1TZSWMDLQAqYHtbQKXzMDtgSnSClXaqJ1FaqMAMy0Xk9
+         sJqpQ5ofKeqVLIyHHlOmHG2go+2VbvMZi/41zUsDBXA0mKXXfKRLssdGyj1QERCbiiPr
+         R9/WDs5rFoOI++7PqVv0D2kWaLUDzqJq9YvCVaKQWff91yoH5MqzYT3c/V/2GvXKb54y
+         mSIw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=dULTLRE6f8vtBip1INjm35ttJ1pitKtvcCZ3p4j8QbM=;
+        fh=d4LiDOcwqCVXOs198vNcn9GaPQ7eYsHBIcjVDNxLLcE=;
+        b=gY+yyJMhzgKEMWXl0vtSn8YhSW3X+ax+5OZPM5ANs+DnaOIeBTmzaGywGQFkjw3Hj9
+         pHHpUafWlxoT6FhoZXBbZMbYFyI/ltDFPwJqhLIJMtNSDRxtbhSqeqt9X8SAqgAxVIlQ
+         /N/hVPpozeNB61iE8UIpEURorAoYJ7HedCHFxf0z+b4NGJBuVG4wMQkpuGFPeHxsJn0k
+         itxnm4L0R622rL8d/tqrYOI2KK7pO6tqy45E3g0wuJcYdJFk+DhJ8vq8Oi61K3wc3HA2
+         Y6QkwDBmGPXKy+omxQEjIBigalfpLrmM4KGnrzU5Z7CmlDy55dPGoeWEc1xODdH29V+S
+         t5Kg==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1781882966; x=1782487766; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=dULTLRE6f8vtBip1INjm35ttJ1pitKtvcCZ3p4j8QbM=;
+        b=pPynJzpXianUUqVKrr/uMSJ/MgAzzQ4Ud4lTVVeQJZ2ESuT9N/h2sG/mnUKKP3Vf+Q
+         M+41AFKtr4621MOrforToeKi+VUajlpe5yfF4BzUFwvcA+93PPmwDen6PIkxiUwLxahQ
+         031SKoNre2q65ubOVK4P90gQrnFgGbAsLk95FpsqmVqRzWFRZHxYZYa5TuPsM6uO9StI
+         MIrzpLbrEsbDPkG1TvNUKrwehxTdhXR9oqGl+m4w5hy0vuX66h7l1Udl26PQO9B8m8s2
+         zGb89JuT8s+jO4X5NWoGX8EnCxc8WnoTNsm0/IxO6NeEmg7KTcKVts8vk5XcBajd5HIF
+         IhRA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1781882966; x=1782487766;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=dULTLRE6f8vtBip1INjm35ttJ1pitKtvcCZ3p4j8QbM=;
+        b=VgbS2IRILxUDtRPN52yjVzsoH2GOOyevzPzR8YjyUztYGQjk+OznUdYcuc5lLmsJfz
+         jaR5lwLt/nNsakFPPjdThNy0Yj6SYR2p9BO5ojF+qTGYJ3lQ+4C7xveGVfH/IbtVOA7k
+         hCiM5eb8OZ7LIcaL113cLrHjhrbSQpHWOaEz05mKmVNbyY1j5WCSXeLzpa5togx7/YsD
+         lu6xGB1IDtp78tTE5JPbFLhkS2ZDyNNmG0tc9Sn2pQr4a6X2i43Y8Q2u84prudVnHhKz
+         My9KVRY4HcCSURHEAE0CHKYbM0Gj4Mhs9gyqsg5hAG7CLzHjyz+gQTM7b95TDTP/ovoQ
+         OHzA==
+X-Gm-Message-State: AOJu0YzlWEpqiR1gJ44sXkXAyZFKCOxx5JHKI0z73zUh3EydWpSJ5Iae
+	RYetR4Mey17R6B0JK1eWJ3GBp6rjWdv16uapHRHpUk6+a70j16zTir4fuxdUiTxcvzAlGe+OtV3
+	7ZljXSYSgWiP5m5KMa1iYIF+YDezK/NlApPpn
+X-Gm-Gg: AfdE7cnp7jaSfUYddV2O0cJU7dnp3R8bshhzEnnru+mXH2r51cX2aMKsLycg5kiCLyT
+	vqAMZkjWJm9/TWfqwez9dIGvbwTVZBSxwdnCKZN7km0fDrJkU3hVykJ/MWUVx6WfdZffe9Y4Pbd
+	HHfQY5ZMJPIRBr2DQccBVf9oCrJwIw9gmdSCwu5JOjnS0hqWFxTs22uaR6o7aL3okCST7oPKxTZ
+	X19zD48Guiq8ysuBei7SNLv2JRqG/usxeZYpdQsMBkMLr1CYFne2JZjQbIKGlv6xXNUNiYLC7Cn
+	1dibmNKSeQ==
+X-Received: by 2002:a17:907:3f08:b0:c05:a987:6818 with SMTP id
+ a640c23a62f3a-c0b74791ec7mr160512166b.45.1781882965830; Fri, 19 Jun 2026
+ 08:29:25 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-HM-Tid: 0a9ee07c0a8503a1kunm1ff7fdfad2af6
-X-HM-MType: 10
-X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
-	tZV1koWUFITzdXWRgWCB1ZQUpXWS1ZQUlXWQ8JGhUIEh9ZQVlDSx4eVkweGB4dSB4ZSkpOH1YeHw
-	5VEwETFhoSFyQUDg9ZV1kYEgtZQVlJSUhVSkpJVUpPTVVKTUlZV1kWGg8SFR0UWUFZT0tIVUpLSE
-	pOTE5VSktLVUpCS0tZBg++
-DKIM-Signature: a=rsa-sha256;
-	b=MtPrZGscOiib643Wr3JQC5FZp1KPCD/FhaAj3xRQIe8Cdw8BmNcI05z3Sm4tdB5Q7C9kVuCkLrr9n1QXZEbF4l7teLPlMeTUrtWkeqFTf2gshywzIFDoJfne69g9oINpQPot+fCEGGI/xrlH1lcZNxclWS8sv5roVMJW4wpOF4k=; s=default; c=relaxed/relaxed; d=seu.edu.cn; v=1;
-	bh=BIgECSojf9+nQYsdS2ayF9Cu03BcvfJ+idAbu5gQmoQ=;
-	h=date:mime-version:subject:message-id:from;
+References: <20260515124218.151966-2-elaidya225@gmail.com> <2026061632-papaya-handwoven-d010@gregkh>
+In-Reply-To: <2026061632-papaya-handwoven-d010@gregkh>
+From: Ahmed Elaidy <elaidya225@gmail.com>
+Date: Fri, 19 Jun 2026 18:29:14 +0300
+X-Gm-Features: AVVi8CclmblgOHLTebR1IvQr0GdtabbyWwRGzxpmUmyAO7FztZWfvJDgibSTRt4
+Message-ID: <CAP48DwbYt3-3c+awg_s-=uHjKq3aE1J0Yx_XvR+v=hhsVMOSqA@mail.gmail.com>
+Subject: Re: [PATCH 6.18.y v4 0/9] mm: backport sticky VMA flags and
+ soft-dirty fix
+To: Greg KH <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, linux-mm@kvack.org, akpm@linux-foundation.org, 
+	ljs@kernel.org, avagin@gmail.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [0.84 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[seu.edu.cn,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[seu.edu.cn:s=default];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+X-Spamd-Result: default: False [-2.16 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-267424-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[gmail.com,nvidia.com,vger.kernel.org,seu.edu.cn];
-	FORWARDED(0.00)[lists@lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_SENDER(0.00)[runyu.xiao@seu.edu.cn,stable@vger.kernel.org];
-	FORGED_RECIPIENTS(0.00)[m:linus.walleij@linaro.org,m:brgl@kernel.org,m:thierry.reding@gmail.com,m:jonathanh@nvidia.com,m:linux-gpio@vger.kernel.org,m:linux-tegra@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:runyu.xiao@seu.edu.cn,m:stable@vger.kernel.org,m:thierryreding@gmail.com,s:lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-267423-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:gregkh@linuxfoundation.org,m:stable@vger.kernel.org,m:linux-mm@kvack.org,m:akpm@linux-foundation.org,m:ljs@kernel.org,m:avagin@gmail.com,s:lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[runyu.xiao@seu.edu.cn,stable@vger.kernel.org];
+	RCVD_TLS_LAST(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[seu.edu.cn:+];
+	FORGED_SENDER(0.00)[elaidya225@gmail.com,stable@vger.kernel.org];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_CC(0.00)[vger.kernel.org,kvack.org,linux-foundation.org,kernel.org,gmail.com];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_SENDER_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[elaidya225@gmail.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	MID_RHS_MATCH_FROMTLD(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,vger.kernel.org:from_smtp,seu.edu.cn:dkim,seu.edu.cn:email,seu.edu.cn:mid,seu.edu.cn:from_mime]
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,vger.kernel.org:from_smtp,mail.gmail.com:mid,linuxfoundation.org:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: A7B126A6BB1
+X-Rspamd-Queue-Id: 03B0C6A6BA7
 
-tegra_gpio_direction_input() and tegra_gpio_direction_output() already
-program the GPIO controller direction registers directly. The additional
-pinctrl_gpio_direction_input/output() calls do not add a Tegra pinctrl
-operation, because the Tegra pinmux ops provide GPIO request/free
-handling but no gpio_set_direction hook.
+Hi Greg,
 
-The extra call still enters the pinctrl core and takes pctldev->mutex.
-Shared GPIO users can call the direction path while holding their
-per-line spinlock, so this otherwise redundant pinctrl direction call can
-sleep in an atomic context.
+> Ok, but what does that actually mean?  A crash?  Normal user
+> triggerable or something else?
 
-This was found by our static analysis tool and then confirmed by manual
-review of tegra_gpio_probe(), the Tegra GPIO direction callbacks and the
-Tegra pinctrl ops. The reviewed path has a default non-sleeping
-struct gpio_chip while the direction callback still enters the pinctrl
-mutex path.
+The issue causes CRIU incremental dump/restore to fail when
+VM_SOFTDIRTY is lost during VMA merge,
+CRIU incorrectly treats pages as unmodified, leading to data loss in
+incremental checkpoints.
 
-A directed runtime validation kept the same non-sleeping chip registration
-and drove:
+> We need acks from the maintainers here before we can take these...
 
-  gpio_shared_proxy_direction_output()
-  gpiod_direction_output_raw_commit()
-  tegra_gpio_direction_output()
-  pinctrl_gpio_direction_output()
+Lorenzo has reviewed the series and given his ack:
+https://lore.kernel.org/stable/agcK1mzmGbB5KSpP@lucifer/
 
-Lockdep reported a sleep-in-atomic warning with the shared GPIO spinlock
-held and pinctrl_get_device_gpio_range() plus tegra_gpio_direction_output()
-on the stack.
+Thanks,
+Ahmed
 
-Do not mark the whole chip as can_sleep to paper over this: can_sleep
-describes whether get()/set() may sleep, and Tegra value access is MMIO.
-Remove the redundant pinctrl direction calls and keep pinctrl involvement
-in the existing request/free path.
 
-Fixes: 11da90541283 ("gpio: tegra: Fix offset of pinctrl calls")
-Cc: stable@vger.kernel.org
-Signed-off-by: Runyu Xiao <runyu.xiao@seu.edu.cn>
----
- drivers/gpio/gpio-tegra.c | 18 ++----------------
- 1 file changed, 2 insertions(+), 16 deletions(-)
-
-diff --git a/drivers/gpio/gpio-tegra.c b/drivers/gpio/gpio-tegra.c
-index 15a5762a82c2..590e81c1e4d1 100644
---- a/drivers/gpio/gpio-tegra.c
-+++ b/drivers/gpio/gpio-tegra.c
-@@ -172,18 +172,11 @@ static int tegra_gpio_direction_input(struct gpio_chip *chip,
- 				      unsigned int offset)
- {
- 	struct tegra_gpio_info *tgi = gpiochip_get_data(chip);
--	int ret;
- 
- 	tegra_gpio_mask_write(tgi, GPIO_MSK_OE(tgi, offset), offset, 0);
- 	tegra_gpio_enable(tgi, offset);
- 
--	ret = pinctrl_gpio_direction_input(chip, offset);
--	if (ret < 0)
--		dev_err(tgi->dev,
--			"Failed to set pinctrl input direction of GPIO %d: %d",
--			 chip->base + offset, ret);
--
--	return ret;
-+	return 0;
- }
- 
- static int tegra_gpio_direction_output(struct gpio_chip *chip,
-@@ -191,19 +184,12 @@ static int tegra_gpio_direction_output(struct gpio_chip *chip,
- 				       int value)
- {
- 	struct tegra_gpio_info *tgi = gpiochip_get_data(chip);
--	int ret;
- 
- 	tegra_gpio_set(chip, offset, value);
- 	tegra_gpio_mask_write(tgi, GPIO_MSK_OE(tgi, offset), offset, 1);
- 	tegra_gpio_enable(tgi, offset);
- 
--	ret = pinctrl_gpio_direction_output(chip, offset);
--	if (ret < 0)
--		dev_err(tgi->dev,
--			"Failed to set pinctrl output direction of GPIO %d: %d",
--			 chip->base + offset, ret);
--
--	return ret;
-+	return 0;
- }
- 
- static int tegra_gpio_get_direction(struct gpio_chip *chip,
--- 
-2.34.1
-
+On Tue, Jun 16, 2026 at 6:39=E2=80=AFAM Greg KH <gregkh@linuxfoundation.org=
+> wrote:
+>
+> On Fri, May 15, 2026 at 03:42:10PM +0300, Ahmed Elaidy wrote:
+> > This series backports the sticky VMA flags infrastructure and the
+> > VM_SOFTDIRTY-on-merge fix to linux-6.18.y.
+> >
+> > Motivation: CRIU incremental dump/restore can hit a missing-parent-page=
+map
+> > failure when VM_SOFTDIRTY is lost during VMA merge operations.
+>
+> Ok, but what does that actually mean?  A crash?  Normal user
+> triggerable or something else?
+>
+> > Patch 8 is the target fix:
+> >   mm: propagate VM_SOFTDIRTY on merge
+> >
+> > The preceding patches provide required dependencies on 6.18.y and are i=
+ncluded
+> > to preserve upstream behavior, as requested by maintainers for stable b=
+ackports.
+> >
+> > Changes since v3:
+> >   - Reverted to sending the full 9-patch series as requested by Greg KH=
+ and Lorenzo.
+> >   - Updated Lorenzo's email to ljs@kernel.org across all patches.
+> >   - Added Cc: stable@vger.kernel.org # 6.18.x to all patches.
+> >   - Added Fixes tag for soft-dirty merging in Patch 8.
+>
+> We need acks from the maintainers here before we can take these...
+>
+> thanks,
+>
+> greg k-h
 
