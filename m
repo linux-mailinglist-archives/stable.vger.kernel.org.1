@@ -1,154 +1,162 @@
-Return-Path: <stable+bounces-267501-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-267502-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id SAlkNxK0NmpKDgcAu9opvQ
-	(envelope-from <stable+bounces-267501-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 20 Jun 2026 17:38:58 +0200
+	id 1WBsBOe3NmojDwcAu9opvQ
+	(envelope-from <stable+bounces-267502-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 20 Jun 2026 17:55:19 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3CC556A920F
-	for <lists+stable@lfdr.de>; Sat, 20 Jun 2026 17:38:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8ACB96A92A5
+	for <lists+stable@lfdr.de>; Sat, 20 Jun 2026 17:55:18 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=q2lx0E6O;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-267501-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-267501-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=fail reason="SPF not aligned (relaxed), DKIM not aligned (relaxed)" header.from=debian.org (policy=none);
-	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
+	dkim=pass header.d=mojatatu.com header.s=google header.b=U9Z2ZPT8;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-267502-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-267502-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=none;
+	arc=pass ("subspace.kernel.org:s=arc-20240116:i=2")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 094E730134A2
-	for <lists+stable@lfdr.de>; Sat, 20 Jun 2026 15:38:57 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 4D0973026C09
+	for <lists+stable@lfdr.de>; Sat, 20 Jun 2026 15:53:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6DB951799F;
-	Sat, 20 Jun 2026 15:38:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F89E399377;
+	Sat, 20 Jun 2026 15:53:37 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wr1-f48.google.com (mail-wr1-f48.google.com [209.85.221.48])
+Received: from mail-yx1-f44.google.com (mail-yx1-f44.google.com [74.125.224.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDD36846F
-	for <stable@vger.kernel.org>; Sat, 20 Jun 2026 15:38:53 +0000 (UTC)
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781969935; cv=none; b=q87wZsiO3eFiBClScEAtPCEc9CPRmRb87nUg9cSKAtW5smiFn8fV7iVcS6PTzD3438f9vhKQLJffnAJlvFmvhxieVVevjcQyw4LCCXnV3CaERUhsxeQ0xZ9Ja0G3NOZ2OOv8NnmZxeStDLXt4Yn0ckeHRvHRT8jXBhn68ph8nxw=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781969935; c=relaxed/simple;
-	bh=60jcPl+SA8Hh4HcH5iRJ05LTiYYC20gbXJ8CpQgcRfQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=MgZeTJgDykkVOT/AP9a6XeWmEYYbkADPC2YelWuJiTpVixfSvq03gwIMwBcrYYEuM2sTP9FqDtdRP1vA/2OE2GWYXSyROerfkoR4nfbLWMC7VRDX8hVEskmz3bkjZ9NyCO6w1nSrl9tOVdqAbXCwGVtMPgJg3KHVTn80VzCsy1s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=q2lx0E6O; arc=none smtp.client-ip=209.85.221.48
-Received: by mail-wr1-f48.google.com with SMTP id ffacd0b85a97d-45fe59255beso1539035f8f.1
-        for <stable@vger.kernel.org>; Sat, 20 Jun 2026 08:38:53 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B406F397692
+	for <stable@vger.kernel.org>; Sat, 20 Jun 2026 15:53:35 +0000 (UTC)
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1781970817; cv=pass; b=Y52Jc0D6g++JDrpNnnWbnqfz35hpHBWaHQ4vK3yVSSVOX7wGvWoQiM09Yt755Ql26jZH2TFfiElaQg7o470cVjVt3xN2JgJeF2TQTLVuxHMV5wvWAsjVHGSz2thH1mrrsxTfbHjHGN2V54ztT+DacBQaWBcuhz5juxdMSapjO+c=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1781970817; c=relaxed/simple;
+	bh=PprN2t9rjdBiH7hNZ9B0fAoZIV5oRd1FHv4010wsUIo=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=MtLkwAEtmulOo50A8BGAKS8O3xjZWPRim4SRbAX8evr+gfzm/vITeTNWjnGrADuVhMv5j6VnSreDGoLydiNmLJYCnnT+WkGxY85d8HkNkinC/0D/QuzUXnJz7r1hWmizwDsD7IrG2UKJ9aqFmn617DVjKo/utdKyH4F6hnp4pdw=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com; spf=none smtp.mailfrom=mojatatu.com; dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b=U9Z2ZPT8; arc=pass smtp.client-ip=74.125.224.44
+Received: by mail-yx1-f44.google.com with SMTP id 956f58d0204a3-662ccb916c5so3180550d50.1
+        for <stable@vger.kernel.org>; Sat, 20 Jun 2026 08:53:35 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1781970815; cv=none;
+        d=google.com; s=arc-20240605;
+        b=HRoMsM8dAn6+E+x3SSCfg0/ldfQdOyjr8r4yCw5mQxQpefuUgoQQodB2F1h5/V7FXD
+         ePpbWRtyCHvA7rkUy4bZ53hpJlj49b8TuBlHVubvNs+Az87xQxWPm0ghSLHNQnLGAfoe
+         5qhbSa1qpBSsvw1lY8kj8coicR9dtoexlzl69G3a3i6+FGauBy5fV0QUA9xFLSEe8KXf
+         hXNaqmHV6B0ln72celmrvvrJA4zF+4bA6hgzn2fBPPjvchybf2efKlLNQ3IvIsqBcTgS
+         7uUSsINIUEDPmXrvlmlFcFmGtQRKxLeWwPXfxenYzDvFbv5I+Zgl+J01UDLb51bPyVao
+         mUfw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=PprN2t9rjdBiH7hNZ9B0fAoZIV5oRd1FHv4010wsUIo=;
+        fh=Uc3IDn8dA8I/jssnWEV+JkuLL8pDxbnSWAx+DycVibA=;
+        b=TxIcMzOiAqMNxpcCG4s8GFzmPiL9j4KGkoB2VVw+aLNo83RmTVcPuEuUrQ8dEbyAoE
+         IN6GJrG5R6BWa5uF7RrGK7AFo+G2UWGccsCA0fvhSTT4FXZL+fyvTyWDtKDqlFax56nK
+         DsWTEc+iwPSdAnT1TKuwF6qb7mUxbJbGs6rCXhZzMJF3kuoRDCr4d+eLAM7e/WIKojMP
+         6QKCwgYlzrNi8AxKe79DkkG/BSHjVW7a1jqoNixTukP6w8ea6ud05pniG5405wqo60u7
+         CPF3TyB/FbBruvA+Y4/mUUOZ4zZ4XnfyedmClZyi+utGw/qUYbMHaour39UleOT/5JdS
+         svWQ==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1781969932; x=1782574732; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=jUUOD7b/36M9dKLQSDarVR6usfGuwps6cFnOeuCQHro=;
-        b=q2lx0E6OyvUuGDQ4XETsxTbYaec3A9xPpXuPL6WmZxcNmsSJllmwQITH3a11WNMdi8
-         uA+ue8AInnW12MkALZ9YVyOoJQou2qbbRTqmks4gmurejfpj4FepafC/k5cKRkjQ9HNi
-         u5nnS5LURZ6AvdAx0XTSAODiCYvcFDaJFj6Bw200JzjQUcbKYMXaG2GRRvkYs7GabOQ3
-         b5OgSfglrgnFIUEl9/UtZpMFoMFELAGTrn5VBB2O7hIWw93zKvY22sfKTiojETjoErvs
-         pM+gK5TyGA5LqTpm2gexYolZCVx42tjE/Ph0UFGMwNSEolcRRNpZ6YkfAkVk8v/23+Qa
-         wgkQ==
+        d=mojatatu.com; s=google; t=1781970815; x=1782575615; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=PprN2t9rjdBiH7hNZ9B0fAoZIV5oRd1FHv4010wsUIo=;
+        b=U9Z2ZPT8o6rPpXDNvC0733ikSVYIdCPba9OWRwGiD5c9kcDmM9jPR73EK6j9u+1kHr
+         2sVGAfRgXhtjGn4Q/c/jXeHCFJrnBouoXScb92l110QKe3hC1ZsBqxQkfOm3o5V4fvJd
+         8Q3ZoFJJGWnNO2E/oAh7Oe/oqV2Yk4oK2HCUA=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781969932; x=1782574732;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:x-gm-gg:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=jUUOD7b/36M9dKLQSDarVR6usfGuwps6cFnOeuCQHro=;
-        b=K8aEhHLJkDWwVvZ2mIRaglQ45Gs5D78PGSsFaa4h/78YeSsxMG55uwuWrG2zO5ucLN
-         j6a1kCfVdaSciTy/alKrZ7il/azpRSkpl2XvHGs1hpfI3l3aq8n/V2rr0sjBg375i8Ew
-         qiHUvxFiQbPbRSM+1Bgi+2wDkDXCc1cMinstJBCTspRC51cyRc5EWpiykoe9vtzbGvYK
-         An5cf2dijHA+iPUeClNKtBr88XZauiCyhzF9/k0QHgWC7swgPExUrhz+x1yBHNOE3t6W
-         88v7B6/wlhxspsk6me1K9G/hGq9TbO7Rr0fA+04piNagLqjavMQKRO6sQxg9ZpNezBh1
-         ypKg==
-X-Gm-Message-State: AOJu0Yz7ibNWXQqlU2F96AD/WBciB+WZa+UYEbH54NWnRF9mf/b8kHkI
-	xPUeTEADO3YPWyJ0tCwrRS1M6B8popznJUJA+w95c81zw1uVsSRyYKrB
-X-Gm-Gg: AfdE7cl0SrrJG6TTqnKbp1R+Koa+V+HgHNO7+aYVB5iViIdDzGdZNKfXuTAxAUA9SHe
-	qkgP8pDZPag/obT8l3i9CoJmxgBHrOuGVEANd2DVsByc5eFY9YyZ7pmCjPsBx7NsV5ItL2xKQvf
-	a4KlYIKAZjVqBnL2SckErMjDWDNlYP5XG7j5gOrxLF/xIyEvqe0tXSRZfrkyAz+dHO55HGp8Eri
-	K2/y8uFLN3d3ptSGeM3dk/qVqf6E3dtN7dYkeO5JHXW7GX+l1hBsxuVDP5PKG09XWDC6x9LgZBE
-	S7ZZWKxmymDaerQfSmkVwiTAw/vuVC1kAGaUpGadmzUWTILh07BbiKwQJskaRrCCEjn+pojBlXX
-	9qMHTWGOVwe4FUx16bgNVogiip9N3GtsUxhHpkxYDq+Syvpa9kPo+ZKnkIn0+7ypmenbTZRN4Id
-	i9LSQvsYOZDcV7YXEbVcSruXqL0lp8dKbJD4HwTNXCde7DgUm9GbXbcGbce3U=
-X-Received: by 2002:a5d:5e91:0:b0:460:138d:c9b0 with SMTP id ffacd0b85a97d-4656d831749mr9818457f8f.2.1781969932103;
-        Sat, 20 Jun 2026 08:38:52 -0700 (PDT)
-Received: from eldamar.lan (c-82-192-247-196.customer.ggaweb.ch. [82.192.247.196])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-466648c698dsm9753509f8f.16.2026.06.20.08.38.51
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 20 Jun 2026 08:38:51 -0700 (PDT)
-Sender: Salvatore Bonaccorso <salvatore.bonaccorso@gmail.com>
-Received: by eldamar.lan (Postfix, from userid 1000)
-	id 5E54EBE2EE7; Sat, 20 Jun 2026 17:38:50 +0200 (CEST)
-Date: Sat, 20 Jun 2026 17:38:50 +0200
-From: Salvatore Bonaccorso <carnil@debian.org>
-To: Sasha Levin <sashal@kernel.org>
-Cc: stable <stable@vger.kernel.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Eric Dumazet <edumazet@google.com>,
-	Noam Rathaus <noamr@ssd-disclosure.com>,
-	Steffen Klassert <steffen.klassert@secunet.com>,
-	Nicolas Dichtel <nicolas.dichtel@6wind.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Ben Hutchings <ben@decadent.org.uk>
-Subject: Re: Please backport d289d5307762 ("ip6_vti: set netns_immutable on
- the fallback device.") to 6.6.y and older
-Message-ID: <aja0ClbV7ocAlQ2V@eldamar.lan>
-References: <ajODI0ViiySkNjK5@eldamar.lan>
- <20260619.0001.reply@kernel.org>
+        d=1e100.net; s=20251104; t=1781970815; x=1782575615;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=PprN2t9rjdBiH7hNZ9B0fAoZIV5oRd1FHv4010wsUIo=;
+        b=TCmvCmiKRMijICAGZLPxsJpb5iF12T1ZUXUKqygmZYw/i2zQDE0aXzbh8ENt9dXqG9
+         aAyOqOFuKnV+UAOUq15Z0GeMsUwu+R5nJkESXkBByNhVeSpY0hoQG9idFwvUn9ipKlEM
+         rjFbWSknKuxucIQgpdv+JY4qY2rwxECkVPt4+Q18QN81CaSgTH+M0hALihIqyla5KgQ6
+         TZIV4g6vWLNL9334ingzPorYjTg20VlDSXnHIH0tYESHtfa96fdlgYACLOJRD+m5J/5s
+         5o6PwbOaYhst53qdT4m4aLVJ/zLQrApCfHu0Im6tAV9CyqOZiQPJf1DBb1aZDFtjmN8q
+         B2bg==
+X-Forwarded-Encrypted: i=1; AHgh+Rr76HDMTxc5T/JzB6SmjPtBgLLC0Putp+FV8lyqOEX7B+PAP5UmZAVTsLRq6H/Iqck3WgLKsbE=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx2FTR9YRX3CkNPsp6C7rIncbY2YFw+r7s+CeNKobhb5yXiMjYH
+	EdnGluC1RChdY08MjwVaLGHmAvw9+x7/TIXuv6LJmxDNBucgTcNw0vzyf4ANJQRCXgi8LKX9YV+
+	49kTvIYa44UKYIAXdRkbgIzC1noJkzjFGjTnMg7AX
+X-Gm-Gg: AfdE7cmXm9za37Hhc6UYsqz6jK2a0UZ0+AsecQoOIU09ARVnm5Xsv94zuIMV5jQkzj1
+	ZaPs2zvh3HW/cshsVLfUJQHOJUx+OZJXNf3TktpaS6nJmFDygWBi7a+/Y1QSRGJXYYbHUWvnfrE
+	PSKUal5IdEB35x+pAx4nHu3f5+azd2ta+p7VfhH1L1NMLk4JtJxQlo6zfqGTGUSOHvMUXF41IT9
+	DbWpikSa2sXZ0AyXqdOrfGi74irtH7ho+DxZxZfaoLq8gijqoOxlkCuRIrw+U9dGUG3u/fBIyy7
+	iXwYxYmSUz9iNpvLj9N6RKFpAIA=
+X-Received: by 2002:a53:d601:0:b0:660:e9fe:18e6 with SMTP id
+ 956f58d0204a3-662fc5eb415mr6811831d50.8.1781970814676; Sat, 20 Jun 2026
+ 08:53:34 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260619.0001.reply@kernel.org>
+References: <20260619151447.223640-1-b1n@b1n.io> <20260619151447.223640-2-b1n@b1n.io>
+In-Reply-To: <20260619151447.223640-2-b1n@b1n.io>
+From: Victor Nogueira <victor@mojatatu.com>
+Date: Sat, 20 Jun 2026 12:53:23 -0300
+X-Gm-Features: AVVi8CffwPZzdgTHf5I-e4yibNUpPw9ZYTSlgla42xdPOTrEgy9qgzAZqsIDlDA
+Message-ID: <CA+NMeC_jyE33TtATHTNMPBmp1nqjqnGwAPrqKVBECTzR9huwNg@mail.gmail.com>
+Subject: Re: [PATCH v3 2/2] selftests/tc-testing: Add DualPI2 GSO backlog
+ accounting test
+To: Xingquan Liu <b1n@b1n.io>
+Cc: Jamal Hadi Salim <jhs@mojatatu.com>, netdev@vger.kernel.org, Jiri Pirko <jiri@resnulli.us>, 
+	Chia-Yu Chang <chia-yu.chang@nokia-bell-labs.com>, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.56 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+X-Spamd-Result: default: False [-1.66 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
 	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	R_DKIM_ALLOW(-0.20)[mojatatu.com:s=google];
 	MAILLIST(-0.15)[generic];
-	DMARC_POLICY_SOFTFAIL(0.10)[debian.org : SPF not aligned (relaxed), DKIM not aligned (relaxed),none];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-267501-lists,stable=lfdr.de];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	FORGED_RECIPIENTS(0.00)[m:sashal@kernel.org,m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:edumazet@google.com,m:noamr@ssd-disclosure.com,m:steffen.klassert@secunet.com,m:nicolas.dichtel@6wind.com,m:kuba@kernel.org,m:ben@decadent.org.uk,s:lists@lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
-	TO_DN_ALL(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_SENDER(0.00)[carnil@debian.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MISSING_XM_UA(0.00)[];
 	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:b1n@b1n.io,m:jhs@mojatatu.com,m:netdev@vger.kernel.org,m:jiri@resnulli.us,m:chia-yu.chang@nokia-bell-labs.com,m:stable@vger.kernel.org,s:lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	DMARC_NA(0.00)[mojatatu.com];
+	FORGED_SENDER(0.00)[victor@mojatatu.com,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
+	FORWARDED(0.00)[lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-267502-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	FORGED_SENDER_FORWARDING(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[carnil@debian.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[victor@mojatatu.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[mojatatu.com:+];
 	ALIAS_RESOLVED(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp]
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[mojatatu.com:dkim,mojatatu.com:email,mojatatu.com:from_mime,mail.gmail.com:mid,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp,b1n.io:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 3CC556A920F
+X-Rspamd-Queue-Id: 8ACB96A92A5
 
-Hi,
+On Fri, Jun 19, 2026 at 12:16=E2=80=AFPM Xingquan Liu <b1n@b1n.io> wrote:
+>
+> Add a regression test for DualPI2 GSO backlog accounting when it is
+> used as a child qdisc of QFQ.
+>
+> The test sends one UDP GSO datagram through a QFQ class with DualPI2 as
+> the leaf qdisc. DualPI2 splits the skb into two segments. After the
+> traffic drains, both QFQ and DualPI2 must report zero backlog and zero
+> qlen.
+>
+> On kernels with the broken accounting, QFQ can keep a stale non-zero
+> qlen after all real packets have been dequeued.
+>
+> Signed-off-by: Xingquan Liu <b1n@b1n.io>
 
-On Sat, Jun 20, 2026 at 07:54:52AM -0400, Sasha Levin wrote:
-> > Please backport d289d5307762 ("ip6_vti: set netns_immutable on the fallback device.") to 6.6.y and older
-> 
-> Queued for 6.6, 6.1, 5.15 and 5.10, thanks.
-
-Thanks. Can you please queue up as well the one for 6.12.y?
-
-https://lore.kernel.org/stable/ajJ6TSzxuWdfQkxf@eldamar.lan/
-
-Regards,
-Salvatore
+Reviewed-by: Victor Nogueira <victor@mojatatu.com>
 
