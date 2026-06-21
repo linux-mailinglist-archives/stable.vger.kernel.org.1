@@ -1,145 +1,257 @@
-Return-Path: <stable+bounces-267537-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-267542-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id oaZ3APHfN2osVAcAu9opvQ
-	(envelope-from <stable+bounces-267537-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 21 Jun 2026 14:58:25 +0200
+	id El3pJtDlN2psVQcAu9opvQ
+	(envelope-from <stable+bounces-267542-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 21 Jun 2026 15:23:28 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 62A516AAC9B
-	for <lists+stable@lfdr.de>; Sun, 21 Jun 2026 14:58:24 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id E789C6AAE06
+	for <lists+stable@lfdr.de>; Sun, 21 Jun 2026 15:23:27 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ej4GDNKp;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-267537-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-267537-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	dkim=pass header.d=intel.com header.s=Intel header.b=NACtc2+9;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-267542-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-267542-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=none) header.from=intel.com;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 0EC623014759
-	for <lists+stable@lfdr.de>; Sun, 21 Jun 2026 12:58:02 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 3A414300D869
+	for <lists+stable@lfdr.de>; Sun, 21 Jun 2026 13:23:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A506D3659FB;
-	Sun, 21 Jun 2026 12:58:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 684C31DF73A;
+	Sun, 21 Jun 2026 13:23:24 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78EA3235BE2;
-	Sun, 21 Jun 2026 12:58:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0005E4C6D;
+	Sun, 21 Jun 2026 13:23:21 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782046681; cv=none; b=pnC48n/nv+DpvjfhEUTVGUtog5cubsPQDMK/cMjswMQxKKjSpslBpg/3c/st7yQpZjbYdfz33n4RCUQuTnfCbXbWgLFwKCikB1R8b6yAxXm/uhBaPlgVh/0KFVRj4/8vRhOcEEDnFVPDw2kSUTX2uzaJg8HOoTn/0lzU68BB6Ko=
+	t=1782048204; cv=none; b=lWBt7h6tLDkWMjk1b1RTeHtWEfTpWMvH3fpHb20qdEB0ARPzcQVvQmdUM80qosaNzVZ4q/pSTLyjmvRpQIavHWo94o/AonBLPw4pfYxJbRZvOWqc62Khr4on9VcFlP1eTR4VEmIJw3367H1Lh17+wLXrMJkQPMJnSPIS+M19Ycg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782046681; c=relaxed/simple;
-	bh=dwyyFF+yPpoJif6/OWI2GLmuQ0czkd3E3lwUANbsdlU=;
-	h=Mime-Version:Content-Type:Date:Message-Id:To:From:Subject:Cc:
-	 References:In-Reply-To; b=qBCRjQgNpnYtiY00oKK1V58HvlA2rtJfNBRgzp8D5brxEjK3f3rQnV+cyQ3Pudfo1bvjKCAQ1bRw7i87VaWlvwQSHYs2qS0PoBJ/vtzF9/HqE7U+pfvSTME89KjE4UJJM5YQ1BJf9kr1ypogKsy15SyK/S0NaQhDA0aLY2GXv+A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ej4GDNKp; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 201171F000E9;
-	Sun, 21 Jun 2026 12:57:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782046680;
-	bh=dwyyFF+yPpoJif6/OWI2GLmuQ0czkd3E3lwUANbsdlU=;
-	h=Date:To:From:Subject:Cc:References:In-Reply-To;
-	b=ej4GDNKp63e4A8UkddmF6kyff7rAp64pM6UmytdApC9Z2U8CNc8xpnXLbGVRgaq6O
-	 z5VxJDYF3OJ+YtwKWSZjESGuCTKgCawhuCUi63t8WvgJta4H/ouC1WoJI2Nw3cXQ0o
-	 2V6H5INF+O3H2STyL7aUVK1/0NVGv3du7lkPSRrv+hb2i7idUkEhwaScyskTQCT1+F
-	 KC7+3TjE1aLVF8G/n1bLLW8hbjeaySn4/MwuenoOo58WNYQVSwuhll7muW+aBYDUS2
-	 OiEhsWBaiYbOcAOZvJU4UM8Sfzh+zdgGaVMJgya2WANSu9cYK5Jjej2+DGVuCR2WW0
-	 ZCxodLUPOamHg==
+	s=arc-20240116; t=1782048204; c=relaxed/simple;
+	bh=kAwJ6DKEdnzoA7kZnXRzifN5TMZTP6bnM1YivJnDrac=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=fhSknTs6a4y4TRH3GN2wFRcObF1B9kl3i4i1dUtHoX2Xfx1/EB0i8epbZBsWNjzXFdlF4s/C4jDyluPTI84BXUWW1MWd7rqt5FlGyZYMesZyZ2/+DgivgriaDLMu24bx8JoReYYzMdjSMcQlQNCzswPfzUJuFiNW7qXgoXqvSZg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=NACtc2+9; arc=none smtp.client-ip=198.175.65.19
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1782048202; x=1813584202;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=kAwJ6DKEdnzoA7kZnXRzifN5TMZTP6bnM1YivJnDrac=;
+  b=NACtc2+9i31+7Dtkzg9uvg8zQZ1YfLAuVGmRb9Rpc+QYrxwRx1aALLh+
+   OcBUkPCAlNwHg64qb6oXy/vDVY+e1TcQ6cRFEJsvAZhfqoiOMivwMep+9
+   fC34P03UnCmLdOzzw/Uz6P8F+/TSTYljIdvQFt5OHOIjmOxkmiyeuiFRo
+   Wk04nFXp5gpfdf/05iVkVQiU+oTAQP4qlp0h3dRSMvSvP7Oc9713qPDK4
+   fs+3Sl0oeBvBzdu1S8YG3mDd4TSw5gYMSnPSd8tahufaTjj6ZtPKPjC8N
+   9aiXN0mV0rVwYy5OahU+BoQ5lm49aGN0k8DaICWspwyp2EPOvweYBHeYu
+   w==;
+X-CSE-ConnectionGUID: jgLDUdHhThiNWwrTOJLJeA==
+X-CSE-MsgGUID: zPoJ7QpWRX+Api2xJdVTmg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11824"; a="82809816"
+X-IronPort-AV: E=Sophos;i="6.24,217,1774335600"; 
+   d="scan'208";a="82809816"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Jun 2026 06:23:21 -0700
+X-CSE-ConnectionGUID: O2cKxBHrTrWhRBRryrkrXw==
+X-CSE-MsgGUID: 8zcIcqfYQsmfkmLIl7NGFw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.24,217,1774335600"; 
+   d="scan'208";a="254090004"
+Received: from sannilnx-dsk.jer.intel.com ([10.12.231.107])
+  by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Jun 2026 06:23:20 -0700
+From: Alexander Usyskin <alexander.usyskin@intel.com>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Menachem Adin <menachem.adin@intel.com>,
+	Alexander Usyskin <alexander.usyskin@intel.com>,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: [char-misc] mei: replace spinlock with mutex for kvfree
+Date: Sun, 21 Jun 2026 16:00:07 +0300
+Message-ID: <20260621130007.1314562-1-alexander.usyskin@intel.com>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Sun, 21 Jun 2026 14:57:56 +0200
-Message-Id: <DJEQTPJAR8DW.18CJ2FC7YZPA3@kernel.org>
-To: "Dawei Feng" <dawei.feng@seu.edu.cn>, "Timur Tabi" <ttabi@nvidia.com>
-From: "Danilo Krummrich" <dakr@kernel.org>
-Subject: Re: [PATCH v2] nouveau/firmware: fix memory leak on BL load failure
-Cc: <lyude@redhat.com>, <maarten.lankhorst@linux.intel.com>,
- <mripard@kernel.org>, <simona@ffwll.ch>, <dri-devel@lists.freedesktop.org>,
- <nouveau@lists.freedesktop.org>, <linux-kernel@vger.kernel.org>,
- <jianhao.xu@seu.edu.cn>, <stable@vger.kernel.org>, "Zilin Guan"
- <zilin@seu.edu.cn>
-References: <20260610025037.4115412-1-dawei.feng@seu.edu.cn>
-In-Reply-To: <20260610025037.4115412-1-dawei.feng@seu.edu.cn>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-4.66 / 15.00];
-	WHITELIST_SPF_DKIM(-3.00)[kernel.org:d:+,kernel.org:s:+];
+X-Spamd-Result: default: False [-3.66 / 15.00];
+	WHITELIST_SPF_DKIM(-3.00)[intel.com:d:+,kernel.org:s:+];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	MV_CASE(0.50)[];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	MID_CONTAINS_FROM(1.00)[];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
+	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-267542-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:dawei.feng@seu.edu.cn,m:ttabi@nvidia.com,m:lyude@redhat.com,m:maarten.lankhorst@linux.intel.com,m:mripard@kernel.org,m:simona@ffwll.ch,m:dri-devel@lists.freedesktop.org,m:nouveau@lists.freedesktop.org,m:linux-kernel@vger.kernel.org,m:jianhao.xu@seu.edu.cn,m:stable@vger.kernel.org,m:zilin@seu.edu.cn,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[dakr@kernel.org,stable@vger.kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[12];
-	TAGGED_FROM(0.00)[bounces-267537-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:gregkh@linuxfoundation.org,m:menachem.adin@intel.com,m:alexander.usyskin@intel.com,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,s:lists@lfdr.de];
 	MIME_TRACE(0.00)[0:+];
 	FORWARDED(0.00)[lists@lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
+	FORGED_SENDER(0.00)[alexander.usyskin@intel.com,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[dakr@kernel.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[alexander.usyskin@intel.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[intel.com:+];
+	RCVD_COUNT_FIVE(0.00)[5];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,seu.edu.cn:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
+	ALIAS_RESOLVED(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,gitlab.freedesktop.org:url,intel.com:dkim,intel.com:email,intel.com:mid,intel.com:from_mime]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 62A516AAC9B
+X-Rspamd-Queue-Id: E789C6AAE06
 
-(Cc: Timur)
+The read buffer allocation that protected by spinlock was
+changed from kmalloc() to kvmalloc().
+This buffer is part of structure protected by spinlock.
+That leads to errors like below when freeing buffer
+that allocated non-contiguous:
 
-On Wed Jun 10, 2026 at 4:50 AM CEST, Dawei Feng wrote:
-> If loading the HS bootloader blob fails, nvkm_falcon_fw_ctor_hs() returns
-> immediately. This skips the common cleanup path and leaks the firmware
-> state allocated by nvkm_falcon_fw_ctor() and nvkm_falcon_fw_sign().
->
-> Fix this by routing the load failure to the 'done' label so
-> nvkm_falcon_fw_dtor() can properly clean up the partially initialized
-> state. Keep the original image firmware in 'blob' until the common
-> cleanup path, and use a separate 'blob_bl' pointer for the bootloader
-> firmware so it can be released immediately after the bootloader data has
-> been copied.
->
-> The bug was first flagged by an experimental analysis tool we are
-> developing for kernel memory-management bugs while analyzing
-> v6.13-rc1. The tool is still under development and is not yet publicly
-> available. Manual inspection confirms that the bug is still present in
-> v7.1-rc6.
->
-> An x86_64 allyesconfig build showed no new warnings. As we do not have a
-> supported NVIDIA GPU with the required firmware to test this path, no
-> runtime testing was able to be performed.
->
-> Fixes: 2541626cfb79 ("drm/nouveau/acr: use common falcon HS FW code for A=
-CR FWs")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Zilin Guan <zilin@seu.edu.cn>
+BUG: sleeping function called from invalid context at mm/vmalloc.c:3448
 
-Is Zilin a co-author of the patch?
+Replace spinlock with mutex to allow non-contiguous free that can wait.
 
-> Signed-off-by: Dawei Feng <dawei.feng@seu.edu.cn>
-> ---
-> Changes in v2:
-> - Use a separate bootloader firmware pointer instead of reusing 'blob'.
-> - Keep the original image firmware release in the common cleanup path.
+Cc: stable@vger.kernel.org
+Fixes: 4adf613e01bf ("mei: use kvmalloc for read buffer")
+Closes: https://gitlab.freedesktop.org/drm/i915/kernel/-/work_items/16359
+Reviewed-by: Menachem Adin <menachem.adin@intel.com>
+Signed-off-by: Alexander Usyskin <alexander.usyskin@intel.com>
+---
+ drivers/misc/mei/client.c  | 37 ++++++++++++++++---------------------
+ drivers/misc/mei/mei_dev.h |  7 ++++---
+ 2 files changed, 20 insertions(+), 24 deletions(-)
 
-@Timur: Any further comments following up v1?
+diff --git a/drivers/misc/mei/client.c b/drivers/misc/mei/client.c
+index 643b0039cc72..1da4fc8d028e 100644
+--- a/drivers/misc/mei/client.c
++++ b/drivers/misc/mei/client.c
+@@ -4,14 +4,15 @@
+  * Intel Management Engine Interface (Intel MEI) Linux driver
+  */
+ 
+-#include <linux/sched/signal.h>
+-#include <linux/wait.h>
++#include <linux/cleanup.h>
++#include <linux/mei.h>
++#include <linux/mutex.h>
++#include <linux/dma-mapping.h>
+ #include <linux/delay.h>
+-#include <linux/slab.h>
+ #include <linux/pm_runtime.h>
+-#include <linux/dma-mapping.h>
+-
+-#include <linux/mei.h>
++#include <linux/slab.h>
++#include <linux/sched/signal.h>
++#include <linux/wait.h>
+ 
+ #include "mei_dev.h"
+ #include "hbm.h"
+@@ -527,16 +528,12 @@ struct mei_cl_cb *mei_cl_enqueue_ctrl_wr_cb(struct mei_cl *cl, size_t length,
+ struct mei_cl_cb *mei_cl_read_cb(struct mei_cl *cl, const struct file *fp)
+ {
+ 	struct mei_cl_cb *cb;
+-	struct mei_cl_cb *ret_cb = NULL;
+ 
+-	spin_lock(&cl->rd_completed_lock);
++	guard(mutex)(&cl->rd_completed_lock);
+ 	list_for_each_entry(cb, &cl->rd_completed, list)
+-		if (!fp || fp == cb->fp) {
+-			ret_cb = cb;
+-			break;
+-		}
+-	spin_unlock(&cl->rd_completed_lock);
+-	return ret_cb;
++		if (!fp || fp == cb->fp)
++			return cb;
++	return NULL;
+ }
+ 
+ /**
+@@ -565,9 +562,9 @@ int mei_cl_flush_queues(struct mei_cl *cl, const struct file *fp)
+ 		mei_io_list_flush_cl(&cl->dev->ctrl_rd_list, cl);
+ 		mei_cl_free_pending(cl);
+ 	}
+-	spin_lock(&cl->rd_completed_lock);
++
++	guard(mutex)(&cl->rd_completed_lock);
+ 	mei_io_list_free_fp(&cl->rd_completed, fp);
+-	spin_unlock(&cl->rd_completed_lock);
+ 
+ 	return 0;
+ }
+@@ -586,7 +583,7 @@ static void mei_cl_init(struct mei_cl *cl, struct mei_device *dev)
+ 	init_waitqueue_head(&cl->tx_wait);
+ 	init_waitqueue_head(&cl->ev_wait);
+ 	INIT_LIST_HEAD(&cl->vtag_map);
+-	spin_lock_init(&cl->rd_completed_lock);
++	mutex_init(&cl->rd_completed_lock);
+ 	INIT_LIST_HEAD(&cl->rd_completed);
+ 	INIT_LIST_HEAD(&cl->rd_pending);
+ 	INIT_LIST_HEAD(&cl->link);
+@@ -1395,9 +1392,8 @@ void mei_cl_add_rd_completed(struct mei_cl *cl, struct mei_cl_cb *cb)
+ 		mei_cl_read_vtag_add_fc(cl);
+ 	}
+ 
+-	spin_lock(&cl->rd_completed_lock);
++	guard(mutex)(&cl->rd_completed_lock);
+ 	list_add_tail(&cb->list, &cl->rd_completed);
+-	spin_unlock(&cl->rd_completed_lock);
+ }
+ 
+ /**
+@@ -1409,9 +1405,8 @@ void mei_cl_add_rd_completed(struct mei_cl *cl, struct mei_cl_cb *cb)
+  */
+ void mei_cl_del_rd_completed(struct mei_cl *cl, struct mei_cl_cb *cb)
+ {
+-	spin_lock(&cl->rd_completed_lock);
++	guard(mutex)(&cl->rd_completed_lock);
+ 	mei_io_cb_free(cb);
+-	spin_unlock(&cl->rd_completed_lock);
+ }
+ 
+ /**
+diff --git a/drivers/misc/mei/mei_dev.h b/drivers/misc/mei/mei_dev.h
+index d8634a726990..ca19b4e45ac9 100644
+--- a/drivers/misc/mei/mei_dev.h
++++ b/drivers/misc/mei/mei_dev.h
+@@ -7,11 +7,12 @@
+ #ifndef _MEI_DEV_H_
+ #define _MEI_DEV_H_
+ 
+-#include <linux/types.h>
+ #include <linux/cdev.h>
+-#include <linux/poll.h>
+ #include <linux/mei.h>
+ #include <linux/mei_cl_bus.h>
++#include <linux/mutex.h>
++#include <linux/poll.h>
++#include <linux/types.h>
+ 
+ static inline int uuid_le_cmp(const uuid_le u1, const uuid_le u2)
+ {
+@@ -314,7 +315,7 @@ struct mei_cl {
+ 	u8 tx_cb_queued;
+ 	enum mei_file_transaction_states writing_state;
+ 	struct list_head rd_pending;
+-	spinlock_t rd_completed_lock; /* protects rd_completed queue */
++	struct mutex rd_completed_lock; /* protects rd_completed queue */
+ 	struct list_head rd_completed;
+ 	struct mei_dma_data dma;
+ 	u8 dma_mapped;
+-- 
+2.53.0
+
 
