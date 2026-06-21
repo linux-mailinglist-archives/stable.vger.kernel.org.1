@@ -1,156 +1,205 @@
-Return-Path: <stable+bounces-267557-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-267558-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id qJQuD8YHOGrpXAcAu9opvQ
-	(envelope-from <stable+bounces-267557-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 21 Jun 2026 17:48:22 +0200
+	id pTkbJHgNOGrHXQcAu9opvQ
+	(envelope-from <stable+bounces-267558-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 21 Jun 2026 18:12:40 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D5D06AB33C
-	for <lists+stable@lfdr.de>; Sun, 21 Jun 2026 17:48:21 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 89D226AB3F5
+	for <lists+stable@lfdr.de>; Sun, 21 Jun 2026 18:12:39 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=FrxISM1z;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-267557-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-267557-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	dkim=none;
+	dmarc=none;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-267558-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-267558-lists+stable=lfdr.de@vger.kernel.org";
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 0F2993010D96
-	for <lists+stable@lfdr.de>; Sun, 21 Jun 2026 15:48:17 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 9DFCF30028DF
+	for <lists+stable@lfdr.de>; Sun, 21 Jun 2026 16:12:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D775C23E356;
-	Sun, 21 Jun 2026 15:48:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4B1123FC41;
+	Sun, 21 Jun 2026 16:12:33 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from maynard.decadent.org.uk (maynard.decadent.org.uk [65.21.191.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA11545039;
-	Sun, 21 Jun 2026 15:48:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDBD621ABAA;
+	Sun, 21 Jun 2026 16:12:31 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782056895; cv=none; b=Sz427t64tWiytJSjglIj3R2ivjs0ETe9mWJdtwCRmK0mE0MiJOYHPElPwSrQdnRgnKZnHo1lLk9Ai1p9lti6m6LSYLxkTDR7vA/FhBvD+pMRIC9KOcx5PKoVZK35SAG+kZQJ9/vY2tbr1slW4qQx1t0gytFEzEkAApcvPKZmKf0=
+	t=1782058353; cv=none; b=fLpFHMHBtQ3pBqJm8V2Vt3/x2FySBHwsx0pe7sBnIuOlqJazPg+ahhOvb0eD7qA/V0GOk6lpq/ruv9ZdutI/R2cfGn6AVbw+BVwyFcOaj38zHxK8TkggMeqQ4Wltrc69HVaINEwH6UKwwPo+9bicu7YWDIGpgyQhsGOQTCGiZUQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782056895; c=relaxed/simple;
-	bh=rcbBh4qPhLcMkmjNOahlfWWxRWZQO8BXgh3SWzAW1Ww=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=tWY8Z3xBnLuVy8W1hS774h4CxtDZ9ER49i80S4384wOHy4mp+TAWZVDekW7F0zIt1pTFkjnHw/K1eWaNwwVrL0gLbf4Ojh2dV8U8X8+6EETIYARn/T6WLpCim4xZEV8zzizEbnD24HLOn+caYudmKLdBmhluCTB4nXAHoN1ipI4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FrxISM1z; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD3451F000E9;
-	Sun, 21 Jun 2026 15:48:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782056894;
-	bh=WgPuBJVNaV8iXn7vMN0W8u2z/1iTfOUDdPi402d7mmA=;
-	h=From:To:Cc:Subject:Date;
-	b=FrxISM1zgRMO/d2IZ5VFsU3Ox0FmX7tXAqncJWmvpdLmADHpGk5f73S+Sa8rwE1ke
-	 c92AVcPIS2diEorB5JftN6EPClV3Bh1YXbPa/XL3Hsxv4BqbUzSXoaA+9zg5RUA4m5
-	 f17g6DRjmnQgyJ4PlEZcQ0iDiALUK3mUtII/AoZX3hW0EFPcBqKKrct8tB/XNMikPq
-	 lS3ppE5VKbLTjgQjnAwaAIPmVwsEi9LAUZN7WM6zL47PTneVqziTs7iimFVCPzUMC5
-	 RtOxN1QmyRV23E7EMZfjeb5DwoUOnqrLuHr+GdUr3xh5VmjLbzVJCAApx+mfCxnrNo
-	 djxouOXt73YQQ==
-From: SeongJae Park <sj@kernel.org>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: SeongJae Park <sj@kernel.org>,
-	"# 5 . 16 . x" <stable@vger.kernel.org>,
-	damon@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: [PATCH] mm/damon/core: handle zero intervals in damon_max_nr_accesses()
-Date: Sun, 21 Jun 2026 08:48:06 -0700
-Message-ID: <20260621154808.86431-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
+	s=arc-20240116; t=1782058353; c=relaxed/simple;
+	bh=C5gbBvGbEjXZp+lv/dI+WhRjHTDqFwecX2kHUEMmcRI=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=g6jKIiF8QwB7MViLu7p9cZVYnMjVnDmzl+DCoFKDdf7pU4vBEFabDCPqAOjDEqe6yjFjDcgjh89hqFfiVGpPhGqi9grSMcEIueZIqpdkg/nPo7JAP1/pau/JXM2j5IIVr8GNcsbB9AjisyJqAXrs1JIu1lCcleZqEms4xWt8KNA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=decadent.org.uk; spf=pass smtp.mailfrom=decadent.org.uk; arc=none smtp.client-ip=65.21.191.19
+Received: from [2a02:578:851f:1502:391e:c5f5:10e2:b9a3] (helo=deadeye)
+	by maynard with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <ben@decadent.org.uk>)
+	id 1wbKmZ-003aX7-11;
+	Sun, 21 Jun 2026 16:12:27 +0000
+Received: from ben by deadeye with local (Exim 4.99.3)
+	(envelope-from <ben@decadent.org.uk>)
+	id 1wbKmY-00000007LsX-1WL8;
+	Sun, 21 Jun 2026 18:12:26 +0200
+Message-ID: <51fafef3d7dce78fd0210b55e45336caaa4a71d9.camel@decadent.org.uk>
+Subject: Re: [PATCH 6.1 342/522] thermal: core: Fix thermal zone governor
+ cleanup issues
+From: Ben Hutchings <ben@decadent.org.uk>
+To: Sasha Levin <sashal@kernel.org>, Greg Kroah-Hartman
+	 <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
+Date: Sun, 21 Jun 2026 18:12:21 +0200
+In-Reply-To: <42c2abbdfdd4ea8e234fbcfc4b37095ebd2c7b36.camel@decadent.org.uk>
+References: <20260616145125.307082728@linuxfoundation.org>
+		 <20260616145141.812464695@linuxfoundation.org>
+	 <42c2abbdfdd4ea8e234fbcfc4b37095ebd2c7b36.camel@decadent.org.uk>
+Content-Type: multipart/signed; micalg="pgp-sha512";
+	protocol="application/pgp-signature"; boundary="=-6TXC5E2rZosMEtxACXKK"
+User-Agent: Evolution 3.56.2-9 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-SA-Exim-Connect-IP: 2a02:578:851f:1502:391e:c5f5:10e2:b9a3
+X-SA-Exim-Mail-From: ben@decadent.org.uk
+X-SA-Exim-Scanned: No (on maynard); SAEximRunCond expanded to false
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-3.66 / 15.00];
-	WHITELIST_SPF_DKIM(-3.00)[kernel.org:d:+,kernel.org:s:+];
+X-Spamd-Result: default: False [-3.56 / 15.00];
+	SIGNED_PGP(-2.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	MIME_GOOD(-0.20)[multipart/signed,text/plain];
 	MAILLIST(-0.15)[generic];
-	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:akpm@linux-foundation.org,m:sj@kernel.org,m:stable@vger.kernel.org,m:damon@lists.linux.dev,m:linux-kernel@vger.kernel.org,m:linux-mm@kvack.org,s:lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORWARDED(0.00)[lists@lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_SENDER(0.00)[sj@kernel.org,stable@vger.kernel.org];
-	TAGGED_FROM(0.00)[bounces-267557-lists,stable=lfdr.de];
-	DKIM_TRACE(0.00)[kernel.org:+];
+	FORGED_SENDER(0.00)[ben@decadent.org.uk,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-267558-lists,stable=lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	DMARC_NA(0.00)[decadent.org.uk];
+	FORGED_RECIPIENTS(0.00)[m:sashal@kernel.org,m:gregkh@linuxfoundation.org,m:stable@vger.kernel.org,m:patches@lists.linux.dev,m:rafael.j.wysocki@intel.com,s:lists@lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORWARDED(0.00)[lists@lfdr.de];
+	MIME_TRACE(0.00)[0:+,1:+,2:~];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sj@kernel.org,stable@vger.kernel.org];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FROM_NEQ_ENVFROM(0.00)[ben@decadent.org.uk,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	RCVD_COUNT_FIVE(0.00)[5];
+	R_DKIM_NA(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FROM_HAS_DN(0.00)[]
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 6D5D06AB33C
+X-Rspamd-Queue-Id: 89D226AB3F5
 
-damon_max_nr_accesses() causes a divide-by-zero if the sampling interval
-is set to zero by the user.  If the aggregation interval is set to zero,
-the function returns zero.  It is wrong, since the real maximum
-nr_acceses in the setup should be one.  Worse yet, it can cause another
-divide-by-zero from its caller, damon_hot_score(), since it uses
-damon_max_nr_accesses() return value as a denominator.
 
-Fix the problem by setting the denominator in the function as 1 when the
-sampling interval is zero.  Also ensure the return value is always 1 or
-greater.
+--=-6TXC5E2rZosMEtxACXKK
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-The issue was discovered [1] by Sashiko.
+On Sun, 2026-06-21 at 17:29 +0200, Ben Hutchings wrote:
+> On Tue, 2026-06-16 at 20:28 +0530, Greg Kroah-Hartman wrote:
+> > 6.1-stable review patch.  If anyone has any objections, please let me k=
+now.
+> >=20
+> > ------------------
+> >=20
+> > From: "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
+> >=20
+> > [ Upstream commit 41ff66baf81c6541f4f985dd7eac4494d03d9440 ]
+> >=20
+> > If thermal_zone_device_register_with_trips() fails after adding
+> > a thermal governor to the thermal zone being registered, the
+> > governor is not removed from it as appropriate which may lead to
+> > a memory leak.
+> >=20
+> > In turn, thermal_zone_device_unregister() calls thermal_set_governor()
+> > without acquiring the thermal zone lock beforehand which may race with
+> > a governor update via sysfs and may lead to a use-after-free in that
+> > case.
+> >=20
+> > Address these issues by adding two thermal_set_governor() calls, one to
+> > thermal_release() to remove the governor from the given thermal zone,
+> > and one to the thermal zone registration error path to cover failures
+> > preceding the thermal zone device registration.
+> >=20
+> > Fixes: e33df1d2f3a0 ("thermal: let governors have private data for each=
+ thermal zone")
+> > Cc: All applicable <stable@vger.kernel.org>
+> > Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+> > Link: https://patch.msgid.link/5092923.31r3eYUQgx@rafael.j.wysocki
+> > [ adapted context for missing mutex_destroy/complete ]
+> > Signed-off-by: Sasha Levin <sashal@kernel.org>
+> > Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> > ---
+> >  drivers/thermal/thermal_core.c |    7 ++++---
+> >  1 file changed, 4 insertions(+), 3 deletions(-)
+> >=20
+> > --- a/drivers/thermal/thermal_core.c
+> > +++ b/drivers/thermal/thermal_core.c
+> > @@ -756,6 +756,7 @@ static void thermal_release(struct devic
+> >  		     sizeof("thermal_zone") - 1)) {
+> >  		tz =3D to_thermal_zone(dev);
+> >  		thermal_zone_destroy_device_groups(tz);
+> > +		thermal_set_governor(tz, NULL);
+> >  		kfree(tz);
+> >  	} else if (!strncmp(dev_name(dev), "cooling_device",
+> >  			    sizeof("cooling_device") - 1)) {
+> > @@ -1260,8 +1261,10 @@ thermal_zone_device_register_with_trips(
+> >  	/* sys I/F */
+> >  	/* Add nodes that are always present via .groups */
+> >  	result =3D thermal_zone_create_device_groups(tz, mask);
+> > -	if (result)
+> > +	if (result) {
+> > +		thermal_set_governor(tz, NULL);
+> >  		goto remove_id;
+> > +	}
+>=20
+> The order of initialisation in thermal_zone_device_register_with_trips()
+> is quite different between 6.1 and mainline.  Clearing the governor here
+> doesn't make sense as the governor has not been set yet.
+>=20
+> The proper place for this in 6.1 seems to be in the failure path after
+> calling thermal_add_hwmon_sysfs().
 
-[1] https://lore.kernel.org/20260619202459.145010-1-sj@kernel.org
+The backports to all stable branches from 5.10 to 6.12 (inclusive) seem
+to have the same problem.
 
-Fixes: 198f0f4c58b9 ("mm/damon/vaddr,paddr: support pageout prioritization")
-Cc: <stable@vger.kernel.org> # 5.16.x
-Signed-off-by: SeongJae Park <sj@kernel.org>
----
-Changes from RFC v1.1
-- rfc v1.1: https://lore.kernel.org/20260620171413.89555-1-sj@kernel.org
-- Wordsmith commit message.
-- Drop RFC tag.
-Changes from RFC v1
-- rfc v1: https://lore.kernel.org/20260619205144.150664-1-sj@kernel.org
-- Handle zero aggr_interval case.
+Ben.
 
- include/linux/damon.h | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+--=20
+Ben Hutchings
+No political challenge can be met by shopping. - George Monbiot
 
-diff --git a/include/linux/damon.h b/include/linux/damon.h
-index 64d75c78f4df4..02ac34537df9a 100644
---- a/include/linux/damon.h
-+++ b/include/linux/damon.h
-@@ -1066,9 +1066,13 @@ static inline bool damon_target_has_pid(const struct damon_ctx *ctx)
- 
- static inline unsigned int damon_max_nr_accesses(const struct damon_attrs *attrs)
- {
--	/* {aggr,sample}_interval are unsigned long, hence could overflow */
--	return min(attrs->aggr_interval / attrs->sample_interval,
-+	unsigned long sample_interval;
-+	unsigned long max_nr_accesses;
-+
-+	sample_interval = attrs->sample_interval ? : 1;
-+	max_nr_accesses = min(attrs->aggr_interval / sample_interval,
- 			(unsigned long)UINT_MAX);
-+	return max_nr_accesses ? : 1;
- }
- 
- 
+--=-6TXC5E2rZosMEtxACXKK
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: This is a digitally signed message part
 
-base-commit: 7a58ae62cdf3c006a53b805bbb12079ab2621a07
--- 
-2.47.3
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCgAdFiEErCspvTSmr92z9o8157/I7JWGEQkFAmo4DWUACgkQ57/I7JWG
+EQlg2Q//ZABfGMf6qsHOLuHxRJUjyPiW09wSzv6JicIRylu7qVSl03dwRsxSv8gn
++52uawEQUqGe+qF+3DOXvC4JPOLwG3Y75dwOfkso1HyEGfy3c+DtrODWiYPfMXSP
+K9JH304mYR1EIcv9Gek4H381B0LFORPC+X+t2B0DWF/acsxuWGgmr5m7JI/bwNUj
+6ajDQcBl5bmsc2o/3tjZQ5bIxdjrGut35KRou7kB+xnZ3AUkxzbdMmce6LV4idIP
+3APRoYRfAyjkgfOERF403UOl//jnISXA/CR5qih2oBq0EcDFWq74MSknDbVXI2y2
+/zMQLzjSkIpqkTCkt/xU+wAH8Ua4wEWSWxKCF2eMUtlHZe4ZiOwxknCbrKq9eg5H
+GBWw+M4EkSxrTFxghMEjScRo6SMIrqspdIk1w/9ocMKc9/cb357+092z+0xQ/5oZ
+dGL9hjZU6CLyDWYdZIq+Rzk3d5ymCjqXKd9IwN8HkareVd8XQU9bi9KHW6Z2ax+T
+x1/8uu38H36KB6PQRiy86b911ASQSr2ye1uj/3Qc4lxLgfMqOBCAR0cb0paPMvqx
+SOXhNtOUjvwE9CnrpnLZUqJfaXfa/89gDf3DuOlHq7HMCDdliFP5mh1CcKr7ChVc
+9KJe+nFJqSvTUhTPzAF1bqVqWfeYg7GZ7iNZK3g8wYXcyZaNSRU=
+=eTi/
+-----END PGP SIGNATURE-----
+
+--=-6TXC5E2rZosMEtxACXKK--
 
