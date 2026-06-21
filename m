@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-267582-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-267583-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id rII0MrtjOGpsbwcAu9opvQ
-	(envelope-from <stable+bounces-267582-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 22 Jun 2026 00:20:43 +0200
+	id AxBlA91jOGptbwcAu9opvQ
+	(envelope-from <stable+bounces-267583-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 22 Jun 2026 00:21:17 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2F4976ABBCD
-	for <lists+stable@lfdr.de>; Mon, 22 Jun 2026 00:20:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 533306ABBD1
+	for <lists+stable@lfdr.de>; Mon, 22 Jun 2026 00:21:16 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=CZGeXYCJ;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-267582-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-267582-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=TRkPyYJ8;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-267583-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-267583-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A3F0B302573C
-	for <lists+stable@lfdr.de>; Sun, 21 Jun 2026 22:20:26 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 718C43031AD0
+	for <lists+stable@lfdr.de>; Sun, 21 Jun 2026 22:20:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB9CD37701C;
-	Sun, 21 Jun 2026 22:20:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D1E7377EA1;
+	Sun, 21 Jun 2026 22:20:27 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD7141DC1AB;
-	Sun, 21 Jun 2026 22:20:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22525377541;
+	Sun, 21 Jun 2026 22:20:25 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782080425; cv=none; b=glhmdIAp6DfRyTLFoZ12GffTW3Qfjqc/7KuGS+NgeT3a2pDqzghd4R2NlrI/6XGleKIzJoB/kwlPrEizcEokNMC3acZuXW/KlSM8epVjLGm9wCPlVA8K5lVVoEyol1+zprRMucA6hciP0inMrdA2XFZUJIdzibkq/Ry9ZKvPGoo=
+	t=1782080427; cv=none; b=Jaeg0LPHuAb+ugV/+JIRoR5WBWWKtcpJ2utveDlC7/AaTvW2ZtnAIufDpLOQaOQ9U33xd75NMIjQo+aHU8QDpOYWM4ftMJTsqcwTNwKYvx6LSArwun9dM9hjc05fQYogCwh6DwBA9qyK+EpNx0UP7bIPEcUy7fmMKHR3hp4pGS0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782080425; c=relaxed/simple;
-	bh=T5VUv1Ga4n7x+9385+Sru3gH6NETsqNWlX+DwZVTA8E=;
+	s=arc-20240116; t=1782080427; c=relaxed/simple;
+	bh=3dDOp9MZ8r9bN/xL7eWh7CirIggpgGv49X6zKypIoNI=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=Egkzhz6qrirCQaLK5XzDB7jQ34CCviIn0oAekNjRWPDuSFXCIw58REFpWx0zwmcUA2iLDYnu+bqa0E4lXTpgaXR3Lw2ROIwUjE7EO7vWiSjx/Rx+Hx9Exf3e4V/ZnYSl8uM+ptSW4qPts/jZinhALtyQcGfx2dS2OHMgTPyqgKg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CZGeXYCJ; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 546EE1F000E9;
-	Sun, 21 Jun 2026 22:20:24 +0000 (UTC)
+	 In-Reply-To:To:Cc; b=ZahNhOuaoDi9Gp9oUJEDx0VHT7ILtKZA1l6XJ1rz0hbXgtruBg+opmQZyBsdypqDvPqALmWYrpqkx+mD49dCSsgSZjLUNencAbaY0A1FiK8Ne4Egs9Uf0rW39DkieeeJftG5+ieMk9QwenJcHhXAULPgPzQXaKvNzcJPE9jN+TI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TRkPyYJ8; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D18221F000E9;
+	Sun, 21 Jun 2026 22:20:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782080424;
-	bh=WCmA0qQBJ2YcrfyBTEx4uocETIQnp8oA9pluEsWaoew=;
+	s=k20260515; t=1782080425;
+	bh=h5u+SbbxToIb+xFR7jv01f/eXTnMKs+MknvmlgN9Noc=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=CZGeXYCJ8Zn0YgYqVPcinLWDRFNBGiNhV2OkIBkSSUfnviUynfIDFCTHoEwH6hgI+
-	 uxm6+yw+Tnen22aoFGO5ckbno5lRccq/JBp1Y3Kp6pJUNNpviuHnOgUzd0fj33TkK6
-	 Qh7x7kzlDQjWOKQE4biC5MJBVT/KIf6A9/UhHr4VTKgj/yBiLKJbCz0YNhvz1xvyQe
-	 sKkd2WEkkWjanOHNWcJSBEb76zdFUQALbikIQ1V5Jn3dA4F28EJhP69szWwcBSkoY0
-	 cJjRUaWkBFp56ewc/INuh7zdqEuL+Dt7j+wFpsYUanp8qnlQSPrRj3ZSTyOZSn6GPQ
-	 kTVaMbIdtwmRA==
+	b=TRkPyYJ8NrhthlPxANOzEY7p+wmHGJpWu+8+WKuUWBY43dzUblwf/WsqqC1pgZpJr
+	 /G8Vi0D6E1UVzzRvaUqQqlDUAdb2797yYqpRStK5oZ2wyw94p8UMRd9Ie7Bv6z1dYj
+	 tPqOnz3b7wX0bLce8LbTej6HPeV0Hmig21oePDqlfiLNByn1zPK8dhUFWSEamiv939
+	 N577LIcdfV5wJI3E78CSO8VAHgrlhYZUsxoVO0Cuj4eqj3kGw4C6zSQOB+yDPOOifa
+	 IcC9/tTtMFIQQOpXDQAR/uRf3FVWlLWnlbzL100MsVG+fKarKQMCPhrhhHo/dVPYPz
+	 lPAle18tqyGQQ==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id D09FB3AAA6EA;
-	Sun, 21 Jun 2026 22:20:16 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 568593AAA6EA;
+	Sun, 21 Jun 2026 22:20:18 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -57,24 +57,20 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net] net: sit: require CAP_NET_ADMIN in the device netns
- for
- changelink
+Subject: Re: [PATCH v3 1/2] net/sched: dualpi2: fix GSO backlog accounting
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <178208041545.521994.18016551360259263471.git-patchwork-notify@kernel.org>
-Date: Sun, 21 Jun 2026 22:20:15 +0000
-References: <20260618070817.3378283-1-maoyixie.tju@gmail.com>
-In-Reply-To: <20260618070817.3378283-1-maoyixie.tju@gmail.com>
-To: Maoyi Xie <maoyixie.tju@gmail.com>
-Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
- pabeni@redhat.com, horms@kernel.org, kuniyu@google.com, shaw.leon@gmail.com,
- nicolas.dichtel@6wind.com, kees@kernel.org, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org
+ <178208041698.521994.2221997843607736583.git-patchwork-notify@kernel.org>
+Date: Sun, 21 Jun 2026 22:20:16 +0000
+References: <20260619151447.223640-1-b1n@b1n.io>
+In-Reply-To: <20260619151447.223640-1-b1n@b1n.io>
+To: Xingquan Liu <b1n@b1n.io>
+Cc: jhs@mojatatu.com, netdev@vger.kernel.org, jiri@resnulli.us,
+ victor@mojatatu.com, chia-yu.chang@nokia-bell-labs.com,
+ stable@vger.kernel.org
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-3.66 / 15.00];
+X-Spamd-Result: default: False [-5.16 / 15.00];
 	WHITELIST_SPF_DKIM(-3.00)[kernel.org:d:+,kernel.org:s:+];
-	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
@@ -82,53 +78,56 @@ X-Spamd-Result: default: False [-3.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[davemloft.net,google.com,kernel.org,redhat.com,gmail.com,6wind.com,vger.kernel.org];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-267582-lists,stable=lfdr.de,netdevbpf];
-	RCPT_COUNT_TWELVE(0.00)[13];
+	TAGGED_FROM(0.00)[bounces-267583-lists,stable=lfdr.de,netdevbpf];
+	FROM_NEQ_ENVFROM(0.00)[patchwork-bot@kernel.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS(0.00)[m:b1n@b1n.io,m:jhs@mojatatu.com,m:netdev@vger.kernel.org,m:jiri@resnulli.us,m:victor@mojatatu.com,m:chia-yu.chang@nokia-bell-labs.com,m:stable@vger.kernel.org,s:lists@lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
 	FORGED_SENDER(0.00)[patchwork-bot@kernel.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:maoyixie.tju@gmail.com,m:davem@davemloft.net,m:edumazet@google.com,m:kuba@kernel.org,m:pabeni@redhat.com,m:horms@kernel.org,m:kuniyu@google.com,m:shaw.leon@gmail.com,m:nicolas.dichtel@6wind.com,m:kees@kernel.org,m:netdev@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,m:maoyixietju@gmail.com,m:shawleon@gmail.com,s:lists@lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_TO(0.00)[gmail.com];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FROM_NEQ_ENVFROM(0.00)[patchwork-bot@kernel.org,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
 	FROM_NO_DN(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	ALIAS_RESOLVED(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp]
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 2F4976ABBCD
+X-Rspamd-Queue-Id: 533306ABBD1
 
 Hello:
 
-This patch was applied to netdev/net.git (main)
+This series was applied to netdev/net.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Thu, 18 Jun 2026 15:08:17 +0800 you wrote:
-> ipip6_changelink() operates on at most two netns, dev_net(dev) and the
-> tunnel link netns t->net. They differ once the device is created in or
-> moved to a netns other than the one the request runs in. The rtnl
-> changelink path checks CAP_NET_ADMIN only against dev_net(dev), so a
-> caller privileged there but not in t->net can rewrite a tunnel that
-> lives in t->net.
+On Fri, 19 Jun 2026 11:13:47 -0400 you wrote:
+> When DualPI2 splits a GSO skb into N segments, it propagates N
+> additional packets to its parent before returning NET_XMIT_SUCCESS.
+> The parent then accounts for the original skb once more, leaving its
+> qlen one larger than the number of packets actually queued.
+> 
+> With QFQ as the parent, after all real packets are dequeued, QFQ still
+> has a non-zero qlen while its in-service aggregate has no active
+> classes. qfq_choose_next_agg() returns NULL and qfq_dequeue() passes
+> the result to qfq_peek_skb(), causing a NULL pointer dereference.
 > 
 > [...]
 
 Here is the summary with links:
-  - [net] net: sit: require CAP_NET_ADMIN in the device netns for changelink
-    https://git.kernel.org/netdev/net/c/27ccb68e7ccc
+  - [v3,1/2] net/sched: dualpi2: fix GSO backlog accounting
+    https://git.kernel.org/netdev/net/c/05ed733b65ab
+  - [v3,2/2] selftests/tc-testing: Add DualPI2 GSO backlog accounting test
+    https://git.kernel.org/netdev/net/c/54704b32b2ab
 
 You are awesome, thank you!
 -- 
