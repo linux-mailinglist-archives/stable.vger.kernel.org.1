@@ -1,241 +1,145 @@
-Return-Path: <stable+bounces-267536-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-267537-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 1D0mE53dN2pmUwcAu9opvQ
-	(envelope-from <stable+bounces-267536-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 21 Jun 2026 14:48:29 +0200
+	id oaZ3APHfN2osVAcAu9opvQ
+	(envelope-from <stable+bounces-267537-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 21 Jun 2026 14:58:25 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 960376AABA5
-	for <lists+stable@lfdr.de>; Sun, 21 Jun 2026 14:48:28 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 62A516AAC9B
+	for <lists+stable@lfdr.de>; Sun, 21 Jun 2026 14:58:24 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=TmRJ7Mw3;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-267536-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-267536-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=none) header.from=gmail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ej4GDNKp;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-267537-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-267537-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D159E300E739
-	for <lists+stable@lfdr.de>; Sun, 21 Jun 2026 12:48:17 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 0EC623014759
+	for <lists+stable@lfdr.de>; Sun, 21 Jun 2026 12:58:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 665C872621;
-	Sun, 21 Jun 2026 12:48:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A506D3659FB;
+	Sun, 21 Jun 2026 12:58:01 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wr1-f47.google.com (mail-wr1-f47.google.com [209.85.221.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF97C365A19
-	for <stable@vger.kernel.org>; Sun, 21 Jun 2026 12:48:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78EA3235BE2;
+	Sun, 21 Jun 2026 12:58:00 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782046096; cv=none; b=jJ91IHTnK++1ojeCaVqXINrT8VSuJx8mdCiOWEcgNOkgT7TOIfXy76T/MTjSp8WNo6DXxKPwtt3gYsyjCG66sZA+2GUG55dSdJO4W9ftuRY72SMIlCLihuG8x57DPou8bnP1OQFxFISw45TCfZAvoo8223+XoDgXcdz0uyHgI7M=
+	t=1782046681; cv=none; b=pnC48n/nv+DpvjfhEUTVGUtog5cubsPQDMK/cMjswMQxKKjSpslBpg/3c/st7yQpZjbYdfz33n4RCUQuTnfCbXbWgLFwKCikB1R8b6yAxXm/uhBaPlgVh/0KFVRj4/8vRhOcEEDnFVPDw2kSUTX2uzaJg8HOoTn/0lzU68BB6Ko=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782046096; c=relaxed/simple;
-	bh=dwd1k+IJABctYDLMq+DgsmYr4JGdBw799Gys1m4tQ18=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=FtsE/YelsubAk+VzVU152pc3h+MGyXEKxKIl37BkZIxMAi19zUFDa4smHw6wu9ZZp7dVb0GigX+SbJCIfg4pyNU3B/h7T/JJ9Nxb8xiUxUzUdgxmaDpKFB9oFLV+4F8/e6HVpVQT+T4oq9Hl50pG94lqkJN0vvzrIpnjmeVAa5o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=TmRJ7Mw3; arc=none smtp.client-ip=209.85.221.47
-Received: by mail-wr1-f47.google.com with SMTP id ffacd0b85a97d-4631679f204so2184406f8f.0
-        for <stable@vger.kernel.org>; Sun, 21 Jun 2026 05:48:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1782046093; x=1782650893; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=hIV4b3lS40cEQDNqNshmkXrtRoxu1KZxLASIPEaidyw=;
-        b=TmRJ7Mw3ssz0jHRsOE4DmrKY8wZ+O9MbfvmkbD4nqbAepu27S/aKfukCDJXkxljJhi
-         7GFHLI13DOaock28j5Ot/Sr/KBikm266U2s8IcCd4YyxHt0aDEfdu9XHkamEgAIZcwUD
-         wXR79MzNKlkte79k3gCnsUZdDf6AHe5AArQul+i4N4drFaXptcPzlVB0KssREAK+7bHl
-         7xpkyBeMp+qZtwCtkVBDdtX49o9FwoyUiOIAc/0+m371/+4nPterh3GJxLbrUngomdKY
-         F/ALR/nBkvgGwURn0Aq2xzqNtri8zrECsx5uvuDJI0EyZWqrDC7KEC5018789IUhmbex
-         UBQA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782046093; x=1782650893;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=hIV4b3lS40cEQDNqNshmkXrtRoxu1KZxLASIPEaidyw=;
-        b=s4DJr/Hvb13Q/KGpSheUHYF9cJCR587LTKZ+I9UIIG+Q2AuLYi4I3W7fkqd/mTnHKZ
-         CB1JIFJwJIgkQPTk4ES98rTwGSppl97Q45kvYwQZ+PHZoBXLhSmvFSGx2hthnjrd6oac
-         dQZnSQixGourR+cuPTqTouScn07g67iYMtBl54oRTr7eLW/qP3kVk2hFlxSfBML3XAzE
-         2ymp3oJS6tD7rLKS4ETJ2KWE7NAAg+0HXcjao4ynEJa7X2AgVNi1bPnWHzFt0jvHK0+i
-         /faYyUF6KGtLkTHeeqncQe4l8sbBeZobozO3+5yT6Hn1sbRUmboiskRjLLt97F/+dZw3
-         13vA==
-X-Forwarded-Encrypted: i=1; AHgh+RrFiXvh8XI4xkXZi75qja0wjnPZ+Y5Tl+PzRyrW0e8aOBp5VkdkxUDcHoGfRDShb/tdvXC4ZF8=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzmgYvo5EDwNMJpvWs9bCLiGhOxmDx9lBEdURf6PHP1eM07J749
-	LUOpTUuDH7NloKonEdJFrau7NBJGFb/aFtXvmhPsRq/EAJ+0SNTPvLnX
-X-Gm-Gg: AfdE7ckfBKUR0NwDVfVYcm2YxqgOv2wHNr/XMJfpk2n7pH+6w6tbxURhldebEg7MM1c
-	AzDzzJK12PsHzZC/5DD5CBBApiU1rBQRETVmk57v44EPpmz6mNQt+AYWsyuxuK+mxRrK7VweOPy
-	Kmb/kxcii5TNyhLUajqldGOciP6ywm7xaVOjzaQrY9ubN8tIp/q8rtg+VwX7vRqwi5pdVbi8THV
-	PEiuZ/PIXgjFaSUch1y7O+C4YWZK8gwmX+Hhyiu0fej14Zu7WhhLm1AMPqd5YBDRL2yaeEf/I0b
-	KG+jAZjHtUCGNZCBP8qXnYfTXTQdTo3Zleh+8Y8kgcTSHP/3jKgGINknPXwKm68xRFhRuFlIOTB
-	eoCbwqLSLrrT9evlDh0WouSzHupxNWFWLxfyhrI1an5z1TaMiOjpfHbhAFZGQ5KAovFhxhS2Pcx
-	NUNNi5iXJShzeJ9XS/sMypDXBX6nxqYK1y6vqfaJzMN2evkUSB2g==
-X-Received: by 2002:a5d:5f92:0:b0:45e:9304:a4c3 with SMTP id ffacd0b85a97d-4651e5c4122mr16430995f8f.19.1782046092926;
-        Sun, 21 Jun 2026 05:48:12 -0700 (PDT)
-Received: from pumpkin (82-69-66-36.dsl.in-addr.zen.co.uk. [82.69.66.36])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4666cea9581sm15509474f8f.0.2026.06.21.05.48.12
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 21 Jun 2026 05:48:12 -0700 (PDT)
-Date: Sun, 21 Jun 2026 13:48:09 +0100
-From: David Laight <david.laight.linux@gmail.com>
-To: Alvin Lim <alvinwylim@gmail.com>
-Cc: linux-ide@vger.kernel.org, Damien Le Moal <dlemoal@kernel.org>, Niklas
- Cassel <cassel@kernel.org>, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org
-Subject: Re: [PATCH] ata: ahci: force 32-bit DMA for ASMedia ASM1166
-Message-ID: <20260621134809.7b1b2e3f@pumpkin>
-In-Reply-To: <20260621100844.1224301-1-alvinwylim@gmail.com>
-References: <20260621100844.1224301-1-alvinwylim@gmail.com>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; arm-unknown-linux-gnueabihf)
+	s=arc-20240116; t=1782046681; c=relaxed/simple;
+	bh=dwyyFF+yPpoJif6/OWI2GLmuQ0czkd3E3lwUANbsdlU=;
+	h=Mime-Version:Content-Type:Date:Message-Id:To:From:Subject:Cc:
+	 References:In-Reply-To; b=qBCRjQgNpnYtiY00oKK1V58HvlA2rtJfNBRgzp8D5brxEjK3f3rQnV+cyQ3Pudfo1bvjKCAQ1bRw7i87VaWlvwQSHYs2qS0PoBJ/vtzF9/HqE7U+pfvSTME89KjE4UJJM5YQ1BJf9kr1ypogKsy15SyK/S0NaQhDA0aLY2GXv+A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ej4GDNKp; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 201171F000E9;
+	Sun, 21 Jun 2026 12:57:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1782046680;
+	bh=dwyyFF+yPpoJif6/OWI2GLmuQ0czkd3E3lwUANbsdlU=;
+	h=Date:To:From:Subject:Cc:References:In-Reply-To;
+	b=ej4GDNKp63e4A8UkddmF6kyff7rAp64pM6UmytdApC9Z2U8CNc8xpnXLbGVRgaq6O
+	 z5VxJDYF3OJ+YtwKWSZjESGuCTKgCawhuCUi63t8WvgJta4H/ouC1WoJI2Nw3cXQ0o
+	 2V6H5INF+O3H2STyL7aUVK1/0NVGv3du7lkPSRrv+hb2i7idUkEhwaScyskTQCT1+F
+	 KC7+3TjE1aLVF8G/n1bLLW8hbjeaySn4/MwuenoOo58WNYQVSwuhll7muW+aBYDUS2
+	 OiEhsWBaiYbOcAOZvJU4UM8Sfzh+zdgGaVMJgya2WANSu9cYK5Jjej2+DGVuCR2WW0
+	 ZCxodLUPOamHg==
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Sun, 21 Jun 2026 14:57:56 +0200
+Message-Id: <DJEQTPJAR8DW.18CJ2FC7YZPA3@kernel.org>
+To: "Dawei Feng" <dawei.feng@seu.edu.cn>, "Timur Tabi" <ttabi@nvidia.com>
+From: "Danilo Krummrich" <dakr@kernel.org>
+Subject: Re: [PATCH v2] nouveau/firmware: fix memory leak on BL load failure
+Cc: <lyude@redhat.com>, <maarten.lankhorst@linux.intel.com>,
+ <mripard@kernel.org>, <simona@ffwll.ch>, <dri-devel@lists.freedesktop.org>,
+ <nouveau@lists.freedesktop.org>, <linux-kernel@vger.kernel.org>,
+ <jianhao.xu@seu.edu.cn>, <stable@vger.kernel.org>, "Zilin Guan"
+ <zilin@seu.edu.cn>
+References: <20260610025037.4115412-1-dawei.feng@seu.edu.cn>
+In-Reply-To: <20260610025037.4115412-1-dawei.feng@seu.edu.cn>
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-4.66 / 15.00];
+	WHITELIST_SPF_DKIM(-3.00)[kernel.org:d:+,kernel.org:s:+];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	MV_CASE(0.50)[];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:alvinwylim@gmail.com,m:linux-ide@vger.kernel.org,m:dlemoal@kernel.org,m:cassel@kernel.org,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,s:lists@lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER(0.00)[davidlaightlinux@gmail.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS(0.00)[m:dawei.feng@seu.edu.cn,m:ttabi@nvidia.com,m:lyude@redhat.com,m:maarten.lankhorst@linux.intel.com,m:mripard@kernel.org,m:simona@ffwll.ch,m:dri-devel@lists.freedesktop.org,m:nouveau@lists.freedesktop.org,m:linux-kernel@vger.kernel.org,m:jianhao.xu@seu.edu.cn,m:stable@vger.kernel.org,m:zilin@seu.edu.cn,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[dakr@kernel.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	FREEMAIL_TO(0.00)[gmail.com];
-	TO_DN_SOME(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
+	RCPT_COUNT_TWELVE(0.00)[12];
+	TAGGED_FROM(0.00)[bounces-267537-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-267536-lists,stable=lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FROM_HAS_DN(0.00)[];
+	MISSING_XM_UA(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
 	FORGED_SENDER_FORWARDING(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[davidlaightlinux@gmail.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[gmail.com:+];
 	ALIAS_RESOLVED(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[dakr@kernel.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,seu.edu.cn:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 960376AABA5
+X-Rspamd-Queue-Id: 62A516AAC9B
 
-On Sun, 21 Jun 2026 18:08:44 +0800
-Alvin Lim <alvinwylim@gmail.com> wrote:
+(Cc: Timur)
 
-> The ASMedia ASM1166 SATA controller (1b21:1166) advertises 64-bit DMA
-> support (AHCI CAP.S64A), but on systems with the IOMMU enabled - where it
-> can be handed DMA addresses above 4 GB - it silently corrupts data in
-> transit.
-
-That seems wrong.
-If any iommu is disabled the sata cotroller will be passed the memory's
-physical address which is very likely to be over 4G.
-So the controller seems to support 64bit addresses - as advertised.
-
-But with the iommu enabled the addresses the controller needs to use are
-different from the physical address - so the controller will almost
-certainly see sub 4G addresses for buffers above 4G.
-(The iommu probably allocates 32bit PCIe addresses for all buffers so that
-it doesn't have to worry about targets that only support 32bit addresses.)
-
-It seems more likely that the wrong addresses are ending up in the host
-side of the iommu and using bounce buffers fixes that.
-Using the wrong addresses is likely to lead to major kernel memory
-corruptions.
-
-Mixing up physical addresses and dma addresses, assuming that memory
-from dma_alloc_coherent() is physically contiguous, or just losing the
-high bits of the physical address passed to the iommu seem more likely.
-
-	David
-
-
-
-> Reads return different, wrong data on each access. SMART is clean,
-> there are no SATA link resets and no MCE is raised, so the corruption is
-> invisible until it surfaces as filesystem metadata errors (XFS EUCLEAN)
-> or, on Ceph, mass scrub errors across multiple independent filesystems at
-> once - i.e. host-level, not filesystem-level.
-> 
-> This is the same failure mode already quirked for other controllers that
-> falsely claim working 64-bit DMA. See commit 105c42566a55 ("ata: ahci:
-> force 32-bit DMA for JMicron JMB582/JMB585") and commit 20730e9b2778
-> ("ahci: add 43-bit DMA address quirk for ASMedia ASM1061 controllers").
-> The ASM1166 currently maps to plain board_ahci with no DMA limit.
-> 
-> Limit the ASM1166 to 32-bit DMA. 32-bit is the guaranteed-correct lower
-> bound; the only cost is extra SWIOTLB bounce-buffering on transfers above
-> 4 GB, negligible for storage. A future change can widen it to the
-> controller's true addressable width if characterised. Until this lands the
-> only workarounds are disabling the IOMMU (amd_iommu=off / intel_iommu=off)
-> or using an HBA.
-> 
-> Reproduced on an AOOSTAR WTR MAX (AMD Ryzen 7 PRO 8845HS) whose six SATA
-> bays all hang off one ASM1166: with the IOMMU on, six concurrent
-> 'dd ... | md5sum' of the same large file return six different sums; with
-> amd_iommu=off they are identical, and a full Ceph deep-scrub of a 5.4 TiB
-> / 1.43M-object pool re-reads end-to-end with zero scrub errors.
-> 
-> Add a board_ahci_32bit_dma board type (mirroring board_ahci_43bit_dma)
-> and point the ASM1166 entry at it.
-> 
-> Fixes: 3bf614106094 ("ata: ahci: add identifiers for ASM2116 series adapters")
+On Wed Jun 10, 2026 at 4:50 AM CEST, Dawei Feng wrote:
+> If loading the HS bootloader blob fails, nvkm_falcon_fw_ctor_hs() returns
+> immediately. This skips the common cleanup path and leaks the firmware
+> state allocated by nvkm_falcon_fw_ctor() and nvkm_falcon_fw_sign().
+>
+> Fix this by routing the load failure to the 'done' label so
+> nvkm_falcon_fw_dtor() can properly clean up the partially initialized
+> state. Keep the original image firmware in 'blob' until the common
+> cleanup path, and use a separate 'blob_bl' pointer for the bootloader
+> firmware so it can be released immediately after the bootloader data has
+> been copied.
+>
+> The bug was first flagged by an experimental analysis tool we are
+> developing for kernel memory-management bugs while analyzing
+> v6.13-rc1. The tool is still under development and is not yet publicly
+> available. Manual inspection confirms that the bug is still present in
+> v7.1-rc6.
+>
+> An x86_64 allyesconfig build showed no new warnings. As we do not have a
+> supported NVIDIA GPU with the required firmware to test this path, no
+> runtime testing was able to be performed.
+>
+> Fixes: 2541626cfb79 ("drm/nouveau/acr: use common falcon HS FW code for A=
+CR FWs")
 > Cc: stable@vger.kernel.org
-> Assisted-by: Claude:claude-opus-4.8
-> Signed-off-by: Alvin Lim <alvinwylim@gmail.com>
-> ---
->  drivers/ata/ahci.c | 10 +++++++++-
->  1 file changed, 9 insertions(+), 1 deletion(-)
-> 
-> diff --git a/drivers/ata/ahci.c b/drivers/ata/ahci.c
-> index 58f512f8952a..895956c2ca15 100644
-> --- a/drivers/ata/ahci.c
-> +++ b/drivers/ata/ahci.c
-> @@ -48,6 +48,7 @@ enum {
->  enum board_ids {
->  	/* board IDs by feature in alphabetical order */
->  	board_ahci,
-> +	board_ahci_32bit_dma,
->  	board_ahci_43bit_dma,
->  	board_ahci_ign_iferr,
->  	board_ahci_no_debounce_delay,
-> @@ -132,6 +133,13 @@ static const struct ata_port_info ahci_port_info[] = {
->  		.udma_mask	= ATA_UDMA6,
->  		.port_ops	= &ahci_ops,
->  	},
-> +	[board_ahci_32bit_dma] = {
-> +		AHCI_HFLAGS	(AHCI_HFLAG_32BIT_ONLY),
-> +		.flags		= AHCI_FLAG_COMMON,
-> +		.pio_mask	= ATA_PIO4,
-> +		.udma_mask	= ATA_UDMA6,
-> +		.port_ops	= &ahci_ops,
-> +	},
->  	[board_ahci_43bit_dma] = {
->  		AHCI_HFLAGS	(AHCI_HFLAG_43BIT_ONLY),
->  		.flags		= AHCI_FLAG_COMMON,
-> @@ -1559,7 +1567,7 @@ static const struct pci_device_id ahci_pci_tbl[] = {
->  	}, {
->  		/* ASM1166 */
->  		PCI_VDEVICE(ASMEDIA, 0x1166),
-> -		.driver_data = board_ahci,
-> +		.driver_data = board_ahci_32bit_dma,
->  	}, {
->  		/*
->  		 * Samsung SSDs found on some macbooks.  NCQ times out if MSI is
-> 
-> base-commit: 322008f87f917e2217eeac386a9410945092eb2e
+> Signed-off-by: Zilin Guan <zilin@seu.edu.cn>
 
+Is Zilin a co-author of the patch?
+
+> Signed-off-by: Dawei Feng <dawei.feng@seu.edu.cn>
+> ---
+> Changes in v2:
+> - Use a separate bootloader firmware pointer instead of reusing 'blob'.
+> - Keep the original image firmware release in the common cleanup path.
+
+@Timur: Any further comments following up v1?
 
