@@ -1,120 +1,197 @@
-Return-Path: <stable+bounces-267553-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-267554-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id uohDBRvuN2r2VgcAu9opvQ
-	(envelope-from <stable+bounces-267553-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 21 Jun 2026 15:58:51 +0200
+	id 8rbeHxz9N2qQWwcAu9opvQ
+	(envelope-from <stable+bounces-267554-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 21 Jun 2026 17:02:52 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6131D6AB032
-	for <lists+stable@lfdr.de>; Sun, 21 Jun 2026 15:58:50 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id DDE366AB24C
+	for <lists+stable@lfdr.de>; Sun, 21 Jun 2026 17:02:51 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=n5hWy1ir;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-267553-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-267553-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	dkim=none;
+	dmarc=none;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-267554-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-267554-lists+stable=lfdr.de@vger.kernel.org";
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id ADCFD3001FA6
-	for <lists+stable@lfdr.de>; Sun, 21 Jun 2026 13:58:47 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id BB1E530162B0
+	for <lists+stable@lfdr.de>; Sun, 21 Jun 2026 15:02:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BFA1A3161BF;
-	Sun, 21 Jun 2026 13:58:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ABBED36C5B3;
+	Sun, 21 Jun 2026 15:02:47 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from maynard.decadent.org.uk (maynard.decadent.org.uk [65.21.191.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B20C61A3166
-	for <stable@vger.kernel.org>; Sun, 21 Jun 2026 13:58:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61DBF1A681B;
+	Sun, 21 Jun 2026 15:02:44 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782050326; cv=none; b=mNlVx04SdJYdXt8lwR3iisHxXuXuxJG2aDCRWGohhDdxQwk+tDXVC9Ry0A5lLNgOF5FZTuDTDM0v2VkvFTdpgv4EL8jkTG/Q8eVLCJuz679nzNhhrxukuVCBhhMMNYwHf9wdZ9Nq6b4Pji70VLrqCr20TiNJLMPBpBfAiQD2HE8=
+	t=1782054167; cv=none; b=VLTiT9IQq2HTN8aBrGzIdUeA5KpvwIyt6YaLz9Vs9XDPg1FoOQPtQy9AmFO3adA/5DYG0LMr0KL6Op8eqfiEFhSa3jOdUM93ObZGOF3u3z4yHPBF7jDVc7BplQbSfciRxlZCBn99mrGkw/AXkY4CRCebNvm+4x6U1j5ROks3CrY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782050326; c=relaxed/simple;
-	bh=3qL/0xrd9bchHC+0B3Uv/kjtp9P9wjqQNfv/CHi1n/M=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lAk8FH+MreraOaR58AWqaV37tlABBqfgKMJ6tp/Wio9mXa8e1Mc7VV9u1PgNq2CxGGYy1tc8hMf1PiDySWFxarT3o9lJa1auVDJTv3zai+EOewuPymHMCVWBCQiprjaQ6QEKMC5WCWkxDafrZFfEmu77nPhFKpjyObhlxu5J2To=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=n5hWy1ir; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40B511F00A3A;
-	Sun, 21 Jun 2026 13:58:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782050325;
-	bh=3hOZ/uxPHZgVX7/9+rDM1vgttk5sp+Kzrpl787XorcE=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=n5hWy1ir38E4ks0eHosVqTIPVotxlOhJ2f6cyl2Za5WtOlKCNgMjX8pwtA1bZ6A9p
-	 NGXzz9jxjNmDsUl16+Jkin3BmGpn47fcDlKAOd/R8se9PZjLAPiQGK2SjvdhNlrt3x
-	 vuA5WcMQ2UHVZtDJMMDK06GS9IDiHz0+OWiclPo9s3AJLVnXrX8IjeT09V9grsl5kt
-	 DnfZxJL20O9T5sqh6sufPqTShU4HlpOiL3L4NhBtlE54YTtIsDMHs4G2nuJuXy+DzI
-	 gwzXuYd3DAOmBlMic7BJDVgdykzv9YwA77YsIRo3i5ds5VjMjLD8iGRcV9eqVopZly
-	 I4G5P1bB0EtAw==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Salvatore Bonaccorso <carnil@debian.org>
-Cc: Sasha Levin <sashal@kernel.org>,
-	Eric Dumazet <edumazet@google.com>,
-	Noam Rathaus <noamr@ssd-disclosure.com>,
-	Steffen Klassert <steffen.klassert@secunet.com>,
-	Nicolas Dichtel <nicolas.dichtel@6wind.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Ben Hutchings <ben@decadent.org.uk>
-Subject: Re: Please backport d289d5307762 ("ip6_vti: set netns_immutable on the fallback device.") to 6.12.y.
-Date: Sun, 21 Jun 2026 09:58:37 -0400
-Message-ID: <20260621133722.0010.sashal@kernel.org>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <ajJ6TSzxuWdfQkxf@eldamar.lan>
-References: <ajJ6TSzxuWdfQkxf@eldamar.lan>
+	s=arc-20240116; t=1782054167; c=relaxed/simple;
+	bh=8N2LjD8Zi0JzSsimy/PTOMo66xc0ZQPjFDjo6+IiGi8=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=Uo1uU/FKtncKnm26ajSUye7fzhm2X+2qWCs95yH11HARNYISY31JIX7xyFuxbEcUXQmOenGVUiqSIqf5Th0FY3ebJ9YVZ0wX+fwwRJhC2EGXVBP4QymvZWuCrxtsCucouoMSxkFS1wIjGbzBgCSAk7ZW3PCgQ9utVpMuRPhVVmo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=decadent.org.uk; spf=pass smtp.mailfrom=decadent.org.uk; arc=none smtp.client-ip=65.21.191.19
+Received: from [2a02:578:851f:1502:391e:c5f5:10e2:b9a3] (helo=deadeye)
+	by maynard with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <ben@decadent.org.uk>)
+	id 1wbJgy-003aIM-0V;
+	Sun, 21 Jun 2026 15:02:36 +0000
+Received: from ben by deadeye with local (Exim 4.99.3)
+	(envelope-from <ben@decadent.org.uk>)
+	id 1wbJgw-00000007GXD-2yyJ;
+	Sun, 21 Jun 2026 17:02:34 +0200
+Message-ID: <b0d5836032ce3135bfc473f6bff791306d086925.camel@decadent.org.uk>
+Subject: Re: [PATCH 6.1 337/522] arm64/mm: Enable batched TLB flush in
+ unmap_hotplug_range()
+From: Ben Hutchings <ben@decadent.org.uk>
+To: Anshuman Khandual <anshuman.khandual@arm.com>, Catalin Marinas
+	 <catalin.marinas@arm.com>, "David Hildenbrand (Arm)" <david@kernel.org>, 
+ Ryan Roberts <ryan.roberts@arm.com>
+Cc: patches@lists.linux.dev, Will Deacon <will@kernel.org>, 
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, Sasha
+ Levin	 <sashal@kernel.org>, Greg Kroah-Hartman
+ <gregkh@linuxfoundation.org>, stable	 <stable@vger.kernel.org>
+Date: Sun, 21 Jun 2026 17:02:27 +0200
+In-Reply-To: <20260616145141.584613180@linuxfoundation.org>
+References: <20260616145125.307082728@linuxfoundation.org>
+	 <20260616145141.584613180@linuxfoundation.org>
+Content-Type: multipart/signed; micalg="pgp-sha512";
+	protocol="application/pgp-signature"; boundary="=-y3J05c+vgPYhtoDB2K3t"
+User-Agent: Evolution 3.56.2-9 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-SA-Exim-Connect-IP: 2a02:578:851f:1502:391e:c5f5:10e2:b9a3
+X-SA-Exim-Mail-From: ben@decadent.org.uk
+X-SA-Exim-Scanned: No (on maynard); SAEximRunCond expanded to false
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-3.66 / 15.00];
-	WHITELIST_SPF_DKIM(-3.00)[kernel.org:d:+,kernel.org:s:+];
+X-Spamd-Result: default: False [-3.56 / 15.00];
+	SIGNED_PGP(-2.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	MIME_GOOD(-0.20)[multipart/signed,text/plain];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
-	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-267553-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_SENDER(0.00)[sashal@kernel.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:carnil@debian.org,m:sashal@kernel.org,m:edumazet@google.com,m:noamr@ssd-disclosure.com,m:steffen.klassert@secunet.com,m:nicolas.dichtel@6wind.com,m:kuba@kernel.org,m:ben@decadent.org.uk,s:lists@lfdr.de];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	RCPT_COUNT_SEVEN(0.00)[10];
-	TAGGED_RCPT(0.00)[stable];
+	TAGGED_FROM(0.00)[bounces-267554-lists,stable=lfdr.de];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FROM_HAS_DN(0.00)[]
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:anshuman.khandual@arm.com,m:catalin.marinas@arm.com,m:david@kernel.org,m:ryan.roberts@arm.com,m:patches@lists.linux.dev,m:will@kernel.org,m:linux-arm-kernel@lists.infradead.org,m:linux-kernel@vger.kernel.org,m:sashal@kernel.org,m:gregkh@linuxfoundation.org,m:stable@vger.kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[ben@decadent.org.uk,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+,1:+,2:~];
+	DMARC_NA(0.00)[decadent.org.uk];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	FROM_HAS_DN(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[ben@decadent.org.uk,stable@vger.kernel.org];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	R_DKIM_NA(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[11];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,decadent.org.uk:mid,decadent.org.uk:from_mime]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 6131D6AB032
+X-Rspamd-Queue-Id: DDE366AB24C
 
-On Wed, Jun 17, 2026 at 12:43:25PM +0200, Salvatore Bonaccorso wrote:
-> I have a question: Given the commit say "ip6_vti: set netns_immutable
-> on the fallback device.", but this won't be anymore a correct
-> statement, should 6.12.y get a "dedicated" backport instead of
-> claiming it the upstream commit?
 
-Queued for 6.12, thanks.
+--=-y3J05c+vgPYhtoDB2K3t
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
--- 
-Thanks,
-Sasha
+On Tue, 2026-06-16 at 20:28 +0530, Greg Kroah-Hartman wrote:
+> 6.1-stable review patch.  If anyone has any objections, please let me kno=
+w.
+>=20
+> ------------------
+>=20
+> From: Anshuman Khandual <anshuman.khandual@arm.com>
+>=20
+> [ Upstream commit 48478b9f791376b4b89018d7afdfd06865498f65 ]
+[...]
+> @@ -949,15 +953,14 @@ static void unmap_hotplug_pmd_range(pud_
+>  		WARN_ON(!pmd_present(pmd));
+>  		if (pmd_sect(pmd)) {
+>  			pmd_clear(pmdp);
+> -
+> -			/*
+> -			 * One TLBI should be sufficient here as the PMD_SIZE
+> -			 * range is mapped with a single block entry.
+> -			 */
+> -			flush_tlb_kernel_range(addr, addr + PAGE_SIZE);
+> -			if (free_mapped)
+> +			if (free_mapped) {
+> +				/* CONT blocks are not supported in the vmemmap */
+> +				WARN_ON(pmd_cont(pmd));
+> +				flush_tlb_kernel_range(addr, addr + PMD_SIZE);
+
+It wasn't clear to me from the commit message why this now adds PMD_SIZE
+rather than PAGE_SIZE.  It seems like this change is fine for Linux
+6.13+ with a CPU that supports TLB range flushing, but otherwise results
+in unnecessarily executing multiple TLB invalidations at intervals of
+the base page size.
+
+>  				free_hotplug_page_range(pmd_page(pmd),
+>  							PMD_SIZE, altmap);
+> +			}
+> +			/* unmap_hotplug_range() flushes TLB for !free_mapped */
+>  			continue;
+>  		}
+>  		WARN_ON(!pmd_table(pmd));
+> @@ -982,15 +985,12 @@ static void unmap_hotplug_pud_range(p4d_
+>  		WARN_ON(!pud_present(pud));
+>  		if (pud_sect(pud)) {
+>  			pud_clear(pudp);
+> -
+> -			/*
+> -			 * One TLBI should be sufficient here as the PUD_SIZE
+> -			 * range is mapped with a single block entry.
+> -			 */
+> -			flush_tlb_kernel_range(addr, addr + PAGE_SIZE);
+> -			if (free_mapped)
+> +			if (free_mapped) {
+> +				flush_tlb_kernel_range(addr, addr + PUD_SIZE);
+[...]
+
+Similarly here, but this is effectively flush_tlb_all() instead.
+
+Ben.
+
+--=20
+Ben Hutchings
+No political challenge can be met by shopping. - George Monbiot
+
+--=-y3J05c+vgPYhtoDB2K3t
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: This is a digitally signed message part
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCgAdFiEErCspvTSmr92z9o8157/I7JWGEQkFAmo3/QMACgkQ57/I7JWG
+EQnOORAAwi0dEpNPAe2/DhmuUrnEJymCCPR62cFYxp4C5G1M4TDy1TVbrr9sJXTB
+VJKQ3SW44b1t7f36h3pnCqcA3ceDfjFkPr6Mca9OabfxerxX0LGe7SCAFlMCAhqC
+nkM1iRJ6x2jzkCExZe2A+V3fIElM/QNzQaviy0g4t479/RLbRWtZCSGD1+1L+G//
+BC9HvehneiyHmf/FbxmCyvceniexwRUnXRXWf7HVxn6JNCWgS0Y4qTVT1mYgqXej
+GUuFtZPei0MuiOz/hJEVsJ/P8mFwsb6XWaVr5B1NyFLDdIMDpKuZWBgxaohCOMrt
+xcj8GVCBCtvwA7wpz9yeI+0aCTkQuSwbvdgOm40lP/hwuA742FiIarsKBrCNbIfN
+U+yFWOM8qmz/qPbaLslTENXUVMIt+2NBGugrLm0aeyNHvmMlyukO5RJagU7NIYyK
+Iz8UVpNAxB7CbcBV9VHWl1MC1aHf3innDFmkDL6y+VPJ03SfE1cFONF1nL0IEwSg
+UT+6TWIW+863nkHc2eTQ4KEhjFFmcbM2RkgdFP/A8LeYhxMqSFhyjESymGIsS+ox
+LoR/xhRfXddxOiPVIQtFBBEH7C58OrDU5dWJl5zmYHf3khc342CcolzS4/21Ua/J
+mWvMGYveWNU4fe/MPeU289MyTsroe0c2P+ysyEcKtB+3yIjPWQQ=
+=lNMR
+-----END PGP SIGNATURE-----
+
+--=-y3J05c+vgPYhtoDB2K3t--
 
