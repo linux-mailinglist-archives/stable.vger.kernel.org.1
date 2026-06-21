@@ -1,144 +1,283 @@
-Return-Path: <stable+bounces-267587-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-267588-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id LED2IIdqOGpLcAcAu9opvQ
-	(envelope-from <stable+bounces-267587-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 22 Jun 2026 00:49:43 +0200
+	id sK1aM9VyOGqGcQcAu9opvQ
+	(envelope-from <stable+bounces-267588-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 22 Jun 2026 01:25:09 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 874326ABC7B
-	for <lists+stable@lfdr.de>; Mon, 22 Jun 2026 00:49:42 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1D8306ABCD3
+	for <lists+stable@lfdr.de>; Mon, 22 Jun 2026 01:25:09 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=none;
-	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=i-love.sakura.ne.jp (policy=none);
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-267587-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-267587-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=fail ("headers rsa verify failed") header.d=armlinux.org.uk header.s=pandora-2019 header.b=q8IbTpQG;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-267588-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-267588-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=fail reason="SPF not aligned (relaxed)" header.from=armlinux.org.uk (policy=none);
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 414233014BD2
-	for <lists+stable@lfdr.de>; Sun, 21 Jun 2026 22:49:38 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 6320D3011BE9
+	for <lists+stable@lfdr.de>; Sun, 21 Jun 2026 23:25:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2AB1379C57;
-	Sun, 21 Jun 2026 22:49:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D51A2D7393;
+	Sun, 21 Jun 2026 23:25:04 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from www262.sakura.ne.jp (www262.sakura.ne.jp [202.181.97.72])
+Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 976C222A80D;
-	Sun, 21 Jun 2026 22:49:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8443B2D3725;
+	Sun, 21 Jun 2026 23:25:02 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782082176; cv=none; b=f6aUke5432MNWsl/pBp7/61lP4eaJTnWJ190DZVWr/78zrm38YKTDWEzTwCBWKGaNq7/lSuRiWUVer/htHoJxPrgHmyaP6od0z1JIFxmJ52qWoZOddqqxUQYzNRtK0HO8Jwi//nkcbQF1iJqQuBuOxRsawhnJ/PYBKIKTriuGrM=
+	t=1782084304; cv=none; b=iQEzXL4dhFSr6JbiYJz3iZ/bDMelW6sjspx3auKMkpCmIleyea62jPm7HHqYKP9QRacV+6NW6QsTUyntPDCcn4jgOnbpBraKAhxkw2JhSO73XBQ09Tg1zodxGYEgTVFFqqCUH926SSjC+f0MoDmNN8gR9sQZAMhNJS7TvyB2qSo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782082176; c=relaxed/simple;
-	bh=XEmvvVr5SPeD2fMpaAzwkvvl+m+p4cjFFyHFFJBrEmw=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=aN9zl59Z6rUcmJTJpNtXfLBG210GZWVKwFKXbtoJ+fDWtdQupLiCRd3TwRQ/v1N+j8Fi/ETbCnsczeCUH2KZOmJvkI6ehT79UFWiAMxTXK0WHWklM6FYd3glGGB/f6rjWL+iSGmAKghJ7kosnzflb+4VkwKgMc8ppARYxRxuu94=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=I-love.SAKURA.ne.jp; spf=pass smtp.mailfrom=I-love.SAKURA.ne.jp; arc=none smtp.client-ip=202.181.97.72
-Received: from www262.sakura.ne.jp (localhost [127.0.0.1])
-	by www262.sakura.ne.jp (8.15.2/8.15.2) with ESMTP id 65LMn62s092099;
-	Mon, 22 Jun 2026 07:49:06 +0900 (JST)
-	(envelope-from penguin-kernel@I-love.SAKURA.ne.jp)
-Received: from [192.168.1.6] (M106072072000.v4.enabler.ne.jp [106.72.72.0])
-	(authenticated bits=0)
-	by www262.sakura.ne.jp (8.15.2/8.15.2) with ESMTPSA id 65LMn6KE092093
-	(version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NO);
-	Mon, 22 Jun 2026 07:49:06 +0900 (JST)
-	(envelope-from penguin-kernel@I-love.SAKURA.ne.jp)
-Message-ID: <be257038-78f3-4a6c-8a57-237f5e2676bc@I-love.SAKURA.ne.jp>
-Date: Mon, 22 Jun 2026 07:49:03 +0900
+	s=arc-20240116; t=1782084304; c=relaxed/simple;
+	bh=qzF3gHce9lGj9fo7zlvVpj7V0PEZe1pc/+7LIepRxb4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=aAWMs5cHknGjBrfoy7Igk31mWUFg0r1K2cTyRzTi/iB9lM8C9kat99Nfzknd+zjeld0HGYBFREryR0iE9U+MeOHCkDoLEmysGgpc0cYmWwrfOutuHweS4EegOXhiMwImCprIQ9S0q8tvJOjA+Q/RKBypnyvXa6Rp/9PiweKx9+8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=q8IbTpQG; arc=none smtp.client-ip=78.32.30.218
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
+	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=5ZXkqYBEaw+vrEbljPvoT7dFlPfHUQjjfX56QVkWwQI=; b=q8IbTpQGnXCuXcFJhwkQo6owmJ
+	2z3ghHs0SZz/2Q6HOWN5rVdnLbEOjBQNbgcGirtCDZaTXYTrQe8Uux6yqw4sLaP7xjuegBmSLN4CU
+	xamhqUE+NZaJAU5GiOAsg0rpFDvgTD9oA2ogkvhTJ57gFgMLhmksBycwAY0lBavlc/ttvkIuJqE2/
+	jg4s6Y3IahW0fMYgIn7bEBSuZJcQzxmqzyiTRVP4bA/Rqp3tSI3d6xA/YXikE/fFfFWV9FHOM1Kij
+	b9tptvaCJygg50Y6gfQC9565qkipL36OYhMpglQEoUQk6EBmpM/pTS1HJnG8UDBuN35UgKnHectuV
+	IQYTNMwA==;
+Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:51816)
+	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.98.2)
+	(envelope-from <linux@armlinux.org.uk>)
+	id 1wbRXA-000000004go-1i03;
+	Mon, 22 Jun 2026 00:25:00 +0100
+Received: from linux by shell.armlinux.org.uk with local (Exim 4.98.2)
+	(envelope-from <linux@shell.armlinux.org.uk>)
+	id 1wbRX9-000000006hd-0PlE;
+	Mon, 22 Jun 2026 00:24:59 +0100
+Date: Mon, 22 Jun 2026 00:24:58 +0100
+From: Russell King <linux@armlinux.org.uk>
+To: slipher <slipher@protonmail.com>
+Cc: "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"stable@vger.kernel.org" <stable@vger.kernel.org>,
+	"regressions@lists.linux.dev" <regressions@lists.linux.dev>
+Subject: Re: [REGRESSION] 32-bit ARM's BKPT instruction no longer works
+Message-ID: <ajhyyq_SscBAOFFY@shell.armlinux.org.uk>
+References: <kJqktbpLphg_Pk5I5SPptgTLjl3E3eq5mN5UzCslyFj7Q1Irp-wDid4mj5eQVd2iZtRGXgeZd8goq195EkXdjyt864YMc8mVb2B9NGH91NQ=@protonmail.com>
+ <ajhHYKyvL9nCUvG5@shell.armlinux.org.uk>
+ <zbEOoL4_phCCh7td7DwqQtyhleFJ_G3yRBc8AFjT5hwIwcRipRMsjtIVJgLi3t5vJk5QsuKjY9c8I91nuVSYk4-xlzrAqigMWIE0iNMc9PM=@protonmail.com>
+ <ajhof3cRtiN0Hk7k@shell.armlinux.org.uk>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] profiling: prevent stale prof_cpu_mask access on init
- failure
-To: Tristan Madani <tristmd@gmail.com>,
-        Andrew Morton <akpm@linux-foundation.org>
-Cc: Ingo Molnar <mingo@elte.hu>, Dave Hansen <dave@linux.vnet.ibm.com>,
-        linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-        Tristan Madani <tristan@talencesecurity.com>
-References: <20260621192324.2062795-1-tristmd@gmail.com>
-Content-Language: en-US
-From: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
-In-Reply-To: <20260621192324.2062795-1-tristmd@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Virus-Status: clean
-X-Anti-Virus-Server: fsav104.rs.sakura.ne.jp
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ajhof3cRtiN0Hk7k@shell.armlinux.org.uk>
+Sender: "Russell King,,," <linux@armlinux.org.uk>
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.36 / 15.00];
+X-Spamd-Result: default: False [-0.36 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_REJECT(1.00)[armlinux.org.uk:s=pandora-2019];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64];
 	MAILLIST(-0.15)[generic];
+	DMARC_POLICY_SOFTFAIL(0.10)[armlinux.org.uk : SPF not aligned (relaxed),none];
 	MIME_GOOD(-0.10)[text/plain];
-	DMARC_POLICY_SOFTFAIL(0.10)[i-love.sakura.ne.jp : SPF not aligned (relaxed), No valid DKIM,none];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-267587-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:tristmd@gmail.com,m:akpm@linux-foundation.org,m:mingo@elte.hu,m:dave@linux.vnet.ibm.com,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,m:tristan@talencesecurity.com,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[penguin-kernel@I-love.SAKURA.ne.jp,stable@vger.kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_TO(0.00)[gmail.com,linux-foundation.org];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_FROM(0.00)[bounces-267588-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:slipher@protonmail.com,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,m:regressions@lists.linux.dev,s:lists@lfdr.de];
+	FREEMAIL_TO(0.00)[protonmail.com];
+	TO_DN_EQ_ADDR_SOME(0.00)[];
 	TO_DN_SOME(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER(0.00)[linux@armlinux.org.uk,stable@vger.kernel.org];
+	FORWARDED(0.00)[lists@lfdr.de];
+	DKIM_TRACE(0.00)[armlinux.org.uk:-];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_FIVE(0.00)[5];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[linux@armlinux.org.uk,stable@vger.kernel.org];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[penguin-kernel@I-love.SAKURA.ne.jp,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCPT_COUNT_THREE(0.00)[4];
 	ALIAS_RESOLVED(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	R_DKIM_NA(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+	MISSING_XM_UA(0.00)[];
+	MID_RHS_MATCH_FROMTLD(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,armlinux.org.uk:email,armlinux.org.uk:url,armlinux.org.uk:from_mime]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 874326ABC7B
+X-Rspamd-Queue-Id: 1D8306ABCD3
 
-On 2026/06/22 4:23, Tristan Madani wrote:
-> diff --git a/kernel/profile.c b/kernel/profile.c
-> index 984f819b701c9..a166ad9512714 100644
-> --- a/kernel/profile.c
-> +++ b/kernel/profile.c
-> @@ -123,6 +123,7 @@ int __ref profile_init(void)
->  	if (prof_buffer)
->  		return 0;
->  
-> +	prof_on = 0;
->  	free_cpumask_var(prof_cpu_mask);
+On Sun, Jun 21, 2026 at 11:41:03PM +0100, Russell King (Oracle) wrote:
+> On Sun, Jun 21, 2026 at 09:53:17PM +0000, slipher wrote:
+> > 
+> > On Sunday, June 21st, 2026 at 3:19 PM, Russell King (Oracle) <linux@armlinux.org.uk> wrote:
+> > 
+> > > On Sun, Jun 21, 2026 at 07:15:27PM +0000, slipher wrote:
+> > > > Consider the C program for 32-bit ARM architectures:
+> > > >
+> > > > int main() {
+> > > > 	__asm__ __volatile__ ("BKPT");
+> > > > 	return 0;
+> > > > }
+> > > >
+> > > >
+> > > > Expected behavior is that this raises SIGTRAP. Since Linux 6.10 this no
+> > > > longer happens; instead execution perpetually resumes at the same
+> > > > instruction, using 100% of CPU. It does not matter whether GDB is
+> > > > attached. I have tested with an armv7l CPU, but I imagine any other
+> > > > variants with the BKPT instruction would be equally affected.
+> > > 
+> > > Looking at the code, I doubt this has ever cleanly raised SIGTRAP (can
+> > > you check whether it does in kernels without c3f89986fde please?)
+> > > 
+> > > What I suspect instead is you get an "Unhandled ... abort" instead
+> > > and the program forcefully killed as hw_breakpoint_pending() would
+> > > have ARM_DSCR_MOE(dscr) == 3, and the switch() would set ret = 1.
+> > > That triggers the fault handlers in arch/arm/mm/fault.c to
+> > > complain bitterly, and forced a SIGTRAP to the program to kill it
+> > > off. No resumption from an unhandled trap is expected.
+> > 
+> > I have tested with a 6.6 kernel. All of that is correct, as detailed in
+> > the aforementioned blog post, except the last sentence. The switch does
+> > set ret = 1, thereby passing on the exception. The kernel complains,
+> > with such lines in dmesg output:
+> > 
+> > [ 1547.164526] Unhandled prefetch abort: breakpoint debug exception (0x222) at 0x0001051c
+> 
+> This message is printed at Alert level. It's just not supposed to
+> happen, and if anyone sees it, it means someone cocked up in the kernel
+> and didn't provide the code to handle a fault that can be generated.
+> 
+> In these situations, the kernel's response is to try and keep the system
+> running by delivering a signal that should result in the process being
+> terminated. In this case, the hardware breakpoint code tells the
+> generic code to deliver a SIGTRAP / TRAP_HWBKPT, and this will be
+> delivered by force_sig_fault() after the noisy kernel message has been
+> produced.
+> 
+> force_sig_fault() will unblock the signal and set the handler to
+> default if it was blocked or ignored. The default action for SIGTRAP
+> should be to generate a coredump and terminate the program.
+> 
+> > Indeed, it is not clean or efficient; the blog
+> > (https://www.jwhitham.org/2015/04/the-mystery-of-fifteen-millisecond.html)
+> > even has a proposed patch to improve the performance when raising
+> > SIGTRAP. However, it is possible to catch the signal, and even resume
+> > with something like this:
+> > 
+> > 
+> > #include <ucontext.h>
+> > #include <signal.h>
+> > #include <stdio.h>
+> > 
+> > void handl(int a, siginfo_t *b, void *uc) {
+> >         puts("caught SIGTRAP");
+> >         ((ucontext_t*)uc)->uc_mcontext.arm_pc += 4;
+> > }
+> > 
+> > int main() {
+> >         struct sigaction s;
+> >         s.sa_flags = SA_SIGINFO;
+> >         s.sa_sigaction = handl;
+> >         sigemptyset(&s.sa_mask);
+> >         sigaction(SIGTRAP, &s, 0);
+> >         puts("start");
+> >         __asm__ __volatile__("BKPT");
+> >         puts("resumed");
+> >         return 0;
+> > }
+> > 
+> > Re-testing, I realized there is a huge caveat: SIGTRAP is *not* raised
+> > when running under a debugger! If GDB is attached, either of the C
+> > programs above will repeatedly resume at the faulting instruction on
+> > Linux 6.6, just as they will with the latest kernels. So the regression
+> > only affects the perhaps-obscure case of using BKPT without any
+> > intention of attaching a debugger, unless that worked in even-earlier
+> > versions of Linux.
+> 
+> ... and while it's repeatedly raising the same fault, it's flooding the
+> kernel console with Alert level messages telling you the fault hasn't
+> been handled even on older kernels... yet you seem to be under the
+> impression that this is supposed to work.
+> 
+> You are testing something that has never been tested before, and are
+> hitting behaviour that isn't _supposed_ to be clean.
+> 
+> That said, the change of behaviour is wrong. If
+> hw_breakpoint_cfi_handler() doesn't understand the reason its been
+> called, it should cause the old behaviour (where the alert message
+> is printed) to be actioned.
+> 
+> The issue over whether BKPT should correctly raise a SIGTRAP that
+> is appropriately handled is an entirely separate issue, which I
+> would regard as a feature request rather than a regression.
+> 
+> Let me put it slightly differently. BKPT in userspace hasn't been
+> supported by the kernel, and the behaviour you've seen from the
+> kernel is incidental to the kernel's abort handling - it is not
+> by design.
+> 
+> Architecturally, BKPT is used with JTAG debuggers, causing the
+> processor to enter debug mode so a JTAG debugger can do its
+> stuff. There was some discussion ten years ago whether LLVM
+> should use BKPT for setting software breakpoints, and it seems
+> they decided against it because of interfering with JTAG
+> debuggers. See https://reviews.llvm.org/D16853?id=46899#347119
+> 
+> Also see the linked discussion from that post, where using BKPT
+> was discussed with gdb. Basically, if a hardware JTAG debugger is
+> connected, BKPT goes straight to the hardware debugger not the
+> kernel. However, note that the sourceware discussion is talking
+> about Thumb2 rather than ARM, but the same will apply there.
+> 
+> In essence, the decision was to stick with the UDF instructions
+> for software breakpoints handled by the kernel, and leave BKPT
+> for hardware JTAG debuggers. Consequently, explicitly executing
+> BKPT without a hardware JTAG debugger is unexpected, the results
+> of which are not guaranteed.
+> 
+> Indeed, under older architectures, you'll get an undefined
+> instruction exception and the program killed by a SIGILL not a
+> SIGTRAP, because BKPT isn't architecturally defined there.
 
-Which tree are you talking about?
+For further clarification, see the ARM Architecture Reference Manual,
+DDI0100E, which introduced BKPT, page 114, but specifically page 115
+which states in the notes:
 
->  	return -ENOMEM;
->  }
-> @@ -325,7 +326,7 @@ void profile_tick(int type)
->  {
->  	struct pt_regs *regs = get_irq_regs();
->  
-> -	if (!user_mode(regs) && cpumask_available(prof_cpu_mask) &&
-> +	if (!user_mode(regs) && prof_on && cpumask_available(prof_cpu_mask) &&
->  	    cpumask_test_cpu(smp_processor_id(), prof_cpu_mask))
+"Hardware override
+"Debug hardware in an implementation is specifically permitted to
+override the normal behavior of the BKPT instruction. Because of
+this, software must not use this instruction for purposes other than
+those documented by the debug system being used (if any). In
+particular, software cannot rely on the Prefetch Abort exception
+occurring, unless either there is guaranteed to be no debug hardware
+in the system or the debug system specifies that it will occur.
 
-NAK. This is a use-after-free read bug.
+"For more information, consult the documentation for the debug
+system being used."
 
-  CPU0                            CPU1
-  
-                                  if (!user_mode(regs) && prof_on && cpumask_available(prof_cpu_mask) &&
-  prof_on = 0;
-  free_cpumask_var(prof_cpu_mask);
-                                      cpumask_test_cpu(smp_processor_id(), prof_cpu_mask)) // <= prof_cpu_mask was already freed.
+DDI0406C also mentions C2.2 states that if DBGEN is enabled, then
+all debug events become halting and cause the CPU to enter debug
+state (for a hardware debugger to respond to.) However, the above
+statement is no longer present, but is covered via other means.
+Indeed, a JTAG hardware debugger can still override BKPT to
+put the CPU into debug mode and omit to generate the Prefetch
+Abort exception.
 
-Correct fix is to remove a commit which adds "free_cpumask_var(prof_cpu_mask);".
+Thus, BKPT isn't guaranteed to raise a prefetch abort depending
+on whether there's a hardware debugger connected and how that
+debugger has configured the interface.
 
->  		profile_hit(type, (void *)profile_pc(regs));
->  }
-
+-- 
+RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
+FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
 
