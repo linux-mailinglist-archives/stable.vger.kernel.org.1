@@ -1,333 +1,146 @@
-Return-Path: <stable+bounces-267740-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-267741-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id R3U2BolNOWo0qQcAu9opvQ
-	(envelope-from <stable+bounces-267740-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 22 Jun 2026 16:58:17 +0200
+	id IyYOIvFOOWqNqQcAu9opvQ
+	(envelope-from <stable+bounces-267741-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 22 Jun 2026 17:04:17 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1248B6B08BB
-	for <lists+stable@lfdr.de>; Mon, 22 Jun 2026 16:58:16 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0DF6F6B094B
+	for <lists+stable@lfdr.de>; Mon, 22 Jun 2026 17:04:17 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=oEr7QA3m;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b="844/Hlof";
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=oEr7QA3m;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b="844/Hlof";
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-267740-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-267740-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=none) header.from=suse.de;
+	dkim=pass header.d=163.com header.s=s110527 header.b=G1wDpdAS;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-267741-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-267741-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=none) header.from=163.com;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 9073B3015157
-	for <lists+stable@lfdr.de>; Mon, 22 Jun 2026 14:54:43 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 9ECE4301DEC2
+	for <lists+stable@lfdr.de>; Mon, 22 Jun 2026 14:57:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4EF5F311592;
-	Mon, 22 Jun 2026 14:54:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0BFFD3115A5;
+	Mon, 22 Jun 2026 14:57:56 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FE7E30FC27
-	for <stable@vger.kernel.org>; Mon, 22 Jun 2026 14:54:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9643030F958;
+	Mon, 22 Jun 2026 14:57:50 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782140080; cv=none; b=O3IqWA3E6QUgiDbFudsqZKdsvr7Yf+mzuueduresVIQ5iVjNvNUlOBCpFh60CzDysNhbkUuuYtK5dGXgc5JFfMBhYj26gqDZDqRLkKj0F5WlkpRLcBRhsLvhjN2lPwSufZyu3Z0MZZh/tkBH+ykkz4qf+KVYlG39SmBOk5NbFYA=
+	t=1782140275; cv=none; b=JjIyYKgBJl05OMSnNUrk5kIVkF2IKHtbyxYojZdJe7przvXyCNCYqUQtJd0GQDbpJjkggvlwcmalT6VVaswUYnqUT7aVvHeFegVgEerhvxMhCnENsdVfB34iNpU9Mrzwj0pmdDn3FO/AzwYsNUjTROB0MxIv2MWqz/5xjSKQO+Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782140080; c=relaxed/simple;
-	bh=4O/Lk+bmL14dJHrMXVZE6YRVaBcltePxcx51t7J73hI=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=DOegZgRxFslWi640z4s8/+qH3CM8HYjjICb8He2q4zQZVQ1hcjtEKpSIM+WLQhVJ9ClLZBHa3j10HwVNgzdM/xwg0B40FdBcAXU3AndDfM6ky/E1TreKpXX/I7S3rYxfpzxP50vtaHaNLaUZ5O9Zhpd3PHwPBUjynRV1yYNy+xw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=oEr7QA3m; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=844/Hlof; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=oEr7QA3m; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=844/Hlof; arc=none smtp.client-ip=195.135.223.131
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 62E1C75991;
-	Mon, 22 Jun 2026 14:54:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1782140076; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=jxh1gHLoGNtM52tLMMkGn2yRHkmuZf/Zujd0BM3u68s=;
-	b=oEr7QA3mKbhoVPXJ4rVR6K/mwPDkNHBzxLnqHDWCsO4VKPlZjwYj3eRdi2Gf/G3X+QNhXB
-	FUt27PsTIkvIEkgszs0m47WlitGv2qz464gNGHwnl+Mv1ymscQc8SF1bSLShI1Q0tALWBo
-	JRiVozWVzx0FHDh3nj0XWWVT+fksojY=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1782140076;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=jxh1gHLoGNtM52tLMMkGn2yRHkmuZf/Zujd0BM3u68s=;
-	b=844/HlofZeD0Pz5Js3SnEw2w3Srz5DH8PDQv+1zn4ZJw7uKsbX3Cqt5dnct4KSDwXol9pf
-	f/D+uc5gFMBL2nBA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1782140076; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=jxh1gHLoGNtM52tLMMkGn2yRHkmuZf/Zujd0BM3u68s=;
-	b=oEr7QA3mKbhoVPXJ4rVR6K/mwPDkNHBzxLnqHDWCsO4VKPlZjwYj3eRdi2Gf/G3X+QNhXB
-	FUt27PsTIkvIEkgszs0m47WlitGv2qz464gNGHwnl+Mv1ymscQc8SF1bSLShI1Q0tALWBo
-	JRiVozWVzx0FHDh3nj0XWWVT+fksojY=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1782140076;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=jxh1gHLoGNtM52tLMMkGn2yRHkmuZf/Zujd0BM3u68s=;
-	b=844/HlofZeD0Pz5Js3SnEw2w3Srz5DH8PDQv+1zn4ZJw7uKsbX3Cqt5dnct4KSDwXol9pf
-	f/D+uc5gFMBL2nBA==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 10382779A8;
-	Mon, 22 Jun 2026 14:54:36 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id DRWPAqxMOWrdeQAAD6G6ig
-	(envelope-from <tzimmermann@suse.de>); Mon, 22 Jun 2026 14:54:36 +0000
-Message-ID: <926d9d5f-be68-4377-9a90-0d9ace2c2c53@suse.de>
-Date: Mon, 22 Jun 2026 16:54:35 +0200
+	s=arc-20240116; t=1782140275; c=relaxed/simple;
+	bh=YYf68g1Rg/bNLATb9mULw2cV5WPeFjqfRq0ysdUgXGU=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=i4w+pp2ckfawFBzRRs+wknuWqawmllhbWBVywLWJbO1iIgFEO/FdFR0eS4Dr2Z+DwpB3Xqp/S40ukfYb6oW6PSxdDoWvIAdywlqDT7fohlZavM5gEVTTTRc46fF+swfHdCMuFvuLD4C8XiEEVJYERfvDWivudZnuALAFnLwBE7k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=G1wDpdAS; arc=none smtp.client-ip=220.197.31.5
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=Ur
+	UO7o7/Wt4Vl34crWwNFTWFoRKfVps2Hqy9BDR/fK0=; b=G1wDpdAS/M3aJVDp/r
+	Oyyk5DH8nL7c1wk/jZqNs0HaSlUNrID5NfaRr4sabndiU4/SVTbq1ZDOujOaUfzW
+	yQgF0sA7dT7gpgqL1OjblOMXeORXRC7q7fbiZTHTYuhcvgNYR5EcIyWzVoOalgSe
+	68euzoXjijM9EhLsSz0kO+NoQ=
+Received: from localhost.localdomain (unknown [])
+	by gzsmtp1 (Coremail) with SMTP id PCgvCgD3P5UtTTlqJpM_DA--.33730S2;
+	Mon, 22 Jun 2026 22:56:47 +0800 (CST)
+From: Haoxiang Li <haoxiang_li2024@163.com>
+To: lgirdwood@gmail.com,
+	broonie@kernel.org,
+	perex@perex.cz,
+	tiwai@suse.com,
+	ckeepax@opensource.cirrus.com,
+	kuninori.morimoto.gx@renesas.com,
+	pierre-louis.bossart@linux.dev,
+	rakesh.a.ughreja@intel.com
+Cc: linux-sound@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Haoxiang Li <haoxiang_li2024@163.com>,
+	stable@vger.kernel.org
+Subject: [PATCH] ASoC: hdac_hda: Fix hlink refcount leak on component registration failure
+Date: Mon, 22 Jun 2026 22:56:45 +0800
+Message-Id: <20260622145645.1184986-1-haoxiang_li2024@163.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] drm/fb-helper: Only consider active CRTCs for vblank
- sync
-To: Jani Nikula <jani.nikula@linux.intel.com>, hns@goldelico.com,
- zhengxingda@iscas.ac.cn, maarten.lankhorst@linux.intel.com,
- mripard@kernel.org, airlied@gmail.com, simona@ffwll.ch, akemnade@kernel.org
-Cc: dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
- letux-kernel@openphoenux.org, kernel@pyra-handheld.com,
- sashiko-reviews@lists.linux.dev, stable@vger.kernel.org
-References: <20260622113434.682292-1-tzimmermann@suse.de>
- <395f15bb770b4be0ffeeb09e7cdeef49340f910c@intel.com>
-Content-Language: en-US
-From: Thomas Zimmermann <tzimmermann@suse.de>
-Autocrypt: addr=tzimmermann@suse.de; keydata=
- xsBNBFs50uABCADEHPidWt974CaxBVbrIBwqcq/WURinJ3+2WlIrKWspiP83vfZKaXhFYsdg
- XH47fDVbPPj+d6tQrw5lPQCyqjwrCPYnq3WlIBnGPJ4/jreTL6V+qfKRDlGLWFjZcsrPJGE0
- BeB5BbqP5erN1qylK9i3gPoQjXGhpBpQYwRrEyQyjuvk+Ev0K1Jc5tVDeJAuau3TGNgah4Yc
- hdHm3bkPjz9EErV85RwvImQ1dptvx6s7xzwXTgGAsaYZsL8WCwDaTuqFa1d1jjlaxg6+tZsB
- 9GluwvIhSezPgnEmimZDkGnZRRSFiGP8yjqTjjWuf0bSj5rUnTGiyLyRZRNGcXmu6hjlABEB
- AAHNJ1Rob21hcyBaaW1tZXJtYW5uIDx0emltbWVybWFubkBzdXNlLmRlPsLAjgQTAQgAOAIb
- AwULCQgHAgYVCgkICwIEFgIDAQIeAQIXgBYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJftODH
- AAoJEGgNwR1TC3ojx1wH/0hKGWugiqDgLNXLRD/4TfHBEKmxIrmfu9Z5t7vwUKfwhFL6hqvo
- lXPJJKQpQ2z8+X2vZm/slsLn7J1yjrOsoJhKABDi+3QWWSGkaGwRJAdPVVyJMfJRNNNIKwVb
- U6B1BkX2XDKDGffF4TxlOpSQzdtNI/9gleOoUA8+jy8knnDYzjBNOZqLG2FuTdicBXblz0Mf
- vg41gd9kCwYXDnD91rJU8tzylXv03E75NCaTxTM+FBXPmsAVYQ4GYhhgFt8S2UWMoaaABLDe
- 7l5FdnLdDEcbmd8uLU2CaG4W2cLrUaI4jz2XbkcPQkqTQ3EB67hYkjiEE6Zy3ggOitiQGcqp
- j//OwE0EWznS4AEIAMYmP4M/V+T5RY5at/g7rUdNsLhWv1APYrh9RQefODYHrNRHUE9eosYb
- T6XMryR9hT8XlGOYRwKWwiQBoWSDiTMo/Xi29jUnn4BXfI2px2DTXwc22LKtLAgTRjP+qbU6
- 3Y0xnQN29UGDbYgyyK51DW3H0If2a3JNsheAAK+Xc9baj0LGIc8T9uiEWHBnCH+RdhgATnWW
- GKdDegUR5BkDfDg5O/FISymJBHx2Dyoklv5g4BzkgqTqwmaYzsl8UxZKvbaxq0zbehDda8lv
- hFXodNFMAgTLJlLuDYOGLK2AwbrS3Sp0AEbkpdJBb44qVlGm5bApZouHeJ/+n+7r12+lqdsA
- EQEAAcLAdgQYAQgAIAIbDBYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJftOH6AAoJEGgNwR1T
- C3ojVSkIALpAPkIJPQoURPb1VWjh34l0HlglmYHvZszJWTXYwavHR8+k6Baa6H7ufXNQtThR
- yIxJrQLW6rV5lm7TjhffEhxVCn37+cg0zZ3j7zIsSS0rx/aMwi6VhFJA5hfn3T0TtrijKP4A
- SAQO9xD1Zk9/61JWk8OysuIh7MXkl0fxbRKWE93XeQBhIJHQfnc+YBLprdnxR446Sh8Wn/2D
- Ya8cavuWf2zrB6cZurs048xe0UbSW5AOSo4V9M0jzYI4nZqTmPxYyXbm30Kvmz0rYVRaitYJ
- 4kyYYMhuULvrJDMjZRvaNe52tkKAvMevcGdt38H4KSVXAylqyQOW5zvPc4/sq9c=
-In-Reply-To: <395f15bb770b4be0ffeeb09e7cdeef49340f910c@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Spam-Flag: NO
-X-Spam-Score: -4.30
-X-Spam-Level: 
+X-CM-TRANSID:PCgvCgD3P5UtTTlqJpM_DA--.33730S2
+X-Coremail-Antispam: 1Uf129KBjvdXoWruF17WryfWF1fWF4fKryDKFg_yoWkuFXEk3
+	4vg3yku3s8GFZrGr17CF4rZrs7ZFsakFWIvF1ktFy3Xry5GrWktFn8XFn8urW8Zws3WF98
+	Xa98Zr13CF13AjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
+	9fnUUvcSsGvfC2KfnxnUUI43ZEXa7sRMyCJDUUUUU==
+X-CM-SenderInfo: xkdr5xpdqjszblsqjki6rwjhhfrp/xtbC7hBItmo5TTAGKwAA3D
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[suse.de,none];
-	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	MID_CONTAINS_FROM(1.00)[];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[163.com,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_DKIM_ALLOW(-0.20)[163.com:s=s110527];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-267740-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:jani.nikula@linux.intel.com,m:hns@goldelico.com,m:zhengxingda@iscas.ac.cn,m:maarten.lankhorst@linux.intel.com,m:mripard@kernel.org,m:airlied@gmail.com,m:simona@ffwll.ch,m:akemnade@kernel.org,m:dri-devel@lists.freedesktop.org,m:linux-kernel@vger.kernel.org,m:letux-kernel@openphoenux.org,m:kernel@pyra-handheld.com,m:sashiko-reviews@lists.linux.dev,m:stable@vger.kernel.org,s:lists@lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER(0.00)[tzimmermann@suse.de,stable@vger.kernel.org];
-	RCPT_COUNT_TWELVE(0.00)[14];
-	FREEMAIL_TO(0.00)[linux.intel.com,goldelico.com,iscas.ac.cn,kernel.org,gmail.com,ffwll.ch];
-	MIME_TRACE(0.00)[0:+];
+	RCVD_COUNT_THREE(0.00)[4];
+	FREEMAIL_TO(0.00)[gmail.com,kernel.org,perex.cz,suse.com,opensource.cirrus.com,renesas.com,linux.dev,intel.com];
+	FORGED_SENDER(0.00)[haoxiang_li2024@163.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS(0.00)[m:lgirdwood@gmail.com,m:broonie@kernel.org,m:perex@perex.cz,m:tiwai@suse.com,m:ckeepax@opensource.cirrus.com,m:kuninori.morimoto.gx@renesas.com,m:pierre-louis.bossart@linux.dev,m:rakesh.a.ughreja@intel.com,m:linux-sound@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:haoxiang_li2024@163.com,m:stable@vger.kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	DKIM_TRACE(0.00)[suse.de:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	TO_DN_SOME(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[6];
+	MIME_TRACE(0.00)[0:+];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FREEMAIL_FROM(0.00)[163.com];
+	RCPT_COUNT_TWELVE(0.00)[12];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[vger.kernel.org,163.com];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[tzimmermann@suse.de,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,vger.kernel.org:from_smtp,iscas.ac.cn:email,suse.de:dkim,suse.de:email,suse.de:mid,suse.de:from_mime,suse.com:url]
+	FROM_NEQ_ENVFROM(0.00)[haoxiang_li2024@163.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
+	TAGGED_FROM(0.00)[bounces-267741-lists,stable=lfdr.de];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DKIM_TRACE(0.00)[163.com:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 1248B6B08BB
+X-Rspamd-Queue-Id: 0DF6F6B094B
 
-Hi
+hdac_hda_dev_probe() gets the HDA link with snd_hdac_ext_bus_link_get()
+before registering the ASoC component. If component registration fails,
+the function returns without dropping the link reference.
 
-Am 22.06.26 um 15:34 schrieb Jani Nikula:
-> On Mon, 22 Jun 2026, Thomas Zimmermann <tzimmermann@suse.de> wrote:
->> Only synchronize fbdev output to the vblank of an active CRTC. Go over
->> the list of CRTCs and pick the first that matches. Fixes warnings as
->> the one shown below
->>
->> [   77.201354] WARNING: drivers/gpu/drm/drm_vblank.c:1320 at drm_crtc_wait_one_vblank+0x194/0x1cc [drm], CPU#1: kworker/1:7/1867
->> [   77.201354] omapdrm omapdrm.0: [drm] vblank wait timed out on crtc 0
->>
->> This currently happens if the fbdev output is not on CRTC 0.
->>
->> Atomic and non-atomic drivers require distinct code paths. As for other
->> fbdev operations, implement both and select the correct one at runtime.
->>
->> Not finding an active CRTC is not a bug. Do not wait in this case, but
->> flush the display update as before.
->>
->> v2:
->> - move look-up code into separate helper
->> - support drivers with legacy modesetting
->> v1:
->> - see https://lore.kernel.org/dri-devel/1c9e0e24-9c4a-4259-8700-cf9e5fd60ca3@suse.de/
->>
->> Co-authored-by: H. Nikolaus Schaller <hns@goldelico.com>
->> Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
->> Fixes: d8c4bddcd8bcb ("drm/fb-helper: Synchronize dirty worker with vblank")
->> Tested-by: Icenowy Zheng <zhengxingda@iscas.ac.cn>
->> Closes: https://bugs.debian.org/1138033
->> Cc: <stable@vger.kernel.org> # v6.19+
->> ---
->>   drivers/gpu/drm/drm_fb_helper.c | 71 ++++++++++++++++++++++++++++++++-
->>   1 file changed, 70 insertions(+), 1 deletion(-)
->>
->> diff --git a/drivers/gpu/drm/drm_fb_helper.c b/drivers/gpu/drm/drm_fb_helper.c
->> index 7b11a582f8ec..cbf0a9a7b8e5 100644
->> --- a/drivers/gpu/drm/drm_fb_helper.c
->> +++ b/drivers/gpu/drm/drm_fb_helper.c
->> @@ -225,16 +225,85 @@ static void drm_fb_helper_resume_worker(struct work_struct *work)
->>   	console_unlock();
->>   }
->>   
->> +static int find_crtc_index_atomic(struct drm_fb_helper *helper)
->> +{
->> +	struct drm_device *dev = helper->dev;
->> +	struct drm_plane *plane;
->> +
->> +	drm_for_each_plane(plane, dev) {
->> +		const struct drm_plane_state *plane_state;
->> +		const struct drm_crtc *crtc;
->> +
->> +		if (plane->type != DRM_PLANE_TYPE_PRIMARY)
->> +			continue;
->> +
->> +		plane_state = plane->state;
->> +		if (plane_state->fb != helper->fb || !plane_state->crtc)
->> +			continue; /* plane doesn't display fbdev emulation */
->> +
->> +		crtc = plane_state->crtc;
->> +		if (!crtc->state->active)
->> +			continue;
->> +		if (drm_WARN_ON_ONCE(dev, crtc->index > INT_MAX))
->> +			continue; /* driver bug */
-> I take it this is here because crtc->index is unsigned, and this
-> function returns int so you can have negative error codes. Ditto the
-> other function below.
->
-> I feel like this is something that should be checked once somewhere, if
-> that. I think adding arbitrary checks like this invites more arbitrary
-> checks everywhere. crtc->index is supposed to be invariant over the
-> lifetime of the CRTC.
+Always call snd_hdac_ext_bus_link_put() after the registration attempt so
+the reference taken during probe is balanced on both success and failure.
 
-Ok, makes sense.
+Fixes: 6bae5ea94989 ("ASoC: hdac_hda: add asoc extension for legacy HDA codec drivers")
+Cc: stable@vger.kernel.org
+Signed-off-by: Haoxiang Li <haoxiang_li2024@163.com>
+---
+ sound/soc/codecs/hdac_hda.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-Best regards
-Thomas
-
->
-> BR,
-> Jani.
->
->> +
->> +		return crtc->index;
->> +	}
->> +
->> +	return -EINVAL;
->> +}
->> +
->> +static int find_crtc_index_legacy(struct drm_fb_helper *helper)
->> +{
->> +	struct drm_device *dev = helper->dev;
->> +	struct drm_crtc *crtc;
->> +
->> +	drm_for_each_crtc(crtc, dev) {
->> +		struct drm_plane *plane = crtc->primary;
->> +
->> +		if (!crtc->enabled)
->> +			continue;
->> +		if (!plane || plane->fb != helper->fb)
->> +			continue; /* CRTC doesn't display fbdev emulation */
->> +		if (drm_WARN_ON_ONCE(dev, crtc->index > INT_MAX))
->> +			continue; /* driver bug */
->> +
->> +		return crtc->index;
->> +	}
->> +
->> +	return -EINVAL;
->> +}
->> +
->> +static int drm_fb_helper_find_crtc_index(struct drm_fb_helper *helper)
->> +{
->> +	struct drm_device *dev = helper->dev;
->> +	int crtc_index;
->> +
->> +	mutex_lock(&dev->mode_config.mutex);
->> +
->> +	if (drm_drv_uses_atomic_modeset(dev))
->> +		crtc_index = find_crtc_index_atomic(helper);
->> +	else
->> +		crtc_index = find_crtc_index_legacy(helper);
->> +
->> +	mutex_unlock(&dev->mode_config.mutex);
->> +
->> +	return crtc_index;
->> +}
->> +
->>   static void drm_fb_helper_fb_dirty(struct drm_fb_helper *helper)
->>   {
->>   	struct drm_device *dev = helper->dev;
->>   	struct drm_clip_rect *clip = &helper->damage_clip;
->>   	struct drm_clip_rect clip_copy;
->> +	int crtc_index;
->>   	unsigned long flags;
->>   	int ret;
->>   
->>   	mutex_lock(&helper->lock);
->> -	drm_client_modeset_wait_for_vblank(&helper->client, 0);
->> +	crtc_index = drm_fb_helper_find_crtc_index(helper);
->> +	if (crtc_index >= 0)
->> +		drm_client_modeset_wait_for_vblank(&helper->client, crtc_index);
->>   	mutex_unlock(&helper->lock);
->>   
->>   	if (drm_WARN_ON_ONCE(dev, !helper->funcs->fb_dirty))
-
+diff --git a/sound/soc/codecs/hdac_hda.c b/sound/soc/codecs/hdac_hda.c
+index 680e341aa7f1..1ab5f8a26e03 100644
+--- a/sound/soc/codecs/hdac_hda.c
++++ b/sound/soc/codecs/hdac_hda.c
+@@ -642,10 +642,8 @@ static int hdac_hda_dev_probe(struct hdac_device *hdev)
+ 						&hdac_hda_codec, hdac_hda_dais,
+ 						ARRAY_SIZE(hdac_hda_dais));
+ 
+-	if (ret < 0) {
++	if (ret < 0)
+ 		dev_err(&hdev->dev, "%s: failed to register HDA codec %d\n", __func__, ret);
+-		return ret;
+-	}
+ 
+ 	snd_hdac_ext_bus_link_put(hdev->bus, hlink);
+ 
 -- 
---
-Thomas Zimmermann
-Graphics Driver Developer
-SUSE Software Solutions Germany GmbH
-Frankenstr. 146, 90461 Nürnberg, Germany, www.suse.com
-GF: Jochen Jaser, Andrew McDonald, Werner Knoblich, (HRB 36809, AG Nürnberg)
-
+2.25.1
 
 
