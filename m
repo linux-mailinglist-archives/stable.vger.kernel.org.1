@@ -1,53 +1,69 @@
-Return-Path: <stable+bounces-267746-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-267749-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id nvC1J35SOWpWqgcAu9opvQ
-	(envelope-from <stable+bounces-267746-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 22 Jun 2026 17:19:26 +0200
+	id BTP9GYdUOWrVqgcAu9opvQ
+	(envelope-from <stable+bounces-267749-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 22 Jun 2026 17:28:07 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 149456B0A9E
-	for <lists+stable@lfdr.de>; Mon, 22 Jun 2026 17:19:26 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 56A2C6B0B8B
+	for <lists+stable@lfdr.de>; Mon, 22 Jun 2026 17:28:06 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=none;
-	dmarc=none;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-267746-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-267746-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=JDQCUEdw;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-267749-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-267749-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 1EA2930062F8
-	for <lists+stable@lfdr.de>; Mon, 22 Jun 2026 15:19:25 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 2A8A9300B2BE
+	for <lists+stable@lfdr.de>; Mon, 22 Jun 2026 15:27:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50D383750BC;
-	Mon, 22 Jun 2026 15:19:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91A063B774B;
+	Mon, 22 Jun 2026 15:27:34 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from cstnet.cn (smtp21.cstnet.cn [159.226.251.21])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94330244675;
-	Mon, 22 Jun 2026 15:19:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB4DA379ECD;
+	Mon, 22 Jun 2026 15:27:31 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782141564; cv=none; b=IISZMAFZdLt/7UbF68SZANnmo06GUJz4983jdVxpOhJfhkQsmLyVaq7PTbiEWsCzlhdE0qC5jLiGB+U9NnKkueQjs/4shbKqpA2A/g4Rf/8WXNezeRTf6p1q21XvvxSDUI9A5BT5LotN9hjDG+UfOiZJHOMNz5vbf0dckqpBDMc=
+	t=1782142054; cv=none; b=bqWk/QEWEaN+gJZP57VN3ieC115dANBqtvrWqvtt2smTg2PDlG+DbHPCWqFfa2Oe+ca5VTSId0BQG3QXlKraCpjYUp4l/Kvsx8Lsai5gSDK7gIRstxqV6F8BKAmBeqDoYC6gdq2j/iWzebyfQt1A8NrCt8aVsgDq9FFT8iQLDWw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782141564; c=relaxed/simple;
-	bh=iBwmvKevVolFhLql59YnzV3ie1X7obFkzvuuRhqWefs=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=I7RpQlK4ZhGCEQjJAGhlDFqF8VBXz4Fl0bMUWViBDv21YGBhev8XnhxG1A6xFuVCf3o0UvkvTytdBjE9vPRdeMWdzIbvr8ALXOAm7LXYUlAEPOYNk3bPU2QnOPGN7mpZqhZYZZ0yrqf0cjMpLRUsFDSJou5T0Cv2GDxliZYtFEg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.21
-Received: from localhost.localdomain (unknown [117.182.74.238])
-	by APP-01 (Coremail) with SMTP id qwCowACXO9RwUjlqCILBAg--.27065S2;
-	Mon, 22 Jun 2026 23:19:14 +0800 (CST)
-From: Wentao Liang <vulab@iscas.ac.cn>
-To: Ayush Sawal <ayush.sawal@chelsio.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	"David S . Miller" <davem@davemloft.net>
-Cc: linux-crypto@vger.kernel.org,
+	s=arc-20240116; t=1782142054; c=relaxed/simple;
+	bh=k5mEzvHfECX+NQXWGlXkQyJW7lIy+OzSTwhNBky1YLg=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=UPbDAmJvFUpzWHnC+DHttnFCPPDszHEpdTVeex26VcwcfduQv+Y9zyBUHWB85ILVf2bKsuYvLS8EoCExuCD9eOlmEmYlKrqj243QInFoMtxh63eKCrbL24n0G4WBz1soqMKZGgh8lq6oZqk0/PMMYBtUWoimZFOzDWbdi732wdE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JDQCUEdw; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2CBD1F00ACA;
+	Mon, 22 Jun 2026 15:27:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1782142051;
+	bh=WT/aXSNySJ8SGKUwVmgop3kKkxHqX8VbVTruLW67AfY=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=JDQCUEdwV0pJovFJvFIPOTDUJPREPkKmBbRfOdY+RgerPVr2rCMt/s1Emu8KAjPjN
+	 yRwXE5HOgjhyJtPDjcGCCvzSCa+MquTLNxxRFvwGbmZKd1HtFm8dCmSmakWMWUfbFF
+	 APegImzTdMPLgGnAqGRdWuLzxR2RB+VL5zC35EGJs/RczEkIcnOZxbm39u4NX6+2S2
+	 FO5jY2gi2HQhCONsU6m9IPofs2VqULZXvzsj84YUvnNy5fdkzl68YL214V8xIiWd/O
+	 eRJByZnwn52+n60VCEyvqfvrp4nlaJsY5zZfRizXNUG+dY4KZwkkWEBkH2ZZVJFs3j
+	 yUx3dKPD/+jnQ==
+Received: from johan by xi.lan with local (Exim 4.99.3)
+	(envelope-from <johan@kernel.org>)
+	id 1wbgYb-00000000UIx-178s;
+	Mon, 22 Jun 2026 17:27:29 +0200
+From: Johan Hovold <johan@kernel.org>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Juergen Stuber <starblue@users.sourceforge.net>,
+	Yue Sun <samsun1006219@gmail.com>,
+	linux-usb@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	Wentao Liang <vulab@iscas.ac.cn>,
+	Johan Hovold <johan@kernel.org>,
 	stable@vger.kernel.org
-Subject: [PATCH v3] Fix multiple issues in chcr driver:
-Date: Mon, 22 Jun 2026 23:19:10 +0800
-Message-Id: <20260622151910.49402-1-vulab@iscas.ac.cn>
-X-Mailer: git-send-email 2.39.5 (Apple Git-154)
+Subject: [PATCH 1/4] USB: iowarrior: fix use-after-free on disconnect race
+Date: Mon, 22 Jun 2026 17:26:09 +0200
+Message-ID: <20260622152612.116422-2-johan@kernel.org>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20260622152612.116422-1-johan@kernel.org>
+References: <20260622152612.116422-1-johan@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -55,150 +71,190 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:qwCowACXO9RwUjlqCILBAg--.27065S2
-X-Coremail-Antispam: 1UD129KBjvJXoWxZr1xKFWDJw1rury8Ww15Arb_yoW5uF1rpF
-	s8CFZayryrJr17GF92yws5Wa43A3y3uF43CrWFya40vwsYqrykXaykZF1jvF1fGFWrG3yU
-	ZwsrXa1fCa4UG37anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUkl14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
-	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
-	1l84ACjcxK6xIIjxv20xvE14v26r4j6ryUM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4j
-	6F4UM28EF7xvwVC2z280aVAFwI0_GcCE3s1l84ACjcxK6I8E87Iv6xkF7I0E14v26rxl6s
-	0DM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xII
-	jxv20xvE14v26r1j6r18McIj6I8E87Iv67AKxVW8JVWxJwAm72CE4IkC6x0Yz7v_Jr0_Gr
-	1lF7xvr2IYc2Ij64vIr41lF7I21c0EjII2zVCS5cI20VAGYxC7MxkF7I0En4kS14v26r12
-	6r1DMxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrVAFwI
-	0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWUAVWUtwCIc40Y
-	0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267AKxV
-	WUJVW8JwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Jr0_Gr1l
-	IxAIcVC2z280aVCY1x0267AKxVW8JVW8JrUvcSsGvfC2KfnxnUUI43ZEXa7VUjJ73PUUUU
-	U==
-X-CM-SenderInfo: pyxotu46lvutnvoduhdfq/1tbiCQ4GA2o5I0xylAABsZ
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [0.04 / 15.00];
+X-Spamd-Result: default: False [-3.66 / 15.00];
+	WHITELIST_SPF_DKIM(-3.00)[kernel.org:d:+,kernel.org:s:+];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-267746-lists,stable=lfdr.de];
-	DMARC_NA(0.00)[iscas.ac.cn];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER(0.00)[vulab@iscas.ac.cn,stable@vger.kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS(0.00)[m:ayush.sawal@chelsio.com,m:herbert@gondor.apana.org.au,m:davem@davemloft.net,m:linux-crypto@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:vulab@iscas.ac.cn,m:stable@vger.kernel.org,s:lists@lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_CC(0.00)[users.sourceforge.net,gmail.com,vger.kernel.org,kernel.org];
+	FORGED_RECIPIENTS(0.00)[m:gregkh@linuxfoundation.org,m:starblue@users.sourceforge.net,m:samsun1006219@gmail.com,m:linux-usb@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:johan@kernel.org,m:stable@vger.kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-267749-lists,stable=lfdr.de];
+	FORGED_SENDER(0.00)[johan@kernel.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[vulab@iscas.ac.cn,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
-	R_DKIM_NA(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[johan@kernel.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 149456B0A9E
+X-Rspamd-Queue-Id: 56A2C6B0B8B
 
-1. In chcr_ahash_final() and chcr_ahash_digest(), chcr_send_wr()
-   return value is not checked. If it fails, DMA buffers are not
-   unmapped, causing leaks.
+mutex_unlock() may access the mutex structure after releasing the lock
+and therefore cannot be used to manage lifetime of objects directly
+(unlike spinlocks and refcounts). [1][2]
 
-2. In chcr_aead_op(), the inflight counter is not decremented when
-   assoclen validation fails.
+Use a kref to release the driver data to avoid use-after-free in
+mutex_unlock() when release() races with disconnect().
 
-Fix by:
-- Adding error handling for chcr_send_wr() with goto unmap
-- Adding chcr_dec_wrcount() on the assoclen error path
+[1] a51749ab34d9 ("locking/mutex: Document that mutex_unlock() is non-atomic")
+[2] 2b9d9e0a9ba0 ("locking/mutex: Clarify that mutex_unlock(), and most
+                   other sleeping locks, can still use the lock object
+                   after it's unlocked")
 
-Fix the following functions with missing decrement on error paths:
-- chcr_aes_encrypt()
-- chcr_aes_decrypt()
-- chcr_aead_op()
-
-For chcr_aes_encrypt() and chcr_aes_decrypt(), use a common error
-label to decrement the counter. For chcr_aead_op(), use the existing
-chcr_dec_wrcount() helper on the invalid assoclen error path.
-
-Cc: stable@vger.kernel.org
-Fixes: b8fd1f4170e7 ("crypto: chcr - Add ctr mode and process large sg entries for cipher")
-Fixes: d91a3159e8d9 ("Crypto/chcr: fix gcm-aes and rfc4106-gcm failed tests")
-Fixes: 324429d74127 ("chcr: Support for Chelsio's Crypto Hardware")
-Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
+Fixes: 946b960d13c1 ("USB: add driver for iowarrior devices.")
+Cc: stable@vger.kernel.org	# 2.6.21
+Reported-by: Yue Sun <samsun1006219@gmail.com>
+Link: https://lore.kernel.org/r/20260618080204.38322-1-samsun1006219@gmail.com
+Signed-off-by: Johan Hovold <johan@kernel.org>
 ---
- drivers/crypto/chelsio/chcr_algo.c | 19 +++++++++++++++----
- 1 file changed, 15 insertions(+), 4 deletions(-)
+ drivers/usb/misc/iowarrior.c | 57 +++++++++++++++---------------------
+ 1 file changed, 24 insertions(+), 33 deletions(-)
 
-diff --git a/drivers/crypto/chelsio/chcr_algo.c b/drivers/crypto/chelsio/chcr_algo.c
-index 6dec42282768..e431e8c1fdbd 100644
---- a/drivers/crypto/chelsio/chcr_algo.c
-+++ b/drivers/crypto/chelsio/chcr_algo.c
-@@ -1359,7 +1359,7 @@ static int chcr_aes_encrypt(struct skcipher_request *req)
- 	err = process_cipher(req, u_ctx->lldi.rxq_ids[reqctx->rxqidx],
- 			     &skb, CHCR_ENCRYPT_OP);
- 	if (err || !skb)
--		return  err;
-+		goto error;
- 	skb->dev = u_ctx->lldi.ports[0];
- 	set_wr_txq(skb, CPL_PRIORITY_DATA, reqctx->txqidx);
- 	chcr_send_wr(skb);
-@@ -1402,11 +1402,15 @@ static int chcr_aes_decrypt(struct skcipher_request *req)
- 	err = process_cipher(req, u_ctx->lldi.rxq_ids[reqctx->rxqidx],
- 			     &skb, CHCR_DECRYPT_OP);
- 	if (err || !skb)
--		return err;
-+		goto error;
- 	skb->dev = u_ctx->lldi.ports[0];
- 	set_wr_txq(skb, CPL_PRIORITY_DATA, reqctx->txqidx);
- 	chcr_send_wr(skb);
- 	return -EINPROGRESS;
-+
-+error:
-+	chcr_dec_wrcount(dev);
-+	return err;
- }
- static int chcr_device_init(struct chcr_context *ctx)
- {
-@@ -1877,7 +1881,10 @@ static int chcr_ahash_finup(struct ahash_request *req)
- 	req_ctx->hctx_wr.processed += params.sg_len;
- 	skb->dev = u_ctx->lldi.ports[0];
- 	set_wr_txq(skb, CPL_PRIORITY_DATA, req_ctx->txqidx);
--	chcr_send_wr(skb);
-+	if (chcr_send_wr(skb)) {
-+		error = -EIO;
-+		goto unmap;
-+	}
- 	return -EINPROGRESS;
- unmap:
- 	chcr_hash_dma_unmap(&u_ctx->lldi.pdev->dev, req);
-@@ -1978,7 +1985,10 @@ static int chcr_ahash_digest(struct ahash_request *req)
- 	req_ctx->hctx_wr.processed += params.sg_len;
- 	skb->dev = u_ctx->lldi.ports[0];
- 	set_wr_txq(skb, CPL_PRIORITY_DATA, req_ctx->txqidx);
--	chcr_send_wr(skb);
-+	if (chcr_send_wr(skb)) {
-+		error = -EIO;
-+		goto unmap;
-+	}
- 	return -EINPROGRESS;
- unmap:
- 	chcr_hash_dma_unmap(&u_ctx->lldi.pdev->dev, req);
-@@ -3636,6 +3646,7 @@ static int chcr_aead_op(struct aead_request *req,
- 	    crypto_ipsec_check_assoclen(req->assoclen) != 0) {
- 		pr_err("RFC4106: Invalid value of assoclen %d\n",
- 		       req->assoclen);
-+		chcr_dec_wrcount(cdev);
- 		return -EINVAL;
- 	}
+diff --git a/drivers/usb/misc/iowarrior.c b/drivers/usb/misc/iowarrior.c
+index 88c6d1d1da11..de2b236ef903 100644
+--- a/drivers/usb/misc/iowarrior.c
++++ b/drivers/usb/misc/iowarrior.c
+@@ -72,6 +72,7 @@ static struct usb_driver iowarrior_driver;
  
+ /* Structure to hold all of our device specific stuff */
+ struct iowarrior {
++	struct kref kref;
+ 	struct mutex mutex;			/* locks this structure */
+ 	struct usb_device *udev;		/* save off the usb device pointer */
+ 	struct usb_interface *interface;	/* the interface for this device */
+@@ -240,8 +241,10 @@ static void iowarrior_write_callback(struct urb *urb)
+ /*
+  *	iowarrior_delete
+  */
+-static inline void iowarrior_delete(struct iowarrior *dev)
++static inline void iowarrior_delete(struct kref *kref)
+ {
++	struct iowarrior *dev = container_of(kref, struct iowarrior, kref);
++
+ 	kfree(dev->int_in_buffer);
+ 	usb_free_urb(dev->int_in_urb);
+ 	kfree(dev->read_queue);
+@@ -637,6 +640,9 @@ static int iowarrior_open(struct inode *inode, struct file *file)
+ 	}
+ 	/* increment our usage count for the driver */
+ 	++dev->opened;
++
++	kref_get(&dev->kref);
++
+ 	/* save our object in the file's private structure */
+ 	file->private_data = dev;
+ 	retval = 0;
+@@ -652,7 +658,6 @@ static int iowarrior_open(struct inode *inode, struct file *file)
+ static int iowarrior_release(struct inode *inode, struct file *file)
+ {
+ 	struct iowarrior *dev;
+-	int retval = 0;
+ 
+ 	dev = file->private_data;
+ 	if (!dev)
+@@ -660,29 +665,18 @@ static int iowarrior_release(struct inode *inode, struct file *file)
+ 
+ 	/* lock our device */
+ 	mutex_lock(&dev->mutex);
++	dev->opened = 0;	/* we're closing now */
+ 
+-	if (dev->opened <= 0) {
+-		retval = -ENODEV;	/* close called more than once */
+-		mutex_unlock(&dev->mutex);
+-	} else {
+-		dev->opened = 0;	/* we're closing now */
+-		retval = 0;
+-		if (dev->present) {
+-			/*
+-			   The device is still connected so we only shutdown
+-			   pending read-/write-ops.
+-			 */
+-			usb_kill_urb(dev->int_in_urb);
+-			wake_up_interruptible(&dev->read_wait);
+-			wake_up_interruptible(&dev->write_wait);
+-			mutex_unlock(&dev->mutex);
+-		} else {
+-			/* The device was unplugged, cleanup resources */
+-			mutex_unlock(&dev->mutex);
+-			iowarrior_delete(dev);
+-		}
++	if (dev->present) {
++		usb_kill_urb(dev->int_in_urb);
++		wake_up_interruptible(&dev->read_wait);
++		wake_up_interruptible(&dev->write_wait);
+ 	}
+-	return retval;
++	mutex_unlock(&dev->mutex);
++
++	kref_put(&dev->kref, iowarrior_delete);
++
++	return 0;
+ }
+ 
+ static __poll_t iowarrior_poll(struct file *file, poll_table * wait)
+@@ -767,6 +761,7 @@ static int iowarrior_probe(struct usb_interface *interface,
+ 	if (!dev)
+ 		return retval;
+ 
++	kref_init(&dev->kref);
+ 	mutex_init(&dev->mutex);
+ 
+ 	atomic_set(&dev->intr_idx, 0);
+@@ -885,7 +880,8 @@ static int iowarrior_probe(struct usb_interface *interface,
+ 	return retval;
+ 
+ error:
+-	iowarrior_delete(dev);
++	kref_put(&dev->kref, iowarrior_delete);
++
+ 	return retval;
+ }
+ 
+@@ -909,19 +905,14 @@ static void iowarrior_disconnect(struct usb_interface *interface)
+ 	usb_kill_anchored_urbs(&dev->submitted);
+ 
+ 	if (dev->opened) {
+-		/* There is a process that holds a filedescriptor to the device ,
+-		   so we only shutdown read-/write-ops going on.
+-		   Deleting the device is postponed until close() was called.
+-		 */
+ 		usb_kill_urb(dev->int_in_urb);
+ 		wake_up_interruptible(&dev->read_wait);
+ 		wake_up_interruptible(&dev->write_wait);
+-		mutex_unlock(&dev->mutex);
+-	} else {
+-		/* no process is using the device, cleanup now */
+-		mutex_unlock(&dev->mutex);
+-		iowarrior_delete(dev);
+ 	}
++
++	mutex_unlock(&dev->mutex);
++
++	kref_put(&dev->kref, iowarrior_delete);
+ }
+ 
+ /* usb specific object needed to register this driver with the usb subsystem */
 -- 
-2.39.5 (Apple Git-154)
+2.53.0
 
 
