@@ -1,215 +1,161 @@
-Return-Path: <stable+bounces-267813-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-267814-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id EzGyDbawOWp8wQcAu9opvQ
-	(envelope-from <stable+bounces-267813-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 23 Jun 2026 00:01:26 +0200
+	id 5M5ZHE6xOWqUwQcAu9opvQ
+	(envelope-from <stable+bounces-267814-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 23 Jun 2026 00:03:58 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 96F226B28CE
-	for <lists+stable@lfdr.de>; Tue, 23 Jun 2026 00:01:25 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id BACDC6B28FB
+	for <lists+stable@lfdr.de>; Tue, 23 Jun 2026 00:03:57 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=intel.com header.s=Intel header.b=gn25p1pl;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-267813-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-267813-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=none) header.from=intel.com;
+	dkim=pass header.d=kernel-dk.20251104.gappssmtp.com header.s=20251104 header.b=MhNiM7DS;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-267814-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-267814-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=none;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id D91473045B3E
-	for <lists+stable@lfdr.de>; Mon, 22 Jun 2026 22:01:12 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 6B089306BA91
+	for <lists+stable@lfdr.de>; Mon, 22 Jun 2026 22:01:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D209837BE7C;
-	Mon, 22 Jun 2026 22:01:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 36A49379EC6;
+	Mon, 22 Jun 2026 22:01:18 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yw1-f182.google.com (mail-yw1-f182.google.com [209.85.128.182])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E453376A03;
-	Mon, 22 Jun 2026 22:01:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8B063793CC
+	for <stable@vger.kernel.org>; Mon, 22 Jun 2026 22:01:12 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782165671; cv=none; b=BdtDIW210bH4csSF3W5+0ah/xZoImYND77ij7CA1K94UhN6X2GIHw837KGIsuY8D6V8/+0b9I7YPEokbLvYr6zFM+eROR4CVFR7z0U/Sc3GftwGFQ9TXbLJ7EkupdruwcDpo0bTQIPg3CLkZyGA4uXAjCB+H1dd0WhUP+2pisOo=
+	t=1782165678; cv=none; b=kttO8uhFCuS0SzdVz7XBvDaPJeBlhI19xqGuFsA296zuHrH1s32z9r7HxRzR+ZYktAGeaRJAH6j95kUX8oykdlDzbm11w7WilyPCaLOLtDdSZxWaUhIS+YBcpuHPq32ZMuafmjVuEDU4DS4L26ANkUPylhbeiq2R/4IW/0LEc1Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782165671; c=relaxed/simple;
-	bh=78Jq1Dj8kEiG1qk4UyHAziYDZVlH2hpxdJI/v/L9er0=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=B5Ded+9iFGMQ1JZrVxLlfy/p2/cED6U/gmWe9wD7Sy8swchmEWoFKVSnJ9RS0IcNkcfkR9bN+XU1JS2zE5fVufAWeSYUGHF5jo2foCfrSdFoN6FY7cf7+wq1/mW2jItsOHoYF6kujGltD7r2TCoQEWROKR8n95xA43NOi7g6kZE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=gn25p1pl; arc=none smtp.client-ip=198.175.65.20
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1782165670; x=1813701670;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=78Jq1Dj8kEiG1qk4UyHAziYDZVlH2hpxdJI/v/L9er0=;
-  b=gn25p1plaNuOnRNJxzl0ubsAfC00iKjAycsJWX8tnW7YFITIDeTjHysN
-   FC2VfOYu/zbOK2TN6e4aa2fG/1TOmz+DkKOqJalMgGUlIrmrixGSIxiPY
-   nL6tU4Pt5hfbYJ+Chkg8WYxLINlo7DFH/YkUbZtyUn2L1f+7mQaV8iH8V
-   ixfOixNmh8twGPTmAle8yeOKaDnHHGVDbqt6m2jzWZIsuDqttiNuJDb4c
-   qjUAAvz7VL9qZl73uELC3ILu9Pqrc/nYzjGPMtC1NIYOkjctMzc63F5vT
-   8njq9vbzYDPWYmP2ob1pahDahvzwGx/AC+PuG4FRXJKh8uG/+6nrafU2m
-   g==;
-X-CSE-ConnectionGUID: J62n6YLdTwePJMRISGm9Mg==
-X-CSE-MsgGUID: 0ImHcn4IRm+Kcq1RZLjJmw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11825"; a="82675566"
-X-IronPort-AV: E=Sophos;i="6.24,219,1774335600"; 
-   d="scan'208";a="82675566"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
-  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Jun 2026 15:01:05 -0700
-X-CSE-ConnectionGUID: dA+pLScgRTCWlDVpe071wQ==
-X-CSE-MsgGUID: D7OImcEmS2Sbp7KxGorQ7g==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.24,219,1774335600"; 
-   d="scan'208";a="248205713"
-Received: from anguy11-upstream.jf.intel.com ([10.166.9.133])
-  by orviesa006.jf.intel.com with ESMTP; 22 Jun 2026 15:01:05 -0700
-From: Tony Nguyen <anthony.l.nguyen@intel.com>
-To: davem@davemloft.net,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	edumazet@google.com,
-	andrew+netdev@lunn.ch,
-	netdev@vger.kernel.org
-Cc: Paul Greenwalt <paul.greenwalt@intel.com>,
-	anthony.l.nguyen@intel.com,
-	stable@vger.kernel.org,
-	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
-	Simon Horman <horms@kernel.org>,
-	Alexander Nowlin <alexander.nowlin@intel.com>
-Subject: [PATCH net 3/8] ice: fix ice_init_link() error return preventing probe
-Date: Mon, 22 Jun 2026 15:00:50 -0700
-Message-ID: <20260622220059.2471844-4-anthony.l.nguyen@intel.com>
-X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20260622220059.2471844-1-anthony.l.nguyen@intel.com>
-References: <20260622220059.2471844-1-anthony.l.nguyen@intel.com>
+	s=arc-20240116; t=1782165678; c=relaxed/simple;
+	bh=yFP6vPTIKZFpIVTyukJeuS1iJIwz/CHA4/+ifh84bHs=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=f8R6Y5TBXrP+fjWiMQc4GLE+2vztpebIRHkfCJJaRjl0WGWCu+K0RSWxYjVa4P8VD+tXq2BlG+PULEfmt4sari2UQ/l0MZJb76q8YfzBFZQtcgw+DSgN0PwvHgxcHA8DvhdU2RThCoEFL5r4FML1iislfV4zssXsI/SsBw7biAg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.dk; spf=pass smtp.mailfrom=kernel.dk; dkim=pass (2048-bit key) header.d=kernel-dk.20251104.gappssmtp.com header.i=@kernel-dk.20251104.gappssmtp.com header.b=MhNiM7DS; arc=none smtp.client-ip=209.85.128.182
+Received: by mail-yw1-f182.google.com with SMTP id 00721157ae682-7dfe7712572so43515797b3.1
+        for <stable@vger.kernel.org>; Mon, 22 Jun 2026 15:01:12 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=kernel-dk.20251104.gappssmtp.com; s=20251104; t=1782165672; x=1782770472; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:date:message-id:subject
+         :references:in-reply-to:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=porwEAXdPPEg6IzZtdKU9orivYQedDa6+cnPOd+H1g8=;
+        b=MhNiM7DSi0XxarxsgxrbaZWRNv3ZBG25xZLeXaTuXmKpMrO/UYUDVGAeo+leXcJawL
+         xQFs24yGmtLs2G8TCzlLAblbaBNw+7W38P2nYo14IhBow29GTbvjz9Hy1y/Tb+ZHIcjC
+         V7h1O+6cgMikMh9HRgUO1qdxHHq8Buk9wD0YsOR0OWyOvob/TOSY+ouWChxEMsB3HTLy
+         FbFe3EFjpWxJNjz0N78CaGhKHWU0eekEuJrTSZu/g6ZlRhBhYC4/GhgINOvwlkcokF1p
+         Ti5pQ4OHuNeP088anlsqgtWJfSIVuLVjIxPCBiQhv7Qh8EiZXQHbPOakjLE4BZ9fCb6v
+         YqTg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1782165672; x=1782770472;
+        h=content-transfer-encoding:mime-version:date:message-id:subject
+         :references:in-reply-to:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=porwEAXdPPEg6IzZtdKU9orivYQedDa6+cnPOd+H1g8=;
+        b=gLmgMHuFD8qbixRH4D4h832n0LQwXafO8PtSO8jf+/IuTB43yrIdUrnIJBKN1/q5Qo
+         syLZGt31g1qHFMcYfZRI2jIBUzsTVTiOb9xXLOD29t7/QfkvjxbvuIVYWdVG6uuMU6K3
+         Vo0015v6oTd49lJfQJnus534wKUuwXPpeOwUQpQe8Eeihfhdw9LHQoQ2Ae64N3z6nM//
+         YgVFqyTBqBIEVZZ9mdjPCRY430W6BPrNcZE7PFI6cqZC2XcaqDVU1Kggju5yIqxbUs+F
+         +50UPWQ5QS2j6L2gQz68iinPHasvr/K6nc505i2yRwEGN3o9CDWnxKFlgLT8WpqgmDMN
+         ge3g==
+X-Forwarded-Encrypted: i=1; AHgh+Rq+jXrVdVvaCYR0akroIoP6t0VvrQJgIGWl7KXIAlq3WN9w36rB+qqdrGCbKfe1ghsueBDRDMA=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yyb1HseJyMIWo2a2jDna4s+ZIPCkTP/kTRWXCQH08AFpn0R6uQt
+	Ic5WnHeD9jxmSRLcNlw+Dvf8E4t++McWSB0hbeuEECooBTxdlRpEazF58bpjlTd1RJo=
+X-Gm-Gg: AfdE7clLjXIA2ActOzrqCeRYVtZexDk8dvkEyCisXMe1ltkqy1vyVtQYG4PVysFt1u+
+	F9fTetRCAys0c0gjGS7bBE2YOPM8E/i0YBlEc9NYpSgr+cHSbzUR72YzyI8rKqb84trCQmn0c/N
+	SwJ3f3aDnyG7LGVQ2E5FD2MEN5P2oFzVJV8wJo/zdbe7t7zNvGan+Zm4newAHYCH6JChZz4GXxt
+	aw91tpOW5zI/Kys3syyT6fqf8Hmd367sXaMsU66tjRctx03sEEPUG63q3lj86eaM7S+ZDR1NFXZ
+	5F8uuiiCsvyFPLSPd9SLEFsiclBp38Sjv27zCj+1y1/xTlawIJmX6rLrcphkTXoCkQ/AVKO5JX9
+	buE4iyoL16D1uLM+rlKEyx3XAlySWUMHQY1f5dLNmHIpdsEHqlo8OqqmjLJahK8vauDFnk2bC4Y
+	R3F9m1cHTtAshobowauDs4vaLnwsrEQ2V+Wmo=
+X-Received: by 2002:a05:690c:46c6:b0:7b6:cd36:84af with SMTP id 00721157ae682-801335040f1mr192567407b3.32.1782165671695;
+        Mon, 22 Jun 2026 15:01:11 -0700 (PDT)
+Received: from [127.0.0.1] ([99.196.128.58])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-8df7f018898sm106932496d6.7.2026.06.22.15.01.03
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 22 Jun 2026 15:01:11 -0700 (PDT)
+From: Jens Axboe <axboe@kernel.dk>
+To: linux-block@vger.kernel.org, Ming Lei <ming.lei@redhat.com>
+Cc: =?utf-8?q?Michal_Koutn=C3=BD?= <mkoutny@suse.com>, 
+ stable@vger.kernel.org, Jay Shin <jaeshin@redhat.com>, 
+ Tejun Heo <tj@kernel.org>, Waiman Long <longman@redhat.com>, 
+ coregee2000@gmail.com
+In-Reply-To: <20260205155425.342084-1-ming.lei@redhat.com>
+References: <20260205155425.342084-1-ming.lei@redhat.com>
+Subject: Re: [PATCH V2] blk-cgroup: fix UAF in __blkcg_rstat_flush()
+Message-Id: <178216566327.110437.11201759901497714686.b4-ty@b4>
+Date: Mon, 22 Jun 2026 16:01:03 -0600
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.15.2
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-2.16 / 15.00];
-	WHITELIST_SPF_DKIM(-3.00)[intel.com:d:+,kernel.org:s:+];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
-	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
+	MID_RHS_NOT_FQDN(0.50)[];
+	R_DKIM_ALLOW(-0.20)[kernel-dk.20251104.gappssmtp.com:s=20251104];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-267813-lists,stable=lfdr.de];
-	RCPT_COUNT_TWELVE(0.00)[12];
+	RECEIVED_HELO_LOCALHOST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER(0.00)[anthony.l.nguyen@intel.com,stable@vger.kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:davem@davemloft.net,m:kuba@kernel.org,m:pabeni@redhat.com,m:edumazet@google.com,m:andrew+netdev@lunn.ch,m:netdev@vger.kernel.org,m:paul.greenwalt@intel.com,m:anthony.l.nguyen@intel.com,m:stable@vger.kernel.org,m:aleksandr.loktionov@intel.com,m:horms@kernel.org,m:alexander.nowlin@intel.com,m:andrew@lunn.ch,s:lists@lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[anthony.l.nguyen@intel.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS(0.00)[m:linux-block@vger.kernel.org,m:ming.lei@redhat.com,m:mkoutny@suse.com,m:stable@vger.kernel.org,m:jaeshin@redhat.com,m:tj@kernel.org,m:longman@redhat.com,m:coregee2000@gmail.com,s:lists@lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[intel.com:+];
+	DMARC_NA(0.00)[kernel.dk];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-267814-lists,stable=lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_SENDER(0.00)[axboe@kernel.dk,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[suse.com,vger.kernel.org,redhat.com,kernel.org,gmail.com];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
 	RCVD_COUNT_FIVE(0.00)[5];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[axboe@kernel.dk,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[kernel-dk.20251104.gappssmtp.com:+];
 	ALIAS_RESOLVED(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	TAGGED_RCPT(0.00)[stable,netdev];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:dkim,intel.com:email,intel.com:mid,intel.com:from_mime,vger.kernel.org:from_smtp]
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,kernel-dk.20251104.gappssmtp.com:dkim,kernel.dk:from_mime]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 96F226B28CE
+X-Rspamd-Queue-Id: BACDC6B28FB
 
-From: Paul Greenwalt <paul.greenwalt@intel.com>
 
-ice_init_link() can return an error status from ice_update_link_info()
-or ice_init_phy_user_cfg(), causing probe to fail.
+On Thu, 05 Feb 2026 23:54:23 +0800, Ming Lei wrote:
+> When multiple blkgs in the same blkcg are released concurrently,
+> a use-after-free can occur. The race happens when one blkg's
+> __blkcg_rstat_flush() removes another blkg's iostat entries via
+> llist_del_all(). The second blkg sees an empty list and proceeds
+> to free itself while the first is still iterating over its entries.
+> 
+> Move the flush from __blkg_release() (RCU callback) to blkg_release()
+> (before call_rcu). This ensures the RCU grace period waits for any
+> concurrent flush's rcu_read_lock() section to complete before freeing.
+> 
+> [...]
 
-An incorrect NVM update procedure can result in link/PHY errors, and
-the recommended resolution is to update the NVM using the correct
-procedure. If the driver fails probe due to link errors, the user
-cannot update the NVM to recover. The link/PHY errors logged are
-non-fatal: they are already annotated as 'not a fatal error if this
-fails'.
+Applied, thanks!
 
-Since none of the errors inside ice_init_link() should prevent probe
-from completing, convert it to void and remove the error check in the
-caller. All failures are already logged; callers have no meaningful
-recovery path for link init errors.
+[1/1] blk-cgroup: fix UAF in __blkcg_rstat_flush()
+      commit: 0ab5ee5a1badb58cbb2242617cb01a4972b1f2a2
 
-Fixes: 5b246e533d01 ("ice: split probe into smaller functions")
-Cc: stable@vger.kernel.org
-Signed-off-by: Paul Greenwalt <paul.greenwalt@intel.com>
-Signed-off-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Tested-by: Alexander Nowlin <alexander.nowlin@intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
----
- drivers/net/ethernet/intel/ice/ice_main.c | 16 +++++-----------
- 1 file changed, 5 insertions(+), 11 deletions(-)
-
-diff --git a/drivers/net/ethernet/intel/ice/ice_main.c b/drivers/net/ethernet/intel/ice/ice_main.c
-index e2fbe111f849..e2fd2dab03e3 100644
---- a/drivers/net/ethernet/intel/ice/ice_main.c
-+++ b/drivers/net/ethernet/intel/ice/ice_main.c
-@@ -4789,16 +4789,14 @@ static void ice_init_wakeup(struct ice_pf *pf)
- 	device_set_wakeup_enable(ice_pf_to_dev(pf), false);
- }
- 
--static int ice_init_link(struct ice_pf *pf)
-+static void ice_init_link(struct ice_pf *pf)
- {
- 	struct device *dev = ice_pf_to_dev(pf);
- 	int err;
- 
- 	err = ice_init_link_events(pf->hw.port_info);
--	if (err) {
-+	if (err)
- 		dev_err(dev, "ice_init_link_events failed: %d\n", err);
--		return err;
--	}
- 
- 	/* not a fatal error if this fails */
- 	err = ice_init_nvm_phy_type(pf->hw.port_info);
-@@ -4838,8 +4836,6 @@ static int ice_init_link(struct ice_pf *pf)
- 	} else {
- 		set_bit(ICE_FLAG_NO_MEDIA, pf->flags);
- 	}
--
--	return err;
- }
- 
- static int ice_init_pf_sw(struct ice_pf *pf)
-@@ -4982,13 +4978,11 @@ static int ice_init(struct ice_pf *pf)
- 
- 	ice_init_wakeup(pf);
- 
--	err = ice_init_link(pf);
--	if (err)
--		goto err_init_link;
-+	ice_init_link(pf);
- 
- 	err = ice_send_version(pf);
- 	if (err)
--		goto err_init_link;
-+		goto err_deinit_pf_sw;
- 
- 	ice_verify_cacheline_size(pf);
- 
-@@ -5007,7 +5001,7 @@ static int ice_init(struct ice_pf *pf)
- 
- 	return 0;
- 
--err_init_link:
-+err_deinit_pf_sw:
- 	ice_deinit_pf_sw(pf);
- err_init_pf_sw:
- 	ice_dealloc_vsis(pf);
+Best regards,
 -- 
-2.47.1
+Jens Axboe
+
+
 
 
