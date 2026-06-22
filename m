@@ -1,212 +1,140 @@
-Return-Path: <stable+bounces-267660-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-267661-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id nZaPOK0OOWpzmAcAu9opvQ
-	(envelope-from <stable+bounces-267660-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 22 Jun 2026 12:30:05 +0200
+	id EdsXFfAOOWqNmAcAu9opvQ
+	(envelope-from <stable+bounces-267661-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 22 Jun 2026 12:31:12 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 37BCE6AEB2F
-	for <lists+stable@lfdr.de>; Mon, 22 Jun 2026 12:30:05 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9E2CC6AEB60
+	for <lists+stable@lfdr.de>; Mon, 22 Jun 2026 12:31:11 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=none;
-	dmarc=none;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-267660-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-267660-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linutronix.de header.s=2020 header.b="3iIq2/jp";
+	dkim=pass header.d=linutronix.de header.s=2020e header.b=d96NQf+w;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-267661-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-267661-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=none) header.from=linutronix.de;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 0776630570DE
-	for <lists+stable@lfdr.de>; Mon, 22 Jun 2026 10:25:57 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 1CC6C3061B4F
+	for <lists+stable@lfdr.de>; Mon, 22 Jun 2026 10:26:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D78E3A545B;
-	Mon, 22 Jun 2026 10:25:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92A053A59B3;
+	Mon, 22 Jun 2026 10:26:57 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from cstnet.cn (smtp25.cstnet.cn [159.226.251.25])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CBD83A545E;
-	Mon, 22 Jun 2026 10:25:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2AE5A3A545B
+	for <stable@vger.kernel.org>; Mon, 22 Jun 2026 10:26:55 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782123955; cv=none; b=T4jpwEsJl6yAMRkuLeufPO6bAlyPD3uWduNpyIWE+hbmkLZqs7EHZveqLWga8vwd5Q/a/xofAxEkit2QBSkLe7uN88i8SBiYRNqiyjBBl+wYttQo3iZXOLWwP2WQfSs57ZQO+DAkzqMiYPE0qxWYrplCFZ0Emsutf/Tji9oZsjY=
+	t=1782124017; cv=none; b=gZNp8wEFedUHPwnZfTwJwDhKysMvhq9jq+mc1+KOlIFe4q7RnqW+5M30slRJ85fT0C4bGZOWQLikDxlz7XoSvXgFq7I4kkVCxWIABO5BfPP3ya/tn/0Oc+TZEamRIJcae9pTbmL4oOnsbQjA6EnDG8L4aHPlb/KvNw5wyeawdt4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782123955; c=relaxed/simple;
-	bh=iN2N/e3dZW+kPQjRl36cn7UsVIeGGeCWu7/JO1xDn3U=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Ef0R4cAsUSdhTpxPfHOFRJ5dh+oUaR/QTuGFjjN6r9jjB5u1+S6baKMC73XUGx3VZ4GQ3r17Kn6Lb23hBBMVq6oH2ixoQDENqTV244siMhy2iMsfih8HdL7YqVwiIFlszT6on0HgJRBqNlaHzBun/yEcIEGfBgJsiX10wJTwuYY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.25
-Received: from [192.168.0.105] (unknown [123.118.218.239])
-	by APP-05 (Coremail) with SMTP id zQCowAA3nN+JDTlqtLaqFA--.57426S2;
-	Mon, 22 Jun 2026 18:25:14 +0800 (CST)
-Message-ID: <2f32370b-63c1-4e8a-bf71-d40874b6bebb@iscas.ac.cn>
-Date: Mon, 22 Jun 2026 18:25:13 +0800
+	s=arc-20240116; t=1782124017; c=relaxed/simple;
+	bh=baSwirDpA4monkJd3G396GlGsw2NX5Cc/zcZ+SCqjws=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=cHQ5UNJIvz8rKUW8ljhzkTJbSeeHymRX473vT5fqj1Jx7EGGcPGHX6ifA54CCY2tPMtd3RPTpJuQ6vwkONc7/VvBlNiFJNxDDASRJaCBzGvdO6HGnyhup/SX1qHJnb/ogx2xcIKvY7PLzm3E9L/9o5fAjG24asJAv9THspgmg94=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=3iIq2/jp; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=d96NQf+w; arc=none smtp.client-ip=193.142.43.55
+From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1782124013;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=YXvFuUhlC/+OE4W3ff8nmdCq38KYvqxt0ICsJOWSQeQ=;
+	b=3iIq2/jpfKCs6dmDVcQ8W7+XpcJ4uRTb5sT0V1S9xzQUoaxsp2a0ZLl9MGgmzretjgzjsX
+	NEUp6jKFf9eKMLzNdeSQohhmQPRRyuzEDNhN+HyQkJqIXs/pamlzhFt10Ym6LNjPda6UoU
+	THytOOctXIQkOF6ri5SHhXKnD7WgVRjw5zwf1I+Zo4S5bGuSbYu2r99FJQFiu3MjaqiQDJ
+	mQlotuMX9jF5wPEbZLTckvDxZEpz6pzI/sID5++pOhs8vXpG7WCIwGtIkaflBLsBP+cmWr
+	V9ZJqVUVjHd4d1Ue1T1o3xhmhLVntBU9FoHxo+ClpEVIpaW1hCkebWIzC146yw==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1782124013;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=YXvFuUhlC/+OE4W3ff8nmdCq38KYvqxt0ICsJOWSQeQ=;
+	b=d96NQf+wLuKxq6Du417kDBLSH6jws2UUp5b+5lwxQ1C1UnocSs7/dRFE1ZYIItFHp8+Cz+
+	8UsPY7Q7JdedXVCA==
+To: stable@vger.kernel.org
+Cc: Bryan Brattlof <bb@ti.com>,
+	Daniel Wagner <daniel.wagner@monom.org>,
+	Jan Kiszka <jan.kiszka@siemens.com>,
+	cip-dev@lists.cip-project.org,
+	nobuhiro.iwamatsu.x90@mail.toshiba,
+	pavel@nabladev.com,
+	Russell King <rmk+kernel@armlinux.org.uk>,
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Subject: [PATCH 0/4] ARM: v6.6 and v6.1 stable backports
+Date: Mon, 22 Jun 2026 12:26:30 +0200
+Message-ID: <20260622102634.780100-1-bigeasy@linutronix.de>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] riscv: entry: Fixup do_trap_break from kernel side
-To: Peter Zijlstra <peterz@infradead.org>, Guo Ren <guoren@kernel.org>
-Cc: Kees Cook <kees@kernel.org>, arnd@arndb.de, palmer@rivosinc.com,
- tglx@linutronix.de, luto@kernel.org, conor.dooley@microchip.com,
- heiko@sntech.de, jszhang@kernel.org, lazyparser@gmail.com,
- falcon@tinylab.org, chenhuacai@kernel.org, apatel@ventanamicro.com,
- atishp@atishpatra.org, mark.rutland@arm.com, bjorn@kernel.org,
- palmer@dabbelt.com, bjorn@rivosinc.com, daniel.thompson@linaro.org,
- linux-arch@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-riscv@lists.infradead.org, stable@vger.kernel.org,
- Guo Ren <guoren@linux.alibaba.com>
-References: <20230702025708.784106-1-guoren@kernel.org>
- <202606191652.38297DE51@keescook> <ajeKPpg2rwadVPY4@gmail.com>
- <20260622082841.GW49951@noisy.programming.kicks-ass.net>
-Content-Language: en-US
-From: Vivian Wang <wangruikang@iscas.ac.cn>
-In-Reply-To: <20260622082841.GW49951@noisy.programming.kicks-ass.net>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:zQCowAA3nN+JDTlqtLaqFA--.57426S2
-X-Coremail-Antispam: 1UD129KBjvJXoWxur4ktFy3KFW7Cw4fCrykZrb_yoW5CFWkpF
-	W3Kay2kF4kJryxZwsrKw40vF9Yka4SqF4rCr45tryrJw4avr1SgFs7trW3KFWDZrW8Wr12
-	vFy0q3srua4UAaDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUvvb7Iv0xC_Kw4lb4IE77IF4wAFF20E14v26ryj6rWUM7CY07I2
-	0VC2zVCF04k26cxKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rw
-	A2F7IY1VAKz4vEj48ve4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Xr0_Ar1l84ACjcxK6xII
-	jxv20xvEc7CjxVAFwI0_Cr0_Gr1UM28EF7xvwVC2z280aVAFwI0_GcCE3s1l84ACjcxK6I
-	8E87Iv6xkF7I0E14v26rxl6s0DM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI
-	64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r1j6r18McIj6I8E87Iv67AKxVWUJVW8Jw
-	Am72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IY64vIr41lFIxGxcIEc7CjxVA2Y2ka0xkIwI1l
-	c7CjxVAaw2AFwI0_GFv_Wryl42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr
-	1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE
-	14v26r4a6rW5MIIYrxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7
-	IYx2IY6xkF7I0E14v26r4j6F4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E
-	87Iv67AKxVWUJVW8JwCI42IY6I8E87Iv6xkF7I0E14v26r4j6r4UJbIYCTnIWIevJa73Uj
-	IFyTuYvjxUvaZXDUUUU
-X-CM-SenderInfo: pzdqw2pxlnt03j6l2u1dvotugofq/
+Content-Transfer-Encoding: quoted-printable
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.46 / 15.00];
+X-Spamd-Result: default: False [0.84 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	MID_CONTAINS_FROM(1.00)[];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[linutronix.de,none];
+	R_DKIM_ALLOW(-0.20)[linutronix.de:s=2020,linutronix.de:s=2020e];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	DMARC_NA(0.00)[iscas.ac.cn];
-	FORGED_RECIPIENTS(0.00)[m:peterz@infradead.org,m:guoren@kernel.org,m:kees@kernel.org,m:arnd@arndb.de,m:palmer@rivosinc.com,m:tglx@linutronix.de,m:luto@kernel.org,m:conor.dooley@microchip.com,m:heiko@sntech.de,m:jszhang@kernel.org,m:lazyparser@gmail.com,m:falcon@tinylab.org,m:chenhuacai@kernel.org,m:apatel@ventanamicro.com,m:atishp@atishpatra.org,m:mark.rutland@arm.com,m:bjorn@kernel.org,m:palmer@dabbelt.com,m:bjorn@rivosinc.com,m:daniel.thompson@linaro.org,m:linux-arch@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:linux-riscv@lists.infradead.org,m:stable@vger.kernel.org,m:guoren@linux.alibaba.com,s:lists@lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER(0.00)[wangruikang@iscas.ac.cn,stable@vger.kernel.org];
-	RCPT_COUNT_TWELVE(0.00)[25];
-	TAGGED_FROM(0.00)[bounces-267660-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-267661-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_COUNT_THREE(0.00)[3];
 	FORWARDED(0.00)[lists@lfdr.de];
-	FREEMAIL_CC(0.00)[kernel.org,arndb.de,rivosinc.com,linutronix.de,microchip.com,sntech.de,gmail.com,tinylab.org,ventanamicro.com,atishpatra.org,arm.com,dabbelt.com,linaro.org,vger.kernel.org,lists.infradead.org,linux.alibaba.com];
+	FORGED_SENDER(0.00)[bigeasy@linutronix.de,stable@vger.kernel.org];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:bb@ti.com,m:daniel.wagner@monom.org,m:jan.kiszka@siemens.com,m:cip-dev@lists.cip-project.org,m:nobuhiro.iwamatsu.x90@mail.toshiba,m:pavel@nabladev.com,m:rmk+kernel@armlinux.org.uk,m:bigeasy@linutronix.de,m:rmk@armlinux.org.uk,s:lists@lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[bigeasy@linutronix.de,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[linutronix.de:+];
+	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	TO_DN_SOME(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[wangruikang@iscas.ac.cn,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	R_DKIM_NA(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[alibaba.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp]
+	RCPT_COUNT_SEVEN(0.00)[9];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	TAGGED_RCPT(0.00)[stable,kernel];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 37BCE6AEB2F
+X-Rspamd-Queue-Id: 9E2CC6AEB60
 
-On 6/22/26 16:28, Peter Zijlstra wrote:
-> On Sun, Jun 21, 2026 at 02:52:46AM -0400, Guo Ren wrote:
->> On Fri, Jun 19, 2026 at 04:54:53PM -0700, Kees Cook wrote:
->>> *thread encromancy*
->>>
->>> On Sat, Jul 01, 2023 at 10:57:07PM -0400, guoren@kernel.org wrote:
->>>> From: Guo Ren <guoren@linux.alibaba.com>
->>>>
->>>> The irqentry_nmi_enter/exit would force the current context into in_interrupt.
->>>> That would trigger the kernel to dead panic, but the kdb still needs "ebreak" to
->>>> debug the kernel.
->>>>
->>>> Move irqentry_nmi_enter/exit to exception_enter/exit could correct handle_break
->>>> of the kernel side.
->>>>
->>>> Before the fixup:
->>>> $echo BUG > /sys/kernel/debug/provoke-crash/DIRECT
->>>>   lkdtm: Performing direct entry BUG
->>>>   ------------[ cut here ]------------
->>>>   kernel BUG at drivers/misc/lkdtm/bugs.c:78!
->>>> [...]
->>>>   Kernel panic - not syncing: Aiee, killing interrupt handler!
->>> This appears to still be unfixed. What's the blocker? The solutions in
->>> this thread seem to work...
->>>
->>> I'd like to be exercising an Oops path via KUnit (for KCFI), and riscv
->>> just instantly falls over instead of thread-killing on the exception.
->> Thanks for reviving this thread. At the time I didn’t fully understand
->> Peter’s point. We should only use the NMI path when the trap occurs with
->> interrupts disabled.
->> Here’s the updated fix:
->>
->>  do_trap_break(struct pt_regs *regs)
->> ... 
->>  		irqentry_exit_to_user_mode(regs);
->>  	} else {
->> -		irqentry_state_t state = irqentry_nmi_enter(regs);
->> +		if (regs->status & SR_IE) {
->> +			enum ctx_state prev_state = exception_enter();
->>  
->> -		handle_break(regs);
->> +			handle_break(regs);
->>  
->> -		irqentry_nmi_exit(regs, state);
->> +			exception_exit(prev_state);
->> +		} else {
->> +			irqentry_state_t state = irqentry_nmi_enter(regs);
->> +
->> +			handle_break(regs);
->> +
->> +			irqentry_nmi_exit(regs, state);
->> +		}
->>  	}
->>  }
->>
->> If you & Peter have no objection, I’ll post a v2.
-> I still don't understand it. This cannot fix anything. Consider:
->
->  EBREAK
->  raw_spin_lock_irq(&your_lock)
->  EBREAK
->
-> So now the first 'works', but the second will crash. Additionally,
-> having the EBREAK context differ so dramatically between invocations
-> seems like a very bad deal to me.
+This is a backport of ARM related fixes. This applies cleanly to v6.6
+and v6.1. The v6.18 and v6.12 trees already contain this.
 
-To spell it out, the problem that needs fixing is:
+I've been looking at v5.15 and it seems there is code missing so I am
+not enitrely sure if it makes sense to backport the last two patches of
+the series any further than v6.1. Therefore I am stopping here ;)=20
 
--> BUG()
-   -> ebreak instruction
-      -> Breakpoint exception
-         -> do_trap_break()
-            -> irqentry_nmi_enter()
-            [ now in_nmi() / in_interrupt() ]
-            -> report_bug() returns BUG_TRAP_TYPE_BUG
-            -> die()
-               -> make_task_dead()
-                  -> panic() because we're in_interrupt()
+#1 and #2 are prerequisites for #3.=20=20=20=20=20=20=20=20=20=20=20=20=20=
+=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=
+=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=
+=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=
+=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=
+=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=
+=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20
+Russell King (Oracle) (4):
+  ARM: group is_permission_fault() with is_translation_fault()
+  ARM: allow __do_kernel_fault() to report execution of memory faults
+  ARM: fix hash_name() fault
+  ARM: fix branch predictor hardening
 
-As such, currently on riscv all BUG() simply completely panic() the
-entire machine, rather than just killing the one task.
+ arch/arm/mm/alignment.c |  4 ++
+ arch/arm/mm/fault.c     | 94 +++++++++++++++++++++++++++++++----------
+ 2 files changed, 76 insertions(+), 22 deletions(-)
 
-How do you think this should be fixed? Here are some ideas but I'm not
-familiar with generic entry stuff:
-
-  * Should we irqentry_nmi_exit() before calling die() for BUG()?
-  * Should we move the GENERIC_BUG trap instruction to cause illegal
-    instruction exception instead, for which we can write a simpler
-    handler that doesn't need to care about the probe stuff?
-
-Vivian "dramforever" Wang
+--=20
+2.53.0
 
 
