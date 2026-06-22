@@ -1,174 +1,247 @@
-Return-Path: <stable+bounces-267725-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-267703-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id HiSoHOxAOWpgpQcAu9opvQ
-	(envelope-from <stable+bounces-267725-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 22 Jun 2026 16:04:28 +0200
+	id fhRUFh42OWpvogcAu9opvQ
+	(envelope-from <stable+bounces-267703-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 22 Jun 2026 15:18:22 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id CDD4F6B0233
-	for <lists+stable@lfdr.de>; Mon, 22 Jun 2026 16:04:27 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 423C66AFBCF
+	for <lists+stable@lfdr.de>; Mon, 22 Jun 2026 15:18:21 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=yahoo.it header.s=s2048 header.b=INIpCsnH;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-267725-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-267725-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=reject) header.from=yahoo.it;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=T29KCQpC;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-267703-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-267703-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=none) header.from=gmail.com;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 40C44303B4FF
-	for <lists+stable@lfdr.de>; Mon, 22 Jun 2026 13:58:13 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id AB3063008FE1
+	for <lists+stable@lfdr.de>; Mon, 22 Jun 2026 13:18:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E7C6D3B5306;
-	Mon, 22 Jun 2026 13:58:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DCCBB3B2FDB;
+	Mon, 22 Jun 2026 13:18:12 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from sonic311-30.consmr.mail.ir2.yahoo.com (sonic311-30.consmr.mail.ir2.yahoo.com [77.238.176.162])
+Received: from mail-ej1-f48.google.com (mail-ej1-f48.google.com [209.85.218.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 612603B47FB
-	for <stable@vger.kernel.org>; Mon, 22 Jun 2026 13:58:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6596E3AE185
+	for <stable@vger.kernel.org>; Mon, 22 Jun 2026 13:18:11 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782136691; cv=none; b=RK+bP0FB95uUrMhICaLTio4AkLTlDM5uL8+vgchvdkOZ7ZfQxbBcocvzjVge/C8T6fGZWsqzu0v9nJFc5jWT2hgBWVxwp77ISxK8iR1IooRi01+GxgllxQ0/mbQmeOAxw49CnKreazj+ncWoV9KVtbLeP5H7ovmGQOr30mpA6sw=
+	t=1782134292; cv=none; b=BrkeBFZRg5387ASKC6kCJo4gZmBaOUQXxR91OVcai4a09dkP7atdTX6lMpxHeE8JnTInI7cH6Jk1XS9mOeF2MIXP9kH3cSdd6py/s4pDvOvNRkfBuBrnIILbrJtqcsUuQi7itVJs8EGEBjk+sVjJJADMIAPDYkxVywDHcqCM1NU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782136691; c=relaxed/simple;
-	bh=HkEzbJxQMOsi3KXpm0Z6tUB/wzFJRDYvcWcIy5jiifI=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=MywA3pusv1XagcZa95Zd/uTedM5kJqO7J0dZ1B2C8S0w/nHPLgnb1XD63BVm4ZAC9u8yOWptPcRxL03Ek40Zil0hDXMmu4PmC2mFjd5XLIfq0S6YTAYjs2zpKIw1sRUqT4qjgtZoeHJHDuvumiu/dUNwLUHuSaKehY2r5mcreOk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=yahoo.it; spf=pass smtp.mailfrom=yahoo.it; dkim=pass (2048-bit key) header.d=yahoo.it header.i=@yahoo.it header.b=INIpCsnH; arc=none smtp.client-ip=77.238.176.162
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.it; s=s2048; t=1782136688; bh=hoeKuPJuZTU4yzEZeRi9SnV0/wIqpGVR8s8vVGwSILo=; h=Date:Subject:To:Cc:References:From:In-Reply-To:From:Subject:Reply-To; b=INIpCsnHOaqONuUlYl9PbYGaw1xf/GXLvVKhX0BJVeEhIB9tY77q/QlN8g0S+nfI6Eqoy9ze2BRrBjtv+Ltr/zhJH0SQT8tfEFIi8ulPbpyNUm2hV3hKKt0DRHgo8ncKxKOYvGs6WMZbWPbE6Ysxvqaq1DIo4fDmkUhzftNGWKt+TAtSz7MpwI8iUgRKSgrGw3TvKmACS1DtCoRzfZi0HH7ujpJ1BF8NlqARFL6SXLwUYEOG2zLnrXS5GCVXRqHK63P04vo3AC7DU6uPfxy56C9N4vibBupfcsa1BRRZgI1GP1bTXxZl6y58q+OCrUWnWszhKY0iNAdGZYB1mxUeOQ==
-X-SONIC-DKIM-SIGN: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1782136688; bh=1ze1bNWmodINPcRC6EuiwHLpZHwVXWYeIC3XE0D93n3=; h=X-Sonic-MF:Date:Subject:To:From:From:Subject; b=a+rxnYpdl1O8MIWK/ioH8+UwY7d8VQuMMgPHAZZdPb26Ea3IW9GaK5GgGN0XsQ8yzCkSwqq7tnxwvOK2Gfrv+fZPuqc5x/WIgqEAw2dTSvTZuIw3GC0moX8mkUzPP9A/YjI+KbVwqunJsu7M8OyO/Yxg2ugH5nJ6j1w0N1w7SfRaMW/IQ34o3uEVKo6F9wUOB6cpAZf+gZj9HbOmwld+GP2pNg1tD4mqIsCZuWf60zRL5bdPc71BtypoqtF8kDjWnDARRk3PuwzIDo1KL0rmfvxkZcOFBhFEdCXN1fH5GMshgqWkiKmHJS6kwhEYe6t9FcPi5w7y7GWJTgHOTx/vHw==
-X-YMail-OSG: YY9d42kVM1kRe15fftSJB0NE9zxHS06QFILjmQg_0QktxybksgxclF1S.uKk1sr
- pMcxrXiWbKJdPInPq3SvFcDKJNNALbU75xDCU29PwS1V3hcZk8o36sb8mvrRw.ic2Y5tRfpnTzoS
- V1YhYn1it1O37N9s2G.wZ.kC7n049ESzTTu6oMmI6uwDLRBzc3CFp7G5N7djKWKUwQp3ZEPyYGfR
- Ojg51lFNqhEYlCfoDlHIqdmmSEN3gNxS8RmKAR3LiD8q8AkAKQXDUJrP_fSkpl7fCeVw9nef66Qq
- xdEObw3TWf3n.Csj02Gj8x.zGpwgGPDldrKqLhpbgntdz4nKaCMR6w8Truof05cQMy8pCpJyhHq2
- safw0uftemwU0GGhcXcHAbpFS7RxQIhLKT7AYM7SuWjM2d8qZ.dPB7L0O3rr3MjnmpzF85rwZDiq
- 7NbgrGpJtGhtJH_d81Yc65aD3agDjLCa3m_omTZTi4Dht2qzhPpp48sdAdUU_yluR6RWlXrGxhoz
- yKKFK_UWePNe3tInF3U_Tfg1FK_yLvvxdRovsk7SXMILoI12ZM9jfcoAUwavFA.5ynWGdQ1HSgKx
- YLV_SucnKSCTuG16ido43pcPqMaIXwineR.51cpj2j..d.Fc8Ml0PRz11IexhZelh4osWFeVCmfE
- yex6AEugmwDEVlOAJazEtmHJaper3pabm7S42qL0N.L2PS0TeM9upL4nffcN5s0.rV2A1TlHEd04
- c5ALJmndS5.SUHx0TEGaVAwcuM5WOtttqG3wUgqBLa1ZwVLiE_RfA9Q7B.Wa2jRwxtmWtj0k8lQ.
- Ls7JjuvVNiEBCIxvxM10.cXTt5v91h.YhQcyURbu14QymTDGe13fWRxHxfXLRcr5d4Zl.Q4pmuQg
- VFMGmisuL9_V4vC8BwwZaNu5x1bvU2bFGTpprVHwZ8d408LTSpY.GTyCPOlxnTNgM4vrmyw2hDLK
- w.3CVNm.njAChvtji0nL4pjvj43o7KNJ0q6h9tEn2wxvUs41QPtj4hcabaHisrjZDV7FB3fr1cH5
- UxBNAF0BUC0jqo2HFLPxrWGSC189pHG0C1HDsrc92rXYHJws56H3yiv8x2IopeO7MRVxYFIfxueT
- Rrs9iCL36hR2k.7MmbdHO9Y8ShJds3Hrt1YAwJAey3qLWAy.dn8htEY0UNH78sE_NE5WJ2SJhJ_Z
- 3GN4xrrIrvQ4jIS8WaUwkvPmqZjxm25vnawwtX63wiPw2b0Ugce_Bos5cbsSzia2XJpFVoifKIqC
- mk1C1zKKUvE321xNjfd9Fxujjk0aTX0JqmNbcgHGRGBk.uOIQysVZVuuN0RHenryK8DWs7knjy08
- Tog_e3BBC_KhTB2RZcuAjIeXZ93s_VYRGzHf7Px4gKQlnUVB4JhvhbzcvnxL7hdyK_AT6jKGN24k
- RImQiPqx9SKYjaeQsXp5yQo4qTmE_IyYebTDkmb8R2wT2znzPqnLuF3l6d8Ds4OEJAQvhcXieSnQ
- _9S6QSEqZHtvE29jNfKIEICgAC_yzbUsL2SuU3Rh3pIb20Q2YxzDMbliqlPYRIJ88s4ckNpTq1mi
- 9010ws1V.OTlxexH0DVA0IsTE7ejv0WH8YjeXNxC6S3yvdDkZJxHBO7P5wd8UuJvjvoOkDA_MKhw
- ptk9B5yAl6TZO8B9UwFrG_XMSFcrsMF6Y56O8zsERTfiMAeB9BiCK_oUcz0Klq9NH3VcpkZb2Akr
- hO8pUlEh9UmPArF6APAC7sRI7LIcRfizZ9ao2L7iHwCDsUIPPuwE2MivoDTDlNyVYDa7ZgZSYMhP
- sdzJaaP_vRNpRFbluE3ncBXug3qGJs.WGO_39sJuOzlOb04VHcK1IrshIfkpwXk9jz2UJ0wC6se7
- z1YAAOwRRMStjGK4gXe9i09KWzzVVgjFbDaMRM8PtAV6sOrqKelp8pVF0zcUfT42kYrCcvKqV88i
- 31W77cMqaFJ58LWeQpJWlPJ4IsVDhswpJ6w3OuA9VQ.4wWH6EaA2uG0VvTjbbjieZrajAOsIJdpE
- AY7cyOJVik7cwDZCcQOn8nEzTos6v3_2BtJ8KIbzV_eCHubKUoHIV7Bpn2XWiElgM4bL_5TH1nJ7
- b1f6SHEA66AY4LXhf8mhIcl2KQzXO9sxoKJvCGABTU1Ybehs1Ki1LRK2rAbqWy03192D3oKxqun4
- NCeI8XgPJKZOMXCkgJIGh6mELqsQ6J19k3nqbavRxDaJHa_un6UQwoh0vXkukyHU_S0YDtTRvoXX
- Wnj5rB1lGDJN7HififSWR0vZtiH8t5bxfrs6fJtdZHixm7I_yzynu1dvOuAWEJLodeDiTV7o-
-X-Sonic-MF: <giovannisantini93@yahoo.it>
-X-Sonic-ID: 18b50555-74d5-45da-8030-189559142278
-Received: from sonic.gate.mail.ne1.yahoo.com by sonic311.consmr.mail.ir2.yahoo.com with HTTP; Mon, 22 Jun 2026 13:58:08 +0000
-Received: by hermes--production-ir2-89844b765-tm5pb (Yahoo Inc. Hermes SMTP Server) with ESMTPA ID 32028e6f0f53486183f93035dfd9b18e;
-          Mon, 22 Jun 2026 13:15:33 +0000 (UTC)
-Message-ID: <745a32ea-0b17-431f-9aa4-f4388f9cbf10@yahoo.it>
-Date: Mon, 22 Jun 2026 15:15:32 +0200
+	s=arc-20240116; t=1782134292; c=relaxed/simple;
+	bh=yyw0nMtUQFYySF+Vo3tr4O3uzZRBP38LtrsViqoS/Xk=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=becMBH6Sozlb5MnBTo2fsiXyKaB9q2b/RKu0EsssRSKIVsEhprDHDMH0v3EDhxVClKzCwGClyIq0L/W5R26BknK2NX/Ym8KIroZx5YxMQpKewDFryeV0HLTsU/ZMFtzKahkD86oo74/+e2zRXfpQLKFCaSXjLteCOZSIRybx13Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=T29KCQpC; arc=none smtp.client-ip=209.85.218.48
+Received: by mail-ej1-f48.google.com with SMTP id a640c23a62f3a-c07fd4dc2c8so457291066b.1
+        for <stable@vger.kernel.org>; Mon, 22 Jun 2026 06:18:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1782134290; x=1782739090; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=64GS0cV1F3q6Azsz5ClQ2jQ7hHXoaFyqY/ADvWBZ5O8=;
+        b=T29KCQpC83FMWIUMXtVjT7ip3KbjcDOwIVyOIrMEOwMoPZt2iD38tI9zYhfnNFrKcN
+         els/EjHrO9ufU+9dzWhXbvNB/CeuNmmjVzqeL8mWc5rC7cMoL1zQB+tYZmJhzkcQgxGn
+         jdH8hO/8OQO7/FzJV4rV2ySzHhDXUGQ8TQJz5LHgY85yNUNq8UjJsEUnEi5WUMMf3WZs
+         WZXFFjzW9fZaKi3Nu4OfejxoV/d0aO4dHwvRskXEx5Z3Ca+lIhLIF9AQtDhXedSk3h2k
+         9DJVJPbnUxdwUUxjPlgR62k04mHHegXtLpIwqlu7srNmfVudDCzj+SPXzH8bec3NrDUP
+         g/gQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1782134290; x=1782739090;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=64GS0cV1F3q6Azsz5ClQ2jQ7hHXoaFyqY/ADvWBZ5O8=;
+        b=kDTe6OYo1M62nS/KQ1X0T2G+GZT6KQUw35bK+ohREht+xSBmviXtlDYoIxRgTgObtt
+         VhuznRBViMQc3uzIqWRpCkEizFX0JhsPa1KDpZCrh8T+0dkZjvaWbG+huCK9k9/Lq3t8
+         6EfZvTx/uM37VdPoOT5OPH7Vhgo7n8xKNwndDix9DE9uZvO1jdniZZ+aaLKey/n9Tksn
+         oKx3W90LJmTsAdv9JwxyGME3uaVuLmPUS6yLXf9eM3yFpTF7n9vHE4fj68ACtRi/neQq
+         /6pp/dGJvLXgXurJki0Yd2uiuJZFUQnoU25B75o1r4l1p2+VRx6YC8G4GlbcOaCjnt5T
+         e0Tw==
+X-Forwarded-Encrypted: i=1; AFNElJ/jXhTpCi+d5zFotVoPCh+nusa+DNVcdgMeN3xNMVdGEn7pVqOzJ48N+sYd4w2Z7NXr4AasNKU=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx47DW0BxGD2ULEVyjs0TY3bN5lVcLwqcYOSKIr9blrDJTPmTMi
+	dC884SS/22L7AfHy+SndJ2Ss+sf+DzCjQgD5JY6BLEtsb2Cc3T1ibH5y
+X-Gm-Gg: AfdE7clIZWuVJ5+2ZWuKZ4Z5Vu6wDW9NgRveTkWL/hBjCnGrWFKE1qDOPLQjUEDI6jA
+	EYIp2+V3M5VzHzep0fNLQjmjkeOCeYzjhjjFKv8+MYXWUfTH6/3NvQQ0z7/7ncD0hA1aHFZGBTz
+	/zwZ99mDny58P6kFifD5GvaNVVuU80vWB4QP+n5WMsfnLbRAdP5W+blinK/iDP/w65Thk177rZa
+	8ZeMlgKle3IE35MTrZdhsR8+loDnDH5eSnElqEV6OWFF8a6FKni8pyZPsGEsi52HjXCLNxqt0eg
+	fFFn1FcfSeGkHAeLE0e2qdOP264sFLlDfMu8CsKTnNHu12WLcRonG5F2NRapIloxoUXyZDLb4Rv
+	9bRy6ncIw74DR48utyzU059GygM2deHlQp+WiS7z5B8RQPzNXPgDX1sf+jF/6yclgd9v32Odx1M
+	UoO5uB6M8OcrYG024caLbeDTzvcrh2sCdM3UPQ7lxb+/upCYrFGYgKAIli8C4=
+X-Received: by 2002:a17:907:3e9a:b0:c0f:cbe8:7830 with SMTP id a640c23a62f3a-c0fcbe8976dmr71683266b.38.1782134288453;
+        Mon, 22 Jun 2026 06:18:08 -0700 (PDT)
+Received: from node ([202.47.63.86])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c0c5e99b968sm356605966b.24.2026.06.22.06.18.04
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 22 Jun 2026 06:18:07 -0700 (PDT)
+From: Muhammad Bilal <meatuni001@gmail.com>
+To: David Heidelberg <david@ixit.cz>,
+	netdev@vger.kernel.org
+Cc: davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	horms@kernel.org,
+	krzk@kernel.org,
+	oe-linux-nfc@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	Muhammad Bilal <meatuni001@gmail.com>,
+	stable@vger.kernel.org
+Subject: [PATCH net v2] nfc: llcp: fix OOB read and u8 offset wrap in TLV parsers
+Date: Mon, 22 Jun 2026 18:18:02 +0500
+Message-ID: <20260622131802.239035-1-meatuni001@gmail.com>
+X-Mailer: git-send-email 2.54.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: rtw88: WiFi card is not offloaded properly when suspending the OS
-To: Ping-Ke Shih <pkshih@realtek.com>,
- "stable@vger.kernel.org" <stable@vger.kernel.org>,
- "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-Cc: Linux regressions mailing list <regressions@lists.linux.dev>
-References: <10da4c45-74ed-4deb-8c88-6d0b803465ba.ref@yahoo.it>
- <10da4c45-74ed-4deb-8c88-6d0b803465ba@yahoo.it>
- <efae0a4db2ab4b6193922b393d3dcdd6@realtek.com>
- <02e09f1a-2807-4fec-aacf-1bc4bbb1ccd1@yahoo.it>
- <b3d2c32150884cdcae21b3bec5062864@realtek.com>
-Content-Language: en-US
-From: Giovanni Santini <giovannisantini93@yahoo.it>
-Autocrypt: addr=giovannisantini93@yahoo.it; keydata=
- xjMEaH5G6BYJKwYBBAHaRw8BAQdAZnF+SJD511cVwFnagEObR10TvHEDWiUkXn55qPW4mEPN
- LUdpb3Zhbm5pIFNhbnRpbmkgPGdpb3Zhbm5pc2FudGluaTkzQHlhaG9vLml0PsKTBBMWCgA7
- AhsDBQsJCAcCBhUKCQgLAgQWAgMBAh4BAheAFiEEsZlH+Qx7w0bL59UyBjXtZomc07YFAmh+
- UU4CGQEACgkQBjXtZomc07aqRAD/dTapfdaiXcED3umK46Ef4oj+4yMmgvILQvAzbTWCW8oB
- AMbcBT7PaB6GuHTLiM0mZwLaB8koObNKxw3XtV7kMw4HzjgEaH5G6BIKKwYBBAGXVQEFAQEH
- QI7SNDV1L0Dq0IjkhOsUDwU7Wzr+AunkhuOy1hUDbY1UAwEIB8J4BBgWCgAgFiEEsZlH+Qx7
- w0bL59UyBjXtZomc07YFAmh+RugCGwwACgkQBjXtZomc07YxZQD9GgcfEawEgJeUijTqZtoq
- /knXol2L++0rMJkdr1SODwYA/07vSweYeVzo00XbyjcQ1le1Y852Ktp6A7O+DZsQJZoG
-In-Reply-To: <b3d2c32150884cdcae21b3bec5062864@realtek.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Mailer: WebService/1.1.26016 mail.backend.jedi.jws.acl:role.jedi.acl.token.atz.jws.hermes.yahoo
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[yahoo.it,reject];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
-	R_DKIM_ALLOW(-0.20)[yahoo.it:s=s2048];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FREEMAIL_FROM(0.00)[yahoo.it];
-	TAGGED_FROM(0.00)[bounces-267725-lists,stable=lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_EQ_ADDR_SOME(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:pkshih@realtek.com,m:stable@vger.kernel.org,m:linux-wireless@vger.kernel.org,m:regressions@lists.linux.dev,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[giovannisantini93@yahoo.it,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	RCPT_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[giovannisantini93@yahoo.it,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[yahoo.it:+];
-	ALIAS_RESOLVED(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FREEMAIL_CC(0.00)[davemloft.net,google.com,kernel.org,redhat.com,lists.linux.dev,vger.kernel.org,gmail.com];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	TAGGED_FROM(0.00)[bounces-267703-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:david@ixit.cz,m:netdev@vger.kernel.org,m:davem@davemloft.net,m:edumazet@google.com,m:kuba@kernel.org,m:pabeni@redhat.com,m:horms@kernel.org,m:krzk@kernel.org,m:oe-linux-nfc@lists.linux.dev,m:linux-kernel@vger.kernel.org,m:meatuni001@gmail.com,m:stable@vger.kernel.org,s:lists@lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER(0.00)[meatuni001@gmail.com,stable@vger.kernel.org];
+	RCPT_COUNT_TWELVE(0.00)[12];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[meatuni001@gmail.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	RCVD_COUNT_FIVE(0.00)[5];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	ALIAS_RESOLVED(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,vger.kernel.org:from_smtp]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: CDD4F6B0233
+X-Rspamd-Queue-Id: 423C66AFBCF
 
-On 2026-06-12 02:30, Ping-Ke Shih wrote:
-> Did you mean 7.0.10 doesn't work to you, but 7.0.11 works well?
->
-> However, the rtw88 driver has no change between 7.0.10 and 7.0.11.
-> I feel the cause might be changes of PCI host, but drivers/pci/ has no changes
-> neither. No obvious idea for now.
->
-> ...
->
-> Ping-Ke
+nfc_llcp_parse_gb_tlv() and nfc_llcp_parse_connection_tlv() contain
+three related bugs in their TLV parsing loops:
 
-Hello,
+1. 'offset' is declared u8 but tlv_array_len is u16. When TLV data
+   advances offset past 255 it silently wraps to zero, causing
+   infinite loops or double-processing of buffer data.
 
-After some research, it looked that it could be an hardware issue.
+2. Before reading tlv[0] (type) and tlv[1] (length) there is no
+   check that offset+2 <= tlv_array_len. A truncated TLV causes
+   an OOB read of one byte past the buffer end.
 
-I've opened my laptop, cleaned it and re-inserted the WiFi card.
+3. After reading the length field, the value bytes are accessed
+   without checking offset+2+length <= tlv_array_len. A crafted
+   length=0xFF on a short buffer causes up to 255 bytes of OOB
+   read past the buffer end.
 
-As of now, the issue seems gone, although I've been using my laptop much 
-less recently.
+Both functions are reachable without authentication via
+nfc_llcp_set_remote_gb() which feeds remote LLCP general bytes
+directly into nfc_llcp_parse_gb_tlv() with no additional
+validation.
 
-I will monitor the situation a bit longer and write here again if the 
-issue comes back.
+Fix all three issues by widening offset from u8 to u16 and adding
+bounds checks for both the TLV header and value field before each
+access.
 
-Bests!
+Fixes: 3df40eb3a2ea ("nfc: constify several pointers to u8, char and sk_buff")
+Cc: stable@vger.kernel.org
+Signed-off-by: Muhammad Bilal <meatuni001@gmail.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+---
 
+Notes:
+    v2:
+     - Rebased onto current nfc/for-next.
+     - Dropped the previous nfc_llcp_recv_snl() fix since equivalent checks
+       were merged by commit ed85d4cbbfaa ("nfc: llcp: bound SNL TLV parsing
+       to the skb and add length checks").
+     - Retain only the fixes for u8 offset wraparound and missing TLV bounds
+       checks in nfc_llcp_parse_gb_tlv() and nfc_llcp_parse_connection_tlv().
+     - Reject invalid TLVs silently with -EINVAL; dropped the v1 pr_err()
+       logging, which was reachable from a remote peer.
+    
+    Link: https://lore.kernel.org/netdev/20260519011937.12903-1-meatuni001@gmail.com/
+
+ net/nfc/llcp_commands.c | 18 ++++++++++++++++--
+ 1 file changed, 16 insertions(+), 2 deletions(-)
+
+diff --git a/net/nfc/llcp_commands.c b/net/nfc/llcp_commands.c
+index 291f26facbf3a..ca89fe967d6a2 100644
+--- a/net/nfc/llcp_commands.c
++++ b/net/nfc/llcp_commands.c
+@@ -193,7 +193,8 @@ int nfc_llcp_parse_gb_tlv(struct nfc_llcp_local *local,
+ 			  const u8 *tlv_array, u16 tlv_array_len)
+ {
+ 	const u8 *tlv = tlv_array;
+-	u8 type, length, offset = 0;
++	u8 type, length;
++	u16 offset = 0;
+ 
+ 	pr_debug("TLV array length %d\n", tlv_array_len);
+ 
+@@ -201,9 +202,15 @@ int nfc_llcp_parse_gb_tlv(struct nfc_llcp_local *local,
+ 		return -ENODEV;
+ 
+ 	while (offset < tlv_array_len) {
++		if (offset + 2 > tlv_array_len)
++			return -EINVAL;
++
+ 		type = tlv[0];
+ 		length = tlv[1];
+ 
++		if (offset + 2 + length > tlv_array_len)
++			return -EINVAL;
++
+ 		pr_debug("type 0x%x length %d\n", type, length);
+ 
+ 		switch (type) {
+@@ -243,7 +250,8 @@ int nfc_llcp_parse_connection_tlv(struct nfc_llcp_sock *sock,
+ 				  const u8 *tlv_array, u16 tlv_array_len)
+ {
+ 	const u8 *tlv = tlv_array;
+-	u8 type, length, offset = 0;
++	u8 type, length;
++	u16 offset = 0;
+ 
+ 	pr_debug("TLV array length %d\n", tlv_array_len);
+ 
+@@ -251,9 +259,15 @@ int nfc_llcp_parse_connection_tlv(struct nfc_llcp_sock *sock,
+ 		return -ENOTCONN;
+ 
+ 	while (offset < tlv_array_len) {
++		if (offset + 2 > tlv_array_len)
++			return -EINVAL;
++
+ 		type = tlv[0];
+ 		length = tlv[1];
+ 
++		if (offset + 2 + length > tlv_array_len)
++			return -EINVAL;
++
+ 		pr_debug("type 0x%x length %d\n", type, length);
+ 
+ 		switch (type) {
+
+base-commit: ed85d4cbbfaa4e630c5aa0d607348b42620d976b
 -- 
-Giovanni Santini
+2.54.0
 
 
