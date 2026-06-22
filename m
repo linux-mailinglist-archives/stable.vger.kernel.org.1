@@ -1,204 +1,162 @@
-Return-Path: <stable+bounces-267790-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-267791-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id aU0YGmGGOWohuwcAu9opvQ
-	(envelope-from <stable+bounces-267790-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 22 Jun 2026 21:00:49 +0200
+	id Wiu1J6qGOWonuwcAu9opvQ
+	(envelope-from <stable+bounces-267791-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 22 Jun 2026 21:02:02 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id DBDF26B1F55
-	for <lists+stable@lfdr.de>; Mon, 22 Jun 2026 21:00:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EAB026B1F6E
+	for <lists+stable@lfdr.de>; Mon, 22 Jun 2026 21:02:01 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linaro.org header.s=google header.b="TKjSs/8X";
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-267790-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-267790-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=none) header.from=linaro.org;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=fCfS+Z2U;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-267791-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-267791-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=none) header.from=gmail.com;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 15499301FA43
-	for <lists+stable@lfdr.de>; Mon, 22 Jun 2026 18:57:58 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 72BF9304D444
+	for <lists+stable@lfdr.de>; Mon, 22 Jun 2026 18:59:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A483534751D;
-	Mon, 22 Jun 2026 18:57:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 86AA734753A;
+	Mon, 22 Jun 2026 18:59:43 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wr1-f46.google.com (mail-wr1-f46.google.com [209.85.221.46])
+Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FCC534752E
-	for <stable@vger.kernel.org>; Mon, 22 Jun 2026 18:57:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D196346FA7
+	for <stable@vger.kernel.org>; Mon, 22 Jun 2026 18:59:41 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782154676; cv=none; b=ON1vOqwpE9ct1L8duGwj7kSGk2ih/e+g94rHSCRnKxy4sPxD1F6UMQPUIEKxNlx6hyGXGtm26cLvI8eg/mlB85kLih7oSqOmKJ6XMQ1mXsJHxmd7s69PQFTEBO0vtp0FMkrdVmIltuyx7DSuXeplgp61Y56q+iaCYUwRjR1MzCQ=
+	t=1782154783; cv=none; b=PwewTewEMjjsCj8/pyyz+I0RQOeEZaLH3xLs2Y7rRaXHbuLAxEYx1HC3Jh/5XN0KrDkcOjnz0k7OMQ0Ws6uKaVRSS/fG7/oeSGLbgBxH4hgxE3SUOD/RHATsn4K7S4Wpze7B4c4YE9z53etQDI6zZXjkKbCHhFVGvfym7z6MpTw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782154676; c=relaxed/simple;
-	bh=Eci/a/8tHg4tTZJiIfDpEB3IqM/YUJ/xXRXY7o2DXVc=;
-	h=Mime-Version:Content-Type:Date:Message-Id:To:Cc:Subject:From:
-	 References:In-Reply-To; b=nzxwnNP1BzBQUWOuLoor0JIpdenTbwITkmXsCyxPh9hX+uNSlj4Lbo75F2WAaCiiVTtZXPdb0nsKeb1z1aSCrpvwc6DPYbxXR4lJbA1E8nJ4rqIoyziPxOQxCc7s7DFCGf0rJvgpNvU3Ykbs0W9+D3Bt9tPQb251xBsSsuDmH+c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=TKjSs/8X; arc=none smtp.client-ip=209.85.221.46
-Received: by mail-wr1-f46.google.com with SMTP id ffacd0b85a97d-4629051c946so145508f8f.1
-        for <stable@vger.kernel.org>; Mon, 22 Jun 2026 11:57:54 -0700 (PDT)
+	s=arc-20240116; t=1782154783; c=relaxed/simple;
+	bh=gPDvbjY4yqlX02GxThsdZXOqsHN6+5dT1OAzP9r96A0=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=YRIIljka0PHElRmhxIFuPSsxiS60EMNTBJFFCA2LSDG21A61scPGYYPnVdqBNXDxFpMqsDWWkJzbZJxlZ7aKJsAiRk3mUbeuui8+5gqATccCbA8XvIwqe/l7LL4I3B8oedzmllPyfwUZXVbmVxUKHhoEkbo4yRFeddZRBfSun6s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=fCfS+Z2U; arc=none smtp.client-ip=209.85.128.43
+Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-490bc6a7958so1360585e9.1
+        for <stable@vger.kernel.org>; Mon, 22 Jun 2026 11:59:41 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1782154673; x=1782759473; darn=vger.kernel.org;
-        h=in-reply-to:references:from:subject:cc:to:message-id:date
-         :content-transfer-encoding:mime-version:from:to:cc:subject:date
+        d=gmail.com; s=20251104; t=1782154780; x=1782759580; darn=vger.kernel.org;
+        h=mime-version:content-transfer-encoding:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=brZs3+MH5gJMBhPZfGjHt4FXO3H2ccunenuS6LTLrkg=;
-        b=TKjSs/8X4fyrzk4Qode7dCVl4Uyszpotigbr10WpOgJXCgOc2yJIf5k1acFWwlFmC0
-         O1yPxyS6uBOkUVkQEroT6g48T86oTWGzzmjjeZNtYITGQlzgsqjaUUzP0QWEGWzrEBd9
-         qn1FjtWm9AYz7GgrHhvAFytG5cf4cF2WPWuRgguXd2qXuwmtDN2FEPffgfFG/9SkAHLF
-         4Ka2x/rxGYxu9PcTAXiWTnhUHfomyQA2G0kOjytt5+L3KqfpXicTtjJr2aw5LUIP3pLs
-         8OnVRg8Tmlm+yIvK/iRvqqCQuTRMur3oinc3h5K9XsQlk0DjeI3fTiHqMAdVM3DHTmq/
-         TS3w==
+        bh=gPDvbjY4yqlX02GxThsdZXOqsHN6+5dT1OAzP9r96A0=;
+        b=fCfS+Z2UwrFokyxqp7xJKMr/bUqkQXIetCKA8fjS1/+hggXOy83qHuZQOdYDUraI8Y
+         XrclIepiSfIHIa0lZHYZoKTGZSUhlXfE6x7bCDiNcRe8EiJoOqzSZE0SRPh+SxjzV2/S
+         UHGvG3fTgmJYriXiIxgLxSF1nmUDbovMUzjBRV7am2Gwt91Sc+DSPiEj1WjNHxdUVckI
+         i1sgaTVtz+5GvM1LnVJirGs736KN6SxBHYXGvFlSNBD2vyNl7lflNdTc0Al9O4ykNBsT
+         pUzpO1nAN+pxu1my2F5H21zxjd2QIMDkC6FvRGeXfH6IZNi9f6Jsg2ymUZCTijtEJOdn
+         hZ1Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782154673; x=1782759473;
-        h=in-reply-to:references:from:subject:cc:to:message-id:date
-         :content-transfer-encoding:mime-version:x-gm-gg:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=brZs3+MH5gJMBhPZfGjHt4FXO3H2ccunenuS6LTLrkg=;
-        b=eZqrpvE78n35B8Wu6CajQa20a1JQZr+1jxMQI8ZztWPCDxyREvKnYKm/HC1jYGlZHj
-         eJD+ug97E2+G8LYMbe9Lf76X6DKWTAhCvcSSHj9qHpPlg/8ZqAi4e+tsyiQa8Kvqoo0W
-         LlTEg7R6qf8XjmqHWZ05Ibnj6WLDoG9FFdBl4XKOfTZsvO4gPl9woBVzMkpAL9cgG/oK
-         Cojk/xOxNzHwS5sgVXe8noNHc76p2fcH31OF5oYhLV6/5yazqGNZnuk8kk+QBp3YOb8Q
-         +MvUyIFSKUjeh4Tu+NMy3bcGLhtXzn5oNEKwQb5lSs6sc0b6huA/LcmURDDU5tP9Qph7
-         M6xg==
-X-Forwarded-Encrypted: i=1; AHgh+Ron0oea3lz9KhxXE9+BuRGdSsnZ3PDxdoEXKrbCDcqiZTPRNmHMBX6XDxf2flYD/iU9wRr/j+E=@vger.kernel.org
-X-Gm-Message-State: AOJu0YypQkBRLCgqN55kEVs2hZOr2TmPDnavzrL3G/fzBjzrPq89z7uP
-	ou92Uz+IGY8RsekX7Cl8L+sD5bQaWvvPlxGCg+nFO4zSAaWNnpyGmkfdGTpcLUFvtpw=
-X-Gm-Gg: AfdE7cmDISloSSJAEMtTEbJ1DjiecSzX7M/xvFyvNU0lC+FTo/l+zYAXOiYLC9hdFrC
-	rvc+uS+vEwuODkm5NcUK30XRMeVho0rWI5Dn7kTItu3OYYxh+PJSL/TRiNZ/htb2jGhW71EfgNV
-	QDQLceKQS+Pp/FaRzKC6fXS4P3NrPNcofBtPIouB1uwl9rlBEjiMX7WAs/Ipje2YBPSKptVRdPB
-	2EMQob4CU93KDCt20Qs4XTYXUfp3ixBac4ptDznRZH3DoNg9zYXMzb2vW1Dnt7PG3mvf6JVNmVS
-	AD2fAbNj1NBe2KUIwsDEJ5ZXWSFclGSiiY4o3LdfnLCR46yHfPlZuldysu1vu43p8mIzje8lQrx
-	hkxGSCk0NJQ4yhPjF9sH+eqD1+2QCussK4EYTIjiIDDtGLe5dehZBb7g8T0JZ3xNAtvGrGKnGoj
-	FA2ZkimAOJGT70FVekua1Og4ysFVU5K/hTBXiCyTgrZZJJt1D6Ean0UQZmmSU1gIujT5GrZN+Nw
-	UG8rJuFEucQ
-X-Received: by 2002:a05:6000:220b:b0:46a:6474:839e with SMTP id ffacd0b85a97d-46a7e9f3eb8mr1087064f8f.4.1782154673472;
-        Mon, 22 Jun 2026 11:57:53 -0700 (PDT)
-Received: from localhost ([2.122.8.179])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-466648c5413sm29609719f8f.11.2026.06.22.11.57.52
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 22 Jun 2026 11:57:52 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1782154780; x=1782759580;
+        h=mime-version:content-transfer-encoding:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=gPDvbjY4yqlX02GxThsdZXOqsHN6+5dT1OAzP9r96A0=;
+        b=J5qKKA4xokBxmL1JzlGaIg/l9Rub19mmqPBqEjwZ+uw3vTN/fRYFF7fuCGyTVnf3bG
+         soL+A+IoMxM8aTduQyh/45eLYHqZ0Shq0BCJw0tVRuTuE6qSjqwY+h/I3CQIYDZH5wyu
+         yNCCt7VUjx+kdN1/n1KsIzTPNHgfNP8AHynn9vCEH2/XU5X9k12r3YHNA+4ANIOc3feo
+         de7ZSZsvMc4ZbuvYR0LHvVhde6Ib5fro0bp9AZ/7Cn8dM9dJpaPVpNIF7m/4m42z8Zf8
+         X8VscrXFggoXDT1kyG6igP+N8elXQJnHqJE7wNr6sgKKmZcDe+r5yenWQKuMAKgj33ff
+         PchQ==
+X-Forwarded-Encrypted: i=1; AFNElJ8Wp71RJSW1fIgPCknQgUNX7jYN3iYKE8hIAWrh/sl+FCERmG8FA8c6nxKckVLVMn55P7G3Ktc=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzhNSQTJuOarsyrZrlrR1HxvqXOcO/83LUp+8MMwJoARGpMyob/
+	+QGCUxpg67/BUR9TO2WfmcuXyP6GOQ0TCAd+do0ik9eVUf2ZXvlQxmmkIrC+MLY=
+X-Gm-Gg: AfdE7ckLET8Fc0Dkk6qGbqjU+CJu2/ioB+MyV7KH56AcjUaYZRLJpjOPXnOra55v+3M
+	DbN4AmJRAh7EhIfzRWby6y338Q90cOcWzq2GGaqIuzc8wx1B6S8FKQwSldmRweVNtmkJfBXqGn4
+	QpCkjFYgbVmUW+AvmI45uJGZQJFaFSC+6CphtGErND4xaD2oi/28MS76lL4T+PcqmIOOyeGLnVB
+	ODuUDHRxdTTc/yMCnobteswArc+C1on9OJNtSK6+u0U3gerPinO55GqE1SXMkS9R0feIIS6crUN
+	77Y1OVxZF30/PX18Jy9P4GrBX2mSvKUyZm+ttbTecvZyAu3lQmnsuovMBM7zMJdLmpzz9rpYnNb
+	TfzkQp3+fdMdCujVRBJLiLOXB/glVAbK3gopjaSTyORKQYGHxwRakGnCusIjtsiNUhz5W92lyAW
+	EAuBzYf5XYGqGOfqm2Uc3FbQ9v/5Y=
+X-Received: by 2002:a05:600c:6285:b0:492:4a1a:a96a with SMTP id 5b1f17b1804b1-4925a0b587fmr10548515e9.11.1782154780210;
+        Mon, 22 Jun 2026 11:59:40 -0700 (PDT)
+Received: from kali (88-170-213-78.subs.proxad.net. [88.170.213.78])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4923fd1fa34sm355121775e9.5.2026.06.22.11.59.37
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 22 Jun 2026 11:59:38 -0700 (PDT)
+From: Tristan Madani <tristmd@gmail.com>
+To: Stephen Smalley <stephen.smalley.work@gmail.com>
+Cc: Paul Moore <paul@paul-moore.com>, Ondrej Mosnacek <omosnace@redhat.com>,
+ Richard Haines <richard_c_haines@btinternet.com>, selinux@vger.kernel.org,
+ stable@vger.kernel.org, linux-kernel@vger.kernel.org,
+ Tristan Madani <tristan@talencesecurity.com>
+Subject: Re: [PATCH] selinux: fix NULL pointer dereference in
+ selinux_sctp_bind_connect()
+Date: Mon, 22 Jun 2026 18:59:37 -0000
+Message-ID: <178215477740.1641401.9370300196381074566@gmail.com>
+In-Reply-To:
+ <CAEjxPJ40fKJbDFobsxoos0CvWqi0FfL6Sd5xkpRY=g5Ukyfnag@mail.gmail.com>
+References: <20260618232149.1780219-1-tristmd@gmail.com>
+ <CAEjxPJ40fKJbDFobsxoos0CvWqi0FfL6Sd5xkpRY=g5Ukyfnag@mail.gmail.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Mon, 22 Jun 2026 19:57:52 +0100
-Message-Id: <DJFT3TXC0OJA.1ZK17YA2RSQXK@linaro.org>
-To: "Peter Griffin" <peter.griffin@linaro.org>
-Cc: "Krzysztof Kozlowski" <krzk@kernel.org>, "Alim Akhtar"
- <alim.akhtar@samsung.com>, "Sam Protsenko" <semen.protsenko@linaro.org>,
- <linux-samsung-soc@vger.kernel.org>,
- <linux-arm-kernel@lists.infradead.org>, <linux-kernel@vger.kernel.org>,
- <stable@vger.kernel.org>, "Sashiko" <sashiko-bot@kernel.org>
-Subject: Re: [PATCH 3/3] soc: samsung: exynos-pmu: fix error paths in
- cpuhotplug/idle states setup
-From: "Alexey Klimov" <alexey.klimov@linaro.org>
-X-Mailer: aerc 0.21.0
-References: <20260605-exynos-pmu-cpuhp-idle-fixes-v1-0-0cd05c81a82d@linaro.org> <20260605-exynos-pmu-cpuhp-idle-fixes-v1-3-0cd05c81a82d@linaro.org> <CADrjBPq4fou5KWh4T=oNkUVPz5Jk-821OVe3j5sWrKnCtHYM6w@mail.gmail.com> <DJ5GP6VQJDHL.2V30K56ME95DO@linaro.org> <CADrjBPqF6GPRLNUZtzkGUHTUQ6NOPoaRvVvF1mUUj_DJ9As1dg@mail.gmail.com>
-In-Reply-To: <CADrjBPqF6GPRLNUZtzkGUHTUQ6NOPoaRvVvF1mUUj_DJ9As1dg@mail.gmail.com>
+MIME-Version: 1.0
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linaro.org,none];
-	MV_CASE(0.50)[];
-	R_DKIM_ALLOW(-0.20)[linaro.org:s=google];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
 	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-267790-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-267791-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RECEIVED_HELO_LOCALHOST(0.00)[];
-	DKIM_TRACE(0.00)[linaro.org:+];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_SENDER(0.00)[alexey.klimov@linaro.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS(0.00)[m:peter.griffin@linaro.org,m:krzk@kernel.org,m:alim.akhtar@samsung.com,m:semen.protsenko@linaro.org,m:linux-samsung-soc@vger.kernel.org,m:linux-arm-kernel@lists.infradead.org,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,m:sashiko-bot@kernel.org,s:lists@lfdr.de];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[paul-moore.com,redhat.com,btinternet.com,vger.kernel.org,talencesecurity.com];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[alexey.klimov@linaro.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
+	FREEMAIL_TO(0.00)[gmail.com];
+	FORGED_SENDER(0.00)[tristmd@gmail.com,stable@vger.kernel.org];
 	TO_DN_SOME(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stephen.smalley.work@gmail.com,m:paul@paul-moore.com,m:omosnace@redhat.com,m:richard_c_haines@btinternet.com,m:selinux@vger.kernel.org,m:stable@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:tristan@talencesecurity.com,m:stephensmalleywork@gmail.com,s:lists@lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORWARDED(0.00)[lists@lfdr.de];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	RCVD_COUNT_FIVE(0.00)[5];
+	ALIAS_RESOLVED(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[tristmd@gmail.com,stable@vger.kernel.org];
+	PRECEDENCE_BULK(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linaro.org:dkim,linaro.org:email,linaro.org:mid,linaro.org:from_mime,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp]
+	MISSING_XM_UA(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: DBDF26B1F55
+X-Rspamd-Queue-Id: EAB026B1F6E
 
-Hi Peter,
+On 2026/06/22 10:12, Stephen Smalley wrote:
+> Is this sufficient, or can the sk_socket be freed under us after the
+> assignment?
 
-On Thu Jun 11, 2026 at 8:07 AM BST, Peter Griffin wrote:
-> Hi Alexey,
->
-> On Wed, 10 Jun 2026 at 16:07, Alexey Klimov <alexey.klimov@linaro.org> wr=
-ote:
->>
->> On Wed Jun 10, 2026 at 2:34 PM BST, Peter Griffin wrote:
->> > Hi Alexey,
->>
->> Hi Peter,
->>
->> > Thanks for your patch!
->> >
->> > On Fri, 5 Jun 2026 at 21:19, Alexey Klimov <alexey.klimov@linaro.org> =
-wrote:
->> >>
->> >> The setup_cpuhp_and_cpuidle() initialisation sequence currently ignor=
-es
->> >> the return values of cpuhp_setup_state(), cpu_pm_register_notifier(),=
- and
->> >> register_reboot_notifier(). If any of these registrations fail during
->> >> probe() routine, the driver returns 0, leaving the driver partially
->> >> configured.
->> >
->> > I originally made the failure non-fatal because the system still boots
->> > without the notifiers registered (and all other Arm64 Exynos SoCs
->> > upstream don't register notifiers and AFAICT have broken cpu hotplug
->> > and cpu idle).
->> >
->> > In hindsight, that seems like a mistake. I think your patch to fully
->> > unwind everything in case of failure makes more sense.  See small
->> > comment below about destroy_cpuhp_and_cpuidle()
->>
->> Wait, setup_cpuhp_and_cpuidle() should be non-fatal and shouldn't
->> return any errors?
->
-> I suggest you re-read my above comment above ^^
+The assignment is safe. sock_orphan() only NULLs sk->sk_socket -- the
+struct socket is freed later in __sock_release(), after inet_release()
+returns. That path goes through sctp_close() -> lock_sock(), which
+serializes with the ASCONF softirq path (bh_lock_sock). So once we
+read a non-NULL pointer into the local variable, the socket is
+guaranteed to remain alive for the duration of the function.
 
-Could you please clarify what specifically addresses my question about
-notifiers?
+> Do different callers of this hook provide different guarantees
+> regarding sk_socket or are they all the same?
 
-Looking further into this, it seems that, for instance, if one of the
-hotplug states fails to register then tracking of pmu_context->in_cpuhp
-becomes broken.
-If reboot notifier silently fails to be registered, then it is unclear how
-this from gs101_cpu_pmu_offline() supposed to work:
+They differ. The setsockopt callers (bindx, connectx, set_primary,
+sendmsg connect) run in process context with a file reference, so
+sk_socket is guaranteed non-NULL. The ASCONF softirq path
+(sctp_process_asconf) has no file reference and can race with socket
+close -- that is the only caller that can hit the NULL.
 
-/* Ignore CPU_PM_ENTER event in reboot or suspend sequence. */
-if (pmu_context->sys_insuspend || pmu_context->sys_inreboot) {
-	raw_spin_unlock(&pmu_context->cpupm_lock);
-	return NOTIFY_OK;
-}
-
-If c2 idles are used during reboot/shutdown then they fail or what?
-
-I am not saying that patch is correct and some rework is needed but I don't
-get why we should completely ignore errors from hotplug states registration
-and should not check registration of notifiers. At least warning should be
-shown to user that pm functionality might be unreliable.
-
-Best regards,
-Alexey.
-
+Tristan
 
