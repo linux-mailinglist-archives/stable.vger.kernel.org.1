@@ -1,56 +1,62 @@
-Return-Path: <stable+bounces-267606-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-267607-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id rtkIJHbdOGpUjQcAu9opvQ
-	(envelope-from <stable+bounces-267606-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 22 Jun 2026 09:00:06 +0200
+	id Dyl0IJneOGqqjQcAu9opvQ
+	(envelope-from <stable+bounces-267607-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 22 Jun 2026 09:04:57 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id D143A6AD197
-	for <lists+stable@lfdr.de>; Mon, 22 Jun 2026 09:00:05 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 78F256AD1EE
+	for <lists+stable@lfdr.de>; Mon, 22 Jun 2026 09:04:56 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=none;
-	dmarc=none;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-267606-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-267606-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=163.com header.s=s110527 header.b=d32aRLLb;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-267607-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-267607-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=none) header.from=163.com;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 350E9302A06A
-	for <lists+stable@lfdr.de>; Mon, 22 Jun 2026 06:59:29 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id A44313006021
+	for <lists+stable@lfdr.de>; Mon, 22 Jun 2026 07:04:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED8A73612F1;
-	Mon, 22 Jun 2026 06:59:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A25DD351C14;
+	Mon, 22 Jun 2026 07:04:50 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E5A16360EFA;
-	Mon, 22 Jun 2026 06:59:26 +0000 (UTC)
+Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.2])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E67D1233943;
+	Mon, 22 Jun 2026 07:04:45 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782111568; cv=none; b=ZKQOCNBWzrCBcMip9AODxbXx1nlkujcLfnCD2d5abCV5GopDW9qW5y13RJUGCSM9u3xgzgPAbj+VtEIEbooXfJihfdNhS7nDVpPz2TCtInrQKDh+R3extMoWWAr9cBShBfHjdWGGB/UnvnEpzenTNUSQEVAgLBvNPK1DEKAWCR4=
+	t=1782111890; cv=none; b=CyUiUFzpZtuqWbbCmXOHIeaNwKFHOPhpFzrk8KN6TGIHLSPWdemnDDQ6a4CyVmMaieLJ86RGQMHCE9BRFvIR7C8rwLik5oATD+WGk5nMtmY6pkDIXNHw9AxwO880RSt+3qlCLweQuDrS2VAlytCVKDYLFUh4RLOevWBMpg0XGgA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782111568; c=relaxed/simple;
-	bh=SunVqTbbcHe4j9+DNc8+TpOP6zhpxhhrWrMF6LO8tvI=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=QjUjNH9NvUhTZGuRYdl5e1mAFvalR8OZqEmY5jeo4K1H8N7pafxRJTL8njh1492UjTMXK6ckWALfUU0seObQtd6isJixoznK1rI/9v00U0CNk6z7k1s0szosZQc87/6bopX3TDAFSKD1nkxwEE0arskya7ls8L6WyE8gZ6OAYIk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn; spf=pass smtp.mailfrom=loongson.cn; arc=none smtp.client-ip=114.242.206.163
-Received: from loongson.cn (unknown [223.64.68.155])
-	by gateway (Coremail) with SMTP id _____8CxHupL3Thqv4AWAA--.57242S3;
-	Mon, 22 Jun 2026 14:59:23 +0800 (CST)
-Received: from kernelserver (unknown [223.64.68.155])
-	by front1 (Coremail) with SMTP id qMiowJCxdcBG3ThqUrOuAA--.59367S2;
-	Mon, 22 Jun 2026 14:59:23 +0800 (CST)
-From: Huacai Chen <chenhuacai@loongson.cn>
-To: Huacai Chen <chenhuacai@kernel.org>
-Cc: loongarch@lists.linux.dev,
-	Xuefeng Li <lixuefeng@loongson.cn>,
-	Guo Ren <guoren@kernel.org>,
-	Xuerui Wang <kernel@xen0n.name>,
-	Jiaxun Yang <jiaxun.yang@flygoat.com>,
+	s=arc-20240116; t=1782111890; c=relaxed/simple;
+	bh=94ffQZN5smXw4dtist2N6Ff1+673ITZAbyoknLT5Ab0=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ZiSmab7i1pW2KEaApMnjm1RIMZT5zrs4auwfK+oDvEFXZeosiK5fwPQcdDF4SFe4s0JEoeabMphtVSBoKMOQhMPiUDLkiuaygoWeIKQAGcS2o1hq1EZ4wB52LLyNezr+dVMsvsrkFjG7ZPizca8m9f9IRIN4/vmjqjvZxkfxsqI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=d32aRLLb; arc=none smtp.client-ip=220.197.31.2
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version; bh=LC
+	l1kE52dxJs4SrnZw4dUUD9eSLe2/W5walU+U+dJtc=; b=d32aRLLbJF+QRdZWKO
+	rRwSLOhr3AQjf7Qp5mgqmRJBAYFGgO5KRQzuvOWyJoTR/TCjTAs7CzkquZy9VJ2H
+	aWtdrP65U92WVHHvNdiQPe4jrryBx7/Yhcd4+LmwIjDpwLiHnUrnR8Xqa3IitBc/
+	LH3wSP+rcRHVp4BPRraerMxe8=
+Received: from ubuntu.. (unknown [])
+	by gzga-smtp-mtada-g0-0 (Coremail) with SMTP id _____wDHAhdZ3jhqsX6EEg--.791S4;
+	Mon, 22 Jun 2026 15:04:01 +0800 (CST)
+From: Ma Ke <make_ruc2021@163.com>
+To: srinivas.pandruvada@linux.intel.com,
+	hansg@kernel.org,
+	ilpo.jarvinen@linux.intel.com,
+	sumesh.k.naduvalath@intel.com,
+	mgross@linux.intel.com
+Cc: platform-driver-x86@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	Huacai Chen <chenhuacai@loongson.cn>,
+	akpm@linux-foundation.org,
+	Ma Ke <make_ruc2021@163.com>,
 	stable@vger.kernel.org
-Subject: [PATCH] LoongArch: Report dying CPU to RCU in stop_this_cpu()
-Date: Mon, 22 Jun 2026 14:59:10 +0800
-Message-ID: <20260622065910.3961592-1-chenhuacai@loongson.cn>
-X-Mailer: git-send-email 2.52.0
+Subject: [RESEND PATCH] platform/x86: ishtp_eclite: fix ACPI device reference leak in probe error path
+Date: Mon, 22 Jun 2026 15:03:52 +0800
+Message-ID: <20260622070352.689982-1-make_ruc2021@163.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -58,111 +64,91 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:qMiowJCxdcBG3ThqUrOuAA--.59367S2
-X-CM-SenderInfo: hfkh0x5xdftxo6or00hjvr0hdfq/
-X-Coremail-Antispam: 1Uk129KBj93XoW7ZFW3Xw47JrW7WFy3Jr17XFc_yoW8KF48pr
-	WFkrn5Zr4kWF1vv398J34xWr9Fy393Gw13X3Z3GrZ3Aay5tr1DZw1IqFyqqFyF9393u34I
-	vFn0v3yvv3WUAagCm3ZEXasCq-sJn29KB7ZKAUJUUUUr529EdanIXcx71UUUUU7KY7ZEXa
-	sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
-	0xBIdaVrnRJUUU9Yb4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
-	IYs7xG6rWj6s0DM7CIcVAFz4kK6r1Y6r17M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
-	e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_JFI_Gr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
-	0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVWxJVW8Jr1l84ACjcxK6I8E87Iv6xkF7I0E14v2
-	6r4UJVWxJr1ln4kS14v26r1Y6r17M2AIxVAIcxkEcVAq07x20xvEncxIr21l57IF6xkI12
-	xvs2x26I8E6xACxx1l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r1q
-	6rW5McIj6I8E87Iv67AKxVWUJVW8JwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IYc2Ij64
-	vIr41l42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1l4IxYO2xFxVAFwI0_
-	Jrv_JF1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1V
-	AY17CE14v26r1q6r43MIIYrxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_JFI_Gr1lIxAI
-	cVC0I7IYx2IY6xkF7I0E14v26r4j6F4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI42
-	IY6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E87Iv6xkF7I0E14v26r4j6r4UJbIYCTnIWIev
-	Ja73UjIFyTuYvjxUc-eODUUUU
+X-CM-TRANSID:_____wDHAhdZ3jhqsX6EEg--.791S4
+X-Coremail-Antispam: 1Uf129KBjvJXoW7CryxZrWUuFW8WrW7Jr1rXrb_yoW8XFyDpF
+	W7KFWrKrW5GrWfK348Xa18Z3Wruw1jv3y8GrWkCw4Uur45uF9aqayIka4YkF1kurWkJa45
+	ZFn7trW8AF1UZFJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0piJGYdUUUUU=
+X-CM-SenderInfo: 5pdnvshuxfjiisr6il2tof0z/xtbC1AF4g2o43mHegwAA3e
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [0.04 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	DMARC_POLICY_ALLOW(-0.50)[163.com,none];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_DKIM_ALLOW(-0.20)[163.com:s=s110527];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-267607-lists,stable=lfdr.de];
+	URIBL_MULTI_FAIL(0.00)[vger.kernel.org:server fail,sin.lore.kernel.org:server fail];
 	RCVD_TLS_LAST(0.00)[];
-	DMARC_NA(0.00)[loongson.cn];
-	TAGGED_FROM(0.00)[bounces-267606-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:chenhuacai@kernel.org,m:loongarch@lists.linux.dev,m:lixuefeng@loongson.cn,m:guoren@kernel.org,m:kernel@xen0n.name,m:jiaxun.yang@flygoat.com,m:linux-kernel@vger.kernel.org,m:chenhuacai@loongson.cn,m:stable@vger.kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[chenhuacai@loongson.cn,stable@vger.kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[chenhuacai@loongson.cn,stable@vger.kernel.org];
-	ALIAS_RESOLVED(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	R_DKIM_NA(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[9];
+	FORGED_RECIPIENTS(0.00)[m:srinivas.pandruvada@linux.intel.com,m:hansg@kernel.org,m:ilpo.jarvinen@linux.intel.com,m:sumesh.k.naduvalath@intel.com,m:mgross@linux.intel.com,m:platform-driver-x86@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:akpm@linux-foundation.org,m:make_ruc2021@163.com,m:stable@vger.kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[make_ruc2021@163.com,stable@vger.kernel.org];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[loongson.cn:email,loongson.cn:mid,loongson.cn:from_mime,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp]
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FREEMAIL_CC(0.00)[vger.kernel.org,linux-foundation.org,163.com];
+	DKIM_TRACE(0.00)[163.com:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[make_ruc2021@163.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FREEMAIL_FROM(0.00)[163.com];
+	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[10];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: D143A6AD197
+X-Rspamd-Queue-Id: 78F256AD1EE
 
-This is a port of MIPS commit 9f3f3bdc6d9dac1 ("MIPS: smp: report dying
-CPU to RCU in stop_this_cpu()"). smp_send_stop() parks all secondary
-CPUs in stop_this_cpu(). And the function marks the CPU offline for the
-scheduler via set_cpu_online(false) but never informs RCU, so RCU keeps
-expecting a quiescent state from CPUs that are now spinning forever with
-interrupts disabled.
+ecl_ishtp_cl_probe() acquires a reference to an ACPI device via
+acpi_find_eclite_device() but fails to release it in the error path
+when acpi_opregion_init() fails. This results in a reference count
+leak, preventing proper cleanup of the ACPI device.
 
-As long as nothing waits for an RCU grace period after smp_send_stop()
-this is harmless, which is why it went unnoticed. However, since commit
-91840be8f710370 ("irq_work: Fix use-after-free in irq_work_single() on
-PREEMPT_RT"), irq_work_sync() calls synchronize_rcu() on architectures
-without an irq_work self-IPI, i.e. where arch_irq_work_has_interrupt()
-returns false. Any irq_work_sync() issued in the reboot/shutdown/halt
-path after smp_send_stop() then blocks on a grace period that can never
-complete, hanging the reboot:
+Calling path: acpi_find_eclite_device() ->
+acpi_dev_get_first_match_dev() -> acpi_dev_get_next_match_dev() ->
+bus_find_device() -> get_device().
 
-  WARNING: CPU: 0 PID: 15 at kernel/irq_work.c:144 irq_work_queue_on
-  ...
-  rcu: INFO: rcu_sched detected stalls on CPUs/tasks:
-  rcu: Offline CPU 1 blocking current GP.
-  rcu: Offline CPU 2 blocking current GP.
-  rcu: Offline CPU 3 blocking current GP.
+Found by code review.
 
-This issue needs some hacks to reproduce, and it was not noticed on
-LoongArch because arch_irq_work_has_interrupt() usually returns true.
-
-Call rcutree_report_cpu_dead() once interrupts are disabled, mirroring
-the generic CPU-hotplug offline path, so RCU stops waiting on the parked
-CPUs and grace periods can still complete. LoongArch shuts down all CPUs
-here without going through the CPU-hotplug mechanism, so this report is
-not otherwise issued.
-
-Cc: <stable@vger.kernel.org>
-Fixes: 91840be8f710 ("irq_work: Fix use-after-free in irq_work_single() on PREEMPT_RT")
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+Signed-off-by: Ma Ke <make_ruc2021@163.com>
+Cc: stable@vger.kernel.org
+Fixes: 7b6bf51de974 ("platform/x86: Add Intel ishtp eclite driver")
 ---
- arch/loongarch/kernel/smp.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/platform/x86/intel/ishtp_eclite.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/arch/loongarch/kernel/smp.c b/arch/loongarch/kernel/smp.c
-index c191c680de66..5d792256bbb9 100644
---- a/arch/loongarch/kernel/smp.c
-+++ b/arch/loongarch/kernel/smp.c
-@@ -707,6 +707,7 @@ static void stop_this_cpu(void *dummy)
- 	set_cpu_online(smp_processor_id(), false);
- 	calculate_cpu_foreign_map();
- 	local_irq_disable();
-+	rcutree_report_cpu_dead();
- 	while (true);
- }
+diff --git a/drivers/platform/x86/intel/ishtp_eclite.c b/drivers/platform/x86/intel/ishtp_eclite.c
+index 93ac8b2dbf38..bca7e217878b 100644
+--- a/drivers/platform/x86/intel/ishtp_eclite.c
++++ b/drivers/platform/x86/intel/ishtp_eclite.c
+@@ -600,13 +600,16 @@ static int ecl_ishtp_cl_probe(struct ishtp_cl_device *cl_device)
+ 	rv = acpi_opregion_init(opr_dev);
+ 	if (rv) {
+ 		dev_err(cl_data_to_dev(opr_dev), "ACPI opregion init failed\n");
+-		goto err_exit;
++		goto err_put;
+ 	}
  
+ 	/* Reprobe devices depending on ECLite - battery, fan, etc. */
+ 	acpi_dev_clear_dependencies(opr_dev->adev);
+ 
+ 	return 0;
++
++err_put:
++	acpi_dev_put(opr_dev->adev);
+ err_exit:
+ 	ishtp_set_connection_state(ecl_ishtp_cl, ISHTP_CL_DISCONNECTING);
+ 	ishtp_cl_disconnect(ecl_ishtp_cl);
 -- 
-2.52.0
+2.43.0
 
 
