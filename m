@@ -1,170 +1,140 @@
-Return-Path: <stable+bounces-267613-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-267615-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id zfv+Bm/qOGoukAcAu9opvQ
-	(envelope-from <stable+bounces-267613-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 22 Jun 2026 09:55:27 +0200
+	id +rr8GPzrOGpokAcAu9opvQ
+	(envelope-from <stable+bounces-267615-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 22 Jun 2026 10:02:04 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B19296AD6FE
-	for <lists+stable@lfdr.de>; Mon, 22 Jun 2026 09:55:26 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id EF5766AD798
+	for <lists+stable@lfdr.de>; Mon, 22 Jun 2026 10:02:03 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=SD3D6mmw;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-267613-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-267613-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=none) header.from=gmail.com;
+	dkim=pass header.d=163.com header.s=s110527 header.b=eMhbPW4A;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-267615-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-267615-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=none) header.from=163.com;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D727330075C8
-	for <lists+stable@lfdr.de>; Mon, 22 Jun 2026 07:53:47 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 9FC033038AF3
+	for <lists+stable@lfdr.de>; Mon, 22 Jun 2026 07:59:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B92DA38332E;
-	Mon, 22 Jun 2026 07:53:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD2F5383319;
+	Mon, 22 Jun 2026 07:59:56 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.4])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8D8D382F2F
-	for <stable@vger.kernel.org>; Mon, 22 Jun 2026 07:53:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3537B361675;
+	Mon, 22 Jun 2026 07:59:44 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782114825; cv=none; b=GZ//GwWPbW5C0/Rw5JxtVlyAoWYie6+Fd5IoG2Dvnk0oneZQ+UBjlXcHoFbfzlMMPO7v6PuNbMAiVg5bBpsYLOguGQq05cl4bw9Yn9FyRypZAXLTpKurZs87rt5DjUvKgbhrQJNPOa0wZ5JpPk+SYQxQuA946lUIxX5LAifTxFE=
+	t=1782115196; cv=none; b=CrQzYctDzrVNcOkWXjFrmgydp7+Yo4Id4eqDtQefs4D5vXDf0x7GVUILGwvWlUkEx94njY9Q+7PEb7Du61AN5rjw2mAAGpkRcI46Hr+h71EkF+sqvDeU82LT0NevtCsvh2d2quabQfU2oe/P6CbWlAPdvD6HYoaoas3Zy8pa0TE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782114825; c=relaxed/simple;
-	bh=kwPAUQHA46UWAzKtvEAsrpO6XV/aeWY/zPZEW9c3HjU=;
-	h=From:To:Cc:Subject:Date:Message-ID:Content-Type:MIME-Version; b=tSjWLrO40sLjg7/1ZjABRYD7MZ/6+C6Pp3lWUUcWYf3Qo/7In2DKOD2P3jBcUOQs90AWOLQIOcan6flAxJyjUCqCVAfBG4JqDa7u0btHhIKCLrHIArYt9ZtPdCktKrywyieDvpaOTBpIJP737ZFmslRkRluRQos72LvHh59TajA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=SD3D6mmw; arc=none smtp.client-ip=209.85.214.172
-Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-2c0c379e8ffso33215185ad.3
-        for <stable@vger.kernel.org>; Mon, 22 Jun 2026 00:53:42 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1782114822; x=1782719622; darn=vger.kernel.org;
-        h=mime-version:content-transfer-encoding:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=muhh0ZwVTyB0/KcADVsIhtg8n2TSc3l0G+5X+uSwFu4=;
-        b=SD3D6mmwLaW3/dquDGLd+NGimfScOJx31HW2jKD/HRtxxPDZnm+mR3e3VGES1vhcH8
-         4G6XmMfp0OXA8YsYn1gZ+Hn3+lA7xal7d0nBM4VuKENrUPqlXN3RBKvL64WMClSG5QOe
-         azd/gmtNV9vpQTOUbc/O3kXiHyXIvOP+nu8Z57el0up11+Jh9UtmFCCMhXC9QUefj+Pd
-         P3UfrCUdVlRnd3G056UZIAAGyGGPdgVGV9pVOX6yQMYzCVzywUYtqgio08asYaeIw0Km
-         TaE04696N5j9kEeqrUJdMPwYVZIDsb6RhNAxkDdItq0Yrmq/pMooEhtfyhTm0e50kA49
-         kiag==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782114822; x=1782719622;
-        h=mime-version:content-transfer-encoding:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=muhh0ZwVTyB0/KcADVsIhtg8n2TSc3l0G+5X+uSwFu4=;
-        b=UaYPkk3zwVsMO+MxVnPokWFuCLy9SIhtLxhj0PPRrR7NNJ1JnmEh9+qcEkR3Ogdw0c
-         2lwageAEWdpW2e00bmTfTm8bKHQQeqF532QgrrUl3r7wWH7zSgMxw6cTJgPxqMd2NLvW
-         z6vcPnPyDKA4xfGxTiV6IWnWb7RXGxhSaKH4bS2MqZf+G7+AFVNhUUIX1fUXquOVyHM9
-         mcL/2eWhYI2by8282XDQUGuIjMAesnbuCfCzZQPWxnQx+J4um1luzZqmP6r4Zpu5Yl0Q
-         1OI4q3fpSp8+689xe2ce76YiK7BcHWlIT8fXEH6y43yO16QMxS1L01RYG7vxq4Lcs8Qp
-         G/Mw==
-X-Forwarded-Encrypted: i=1; AHgh+RqkQcjtbvbvnjapSrbGGieIacFPFUC+6r7A+e2Qoift8rxQuYhkOeYTjYKeqChFU3N4VYQihsI=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzxiqWwwvqTeZUb+kgW1QytBv/Scw/2UGufZNAPk0C7gdHuWcdG
-	ZtvczAFFMKNk8BN4w6VSAbA7huD2O9kitmGBBwarWifnzTLItKv8HQ6E
-X-Gm-Gg: AfdE7cl9Bac+al0fE80sn7EGsye67QNjdoD/zXr3jQqi7xWIOxmn1r08LRjV+zQOha5
-	w2L3aSLHKigrCsJclQdX7owKiMhAbriEwON1/ZfxyVrkkTIXFV7PysIdn9LfZ09zrVvTuI1UWyM
-	Np+tCpjSl8frKpclp6QU4fdI5wsDV8jPBv93yr3Lj6c/ZSsUKZjuD8tUJxag9nfaD11n367QjT5
-	MeGIJiNmLumyD6rWR/dr4ugNOTrH9tsi2ZBs2MLgOFgDVdkLHH3XzI9XMFI2FEXSQeqjH/Nz+4l
-	FNG1RXCrdev1pTyOm01V5c24nMI4eSO9R9XhGqrtuIn/gSb0N15TRYKzUSwxrlsXOXw7T7h+KnX
-	IO0HbHHnliYsZ4lsy3XW5z94othznbEwcF0ziXrDvMUkPh4k3dbYlRtWET90CYd+3U0YhjhRUVV
-	FqmgK1fUdvOwyFY7Eji2ONTOwQmgm1RA+vJmbovA==
-X-Received: by 2002:a17:903:1d1:b0:2c6:d70a:92af with SMTP id d9443c01a7336-2c7190576c9mr133110835ad.37.1782114821743;
-        Mon, 22 Jun 2026 00:53:41 -0700 (PDT)
-Received: from csl-conti-dell7858.ntu.edu.sg ([155.69.195.57])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2c7444aa5f1sm79786155ad.78.2026.06.22.00.53.39
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 22 Jun 2026 00:53:41 -0700 (PDT)
-From: Maoyi Xie <maoyixie.tju@gmail.com>
-To: Johannes Berg <johannes@sipsolutions.net>
-Cc: Jakub Kicinski <kuba@kernel.org>, linux-wireless@vger.kernel.org,
- libertas-dev@lists.infradead.org, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org
-Subject: [PATCH] wifi: libertas_tf: fix use-after-free in lbtf_free_adapter()
-Date: Mon, 22 Jun 2026 15:53:38 +0800
-Message-ID: <178211481807.2212567.8773346114561900100@maoyixie.com>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+	s=arc-20240116; t=1782115196; c=relaxed/simple;
+	bh=qyBaaWnYRbK7XCAbAJbWuep5cFL9E/JUZL/x+Cq/CYo=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=g8J1oS0Lt7aJz/4Dirv89V0Dlu5GRzMGmOUAZG4WFCqKsjQbxD33IwskofsNqpsT6dxDkK+N3E7pHtFzkbPZTkC7POGgmL900stt4PEqpuFWHCvU3ksrkjPzdmUaws2b/dzh7xn1haQJTIu3eJ7KxgaVc2MYegQK0a77eFlurBY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=eMhbPW4A; arc=none smtp.client-ip=220.197.31.4
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=ws
+	C9plxLC49dLoH7qzqis/G3QGv01+Xrfj7bJMYdBtE=; b=eMhbPW4A+xpCxezzUb
+	p6ljtzbsufNBos05mhI+GMooS5VAAhvcSSUFadlUkiBynfiv0VnjrpK7Tn6kTPLv
+	qx0P0ckt66X/RXdHE0KCxW2oVGZf6ELA9RcA39pefdqSvQsVuieig0BgCD/HvbQR
+	19BfYNXvrMbSdPiCnBucelB5E=
+Received: from localhost.localdomain (unknown [])
+	by gzga-smtp-mtada-g1-2 (Coremail) with SMTP id _____wDnNwU16zhqBIo_FA--.7653S2;
+	Mon, 22 Jun 2026 15:58:47 +0800 (CST)
+From: Haoxiang Li <haoxiang_li2024@163.com>
+To: ram.vegesna@broadcom.com,
+	James.Bottomley@HansenPartnership.com,
+	martin.petersen@oracle.com,
+	dwagner@suse.de,
+	jsmart2021@gmail.com,
+	hare@suse.de
+Cc: linux-scsi@vger.kernel.org,
+	target-devel@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Haoxiang Li <haoxiang_li2024@163.com>,
+	stable@vger.kernel.org
+Subject: [PATCH] scsi: elx: efct: Fix IO leak on unsupported additional CDB
+Date: Mon, 22 Jun 2026 15:58:44 +0800
+Message-Id: <20260622075844.832871-1-haoxiang_li2024@163.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:_____wDnNwU16zhqBIo_FA--.7653S2
+X-Coremail-Antispam: 1Uf129KBjvdXoW7GF17ZF4fur4rtr18tr4xJFb_yoWDCrg_ur
+	4rXryfZrnYkF1kGF4rtF4fZayaka1Duwn7ZF1Fg34Fgr47ZrWUCw1DArZag3yUJrZ2yFZ5
+	Ww17ZFWUCr17ujkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
+	9fnUUvcSsGvfC2KfnxnUUI43ZEXa7sRRPfHUUUUUU==
+X-CM-SenderInfo: xkdr5xpdqjszblsqjki6rwjhhfrp/xtbC7hewH2o46zdBawAA3y
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	MID_CONTAINS_FROM(1.00)[];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[163.com,none];
+	R_DKIM_ALLOW(-0.20)[163.com:s=s110527];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-267615-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-267613-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:johannes@sipsolutions.net,m:kuba@kernel.org,m:linux-wireless@vger.kernel.org,m:libertas-dev@lists.infradead.org,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,s:lists@lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	FORGED_SENDER(0.00)[maoyixietju@gmail.com,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	FREEMAIL_TO(0.00)[broadcom.com,HansenPartnership.com,oracle.com,suse.de,gmail.com];
+	FORGED_SENDER(0.00)[haoxiang_li2024@163.com,stable@vger.kernel.org];
 	TO_DN_SOME(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:ram.vegesna@broadcom.com,m:James.Bottomley@HansenPartnership.com,m:martin.petersen@oracle.com,m:dwagner@suse.de,m:jsmart2021@gmail.com,m:hare@suse.de,m:linux-scsi@vger.kernel.org,m:target-devel@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:haoxiang_li2024@163.com,m:stable@vger.kernel.org,s:lists@lfdr.de];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	MISSING_XM_UA(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[maoyixietju@gmail.com,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FREEMAIL_CC(0.00)[vger.kernel.org,163.com];
+	DKIM_TRACE(0.00)[163.com:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[haoxiang_li2024@163.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FREEMAIL_FROM(0.00)[163.com];
 	ALIAS_RESOLVED(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[11];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	TAGGED_RCPT(0.00)[stable];
 	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: B19296AD6FE
+X-Rspamd-Queue-Id: EF5766AD798
 
-lbtf_free_adapter() calls timer_delete(&priv->command_timer), which does
-not wait for a running command_timer_fn() callback. lbtf_free_adapter()
-runs on the teardown path right before ieee80211_free_hw() frees priv,
-both in lbtf_remove_card() and in the probe error path. command_timer is
-armed by mod_timer() in lbtf_cmd() whenever a firmware command is sent.
-command_timer_fn() dereferences priv. If a command times out as the
-device is removed, command_timer_fn() runs concurrently with teardown and
-dereferences priv after it has been freed.
+efct_dispatch_fcp_cmd() allocates an efct_io before dispatching an
+unsolicited FCP command. If the command has an unsupported additional
+CDB, the function returns -EIO before handing the IO to the SCSI layer.
 
-This is the same use-after-free that commit 03cc8f90d053 ("wifi: libertas:
-fix use-after-free in lbs_free_adapter()") fixed in the sibling libertas
-driver. The libertas_tf variant has the identical pattern and was left
-unchanged. Use timer_delete_sync() so any in-flight callback completes
-before priv is freed.
+Free the allocated IO before returning from this error path.
 
-Fixes: 06b16ae53192 ("libertas_tf: main.c, data paths and mac80211 handlers")
+Fixes: f45ae6aac0a0 ("scsi: elx: efct: Unsolicited FC frame processing routines")
 Cc: stable@vger.kernel.org
-Signed-off-by: Maoyi Xie <maoyixie.tju@gmail.com>
+Signed-off-by: Haoxiang Li <haoxiang_li2024@163.com>
 ---
-I asked about this on linux-wireless on 2026-06-15 and got no reply, so
-I am sending the fix. It mirrors the merged libertas fix exactly.
+ drivers/scsi/elx/efct/efct_unsol.c | 1 +
+ 1 file changed, 1 insertion(+)
 
- drivers/net/wireless/marvell/libertas_tf/main.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/net/wireless/marvell/libertas_tf/main.c b/drivers/net/wireless/marvell/libertas_tf/main.c
-index fb20fe31cd36..42be6fa22f9c 100644
---- a/drivers/net/wireless/marvell/libertas_tf/main.c
-+++ b/drivers/net/wireless/marvell/libertas_tf/main.c
-@@ -174,7 +174,7 @@ static void lbtf_free_adapter(struct lbtf_private *priv)
- {
- 	lbtf_deb_enter(LBTF_DEB_MAIN);
- 	lbtf_free_cmd_buffer(priv);
--	timer_delete(&priv->command_timer);
-+	timer_delete_sync(&priv->command_timer);
- 	lbtf_deb_leave(LBTF_DEB_MAIN);
- }
+diff --git a/drivers/scsi/elx/efct/efct_unsol.c b/drivers/scsi/elx/efct/efct_unsol.c
+index e6addab66a60..6a871a59c909 100644
+--- a/drivers/scsi/elx/efct/efct_unsol.c
++++ b/drivers/scsi/elx/efct/efct_unsol.c
+@@ -385,6 +385,7 @@ efct_dispatch_fcp_cmd(struct efct_node *node, struct efc_hw_sequence *seq)
  
+ 		if (cmnd->fc_flags & FCP_CFL_LEN_MASK) {
+ 			efc_log_err(efct, "Additional CDB not supported\n");
++			efct_scsi_io_free(io);
+ 			return -EIO;
+ 		}
+ 		/*
 -- 
-2.34.1
+2.25.1
 
 
