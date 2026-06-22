@@ -1,218 +1,249 @@
-Return-Path: <stable+bounces-267637-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-267621-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id oeQ9OJwCOWqFlQcAu9opvQ
-	(envelope-from <stable+bounces-267637-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 22 Jun 2026 11:38:36 +0200
+	id gE1CBIXwOGpWkQcAu9opvQ
+	(envelope-from <stable+bounces-267621-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 22 Jun 2026 10:21:25 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3DBF76AE4F7
-	for <lists+stable@lfdr.de>; Mon, 22 Jun 2026 11:38:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 503526ADA1B
+	for <lists+stable@lfdr.de>; Mon, 22 Jun 2026 10:21:24 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b="rtcHiP/3";
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-267637-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-267637-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	arc=reject ("cv is fail on i=2")
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=mYadQOo4;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-267621-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-267621-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id EFE5D3162446
-	for <lists+stable@lfdr.de>; Mon, 22 Jun 2026 09:22:33 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C532C3042597
+	for <lists+stable@lfdr.de>; Mon, 22 Jun 2026 08:14:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AABBB36C9C2;
-	Mon, 22 Jun 2026 09:21:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4DB4F37B010;
+	Mon, 22 Jun 2026 08:13:52 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from CY3PR05CU001.outbound.protection.outlook.com (mail-westcentralusazon11013065.outbound.protection.outlook.com [40.93.201.65])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0974C3655F5
-	for <stable@vger.kernel.org>; Mon, 22 Jun 2026 09:21:08 +0000 (UTC)
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782120071; cv=fail; b=ViFltQ9IubSHGYwx4M8MtZPp0OfeWP4p6F3QIj/b9tfnqB2x11I/jPCbRHVr6gQKWA8eJ1XJOxUjol4IL1lbrB4yZCZHynnkqR0Nn07wXeLHIN1c3FCSidv5ht7ePDrNe5347ULglHe/avIwsEQVuboekgu9a9d35A6XIhOAovE=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782120071; c=relaxed/simple;
-	bh=+q4flEnRL0ZqRMafGVOZtDy3Vfn4WPJDw3rNOKraumc=;
-	h=References:From:To:CC:Subject:Date:In-Reply-To:Message-ID:
-	 MIME-Version:Content-Type; b=JeaEYkw54/A23v6CxG4NkzNZJ/cygAn1i7MZ9FMEo2ujY+zuaG9r5oiLAz5SL+HL2sUbM7A876n1YV8sdXXPj+/qfq+YR92+LQp2PaqAdjQyqNBmmdbq5+27fMKNpsGybtviWfopEfCig7fhjxcQfI6TMB9IaejwyZL2bNv0ceo=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=rtcHiP/3; arc=fail smtp.client-ip=40.93.201.65
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Ay9xkGfiXQ/Qypvv1I8VWQe/cmCI5uCFG2C2/fWWQX8bpjv5d9dxxQwcTNtmCWvRfvYZ/FfoHOil08/24CePoDNQO5FIiyQE2TA0MB9g19A4VRUj5/mQbcAbpMDw7a348e0yAWs+RTUJKCjJWsPUKUED5fIKchxzxshaZOGFlEXqv1y9f1SCWUguhQNUFqyDkLiUvmk5f0eUa//wJeyS4wh1it98aDXyyWiuQbhRf/LFrJcojJuOpYLJso+lEVGvvpI99+dcVgyWnpbL5U1piH424Sc+dR3jxmcaj9di/1es8Rr9p3yoFj3MpQ8DrfEGKZZ0HgokyEOXlpu9OJ3/OA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=UDJLVhriJK0wd7O5IVqub9YKvXpsgtg8XmSikMDJ06A=;
- b=GISP4g3B+vYiB/8rtUDLQHU0qQKQXDbLR1wRlZns3NLV4aCPZun+Y8C2kY+Nu+tOYZPTLbhGUMIVFNHKXtfpcWgL9mX95Q7BgfBFrtgv10jjEvh1doIz4vFQRQAxDu/ldaJ80G1aNMovwTOg5XCiaOiiJDn6wCbRYCUBL/J1VZMxt1RqtxhtC1Z3g/VD0iGcNRxUCjT47+GPoya3mAT9/rPyIkEWkk8EwvmiydJuwh8YV2sG9/J5X26Sbb9RuugxECjKe6LKnwoReyZWzphfXdlrpxkHHL2Gydmm/vtGZ1Gwn6HKf3cis9BYiPNFkk20GwiJZPubqV5gdl8+TjH6+Q==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 216.228.117.160) smtp.rcpttodomain=gmail.com smtp.mailfrom=nvidia.com;
- dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=UDJLVhriJK0wd7O5IVqub9YKvXpsgtg8XmSikMDJ06A=;
- b=rtcHiP/3aobaNBBHhp9ImBUol2UQF9bvZwxjXadhiq60EtcNeIlS0yfkjdpIkc5ZGj//PL+unCQ4xadkq3yErsOeSY2yR+gxdLNE0JQ8NTIRoF38YKa4tVn1/n70VbemgnFA1jRDaukelxnatr9KmwryhN9uykruvYKVBiSMfHffdBagD2mUhH73ub6EsUsBkIf/WqHqGvBDixNEiPhk0mvRKxH+386vQE5Cyw3fJzWHhTR/4UCznSdloduKIGa+iMunE1difs/Z3C0VCcgIENtsZT6yIuUp7IyS6wgB5eQ9Of59pvVFLUOwK43aKlpef+SNeZMZZ4ATvBxzSoFzQg==
-Received: from BL1PR13CA0120.namprd13.prod.outlook.com (2603:10b6:208:2b9::35)
- by IA0PPFF4B476A86.namprd12.prod.outlook.com (2603:10b6:20f:fc04::bea) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.139.11; Mon, 22 Jun
- 2026 09:21:02 +0000
-Received: from BL02EPF00029927.namprd02.prod.outlook.com
- (2603:10b6:208:2b9:cafe::6c) by BL1PR13CA0120.outlook.office365.com
- (2603:10b6:208:2b9::35) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.21.159.11 via Frontend Transport; Mon,
- 22 Jun 2026 09:21:00 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.160)
- smtp.mailfrom=nvidia.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=nvidia.com;
-Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
- 216.228.117.160 as permitted sender) receiver=protection.outlook.com;
- client-ip=216.228.117.160; helo=mail.nvidia.com; pr=C
-Received: from mail.nvidia.com (216.228.117.160) by
- BL02EPF00029927.mail.protection.outlook.com (10.167.249.52) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.159.10 via Frontend Transport; Mon, 22 Jun 2026 09:21:00 +0000
-Received: from rnnvmail201.nvidia.com (10.129.68.8) by mail.nvidia.com
- (10.129.200.66) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Mon, 22 Jun
- 2026 02:20:45 -0700
-Received: from fedora (10.126.231.37) by rnnvmail201.nvidia.com (10.129.68.8)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Mon, 22 Jun
- 2026 02:20:40 -0700
-References: <2e4d2f2b9efa7b0b32476947f63506cfe9568d1d.1778851656.git.petrm@nvidia.com>
- <2026061639-antennae-upstage-bd52@gregkh>
- <2026061610-lying-manor-2d57@gregkh> <871pe5i3v1.fsf@nvidia.com>
- <2026061754-patronage-wilt-e4fa@gregkh>
-User-agent: mu4e 1.8.14; emacs 30.2
-From: Petr Machata <petrm@nvidia.com>
-To: Greg KH <gregkh@linuxfoundation.org>
-CC: Petr Machata <petrm@nvidia.com>, Sasha Levin <sashal@kernel.org>,
-	<stable@vger.kernel.org>, Wojtek Wasko <wwasko@nvidia.com>, Mahesh Bandewar
-	<maheshb@google.com>, Shuah Khan <shuah@kernel.org>, Richard Cochran
-	<richardcochran@gmail.com>, Yong Wang <yongwang@nvidia.com>
-Subject: Re: [PATCH 6.1.y] Revert "selftest/ptp: update ptp selftest to
- exercise the gettimex options"
-Date: Mon, 22 Jun 2026 10:11:47 +0200
-In-Reply-To: <2026061754-patronage-wilt-e4fa@gregkh>
-Message-ID: <87h5mvhqxo.fsf@nvidia.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A717238E8C9
+	for <stable@vger.kernel.org>; Mon, 22 Jun 2026 08:13:48 +0000 (UTC)
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1782116031; cv=none; b=lKZm+pMGh+fYcSLVZlLyw5U492CHHCAcvxCOpE43ZjRMqDYS7mX47hAzIjxvWR37l/hlJzKE/2aJRJXomWVukMN44C0MDCBNOIi7Y9hnpk7ryPt9rB17GF5EO2MW/CNu9eAtxFyrlraJOozzW91NDI+9ZZnHaPKW1l5CuHn6rJE=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1782116031; c=relaxed/simple;
+	bh=F6H+rAEwAFlvo2vcoaq3mMaDhsIksTBUqphzpxP80WY=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=lnZI06ecKL/oM55jiLws34wr4Rfj21rWP9EluFpno3EPoa/3PKHwie7PEMd4Hjp1YOpyLmg3ibXO7s7n3VYSji+NX12ugysqDrT+i+lI/TvzK2/Q0zhiyPahKEvE4e90jFE8V4RPgMCb9qvRU4MSdr1KRN1rkKSt+Z1SpCuK2vs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=mYadQOo4; arc=none smtp.client-ip=209.85.128.52
+Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-490b9318997so27156165e9.2
+        for <stable@vger.kernel.org>; Mon, 22 Jun 2026 01:13:48 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1782116027; x=1782720827; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=y69DNLtkcPX106ySVX6ZlNH6S9rjQScn7EBr8UTU9k0=;
+        b=mYadQOo46NcgaU12CxB9GSPlIIegnCNLdCNhSOyW/I+Xy07v53GHjb50/R+GSFI+uR
+         YlfBTbDf95ZxaB/UL/7XxShjkXDQD2vQ09dYUezg8LsqE0eDEIUsFBaQut53YdNbx3eO
+         cJYu+JGbxn302NwD1+7xmLweKbs+aIfxkrSyQv2gQHvgLtNUfY5PPhFvCdz0vUe1cvi0
+         itW/cqtzbndpD86fPZZMZD03nuRNiJ6g1ijby3UiOPkjZXtsZwdDfCrmpkdXd6SM0zSO
+         Gj1NCfGLVSTpe5zsqhmplOlaFb5PhD8s1Jk+ifwjkZhxHZzFqL/da7BZ6D9tFxKu9DZp
+         YToA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1782116027; x=1782720827;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=y69DNLtkcPX106ySVX6ZlNH6S9rjQScn7EBr8UTU9k0=;
+        b=ecdr01WNA6C6OFkHj6XCNElMOr6yLSUQtJEoW36PCnMEvIm4rq5JOYFgFlxJ+F15wd
+         LBtTgc8wZjm5n5k6Sw0i5YUujWPhdTLklbvOSgkL2gGj84I0LB+tTZrl7P4kOIC3Lh04
+         wHdcrOeTY+u2dhvB7kLW96tBuxCu1APjZgWho63lXpTGOMPx4d4VVBpWjZpnxFJmCwNp
+         8mWQ0sIkk6aIaTt+Xdtj7gBE+DpgOZ09x8+cKUmMVGWrExycTZqTNfY24bnniYvCWlQU
+         /DKXKP7y8+jU7Ot4paRgRWL1sKf029k2x8qgkjiuHlyocHQEzszVCJ37EvXuRSvV0dOO
+         xfUQ==
+X-Forwarded-Encrypted: i=1; AFNElJ8CoOOaz1UGex7uQnQf/GANq5HoMWg0CR2sl9wuzmFlEofg54fY6I8Pa1853vi2INkMYtS/1HY=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxeMFMMXofq6UUGf5lvdkjuHZlyutJYum/LcYi4KSfc6bkoJjZy
+	ZmAzCuKesU079nWHdoWnRrxTZSXdLPHeZwEv0fQsBKvQiwOgCuceC/IE
+X-Gm-Gg: AfdE7cnuoQv6ClDAYwC5Dd0+DSb4lcIy93JsGGWHKmOFmYPGd9zKbAQY1bfqxmiO37R
+	ilMgToQ0dNGr657GjEk8C9iJbkTEM20P7Mp1lzz/fikgBLxpXioP/tRKBw9Qm8zvw03IQJMIVKJ
+	hR/8V/1DblX7fyzoTLZDRy9KJGAyC30mRISRsebRZg9wdOiHCT/q0S4TIewwDV7HJHP/94SPhtp
+	7ps2STNnXVsCMpw3sJayETcCWBXBRUIMgRD8oSTpIuKoxWUe8O+tl/E0Lr8UYbzy61wlM3mjXXX
+	c078Qy+KDdMvd+9FGJCEnmFqwYhRuLU7ke45CKJ60XoG6FeYiXUCCCrFCSaV15n5v4x4jmC2JUu
+	bXQUdSYoKEgtPPtVSVlMFERJOFSxx256HKwIvp3rMXeYyubzsK5NhbEzMwIXvgA6qqadKQiftHW
+	apFL3lnCJvp6P8h1DU4Jj4KOoAL4VXjMUDBgYbVEyhBb3DkoPATw==
+X-Received: by 2002:a05:600c:8719:b0:492:4c60:bfb8 with SMTP id 5b1f17b1804b1-4924c60bfdemr121648545e9.28.1782116026585;
+        Mon, 22 Jun 2026 01:13:46 -0700 (PDT)
+Received: from pumpkin (82-69-66-36.dsl.in-addr.zen.co.uk. [82.69.66.36])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4923fd30078sm274806595e9.7.2026.06.22.01.13.45
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 22 Jun 2026 01:13:45 -0700 (PDT)
+Date: Mon, 22 Jun 2026 09:13:44 +0100
+From: David Laight <david.laight.linux@gmail.com>
+To: David Hu <xuehaohu@google.com>
+Cc: Sumit Semwal <sumit.semwal@linaro.org>, "Christian =?UTF-8?B?S8O2bmln?="
+ <christian.koenig@amd.com>, Jason Gunthorpe <jgg@ziepe.ca>, Nicolin Chen
+ <nicolinc@nvidia.com>, Leon Romanovsky <leon@kernel.org>, Kevin Tian
+ <kevin.tian@intel.com>, Ankit Agrawal <ankita@nvidia.com>, Alex Williamson
+ <alex@shazbot.org>, linux-media@vger.kernel.org,
+ dri-devel@lists.freedesktop.org, linaro-mm-sig@lists.linaro.org,
+ linux-kernel@vger.kernel.org, iommu@lists.linux.dev, jmoroni@google.com,
+ praan@google.com, kpberry@google.com, sashiko-bot <sashiko-bot@kernel.org>,
+ stable@vger.kernel.org
+Subject: Re: [PATCH] dma-buf: Split sgl by largest page-aligned chunk
+Message-ID: <20260622091344.794e0d74@pumpkin>
+In-Reply-To: <20260621222130.1667453-1-xuehaohu@google.com>
+References: <20260621222130.1667453-1-xuehaohu@google.com>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; arm-unknown-linux-gnueabihf)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-ClientProxiedBy: rnnvmail201.nvidia.com (10.129.68.8) To
- rnnvmail201.nvidia.com (10.129.68.8)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BL02EPF00029927:EE_|IA0PPFF4B476A86:EE_
-X-MS-Office365-Filtering-Correlation-Id: f5413708-44f8-4b85-bed5-08ded03f937a
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|1800799024|23010399003|36860700016|82310400026|56012099006|11063799006|18002099003|22082099003|4143699003;
-X-Microsoft-Antispam-Message-Info:
-	7B6kLeoGeL3ssl7UjviozGgpvac8yP7A27OzL49oHpT5DhbtCVUht3T+ykNYb2i0fhbn3A/hklfaeN52HXjsvF17F76IemT7/xE7vLXwUFmDNgsoLcrNKieAdmruo6VQ1DWEk21sCgEfsr9fbeBOfLdKetQfbi/mqlNS3XaY+btKELpUAmdrK9xoaFxZfkdV6yojlcT/4rMTD94Bbqu/X7vAZUO+cJevz4XcVBAklhSY8s9edYp1ch90iGA3/B04xLZaNe2a3+jKwZAz5/o0GeiDq/Ai3FgdyEILCseJ0AMfwihZLwftq/yV+XeNCUPey2upumQhAlLOqnk8jJIfflF0Mogf28oIiNuEy19MakmRNYnHyMbuRv4STIdML2qPZMUyiuW70X8ZkfAKhD2++DZsi2S5P2wglhlCBzxAG1U+GL5OsEisWzeD53n7lcF+HAZ2rhVrrfemwTbypO25wmz4pSeVAwKuV5aNAwu53NNxYpaBVbS3yzdsrBNFdsZ9LlPetszbKhmfCX/RrhzjnJS5MLCK6RE4h7P47g02nihT8PsGO8j77HO9H2K8oEF2k0PKe1LS0KvCE8o5b5o2cqZ7ahZSbn90BdQV13rzm5RS4FKuIE5HkKedNdEmU0QS18bmUcmT1QfFvRnE4PzbLku/zhNjunSBVxIGIul3Tqr2Y99WGMyztVXtLZbfXyx5wjZD3FcCDPCdREZDHd52KQ==
-X-Forefront-Antispam-Report:
-	CIP:216.228.117.160;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge1.nvidia.com;CAT:NONE;SFS:(13230040)(376014)(1800799024)(23010399003)(36860700016)(82310400026)(56012099006)(11063799006)(18002099003)(22082099003)(4143699003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	494hmXeZy2bk/sifpvlWKpggmts924nhRcxiflvzWcxf/fLiEVHO5G0l8YX35Aha7OwE4QeJjajuYtNbJ4EO1fc7wvUHb46+3K226K5rJFhK2HyehZ7f6BaT2WzjHNzoSedRyfS+7KAZcRfHnMVCL7yCgLeKJ6C8L+gzu3QpCEbn8VK9koNM8OLhFVq01ZJdhZUnDbicY/ftkopaKISUnn1qjgJ/19JJxoSRPZ7s1tvUO0wHqozp+bvTYebdZ6ncPSY/hOTV36uiZ198xgt7XoXD0/j41qsIDsFXdh4KP6UZNPgb5JOmIVkcAkrYV06Kk4uvOd3hK35AOEEAEs5zpe6FcTWHAiY4+qa1W268/xf2SQiRvFBXpzc5kxYOIQo4ya0j+7i8TNulqttQIUwrDm2wH6CbefymfKk1v2R8vxT+DfhBbmx6zbd6YoXlxv0D
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 22 Jun 2026 09:21:00.7208
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: f5413708-44f8-4b85-bed5-08ded03f937a
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.160];Helo=[mail.nvidia.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	BL02EPF00029927.namprd02.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA0PPFF4B476A86
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-6.66 / 15.00];
-	WHITELIST_DMARC(-7.00)[nvidia.com:D:+];
-	ARC_REJECT(1.00)[cv is fail on i=2];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[nvidia.com,reject];
-	R_DKIM_ALLOW(-0.20)[Nvidia.com:s=selector2];
+X-Spamd-Result: default: False [-1.66 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_RHS_NOT_FQDN(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[nvidia.com,kernel.org,vger.kernel.org,google.com,gmail.com];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:gregkh@linuxfoundation.org,m:petrm@nvidia.com,m:sashal@kernel.org,m:stable@vger.kernel.org,m:wwasko@nvidia.com,m:maheshb@google.com,m:shuah@kernel.org,m:richardcochran@gmail.com,m:yongwang@nvidia.com,s:lists@lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-267637-lists,stable=lfdr.de];
-	FORGED_SENDER(0.00)[petrm@nvidia.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[Nvidia.com:+];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[petrm@nvidia.com,stable@vger.kernel.org];
+	RCPT_COUNT_TWELVE(0.00)[19];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_SENDER(0.00)[davidlaightlinux@gmail.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS(0.00)[m:xuehaohu@google.com,m:sumit.semwal@linaro.org,m:christian.koenig@amd.com,m:jgg@ziepe.ca,m:nicolinc@nvidia.com,m:leon@kernel.org,m:kevin.tian@intel.com,m:ankita@nvidia.com,m:alex@shazbot.org,m:linux-media@vger.kernel.org,m:dri-devel@lists.freedesktop.org,m:linaro-mm-sig@lists.linaro.org,m:linux-kernel@vger.kernel.org,m:iommu@lists.linux.dev,m:jmoroni@google.com,m:praan@google.com,m:kpberry@google.com,m:sashiko-bot@kernel.org,m:stable@vger.kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-267621-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[davidlaightlinux@gmail.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[gmail.com:+];
 	ALIAS_RESOLVED(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	TAGGED_RCPT(0.00)[stable];
-	RCVD_COUNT_SEVEN(0.00)[8]
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 3DBF76AE4F7
+X-Rspamd-Queue-Id: 503526ADA1B
+
+On Sun, 21 Jun 2026 22:21:30 +0000
+David Hu <xuehaohu@google.com> wrote:
+
+> Currently, `fill_sg_entry()` splits the scatterlist using `UINT_MAX`.
+> This creates a non-page-aligned DMA length (`0xFFFFFFFF`) for the
+> first entry, resulting in non-page-aligned DMA addresses for all
+> subsequent entries.
+
+How did you find this?
+It requires a single buffer over 4GB - seems highly unlikely.
 
 
-Greg KH <gregkh@linuxfoundation.org> writes:
+> 
+> While the underlying IOMMU mapping may be contiguous, hardware
+> DMA engines often require explicit address alignment (e.g., page,
+> cacheline, or storage sector boundaries). Passing unaligned
+> addresses and lengths can cause explicit failures in DMA descriptor
+> creation or silent data corruption if lower unaligned bits are
+> truncated.
+> 
+> Fix this by splitting the scatterlist by the largest possible page
+> aligned chunk within `UINT_MAX` (`ALIGN_DOWN(UINT_MAX, PAGE_SIZE)`).
+> This ensures all scatterlist DMA addresses and lengths remain page
+> aligned and satisfy hardware constraints.
 
-> On Wed, Jun 17, 2026 at 05:22:44PM +0200, Petr Machata wrote:
->> 
->> Greg KH <gregkh@linuxfoundation.org> writes:
->> 
->> > On Tue, Jun 16, 2026 at 06:58:53PM +0530, Greg KH wrote:
->> >> On Fri, May 15, 2026 at 03:53:53PM +0200, Petr Machata wrote:
->> >> > This reverts commit 06954f715deb0ed053f8bf85547370db6870225d, which is
->> >> > commit 3d07b691ee707c00afaf365440975e81bb96cd9b upstream.
->> >> > 
->> >> > The cited commit allows testptp to set a configurable clock_id. That is
->> >> > done via a PTP_SYS_OFFSET_EXTENDED ioctl call, whose argument is struct
->> >> > ptp_sys_offset_extended, where the clock_id is set. However, this Linux
->> >> > version does not support the ptp_sys_offset_extended.clockid field, and
->> >> > the test case cannot be built against this tree's own UAPI headers.
->> >> > 
->> >> > The reverted commit was introduced to resolve a missing dependency of
->> >> > commit c6dc458227a3 ("testptp: Add option to open PHC in readonly mode"),
->> >> > which is 76868642e427 upstream. My suspicion is that the only conflict
->> >> > between the two is the getopt string, and there is otherwise no direct
->> >> > dependency between the two.
->> >> > 
->> >> > This patch therefore reverts the cited commit, with hand-resolving the
->> >> > getopt string to include 'r' (as introduced by c6dc458227a3), but not
->> >> > 'y' (introduced by 06954f715deb).
->> >> > 
->> >> > Reported-by: Yong Wang <yongwang@nvidia.com>
->> >> > Signed-off-by: Petr Machata <petrm@nvidia.com>
->> >> > ---
->> >> > 
->> >> > Note: the issue appears to exist in 6.6, 6.12 and 6.18 as well.
->> >> >       Depending on your preference, I can prepare separate
->> >> >       patches for those branches as well. Let me know.
->> >> 
->> >> No need, I did it now for those branches too, thanks!
->> >
->> > Oops, nope, spoke too soon, 6.18.y still needs it, this one doesn't
->> > apply there.  Can you send that revert?
->> 
->> My bad, 6.18 does appear to have the field already.
->> In fact, looking at 6.12, I see it as well.
->
-> So should this be dropped from 6.12?
+It would almost certainly better to spilt into 2G chunks.
+That removes any need for any divisions.
 
-Yes.
+> Page-aligned entries allow the system to cleanly chunk payloads into
+> PCIe MaxPayloadSize (MPS) (e.g., 128 bytes, 256 bytes, 512 bytes).
+> As a result, this may help reduce TLP fragmentation in P2P transfers
+> and alleviate potential congestion within a logical PCIe switch
+> partition, especially when Relaxed Ordering is not possible due to
+> hardware constraints.
+> 
+> Reported-by: sashiko-bot <sashiko-bot@kernel.org>
+> Closes: https://lore.kernel.org/all/20260609165431.778061F00893@smtp.kernel.org/
+> Fixes: 3aa31a8bb11e ("dma-buf: provide phys_vec to scatter-gather mapping routine")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: David Hu <xuehaohu@google.com>
+> ---
+>  drivers/dma-buf/dma-buf-mapping.c | 13 ++++++++-----
+>  1 file changed, 8 insertions(+), 5 deletions(-)
+> 
+> diff --git a/drivers/dma-buf/dma-buf-mapping.c b/drivers/dma-buf/dma-buf-mapping.c
+> index 794acff2546a..f2bde38fdb1f 100644
+> --- a/drivers/dma-buf/dma-buf-mapping.c
+> +++ b/drivers/dma-buf/dma-buf-mapping.c
+> @@ -5,6 +5,9 @@
+>   */
+>  #include <linux/dma-buf-mapping.h>
+>  #include <linux/dma-resv.h>
+> +#include <linux/align.h>
+> +
+> +#define MAX_ENT_SZ ALIGN_DOWN(UINT_MAX, PAGE_SIZE)
 
-I was AFK Thu+Fri last week, and it's now out including the revert.
-I'll send a revert revert.
+>  
+>  static struct scatterlist *fill_sg_entry(struct scatterlist *sgl, size_t length,
+>  					 dma_addr_t addr)
+> @@ -12,9 +15,9 @@ static struct scatterlist *fill_sg_entry(struct scatterlist *sgl, size_t length,
+>  	unsigned int len, nents;
+>  	int i;
+>  
+> -	nents = DIV_ROUND_UP(length, UINT_MAX);
+> +	nents = DIV_ROUND_UP(length, MAX_ENT_SZ);
+>  	for (i = 0; i < nents; i++) {
+
+Why not change that to 'while (length) {' to avoid the division above.
+
+> -		len = min_t(size_t, length, UINT_MAX);
+> +		len = min_t(size_t, length, MAX_ENT_SZ);
+
+I bet that doesn't need to be min_t()
+
+>  		length -= len;
+>  		/*
+>  		 * DMABUF abuses scatterlist to create a scatterlist
+> @@ -24,7 +27,7 @@ static struct scatterlist *fill_sg_entry(struct scatterlist *sgl, size_t length,
+>  		 * does not require the CPU list for mapping or unmapping.
+>  		 */
+>  		sg_set_page(sgl, NULL, 0, 0);
+> -		sg_dma_address(sgl) = addr + (dma_addr_t)i * UINT_MAX;
+> +		sg_dma_address(sgl) = addr + (dma_addr_t)i * MAX_ENT_SZ;
+>  		sg_dma_len(sgl) = len;
+
+Replace the multiply with 'addr += len'.
+
+-- David
+
+>  		sgl = sg_next(sgl);
+>  	}
+> @@ -41,14 +44,14 @@ static unsigned int calc_sg_nents(struct dma_iova_state *state,
+>  
+>  	if (!state || !dma_use_iova(state)) {
+>  		for (i = 0; i < nr_ranges; i++)
+> -			nents += DIV_ROUND_UP(phys_vec[i].len, UINT_MAX);
+> +			nents += DIV_ROUND_UP(phys_vec[i].len, MAX_ENT_SZ);
+>  	} else {
+>  		/*
+>  		 * In IOVA case, there is only one SG entry which spans
+>  		 * for whole IOVA address space, but we need to make sure
+>  		 * that it fits sg->length, maybe we need more.
+>  		 */
+> -		nents = DIV_ROUND_UP(size, UINT_MAX);
+> +		nents = DIV_ROUND_UP(size, MAX_ENT_SZ);
+>  	}
+>  
+>  	return nents;
+
 
