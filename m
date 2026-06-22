@@ -1,305 +1,325 @@
-Return-Path: <stable+bounces-267714-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-267718-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id pu9lE4g3OWrsogcAu9opvQ
-	(envelope-from <stable+bounces-267714-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 22 Jun 2026 15:24:24 +0200
+	id NJrtIqc3OWr2ogcAu9opvQ
+	(envelope-from <stable+bounces-267718-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 22 Jun 2026 15:24:55 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9EAB26AFD05
-	for <lists+stable@lfdr.de>; Mon, 22 Jun 2026 15:24:23 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 221B96AFD25
+	for <lists+stable@lfdr.de>; Mon, 22 Jun 2026 15:24:55 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=lgwRbRr5;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-267714-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-267714-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("subspace.kernel.org:s=arc-20240116:i=2")
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=rxsgRj0U;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-267718-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-267718-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=reject) header.from=nvidia.com;
+	arc=reject ("cv is fail on i=2")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 04DEE302F599
-	for <lists+stable@lfdr.de>; Mon, 22 Jun 2026 13:24:01 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 1481F30117A0
+	for <lists+stable@lfdr.de>; Mon, 22 Jun 2026 13:24:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD5C83AA195;
-	Mon, 22 Jun 2026 13:24:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B196345CBF;
+	Mon, 22 Jun 2026 13:24:51 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lf1-f50.google.com (mail-lf1-f50.google.com [209.85.167.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from BN8PR05CU002.outbound.protection.outlook.com (mail-eastus2azon11011060.outbound.protection.outlook.com [52.101.57.60])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B3203B3BF5
-	for <stable@vger.kernel.org>; Mon, 22 Jun 2026 13:23:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D118E379C57;
+	Mon, 22 Jun 2026 13:24:49 +0000 (UTC)
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782134640; cv=pass; b=NNJq9yPIN39gkHcMRYPWPUgrjQpluhxBtHSUHb4Bm1eMUR6DbPNg4CzJ07SaT8ryCBQO9TUekyj9zP1zV/COxZwhQEOjhVfQ2EBdGL5WLcdkViCNlTcgPyZH3F/RI+4FSSQ/vz4wIcFWuyE+/NzKxpjhcvu2K7dJizyBLrxTMGo=
+	t=1782134691; cv=fail; b=Nvwy0vw/NcB0gio+pftxbic+xLA7peeClLIDcxj+bXe/Uu99MFCHfLQCxEoltl/YREc2kionjbSZDGRWZpOmYI722FkVe0+sv7ni9ndtQRez1TEOzYoge2QY304Asxjnso16OY2I8zZm4Bt/6XFGnRlCZ27kGUssbLIZA6Bw7Tk=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782134640; c=relaxed/simple;
-	bh=cqOwlRB2cYciytVAI/aGHMBa2Mc4vzqaQ2ijpe+WEQM=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=LRE/CFiC7KZCJve7Vd20i+CDBLROC0JQktVkvgFGDBv6kyKnVvJsJ1HcRBBmRyTBasPQPGN89G8foXZGdwgKfYy5X37uQ3HA5wmvb4+BzpzT/YYPq9C6hyx1PRQ6UIVFahmstVBj/OOrkuXQwhf0mBmOiNCAAr/E3WjhUFgctDU=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=lgwRbRr5; arc=pass smtp.client-ip=209.85.167.50
-Received: by mail-lf1-f50.google.com with SMTP id 2adb3069b0e04-5aa7a7ad4d3so3456760e87.1
-        for <stable@vger.kernel.org>; Mon, 22 Jun 2026 06:23:58 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1782134636; cv=none;
-        d=google.com; s=arc-20240605;
-        b=eJav2NGPzMCjMP31j0VTRwnpnw5FgM2nBWcvU7+Wmh/DFNGNZr+L56IggkjMt9y8Ok
-         LHquw4MYb7fKkdJugRPInp/sPPX4QAokd5LIDLe7koBmTYBbEq5hcERXvZhF7u5eCHld
-         hfrlPR5RK1II2Jh7FNFKwECDx2LiPm/LBqXm1r6HOYq9mR3N+pdr1yX01jHof16fVVAE
-         pmwUyKA6fNC7+6JfbA1aN5KddSgdeEvuEH/BOozyeMw516fnIaF/lqwcYU2yCsHkZyhh
-         vkGD4bw4zTlM825cMnXImC9R2DqIQ2yAgzyuk27xfCEGtl3GhuFHZzR4v1LX6WwQ/tYG
-         OHMQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=rU+oHCPcXn9BhjAvef88TGQxC669FX2Q4BW71gODPzw=;
-        fh=vCDFjBqGLzIfFo8G4II118NfKAHThdsq1yagIVuoe2Q=;
-        b=DZ55ZcwxPtKB8rh143nfqz6I5JbwZHfJ2sbfV5n7X3UzLFueuuB/6Odmn9i23d0KHx
-         Vta4DPXprVJ7OaTqzz/SG+gRVPU2YBMi2kNOPq+ITpHnmaU//u488M4p2nduIi/Jp0Cf
-         BVsxMsgdsewWRirUaMbRxt267FrShQs7VZSFiaNDU667n45/ERehS3g/l1S5cgR7wPcB
-         Vm0eLsIel604h2pMezTVVj1aAqC5Y7NJG5wo7Il/hyckXJm7H1v1teKYREMJDmyM+kFR
-         YSKMZvwxXS7qWid4ZrKwtyln2/TFxeEX5xYB22JpjVbag/jwqdQrx68PG5feZ/SQ83I4
-         rSeg==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1782134636; x=1782739436; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=rU+oHCPcXn9BhjAvef88TGQxC669FX2Q4BW71gODPzw=;
-        b=lgwRbRr5CMtzkdfyF6e/lOJmHZnG/e1tbAfOvy7+V0X7/8CbTgm+61wS8mibESdJ0a
-         W7xtUk+pz+CkvmApg2mutTmp7roWRNNF1z+VaMTdgaS1BI1/dAwy24Xk3IofTY4RSCtb
-         tma8cfvJMA7vYOzKBWBc6h6bqtIiF9U0x/Kdu90rHMJZENyqxEhZIEygGhZY2moobRTf
-         6OPHMWmoEq1EuQ0Jf1BCjB6MYTp8v/hLa1pilYkH3lFM8qNq11CsDwzLZCQ/weZnlPA+
-         pt0Zyf2xM0z3T/KUpaUQHxi10QRo0FSq7ask9dp3Slnpv8R3wXIOaH1KXI+EwhzeaM0z
-         Sbtw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782134636; x=1782739436;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=rU+oHCPcXn9BhjAvef88TGQxC669FX2Q4BW71gODPzw=;
-        b=PEKa7i7Dgm8wyIrhBYlAcJUybPAzt1p8qqgWMkM1iAJDL/PHcCjcyfUm/t4MLvexns
-         9KQ4POs4Thba+eFhu0x4CW+iyStWJs0Zoyw6mCedW4E5BDhsmdK+A/VC0Vg/wzE/HJZz
-         HW58vHJzTtPU9omfEjW8Q93cu/fTtteKKMhUoQpmbeaO5efs3BEQyzbf10JsyHDuWkvh
-         cv9tCp8/tqllpN/vSuOWYKwbk87f8o70d7MYWUzGXnoNKbS8PhRcTFod9JaigZWVvBSt
-         j9knFDsBuwdX3TdDJt9Y2j4GpLhd8/WvL7sdaQo54tbP4m/cxZISa0K/s9O2pv79JAdx
-         LH5w==
-X-Forwarded-Encrypted: i=1; AFNElJ8cE0qSvy4kYbompGfGhUYIczGG328X0T4bnT9Ru0jU1soaKm5eiXEqucy4oPCc5cNOWGEQwcw=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzlaASvzlOR8n/bPQNvXIUJ0uf7yL0FqgGJ1HgNDrizz32x+hC7
-	F6H9HG+KOqNglX3uyRmAQv/65tZKOg6j1pOaxeaTLbQQene2MWOanih32tcv2YHQoTEcHNaPLNB
-	fc3Fg/gc9oHl3XbshPxJ/MwNbIoak8nc=
-X-Gm-Gg: AfdE7cn0vrIj1KLTkRHRx2b/rEo5X4u3z3FNpfyBywY0qjlREiNrwxJrER8ibc8auft
-	tOex48PU6ki3SWp5mlMhC5bGCTvvAoO0ynXgM7KGN8/42bTTFBDKvuujcg7/MHtdJjYvd+6JFxb
-	0GuRdCSfHhT16/Z9yuHR4YqDDj9mvpgc7/kwif2N85ReFdIIYGjXZ+qYyvhWmCSr1O0LXJYVvK5
-	RyNCGhRrCO1G/TEqgebSeHFetNwCpo08wmxl+/Uo0BaQkaA7jDoIyrPa3HyczkHHGaVm88H9w==
-X-Received: by 2002:a05:6512:2c99:b0:5ad:4f16:2af8 with SMTP id
- 2adb3069b0e04-5ad576e171emr3796648e87.16.1782134636131; Mon, 22 Jun 2026
- 06:23:56 -0700 (PDT)
+	s=arc-20240116; t=1782134691; c=relaxed/simple;
+	bh=7njEvVlv5BCQG5G0tHk/WqPOD4iBYf2cmW5MG/wpk0c=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=CacBtt13Cwk0mJl8E+jUX5+bHYJPKlyTu5nqM1+P4XIU5WE/0MF7mZgv2EE8N/LbDZsHZ3GP1fzVeIQgw/EXXrcU0RJFjBlBvNXO0yX18vb0OqgmtHotRbjNfJKYYNypN8iM1Ij6D48wSLyjGumRclF4KCfBXO7ob+STPb4Z/Ms=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=rxsgRj0U; arc=fail smtp.client-ip=52.101.57.60
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=iWfOfVgwVCjTkFCYcxoaNiZDZWsPr9ilD+3ZAEtw4HkYnfGps7GhTEhe6K5xXH1eGhZeE+qf6gaRhBtYTS2ro7w8F73IgfbqSJJw9yTdVwJlubWZ8Sjry0Nl0AQkGME6Zox1FMhAic8t1T13VxQQmkEEqptBq/1vWiS927i2QR611llnmKBaNOiMymh930ViEvK5OQocwCEWYw8GR92wcuTx1GJbik7DBb6429IjbsH7qR2w9bOFv2ZOw5zyMzvm83a3NnHooBds5biitIWyZYR/QCVqboveQRDt6LhbVWZOaSi8yrYOZFpxfa5jfZEhUAEgktdkPvlP/ZOim3Mh1Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=4rUXEZgcq9Y2E/3aP9SFG9L0DowPvlknkAD3D4G0Ef0=;
+ b=GIyZQfqrQCqXbd7VttROwv2sr9xZ3b1t5+wAAmd8fav0hpRtPyVt6fj4iL100APbuOQIEzGPI8LcmGsmQT6h//d5wFRy+ugs16ci6h/Z8vQOdzOdbWr8x9lusGdY54+xzUiFRszpKczm1RZdNWQshhzK67sMDulQ2Ojv88YzZy0ToH/fGEjPDsKN+IqICsr0S9ozywdKgMEKrSGegLDvklHdaIiIPkkn0ij29SZlmp9cZHtyqvkH6J6w4RLYKl+2p66DhaYLPfAxtI9SZlPELGCYAUD8z1Y9QmunSTCEF2gA3N2bu4m4BzD1/L73I47DBJX5f4ZWfB3RltIr1UhJWQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=4rUXEZgcq9Y2E/3aP9SFG9L0DowPvlknkAD3D4G0Ef0=;
+ b=rxsgRj0UYfvp+o3kSoUF9DoPRvEbl7GnVtpPs28gmQ+8n4Fn7GRnsCCUecPGEGktHWWnpGmTMB0STh++mzmagpelA7Jb6sAs9Yn1JpG+4XOrmc3Fwa7mAIufLmoxTrcVHRZh5+1Dv0uKFNod/TGWoey2NNcajD6T4emorv02Nkomb3ijFMBvEpIYQlC3bEA1vWZdMXwzzC8aRG5vd2rgryzSfRCpW6RojqdHpHwq64h43yEZ3zS+QLZUQT5X1OIIe8OnlCqxTQTJyzE8h1ABkZkYSv7w9Vm6q38KzgvaUXRDuClusXsEa4MCr+DFZJ7A86rME/bqpQIYqvMySQu4AA==
+Received: from DS2PR12MB9750.namprd12.prod.outlook.com (2603:10b6:8:2b0::12)
+ by CH3PR12MB7739.namprd12.prod.outlook.com (2603:10b6:610:151::22) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.139.19; Mon, 22 Jun
+ 2026 13:24:44 +0000
+Received: from DS2PR12MB9750.namprd12.prod.outlook.com
+ ([fe80::56a8:d6bf:e24c:b391]) by DS2PR12MB9750.namprd12.prod.outlook.com
+ ([fe80::56a8:d6bf:e24c:b391%6]) with mapi id 15.21.0139.009; Mon, 22 Jun 2026
+ 13:24:44 +0000
+Message-ID: <169ef7cc-e1fe-46d6-95ca-0f3514e806c0@nvidia.com>
+Date: Mon, 22 Jun 2026 14:24:40 +0100
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] usb: gadget: tegra-xudc: drain EP pipeline before
+ dma_unmap
+To: Vishal Kumar <vishalmimani008@gmail.com>, linux-usb@vger.kernel.org
+Cc: gregkh@linuxfoundation.org, thierry.reding@gmail.com,
+ linux-tegra@vger.kernel.org, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org
+References: <20260606024011.1160110-1-vishalmimani008@gmail.com>
+From: Jon Hunter <jonathanh@nvidia.com>
+Content-Language: en-US
+In-Reply-To: <20260606024011.1160110-1-vishalmimani008@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: FR2P281CA0077.DEUP281.PROD.OUTLOOK.COM
+ (2603:10a6:d10:9a::14) To DS2PR12MB9750.namprd12.prod.outlook.com
+ (2603:10b6:8:2b0::12)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260618100503.2601790-1-qiwenjie@xiaomi.com> <4354654f-3aca-40a8-bc88-23e540ee5aec@kernel.org>
-In-Reply-To: <4354654f-3aca-40a8-bc88-23e540ee5aec@kernel.org>
-From: Wenjie Qi <qwjhust@gmail.com>
-Date: Mon, 22 Jun 2026 21:23:43 +0800
-X-Gm-Features: AVVi8CdwS8_Q5RTN8GidR2JIEHPajLBKvISYeuzADxiGJrCeQOFsijQNHvGKnR4
-Message-ID: <CAGFpFsQoZSB_YiCrJcZ31OiFtCFi03rSHKbxP7qArRFvH++FPw@mail.gmail.com>
-Subject: Re: [PATCH v7] f2fs: use post-decrement count for cp_wait wakeup
-To: Chao Yu <chao@kernel.org>
-Cc: jaegeuk@kernel.org, geoo115@gmail.com, stable@vger.kernel.org, 
-	linux-f2fs-devel@lists.sourceforge.net, linux-kernel@vger.kernel.org, 
-	qiwenjie@xiaomi.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DS2PR12MB9750:EE_|CH3PR12MB7739:EE_
+X-MS-Office365-Filtering-Correlation-Id: e2694c70-b1c0-40e7-2f7f-08ded0619fd8
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|23010399003|1800799024|376014|366016|10070799003|18002099003|22082099003|11063799006|6133799003|56012099006;
+X-Microsoft-Antispam-Message-Info:
+	fWWolRiyBuNlAIkMFEmKIp2th7yoOCVN1CJsannU4Bcld4ZDhB4YY10/1Qg6RyEt0gLetNL/2nQEwikh9R9lF4IV1CJr+1HpDnyGOKymdRwMQ/4/mQEeYTvGonEfn+vYbC7oEFIORCqEqpxOUTs1mJqN6ALmAHji025p7n4JVYQ5GqJoWbT1eVcmeGiJSrSdcBhIb0TOdfF4fXiYkZ1wrc+kxS++sMpTC+MKomR69gy7HBBOFzyeidGAjNaDpvbYp/Ssa2zJ17+iLJ9UcsN0mlgGBS8uhrEmdkFWsJj2uCUr8hU5QY2iTBg8Qih+nPGFPyxiQdfYyveBNMEhPs5sKFkwW0DoPchtEi7kmpxI5GyHZQwHrTDX+717XlPaZHUUC/ZzGXFCXGTt4GJjx+8TfqR2HPH3MSlU/Sw2Rl/+CN1DthMXTUw1i5h1H1/2IdZZ6IRmlvZ8ROiolJyCO55jaLFsUTFdfJwBvZ0JeYoD4p6jE+oNRuk8i2lvF53Xu3pKoxLN35yKKcuSTcbqp2EOwKclySxo6TcKGNiEuwNNEsoSgMZoWfZPOc956TEzHsTfSY+ScQ9866JWFkkvcXGzhIzJ7HDjKWx34wT/9PgOf+QZFZuQpSfyfJvNztwTnnbNyt2Zza4IB8v83aJoVZyUT6K/r+EyKOP3+UncE2iy3J4=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS2PR12MB9750.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(1800799024)(376014)(366016)(10070799003)(18002099003)(22082099003)(11063799006)(6133799003)(56012099006);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?MWd4K25GSTFqVm5idHF3Sk9KWmdKRWxnYUVuUjBCTU5iMFFxaWVzUEJHL0VC?=
+ =?utf-8?B?N1I1bkFWTjh6NFVPRGtQbi95WlFaMDNrV0xpWi9rcmtZL1ZBQ3J5ZTdwZWxi?=
+ =?utf-8?B?U2lYem4zN1BySktBREp0T2lteFQxeFIwWVJzMUNiUUN4bmJISG1YTkJ0dnpK?=
+ =?utf-8?B?bjlBbk9vZWthTEFCRDhjZ0xqbkFVcGo2U3FZNHl3TlZtU0VtVDVXa2daQ1BO?=
+ =?utf-8?B?TmZTeFNpUkI3aGd6TVZjcXlYdU9zZkZRYTVpVVJXZVM4Tk90UitEK1l0VEJo?=
+ =?utf-8?B?VGZXOTFGamgxaVdnT1hPMEFiR2ZUN0FpYk1veDlqRDBWcEVyWVNEVEhZRDQ3?=
+ =?utf-8?B?cHEwR3VZcVYwMTJFamxwWFNSL3VJSjNUUHVDVVFjZjZ4a1loa1hFaTNhWEtB?=
+ =?utf-8?B?NXRvZ2FUUng4RHV0OWRHaXQvTFZvN0RTYTN2Mzg3UWpWemVTYSswT2Jadkkz?=
+ =?utf-8?B?TlpZS0wycHNtZXZoZTh1K0J4eG5ic2Z2UC9xYlNkVHJ4dmVkNEpuZU9lMzR0?=
+ =?utf-8?B?Uml2bHdQK2ttdXlKaHpoRWFNQzJnbDR1WFk0MlV6eUV5ckdYUTl5Q1hJck1n?=
+ =?utf-8?B?YW12WjljZHcxdlZBVWVaYjJza1p2S1ErSDZKS096dVZ2a0NwR1RZKzlkQWx3?=
+ =?utf-8?B?cVcwajhqZXVENUxHNU0zb251bytiZnVxcDZqYStwTU1iZHBuZTcxTDd6alBF?=
+ =?utf-8?B?VU5JRTFob1lZcDR0cmMwWm1oeTY1VFhvQWFiaTNPN1lnekdZNnllNWZuRk9O?=
+ =?utf-8?B?ZGVSZzM0d1dEQWR1VVI4VFh1a2FxMVhvUXFsMkFBbkZJOVQ5dEtUbWhWa0w5?=
+ =?utf-8?B?cmtOWG5aS0pQU3hKQ1VXaFFIa2dWZGJkU3ZndGwvOXZ6UjZWeFFVMjhtMmhl?=
+ =?utf-8?B?clB6cGlDQVViQ1YrMk4wS2pFNkNhZ2MwL1UyV21ESit1T09hbFNCMGFIcXZ6?=
+ =?utf-8?B?MmlWUnJYaUh1OTRhSE9icURKZFJiRlEwY0F2U0x6SWJYWGgvYmN3TGZZZVNI?=
+ =?utf-8?B?SWl5a2R0TVZVUE83N25uYWxGb0xXb0RSRUV0b2kxOTBnSHVVclM4WitJRnkr?=
+ =?utf-8?B?b2pQcVdwMDhCN2R6UHExMWtleitOYjJOZkZUbjJzOXY0bThQczF6OVA1OFhw?=
+ =?utf-8?B?NGRHblZOekhzM2JaVU95NjJ0RDNYVDVJck5Wd0lJUkpwdVJsT3J0TzA2MWhY?=
+ =?utf-8?B?emRaUWc5aktHdzBoczY1OEUzOEkzc3VrSWVadHpEQnlJNDcvb2JYU0U5ZTk4?=
+ =?utf-8?B?S3JXMjJDME1ZejFEU1orMytzN1A0dG15Umt6RVdyS3Fra0hYOC9JRTdGWWd3?=
+ =?utf-8?B?T0p4V0pEM1phUEdMbzlYVU5qQ1RqR2FtOFBvMnM1SW1XbjVUR2xGTWs0UDJu?=
+ =?utf-8?B?dmRBa1hiQ2VsK0FlTlRtTzNUQTNqRWFqQUdsMTdQZkhIakR6MEhOV0Fxdmwv?=
+ =?utf-8?B?TkJjenhwY2pEV1ZCWlR0cmVxSjQ4WnR3WUliL2M1RkdPVFN1MFA2TE8yR1JB?=
+ =?utf-8?B?aEhyNVFQeHRsRkRWanBWOHBCUjR0YlVXV09CYmhUUUx6eEF3Si8wWkNtcjFr?=
+ =?utf-8?B?UGFjeTMyWTA3NGIvaU1xQW5jaGpJNC9ESVJ1U2p1R1ZQaDlGU05nYUlydkVp?=
+ =?utf-8?B?T2RIK0RMZDJLUFdMeGJENENRVkJwYUJqVHI4ckZWRzZVeDB4UVlwbGdpQ25W?=
+ =?utf-8?B?VFJCc215dFZXRnJqVmJPMDhPdmJ6VWEzTjlDcVA1bTFaclNxYlpwRFFnSE9U?=
+ =?utf-8?B?dTBNV3BodGZqWDN2VWU3WVByQSs0N1dGajBBRC9kaG5RSHcyZWVIMmUvbkZu?=
+ =?utf-8?B?Q2E3Y3NCQmVURHRhaXpsSGd0NHN6OVlOMksyNm4rSFBMc1F5MkNKV2NGR0Fi?=
+ =?utf-8?B?ZnpoNkVxcjNHdnhpQU9saENhazdQT2xuUkdhWUowM2lxZ2syaTJqRFdVQmdk?=
+ =?utf-8?B?dy9DU1hKYzdtamRvVUVXSHFDMGd0clEzTHJzVTF0R1ZuTWEzNzQvamdpalBt?=
+ =?utf-8?B?aHFJK2xRRWNaVHpaQUFJcmJOWld3Nk16Wi81K2lwK1FHdGVzWnVYQW1YYStz?=
+ =?utf-8?B?TnhFZk02dGhWcGk2SllxQmNTNk5xcEZ3cjBMZmRGRlRoaEZyZFBNN2xzUEJl?=
+ =?utf-8?B?T2F0akR3UHZ2VkxoNVFsSVpOdGVYRm1qcEZCOHJRN0dxWGYzb3NSODFFUTMv?=
+ =?utf-8?B?ZzdGMm1vQ0VyU2ZZbWpxUzZRQlIyNy9oU1VkdW9CN2dGa2hoeHVlUkVWVzhX?=
+ =?utf-8?B?c1NyTkQ2U0ZCYndndkwrTjl3R25SaEdGdXREU3hMdlhPZVJmeGZjb3NVNk9t?=
+ =?utf-8?B?QlJnZCtpalEvMG1tcG95NGpxWkg5aUlXY2wycUQ1Z0RZL05rWTNyN1FFZ3Vz?=
+ =?utf-8?Q?PYVcwPIXkFlevmBAwIMafGTcixXJ+Us0PoKm+oJRSOiYy?=
+X-MS-Exchange-AntiSpam-MessageData-1: vFw2Tm0mO0E4iQ==
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: e2694c70-b1c0-40e7-2f7f-08ded0619fd8
+X-MS-Exchange-CrossTenant-AuthSource: DS2PR12MB9750.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 22 Jun 2026 13:24:44.7555
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 5n87VpZyA5cxB3JgnvmEOsGgfKX1Ci5Ix6o6ixBwyEONEbbOTlfd8h16bLP6YPilhf2ahVWLe0Pny3KGGWzBrA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR12MB7739
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-2.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+X-Spamd-Result: default: False [-7.16 / 15.00];
+	WHITELIST_DMARC(-7.00)[nvidia.com:D:+];
+	ARC_REJECT(1.00)[cv is fail on i=2];
+	DMARC_POLICY_ALLOW(-0.50)[nvidia.com,reject];
+	R_DKIM_ALLOW(-0.20)[Nvidia.com:s=selector2];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,gmail.com,vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-267718-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[kernel.org,gmail.com,vger.kernel.org,lists.sourceforge.net,xiaomi.com];
-	TAGGED_FROM(0.00)[bounces-267714-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:chao@kernel.org,m:jaegeuk@kernel.org,m:geoo115@gmail.com,m:stable@vger.kernel.org,m:linux-f2fs-devel@lists.sourceforge.net,m:linux-kernel@vger.kernel.org,m:qiwenjie@xiaomi.com,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[qwjhust@gmail.com,stable@vger.kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	RCVD_COUNT_THREE(0.00)[4];
+	FREEMAIL_TO(0.00)[gmail.com,vger.kernel.org];
 	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:vishalmimani008@gmail.com,m:linux-usb@vger.kernel.org,m:gregkh@linuxfoundation.org,m:thierry.reding@gmail.com,m:linux-tegra@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,m:thierryreding@gmail.com,s:lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[gmail.com:+];
+	FORGED_SENDER(0.00)[jonathanh@nvidia.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[Nvidia.com:+];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_FORWARDING(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[qwjhust@gmail.com,stable@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[jonathanh@nvidia.com,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MID_RHS_MATCH_FROMTLD(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	ALIAS_RESOLVED(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCPT_COUNT_SEVEN(0.00)[7];
-	MISSING_XM_UA(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FREEMAIL_FROM(0.00)[gmail.com]
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 9EAB26AFD05
+X-Rspamd-Queue-Id: 221B96AFD25
 
-  The UAF scenario described in v1/v2 does not look valid. The wakeup is
-  already before folio_end_writeback(), and I do not see enough basis to
-  claim that sbi->cp_wait can be freed at that point.
 
-  After your comments, v3-v7 drifted to a different issue: using the
-  post-decrement count to avoid missing the zero transition when another
-  F2FS_WB_CP_DATA writeback is submitted before the second get_pages()
-  check. That is not the same issue as the v1/v2 UAF description.
 
-  Please drop this patch. If you think the wakeup-latency issue is
-still worth fixing
-  separately, I can send a new patch without the UAF wording, Fixes
-tag, or stable Cc.
+On 06/06/2026 03:40, Vishal Kumar wrote:
+> On Tegra186/194/234 the XUDC posts a transfer-completion event when the
+> DMA write is dispatched to the AXI interconnect, before the store is
+> committed to memory.  Under SMMU strict mode dma_unmap() synchronously
+> invalidates the IOVA TLB entry.  An in-flight AXI write to the
+> just-unmapped IOVA triggers a translation fault (fsr=0x402) that
+> permanently wedges the bulk-OUT endpoint.
+> 
+> Observed on Tegra234 (Jetson Orin Nano) at ~170 MB/s USB-NCM transfers:
+> 
+>    arm-smmu 8000000.iommu: Unhandled context fault: fsr=0x402,
+>      iova=0xfffb5000, cbfrsynra=0x100f, cb=3
+>    tegra-mc 2c00000.memory-controller: EMEM address decode error
+> 
+> cbfrsynra=0x100f identifies XUDC (StreamID 0x0f per DT), cb=3 is iommu
+> group 4 (3550000.usb).  fsr=0x402 is a translation fault on a DMA write.
+> 
+> Fix: poll EP_THREAD_ACTIVE before calling usb_gadget_unmap_request() for
+> non-control endpoints.  EP_THREAD_ACTIVE clearing is the hardware's
+> guarantee that the endpoint sequencer is idle and all AXI transactions
+> have completed, so the subsequent TLB invalidation cannot race an
+> in-flight write.
+> 
+> Also change ep_wait_for_inactive() to return the readl_poll_timeout()
+> status so callers can detect a timeout.  On timeout in the completion
+> path, skip dma_unmap() to avoid the translation fault and force
+> req->usb_req.status = -EIO so the gadget driver does not treat the
+> transfer as successful or requeue the still-mapped buffer.  On timeout
+> in the dequeue path, emit a warning.
+> 
+> Fixes: 49d6f3dd4abe ("usb: gadget: add tegra xusb device mode driver")
+> Cc: <stable@vger.kernel.org>
+> Signed-off-by: Vishal Kumar <vishalmimani008@gmail.com>
+> ---
+>   drivers/usb/gadget/udc/tegra-xudc.c | 47 ++++++++++++++++++++++------
+>   1 file changed, 38 insertions(+), 9 deletions(-)
+> 
+> diff --git a/drivers/usb/gadget/udc/tegra-xudc.c b/drivers/usb/gadget/udc/tegra-xudc.c
+> index 0b63b8c0a..3f18beddf 100644
+> --- a/drivers/usb/gadget/udc/tegra-xudc.c
+> +++ b/drivers/usb/gadget/udc/tegra-xudc.c
+> @@ -1023,9 +1023,9 @@ static void ep_wait_for_stopped(struct tegra_xudc *xudc, unsigned int ep)
+>   	xudc_writel(xudc, BIT(ep), EP_STOPPED);
+>   }
+>   
+> -static void ep_wait_for_inactive(struct tegra_xudc *xudc, unsigned int ep)
+> +static int ep_wait_for_inactive(struct tegra_xudc *xudc, unsigned int ep)
+>   {
+> -	xudc_readl_poll(xudc, EP_THREAD_ACTIVE, BIT(ep), 0);
+> +	return xudc_readl_poll(xudc, EP_THREAD_ACTIVE, BIT(ep), 0);
+>   }
+>   
+>   static void tegra_xudc_req_done(struct tegra_xudc_ep *ep,
+> @@ -1046,8 +1046,39 @@ static void tegra_xudc_req_done(struct tegra_xudc_ep *ep,
+>   					 (xudc->setup_state ==
+>   					  DATA_STAGE_XFER));
+>   	} else {
+> -		usb_gadget_unmap_request(&xudc->gadget, &req->usb_req,
+> -					 usb_endpoint_dir_in(ep->desc));
+> +		/*
+> +		 * Drain the endpoint DMA pipeline before unmapping.
+> +		 *
+> +		 * Under SMMU strict mode dma_unmap() synchronously
+> +		 * invalidates the IOVA TLB entry.  On Tegra186/194/234 the
+> +		 * XUDC appears to post the completion event when the DMA
+> +		 * write is dispatched to the AXI interconnect, before the
+> +		 * store is committed to memory.  A subsequent dma_unmap()
+> +		 * can remove the IOVA translation while the write is still
+> +		 * in-flight, triggering a translation fault (fsr=0x402) that
+> +		 * permanently wedges the bulk endpoint.
+> +		 *
+> +		 * Wait for EP_THREAD_ACTIVE to clear (endpoint sequencer
+> +		 * idle).  On timeout skip the unmap to avoid the SMMU fault;
+> +		 * the DMA mapping leaks but the hardware is already in an
+> +		 * unrecoverable state.
+> +		 */
+> +		if (!WARN_ONCE(ep_wait_for_inactive(xudc, ep->index),
+> +			       "ep%u: DMA drain timed out; skipping dma_unmap\n",
+> +			       ep->index)) {
+> +			/* Read-back completes the poll barrier; EP_THREAD_ACTIVE=0 guarantees DMA is idle. */
+> +			xudc_readl(xudc, EP_THREAD_ACTIVE);
 
-  Thanks,
+The ep_wait_for_inactive() is reading the EP_THREAD_ACTIVE and so this 
+would appear to be redundant.
 
-On Sat, Jun 20, 2026 at 3:57=E2=80=AFPM Chao Yu <chao@kernel.org> wrote:
->
-> On 6/18/26 18:05, Wenjie Qi wrote:
-> > f2fs_write_end_io() decrements the writeback page counter and then read=
-s
-> > it again with get_pages() to decide whether the last F2FS_WB_CP_DATA
-> > completion should wake cp_wait.
-> >
-> > That second read can miss the zero transition as below:
->
-> Looks comments of v7 patch is quite different from the one of v1 patch?
->
-> Quoted from v1:
->
-> "f2fs_write_end_io() currently decrements the writeback page counter befo=
-re
-> waking sbi->cp_wait for the last F2FS_WB_CP_DATA completion.
->
-> That decrement can drop the F2FS_WB_CP_DATA count to zero. It can unblock
-> a concurrent unmount path waiting in f2fs_wait_on_all_pages(). Unmount ca=
-n
-> continue through f2fs_put_super() and eventually free sbi while the end_i=
-o
-> callback is still about to evaluate wq_has_sleeper() and wake_up() on
-> sbi->cp_wait.
->
-> Commit 2d9c4a4ed4ee ("f2fs: fix UAF caused by decrementing sbi->nr_pages[=
-]
-> in f2fs_write_end_io()") fixed one post-decrement sbi access by moving th=
-e
-> warm-node-list handling before dec_page_count(). The compressed writeback
-> path follows the same rule and documents that dec_page_count() must be th=
-e
-> last access to sbi when it can drop F2FS_WB_CP_DATA to zero.
->
-> Apply the same ordering rule to the cp_wait wakeup. Check whether this is
-> the last F2FS_WB_CP_DATA completion and wake the waiter before the counte=
-r
-> decrement. Then the callback no longer dereferences sbi->cp_wait after th=
-e
-> lifetime boundary. A waiter that runs before the decrement may observe ol=
-d
-> count and sleep until the one-jiffy timeout, but correctness no longer
-> depends on touching sbi after the counter reaches zero."
->
-> I may found something interesting: v7 codes try to fix UAF bug described =
-in
-> v1 comment, however v7 comment tries to explain what v2 codes want to do.
->
-> I suspect your LLM goes another direction after prompted w/ my comments o=
-n
-> patch v1? Let me know I'm wrong. :P
->
-> Thanks,
->
-> >
-> > checkpoint          end_io A              submitter B
-> > - f2fs_wait_on_all_pages
-> >   - get_pages() > 0
-> >   - prepare_to_wait(cp_wait)
-> >   - io_schedule_timeout
-> >                      - f2fs_write_end_io
-> >                       - dec_page_count
-> >                        : count 1 -> 0
-> >                                           - f2fs_submit_page_write
-> >                                            - inc_page_count
-> >                                             : count 0 -> 1
-> >                       - get_pages() > 0
-> >                         : skip wake_up(cp_wait)
-> >
-> > The checkpoint thread can then keep sleeping until
-> > DEFAULT_SCHEDULE_TIMEOUT, even though end_io A completed the old last
-> > F2FS_WB_CP_DATA page.
-> >
-> > Use the post-decrement value for F2FS_WB_CP_DATA completions so the wak=
-eup
-> > decision is tied to this completion.  Keep the existing dec_page_count(=
-)
-> > path for other writeback counters.
-> >
-> > Fixes: e234088758fc ("f2fs: avoid wait if IO end up when do_checkpoint =
-for better performance")
-> > Fixes: ce2739e482bc ("f2fs: fix to avoid UAF in f2fs_write_end_io()")
-> > Cc: stable@vger.kernel.org
-> > Signed-off-by: Wenjie Qi <qiwenjie@xiaomi.com>
-> > ---
-> >   fs/f2fs/data.c | 12 +++++++-----
-> >   fs/f2fs/f2fs.h |  6 ++++++
-> >   2 files changed, 13 insertions(+), 5 deletions(-)
-> >
-> > diff --git a/fs/f2fs/data.c b/fs/f2fs/data.c
-> > index d83a21998ec2..2afdcd209d54 100644
-> > --- a/fs/f2fs/data.c
-> > +++ b/fs/f2fs/data.c
-> > @@ -392,15 +392,17 @@ static void f2fs_write_end_io(struct bio *bio)
-> >               if (f2fs_in_warm_node_list(folio))
-> >                       f2fs_del_fsync_node_entry(sbi, folio);
-> >
-> > -             dec_page_count(sbi, type);
-> > -
-> >               /*
-> >                * we should access sbi before folio_end_writeback() to
-> >                * avoid racing w/ kill_f2fs_super()
-> >                */
-> > -             if (type =3D=3D F2FS_WB_CP_DATA && !get_pages(sbi, type) =
-&&
-> > -                             wq_has_sleeper(&sbi->cp_wait))
-> > -                     wake_up(&sbi->cp_wait);
-> > +             if (type =3D=3D F2FS_WB_CP_DATA) {
-> > +                     if (!dec_page_count_return(sbi, type) &&
-> > +                         wq_has_sleeper(&sbi->cp_wait))
-> > +                             wake_up(&sbi->cp_wait);
-> > +             } else {
-> > +                     dec_page_count(sbi, type);
-> > +             }
-> >
-> >               folio_clear_f2fs_gcing(folio);
-> >               folio_end_writeback(folio);
-> > diff --git a/fs/f2fs/f2fs.h b/fs/f2fs/f2fs.h
-> > index 9f24287de4c3..db750cef371d 100644
-> > --- a/fs/f2fs/f2fs.h
-> > +++ b/fs/f2fs/f2fs.h
-> > @@ -2776,6 +2776,12 @@ static inline void dec_page_count(struct f2fs_sb=
-_info *sbi, int count_type)
-> >       atomic_dec(&sbi->nr_pages[count_type]);
-> >   }
-> >
-> > +static inline int dec_page_count_return(struct f2fs_sb_info *sbi,
-> > +                                     int count_type)
-> > +{
-> > +     return atomic_dec_return(&sbi->nr_pages[count_type]);
-> > +}
-> > +
-> >   static inline void inode_dec_dirty_pages(struct inode *inode)
-> >   {
-> >       if (!S_ISDIR(inode->i_mode) && !S_ISREG(inode->i_mode) &&
-> >
-> > base-commit: c0b65f6129c7fbb526e921dd60261650f1b2bef9
->
+> +			usb_gadget_unmap_request(&xudc->gadget, &req->usb_req,
+> +						 usb_endpoint_dir_in(ep->desc));
+> +		} else {
+> +			/*
+> +			 * Timeout: mapping is intentionally leaked to avoid the
+> +			 * SMMU fault.  Force -EIO so the gadget driver does not
+> +			 * treat this as a successful transfer and reuse the
+> +			 * still-mapped buffer.
+> +			 */
+> +			req->usb_req.status = -EIO;
+
+The above is confusing. Wouldn't it be simpler to have ...
+
+  if (WARN_ONCE(ep_wait_for_inactive())) {
+      req->usb_req.status = -EIO;
+  } else {
+      xudc_readl(xudc, EP_THREAD_ACTIVE);
+      usb_gadget_unmap_request(...);
+  }
+
+Furthermore, it seems that if this now fails then we don't unmap the 
+buffer, but we still give back the request afterwards anyway.
+
+> +		}
+>   	}
+>   
+>   	spin_unlock(&xudc->lock);
+> @@ -1443,10 +1474,12 @@ __tegra_xudc_ep_dequeue(struct tegra_xudc_ep *ep,
+>   		return 0;
+>   	}
+>   
+> -	/* Halt DMA for this endpiont. */
+> +	/* Halt DMA for this endpoint. */
+>   	if (ep_ctx_read_state(ep->context) == EP_STATE_RUNNING) {
+>   		ep_pause(xudc, ep->index);
+> -		ep_wait_for_inactive(xudc, ep->index);
+> +		if (ep_wait_for_inactive(xudc, ep->index))
+> +			dev_warn(xudc->dev, "ep%u: DMA drain timed out during dequeue\n",
+> +				 ep->index);
+
+Maybe it is better to put the warning in the ep_wait_for_inactive() 
+function.
+
+>   	}
+>   
+>   	deq_trb = trb_phys_to_virt(ep, ep_ctx_read_deq_ptr(ep->context));
+> 
+> 2.39.0
+
+-- 
+nvpublic
+
 
