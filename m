@@ -1,176 +1,150 @@
-Return-Path: <stable+bounces-267805-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-267806-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id IGSZJcKVOWpqvQcAu9opvQ
-	(envelope-from <stable+bounces-267805-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 22 Jun 2026 22:06:26 +0200
+	id 4itbCIOaOWoovgcAu9opvQ
+	(envelope-from <stable+bounces-267806-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 22 Jun 2026 22:26:43 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id E4C676B236E
-	for <lists+stable@lfdr.de>; Mon, 22 Jun 2026 22:06:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 89C726B2413
+	for <lists+stable@lfdr.de>; Mon, 22 Jun 2026 22:26:42 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=grrlz.net header.s=stigmate header.b=JmSAlrvy;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-267805-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-267805-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=reject) header.from=grrlz.net;
+	dkim=pass header.d=cmpxchg.org header.s=google header.b=e00fEzYd;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-267806-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-267806-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=none) header.from=cmpxchg.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 5A09C302F72E
-	for <lists+stable@lfdr.de>; Mon, 22 Jun 2026 20:05:57 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id AE485304E6EF
+	for <lists+stable@lfdr.de>; Mon, 22 Jun 2026 20:23:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B676D34B410;
-	Mon, 22 Jun 2026 20:05:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2EC9B34CFDD;
+	Mon, 22 Jun 2026 20:23:53 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from devianza.investici.org (devianza.investici.org [198.167.222.108])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qv1-f43.google.com (mail-qv1-f43.google.com [209.85.219.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30F8F2C21FF;
-	Mon, 22 Jun 2026 20:05:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4DC534CFC3
+	for <stable@vger.kernel.org>; Mon, 22 Jun 2026 20:23:50 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782158756; cv=none; b=M7muNXED/XK7x0lW57/T5DNyl/fcZxQ0g8/sklo4mdg8s7blo9EQ67feLAxcmLdtsPPYMRmaX/rLYX4D9bv28XvrGBvOFxAphliKUxh5Cfwzyc6xpdWFwJ4wHq7AOSIn3gvjLZpnRJukxb1Dm74RXkd6ILq+CTRKanRcv56k8zQ=
+	t=1782159833; cv=none; b=Is0oN9o8wHneRf1VUCL2m1Y3BF3hSfYYq3tgewe65DCtWBkrbEzmvZseNRDDQwxi11/ri6+oBghLUaU4FBUatF/GXtVlmMg/FY38jHnnAT4+qPmck0qu25hXVqIg1NBHUiKfXZYNpXSqQ+10zpYfjpaA0SPwEfVgMpStkcgwbP4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782158756; c=relaxed/simple;
-	bh=ekb7irfG3v0KJG330BbVaYKyJ+lOjmtWZbx/uoMxyxI=;
-	h=Date:From:To:CC:Subject:In-Reply-To:References:Message-ID:
-	 MIME-Version:Content-Type; b=FhnpgTl8AX+UswU8hER9RT8sdbY36AdoIHxj5vl4MqsXewTGapm2RwsFkDj3qiRC3RxYKcT+czgl2qyc6vltoLvDVuvmyT6HTgwbLQReDi2RkeMEaJ3uz8MqU0MZDf9Rf2J7U5qmjKQ+eJlXKIsKoJpnS8s24z/5yCSEl87kzz8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=grrlz.net; spf=pass smtp.mailfrom=grrlz.net; dkim=pass (1024-bit key) header.d=grrlz.net header.i=@grrlz.net header.b=JmSAlrvy; arc=none smtp.client-ip=198.167.222.108
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=grrlz.net;
-	s=stigmate; t=1782158750;
-	bh=0QY9WmsSEegkR8/znuKKw2NESLcnUTCfnX6JO57mUy0=;
-	h=Date:From:To:CC:Subject:In-Reply-To:References:From;
-	b=JmSAlrvyQtN4rS9FSRTeCTjvVHmGP5R0Vf14j5aA1PfeAToaI0S0GDA9ddN2XvfRo
-	 3FLRV2GlKGW8JCzo8BkjmYmgGehxmpumFnMqp7wHrTexaHlqQ3U8dzYZIB1JWQnzHr
-	 nvSPKWjC9qEt0J6tFzUHmWHYI+rOSfSPyBbKA7mE=
-Received: from mx2.investici.org (unknown [127.0.0.1])
-	by devianza.investici.org (Postfix) with ESMTP id 4gkfMf5tS0z6vNp;
-	Mon, 22 Jun 2026 20:05:50 +0000 (UTC)
-Received: by mx2.investici.org (Postfix) id 4gkfMf27knz4y2q;
-	Mon, 22 Jun 2026 20:05:50 +0000 (UTC)
-Date: Mon, 22 Jun 2026 21:05:51 +0100
-From: Bradley Morgan <include@grrlz.net>
-To: Oleg Nesterov <oleg@redhat.com>
-CC: Christian Brauner <brauner@kernel.org>, ebiederm@xmission.com,
- Andrew Morton <akpm@linux-foundation.org>,
- Peter Zijlstra <peterz@infradead.org>,
- Adrian Huang <adrianhuang0701@gmail.com>, Marco Elver <elver@google.com>,
- Kexin Sun <kexinsun@smail.nju.edu.cn>, Thomas Gleixner <tglx@kernel.org>,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH] signal: avoid shared siginfo namespace rewrites
-In-Reply-To: <ajl0_fTFXHpL8P9T@redhat.com>
-References: <20260622164029.11474-1-include@grrlz.net> <ajl0_fTFXHpL8P9T@redhat.com>
-Message-ID: <0873AC4A-3CB2-4F7B-BFE6-75D855AD22DC@grrlz.net>
+	s=arc-20240116; t=1782159833; c=relaxed/simple;
+	bh=L7H2ibsXc8PoK8CbMSVQjpP3esUP2noyWgkyHLN4J0I=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=owPP8rFOF/S4KNP8bfAnwoW1mrbwajWKqA2Zce9P+6QeXYdmCj8+sXMDmTpShluWu5ENgY44P6Vi2h0kEyGpMoc0PO/SRpbNNjca1C0+zYJunOk3Bl+n6ztpUl+fErIypUcOu1FOOllfd8dxblVAtZ7/y+qwjvTqVnRRA7+Ami4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cmpxchg.org; spf=pass smtp.mailfrom=cmpxchg.org; dkim=pass (2048-bit key) header.d=cmpxchg.org header.i=@cmpxchg.org header.b=e00fEzYd; arc=none smtp.client-ip=209.85.219.43
+Received: by mail-qv1-f43.google.com with SMTP id 6a1803df08f44-8dcd895a4c0so57517056d6.3
+        for <stable@vger.kernel.org>; Mon, 22 Jun 2026 13:23:50 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=cmpxchg.org; s=google; t=1782159829; x=1782764629; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=DmKAzXUWgr5Z6Z1mBVW0DXpsiSegxpV2RCsb4MGdO1I=;
+        b=e00fEzYdm3eKKkSjXGKsOE3t+yVBkHwDQ3dhgoj4BlE/cyobHqlXyVvQBAwYSTdxXy
+         5a8R5TxzHXSr7LO9ZJXULz3/W8FMmG6bUI1RryaOTXQaSeAW0Kyg15HdOdoKTrvjNnlA
+         Dz1O+JuNNTjwzENemuE50HWUh3/kpslePtQ4RZnV0wb9d3CKgF6wTIPuz9TrmrcgBtZQ
+         4MAGe5AUSd6kBuDwlvpNzOUFAZtXuCzbifmPxrZYh2lsSXtfwtmzU0n1oSoDppTr/VJ6
+         1S0GPmgWAQ8X/c8IJfO+sLUJZQ5TFyqJ6ApX4TkHFl9Mu5ZVd/67u4GEeBI0EPn3qCbY
+         9pew==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1782159829; x=1782764629;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=DmKAzXUWgr5Z6Z1mBVW0DXpsiSegxpV2RCsb4MGdO1I=;
+        b=i69neRCuW+CS1S+rZ636+7/07PY1RnvZYeIWajJ7BOmNizPDGT2b6ufLSfD/k1aq5L
+         Q2Yn7vCq4MBADo7asqlGSBoHuy4DX4wxHs4Y6yRsobaONc8wIb+/N4oLqZtSTuR/talK
+         745RjeSSMWckyMqyPju+13XwrySYbntSy2nDwX05nadFYrAyWUwRYPiO3sydNU+Quqek
+         oqxpDyDe5xuYYfBjZTBRPKIH3tr8u2XkTCJnmjtAlxlnRdDqj4AvHi8HbjIcD5eLWjjk
+         Sr/FZ4UtvT1x9sJNGNVu/HlUcNCTc8d0ljxM9O5mD3HbGyrP1H8x4b7UixhcOV3I8ua/
+         p9Hg==
+X-Forwarded-Encrypted: i=1; AHgh+RrcnJDdf4rK53SZTesHTDZ+u58FnY5MmhJbulp9VYxCkpS5wKwNcg6JYFbs63h4rUVmTtdUO4Y=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwKqW+yotysNAc7u+7wzTJaoJ1SK8OQidFDTgQjTIl5FJ/xooJd
+	0XeF5oWFh5dvjNnuNgP7xf+nMyz7KbuTCm8LuexDElPmINm8XFFTRM7l9oIsbBhXihM=
+X-Gm-Gg: AfdE7cnupZukiTEyg89+BIkz3NBBriX6yfXtnvUTdHpIlGyUAiHRE9yU1hg3YM2nLWE
+	94DUHx3E6a5VTYZX5EqBHRCEvd8ZajfbiBqSIVl2urWU3tdaqkjjch6OgWg9m50HwgocXgluFc9
+	/alIncEjcl9phqMBcKR3CbmSGTcvMVfYjU7NM+YMtfRDzjn6Q44FX4OORZryIClMN1x17TWh4Px
+	KwJUCdEoj0OvxTmupatO8UbbtezeJgl8BpLAUXeqst8cOyvMFc/cRNoLd3cUvU4jJS970IG7Gtg
+	TeYw4Yv55fTt5BCntiH0Q++j9Bd07Op4NqsOjZiE2rNhDaYMoTaTgPALweOb8hn39JSxX0AgW7D
+	4W6Wphsr2XfAVrXfVM6432DfFC1lCZAKMSp81Y8lGSHEQe19NNcBLasAN0BRgpcqCMCY9KW6Hl5
+	iNh6D+GXPQGHg=
+X-Received: by 2002:a05:6214:3314:b0:8c9:cb98:5fb1 with SMTP id 6a1803df08f44-8de3f78e4f3mr241102106d6.12.1782159829411;
+        Mon, 22 Jun 2026 13:23:49 -0700 (PDT)
+Received: from localhost ([2603:7001:f100:500:365a:60ff:fe62:ff29])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-8df81cde319sm105792376d6.31.2026.06.22.13.23.48
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 22 Jun 2026 13:23:48 -0700 (PDT)
+Date: Mon, 22 Jun 2026 16:23:44 -0400
+From: Johannes Weiner <hannes@cmpxchg.org>
+To: Zi Yan <ziy@nvidia.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Brendan Jackman <jackmanb@google.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	Jiaqi Yan <jiaqiyan@google.com>, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH hotfix] mm/compaction: handle free_pages_prepare()
+ properly in compaction_free()
+Message-ID: <ajmZ0IPORONQ_Vs4@cmpxchg.org>
+References: <20260622-handle_free_pages_prepare_in_compaction_free-v1-1-fcf3b14abcf7@nvidia.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260622-handle_free_pages_prepare_in_compaction_free-v1-1-fcf3b14abcf7@nvidia.com>
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[grrlz.net,reject];
-	R_DKIM_ALLOW(-0.20)[grrlz.net:s=stigmate];
+	DMARC_POLICY_ALLOW(-0.50)[cmpxchg.org,none];
 	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[cmpxchg.org:s=google];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[kernel.org,xmission.com,linux-foundation.org,infradead.org,gmail.com,google.com,smail.nju.edu.cn,vger.kernel.org];
-	TAGGED_FROM(0.00)[bounces-267805-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-267806-lists,stable=lfdr.de];
+	RECEIVED_HELO_LOCALHOST(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:oleg@redhat.com,m:brauner@kernel.org,m:ebiederm@xmission.com,m:akpm@linux-foundation.org,m:peterz@infradead.org,m:adrianhuang0701@gmail.com,m:elver@google.com,m:kexinsun@smail.nju.edu.cn,m:tglx@kernel.org,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,s:lists@lfdr.de];
+	DKIM_TRACE(0.00)[cmpxchg.org:+];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[grrlz.net:+];
+	FORGED_RECIPIENTS(0.00)[m:ziy@nvidia.com,m:akpm@linux-foundation.org,m:vbabka@kernel.org,m:surenb@google.com,m:mhocko@suse.com,m:jackmanb@google.com,m:baolin.wang@linux.alibaba.com,m:jiaqiyan@google.com,m:linux-mm@kvack.org,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,s:lists@lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_SENDER(0.00)[include@grrlz.net,stable@vger.kernel.org];
+	FORGED_SENDER(0.00)[hannes@cmpxchg.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	MISSING_XM_UA(0.00)[];
-	TO_DN_SOME(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[include@grrlz.net,stable@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[hannes@cmpxchg.org,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	TO_DN_SOME(0.00)[];
 	RCPT_COUNT_SEVEN(0.00)[11];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp,grrlz.net:dkim,grrlz.net:email,grrlz.net:mid,grrlz.net:from_mime]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: E4C676B236E
+X-Rspamd-Queue-Id: 89C726B2413
 
-On June 22, 2026 6:46:37 PM GMT+01:00, Oleg Nesterov <oleg@redhat.com>
-wrote:
->On 06/22, Bradley Morgan wrote:
->>
->> send_signal_locked() rewrites sender ids for the target namespace.
->> Group sends reuse the same siginfo, so one recipient can affect the
->> next.
->
->Hmm... I'll re-read this change tomorrow after sleep, but I am almost sure
->you are you are right anyway...
+On Mon, Jun 22, 2026 at 11:30:42AM -0400, Zi Yan wrote:
+> free_pages_prepare() can fail but compaction_free() does not handle the
+> failure case. Failed pages should not be added back to cc->freepages for
+> future use, since they can be either PageHWPoison or free_page_is_bad()
+> and might cause data corruption.
+> 
+> Fixes: 733aea0b3a7bb ("mm/compaction: add support for >0 order folio memory compaction.")
+> Signed-off-by: Zi Yan <ziy@nvidia.com>
+> Cc: stable@vger.kernel.org
 
-Sure! Feel free to take ur time!
-
->I am wondering if we can conditionalize the "swap(rewritten, info)" logic
->with your patch, most probably this makes no sense...
->
->May I suggest another change on top of your fix? Make the "kernel_siginfo
->*info"
->arg of send_signal_locked() "const". To make it more clear. Yes, the
->signature
->of has_si_pid_and_uid() should be changed too. Up to you.
-
-I'll do it. I don't mind.
-
->Thanks,
->
->Oleg.
->
->> Copy the siginfo before changing it.
->>
->> Fixes: 7a0cf094944e ("signal: Correct namespace fixups of si_pid and
->si_uid")
->> Cc: stable@vger.kernel.org
->> Signed-off-by: Bradley Morgan <include@grrlz.net>
->> ---
->>  kernel/signal.c | 4 ++++
->>  1 file changed, 4 insertions(+)
->>
->> diff --git a/kernel/signal.c b/kernel/signal.c
->> index b9fc7be1a169..d72d9be3a992 100644
->> --- a/kernel/signal.c
->> +++ b/kernel/signal.c
->> @@ -1181,6 +1181,7 @@ static inline bool has_si_pid_and_uid(struct
->kernel_siginfo *info)
->>  int send_signal_locked(int sig, struct kernel_siginfo *info,
->>  		       struct task_struct *t, enum pid_type type)
->>  {
->> +	struct kernel_siginfo rewritten;
->>  	/* Should SIGKILL or SIGSTOP be received by a pid namespace init? */
->>  	bool force = false;
->> 
->> @@ -1194,6 +1195,9 @@ int send_signal_locked(int sig, struct
->kernel_siginfo *info,
->>  		/* SIGKILL and SIGSTOP is special or has ids */
->>  		struct user_namespace *t_user_ns;
->> 
->> +		rewritten = *info;
->> +		info = &rewritten;
->> +
->>  		rcu_read_lock();
->>  		t_user_ns = task_cred_xxx(t, user_ns);
->>  		if (current_user_ns() != t_user_ns) {
->> --
->> 2.53.0
->>
->
->
-
-Thanks!
+Acked-by: Johannes Weiner <hannes@cmpxchg.org>
 
