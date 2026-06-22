@@ -1,106 +1,140 @@
-Return-Path: <stable+bounces-267647-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-267648-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 7DtPELkGOWpolgcAu9opvQ
-	(envelope-from <stable+bounces-267647-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 22 Jun 2026 11:56:09 +0200
+	id 11yxMb4GOWpxlgcAu9opvQ
+	(envelope-from <stable+bounces-267648-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 22 Jun 2026 11:56:14 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id BCA256AE76D
-	for <lists+stable@lfdr.de>; Mon, 22 Jun 2026 11:56:08 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 20DAA6AE77C
+	for <lists+stable@lfdr.de>; Mon, 22 Jun 2026 11:56:14 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Mkdfdwmz;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-267647-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-267647-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="k/evU/fW";
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-267648-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-267648-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 88C7230036E9
-	for <lists+stable@lfdr.de>; Mon, 22 Jun 2026 09:55:14 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C0F953006785
+	for <lists+stable@lfdr.de>; Mon, 22 Jun 2026 09:55:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B00F369970;
-	Mon, 22 Jun 2026 09:55:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C16E39B943;
+	Mon, 22 Jun 2026 09:55:18 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 404FB39A7FA
-	for <stable@vger.kernel.org>; Mon, 22 Jun 2026 09:55:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7D0E3644C9
+	for <stable@vger.kernel.org>; Mon, 22 Jun 2026 09:55:15 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782122112; cv=none; b=hbY/wyNs3uIqy44lFnX/4Bd/2Ay6d4LbbMdz3Vu4arURQUgrMXsqDyj5Tuc5lV4u9nDWmPBLjv0oBZspCeQ/UMnMDo3v2XbipaXiNFTxJLtmkfq6T6oLxfvO7eoPdgNuUdmCqYXy9YwK4cpo6VF9kqrx1+c3SyhlEnagV6RZEVo=
+	t=1782122117; cv=none; b=NWzQJlp71mRqOsMIe/N3NzYZ5fl1ZQ9gJiDpLHpNNtpEfiUjdkSRShFK3yBYLCA15CSOo3QM2+Er/n7QTLtMNZTETppoM75zv5i65vnsHiC9T/oh1kDqvSpc9n17YGKOPq0nl0Ewv3tHYsAXYrxMjDsLjgMDu23Nm9diOTqsv9c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782122112; c=relaxed/simple;
-	bh=22NiOE2gMGGnQ8QJedCdcB66z2sCqgnYoka8Hw/b4j4=;
-	h=Date:Message-ID:From:To:Cc:Subject; b=uUcUb4jjhb9KqdSNxP9z5rfzYCgBOkxUbBeMODyQyHbcWRW1eguXUqK7nqtNM1WTnWqJbpjVHsWLeELUVBTpyU0FSPe88qlLwt9ommHs83JdlV8m8S6/gw6+Zu4c1c7TzWSJqv7LHWgbrhK07uErpvpcBNjGvGLa8o6vpG3AxAc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Mkdfdwmz; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3CD591F000E9;
-	Mon, 22 Jun 2026 09:55:09 +0000 (UTC)
+	s=arc-20240116; t=1782122117; c=relaxed/simple;
+	bh=cZleeDJkvfG9CWhmw76fwkci1b3DYdiDD5Mu9SrOh7E=;
+	h=Date:Message-ID:From:To:Cc:Subject:References:MIME-Version:
+	 Content-Type; b=BhvuoAvVVEor1tNts4suYeUv0nXAWHWB+iAn6J/O5JExZrnYqweGzAJ1f08lvq/2jjHipCH2t4xeFN3z9WXiUMbVvy9zdvOc0vmR/S8SulKbVybnfqH1M6N/O9aSBgMyP0RUBoplVWb7adQyFIW/jeOd8So+uyCmeFHNTjt7E8E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=k/evU/fW; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A48A71F000E9;
+	Mon, 22 Jun 2026 09:55:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782122111;
-	bh=EIQXIFZQ7Fv6o3MA3NeTORGu/XgvCk+YOy4a+ZvIj0A=;
-	h=Date:From:To:Cc:Subject;
-	b=MkdfdwmzGbpYAbqJi++XfSsLmU4lZLLOy5t9OAD4yQM4K2wgoS0A4wJ4iuPWh/xYX
-	 YWhErycJCcQUl7vW73UEBno6uAggx6CND3qIJNaDWTUif8xtxjCWobUkacxQ9ZR8K0
-	 b2YM4xAL8IGpxL0c2fdiZhsCzxfkqwRB7OtjtTYo70QLgElWNfpcwDNfxhdV0IFbfp
-	 A20WOV6FuDYLoRefGrDVA/igPdzGuJMxCTM0O0kicZtYQKSVfc69bjSdHetkiKszYK
-	 F9tITaKFs5NDrj2Nz2Uunk1Yl4HAA8aWOA+d+IDE5DUUIMidXQxOHNZUwn9Q7Xy4+X
-	 XN0p5c2rJmO6g==
-Date: Mon, 22 Jun 2026 11:55:08 +0200
-Message-ID: <20260622092400.929691694@kernel.org>
+	s=k20260515; t=1782122115;
+	bh=T61vrN2WtGUqjoM31DzcpbQRmltAxbvteH2cHPdyYQQ=;
+	h=Date:From:To:Cc:Subject:References;
+	b=k/evU/fW6OtDsEAGRQ7TSm0IWZ0iQJ23PrbsVNcPPkYKKAEtNvxEm3/ho6OcSptXV
+	 6Z1qClmbbDPdYWlp55F0p/1bLfI6zjKq1D/kXfj4POpWs/MdGBVz0z+U1YD5Z5DACd
+	 9HWGVba66YGQw5ngSq8GzobWVhQkPTZgBPkTdoN1tCTf26QuxY8xlFHVGu9YnQYhYq
+	 M1nLMgkGXRd9u39/JbWtmC3CjDD5uz75HxiDCjUyCD7Eog2EeFUEeVH4VJWCQAedNJ
+	 EpWpCdGTi9otA3EDPsKJAZab67VDmUwqvRRFBjRXZBvLUcg1KqgomjEBjTpGf54cd7
+	 Y05jiYoOSQs7A==
+Date: Mon, 22 Jun 2026 11:55:12 +0200
+Message-ID: <20260622092952.095465135@kernel.org>
 User-Agent: quilt/0.69
 From: Thomas Gleixner <tglx@kernel.org>
 To: stable@vger.kernel.org
 Cc: Waiman Long <longman@redhat.com>,
  Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Subject: [patch v6.6.y, v6.12.y 0/4] debugobjects: Various backports
+Subject: [patch v6.6.y,
+ v6.12.y 1/4] debugobjects: Allow to refill the pool before SYSTEM_SCHEDULING
+References: <20260622092400.929691694@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-4.66 / 15.00];
+X-Spamd-Result: default: False [-5.16 / 15.00];
 	WHITELIST_SPF_DKIM(-3.00)[kernel.org:d:+,kernel.org:s:+];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-267648-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-267647-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:longman@redhat.com,m:bigeasy@linutronix.de,s:lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FORGED_SENDER(0.00)[tglx@kernel.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCPT_COUNT_THREE(0.00)[3];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[tglx@kernel.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	ALIAS_RESOLVED(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	RCPT_COUNT_THREE(0.00)[3];
 	TO_DN_SOME(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[tglx@kernel.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp,linutronix.de:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: BCA256AE76D
+X-Rspamd-Queue-Id: 20DAA6AE77C
 
-This series contains the necessary backports to apply the recent important
-debugobject fixes to the linux-6.6.y and linux-6.12.y series.
+From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 
-Thanks,
+commit 06e0ae988f6e3499785c407429953ade19c1096b upstream.
 
-	tglx
+The pool of free objects is refilled on several occasions such as object
+initialisation. On PREEMPT_RT refilling is limited to preemptible
+sections due to sleeping locks used by the memory allocator. The system
+boots with disabled interrupts so the pool can not be refilled.
 
+If too many objects are initialized and the pool gets empty then
+debugobjects disables itself.
+
+Refiling can also happen early in the boot with disabled interrupts as
+long as the scheduler is not operational. If the scheduler can not
+preempt a task then a sleeping lock can not be contended.
+
+Allow to additionally refill the pool if the scheduler is not
+operational.
+
+Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Link: https://patch.msgid.link/20251127153652.291697-2-bigeasy@linutronix.de
+---
+ lib/debugobjects.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+---
+--- a/lib/debugobjects.c
++++ b/lib/debugobjects.c
+@@ -604,7 +604,7 @@ static void debug_objects_fill_pool(void
+ 	 * raw_spinlock_t are basically the same type and this lock-type
+ 	 * inversion works just fine.
+ 	 */
+-	if (!IS_ENABLED(CONFIG_PREEMPT_RT) || preemptible()) {
++	if (!IS_ENABLED(CONFIG_PREEMPT_RT) || preemptible() || system_state < SYSTEM_SCHEDULING) {
+ 		/*
+ 		 * Annotate away the spinlock_t inside raw_spinlock_t warning
+ 		 * by temporarily raising the wait-type to WAIT_SLEEP, matching
 
 
