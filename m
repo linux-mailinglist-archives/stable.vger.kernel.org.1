@@ -1,303 +1,335 @@
-Return-Path: <stable+bounces-267636-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-267638-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id qpZTH30COWqBlQcAu9opvQ
-	(envelope-from <stable+bounces-267636-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 22 Jun 2026 11:38:05 +0200
+	id 4x6QOZUBOWo5lQcAu9opvQ
+	(envelope-from <stable+bounces-267638-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 22 Jun 2026 11:34:13 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C70AB6AE4EA
-	for <lists+stable@lfdr.de>; Mon, 22 Jun 2026 11:38:04 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 575416AE45E
+	for <lists+stable@lfdr.de>; Mon, 22 Jun 2026 11:34:13 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b="DP6wql/N";
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-267636-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-267636-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=none) header.from=ibm.com;
-	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
+	dkim=pass header.d=qualcomm.com header.s=qcppdkim1 header.b=TkT2XMH5;
+	dkim=pass header.d=oss.qualcomm.com header.s=google header.b=KMQKP3Kq;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-267638-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-267638-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=reject) header.from=qualcomm.com;
+	arc=pass ("subspace.kernel.org:s=arc-20240116:i=2")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 873DC3140383
-	for <lists+stable@lfdr.de>; Mon, 22 Jun 2026 09:22:04 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 63C6330FF222
+	for <lists+stable@lfdr.de>; Mon, 22 Jun 2026 09:24:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6159C3A3830;
-	Mon, 22 Jun 2026 09:20:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE19939BFFC;
+	Mon, 22 Jun 2026 09:24:19 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5570F39FCB1;
-	Mon, 22 Jun 2026 09:20:22 +0000 (UTC)
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782120031; cv=none; b=t+YdZfix3Ie4+Flva6UdQeINkHiVcmVOnBaLcL6Z23Rqnf7NCn8B+8co/gjCM73Tmo6+VIJmQI9qMuppu8o7smj7cn9WjTGFBSzfomQyQlfjMpiWnKZaLBZOu4AIlbLKmOrbI70VwaSQEP1PKE4YrO6wBbmsSRMhFoId0gLkUXk=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782120031; c=relaxed/simple;
-	bh=+AvsZHdQo7ixFPGCuNhf/fpgpfW3jGk7eN+2ccCvb9Y=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Uv6mq5fMGPot+qzTevsI1sswzMcFNkhibiOzW7xMXjjXAqn8Hwvq0h05pvV8HWb2lLXDdikP7/p+U7U5L1D55ODx18i6i51EHeDK1/GC8Y+9GmCSTCVVUGK+Pa2mW1rPV2XFRqshOiN6vsXMRKAe4cNXsCS7E6dwxvfFLz2jX8Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=DP6wql/N; arc=none smtp.client-ip=148.163.156.1
-Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 65M5Ikfc1814109;
-	Mon, 22 Jun 2026 09:20:07 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=0JUZe5
-	dJJdUpHkKuRqCR5BVM3FwjgxO8hAmWO2x8SHQ=; b=DP6wql/NmsQjPYpz2cOcHC
-	B1VLiSlU+dg6z5ztZeVCAWcHKzLp3rUFKbrGQk65Thr3Pxke13fRzc2f7BA5bpht
-	75opS4+wKNavlDLAgl0c1KzcuRiuPn0r8IBDcB3xWslDhCvUwcavsFyBoXzumtZt
-	KeL4NKMx+J20xaKeJuDdr9aD8AYn/pHCoLe02UdzVaP6Kn+rmUiYijuwgvPlEonA
-	5Il9lCGME28yeLuPYrMetUnM0HgcZGZFk3H/HZA/fVKWpVMT9/zKI8OgZPNJQgCZ
-	o8byYYkdcj1rabEpkFkYpjSSk00m1Vd5ZEOv3f9owGXUEfzzsAEPY+sY0LmxrBbg
-	==
-Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4ewjhqg894-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 22 Jun 2026 09:20:07 +0000 (GMT)
-Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma23.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 65M9JbJ6017045;
-	Mon, 22 Jun 2026 09:20:06 GMT
-Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
-	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4ex6ph5by2-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 22 Jun 2026 09:20:05 +0000 (GMT)
-Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com [10.20.54.102])
-	by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 65M9K1ok59638238
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 22 Jun 2026 09:20:01 GMT
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 9D43620040;
-	Mon, 22 Jun 2026 09:20:01 +0000 (GMT)
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 664E92004D;
-	Mon, 22 Jun 2026 09:19:59 +0000 (GMT)
-Received: from [9.89.240.192] (unknown [9.89.240.192])
-	by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Mon, 22 Jun 2026 09:19:59 +0000 (GMT)
-Message-ID: <f0658993-b904-4b42-8cf3-916875703523@linux.ibm.com>
-Date: Mon, 22 Jun 2026 14:49:58 +0530
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDAB43655F5
+	for <stable@vger.kernel.org>; Mon, 22 Jun 2026 09:24:17 +0000 (UTC)
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1782120259; cv=pass; b=oDMgosT6Jp9m3/jMmo3ANEi1yMFgdYOzynWr4nFpclpyjX7MwjFesWuzbzT8vQtgIOH9iuoZ0EoEoSNiLgc67JWIvb2sN5G+GswW2M+AUWG8OtGY0D+4kx/I5+VaU2N++MIWXOE1aYzwykevpUv3p1cksKA9h7RCpEOd+/DoX34=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1782120259; c=relaxed/simple;
+	bh=+vjfu+BhfoRhdod3ax7XIibD0urP8iK+x+y0nVqbMLw=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=oz7fYKtgHVpFy+RKniGpwwDxtaT3+VRM4RdHN0VGOYedZl3ixydYTgyrkDeZuaK410eEf3nfw4MilLdt31MRcxtlcK7zYY6PdjlD9AZn9l3cWucI9SBzJzukLGzMr/vcGLK9uFVFS/CanADmkTCEv87LARCkafKyW/rWcMWLz90=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=TkT2XMH5; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=KMQKP3Kq; arc=pass smtp.client-ip=205.220.168.131
+Received: from pps.filterd (m0279865.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 65M59F7d2427862
+	for <stable@vger.kernel.org>; Mon, 22 Jun 2026 09:24:17 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	GArM74qnbNn74pkKdk5flnpvpw6XEnRlwvdWaHNFJaM=; b=TkT2XMH5fGdfmxh+
+	L5zZ6+w8+34sEglP8ScnznU3OodYXcZe97s5VsCq8CqwORHI55iV9plqZ2TmfBt4
+	lSbhgGRqoJKcUgiSv3oTiMO3SVB2wSwV9nn9ue2eZJErE4T8REmFO4gEF2DoHleq
+	jzyLg+LEAW8UJ6/voeyBTOaa6Oc6FqFeVWS07It4V3wLn+EC5znAdHZuMdSRlvPH
+	RkJv/1c+n8V6SpfWLCpX/tyB3vPVYkJzkb9Vj0wB7GO0PrnL+qrZpTGg/syDidy8
+	/+vxb6/QQ6kVbMjWgTEyMk3dq16f+UYpbnIc+vE2nfaYF5TqGKCHAYi8AL+D6JTH
+	01xR0A==
+Received: from mail-qk1-f198.google.com (mail-qk1-f198.google.com [209.85.222.198])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4ewhtsdvv8-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <stable@vger.kernel.org>; Mon, 22 Jun 2026 09:24:17 +0000 (GMT)
+Received: by mail-qk1-f198.google.com with SMTP id af79cd13be357-92158791d14so240475585a.2
+        for <stable@vger.kernel.org>; Mon, 22 Jun 2026 02:24:16 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1782120256; cv=none;
+        d=google.com; s=arc-20240605;
+        b=dcbYi/UHh1F3h8DNiywyaFNJsrEEqJLaIYudAp73WHDg83APx1nV7AwmTMgHkQ0E23
+         RIfDDA/t0WtaD7nnRXnUFjPENH5MXrg8q5yaqXut8V49HAndX6uKq3eG0FYAc65uAmHb
+         l3mxdhgTmTomgCiUVH6DqCGP8VHqv1UqUP9/VVEyBpxYDLIfnHJo0qElbsVZM4L1XH12
+         mJNGEibkGgDuHaLiiV+XvNLKufeyNxgDxzYJ9lgAu61KTSJPyQ8AUTVHg48paOrydiCo
+         pPrEaF/1YS9lWmQ0d1AtGGL+GFG0fxp9QMTIvmb9wD6incYT3j2lIjezv4SPs7YG+xu8
+         ZTlg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=GArM74qnbNn74pkKdk5flnpvpw6XEnRlwvdWaHNFJaM=;
+        fh=zMkj6gLpUujLexgDKMDKs3ymzQEdhXmFCXb1jazPxBE=;
+        b=EGV2IZ81ZPX5FpMZXTPUhj/egY0KkPXhdzkQPcIGnlUoz4TQPMvBJCSMpPldm3rBRt
+         2Pi9/xS+Ed3i3YHcMNm4cpA7IuxcMUBzqUNpF/e+3zut9ilOy6YsYTRQ9cHlwDRYR0r4
+         Fsu2f1i29dnSJbQeqJw2tcE+FjkRtTCAIpbf+z5a9FybgIuQ+owpHX9gFufOCOz6zEsk
+         0JGa+D06gRXY9uopxXr9MKXuS/DOUPbFL20MZcod1urDsS3ClBQicFblpt/MpcYDrG5m
+         k+wy99/KMhNZmmDyYyCvYlnudt5VjXXN81nFEi7q9s0nPe/QNLcP9Y5hJaOp+2Gfrhfj
+         lnSQ==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=oss.qualcomm.com; s=google; t=1782120256; x=1782725056; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=GArM74qnbNn74pkKdk5flnpvpw6XEnRlwvdWaHNFJaM=;
+        b=KMQKP3Kqe0MQrfyCHhoROjxXCD1ok8YmmBRw+ZcW6/9liwAIzuVmXFqphdYM5XmhkX
+         ngM+fWvu8if32JonHJg0wBnjqiP2nSNCWs1w4X3V37B/ZS59DKiRf1/vHjakqbRVVMym
+         1fGvvmON47m3hW6GGwaiNqo5aArYDFcY49lPDGyczxu2Sc53MHYn9ieMAkWylAfYfXjk
+         L/vRoStlOLyrqj6kXdhGIkoNLdWeXVhPCkV1R4hzujejgoden3TQ2cqK8kknc8Nc+KfA
+         MGafETl2GB7M264pzuhb5vyDiDLeYaNcfkdMsAakMITtz1PRGEgzYgqNKRIv7Cf6DLxE
+         DMiQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1782120256; x=1782725056;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=GArM74qnbNn74pkKdk5flnpvpw6XEnRlwvdWaHNFJaM=;
+        b=tExiK23cdzFmG0KO8EQU2XEjNIiKKdrpZLQ8saAHdMwp4K1P/VnmN3b3h8r+Q7OegK
+         sQxlISFGDN4HWE7LlwaXRNneb51ZoyVzJfkuT5Zwy8TWRhbRa3WKJkJ+KyHp+Ieh2aAv
+         NPLuNkHz+mD7PdDy1WOp6f5WDgbeVspgTcWo0hVgpvAf0qDNvASTc9bmVBzhKkn+ljfO
+         EPT0mW0ljaS4+QEwdrcWCS+PQPLcOPXg237QtAvgtC/h4aXLnvpna5FgY2oYh2uWR6js
+         UxTNsBOVBiafyJA1nR4cwSr/bCvI+WkcX7udmfYohzi8ryTEqjCD2dSi5+DwlvO2YMD0
+         NtLA==
+X-Forwarded-Encrypted: i=1; AFNElJ+cUJAgijOFAN0R5K+dBgVleIPg2/sduUVWnMs+J5x62Jeh4MBfGsQNYGuWPW16Vpje5clDdHw=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwCnbQfFFxeuVhWjEhsoEPyHleVsj1zF4YUbgmCFC/baE7MEpnA
+	LkDLwOnJfkK7ONFhF+hQyB6udEpDqU3jJMujgz5a2pYwfrL34r9TSrxsOZ3yIcK1q69GYkljszY
+	XqNDBsXBsJVF1pPGBOvtkTx/gEERmi25ric1iX2VjiZhwqOzwiSaw1FEeZGE2vqWWJMJmF813Ze
+	Z3d+lNcN4/E6Kkemb80D+vbkWR+bheDmsRvg==
+X-Gm-Gg: AfdE7cmB96cVLBuInxQ5Sh+7pj8RzN8ChBo1gimzz+WFdVTGboPD+ifdLo9c/upMqn+
+	mvv40YNXDMSowZ7MWjV28O8sbUQ873oPsSK8hbHp3I8bX98gcIi+lvxBCmkPqV5I3sOE9iP05JV
+	ZEWvRvc5Gg/8rRKaIJwk3h5D8UHXvpnOGuZJI3Agmi0/o6bf3TwfDxbABOVuB33LM343B9e0sv+
+	RncWZKxoE22u/Y9uE8BbrDkGNoctWdzoLFaCdAJP7wHhISpQGjimHtW+SKvOQhfBc/w2lpS+zWb
+	POl7p3+oWA==
+X-Received: by 2002:a05:620a:2947:b0:915:a101:48d with SMTP id af79cd13be357-9208ddc3d63mr2267953185a.56.1782120255938;
+        Mon, 22 Jun 2026 02:24:15 -0700 (PDT)
+X-Received: by 2002:a05:620a:2947:b0:915:a101:48d with SMTP id
+ af79cd13be357-9208ddc3d63mr2267949985a.56.1782120255356; Mon, 22 Jun 2026
+ 02:24:15 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [bpf v8 7/7] powerpc/bpf: fix buffer overflow in JIT for large
- BPF programs
-To: adubey@linux.ibm.com, bpf@vger.kernel.org
-Cc: linuxppc-dev@lists.ozlabs.org, maddy@linux.ibm.com, ast@kernel.org,
-        andrii@kernel.org, daniel@iogearbox.net, shuah@kernel.org,
-        linux-kselftest@vger.kernel.org, stable@vger.kernel.org,
-        sashiko-bot@kernel.org
-References: <20260616164741.32252-1-adubey@linux.ibm.com>
- <20260616164741.32252-8-adubey@linux.ibm.com>
-Content-Language: en-US
-From: Hari Bathini <hbathini@linux.ibm.com>
-In-Reply-To: <20260616164741.32252-8-adubey@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Authority-Analysis: v=2.4 cv=I4VVgtgg c=1 sm=1 tr=0 ts=6a38fe47 cx=c_pps
- a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
- a=IkcTkHD0fZMA:10 a=FelO9ux0wxsA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=uAbxVGIbfxUO_5tXvNgY:22 a=VwQbUJbxAAAA:8
- a=VnNF1IyMAAAA:8 a=8c-tPXck8-7YJIjhN78A:9 a=QEXdDO2ut3YA:10
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNjIyMDA5MSBTYWx0ZWRfX9pq+SPCazsoW
- +OFptsHwBuucHwdW0AswjL/Stu4HBy+mxvmOfgagyF4Ov0BOFUIScFngjVELe1xU6wEfF5o5VVz
- UxBgcJ/eRRndN05Q8XQ9kCYusdbCkBWLq0WHkulKX0lNCHTRgc4djG/kG/EsZUWuSy9wZ2h96QK
- GCtzuy+XCx713BAszJLI1MHmsVf7COOwFvGrG+5QyWLHlnZcSLfC0U+McLP2tAq/PkwdHFrgSa3
- AFBwzI8ezqJZkmkaHytiUUJNbOqKO5myZzPa37UMhBTvY4xXN5qw9Sq1Xgi0gcpb7xCkc3fyNgT
- mCO3zb/wOM3Gh+Z9iLHiCWE68lCkfRu6tzumdSvH+c1qRdUepFbs64ge6X+LNE6SKSOVKuvrW/T
- gQkXAkgJambTrU6tLOlnisOctMj+xUFa9BKq4cuA2dl1Xx0OmDnHXEFOeeUNLZc1Vs22NdWSuJ3
- Vnn1Xxf5bQAyr7ggDxg==
-X-Proofpoint-GUID: SUrNjkj5cl5S2zcJEP9e6-yHbL9EFKqO
-X-Proofpoint-ORIG-GUID: SUrNjkj5cl5S2zcJEP9e6-yHbL9EFKqO
-X-Proofpoint-Spam-Info: AW1haW4tMjYwNjIyMDA5MSBTYWx0ZWRfX8LWFzgmxznWG
- LNesHjg2Xz4H7IMU+gUPtKtc8QJl6VdQTtWl8WaUuI7c955wyM1AD3tB1uhBbdzPjP3z/S2FHEC
- fmfcSUxKJMUJFSusfIk7r53y7tPlywM=
+References: <178196118045.462404.11069139160448641355@maoyixie.com>
+In-Reply-To: <178196118045.462404.11069139160448641355@maoyixie.com>
+From: Loic Poulain <loic.poulain@oss.qualcomm.com>
+Date: Mon, 22 Jun 2026 11:24:04 +0200
+X-Gm-Features: AVVi8CfyS_ylE1iVRIoh3zvGMYG3LeW2cuA8hUNIwvvj0zyp3zHOrXVrmx5bJso
+Message-ID: <CAFEp6-04no0SNQ+Q4L0R78cmCgrVHManT_TzaYWsTAkxJ2LFww@mail.gmail.com>
+Subject: Re: [PATCH net v2] net: wwan: iosm: bound device offsets in the MUX
+ downlink decoder
+To: Maoyi Xie <maoyixie.tju@gmail.com>
+Cc: Sergey Ryazanov <ryazanov.s.a@gmail.com>,
+        Johannes Berg <johannes@sipsolutions.net>,
+        Andrew Lunn <andrew+netdev@lunn.ch>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Proofpoint-GUID: q2A3RCow_4Ovb-JIOFW-Y32FxpZufBfB
+X-Proofpoint-ORIG-GUID: q2A3RCow_4Ovb-JIOFW-Y32FxpZufBfB
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNjIyMDA5MiBTYWx0ZWRfX7p2heLQHX2iO
+ ndW17OO4PV2MzpIQMfnT8oM7jNllLaBuA2LLcumau3gPLL3+SI7Ahulaf+fnecQo9yiadZzE1Ij
+ jNCsSGWFf8g8+P2qqQS0Rq++45KYlu+KWF4drHiReGfW1Sh922TduhJ0fS+iVSSdMOXP0eA4cJ4
+ krgo6R8emz2GSEjp7VHCnsVAp8zyCsuSGkjiQ3MGG8vE1U/275UxuattX6376PaN3+iwKqAN1q9
+ 8FNl/JHmhIrWfxCCtBvjAnSvmjYDWtPipGyVRmAJ36o4CLhfly7WX247iPgGUheIUN0fVHybWIB
+ e+AI1K4PPSNWWeleqwFb0EzBVPvXZjWBZb06RW8jEaC4fQgkb67cUptf5M+DNlZ3cjbxDF+JYEU
+ h7Kufc+HGKpsOr6nxMRCPz3VbmNxUa1RKeODm4xIszAftY36RL+wZJ66oFdANhLtBkWxIWD1pco
+ H0s5VDtgFtA8Lu/DPEg==
+X-Authority-Analysis: v=2.4 cv=bcRbluPB c=1 sm=1 tr=0 ts=6a38ff41 cx=c_pps
+ a=qKBjSQ1v91RyAK45QCPf5w==:117 a=IkcTkHD0fZMA:10 a=FelO9ux0wxsA:10
+ a=s4-Qcg_JpJYA:10 a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22
+ a=Um2Pa8k9VHT-vaBCBUpS:22 a=VwQbUJbxAAAA:8 a=SnhycFdtAAAA:8 a=pGLkceISAAAA:8
+ a=EUspDBNiAAAA:8 a=ckisEX8qNS7d6mgPHJgA:9 a=QEXdDO2ut3YA:10
+ a=NFOGd7dJGGMPyQGDc5-O:22 a=IdunurJ9zWQ3aaQyNLvr:22
+X-Proofpoint-Spam-Info: AW1haW4tMjYwNjIyMDA5MiBTYWx0ZWRfXwUc9VKxBftdC
+ 3BeYMOLC2nCeRehqVnBTxWaelYSSwBYn4qi22Hl7wCMHbEcR0OYiHV2KeJR6bEluR6ovX8PxxSZ
+ Jn5uDixVjf5jXTIC7ZEaCiIzLOiCSkQ=
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.125,FMLib:17.12.100.49
  definitions=2026-06-22_01,2026-06-18_03,2025-10-01_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- lowpriorityscore=0 malwarescore=0 clxscore=1015 impostorscore=0
- suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 priorityscore=1501
- adultscore=0 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2606150000
- definitions=main-2606220091
+ priorityscore=1501 bulkscore=0 impostorscore=0 malwarescore=0 phishscore=0
+ lowpriorityscore=0 adultscore=0 spamscore=0 suspectscore=0 clxscore=1015
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2606220092
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-2.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[ibm.com,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[ibm.com:s=pp1];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
+	DMARC_POLICY_ALLOW(-0.50)[qualcomm.com,reject];
+	R_DKIM_ALLOW(-0.20)[qualcomm.com:s=qcppdkim1,oss.qualcomm.com:s=google];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_RECIPIENTS(0.00)[m:adubey@linux.ibm.com,m:bpf@vger.kernel.org,m:linuxppc-dev@lists.ozlabs.org,m:maddy@linux.ibm.com,m:ast@kernel.org,m:andrii@kernel.org,m:daniel@iogearbox.net,m:shuah@kernel.org,m:linux-kselftest@vger.kernel.org,m:stable@vger.kernel.org,m:sashiko-bot@kernel.org,s:lists@lfdr.de];
-	DKIM_TRACE(0.00)[ibm.com:+];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[gmail.com,sipsolutions.net,lunn.ch,davemloft.net,google.com,kernel.org,redhat.com,vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-267638-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER(0.00)[hbathini@linux.ibm.com,stable@vger.kernel.org];
-	TAGGED_FROM(0.00)[bounces-267636-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	FROM_HAS_DN(0.00)[];
+	FREEMAIL_TO(0.00)[gmail.com];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:maoyixie.tju@gmail.com,m:ryazanov.s.a@gmail.com,m:johannes@sipsolutions.net,m:andrew+netdev@lunn.ch,m:davem@davemloft.net,m:edumazet@google.com,m:kuba@kernel.org,m:pabeni@redhat.com,m:netdev@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,m:maoyixietju@gmail.com,m:ryazanovsa@gmail.com,m:andrew@lunn.ch,s:lists@lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_SENDER(0.00)[loic.poulain@oss.qualcomm.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[qualcomm.com:+,oss.qualcomm.com:+];
+	MISSING_XM_UA(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_FORWARDING(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[hbathini@linux.ibm.com,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	TO_DN_NONE(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[11];
+	FROM_NEQ_ENVFROM(0.00)[loic.poulain@oss.qualcomm.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_COUNT_SEVEN(0.00)[11]
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[11];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	TAGGED_RCPT(0.00)[stable,netdev];
+	TO_DN_SOME(0.00)[]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: C70AB6AE4EA
+X-Rspamd-Queue-Id: 575416AE45E
 
-
-Hi Abhishek,
-
-On 16/06/26 10:17 pm, adubey@linux.ibm.com wrote:
-> From: Abhishek Dubey <adubey@linux.ibm.com>
-> 
-> During size calculation in pass-0, exit_addr is 0 since addrs[fp->len]
-> is not yet populated. bpf_jit_emit_exit_insn() treats a zero exit_addr
-> as in-range and skips bpf_jit_build_epilogue(), so the alternate inline
-> epilogue instructions are not counted in alloclen.
-> 
-> In later passes, if the real exit_addr falls outside the 32MB branch
-> range, the full inline epilogue is emitted into the already-allocated
-> buffer, writing past its end and corrupting adjacent memory.
-> 
-> Fix by ensuring exit_addr is non-zero before treating it as in-range,
-> so pass-0 always falls through to bpf_jit_build_epilogue() and
-> conservatively accounts for all epilogue instructions in alloclen.
-> Also range check alt_exit_addr directly in the else-if condition.
-> 
-> Since exit_addr handling now falls through to the epilogue, two
-> related issues in bpf_int_jit_compile() must also be addressed:
-> 
-> 1. Reset cgctx.alt_exit_addr before the second size-calculation pass.
->     Without this, a stale alt_exit_addr from the first pass causes the
->     second pass to emit a single jump instead of the full epilogue,
->     undercounting alloclen and introducing the overflow.
-> 
-> 2. Recompute addrs[fp->len] at the end of each code-generation pass.
->     The larger body from pass-0 might shrink in later passes; a stale
->     addrs[fp->len] would leave exit branching past the real epilogue
->     into the padding.
-> 
-> Reported-by: sashiko-bot@kernel.org
-> Closes: https://lore.kernel.org/bpf/20260529015855.364704-2-adubey@linux.ibm.com/T/#mfcb23909d977b949727cca4f59ee56a13fd69b92
-> Fixes: d243b62b7bd3 ("powerpc64/bpf: Add support for bpf trampolines")
+On Sat, Jun 20, 2026 at 3:13=E2=80=AFPM Maoyi Xie <maoyixie.tju@gmail.com> =
+wrote:
+>
+> mux_dl_adb_decode() walks a chain of aggregated datagram tables using
+> offsets and lengths taken from the modem. first_table_index,
+> next_table_index, table_length, datagram_index and datagram_length are
+> all device supplied le values. Only first_table_index was checked, and
+> only for being non zero. The decoder then formed adth =3D block +
+> adth_index and read the table header and the datagram entries with no
+> bound against the received skb. A modem that reports an index or a
+> length past the downlink buffer makes the decoder read out of bounds.
+>
+> The buffer is IPC_MEM_MAX_DL_MUX_LITE_BUF_SIZE and skb->len is at most
+> that, so skb->len is the real limit, but none of these in band offsets
+> were checked against it.
+>
+> Validate every device offset and length against skb->len before use.
+> The block header must fit. Each table header, on entry and after every
+> next_table_index, must lie inside the skb. The datagram table must fit.
+> Each datagram index and length must stay inside the skb. The header
+> padding must not exceed the datagram length so the receive length does
+> not wrap.
+>
+> This was reproduced under KASAN as a slab out of bounds read on a normal
+> downlink receive once the iosm net device is up.
+>
+> Fixes: 1f52d7b62285 ("net: wwan: iosm: Enable M.2 7360 WWAN card support"=
+)
+> Suggested-by: Loic Poulain <loic.poulain@oss.qualcomm.com>
 > Cc: stable@vger.kernel.org
-> Signed-off-by: Abhishek Dubey <adubey@linux.ibm.com>
+> Signed-off-by: Maoyi Xie <maoyixie.tju@gmail.com>
+
+Reviewed-by: Loic Poulain <loic.poulain@oss.qualcomm.com>
+
+
 > ---
->   arch/powerpc/net/bpf_jit_comp.c | 9 +++++----
->   1 file changed, 5 insertions(+), 4 deletions(-)
-> 
-> diff --git a/arch/powerpc/net/bpf_jit_comp.c b/arch/powerpc/net/bpf_jit_comp.c
-> index 1c274df2b4f7..d48bc722d0dc 100644
-> --- a/arch/powerpc/net/bpf_jit_comp.c
-> +++ b/arch/powerpc/net/bpf_jit_comp.c
-> @@ -128,11 +128,10 @@ void bpf_jit_build_fentry_stubs(u32 *image, u32 *fimage, struct codegen_context
->   int bpf_jit_emit_exit_insn(u32 *image, u32 *fimage, struct codegen_context *ctx,
->   							int tmp_reg, long exit_addr)
->   {
-> -	if (!exit_addr || is_offset_in_branch_range(exit_addr - (ctx->idx * 4))) {
-> +	if (exit_addr && is_offset_in_branch_range(exit_addr - (long)(ctx->idx * 4))) {
->   		PPC_JMP(exit_addr);
-> -	} else if (ctx->alt_exit_addr) {
-> -		if (WARN_ON(!is_offset_in_branch_range((long)ctx->alt_exit_addr - (ctx->idx * 4))))
-> -			return -1;
-> +	} else if (ctx->alt_exit_addr && is_offset_in_branch_range(
-> +			(long)(ctx->alt_exit_addr) - (long)(ctx->idx * 4))) {
->   		PPC_JMP(ctx->alt_exit_addr);
->   	} else {
->   		ctx->alt_exit_addr = ctx->idx * 4;
-> @@ -303,6 +302,7 @@ struct bpf_prog *bpf_int_jit_compile(struct bpf_verifier_env *env, struct bpf_pr
->   	 */
->   	if (cgctx.seen & SEEN_TAILCALL || !is_offset_in_branch_range((long)cgctx.idx * 4)) {
->   		cgctx.idx = 0;
-> +		cgctx.alt_exit_addr = 0;
->   		if (bpf_jit_build_body(fp, NULL, NULL, &cgctx, addrs, 0, false))
->   			goto out_err;
->   	}
-> @@ -347,6 +347,7 @@ struct bpf_prog *bpf_int_jit_compile(struct bpf_verifier_env *env, struct bpf_pr
->   			bpf_jit_binary_pack_free(fhdr, hdr);
->   			goto out_err;
->   		}
-
-> +		addrs[fp->len] = cgctx.idx * 4;
-
-Something like the below is needed to fix the potential branching issues
-due to code shrinkage, reported by sashiko-bot in the other thread:
-
-diff --git a/arch/powerpc/net/bpf_jit.h b/arch/powerpc/net/bpf_jit.h
-index af510da12d8e..09cb7128c46b 100644
---- a/arch/powerpc/net/bpf_jit.h
-+++ b/arch/powerpc/net/bpf_jit.h
-@@ -14,6 +14,13 @@
-  #include <asm/ppc-opcode.h>
-  #include <linux/build_bug.h>
-
-+/*
-+ * We need at least 2 passes for proper code generation, and may need
-+ * additional passes if code size changes between passes.
-+ */
-+#define CODEGEN_MIN_PASSES	2
-+#define CODEGEN_MAX_PASSES	3
-+
-  #ifdef CONFIG_PPC64_ELF_ABI_V1
-  #define FUNCTION_DESCR_SIZE	24
-  #else
-diff --git a/arch/powerpc/net/bpf_jit_comp.c 
-b/arch/powerpc/net/bpf_jit_comp.c
-index 904d5fe157bd..f8c1d1a39a90 100644
---- a/arch/powerpc/net/bpf_jit_comp.c
-+++ b/arch/powerpc/net/bpf_jit_comp.c
-@@ -335,8 +335,10 @@ struct bpf_prog *bpf_int_jit_compile(struct 
-bpf_verifier_env *env, struct bpf_pr
-  	code_base = (u32 *)(image + FUNCTION_DESCR_SIZE);
-  	fcode_base = (u32 *)(fimage + FUNCTION_DESCR_SIZE);
-
--	/* Code generation passes 1-2 */
--	for (pass = 1; pass < 3; pass++) {
-+	/* Code generation passes 1-2+, loop until program size converges. */
-+	for (pass = 1; pass <= CODEGEN_MAX_PASSES; pass++) {
-+		u32 prev_proglen = proglen;
-+
-  		/* Now build the prologue, body code & epilogue for real. */
-  		cgctx.idx = 0;
-  		cgctx.alt_exit_addr = 0;
-@@ -350,9 +352,23 @@ struct bpf_prog *bpf_int_jit_compile(struct 
-bpf_verifier_env *env, struct bpf_pr
-  		addrs[fp->len] = cgctx.idx * 4;
-  		bpf_jit_build_epilogue(code_base, fcode_base, &cgctx);
-
-+		proglen = cgctx.idx * 4;
-+
-  		if (bpf_jit_enable > 1)
-  			pr_info("Pass %d: shrink = %d, seen = 0x%x\n", pass,
--				proglen - (cgctx.idx * 4), cgctx.seen);
-+				prev_proglen - proglen, cgctx.seen);
-+
-+		/* Check if program size has converged, but ensure minimum passes */
-+		if (pass >= CODEGEN_MIN_PASSES && proglen == prev_proglen)
-+			break;
-+
-+		if (pass == CODEGEN_MAX_PASSES && proglen != prev_proglen) {
-+			pr_err("BPF JIT: Program did not converge after %d passes\n",
-+			       CODEGEN_MAX_PASSES);
-+			bpf_arch_text_copy(&fhdr->size, &hdr->size, sizeof(hdr->size));
-+			bpf_jit_binary_pack_free(fhdr, hdr);
-+			goto out_err;
-+		}
-  	}
-
-  	if (bpf_jit_enable > 1)
-
-
-- Hari
+> Changes in v2:
+> - mux_dl_process_dg now uses intermediate native endian locals dg_index
+>   and dg_len so the bound checks read cleaner and avoid the repeated
+>   le32_to_cpu conversions, per Loic Poulain's review. No functional
+>   change.
+>
+> Link to v1: https://lore.kernel.org/all/178185979029.4044562.999361597594=
+9055530@maoyixie.com/
+>
+>  drivers/net/wwan/iosm/iosm_ipc_mux_codec.c | 33 ++++++++++++++++------
+>  1 file changed, 24 insertions(+), 9 deletions(-)
+>
+> diff --git a/drivers/net/wwan/iosm/iosm_ipc_mux_codec.c b/drivers/net/wwa=
+n/iosm/iosm_ipc_mux_codec.c
+> index bff46f7ca59f..ff9a4bc52f29 100644
+> --- a/drivers/net/wwan/iosm/iosm_ipc_mux_codec.c
+> +++ b/drivers/net/wwan/iosm/iosm_ipc_mux_codec.c
+> @@ -553,19 +553,21 @@ static int mux_dl_process_dg(struct iosm_mux *ipc_m=
+ux, struct mux_adbh *adbh,
+>         u32 packet_offset, i, rc, dg_len;
+>
+>         for (i =3D 0; i < nr_of_dg; i++, dg++) {
+> -               if (le32_to_cpu(dg->datagram_index)
+> -                               < sizeof(struct mux_adbh))
+> +               u32 dg_index =3D le32_to_cpu(dg->datagram_index);
+> +
+> +               dg_len =3D le16_to_cpu(dg->datagram_length);
+> +
+> +               if (dg_index < sizeof(struct mux_adbh))
+>                         goto dg_error;
+>
+> -               /* Is the packet inside of the ADB */
+> -               if (le32_to_cpu(dg->datagram_index) >=3D
+> -                                       le32_to_cpu(adbh->block_length)) =
+{
+> +               /* Is the packet inside of the ADB and the received skb ?=
+ */
+> +               if (dg_index >=3D le32_to_cpu(adbh->block_length) ||
+> +                   dg_index >=3D skb->len ||
+> +                   dg_len > skb->len - dg_index ||
+> +                   dl_head_pad_len >=3D dg_len) {
+>                         goto dg_error;
+>                 } else {
+> -                       packet_offset =3D
+> -                               le32_to_cpu(dg->datagram_index) +
+> -                               dl_head_pad_len;
+> -                       dg_len =3D le16_to_cpu(dg->datagram_length);
+> +                       packet_offset =3D dg_index + dl_head_pad_len;
+>                         /* Pass the packet to the netif layer. */
+>                         rc =3D ipc_mux_net_receive(ipc_mux, if_id, ipc_mu=
+x->wwan,
+>                                                  packet_offset,
+> @@ -595,6 +597,10 @@ static void mux_dl_adb_decode(struct iosm_mux *ipc_m=
+ux,
+>         block =3D skb->data;
+>         adbh =3D (struct mux_adbh *)block;
+>
+> +       /* The block header itself must fit in the received skb. */
+> +       if (skb->len < sizeof(struct mux_adbh))
+> +               goto adb_decode_err;
+> +
+>         /* Process the aggregated datagram tables. */
+>         adth_index =3D le32_to_cpu(adbh->first_table_index);
+>
+> @@ -606,6 +612,11 @@ static void mux_dl_adb_decode(struct iosm_mux *ipc_m=
+ux,
+>
+>         /* Loop through mixed session tables. */
+>         while (adth_index) {
+> +               /* The table header must lie within the received skb. */
+> +               if (adth_index < sizeof(struct mux_adbh) ||
+> +                   adth_index > skb->len - sizeof(struct mux_adth))
+> +                       goto adb_decode_err;
+> +
+>                 /* Get the reference to the table header. */
+>                 adth =3D (struct mux_adth *)(block + adth_index);
+>
+> @@ -629,6 +640,10 @@ static void mux_dl_adb_decode(struct iosm_mux *ipc_m=
+ux,
+>                 if (le16_to_cpu(adth->table_length) < sizeof(struct mux_a=
+dth))
+>                         goto adb_decode_err;
+>
+> +               /* The whole datagram table must fit in the received skb.=
+ */
+> +               if (le16_to_cpu(adth->table_length) > skb->len - adth_ind=
+ex)
+> +                       goto adb_decode_err;
+> +
+>                 /* Calculate the number of datagrams. */
+>                 nr_of_dg =3D (le16_to_cpu(adth->table_length) -
+>                                         sizeof(struct mux_adth)) /
+> --
+> 2.34.1
+>
 
