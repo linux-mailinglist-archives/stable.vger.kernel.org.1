@@ -1,305 +1,215 @@
-Return-Path: <stable+bounces-267812-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-267813-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id biN4F6ioOWpOwAcAu9opvQ
-	(envelope-from <stable+bounces-267812-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 22 Jun 2026 23:27:04 +0200
+	id EzGyDbawOWp8wQcAu9opvQ
+	(envelope-from <stable+bounces-267813-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 23 Jun 2026 00:01:26 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id A9F966B27C7
-	for <lists+stable@lfdr.de>; Mon, 22 Jun 2026 23:27:03 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 96F226B28CE
+	for <lists+stable@lfdr.de>; Tue, 23 Jun 2026 00:01:25 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=google.com header.s=20251104 header.b=QEbmW7J6;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-267812-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-267812-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("subspace.kernel.org:s=arc-20240116:i=2")
+	dkim=pass header.d=intel.com header.s=Intel header.b=gn25p1pl;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-267813-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-267813-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=none) header.from=intel.com;
+	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 7ED093017C10
-	for <lists+stable@lfdr.de>; Mon, 22 Jun 2026 21:26:33 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id D91473045B3E
+	for <lists+stable@lfdr.de>; Mon, 22 Jun 2026 22:01:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F353371895;
-	Mon, 22 Jun 2026 21:26:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D209837BE7C;
+	Mon, 22 Jun 2026 22:01:11 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lf1-f41.google.com (mail-lf1-f41.google.com [209.85.167.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C540372057
-	for <stable@vger.kernel.org>; Mon, 22 Jun 2026 21:26:26 +0000 (UTC)
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782163590; cv=pass; b=kpRUD9PYTdJ34sxsoHw0W4e5Pxp5hWAcgxDDnNPCQ7C4++ISdfDLFJIxh3ValEVxPxlcYZlMF7tRoxHHmNjvS7lJEGvF7upSt3KKnkv/3gyqASMiyVb9/iUYrsjWZ/YO8TGKD0NrY7lpStmfD0Trgi29k5RNeMUiU7pfQL96whQ=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782163590; c=relaxed/simple;
-	bh=NflH0Gfezb1XneHPVcE4Mia9bSbDbmEspl/+r5JrR50=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=aqgbDOXBcae3HwePqdk9RQWoKoWE841Xa+SZU2QJGnuq8jh43gy37SPanBR71T1qD+lLmoQ5DJmRRTFWBTNZ4Dhq5/TZuOYKHiFkz4iQpB4Y+rPbnoHFzZa4vgHzdgSjRKY02+vX1XxSI5jYDoMsKEWu67iwfr/jUaeSmSI069M=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=QEbmW7J6; arc=pass smtp.client-ip=209.85.167.41
-Received: by mail-lf1-f41.google.com with SMTP id 2adb3069b0e04-5ad2abf31aeso825e87.1
-        for <stable@vger.kernel.org>; Mon, 22 Jun 2026 14:26:25 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1782163584; cv=none;
-        d=google.com; s=arc-20260327;
-        b=h9Mg29juCpB6KYMUszxSzf6EeBvCzSGwygDk7iEm7lRFzcluzT2PBtiVG0ENN9UTpE
-         cBqv7yB4TFgW0mqKMdxrpHQk9GhAdDy3Hhn/lLX7iiR/U24h4C1Xq0M5EcJ+172L4GWB
-         ZH48GxesbQLXd+SakHNJchH7gqOURqWh2hASfCvjbjbkyd4m9zPOx8MxukIZMIZtuiPW
-         rQwScGJ6z1h/jkx5O7ERJqW3nKkGmiuruL9uoTWdlmgbbXmQCLfy+XYNv9Pbzh9dWDOY
-         fI4h6fJNuNcr8+FmJ4QuHUNpCqcJp0ZVOKGlJu2L+JJR43P/c+juxCCIVmyMS35rHUaY
-         cyAQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=ssE3TLUG/7J9ufeN9q/DrGgYY9Z2q4mT+HtG/803YCc=;
-        fh=nE9CNcdjmND50bi+OVaedoRFQlTkNZII7g/poXkueis=;
-        b=j9nXls5mFyz0idlRMmILl2HfQla1IuCEVtcosq3Tet8TyC5r5JWwRoY+PuKyylus0O
-         Dr1I6KovKVQGPUTVPDDUchIzS8dHRLEtx5DlaBSxgPsKmKz+c8skUOLk3B+heAWluZJp
-         A4+JKvvmubWW9eOLi3tXqKxvJGvhANzbFT1H3Vg6wa6SbxZzcmmFEHfgZNrR9XMgrxTb
-         mYEWzTdf6KdTNwl7J/ArWeyon8GO4vrxqF74YMOSdvmlx/pX5IwGHv84p41iL74jwENc
-         2fG3Ty+IEtble6srAMNeBjB9UjfsoSxjVFlg7l403mT/QWYH0kYQoSkQUA6a9E4v8ui1
-         Xutg==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1782163584; x=1782768384; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=ssE3TLUG/7J9ufeN9q/DrGgYY9Z2q4mT+HtG/803YCc=;
-        b=QEbmW7J6VqWb0VWbxpiT5WWeXJnmex/IKF43rVscjY7n6uPCabJqx7PiN3F6FiIytu
-         uTxIX5zPXgx+EVcWSnf7J3a9hYWdKtEMi+ElZocEyqpmLWUS80w3qBGZmCikbwRLfMXD
-         50ovAvDSr5JYGmBCx9f7tD4UX+Nb4dYwVhW4oh8zU8SztHkflRJhj78h4UvSeMFuznuB
-         hdAB9tDwpYMkYSkWeATuG56s4fOk1IMRDKtQOUX6nrk3D7t15HjMzmeOn6YdZ9sHB21h
-         AiFh05bLIWmQWgGsHFWbDkA+7OkdEIexoAB2QzPnD75gDC0RQ5ITGhfn/D6adKtaBa8H
-         HaOg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782163584; x=1782768384;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=ssE3TLUG/7J9ufeN9q/DrGgYY9Z2q4mT+HtG/803YCc=;
-        b=BTa6CCYlCDjhZb25qHctTGK8MDhG+Iuj4GjzFhJoRuMGgvQ6hL7jYPD9BCfY3SlcUl
-         6MgLwSPln75G0/CbtaV2RTP+Ltjn5WGUZafBgz2MTAbNehfozDtJuJElaWYQo12p4ctU
-         eVUX4yRkrgP9//IVneVLT3Lo7NoDsp5HldPjYo5US4E+4o963ErxYHZbV+lt4Wlb9G29
-         I04gKDdZQKA3uv61BpQ+w0KPHvyMgNHrM730+f2te6GMco9gTC4fJb0g2ZKPMxerMxh/
-         kCskiFtZYYGb6thQrDgD5/7ZttoTofscbptjHrvfPk+kWpv/k+RAzQFQMgo1uNHz1grq
-         FeIw==
-X-Forwarded-Encrypted: i=1; AFNElJ/7MPKZq8isXzXZKUX8nj6NslNtJVFMU28EcidfWo/aO9LHpyv8WNsGtWLH/XgTwh0diL28gLk=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyaNd1TaOTEt8q1AUKDzJWsTNOU++NgovuhZ26VMaNaCEANNj3D
-	QQfEQr2sYGLwmJHq/U/64K9ty94fVG/Xm0ReesutVKvXXGVsbmgnD0RwR7Sx6p04gVOmwNr03kK
-	IqFrExnpA8uNAOsDESS1iW3j1PkThXgzuKYq96HA=
-X-Gm-Gg: AfdE7cnoUcp6N50A3l2m3iKLBgETO/mP3dPXmVK/D2H8uPIyXfMbAAznWMssyYefIF2
-	44cz9ZogUTXK0W6xxC+pKhN6wmqfouhkwUTLgLITy3YhMbzYrVDNPHrmONf4rabRxePE4ANXuKQ
-	vAYKSNyt/X5TwYqJcVWnKmpCUEmQ8NF+okEyv/DxZsCCOBPYXy4EMU7w/YrkH8ldHut+1SC9kZk
-	3r9AMYzUJOSr0cedMK3cMAwYzRUeSd8zNL3RaixFQbM3sGsQB9Efep9wR3YmUGCLKKkIi1YGwV1
-	WXI=
-X-Received: by 2002:a05:6512:2302:b0:5aa:883f:5da4 with SMTP id
- 2adb3069b0e04-5ada9edb8famr21097e87.11.1782163583717; Mon, 22 Jun 2026
- 14:26:23 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E453376A03;
+	Mon, 22 Jun 2026 22:01:10 +0000 (UTC)
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1782165671; cv=none; b=BdtDIW210bH4csSF3W5+0ah/xZoImYND77ij7CA1K94UhN6X2GIHw837KGIsuY8D6V8/+0b9I7YPEokbLvYr6zFM+eROR4CVFR7z0U/Sc3GftwGFQ9TXbLJ7EkupdruwcDpo0bTQIPg3CLkZyGA4uXAjCB+H1dd0WhUP+2pisOo=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1782165671; c=relaxed/simple;
+	bh=78Jq1Dj8kEiG1qk4UyHAziYDZVlH2hpxdJI/v/L9er0=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=B5Ded+9iFGMQ1JZrVxLlfy/p2/cED6U/gmWe9wD7Sy8swchmEWoFKVSnJ9RS0IcNkcfkR9bN+XU1JS2zE5fVufAWeSYUGHF5jo2foCfrSdFoN6FY7cf7+wq1/mW2jItsOHoYF6kujGltD7r2TCoQEWROKR8n95xA43NOi7g6kZE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=gn25p1pl; arc=none smtp.client-ip=198.175.65.20
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1782165670; x=1813701670;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=78Jq1Dj8kEiG1qk4UyHAziYDZVlH2hpxdJI/v/L9er0=;
+  b=gn25p1plaNuOnRNJxzl0ubsAfC00iKjAycsJWX8tnW7YFITIDeTjHysN
+   FC2VfOYu/zbOK2TN6e4aa2fG/1TOmz+DkKOqJalMgGUlIrmrixGSIxiPY
+   nL6tU4Pt5hfbYJ+Chkg8WYxLINlo7DFH/YkUbZtyUn2L1f+7mQaV8iH8V
+   ixfOixNmh8twGPTmAle8yeOKaDnHHGVDbqt6m2jzWZIsuDqttiNuJDb4c
+   qjUAAvz7VL9qZl73uELC3ILu9Pqrc/nYzjGPMtC1NIYOkjctMzc63F5vT
+   8njq9vbzYDPWYmP2ob1pahDahvzwGx/AC+PuG4FRXJKh8uG/+6nrafU2m
+   g==;
+X-CSE-ConnectionGUID: J62n6YLdTwePJMRISGm9Mg==
+X-CSE-MsgGUID: 0ImHcn4IRm+Kcq1RZLjJmw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11825"; a="82675566"
+X-IronPort-AV: E=Sophos;i="6.24,219,1774335600"; 
+   d="scan'208";a="82675566"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Jun 2026 15:01:05 -0700
+X-CSE-ConnectionGUID: dA+pLScgRTCWlDVpe071wQ==
+X-CSE-MsgGUID: D7OImcEmS2Sbp7KxGorQ7g==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.24,219,1774335600"; 
+   d="scan'208";a="248205713"
+Received: from anguy11-upstream.jf.intel.com ([10.166.9.133])
+  by orviesa006.jf.intel.com with ESMTP; 22 Jun 2026 15:01:05 -0700
+From: Tony Nguyen <anthony.l.nguyen@intel.com>
+To: davem@davemloft.net,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	edumazet@google.com,
+	andrew+netdev@lunn.ch,
+	netdev@vger.kernel.org
+Cc: Paul Greenwalt <paul.greenwalt@intel.com>,
+	anthony.l.nguyen@intel.com,
+	stable@vger.kernel.org,
+	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
+	Simon Horman <horms@kernel.org>,
+	Alexander Nowlin <alexander.nowlin@intel.com>
+Subject: [PATCH net 3/8] ice: fix ice_init_link() error return preventing probe
+Date: Mon, 22 Jun 2026 15:00:50 -0700
+Message-ID: <20260622220059.2471844-4-anthony.l.nguyen@intel.com>
+X-Mailer: git-send-email 2.47.1
+In-Reply-To: <20260622220059.2471844-1-anthony.l.nguyen@intel.com>
+References: <20260622220059.2471844-1-anthony.l.nguyen@intel.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260621222130.1667453-1-xuehaohu@google.com> <20260622091344.794e0d74@pumpkin>
-In-Reply-To: <20260622091344.794e0d74@pumpkin>
-From: David Hu <xuehaohu@google.com>
-Date: Mon, 22 Jun 2026 17:26:10 -0400
-X-Gm-Features: AVVi8CfJIbyQ0LZKF2B9vVNXYGGvbzr3GZ2ukEdWP929fB_vPszHbNiUlAHw-3A
-Message-ID: <CAPd9Lg9+d=Rw4230FdcMFd0VYfyhXhD=eju53iURR8c61iXsWw@mail.gmail.com>
-Subject: Re: [PATCH] dma-buf: Split sgl by largest page-aligned chunk
-To: David Laight <david.laight.linux@gmail.com>
-Cc: Sumit Semwal <sumit.semwal@linaro.org>, =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>, 
-	Jason Gunthorpe <jgg@ziepe.ca>, Nicolin Chen <nicolinc@nvidia.com>, Leon Romanovsky <leon@kernel.org>, 
-	Kevin Tian <kevin.tian@intel.com>, Ankit Agrawal <ankita@nvidia.com>, 
-	Alex Williamson <alex@shazbot.org>, linux-media@vger.kernel.org, 
-	dri-devel@lists.freedesktop.org, linaro-mm-sig@lists.linaro.org, 
-	linux-kernel@vger.kernel.org, iommu@lists.linux.dev, jmoroni@google.com, 
-	praan@google.com, kpberry@google.com, sashiko-bot <sashiko-bot@kernel.org>, 
-	stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
+	WHITELIST_SPF_DKIM(-3.00)[intel.com:d:+,kernel.org:s:+];
 	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
-	DMARC_POLICY_ALLOW(-0.50)[google.com,reject];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[google.com:s=20251104];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_RECIPIENTS(0.00)[m:david.laight.linux@gmail.com,m:sumit.semwal@linaro.org,m:christian.koenig@amd.com,m:jgg@ziepe.ca,m:nicolinc@nvidia.com,m:leon@kernel.org,m:kevin.tian@intel.com,m:ankita@nvidia.com,m:alex@shazbot.org,m:linux-media@vger.kernel.org,m:dri-devel@lists.freedesktop.org,m:linaro-mm-sig@lists.linaro.org,m:linux-kernel@vger.kernel.org,m:iommu@lists.linux.dev,m:jmoroni@google.com,m:praan@google.com,m:kpberry@google.com,m:sashiko-bot@kernel.org,m:stable@vger.kernel.org,m:davidlaightlinux@gmail.com,s:lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-267813-lists,stable=lfdr.de];
+	RCPT_COUNT_TWELVE(0.00)[12];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FROM_HAS_DN(0.00)[];
-	FREEMAIL_TO(0.00)[gmail.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[19];
-	FORGED_SENDER(0.00)[xuehaohu@google.com,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER(0.00)[anthony.l.nguyen@intel.com,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:davem@davemloft.net,m:kuba@kernel.org,m:pabeni@redhat.com,m:edumazet@google.com,m:andrew+netdev@lunn.ch,m:netdev@vger.kernel.org,m:paul.greenwalt@intel.com,m:anthony.l.nguyen@intel.com,m:stable@vger.kernel.org,m:aleksandr.loktionov@intel.com,m:horms@kernel.org,m:alexander.nowlin@intel.com,m:andrew@lunn.ch,s:lists@lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
-	TAGGED_FROM(0.00)[bounces-267812-lists,stable=lfdr.de];
-	DKIM_TRACE(0.00)[google.com:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[xuehaohu@google.com,stable@vger.kernel.org];
 	TO_DN_SOME(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[anthony.l.nguyen@intel.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[intel.com:+];
+	RCVD_COUNT_FIVE(0.00)[5];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp,mail.gmail.com:mid]
+	ALIAS_RESOLVED(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	TAGGED_RCPT(0.00)[stable,netdev];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:dkim,intel.com:email,intel.com:mid,intel.com:from_mime,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: A9F966B27C7
+X-Rspamd-Queue-Id: 96F226B28CE
 
-On Mon, Jun 22, 2026 at 4:13=E2=80=AFAM David Laight
-<david.laight.linux@gmail.com> wrote:
->
+From: Paul Greenwalt <paul.greenwalt@intel.com>
 
-Hi David,
+ice_init_link() can return an error status from ice_update_link_info()
+or ice_init_phy_user_cfg(), causing probe to fail.
 
-Thank you for your review. You raised many good points regarding
-optimizations here. I'll switch to using 2G as the max entry size
-(`SZ_2G` from `linux/sizes.h`), and remove divisions and
-multiplications. I'll also replace the `for()` loop with `while
-(length)`, and drop `min_t()` in favor of `min()` by casting `SZ_2G`
-to `size_t`. I'll send out a v2 with these changes shortly.
+An incorrect NVM update procedure can result in link/PHY errors, and
+the recommended resolution is to update the NVM using the correct
+procedure. If the driver fails probe due to link errors, the user
+cannot update the NVM to recover. The link/PHY errors logged are
+non-fatal: they are already annotated as 'not a fatal error if this
+fails'.
 
-Thanks,
-David
+Since none of the errors inside ice_init_link() should prevent probe
+from completing, convert it to void and remove the error check in the
+caller. All failures are already logged; callers have no meaningful
+recovery path for link init errors.
 
-> > Currently, `fill_sg_entry()` splits the scatterlist using `UINT_MAX`.
-> > This creates a non-page-aligned DMA length (`0xFFFFFFFF`) for the
-> > first entry, resulting in non-page-aligned DMA addresses for all
-> > subsequent entries.
->
-> How did you find this?
-> It requires a single buffer over 4GB - seems highly unlikely.
+Fixes: 5b246e533d01 ("ice: split probe into smaller functions")
+Cc: stable@vger.kernel.org
+Signed-off-by: Paul Greenwalt <paul.greenwalt@intel.com>
+Signed-off-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Tested-by: Alexander Nowlin <alexander.nowlin@intel.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+---
+ drivers/net/ethernet/intel/ice/ice_main.c | 16 +++++-----------
+ 1 file changed, 5 insertions(+), 11 deletions(-)
 
-It was observed during experiments with buffers over 8GB on an accelerator.
+diff --git a/drivers/net/ethernet/intel/ice/ice_main.c b/drivers/net/ethernet/intel/ice/ice_main.c
+index e2fbe111f849..e2fd2dab03e3 100644
+--- a/drivers/net/ethernet/intel/ice/ice_main.c
++++ b/drivers/net/ethernet/intel/ice/ice_main.c
+@@ -4789,16 +4789,14 @@ static void ice_init_wakeup(struct ice_pf *pf)
+ 	device_set_wakeup_enable(ice_pf_to_dev(pf), false);
+ }
+ 
+-static int ice_init_link(struct ice_pf *pf)
++static void ice_init_link(struct ice_pf *pf)
+ {
+ 	struct device *dev = ice_pf_to_dev(pf);
+ 	int err;
+ 
+ 	err = ice_init_link_events(pf->hw.port_info);
+-	if (err) {
++	if (err)
+ 		dev_err(dev, "ice_init_link_events failed: %d\n", err);
+-		return err;
+-	}
+ 
+ 	/* not a fatal error if this fails */
+ 	err = ice_init_nvm_phy_type(pf->hw.port_info);
+@@ -4838,8 +4836,6 @@ static int ice_init_link(struct ice_pf *pf)
+ 	} else {
+ 		set_bit(ICE_FLAG_NO_MEDIA, pf->flags);
+ 	}
+-
+-	return err;
+ }
+ 
+ static int ice_init_pf_sw(struct ice_pf *pf)
+@@ -4982,13 +4978,11 @@ static int ice_init(struct ice_pf *pf)
+ 
+ 	ice_init_wakeup(pf);
+ 
+-	err = ice_init_link(pf);
+-	if (err)
+-		goto err_init_link;
++	ice_init_link(pf);
+ 
+ 	err = ice_send_version(pf);
+ 	if (err)
+-		goto err_init_link;
++		goto err_deinit_pf_sw;
+ 
+ 	ice_verify_cacheline_size(pf);
+ 
+@@ -5007,7 +5001,7 @@ static int ice_init(struct ice_pf *pf)
+ 
+ 	return 0;
+ 
+-err_init_link:
++err_deinit_pf_sw:
+ 	ice_deinit_pf_sw(pf);
+ err_init_pf_sw:
+ 	ice_dealloc_vsis(pf);
+-- 
+2.47.1
 
-> >
-> > While the underlying IOMMU mapping may be contiguous, hardware
-> > DMA engines often require explicit address alignment (e.g., page,
-> > cacheline, or storage sector boundaries). Passing unaligned
-> > addresses and lengths can cause explicit failures in DMA descriptor
-> > creation or silent data corruption if lower unaligned bits are
-> > truncated.
-> >
-> > Fix this by splitting the scatterlist by the largest possible page
-> > aligned chunk within `UINT_MAX` (`ALIGN_DOWN(UINT_MAX, PAGE_SIZE)`).
-> > This ensures all scatterlist DMA addresses and lengths remain page
-> > aligned and satisfy hardware constraints.
->
-> It would almost certainly better to spilt into 2G chunks.
-> That removes any need for any divisions.
-
-I agree. 2G naturally aligns with most hardware boundaries, while also
-allowing compiler optimizations with simple bit shifts.
-
->
-> > Page-aligned entries allow the system to cleanly chunk payloads into
-> > PCIe MaxPayloadSize (MPS) (e.g., 128 bytes, 256 bytes, 512 bytes).
-> > As a result, this may help reduce TLP fragmentation in P2P transfers
-> > and alleviate potential congestion within a logical PCIe switch
-> > partition, especially when Relaxed Ordering is not possible due to
-> > hardware constraints.
-> >
-> > Reported-by: sashiko-bot <sashiko-bot@kernel.org>
-> > Closes: https://lore.kernel.org/all/20260609165431.778061F00893@smtp.ke=
-rnel.org/
-> > Fixes: 3aa31a8bb11e ("dma-buf: provide phys_vec to scatter-gather mappi=
-ng routine")
-> > Cc: stable@vger.kernel.org
-> > Signed-off-by: David Hu <xuehaohu@google.com>
-> > ---
-> >  drivers/dma-buf/dma-buf-mapping.c | 13 ++++++++-----
-> >  1 file changed, 8 insertions(+), 5 deletions(-)
-> >
-> > diff --git a/drivers/dma-buf/dma-buf-mapping.c b/drivers/dma-buf/dma-bu=
-f-mapping.c
-> > index 794acff2546a..f2bde38fdb1f 100644
-> > --- a/drivers/dma-buf/dma-buf-mapping.c
-> > +++ b/drivers/dma-buf/dma-buf-mapping.c
-> > @@ -5,6 +5,9 @@
-> >   */
-> >  #include <linux/dma-buf-mapping.h>
-> >  #include <linux/dma-resv.h>
-> > +#include <linux/align.h>
-> > +
-> > +#define MAX_ENT_SZ ALIGN_DOWN(UINT_MAX, PAGE_SIZE)
->
-> >
-> >  static struct scatterlist *fill_sg_entry(struct scatterlist *sgl, size=
-_t length,
-> >                                        dma_addr_t addr)
-> > @@ -12,9 +15,9 @@ static struct scatterlist *fill_sg_entry(struct scatt=
-erlist *sgl, size_t length,
-> >       unsigned int len, nents;
-> >       int i;
-> >
-> > -     nents =3D DIV_ROUND_UP(length, UINT_MAX);
-> > +     nents =3D DIV_ROUND_UP(length, MAX_ENT_SZ);
-> >       for (i =3D 0; i < nents; i++) {
->
-> Why not change that to 'while (length) {' to avoid the division above.
-
-Sounds good, will do.
-
->
-> > -             len =3D min_t(size_t, length, UINT_MAX);
-> > +             len =3D min_t(size_t, length, MAX_ENT_SZ);
->
-> I bet that doesn't need to be min_t()
-
-Agreed.
-
-
->
-> >               length -=3D len;
-> >               /*
-> >                * DMABUF abuses scatterlist to create a scatterlist
-> > @@ -24,7 +27,7 @@ static struct scatterlist *fill_sg_entry(struct scatt=
-erlist *sgl, size_t length,
-> >                * does not require the CPU list for mapping or unmapping=
-.
-> >                */
-> >               sg_set_page(sgl, NULL, 0, 0);
-> > -             sg_dma_address(sgl) =3D addr + (dma_addr_t)i * UINT_MAX;
-> > +             sg_dma_address(sgl) =3D addr + (dma_addr_t)i * MAX_ENT_SZ=
-;
-> >               sg_dma_len(sgl) =3D len;
->
-> Replace the multiply with 'addr +=3D len'.
-
-Will update this as well.
-
->
-> -- David
->
-> >               sgl =3D sg_next(sgl);
-> >       }
-> > @@ -41,14 +44,14 @@ static unsigned int calc_sg_nents(struct dma_iova_s=
-tate *state,
-> >
-> >       if (!state || !dma_use_iova(state)) {
-> >               for (i =3D 0; i < nr_ranges; i++)
-> > -                     nents +=3D DIV_ROUND_UP(phys_vec[i].len, UINT_MAX=
-);
-> > +                     nents +=3D DIV_ROUND_UP(phys_vec[i].len, MAX_ENT_=
-SZ);
-> >       } else {
-> >               /*
-> >                * In IOVA case, there is only one SG entry which spans
-> >                * for whole IOVA address space, but we need to make sure
-> >                * that it fits sg->length, maybe we need more.
-> >                */
-> > -             nents =3D DIV_ROUND_UP(size, UINT_MAX);
-> > +             nents =3D DIV_ROUND_UP(size, MAX_ENT_SZ);
-> >       }
-> >
-> >       return nents;
->
 
