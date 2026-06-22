@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-267643-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-267644-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id HqdlI6YGOWpilgcAu9opvQ
-	(envelope-from <stable+bounces-267643-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 22 Jun 2026 11:55:50 +0200
+	id ohQgMXQGOWpclgcAu9opvQ
+	(envelope-from <stable+bounces-267644-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 22 Jun 2026 11:55:00 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id E32BA6AE761
-	for <lists+stable@lfdr.de>; Mon, 22 Jun 2026 11:55:49 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 64DEA6AE746
+	for <lists+stable@lfdr.de>; Mon, 22 Jun 2026 11:55:00 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=CfOH8Mbr;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-267643-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-267643-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=SVavMTA+;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-267644-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-267644-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 245CB303B7F2
-	for <lists+stable@lfdr.de>; Mon, 22 Jun 2026 09:54:58 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id CB9C7300BBA7
+	for <lists+stable@lfdr.de>; Mon, 22 Jun 2026 09:54:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 531AB3A4267;
-	Mon, 22 Jun 2026 09:54:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24BF63A1E7E;
+	Mon, 22 Jun 2026 09:54:49 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97CA339A05D
-	for <stable@vger.kernel.org>; Mon, 22 Jun 2026 09:54:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB1CD3A452E
+	for <stable@vger.kernel.org>; Mon, 22 Jun 2026 09:54:45 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782122083; cv=none; b=HIgChB4Bk9mB3rtvZlINS8fyb/bZ58AMK9sRhd4LPJzrF+T0RjV/ZuZLIk3YtuZ/JAEgrN/x+3uF+zeTO79ukDt4p1WbP1h7W1K7RQupIHIhpL+4O1Bi4s4h8ueqWXRevywGQdg3Yn4VQi+CKQc70+NXjVtiMXC1JTRgats+iBw=
+	t=1782122088; cv=none; b=ftQZ1QxR0IcjooOIZr2gTFeKGzSaHOXk74UB/EDJtY5nR8nzSB0lI4+lImRtRaYQm1/T3rwOxrqhQC7+fYQwCuQJn55RIpXyVN7eCxpMi5lRQNg/rS336N+jf3Z6+sEMzJyo0ApcO4EKhHjyukL9WY8xo36uYVZcHgqsFLTyOr4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782122083; c=relaxed/simple;
-	bh=N33bS6d1fb8GwHLGigaBidVRxWEIFPI33TQGP2A5Kgc=;
+	s=arc-20240116; t=1782122088; c=relaxed/simple;
+	bh=oqiicfY4FIQX0iDyOzCrhT5s6dW5vq8a/rQ2+zX+FK8=;
 	h=Date:Message-ID:From:To:Cc:Subject:References:MIME-Version:
-	 Content-Type; b=lwvg16fsx4y5C1Ey0/SLiWc8jZyKS/wWPs8jW3zoNvEygd03zEX+v/wWLvXbrHFPa19ZD50XmXyLoe4aQc8gR4UtyETW06CXVR2RLmMZ8aIGKPfAcW2dPfyMULV8W++PplTjZvo4CBfTWf95m05WlKePTZON8e8cewHdWEDyaFQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CfOH8Mbr; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3944E1F000E9;
-	Mon, 22 Jun 2026 09:54:40 +0000 (UTC)
+	 Content-Type; b=Kn8frrk4tQSx2KqmqR0fbVazGTCYLZlPRyLwEOZ9UYkEwTDuoiIZjlOjNJApQsCxeKdWe6x3xbLp7brqe0p66MyCLXhND3zv7IL2AXDiT/oVdVd6Ii0ZmtuNBHM005flc8Sqn9nP59fCU0gGp2XwxuF3IKCilTsBCUqm2fRReso=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SVavMTA+; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82B0F1F00A3A;
+	Mon, 22 Jun 2026 09:54:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782122080;
-	bh=EK3Jzgwc6drkAbd3vS+vB9oP77g/BmE+bjWb++tgjpo=;
+	s=k20260515; t=1782122085;
+	bh=R4wbtXHQe1yBTxtj1741PuYiVyXqPIZKeMVUgFa2K6s=;
 	h=Date:From:To:Cc:Subject:References;
-	b=CfOH8MbrjniUnRoIpZzj2p7T8xX0OMIIYMoASRAmX+zWuKH0N1XGp0tevmMjFtMTX
-	 rjdUWLEw9t6UonBaCJsrlXNarxFeBtc9VNRqQSdKFPOARoxpXkXKtpsjQzLMZgGL7f
-	 56iQzdt1mPY6D7+I6jxxR3dvtffD0tHpmoiMUnvd8wdL9IKuuzTEkToVSC/je46Uao
-	 hRn61Kxyj2oV2DJb0y2EQHKaOqGr4oATbtkJdjHq4snKm0qxH4ciBy3dWzfQf4Pd3V
-	 SV3oVdVy5jU80WgbAe3a4SpeIeo1BJwJZ4KcDcO9CPAHSGVT6P1z/I6TCxDOlAQaB3
-	 yLnMwa7k3v/BA==
-Date: Mon, 22 Jun 2026 11:54:38 +0200
-Message-ID: <20260622093321.529425167@kernel.org>
+	b=SVavMTA+B/GfaFmg3qrXLXQ0vAq1Wdlj8It6N7Dm1J3Xir2Ao0NY3fSqF9pAic0O/
+	 ajos0FpOg1QZFOZ1idzA2XlclTai4AO9kkdRF76sqnSGVLGy4wYhqBulWXlAsUi4AD
+	 UBmSCZL/3PmEjJqPXYtOCRl6QPldWx9bJ+Tm3WyvN0hOYhPdf2z6JsDWpnVVMr8WDT
+	 8c2UuISdVJaDeo5XEvoQeozqAfGloXr6Ng1ZBewg4vZSEj469eAx827aQic5WMEhFX
+	 L3Y7TWXoCPsq6sStUN2lBOqSgGIME7S3hQeizTHnSYVSCVN5nNWUF194k2oZGuK2xC
+	 re/HKNovomR/Q==
+Date: Mon, 22 Jun 2026 11:54:42 +0200
+Message-ID: <20260622093321.585763770@kernel.org>
 User-Agent: quilt/0.69
 From: Thomas Gleixner <tglx@kernel.org>
 To: stable@vger.kernel.org
 Cc: Waiman Long <longman@redhat.com>,
  Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Subject: [patch v6.18.y 1/4] debugobjects: Allow to refill the pool before
- SYSTEM_SCHEDULING
+Subject: [patch v6.18.y 2/4] debugobjects: Use LD_WAIT_CONFIG instead of
+ LD_WAIT_SLEEP
 References: <20260622093040.582177124@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -68,12 +68,12 @@ X-Spamd-Result: default: False [-5.16 / 15.00];
 	WHITELIST_SPF_DKIM(-3.00)[kernel.org:d:+,kernel.org:s:+];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-267643-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-267644-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -82,7 +82,7 @@ X-Spamd-Result: default: False [-5.16 / 15.00];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FORGED_SENDER(0.00)[tglx@kernel.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	RCPT_COUNT_THREE(0.00)[3];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
@@ -96,44 +96,45 @@ X-Spamd-Result: default: False [-5.16 / 15.00];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TO_DN_SOME(0.00)[]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: E32BA6AE761
+X-Rspamd-Queue-Id: 64DEA6AE746
 
 From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 
-commit 06e0ae988f6e3499785c407429953ade19c1096b upstream.
+commit 37de2dbc318ee10577c1c2704de5a803e75e55a2 upstream.
 
-The pool of free objects is refilled on several occasions such as object
-initialisation. On PREEMPT_RT refilling is limited to preemptible
-sections due to sleeping locks used by the memory allocator. The system
-boots with disabled interrupts so the pool can not be refilled.
+fill_pool_map is used to suppress nesting violations caused by acquiring
+a spinlock_t (from within the memory allocator) while holding a
+raw_spinlock_t. The used annotation is wrong.
 
-If too many objects are initialized and the pool gets empty then
-debugobjects disables itself.
+LD_WAIT_SLEEP is for always sleeping lock types such as mutex_t.
+LD_WAIT_CONFIG is for lock type which are sleeping while spinning on
+PREEMPT_RT such as spinlock_t.
 
-Refiling can also happen early in the boot with disabled interrupts as
-long as the scheduler is not operational. If the scheduler can not
-preempt a task then a sleeping lock can not be contended.
-
-Allow to additionally refill the pool if the scheduler is not
-operational.
+Use LD_WAIT_CONFIG as override.
 
 Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Link: https://patch.msgid.link/20251127153652.291697-2-bigeasy@linutronix.de
+Link: https://patch.msgid.link/20251127153652.291697-3-bigeasy@linutronix.de
 ---
- lib/debugobjects.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ lib/debugobjects.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 ---
+diff --git a/lib/debugobjects.c b/lib/debugobjects.c
+index 9d59b797d1b5..4343dc5e5c99 100644
 --- a/lib/debugobjects.c
 +++ b/lib/debugobjects.c
-@@ -731,7 +731,7 @@ static void debug_objects_fill_pool(void
- 	 * raw_spinlock_t are basically the same type and this lock-type
- 	 * inversion works just fine.
- 	 */
--	if (!IS_ENABLED(CONFIG_PREEMPT_RT) || preemptible()) {
-+	if (!IS_ENABLED(CONFIG_PREEMPT_RT) || preemptible() || system_state < SYSTEM_SCHEDULING) {
+@@ -734,10 +734,10 @@ static void debug_objects_fill_pool(void)
+ 	if (!IS_ENABLED(CONFIG_PREEMPT_RT) || preemptible() || system_state < SYSTEM_SCHEDULING) {
  		/*
  		 * Annotate away the spinlock_t inside raw_spinlock_t warning
- 		 * by temporarily raising the wait-type to WAIT_SLEEP, matching
+-		 * by temporarily raising the wait-type to WAIT_SLEEP, matching
++		 * by temporarily raising the wait-type to LD_WAIT_CONFIG, matching
+ 		 * the preemptible() condition above.
+ 		 */
+-		static DEFINE_WAIT_OVERRIDE_MAP(fill_pool_map, LD_WAIT_SLEEP);
++		static DEFINE_WAIT_OVERRIDE_MAP(fill_pool_map, LD_WAIT_CONFIG);
+ 		lock_map_acquire_try(&fill_pool_map);
+ 		fill_pool();
+ 		lock_map_release(&fill_pool_map);
 
 
