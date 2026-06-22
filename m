@@ -1,61 +1,62 @@
-Return-Path: <stable+bounces-267614-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-267616-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id tf4zCdPrOGpikAcAu9opvQ
-	(envelope-from <stable+bounces-267614-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 22 Jun 2026 10:01:23 +0200
+	id rhARFz/sOGp0kAcAu9opvQ
+	(envelope-from <stable+bounces-267616-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 22 Jun 2026 10:03:11 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D3F56AD787
-	for <lists+stable@lfdr.de>; Mon, 22 Jun 2026 10:01:22 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id AB54E6AD7B3
+	for <lists+stable@lfdr.de>; Mon, 22 Jun 2026 10:03:10 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=ideasonboard.com header.s=mail header.b=UeHDRADs;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-267614-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-267614-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=none) header.from=ideasonboard.com;
+	dkim=pass header.d=lunn.ch header.s=20171124 header.b="ok k9t4D";
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-267616-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-267616-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=none) header.from=lunn.ch;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 92DAC3037D63
-	for <lists+stable@lfdr.de>; Mon, 22 Jun 2026 07:59:05 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A53FE301DE06
+	for <lists+stable@lfdr.de>; Mon, 22 Jun 2026 08:02:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B240C383319;
-	Mon, 22 Jun 2026 07:59:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F8AD38E5F9;
+	Mon, 22 Jun 2026 08:02:03 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DEA23815DD;
-	Mon, 22 Jun 2026 07:59:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE08436EAA6;
+	Mon, 22 Jun 2026 08:02:01 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782115144; cv=none; b=GfKNmERtsZoQQRZrB9qLc/RidmmR/rtjYlVS9WdbUCsuyymdD5qy4+NGwBJpi6MdnNSdkwWlur6yf9qaUOT/5Hbvali3NwjNg9lbld+R2FkD+lVW0d1wVOvv7zsrQidlhMb6ZQMhQMGS8ARJ8moSQNgn0AnZIKDch4FeMmt07Lk=
+	t=1782115323; cv=none; b=b413aUKD4QuGoRadXWO1lXywPvERS4N1XjKSLczXBi6NvcpuZY/5L4SPUP5WkaLi8bBgVJMTSLibvWsoOyCJV54Crhe2JLdCXpCZslyrD+JYHB/49+ANZ79wfiMorxCeSVqvIYeX3SfTxQnX9brNw2Hjoop/HZtJAoWhKdauiU4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782115144; c=relaxed/simple;
-	bh=91QdCSk232KiUANG4CEhHOZADC/4ruPF70HDR+2rVoo=;
+	s=arc-20240116; t=1782115323; c=relaxed/simple;
+	bh=9YcSQDgiIdeeJ5Q6A5OyXgluQjm6S2yxNJeBrtelcm4=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ganaDeuY4ggby3jngSnHoI1zVgjDxpz+sbzx1rWTum5oB7KGuP73Zzy620WtLU3rcepC1GL+OJZ6m7ENbqrLw5INE4jIYU2MJY0FuSm2a9Xct/xXNnBchRn/tpLi9G3T8E+pnhnbIoZvj2h/1oaEMEP5FvmiTgPOdsoLcBo3o0k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=UeHDRADs; arc=none smtp.client-ip=213.167.242.64
-Received: from ideasonboard.com (mob-109-113-9-173.net.vodafone.it [109.113.9.173])
-	by perceval.ideasonboard.com (Postfix) with ESMTPSA id 40EFF1E6;
-	Mon, 22 Jun 2026 09:58:23 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
-	s=mail; t=1782115103;
-	bh=91QdCSk232KiUANG4CEhHOZADC/4ruPF70HDR+2rVoo=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=UeHDRADsEzARdpfx9wqYb97j7Ckk9PpBDNWUtrP/rJNzZ5rReLLLghp3vJqv7JvA5
-	 F1xIQk8Mcpw+JMW8+Gjn/5M0wxM0za/0iqkqVp+QhVPRs/vn1Kf392bqZ+vvlidDkY
-	 FOMFY5Hy0qelSOc2KzDosYyZ7jvh8S8iOxOVhf84=
-Date: Mon, 22 Jun 2026 09:58:57 +0200
-From: Jacopo Mondi <jacopo.mondi@ideasonboard.com>
-To: Biren Pandya <birenpandya@gmail.com>
-Cc: Jacopo Mondi <jacopo+renesas@jmondi.org>, 
-	Kieran Bingham <kieran.bingham+renesas@ideasonboard.com>, Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>, 
-	Niklas =?utf-8?Q?S=C3=B6derlund?= <niklas.soderlund+renesas@ragnatech.se>, Mauro Carvalho Chehab <mchehab@kernel.org>, 
-	Sakari Ailus <sakari.ailus@linux.intel.com>, "open list:RDACM21 Camera Sensor" <linux-media@vger.kernel.org>, 
-	open list <linux-kernel@vger.kernel.org>, stable@vger.kernel.org
-Subject: Re: [PATCH v2] media: i2c: rdacm21: Fix missing
- media_entity_cleanup()
-Message-ID: <ajjp7QW_F2Hryuw9@zed>
-References: <20260621060709.54396-2-birenpandya@gmail.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=vDr3IEms3rgX5Oqg72q2Gf9cOWBXcn2e8AH0fjjOa6CdNbDl6WVmfOIC3kvu0U8ay1s52RysciI+FEukg79Kj1AKQZBCrgtMrGnti/o6uWCWcAei5BQNtglO0HG/ZMgEo42AWGIpO3XjeKzouUYmBaHXM5yhbpbtDybm1j1nZ64=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=okk9t4Df; arc=none smtp.client-ip=156.67.10.101
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Transfer-Encoding:Content-Disposition:
+	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:From:
+	Sender:Reply-To:Subject:Date:Message-ID:To:Cc:MIME-Version:Content-Type:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Content-Disposition:
+	In-Reply-To:References; bh=aTh+kVZB6+gAPWFNfzyuI+EJqNKK1a/lt3CUQPy9Nng=; b=ok
+	k9t4DfJzBHbCvaiZX0urkEZrmrub1EWvQw35Zan6erjLzqSodanFfjZ5MXgaOmCsc2CTj1I/Dcr5H
+	GAW10W6sucnnIKyCYZ3JsqrI/gsiJjwacrsi1y7BK3E6rfRM1q7TaJpIIu73fF1NvQtusGxiB3HSW
+	LzPvMlnDd4l/TRE=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1wbZbI-008nRY-9V; Mon, 22 Jun 2026 10:01:48 +0200
+Date: Mon, 22 Jun 2026 10:01:48 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: Pavan Chebbi <pavan.chebbi@broadcom.com>
+Cc: Haoxiang Li <haoxiang_li2024@163.com>, andrew+netdev@lunn.ch,
+	davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+	pabeni@redhat.com, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH] net: meth: check skb allocation in meth_init_rx_ring()
+Message-ID: <d4b8eedd-5be4-46a8-a887-a06f80f1a293@lunn.ch>
+References: <20260622044914.664749-1-haoxiang_li2024@163.com>
+ <CALs4sv2dr2QsFU_DUDNAMgr4MDxHcRrHqer+Kdm7dP+4TUT0eg@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -64,100 +65,86 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20260621060709.54396-2-birenpandya@gmail.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CALs4sv2dr2QsFU_DUDNAMgr4MDxHcRrHqer+Kdm7dP+4TUT0eg@mail.gmail.com>
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.16 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[ideasonboard.com,none];
-	R_DKIM_ALLOW(-0.20)[ideasonboard.com:s=mail];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64];
+	DMARC_POLICY_ALLOW(-0.50)[lunn.ch,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[lunn.ch:s=20171124];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-267614-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-267616-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:birenpandya@gmail.com,m:jacopo+renesas@jmondi.org,m:kieran.bingham+renesas@ideasonboard.com,m:laurent.pinchart+renesas@ideasonboard.com,m:niklas.soderlund+renesas@ragnatech.se,m:mchehab@kernel.org,m:sakari.ailus@linux.intel.com,m:linux-media@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,m:jacopo@jmondi.org,m:kieran.bingham@ideasonboard.com,m:laurent.pinchart@ideasonboard.com,m:niklas.soderlund@ragnatech.se,s:lists@lfdr.de];
-	FREEMAIL_TO(0.00)[gmail.com];
-	MIME_TRACE(0.00)[0:+];
 	RCVD_COUNT_THREE(0.00)[4];
+	FREEMAIL_CC(0.00)[163.com,lunn.ch,davemloft.net,google.com,kernel.org,redhat.com,vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS(0.00)[m:pavan.chebbi@broadcom.com,m:haoxiang_li2024@163.com,m:andrew+netdev@lunn.ch,m:davem@davemloft.net,m:edumazet@google.com,m:kuba@kernel.org,m:pabeni@redhat.com,m:netdev@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,m:andrew@lunn.ch,s:lists@lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_SENDER(0.00)[jacopo.mondi@ideasonboard.com,stable@vger.kernel.org];
+	FORGED_SENDER(0.00)[andrew@lunn.ch,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[jacopo.mondi@ideasonboard.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[ideasonboard.com:+];
+	FROM_NEQ_ENVFROM(0.00)[andrew@lunn.ch,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[lunn.ch:+];
 	RCPT_COUNT_SEVEN(0.00)[10];
-	TAGGED_RCPT(0.00)[stable,renesas];
+	TAGGED_RCPT(0.00)[stable,netdev];
+	TO_DN_SOME(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
 	MISSING_XM_UA(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp,ideasonboard.com:dkim,ideasonboard.com:from_mime,zed:mid]
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp,lunn.ch:dkim,lunn.ch:mid,lunn.ch:from_mime]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 6D3F56AD787
+X-Rspamd-Queue-Id: AB54E6AD7B3
 
-Hi Biren
+On Mon, Jun 22, 2026 at 11:27:41AM +0530, Pavan Chebbi wrote:
+> On Mon, Jun 22, 2026 at 10:20 AM Haoxiang Li <haoxiang_li2024@163.com> wrote:
+> >
+> > meth_init_rx_ring() does not check the return value of alloc_skb().
+> > If the allocation fails, the NULL skb is passed to skb_reserve() and
+> > then dereferenced through skb->head.
+> >
+> > Add check for alloc_skb() to prevent potential null pointer dereference.
+> >
+> > Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+> > Cc: stable@vger.kernel.org
+> > Signed-off-by: Haoxiang Li <haoxiang_li2024@163.com>
+> > ---
+> >  drivers/net/ethernet/sgi/meth.c | 3 +++
+> >  1 file changed, 3 insertions(+)
+> >
+> > diff --git a/drivers/net/ethernet/sgi/meth.c b/drivers/net/ethernet/sgi/meth.c
+> > index f7c3a5a766b7..ceff3cc937ad 100644
+> > --- a/drivers/net/ethernet/sgi/meth.c
+> > +++ b/drivers/net/ethernet/sgi/meth.c
+> > @@ -228,6 +228,9 @@ static int meth_init_rx_ring(struct meth_private *priv)
+> >
+> >         for (i = 0; i < RX_RING_ENTRIES; i++) {
+> >                 priv->rx_skbs[i] = alloc_skb(METH_RX_BUFF_SIZE, 0);
+> > +               if (!priv->rx_skbs[i])
+> > +                       return -ENOMEM;
+> > +
+> 
+> I think the fix is not complete. The caller meth_open() will not free
+> any successfully allocated skbs if the function ever returns -ENOMEM.
 
-On Sun, Jun 21, 2026 at 11:37:06AM +0530, Biren Pandya wrote:
-> If an error occurs after media_entity_pads_init() is called, the media
-> entity is left uncleaned, potentially leaking resources or leaving it
-> in an invalid state. Similarly, the remove path misses the cleanup.
->
-> Add media_entity_cleanup() to both the error path in rdacm21_probe()
-> and the rdacm21_remove() function to ensure proper resource release.
->
-> Fixes: a59f853b3b4b ("media: i2c: Add driver for RDACM21 camera module")
-> Cc: stable@vger.kernel.org
+There is also the question, does anybody care? Are SGI machines still
+used? This is a Fast Ethernet driver, written in 2003. It has no
+Maintainer. Maybe it would be better to just remove the driver?
 
-I wouldn't backport this. media_entity_cleanup() does nothing at the
-moment and will do nothing on stable kernels as well.
+At least drop the Fixes: tag, it does not fit the Stable rules.
 
-It is anyway worth adding it to the driver in case in future it will
-do something.
+https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html
 
-> Signed-off-by: Biren Pandya <birenpandya@gmail.com>
-> ---
->  drivers/media/i2c/rdacm21.c | 2 ++
->  1 file changed, 2 insertions(+)
->
-> diff --git a/drivers/media/i2c/rdacm21.c b/drivers/media/i2c/rdacm21.c
-> index bcab462708c7..41d4242a9b58 100644
-> --- a/drivers/media/i2c/rdacm21.c
-> +++ b/drivers/media/i2c/rdacm21.c
-> @@ -594,6 +594,7 @@ static int rdacm21_probe(struct i2c_client *client)
->
->  error_free_ctrls:
->  	v4l2_ctrl_handler_free(&dev->ctrls);
-> +	media_entity_cleanup(&dev->sd.entity);
+    Andrew
 
-Don't you think a new label befoer error_free_ctrls: (possibile named
-error_entity_cleanup) would be better ?
-
-The code jumps to error_free_ctrls: even before calling
-media_entity_pads_init().
-
-Thanks
-   j
-
->  error:
->  	i2c_unregister_device(dev->isp);
->
-> @@ -606,6 +607,7 @@ static void rdacm21_remove(struct i2c_client *client)
->
->  	v4l2_async_unregister_subdev(&dev->sd);
->  	v4l2_ctrl_handler_free(&dev->ctrls);
-> +	media_entity_cleanup(&dev->sd.entity);
->  	i2c_unregister_device(dev->isp);
->  }
->
-> --
-> 2.50.1 (Apple Git-155)
->
+---
+pw-bot: cr
 
