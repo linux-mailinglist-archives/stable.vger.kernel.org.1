@@ -1,151 +1,192 @@
-Return-Path: <stable+bounces-267713-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-267715-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id /tgsCIA2OWqSogcAu9opvQ
-	(envelope-from <stable+bounces-267713-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 22 Jun 2026 15:20:00 +0200
+	id vxMEOOY3OWoIowcAu9opvQ
+	(envelope-from <stable+bounces-267715-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 22 Jun 2026 15:25:58 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC11D6AFC42
-	for <lists+stable@lfdr.de>; Mon, 22 Jun 2026 15:19:59 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 367F96AFD63
+	for <lists+stable@lfdr.de>; Mon, 22 Jun 2026 15:25:58 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=cslyHsxa;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-267713-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-267713-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	dkim=none;
+	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=suse.de (policy=none);
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-267715-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-267715-lists+stable=lfdr.de@vger.kernel.org";
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id DE9693012B36
-	for <lists+stable@lfdr.de>; Mon, 22 Jun 2026 13:19:43 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B7AB6303A121
+	for <lists+stable@lfdr.de>; Mon, 22 Jun 2026 13:24:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A4C03B2FFC;
-	Mon, 22 Jun 2026 13:19:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6408F3A380C;
+	Mon, 22 Jun 2026 13:24:43 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C9303ACEF1;
-	Mon, 22 Jun 2026 13:19:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1401E379C57
+	for <stable@vger.kernel.org>; Mon, 22 Jun 2026 13:24:42 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782134366; cv=none; b=oAnE1oWGQpBAKyzBQNtoXoYjszhRTAQ/jRCiz/yEQ8XP5LXENigoxf3KBdZa2oVF06vqeCrz77+VmaBUo+KrqaFjQNSH3utXZSd5WOpamdFCQ457U5IFRfYe1DqJkaBcVfom/J/4l0ZB1XIca3aJHrN3leCv2o9bgC68k7rJ05U=
+	t=1782134683; cv=none; b=mjmKDuhJwiT+gjtl/Q+czo63ZtVqpK9K43GVSTSHeN6jSSwqSo+z74vgCIV3s+/ar+Dheid00v66/WgDwu1gNFmlnW6FZgWvKB7dzgvEHsMaFEVG7SeTcOlm6A6xg8yloyH0DZbZS58rPPNYOEGO7YUq2pZaM4aG/abKVeHNoqU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782134366; c=relaxed/simple;
-	bh=8bGBKUF3m/qOLK0ih9wizlpj0BMxuCtUnhKDwkzW51g=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=SVHwOAsstwC26K09R5FX2D3EBk7yKoB4LjDy2bw4Bsn0iAnb9tDMjqUpIOh2SngBc1ZhLaImVKKEmq6QfRHccLT/g6JiZJtcyvFtM73lhmjSsWK7MzSPLBeWbeJtu5oac033OwvHkN9WMKU245YD/tr1nrcvSEb9j/j73HJ0rus=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cslyHsxa; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73DE61F000E9;
-	Mon, 22 Jun 2026 13:19:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782134365;
-	bh=gCuyjH8s4uo18v3YVLGfAenBgSN8rOqxr2/O5hTYl38=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=cslyHsxacOJ3QXg4oBPi3fC1KSr1icF0qmff+EZiuEE7m5nhhpNsNQYq/2nQfNc96
-	 dCDRTwvzmPf9A9uTK8dTtufOfivXPKSKPo14Hwpfn0ouyhLeFeYOAielyVbMpnM8D/
-	 pGWgyw75dbR7QtPhJobc/T2ayOqRCxeS3kbE3iHtDOZorwHoXHS7PQX0DT1m7zFofQ
-	 6UFcADMR/OtXeNuOI090MBf+BdaQ3aUvGUs7y+5nvyq1gbku9jL4v8g8aJr2cbhOrq
-	 stTzAjxd/X6p8SXKSZByAhXBj78GyIXVidj/bYcT448j7nbIEtmlwc9fgvPPMm6j/+
-	 x0dGfb76mPsgg==
-Date: Mon, 22 Jun 2026 15:19:20 +0200
-From: Niklas Cassel <cassel@kernel.org>
-To: David Laight <david.laight.linux@gmail.com>
-Cc: Damien Le Moal <dlemoal@kernel.org>, Alvin Lim <alvinwylim@gmail.com>,
-	linux-ide@vger.kernel.org, linux-kernel@vger.kernel.org,
+	s=arc-20240116; t=1782134683; c=relaxed/simple;
+	bh=kQI2smvKLGI63LSIg4Ltqbvt8tDcGyiiyLjbOy77Jlg=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=d7JmLpGUH9pEj4pblBQMGCpF67FdNxKMEMr6YFHLoBwtpZy2lpZ+WzFY9DTBHWOmpQCJHIjRJgOoHzbsiR8jiiKeONXEtBIhd+UBMloGy1n5Wz2m/on/VSBmZyzdVc+j6G2DV74sDvydhtAN4OQd4dr9K6tAKJQWtePIl1reo/8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; arc=none smtp.client-ip=195.135.223.131
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 74BA575C63;
+	Mon, 22 Jun 2026 13:24:40 +0000 (UTC)
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 300B0779AB;
+	Mon, 22 Jun 2026 13:24:40 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id oJ+mCpg3OWpYIQAAD6G6ig
+	(envelope-from <tzimmermann@suse.de>); Mon, 22 Jun 2026 13:24:40 +0000
+From: Thomas Zimmermann <tzimmermann@suse.de>
+To: javierm@redhat.com,
+	treding@nvidia.com,
+	maarten.lankhorst@linux.intel.com,
+	mripard@kernel.org,
+	airlied@gmail.com,
+	simona@ffwll.ch,
+	rayyan@ansari.sh
+Cc: dri-devel@lists.freedesktop.org,
+	sashiko-reviews@lists.linux.dev,
+	Thomas Zimmermann <tzimmermann@suse.de>,
 	stable@vger.kernel.org
-Subject: Re: [PATCH] ata: ahci: force 32-bit DMA for ASMedia ASM1166
-Message-ID: <ajk2WIzpNgQSJ2dh@ryzen>
-References: <20260621100844.1224301-1-alvinwylim@gmail.com>
- <8c681e59-30aa-4a66-a5cd-9cccf8e338ff@kernel.org>
- <20260622140257.113f2275@pumpkin>
+Subject: [PATCH v2 1/6] drm/sysfb: simpledrm: Improve framebuffer-size validation
+Date: Mon, 22 Jun 2026 15:19:35 +0200
+Message-ID: <20260622132433.722823-2-tzimmermann@suse.de>
+X-Mailer: git-send-email 2.54.0
+In-Reply-To: <20260622132433.722823-1-tzimmermann@suse.de>
+References: <20260622132433.722823-1-tzimmermann@suse.de>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260622140257.113f2275@pumpkin>
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Pre-Result: action=no action;
+	module=replies;
+	Message is reply to one we originated
+X-Spam-Flag: NO
+X-Spam-Score: -4.00
+X-Spam-Level: 
+X-Rspamd-Pre-Result: action=no action;
+	module=replies;
+	Message is reply to one we originated
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-4.66 / 15.00];
-	WHITELIST_SPF_DKIM(-3.00)[kernel.org:d:+,kernel.org:s:+];
+X-Spamd-Result: default: False [0.14 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	MID_CONTAINS_FROM(1.00)[];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
+	DMARC_POLICY_SOFTFAIL(0.10)[suse.de : SPF not aligned (relaxed), No valid DKIM,none];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_RECIPIENTS(0.00)[m:david.laight.linux@gmail.com,m:dlemoal@kernel.org,m:alvinwylim@gmail.com,m:linux-ide@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,m:davidlaightlinux@gmail.com,s:lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FREEMAIL_TO(0.00)[gmail.com];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER(0.00)[cassel@kernel.org,stable@vger.kernel.org];
-	TO_DN_SOME(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	TAGGED_FROM(0.00)[bounces-267713-lists,stable=lfdr.de];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_RECIPIENTS(0.00)[m:javierm@redhat.com,m:treding@nvidia.com,m:maarten.lankhorst@linux.intel.com,m:mripard@kernel.org,m:airlied@gmail.com,m:simona@ffwll.ch,m:rayyan@ansari.sh,m:dri-devel@lists.freedesktop.org,m:sashiko-reviews@lists.linux.dev,m:tzimmermann@suse.de,m:stable@vger.kernel.org,s:lists@lfdr.de];
+	FREEMAIL_TO(0.00)[redhat.com,nvidia.com,linux.intel.com,kernel.org,gmail.com,ffwll.ch,ansari.sh];
 	FORGED_SENDER_FORWARDING(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[cassel@kernel.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[kernel.org,gmail.com,vger.kernel.org];
+	FORGED_SENDER(0.00)[tzimmermann@suse.de,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-267715-lists,stable=lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[tzimmermann@suse.de,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	R_DKIM_NA(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[6];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[11];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	MISSING_XM_UA(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,vger.kernel.org:from_smtp,ryzen:mid]
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: CC11D6AFC42
+X-Rspamd-Queue-Id: 367F96AFD63
 
-On Mon, Jun 22, 2026 at 02:02:57PM +0100, David Laight wrote:
-> On Mon, 22 Jun 2026 20:31:54 +0900
-> Damien Le Moal <dlemoal@kernel.org> wrote:
-> 
-> > On 6/21/26 19:08, Alvin Lim wrote:
-> > > The ASMedia ASM1166 SATA controller (1b21:1166) advertises 64-bit DMA
-> > > support (AHCI CAP.S64A), but on systems with the IOMMU enabled - where it
-> > > can be handed DMA addresses above 4 GB - it silently corrupts data in
-> > > transit. Reads return different, wrong data on each access. SMART is clean,
-> > > there are no SATA link resets and no MCE is raised, so the corruption is
-> > > invisible until it surfaces as filesystem metadata errors (XFS EUCLEAN)
-> > > or, on Ceph, mass scrub errors across multiple independent filesystems at
-> > > once - i.e. host-level, not filesystem-level.
-> > > 
-> > > This is the same failure mode already quirked for other controllers that
-> > > falsely claim working 64-bit DMA. See commit 105c42566a55 ("ata: ahci:
-> > > force 32-bit DMA for JMicron JMB582/JMB585") and commit 20730e9b2778
-> > > ("ahci: add 43-bit DMA address quirk for ASMedia ASM1061 controllers").
-> > > The ASM1166 currently maps to plain board_ahci with no DMA limit.  
-> > 
-> > Have you tried the same quirk, limiting DMA to 43-bits ? It is very likely that
-> > this adapter bug is the same as the 1061.
-> > 
-> 
-> It would also be worth checking that you get the read fails with a 44-bit mask.
-> 
-> I'd guess it also requires that you keep the controller busy for (about) 8TB
-> of reads - which is where sequential address allocation would exceed 43-bits.
-> But that is just conjecture since I've not looked at the iommu code.
+Validate the framebuffer size from the firmware against the
+limitations of struct drm_display_mode. The type only stores sizes
+in 16-bit fields. Fail probing on errors.
 
-The iommu code will by default try to allocate a 32-bit IOVA by default:
-https://github.com/torvalds/linux/blob/v7.1/drivers/iommu/dma-iommu.c#L780-L799
+v2:
+- remove unused function simplefb_get_validated_int0() (Sashiko)
 
-Only once a 32-bit IOVA allocation fails, will it start using 64-bit IOVAs.
+Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
+Fixes: 11e8f5fd223b ("drm: Add simpledrm driver")
+Cc: <stable@vger.kernel.org> # v5.14+
+---
+ drivers/gpu/drm/sysfb/simpledrm.c | 15 ++++-----------
+ 1 file changed, 4 insertions(+), 11 deletions(-)
 
+diff --git a/drivers/gpu/drm/sysfb/simpledrm.c b/drivers/gpu/drm/sysfb/simpledrm.c
+index fc168920f2c6..15dcafa9d524 100644
+--- a/drivers/gpu/drm/sysfb/simpledrm.c
++++ b/drivers/gpu/drm/sysfb/simpledrm.c
+@@ -48,13 +48,6 @@ simplefb_get_validated_int(struct drm_device *dev, const char *name,
+ 	return drm_sysfb_get_validated_int(dev, name, value, INT_MAX);
+ }
+ 
+-static int
+-simplefb_get_validated_int0(struct drm_device *dev, const char *name,
+-			    uint32_t value)
+-{
+-	return drm_sysfb_get_validated_int0(dev, name, value, INT_MAX);
+-}
+-
+ static const struct drm_format_info *
+ simplefb_get_validated_format(struct drm_device *dev, const char *format_name)
+ {
+@@ -88,14 +81,14 @@ static int
+ simplefb_get_width_pd(struct drm_device *dev,
+ 		      const struct simplefb_platform_data *pd)
+ {
+-	return simplefb_get_validated_int0(dev, "width", pd->width);
++	return drm_sysfb_get_validated_int0(dev, "width", pd->width, U16_MAX);
+ }
+ 
+ static int
+ simplefb_get_height_pd(struct drm_device *dev,
+ 		       const struct simplefb_platform_data *pd)
+ {
+-	return simplefb_get_validated_int0(dev, "height", pd->height);
++	return drm_sysfb_get_validated_int0(dev, "height", pd->height, U16_MAX);
+ }
+ 
+ static int
+@@ -144,7 +137,7 @@ simplefb_get_width_of(struct drm_device *dev, struct device_node *of_node)
+ 
+ 	if (ret)
+ 		return ret;
+-	return simplefb_get_validated_int0(dev, "width", width);
++	return drm_sysfb_get_validated_int0(dev, "width", width, U16_MAX);
+ }
+ 
+ static int
+@@ -155,7 +148,7 @@ simplefb_get_height_of(struct drm_device *dev, struct device_node *of_node)
+ 
+ 	if (ret)
+ 		return ret;
+-	return simplefb_get_validated_int0(dev, "height", height);
++	return drm_sysfb_get_validated_int0(dev, "height", height, U16_MAX);
+ }
+ 
+ static int
+-- 
+2.54.0
 
-It is possible to to set iommu.forcedac=1 to allocate from the full usable
-IOVA range immediately:
-https://github.com/torvalds/linux/blob/v7.1/Documentation/admin-guide/kernel-parameters.txt#L2619
-
-
-Kind regards,
-Niklas
 
