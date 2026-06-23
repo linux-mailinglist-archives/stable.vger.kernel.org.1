@@ -1,144 +1,169 @@
-Return-Path: <stable+bounces-267825-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-267826-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 5N9SHrnJOWr4xQcAu9opvQ
-	(envelope-from <stable+bounces-267825-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 23 Jun 2026 01:48:09 +0200
+	id CKFGCGPOOWr6xgcAu9opvQ
+	(envelope-from <stable+bounces-267826-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 23 Jun 2026 02:08:03 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id CA27E6B2DA3
-	for <lists+stable@lfdr.de>; Tue, 23 Jun 2026 01:48:08 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 70FFE6B2E9E
+	for <lists+stable@lfdr.de>; Tue, 23 Jun 2026 02:08:02 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ETCUqZLc;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-267825-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-267825-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=PSzL0RE3;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-267826-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-267826-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=none) header.from=gmail.com;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id EC2E530391D8
-	for <lists+stable@lfdr.de>; Mon, 22 Jun 2026 23:48:06 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 979EF3033536
+	for <lists+stable@lfdr.de>; Tue, 23 Jun 2026 00:07:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B078F36A377;
-	Mon, 22 Jun 2026 23:48:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B63352030A;
+	Tue, 23 Jun 2026 00:07:58 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-dy1-f180.google.com (mail-dy1-f180.google.com [74.125.82.180])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FD911643B;
-	Mon, 22 Jun 2026 23:48:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64610DDA9
+	for <stable@vger.kernel.org>; Tue, 23 Jun 2026 00:07:57 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782172083; cv=none; b=VH6dH9sMnOiduObvr2S7/XZc4227bXsd+mCqPEtqUVHYbBiquett26ZarpGLSRahznTES85/DWvTWuU9MU2d2TcBFpqgFEHyqVH765nSf3lXWGBqwlWqJPztuX0fz7egru1oXfX8Hy7ThF+RF9H+Tu3iPNqHq+j/XfPsBFyusVM=
+	t=1782173278; cv=none; b=XpEH0viinE/ZXHHmZsmeMSz7TBmsDmmhE+/og8DzdNjfFNajtYGW1YKaaVRaIpo2LfUftUEPer4OChDr5OtL9u2SdXKuGtTwP3S3JwRVVKNSAj5Upf/P2UndmWL0ZXqSevlG8mZA0Lvh9gHFI+bK5VZwAJvyNXjgaLvdNLSKroM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782172083; c=relaxed/simple;
-	bh=nfoWq9R7GBoKDdsbiJZ7a2NyNOq8qlYJJM0AGSKi3AQ=;
-	h=Content-Type:MIME-Version:Message-Id:In-Reply-To:References:
-	 Subject:From:To:Cc:Date; b=WKonCBIRT8x8PO7oBAaMgpxEut7f9aecEALA/8iluhCWAUsaFRUMjd3lBFnATW/SfBxZlxvfzG3/8Y0PXqQRLEGMp4EABb0vTWyImpYWrJ/SNRlYP+tIY/nPHL0+T2q81wSFPEFr4J2HBoxGk8yqsHUO3/F+Q6Yk5wv2MGgQqLU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ETCUqZLc; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 073541F000E9;
-	Mon, 22 Jun 2026 23:48:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782172082;
-	bh=JytJFOfxKwPACn3VV6PeQxCT3IyTWu+Q2yWyLZATs0Q=;
-	h=In-Reply-To:References:Subject:From:To:Cc:Date;
-	b=ETCUqZLctKWI8afmputjxETpnh7713hSQ8tspQCfOtWm0P+b6EbWClT00dxHXMWWs
-	 cDqK++sOsPKoALqoolGEkIP5BgkgDg6zmvj5G2NZTS7EwG8qV/E6DNP+gZgvh2LzmL
-	 uWyWsmZhJ+KJQ7bMTglnwM0uRuFRoKWbiCnsHZoNOdzzEobg5qwpNQe5gtUfxg8C3y
-	 aPaXCr3FAHvDit4FJGbWfFGOg01TUqNEKI1BU4rJfY65EFqtX9RMMA3+Ebw06Gow/5
-	 DZOnbk3ibm15O5OWRrFprAJUMDmiOLZk28jzJhVo76CD7n4UccmYWxeet+HSW0YOFc
-	 35ImarE2WjJuw==
-Content-Type: multipart/mixed; boundary="===============3652432469569788701=="
+	s=arc-20240116; t=1782173278; c=relaxed/simple;
+	bh=nRV59y3Rno5LQFnWbfsFG/AK69d4DippmWN5QexS0A8=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=d05HxC9QVxLP5tZEUTT4v88RVLWykSW8/VoNH5GMgUmP51Q2G2PHi3NKpxtX/Sb2IuQ5OBk8yUC49++Vu1v6adtmc04v4WdCUU/qDcvlE36/S4X1ltLnE80ldhRfiRkaThrNLXJoFTwSai8Hb0/VB7dcKtUhFa1Zh3Hf9TiH0K4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=PSzL0RE3; arc=none smtp.client-ip=74.125.82.180
+Received: by mail-dy1-f180.google.com with SMTP id 5a478bee46e88-30beab3af9eso12031105eec.1
+        for <stable@vger.kernel.org>; Mon, 22 Jun 2026 17:07:57 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1782173276; x=1782778076; darn=vger.kernel.org;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=nRV59y3Rno5LQFnWbfsFG/AK69d4DippmWN5QexS0A8=;
+        b=PSzL0RE3kBKj8Y2pyDrwX58/IHVxeml22HnLn+snl0DCL1dUe+YZ5uYg93XBD6EFhp
+         SH1pOZOJxKYJykrwXqObVnnx939UkqH7tzTB/siLcBqmVFmvEjmFEQW17cnI6iNvlahH
+         tJvIUNAYave4XRp5JwaycMjyRJFdns4oSgaSIqlOiIkYOyS5fpwrmJckWbr7x7cUogdu
+         YAKP2O5w//LGm0MHkzS6SxKXp2zpaYyJih7wnd6jEoMKLOHS0bK19jHVXYU0jPnGvP06
+         2Iw1KW2LdqEzHQbd88zEHfDQDPfLqIZ8Jo+N55OcFLeB+3r0y4zZa13otYgUmL4kczVV
+         0HQg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1782173276; x=1782778076;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=nRV59y3Rno5LQFnWbfsFG/AK69d4DippmWN5QexS0A8=;
+        b=WB1lLgc/QamCqPssEqUebiXsSc0Untrk0gWKFB0I6Ywe65p5T2lGLxTfimTdaifufD
+         gubjbhI+tO4payAIuYJwwBpqaB0X+To0NWStxm8S/C4Uof0byqjK1mTpdgAbWCjujtNf
+         XWVF4abM067DatGE5hTT4oBHjz6A+g7vXFxFsbgiHtiSLcHJrvz2dWIGXwF2Vfn8rcRa
+         e2IHAoJJPr8+RuwxKxW2ED/hWOpIIU/ZPiz5NthjSLPiJhRLjhlHJjZBNg68axYx2xMO
+         zRvsOTwzKKXLhq2LN00gZyjBNnuNq23appkUZoNd0gjFjj1jjcBNTBVMpV1cWCAvdE2D
+         j/qg==
+X-Forwarded-Encrypted: i=1; AHgh+RoLIy6xywEYmnwqnJsCIB7AI3dYl5/Uosa/ORZVMDQbEfNQewpZc2VujlQFmmbWtcA62R3hk5I=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxyZFpSRJyYoWfxMs4ZFi8BA4VUyKUZ1DEmODfR0Gex5M3Mne8E
+	pM2tmk++wJy3iyr8CIoxoEsNZtWM7ftZrFoEVPBbULNZm+j29D2odWbc
+X-Gm-Gg: AfdE7cnoiI9G6KYALBFYNvjuSHPDRWpAP85pAffOsDgMJzPto755bCaPxl8NV5Fw0k7
+	GQgV1bWmmrehJsY923fz81Pto8zLsuLevGRS8oJEmi5uSrH0uRY8P+6BSFCkujQhO1qkVxOh9gZ
+	5QaZFv7gagANC+CIzeJ0ymKCel2hIydy4dsoB0rz47u/9ZNcmxPyoXaqQ653wd1fDEGiwpBdEwi
+	2q7XNZWdwBBtGtNOtzmtQ+LsWktnz1tPDZPPnLhSlREsUnYCufyWtGNXDjruNgVSvLJxYQEQ2O9
+	hn5l68hFycTVbHTZpOJ1YCAfhLFWRHcbyD0WqEnal7c3RgyYjD6hrD0Z9SlMtChG5YijldtAeqL
+	ldcba9NYx2aLWvPNWJ6wiaLo4+r6pL6wfUUjCVOlnVnK8fxiMxUcT7y+w/TyiStX9OgmjmQ84c5
+	Lr+1zrXYU2nWq4MGgj6IC5q05qhI1/Eaj2WqqD1TByzCaVYYjk3klSomKw2RlIBexT1cF6qw==
+X-Received: by 2002:a05:7301:38a4:b0:2d9:ad46:4a92 with SMTP id 5a478bee46e88-30c06e4f9edmr11670192eec.13.1782173276518;
+        Mon, 22 Jun 2026 17:07:56 -0700 (PDT)
+Received: from ?IPv6:2a03:83e0:115c:1:c4f4:7a34:78e2:a600? ([2620:10d:c090:500::2:e8d1])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-30c1ba1f8b2sm12488864eec.4.2026.06.22.17.07.54
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 22 Jun 2026 17:07:56 -0700 (PDT)
+Message-ID: <ee4804545dc421010b5ec8b2d8b30be168faf6de.camel@gmail.com>
+Subject: Re: [PATCH bpf v3 1/2] bpf: Reset register bounds before narrowing
+ retval range in check_mem_access()
+From: Eduard Zingerman <eddyz87@gmail.com>
+To: Tristan Madani <tristmd@gmail.com>, Alexei Starovoitov <ast@kernel.org>,
+  Daniel Borkmann <daniel@iogearbox.net>, Andrii Nakryiko <andrii@kernel.org>
+Cc: Xu Kuohai <xukuohai@huawei.com>, Jiri Olsa <jolsa@kernel.org>, John
+ Fastabend <john.fastabend@gmail.com>, Martin KaFai Lau
+ <martin.lau@linux.dev>, bpf@vger.kernel.org, 	stable@vger.kernel.org,
+ tristan@talencesecurity.com
+Date: Mon, 22 Jun 2026 17:07:53 -0700
+In-Reply-To: <20260622230123.3695446-2-tristmd@gmail.com>
+References: <20260622230123.3695446-1-tristmd@gmail.com>
+	 <20260622230123.3695446-2-tristmd@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.60.1 (3.60.1-1.fc44) 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-Id: <a513201b6f2574ecf1e238a0caabb170767a2006d388f86f80ca7641371120e2@mail.kernel.org>
-In-Reply-To: <20260622230123.3695446-2-tristmd@gmail.com>
-References: <20260622230123.3695446-2-tristmd@gmail.com>
-Subject: Re: [PATCH bpf v3 1/2] bpf: Reset register bounds before narrowing retval range in check_mem_access()
-From: bot+bpf-ci@kernel.org
-To: tristmd@gmail.com,ast@kernel.org,daniel@iogearbox.net,andrii@kernel.org
-Cc: eddyz87@gmail.com,xukuohai@huawei.com,jolsa@kernel.org,john.fastabend@gmail.com,martin.lau@linux.dev,bpf@vger.kernel.org,stable@vger.kernel.org,tristan@talencesecurity.com,ast@kernel.org,andrii@kernel.org,daniel@iogearbox.net,martin.lau@kernel.org,eddyz87@gmail.com,yonghong.song@linux.dev,clm@meta.com,ihor.solodrai@linux.dev
-Date: Mon, 22 Jun 2026 23:48:02 +0000 (UTC)
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-2.66 / 15.00];
-	WHITELIST_SPF_DKIM(-3.00)[kernel.org:d:+,kernel.org:s:+];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	CTYPE_MIXED_BOGUS(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
-	MIME_GOOD(-0.10)[multipart/mixed,text/plain];
+	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-267826-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+,1:+];
-	TAGGED_FROM(0.00)[bounces-267825-lists,stable=lfdr.de,bpf-ci];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FREEMAIL_CC(0.00)[gmail.com,huawei.com,kernel.org,linux.dev,vger.kernel.org,talencesecurity.com,iogearbox.net,meta.com];
-	FORGED_RECIPIENTS(0.00)[m:tristmd@gmail.com,m:ast@kernel.org,m:daniel@iogearbox.net,m:andrii@kernel.org,m:eddyz87@gmail.com,m:xukuohai@huawei.com,m:jolsa@kernel.org,m:john.fastabend@gmail.com,m:martin.lau@linux.dev,m:bpf@vger.kernel.org,m:stable@vger.kernel.org,m:tristan@talencesecurity.com,m:martin.lau@kernel.org,m:yonghong.song@linux.dev,m:clm@meta.com,m:ihor.solodrai@linux.dev,m:johnfastabend@gmail.com,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[bot@kernel.org,stable@vger.kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:tristmd@gmail.com,m:ast@kernel.org,m:daniel@iogearbox.net,m:andrii@kernel.org,m:xukuohai@huawei.com,m:jolsa@kernel.org,m:john.fastabend@gmail.com,m:martin.lau@linux.dev,m:bpf@vger.kernel.org,m:stable@vger.kernel.org,m:tristan@talencesecurity.com,m:johnfastabend@gmail.com,s:lists@lfdr.de];
 	FREEMAIL_TO(0.00)[gmail.com,kernel.org,iogearbox.net];
-	FROM_NEQ_ENVFROM(0.00)[bot@kernel.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
-	MID_RHS_MATCH_FROMTLD(0.00)[];
-	TO_DN_NONE(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	RCPT_COUNT_TWELVE(0.00)[20];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	FROM_NO_DN(0.00)[];
+	FORGED_SENDER(0.00)[eddyz87@gmail.com,stable@vger.kernel.org];
+	TO_DN_SOME(0.00)[];
+	FREEMAIL_CC(0.00)[huawei.com,kernel.org,gmail.com,linux.dev,vger.kernel.org,talencesecurity.com];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,mail.kernel.org:mid]
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	ALIAS_RESOLVED(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[eddyz87@gmail.com,stable@vger.kernel.org];
+	PRECEDENCE_BULK(0.00)[];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	RCPT_COUNT_SEVEN(0.00)[11];
+	TAGGED_RCPT(0.00)[stable];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	MID_RHS_MATCH_FROM(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: CA27E6B2DA3
+X-Rspamd-Queue-Id: 70FFE6B2E9E
 
---===============3652432469569788701==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+On Mon, 2026-06-22 at 23:01 +0000, Tristan Madani wrote:
+> From: Tristan Madani <tristan@talencesecurity.com>
+>=20
+> When the BPF verifier processes a context load of an LSM hook return
+> value, it calls __mark_reg_s32_range() to narrow the register to the
+> hook's valid range. However, __mark_reg_s32_range() intersects the new
+> range with the register's existing bounds using max_t()/min_t() rather
+> than replacing them.
+>=20
+> If the destination register carries stale bounds from a prior instruction
+> (e.g. BPF_MOV64_IMM), the intersection can produce a range narrower than
+> reality. The verifier then believes it knows the register's exact value,
+> while at runtime the actual hook return value is loaded, creating a
+> verifier/runtime mismatch that can be used to bypass BPF memory safety
+> checks.
+>=20
+> The else branch already calls mark_reg_unknown() to reset register state
+> before any narrowing. Apply the same reset in the is_retval path so
+> stale bounds are cleared before __mark_reg_s32_range() intersects.
+>=20
+> Fixes: 5d99e198be27 ("bpf, lsm: Add check for BPF LSM return value")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Tristan Madani <tristan@talencesecurity.com>
+> ---
 
-> diff --git a/kernel/bpf/verifier.c b/kernel/bpf/verifier.c
-> index a2b348f98080..21a365d436a5 100644
-> --- a/kernel/bpf/verifier.c
-> +++ b/kernel/bpf/verifier.c
-> @@ -6201,6 +6201,7 @@ static int check_mem_access(struct bpf_verifier_env *env, int insn_idx, struct b
->  			 */
->  			if (info.reg_type == SCALAR_VALUE) {
->  				if (info.is_retval && get_func_retval_range(env->prog, &range)) {
-> +					mark_reg_unknown(env, regs, value_regno);
->  					err = __mark_reg_s32_range(env, regs, value_regno,
->  								   range.minval, range.maxval);
->  					if (err)
+Acked-by: Eduard Zingerman <eddyz87@gmail.com>
 
-In the v2 review thread
-(https://lore.kernel.org/bpf/4eae275e93d8eb165da8485a127a1fd0e7f91510.camel@gmail.com/),
-Eduard Zingerman requested that a selftest be added to demonstrate the
-stale bounds issue. While the v3 cover letter claims the selftest was
-added as patch 2/2, the selftest is missing from the current commit
-being reviewed.
-
-The suggested test should verify that loading an LSM hook return value
-into a register with stale bounds (e.g., from r6 = 0) properly resets
-the bounds, preventing the verifier from incorrectly pruning branches
-based on assumed constant values.
-
-Could the selftest be added as described in the v2 review feedback?
-
-
----
-AI reviewed your patch. Please fix the bug or email reply why it's not a bug.
-See: https://github.com/kernel-patches/vmtest/blob/master/ci/claude/README.md
-
-CI run summary: https://github.com/kernel-patches/bpf/actions/runs/27990633425
---===============3652432469569788701==--
+[...]
 
