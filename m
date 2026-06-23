@@ -1,166 +1,205 @@
-Return-Path: <stable+bounces-267890-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-267891-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id V2B1DElDOmrr4wcAu9opvQ
-	(envelope-from <stable+bounces-267890-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 23 Jun 2026 10:26:49 +0200
+	id D66qNKBDOmoC5AcAu9opvQ
+	(envelope-from <stable+bounces-267891-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 23 Jun 2026 10:28:16 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 974286B5442
-	for <lists+stable@lfdr.de>; Tue, 23 Jun 2026 10:26:48 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 684396B5462
+	for <lists+stable@lfdr.de>; Tue, 23 Jun 2026 10:28:16 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b="CrlgJ/mF";
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-267890-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-267890-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=none) header.from=gmail.com;
+	dkim=pass header.d=mailbox.org header.s=mail20150812 header.b=JPC8ilqp;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-267891-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-267891-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=reject) header.from=mailbox.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 378F0306D60A
-	for <lists+stable@lfdr.de>; Tue, 23 Jun 2026 08:25:07 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id E13D23016B61
+	for <lists+stable@lfdr.de>; Tue, 23 Jun 2026 08:28:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 90E6F3CE0B8;
-	Tue, 23 Jun 2026 08:25:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB01E3CB8FF;
+	Tue, 23 Jun 2026 08:28:12 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mout-p-202.mailbox.org (mout-p-202.mailbox.org [80.241.56.172])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F0BE3CCFC2
-	for <stable@vger.kernel.org>; Tue, 23 Jun 2026 08:25:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E6AF2E2286
+	for <stable@vger.kernel.org>; Tue, 23 Jun 2026 08:28:09 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782203106; cv=none; b=SZHI2BPmxqx7f1WFCUqJClJjd6elDKWxMFLyWZO2W/B5PDuWbpKrM8So5se1Wc7GeoyhQciFG0488oTlHiVLrCgs9EjuqfNvnu4USWazomBfxKLnMXJm7rwq93G8AAyZD6pM5axLLAJVYK6pTrOUZT8u7awouFE8+H6qIpZNirs=
+	t=1782203292; cv=none; b=qL/mldQtqpk9il3loxzsvH2G3UFBs8JkxJNuxjd4XBy109QCGbIzxxB128vAqTGK2NGsjm2QLOS+ynPgyCme5gM4FyMq2IhUnpWNvNb9O+0I1Ut4r9Qu/2SIztEqe43njnZBzITSF1QUFvNPMMFhMBAFs13gljmvscLlPjwk5q4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782203106; c=relaxed/simple;
-	bh=ALu77l9JWVXGe1A3hUFppTa6Pdqm7Gq1p7JR3rm89DU=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ogaz4MT4k50mOOF2jzMX8oR8yISvUGFJam5YL+ccwWHKokDu+/iXuj+E3ZgWzhFAEUQxJ9rn0CO48RyNYZ3lp6JQD+t3Jz92xfGG55v7jWvfzueVwtpleT6cHjSX1SWp0TFY+SizHxwL9HTlaPpF92SCg3Rx/yG084NvTKklv2Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=CrlgJ/mF; arc=none smtp.client-ip=209.85.128.46
-Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-49230a567a9so25856675e9.0
-        for <stable@vger.kernel.org>; Tue, 23 Jun 2026 01:25:04 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1782203103; x=1782807903; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=XqWt0bI44jas3c/HR//JGgX6WMjaPFSRIYH+iY3eOF4=;
-        b=CrlgJ/mFJMMhclIQfH5UZLv8UMNvdShR3QoAmhwaNitLBJcLRiBlrsUfeZl4+ETK0o
-         4hDXPyzbKjpou5rwFUiVCZFpwoJMs5PjTWP0bsAvxy8+eTHkGmAm0AsHRoLfrpD8Nhe1
-         Z/D9N6kTHy/R8yvrioyvVEK5thF71O0azIGQv4KyXXF76QYy+QSbqjyMQ4gJpyv+GhGQ
-         JhRcUwa1k6vQ0vaycjKHi2N4Q3srUolQD0EmNuOM2LgsPfTfGCU55N4qVbKorv/LrHDX
-         W5++kk/lBUw+4g5zhLrkoHyfSHcm/pw9j98V6S0wXeBIoiAjgO1xlFHUzgMMMNdmAGqi
-         J3KA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782203103; x=1782807903;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=XqWt0bI44jas3c/HR//JGgX6WMjaPFSRIYH+iY3eOF4=;
-        b=aX8Xdw2L1/Jkfi7WfFjuGUzxLOOgQ1GvhuO1klXKWQkL99EQLeMOmIi1aHZMOutGhX
-         fS3t+HeH5PjCTiSBUHzd2PXhbxGOyV+xeg6FfZSI2qv2/yPecTRniPnP3I2nuznM3Yxz
-         WGFHsLj9mc4ND0HHmEOTo1lB6jwdM4lKZd6P+z9/nYQWbbLFM7Ng3F+7KwosL9E+SWYE
-         IOnixfcugvLdd+mdmeWn6B0vhq+sX6ypRDl6tvC0utrSGOu0hhBvWurZLDrA8jqNbf0R
-         fmr2coI+pjbUW+NvTvTvu2UNNAPbAwcWnEeTFs57dltZe6XyM34HukhcGPjHAq5CrVXI
-         ydWg==
-X-Forwarded-Encrypted: i=1; AFNElJ91uxf5ELn8IZ0wBSnrazMZVXLwcptAbGiKiVdBJhCmnnbcdaAym2q3F3Ee9UbvWiGB5ySH8Fw=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzH9hXRXbR+XsRDjiPLhc8XhjqzQWPruDOG8dui1H9FORK0CwEb
-	91+8Vvl65/K8la9tgucYMYgHp7FpJ051DPfcNGPGuDjSe2tuhQ6JCOLN
-X-Gm-Gg: AfdE7cmKCkR8InqH2KM4CqDr5ykYkcHGekfn1GpNnTVRtUZ5z9upSXO8KW3twFdH3vS
-	5kS0Rztlhl0BaiAcWLekNkqcv/je4Nc5VEZOidyMTuunXuaDz37ZD84nFB28N1/F2zJFKZBTELm
-	iBNeKwwMwLAZr/KDR4p3ADRFsTjkb7wnH6cRGr2AepScE591feVA/4lQ65PSBjKhNGW50kIRZJe
-	it9vyZ1axEJhaYM4HGa5oOdsh35wSlw7VBd5Gk95ammvpOwPRtlSBYFGFiNGSBAyadzsZxBKlDS
-	P6wqg2EszBRu9OLN3bSz207tlITqA4AeYFyLrQmeOPZGZcD8rRwbmVVD47/eZD+vKmU9bsTqaqv
-	lrCNGv6wxfg+rFcprgTevvqvc95CKr5lqwnAUqUVV7QmQgxQtJLOJjV624WrmtY/yBN/8O3nZH8
-	fFCSwxsEusRVyD3ITQt0KbdqyK/oVpoumehjdt3q3EfZM1uD8WpQ==
-X-Received: by 2002:a05:600c:348f:b0:492:4636:87ae with SMTP id 5b1f17b1804b1-492463687d1mr271367215e9.17.1782203103276;
-        Tue, 23 Jun 2026 01:25:03 -0700 (PDT)
-Received: from pumpkin (82-69-66-36.dsl.in-addr.zen.co.uk. [82.69.66.36])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4924923c862sm262149435e9.7.2026.06.23.01.25.02
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 23 Jun 2026 01:25:02 -0700 (PDT)
-Date: Tue, 23 Jun 2026 09:25:01 +0100
-From: David Laight <david.laight.linux@gmail.com>
-To: David Hu <xuehaohu@google.com>
-Cc: Sumit Semwal <sumit.semwal@linaro.org>, Christian =?UTF-8?B?S8O2bmln?=
- <christian.koenig@amd.com>, Jason Gunthorpe <jgg@ziepe.ca>, Nicolin Chen
- <nicolinc@nvidia.com>, Leon Romanovsky <leon@kernel.org>, Kevin Tian
- <kevin.tian@intel.com>, Ankit Agrawal <ankita@nvidia.com>, Alex Williamson
- <alex@shazbot.org>, linux-media@vger.kernel.org,
- dri-devel@lists.freedesktop.org, linaro-mm-sig@lists.linaro.org,
- linux-kernel@vger.kernel.org, iommu@lists.linux.dev, jmoroni@google.com,
- praan@google.com, kpberry@google.com, sashiko-bot <sashiko-bot@kernel.org>,
- stable@vger.kernel.org
-Subject: Re: [PATCH] dma-buf: Split sgl by largest page-aligned chunk
-Message-ID: <20260623092501.17bef195@pumpkin>
-In-Reply-To: <CAPd9Lg9+d=Rw4230FdcMFd0VYfyhXhD=eju53iURR8c61iXsWw@mail.gmail.com>
-References: <20260621222130.1667453-1-xuehaohu@google.com>
-	<20260622091344.794e0d74@pumpkin>
-	<CAPd9Lg9+d=Rw4230FdcMFd0VYfyhXhD=eju53iURR8c61iXsWw@mail.gmail.com>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; arm-unknown-linux-gnueabihf)
+	s=arc-20240116; t=1782203292; c=relaxed/simple;
+	bh=z0SXAia8ruPxK/zDm9KXDLErWTklT5oxtPUHHuhfMGA=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=f08I8+Kh8K7MUFbXOTZeHdsIVw7nRKEqmhWYGRhvI8R1X1NrqTd08wvlONeQ3H6GR78u0+HQjKs82cwlYI7Y6pQFXLls8CvfE8tg0acumiiaVRzPiG5NmbvmnacQQktksAqNm3bREngZTzRBLOH8DGdQmC4/li/nBT7wYP0MP14=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org; spf=pass smtp.mailfrom=mailbox.org; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=JPC8ilqp; arc=none smtp.client-ip=80.241.56.172
+Received: from smtp102.mailbox.org (smtp102.mailbox.org [IPv6:2001:67c:2050:b231:465::102])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mout-p-202.mailbox.org (Postfix) with ESMTPS id 4gkyr56Ljgz9tqv;
+	Tue, 23 Jun 2026 10:28:05 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
+	t=1782203285;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=gJimQdzybTxzTLGbKtZM1e8rYaAZQLBVJJujT6gBEis=;
+	b=JPC8ilqp8nnQ4aN499Qi/XAZ92ws7JYpGM9wcnJvfQYq2+QgymDOolFOoI3jJ1yyXFc6c7
+	5b1PPRW4aj5BbQYO2eOF7LI/lCw5Oh/CZfTFisW/PFI2Y5FWStfDqSTDtiGe1x31nB70ZS
+	l/J+xIZ8Wp5SLgz4QbpXOuPk0nzfXDb6cmyJ6f5g7GXhAhspDh/b5k5+6b7Ndoi0EdDIsG
+	J18HyzhAun1RI4XTVYVVj5sfCjd9XhVp+r+/Lj19BS9XqoA/9VOH2BLB+wp9Io1IWHA+Ie
+	tbV0ywdxrapdd5WiDHTEZUN0Pyka3iBK5LbV009Mk1uM9n0oLbyKQvN1Y9jycA==
+Message-ID: <f36d5096-b509-42b7-8a11-423c03c05919@mailbox.org>
+Date: Tue, 23 Jun 2026 10:28:00 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Subject: Re: [PATCH v2 2/3] drm/amd/display: check GRPH_FLIP status before
+ sending event
+To: sunpeng.li@amd.com, amd-gfx@lists.freedesktop.org
+Cc: Harry.Wentland@amd.com, mario.limonciello@amd.com, wiagn233@outlook.com,
+ sysdadmin@m1k.cloud, timur.kristof@gmail.com, xaver.hugl@kde.org,
+ mario.kleiner.de@gmail.com, matthew.schwartz@linux.dev, chris@kode54.net,
+ stable@vger.kernel.org
+References: <20260622171752.73374-1-sunpeng.li@amd.com>
+ <20260622171752.73374-3-sunpeng.li@amd.com>
+From: =?UTF-8?Q?Michel_D=C3=A4nzer?= <michel.daenzer@mailbox.org>
+Content-Language: en-CA
+In-Reply-To: <20260622171752.73374-3-sunpeng.li@amd.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+X-MBO-RS-META: 4p1kghpoqgpc6odtkt3cgxgochkn6agr
+X-MBO-RS-ID: b2c8e0ce78beb67af8b
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	DMARC_POLICY_ALLOW(-0.50)[mailbox.org,reject];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_DKIM_ALLOW(-0.20)[mailbox.org:s=mail20150812];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[19];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_SENDER(0.00)[davidlaightlinux@gmail.com,stable@vger.kernel.org];
-	FORGED_RECIPIENTS(0.00)[m:xuehaohu@google.com,m:sumit.semwal@linaro.org,m:christian.koenig@amd.com,m:jgg@ziepe.ca,m:nicolinc@nvidia.com,m:leon@kernel.org,m:kevin.tian@intel.com,m:ankita@nvidia.com,m:alex@shazbot.org,m:linux-media@vger.kernel.org,m:dri-devel@lists.freedesktop.org,m:linaro-mm-sig@lists.linaro.org,m:linux-kernel@vger.kernel.org,m:iommu@lists.linux.dev,m:jmoroni@google.com,m:praan@google.com,m:kpberry@google.com,m:sashiko-bot@kernel.org,m:stable@vger.kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-267890-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	FORWARDED(0.00)[lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-267891-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER(0.00)[michel.daenzer@mailbox.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS(0.00)[m:sunpeng.li@amd.com,m:amd-gfx@lists.freedesktop.org,m:Harry.Wentland@amd.com,m:mario.limonciello@amd.com,m:wiagn233@outlook.com,m:sysdadmin@m1k.cloud,m:timur.kristof@gmail.com,m:xaver.hugl@kde.org,m:mario.kleiner.de@gmail.com,m:matthew.schwartz@linux.dev,m:chris@kode54.net,m:stable@vger.kernel.org,m:timurkristof@gmail.com,m:mariokleinerde@gmail.com,s:lists@lfdr.de];
+	FREEMAIL_CC(0.00)[amd.com,outlook.com,m1k.cloud,gmail.com,kde.org,linux.dev,kode54.net,vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
+	MISSING_XM_UA(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
+	TO_DN_NONE(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[davidlaightlinux@gmail.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[gmail.com:+];
+	FROM_NEQ_ENVFROM(0.00)[michel.daenzer@mailbox.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[mailbox.org:+];
 	ALIAS_RESOLVED(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,pumpkin:mid]
+	RCPT_COUNT_TWELVE(0.00)[12];
+	MID_RHS_MATCH_FROM(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,amd.com:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 974286B5442
+X-Rspamd-Queue-Id: 684396B5462
 
-On Mon, 22 Jun 2026 17:26:10 -0400
-David Hu <xuehaohu@google.com> wrote:
+On 6/22/26 19:17, sunpeng.li@amd.com wrote:
+> 
+> diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+> index da118377b73a8..732ddafb5cfea 100644
+> --- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+> +++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+> @@ -4135,6 +4135,28 @@ static void amdgpu_dm_enable_self_refresh(struct amdgpu_display_manager *dm,
+>  	}
+>  }
+>  
+> +static void dm_arm_vblank_event(struct amdgpu_crtc *acrtc,
+> +				struct dm_crtc_state *acrtc_state,
+> +				bool pflip_update,
+> +				bool cursor_update)
+> +{
+> +	assert_spin_locked(&acrtc->base.dev->event_lock);
+> +
+> +	if (pflip_update && acrtc->base.state->event &&
+> +	acrtc_state->active_planes > 0) {
+> +		drm_crtc_vblank_get(&acrtc->base);
+> +		WARN_ON(acrtc->pflip_status != AMDGPU_FLIP_NONE);
+> +		/* Arm flip completion handling and event delivery after programming. */
+> +		prepare_flip_isr(acrtc);
+> +	} else if (cursor_update && acrtc_state->active_planes > 0) {
+> +		if (acrtc->base.state->event) {
+> +			drm_crtc_vblank_get(&acrtc->base);
+> +			acrtc->event = acrtc->base.state->event;
+> +			acrtc->base.state->event = NULL;
+> +		}
+> +	}
+> +}
 
-> On Mon, Jun 22, 2026 at 4:13=E2=80=AFAM David Laight
-> <david.laight.linux@gmail.com> wrote:
-> > =20
->=20
-> Hi David,
->=20
-> Thank you for your review. You raised many good points regarding
-> optimizations here. I'll switch to using 2G as the max entry size
-> (`SZ_2G` from `linux/sizes.h`), and remove divisions and
-> multiplications. I'll also replace the `for()` loop with `while
-> (length)`, and drop `min_t()` in favor of `min()` by casting `SZ_2G`
-> to `size_t`.
+This looks like it can be cleaned up a bit (feel free to ignore though):
 
-You shouldn't need a cast at all.
+{
+	assert_spin_locked(&acrtc->base.dev->event_lock);
 
-	David L.
+	if (acrtc->base.state->event && acrtc_state->active_planes > 0) {
+		if (pflip_update) {
+			drm_crtc_vblank_get(&acrtc->base);
+			WARN_ON(acrtc->pflip_status != AMDGPU_FLIP_NONE);
+			/* Arm flip completion handling and event delivery after programming. */
+			prepare_flip_isr(acrtc);
+		} else if (cursor_update) {
+			drm_crtc_vblank_get(&acrtc->base);
+			acrtc->event = acrtc->base.state->event;
+			acrtc->base.state->event = NULL;
+		}
+	}
+}
 
-> I'll send out a v2 with these changes shortly.
->=20
-> Thanks,
-> David
+
+> +	/*
+> +	 * DCE depends on a combination of GRPH_FLIP, VLINE0, and VUPDATE for
+> +	 * event delivery. Only GRPH_FLIP handler can send pflip events, and it
+> +	 * only fires if HW latched to the flip. Maintain legacy behavior by
+> +	 * arming event before programming.
+> +	 */
+> +	if (amdgpu_ip_version(dm->adev, DCE_HWIP, 0) == 0) {
+> +		scoped_guard(spinlock_irqsave, &pcrtc->dev->event_lock)
+> +			dm_arm_vblank_event(acrtc_attach, acrtc_state,
+> +					pflip_present, cursor_update);
+>  	}
+
+Coding style:
+
+	if (amdgpu_ip_version(dm->adev, DCE_HWIP, 0) == 0) {
+		scoped_guard(spinlock_irqsave, &pcrtc->dev->event_lock) {
+			dm_arm_vblank_event(acrtc_attach, acrtc_state,
+					    pflip_present, cursor_update);
+		}
+	}
+
+Nested multi-line statements require curly braces.
+
+
+> +		if (updated_planes_and_streams)
+> +			flip_latched_during_prog =
+> +				!dc_get_flip_pending_on_otg(dm->dc, acrtc_attach->otg_inst);
+
+		if (updated_planes_and_streams) {
+			flip_latched_during_prog =
+				!dc_get_flip_pending_on_otg(dm->dc, acrtc_attach->otg_inst);
+		}
+
+
+-- 
+Earthling Michel Dänzer       \        GNOME / Xwayland / Mesa developer
+https://redhat.com             \               Libre software enthusiast
 
