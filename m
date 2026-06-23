@@ -1,141 +1,283 @@
-Return-Path: <stable+bounces-267991-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-267994-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 8FxsMda+OmrMFggAu9opvQ
-	(envelope-from <stable+bounces-267991-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 23 Jun 2026 19:13:58 +0200
+	id 3nFBMA3QOmpyHggAu9opvQ
+	(envelope-from <stable+bounces-267994-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 23 Jun 2026 20:27:25 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 217116B8FB7
-	for <lists+stable@lfdr.de>; Tue, 23 Jun 2026 19:13:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2306D6B96C5
+	for <lists+stable@lfdr.de>; Tue, 23 Jun 2026 20:27:25 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=fRIB09FM;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-267991-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-267991-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=VistuIYF;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-267994-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-267994-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 5A4573038F74
-	for <lists+stable@lfdr.de>; Tue, 23 Jun 2026 17:13:54 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 0FE49303C3FA
+	for <lists+stable@lfdr.de>; Tue, 23 Jun 2026 18:27:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C98B4389115;
-	Tue, 23 Jun 2026 17:13:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A687B392C32;
+	Tue, 23 Jun 2026 18:27:17 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B575231B828;
-	Tue, 23 Jun 2026 17:13:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5170838D3EA;
+	Tue, 23 Jun 2026 18:27:16 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782234832; cv=none; b=CCRT7pUvSWDK0Qu+2snluSqZh/RXdPNrbBIyhe7FHmKe/ZGPot8TjszBfHaHkVozVwaxr4ebD/+oKSFnEOZdwItF4K3jAfEiX3PYSyXSJukFBQOvJx1vnphE4SvTM3cWg7BoxcZx0sbqEXAMLrupSsp7cW6hZRrhvyZRg00oTqM=
+	t=1782239237; cv=none; b=OiEf3BGMCGWFsMBoG1fpDYipLWKBDLTSTfLx1JZ4h1LPi1k50jchdhj3lIHgI5rQzQj/imWjLFQuRF4tYXhDE1TCnLWplPbxM/IhZayX4kKm0C8iSjJwjxJKNHjM9/L2oR7SYl60BaV9GeCG0ivO8rxx8KUMdeeN01T1DkHm2r4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782234832; c=relaxed/simple;
-	bh=24ZQIJ3KPKzZKOkPk+LWogsiedxQVRh/THtjXZagFMU=;
-	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=fp52t74cDboMLbgHmfECpnFmSNayU3nQgiyZEWgBHmk7/Kd0pKbDkQIlqbb6wMR3pGZbj01dyniJZTJqdXWpQyYC06xsE81rC+6EUw9QgsirTbo26VMqQ1bHEOuYOr6MGlYbLzK1H0aSG/+pAnK6x69z6mnmvoygrp9ftJfZAKc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fRIB09FM; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 521681F000E9;
-	Tue, 23 Jun 2026 17:13:51 +0000 (UTC)
+	s=arc-20240116; t=1782239237; c=relaxed/simple;
+	bh=c266SklNeNU3U1hZxkhZXefmDfRswMXlkKWxX6IQPFU=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=X4hms5qrDHRy0rdLKTty4ORlum4aGQTIogKPvARNLjIahO8fCxXWfqbylkPpj+mFAIIc23hwkDn/PqEYVdLB8ehCkvcjz/es54F7aouC1YRZXZ4t1qwUFMXvjI0jXzgbs9gcvFp7Bxw54IwXWJFPwi5FtZIAnOjrtH5qoM2ErOI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VistuIYF; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C28DF1F000E9;
+	Tue, 23 Jun 2026 18:27:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782234831;
-	bh=vhreZ8yRUlN4RuI04jkE4d/50FEPa9YAIQ2hGcx7C0I=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=fRIB09FMr23fglUg99yzZmvQGjsqXIcTsL9pV9EfZY4fdQuK/wGCz2xViKt1CBv4g
-	 UXqG3AuMTyUAUfF+EZ9qP0H7ux0UIZ6w5MzcWzdOaq8VN+04DKHfFhiAnwNLfJ8bpQ
-	 JDk8hL+aZ04dBgf1qrreK7cplFwW3lL6RDzu5rQiF8OU1UMk5t/1uU0YC3frUrsdSu
-	 qcjl5J1jU/Sz3h4cRY02xIoKNbWAOBgvMJAjcUotklRxw6iM6n2Yw3eF05qFYkxovw
-	 3QKkXN48M+UbciyCk8Vsbv0gBGR/aw1UN5H+uOam7WN7obLls4omm453U1/emu0VtL
-	 A2UVRUPyStHmw==
-Received: from sofa.misterjones.org ([185.219.108.64] helo=goblin-girl.misterjones.org)
-	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.98.2)
-	(envelope-from <maz@kernel.org>)
-	id 1wc4h3-0000000FMp3-0wqe;
-	Tue, 23 Jun 2026 17:13:49 +0000
-Date: Tue, 23 Jun 2026 18:13:48 +0100
-Message-ID: <86pl1hqiwj.wl-maz@kernel.org>
-From: Marc Zyngier <maz@kernel.org>
-To: Bradley Morgan <include@grrlz.net>
-Cc: Oliver Upton <oupton@kernel.org>,
-	kvmarm@lists.linux.dev,
-	Fuad Tabba <tabba@google.com>,
-	Joey Gouly <joey.gouly@arm.com>,
-	Steffen Eiden <seiden@linux.ibm.com>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Zenghui Yu <yuzenghui@huawei.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>,
-	Quentin Perret <qperret@google.com>,
-	Vincent Donnefort <vdonnefort@google.com>,
-	linux-arm-kernel@lists.infradead.org,
+	s=k20260515; t=1782239235;
+	bh=M1H6GgCBkd12Q2vTtVWlECeEISgxezKOQCjK4ILhU5Y=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=VistuIYFPmsC9YAjO6zS3akWtB7tmYrnuf958eTRfOHmEFfov6RoofYe0xZdZesIU
+	 gAPBOENhcg6P+A0jRh8KTQqFuVrptXuntVmewM1Zi1fJ2NHMIGPfeQ8nAjeKL79GrJ
+	 pM5UAVCvkUW/3Hp9YiIakqaaEPQRt3R50XKsjR5CZS8hQNT2wYztUtS0KcyryhCzW6
+	 fMl1TumweDCyj4N7hRf13pQIIqroVuGlXcMYYWy/g5IsvF6Aw3MGm02s1h2m+ErNtF
+	 oiRo0PVFQq6eAJZEUX43QsFWk/aU1TPMQeV/zz2rY8/qUvCr4/mXe9+9zATWz7wqjg
+	 imjgaNWU0x7+Q==
+From: Simon Horman <horms@kernel.org>
+To: sam@bynar.io
+Cc: Simon Horman <horms@kernel.org>,
+	david@ixit.cz,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	oe-linux-nfc@lists.linux.dev,
+	netdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Subject: Re: [PATCH v2 1/2] KVM: arm64: skip pKVM cache flushes for non cacheable mappings
-In-Reply-To: <5925B41F-0F57-4BCB-9F93-7600878ECA27@grrlz.net>
-References: <20260623160339.15143-1-include@grrlz.net>
-	<20260623163756.4591-1-include@grrlz.net>
-	<86qzlxqjf3.wl-maz@kernel.org>
-	<5925B41F-0F57-4BCB-9F93-7600878ECA27@grrlz.net>
-User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
- FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/30.1
- (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
+Subject: Re: [PATCH net] nfc: nci: fix out-of-bounds write in nci_target_auto_activated()
+Date: Tue, 23 Jun 2026 18:21:10 +0100
+Message-ID: <20260623172109.1105965-2-horms@kernel.org>
+X-Mailer: git-send-email 2.54.0
+In-Reply-To: <20260622145243.3167276-1-sam@bynar.io>
+References: <20260622145243.3167276-1-sam@bynar.io>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
-Content-Type: text/plain; charset=US-ASCII
-X-SA-Exim-Connect-IP: 185.219.108.64
-X-SA-Exim-Rcpt-To: include@grrlz.net, oupton@kernel.org, kvmarm@lists.linux.dev, tabba@google.com, joey.gouly@arm.com, seiden@linux.ibm.com, suzuki.poulose@arm.com, yuzenghui@huawei.com, catalin.marinas@arm.com, will@kernel.org, qperret@google.com, vdonnefort@google.com, linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
-X-SA-Exim-Mail-From: maz@kernel.org
-X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-4.16 / 15.00];
+X-Spamd-Result: default: False [-3.66 / 15.00];
 	WHITELIST_SPF_DKIM(-3.00)[kernel.org:d:+,kernel.org:s:+];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-267991-lists,stable=lfdr.de];
-	RCPT_COUNT_TWELVE(0.00)[15];
-	FORGED_SENDER(0.00)[maz@kernel.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS(0.00)[m:sam@bynar.io,m:horms@kernel.org,m:david@ixit.cz,m:davem@davemloft.net,m:edumazet@google.com,m:kuba@kernel.org,m:pabeni@redhat.com,m:oe-linux-nfc@lists.linux.dev,m:netdev@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,s:lists@lfdr.de];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS(0.00)[m:include@grrlz.net,m:oupton@kernel.org,m:kvmarm@lists.linux.dev,m:tabba@google.com,m:joey.gouly@arm.com,m:seiden@linux.ibm.com,m:suzuki.poulose@arm.com,m:yuzenghui@huawei.com,m:catalin.marinas@arm.com,m:will@kernel.org,m:qperret@google.com,m:vdonnefort@google.com,m:linux-arm-kernel@lists.infradead.org,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,s:lists@lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-267994-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_SENDER(0.00)[horms@kernel.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	FORWARDED(0.00)[lists@lfdr.de];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[maz@kernel.org,stable@vger.kernel.org];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[horms@kernel.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[kernel.org:+];
 	ALIAS_RESOLVED(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[11];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,sashiko.dev:url,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 217116B8FB7
+X-Rspamd-Queue-Id: 2306D6B96C5
 
-On Tue, 23 Jun 2026 18:04:07 +0100,
-Bradley Morgan <include@grrlz.net> wrote:
-> 
-> I'll go and do V3 with another sashiko suggestion. I'll fix your path too.
+This is an AI-generated review of your patch. The human sending this
+email has considered the AI review valid, or at least plausible.
+Full review at: https://sashiko.dev
+---
+nfc: nci: fix out-of-bounds write in nci_target_auto_activated()
 
-Before you do that, please verify that whatever Sashiko spits out
-makes any sense. I'm not convinced by its reply on v1 at all.
+This commit adds a bounds check to nci_target_auto_activated() to prevent
+an out-of-bounds array write. If ndev->n_targets equals
+NCI_MAX_DISCOVERED_TARGETS, it prints a debug message and returns early.
 
-	M.
+> diff --git a/net/nfc/nci/ntf.c b/net/nfc/nci/ntf.c
+> index c96512bb86531..566ca839fa488 100644
+> --- a/net/nfc/nci/ntf.c
+> +++ b/net/nfc/nci/ntf.c
+> @@ -603,6 +603,12 @@ static void nci_target_auto_activated(struct nci_dev *ndev,
+>  	struct nfc_target *target;
+>  	int rc;
+>  
+> +	/* This is a new target, check if we've enough room */
+> +	if (ndev->n_targets == NCI_MAX_DISCOVERED_TARGETS) {
+> +		pr_debug("not enough room, ignoring new target...\n");
+> +		return;
 
--- 
-Without deviation from the norm, progress is not possible.
+[Severity: High]
+Does this early return cause the state machine to stall?
+
+Looking at nci_rf_intf_activated_ntf_packet(), the state is transitioned
+to NCI_POLL_ACTIVE right before this function is called:
+
+net/nfc/nci/ntf.c:nci_rf_intf_activated_ntf_packet() {
+    ...
+    atomic_set(&ndev->state, NCI_POLL_ACTIVE);
+    if (err == NCI_STATUS_OK)
+        nci_target_auto_activated(ndev, &ntf);
+    ...
+}
+
+Because of the early return here, nfc_targets_found() is skipped. Does this
+leave the state wedged in NCI_POLL_ACTIVE, permanently blocking future 
+attempts to stop polling since nci_stop_poll() requires the state to be 
+NCI_DISCOVERY?
+
+> +	}
+> +
+>  	target = &ndev->targets[ndev->n_targets];
+
+[ ... ]
+
+[Severity: Critical]
+This isn't a bug introduced by this patch, but can the ntf union copy
+uninitialized stack memory into persistent device structures?
+
+In net/nfc/nci/ntf.c:nci_rf_discover_ntf_packet(), the local ntf struct
+is declared on the stack:
+
+    struct nci_rf_discover_ntf ntf;
+
+If the incoming packet has ntf.rf_tech_specific_params_len == 0, the
+extraction routines are bypassed, leaving the rf_tech_specific_params union
+uninitialized. The struct is then passed to nci_add_new_target():
+
+    if (add_target == true)
+        nci_add_new_target(ndev, &ntf);
+
+This eventually calls nci_add_new_protocol(), which blindly reads from this
+union:
+
+    nfca_poll = (struct rf_tech_specific_params_nfca_poll *)params;
+    target->sens_res = nfca_poll->sens_res;
+    target->sel_res = nfca_poll->sel_res;
+    target->nfcid1_len = nfca_poll->nfcid1_len;
+
+Could this uninitialized stack garbage be copied into ndev->targets, and
+later broadcasted to userspace via Netlink in nfc_targets_found()?
+
+[Severity: Critical]
+This isn't a bug introduced by this patch, but does the general bytes length
+calculation underflow?
+
+In net/nfc/nci/ntf.c:nci_store_general_bytes_nfc_dep():
+
+    ndev->remote_gb_len = min_t(__u8, 
+        (ntf->activation_params.listen_nfc_dep.atr_req_len - 
+         NFC_ATR_REQ_GT_OFFSET), NFC_ATR_REQ_GB_MAXSIZE);
+         
+    memcpy(ndev->remote_gb, 
+        (ntf->activation_params.listen_nfc_dep.atr_req + 
+         NFC_ATR_REQ_GT_OFFSET), ndev->remote_gb_len);
+
+The length is computed by subtracting NFC_ATR_REQ_GT_OFFSET (14) from
+atr_req_len. If atr_req_len is less than 14, this subtraction will
+underflow.
+
+Because of the min_t cast, this large underflowed value is bounded to
+NFC_ATR_REQ_GB_MAXSIZE (48). The memcpy() then copies 48 bytes starting
+from atr_req + 14 into ndev->remote_gb.
+
+Since the source buffer is part of the ntf union allocated on the stack
+in nci_rf_intf_activated_ntf_packet(), could this leak up to 48 bytes of
+uninitialized kernel stack memory to userspace?
+
+[Severity: High]
+This isn't a bug introduced by this patch, but does the lack of skb->len
+validation in NCI response handlers allow out-of-bounds reads?
+
+In nci_core_init_rsp_packet_v1() in net/nfc/nci/rsp.c, fields are read
+and arrays are copied from the payload:
+
+    ndev->num_supported_rf_interfaces = 
+        rsp_1->num_supported_rf_interfaces;
+        
+    memcpy(ndev->supported_rf_interfaces, rsp_1->supported_rf_interfaces, 
+           ndev->num_supported_rf_interfaces);
+
+Similarly in nci_core_init_rsp_packet_v2():
+
+    while (rf_interface_idx < ndev->num_supported_rf_interfaces) {
+        ndev->supported_rf_interfaces[rf_interface_idx++] = 
+            *supported_rf_interface++;
+    }
+
+Since the NCI control header is stripped via skb_pull(), leaving the
+payload length in skb->len, what happens if an NFCC sends a short response
+packet (e.g. plen = 1)? Could this cause the handlers to read adjacent
+kernel slab memory?
+
+[Severity: High]
+This isn't a bug introduced by this patch, but is there a missing boundary
+validation when extracting activation parameters?
+
+In net/nfc/nci/ntf.c:nci_extract_activation_params_iso_dep():
+
+    nfca_poll->rats_res_len = min_t(__u8, *data++, NFC_ATS_MAXSIZE);
+    if (nfca_poll->rats_res_len > 0) {
+        memcpy(nfca_poll->rats_res, data, nfca_poll->rats_res_len);
+    }
+
+And in nci_extract_activation_params_nfc_dep():
+
+    poll->atr_res_len = min_t(__u8, *data++, NFC_ATR_RES_MAXSIZE - 2);
+    if (poll->atr_res_len > 0)
+        memcpy(poll->atr_res, data, poll->atr_res_len);
+
+These inner lengths are bounded by a maximum size like NFC_ATS_MAXSIZE, but
+they are not validated against the remaining bytes in the SKB (skb->len).
+
+If a malformed packet provides a large inner length but a short payload,
+could this memcpy() read out of bounds into the device structure,
+potentially leaking adjacent slab memory to userspace later?
+
+[Severity: High]
+This isn't a bug introduced by this patch, but is there a potential
+priority inversion or timeout deadlock involving the device lock?
+
+Functions like nfc_stop_poll() in net/nfc/core.c acquire the device lock:
+
+    device_lock(&dev->dev);
+    ...
+    if (dev->ops->stop_poll)
+        dev->ops->stop_poll(dev);
+
+This eventually calls nci_request(), which synchronously waits for a
+completion signaled by the nci_rx_work thread. However, if an NTF packet
+is received first, nci_rx_work processes it and invokes
+nfc_targets_found(), which also attempts to acquire the device lock:
+
+    device_lock(&dev->dev);
+
+Since the calling thread already holds the device lock, nci_rx_work blocks
+indefinitely. Because the RX worker is blocked, it cannot process the
+pending RSP, causing nci_request() to time out and fail. Could this
+deadlock the RX thread?
 
