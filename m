@@ -1,354 +1,257 @@
-Return-Path: <stable+bounces-267990-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-267992-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id GGNdIv29OmppFggAu9opvQ
-	(envelope-from <stable+bounces-267990-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 23 Jun 2026 19:10:21 +0200
+	id jFbcHPW+OmrbFggAu9opvQ
+	(envelope-from <stable+bounces-267992-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 23 Jun 2026 19:14:29 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D44436B8F81
-	for <lists+stable@lfdr.de>; Tue, 23 Jun 2026 19:10:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BFEC56B8FCD
+	for <lists+stable@lfdr.de>; Tue, 23 Jun 2026 19:14:28 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ieednaGG;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-267990-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-267990-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
+	dkim=pass header.d=ziehl-abegg.de header.s=selector1 header.b=i3vGM73r;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-267992-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-267992-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=quarantine) header.from=ziehl-abegg.de;
+	arc=reject ("cv is fail on i=2")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id EDC813051C5B
-	for <lists+stable@lfdr.de>; Tue, 23 Jun 2026 17:10:13 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id EC302306AE5A
+	for <lists+stable@lfdr.de>; Tue, 23 Jun 2026 17:13:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3C18388E7C;
-	Tue, 23 Jun 2026 17:10:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA21D389115;
+	Tue, 23 Jun 2026 17:13:58 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from AM0PR83CU005.outbound.protection.outlook.com (mail-westeuropeazon11020081.outbound.protection.outlook.com [52.101.69.81])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6ECA530C164;
-	Tue, 23 Jun 2026 17:10:11 +0000 (UTC)
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782234612; cv=none; b=rRMHQBXYbvPZPcMjeBd0ekCYmG/exBHVPmwRwchP/MghxvINTYSSEs5rJwymfOs9kS44UkTkTXIPyS425PeYeSctIEp/DmPJTLI2vxbM3OTO8F1b+147qlc4qYHnDYagP9g+tJoOChnDBffbFp4Qp2wC3JbyApg1P0zfqvg99O4=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782234612; c=relaxed/simple;
-	bh=G2juHNm0MQSkesq1JQVu2orcc7IIrgmx+oXkd4LHWFc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=GX1HiVwNsOOPfcIiOMkUr8x7GmgzDSEMaSsnrztJQZfnFtZze19qHt18PWlYAjKy96Xqeaq/It3Ns8SLv3v30qj7CWtcK0zSO/MPeZ63SSGKSokC8yxvxamr6EWCZQpXS3NmBnVygTym7IhUTDdK2DnewP6DcMYNkxQ1O0Pb0sc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ieednaGG; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9AD771F000E9;
-	Tue, 23 Jun 2026 17:10:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782234611;
-	bh=WDvdzY1ErQFnk/RK+FkTuVAjD4osJ5TRcU6EtvGfSxg=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=ieednaGGvYm2myJJqbDa4a12RAoxTEbph0h036DThaLkxKy8+88OP8D9jqmPrWkwM
-	 01V+i/rkY+XNLsY5VStIr/7otCQcFVI8wNNFqnBepeqEso4vTP9l7Wa3PcSX0jKrHL
-	 SEeOfdVL12UoCq6lSenY/0hy+7liT+WdYP/I3GClj3a5K3D+5KXKEmYTwOkDv311Az
-	 vy5hch/wNQh5KNeZ7ZTFT2jCGOuJI8etMF3RKLnSBS1lZfbSorNno8uPE96Ju6rx/w
-	 gmJp8+l5VLxeFyJU0dj5g9EINushzC+23dCws8Rrwr8nUQdW1kb9jzDrNqlYOX0GZg
-	 +CujLJOl3V1/Q==
-Date: Tue, 23 Jun 2026 10:10:09 -0700
-From: Namhyung Kim <namhyung@kernel.org>
-To: Alexei Starovoitov <alexei.starovoitov@gmail.com>
-Cc: Viktor Malik <vmalik@redhat.com>, linux-perf-users@vger.kernel.org,
-	Peter Zijlstra <peterz@infradead.org>,
-	Ingo Molnar <mingo@redhat.com>,
-	Arnaldo Carvalho de Melo <acme@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-	Jiri Olsa <jolsa@kernel.org>, Ian Rogers <irogers@google.com>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	James Clark <james.clark@linaro.org>,
-	Howard Chu <howardchu95@gmail.com>, linux-kernel@vger.kernel.org,
-	bpf@vger.kernel.org, Michael Petlan <mpetlan@redhat.com>,
-	stable@vger.kernel.org
-Subject: Re: [PATCH] perf trace: Refactor augmented_raw_syscalls using
- bpf_loop
-Message-ID: <ajq98dm4gAwEzkMb@google.com>
-References: <20260623112533.1151502-1-vmalik@redhat.com>
- <DJGJ9F6WQZV9.2W4WBIHYLJQ97@gmail.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 901B831B828;
+	Tue, 23 Jun 2026 17:13:56 +0000 (UTC)
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1782234838; cv=fail; b=ISmqEoWn7+/8jmtua/kasLmQAKk+g6Mfj1kciXKkpBDVFwPgFoZ8uEwjeO0UOGLvkY10HppknWG05eaBHMNZvOwNE7s46vlBW6kYo2linlI0Kio27gsBWCrJAR7GcvfEIM1vBvUHk2PP9+4ITjH7A1JYECU1Y5Zvrg1lcAGYu0w=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1782234838; c=relaxed/simple;
+	bh=xkCWM3u+RXN3HMrK2RfmxbrO0u4LnMn8M5l2fur8E8E=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=r1/5Ez2ovc5TsZYAlo6j4rYL0S19sjfjX2skkc8Tc3ojkqLlFSp20+t4R7jfQgkiDuWEyd68YD2YWMdzmno8bA7KYMDY+7Da2KPRbU/ZSJIB+Qz83HRonTAzPalkfma4D6n2GZoHIJjjDb5H9gekHBqRxmZBUl5coAPWxse0hKQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ziehl-abegg.de; spf=pass smtp.mailfrom=ziehl-abegg.de; dkim=pass (1024-bit key) header.d=ziehl-abegg.de header.i=@ziehl-abegg.de header.b=i3vGM73r; arc=fail smtp.client-ip=52.101.69.81
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=E1QUQyryDD037espIwGtVt2HcX52wwP5LDWuwiT5H95fLdpJ2noR5wDMLVp/LOr9Nb9b6DUFOd0gtBXGVD8tlLz/Z/YqXxp472jG+2n2BiEAUhJyPTKRllPsDwrjcnzNKphsxY5UPtFPLY/S/Fw+7R49yQvd6T5m4kN1WO27GqAtLCQdLtUYmRGgp7HEZ96L6Ag6CfUb5Sp8WanUFVAKLArqEz7/KbXAQHz78DpxdOQ1Hmz8959oUfpM3A0pnxttPa6h69857UQ9c9sEm6CpHxVdnDs2ZYnn3UfV3O/bSPpRrARjuHgFjMcb6+FZ5Bn+8PA1wVtQ17D3OoPI+F0Atg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=9GOMdTAEmixSdQ55ofelHeZTazdWAILvCay9evFD37o=;
+ b=cbY7X6YV9iTa0tshoTvZVf7LVO8mZrtomEIcDcqkGOMXtG5323q3v5G9SXbgEj9v/sOW9rFsug5qQ52kro3qimgVtAJ9ytqnxpodoq+tjphqqxMeeqfYBDl6wgrv77NRCkBVLDucGoQic4sPVP1xtO0n+j/Sbz3kVPLDYk4xjIfkPTKd8YEwXmTU2oIg9d2jr9fH/SYXjcKZjW+Qrtv5tn1EnBKdKtasXM2XplXAy8p/gZv1K39Hh2298meAWxQF2/OmrqoTCS7yWcvw4scR5jO8xsQxMDzwRlyiLzSFH4+4OWiLr34POSQKgqyOmk4MOQ5wzh1C7A/yQLrfhxUWCg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 52.138.216.130) smtp.rcpttodomain=vger.kernel.org
+ smtp.mailfrom=ziehl-abegg.de; dmarc=pass (p=quarantine sp=quarantine pct=100)
+ action=none header.from=ziehl-abegg.de; dkim=none (message not signed);
+ arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ziehl-abegg.de;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=9GOMdTAEmixSdQ55ofelHeZTazdWAILvCay9evFD37o=;
+ b=i3vGM73rR3zrzBcDZmNDxk5HeD+C3QeANYv3qvowFYBEoI5iNvGG0t2QrJEKoHrIwyWED6ZAen20cM3hOWXdU/Qeuxt8T6lh89XwzsGeOMZ+nEf6lz10fQ3CGbtk1eGOjNz/qflgavd0Op/kIkoUYpeIdtjdm0r2sBI38axI1bs=
+Received: from AM4PR0302CA0027.eurprd03.prod.outlook.com (2603:10a6:205:2::40)
+ by DB3PR0202MB9036.eurprd02.prod.outlook.com (2603:10a6:10:438::9) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.139.20; Tue, 23 Jun
+ 2026 17:13:52 +0000
+Received: from AM2PEPF0001C714.eurprd05.prod.outlook.com
+ (2603:10a6:205:2:cafe::91) by AM4PR0302CA0027.outlook.office365.com
+ (2603:10a6:205:2::40) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.139.20 via Frontend Transport; Tue,
+ 23 Jun 2026 17:13:52 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 52.138.216.130)
+ smtp.mailfrom=ziehl-abegg.de; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=ziehl-abegg.de;
+Received-SPF: Pass (protection.outlook.com: domain of ziehl-abegg.de
+ designates 52.138.216.130 as permitted sender)
+ receiver=protection.outlook.com; client-ip=52.138.216.130;
+ helo=eu22-emailsignatures-cloud.codetwo.com; pr=C
+Received: from eu22-emailsignatures-cloud.codetwo.com (52.138.216.130) by
+ AM2PEPF0001C714.mail.protection.outlook.com (10.167.16.184) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.159.10 via Frontend Transport; Tue, 23 Jun 2026 17:13:51 +0000
+Received: from DB6PR07CU003.outbound.protection.outlook.com (40.93.64.93) by eu22-emailsignatures-cloud.codetwo.com with CodeTwo SMTP Server (TLS12) via SMTP; Tue, 23 Jun 2026 17:13:46 +0000
+Received: from DUZPR01CA0056.eurprd01.prod.exchangelabs.com
+ (2603:10a6:10:469::7) by AMDPR02MB11550.eurprd02.prod.outlook.com
+ (2603:10a6:20b:73b::15) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.113.18; Tue, 23 Jun
+ 2026 17:13:43 +0000
+Received: from DU2PEPF00028D11.eurprd03.prod.outlook.com
+ (2603:10a6:10:469:cafe::a6) by DUZPR01CA0056.outlook.office365.com
+ (2603:10a6:10:469::7) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.159.12 via Frontend Transport; Tue,
+ 23 Jun 2026 17:13:43 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 217.6.247.99)
+ smtp.mailfrom=ziehl-abegg.de; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=ziehl-abegg.de;
+Received-SPF: Pass (protection.outlook.com: domain of ziehl-abegg.de
+ designates 217.6.247.99 as permitted sender) receiver=protection.outlook.com;
+ client-ip=217.6.247.99; helo=mail.za.ziehl-abegg.de; pr=C
+Received: from mail.za.ziehl-abegg.de (217.6.247.99) by
+ DU2PEPF00028D11.mail.protection.outlook.com (10.167.242.25) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.21.159.10 via Frontend Transport; Tue, 23 Jun 2026 17:13:43 +0000
+Received: from localhost (10.1.201.87) by vEX02.za.ziehl-abegg.de
+ (10.1.201.106) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.61; Tue, 23 Jun
+ 2026 19:13:42 +0200
+From: Paul Mbewe <paultyson.mbewe@ziehl-abegg.de>
+To: <david.laight.linux@gmail.com>
+CC: <linux-serial@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<gregkh@linuxfoundation.org>, <jirislaby@kernel.org>,
+	<hvilleneuve@dimonoff.com>, <stable@vger.kernel.org>,
+	<tobias.gannert@ziehl-abegg.de>, <joachim.knorr@ziehl-abegg.de>, Paul Mbewe
+	<paultyson.mbewe@ziehl-abegg.de>
+Subject: Re: [PATCH 2/2] serial: sc16is7xx: set TX FIFO trigger level to half FIFO to prevent underruns
+Date: Tue, 23 Jun 2026 19:13:28 +0200
+Message-ID: <20260623171328.153735-1-paultyson.mbewe@ziehl-abegg.de>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20260623160759.506f456e@pumpkin>
+References: <20260623160759.506f456e@pumpkin>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <DJGJ9F6WQZV9.2W4WBIHYLJQ97@gmail.com>
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain
+X-ClientProxiedBy: vEX01.za.ziehl-abegg.de (10.1.201.105) To
+ vEX02.za.ziehl-abegg.de (10.1.201.106)
+X-TM-AS-Product-Ver: SMEX-14.0.0.3239-9.1.2019-30024.007
+X-TM-AS-Result: No-10--16.209000-8.000000
+X-TMASE-MatchedRID: u7Yf2n7Ca/2HXEtxeZW06Ka5LaHlPm0+nOh7yddoSeOiMrI1WZc6u31i
+	NLYHUO6nvowtcqHt7gd6d7XUE/oZlCq+IDhKu/cW3voO92n3LCrWRI6+saz/4ZdigZi17dHq/7V
+	IAujYlfmZlqCQ5FwWsiwxedL7fMGvbvdYkHY6wfEbDP4SVbyWhgrN8TTGJsc0Paj0VwPn2LUt4d
+	eikMpofDMs/CnMa0Mxvgzz342VCJUsST2dyZP/gXzRkrQz4xEZJ3y+iqiko28oEQF9DEP4Hai7N
+	h532INSumvj5sw68ZLKvNGNmG0SU6+eCSMeOiOkFNPcKKOC8NjbyADE/9OzovVUZDyWvrKuiwAy
+	D/hxCLwD/dHyT/Xh7Q==
+X-TM-AS-User-Approved-Sender: No
+X-TM-AS-User-Blocked-Sender: No
+X-TMASE-Result: 10--16.209000-8.000000
+X-TMASE-Version: SMEX-14.0.0.3239-9.1.2019-30024.007
+X-TM-SNTS-SMTP: F8BD814DB25496109693A2100C27603B9ECAFC5B53004B1A44330696E6834EAA2000:8
+X-EOPAttributedMessage: 1
+X-MS-TrafficTypeDiagnostic:
+	DU2PEPF00028D11:EE_|AMDPR02MB11550:EE_|AM2PEPF0001C714:EE_|DB3PR0202MB9036:EE_
+X-MS-Office365-Filtering-Correlation-Id: 119a5ee9-f125-4c26-2c49-08ded14acc63
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam-Untrusted:
+ BCL:0;ARA:13230040|376014|1800799024|30052699003|36860700016|23010399003|82310400026|6133799003|22082099003|18002099003|56012099006|11063799006;
+X-Microsoft-Antispam-Message-Info-Original:
+ I3tGkMhjDU3WmcOEgoINJL1rvhe7x1Amw27FBykETXRS/NpyK+1xi8qXArkGEPbtW+uOe2YytDtbQ9DZRl1V+CjyQ2usnuR8OkRsej7MOa2QiHbBHI3VJLi20ykP9qsQ3/2nqoqTV4aPBCjwQVYkqW2qoDs6RAbQF7ALwxACOInaPd2x1GTiMsE4ZsznNGv0ZMc8d9h4QQyz5656ygyNhm5aPrjQ7gAic+u4sZzRHFkmQ+SZ9MZHv8TP+ggcXm6UCa8Y6x9Bg0e2C6bFTK91HgrHJiBuT72nPqDzfCzvSP72D7JbfdfvKRCF+IjTiAXPynMNWFMBviKSuiRJPrcqQb7htG0m1ynodRAMYjMqT2uBvr5UFJZWNU4mzBnJ/IfeqLidYbTrxE7OtBh22l+MurhRT5w87T1PhakOjFi7esIFgSjRiXBF0wJSqHHMD2PTJHk5vYXAm6rZd79DCYAFWAS3utZTFk2XfYNH+78ehmjcJ+Yys8HIxD1BIBrcJ71uIIKNVXgXR9bUe2zYsqsktJDQ5QJcMNkbhAbgKu2qQZDgFok81BzpS4jZI28QzYAEK0JJHaU28tvt1mhQJEX7pDhWYXNXEH2z9deRwtDYh3ma1Vt5OMzEe7x7lf6XUGiSh7dT1SQiUbxCpK0PbUaEj3nZCt5VYmXRNBcCWEY2bsE3WTSttK1rbbUlnENVwrRWBTaxDdrmDUDXpoo5r/TbgQ==
+X-Forefront-Antispam-Report-Untrusted:
+ CIP:217.6.247.99;CTRY:DE;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.za.ziehl-abegg.de;PTR:nix.ziehl-abegg.de;CAT:NONE;SFS:(13230040)(376014)(1800799024)(30052699003)(36860700016)(23010399003)(82310400026)(6133799003)(22082099003)(18002099003)(56012099006)(11063799006);DIR:OUT;SFP:1102;
+X-Exchange-RoutingPolicyChecked: eAMTf7FWeFiYTV9Ab+1USAj5PACg2pDC43VvfqzqALlxibu3N/QmIwMm+WG7irv4tcvBZ1m/DKJ7jjDS2+4geiqDiS4PYJccN+LtQx7a1qR/B9U+IfIyxTxFNJ+yTcV4AR2IhLATbAFbIJKUoOaOIILRkU1v/USAFDQApScjvlq9QUUrdznDhKQ1yWNV7FlaPl/PupDSdlQzRU00p+qHEvrnm65NNCKgFc8ZtQpAc9oO/L+MGQXPuQPUisqClfMLyMYPAIKu3Qj7OyH3lZ3q8CsAg84KT+q01IUQzDeij6smOGjM3E2aHWq0R2eb79GAwLzAmEjydLKTbPWt0y17yA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AMDPR02MB11550
+X-CodeTwo-MessageID: 5b9e7555-f5a5-4947-9da3-7e5b352123a3.20260623171346@eu22-emailsignatures-cloud.codetwo.com
+X-CodeTwoProcessed: true
+X-MS-Exchange-Transport-CrossTenantHeadersStripped:
+ AM2PEPF0001C714.eurprd05.prod.outlook.com
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-Correlation-Id-Prvs:
+	48792bcf-1d08-48b1-f2b3-08ded14ac761
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|30052699003|14060799003|82310400026|35042699022|376014|23010399003|36860700016|1800799024|6133799003|22082099003|18002099003|11063799006|56012099006;
+X-Microsoft-Antispam-Message-Info:
+	XpLBqSQwJ3p6PredcCjB+6jqfDKuyYLhQrfL3sqwdAROoj51qQEketzK3FCyQjhDUl2ieJBA+r/GKDF3NSgZUzkWhUvjPCPsXl5g4PSKNEvDM4z29J7ZfLfhIaRl1DNcv0eDoKfjLMT75zMvQ4VUuN680fexKLJvuCfbtyBcrm/g9Hpm+NCGKvAxnpp/gehj+caslFNn1eOa9gpI8KZLSAxH4czv0nZCB8vttPdRUzikoIgAwy6qN9LQ3I9ZoxbXoyqY1qIYH2ODtxpaaZPa5zHwFUmJuTWSuvxUfl6zCUV5etxYLTP1CuUUQUwEBx5yGrVsUeZZsIVmjd13XMEJK0T9kW45O3Cc8DI33uWze6IakiFvIjkBIZjU8ia5E82NVaQaDPllcSI8yseCG9IWcqCL2Oy00gbT9YZN5CVuon09o+0Vz/KGgIA8m+8Uk2tW3ttwcAaM+gVu/rSvlSk7QIfHk5vq+XZVbabuqMbqTFpF7j5plGM26/AecAPrxp2nb+IgX+Z1x44+sfccLawo28PRj1jr0rKQwe3Nc1x5KziEP7TtcEVfy8NWMdez9ztt/fOeFuW1Nvui7Z7jCir8VI+lhVQVZNa8D6mmWLcWANaS9vfdZMGLv0xJ3s4aPVkDTnbMK1Shqw1ukFcvbTPIyMrbM7Ki2xNDJQsCcXZ67s3bewZsranR3BCOVH8WZuMdybZUhuNVeMkPm6+DF3V3Wg==
+X-Forefront-Antispam-Report:
+	CIP:52.138.216.130;CTRY:IE;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:eu22-emailsignatures-cloud.codetwo.com;PTR:eu22-emailsignatures-cloud.codetwo.com;CAT:NONE;SFS:(13230040)(30052699003)(14060799003)(82310400026)(35042699022)(376014)(23010399003)(36860700016)(1800799024)(6133799003)(22082099003)(18002099003)(11063799006)(56012099006);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	SIrNiZfnrtJa1dVMC83yVLUDVRqlhuohmq7jCDesrnIAutDsGqCBlQlK37+owPfBZUASvc1WG6FMrQ8Aoxw8gXmXXB2jWXh2+nWaVgZGMeeWrI+tsno6k0DpLr/1rH20649UEhjgdujd0edjlUlUh6cy2qd+q26SrGUYZdqc0kKVtWhPb8p9+BOaOgAdbR3KS5gMxSMC323dYMiEU0rhZuYZEbs2sTfjOgJUSB4fBczHjkMRYesp/Gxvf6fqC12jBLuUixQwAif4cs9C1/s0Cz8dMIoOoH/hm9A2FRsCpzB1Uoo6eX5PiKPodDHKLTokRgzwE/fO06CsRHWGXI5IrRK4D0NGnWjtk3V6j/QldXtgCHmZIVNflIeRtECKUuPkQhb/4cZfLyBx/cuCotMsV5DLxris7sMFjbS8JKY4ZFmXepshhuCgyrPLtU/MlbJe
+X-OriginatorOrg: ziehl-abegg.de
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Jun 2026 17:13:51.9079
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 119a5ee9-f125-4c26-2c49-08ded14acc63
+X-MS-Exchange-CrossTenant-Id: 11a5c065-3ef5-41f0-92f9-a77cbf208c03
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=11a5c065-3ef5-41f0-92f9-a77cbf208c03;Ip=[52.138.216.130];Helo=[eu22-emailsignatures-cloud.codetwo.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	AM2PEPF0001C714.eurprd05.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB3PR0202MB9036
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-3.66 / 15.00];
-	WHITELIST_SPF_DKIM(-3.00)[kernel.org:d:+,kernel.org:s:+];
+X-Spamd-Result: default: False [2.84 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
+	ARC_REJECT(1.00)[cv is fail on i=2];
+	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[ziehl-abegg.de,quarantine];
+	R_MISSING_CHARSET(0.50)[];
+	R_DKIM_ALLOW(-0.20)[ziehl-abegg.de:s=selector1];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_RECIPIENTS(0.00)[m:alexei.starovoitov@gmail.com,m:vmalik@redhat.com,m:linux-perf-users@vger.kernel.org,m:peterz@infradead.org,m:mingo@redhat.com,m:acme@kernel.org,m:mark.rutland@arm.com,m:alexander.shishkin@linux.intel.com,m:jolsa@kernel.org,m:irogers@google.com,m:adrian.hunter@intel.com,m:james.clark@linaro.org,m:howardchu95@gmail.com,m:linux-kernel@vger.kernel.org,m:bpf@vger.kernel.org,m:mpetlan@redhat.com,m:stable@vger.kernel.org,m:alexeistarovoitov@gmail.com,s:lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-267992-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
-	RCPT_COUNT_TWELVE(0.00)[17];
 	FORWARDED(0.00)[lists@lfdr.de];
-	FREEMAIL_TO(0.00)[gmail.com];
+	FORGED_RECIPIENTS(0.00)[m:david.laight.linux@gmail.com,m:linux-serial@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:gregkh@linuxfoundation.org,m:jirislaby@kernel.org,m:hvilleneuve@dimonoff.com,m:stable@vger.kernel.org,m:tobias.gannert@ziehl-abegg.de,m:joachim.knorr@ziehl-abegg.de,m:paultyson.mbewe@ziehl-abegg.de,m:davidlaightlinux@gmail.com,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[paultyson.mbewe@ziehl-abegg.de,stable@vger.kernel.org];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-267990-lists,stable=lfdr.de];
-	FORGED_SENDER(0.00)[namhyung@kernel.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	TO_DN_SOME(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[namhyung@kernel.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[redhat.com,vger.kernel.org,infradead.org,kernel.org,arm.com,linux.intel.com,google.com,intel.com,linaro.org,gmail.com];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	RECEIVED_HELO_LOCALHOST(0.00)[];
+	FREEMAIL_TO(0.00)[gmail.com];
+	DKIM_TRACE(0.00)[ziehl-abegg.de:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	MISSING_XM_UA(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[paultyson.mbewe@ziehl-abegg.de,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[ziehl-abegg.de:dkim,ziehl-abegg.de:mid,ziehl-abegg.de:from_mime,vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo];
+	RCPT_COUNT_SEVEN(0.00)[10];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+	ALIAS_RESOLVED(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	RCVD_COUNT_SEVEN(0.00)[11]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: D44436B8F81
+X-Rspamd-Queue-Id: BFEC56B8FCD
 
-Hello,
+Hi David,
 
-On Tue, Jun 23, 2026 at 08:27:39AM -0700, Alexei Starovoitov wrote:
-> On Tue Jun 23, 2026 at 4:25 AM PDT, Viktor Malik wrote:
-> > The loop for processing syscall args in augment_raw_syscalls has a
-> > history of breaking with Clang updates, see e.g. commit 013eb043f37b
-> > ("perf trace: Fix BPF loading failure (-E2BIG)") from Clang 15 to 16.
-> >
-> > Now, a similar thing happened between Clang 21 and 22. While the issue
-> > is mitigated on the main line by a recent verifier update, it remains
-> > broken on the 6.12 and 6.18 stable branches:
-> >
-> >     [linux-6.18.y]# sudo perf trace true
-> >     libbpf: prog 'sys_enter': BPF program load failed: -E2BIG
-> >     libbpf: prog 'sys_enter': -- BEGIN PROG LOAD LOG --
-> >     [...]
-> >     BPF program is too large. Processed 1000001 insn
-> >     processed 1000001 insns (limit 1000000) max_states_per_insn 40 total_states 37941 peak_states 232 mark_read 0
-> >     -- END PROG LOAD LOG --
-> >     libbpf: prog 'sys_enter': failed to load: -E2BIG
-> >     libbpf: failed to load object 'augmented_raw_syscalls_bpf'
-> >     libbpf: failed to load BPF skeleton 'augmented_raw_syscalls_bpf': -E2BIG
-> >     Error: failed to get syscall or beauty map fd
-> >     [...]
-> >
-> > The reason is that the loop is quite complex and the BPF verifier often
-> > struggles to prove that it terminates.
-> >
-> > Fix the issue by refactoring the loop body into a callback function and
-> > calling the bpf_loop helper. This should prevent future breakages of
-> > this kind since the callback function has no loops. It also allows to
-> > drop a few artificial checks to help the verifier, including the changes
-> > introduced by 013eb043f37b.
+On the test system, the relevant threads already run with RT priority:
 
-Thanks for working on this.  I encountered this issue before and never
-found time to take a deeper look yet.
+  irq/134-spi2.0     SCHED_FIFO priority 50
+  sc16is7xx          SCHED_FIFO priority 50
 
-> >
-> > Signed-off-by: Viktor Malik <vmalik@redhat.com>
-> > Fixes: a68fd6a6cdd3 ("perf trace: Collect augmented data using BPF")
-> > Fixes: 013eb043f37b ("perf trace: Fix BPF loading failure (-E2BIG)")
-> > Cc: stable@vger.kernel.org
-> > ---
-> >  .../bpf_skel/augmented_raw_syscalls.bpf.c     | 157 +++++++++++-------
-> >  1 file changed, 96 insertions(+), 61 deletions(-)
-> >
-> > diff --git a/tools/perf/util/bpf_skel/augmented_raw_syscalls.bpf.c b/tools/perf/util/bpf_skel/augmented_raw_syscalls.bpf.c
-> > index 2a6e61864ee0..6d553ed3ac23 100644
-> > --- a/tools/perf/util/bpf_skel/augmented_raw_syscalls.bpf.c
-> > +++ b/tools/perf/util/bpf_skel/augmented_raw_syscalls.bpf.c
-> > @@ -429,15 +429,96 @@ static bool pid_filter__has(struct pids_filtered *pids, pid_t pid)
-> >  	return bpf_map_lookup_elem(pids, &pid) != NULL;
-> >  }
-> >  
-> > +struct args_loop_ctx {
-> > +	struct syscall_enter_args *args;
-> > +	unsigned int *beauty_map;
-> > +	void *payload_offset;
-> > +	int value_size;
-> > +	u64 *output;
-> > +	bool *do_output;
-> > +};
-> > +
-> > +static long process_arg_cb(u64 i, void *ctx)
-> > +{
-> > +	/*
-> > +	 * Determine what type of argument and how many bytes to read from user space, using the
-> > +	 * value in the beauty_map. This is the relation of parameter type and its corresponding
-> > +	 * value in the beauty map, and how many bytes we read eventually:
-> > +	 *
-> > +	 * string: 1			      -> size of string
-> > +	 * struct: size of struct	      -> size of struct
-> > +	 * buffer: -1 * (index of paired len) -> value of paired len (maximum: TRACE_AUG_MAX_BUF)
-> > +	 */
-> > +	struct augmented_arg *augmented_arg;
-> > +	struct args_loop_ctx *loop_ctx;
-> > +	int aug_size, size, index;
-> > +	bool augmented;
-> > +	void *arg;
-> > +
-> > +	/* Bounds check for the below map access to help the verifier */
-> > +	if (i < 0 || i >= 6)
-> > +		return 1;
-> > +
-> > +	loop_ctx = (struct args_loop_ctx *)ctx;
-> > +	arg = (void *)loop_ctx->args->args[i];
-> > +	augmented = false;
-> > +	size = loop_ctx->beauty_map[i];
-> > +	aug_size = size; /* size of the augmented data read from user space */
-> > +	augmented_arg = (struct augmented_arg *)loop_ctx->payload_offset;
-> > +
-> > +	if (size == 0 || arg == NULL)
-> > +		return 0; /* continue */
-> > +
-> > +	if (size == 1) { /* string */
-> > +		aug_size = bpf_probe_read_user_str(augmented_arg->value, loop_ctx->value_size, arg);
-> > +		augmented = true;
-> > +	} else if (size > 0 && size <= loop_ctx->value_size) { /* struct */
-> > +		if (!bpf_probe_read_user(augmented_arg->value, size, arg))
-> > +			augmented = true;
-> > +	} else if (size < 0 && size >= -6) { /* buffer */
-> > +		index = -(size + 1);
-> > +		barrier_var(index); // Prevent clang (noticed with v18) from removing the &= 7 trick.
-> > +		index &= 7;	    // Satisfy the bounds checking with the verifier in some kernels.
-> > +		aug_size = loop_ctx->args->args[index];
-> > +
-> > +		if (aug_size > TRACE_AUG_MAX_BUF)
-> > +			aug_size = TRACE_AUG_MAX_BUF;
-> > +
-> > +		if (aug_size > 0) {
-> > +			if (!bpf_probe_read_user(augmented_arg->value, aug_size, arg))
-> > +				augmented = true;
-> > +		}
-> > +	}
-> > +
-> > +	/* Augmented data size is limited to sizeof(augmented_arg->unnamed union with value field) */
-> > +	if (aug_size > loop_ctx->value_size)
-> > +		aug_size = loop_ctx->value_size;
-> > +
-> > +	/* write data to payload */
-> > +	if (augmented) {
-> > +		int written = offsetof(struct augmented_arg, value) + aug_size;
-> > +
-> > +		if (written < 0 || written > sizeof(struct augmented_arg))
-> > +			return 1; /* break */
-> > +
-> > +		augmented_arg->size = aug_size;
-> > +		*loop_ctx->output += written;
-> > +		loop_ctx->payload_offset += written;
-> > +		*loop_ctx->do_output = true;
-> > +	}
-> > +
-> > +	return 0;
-> > +}
-> > +
-> >  static int augment_sys_enter(void *ctx, struct syscall_enter_args *args)
-> >  {
-> > -	bool augmented, do_output = false;
-> > -	int zero = 0, index, value_size = sizeof(struct augmented_arg) - offsetof(struct augmented_arg, value);
-> > +	bool do_output = false;
-> > +	int zero = 0, value_size = sizeof(struct augmented_arg) - offsetof(struct augmented_arg, value);
-> >  	u64 output = 0; /* has to be u64, otherwise it won't pass the verifier */
-> > -	s64 aug_size, size;
-> >  	unsigned int nr, *beauty_map;
-> >  	struct beauty_payload_enter *payload;
-> > -	void *arg, *payload_offset;
-> > +	void *payload_offset;
-> > +	long iters;
-> >  
-> >  	/* fall back to do predefined tail call */
-> >  	if (args == NULL)
-> > @@ -457,63 +538,17 @@ static int augment_sys_enter(void *ctx, struct syscall_enter_args *args)
-> >  	/* copy the sys_enter header, which has the syscall_nr */
-> >  	__builtin_memcpy(&payload->args, args, sizeof(struct syscall_enter_args));
-> >  
-> > -	/*
-> > -	 * Determine what type of argument and how many bytes to read from user space, using the
-> > -	 * value in the beauty_map. This is the relation of parameter type and its corresponding
-> > -	 * value in the beauty map, and how many bytes we read eventually:
-> > -	 *
-> > -	 * string: 1			      -> size of string
-> > -	 * struct: size of struct	      -> size of struct
-> > -	 * buffer: -1 * (index of paired len) -> value of paired len (maximum: TRACE_AUG_MAX_BUF)
-> > -	 */
-> > -	for (int i = 0; i < 6; i++) {
-> > -		arg = (void *)args->args[i];
-> > -		augmented = false;
-> > -		size = beauty_map[i];
-> > -		aug_size = size; /* size of the augmented data read from user space */
-> > -
-> > -		if (size == 0 || arg == NULL)
-> > -			continue;
-> > -
-> > -		if (size == 1) { /* string */
-> > -			aug_size = bpf_probe_read_user_str(((struct augmented_arg *)payload_offset)->value, value_size, arg);
-> > -			/* minimum of 0 to pass the verifier */
-> > -			if (aug_size < 0)
-> > -				aug_size = 0;
-> > -
-> > -			augmented = true;
-> > -		} else if (size > 0 && size <= value_size) { /* struct */
-> > -			if (!bpf_probe_read_user(((struct augmented_arg *)payload_offset)->value, size, arg))
-> > -				augmented = true;
-> > -		} else if ((int)size < 0 && size >= -6) { /* buffer */
-> > -			index = -(size + 1);
-> > -			barrier_var(index); // Prevent clang (noticed with v18) from removing the &= 7 trick.
-> > -			index &= 7;	    // Satisfy the bounds checking with the verifier in some kernels.
-> > -			aug_size = args->args[index] > TRACE_AUG_MAX_BUF ? TRACE_AUG_MAX_BUF : args->args[index];
-> > -
-> > -			if (aug_size > 0) {
-> > -				if (!bpf_probe_read_user(((struct augmented_arg *)payload_offset)->value, aug_size, arg))
-> > -					augmented = true;
-> > -			}
-> > -		}
-> > -
-> > -		/* Augmented data size is limited to sizeof(augmented_arg->unnamed union with value field) */
-> > -		if (aug_size > value_size)
-> > -			aug_size = value_size;
-> > -
-> > -		/* write data to payload */
-> > -		if (augmented) {
-> > -			int written = offsetof(struct augmented_arg, value) + aug_size;
-> > -
-> > -			if (written < 0 || written > sizeof(struct augmented_arg))
-> > -				return 1;
-> > -
-> > -			((struct augmented_arg *)payload_offset)->size = aug_size;
-> > -			output += written;
-> > -			payload_offset += written;
-> > -			do_output = true;
-> > -		}
-> > -	}
-> > +	struct args_loop_ctx loop_ctx = {
-> > +		.args = args,
-> > +		.beauty_map = beauty_map,
-> > +		.payload_offset = payload_offset,
-> > +		.value_size = value_size,
-> > +		.output = &output,
-> > +		.do_output = &do_output
-> > +	};
-> > +	iters = bpf_loop(6, process_arg_cb, &loop_ctx, 0);
-> 
-> bpf_loop() is old and generally not recommended.
-> Please use bpf_for() then the diff will be one line change and
-> can scale to any number of args. Not just 6.
- 
-One thing we should take care is to support old kernels.  The oldest
-LTS kernel in the kernel.org is 5.10 and bpf_loop() was introduced in
-5.17 and bpf_for (bpf_iter_num) was 6.4.
+So this is not caused by the IRQ thread running as a normal SCHED_OTHER
+task. That does not remove all latency sources, of course; on this
+single-core SPI system the threaded IRQ can still be affected by other
+RT/kernel activity, IRQ/preemption-disabled sections, SPI transfer time,
+or lock contention.
 
-Maybe we can factor out the loop body and call it from different
-mechanisms like open-coded loop, bpf_loop or bpf_for depending on the
-kernel version.  But not sure it'd fix the verifier issue though.
+I agree, changing the TX trigger from 8 to 32 free spaces reduces the
+per-interrupt time-to-empty margin. With an 8-space trigger the FIFO
+still contains 56 bytes when THRI asserts, while with a 32-space trigger
+it contains 32 bytes. So the v1 commit message is misleading when it
+describes this as increasing the refill window.
 
-Thanks,
-Namhyung
+The observed effect is instead that the 8-space trigger causes many
+small TX refill events. Each event has roughly the same cost, as you
+said. If the handler runs in time, it can catch up by seeing more than
+8 free spaces and writing more data. The failure happens when one event
+is delayed long enough for the FIFO to drain.
 
+Using a 32-space trigger reduces the number of refill events and the
+associated IRQ/SPI load. It also reduces the chance that one delayed
+event lets the FIFO drain completely. On the tested setup this reduced
+irq/134-spi2.0 CPU usage from about 15-17% to about 5%, sys CPU from
+about 51-61% to about 19-28%, and load average from about 2.0-2.2 to
+about 0.65-1.3. With that change, the observed TX gaps disappeared.
+
+So I agree the commit message should be reworked to describe this as
+reducing TX refill events and IRQ/SPI load, not as increasing the
+per-interrupt latency margin.
+
+If changing the default trigger globally is considered too broad, I can
+also look at making the TX trigger configurable or limiting the change to
+SPI-backed devices.
+
+Thanks
+Paul
 
