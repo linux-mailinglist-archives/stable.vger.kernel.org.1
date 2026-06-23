@@ -1,212 +1,226 @@
-Return-Path: <stable+bounces-267900-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-267899-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id RfMFDKlLOmoD5gcAu9opvQ
-	(envelope-from <stable+bounces-267900-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 23 Jun 2026 11:02:33 +0200
+	id dENBBItMOmpP5gcAu9opvQ
+	(envelope-from <stable+bounces-267899-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 23 Jun 2026 11:06:19 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E75C6B5877
-	for <lists+stable@lfdr.de>; Tue, 23 Jun 2026 11:02:32 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5779E6B5920
+	for <lists+stable@lfdr.de>; Tue, 23 Jun 2026 11:06:18 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ZM++u5wL;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-267900-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-267900-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ZCddekKJ;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-267899-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-267899-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 044863042C60
-	for <lists+stable@lfdr.de>; Tue, 23 Jun 2026 09:00:05 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 56D1030C0179
+	for <lists+stable@lfdr.de>; Tue, 23 Jun 2026 09:00:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27AF83CF660;
-	Tue, 23 Jun 2026 09:00:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D20C93C6611;
+	Tue, 23 Jun 2026 09:00:01 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E81D23B8409;
-	Tue, 23 Jun 2026 09:00:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DB803CF200;
+	Tue, 23 Jun 2026 08:59:55 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782205203; cv=none; b=uHejzZObNXBoleBpOSi3PSnXH2wvkr1VP7TVECeoBNklmEwdmfje1GsAZDFX2pu8wR8m5mIliuearrnj+9CK5L9ibM7cb8dAFukpL/t1m+8URae9QET3HGJCXicu2+7rD0Q5PFMc1Aw84XwsGiaD88l9DKZFC6iP6qqmhM8kFlg=
+	t=1782205201; cv=none; b=KSE1JrwrxPrDPBphjrDM8nU3EFJ4UpyioqnBpxFb4vTbz9G0NALMc68xx+6kaAeII6MFwYmL9zjQbpx1RezVK8NB+Lq0PMo7lmr41j+YSJu4g0Qer+UQWgHvhzGE3ewe7ieFxePt10xE3HVH3A/Y9qw+r9P7pF1qsx2XcIff/9E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782205203; c=relaxed/simple;
-	bh=KXCWevaiHNf2bqeT/TW3o/o4kdJsGqvIhId7jpYROMQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=J0cjovgns3J95NZJn+LrDqbE6tyBat5+APmbqxuKnirVZBbLKelV24yDZDOjau4C81gQefTiWNRAHjGO7fi/nDCOvWnvcPdoEC009dCZ/Ck1poIy3Pu4g3KP9RTeVEe4u+spKLUl1sPDqI4Sgx6JsX4es3BHb6PseY3Bm5NglN4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZM++u5wL; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE9401F00A3D;
-	Tue, 23 Jun 2026 09:00:00 +0000 (UTC)
+	s=arc-20240116; t=1782205201; c=relaxed/simple;
+	bh=0GU9LIMJY50aIaiYHYc+NTnY9K6OdMdQEpFxEubWTJg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=TrDfTKIBIGg+nsMi7qLMuX3/rezY4XJh3Fyh+eoMhoGTZGO5o3e2P4ZtPBIFbhqT5QriruPK4x9IxC7AiAadCntjhEhoV0uCItBB/6vE9tTxMTMLiCoOODApAhIdbNernvUAO+gRsjFlJWRrpIR9OCmKNAlvhiH2dJcuuWZYHo0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZCddekKJ; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4B271F000E9;
+	Tue, 23 Jun 2026 08:59:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782205202;
-	bh=SCC+wdNVnXZNNrHkcj5DB7AYfXe6MM5pzfdxCLChsM0=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=ZM++u5wL+YKtpmuFpGRpVwJwVgtb/L8w4mFRPTSoGDLRLuogyF9bANy8KFhZENotE
-	 ZAHcd4yF0vufCcETS9L1qDYFPaPFNkJ4/bjnkRiIH1+0sATzNkmicMeDKi8leZkzIu
-	 P3NoDcIZUa7Osq0/YfOkp7zWxcuqw2rXSEuOKKvYyiiOyqkwzYuPb1et7N1fU2W2G5
-	 s0SWd6LDejaUj6cHQF4nx0DyGO4l26f6ymvl9WuagqXkzYqD7S0Bh3B32z6wSQpT3m
-	 x3IQvgOoVvw5a9qaisB4hW1nTvSqF7hEejJnmtgIGR3uCADgpchR3BuHvCS7+Dr3dS
-	 m1rmjyz7P5yXg==
-Message-ID: <3377aaa2-2f9e-4e01-9f2d-a39cee71a465@kernel.org>
-Date: Tue, 23 Jun 2026 09:59:49 +0100
+	s=k20260515; t=1782205195;
+	bh=CZJDMKie+kghBH4XpQ8XcibyOPE/XQSoQlDLMtsEl4U=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=ZCddekKJeKhGUvYTJgXy9VoBpK1WCBwH238B5Ov4bM/rLsaZmhsVB3PYh7W4Q1EKE
+	 6ILnKu1bv0n1xn54jX3aHNp+JzxMQUm5CKebOTP5r2qifBmSUj4O+LuNsy8GBwA7M8
+	 MiQazGMT1kWNjDHx35ledoiyrRVsAjmbdWO51zyyD7hGf44VB3jwpoj6J7cmTW7rRs
+	 SPOy360WTGEWlK8dGCqvKRFXp+sMLTsD6bDf+8x9c8U0wBhRWN0XC20ET9UCg98BPY
+	 Ua43fgAGAS6tgec2DXPOnz3b/NZYnd4OvIfHYLCkJToAZfIEy+gYKw4l9uuMPHCTRU
+	 y8HTEz5/Syhww==
+Received: from johan by xi.lan with local (Exim 4.99.3)
+	(envelope-from <johan@kernel.org>)
+	id 1wbwz3-00000000Zgb-0NSv;
+	Tue, 23 Jun 2026 10:59:53 +0200
+Date: Tue, 23 Jun 2026 10:59:53 +0200
+From: Johan Hovold <johan@kernel.org>
+To: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org,
+	patches@lists.linux.dev,
+	Masayuki Ohtake <masa-korg@dsn.okisemi.com>,
+	Ramanan Govindarajan <ramanan.govindarajan@oracle.com>,
+	Mark Brown <broonie@kernel.org>, Sasha Levin <sashal@kernel.org>,
+	Vegard Nossum <vegard.nossum@oracle.com>
+Subject: Re: [PATCH 5.15 323/411] spi: topcliff-pch: fix controller
+ deregistration
+Message-ID: <ajpLCYZ3eQm5p64L@hovoldconsulting.com>
+References: <20260616145100.376842714@linuxfoundation.org>
+ <20260616145118.324999322@linuxfoundation.org>
+ <d23a21f0-95dd-4e0c-845e-2a54c50f44eb@oracle.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3] media: as102: drop device reference on probe failure
-To: Jiawen Liu <1298662399@qq.com>, mchehab@kernel.org
-Cc: hverkuil+cisco@kernel.org, kees@kernel.org, linux-media@vger.kernel.org,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org
-References: <vQaKSTkXJRhk3WSQgTuoKGXJ4g3L1p3JxzdvdE5MqQdJqJrUwJiY7XpUOlLkqsKQOBBrC1jvbrxbkGMkmhZJQQ==@protonmail.internalid>
- <tencent_82A872B4FEBAE805125BB7D18918D0E25705@qq.com>
-From: Bryan O'Donoghue <bod@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=bod@kernel.org; keydata=
- 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
-In-Reply-To: <tencent_82A872B4FEBAE805125BB7D18918D0E25705@qq.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <d23a21f0-95dd-4e0c-845e-2a54c50f44eb@oracle.com>
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-5.16 / 15.00];
 	WHITELIST_SPF_DKIM(-3.00)[kernel.org:d:+,kernel.org:s:+];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:1298662399@qq.com,m:mchehab@kernel.org,m:hverkuil+cisco@kernel.org,m:kees@kernel.org,m:linux-media@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,m:hverkuil@kernel.org,s:lists@lfdr.de];
-	FREEMAIL_TO(0.00)[qq.com,kernel.org];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_SENDER(0.00)[bod@kernel.org,stable@vger.kernel.org];
-	TAGGED_FROM(0.00)[bounces-267900-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-267899-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[bod@kernel.org,stable@vger.kernel.org];
 	DKIM_TRACE(0.00)[kernel.org:+];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	TAGGED_RCPT(0.00)[stable,cisco];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS(0.00)[m:harshit.m.mogalapalli@oracle.com,m:gregkh@linuxfoundation.org,m:stable@vger.kernel.org,m:patches@lists.linux.dev,m:masa-korg@dsn.okisemi.com,m:ramanan.govindarajan@oracle.com,m:broonie@kernel.org,m:sashal@kernel.org,m:vegard.nossum@oracle.com,s:lists@lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_SENDER(0.00)[johan@kernel.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	TO_DN_SOME(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[johan@kernel.org,stable@vger.kernel.org];
+	MISSING_XM_UA(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,qq.com:email,vger.kernel.org:from_smtp]
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,hovoldconsulting.com:mid]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 8E75C6B5877
+X-Rspamd-Queue-Id: 5779E6B5920
 
-On 23/06/2026 09:56, Jiawen Liu wrote:
-> as102_usb_probe() initializes the kref and takes a USB device reference
-> before registering the USB minor.
+On Fri, Jun 19, 2026 at 06:08:40PM +0530, Harshit Mogalapalli wrote:
+> Hi Greg/Sasha,
 > 
-> The change named in the Fixes tag avoided freeing as102_dev directly
-> after usb_register_dev() succeeds, because userspace can open the minor
-> before a later probe failure and hold an extra kref until release.
+> On 16/06/26 20:29, Greg Kroah-Hartman wrote:
+> > 5.15-stable review patch.  If anyone has any objections, please let me know.
+> > 
+> > ------------------
+> > 
+> > From: Johan Hovold <johan@kernel.org>
+> > 
+> > [ Upstream commit 5d6f477d6fc0767c57c5e1e6f55a1662820eef87 ]
+> > 
+> > Make sure to deregister the controller before disabling and releasing
+> > underlying resources like interrupts and DMA during driver unbind.
+> > 
 > 
-> However, the stream-allocation and DVB-registration failure paths now
-> deregister the USB minor and return without dropping the probe path
-> initial kref. That leaves the USB device reference held by as102_dev
-> leaked.
+> ^^ let us remember this -- deregister before releasing irqs.
 > 
-> Drop the initial reference with kref_put() after usb_deregister_dev(). If
-> no userspace file is open, as102_usb_release() releases the USB device
-> and frees as102_dev immediately. If a file is open, the final free is
-> deferred until the last file release drops the remaining kref.
+> > Fixes: e8b17b5b3f30 ("spi/topcliff: Add topcliff platform controller hub (PCH) spi bus driver")
+> > Cc: stable@vger.kernel.org	# 2.6.37
+> > Cc: Masayuki Ohtake <masa-korg@dsn.okisemi.com>
+> > Signed-off-by: Johan Hovold <johan@kernel.org>
+> > Link: https://patch.msgid.link/20260414134319.978196-8-johan@kernel.org
+> > Signed-off-by: Mark Brown <broonie@kernel.org>
+> > [ renamed spi_controller_*(data->host) calls to spi_master_*(data->master) ]
+> > Signed-off-by: Sasha Levin <sashal@kernel.org>
+> > Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> > ---
+> >   drivers/spi/spi-topcliff-pch.c |    7 ++++++-
+> >   1 file changed, 6 insertions(+), 1 deletion(-)
+> > 
+> > --- a/drivers/spi/spi-topcliff-pch.c
+> > +++ b/drivers/spi/spi-topcliff-pch.c
+> > @@ -1450,11 +1450,16 @@ static void pch_spi_pd_remove(struct pla
+> >   		free_irq(board_dat->pdev->irq, data);
+> >   	}
+> ^^^ let us remember this.
 > 
-> Fixes: 8bd29dbe03fc ("media: as102: fix to not free memory after the device is registered in as102_usb_probe()")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Jiawen Liu <1298662399@qq.com>
-> ---
-> Changes in v3:
-> - Collapse the error labels so failed_stream falls through to the common
->    kref_put() return path, as suggested by Bryan O'Donoghue.
-> 
-> Changes in v2:
-> - Add Fixes and Cc stable tags.
-> - Clarify why the probe failure path must drop the initial kref rather
->    than free as102_dev directly.
-> 
->   drivers/media/usb/as102/as102_usb_drv.c | 5 +----
->   1 file changed, 1 insertion(+), 4 deletions(-)
-> 
-> diff --git a/drivers/media/usb/as102/as102_usb_drv.c b/drivers/media/usb/as102/as102_usb_drv.c
-> index a11024451ceb..2e6c9b50ee5f 100644
-> --- a/drivers/media/usb/as102/as102_usb_drv.c
-> +++ b/drivers/media/usb/as102/as102_usb_drv.c
-> @@ -403,13 +403,10 @@ static int as102_usb_probe(struct usb_interface *intf,
->   failed_dvb:
->   	as102_free_usb_stream_buffer(as102_dev);
->   failed_stream:
-> -	usb_set_intfdata(intf, NULL);
->   	usb_deregister_dev(intf, &as102_usb_class_driver);
-> -	return ret;
->   failed:
-> -	usb_put_dev(as102_dev->bus_adap.usb_dev);
->   	usb_set_intfdata(intf, NULL);
-> -	kfree(as102_dev);
-> +	kref_put(&as102_dev->kref, as102_usb_release);
->   	return ret;
->   }
+> >   
+> > +	spi_master_get(data->master);
+> > +
+> > +	spi_unregister_master(data->master);
+> > +
+> >   	if (use_dma)
+> >   		pch_free_dma_buf(board_dat, data);
+> >   
+> >   	pci_iounmap(board_dat->pdev, data->io_remap_addr);
+> > -	spi_unregister_master(data->master);
+> > +
+> > +	spi_master_put(data->master);
+> >   }
 > 
 > 
-> base-commit: 9e7e6633458362db72427b48effad8d759131c35
-> --
-> 2.34.1
+> I ran an AI assisted backport review over the 5.15.210 queue and then
+> checked this one manually. I think the 5.15.y backport keeps the API 
+> mapping, but not the upstream teardown ordering.
 > 
+> Upstream 5d6f477d6fc0 unregisters the controller before the local teardown:
+> 
+>          spi_controller_get(data->host);
+> 
+>          spi_unregister_controller(data->host);
+> 
+>          if (use_dma)
+>                  pch_free_dma_buf(board_dat, data);
+>          ...
+>          pch_spi_free_resources(board_dat, data);
+>          /* disable interrupts & free IRQ */
+>          if (data->irq_reg_sts) {
+>                  /* disable interrupts */
+>                  pch_spi_setclr_reg(data->host, PCH_SPCR, 0, PCH_ALL);
+>                  data->irq_reg_sts = false;
+>                  free_irq(board_dat->pdev->irq, data);
+>          }
+> 
+> 
+> In final 5.15.y, the equivalent spi_master_get()/spi_unregister_master()
+> still happens after queue/status teardown, pch_spi_free_resources(), IRQ
+> disable, and free_irq():
+> 
+>          pch_spi_free_resources(board_dat, data);
+>          if (data->irq_reg_sts) {
+>                  pch_spi_setclr_reg(data->master, PCH_SPCR, 0, PCH_ALL);
+>                  data->irq_reg_sts = false;
+>                  free_irq(board_dat->pdev->irq, data);
+>          }
+> 
+>          spi_master_get(data->master);
+> 
+>          spi_unregister_master(data->master);
+> 
+> The spi_master_* names are equivalent wrappers for the controller APIs 
+> in 5.15.y, but the call placement is still the old ordering. That leaves 
+> child SPI devices registered while the driver has already started 
+> tearing down controller resources.
+> 
+> I think for 5.15.y we should fix the backport by moving spi_master_get() 
+> and spi_unregister_master() before the local queue/resource/IRQ teardown 
+> in pch_spi_pd_remove(), thoughts?
 
-Reviewed-by: Bryan O'Donoghue <bod@kernel.org>
+I agree, this backport looks wrong.
 
----
-bod
+This is probably an effect of
+
+	9d72732fe70c ("spi: topcliff-pch: fix use-after-free on unbind")
+
+being backported before
+
+	9d72732fe70c ("spi: topcliff-pch: fix use-after-free on unbind")
+
+due to the latter first failing to apply because of the SPI API rename.
+
+Johan
 
