@@ -1,259 +1,172 @@
-Return-Path: <stable+bounces-267881-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-267883-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id oSkrBT81Omoi4AcAu9opvQ
-	(envelope-from <stable+bounces-267881-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 23 Jun 2026 09:26:55 +0200
+	id 5O33HWA2Omp24AcAu9opvQ
+	(envelope-from <stable+bounces-267883-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 23 Jun 2026 09:31:44 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C27C56B4D6F
-	for <lists+stable@lfdr.de>; Tue, 23 Jun 2026 09:26:54 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id CE52D6B4DEE
+	for <lists+stable@lfdr.de>; Tue, 23 Jun 2026 09:31:43 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=dZdj8ZZe;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-267881-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-267881-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=gcgF2gCn;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-267883-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-267883-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
+	arc=pass ("subspace.kernel.org:s=arc-20240116:i=2")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 8966A3026AF3
-	for <lists+stable@lfdr.de>; Tue, 23 Jun 2026 07:26:52 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id AA1C4300EAA6
+	for <lists+stable@lfdr.de>; Tue, 23 Jun 2026 07:31:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7BF293BA253;
-	Tue, 23 Jun 2026 07:26:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C2963B6347;
+	Tue, 23 Jun 2026 07:31:28 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pf1-f174.google.com (mail-pf1-f174.google.com [209.85.210.174])
+Received: from mail-ed1-f45.google.com (mail-ed1-f45.google.com [209.85.208.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E882D3B38AB
-	for <stable@vger.kernel.org>; Tue, 23 Jun 2026 07:26:49 +0000 (UTC)
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782199611; cv=none; b=XCEIdb4j36nN46oo140vWWQz6kNbPALLbMc8wtQyoNf3KixhoYdHghKYoaDcmMrhEKAlq48IuOzm6G57W86+HA4D5Pgl3uPGocjOybOS2RnCvMXI8oxCmjQtuHstxVj7aT/4hrc9OC3w09AyblbMdLjd5jBR355VFwEtb7igIgo=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782199611; c=relaxed/simple;
-	bh=8VkazeSEIBkEWKYXfN3/pxdnfFUNnahf0WVmLIxhgIs=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dK34rTRYNHniDybuJPz2enDy9EvPGzn/S/xBEHEFElv7CaNP7NFDaidaHTaYppC4EZcGyCfoWGkbf5bDtWTRW7p3T1aCRSTcJjmd9hLfse53MzcAD97cgrSEy2lpCBtb9/qPrYt7kdKuqtXv1rmw2+65atERb8PpjQao3gE2v3E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=dZdj8ZZe; arc=none smtp.client-ip=209.85.210.174
-Received: by mail-pf1-f174.google.com with SMTP id d2e1a72fcca58-84536e2857eso3222112b3a.0
-        for <stable@vger.kernel.org>; Tue, 23 Jun 2026 00:26:49 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DD502797AC
+	for <stable@vger.kernel.org>; Tue, 23 Jun 2026 07:31:26 +0000 (UTC)
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1782199887; cv=pass; b=kzepJ9MxzJZsHRGju0zTXEJMBFNwvxKmRhio281p2BWXqX/cDAA+DhDes+/M5bcvb6IC5Up5zHc361AjQR845q6Cyk7dV+mL7N2mrAaJbfiViu+EXbLYSVI17wbuVGfJ18Hu+ER/2OAt9IIo2DmF1J69Y2lEeZERcbMQR52vLfM=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1782199887; c=relaxed/simple;
+	bh=wNnxLYnrYtZlvSO76qoO37z4hdu8yf/j9NrnkipyBDI=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Eb4g+SnDoPyZ2EI8Lh/lK+mEJhO1OBSI+xVR5dYtL8a9bAssEnur0NlWT+F2H75IhOqyq1YhRRW949jHC1ozlqgmtk2Hfk0i93ZgV75UL5L4j+11kph6Ns+gi80IwcF8dD1kP3etMb5JVLgufV4GOJ7jvjS+wp5POe85p4OcTQE=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=gcgF2gCn; arc=pass smtp.client-ip=209.85.208.45
+Received: by mail-ed1-f45.google.com with SMTP id 4fb4d7f45d1cf-691c5776f35so7526217a12.3
+        for <stable@vger.kernel.org>; Tue, 23 Jun 2026 00:31:26 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1782199885; cv=none;
+        d=google.com; s=arc-20240605;
+        b=KOXVfMYlPXi2vUieDqbtyRZqYPGe6bv7/jrBQaPwlCxTbDlAc7iBXJCQdsRfui3ZVf
+         mty2lknbixwYTc1fuZwAfhAM8h+PyZHb/z+q9Ajv5M1AXRn4PN4g43GYSRZW5T0HY634
+         IY9D55r6N7qUxf3SqY5mEfJjTUp6mWe9dhMK27li4Mu8kOoaP1DEPaEmWQTNmtGpikS9
+         zvBl80NNl9nI89KYe5g0apzLU0sEF0jqQ6UPG6/4lJ4PeQewGE717nO3SOEfd1V3guJY
+         /v5Rf/CP5pHjkhUvcLM6y6LxO0CFRtJk4XUbMBxIFm/bYXR+DMzYiRtXBrI9arMDTe65
+         zIgw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=wNnxLYnrYtZlvSO76qoO37z4hdu8yf/j9NrnkipyBDI=;
+        fh=8QiywGpUY8upCbNZ+QIJxCHcCV7duXOAEKq2qrLfjO0=;
+        b=RQkcKwP0tOr1XfTcKPclJ5uqyej7jDhz3Ko/m+ng+cGeehJI0u9/cSIgNlBPbWJqxA
+         b5vNoW5JZFpWzrqLpV+ZkdQiiPv5E3rLY8WfDQWBrCKm6Q8LeAdLbuW17NZt16Tf08Dn
+         6YZP1fht7EJYYvKsRlzhVStW3tt7ut92l4Wy1HS22od6K/4RXysTjNt4Gt8Una052io1
+         97T3OrtIAG8zpWe06LShFDUSh9Lnd5yF347Y8qWlcIE6mTEEIDVyGKoPuN2j1Y6s4Q6S
+         yKYLwPB2RF0uG1vyoxclZA9FkfPtPqWIutOyl9BOSyG0LMyFobSlJNcdgFb2jRbdLZq8
+         gT4g==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1782199609; x=1782804409; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=av163n6vLeJcN4V8gx196RJyV5mYzpTIV4U25JqmgL0=;
-        b=dZdj8ZZeo/JFJLtv+AkQRnViAQtCi3qFZfwirz8A5fNTiGI38NJR6JaXYb3orKXnPU
-         yVxirDyBeMm/W9Wk/u3CgZTY0nQvyrO9Adbx86dhshHKWJizHtBzpbVovVeslh6018Xl
-         6EpM7Ovx8I121fD8E+RtAoC0aV/piPp3epT0JX1MBzGPVARCYqCbstG8t+IVOdr1Pk2e
-         MX7lldA/p/rtAR153iDAElKrZvfLowhZcS2Zm5HYqx9ZwWmtdV1ozR6Ze3b/Yc00z3MN
-         ebH7sVEpoqR/ywkWuv94nMTCEjnDjvAYlTRK4yTyFZdtPyyIXBZuwhalnL6s63SxUwgP
-         Z56Q==
+        d=gmail.com; s=20251104; t=1782199885; x=1782804685; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=wNnxLYnrYtZlvSO76qoO37z4hdu8yf/j9NrnkipyBDI=;
+        b=gcgF2gCnXkcAW6tmpCuB0TCOMS9d0GuVuiZw0RerJ3nEHxwOr25L1+ZJE6YEwlgAh1
+         CYaNIBTcB5IPtz2QuPGcZt8+I8BPK3aHArf1AGkRbxBghRXPe4Wc1dz+v0VyKRTQeWTY
+         VpVGgpuPO88/EmiTdE9eh/HzY+XZHAfO9xwTHZBbnYbldGWZHQ8quumFMtos+ALT7uIE
+         WgTCK7gn0W8B9MxAOvl5W5BnFSG/BsJLMMIo3Ip0vbZRQ2RQT1n0y2SW6N5JSt5YqD4r
+         Znt/1irOoJnOUiRhZLhLjwbW0SZ9QgtpBGUZQb+arhsyIYgCMVCKWz+qOm5qoUl2C/rJ
+         UUsQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782199609; x=1782804409;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=av163n6vLeJcN4V8gx196RJyV5mYzpTIV4U25JqmgL0=;
-        b=DmU2LksUyTA40dtHRrM907MZbKjGBQBYf/MYkmtGv+e9NTWQrhps0W+1iT3zGTnSbc
-         s2IprPZ42qH182v822WpEkKxw9r/djY9DAoCBRpse8uixi+7pH5EQgg5ImQxbCRXfRlP
-         M7gYmRcE92X9XfLAU9q330nNgovzzZAq5AWFRO2H+24Ls55ujcYl1AI+KR+3MoXFWs1b
-         /y+y/jarc6leH/oycxJF4LRcfOKlDYlkYptQqZlRrobebkgOw5T9Qe4qz9FnLrvQAyOd
-         1JAVKY0V94S0RmykGhb+IMqO7hSA9qEwtSw71KBWJtqOEO9JT7K/hNQbUiQ8t0WwnkeR
-         +QbQ==
-X-Forwarded-Encrypted: i=1; AFNElJ/B/Mvp/iws0NPE3FNa7mRl/jRV4jPX3UvT1iuy8Da6+Ghz2x6MBWK7rWfBaEwPmK7Z0EFg0Y0=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzCT0oNPqV6PRU4Kl4at80z1nS48nN6pGR6pquBHWvxylwUiteN
-	6KN9/6ukfd/lU/UiMeENCuuM1lmW1jNqGpbkFan6zZsFW4EHhs9JUNNg
-X-Gm-Gg: AfdE7cmfovzoCnqnKZd/f18EC3I4zICweYWjXE7knUQ6ZtOJ1SzTKGwT5NeIRltNz2S
-	OY/4mR4SGLUni8QHMUnTquLGydezESwHhGKVWkZmneYpDTYEIanIF/kZXllwt4MrjWs0du/njqH
-	csYBXniEI081inB890NUXlnPZcKYU/N44GsHy0kTfgWVC5bN5d6WM9TRbzLyaaPeRgu4iuLQdN2
-	8eKXicw5DIkjZppQuXAcspBjuew7HYGS9iUeAV2eSVW8Qc/FTfj09Yb3WNHmac/I/WOaNT/G/gA
-	NcK7e60O9zO2hnpzZv91vgC/lY/kkwhD7jSlxOyZ+SC97ThhEyuvfAY96GZMrrKF88uA4sG0A2K
-	CO9Ys+E5hE1CbGwzQCPFtRaR7WIXaWmUlgcMpmaPP4NxIQ3S+pjwgCYxTCMFUiHPAjj1P9HFMiy
-	1vw5l+irQ5AOTZlBtbiBWbG7k=
-X-Received: by 2002:a05:6a00:1814:b0:845:4679:4a3 with SMTP id d2e1a72fcca58-845507ec58dmr19012459b3a.19.1782199609144;
-        Tue, 23 Jun 2026 00:26:49 -0700 (PDT)
-Received: from osman.mioffice.cn ([43.224.245.178])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-84564d8dddbsm9782523b3a.19.2026.06.23.00.26.45
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 23 Jun 2026 00:26:48 -0700 (PDT)
-From: Zhan Xusheng <zhanxusheng1024@gmail.com>
-X-Google-Original-From: Zhan Xusheng <zhanxusheng@xiaomi.com>
-To: Jaegeuk Kim <jaegeuk@kernel.org>,
-	Chao Yu <chao@kernel.org>
-Cc: Daniel Lee <chullee@google.com>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	linux-kernel@vger.kernel.org,
-	linux-trace-kernel@vger.kernel.org,
-	stable@vger.kernel.org,
-	Zhan Xusheng <zhanxusheng@xiaomi.com>
-Subject: [PATCH v2] f2fs: don't drop the top folio order in the f2fs_iostat tracepoint
-Date: Tue, 23 Jun 2026 15:26:41 +0800
-Message-ID: <20260623072641.3547410-1-zhanxusheng@xiaomi.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <69618bed-db94-4503-aa9b-c78fb51a945c@kernel.org>
-References: <69618bed-db94-4503-aa9b-c78fb51a945c@kernel.org>
+        d=1e100.net; s=20251104; t=1782199885; x=1782804685;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=wNnxLYnrYtZlvSO76qoO37z4hdu8yf/j9NrnkipyBDI=;
+        b=bcjsxNECNRnDrqDtwVQ6Xiypl8llraSsG+ITHyz1nD3g+rBLgdjXMWAZEhzgvoFqNZ
+         gnnuw6As8jCsOeu8NU7XKOGvpFVrtplquPgpO70EPu4xH597KdMzGaAxUC4hKoDpS/bM
+         RljdmsxWPFMsP/0Qq/fjyacjhwkq2zodrK7WnEfmXNNzlo8NzBDWiEchgAJP151w5ltb
+         IsfnrA4gEBShJFVG0cEA5c+lBjPfBk41REzTSfJzaw9uCnK0aGxJI6DClJYL3BFqlul1
+         jcUpiZWyVEMNjzRPZnBR4/YvBNUuNuni58P3YnVcHOX8QwXjnCX6Ujk2u4ZOYyI3coFi
+         wLCg==
+X-Forwarded-Encrypted: i=1; AFNElJ+W0uiPi1wVVTRAjkRWaoNDqdXsqB93BFBWuZJvsafv6pqOl97ZgDLW2kLYb98NkxSZsjLXobE=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwQ4bs9ZlpYjaePNv4MWwdjqgW4Jf0GeD9pkl2iYXVyAP/pWTVV
+	HOLbcfpgd1VJWEDq2Ph8ut5+5I1l9WNIgbAf91SJnsdkfthU2g7WBSmO5tZkvVhCyq1vsp0eWH0
+	QYguKgv7kcgYhVbcF64WMQRXsq3YIihA=
+X-Gm-Gg: AfdE7clb+JnSKmEu8vZMfd1FwTnxSxQ63LalPNULv7lY6I5UxLk/3BKW5/aopSO2VaY
+	NFWiHaD95voAueZvQJgyr0m2b+/mPwonOW+hsD88op7+8BHY5ORdrZ+SP7Zv9RgPfiIQ58/Q5ul
+	zuHswxkD1aP2HQZZucray301Ln3sShFSkd1CZJwGUHH4SbBcfCsC90rFAbD+Lo68MDaJoiEFV5c
+	EB9Eh7jYgtmkmfcV5JAYXibXD8AK9eoJY8VZKJdIKGKMTOumkJa5zqt4awaDM92yZTXtDXhDHjK
+	COsmYlPj3J+cT//zdK6jfumuxQcW66c=
+X-Received: by 2002:a17:907:971d:b0:bee:c13f:7ec0 with SMTP id
+ a640c23a62f3a-c108c7fe9fcmr55355966b.8.1782199884534; Tue, 23 Jun 2026
+ 00:31:24 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20260619095936.24080-1-nikhilsolanke5@gmail.com>
+ <8175e40d-357a-4513-b827-752f679e9904@rowland.harvard.edu>
+ <CAFgddhKKuGQgu0Ahu_WRyZocQGwPZkUejjoaJQ+P8--+k=Lwkg@mail.gmail.com> <8da4a00f-a01c-4b38-82a3-a718e5588f51@rowland.harvard.edu>
+In-Reply-To: <8da4a00f-a01c-4b38-82a3-a718e5588f51@rowland.harvard.edu>
+From: Nikhil Solanke <nikhilsolanke5@gmail.com>
+Date: Tue, 23 Jun 2026 13:01:12 +0530
+X-Gm-Features: AVVi8Ceg9WedBgeSh6qEiGvuEGTJVDy2JLw21bGpVlYvaoqzbD0_RraFsYA-2-A
+Message-ID: <CAFgddhLVAp7nMX4YUHoaG+Q_Hm6w1uq9df2kH+4RWiJJGYDdhw@mail.gmail.com>
+Subject: Re: [PATCH] usbcore: Add quirk for 255-bytes initial config read
+To: Alan Stern <stern@rowland.harvard.edu>
+Cc: linux-usb@vger.kernel.org, gregkh@linuxfoundation.org, 
+	linux-kernel@vger.kernel.org, michal.pecio@gmail.com, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.66 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
 	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	PRECEDENCE_BULK(0.00)[];
-	TAGGED_FROM(0.00)[bounces-267881-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stern@rowland.harvard.edu,m:linux-usb@vger.kernel.org,m:gregkh@linuxfoundation.org,m:linux-kernel@vger.kernel.org,m:michal.pecio@gmail.com,m:stable@vger.kernel.org,m:michalpecio@gmail.com,s:lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-267883-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:jaegeuk@kernel.org,m:chao@kernel.org,m:chullee@google.com,m:rostedt@goodmis.org,m:mhiramat@kernel.org,m:linux-kernel@vger.kernel.org,m:linux-trace-kernel@vger.kernel.org,m:stable@vger.kernel.org,m:zhanxusheng@xiaomi.com,s:lists@lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FORGED_SENDER(0.00)[zhanxusheng1024@gmail.com,stable@vger.kernel.org];
-	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER(0.00)[nikhilsolanke5@gmail.com,stable@vger.kernel.org];
 	FORWARDED(0.00)[lists@lfdr.de];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[gmail.com:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[zhanxusheng1024@gmail.com,stable@vger.kernel.org];
-	ALIAS_RESOLVED(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
+	RCPT_COUNT_FIVE(0.00)[6];
 	FORGED_SENDER_FORWARDING(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[nikhilsolanke5@gmail.com,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[vger.kernel.org,linuxfoundation.org,gmail.com];
+	MID_RHS_MATCH_FROMTLD(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
 	TAGGED_RCPT(0.00)[stable];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,xiaomi.com:mid,xiaomi.com:email,vger.kernel.org:from_smtp]
+	MISSING_XM_UA(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,mail.gmail.com:mid,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: C27C56B4D6F
+X-Rspamd-Queue-Id: CE52D6B4DEE
 
-The f2fs_iostat tracepoint stores the per-order read folio counts in a
-fixed-size array and prints a fixed number of buckets, both hardcoded to
-11. The sysfs iostat accounting array is instead sized by NR_PAGE_ORDERS
-(= MAX_PAGE_ORDER + 1), which is not always 11:
+I have a v2 patch ready with all the requested changes along with the
+documentation in Documentation/admin-guide/kernel-parameters.txt. Is
+there any other place where I have to write documentation?
 
-	arm64 16K pages -> MAX_PAGE_ORDER 11 -> NR_PAGE_ORDERS 12
-	arm64 64K pages -> MAX_PAGE_ORDER 13 -> NR_PAGE_ORDERS 14
+Also, I would like to know the "low-level" type reason as to why do we
+have 2 separate buffers. a desc and then a bigbuffer? Why don't we
+just realloc the desc buffer? Does this have something to do with
+reallocs in general?
 
-f2fs enables large folios for immutable, non-compressed files, and the
-read folio order is bounded by MAX_PAGECACHE_ORDER, i.e.
-min(MAX_XAS_ORDER, PREFERRED_MAX_PAGECACHE_ORDER). With THP enabled this
-reaches order 11 on 16K/64K base-page kernels (MAX_XAS_ORDER caps it at
-11). So an order-11 read folio is possible there and is accounted into
-index 11 of the array.
+Also (a bit more tangent), can the usb device potentially fingerprint
+the host os? if we are asking for 9 bytes first and windows ask for
+255, is it possible that some usb devices will fingerprint the OS
+based on this, and behave differently? are there any other such places
+where fingerprinting is possible? In those cases, is it theoretically
+possible that this patch might fix some weird devices that "seem to
+work" on windows but not on linux? I might just add this one line to
+documentation that it might theoretically fix other usb devices as
+well instead of it just being a quirk to fix a game controller.
 
-On those configurations the sysfs file reports the order-11 count
-correctly, but the tracepoint silently drops it: the memcpy is capped at
-min(NR_PAGE_ORDERS, 11), so index 11 is never copied and the trace
-disagrees with sysfs. There is no memory-safety issue, only the order-11
-bucket missing from the trace; 4K-page kernels (NR_PAGE_ORDERS == 11,
-max order <= 9) are unaffected.
-
-Size the array and the printed buckets by a ceiling that covers the
-largest possible NR_PAGE_ORDERS (14) with headroom, and add a
-BUILD_BUG_ON() so any future growth of NR_PAGE_ORDERS fails the build
-loudly instead of silently truncating again. The human-readable
-"order=count" output is preserved.
-
-Fixes: cb8ff3ead9a3 ("f2fs: add page-order information for large folio reads in iostat")
-Cc: stable@vger.kernel.org
-Signed-off-by: Zhan Xusheng <zhanxusheng@xiaomi.com>
----
-v2:
- - Move the BUILD_BUG_ON() from f2fs_update_read_folio_count() into
-   f2fs_init_iostat() (Chao Yu)
- - Add Cc: stable (Chao Yu)
-
- fs/f2fs/iostat.c            |  6 ++++++
- include/trace/events/f2fs.h | 20 ++++++++++++++++----
- 2 files changed, 22 insertions(+), 4 deletions(-)
-
-diff --git a/fs/f2fs/iostat.c b/fs/f2fs/iostat.c
-index ae265e3e9b2c..12d4e18a6a50 100644
---- a/fs/f2fs/iostat.c
-+++ b/fs/f2fs/iostat.c
-@@ -332,6 +332,12 @@ void f2fs_destroy_iostat_processing(void)
- 
- int f2fs_init_iostat(struct f2fs_sb_info *sbi)
- {
-+	/*
-+	 * The f2fs_iostat tracepoint emits a fixed number of read folio order
-+	 * buckets; make sure every order fits so none is silently dropped.
-+	 */
-+	BUILD_BUG_ON(NR_PAGE_ORDERS > F2FS_IOSTAT_RD_FOLIO_ORDERS);
-+
- 	/* init iostat info */
- 	spin_lock_init(&sbi->iostat_lock);
- 	spin_lock_init(&sbi->iostat_lat_lock);
-diff --git a/include/trace/events/f2fs.h b/include/trace/events/f2fs.h
-index b5188d2671d7..3e810690d9de 100644
---- a/include/trace/events/f2fs.h
-+++ b/include/trace/events/f2fs.h
-@@ -2114,6 +2114,14 @@ DEFINE_EVENT(f2fs_zip_end, f2fs_decompress_pages_end,
- );
- 
- #ifdef CONFIG_F2FS_IOSTAT
-+/*
-+ * Number of read folio order buckets emitted by the f2fs_iostat tracepoint.
-+ * TP_printk() cannot loop, so the field count is fixed here and must be >=
-+ * the largest possible NR_PAGE_ORDERS (14 on arm64 with 64K pages). The
-+ * BUILD_BUG_ON() in f2fs_update_read_folio_count() enforces this.
-+ */
-+#define F2FS_IOSTAT_RD_FOLIO_ORDERS	16
-+
- TRACE_EVENT(f2fs_iostat,
- 
- 	TP_PROTO(struct f2fs_sb_info *sbi, unsigned long long *iostat,
-@@ -2151,7 +2159,7 @@ TRACE_EVENT(f2fs_iostat,
- 		__field(unsigned long long,	fs_mrio)
- 		__field(unsigned long long,	fs_discard)
- 		__field(unsigned long long,	fs_reset_zone)
--		__array(unsigned long long,	read_folio_count, 11)
-+		__array(unsigned long long,	read_folio_count, F2FS_IOSTAT_RD_FOLIO_ORDERS)
- 	),
- 
- 	TP_fast_assign(
-@@ -2186,7 +2194,8 @@ TRACE_EVENT(f2fs_iostat,
- 		__entry->fs_reset_zone	= iostat[FS_ZONE_RESET_IO];
- 		memset(__entry->read_folio_count, 0, sizeof(__entry->read_folio_count));
- 		memcpy(__entry->read_folio_count, read_folio_count,
--				sizeof(unsigned long long) * min_t(int, NR_PAGE_ORDERS, 11));
-+				sizeof(unsigned long long) *
-+				min_t(int, NR_PAGE_ORDERS, F2FS_IOSTAT_RD_FOLIO_ORDERS));
- 	),
- 
- 	TP_printk("dev = (%d,%d), "
-@@ -2201,7 +2210,8 @@ TRACE_EVENT(f2fs_iostat,
- 		"fs [data=%llu, (gc_data=%llu, cdata=%llu), "
- 		"node=%llu, meta=%llu], "
- 		"read_folio_count [0=%llu, 1=%llu, 2=%llu, 3=%llu, 4=%llu, "
--		"5=%llu, 6=%llu, 7=%llu, 8=%llu, 9=%llu, 10=%llu]",
-+		"5=%llu, 6=%llu, 7=%llu, 8=%llu, 9=%llu, 10=%llu, 11=%llu, "
-+		"12=%llu, 13=%llu, 14=%llu, 15=%llu]",
- 		show_dev(__entry->dev), __entry->app_wio, __entry->app_dio,
- 		__entry->app_bio, __entry->app_mio, __entry->app_bcdio,
- 		__entry->app_mcdio, __entry->fs_dio, __entry->fs_cdio,
-@@ -2218,7 +2228,9 @@ TRACE_EVENT(f2fs_iostat,
- 		__entry->read_folio_count[4], __entry->read_folio_count[5],
- 		__entry->read_folio_count[6], __entry->read_folio_count[7],
- 		__entry->read_folio_count[8], __entry->read_folio_count[9],
--		__entry->read_folio_count[10])
-+		__entry->read_folio_count[10], __entry->read_folio_count[11],
-+		__entry->read_folio_count[12], __entry->read_folio_count[13],
-+		__entry->read_folio_count[14], __entry->read_folio_count[15])
- );
- 
- #ifndef __F2FS_IOSTAT_LATENCY_TYPE
--- 
-2.43.0
-
+Nikhil Solanke
 
