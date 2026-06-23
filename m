@@ -1,63 +1,63 @@
-Return-Path: <stable+bounces-267936-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-267937-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id tkRiAJd2Omp89gcAu9opvQ
-	(envelope-from <stable+bounces-267936-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 23 Jun 2026 14:05:43 +0200
+	id I+RMIEh3Omqw9gcAu9opvQ
+	(envelope-from <stable+bounces-267937-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 23 Jun 2026 14:08:40 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E1C976B6F78
-	for <lists+stable@lfdr.de>; Tue, 23 Jun 2026 14:05:41 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D1B376B6FA1
+	for <lists+stable@lfdr.de>; Tue, 23 Jun 2026 14:08:39 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=dd7myrmR;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-267936-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-267936-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Pr8ANlj2;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-267937-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-267937-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id D0686301A34A
-	for <lists+stable@lfdr.de>; Tue, 23 Jun 2026 12:05:38 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 9F69F30182AC
+	for <lists+stable@lfdr.de>; Tue, 23 Jun 2026 12:08:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CCF2A36A376;
-	Tue, 23 Jun 2026 12:05:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C46B3D525F;
+	Tue, 23 Jun 2026 12:08:38 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A67F1346E72
-	for <stable@vger.kernel.org>; Tue, 23 Jun 2026 12:05:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26CBB3D45CF
+	for <stable@vger.kernel.org>; Tue, 23 Jun 2026 12:08:37 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782216335; cv=none; b=C84ZM7/IJ5ImJnNyubOERLYlg+LIBjx2ATfTSJnTFQVKBbsMBByx76DMzxjVp95/2qhKXQp569ELiWRnZFgNTt1UPOqBbVQQgyc0l2fZ94J9P/esrLfoDD1EkKnBmfa2a9aMHh/606q3stwr+gpsFeJEjYldR+cKuU5zPNk393k=
+	t=1782216518; cv=none; b=O2w+V2QYOgeuNJFYZhdTvJehTdUoXaFZJ94B60NJJ3Ki/UIV72rrS5NrDLHF+cHijXjB85PRvSEl/5cMokhqueWsY0ukfbkr4hkVI/NXdU6FoIzqOs6UAqEw1iMvT7iilL1mefqmvG+JJz24Zwablkk/wfFF+0uRypJwsAm69hs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782216335; c=relaxed/simple;
-	bh=cwGhMhdjIhgq4GSIW/JMOtvQU5zMIuo1CpGAx5NIgKo=;
+	s=arc-20240116; t=1782216518; c=relaxed/simple;
+	bh=7X7Pgxli6e0Y2NQXu6YbdOUFj/xrPqp+AMUc/UiBScw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mwfvGBrfdXEpjfhysAULq60vyAlUjTVf/VPp5YfiSEOVTw3NzlCWB46cqjvVzfAuyrCbJVuksk8RZDgxnOrtYHTMJf6SvyuBzMdihUuMAnoBL1QpubpbawVFJnHOh/JROuo/Ue4A4ZCjrD57PPp9X3onSn8Z0oapdnMUE8C9IrA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dd7myrmR; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B05D11F000E9;
-	Tue, 23 Jun 2026 12:05:33 +0000 (UTC)
+	 MIME-Version; b=cdIftDHGL3hWDKNzU9eDZHKpn5yWNzZWNd8XmXqq/uiY3OxoT4/wcpgAQsA4KVn6MU1CpRSQEkWhZJKYFiNlS5xYRl6kot5OR+htMk/o4VYPyi594P92c2IaLKag2nLaAmOkzKiA2VlCa3Ws3RUf1utRLd1oLHrx1bmVLp8FNuk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Pr8ANlj2; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76A5A1F000E9;
+	Tue, 23 Jun 2026 12:08:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782216334;
-	bh=KFCShWuWsAg94MRiOGl00DJjE7Tm+LQXmkyC+JJcWwQ=;
+	s=k20260515; t=1782216517;
+	bh=qZhBOn0UMx9FZMAbhXtwxhUQ2Qt4Qfa8lnmIE6btLzU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=dd7myrmRRSZM8bjJsEdgsQuBVxNIIa6Tpx5FvPUUKSD0ScW4y6h8JOTJDdKqdJBgB
-	 aPu04dkMxI0PT0g4GmZ6tTvMtBYFzShaK/xH3ScNREOi2dgTAhyxp3WxZFQ35JzvKJ
-	 EJI0XzxaMORX6IlPwCk00KBxwoskOyRhCYj4bGPPKJ1T6PPX76B6qqesgkaV1Z3lFa
-	 9HrrZBESwWn9RNK4TYucyndlfBPx4sNMlmxHQloi7O80gp71DVe1v/bc0SFxX9eFBy
-	 8VD2+dGCi22Xnc2iJSfErwMW5bzvAxe1LkRzx1ejMn9jYKSFbY/rH66imACmv7l6rF
-	 bENhaOMpPuWkg==
+	b=Pr8ANlj2RQooU0Ulkj/4vVzt4MuF+7MqbAS8GORwRzX1iICgFRCdgWQ9ccag4bHKj
+	 /DJG+O/dePCmt8kPKQb58Bhp014ZPgcYD4MRTxdblikveGufYtuH4QTiRLBK9ByZQR
+	 8BlLqx8aAf/RdSwh3i7SYQQBmjLBIuIGzZAIyHqH/fFHWN+0Kf4x96WQipIlKe6JVE
+	 u3y08BdcKtWdiXLU9yCQpoBgsDfyR1tFHP/wqqkUi7Lx4FAClEiSZWuOvpIbblN08I
+	 RSd6U5/UNnxA/arN20Sl5rFiNBaSDcMIiX3fbM77lr1FTgIaDYr/JRXqEwYDWwJtUF
+	 /gCT644iv5Upw==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
 Cc: Joanne Koong <joannelkoong@gmail.com>,
 	Lei Lu <llfamsec@gmail.com>,
 	Miklos Szeredi <mszeredi@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12.y] fuse: re-lock request before replacing page cache folio
-Date: Tue, 23 Jun 2026 08:05:32 -0400
-Message-ID: <20260623120532.1152295-1-sashal@kernel.org>
+Subject: [PATCH 6.6.y] fuse: re-lock request before replacing page cache folio
+Date: Tue, 23 Jun 2026 08:08:35 -0400
+Message-ID: <20260623120835.1156432-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <2026062230-operable-mushroom-1659@gregkh>
-References: <2026062230-operable-mushroom-1659@gregkh>
+In-Reply-To: <2026062231-fraction-kissable-8842@gregkh>
+References: <2026062231-fraction-kissable-8842@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -72,13 +72,13 @@ X-Spamd-Result: default: False [-3.66 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-267936-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-267937-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:joannelkoong@gmail.com,m:llfamsec@gmail.com,m:mszeredi@redhat.com,m:sashal@kernel.org,s:lists@lfdr.de];
@@ -97,11 +97,11 @@ X-Spamd-Result: default: False [-3.66 / 15.00];
 	ALIAS_RESOLVED(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: E1C976B6F78
+X-Rspamd-Queue-Id: D1B376B6FA1
 
 From: Joanne Koong <joannelkoong@gmail.com>
 
@@ -131,10 +131,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 5 insertions(+), 14 deletions(-)
 
 diff --git a/fs/fuse/dev.c b/fs/fuse/dev.c
-index 8f4a2ff56cc3be..42c8d57fca12b9 100644
+index 29a6c3a5829d83..cc16f809e5ce54 100644
 --- a/fs/fuse/dev.c
 +++ b/fs/fuse/dev.c
-@@ -891,6 +891,10 @@ static int fuse_try_move_page(struct fuse_copy_state *cs, struct page **pagep)
+@@ -843,6 +843,10 @@ static int fuse_try_move_page(struct fuse_copy_state *cs, struct page **pagep)
  	if (WARN_ON(folio_test_mlocked(oldfolio)))
  		goto out_fallback_unlock;
  
@@ -145,7 +145,7 @@ index 8f4a2ff56cc3be..42c8d57fca12b9 100644
  	replace_page_cache_folio(oldfolio, newfolio);
  
  	folio_get(newfolio);
-@@ -904,20 +908,7 @@ static int fuse_try_move_page(struct fuse_copy_state *cs, struct page **pagep)
+@@ -856,20 +860,7 @@ static int fuse_try_move_page(struct fuse_copy_state *cs, struct page **pagep)
  	 */
  	pipe_buf_release(cs->pipe, buf);
  
