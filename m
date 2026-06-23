@@ -1,132 +1,134 @@
-Return-Path: <stable+bounces-267903-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-267904-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id TIjNGLRNOmqe5gcAu9opvQ
-	(envelope-from <stable+bounces-267903-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 23 Jun 2026 11:11:16 +0200
+	id mhXuE/lOOmoI5wcAu9opvQ
+	(envelope-from <stable+bounces-267904-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 23 Jun 2026 11:16:41 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 13C606B5A25
-	for <lists+stable@lfdr.de>; Tue, 23 Jun 2026 11:11:16 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id C58126B5B16
+	for <lists+stable@lfdr.de>; Tue, 23 Jun 2026 11:16:40 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=sipsolutions.net header.s=mail header.b=wvcWqHoZ;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-267903-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-267903-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=none;
+	dkim=pass header.d=linux.microsoft.com header.s=default header.b=XLRP6UDV;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-267904-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-267904-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=none) header.from=linux.microsoft.com;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id AE56A30448DB
-	for <lists+stable@lfdr.de>; Tue, 23 Jun 2026 09:10:36 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 60E2D30AF3E5
+	for <lists+stable@lfdr.de>; Tue, 23 Jun 2026 09:11:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CFFA530CD89;
-	Tue, 23 Jun 2026 09:10:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B84E314D1F;
+	Tue, 23 Jun 2026 09:11:47 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 836E62D4B68;
-	Tue, 23 Jun 2026 09:10:32 +0000 (UTC)
+Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF7BE1E832A;
+	Tue, 23 Jun 2026 09:11:45 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782205835; cv=none; b=NdmY56PyAoznvM/9vhraX/EJcQXdT3VrV8ASkBpleaI01s0mjAdSGJMUY4NxEmiiebkCLlwt8UHqCprvxPi4LLjPaEUuT7nKg/p+i03LteD7fQZK1h7WdXwVSxSQk1y43xKnWBBkhciGlys27K/F5jDZJEC9Y0xfQYNVYNkuvjI=
+	t=1782205907; cv=none; b=jSH9vPJdewSGz0xMt4diI+H7FA/Rzula2b/ldQskxzOzT/goGCqSmd0dxQLfqNX76ZL3A8m97P7ATM7TXvzdBrkyX0w8Lbiuv22i1glmfGaswpFfWNWGi5qLxhQoLY3NRjNO/yhFmgIcDv+rnY6lyB6+bDfqaMNE1xNPEJkjDpU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782205835; c=relaxed/simple;
-	bh=nyF+gNW8/nSCzTolTcL2Udbq/hDcUcNUOW1uk87EcHY=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=nQx4j4bEP3ZnhZGVVVsVAVMDmnbIEkdnJIaO36VH5bX391F6NhSISQe/hQemGByZknPo/ytirLMsHZIcA7EUcgzjbwhwcvORyIVZP9HBQkgksc0vP8NB8pgjHy348qwWbCygrgu6njXXJ0fa1Z/Zgqym9VEdVOiqGSFNWbZGx8o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=permerror header.from=sipsolutions.net; spf=none smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=wvcWqHoZ; arc=none smtp.client-ip=168.119.38.16
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=nyF+gNW8/nSCzTolTcL2Udbq/hDcUcNUOW1uk87EcHY=;
-	t=1782205832; x=1783415432; b=wvcWqHoZDhB04XqEH7qBgWhOqDD400S3TJWpbJkBXFI7Ufr
-	8HQ0Wk5rz1YP2HSyyw694jZAuIVUo8RfpKcE1CXuH5zZJVMJWRQFmURz588DyOscX8bkdlKroYdDO
-	1f01CEmWo3j9xU00RllUqQfAzlDP1WlvAx0MzDsNzClS1vAF923tPUkOc2U/f4nrtq6Rm/i1ZgBAG
-	BKN3ztRZtb37UdZ0eTHcuRcqvRBCzacUFvKKng4OnoJFlg7c5k3quEGxDRCPwAaNvuvp+LEimqIzX
-	C3euG8Yrquv9QDGm2MHOoQ3fuOU2IQs85NywnkMUngRVqFPrKZB5yXnwgwiv/4gQ==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__ECDSA_SECP256R1_SHA256__AES_256_GCM:256)
-	(Exim 4.98.2)
-	(envelope-from <johannes@sipsolutions.net>)
-	id 1wbx9J-0000000ERr1-2bYK;
-	Tue, 23 Jun 2026 11:10:29 +0200
-Message-ID: <c3fd8617849368e579a56c4397b7ee8624ef27ad.camel@sipsolutions.net>
-Subject: Re: [PATCH] wifi: mac80211: only accept IBSS channel switch from
- our own BSSID
-From: Johannes Berg <johannes@sipsolutions.net>
-To: Yingjie Cao <yingjcao@sigvoid.com>
-Cc: linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	s=arc-20240116; t=1782205907; c=relaxed/simple;
+	bh=X2KRnl5GpNyXLug8lTxyfQGxzlziXIzuqts0TorkuM8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=mOrjZDlEA9ml6kHyVlDPdGbmJiRrgszUCQEVoXkumq+sLfeeWrbyJq9jglruT7Xi7Dk8g57oj6VK23LaDxE2c1WWcfkGAxNaGqyCSkLr9HJEdOUkvmOOxoSlBLGfsAGUKHyk/gLprRMZmfnwohiquHbv3U8hEqYOZ2hoKs/9oMg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=XLRP6UDV; arc=none smtp.client-ip=13.77.154.182
+Received: by linux.microsoft.com (Postfix, from userid 1134)
+	id 0B94E20B7169; Tue, 23 Jun 2026 02:11:42 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 0B94E20B7169
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
+	s=default; t=1782205902;
+	bh=oV11M/7KggG59gtDIfbWlFffELRbonK8du94KMzOUoM=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=XLRP6UDV6ShSzRA0kSSd0fw7aF0coz+K4qVJASbh3RtC5V9gNfEOsPwdVmQRxUfc9
+	 +q5IICdU9rhcdWFIPXtt+RwOxluOOoA2yTTkODus83+OdwbkWuHe9NG4zBASY4p8Kp
+	 j0mozBglXFuNppb89TlrEHQwTyDb+SKMTzvbt59U=
+Date: Tue, 23 Jun 2026 02:11:42 -0700
+From: Shradha Gupta <shradhagupta@linux.microsoft.com>
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: Dexuan Cui <decui@microsoft.com>, Wei Liu <wei.liu@kernel.org>,
+	Haiyang Zhang <haiyangz@microsoft.com>,
+	"K. Y. Srinivasan" <kys@microsoft.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
+	Konstantin Taranov <kotaranov@microsoft.com>,
+	Simon Horman <horms@kernel.org>,
+	Erni Sri Satya Vennela <ernis@linux.microsoft.com>,
+	Dipayaan Roy <dipayanroy@linux.microsoft.com>,
+	Shiraz Saleem <shirazsaleem@microsoft.com>,
+	Michael Kelley <mhklinux@outlook.com>,
+	Long Li <longli@microsoft.com>, Yury Norov <yury.norov@gmail.com>,
+	linux-hyperv@vger.kernel.org, linux-kernel@vger.kernel.org,
+	netdev@vger.kernel.org, Paul Rosswurm <paulros@microsoft.com>,
+	Shradha Gupta <shradhagupta@microsoft.com>,
+	Saurabh Singh Sengar <ssengar@microsoft.com>,
 	stable@vger.kernel.org
-Date: Tue, 23 Jun 2026 11:10:27 +0200
-In-Reply-To: <20260623090437.13198-1-yingjcao@sigvoid.com>
-References: <20260623090437.13198-1-yingjcao@sigvoid.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.58.3 (3.58.3-1.fc43) 
+Subject: Re: [PATCH v4 net] net: mana: Optimize irq affinity for low vcpu
+ configs
+Message-ID: <ajpNzozyQdWYyWlH@linuxonhyperv3.guj3yctzbm1etfxqx2vob5hsef.xx.internal.cloudapp.net>
+References: <20260619073338.481035-1-shradhagupta@linux.microsoft.com>
+ <20260622182248.5bfc49ce@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-malware-bazaar: not-scanned
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260622182248.5bfc49ce@kernel.org>
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-3.66 / 15.00];
+	WHITELIST_SPF_DKIM(-3.00)[microsoft.com:d:+,kernel.org:s:+];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
-	R_DKIM_ALLOW(-0.20)[sipsolutions.net:s=mail];
+	DMARC_POLICY_ALLOW(-0.50)[linux.microsoft.com,none];
+	R_DKIM_ALLOW(-0.20)[linux.microsoft.com:s=default];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FROM_HAS_DN(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:yingjcao@sigvoid.com,m:linux-wireless@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:kuba@kernel.org,m:decui@microsoft.com,m:wei.liu@kernel.org,m:haiyangz@microsoft.com,m:kys@microsoft.com,m:andrew+netdev@lunn.ch,m:davem@davemloft.net,m:edumazet@google.com,m:pabeni@redhat.com,m:kotaranov@microsoft.com,m:horms@kernel.org,m:ernis@linux.microsoft.com,m:dipayanroy@linux.microsoft.com,m:shirazsaleem@microsoft.com,m:mhklinux@outlook.com,m:longli@microsoft.com,m:yury.norov@gmail.com,m:linux-hyperv@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:netdev@vger.kernel.org,m:paulros@microsoft.com,m:shradhagupta@microsoft.com,m:ssengar@microsoft.com,m:stable@vger.kernel.org,m:andrew@lunn.ch,m:yurynorov@gmail.com,s:lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	DMARC_NA(0.00)[sipsolutions.net: no valid DMARC record];
-	FORGED_SENDER(0.00)[johannes@sipsolutions.net,stable@vger.kernel.org];
+	RCVD_TLS_LAST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-267903-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-267904-lists,stable=lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
+	RCPT_COUNT_TWELVE(0.00)[24];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	RCPT_COUNT_THREE(0.00)[4];
+	FORGED_SENDER(0.00)[shradhagupta@linux.microsoft.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[linux.microsoft.com:+];
+	TO_DN_SOME(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[johannes@sipsolutions.net,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[sipsolutions.net:+];
-	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_NEQ_ENVFROM(0.00)[shradhagupta@linux.microsoft.com,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[microsoft.com,kernel.org,lunn.ch,davemloft.net,google.com,redhat.com,linux.microsoft.com,outlook.com,gmail.com,vger.kernel.org];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,vger.kernel.org:from_smtp,sipsolutions.net:dkim,sipsolutions.net:mid,sipsolutions.net:from_mime]
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	TAGGED_RCPT(0.00)[stable,netdev];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxonhyperv3.guj3yctzbm1etfxqx2vob5hsef.xx.internal.cloudapp.net:mid,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 13C606B5A25
+X-Rspamd-Queue-Id: C58126B5B16
 
-On Tue, 2026-06-23 at 17:04 +0800, Yingjie Cao wrote:
-> ieee80211_rx_bss_info() acts on a channel switch announcement (CSA)
-> carried in a received beacon or probe response before it verifies that
-> the frame's BSSID matches our own IBSS; it only checks that the SSID
-> matches. ieee80211_rx_mgmt_spectrum_mgmt() acts on a spectrum management
-> (channel switch) action frame without checking the BSSID at all.
->=20
-> Because of this, any station in radio range that knows the IBSS SSID
-> (which is broadcast in cleartext) can inject a beacon or action frame
-> carrying a CSA element that points at an unsupported channel. The switch
-> then fails in ieee80211_ibss_process_chanswitch(), which queues
-> csa_connection_drop_work and tears the whole IBSS down. The members
-> rejoin and the attacker repeats, resulting in a persistent,
-> unauthenticated denial of service. Encrypted IBSS networks are equally
-> affected because beacons are not protected. Since both of these CSA
-> entry points are IBSS-specific, the impact is confined to IBSS (ad-hoc)
-> mode; managed-mode CSA is handled separately in mlme.c and is unaffected.
+On Mon, Jun 22, 2026 at 06:22:48PM -0700, Jakub Kicinski wrote:
+> On Fri, 19 Jun 2026 00:33:35 -0700 Shradha Gupta wrote:
+> > Fixes: 755391121038 ("net: mana: Allocate MSI-X vectors dynamically")
+> > Cc: stable@vger.kernel.org
+> 
+> If you want this to be a fix -- could you please rewrite the commit
+> message? What matters most is the comparison before the bad commit,
+> the bad commit, and then with this fix applied. Perhaps the three
+> cases you list is that but it's not immediately obvious..
+> -- 
+> pw-bot: cr
 
-Once you rewrite this to be more honest, you'll see that the whole Cc
-stable thing and all is fairly much pointless?
+sure, Jakub. Let me send out a newer version with this change in commit
+message
 
-Or have you not realised yet that stations can also trivially fake their
-MAC address?
-
-johannes
+regards,
+Shradha
 
