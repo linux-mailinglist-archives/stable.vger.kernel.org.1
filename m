@@ -1,279 +1,138 @@
-Return-Path: <stable+bounces-267939-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-267942-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id k0aUEmt7OmoO+AcAu9opvQ
-	(envelope-from <stable+bounces-267939-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 23 Jun 2026 14:26:19 +0200
+	id W9bfJLR/Ompp+QcAu9opvQ
+	(envelope-from <stable+bounces-267942-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 23 Jun 2026 14:44:36 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD9876B70FE
-	for <lists+stable@lfdr.de>; Tue, 23 Jun 2026 14:26:18 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D57526B7298
+	for <lists+stable@lfdr.de>; Tue, 23 Jun 2026 14:44:35 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=ExcaMXp4;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-267939-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-267939-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("subspace.kernel.org:s=arc-20240116:i=2")
+	dkim=pass header.d=163.com header.s=s110527 header.b=W6OFYhR4;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-267942-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-267942-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=none) header.from=163.com;
+	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id CB45C303C3C2
-	for <lists+stable@lfdr.de>; Tue, 23 Jun 2026 12:22:03 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 909DE30B79E5
+	for <lists+stable@lfdr.de>; Tue, 23 Jun 2026 12:43:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62D4A3D5C1D;
-	Tue, 23 Jun 2026 12:22:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4CA133D6498;
+	Tue, 23 Jun 2026 12:43:41 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pg1-f173.google.com (mail-pg1-f173.google.com [209.85.215.173])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.4])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB71F3D5674
-	for <stable@vger.kernel.org>; Tue, 23 Jun 2026 12:22:00 +0000 (UTC)
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782217322; cv=pass; b=oBCkEXei/37Qs0uLEs+m0O6VX60UBZOsEeun8CuVFR9xXz3TQQ+uRlw/AbtBlI5rtYEhrn06bptvt8zMuneEo6CoegayQKXeA4o/65gE3QQzYbWq+NUSRjGZ5nluc8yC2oiteH2UhQDqH6HGvTb4jk1ifLBZxEP2aN2vTxWIDMc=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782217322; c=relaxed/simple;
-	bh=lrbCLEPGJTNUtD3BgZCajTRgrXSGt2/8tpvlmaF5vNo=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=R53MlAKgZAMSf0P4dNvInfPP0dyT/RFYFnzTLOS7vIWAcX3RGIEcsz5/AEJVft4Py6TTENAoUiiNx1K8ZEuczZ4PDANHAVjo9RrLRkB7Zw9eakiYRoQWrpsDgclAvQwmHZWiyej3D8K7J31KjTQHXE6AJ+ZZrkluTISusoQ9PkY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ExcaMXp4; arc=pass smtp.client-ip=209.85.215.173
-Received: by mail-pg1-f173.google.com with SMTP id 41be03b00d2f7-c897468a244so2010626a12.3
-        for <stable@vger.kernel.org>; Tue, 23 Jun 2026 05:22:00 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1782217320; cv=none;
-        d=google.com; s=arc-20240605;
-        b=XRW2loTnGiy6CbP4PfqV2lNqHkmj4mhDJjQiBR+ZlIVfwFQXN6RZKSWOzR+hFG9uO+
-         DIOotUzVJn71yuFQhetF5u4I6fOFl3mtKFbyLfTodh+TjKabTXrOYJcvddGuyGEosUqZ
-         y1DCYsO0SsmEUDPRe3Y+XS+q5LRHpiYOStZv+tMH4Ku3Jmw1i+FbNqBU5z0zaeb+oWhW
-         SPQ4BsnvdY4D6XO191ev1IOLe2PlTZqexqUoEdqpiQ6JLbF3X2oVdPLrNHUNTBg1sH5d
-         jaz7PJrGvraBXwg5rOaiUUPQ+S4VHVl/tjLnwwKASfcUY93d8tvuwiONrexLCz+fGTZI
-         sbfQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=uuFR3/6LFoFU0zSu0VzULNjfNKPzwppMVDxzsvPNJ6k=;
-        fh=J/zApK3cExnI6ju5WN+M0h8jgJsRgS3n3L+p0cWbqrw=;
-        b=bkH1wqpXH1IUIa9gavVY0rnISDeTB4Feo4B+dh+Vpk3CvVaRvX8+/0nwDRB9oK9H0g
-         KpGRsEjztx9Y/YHuGyt/LGyn0v317KHwLCCABtr8Njw5Xo3PkMrIX7TBM3Az3Kg5AIrV
-         uAh4AGMyJb+2cs+Mk5QEPPHcTmt46RH5x7BC9DU+2BVwp2W1cb2cIsPdThHI7lk9csGL
-         sEvz2xIfhulHQp8IkxMI/fWWUpAum1A6LuQsuw3iIDmEjHeVkjAzujIi+A185gGmqDnq
-         pzrsN/AahEZXwNFxgskPKoaQFz6hqxI4TfDwjnIch5+9b3vof6kfXOzEb6Xc6/4cwgVp
-         FsnA==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1782217320; x=1782822120; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=uuFR3/6LFoFU0zSu0VzULNjfNKPzwppMVDxzsvPNJ6k=;
-        b=ExcaMXp4+0zSEUEtweofoo6ikED9yqzV80OLY11IneyxSJf5EW48TKytDO8AMcVyrO
-         o/MKDKi5XEdX4pTyqvQhaBcJQhuV9pv1jOcAV5gCe0khVgcGAOaJXK1f6TioiRQcEAg6
-         f016BbvXBqYSEEXfFqjKgl5WevWRicQ5eDIBsBqn85iIn2G2lPZQfClHWoCwqjrofIfe
-         xTrWBlcvsHGq/0b9VoAXGlll363S/7/EstbT2XItEwWKUM2O73zs3jWrVeKlGRrGgRcG
-         yTu/2dAQzCEpIxR5CIkjCZxKXLpUKzSzW5NqiqgWmiM6viiJkKIscXC+Qd43uBzXQB5s
-         kwCA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782217320; x=1782822120;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=uuFR3/6LFoFU0zSu0VzULNjfNKPzwppMVDxzsvPNJ6k=;
-        b=cO6rmMJ8axn7Qul92rxkNwjVAKQWK2kNG8PUVBpZtHmUdiEenrbckv074hAaelM9kk
-         AssaYCE+VJHE1T2twd96EoBMVSJy31vRzRoUYlgSPayH/eajWhbULmqnQD9k/N1DYzmx
-         9f+W+GhUC2narjTai2XbCLkK1mVumgNoNbTafz1koCwAVnEev7PYDbl/xQiDyiXMEX8j
-         1U3MEI7TO0X6emkc9reCbN0fHJaeS2F+2psNgzHytoeWxzpHUApT6Gttu4asNnWoW9Io
-         pBNuoquQPUDeK0t7HFlLrDAr5lCIyQuU/+WeCR6DeJnBAs1xcpnGyrwL7FjIm3HXlHhy
-         XmRg==
-X-Forwarded-Encrypted: i=1; AFNElJ8flFuJ8MD38cLiMFRZDtfZwRImyiyCHMxkaGeAXANcqc9ugl4uyDt69I4W/vcnsuyuOlg8goc=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzcO0vkbfJbXpluqZSIir/LcaXrUO2cPI6lvPNJYouUC/99QHDQ
-	LXU0bjrJWKWw4WJJ1S8SuBusDXKhvKH5YWooK1gNcU+L9xvWir5zW23RJukg2hl3Q2wOtarUtW7
-	d71i+1Jw9IZV0DqpmvAyPTbc6vbQGv38=
-X-Gm-Gg: AfdE7clA7pa9nhk6Su7vO5S7NeBlPszrjbvF/G8gLsHph0VI+aSkILSqW/Roa6yhhd1
-	l0mwALhpq1mPDtP6xOfgbc6TeD6j+SVBksrpSZOQXtR7xaoA7uNwUjjE8RMyKZs6yDdibtpL18o
-	do1uzA8AOfSLPCwPadV01vkY9k/+LE+2MnLs03fj9LiBWgOn/RHlwWWNUdbH7OMyZxeFZ1bbJ0Y
-	9Yvip3Si0KwCOG0jrWjHGCi9AshxfvqrA7ML5tnp4CoQmR9/JoI6OBqymtb1ZluZn4845uP
-X-Received: by 2002:a05:6a20:3946:b0:3b4:6a31:6d0f with SMTP id
- adf61e73a8af0-3bb34e72975mr20752819637.41.1782217319845; Tue, 23 Jun 2026
- 05:21:59 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5EF63D648C;
+	Tue, 23 Jun 2026 12:43:37 +0000 (UTC)
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1782218621; cv=none; b=i1PY17xHtfgzmGyisp5GeV7TbggnVlT67+f2nO7gVaprThSEUQ/PcFAuhCA3zcqTEisnl1P9w6gCDktOzvzpguaOYkNQonVbYhwnHjN0O3DoEqWyuFEcYhiNo+c4VvBL07fx1pzI80k2zahcPbt3kdt4iQyAoIv0auGqPt2RkM0=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1782218621; c=relaxed/simple;
+	bh=BXtXOm5B6qhuPXucVvTrKproBQu/gXNwblc0a5BeRLA=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=hGPrTd93OJ2TunEmSDPahISUII7Wo4H+hLEcJanhsTH27OBGKLbFsU9Bwsvtq6IcOIyQf6w90Nq5+0c74+t9wkWo3d5y2vVzZ8SgPRaVU20JYHU0NosEscBIOcNwZwE9/FfHdGBi21rzMGTFC8vfQ0Ine1K6jqpZIGpuyLqdyWc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=W6OFYhR4; arc=none smtp.client-ip=220.197.31.4
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=J/
+	radkrB3pDFS0FKS2b3QlD+owbAySbqiZgS312jhuk=; b=W6OFYhR4ukxILTmujE
+	K9cU9LnWJ+A3GOnj25hWEF0bvxzq3wzsjS033sXY4kKzj8RL3xIdTZFHGunjq19O
+	erwFqjaBqFEDEqLMwzNZTIcUz8X98FTMr6Z5oO6PudZkFbtez3pyAj0xXGqk4lp0
+	ld8tyuz8g1cYLYFoPY0pUjqjw=
+Received: from 163.com (unknown [])
+	by gzsmtp5 (Coremail) with SMTP id QCgvCgDHCxxZfzpqYyrLDg--.21141S2;
+	Tue, 23 Jun 2026 20:43:08 +0800 (CST)
+From: w15303746062@163.com
+To: arnd@arndb.de,
+	gregkh@linuxfoundation.org
+Cc: linux-kernel@vger.kernel.org,
+	kees@kernel.org,
+	stable@vger.kernel.org,
+	Mingyu Wang <25181214217@stu.xidian.edu.cn>
+Subject: [PATCH v3 0/2] misc: ibmasm: Fix out-of-bounds MMIO accesses
+Date: Tue, 23 Jun 2026 20:43:02 +0800
+Message-Id: <20260623124304.371163-1-w15303746062@163.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260618232149.1780219-1-tristmd@gmail.com> <20260622210330.3187099-1-tristmd@gmail.com>
-In-Reply-To: <20260622210330.3187099-1-tristmd@gmail.com>
-From: Stephen Smalley <stephen.smalley.work@gmail.com>
-Date: Tue, 23 Jun 2026 08:21:48 -0400
-X-Gm-Features: AVVi8CeIpvPNGZ0JTtt7DlppUyHKoB5i9DPzflCT466N-OeyDpTPwPP0r_SGGf0
-Message-ID: <CAEjxPJ5pFjTvS5n4DMqL=bjdCKoTfSSUKRhZcHuR+99XaoGKAA@mail.gmail.com>
-Subject: Re: [PATCH v2] selinux: avoid sk_socket dereference in selinux_sctp_bind_connect()
-To: Tristan Madani <tristmd@gmail.com>
-Cc: Paul Moore <paul@paul-moore.com>, Ondrej Mosnacek <omosnace@redhat.com>, 
-	Richard Haines <richard_c_haines@btinternet.com>, selinux@vger.kernel.org, 
-	stable@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	tristan@talencesecurity.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:QCgvCgDHCxxZfzpqYyrLDg--.21141S2
+X-Coremail-Antispam: 1Uf129KBjvJXoWrtFW5AFyxXF4fWw1ktF4fXwb_yoW8Jr15pF
+	s8W3yYvrW8ArZ2va9xAr1jgFy5Ca4xJFW3Wry7t348Zry5JFy5Ar1j9w15Xr4xG395tw48
+	uFyUta4xu3Wjy3DanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07UZZ2fUUUUU=
+X-CM-SenderInfo: jzrvjiatxuliiws6il2tof0z/xtbC5BwgBGo6f1yBfgAA3Q
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-2.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_CONTAINS_FROM(1.00)[];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[163.com,none];
+	R_DKIM_ALLOW(-0.20)[163.com:s=s110527];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-267939-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:tristmd@gmail.com,m:paul@paul-moore.com,m:omosnace@redhat.com,m:richard_c_haines@btinternet.com,m:selinux@vger.kernel.org,m:stable@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:tristan@talencesecurity.com,s:lists@lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FREEMAIL_CC(0.00)[paul-moore.com,redhat.com,btinternet.com,vger.kernel.org,talencesecurity.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:arnd@arndb.de,m:gregkh@linuxfoundation.org,m:linux-kernel@vger.kernel.org,m:kees@kernel.org,m:stable@vger.kernel.org,m:25181214217@stu.xidian.edu.cn,s:lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER(0.00)[stephensmalleywork@gmail.com,stable@vger.kernel.org];
-	FREEMAIL_TO(0.00)[gmail.com];
-	FROM_HAS_DN(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_SENDER(0.00)[w15303746062@163.com,stable@vger.kernel.org];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FREEMAIL_FROM(0.00)[163.com];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-267942-lists,stable=lfdr.de];
+	DKIM_TRACE(0.00)[163.com:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FREEMAIL_FROM(0.00)[gmail.com];
 	FORGED_SENDER_FORWARDING(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[stephensmalleywork@gmail.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	MID_RHS_MATCH_FROMTLD(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[w15303746062@163.com,stable@vger.kernel.org];
+	RCPT_COUNT_FIVE(0.00)[6];
+	ALIAS_RESOLVED(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	MISSING_XM_UA(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[talencesecurity.com:email,vger.kernel.org:from_smtp,mail.gmail.com:mid,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+	FROM_NO_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[xidian.edu.cn:email,vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: AD9876B70FE
+X-Rspamd-Queue-Id: D57526B7298
 
-On Mon, Jun 22, 2026 at 5:03=E2=80=AFPM Tristan Madani <tristmd@gmail.com> =
-wrote:
->
-> From: Tristan Madani <tristan@talencesecurity.com>
->
-> selinux_sctp_bind_connect() dereferences sk->sk_socket to pass a
-> struct socket * to selinux_socket_bind() and
-> selinux_socket_connect_helper().  However, when the hook is invoked
-> from the ASCONF softirq path (sctp_process_asconf), there is no file
-> reference guaranteeing that sk->sk_socket is non-NULL.  The setsockopt
-> callers (bindx, connectx, set_primary, sendmsg connect) hold a file
-> reference and are not affected.
->
-> Both selinux_socket_bind() and selinux_socket_connect_helper()
-> immediately resolve sock->sk, never using the struct socket * for
-> anything else.  Refactor the inner logic into helpers that take a
-> struct sock * directly so that selinux_sctp_bind_connect() never needs
-> to touch sk->sk_socket at all.
->
-> Suggested-by: Stephen Smalley <stephen.smalley.work@gmail.com>
-> Fixes: d452930fd3b9 ("selinux: Add SCTP support")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Tristan Madani <tristan@talencesecurity.com>
-> ---
-> Changes in v2:
-> - Refactor selinux_socket_bind() and selinux_socket_connect_helper()
->   into sk-based inner helpers instead of adding a NULL check on
->   sk->sk_socket (Stephen Smalley)
->
->  security/selinux/hooks.c | 20 ++++++++++----------
->  1 file changed, 10 insertions(+), 10 deletions(-)
->
-> diff --git a/security/selinux/hooks.c b/security/selinux/hooks.c
-> index 1a713d96206f..aa58a17da219 100644
-> --- a/security/selinux/hooks.c
-> +++ b/security/selinux/hooks.c
-> @@ -4994,9 +4994,8 @@ static int selinux_socket_socketpair(struct socket =
-*socka,
->     Need to determine whether we should perform a name_bind
->     permission check between the socket and the port number. */
->
-> -static int selinux_socket_bind(struct socket *sock, struct sockaddr *add=
-ress, int addrlen)
-> +static int __selinux_socket_bind(struct sock *sk, struct sockaddr *addre=
-ss, int addrlen)
->  {
-> -       struct sock *sk =3D sock->sk;
->         struct sk_security_struct *sksec =3D selinux_sock(sk);
->         u16 family;
->         int err;
-> @@ -5126,13 +5125,17 @@ static int selinux_socket_bind(struct socket *soc=
-k, struct sockaddr *address, in
->         return -EAFNOSUPPORT;
->  }
->
-> +static int selinux_socket_bind(struct socket *sock, struct sockaddr *add=
-ress, int addrlen)
-> +{
-> +       return __selinux_socket_bind(sock->sk, address, addrlen);
-> +}
-> +
->  /* This supports connect(2) and SCTP connect services such as sctp_conne=
-ctx(3)
->   * and sctp_sendmsg(3) as described in Documentation/security/SCTP.rst
->   */
-> -static int selinux_socket_connect_helper(struct socket *sock,
-> +static int selinux_socket_connect_helper(struct sock *sk,
->                                          struct sockaddr *address, int ad=
-drlen)
->  {
-> -       struct sock *sk =3D sock->sk;
->         struct sk_security_struct *sksec =3D selinux_sock(sk);
->         int err;
->
-> @@ -5221,7 +5224,7 @@ static int selinux_socket_connect(struct socket *so=
-ck,
->         int err;
->         struct sock *sk =3D sock->sk;
->
-> -       err =3D selinux_socket_connect_helper(sock, address, addrlen);
-> +       err =3D selinux_socket_connect_helper(sk, address, addrlen);
->         if (err)
->                 return err;
->
-> @@ -5706,13 +5709,10 @@ static int selinux_sctp_bind_connect(struct sock =
-*sk, int optname,
->         int len, err =3D 0, walk_size =3D 0;
->         void *addr_buf;
->         struct sockaddr *addr;
-> -       struct socket *sock;
->
->         if (!selinux_policycap_extsockclass())
->                 return 0;
->
-> -       /* Process one or more addresses that may be IPv4 or IPv6 */
-> -       sock =3D sk->sk_socket;
+From: Mingyu Wang <25181214217@stu.xidian.edu.cn>
 
-The comment should remain since it wasn't specific to the line of code
-you are removing.
+This patch series fixes two distinct out-of-bounds (OOB) MMIO access
+vectors in the ibmasm driver when exposed to malformed or fuzzed hardware
+with an undersized BAR 0.
 
->         addr_buf =3D address;
->
->         while (walk_size < addrlen) {
-> @@ -5741,14 +5741,14 @@ static int selinux_sctp_bind_connect(struct sock =
-*sk, int optname,
->                 case SCTP_PRIMARY_ADDR:
->                 case SCTP_SET_PEER_PRIMARY_ADDR:
->                 case SCTP_SOCKOPT_BINDX_ADD:
-> -                       err =3D selinux_socket_bind(sock, addr, len);
-> +                       err =3D __selinux_socket_bind(sk, addr, len);
->                         break;
->                 /* Connect checks */
->                 case SCTP_SOCKOPT_CONNECTX:
->                 case SCTP_PARAM_SET_PRIMARY:
->                 case SCTP_PARAM_ADD_IP:
->                 case SCTP_SENDMSG_CONNECT:
-> -                       err =3D selinux_socket_connect_helper(sock, addr,=
- len);
-> +                       err =3D selinux_socket_connect_helper(sk, addr, l=
-en);
->                         if (err)
->                                 return err;
->
-> --
-> 2.47.3
->
+Patch 1 addresses the static OOB access during the probe phase.
+Patch 2 addresses the dynamic OOB accesses via malicious hardware MFAs
+during runtime interrupts.
+
+Changes in v3:
+ - Split the monolithic v2 patch into a 2-patch series to separate the 
+   probe-time static checks from the runtime dynamic checks, as requested 
+   by Greg KH.
+
+Changes in v2:
+ - Added dynamic MFA bounds checking in get_i2o_message().
+ - Implemented hardware mailbox deadlock prevention.
+ - Fixed potential unsigned integer underflow in bounds check arithmetic.
+
+Mingyu Wang (2):
+  misc: ibmasm: Fix static out-of-bounds MMIO access during probe
+  misc: ibmasm: Fix dynamic out-of-bounds MMIO access via malicious MFA
+
+ drivers/misc/ibmasm/ibmasm.h   |  1 +
+ drivers/misc/ibmasm/lowlevel.c | 19 +++++++++++++++----
+ drivers/misc/ibmasm/lowlevel.h | 27 +++++++++++++++++++++++++--
+ drivers/misc/ibmasm/module.c   | 13 +++++++++++++
+ 4 files changed, 54 insertions(+), 6 deletions(-)
+
+-- 
+2.34.1
+
 
