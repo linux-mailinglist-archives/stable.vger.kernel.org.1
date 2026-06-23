@@ -1,156 +1,151 @@
-Return-Path: <stable+bounces-267968-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-267969-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 5WE0FOKoOmrECwgAu9opvQ
-	(envelope-from <stable+bounces-267968-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 23 Jun 2026 17:40:18 +0200
+	id jGylF/+oOmrSCwgAu9opvQ
+	(envelope-from <stable+bounces-267969-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 23 Jun 2026 17:40:47 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C02856B85F3
-	for <lists+stable@lfdr.de>; Tue, 23 Jun 2026 17:40:17 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id A0E176B860B
+	for <lists+stable@lfdr.de>; Tue, 23 Jun 2026 17:40:46 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=grrlz.net header.s=stigmate header.b=YWQ63Pqr;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-267968-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-267968-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=reject) header.from=grrlz.net;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=OdRUuRIW;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-267969-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-267969-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id E52AB3097B24
-	for <lists+stable@lfdr.de>; Tue, 23 Jun 2026 15:35:23 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 7B0103073416
+	for <lists+stable@lfdr.de>; Tue, 23 Jun 2026 15:37:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67C5D2EB5CD;
-	Tue, 23 Jun 2026 15:35:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 945202E285C;
+	Tue, 23 Jun 2026 15:37:25 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from confino.investici.org (confino.investici.org [93.190.126.19])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0388C2F7EE3;
-	Tue, 23 Jun 2026 15:35:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73B602C3268;
+	Tue, 23 Jun 2026 15:37:24 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782228914; cv=none; b=JUy+A5Sb9s32DGf1iEA7H6bLNlt+m0X5KnKjxWC9XqjKYs+wwyV3n2DRe0eoLPdfvdB8uJqYhDuxBg6Q4GNL/uurmO8FUebIaZGQbJQ5EGSov1XbrDQmdydCT7v0YqtJAvOSmBkRVLJaHLqrl2T398978mQXEV2q+LrpAaESqVA=
+	t=1782229045; cv=none; b=V6S1lXJ+jqsYC5z3o8jEDkhpW1cQl9NtbJRe9pHCnynVD2r6uiI+mmCIXu6VHQkKe5dyAiWd2FHb6ir5pdZDxD5g1GxZGY5+UgN/PDuFlsnsPACmyfDcHGjsr8I+urUgGPZC7FQNzHa5ieX6AgjW3zjbPOARyFF8xQBNGIM874E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782228914; c=relaxed/simple;
-	bh=1Gp/NOYgjpPwmJILJJFsZmVhfxObqfsGcV7GsCvTAWA=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=udMUDvIIcOtOVpbAsPFsO64uL1snaf8GoDO0pXj/dSc1bk8Zn7++qhrefc1PbtyFIIUR+t3+Kw5QDWAmzOfuFeIMSfhWu4m8s839eQEP8D2zqQKwrRIHEVreGyKl17GlCo3QFqzgbeH7yGipmsvMZ00R6xzlrzGkuscquNDeVNM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=grrlz.net; spf=pass smtp.mailfrom=grrlz.net; dkim=pass (1024-bit key) header.d=grrlz.net header.i=@grrlz.net header.b=YWQ63Pqr; arc=none smtp.client-ip=93.190.126.19
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=grrlz.net;
-	s=stigmate; t=1782228911;
-	bh=yJvoIA1fO2feDg/kwex0Po7ylI4GiWcadD1slikx9OE=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YWQ63PqrZA6fHb8qsiiZDoFe8MfB9mrdyJNeNo70YVy2vjDtftfvhU4iMf/0NMZTl
-	 Rr6cmR0Pic59edq6R/aHn1RQm+BOmvPs1Yy4a6UpumqBRscME5k1uJj10kJW1t8FDF
-	 4E9tmGrDQ8GfP2ptybXd6OHZwo30tkIyAsf+LS+s=
-Received: from mx1.investici.org (unknown [127.0.0.1])
-	by confino.investici.org (Postfix) with ESMTP id 4gl8Jv4hBZz10yw;
-	Tue, 23 Jun 2026 15:35:11 +0000 (UTC)
-Received: by mx1.investici.org (Postfix) id 4gl8Jt3GQrz10xZ;
-	Tue, 23 Jun 2026 15:35:10 +0000 (UTC)
-From: Bradley Morgan <include@grrlz.net>
-To: Petr Mladek <pmladek@suse.com>,
-	Feng Tang <feng.tang@linux.alibaba.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Cc: Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Christophe Leroy <chleroy@kernel.org>,
-	Mukesh Kumar Chaurasiya <mchauras@linux.ibm.com>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Jinchao Wang <wangjinchao600@gmail.com>,
-	Kees Cook <kees@kernel.org>,
-	Rio <rioo.tsukatsukii@gmail.com>,
-	Joel Granados <joel.granados@kernel.org>,
-	Pnina Feder <pnina.feder@mobileye.com>,
-	Petr Pavlu <petr.pavlu@suse.com>,
-	Sergey Senozhatsky <senozhatsky@chromium.org>,
-	Douglas Anderson <dianders@chromium.org>,
-	Mayank Rungta <mrungta@google.com>,
-	Tejun Heo <tj@kernel.org>,
-	Zhenguo Yao <yaozhenguo1@gmail.com>,
-	linuxppc-dev@lists.ozlabs.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org,
-	Bradley Morgan <include@grrlz.net>
-Subject: [PATCH v2 4/4] panic: avoid duplicate all CPU backtraces from sys_info
-Date: Tue, 23 Jun 2026 15:35:01 +0000
-Message-ID: <2199a8b4da8700b9f27e61486293e9c26ab107ef.1782228656.git.include@grrlz.net>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <9b8c96e291696815d3c7de5d3e199298dee0279d.1782228656.git.include@grrlz.net>
-References: <9b8c96e291696815d3c7de5d3e199298dee0279d.1782228656.git.include@grrlz.net>
+	s=arc-20240116; t=1782229045; c=relaxed/simple;
+	bh=nREeY4DTiLgeB4zrofIO+IvNNQ2PDsTx87UtYyTPrPA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ah1sVd/CJxj4IncbTOgDOYGQgItX+PbCxTFRQcICZnthCVzYqf68KvJusMwhfGXIyjVdiICPmDMPZ+f6lL0zkn91LTaHQ3XvTx1+YrGAH51xevHMQXgf3YPbM7lIpF/mowT6Mh8cvAUBv8yPSG+vW4w0rGFp0nEZ41HuomjxDQQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OdRUuRIW; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4BB9B1F000E9;
+	Tue, 23 Jun 2026 15:37:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1782229044;
+	bh=od1GINUddwoJVFpvWPgpX9maKY8Jm8T7x2Idfnie6Xk=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=OdRUuRIWDgSWPKI1zESzng3DnadQcFEv3Kwh2K5YAZZi8pcWF1Vs6DSMdAdHTUgKE
+	 1SS5uC0R/o1lRd/byfakX336xbwGRcYM07VgavLLe+8EXFZkheQZ6NMWmvUu0xecYa
+	 uur9AMwbe0rXlX9TdH1yj1ug88ODZq2k6HO6iXmPXbJMPAmDJEbjZXP3DwhLUxrroP
+	 YDekleLVx7Qo8G8W1R6txeO3M+0n29S4q8vhRMMh7KalTq7gQmEZY7R5Dg3hZQydSv
+	 6c9l5aR9dX0Fq1MYQtIH7dWDWUlPHwbqGKJ4WPTcDy4ZwYRY93UH7Xtofe6H7udnpw
+	 wpPNn4Lw/Racw==
+Date: Tue, 23 Jun 2026 17:37:19 +0200
+From: Andi Shyti <andi.shyti@kernel.org>
+To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc: linux-i2c@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Chris Packham <chris.packham@alliedtelesis.co.nz>, stable@vger.kernel.org
+Subject: Re: [PATCH v1 1/1] i2c: mpc: Fix timeout calculations
+Message-ID: <ajqmNOky98RWB989@zenone.zhora.eu>
+References: <20260618144934.3249950-1-andriy.shevchenko@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260618144934.3249950-1-andriy.shevchenko@linux.intel.com>
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [0.84 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-5.16 / 15.00];
+	WHITELIST_SPF_DKIM(-3.00)[kernel.org:d:+,kernel.org:s:+];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[grrlz.net,reject];
-	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[grrlz.net:s=stigmate];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-267968-lists,stable=lfdr.de];
-	RCPT_COUNT_TWELVE(0.00)[24];
-	FREEMAIL_CC(0.00)[linux.ibm.com,ellerman.id.au,gmail.com,kernel.org,linux.intel.com,mobileye.com,suse.com,chromium.org,google.com,lists.ozlabs.org,vger.kernel.org,grrlz.net];
-	MIME_TRACE(0.00)[0:+];
 	RCVD_TLS_LAST(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:andriy.shevchenko@linux.intel.com,m:linux-i2c@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:chris.packham@alliedtelesis.co.nz,m:stable@vger.kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[andi.shyti@kernel.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:pmladek@suse.com,m:feng.tang@linux.alibaba.com,m:akpm@linux-foundation.org,m:maddy@linux.ibm.com,m:mpe@ellerman.id.au,m:npiggin@gmail.com,m:chleroy@kernel.org,m:mchauras@linux.ibm.com,m:andriy.shevchenko@linux.intel.com,m:wangjinchao600@gmail.com,m:kees@kernel.org,m:rioo.tsukatsukii@gmail.com,m:joel.granados@kernel.org,m:pnina.feder@mobileye.com,m:petr.pavlu@suse.com,m:senozhatsky@chromium.org,m:dianders@chromium.org,m:mrungta@google.com,m:tj@kernel.org,m:yaozhenguo1@gmail.com,m:linuxppc-dev@lists.ozlabs.org,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,m:include@grrlz.net,m:riootsukatsukii@gmail.com,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[include@grrlz.net,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[include@grrlz.net,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-267969-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	FORWARDED(0.00)[lists@lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[grrlz.net:+];
-	RCVD_COUNT_FIVE(0.00)[5];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
+	FORGED_SENDER_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[andi.shyti@kernel.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,vger.kernel.org:from_smtp,grrlz.net:dkim,grrlz.net:email,grrlz.net:mid,grrlz.net:from_mime]
+	MISSING_XM_UA(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,intel.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,zenone.zhora.eu:mid]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: C02856B85F3
+X-Rspamd-Queue-Id: A0E176B860B
 
-panic_other_cpus_shutdown() handles SYS_INFO_ALL_BT before stopping the
-other CPUs. Do not ask sys_info() to handle that bit again later in the
-panic path.
+Hi Andy,
 
-Use sys_info_without_all_bt() so panic_print=all_bt does not request more
-output after the CPUs are stopped.
+On Thu, Jun 18, 2026 at 04:49:34PM +0200, Andy Shevchenko wrote:
+> ON the first glance the harmless cleanup of the driver does nothing bad.
+> However, as the operator precedence list states the '*' (multiplication)
+> and '/' division operators have order 5 with left-to-right associativity
+> the *= has order 17 and associativity right-to-left. It wouldn't not be
+> a problem to replace
+> 
+> 	foo = foo * HZ / 1000000;
+> 
+> with
+> 
+> 	foo *= HZ / 1000000;
+> 
+> if HZ constant is in Hertz. The problem is that in the Linux kernel HZ is
+> defined in jiffy units, which is order of magnitude smaller than a million.
+> That's why operator precedence has a crucial role here. Fix the regression
+> by reverting pre-optimized calculations.
+> 
+> Fixes: be40a3ae719f ("i2c: mpc: Use of_property_read_u32 instead of of_get_property")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-Fixes: b76e89e50fc3 ("panic: generalize panic_print's function to show sys info")
-Cc: stable@vger.kernel.org
-Signed-off-by: Bradley Morgan <include@grrlz.net>
----
-Changes since v1:
-- New patch using the same helper for panic.
+merged to i2c/i2c-fixes.
 
- kernel/panic.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Thanks,
+Andi
 
-diff --git a/kernel/panic.c b/kernel/panic.c
-index d030f88ad4ef..2cf229c7c0cf 100644
---- a/kernel/panic.c
-+++ b/kernel/panic.c
-@@ -683,7 +683,7 @@ void vpanic(const char *fmt, va_list args)
- 	 */
- 	atomic_notifier_call_chain(&panic_notifier_list, 0, buf);
- 
--	sys_info(panic_print);
-+	sys_info_without_all_bt(panic_print);
- 
- 	kmsg_dump_desc(KMSG_DUMP_PANIC, buf);
- 
--- 
-2.53.0
+> ---
+>  drivers/i2c/busses/i2c-mpc.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/i2c/busses/i2c-mpc.c b/drivers/i2c/busses/i2c-mpc.c
+> index 28c5c5c1fb7a..a21fa45bd64c 100644
+> --- a/drivers/i2c/busses/i2c-mpc.c
+> +++ b/drivers/i2c/busses/i2c-mpc.c
+> @@ -844,7 +844,7 @@ static int fsl_i2c_probe(struct platform_device *op)
+>  					      "fsl,timeout", &mpc_ops.timeout);
+>  
+>  	if (!result) {
+> -		mpc_ops.timeout *= HZ / 1000000;
+> +		mpc_ops.timeout = mpc_ops.timeout * HZ / 1000000;
+>  		if (mpc_ops.timeout < 5)
+>  			mpc_ops.timeout = 5;
+>  	} else {
+> -- 
+> 2.50.1
+> 
 
