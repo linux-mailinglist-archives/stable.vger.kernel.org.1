@@ -1,168 +1,198 @@
-Return-Path: <stable+bounces-267875-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-267876-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id Qeg7H0ExOmoK3wcAu9opvQ
-	(envelope-from <stable+bounces-267875-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 23 Jun 2026 09:09:53 +0200
+	id 9olNE/AyOmqR3wcAu9opvQ
+	(envelope-from <stable+bounces-267876-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 23 Jun 2026 09:17:04 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0FA486B4B96
-	for <lists+stable@lfdr.de>; Tue, 23 Jun 2026 09:09:53 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B2EB6B4C78
+	for <lists+stable@lfdr.de>; Tue, 23 Jun 2026 09:17:03 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=163.com header.s=s110527 header.b=ODrthWF9;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-267875-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-267875-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=none) header.from=163.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=jQrd2K6W;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-267876-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-267876-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=none) header.from=linux.dev;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 7B7BE3027782
-	for <lists+stable@lfdr.de>; Tue, 23 Jun 2026 07:09:52 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 30E17300A646
+	for <lists+stable@lfdr.de>; Tue, 23 Jun 2026 07:17:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6CC03C3BF1;
-	Tue, 23 Jun 2026 07:09:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2AABF345752;
+	Tue, 23 Jun 2026 07:16:57 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.2])
+Received: from out-186.mta0.migadu.com (out-186.mta0.migadu.com [91.218.175.186])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F464399001;
-	Tue, 23 Jun 2026 07:09:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDDB325B0BD
+	for <stable@vger.kernel.org>; Tue, 23 Jun 2026 07:16:54 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782198588; cv=none; b=rgVyLEQpOOmvUqRp4/XqnZmXJf938ZH+KzamY4mJiSL0fwMlKq+uZvc7MDqBlJGVoKT+2XW0ozajzn3uyzVZ7iRNcepme9e+sVAAQiVGUNUP0lAo/RLzaYxC2/pYO7Leyvlno0mRn/T53hn5Ta2TD4M7dBaLTv2aeKAygSgltWI=
+	t=1782199017; cv=none; b=dHWmTal+dnaktzkQtYRjkFNVABBFOshAv+XUUXpcfJf/CMaRf/M1xW1pyCktfTcjRJE/qYj2HH4MbhpPJ2mLbGdhOp4hnVscIMV5pK5pd+anM4rAivkeRlbBeiulKDI06i0U/7rdDgDL4YVRxt9C9gaZW5AtdDGcY2ZZ6BGNc/Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782198588; c=relaxed/simple;
-	bh=6vQ+XEkrFb3RhTebNAdikI3XbitfavAkgp6z/BNSqmk=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=d8RGZjAtQEYCrujJ38IpREuiAp9NdByY+4Sv6XsQWDqBUBLR1doR+A9V1os7GrARY/z72E/SEULgotjRiwp107ZK0JLxUV5z8v7dhgxIoIhUQhLIJR6lNLnZieEplt+whbIKlElsrybAsC++mRDgotJyTIE5SwBazvMZYbCM1t4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=ODrthWF9; arc=none smtp.client-ip=117.135.210.2
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=JN
-	/cE86GktJ6gz2daQCtaRTpzAtkNKIRKWpGJ+gjnQU=; b=ODrthWF9prpDLUSuWV
-	2Uo6aTmBfPHzf1ZQoaRdu7C7ab7PvD77DkTGQP5cOkrQCL/d5GDO3CXRBQIXjiWI
-	eOYO3nUPfj3ZKUXEm92Q6ETNGs6JvJ38JVeJUzYS0tOCma2e7wDR9A7AQ5Lc7teh
-	UxEIPzpz+CFK84pGOCohrIQBA=
-Received: from 163.com (unknown [])
-	by gzga-smtp-mtada-g0-0 (Coremail) with SMTP id _____wD3fwoXMTpqsMFREw--.15887S2;
-	Tue, 23 Jun 2026 15:09:14 +0800 (CST)
-From: w15303746062@163.com
-To: arnd@arndb.de,
-	gregkh@linuxfoundation.org
-Cc: linux-kernel@vger.kernel.org,
-	kees@kernel.org,
-	Mingyu Wang <25181214217@stu.xidian.edu.cn>,
-	stable@vger.kernel.org
-Subject: [PATCH] misc: ibmasm: Fix out-of-bounds MMIO access during module load
-Date: Tue, 23 Jun 2026 15:09:09 +0800
-Message-Id: <20260623070909.362260-1-w15303746062@163.com>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1782199017; c=relaxed/simple;
+	bh=l1gQ6oU5AxLIn/0A7p5EEoFlikm6dyZM/gbIW61sjS8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=fr5YeY999kh3zhNHiXupa/9/3up7UircPu/ehL/e6eIbNqTKivuoCXpL/NPcelveiGLwDdO36uQ3LhFc1hZ6/3o5qzo854DXwu4f+FfWjlJZgu40JqIXEYUIjOUnh9Gg8XVuvts3mQPoLQltTrBLWPAPV93PXjzgDjTWOD7Ap+w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=jQrd2K6W; arc=none smtp.client-ip=91.218.175.186
+Message-ID: <d97128c0-7d89-4b5c-b891-84f9af702fee@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1782199012;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=zZ+uAaSGd3OZS1aU2uMCCmFDj6tXs2rYH2kiB6ZZtOs=;
+	b=jQrd2K6Wcjb+o/3i0dgciyF91g4QWNDhUnuaOH0U/WqJXuqyfCODDSAdXGvqwnfORs9/pp
+	NoJIu+nDxRDWNjuYV3koTQWxNHMwTCB4948DzxfGQiXU4rgwzn1XJNWgfBp0ZlycHlj8Bs
+	6FPTSMSFVXKDjpvJFk6zfgKzttDwzSc=
+Date: Tue, 23 Jun 2026 15:16:16 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wD3fwoXMTpqsMFREw--.15887S2
-X-Coremail-Antispam: 1Uf129KBjvJXoWxXF4DKw1kGr13tFWrXF4kCrg_yoW5Jw43pF
-	93WayFkrWUXF4qva17J3s29FyrCay0kFWY939xCa4fZF98ta45AFnFka4UWF4DX3WkKa17
-	trWUtry5u3WDAaUanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07jFksDUUUUU=
-X-CM-SenderInfo: jzrvjiatxuliiws6il2tof0z/xtbC-xp7X2o6MRrlRgAA3Z
+Subject: Re: [PATCH v2] mm: mglru: fix stale batch updates after memcg
+ reparenting
+To: Harry Yoo <harry@kernel.org>, akpm@linux-foundation.org,
+ david@kernel.org, kasong@tencent.com, shakeel.butt@linux.dev,
+ baohua@kernel.org, axelrasmussen@google.com, yuanchu@google.com,
+ weixugc@google.com, hannes@cmpxchg.org, muchun.song@linux.dev,
+ peiyang_he@smail.nju.edu.cn, mhocko@kernel.org, roman.gushchin@linux.dev,
+ ljs@kernel.org
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ Qi Zheng <zhengqi.arch@bytedance.com>, stable@vger.kernel.org
+References: <20260623024237.45990-1-qi.zheng@linux.dev>
+ <e74b0808-3bcc-414d-a037-41e479210cc0@kernel.org>
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Qi Zheng <qi.zheng@linux.dev>
+In-Reply-To: <e74b0808-3bcc-414d-a037-41e479210cc0@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Migadu-Flow: FLOW_OUT
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[163.com,none];
-	R_DKIM_ALLOW(-0.20)[163.com:s=s110527];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linux.dev,none];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_DKIM_ALLOW(-0.20)[linux.dev:s=key1];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_RECIPIENTS(0.00)[m:arnd@arndb.de,m:gregkh@linuxfoundation.org,m:linux-kernel@vger.kernel.org,m:kees@kernel.org,m:25181214217@stu.xidian.edu.cn,m:stable@vger.kernel.org,s:lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER(0.00)[w15303746062@163.com,stable@vger.kernel.org];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FREEMAIL_FROM(0.00)[163.com];
+	RCVD_COUNT_THREE(0.00)[3];
+	FORGED_RECIPIENTS(0.00)[m:harry@kernel.org,m:akpm@linux-foundation.org,m:david@kernel.org,m:kasong@tencent.com,m:shakeel.butt@linux.dev,m:baohua@kernel.org,m:axelrasmussen@google.com,m:yuanchu@google.com,m:weixugc@google.com,m:hannes@cmpxchg.org,m:muchun.song@linux.dev,m:peiyang_he@smail.nju.edu.cn,m:mhocko@kernel.org,m:roman.gushchin@linux.dev,m:ljs@kernel.org,m:linux-mm@kvack.org,m:linux-kernel@vger.kernel.org,m:zhengqi.arch@bytedance.com,m:stable@vger.kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[qi.zheng@linux.dev,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[19];
+	TAGGED_FROM(0.00)[bounces-267876-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-267875-lists,stable=lfdr.de];
-	DKIM_TRACE(0.00)[163.com:+];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FROM_HAS_DN(0.00)[];
+	MISSING_XM_UA(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[w15303746062@163.com,stable@vger.kernel.org];
-	RCPT_COUNT_FIVE(0.00)[6];
 	ALIAS_RESOLVED(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[qi.zheng@linux.dev,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linux.dev:+];
+	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	FROM_NO_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,vger.kernel.org:from_smtp,xidian.edu.cn:email]
+	TO_DN_SOME(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,vger.kernel.org:from_smtp,bytedance.com:email,linux.dev:dkim,linux.dev:mid,linux.dev:from_mime,nju.edu.cn:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 0FA486B4B96
+X-Rspamd-Queue-Id: 0B2EB6B4C78
 
-From: Mingyu Wang <25181214217@stu.xidian.edu.cn>
+Hi Harry,
 
-The ibmasm driver maps PCI BAR 0 without verifying if the hardware-provided
-resource length is sufficient. The driver statically accesses the
-INTR_CONTROL_REGISTER at offset 0x13A4.
+On 6/23/26 2:17 PM, Harry Yoo wrote:
+> 
+> 
+> On 6/23/26 11:42 AM, Qi Zheng wrote:
+>> From: Qi Zheng <zhengqi.arch@bytedance.com>
+>>
+>> The mglru page table walker batches per-generation size deltas in
+>> walk->nr_pages while walking page tables without holding the lruvec lock.
+>> The reset_batch_size() later folds those deltas into walk->lruvec under
+>> the lruvec lock.
+> 
+> Ouch.
+> 
+> IIRC the user-visible impact of underestimated nr_pages in MGLRU
+> was premature OOMs because MGLRU does not try to reclaim memory when
+> nr_pages reaches zero, but there are still more pages.
+> 
+> Perhaps worth mentioning in the changelog?
 
-When evaluating the driver against emulated hardware or during virtual
-device fuzzing, a malformed device may expose a significantly undersized
-BAR 0 (e.g., 4KB). In this scenario, the readl() in enable_sp_interrupts()
-crosses the mapped page boundary into unmapped memory, causing a page fault
-during probe.
+Maybe this should be placed before "To fix it...".
 
-Because this crash happens while holding the idempotent_init_module() lock,
-it leaves the module loading subsystem in a corrupted state, leading to a
-cascading global soft lockup when other threads attempt to load modules:
+> 
+>> The page table walker can run concurrently with the memcg reparenting path
+>> as follows:
+>>
+>> CPU0                           CPU1
+>> ====                           ====
+>>
+>> walk_mm
+>> --> walk_page_range
+>>      --> update_batch_size
+>>          --> walk->nr_pages += delta
+>>
+>>                                mem_cgroup_css_offline
+>>                                --> memcg_reparent_objcgs
+>>                                    --> lock lruvec
+>>                                        lru_gen_reparent_memcg
+>>                                        --> reparent child folios to parent
+>>                                        unlock lruvec
+>>
+>>      lock lruvec
+>>      reset_batch_size
+>>      --> child lrugen->nr_pages += delta
+> 
+> The problem here is that, while grabbing a reference to memcg
+> (via mem_cgroup_iter(), for example) makes sure that the memcg is not
+> freed, it does not prevent offlining happening, and reset_batch_size()
+> doesn't check whether the lruvec has been reparented, or the lruvec
+> is going to be reparented.
+> 
+>> This will trigger the following warning in lru_gen_exit_memcg():
+>>
+>> 	VM_WARN_ON_ONCE(memchr_inv(lruvec->lrugen.nr_pages, 0,
+>> 				   sizeof(lruvec->lrugen.nr_pages)));
+>>
+>> To fix it, add lrugen->reparented to remember the new owner of a
+>> reparented lruvec, and make reset_batch_size() charge pending deltas to
+>> that owner.
+> 
+> Could you please explain why it is unavoidable to introduce the new
+> field and why checking whether the cgroup is dying (and charging deltas
+> to non-dying parent) doesn't work?
 
-  BUG: unable to handle page fault for address: ffffc900018433a4
-  #PF: supervisor read access in kernel mode
-  #PF: error_code(0x0000) - not-present page
-  ...
-  RIP: 0010:readl arch/x86/include/asm/io.h:59 [inline] [ibmasm]
-  RIP: 0010:ibmasm_enable_interrupts drivers/misc/ibmasm/lowlevel.h:54 [inline] [ibmasm]
-  RIP: 0010:enable_sp_interrupts drivers/misc/ibmasm/lowlevel.h:65 [inline] [ibmasm]
-  ...
-  watchdog: BUG: soft lockup - CPU#1 stuck for 266s! [systemd-udevd:182]
-  ...
-  RIP: 0010:queued_spin_lock_slowpath+0x243/0xbf0 kernel/locking/qspinlock.c:141
+Peiyang tried doing this [1], but it doesn't work because
+ss->css_offline() is called before clearing the CSS_ONLINE flag. I
+also considered using mem_cgroup_tryget_online(), but that only prevent
+the memcg from being freed. It's doesn't prevent the offlining.
 
-Fix this by ensuring the BAR size is at least INTR_CONTROL_REGISTER + 4
-before calling pci_ioremap_bar().
+So in the end, I chose the approach used in this patch. Simply adding
+a new field to mglru to track its reparenting status seems to be the
+most straightforward and effective approach.
 
-Fixes: bdbeed75b288 ("pci: use pci_ioremap_bar() in drivers/misc")
-Cc: stable@vger.kernel.org
-Signed-off-by: Mingyu Wang <25181214217@stu.xidian.edu.cn>
----
- drivers/misc/ibmasm/module.c | 11 +++++++++++
- 1 file changed, 11 insertions(+)
+Thanks,
+Qi
 
-diff --git a/drivers/misc/ibmasm/module.c b/drivers/misc/ibmasm/module.c
-index 4509c15a76a8..47daef731778 100644
---- a/drivers/misc/ibmasm/module.c
-+++ b/drivers/misc/ibmasm/module.c
-@@ -93,6 +93,17 @@ static int ibmasm_init_one(struct pci_dev *pdev, const struct pci_device_id *id)
- 	}
- 
- 	sp->irq = pdev->irq;
-+
-+	/*
-+	 * Ensure BAR 0 is large enough to cover the highest statically
-+	 * accessed hardware register (INTR_CONTROL_REGISTER at 0x13A4).
-+	 */
-+	if (pci_resource_len(pdev, 0) < INTR_CONTROL_REGISTER + 4) {
-+		dev_err(sp->dev, "PCI BAR0 is too small\n");
-+		result = -ENODEV;
-+		goto error_ioremap;
-+	}
-+
- 	sp->base_address = pci_ioremap_bar(pdev, 0);
- 	if (!sp->base_address) {
- 		dev_err(sp->dev, "Failed to ioremap pci memory\n");
--- 
-2.34.1
+[1]. 
+https://lore.kernel.org/all/5A9E929D82717101+12fcf643-efb8-4b9a-a53a-1e28cc894f0b@smail.nju.edu.cn
+
+> 
+>> Reported-by: Peiyang He <peiyang_he@smail.nju.edu.cn>
+>> Closes: https://lore.kernel.org/all/5A9E929D82717101+12fcf643-efb8-4b9a-a53a-1e28cc894f0b@smail.nju.edu.cn
+>> Fixes: f304652609ea ("mm: vmscan: prepare for reparenting MGLRU folios")
+>> Cc: <stable@vger.kernel.org>
+>> Signed-off-by: Qi Zheng <zhengqi.arch@bytedance.com>
+>> Reviewed-by: Barry Song <baohua@kernel.org>
+>> ---
+> 
 
 
