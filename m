@@ -1,182 +1,283 @@
-Return-Path: <stable+bounces-267918-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-267920-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id gHBFOkBsOmrR8gcAu9opvQ
-	(envelope-from <stable+bounces-267918-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 23 Jun 2026 13:21:36 +0200
+	id efkaAfJsOmoV8wcAu9opvQ
+	(envelope-from <stable+bounces-267920-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 23 Jun 2026 13:24:34 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A9BC6B6A86
-	for <lists+stable@lfdr.de>; Tue, 23 Jun 2026 13:21:36 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 872926B6AE6
+	for <lists+stable@lfdr.de>; Tue, 23 Jun 2026 13:24:33 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=Vw2YvPfh;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-267918-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-267918-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
+	dkim=pass header.d=ziehl-abegg.de header.s=selector1 header.b=ghOGQ9x2;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-267920-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-267920-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=quarantine) header.from=ziehl-abegg.de;
+	arc=reject ("cv is fail on i=2")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 5A294303BBB0
-	for <lists+stable@lfdr.de>; Tue, 23 Jun 2026 11:21:35 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 01BCB306B35F
+	for <lists+stable@lfdr.de>; Tue, 23 Jun 2026 11:23:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 240203D34B9;
-	Tue, 23 Jun 2026 11:21:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3FB63D3D00;
+	Tue, 23 Jun 2026 11:23:51 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-oi1-f169.google.com (mail-oi1-f169.google.com [209.85.167.169])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from AS8PR04CU009.outbound.protection.outlook.com (mail-westeuropeazon11021137.outbound.protection.outlook.com [52.101.70.137])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9D50377574
-	for <stable@vger.kernel.org>; Tue, 23 Jun 2026 11:21:31 +0000 (UTC)
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782213692; cv=none; b=ibSvX7LehkYX2bgFnHaiQIdtrDGycfpRBHveThsTlPK7b7SQMxdn89G/kexEkh58YkurFd8+a36xAKj6xbA5MmK3mY8XLxW21mKcO6WJG0SMmpyQM87tWWZ6XBVOuB66SIvR6BEKMXbe6tWUswIcRtLp8rHf/DnwKOrNn++77Io=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782213692; c=relaxed/simple;
-	bh=DvUc4qs6pGlAq5YVheN9HonjTAdavu+DHluLkjiJn8E=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=kmDJOVe1UhMta8ah13T1mOpobcDY5MODXwQOc2npV4FyTyw3i7RHWVH13tOEnIcWgRK7MR9IuMScGrOMHnUqYGX5oYSkmOwzhXTgMv7szWXbvx9UAb8uubCt9YiI8jrgif3BeBY+YdXhdY8hrbZvO+IWGYHV4EeEVVTCvwvOWsc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Vw2YvPfh; arc=none smtp.client-ip=209.85.167.169
-Received: by mail-oi1-f169.google.com with SMTP id 5614622812f47-4864a5c83f1so3059031b6e.0
-        for <stable@vger.kernel.org>; Tue, 23 Jun 2026 04:21:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1782213691; x=1782818491; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=EMH/IcGTLo6vZoiysZQe+TRMu5P99Nsjkh7igJAUCYU=;
-        b=Vw2YvPfhpfKU+mNZYC+++Kf3Z0vI7PnmU4qOhiOD0WO+ZoAUnfK6sjl1b8qcLrHZL9
-         gFEpWmhYqN/D+nNRIcLtMOOeYoxtAdDyfbPBOOVmB2kUaDLpwA4iOiQes7MbIzZLO66T
-         Jn7dYQxwejtoik6yodSnJRS2juf+nyRH/nZKKDgAC8A2eC8ngverb5Px7/VBL4hR6vKC
-         N3Vu/pNjeSGJijnMSP+G45kfefskSA4qhuzc6YtpwL+iJGYl6bFACRTkOcBCTq2L0Sm/
-         rgBdruLgAL+bA6F+3hoXjwR7wKHiWLRbj8G2MYKFdRxPNO9S35UM63rAYJjgdrWvrE2n
-         iDTw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782213691; x=1782818491;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=EMH/IcGTLo6vZoiysZQe+TRMu5P99Nsjkh7igJAUCYU=;
-        b=m4XaU4UZVnbO2MFFvIoF6vcO3oPzjlW7Tif5M2E7DhHmObuK/5phNoXYmsWHiGj3X9
-         qtdu8JVee7IJ8KCosoM/u9eBWXNbKK9iRBuBRJUGcFu0wHQdWTTkuE/e9zIKvUTMjBQ9
-         Oj+kp/QO9XLSvytQ4EkbBbm0xOvr+Y37N3Yj5AlkQYk+xDFdCN4bE2uEvQzWLqi7ZRiR
-         2q6HcT+2nxRWVaEpiYfUGvACPDbnSlm2WDJGyHy49+7Lv/q8ELgGt0ZrfMY9zKwXZJup
-         3nXoEKZpcQnWvw0Z+O9CjkF+D0TPWl+aUXXf3MTpUZKZJQf44f/dac5wVrCfLFUf2n5h
-         mhuA==
-X-Gm-Message-State: AOJu0YwXliUegeTGfkjY14nJtm3kteTESDCHomzWzoCuzB3j8dqPdAPV
-	XWCZ9vbTCwU49ilYPanD+avMky2eje0BAfkftxZr8HBPVvoLq8UkVk1jL990dxXd
-X-Gm-Gg: AfdE7ckzOESPw2KTO3v5tlpqFwPRttdYmhGRCmtcf552jCZRb+tgCh5Ke8ftlhWXBl2
-	/DbaswFinaFwxPUJeDSWsNluW+ig3yLBC1VvoCo5WDz5M2QK4v55Au/szxYL7eMCPMkvhPfdWo2
-	KRXpqiokkp57tb/Zq6goDwJvzgH1K3GBI/n7cCqRkaEyY1rB0vyGxu/97o4qro1rwDyQbd65LT3
-	I1WhOm1p8XBTBYtsrbbkckHqA5pGXenTjkAH6642QWGWmrRgDsg0v6luZW/9WeQmGBWObsO6v1c
-	qrenrA0brDoGepU5nJ2b6pjtrjNnz4yBwXDxKsO+0Uyfxqg9FNvQGyboGHTjuHaXEWLnue1wGKK
-	r4NVKEnrCs9udpaaxgMCDO0sVpz4u5NwcmI9GD7KQ0kCWbdyxrbDQgoUzIcgYTMAPa1C/I/am+0
-	3xO46jk1Gyg65gLf5IaTMug86zCxof
-X-Received: by 2002:a05:6808:1204:b0:489:5caa:68ac with SMTP id 5614622812f47-4896aa62383mr15259240b6e.14.1782213690647;
-        Tue, 23 Jun 2026 04:21:30 -0700 (PDT)
-Received: from GINKO1.localdomain ([216.167.189.32])
-        by smtp.gmail.com with ESMTPSA id 46e09a7af769-7e944068feesm8291748a34.11.2026.06.23.04.21.30
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 23 Jun 2026 04:21:30 -0700 (PDT)
-From: Michael Pratte <slatoncomputers@gmail.com>
-To: stable@vger.kernel.org
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH] s2io: only arm hardware LSO for GSO skbs
-Date: Tue, 23 Jun 2026 06:21:31 -0500
-Message-ID: <20260623112131.752148-1-slatoncomputers@gmail.com>
-X-Mailer: git-send-email 2.54.0
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AB7B3BE156;
+	Tue, 23 Jun 2026 11:23:49 +0000 (UTC)
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1782213831; cv=fail; b=TAX/hLV588H3wAX1G700u8lpGYJ+lu4b51GEQUXt38foTAihBNDpt/nQzqrnxMNZ6lJl1snFZmZ9kNZxIZL1TZMPIqGmvc8Ik5atD8SFjn1zJ36tiTr0xrLhy6UK9yakPZ1L1JAxxhzdRzDSXrmnpC33IfOAMZ3bhBx2tMUZAAk=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1782213831; c=relaxed/simple;
+	bh=ERsBWLd1ajmffo+1fLfqYRhDlD0T/VGx3RuHP9W8gR8=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=uIdT+FgeNJn/9gramRhw6lmbAvX9eJA6tcJXyi2ezjbIMsinezZOrNzBc+a2QXdvDUJlETqOqPNiyI3566TZq6Z39xQd3XH8wEIQsD3mwKEs68KsemV2L48Tynmgc5u78Ly30jQtEFvaXEeOVt2N2nHxBVNp7OAv+3p3aM3eZPM=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ziehl-abegg.de; spf=pass smtp.mailfrom=ziehl-abegg.de; dkim=pass (1024-bit key) header.d=ziehl-abegg.de header.i=@ziehl-abegg.de header.b=ghOGQ9x2; arc=fail smtp.client-ip=52.101.70.137
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=cWf+Zt9ZSK4jxFCwFkzec7d0Ov8OhK5KyEWkKdPLcD69/nOYUgaaTg5GG/e7p0tioQVmTkUYkYXMps0BScCRxqXd7cpkShq1neYMxvM85Xb4N8RFaKn8QbREt5Js5gOfnTEezHEWaSyiA/KmRSjRX69N4swyZpenry3lW3S2/1RSGG7iw44pkHae7aRY2kY2U5Rk7m3nFA0f4+ymEspr/fsz+8L7XZ+W3rDBxmaxtuFyUd41c8jBkirq0EyWViZRsJumW2YhCqKbUjbRpdXs5e1Wn6iCtt73midOZYS60SDXDzMEL3RCuPTY+WyVKM4xVsmgBFPj7Zl2BA6x2HBBvQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=qpx2phU6JeyM2OFBsrqGymCW70QNZtf9m/g+/JDlV/w=;
+ b=SB7VOFQKi5f1CYt1V+HL5Q/4YHk3pyZxhudr4aDiKlX8wfGxT8VvYn5/BUvD7ygYTMul5rjOdxrs+SmSBlKbCpAo9oe/x0Wm5Sx6V8NhmG8xIWxvBxauU2xkWBHBxOaEauBAfmJlZBQzhfGXW7qAP1o5rlE5saRwiYOFLPYF35JO73ejYQk7Sh3FSobN1y0WSTKSAnxb9WlusBXz9dSHie9Al7qNybwhwF7P39HIdOnWwahORhwisWf9Y+6upVfgVNmUmjJZatprHJ6OqwqBz0F/qdeX2wZCKET0K4ZcYS+U2n/csKbrH/x+wqOSf0FNjJAWS/VLFSV4/ZJXRpluLw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 52.138.216.130) smtp.rcpttodomain=vger.kernel.org
+ smtp.mailfrom=ziehl-abegg.de; dmarc=pass (p=quarantine sp=quarantine pct=100)
+ action=none header.from=ziehl-abegg.de; dkim=none (message not signed);
+ arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ziehl-abegg.de;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=qpx2phU6JeyM2OFBsrqGymCW70QNZtf9m/g+/JDlV/w=;
+ b=ghOGQ9x2aA0QrE0TeBRcYE3wbBmdzyPASLu7bMaT3NsYlybdBP44J3Uzflh4kyRr2S0I+hlwUJcccjilkvd8m+lMQlsq1rm3QB9sgGDju8q6OnJe/4aegNk3O3yFpSRjZZ+k//1/5nMYZ1MjPDHSiYKjuryeFdUT3MobnV2+LEo=
+Received: from AS4P190CA0023.EURP190.PROD.OUTLOOK.COM (2603:10a6:20b:5d0::9)
+ by PA4PR02MB6895.eurprd02.prod.outlook.com (2603:10a6:102:d4::20) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.139.19; Tue, 23 Jun
+ 2026 11:23:41 +0000
+Received: from AM4PEPF00027A68.eurprd04.prod.outlook.com
+ (2603:10a6:20b:5d0:cafe::57) by AS4P190CA0023.outlook.office365.com
+ (2603:10a6:20b:5d0::9) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.139.16 via Frontend Transport; Tue,
+ 23 Jun 2026 11:23:41 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 52.138.216.130)
+ smtp.mailfrom=ziehl-abegg.de; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=ziehl-abegg.de;
+Received-SPF: Pass (protection.outlook.com: domain of ziehl-abegg.de
+ designates 52.138.216.130 as permitted sender)
+ receiver=protection.outlook.com; client-ip=52.138.216.130;
+ helo=eu22-emailsignatures-cloud.codetwo.com; pr=C
+Received: from eu22-emailsignatures-cloud.codetwo.com (52.138.216.130) by
+ AM4PEPF00027A68.mail.protection.outlook.com (10.167.16.85) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.159.10 via Frontend Transport; Tue, 23 Jun 2026 11:23:40 +0000
+Received: from DUZPR08CU001.outbound.protection.outlook.com (40.93.64.70) by eu22-emailsignatures-cloud.codetwo.com with CodeTwo SMTP Server (TLS12) via SMTP; Tue, 23 Jun 2026 11:23:39 +0000
+Received: from PA7P264CA0345.FRAP264.PROD.OUTLOOK.COM (2603:10a6:102:39a::13)
+ by AM7PR02MB6484.eurprd02.prod.outlook.com (2603:10a6:20b:1b1::16) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.159.13; Tue, 23 Jun
+ 2026 11:23:36 +0000
+Received: from AM4PEPF00025F98.EURPRD83.prod.outlook.com
+ (2603:10a6:102:39a:cafe::94) by PA7P264CA0345.outlook.office365.com
+ (2603:10a6:102:39a::13) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.139.20 via Frontend Transport; Tue,
+ 23 Jun 2026 11:23:36 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 217.6.247.99)
+ smtp.mailfrom=ziehl-abegg.de; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=ziehl-abegg.de;
+Received-SPF: Pass (protection.outlook.com: domain of ziehl-abegg.de
+ designates 217.6.247.99 as permitted sender) receiver=protection.outlook.com;
+ client-ip=217.6.247.99; helo=mail.za.ziehl-abegg.de; pr=C
+Received: from mail.za.ziehl-abegg.de (217.6.247.99) by
+ AM4PEPF00025F98.mail.protection.outlook.com (10.167.16.7) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.21.181.0 via Frontend Transport; Tue, 23 Jun 2026 11:23:36 +0000
+Received: from localhost (10.1.201.87) by vEX02.za.ziehl-abegg.de
+ (10.1.201.106) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.61; Tue, 23 Jun
+ 2026 13:23:32 +0200
+From: Paul Mbewe <paultyson.mbewe@ziehl-abegg.de>
+To: <linux-serial@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+CC: <gregkh@linuxfoundation.org>, <jirislaby@kernel.org>,
+	<hvilleneuve@dimonoff.com>, Paul Mbewe <paultyson.mbewe@ziehl-abegg.de>,
+	<stable@vger.kernel.org>, Tobias Gannert <tobias.gannert@ziehl-abegg.de>,
+	Joachim Knorr <joachim.knorr@ziehl-abegg.de>
+Subject: [PATCH 1/2] serial: sc16is7xx: fix TX gap caused by kfifo circular buffer wrap-around
+Date: Tue, 23 Jun 2026 13:22:24 +0200
+Message-ID: <20260623112225.82386-2-paultyson.mbewe@ziehl-abegg.de>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20260623112225.82386-1-paultyson.mbewe@ziehl-abegg.de>
+References: <20260623112225.82386-1-paultyson.mbewe@ziehl-abegg.de>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain
+X-ClientProxiedBy: vEX04.za.ziehl-abegg.de (10.1.201.108) To
+ vEX02.za.ziehl-abegg.de (10.1.201.106)
+X-TM-AS-Product-Ver: SMEX-14.0.0.3239-9.1.2019-30024.005
+X-TM-AS-Result: No-10--3.290200-8.000000
+X-TMASE-MatchedRID: 84bS4swKpiX/qqVpqhD4PJ0UyaWO1QCnOteHVGUMZ+DaHg8oIhVMt0jc
+	zmIAEiD+wxHck2GMxs0NhTxGpM1b6sp0ttW478qbm2eUW/oDuiF8f4R6zG0o1f5CEAGScl89KVF
+	ZxXdSZ5xo3qrovOBxQlYlwY+8qfWiicsvhXQraykZD7bjq+6lMGzY00haS8Qo2ubnxCjreJ9SNu
+	Dnpl7GPgObIzLs3GAWEgg3cwDHl/2jYFSFiWs3onGDuy8y1qku3W6IHoa8uBASPBCwN1yGzYsAM
+	g/4cQi8f33Z9BQl64hjWEd0C42224eVln79iR5WNfdOZrUX+mcFYPOvfeQoZkZw4b6ew8txrcgY
+	SgCyxhsX9j5CWNv2R5n/n67dt9lDVVtlvmSZGXhfJnqmX+gNDX4DPSs1ZmHWgrfEfAe6N49pLdd
+	d9zGllg==
+X-TM-AS-User-Approved-Sender: No
+X-TM-AS-User-Blocked-Sender: No
+X-TMASE-Result: 10--3.290200-8.000000
+X-TMASE-Version: SMEX-14.0.0.3239-9.1.2019-30024.005
+X-TM-SNTS-SMTP: 1C6007103D3103BBCEF5A789333A6C7D4E64B5CE40B60DEF2CE5A808AA3F05452000:8
+X-EOPAttributedMessage: 1
+X-MS-TrafficTypeDiagnostic:
+	AM4PEPF00025F98:EE_|AM7PR02MB6484:EE_|AM4PEPF00027A68:EE_|PA4PR02MB6895:EE_
+X-MS-Office365-Filtering-Correlation-Id: b1daa0d1-1d44-496b-91d2-08ded119e0d6
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam-Untrusted:
+ BCL:0;ARA:13230040|82310400026|23010399003|1800799024|36860700016|376014|18002099003|22082099003|11063799006|56012099006|6133799003;
+X-Microsoft-Antispam-Message-Info-Original:
+ ewnCToI0bNCbsSIo8J32en+AFJjlLk/Pe8kM5U5mQLtG8LZtGYGO6uqfGCk61rnqGV4ZvCXBjSLp2HsI0GSAYMu9vzsYu4iHOflTfAV8oLuHX3wbeSyP+CbPOqIp0LuOixXmo62m+5oq5SRFgYoG+bwvSpARSZAnGWTydWO+gbPf3OCfT/zm3JQBL8mc77O2MMiPcXsLk7GzEsGhtJ1S30mSookr6oHnWSMCc+QS1dgrixQGAuAt5otDmf0WdpKMFOtf9B/EQ2HqPJVFxqeKhRY0ks1GB+iflkK7ABjLJlIfqiCtqZ7oba+Cdd+3j+ECIjb/UtHmKK/VVVJmyuIUvM82HaqdwCX2FOG77ZCDvnOnyuKxBUwwtIwFC4LBOlccZoUu+VrxeAipOTGmBgBEZLidJ1KZB60o4mCAiqQBT9tw1OgSoeSiTLGDs+MKc1hEh84HeT8T5V6oJ/7fTsU9bbyDZWf8NYy1gB7Trvhp3I5JjUEZVRpYeg7v+YC6VQ2EwH5iPRko+EbkWzm83tYydCZ+fwzi9Ys+oDQCOPrp97vYNotzezh+GQlgyHv9KQtzGYTzAdN0TzRscz4GKf+bGhNaVJ6TQlcaExgQQh3CtAQc9PHAtR8RxAVWp/Vude/4GVt2HexHL7O/n3/RtyWHDc2ef0J79pWG2EJILBUJbLJqWqR3pGDyAXohflcJQWWshGwRvyPerId6jbh6o3uz5w==
+X-Forefront-Antispam-Report-Untrusted:
+ CIP:217.6.247.99;CTRY:DE;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.za.ziehl-abegg.de;PTR:nix.ziehl-abegg.de;CAT:NONE;SFS:(13230040)(82310400026)(23010399003)(1800799024)(36860700016)(376014)(18002099003)(22082099003)(11063799006)(56012099006)(6133799003);DIR:OUT;SFP:1102;
+X-Exchange-RoutingPolicyChecked: b47Zp/SWjxAxF0kEU+0OuAe2GuIkLmpvDhCyRGrLQKhMGeQg0hYEjc0FbiTXkxXgfXEpWXdGAB3FTHNEjwrFyMTxNGMtD8RDwHQW/RMXwd5FxUVRVZU6qjIHc3oukrNzZghN9O5FtTnk8s82vGnHNZr0UZtWs+Z6TyHj2ypBrJygEU+BeLmnOZTXvDAJ26XGKSlyAVRczqgCFziT9T1zlKpgEgwXFg++642DnMdM0MUvxSs0rD5+FVmeGRhflw2tQAm2t2psOj3j6eUkPmMhD/b0IQhdxBQeiIywi2BeFOvZx/ubBqViAIhzn9Nd6SCB+1XPZLJ087uBUHG80/OgTQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM7PR02MB6484
+X-CodeTwo-MessageID: 2cec5853-cdc8-4033-bd46-0aba5085d89a.20260623112339@eu22-emailsignatures-cloud.codetwo.com
+X-CodeTwoProcessed: true
+X-MS-Exchange-Transport-CrossTenantHeadersStripped:
+ AM4PEPF00027A68.eurprd04.prod.outlook.com
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-Correlation-Id-Prvs:
+	0817eaea-515e-45b5-888b-08ded119de29
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|36860700016|35042699022|82310400026|23010399003|14060799003|1800799024|11063799006|6133799003|56012099006|18002099003|22082099003;
+X-Microsoft-Antispam-Message-Info:
+	Nxp8EedO56gMUWbeKZm63QqvkdYA9AVxj7bs5r/7st9IPp91YNC/FLqVVoK5NVk1Mi9qncr7qPtVO3icGeXRJyYHOpLr9EyLvADMCBDr35cSGpCLyThUWY8FhXkg3PK73FzMftscBlnFjVkbl58fmDFTnpRYQYSQqCHeqCQ9FyiSlc9O9EA1cDnO14UZAshyeM+fBhWkNIu6X1on/1eEjQXyoLtbyhpIbZ24vYGKcX+EGOzYpEVIBuyScx87Ccsb6Ulh75CyL4jRH1S+9wR/1cBrNtSwmE9d0gNDTg36o8M5WfRQhy59W5TvnG8QTTYvmqn9+IB3pk1wjUs+zdXh59hSLJSva0bt4n8FIOA6HXqKkUy6yIU18+7n+Y1kgVMLp4hjKIQbbO3CX4tToEakpv1gOsmVXsBMp9ouJKzEYvw4as4HtVMkl2nET4DY+tmKQg4Gsei/gNBWJM00f6IUR3b5eWlp1upO4hNTUrEQ8ixSro6fyVNvije3BTL3NMGGZvkDGRcg5D8z0tY45BHoDE10z8DKpczDjDmiZjzVYBsh9S0vWF8dmQKxH+vOIqWUF/pzfgQXXklXbQ3fLKvk3AGvnZcnXyTXuwaDIX2ocJG5NvLpyUaZVmXT0kF3Hk9GpTGekXdSnWOaRGU50cwS6w4csVk3qQhSd1Q/8jFwORNPXcV4TtuYyOqcIKjUGdVEDEGgCdRlBNM8c6VyZgeHwQ==
+X-Forefront-Antispam-Report:
+	CIP:52.138.216.130;CTRY:IE;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:eu22-emailsignatures-cloud.codetwo.com;PTR:eu22-emailsignatures-cloud.codetwo.com;CAT:NONE;SFS:(13230040)(376014)(36860700016)(35042699022)(82310400026)(23010399003)(14060799003)(1800799024)(11063799006)(6133799003)(56012099006)(18002099003)(22082099003);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	B1lrj3eEa5swvYt1OWO76Y9S+NEKgPTB8HGY4mYZEcyjm5TV++X00NhyYcs+hR3lNhOosK/W/IRw14pLm+VYR47+8v6YmNemrO1QG2v5anDq4s6uqMhpvkXG6/Nrw1kb1FrdjuezlSzJwLNxBUx7VXhJy2WPjSr5qK4i6NiA6DdRPkZHoc7B+k8yTtP5Bx/6iflafX8pvoOu3LEFHUkmnqJSiPpJJu9tuajR+fRSi7NErRu7gNCvCu6ayEvEHeVCVed5jxP2YiuCKQFGyczaUq6GGY2gidQb45sfH4RglnwNYl+FNfqNflYRoNSKUX7dK5qwSdtQfXBhgCbQA0oM+sFj71lsYHFD349w/2CcQRdfW5+e/Gxol8AIlEPHgghvdcfda9odBD16hlYuihM2Yk0CnZ3564FThf4nl7hR8IHMbdSjHMNupKXhvV4NgVcz
+X-OriginatorOrg: ziehl-abegg.de
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Jun 2026 11:23:40.8205
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: b1daa0d1-1d44-496b-91d2-08ded119e0d6
+X-MS-Exchange-CrossTenant-Id: 11a5c065-3ef5-41f0-92f9-a77cbf208c03
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=11a5c065-3ef5-41f0-92f9-a77cbf208c03;Ip=[52.138.216.130];Helo=[eu22-emailsignatures-cloud.codetwo.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	AM4PEPF00027A68.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PA4PR02MB6895
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.66 / 15.00];
+X-Spamd-Result: default: False [1.34 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	ARC_REJECT(1.00)[cv is fail on i=2];
 	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	DMARC_POLICY_ALLOW(-0.50)[ziehl-abegg.de,quarantine];
+	R_DKIM_ALLOW(-0.20)[ziehl-abegg.de:s=selector1];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-267918-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-267920-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_SENDER(0.00)[paultyson.mbewe@ziehl-abegg.de,stable@vger.kernel.org];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:linux-serial@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:gregkh@linuxfoundation.org,m:jirislaby@kernel.org,m:hvilleneuve@dimonoff.com,m:paultyson.mbewe@ziehl-abegg.de,m:stable@vger.kernel.org,m:tobias.gannert@ziehl-abegg.de,m:joachim.knorr@ziehl-abegg.de,s:lists@lfdr.de];
+	RECEIVED_HELO_LOCALHOST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER(0.00)[slatoncomputers@gmail.com,stable@vger.kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:sashal@kernel.org,s:lists@lfdr.de];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	RCPT_COUNT_THREE(0.00)[3];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[slatoncomputers@gmail.com,stable@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[paultyson.mbewe@ziehl-abegg.de,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	RCVD_COUNT_FIVE(0.00)[5];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	FREEMAIL_FROM(0.00)[gmail.com];
+	DKIM_TRACE(0.00)[ziehl-abegg.de:+];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,ziehl-abegg.de:dkim,ziehl-abegg.de:email,ziehl-abegg.de:mid,ziehl-abegg.de:from_mime];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	ALIAS_RESOLVED(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	RCVD_COUNT_SEVEN(0.00)[11]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 5A9BC6B6A86
+X-Rspamd-Queue-Id: 872926B6AE6
 
-s2io_xmit() enables the Xframe/Xframe-II hardware LSO (TCP segmentation)
-engine whenever the skb's gso_type carries SKB_GSO_TCPV4/TCPV6, and
-programs the segment size from gso_size:
+kfifo_out_linear_ptr() returns only one contiguous linear segment of the
+circular kfifo buffer. When transmit data wraps around the end of the
+buffer, only the first segment (up to the buffer end) is sent. The
+remaining data at the start of the buffer is not sent until the next TX
+interrupt fires, resulting in a visible inter-frame gap on the wire.
 
-	offload_type = s2io_offload_type(skb);
-	if (offload_type & (SKB_GSO_TCPV4 | SKB_GSO_TCPV6)) {
-		txdp->Control_1 |= TXD_TCP_LSO_EN;
-		txdp->Control_1 |= TXD_TCP_LSO_MSS(s2io_tcp_mss(skb));
-	}
+This gap violates the Modbus RTU 1.5 character-time inter-character
+silence limit. Receivers interpret any silence exceeding 1.5 character
+times as an end-of-frame marker, splitting a single valid frame into
+two malformed fragments and corrupting communication on the bus.
 
-Since commit 51466a7545b7 ("tcp: fill shinfo->gso_type at last moment")
-tcp_transmit_skb() sets skb_shinfo(skb)->gso_type unconditionally on
-every TCP skb, including non-GSO frames where gso_size is 0. The driver
-therefore arms the LSO engine with MSS == 0 for ordinary TCP segments
-such as the connection's SYN. The Xframe-II LSO engine treats an MSS of
-0 as an illegal descriptor and aborts the transmit (lso_err_reg reports
-LSO6_ABORT), so the frame is dropped before it reaches the MAC. The
-result is that no TCP can be transmitted on these adapters since v4.2;
-UDP and ICMP (which never carry SKB_GSO_TCPV4) are unaffected.
+The incomplete transfer also causes unnecessary TX interrupts: instead
+of draining the full available FIFO space in one pass, the driver fires
+an extra interrupt per wrap-around just to send the remaining bytes.
 
-Only arm the LSO engine when the skb is actually GSO (gso_size > 0),
-restoring the pre-4.2 behaviour. Non-GSO TCP frames take the normal
-transmit path.
+The pre-kfifo code handled wrap-around by copying bytes one at a time
+from the circ_buf into a linear staging buffer. The conversion to kfifo
+replaced this with a single kfifo_out_linear_ptr() call, losing the
+wrap-around handling. The max310x driver (a similar SPI UART) correctly
+handles this with a while loop.
 
-Reproduced and fixed on Linux 6.6.67 with an Xframe-II adapter
-(PCI 17d5:5832); bisected to good v4.1.6 / bad v4.2.2.
+Fix this by calling kfifo_out_linear_ptr() in a loop, advancing through
+all contiguous segments until the available TX FIFO space is exhausted
+or the kfifo is empty.
 
-Fixes: 51466a7545b7 ("tcp: fill shinfo->gso_type at last moment")
-Signed-off-by: Michael Pratte <slatoncomputers@gmail.com>
+Tested on SC16IS752 (SPI) driving RS-485 at 115200 baud 8N1 on an
+i.MX6ULL based board. Oscilloscope confirmed mid-frame breaks at the
+kfifo wrap-around boundary before the fix; no breaks observed after.
+
+Fixes: 1788cf6a91d9 ("tty: serial: switch from circ_buf to kfifo")
+Cc: stable@vger.kernel.org
+Reported-by: Tobias Gannert <tobias.gannert@ziehl-abegg.de>
+Tested-by: Tobias Gannert <tobias.gannert@ziehl-abegg.de>
+Reviewed-by: Joachim Knorr <joachim.knorr@ziehl-abegg.de>
+Signed-off-by: Paul Mbewe <paultyson.mbewe@ziehl-abegg.de>
 ---
-[ Not upstream and cannot be: the s2io driver was removed from mainline in
-  commit aba0138eb7d7 ("net: ethernet: neterion: s2io: remove unused
-  driver"). It still ships in the 6.6.y and 6.12.y stable trees, where this
-  bug is present and the patch applies cleanly. Please apply there. ]
+ drivers/tty/serial/sc16is7xx.c | 14 +++++++++++---
+ 1 file changed, 11 insertions(+), 3 deletions(-)
 
- drivers/net/ethernet/neterion/s2io.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/net/ethernet/neterion/s2io.c b/drivers/net/ethernet/neterion/s2io.c
-index 1e55ccb..9988ff9 100644
---- a/drivers/net/ethernet/neterion/s2io.c
-+++ b/drivers/net/ethernet/neterion/s2io.c
-@@ -4105,7 +4105,7 @@ static netdev_tx_t s2io_xmit(struct sk_buff *skb, struct net_device *dev)
+diff --git a/drivers/tty/serial/sc16is7xx.c b/drivers/tty/serial/sc16is7xx.=
+c
+index 1a2c4c14f6aa..395a219280be 100644
+--- a/drivers/tty/serial/sc16is7xx.c
++++ b/drivers/tty/serial/sc16is7xx.c
+@@ -730,9 +730,17 @@ static void sc16is7xx_handle_tx(struct uart_port *port=
+)
+ 		txlen =3D 0;
  	}
- 
- 	offload_type = s2io_offload_type(skb);
--	if (offload_type & (SKB_GSO_TCPV4 | SKB_GSO_TCPV6)) {
-+	if ((offload_type & (SKB_GSO_TCPV4 | SKB_GSO_TCPV6)) && skb_is_gso(skb)) {
- 		txdp->Control_1 |= TXD_TCP_LSO_EN;
- 		txdp->Control_1 |= TXD_TCP_LSO_MSS(s2io_tcp_mss(skb));
- 	}
--- 
-2.54.0
+=20
+-	txlen =3D kfifo_out_linear_ptr(&tport->xmit_fifo, &tail, txlen);
+-	sc16is7xx_fifo_write(port, tail, txlen);
+-	uart_xmit_advance(port, txlen);
++	/* Handle circular buffer wrap-around by sending in contiguous segments *=
+/
++	while (txlen > 0 && !kfifo_is_empty(&tport->xmit_fifo)) {
++		unsigned int to_send;
++
++		to_send =3D kfifo_out_linear_ptr(&tport->xmit_fifo, &tail, txlen);
++		if (!to_send)
++			break;
++		sc16is7xx_fifo_write(port, tail, to_send);
++		uart_xmit_advance(port, to_send);
++		txlen -=3D to_send;
++	}
+=20
+ 	uart_port_lock_irqsave(port, &flags);
+ 	if (kfifo_len(&tport->xmit_fifo) < WAKEUP_CHARS)
+--=20
+2.43.0
 
 
