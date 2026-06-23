@@ -1,155 +1,131 @@
-Return-Path: <stable+bounces-267934-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-267935-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id pe+lNNx0Omrc9QcAu9opvQ
-	(envelope-from <stable+bounces-267934-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 23 Jun 2026 13:58:20 +0200
+	id BcenDWp1OmoS9gcAu9opvQ
+	(envelope-from <stable+bounces-267935-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 23 Jun 2026 14:00:42 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 381B26B6EC7
-	for <lists+stable@lfdr.de>; Tue, 23 Jun 2026 13:58:20 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6D5426B6F20
+	for <lists+stable@lfdr.de>; Tue, 23 Jun 2026 14:00:40 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=163.com header.s=s110527 header.b=P6OoiXkL;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-267934-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-267934-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=none) header.from=163.com;
+	dkim=none ("invalid DKIM record") header.d=stu.xidian.edu.cn header.s=dkim header.b=gMHEXcMU;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-267935-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-267935-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=fail reason="SPF not aligned (relaxed)" header.from=xidian.edu.cn (policy=quarantine);
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 80127304DCF0
-	for <lists+stable@lfdr.de>; Tue, 23 Jun 2026 11:58:17 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 915A03010384
+	for <lists+stable@lfdr.de>; Tue, 23 Jun 2026 12:00:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 153DA3D5246;
-	Tue, 23 Jun 2026 11:58:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 122243D47B4;
+	Tue, 23 Jun 2026 12:00:36 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.3])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DB593D47BD;
-	Tue, 23 Jun 2026 11:58:08 +0000 (UTC)
+Received: from zg8tmtyylji0my4xnjqumte4.icoremail.net (zg8tmtyylji0my4xnjqumte4.icoremail.net [162.243.164.118])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 15F44308F2A;
+	Tue, 23 Jun 2026 12:00:29 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782215893; cv=none; b=tH6Pi7CbGyXweXkKFSCINTlaNr5rdsD6Ryq+rB/c/Y2IkfWWIeJktpTUrWwNgHCH+Y6gGt+ZgiSy+AzfEYI24gzAbwmV8usDuCBwSpDT0OKv4tsSzGQpT3WFDIXUZtlloeXEvTl+WH4NpSkrRiGelz+g9kTo49tQkWsv+tfKQFI=
+	t=1782216035; cv=none; b=CHJ8y7P4PhriOSJQhN2CUxMplgZZCHQnlFtFMbuSy0NgWWM4CEaGUVLcxurzOA/pLgIMwrIsLpvBNzyPrHfNsYWTM07d3PXdYPzr4Omt+Rp4gWFigeYNgkBpET5eb3b6iQ2tqVdv0xDZ/U1g7iXOI7bdONLWQIAK0oR9A7suPWU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782215893; c=relaxed/simple;
-	bh=lwmTLKLGBmd5rzYhUjXuVqa8X0+dsB4HsqU5oOyOrPk=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=FUEX5vrjX01yQ5EOlzoir6MHUWE3KEEffhr+YVvUvSX2DmZo4rRb8aCaOcYQEGaBVcaHOLLu6xdw2dLXOYKPRKF8ySd81lXVvxxlkW6vBD+6H+azy5jrcVDUGjTj4NypjIQpYE0J7yA5PGLjTDxfjUrpVtVnqibua94Q8Dit1tE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=P6OoiXkL; arc=none smtp.client-ip=220.197.31.3
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=Jy
-	qaO8kPsSCsSS6QqHxsmEpq9UNz19yAQVVRi9X8TRg=; b=P6OoiXkLr9gihEQiB4
-	tUtBNanoJzvJcaXZ0p8MyTjMR94VKYZLHu/xfWkkqHLr4MkweRWwkp9ZkLbE07rL
-	jyfCG5SZXhoLoW7XO3iqbqVvSM5A+MLbjPYQnsL26rhkXrnDmRwp4h25TZpfr22T
-	W6BTsvZ4ehEcJsrh6Zpa3SBLI=
-Received: from localhost.localdomain (unknown [])
-	by gzga-smtp-mtada-g1-2 (Coremail) with SMTP id _____wDXvxObdDpqHqw_FQ--.64734S2;
-	Tue, 23 Jun 2026 19:57:17 +0800 (CST)
-From: Haoxiang Li <haoxiang_li2024@163.com>
-To: andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	Steen.Hegelund@microchip.com,
-	daniel.machon@microchip.com,
-	UNGLinuxDriver@microchip.com,
-	kees@kernel.org,
-	horms@kernel.org,
-	bjarni.jonasson@microchip.com,
-	lars.povlsen@microchip.com
-Cc: netdev@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	Haoxiang Li <haoxiang_li2024@163.com>,
-	stable@vger.kernel.org
-Subject: [PATCH] net: sparx5: unregister blocking notifier on init failure
-Date: Tue, 23 Jun 2026 19:57:14 +0800
-Message-Id: <20260623115714.2192074-1-haoxiang_li2024@163.com>
-X-Mailer: git-send-email 2.25.1
+	s=arc-20240116; t=1782216035; c=relaxed/simple;
+	bh=X2g2Po6EjGl8IaUtYZNpXHAH8+FFhBI4fe+OnuVmigc=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=EjKLbG60taQYHnHjjvWjWVeHhEEQKxNqzDx+k6mkPyDamqDUvm20SrG8aAO98s6qI9DTFsSFHRbxEZxhTCgR4aBciKFEmOsyZP0ytYhLIPdBmiTPfj1IiuE9261SbK0VRYkusPCkysoCuaEmDkKBUe+Ljch6Y6RswIVdSAljbog=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=stu.xidian.edu.cn; spf=pass smtp.mailfrom=stu.xidian.edu.cn; dkim=fail (0-bit key) header.d=stu.xidian.edu.cn header.i=@stu.xidian.edu.cn header.b=gMHEXcMU reason="key not found in DNS"; arc=none smtp.client-ip=162.243.164.118
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=stu.xidian.edu.cn; s=dkim; h=Received:Message-ID:Date:
+	MIME-Version:User-Agent:Subject:To:Cc:References:From:
+	In-Reply-To:Content-Type:Content-Transfer-Encoding; bh=skdyKb1EZ
+	y48Ro8jFkX3XE4S+UQ0yRqq3vVNyv9/7u8=; b=gMHEXcMUFLRuwh/9Mj5iCSeOC
+	KGNMhAivZ79VrjfwwhQLs39NGiYkTIjiqgJkGJTLmxta7ST99pM0s9HSxj4puh3G
+	MiHui3cHLhb9+3NupZNcYJAdRqnTQfoRGMyJJM/hU5bQXfUlQ1yT6pwWT1EMRJrS
+	cfHZR8/GCnmq7pB4jo=
+Received: from [10.196.180.86] (unknown [113.200.174.80])
+	by hzbj-edu-front-4.icoremail.net (Coremail) with SMTP id BrQMCkAWvLdVdTpqKUARAw--.53347S3;
+	Tue, 23 Jun 2026 20:00:22 +0800 (CST)
+Message-ID: <0a6ee8f7-5487-4963-b2f0-eed6466d7bd6@stu.xidian.edu.cn>
+Date: Tue, 23 Jun 2026 20:00:20 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wDXvxObdDpqHqw_FQ--.64734S2
-X-Coremail-Antispam: 1Uf129KBjvJXoW7Wry3Gr4rZr13GF13AFWxCrg_yoW8XF43pa
-	y5uFykCr18Kr45u3Wjkw18AFyDWw17KrWUur1ft3s0ga45KFZ3Ca4UtFyYqr10k3sruasI
-	qayDZa48u3yDC3DanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0zibdbUUUUUU=
-X-CM-SenderInfo: xkdr5xpdqjszblsqjki6rwjhhfrp/xtbCxR1t22o6dJ2TwAAA3E
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] misc: ibmasm: Fix static and dynamic out-of-bounds
+ MMIO accesses
+To: Greg KH <gregkh@linuxfoundation.org>, w15303746062@163.com
+Cc: arnd@arndb.de, linux-kernel@vger.kernel.org, kees@kernel.org,
+ stable@vger.kernel.org
+References: <2026062354-crawfish-t-shirt-d45d@gregkh>
+ <20260623114046.368089-1-w15303746062@163.com>
+ <2026062354-quote-lullaby-85e3@gregkh>
+From: Mingyu Wang <25181214217@stu.xidian.edu.cn>
+In-Reply-To: <2026062354-quote-lullaby-85e3@gregkh>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-CM-TRANSID:BrQMCkAWvLdVdTpqKUARAw--.53347S3
+X-Coremail-Antispam: 1UD129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7v73
+	VFW2AGmfu7bjvjm3AaLaJ3UjIYCTnIWjp_UUUYd7k0a2IF6F4UM7kC6x804xWl14x267AK
+	xVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0rVWrJVCq3wAFIxvE14AKwVWUJVWUGw
+	A2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK021l84ACjcxK6xIIjxv20xvE14v26r1j
+	6r1xM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4j6F4UM28EF7xvwVC2z280aVAFwI0_Gr
+	1j6F4UJwA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_Gr1j6F4UJwAac4AC62xK8xCEY4vEwIxC
+	4wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0I7
+	IYx2IY67AKxVWUGVWUXwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFVCjc4AY6r1j6r4U
+	M4x0Y48IcVAKI48JMxkIecxEwVAFwVW5JwCF04k20xvY0x0EwIxGrwCF54CYxVCY1x0262
+	kKe7AKxVWUAVWUtwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02F40E14v26r1j6r18
+	MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_JF0_Jw1lIxkGc2Ij64vIr4
+	1lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7CjxVAFwI0_Gr0_Cr1l
+	IxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r1j6r4UMIIF0xvEx4
+	A2jsIEc7CjxVAFwI0_Gr0_Gr1UYxBIdaVFxhVjvjDU0xZFpf9x07j01v3UUUUU=
+X-CM-SenderInfo: qsvrmiqsrujiux6v33wo0lvxldqovvfxof0/1tbiAQUNEWo5Uea5mQAAsc
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [0.84 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [0.04 / 15.00];
+	DMARC_POLICY_QUARANTINE(1.50)[xidian.edu.cn : SPF not aligned (relaxed),quarantine];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[163.com,none];
-	R_DKIM_ALLOW(-0.20)[163.com:s=s110527];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:andrew+netdev@lunn.ch,m:davem@davemloft.net,m:edumazet@google.com,m:kuba@kernel.org,m:pabeni@redhat.com,m:Steen.Hegelund@microchip.com,m:daniel.machon@microchip.com,m:UNGLinuxDriver@microchip.com,m:kees@kernel.org,m:horms@kernel.org,m:bjarni.jonasson@microchip.com,m:lars.povlsen@microchip.com,m:netdev@vger.kernel.org,m:linux-arm-kernel@lists.infradead.org,m:linux-kernel@vger.kernel.org,m:haoxiang_li2024@163.com,m:stable@vger.kernel.org,m:andrew@lunn.ch,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[haoxiang_li2024@163.com,stable@vger.kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_TO(0.00)[linuxfoundation.org,163.com];
+	FORGED_RECIPIENTS(0.00)[m:gregkh@linuxfoundation.org,m:w15303746062@163.com,m:arnd@arndb.de,m:linux-kernel@vger.kernel.org,m:kees@kernel.org,m:stable@vger.kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[25181214217@stu.xidian.edu.cn,stable@vger.kernel.org];
+	R_DKIM_PERMFAIL(0.00)[stu.xidian.edu.cn:s=dkim];
 	FORWARDED(0.00)[lists@lfdr.de];
-	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_FROM(0.00)[163.com];
-	RCPT_COUNT_TWELVE(0.00)[17];
-	TAGGED_FROM(0.00)[bounces-267934-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[vger.kernel.org,lists.infradead.org,163.com];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	TAGGED_RCPT(0.00)[stable,netdev];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DKIM_TRACE(0.00)[163.com:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[haoxiang_li2024@163.com,stable@vger.kernel.org];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,vger.kernel.org:from_smtp]
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-267935-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[25181214217@stu.xidian.edu.cn,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[stu.xidian.edu.cn:~];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,stu.xidian.edu.cn:mid,stu.xidian.edu.cn:from_mime]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 381B26B6EC7
+X-Rspamd-Queue-Id: 6D5426B6F20
 
-sparx5_register_notifier_blocks() registers the switchdev blocking
-notifier before allocating the ordered workqueue. If the workqueue
-allocation fails, the error path unregisters the switchdev and netdevice
-notifiers, but leaves the blocking notifier registered.
+> That's a lot of different things all at once here.  Please split this up
+> into a patch series, doing only one logical thing per patch so it is
+> easier to review and apply.
 
-Add a separate error label for the workqueue allocation failure path and
-unregister the switchdev blocking notifier there.
+Understood. I will split this into a 2-patch series (v3) as suggested 
+and send it out shortly.
 
-Fixes: d6fce5141929 ("net: sparx5: add switching support")
-Cc: stable@vger.kernel.org
-Signed-off-by: Haoxiang Li <haoxiang_li2024@163.com>
----
- drivers/net/ethernet/microchip/sparx5/sparx5_switchdev.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/microchip/sparx5/sparx5_switchdev.c b/drivers/net/ethernet/microchip/sparx5/sparx5_switchdev.c
-index 644458108dd2..dac4dd833127 100644
---- a/drivers/net/ethernet/microchip/sparx5/sparx5_switchdev.c
-+++ b/drivers/net/ethernet/microchip/sparx5/sparx5_switchdev.c
-@@ -765,11 +765,13 @@ int sparx5_register_notifier_blocks(struct sparx5 *s5)
- 	sparx5_owq = alloc_ordered_workqueue("sparx5_order", 0);
- 	if (!sparx5_owq) {
- 		err = -ENOMEM;
--		goto err_switchdev_blocking_nb;
-+		goto err_alloc_workqueue;
- 	}
- 
- 	return 0;
- 
-+err_alloc_workqueue:
-+	unregister_switchdev_blocking_notifier(&s5->switchdev_blocking_nb);
- err_switchdev_blocking_nb:
- 	unregister_switchdev_notifier(&s5->switchdev_nb);
- err_switchdev_nb:
--- 
-2.25.1
+Best regards,
+
+
+Mingyu Wang
 
 
