@@ -1,140 +1,253 @@
-Return-Path: <stable+bounces-267905-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-267906-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id C1HdNUBOOmrc5gcAu9opvQ
-	(envelope-from <stable+bounces-267905-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 23 Jun 2026 11:13:36 +0200
+	id W+1dAvlOOmoH5wcAu9opvQ
+	(envelope-from <stable+bounces-267906-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 23 Jun 2026 11:16:41 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 901FE6B5A9B
-	for <lists+stable@lfdr.de>; Tue, 23 Jun 2026 11:13:36 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1BFBA6B5B15
+	for <lists+stable@lfdr.de>; Tue, 23 Jun 2026 11:16:40 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=sipsolutions.net header.s=mail header.b=sDUek66i;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-267905-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-267905-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=none;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=LObtBUp1;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-267906-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-267906-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=none) header.from=linux.dev;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id B39563036AF0
-	for <lists+stable@lfdr.de>; Tue, 23 Jun 2026 09:12:27 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 6F28D30700C9
+	for <lists+stable@lfdr.de>; Tue, 23 Jun 2026 09:15:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05AE233F8C5;
-	Tue, 23 Jun 2026 09:12:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B89B430B508;
+	Tue, 23 Jun 2026 09:15:30 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
+Received: from out-172.mta1.migadu.com (out-172.mta1.migadu.com [95.215.58.172])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51DEE30C37A;
-	Tue, 23 Jun 2026 09:12:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B626F356772
+	for <stable@vger.kernel.org>; Tue, 23 Jun 2026 09:15:26 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782205945; cv=none; b=UF9xWxtDp4RmNgeXgUBdvLQtejdUaMjB3n+bIV25XqHtsyNNXYelmoIzA6/fgAeedX1F27ekCNdLIwsWilOUT9cKJKP3+1FYdyexU5a692h8ENbkLRHa19wOms/NUjHLy0xBxd5dNTTQziUQX4J/JuwOwDxA35iiuIfXIVvMAso=
+	t=1782206130; cv=none; b=ZbMFfY8UtxIqaO5hI0+oK6VJYhOFDLTM8vPgYa8Iimr3NM6N6296kvOJ/gQIdAh98RhGrHVirwxHTCnGrgWbBmHkm1ybnrdQUBThhDEscE1uc6u1ZLiii+9gOYWnVZGOyjWViccY1uCynKY3hx+6mpuhQ1NnvgxTvAcLcHkY0nI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782205945; c=relaxed/simple;
-	bh=MHzNp/YphF9W64kDmQouLhBcCenTH++pKXShErOJQ2k=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=c89AQ4u8M7Xid3sG68GPFyNwpLqqSeeJeostHblDd3tYlv07TTqb2BG9QmIgKadZXFlKJZhNWR1bi+0l5aaSIixsr0zQvcrEg/h4MVigSosrf9dIhCwmYKZNilfAUGvfJFeEV/zQWz2P5sWtTH3lhVT0yA73LGiwrnrwDQil7pc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=permerror header.from=sipsolutions.net; spf=none smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=sDUek66i; arc=none smtp.client-ip=168.119.38.16
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=MHzNp/YphF9W64kDmQouLhBcCenTH++pKXShErOJQ2k=;
-	t=1782205944; x=1783415544; b=sDUek66iv9AcrmEQQbhdFHoHZCfhLPyTnR8BSxxZFpepsFk
-	sItAVPHd+a9yJNUBCJ/H4z++LHxUZx9MK3UQ/BQZ/J9PWPlVENhcQaU6W4gm/E7VkBaLoxScA5W1C
-	CvzMImdeNzJ7AFeXou2JY17sh6hO43cMECG5EqhwEiOkKK4qpcosWk8oQ7jiDT/J49VLsAQcpQI4G
-	TDZSV+GTqTYIzd3xJZC2ROAEkoJxqYnXMABslcHrMR1BqoOmDgsRKpmMzBjTJ0HFLFwhwsbNAm4uD
-	rTFFxGMY9xx63GaS0XSOiWVlojeDl+mLZqqAAniJFGKhjPGRZ7Kk/NSCvOM4POmw==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__ECDSA_SECP256R1_SHA256__AES_256_GCM:256)
-	(Exim 4.98.2)
-	(envelope-from <johannes@sipsolutions.net>)
-	id 1wbxB7-0000000ERvU-1OG1;
-	Tue, 23 Jun 2026 11:12:21 +0200
-Message-ID: <9201d828365fa2b11fb6a83d1ff66365435a9072.camel@sipsolutions.net>
-Subject: Re: [PATCH] wifi: mac80211: only accept IBSS channel switch from
- our own BSSID
-From: Johannes Berg <johannes@sipsolutions.net>
-To: Yingjie Cao <yingjcao@sigvoid.com>
-Cc: linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	stable@vger.kernel.org
-Date: Tue, 23 Jun 2026 11:12:20 +0200
-In-Reply-To: <c3fd8617849368e579a56c4397b7ee8624ef27ad.camel@sipsolutions.net>
-References: <20260623090437.13198-1-yingjcao@sigvoid.com>
-	 <c3fd8617849368e579a56c4397b7ee8624ef27ad.camel@sipsolutions.net>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.58.3 (3.58.3-1.fc43) 
+	s=arc-20240116; t=1782206130; c=relaxed/simple;
+	bh=Uq4tl0f4UDZHBwV8ZukWALN7IdFSZ1aFxZ6bvjKfVe8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=vBW2UJjj59h91ta7rb1KioEXmuCF+eEu/YiiWDvmTLBUQ6beGNXTyxVWMcTaLLTOlgfsSaB5U0v8EjnZqTM6mc5r6CtWMhxfY9sPgx7I3mD2v6KQkrpSaX+JmKioxPySQr8z5XzScJgBcO431yTyaVZMNWkhqZHriXhvk3XOSQs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=LObtBUp1; arc=none smtp.client-ip=95.215.58.172
+Message-ID: <7946da94-dc1d-4cf2-986e-466c378665b6@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1782206124;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=tpZginHVqkNU49eIJBOmNB7unJDksJ/MhSRIVKp8tno=;
+	b=LObtBUp15MZd/tRyF7vr3WJJOlnw8HBAHu6hLIba57mzs7Zah7zHFXPQeIrqlzSiWm2SPx
+	cRxNmiT21o/E/q/mMWXss0B5GOBio155kO+Qie4Ve7AXwTvhf7RPepF5ZGbFjhtkDD/LSQ
+	W+oRfd2s5LCelV8dP+jrElKGpU8Tx4U=
+Date: Tue, 23 Jun 2026 17:14:17 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-malware-bazaar: not-scanned
+Subject: Re: [PATCH v2] mm: mglru: fix stale batch updates after memcg
+ reparenting
+To: Harry Yoo <harry@kernel.org>, akpm@linux-foundation.org,
+ david@kernel.org, kasong@tencent.com, shakeel.butt@linux.dev,
+ baohua@kernel.org, axelrasmussen@google.com, yuanchu@google.com,
+ weixugc@google.com, hannes@cmpxchg.org, muchun.song@linux.dev,
+ peiyang_he@smail.nju.edu.cn, mhocko@kernel.org, roman.gushchin@linux.dev,
+ ljs@kernel.org
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ Qi Zheng <zhengqi.arch@bytedance.com>, stable@vger.kernel.org
+References: <20260623024237.45990-1-qi.zheng@linux.dev>
+ <e74b0808-3bcc-414d-a037-41e479210cc0@kernel.org>
+ <d97128c0-7d89-4b5c-b891-84f9af702fee@linux.dev>
+ <8a76aefd-629c-41f3-b365-aefd4cc1411e@kernel.org>
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Qi Zheng <qi.zheng@linux.dev>
+In-Reply-To: <8a76aefd-629c-41f3-b365-aefd4cc1411e@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Migadu-Flow: FLOW_OUT
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
-	R_DKIM_ALLOW(-0.20)[sipsolutions.net:s=mail];
+	DMARC_POLICY_ALLOW(-0.50)[linux.dev,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_DKIM_ALLOW(-0.20)[linux.dev:s=key1];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FROM_HAS_DN(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:yingjcao@sigvoid.com,m:linux-wireless@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,s:lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	DMARC_NA(0.00)[sipsolutions.net: no valid DMARC record];
-	FORGED_SENDER(0.00)[johannes@sipsolutions.net,stable@vger.kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-267905-lists,stable=lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:harry@kernel.org,m:akpm@linux-foundation.org,m:david@kernel.org,m:kasong@tencent.com,m:shakeel.butt@linux.dev,m:baohua@kernel.org,m:axelrasmussen@google.com,m:yuanchu@google.com,m:weixugc@google.com,m:hannes@cmpxchg.org,m:muchun.song@linux.dev,m:peiyang_he@smail.nju.edu.cn,m:mhocko@kernel.org,m:roman.gushchin@linux.dev,m:ljs@kernel.org,m:linux-mm@kvack.org,m:linux-kernel@vger.kernel.org,m:zhengqi.arch@bytedance.com,m:stable@vger.kernel.org,s:lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[3];
+	FORGED_SENDER(0.00)[qi.zheng@linux.dev,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[19];
+	TAGGED_FROM(0.00)[bounces-267906-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FROM_HAS_DN(0.00)[];
+	MISSING_XM_UA(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	RCPT_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[johannes@sipsolutions.net,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[sipsolutions.net:+];
+	FROM_NEQ_ENVFROM(0.00)[qi.zheng@linux.dev,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linux.dev:+];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	TO_DN_SOME(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,sipsolutions.net:dkim,sipsolutions.net:mid,sipsolutions.net:from_mime]
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,vger.kernel.org:from_smtp,bytedance.com:email,linux.dev:dkim,linux.dev:mid,linux.dev:from_mime]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 901FE6B5A9B
+X-Rspamd-Queue-Id: 1BFBA6B5B15
 
-On Tue, 2026-06-23 at 11:10 +0200, Johannes Berg wrote:
-> On Tue, 2026-06-23 at 17:04 +0800, Yingjie Cao wrote:
-> > ieee80211_rx_bss_info() acts on a channel switch announcement (CSA)
-> > carried in a received beacon or probe response before it verifies that
-> > the frame's BSSID matches our own IBSS; it only checks that the SSID
-> > matches. ieee80211_rx_mgmt_spectrum_mgmt() acts on a spectrum managemen=
-t
-> > (channel switch) action frame without checking the BSSID at all.
-> >=20
-> > Because of this, any station in radio range that knows the IBSS SSID
-> > (which is broadcast in cleartext) can inject a beacon or action frame
-> > carrying a CSA element that points at an unsupported channel. The switc=
-h
-> > then fails in ieee80211_ibss_process_chanswitch(), which queues
-> > csa_connection_drop_work and tears the whole IBSS down. The members
-> > rejoin and the attacker repeats, resulting in a persistent,
-> > unauthenticated denial of service. Encrypted IBSS networks are equally
-> > affected because beacons are not protected. Since both of these CSA
-> > entry points are IBSS-specific, the impact is confined to IBSS (ad-hoc)
-> > mode; managed-mode CSA is handled separately in mlme.c and is unaffecte=
-d.
->=20
-> Once you rewrite this to be more honest, you'll see that the whole Cc
-> stable thing and all is fairly much pointless?
->=20
-> Or have you not realised yet that stations can also trivially fake their
-> MAC address?
+Hi Harry,
 
-Also, since you don't have a track record in wifi, I'll point once again
-to https://docs.kernel.org/process/coding-assistants.html
+On 6/23/26 4:18 PM, Harry Yoo wrote:
+> 
+> 
+> On 6/23/26 4:16 PM, Qi Zheng wrote:
+>> Hi Harry,
+> 
+> Hi Qi!
+> 
+>> On 6/23/26 2:17 PM, Harry Yoo wrote:
+>>> On 6/23/26 11:42 AM, Qi Zheng wrote:
+>>>> From: Qi Zheng <zhengqi.arch@bytedance.com>
+>>>>
+>>>> The mglru page table walker batches per-generation size deltas in
+>>>> walk->nr_pages while walking page tables without holding the lruvec
+>>>> lock.
+>>>> The reset_batch_size() later folds those deltas into walk->lruvec under
+>>>> the lruvec lock.
+>>>
+>>> Ouch.
+>>>
+>>> IIRC the user-visible impact of underestimated nr_pages in MGLRU
+>>> was premature OOMs because MGLRU does not try to reclaim memory when
+>>> nr_pages reaches zero, but there are still more pages.
+>>>
+>>> Perhaps worth mentioning in the changelog?
+>>
+>> Maybe this should be placed before "To fix it...".
+> 
+> Thanks!
+> 
+>>>> The page table walker can run concurrently with the memcg reparenting
+>>>> path
+>>>> as follows:
+>>>>
+>>>> CPU0                           CPU1
+>>>> ====                           ====
+>>>>
+>>>> walk_mm
+>>>> --> walk_page_range
+>>>>       --> update_batch_size
+>>>>           --> walk->nr_pages += delta
+>>>>
+>>>>                                 mem_cgroup_css_offline
+>>>>                                 --> memcg_reparent_objcgs
+>>>>                                     --> lock lruvec
+>>>>                                         lru_gen_reparent_memcg
+>>>>                                         --> reparent child folios to
+>>>> parent
+>>>>                                         unlock lruvec
+>>>>
+>>>>       lock lruvec
+>>>>       reset_batch_size
+>>>>       --> child lrugen->nr_pages += delta
+>>>
+>>> The problem here is that, while grabbing a reference to memcg
+>>> (via mem_cgroup_iter(), for example) makes sure that the memcg is not
+>>> freed, it does not prevent offlining happening, and reset_batch_size()
+>>> doesn't check whether the lruvec has been reparented, or the lruvec
+>>> is going to be reparented.
+>>>
+>>>> This will trigger the following warning in lru_gen_exit_memcg():
+>>>>
+>>>>      VM_WARN_ON_ONCE(memchr_inv(lruvec->lrugen.nr_pages, 0,
+>>>>                     sizeof(lruvec->lrugen.nr_pages)));
+>>>>
+>>>> To fix it, add lrugen->reparented to remember the new owner of a
+>>>> reparented lruvec, and make reset_batch_size() charge pending deltas to
+>>>> that owner.
+>>>
+>>> Could you please explain why it is unavoidable to introduce the new
+>>> field and why checking whether the cgroup is dying (and charging deltas
+>>> to non-dying parent) doesn't work?
+>>
+>> Peiyang tried doing this [1], but it doesn't work because
+>> ss->css_offline() is called before clearing the CSS_ONLINE flag.
+> 
+> Right.
+> 
+>> I also considered using mem_cgroup_tryget_online(), but that only prevent
+>> the memcg from being freed. It's doesn't prevent the offlining.
+> 
+> Right.
+> 
+> I think checking CSS_DYING under RCU and grabbing the lruvec
+> of the first non-dying memcg should work (this pattern is already
+> used where we use RCU to guarantee memcgs are not freed).
+> 
+> If we do not observe CSS_DYING flag, it is safe to charge deltas
+> to the lruvec because RCU guarantees that reparenting cannot happen
+> under us.
+> 
+> If we do observe CSS_DYING, we can walk up the hierarchy and charge
+> deltas to the first non-dying memcg.
 
-johannes
+Checking CSS_DYING looks feasible, but the rcu lock alone cannot prevent
+reparenting. We should recheck CSS_DYING after acquiring the lruvec
+lock, otherwise we might run into the following race:
+
+   CPU0 reset_batch_size              CPU1 memcg teardown
+   =====================              ==================
+
+   read !CSS_DYING
+
+                                      set CSS_DYING
+                                      memcg_reparent_objcgs()
+                                      lock child lruvec
+                                      move child to parent
+                                      zero child nr_pages
+                                      unlock child lruvec
+
+   lock child lruvec
+   charge stale delta to child
+
+So it seems lock_batch_lruvec() should be implemented like this:
+
+static struct lruvec *lock_batch_lruvec(struct lruvec *lruvec)
+{
+	struct mem_cgroup *memcg = lruvec_memcg(lruvec);
+
+	rcu_read_lock();
+retry:
+	while (memcg && css_is_dying(&memcg->css))
+		memcg = parent_mem_cgroup(memcg);
+
+	lruvec = mem_cgroup_lruvec(memcg, pgdat);
+	spin_lock_irq(&lruvec->lru_lock);
+	if (memcg && unlikely(css_is_dying(&memcg->css))) {
+		spin_unlock_irq(&lruvec->lru_lock);
+		goto retry;
+	}
+
+	rcu_read_unlock();
+
+	return lruvec;
+}
+
+This way, there is no need to add lrugen->reparented, right?
+
+Thanks,
+Qi
+
 
