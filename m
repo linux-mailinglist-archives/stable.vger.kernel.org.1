@@ -1,141 +1,168 @@
-Return-Path: <stable+bounces-267974-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-267975-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id iZsOCGuuOmqMDggAu9opvQ
-	(envelope-from <stable+bounces-267974-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 23 Jun 2026 18:03:55 +0200
+	id 18hQDYKuOmqfDggAu9opvQ
+	(envelope-from <stable+bounces-267975-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 23 Jun 2026 18:04:18 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1123C6B88A3
-	for <lists+stable@lfdr.de>; Tue, 23 Jun 2026 18:03:54 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6FE456B88AC
+	for <lists+stable@lfdr.de>; Tue, 23 Jun 2026 18:04:17 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=intel.com header.s=Intel header.b=gV4oizqV;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-267974-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-267974-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=none) header.from=intel.com;
+	dkim=pass header.d=grrlz.net header.s=stigmate header.b="roH4qtC/";
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-267975-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-267975-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=reject) header.from=grrlz.net;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 3B8533056684
-	for <lists+stable@lfdr.de>; Tue, 23 Jun 2026 16:03:50 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 0C589304DCDD
+	for <lists+stable@lfdr.de>; Tue, 23 Jun 2026 16:03:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 523C330CD92;
-	Tue, 23 Jun 2026 16:03:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6D0730DECE;
+	Tue, 23 Jun 2026 16:03:47 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
+Received: from confino.investici.org (confino.investici.org [93.190.126.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39A72305968;
-	Tue, 23 Jun 2026 16:03:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 506CF30BF4E;
+	Tue, 23 Jun 2026 16:03:45 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782230626; cv=none; b=gGZHU9KY85/pKjGROwl3QWKdsUmHib5wCCqvYHRTLuD8d+k6EU5nsd1E+EWBnq2IlG4/aPmltUNuy78nkPge4wH/scNgbk0e/+tcFN/sEk3UBEGidntsZQP3Rgp4s2yX6iAfV15WjQnj0mL+urx7S8fDqNDHn48Ulwcm8pKTGUY=
+	t=1782230627; cv=none; b=io/2ctHIJ9VMa33IcUQDI5DYXMq9M3EAH2huQj/4xqMPeHpaYIPZLqH9rNqFz88+t9C1HI3icmqGG8UA6vh9NPJKTLbGAwzLXNAbsC0gCF5JwfrT3izUwGLGQNTzSU29vJi9CPr3akr6hSMuy0/sX9lO7WDUbtkNok5wcChXkbc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782230626; c=relaxed/simple;
-	bh=M+yrv/rttnRC9SUCDZi67uEy7XqdBOsgEDrOYVtOu3k=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=lvyculpmCIk+StLihZQPSIux69VsbZbtBKw85hDicytGaNBSGA6oW4wfOihVf0U0Y4xpWpzdAgXMO0CaG++4fvgavLLrFR5jRLnfC9K5mTnlnhfUhniJ0dub3Ap5NaebkxClu3SpWZbRqMCNLOwZJUVzoy4AWpjHpOOpqSIrp9A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=gV4oizqV; arc=none smtp.client-ip=192.198.163.16
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1782230624; x=1813766624;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=M+yrv/rttnRC9SUCDZi67uEy7XqdBOsgEDrOYVtOu3k=;
-  b=gV4oizqVvG2NEbvG9CJYzi11kCBNc+4vvqRnwEkUrDOdTaBIOiC/U8XN
-   ccY0iQ9V6Nde47XxO6t0uEgGIzeDd0aczrmt8C438oBTkQAP/7QspyDQ/
-   dM/nw5Ps/kXSWhlwX9H4C+JG9sftrk1HfEl9F/5CpquevhqCoqt45BiFX
-   fa0jTHNUS0B4aR6mtSQYAbvYnB63Xwpo23gYpNWstszqcnBfoOKeXrT2h
-   5KP3vsZ0scE0nifm1pqGDJBVb6huB9VOPZIE41g73aBFbbQNQOz0Xnjxn
-   CY09iB+46LXqRwNtzQ3o1OQ5dp1C2VLJXHt1N6UWDHiw6/yRKyjfgxpGs
-   w==;
-X-CSE-ConnectionGUID: mLAwNsEWTnKoPBbrj9lsdQ==
-X-CSE-MsgGUID: StyCjNs+QYakQ9qGaQMJfA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11826"; a="70494256"
-X-IronPort-AV: E=Sophos;i="6.24,220,1774335600"; 
-   d="scan'208";a="70494256"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
-  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Jun 2026 09:03:43 -0700
-X-CSE-ConnectionGUID: 8FOrKmyKRmaCoYnKQLu24w==
-X-CSE-MsgGUID: +eHckxSDSTqkMUHlmZae5w==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.24,220,1774335600"; 
-   d="scan'208";a="245187256"
-Received: from klitkey1-mobl1.ger.corp.intel.com (HELO localhost) ([10.245.244.7])
-  by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Jun 2026 09:03:40 -0700
-Date: Tue, 23 Jun 2026 19:03:38 +0300
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To: Haoxiang Li <haoxiang_li2024@163.com>
-Cc: gregkh@linuxfoundation.org, jirislaby@kernel.org,
-	fourier.thomas@gmail.com, 2426767509@qq.com, kees@kernel.org,
-	linux-kernel@vger.kernel.org, linux-serial@vger.kernel.org,
+	s=arc-20240116; t=1782230627; c=relaxed/simple;
+	bh=xA9YfqTuGRMnUD7VqfUSzd8lOI9h6g5dP4YXGJmaJZw=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=TZAgh8l8wfCHvoCr2A3NvLUWXc4HXuh/saNpAFSSJTc9tZOu6b4aVc+kSWNW7Ip6e4KEcC2InczT3nvHK3YV8LEYRJcbp/6Q9nrzgehTuJaApXRxPgQ1fnjhRyeVgAyyQaUd+BycOqI/inW97HLQB0RbKLpsu30zj31VQTfOTxM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=grrlz.net; spf=pass smtp.mailfrom=grrlz.net; dkim=pass (1024-bit key) header.d=grrlz.net header.i=@grrlz.net header.b=roH4qtC/; arc=none smtp.client-ip=93.190.126.19
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=grrlz.net;
+	s=stigmate; t=1782230623;
+	bh=qp76MOZfkgfbvVC3NAMXAD7D03E4T9rNo0rJqkiEJiI=;
+	h=From:To:Cc:Subject:Date:From;
+	b=roH4qtC/vCJAmrGeyJBBp+EBB3owg2oMpGfPEaMRjNOAHg+SZF+HbaoH7bG+8ARfx
+	 yJC1StVlOmpPO41qaaT090JQeNsMxzxy3dj2t3pZ2vozAHaQ8/gG/z4iiTiGQXj1aj
+	 JaiMqrPOchzCEWycjntF7H8RSOUdN6qXqfCDOtw4=
+Received: from mx1.investici.org (unknown [127.0.0.1])
+	by confino.investici.org (Postfix) with ESMTP id 4gl8xq50DFz110W;
+	Tue, 23 Jun 2026 16:03:43 +0000 (UTC)
+Received: by mx1.investici.org (Postfix) id 4gl8xp6CCYz10hk;
+	Tue, 23 Jun 2026 16:03:42 +0000 (UTC)
+From: Bradley Morgan <include@grrlz.net>
+To: Marc Zyngier <maz@kernel.org>,
+	Oliver Upton <oupton@kernel.org>,
+	kvmarm@lists.linux.dev
+Cc: Fuad Tabba <tabba@google.com>,
+	Joey Gouly <joey.gouly@arm.com>,
+	Steffen Eiden <seiden@linux.ibm.com>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Zenghui Yu <yuzenghui@huawei.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>,
+	Quentin Perret <qperret@google.com>,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	Bradley Morgan <include@grrlz.net>,
 	stable@vger.kernel.org
-Subject: Re: [PATCH] tty: serial: pch_uart: add check for pci_get_slot()
-Message-ID: <ajquWkPABcxOVQWg@ashevche-desk.local>
-References: <20260623140539.2272473-1-haoxiang_li2024@163.com>
+Subject: [PATCH] KVM: arm64: skip pKVM cache flushes for non cacheable mappings
+Date: Tue, 23 Jun 2026 16:03:39 +0000
+Message-ID: <20260623160339.15143-1-include@grrlz.net>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260623140539.2272473-1-haoxiang_li2024@163.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
- krs, Bertel Jungin Aukio 5, 02600 Espoo
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-3.66 / 15.00];
-	WHITELIST_SPF_DKIM(-3.00)[intel.com:d:+,kernel.org:s:+];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
-	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[grrlz.net,reject];
+	R_DKIM_ALLOW(-0.20)[grrlz.net:s=stigmate];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-267974-lists,stable=lfdr.de];
+	RCPT_COUNT_TWELVE(0.00)[15];
+	TAGGED_FROM(0.00)[bounces-267975-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:haoxiang_li2024@163.com,m:gregkh@linuxfoundation.org,m:jirislaby@kernel.org,m:fourier.thomas@gmail.com,m:2426767509@qq.com,m:kees@kernel.org,m:linux-kernel@vger.kernel.org,m:linux-serial@vger.kernel.org,m:stable@vger.kernel.org,m:fourierthomas@gmail.com,s:lists@lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER(0.00)[andriy.shevchenko@linux.intel.com,stable@vger.kernel.org];
-	TO_DN_SOME(0.00)[];
-	FREEMAIL_TO(0.00)[163.com];
-	MIME_TRACE(0.00)[0:+];
-	HAS_ORG_HEADER(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,kernel.org,gmail.com,qq.com,vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
+	MIME_TRACE(0.00)[0:+];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_SENDER(0.00)[include@grrlz.net,stable@vger.kernel.org];
+	FORGED_RECIPIENTS(0.00)[m:maz@kernel.org,m:oupton@kernel.org,m:kvmarm@lists.linux.dev,m:tabba@google.com,m:joey.gouly@arm.com,m:seiden@linux.ibm.com,m:suzuki.poulose@arm.com,m:yuzenghui@huawei.com,m:catalin.marinas@arm.com,m:will@kernel.org,m:qperret@google.com,m:linux-arm-kernel@lists.infradead.org,m:linux-kernel@vger.kernel.org,m:include@grrlz.net,m:stable@vger.kernel.org,s:lists@lfdr.de];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[andriy.shevchenko@linux.intel.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[intel.com:+];
-	ALIAS_RESOLVED(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[include@grrlz.net,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[grrlz.net:+];
+	RCVD_COUNT_FIVE(0.00)[5];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	ALIAS_RESOLVED(0.00)[];
+	TO_DN_SOME(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,vger.kernel.org:from_smtp,intel.com:dkim,intel.com:email,ashevche-desk.local:mid]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[grrlz.net:dkim,grrlz.net:email,grrlz.net:mid,grrlz.net:from_mime,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 1123C6B88A3
+X-Rspamd-Queue-Id: 6FE456B88AC
 
-On Tue, Jun 23, 2026 at 10:05:39PM +0800, Haoxiang Li wrote:
-> Add check for pci_get_slot() to prevent a potetial
-> null pointer dereference in pch_request_dma().
+pKVM keeps its own mapping list for stage 2 operations. Its flush path
+uses that list directly, so it lost the PTE attribute check done by the
+generic stage 2 walker.
 
-Not that it's quite possible, but probably you found this due to AI review
-which might have considered some cases of manual binding a PCI device to any
-PCI driver.
+Record whether a mapping is cacheable and skip cache maintenance for
+mappings that are not cacheable.
 
-Given that is the case, I'm fine with the change.
+Fixes: e912efed485a ("KVM: arm64: Introduce the EL1 pKVM MMU")
+Cc: stable@vger.kernel.org
+Signed-off-by: Bradley Morgan <include@grrlz.net>
+---
+ arch/arm64/include/asm/kvm_pkvm.h | 1 +
+ arch/arm64/kvm/pkvm.c             | 8 +++++++-
+ 2 files changed, 8 insertions(+), 1 deletion(-)
 
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-
+diff --git a/arch/arm64/include/asm/kvm_pkvm.h b/arch/arm64/include/asm/kvm_pkvm.h
+index 74fedd9c5ff0..d9dd8239910d 100644
+--- a/arch/arm64/include/asm/kvm_pkvm.h
++++ b/arch/arm64/include/asm/kvm_pkvm.h
+@@ -196,6 +196,7 @@ struct pkvm_mapping {
+ 	u64 gfn;
+ 	u64 pfn;
+ 	u64 nr_pages;
++	bool cacheable;
+ 	u64 __subtree_last;	/* Internal member for interval tree */
+ };
+ 
+diff --git a/arch/arm64/kvm/pkvm.c b/arch/arm64/kvm/pkvm.c
+index 428723b1b0f5..105ab1258066 100644
+--- a/arch/arm64/kvm/pkvm.c
++++ b/arch/arm64/kvm/pkvm.c
+@@ -473,6 +473,8 @@ int pkvm_pgtable_stage2_map(struct kvm_pgtable *pgt, u64 addr, u64 size,
+ 	mapping->gfn = gfn;
+ 	mapping->pfn = pfn;
+ 	mapping->nr_pages = size / PAGE_SIZE;
++	mapping->cacheable = !(prot & (KVM_PGTABLE_PROT_DEVICE |
++				       KVM_PGTABLE_PROT_NORMAL_NC));
+ 	pkvm_mapping_insert(mapping, &pgt->pkvm_mappings);
+ 
+ 	return ret;
+@@ -517,9 +519,13 @@ int pkvm_pgtable_stage2_flush(struct kvm_pgtable *pgt, u64 addr, u64 size)
+ 	struct pkvm_mapping *mapping;
+ 
+ 	lockdep_assert_held(&kvm->mmu_lock);
+-	for_each_mapping_in_range_safe(pgt, addr, addr + size, mapping)
++	for_each_mapping_in_range_safe(pgt, addr, addr + size, mapping) {
++		if (!mapping->cacheable)
++			continue;
++
+ 		__clean_dcache_guest_page(pfn_to_kaddr(mapping->pfn),
+ 					  PAGE_SIZE * mapping->nr_pages);
++	}
+ 
+ 	return 0;
+ }
 -- 
-With Best Regards,
-Andy Shevchenko
-
+2.53.0
 
 
