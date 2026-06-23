@@ -1,157 +1,177 @@
-Return-Path: <stable+bounces-268002-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-268012-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 5/fIFtTZOmp+IggAu9opvQ
-	(envelope-from <stable+bounces-268002-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 23 Jun 2026 21:09:08 +0200
+	id 4WU8IZLdOmojJQgAu9opvQ
+	(envelope-from <stable+bounces-268012-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 23 Jun 2026 21:25:06 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD0026B997B
-	for <lists+stable@lfdr.de>; Tue, 23 Jun 2026 21:09:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E67EE6B9B00
+	for <lists+stable@lfdr.de>; Tue, 23 Jun 2026 21:25:05 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=pZ4kgKvs;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-268002-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-268002-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("subspace.kernel.org:s=arc-20240116:i=2")
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=WShvWu8F;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-268012-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-268012-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 7EDE4304DFF7
-	for <lists+stable@lfdr.de>; Tue, 23 Jun 2026 19:09:03 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id AB2B5307E699
+	for <lists+stable@lfdr.de>; Tue, 23 Jun 2026 19:23:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6749F37F8A0;
-	Tue, 23 Jun 2026 19:09:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ADD0F390C81;
+	Tue, 23 Jun 2026 19:23:44 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ej1-f51.google.com (mail-ej1-f51.google.com [209.85.218.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06810208D0
-	for <stable@vger.kernel.org>; Tue, 23 Jun 2026 19:09:00 +0000 (UTC)
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782241742; cv=pass; b=OI4ZPJvUcwCIoXfx+VLUhwljSa9N8uA0UuKGk4gS9p+9pGMD/l9euIL1+zLg3CeGa/Jk1wdMsajq0aNR2RwUrPLhobCjymMlqmI+TPcxrgZouCocHHS0/KTdvl6arLtgRIXi/X1IOaXmPDS2RD91FhokSia9QMEdrFvKkuwCkVs=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782241742; c=relaxed/simple;
-	bh=LdofAR8e/Kti/WYvRJh0sJk3FrQJ4xmAUqnttCZI140=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=T80krBVM9AwZ8Y77TeoLkiyz84FVG1vQ/y5d712lnd2zKqDFyeETOBpDWVr/GuBmnGhHPrr/oPKcr+wijffxx3ao4dhlklfdBBpa6hNI2k52+kEcGxB4D/QhbDm2wLLd7fKzdTk3WEOUkcRSS1wwVrD8CnUFWcqBXTgs81gBtzc=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=pZ4kgKvs; arc=pass smtp.client-ip=209.85.218.51
-Received: by mail-ej1-f51.google.com with SMTP id a640c23a62f3a-c0d6c75c58cso30444066b.1
-        for <stable@vger.kernel.org>; Tue, 23 Jun 2026 12:09:00 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1782241739; cv=none;
-        d=google.com; s=arc-20240605;
-        b=izQDW7APiqEgTuEotDhWSUMbLLRZn2YYQkobPF777IGyyXrm3nKBVwSOjy9Cxi2Pyo
-         qvVI6yjhBQW9tgYUZgqnRSRmyLpVd7xsCoo5WivJwwJLP2NqhBPHi/pbuiEXewZ6AeOK
-         RuahDhzNMCF0wYI6LxDSvrPAe0tj5QxeWhczbe4X+XrAGE8C3XrJKDl5XZ0YWmnLeCEs
-         bWRc6L6qWU563BRiFG6fl8jfZxNLdj0W3e1bVLTO/wuC1XXpfei+qn9hxZcWO9P7btuh
-         wg0GmPU2OblexQX5QcMXacUiQM+cu+WlHxfMcwLnwSYDhlHPsRBeEcwangtw7q1/12xl
-         7iDQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=LdofAR8e/Kti/WYvRJh0sJk3FrQJ4xmAUqnttCZI140=;
-        fh=ZZMTP/4GG7UK9WEpX+he9ro7gKcWs4NbL8+wT8GHrs4=;
-        b=FattRAM2XBAYS02wvxs2AL6xDNqtetx4k2i8fDFI3V+dL8IZL4wVuri0BTcpHFDXb+
-         254FfQM/a4vIDvJZGE1lRy4OWY+bJ7vlzKHDlNYAcsmr5KigqnzN/+IyOp8Q0kXd4QVu
-         Cs1DouW7l6NYDC2ysVNJUawppihl5x7kqusSsh5Jxc12IJGjBm1zvVqbrAYeouNqxX2w
-         8XVF7zE7Zr7oZNb/GOHxVd3yoL7mFJzDLSXnDStKMbW/JErwYHJBHS2hQKXbxLiFoVZe
-         QhBT0/Ik2eIvpZ/DukyDg2rRmkBE/t4TMhO7Kh8vG6uPk5g6pFC+KqhlesUVre2Lcouz
-         WjiA==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1782241739; x=1782846539; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=LdofAR8e/Kti/WYvRJh0sJk3FrQJ4xmAUqnttCZI140=;
-        b=pZ4kgKvsl8ZfHTMIog2LZaBW7h+HJS3C+m7ai9cn7I9ykrq1XixVJa+svUpkAZe6z0
-         6w8Na8Z1HFLbAO7rqFFjKTYugQBoPk3LXkFCNYShEw5QVmcqATfaPzFAjj1vss3wjE6X
-         +ENhVhpuv0pcPZUyMoFwGqw2mzujiCWxx/aRYwYqPxi0Nx6xmhOnZPJ6J5uyso92Vq9d
-         VTstEXYWkMy9J83N7rxDSDDwsXy1h35SosuiskqCtLAwmdfdaBDVxLoYFaERZ48IxU5L
-         0oIdGKVbjD3cBHWuls2UUkpyYuUM/m+FGjU2DWdN9w/DhxDQboLEm8lNwJylxPYLsm5E
-         i9Qg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782241739; x=1782846539;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=LdofAR8e/Kti/WYvRJh0sJk3FrQJ4xmAUqnttCZI140=;
-        b=anrZ/vRxRYSjL34levqWRRtMKxMieQKZJ3d7mchK107GZlVKuqC8yp1QdLv6rU+8Qm
-         lfUMgA9vywiedHzPVxyyprPbuT3Mcyudw/WvMhWpTVPcjnT6z3qH6LtRdSKmVLFuRH2u
-         HTpH4O3Ggr0e1MecTqRfXBKAOow16AHqYO+E/B9Rt4zfiZMi0rt6zi4rG3fgQd9Ktbdp
-         cu7ir0iY4o2x/T88NmtD/aYJBr9urKNAxygk3SfFxCMlkzNTNhpNZ7ilx1GpURU11Ave
-         TxeXGHzzIT/o+pgzbNn5uNAWao53ErmRH9Tlx9h5Guvyh7UXM5E1cjZZBTaXWSNwJcKN
-         AhgA==
-X-Forwarded-Encrypted: i=1; AFNElJ+SuI/jbjox5pWrA2XhlXcNcKlGK2jZr0mA7nFid+KolK7ivQh39y5vfIUrxU5surmWNMGc3cU=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy8yJNsWN13S/jTls0lNvTzAw3ZrS4YaZGVi45UiaIcBQQz/i5D
-	a1UXd/KGWY+nMVvCmcsh7Mm3kTNmiptwKWHlzQ65yUg0P/J33405AgprwbbVsAmN7XRU43l8uY2
-	Txazb149ZnZpXR7tooGcWhe2uFeAYN30CVmvysGk=
-X-Gm-Gg: AfdE7clUEzDlsz+y4ob3GLOkSsDiLv3fJV7GfY6OFwWHZAK2L/aE+VPm6tdcCkGzZL1
-	AYPK/DFLqWsxTSpRCjBxcPGxrDIXSZWV+Snqanx2aOWuuZnedwlkzRRjHvwt6ULXDsozug6c1rP
-	T39XcICVSTDmzZd4y3oh0St+VT2YiQRnpStUT3HfE93ruQZDrT5vyo3infX2QFw1slE7O1CRx8l
-	9RYaiRz2zObW/XYHGJwJTmbo+capMd5A5P1WOTNBwvVwSPyGdHr4tj5GDUCo6Qa1OF5bIO+btr6
-	ytsXzDJwRCd12+xmJGMOq9Bp8NPCVw==
-X-Received: by 2002:a17:907:9c07:b0:c04:93d7:3c12 with SMTP id
- a640c23a62f3a-c0c65adebc1mr95587766b.25.1782241739297; Tue, 23 Jun 2026
- 12:08:59 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67D0F38B142;
+	Tue, 23 Jun 2026 19:23:43 +0000 (UTC)
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1782242624; cv=none; b=lMrHSb0na2xm3P46w4gFHGkpUMDpDgsvpBGKn7EVMQnvMvE6lGvHzAoSycUi3zgKBRFLPO30rc6vR4q9/qf1h69sC8fX1iC9XblEiI3TkfvLVSx7sWkfkcLctreauhZfBqsKvrbgIEVHToq2RLbXfpfcG2OiiT2kCQYb9hU8fuY=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1782242624; c=relaxed/simple;
+	bh=O7DR9ILkd2nJoHBh2TQnDbYT3Y7Ne14/dVuQzQqfa9k=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=fdlo3GaTifF/lhesZvYzgEMoxkN7MG8lljtf7FHw6nQednR8JfRW7xy0kndH1SJW08xQFj/H2KBuqwpAt6TRM4TWDwyPJv47yHJ4Fb/SAspC28z2YtW9lrEaNqjZBp/xMyadO+s8fYWSIv2tgi7Z5PXb0XLgoSAU3RXnAy11ck4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WShvWu8F; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E1B61F000E9;
+	Tue, 23 Jun 2026 19:23:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1782242623;
+	bh=/eUnBmyw2rFOllRrbRo6eVqfdlq5TkvvC1+VM9YXfiw=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=WShvWu8FV9VtCbeNSuU3WtBZKK/Ri3PUigE77CXwQuUY0D3+bwB26QgV+gnHoITwV
+	 n7K3XMkwYI71pqkqNpj5mv+02apbsy8aGitAfGB/8T6XQwE59w+PMP5dZATy+g+Jlm
+	 B/cc5C+aRK4aBueXfjtAwsozb3Zrck8Af0uYhTAGnByUGn5cKojNNwdfyfy5Vbrm3f
+	 bswxYtvL5qtpB6dnfEtg6WIg8UVvlym6aANEoHU4dVfxM0xPMpRoZN24DmZcAn8t8B
+	 Oyp5fWMyGs/lLSnBAl6UrDe4TZFjYO27HxPVf9dlk2X23M0+NkDrVnemc5xWBNhdZs
+	 AfRFMm5ZD/Sdg==
+Date: Tue, 23 Jun 2026 20:23:34 +0100
+From: Jonathan Cameron <jic23@kernel.org>
+To: Andy Shevchenko <andriy.shevchenko@intel.com>
+Cc: Herman van Hazendonk <github.com@herrie.org>, David Lechner
+ <dlechner@baylibre.com>, Nuno =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>, Andy
+ Shevchenko <andy@kernel.org>, Nathan Chancellor <nathan@kernel.org>, Nick
+ Desaulniers <nick.desaulniers+lkml@gmail.com>, Bill Wendling
+ <morbo@google.com>, Justin Stitt <justinstitt@google.com>, Denis Ciocca
+ <denis.ciocca@gmail.com>, Lars-Peter Clausen <lars@metafoo.de>, Rob Herring
+ <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Denis Ciocca <denis.ciocca@st.com>, Linus Walleij
+ <linusw@kernel.org>, linux-iio@vger.kernel.org,
+ linux-kernel@vger.kernel.org, llvm@lists.linux.dev,
+ devicetree@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH v2 1/3] iio: common: st_sensors: honour channel
+ endianness in read_axis_data
+Message-ID: <20260623202334.2217b1d4@jic23-huawei>
+In-Reply-To: <ajJwzsIMxX3Ew1x_@ashevche-desk.local>
+References: <20260616-submit-iio-lsm303dlh-magn-fixes-v2-0-063edcf74e60@herrie.org>
+	<20260616-submit-iio-lsm303dlh-magn-fixes-v2-1-063edcf74e60@herrie.org>
+	<ajJwzsIMxX3Ew1x_@ashevche-desk.local>
+X-Mailer: Claws Mail 4.4.0 (GTK 3.24.52; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260623161035.5792-1-nikhilsolanke5@gmail.com> <75822857-473d-4067-a378-aae2cdab4176@infradead.org>
-In-Reply-To: <75822857-473d-4067-a378-aae2cdab4176@infradead.org>
-From: Nikhil Solanke <nikhilsolanke5@gmail.com>
-Date: Wed, 24 Jun 2026 00:38:45 +0530
-X-Gm-Features: AVVi8Cc1hD2hPk4FFMnKSCHccCyNZqCcEpbtGZZJrz-Ggm9d9Z4FkIbejjM89WE
-Message-ID: <CAFgddhKDafzUTCsbYXpWPcN66hetu9aJOygpsb_eLwsU30ADrQ@mail.gmail.com>
-Subject: Re: [PATCH v2] usbcore: Add quirk for 255-bytes initial config read
-To: Randy Dunlap <rdunlap@infradead.org>
-Cc: linux-usb@vger.kernel.org, gregkh@linuxfoundation.org, 
-	linux-kernel@vger.kernel.org, stern@rowland.harvard.edu, 
-	michal.pecio@gmail.com, stable@vger.kernel.org, corbet@lwn.net, 
-	skhan@linuxfoundation.org, linux-doc@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.66 / 15.00];
+X-Spamd-Result: default: False [-3.16 / 15.00];
+	WHITELIST_SPF_DKIM(-3.00)[kernel.org:d:+,kernel.org:s:+];
 	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_RHS_NOT_FQDN(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-268002-lists,stable=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-268012-lists,stable=lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
-	FREEMAIL_CC(0.00)[vger.kernel.org,linuxfoundation.org,rowland.harvard.edu,gmail.com,lwn.net];
-	FORGED_RECIPIENTS(0.00)[m:rdunlap@infradead.org,m:linux-usb@vger.kernel.org,m:gregkh@linuxfoundation.org,m:linux-kernel@vger.kernel.org,m:stern@rowland.harvard.edu,m:michal.pecio@gmail.com,m:stable@vger.kernel.org,m:corbet@lwn.net,m:skhan@linuxfoundation.org,m:linux-doc@vger.kernel.org,m:michalpecio@gmail.com,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[nikhilsolanke5@gmail.com,stable@vger.kernel.org];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_SENDER(0.00)[jic23@kernel.org,stable@vger.kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:andriy.shevchenko@intel.com,m:github.com@herrie.org,m:dlechner@baylibre.com,m:nuno.sa@analog.com,m:andy@kernel.org,m:nathan@kernel.org,m:nick.desaulniers+lkml@gmail.com,m:morbo@google.com,m:justinstitt@google.com,m:denis.ciocca@gmail.com,m:lars@metafoo.de,m:robh@kernel.org,m:krzk+dt@kernel.org,m:conor+dt@kernel.org,m:denis.ciocca@st.com,m:linusw@kernel.org,m:linux-iio@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:llvm@lists.linux.dev,m:devicetree@vger.kernel.org,m:stable@vger.kernel.org,m:nickdesaulniers@gmail.com,m:denisciocca@gmail.com,m:krzk@kernel.org,m:conor@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[21];
+	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FREEMAIL_FROM(0.00)[gmail.com];
+	TO_DN_SOME(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[nikhilsolanke5@gmail.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	MID_RHS_MATCH_FROMTLD(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_NEQ_ENVFROM(0.00)[jic23@kernel.org,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[herrie.org,baylibre.com,analog.com,kernel.org,gmail.com,google.com,metafoo.de,st.com,vger.kernel.org,lists.linux.dev];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[10];
-	MISSING_XM_UA(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	TAGGED_RCPT(0.00)[stable,lkml,dt];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,mail.gmail.com:mid,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,jic23-huawei:mid,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,intel.com:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: AD0026B997B
+X-Rspamd-Queue-Id: E67EE6B9B00
 
-> add ending '.'
->
-> For all lines added here, use tabs instead of spaces for indentation.
+On Wed, 17 Jun 2026 13:02:54 +0300
+Andy Shevchenko <andriy.shevchenko@intel.com> wrote:
 
-Done! Waiting for any other changes before submitting v3
+> On Tue, Jun 16, 2026 at 03:02:04PM +0200, Herman van Hazendonk wrote:
+> > st_sensors_read_axis_data() unconditionally decoded multi-byte
+> > results with get_unaligned_le16() / get_unaligned_le24() regardless
+> > of the channel's declared scan_type.endianness.
+> >=20
+> > For every ST sensor that has used this helper since it was introduced
+> > this happened to be fine because the ST IMU/accel/gyro/pressure
+> > families publish their data registers as little-endian and the
+> > channel specs in those drivers declare IIO_LE accordingly.
+> >=20
+> > The LSM303DLH magnetometer however publishes its X/Y/Z output as a
+> > pair of big-endian bytes (the H register sits at the lower address,
+> > 0x03/0x05/0x07, and the L register immediately after), and its
+> > channel specs in st_magn_core.c correctly declare IIO_BE -- but
+> > read_axis_data() ignored that and decoded as little-endian, swapping
+> > the high and low bytes of every magnetometer sample. The LSM303DLHC
+> > and LSM303DLM share the same st_magn_16bit_channels (IIO_BE) and
+> > were therefore byte-swapped by the same bug; users of those parts
+> > will see different in_magn_*_raw values after this fix lands.
+> >=20
+> > The bug is most visible on a stationary chip: in earth's field the
+> > true X reading is small and the high byte sits at 0x00, so swapping
+> > the bytes pins sysfs X at exactly the low byte's pattern (e.g. 0x00F0
+> > =3D 240). Y and Z still appear "to vary" because their magnitudes are
+> > larger and the noise in the low byte produces big swings in the
+> > swapped high byte:
+> >=20
+> >   before (LSM303DLH flat, sysfs in_magn_*_raw):
+> >       X=3D240 (stuck), Y=3D 12032..23296, Z=3D-16128..-9728
+> >=20
+> >   after (direct i2c-dev big-endian decode, same chip same orientation):
+> >       X=E2=89=88-4096, Y=E2=89=88210, Z=E2=89=8880     (sensible values=
+ reflecting earth's
+> >                                 ambient field at low gauss range)
+> >=20
+> > Fix read_axis_data() to dispatch on ch->scan_type.endianness and
+> > call get_unaligned_be16() / get_unaligned_be24() when the channel
+> > declares IIO_BE. Existing IIO_LE consumers (st_accel, st_gyro,
+> > st_pressure, st_lsm6dsx and others) are unaffected because their
+> > channel specs already declare IIO_LE and the LE path is unchanged.
+> >=20
+> > While restructuring the branches, replace the previously implicit
+> > silent-success-with-uninitialised-*data fall-through for
+> > byte_for_channel outside 1..3 with an explicit return -EINVAL. No
+> > in-tree ST sensor publishes such a channel, but the new behaviour
+> > is strictly safer than handing userspace garbage. =20
+>=20
+> Sounds like inevitable change in ABI, but worth doing it.
+> Reviewed-by: Andy Shevchenko <andriy.shevchenko@intel.com>
+Applied to the fixes-togreg branch of iio.git. I'll wait until after
+rc1 to send a pull request though (and rebase on rc1 in the meantime).
+The other patches may have to wait, I haven't checked yet!
+
+Jonathan
+
+>=20
+
 
