@@ -1,183 +1,163 @@
-Return-Path: <stable+bounces-268110-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-268111-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id PxPlLZieO2rSaQgAu9opvQ
-	(envelope-from <stable+bounces-268110-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 24 Jun 2026 11:08:40 +0200
+	id q6VQMfKeO2reaQgAu9opvQ
+	(envelope-from <stable+bounces-268111-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 24 Jun 2026 11:10:10 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 12BB96BCD16
-	for <lists+stable@lfdr.de>; Wed, 24 Jun 2026 11:08:40 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id B9F6C6BCD36
+	for <lists+stable@lfdr.de>; Wed, 24 Jun 2026 11:10:09 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=1x42hlTl;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=R3IlegPj;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=cf2skJNV;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=Z7IVdP38;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-268110-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-268110-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=none) header.from=suse.de;
+	dkim=pass header.d=intel.com header.s=Intel header.b=k2E600TH;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-268111-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-268111-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=none) header.from=intel.com;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 6C4D8301A73E
-	for <lists+stable@lfdr.de>; Wed, 24 Jun 2026 09:03:55 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id C99323007294
+	for <lists+stable@lfdr.de>; Wed, 24 Jun 2026 09:10:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA53E3254A8;
-	Wed, 24 Jun 2026 09:03:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D93C329C60;
+	Wed, 24 Jun 2026 09:10:03 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E9B52EEE94
-	for <stable@vger.kernel.org>; Wed, 24 Jun 2026 09:03:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6C5630569F
+	for <stable@vger.kernel.org>; Wed, 24 Jun 2026 09:10:01 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782291834; cv=none; b=idWsSB8HpOog/4M+8cTlrSYfIdwhkLBIn9dc8P39gy9gs7VESCbf4S1fosjL/YxUJdeynIs/maInqxcIU20FdJdFU1t66+ngtYLcTt+Z073NK+Qb7fePJ0DGBXdvrpSgg5jpD0g/IPtjTof0zBfmqvHdC7JccO9JugQH6WZOi9s=
+	t=1782292203; cv=none; b=SyH1XzD+U79LQQDl4NEhjUvrVpLe5BQxNqG8l88P4EO4VcA3TtqHf/I1DvAEgTz6NwDPMorY+dAykMxmp7cejRb4fZ95/mz1sgBoeyUx3MUipsMVjMmPYLteLmlg1Qyn/9BT5zvgsJNhQJdiWGJ5JA0vVU80sb/xZidw84Z38Vo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782291834; c=relaxed/simple;
-	bh=UcSBwmcsZBPBDfORQOE84AIbuSrV+baxPj7jqtWS7M4=;
-	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=b0yesGQP660QWmmirVLsZxTi1e3Kre1wDNG1oi1j5pJNTPqAFZAbJ0CjGL5D4hqsXhpnGysvlKe5rVsneOrTTeWTa9q37vTeFNi69egJ4S9bPVm9MHq9sNYYWq+/SPqCYwOBEkdoT9URhl9kq0Yg0pmuuBFatF7Cf1D4Qu/9+44=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=1x42hlTl; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=R3IlegPj; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=cf2skJNV; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=Z7IVdP38; arc=none smtp.client-ip=195.135.223.130
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id E9CBE713D7;
-	Wed, 24 Jun 2026 09:03:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1782291826; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=T9d7DZdLslHNPZRGZFvdtDMf5wRXMC8cZhiVMfWkhSw=;
-	b=1x42hlTlbAPQp3ao+Ih26eDBKGDx7R8aAxFYC7Eivx6/lxWL+8Suck49mfKIHqmIX29xHy
-	YIShcdrCsDTsUGbd/9kg90hbjuLsuYkDZmUZosXtctBZ/0dO8J2uMNmQygL2E4lJ6nAQu1
-	dNwJRNrxY50Nc8F/0wDHbpZeep+I87Q=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1782291826;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=T9d7DZdLslHNPZRGZFvdtDMf5wRXMC8cZhiVMfWkhSw=;
-	b=R3IlegPjZTUNknN36W/DiY55Po4/SuzgU3qGkj7yA3lqqO0zqEbr28szomnYRcJbIoJJhD
-	R585SYNGtdZpmIAw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1782291825; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=T9d7DZdLslHNPZRGZFvdtDMf5wRXMC8cZhiVMfWkhSw=;
-	b=cf2skJNV60mNLUuxRnpLovr/O7KcTHvtO7bPZBnVB0NzDbme0svj7RqQ++94BOa2gIe9EH
-	sXv3o3/raFT1rzOq0op0EJU5EGBWJ8DLsYp4d906vzP8gBf5f8J5TifrrpUmoUhWxqSIax
-	dCgq1XP6rAc1LVJ2fdOOR0jWgFUW5H0=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1782291825;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=T9d7DZdLslHNPZRGZFvdtDMf5wRXMC8cZhiVMfWkhSw=;
-	b=Z7IVdP38ZbUZkU/H5AlfUJchJ+FWo/QrxJc9U5xHnxDgz61VkJqx8yCTwNtTHEnouhLPoR
-	bNLZziGbOgB6CfBA==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 95166779AB;
-	Wed, 24 Jun 2026 09:03:45 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id mFgMI3GdO2o/cgAAD6G6ig
-	(envelope-from <tiwai@suse.de>); Wed, 24 Jun 2026 09:03:45 +0000
-Date: Wed, 24 Jun 2026 11:03:45 +0200
-Message-ID: <874iiswbri.wl-tiwai@suse.de>
-From: Takashi Iwai <tiwai@suse.de>
-To: HyeongJun An <sammiee5311@gmail.com>
-Cc: Takashi Iwai <tiwai@suse.com>,
-	Jaroslav Kysela <perex@perex.cz>,
-	linux-sound@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
+	s=arc-20240116; t=1782292203; c=relaxed/simple;
+	bh=2+AYVRt5sXs90dXPOyDTHlXALrZ4HOpnjfYqPyRpyZE=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=gcEnh+VYR+J8eqzFUwCu6oMFCvQys1jJ2PpVdBUxNZu8u5/Ccsn4keb8Qk0fpWDH9c9FiljuSQjofwLIlVi/Gs6WHZBgv+g6pLjwawIBiTHXnUH9umXS+gK6Yt64mYCsFS01RhOmdRMkZwjn20urPHVd85bB/hLyMH2h7rVLug0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=k2E600TH; arc=none smtp.client-ip=192.198.163.8
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1782292201; x=1813828201;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=2+AYVRt5sXs90dXPOyDTHlXALrZ4HOpnjfYqPyRpyZE=;
+  b=k2E600THkghbwK8aVsvI9a0XizwCHNGHzfFR2QAmStg2wHWoRaq8cfFY
+   fwDx5h0yiiHpGOxUa2koIRRQNVCgj0Bilpu4XGjGo5oWvXQ4d1UV16mfA
+   Mqy5WkYfKRPp4JfzbfX5US0tPdJ/3oXcFneuBS4aboFFQpIXBppprk6hM
+   40+kkvDTx4Cx4Z2FaDiUNNJju8n9NsDFfBitrVGZzo37qYJ4b79vDGU6Y
+   BHUNqZbVOu0hbLNyeEJEK5pYQXybnFNYmm3vGUGi7EawYecf46ZaWQ3Nc
+   Zk/68Q6GvJRLJtzdkRtNms2dd7YvQfywkzbgqTwmspHtO5nh+sE2XPykD
+   g==;
+X-CSE-ConnectionGUID: J8kr8G9TRbu+J4fkUk6AIA==
+X-CSE-MsgGUID: 6W+uNhu2TF6/OyNnIPHDrg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11826"; a="100598682"
+X-IronPort-AV: E=Sophos;i="6.24,222,1774335600"; 
+   d="scan'208";a="100598682"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Jun 2026 02:10:00 -0700
+X-CSE-ConnectionGUID: KfwQPapZRiWPbZUEA0FmyA==
+X-CSE-MsgGUID: +m2B6kc9RUybhaFhj3Nsrw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.24,222,1774335600"; 
+   d="scan'208";a="279938649"
+Received: from amilburn-desk.amilburn-desk (HELO localhost) ([10.245.244.147])
+  by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Jun 2026 02:09:58 -0700
+From: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
+To: Intel graphics driver community testing & development <intel-gfx@lists.freedesktop.org>
+Cc: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
+	Martin Hodo <martin.hodo@intel.com>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	=?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
+	Simona Vetter <simona.vetter@ffwll.ch>,
 	stable@vger.kernel.org
-Subject: Re: [PATCH] ALSA: seq: Fix uninitialised heap leak in snd_seq_event_dup()
-In-Reply-To: <20260623233841.853326-1-sammiee5311@gmail.com>
-References: <20260623233841.853326-1-sammiee5311@gmail.com>
-User-Agent: Wanderlust/2.15.9 (Almost Unreal) Emacs/30.2 Mule/6.0
+Subject: [PATCH] drm/i915: Return NULL on error in active_instance
+Date: Wed, 24 Jun 2026 12:09:40 +0300
+Message-ID: <20260624090940.74840-1-joonas.lahtinen@linux.intel.com>
+X-Mailer: git-send-email 2.54.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
-Content-Type: text/plain; charset=US-ASCII
-X-Spam-Flag: NO
-X-Spam-Score: -3.51
-X-Spam-Level: 
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.16 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [-4.16 / 15.00];
+	WHITELIST_SPF_DKIM(-3.00)[intel.com:d:+,kernel.org:s:+];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[suse.de,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
+	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-268110-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
-	FREEMAIL_TO(0.00)[gmail.com];
-	FORGED_RECIPIENTS(0.00)[m:sammiee5311@gmail.com,m:tiwai@suse.com,m:perex@perex.cz,m:linux-sound@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[tiwai@suse.de,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-268111-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:intel-gfx@lists.freedesktop.org,m:joonas.lahtinen@linux.intel.com,m:martin.hodo@intel.com,m:maarten.lankhorst@linux.intel.com,m:thomas.hellstrom@linux.intel.com,m:simona.vetter@ffwll.ch,m:stable@vger.kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_SENDER(0.00)[joonas.lahtinen@linux.intel.com,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
 	FORGED_SENDER_FORWARDING(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[6];
+	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[tiwai@suse.de,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[suse.de:+];
+	FROM_NEQ_ENVFROM(0.00)[joonas.lahtinen@linux.intel.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[intel.com:+];
 	ALIAS_RESOLVED(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,suse.de:dkim,suse.de:mid,suse.de:from_mime]
+	RCPT_COUNT_SEVEN(0.00)[7];
+	TO_DN_SOME(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,vger.kernel.org:from_smtp,intel.com:dkim,intel.com:email,linux.intel.com:mid,linux.intel.com:from_mime]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 12BB96BCD16
+X-Rspamd-Queue-Id: B9F6C6BCD36
 
-On Wed, 24 Jun 2026 01:38:40 +0200,
-HyeongJun An wrote:
-> 
-> snd_seq_event_dup() copies an incoming event into a pool cell and, in
-> the UMP-enabled build, clears the trailing cell->ump.raw.extra word that
-> the memcpy() did not cover.  The guard deciding whether to clear it
-> compares the copied size against sizeof(cell->event):
-> 
-> 	memcpy(&cell->ump, event, size);
-> 	if (size < sizeof(cell->event))
-> 		cell->ump.raw.extra = 0;
-> 
-> For a legacy (non-UMP) event, size == sizeof(struct snd_seq_event) ==
-> sizeof(cell->event), so the condition is false and the extra word keeps
-> stale data.  The cell pool is allocated with kvmalloc() (not zeroed) and
-> cells are reused via a free list, so that word holds uninitialised heap
-> or leftover event data.
-> 
-> When such a cell is delivered to a UMP client (client->midi_version > 0)
-> that set SNDRV_SEQ_FILTER_NO_CONVERT -- so the legacy event reaches it
-> unconverted -- snd_seq_read() reads it out as the larger struct
-> snd_seq_ump_event and copies the stale word to user space, a 4-byte
-> kernel heap infoleak to an unprivileged /dev/snd/seq client.
-> 
-> Compare against sizeof(cell->ump) instead, so the trailing word is zeroed
-> for every event shorter than the UMP cell.
-> 
-> Fixes: 46397622a3fa ("ALSA: seq: Add UMP support")
-> Cc: stable@vger.kernel.org
-> Assisted-by: Claude:claude-opus-4-8
-> Signed-off-by: HyeongJun An <sammiee5311@gmail.com>
+Avoid returning &node->base when node is NULL due to OOM
+during GFP_ATOMIC allocation.
 
-Applied now.  Thanks.
+Discovered using AI-assisted static analysis confirmed by
+Intel Product Security.
 
+Reported-by: Martin Hodo <martin.hodo@intel.com>
+Fixes: bfaae47db3c0 ("drm/i915: make lockdep slightly happier about execbuf.")
+Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
+Cc: Thomas Hellström <thomas.hellstrom@linux.intel.com>
+Cc: Simona Vetter <simona.vetter@ffwll.ch>
+Cc: <stable@vger.kernel.org> # v5.13+
+Signed-off-by: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
+---
+ drivers/gpu/drm/i915/i915_active.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-Takashi
+diff --git a/drivers/gpu/drm/i915/i915_active.c b/drivers/gpu/drm/i915/i915_active.c
+index 5cb7a72774a0..aa77def0bc0d 100644
+--- a/drivers/gpu/drm/i915/i915_active.c
++++ b/drivers/gpu/drm/i915/i915_active.c
+@@ -318,7 +318,7 @@ active_instance(struct i915_active *ref, u64 idx)
+ 	 */
+ 	node = kmem_cache_alloc(slab_cache, GFP_ATOMIC);
+ 	if (!node)
+-		goto out;
++		goto err;
+ 
+ 	__i915_active_fence_init(&node->base, NULL, node_retire);
+ 	node->ref = ref;
+@@ -332,6 +332,11 @@ active_instance(struct i915_active *ref, u64 idx)
+ 	spin_unlock_irq(&ref->tree_lock);
+ 
+ 	return &node->base;
++
++err:
++	spin_unlock_irq(&ref->tree_lock);
++
++	return NULL;
+ }
+ 
+ void __i915_active_init(struct i915_active *ref,
+-- 
+2.54.0
+
 
