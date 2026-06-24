@@ -1,199 +1,152 @@
-Return-Path: <stable+bounces-268197-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-269745-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id +udfNyYJPGr6iwgAu9opvQ
-	(envelope-from <stable+bounces-268197-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 24 Jun 2026 18:43:18 +0200
+	id EKkcFAhjQmr25wkAu9opvQ
+	(envelope-from <stable+bounces-269745-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 29 Jun 2026 14:20:24 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7DD6F6C00C2
-	for <lists+stable@lfdr.de>; Wed, 24 Jun 2026 18:43:18 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id E7A196D9FB5
+	for <lists+stable@lfdr.de>; Mon, 29 Jun 2026 14:20:23 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=amd.com header.s=selector1 header.b=4GGUPfi+;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-268197-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-268197-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=quarantine) header.from=amd.com;
-	arc=reject ("cv is fail on i=2")
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=bIOJGuAk;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-269745-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-269745-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id ECF973024E75
-	for <lists+stable@lfdr.de>; Wed, 24 Jun 2026 16:42:08 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 7CAF530432FF
+	for <lists+stable@lfdr.de>; Mon, 29 Jun 2026 12:14:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B13CA33B966;
-	Wed, 24 Jun 2026 16:41:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 915BD36C9EC;
+	Mon, 29 Jun 2026 12:14:07 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from CO1PR03CU002.outbound.protection.outlook.com (mail-westus2azon11010048.outbound.protection.outlook.com [52.101.46.48])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61B8F332604;
-	Wed, 24 Jun 2026 16:41:58 +0000 (UTC)
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782319319; cv=fail; b=F6kQ0ZQB/EKoQgxUnFgcdWttpiHHTX470qopQYF/EwUX/Ug5iwVMmRcJon+mMKgKvVALWhz1rbGqS4+dSE/gpgWWBq9f2QeHXwNksNNFz0VetQ7WkpIJclGWC9oH8nsNn9xnlUdnn6tXpAvkRrjlE4lAZcxcY5yvvPfOcbZrWDo=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782319319; c=relaxed/simple;
-	bh=E3g6frPvNc2i7fvCC/NjKykCIr+NJh1wVMW6Oynxpsk=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=VqQNf/d34Pm1GDvTfqkaypPPLEWIWgceugoCyuOAhgcD1PJ8/2UdohJiaWshm676o4IVh6vDpcs3njRZAYUnnjHjt7JaToCgUNb0zFEBO+H5UFR8KCT55/CtMGKE9riZDA9So1b5Yj3ena5044tVZ4ONAr1xl6s1dTzeseR27iI=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=4GGUPfi+; arc=fail smtp.client-ip=52.101.46.48
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=hbRFEtMOTfjATH3e5CINIQGjRqSxIu0B78A52FlHOXKIH58eixc6bPlW6hfX5PxQgRUmTz1OU8dZzOugziFHlc14MWvEOcB3bAk8XUkXPUrOC6+7PQVyd8aOGBuYUzcc3tmp16/wgLfJBqh0dbm/43ndTHbczbMuVFJgAX6hsSvp3xnEYRsSiWzgBduXsDwAYJ+KnhmzYZVk5+9n9MTc2PhcA1O6+JzMzX9Cd321bD9Gc9oDyFMI1PpGJqwS7oTZMa9wY1hLciBbdNNSuDUPCXIg++Uq8xVJE71RZ2rnNX5ZrzJkRn4zTquhk/EXx7qBsKLK4RjMGJ0S5aqiP43j7w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=7Jr0BxNAAxmcRFmeYLBoJ6hgm9vhlqWD+YMxqNT1frc=;
- b=Nh0rqoyoB0UvEn9NG94KBmCe9eg1eIP/4Kh6w6vSI6S6a7I/VSOymtIWpY4+2lzWuvYURv762ghL8NyK+vOVVKS4dI/h6B85+Uqg6Fe+hQWo2YDCpp/FrdYOTDjafYTL4MkUMHYPTiQ8Q1MCyP2i1/82nz9nyEdLZKm2XOiETvskyGQNDR7ezUCG8YqbnJpFoWRXprZ/e3w4Ci7rJ7hqJquXqnlqLqby0Wbd1xyvnJ1ltiM6jKgp5VVSDSeZRK+ZvLNbDld7izWgoACOU9NqQ/3+Fqi+Dfjk2ClOHWFRxx3NyVPVINxDx1KVg6PZ1h6Ix1Ko54ZQKNWuk77vIu2SBg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=alien8.de smtp.mailfrom=amd.com; dmarc=pass
- (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=7Jr0BxNAAxmcRFmeYLBoJ6hgm9vhlqWD+YMxqNT1frc=;
- b=4GGUPfi+y3GqGuOmZXClX3yHhYqXXlU4btJB/51EKrKqtdwkcBI6YPuRtwal8YKUDs50MhMtXNmCJcFvui7tGrLaUNDlE5Qo8rMC9OYHgA7k6J1DHZemtJ0vfftKV4OZ5VaEIDyo60Lg9Ri7c+eYYm/bs3bufK5Sa1fHzEun9lc=
-Received: from PH8PR15CA0023.namprd15.prod.outlook.com (2603:10b6:510:2d2::22)
- by SA1PR12MB7269.namprd12.prod.outlook.com (2603:10b6:806:2be::5) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.159.12; Wed, 24 Jun
- 2026 16:41:54 +0000
-Received: from SN1PEPF000397B1.namprd05.prod.outlook.com
- (2603:10b6:510:2d2:cafe::a1) by PH8PR15CA0023.outlook.office365.com
- (2603:10b6:510:2d2::22) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.21.159.15 via Frontend Transport; Wed,
- 24 Jun 2026 16:41:53 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
-Received: from satlexmb07.amd.com (165.204.84.17) by
- SN1PEPF000397B1.mail.protection.outlook.com (10.167.248.55) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.159.10 via Frontend Transport; Wed, 24 Jun 2026 16:41:53 +0000
-Received: from satlexmb08.amd.com (10.181.42.217) by satlexmb07.amd.com
- (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.41; Wed, 24 Jun
- 2026 11:41:53 -0500
-Received: from [172.29.28.188] (10.180.168.240) by satlexmb08.amd.com
- (10.181.42.217) with Microsoft SMTP Server id 15.2.2562.41 via Frontend
- Transport; Wed, 24 Jun 2026 11:41:49 -0500
-Message-ID: <0500111d-91bf-4105-8de3-af44a113157a@amd.com>
-Date: Wed, 24 Jun 2026 12:41:48 -0400
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6688D37C0FC;
+	Mon, 29 Jun 2026 12:14:06 +0000 (UTC)
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1782735247; cv=none; b=Av2v7VOJ/LTjmSH2OGHh0yoR2kbeVashUBUFeh5vsw3cJ2ADmg3h+E3qGA01Mws6c8ZSSad3lxckHrn0+b42erD7EQ2i3rg7uBfw08e5APqGEELEJtl2cJil4YqY6cKzSQRkKCfcOMyyeteV+lQ1DGMqpnuph/e3ThK8H2lhcZA=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1782735247; c=relaxed/simple;
+	bh=I8SxFiR4w7yQ2Mzp5iIXtB1nJWVUCK0u8oqOK9del00=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=jDa4a7QOI763h1R8POO2vMPSHKbl2s3ktLBe02h6LT5dtm75m2vWtaSvFGhPSt6Xms4M8cm+vVGT7lzp1mTrUsWl7f8+cVUwN4ecv7cT6BMdESUVTHSxSZHRHtEs5S2HOUko02Jl0qQeSvhPv338jIQAttE1D9nDSN9ulr9IP2c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bIOJGuAk; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 034CD1F000E9;
+	Mon, 29 Jun 2026 12:14:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1782735246;
+	bh=nrRq/rqP6CPHqJ5bPla9J1CX1DPLvJIFTJzunN36uJQ=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date;
+	b=bIOJGuAkRUeEsVyXg2f4w6mVqSoSoGesHWg/LiHk1eKwRDY89MEN0tl0S4VO1WPXy
+	 2Sqd1qdNgX35zyEUdU5bTL4UPaDxzlgDZ3ek654UY/c5LO38Tsw0tuTZEvTKyDXq6L
+	 BjknxvL2Qg9GjjiXkSKFFdYBQgNU4p7hfawjXKgvtiDKy/M/c4E+j+60uyUbxJVc6M
+	 JwMfNX7yRv71qNizXLd1i5SSXn1Pp2a0htEwDJOSQzgiMq5qDwt1V4h6Lljw6ywzWD
+	 zV9PJCikwOT1EDedQaCR+SuuFCG1az0nrI1bgueqMks/dtJsMTMfUmQfnRsW0OK7SE
+	 owmwQPzsqjNgQ==
+From: Mark Brown <broonie@kernel.org>
+To: Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Fabio Estevam <festevam@gmail.com>, Carlos Song <carlos.song@nxp.com>, 
+ linux-spi@vger.kernel.org, imx@lists.linux.dev, 
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
+ Javier Fernandez Pastrana <javier.pastrana@linutronix.de>
+Cc: stable@vger.kernel.org
+In-Reply-To: <20260624151958.18626-1-javier.pastrana@linutronix.de>
+References: <20260624151958.18626-1-javier.pastrana@linutronix.de>
+Subject: Re: [PATCH v2] spi: imx: reconfigure for PIO when DMA cannot be
+ started
+Message-Id: <178231999027.43395.1514985035115232415.b4-ty@b4>
+Date: Wed, 24 Jun 2026 17:53:10 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] x86: Avoid divide by 0 in amd_smn_init()
-To: Borislav Petkov <bp@alien8.de>, Andrew Cooper <andrew.cooper3@citrix.com>
-CC: Mario Limonciello <mario.limonciello@amd.com>, Yazen Ghannam
-	<yazen.ghannam@amd.com>, Thomas Gleixner <tglx@kernel.org>, Ingo Molnar
-	<mingo@redhat.com>, Dave Hansen <dave.hansen@linux.intel.com>,
-	<x86@kernel.org>, "H. Peter Anvin" <hpa@zytor.com>, Penny Zheng
-	<penny.zheng@amd.com>, <stable@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>
-References: <20260623211904.3674-1-jason.andryuk@amd.com>
- <20260623213552.GAajr8ONjXFUnuUOE3@fat_crate.local>
- <48629f88-4b78-424e-a199-d87594c8cb40@amd.com>
- <20260624155910.GCajv-zguf0GiBxt2F@fat_crate.local>
-Content-Language: en-US
-From: Jason Andryuk <jason.andryuk@amd.com>
-In-Reply-To: <20260624155910.GCajv-zguf0GiBxt2F@fat_crate.local>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SN1PEPF000397B1:EE_|SA1PR12MB7269:EE_
-X-MS-Office365-Filtering-Correlation-Id: 022d1f76-e094-4e2e-130e-08ded20f7f65
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|82310400026|23010399003|1800799024|36860700016|4143699003|11063799006|3023799007|56012099006|22082099003|18002099003;
-X-Microsoft-Antispam-Message-Info:
-	AHIwtURToR02W/yFq+U+Urrgn2NeidsjNnak6KQKkyYYCsuYFVHRdWRj8sp2LvuuzVNonGE6QX5G5RumiE4DVDTPOqn4MPDENYQjqltZ5rneB6Ng5raDIgL+Y+Y4/ssL1ggvxwompDFXiYSFyWkl7+y2kz5nT6953FfRhp6xKd5Mi5n+38meQ+2DqAw917DxLj3ch+gb3NkgIRInavf/234Cjm47pugZtcbZJxaGeq6b1yJ/9R9A9bpYRbx3D1z6KBkLYdqA7+fM2rsQ324y6Aznc8X1aE1oFx9CeuE6baLdyMeCuyrt+nhqPZK4ahtqWw78QIkiFJcKjHPNRHX4EBY3onP+NxcVOjRXuSBlVAhrvpImB4fCUXsAbwvoqDdktE3DcQbG7L58ImsZay1lqMzgnBTXxKgnvtUvCVKLYcDLOaQJbIkSH/G4z/uM2ubscSfulbuuXnCaMtRit4wy9p+KPKFtYWeZtZi4pTkhpmruhUid7Q5jd2XJ/ST5AMP1kUylgUvCTT8YkDPVHm2ApttALhFVlwqRhXHXEAA3m9lbttsANEhzBrLryydbrLDFSDSS0st2YHF+kNyEWi4pvutbFgDsYOPHyAgQUqucs/8ylVaa3uLNVlf3/JVUuACxxeC8W6dBs+jB99gkqoedxPF1xFEE6UJ9xdKjsAPpn1LRmo/kbZQF/5ym2vbP/7AVlLMgh/tgNKr2gtz2eSAEpQ==
-X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(376014)(82310400026)(23010399003)(1800799024)(36860700016)(4143699003)(11063799006)(3023799007)(56012099006)(22082099003)(18002099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	uGHpujhnVcLwqoJ1Nwyn/GIAHM/kl/mxka5uZBfRIHdrzt6yXm/1OTAT5oCFi3QaNxObxbt2Sn0jKHmCDII3In4DNb933cXiTAbcFq3uP+43LzOZvS6pooW/OUik2bjQM5fKSVAeqi3zpzAC0u9+YowLEM5u9d0yW3wTUzvcs354tkbPRw3mrgnT4/57bmkiTN6I2DhIut4/3oqgqYpeMFYiHGBrjs6EaWFC10rF/dLaTYgA73KDw7LtISNNDD/rhpPQPUfZ7uQ+ReYvUn3NLm8axShTd7MjtCzcUsNmXp9WXAFZ3oYTJNgLDyuTw3UKRKrATC01P3cY7AY2fTw7mcsqjFUhrcdLfMl0my/aNmDodjJzRgk2Vr0b47IEYLcbx0C5mvdnHzcF/489kV1CTY5T9H346/BjRBq2V9ywGYl/b2UHh1eFtrr3SW05cWnW
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Jun 2026 16:41:53.6224
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 022d1f76-e094-4e2e-130e-08ded20f7f65
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	SN1PEPF000397B1.namprd05.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR12MB7269
+X-Mailer: b4 0.16-dev
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1139; i=broonie@kernel.org;
+ h=from:subject:message-id; bh=I8SxFiR4w7yQ2Mzp5iIXtB1nJWVUCK0u8oqOK9del00=;
+ b=owEBbQGS/pANAwAKASTWi3JdVIfQAcsmYgBqQmGLTSMvPD+Qz2hu2SvAp+EQjs8+4wlCDYYXX
+ 1Pz9qVf13CJATMEAAEKAB0WIQSt5miqZ1cYtZ/in+ok1otyXVSH0AUCakJhiwAKCRAk1otyXVSH
+ 0KSeB/92Zvp4edp2JAXF83YCsb7VKwwI8k9+1fxKerRxav/oc0lreCiVnEvWOxEY0a88/8aAKHw
+ L0mOKSavZWuZzlat6yzPzrn8pskTjGQ20NqU7dKPR0RbOgjmhKfBkX+MCoHFzQOKUveZZL/W/Jb
+ JUHlAN77K3hZHFLf04upFHGqu4m45Tg+TNpMWZdtPTZgFaqjLUPvGzTh8KR8P/Pa47jortjrABh
+ VvDU4dMjH8hkcHoRhrLDhv/yzGqMXi8Jbzz57gcI+jaZ8z9ISAhXc4TVPck7A40WO4u9xsCX61t
+ Ajxl6jN96Rfx2MCV/gdet1mnhwsbtYwAYJJiDTDlA1Fm+aZK
+X-Developer-Key: i=broonie@kernel.org; a=openpgp;
+ fpr=3F2568AAC26998F9E813A1C5C3F436CA30F5D8EB
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	ARC_REJECT(1.00)[cv is fail on i=2];
-	DMARC_POLICY_ALLOW(-0.50)[amd.com,quarantine];
-	R_DKIM_ALLOW(-0.20)[amd.com:s=selector1];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+X-Spamd-Result: default: False [-3.66 / 15.00];
+	WHITELIST_SPF_DKIM(-3.00)[kernel.org:d:+,kernel.org:s:+];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	DATE_IN_PAST(1.00)[115];
+	MID_RHS_NOT_FQDN(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCPT_COUNT_TWELVE(0.00)[12];
-	TAGGED_FROM(0.00)[bounces-268197-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER(0.00)[jason.andryuk@amd.com,stable@vger.kernel.org];
-	FORGED_RECIPIENTS(0.00)[m:bp@alien8.de,m:andrew.cooper3@citrix.com,m:mario.limonciello@amd.com,m:yazen.ghannam@amd.com,m:tglx@kernel.org,m:mingo@redhat.com,m:dave.hansen@linux.intel.com,m:x86@kernel.org,m:hpa@zytor.com,m:penny.zheng@amd.com,m:stable@vger.kernel.org,m:linux-kernel@vger.kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
 	FROM_HAS_DN(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:Frank.Li@nxp.com,m:s.hauer@pengutronix.de,m:kernel@pengutronix.de,m:festevam@gmail.com,m:carlos.song@nxp.com,m:linux-spi@vger.kernel.org,m:imx@lists.linux.dev,m:linux-arm-kernel@lists.infradead.org,m:linux-kernel@vger.kernel.org,m:javier.pastrana@linutronix.de,m:stable@vger.kernel.org,s:lists@lfdr.de];
+	FREEMAIL_TO(0.00)[nxp.com,pengutronix.de,gmail.com,vger.kernel.org,lists.linux.dev,lists.infradead.org,linutronix.de];
+	FORGED_SENDER(0.00)[broonie@kernel.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-269745-lists,stable=lfdr.de];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[jason.andryuk@amd.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[amd.com:+];
 	ALIAS_RESOLVED(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[broonie@kernel.org,stable@vger.kernel.org];
+	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[11];
 	TAGGED_RCPT(0.00)[stable];
-	RCVD_COUNT_SEVEN(0.00)[8]
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 7DD6F6C00C2
+X-Rspamd-Queue-Id: E7A196D9FB5
 
-On 2026-06-24 11:59, Borislav Petkov wrote:
-> + Andy
-> 
-> On Wed, Jun 24, 2026 at 11:41:16AM -0400, Jason Andryuk wrote:
->> I have wip s0ix support with Xen where dom0 issues the amd-pmc calls to
->> enter s0ix.  I'm not sure of all the uses of SMN, but with Xen dom0/hardware
->> domain running most drivers, I think it should be available.
-> 
-> Well, how should we make it available if dom0 doesn't really allow us to
-> enumerate PCI roots and thus count AMD nodes?
+On Wed, 24 Jun 2026 17:19:58 +0200, Javier Fernandez Pastrana wrote:
+> spi: imx: reconfigure for PIO when DMA cannot be started
 
-dom0 enumerates the physical PCI roots.  It's just the dom0 vCPUs and 
-topology are synthetic.
+Applied to
 
-> Andy, see upthread.
-> 
-> What would you suggest we do here on dom0? We're trying to enumerate AMD
-> nodes but dom0 is doing something special wrt topology and PCI roots - see
-> get_next_root() in amd_node.c.
-> 
-> Thx.
-> 
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-7.2
 
-I think this is the issue:
+Thanks!
 
-     The "root" device search was introduced to support SMN access for Zen
-     systems. This device represents a PCIe root complex. It is not the
-     same as the "CPU/node" devices found at slots 0x18-0x1F.
+[1/1] spi: imx: reconfigure for PIO when DMA cannot be started
+      https://git.kernel.org/broonie/spi/c/245404c26563
 
-We don't want dom0 to access the "CPU/node" devices.  It's the "root" 
-device SMN access I am trying to retain.  Many amd_smn_read/write calls 
-have hardcoded node 0, like for amd-pmc.
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
 
-Regards,
-Jason
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
+
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark
+
 
