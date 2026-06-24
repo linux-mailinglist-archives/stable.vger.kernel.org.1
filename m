@@ -1,167 +1,162 @@
-Return-Path: <stable+bounces-268225-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-268226-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id SahxK5ZUPGpDmwgAu9opvQ
-	(envelope-from <stable+bounces-268225-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 00:05:10 +0200
+	id xXxdF5BXPGq6mwgAu9opvQ
+	(envelope-from <stable+bounces-268226-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 00:17:52 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id B59486C1AE6
-	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 00:05:09 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id C438B6C1B59
+	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 00:17:51 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=archlinux.org header.s=dkim-rsa header.b=G0Wxt0r2;
-	dkim=pass header.d=archlinux.org header.s=dkim-ed25519 header.b=rHA48A4i;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-268225-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-268225-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=none) header.from=archlinux.org;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ThqsPopR;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-268226-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-268226-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 0C168300682A
-	for <lists+stable@lfdr.de>; Wed, 24 Jun 2026 22:05:07 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 38AC8301475C
+	for <lists+stable@lfdr.de>; Wed, 24 Jun 2026 22:17:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A839265629;
-	Wed, 24 Jun 2026 22:05:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B89AD28C869;
+	Wed, 24 Jun 2026 22:17:46 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail.archlinux.org (mail.archlinux.org [95.216.189.61])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AA1B2459C5;
-	Wed, 24 Jun 2026 22:05:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9493D17DFE7;
+	Wed, 24 Jun 2026 22:17:45 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782338705; cv=none; b=PdcQI/gkgr40Gq3iJ+HPQJKX04m8+bYGIcIETWRHgx0ccVg+cgm/oediG+IMHxwxwdsL16uCXrrvNoRiqkodMJp0liWkouuzKmqwPmypQTrdEQ981PpRinhIreFHOJAVa2Ts1oRZa44J2LqDSOOgwisAGYRoCJoXeON6K4WmvF8=
+	t=1782339466; cv=none; b=MUpEhrvHz6lkcgQl1FUsheIg5yk/WAl+s+TvdAOhkUHMK75w588dE6TGcCqWyL1a61xfqA9iBmRZsdHxY7dVGz0L4lkkBxYI/hVXCqH34+zQyFV/DaG12EdOCqk8B5tqZ2Vb+ifOmmFqjdhBjVf0fZVVpOul58caNYkjmY/9K2E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782338705; c=relaxed/simple;
-	bh=DzsGDJlo0P6UfxfIIVwaI4Ge4r3irh7jrVqwbjP2kbE=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=E8zh0BU4HtSOGgPsPW/saHFl42cHyQoYUbwazZ/LERwCoQ/BO7mWlNsgI7moOqk7oLq9/Qwyxb0rYJTtqKdZFUffvtzA4Ea0Hc3YK0Nkx5FLCSjairqIiiFNsvxffp12YxtLehVkuVPnJxWGIdoT3e9eXluEk2G3wi1NHN7+C2g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=archlinux.org; spf=pass smtp.mailfrom=archlinux.org; dkim=pass (4096-bit key) header.d=archlinux.org header.i=@archlinux.org header.b=G0Wxt0r2; dkim=permerror (0-bit key) header.d=archlinux.org header.i=@archlinux.org header.b=rHA48A4i; arc=none smtp.client-ip=95.216.189.61
-From: Felix Yan <felixonmars@archlinux.org>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=archlinux.org;
-	s=dkim-rsa; t=1782338701;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=CRHXdpLz3bOfMCjFuHufEqTdHRjLCSuPmqyaKfN5Y1s=;
-	b=G0Wxt0r20645tYPp6uRdYV4qaOMahAPpt9HIEZEhBJUZ9LvB0FRD4Nv7314wJIPfugc7Rf
-	tFNq6CPbfDbHkjRjlPBeOTgzl/RF/toPHCNmRuNpRK5bc4+dLqA+i3Sa+LD8vuj6F50xJz
-	KxHRme9PoF/TNfHzHYSJwaDjHSBTorQFY6txaMUiNd44grAIEIi32QqhL8Q8kA7yMVOUe1
-	QCdvInGQwnzKT53O6Up7CdMkhIvcTNXxoxMGAdOebFw9NAzWrcjO+0Y07WIkEt5QHLowV/
-	EUOZIWcXgdIDUYyvvtj1qxjwzEkBTIkTEshM4FxV5LrQ4qXoiOzIXvW9n0CK70SRcH6iRM
-	5e44m1drrrfIOPjiX0XH1HSn1OV3V+EZpIhMW/bjqQPcVpTnSyeXYKqrdGEFijVV+Se2EC
-	BvK/4ewxXjp0+yFE0VKd+nt4JEwRTwIY3FWFi7+egV80xo1+2bLUQ5qc+WoeGxSoOfT7pF
-	xthcPBheysDSoRCc/xMYBtzuSV1013HjhQA6eI4kyKP++nGvZJByScfOXs4J/EzLagyWHG
-	KuTSDY/GLnu8BHjF6a/57aVuKAllVv2H4EkdNlvp7qe58Neob0jB58xgbStpx6O9Kka3M0
-	jzAWsSGnIaV4y2D+HsdEzRrMP/DT80ZGQ5LQS/rfVxxslJVuwrHjE=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=archlinux.org;
-	s=dkim-ed25519; t=1782338701;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=CRHXdpLz3bOfMCjFuHufEqTdHRjLCSuPmqyaKfN5Y1s=;
-	b=rHA48A4ipOYEPx6vlpsau0zfNunJTQvt1uNml7YWW3bqQlSRwEr/AuO9AlLUWNVGXnt++S
-	P0IvDvf1UQDBKKAA==
-To: daniel.lezcano@kernel.org,
-	tglx@kernel.org
-Cc: wens@kernel.org,
-	jernej.skrabec@gmail.com,
-	samuel@sholland.org,
-	indrek.kruusa@gmail.com,
-	linux-kernel@vger.kernel.org,
-	linux-sunxi@lists.linux.dev,
-	linux-riscv@lists.infradead.org,
-	Felix Yan <felixonmars@archlinux.org>,
-	stable@vger.kernel.org
-Subject: [PATCH] clocksource/drivers/timer-sun4i: Advertise a real minimum delta
-Date: Thu, 25 Jun 2026 06:04:34 +0800
-Message-ID: <20260624220434.4183732-1-felixonmars@archlinux.org>
-X-Mailer: git-send-email 2.54.0
-In-Reply-To: <CA+fTLhgLmTY+exGujKf8OYYQvcEW5X5NJ_5sLq2AYL6zER2c0A@mail.gmail.com>
-References: <CA+fTLhgLmTY+exGujKf8OYYQvcEW5X5NJ_5sLq2AYL6zER2c0A@mail.gmail.com>
+	s=arc-20240116; t=1782339466; c=relaxed/simple;
+	bh=KGAEoNXM+X6r7G1OLOqYkfq4XezrCJ4j5qUYzl34gis=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=lSHzdgtf5Tg5wM0/wOp5UpOfrkicUPKzuRPR5DmJSlD0uPZhV2/doFhQSwoKn1Z0n8LJ/bMODU5am9INsHIgnWkEdSw9Vnx+gaQMGrcvVE+JQ0oaC4Vl0I2FdKk0ZAzStXMFqIZpoTKqVRhFXU7ygWF15R6vkeEm9FYM7F9N15E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ThqsPopR; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71ED41F000E9;
+	Wed, 24 Jun 2026 22:17:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1782339465;
+	bh=7r/QIb+MyviZ0cvAfiTnrfO+nnLRPdOlocQP+SmLxBs=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=ThqsPopRFrXgXUpjCAdXsN5b+LL6eXvZh2bZit3FOqs6/3TGQbkmi47W5MqH7QL9F
+	 6L5YzEW8XXAAfHUWOwm8oQPUYigAAhXRkbiGzSJ0dBU91jmFfMj1yKUxrp2Nl4/+az
+	 cjUMrWV/eS5roZ+x2ejGWlcphJHk+GVcaetC/ErZq2uMfg4fGCyQ6WnhJRu96A5wEA
+	 Fn9HODxixwGvUFYKr01Goh3+R+64T0OzwkvXNReIl40BhkXWiLer5twMmg8wWGMoSP
+	 k8LN4TDHyteHqXz5lmvHBr1MKmyco73Sy6Uh27jVvOErHavqSIJqvse6PXtS9bYkpN
+	 uD6vHkQotuamA==
+Date: Wed, 24 Jun 2026 15:17:39 -0700
+From: Nathan Chancellor <nathan@kernel.org>
+To: Ingo Molnar <mingo@kernel.org>, Peter Zijlstra <peterz@infradead.org>
+Cc: Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
+	Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+	Ard Biesheuvel <ardb@kernel.org>,
+	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
+	Bill Wendling <morbo@google.com>,
+	Justin Stitt <justinstitt@google.com>, linux-kernel@vger.kernel.org,
+	llvm@lists.linux.dev, stable@vger.kernel.org
+Subject: Re: [PATCH] x86/boot/compressed: Disable jump tables for clang
+Message-ID: <20260624221739.GA7516@ax162>
+References: <20260623-x86-boot-compressed-disable-jt-clang-v1-1-575fccd58107@kernel.org>
+ <ajulLtY29HtgWokg@gmail.com>
+ <20260624093848.GA48970@noisy.programming.kicks-ass.net>
+ <ajuoqIk4tSV7CmFC@gmail.com>
+ <ajupfkcZTTxGP2dG@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ajupfkcZTTxGP2dG@gmail.com>
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [0.84 / 15.00];
+X-Spamd-Result: default: False [-3.16 / 15.00];
+	WHITELIST_SPF_DKIM(-3.00)[kernel.org:d:+,kernel.org:s:+];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[archlinux.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[archlinux.org:s=dkim-rsa,archlinux.org:s=dkim-ed25519];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	MID_RHS_NOT_FQDN(0.50)[];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-268225-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[kernel.org,gmail.com,sholland.org,vger.kernel.org,lists.linux.dev,lists.infradead.org,archlinux.org];
-	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	RCPT_COUNT_TWELVE(0.00)[14];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:mingo@kernel.org,m:peterz@infradead.org,m:tglx@kernel.org,m:mingo@redhat.com,m:bp@alien8.de,m:dave.hansen@linux.intel.com,m:x86@kernel.org,m:ardb@kernel.org,m:nick.desaulniers+lkml@gmail.com,m:morbo@google.com,m:justinstitt@google.com,m:linux-kernel@vger.kernel.org,m:llvm@lists.linux.dev,m:stable@vger.kernel.org,m:nickdesaulniers@gmail.com,s:lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_SENDER(0.00)[felixonmars@archlinux.org,stable@vger.kernel.org];
-	RCVD_COUNT_THREE(0.00)[3];
-	FORGED_RECIPIENTS(0.00)[m:daniel.lezcano@kernel.org,m:tglx@kernel.org,m:wens@kernel.org,m:jernej.skrabec@gmail.com,m:samuel@sholland.org,m:indrek.kruusa@gmail.com,m:linux-kernel@vger.kernel.org,m:linux-sunxi@lists.linux.dev,m:linux-riscv@lists.infradead.org,m:felixonmars@archlinux.org,m:stable@vger.kernel.org,m:jernejskrabec@gmail.com,m:indrekkruusa@gmail.com,s:lists@lfdr.de];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[felixonmars@archlinux.org,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-268226-lists,stable=lfdr.de];
+	FORGED_SENDER(0.00)[nathan@kernel.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[archlinux.org:+];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	TO_DN_SOME(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[nathan@kernel.org,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[kernel.org,redhat.com,alien8.de,linux.intel.com,gmail.com,google.com,vger.kernel.org,lists.linux.dev];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[11];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_RCPT(0.00)[stable,lkml];
+	MISSING_XM_UA(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: B59486C1AE6
+X-Rspamd-Queue-Id: C438B6C1B59
 
-sun4i_clkevt_next_event() compensates for the timer stop/start
-synchronization delay by programming evt - TIMER_SYNC_TICKS into the
-hardware interval register. The clockevent device currently advertises
-TIMER_SYNC_TICKS as min_delta_ticks, so the clockevents core is allowed
-to call set_next_event() with evt == TIMER_SYNC_TICKS.
+On Wed, Jun 24, 2026 at 11:55:10AM +0200, Ingo Molnar wrote:
+> 
+> * Ingo Molnar <mingo@kernel.org> wrote:
+> 
+> 
+> > > I'm sitting on a patch to unconditionally disable jump-tables for
+> > > x86_64:
+> > > 
+> > >   https://web.git.kernel.org/pub/scm/linux/kernel/git/peterz/queue.git/log/?h=x86/syscall
+> > 
+> > In particular:
+> > 
+> >   https://web.git.kernel.org/pub/scm/linux/kernel/git/peterz/queue.git/commit/?h=x86/syscall&id=76612388fe7aa41a8eb88f890d451bc17255eda0
+> 
+> Side note: since arch/x86/boot/compressed/Makefile constructs
+> its own KBUILD_CFLAGS, so a change to that Makefile will still
+> be required to universally apply -fno-jump-tables and work
+> around this Clang optimization in the decompression code.
 
-That programs a zero-tick interval. With oneshot/highres/nohz timer
-operation this can leave the next event stuck, which was observed as a
-boot hang on Allwinner D1 after the clockevents core started reusing
-forced minimum-delta events.
+Right. I had intentionally kept my change scoped to clang to be less
+controversial but in the face of Peter's series, it makes sense to do it
+for all compilers like Ingo suggested. I have no preference for how we
+proceed here. I don't mind sending a v2 with something like
 
-Advertise one extra tick instead, so the smallest event accepted by the
-core still programs at least one hardware tick after the synchronization
-compensation.
+diff --git a/arch/x86/boot/compressed/Makefile b/arch/x86/boot/compressed/Makefile
+index 07e0e64b9a98..06934f9691d6 100644
+--- a/arch/x86/boot/compressed/Makefile
++++ b/arch/x86/boot/compressed/Makefile
+@@ -27,6 +27,7 @@ targets := vmlinux vmlinux.bin vmlinux.bin.gz vmlinux.bin.bz2 vmlinux.bin.lzma \
+ KBUILD_CFLAGS := -m$(BITS) -O2 $(CLANG_FLAGS)
+ KBUILD_CFLAGS += $(CC_FLAGS_DIALECT)
+ KBUILD_CFLAGS += -fno-strict-aliasing -fPIE
++KBUILD_CFLAGS += -fno-jump-tables
+ KBUILD_CFLAGS += -Wundef
+ KBUILD_CFLAGS += -DDISABLE_BRANCH_PROFILING
+ cflags-$(CONFIG_X86_32) := -march=i386
+--
 
-Fixes: 12e1480bcb49 ("clocksource: sun4i: Report the minimum tick that we can program")
-Cc: stable@vger.kernel.org
-Reported-by: Indrek Kruusa <indrek.kruusa@gmail.com>
-Closes: https://lore.kernel.org/linux-riscv/CA+fTLhgLmTY+exGujKf8OYYQvcEW5X5NJ_5sLq2AYL6zER2c0A@mail.gmail.com/
-Assisted-by: Codex:gpt-5.5
-Signed-off-by: Felix Yan <felixonmars@archlinux.org>
----
- drivers/clocksource/timer-sun4i.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Another option would be Peter folding that diff into his series then
+once it lands, I could send this patch to the stable team with most of
+this patch's justification intact with a note that the equivalent change
+has been applied to mainline under a different justification. Just let
+me know what you all would prefer.
 
-diff --git a/drivers/clocksource/timer-sun4i.c b/drivers/clocksource/timer-sun4i.c
-index 7bdcc60ad43c..c2d04ab7cf2d 100644
---- a/drivers/clocksource/timer-sun4i.c
-+++ b/drivers/clocksource/timer-sun4i.c
-@@ -208,7 +208,7 @@ static int __init sun4i_timer_init(struct device_node *node)
- 	sun4i_timer_clear_interrupt(timer_of_base(&to));
- 
- 	clockevents_config_and_register(&to.clkevt, timer_of_rate(&to),
--					TIMER_SYNC_TICKS, 0xffffffff);
-+					TIMER_SYNC_TICKS + 1, 0xffffffff);
- 
- 	/* Enable timer0 interrupt */
- 	val = readl(timer_of_base(&to) + TIMER_IRQ_EN_REG);
 -- 
-2.54.0
-
+Cheers,
+Nathan
 
