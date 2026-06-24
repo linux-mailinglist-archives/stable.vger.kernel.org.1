@@ -1,196 +1,155 @@
-Return-Path: <stable+bounces-268152-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-268179-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id mV/1OGvLO2r2dAgAu9opvQ
-	(envelope-from <stable+bounces-268152-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 24 Jun 2026 14:19:55 +0200
+	id jouDNqr3O2pkgwgAu9opvQ
+	(envelope-from <stable+bounces-268179-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 24 Jun 2026 17:28:42 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3D50C6BE0B8
-	for <lists+stable@lfdr.de>; Wed, 24 Jun 2026 14:19:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2F1926BFA5B
+	for <lists+stable@lfdr.de>; Wed, 24 Jun 2026 17:28:42 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=V2raHcm4;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-268152-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-268152-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=none) header.from=gmail.com;
+	dkim=none;
+	dmarc=none;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-268179-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-268179-lists+stable=lfdr.de@vger.kernel.org";
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 5E728301AA75
-	for <lists+stable@lfdr.de>; Wed, 24 Jun 2026 12:16:27 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C61513111143
+	for <lists+stable@lfdr.de>; Wed, 24 Jun 2026 15:19:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 345B42ED870;
-	Wed, 24 Jun 2026 12:16:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC65B3D669D;
+	Wed, 24 Jun 2026 15:19:05 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lj1-f182.google.com (mail-lj1-f182.google.com [209.85.208.182])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from maynard.decadent.org.uk (maynard.decadent.org.uk [65.21.191.19])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA51D272801
-	for <stable@vger.kernel.org>; Wed, 24 Jun 2026 12:16:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB5352F8EA5;
+	Wed, 24 Jun 2026 15:19:03 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782303386; cv=none; b=dca/gqWr2w5ZLee3I7fUoBjn4QLEJ3x3+Wu7QjpyIUdPe0YLoktfNEhLieen6YOYUHEEou27MMCPLC4wm/4HWsNXG76+azdYrw7WHX2rVoird3GAMppfPIA0OOHYSiyhMHkDMm2uSnBecwt6hjap7DtbLpthFNv2q34boI9LnzU=
+	t=1782314345; cv=none; b=FMt+5PEztKiza5PkGP87Lh0iwjhL0DG/r5BmaKYdaQ07v7TIs15mMUYi5W6fnjTHeemqiuWTQjGDmMmEMUBX+ss/yGQm2XWIE/ZuupO4MAC6BHsZUL7JknxlTvIkx+F5jWEmy2JDOPzWidvIs7pAjWk/7C+U/SCyzc2nvnB5/BI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782303386; c=relaxed/simple;
-	bh=8mTZuUoiyhNRN3gTKiUmzENom/VFrrl5XjY2DI/t9pU=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=BBI1s/qnE8R+mim2+4NggOydBAWKrsW9N1FhCPwHNe4HM3Qp9MosrewhVlqAHXXj8ISZb8XvYTS31y69MqlwfL81ui7M+Lbgkp/a5THVvJ7WumjCpgcdCoeLt9UtTGjuL50bq91ZXurEBalzk9+OeUedpMa6JO9JccJlWdz4bTs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=V2raHcm4; arc=none smtp.client-ip=209.85.208.182
-Received: by mail-lj1-f182.google.com with SMTP id 38308e7fff4ca-399389dae7fso10076221fa.0
-        for <stable@vger.kernel.org>; Wed, 24 Jun 2026 05:16:24 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1782303383; x=1782908183; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=ZWN+ktVTYkpSQqdNFGaR2EYDD+puHcc21cFbcKJgBfs=;
-        b=V2raHcm4aq59i6qi0YfjMaqw8TXp1JbHv1JaNVBJ1C0bXP7+3dHBVRQqMBY0KHnvMm
-         AkG+HFYcLqUUWHwx6Ch0UQEWHrMch9cq/7r1ANOBfHHgpPQPLZSa7kQgD+XCS8rW2QFZ
-         jO1H2gIPQwJmogZ1qKqrSIX9k/VrTj8zNA5ll/vaw8fEoYF1VoG129P0Ayq1mYKXdk3+
-         pXm948Uir2MbhKX1PCUySlzsLAQBHYuytszwn91cmxfRX0tKzwy3Irt0hHiPmyjbwVaT
-         XI9Jt/Rm1oyumHGhgOCN8c1FBXaOvtm4XIWMGeJPw9TJUD5Nmrn0d5jO6QJQi/50LnSD
-         8ddA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782303383; x=1782908183;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ZWN+ktVTYkpSQqdNFGaR2EYDD+puHcc21cFbcKJgBfs=;
-        b=U5g5Ec4NZIXl4sSxmRBIvlJ3xlt+U3/kNAbvEQqWaBSeb2FrJhs0jw7S9yJI39i1T9
-         QVxLrFW8pjc05bGpW5XsUxC55OpUQ2fwnBoHC06xjj0Ym/TN4pYlpATUCmrITqCt0RSY
-         bc/VvE4oHw0a5rUJtZZIkPFWV8l+5LstuqHUh4UCIX5pnBqQNxzzvDktt5qbbmmVpQtc
-         h8YL7WUxL8Ptf3OJGaghecVpL1PyD2tA1eGmLYlfUo6aERUhywgJQabFD5WlrzIX21E/
-         +DKHkdu7E4UIji9xE9mXtRXcNVT0wT8XzmC8TFjPrrvu9NRK9MGZAogllclDgB5yuVmz
-         Jzig==
-X-Gm-Message-State: AOJu0YyVxdrr/P2xy9FVQKZv2OCI+RqD5Qqq6i0e4bA8aC77pmzHp1sp
-	x1npL6uYVzo7Ft899jSDUiJEH3Q0fgffujJ8wftj+ooVwfVIE79sGOz+cajaof417hE=
-X-Gm-Gg: AfdE7cl1vPei5ELdrAU1pdXmOjhyGQBIXnx+IG9ESXTFTx1mpLQhnXiTXa8y10oaAme
-	kvVvd5IZA2PsqijPBSgZUwP7Kfv9I4R8i/dn4GJjjGZDkAYg/N/OI3gM0KMgLiSFhZiIwuGnJTd
-	uNpEx4bi2186/THb2KOX+hpgqqz/gdPMTwMF40v5J6Vv4c9D2LhEPOgCrF6HfCG4I/uQ0uc5mpA
-	QSMQ69rwU110vhpEMyVEX1EGv169Clw5KJnAsbqrhu6frhyFh7YP691Sso06Tja33LdNkBJEjpZ
-	ou5zgz8JJuiA1jayy8HrX0d8MUYAcZpJrjm2uIFpnsz+k0PXms2BmUQ7BboZ50LYYMtDL2NQML3
-	8arLaLukkfExcQR8wsNzMIZJ1IpygxAOtYpRj+4QN5+ESvGDvn5mVHMBPwZN2yEcidL2VyZA90k
-	LEfVEYsfXXY2a8g/+qjLrjIsUwM6UK
-X-Received: by 2002:a2e:a913:0:b0:38e:8357:c5ae with SMTP id 38308e7fff4ca-39ac25ddbedmr400571fa.9.1782303382591;
-        Wed, 24 Jun 2026 05:16:22 -0700 (PDT)
-Received: from grower.astra-academy.ru ([185.32.135.49])
-        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-3999b156f23sm33089191fa.27.2026.06.24.05.16.20
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 24 Jun 2026 05:16:22 -0700 (PDT)
-From: Alexander Martyniuk <alexevgmart@gmail.com>
-To: stable@vger.kernel.org,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Alexander Martyniuk <alexevgmart@gmail.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	Jann Horn <jannh@google.com>,
-	Lee Jones <lee@kernel.org>,
-	Sasha Levin <sashal@kernel.org>,
-	Rao Shoaib <rao.shoaib@oracle.com>,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	stable@kernel.org,
-	Yuan Tan <yuantan098@gmail.com>,
-	Yifan Wu <yifanwucs@gmail.com>,
-	Juefei Pu <tomapufckgml@gmail.com>,
-	Xin Liu <bird@lzu.edu.cn>,
-	Jiexun Wang <wangjiexun2025@gmail.com>,
-	Ren Wei <n05ec@lzu.edu.cn>
-Subject: [PATCH 5.15/6.1/6.6] af_unix: Reject SIOCATMARK on non-stream sockets
-Date: Wed, 24 Jun 2026 15:16:48 +0000
-Message-ID: <20260624151651.38894-1-alexevgmart@gmail.com>
-X-Mailer: git-send-email 2.43.0
+	s=arc-20240116; t=1782314345; c=relaxed/simple;
+	bh=QRtmDFIt4aXfDOHUY3Mt3rvSCzaVNgg/7GNG7k7kKec=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=f0DK4sv1Y0P3PjyOwMWy4Dt0z5c08Jzi17HHwELsiDUR0BrnAaCVQK/yGRQdn/zc6kx8hDQ5Glf2JxKCtYcGtt52585NHuG8IahWkyIl3nIQrSFFmQSOuFYQZ8jmwRvLFAxaY0BB/gN6HdajfcIqUNXz738DEMz/51gcw2eGBcw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=decadent.org.uk; spf=pass smtp.mailfrom=decadent.org.uk; arc=none smtp.client-ip=65.21.191.19
+Received: from [2a02:578:851f:1502:391e:c5f5:10e2:b9a3] (helo=deadeye)
+	by maynard with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <ben@decadent.org.uk>)
+	id 1wcPNQ-0041AD-09;
+	Wed, 24 Jun 2026 15:18:56 +0000
+Received: from ben by deadeye with local (Exim 4.99.3)
+	(envelope-from <ben@decadent.org.uk>)
+	id 1wcPNO-00000007zzq-3dvh;
+	Wed, 24 Jun 2026 17:18:54 +0200
+Message-ID: <b6441670bdb04dc530f433bd21d6c64feb633355.camel@decadent.org.uk>
+Subject: Re: [PATCH 5.15 299/411] ALSA: aloop: Fix peer runtime UAF during
+ format-change stop
+From: Ben Hutchings <ben@decadent.org.uk>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, 
+	syzbot+8fa95c41eafbc9d2ff6f@syzkaller.appspotmail.com, Takashi Iwai	
+ <tiwai@suse.com>, =?ISO-8859-1?Q?C=E1ssio?= Gabriel	
+ <cassiogabrielcontato@gmail.com>, Takashi Iwai <tiwai@suse.de>, Sasha Levin
+	 <sashal@kernel.org>
+Date: Wed, 24 Jun 2026 17:18:47 +0200
+In-Reply-To: <20260616145117.047717921@linuxfoundation.org>
+References: <20260616145100.376842714@linuxfoundation.org>
+	 <20260616145117.047717921@linuxfoundation.org>
+Content-Type: multipart/signed; micalg="pgp-sha512";
+	protocol="application/pgp-signature"; boundary="=-kr5dCzr0/TGAVnX8CVPo"
+User-Agent: Evolution 3.56.2-9 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-SA-Exim-Connect-IP: 2a02:578:851f:1502:391e:c5f5:10e2:b9a3
+X-SA-Exim-Mail-From: ben@decadent.org.uk
+X-SA-Exim-Scanned: No (on maynard); SAEximRunCond expanded to false
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [3.34 / 15.00];
-	DATE_IN_FUTURE(4.00)[2];
+X-Spamd-Result: default: False [-2.06 / 15.00];
+	SIGNED_PGP(-2.00)[];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_MISSING_CHARSET(0.50)[];
+	MIME_GOOD(-0.20)[multipart/signed,text/plain];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	MAILLIST(-0.15)[generic];
-	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-268152-lists,stable=lfdr.de];
-	FORGED_SENDER(0.00)[alexevgmart@gmail.com,stable@vger.kernel.org];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	FREEMAIL_CC(0.00)[gmail.com,davemloft.net,kernel.org,redhat.com,google.com,oracle.com,vger.kernel.org,lzu.edu.cn];
-	RCPT_COUNT_TWELVE(0.00)[20];
+	TAGGED_FROM(0.00)[bounces-268179-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[lists.linux.dev,syzkaller.appspotmail.com,suse.com,gmail.com,suse.de,kernel.org];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:alexevgmart@gmail.com,m:davem@davemloft.net,m:kuba@kernel.org,m:pabeni@redhat.com,m:kuniyu@google.com,m:jannh@google.com,m:lee@kernel.org,m:sashal@kernel.org,m:rao.shoaib@oracle.com,m:netdev@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:stable@kernel.org,m:yuantan098@gmail.com,m:yifanwucs@gmail.com,m:tomapufckgml@gmail.com,m:bird@lzu.edu.cn,m:wangjiexun2025@gmail.com,m:n05ec@lzu.edu.cn,s:lists@lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:gregkh@linuxfoundation.org,m:stable@vger.kernel.org,m:patches@lists.linux.dev,m:syzbot+8fa95c41eafbc9d2ff6f@syzkaller.appspotmail.com,m:tiwai@suse.com,m:cassiogabrielcontato@gmail.com,m:tiwai@suse.de,m:sashal@kernel.org,m:syzbot@syzkaller.appspotmail.com,s:lists@lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[alexevgmart@gmail.com,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	RCVD_COUNT_FIVE(0.00)[5];
+	MIME_TRACE(0.00)[0:+,1:+,2:~];
+	DMARC_NA(0.00)[decadent.org.uk];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_SENDER(0.00)[ben@decadent.org.uk,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[ben@decadent.org.uk,stable@vger.kernel.org];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	ALIAS_RESOLVED(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp,msgid.link:url]
+	RCPT_COUNT_SEVEN(0.00)[8];
+	R_DKIM_NA(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable,8fa95c41eafbc9d2ff6f];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 3D50C6BE0B8
+X-Rspamd-Queue-Id: 2F1926BFA5B
 
-From: Jiexun Wang <wangjiexun2025@gmail.com>
 
-commit d119775f2bad827edc28071c061fdd4a91f889a5 upstream.
+--=-kr5dCzr0/TGAVnX8CVPo
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-SIOCATMARK reports whether the receive queue is at the urgent mark for
-MSG_OOB.
+On Tue, 2026-06-16 at 20:28 +0530, Greg Kroah-Hartman wrote:
+> 5.15-stable review patch.  If anyone has any objections, please let me kn=
+ow.
+>=20
+> ------------------
+>=20
+> From: C=C3=A1ssio Gabriel <cassiogabrielcontato@gmail.com>
+>=20
+> [ Upstream commit e5c33cdc6f402eab8abd36ecf436b22c9d3a8aff ]
+[...]
 
-In AF_UNIX, MSG_OOB is supported only for SOCK_STREAM sockets.
-SOCK_DGRAM and SOCK_SEQPACKET reject MSG_OOB in sendmsg() and recvmsg(),
-so they should not support SIOCATMARK either.
+No objection, but this is missing from the 6.1 and 6.6 branches.
 
-Return -EOPNOTSUPP for non-stream sockets before checking the receive
-queue.
+Ben.
 
-Fixes: 314001f0bf92 ("af_unix: Add OOB support")
-Cc: stable@kernel.org
-Reported-by: Yuan Tan <yuantan098@gmail.com>
-Reported-by: Yifan Wu <yifanwucs@gmail.com>
-Reported-by: Juefei Pu <tomapufckgml@gmail.com>
-Reported-by: Xin Liu <bird@lzu.edu.cn>
-Suggested-by: Kuniyuki Iwashima <kuniyu@google.com>
-Signed-off-by: Jiexun Wang <wangjiexun2025@gmail.com>
-Signed-off-by: Ren Wei <n05ec@lzu.edu.cn>
-Reviewed-by: Kuniyuki Iwashima <kuniyu@google.com>
-Link: https://patch.msgid.link/20260506140825.2987635-1-n05ec@lzu.edu.cn
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Alexander Martyniuk <alexevgmart@gmail.com>
----
-Backport fix for CVE-2026-52928
- net/unix/af_unix.c | 3 +++
- 1 file changed, 3 insertions(+)
+--=20
+Ben Hutchings
+Anthony's Law of Force: Don't force it, get a larger hammer.
 
-diff --git a/net/unix/af_unix.c b/net/unix/af_unix.c
-index 32892a40d139..8bd78cad69e7 100644
---- a/net/unix/af_unix.c
-+++ b/net/unix/af_unix.c
-@@ -3139,6 +3139,9 @@ static int unix_ioctl(struct socket *sock, unsigned int cmd, unsigned long arg)
- 			struct sk_buff *skb;
- 			int answ = 0;
- 
-+			if (sk->sk_type != SOCK_STREAM)
-+				return -EOPNOTSUPP;
-+
- 			skb = skb_peek(&sk->sk_receive_queue);
- 			if (skb && skb == READ_ONCE(unix_sk(sk)->oob_skb))
- 				answ = 1;
--- 
-2.43.0
+--=-kr5dCzr0/TGAVnX8CVPo
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: This is a digitally signed message part
 
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCgAdFiEErCspvTSmr92z9o8157/I7JWGEQkFAmo79VcACgkQ57/I7JWG
+EQkkkxAAwk5QKrmHOOZglVf+vJ8rppNqHTB8UUqZN3CJgqy8Mo+ADS2scvOZSORM
+VDGu31utJC3/xkQzTN2GM8WvVY1Y0q4HPuhnsM20ISHWRzWD80cJkfZ33S6kH6zJ
+AwvcczY0Tn41OflN15IlNi8edkkO9nb0xfbDlJqEwO0VzOoagX9EKNS6IgxN8p02
+YFXTmBB9NTTRBYh8nw31MziXJNkypR833EHkmQeg/pQwToDEq7JHlZPdfJUs2QM3
+jju0EuIoID1syar54Hl18nDuzbUao7AiXzvYLU4kK+PoxxFHSa5kHE/zymGPGEPW
+6wX3SDV7muITk35PqXcAvwSireRx2j+2+RIFyhBEzIj7Mz5PFCTZeYEmkE0r4vv7
+PSAoCfkaSfpLpulbNPwm3cRkz+W1F8XFVALRigeBAAuwMsvj6g01yjzuwujAcKd6
+gCNUnw88obBIaDwW/BJkzFd41CA8Mxh2nML2nCzFU0nHTgE7IsRE1Sj2e0xX6mY2
+ZjZjx+YYRH2IBgJglCLTLLsG044umNi5gSO2skkLuM9MK9ZrlNVBbvA2aCzvBZPd
+y8g1f07xf/8i0dogftlEKPt9WwqgZN3l4DIcPPSUJM9fcUjgSNSXER/oOquGb8u5
+DFIh3M8aFigRz/hoeAJzFWisLC6hWKTpCjw1HVg0hArpMl9WcaM=
+=GcsM
+-----END PGP SIGNATURE-----
+
+--=-kr5dCzr0/TGAVnX8CVPo--
 
