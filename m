@@ -1,71 +1,95 @@
-Return-Path: <stable+bounces-268125-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-268127-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id lt3VEbelO2ouawgAu9opvQ
-	(envelope-from <stable+bounces-268125-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 24 Jun 2026 11:39:03 +0200
+	id 1MLqFbmnO2qPawgAu9opvQ
+	(envelope-from <stable+bounces-268127-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 24 Jun 2026 11:47:37 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id D2C3A6BCFFA
-	for <lists+stable@lfdr.de>; Wed, 24 Jun 2026 11:39:02 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id A4E636BD0C1
+	for <lists+stable@lfdr.de>; Wed, 24 Jun 2026 11:47:36 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=BXJkkgGD;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-268125-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-268125-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=none) header.from=infradead.org;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=SZlFEU4D;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-268127-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-268127-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=none) header.from=gmail.com;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 4736C3006443
-	for <lists+stable@lfdr.de>; Wed, 24 Jun 2026 09:39:02 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A2D7C3032803
+	for <lists+stable@lfdr.de>; Wed, 24 Jun 2026 09:44:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ABA4C3AE184;
-	Wed, 24 Jun 2026 09:38:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35F0F2F5487;
+	Wed, 24 Jun 2026 09:44:05 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f44.google.com (mail-pj1-f44.google.com [209.85.216.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2FA339BFED;
-	Wed, 24 Jun 2026 09:38:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD42225B0AE
+	for <stable@vger.kernel.org>; Wed, 24 Jun 2026 09:44:03 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782293938; cv=none; b=lKcGK5f5HvQntY8lXKa9nSz3vgHbN2hSiC2e86jI91VtU4D/gIazyEvBPHGXUNdohITc5ETjlyWaO2gPWHBTFiWAvI88B4p9RFNSTRhAlPtk2Vl/9PnDZyQ4Q7C3HOnpkXqysr5259uNYAWSVppSVKwYcVk4PnFHWd5Ua9BpxoY=
+	t=1782294245; cv=none; b=tsvwSrnk93u1hnf+DWpFpDGFIhwzy4L8jF9CsUrrFqLzwnFv5Oeb1thd+ZcFUMJhmE66BDcFOTCzzEvUGE1omMM2etpyQuBPqNJyKakGtiKwcbUNalJ6GnPUe3XbMJRKn5XqKNdLI+1IAwn48/4qkq5WK1yBTZVDzLulgJuA/SA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782293938; c=relaxed/simple;
-	bh=Ig0qug2I/Az2rFpPjAA8R35/bN9spPpqR1YFwjD4zzc=;
+	s=arc-20240116; t=1782294245; c=relaxed/simple;
+	bh=DkfiNip9gvyz5mAVZwLGn9pHn6AMMbIR6YtLs/F+Pzw=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=DDjEFyWL8holBsBVy4Wcz4o/mI8X+fYHWEuGkVMf0hr+aA5OdT2HnTi5ZlNbOuP4fstflKHYlrGB5X5TBrzUoo1FvnlQvONq8f1YY4C9rsFu/Dm88B4m+Bpsb4n7QQDYxq37H4R4lYE4FjFLrRPe3BotftGAzOa0iy769w4/5g4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=pass smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=BXJkkgGD; arc=none smtp.client-ip=90.155.50.34
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=lX806ff/J16u4dwImlE38JzQyqABU8n1P1+oNc6Rc+c=; b=BXJkkgGDBhZ6Ntfge1O8rysW6d
-	WjsYWdv0ytk/Xzo98JPSDLu4aWLUVFuH1dpMrrx4gGu2cUlt05TbLMaKXhhCJnn/URVK3D2Z5Uon1
-	waoyW5jBYSN0OzbHPsfb0K27+ZD34M8rXby2tHYCWd04YRvdW0IzYa+fahJMSDOEcBvtQoNsbXigC
-	tBBZNN3vW5xW1sqT32nLs6F3NGA6vc8bbmDiOxfg9L6GRaeGAfiz7eFHLwskh6MRR8LNi1ag/PVEs
-	vtrMuQ8qs5g9UJRjRf6W07BGXK9Qpx4GcyqVn4GtJ3O0UJgETYtL9ZkhdgvwPjjhuEdweW1b0ErtJ
-	RlyL4C9g==;
-Received: from 77-249-17-252.cable.dynamic.v4.ziggo.nl ([77.249.17.252] helo=noisy.programming.kicks-ass.net)
-	by casper.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wcK4G-00000007nH3-1oBJ;
-	Wed, 24 Jun 2026 09:38:48 +0000
-Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
-	id 427F0300400; Wed, 24 Jun 2026 11:38:48 +0200 (CEST)
-Date: Wed, 24 Jun 2026 11:38:48 +0200
-From: Peter Zijlstra <peterz@infradead.org>
-To: Ingo Molnar <mingo@kernel.org>
-Cc: Nathan Chancellor <nathan@kernel.org>,
-	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
-	Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-	Ard Biesheuvel <ardb@kernel.org>,
-	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
-	Bill Wendling <morbo@google.com>,
-	Justin Stitt <justinstitt@google.com>, linux-kernel@vger.kernel.org,
-	llvm@lists.linux.dev, stable@vger.kernel.org
-Subject: Re: [PATCH] x86/boot/compressed: Disable jump tables for clang
-Message-ID: <20260624093848.GA48970@noisy.programming.kicks-ass.net>
-References: <20260623-x86-boot-compressed-disable-jt-clang-v1-1-575fccd58107@kernel.org>
- <ajulLtY29HtgWokg@gmail.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=qvvdU9EHJENVwouyEFgF+g+T4O9eN2UMSDKGsP3t9DFFkr+LTsS2o1oFoy+19HEPnrULk/iBVDGZfccarW6ditj/GfSUQZOhj01b2pC6yagXrYsZeE1MDNBte242/zS3+HSEnCfHPE8WWAsyar10QJRCJ0xjwuwdlpV23mKvdaw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=SZlFEU4D; arc=none smtp.client-ip=209.85.216.44
+Received: by mail-pj1-f44.google.com with SMTP id 98e67ed59e1d1-37c867bd3e0so510447a91.0
+        for <stable@vger.kernel.org>; Wed, 24 Jun 2026 02:44:03 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1782294243; x=1782899043; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=6/Nm8rMgcjSABP2aayKy6xYMf5YMQOQ2B23LheDWb6Y=;
+        b=SZlFEU4DRN5PWCyOExNKaxPfneZlBdNKaVyj9a8muDXJwCqPU5l/40dT9DsOo3FgHo
+         IpS1W9sXdmchlLgzsvhxsWbIUIyrkrWCJXUnL8LD7Wlmp1T9ZewxTaw1cVaqULM7XsZp
+         98NqKslPgC1BQHqMRtA3czYs3YIZjTW/2nARLzVJGHpfA6AVxr6gP7mIOxaAwy4F279i
+         pZpbMpnTHYhBu3cxp7U3G/1bzt4dlit3Ckoba4aGCPzdoPjxrzJ0WrBENpo6WXJ6QLX4
+         F65XIXpOQWaxn6om/0QjV7G01lSvbQI/Uz0cmw+vhlUX8gF5o17qvEUFi3d0u+ujFj2/
+         urdg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1782294243; x=1782899043;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=6/Nm8rMgcjSABP2aayKy6xYMf5YMQOQ2B23LheDWb6Y=;
+        b=Gen7rUgcd28+wqR5ZasRWjx6dYFJ/F1DRxqK1KPKot6WRuSstpduN9iEM7GbMpG+Ms
+         O2e7ikWImS9lCL58BcBpP6+MYmjwNGaR3gpoQ6QIgP9pb2Mx33TezjkaheJl2oqzy8nL
+         hSGTzAgkcgbbQ3v+Iv4v48z4C/oJjJ13xYVzrwWbZOykWSwXEFh1M4DjB9OM1zjy4fMP
+         0PpGDFy8K8KeCZV/JIqQ9OeakTIE1fTiLpKoGmLK9RhHsBh/3otH4a3LGIo73cTYcmOp
+         RKuGT0w8xH2MdZ/rw7uD38CnHMi42QIiRr1zP+HVbGv3OYWvOypf8eUjaZWr9pAtEt7i
+         qsCA==
+X-Gm-Message-State: AOJu0YxrPya2RBwgkret+LdBJr2acxLJP/0HomJmUYImHLaCnqtIlUiD
+	FaxPWByp7QEVJxdvbAiXk+eTo+M7AOYLlmHd7B+0qs0kevIn6WEaCyMT
+X-Gm-Gg: AfdE7cnzHWmOWxq6Zd4yW0/GAHtuJrcjgCYD5qlt98Dxr+ILPUtnl/KK6QKxMh1xDwj
+	sFAKTf7Q/OmPpEDvEoXnT07y1MlEWpuvWa1fvLcS5fG1O5l4ZF/bJYveZ4LyEZLS9gp6pWPndVi
+	ZjU73JM9bg8ujqHTBI/effa9nThgLXXY86wTkPb8ODGFEDbJ4m2ww8lzhZs4WpSRUur0qk3EX3k
+	xbGB1RySCYQ0qXy/T81BsUpgvoYJwVh7TjreZ5EEmHX6yIUNH4e4rHTA1JLL2MFuyjXtOLHMzeG
+	IIbZNwtcbYWvZqPi1ZAkTNH6uHCjEuDSz/PHkv2MD3qM9UjWpWO4nd+BEoYnUCLG2524eNlPZoG
+	ON7j3+yda5aq4baUkupLB4hhBuiyp19XIpzpE7NDwkQMTwjon7AstQOgvD+J52/Qcx8swCn9v1C
+	I0BexcW3tztVgzkV0pEWcM43JEslOEwpQIdJpWAwXsrmyPjxBf1KF9Xqji8VOxfy4l9A==
+X-Received: by 2002:a17:90b:4b10:b0:36c:e254:4db with SMTP id 98e67ed59e1d1-37de41aa52dmr2724532a91.6.1782294242992;
+        Wed, 24 Jun 2026 02:44:02 -0700 (PDT)
+Received: from DESKTOP-19IMU7U.localdomain ([125.242.148.221])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-37de4d4b0cdsm619527a91.1.2026.06.24.02.43.58
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 24 Jun 2026 02:44:02 -0700 (PDT)
+Date: Wed, 24 Jun 2026 18:44:00 +0900
+From: Wongi Lee <qw3rtyp0@gmail.com>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, Sasha Levin <sashal@kernel.org>,
+	netdev@vger.kernel.org, David Ahern <dsahern@kernel.org>,
+	Ido Schimmel <idosch@nvidia.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>, Jungwoo Lee <jwlee2217@gmail.com>
+Subject: Re: Please apply 736b380e28d0 and eca856950f7c down to 6.1.y
+Message-ID: <ajum4HXbhgdRl6Vz@DESKTOP-19IMU7U.localdomain>
+References: <ajuR7rZYU943EG6p@DESKTOP-19IMU7U.localdomain>
+ <2026062417-conceal-driving-0ebd@gregkh>
+ <ajujm9+82N1g/HgF@DESKTOP-19IMU7U.localdomain>
+ <2026062416-amulet-paradox-cf7c@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -74,104 +98,100 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <ajulLtY29HtgWokg@gmail.com>
+In-Reply-To: <2026062416-amulet-paradox-cf7c@gregkh>
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[infradead.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
-	R_DKIM_ALLOW(-0.20)[infradead.org:s=casper.20170209];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	RCPT_COUNT_TWELVE(0.00)[12];
 	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[14];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-268125-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-268127-lists,stable=lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:mingo@kernel.org,m:nathan@kernel.org,m:tglx@kernel.org,m:mingo@redhat.com,m:bp@alien8.de,m:dave.hansen@linux.intel.com,m:x86@kernel.org,m:ardb@kernel.org,m:nick.desaulniers+lkml@gmail.com,m:morbo@google.com,m:justinstitt@google.com,m:linux-kernel@vger.kernel.org,m:llvm@lists.linux.dev,m:stable@vger.kernel.org,m:nickdesaulniers@gmail.com,s:lists@lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER(0.00)[qw3rtyp0@gmail.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS(0.00)[m:gregkh@linuxfoundation.org,m:stable@vger.kernel.org,m:sashal@kernel.org,m:netdev@vger.kernel.org,m:dsahern@kernel.org,m:idosch@nvidia.com,m:davem@davemloft.net,m:edumazet@google.com,m:kuba@kernel.org,m:pabeni@redhat.com,m:horms@kernel.org,m:jwlee2217@gmail.com,s:lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_SENDER(0.00)[peterz@infradead.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[kernel.org,redhat.com,alien8.de,linux.intel.com,gmail.com,google.com,vger.kernel.org,lists.linux.dev];
+	FREEMAIL_CC(0.00)[vger.kernel.org,kernel.org,nvidia.com,davemloft.net,google.com,redhat.com,gmail.com];
 	FROM_HAS_DN(0.00)[];
 	MISSING_XM_UA(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[peterz@infradead.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[infradead.org:+];
+	FROM_NEQ_ENVFROM(0.00)[qw3rtyp0@gmail.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[gmail.com:+];
 	ALIAS_RESOLVED(0.00)[];
-	TAGGED_RCPT(0.00)[stable,lkml];
+	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,noisy.programming.kicks-ass.net:mid,infradead.org:dkim,infradead.org:from_mime]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp,DESKTOP-19IMU7U.localdomain:mid]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: D2C3A6BCFFA
+X-Rspamd-Queue-Id: A4E636BD0C1
 
-On Wed, Jun 24, 2026 at 11:36:46AM +0200, Ingo Molnar wrote:
+On Wed, Jun 24, 2026 at 11:37:29AM +0200, Greg Kroah-Hartman wrote:
+> On Wed, Jun 24, 2026 at 06:30:03PM +0900, Wongi Lee wrote:
+> > On Wed, Jun 24, 2026 at 11:00:45AM +0200, Greg Kroah-Hartman wrote:
+> > > On Wed, Jun 24, 2026 at 05:14:38PM +0900, Wongi Lee wrote:
+> > > > Hi,
+> > > > 
+> > > > Could the following upstream commits be queued for the active stable
+> > > > trees?
+> > > > 
+> > > >   commit 736b380e28d0480c7bc3e022f1950f31fe53a7c5
+> > > >   ("ipv6: account for fraggap on the paged allocation path")
+> > > 
+> > > I do not see that commit id in Linus's tree, are you sure it is correct?
+> > > 
+> > > >   commit eca856950f7cb1a221e02b99d758409f2c5cec42
+> > > >   ("ipv4: account for fraggap on the paged allocation path")
+> > > 
+> > > Same here, no id of that one in Linus's tree that I can see.
+> > > 
+> > > thanks,
+> > > 
+> > > greg k-h
+> > 
+> > 
+> > Hi Greg,
+> > 
+> > First, sorry for confusing you.
+> > 
+> > The commit IDs are from netdev/net.git:
+> > 
+> >   736b380e28d0480c7bc3e022f1950f31fe53a7c5
+> >   https://git.kernel.org/pub/scm/linux/kernel/git/netdev/net.git/commit/?id=736b380e28d0
+> > 
+> >   eca856950f7cb1a221e02b99d758409f2c5cec42
+> >   https://git.kernel.org/pub/scm/linux/kernel/git/netdev/net.git/commit/?id=eca856950f7c
+> > 
+> > They were applied to netdev without Cc: stable@vger.kernel.org, so I
+> > wanted to flag them for stable handling but I send it too fast (before
+> > merge).
+> > 
+> > I will resend the request with the Linus tree commit ID.
 > 
-> * Nathan Chancellor <nathan@kernel.org> wrote:
+> They have to be in Linus's tree, before we can take them in a stable
+> release, right?
 > 
-> > After a recent upstream LLVM change to start generating jump and lookup
-> > tables in switch statements in more instances [1], linking the
-> > compressed x86 boot image when CONFIG_KERNEL_ZSTD is enabled fails with:
-> > 
-> >   ld.lld: error: Unexpected run-time relocations (.rela) detected!
-> > 
-> > Dumping the relocations in misc.o, which is the only file influenced by
-> > CONFIG_KERNEL_ZSTD in the decompressor, shows dynamic relocations to
-> > some string constants, which correspond to the string literals in the
-> > switch statement in handle_zstd_error():
-> > 
-> >   Relocation section '.rela.data.rel.ro' at offset 0x277b0 contains 31 entries:
-> >       Offset             Info             Type               Symbol's Value  Symbol's Name + Addend
-> >   0000000000000000  0000006600000001 R_X86_64_64            0000000000000000 .rodata.str1.1 + 73a
-> >   0000000000000008  0000006600000001 R_X86_64_64            0000000000000000 .rodata.str1.1 + 78e
-> >   0000000000000010  0000006600000001 R_X86_64_64            0000000000000000 .rodata.str1.1 + 78e
-> >   0000000000000018  0000006600000001 R_X86_64_64            0000000000000000 .rodata.str1.1 + 78e
-> >   ...
-> > 
-> > This optimization is problematic for the decompressor environment, as it
-> > is built as -fPIE without any explicit absolute references (as described
-> > at the top of misc.c) while not applying any dynamic relocations, hence
-> > the linker assertion. To opt out of this optimization, which is of
-> > little value in this special early boot code, disable jump tables in the
-> > decompressor when building with clang. This mirrors the other x86
-> > startup code in arch/x86/boot/startup.
-> > 
-> > Cc: stable@vger.kernel.org
-> > Closes: https://github.com/ClangBuiltLinux/linux/issues/2165
-> > Link: https://github.com/llvm/llvm-project/commit/fa02a6ed66b1700c996b49c96c6bc0eb014c9518 [1]
-> > Signed-off-by: Nathan Chancellor <nathan@kernel.org>
-> > ---
-> >  arch/x86/boot/compressed/Makefile | 1 +
-> >  1 file changed, 1 insertion(+)
-> > 
-> > diff --git a/arch/x86/boot/compressed/Makefile b/arch/x86/boot/compressed/Makefile
-> > index 07e0e64b9a98..1c0d29e3eeba 100644
-> > --- a/arch/x86/boot/compressed/Makefile
-> > +++ b/arch/x86/boot/compressed/Makefile
-> > @@ -31,6 +31,7 @@ KBUILD_CFLAGS += -Wundef
-> >  KBUILD_CFLAGS += -DDISABLE_BRANCH_PROFILING
-> >  cflags-$(CONFIG_X86_32) := -march=i386
-> >  cflags-$(CONFIG_X86_64) := -mcmodel=small -mno-red-zone
-> > +cflags-$(CONFIG_CC_IS_CLANG) += -fno-jump-tables
+> And why were they not originally tagged with the cc: stable?  That would
+> save you time in the future as it would all just happen automatically.
 > 
-> So, shouldn't we just use -fno-jump-tables for *all* compilers,
-> like we do in arch/x86/boot/startup/Makefile?
+> thanks,
 > 
-> The point wouldn't be to just work around any Clang
-> jump-table optimization complications alone, but also
-> to synchronize the build options of very early code and such.
+> greg k-h
 
-I'm sitting on a patch to unconditionally disable jump-tables for
-x86_64:
+Right, my fault.
 
-  https://web.git.kernel.org/pub/scm/linux/kernel/git/peterz/queue.git/log/?h=x86/syscall
+Also I just forgot cc'ing stable when sending it. I'll apply it next time.
 
-I need to fix the robot fallout and then actually post this.
+thanks,
+Wongi
 
