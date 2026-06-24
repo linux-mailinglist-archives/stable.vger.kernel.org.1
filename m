@@ -1,184 +1,242 @@
-Return-Path: <stable+bounces-268190-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-268198-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id UC20J/cBPGrOiQgAu9opvQ
-	(envelope-from <stable+bounces-268190-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 24 Jun 2026 18:12:39 +0200
+	id 9xS3HIILPGqejAgAu9opvQ
+	(envelope-from <stable+bounces-268198-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 24 Jun 2026 18:53:22 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 974106BFEC1
-	for <lists+stable@lfdr.de>; Wed, 24 Jun 2026 18:12:38 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6FE8F6C01C3
+	for <lists+stable@lfdr.de>; Wed, 24 Jun 2026 18:53:21 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=grrlz.net header.s=stigmate header.b=YrM62DRh;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-268190-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-268190-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=reject) header.from=grrlz.net;
+	dkim=none;
+	dmarc=none;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-268198-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-268198-lists+stable=lfdr.de@vger.kernel.org";
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id A55313006912
-	for <lists+stable@lfdr.de>; Wed, 24 Jun 2026 16:12:35 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 8C35B30135E2
+	for <lists+stable@lfdr.de>; Wed, 24 Jun 2026 16:52:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C6A13C6A43;
-	Wed, 24 Jun 2026 16:12:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 057A634C990;
+	Wed, 24 Jun 2026 16:51:56 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from latitanza.investici.org (latitanza.investici.org [185.218.207.228])
+Received: from cache8.serv00.com (cache8.serv00.com [128.204.223.114])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFB9F306775;
-	Wed, 24 Jun 2026 16:12:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAA1C33DEF7;
+	Wed, 24 Jun 2026 16:51:53 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782317554; cv=none; b=aSilfHiOseL4ub3WXmAcIkwANvXvHOtea0gpjXLNTIJw1c2F7qs550hsFPFY937sNBp0MS/7yoyXG5ItjZiJ57l73mbk0eHGJUn+JIrJMZEW30OAPLibq2wjraL7wJacNaclwfOTrQB/R0ZYP2zivGnAqlSXn6DspM5FYAsvjY8=
+	t=1782319915; cv=none; b=KIjELuLJ9q4mALpe20PkpoHpTn8hGGMq0YwIWXyQibBOrkc28JfUIP5QJ6uBQ6P1ibpMgdzQqt/4R0/MeGcOqEDZX6DlXr+mRhhzwPi2Nl3sLbZ6JKEuWmooAcm+ZHvPrYhFfbZvpVbdpebzD/GWmp5u1cXQFlti7WSj8OQIrRU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782317554; c=relaxed/simple;
-	bh=MCMXBUpeLXOutfBbFK8TAU3rO6cuxbsu3V+GFPpcJc0=;
-	h=Date:From:To:CC:Subject:In-Reply-To:References:Message-ID:
-	 MIME-Version:Content-Type; b=iDua5gZ42gZX5nUdLCjm40zw/pLhyTbAY2VlRLtRGinlKm1OTolwZqbmnlk/6OwxZsNhDVUfdkNnDXJQvj4BO3fUJC+1ZGMZqo4XXN9diW46BXgmRca50P9WXhwUJZpTdWNPmNo5Nng6Zsh3/acSysZIANfde97+rhgDN1/uT+w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=grrlz.net; spf=pass smtp.mailfrom=grrlz.net; dkim=pass (1024-bit key) header.d=grrlz.net header.i=@grrlz.net header.b=YrM62DRh; arc=none smtp.client-ip=185.218.207.228
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=grrlz.net;
-	s=stigmate; t=1782317551;
-	bh=VnQUr85LCOui0QkTY9NjKigopViBoQ7x5EYpB8b0K74=;
-	h=Date:From:To:CC:Subject:In-Reply-To:References:From;
-	b=YrM62DRhSFVLelbhXvWrZU2rfJ6oaoVsnB26D6/+rcUoc3Ss5Sz+tIpjVmMAARFKy
-	 euhDTMnvO1Wf4e9iOlGsLUtgdY/42yZ2093VMpt26QBylka7cYdwyOu3/WtVHXnyWB
-	 dk9YkvCd773tu6PrJth1qChw2NdWbYuV6HQFCaak=
-Received: from mx3.investici.org (unknown [127.0.0.1])
-	by latitanza.investici.org (Postfix) with ESMTP id 4gln5W2j6JzGp8s;
-	Wed, 24 Jun 2026 16:12:31 +0000 (UTC)
-Received: by mx3.investici.org (Postfix) id 4gln5V3s2VzGp8r;
-	Wed, 24 Jun 2026 16:12:30 +0000 (UTC)
-Date: Wed, 24 Jun 2026 17:12:28 +0100
-From: Bradley Morgan <include@grrlz.net>
-To: Feng Tang <feng.tang@linux.alibaba.com>
-CC: Petr Mladek <pmladek@suse.com>, Andrew Morton <akpm@linux-foundation.org>,
- Madhavan Srinivasan <maddy@linux.ibm.com>,
- Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
- Christophe Leroy <chleroy@kernel.org>,
- Mukesh Kumar Chaurasiya <mchauras@linux.ibm.com>,
- Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
- Jinchao Wang <wangjinchao600@gmail.com>, Kees Cook <kees@kernel.org>,
- Rio <rioo.tsukatsukii@gmail.com>, Joel Granados <joel.granados@kernel.org>,
- Pnina Feder <pnina.feder@mobileye.com>, Petr Pavlu <petr.pavlu@suse.com>,
- Sergey Senozhatsky <senozhatsky@chromium.org>,
- Douglas Anderson <dianders@chromium.org>, Mayank Rungta <mrungta@google.com>,
- Tejun Heo <tj@kernel.org>, Zhenguo Yao <yaozhenguo1@gmail.com>,
- linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org
-Subject: =?US-ASCII?Q?Re=3A_=5BPATCH_v2_4/4=5D_panic=3A_avoid_dupli?=
- =?US-ASCII?Q?cate_all_CPU_backtraces_from_sys=5Finfo?=
-In-Reply-To: <ajtF8xCGBNH3wzzo@U-2FWC9VHC-2323.local>
-References: <9b8c96e291696815d3c7de5d3e199298dee0279d.1782228656.git.include@grrlz.net> <2199a8b4da8700b9f27e61486293e9c26ab107ef.1782228656.git.include@grrlz.net> <ajtF8xCGBNH3wzzo@U-2FWC9VHC-2323.local>
-Message-ID: <F8A80465-2EE6-457C-A580-5CC325A5A226@grrlz.net>
+	s=arc-20240116; t=1782319915; c=relaxed/simple;
+	bh=49+HNziQ6DaJS8BYEKYppoYy7/F7F+2/UbGJSXITjQ8=;
+	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:References:
+	 In-Reply-To:Content-Type; b=E7TTBIM5fHDW1iASYyLlWJxx2HR3Oa8lLpGa35FypnLFGvltVS+nUi86UlHKjSFMvPptH/ISPr0kjWyVhtoO5w3xZR43slTOq95TdFBFILmtk/wjTnosotc9YbMi8ESW04sbe9rWUKuZ7A0dHqd1Q4FVKpLNX3vURsBmj1RjbCw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=simplelinux.cn.eu.org; spf=pass smtp.mailfrom=simplelinux.cn.eu.org; arc=none smtp.client-ip=128.204.223.114
+Message-ID: <a4c057ae-cba3-453d-8bd0-54c94dbfe491@simplelinux.cn.eu.org>
+Date: Thu, 25 Jun 2026 00:15:36 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+From: Yuanzhen Gan <elysia-best@simplelinux.cn.eu.org>
+Subject: Re: [PATCH] LoongArch: Add PIO for early access before ACPI PCI root
+ register
+Reply-To: elysia-best@simplelinux.cn.eu.org
+To: Huacai Chen <chenhuacai@loongson.cn>, Huacai Chen <chenhuacai@kernel.org>
+Cc: loongarch@lists.linux.dev, Xuefeng Li <lixuefeng@loongson.cn>,
+ Guo Ren <guoren@kernel.org>, Xuerui Wang <kernel@xen0n.name>,
+ Jiaxun Yang <jiaxun.yang@flygoat.com>, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org, Kexy Biscuit <kexybiscuit@aosc.io>,
+ Mingcong Bai <jeffbai@aosc.io>
+References: <20260622065843.3961572-1-chenhuacai@loongson.cn>
+Content-Language: en-US
+Autocrypt: addr=elysia-best@simplelinux.cn.eu.org; keydata=
+ xjMEaJsoJxYJKwYBBAHaRw8BAQdAmKn44BnjrSjnLk+4kelzELvhTTWpOZTPmez2jy8squ3N
+ KkVseXNpYSA8ZWx5c2lhLWJlc3RAc2ltcGxlbGludXguY24uZXUub3JnPsKPBBMWCAA3FiEE
+ dKkzyG7ab0S7lAwAAxs1vPhHLWAFAmibKCcFCQWjmoACGwMECwkIBwUVCAkKCwUWAgMBAAAK
+ CRADGzW8+EctYL66AQDlhTx8ZtQRjonY5JZbBWPQVwKrtjiANGgP5/uQLMR6/wD8CXOeYIYb
+ qQVkLZZmcf/iabf19/mheoBBsyh4BrUCPQzOOARomygnEgorBgEEAZdVAQUBAQdAbDmqQT+f
+ Z6Ivru0sdFV+yHivtibOx9K+K4riXcwfajYDAQgHwn4EGBYIACYWIQR0qTPIbtpvRLuUDAAD
+ GzW8+EctYAUCaJsoJwUJBaOagAIbDAAKCRADGzW8+EctYDIvAQCtWFldeDqEJZ5C/JDBcogi
+ zbSGxdlsfdtUyI69Y86lWwD8DlA4dIOH0o5tohTYA6hw74fAmR1jMkPfEE8dsy0ohg8=
+In-Reply-To: <20260622065843.3961572-1-chenhuacai@loongson.cn>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-System-Sender: elysia-best@simplelinux.cn.eu.org
+X-System-UID: 5146
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [0.54 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	SUBJ_EXCESS_QP(1.20)[];
+X-Spamd-Result: default: False [-1.46 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[grrlz.net,reject];
-	R_DKIM_ALLOW(-0.20)[grrlz.net:s=stigmate];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[suse.com,linux-foundation.org,linux.ibm.com,ellerman.id.au,gmail.com,kernel.org,linux.intel.com,mobileye.com,chromium.org,google.com,lists.ozlabs.org,vger.kernel.org];
-	TAGGED_FROM(0.00)[bounces-268190-lists,stable=lfdr.de];
+	DMARC_NA(0.00)[simplelinux.cn.eu.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:feng.tang@linux.alibaba.com,m:pmladek@suse.com,m:akpm@linux-foundation.org,m:maddy@linux.ibm.com,m:mpe@ellerman.id.au,m:npiggin@gmail.com,m:chleroy@kernel.org,m:mchauras@linux.ibm.com,m:andriy.shevchenko@linux.intel.com,m:wangjinchao600@gmail.com,m:kees@kernel.org,m:rioo.tsukatsukii@gmail.com,m:joel.granados@kernel.org,m:pnina.feder@mobileye.com,m:petr.pavlu@suse.com,m:senozhatsky@chromium.org,m:dianders@chromium.org,m:mrungta@google.com,m:tj@kernel.org,m:yaozhenguo1@gmail.com,m:linuxppc-dev@lists.ozlabs.org,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,m:riootsukatsukii@gmail.com,s:lists@lfdr.de];
-	MIME_TRACE(0.00)[0:+];
 	RCVD_TLS_LAST(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_SENDER(0.00)[include@grrlz.net,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-268198-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:chenhuacai@loongson.cn,m:chenhuacai@kernel.org,m:loongarch@lists.linux.dev,m:lixuefeng@loongson.cn,m:guoren@kernel.org,m:kernel@xen0n.name,m:jiaxun.yang@flygoat.com,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,m:kexybiscuit@aosc.io,m:jeffbai@aosc.io,s:lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[3];
+	FORGED_SENDER(0.00)[elysia-best@simplelinux.cn.eu.org,stable@vger.kernel.org];
+	TO_DN_SOME(0.00)[];
+	REPLYTO_DOM_NEQ_TO_DOM(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[grrlz.net:+];
-	MISSING_XM_UA(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[23];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[include@grrlz.net,stable@vger.kernel.org];
+	FORWARDED(0.00)[lists@lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	HAS_REPLYTO(0.00)[elysia-best@simplelinux.cn.eu.org];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	REPLYTO_ADDR_EQ_FROM(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[elysia-best@simplelinux.cn.eu.org,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[11];
+	R_DKIM_NA(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,vger.kernel.org:from_smtp,simplelinux.cn.eu.org:replyto,simplelinux.cn.eu.org:email,simplelinux.cn.eu.org:mid,simplelinux.cn.eu.org:from_mime,aosc.io:email,loongson.cn:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 974106BFEC1
+X-Rspamd-Queue-Id: 6FE8F6C01C3
 
-On June 24, 2026 3:50:27 AM GMT+01:00, Feng Tang
-<feng.tang@linux.alibaba.com> wrote:
->On Tue, Jun 23, 2026 at 03:35:01PM +0000, Bradley Morgan wrote:
->> panic_other_cpus_shutdown() handles SYS_INFO_ALL_BT before stopping the
->> other CPUs. Do not ask sys_info() to handle that bit again later in the
->> panic path.
->> 
->> Use sys_info_without_all_bt() so panic_print=all_bt does not request
->more
->> output after the CPUs are stopped.
->
->Good catch! Thanks!
->
->Later in panic_other_cpus_shutdown(), it sends IPIs to stop other CPUs,
->and
->this patch does avoid dumping local call trace again!
->
->For the whole serie, feel free to add:
->
->Reviewed-by: Feng Tang <feng.tang@linux.alibaba.com>
->
->Thanks,
->Feng
+On Mon, 22 Jun 2026 14:58:43 +0800, Huacai Chen <chenhuacai@loongson.cn> 
+wrote:
+  > For ACPI system we suppose the ISA/LPC PIO range is registered together
+  > with PCI root bridge. But the fact is there may be some early access to
+  > the ISA/LPC PIO range before ACPI PCI root register (most of them are
+  > due to abnormal BIOS). Unconditionally register the ISA/LPC PIO range
+  > usually causes ACPI PCI root register fail because of the address range
+  > confliction. So we add a pair of helpers: acpi_add_early_pio() to add
+  > PIO for early access, and acpi_remove_early_pio() to remove PIO before
+  > PCI root register. Since acpi_remove_early_pio() may be called multiple
+  > times, we add an acpi_pio flag to ensure PIO be removed only once.
+  >
+  > Cc: <stable@vger.kernel.org>
+  > Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+  > ---
+  >  arch/loongarch/include/asm/acpi.h |  2 ++
+  >  arch/loongarch/kernel/acpi.c      | 28 ++++++++++++++++++++++++++++
+  >  arch/loongarch/kernel/setup.c     |  2 ++
+  >  arch/loongarch/pci/acpi.c         |  2 ++
+  >  4 files changed, 34 insertions(+)
+  >
+  > diff --git a/arch/loongarch/include/asm/acpi.h 
+b/arch/loongarch/include/asm/acpi.h
+  > index eda9d4d0a493..c05168aedcaa 100644
+  > --- a/arch/loongarch/include/asm/acpi.h
+  > +++ b/arch/loongarch/include/asm/acpi.h
+  > @@ -38,6 +38,8 @@ static inline bool acpi_has_cpu_in_madt(void)
+  >  extern struct list_head acpi_wakeup_device_list;
+  >  extern struct acpi_madt_core_pic acpi_core_pic[MAX_CORE_PIC];
+  >
+  > +extern void acpi_add_early_pio(void);
+  > +extern void acpi_remove_early_pio(void);
+  >  extern int __init parse_acpi_topology(void);
+  >
+  >  #endif /* !CONFIG_ACPI */
+  > diff --git a/arch/loongarch/kernel/acpi.c b/arch/loongarch/kernel/acpi.c
+  > index 058f0dbe8e8f..8f650c9ffecd 100644
+  > --- a/arch/loongarch/kernel/acpi.c
+  > +++ b/arch/loongarch/kernel/acpi.c
+  > @@ -16,6 +16,7 @@
+  >  #include <linux/memblock.h>
+  >  #include <linux/of_fdt.h>
+  >  #include <linux/serial_core.h>
+  > +#include <linux/vmalloc.h>
+  >  #include <asm/io.h>
+  >  #include <asm/numa.h>
+  >  #include <asm/loongson.h>
+  > @@ -59,6 +60,33 @@ void __iomem 
+*acpi_os_ioremap(acpi_physical_address phys, acpi_size size)
+  >  		return ioremap_cache(phys, size);
+  >  }
+  >
+  > +#define PIO_BASE (unsigned long)PCI_IOBASE
+  > +#define PIO_SIZE ALIGN(ISA_IOSIZE, PAGE_SIZE)
+  > +
+  > +static bool acpi_pio;
+  > +
+  > +/* Add PIO for early access */
+  > +void acpi_add_early_pio(void)
+  > +{
+  > +	if (!acpi_disabled) {
+  > +		acpi_pio = true;
+  > +		vmap_page_range(PIO_BASE, PIO_BASE + PIO_SIZE,
+  > +				LOONGSON_LIO_BASE, pgprot_device(PAGE_KERNEL));
+  > +	}
+  > +}
+  > +
+  > +/* Remove PIO for PCI register */
+  > +void acpi_remove_early_pio(void)
+  > +{
+  > +	if (!acpi_pio)
+  > +		return;
+  > +
+  > +	if (!acpi_disabled) {
+  > +		acpi_pio = false;
+  > +		vunmap_range(PIO_BASE, PIO_BASE + PIO_SIZE);
+  > +	}
+  > +}
+  > +
+  >  #ifdef CONFIG_SMP
+  >  static int set_processor_mask(u32 id, u32 pass)
+  >  {
+  > diff --git a/arch/loongarch/kernel/setup.c 
+b/arch/loongarch/kernel/setup.c
+  > index 369262117c63..eaebb52bd36e 100644
+  > --- a/arch/loongarch/kernel/setup.c
+  > +++ b/arch/loongarch/kernel/setup.c
+  > @@ -502,6 +502,8 @@ static __init int arch_reserve_pio_range(void)
+  >  {
+  >  	struct device_node *np;
+  >
+  > +	acpi_add_early_pio();
+  > +
+  >  	for_each_node_by_name(np, "isa") {
+  >  		struct of_range range;
+  >  		struct of_range_parser parser;
+  > diff --git a/arch/loongarch/pci/acpi.c b/arch/loongarch/pci/acpi.c
+  > index b02698a338ee..ccbcea61fcd9 100644
+  > --- a/arch/loongarch/pci/acpi.c
+  > +++ b/arch/loongarch/pci/acpi.c
+  > @@ -65,6 +65,8 @@ static int acpi_prepare_root_resources(struct 
+acpi_pci_root_info *ci)
+  >  	struct resource_entry *entry, *tmp;
+  >  	struct acpi_device *device = ci->bridge;
+  >
+  > +	acpi_remove_early_pio();
+  > +
+  >  	status = acpi_pci_probe_root_resources(ci);
+  >  	if (status > 0) {
+  >  		acpi_evaluate_integer(device->handle, "PCIH", NULL, &pci_h);
 
-Thanks a lot Feng!
+I have tested this patch on my Loongson-3A6000 system with Kunlun 
+firmware. The patch successfully resolves the ACPI PCI root bridge 
+registration issue caused by early ISA/LPC PIO access.
 
-All 4 patches, right?
+On this platform, the DSDT defines _CRS methods for UAR and LPT devices 
+that call the ENFG() and EXFG() methods from the ITE1 device. This 
+causes early writes to the ISA/LPC PIO range before PCI root bridge 
+registration. The patch's early PIO registration mechanism properly 
+handles this firmware quirk.
 
-I'll let the maintainer (whomever will merge it) merge it, and add 
-your tag!
+Test environment:
+- Platform: Seewo OEM 3A6000 (CB,L3A6.MA01 V1.0)
+- Firmware: Kunlun BIOS
+- CPU: Loongson-3A6000-HV @ 2.50 GHz
+- OS: AOSC OS 13.2.0 (loongarch64)
+- Kernel: Linux 7.0.13-aosc-main-16k
 
-If you would like, Feng, if you CC me on any watchdog, etc etc patch,
-I'm sure I'll help review! :)
+The system boots successfully when the patch is applied.
 
-Thanks for your tag.
+Cc: Mingcong Bai <jeffbai@aosc.io>
+Cc: Kexy Biscuit <kexybiscuit@aosc.io>
+Tested-by: Yuanzhen Gan <elysia-best@simplelinux.cn.eu.org>
 
-
->> 
->> Fixes: b76e89e50fc3 ("panic: generalize panic_print's function to show
->sys info")
->> Cc: stable@vger.kernel.org
->> Signed-off-by: Bradley Morgan <include@grrlz.net>
->> ---
->> Changes since v1:
->> - New patch using the same helper for panic.
->> 
->>  kernel/panic.c | 2 +-
->>  1 file changed, 1 insertion(+), 1 deletion(-)
->> 
->> diff --git a/kernel/panic.c b/kernel/panic.c
->> index d030f88ad4ef..2cf229c7c0cf 100644
->> --- a/kernel/panic.c
->> +++ b/kernel/panic.c
->> @@ -683,7 +683,7 @@ void vpanic(const char *fmt, va_list args)
->>  	 */
->>  	atomic_notifier_call_chain(&panic_notifier_list, 0, buf);
->>  
->> -	sys_info(panic_print);
->> +	sys_info_without_all_bt(panic_print);
->>  
->>  	kmsg_dump_desc(KMSG_DUMP_PANIC, buf);
->>  
->> -- 
->> 2.53.0
->
-
-Thanks!
 
