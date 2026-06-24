@@ -1,358 +1,171 @@
-Return-Path: <stable+bounces-268214-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-268215-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id qvi+KrkjPGrDkQgAu9opvQ
-	(envelope-from <stable+bounces-268214-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 24 Jun 2026 20:36:41 +0200
+	id 6Hg6AOAjPGrFkQgAu9opvQ
+	(envelope-from <stable+bounces-268215-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 24 Jun 2026 20:37:20 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id F27EC6C0C2C
-	for <lists+stable@lfdr.de>; Wed, 24 Jun 2026 20:36:40 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 62A126C0C33
+	for <lists+stable@lfdr.de>; Wed, 24 Jun 2026 20:37:19 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=Td9BuWB1;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-268214-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-268214-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=none) header.from=gmail.com;
+	dkim=pass header.d=grrlz.net header.s=stigmate header.b=abQkgu7N;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-268215-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-268215-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=reject) header.from=grrlz.net;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B2581304DCA6
-	for <lists+stable@lfdr.de>; Wed, 24 Jun 2026 18:35:45 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 9759E3027375
+	for <lists+stable@lfdr.de>; Wed, 24 Jun 2026 18:37:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8DC343314DE;
-	Wed, 24 Jun 2026 18:35:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA097331200;
+	Wed, 24 Jun 2026 18:37:15 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pf1-f171.google.com (mail-pf1-f171.google.com [209.85.210.171])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from confino.investici.org (confino.investici.org [93.190.126.19])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19FB61A3165
-	for <stable@vger.kernel.org>; Wed, 24 Jun 2026 18:35:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63569325706;
+	Wed, 24 Jun 2026 18:37:14 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782326145; cv=none; b=YCv4g8iZT+ESDna85VZ2MER+dw+VvlqkEdxUhmHri+UuKWob8QuQKJpuOwYke9rRcavlgYoZbOJ3h8VelmvuUkCxTWrP5pPYCI5EaLmfS/xlKO8qYk3ZY8yw1Mm8R5SMPT9QOUZ4y5cYtn9kYbnpTEoDnaE/sM/hLgzNrwB0Qdc=
+	t=1782326235; cv=none; b=WxsG7dH+4WQep2fhMYpQjo5zY32jovVjCx1Xg5O0YX1k3nOevP2TY2tFuDrckfpM1qwB/Ig//UbMQbqZURcuxLMGRXIAdmqVpzQlrphDZA02XiWSbGgZGnHvVgXkNNxP91RiZ3JDeVF8jhOtv+sUxnPEH14FeiTAbKZPVEZn6GM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782326145; c=relaxed/simple;
-	bh=ZWTop5MIvONvn6LUykPB/avYD8xXyrmvd1137/JWVzI=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=KGKEemdGuupmSwphEvhn+yHX+UeMyAz0rva1LbnqtesRXXsV79ZA49IItjnuyCEKK3Z2MdK6MXrpyGU3TjfD3fw6NcPHS3LZDfPTI8anUkIN+OWa6JFN0SzPNF0m2gPvfuZ4zlK2elMvJ+bv8GJbBZgILw6rHJWZwYDs6s/STvE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Td9BuWB1; arc=none smtp.client-ip=209.85.210.171
-Received: by mail-pf1-f171.google.com with SMTP id d2e1a72fcca58-8454fccf3b1so296282b3a.1
-        for <stable@vger.kernel.org>; Wed, 24 Jun 2026 11:35:42 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1782326142; x=1782930942; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=CkQrwyqUtbEBwCw+6J77RIBxcGN7JfNHmCCOvnM/ljo=;
-        b=Td9BuWB1ehwzfEhEqHjmJ3dUaN7v83si+YvNgCX7Zv2rDqjDV+gbTTaUQBLN7I85pj
-         lH5QDJ/fTTspw0J+MLeMSS5MWiAv3LqNRF3SJKS5DQoloEYcoRaXgM5bSRs8ywTiLsbp
-         S4YOeot4328hsqa0R1/nZVvqkxLM1VuGElbMwGHHqvewOiybUboagOdIPtLP00DIovzM
-         3x+kWfOD0ItDsoJRQ4KHxtALKTy6CZsy2AV1wVmV7+IlaZS/YoBG9TjNo7ePu6eTJL/R
-         O44HMA8zueKGqPq6/3HoTrDNBUB4rBA8buSU9cDg4Vn0pB47aoqmKfUUc5BifCVaIPpp
-         DYoQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782326142; x=1782930942;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=CkQrwyqUtbEBwCw+6J77RIBxcGN7JfNHmCCOvnM/ljo=;
-        b=Csvkj5F+aWjiDBbVuvx0nqW2edz1h6lkeg3glwqr19ZcB21E1cKeB6xLH8wzk3Ih1x
-         pphkAD932gIItDIl7HMucFF4uqLUuUbo3bhy35ky2u6cmIfr40zSgSZOCPJdNyGwuOb+
-         sVGxZgQiG+egMFI3BFoxLRp/Cwcbm0+ryq0pr2Ml+CX7viW7QOaSljuuEXrrQm0PNI+H
-         ctxPw9if8ncbOplEFvJ+JkG/uIzk6tt3bA79rKFJ2kre7vjgB3cRkcogIw0FtDt8fjl5
-         cau7g/Sx6aDM/ROElte8CzGRJHyASvEBzeULDCIJPFYz2VozCiTEc1cNCuzwyyuvv9Ve
-         tMYw==
-X-Forwarded-Encrypted: i=1; AHgh+Rp1C1/QC2xmQ0Evd2Nw+CpfsiXne0i9qG/Asl1ZJ9PThj0A6GsRacyCDWXe/xdIMRCn7Azff4M=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yza/x2MnD45y8++/evifAJNcn+vto3lX+47FmA4d1g2AZJnk98B
-	FNJCl0HY8fcODNVHyUEcllOWzWFeSodOrLVRgT1ojpEunbtWX5n194WJ
-X-Gm-Gg: AfdE7ckxnUEgj0mZXLgj7ZiM+/nmHJnhaLA+IQ/5kySdLsujNulJnbVT1Ex+q5paDfq
-	PQTnZqJ3FBi/38wGTQdciTl+U/l5blGrFTcqLb5bqePp1Qt1WaaIWeztAXrx9m5acJhEGm9li3V
-	QlByK1R61b6KNChT5fpMhMvVy9Q0X3gJd6f6m2nfdIMEARfUCvhEFZp6acVfuGL3lGRgf0tOYMn
-	Eu+E9chd+AGcUxXQKvzhSj1s+EFOf6lCxNgl1c1+6DLA7F7K2g4PPQ0nL/9SIJs7G3ifmvxQC9L
-	oJriRfcO/ha8vB+AjTky4NIVffVPi6ujf6UjeyZgqBxrgt4UUx2QfvecYVanwjA+NcenCY90AyJ
-	prD40DhSLHQzZguEMdE+TA3YztSoC7XOEvHX3aRq13DJuV6/0qxl7p3Y5iSll8lzNYUrJdDrBIA
-	mQdrXJRuHd1k/NTbGX
-X-Received: by 2002:a17:903:b0e:b0:2c4:397:dd7a with SMTP id d9443c01a7336-2c7bf1a5354mr52776825ad.4.1782326142285;
-        Wed, 24 Jun 2026 11:35:42 -0700 (PDT)
-Received: from kali ([2402:e280:3d7c:a2:536a:b505:93f5:9d5d])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2c7f63b2bd7sm3348575ad.48.2026.06.24.11.35.38
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 24 Jun 2026 11:35:41 -0700 (PDT)
-From: Pavitra Jha <jhapavitra98@gmail.com>
-To: alexander.deucher@amd.com,
-	christian.koenig@amd.com
-Cc: airlied@gmail.com,
-	simona@ffwll.ch,
-	amd-gfx@lists.freedesktop.org,
-	gregkh@linuxfoundation.org,
-	dri-devel@lists.freedesktop.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org,
-	Pavitra Jha <jhapavitra98@gmail.com>
-Subject: [PATCH] drm/amdgpu/discovery: fix OOB read via unchecked die_offset in IP discovery parsing
-Date: Wed, 24 Jun 2026 14:34:09 -0400
-Message-ID: <20260624183409.1079288-1-jhapavitra98@gmail.com>
-X-Mailer: git-send-email 2.53.0
+	s=arc-20240116; t=1782326235; c=relaxed/simple;
+	bh=cYgKJTc9gkW11/NnIWcI7YTOuDswywvAsTQV0uV3LR0=;
+	h=Date:From:To:CC:Subject:In-Reply-To:References:Message-ID:
+	 MIME-Version:Content-Type; b=EXgWvVqc9dS7naJdN5eH184B93bOeQsjN+hEVwMLpfVKG6lWwtdSAdazeYWXKndAXkXlaQFhOSmkEkvACwmveDPbLb8EVAsRIgt3YSaqO+h5d12x4BQGr8MHq0T855C95suPgBuIisq8ACwFDtprtyL0BA6sM4pbxV9XgP5njt4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=grrlz.net; spf=pass smtp.mailfrom=grrlz.net; dkim=pass (1024-bit key) header.d=grrlz.net header.i=@grrlz.net header.b=abQkgu7N; arc=none smtp.client-ip=93.190.126.19
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=grrlz.net;
+	s=stigmate; t=1782326232;
+	bh=NI46s4EnJvuP923IrCreg9YPlL82QCQYf/Ag8Yhe+Gg=;
+	h=Date:From:To:CC:Subject:In-Reply-To:References:From;
+	b=abQkgu7NFxeoFje3tY15Ct7rEGE1UYqmUqhAlpWEFcuJNYYjvc6tHdnVP5WbkUQdl
+	 q76dm//6kZk9Tu1OxSyWOHKn6vyCa7jBDOe+zcCLX5SvFeVwlk6bs/yob8mdnqVMg2
+	 Yh9gU3E0XBtHs6AEzIEMQDd6T2j0yGnfEKFJatIM=
+Received: from mx1.investici.org (unknown [127.0.0.1])
+	by confino.investici.org (Postfix) with ESMTP id 4glrJS6fykz10tT;
+	Wed, 24 Jun 2026 18:37:12 +0000 (UTC)
+Received: by mx1.investici.org (Postfix) id 4glrJS2KFkz10s3;
+	Wed, 24 Jun 2026 18:37:12 +0000 (UTC)
+Date: Wed, 24 Jun 2026 19:37:11 +0100
+From: Bradley Morgan <include@grrlz.net>
+To: Marc Zyngier <maz@kernel.org>
+CC: Oliver Upton <oupton@kernel.org>, Fuad Tabba <tabba@google.com>,
+ Joey Gouly <joey.gouly@arm.com>, Steffen Eiden <seiden@linux.ibm.com>,
+ Suzuki K Poulose <suzuki.poulose@arm.com>, Zenghui Yu <yuzenghui@huawei.com>,
+ Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
+ Quentin Perret <qperret@google.com>,
+ Vincent Donnefort <vdonnefort@google.com>, Gavin Shan <gshan@redhat.com>,
+ Alexandru Elisei <alexandru.elisei@arm.com>,
+ linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: =?US-ASCII?Q?Re=3A_=5BPATCH_v3_3/3=5D_KVM=3A_arm64=3A_top_up_s?=
+ =?US-ASCII?Q?tage_2_memcache_for_dirty_logging_faults?=
+In-Reply-To: <86ik77re2n.wl-maz@kernel.org>
+References: <20260624160028.15591-1-include@grrlz.net> <20260624160028.15591-4-include@grrlz.net> <9FCEC7E9-DE50-443F-8E82-9FA22CA15ED6@grrlz.net> <6FBA06E8-B0C4-444C-B226-0B756C0172A7@grrlz.net> <86ik77re2n.wl-maz@kernel.org>
+Message-ID: <548B439F-7DDD-418B-98E2-D7D6BB047A6E@grrlz.net>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain;
+ charset=utf-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.66 / 15.00];
+X-Spamd-Result: default: False [-0.96 / 15.00];
+	SUBJ_EXCESS_QP(1.20)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	DMARC_POLICY_ALLOW(-0.50)[grrlz.net,reject];
+	R_DKIM_ALLOW(-0.20)[grrlz.net:s=stigmate];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FREEMAIL_CC(0.00)[gmail.com,ffwll.ch,lists.freedesktop.org,linuxfoundation.org,vger.kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-268214-lists,stable=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-268215-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:alexander.deucher@amd.com,m:christian.koenig@amd.com,m:airlied@gmail.com,m:simona@ffwll.ch,m:amd-gfx@lists.freedesktop.org,m:gregkh@linuxfoundation.org,m:dri-devel@lists.freedesktop.org,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,m:jhapavitra98@gmail.com,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[jhapavitra98@gmail.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[jhapavitra98@gmail.com,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_SENDER(0.00)[include@grrlz.net,stable@vger.kernel.org];
+	RCPT_COUNT_TWELVE(0.00)[17];
+	FORGED_RECIPIENTS(0.00)[m:maz@kernel.org,m:oupton@kernel.org,m:tabba@google.com,m:joey.gouly@arm.com,m:seiden@linux.ibm.com,m:suzuki.poulose@arm.com,m:yuzenghui@huawei.com,m:catalin.marinas@arm.com,m:will@kernel.org,m:qperret@google.com,m:vdonnefort@google.com,m:gshan@redhat.com,m:alexandru.elisei@arm.com,m:linux-arm-kernel@lists.infradead.org,m:kvmarm@lists.linux.dev,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,s:lists@lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORWARDED(0.00)[lists@lfdr.de];
+	DKIM_TRACE(0.00)[grrlz.net:+];
+	MISSING_XM_UA(0.00)[];
+	TO_DN_SOME(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
 	RCVD_COUNT_FIVE(0.00)[5];
-	RCPT_COUNT_SEVEN(0.00)[10];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[include@grrlz.net,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+	MID_RHS_MATCH_FROM(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,grrlz.net:dkim,grrlz.net:email,grrlz.net:mid,grrlz.net:from_mime,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: F27EC6C0C2C
+X-Rspamd-Queue-Id: 62A126C0C33
 
-Three call sites in amdgpu_discovery.c dereference firmware-controlled
-die_offset values without validating them against adev->discovery.size:
+On June 24, 2026 7:25:04 PM GMT+01:00, Marc Zyngier <maz@kernel.org> wrote:
+>On Wed, 24 Jun 2026 18:46:10 +0100,
+>Bradley Morgan <include@grrlz.net> wrote:
+>> 
+>> On June 24, 2026 6:39:16 PM GMT+01:00, Bradley Morgan
+><include@grrlz.net>
+>> wrote:
+>> >
+>> >Note: Patch 3 seems to conflict because of patch 2 (the comments)
+>> >
+>> >
+>> >Oops! :(
+>> >
+>> >V4 (after people have their review go), will contain one commit (patch
+>> >3) with the updated comments.
+>> >
+>> >Patch 1 and 2 applies as usual.
+>> >
+>> >Apologies for my messup. 
+>> >
+>> >Thanks!
+>> 
+>> 
+>> Actually. Hmm.
+>> 
+>> I'll just drop patches 2 and 3, I'll do them at a later date, please
+>> disregard patches 2 and 3, patch 1 doesn't rely on 2 and 3..
+>> 
+>> If you guys wanna have a look feel free! :)
+>
+>As I suggested in my reply to your hasty v2, taking a few *days*
+>between versions is generally a good thing. it gives the reviewers
+>time to chime in, and gives you the opportunity to reflect on what
+>you've just written (reading your own patches after a few days is a
+>sure way to go and rewrite them).
 
-  amdgpu_discovery_read_harvest_bit_per_ip() line 776-777
-  amdgpu_discovery_sysfs_init()              line 1298-1299
-  amdgpu_discovery_reg_base_init()           line 1524-1525
+welp, I guess I learned the hard way with the hastiness of my V3, (that's
+kinda why I dropped p2 and p3)
 
-In all three sites the pattern is:
 
-  die_offset = le16_to_cpu(ihdr->die_info[i].die_offset);
-  dhdr = (struct die_header *)(discovery_bin + die_offset);
+>Actually, by posting more often, you are guaranteeing that people
+>*avoid* reviewing your stuff, since odds are that there is a new
+>version coming in the next 10 minutes, so why bother...
 
-die_offset is a firmware-controlled u16 (max 65535). The discovery
-binary is allocated as adev->discovery.size bytes (DISCOVERY_TMR_SIZE
-= 10240 by default). No bounds check exists between the le16_to_cpu()
-call and the pointer cast, so a crafted blob with die_offset >= 10240
-produces a pointer past the end of the allocation. The subsequent reads
-of dhdr->die_id and dhdr->num_ips are then slab-out-of-bounds reads.
+I'm not planning on posting another version, until fuller review concludes
 
-The ip_offset advancement inside the inner loop also uses
-struct_size(ip, base_address, ip->num_base_address) where
-num_base_address is firmware-controlled, enabling unbounded advancement
-past the allocation on each iteration.
 
-ASAN report (kernel 7.1.0+, QEMU/x86_64, nokaslr, slub_debug=FZPUA):
+>But hey, that's free advice, so it's probably worthless.
 
-==================================================================
-BUG: KASAN: slab-out-of-bounds in poc_init+0x453/0x1000 [amd_oob_harness]
-Read of size 2 at addr ffff88800318a801 by task insmod/22
+advice from someone with experience isn't worthless. 
 
-CPU: 0 UID: 0 PID: 22 Comm: insmod Tainted: G           O        7.1.0+ #26 PREEMPTLAZY
-Tainted: [O]=OOT_MODULE
-Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.17.0-debian-1.17.0-1 04/01/2014
-Call Trace:
- <TASK>
- dump_stack_lvl+0x2b/0x40
- print_report+0x14f/0x4d0
- ? wake_up_klogd_work_func+0x70/0x70
- ? poc_exit+0xfc0/0xfc0 [amd_oob_harness]
- kasan_report+0xd4/0x100
- ? poc_init+0x453/0x1000 [amd_oob_harness]
- ? poc_init+0x453/0x1000 [amd_oob_harness]
- poc_init+0x453/0x1000 [amd_oob_harness]
- ? poc_exit+0xfc0/0xfc0 [amd_oob_harness]
- ? poc_exit+0xfc0/0xfc0 [amd_oob_harness]
- do_one_initcall+0xb0/0x230
- ? initcall_blacklisted+0x150/0x150
- ? kasan_unpoison+0x40/0x60
- do_init_module+0x263/0x810
- ? kasan_save_free_info+0x37/0x50
- ? free_module+0x300/0x300
- ? kfree+0xf1/0x390
- load_module+0x3e12/0x51e0
- ? sysvec_apic_timer_interrupt+0xa/0x80
- ? asm_sysvec_apic_timer_interrupt+0x16/0x20
- ? module_frob_arch_sections+0x20/0x20
- ? kernel_read_file+0x4d9/0x790
- ? kernel_read_file+0x36c/0x790
- init_module_from_file+0x136/0x150
- ? __do_sys_init_module+0x180/0x180
- ? do_sys_openat2+0xeb/0x140
- ? fdget+0x64/0x200
- __x64_sys_finit_module+0x39f/0x7a0
- ? __x64_sys_init_module+0xc0/0xc0
- ? __x64_sys_open+0x180/0x180
- do_syscall_64+0x56/0x3f0
- entry_SYSCALL_64_after_hwframe+0x4b/0x53
-RIP: 0033:0x4d1259
-Code: ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 44 00 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 e8 ff ff ff f7 d8 64 89 01 48
-RSP: 002b:00007fffb68052f8 EFLAGS: 00000246 ORIG_RAX: 0000000000000139
-RAX: ffffffffffffffda RBX: 0000000000000000 RCX: 00000000004d1259
-RDX: 0000000000000000 RSI: 000000000a529cf0 RDI: 0000000000000003
-RBP: 000000000a529cf0 R08: 0000000000000007 R09: 0000000000000000
-R10: 0000000000000000 R11: 0000000000000246 R12: 000000000a528dd0
-R13: 0000000000000003 R14: 0000000000000000 R15: 0000000000000000
- </TASK>
+just stupid me decided to unpark my V3 and send it :(
 
-The buggy address belongs to the physical page:
-page: refcount:0 mapcount:0 mapping:0000000000000000 index:0x0 pfn:0x3188
-head: order:2 mapcount:0 entire_mapcount:0 nr_pages_mapped:0 pincount:0
-flags: 0x4000000000000040(head|zone=1)
-page_type: f8(unknown)
-raw: 4000000000000040 0000000000000000 dead000000000122 0000000000000000
-raw: 0000000000000000 0000000000000000 00000000f8000000 0000000000000000
-head: 4000000000000040 0000000000000000 dead000000000122 0000000000000000
-head: 0000000000000000 0000000000000000 00000000f8000000 0000000000000000
-head: 4000000000000002 ffffea00000c6201 00000000ffffffff 00000000ffffffff
-head: 0000000000000000 0000000000000000 00000000ffffffff 0000000000000000
-page dumped because: kasan: bad access detected
+Sorry about that..
 
-Memory state around the buggy address:
- ffff88800318a700: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
- ffff88800318a780: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
->ffff88800318a800: fe fe fe fe fe fe fe fe fe fe fe fe fe fe fe fe
-                   ^
- ffff88800318a880: fe fe fe fe fe fe fe fe fe fe fe fe fe fe fe fe
- ffff88800318a900: fe fe fe fe fe fe fe fe fe fe fe fe fe fe fe fe
-==================================================================
-BUG: KASAN: slab-out-of-bounds in poc_init+0x4b3/0x1000 [amd_oob_harness]
-Read of size 2 at addr ffff88800318a803 by task insmod/22
+>	M.
+>
+>
 
-CPU: 0 UID: 0 PID: 22 Comm: insmod Tainted: G    B      O        7.1.0+ #26 PREEMPTLAZY
-Tainted: [B]=BAD_PAGE, [O]=OOT_MODULE
-Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.17.0-debian-1.17.0-1 04/01/2014
-Call Trace:
- <TASK>
- dump_stack_lvl+0x2b/0x40
- print_report+0x14f/0x4d0
- ? add_taint+0x50/0x70
- kasan_report+0xd4/0x100
- ? poc_init+0x4b3/0x1000 [amd_oob_harness]
- ? poc_init+0x4b3/0x1000 [amd_oob_harness]
- poc_init+0x4b3/0x1000 [amd_oob_harness]
- ? poc_exit+0xfc0/0xfc0 [amd_oob_harness]
- ? poc_exit+0xfc0/0xfc0 [amd_oob_harness]
- do_one_initcall+0xb0/0x230
- ? initcall_blacklisted+0x150/0x150
- ? kasan_unpoison+0x40/0x60
- do_init_module+0x263/0x810
- ? kasan_save_free_info+0x37/0x50
- ? free_module+0x300/0x300
- ? kfree+0xf1/0x390
- load_module+0x3e12/0x51e0
- ? sysvec_apic_timer_interrupt+0xa/0x80
- ? asm_sysvec_apic_timer_interrupt+0x16/0x20
- ? module_frob_arch_sections+0x20/0x20
- ? kernel_read_file+0x4d9/0x790
- ? kernel_read_file+0x36c/0x790
- init_module_from_file+0x136/0x150
- ? __do_sys_init_module+0x180/0x180
- ? do_sys_openat2+0xeb/0x140
- ? fdget+0x64/0x200
- __x64_sys_finit_module+0x39f/0x7a0
- ? __x64_sys_init_module+0xc0/0xc0
- ? __x64_sys_open+0x180/0x180
- do_syscall_64+0x56/0x3f0
- entry_SYSCALL_64_after_hwframe+0x4b/0x53
-RIP: 0033:0x4d1259
-Code: ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 44 00 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 e8 ff ff ff f7 d8 64 89 01 48
-RSP: 002b:00007fffb68052f8 EFLAGS: 00000246 ORIG_RAX: 0000000000000139
-RAX: ffffffffffffffda RBX: 0000000000000000 RCX: 00000000007ffff0 RDI: 0000000000000003
-RBP: 000000000a529cf0 R08: 0000000000000007 R09: 0000000000000000
-R10: 0000000000000000 R11: 0000000000000246 R12: 000000000a528dd0
-R13: 0000000000000003 R14: 0000000000000000 R15: 0000000000000000
- </TASK>
-
-The buggy address belongs to the physical page:
-page: refcount:0 mapcount:0 mapping:0000000000000000 index:0x0 pfn:0x3188
-head: order:2 mapcount:0 entire_mapcount:0 nr_pages_mapped:0 pincount:0
-flags: 0x4000000000000040(head|zone=1)
-page_type: f8(unknown)
-raw: 4000000000000040 0000000000000000 dead000000000122 0000000000000000
-raw: 0000000000000000 0000000000000000 00000000f8000000 0000000000000000
-head: 4000000000000040 0000000000000000 dead000000000122 0000000000000000
-head: 0000000000000000 0000000000000000 00000000f8000000 0000000000000000
-head: 4000000000000002 ffffea00000c6201 00000000ffffffff 00000000ffffffff
-head: 0000000000000000 0000000000000000 00000000ffffffff 0000000000000000
-page dumped because: kasan: bad access detected
-
-Memory state around the buggy address:
- ffff88800318a700: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
- ffff88800318a780: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
->ffff88800318a800: fe fe fe fe fe fe fe fe fe fe fe fe fe fe fe fe
-                   ^
- ffff88800318a880: fe fe fe fe fe fe fe fe fe fe fe fe fe fe fe fe
- ffff88800318a900: fe fe fe fe fe fe fe fe fe fe fe fe fe fe fe fe
-==================================================================
-
-Fix by adding a bounds check on die_offset against adev->discovery.size
-before the pointer cast in all three sites.
-
-Fixes: d0c647a6aae2 ("drm/amdgpu/discovery: support new discovery binary header")
-Cc: stable@vger.kernel.org
-Signed-off-by: Pavitra Jha <jhapavitra98@gmail.com>
----
- drivers/gpu/drm/amd/amdgpu/amdgpu_discovery.c | 15 +++++++++++++++
- 1 file changed, 15 insertions(+)
-
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_discovery.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_discovery.c
-index be5069642..41ca01e2b 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_discovery.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_discovery.c
-@@ -774,6 +774,11 @@ static void amdgpu_discovery_read_harvest_bit_per_ip(struct amdgpu_device *adev,
- 	/* scan harvest bit of all IP data structures */
- 	for (i = 0; i < num_dies; i++) {
- 		die_offset = le16_to_cpu(ihdr->die_info[i].die_offset);
-+		if (die_offset + sizeof(*dhdr) > adev->discovery.size) {
-+			dev_err(adev->dev, "invalid die_offset %u in harvest table\n",
-+				die_offset);
-+			return;
-+		}
- 		dhdr = (struct die_header *)(discovery_bin + die_offset);
- 		num_ips = le16_to_cpu(dhdr->num_ips);
- 		ip_offset = die_offset + sizeof(*dhdr);
-@@ -1296,6 +1301,11 @@ static int amdgpu_discovery_sysfs_recurse(struct amdgpu_device *adev)
- 		struct ip_die_entry *ip_die_entry;
- 
- 		die_offset = le16_to_cpu(ihdr->die_info[ii].die_offset);
-+		if (die_offset + sizeof(*dhdr) > adev->discovery.size) {
-+			dev_err(adev->dev, "invalid die_offset %u in sysfs init\n",
-+				die_offset);
-+			return -EINVAL;
-+		}
- 		dhdr = (struct die_header *)(discovery_bin + die_offset);
- 		num_ips = le16_to_cpu(dhdr->num_ips);
- 		ip_offset = die_offset + sizeof(*dhdr);
-@@ -1522,6 +1532,11 @@ static int amdgpu_discovery_reg_base_init(struct amdgpu_device *adev)
- 
- 	for (i = 0; i < num_dies; i++) {
- 		die_offset = le16_to_cpu(ihdr->die_info[i].die_offset);
-+		if (die_offset + sizeof(*dhdr) > adev->discovery.size) {
-+			dev_err(adev->dev, "invalid die_offset %u in reg base init\n",
-+				die_offset);
-+			return -EINVAL;
-+		}
- 		dhdr = (struct die_header *)(discovery_bin + die_offset);
- 		num_ips = le16_to_cpu(dhdr->num_ips);
- 		ip_offset = die_offset + sizeof(*dhdr);
--- 
-2.53.0
-
+Thanks!
 
