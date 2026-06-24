@@ -1,63 +1,96 @@
-Return-Path: <stable+bounces-268124-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-268126-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 6kMtMqumO2pgawgAu9opvQ
-	(envelope-from <stable+bounces-268124-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 24 Jun 2026 11:43:07 +0200
+	id 6rQBMO2lO2o4awgAu9opvQ
+	(envelope-from <stable+bounces-268126-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 24 Jun 2026 11:39:57 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 294106BD07D
-	for <lists+stable@lfdr.de>; Wed, 24 Jun 2026 11:43:07 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id F0A2D6BD014
+	for <lists+stable@lfdr.de>; Wed, 24 Jun 2026 11:39:56 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=qRFYTXnE;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-268124-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-268124-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=none) header.from=linuxfoundation.org;
+	dkim=pass header.d=kroah.com header.s=fm1 header.b=h6vTe0lQ;
+	dkim=pass header.d=messagingengine.com header.s=fm1 header.b=Q7pvbAzE;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-268126-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-268126-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=none) header.from=kroah.com;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 9F349301BF79
-	for <lists+stable@lfdr.de>; Wed, 24 Jun 2026 09:38:50 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 6D734300610A
+	for <lists+stable@lfdr.de>; Wed, 24 Jun 2026 09:39:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 394F83B14D2;
-	Wed, 24 Jun 2026 09:38:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8926E1E22E9;
+	Wed, 24 Jun 2026 09:39:55 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from fhigh-a2-smtp.messagingengine.com (fhigh-a2-smtp.messagingengine.com [103.168.172.153])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85A8A3A16A1;
-	Wed, 24 Jun 2026 09:38:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8951F1AB6F1
+	for <stable@vger.kernel.org>; Wed, 24 Jun 2026 09:39:53 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782293927; cv=none; b=Vx9/DbmcF6xJgUSDmy2OLvBy29134w0JIuSl4fQ6Wwb+7wSxOJihLmoCQeYa3y5SnEynoobYyibb3BV94VSdUhgzzo0pnx5fOsjJhYtw7zt+5Nf2ZLpQlxW5ImXDzSRfcZsL9Sud56WfmTqqir17hIc6SBk5ZbvLk9WAHdC7+yo=
+	t=1782293995; cv=none; b=da+CFWHxG2V4yDW0zCfqSiPA0Y+4P93d/Fa3fmjWAOBaGTZ/+sDyGrv9NEKU/C6kQF8CBLe+ZHW8voW66dl7R1ADwpHuAumCadeJ6a2yl2LGx6szKCCfglcWny8FnBfghndydWUiRCX9OvoV7ZNqc1J49EMwULiCsN5xeOY2JVo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782293927; c=relaxed/simple;
-	bh=M2YMAyyrXp+m7daGRk83FBoAsgDyiLWZKk8W6zjdrnU=;
+	s=arc-20240116; t=1782293995; c=relaxed/simple;
+	bh=ndy+XQIjb+bXruAl3ufzMAnurhqUwUJT2EMJD07YEn8=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=kFD3QXGxmnJz1kOL1e5SV5QgjIghs0DdZSb3gZxtlZUmKfqAGpm0H7rNY57uw9kFvkjchHreMPTWkCOpwls5xDkj0YyWoo3fyzF+gIXYe4LLjIAoQV1rnlqz8afwg4cCCwG+g+IefolSKYm5bjd1T1uGlgneghQxg8QV/GDyv4E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qRFYTXnE; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ECF251F000E9;
-	Wed, 24 Jun 2026 09:38:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1782293921;
-	bh=HwV1spafxwZqAlW6qWIVPzH+VQ8S47/INwFY5X+vW84=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=qRFYTXnEJeQ7p0Il9HzB8Gcdt6GhOBhMppeXIjxMYGd+tL1swUy7Cb1xJN64rB9Wr
-	 UVvR6h+Q6b1ABEjXrEYUYZK/7tTIfLLFPIbKQGeWkfyHAjLxm9lm9xSIu49S4/tpts
-	 G/13VZbx20tLGL3kauIbdteRfF84AW9LalZh2W7g=
-Date: Wed, 24 Jun 2026 11:37:29 +0200
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Wongi Lee <qw3rtyp0@gmail.com>
-Cc: stable@vger.kernel.org, Sasha Levin <sashal@kernel.org>,
-	netdev@vger.kernel.org, David Ahern <dsahern@kernel.org>,
-	Ido Schimmel <idosch@nvidia.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>, Jungwoo Lee <jwlee2217@gmail.com>
-Subject: Re: Please apply 736b380e28d0 and eca856950f7c down to 6.1.y
-Message-ID: <2026062416-amulet-paradox-cf7c@gregkh>
-References: <ajuR7rZYU943EG6p@DESKTOP-19IMU7U.localdomain>
- <2026062417-conceal-driving-0ebd@gregkh>
- <ajujm9+82N1g/HgF@DESKTOP-19IMU7U.localdomain>
+	 Content-Type:Content-Disposition:In-Reply-To; b=CXd0127JsVIVHLUEsfIJrkma+XRggeh7Iss6hHK6wlSSqYlPT/n4KHPYxzKo+ytAXikMzuuHU4/5uq0g5fCez74bdB2Qkx1q4f3+JGG2PW0z1Ls9z0kPW2ABqRoLbX3RFbxO6JbbD07tQe5Ug2kmAbDBPCQ9Gm7HwaHGd5cDOIE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com; spf=pass smtp.mailfrom=kroah.com; dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b=h6vTe0lQ; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=Q7pvbAzE; arc=none smtp.client-ip=103.168.172.153
+Received: from phl-compute-12.internal (phl-compute-12.internal [10.202.2.52])
+	by mailfhigh.phl.internal (Postfix) with ESMTP id C47571400086;
+	Wed, 24 Jun 2026 05:39:52 -0400 (EDT)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-12.internal (MEProxy); Wed, 24 Jun 2026 05:39:52 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kroah.com; h=cc
+	:cc:content-type:content-type:date:date:from:from:in-reply-to
+	:in-reply-to:message-id:mime-version:references:reply-to:subject
+	:subject:to:to; s=fm1; t=1782293992; x=1782380392; bh=qwPtXcTmpk
+	w3vEjsqekKQfXtxvhPBQW5o2Gmds+R4JM=; b=h6vTe0lQqBm7kUgOyjDib1YDUJ
+	jT/Uz8+eOZIzvGwhG7IUjz8Tpcr8eS4ls7HssRuL/aCRrJZmBZQNKgM2aHKwUOso
+	nXwxEHYLCxDY0gyvdIbvcs4+dEJcfRGHHwNIHqJAjOjaS+VjOD1XIflxJzLQ9LBD
+	6pAYXNK749z4q/ilmuxklN71FMDjLjFGFi6cO1UKxQAvJRYplzcV3jKb4FiqzaGj
+	Hqc/b2giKZOoBa+7GAlLZMist5T+zrVbZq5W233BCWmXquLBd+3oP6KqseL1aCM3
+	VVM5inuRNe+tH0+wd/u2Q4MxNO08VG8A72j6jgtWdzoCr0MBZV7/gonDUcoQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-type:content-type:date:date
+	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+	:message-id:mime-version:references:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=
+	1782293992; x=1782380392; bh=qwPtXcTmpkw3vEjsqekKQfXtxvhPBQW5o2G
+	mds+R4JM=; b=Q7pvbAzEh8Frh0wBQhW6A7vVsYImLS8V9rCd1gjEw7OdsIm+9h5
+	iYsXs81DfP79xGCnMOmVNwyKQCXQSi83FKD2l5gtYFAF/l4czF3lmdakBOyLWnmr
+	iYK6e2G5r4YxzxiI5cuuMNR6qzAe+7iYo98O5m1uLB2wnLrdfbeomsx2Nj9BE9OR
+	6FKAXvSo4S2OuScNf5Gy3Z52BGQgWm7cuGK9Hu7QzT55zlLWrVAkXvH10Fcpvn2T
+	O1qk5IxIjb3+FL6bLhsKN14vOOG4sWV3hFJAbGtpKdGT2NhuuwWty8l2qAyiPGWu
+	bdFEktTxz7ZwKGnOCyNFxLM9qfv/+T8t8kg==
+X-ME-Sender: <xms:6KU7ahErKkWTWVfSNBe4677DQNnSCOs3P2OlcMjf7hvCWXECKjPcdA>
+    <xme:6KU7akKqcaAZtqxyi_Co0u__XwLhxASp0LHFGodkynzGqR8ba2Yh6Ffe2u4N01TGy
+    RWQh8K8zrlgaTvEv2s971iPPNl8V8eMq2EfLnrGYxqlGjpm>
+X-ME-Received: <xmr:6KU7atn_dU1OD273bRHLjwY9ENpPkCwfAQpKgME9N52WburClM38JO42J1k>
+X-ME-Proxy-Cause: dmFkZTEOgZZxH5b7brj7NLntQES6yrZD7j1rXG0dtZu3Yj4sVYvI20W6uIjrLB25lDOE2F
+    mbwP66K9CNYNrsfL3n+cmjKNwlqbr5jbLCIDqEmcqLzzN0BAiz95ztFTRciAK/U+0BdNDW
+    XmI9LKUPEwFeDCz2CcoK4VIViWxM6NQeWfydelVPJD/lQZ/ch19DbFPUmz6u8dIZNgLZJO
+    kWuAhakDuiD2drDi4pNnKbMb+gGtlxejU5l9NF+3IYg0Jx8jCUQ+oeEXMSoBkMdybKrBby
+    rWb2i0LaodAcv3Re2VTf/nb91WFKDoTs7//HqgJ8DAduDYqiwS/goRjxb+c/IPXi6kBsYr
+    akNpFqWDg+wbGPxaKn9zhmMORjCsy+JQZ5LPA+eNj6ttUF3yxIQi8Qv81gWLg92wspKPER
+    WLsngtgIbtKSPnc32JDUlZo2OtqkUYrSg8r7ba6rCULpATQrBcjH1B81mLDOjKbEc1829e
+    1U410vbACJqsfvv+bGGZ2cJ9eA+orR77STti/xDfVEyQWJKmZhlUL6DaE9/WBZohkBbWVO
+    DNhQ0OzrxqBKewvLhVYYJKXLZcDCy08V/aqmhQE2UXtU40zesOJ/M/hPhrPuJu8j4wAd/H
+    zWhtHen80te/qdbaUexmUnTUQ6y8A5ii2U5PZajNmdnbY0DlWFMs+0n6WBiw
+X-ME-Proxy: <xmx:6KU7akQzvVfJsowt77tsodpc3t2Ay7bEDqd8dsBrgmdAJ7BdhuOVbA>
+    <xmx:6KU7anL_OBrAXBnmbm9Q-4z9A5LUh-mgbt_lNwvawwNbtFGYfdMkjQ>
+    <xmx:6KU7aiAWCtRrZPatuY4r3vj4QKBlzx635iAZRKwtvRC5g-CQaHDUOQ>
+    <xmx:6KU7aoC-viDVRn3COivJY_kjMcZ9IQyDdk_LBPNs9gbd8NcxpczLbg>
+    <xmx:6KU7agVAEJBLvNOGcVHTKvC3QfSFN6FRmAgv266MUet8eg6gUE2smlGO>
+Feedback-ID: i787e41f1:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
+ 24 Jun 2026 05:39:52 -0400 (EDT)
+Date: Wed, 24 Jun 2026 11:38:42 +0200
+From: Greg KH <greg@kroah.com>
+To: Yoann Congal <yoann.congal@smile.fr>
+Cc: stable@vger.kernel.org
+Subject: Re: "ext4: get rid of ppath in get_ext_path()" 6.6.y backport request
+Message-ID: <2026062418-upswing-scabby-0f83@gregkh>
+References: <DJH66E0ZKMBD.RJREJPRY6MMD@smile.fr>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -66,92 +99,163 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <ajujm9+82N1g/HgF@DESKTOP-19IMU7U.localdomain>
+In-Reply-To: <DJH66E0ZKMBD.RJREJPRY6MMD@smile.fr>
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [2.34 / 15.00];
-	MID_END_EQ_FROM_USER_PART(4.00)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	DMARC_POLICY_ALLOW(-0.50)[kroah.com,none];
 	MID_RHS_NOT_FQDN(0.50)[];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_DKIM_ALLOW(-0.20)[kroah.com:s=fm1,messagingengine.com:s=fm1];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FROM_HAS_DN(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:qw3rtyp0@gmail.com,m:stable@vger.kernel.org,m:sashal@kernel.org,m:netdev@vger.kernel.org,m:dsahern@kernel.org,m:idosch@nvidia.com,m:davem@davemloft.net,m:edumazet@google.com,m:kuba@kernel.org,m:pabeni@redhat.com,m:horms@kernel.org,m:jwlee2217@gmail.com,s:lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[12];
-	FREEMAIL_TO(0.00)[gmail.com];
+	TAGGED_FROM(0.00)[bounces-268126-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
+	RCPT_COUNT_TWO(0.00)[2];
 	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS(0.00)[m:yoann.congal@smile.fr,m:stable@vger.kernel.org,s:lists@lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
-	TAGGED_FROM(0.00)[bounces-268124-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[vger.kernel.org,kernel.org,nvidia.com,davemloft.net,google.com,redhat.com,gmail.com];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	FORGED_SENDER(0.00)[greg@kroah.com,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[kroah.com:+,messagingengine.com:+];
 	MISSING_XM_UA(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp]
+	TO_DN_SOME(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[greg@kroah.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,messagingengine.com:dkim,kroah.com:dkim,kroah.com:from_mime,yoctoproject.org:url]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 294106BD07D
+X-Rspamd-Queue-Id: F0A2D6BD014
 
-On Wed, Jun 24, 2026 at 06:30:03PM +0900, Wongi Lee wrote:
-> On Wed, Jun 24, 2026 at 11:00:45AM +0200, Greg Kroah-Hartman wrote:
-> > On Wed, Jun 24, 2026 at 05:14:38PM +0900, Wongi Lee wrote:
-> > > Hi,
-> > > 
-> > > Could the following upstream commits be queued for the active stable
-> > > trees?
-> > > 
-> > >   commit 736b380e28d0480c7bc3e022f1950f31fe53a7c5
-> > >   ("ipv6: account for fraggap on the paged allocation path")
-> > 
-> > I do not see that commit id in Linus's tree, are you sure it is correct?
-> > 
-> > >   commit eca856950f7cb1a221e02b99d758409f2c5cec42
-> > >   ("ipv4: account for fraggap on the paged allocation path")
-> > 
-> > Same here, no id of that one in Linus's tree that I can see.
-> > 
-> > thanks,
-> > 
-> > greg k-h
+On Wed, Jun 24, 2026 at 11:25:06AM +0200, Yoann Congal wrote:
+> Hello,
 > 
+> I'd like to request the backport of
+> 6b854d552711 ("ext4: get rid of ppath in get_ext_path()")
+> on the 6.6.y branch.
 > 
-> Hi Greg,
+> Rational:
+> 6.6.130 commit fb138df7d886 ("ext4: get rid of ppath in ext4_ext_insert_extent()")
+> created a regression in ext4_ext_map_blocks() by changing the path value
+> under error (NULL -> ERR_PTR). But path is only checked for NULL value
+> in ext4_free_ext_path (not ERR_PTR).
 > 
-> First, sorry for confusing you.
+> The check is added in 6b854d552711 ("ext4: get rid of ppath in get_ext_path()"),
+> hence this backport request.
 > 
-> The commit IDs are from netdev/net.git:
+> More details:
+> This regression was triggered during LTP test on a 6.6.129->6.6.142
+> upgrade for a Yocto Project stable branch:
+> https://autobuilder.yoctoproject.org/valkyrie/#/builders/98/builds/3837
+> -> https://valkyrie.yocto.io/pub/non-release/20260622-121/testresults/qemuarm64-ltp/core-image-sato/qemu_boot_log.20260623002740
 > 
->   736b380e28d0480c7bc3e022f1950f31fe53a7c5
->   https://git.kernel.org/pub/scm/linux/kernel/git/netdev/net.git/commit/?id=736b380e28d0
+> [ 6952.500858] Unable to handle kernel paging request at virtual address ffffffffffffffec
+> [ 6952.503768] Mem abort info:
+> [ 6952.504431]   ESR = 0x0000000096000005
+> [ 6952.505333]   EC = 0x25: DABT (current EL), IL = 32 bits
+> [ 6952.506541]   SET = 0, FnV = 0
+> [ 6952.507354]   EA = 0, S1PTW = 0
+> [ 6952.508154]   FSC = 0x05: level 1 translation fault
+> [ 6952.509208] Data abort info:
+> [ 6952.509849]   ISV = 0, ISS = 0x00000005, ISS2 = 0x00000000
+> [ 6952.511175]   CM = 0, WnR = 0, TnD = 0, TagAccess = 0
+> [ 6952.512372]   GCS = 0, Overlay = 0, DirtyBit = 0, Xs = 0
+> [ 6952.513667] swapper pgtable: 4k pages, 39-bit VAs, pgdp=0000000041250000
+> [ 6952.514909] [ffffffffffffffec] pgd=0000000000000000, p4d=0000000000000000, pud=0000000000000000
+> [ 6952.516423] Internal error: Oops: 0000000096000005 [#1] PREEMPT SMP
+> [ 6952.517503] Modules linked in: x_tables tun loop [last unloaded: ip6_tables]
+> [ 6952.518691] CPU: 1 PID: 1078 Comm: kworker/u12:1 Tainted: G        W          6.6.142-yocto-standard #1
+> [ 6952.520269] Hardware name: linux,dummy-virt (DT)
+> [ 6952.521094] Workqueue: writeback wb_workfn (flush-7:0)
+> [ 6952.521985] pstate: 60400005 (nZCv daif +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+> [ 6952.523184] pc : ext4_ext_map_blocks+0x260/0x1860
+> [ 6952.524011] lr : ext4_ext_map_blocks+0xdb8/0x1860
+> [ 6952.524851] sp : ffffffc086a3b620
+> [ 6952.525421] x29: ffffffc086a3b740 x28: ffffffffffffffe4 x27: 000000000000808c
+> [ 6952.526624] x26: ffffff8017dd9000 x25: 000000000000808c x24: 0000000000000002
+> [ 6952.527849] x23: ffffff8035e766c8 x22: ffffff802e589690 x21: 000000000000042f
+> [ 6952.529087] x20: ffffffc086a3b948 x19: ffffff8035e767f0 x18: 0000000000000000
+> [ 6952.530310] x17: ffffffc081691310 x16: fffffffe001ab548 x15: 0000005564d4cb48
+> [ 6952.531519] x14: 00000000ffffffff x13: 0000000000000000 x12: ffffffffffffffc0
+> [ 6952.532683] x11: 0000000000000040 x10: ffffff8005d81d80 x9 : ffffffc0803cce14
+> [ 6952.533886] x8 : 00000000bab647bc x7 : 0000000000000000 x6 : 000000000000d847
+> [ 6952.535065] x5 : 0000000000000000 x4 : 0000000000316019 x3 : 0000000000000000
+> [ 6952.536264] x2 : 0000000000000000 x1 : 0000000000000000 x0 : ffffff803deec880
+> [ 6952.537425] Call trace:
+> [ 6952.537860]  ext4_ext_map_blocks+0x260/0x1860
+> [ 6952.538589]  ext4_map_blocks+0x19c/0x598
+> [ 6952.539258]  ext4_do_writepages+0x5a4/0xbe0
+> [ 6952.539977]  ext4_writepages+0x84/0x110
+> [ 6952.540624]  do_writepages+0x94/0x1e0
+> [ 6952.541240]  __writeback_single_inode+0x60/0x4d8
+> [ 6952.542086]  writeback_sb_inodes+0x208/0x4b0
+> [ 6952.542812]  __writeback_inodes_wb+0x58/0x118
+> [ 6952.543578]  wb_writeback+0x274/0x440
+> [ 6952.544198]  wb_workfn+0x3b0/0x5c8
+> [ 6952.544788]  process_one_work+0x16c/0x3e0
+> [ 6952.545434]  worker_thread+0x1b4/0x378
+> [ 6952.546059]  kthread+0x118/0x128
+> [ 6952.546599]  ret_from_fork+0x10/0x20
+> [ 6952.547197] Code: 2a0103f9 b9009fe1 b9000e99 b40055fc (79401398)
+> [ 6952.548170] ---[ end trace 0000000000000000 ]---
+> [ 6952.551090] ------------[ cut here ]------------
 > 
->   eca856950f7cb1a221e02b99d758409f2c5cec42
->   https://git.kernel.org/pub/scm/linux/kernel/git/netdev/net.git/commit/?id=eca856950f7c
+> Reading the resulting code in 6.6.142:
+> fs/ext4/extents.c:
+> int ext4_ext_map_blocks(handle_t *handle, struct inode *inode,
+> 			struct ext4_map_blocks *map, int flags)
+> {
+> 	struct ext4_ext_path *path = NULL;
+> 	// ...
 > 
-> They were applied to netdev without Cc: stable@vger.kernel.org, so I
-> wanted to flag them for stable handling but I send it too fast (before
-> merge).
+> got_allocated_blocks:
+> 	path = ext4_ext_insert_extent(handle, inode, path, &newex, flags);
+> 	if (IS_ERR(path)) {
+> 		err = PTR_ERR(path);
+> 		/*
+> 		 * Gracefully handle out of space conditions. If the filesystem
+> 		 * is inconsistent, we'll just leak allocated blocks to avoid
+> 		 * causing even more damage.
+> 		 */
+> 		// ...
+> 		goto out;
+> 	}
 > 
-> I will resend the request with the Linus tree commit ID.
+> 	// ...
+> out:
+> 	ext4_free_ext_path(path);
+> 
+> 	trace_ext4_ext_map_blocks_exit(inode, flags, map,
+> 				       err ? err : allocated);
+> 	return err ? err : allocated;
+> }
+> 
+> => Under out of space condition (what LTP does a *LOT*): path is given unmodified to
+> ext4_free_ext_path() that only does a NULL check (no IS_ERR) before
+> dereferencing it. And that produces the oops and then, the LTP failure.
+> 
+> Notably, master commit 6b854d552711 ("ext4: get rid of ppath in get_ext_path()")
+> never got backported to 6.6.y. But does add the IS_ERR_OR_NULL() check
+> to ext4_free_ext_path:
+>  void ext4_free_ext_path(struct ext4_ext_path *path)
+>  {
+> +       if (IS_ERR_OR_NULL(path))
+> +               return;
+> 
+> Thanks!
 
-They have to be in Linus's tree, before we can take them in a stable
-release, right?
-
-And why were they not originally tagged with the cc: stable?  That would
-save you time in the future as it would all just happen automatically.
+Please always cc: the maintainers and developers involved in a patch
+when asking for it to be backported, as we need their approval as well
+before we can do it.
 
 thanks,
 
