@@ -1,59 +1,69 @@
-Return-Path: <stable+bounces-268069-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-268070-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 0puTB4d2O2pAYQgAu9opvQ
-	(envelope-from <stable+bounces-268069-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 24 Jun 2026 08:17:43 +0200
+	id Ahg5IxR3O2pcYQgAu9opvQ
+	(envelope-from <stable+bounces-268070-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 24 Jun 2026 08:20:04 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6B5AB6BBB71
-	for <lists+stable@lfdr.de>; Wed, 24 Jun 2026 08:17:42 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id D116D6BBB95
+	for <lists+stable@lfdr.de>; Wed, 24 Jun 2026 08:20:03 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=LXvPmPBy;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-268069-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-268069-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=none) header.from=linux.alibaba.com;
+	dkim=pass header.d=163.com header.s=s110527 header.b=We4dDDJu;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-268070-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-268070-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=none) header.from=163.com;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 02C6E301E58A
-	for <lists+stable@lfdr.de>; Wed, 24 Jun 2026 06:17:35 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D39EB301ECFA
+	for <lists+stable@lfdr.de>; Wed, 24 Jun 2026 06:19:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80C7D32AAB5;
-	Wed, 24 Jun 2026 06:17:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F2DF38550E;
+	Wed, 24 Jun 2026 06:19:56 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from out30-100.freemail.mail.aliyun.com (out30-100.freemail.mail.aliyun.com [115.124.30.100])
+Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.4])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0324B1C5F27;
-	Wed, 24 Jun 2026 06:17:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3714A1C5F27;
+	Wed, 24 Jun 2026 06:19:44 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782281854; cv=none; b=bgOKgL0dBh9LNYDOxIznpMbgndt5O5TTrjddpHwAgtRFQuho45xTltUO04a1A+hojLpYmK14DwXn3epgmy0+Hld1249twfJ8jRl1sdm1FasZ8ib9XDJmiUYxBr5runJ6LZ9MEn51T7Q6jJh9l/xxbJ6iMueqebf4yheZ4r07Ymc=
+	t=1782281996; cv=none; b=Rgvecc94SAuL4Oz64nqphUzzzVTOqimRbDsx3w+p26HPGPBVAsDeyaKKs+ujfk0Haj0jqWJH21Mpl4ba677hQnuFzjm7dFaq/9ecr3I3tA9gcEXiDlXHdwtrpU7/I5HgostcvBYZ29McJEmEBZqA19o3AMNFZPrAO8yk3txYkCU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782281854; c=relaxed/simple;
-	bh=v90PhLcJLyT/2ztDpcv2ajbHy++PTPvl6RpvzQ986F0=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=EJiRft2t6TR7OB7qyiRbsw71CAI0IoQs2qxg380So1dqdrgEvNjRSYT5vpBqDVQF0ilE2hFb+7bq65DoxBgJpwZPSwnvWvX9eVE/fnvTo0bKfm7f5Dhm6A2Bns2+vP62o4OU5YTtQq4IcWlqAGr30+cJFqgQvq+z/MfbSs1rfkw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=LXvPmPBy; arc=none smtp.client-ip=115.124.30.100
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1782281848; h=From:To:Subject:Date:Message-Id:MIME-Version;
-	bh=gPiqJ8EAvjFK9ofq3L0YUNV8mpGt7xsTx92E0OJpExs=;
-	b=LXvPmPByvJkKPLZHODThPUuDSsxIUTLPP4NqxWdJ73r1tRAocZmSsu+/BjdtYXcaVGdw0wawW/ejmhkfQ1LNpGoLHW07D+DtBLWkHdPrO6WukAN+5/aToxAuKYY+Htsl/TlYmDkd0hcb9R6CdR+FSEjWXeW3SSzJH0pzlcWX37I=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R201e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033037009110;MF=xiangzao@linux.alibaba.com;NM=1;PH=DS;RN=7;SR=0;TI=SMTPD_---0X5X8Ig5_1782281838;
-Received: from localhost.localdomain(mailfrom:xiangzao@linux.alibaba.com fp:SMTPD_---0X5X8Ig5_1782281838 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Wed, 24 Jun 2026 14:17:27 +0800
-From: Yuanhe Shu <xiangzao@linux.alibaba.com>
-To: Steven Rostedt <rostedt@goodmis.org>,
-	Masami Hiramatsu <mhiramat@kernel.org>
-Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	s=arc-20240116; t=1782281996; c=relaxed/simple;
+	bh=Cm8uxm8lEwj/kLkx5WD6HgrQFavrQweJc59P3wASls8=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=aeIGS0lsRgda5KOsVt0mlhlWvsvexsCybQitOVFTzq7uBGTPPf5JyNPZm6fUsGMBIDY0VHndrh2OfxH1SV6lQ1wRF0DAjBAXtWxVqgtPR72XT7I1lU/LMTLhFhKehNN6T5wnXpXinKWZf7/4zPckf/mRDUbHTIMhrfTQCtbuP1U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=We4dDDJu; arc=none smtp.client-ip=220.197.31.4
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=yl
+	e0Kqd88zaVEflBPBDE3K9lYXnitx52ifkJn5SKETE=; b=We4dDDJueapUQ2UchF
+	xCRY8IHkbysKOWewwKRaqDMudfZhxP+cZFzNoY5+qxU0m6OkCu6Hh/RCBQmi8/I1
+	9HfxSNnhSLAj8HArHVezdIhNN1GQQ+GwWT4/USEacbKshDY22XPcnIkd9/QOxvVl
+	lBDv3o6Xi5G3+VMIGwcze5XYY=
+Received: from localhost.localdomain (unknown [])
+	by gzga-smtp-mtada-g1-3 (Coremail) with SMTP id _____wDn8xDfdjtq3ideEw--.60S2;
+	Wed, 24 Jun 2026 14:19:15 +0800 (CST)
+From: Haoxiang Li <haoxiang_li2024@163.com>
+To: mjrosato@linux.ibm.com,
+	alifm@linux.ibm.com,
+	farman@linux.ibm.com,
+	borntraeger@linux.ibm.com,
+	frankja@linux.ibm.com,
+	imbrenda@linux.ibm.com,
+	david@kernel.org,
+	hca@linux.ibm.com,
+	gor@linux.ibm.com,
+	agordeev@linux.ibm.com,
+	svens@linux.ibm.com,
+	schnelle@linux.ibm.com
+Cc: linux-s390@vger.kernel.org,
+	kvm@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	linux-trace-kernel@vger.kernel.org,
-	stable@vger.kernel.org,
-	Yuanhe Shu <xiangzao@linux.alibaba.com>
-Subject: [PATCH] tracing: Fix NULL pointer dereference in func_set_flag()
-Date: Wed, 24 Jun 2026 14:17:15 +0800
-Message-Id: <20260624061715.1445655-1-xiangzao@linux.alibaba.com>
-X-Mailer: git-send-email 2.39.3
+	Haoxiang Li <haoxiang_li2024@163.com>,
+	stable@vger.kernel.org
+Subject: [PATCH v2] KVM: s390: pci: Fix GISC refcount leak on AIF enable failure
+Date: Wed, 24 Jun 2026 14:19:10 +0800
+Message-Id: <20260624061910.2794734-1-haoxiang_li2024@163.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -61,131 +71,79 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:_____wDn8xDfdjtq3ideEw--.60S2
+X-Coremail-Antispam: 1Uf129KBjvdXoW7JFWfZw1kAFyUWr17tw43Jrb_yoWDKFbEvw
+	1Iy340q395ZrsrCryqkFs7ZF1Fka48WF4fAr10qrn8JF95ZrsrW3y8Zr43u3s7Wr4SyrWx
+	X392ywn3Z34IkjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
+	9fnUUvcSsGvfC2KfnxnUUI43ZEXa7sRu0PfDUUUUU==
+X-CM-SenderInfo: xkdr5xpdqjszblsqjki6rwjhhfrp/xtbCxQM-rWo7duO5pwAA3O
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-10.66 / 15.00];
-	WHITELIST_DMARC(-7.00)[alibaba.com:D:+];
-	WHITELIST_SPF_DKIM(-3.00)[alibaba.com:d:+,kernel.org:s:+];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	DMARC_POLICY_ALLOW(-0.50)[163.com,none];
 	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[linux.alibaba.com,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[linux.alibaba.com:s=default];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[163.com:s=s110527];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-268069-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:mjrosato@linux.ibm.com,m:alifm@linux.ibm.com,m:farman@linux.ibm.com,m:borntraeger@linux.ibm.com,m:frankja@linux.ibm.com,m:imbrenda@linux.ibm.com,m:david@kernel.org,m:hca@linux.ibm.com,m:gor@linux.ibm.com,m:agordeev@linux.ibm.com,m:svens@linux.ibm.com,m:schnelle@linux.ibm.com,m:linux-s390@vger.kernel.org,m:kvm@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:haoxiang_li2024@163.com,m:stable@vger.kernel.org,s:lists@lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_SENDER(0.00)[haoxiang_li2024@163.com,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:rostedt@goodmis.org,m:mhiramat@kernel.org,m:mathieu.desnoyers@efficios.com,m:linux-kernel@vger.kernel.org,m:linux-trace-kernel@vger.kernel.org,m:stable@vger.kernel.org,m:xiangzao@linux.alibaba.com,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[xiangzao@linux.alibaba.com,stable@vger.kernel.org];
+	FREEMAIL_FROM(0.00)[163.com];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[17];
+	FORWARDED(0.00)[lists@lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-268070-lists,stable=lfdr.de];
+	DKIM_TRACE(0.00)[163.com:+];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[xiangzao@linux.alibaba.com,stable@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[haoxiang_li2024@163.com,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linux.alibaba.com:+];
+	FREEMAIL_CC(0.00)[vger.kernel.org,163.com];
 	ALIAS_RESOLVED(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	TO_DN_SOME(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linux.alibaba.com:dkim,linux.alibaba.com:mid,linux.alibaba.com:from_mime,vger.kernel.org:from_smtp,alibaba.com:email]
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 6B5AB6BBB71
+X-Rspamd-Queue-Id: D116D6BBB95
 
-func_set_flag() dereferences tr->current_trace_flags before verifying
-that the current tracer is actually the function tracer. When the active
-tracer has been switched away from "function" (e.g., to "wakeup_rt"),
-tr->current_trace_flags can be NULL, leading to a NULL pointer
-dereference and kernel crash.
+kvm_s390_gisc_register() registers the guest ISC before pinning
+the guest interrupt forwarding pages and allocating the AISB bit.
+If any of the later setup steps fails, the function unwinds the
+pinned pages and other local state, but does not unregister the
+GISC reference. Add the missing kvm_s390_gisc_unregister() to the
+error unwind path.
 
-The call chain that triggers this is:
-
-  trace_options_write()
-    -> __set_tracer_option()
-      -> trace->set_flag()          /* func_set_flag */
-
-In func_set_flag(), the first operation is:
-
-  if (!!set == !!(tr->current_trace_flags->val & bit))
-
-This dereferences tr->current_trace_flags unconditionally. The safety
-check that guards against a non-function tracer:
-
-  if (tr->current_trace != &function_trace)
-      return 0;
-
-is placed *after* the dereference, which is too late.
-
-This was observed with the following crash dump:
-
-  BUG: unable to handle page fault at 0000000000000000
-  RIP: func_set_flag+0xd
-
-  Call Trace:
-   __set_tracer_option+0x27
-   trace_options_write+0x75
-   vfs_write+0x12a
-   ksys_write+0x66
-   do_syscall_64+0x5b
-
-  RIP: ffffffff914c973d  RSP: ff67ec88b01dfdf0  RFLAGS: 00010202
-  RAX: 0000000000000000  RBX: ff3a826e80354580  RCX: 0000000000000001
-  RDX: 0000000000000001  RSI: 0000000000000000  RDI: ffffffff93918080
-
-The disassembly confirms the fault:
-
-  func_set_flag+0:   mov 0x1f08(%rdi), %rax  ; RAX = tr->current_trace_flags = NULL
-  func_set_flag+13:  mov (%rax), %eax        ; page fault: dereference NULL
-
-At the time of the crash:
-  tr->current_trace_flags = 0x0 (NULL)
-  tr->current_trace = wakeup_rt_tracer (not function_trace)
-
-The scenario is that a process opens a function tracer option file (such
-as "func_stack_trace"), then the current tracer is switched to another
-tracer (e.g., "wakeup_rt"), which sets current_trace_flags to NULL. When
-the process subsequently writes to the option file, func_set_flag() is
-invoked and crashes on the NULL dereference.
-
-Fix this by moving the current_trace check before the
-current_trace_flags dereference, so that func_set_flag() returns early
-when the function tracer is not active.
-
+Fixes: 3c5a1b6f0a18 ("KVM: s390: pci: provide routines for enabling/disabling interrupt forwarding")
 Cc: stable@vger.kernel.org
-Fixes: 76680d0d2825 ("tracing: Have function tracer define options per instance")
-Signed-off-by: Yuanhe Shu <xiangzao@linux.alibaba.com>
+Signed-off-by: Haoxiang Li <haoxiang_li2024@163.com>
 ---
- kernel/trace/trace_functions.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+Changes in v2:
+ - Move unregister call after "out" label. Thanks, Matt!
+---
+ arch/s390/kvm/pci.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/kernel/trace/trace_functions.c b/kernel/trace/trace_functions.c
-index f283391a4dc8..cd37f2013758 100644
---- a/kernel/trace/trace_functions.c
-+++ b/kernel/trace/trace_functions.c
-@@ -458,12 +458,12 @@ func_set_flag(struct trace_array *tr, u32 old_flags, u32 bit, int set)
- 	ftrace_func_t func;
- 	u32 new_flags;
+diff --git a/arch/s390/kvm/pci.c b/arch/s390/kvm/pci.c
+index 5b075c38998e..686113be0530 100644
+--- a/arch/s390/kvm/pci.c
++++ b/arch/s390/kvm/pci.c
+@@ -328,6 +328,7 @@ static int kvm_s390_pci_aif_enable(struct zpci_dev *zdev, struct zpci_fib *fib,
+ unpin1:
+ 	unpin_user_page(aibv_page);
+ out:
++	kvm_s390_gisc_unregister(kvm, fib->fmt0.isc);
+ 	return rc;
+ }
  
--	/* Do nothing if already set. */
--	if (!!set == !!(tr->current_trace_flags->val & bit))
-+	/* We can change this flag only when current tracer is function. */
-+	if (tr->current_trace != &function_trace)
- 		return 0;
- 
--	/* We can change this flag only when not running. */
--	if (tr->current_trace != &function_trace)
-+	/* Do nothing if already set. */
-+	if (!!set == !!(tr->current_trace_flags->val & bit))
- 		return 0;
- 
- 	new_flags = (tr->current_trace_flags->val & ~bit) | (set ? bit : 0);
 -- 
-2.39.3
+2.25.1
 
 
