@@ -1,241 +1,165 @@
-Return-Path: <stable+bounces-268053-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-268054-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id T6RrOrZFO2psVQgAu9opvQ
-	(envelope-from <stable+bounces-268053-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 24 Jun 2026 04:49:26 +0200
+	id ET45AgFGO2qVVQgAu9opvQ
+	(envelope-from <stable+bounces-268054-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 24 Jun 2026 04:50:41 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3A8896BAF7C
-	for <lists+stable@lfdr.de>; Wed, 24 Jun 2026 04:49:26 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 458A76BAF8D
+	for <lists+stable@lfdr.de>; Wed, 24 Jun 2026 04:50:40 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=fnnas-com.20200927.dkim.feishu.cn header.s=s1 header.b=NezUof0A;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-268053-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-268053-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=none;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=m2saXI8U;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-268054-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-268054-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=none) header.from=linux.alibaba.com;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 0FC3A304149E
-	for <lists+stable@lfdr.de>; Wed, 24 Jun 2026 02:49:25 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 00E533042E48
+	for <lists+stable@lfdr.de>; Wed, 24 Jun 2026 02:50:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD9A3301460;
-	Wed, 24 Jun 2026 02:49:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 766E5301471;
+	Wed, 24 Jun 2026 02:50:38 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from va-2-30.ptr.blmpb.com (va-2-30.ptr.blmpb.com [209.127.231.30])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from out30-110.freemail.mail.aliyun.com (out30-110.freemail.mail.aliyun.com [115.124.30.110])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8D3E3002D8
-	for <stable@vger.kernel.org>; Wed, 24 Jun 2026 02:49:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55F2E3009CB;
+	Wed, 24 Jun 2026 02:50:34 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782269363; cv=none; b=H/E6PKSJjUQClkKcoNxi2tqhGW5teOR5TlTekJVcFR8xtE7XE5GYpiLCo8CMZ2wPHpUG0Amw+7Ksq4OS+wxhdUcSRsISbhjJ2UAUhRX9re6J0vaq9Xv+/viJfFS6TqtdXdhRrXk0AQ2SkJ5EA/R8ARQNQiF8DZ3GDA93KLyMW28=
+	t=1782269438; cv=none; b=bUFKsLfodmeE7DcWbK8S/p3hrXhctFnRkj0n9P3LcD+28pKhCuSwcS0Q4Hccz1Rlge0CH/u2Fo9n6p5Vsoz1QZH2zdseLdLmHrcp8Pq5VPXin5y91IdGgw3r7Lfe0pU9TRF/Shv9bZCJTnPot1EFRlbOqW+VTMiO2AraFv7uR2Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782269363; c=relaxed/simple;
-	bh=IPrXncu2hiGlR9FfELgR/4ZkZtSAmPp48tUCR+Gkkp8=;
-	h=To:Cc:Subject:Content-Type:Content-Disposition:References:Date:
-	 Mime-Version:From:Message-Id:In-Reply-To; b=WChXT7FbydX/fSIPRKZRyMiaU7vX69G81hUJgendAhVmCd6aIQjWQgx2zjxMr84ntjP2s6oevzZxqQJD3pP5uSsIzIdMETEebqW+dag4n4Qt30sX0hFUitD7uPZEgSXNXFY6nt1JF5a7yqYrtNlQ0xSbGqRyqWAChQc95mTOkQw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=fnnas.com; spf=pass smtp.mailfrom=fnnas.com; dkim=pass (2048-bit key) header.d=fnnas-com.20200927.dkim.feishu.cn header.i=@fnnas-com.20200927.dkim.feishu.cn header.b=NezUof0A; arc=none smtp.client-ip=209.127.231.30
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- s=s1; d=fnnas-com.20200927.dkim.feishu.cn; t=1782269351;
-  h=from:subject:mime-version:from:date:message-id:subject:to:cc:
- reply-to:content-type:mime-version:in-reply-to:message-id;
- bh=QUg0DylQni8fWh1dKXPQWwrNglC7DjoIeCKSed/uDCQ=;
- b=NezUof0AaB7d33ZbmD8NI1tUCShi4d81GQccC0CcwPPHJNjrV+IAWHr19ZOlt0wrEcBg+I
- 40WkE7KXVbe8NTcCIi2xrZq4s8WlisxSCrQXsI+SlkB3bQdmwxH2+baLeuAKyvFa7DFG5B
- VgMPoCJoD8qLK3T8HyA7ncbhsHuuRG6H94OgEibtomQ2JhLsGUb7PmM6iFJeKasGIWgV33
- 8JOV9ToV0sj3kQPoPxQnPpToWn5ddR62S95LTf1lC4HxbeZUZr5GPwgOxQp2o68A2jdx4a
- QFiBmEJalUKhd3By6dk3nf75nIzK0ZfkoI2dJve7/cBMo6CflHe42C95WzVXYw==
-To: "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>, 
-	"Jiri Slaby" <jirislaby@kernel.org>, 
-	=?utf-8?q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>, 
-	"Xin Zhao" <jackzxcui1989@163.com>, 
-	"Andy Shevchenko" <andy.shevchenko@gmail.com>, 
-	"Kees Cook" <kees@kernel.org>, "Ingo Molnar" <mingo@kernel.org>, 
-	"Bing Fan" <tombinfan@tencent.com>, 
-	"Guanbing Huang" <albanhuang@tencent.com>, 
-	<linux-kernel@vger.kernel.org>, <linux-serial@vger.kernel.org>
-Cc: <stable@vger.kernel.org>
-Subject: Re: [PATCH] serial: 8250: serialize shared IRQ startup
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-Received: from MiniServer ([183.34.167.222]) by smtp.feishu.cn with ESMTPS; Wed, 24 Jun 2026 10:49:07 +0800
-X-Lms-Return-Path: <lba+26a3b45a5+cbade3+vger.kernel.org+wangzhaolong@fnnas.com>
-References: <20260527092052.2086342-1-wangzhaolong@fnnas.com>
-Date: Wed, 24 Jun 2026 10:49:05 +0800
+	s=arc-20240116; t=1782269438; c=relaxed/simple;
+	bh=ndvzgTea6WlyY9d8jQn5HMz62wWCa35xyt9nMxGJdLs=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=j+hyVc6hbskZyPHsbJF6+lgGJOFOTwuAcke8c8jwfIZHHBlU5xv17H9Fk4Oqkl0y9sSkY4cLsw8IphAiVCYyqunf56TRxkXu77yNj1dmmV1T2Vt7AgPfpEihNyWNPHcKaCrjlJp1RT8kspX1dV5RhYqv4SwB7z36hoIKztt/39A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=m2saXI8U; arc=none smtp.client-ip=115.124.30.110
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1782269431; h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type;
+	bh=QK2Sa3tUM9FmdHMKVzdbtY23gSTQnspEbezYtpW8lPQ=;
+	b=m2saXI8UOWaLWZm6j/GOSBC6dAK2oGMUIHhe6dGSf/2M8DsS8zzOJJQbBelR9N5P9FJoHgYEuGgRouqjnD/GCxyu8eFo0288JnM7hLVG2Ovly3q5EElp3ZaAE2Wd0uY4WumJXCU3l0YrQ7aYHZ3ISmXWOoiIegsgni7kITpdBlo=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R521e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam011083073210;MF=feng.tang@linux.alibaba.com;NM=1;PH=DS;RN=24;SR=0;TI=SMTPD_---0X5W1YNy_1782269429;
+Received: from localhost(mailfrom:feng.tang@linux.alibaba.com fp:SMTPD_---0X5W1YNy_1782269429 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Wed, 24 Jun 2026 10:50:29 +0800
+Date: Wed, 24 Jun 2026 10:50:27 +0800
+From: Feng Tang <feng.tang@linux.alibaba.com>
+To: Bradley Morgan <include@grrlz.net>
+Cc: Petr Mladek <pmladek@suse.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Christophe Leroy <chleroy@kernel.org>,
+	Mukesh Kumar Chaurasiya <mchauras@linux.ibm.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Jinchao Wang <wangjinchao600@gmail.com>,
+	Kees Cook <kees@kernel.org>, Rio <rioo.tsukatsukii@gmail.com>,
+	Joel Granados <joel.granados@kernel.org>,
+	Pnina Feder <pnina.feder@mobileye.com>,
+	Petr Pavlu <petr.pavlu@suse.com>,
+	Sergey Senozhatsky <senozhatsky@chromium.org>,
+	Douglas Anderson <dianders@chromium.org>,
+	Mayank Rungta <mrungta@google.com>, Tejun Heo <tj@kernel.org>,
+	Zhenguo Yao <yaozhenguo1@gmail.com>, linuxppc-dev@lists.ozlabs.org,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH v2 4/4] panic: avoid duplicate all CPU backtraces from
+ sys_info
+Message-ID: <ajtF8xCGBNH3wzzo@U-2FWC9VHC-2323.local>
+References: <9b8c96e291696815d3c7de5d3e199298dee0279d.1782228656.git.include@grrlz.net>
+ <2199a8b4da8700b9f27e61486293e9c26ab107ef.1782228656.git.include@grrlz.net>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-From: "Wang Zhaolong" <wangzhaolong@fnnas.com>
-Message-Id: <ajtFoTHUQHJGYV5Q@MiniServer>
-In-Reply-To: <20260527092052.2086342-1-wangzhaolong@fnnas.com>
-X-Original-From: Wang Zhaolong <wangzhaolong@fnnas.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <2199a8b4da8700b9f27e61486293e9c26ab107ef.1782228656.git.include@grrlz.net>
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [0.84 / 15.00];
+X-Spamd-Result: default: False [-10.66 / 15.00];
+	WHITELIST_DMARC(-7.00)[alibaba.com:D:+];
+	WHITELIST_SPF_DKIM(-3.00)[alibaba.com:d:+,kernel.org:s:+];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MV_CASE(0.50)[];
-	MID_RHS_NOT_FQDN(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64];
-	R_DKIM_ALLOW(-0.20)[fnnas-com.20200927.dkim.feishu.cn:s=s1];
+	DMARC_POLICY_ALLOW(-0.50)[linux.alibaba.com,none];
+	R_DKIM_ALLOW(-0.20)[linux.alibaba.com:s=default];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	DMARC_NA(0.00)[fnnas.com];
-	FORGED_RECIPIENTS(0.00)[m:gregkh@linuxfoundation.org,m:jirislaby@kernel.org,m:ilpo.jarvinen@linux.intel.com,m:jackzxcui1989@163.com,m:andy.shevchenko@gmail.com,m:kees@kernel.org,m:mingo@kernel.org,m:tombinfan@tencent.com,m:albanhuang@tencent.com,m:linux-kernel@vger.kernel.org,m:linux-serial@vger.kernel.org,m:stable@vger.kernel.org,m:andyshevchenko@gmail.com,s:lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER(0.00)[wangzhaolong@fnnas.com,stable@vger.kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[12];
-	FREEMAIL_TO(0.00)[linuxfoundation.org,kernel.org,linux.intel.com,163.com,gmail.com,tencent.com,vger.kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:include@grrlz.net,m:pmladek@suse.com,m:akpm@linux-foundation.org,m:maddy@linux.ibm.com,m:mpe@ellerman.id.au,m:npiggin@gmail.com,m:chleroy@kernel.org,m:mchauras@linux.ibm.com,m:andriy.shevchenko@linux.intel.com,m:wangjinchao600@gmail.com,m:kees@kernel.org,m:rioo.tsukatsukii@gmail.com,m:joel.granados@kernel.org,m:pnina.feder@mobileye.com,m:petr.pavlu@suse.com,m:senozhatsky@chromium.org,m:dianders@chromium.org,m:mrungta@google.com,m:tj@kernel.org,m:yaozhenguo1@gmail.com,m:linuxppc-dev@lists.ozlabs.org,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,m:riootsukatsukii@gmail.com,s:lists@lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	DKIM_TRACE(0.00)[fnnas-com.20200927.dkim.feishu.cn:+];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORWARDED(0.00)[lists@lfdr.de];
+	RCPT_COUNT_TWELVE(0.00)[23];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER(0.00)[feng.tang@linux.alibaba.com,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-268054-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[linux.alibaba.com:+];
 	TO_DN_SOME(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[wangzhaolong@fnnas.com,stable@vger.kernel.org];
-	TAGGED_FROM(0.00)[bounces-268053-lists,stable=lfdr.de];
+	FROM_NEQ_ENVFROM(0.00)[feng.tang@linux.alibaba.com,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[suse.com,linux-foundation.org,linux.ibm.com,ellerman.id.au,gmail.com,kernel.org,linux.intel.com,mobileye.com,chromium.org,google.com,lists.ozlabs.org,vger.kernel.org];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	TAGGED_RCPT(0.00)[stable];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	MISSING_XM_UA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,fnnas-com.20200927.dkim.feishu.cn:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,MiniServer:mid,fnnas.com:from_mime,fnnas.com:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[alibaba.com:email,U-2FWC9VHC-2323.local:mid,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp,linux.alibaba.com:dkim,linux.alibaba.com:from_mime]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 3A8896BAF7C
+X-Rspamd-Queue-Id: 458A76BAF8D
 
-On Wed, May 27, 2026 at 05:20:51PM +0800, Wang Zhaolong wrote:
-> Concurrent startup of two 8250 ports sharing the same IRQ can trigger an
-> IRQ core warning:
+On Tue, Jun 23, 2026 at 03:35:01PM +0000, Bradley Morgan wrote:
+> panic_other_cpus_shutdown() handles SYS_INFO_ALL_BT before stopping the
+> other CPUs. Do not ask sys_info() to handle that bit again later in the
+> panic path.
 > 
->   Unbalanced enable for IRQ 3
->   WARNING: CPU: 0 PID: 580 at kernel/irq/manage.c:774 __enable_irq+0x3b/0x60
->   Call Trace:
->    enable_irq+0x8d/0x120
->    serial8250_do_startup+0x80d/0xa80
->    uart_port_startup+0x13d/0x440
->    uart_port_activate+0x5b/0xb0
->    tty_port_open+0xa1/0x120
->    uart_open+0x1e/0x30
->    tty_open+0x140/0x7a0
-> 
-> The second port can then run the shared-IRQ startup test while the IRQ core
-> is still enabling the line for the first port.  The local
-> disable_irq_nosync()/enable_irq() pair is balanced, but the interleaving can
-> still unbalance the IRQ core disable depth.
-> 
-> That makes the QEMU legacy serial ports enter the shared-IRQ THRE test path:
-> 
->   serial8250_do_startup()
->     if (port->irqflags & IRQF_SHARED)
->       disable_irq_nosync(port->irq)
->     ...
->     if (port->irqflags & IRQF_SHARED)
->       enable_irq(port->irq)
-> 
-> One possible interleaving is:
-> 
->   CPU0, ttyS1                         CPU1, ttyS3
-> 
->   serial_link_irq_chain()
->     hash_add(i)
->     i->head = &ttyS1
->     request_irq()
->                                         serial_link_irq_chain()
->                                           find i in irq_lists
->                                           list_add(&ttyS3, i->head)
->                                         serial8250_do_startup()
->                                           disable_irq_nosync(irq)
->     irq_startup()
->       desc->depth = 0
->                                           enable_irq(irq)
->                                             WARN: Unbalanced enable for IRQ 3
-> 
-> Keep hash_mutex held in serial_link_irq_chain() until the first request_irq()
-> has completed.  This prevents another 8250 port sharing the IRQ from joining
-> the chain and running the THRE test while the IRQ core is still starting the
-> interrupt.
-> 
-> This was reproduced in QEMU with ttyS1 and ttyS3 sharing IRQ 3.  With this
-> change, 100000 synchronized open/close iterations on /dev/ttyS1 and /dev/ttyS3
-> completed without the warning.
-> 
-> Fixes: 64c79dfbc458 ("serial: 8250_pnp: Support configurable reg shift property")
-> Closes: https://bugzilla.kernel.org/show_bug.cgi?id=221579
-> Cc: stable@vger.kernel.org # 6.10+
-> Assisted-by: Codex:gpt-5
-> Signed-off-by: Wang Zhaolong <wangzhaolong@fnnas.com>
-> ---
->  drivers/tty/serial/8250/8250_core.c | 9 +++++++--
->  1 file changed, 7 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/tty/serial/8250/8250_core.c b/drivers/tty/serial/8250/8250_core.c
-> index a428e88938eb..64eed4dc343f 100644
-> --- a/drivers/tty/serial/8250/8250_core.c
-> +++ b/drivers/tty/serial/8250/8250_core.c
-> @@ -132,12 +132,10 @@ static void serial_do_unlink(struct irq_info *i, struct uart_8250_port *up)
->   */
->  static struct irq_info *serial_get_or_create_irq_info(const struct uart_8250_port *up)
->  {
->  	struct irq_info *i;
->  
-> -	guard(mutex)(&hash_mutex);
-> -
->  	hash_for_each_possible(irq_lists, i, node, up->port.irq)
->  		if (i->irq == up->port.irq)
->  			return i;
->  
->  	i = kzalloc_obj(*i);
-> @@ -154,10 +152,12 @@ static struct irq_info *serial_get_or_create_irq_info(const struct uart_8250_por
->  static int serial_link_irq_chain(struct uart_8250_port *up)
->  {
->  	struct irq_info *i;
->  	int ret;
->  
-> +	guard(mutex)(&hash_mutex);
-> +
->  	i = serial_get_or_create_irq_info(up);
->  	if (IS_ERR(i))
->  		return PTR_ERR(i);
->  
->  	scoped_guard(spinlock_irq, &i->lock) {
-> @@ -169,10 +169,15 @@ static int serial_link_irq_chain(struct uart_8250_port *up)
->  
->  		INIT_LIST_HEAD(&up->list);
->  		i->head = &up->list;
->  	}
->  
-> +	/*
-> +	 * Keep the shared-IRQ chain locked until the first handler is installed.
-> +	 * Otherwise another UART can join early and run startup IRQ masking while
-> +	 * the IRQ core is still enabling the line, unbalancing the disable depth.
-> +	 */
->  	ret = request_irq(up->port.irq, serial8250_interrupt, up->port.irqflags, up->port.name, i);
->  	if (ret < 0)
->  		serial_do_unlink(i, up);
->  
->  	return ret;
-> -- 
-> 2.54.0
+> Use sys_info_without_all_bt() so panic_print=all_bt does not request more
+> output after the CPUs are stopped.
 
-Hi Maintainers,
+Good catch! Thanks!
 
-Friendly ping on this patch.
+Later in panic_other_cpus_shutdown(), it sends IPIs to stop other CPUs, and
+this patch does avoid dumping local call trace again!
 
-This is a clean and simple one-line relocation fix for the shared IRQ race condition.
+For the whole serie, feel free to add:
 
-I noticed there is another ongoing thread attempting to address the same bug with a
-much more complex approach, but it seems to miss the regression test cases.
-
-Could you please take a look at this simpler alternative when you have time? Any
-feedback or reviews would be highly appreciated.
+Reviewed-by: Feng Tang <feng.tang@linux.alibaba.com>
 
 Thanks,
-Wang
+Feng
+
+> 
+> Fixes: b76e89e50fc3 ("panic: generalize panic_print's function to show sys info")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Bradley Morgan <include@grrlz.net>
+> ---
+> Changes since v1:
+> - New patch using the same helper for panic.
+> 
+>  kernel/panic.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/kernel/panic.c b/kernel/panic.c
+> index d030f88ad4ef..2cf229c7c0cf 100644
+> --- a/kernel/panic.c
+> +++ b/kernel/panic.c
+> @@ -683,7 +683,7 @@ void vpanic(const char *fmt, va_list args)
+>  	 */
+>  	atomic_notifier_call_chain(&panic_notifier_list, 0, buf);
+>  
+> -	sys_info(panic_print);
+> +	sys_info_without_all_bt(panic_print);
+>  
+>  	kmsg_dump_desc(KMSG_DUMP_PANIC, buf);
+>  
+> -- 
+> 2.53.0
 
