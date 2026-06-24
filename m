@@ -1,287 +1,197 @@
-Return-Path: <stable+bounces-268181-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-268184-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id cqKdATr4O2q5gwgAu9opvQ
-	(envelope-from <stable+bounces-268181-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 24 Jun 2026 17:31:06 +0200
+	id Yrx7Nrz9O2oOhwgAu9opvQ
+	(envelope-from <stable+bounces-268184-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 24 Jun 2026 17:54:36 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id A91366BFABE
-	for <lists+stable@lfdr.de>; Wed, 24 Jun 2026 17:31:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DFF466BFD17
+	for <lists+stable@lfdr.de>; Wed, 24 Jun 2026 17:54:35 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=nxp.com header.s=selector1 header.b=aTjq4RAN;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-268181-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-268181-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=none) header.from=nxp.com;
-	arc=reject ("cv is fail on i=2")
+	dkim=fail ("headers rsa verify failed") header.d=xmission.com header.s=xmission header.b=GGxBrXow;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-268184-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-268184-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=fail reason="SPF not aligned (relaxed)" header.from=xmission.com (policy=none);
+	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id B3769304ADE4
-	for <lists+stable@lfdr.de>; Wed, 24 Jun 2026 15:27:57 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id EA307301F581
+	for <lists+stable@lfdr.de>; Wed, 24 Jun 2026 15:54:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40B303D9DD9;
-	Wed, 24 Jun 2026 15:27:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B5DDD3DA7F6;
+	Wed, 24 Jun 2026 15:54:30 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from DB3PR0202CU003.outbound.protection.outlook.com (mail-northeuropeazon11010068.outbound.protection.outlook.com [52.101.84.68])
+Received: from out03.mta.xmission.com (out03.mta.xmission.com [166.70.13.233])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4240C2F8E81;
-	Wed, 24 Jun 2026 15:27:52 +0000 (UTC)
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782314874; cv=fail; b=kfbDomYEQ0nLuGFojRwHo/7UIt8ui9+vkDjMgkmZFA2pLmu7p6AqcxCMxYEUA42Dlp9+MclvcehKKkGvNuCOybmzVQswAVDpnnmBdiAzrFXHJvCZhCXOLmOvziDM7SwCS9ya/0tm0fZClv2lOctwh1UHYdDaeJ/lGvwVZwVvjeo=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782314874; c=relaxed/simple;
-	bh=UbZSGAkMp/9AQdD+P8oB1DgITJbBGs6aVrDm09cMnow=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=B/7QfPzfOarbTZaCzqTU95tIpE4B0zDGFyoMX0CSreyKf3KaiN4B+bYQ8WGv+FfRg7ZJ0cRDLMBF64CLY2wWlEw4Wx2Dpqf9zUOPl53/z0dLhqRfHfpM5K8A0TfvKmV3SGAfj101nVsKBZdPJioG78CPm6vZuGWdDpLdDAPqdds=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=aTjq4RAN; arc=fail smtp.client-ip=52.101.84.68
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=aFp0MM3aM+FoHEgPp0OudMNWgrHboSMzVOcTZucIZq3doIlfFYT03dvjGdyWOYLl4oNm4aJXPJ4w3VLDkzQ1RBKyIT4jU/1FRCrQJhkjMFFWlApNgGNJqwJaxFg0ctck2qRQPi1yMOWuM02/BBI64TNC8OmW08AKBcIIYuOHQdLT9OqH6hL7M4YGw7Baoqh73JCX8MsQz8bL65orVrCAXTRovGOMvf6vP8ddbpHjVyyUTz5g7TEQvhHKTY0KrG1Jle6lz24cMm3advlvUcMRLY9psmrIx7rHpRgIZMulTOJvcuZ8W1U6CPCzBlV37RUJQTmhaUxbdR3kQd+a5hvoGg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=2E1GWR8p1Lt61IxU6XjwCv+WWZn1seqOABqzX0+9sHo=;
- b=Hpdmbn0hkkzq4W8dmAltEuCXPOAZ9trIrKhpCk8kR6KYBfjKuY+whzbd8hOUkTnGoeeRi9fRa77nJAy7pgu9QKeNooW//xxLb3VVrGrMJ1kyBYuclxB2ywW6nIXegojZ9nM2/pTbSeCwhznHD5bwwR0q4MWjsHjEEiZR5K+NXKdAYNR4+R0tgn4bFFL1O/4L3q1wQTJZslPtu/c2cbAiLEcbj543v8AymSxE0pt1erk0D7uib02tzfnS9NYZSeHllM9vGtvTC1OZxWV2gYwJTACl95oTlXCWxfLGLZIyYSXTdKUU2eZtZ9KFLsSx3S3h02QgA0Ye+tjbqcZd2oXayw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=2E1GWR8p1Lt61IxU6XjwCv+WWZn1seqOABqzX0+9sHo=;
- b=aTjq4RAN9+K/ryMn/x6B0hOlh4+V+vWQ3S8plFaAgXGvZmg3ZiAteqsj9wHJUas6WXGRgapHL17dLRxbBXngao65kV/SF98adccB6/NslMJwcLsuaHoXYrSnP71kXtC8izLIp5ZGmY5Ilg8Q5qDTnf8q9R9su1rSWgyBb5ht+ktWgKWNDIg2gtrC6ylu/rtot9KkHY6Klr1s6O/LX7HAWRcmoNJe1crDIsmgzRvCkktNqXEjJu6PPpU89gpataAFPFAQy5zXDn2dU206v8NwushQ2wWapiPkFnryDsZfEAd3qhJlwvzEtnU32+b0STF8YgTARC7/anuSRGv6xAHSng==
-Received: from AM0PR04MB6802.eurprd04.prod.outlook.com (2603:10a6:208:184::17)
- by DU2PR04MB8693.eurprd04.prod.outlook.com (2603:10a6:10:2dc::22) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.159.15; Wed, 24 Jun
- 2026 15:27:49 +0000
-Received: from AM0PR04MB6802.eurprd04.prod.outlook.com
- ([fe80::dc36:17b6:e5b1:fa51]) by AM0PR04MB6802.eurprd04.prod.outlook.com
- ([fe80::dc36:17b6:e5b1:fa51%4]) with mapi id 15.21.0159.012; Wed, 24 Jun 2026
- 15:27:49 +0000
-From: Carlos Song <carlos.song@nxp.com>
-To: Javier Fernandez Pastrana <javier.pastrana@linutronix.de>, Mark Brown
-	<broonie@kernel.org>, Frank Li <frank.li@nxp.com>, Sascha Hauer
-	<s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, "linux-spi@vger.kernel.org"
-	<linux-spi@vger.kernel.org>, "imx@lists.linux.dev" <imx@lists.linux.dev>,
-	"linux-arm-kernel@lists.infradead.org"
-	<linux-arm-kernel@lists.infradead.org>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>
-CC: "stable@vger.kernel.org" <stable@vger.kernel.org>
-Subject: RE: [PATCH v2] spi: imx: reconfigure for PIO when DMA cannot be
- started
-Thread-Topic: [PATCH v2] spi: imx: reconfigure for PIO when DMA cannot be
- started
-Thread-Index: AQHdA+4Dys8i7MW5JkKuqY43zXsxcQ==
-Date: Wed, 24 Jun 2026 15:27:49 +0000
-Message-ID:
- <AM0PR04MB6802ED0CFC33BED94C1E2D0BE8ED2@AM0PR04MB6802.eurprd04.prod.outlook.com>
-References: <20260624151958.18626-1-javier.pastrana@linutronix.de>
-In-Reply-To: <20260624151958.18626-1-javier.pastrana@linutronix.de>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: AM0PR04MB6802:EE_|DU2PR04MB8693:EE_
-x-ms-office365-filtering-correlation-id: 38e86289-8abf-4017-f3db-08ded2052638
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam:
- BCL:0;ARA:13230040|19092799006|366016|7416014|376014|1800799024|23010399003|22082099003|18002099003|38070700021|11063799006|921020|6133799003|56012099006;
-x-microsoft-antispam-message-info:
- ckbcZ1mBmToZjz1kvUHc/ERzmRgoMbGHyt46xpSlzuHFvWghmQ1QsbRQ/FUNUgU76/xn3RBvn19Lf4cSwgbO8AJM6sUVGzDADVb/Tf7mENhXCivydGsC0Vq0iaJE364nU1DL3v/H6UICbMrZtYeqz+HgZSNo35Gf4+7WiMGlwh0Mnlv0MkEsdNR46oFaI6tgpVo0dQmWDUd7yYlUAlqmD7WLIq0msFO4aJZ1iQEMwzzKfz/ZoLi5JxKpm3mm2aPXs9DyiumRLxEGyWqGN+/y+0p+nTdTVIPZXvTHWATt7eGQQo5HUZ7FYUzsFgXm2SbJBRSBAND3bpHgVPvcwUtCQ4HU5sdwykplCDCvs2mQlhsWyG5U7ps3JrRJdv77HilAWNtDXrb2F1nQmsuq7C9NEjTuf8jKuFYiiP8Q6pTLovhekGu8qmWrCSW4KMklwCuG12tIDmbjTePBj7m2t5DtV3Bv3HzZJXmXo3+kFutkBx/JjfN/uTMHjJqYfY7LoaGewAUYcDLJOJtYYGfL9mYsk28cAvEK7FdSlGUUrlXQcjsX8EtO8fwF2+lcNSXyd7n8LBkNXPGUSL6LMB/pqmQg3nqhp717qrhvgaRB5YWtqRqbVngi/wGb0z1RCi4sRRrYVLPp85/rAZ9ERo9wr3C14mBaV56EjKQ6y3yv5SYT8HTvJIRh2SVXB3wx4pQ0EPnPss4g0NU+q6s+qkrawEuJrftYhCxR5SgRoVO69tppt6KaG+ojDRhgOogS+yH14xXp
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM0PR04MB6802.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(19092799006)(366016)(7416014)(376014)(1800799024)(23010399003)(22082099003)(18002099003)(38070700021)(11063799006)(921020)(6133799003)(56012099006);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?us-ascii?Q?i3ACLfT4/gy96aFqNzGEushMcDwiBT8A3IBdpVJX/7ab5ZKvaxjnBZRpQ2LH?=
- =?us-ascii?Q?fUZnJa+dQIORkxopNDvpp7czQlLWKh0ZPt6HcLY5Xes8ZNQ95tf/XG4m7DAw?=
- =?us-ascii?Q?1FZ/vyrwNDSQ/XuuT5JI+m4RnDZuUPOku8EEhsLRahn5gwGrw+HKushh/RZk?=
- =?us-ascii?Q?XGeS8FSfWrRr0Z6gjr4Ua99wSYy+Laruc5ufkgjnlrsLdzhY0P9DvfrlSv6h?=
- =?us-ascii?Q?kigRdXrEo2pik2IsSnAAd+pO7oHdixc3qXemYj43IwPXt3RnTz3H1qQh/VHj?=
- =?us-ascii?Q?qHsSMe6HtunTXkewo3Bdpl3Bq69cGkCC6K/Ces+1ofkyjqtJnAAgoT8tmoDF?=
- =?us-ascii?Q?pVOTpwsx4ZSGR/IGBe7O7eJw/2P1+8RWM6x33KOw1Nvihk+4idTUSvYJ+xNW?=
- =?us-ascii?Q?8DlicEPXeUIHJvlqpsE5VQC2a3pIqa5A96FokKSiwbXPiepFfE/Opem/btux?=
- =?us-ascii?Q?ETKO6W5YkWwzyrbnFiHVMFBsYt3eTI5daJyojwo02A0ooskOpEn0LDljRc//?=
- =?us-ascii?Q?hIaK36j6B3U1kCyNY+tLO3N685mJ3NFxRNuUl3K4XEE6s07oBDflD7Iv7OIq?=
- =?us-ascii?Q?YaZVvOHWQdc/rktKBYukNpukH6Xy8I8DfJ9li6i9ftC31JPyflnFGw693xAV?=
- =?us-ascii?Q?7wogcTRunfipzV51BDUJPGgETqXcW0+GcMKZ6lCfGvhyuFdVmML4JmvldvrR?=
- =?us-ascii?Q?vrW7G3ckAaCJaNBLMx1X+7SwPRTgm0DX5qHmj0Uz25ooa3HLtKKE37Wr5BOl?=
- =?us-ascii?Q?nwylueY83WhhudonJjoja14YOtYLBDbGkgyJWqHx53W37HXYuprfgtFWV1Lq?=
- =?us-ascii?Q?MoTz2hK/LHw3odQYiBNEwuRyI2zOHp8jRcjkV0hy687ZwyiPbom6TCTj0Hwp?=
- =?us-ascii?Q?7/RbW02vW4yqectlRwLjY1ql86foc0LY8VuzEc7fZWYOqvXVI1GyqGWTgqUx?=
- =?us-ascii?Q?2V/j10d0JAjUD+2l2cNq2HO94SJ1ZuzOUPHQaLGZ63Wq9yZnzBTqADdl/NZB?=
- =?us-ascii?Q?RZi37kR74ybubnZ/u/FSWE2e8xGruQYcwUZ05wSn1QdPp58HJaWJseMQ3q0P?=
- =?us-ascii?Q?8WKVx4tSfVPTREWdoBtxD/HFR9vUkLxt6OCnkwf2G3zEgWjx8dpM9bpZYbnU?=
- =?us-ascii?Q?FuUcb+xHHCurral6g/4BN3GBURbXqed2Hk337g/ICj3igXQBvMi0B4cM0F8q?=
- =?us-ascii?Q?668et+zmaJq6yx/cuT8ydHBlWQz3+YTzXQUZ5Rtpvx0Xg4cJVgWDrmT34yyM?=
- =?us-ascii?Q?QwFd7gmTeCFy/YUkZ5PWycE3Us6wQm3TJO5xwCSvEkwfxA81FBxdJ+wuaumo?=
- =?us-ascii?Q?Uifxk/AT4hXnubUFkdXRvVE7aCTflDvqAidV+R79oElZdasfJqjp5ETa6XzU?=
- =?us-ascii?Q?hziShzL8PiMGL6veXQwvT4aIPcgkxKqtnSjvCvJ2Y1Jk7IBaHhZ9oFE+PROH?=
- =?us-ascii?Q?zc1jQ2jcb4xGLHjZP66y90sMzmDwbfCK2AS6LQ2gKsk3lqhjCk3QC8q4GW/9?=
- =?us-ascii?Q?WnFG658coXTctF41Q429Sv5mfB5cYUviWyVlGKp4bBW9+6EFGPjeyScyXkXU?=
- =?us-ascii?Q?HFUlRTWzpIwt/9WGv6PHO9Ign/WoWWYFAI+cCdWIqFnVmLB4vvhwYrB6xmfk?=
- =?us-ascii?Q?5AWjXDMiaw826N1cQBSRvEDz66hmlRBk6cVYpv9js5rERRopc+Jb4uX7R2ri?=
- =?us-ascii?Q?6+9TIAoNAokKMRr3aL9YTxk/qfKyTySR2gVSGlPU0BkRjIYy?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 503253002DD;
+	Wed, 24 Jun 2026 15:54:29 +0000 (UTC)
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1782316470; cv=none; b=JvctE/nztQJBglGw/ZXF3ULD5sf2m4A/DjV5LLVRJ1Dc5x1l5YtCpd2ugSDlr/7tgaqQhHnbFoJWUG1dZTqiCWIk52N2yvmPuK51tL7KGf+q7iOdmiquQNs1rSuQn9c4kCheairuaJnbe2PNjL/Gtk2Z192EU827iOML5PffYNw=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1782316470; c=relaxed/simple;
+	bh=xh7ViXnNgYwHC7qNeGeR9ecHxFs4hpAP5kSmM5JL+Vw=;
+	h=From:To:Cc:In-Reply-To:References:Date:Message-ID:MIME-Version:
+	 Content-Type:Subject; b=Bp4UuKV7NGxkBHLfXcW5yTorjaznV0KI6bPYhEgVn+kfxfezdZJiOz6uCN7qRf2xUudek9RWvcFtLw7FOa4zHquUZ09YA3thGQbT+Q3+jmn5ghyj0G5NY6/11xBGH4cvRCXFDNcCGDdl77bTQ5piXMkUz/VaUgTZoMRVkUtFJlY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=xmission.com; spf=pass smtp.mailfrom=xmission.com; dkim=pass (1024-bit key) header.d=xmission.com header.i=@xmission.com header.b=GGxBrXow; arc=none smtp.client-ip=166.70.13.233
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=simple/simple; d=xmission.com;
+	 s=xmission; h=Subject:Content-Type:MIME-Version:Message-ID:Date:References:
+	In-Reply-To:Cc:To:From:Sender:Reply-To:Content-Transfer-Encoding:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+	List-Post:List-Owner:List-Archive;
+	bh=xh7ViXnNgYwHC7qNeGeR9ecHxFs4hpAP5kSmM5JL+Vw=; b=GGxBrXowz7rXY1LiITAIg4lPTC
+	YdXZosxxfln9aFYpwvraz7YZcUidW/vs744LrhfzZhTw6OyNOBuz7a5qSGv3SCtcAeq/As3YKsTb+
+	00cenxSa3qtJxxhLi9EkuC96wjmgOlWVuVKkvgiH/gKKTYkSycrdcDejizLahl74m6UQ=;
+Received: from in02.mta.xmission.com ([166.70.13.52]:42798)
+	by out03.mta.xmission.com with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.93)
+	(envelope-from <ebiederm@xmission.com>)
+	id 1wcPYC-001JQQ-Uw; Wed, 24 Jun 2026 09:30:04 -0600
+Received: from ip72-198-198-28.om.om.cox.net ([72.198.198.28]:59284 helo=email.froward.int.ebiederm.org.xmission.com)
+	by in02.mta.xmission.com with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.93)
+	(envelope-from <ebiederm@xmission.com>)
+	id 1wcPYC-00GnQt-3S; Wed, 24 Jun 2026 09:30:04 -0600
+From: "Eric W. Biederman" <ebiederm@xmission.com>
+To: Oleg Nesterov <oleg@redhat.com>
+Cc: Bradley Morgan <include@grrlz.net>,  Christian Brauner
+ <brauner@kernel.org>,  Steven Rostedt <rostedt@goodmis.org>,  Masami
+ Hiramatsu <mhiramat@kernel.org>,  Mathieu Desnoyers
+ <mathieu.desnoyers@efficios.com>,  Andrew Morton
+ <akpm@linux-foundation.org>,  Peter Zijlstra <peterz@infradead.org>,
+  Marco Elver <elver@google.com>,  Aleksandr Nogikh <nogikh@google.com>,
+  Thomas Gleixner <tglx@kernel.org>,  Adrian Huang
+ <adrianhuang0701@gmail.com>,  Kexin Sun <kexinsun@smail.nju.edu.cn>,
+  linux-kernel@vger.kernel.org,  linux-trace-kernel@vger.kernel.org,
+  stable@vger.kernel.org
+In-Reply-To: <ajpv5bW01_xtlZ6R@redhat.com> (Oleg Nesterov's message of "Tue,
+	23 Jun 2026 13:37:09 +0200")
+References: <20260622164029.11474-1-include@grrlz.net>
+	<86a8857d58d43ee26a8b365b837fd24830343494.1782159692.git.include@grrlz.net>
+	<ajpv5bW01_xtlZ6R@redhat.com>
+Date: Wed, 24 Jun 2026 10:29:59 -0500
+Message-ID: <87bjd0c5xk.fsf@email.froward.int.ebiederm.org>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: AM0PR04MB6802.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 38e86289-8abf-4017-f3db-08ded2052638
-X-MS-Exchange-CrossTenant-originalarrivaltime: 24 Jun 2026 15:27:49.0736
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: uI339wTLQqekhUhc5c1Z+TggyvypnuNfsc0mjhWX+JDGiGJiWd5F+SXbGWQoRxYxvC6MofYJK0GfNQbIEJcYdQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DU2PR04MB8693
+Content-Type: text/plain
+X-XM-SPF: eid=1wcPYC-00GnQt-3S;;;mid=<87bjd0c5xk.fsf@email.froward.int.ebiederm.org>;;;hst=in02.mta.xmission.com;;;ip=72.198.198.28;;;frm=ebiederm@xmission.com;;;spf=pass
+X-XM-AID: U2FsdGVkX19lMRvGX1KD9Qluxwju7Bauekh91GYrANI=
+X-Spam-Level: 
+X-Spam-Report: 
+	* -1.0 ALL_TRUSTED Passed through trusted hosts only via SMTP
+	*  0.1 BAYES_50 BODY: Bayes spam probability is 40 to 60%
+	*      [score: 0.4493]
+	*  0.7 XMSubLong Long Subject
+	*  0.0 T_TM2_M_HEADER_IN_MSG BODY: No description available.
+	* -0.0 DCC_CHECK_NEGATIVE Not listed in DCC
+	*      [sa07 1397; Body=1 Fuz1=1 Fuz2=1]
+	*  1.0 T_XMDrugObfuBody_08 obfuscated drug references
+X-Spam-DCC: XMission; sa07 1397; Body=1 Fuz1=1 Fuz2=1 
+X-Spam-Combo: ;Oleg Nesterov <oleg@redhat.com>
+X-Spam-Relay-Country: 
+X-Spam-Timing: total 401 ms - load_scoreonly_sql: 0.06 (0.0%),
+	signal_user_changed: 10 (2.5%), b_tie_ro: 9 (2.2%), parse: 1.02 (0.3%),
+	 extract_message_metadata: 3.3 (0.8%), get_uri_detail_list: 1.20
+	(0.3%), tests_pri_-2000: 3.4 (0.8%), tests_pri_-1000: 3.0 (0.8%),
+	tests_pri_-950: 1.17 (0.3%), tests_pri_-900: 0.97 (0.2%),
+	tests_pri_-90: 111 (27.7%), check_bayes: 110 (27.4%), b_tokenize: 7
+	(1.7%), b_tok_get_all: 7 (1.7%), b_comp_prob: 2.1 (0.5%),
+	b_tok_touch_all: 91 (22.8%), b_finish: 0.76 (0.2%), tests_pri_0: 246
+	(61.3%), check_dkim_signature: 0.54 (0.1%), check_dkim_adsp: 2.6
+	(0.7%), poll_dns_idle: 0.82 (0.2%), tests_pri_10: 1.94 (0.5%),
+	tests_pri_500: 11 (2.8%), rewrite_mail: 0.00 (0.0%)
+Subject: Re: [PATCH v2 1/2] signal: avoid shared siginfo namespace rewrites
+X-SA-Exim-Connect-IP: 166.70.13.52
+X-SA-Exim-Rcpt-To: stable@vger.kernel.org, linux-trace-kernel@vger.kernel.org, linux-kernel@vger.kernel.org, kexinsun@smail.nju.edu.cn, adrianhuang0701@gmail.com, tglx@kernel.org, nogikh@google.com, elver@google.com, peterz@infradead.org, akpm@linux-foundation.org, mathieu.desnoyers@efficios.com, mhiramat@kernel.org, rostedt@goodmis.org, brauner@kernel.org, include@grrlz.net, oleg@redhat.com
+X-SA-Exim-Mail-From: ebiederm@xmission.com
+X-SA-Exim-Scanned: No (on out03.mta.xmission.com); SAEximRunCond expanded to false
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	ARC_REJECT(1.00)[cv is fail on i=2];
-	DMARC_POLICY_ALLOW(-0.50)[nxp.com,none];
-	R_DKIM_ALLOW(-0.20)[nxp.com:s=selector1];
+X-Spamd-Result: default: False [0.14 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_DKIM_REJECT(1.00)[xmission.com:s=xmission];
+	R_MISSING_CHARSET(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
+	DMARC_POLICY_SOFTFAIL(0.10)[xmission.com : SPF not aligned (relaxed),none];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-268184-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-268181-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:javier.pastrana@linutronix.de,m:broonie@kernel.org,m:frank.li@nxp.com,m:s.hauer@pengutronix.de,m:kernel@pengutronix.de,m:festevam@gmail.com,m:linux-spi@vger.kernel.org,m:imx@lists.linux.dev,m:linux-arm-kernel@lists.infradead.org,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,s:lists@lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_EQ_ADDR_SOME(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FREEMAIL_TO(0.00)[linutronix.de,kernel.org,nxp.com,pengutronix.de,gmail.com,vger.kernel.org,lists.linux.dev,lists.infradead.org];
+	FORGED_RECIPIENTS(0.00)[m:oleg@redhat.com,m:include@grrlz.net,m:brauner@kernel.org,m:rostedt@goodmis.org,m:mhiramat@kernel.org,m:mathieu.desnoyers@efficios.com,m:akpm@linux-foundation.org,m:peterz@infradead.org,m:elver@google.com,m:nogikh@google.com,m:tglx@kernel.org,m:adrianhuang0701@gmail.com,m:kexinsun@smail.nju.edu.cn,m:linux-kernel@vger.kernel.org,m:linux-trace-kernel@vger.kernel.org,m:stable@vger.kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[ebiederm@xmission.com,stable@vger.kernel.org];
+	RCPT_COUNT_TWELVE(0.00)[16];
+	FREEMAIL_CC(0.00)[grrlz.net,kernel.org,goodmis.org,efficios.com,linux-foundation.org,infradead.org,google.com,gmail.com,smail.nju.edu.cn,vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER(0.00)[carlos.song@nxp.com,stable@vger.kernel.org];
-	FORWARDED(0.00)[lists@lfdr.de];
-	DKIM_TRACE(0.00)[nxp.com:+];
-	MISSING_XM_UA(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[carlos.song@nxp.com,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FORWARDED(0.00)[lists@lfdr.de];
+	DKIM_TRACE(0.00)[xmission.com:-];
 	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	RCPT_COUNT_SEVEN(0.00)[11];
-	REDIRECTOR_URL(0.00)[aka.ms];
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[ebiederm@xmission.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,infradead.org:email,vger.kernel.org:from_smtp,linutronix.de:email,linux.dev:email,aka.ms:url,nxp.com:dkim,nxp.com:email,nxp.com:from_mime,AM0PR04MB6802.eurprd04.prod.outlook.com:mid]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: A91366BFABE
+X-Rspamd-Queue-Id: DFF466BFD17
 
+Oleg Nesterov <oleg@redhat.com> writes:
 
+> Add Eric.
+>
+> OK, I agree, it seems we need a simple fix.
+>
+> Acked-by: Oleg Nesterov <oleg@redhat.com>
+>
+> -------------------------------------------------------------------------
+> But let me add some "offtopic" notes... Why do we actually need this fix?
+>
+> kill_something_info(). But at first glance sys_kill/kill_something_info
+> can simply use SEND_SIG_NOINFO? If yes, this makes sense anyway, I will
+> re-check...
+>
+> do_pidfd_send_signal(PIDFD_SIGNAL_PROCESS_GROUP) allows to call
+> kill_pgrp_info() if si_code < 0... Not that I think this would be better,
+> but we could move this "rewrite" logic into __kill_pgrp_info()...
+>
+> Anything else needs this change? Most probably yes, but after the quick
+> grep I don't see other group senders with !is_si_special(info).
+>
+> Eric, what do you think?
 
-> -----Original Message-----
-> From: Javier Fernandez Pastrana <javier.pastrana@linutronix.de>
-> Sent: Wednesday, June 24, 2026 11:20 PM
-> To: Mark Brown <broonie@kernel.org>; Frank Li <frank.li@nxp.com>; Sascha
-> Hauer <s.hauer@pengutronix.de>; Pengutronix Kernel Team
-> <kernel@pengutronix.de>; Fabio Estevam <festevam@gmail.com>; Carlos Song
-> <carlos.song@nxp.com>; linux-spi@vger.kernel.org; imx@lists.linux.dev;
-> linux-arm-kernel@lists.infradead.org; linux-kernel@vger.kernel.org
-> Cc: javier.pastrana@linutronix.de; stable@vger.kernel.org
-> Subject: [EXT] [PATCH v2] spi: imx: reconfigure for PIO when DMA cannot b=
-e
-> started
->=20
-> [Some people who received this message don't often get email from
-> javier.pastrana@linutronix.de. Learn why this is important at
-> https://aka.ms/LearnAboutSenderIdentification ]
->=20
-> Caution: This is an external email. Please take care when clicking links =
-or opening
-> attachments. When in doubt, report the message using the 'Report this ema=
-il'
-> button
->=20
->=20
-> When spi_imx_can_dma() selects DMA, the ECSPI is configured for DMA:
-> spi_imx_setupxfer() sets CTRL.SMC and clears dynamic_burst, and
-> spi_imx_dma_transfer() programs the dynamic-burst BURST_LENGTH and the
-> SDMA watermarks.
->=20
-> If the DMA descriptor cannot be prepared (dmaengine_prep_slave_single()
-> returns NULL), the transfer is failed with SPI_TRANS_FAIL_NO_START and fa=
-lls
-> back to PIO. The dynamic-burst DMA path uses its own bounce buffers inste=
-ad of
-> the SPI core's mapping, so xfer->{tx,rx}_sg_mapped are not set and the co=
-re's
-> DMA->PIO retry is skipped; the driver falls back to PIO internally. But n=
-one of the
-> DMA-mode configuration is undone, so the PIO transfer runs with CTRL.SMC =
-set,
-> the wrong burst length and dynamic_burst cleared, and the transferred dat=
-a is
-> corrupted.
->=20
-> This is easily hit on i.MX8MP boards that describe ECSPI DMA in the devic=
-e tree
-> but run SDMA on ROM firmware (no external sdma-imx7d.bin):
-> every ECSPI DMA prepare fails. An Infineon SLB9670 TPM on ECSPI1 then ret=
-urns
-> shifted TPM2_GetCapability data, is flagged "field failure mode", /dev/tp=
-mrm0 is
-> never created.
->=20
-> Set controller->fallback before re-running spi_imx_setupxfer() so the ECS=
-PI is
-> reconfigured exactly like a normal PIO transfer. With
-> controller->fallback set, spi_imx_setupxfer() sees spi_imx_can_dma()
-> return false, so it clears spi_imx->usedma and reprograms the controller =
-(clears
-> CTRL.SMC, restores dynamic_burst and the PIO burst length). No explicit
-> spi_imx->usedma =3D false is needed: setupxfer() already updates it from =
-the
-> can_dma() result.
->=20
-> Fixes: faa8e404ad8e ("spi: imx: support dynamic burst length for ECSPI DM=
-A
-> mode")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Javier Fernandez Pastrana <javier.pastrana@linutronix.de>
+So I think tracing the basic kill syscall is interesting.
 
-Hi,
+It uses an explicit siginfo.  It does that so it can choose
+between setting si_code to SI_TKILL and SI_USER.
 
-LGTM. Thank you!
+If the signal number is -1 it sends to every process in the
+system (or at least the pid namespace).
 
-Acked-by: Carlos Song <carlos.song@nxp.com>
+That will require translation.
 
-> ---
-> v2: drop redundant spi_imx->usedma =3D false; spi_imx_setupxfer() already
->     clears it via spi_imx_can_dma() (Carlos Song)
->=20
->  drivers/spi/spi-imx.c | 3 ++-
->  1 file changed, 2 insertions(+), 1 deletion(-)
->=20
-> diff --git a/drivers/spi/spi-imx.c b/drivers/spi/spi-imx.c index
-> 480d1e8b281f..1837cc7b0b96 100644
-> --- a/drivers/spi/spi-imx.c
-> +++ b/drivers/spi/spi-imx.c
-> @@ -2152,7 +2152,8 @@ static int spi_imx_transfer_one(struct spi_controll=
-er
-> *controller,
->         if (spi_imx->usedma) {
->                 ret =3D spi_imx_dma_transfer(spi_imx, transfer);
->                 if (transfer->error & SPI_TRANS_FAIL_NO_START) {
-> -                       spi_imx->usedma =3D false;
-> +                       controller->fallback =3D true;
-> +                       spi_imx_setupxfer(spi, transfer);
->                         if (spi_imx->target_mode)
->                                 return spi_imx_pio_transfer_target(spi,
-> transfer);
->                         else
-> --
-> 2.47.3
+So either we need to add another special siginfo value to handle
+SI_TKILL, or we need to fix this the way that was suggested.
+
+I suspect just fixing send_signal_locked looks the easiest,
+especially if you make the siginfo parameter const.
+
+It would likely help to have a self test that detects the problem before
+this is fixed and passes afterwards so we have some chance of detecting
+if someone makes a similar mistake in the future.
+
+Eric
+
 
 
