@@ -1,162 +1,268 @@
-Return-Path: <stable+bounces-268226-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-268228-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id xXxdF5BXPGq6mwgAu9opvQ
-	(envelope-from <stable+bounces-268226-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 00:17:52 +0200
+	id r1heJd9ZPGpYnAgAu9opvQ
+	(envelope-from <stable+bounces-268228-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 00:27:43 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id C438B6C1B59
-	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 00:17:51 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id CF3F06C1C10
+	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 00:27:42 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ThqsPopR;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-268226-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-268226-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	dkim=none;
+	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=microsoft.com (policy=reject);
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-268228-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-268228-lists+stable=lfdr.de@vger.kernel.org";
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 38AC8301475C
-	for <lists+stable@lfdr.de>; Wed, 24 Jun 2026 22:17:50 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 2AEB83014E57
+	for <lists+stable@lfdr.de>; Wed, 24 Jun 2026 22:27:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B89AD28C869;
-	Wed, 24 Jun 2026 22:17:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B7A80395DAA;
+	Wed, 24 Jun 2026 22:26:56 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9493D17DFE7;
-	Wed, 24 Jun 2026 22:17:45 +0000 (UTC)
+Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 663552C08CF;
+	Wed, 24 Jun 2026 22:26:55 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782339466; cv=none; b=MUpEhrvHz6lkcgQl1FUsheIg5yk/WAl+s+TvdAOhkUHMK75w588dE6TGcCqWyL1a61xfqA9iBmRZsdHxY7dVGz0L4lkkBxYI/hVXCqH34+zQyFV/DaG12EdOCqk8B5tqZ2Vb+ifOmmFqjdhBjVf0fZVVpOul58caNYkjmY/9K2E=
+	t=1782340016; cv=none; b=BFwd11ykxafMUllDssVkSA9BbIb3hTC108nsQDCdilNSyHVCboVPyRqbF6K/8uJ0Uq9A6BHqZjSxFc6UPu8T3a9aCHtr4Av9GunbV3Nu6eb36UnSXfjfN+xup+/ANiXPQfLojYaXTP0koyKoD+t71zxqkj8YpwVPBRm2XwZDiL4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782339466; c=relaxed/simple;
-	bh=KGAEoNXM+X6r7G1OLOqYkfq4XezrCJ4j5qUYzl34gis=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=lSHzdgtf5Tg5wM0/wOp5UpOfrkicUPKzuRPR5DmJSlD0uPZhV2/doFhQSwoKn1Z0n8LJ/bMODU5am9INsHIgnWkEdSw9Vnx+gaQMGrcvVE+JQ0oaC4Vl0I2FdKk0ZAzStXMFqIZpoTKqVRhFXU7ygWF15R6vkeEm9FYM7F9N15E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ThqsPopR; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71ED41F000E9;
-	Wed, 24 Jun 2026 22:17:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782339465;
-	bh=7r/QIb+MyviZ0cvAfiTnrfO+nnLRPdOlocQP+SmLxBs=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=ThqsPopRFrXgXUpjCAdXsN5b+LL6eXvZh2bZit3FOqs6/3TGQbkmi47W5MqH7QL9F
-	 6L5YzEW8XXAAfHUWOwm8oQPUYigAAhXRkbiGzSJ0dBU91jmFfMj1yKUxrp2Nl4/+az
-	 cjUMrWV/eS5roZ+x2ejGWlcphJHk+GVcaetC/ErZq2uMfg4fGCyQ6WnhJRu96A5wEA
-	 Fn9HODxixwGvUFYKr01Goh3+R+64T0OzwkvXNReIl40BhkXWiLer5twMmg8wWGMoSP
-	 k8LN4TDHyteHqXz5lmvHBr1MKmyco73Sy6Uh27jVvOErHavqSIJqvse6PXtS9bYkpN
-	 uD6vHkQotuamA==
-Date: Wed, 24 Jun 2026 15:17:39 -0700
-From: Nathan Chancellor <nathan@kernel.org>
-To: Ingo Molnar <mingo@kernel.org>, Peter Zijlstra <peterz@infradead.org>
-Cc: Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
-	Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-	Ard Biesheuvel <ardb@kernel.org>,
-	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
-	Bill Wendling <morbo@google.com>,
-	Justin Stitt <justinstitt@google.com>, linux-kernel@vger.kernel.org,
-	llvm@lists.linux.dev, stable@vger.kernel.org
-Subject: Re: [PATCH] x86/boot/compressed: Disable jump tables for clang
-Message-ID: <20260624221739.GA7516@ax162>
-References: <20260623-x86-boot-compressed-disable-jt-clang-v1-1-575fccd58107@kernel.org>
- <ajulLtY29HtgWokg@gmail.com>
- <20260624093848.GA48970@noisy.programming.kicks-ass.net>
- <ajuoqIk4tSV7CmFC@gmail.com>
- <ajupfkcZTTxGP2dG@gmail.com>
+	s=arc-20240116; t=1782340016; c=relaxed/simple;
+	bh=Ho1ZueKN3CtWcD6Wl+WMy04kWDEdxKBqwxdu0vgj/MI=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=fsNUibykpnlr6yUFtEgM/bA+hik9FH+5w8sgBKtcmtBXzabdZMl/wG9gMKo2PvNdufMMagN+HQLe/2siA03RPFXTUr8Q0yFKck/xuDMFgYpijM3p1JCCdEU9sBolOo8msRKjIYWZjxXcDOMSNliAU9SJ7frq0LDCmBSkpyAO/SU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; arc=none smtp.client-ip=13.77.154.182
+Received: by linux.microsoft.com (Postfix, from userid 1009)
+	id D76BA20B7166; Wed, 24 Jun 2026 15:26:50 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com D76BA20B7166
+From: Dexuan Cui <decui@microsoft.com>
+To: kys@microsoft.com,
+	haiyangz@microsoft.com,
+	wei.liu@kernel.org,
+	decui@microsoft.com,
+	longli@microsoft.com,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	kotaranov@microsoft.com,
+	horms@kernel.org,
+	ernis@linux.microsoft.com,
+	dipayanroy@linux.microsoft.com,
+	kees@kernel.org,
+	jacob.e.keller@intel.com,
+	ssengar@linux.microsoft.com,
+	linux-hyperv@vger.kernel.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-rdma@vger.kernel.org
+Cc: stable@vger.kernel.org
+Subject: [PATCH net v2 1/2] net: mana: Sync page pool RX frags for CPU
+Date: Wed, 24 Jun 2026 15:26:04 -0700
+Message-ID: <20260624222605.1794719-2-decui@microsoft.com>
+X-Mailer: git-send-email 2.43.7
+In-Reply-To: <20260624222605.1794719-1-decui@microsoft.com>
+References: <20260624222605.1794719-1-decui@microsoft.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ajupfkcZTTxGP2dG@gmail.com>
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-3.16 / 15.00];
-	WHITELIST_SPF_DKIM(-3.00)[kernel.org:d:+,kernel.org:s:+];
+X-Spamd-Result: default: False [3.54 / 15.00];
+	DMARC_POLICY_REJECT(2.00)[microsoft.com : SPF not aligned (relaxed), No valid DKIM,reject];
 	SUSPICIOUS_RECIPS(1.50)[];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	MID_RHS_NOT_FQDN(0.50)[];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	RCPT_COUNT_TWELVE(0.00)[14];
+	FORGED_RECIPIENTS(0.00)[m:kys@microsoft.com,m:haiyangz@microsoft.com,m:wei.liu@kernel.org,m:decui@microsoft.com,m:longli@microsoft.com,m:andrew+netdev@lunn.ch,m:davem@davemloft.net,m:edumazet@google.com,m:kuba@kernel.org,m:pabeni@redhat.com,m:kotaranov@microsoft.com,m:horms@kernel.org,m:ernis@linux.microsoft.com,m:dipayanroy@linux.microsoft.com,m:kees@kernel.org,m:jacob.e.keller@intel.com,m:ssengar@linux.microsoft.com,m:linux-hyperv@vger.kernel.org,m:netdev@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:linux-rdma@vger.kernel.org,m:stable@vger.kernel.org,m:andrew@lunn.ch,s:lists@lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:mingo@kernel.org,m:peterz@infradead.org,m:tglx@kernel.org,m:mingo@redhat.com,m:bp@alien8.de,m:dave.hansen@linux.intel.com,m:x86@kernel.org,m:ardb@kernel.org,m:nick.desaulniers+lkml@gmail.com,m:morbo@google.com,m:justinstitt@google.com,m:linux-kernel@vger.kernel.org,m:llvm@lists.linux.dev,m:stable@vger.kernel.org,m:nickdesaulniers@gmail.com,s:lists@lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-268226-lists,stable=lfdr.de];
-	FORGED_SENDER(0.00)[nathan@kernel.org,stable@vger.kernel.org];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-268228-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER(0.00)[decui@microsoft.com,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	TO_DN_SOME(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[nathan@kernel.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[kernel.org,redhat.com,alien8.de,linux.intel.com,gmail.com,google.com,vger.kernel.org,lists.linux.dev];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[decui@microsoft.com,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo];
+	TO_DN_NONE(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TAGGED_RCPT(0.00)[stable,lkml];
-	MISSING_XM_UA(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
+	R_DKIM_NA(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[22];
+	TAGGED_RCPT(0.00)[stable,netdev];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	FORGED_SENDER_FORWARDING(0.00)[]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: C438B6C1B59
+X-Rspamd-Queue-Id: CF3F06C1C10
 
-On Wed, Jun 24, 2026 at 11:55:10AM +0200, Ingo Molnar wrote:
-> 
-> * Ingo Molnar <mingo@kernel.org> wrote:
-> 
-> 
-> > > I'm sitting on a patch to unconditionally disable jump-tables for
-> > > x86_64:
-> > > 
-> > >   https://web.git.kernel.org/pub/scm/linux/kernel/git/peterz/queue.git/log/?h=x86/syscall
-> > 
-> > In particular:
-> > 
-> >   https://web.git.kernel.org/pub/scm/linux/kernel/git/peterz/queue.git/commit/?h=x86/syscall&id=76612388fe7aa41a8eb88f890d451bc17255eda0
-> 
-> Side note: since arch/x86/boot/compressed/Makefile constructs
-> its own KBUILD_CFLAGS, so a change to that Makefile will still
-> be required to universally apply -fno-jump-tables and work
-> around this Clang optimization in the decompression code.
+MANA allocates RX buffers from page pool fragments when frag_count is
+greater than 1. In that case the buffers remain DMA mapped by page pool
+and the RX completion path does not call dma_unmap_single(). As a result,
+the implicit sync-for-CPU normally performed by dma_unmap_single() is
+missing before the packet data is passed to the networking stack.
 
-Right. I had intentionally kept my change scoped to clang to be less
-controversial but in the face of Peter's series, it makes sense to do it
-for all compilers like Ingo suggested. I have no preference for how we
-proceed here. I don't mind sending a v2 with something like
+This breaks RX on configurations which require explicit DMA syncing, for
+example when booted with swiotlb=force.
 
-diff --git a/arch/x86/boot/compressed/Makefile b/arch/x86/boot/compressed/Makefile
-index 07e0e64b9a98..06934f9691d6 100644
---- a/arch/x86/boot/compressed/Makefile
-+++ b/arch/x86/boot/compressed/Makefile
-@@ -27,6 +27,7 @@ targets := vmlinux vmlinux.bin vmlinux.bin.gz vmlinux.bin.bz2 vmlinux.bin.lzma \
- KBUILD_CFLAGS := -m$(BITS) -O2 $(CLANG_FLAGS)
- KBUILD_CFLAGS += $(CC_FLAGS_DIALECT)
- KBUILD_CFLAGS += -fno-strict-aliasing -fPIE
-+KBUILD_CFLAGS += -fno-jump-tables
- KBUILD_CFLAGS += -Wundef
- KBUILD_CFLAGS += -DDISABLE_BRANCH_PROFILING
- cflags-$(CONFIG_X86_32) := -march=i386
---
+Fix this by recording the page pool page and DMA sync offset when the RX
+buffer is allocated, and syncing the received packet range for CPU access
+before handing the RX buffer to the stack.
 
-Another option would be Peter folding that diff into his series then
-once it lands, I could send this patch to the stable team with most of
-this patch's justification intact with a note that the equivalent change
-has been applied to mainline under a different justification. Just let
-me know what you all would prefer.
+Fixes: 730ff06d3f5c ("net: mana: Use page pool fragments for RX buffers instead of full pages to improve memory efficiency.")
+Cc: stable@vger.kernel.org
+Reviewed-by: Haiyang Zhang <haiyangz@microsoft.com>
+Signed-off-by: Dexuan Cui <decui@microsoft.com>
+---
 
+Changes since v1:
+    v1 is split into two patches in the v2.
+    Add Haiyang's Reviewed-by.
+
+ drivers/net/ethernet/microsoft/mana/mana_en.c | 39 +++++++++++++++----
+ include/net/mana/mana.h                       |  8 ++++
+ 2 files changed, 40 insertions(+), 7 deletions(-)
+
+diff --git a/drivers/net/ethernet/microsoft/mana/mana_en.c b/drivers/net/ethernet/microsoft/mana/mana_en.c
+index c9b1df1ed109..1875bffd82b7 100644
+--- a/drivers/net/ethernet/microsoft/mana/mana_en.c
++++ b/drivers/net/ethernet/microsoft/mana/mana_en.c
+@@ -2044,12 +2044,16 @@ static void mana_rx_skb(void *buf_va, bool from_pool,
+ }
+ 
+ static void *mana_get_rxfrag(struct mana_rxq *rxq, struct device *dev,
+-			     dma_addr_t *da, bool *from_pool)
++			     dma_addr_t *da, bool *from_pool,
++			     struct page **pp_page, u32 *dma_sync_offset)
+ {
+ 	struct page *page;
+ 	u32 offset;
+ 	void *va;
++
+ 	*from_pool = false;
++	*pp_page = NULL;
++	*dma_sync_offset = 0;
+ 
+ 	/* Don't use fragments for jumbo frames or XDP where it's 1 fragment
+ 	 * per page.
+@@ -2087,31 +2091,47 @@ static void *mana_get_rxfrag(struct mana_rxq *rxq, struct device *dev,
+ 	va  = page_to_virt(page) + offset;
+ 	*da = page_pool_get_dma_addr(page) + offset + rxq->headroom;
+ 	*from_pool = true;
++	*pp_page = page;
++	*dma_sync_offset = offset + rxq->headroom;
+ 
+ 	return va;
+ }
+ 
+ /* Allocate frag for rx buffer, and save the old buf */
+ static void mana_refill_rx_oob(struct device *dev, struct mana_rxq *rxq,
+-			       struct mana_recv_buf_oob *rxoob, void **old_buf,
+-			       bool *old_fp)
++			       struct mana_recv_buf_oob *rxoob, u32 pktlen,
++			       void **old_buf, bool *old_fp)
+ {
++	struct page *pp_page;
++	u32 dma_sync_offset;
+ 	bool from_pool;
+ 	dma_addr_t da;
+ 	void *va;
+ 
+-	va = mana_get_rxfrag(rxq, dev, &da, &from_pool);
++	va = mana_get_rxfrag(rxq, dev, &da, &from_pool, &pp_page,
++			     &dma_sync_offset);
+ 	if (!va)
+ 		return;
+-	if (!rxoob->from_pool || rxq->frag_count == 1)
++	if (!rxoob->from_pool || rxq->frag_count == 1) {
+ 		dma_unmap_single(dev, rxoob->sgl[0].address, rxq->datasize,
+ 				 DMA_FROM_DEVICE);
++	} else {
++		/* The page pool maps the whole page and only syncs for device
++		 * automatically (PP_FLAG_DMA_SYNC_DEV). Sync the received bytes
++		 * for the CPU before they are read: this is required if DMA
++		 * is incoherent or bounce buffers are used.
++		 */
++		page_pool_dma_sync_for_cpu(rxq->page_pool, rxoob->pp_page,
++					   rxoob->dma_sync_offset, pktlen);
++	}
+ 	*old_buf = rxoob->buf_va;
+ 	*old_fp = rxoob->from_pool;
+ 
+ 	rxoob->buf_va = va;
+ 	rxoob->sgl[0].address = da;
+ 	rxoob->from_pool = from_pool;
++	rxoob->pp_page = pp_page;
++	rxoob->dma_sync_offset = dma_sync_offset;
+ }
+ 
+ static void mana_process_rx_cqe(struct mana_rxq *rxq, struct mana_cq *cq,
+@@ -2170,7 +2190,7 @@ static void mana_process_rx_cqe(struct mana_rxq *rxq, struct mana_cq *cq,
+ 		rxbuf_oob = &rxq->rx_oobs[curr];
+ 		WARN_ON_ONCE(rxbuf_oob->wqe_inf.wqe_size_in_bu != 1);
+ 
+-		mana_refill_rx_oob(dev, rxq, rxbuf_oob, &old_buf, &old_fp);
++		mana_refill_rx_oob(dev, rxq, rxbuf_oob, pktlen, &old_buf, &old_fp);
+ 
+ 		/* Unsuccessful refill will have old_buf == NULL.
+ 		 * In this case, mana_rx_skb() will drop the packet.
+@@ -2566,6 +2586,8 @@ static int mana_fill_rx_oob(struct mana_recv_buf_oob *rx_oob, u32 mem_key,
+ 			    struct mana_rxq *rxq, struct device *dev)
+ {
+ 	struct mana_port_context *mpc = netdev_priv(rxq->ndev);
++	struct page *pp_page = NULL;
++	u32 dma_sync_offset = 0;
+ 	bool from_pool = false;
+ 	dma_addr_t da;
+ 	void *va;
+@@ -2573,13 +2595,16 @@ static int mana_fill_rx_oob(struct mana_recv_buf_oob *rx_oob, u32 mem_key,
+ 	if (mpc->rxbufs_pre)
+ 		va = mana_get_rxbuf_pre(rxq, &da);
+ 	else
+-		va = mana_get_rxfrag(rxq, dev, &da, &from_pool);
++		va = mana_get_rxfrag(rxq, dev, &da, &from_pool, &pp_page,
++				     &dma_sync_offset);
+ 
+ 	if (!va)
+ 		return -ENOMEM;
+ 
+ 	rx_oob->buf_va = va;
+ 	rx_oob->from_pool = from_pool;
++	rx_oob->pp_page = pp_page;
++	rx_oob->dma_sync_offset = dma_sync_offset;
+ 
+ 	rx_oob->sgl[0].address = da;
+ 	rx_oob->sgl[0].size = rxq->datasize;
+diff --git a/include/net/mana/mana.h b/include/net/mana/mana.h
+index 8f721cd4e4a7..4111b93169d2 100644
+--- a/include/net/mana/mana.h
++++ b/include/net/mana/mana.h
+@@ -305,6 +305,14 @@ struct mana_recv_buf_oob {
+ 
+ 	void *buf_va;
+ 	bool from_pool; /* allocated from a page pool */
++	/* head page of the page_pool fragment; valid only when
++	 * from_pool && frag_count > 1.
++	 */
++	struct page *pp_page;
++	/* Fragment offset plus rxq->headroom, passed to
++	 * page_pool_dma_sync_for_cpu().
++	 */
++	u32 dma_sync_offset;
+ 
+ 	/* SGL of the buffer going to be sent as part of the work request. */
+ 	u32 num_sge;
 -- 
-Cheers,
-Nathan
+2.34.1
+
 
