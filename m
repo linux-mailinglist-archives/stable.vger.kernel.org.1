@@ -1,122 +1,152 @@
-Return-Path: <stable+bounces-268200-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-268202-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id AGEbC7QPPGqkjQgAu9opvQ
-	(envelope-from <stable+bounces-268200-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 24 Jun 2026 19:11:16 +0200
+	id 1AxjAXcQPGq8jQgAu9opvQ
+	(envelope-from <stable+bounces-268202-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 24 Jun 2026 19:14:31 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 500F86C041C
-	for <lists+stable@lfdr.de>; Wed, 24 Jun 2026 19:11:15 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 463536C0458
+	for <lists+stable@lfdr.de>; Wed, 24 Jun 2026 19:14:30 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=DZ3u4y1E;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-268200-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-268200-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	dkim=none;
+	dmarc=none;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-268202-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-268202-lists+stable=lfdr.de@vger.kernel.org";
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D8E78304BDAE
-	for <lists+stable@lfdr.de>; Wed, 24 Jun 2026 17:09:49 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 173C63004601
+	for <lists+stable@lfdr.de>; Wed, 24 Jun 2026 17:14:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB9143CF1F5;
-	Wed, 24 Jun 2026 17:09:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ADF903D091F;
+	Wed, 24 Jun 2026 17:14:10 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from maynard.decadent.org.uk (maynard.decadent.org.uk [65.21.191.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E844136A372;
-	Wed, 24 Jun 2026 17:09:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B09A33F5A9;
+	Wed, 24 Jun 2026 17:14:08 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782320978; cv=none; b=Fzb5LHAv5rdNFqusjSUlsEAngVs+AaQN2RcmQuc4hD3WcC1+xMf0nfkKhURPOuq4JOjF7xb2s1amQ65bBa3NU8TLRkR/S2feCpYTt4GNGE1TvRE2oAYUZpBR09PoTA4wJgbeSFK4EJ1ptfk5FpiSvRBiAnmfi/30AeczY9cmfy8=
+	t=1782321250; cv=none; b=pgGD170ANKiNVIRx7B9iGt7l3rCg9sQMkxP+T8PK68tJE6sQ/zn2xZqCltFh8sjIwA910G43aPkYmgS0E8ZrT+BKxTiHXBNuWGjs2QZVWURst6xwupin/Bc9iNFxa+YKGL9SP+FkNkKUeVVFtLRzmRLhuNQd8r9BX7FbnwEhW0s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782320978; c=relaxed/simple;
-	bh=DYh1LUenaTDhEk/UmsDiMVbQZjBgGC/XJT4/INLu6Qo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ijcgDzJhuHoHg/w+i0Mreh3hqK8hPFBqQowuODa4TSBghI6gZeDRn+9FpU3nHzSclfDpvLQWphvifE5ngvdIlZtI18jvM+KT+7obvQkM2sva9nE2feNkw9OUXICNTzl4Ix8d83kTTEvlx81mp3SLwHK7XT40pIG4rYE1/c76B0o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DZ3u4y1E; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 926B31F00A3A;
-	Wed, 24 Jun 2026 17:09:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782320975;
-	bh=TLvkpf4KTJQFN28eqRP3QnEGWaIf2KNDDqo+8IaoD8Y=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=DZ3u4y1EuddVkVxZl9TuaKdGmj2sHTwSD7sWEekXqFsWZ+TVrESUWDSr4IqbDlWqG
-	 P6TPQnntSk01MslZEtgeXo7N+5uklvsubn6N0PFOkfroCSQzqtWd5I/+khr5W6dm/6
-	 qq6b7TCY2pev6ZaJYIsusdPam+L0AGzJnVZxnGUguvi5g9pEQAo92Lr2ZEZLAW1x+Q
-	 x8cnu3inZPwCRmH87/Xqc4VOgEG5fs5xdxdUptdgXC2KCCNS8PqrZIeq2k202okG/l
-	 95uZNKHpHLQN0Nd/DlD67QmeqUqG3yf8qgVd1Q/O3I+4JBZkOKKrhLEQk8FFilJGQE
-	 oartZAyBYq5Ag==
-Date: Wed, 24 Jun 2026 18:09:30 +0100
-From: Simon Horman <horms@kernel.org>
-To: Haoxiang Li <haoxiang_li2024@163.com>
-Cc: sgoutham@marvell.com, lcherian@marvell.com, gakula@marvell.com,
-	hkelam@marvell.com, sbhatta@marvell.com, andrew+netdev@lunn.ch,
-	davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
-	pabeni@redhat.com, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH] octeontx2-af: Free BPID bitmap on setup failure
-Message-ID: <20260624170930.GB1131256@horms.kernel.org>
-References: <20260623114316.2182271-1-haoxiang_li2024@163.com>
+	s=arc-20240116; t=1782321250; c=relaxed/simple;
+	bh=zOA+NRAC3fnoUFbbw5rsQgGbAmrqEGSkAVCK6P8mSvY=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=RO8mdvbuTxBZ21vZY9DttUSOQFFJrd4LVVYO4T0QB9x8ZUq7zlxFL49lJyZr9WmFeSvOI7JnYDGs3ijUGRAkHov4K9jIawJ2iqqrOJxm2QNGyhjx4QIdpX6wfXGI9s85rw/azOeeL++b7Ou77LKdysJMhm7tdmmk3ed0SadB1R0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=decadent.org.uk; spf=pass smtp.mailfrom=decadent.org.uk; arc=none smtp.client-ip=65.21.191.19
+Received: from [2a02:578:851f:1502:391e:c5f5:10e2:b9a3] (helo=deadeye)
+	by maynard with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <ben@decadent.org.uk>)
+	id 1wcRAR-0042vN-0z;
+	Wed, 24 Jun 2026 17:13:39 +0000
+Received: from ben by deadeye with local (Exim 4.99.3)
+	(envelope-from <ben@decadent.org.uk>)
+	id 1wcRAO-000000088WR-2hYd;
+	Wed, 24 Jun 2026 19:13:36 +0200
+Message-ID: <66cf4f95534aa5428a362857cf78dcb946c51672.camel@decadent.org.uk>
+Subject: Re: [PATCH 5.15 323/411] spi: topcliff-pch: fix controller
+ deregistration
+From: Ben Hutchings <ben@decadent.org.uk>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, Masayuki Ohtake <masa-korg@dsn.okisemi.com>, 
+ Johan Hovold <johan@kernel.org>, Mark Brown <broonie@kernel.org>, Sasha
+ Levin <sashal@kernel.org>
+Date: Wed, 24 Jun 2026 19:13:30 +0200
+In-Reply-To: <20260616145118.324999322@linuxfoundation.org>
+References: <20260616145100.376842714@linuxfoundation.org>
+	 <20260616145118.324999322@linuxfoundation.org>
+Content-Type: multipart/signed; micalg="pgp-sha512";
+	protocol="application/pgp-signature"; boundary="=-4Hbk2u6isj5YWtDERwLc"
+User-Agent: Evolution 3.56.2-9 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260623114316.2182271-1-haoxiang_li2024@163.com>
+X-SA-Exim-Connect-IP: 2a02:578:851f:1502:391e:c5f5:10e2:b9a3
+X-SA-Exim-Mail-From: ben@decadent.org.uk
+X-SA-Exim-Scanned: No (on maynard); SAEximRunCond expanded to false
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-3.66 / 15.00];
-	WHITELIST_SPF_DKIM(-3.00)[kernel.org:d:+,kernel.org:s:+];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-3.56 / 15.00];
+	SIGNED_PGP(-2.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	MIME_GOOD(-0.20)[multipart/signed,text/plain];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
-	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-268200-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:haoxiang_li2024@163.com,m:sgoutham@marvell.com,m:lcherian@marvell.com,m:gakula@marvell.com,m:hkelam@marvell.com,m:sbhatta@marvell.com,m:andrew+netdev@lunn.ch,m:davem@davemloft.net,m:edumazet@google.com,m:kuba@kernel.org,m:pabeni@redhat.com,m:netdev@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,m:andrew@lunn.ch,s:lists@lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	RCPT_COUNT_TWELVE(0.00)[14];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FREEMAIL_TO(0.00)[163.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_SENDER(0.00)[horms@kernel.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[horms@kernel.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	MID_RHS_MATCH_FROMTLD(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_FROM(0.00)[bounces-268202-lists,stable=lfdr.de];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	TAGGED_RCPT(0.00)[stable,netdev];
-	MISSING_XM_UA(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,horms.kernel.org:mid]
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:gregkh@linuxfoundation.org,m:stable@vger.kernel.org,m:patches@lists.linux.dev,m:masa-korg@dsn.okisemi.com,m:johan@kernel.org,m:broonie@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[ben@decadent.org.uk,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+,1:+,2:~];
+	DMARC_NA(0.00)[decadent.org.uk];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FROM_HAS_DN(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[ben@decadent.org.uk,stable@vger.kernel.org];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	R_DKIM_NA(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 500F86C041C
+X-Rspamd-Queue-Id: 463536C0458
 
-On Tue, Jun 23, 2026 at 07:43:16PM +0800, Haoxiang Li wrote:
-> nix_setup_bpids() allocates bp->bpids with rvu_alloc_bitmap(), which uses
-> a plain kcalloc(). If any of the following devm_kcalloc() allocations for
-> the BPID mapping arrays fails, the function returns without freeing the
-> bitmap. Free the BPID bitmap before returning from those error paths.
-> 
-> Fixes: d6212d2e41a0 ("octeontx2-af: Create BPIDs free pool")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Haoxiang Li <haoxiang_li2024@163.com>
 
-Reviewed-by: Simon Horman <horms@kernel.org>
+--=-4Hbk2u6isj5YWtDERwLc
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-I am wondering if you did a pass for any other similar problems
-with users of rvu_alloc_bitmap.
+On Tue, 2026-06-16 at 20:29 +0530, Greg Kroah-Hartman wrote:
+> 5.15-stable review patch.  If anyone has any objections, please let me kn=
+ow.
+>=20
+> ------------------
+>=20
+> From: Johan Hovold <johan@kernel.org>
+>=20
+> [ Upstream commit 5d6f477d6fc0767c57c5e1e6f55a1662820eef87 ]
+[...]
+
+Aside from the issue already pointed out with this backport, the fix is
+also missing from the 6.1 and 6.6 branches.
+
+Ben.
+
+--=20
+Ben Hutchings
+Anthony's Law of Force: Don't force it, get a larger hammer.
+
+--=-4Hbk2u6isj5YWtDERwLc
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: This is a digitally signed message part
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCgAdFiEErCspvTSmr92z9o8157/I7JWGEQkFAmo8EDsACgkQ57/I7JWG
+EQk39BAAkBvHYG5NgAUy6GD8EWNHQhti4b/CS3m8zb9pk56yFbzm6Bfwe77ScShD
+3psMgpOtazD/kBN56YEACPUp+iftg8+V9GTQ5MhX71LyAmDpdxd17Q7v/+mZsXUI
+cjf5rJH8Ed6bWPqgJgCPaL+4Y+tSdv41ydxqPcKfYMCpFWpKM2Yqm7qSK7cYZ+A1
+KN9SUenLZdaDp4wiJSkbUhr5to7xKh2CpJpLOeO6I+MMhkk/0gQ+YSkRJN8IOVZQ
+LA0OP21ZSKtu/h9AzCqImt77k1pnpvkGK18lov7y9Nib8yIhFF6M5TCFNWYL7+Zm
+1EmLa+iDC+/Qvnsc+snquja3kr7/OT6o30Gov/H7B1IOYK62WYVBWQIWcIV/Og3n
+gmg6Goo4sBNXLmKp4EYo5Jx59nPMen7yZPw92sjVdbHWwPuAjtWRDMzXeM1njmQo
+IEh58UJ+qhL31nHZwHWrUmT/KA4pEZ0c8NfXg+Jd1YumaYORQStboRT6+2S/3k9B
+yYc7lDWtWC6Cybh2tkgyhVkm29idgFFVBWiEfG0unWDkM4lf5LcLdgYvGlHF0znS
+wLjplfbzoTZ5vwP3gic9I8Sz2RVaJyNLNCIw2N+aIrs1h9Kd/mY4DOiAqoi1fAi/
+2Np2w5y1l75FApHPhhdYF5SKXWFYp7Sn0AvbO1l8BjBiqg+bFys=
+=ysk7
+-----END PGP SIGNATURE-----
+
+--=-4Hbk2u6isj5YWtDERwLc--
 
