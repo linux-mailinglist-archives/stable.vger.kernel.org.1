@@ -1,124 +1,202 @@
-Return-Path: <stable+bounces-268151-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-268172-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id ECldFc7IO2pcdAgAu9opvQ
-	(envelope-from <stable+bounces-268151-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 24 Jun 2026 14:08:46 +0200
+	id josyGGzpO2r3fAgAu9opvQ
+	(envelope-from <stable+bounces-268172-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 24 Jun 2026 16:27:56 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id CA5CB6BDFC8
-	for <lists+stable@lfdr.de>; Wed, 24 Jun 2026 14:08:45 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 779FE6BF1A1
+	for <lists+stable@lfdr.de>; Wed, 24 Jun 2026 16:27:55 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=OVkmIq0O;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-268151-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-268151-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=none) header.from=linuxfoundation.org;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b="AcMSf/jl";
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-268172-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-268172-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=none) header.from=gmail.com;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id E9BF631751E1
-	for <lists+stable@lfdr.de>; Wed, 24 Jun 2026 11:59:29 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 11E68302FC80
+	for <lists+stable@lfdr.de>; Wed, 24 Jun 2026 14:24:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E0503AB47E;
-	Wed, 24 Jun 2026 11:58:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 761B93BD657;
+	Wed, 24 Jun 2026 14:24:39 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f50.google.com (mail-pj1-f50.google.com [209.85.216.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F5973A9856;
-	Wed, 24 Jun 2026 11:58:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A5133BBFCA
+	for <stable@vger.kernel.org>; Wed, 24 Jun 2026 14:24:37 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782302333; cv=none; b=NeN6lJcMj7WLrwoopltHWR+Db9ccywLZRAtThH6gw7NoJnJQISflINYW4VVIgcH6ViwoV+j7tQCyvyKdnDi1eeOJjI2jnAbbpcyHNndqqEfrWK/xtBVl3J2GvRyd7uYGyaZQnjrHfyr/AqWHh+BUY+TeGtioG6w7gIWXxsIRZe4=
+	t=1782311079; cv=none; b=D9LTLpTQ/2HsntTuTZyIZmrrb2s1GiEZCf9GKhKKov+gfY1LYou+13MX5YwnfD+yCZ5Al3D8f5qe7gapKZyhm5DLJ0nfc2MkB8rnbAY1GnJexBexNkUUiGk+dkLQTt1C9iF5snXQhvODKGLQNKW65GDuTBDN2CYh9xVbOo2vtZI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782302333; c=relaxed/simple;
-	bh=Afjq53kjtlJtWaM/iynRMo2B4fa28T0aOwWngmX1NHI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=hjImPJBzYB2lwQEmNq29bdjF7tqWTvwyjN+invQ/eabMwKC2gfH9zavtC6o5cmb8VbG0xmijY4loEKDuPstUkSWmjTC9mzkfgQNHlGXIzZm2cqEdCa6saaPbSvVFBRx/SZOYox570fc1pD1WHN22UZyiMBE8DurMCnZUeUIax98=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OVkmIq0O; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 878791F000E9;
-	Wed, 24 Jun 2026 11:58:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1782302332;
-	bh=FgVZL5yjF1lvBvWnuYIQDHGkjIANCmjkiCOImFrhE0Y=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=OVkmIq0OgK6ozwJCfT96eLni0mKCGIOEblshJgP+XC8zElVQukV9PL5Zcs8jmJu7H
-	 RdkUPdtbaGyeJ7zBcpjJgdp+JuCXxAR5qR+keD/JN1D4Id1jimMRVIPGyDMDMbRwcC
-	 thmOVSiHyW/aYwTUw42x1b7jk+MuJmQUJmBj4fEw=
-Date: Wed, 24 Jun 2026 12:57:41 +0100
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Pablo Neira Ayuso <pablo@netfilter.org>
-Cc: Alexander Martyniuk <alexevgmart@gmail.com>, stable@vger.kernel.org,
-	Jozsef Kadlecsik <kadlec@netfilter.org>,
-	Florian Westphal <fw@strlen.de>,
-	"David S. Miller" <davem@davemloft.net>,
-	Alexey Kuznetsov <kuznet@ms2.inr.ac.ru>,
-	Hideaki YOSHIFUJI <yoshfuji@linux-ipv6.org>,
-	Jakub Kicinski <kuba@kernel.org>, Patrick McHardy <kaber@trash.net>,
-	netfilter-devel@vger.kernel, coreteam@netfilter.org,
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Weiming Shi <bestswngs@gmail.com>, Xiang Mei <xmei5@asu.edu>
-Subject: Re: [PATCH 5.10] netfilter: nf_log: validate MAC header was set
- before dumping it
-Message-ID: <2026062417-icky-dissuade-7379@gregkh>
-References: <20260624140117.19799-1-alexevgmart@gmail.com>
- <ajvEDFOlP7Bqb-3j@chamomile>
+	s=arc-20240116; t=1782311079; c=relaxed/simple;
+	bh=+GvPHtbjBfoeFHgSA3GIQrRzol9K7XiFhRwqivJDapw=;
+	h=From:To:Cc:Subject:In-Reply-To:Date:Message-ID:References:
+	 MIME-version:Content-type; b=Fy0m/9eRmHpDn73IHrqRW23ni3ZYB3I+uk5E5MfqTqEjYa+WlUdXmpjDs/G2wsO4QIMtpcCeQoyywTrVUeLcS/QvMCUgNiCgGQdPcrbo/ZxiPhO4Wj0GyxZGx0N2qaXa8ZXXBifXxLQnlPMBcOz0/NeezDzSgSG+VD/u6SPkD0A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=AcMSf/jl; arc=none smtp.client-ip=209.85.216.50
+Received: by mail-pj1-f50.google.com with SMTP id 98e67ed59e1d1-36dac5d5d05so520691a91.2
+        for <stable@vger.kernel.org>; Wed, 24 Jun 2026 07:24:37 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1782311076; x=1782915876; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:message-id:date
+         :in-reply-to:subject:cc:to:from:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=bC7GeOhZGz0je76Vr4XAaqeVuPBssFAF57vnDxsL79M=;
+        b=AcMSf/jlCJU2ILuSt+66WbpetxY2HadsHQVxaA/1YzNOwOVJf6n4RLaG1DmmcY6C7p
+         TIlPgl5GFj2+dPxYJTMwPia9v9Oh8ViLz3dd8+7bhnGkU8x2iGj0nQxSfc+MsXKNj/AL
+         x0mJtdLNhk4c2+6dcqg5wYXcNiPXJO1vZks1nY9wk5yS5gzhdt+gneIE3OI5jHv4Xeaq
+         DiReOB/Y4FQHNP5xcG8OzvSCbTqCISOt70ReiblXb8Pac7claoinWoXJFNrsMshEt589
+         fFCCiCHURgnayZiapliKnusbAgNylNCa7+XnbSDGBFbW3uneBo7Fbi/kvv4nOj1QPDJp
+         fAXA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1782311076; x=1782915876;
+        h=content-transfer-encoding:mime-version:references:message-id:date
+         :in-reply-to:subject:cc:to:from:x-gm-gg:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=bC7GeOhZGz0je76Vr4XAaqeVuPBssFAF57vnDxsL79M=;
+        b=BAEt2VcmikCkHo2TO5ZKMIbJPMe8YoyvaYRFRgaZSn7Q3G0lrnDVyt3D6yxOXf97rv
+         iV85i5BabLf0SpNOiZiJlHjquaxy563Hof8fdMTRZIkZ+L7X4xVf/EUvI+MyhgAaG8fM
+         55WY1sg6LsqU+UZbJEG+NjG6PLhT3KSLI78MLVj011thkp80bIIW4PXR80rDFoAgQExj
+         bcZngUxER8HwP5HN7lIYeNG0+x9S7B7ymIRfgdOOAvSaMkO5IblNCheDanA6LvhzI/hF
+         d1DJ4Iq7FNwexULquAn9jj/M0WLL8TxU2auxQSdulhlJMODyC0LySz+AKlAPdUOP1kgh
+         UtMQ==
+X-Forwarded-Encrypted: i=1; AHgh+Ro7uhpb6TLKD2vnCnPM6ZSUsarXFZLLaVmfuMxZOeQuZ/1RZD9ugUEaGdvQMCBOSovKf+tNzxc=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx09ZkqEIk/ktwNXub/RZgaifhFUQvjuBF2C3Afteouf4FMcNcJ
+	jVuc/5J30fojSGjmhR0K+hTkVIRdX5x2kraFGfJ2+NlT7TmvdaQ87H4w
+X-Gm-Gg: AfdE7clcCxlqUBenuTdfIxABnARF7SMpRVQajwTepa+MMTwKHQQVzYDiFuPFtoFAYUS
+	1nG0xRBaYTDZ670+qxDxzfEWSQ3bH4sUISlFWv2hQJd7EkOi5+7pFOSj4G5Z+PHCMxVcQSoH2qt
+	8Gf15uxprP1uOvPPmyFFp4vzHbPMtaA3IjLvYfzttXFwXjo+iP0SDyKlp9mtaE91VlWol+2r2kb
+	Qb45fz+vl6zDRYCanVMi/JeHyCmn5nE3iRmiLLVJBpjRJQ9Jjp/ZtKWh+GLwvTqkrMhleYVHfw2
+	c4i8yn0diHb7dgB+dXVCpe++s3/wmEo8S3i6qE8O7ePLtoCOhSe6kMyPYJtX44N0atHQZNsaOr7
+	fpPI/LjZQItolcWm8zp5JempC8lSstfacRgBqae+uC2N2O6IXntHLxAYA+aXvEY8E5ZCOkL8b/E
+	TUkwh6HR46o/sCHqk=
+X-Received: by 2002:a17:903:1d0:b0:2bf:3309:ecce with SMTP id d9443c01a7336-2c7e15804acmr39177245ad.28.1782311076310;
+        Wed, 24 Jun 2026 07:24:36 -0700 (PDT)
+Received: from pve-server ([49.205.216.49])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2c7439f86aesm135035155ad.49.2026.06.24.07.24.28
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 24 Jun 2026 07:24:35 -0700 (PDT)
+From: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+To: Salvatore Dipietro <dipiets@amazon.it>, willy@infradead.org
+Cc: dipiets@amazon.it, abuehaze@amazon.com, akpm@linux-foundation.org, alisaidi@amazon.com, blakgeof@amazon.com, brauner@kernel.org, dipietro.salvatore@gmail.com, djwong@kernel.org, linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org, linux-xfs@vger.kernel.org, stable@vger.kernel.org, vbabka@suse.com, David Hildenbrand (Arm) <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, Mike Rapoport <rppt@kernel.org>, Michal Hocko <mhocko@suse.com>, Vlastimil Babka <vbabka@kernel.org>
+Subject: Re: [PATCH 1/1] iomap: avoid compaction for costly folio order allocation
+In-Reply-To: <20260624080639.17100-1-dipiets@amazon.it>
+Date: Wed, 24 Jun 2026 17:51:18 +0530
+Message-ID: <o6h0w2m9.ritesh.list@gmail.com>
+References: <20260527162412.19922-1-dipiets@amazon.it> <20260624080639.17100-1-dipiets@amazon.it>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ajvEDFOlP7Bqb-3j@chamomile>
+MIME-version: 1.0
+Content-type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [2.34 / 15.00];
-	MID_END_EQ_FROM_USER_PART(4.00)[];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FROM_HAS_DN(0.00)[];
-	TAGGED_FROM(0.00)[bounces-268151-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-268172-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:pablo@netfilter.org,m:alexevgmart@gmail.com,m:stable@vger.kernel.org,m:kadlec@netfilter.org,m:fw@strlen.de,m:davem@davemloft.net,m:kuznet@ms2.inr.ac.ru,m:yoshfuji@linux-ipv6.org,m:kuba@kernel.org,m:kaber@trash.net,m:netfilter-devel@vger.kernel,m:coreteam@netfilter.org,m:netdev@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:bestswngs@gmail.com,m:xmei5@asu.edu,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS(0.00)[m:dipiets@amazon.it,m:willy@infradead.org,m:abuehaze@amazon.com,m:akpm@linux-foundation.org,m:alisaidi@amazon.com,m:blakgeof@amazon.com,m:brauner@kernel.org,m:dipietro.salvatore@gmail.com,m:djwong@kernel.org,m:linux-fsdevel@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:linux-mm@kvack.org,m:linux-xfs@vger.kernel.org,m:stable@vger.kernel.org,m:vbabka@suse.com,m:david@kernel.org,m:ljs@kernel.org,m:rppt@kernel.org,m:mhocko@suse.com,m:vbabka@kernel.org,m:dipietrosalvatore@gmail.com,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[riteshlist@gmail.com,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[16];
-	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	FREEMAIL_CC(0.00)[amazon.it,amazon.com,linux-foundation.org,kernel.org,gmail.com,vger.kernel.org,kvack.org,suse.com];
+	RCPT_COUNT_TWELVE(0.00)[22];
 	FORWARDED(0.00)[lists@lfdr.de];
-	FREEMAIL_CC(0.00)[gmail.com,vger.kernel.org,netfilter.org,strlen.de,davemloft.net,ms2.inr.ac.ru,linux-ipv6.org,kernel.org,trash.net,vger.kernel,asu.edu];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	MIME_TRACE(0.00)[0:+];
+	FROM_HAS_DN(0.00)[];
 	MISSING_XM_UA(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,gregkh:mid,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:from_mime]
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	ALIAS_RESOLVED(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[riteshlist@gmail.com,stable@vger.kernel.org];
+	PRECEDENCE_BULK(0.00)[];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,vger.kernel.org:from_smtp,amazon.it:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: CA5CB6BDFC8
+X-Rspamd-Queue-Id: 779FE6BF1A1
 
-On Wed, Jun 24, 2026 at 01:48:28PM +0200, Pablo Neira Ayuso wrote:
-> Hi,
-> 
-> Thanks but why only 5.10?
+Salvatore Dipietro <dipiets@amazon.it> writes:
 
-It's already in the following releases:
-	5.15.210 6.1.176 6.6.143 6.12.94 6.18.36 7.0.13 7.1
+> Hi Ritesh, Matthew,
+>
+> I wanted to kindly follow up on my summary from May 27th regarding the best path 
+> forward for this patch.
+>
 
-so 5.10.y seems like the only one missing it at the moment.
+Hi Salvatore,
 
-thanks,
+Sorry about the delay. I did bring this topic up in one of our internal
+ext4 community calls. And to share some context, MM community thinks we
+need a better long term fix for this problem rather than patching call
+sites and/or playing tricks like - 
 
-greg k-h
+diff --git a/mm/filemap.c b/mm/filemap.c
+index 4e636647100c..f2343c26dd63 100644
+--- a/mm/filemap.c
++++ b/mm/filemap.c
+@@ -2007,8 +2007,13 @@ struct folio *__filemap_get_folio_mpol(struct address_space *mapping,
+ 			gfp_t alloc_gfp = gfp;
+ 
+ 			err = -ENOMEM;
+-			if (order > min_order)
+-				alloc_gfp |= __GFP_NORETRY | __GFP_NOWARN;
++			if (order > min_order) {
++				alloc_gfp |= __GFP_NOWARN;
++				if (order > PAGE_ALLOC_COSTLY_ORDER)
++					alloc_gfp &= ~__GFP_DIRECT_RECLAIM;
++				else
++					alloc_gfp |= __GFP_NORETRY;
++			}
+
+Unfortunately most of the folks might be missing free cycles
+to work on this problem right now :( - Hence the delay in addressing
+this..
+
+
+However - I would like to bring this problem to other MM community
+members as well who might have an interest in this space. Can we look
+into the proposed solutions from Salvatore and suggest the next steps
+please? 
+
+Maybe if someone can share what is MM community looking  for here - I
+guess that will be a good start. Looking into the table I think
+Salvatore had also shared a diff for kicking kcompactd in the background
+[2].
+
+[2]: https://lore.kernel.org/all/20260506123326.17293-1-dipiets@amazon.it/
+
+(Sorry I still have few other things on my plate before I start look
+into this more actively. But let's hear from others, who have better
+knowledge than me on this.)
+
+> To recap, we benchmarked all proposed variations and shared the results:
+>
+> | Patch                          | Change Location        | Avg TPS    | % vs Baseline |
+> |--------------------------------|------------------------|------------|:-------------:|
+> | Baseline (no patch)            | —                      | 101,979.75 |       —       |
+> | v1 (original, iomap caller)    | fs/iomap/buffered-io.c | 141,194.20 |    +38.45%    |
+> | Ritesh's suggestion            | mm/filemap.c           | 139,200.61 |    +36.50%    |
+> | Matthew's suggestion           | mm/filemap.c           | 143,863.82 |    +41.07%    |
+> | kcompactd background           | mm/page_alloc.c        | 134,278.47 |    +31.67%    |
+>
+
+
+-ritesh
+
 
