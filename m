@@ -1,93 +1,61 @@
-Return-Path: <stable+bounces-268120-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-268122-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id DaS7ISWkO2rwaggAu9opvQ
-	(envelope-from <stable+bounces-268120-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 24 Jun 2026 11:32:21 +0200
+	id ICtmOmSlO2ogawgAu9opvQ
+	(envelope-from <stable+bounces-268122-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 24 Jun 2026 11:37:40 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id EE1096BCF80
-	for <lists+stable@lfdr.de>; Wed, 24 Jun 2026 11:32:20 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 354526BCFD5
+	for <lists+stable@lfdr.de>; Wed, 24 Jun 2026 11:37:38 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=MSH5b1UV;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-268120-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-268120-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=none) header.from=gmail.com;
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=03O5kptM;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-268122-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-268122-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id F341030B3971
-	for <lists+stable@lfdr.de>; Wed, 24 Jun 2026 09:30:17 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 9D1923006450
+	for <lists+stable@lfdr.de>; Wed, 24 Jun 2026 09:37:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9B452D63F8;
-	Wed, 24 Jun 2026 09:30:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8527628506C;
+	Wed, 24 Jun 2026 09:37:21 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pf1-f179.google.com (mail-pf1-f179.google.com [209.85.210.179])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DE072EC09F
-	for <stable@vger.kernel.org>; Wed, 24 Jun 2026 09:30:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87C9F3B9949;
+	Wed, 24 Jun 2026 09:37:15 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782293412; cv=none; b=UuGU9Yn/tNIf4eg5NES83AsMeB6z3zOL8lLNnxD+eGCVckps3/hg95143GEaXj59KuFnDyV8spsMhv65BPGatiBI9rqV7WpPojqgo1qJWQJzHe0v237dyaVLdB6KDYsYz1rreNUdL8YjOpXD+0DpZdmpmntXwJyTNYsk8LdIY3s=
+	t=1782293840; cv=none; b=X3HASNwlqXSjGVBywFgsQNJKpeL2m4wTcARRLB5h4OZi4wSV7u97Gvr679OnPv5sjBPb6/4AZ/Pyk7RW79zukQ2izh1PbL7uKFuasZlt489/jhkNXrYFckL1PCWXGTmAaEXzgxeshVVxk+xzmH7KAagVBvs2s9AQB+eClGDu49c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782293412; c=relaxed/simple;
-	bh=D8CFwLPp5KatUW5AZ7GtpjRwh++f82p7zALAB4npO7o=;
+	s=arc-20240116; t=1782293840; c=relaxed/simple;
+	bh=tv9J4EnWkXedhmAx7yiXQV2KAa48b/rZoQTPFjRZRLg=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=jGcJr95NjF4acg1kUxoDM3yU4IF1OQWjXIipvIMx5UkL6HgknQTzFZaTaZjrmQnOCW5BRzlJYrOqS14m3cgk+O4TI4/SX2bRBF2rmm9myWWMeBmfNC3n/+dMgqrrHAJRBnJ89s2t4EQtadeQbR0GbYFBp2HvioeFfluf24GXDp8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=MSH5b1UV; arc=none smtp.client-ip=209.85.210.179
-Received: by mail-pf1-f179.google.com with SMTP id d2e1a72fcca58-8454c5a280aso1120524b3a.1
-        for <stable@vger.kernel.org>; Wed, 24 Jun 2026 02:30:05 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1782293405; x=1782898205; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=04Y/Pe8XmMfRpuwlfV46g/2VJTxETiC/sRNVRFinUHU=;
-        b=MSH5b1UVo9mDNudBLwv/KkdWEX3cM1XrNJwmnVpGpVQgM1cAq5G0oGy1KkLl8DAus1
-         6Muo1CLjhv/t+nWaMZSqwqicqUk915yntntUlhQ2VOQQdRdrYReIJ1O+DW+BT+AZxCjo
-         PrLswFn9kP3Am34VvvIpK7RWV5ApwYRzknz5ZHaRlQuuf3CXiZrHOBppaPht1S7wP355
-         8MvJTGTX9er6c1VYK41UFmH9GCVcgFVrDVR7+cJp++XsV31dkONr/akjr/+tJ6SJDRGj
-         b9h+QzHmJPDCjbXH3ByvLkgzWPrfEbynVGYjsR6qLsUriKN4uH660aKgGjwnaM5xq3M/
-         I7vQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782293405; x=1782898205;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=04Y/Pe8XmMfRpuwlfV46g/2VJTxETiC/sRNVRFinUHU=;
-        b=KwEW9mJJMXjGH24cwya5Md4lVBADKwhjtMU6iLTIOIgU8ahwkeUk3v8+XQNDfG3Lz2
-         nU3wQj3qd3BBDhWyAWgsU6e4EkXDw3CptJ6Qwrr/7JzkY6RHSfPSRxkV+FABGGGZiMbV
-         de46ReZ1c4fRiBbbvE2fJQCKb+6Dh5ia98wHqFDOwQ/E44Qe3ckzxNYIFSkpWdll7Qcy
-         3Wx22vXHk1Q8uHwjDu29pJ6FL3T7bHqJlqoWpTicv/mxxfp5dZYHUIwrz0ot3QmLCseW
-         HF0oeEm07o847cNdfmbu6QLFW3XZF/aqg6a7ybW8Ry21KEfTPKavAVODaG/g+a/4H20e
-         S3EA==
-X-Gm-Message-State: AOJu0Yzpu1mO+b687Jz75Q98km9v7wCSg/lG0MhZDApZnNvCb5H6mAgP
-	wCebI5jbXiNZXi340OS5PIwvyuY1ku5iiWTCnMFYEVFize0c+jwTz7Yf
-X-Gm-Gg: AfdE7cnUvWVK62uw3yJzN9I7agw3EzUY2Qaa9Ja8O/ufjszJPOGJPrYpM2ooLe+aMRS
-	sv1xiAz5XM+IlnL5BCrKXD7ujIEUwoTt7NAknvmYw4oEuCYt5jxEBvE0BdRUdIwslveh78bDmkl
-	mMi7wrBnqjegoh85E6jVmfmxI3Cgz0zkn8yXCnGuKcCBwB7O7SaZKs5s4wL+UPPse1dGXsGrI+H
-	ME2y2DaAjPsTKSPrfLO7XczfE3HNRKMweaZrBVcc/zH9oIjqX5cIgM1MeT5HgeqyLCoG+PHyamR
-	Afhe3bSMzcCEfDsjlHGrVKYyxIiNZk8K1x35FXOc7WvRw7yCRbH+8jg3eSBoYjItDhkjwNjbYon
-	LGduww5KnX2GbFhNXHoVg/DYqD+abpHGXJy1qLnhIj7dKzv5xzgqgEkb/bXlhe8oPaWtECSk+9Y
-	y96rxawZYTZVvSew6TCohym2ytUOBfUzGaCBmgAHOp4jP6IcyfD1YShBokyvIw8WsD6Q==
-X-Received: by 2002:a05:6a00:2e9a:b0:837:f111:b70 with SMTP id d2e1a72fcca58-84591b23fe1mr6791752b3a.4.1782293404586;
-        Wed, 24 Jun 2026 02:30:04 -0700 (PDT)
-Received: from DESKTOP-19IMU7U.localdomain ([125.242.148.221])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-845a3fec0f7sm1679883b3a.22.2026.06.24.02.30.01
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 24 Jun 2026 02:30:04 -0700 (PDT)
-Date: Wed, 24 Jun 2026 18:30:03 +0900
-From: Wongi Lee <qw3rtyp0@gmail.com>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, Sasha Levin <sashal@kernel.org>,
-	netdev@vger.kernel.org, David Ahern <dsahern@kernel.org>,
-	Ido Schimmel <idosch@nvidia.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>, Jungwoo Lee <jwlee2217@gmail.com>
-Subject: Re: Please apply 736b380e28d0 and eca856950f7c down to 6.1.y
-Message-ID: <ajujm9+82N1g/HgF@DESKTOP-19IMU7U.localdomain>
-References: <ajuR7rZYU943EG6p@DESKTOP-19IMU7U.localdomain>
- <2026062417-conceal-driving-0ebd@gregkh>
+	 Content-Type:Content-Disposition:In-Reply-To; b=idea0MFGdUBgmS/yefq4la3Sy2H9ZmwlCSVBMSyd2ic5rYZAfSLznPUzhHKuMbLqQzuKS9mAuwOE6Eks13uu7Viza3Ul8WFdq4E5sfto7oP6cgsdjdLfJNZldw253PLqozw1nPqVRAoHsXIujmGlpAYzP7to5i5Me04jUIUA+PQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=03O5kptM; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A5E51F000E9;
+	Wed, 24 Jun 2026 09:37:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
+	s=korg; t=1782293834;
+	bh=IRC3d8HiCXbhLck/u1YUWijHs/FB+fBPFMejEZTkaJ0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=03O5kptMlXN+XIIfTFw5XK17h3jEjzC0ucbYKlFdtACuBxA8Y+P4zJP1Z/atUc4gq
+	 n+HK7VLDhmHklk6yQxNeaD6USWZVJwL07gG2qv9zUDzEUq1BUcEhxaSBu+jbEuc47J
+	 7X45T3Sp3TXLwUWU1iGDKNsfx+PdaHNu9VxvcyVg=
+Date: Wed, 24 Jun 2026 11:36:02 +0200
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Wentao Guan <guanwentao@uniontech.com>
+Cc: iklatzco <iklatzco@gmail.com>, 00107082 <00107082@163.com>,
+	patches <patches@lists.linux.dev>, peterz <peterz@infradead.org>,
+	Sasha Levin <sashal@kernel.org>, stable <stable@vger.kernel.org>,
+	"yeoreum.yun" <yeoreum.yun@arm.com>
+Subject: Re: perf: Fix dangling cgroup pointer in cpuctx
+Message-ID: <2026062414-spry-reflux-1cd4@gregkh>
+References: <20260616145120.525872058@linuxfoundation.org>
+ <20260624080310.2502480-1-guanwentao@uniontech.com>
+ <2026062455-obtrusive-sandbox-d6d1@gregkh>
+ <tencent_62A2AD8F12114EBC582137F1@qq.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -96,84 +64,88 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <2026062417-conceal-driving-0ebd@gregkh>
+In-Reply-To: <tencent_62A2AD8F12114EBC582137F1@qq.com>
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [2.34 / 15.00];
+	MID_END_EQ_FROM_USER_PART(4.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	MID_RHS_NOT_FQDN(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	RCPT_COUNT_TWELVE(0.00)[12];
+	TAGGED_FROM(0.00)[bounces-268122-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-268120-lists,stable=lfdr.de];
+	TO_DN_ALL(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FREEMAIL_CC(0.00)[gmail.com,163.com,lists.linux.dev,infradead.org,kernel.org,vger.kernel.org,arm.com];
 	FORWARDED(0.00)[lists@lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER(0.00)[qw3rtyp0@gmail.com,stable@vger.kernel.org];
-	FORGED_RECIPIENTS(0.00)[m:gregkh@linuxfoundation.org,m:stable@vger.kernel.org,m:sashal@kernel.org,m:netdev@vger.kernel.org,m:dsahern@kernel.org,m:idosch@nvidia.com,m:davem@davemloft.net,m:edumazet@google.com,m:kuba@kernel.org,m:pabeni@redhat.com,m:horms@kernel.org,m:jwlee2217@gmail.com,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:guanwentao@uniontech.com,m:iklatzco@gmail.com,m:00107082@163.com,m:patches@lists.linux.dev,m:peterz@infradead.org,m:sashal@kernel.org,m:stable@vger.kernel.org,m:yeoreum.yun@arm.com,s:lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[vger.kernel.org,kernel.org,nvidia.com,davemloft.net,google.com,redhat.com,gmail.com];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	MISSING_XM_UA(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[qw3rtyp0@gmail.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[gmail.com:+];
 	ALIAS_RESOLVED(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,vger.kernel.org:from_smtp,DESKTOP-19IMU7U.localdomain:mid]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,gregkh:mid]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: EE1096BCF80
+X-Rspamd-Queue-Id: 354526BCFD5
 
-On Wed, Jun 24, 2026 at 11:00:45AM +0200, Greg Kroah-Hartman wrote:
-> On Wed, Jun 24, 2026 at 05:14:38PM +0900, Wongi Lee wrote:
-> > Hi,
-> > 
-> > Could the following upstream commits be queued for the active stable
-> > trees?
-> > 
-> >   commit 736b380e28d0480c7bc3e022f1950f31fe53a7c5
-> >   ("ipv6: account for fraggap on the paged allocation path")
+On Wed, Jun 24, 2026 at 05:27:56PM +0800, Wentao Guan wrote:
+> Hello,
 > 
-> I do not see that commit id in Linus's tree, are you sure it is correct?
+> orginal patch commit 3b7a34aebbdf2a4b7295205bf0c654294283ec82,
+> perf: Fix dangling cgroup pointer in cpuctx delete
+> 'event->pending_disable = 1;' in __perf_remove_from_context(),
+> but the backport commit ae1ada0af16249a3ed15e33fa6719a6a2f96f537 did not.
 > 
-> >   commit eca856950f7cb1a221e02b99d758409f2c5cec42
-> >   ("ipv4: account for fraggap on the paged allocation path")
-> 
-> Same here, no id of that one in Linus's tree that I can see.
-> 
-> thanks,
-> 
-> greg k-h
+> [context different]
+> 25,26c19,20
+> <  kernel/events/core.c | 16 ++++------------
+> <  1 file changed, 4 insertions(+), 12 deletions(-)
+> ---
+> >  kernel/events/core.c | 21 ++++++---------------
+> >  1 file changed, 6 insertions(+), 15 deletions(-)
+> 29c23
+> < index 0ac83fc1cb5e3..132524d0297cb 100644
+> ---
+> > index 1cc98b9b3c0b4..d78608323916f 100644
+> 32c26
+> < @@ -2056,18 +2056,6 @@ list_del_event(struct perf_event *event, struct perf_event_context *ctx)
+> ---
+> > @@ -2120,18 +2120,6 @@ list_del_event(struct perf_event *event, struct perf_event_context *ctx)
+> 51c45,51
+> < @@ -2401,6 +2389,10 @@ __perf_remove_from_context(struct perf_event *event,
+> ---
+> > @@ -2488,11 +2476,14 @@ __perf_remove_from_context(struct perf_event *event,
+> >               state = PERF_EVENT_STATE_EXIT;
+> >       if (flags & DETACH_REVOKE)
+> >               state = PERF_EVENT_STATE_REVOKED;
+> > -     if (flags & DETACH_DEAD) {
+> > -             event->pending_disable = 1;
+> > +     if (flags & DETACH_DEAD)
+> 53c53,54
+> <       }
+> ---
+> > -     }
 
+I'm sorry, but I can't understand un-unified diffs, and diffs of diffs
+are a whole other level of toughness....  If you feel something was
+backported incorrectly, can you provide a patch to fix it up?
 
-Hi Greg,
+thanks,
 
-First, sorry for confusing you.
-
-The commit IDs are from netdev/net.git:
-
-  736b380e28d0480c7bc3e022f1950f31fe53a7c5
-  https://git.kernel.org/pub/scm/linux/kernel/git/netdev/net.git/commit/?id=736b380e28d0
-
-  eca856950f7cb1a221e02b99d758409f2c5cec42
-  https://git.kernel.org/pub/scm/linux/kernel/git/netdev/net.git/commit/?id=eca856950f7c
-
-They were applied to netdev without Cc: stable@vger.kernel.org, so I
-wanted to flag them for stable handling but I send it too fast (before
-merge).
-
-I will resend the request with the Linus tree commit ID.
-
-Thanks,
-Wongi
+greg k-h
 
