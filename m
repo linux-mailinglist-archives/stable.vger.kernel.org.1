@@ -1,197 +1,124 @@
-Return-Path: <stable+bounces-268150-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-268151-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id Cv3ZEpDFO2rbcggAu9opvQ
-	(envelope-from <stable+bounces-268150-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 24 Jun 2026 13:54:56 +0200
+	id ECldFc7IO2pcdAgAu9opvQ
+	(envelope-from <stable+bounces-268151-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 24 Jun 2026 14:08:46 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E17016BDDD3
-	for <lists+stable@lfdr.de>; Wed, 24 Jun 2026 13:54:55 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id CA5CB6BDFC8
+	for <lists+stable@lfdr.de>; Wed, 24 Jun 2026 14:08:45 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=aoOVIkaA;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-268150-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-268150-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=none) header.from=gmail.com;
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=OVkmIq0O;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-268151-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-268151-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id DCDF930160ED
-	for <lists+stable@lfdr.de>; Wed, 24 Jun 2026 11:54:50 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id E9BF631751E1
+	for <lists+stable@lfdr.de>; Wed, 24 Jun 2026 11:59:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 115022EC09F;
-	Wed, 24 Jun 2026 11:54:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E0503AB47E;
+	Wed, 24 Jun 2026 11:58:54 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pj1-f50.google.com (mail-pj1-f50.google.com [209.85.216.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B573B2D8DCA
-	for <stable@vger.kernel.org>; Wed, 24 Jun 2026 11:54:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F5973A9856;
+	Wed, 24 Jun 2026 11:58:52 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782302089; cv=none; b=LKxwVYfPm7oaUxWAnx4QQ5ZsVhhRHFkUp/kUipus+QgVaImi+9AS3kKPZVvYg+AMjDAF7aM3rVQeNRFOxrODFXA3hTzMu6guayvx/+dsWobSvEwp/AkXmUyFXMAjeOZ0mivf86g+sjryB+Qsq6/D2kxJ6ppBq3FjqszSvBczsjc=
+	t=1782302333; cv=none; b=NeN6lJcMj7WLrwoopltHWR+Db9ccywLZRAtThH6gw7NoJnJQISflINYW4VVIgcH6ViwoV+j7tQCyvyKdnDi1eeOJjI2jnAbbpcyHNndqqEfrWK/xtBVl3J2GvRyd7uYGyaZQnjrHfyr/AqWHh+BUY+TeGtioG6w7gIWXxsIRZe4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782302089; c=relaxed/simple;
-	bh=NJIUWSJ2/5oDMgmPZyUjT8tDUusKNoorVLMnWl2KDBc=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=JtKaDGfnnnTd3EK1lxuxtcBf0XJ6J82b+AN1LoZRd/BTY2Z0v2A6Xx9YBf+IMMwySgLzMonvQHeQ3MfX9mCLxVKZllSYUhkTVRfv2RbqlsqEUJrpVItmIr9d+juzTjihI2f/HUDcYjAUWWBP/Gp0Y+OCS0znPX6qmGBl+WNlgNM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=aoOVIkaA; arc=none smtp.client-ip=209.85.216.50
-Received: by mail-pj1-f50.google.com with SMTP id 98e67ed59e1d1-36d630c0e35so1056041a91.3
-        for <stable@vger.kernel.org>; Wed, 24 Jun 2026 04:54:47 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1782302087; x=1782906887; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=fLb/Hu2mPOrI011yJ3nUBFQGzs37RCJxz/GfG5VFFBE=;
-        b=aoOVIkaALslTqjLFx46D8tono8mk+5wj8B7VAE1FMVOeDFt4T8aiTOVwjqxulZETli
-         Jc/D+LSeic/KiSPbc3D/O8e7yEXgsC3REclumPOkFnjjzXrRYiDnt3B/UO2LT1lX6Tax
-         M3hxUmDjSxzV7GlFRwaWmF/bWE+DitCG0F+2qaOuaHZItc/KRP8u67LasoynheyBv3xL
-         B0SI3Phe0LfPnSu8ikvWl/ITxdwXOA8LxoB1Kb2mKg8+BmYMjohu4yXZT9fPUL2+SEVh
-         TjSXxUGEc79O4FT8tUre9DaKu0HM/t4yE3bNdecEPwd7WqkndxByv2SZ4eiKiGX4QBKG
-         7j7A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782302087; x=1782906887;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=fLb/Hu2mPOrI011yJ3nUBFQGzs37RCJxz/GfG5VFFBE=;
-        b=TdsDbSkhTWIMVJpNyXC089rVcAyoMyIZ8xwYk+gCZkG/+jE8pifflJ04xf/zLf5eq9
-         FfRJ4Aua/pUa4SmAMvu0REr+FuD/SXyHRv2JafK9RxwtnLrTuFF1lSKVm0HyIZTT2kUl
-         P0nYQrFu5m3GXsTehiRpiWhD4R34EDtlsoh00TzHFGyw0ujBxS5eA0OIpNHoRHk+1lkV
-         JSiPWQ50j8p5V9jbvYTt3nXpxPWFSip/owggTW//CKp2h1o8UKPwSVvMKoiTkfaxIntw
-         AL3aWv/bJxHa0QADbac5YpgeWbkNugRebKDlSczDjfbK1VDhrj0Q1w4sizd0+oQzq6X4
-         lrKg==
-X-Forwarded-Encrypted: i=1; AHgh+RojZdTULEJ3WkfNVa07mXn2cZxGXPf8xtVCflbDjVLsiLjdYEQusml/9xhWoOFWSbM2c4T8nDM=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxPDIRwFO3ijeYt2ZibvE8hmIlNiPKkooAj8IsFrbqj66JI2u2F
-	nC0Jdef60fE07EXI3Ujx/FLq5YU0hUZmfJwUXJFa6IdfC8hZLdAdRI3O
-X-Gm-Gg: AfdE7cmiPcUAPDVYwnt0ynMXxLeOr9pV73dZiwLd/NAVwvPOP4J5ylMP/6xGiBiFvkD
-	ZYU0wszHqGEIgyH6ldS1l3WdbueWFg4oKzt/mZaIgqoHNUPz+qTIz/gR28upTr5WnqHSC/OqSyT
-	V11k7vTISgzSRE/4n6sw8sHdaRlYbN0fm/8VDQN3+hPcRKOUAz8qCG1IqBOvxYmFHaL2jZpSOEd
-	LJCmciBWgR8ZGgZm8kc8/oPDW3d5qsOmtOz/ogoawvbtobP+7umaR8xcNEuKxZUPt9bpjA8+AXO
-	t5NRre8DebEacy8cJMF08U8JcKlatF/cIUtJImQGopaLO3NX9VB5XgluRNutOX8aYvKzLiFh1J4
-	/h7utc+9aXthj9Jqt+7cWj8QFJBRUrv8l/+J/YqbiA866L0H8M5245EIZ/fyliwi+KQ5NquNv0a
-	yV5ESn4iZTk8o3YwLRdfYbMWjlu391KMEJNnlPWh9xQCh45xkQN4ieVDn5tIi+wlXj9rG1rfraY
-	eAOzQ==
-X-Received: by 2002:a17:90b:3c41:b0:36d:7a76:827b with SMTP id 98e67ed59e1d1-37de4668d5bmr3113121a91.14.1782302086811;
-        Wed, 24 Jun 2026 04:54:46 -0700 (PDT)
-Received: from nugod-NUC15CRHU5.tail9f095a.ts.net ([218.237.104.87])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-37de3a843fcsm2359422a91.3.2026.06.24.04.54.44
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 24 Jun 2026 04:54:46 -0700 (PDT)
-From: HyeongJun An <sammiee5311@gmail.com>
-To: Marcel Holtmann <marcel@holtmann.org>,
-	Luiz Augusto von Dentz <luiz.dentz@gmail.com>
-Cc: linux-bluetooth@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	HyeongJun An <sammiee5311@gmail.com>,
-	stable@vger.kernel.org
-Subject: [PATCH] Bluetooth: eir: Fix OOB read in eir_get_service_data()
-Date: Wed, 24 Jun 2026 20:54:39 +0900
-Message-ID: <20260624115439.868817-1-sammiee5311@gmail.com>
-X-Mailer: git-send-email 2.43.0
+	s=arc-20240116; t=1782302333; c=relaxed/simple;
+	bh=Afjq53kjtlJtWaM/iynRMo2B4fa28T0aOwWngmX1NHI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=hjImPJBzYB2lwQEmNq29bdjF7tqWTvwyjN+invQ/eabMwKC2gfH9zavtC6o5cmb8VbG0xmijY4loEKDuPstUkSWmjTC9mzkfgQNHlGXIzZm2cqEdCa6saaPbSvVFBRx/SZOYox570fc1pD1WHN22UZyiMBE8DurMCnZUeUIax98=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OVkmIq0O; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 878791F000E9;
+	Wed, 24 Jun 2026 11:58:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
+	s=korg; t=1782302332;
+	bh=FgVZL5yjF1lvBvWnuYIQDHGkjIANCmjkiCOImFrhE0Y=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=OVkmIq0OgK6ozwJCfT96eLni0mKCGIOEblshJgP+XC8zElVQukV9PL5Zcs8jmJu7H
+	 RdkUPdtbaGyeJ7zBcpjJgdp+JuCXxAR5qR+keD/JN1D4Id1jimMRVIPGyDMDMbRwcC
+	 thmOVSiHyW/aYwTUw42x1b7jk+MuJmQUJmBj4fEw=
+Date: Wed, 24 Jun 2026 12:57:41 +0100
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Pablo Neira Ayuso <pablo@netfilter.org>
+Cc: Alexander Martyniuk <alexevgmart@gmail.com>, stable@vger.kernel.org,
+	Jozsef Kadlecsik <kadlec@netfilter.org>,
+	Florian Westphal <fw@strlen.de>,
+	"David S. Miller" <davem@davemloft.net>,
+	Alexey Kuznetsov <kuznet@ms2.inr.ac.ru>,
+	Hideaki YOSHIFUJI <yoshfuji@linux-ipv6.org>,
+	Jakub Kicinski <kuba@kernel.org>, Patrick McHardy <kaber@trash.net>,
+	netfilter-devel@vger.kernel, coreteam@netfilter.org,
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+	Weiming Shi <bestswngs@gmail.com>, Xiang Mei <xmei5@asu.edu>
+Subject: Re: [PATCH 5.10] netfilter: nf_log: validate MAC header was set
+ before dumping it
+Message-ID: <2026062417-icky-dissuade-7379@gregkh>
+References: <20260624140117.19799-1-alexevgmart@gmail.com>
+ <ajvEDFOlP7Bqb-3j@chamomile>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ajvEDFOlP7Bqb-3j@chamomile>
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [2.34 / 15.00];
+	MID_END_EQ_FROM_USER_PART(4.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	MID_RHS_NOT_FQDN(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[vger.kernel.org,gmail.com];
-	TAGGED_FROM(0.00)[bounces-268150-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:marcel@holtmann.org,m:luiz.dentz@gmail.com,m:linux-bluetooth@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:sammiee5311@gmail.com,m:stable@vger.kernel.org,m:luizdentz@gmail.com,s:lists@lfdr.de];
-	FREEMAIL_TO(0.00)[holtmann.org,gmail.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER(0.00)[sammiee5311@gmail.com,stable@vger.kernel.org];
-	TO_DN_SOME(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sammiee5311@gmail.com,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	RCVD_COUNT_FIVE(0.00)[5];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	TAGGED_FROM(0.00)[bounces-268151-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:pablo@netfilter.org,m:alexevgmart@gmail.com,m:stable@vger.kernel.org,m:kadlec@netfilter.org,m:fw@strlen.de,m:davem@davemloft.net,m:kuznet@ms2.inr.ac.ru,m:yoshfuji@linux-ipv6.org,m:kuba@kernel.org,m:kaber@trash.net,m:netfilter-devel@vger.kernel,m:coreteam@netfilter.org,m:netdev@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:bestswngs@gmail.com,m:xmei5@asu.edu,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[16];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FREEMAIL_CC(0.00)[gmail.com,vger.kernel.org,netfilter.org,strlen.de,davemloft.net,ms2.inr.ac.ru,linux-ipv6.org,kernel.org,trash.net,vger.kernel,asu.edu];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp]
+	MISSING_XM_UA(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,gregkh:mid,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:from_mime]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: E17016BDDD3
+X-Rspamd-Queue-Id: CA5CB6BDFC8
 
-eir_get_service_data() walks the advertising data looking for a Service
-Data field with a matching UUID.  eir_get_data() returns a pointer to the
-matched field's data (field + 2) and reports dlen = field_len - 1 (the
-data length only), while the field actually spans field_len + 1 = dlen + 2
-bytes once its length and type bytes are counted.
+On Wed, Jun 24, 2026 at 01:48:28PM +0200, Pablo Neira Ayuso wrote:
+> Hi,
+> 
+> Thanks but why only 5.10?
 
-On a UUID mismatch the loop advances:
+It's already in the following releases:
+	5.15.210 6.1.176 6.6.143 6.12.94 6.18.36 7.0.13 7.1
 
-	eir += dlen;
-	eir_len -= dlen;
+so 5.10.y seems like the only one missing it at the moment.
 
-The pointer advance is correct, but eir_len is decremented by only dlen --
-2 less than the bytes the field really spans (and less still when
-eir_get_data() skipped preceding non-Service-Data fields).  eir_len thus
-over-counts the remaining buffer, and the error compounds across fields.
-As eir_get_data() bounds its walk by this inflated eir_len, it ends up
-reading the length/type bytes of a "field" past the end of the buffer.
+thanks,
 
-For an ISO broadcast sink the buffer is hcon->le_per_adv_data[], filled
-from the periodic-advertising reports of a remote broadcaster and parsed
-by eir_get_service_data() in net/bluetooth/iso.c.  A crafted PA payload
-packed with mismatching Service Data fields drives the walk past the
-array into adjacent struct hci_conn memory -- a remotely triggerable
-out-of-bounds read; when a drifted field happens to match the BAA UUID
-the out-of-bounds bytes are copied into iso_pi(sk)->base and become
-readable from user space via getsockopt(BT_ISO_BASE).
-
-Keep eir_len in sync with the pointer by recomputing it from the end of
-the buffer on each iteration.
-
-Fixes: 8f9ae5b3ae80 ("Bluetooth: eir: Add helpers for managing service data")
-Cc: stable@vger.kernel.org
-Assisted-by: Claude:claude-opus-4-8
-Signed-off-by: HyeongJun An <sammiee5311@gmail.com>
----
- net/bluetooth/eir.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
-
-diff --git a/net/bluetooth/eir.c b/net/bluetooth/eir.c
-index 1de5f9df6eec..a55696820b22 100644
---- a/net/bluetooth/eir.c
-+++ b/net/bluetooth/eir.c
-@@ -369,6 +369,7 @@ u8 eir_create_scan_rsp(struct hci_dev *hdev, u8 instance, u8 *ptr)
- 
- void *eir_get_service_data(u8 *eir, size_t eir_len, u16 uuid, size_t *len)
- {
-+	const u8 *eir_end = eir + eir_len;
- 	size_t dlen;
- 
- 	while ((eir = eir_get_data(eir, eir_len, EIR_SERVICE_DATA, &dlen))) {
-@@ -381,7 +382,7 @@ void *eir_get_service_data(u8 *eir, size_t eir_len, u16 uuid, size_t *len)
- 		}
- 
- 		eir += dlen;
--		eir_len -= dlen;
-+		eir_len = eir_end - eir;
- 	}
- 
- 	return NULL;
--- 
-2.43.0
-
+greg k-h
 
