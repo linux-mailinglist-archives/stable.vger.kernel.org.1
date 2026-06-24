@@ -1,328 +1,159 @@
-Return-Path: <stable+bounces-268105-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-268107-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id aGFfMBedO2qIaQgAu9opvQ
-	(envelope-from <stable+bounces-268105-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 24 Jun 2026 11:02:15 +0200
+	id F13+OnucO2pTaQgAu9opvQ
+	(envelope-from <stable+bounces-268107-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 24 Jun 2026 10:59:39 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id E457C6BCC5C
-	for <lists+stable@lfdr.de>; Wed, 24 Jun 2026 11:02:13 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3AF2C6BCBF0
+	for <lists+stable@lfdr.de>; Wed, 24 Jun 2026 10:59:39 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=DqzeXJwN;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-268105-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-268105-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=none) header.from=linux.dev;
+	dkim=pass header.d=seu.edu.cn header.s=default header.b=erdZEh2o;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-268107-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-268107-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=none) header.from=seu.edu.cn;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 7D06E30C4F8B
-	for <lists+stable@lfdr.de>; Wed, 24 Jun 2026 08:58:31 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 5FF0E3007282
+	for <lists+stable@lfdr.de>; Wed, 24 Jun 2026 08:59:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0CF53399D10;
-	Wed, 24 Jun 2026 08:58:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4FF5639D3FC;
+	Wed, 24 Jun 2026 08:59:28 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from out-182.mta0.migadu.com (out-182.mta0.migadu.com [91.218.175.182])
+Received: from mail-m155101.qiye.163.com (mail-m155101.qiye.163.com [101.71.155.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8EFA175A67
-	for <stable@vger.kernel.org>; Wed, 24 Jun 2026 08:58:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 170A9388E66;
+	Wed, 24 Jun 2026 08:59:23 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782291510; cv=none; b=ubKbSoib8h8QGRaBAZHjVmeqU9vajsYrrn0t4LrBqx5onIJAiarrUVOCJ6VvPHPRa2/8Ryxm4AOl1YmFnAZ8umPt8ZS+WxUkqvK36pmm4za8cTvPFKyqhFK7uEwTvJScqnhpujSYO8wcE6TuFdyedrAAwq2kv9xrdz8+JlGoUUo=
+	t=1782291567; cv=none; b=GNsp1eDHePfXyC/H6i6vFR+90mZgnSJczyFvLwCZ9ial4a12ptfsAy8hyp5LCvFLPvxyRz8Vc0Smu/NjPAG6s8YrQXmuCj3GqzedJ5jmNeNhN1NnU9LVbKDICQXCbTTC/0eMBAirfWltCT7pNFRYO77g+F9q5NlZlodAm09DrmI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782291510; c=relaxed/simple;
-	bh=xkcNbW0l33v3rAO/IdjcFyWV9hn9OXrgZlbD7fkWqCA=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=FtKNMI268VdbjxhZ7YArFaKkrOyt7SbbQSZB6CJe0YvD2Aigpx6GdQ3RVUyRiXKAnXoErBEfa0NpNoaXAUu1mFEtVV2ty6PZq+JYa6H7bjj21+UjA03jMgk/ox0+nx/IVKJtjqzRF/O130haB4b3+sal98fx3G+0bYzhBxXeGAU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=DqzeXJwN; arc=none smtp.client-ip=91.218.175.182
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1782291505;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=DXPW+YBNntz9f0Lp8avROen0rFA3jB4hGj6rmd8rypo=;
-	b=DqzeXJwNf5gDBGu1OcL4/hrbV9Hi1AXOHwTCheCL8GbteM8Cem4O7iA9uT/jeE696Ozhmn
-	Cm1ez+SF+AitEURBxgb1tUSkQcp5Fw9X5eQrpr1OJ6rdTzeyNFIv+JRBpsjgpbZFvsfJ+G
-	/aZo7pU8DQ1WTrzMM0taz0iO8CxoXJs=
-From: Lance Yang <lance.yang@linux.dev>
-To: richard.weiyang@gmail.com
-Cc: akpm@linux-foundation.org,
-	david@kernel.org,
-	ljs@kernel.org,
-	riel@surriel.com,
-	liam@infradead.org,
-	vbabka@kernel.org,
-	harry@kernel.org,
-	jannh@google.com,
-	ziy@nvidia.com,
-	sj@kernel.org,
-	balbirs@nvidia.com,
-	linux-mm@kvack.org,
+	s=arc-20240116; t=1782291567; c=relaxed/simple;
+	bh=fC6w5B2nTnKPRsothCtVZ+qn5I3g0FjCgVdQ7JVzBlo=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=fCIEauxWao6IQ1nRuormU04jaqOOVbIPym9T/vJ/HYrUkb4Hdpwz1KLA7cKcEUPfaiigv3picLHo4ETyp7LKiZbxgZ+0ykfDecceVQTcQh7lqyKvP6B2orFNSfsabcF7Q17FrP5JBM7muhhhAOfzvNCSWgmMFR6aU3qgH3FVXJA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=seu.edu.cn; spf=pass smtp.mailfrom=seu.edu.cn; dkim=pass (1024-bit key) header.d=seu.edu.cn header.i=@seu.edu.cn header.b=erdZEh2o; arc=none smtp.client-ip=101.71.155.101
+Received: from DESKTOP-SUEFNF9.taila7e912.ts.net (unknown [58.241.16.34])
+	by smtp.qiye.163.com (Hmail) with ESMTP id 439346cd7;
+	Wed, 24 Jun 2026 16:59:19 +0800 (GMT+08:00)
+From: Dawei Feng <dawei.feng@seu.edu.cn>
+To: mripard@kernel.org
+Cc: paulk@sys-base.io,
+	mchehab@kernel.org,
+	gregkh@linuxfoundation.org,
+	wens@kernel.org,
+	jernej.skrabec@gmail.com,
+	samuel@sholland.org,
+	hverkuil@kernel.org,
+	linux-media@vger.kernel.org,
+	linux-staging@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-sunxi@lists.linux.dev,
 	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org,
-	lance.yang@linux.dev
-Subject: Re: [Patch mm-hotfixes v4] mm/page_vma_mapped: fix device-private PMD handling
-Date: Wed, 24 Jun 2026 16:57:56 +0800
-Message-Id: <20260624085756.6598-1-lance.yang@linux.dev>
-In-Reply-To: <20260624065353.1622-1-richard.weiyang@gmail.com>
-References: <20260624065353.1622-1-richard.weiyang@gmail.com>
+	jianhao.xu@seu.edu.cn,
+	zilin@seu.edu.cn,
+	Dawei Feng <dawei.feng@seu.edu.cn>,
+	stable@vger.kernel.org
+Subject: [PATCH] media: cedrus: fix memory leak in cedrus_init_ctrls()
+Date: Wed, 24 Jun 2026 16:59:20 +0800
+Message-Id: <20260624085920.578446-1-dawei.feng@seu.edu.cn>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
+X-HM-Tid: 0a9ef8daf33f03a2kunmb50e020236f68
+X-HM-MType: 10
+X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
+	tZV1koWUFITzdXWRgWCB1ZQUpXWS1ZQUlXWQ8JGhUIEh9ZQVlDHRpLVkhOTx1LGR8fTkIaTlYeHw
+	5VEwETFhoSFyQUDg9ZV1kYEgtZQVlOQ1VJT0pVSk1VSE9ZV1kWGg8SFR0UWUFZT0tIVUpLSEpPSE
+	xVSktLVUpCS0tZBg++
+DKIM-Signature: a=rsa-sha256;
+	b=erdZEh2o+CuenN77cKHcsJJ1qdCHhHw85+ajbj6voIkvWHuPMI/l8WEyNmbHW+2oU/Z3oJcbTNeRdMPI3imx4Pw8pDeGvZO2CNXVCkcWIGktPUH/jyjplOoWdLREfWyp6j98Qb0ccJd6yNNEqA2w3CWrJYZaezLpnyzUFClFKb0=; c=relaxed/relaxed; s=default; d=seu.edu.cn; v=1;
+	bh=nQ64irTn5cB91B6G4LunXFGhvflcWlZllUKpo3Q4WA0=;
+	h=date:mime-version:subject:message-id:from;
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [0.34 / 15.00];
+X-Spamd-Result: default: False [0.84 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
-	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linux.dev,none];
-	R_DKIM_ALLOW(-0.20)[linux.dev:s=key1];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[seu.edu.cn,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_DKIM_ALLOW(-0.20)[seu.edu.cn:s=default];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-268105-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:richard.weiyang@gmail.com,m:akpm@linux-foundation.org,m:david@kernel.org,m:ljs@kernel.org,m:riel@surriel.com,m:liam@infradead.org,m:vbabka@kernel.org,m:harry@kernel.org,m:jannh@google.com,m:ziy@nvidia.com,m:sj@kernel.org,m:balbirs@nvidia.com,m:linux-mm@kvack.org,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,m:lance.yang@linux.dev,m:richardweiyang@gmail.com,s:lists@lfdr.de];
-	FREEMAIL_TO(0.00)[gmail.com];
-	MIME_TRACE(0.00)[0:+];
-	RCVD_COUNT_THREE(0.00)[3];
+	FORGED_RECIPIENTS(0.00)[m:mripard@kernel.org,m:paulk@sys-base.io,m:mchehab@kernel.org,m:gregkh@linuxfoundation.org,m:wens@kernel.org,m:jernej.skrabec@gmail.com,m:samuel@sholland.org,m:hverkuil@kernel.org,m:linux-media@vger.kernel.org,m:linux-staging@lists.linux.dev,m:linux-arm-kernel@lists.infradead.org,m:linux-sunxi@lists.linux.dev,m:linux-kernel@vger.kernel.org,m:jianhao.xu@seu.edu.cn,m:zilin@seu.edu.cn,m:dawei.feng@seu.edu.cn,m:stable@vger.kernel.org,m:jernejskrabec@gmail.com,s:lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-268107-lists,stable=lfdr.de];
+	RCPT_COUNT_TWELVE(0.00)[17];
 	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_SENDER(0.00)[lance.yang@linux.dev,stable@vger.kernel.org];
+	RCVD_TLS_LAST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER(0.00)[dawei.feng@seu.edu.cn,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[16];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	TO_DN_NONE(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	DKIM_TRACE(0.00)[seu.edu.cn:+];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[lance.yang@linux.dev,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linux.dev:+];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[dawei.feng@seu.edu.cn,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FREEMAIL_CC(0.00)[sys-base.io,kernel.org,linuxfoundation.org,gmail.com,sholland.org,vger.kernel.org,lists.linux.dev,lists.infradead.org,seu.edu.cn];
 	ALIAS_RESOLVED(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,linux.dev:dkim,linux.dev:email,linux.dev:mid,linux.dev:from_mime,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,nvidia.com:email]
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,seu.edu.cn:dkim,seu.edu.cn:email,seu.edu.cn:mid,seu.edu.cn:from_mime]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: E457C6BCC5C
+X-Rspamd-Queue-Id: 3AF2C6BCBF0
 
+In cedrus_init_ctrls(), the V4L2 control handler is initialized before
+allocating memory for ctx->ctrls. If this allocation fails, the function
+returns -ENOMEM without freeing the previously allocated handler
+resources, leading to a memory leak.
 
-On Wed, Jun 24, 2026 at 06:53:53AM +0000, Wei Yang wrote:
->Commit 65edfda6f3f2 ("mm/rmap: extend rmap and migration support
->device-private entries") introduced the concept of device-private
->PMD entries, but did not correctly update the rmap walk code to
->account for them.
->
->As a result, when page_vma_mapped_walk() encounters device-private
->PMD entries, it takes no action other than to acquire the PMD lock
->and exit.
->
->However this is highly problematic for two reasons - firstly,
->device private entries possess a PFN so check_pmd() needs to be
->called to ensure an overlapping PFN range.
->
->Secondly, and more importantly, if PVMW_MIGRATION is set the
->caller assumes the returned entry is a migration entry, resulting
->in memory corruption when the caller tries to interpret the device
->private entry as such.
->
->In addition, commit 146287290023 ("mm/huge_memory: implement
->device-private THP splitting") allowed device private PMDs to be
->split like THP mappings, but again did not update this code path.
->
->As a result, we might race a PMD split prior to acquiring the PMD
->lock.
->
->This patch addresses all of these issues by invoking check_pmd(),
->ensuring PMVW_MIGRATION is not set and checks whether a split raced
->us we do for PMD THP and migration entries.
->
->Fixes: 65edfda6f3f2 ("mm/rmap: extend rmap and migration support device-private entries")
->Cc: <stable@vger.kernel.org>
->Signed-off-by: Wei Yang <richard.weiyang@gmail.com>
->Suggested-by: David Hildenbrand <david@kernel.org>
+Fix this by calling v4l2_ctrl_handler_free() on the ctx->ctrls allocation
+failure path.
 
-Shouldn't we add
+The bug was first flagged by an experimental analysis tool we are
+developing for kernel memory-management bugs while analyzing
+v6.13-rc1. The tool is still under development and is not yet publicly
+available. Manual inspection confirms that the bug is still
+present in v7.1.1.
 
-Suggested-by: Lorenzo Stoakes <ljs@kernel.org>
+An x86_64 allyesconfig build showed no new warnings. As we do not have an
+Allwinner SoC or board with a Cedrus VPU available to test with, no
+runtime testing was able to be performed.
 
-as well?
+Fixes: 50e761516f2b ("media: platform: Add Cedrus VPU decoder driver")
+Cc: stable@vger.kernel.org
+Signed-off-by: Dawei Feng <dawei.feng@seu.edu.cn>
+---
+ drivers/staging/media/sunxi/cedrus/cedrus.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-v4 mostly follows Lorenzo's comments, code bits included. Feels only fair.
+diff --git a/drivers/staging/media/sunxi/cedrus/cedrus.c b/drivers/staging/media/sunxi/cedrus/cedrus.c
+index bbd186b8035b..96acd52e380c 100644
+--- a/drivers/staging/media/sunxi/cedrus/cedrus.c
++++ b/drivers/staging/media/sunxi/cedrus/cedrus.c
+@@ -285,8 +285,10 @@ static int cedrus_init_ctrls(struct cedrus_dev *dev, struct cedrus_ctx *ctx)
+ 	ctrl_size = sizeof(ctrl) * CEDRUS_CONTROLS_COUNT + 1;
+ 
+ 	ctx->ctrls = kzalloc(ctrl_size, GFP_KERNEL);
+-	if (!ctx->ctrls)
++	if (!ctx->ctrls) {
++		v4l2_ctrl_handler_free(hdl);
+ 		return -ENOMEM;
++	}
+ 
+ 	j = 0;
+ 	for (i = 0; i < CEDRUS_CONTROLS_COUNT; i++) {
+-- 
+2.34.1
 
->Cc: David Hildenbrand <david@kernel.org>
->Cc: Balbir Singh <balbirs@nvidia.com>
->Cc: SeongJae Park <sj@kernel.org>
->Cc: Zi Yan <ziy@nvidia.com>
->Cc: Lorenzo Stoakes <ljs@kernel.org>
->Cc: Lance Yang <lance.yang@linux.dev>
->
->---
->v4:
->  * refine subject and commit log based on Lorenzo's suggestion
->  * put pmd device-private entry handling in its own if branch,
->    suggested by Lorenzo
->
->v3:
->  * remove cleanup part, only fix the issue for device-private entry
->  * refine user effect description based on Lorenzo's suggestion
->
->v2: https://lore.kernel.org/all/20260616063436.20455-1-richard.weiyang@gmail.com/T/#u
->  * specify the possible error case of current code and user visible effect
->  * besides fix, cleanup the pmd entry handling based on David's suggestion
->
->v1: https://lore.kernel.org/linux-mm/20260508013728.21285-1-richard.weiyang@gmail.com/
->---
-> mm/page_vma_mapped.c | 20 +++++++++++++++-----
-> 1 file changed, 15 insertions(+), 5 deletions(-)
->
->diff --git a/mm/page_vma_mapped.c b/mm/page_vma_mapped.c
->index 2ccbabfb2cc1..17dff8aab9f9 100644
->--- a/mm/page_vma_mapped.c
->+++ b/mm/page_vma_mapped.c
->@@ -269,14 +269,24 @@ bool page_vma_mapped_walk(struct page_vma_mapped_walk *pvmw)
-
-
-Hmm ... looks like there may still be a race here ...
-
-Current code picks the branch from the lockless PMD value:
-
-		pmde = pmdp_get_lockless(pvmw->pmd);
-
-		if (pmd_trans_huge(pmde) || pmd_is_migration_entry(pmde)) {
-			pvmw->ptl = pmd_lock(mm, pvmw->pmd);
-			pmde = *pvmw->pmd;
-			if (!pmd_present(pmde)) {
-				softleaf_t entry;
-
-				if (!thp_migration_supported() ||
-				    !(pvmw->flags & PVMW_MIGRATION))
-					return not_found(pvmw);
-				entry = softleaf_from_pmd(pmde);
-
-				if (!softleaf_is_migration(entry) ||
-				    !check_pmd(softleaf_to_pfn(entry), pvmw))
-					return not_found(pvmw);
-				return true;
-			}
-		}
-
-But after taking PTL, the PMD may already be a different non-present PMD
-type:
-
-CPU0: pmde = pmdp_get_lockless();   // sees PMD migration entry
-
-CPU1: remove_migration_ptes(src, dst /* device-private */)
-        ... via rmap_walk(dst) ...
-        page_vma_mapped_walk(&pvmw /* src, PVMW_MIGRATION */)
-          returns with PTL held for the PMD migration entry
-        remove_migration_pmd(new = dst page)
-          installs a device-private PMD
-        next page_vma_mapped_walk()
-          drops PTL via not_found()
-
-CPU0: takes PTL
-      pmde = *pvmw->pmd;            // now device-private PMD
-
-So when PVMW_MIGRATION is not set, current code can return not_found()
-before we even decode the locked PMD as a device-private entry.
-
-Commit 65edfda6f3f2 ("mm/rmap: extend rmap and migration support
-device-private entries") made the
-
-device-private PMD <-> PMD migration
-
-transition possible.
-
-set_pmd_migration_entry() can replace a device-private PMD with a PMD
-migration entry, and remove_migration_pmd() can restore a PMD migration
-entry back to a device-private PMD when the new folio is device-private.
-
-Maybe decode the locked softleaf entry first, before the migration-only
-checks? Something like this on top:
-
----8<---
-diff --git a/mm/page_vma_mapped.c b/mm/page_vma_mapped.c
-index 17dff8aab9f9..97babd408dba 100644
---- a/mm/page_vma_mapped.c
-+++ b/mm/page_vma_mapped.c
-@@ -249,10 +249,18 @@ bool page_vma_mapped_walk(struct page_vma_mapped_walk *pvmw)
- 			if (!pmd_present(pmde)) {
- 				softleaf_t entry;
-
-+				entry = softleaf_from_pmd(pmde);
-+				if (softleaf_is_device_private(entry)) {
-+					if (pvmw->flags & PVMW_MIGRATION)
-+						return not_found(pvmw);
-+					if (!check_pmd(softleaf_to_pfn(entry), pvmw))
-+						return not_found(pvmw);
-+					return true;
-+				}
-+
- 				if (!thp_migration_supported() ||
- 				    !(pvmw->flags & PVMW_MIGRATION))
- 					return not_found(pvmw);
--				entry = softleaf_from_pmd(pmde);
-
- 				if (!softleaf_is_migration(entry) ||
- 				    !check_pmd(softleaf_to_pfn(entry), pvmw))
-@@ -266,7 +274,10 @@ bool page_vma_mapped_walk(struct page_vma_mapped_walk *pvmw)
- 					return not_found(pvmw);
- 				return true;
- 			}
--			/* THP pmd was split under us: handle on pte level */
-+			/*
-+			 * THP pmd was split under us, or device-private PMD
-+			 * changed under us: handle on pte level.
-+			 */
- 			spin_unlock(pvmw->ptl);
- 			pvmw->ptl = NULL;
- 		} else if (pmd_is_device_private_entry(pmde)) {
---
-
-Anyway, that stuff is getting kinda messy now. Feels like it really needs
-a cleanup on top before it bites us again :)
-
-Cheers, Lance
-
-> 			/* THP pmd was split under us: handle on pte level */
-> 			spin_unlock(pvmw->ptl);
-> 			pvmw->ptl = NULL;
->-		} else if (!pmd_present(pmde)) {
->-			const softleaf_t entry = softleaf_from_pmd(pmde);
->+		} else if (pmd_is_device_private_entry(pmde)) {
->+			softleaf_t entry;
->+
->+			pvmw->ptl = pmd_lock(mm, pvmw->pmd);
->+			pmde = *pvmw->pmd;
->+			entry = softleaf_from_pmd(pmde);
-> 
->-			if (softleaf_is_device_private(entry)) {
->-				pvmw->ptl = pmd_lock(mm, pvmw->pmd);
->+			if (likely(softleaf_is_device_private(entry))) {
->+				if (pvmw->flags & PVMW_MIGRATION)
->+					return not_found(pvmw);
->+				if (!check_pmd(softleaf_to_pfn(entry), pvmw))
->+					return not_found(pvmw);
-> 				return true;
-> 			}
->-
->+			/* device-private pmd was split under us: handle on pte level */
->+			spin_unlock(pvmw->ptl);
->+			pvmw->ptl = NULL;
->+		} else if (!pmd_present(pmde)) {
-> 			if ((pvmw->flags & PVMW_SYNC) &&
-> 			    thp_vma_suitable_order(vma, pvmw->address,
-> 						   PMD_ORDER) &&
->-- 
->2.34.1
->
->
 
