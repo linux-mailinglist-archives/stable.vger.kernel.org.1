@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-268443-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-268492-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id PvBdMC8oPWpiyAgAu9opvQ
-	(envelope-from <stable+bounces-268443-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 15:07:59 +0200
+	id cp9lJv0oPWrHyAgAu9opvQ
+	(envelope-from <stable+bounces-268492-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 15:11:25 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D3CA6C5ECB
-	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 15:07:59 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9D59B6C5FC5
+	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 15:11:24 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=NknSu0CM;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-268443-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-268443-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=oynWl09t;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-268492-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-268492-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 9823D30292F9
-	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 13:07:51 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 380A33009F17
+	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 13:10:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 406092D060D;
-	Thu, 25 Jun 2026 13:07:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E54B22E7374;
+	Thu, 25 Jun 2026 13:10:32 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19EE22D5412;
-	Thu, 25 Jun 2026 13:07:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78D4A28640B;
+	Thu, 25 Jun 2026 13:10:31 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782392871; cv=none; b=safspzcYBaY3uJiRjXH7IpvOOz0tKKew7aC/IyrMS5GnAfgMjCAcocFpjFTKxFJf8bxxxIVbXkYDYysgQ3D+oRdKdUN/Ck/NC3c6iu3I0JnCgW5hYaNvpPj/N1YINpE21WiQizRsKb85LZUBIYDaaqVnRi7UA3p9CXLC5/A5/2Y=
+	t=1782393032; cv=none; b=H80Vm5+PuuNLbF38Zgvg6+bFmLQ0EeOZArFjrI8+wuThc29R0I++0SeMYSAk3UsxLeAl5haC9swWFgLqDBnFu2q36JK9hAYFHQ7WEDQBqli+OT9mUAIkcUz5bBG33Ql2T+uVt+5X1Gf8bG7X1zhIBQ7jNcfhZYqJHbK5zzOD/XE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782392871; c=relaxed/simple;
-	bh=YQ3CKcVMdN2/mOySCIGkTBMKmw08liwx7Yk3Htu7Z3o=;
+	s=arc-20240116; t=1782393032; c=relaxed/simple;
+	bh=tF0/oRVYAAmNir0LoL0GKqgGC+FuZUqwSzL3j5LiAYE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rNPUr9XCjhDj6NpAyXAKPnfGeK2HXWA1Ib1OVLDIFzpd+/trDmqwx8z6vKjmYp7D4AL3lnJnkxCPnLJGO5UXoooxqRFxAaqUBv1EGkZHDZAV0xkD1m+eWOv4yHaxWa5bd41baozBVdt2C/HMO6aRJmfEJT+we4ynDiGnlRjmMPE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NknSu0CM; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D8451F000E9;
-	Thu, 25 Jun 2026 13:07:48 +0000 (UTC)
+	 MIME-Version; b=SvWQGIUUzhLW8Vdva7L67va09U5wBdk239JfxqXMy9GQS6A/Lxj8lKviicGnmFpzpCcui6WIa/BfEQ44WLf05TKSU/FxFG5df/xV198WEUjWZO7HgcrAiTe2x2Zw2LRLhIPfiGbiX1EUe1OM8zFyigaVTuNuMu50JtjrvqjZ2Eo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oynWl09t; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A35291F000E9;
+	Thu, 25 Jun 2026 13:10:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1782392869;
-	bh=Y674XSuCyucD5dvdzkNBRLuinSqhfcglgbeRwF+Whak=;
+	s=korg; t=1782393031;
+	bh=5vmq2/y9MVgVBPpoJW7Y0bzvQSvtKQLaIuySx8snikQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=NknSu0CM2Ei+RHFQCsr5wL8CSWwRF3MnT+M2Jd7/o73oc05qC/lZMEncvRTl9uK15
-	 cFwgUVvXMVqLm1/6/AEiGsuTK8LQakIgAJinzSxsJKuRoINNwvxoScUwYvbRe+Qz65
-	 xPBrz0Ha0qDFo221nae4P+ZLLXkL7GE7jbiwNku8=
+	b=oynWl09t6B3xg4y/j6QUK3xayWYSt7ha4thn7RWZaQ1i59B1u2xuEY7EYEHS2GKhM
+	 3MEwl7dzS0mFUQvgGYxh8f0gCfQ8f65d/CgUE8FQ2pwfN2fyhxVn082YG/7UZ9N2j5
+	 IOHhbJJgQBwgNvYQFY9znwJW9smkl3rjhqjz9QWc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Subject: [PATCH 6.18 48/60] Input: rmi4 - fix type overflow in register counts
+	Bernard Pidoux <bernard.f6bvp@gmail.com>
+Subject: [PATCH 7.0 21/49] rose: fix netdev double-hold in rose_rx_call_request()
 Date: Thu, 25 Jun 2026 14:03:33 +0100
-Message-ID: <20260625125652.736851146@linuxfoundation.org>
+Message-ID: <20260625125640.448597542@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260625125645.554579168@linuxfoundation.org>
-References: <20260625125645.554579168@linuxfoundation.org>
+In-Reply-To: <20260625125637.527552689@linuxfoundation.org>
+References: <20260625125637.527552689@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,20 +71,20 @@ X-Spamd-Result: default: False [-0.16 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORWARDED(0.00)[lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-268443-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-268492-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:dmitry.torokhov@gmail.com,m:dmitrytorokhov@gmail.com,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:bernard.f6bvp@gmail.com,m:bernardf6bvp@gmail.com,s:lists@lfdr.de];
 	RCPT_COUNT_THREE(0.00)[4];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
@@ -94,52 +94,62 @@ X-Spamd-Result: default: False [-0.16 / 15.00];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,vger.kernel.org:from_smtp,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 6D3CA6C5ECB
+X-Rspamd-Queue-Id: 9D59B6C5FC5
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+From: Bernard Pidoux <bernard.f6bvp@gmail.com>
 
-commit a0a87e441238e07c5f7e3de133ef77a9d4229f01 upstream.
+commit c675277c3ba0d2310e0825577d58308c39931e14 upstream.
 
-The number of registers in the RMI4 register descriptor is populated
-by counting the bits in the presence map using bitmap_weight(). Since
-the presence map can contain up to 256 bits (RMI_REG_DESC_PRESENSE_BITS),
-storing this count in a u8 can overflow to 0 if all 256 bits are set.
+rose_rx_call_request() used netdev_tracker_alloc() after assigning
+make_rose->device, intending to take ownership of the reference passed
+by the caller.  But every caller -- rose_route_frame() and
+rose_loopback_timer() -- already calls dev_put() for its own hold after
+the function returns, so the socket ended up with a tracker entry
+pointing at a reference that had already been released.
 
-Change the num_registers field in struct rmi_register_descriptor
-from u8 to u16 to prevent potential integer overflow and ensure safe
-processing of devices reporting large descriptors.
+The result was spurious refcount_t warnings ("saturated", "decrement
+hit 0") on every incoming CALL_REQUEST, leading to refcount corruption
+and eventual silent freeze.
 
-Fixes: 2b6a321da9a2 ("Input: synaptics-rmi4 - add support for Synaptics RMI4 devices")
-Cc: stable@vger.kernel.org
-Assisted-by: Gemini:gemini-3.1-pro
-Link: https://patch.msgid.link/20260505045952.1570713-3-dmitry.torokhov@gmail.com
-Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Replace netdev_tracker_alloc() with netdev_hold() so that
+rose_rx_call_request() acquires its own independent reference.  Each
+caller retains its own hold from rose_dev_get() and releases it via
+dev_put() as before; socket cleanup releases the socket's separate hold
+via netdev_put().
+
+Signed-off-by: Bernard Pidoux <bernard.f6bvp@gmail.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/input/rmi4/rmi_driver.h |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/rose/af_rose.c |    8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
---- a/drivers/input/rmi4/rmi_driver.h
-+++ b/drivers/input/rmi4/rmi_driver.h
-@@ -65,7 +65,7 @@ struct rmi_register_desc_item {
- struct rmi_register_descriptor {
- 	unsigned long struct_size;
- 	unsigned long presense_map[BITS_TO_LONGS(RMI_REG_DESC_PRESENSE_BITS)];
--	u8 num_registers;
-+	u16 num_registers;
- 	struct rmi_register_desc_item *registers;
- };
+--- a/net/rose/af_rose.c
++++ b/net/rose/af_rose.c
+@@ -1079,9 +1079,11 @@ int rose_rx_call_request(struct sk_buff
+ 		make_rose->source_digis[n] = facilities.source_digis[n];
+ 	make_rose->neighbour     = neigh;
+ 	make_rose->device        = dev;
+-	/* Caller got a reference for us. */
+-	netdev_tracker_alloc(make_rose->device, &make_rose->dev_tracker,
+-			     GFP_ATOMIC);
++	/* Take an independent reference for this socket; callers keep their
++	 * own reference (from rose_dev_get / dev_hold) and will release it
++	 * themselves via dev_put().
++	 */
++	netdev_hold(make_rose->device, &make_rose->dev_tracker, GFP_ATOMIC);
+ 	make_rose->facilities    = facilities;
  
+ 	rose_neigh_hold(make_rose->neighbour);
 
 
 
