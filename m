@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-268432-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-268433-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id wS2mCQQoPWpMyAgAu9opvQ
-	(envelope-from <stable+bounces-268432-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 15:07:16 +0200
+	id OVgAMBMoPWpSyAgAu9opvQ
+	(envelope-from <stable+bounces-268433-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 15:07:31 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A954D6C5E7E
-	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 15:07:15 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7EDBA6C5E96
+	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 15:07:31 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=t9lp1VNB;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-268432-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-268432-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=T6yb9rfW;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-268433-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-268433-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 23D203009146
-	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 13:07:15 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 90D0330292FF
+	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 13:07:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D57271E633C;
-	Thu, 25 Jun 2026 13:07:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 360432D5412;
+	Thu, 25 Jun 2026 13:07:17 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1B7C2BEFEB;
-	Thu, 25 Jun 2026 13:07:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05D291E633C;
+	Thu, 25 Jun 2026 13:07:16 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782392833; cv=none; b=HFPOpUbwywdHQ8idWl2MACmVxZBJnlNudLfSQamutEVOOblr2Mkg+JNiBkA/QaNJjfF29VpRFYw6l4X/kdkQ0DBUjOPNJyBO/rteZEQaKp9jV4b6A8H/oUHv0AUraTVYT/+XtATIgkUdbbMhcswsvPuZIs463wEIFc9btgdXo/g=
+	t=1782392837; cv=none; b=qk+BtN1dO1kX8C7xPFqV6Ckz3WS1shPujSxcEvyveX/AgT0Y4kFPJm7PEAYnHSfsaTAOiHL8zu9BbO0GlKSBk3TUtGEQFIVQjXr+bA2BuWxaCJHzaOODGV54W6Sn45nYgueH57F5v62s3KICuLFiN7EPmUICvfpT7lxIqRzgFjs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782392833; c=relaxed/simple;
-	bh=26ciyC5UtP2Pl8xzNnFrGEh6AaLwdz41qAo1jSV6EJ0=;
+	s=arc-20240116; t=1782392837; c=relaxed/simple;
+	bh=vZ7J8JFv7l0isIyDRTPA64pHmmipIK7lJdpePB4Y8F8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bkMY2TobDtd1tMLW7/Ru3uzPDrRFwS0Um+vQlWuJ+jWEH9J4ptzafq+h9B/78TDNrE815R0mCO58MyQhQdUUpnKNS+3mTgd9sKtTl0Lmy291/BLU8GUPNkZn0DI8JDwmhxbkzMZhrIj3zYjUhfLlrS5CFgHKxY3s1NeC7TlPxUQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t9lp1VNB; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01A7D1F000E9;
-	Thu, 25 Jun 2026 13:07:11 +0000 (UTC)
+	 MIME-Version; b=DiQFPjqWnriQWO6r5N7U8sNiV4RPChx6mw/EKzRUOqKE4TKxzHkoQlpmlmSL6c8UMZe5jIhEWX7Dk3FpFxIgVShpfHkNwezsO7fIFVl0xXM02UtFoYFDYOPFZC4VfE2sA5moCYxxxlboiD7iU0hkuwyE6+gXNswC0NqLKwSoFec=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T6yb9rfW; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4AA311F000E9;
+	Thu, 25 Jun 2026 13:07:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1782392832;
-	bh=EaL25P+h1D4aONrFw0Cb7OpmGyUUciMtJHDbPCO+Jpc=;
+	s=korg; t=1782392835;
+	bh=kMLUHQKCS41ug4zbI9wUjjcvJHC3AXo/3K1mc2ctTho=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=t9lp1VNBwIAy66YI9vSQ/5m7SYHeBiq3aPwZqXg4Rc0GY+CE0d2ONuwzJnlgw53Ok
-	 KwVJ2fBTHCjJXsLNyga1mqVOWaW1z2FmA3JgXnrPc461uHROC2JcNne0HHeJsIvBJf
-	 yHx/C6YNMWJ1yQLsf5NUDH5alRt/AkLMZ6DFdR34=
+	b=T6yb9rfWGi+FpwIRw64nY1cwtESWed1iyH2xiRnlitYk45NZO08YbtjXoqh6OKip4
+	 7wvDL2Xv4fkAQEJ3/drJuR4FQ9wMhaoQBU57y/9a+Ob497yBVAG/Tr+RvVCOwdL12J
+	 F8K1nwLHQukvtWmnCTJqKasVPZ1pb7TlS1YX+cE8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Bernard Pidoux <bernard.f6bvp@gmail.com>
-Subject: [PATCH 6.18 23/60] rose: fix netdev double-hold in rose_make_new()
-Date: Thu, 25 Jun 2026 14:03:08 +0100
-Message-ID: <20260625125648.957773009@linuxfoundation.org>
+Subject: [PATCH 6.18 24/60] rose: release netdev ref and destroy orphaned incoming sockets
+Date: Thu, 25 Jun 2026 14:03:09 +0100
+Message-ID: <20260625125649.103756507@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260625125645.554579168@linuxfoundation.org>
 References: <20260625125645.554579168@linuxfoundation.org>
@@ -71,20 +71,20 @@ X-Spamd-Result: default: False [-0.16 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORWARDED(0.00)[lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-268432-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-268433-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:bernard.f6bvp@gmail.com,m:bernardf6bvp@gmail.com,s:lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:bernard.f6bvp@gmail.com,m:bernardf6bvp@gmail.com,s:lists@lfdr.de];
 	RCPT_COUNT_THREE(0.00)[4];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
@@ -94,13 +94,13 @@ X-Spamd-Result: default: False [-0.16 / 15.00];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: A954D6C5E7E
+X-Rspamd-Queue-Id: 7EDBA6C5E96
 
 6.18-stable review patch.  If anyone has any objections, please let me know.
 
@@ -108,49 +108,80 @@ X-Rspamd-Queue-Id: A954D6C5E7E
 
 From: Bernard Pidoux <bernard.f6bvp@gmail.com>
 
-commit b9fb21ceb4f0d043767a1eba60786ec84809033b upstream.
+commit df12be096302d2c947388acc25764456c7f18cc1 upstream.
 
-rose_make_new() copies orose->device from the listener socket and calls
-netdev_hold(), storing the tracker in rose->dev_tracker.  The only
-caller, rose_rx_call_request(), then overwrites both make_rose->device
-and make_rose->dev_tracker with a fresh netdev_hold() for the actual
-incoming-call device.
+Two related cleanup gaps left the module unremovable after a loopback
+session:
 
-This orphans the tracker allocated by rose_make_new(): it remains in
-the device's refcount_tracker list but no pointer exists to free it
-via netdev_put().  The result is one spurious outstanding reference per
-accepted CALL_REQUEST, visible at rmmod time as:
+1. rose_destroy_socket() did not release the device reference.  When
+   an unaccepted incoming socket (created by rose_rx_call_request()) is
+   destroyed via rose_heartbeat_expiry(), it is removed from rose_list
+   before rose_kill_by_device() can find it, so the netdev_hold() taken
+   in rose_rx_call_request() was never matched by netdev_put().  Add the
+   release at the top of rose_destroy_socket() guarded by a NULL check
+   so that rose_release() and rose_kill_by_device(), which already call
+   netdev_put() and set device = NULL, are not affected.
 
-  ref_tracker: netdev@X has 2/2 users at
-      rose_rx_call_request+0xba3/0x1d50 [rose]
-      rose_loopback_timer+0x3eb/0x670 [rose]
+2. rose_heartbeat_expiry() STATE_0 cleanup required TCP_LISTEN in
+   addition to SOCK_DEAD.  Unaccepted incoming sockets are
+   TCP_ESTABLISHED, so the condition was never true and those sockets
+   lingered forever, holding the module use count above zero and
+   blocking rmmod.  Drop the TCP_LISTEN restriction: any STATE_0 +
+   SOCK_DEAD socket is orphaned and should be destroyed.
 
-The second entry is the orphaned tracker from rose_make_new(); the
-first is the correctly-managed socket reference from rose_rx_call_request().
-
-Fix: initialise rose->device to NULL in rose_make_new() and let
-rose_rx_call_request() -- the sole caller -- assign the correct device
-and take the sole netdev_hold() as it already does.
+Together with the earlier rose_make_new() double-hold fix these three
+patches allow clean rmmod after loopback sessions.
 
 Signed-off-by: Bernard Pidoux <bernard.f6bvp@gmail.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/rose/af_rose.c |    4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ net/rose/af_rose.c    |    9 +++++++++
+ net/rose/rose_timer.c |    9 +++++----
+ 2 files changed, 14 insertions(+), 4 deletions(-)
 
 --- a/net/rose/af_rose.c
 +++ b/net/rose/af_rose.c
-@@ -631,9 +631,7 @@ static struct sock *rose_make_new(struct
- 	rose->hb	= orose->hb;
- 	rose->idle	= orose->idle;
- 	rose->defer	= orose->defer;
--	rose->device	= orose->device;
--	if (rose->device)
--		netdev_hold(rose->device, &rose->dev_tracker, GFP_ATOMIC);
-+	rose->device	= NULL;  /* rose_rx_call_request() sets this */
- 	rose->qbitincl	= orose->qbitincl;
+@@ -363,6 +363,7 @@ static void rose_destroy_timer(struct ti
+  */
+ void rose_destroy_socket(struct sock *sk)
+ {
++	struct rose_sock *rose = rose_sk(sk);
+ 	struct sk_buff *skb;
  
- 	return sk;
+ 	rose_remove_socket(sk);
+@@ -370,6 +371,14 @@ void rose_destroy_socket(struct sock *sk
+ 	rose_stop_idletimer(sk);
+ 	rose_stop_timer(sk);
+ 
++	/* Drop any device reference not already released by rose_kill_by_device()
++	 * or rose_release() -- e.g. incoming sockets that were never accepted.
++	 */
++	if (rose->device) {
++		netdev_put(rose->device, &rose->dev_tracker);
++		rose->device = NULL;
++	}
++
+ 	rose_clear_queues(sk);		/* Flush the queues */
+ 
+ 	while ((skb = skb_dequeue(&sk->sk_receive_queue)) != NULL) {
+--- a/net/rose/rose_timer.c
++++ b/net/rose/rose_timer.c
+@@ -128,10 +128,11 @@ static void rose_heartbeat_expiry(struct
+ 	}
+ 	switch (rose->state) {
+ 	case ROSE_STATE_0:
+-		/* Magic here: If we listen() and a new link dies before it
+-		   is accepted() it isn't 'dead' so doesn't get removed. */
+-		if (sock_flag(sk, SOCK_DESTROY) ||
+-		    (sk->sk_state == TCP_LISTEN && sock_flag(sk, SOCK_DEAD))) {
++		/* Destroy any orphaned STATE_0 socket: either explicitly
++		 * flagged SOCK_DESTROY, or SOCK_DEAD (covers both unaccepted
++		 * incoming connections and listening sockets whose link died).
++		 */
++		if (sock_flag(sk, SOCK_DESTROY) || sock_flag(sk, SOCK_DEAD)) {
+ 			bh_unlock_sock(sk);
+ 			rose_destroy_socket(sk);
+ 			sock_put(sk);
 
 
 
