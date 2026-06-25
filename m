@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-268457-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-268484-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id Bu7iC1goPWp1yAgAu9opvQ
-	(envelope-from <stable+bounces-268457-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 15:08:40 +0200
+	id 03uvGrEoPWqoyAgAu9opvQ
+	(envelope-from <stable+bounces-268484-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 15:10:09 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C9B946C5EF8
-	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 15:08:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 38D6D6C5F80
+	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 15:10:09 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=i9UhukiZ;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-268457-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-268457-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=usCoZ6Yk;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-268484-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-268484-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 42EB830054CC
-	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 13:08:39 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id AC487300C024
+	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 13:10:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 274EB2DC334;
-	Thu, 25 Jun 2026 13:08:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5315E28725B;
+	Thu, 25 Jun 2026 13:10:06 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9AAF2D5412;
-	Thu, 25 Jun 2026 13:08:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CD922253EE;
+	Thu, 25 Jun 2026 13:10:04 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782392916; cv=none; b=ZU9XRN/bx7kPujJ7GrNN7xxXl3wQtGBKbswwIHXvGD9s8fDsMvc9/qTDO1B6OKVx33Z8mk87kQK4GArv3OOK4kVOhq2cDcLc4JFrbcghdnMT8Iv/kEv0qK5+sZmeLkoNJvTJcEeVJtYvpq/Dh3e/UJUCQC5I3DJGTCEzH1N6Dj8=
+	t=1782393006; cv=none; b=o2as64hhrD8FVrBgdBZEq5GIb6+FTZc8hC+3Hso3guuMLzfMVBjx39Kti68eD0bpuYa9KpWcd9TSAmWJTeIFZYAL5EbnZZ/HeBXbIoXWBO02lEl5G7+7NhoidCB/pj/Zd0RVh1niXtQPdGtuiBVFbriBfXgElXojvX8Y1lelpT0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782392916; c=relaxed/simple;
-	bh=uy5aw7NxE4B6ii8cqHzAbQKnAZmfhG1w8d1NJqDuYx0=;
+	s=arc-20240116; t=1782393006; c=relaxed/simple;
+	bh=wedskd2z1h9qz6lMNjBoh1ZcAV2+I7l4l4ONKBHs/Lw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YuBhraXvw2oxZynXi0MD5sDyU60VlVc0VWQbcryvlfy2bYFkHs9Whtrm9GilDB3DQO3JQ/mZYPi7I2yiS5rzVMOKaDyzJgrxayEeNG1M+D4948+6Vmgn/V0L3SKZeyK4O0pzXRfpgbC3nH7nstXLBVlIoxWDWqwIs4IfSbWSmQ4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i9UhukiZ; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28DCC1F000E9;
-	Thu, 25 Jun 2026 13:08:34 +0000 (UTC)
+	 MIME-Version; b=CPZVompW/zH7VgQhHDOPt40OQWZxhyTwA0jJqFwETiD2hqBK+xzOLpCL7lKuTf3LyeUi1uiVtdO5jJC+cgLsioVaJF8VbbatTGoJJZzeDkL0X4sZ/meukXbgNfpiay/qYFwQfDOoUr/QN2EcjLh3qj1ONSaDHoxHEG78qJTT78Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=usCoZ6Yk; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41AAF1F000E9;
+	Thu, 25 Jun 2026 13:10:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1782392915;
-	bh=ekNjmgVpYT8ImWK0zjCwqd2S/rXakdJ0eGhL3ptMjnk=;
+	s=korg; t=1782393004;
+	bh=B75b0xem9CKJ1Bjb3MaVcXa1zrfrT0iCP9R0Cq3eNS8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=i9UhukiZ5DLPuqiMPmrSjpm0b6Wn3F4OhfufknzoA0ykAqax/VSh0VKtg8I6Pwv4i
-	 mboBHUpXG8SD/oKSqpZE2OJWD2USzsG8odkgvUksVP101SQw+8Secatu3C0wHWrGBy
-	 A1c6aML8lBmzmEDZ6RamxxL+KmVs2YTixtIl4Wv4=
+	b=usCoZ6Yk0LGDo+THWtgAdO6IdCtYTDcph9bF+UWIIPSvbJlt8RpccXVh83IlWtmuv
+	 MJE48sw/DHJKczDCVKlwqXLT/zUNCR5kG+OBpB0XuXucy+Bz3ccQ2o39P+hxj+t6IL
+	 +qqt8MKNONvNr67QUFb8na9+5v67EQhv5THdmu4E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yi Yang <yiyang13@huawei.com>,
-	Jiri Slaby <jirislaby@kernel.org>
-Subject: [PATCH 6.18 54/60] vc_screen: fix null-ptr-deref in vcs_notifier() during concurrent vcs_write
-Date: Thu, 25 Jun 2026 14:03:39 +0100
-Message-ID: <20260625125653.615614718@linuxfoundation.org>
+	Bernard Pidoux <bernard.f6bvp@gmail.com>
+Subject: [PATCH 7.0 28/49] rose: cancel neighbour timers in rose_neigh_put() before freeing
+Date: Thu, 25 Jun 2026 14:03:40 +0100
+Message-ID: <20260625125641.474020187@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260625125645.554579168@linuxfoundation.org>
-References: <20260625125645.554579168@linuxfoundation.org>
+In-Reply-To: <20260625125637.527552689@linuxfoundation.org>
+References: <20260625125637.527552689@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,7 +65,8 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
@@ -75,77 +75,80 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-268457-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:yiyang13@huawei.com,m:jirislaby@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-268484-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:bernard.f6bvp@gmail.com,m:bernardf6bvp@gmail.com,s:lists@lfdr.de];
+	RCPT_COUNT_THREE(0.00)[4];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,huawei.com:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: C9B946C5EF8
+X-Rspamd-Queue-Id: 38D6D6C5F80
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yi Yang <yiyang13@huawei.com>
+From: Bernard Pidoux <bernard.f6bvp@gmail.com>
 
-commit a287620312dc6dcb9a093417a0e589bf30fcf38a upstream.
+commit 9b222cb1d23ff210975e9df5ebab7b011acb6fad upstream.
 
-A KASAN null-ptr-deref was observed in vcs_notifier():
+rose_neigh_put() kfree()s the neighbour but never cancels its ftimer and
+t0timer. Until now every caller that dropped the final reference first
+called rose_remove_neigh(), which deletes those timers. The socket
+heartbeat reaping path drops the last reference directly, so a neighbour
+could be freed with t0timer still armed -- it re-arms itself in
+rose_t0timer_expiry() -- leading to a use-after-free write in
+enqueue_timer().
 
-BUG: KASAN: null-ptr-deref in vcs_notifier+0x98/0x130
-Read of size 2 at addr qmp_cmd_name: qmp_capabilities, arguments: {}
+Cancel both timers with timer_delete_sync() (the synchronous variant, to
+wait out a concurrently running, self-rearming handler) in the
+refcount-zero branch of rose_neigh_put().
 
-The issue is a race condition in vcs_write(). When the console_lock is
-temporarily dropped (to copy data from userspace), the vc_data pointer
-obtained from vcs_vc() may become stale. After re-acquiring the lock,
-vcs_vc() is called again to re-validate the pointer. If the vc has been
-deallocated in the meantime, vcs_vc() returns NULL, and the while loop
-breaks (with written > 0). However, after the loop, vcs_scr_updated(vc)
-is still called with the now-NULL vc pointer, leading to a null pointer
-dereference in the notifier chain (vcs_notifier dereferences param->vc).
-
-Fix this by adding a NULL check for vc before calling vcs_scr_updated().
-
-Fixes: 8fb9ea65c9d1 ("vc_screen: reload load of struct vc_data pointer in vcs_write() to avoid UAF")
-Cc: stable@vger.kernel.org
-Signed-off-by: Yi Yang <yiyang13@huawei.com>
-Reviewed-by: Jiri Slaby <jirislaby@kernel.org>
-Link: https://patch.msgid.link/20260604060734.2914976-1-yiyang13@huawei.com
+Signed-off-by: Bernard Pidoux <bernard.f6bvp@gmail.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/tty/vt/vc_screen.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ include/net/rose.h |   12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
---- a/drivers/tty/vt/vc_screen.c
-+++ b/drivers/tty/vt/vc_screen.c
-@@ -686,7 +686,7 @@ vcs_write(struct file *file, const char
- 	}
- 	*ppos += written;
- 	ret = written;
--	if (written)
-+	if (written && vc)
- 		vcs_scr_updated(vc);
- 
- 	return ret;
+--- a/include/net/rose.h
++++ b/include/net/rose.h
+@@ -160,6 +160,18 @@ static inline void rose_neigh_hold(struc
+ static inline void rose_neigh_put(struct rose_neigh *rose_neigh)
+ {
+ 	if (refcount_dec_and_test(&rose_neigh->use)) {
++		/* We are dropping the last reference, so we are about to free the
++		 * neighbour.  Its timers may still be armed -- t0timer in particular
++		 * re-arms itself in rose_t0timer_expiry().  rose_remove_neigh()
++		 * cancels them before its own put, but callers that drop the final
++		 * reference without first calling rose_remove_neigh() (the socket
++		 * heartbeat reaping path) would otherwise kfree() a neighbour with a
++		 * live timer -> use-after-free.  timer_delete_sync() (not the async
++		 * variant) is required: it waits out a concurrently running handler
++		 * and loops until the self-rearming timer stays stopped.
++		 */
++		timer_delete_sync(&rose_neigh->ftimer);
++		timer_delete_sync(&rose_neigh->t0timer);
+ 		if (rose_neigh->ax25)
+ 			ax25_cb_put(rose_neigh->ax25);
+ 		kfree(rose_neigh->digipeat);
 
 
 
