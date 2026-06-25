@@ -1,163 +1,259 @@
-Return-Path: <stable+bounces-268610-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-268611-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id lZsWNgpSPWoX1QgAu9opvQ
-	(envelope-from <stable+bounces-268610-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 18:06:34 +0200
+	id DVKpLBRTPWpt1QgAu9opvQ
+	(envelope-from <stable+bounces-268611-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 18:11:00 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 779BD6C74DB
-	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 18:06:34 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1DAB36C759E
+	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 18:11:00 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=none;
-	dmarc=none;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-268610-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-268610-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=rowland.harvard.edu header.s=google header.b=BzZsPfVd;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-268611-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-268611-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=none) header.from=rowland.harvard.edu;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id EB1EE30406AA
-	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 16:06:21 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 468F33014568
+	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 16:08:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 295FE3E1CFF;
-	Thu, 25 Jun 2026 16:06:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ACE863A0B13;
+	Thu, 25 Jun 2026 16:08:34 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from cstnet.cn (smtp25.cstnet.cn [159.226.251.25])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+Received: from mail-qk1-f181.google.com (mail-qk1-f181.google.com [209.85.222.181])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 347D2347DD;
-	Thu, 25 Jun 2026 16:06:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3884D3E1CFF
+	for <stable@vger.kernel.org>; Thu, 25 Jun 2026 16:08:32 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782403577; cv=none; b=RrwJPyQbSfuT8+iVNhNUbFya+K+TyjiMM+/dlmTiBlqg4+G+4ZyvRQx7qgnsSRbVWbOZCTyuDwIIOyIFjEWhWlSXLydCi/NqHQ3Kdkpt6/i8O+liXpguowcemnLdC21gnWWkWFxHRL6+zEw6D7ahitw+tIBebR8IFgUC6nX+IKM=
+	t=1782403714; cv=none; b=kVYXWAY8HfK1p7fGyDCXvR6X7k+KDN77I2iP33BxRjyrs33oocJcrTUT6dtKqGIGotcvnKuJ7woPQS64+zjH7l9jX9RlJUEFFkv0PtT6C9bhONRxHF9kNJ/2aOz9hO7orfcbQJWeS0E4b52FAHWYoFZka5WJUb3mynWmao0Jhcc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782403577; c=relaxed/simple;
-	bh=l+DHLD0yCxEuPehPS7ksD3dSugjvskURTfhbZEviHx8=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=pN2vSveU3waJdMCuz1tTXIG7CUjvF5a1nXc262cAbQjP2QoepBQMkKS5oCU4A4gpeVjnnCdBs9fx9Ogv+K6T/D60HkWVq2dCf5DQq3wqWa5GGBi0TGuILrf/skHoFhPvnC+P3s1Qjpoj+ZEzMQ3lK3SKWSFGl4HnOHiAXdA9akc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.25
-Received: from localhost.localdomain (unknown [117.182.75.66])
-	by APP-05 (Coremail) with SMTP id zQCowAAnoPPxUT1qk2o9FQ--.23845S2;
-	Fri, 26 Jun 2026 00:06:10 +0800 (CST)
-From: Wentao Liang <vulab@iscas.ac.cn>
-To: marcel@holtmann.org,
-	luiz.dentz@gmail.com
-Cc: linux-bluetooth@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Wentao Liang <vulab@iscas.ac.cn>,
+	s=arc-20240116; t=1782403714; c=relaxed/simple;
+	bh=txA3luw49KQYaD3e0kkYooetbGz2U80FDkOLBGwVA5o=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=D85IhreSsffHK3NCrwYZP0x/vRw5OphsVS5iVzdPj2EL1RnBiOKhYTDOJ5FE0jnDZ6dqMZ5E3VpBVc79I8NJsOExhci0R9JjQ8jFBrkWfk9pgtIFy+kYw+K5ewu4RKIvm27cGHovPiAfdNN9u/wp4YbZv2BSpM91FPgHqQjgl6o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rowland.harvard.edu; spf=fail smtp.mailfrom=g.harvard.edu; dkim=pass (2048-bit key) header.d=rowland.harvard.edu header.i=@rowland.harvard.edu header.b=BzZsPfVd; arc=none smtp.client-ip=209.85.222.181
+Received: by mail-qk1-f181.google.com with SMTP id af79cd13be357-922ade88d0aso7213185a.1
+        for <stable@vger.kernel.org>; Thu, 25 Jun 2026 09:08:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=rowland.harvard.edu; s=google; t=1782403711; x=1783008511; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=Ug4SbaeJ/1EYKpxKC0dJskWinTAS7LmFXgKf0w7V/S4=;
+        b=BzZsPfVda2GFeJl0UtWa2juzVDwnwSa9vyvdf3klmEMIy5vQ02QmOu2XQ2KB4XL4VS
+         Poc9XgzmVwSNdXD3WeWvUy8Z2EaOovXb5yleDpvaUIjpW/JdFBHz1JCyqDp9BxwN0VD4
+         EAKeyYKe6InGC2wNH3vZKn2oXlYlVAKmEba84z8PrSP9kmWrdjcsLrobDTDzLqlVxJ/o
+         GUf91FqJqs8vZqRLm4u6zInTH4LZTJ2VlvmqKjnV/v6+VciSj8l8eZzARAbeKjlHMAyd
+         fvefW1Ukocxz4amhgWEtXHo3eEABGY3IDFMxgThpRq2HEjxW+MVrP4Dh39Cf8CL7tdDi
+         WBkw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1782403711; x=1783008511;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=Ug4SbaeJ/1EYKpxKC0dJskWinTAS7LmFXgKf0w7V/S4=;
+        b=Too+cW8XpqrIn0D1QgL/eOfaZXoPV6eT1VOok38Nxh14Lu/F5AYfFTFC0L5bBYZfEu
+         gM6Hg2PJr+1+vBW6lmatqlmhIIGs06+W0OwBKbIOrwzPBxYyatiGgBFl/jtxnibUuET6
+         DOLOrFq8Ld7XYZpHXZJ2pQSKL1cY3inGUmeA1MnJada6rdKp03JCrTIj0WygJ2LiLZfD
+         Q03cbih+eGctD1Z/SIl4Fin4tjhQUNbj7/ow3hYeTnfq2o0WiP6MPZjjAaqIgd2J03YE
+         JE5ZX9RH7ARo3CWmmly6RocJA8XAc4bHOeoWFXv914MqooNUmgJq9XI5KHjiVvN1XTRf
+         7G5g==
+X-Forwarded-Encrypted: i=1; AFNElJ/CRVvFEthwSMbyDYfC5qL0mSK/0uSh0VXs06G9Qm3QIj0dBC2THSE1zWWS8DDfq1XneDIju74=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyY7JnqoUgVxLAq2meyD5aqgPPS/Gs+xpvIz/4PmPgnbv7D1MoF
+	9WSTlVBEt7YfIi9cynmsBblG2r4C9W1AH8bTq98oFlv95bsH3C5EmvW10OqrA+ksIka+JIoXIVJ
+	0FzdVXQ==
+X-Gm-Gg: AfdE7cmyPsz+sWgWIfgXUBdeENMsCNNLcT8DKAFvtwX6DYsnVKlekxh2Tq1Nqg0ldk5
+	ULlfVTuQG6kkwCpikagupB6R92lk/NgMsu82XrvvKQtYb6t15kiGLt7TiUWSGzqwflajM4zBa2E
+	TwAznU1hq3hmpXLuNQwOszUjec52oaqqeZVwXpzGvKdKiODWT06UB4JU24wekh3k71pCb9zw/DV
+	mysNGXa65k69ywVPZSjmcdaCt9TNoqWgwYOlHsQAFT3Poltd5Z7kVZtQVunGGsghWY2hd71uE3E
+	oMkfYKgqqwiulpFkdwYUnoCr24QUC8IIuozZwJSDwGlV9qQzIxJYAOi0En+rWLmt+UHMkRP1XJt
+	nkxIhnZB5zEoIhSmZvLDsPMkYFG97qvXoUMsXCpklo/cR3n6eIPaX1WWmgQy7X8WCmu+u1mJ8Rv
+	9di+QfB+V83foUzjZtJ+NxPUkuIGwy/bqN
+X-Received: by 2002:a05:620a:4409:b0:923:8612:f15 with SMTP id af79cd13be357-9293bd3b210mr434367185a.18.1782403710911;
+        Thu, 25 Jun 2026 09:08:30 -0700 (PDT)
+Received: from rowland.harvard.edu ([2601:19b:d01:d210:d62f:1911:f952:16ba])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-926004ac1b8sm842832585a.36.2026.06.25.09.08.28
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 25 Jun 2026 09:08:29 -0700 (PDT)
+Date: Thu, 25 Jun 2026 12:08:27 -0400
+From: Alan Stern <stern@rowland.harvard.edu>
+To: Jimmy Hu <hhhuuu@google.com>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Subject: [PATCH] btmrvl: Fix hdev dangling pointer and error code in register_hdev
-Date: Fri, 26 Jun 2026 00:06:07 +0800
-Message-Id: <20260625160607.81615-1-vulab@iscas.ac.cn>
-X-Mailer: git-send-email 2.39.5 (Apple Git-154)
+Subject: Re: [PATCH v3] usb: gadget: udc: Fix use-after-free in
+ gadget_match_driver
+Message-ID: <ae8d0b9d-ba7c-429d-a660-30e4d175599d@rowland.harvard.edu>
+References: <20260625073705.803880-1-hhhuuu@google.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:zQCowAAnoPPxUT1qk2o9FQ--.23845S2
-X-Coremail-Antispam: 1UD129KBjvJXoWxJr1ftrWxGw4kAFWUXFW7CFg_yoW8AFy3pa
-	1kWa4Yyr1FgrWIvrs8AF4Iqa90ganxX3y8CasxAwn3Zr4ay3yvyrs8ZFyjqr15KrZ5Zw13
-	KasrWw1Uu3WUAaUanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUkl14x267AKxVWUJVW8JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
-	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
-	1l84ACjcxK6xIIjxv20xvE14v26r4j6ryUM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4j
-	6F4UM28EF7xvwVC2z280aVAFwI0_Jr0_Gr1l84ACjcxK6I8E87Iv6xkF7I0E14v26r4j6r
-	4UJwAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0
-	I7IYx2IY67AKxVWUJVWUGwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFVCjc4AY6r1j6r
-	4UM4x0Y48IcxkI7VAKI48JM4x0x7Aq67IIx4CEVc8vx2IErcIFxwCY1x0262kKe7AKxVWU
-	AVWUtwCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02F40E14
-	v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_JF0_Jw1lIxkG
-	c2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7CjxVAFwI
-	0_Jr0_Gr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r1j6r4U
-	MIIF0xvEx4A2jsIEc7CjxVAFwI0_Jr0_GrUvcSsGvfC2KfnxnUUI43ZEXa7VUjuHq7UUUU
-	U==
-X-CM-SenderInfo: pyxotu46lvutnvoduhdfq/1tbiCQ8JA2o9Q74fFgAAsv
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260625073705.803880-1-hhhuuu@google.com>
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [1.54 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[rowland.harvard.edu,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[rowland.harvard.edu:s=google];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_RECIPIENTS(0.00)[m:marcel@holtmann.org,m:luiz.dentz@gmail.com,m:linux-bluetooth@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:vulab@iscas.ac.cn,m:stable@vger.kernel.org,m:luizdentz@gmail.com,s:lists@lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DMARC_NA(0.00)[iscas.ac.cn];
-	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_TO(0.00)[holtmann.org,gmail.com];
+	DKIM_TRACE(0.00)[rowland.harvard.edu:+];
 	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_SENDER(0.00)[vulab@iscas.ac.cn,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-268611-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_SENDER(0.00)[stern@rowland.harvard.edu,stable@vger.kernel.org];
+	FORGED_RECIPIENTS(0.00)[m:hhhuuu@google.com,m:gregkh@linuxfoundation.org,m:linux-usb@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,s:lists@lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
+	MISSING_XM_UA(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[vulab@iscas.ac.cn,stable@vger.kernel.org];
-	TAGGED_FROM(0.00)[bounces-268610-lists,stable=lfdr.de];
+	FROM_NEQ_ENVFROM(0.00)[stern@rowland.harvard.edu,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	ALIAS_RESOLVED(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	R_DKIM_NA(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	FROM_HAS_DN(0.00)[]
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[5]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 779BD6C74DB
+X-Rspamd-Queue-Id: 1DAB36C759E
 
-In btmrvl_register_hdev(), when hci_register_dev() fails, the
-function frees the hci_dev via hci_free_dev() but leaves
-priv->btmrvl_dev.hcidev as a dangling pointer. While the subsequent
-cleanup code does not currently access it, setting it to NULL is a
-defensive fix that prevents potential use-after-free.
+On Thu, Jun 25, 2026 at 03:37:04PM +0800, Jimmy Hu wrote:
+> The udc structure acts as the management structure for the gadget,
+> but their lifecycles are decoupled. A race condition exists where
+> usb_del_gadget() frees the udc memory (e.g., via mode-switch work)
+> while gadget_match_driver() concurrently accesses the freed udc memory
+> (e.g., via configfs), causing a Use-After-Free (UAF) that triggers a
+> NULL pointer dereference when the freed memory is zeroed:
+> 
+> [39430.908615][ T1171] Unable to handle kernel NULL pointer dereference at virtual address 0000000000000000
+> [39430.911397][ T1171] pc : __pi_strcmp+0x20/0x140
+> [39430.911441][ T1171] lr : gadget_match_driver+0x34/0x60
+> ...
+> [39430.911890][ T1171]  usb_gadget_register_driver_owner+0x50/0xf8
+> [39430.911910][ T1171]  gadget_dev_desc_UDC_store+0xf4/0x140
+> [39430.931308][ T1171]  configfs_write_iter+0xec/0x134
+> 
+> [39430.957058][ T1171] Workqueue: events_freezable __dwc3_set_mode
+> [39430.957287][ T1171]  dwc3_gadget_exit+0x34/0x8c
+> [39430.957304][ T1171]  __dwc3_set_mode+0xc0/0x664
+> 
+> Fix this by ensuring the udc structure remains allocated until the
+> gadget is released. To achieve this, introduce a new
+> usb_gadget_release() routine to the core. When the gadget is added,
+> usb_add_gadget() stores the gadget's release routine in the udc
+> structure and takes a reference to the udc. When the gadget is
+> released, usb_gadget_release() drops the reference to the udc and
+> then calls the gadget's release routine.
+> 
+> Suggested-by: Alan Stern <stern@rowland.harvard.edu>
+> Cc: <stable@vger.kernel.org>
+> Signed-off-by: Jimmy Hu <hhhuuu@google.com>
+> ---
 
-Additionally, the function always returns -ENOMEM on the
-hci_register_dev() failure path, discarding the actual error code.
-Fix this by preserving and returning the original error code.
+Looks good to me.
 
-Cc: stable@vger.kernel.org
-Fixes: 132ff4e5fa8d ("Bluetooth: Add btmrvl driver for Marvell Bluetooth devices")
-Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
----
- drivers/bluetooth/btmrvl_main.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+Reviewed-by: Alan Stern <stern@rowland.harvard.edu>
 
-diff --git a/drivers/bluetooth/btmrvl_main.c b/drivers/bluetooth/btmrvl_main.c
-index d6f0ad0b4b6e..3a4c8abae05b 100644
---- a/drivers/bluetooth/btmrvl_main.c
-+++ b/drivers/bluetooth/btmrvl_main.c
-@@ -683,7 +683,7 @@ int btmrvl_register_hdev(struct btmrvl_private *priv)
- 	ret = hci_register_dev(hdev);
- 	if (ret < 0) {
- 		BT_ERR("Can not register HCI device");
--		goto err_hci_register_dev;
-+		goto err_hci_register_dev_free;
- 	}
- 
- #ifdef CONFIG_DEBUG_FS
-@@ -692,8 +692,9 @@ int btmrvl_register_hdev(struct btmrvl_private *priv)
- 
- 	return 0;
- 
--err_hci_register_dev:
-+err_hci_register_dev_free:
- 	hci_free_dev(hdev);
-+	priv->btmrvl_dev.hcidev = NULL;
- 
- err_hdev:
- 	/* Stop the thread servicing the interrupts */
-@@ -702,7 +703,7 @@ int btmrvl_register_hdev(struct btmrvl_private *priv)
- 	btmrvl_free_adapter(priv);
- 	kfree(priv);
- 
--	return -ENOMEM;
-+	return ret;
- }
- EXPORT_SYMBOL_GPL(btmrvl_register_hdev);
- 
--- 
-2.39.5 (Apple Git-154)
+Alan Stern
 
+> V2 -> V3:
+> - Fix column alignment in struct usb_udc.
+> - Remove redundant NULL check in usb_gadget_release().
+> - Add comments explaining the lifecycle override and error path cleanup.
+> 
+> V1 -> V2: Rework the fix using a new release routine in the core.
+> 
+> v2: https://lore.kernel.org/all/20260624030154.393004-1-hhhuuu@google.com/
+> v1: https://lore.kernel.org/all/20260526070635.839701-1-hhhuuu@google.com/
+> 
+>  drivers/usb/gadget/udc/core.c | 29 ++++++++++++++++++++++++++++-
+>  1 file changed, 28 insertions(+), 1 deletion(-)
+> 
+> diff --git a/drivers/usb/gadget/udc/core.c b/drivers/usb/gadget/udc/core.c
+> index 60340ff9edbf..f6da12b553a0 100644
+> --- a/drivers/usb/gadget/udc/core.c
+> +++ b/drivers/usb/gadget/udc/core.c
+> @@ -31,8 +31,9 @@ static const struct bus_type gadget_bus_type;
+>  /**
+>   * struct usb_udc - describes one usb device controller
+>   * @driver: the gadget driver pointer. For use by the class code
+> - * @dev: the child device to the actual controller
+>   * @gadget: the gadget. For use by the class code
+> + * @gadget_release: the gadget's release routine
+> + * @dev: the child device to the actual controller
+>   * @list: for use by the udc class driver
+>   * @vbus: for udcs who care about vbus status, this value is real vbus status;
+>   * for udcs who do not care about vbus status, this value is always true
+> @@ -53,6 +54,7 @@ static const struct bus_type gadget_bus_type;
+>  struct usb_udc {
+>  	struct usb_gadget_driver	*driver;
+>  	struct usb_gadget		*gadget;
+> +	void				(*gadget_release)(struct device *dev);
+>  	struct device			dev;
+>  	struct list_head		list;
+>  	bool				vbus;
+> @@ -1362,6 +1364,17 @@ static void usb_udc_nop_release(struct device *dev)
+>  	dev_vdbg(dev, "%s\n", __func__);
+>  }
+>  
+> +static void usb_gadget_release(struct device *dev)
+> +{
+> +	struct usb_gadget *gadget = dev_to_usb_gadget(dev);
+> +	struct usb_udc *udc = gadget->udc;
+> +	/* Cache the gadget's release routine to prevent UAF */
+> +	void (*release)(struct device *dev) = udc->gadget_release;
+> +
+> +	put_device(&udc->dev);
+> +	release(dev);
+> +}
+> +
+>  /**
+>   * usb_initialize_gadget - initialize a gadget and its embedded struct device
+>   * @parent: the parent device to this udc. Usually the controller driver's
+> @@ -1418,6 +1431,14 @@ int usb_add_gadget(struct usb_gadget *gadget)
+>  	mutex_init(&udc->connect_lock);
+>  
+>  	udc->started = false;
+> +	/*
+> +	 * Align decoupled lifecycles: take a UDC reference to ensure it
+> +	 * remains allocated until the gadget is released, requiring an
+> +	 * override of the gadget's release routine to drop it.
+> +	 */
+> +	udc->gadget_release = gadget->dev.release;
+> +	gadget->dev.release = usb_gadget_release;
+> +	get_device(&udc->dev);
+>  
+>  	mutex_lock(&udc_lock);
+>  	list_add_tail(&udc->list, &udc_list);
+> @@ -1462,6 +1483,12 @@ int usb_add_gadget(struct usb_gadget *gadget)
+>  	mutex_lock(&udc_lock);
+>  	list_del(&udc->list);
+>  	mutex_unlock(&udc_lock);
+> +	/*
+> +	 * Revert the override and drop the UDC reference to prevent
+> +	 * leaking the UDC if the gadget was statically allocated.
+> +	 */
+> +	gadget->dev.release = udc->gadget_release;
+> +	put_device(&udc->dev);
+>  
+>   err_put_udc:
+>  	put_device(&udc->dev);
+> 
+> base-commit: 502d801f0ab03e4f32f9a33d203154ce84887921
+> -- 
+> 2.55.0.rc0.799.gd6f94ed593-goog
+> 
 
