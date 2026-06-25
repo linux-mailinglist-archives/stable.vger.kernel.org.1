@@ -1,153 +1,230 @@
-Return-Path: <stable+bounces-268262-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-268265-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id Qh1TBUu3PGqqqwgAu9opvQ
-	(envelope-from <stable+bounces-268262-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 07:06:19 +0200
+	id JisWIIO7PGpprAgAu9opvQ
+	(envelope-from <stable+bounces-268265-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 07:24:19 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 51FAF6C2B72
-	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 07:06:18 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 760536C2C83
+	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 07:24:18 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=arm.com header.s=foss header.b=UiR8YwXC;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-268262-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-268262-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=none) header.from=arm.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ba1gn6eR;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-268265-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-268265-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B03AB302D104
-	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 05:06:13 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 4CF60300BC52
+	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 05:24:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 450F12F28EA;
-	Thu, 25 Jun 2026 05:06:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF66B2EC57C;
+	Thu, 25 Jun 2026 05:24:10 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F1DB2309AA;
-	Thu, 25 Jun 2026 05:06:09 +0000 (UTC)
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90B2D17D2;
+	Thu, 25 Jun 2026 05:24:10 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782363972; cv=none; b=isuDwhRJFTmkaxlzl+w65oiqdZoNjajazcKC16T2B++0XOiYbj+sQzZ2C6HTucYM/eNWUJyD7ea1fC87/tRl532oU+GRdwiumbF6hIJtVTVo8MKQonEGe/4KICXroKg5Z1dPpYRnZBpJKjhc+fpjuk+D9jeP0gvzs4hDXisw0/c=
+	t=1782365050; cv=none; b=CjpZ5/eJtXZGTI92sKWKHghnqswTb0/ZNdm42nyeu3De/MhKxwok52vSU+33dK9JwZySh2OjtDYJvJpOP943uMPmxSMR4RNpGZAcIJiSVOQJLnaSwLQ7TFysv88XBN9UHZnTYaTVuSofig5MAkYOGmVriLUiI668Bw8oeDN9vK8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782363972; c=relaxed/simple;
-	bh=Lay1HVOEFuLeVqkTA0aGqyvQ+T34DBOYVeHMQyWlWxI=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=uZ6Ppp/SGRuYhYGL381tdtiBihUo5s5exuMAGUl9+7IzihQbf16mqI/g3jiKT2Np8GE4jWbsxv01MzvbcHD93yuknFi1J5glUoUL3oQ/g/iECA0bgWW04xQl6Axg/tVWFobovLSU8152vLZRzPXSTwxvjFh0RVMjxqnclFEMULc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=UiR8YwXC; arc=none smtp.client-ip=217.140.110.172
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id B0E762BCE;
-	Wed, 24 Jun 2026 22:06:04 -0700 (PDT)
-Received: from [10.164.19.14] (unknown [10.164.19.14])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 994CC3F905;
-	Wed, 24 Jun 2026 22:06:05 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1782363969; bh=Lay1HVOEFuLeVqkTA0aGqyvQ+T34DBOYVeHMQyWlWxI=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=UiR8YwXC0OcWwu5H/2F2xG3WeZQPa7DTkaff1XDArWPQ5iDEW4vKBeqhsms5v91dY
-	 nqB/Pji3MJWFNE6eJIjpqk1zLtQ/xjJKzh1aVx9RrmCi8V/V0xd7EUS57VvjCat5l4
-	 CF/2pyXu3QWf/JrjUquDEykrcJRasB6AnnkTJwH4=
-Message-ID: <c17ea0ca-1e6c-4504-87f5-219f13c846f5@arm.com>
-Date: Thu, 25 Jun 2026 10:36:02 +0530
+	s=arc-20240116; t=1782365050; c=relaxed/simple;
+	bh=aW1/nKWCMH/ml7XFGrgw6NSHQMxG+oaTKC0rssB3PYs=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=hy1GZy0fap/bo9e/QzIQx8ZNCizuKkfiFz/YilQqvLJMBJjJfsM2b6g5MNjcgNFo3aGBQgjBtLVgh1fnXezQ5sErcUCxdyzx4zh8LMQnvpDXL53FhsPYNhXZRXcPHKup8j5UU2GWIxCFvd5Sv4gXsCPf5TVNBvm+nBO+ySa3xHU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ba1gn6eR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 025D7C2BCB4;
+	Thu, 25 Jun 2026 05:24:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1782365050;
+	bh=aW1/nKWCMH/ml7XFGrgw6NSHQMxG+oaTKC0rssB3PYs=;
+	h=From:Date:Subject:To:Cc:Reply-To:From;
+	b=ba1gn6eRVrGAuQMhwb1ugbbzHx9avhVpmWneoDc3R6LqmxWR/ZaDKLEmH0SIHvA5U
+	 ShjJA2hwFh6wRcO9hUjj8NnkXjM7LnYVz+sR9vRLepoXuYj7OMv+xA5lhIcQk+VlcM
+	 wozNfjMotGzkVuTAdSMzCwuHhKjO1VarjSWcvUoWU/Ai7Ep641svvew7Ngvcjr4QSm
+	 TZbrdr/D0ro7F4dO3nqYWk+QPHdoqmEpHLmzeDicqRO7btkC+CoW7+L0zLFR/tKLBl
+	 pc+g/GB92K3ifhcBXxju0CAM2yR7U95GEMw3uZRtgJkI3LgFgF1O8/z0s+hrUNWurp
+	 gFs7kVpSxrhkg==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id D99F7CDB47F;
+	Thu, 25 Jun 2026 05:24:09 +0000 (UTC)
+From: Tjerk Kusters via B4 Relay <devnull+tkusters.aweta.nl@kernel.org>
+Date: Thu, 25 Jun 2026 07:24:06 +0200
+Subject: [PATCH net v3] igb: only strip Rx timestamp header on the first
+ buffer of a frame
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm/rmap: use huge_ptep_get() in try_to_unmap_one()
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: david@kernel.org, ljs@kernel.org, riel@surriel.com, liam@infradead.org,
- vbabka@kernel.org, harry@kernel.org, jannh@google.com, kas@kernel.org,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org, ryan.roberts@arm.com,
- anshuman.khandual@arm.com, stable@vger.kernel.org
-References: <20260625042853.2752898-1-dev.jain@arm.com>
- <20260624214230.4aff522ec8fa4a8f1607c942@linux-foundation.org>
-Content-Language: en-US
-From: Dev Jain <dev.jain@arm.com>
-In-Reply-To: <20260624214230.4aff522ec8fa4a8f1607c942@linux-foundation.org>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
+Message-Id: <20260625-igb-rx-ts-fix-v3-1-99b3efa08dca@aweta.nl>
+X-B4-Tracking: v=1; b=H4sIAHW7PGoC/3WNwQ6CMBBEf4Xs2TWlhIqe/A/DobQrrDGFtBUxp
+ P9uwbPHmbx5s0IgzxTgUqzgaebAo8uhOhRgBu16QrY5gxRSCVWekfsO/YIx4J0XNPYk6qYmqko
+ FeTN5yvXuu4GjCO2vDK/uQSZupg0bOMTRf/bXWe7wn4NZYom26hqrRG20klf9pqiP7gltSukL1
+ xF4scAAAAA=
+X-Change-ID: 20260619-igb-rx-ts-fix-cd70585ee316
+To: Tony Nguyen <anthony.l.nguyen@intel.com>, 
+ Przemek Kitszel <przemyslaw.kitszel@intel.com>, 
+ Andrew Lunn <andrew+netdev@lunn.ch>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Richard Cochran <richardcochran@gmail.com>, 
+ Jesper Dangaard Brouer <hawk@kernel.org>, 
+ Kurt Kanzenbach <kurt@linutronix.de>
+Cc: intel-wired-lan@lists.osuosl.org, netdev@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
+ Piotr Kwapulinski <piotr.kwapulinski@intel.com>, 
+ Aleksandr Loktionov <aleksandr.loktionov@intel.com>, 
+ Tjerk Kusters <tkusters@aweta.nl>
+X-Mailer: b4 0.15.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1782365048; l=4324;
+ i=tkusters@aweta.nl; s=20260619; h=from:subject:message-id;
+ bh=QXi/sQ73rXUilm750LFxDKqWGpv73iTpHTzOn0DFvnk=;
+ b=bhY0yP8fX23eKVecpe+7M7mHyZD21AUKMLaA4/ynXISYboagzoNyKWC8WpxhwgUp9rsyUdirz
+ 4tShZ6rbyvlBXmYZ6K3uGLNTm8ViMvhk66Pf4SWdIGfWB0rI947+p7u
+X-Developer-Key: i=tkusters@aweta.nl; a=ed25519;
+ pk=JYRpYQ3+LrphEabgnxcbiOUpwvNP8WDDMcLzz+cwKsk=
+X-Endpoint-Received: by B4 Relay for tkusters@aweta.nl/20260619 with
+ auth_id=831
+X-Original-From: Tjerk Kusters <tkusters@aweta.nl>
+Reply-To: tkusters@aweta.nl
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-3.66 / 15.00];
+	WHITELIST_SPF_DKIM(-3.00)[kernel.org:d:+,kernel.org:s:+];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[arm.com,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[arm.com:s=foss];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-268262-lists,stable=lfdr.de];
-	RCPT_COUNT_TWELVE(0.00)[14];
-	MIME_TRACE(0.00)[0:+];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-268265-lists,stable=lfdr.de,tkusters.aweta.nl];
+	FORGED_RECIPIENTS(0.00)[m:anthony.l.nguyen@intel.com,m:przemyslaw.kitszel@intel.com,m:andrew+netdev@lunn.ch,m:davem@davemloft.net,m:edumazet@google.com,m:kuba@kernel.org,m:pabeni@redhat.com,m:richardcochran@gmail.com,m:hawk@kernel.org,m:kurt@linutronix.de,m:intel-wired-lan@lists.osuosl.org,m:netdev@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,m:piotr.kwapulinski@intel.com,m:aleksandr.loktionov@intel.com,m:tkusters@aweta.nl,m:andrew@lunn.ch,s:lists@lfdr.de];
+	FREEMAIL_TO(0.00)[intel.com,lunn.ch,davemloft.net,google.com,kernel.org,redhat.com,gmail.com,linutronix.de];
+	FORGED_SENDER(0.00)[devnull@kernel.org,stable@vger.kernel.org];
 	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:akpm@linux-foundation.org,m:david@kernel.org,m:ljs@kernel.org,m:riel@surriel.com,m:liam@infradead.org,m:vbabka@kernel.org,m:harry@kernel.org,m:jannh@google.com,m:kas@kernel.org,m:linux-mm@kvack.org,m:linux-kernel@vger.kernel.org,m:ryan.roberts@arm.com,m:anshuman.khandual@arm.com,m:stable@vger.kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_SENDER(0.00)[dev.jain@arm.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[arm.com:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[17];
+	MIME_TRACE(0.00)[0:+];
+	FROM_HAS_DN(0.00)[];
+	REPLYTO_DOM_NEQ_TO_DOM(0.00)[];
+	HAS_REPLYTO(0.00)[tkusters@aweta.nl];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[dev.jain@arm.com,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[devnull@kernel.org,stable@vger.kernel.org];
+	REPLYTO_DOM_NEQ_FROM_DOM(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
+	TAGGED_RCPT(0.00)[stable,netdev];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp,arm.com:dkim,arm.com:email,arm.com:mid,arm.com:from_mime]
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,vger.kernel.org:from_smtp,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 51FAF6C2B72
+X-Rspamd-Queue-Id: 760536C2C83
 
+From: Tjerk Kusters <tkusters@aweta.nl>
 
+When Rx hardware timestamping is enabled (e.g. ptp4l, which configures
+HWTSTAMP_FILTER_ALL), the NIC prepends a 16-byte timestamp header to the
+first Rx buffer of every received frame. igb_clean_rx_irq() strips this
+header inside its per-buffer loop:
 
-On 25/06/26 10:12 am, Andrew Morton wrote:
-> On Thu, 25 Jun 2026 04:28:51 +0000 Dev Jain <dev.jain@arm.com> wrote:
-> 
->> try_to_unmap_one() handles hugetlb folios when memory failure needs
->> to replace a poisoned hugetlb mapping with a hwpoison entry. In that
->> case page_vma_mapped_walk() returns the hugetlb entry in pvmw.pte, but
->> the code reads it with ptep_get() before decoding the PFN.
->>
->> That is wrong on architectures where hugetlb entries are not encoded as
->> regular PTEs. On s390, for example, a raw huge RSTE must be converted
->> by huge_ptep_get() before helpers such as pte_pfn() can inspect it. A
->> raw decode can select the wrong subpage, so try_to_unmap_one() can
->> install a hwpoison entry for the wrong PFN.
->>
->> The userspace-visible result is that a later access to the poisoned
->> hugetlb subpage can miss the expected SIGBUS. With DEBUG_VM, the wrong
->> subpage can also trip the PageHWPoison check.
->>
->> Use huge_ptep_get() for hugetlb mappings before decoding the PFN.
->>
->> Before c7ab0d2fdc84, the bug existed in the form of a plain dereference:
->> we would check the head page pfn of the hugetlb with pte_pfn(*pte), and
->> bail out on mismatch. This would mean that the hwpoisoned entry will not
->> get installed.
->>
->> I am not sure what is the procedure on such kinds of very old bugs - how
->> back should I really go?
-> 
-> I think 9 years is enough ;)
-> 
->> There are similar old bugs present, in try_to_migrate_one(), check_pte(),
->> remove_migration_pte(), prot_none_hugetlb_entry().
-> 
-> Why now?  Was there some more recent (s390?) change which exposed this?
+	if (igb_test_staterr(rx_desc, E1000_RXDADV_STAT_TSIP)) {
+		ts_hdr_len = igb_ptp_rx_pktstamp(rx_ring->q_vector,
+						 pktbuf, &timestamp);
+		pkt_offset += ts_hdr_len;
+		size -= ts_hdr_len;
+	}
 
-I was refactoring the hugetlb bits in try_to_unmap_one, so the bug got
-caught in review by David (which reminds me to put a "Reported-by" tag
-on this patch).
+For a frame that spans more than one Rx buffer (e.g. a jumbo frame), this
+block runs once per buffer. The timestamp header only exists at the start
+of the first buffer, but igb_ptp_rx_pktstamp() is called for every buffer.
 
-I guess if someone would run hugetlb-read-hwpoison.c on s390, this would
-be caught. Turns out, this selftest is in a category of "destructive tests"
-in run_vmtests.sh, so ./run_vmtests.sh or even ./run_vmtests.sh -a won't
-run this. We are supposed to run this with ./run_vmtests.sh -d, and that
-option was broken until one month ago, see 3432cbb291aa. So essentially
-no one has been running that test.
-> 
+On a continuation buffer the data is packet payload, not a timestamp
+header. igb_ptp_rx_pktstamp() already has two guards against acting on a
+non-header buffer: it returns 0 if PTP is disabled, and returns 0 if the
+reserved dwords (the first 8 bytes) are non-zero. Neither is sufficient
+here: PTP is enabled, and a continuation buffer whose payload happens to
+begin with 8 zero bytes passes the reserved-dword check. In that case the
+payload is mistaken for a valid timestamp header and igb_ptp_rx_pktstamp()
+returns IGB_TS_HDR_LEN, so the caller strips 16 bytes of real data from
+that buffer. A frame spanning N buffers whose continuation buffers start
+with zero bytes therefore loses 16 * (N - 1) bytes from its tail.
+
+This is easily triggered by a GigE Vision camera streaming dark frames
+(mostly 0x00 pixel data) over jumbo UDP with PTP active on the receiver:
+the all-zero frames arrive truncated while frames with non-zero content
+are fine. There is no error indication.
+
+No content-based check can reliably tell a continuation buffer that begins
+with zero bytes from a real timestamp header, because both are all zero.
+Fix it structurally instead: only attempt the strip on the first buffer of
+a frame, which is the only buffer that can contain a timestamp header. In
+igb_clean_rx_irq() skb is NULL until the first buffer has been processed,
+so guarding the strip with !skb restricts it to the first buffer
+regardless of payload content.
+
+Fixes: 5379260852b0 ("igb: Fix XDP with PTP enabled")
+Cc: stable@vger.kernel.org
+Reviewed-by: Piotr Kwapulinski <piotr.kwapulinski@intel.com>
+Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+Reviewed-by: Kurt Kanzenbach <kurt@linutronix.de>
+Signed-off-by: Tjerk Kusters <tkusters@aweta.nl>
+---
+Changes in v3:
+- update the rx-timestamp comment to note it only applies to the first
+  buffer of a frame (Piotr Kwapulinski)
+- add Reviewed-by from Aleksandr Loktionov and Piotr Kwapulinski
+- no functional change
+- Link to v2: https://patch.msgid.link/20260619-igb-rx-ts-fix-v2-1-d3b8d605ca62@aweta.nl
+
+igb: only strip Rx timestamp header on the first buffer of a frame
+
+Changes in v2:
+ - resend via b4 (v1 was sent with a mail client)
+ - use full author name "Tjerk Kusters" (Jacob Keller)
+ - add Reviewed-by from Kurt Kanzenbach
+ - no functional change
+
+Link to v1: https://lore.kernel.org/all/PAWPR05MB1069106D52F4E17F1EDB99C67B9182@PAWPR05MB10691.eurprd05.prod.outlook.com/
+---
+ drivers/net/ethernet/intel/igb/igb_main.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/net/ethernet/intel/igb/igb_main.c b/drivers/net/ethernet/intel/igb/igb_main.c
+index ce91dda00ec0..539bf5389a24 100644
+--- a/drivers/net/ethernet/intel/igb/igb_main.c
++++ b/drivers/net/ethernet/intel/igb/igb_main.c
+@@ -9060,8 +9060,11 @@ static int igb_clean_rx_irq(struct igb_q_vector *q_vector, const int budget)
+ 		rx_buffer = igb_get_rx_buffer(rx_ring, size, &rx_buf_pgcnt);
+ 		pktbuf = page_address(rx_buffer->page) + rx_buffer->page_offset;
+ 
+-		/* pull rx packet timestamp if available and valid */
+-		if (igb_test_staterr(rx_desc, E1000_RXDADV_STAT_TSIP)) {
++		/* pull rx packet timestamp if available and valid; it is only
++		 * present on the first buffer of a frame
++		 */
++		if (!skb &&
++		    igb_test_staterr(rx_desc, E1000_RXDADV_STAT_TSIP)) {
+ 			int ts_hdr_len;
+ 
+ 			ts_hdr_len = igb_ptp_rx_pktstamp(rx_ring->q_vector,
+
+---
+base-commit: 2d3090a8aeb596a26935db0955d46c9a5db5c6ce
+change-id: 20260619-igb-rx-ts-fix-cd70585ee316
+
+Best regards,
+--  
+Tjerk Kusters <tkusters@aweta.nl>
+
 
 
