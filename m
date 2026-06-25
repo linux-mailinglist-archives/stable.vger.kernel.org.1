@@ -1,59 +1,67 @@
-Return-Path: <stable+bounces-268485-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-268459-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id kMCLNQkpPWrPyAgAu9opvQ
-	(envelope-from <stable+bounces-268485-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 15:11:37 +0200
+	id UIN3H4IoPWqQyAgAu9opvQ
+	(envelope-from <stable+bounces-268459-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 15:09:22 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 497416C5FD8
-	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 15:11:37 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 986376C5F34
+	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 15:09:21 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=K+YfTW1n;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-268485-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-268485-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=eJIz8C8A;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-268459-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-268459-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id BFC1A307A732
-	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 13:10:09 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 66EB23000BB1
+	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 13:08:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 678DD1C695;
-	Thu, 25 Jun 2026 13:10:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B7EAC2F3C37;
+	Thu, 25 Jun 2026 13:08:45 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45DC1288530;
-	Thu, 25 Jun 2026 13:10:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 892452DF6E6;
+	Thu, 25 Jun 2026 13:08:42 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782393009; cv=none; b=TSmBBD5tOqYB8esUKoDx+3nVJzNJeZcPiiWo3IclYhKg/SJZEG1zTaesWDLJEBlAmhZfVYUwHGmZoB8Z99UioSNf1giCz1RrXmavM/D4SdO2Pvy0tHS/cFtljAbkHc9Kkbkxo+W+EwXMKMSIPSIN+2gWDXLJC7NFAsVSjISPjcs=
+	t=1782392925; cv=none; b=DN+yM4qI5TNl7OsRDmFDK39K3q6uNWUC/HYjthMyNneHDQVvD32GbtI9Bd7vZ+64m3we9ikpsQN3oYAmqSm0Oioiuw9BvTjTp3IfgG4ZvCRCqon+08/pZX1kmE/m0Y3xh/dtQCmx8dy4TV9xPox0XB+pwQfzFg25KcRMYUG72p8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782393009; c=relaxed/simple;
-	bh=sZBFq2+aHfYFsBRrj/vKSFIiCOS/alBZVEMbcHs1Eq0=;
+	s=arc-20240116; t=1782392925; c=relaxed/simple;
+	bh=LAH46GWgR5ng8bjt/UTyrKbrseYzajTJ4Zh7a0GXKBc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qyW0XqW5lriOsi97YvUjfSr7GRMe46KC0SHqpiUG2MsB+vDJBEHiFnfa3S9tKP99kCdra5kOMaTxyioBAl+2PVJJEOrae17vBD9H3zP/TCVSsTbdLkVSY+8pc2X/OaD47/xMXGX/9SIpn7YjVRPzNyVRWIW8eTLPf9kBxu8AEno=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K+YfTW1n; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B4341F000E9;
-	Thu, 25 Jun 2026 13:10:07 +0000 (UTC)
+	 MIME-Version; b=rwiQYbdcUiUf/koxvktzHEUZUaYdlvZ4oYtNJvyUgiRaJ8dWHslUt29BCJII8lTn0aTFPuPfC3dxKX7s/njDSklVGIwrdTJ8YntzcdUR5cceKfTTdKaWW7YhO4LwB0gqs6FuYvlXrHmoruA5h81jPlUNm/7iHlHT/DWjY1Z+izg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eJIz8C8A; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC16C1F000E9;
+	Thu, 25 Jun 2026 13:08:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1782393008;
-	bh=8TTZWnYuDabfy3qUr/4RS9wW2i7o0gkBuGJdAGrNRoc=;
+	s=korg; t=1782392922;
+	bh=FEEo9GC8ufe6V8U2ruq/oUWMk4oKC4r+nIW1Xdtg8D8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=K+YfTW1n1SD4qMsgIwfIWCvsbrX1atD7pDaj07b0sAK7jyJfmzQsMEHa72q0gyOfW
-	 GDr3ZgJ1OkOFRbOSR5/vqmE/l4jhWcL1cHqzj4hZsQZWr+M5WzBxvGFZ48wp3ORbV0
-	 0rXKt30r3Ke+TWYQ1E6LjokzY9MaVrV6IoqPCwyQ=
+	b=eJIz8C8AbRdIHcY+wtAwKPwu0NZpTWcjojvB+AnomfBjLJpw2AunuRZN/q4VueFxE
+	 QylDv8rtMHvtyvrna+lIHKYBrpGvjfRV0b7tR1iaRTPrJMDFEbXMms51Te2fnVSn08
+	 vlxu8+MUtpAKfECEM2PY83IE59FqI+6dOkTg1kWA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bernard Pidoux <bernard.f6bvp@gmail.com>
-Subject: [PATCH 7.0 29/49] rose: clear neighbour pointer in rose_kill_by_device()
+	Georgi Djakov <georgi.djakov@oss.qualcomm.com>,
+	"Oscar Salvador (SUSE)" <osalvador@kernel.org>,
+	Vishal Verma <vishal.l.verma@intel.com>,
+	Mike Rapoport <rppt@kernel.org>,
+	Richard Cheng <icheng@nvidia.com>,
+	David Hildenbrand <david@kernel.org>,
+	Georgi Djakov <djakov@kernel.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.18 56/60] drivers/base/memory: set mem->altmap after successful device registration
 Date: Thu, 25 Jun 2026 14:03:41 +0100
-Message-ID: <20260625125641.606615670@linuxfoundation.org>
+Message-ID: <20260625125653.918941816@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260625125637.527552689@linuxfoundation.org>
-References: <20260625125637.527552689@linuxfoundation.org>
+In-Reply-To: <20260625125645.554579168@linuxfoundation.org>
+References: <20260625125645.554579168@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,86 +73,94 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-268485-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-268459-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[12];
+	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:bernard.f6bvp@gmail.com,m:bernardf6bvp@gmail.com,s:lists@lfdr.de];
-	RCPT_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:georgi.djakov@oss.qualcomm.com,m:osalvador@kernel.org,m:vishal.l.verma@intel.com,m:rppt@kernel.org,m:icheng@nvidia.com,m:david@kernel.org,m:djakov@kernel.org,m:rafael@kernel.org,m:akpm@linux-foundation.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,linux-foundation.org:email,nvidia.com:email,qualcomm.com:email,intel.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 497416C5FD8
+X-Rspamd-Queue-Id: 986376C5F34
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bernard Pidoux <bernard.f6bvp@gmail.com>
+From: Georgi Djakov <georgi.djakov@oss.qualcomm.com>
 
-commit 606e42d195b467480d4d405f8814c48d1651a76a upstream.
+commit a2b8d7827f48ee54a686cb80e4a1d0ff954ec42a upstream.
 
-rose_kill_by_device() drops the neighbour reference but leaves
-rose->neighbour pointing at it, unlike every other rose_neigh_put() site
-(see "rose: clear neighbour pointer after rose_neigh_put() in state
-machines"). The heartbeat STATE_0 reaping path then puts the same
-neighbour a second time, causing a rose_neigh refcount underflow and a
-use-after-free.
+If __add_memory_block() fails at xa_store() (under memory pressure for
+example), device_unregister() is called, which eventually triggers
+memory_block_release() with mem->altmap still set, causing a
+WARN_ON(mem->altmap).  This was triggered by modifying virtio-mem driver.
 
-Set rose->neighbour = NULL after the put, restoring the invariant.
+Fix this by delaying the assignment of mem->altmap until after
+__add_memory_block() has succeeded.
 
-Signed-off-by: Bernard Pidoux <bernard.f6bvp@gmail.com>
+Link: https://lore.kernel.org/20260514092657.3057141-1-georgi.djakov@oss.qualcomm.com
+Fixes: 1a8c64e11043 ("mm/memory_hotplug: embed vmem_altmap details in memory block")
+Signed-off-by: Georgi Djakov <georgi.djakov@oss.qualcomm.com>
+Acked-by: Oscar Salvador (SUSE) <osalvador@kernel.org>
+Cc: Vishal Verma <vishal.l.verma@intel.com>
+Cc: Mike Rapoport <rppt@kernel.org>
+Cc: Richard Cheng <icheng@nvidia.com>
+Cc: David Hildenbrand <david@kernel.org>
+Cc: Georgi Djakov <djakov@kernel.org>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: "Rafael J. Wysocki" <rafael@kernel.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/rose/af_rose.c |   10 +++++++++-
- 1 file changed, 9 insertions(+), 1 deletion(-)
+ drivers/base/memory.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/net/rose/af_rose.c
-+++ b/net/rose/af_rose.c
-@@ -216,8 +216,16 @@ start:
- 			 * looping forever in ROSE_STATE_0 with no owner.
- 			 */
- 			sock_set_flag(sk, SOCK_DESTROY);
--			if (rose->neighbour)
-+			if (rose->neighbour) {
- 				rose_neigh_put(rose->neighbour);
-+				/* Clear the pointer after dropping the reference, as
-+				 * every other rose_neigh_put() site does.  Otherwise
-+				 * rose_heartbeat_expiry() (STATE_0 reaping) sees a stale
-+				 * rose->neighbour and puts it a second time -> rose_neigh
-+				 * refcount underflow / use-after-free.
-+				 */
-+				rose->neighbour = NULL;
-+			}
- 			netdev_put(rose->device, &rose->dev_tracker);
- 			rose->device = NULL;
- 		}
+--- a/drivers/base/memory.c
++++ b/drivers/base/memory.c
+@@ -828,7 +828,6 @@ static int add_memory_block(unsigned lon
+ 	mem->start_section_nr = block_id * sections_per_block;
+ 	mem->state = state;
+ 	mem->nid = nid;
+-	mem->altmap = altmap;
+ 	INIT_LIST_HEAD(&mem->group_next);
+ 
+ #ifndef CONFIG_NUMA
+@@ -846,6 +845,8 @@ static int add_memory_block(unsigned lon
+ 	if (ret)
+ 		return ret;
+ 
++	mem->altmap = altmap;
++
+ 	if (group) {
+ 		mem->group = group;
+ 		list_add(&mem->group_next, &group->memory_blocks);
 
 
 
