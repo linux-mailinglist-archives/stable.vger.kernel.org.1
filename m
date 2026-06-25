@@ -1,179 +1,199 @@
-Return-Path: <stable+bounces-268335-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-268343-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id oItVA1YGPWrPvwgAu9opvQ
-	(envelope-from <stable+bounces-268335-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 12:43:34 +0200
+	id kcMnMP8GPWoYwAgAu9opvQ
+	(envelope-from <stable+bounces-268343-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 12:46:23 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id A25E76C4BE9
-	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 12:43:33 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id C27C56C4CC5
+	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 12:46:22 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=sqCPT31B;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-268335-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-268335-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=none) header.from=ibm.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=v5+HoMHQ;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=nCoydn7r;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=v5+HoMHQ;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=nCoydn7r;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-268343-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-268343-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=none;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 06CD0307E6A3
-	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 10:42:17 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 9E6BD3015619
+	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 10:44:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ECEE73CFF50;
-	Thu, 25 Jun 2026 10:42:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4EB103D45FA;
+	Thu, 25 Jun 2026 10:44:06 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BA7E3CF698;
-	Thu, 25 Jun 2026 10:42:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2E793CF699
+	for <stable@vger.kernel.org>; Thu, 25 Jun 2026 10:44:04 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782384135; cv=none; b=b2apzqAY0f6aG830TVbVKoB2UoKWPM/q2FeZTK0dT6dGFk35Chr1Jk7zJOTWtoyezSGld09DSekvysbbpQk9pQwLXNWMrD09r2aHChk2Os6p7aINAfnBCZYRjEDnSDZMc5h4nmZFez+xtvAhdTR4IKxbIbzw2SO5nLGFOR1/Keo=
+	t=1782384246; cv=none; b=gUNacl2JKSbu0yD1709AEmSEMXZxmSgq9mSa95hHogbY/OUb8eiNEISaDTTarW5400u18gD66DqQTJ2CMmwKxZHQEMQkJNBklg9ZapUbkkGXdP9srBjpi8NIXwOXUdImChds/iC0fgDeaPT3ERV73Yuj1BZez5f56bAchP/4Bdo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782384135; c=relaxed/simple;
-	bh=173lQ7jzJnbBLvffNLCqIOWQQGAchmqsaB7zv7/I9ww=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=O0VIWstFnj+pS6h4uMg5RaZhk4jEGmdabF38Ez0Bz6vZbjqAOi3+BgTNQLlr8AkSr+4ykyPdn2Z2Xbc8rdvKNJ3SLqLStF3MMNtLTtaYXKe1lsHA/Ico+kCRFWIpFVSzWWpJ4R6Ak9QDKVvby7pQmJuVVVM7lqsP/JoV4bl6608=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=sqCPT31B; arc=none smtp.client-ip=148.163.156.1
-Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 65P3nsih3188232;
-	Thu, 25 Jun 2026 10:42:10 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=PPxrq8
-	Mq/VZpa22VlH3o9x7wplaq6waAQx3XOI0U4Zs=; b=sqCPT31B4hnuP8UVwFvpyj
-	qvDhd0wai3xHDNBOyTnLqg1VwWA/KilXk0dDeWuweJAIigoj5GS5cNEjgKbgyyYp
-	GrY+2wRemn7pqVyAq7MYOdVikkb0v3zquUrQUelaqBxUl2nblZ+Nybzxk2w8VkMK
-	8bobw8sXXidwaf+ZxOrTqnNmXlC18gKMqvKALZo7JMJKIXCvW/1QzfenM4Q2NuZA
-	lbpT8+T8dobQB2L07XY1BVGfmzDEAbSLFvr05hhRsfonbGWHyM7pEk5PXwl7wopo
-	VVs9pCN0johp/FJMhq8UAOfavmo/aXm5o7+Lx/JvhR683rPEKBYDWEaQbXYo3zhQ
-	==
-Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4ewjhr15xa-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 25 Jun 2026 10:42:09 +0000 (GMT)
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma13.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 65PAYpIF003558;
-	Thu, 25 Jun 2026 10:42:08 GMT
-Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
-	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 4ex7dgdf2m-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 25 Jun 2026 10:42:08 +0000 (GMT)
-Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com [10.20.54.105])
-	by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 65PAg50a31392166
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 25 Jun 2026 10:42:05 GMT
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 2DB9820040;
-	Thu, 25 Jun 2026 10:42:05 +0000 (GMT)
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id D29BC2004B;
-	Thu, 25 Jun 2026 10:42:04 +0000 (GMT)
-Received: from [9.224.77.173] (unknown [9.224.77.173])
-	by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Thu, 25 Jun 2026 10:42:04 +0000 (GMT)
-Message-ID: <9b05627e-abb8-447b-afd6-994045ccedcd@linux.ibm.com>
-Date: Thu, 25 Jun 2026 12:42:04 +0200
+	s=arc-20240116; t=1782384246; c=relaxed/simple;
+	bh=tnZeXJHehJ+A52w8B4DoKvRqhsJXdVGIORGG61VkSbM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=LXzVk8a+3y8BvMUy4zjg22xoU9su4ko/A0DKRw2e6eT5bR/FFtT/n6JpuHzVRqGSP/PXuy5Vs666Upn/l4tYYaVEP83mGg39kwocPSA74lBMFDJmYEbpnQY0rah7jVGiKytYJ7kdpQP8l3bEAZpyyCAM62il0rd248uJoFQY4+M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz; spf=pass smtp.mailfrom=suse.cz; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=v5+HoMHQ; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=nCoydn7r; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=v5+HoMHQ; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=nCoydn7r; arc=none smtp.client-ip=195.135.223.130
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id DF6DE7182E;
+	Thu, 25 Jun 2026 10:44:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1782384242; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=VIWR4ZG0IOd3ZVwv89DuimxILHVqAiCjPspcDkVjjIw=;
+	b=v5+HoMHQ5jcnGevca330BQxWuIIdlcDtwmqY5Feml7DY2Cxf5n1sOjj1OD2xCuSPxrQQWi
+	5CsL0ff7t080cF0ZIe+qmg0GFoK+H4FzRb2spRNdDDiJZFLbNtKPTJcsBq+WlJhTrjGUg9
+	eLnf4fyNX3TfVGhl0oGEQMEB7vlkjew=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1782384242;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=VIWR4ZG0IOd3ZVwv89DuimxILHVqAiCjPspcDkVjjIw=;
+	b=nCoydn7rOmPosCH95uNSfw1ePXmT3IcMznMe0Hl1f8krkwclFbaX2A4HM9JFVv2TqqgNgS
+	T7wVG9hEFL0W68Ag==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1782384242; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=VIWR4ZG0IOd3ZVwv89DuimxILHVqAiCjPspcDkVjjIw=;
+	b=v5+HoMHQ5jcnGevca330BQxWuIIdlcDtwmqY5Feml7DY2Cxf5n1sOjj1OD2xCuSPxrQQWi
+	5CsL0ff7t080cF0ZIe+qmg0GFoK+H4FzRb2spRNdDDiJZFLbNtKPTJcsBq+WlJhTrjGUg9
+	eLnf4fyNX3TfVGhl0oGEQMEB7vlkjew=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1782384242;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=VIWR4ZG0IOd3ZVwv89DuimxILHVqAiCjPspcDkVjjIw=;
+	b=nCoydn7rOmPosCH95uNSfw1ePXmT3IcMznMe0Hl1f8krkwclFbaX2A4HM9JFVv2TqqgNgS
+	T7wVG9hEFL0W68Ag==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id D3029779A8;
+	Thu, 25 Jun 2026 10:44:02 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id YtV7M3IGPWpXPQAAD6G6ig
+	(envelope-from <jack@suse.cz>); Thu, 25 Jun 2026 10:44:02 +0000
+Received: by quack3.suse.cz (Postfix, from userid 1000)
+	id 7A40DA10A3; Thu, 25 Jun 2026 12:43:54 +0200 (CEST)
+Date: Thu, 25 Jun 2026 12:43:54 +0200
+From: Jan Kara <jack@suse.cz>
+To: Christoph Hellwig <hch@lst.de>
+Cc: cem@kernel.org, linux-xfs@vger.kernel.org, stable@vger.kernel.org, 
+	"Darrick J. Wong" <djwong@kernel.org>, Dave Chinner <david@fromorbit.com>, 
+	Eric Sandeen <sandeen@redhat.com>, "Dr. Thomas Orgis" <thomas.orgis@uni-hamburg.de>, 
+	Jan Kara <jack@suse.cz>, linux-fsdevel@vger.kernel.org, 
+	Christian Brauner <brauner@kernel.org>
+Subject: Re: [PATCH] xfs: fix capabily check in xfs_setattr_nonsize
+Message-ID: <qcsdbdpp23fsu3cqhpjdpwusvl6onc2knnrun522ofrutxpz6j@reh3k2ofqjir>
+References: <20260624101436.362533-1-cem@kernel.org>
+ <20260624134039.GB5649@lst.de>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] KVM: s390: pci: Fix GISC refcount leak on AIF enable
- failure
-To: Haoxiang Li <haoxiang_li2024@163.com>, mjrosato@linux.ibm.com,
-        alifm@linux.ibm.com, farman@linux.ibm.com, frankja@linux.ibm.com,
-        imbrenda@linux.ibm.com, david@kernel.org, hca@linux.ibm.com,
-        gor@linux.ibm.com, agordeev@linux.ibm.com, svens@linux.ibm.com,
-        schnelle@linux.ibm.com
-Cc: linux-s390@vger.kernel.org, kvm@vger.kernel.org,
-        linux-kernel@vger.kernel.org, stable@vger.kernel.org
-References: <20260624061910.2794734-1-haoxiang_li2024@163.com>
-Content-Language: en-US
-From: Christian Borntraeger <borntraeger@linux.ibm.com>
-In-Reply-To: <20260624061910.2794734-1-haoxiang_li2024@163.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Authority-Analysis: v=2.4 cv=I4VVgtgg c=1 sm=1 tr=0 ts=6a3d0602 cx=c_pps
- a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
- a=IkcTkHD0fZMA:10 a=FelO9ux0wxsA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=uAbxVGIbfxUO_5tXvNgY:22 a=VwQbUJbxAAAA:8
- a=Byx-y9mGAAAA:8 a=VnNF1IyMAAAA:8 a=5fjQyjqO7ItlhYJTiW4A:9 a=QEXdDO2ut3YA:10
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNjI1MDA4OCBTYWx0ZWRfX+lEBWXtDF8RP
- iy+Kl2hBQSR6SZa7E4vGA0UvkKxvYXca5XBm7jdvV3RHTmYf1Pzi+T2Nw8EK0TwtBqi0Wf4i53z
- 9a4f4+dTunkUXCbsS6HdSsUWhUx1PkwZ4lRfs+CA8aQeplaZWmPgSVKGCuTGI9K+1AOj9S0cGTj
- 5XkkgD55Lfp/gxNB2Ze48MKxlcUU53My6Rp3II3EYQ2aT1CkR+kB1y66nQ3thpuwTeSa9Ao4Vm3
- E7W3m1T6zPkgz9ZlhEAwGtPPMxnZ50XFFDR9w5OKNykSWw3cpAgRcZmxI30BuvFEToJrO6KMpAz
- Y1Y1puBQ2at2SknYFvHsRzqUs7llWJOWBt+jUXlM2R06C2jVej9z/gZUdSUGk0XOADNmVCtOQbg
- NU1BW8o1Z4CIY0xiq0ja+MqHog84MTDoi8fuyy3iS9CtwlV79B0sBapvOjoZAOSD+K5fEpxMaWw
- tezoo9pnh2nFWIvUZng==
-X-Proofpoint-GUID: 2ZY1oorcYXfgmBh7E2HeWMMeHiSJwrU4
-X-Proofpoint-ORIG-GUID: DC6bkh7qS0SbxJMK13wVUfykDy0GfR4_
-X-Proofpoint-Spam-Info: AW1haW4tMjYwNjI1MDA4OCBTYWx0ZWRfX2flGIkIQamr7
- oxwae893OWC2w3olmEux6PP5BnRXhuZ9Fq908kTwByJ8vtAu1cvoPq9SzPycfKA8oFs/F9Qd7nk
- rc0KikYs0jlBQwsyygArsVy0EhB8gSQ=
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.125,FMLib:17.12.100.49
- definitions=2026-06-25_01,2026-06-24_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- lowpriorityscore=0 malwarescore=0 clxscore=1011 impostorscore=0
- suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 priorityscore=1501
- adultscore=0 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2606150000
- definitions=main-2606250088
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260624134039.GB5649@lst.de>
+X-Spam-Flag: NO
+X-Spam-Score: -4.01
+X-Spam-Level: 
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[ibm.com,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[ibm.com:s=pp1];
+	MID_RHS_NOT_FQDN(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_DKIM_ALLOW(-0.20)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCPT_COUNT_TWELVE(0.00)[16];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-268343-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:hch@lst.de,m:cem@kernel.org,m:linux-xfs@vger.kernel.org,m:stable@vger.kernel.org,m:djwong@kernel.org,m:david@fromorbit.com,m:sandeen@redhat.com,m:thomas.orgis@uni-hamburg.de,m:jack@suse.cz,m:linux-fsdevel@vger.kernel.org,m:brauner@kernel.org,s:lists@lfdr.de];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.cz:dkim,suse.cz:from_mime,vger.kernel.org:from_smtp,suse.com:email,reh3k2ofqjir:mid,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo];
+	DMARC_NA(0.00)[suse.cz];
 	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[suse.cz:+];
 	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:haoxiang_li2024@163.com,m:mjrosato@linux.ibm.com,m:alifm@linux.ibm.com,m:farman@linux.ibm.com,m:frankja@linux.ibm.com,m:imbrenda@linux.ibm.com,m:david@kernel.org,m:hca@linux.ibm.com,m:gor@linux.ibm.com,m:agordeev@linux.ibm.com,m:svens@linux.ibm.com,m:schnelle@linux.ibm.com,m:linux-s390@vger.kernel.org,m:kvm@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,s:lists@lfdr.de];
-	FREEMAIL_TO(0.00)[163.com,linux.ibm.com,kernel.org];
+	FORGED_SENDER(0.00)[jack@suse.cz,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_SENDER(0.00)[borntraeger@linux.ibm.com,stable@vger.kernel.org];
-	TAGGED_FROM(0.00)[bounces-268335-lists,stable=lfdr.de];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp,linux.ibm.com:mid,linux.ibm.com:from_mime];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[borntraeger@linux.ibm.com,stable@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[jack@suse.cz,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[ibm.com:+];
+	MISSING_XM_UA(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[11];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCVD_COUNT_SEVEN(0.00)[11]
+	RCVD_COUNT_SEVEN(0.00)[7]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: A25E76C4BE9
+X-Rspamd-Queue-Id: C27C56C4CC5
 
-Am 24.06.26 um 08:19 schrieb Haoxiang Li:
-> kvm_s390_gisc_register() registers the guest ISC before pinning
-> the guest interrupt forwarding pages and allocating the AISB bit.
-> If any of the later setup steps fails, the function unwinds the
-> pinned pages and other local state, but does not unregister the
-> GISC reference. Add the missing kvm_s390_gisc_unregister() to the
-> error unwind path.
+On Wed 24-06-26 15:40:39, Christoph Hellwig wrote:
+> Adding Jan and Christian for quota and user_ns knowledge.
 > 
-> Fixes: 3c5a1b6f0a18 ("KVM: s390: pci: provide routines for enabling/disabling interrupt forwarding")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Haoxiang Li <haoxiang_li2024@163.com>
-> ---
-> Changes in v2:
->   - Move unregister call after "out" label. Thanks, Matt!
-Reviewed-by: Christian Borntraeger <borntraeger@linux.ibm.com>
+> On Wed, Jun 24, 2026 at 12:14:29PM +0200, cem@kernel.org wrote:
+> > From: Carlos Maiolino <cem@kernel.org>
+> > 
+> > An user reported a bug where he managed to evade group's quota
+> > by changing a file's gid to a different group id the same user
+> > belonged to, even though quotas were enforced on both gids and the
+> > file's size was big enough to exceed the quota's hardlimit.
+> > 
+> > Commit eba0549bc7d1 replaced a capable() call by a
+> > has_capability_noaudit() to prevent unnecessary selinux audit messages.
+> > Turns out that both calls have slightly different semantics even though
+> > their documentation seems similar. Where in a nutshell:
+> > 
+> > capable() - Tests the task's effective credentials
+> > has_ns_capability_noaudit() - Tests the task's real credentials
+> 
+> Eww..
 
-applied.
+Yeah, that's a catch.
+
+> > This most of the time has no practical difference but in some cases like
+> > changing attrs (specifically group id in this case) through a NFS client
+> > this will allow the quota code to use XFS_QMOPT_FORCE_RES, effectively
+> > bypassing quota accounting checks.
+> 
+> Yeah, this does look wrong.  Do the other conversion in the above commit
+> have tthe same issue?
+> 
+> > Using instead ns_capable_noaudit() should fix this issue and prevent
+> > selinux audit messages.
+> 
+> The generic quota code manages to do without either has_capability_noaudit
+> or ns_capable_noaudit.  I think this might be hidden behind
+> inode_owner_or_capable calls.  Any idea why we're different?
+
+Actually no. Generic quota code has equivalent checks in ignore_hardlimit()
+function which does capable(CAP_SYS_RESOURCE) check. I guess the reason why
+nobody complained about generic quota code is that we call
+ignore_hardlimit() only if we are above hardlimit whereas XFS calls this
+for every transaction...
+
+								Honza
+
+-- 
+Jan Kara <jack@suse.com>
+SUSE Labs, CR
 
