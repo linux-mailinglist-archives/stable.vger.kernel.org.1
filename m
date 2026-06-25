@@ -1,82 +1,82 @@
-Return-Path: <stable+bounces-268269-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-268270-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id FZaMLLDAPGpUrQgAu9opvQ
-	(envelope-from <stable+bounces-268269-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 07:46:24 +0200
+	id jGeDELnAPGpVrQgAu9opvQ
+	(envelope-from <stable+bounces-268270-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 07:46:33 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 35F786C2D61
-	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 07:46:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D7D5B6C2D66
+	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 07:46:32 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=intel.com header.s=Intel header.b=hwtiQWel;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-268269-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-268269-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=intel.com header.s=Intel header.b="SL/dEXIn";
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-268270-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-268270-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=intel.com;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id A80A3301EF53
-	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 05:46:23 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 34C8F301E03E
+	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 05:46:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 12A893803C0;
-	Thu, 25 Jun 2026 05:46:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59F31383319;
+	Thu, 25 Jun 2026 05:46:21 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82C732D77F5;
-	Thu, 25 Jun 2026 05:46:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A16DF37C900;
+	Thu, 25 Jun 2026 05:46:16 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782366376; cv=none; b=FFMvDcK+PGn2pFT3ByV92ucZcg0AeXdsANFB900scZKfsUyiOPpi3AZxGjATFPdDw+IXUs/QbBS8ArGd4UZZXAWo1uBUxAfHoPry6unmgbJ4nNqGtnSllXVmhXh8GXuXtbifUEBjbBMaNWUh8+lHnpwu6NbpvBjnbBLtqRwR8vY=
+	t=1782366380; cv=none; b=mBBem6zkM3OJzPU3Wd0RykJcSHTJdbKMBsrThMK1SHkFB6jfr5RNdhg6V3l0TxfuiDBN08mrq33LOXJ1enat0unxl3VmLrG5HgN8GB1DLYhLW9SJKD5UApMgFcJKgi42inVlT/LSVbB+5XN/FmdS98u6T1Nr+2flHh/cL7JLYfU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782366376; c=relaxed/simple;
-	bh=CF0Qpif2lRz1peTAm1ADsyGmWCzDr80ARjv0mpc3Kk8=;
+	s=arc-20240116; t=1782366380; c=relaxed/simple;
+	bh=0xMLENcuy5XK64XhlRj6nQreCLFTSuOzxNb7Pm80sPE=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Mjw5we0TX2MZFCMulFlHMJC4lI+E4zFsv+do8CDP2iq/f5lcH1jv9JI9AdLsZ18J8cbUMRO/SqyAJ3c+0266tJATNkZi3VGabhFCVWT/+c0CbovSJtbbG9w/Ewwf0c9qJc5ZZ6ZRH0uCd5pn0J7exmz/eucTNXwScVYEsTpvY3Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=hwtiQWel; arc=none smtp.client-ip=192.198.163.19
+	 Content-Type:Content-Disposition:In-Reply-To; b=glczA64QVOm3nhsPJoNWZ6fxIuvxZTqmxZh9S025uLAoxP+IQsL/FPRWHkyPwz/17mvBcbZVXzbn/4r1TmAwlUMHnU0C/ka7KQJ3s3zXjJSoLEFdop5p6kR6U3WUOBi9NB8pet+ByKr+ash2PBWVFlSvNxqucJGoecfyirg6SyE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=SL/dEXIn; arc=none smtp.client-ip=192.198.163.19
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1782366372; x=1813902372;
+  t=1782366377; x=1813902377;
   h=date:from:to:cc:subject:message-id:references:
    mime-version:in-reply-to;
-  bh=CF0Qpif2lRz1peTAm1ADsyGmWCzDr80ARjv0mpc3Kk8=;
-  b=hwtiQWelG/0ZYEiJLiaKVy5YSNrY94ICfqg2Fn9n7dWeKf0NwFLAWXjt
-   kpg+3uK+RggdScndB7df2TA9GSjU7RQ62DjgnHjtQY+YV2p/c/0o6ABIs
-   MVkC91tiEufFQ7TbW/gpMr788i4MUa2zsn4vbLKSrDIa2+imcV2dH68p3
-   531aAYvgPw3E7cv45xhFEwNqreOdnPiJL5818PKXJdtSf3AL3Vdi5I5q0
-   brUvYzeO5V2Pp6ptgF4lPo9SOKgfOlRPlWFTKqATcBt3td+bs/aFvYqeA
-   CgU4Y2OeNzlY7aj7reZue9o1S7DrHelPprPk5hOyi3fR4Ufc5SkthONh+
-   Q==;
-X-CSE-ConnectionGUID: r47Os+dURESN9bYHX0qw4w==
-X-CSE-MsgGUID: Qrzo7OqOTIO3voFYE5jIBw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11827"; a="82121849"
+  bh=0xMLENcuy5XK64XhlRj6nQreCLFTSuOzxNb7Pm80sPE=;
+  b=SL/dEXInXYi2sWfeUbC9B5Eftp4XYbsVbeJ59JYF0DwGVsWF36ug1o4i
+   +xOtI8w9f4kXI2FsAQpSavLa1pQqBHIPY8P90/XQ37olqRJFr09jTPURe
+   doAQKQe/YGzSmkE5urW9jZAxUJljazldHAuFzZTee9D+VDpoQtMPlxhkC
+   vaqT6xoRFv/jioYa9VyiuS1K9YkYe6V+5R48ub6S86ip1pNZt2u8t355j
+   kiFIMRSBGgBumj1am2Fbpcmu4vrEAEt10ELElWxUuQ+HKPKcL81L6KGq9
+   UwpLzCtAfEMJTsUFyW9FF18qEtiJP2Y8K3GIW17/QTA0BweHSBHPddWhf
+   w==;
+X-CSE-ConnectionGUID: OFPyoWqlR8eFgwz4uOHVmg==
+X-CSE-MsgGUID: l1Zi2LiNTlSUw0/mIIaq8w==
+X-IronPort-AV: E=McAfee;i="6800,10657,11827"; a="82121858"
 X-IronPort-AV: E=Sophos;i="6.24,223,1774335600"; 
-   d="scan'208";a="82121849"
+   d="scan'208";a="82121858"
 Received: from orviesa002.jf.intel.com ([10.64.159.142])
   by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Jun 2026 22:46:11 -0700
-X-CSE-ConnectionGUID: TgBe4sbNSImv6HMaVV55Ew==
-X-CSE-MsgGUID: 5iiTdnI/RfaHkbwKTp6RZg==
+X-CSE-ConnectionGUID: Ya1fGO+hSQ2qgsRSNC27zQ==
+X-CSE-MsgGUID: fWctwNGFTbexH2ojKAyAIg==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.24,223,1774335600"; 
-   d="scan'208";a="280543917"
+   d="scan'208";a="280543918"
 Received: from lkp-server02.sh.intel.com (HELO ea128546eb3d) ([10.239.97.151])
   by orviesa002.jf.intel.com with ESMTP; 24 Jun 2026 22:46:06 -0700
 Received: from kbuild by ea128546eb3d with local (Exim 4.98.2)
 	(envelope-from <lkp@intel.com>)
-	id 1wccua-000000003w9-1qFv;
+	id 1wccua-000000003wB-1xiI;
 	Thu, 25 Jun 2026 05:46:04 +0000
-Date: Thu, 25 Jun 2026 13:45:57 +0800
+Date: Thu, 25 Jun 2026 13:45:58 +0800
 From: kernel test robot <lkp@intel.com>
 To: Dev Jain <dev.jain@arm.com>, akpm@linux-foundation.org,
 	david@kernel.org, ljs@kernel.org
-Cc: oe-kbuild-all@lists.linux.dev, Dev Jain <dev.jain@arm.com>,
-	riel@surriel.com, liam@infradead.org, vbabka@kernel.org,
-	harry@kernel.org, jannh@google.com, kas@kernel.org,
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
+	Dev Jain <dev.jain@arm.com>, riel@surriel.com, liam@infradead.org,
+	vbabka@kernel.org, harry@kernel.org, jannh@google.com,
+	kas@kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
 	ryan.roberts@arm.com, anshuman.khandual@arm.com,
 	stable@vger.kernel.org
 Subject: Re: [PATCH] mm/rmap: use huge_ptep_get() in try_to_unmap_one()
-Message-ID: <202606251311.CCKYInqf-lkp@intel.com>
+Message-ID: <202606251341.jfIr1D7m-lkp@intel.com>
 References: <20260625042853.2752898-1-dev.jain@arm.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -99,11 +99,11 @@ X-Spamd-Result: default: False [-4.16 / 15.00];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-268269-lists,stable=lfdr.de];
-	RCPT_COUNT_TWELVE(0.00)[17];
+	TAGGED_FROM(0.00)[bounces-268270-lists,stable=lfdr.de];
+	RCPT_COUNT_TWELVE(0.00)[18];
 	FORGED_SENDER(0.00)[lkp@intel.com,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS(0.00)[m:dev.jain@arm.com,m:akpm@linux-foundation.org,m:david@kernel.org,m:ljs@kernel.org,m:oe-kbuild-all@lists.linux.dev,m:riel@surriel.com,m:liam@infradead.org,m:vbabka@kernel.org,m:harry@kernel.org,m:jannh@google.com,m:kas@kernel.org,m:linux-mm@kvack.org,m:linux-kernel@vger.kernel.org,m:ryan.roberts@arm.com,m:anshuman.khandual@arm.com,m:stable@vger.kernel.org,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:dev.jain@arm.com,m:akpm@linux-foundation.org,m:david@kernel.org,m:ljs@kernel.org,m:llvm@lists.linux.dev,m:oe-kbuild-all@lists.linux.dev,m:riel@surriel.com,m:liam@infradead.org,m:vbabka@kernel.org,m:harry@kernel.org,m:jannh@google.com,m:kas@kernel.org,m:linux-mm@kvack.org,m:linux-kernel@vger.kernel.org,m:ryan.roberts@arm.com,m:anshuman.khandual@arm.com,m:stable@vger.kernel.org,s:lists@lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
@@ -119,9 +119,9 @@ X-Spamd-Result: default: False [-4.16 / 15.00];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	MISSING_XM_UA(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:dkim,intel.com:email,intel.com:mid,intel.com:from_mime,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,vger.kernel.org:from_smtp,01.org:url]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[01.org:url,intel.com:dkim,intel.com:email,intel.com:mid,intel.com:from_mime,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 35F786C2D61
+X-Rspamd-Queue-Id: D7D5B6C2D66
 
 Hi Dev,
 
@@ -133,23 +133,24 @@ url:    https://github.com/intel-lab-lkp/linux/commits/Dev-Jain/mm-rmap-use-huge
 base:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-everything
 patch link:    https://lore.kernel.org/r/20260625042853.2752898-1-dev.jain%40arm.com
 patch subject: [PATCH] mm/rmap: use huge_ptep_get() in try_to_unmap_one()
-config: nios2-allnoconfig (https://download.01.org/0day-ci/archive/20260625/202606251311.CCKYInqf-lkp@intel.com/config)
-compiler: nios2-linux-gcc (GCC) 11.5.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260625/202606251311.CCKYInqf-lkp@intel.com/reproduce)
+config: hexagon-allnoconfig (https://download.01.org/0day-ci/archive/20260625/202606251341.jfIr1D7m-lkp@intel.com/config)
+compiler: clang version 23.0.0git (https://github.com/llvm/llvm-project 6cc609bb250b21b47fc7d394b4019101e9983597)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260625/202606251341.jfIr1D7m-lkp@intel.com/reproduce)
 
 If you fix the issue in a separate patch/commit (i.e. not just a new version of
 the same patch/commit), kindly add following tags
 | Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202606251311.CCKYInqf-lkp@intel.com/
+| Closes: https://lore.kernel.org/oe-kbuild-all/202606251341.jfIr1D7m-lkp@intel.com/
 
 All errors (new ones prefixed by >>):
 
-   mm/rmap.c: In function 'try_to_unmap_one':
->> mm/rmap.c:2100:34: error: implicit declaration of function 'huge_ptep_get' [-Werror=implicit-function-declaration]
+>> mm/rmap.c:2100:13: error: call to undeclared function 'huge_ptep_get'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
     2100 |                         pteval = huge_ptep_get(mm, address, pvmw.pte);
-         |                                  ^~~~~~~~~~~~~
->> mm/rmap.c:2100:34: error: incompatible types when assigning to type 'pte_t' from type 'int'
-   cc1: some warnings being treated as errors
+         |                                  ^
+>> mm/rmap.c:2100:11: error: assigning to 'pte_t' from incompatible type 'int'
+    2100 |                         pteval = huge_ptep_get(mm, address, pvmw.pte);
+         |                                ^ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   2 errors generated.
 
 
 vim +/huge_ptep_get +2100 mm/rmap.c
