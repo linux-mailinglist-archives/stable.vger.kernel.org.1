@@ -1,180 +1,256 @@
-Return-Path: <stable+bounces-268609-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-268608-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id dizfIGFRPWrs1AgAu9opvQ
-	(envelope-from <stable+bounces-268609-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 18:03:45 +0200
+	id 91SSCo9RPWrz1AgAu9opvQ
+	(envelope-from <stable+bounces-268608-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 18:04:31 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2CE5B6C7460
-	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 18:03:44 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 973166C747D
+	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 18:04:30 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=none ("invalid DKIM record") header.d=stu.xidian.edu.cn header.s=dkim header.b=tOBLxWgM;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-268609-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-268609-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=fail reason="SPF not aligned (relaxed)" header.from=xidian.edu.cn (policy=quarantine);
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=eh7r+dl5;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-268608-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-268608-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id A2FC33018631
-	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 16:03:39 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 27A1F301D947
+	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 16:03:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E25E3DD877;
-	Thu, 25 Jun 2026 16:03:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0AD83B531A;
+	Thu, 25 Jun 2026 16:03:20 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from zg8tmtyylji0my4xnjqumte4.icoremail.net (zg8tmtyylji0my4xnjqumte4.icoremail.net [162.243.164.118])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1D212C11F1;
-	Thu, 25 Jun 2026 16:03:27 +0000 (UTC)
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62F823B47DD;
+	Thu, 25 Jun 2026 16:03:18 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782403414; cv=none; b=VZ9tZ0c/yLxq8Ms5wreKAhft+/ZYpTpTehcxDzlBBCaoCKaFXHGZdFzwCKxseQDMMg1K/UK9aCQncFXfX08QbDUJDfWOLYqpWply9MmyHRqTp8CguVjbgiJQlNPFZU8u6mSyQfj1rbTE5wgyZ3Jxo5MhAlPVSOSN4aILrgC75GA=
+	t=1782403400; cv=none; b=saq0gfdjuClQdZHSVIXxaxz3cyRgt9cCqmHzi7UV5TYB/dfiEjI0kMD9QiVPtBVRadq1PJu1X071Hg0gahmuB+uqsapWBkzxHtD38ysFUaaylPSN1NKOiTAg9oAVKSQkCSpkOD19MxXkgZl7HyS5yv3Zu23SxSE/I5WFWaIzllM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782403414; c=relaxed/simple;
-	bh=samrj8yHo1D5/fsyySq37fuxzVFvSDkrpjTR0gmCqSA=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=h+ZR4DJ1DR4x/qv8JjSXFnSkD2rv/T27rH27nNQpSViY+9jmPA6Lo/p6XH73oxXblxx4Osz4+sMKMibo7YMTFOv27sO/mmUKBebGynQdLjozNj38EZPZLPCNaTicDpbQceZZN4A+VE77qoqQK8OEuBsLupo4on65/IJ0sbLjiYM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=stu.xidian.edu.cn; spf=pass smtp.mailfrom=stu.xidian.edu.cn; dkim=fail (0-bit key) header.d=stu.xidian.edu.cn header.i=@stu.xidian.edu.cn header.b=tOBLxWgM reason="key not found in DNS"; arc=none smtp.client-ip=162.243.164.118
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=stu.xidian.edu.cn; s=dkim; h=Received:From:To:Cc:Subject:Date:
-	Message-Id:MIME-Version:Content-Transfer-Encoding; bh=T8/WLYardC
-	tv6AXvQJyez5N5S5F59yReGTMgkUtb4vY=; b=tOBLxWgMYVfYBLB/OWvGtfHPl8
-	xK5FUWZGNTZvsHlJ3brp1x8d+BZpUfzWlP0zeuBMzLZARAWPjzcYRB2cyDcbwfXW
-	khjBglHXGXJFqOTsLLVVJ4CaJPJTv8Xet8PBBEUiROGWD92IdgxdbJMvx9MLPZ4n
-	Cz529xigziL3TIpUk=
-Received: from wmy.localdomain (unknown [113.200.174.100])
-	by hzbj-edu-front-4.icoremail.net (Coremail) with SMTP id BrQMCkAmTxVAUT1q3zwBAA--.5710S2;
-	Fri, 26 Jun 2026 00:03:15 +0800 (CST)
-From: Mingyu Wang <25181214217@stu.xidian.edu.cn>
-To: deller@gmx.de,
-	tzimmermann@suse.de,
-	simona@ffwll.ch
-Cc: syoshida@redhat.com,
-	dri-devel@lists.freedesktop.org,
-	linux-fbdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	w15303746062@163.com,
-	Mingyu Wang <25181214217@stu.xidian.edu.cn>,
-	stable@vger.kernel.org
-Subject: [PATCH v2] fbdev: fbcon: fix out-of-bounds read in err_out of fbcon_do_set_font()
-Date: Fri, 26 Jun 2026 00:03:06 +0800
-Message-Id: <20260625160306.438847-1-25181214217@stu.xidian.edu.cn>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1782403400; c=relaxed/simple;
+	bh=7bKoxFM7KIOZ8oc/Q47QcvjrAFswlZcecxV75ra08vE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=nfXq7QJ4F9hCYWtW3TuUbNN9RdheO/u12Q8kf06H/b86BT14wPVnPyvkeKK6ja67MvB46IFkRj4yULSjGvfCDHH85TbO98iukc5YBjAs7/OLXiILGHdeH/YqA8t35FVmZqs4uP/Wk8qz5Y9cZpGs0Z7zqnS/f0fLp9WJQDpKxsc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eh7r+dl5; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with UTF8SMTPSA id D838E1F000E9;
+	Thu, 25 Jun 2026 16:03:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1782403397;
+	bh=keGsTG6PzRLpDRyGU6n06RqldyGUbJfHiuRsazLhSQQ=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=eh7r+dl5/FXG6ihuw6LEBQjpMJrMq5hkgURRWMfeq3pnk7K4AlEW5Ra5Gb0pY7h+z
+	 JYKHp11flSpRSS0O0Qv4V57geJ2LwlvGXZD4RajjSxpiBVHpwGFzkVKPZFGsECHYxZ
+	 H6Js9ytE1f/MWsYl9EvZqOH1yYowhbXSOnAENVebqIfhK64GOwnkM/RQWxBAH2mo+x
+	 93XRUgIl1bZChegrJN4no1TVLZLdEhRlP7QcqVhWlJqzUvVdI1cB/FFmOZ7IjBIpCE
+	 4n35yoVy1Jxca4ocCyp5KzLqsu5HpHDH75/KLTs4YEwpLyvomrQf51cE17B7TSlag6
+	 77hYGon+G2/pw==
+Date: Thu, 25 Jun 2026 09:03:17 -0700
+From: "Darrick J. Wong" <djwong@kernel.org>
+To: Carlos Maiolino <cem@kernel.org>
+Cc: Christoph Hellwig <hch@lst.de>, Jan Kara <jack@suse.cz>,
+	linux-xfs@vger.kernel.org, stable@vger.kernel.org,
+	Dave Chinner <david@fromorbit.com>,
+	Eric Sandeen <sandeen@redhat.com>,
+	"Dr. Thomas Orgis" <thomas.orgis@uni-hamburg.de>,
+	linux-fsdevel@vger.kernel.org,
+	Christian Brauner <brauner@kernel.org>
+Subject: Re: [PATCH] xfs: fix capabily check in xfs_setattr_nonsize
+Message-ID: <20260625160317.GY6078@frogsfrogsfrogs>
+References: <20260624101436.362533-1-cem@kernel.org>
+ <20260624134039.GB5649@lst.de>
+ <qcsdbdpp23fsu3cqhpjdpwusvl6onc2knnrun522ofrutxpz6j@reh3k2ofqjir>
+ <20260625123754.GA19947@lst.de>
+ <aj1CdKwE3A40vQhQ@nidhogg.toxiclabs.cc>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:BrQMCkAmTxVAUT1q3zwBAA--.5710S2
-X-Coremail-Antispam: 1UD129KBjvJXoWxGFW7Ww13WFWxCr1DJr1rtFb_yoW5Jw4xp3
-	y3Kw13Kr1ktr1rGa10gw4kCF15Wan7A34jqayxK345Kw15Gr4UXFW0yFyYvF98C3srXF10
-	qw1vg3s29FyDC3DanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUBK14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
-	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
-	1l84ACjcxK6xIIjxv20xvE14v26r1j6r1xM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4j
-	6F4UM28EF7xvwVC2z280aVAFwI0_Jr0_Gr1l84ACjcxK6I8E87Iv6xkF7I0E14v26r4j6r
-	4UJwAac4AC62xK8xCEY4vEwIxC4wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC
-	0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWUJVWUGwAv7VC2z280aVAFwI0_Jr0_Gr
-	1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcxkI7VAKI48JM4x0x7Aq67IIx4CEVc8vx2IE
-	rcIFxwACI402YVCY1x02628vn2kIc2xKxwCY1x0262kKe7AKxVWUtVW8ZwCY02Avz4vE14
-	v_JwCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02F40E14v2
-	6r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_Jw0_GFylIxkGc2
-	Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7CjxVAFwI0_
-	Jr0_Gr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r1j6r4UMI
-	IF0xvEx4A2jsIEc7CjxVAFwI0_Jr0_GrUvcSsGvfC2KfnxnUUI43ZEXa7VUUsXo7UUUUU=
-	=
-X-CM-SenderInfo: qsvrmiqsrujiux6v33wo0lvxldqovvfxof0/1tbiAgUPEWo9RfMFSgABs2
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aj1CdKwE3A40vQhQ@nidhogg.toxiclabs.cc>
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [1.54 / 15.00];
-	DMARC_POLICY_QUARANTINE(1.50)[xidian.edu.cn : SPF not aligned (relaxed),quarantine];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [-4.66 / 15.00];
+	WHITELIST_SPF_DKIM(-3.00)[kernel.org:d:+,kernel.org:s:+];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	MID_RHS_NOT_FQDN(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_RECIPIENTS(0.00)[m:deller@gmx.de,m:tzimmermann@suse.de,m:simona@ffwll.ch,m:syoshida@redhat.com,m:dri-devel@lists.freedesktop.org,m:linux-fbdev@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:w15303746062@163.com,m:25181214217@stu.xidian.edu.cn,m:stable@vger.kernel.org,s:lists@lfdr.de];
-	TAGGED_FROM(0.00)[bounces-268609-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_TO(0.00)[gmx.de,suse.de,ffwll.ch];
-	FORGED_SENDER(0.00)[25181214217@stu.xidian.edu.cn,stable@vger.kernel.org];
-	TO_DN_SOME(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
-	R_DKIM_PERMFAIL(0.00)[stu.xidian.edu.cn:s=dkim];
+	TAGGED_FROM(0.00)[bounces-268608-lists,stable=lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
-	FREEMAIL_CC(0.00)[redhat.com,lists.freedesktop.org,vger.kernel.org,163.com,stu.xidian.edu.cn];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:cem@kernel.org,m:hch@lst.de,m:jack@suse.cz,m:linux-xfs@vger.kernel.org,m:stable@vger.kernel.org,m:david@fromorbit.com,m:sandeen@redhat.com,m:thomas.orgis@uni-hamburg.de,m:linux-fsdevel@vger.kernel.org,m:brauner@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_SENDER(0.00)[djwong@kernel.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[25181214217@stu.xidian.edu.cn,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[stu.xidian.edu.cn:~];
 	ALIAS_RESOLVED(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[djwong@kernel.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	RCPT_COUNT_SEVEN(0.00)[10];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	TAGGED_RCPT(0.00)[stable];
-	FROM_HAS_DN(0.00)[]
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	TO_DN_SOME(0.00)[]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 2CE5B6C7460
+X-Rspamd-Queue-Id: 973166C747D
 
-When fbcon_do_set_font() fails (e.g., due to a memory allocation failure
-inside vc_resize() under heavy memory pressure), it jumps to the `err_out`
-label to roll back the console state. However, the current rollback logic
-forgets to restore the `hi_font` state, leading to a severe state machine
-corruption.
+On Thu, Jun 25, 2026 at 05:00:21PM +0200, Carlos Maiolino wrote:
+> On Thu, Jun 25, 2026 at 02:37:54PM +0200, Christoph Hellwig wrote:
+> > On Thu, Jun 25, 2026 at 12:43:54PM +0200, Jan Kara wrote:
+> > > On Wed 24-06-26 15:40:39, Christoph Hellwig wrote:
+> > > > Adding Jan and Christian for quota and user_ns knowledge.
+> > > > 
+> > > > On Wed, Jun 24, 2026 at 12:14:29PM +0200, cem@kernel.org wrote:
+> > > > > From: Carlos Maiolino <cem@kernel.org>
+> > > > > 
+> > > > > An user reported a bug where he managed to evade group's quota
+> > > > > by changing a file's gid to a different group id the same user
+> > > > > belonged to, even though quotas were enforced on both gids and the
+> > > > > file's size was big enough to exceed the quota's hardlimit.
+> > > > > 
+> > > > > Commit eba0549bc7d1 replaced a capable() call by a
+> > > > > has_capability_noaudit() to prevent unnecessary selinux audit messages.
+> > > > > Turns out that both calls have slightly different semantics even though
+> > > > > their documentation seems similar. Where in a nutshell:
+> > > > > 
+> > > > > capable() - Tests the task's effective credentials
+> > > > > has_ns_capability_noaudit() - Tests the task's real credentials
+> > > > 
+> > > > Eww..
+> > > 
+> > > Yeah, that's a catch.
 
-Earlier in the function, `set_vc_hi_font()` might be called to change
-`vc->vc_hi_font_mask` and mutate the screen buffer. If `vc_resize()`
-subsequently fails, the `err_out` path restores `vc_font.charcount`
-but entirely skips rolling back the `vc_hi_font_mask` and the screen
-buffer.
+I spent a while trying to figure out how I went wrong in selecting the
+function name:
 
-This mismatch leaves the terminal in a desynchronized state. Because
-`vc_hi_font_mask` remains set, the VT subsystem will still accept
-character indices greater than 255 from userspace and write them to the
-screen buffer. Subsequent rendering calls (e.g., `fbcon_putcs()`) will
-then use these inflated indices to access the reverted, 256-character
-font array, leading to a deterministic out-of-bounds read and potential
-kernel memory disclosure.
+ * capable - Determine if the current task has a superior capability in effect
+ * @cap: The capability to be tested for
+ *
+ * Return true if the current task has the given superior capability currently
+ * available for use, false if not.
 
-Fix this by adding the missing rollback logic for the `hi_font` mask
-and screen buffer in the error path.
+vs.
 
-Fixes: a5a923038d70 ("fbdev: fbcon: Properly revert changes when vc_resize() failed")
-Cc: stable@vger.kernel.org
-Signed-off-by: Mingyu Wang <25181214217@stu.xidian.edu.cn>
-Reviewed-by: Thomas Zimmermann <tzimmermann@suse.de>
----
- drivers/video/fbdev/core/fbcon.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ * has_capability_noaudit - Does a task have a capability (unaudited) in the
+ * initial user ns
+ * @t: The task in question
+ * @cap: The capability to be tested for
+ *
+ * Return true if the specified task has the given superior capability
+ * currently in effect to init_user_ns, false if not.  Don't write an
+ * audit message for the check.
 
-diff --git a/drivers/video/fbdev/core/fbcon.c b/drivers/video/fbdev/core/fbcon.c
-index 9077d3b99357..37beb93045af 100644
---- a/drivers/video/fbdev/core/fbcon.c
-+++ b/drivers/video/fbdev/core/fbcon.c
-@@ -2405,6 +2405,7 @@ static int fbcon_do_set_font(struct vc_data *vc, int w, int h, int charcount,
- 	int resize, ret, old_width, old_height, old_charcount;
- 	font_data_t *old_fontdata = p->fontdata;
- 	const u8 *old_data = vc->vc_font.data;
-+	unsigned short old_hi_font_mask = vc->vc_hi_font_mask;
- 
- 	font_data_get(data);
- 
-@@ -2451,6 +2452,12 @@ static int fbcon_do_set_font(struct vc_data *vc, int w, int h, int charcount,
- 	vc->vc_font.height = old_height;
- 	vc->vc_font.charcount = old_charcount;
- 
-+	/* Restore the hi_font state and screen buffer */
-+	if (old_hi_font_mask && !vc->vc_hi_font_mask)
-+		set_vc_hi_font(vc, true);
-+	else if (!old_hi_font_mask && vc->vc_hi_font_mask)
-+		set_vc_hi_font(vc, false);
-+
- 	font_data_put(data);
- 
- 	return ret;
--- 
-2.34.1
+vs.
 
+ * ns_capable_noaudit - Determine if the current task has a superior capability
+ * (unaudited) in effect
+ * @ns:  The usernamespace we want the capability in
+ * @cap: The capability to be tested for
+ *
+ * Return true if the current task has the given superior capability currently
+ * available for use, false if not.
+
+All three of these sound the same to me.  But what about the call path?
+
+capable -> ns_capable -> ns_capable_common
+
+has_capability_noaudit -> has_ns_capability_noaudit
+
+ns_capable_noaudit -> ns_capable_common
+
+Hum, maybe that's the difference -- ns_capable_common vs.
+has_ns_capability_noaudit?
+
+ns_capable_common calls security_capable() with current_cred(), whereas
+has_ns_capability_noaudit calls it with __task_cred(t), which is
+@current in the xfs_trans_alloc_ichange case.
+
+Aha!  current_cred is current->cred, whereas __task_cred(current) is
+current->real_cred, and these aren't the same thing:
+
+	/* Objective and real subjective task credentials (COW): */
+	const struct cred __rcu		*real_cred;
+
+	/* Effective (overridable) subjective task credentials (COW): */
+	const struct cred __rcu		*cred;
+
+So I guess ns_capable_common (and wrappers) are testing the process'
+effective credentials, whereas has_ns_capability_noaudit is testing the
+process' real credentials?
+
+It would have been *really* nice if the documentation for those
+functions mentioned that distinction!
+
+> > > > > This most of the time has no practical difference but in some cases like
+> > > > > changing attrs (specifically group id in this case) through a NFS client
+> > > > > this will allow the quota code to use XFS_QMOPT_FORCE_RES, effectively
+> > > > > bypassing quota accounting checks.
+> > > > 
+> > > > Yeah, this does look wrong.  Do the other conversion in the above commit
+> > > > have tthe same issue?
+> > > > 
+> > > > > Using instead ns_capable_noaudit() should fix this issue and prevent
+> > > > > selinux audit messages.
+> > > > 
+> > > > The generic quota code manages to do without either has_capability_noaudit
+> > > > or ns_capable_noaudit.  I think this might be hidden behind
+> > > > inode_owner_or_capable calls.  Any idea why we're different?
+> > > 
+> > > Actually no. Generic quota code has equivalent checks in ignore_hardlimit()
+> > > function which does capable(CAP_SYS_RESOURCE) check. I guess the reason why
+> > > nobody complained about generic quota code is that we call
+> > > ignore_hardlimit() only if we are above hardlimit whereas XFS calls this
+> > > for every transaction...
+> > 
+> > I guess we should aim for the same to avoid the spurious audit logs.
+> > 
+> > I.e. xfs_trans_alloc_ichange is currently always called either with
+> > force = true or force = this capable check.  So as a first step we can
+> > move the check into xfs_trans_alloc_ichange for the !force case, and the
+> > propagate that through XFS_QMOPT_FORCE_RES into xfs_trans_dqresv, i.e.
+> > only set XFS_QMOPT_FORCE_RES for the real forced case and instead
+> > have the capable check down in xfs_trans_dqresv.
+> > 
+> 
+> Sounds fair, I'll give it a try tomorrow.
+
+So yeah, I agree we should change that to:
+
+	ns_capable_noaudit(&init_user_ns, CAP_FOWNER)
+
+Though it's also weird that XFS gates it on CAP_FOWNER whereas the VFS
+checks CAP_SYS_RESOURCE.  Though I would have added this:
+
+static inline bool
+current_may_ignore_quota_limits(void)
+{
+	/*
+	 * If the current process' effective credentials include
+	 * CAP_FOWNER, then they're allowed to ignore the hard limit.
+	 */
+	return ns_capable_noaudit(&init_user_ns, CAP_FOWNER);
+}
+
+and then changed the callsites in xfs_ioctl/xfs_iops.c to:
+
+	error = xfs_trans_alloc_ichange(ip, udqp, gdqp, NULL,
+			current_may_ignore_quota_limits(), &tp);
+
+The has_capability_noaudit call in xfs_fsmap.c should change to
+ns_capable_noaudit.
+
+--D
 
