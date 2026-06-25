@@ -1,53 +1,69 @@
-Return-Path: <stable+bounces-268363-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-268365-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id eWkbHRUVPWoZwwgAu9opvQ
-	(envelope-from <stable+bounces-268363-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 13:46:29 +0200
+	id NXwILKgXPWquwwgAu9opvQ
+	(envelope-from <stable+bounces-268365-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 13:57:28 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8B6206C5408
-	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 13:46:28 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 38D526C5504
+	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 13:57:28 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=none;
-	dmarc=none;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-268363-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-268363-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=yandex.ru header.s=mail header.b=wU5c1pbx;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-268365-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-268365-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=none) header.from=yandex.ru;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 1C1D6306FC3F
-	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 11:46:01 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id DD0E93047438
+	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 11:49:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D6C713DD85C;
-	Thu, 25 Jun 2026 11:45:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73C373D3D10;
+	Thu, 25 Jun 2026 11:49:19 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from cstnet.cn (smtp25.cstnet.cn [159.226.251.25])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+Received: from forward102a.mail.yandex.net (forward102a.mail.yandex.net [178.154.239.85])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B31C53DD505;
-	Thu, 25 Jun 2026 11:45:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B565C184;
+	Thu, 25 Jun 2026 11:49:15 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782387958; cv=none; b=c9QGwpOIKeg4bhSm/wLv0PUcJu2B8nr0odL9xC8YuRAdnKc6T1sh86F+V2kkvSG2opsxuGvoqqAtdvimPNfJ+SpDWMZMxuUeSy2oy0365NV+pAU6VdunrBqgJOfVquUw5pe1PO8fWYGG1FDbofuD9J4U3gE0k+6rUl+KFvVBfeE=
+	t=1782388159; cv=none; b=u8c1/OPJ6tAi5g9EiekCUUx+1Rj4RHTA5icSXd6aNHZVyv5NB63foYx+zVMqJqEAVAkWM0QNU/pPI+NaWDtan5Rjsj2RMPvwXBotftVX2I5N+O9Ga6DPf3m1OsmOVgcRexvLIF8sU088gQ/isyuKhF6dUc+3OsKsPfMLvXk6eo4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782387958; c=relaxed/simple;
-	bh=pwQshbRYceQ8XyloeoHFmKrmRx+S/ubRuGKHrG5BZQc=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=HTAoQbin2ZEBYoCiis5JHxVrAi9orbw4GOsOL+y/LhvZ+fZdzFRPtdA5IKoZ1nDi+GA+3VAMZAN+nKmvCNbRK/eTMT/6kPWvsTXSJM5Wp8Us8iR1pdZ9DpjhSxMNCUtUsf2FyXXzA0RXuvdXbBf+8dteFlH08+irjBxMB+c0JP0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.25
-Received: from localhost.localdomain (unknown [117.182.75.66])
-	by APP-05 (Coremail) with SMTP id zQCowAAnoPPtFD1qrYw0FQ--.21749S2;
-	Thu, 25 Jun 2026 19:45:50 +0800 (CST)
-From: Wentao Liang <vulab@iscas.ac.cn>
-To: robh@kernel.org,
-	tomeu@tomeuvizoso.net,
-	ogabbay@kernel.org
-Cc: dri-devel@lists.freedesktop.org,
+	s=arc-20240116; t=1782388159; c=relaxed/simple;
+	bh=siMqfGA2LbcLpc8TVJBf9szt0ISO8uooGPF6kp3XeSs=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=fFz4zPfgFWuuz62siK5JybatSFrxuc0I/e/TUFHhV+BfyHmcaPO/DKF4UDooUTY4/fMmEwajZrRAgzFlv4VD0WPEyA7au4/MkSeap7YCuRIUxYc7kKjEilVoZGbu27KdKsieK9J7sgJfUqNdlhlFi5epLoht0vgkAQ5RauBuvlw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yandex.ru; spf=pass smtp.mailfrom=yandex.ru; dkim=pass (1024-bit key) header.d=yandex.ru header.i=@yandex.ru header.b=wU5c1pbx; arc=none smtp.client-ip=178.154.239.85
+Received: from mail-nwsmtp-smtp-production-main-84.vla.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-84.vla.yp-c.yandex.net [IPv6:2a02:6b8:c0f:39a:0:640:15c4:0])
+	by forward102a.mail.yandex.net (Yandex) with ESMTPS id BF39EC0303;
+	Thu, 25 Jun 2026 14:49:07 +0300 (MSK)
+Received: by mail-nwsmtp-smtp-production-main-84.vla.yp-c.yandex.net (smtp) with ESMTPSA id imX0h9Zd7a60-9VPCYWd1;
+	Thu, 25 Jun 2026 14:49:06 +0300
+X-Yandex-Fwd: 1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex.ru; s=mail;
+	t=1782388146; bh=N3iJX4b7hiSFwQlA4tOHWUsCIZUNpe0ZD60sev6y8NA=;
+	h=Message-ID:Date:Cc:Subject:To:From;
+	b=wU5c1pbxBjWOZrMRoEOGDGa8Hcqtk0iEH/Q/6NO75zGGCmSHaVg7badtMMUluXY0S
+	 NEjxiyR4gqM5trvVOhq8JCT/AbNNE7QRPbw9ZKZUOQMwtS4AS50lT3/zhr2DwPId6h
+	 tcVpKCdlg3c1B1WtKKclbTX0jJD35z8upiMinaHI=
+From: Evgenii Burenchev <evg28bur@yandex.ru>
+To: stable@vger.kernel.org,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Evgenii Burenchev <evg28bur@yandex.ru>,
+	idosch@nvidia.com,
+	petrm@nvidia.com,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	jiri@resnulli.us,
+	netdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	Wentao Liang <vulab@iscas.ac.cn>,
-	stable@vger.kernel.org
-Subject: [PATCH] accel/ethosu: Fix use-after-free and memory leak in ioctl_submit_job
-Date: Thu, 25 Jun 2026 19:45:47 +0800
-Message-Id: <20260625114547.50649-1-vulab@iscas.ac.cn>
-X-Mailer: git-send-email 2.39.5 (Apple Git-154)
+	lvc-project@linuxtesting.org
+Subject: [PATCH net] mlxsw: spectrum_acl_erp: Fix const qualifier of delta_clear()
+Date: Thu, 25 Jun 2026 14:48:31 +0300
+Message-ID: <20260625114831.17386-1-evg28bur@yandex.ru>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -55,108 +71,94 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:zQCowAAnoPPtFD1qrYw0FQ--.21749S2
-X-Coremail-Antispam: 1UD129KBjvJXoW7Aw1fZw43AF4xXw17KryUWrg_yoW8ZF43pa
-	1rW3yjgrZ8Xa10gayDAw4jgF15Ka12gryIkr4kuw4avFn5Xr12qa1rCr92qFy8ZrZ7t3Wx
-	XFW2kw1rWa4rAaUanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUkl14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
-	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
-	1l84ACjcxK6xIIjxv20xvE14v26r4j6ryUM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4j
-	6F4UM28EF7xvwVC2z280aVAFwI0_GcCE3s1l84ACjcxK6I8E87Iv6xkF7I0E14v26rxl6s
-	0DM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xII
-	jxv20xvE14v26r106r15McIj6I8E87Iv67AKxVWUJVW8JwAm72CE4IkC6x0Yz7v_Jr0_Gr
-	1lF7xvr2IYc2Ij64vIr41lF7I21c0EjII2zVCS5cI20VAGYxC7MxkF7I0En4kS14v26r12
-	6r1DMxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrVAFwI
-	0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWUAVWUtwCIc40Y
-	0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267AKxV
-	W8JVWxJwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Jr0_Gr1l
-	IxAIcVC2z280aVCY1x0267AKxVW8JVW8JrUvcSsGvfC2KfnxnUUI43ZEXa7VU18sqtUUUU
-	U==
-X-CM-SenderInfo: pyxotu46lvutnvoduhdfq/1tbiBgoJA2o835HLRQAAsQ
-X-Rspamd-Action: no action
-X-Spamd-Result: default: False [0.04 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+X-Rspamd-Action: add header
+X-Spamd-Result: default: False [10.34 / 15.00];
+	URIBL_BLACK(7.50)[linuxtesting.org:url];
+	SUSPICIOUS_RECIPS(1.50)[];
 	MID_CONTAINS_FROM(1.00)[];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
+	BAD_REP_POLICIES(0.10)[];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-268363-lists,stable=lfdr.de];
-	DMARC_NA(0.00)[iscas.ac.cn];
-	FORGED_RECIPIENTS(0.00)[m:robh@kernel.org,m:tomeu@tomeuvizoso.net,m:ogabbay@kernel.org,m:dri-devel@lists.freedesktop.org,m:linux-kernel@vger.kernel.org,m:vulab@iscas.ac.cn,m:stable@vger.kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[vulab@iscas.ac.cn,stable@vger.kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORWARDED(0.00)[lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-268365-lists,stable=lfdr.de];
+	FREEMAIL_FROM(0.00)[yandex.ru];
+	R_DKIM_ALLOW(0.00)[yandex.ru:s=mail];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:evg28bur@yandex.ru,m:idosch@nvidia.com,m:petrm@nvidia.com,m:andrew+netdev@lunn.ch,m:davem@davemloft.net,m:edumazet@google.com,m:kuba@kernel.org,m:pabeni@redhat.com,m:jiri@resnulli.us,m:netdev@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:lvc-project@linuxtesting.org,m:andrew@lunn.ch,s:lists@lfdr.de];
+	RCPT_COUNT_TWELVE(0.00)[14];
+	GREYLIST(0.00)[pass,body];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[vulab@iscas.ac.cn,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER(0.00)[evg28bur@yandex.ru,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[yandex.ru,nvidia.com,lunn.ch,davemloft.net,google.com,kernel.org,redhat.com,resnulli.us,vger.kernel.org,linuxtesting.org];
+	FORWARDED(0.00)[lists@lfdr.de];
+	DMARC_POLICY_ALLOW(0.00)[yandex.ru,none];
+	DKIM_TRACE(0.00)[yandex.ru:+];
 	FORGED_SENDER_FORWARDING(0.00)[];
-	R_DKIM_NA(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
 	ALIAS_RESOLVED(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,iscas.ac.cn:email,iscas.ac.cn:mid,iscas.ac.cn:from_mime]
+	PRECEDENCE_BULK(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[evg28bur@yandex.ru,stable@vger.kernel.org];
+	TO_DN_SOME(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	R_SPF_ALLOW(0.00)[+ip6:2600:3c0a:e001:db::/64:c];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_RCPT(0.00)[stable,netdev];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ARC_ALLOW(0.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,linuxtesting.org:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 8B6206C5408
+X-Rspamd-Queue-Id: 38D526C5504
+X-Spam: Yes
 
-Two bugs exist in ethosu_ioctl_submit_job():
+mlxsw_sp_acl_erp_delta_clear() takes 'const char *enc_key' but modifies
+the memory it points to. This is a logical error in the function
+declaration.
 
-1. Use-after-free via NULL pointer dereference: When done_fence
-   allocation fails, the error path jumps to out_cleanup_job which calls
-   drm_sched_job_cleanup() on an uninitialized struct, dereferencing the
-   NULL s_fence pointer.
+The only caller passes a non-const buffer (aentry->ht_key.enc_key), so
+the const qualifier is misleading and unnecessary.
 
-2. Memory leak of done_fence: The done_fence struct is allocated
-   separately with kzalloc() but is never freed on any error path that
-   occurs after successful allocation (including drm_sched_job_init
-   failure, BO lookup failures, etc.). It cannot be freed via
-   dma_fence_put() because dma_fence_init() is not called until
-   ethosu_job_run().
+Remove const from the enc_key parameter to match the actual usage.
 
-Fix by:
-- Changing the done_fence allocation failure goto target from
-  out_cleanup_job to out_put_job, which skips the uninitialized
-  drm_sched_job_cleanup() call.
-- Adding kfree(job->done_fence) in ethosu_job_err_cleanup() to ensure
-  the separately allocated fence struct is released on all error paths.
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
 
-Cc: stable@vger.kernel.org
-Fixes: 5a5e9c0228e6 ("accel: Add Arm Ethos-U NPU driver")
-Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
+Fixes: c22291f7cf45 ("mlxsw: spectrum: acl: Implement delta for ERP")
+Signed-off-by: Evgenii Burenchev <evg28bur@yandex.ru>
 ---
- drivers/accel/ethosu/ethosu_job.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/mellanox/mlxsw/spectrum_acl_erp.c  | 2 +-
+ drivers/net/ethernet/mellanox/mlxsw/spectrum_acl_tcam.h | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/accel/ethosu/ethosu_job.c b/drivers/accel/ethosu/ethosu_job.c
-index ec85f4156744..9a8164a54454 100644
---- a/drivers/accel/ethosu/ethosu_job.c
-+++ b/drivers/accel/ethosu/ethosu_job.c
-@@ -150,6 +150,7 @@ static void ethosu_job_err_cleanup(struct ethosu_job *job)
- 	for (i = 0; i < job->region_cnt; i++)
- 		drm_gem_object_put(job->region_bo[i]);
+diff --git a/drivers/net/ethernet/mellanox/mlxsw/spectrum_acl_erp.c b/drivers/net/ethernet/mellanox/mlxsw/spectrum_acl_erp.c
+index cbb272a96359..0d0cd093b3c6 100644
+--- a/drivers/net/ethernet/mellanox/mlxsw/spectrum_acl_erp.c
++++ b/drivers/net/ethernet/mellanox/mlxsw/spectrum_acl_erp.c
+@@ -1118,7 +1118,7 @@ u8 mlxsw_sp_acl_erp_delta_value(const struct mlxsw_sp_acl_erp_delta *delta,
+ }
  
-+	kfree(job->done_fence);
- 	drm_gem_object_put(job->cmd_bo);
+ void mlxsw_sp_acl_erp_delta_clear(const struct mlxsw_sp_acl_erp_delta *delta,
+-				  const char *enc_key)
++				  char *enc_key)
+ {
+ 	u16 start = delta->start;
+ 	u8 mask = delta->mask;
+diff --git a/drivers/net/ethernet/mellanox/mlxsw/spectrum_acl_tcam.h b/drivers/net/ethernet/mellanox/mlxsw/spectrum_acl_tcam.h
+index 010204f73ea4..67cc7a5737dd 100644
+--- a/drivers/net/ethernet/mellanox/mlxsw/spectrum_acl_tcam.h
++++ b/drivers/net/ethernet/mellanox/mlxsw/spectrum_acl_tcam.h
+@@ -245,7 +245,7 @@ u8 mlxsw_sp_acl_erp_delta_mask(const struct mlxsw_sp_acl_erp_delta *delta);
+ u8 mlxsw_sp_acl_erp_delta_value(const struct mlxsw_sp_acl_erp_delta *delta,
+ 				const char *enc_key);
+ void mlxsw_sp_acl_erp_delta_clear(const struct mlxsw_sp_acl_erp_delta *delta,
+-				  const char *enc_key);
++				  char *enc_key);
  
- 	kfree(job);
-@@ -393,7 +394,7 @@ static int ethosu_ioctl_submit_job(struct drm_device *dev, struct drm_file *file
- 	ejob->done_fence = kzalloc_obj(*ejob->done_fence);
- 	if (!ejob->done_fence) {
- 		ret = -ENOMEM;
--		goto out_cleanup_job;
-+		goto out_put_job;
- 	}
+ struct mlxsw_sp_acl_erp_mask;
  
- 	ret = drm_sched_job_init(&ejob->base,
 -- 
-2.39.5 (Apple Git-154)
+2.43.0
 
 
