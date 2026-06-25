@@ -1,52 +1,102 @@
-Return-Path: <stable+bounces-268606-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-268607-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id l931D6pOPWo91AgAu9opvQ
-	(envelope-from <stable+bounces-268606-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 17:52:10 +0200
+	id O7keDvtRPWoR1QgAu9opvQ
+	(envelope-from <stable+bounces-268607-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 18:06:19 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id E61E76C72DF
-	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 17:52:08 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id A7BF46C74C9
+	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 18:06:18 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=none;
-	dmarc=none;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-268606-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-268606-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=kRm59YCW;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-268607-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-268607-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=none) header.from=gmail.com;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 19BFD3006017
-	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 15:52:06 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id BD4C630A089D
+	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 16:02:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA9CA2F8E9E;
-	Thu, 25 Jun 2026 15:52:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B33CB328B75;
+	Thu, 25 Jun 2026 16:02:35 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from cstnet.cn (smtp25.cstnet.cn [159.226.251.25])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com [209.85.214.169])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A670923BD1B;
-	Thu, 25 Jun 2026 15:52:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFA0E32BF44
+	for <stable@vger.kernel.org>; Thu, 25 Jun 2026 16:02:33 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782402724; cv=none; b=GAG37CElHKB+kmLiSgyOFMy7KHJSoy49U3bo5uPjsNhW2qt7l66A9Hc7UFIhy6Xpig2E6P4MvFfREOCYwOkgzaqtlKej9yICTV3DH4D+clvf5OTBhf9AvthZ/3CLtzGW7SvwBZhN0yc2Pb/MjGWlQKICtCNQYf/sNqQj9qRI+Qw=
+	t=1782403355; cv=none; b=mylEHvMvf8ypXJsuEL7drYvOw6JsFmCpFMZLQBIvL5IdiUBHn5H1r+6yzLQzy5F0q+w6hQVmOjlpQ1c7a5JtsiZmy42bz2qRjQF8sJ1xi8C88m/+artu5EUtZa6cNSju9Lu+/CrXkvRZm9kPbAxKJ+TcHOfPgzl/M7dbeRvb4CI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782402724; c=relaxed/simple;
-	bh=IC6Q6MTRSyXrG3hxFjc6o6YbwEReB2tXb5S0XSApuPY=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=n7ptaScpkbY+ZPb92pWug8nhdK6/hAZElvN7tyXSaIckgrRamFhWJiLiAwf0FKIqI84bhD9Ac6dbJTC6edTXQxzNZqByAMV3dE2K8v7G6is82EnfqEikhpgE5AZb+9Syfnm+9PQbnazAV0scsPzpNtvqI+qn4DQvZ96F7UbtURM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.25
-Received: from localhost.localdomain (unknown [117.182.75.66])
-	by APP-05 (Coremail) with SMTP id zQCowABXrtGXTj1qke88FQ--.13788S2;
-	Thu, 25 Jun 2026 23:51:53 +0800 (CST)
-From: Wentao Liang <vulab@iscas.ac.cn>
-To: marcel@holtmann.org,
-	luiz.dentz@gmail.com
-Cc: linux-bluetooth@vger.kernel.org,
+	s=arc-20240116; t=1782403355; c=relaxed/simple;
+	bh=L9c5Szdgt8qF07KpP6DJofk4aMPG49dmybsPbBc1Q4A=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=aiEbPR/6Pd/VtVH1AkqJII+0rXo57QocG8Zm1Zan/cSmFyfGPAAhxr+b4VV27J3OB4NJ+BsANyQ9TotEBCz6GDOWc5xtBBQEFJzX5OixL8rSOjrwFVprNY/NbLuFM/E3f0Oo1xPvQiymHLF8RNAcHLy1n2crKTTcNMBfoPGdfwM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=kRm59YCW; arc=none smtp.client-ip=209.85.214.169
+Received: by mail-pl1-f169.google.com with SMTP id d9443c01a7336-2c6c57c5bcfso1090855ad.1
+        for <stable@vger.kernel.org>; Thu, 25 Jun 2026 09:02:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1782403353; x=1783008153; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=7uBKJbZacR7qpAxgkxKTYuFWT8lf0EijVUm+JTDcFsE=;
+        b=kRm59YCWFYAvGQCkmCZDJRC4Cm8V/xJYTHnADBD819LZ524O1EJkiwRbBpBsjLRB2r
+         NUwHmNcNMxEGb2oumraGN/uZv65o+6+m9dmuz6LLINRUSGSHH14xqhIeCrdVIk4BqoCX
+         YI/ynEyfH5h2hpeJX/RuN/fwvcvG5KqRsRlArZZVrVoGyqyFfZGO1mPC/XMxPdnTBs21
+         HUV9LLBO90mkk64r8LO9Q3UHGNQd+GV3s3Mvb4oB8779zS7IcWiiLHIaTBt8iZPWV32O
+         /k6LcUSKHx+y45TedvsBhPJEdBSt9Vb/YHH6CFfC7Vjgjy5w0/f6NXhnE4T5lAgLCYfh
+         kzuA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1782403353; x=1783008153;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=7uBKJbZacR7qpAxgkxKTYuFWT8lf0EijVUm+JTDcFsE=;
+        b=RcCkGSbd+tbN0+rBmMIbNJTXrOXrXpNtt8bfsw6S3xmmO7g8QV8sJ4DDD3SlPTN5Q3
+         uk4zTiITOQ2EGcfR/yhleP2FAmmkykmYQdBHps2XPKwVDqWZp37QyJIG56CZZPyPOV6P
+         lHssI9Q+l4M+zyljuIu7MNZ1FaVMM6XWLMMVicGrTiE2IpSFVa9qrFW8N3xr9dP+Vp8G
+         5QOI7Zs2rwNNQuAUelPIJezZutFpRe9OhKCMepSY7ABwhnhPz30Fkl2lHX+ba0wqhaGA
+         1bF84Dauw82UQZlw37UV0m/0dEOVdusz5T9qC2Rvg6D/hKLZheYYRlW012cJuyB5VCEF
+         w3Vw==
+X-Forwarded-Encrypted: i=1; AHgh+RoBtghg1B9uGYzxAkA4fVIncsuEjEU3aYmoF3n9LLhELoQmixgvEs/MEnUR34048WTTbi+mC0Y=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzwAjuaFK55SI9+W54LGxuWWYkxu+tUgNes83qEKN3OSAZCfYw9
+	ZRvh/0nHwQ6M/9qhd2M6PJt1NMfNzg1F0OjW32BPJJCBux4y0BMRm+aT
+X-Gm-Gg: AfdE7cnp8sMgHb2C7xNRtUX5djTAKPlm6BRWMeSfBrX3Z2/VIQ93wL2iNEy1j4RO4Uj
+	nD6zbBNJrPxsLGiHFrre0ghBTwLMr3BhV45vOc95ysWF23/9S3A3R4JiAJgZGibThb4KdLpRbNv
+	/a4kfuDXkTAqrsqBj7QCWzXetWzaO/qtF9uLT1g7lZLoSApe7rU9N3yFIzEibWp2O5qGEPTGVUW
+	h0Oh8hUikTQOat26t/UCZg9TZwVBClx5/yB/AfPk8zi+OpXQNEHttu9+TvyEu1P8sZ7H+qy1anb
+	EWw7KtHIDDYjwGfI1n93FsTf54B5ZE5J0omHPbR0RFIBKHhqoFe/II6W36pYyY72QUjmIbVzi41
+	pQ4vlHX9HWpRRDgjHURvkG7MVuHNmgSf25kXVLQSONIoZNkuaLIoU0dxn1RB0pASY60GSUCs4em
+	KcYKugRuIYawkz3M7Fnz2M1fc8183dS71FEREW
+X-Received: by 2002:a17:902:d483:b0:2c6:6424:c79f with SMTP id d9443c01a7336-2c7fc708aa6mr35566035ad.8.1782403352803;
+        Thu, 25 Jun 2026 09:02:32 -0700 (PDT)
+Received: from liem-TUF-Gaming-FX505GM-FX86FM ([240e:39b:ee0:1b70:943:8348:4ae1:4072])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2c7f5ac88cfsm24127925ad.2.2026.06.25.09.02.26
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 25 Jun 2026 09:02:32 -0700 (PDT)
+From: Liem <liem16213@gmail.com>
+To: Oleksij Rempel <o.rempel@pengutronix.de>
+Cc: Andi Shyti <andi.shyti@kernel.org>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Frank Li <Frank.Li@nxp.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Biwen Li <biwen.li@nxp.com>,
+	Wolfram Sang <wsa@kernel.org>,
+	linux-i2c@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
 	linux-kernel@vger.kernel.org,
-	Wentao Liang <vulab@iscas.ac.cn>,
-	stable@vger.kernel.org
-Subject: [PATCH] btintel_pcie: Clear hdev pointer in error path of btintel_pcie_setup_hdev
-Date: Thu, 25 Jun 2026 23:51:49 +0800
-Message-Id: <20260625155149.79838-1-vulab@iscas.ac.cn>
-X-Mailer: git-send-email 2.39.5 (Apple Git-154)
+	stable@vger.kernel.org,
+	Liem <liem16213@gmail.com>
+Subject: [PATCH v2] i2c: imx: Fix slave registration error path and missing timer cleanup
+Date: Fri, 26 Jun 2026 00:02:19 +0800
+Message-ID: <20260625160219.55116-1-liem16213@gmail.com>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20260625071130.93544-1-liem16213@gmail.com>
+References: <20260625071130.93544-1-liem16213@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -54,88 +104,105 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:zQCowABXrtGXTj1qke88FQ--.13788S2
-X-Coremail-Antispam: 1UD129KBjvdXoW7Xw45Xry7XFy3Wr1kArW7twb_yoWkArX_ur
-	yrAr97XFyUJF13tF17ArW5ZF15CrySgF4vqFnFgrW3G3s3Xr1v9asF9r90q3Z3GrW5tr9a
-	y3WUXr18Jr13GjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
-	9fnUUIcSsGvfJTRUUUbcAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2IYs7xG
-	6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48ve4kI8w
-	A2z4x0Y4vE2Ix0cI8IcVAFwI0_JFI_Gr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI0_Gr0_
-	Cr1l84ACjcxK6I8E87Iv67AKxVW0oVCq3wA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_GcCE3s
-	1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xvF2IEw4CE5I8CrVC2j2WlYx0E2Ix0
-	cI8IcVAFwI0_Jr0_Jr4lYx0Ex4A2jsIE14v26r4j6F4UMcvjeVCFs4IE7xkEbVWUJVW8Jw
-	ACjcxG0xvY0x0EwIxGrwACjI8F5VA0II8E6IAqYI8I648v4I1lc7CjxVAaw2AFwI0_JF0_
-	Jw1l42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67AKxV
-	WUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r126r1DMIIYrxkI
-	7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14v26r
-	1j6r4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWUJVW8JwCI
-	42IY6I8E87Iv6xkF7I0E14v26r4j6r4UJbIYCTnIWIevJa73UjIFyTuYvjfU8miiUUUUU
-X-CM-SenderInfo: pyxotu46lvutnvoduhdfq/1tbiDAgJA2o9Q+oWyQAAsv
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [1.54 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_RECIPIENTS(0.00)[m:marcel@holtmann.org,m:luiz.dentz@gmail.com,m:linux-bluetooth@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:vulab@iscas.ac.cn,m:stable@vger.kernel.org,m:luizdentz@gmail.com,s:lists@lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DMARC_NA(0.00)[iscas.ac.cn];
-	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_TO(0.00)[holtmann.org,gmail.com];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_SENDER(0.00)[vulab@iscas.ac.cn,stable@vger.kernel.org];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	FREEMAIL_CC(0.00)[kernel.org,pengutronix.de,nxp.com,gmail.com,vger.kernel.org,lists.linux.dev,lists.infradead.org];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-268607-lists,stable=lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:o.rempel@pengutronix.de,m:andi.shyti@kernel.org,m:kernel@pengutronix.de,m:Frank.Li@nxp.com,m:s.hauer@pengutronix.de,m:festevam@gmail.com,m:biwen.li@nxp.com,m:wsa@kernel.org,m:linux-i2c@vger.kernel.org,m:imx@lists.linux.dev,m:linux-arm-kernel@lists.infradead.org,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,m:liem16213@gmail.com,s:lists@lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[14];
+	FORGED_SENDER(0.00)[liem16213@gmail.com,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
+	TO_DN_SOME(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[vulab@iscas.ac.cn,stable@vger.kernel.org];
-	TAGGED_FROM(0.00)[bounces-268606-lists,stable=lfdr.de];
+	FROM_NEQ_ENVFROM(0.00)[liem16213@gmail.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[gmail.com:+];
 	ALIAS_RESOLVED(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	R_DKIM_NA(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	FROM_HAS_DN(0.00)[]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: E61E76C72DF
+X-Rspamd-Queue-Id: A7BF46C74C9
 
-In btintel_pcie_setup_hdev(), if hci_register_dev() fails, the
-function frees the hci_dev via hci_free_dev() but leaves
-data->hdev as a dangling pointer. If a subsequent error handler in
-the probe function accesses data->hdev, it would result in a
-use-after-free.
+There are two issues that affect the i2c-imx slave handling:
 
-Although the current probe error path (btintel_pcie_reset_bt) does
-not access data->hdev, setting it to NULL after freeing is a
-defensive fix that prevents potential future bugs.
+1. In i2c_imx_reg_slave(), i2c_imx->slave is checked at the beginning
+   and the function returns -EBUSY if it is non-NULL.  If
+   pm_runtime_resume_and_get() fails later, the error path returns
+   without clearing i2c_imx->slave, leaving it non-NULL.  Subsequent
+   attempts to register a slave will then immediately fail with
+   -EBUSY, making it impossible to register the slave again.  Fix
+   by setting i2c_imx->slave = NULL on the error path.
 
+2. In i2c_imx_unreg_slave(), the slave pointer is set to NULL after
+   disabling interrupts.  However, a pending interrupt might already
+   have started the hrtimer (i2c_imx_slave_timeout) before the pointer
+   was cleared.  If the hrtimer fires after i2c_imx->slave is set to
+   NULL, the timer callback i2c_imx_slave_finish_op() will call
+   i2c_imx_slave_event() with a NULL slave pointer, and the
+   last_slave_event check loop in i2c_imx_slave_finish_op() may cause
+   a system hang because last_slave_event is no longer updated.  Fix
+   by canceling the hrtimer and waiting for it to complete after
+   disabling interrupts, before clearing the slave pointer.
+
+Both issues can trigger a kernel oops, system hang, or permanent
+slave registration failure under certain race conditions.  Add the
+missing NULL assignment and the missing hrtimer cleanup to harden
+the slave path.
+
+Fixes: f7414cd6923f ("i2c: imx: support slave mode for imx I2C driver")
 Cc: stable@vger.kernel.org
-Fixes: 6e65a09f9275 ("Bluetooth: btintel_pcie: Add *setup* function to download firmware")
-Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
+Signed-off-by: Liem <liem16213@gmail.com>
 ---
- drivers/bluetooth/btintel_pcie.c | 1 +
- 1 file changed, 1 insertion(+)
+v1 -> v2:
+  - Instead of adding a NULL check in i2c_imx_slave_event(), cancel
+    the hrtimer and wait for it to finish in i2c_imx_unreg_slave()
+    after disabling interrupts, as suggested by <Carlos Song>.
+    This avoids a potential hang in the last_slave_event loop in
+    i2c_imx_slave_finish_op().
+---
+ drivers/i2c/busses/i2c-imx.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/bluetooth/btintel_pcie.c b/drivers/bluetooth/btintel_pcie.c
-index 37e050763633..56d24467b7d5 100644
---- a/drivers/bluetooth/btintel_pcie.c
-+++ b/drivers/bluetooth/btintel_pcie.c
-@@ -2478,6 +2478,7 @@ static int btintel_pcie_setup_hdev(struct btintel_pcie_data *data)
+diff --git a/drivers/i2c/busses/i2c-imx.c b/drivers/i2c/busses/i2c-imx.c
+index 28313d0fad37..04ffb927aba9 100644
+--- a/drivers/i2c/busses/i2c-imx.c
++++ b/drivers/i2c/busses/i2c-imx.c
+@@ -936,6 +936,7 @@ static int i2c_imx_reg_slave(struct i2c_client *client)
+ 	/* Resume */
+ 	ret = pm_runtime_resume_and_get(i2c_imx->adapter.dev.parent);
+ 	if (ret < 0) {
++		i2c_imx->slave = NULL;
+ 		dev_err(&i2c_imx->adapter.dev, "failed to resume i2c controller");
+ 		return ret;
+ 	}
+@@ -957,7 +958,7 @@ static int i2c_imx_unreg_slave(struct i2c_client *client)
+ 	imx_i2c_write_reg(0, i2c_imx, IMX_I2C_IADR);
  
- exit_error:
- 	hci_free_dev(hdev);
-+	data->hdev = NULL;
- 	return err;
- }
+ 	i2c_imx_reset_regs(i2c_imx);
+-
++	hrtimer_cancel(&i2c_imx->slave_timer);
+ 	i2c_imx->slave = NULL;
  
+ 	/* Suspend */
 -- 
-2.39.5 (Apple Git-154)
+2.53.0
 
 
