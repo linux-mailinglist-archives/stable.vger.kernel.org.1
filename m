@@ -1,153 +1,126 @@
-Return-Path: <stable+bounces-268554-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-268555-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id Kda+H+kzPWq/ywgAu9opvQ
-	(envelope-from <stable+bounces-268554-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 15:58:01 +0200
+	id NrZbFf0zPWrCywgAu9opvQ
+	(envelope-from <stable+bounces-268555-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 15:58:21 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id BA8AE6C6503
-	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 15:58:00 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B702A6C650C
+	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 15:58:20 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=V1XCoLvh;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-268554-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-268554-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=rXYrCJdy;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-268555-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-268555-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 79EE9305749F
-	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 13:54:58 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id D972730154A9
+	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 13:58:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 322BB3451D6;
-	Thu, 25 Jun 2026 13:54:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E89F348883;
+	Thu, 25 Jun 2026 13:58:04 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C31532936C
-	for <stable@vger.kernel.org>; Thu, 25 Jun 2026 13:54:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5572F2E7394;
+	Thu, 25 Jun 2026 13:58:03 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782395697; cv=none; b=oqWpiH4OdOZJe0IORP/vl1poyYNP1iiJyhP8hpPar3Jo/523c63m4VssyqXQR8ODrlR4NSGrz035Mk0d6JO3cjJiCKlKWVAYQ2dAkmVmur4sLbbMj9IsrIUcfoULBJ48/ntsp7wffuRXiraCrMDRaUj3rGcWAK20m/PKybt0YQw=
+	t=1782395884; cv=none; b=FZ4Do9VHEXTD5MWApe4RvmSt4DXKy2EW6+pEXJatmtfOaRAUhaWM4jodce2qTXHLFLWt72dpF6xnX+vbDyMIDwuPJVH+Kh4/i0WN5Qa34qDjiKPUcjWnurACNSvVLW2qQ8V/tCI4+F10GGCTNP7svAMnl1mHLoq8jHQayw2LL10=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782395697; c=relaxed/simple;
-	bh=jho8W/TRhhgyB6sxz5B7/W7j4V8XkBy6joZzfof5dRQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YOkfzsv9YBdXva6xynIcprrhzsbvkmAEgk+Eo30UvjKTIlwhLWcFSYvKewcdghYsnuaQv4NyWMEb2W+vzDhzoXFPpZ+aj8/lxmB4fInHvY3iFMzksWOsqeOdCxP5n6I79s4ZNCOkIpVAN3xGyvtHwm8t0dEDVH1mWs4t4zp4H0w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=V1XCoLvh; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24D1E1F000E9;
-	Thu, 25 Jun 2026 13:54:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782395695;
-	bh=l0oiXDPFOLQj93eKN3HMJ44duZmuABLSkp2DOUYM8ks=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=V1XCoLvh2cgXyCI6dipeYGLzhZtsYHYKQdSNadtaYWqz5kpvCGFZMTXTBZu9N+eGY
-	 omhrmtRP9yBe/xhezeb7n8WdP7qQK9CtKSKabZ3bSOudYput6cZU0fppCPA5g/j4iG
-	 99RJLekdmGcmMKlnzoSPMz0G8BFOo8ZmYEuW/MYbexDeiglroi9l66hXrBYWRfoHeM
-	 Eo6i4FRei4F+CkjL6KFyCTydK/H+lstkSSU//bDnPZOxEdFg2oRIsDSa3fvI6CQIaQ
-	 JwUyrZgwTzBsXfoT1n4lkmmDcaLxv6FvVeUqr4PPaoVcu/PrdpUgMUoCIkQ8lZKquZ
-	 O19Xc9Xs37wgw==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: Stepan Ionichev <sozdayvek@gmail.com>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6.y] serial: 8250_dw: unregister 8250 port if clk_notifier_register() fails
-Date: Thu, 25 Jun 2026 09:54:53 -0400
-Message-ID: <20260625135453.2421817-1-sashal@kernel.org>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <2026062538-lash-atrium-5f0f@gregkh>
-References: <2026062538-lash-atrium-5f0f@gregkh>
+	s=arc-20240116; t=1782395884; c=relaxed/simple;
+	bh=WkpX74Apm5zS3j+opCUVdUTkZMu1z3vSVuewr0vE0WA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=IxLjhtqkBrDeLN+SQQabYPjRSUmjee0jL9n4ak1KWMwZFeWBM6TaDPXB4t68MYjcYECWurRJ78tqvTXS4CspHSIBWXDvJRBB+T0d6oUulDXaoYM5uHsRA5Es2MCKGzGhLB9q8jA392LZ2S+R3UOAXEb2VdlrTTJBCg8H0EfFCEo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rXYrCJdy; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52D751F000E9;
+	Thu, 25 Jun 2026 13:58:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
+	s=korg; t=1782395882;
+	bh=tc+ZdzXRZteGRMtjR4CniifwuVl4SgWaauwfcCEypNU=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=rXYrCJdyjnxpsIjwNB43it0OboJBvuFr+8wBU+n4wpKJm7PthsSxs3TNiqbzuPMio
+	 MXr16C/loNOeILGs/+sQkc1Qt7p9YIRRZeCU+Sox80JuYSIEN9g9S1jCg51k3LDUOz
+	 S4Z1x57qnuswWmB40dldCGZ7ldwZyTtFN85xzlOA=
+Date: Thu, 25 Jun 2026 14:56:50 +0100
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Nikhil Solanke <nikhilsolanke5@gmail.com>
+Cc: linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org,
+	stern@rowland.harvard.edu, michal.pecio@gmail.com,
+	stable@vger.kernel.org, corbet@lwn.net, skhan@linuxfoundation.org,
+	linux-doc@vger.kernel.org
+Subject: Re: [PATCH v2] usbcore: Add quirk for 255-bytes initial config read
+Message-ID: <2026062551-irritably-monotype-a70b@gregkh>
+References: <20260623161035.5792-1-nikhilsolanke5@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260623161035.5792-1-nikhilsolanke5@gmail.com>
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-3.66 / 15.00];
-	WHITELIST_SPF_DKIM(-3.00)[kernel.org:d:+,kernel.org:s:+];
+X-Spamd-Result: default: False [3.84 / 15.00];
+	MID_END_EQ_FROM_USER_PART(4.00)[];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
+	MID_RHS_NOT_FQDN(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-268554-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-268555-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:nikhilsolanke5@gmail.com,m:linux-usb@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:stern@rowland.harvard.edu,m:michal.pecio@gmail.com,m:stable@vger.kernel.org,m:corbet@lwn.net,m:skhan@linuxfoundation.org,m:linux-doc@vger.kernel.org,m:michalpecio@gmail.com,s:lists@lfdr.de];
+	FREEMAIL_TO(0.00)[gmail.com];
 	MIME_TRACE(0.00)[0:+];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:sozdayvek@gmail.com,m:andriy.shevchenko@linux.intel.com,m:gregkh@linuxfoundation.org,m:sashal@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_SENDER(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FORWARDED(0.00)[lists@lfdr.de];
-	FREEMAIL_CC(0.00)[gmail.com,linux.intel.com,linuxfoundation.org,kernel.org];
-	DKIM_TRACE(0.00)[kernel.org:+];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[vger.kernel.org,rowland.harvard.edu,gmail.com,lwn.net,linuxfoundation.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	TO_DN_SOME(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
 	ALIAS_RESOLVED(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	TAGGED_RCPT(0.00)[stable];
+	MISSING_XM_UA(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,vger.kernel.org:from_smtp,msgid.link:url,intel.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,gregkh:mid]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: BA8AE6C6503
+X-Rspamd-Queue-Id: B702A6C650C
 
-From: Stepan Ionichev <sozdayvek@gmail.com>
+On Tue, Jun 23, 2026 at 09:40:35PM +0530, Nikhil Solanke wrote:
+> @@ -912,6 +915,13 @@ int usb_get_configuration(struct usb_device *dev)
+>  	unsigned char *bigbuffer;
+>  	struct usb_config_descriptor *desc;
+>  	int result;
+> +	/*
+> +	 * Devices with quirky firmware will stall or reset when asked only for
+> +	 * the configuration header. This variable decides which size to use in
+> +	 * that case, if the quirk for that device was set.
+> +	 */
+> +	size_t usb_config_req_size = (dev->quirks & USB_QUIRK_WINDOWS_CONFIG_REQ_SIZE)
+> +		? USB_CONFIG_WINDOWS_REQ_SIZE : USB_DT_CONFIG_SIZE;
 
-[ Upstream commit 10fc708b4de7f86002d2d735a2dbf3b5b7f65692 ]
+Please just use if () lines for code logic like this.  Don't abuse ?:
+stuff as it's not needed.  Remember, we write code for people first,
+compilers second, and in this case the compiler doesn't care either way
+at all, but an if () line makes people much happier.
 
-dw8250_probe() registers the 8250 port via serial8250_register_8250_port()
-and then, if the device has a clock, registers a clock notifier. If
-clk_notifier_register() fails, probe returns the error but leaves the
-8250 port registered. The matching serial8250_unregister_port() lives
-in dw8250_remove(), which is not called when probe fails, so the port
-slot stays occupied until the device is rebound or the system is
-rebooted. The devm-allocated driver data is freed while the port still
-references it (via the saved private_data and serial_in/serial_out
-callbacks), so any access to that port slot before a rebind is a
-use-after-free hazard.
+thanks,
 
-Unregister the port on the clk_notifier_register() error path.
-
-Fixes: cc816969d7b5 ("serial: 8250_dw: Fix common clocks usage race condition")
-Cc: stable@vger.kernel.org
-Signed-off-by: Stepan Ionichev <sozdayvek@gmail.com>
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Link: https://patch.msgid.link/20260514143746.23671-2-sozdayvek@gmail.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- drivers/tty/serial/8250/8250_dw.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/tty/serial/8250/8250_dw.c b/drivers/tty/serial/8250/8250_dw.c
-index 60a05bfecde39c..d1cf00cd945d97 100644
---- a/drivers/tty/serial/8250/8250_dw.c
-+++ b/drivers/tty/serial/8250/8250_dw.c
-@@ -688,8 +688,10 @@ static int dw8250_probe(struct platform_device *pdev)
- 	 */
- 	if (data->clk) {
- 		err = clk_notifier_register(data->clk, &data->clk_notifier);
--		if (err)
-+		if (err) {
-+			serial8250_unregister_port(data->data.line);
- 			return dev_err_probe(dev, err, "Failed to set the clock notifier\n");
-+		}
- 		queue_work(system_unbound_wq, &data->clk_work);
- 	}
- 
--- 
-2.53.0
-
+greg k-h
 
