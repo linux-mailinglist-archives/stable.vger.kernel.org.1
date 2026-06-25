@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-268522-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-268514-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id TP/6HLMpPWoVyQgAu9opvQ
-	(envelope-from <stable+bounces-268522-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 15:14:27 +0200
+	id 6i99E5YpPWoOyQgAu9opvQ
+	(envelope-from <stable+bounces-268514-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 15:13:58 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C015F6C60B0
-	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 15:14:26 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id B3B1A6C609C
+	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 15:13:57 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=pjwq7p2o;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-268522-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-268522-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=QGR0O+Gs;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-268514-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-268514-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id EBED1303CE13
-	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 13:12:08 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 1C0CD300F5D4
+	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 13:11:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F5E72EC086;
-	Thu, 25 Jun 2026 13:12:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE6C32F9998;
+	Thu, 25 Jun 2026 13:11:43 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 152CA2E040D;
-	Thu, 25 Jun 2026 13:12:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE7922F7F11;
+	Thu, 25 Jun 2026 13:11:40 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782393128; cv=none; b=KOZUODhwJ8ymeKPNCrqUL0yCwpwrYuVSYZdGxcNY69yEok+h/B1EwuTOyO6VG9B9bLP1OqyDZQG3vTp/3cUszLinCOlSIxmTYCJvbU0hyrvK653Iitb2YxCSgevyx9VJeVgYlULIeR12/jURJQ1L5tV+QYtfSPWcjg3y1Gwtu90=
+	t=1782393103; cv=none; b=A0o1u//eDCkU4ujTtDTCRorkba7iHLg5ZUNUBPJFdFM+USb6N9KRkK+NvLGjN4jl3c5rkcg2eANnEPe+rRulUolvD2C55ADym3W6NOCu51A8HR3HsKrqYa+OL3QGTqU1H2taM8E4QgDzHn4rWKDGu2sZtIrlw7pRU/41wRzYmj8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782393128; c=relaxed/simple;
-	bh=STjVY59kaZ92By61VpR6H2Tr4VcFW7ZT0bMZ3DVpGD8=;
+	s=arc-20240116; t=1782393103; c=relaxed/simple;
+	bh=aXFzI+NBl+7RDEMEh2l/mXTZ0R037bBHEyy8SIKisv4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=F34Zw+S3EyU74mzcs24C1aJuQ8CCBXglJtIfL/ErGaLfXk9ogxSU4bgQLZHnxjBcr3GAaw7+B8H5Y9Yw6nTq21OZRibMiWhlA/FnlyM4WsJ0jc354f7yVNOOf3PMlgaEkBNRnykgJac7UZ7Ez76eECqlff/18vbSNzlSryj+Seg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pjwq7p2o; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A5171F000E9;
-	Thu, 25 Jun 2026 13:12:06 +0000 (UTC)
+	 MIME-Version; b=hL/8/6a+Bp6drJGFaF8I0sbTX4Z8NTJZHaV+Eb2oY7K44f1c+neLUqWGGMkN6a0W8PcNs607Gl5xB8y85uQAFJMZ19H9RTFgavMGUDO0jUUuCALKsZCKa4U3JbgxMGHgTg5/YbTfhEdvkvoMrDsTGkn9vd07cjQVMa5fkd69/m4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QGR0O+Gs; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ECB601F000E9;
+	Thu, 25 Jun 2026 13:11:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1782393127;
-	bh=hb4DWf+fRFxnJor3r9V9B4H9TfFTsnARdV9qbOIylKM=;
+	s=korg; t=1782393100;
+	bh=ypxRrCTob/EnM5lLRf4QvV778IP5HtId8L6PptjuwhY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=pjwq7p2o4Bwj+AjxToU3AcydvYVUlLZ3Fx1JFw4JdPQVBjp2LCG8uCOT6pUJJzPS4
-	 pt70qcArUKHTlRs1ShC6bJfoGSQ9zjpW+ZlSavsyKofOLspgL0rXF9BQCyNe8I5aZI
-	 pI43ptkFAb76IaYu8m2ptAoaQNrpUA7TllwqS89o=
+	b=QGR0O+Gs0pT0hSn1AouSnZd0rHPT7QQBwmT5B7I3NYt8HQOE8nuFcV2+5xkGe7ePq
+	 NWiePI6O9omWxnwipHttnh1vTc5Twi588+EkQYiaDBXE9Fo7BIGQ1Pf/uraxCDJmX5
+	 +5DHyzwmojcPG9djVna9fjvjCnQYLK6ciazVm/As=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mingyu Wang <25181214217@stu.xidian.edu.cn>,
-	Lukas Wunner <lukas@wunner.de>
-Subject: [PATCH 7.1 04/21] agp/amd64: Fix broken error propagation in agp_amd64_probe()
+	Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>,
+	Viken Dadhaniya <viken.dadhaniya@oss.qualcomm.com>
+Subject: [PATCH 7.0 44/49] serial: qcom_geni: Fix RX DMA stall when SE_DMA_RX_LEN_IN is zero
 Date: Thu, 25 Jun 2026 14:03:56 +0100
-Message-ID: <20260625125613.826123670@linuxfoundation.org>
+Message-ID: <20260625125643.705630978@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260625125613.243729608@linuxfoundation.org>
-References: <20260625125613.243729608@linuxfoundation.org>
+In-Reply-To: <20260625125637.527552689@linuxfoundation.org>
+References: <20260625125637.527552689@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,21 +71,21 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-268522-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-268514-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:25181214217@stu.xidian.edu.cn,m:lukas@wunner.de,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:bartosz.golaszewski@oss.qualcomm.com,m:viken.dadhaniya@oss.qualcomm.com,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
@@ -97,61 +97,59 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,xidian.edu.cn:email,wunner.de:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,qualcomm.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: C015F6C60B0
+X-Rspamd-Queue-Id: B3B1A6C609C
 
-7.1-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mingyu Wang <25181214217@stu.xidian.edu.cn>
+From: Viken Dadhaniya <viken.dadhaniya@oss.qualcomm.com>
 
-commit b08472db93b1ccff84a7adec5779d47f0e9d3a30 upstream.
+commit b93062b6d8a1b2d9bad235cac25558a909819026 upstream.
 
-A NULL pointer dereference was observed in the AMD64 AGP driver when
-running in a virtualized environment (e.g. qemu/kvm) without a physical
-AMD northbridge. The crash occurs in amd64_fetch_size() when attempting
-to dereference the pointer returned by node_to_amd_nb(0).
+In qcom_geni_serial_handle_rx_dma(), geni_se_rx_dma_unprep() clears
+port->rx_dma_addr before SE_DMA_RX_LEN_IN is read. If the register is zero,
+for example when the RX stale counter fires on an idle line, the handler
+returns without calling geni_se_rx_dma_prep().
 
-The root cause of this crash is broken error propagation in
-agp_amd64_probe(): When no AMD northbridges are found, cache_nbs()
-correctly returns -ENODEV. However, the probe function erroneously
-checks the return value against exactly -1, rather than < 0.
+The next RX DMA interrupt then hits the !port->rx_dma_addr guard and
+returns immediately, so the RX DMA buffer is never rearmed and later input
+is lost.
 
-As a result, the hardware absence error is masked, allowing the driver
-to improperly proceed with initialization. It eventually calls
-agp_add_bridge(), which invokes amd64_fetch_size(). Since the hardware
-does not exist, node_to_amd_nb(0) returns NULL, leading to a General
-Protection Fault (GPF) when accessing its ->misc member.
+Keep the handler on the rearm path when rx_in is zero. Warn about the
+unexpected zero-length DMA completion, skip received-data handling, and
+always call geni_se_rx_dma_prep().
 
-Fix the issue by correcting the error check in agp_amd64_probe() to
-abort properly when cache_nbs() returns any negative error code. This
-prevents the driver from erroneously proceeding without hardware, thereby
-avoiding the subsequent NULL pointer dereference at its source.
-
-Fixes: a32073bffc65 ("[PATCH] x86_64: Clean and enhance up K8 northbridge access code")
-Signed-off-by: Mingyu Wang <25181214217@stu.xidian.edu.cn>
-Signed-off-by: Lukas Wunner <lukas@wunner.de>
-Reviewed-by: Lukas Wunner <lukas@wunner.de>
-Cc: stable@vger.kernel.org # v2.6.18+
-Link: https://patch.msgid.link/20260504074823.99377-1-w15303746062@163.com
+Fixes: 2aaa43c70778 ("tty: serial: qcom-geni-serial: add support for serial engine DMA")
+Cc: stable@vger.kernel.org
+Reviewed-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
+Signed-off-by: Viken Dadhaniya <viken.dadhaniya@oss.qualcomm.com>
+Link: https://patch.msgid.link/20260528-serial-rx-0-byte-fix-v2-1-b4195cfe342f@oss.qualcomm.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/char/agp/amd64-agp.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/tty/serial/qcom_geni_serial.c |    9 +++------
+ 1 file changed, 3 insertions(+), 6 deletions(-)
 
---- a/drivers/char/agp/amd64-agp.c
-+++ b/drivers/char/agp/amd64-agp.c
-@@ -546,7 +546,7 @@ static int agp_amd64_probe(struct pci_de
- 	/* Fill in the mode register */
- 	pci_read_config_dword(pdev, bridge->capndx+PCI_AGP_STATUS, &bridge->mode);
+--- a/drivers/tty/serial/qcom_geni_serial.c
++++ b/drivers/tty/serial/qcom_geni_serial.c
+@@ -904,12 +904,9 @@ static void qcom_geni_serial_handle_rx_d
+ 	port->rx_dma_addr = 0;
  
--	if (cache_nbs(pdev, cap_ptr) == -1) {
-+	if (cache_nbs(pdev, cap_ptr) < 0) {
- 		agp_put_bridge(bridge);
- 		return -ENODEV;
- 	}
+ 	rx_in = readl(uport->membase + SE_DMA_RX_LEN_IN);
+-	if (!rx_in) {
+-		dev_warn(uport->dev, "serial engine reports 0 RX bytes in!\n");
+-		return;
+-	}
+-
+-	if (!drop)
++	if (!rx_in)
++		dev_warn_ratelimited(uport->dev, "serial engine reports 0 RX bytes in!\n");
++	else if (!drop)
+ 		handle_rx_uart(uport, rx_in);
+ 
+ 	ret = geni_se_rx_dma_prep(&port->se, port->rx_buf,
 
 
 
