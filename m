@@ -1,61 +1,59 @@
-Return-Path: <stable+bounces-268516-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-268511-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id tXFpJp0pPWoPyQgAu9opvQ
-	(envelope-from <stable+bounces-268516-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 15:14:05 +0200
+	id nqLUF2YpPWoAyQgAu9opvQ
+	(envelope-from <stable+bounces-268511-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 15:13:10 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E65396C609F
-	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 15:14:04 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0FF246C606A
+	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 15:13:10 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=Syy1DtXS;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-268516-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-268516-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=ADCMiglJ;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-268511-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-268511-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 47DA4302351A
-	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 13:11:50 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id DB08D305EFDD
+	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 13:11:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A65B2E7374;
-	Thu, 25 Jun 2026 13:11:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 405641F03DE;
+	Thu, 25 Jun 2026 13:11:32 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8C5F2C0F6C;
-	Thu, 25 Jun 2026 13:11:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09AAA29B77C;
+	Thu, 25 Jun 2026 13:11:30 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782393109; cv=none; b=Url9hTl7PskCBN6xwzgEtHar2Vr0wMDDgCNt8TJ/XSJ1tBLMxKuFuF24McvRn+gvTtZa98CADzviw8GXlSSbUY74l2cwTrj1L0rG/i0XqlagVqu1PHNwIQLKZgHaY3ssMu4FBY1EjoJ1E9UEoP1lYZzldkgdt1NXEBERVf6GUhI=
+	t=1782393092; cv=none; b=dANr0rwk6Rs061W9wOGe6DvlPQutvdIf3Rn1hxjXckGJjr5lv4ZB1+SXKBi9sRZhhVptZqCavJLv6j/XWj/mlZLbAd4cL7CiQi7LhzAU0Yt7KeetHlV8CIDZJwdCRXWEB1JTTFtwUe9atl1ymu0R8SOIOGNZ7drbn3sICtS4vLo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782393109; c=relaxed/simple;
-	bh=1bBTHj8jLobwzBpuZDFurOQmCY1MDbVtlRrT3+xJmxc=;
+	s=arc-20240116; t=1782393092; c=relaxed/simple;
+	bh=U29JaSPFdth0W3i93z8glwy0wwD1X/UdMM4dZJnTG8k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XUwBThBiy27BpvW9ZcNrgPcMyHTxIRV0aMV4ezsgxylBRaY7Rl+k76AGrr8RJSh+m5TL7OfIgfXg0n4h2JanwwQJQZzG6HVF5Ve2IOIwwHstXQTUliwB5qA07ij3ebAzmDu6XWbD32BQ9J/gDb1sa62BnAbTmUlYTndcOvH8rZg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Syy1DtXS; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8AE8D1F000E9;
-	Thu, 25 Jun 2026 13:11:46 +0000 (UTC)
+	 MIME-Version; b=iojdq1RGqO0Bt+7WS6GMHhK6mrmHmVSme3I+2ZDxr6d08VZ/AFAG10WWtpOSSJZ9jz4ZZgOBuyliK+8FU7cb/BIW8pOKsh5PBuYWDLLVsqyJER6UvUeboGglsmOif/Q1QtX//mGEUx3ZRM9vGp8gus3F8K8QC2gnNnxbN0wMbo4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ADCMiglJ; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10EAF1F00A3A;
+	Thu, 25 Jun 2026 13:11:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1782393107;
-	bh=XViU7dSi4VEFWSMhINEaXnIltKCau2lVYHkgO0fRiAk=;
+	s=korg; t=1782393090;
+	bh=KAM/1qLCoNKhjnL+pjuoW2vUSMFY9hqKYFn9BfvHe7s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Syy1DtXSGy44f7dvX2JFgvBxoPoVRUt2EPYGFiOfWr9JVn0gAbJccTA2+jN1iWbt5
-	 /zfcGOTkwYDVgPNXfhbdBKrhFKq6pp4Rxhlt3s2O5IBqyPemCmAP/V63/iNLoyfb3o
-	 A7R6roGyPhDSNMLf/UiHX+GGkkuoMDt9dVs92r5A=
+	b=ADCMiglJnANZ1oM1BzPno7Rxgzt9+zIYK+bAdsUd/8JSD8mjqeqQJf2XayNOxTBBh
+	 GJE+NBSK7J+43F2oW8K+XDvwa+6UeTworP/Ag4xxReYkQ4PWmRsdnJ788ZNcuDavLK
+	 83Cy5ipi8VSAv88ecZa+NrZzOo/UpoUoRQGiARD8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gabriel Krisman Bertazi <krisman@suse.de>,
-	Jens Axboe <axboe@kernel.dk>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.1 01/21] io_uring/net: Avoid msghdr on op_connect/op_bind async data
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Subject: [PATCH 7.0 41/49] Input: rmi4 - fix bit count in bitmap_copy()
 Date: Thu, 25 Jun 2026 14:03:53 +0100
-Message-ID: <20260625125613.436060617@linuxfoundation.org>
+Message-ID: <20260625125643.299523917@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260625125613.243729608@linuxfoundation.org>
-References: <20260625125613.243729608@linuxfoundation.org>
+In-Reply-To: <20260625125637.527552689@linuxfoundation.org>
+References: <20260625125637.527552689@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,214 +65,89 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-268516-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:krisman@suse.de,m:axboe@kernel.dk,m:sashal@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-268511-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:dmitry.torokhov@gmail.com,m:dmitrytorokhov@gmail.com,s:lists@lfdr.de];
+	RCPT_COUNT_THREE(0.00)[4];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[kernel.dk:email,msgid.link:url,suse.de:email,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,vger.kernel.org:from_smtp,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: E65396C609F
+X-Rspamd-Queue-Id: 0FF246C606A
 
-7.1-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gabriel Krisman Bertazi <krisman@suse.de>
+From: Dmitry Torokhov <dmitry.torokhov@gmail.com>
 
-[ Upstream commit 3979840cd858f30f43ea9f4e7f7f1f56de82d698 ]
-This fixes a memory leak due to the lack of the cleanup hook for the
-iovec.  The stable backport differs from upstream by dropping the
-io_connect_bpf_populate hunk, which didn't exist at the time and by
-fixing the merge conflict due to the introduction of
-io_bind_file_create.
+commit f22dbbcbd1f70ed004a7bf8837e0f0c3cc230b78 upstream.
 
-Both IORING_OP_CONNECT and IORING_OP_BIND reuse the msghdr object just
-to store the sockaddr. Beyond allocating a much larger object than
-needed, msghdr can also wrap an iovec, which will be recycled
-unnecessarily. This uses the sockaddr directly.
+bitmap_copy() takes number of bits, not bytes (or longs). Correct
+the bit count in rmi_driver_set_irq_bits() and
+rmi_driver_clear_irq_bits().
 
+Fixes: 2b6a321da9a2 ("Input: synaptics-rmi4 - add support for Synaptics RMI4 devices")
 Cc: stable@vger.kernel.org
-Signed-off-by: Gabriel Krisman Bertazi <krisman@suse.de>
-Link: https://patch.msgid.link/20260602215327.1885109-2-krisman@suse.de
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Gabriel Krisman Bertazi <krisman@suse.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Assisted-by: Gemini:gemini-3.1-pro
+Link: https://patch.msgid.link/20260505045952.1570713-7-dmitry.torokhov@gmail.com
+Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- io_uring/net.c   | 36 ++++++++++++++++++------------------
- io_uring/opdef.c |  4 ++--
- 2 files changed, 20 insertions(+), 20 deletions(-)
+ drivers/input/rmi4/rmi_driver.c |    7 +++----
+ 1 file changed, 3 insertions(+), 4 deletions(-)
 
-diff --git a/io_uring/net.c b/io_uring/net.c
-index ee848eb65ec99e..bf60cd393b11a5 100644
---- a/io_uring/net.c
-+++ b/io_uring/net.c
-@@ -1733,7 +1733,7 @@ int io_socket(struct io_kiocb *req, unsigned int issue_flags)
- int io_connect_prep(struct io_kiocb *req, const struct io_uring_sqe *sqe)
- {
- 	struct io_connect *conn = io_kiocb_to_cmd(req, struct io_connect);
--	struct io_async_msghdr *io;
-+	struct sockaddr_storage *addr;
+--- a/drivers/input/rmi4/rmi_driver.c
++++ b/drivers/input/rmi4/rmi_driver.c
+@@ -388,9 +388,8 @@ static int rmi_driver_set_irq_bits(struc
+ 							__func__);
+ 		goto error_unlock;
+ 	}
+-	bitmap_copy(data->current_irq_mask, data->new_irq_mask,
+-		    data->num_of_irq_regs);
  
- 	if (sqe->len || sqe->buf_index || sqe->rw_flags || sqe->splice_fd_in)
- 		return -EINVAL;
-@@ -1742,17 +1742,17 @@ int io_connect_prep(struct io_kiocb *req, const struct io_uring_sqe *sqe)
- 	conn->addr_len =  READ_ONCE(sqe->addr2);
- 	conn->in_progress = conn->seen_econnaborted = false;
++	bitmap_copy(data->current_irq_mask, data->new_irq_mask, data->irq_count);
+ 	bitmap_or(data->fn_irq_bits, data->fn_irq_bits, mask, data->irq_count);
  
--	io = io_msg_alloc_async(req);
--	if (unlikely(!io))
-+	addr = io_uring_alloc_async_data(NULL, req);
-+	if (unlikely(!addr))
- 		return -ENOMEM;
- 
--	return move_addr_to_kernel(conn->addr, conn->addr_len, &io->addr);
-+	return move_addr_to_kernel(conn->addr, conn->addr_len, addr);
- }
- 
- int io_connect(struct io_kiocb *req, unsigned int issue_flags)
- {
- 	struct io_connect *connect = io_kiocb_to_cmd(req, struct io_connect);
--	struct io_async_msghdr *io = req->async_data;
-+	struct sockaddr_storage *addr = req->async_data;
- 	unsigned file_flags;
- 	int ret;
- 	bool force_nonblock = issue_flags & IO_URING_F_NONBLOCK;
-@@ -1766,8 +1766,7 @@ int io_connect(struct io_kiocb *req, unsigned int issue_flags)
- 
- 	file_flags = force_nonblock ? O_NONBLOCK : 0;
- 
--	ret = __sys_connect_file(req->file, &io->addr, connect->addr_len,
--				 file_flags);
-+	ret = __sys_connect_file(req->file, addr, connect->addr_len, file_flags);
- 	if ((ret == -EAGAIN || ret == -EINPROGRESS || ret == -ECONNABORTED)
- 	    && force_nonblock) {
- 		if (ret == -EINPROGRESS) {
-@@ -1796,7 +1795,6 @@ int io_connect(struct io_kiocb *req, unsigned int issue_flags)
- out:
- 	if (ret < 0)
- 		req_set_fail(req);
--	io_req_msg_cleanup(req, issue_flags);
- 	io_req_set_res(req, ret, 0);
- 	return IOU_COMPLETE;
- }
-@@ -1806,15 +1804,15 @@ int io_connect(struct io_kiocb *req, unsigned int issue_flags)
-  * which in turn end up in mnt_want_write() which will grab the fs
-  * percpu start write sem. This can trigger a lockdep warning.
-  */
--static int io_bind_file_create(const struct io_async_msghdr *io, int addr_len)
-+static int io_bind_file_create(const struct sockaddr_storage *addr, int addr_len)
- {
- 	const struct sockaddr_un *sun;
- 
--	if (io->addr.ss_family != AF_UNIX)
-+	if (addr->ss_family != AF_UNIX)
- 		return 0;
- 	if (addr_len <= offsetof(struct sockaddr_un, sun_path))
- 		return 0;
--	sun = (const struct sockaddr_un *) &io->addr;
-+	sun = (const struct sockaddr_un *) addr;
- 	return sun->sun_path[0] != '\0';
- }
- 
-@@ -1822,7 +1820,7 @@ int io_bind_prep(struct io_kiocb *req, const struct io_uring_sqe *sqe)
- {
- 	struct io_bind *bind = io_kiocb_to_cmd(req, struct io_bind);
- 	struct sockaddr __user *uaddr;
--	struct io_async_msghdr *io;
-+	struct sockaddr_storage *addr;
- 	int ret;
- 
- 	if (sqe->len || sqe->buf_index || sqe->rw_flags || sqe->splice_fd_in)
-@@ -1831,21 +1829,23 @@ int io_bind_prep(struct io_kiocb *req, const struct io_uring_sqe *sqe)
- 	uaddr = u64_to_user_ptr(READ_ONCE(sqe->addr));
- 	bind->addr_len =  READ_ONCE(sqe->addr2);
- 
--	io = io_msg_alloc_async(req);
--	if (unlikely(!io))
-+	addr = io_uring_alloc_async_data(NULL, req);
-+	if (unlikely(!addr))
- 		return -ENOMEM;
--	ret = move_addr_to_kernel(uaddr, bind->addr_len, &io->addr);
+ error_unlock:
+@@ -419,8 +418,8 @@ static int rmi_driver_clear_irq_bits(str
+ 							__func__);
+ 		goto error_unlock;
+ 	}
+-	bitmap_copy(data->current_irq_mask, data->new_irq_mask,
+-		    data->num_of_irq_regs);
 +
-+	ret = move_addr_to_kernel(uaddr, bind->addr_len, addr);
- 	if (unlikely(ret))
- 		return ret;
--	if (io_bind_file_create(io, bind->addr_len))
-+	if (io_bind_file_create(addr, bind->addr_len))
- 		req->flags |= REQ_F_FORCE_ASYNC;
- 	return 0;
- }
++	bitmap_copy(data->current_irq_mask, data->new_irq_mask, data->irq_count);
  
-+
- int io_bind(struct io_kiocb *req, unsigned int issue_flags)
- {
- 	struct io_bind *bind = io_kiocb_to_cmd(req, struct io_bind);
--	struct io_async_msghdr *io = req->async_data;
-+	struct sockaddr_storage *addr = req->async_data;
- 	struct socket *sock;
- 	int ret;
- 
-@@ -1853,7 +1853,7 @@ int io_bind(struct io_kiocb *req, unsigned int issue_flags)
- 	if (unlikely(!sock))
- 		return -ENOTSOCK;
- 
--	ret = __sys_bind_socket(sock, &io->addr, bind->addr_len);
-+	ret = __sys_bind_socket(sock, addr, bind->addr_len);
- 	if (ret < 0)
- 		req_set_fail(req);
- 	io_req_set_res(req, ret, 0);
-diff --git a/io_uring/opdef.c b/io_uring/opdef.c
-index c3ef52b7081132..34cd320a427b8f 100644
---- a/io_uring/opdef.c
-+++ b/io_uring/opdef.c
-@@ -203,7 +203,7 @@ const struct io_issue_def io_issue_defs[] = {
- 		.unbound_nonreg_file	= 1,
- 		.pollout		= 1,
- #if defined(CONFIG_NET)
--		.async_size		= sizeof(struct io_async_msghdr),
-+		.async_size		= sizeof(struct sockaddr_storage),
- 		.prep			= io_connect_prep,
- 		.issue			= io_connect,
- #else
-@@ -503,7 +503,7 @@ const struct io_issue_def io_issue_defs[] = {
- 		.needs_file		= 1,
- 		.prep			= io_bind_prep,
- 		.issue			= io_bind,
--		.async_size		= sizeof(struct io_async_msghdr),
-+		.async_size		= sizeof(struct sockaddr_storage),
- #else
- 		.prep			= io_eopnotsupp_prep,
- #endif
--- 
-2.53.0
-
+ error_unlock:
+ 	mutex_unlock(&data->irq_mutex);
 
 
 
