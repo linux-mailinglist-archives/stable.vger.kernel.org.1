@@ -1,166 +1,189 @@
-Return-Path: <stable+bounces-268629-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-268630-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id tdDiDjlgPWqz2AgAu9opvQ
-	(envelope-from <stable+bounces-268629-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 19:07:05 +0200
+	id QUlzHkRgPWq12AgAu9opvQ
+	(envelope-from <stable+bounces-268630-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 19:07:16 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 915456C7B23
-	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 19:07:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C51C76C7B2C
+	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 19:07:15 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=intel.com header.s=Intel header.b=asBWxr5S;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-268629-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-268629-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=none) header.from=intel.com;
+	dkim=none;
+	dmarc=none;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-268630-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-268630-lists+stable=lfdr.de@vger.kernel.org";
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A2BDF3006161
-	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 17:03:14 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 729CA300A38E
+	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 17:03:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C15B3AA1B0;
-	Thu, 25 Jun 2026 17:03:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D44253AA1B0;
+	Thu, 25 Jun 2026 17:03:36 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
+Received: from maynard.decadent.org.uk (maynard.decadent.org.uk [65.21.191.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 907DB1D5174
-	for <stable@vger.kernel.org>; Thu, 25 Jun 2026 17:03:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67EBA23E25B;
+	Thu, 25 Jun 2026 17:03:34 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782406994; cv=none; b=f8p3yatOjHqiR25pHcUpi3wUHrstlJ3MfPxDA7fCkz5Rq7Q2lenwifApwk6AqGIo+m5Wznk0av45Vl/646FPO6+Fu4rfh+kusSF8Wyep/93cz05BsZb3FkVOW40wqJrRPj1PSdNV7S9RNmmVIEzu2HskzFNQKzl9U5BPRdxXbIk=
+	t=1782407016; cv=none; b=f19BIrT9b61orhfC7Hh5xJGLPSsJkXyi2AZjsB1uJx+Wk6WjsXk3FAcE6ep/KeGNK1YSmD8qbVhNC6s6P7jW1bJg3cLGutPHat3O0TP4w6xxHuZ4F83eE1d8CpSvqnb6Vcs22vcvc/buAVovRx+9W/v4eNZHqiWn1wuu1UDmjrE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782406994; c=relaxed/simple;
-	bh=fcnuWjNDpxYoqPLJY8tZDCmNmusN3hivYrhzF//HNOM=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=b4GrTBGojDPMRfXR/VXUaPh/kYZFuHI4navgDRjmxZoTt88vZc+sy8YYuSIs2GF8vRGXFUfHpgfdAuJgHwKY46vbLW6jlcDiJT1nKmLlTjssG9gLjQxvRgf+z/lhs37KJ+JrDQvPIvlIn0ltT9VqN+ZQ/9yqbeQrQpWaqV+rjhA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=asBWxr5S; arc=none smtp.client-ip=198.175.65.18
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1782406993; x=1813942993;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=fcnuWjNDpxYoqPLJY8tZDCmNmusN3hivYrhzF//HNOM=;
-  b=asBWxr5SfmzMAFHZ1kDLbe7YGTuByxTqjogNoXuod6un8VDGO9BwHHsh
-   QQ89HVNCfKWNzVuQiSDu2/uFzoVMzCCXVoFGfQt/OXqCi/Y4IvCnff6Jd
-   p9o8aqC7XUzkwVrA/AxITVhiTWO0VnbWdzRYUFybvKk6AI6OU/zrB7GDp
-   ISjvoJ8YZ8gRLO/KoJF/df7aX0rHW5qnaJPgpwkwo2hyYggtPnAhvpUsv
-   b+opbPfDryZMIrrpozjpdmIu6Us00g3mEYeolUtQRMy7NPCmlARaMeSAR
-   aQMxma2dmjqW/2X5231bN6jgAY4N7hVjoy9I8ajelTHpyat+bM62cHr8I
-   Q==;
-X-CSE-ConnectionGUID: VhN0uIytSoW8Lk0QnbAyTw==
-X-CSE-MsgGUID: unynUmwRS4enduyDu9lUZw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11828"; a="83289076"
-X-IronPort-AV: E=Sophos;i="6.24,224,1774335600"; 
-   d="scan'208";a="83289076"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
-  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Jun 2026 10:03:12 -0700
-X-CSE-ConnectionGUID: 6s39jCKiRr+xXiPP/nKRFA==
-X-CSE-MsgGUID: zWSJR28ZToikF1c6x2A8ag==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.24,224,1774335600"; 
-   d="scan'208";a="274187306"
-Received: from ijarvine-mobl1.ger.corp.intel.com (HELO localhost) ([10.245.245.126])
-  by fmviesa002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Jun 2026 10:03:09 -0700
-From: Jani Nikula <jani.nikula@intel.com>
-To: intel-gfx@lists.freedesktop.org,
-	intel-xe@lists.freedesktop.org
-Cc: jani.nikula@intel.com,
-	Martin Hodo <martin.hodo@intel.com>,
-	stable@vger.kernel.org,
-	Anshuman Gupta <anshuman.gupta@intel.com>,
-	Suraj Kandpal <suraj.kandpal@intel.com>
-Subject: [PATCH] drm/i915/hdcp: check streams[] bounds before overflow
-Date: Thu, 25 Jun 2026 20:03:04 +0300
-Message-ID: <20260625170304.1104723-1-jani.nikula@intel.com>
-X-Mailer: git-send-email 2.47.3
+	s=arc-20240116; t=1782407016; c=relaxed/simple;
+	bh=TkaC+ITyc5ECGcY11xX9NJOyBuFYLfP2h/nqfbyS8KM=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=Jh51cb02wJsbPt/itLSPdtp00yF4zRNZTaPIn+RIH7wblJUre7QlcxOm/wHuv2GX0sskqjX9egpikOXzdZgbPNL+IFd8IFtjETJ0t6Xnlpi6WwaX0H5UVJk7aTXt+2XoWLPdgx3qpefOhqhGnB0/BXFk7GKZSQPgPon4jkT2SY8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=decadent.org.uk; spf=pass smtp.mailfrom=decadent.org.uk; arc=none smtp.client-ip=65.21.191.19
+Received: from [2a02:578:851f:1502:391e:c5f5:10e2:b9a3] (helo=deadeye)
+	by maynard with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <ben@decadent.org.uk>)
+	id 1wcnU5-004JTU-0c;
+	Thu, 25 Jun 2026 17:03:25 +0000
+Received: from ben by deadeye with local (Exim 4.99.3)
+	(envelope-from <ben@decadent.org.uk>)
+	id 1wcnU3-00000008Sti-30x4;
+	Thu, 25 Jun 2026 19:03:23 +0200
+Message-ID: <0e31e18e9567e8d58fbb8e06955c3ed8e5a120d3.camel@decadent.org.uk>
+Subject: Re: [PATCH 6.1 431/522] cgroup/cpuset: Reset DL migration state on
+ can_attach() failure
+From: Ben Hutchings <ben@decadent.org.uk>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, Guopeng Zhang <zhangguopeng@kylinos.cn>, Tejun
+ Heo	 <tj@kernel.org>, Chen Ridong <chenridong@huaweicloud.com>, Waiman Long
+	 <longman@redhat.com>, Sasha Levin <sashal@kernel.org>
+Date: Thu, 25 Jun 2026 19:03:18 +0200
+In-Reply-To: <20260616145146.132165243@linuxfoundation.org>
+References: <20260616145125.307082728@linuxfoundation.org>
+	 <20260616145146.132165243@linuxfoundation.org>
+Content-Type: multipart/signed; micalg="pgp-sha512";
+	protocol="application/pgp-signature"; boundary="=-MaYQKXGlI/qt01T47OJK"
+User-Agent: Evolution 3.56.2-9 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6 krs Bertel Jungin Aukio 5, 02600 Espoo, Finland
-Content-Transfer-Encoding: 8bit
+X-SA-Exim-Connect-IP: 2a02:578:851f:1502:391e:c5f5:10e2:b9a3
+X-SA-Exim-Mail-From: ben@decadent.org.uk
+X-SA-Exim-Scanned: No (on maynard); SAEximRunCond expanded to false
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-3.66 / 15.00];
-	WHITELIST_SPF_DKIM(-3.00)[intel.com:d:+,kernel.org:s:+];
+X-Spamd-Result: default: False [-3.56 / 15.00];
+	SIGNED_PGP(-2.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
+	MIME_GOOD(-0.20)[multipart/signed,text/plain];
 	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
 	MAILLIST(-0.15)[generic];
-	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-268629-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:intel-gfx@lists.freedesktop.org,m:intel-xe@lists.freedesktop.org,m:jani.nikula@intel.com,m:martin.hodo@intel.com,m:stable@vger.kernel.org,m:anshuman.gupta@intel.com,m:suraj.kandpal@intel.com,s:lists@lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_SENDER(0.00)[jani.nikula@intel.com,stable@vger.kernel.org];
-	HAS_ORG_HEADER(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	TAGGED_FROM(0.00)[bounces-268630-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[jani.nikula@intel.com,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[intel.com:+];
-	RCVD_COUNT_FIVE(0.00)[5];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:gregkh@linuxfoundation.org,m:stable@vger.kernel.org,m:patches@lists.linux.dev,m:zhangguopeng@kylinos.cn,m:tj@kernel.org,m:chenridong@huaweicloud.com,m:longman@redhat.com,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[ben@decadent.org.uk,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+,1:+,2:~];
+	DMARC_NA(0.00)[decadent.org.uk];
+	FORWARDED(0.00)[lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FROM_HAS_DN(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[ben@decadent.org.uk,stable@vger.kernel.org];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	R_DKIM_NA(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp,intel.com:dkim,intel.com:email,intel.com:mid,intel.com:from_mime]
+	RCPT_COUNT_SEVEN(0.00)[8];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,decadent.org.uk:mid,decadent.org.uk:from_mime]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 915456C7B23
+X-Rspamd-Queue-Id: C51C76C7B2C
 
-The data->streams[] overflow check is done after the buffer overflow has
-already happened. Move the overflow check before the write.
 
-Side note, emitting a warning splat with a backtrace might be overkill
-here, but prefer not changing the behaviour other than not doing the
-overrun.
+--=-MaYQKXGlI/qt01T47OJK
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Discovered using AI-assisted static analysis confirmed by Intel Product
-Security.
+On Tue, 2026-06-16 at 20:29 +0530, Greg Kroah-Hartman wrote:
+> 6.1-stable review patch.  If anyone has any objections, please let me kno=
+w.
+>=20
+> ------------------
+>=20
+> From: Guopeng Zhang <zhangguopeng@kylinos.cn>
+>=20
+> [ Upstream commit 4a39eda5fdd867fc39f3c039714dd432cee00268 ]
+>=20
+> cpuset_can_attach() accumulates temporary SCHED_DEADLINE migration
+> state in the destination cpuset while walking the taskset.
+[...]
+> --- a/kernel/cgroup/cpuset.c
+> +++ b/kernel/cgroup/cpuset.c
+> @@ -2579,16 +2579,13 @@ static int cpuset_can_attach(struct cgro
+>  		int cpu =3D cpumask_any_and(cpu_active_mask, cs->effective_cpus);
+> =20
+>  		if (unlikely(cpu >=3D nr_cpu_ids)) {
+> -			reset_migrate_dl_data(cs);
+>  			ret =3D -EINVAL;
+>  			goto out_unlock;
+>  		}
+> =20
+>  		ret =3D dl_bw_alloc(cpu, cs->sum_migrate_dl_bw);
+> -		if (ret) {
+> -			reset_migrate_dl_data(cs);
+> +		if (ret)
+>  			goto out_unlock;
+> -		}
+>  	}
+> =20
+>  out_success:
+> @@ -3401,7 +3398,10 @@ static int cpuset_can_fork(struct task_s
 
-Reported-by: Martin Hodo <martin.hodo@intel.com>
-Fixes: e03187e12cae ("drm/i915/hdcp: MST streams support in hdcp port_data")
-Cc: <stable@vger.kernel.org> # v5.12+
-Cc: Anshuman Gupta <anshuman.gupta@intel.com>
-Cc: Suraj Kandpal <suraj.kandpal@intel.com>
-Signed-off-by: Jani Nikula <jani.nikula@intel.com>
----
- drivers/gpu/drm/i915/display/intel_hdcp.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+In this backport the second hunk is being applied to the wrong function!
+The backport to 6.6 has the same problem.
 
-diff --git a/drivers/gpu/drm/i915/display/intel_hdcp.c b/drivers/gpu/drm/i915/display/intel_hdcp.c
-index e88fec24af49..521786a75c42 100644
---- a/drivers/gpu/drm/i915/display/intel_hdcp.c
-+++ b/drivers/gpu/drm/i915/display/intel_hdcp.c
-@@ -145,6 +145,9 @@ intel_hdcp_required_content_stream(struct intel_atomic_state *state,
- 		if (!new_conn_state || !new_conn_state->crtc)
- 			continue;
- 
-+		if (drm_WARN_ON(display->drm, data->k >= INTEL_NUM_PIPES(display)))
-+			return -EINVAL;
-+
- 		data->streams[data->k].stream_id =
- 			intel_conn_to_vcpi(state, connector);
- 		data->k++;
-@@ -155,7 +158,7 @@ intel_hdcp_required_content_stream(struct intel_atomic_state *state,
- 	}
- 	drm_connector_list_iter_end(&conn_iter);
- 
--	if (drm_WARN_ON(display->drm, data->k > INTEL_NUM_PIPES(display) || data->k == 0))
-+	if (drm_WARN_ON(display->drm, !data->k))
- 		return -EINVAL;
- 
- 	/*
--- 
-2.47.3
+Ben.
 
+>  	 * changes which zero cpus/mems_allowed.
+>  	 */
+>  	cs->attach_in_progress++;
+> +
+>  out_unlock:
+> +	if (ret)
+> +		reset_migrate_dl_data(cs);
+>  	mutex_unlock(&cpuset_mutex);
+>  	return ret;
+>  }
+>=20
+>=20
+
+--=20
+Ben Hutchings
+Humans are not rational beings; they are rationalising beings.
+
+--=-MaYQKXGlI/qt01T47OJK
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: This is a digitally signed message part
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCgAdFiEErCspvTSmr92z9o8157/I7JWGEQkFAmo9X1YACgkQ57/I7JWG
+EQm1IBAAyTPz8RlfmKVe8sazTi0W6JmbsxE0aONe892BrngEcAz0g2zEr+OIkgHN
+vh1p7udtSSTGT9iy5SqAu/N+PUd/vlGWb/qbzLHat74HdsxfdcS3iV2qPBivEwNn
+INA7DxD83LCx+Hvz/Dmz4dy5G4tXqpRZLhWLAnCTqoMSeXpaW65XfddJnAPLPXl6
+Y+V/tvyLOwRa9F+ZJUlaUIQ73JlzS7fApzj4wPz59gkyDrwzv3+otM9WY52zmwtx
+gzCaKUK8epodzNBrKFdXBN2EbzUJu/cihPreFPIx5KcT3nWkwC863HOlAxv+EXsX
+rgLcDCjEI6Xi3VozaTrQkYKEPIQRHL6Y0vMFF8Nc+nii6yS1566Uj5PzmkK0ybch
+ZYsSz7rs6fl+HFD9iOPKmhqM9mQ4WNRtqJZ63phqUTceQwp6kBrJd+sJ+p4+78HQ
+1UhoSeAnlCSJnu67gdrUbfga9rKi9ZbhGn4de+B5GEAsAreehG0+Bx2a2IPkMham
+oLY7XBLLl1aHJQ9qpciqdhjliXoFDDdMl12Rz9PkwG6eMPu+8rTujtY4qPrhpcnB
+PjITP0JQlbSLegJWwd2Q6YiC8ptseGuFB2z4cCTExgfh0pAP12lxOyzo+CtUDoFj
+O2MluhcBM99WLEXTE1rrbDfPUqUSxcU8qt4a0sveKq/Ipuj1HOo=
+=SrAn
+-----END PGP SIGNATURE-----
+
+--=-MaYQKXGlI/qt01T47OJK--
 
