@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-268517-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-268518-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id NOgyKD8pPWrtyAgAu9opvQ
-	(envelope-from <stable+bounces-268517-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 15:12:31 +0200
+	id vIUqBKcpPWoRyQgAu9opvQ
+	(envelope-from <stable+bounces-268518-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 15:14:15 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9FE3F6C602C
-	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 15:12:30 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id BC03C6C60A8
+	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 15:14:13 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=Mr8DJ8NU;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-268517-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-268517-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=i5CR3+pI;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-268518-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-268518-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 555F330148D0
-	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 13:11:53 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 1B6E13030E8F
+	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 13:11:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 39FA12E040D;
-	Thu, 25 Jun 2026 13:11:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 371CB2E7374;
+	Thu, 25 Jun 2026 13:11:55 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC33E28640B;
-	Thu, 25 Jun 2026 13:11:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F2031F03DE;
+	Thu, 25 Jun 2026 13:11:53 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782393112; cv=none; b=j//Uzu6dTqiEmVQSo+QR/ZfbXWhjAVzDvqQGZkN8BXH2HdYxzLD/BR/ylmfxY1vbpQCYBSoy19BTXW1X4z8MfYtoXxhiXEL3D8LMuNs2o2Z63ycgWozrmPeWiG/NszFj4IvCfCC8fDcvhqlDL9vQ7TVr/9suB+Qtiv3qBDNs5Lk=
+	t=1782393115; cv=none; b=mx7ZeX6tQYlFvoXXnMsJpDKtmkWaa5WexlOwFYxnJ65d6fPAeQhspzcoJVgaBxdGh2dbxjTsTY5twGWLXg7UtYzEDLZFW94GtRmyLL61hwDU9ROWBFPixeP4JHGa8vZUP9vVpSH8migdjB8neE/2H5ysHRfvj2lFm+NqgKhGeg4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782393112; c=relaxed/simple;
-	bh=ut6Ix14Qjpk5q05DLmt4lzcfWly0Vq2FEq4WwXVqgkc=;
+	s=arc-20240116; t=1782393115; c=relaxed/simple;
+	bh=olCU519ZFrropJcCoLXyGBuvp7p5Gbbw2rlPrX/d/PQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gagX3Uo6GrWnN60SLWeU47Sc+23uLWazUUzmZBBD2etNxZCkpsuhd2A6MCZemufxIe1JUQPA0Ddss8K5pb9aIPXAEAwKD8+5O8u73O3K5qv/aCOaZebJhr8gWAVakE1Vy/qtCXPqw7ejwUrN3f/ayQI8ukbOBXml5FtZuiunsLc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Mr8DJ8NU; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4CCF1F00A3D;
-	Thu, 25 Jun 2026 13:11:49 +0000 (UTC)
+	 MIME-Version; b=Zq7x+76+jnhOtAyevx28gQJycxfSh+l+Cs5NaWdb9nUfeedeNCu26JGsnPXl0Teu5NQhVh2xooxx355HnBdJuFDvj5PHvhpeG/qAqPwS0VlMjXgqh8bXyhR37fjK6sX65SBsveoTN3Z2R6RMTeAvub7YDLl7+7f1/8SfwjNbqKI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i5CR3+pI; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1DF191F00A3A;
+	Thu, 25 Jun 2026 13:11:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1782393110;
-	bh=42x/QYL+beHf82e1QuXXTL3wEV/hbbRCxow6WpglxCs=;
+	s=korg; t=1782393113;
+	bh=8zYMXJlIj56KeRDk3l35s/Byz7O82w8n0yzdix7Hzvo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Mr8DJ8NU4ISHZySq8jASDsZJEnrfE+2kvgeNaOr3KmwV/9hJSA7lgcemHH6g4VmWp
-	 8tMX4vByqoi4GabuQ/lO3KnnTOu9d+x70+W10n81YoWoBiiDtm+jtAgMZ/hmeMjalq
-	 YIxubcYsk5oXKLJsF3vbEJlyvCCdWm6FlAKHHwjM=
+	b=i5CR3+pIhRZtMelBlHWsJeogjCyzIyC7ernoflZoFq16M9au/A8iPhc0/V8Q+fMDY
+	 EJNphDSYG9ebcxHZX6OirZq/A1WoDycLuO1TrnjDRob55eRNynGQI+Qo0/lT6Q32+y
+	 jRRvyt5rSai7diGFDgY+YdyHnTPxINBnfvPzKEhE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Subject: [PATCH 7.1 10/21] Input: rmi4 - fix num_subpackets overflow in register descriptor
-Date: Thu, 25 Jun 2026 14:04:02 +0100
-Message-ID: <20260625125614.682899601@linuxfoundation.org>
+Subject: [PATCH 7.1 11/21] Input: rmi4 - fix memory leak in rmi_set_attn_data()
+Date: Thu, 25 Jun 2026 14:04:03 +0100
+Message-ID: <20260625125614.810059617@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260625125613.243729608@linuxfoundation.org>
 References: <20260625125613.243729608@linuxfoundation.org>
@@ -71,20 +71,20 @@ X-Spamd-Result: default: False [-0.16 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORWARDED(0.00)[lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-268517-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-268518-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:dmitry.torokhov@gmail.com,m:dmitrytorokhov@gmail.com,s:lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	RCPT_COUNT_THREE(0.00)[4];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
@@ -94,13 +94,13 @@ X-Spamd-Result: default: False [-0.16 / 15.00];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,msgid.link:url,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,msgid.link:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 9FE3F6C602C
+X-Rspamd-Queue-Id: BC03C6C60A8
 
 7.1-stable review patch.  If anyone has any objections, please let me know.
 
@@ -108,52 +108,36 @@ X-Rspamd-Queue-Id: 9FE3F6C602C
 
 From: Dmitry Torokhov <dmitry.torokhov@gmail.com>
 
-commit 2b4b482d5c4c23c668b998a7da985aea0fa4a978 upstream.
+commit a55a683a8e2bddb5467baab3e597a93022d4ee05 upstream.
 
-RMI_REG_DESC_SUBPACKET_BITS is defined as 296 (37 * BITS_PER_BYTE). This
-may overflow num_subpackets in struct rmi_register_desc_item which is
-defined as a u8.
+kfifo_put() returns 0 if the FIFO is full. In this case, we must
+free the memory allocated for the attention data to avoid a leak.
 
-Fix this by changing the type of num_subpackets to u16.
-
-Fixes: 2b6a321da9a2 ("Input: synaptics-rmi4 - add support for Synaptics RMI4 devices")
+Fixes: b908d3cd812a ("Input: synaptics-rmi4 - allow to add attention data")
 Cc: stable@vger.kernel.org
 Assisted-by: Gemini:gemini-3.1-pro
-Link: https://patch.msgid.link/20260505045952.1570713-4-dmitry.torokhov@gmail.com
+Link: https://patch.msgid.link/20260505045952.1570713-5-dmitry.torokhov@gmail.com
 Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/input/rmi4/rmi_driver.h |    2 +-
- drivers/input/rmi4/rmi_f12.c    |    7 +++++++
- 2 files changed, 8 insertions(+), 1 deletion(-)
+ drivers/input/rmi4/rmi_driver.c |    6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
---- a/drivers/input/rmi4/rmi_driver.h
-+++ b/drivers/input/rmi4/rmi_driver.h
-@@ -53,7 +53,7 @@ struct pdt_entry {
- struct rmi_register_desc_item {
- 	u16 reg;
- 	unsigned long reg_size;
--	u8 num_subpackets;
-+	u16 num_subpackets;
- 	unsigned long subpacket_map[BITS_TO_LONGS(
- 				RMI_REG_DESC_SUBPACKET_BITS)];
- };
---- a/drivers/input/rmi4/rmi_f12.c
-+++ b/drivers/input/rmi4/rmi_f12.c
-@@ -467,6 +467,13 @@ static int rmi_f12_probe(struct rmi_func
- 		f12->data1 = item;
- 		f12->data1_offset = data_offset;
- 		data_offset += item->reg_size;
-+
-+		if (item->num_subpackets > 255) {
-+			dev_err(&fn->dev, "Too many fingers declared: %d\n",
-+				item->num_subpackets);
-+			return -EINVAL;
-+		}
-+
- 		sensor->nbr_fingers = item->num_subpackets;
- 		sensor->report_abs = 1;
- 		sensor->attn_size += item->reg_size;
+--- a/drivers/input/rmi4/rmi_driver.c
++++ b/drivers/input/rmi4/rmi_driver.c
+@@ -183,7 +183,11 @@ void rmi_set_attn_data(struct rmi_device
+ 	attn_data.size = size;
+ 	attn_data.data = fifo_data;
+ 
+-	kfifo_put(&drvdata->attn_fifo, attn_data);
++	if (!kfifo_put(&drvdata->attn_fifo, attn_data)) {
++		dev_warn_ratelimited(&rmi_dev->dev,
++				     "Failed to enqueue attention data, FIFO full\n");
++		kfree(fifo_data);
++	}
+ }
+ EXPORT_SYMBOL_GPL(rmi_set_attn_data);
+ 
 
 
 
