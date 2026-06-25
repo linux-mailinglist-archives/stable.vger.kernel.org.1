@@ -1,68 +1,87 @@
-Return-Path: <stable+bounces-268509-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-268529-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id XzcBMGQpPWr9yAgAu9opvQ
-	(envelope-from <stable+bounces-268509-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 15:13:08 +0200
+	id LliUD+gpPWokyQgAu9opvQ
+	(envelope-from <stable+bounces-268529-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 15:15:20 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD4ED6C605D
-	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 15:13:07 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 874D96C60D3
+	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 15:15:19 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=PnZ+GnUl;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-268509-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-268509-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=ceF4ea2v;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-268529-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-268529-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id D5F2C305EA5D
-	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 13:11:29 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 3065A3096CE5
+	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 13:12:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 087383054C7;
-	Thu, 25 Jun 2026 13:11:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6DD352DCC13;
+	Thu, 25 Jun 2026 13:12:28 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4CB12E040D;
-	Thu, 25 Jun 2026 13:11:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E0462877F7;
+	Thu, 25 Jun 2026 13:12:26 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782393087; cv=none; b=Tm45j+ZZ/p0zdOz6o8sAURhbMy3gDD/v4p+6yysOcm5NODMb5g9Zr3Rdi9WaG0IagpjGvmyZ7O0a9R1DRO+JgYJPwyox471r06jLu7EGnK5sLgaN8G1/eRJUAGOWF4KcXKKb3wa/mlj/B5F9gQQDd+NM4764gPxtiWHprpZPTNA=
+	t=1782393148; cv=none; b=Un63DJlpuI+BQnn9OiWUSbMGMD7B5JGsEa5ljPC/BXCKwiRnMBL9uX3sfiksM68h3HLpAtHsN+xYesCTRc3YtjwNYP12RwjRvcISAfCYayRjNP/x6UXdSIimYBa4ij2lwa03PLs08zSdSCUbCVazq1dJhS2X7rA9FJsbjwr0whk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782393087; c=relaxed/simple;
-	bh=ykh3TojpqrRa+/noSNX9YebH8TqK+RmTAj+8c59KwsY=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FBuMmeGluCCUY0DCpV94UWdfXvZlr4PJsEmbUGp7qy9OxQy2K7l613WBu6/3ZddiMphsJS99cKhtKKMDE6wmXDCCLHf111EsBVjcVSOSEcpgatfHmoFGW3/Tdqn5wXyaUYTSKM2pjRlCcLrH6O+XtzgYwxqmBnOcr4BFE8q1XaY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PnZ+GnUl; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7428C1F00A3A;
-	Thu, 25 Jun 2026 13:11:23 +0000 (UTC)
+	s=arc-20240116; t=1782393148; c=relaxed/simple;
+	bh=Y1V1Km+tKvYpeUTUmai3Hl0qKuXEs5HWfC0q6fYAaRI=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=INOstaP0yUTBwsXC44Fj+WDuUZgt1Qo0NACAbKJTYhyobkcSyLqBzfNP2GU5iS05HcmrZUvYGer8ETXcrNImmQJtZvHS3ySfGHmb1xUFDDlgY2ggmjGHOTroqbNZiy2vLauYpwTIOdNGEl/xQIJ0giwnAbDemzza+Z3GBYIefpo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ceF4ea2v; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E82BF1F000E9;
+	Thu, 25 Jun 2026 13:12:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1782393084;
-	bh=/IRnVEAVKNMhskMTdqGTRx7fMWvjUV9B2NV/WF9+cSQ=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=PnZ+GnUlTMDDzj+1SKufV5leJVNX/t/q2uZMxVDNxXh3JPgKHewmHYSKpErYqGG+v
-	 vTM/vvXBxRkn7TZhyKugMETe8ocLocrqcDQ4TQXmtK3+RgOyjkYdhZuzXa9WN3ij3y
-	 hLpToZBWBrwwOGYQccdFmNiGNnnE8n3gddiBoNkE=
+	s=korg; t=1782393146;
+	bh=tpRMeUtVDDZLkcup7aETD9UQs0+9frGOD53fFH5ag8w=;
+	h=From:To:Cc:Subject:Date;
+	b=ceF4ea2vfIcbgXunq8z6ZlIRlw+i0CISFObcMAJy9Ctb2A1PVn9jXvvBGahKe2HKZ
+	 7ytJMPYR/p821Wo27vFJKOJ3ZBIBUnccPmXyEtVS2FSFZWjO1w9DgJa5peNuvs4gOi
+	 h65aJU6NEuO5Zr5DBybgIPi5n6WB6EvSATDQxk2Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Subject: [PATCH 7.0 39/49] Input: rmi4 - fix memory leak in rmi_set_attn_data()
-Date: Thu, 25 Jun 2026 14:03:51 +0100
-Message-ID: <20260625125643.006722248@linuxfoundation.org>
+	linux-kernel@vger.kernel.org,
+	torvalds@linux-foundation.org,
+	akpm@linux-foundation.org,
+	linux@roeck-us.net,
+	shuah@kernel.org,
+	patches@kernelci.org,
+	lkft-triage@lists.linaro.org,
+	pavel@nabladev.com,
+	jonathanh@nvidia.com,
+	f.fainelli@gmail.com,
+	sudipm.mukherjee@gmail.com,
+	rwarsow@gmx.de,
+	conor@kernel.org,
+	hargar@microsoft.com,
+	broonie@kernel.org,
+	achill@achill.org,
+	sr@sladewatkins.com
+Subject: [PATCH 7.1 00/21] 7.1.2-rc1 review
+Date: Thu, 25 Jun 2026 14:03:52 +0100
+Message-ID: <20260625125613.243729608@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260625125637.527552689@linuxfoundation.org>
-References: <20260625125637.527552689@linuxfoundation.org>
-User-Agent: quilt/0.69
-X-stable: review
-X-Patchwork-Hint: ignore
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: quilt/0.69
+X-stable: review
+X-Patchwork-Hint: ignore
+X-KernelTest-Patch: http://kernel.org/pub/linux/kernel/v7.x/stable-review/patch-7.1.2-rc1.gz
+X-KernelTest-Tree: git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git
+X-KernelTest-Branch: linux-7.1.y
+X-KernelTest-Patches: git://git.kernel.org/pub/scm/linux/kernel/git/stable/stable-queue.git
+X-KernelTest-Version: 7.1.2-rc1
+X-KernelTest-Deadline: 2026-06-27T12:56+00:00
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-0.16 / 15.00];
@@ -71,21 +90,21 @@ X-Spamd-Result: default: False [-0.16 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	RCVD_TLS_LAST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[20];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-268529-lists,stable=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:linux-kernel@vger.kernel.org,m:torvalds@linux-foundation.org,m:akpm@linux-foundation.org,m:linux@roeck-us.net,m:shuah@kernel.org,m:patches@kernelci.org,m:lkft-triage@lists.linaro.org,m:pavel@nabladev.com,m:jonathanh@nvidia.com,m:f.fainelli@gmail.com,m:sudipm.mukherjee@gmail.com,m:rwarsow@gmx.de,m:conor@kernel.org,m:hargar@microsoft.com,m:broonie@kernel.org,m:achill@achill.org,m:sr@sladewatkins.com,m:ffainelli@gmail.com,m:sudipmmukherjee@gmail.com,s:lists@lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-268509-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,vger.kernel.org,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,nabladev.com,nvidia.com,gmail.com,gmx.de,microsoft.com,achill.org,sladewatkins.com];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:dmitry.torokhov@gmail.com,m:dmitrytorokhov@gmail.com,s:lists@lfdr.de];
-	RCPT_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
@@ -94,50 +113,135 @@ X-Spamd-Result: default: False [-0.16 / 15.00];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[xidian.edu.cn:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,qualcomm.com:email,suse.de:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: CD4ED6C605D
+X-Rspamd-Queue-Id: 874D96C60D3
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+This is the start of the stable review cycle for the 7.1.2 release.
+There are 21 patches in this series, all will be posted as a response
+to this one.  If anyone has any issues with these being applied, please
+let me know.
 
-------------------
+Responses should be made by Sat, 27 Jun 2026 12:54:50 +0000.
+Anything received after that time might be too late.
 
-From: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+The whole patch series can be found in one patch at:
+	https://www.kernel.org/pub/linux/kernel/v7.x/stable-review/patch-7.1.2-rc1.gz
+or in the git tree and branch at:
+	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-7.1.y
+and the diffstat can be found below.
 
-commit a55a683a8e2bddb5467baab3e597a93022d4ee05 upstream.
+thanks,
 
-kfifo_put() returns 0 if the FIFO is full. In this case, we must
-free the memory allocated for the attention data to avoid a leak.
+greg k-h
 
-Fixes: b908d3cd812a ("Input: synaptics-rmi4 - allow to add attention data")
-Cc: stable@vger.kernel.org
-Assisted-by: Gemini:gemini-3.1-pro
-Link: https://patch.msgid.link/20260505045952.1570713-5-dmitry.torokhov@gmail.com
-Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
----
- drivers/input/rmi4/rmi_driver.c |    6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+-------------
+Pseudo-Shortlog of commits:
 
---- a/drivers/input/rmi4/rmi_driver.c
-+++ b/drivers/input/rmi4/rmi_driver.c
-@@ -183,7 +183,11 @@ void rmi_set_attn_data(struct rmi_device
- 	attn_data.size = size;
- 	attn_data.data = fifo_data;
- 
--	kfifo_put(&drvdata->attn_fifo, attn_data);
-+	if (!kfifo_put(&drvdata->attn_fifo, attn_data)) {
-+		dev_warn_ratelimited(&rmi_dev->dev,
-+				     "Failed to enqueue attention data, FIFO full\n");
-+		kfree(fifo_data);
-+	}
- }
- EXPORT_SYMBOL_GPL(rmi_set_attn_data);
- 
+Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+    Linux 7.1.2-rc1
+
+Miklos Szeredi <mszeredi@redhat.com>
+    virtiofs: fix UAF on submount umount
+
+Ruslan Valiyev <linuxoid@gmail.com>
+    media: vidtv: fix NULL pointer dereference in vidtv_mux_push_si
+
+Gil Portnoy <dddhkts1@gmail.com>
+    ksmbd: reject non-VALID session in compound request branch
+
+Georgi Djakov <georgi.djakov@oss.qualcomm.com>
+    drivers/base/memory: set mem->altmap after successful device registration
+
+Stepan Ionichev <sozdayvek@gmail.com>
+    serial: 8250_dw: unregister 8250 port if clk_notifier_register() fails
+
+Viken Dadhaniya <viken.dadhaniya@oss.qualcomm.com>
+    serial: qcom_geni: Fix RX DMA stall when SE_DMA_RX_LEN_IN is zero
+
+Yi Yang <yiyang13@huawei.com>
+    vc_screen: fix null-ptr-deref in vcs_notifier() during concurrent vcs_write
+
+Giovanni Cabiddu <giovanni.cabiddu@intel.com>
+    crypto: qat - remove unused character device and IOCTLs
+
+Dmitry Torokhov <dmitry.torokhov@gmail.com>
+    Input: rmi4 - fix bit count in bitmap_copy()
+
+Dmitry Torokhov <dmitry.torokhov@gmail.com>
+    Input: rmi4 - iterative IRQ handler
+
+Dmitry Torokhov <dmitry.torokhov@gmail.com>
+    Input: rmi4 - fix memory leak in rmi_set_attn_data()
+
+Dmitry Torokhov <dmitry.torokhov@gmail.com>
+    Input: rmi4 - fix num_subpackets overflow in register descriptor
+
+Dmitry Torokhov <dmitry.torokhov@gmail.com>
+    Input: rmi4 - fix type overflow in register counts
+
+Dmitry Torokhov <dmitry.torokhov@gmail.com>
+    Input: rmi4 - refactor register descriptor parsing
+
+Dmitry Torokhov <dmitry.torokhov@gmail.com>
+    Input: rmi4 - fix register descriptor address calculation
+
+Sam Daly <sam@samdaly.ie>
+    iio: adc: ti-ads1298: add bounds check to pga_settings index
+
+Sam Daly <sam@samdaly.ie>
+    iio: light: veml6075: add bounds check to veml6075_it_ms index
+
+Mingyu Wang <25181214217@stu.xidian.edu.cn>
+    agp/amd64: Fix broken error propagation in agp_amd64_probe()
+
+Yang Erkun <yangerkun@huawei.com>
+    Revert "NFSD: Defer sub-object cleanup in export put callbacks"
+
+Joanne Koong <joannelkoong@gmail.com>
+    fuse: re-lock request before replacing page cache folio
+
+Gabriel Krisman Bertazi <krisman@suse.de>
+    io_uring/net: Avoid msghdr on op_connect/op_bind async data
+
+
+-------------
+
+Diffstat:
+
+ Documentation/userspace-api/ioctl/ioctl-number.rst |   1 -
+ Makefile                                           |   4 +-
+ drivers/base/memory.c                              |   3 +-
+ drivers/char/agp/amd64-agp.c                       |   2 +-
+ drivers/crypto/intel/qat/qat_common/adf_cfg.c      |  10 -
+ drivers/crypto/intel/qat/qat_common/adf_cfg.h      |   1 -
+ .../crypto/intel/qat/qat_common/adf_cfg_common.h   |  32 --
+ drivers/crypto/intel/qat/qat_common/adf_cfg_user.h |  38 --
+ .../crypto/intel/qat/qat_common/adf_common_drv.h   |   3 -
+ drivers/crypto/intel/qat/qat_common/adf_ctl_drv.c  | 404 +--------------------
+ drivers/crypto/intel/qat/qat_common/adf_dev_mgr.c  |  70 ----
+ drivers/iio/adc/ti-ads1298.c                       |   7 +-
+ drivers/iio/light/veml6075.c                       |   8 +-
+ drivers/input/rmi4/rmi_driver.c                    | 171 +++++----
+ drivers/input/rmi4/rmi_driver.h                    |   4 +-
+ drivers/input/rmi4/rmi_f12.c                       |   7 +
+ drivers/media/test-drivers/vidtv/vidtv_mux.c       |   8 +-
+ drivers/tty/serial/8250/8250_dw.c                  |   4 +-
+ drivers/tty/serial/qcom_geni_serial.c              |   9 +-
+ drivers/tty/vt/vc_screen.c                         |   2 +-
+ fs/fuse/dev.c                                      |  19 +-
+ fs/fuse/file.c                                     |   8 +-
+ fs/nfsd/export.c                                   |  67 +---
+ fs/nfsd/export.h                                   |   7 +-
+ fs/nfsd/nfsctl.c                                   |   8 +-
+ fs/smb/server/smb2pdu.c                            |   5 +
+ io_uring/net.c                                     |  36 +-
+ io_uring/opdef.c                                   |   4 +-
+ 28 files changed, 193 insertions(+), 749 deletions(-)
 
 
 
