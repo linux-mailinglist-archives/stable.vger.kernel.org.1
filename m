@@ -1,169 +1,119 @@
-Return-Path: <stable+bounces-268673-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-268674-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id YAUhKBGXPWp+4ggAu9opvQ
-	(envelope-from <stable+bounces-268673-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 23:01:05 +0200
+	id D3GxFZOYPWrI4ggAu9opvQ
+	(envelope-from <stable+bounces-268674-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 23:07:31 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E4E036C8A5C
-	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 23:01:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CC5D46C8AB4
+	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 23:07:30 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=grrlz.net header.s=stigmate header.b=GxvgJFkE;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-268673-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-268673-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=reject) header.from=grrlz.net;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=tNo9mlwv;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-268674-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-268674-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=none;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 482843024979
-	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 21:01:02 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 546F8302BE16
+	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 21:07:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99BA72F7EE5;
-	Thu, 25 Jun 2026 21:01:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B1F7837267E;
+	Thu, 25 Jun 2026 21:07:27 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from devianza.investici.org (devianza.investici.org [198.167.222.108])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EDEB37189C;
-	Thu, 25 Jun 2026 21:00:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 850C8346E56;
+	Thu, 25 Jun 2026 21:07:26 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782421261; cv=none; b=DqMtjP0AamvoQ05XITk9wBDDKIqRf4lRK1UaHwwBgQNfBn5fhTrE14zJXCua1IxKRMXReIYzkjWs0p+Tbxfud3eR5wgMBWyI6xh713IUxNaT/8UuxKSG0KwYgfX3gY6n3w2ROPeN66Wu9Mf3vyvABhYnEc6H+wBeqdwVTJ0fWb4=
+	t=1782421647; cv=none; b=a+CvBnPEydCF4Aiywy/BFCjg670YesVfIpxMSxUinf7oE0W8D77gYea/7veFck0ZffTlHrTc+nmNy+AuHfpCsIrMQ2iz3JQBbdK75Kbq3WinGSiFHSdW1IZ/nr0JzriT78HzHE52tIWU91REG+k/UK+kIWimwr4EQnn/K0SYLV8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782421261; c=relaxed/simple;
-	bh=ko0mX7Afs1yy1jOXU0GvZ+uicWQcPJLYDI+ylanoqTg=;
-	h=Date:From:To:CC:Subject:In-Reply-To:References:Message-ID:
-	 MIME-Version:Content-Type; b=HR7RIrVt33+T/NSqADJzgo83UGoqma9aGArjup1H2hgHlC73yGzsiK0lx6bOgnfc4FjgRzAHs2yPfaI85rCukftWrEWCkWVJbsSE/Z52+JHMPTO8iucVsRrxih3NxkpEkMSCsvMxVA4pnMJMqX3LlkjVQehOzOxRabJvNr9LSXU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=grrlz.net; spf=pass smtp.mailfrom=grrlz.net; dkim=pass (1024-bit key) header.d=grrlz.net header.i=@grrlz.net header.b=GxvgJFkE; arc=none smtp.client-ip=198.167.222.108
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=grrlz.net;
-	s=stigmate; t=1782421250;
-	bh=64HTg0uFKX95Q5pSeC9H32PA2JC3Aqc39eu22kNWJLg=;
-	h=Date:From:To:CC:Subject:In-Reply-To:References:From;
-	b=GxvgJFkEbpITe5DBm/v10raibSet+yGLFH6b9hw3t4LlZGM5OKX55kIEwOEsMaq9k
-	 koxzBhKyAYCPOnf79CwvO/Fh8mq+B1sbVRPziffuSYgzSsayol1qmNeMDLYuANBKqO
-	 ZHzVdiK4eHF+RMoF9UzKVA8dyPW4EbbSThCr4BTs=
-Received: from mx2.investici.org (unknown [127.0.0.1])
-	by devianza.investici.org (Postfix) with ESMTP id 4gmWRk19Vqz6vy4;
-	Thu, 25 Jun 2026 21:00:50 +0000 (UTC)
-Received: by mx2.investici.org (Postfix) id 4gmWRj4tZPz4y2q;
-	Thu, 25 Jun 2026 21:00:49 +0000 (UTC)
-Date: Thu, 25 Jun 2026 22:00:46 +0100
-From: Bradley Morgan <include@grrlz.net>
-To: Andrew Morton <akpm@linux-foundation.org>, Petr Mladek <pmladek@suse.com>
-CC: Feng Tang <feng.tang@linux.alibaba.com>,
- Madhavan Srinivasan <maddy@linux.ibm.com>,
- Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
- Christophe Leroy <chleroy@kernel.org>,
- Mukesh Kumar Chaurasiya <mchauras@linux.ibm.com>,
- Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
- Jinchao Wang <wangjinchao600@gmail.com>, Kees Cook <kees@kernel.org>,
- Rio <rioo.tsukatsukii@gmail.com>, Joel Granados <joel.granados@kernel.org>,
- Pnina Feder <pnina.feder@mobileye.com>, Petr Pavlu <petr.pavlu@suse.com>,
- Sergey Senozhatsky <senozhatsky@chromium.org>,
- Douglas Anderson <dianders@chromium.org>, Mayank Rungta <mrungta@google.com>,
- Tejun Heo <tj@kernel.org>, Zhenguo Yao <yaozhenguo1@gmail.com>,
- linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org, Michal Hocko <mhocko@suse.cz>,
- Miroslav Benes <mbenes@suse.cz>, Jiri Kosina <jkosina@suse.cz>
-Subject: =?US-ASCII?Q?Re=3A_Fixed_tag_magic=3A_was=3A_Re=3A_=5BPATCH_v2_1/4=5D_sys?=
- =?US-ASCII?Q?=5Finfo=3A_add_helper_for_callers_that_handle_all=5Fbt?=
-In-Reply-To: <20260625113814.9372b8a78b374560393fd879@linux-foundation.org>
-References: <9b8c96e291696815d3c7de5d3e199298dee0279d.1782228656.git.include@grrlz.net> <20260624133419.a2d566f50c44ee2d4e0fb395@linux-foundation.org> <aj1Jh57McGH94gGY@pathway.suse.cz> <20260625113814.9372b8a78b374560393fd879@linux-foundation.org>
-Message-ID: <B0FE0A33-91FF-4914-A535-73505C01F9E1@grrlz.net>
+	s=arc-20240116; t=1782421647; c=relaxed/simple;
+	bh=iW8j/hMTRdm3ei62TqTZ/oEHaBEmMC1qvSEVov4fR1I=;
+	h=Date:From:To:Cc:Subject:Message-Id:In-Reply-To:References:
+	 Mime-Version:Content-Type; b=DBBwO0qOi1p3+gR7RZ/1rILj7qGUXtz1n7hiyLU7JfqFYm084gbOq4QnpqwymOmrI4qrEbrNjFp+ZpUYfRJkqdaFsOQCmJIJGwPZKj69jEBirnAq3SQOh+af+fdx9q3EvDDZVT2DitTWNMU9/KcY44tPpHWboNniiVSkkoyVYXE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=tNo9mlwv; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B89AD1F000E9;
+	Thu, 25 Jun 2026 21:07:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux-foundation.org; s=korg; t=1782421646;
+	bh=XCf31iXVjV/xmKk4RzROAt3XMkVH30g6uJirV06m81Y=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=tNo9mlwvZrMW09CQHCsb1IqYR+uR1kIeFNoUrsmo9Zt2VKQXPUkk/Hn9oMr3EkDi9
+	 kB1its+rg+gu3WKtHfTJjhW8G0dmcMuqT4p8sqcVYm+UrUDoQIhKjUrtyIFoVf6+1/
+	 o4x58Mc4ANn9xd6n5H31c7cqP4+ToM4YN+XhTnqg=
+Date: Thu, 25 Jun 2026 14:07:25 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Lance Yang <lance.yang@linux.dev>
+Cc: richard.weiyang@gmail.com, david@kernel.org, balbirs@nvidia.com,
+ ljs@kernel.org, riel@surriel.com, liam@infradead.org, vbabka@kernel.org,
+ harry@kernel.org, jannh@google.com, ziy@nvidia.com, sj@kernel.org,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [Patch mm-hotfixes v4] mm/page_vma_mapped: fix device-private
+ PMD handling
+Message-Id: <20260625140725.15fdfe5a48b6d7f0d667c948@linux-foundation.org>
+In-Reply-To: <20260625114235.40611-1-lance.yang@linux.dev>
+References: <20260624085756.6598-1-lance.yang@linux.dev>
+	<20260625114235.40611-1-lance.yang@linux.dev>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [0.54 / 15.00];
+X-Spamd-Result: default: False [0.34 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
-	SUBJ_EXCESS_QP(1.20)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[grrlz.net,reject];
-	R_DKIM_ALLOW(-0.20)[grrlz.net:s=stigmate];
+	MV_CASE(0.50)[];
+	R_DKIM_ALLOW(-0.20)[linux-foundation.org:s=korg];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[linux.alibaba.com,linux.ibm.com,ellerman.id.au,gmail.com,kernel.org,linux.intel.com,mobileye.com,suse.com,chromium.org,google.com,lists.ozlabs.org,vger.kernel.org,suse.cz];
-	TAGGED_FROM(0.00)[bounces-268673-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:akpm@linux-foundation.org,m:pmladek@suse.com,m:feng.tang@linux.alibaba.com,m:maddy@linux.ibm.com,m:mpe@ellerman.id.au,m:npiggin@gmail.com,m:chleroy@kernel.org,m:mchauras@linux.ibm.com,m:andriy.shevchenko@linux.intel.com,m:wangjinchao600@gmail.com,m:kees@kernel.org,m:rioo.tsukatsukii@gmail.com,m:joel.granados@kernel.org,m:pnina.feder@mobileye.com,m:petr.pavlu@suse.com,m:senozhatsky@chromium.org,m:dianders@chromium.org,m:mrungta@google.com,m:tj@kernel.org,m:yaozhenguo1@gmail.com,m:linuxppc-dev@lists.ozlabs.org,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,m:mhocko@suse.cz,m:mbenes@suse.cz,m:jkosina@suse.cz,m:riootsukatsukii@gmail.com,s:lists@lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[26];
-	FORGED_SENDER(0.00)[include@grrlz.net,stable@vger.kernel.org];
+	FORGED_RECIPIENTS(0.00)[m:lance.yang@linux.dev,m:richard.weiyang@gmail.com,m:david@kernel.org,m:balbirs@nvidia.com,m:ljs@kernel.org,m:riel@surriel.com,m:liam@infradead.org,m:vbabka@kernel.org,m:harry@kernel.org,m:jannh@google.com,m:ziy@nvidia.com,m:sj@kernel.org,m:linux-mm@kvack.org,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,m:richardweiyang@gmail.com,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[akpm@linux-foundation.org,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-268674-lists,stable=lfdr.de];
+	RCPT_COUNT_TWELVE(0.00)[15];
+	DMARC_NA(0.00)[linux-foundation.org];
 	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
-	DKIM_TRACE(0.00)[grrlz.net:+];
 	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[include@grrlz.net,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linux-foundation.org:+];
+	FORGED_SENDER_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	MISSING_XM_UA(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[akpm@linux-foundation.org,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[gmail.com,kernel.org,nvidia.com,surriel.com,infradead.org,google.com,kvack.org,vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp,grrlz.net:dkim,grrlz.net:email,grrlz.net:mid,grrlz.net:from_mime]
+	TO_DN_SOME(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linux-foundation.org:dkim,linux-foundation.org:mid,linux-foundation.org:from_mime,linux.dev:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: E4E036C8A5C
+X-Rspamd-Queue-Id: CC5D46C8AB4
 
-On 25 June 2026 19:38:14 BST, Andrew Morton <akpm@linux-foundation.org>
-wrote:
->On Thu, 25 Jun 2026 17:30:15 +0200 Petr Mladek <pmladek@suse.com> wrote:
->
->> On Wed 2026-06-24 13:34:19, Andrew Morton wrote:
->> > On Tue, 23 Jun 2026 15:34:58 +0000 Bradley Morgan <include@grrlz.net>
->wrote:
->> > 
->> > > Some callers handle SYS_INFO_ALL_BT themselves before calling
->sys_info().
->> > > Add a helper that strips that bit without turning an all_bt only
->mask into
->> > > a kernel_sys_info fallback.
->> > 
->> > I assume this patch wants a Fixes: and a cc:stable also.
->> > 
->> > It would be nice to have the conventional [0/N] cover letter to tell
->> > readers what this is all about.
->> > 
->> > The patches all have different Fixes: targets.  This risks inviting
->the
->> > -stable maintainers to merge only some of the patches into some
->> > kernels, resulting in an untested combination and which might break
->> > things.
->> 
->> I do not agree here. The Fixes tag should should point to a commit
->> which introduced the regression into the given code. And finding
->> some magic common point beause there is some magic undocumented
->> process for maintaining stable kernels sounds like a way to hell
->> to me.
->
->Well, as said, this potentially asks -stable maintainers to cherrypick
->individual patches from this series into various kernel versions. 
->Potentially resulting in code combinations which nobody has tested. 
->Heck, the individual patches may not even compile.
->
->If we're to add the series to mainline as a single atomic lump then we
->should add it to -stable as a single atomic lump, as that's the only
->thing which has been tested.  To communicate this to -stable
->maintainers we can choose a Fixes: target to which the series can be
->added as a single atomic lump.
->
->Of course, we could always discuss this with -stable maintainers ;)
->
+On Thu, 25 Jun 2026 19:42:35 +0800 Lance Yang <lance.yang@linux.dev> wrote:
 
+> >Suggested-by: Lorenzo Stoakes <ljs@kernel.org>
+> >
+> >as well?
+> 
+> No need to resend. I think Andrew can add this when applying :)
 
-Hi Andrew, I ended up deciding on a generic fixes tag on V3, if you
-would like to have a look.
+I managed.
 
-Thanks!
+Thanks, I'll queue this as a hotfix.  Somewhat tentatively - it's
+unclear whether we'll be seeing a v2?
+
 
