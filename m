@@ -1,161 +1,262 @@
-Return-Path: <stable+bounces-268587-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-268589-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id RZyALn1EPWon0ggAu9opvQ
-	(envelope-from <stable+bounces-268587-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 17:08:45 +0200
+	id u+qaKR1HPWq80ggAu9opvQ
+	(envelope-from <stable+bounces-268589-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 17:19:57 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 170186C6F14
-	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 17:08:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F24426C7024
+	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 17:19:56 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=fSv+Mrsa;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-268587-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-268587-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("subspace.kernel.org:s=arc-20240116:i=2")
+	dkim=pass header.d=linux.dev header.s=key1 header.b=araeRisd;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-268589-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-268589-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=none) header.from=linux.dev;
+	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 0961D3008A4A
-	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 15:08:11 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C26A830DDEAC
+	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 15:18:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B77E39281F;
-	Thu, 25 Jun 2026 15:08:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 448103E8328;
+	Thu, 25 Jun 2026 15:18:01 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ej1-f46.google.com (mail-ej1-f46.google.com [209.85.218.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from out-170.mta1.migadu.com (out-170.mta1.migadu.com [95.215.58.170])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45DEF2E7394
-	for <stable@vger.kernel.org>; Thu, 25 Jun 2026 15:08:08 +0000 (UTC)
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782400089; cv=pass; b=ozBM0FEf+CJLqKx3R73Q0fv1lmW2gUMLqlAbJmzHzPyTU+4fflryn4XDkI4UWyHPlRULw9s3wQqH79UMYU88tf56y3n7K2o/4tK3ZU2WlB+Ww3hVnqYFc3d3BFVt6SaGThH/PjFZUkZDwRKUn5oY544JNyYLSmtEXcdIvffkUOE=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782400089; c=relaxed/simple;
-	bh=MkO3fCXc1ZaOKiTnsnssleSvXkY2yN/+fGVR08qjueQ=;
-	h=MIME-Version:From:Date:Message-ID:Subject:To:Cc:Content-Type; b=pbY18H0qhL6bMsYJe6qEwekSVBv1NKsTDzmO3SwBgvA/vINvS/Cs3tPUD2SAqt4lzYAtFTNL47UR5tXTZbDMPnnxtUEd9enQpNcLdGw9yh+H4mlESi0+uu64fCgLmWD5wpbToXwTDhvQd5y6QaTIP3uuAVKNlgfJnJHJkNI9w5M=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=fSv+Mrsa; arc=pass smtp.client-ip=209.85.218.46
-Received: by mail-ej1-f46.google.com with SMTP id a640c23a62f3a-c1214dc027cso71428066b.1
-        for <stable@vger.kernel.org>; Thu, 25 Jun 2026 08:08:08 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1782400087; cv=none;
-        d=google.com; s=arc-20260327;
-        b=OKpiB/BkUfW6wsRx0ckctFZk4tNU6dTG4I32pE1x1vyBgfA45MHU+swcM+wcZyM/Us
-         b6IGct67dSgDsYD42xWnYdkYFPx8BcE5yFG9fHc++mhU1YVUsBgDRxqRShEUclt7xfvG
-         nCByP6K+eas+f3rplFSR5rx2sqrL6amZQXkzRhWBsta+0bQt4ynzBCGOk0qpb1HTfFle
-         4dibARqX68HM7ZvYxyExT121elJ26EvdA1CAJzWDRHEInSkf8QwMfoks6jeC0uGIvYj0
-         iKZYA1sdj4D7Xgs89EjgTdj/iAJWfcRpmmFVhd6k71alLomYIzxaoYY/G+FcWkwaTOHj
-         7R9Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=cc:to:subject:message-id:date:from:mime-version:dkim-signature;
-        bh=MkO3fCXc1ZaOKiTnsnssleSvXkY2yN/+fGVR08qjueQ=;
-        fh=AJ4wr+Vi7zKnuQ0MLruaL29ZfvBsaOkHYgXURjmQGRQ=;
-        b=qCt3r9tgos1IskoJeyClU/jkY8dnuvIGCp0EI/iOpKGuGG5p1vo1xKmn0gt1VGK5z6
-         oLwJHiqtbKwFJyRYu7L0QDm7ewhpAjpEywFPhUCnonB6n6VMhw3pMc35rYlhx+3B+GA5
-         bXky1kzSgchT53neghC1eZo0uCVS/Hdo3TCaCIpJR9PmC7S1XqPr1U8LMsCovl8PysuM
-         9M1x7RNQt/rgTigWLCP9i0GnYVOAHFdDX9NRhqhNRx45lL5NLFZW8svdv/ZXvIrDQQPy
-         dtjGfImtjQKq30W64WZG8olCZIZQ2YYBvAq2aq4cu5kskeXDaxNi+s2Bah93SnHnDl4s
-         8dRg==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1782400087; x=1783004887; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:mime-version:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=MkO3fCXc1ZaOKiTnsnssleSvXkY2yN/+fGVR08qjueQ=;
-        b=fSv+MrsaWE7mMOXMXnZPNUDyQDVQ4Tz0enLSDwkuya+4W5n31sedpmamaKaqZN3drp
-         sUVd3x4xxh9iegn8jxY49mMy1lRxI0owIqMTtYjP9jwscuaR4BzMrbXToBgfAmpscNKP
-         z/dSBgYbmFIQofzkXSOSYguNsyQhR6lT0FYOOcYs/L8k7b/2fp6fYydymPZfzgHGU8tW
-         mqrk4WmqodTr4Yc/Ab3AexbC5JRo/qFI7WO228bXeBJae+asrZBxA0TD7tVtX/lRhpjB
-         hjC7B+HgZ7el7oNgCjJGSgRlZRSxwb0JCnJ31OOJI3Jq5GHKPRCIdq5FgV0PSc5YVYxe
-         /vWQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782400087; x=1783004887;
-        h=cc:to:subject:message-id:date:from:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=MkO3fCXc1ZaOKiTnsnssleSvXkY2yN/+fGVR08qjueQ=;
-        b=FX7ziQeuYAQ+Pt6CbT1fuCx0RDO0JdWFMlqcZqkQJxtxAUoTzes550dbtKBDmLJVCv
-         R6MCpZqFlXlLUOG2w/qACPXwb9seZnxRpC5311zl3MOHgdP/49oEDhnNCq/eCr8O78GE
-         XgxO5RWUM165fgAtM0azlAs5f4rQeSgkNaANp7M+5iTShnwPTJFp4v/GOkFGJWnTl2+L
-         ynXzUH2ousJVkz0VU4Ud8YtssI7dXJpA2XDnGcDafQbiYrMtpaLN2ZslQkePnmpzmyiB
-         HcsX+4XSROumz/WM2lrvRVffBxj+JvnIK+KCxIV57tDjqEz9dv5h1usGkn3mL/J4I/8s
-         vk9w==
-X-Forwarded-Encrypted: i=1; AHgh+RqPfHEXybcZbWzyzPCzZ1bFrh5nHLHIJxOKdMBRfEVaCl1cvG0XIWk+c7dKNnEBjMtDnRfRow0=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzsFJk3P54LoaiU33SSJcUTEiwhqxSEjQvXikURfk58eXQ7J4YY
-	CAFTsX2/Ameg8IholUGy0aJ0FSHpJ1RuvyQwC98p+t8IV4SAlC1GlNkKJyPW4tFyw5LuKOzA/72
-	Y/IXLRlZ4ZqYOutE5mLFQ29nIoHuZX30=
-X-Gm-Gg: AfdE7clv94d16CJesBt9JYKClYK+tpav46VUrm1f18rLk/MZa9sptmVyTjqWXV1IgVo
-	uAiHGijqCJ6c7DHR7q1FtExxS8PJmIA95jXgbHL3rsDHxtoILM1JfXvcqaZsi/0+BZxz78GjgnR
-	N4c/4CxqGInTAkpwzAJ7AwqxmMp7U1p0Wouo8oV3j33IyoWk9otmvYyqqgPFKz3OEcxPNu9eCwH
-	5aRlmhO7MCU5CTsGPx9gZzzgkDCwYA6+sKUA4qyoA290XZDoqEV1BhEgya5FnkzzfxPeu5v
-X-Received: by 2002:a17:907:8d8e:b0:c0c:2033:c078 with SMTP id
- a640c23a62f3a-c1205ef178dmr223399166b.26.1782400086250; Thu, 25 Jun 2026
- 08:08:06 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D990367B62
+	for <stable@vger.kernel.org>; Thu, 25 Jun 2026 15:17:58 +0000 (UTC)
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1782400681; cv=none; b=Emlp+McyArlHZgJiDMRy/7mpn1SXYX0Cwb5xM+x5A0HoIKy6/ArTHkGgYV/KyRC28QstDjJcI8yXg1mLwYFUgDTsjw/gPYlt8niZFYf/GkTzcw8LPfeE6STFrfSdmUL+C29x8PdeDJ3UkaMfCMlGIBFYE7cDnB655QKdBh/TfBg=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1782400681; c=relaxed/simple;
+	bh=ekx5cr7T299wlK8jCLijW3dhHd83+VG4kNX/35JMfiM=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=DjIw5861wmOAxUNsPkdLxU1xK6s2GHLungnJjRpMF07KWeOa74wbhVhJPGQ1jb0ovnf5u+YNPNeG0DbENNPksp1xiWsKjk3QXQKxgOajQjWduAgKwsqk6mokAfFr0GmSw/+7+KSWkkqhXe70g45SGFZI25DBITDOCwfN+7na4jw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=araeRisd; arc=none smtp.client-ip=95.215.58.170
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1782400676;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=0abFjDD7MeWR8jXMZ2j0zCKAbj5uTG1W2qlcF8YqFc4=;
+	b=araeRisdZjkkXDB5B5YHuyjgxiM3QgILhTA3HYQM2YO4riqCwXB16muACRB18zccxmj6HB
+	uk5sdyKDreRF+CYXqUsePISuTN1byrhnIsvTqYnq8CpyfVWyZlNIte2FgGzk+V6kjepyj3
+	1MUTcDj9eg6EsdVDrA1sykzJH9DqGZo=
+From: Qi Zheng <qi.zheng@linux.dev>
+To: akpm@linux-foundation.org,
+	david@kernel.org,
+	kasong@tencent.com,
+	shakeel.butt@linux.dev,
+	baohua@kernel.org,
+	axelrasmussen@google.com,
+	yuanchu@google.com,
+	weixugc@google.com,
+	hannes@cmpxchg.org,
+	harry@kernel.org,
+	muchun.song@linux.dev,
+	peiyang_he@smail.nju.edu.cn,
+	mhocko@kernel.org,
+	roman.gushchin@linux.dev,
+	ljs@kernel.org
+Cc: linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	Qi Zheng <zhengqi.arch@bytedance.com>,
+	stable@vger.kernel.org
+Subject: [PATCH v3] mm: mglru: fix stale batch updates after memcg reparenting
+Date: Thu, 25 Jun 2026 23:15:54 +0800
+Message-ID: <20260625151554.55105-1-qi.zheng@linux.dev>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-From: liem <liem16213@gmail.com>
-Date: Thu, 25 Jun 2026 23:07:54 +0800
-X-Gm-Features: AVVi8CdXewmKMx24Id0KrC4KlPydUzifiJZC1utFI6DQTmNGydZ-bYS7JAqj14c
-Message-ID: <CABoz+=2PHMv0mqxPwHyR5rBOhT7xFxGVok69JoYhadQTuNnsdQ@mail.gmail.com>
-Subject: Re: [PATCH] i2c: imx: Fix slave registration error path and missing
- NULL check
-To: liem <liem16213@gmail.com>
-Cc: Frank Li <Frank.Li@nxp.com>, Andi Shyti <andi.shyti@kernel.org>, Biwen Li <biwen.li@nxp.com>, 
-	Fabio Estevam <festevam@gmail.com>, imx@lists.linux.dev, 
-	Pengutronix Kernel Team <kernel@pengutronix.de>, linux-arm-kernel@lists.infradead.org, 
-	linux-i2c@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Oleksij Rempel <o.rempel@pengutronix.de>, Sascha Hauer <s.hauer@pengutronix.de>, stable@vger.kernel.org, 
-	Wolfram Sang <wsa@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
-	FAKE_REPLY(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[linux.dev,none];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[linux.dev:s=key1];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:liem16213@gmail.com,m:Frank.Li@nxp.com,m:andi.shyti@kernel.org,m:biwen.li@nxp.com,m:festevam@gmail.com,m:imx@lists.linux.dev,m:kernel@pengutronix.de,m:linux-arm-kernel@lists.infradead.org,m:linux-i2c@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:o.rempel@pengutronix.de,m:s.hauer@pengutronix.de,m:stable@vger.kernel.org,m:wsa@kernel.org,s:lists@lfdr.de];
-	FREEMAIL_TO(0.00)[gmail.com];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER(0.00)[liem16213@gmail.com,stable@vger.kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_FROM(0.00)[gmail.com];
+	RCPT_COUNT_TWELVE(0.00)[19];
 	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[14];
+	TAGGED_FROM(0.00)[bounces-268589-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[3];
+	FORGED_RECIPIENTS(0.00)[m:akpm@linux-foundation.org,m:david@kernel.org,m:kasong@tencent.com,m:shakeel.butt@linux.dev,m:baohua@kernel.org,m:axelrasmussen@google.com,m:yuanchu@google.com,m:weixugc@google.com,m:hannes@cmpxchg.org,m:harry@kernel.org,m:muchun.song@linux.dev,m:peiyang_he@smail.nju.edu.cn,m:mhocko@kernel.org,m:roman.gushchin@linux.dev,m:ljs@kernel.org,m:linux-mm@kvack.org,m:linux-kernel@vger.kernel.org,m:zhengqi.arch@bytedance.com,m:stable@vger.kernel.org,s:lists@lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_SENDER(0.00)[qi.zheng@linux.dev,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-268587-lists,stable=lfdr.de];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	TO_DN_SOME(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[liem16213@gmail.com,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[nxp.com,kernel.org,gmail.com,lists.linux.dev,pengutronix.de,lists.infradead.org,vger.kernel.org];
-	MID_RHS_MATCH_FROMTLD(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[qi.zheng@linux.dev,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[linux.dev:+];
+	ALIAS_RESOLVED(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	MISSING_XM_UA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp,mail.gmail.com:mid]
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp,linux.dev:dkim,linux.dev:mid,linux.dev:from_mime,nju.edu.cn:email,bytedance.com:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 170186C6F14
+X-Rspamd-Queue-Id: F24426C7024
 
-Hi,Carlos!
+From: Qi Zheng <zhengqi.arch@bytedance.com>
 
-Thank you for your review.
+The mglru page table walker batches per-generation size deltas in
+walk->nr_pages while walking page tables without holding the lruvec lock.
+The reset_batch_size() later folds those deltas into walk->lruvec under
+the lruvec lock.
 
-Q: Have you meet the issue on one real platform?
-A: No,I just noticed the error while reading the code.
+The page table walker can run concurrently with the memcg reparenting path
+as follows:
 
-I think your idea which cancel the slave timer and wait it finished
-after disabled IRQ is better.
+CPU0                           CPU1
+====                           ====
 
-I'll fix the issues and send a v2.Thank you again!
+walk_mm
+--> walk_page_range
+    --> update_batch_size
+        --> walk->nr_pages += delta
+
+                              mem_cgroup_css_offline
+                              --> memcg_reparent_objcgs
+                                  --> lock lruvec
+                                      lru_gen_reparent_memcg
+                                      --> reparent child folios to parent
+                                      unlock lruvec
+
+    lock lruvec
+    reset_batch_size
+    --> child lrugen->nr_pages += delta
+
+This will trigger the following warning in lru_gen_exit_memcg():
+
+	VM_WARN_ON_ONCE(memchr_inv(lruvec->lrugen.nr_pages, 0,
+				   sizeof(lruvec->lrugen.nr_pages)));
+
+And the user-visible impact of underestimated nr_pages in MGLRU was
+premature OOMs because MGLRU does not try to reclaim memory when nr_pages
+reaches zero, but there are still more pages.
+
+To fix it, make reset_batch_size() check CSS_DYING under RCU before
+flushing the pending batch. A non-dying memcg keeps the original lruvec
+stable against RCU-delayed offlining; a dying memcg redirects the deltas
+to the first non-dying ancestor.
+
+Reported-by: Peiyang He <peiyang_he@smail.nju.edu.cn>
+Closes: https://lore.kernel.org/all/5A9E929D82717101+12fcf643-efb8-4b9a-a53a-1e28cc894f0b@smail.nju.edu.cn
+Fixes: f304652609ea ("mm: vmscan: prepare for reparenting MGLRU folios")
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Qi Zheng <zhengqi.arch@bytedance.com>
+---
+Changes in v3:
+ - re-implement lock_batch_lruvec() by checking CSS_DYING under the RCU lock
+   (suggested by Harry)
+ - update the commit message (suggested by Harry)
+ - temporarily drop the previous Reviewed-by tags
+   (since the sync method has changed)
+ - rebase onto the next-20260624
+
+Changes in v2:
+ - update the commit message (pointed by Barry)
+ - collect Reviewed-by
+
+ mm/vmscan.c | 45 ++++++++++++++++++++++++++++++++++++++-------
+ 1 file changed, 38 insertions(+), 7 deletions(-)
+
+diff --git a/mm/vmscan.c b/mm/vmscan.c
+index 35c3bb15ae96..1ec8c23c72b9 100644
+--- a/mm/vmscan.c
++++ b/mm/vmscan.c
+@@ -3262,10 +3262,44 @@ static void update_batch_size(struct lru_gen_mm_walk *walk, struct folio *folio,
+ 	walk->nr_pages[new_gen][type][zone] += delta;
+ }
+ 
++#ifdef CONFIG_MEMCG
++static struct lruvec *lock_batch_lruvec(struct lruvec *lruvec)
++{
++	struct pglist_data *pgdat = lruvec_pgdat(lruvec);
++	struct mem_cgroup *memcg = lruvec_memcg(lruvec);
++
++	rcu_read_lock();
++
++	/*
++	 * The memcg can be NULL when the memory controller is disabled.
++	 * Otherwise, the caller keeps the memcg owning @lruvec alive.
++	 */
++	if (!memcg || !css_is_dying(&memcg->css))
++		goto lock;
++
++	do {
++		memcg = parent_mem_cgroup(memcg);
++	} while (memcg && css_is_dying(&memcg->css));
++	lruvec = mem_cgroup_lruvec(memcg, pgdat);
++
++lock:
++	spin_lock_irq(&lruvec->lru_lock);
++
++	return lruvec;
++}
++#else
++static struct lruvec *lock_batch_lruvec(struct lruvec *lruvec)
++{
++	lruvec_lock_irq(lruvec);
++
++	return lruvec;
++}
++#endif
++
+ static void reset_batch_size(struct lru_gen_mm_walk *walk)
+ {
+ 	int gen, type, zone;
+-	struct lruvec *lruvec = walk->lruvec;
++	struct lruvec *lruvec = lock_batch_lruvec(walk->lruvec);
+ 	struct lru_gen_folio *lrugen = &lruvec->lrugen;
+ 
+ 	walk->batched = 0;
+@@ -3285,6 +3319,8 @@ static void reset_batch_size(struct lru_gen_mm_walk *walk)
+ 			lru += LRU_ACTIVE;
+ 		__update_lru_size(lruvec, lru, zone, delta);
+ 	}
++
++	lruvec_unlock_irq(lruvec);
+ }
+ 
+ static int should_skip_vma(unsigned long start, unsigned long end, struct mm_walk *args)
+@@ -3779,11 +3815,8 @@ static void walk_mm(struct mm_struct *mm, struct lru_gen_mm_walk *walk)
+ 			mmap_read_unlock(mm);
+ 		}
+ 
+-		if (walk->batched) {
+-			lruvec_lock_irq(lruvec);
++		if (walk->batched)
+ 			reset_batch_size(walk);
+-			lruvec_unlock_irq(lruvec);
+-		}
+ 
+ 		cond_resched();
+ 	} while (err == -EAGAIN);
+@@ -4867,9 +4900,7 @@ static int evict_folios(unsigned long nr_to_scan, struct lruvec *lruvec,
+ 	walk = current->reclaim_state->mm_walk;
+ 	if (walk && walk->batched) {
+ 		walk->lruvec = lruvec;
+-		lruvec_lock_irq(lruvec);
+ 		reset_batch_size(walk);
+-		lruvec_unlock_irq(lruvec);
+ 	}
+ 
+ 	mod_lruvec_state(lruvec, PGDEMOTE_KSWAPD + reclaimer_offset(sc),
+-- 
+2.54.0
+
 
