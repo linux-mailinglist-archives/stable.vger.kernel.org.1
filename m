@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-268499-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-268457-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id BkaHIkQpPWrvyAgAu9opvQ
-	(envelope-from <stable+bounces-268499-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 15:12:36 +0200
+	id Bu7iC1goPWp1yAgAu9opvQ
+	(envelope-from <stable+bounces-268457-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 15:08:40 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3A0B46C6031
-	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 15:12:36 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id C9B946C5EF8
+	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 15:08:39 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=InTE6FvA;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-268499-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-268499-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=i9UhukiZ;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-268457-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-268457-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 4340D303F9A8
-	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 13:10:53 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 42EB830054CC
+	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 13:08:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5ADAF29CB24;
-	Thu, 25 Jun 2026 13:10:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 274EB2DC334;
+	Thu, 25 Jun 2026 13:08:37 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F1CE1E633C;
-	Thu, 25 Jun 2026 13:10:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9AAF2D5412;
+	Thu, 25 Jun 2026 13:08:35 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782393052; cv=none; b=CbPrv4ddrNjQ3mSLj1xMMpuHCQFwGAQ7Js82NFNah+EkNDEZG/VcgEm5OL+GhzoBv/AVzm7CfDHbf6qGqC1F08HDHHgsxPafynrRyVJN7iDFbPWrE8HIg1LB3B76QKxA3bPwFIsNBe864ipSTtndbqUV+YItKARt1V5WA1nvTCc=
+	t=1782392916; cv=none; b=ZU9XRN/bx7kPujJ7GrNN7xxXl3wQtGBKbswwIHXvGD9s8fDsMvc9/qTDO1B6OKVx33Z8mk87kQK4GArv3OOK4kVOhq2cDcLc4JFrbcghdnMT8Iv/kEv0qK5+sZmeLkoNJvTJcEeVJtYvpq/Dh3e/UJUCQC5I3DJGTCEzH1N6Dj8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782393052; c=relaxed/simple;
-	bh=U4dxaZTJt8tPIWAUGKHq1/fR7hZ9j4tJ8ta4SSK1T+A=;
+	s=arc-20240116; t=1782392916; c=relaxed/simple;
+	bh=uy5aw7NxE4B6ii8cqHzAbQKnAZmfhG1w8d1NJqDuYx0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XC2vdOYiQX87htvLnfHBoXuIWvHFyRjEBDibdY/Qu28c5hG4nvuV1UfjG7Yo5fh/+GGOeE/GEC4jiI/A40FQWC8KwJRY+neZo46+Nhs6DM7rBnXYU95nBlOfLJzyyKL6aYMcxZeLoupWaTabfuFYlfePITpy6IJXzfh38CvgpRw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=InTE6FvA; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7267B1F000E9;
-	Thu, 25 Jun 2026 13:10:50 +0000 (UTC)
+	 MIME-Version; b=YuBhraXvw2oxZynXi0MD5sDyU60VlVc0VWQbcryvlfy2bYFkHs9Whtrm9GilDB3DQO3JQ/mZYPi7I2yiS5rzVMOKaDyzJgrxayEeNG1M+D4948+6Vmgn/V0L3SKZeyK4O0pzXRfpgbC3nH7nstXLBVlIoxWDWqwIs4IfSbWSmQ4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i9UhukiZ; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28DCC1F000E9;
+	Thu, 25 Jun 2026 13:08:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1782393051;
-	bh=8dDWmuCvbTYbL5RmboNO/AhMg/HKaHjeyA70t5ct1nw=;
+	s=korg; t=1782392915;
+	bh=ekNjmgVpYT8ImWK0zjCwqd2S/rXakdJ0eGhL3ptMjnk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=InTE6FvAckOyfB52tZhTdfFSNlUyIMXMPwbGy3yh2L3EYYYguby0lYt81d6NQ6pis
-	 ZOOiCL9wC9u21bQbdc2pyXJICRCyGubp0ViiUBzg+oNNyJUL9YxKxjrxzptOv45vF1
-	 p/5G+I8+SzkQBlVaKD1cZnSC6x89Zqz5dDOGPP2M=
+	b=i9UhukiZ5DLPuqiMPmrSjpm0b6Wn3F4OhfufknzoA0ykAqax/VSh0VKtg8I6Pwv4i
+	 mboBHUpXG8SD/oKSqpZE2OJWD2USzsG8odkgvUksVP101SQw+8Secatu3C0wHWrGBy
+	 A1c6aML8lBmzmEDZ6RamxxL+KmVs2YTixtIl4Wv4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bernard Pidoux <bernard.f6bvp@gmail.com>
-Subject: [PATCH 7.0 27/49] rose: drop CALL_REQUEST in loopback timer when device is not running
+	Yi Yang <yiyang13@huawei.com>,
+	Jiri Slaby <jirislaby@kernel.org>
+Subject: [PATCH 6.18 54/60] vc_screen: fix null-ptr-deref in vcs_notifier() during concurrent vcs_write
 Date: Thu, 25 Jun 2026 14:03:39 +0100
-Message-ID: <20260625125641.311035715@linuxfoundation.org>
+Message-ID: <20260625125653.615614718@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260625125637.527552689@linuxfoundation.org>
-References: <20260625125637.527552689@linuxfoundation.org>
+In-Reply-To: <20260625125645.554579168@linuxfoundation.org>
+References: <20260625125645.554579168@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,97 +66,86 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-268499-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-268457-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:bernard.f6bvp@gmail.com,m:bernardf6bvp@gmail.com,s:lists@lfdr.de];
-	RCPT_COUNT_THREE(0.00)[4];
 	TO_DN_SOME(0.00)[];
+	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:yiyang13@huawei.com,m:jirislaby@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,huawei.com:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 3A0B46C6031
+X-Rspamd-Queue-Id: C9B946C5EF8
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bernard Pidoux <bernard.f6bvp@gmail.com>
+From: Yi Yang <yiyang13@huawei.com>
 
-commit cf5567a2652e44866eae8987dff4c1ea507680df upstream.
+commit a287620312dc6dcb9a093417a0e589bf30fcf38a upstream.
 
-When ax25stop brings down rose0 while the loopback timer has pending
-CALL_REQUEST frames, rose_loopback_timer() calls rose_dev_get() and
-finds the device still registered (unregister_netdevice waits for
-refs to drop), then calls rose_rx_call_request() which takes a
-netdev_hold() for the new socket.
+A KASAN null-ptr-deref was observed in vcs_notifier():
 
-But NETDEV_DOWN fires only once: rose_kill_by_device() already ran
-before this timer tick, so the new socket is never cleaned up.  The
-stuck reference prevents unregister_netdevice from completing, and the
-orphan socket's timers eventually fire on freed memory (KASAN
-slab-use-after-free in __run_timers).
+BUG: KASAN: null-ptr-deref in vcs_notifier+0x98/0x130
+Read of size 2 at addr qmp_cmd_name: qmp_capabilities, arguments: {}
 
-The kernel clears IFF_UP via dev_close() before sending NETDEV_DOWN,
-so checking netif_running() after rose_dev_get() is sufficient: if the
-device is no longer running, the CALL_REQUEST is silently dropped and
-no socket is created.  This closes the race without touching the
-module-exit path (which already stops the timer via loopback_stopping).
+The issue is a race condition in vcs_write(). When the console_lock is
+temporarily dropped (to copy data from userspace), the vc_data pointer
+obtained from vcs_vc() may become stale. After re-acquiring the lock,
+vcs_vc() is called again to re-validate the pointer. If the vc has been
+deallocated in the meantime, vcs_vc() returns NULL, and the while loop
+breaks (with written > 0). However, after the loop, vcs_scr_updated(vc)
+is still called with the now-NULL vc pointer, leading to a null pointer
+dereference in the notifier chain (vcs_notifier dereferences param->vc).
 
-Tested: unregister_netdevice completes immediately after ax25stop with
-active loopback connections; no ref_tracker warnings, no KASAN.
+Fix this by adding a NULL check for vc before calling vcs_scr_updated().
 
-Signed-off-by: Bernard Pidoux <bernard.f6bvp@gmail.com>
+Fixes: 8fb9ea65c9d1 ("vc_screen: reload load of struct vc_data pointer in vcs_write() to avoid UAF")
+Cc: stable@vger.kernel.org
+Signed-off-by: Yi Yang <yiyang13@huawei.com>
+Reviewed-by: Jiri Slaby <jirislaby@kernel.org>
+Link: https://patch.msgid.link/20260604060734.2914976-1-yiyang13@huawei.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/rose/rose_loopback.c |   10 ++++++++++
- 1 file changed, 10 insertions(+)
+ drivers/tty/vt/vc_screen.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/net/rose/rose_loopback.c
-+++ b/net/rose/rose_loopback.c
-@@ -118,6 +118,16 @@ static void rose_loopback_timer(struct t
- 				kfree_skb(skb);
- 				continue;
- 			}
-+			/* rose_kill_by_device() runs on NETDEV_DOWN (IFF_UP cleared)
-+			 * before the device is unregistered.  If we create a new
-+			 * socket here after that cleanup, the ref never gets released
-+			 * because NETDEV_DOWN fires only once.  Drop the call instead.
-+			 */
-+			if (!netif_running(dev)) {
-+				dev_put(dev);
-+				kfree_skb(skb);
-+				continue;
-+			}
+--- a/drivers/tty/vt/vc_screen.c
++++ b/drivers/tty/vt/vc_screen.c
+@@ -686,7 +686,7 @@ vcs_write(struct file *file, const char
+ 	}
+ 	*ppos += written;
+ 	ret = written;
+-	if (written)
++	if (written && vc)
+ 		vcs_scr_updated(vc);
  
- 			if (rose_rx_call_request(skb, dev, rose_loopback_neigh, lci_o) == 0)
- 				kfree_skb(skb);
+ 	return ret;
 
 
 
