@@ -1,71 +1,58 @@
-Return-Path: <stable+bounces-268286-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-268287-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id jSOlBErWPGpgtAgAu9opvQ
-	(envelope-from <stable+bounces-268286-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 09:18:34 +0200
+	id UoBdJYjZPGo6tQgAu9opvQ
+	(envelope-from <stable+bounces-268287-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 09:32:24 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 66B916C34D5
-	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 09:18:33 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0038B6C3614
+	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 09:32:23 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=none;
-	dmarc=none;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-268286-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-268286-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=Qw9xP0OM;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-268287-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-268287-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id B204C302BCED
-	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 07:18:30 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 6F4763029E7A
+	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 07:32:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 607A135F16F;
-	Thu, 25 Jun 2026 07:18:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA1F3379ECD;
+	Thu, 25 Jun 2026 07:32:20 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mx1.white.stw.pengutronix.de (mx1.white.stw.pengutronix.de [185.203.200.13])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9767212564;
-	Thu, 25 Jun 2026 07:18:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84F11378D89
+	for <stable@vger.kernel.org>; Thu, 25 Jun 2026 07:32:19 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782371906; cv=none; b=F3zUQqvSIrdkmK8T8+RO38al2zGCDmcYdgLflWCHyJ9waXub2/Hkvewl8qlrUDZxr+OBZEJJp36P3FUJnTawl3q4NWX04Dtxiyf6dTLd3xA1Ee702SgXzQQci0RixRfSMfqbV1j6jZ0HD23szsHsgks9Q98EOjVX+94cnZG4CSA=
+	t=1782372740; cv=none; b=CS7JU3N1ytzA1siRlnbzhTHPBez7dakD8nndEdghqwAAHkJBVmZR40wAAdNQumJOjxXQr2IKBISE0Tyz92w6eV7PD+R2pe3SuLaLy+YpnjsgP4yd8/nzjIyQDcpp4E49/w4rHSq143tJNoUa/4eYLyNmMClG3UUZE3taOO3zQzE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782371906; c=relaxed/simple;
-	bh=sJ+CCPF0CYyGnCSQxtoQ9+ZKYBlQ0GV4hzUB+BKi3bI=;
+	s=arc-20240116; t=1782372740; c=relaxed/simple;
+	bh=zevK5vF09d6T9kn9KhDm+RWkCiWy3KpFERzApn0czK0=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=dQLfjMJ3MiF5KLRQd/BZ3DIZhWlc3m6OoYtiRKJpV77hxIlHLLgpQrkd3oFSHn1rmsbaIVYkX0M1/PQ4GryBDJ5vFys3s4Cauxi4GaloQSSn5TT0dkSKDxX9XxQd/ZbWUmlUtakPH/KKCq0yDfJHjb8NTjxR3d4maZSON8cxC0Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.200.13
-Received: from drehscheibe.grey.stw.pengutronix.de (drehscheibe.grey.stw.pengutronix.de [IPv6:2a0a:edc0:0:c01:1d::a2])
-	(Authenticated sender: relay-from-drehscheibe.grey.stw.pengutronix.de)
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id 2961520066B;
-	Thu, 25 Jun 2026 09:18:23 +0200 (CEST)
-Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <ore@pengutronix.de>)
-	id 1wceLv-004YMz-0G;
-	Thu, 25 Jun 2026 09:18:23 +0200
-Received: from ore by pty.whiteo.stw.pengutronix.de with local (Exim 4.98.2)
-	(envelope-from <ore@pengutronix.de>)
-	id 1wceLu-0000000DGBy-42LG;
-	Thu, 25 Jun 2026 09:18:22 +0200
-Date: Thu, 25 Jun 2026 09:18:22 +0200
-From: Oleksij Rempel <o.rempel@pengutronix.de>
-To: Vincent Jardin <vjardin@free.fr>
-Cc: Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Andi Shyti <andi.shyti@kernel.org>, Frank Li <Frank.Li@nxp.com>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, Wolfram Sang <wsa@kernel.org>,
-	Kaushal Butala <kaushalkernelmailinglist@gmail.com>,
-	Shawn Guo <shawn.guo@freescale.com>,
-	Stefan Eichenberger <stefan.eichenberger@toradex.com>,
-	linux-i2c@vger.kernel.org, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH v2 0/2] i2c: imx: fix SMBus block-read of 0 locking the
- bus
-Message-ID: <ajzWPi3L8MjyrKfo@pengutronix.de>
-References: <20260525-for-upstream-i2c-lx2160-fix-v1-v1-0-f30ab53dd97c@free.fr>
- <20260525-for-upstream-i2c-lx2160-fix-v1-v2-0-26a3cc8cd055@free.fr>
+	 Content-Type:Content-Disposition:In-Reply-To; b=N5VR/Qtajhtl8DzSb0d8CrWVl1j3Oe5RqZEUHako0p+Ml3GfF8wsouMLju8icwUcDat6DdS93Q2LnO3zV1UP5TzlPjYIDclvmBz8IXfHOprl1J16QrI2MgZsCQV2PKMa2/YDTwDQ8GX39+NgBq1eiNs8aq37eRRkxszFUHBensY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Qw9xP0OM; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A4061F000E9;
+	Thu, 25 Jun 2026 07:32:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
+	s=korg; t=1782372739;
+	bh=1tI5DV4QPJAYhk1GZLq5dEDXXnyejB+8Z3wWKxu2iKg=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=Qw9xP0OMU2Nk3/poNDhfRXCKoVkrLWZ+L1ttpZR8WR1WF6zo/nCb9jq1++108mnX4
+	 ef+OHJXG//V4JfpC1zBGTnn76typTPjKq6Of2LO1y5v3P+49vXCZtH7BgbN3F6vxPe
+	 CBC/a8tZbs5CrOLCsm/0DGYreylotf//bqRgMKH0=
+Date: Thu, 25 Jun 2026 08:31:06 +0100
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Faicker Mo <faicker.mo@gmail.com>
+Cc: stable@vger.kernel.org
+Subject: Re: need the upstream commit to be merged to stable kernel
+Message-ID: <2026062536-pleat-unpiloted-9a6c@gregkh>
+References: <CAG9krM_RbUhPgkcP6DFJM=jgDxMCNu8032=pM5OS2Agcxm-UKQ@mail.gmail.com>
+ <2026062331-bruising-wimp-74a7@gregkh>
+ <2026062320-backtrack-unusable-96e1@gregkh>
+ <CAG9krM9398KH27SngNaujagzMz6DYfcSBFYzFaxj8aZMRh7_iQ@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -74,69 +61,77 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20260525-for-upstream-i2c-lx2160-fix-v1-v2-0-26a3cc8cd055@free.fr>
-X-Sent-From: Pengutronix Hildesheim
-X-URL: http://www.pengutronix.de/
-X-Accept-Language: de,en
-X-Accept-Content-Type: text/plain
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAG9krM9398KH27SngNaujagzMz6DYfcSBFYzFaxj8aZMRh7_iQ@mail.gmail.com>
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.46 / 15.00];
+X-Spamd-Result: default: False [2.34 / 15.00];
+	MID_END_EQ_FROM_USER_PART(4.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	MID_RHS_NOT_FQDN(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FREEMAIL_CC(0.00)[pengutronix.de,kernel.org,nxp.com,gmail.com,freescale.com,toradex.com,vger.kernel.org,lists.linux.dev,lists.infradead.org];
-	TAGGED_FROM(0.00)[bounces-268286-lists,stable=lfdr.de];
-	DMARC_NA(0.00)[pengutronix.de];
-	FORGED_RECIPIENTS(0.00)[m:vjardin@free.fr,m:kernel@pengutronix.de,m:andi.shyti@kernel.org,m:Frank.Li@nxp.com,m:s.hauer@pengutronix.de,m:festevam@gmail.com,m:wsa@kernel.org,m:kaushalkernelmailinglist@gmail.com,m:shawn.guo@freescale.com,m:stefan.eichenberger@toradex.com,m:linux-i2c@vger.kernel.org,m:imx@lists.linux.dev,m:linux-arm-kernel@lists.infradead.org,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,s:lists@lfdr.de];
-	FREEMAIL_TO(0.00)[free.fr];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:faicker.mo@gmail.com,m:stable@vger.kernel.org,m:faickermo@gmail.com,s:lists@lfdr.de];
+	RCPT_COUNT_TWO(0.00)[2];
+	TAGGED_FROM(0.00)[bounces-268287-lists,stable=lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_SENDER(0.00)[o.rempel@pengutronix.de,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	RCPT_COUNT_TWELVE(0.00)[15];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[o.rempel@pengutronix.de,stable@vger.kernel.org];
+	FREEMAIL_TO(0.00)[gmail.com];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	MISSING_XM_UA(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	R_DKIM_NA(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
+	MIME_TRACE(0.00)[0:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	TO_DN_SOME(0.00)[]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 66B916C34D5
+X-Rspamd-Queue-Id: 0038B6C3614
 
-On Mon, May 25, 2026 at 06:43:14PM +0200, Vincent Jardin wrote:
-> i2c-imx rejects a SMBus Block Read byte count of 0 (valid per SMBus 3.1
-> 6.5.7) and it returns without a NACK+STOP, leaving the target
-> holding SDA so the bus is stuck until a power cycle occur.
-> 
-> The same bug is occuring with two independently introduced spots, so the
-> fix is two patches with their respective Fixes: tags and backport ranges:
-> 
->   1/2  atomic/polling path       Fixes: 8e8782c71595   v3.16+
->   2/2  IRQ-driven state machine  Fixes: 5f5c2d4579ca   v6.13+
-> 
-> Signed-off-by: Vincent Jardin <vjardin@free.fr>
+On Thu, Jun 25, 2026 at 11:42:31AM +0800, Faicker Mo wrote:
+> On Tue, Jun 23, 2026 at 3:06 PM Greg KH <gregkh@linuxfoundation.org> wrote:
+> >
+> > On Tue, Jun 23, 2026 at 09:03:42AM +0200, Greg KH wrote:
+> > > On Tue, Jun 23, 2026 at 02:35:18PM +0800, Faicker Mo wrote:
+> > > > Subject: net: net_failover: Fix the deadlock in slave register
+> > > > Commit: b84c563
+> > > > Reason: wish the upstream commit to be merged to 7.0, because Ubuntu
+> > > > 26.04 (LTS) uses this kernel. Thanks.
+> > > >
+> > >
+> > > Sure, but note that 7.0.y will go end-of-life in a matter of days :)
+> > >
+> > > Also applied to 6.18.y which will not go end-of-life.
+> >
+> > Nope, breaks the build :(
+> Hi, I tested it with make defconfig(CONFIG_NET_FAILOVER=y), make
+> vmlinux, no errors.
+> Both 7.0.y and 6.18.y branches were tested.
 
-Acked-by: Oleksij Rempel <o.rempel@pengutronix.de>
+Here's what I get:
 
-Thank you!
+$ make -j100
+  DESCEND objtool
+  CALL    scripts/checksyscalls.sh
+  INSTALL libsubcmd_headers
+  CC [M]  net/core/failover.o
+  CC [M]  drivers/net/net_failover.o
+  MODPOST Module.symvers
+ERROR: modpost: "netif_open" [drivers/net/net_failover.ko] undefined!
+make[2]: *** [scripts/Makefile.modpost:147: Module.symvers] Error 1
+make[1]: *** [/home/gregkh/linux/stable/linux-7.0.y/Makefile:2061: modpost] Error 2
+make: *** [Makefile:248: __sub-make] Error 2
 
-Best Regards,
-Oleksij
-- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
