@@ -1,61 +1,81 @@
-Return-Path: <stable+bounces-268480-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-268455-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 7Bu9OvYoPWrFyAgAu9opvQ
-	(envelope-from <stable+bounces-268480-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 15:11:18 +0200
+	id nUCCCQYpPWrKyAgAu9opvQ
+	(envelope-from <stable+bounces-268455-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 15:11:34 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9D07D6C5FBF
-	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 15:11:18 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id BAEEB6C5FD4
+	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 15:11:33 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="GwQ/2+SR";
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-268480-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-268480-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=2bX3EzDr;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-268455-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-268455-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 3CCAD307406A
-	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 13:09:58 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 74C50300EF7E
+	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 13:08:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7791A30568D;
-	Thu, 25 Jun 2026 13:09:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2324B28640B;
+	Thu, 25 Jun 2026 13:08:31 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63ECC2EDD7D;
-	Thu, 25 Jun 2026 13:09:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D3A02D94AF;
+	Thu, 25 Jun 2026 13:08:29 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782392994; cv=none; b=E+S6JKh8Ajccby+ULN4h/IMx3lcSFrgQ8LTJT5k8CTDGXEO4WR1M+O875ZSofPrJjQnBQgkDIHi5rvUHXDsa1ikwV0DqxCC5NHo7OkT1td3MSAi647eu2S1oPZa5iIzeIjrWVN4VKsrsPvX66mSJxhnDqOZxcdXjNLU6/sPMTg8=
+	t=1782392910; cv=none; b=joXn3ZxU4KRv+e2WyY48ka4tT12D6pZ3NhdS3wZ7lGlGHyUv4FPnq/EJ9hkJqwm5jjXCd0cS7WWKss7f0ImjsQ39pz0l3iaETGf64oTW06otp2qcmJqDBWge2ZaGMCJ9wrCf+2UCA9Rww/xEPpVzE0+19X72SKkXD4G1ZFiYAgc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782392994; c=relaxed/simple;
-	bh=m8qUzYLItjkvt9z/kmyNhCpy8lF1CXAZ3cPG+IaHaOs=;
+	s=arc-20240116; t=1782392910; c=relaxed/simple;
+	bh=g61kUT8RRUE38xm2X8P00OnH0SPlsGkt2cAPoq9lZpE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fTN+gmlJfl7TWLgJdnx8e9XEo6/RAFXv+/TTON+sVmxZ53hytvyMQQHfp5rSnAxiSagnyHyiih1bC8k4Wmu2zokHSIy8hoqRFKvsiynk49LrOzdJ/xw5Sj3g6NT6yjmoW1tn8qYOjckBe4kUa2SyOa/q9OkgMB5sB1rz0XFBz7Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GwQ/2+SR; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 108441F000E9;
-	Thu, 25 Jun 2026 13:09:50 +0000 (UTC)
+	 MIME-Version; b=TtfPPjhaw4CVYe40UBtWlJobaoNaT+3I1fxzPBNhMoc8+lcJLAyT27m0tbpaO4o/Y9Bc7N6ZYpc0Y5OjR9ktkeW3Giob6UT15g9LhnOWUEl90MNVRj/NZ7dedG/Ht0purRd1TCpUg0BiWOo4YitjRaJ/NqoGUrqQBwYX4nsUyKw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2bX3EzDr; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 556961F000E9;
+	Thu, 25 Jun 2026 13:08:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1782392991;
-	bh=1AIzNGT3WzZhr5iBlOT0p2KL9kgQ+L7moLJUsg4oW6k=;
+	s=korg; t=1782392909;
+	bh=HLtaA0MmOWKef0lHEmr/5jGs8vRBLzu1SJysi9wV/MQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=GwQ/2+SR9Qv6F+a1DBYlWiLin4shB4Vz7vR7Ptypf2KAmYWkblLUuZenQPYHmdVUB
-	 Fshm25/HQzTZ8sTvzuqUqCDMl9gd4hvXz1ufY6nkCQgq22/Bmlqefz8JdOXsRgD7ab
-	 HzrPw4Y4gsBdNK1YBiraSIlda98yOBCnfWZ+6Pk0=
+	b=2bX3EzDrqURdspQYWSeuHXTG/2S/CXtThFy6DJ4jIvSoogXNLR0onE6YReZSY56Kj
+	 Ka7cT8yM21rjbQ3vrI6uIBdOOP1i1+48wp3vsopJ382qRoZ83sF9aD/nmYvh8ZfSzP
+	 2k++n8Eqy+g53W623miKi13vrQuKsRHBfSlVIxAk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lei Lu <llfamsec@gmail.com>,
-	Joanne Koong <joannelkoong@gmail.com>,
-	Miklos Szeredi <mszeredi@redhat.com>
-Subject: [PATCH 7.0 09/49] fuse: re-lock request before replacing page cache folio
+	Lorenzo Stoakes <ljs@kernel.org>,
+	Pedro Falcato <pfalcato@suse.de>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Andrei Vagin <avagin@gmail.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	Barry Song <baohua@kernel.org>,
+	"David Hildenbrand (Red Hat)" <david@kernel.org>,
+	Dev Jain <dev.jain@arm.com>,
+	Jann Horn <jannh@google.com>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Lance Yang <lance.yang@linux.dev>,
+	Liam Howlett <liam.howlett@oracle.com>,
+	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Mike Rapoport <rppt@kernel.org>,
+	Nico Pache <npache@redhat.com>,
+	Ryan Roberts <ryan.roberts@arm.com>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Zi Yan <ziy@nvidia.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Ahmed Elaidy <elaidya225@gmail.com>
+Subject: [PATCH 6.18 36/60] mm: update vma_modify_flags() to handle residual flags, document
 Date: Thu, 25 Jun 2026 14:03:21 +0100
-Message-ID: <20260625125638.806582985@linuxfoundation.org>
+Message-ID: <20260625125650.925649653@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260625125637.527552689@linuxfoundation.org>
-References: <20260625125637.527552689@linuxfoundation.org>
+In-Reply-To: <20260625125645.554579168@linuxfoundation.org>
+References: <20260625125645.554579168@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,21 +92,21 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-268480-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:llfamsec@gmail.com,m:joannelkoong@gmail.com,m:mszeredi@redhat.com,s:lists@lfdr.de];
+	RCPT_COUNT_TWELVE(0.00)[26];
+	TAGGED_FROM(0.00)[bounces-268455-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:ljs@kernel.org,m:pfalcato@suse.de,m:vbabka@suse.cz,m:avagin@gmail.com,m:baolin.wang@linux.alibaba.com,m:baohua@kernel.org,m:david@kernel.org,m:dev.jain@arm.com,m:jannh@google.com,m:corbet@lwn.net,m:lance.yang@linux.dev,m:liam.howlett@oracle.com,m:mhiramat@kernel.org,m:mathieu.desnoyers@efficios.com,m:mhocko@suse.com,m:rppt@kernel.org,m:npache@redhat.com,m:ryan.roberts@arm.com,m:rostedt@goodmis.org,m:surenb@google.com,m:ziy@nvidia.com,m:akpm@linux-foundation.org,m:elaidya225@gmail.com,s:lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,redhat.com];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,suse.de,suse.cz,gmail.com,linux.alibaba.com,arm.com,google.com,lwn.net,linux.dev,oracle.com,efficios.com,suse.com,redhat.com,goodmis.org,nvidia.com,linux-foundation.org];
 	FORWARDED(0.00)[lists@lfdr.de];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
@@ -95,80 +115,385 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
+	TO_DN_SOME(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 9D07D6C5FBF
+X-Rspamd-Queue-Id: BAEEB6C5FD4
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Joanne Koong <joannelkoong@gmail.com>
+From: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
 
-commit a078484921052d0badd827fcc2770b5cfc1d4120 upstream.
+commit 9119d6c2095bb20292cb9812dd70d37f17e3bd37 upstream.
 
-fuse_try_move_folio() unlocks the request on entry but does not
-re-lock it on the success path. This means fuse_chan_abort() can end the
-request and free the fuse_io_args (eg fuse_readpages_end()) while the
-subsequent copy chain logic after fuse_try_move_folio() accesses the
-fuse_io_args, leading to use-after-free issues.
+The vma_modify_*() family of functions each either perform splits, a merge
+or no changes at all in preparation for the requested modification to
+occur.
 
-Fix this by calling lock_request() before replace_page_cache_folio().
-This ensures the request is locked on the success path which will
-prevent the fuse_io_args from being freed while the later copying logic
-runs, and also ensures that the ap->folios[i]->mapping is never null
-since ap->folios[i] will always point to the newfolio after
-replace_page_cache_folio().
+When doing so for a VMA flags change, we currently don't account for any
+flags which may remain (for instance, VM_SOFTDIRTY) despite the requested
+change in the case that a merge succeeded.
 
-Fixes: ce534fb05292 ("fuse: allow splice to move pages")
-Cc: stable@vger.kernel.org
-Reported-by: Lei Lu <llfamsec@gmail.com>
-Signed-off-by: Joanne Koong <joannelkoong@gmail.com>
-Signed-off-by: Miklos Szeredi <mszeredi@redhat.com>
+This is made more important by subsequent patches which will introduce the
+concept of sticky VMA flags which rely on this behaviour.
+
+This patch fixes this by passing the VMA flags parameter as a pointer and
+updating it accordingly on merge and updating callers to accommodate for
+this.
+
+Additionally, while we are here, we add kdocs for each of the
+vma_modify_*() functions, as the fact that the requested modification is
+not performed is confusing so it is useful to make this abundantly clear.
+
+We also update the VMA userland tests to account for this change.
+
+Link: https://lkml.kernel.org/r/23b5b549b0eaefb2922625626e58c2a352f3e93c.1763460113.git.ljs@kernel.org
+Signed-off-by: Lorenzo Stoakes <ljs@kernel.org>
+Reviewed-by: Pedro Falcato <pfalcato@suse.de>
+Reviewed-by: Vlastimil Babka <vbabka@suse.cz>
+Cc: Andrei Vagin <avagin@gmail.com>
+Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
+Cc: Barry Song <baohua@kernel.org>
+Cc: David Hildenbrand (Red Hat) <david@kernel.org>
+Cc: Dev Jain <dev.jain@arm.com>
+Cc: Jann Horn <jannh@google.com>
+Cc: Jonathan Corbet <corbet@lwn.net>
+Cc: Lance Yang <lance.yang@linux.dev>
+Cc: Liam Howlett <liam.howlett@oracle.com>
+Cc: "Masami Hiramatsu (Google)" <mhiramat@kernel.org>
+Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Cc: Michal Hocko <mhocko@suse.com>
+Cc: Mike Rapoport <rppt@kernel.org>
+Cc: Nico Pache <npache@redhat.com>
+Cc: Ryan Roberts <ryan.roberts@arm.com>
+Cc: Steven Rostedt <rostedt@goodmis.org>
+Cc: Suren Baghdasaryan <surenb@google.com>
+Cc: Zi Yan <ziy@nvidia.com>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Ahmed Elaidy <elaidya225@gmail.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/fuse/dev.c |   19 +++++--------------
- 1 file changed, 5 insertions(+), 14 deletions(-)
+ mm/madvise.c            |    2 
+ mm/mlock.c              |    2 
+ mm/mprotect.c           |    2 
+ mm/mseal.c              |    7 +-
+ mm/vma.c                |   56 ++++++++++---------
+ mm/vma.h                |  138 +++++++++++++++++++++++++++++++++++-------------
+ tools/testing/vma/vma.c |    3 -
+ 7 files changed, 142 insertions(+), 68 deletions(-)
 
---- a/fs/fuse/dev.c
-+++ b/fs/fuse/dev.c
-@@ -1037,6 +1037,10 @@ static int fuse_try_move_folio(struct fu
- 	if (WARN_ON(folio_test_mlocked(oldfolio)))
- 		goto out_fallback_unlock;
+--- a/mm/madvise.c
++++ b/mm/madvise.c
+@@ -167,7 +167,7 @@ static int madvise_update_vma(vm_flags_t
+ 			range->start, range->end, anon_name);
+ 	else
+ 		vma = vma_modify_flags(&vmi, madv_behavior->prev, vma,
+-			range->start, range->end, new_flags);
++			range->start, range->end, &new_flags);
  
-+	err = lock_request(cs->req);
-+	if (err)
-+		goto out_fallback_unlock;
+ 	if (IS_ERR(vma))
+ 		return PTR_ERR(vma);
+--- a/mm/mlock.c
++++ b/mm/mlock.c
+@@ -480,7 +480,7 @@ static int mlock_fixup(struct vma_iterat
+ 		 */
+ 		goto out;
+ 
+-	vma = vma_modify_flags(vmi, *prev, vma, start, end, newflags);
++	vma = vma_modify_flags(vmi, *prev, vma, start, end, &newflags);
+ 	if (IS_ERR(vma)) {
+ 		ret = PTR_ERR(vma);
+ 		goto out;
+--- a/mm/mprotect.c
++++ b/mm/mprotect.c
+@@ -813,7 +813,7 @@ mprotect_fixup(struct vma_iterator *vmi,
+ 		newflags &= ~VM_ACCOUNT;
+ 	}
+ 
+-	vma = vma_modify_flags(vmi, *pprev, vma, start, end, newflags);
++	vma = vma_modify_flags(vmi, *pprev, vma, start, end, &newflags);
+ 	if (IS_ERR(vma)) {
+ 		error = PTR_ERR(vma);
+ 		goto fail;
+--- a/mm/mseal.c
++++ b/mm/mseal.c
+@@ -69,9 +69,10 @@ static int mseal_apply(struct mm_struct
+ 		const unsigned long curr_end = MIN(vma->vm_end, end);
+ 
+ 		if (!(vma->vm_flags & VM_SEALED)) {
+-			vma = vma_modify_flags(&vmi, prev, vma,
+-					curr_start, curr_end,
+-					vma->vm_flags | VM_SEALED);
++			vm_flags_t vm_flags = vma->vm_flags | VM_SEALED;
 +
- 	replace_page_cache_folio(oldfolio, newfolio);
++			vma = vma_modify_flags(&vmi, prev, vma, curr_start,
++					       curr_end, &vm_flags);
+ 			if (IS_ERR(vma))
+ 				return PTR_ERR(vma);
+ 			vm_flags_set(vma, VM_SEALED);
+--- a/mm/vma.c
++++ b/mm/vma.c
+@@ -1676,25 +1676,35 @@ static struct vm_area_struct *vma_modify
+ 	return vma;
+ }
  
- 	folio_get(newfolio);
-@@ -1050,20 +1054,7 @@ static int fuse_try_move_folio(struct fu
+-struct vm_area_struct *vma_modify_flags(
+-	struct vma_iterator *vmi, struct vm_area_struct *prev,
+-	struct vm_area_struct *vma, unsigned long start, unsigned long end,
+-	vm_flags_t vm_flags)
++struct vm_area_struct *vma_modify_flags(struct vma_iterator *vmi,
++		struct vm_area_struct *prev, struct vm_area_struct *vma,
++		unsigned long start, unsigned long end,
++		vm_flags_t *vm_flags_ptr)
+ {
+ 	VMG_VMA_STATE(vmg, vmi, prev, vma, start, end);
++	const vm_flags_t vm_flags = *vm_flags_ptr;
++	struct vm_area_struct *ret;
+ 
+ 	vmg.vm_flags = vm_flags;
+ 
+-	return vma_modify(&vmg);
++	ret = vma_modify(&vmg);
++	if (IS_ERR(ret))
++		return ret;
++
++	/*
++	 * For a merge to succeed, the flags must match those requested. For
++	 * flags which do not obey typical merge rules (i.e. do not need to
++	 * match), we must let the caller know about them.
++	 */
++	if (vmg.state == VMA_MERGE_SUCCESS)
++		*vm_flags_ptr = ret->vm_flags;
++	return ret;
+ }
+ 
+-struct vm_area_struct
+-*vma_modify_name(struct vma_iterator *vmi,
+-		       struct vm_area_struct *prev,
+-		       struct vm_area_struct *vma,
+-		       unsigned long start,
+-		       unsigned long end,
+-		       struct anon_vma_name *new_name)
++struct vm_area_struct *vma_modify_name(struct vma_iterator *vmi,
++		struct vm_area_struct *prev, struct vm_area_struct *vma,
++		unsigned long start, unsigned long end,
++		struct anon_vma_name *new_name)
+ {
+ 	VMG_VMA_STATE(vmg, vmi, prev, vma, start, end);
+ 
+@@ -1703,12 +1713,10 @@ struct vm_area_struct
+ 	return vma_modify(&vmg);
+ }
+ 
+-struct vm_area_struct
+-*vma_modify_policy(struct vma_iterator *vmi,
+-		   struct vm_area_struct *prev,
+-		   struct vm_area_struct *vma,
+-		   unsigned long start, unsigned long end,
+-		   struct mempolicy *new_pol)
++struct vm_area_struct *vma_modify_policy(struct vma_iterator *vmi,
++		struct vm_area_struct *prev, struct vm_area_struct *vma,
++		unsigned long start, unsigned long end,
++		struct mempolicy *new_pol)
+ {
+ 	VMG_VMA_STATE(vmg, vmi, prev, vma, start, end);
+ 
+@@ -1717,14 +1725,10 @@ struct vm_area_struct
+ 	return vma_modify(&vmg);
+ }
+ 
+-struct vm_area_struct
+-*vma_modify_flags_uffd(struct vma_iterator *vmi,
+-		       struct vm_area_struct *prev,
+-		       struct vm_area_struct *vma,
+-		       unsigned long start, unsigned long end,
+-		       vm_flags_t vm_flags,
+-		       struct vm_userfaultfd_ctx new_ctx,
+-		       bool give_up_on_oom)
++struct vm_area_struct *vma_modify_flags_uffd(struct vma_iterator *vmi,
++		struct vm_area_struct *prev, struct vm_area_struct *vma,
++		unsigned long start, unsigned long end, vm_flags_t vm_flags,
++		struct vm_userfaultfd_ctx new_ctx, bool give_up_on_oom)
+ {
+ 	VMG_VMA_STATE(vmg, vmi, prev, vma, start, end);
+ 
+--- a/mm/vma.h
++++ b/mm/vma.h
+@@ -266,47 +266,115 @@ void remove_vma(struct vm_area_struct *v
+ void unmap_region(struct ma_state *mas, struct vm_area_struct *vma,
+ 		struct vm_area_struct *prev, struct vm_area_struct *next);
+ 
+-/* We are about to modify the VMA's flags. */
+-__must_check struct vm_area_struct
+-*vma_modify_flags(struct vma_iterator *vmi,
++/**
++ * vma_modify_flags() - Peform any necessary split/merge in preparation for
++ * setting VMA flags to *@vm_flags in the range @start to @end contained within
++ * @vma.
++ * @vmi: Valid VMA iterator positioned at @vma.
++ * @prev: The VMA immediately prior to @vma or NULL if @vma is the first.
++ * @vma: The VMA containing the range @start to @end to be updated.
++ * @start: The start of the range to update. May be offset within @vma.
++ * @end: The exclusive end of the range to update, may be offset within @vma.
++ * @vm_flags_ptr: A pointer to the VMA flags that the @start to @end range is
++ * about to be set to. On merge, this will be updated to include any additional
++ * flags which remain in place.
++ *
++ * IMPORTANT: The actual modification being requested here is NOT applied,
++ * rather the VMA is perhaps split, perhaps merged to accommodate the change,
++ * and the caller is expected to perform the actual modification.
++ *
++ * In order to account for VMA flags which may persist (e.g. soft-dirty), the
++ * @vm_flags_ptr parameter points to the requested flags which are then updated
++ * so the caller, should they overwrite any existing flags, correctly retains
++ * these.
++ *
++ * Returns: A VMA which contains the range @start to @end ready to have its
++ * flags altered to *@vm_flags.
++ */
++__must_check struct vm_area_struct *vma_modify_flags(struct vma_iterator *vmi,
+ 		struct vm_area_struct *prev, struct vm_area_struct *vma,
+ 		unsigned long start, unsigned long end,
+-		vm_flags_t vm_flags);
++		vm_flags_t *vm_flags_ptr);
+ 
+-/* We are about to modify the VMA's anon_name. */
+-__must_check struct vm_area_struct
+-*vma_modify_name(struct vma_iterator *vmi,
+-		 struct vm_area_struct *prev,
+-		 struct vm_area_struct *vma,
+-		 unsigned long start,
+-		 unsigned long end,
+-		 struct anon_vma_name *new_name);
+-
+-/* We are about to modify the VMA's memory policy. */
+-__must_check struct vm_area_struct
+-*vma_modify_policy(struct vma_iterator *vmi,
+-		   struct vm_area_struct *prev,
+-		   struct vm_area_struct *vma,
++/**
++ * vma_modify_name() - Peform any necessary split/merge in preparation for
++ * setting anonymous VMA name to @new_name in the range @start to @end contained
++ * within @vma.
++ * @vmi: Valid VMA iterator positioned at @vma.
++ * @prev: The VMA immediately prior to @vma or NULL if @vma is the first.
++ * @vma: The VMA containing the range @start to @end to be updated.
++ * @start: The start of the range to update. May be offset within @vma.
++ * @end: The exclusive end of the range to update, may be offset within @vma.
++ * @new_name: The anonymous VMA name that the @start to @end range is about to
++ * be set to.
++ *
++ * IMPORTANT: The actual modification being requested here is NOT applied,
++ * rather the VMA is perhaps split, perhaps merged to accommodate the change,
++ * and the caller is expected to perform the actual modification.
++ *
++ * Returns: A VMA which contains the range @start to @end ready to have its
++ * anonymous VMA name changed to @new_name.
++ */
++__must_check struct vm_area_struct *vma_modify_name(struct vma_iterator *vmi,
++		struct vm_area_struct *prev, struct vm_area_struct *vma,
++		unsigned long start, unsigned long end,
++		struct anon_vma_name *new_name);
++
++/**
++ * vma_modify_policy() - Peform any necessary split/merge in preparation for
++ * setting NUMA policy to @new_pol in the range @start to @end contained
++ * within @vma.
++ * @vmi: Valid VMA iterator positioned at @vma.
++ * @prev: The VMA immediately prior to @vma or NULL if @vma is the first.
++ * @vma: The VMA containing the range @start to @end to be updated.
++ * @start: The start of the range to update. May be offset within @vma.
++ * @end: The exclusive end of the range to update, may be offset within @vma.
++ * @new_pol: The NUMA policy that the @start to @end range is about to be set
++ * to.
++ *
++ * IMPORTANT: The actual modification being requested here is NOT applied,
++ * rather the VMA is perhaps split, perhaps merged to accommodate the change,
++ * and the caller is expected to perform the actual modification.
++ *
++ * Returns: A VMA which contains the range @start to @end ready to have its
++ * NUMA policy changed to @new_pol.
++ */
++__must_check struct vm_area_struct *vma_modify_policy(struct vma_iterator *vmi,
++		   struct vm_area_struct *prev, struct vm_area_struct *vma,
+ 		   unsigned long start, unsigned long end,
+ 		   struct mempolicy *new_pol);
+ 
+-/* We are about to modify the VMA's flags and/or uffd context. */
+-__must_check struct vm_area_struct
+-*vma_modify_flags_uffd(struct vma_iterator *vmi,
+-		       struct vm_area_struct *prev,
+-		       struct vm_area_struct *vma,
+-		       unsigned long start, unsigned long end,
+-		       vm_flags_t vm_flags,
+-		       struct vm_userfaultfd_ctx new_ctx,
+-		       bool give_up_on_oom);
+-
+-__must_check struct vm_area_struct
+-*vma_merge_new_range(struct vma_merge_struct *vmg);
+-
+-__must_check struct vm_area_struct
+-*vma_merge_extend(struct vma_iterator *vmi,
+-		  struct vm_area_struct *vma,
+-		  unsigned long delta);
++/**
++ * vma_modify_flags_uffd() - Peform any necessary split/merge in preparation for
++ * setting VMA flags to @vm_flags and UFFD context to @new_ctx in the range
++ * @start to @end contained within @vma.
++ * @vmi: Valid VMA iterator positioned at @vma.
++ * @prev: The VMA immediately prior to @vma or NULL if @vma is the first.
++ * @vma: The VMA containing the range @start to @end to be updated.
++ * @start: The start of the range to update. May be offset within @vma.
++ * @end: The exclusive end of the range to update, may be offset within @vma.
++ * @vm_flags: The VMA flags that the @start to @end range is about to be set to.
++ * @new_ctx: The userfaultfd context that the @start to @end range is about to
++ * be set to.
++ * @give_up_on_oom: If an out of memory condition occurs on merge, simply give
++ * up on it and treat the merge as best-effort.
++ *
++ * IMPORTANT: The actual modification being requested here is NOT applied,
++ * rather the VMA is perhaps split, perhaps merged to accommodate the change,
++ * and the caller is expected to perform the actual modification.
++ *
++ * Returns: A VMA which contains the range @start to @end ready to have its VMA
++ * flags changed to @vm_flags and its userfaultfd context changed to @new_ctx.
++ */
++__must_check struct vm_area_struct *vma_modify_flags_uffd(struct vma_iterator *vmi,
++		struct vm_area_struct *prev, struct vm_area_struct *vma,
++		unsigned long start, unsigned long end, vm_flags_t vm_flags,
++		struct vm_userfaultfd_ctx new_ctx, bool give_up_on_oom);
++
++__must_check struct vm_area_struct *vma_merge_new_range(struct vma_merge_struct *vmg);
++
++__must_check struct vm_area_struct *vma_merge_extend(struct vma_iterator *vmi,
++		  struct vm_area_struct *vma, unsigned long delta);
+ 
+ void unlink_file_vma_batch_init(struct unlink_vma_file_batch *vb);
+ 
+--- a/tools/testing/vma/vma.c
++++ b/tools/testing/vma/vma.c
+@@ -339,6 +339,7 @@ static bool test_simple_modify(void)
+ 	struct mm_struct mm = {};
+ 	struct vm_area_struct *init_vma = alloc_vma(&mm, 0, 0x3000, 0, vm_flags);
+ 	VMA_ITERATOR(vmi, &mm, 0x1000);
++	vm_flags_t flags = VM_READ | VM_MAYREAD;
+ 
+ 	ASSERT_FALSE(attach_vma(&mm, init_vma));
+ 
+@@ -347,7 +348,7 @@ static bool test_simple_modify(void)
+ 	 * performs the merge/split only.
  	 */
- 	pipe_buf_release(cs->pipe, buf);
- 
--	err = 0;
--	spin_lock(&cs->req->waitq.lock);
--	if (test_bit(FR_ABORTED, &cs->req->flags))
--		err = -ENOENT;
--	else
--		*foliop = newfolio;
--	spin_unlock(&cs->req->waitq.lock);
--
--	if (err) {
--		folio_unlock(newfolio);
--		folio_put(newfolio);
--		goto out_put_old;
--	}
--
-+	*foliop = newfolio;
- 	folio_unlock(oldfolio);
- 	/* Drop ref for ap->pages[] array */
- 	folio_put(oldfolio);
+ 	vma = vma_modify_flags(&vmi, init_vma, init_vma,
+-			       0x1000, 0x2000, VM_READ | VM_MAYREAD);
++			       0x1000, 0x2000, &flags);
+ 	ASSERT_NE(vma, NULL);
+ 	/* We modify the provided VMA, and on split allocate new VMAs. */
+ 	ASSERT_EQ(vma, init_vma);
 
 
 
