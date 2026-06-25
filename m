@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-268528-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-268517-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id FtzrLIspPWoNyQgAu9opvQ
-	(envelope-from <stable+bounces-268528-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 15:13:47 +0200
+	id NOgyKD8pPWrtyAgAu9opvQ
+	(envelope-from <stable+bounces-268517-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 15:12:31 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 686176C6097
-	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 15:13:47 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9FE3F6C602C
+	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 15:12:30 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=tQ4AcjWO;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-268528-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-268528-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=Mr8DJ8NU;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-268517-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-268517-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id A4C5430700E4
-	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 13:12:25 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 555F330148D0
+	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 13:11:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA62B2DCC13;
-	Thu, 25 Jun 2026 13:12:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 39FA12E040D;
+	Thu, 25 Jun 2026 13:11:52 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F68A2EC086;
-	Thu, 25 Jun 2026 13:12:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC33E28640B;
+	Thu, 25 Jun 2026 13:11:50 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782393144; cv=none; b=RIIRUkch1mZfKnDQki0A6MjIrSIeV9Y4EP59v2Zf8IP/lbOg2ztkXWECeqe8QU/JlPneoAqQ/7n/Tv566IBdt6cxft77z2EisZEhEVxRBXCAwCa9PwBAX5/oWZcDuiYFiAYsFhGXHz9HmkMbKAbiYDQMOqgfrPtD/Wgl66EqcK4=
+	t=1782393112; cv=none; b=j//Uzu6dTqiEmVQSo+QR/ZfbXWhjAVzDvqQGZkN8BXH2HdYxzLD/BR/ylmfxY1vbpQCYBSoy19BTXW1X4z8MfYtoXxhiXEL3D8LMuNs2o2Z63ycgWozrmPeWiG/NszFj4IvCfCC8fDcvhqlDL9vQ7TVr/9suB+Qtiv3qBDNs5Lk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782393144; c=relaxed/simple;
-	bh=hXZ5IXxBJ4/vNwN3xxVxdcdyigQL3aBaGVe+XaZyIzc=;
+	s=arc-20240116; t=1782393112; c=relaxed/simple;
+	bh=ut6Ix14Qjpk5q05DLmt4lzcfWly0Vq2FEq4WwXVqgkc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UNVripz2mDh+WOmF1yK54LAoRY9+oSzhMppujbtrsykZt4hjUoeh/nBzySkOtudv+wLuD0Vwuh3nZ/dsklHwBtgQoYLTAoMeRk7YXNyAgcRTPICS7+LeuOWp4DPW8mwgMJf9PtJjm94ZQhm50Rj+KT+XDrJhW462hl4JCd7yzWg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tQ4AcjWO; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D46EC1F00A3A;
-	Thu, 25 Jun 2026 13:12:22 +0000 (UTC)
+	 MIME-Version; b=gagX3Uo6GrWnN60SLWeU47Sc+23uLWazUUzmZBBD2etNxZCkpsuhd2A6MCZemufxIe1JUQPA0Ddss8K5pb9aIPXAEAwKD8+5O8u73O3K5qv/aCOaZebJhr8gWAVakE1Vy/qtCXPqw7ejwUrN3f/ayQI8ukbOBXml5FtZuiunsLc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Mr8DJ8NU; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4CCF1F00A3D;
+	Thu, 25 Jun 2026 13:11:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1782393143;
-	bh=O3gJm5ho+sprxgHCxyg2tUmI+m1xUcoWFUG0Hde/3Ws=;
+	s=korg; t=1782393110;
+	bh=42x/QYL+beHf82e1QuXXTL3wEV/hbbRCxow6WpglxCs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=tQ4AcjWOosioOYevsQMTnuO4OEozknM/MoHFXAW4GdgojL2uj7CU/nKYvGrTYV9PV
-	 QDELdLic5qP0TRJF0dQy91YuWenXPAm07UTLBmYk91r2ClZnnAyIX2nIx4GwnzQ6m0
-	 GFP6DfqYCg+GZGbY8OB8frGiKuRHk8/D61GlsCzU=
+	b=Mr8DJ8NU4ISHZySq8jASDsZJEnrfE+2kvgeNaOr3KmwV/9hJSA7lgcemHH6g4VmWp
+	 8tMX4vByqoi4GabuQ/lO3KnnTOu9d+x70+W10n81YoWoBiiDtm+jtAgMZ/hmeMjalq
+	 YIxubcYsk5oXKLJsF3vbEJlyvCCdWm6FlAKHHwjM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Subject: [PATCH 7.1 09/21] Input: rmi4 - fix type overflow in register counts
-Date: Thu, 25 Jun 2026 14:04:01 +0100
-Message-ID: <20260625125614.543002211@linuxfoundation.org>
+Subject: [PATCH 7.1 10/21] Input: rmi4 - fix num_subpackets overflow in register descriptor
+Date: Thu, 25 Jun 2026 14:04:02 +0100
+Message-ID: <20260625125614.682899601@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260625125613.243729608@linuxfoundation.org>
 References: <20260625125613.243729608@linuxfoundation.org>
@@ -71,14 +71,14 @@ X-Spamd-Result: default: False [-0.16 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORWARDED(0.00)[lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-268528-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-268517-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com];
@@ -94,13 +94,13 @@ X-Spamd-Result: default: False [-0.16 / 15.00];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,msgid.link:url,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 686176C6097
+X-Rspamd-Queue-Id: 9FE3F6C602C
 
 7.1-stable review patch.  If anyone has any objections, please let me know.
 
@@ -108,38 +108,52 @@ X-Rspamd-Queue-Id: 686176C6097
 
 From: Dmitry Torokhov <dmitry.torokhov@gmail.com>
 
-commit a0a87e441238e07c5f7e3de133ef77a9d4229f01 upstream.
+commit 2b4b482d5c4c23c668b998a7da985aea0fa4a978 upstream.
 
-The number of registers in the RMI4 register descriptor is populated
-by counting the bits in the presence map using bitmap_weight(). Since
-the presence map can contain up to 256 bits (RMI_REG_DESC_PRESENSE_BITS),
-storing this count in a u8 can overflow to 0 if all 256 bits are set.
+RMI_REG_DESC_SUBPACKET_BITS is defined as 296 (37 * BITS_PER_BYTE). This
+may overflow num_subpackets in struct rmi_register_desc_item which is
+defined as a u8.
 
-Change the num_registers field in struct rmi_register_descriptor
-from u8 to u16 to prevent potential integer overflow and ensure safe
-processing of devices reporting large descriptors.
+Fix this by changing the type of num_subpackets to u16.
 
 Fixes: 2b6a321da9a2 ("Input: synaptics-rmi4 - add support for Synaptics RMI4 devices")
 Cc: stable@vger.kernel.org
 Assisted-by: Gemini:gemini-3.1-pro
-Link: https://patch.msgid.link/20260505045952.1570713-3-dmitry.torokhov@gmail.com
+Link: https://patch.msgid.link/20260505045952.1570713-4-dmitry.torokhov@gmail.com
 Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
  drivers/input/rmi4/rmi_driver.h |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/input/rmi4/rmi_f12.c    |    7 +++++++
+ 2 files changed, 8 insertions(+), 1 deletion(-)
 
 --- a/drivers/input/rmi4/rmi_driver.h
 +++ b/drivers/input/rmi4/rmi_driver.h
-@@ -65,7 +65,7 @@ struct rmi_register_desc_item {
- struct rmi_register_descriptor {
- 	unsigned long struct_size;
- 	unsigned long presense_map[BITS_TO_LONGS(RMI_REG_DESC_PRESENSE_BITS)];
--	u8 num_registers;
-+	u16 num_registers;
- 	struct rmi_register_desc_item *registers;
+@@ -53,7 +53,7 @@ struct pdt_entry {
+ struct rmi_register_desc_item {
+ 	u16 reg;
+ 	unsigned long reg_size;
+-	u8 num_subpackets;
++	u16 num_subpackets;
+ 	unsigned long subpacket_map[BITS_TO_LONGS(
+ 				RMI_REG_DESC_SUBPACKET_BITS)];
  };
- 
+--- a/drivers/input/rmi4/rmi_f12.c
++++ b/drivers/input/rmi4/rmi_f12.c
+@@ -467,6 +467,13 @@ static int rmi_f12_probe(struct rmi_func
+ 		f12->data1 = item;
+ 		f12->data1_offset = data_offset;
+ 		data_offset += item->reg_size;
++
++		if (item->num_subpackets > 255) {
++			dev_err(&fn->dev, "Too many fingers declared: %d\n",
++				item->num_subpackets);
++			return -EINVAL;
++		}
++
+ 		sensor->nbr_fingers = item->num_subpackets;
+ 		sensor->report_abs = 1;
+ 		sensor->attn_size += item->reg_size;
 
 
 
