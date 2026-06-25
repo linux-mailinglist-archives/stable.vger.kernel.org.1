@@ -1,62 +1,63 @@
-Return-Path: <stable+bounces-268476-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-268428-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id rPi1Nm0pPWoEyQgAu9opvQ
-	(envelope-from <stable+bounces-268476-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 15:13:17 +0200
+	id oS3kMPYnPWpGyAgAu9opvQ
+	(envelope-from <stable+bounces-268428-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 15:07:02 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6B0526C607B
-	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 15:13:17 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5BE4D6C5E72
+	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 15:07:02 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=DD7sa7QN;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-268476-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-268476-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=RuxYYQy+;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-268428-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-268428-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id F17753062C38
-	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 13:09:40 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id CB410300647C
+	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 13:07:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 16BB629B77C;
-	Thu, 25 Jun 2026 13:09:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B418E2D0C84;
+	Thu, 25 Jun 2026 13:07:00 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97097288530;
-	Thu, 25 Jun 2026 13:09:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80FA42848A7;
+	Thu, 25 Jun 2026 13:06:59 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782392979; cv=none; b=mumX/CV2iN3ZHyL/Th1DrSVVFv9fvttscahVqDPty+AU3vSSmDsMY4W9ApsxEmD9JKwP9sZgvzf4GaEXJEPuugGzOdwDdlYswlqIGO3x8frxzEn2P3EW+XhUvQIVAqSsgI7LcwHMtH4G+jfdIhS/Bi4pwAXXgb1UVoa+mze62w0=
+	t=1782392820; cv=none; b=fig6UVaCSzwXOHXqzfVmZg85Nauo+UucaciP38vnGZAvY9navDhsBK5SzHx0nox2YWXMWUm8SqA3LTpbMrYjLM1OFGqb6mb8mHtblfbnHTWJJbLuVgjDu5iileE/hGzcolovtakmiHo9ADaRkRx9as3stmA7/ZQ4LScSVaBZYoc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782392979; c=relaxed/simple;
-	bh=aoCZ+43GAQd2LyDccMoh7Fn3kU3u70MnwSW8RA0xbXc=;
+	s=arc-20240116; t=1782392820; c=relaxed/simple;
+	bh=fLt/j0dTL+mSHOO1EjsgaESorXazHZLhEOx0OQU8eyQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jYnHX0UPNycgSm+5orvHErJSZdu1dCuoEcph2zRsU5oQMuulehEFiU2i6CLnYeNC9d10t7unMyMLkJ3cOLm3pS2izEpPXz5Ykt8Ry0VWY885cNL+3X2sbdheb7n0fUlpRRYA3QhCnqnEFDcV8Osywq8fc9975CIB2Gb8BUtQfYg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DD7sa7QN; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D40731F00A3A;
-	Thu, 25 Jun 2026 13:09:37 +0000 (UTC)
+	 MIME-Version; b=Wsxz54hzV9yWpacKaxd833hRj2mC7YUXQYVl0qtMnYcQx1X1Gmsvsb/Q5KrMmothVnsZ6BubSa7X/jxSoadimXihijiDabkz84VGO4ypnqxs/4DRkle7rx20IGvOHdwgb5yQ334Aaa91Zxd3TG4nfamXJ0sVgiTICkwXzyJdU6k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RuxYYQy+; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4D5D1F000E9;
+	Thu, 25 Jun 2026 13:06:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1782392978;
-	bh=ZUasuZUbTUR3GR/lrVUIjLWBFY39GfJOKB4GXSg/2+k=;
+	s=korg; t=1782392819;
+	bh=+9PmY22WCE5ujdb2mhdDhdkbTD+pjcuLbGU2C+gawXs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=DD7sa7QNgM1pIFy65FqcR7GPW0aFN4qabkHUsaDLKQuCi1RcRMOhw6Qd02BT2I3FE
-	 lAb+lP6G/u3sN4GyMDGn/fsHai1xaWS754Ab0LtIVOqqgOXoKpAIthsOVN1ui/bR3C
-	 eDKEepdSX263fLdT8Qjm65kxWtQGFR4ltiz8J7Lk=
+	b=RuxYYQy+HePsHc2+qJl+1ho3vhYcPOgJugehdv1jYR9icHUEvsKInolOolemcxsIf
+	 hD4m0io81hc1XKovD0fekvmuWN1wRvXYFP7b/sJbqWaWQ7E0uHtbmgHSMiCVeNE6qd
+	 YhgSSindguBaG5vhHPgjIf/VX4lTcWv+eJQMIw5c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tudor Ambarus <tudor.ambarus@linaro.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>,
-	Krzysztof Kozlowski <krzk@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 05/49] firmware: exynos-acpm: Count acpm_xfer buffers with __counted_by_ptr
-Date: Thu, 25 Jun 2026 14:03:17 +0100
-Message-ID: <20260625125638.258941246@linuxfoundation.org>
+	"marcelo.leitner@gmail.com, lucien.xin@gmail.com, davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, bestswngs@gmail.com, linux-sctp@vger.kernel.org, netdev@vger.kernel.org, linux-kernel@vger.kernel.org, Alexander Martyniuk" <alexevgmart@gmail.com>,
+	Xin Long <lucien.xin@gmail.com>,
+	Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Alexander Martyniuk <alexevgmart@gmail.com>
+Subject: [PATCH 6.18 33/60] sctp: disable BH before calling udp_tunnel_xmit_skb()
+Date: Thu, 25 Jun 2026 14:03:18 +0100
+Message-ID: <20260625125650.415762921@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260625125637.527552689@linuxfoundation.org>
-References: <20260625125637.527552689@linuxfoundation.org>
+In-Reply-To: <20260625125645.554579168@linuxfoundation.org>
+References: <20260625125645.554579168@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,99 +69,129 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-268476-lists,stable=lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-268428-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:tudor.ambarus@linaro.org,m:krzysztof.kozlowski@oss.qualcomm.com,m:krzk@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:alexevgmart@gmail.com,m:lucien.xin@gmail.com,m:marcelo.leitner@gmail.com,m:kuba@kernel.org,m:lucienxin@gmail.com,m:marceloleitner@gmail.com,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
 	RCVD_COUNT_THREE(0.00)[4];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linaro.org:email,qualcomm.com:email,msgid.link:url,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,vger.kernel.org:from_smtp,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 6B0526C607B
+X-Rspamd-Queue-Id: 5BE4D6C5E72
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
+From: Xin Long <lucien.xin@gmail.com>
 
-[ Upstream commit 951b8eee0581bbf39e7b0464d679eee8cb9da3e0 ]
+commit 2cd7e6971fc2787408ceef17906ea152791448cf upstream.
 
-Use __counted_by_ptr() attribute on the acpm_xfer buffers so UBSAN will
-validate runtime that we do not pass over the buffer size, thus making
-code safer.
+udp_tunnel_xmit_skb() / udp_tunnel6_xmit_skb() are expected to run with
+BH disabled.  After commit 6f1a9140ecda ("add xmit recursion limit to
+tunnel xmit functions"), on the path:
 
-Usage of __counted_by_ptr() (or actually __counted_by()) requires that
-counter is initialized before counted array.
+  udp(6)_tunnel_xmit_skb() -> ip(6)tunnel_xmit()
 
-Tested-by: Tudor Ambarus <tudor.ambarus@linaro.org>
-Reviewed-by: Tudor Ambarus <tudor.ambarus@linaro.org>
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
-Link: https://patch.msgid.link/20260219-firmare-acpm-counted-v2-3-e1f7389237d3@oss.qualcomm.com
-Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
-Stable-dep-of: f133bd4b5daf ("firmware: samsung: acpm: Fix cross-thread RX length corruption")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+dev_xmit_recursion_inc()/dec() must stay balanced on the same CPU.
+
+Without local_bh_disable(), the context may move between CPUs, which can
+break the inc/dec pairing. This may lead to incorrect recursion level
+detection and cause packets to be dropped in ip(6)_tunnel_xmit() or
+__dev_queue_xmit().
+
+Fix it by disabling BH around both IPv4 and IPv6 SCTP UDP xmit paths.
+
+In my testing, after enabling the SCTP over UDP:
+
+  # ip net exec ha sysctl -w net.sctp.udp_port=9899
+  # ip net exec ha sysctl -w net.sctp.encap_port=9899
+  # ip net exec hb sysctl -w net.sctp.udp_port=9899
+  # ip net exec hb sysctl -w net.sctp.encap_port=9899
+
+  # ip net exec ha iperf3 -s
+
+- without this patch:
+
+  # ip net exec hb iperf3 -c 192.168.0.1 --sctp
+  [  5]   0.00-10.00  sec  37.2 MBytes  31.2 Mbits/sec  sender
+  [  5]   0.00-10.00  sec  37.1 MBytes  31.1 Mbits/sec  receiver
+
+- with this patch:
+
+  # ip net exec hb iperf3 -c 192.168.0.1 --sctp
+  [  5]   0.00-10.00  sec  3.14 GBytes  2.69 Gbits/sec  sender
+  [  5]   0.00-10.00  sec  3.14 GBytes  2.69 Gbits/sec  receiver
+
+Fixes: 6f1a9140ecda ("net: add xmit recursion limit to tunnel xmit functions")
+Fixes: 046c052b475e ("sctp: enable udp tunneling socks")
+Signed-off-by: Xin Long <lucien.xin@gmail.com>
+Acked-by: Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>
+Link: https://patch.msgid.link/c874a8548221dcd56ff03c65ba75a74e6cf99119.1776017727.git.lucien.xin@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Alexander Martyniuk <alexevgmart@gmail.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/firmware/samsung/exynos-acpm-dvfs.c |    4 ++--
- drivers/firmware/samsung/exynos-acpm.h      |    4 ++--
- 2 files changed, 4 insertions(+), 4 deletions(-)
+ net/sctp/ipv6.c     |    2 ++
+ net/sctp/protocol.c |    2 ++
+ 2 files changed, 4 insertions(+)
 
---- a/drivers/firmware/samsung/exynos-acpm-dvfs.c
-+++ b/drivers/firmware/samsung/exynos-acpm-dvfs.c
-@@ -25,12 +25,12 @@ static void acpm_dvfs_set_xfer(struct ac
- 			       unsigned int acpm_chan_id, bool response)
- {
- 	xfer->acpm_chan_id = acpm_chan_id;
--	xfer->txd = cmd;
- 	xfer->txcnt = cmdlen;
-+	xfer->txd = cmd;
+--- a/net/sctp/ipv6.c
++++ b/net/sctp/ipv6.c
+@@ -261,9 +261,11 @@ static int sctp_v6_xmit(struct sk_buff *
+ 	skb_set_inner_ipproto(skb, IPPROTO_SCTP);
+ 	label = ip6_make_flowlabel(sock_net(sk), skb, fl6->flowlabel, true, fl6);
  
- 	if (response) {
--		xfer->rxd = cmd;
- 		xfer->rxcnt = cmdlen;
-+		xfer->rxd = cmd;
- 	}
++	local_bh_disable();
+ 	udp_tunnel6_xmit_skb(dst, sk, skb, NULL, &fl6->saddr, &fl6->daddr,
+ 			     tclass, ip6_dst_hoplimit(dst), label,
+ 			     sctp_sk(sk)->udp_port, t->encap_port, false, 0);
++	local_bh_enable();
+ 	return 0;
  }
  
---- a/drivers/firmware/samsung/exynos-acpm.h
-+++ b/drivers/firmware/samsung/exynos-acpm.h
-@@ -8,8 +8,8 @@
- #define __EXYNOS_ACPM_H__
+--- a/net/sctp/protocol.c
++++ b/net/sctp/protocol.c
+@@ -1102,10 +1102,12 @@ static inline int sctp_v4_xmit(struct sk
+ 	skb_reset_inner_mac_header(skb);
+ 	skb_reset_inner_transport_header(skb);
+ 	skb_set_inner_ipproto(skb, IPPROTO_SCTP);
++	local_bh_disable();
+ 	udp_tunnel_xmit_skb(dst_rtable(dst), sk, skb, fl4->saddr,
+ 			    fl4->daddr, dscp, ip4_dst_hoplimit(dst), df,
+ 			    sctp_sk(sk)->udp_port, t->encap_port, false, false,
+ 			    0);
++	local_bh_enable();
+ 	return 0;
+ }
  
- struct acpm_xfer {
--	const u32 *txd;
--	u32 *rxd;
-+	const u32 *txd __counted_by_ptr(txcnt);
-+	u32 *rxd __counted_by_ptr(rxcnt);
- 	size_t txcnt;
- 	size_t rxcnt;
- 	unsigned int acpm_chan_id;
 
 
 
