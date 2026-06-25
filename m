@@ -1,61 +1,71 @@
-Return-Path: <stable+bounces-268470-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-268450-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id WZfmIxEpPWrSyAgAu9opvQ
-	(envelope-from <stable+bounces-268470-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 15:11:45 +0200
+	id sIZDJGcoPWqCyAgAu9opvQ
+	(envelope-from <stable+bounces-268450-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 15:08:55 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id E39686C5FE7
-	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 15:11:44 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id EE6486C5F14
+	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 15:08:54 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=07gPIDyv;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-268470-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-268470-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="gYKz/8Jp";
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-268450-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-268450-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 7E7B23024C80
-	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 13:09:20 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 621763054EAA
+	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 13:08:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 103AC28751B;
-	Thu, 25 Jun 2026 13:09:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2DC372D060D;
+	Thu, 25 Jun 2026 13:08:14 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8FF629B77C;
-	Thu, 25 Jun 2026 13:09:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFCB42DC334;
+	Thu, 25 Jun 2026 13:08:12 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782392959; cv=none; b=qNl3H85xwn+avnaF77hvLUI1/6WaAgtqENsdkoMIWpJ/SgeDWYKcvEsaN0lgObxIqs+Qxk/FuzSyXHcdheAWgQkfvHW4FwBupq/tYcxj9ckBh5Zhycs3N73yfJg5Ne1px/G5RkhkV+YID4H9ITwSgTEoaVnohcdOm+csQhV98bI=
+	t=1782392894; cv=none; b=C87Kj8sClJ1rKPxIYEreJ3HHhHGNxbW9q8V2ITUJJrQasZXMjLOSrDbO+uOZBUE1NsK6jQ0U/3X44mm4YAJrwYVyCbVYB1B+iGkFVXLABE1py+oVNLx+OALWWBdYQPKAcQ1a99rdLfej5hU1lVdxv41ZlaJLPAqG1ompcqytpmM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782392959; c=relaxed/simple;
-	bh=qU8fViZ4bC7WNiNco2PVuZnICuyFVn2fKW6tLB5AVFg=;
+	s=arc-20240116; t=1782392894; c=relaxed/simple;
+	bh=pfZfuQEHDP42dBNoHHZhyveWire0DtYNviasEQVUCmQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=V2cuwiNRc9syE9je1tKAAzMcwLeuWz+pyZjCZQwbvoVZJs3nt3bTlMKIW/tjHnlAJr1FLRUsAknLRCesx8610QBikkrO2vJWseI2B3gM8giaNcAjhSl3VEfVic6NyQvH20Nq+i+gc0ZFvFKC5TXVYeEEbxZaJ+gndTy9wRgVHEY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=07gPIDyv; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 108A31F000E9;
-	Thu, 25 Jun 2026 13:09:17 +0000 (UTC)
+	 MIME-Version; b=PiJVfTfjdjcs+hdiInQ5IUAYYMyN0RcISN8uU0ttRIY3gnMN4zrvpWKEBFMPS3v8EYAYWpmwu1K3REQKAomPH8uZWDp8RHTLIje6tLiLPfqg+ieDBSv5qlmFuhyk3v/68/FNhPRdSLOk/8SEZmTL2AZ9LDtjs0dMtsSBweGN8Y4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gYKz/8Jp; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1BC571F000E9;
+	Thu, 25 Jun 2026 13:08:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1782392958;
-	bh=AWaI1Q7eQLEywsSady2LpwJWaqcPl3ffHzZyPM+rrTI=;
+	s=korg; t=1782392892;
+	bh=g2DoFrZJUjSKa78Fnxen5WaXlPtYmsR7htSp5vKDxvU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=07gPIDyvLAsJXWd0Ua2/K3W9L87xjMK3EVlc7A3moBz1s5Z/W3KjDba8rxteVUK84
-	 bEzmBIuEmboWn1iEEppXkHuQdTzM8Lb9626RbkGigOleMPBzjsNNtGJnC4bWd0JWD3
-	 Va2mJj45m7CSewmLB4XoIXzKc8RJW51YXOzVGwNA=
+	b=gYKz/8Jpw1dnnLnkfPJpXnjG8r1ejw0kZuhLGZu2gE5UHQSwm8qe5Yy8P3V7c1msn
+	 KnSwpMnh51korhQM27nVaqVwcCZpYWefQjkVvO2ru4GxSjvFw3ZFKsAypJTHD4dWoi
+	 FZhwgbNwLFmBgSSr4T9ccyveHVtu7v5cj3pVjksE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xiang Mei <xmei5@asu.edu>,
-	Weiming Shi <bestswngs@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 7.0 14/49] net: qualcomm: rmnet: fix endpoint use-after-free in rmnet_dellink()
+	Lorenzo Stoakes <ljs@kernel.org>,
+	Andrey Vagin <avagin@gmail.com>,
+	"David Hildenbrand (Red Hat)" <david@kernel.org>,
+	Jann Horn <jannh@google.com>,
+	Liam Howlett <liam.howlett@oracle.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Mike Rapoport <rppt@kernel.org>,
+	Pedro Falcato <pfalcato@suse.de>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Cyrill Gorcunov <gorcunov@gmail.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Ahmed Elaidy <elaidya225@gmail.com>
+Subject: [PATCH 6.18 41/60] testing/selftests/mm: add soft-dirty merge self-test
 Date: Thu, 25 Jun 2026 14:03:26 +0100
-Message-ID: <20260625125639.504430267@linuxfoundation.org>
+Message-ID: <20260625125651.704240577@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260625125637.527552689@linuxfoundation.org>
-References: <20260625125637.527552689@linuxfoundation.org>
+In-Reply-To: <20260625125645.554579168@linuxfoundation.org>
+References: <20260625125645.554579168@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,21 +82,21 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-268470-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:xmei5@asu.edu,m:bestswngs@gmail.com,m:kuba@kernel.org,s:lists@lfdr.de];
+	RCPT_COUNT_TWELVE(0.00)[16];
+	TAGGED_FROM(0.00)[bounces-268450-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:ljs@kernel.org,m:avagin@gmail.com,m:david@kernel.org,m:jannh@google.com,m:liam.howlett@oracle.com,m:mhocko@suse.com,m:rppt@kernel.org,m:pfalcato@suse.de,m:surenb@google.com,m:vbabka@suse.cz,m:gorcunov@gmail.com,m:akpm@linux-foundation.org,m:elaidya225@gmail.com,s:lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,asu.edu,gmail.com,kernel.org];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,gmail.com,google.com,oracle.com,suse.com,suse.de,suse.cz,linux-foundation.org];
 	FORWARDED(0.00)[lists@lfdr.de];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
@@ -95,100 +105,208 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
+	TO_DN_SOME(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[asu.edu:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,msgid.link:url]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,linux-foundation.org:email,suse.cz:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,oracle.com:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: E39686C5FE7
+X-Rspamd-Queue-Id: EE6486C5F14
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Weiming Shi <bestswngs@gmail.com>
+From: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
 
-commit d00c953a8f69921f484b629801766da68f27f658 upstream.
+commit c7ba92bcfea34f6b4afc744c3b65c8f7420fefe0 upstream.
 
-rmnet_dellink() removes the endpoint from the hash table with
-hlist_del_init_rcu() and then immediately frees it with kfree(). However,
-RCU readers on the receive path (rmnet_rx_handler ->
-__rmnet_map_ingress_handler) may still hold a reference to the endpoint and
-dereference ep->egress_dev after the memory has been freed. The endpoint is
-a kmalloc-32 object, and the stale read at offset 8 corresponds to the
-egress_dev pointer.
+Assert that we correctly merge VMAs containing VM_SOFTDIRTY flags now that
+we correctly handle these as sticky.
 
-  BUG: unable to handle page fault for address: ffffffffde942eef
-  Oops: 0002 [#1] SMP NOPTI
-  CPU: 1 UID: 0 PID: 137 Comm: poc_write Not tainted 7.0.0+ #4 PREEMPTLAZY
-  RIP: 0010:rmnet_vnd_rx_fixup (rmnet_vnd.c:27)
-  Call Trace:
-   <TASK>
-   __rmnet_map_ingress_handler (rmnet_handlers.c:48 rmnet_handlers.c:101)
-   rmnet_rx_handler (rmnet_handlers.c:129 rmnet_handlers.c:235)
-   __netif_receive_skb_core.constprop.0 (net/core/dev.c:6096)
-   __netif_receive_skb_one_core (net/core/dev.c:6208)
-   netif_receive_skb (net/core/dev.c:6467)
-   tun_get_user (drivers/net/tun.c:1955)
-   tun_chr_write_iter (drivers/net/tun.c:2003)
-   vfs_write (fs/read_write.c:688)
-   ksys_write (fs/read_write.c:740)
-   </TASK>
+In order to do so, we have to account for the fact the pagemap interface
+checks soft dirty PTEs and additionally that newly merged VMAs are marked
+VM_SOFTDIRTY.
 
-Add an rcu_head field to struct rmnet_endpoint and replace kfree() with
-kfree_rcu() so the endpoint memory remains valid through the RCU grace
-period. Also remove the rmnet_vnd_dellink() call and inline only the
-nr_rmnet_devs decrement, since rmnet_vnd_dellink() would set
-ep->egress_dev to NULL during the grace period, creating a data race
-with lockless readers.
+We do this by using use unfaulted anon VMAs, establishing one and clearing
+references on that one, before establishing another and merging the two
+before checking that soft-dirty is propagated as expected.
 
-Fixes: ceed73a2cf4a ("drivers: net: ethernet: qualcomm: rmnet: Initial implementation")
-Reported-by: Xiang Mei <xmei5@asu.edu>
-Signed-off-by: Weiming Shi <bestswngs@gmail.com>
-Link: https://patch.msgid.link/20260514122511.3083479-2-bestswngs@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+We check that this functions correctly with mremap() and mprotect() as
+sample cases, because VMA merge of adjacent newly mapped VMAs will
+automatically be made soft-dirty due to existing logic which does so.
+
+We are therefore exercising other means of merging VMAs.
+
+Link: https://lkml.kernel.org/r/d5a0f735783fb4f30a604f570ede02ccc5e29be9.1763399675.git.ljs@kernel.org
+Signed-off-by: Lorenzo Stoakes <ljs@kernel.org>
+Cc: Andrey Vagin <avagin@gmail.com>
+Cc: David Hildenbrand (Red Hat) <david@kernel.org>
+Cc: Jann Horn <jannh@google.com>
+Cc: Liam Howlett <liam.howlett@oracle.com>
+Cc: Michal Hocko <mhocko@suse.com>
+Cc: Mike Rapoport <rppt@kernel.org>
+Cc: Pedro Falcato <pfalcato@suse.de>
+Cc: Suren Baghdasaryan <surenb@google.com>
+Cc: Vlastimil Babka <vbabka@suse.cz>
+Cc: Cyrill Gorcunov <gorcunov@gmail.com>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Ahmed Elaidy <elaidya225@gmail.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/qualcomm/rmnet/rmnet_config.c |    8 ++++----
- drivers/net/ethernet/qualcomm/rmnet/rmnet_config.h |    1 +
- 2 files changed, 5 insertions(+), 4 deletions(-)
+ tools/testing/selftests/mm/soft-dirty.c |  127 +++++++++++++++++++++++++++++++-
+ 1 file changed, 126 insertions(+), 1 deletion(-)
 
---- a/drivers/net/ethernet/qualcomm/rmnet/rmnet_config.c
-+++ b/drivers/net/ethernet/qualcomm/rmnet/rmnet_config.c
-@@ -213,8 +213,8 @@ static void rmnet_dellink(struct net_dev
- 	ep = rmnet_get_endpoint(real_port, mux_id);
- 	if (ep) {
- 		hlist_del_init_rcu(&ep->hlnode);
--		rmnet_vnd_dellink(mux_id, real_port, ep);
--		kfree(ep);
-+		real_port->nr_rmnet_devs--;
-+		kfree_rcu(ep, rcu);
- 	}
+--- a/tools/testing/selftests/mm/soft-dirty.c
++++ b/tools/testing/selftests/mm/soft-dirty.c
+@@ -184,6 +184,130 @@ static void test_mprotect(int pagemap_fd
+ 		close(test_fd);
+ }
  
- 	netdev_upper_dev_unlink(real_dev, dev);
-@@ -238,9 +238,9 @@ static void rmnet_force_unassociate_devi
- 		hash_for_each_safe(port->muxed_ep, bkt_ep, tmp_ep, ep, hlnode) {
- 			unregister_netdevice_queue(ep->egress_dev, &list);
- 			netdev_upper_dev_unlink(real_dev, ep->egress_dev);
--			rmnet_vnd_dellink(ep->mux_id, port, ep);
- 			hlist_del_init_rcu(&ep->hlnode);
--			kfree(ep);
-+			port->nr_rmnet_devs--;
-+			kfree_rcu(ep, rcu);
- 		}
- 		rmnet_unregister_real_device(real_dev);
- 		unregister_netdevice_many(&list);
---- a/drivers/net/ethernet/qualcomm/rmnet/rmnet_config.h
-+++ b/drivers/net/ethernet/qualcomm/rmnet/rmnet_config.h
-@@ -18,6 +18,7 @@ struct rmnet_endpoint {
- 	u8 mux_id;
- 	struct net_device *egress_dev;
- 	struct hlist_node hlnode;
-+	struct rcu_head rcu;
- };
++static void test_merge(int pagemap_fd, int pagesize)
++{
++	char *reserved, *map, *map2;
++
++	/*
++	 * Reserve space for tests:
++	 *
++	 *   ---padding to ---
++	 *   |   avoid adj.  |
++	 *   v     merge     v
++	 * |---|---|---|---|---|
++	 * |   | 1 | 2 | 3 |   |
++	 * |---|---|---|---|---|
++	 */
++	reserved = mmap(NULL, 5 * pagesize, PROT_NONE,
++			MAP_ANON | MAP_PRIVATE, -1, 0);
++	if (reserved == MAP_FAILED)
++		ksft_exit_fail_msg("mmap failed\n");
++	munmap(reserved, 4 * pagesize);
++
++	/*
++	 * Establish initial VMA:
++	 *
++	 *      S/D
++	 * |---|---|---|---|---|
++	 * |   | 1 |   |   |   |
++	 * |---|---|---|---|---|
++	 */
++	map = mmap(&reserved[pagesize], pagesize, PROT_READ | PROT_WRITE,
++		   MAP_ANON | MAP_PRIVATE | MAP_FIXED, -1, 0);
++	if (map == MAP_FAILED)
++		ksft_exit_fail_msg("mmap failed\n");
++
++	/* This will clear VM_SOFTDIRTY too. */
++	clear_softdirty();
++
++	/*
++	 * Now place a new mapping which will be marked VM_SOFTDIRTY. Away from
++	 * map:
++	 *
++	 *       -      S/D
++	 * |---|---|---|---|---|
++	 * |   | 1 |   | 2 |   |
++	 * |---|---|---|---|---|
++	 */
++	map2 = mmap(&reserved[3 * pagesize], pagesize, PROT_READ | PROT_WRITE,
++		    MAP_ANON | MAP_PRIVATE | MAP_FIXED, -1, 0);
++	if (map2 == MAP_FAILED)
++		ksft_exit_fail_msg("mmap failed\n");
++
++	/*
++	 * Now remap it immediately adjacent to map, if the merge correctly
++	 * propagates VM_SOFTDIRTY, we should then observe the VMA as a whole
++	 * being marked soft-dirty:
++	 *
++	 *       merge
++	 *        S/D
++	 * |---|-------|---|---|
++	 * |   |   1   |   |   |
++	 * |---|-------|---|---|
++	 */
++	map2 = mremap(map2, pagesize, pagesize, MREMAP_FIXED | MREMAP_MAYMOVE,
++		      &reserved[2 * pagesize]);
++	if (map2 == MAP_FAILED)
++		ksft_exit_fail_msg("mremap failed\n");
++	ksft_test_result(pagemap_is_softdirty(pagemap_fd, map) == 1,
++			 "Test %s-anon soft-dirty after remap merge 1st pg\n",
++			 __func__);
++	ksft_test_result(pagemap_is_softdirty(pagemap_fd, map2) == 1,
++			 "Test %s-anon soft-dirty after remap merge 2nd pg\n",
++			 __func__);
++
++	munmap(map, 2 * pagesize);
++
++	/*
++	 * Now establish another VMA:
++	 *
++	 *      S/D
++	 * |---|---|---|---|---|
++	 * |   | 1 |   |   |   |
++	 * |---|---|---|---|---|
++	 */
++	map = mmap(&reserved[pagesize], pagesize, PROT_READ | PROT_WRITE,
++		   MAP_ANON | MAP_PRIVATE | MAP_FIXED, -1, 0);
++	if (map == MAP_FAILED)
++		ksft_exit_fail_msg("mmap failed\n");
++
++	/* Clear VM_SOFTDIRTY... */
++	clear_softdirty();
++	/* ...and establish incompatible adjacent VMA:
++	 *
++	 *       -  S/D
++	 * |---|---|---|---|---|
++	 * |   | 1 | 2 |   |   |
++	 * |---|---|---|---|---|
++	 */
++	map2 = mmap(&reserved[2 * pagesize], pagesize,
++	PROT_READ | PROT_WRITE | PROT_EXEC,
++		   MAP_ANON | MAP_PRIVATE | MAP_FIXED, -1, 0);
++	if (map2 == MAP_FAILED)
++		ksft_exit_fail_msg("mmap failed\n");
++
++	/*
++	 * Now mprotect() VMA 1 so it's compatible with 2 and therefore merges:
++	 *
++	 *       merge
++	 *        S/D
++	 * |---|-------|---|---|
++	 * |   |   1   |   |   |
++	 * |---|-------|---|---|
++	 */
++	if (mprotect(map, pagesize, PROT_READ | PROT_WRITE | PROT_EXEC))
++		ksft_exit_fail_msg("mprotect failed\n");
++
++	ksft_test_result(pagemap_is_softdirty(pagemap_fd, map) == 1,
++			 "Test %s-anon soft-dirty after mprotect merge 1st pg\n",
++			 __func__);
++	ksft_test_result(pagemap_is_softdirty(pagemap_fd, map2) == 1,
++			 "Test %s-anon soft-dirty after mprotect merge 2nd pg\n",
++			 __func__);
++
++	munmap(map, 2 * pagesize);
++}
++
+ static void test_mprotect_anon(int pagemap_fd, int pagesize)
+ {
+ 	test_mprotect(pagemap_fd, pagesize, true);
+@@ -204,7 +328,7 @@ int main(int argc, char **argv)
+ 	if (!softdirty_supported())
+ 		ksft_exit_skip("soft-dirty is not support\n");
  
- struct rmnet_egress_agg_params {
+-	ksft_set_plan(15);
++	ksft_set_plan(19);
+ 	pagemap_fd = open(PAGEMAP_FILE_PATH, O_RDONLY);
+ 	if (pagemap_fd < 0)
+ 		ksft_exit_fail_msg("Failed to open %s\n", PAGEMAP_FILE_PATH);
+@@ -216,6 +340,7 @@ int main(int argc, char **argv)
+ 	test_hugepage(pagemap_fd, pagesize);
+ 	test_mprotect_anon(pagemap_fd, pagesize);
+ 	test_mprotect_file(pagemap_fd, pagesize);
++	test_merge(pagemap_fd, pagesize);
+ 
+ 	close(pagemap_fd);
+ 
 
 
 
