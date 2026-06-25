@@ -1,61 +1,56 @@
-Return-Path: <stable+bounces-268490-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-268515-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id x/ViLx0pPWrayAgAu9opvQ
-	(envelope-from <stable+bounces-268490-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 15:11:57 +0200
+	id mw7jKXEpPWoGyQgAu9opvQ
+	(envelope-from <stable+bounces-268515-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 15:13:21 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 648166C6007
-	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 15:11:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4D2956C6084
+	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 15:13:21 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="S7OzZ/p3";
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-268490-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-268490-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=k1GdjCxp;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-268515-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-268515-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 168113045B2E
-	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 13:10:27 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 2FA00302772A
+	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 13:11:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EABFF28751B;
-	Thu, 25 Jun 2026 13:10:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F1CA830AD05;
+	Thu, 25 Jun 2026 13:11:47 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C041C29B77C;
-	Thu, 25 Jun 2026 13:10:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94C992D0C79;
+	Thu, 25 Jun 2026 13:11:44 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782393025; cv=none; b=nHA8n9oEgQvR2JLF3uTGBjb5/hg1m0pcR0ZzgfYlWbCn9JBYDKc4C6JrbfeIaPRUvXw9RG75iDINk0pZKpUdhTnk0jk0gYPKksj2NxSj7cH8CumFrseuR5MIW8aa0cht/7RcosQZoihQJz/03gC8JWjmPqf/VVL/8m31pIdCIEc=
+	t=1782393107; cv=none; b=mdDpfuHvl4f3z6RXYykaXJoNQ8YJvnBu3BpzWTLi3DDDFFJ8UOZNqWJ6ekWvLzyn8g6s9/Z41hR6fI6ZTOHLR6Oi3OqiFD83SJfHyDEVrbc2zjGMDuziNBIKZ7zVlZs8HyrowXKX5gQ44tC+u5XifLKvMLHDsCfEN1/eq+dURig=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782393025; c=relaxed/simple;
-	bh=5TAtTU2Ev4uBCj2XbNoG64Ogb3SxyCs9PqIC/wwgUGE=;
+	s=arc-20240116; t=1782393107; c=relaxed/simple;
+	bh=idwGSNy0iR1d8U/bkKyXtviLGKpL00JieL3Vtqc6SVM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=IITC4HdnJxwC74b60x8WRvK5WOe2naC0aeaZ6IBE0Y+bwZJJWeGKh52x1mjdHFLE1MkxXe/VrcqTOwPQOMWH7CzMK1sj7ENCi5ZtBnbBXjJViz/AFqz/8XaoAVSiN4BHO6eow8ks1qCEUOf1ofWTcrGEHtgsNugmNkWGWJej+gg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S7OzZ/p3; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11AB41F000E9;
-	Thu, 25 Jun 2026 13:10:23 +0000 (UTC)
+	 MIME-Version; b=Bs/fOcW3AgqYm9QWVLt8qi1ZPye6LIba8WvGiv8D4AuDS6gEsQkTef3F7Z32Uej5gu3Dk7Ele98bjD5vGuakL9wP6j172rhg1fxKfRDg9SuHIRRsCrbwRrUArWoP+iG5ozorPE0HMynZZ1WzNJHHpkGTzRxGucE3HvdXMtXf3Hc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k1GdjCxp; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41F5B1F00A3A;
+	Thu, 25 Jun 2026 13:11:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1782393024;
-	bh=JhBai0q7pthUo7ka1itYdt5n6IBoSRoX+zXucFINRMg=;
+	s=korg; t=1782393103;
+	bh=6Sfp5JF/kFR7IMGIBDFcbUSjftj2A7NttVcigqvYya0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=S7OzZ/p3oHBfH5Wpr/Ipp3dij0f28hLh8KJ0BEe2RzRX4T3DpQXIRKIZy6WhT6uTE
-	 Xkhzz63nJ3jPJG3psx4MTD4NyWJAEVQrWJaB/oYcxyIs+qvMY+mdxzeogs5DfmBlvU
-	 ZoLC1Zhex+lPrqwcsBiqCoUQEs0EKdRBKAgpvsY0=
+	b=k1GdjCxpY4rGK4Ipe3y7v2+8wP0viE1Z0uUVTn4hUh11HUz/7tH//4Op7yfWUUlCQ
+	 v/Kx6AEgcHklUWqUMnROaxazV9X1WIfwxUVi3aUvAwJPE8DKl572w1RgtiSBioLWXl
+	 DKzphsKaljT4H+EYbvpaCdTOmQvXp8Uht6D8kPyw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Jonathan Cameron <jic23@kernel.org>,
-	David Lechner <dlechner@baylibre.com>,
-	=?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>,
-	Andy Shevchenko <andy@kernel.org>,
-	Sam Daly <sam@samdaly.ie>
-Subject: [PATCH 7.0 34/49] iio: adc: ti-ads1298: add bounds check to pga_settings index
-Date: Thu, 25 Jun 2026 14:03:46 +0100
-Message-ID: <20260625125642.322076574@linuxfoundation.org>
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Subject: [PATCH 7.0 35/49] Input: rmi4 - fix register descriptor address calculation
+Date: Thu, 25 Jun 2026 14:03:47 +0100
+Message-ID: <20260625125642.463620750@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260625125637.527552689@linuxfoundation.org>
 References: <20260625125637.527552689@linuxfoundation.org>
@@ -68,96 +63,84 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-268490-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
+	FORWARDED(0.00)[lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:stable@kernel.org,m:jic23@kernel.org,m:dlechner@baylibre.com,m:nuno.sa@analog.com,m:andy@kernel.org,m:sam@samdaly.ie,s:lists@lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-268515-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	TAGGED_RCPT(0.00)[stable];
-	MID_RHS_MATCH_FROM(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:dmitry.torokhov@gmail.com,m:dmitrytorokhov@gmail.com,s:lists@lfdr.de];
+	RCPT_COUNT_THREE(0.00)[4];
 	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,baylibre.com:email,samdaly.ie:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,analog.com:email]
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,vger.kernel.org:from_smtp,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 648166C6007
+X-Rspamd-Queue-Id: 4D2956C6084
 
 7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sam Daly <sam@samdaly.ie>
+From: Dmitry Torokhov <dmitry.torokhov@gmail.com>
 
-commit 95e8a48d7a85d4226934020e57815a3316d3a14b upstream.
+commit a98518e72439fd42cbfe641c2896543cb088e3d1 upstream.
 
-ads1298_pga_settings has 7 elements but ADS1298_MASK_CH_PGA can yield
-values 0-7. If it yields a value >= 7, this causes an out-of-bounds
-array access. Add a bounds check and return -EINVAL if the index
-is out of range.
+When reading the register descriptor, the base address is incremented by
+1 to read the presence register block. However, after reading the
+presence register block, the address is incorrectly incremented by only
+1 byte (++addr) instead of the actual size of the presence block
+(size_presence_reg). This causes the subsequent structure block read to
+read from the wrong memory location if the presence block is larger than
+1 byte.
 
-Note that the remaining value b111 is reserved so should not be seen
-in a correctly functioning system.
+Fix this by advancing the address by size_presence_reg.
 
-Assisted-by: gkh_clanker_2000
-Cc: stable <stable@kernel.org>
-Cc: Jonathan Cameron <jic23@kernel.org>
-Cc: David Lechner <dlechner@baylibre.com>
-Cc: "Nuno Sá" <nuno.sa@analog.com>
-Cc: Andy Shevchenko <andy@kernel.org>
-Signed-off-by: Sam Daly <sam@samdaly.ie>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Jonathan Cameron <jic23@kernel.org>
+Fixes: 2b6a321da9a2 ("Input: synaptics-rmi4 - add support for Synaptics RMI4 devices")
+Cc: stable@vger.kernel.org
+Assisted-by: Gemini:gemini-3.1-pro
+Link: https://patch.msgid.link/20260505045952.1570713-1-dmitry.torokhov@gmail.com
+Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/adc/ti-ads1298.c |    7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ drivers/input/rmi4/rmi_driver.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/iio/adc/ti-ads1298.c
-+++ b/drivers/iio/adc/ti-ads1298.c
-@@ -279,6 +279,7 @@ static const u8 ads1298_pga_settings[] =
- static int ads1298_get_scale(struct ads1298_private *priv,
- 			     int channel, int *val, int *val2)
- {
-+	unsigned int pga_idx;
- 	int ret;
- 	unsigned int regval;
- 	u8 gain;
-@@ -302,7 +303,11 @@ static int ads1298_get_scale(struct ads1
+--- a/drivers/input/rmi4/rmi_driver.c
++++ b/drivers/input/rmi4/rmi_driver.c
+@@ -594,7 +594,7 @@ int rmi_read_register_desc(struct rmi_de
+ 	ret = rmi_read_block(d, addr, buf, size_presence_reg);
  	if (ret)
  		return ret;
+-	++addr;
++	addr += size_presence_reg;
  
--	gain = ads1298_pga_settings[FIELD_GET(ADS1298_MASK_CH_PGA, regval)];
-+	pga_idx = FIELD_GET(ADS1298_MASK_CH_PGA, regval);
-+	if (pga_idx >= ARRAY_SIZE(ads1298_pga_settings))
-+		return -EINVAL;
-+
-+	gain = ads1298_pga_settings[pga_idx];
- 	*val /= gain; /* Full scale is VREF / gain */
- 
- 	*val2 = ADS1298_BITS_PER_SAMPLE - 1; /* Signed, hence the -1 */
+ 	if (buf[0] == 0) {
+ 		presense_offset = 3;
 
 
 
