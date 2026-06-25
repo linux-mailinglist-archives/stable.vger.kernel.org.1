@@ -1,62 +1,63 @@
-Return-Path: <stable+bounces-268425-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-268474-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id WG3TBNQoPWq2yAgAu9opvQ
-	(envelope-from <stable+bounces-268425-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 15:10:44 +0200
+	id BEwAC2cpPWoByQgAu9opvQ
+	(envelope-from <stable+bounces-268474-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 15:13:11 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 48C006C5F94
-	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 15:10:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7B9DC6C606D
+	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 15:13:10 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=zFAXVLPd;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-268425-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-268425-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=nOvROY7H;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-268474-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-268474-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 3E53F301D062
-	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 13:06:51 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id F282430F5774
+	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 13:09:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DAC5423E25B;
-	Thu, 25 Jun 2026 13:06:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CBB7728640B;
+	Thu, 25 Jun 2026 13:09:33 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99ABB1E633C;
-	Thu, 25 Jun 2026 13:06:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 417EF1E633C;
+	Thu, 25 Jun 2026 13:09:31 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782392810; cv=none; b=T3eZ6jxqY1jZW2V8jHini0FdjIdJ71Rv4lyeqGkPg32Te18C6RAibLilSex6OT57e+YG53Dkpbjkgj9+mEErVQAEYfObYipJt0bbDK804x5Oki8RJ6xjRuqIh5/r0cTe3pNI95MUswAXUHx0S9I3bF1QmjULtQ18B5kOwS321io=
+	t=1782392973; cv=none; b=flX9vSzXNOY+jF/1hHYaJG9sCDlLYQnevG8qUGWxG0kk8VLq6PKXM3iibaKyCx7b3ZaOpSKOMrARnyOz2BwI3OcT3L2Yiy6yhm5+Vml64k0nuWl2hoIDHkXNPxgq51JpsopBbx0dZjv+Y6R0y19lX8xaZ5LEteYYg5JYUQpgtQM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782392810; c=relaxed/simple;
-	bh=omfY/PjAVSENlpNHC1f2ODWKEunjFIDtixgKnBgFq3Y=;
+	s=arc-20240116; t=1782392973; c=relaxed/simple;
+	bh=We0+lH7P+X4EG/Djo5FS3t+ukpF8sxG26Bwjv9F92IY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=A/yTH2At4ujy751kLmz+VZYf9L42N02jkgQudg8O4ZXWY9L7+JvFKal+m9BR+n7VC2VaDp9Sax3EbaHGayRXDMkbdhs8yBajM9Oy1LxiA49sUj8lW2nXU1SFuqIR3cFH4WCy9EU0g6xLsD+ucmU8qOWmtsQnrd9/QdX6AUPVKWs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zFAXVLPd; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD59C1F000E9;
-	Thu, 25 Jun 2026 13:06:48 +0000 (UTC)
+	 MIME-Version; b=swpufYpVPIZMjHchorx07o4ZEZstpM+e1v7ectKca+hT9qD4vWFZh+0xRKgII6HfotxJYmeKImjfGJnVZyimu61Jro+xuf3UXBY6u2tCgMLVCOYLdxj1NwiEmDVks0yZ7Va83Dm+p76hP6Hx1hWLr+iYpdUGqhVrudMqBRDrbdE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nOvROY7H; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 418CA1F000E9;
+	Thu, 25 Jun 2026 13:09:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1782392809;
-	bh=9/8nJ7HyO3qGWAtukuOIBEb2HouQ+yXL0rKx06XXzGA=;
+	s=korg; t=1782392971;
+	bh=N6dLL5kukwBegsVUyOKvwqYF2qrO9sNr7py+PrYrtSI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=zFAXVLPd8mgbtNNUuarcMjj3uNqQ9Tb1EEPflAr1q6X1m1Ub0nooBtMDKLfAXQz7N
-	 hJ8dwFlv/5cILaY9KnscoOUgTVb9qNGXQqv45RpTOsbMhub5Z28GcETR41BDlsgTRG
-	 ZnuiFCQ5ySKOZfcNSa8/uFtbe/SU83PAkx87dw/E=
+	b=nOvROY7HQI07SrI7+bdSFP3HtQyTyU+EEJdMTcAj+83hjLtEoVLq+8IEGj39JCpXy
+	 LzodH/Lwp0g2QfdCk2R2CH9iiCyP8NhTsb+UAs9MKX7epXSi8lo4el6QdjcuBR9R0q
+	 I0BxX5J8HnkyT3HkQdZi2DDsHGibACTStGnnOllU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thorsten Blum <thorsten.blum@linux.dev>,
-	Long Li <longli@microsoft.com>,
-	Wei Liu <wei.liu@kernel.org>,
+	Tj <tj.iam.tj@proton.me>,
+	Jeff Layton <jlayton@kernel.org>,
+	NeilBrown <neil@brown.name>,
+	Chuck Lever <chuck.lever@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 30/60] hv: utils: handle and propagate errors in kvp_register
+Subject: [PATCH 7.0 03/49] lockd: fix TEST handling when not all permissions are available.
 Date: Thu, 25 Jun 2026 14:03:15 +0100
-Message-ID: <20260625125649.972601360@linuxfoundation.org>
+Message-ID: <20260625125637.974589603@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260625125645.554579168@linuxfoundation.org>
-References: <20260625125645.554579168@linuxfoundation.org>
+In-Reply-To: <20260625125637.527552689@linuxfoundation.org>
+References: <20260625125637.527552689@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -79,10 +80,10 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-268425-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-268474-lists,stable=lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:thorsten.blum@linux.dev,m:longli@microsoft.com,m:wei.liu@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:tj.iam.tj@proton.me,m:jlayton@kernel.org,m:neil@brown.name,m:chuck.lever@oracle.com,m:sashal@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
@@ -96,98 +97,266 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,linux.dev:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,oracle.com:email,vger.kernel.org:from_smtp,proton.me:email,brown.name:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 48C006C5F94
+X-Rspamd-Queue-Id: 7B9DC6C606D
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thorsten Blum <thorsten.blum@linux.dev>
+From: NeilBrown <neil@brown.name>
 
-[ Upstream commit 3fcf923302a8f5c0dc3af3d2ca2657cb5fae4297 ]
+[ Upstream commit 0b474240327cebeff08ad429e8ed3cfc6c8ee816 ]
 
-Make kvp_register() return an error code instead of silently ignoring
-failures, and propagate the error from kvp_handle_handshake() instead of
-returning success.
+The F_GETLK fcntl can work with either read access or write access or
+both.  It can query F_RDLCK and F_WRLCK locks in either case.
 
-This propagates both kzalloc_obj() and hvutil_transport_send() failures
-to kvp_handle_handshake() and thus to kvp_on_msg().
+However lockd currently treats F_GETLK similar to F_SETLK in that read
+access is required to query an F_RDLCK lock and write access is required
+to query a F_WRLCK lock.
 
-Fixes: 245ba56a52a3 ("Staging: hv: Implement key/value pair (KVP)")
-Cc: stable@vger.kernel.org
-Signed-off-by: Thorsten Blum <thorsten.blum@linux.dev>
-Reviewed-by: Long Li <longli@microsoft.com>
-Signed-off-by: Wei Liu <wei.liu@kernel.org>
+This is wrong and can cause problems - e.g.  when qemu accesses a
+read-only (e.g. iso) filesystem image over NFS (though why it queries
+if it can get a write lock - I don't know.  But it does, and this works
+with local filesystems).
+
+So we need TEST requests to be handled differently.  To do this:
+
+- change nlm_do_fopen() to accept O_RDWR as a mode and in that case
+  succeed if either a O_RDONLY or O_WRONLY file can be opened.
+- change nlm_lookup_file() to accept a mode argument from caller,
+  instead of deducing base on lock time, and pass that on to nlm_do_fopen()
+- change nlm4svc_retrieve_args() and nlmsvc_retrieve_args() to detect
+  TEST requests and pass O_RDWR as a mode to nlm_lookup_file, passing
+  the same mode as before for other requests.  Also set
+   lock->fl.c.flc_file to whichever file is available for TEST requests.
+- change nlmsvc_testlock() to also not calculate the mode, but to use
+  whatever was stored in lock->fl.c.flc_file.
+
+This behaviour of lockd - requesting O_WRONLY access to TEST for
+exclusive locks - has been present at least since git history began.
+However it was hidden until recently because knfsd ignored the access
+requested by lockd and required only READ access for all locking
+requests (unless the underlying filesystem provided an f_op->open
+function which checked access permissions).
+
+The commit mentioned in Fixes: below changed nfsd_permission() to NOT
+override the access request for LOCK requests and this exposed the bug
+that we are now fixing.
+
+Note that there is another issue that this patch does not address.
+The flock(.., LOCK_EX) call is permitted on a read-only file descriptor.
+Linux NFS maps this to NLM locking as whole-file byte-range locks.
+nfsd will see this as though it were fcntl( F_SETLK (F_WRLCK)) and will
+now require write access, which it might not be able to get.
+It is not clear if this is a problem in practice, or what the best
+solution might be.  So no attempt is made to address it.
+
+Reported-by: Tj <tj.iam.tj@proton.me>
+Link: https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=1128861
+Fixes: 4cc9b9f2bf4d ("nfsd: refine and rename NFSD_MAY_LOCK")
+Reviewed-by: Jeff Layton <jlayton@kernel.org>
+Signed-off-by: NeilBrown <neil@brown.name>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/hv/hv_kvp.c |   27 ++++++++++++++-------------
- 1 file changed, 14 insertions(+), 13 deletions(-)
+ fs/lockd/svc4proc.c         | 13 ++++++++++---
+ fs/lockd/svclock.c          |  4 +---
+ fs/lockd/svcproc.c          | 15 ++++++++++++---
+ fs/lockd/svcsubs.c          | 35 +++++++++++++++++++++++++----------
+ include/linux/lockd/lockd.h |  2 +-
+ 5 files changed, 49 insertions(+), 20 deletions(-)
 
---- a/drivers/hv/hv_kvp.c
-+++ b/drivers/hv/hv_kvp.c
-@@ -93,7 +93,7 @@ static void kvp_send_key(struct work_str
- static void kvp_respond_to_host(struct hv_kvp_msg *msg, int error);
- static void kvp_timeout_func(struct work_struct *dummy);
- static void kvp_host_handshake_func(struct work_struct *dummy);
--static void kvp_register(int);
-+static int kvp_register(int);
+diff --git a/fs/lockd/svc4proc.c b/fs/lockd/svc4proc.c
+index 4b6f18d977343d..75e020a8bfd072 100644
+--- a/fs/lockd/svc4proc.c
++++ b/fs/lockd/svc4proc.c
+@@ -26,6 +26,8 @@ nlm4svc_retrieve_args(struct svc_rqst *rqstp, struct nlm_args *argp,
+ 	struct nlm_host		*host = NULL;
+ 	struct nlm_file		*file = NULL;
+ 	struct nlm_lock		*lock = &argp->lock;
++	bool			is_test = (rqstp->rq_proc == NLMPROC_TEST ||
++					   rqstp->rq_proc == NLMPROC_TEST_MSG);
+ 	__be32			error = 0;
  
- static DECLARE_DELAYED_WORK(kvp_timeout_work, kvp_timeout_func);
- static DECLARE_DELAYED_WORK(kvp_host_handshake_work, kvp_host_handshake_func);
-@@ -127,24 +127,26 @@ static void kvp_register_done(void)
- 	hv_poll_channel(kvp_transaction.recv_channel, kvp_poll_wrapper);
- }
+ 	/* nfsd callbacks must have been installed for this procedure */
+@@ -46,15 +48,20 @@ nlm4svc_retrieve_args(struct svc_rqst *rqstp, struct nlm_args *argp,
+ 	if (filp != NULL) {
+ 		int mode = lock_to_openmode(&lock->fl);
  
--static void
-+static int
- kvp_register(int reg_value)
- {
- 
- 	struct hv_kvp_msg *kvp_msg;
- 	char *version;
-+	int ret;
- 
- 	kvp_msg = kzalloc(sizeof(*kvp_msg), GFP_KERNEL);
-+	if (!kvp_msg)
-+		return -ENOMEM;
- 
--	if (kvp_msg) {
--		version = kvp_msg->body.kvp_register.version;
--		kvp_msg->kvp_hdr.operation = reg_value;
--		strcpy(version, HV_DRV_VERSION);
--
--		hvutil_transport_send(hvt, kvp_msg, sizeof(*kvp_msg),
--				      kvp_register_done);
--		kfree(kvp_msg);
--	}
-+	version = kvp_msg->body.kvp_register.version;
-+	kvp_msg->kvp_hdr.operation = reg_value;
-+	strcpy(version, HV_DRV_VERSION);
++		if (is_test)
++			mode = O_RDWR;
 +
-+	ret = hvutil_transport_send(hvt, kvp_msg, sizeof(*kvp_msg),
-+				    kvp_register_done);
-+	kfree(kvp_msg);
-+	return ret;
+ 		lock->fl.c.flc_flags = FL_POSIX;
+ 
+-		error = nlm_lookup_file(rqstp, &file, lock);
++		error = nlm_lookup_file(rqstp, &file, lock, mode);
+ 		if (error)
+ 			goto no_locks;
+ 		*filp = file;
+-
+ 		/* Set up the missing parts of the file_lock structure */
+-		lock->fl.c.flc_file = file->f_file[mode];
++		if (is_test)
++			lock->fl.c.flc_file = nlmsvc_file_file(file);
++		else
++			lock->fl.c.flc_file = file->f_file[mode];
+ 		lock->fl.c.flc_pid = current->tgid;
+ 		lock->fl.fl_start = (loff_t)lock->lock_start;
+ 		lock->fl.fl_end = lock->lock_len ?
+diff --git a/fs/lockd/svclock.c b/fs/lockd/svclock.c
+index abc65dc79f8543..382bf0d93ed1c1 100644
+--- a/fs/lockd/svclock.c
++++ b/fs/lockd/svclock.c
+@@ -619,7 +619,6 @@ nlmsvc_testlock(struct svc_rqst *rqstp, struct nlm_file *file,
+ 		struct nlm_lock *conflock)
+ {
+ 	int			error;
+-	int			mode;
+ 	__be32			ret;
+ 
+ 	dprintk("lockd: nlmsvc_testlock(%s/%ld, ty=%d, %Ld-%Ld)\n",
+@@ -637,14 +636,13 @@ nlmsvc_testlock(struct svc_rqst *rqstp, struct nlm_file *file,
+ 		goto out;
+ 	}
+ 
+-	mode = lock_to_openmode(&lock->fl);
+ 	locks_init_lock(&conflock->fl);
+ 	/* vfs_test_lock only uses start, end, and owner, but tests flc_file */
+ 	conflock->fl.c.flc_file = lock->fl.c.flc_file;
+ 	conflock->fl.fl_start = lock->fl.fl_start;
+ 	conflock->fl.fl_end = lock->fl.fl_end;
+ 	conflock->fl.c.flc_owner = lock->fl.c.flc_owner;
+-	error = vfs_test_lock(file->f_file[mode], &conflock->fl);
++	error = vfs_test_lock(lock->fl.c.flc_file, &conflock->fl);
+ 	if (error) {
+ 		ret = nlm_lck_denied_nolocks;
+ 		goto out;
+diff --git a/fs/lockd/svcproc.c b/fs/lockd/svcproc.c
+index 5817ef272332d9..d98e8d684376b7 100644
+--- a/fs/lockd/svcproc.c
++++ b/fs/lockd/svcproc.c
+@@ -55,6 +55,8 @@ nlmsvc_retrieve_args(struct svc_rqst *rqstp, struct nlm_args *argp,
+ 	struct nlm_host		*host = NULL;
+ 	struct nlm_file		*file = NULL;
+ 	struct nlm_lock		*lock = &argp->lock;
++	bool			is_test = (rqstp->rq_proc == NLMPROC_TEST ||
++					   rqstp->rq_proc == NLMPROC_TEST_MSG);
+ 	int			mode;
+ 	__be32			error = 0;
+ 
+@@ -70,15 +72,22 @@ nlmsvc_retrieve_args(struct svc_rqst *rqstp, struct nlm_args *argp,
+ 
+ 	/* Obtain file pointer. Not used by FREE_ALL call. */
+ 	if (filp != NULL) {
+-		error = cast_status(nlm_lookup_file(rqstp, &file, lock));
++		mode = lock_to_openmode(&lock->fl);
++
++		if (is_test)
++			mode = O_RDWR;
++
++		error = cast_status(nlm_lookup_file(rqstp, &file, lock, mode));
+ 		if (error != 0)
+ 			goto no_locks;
+ 		*filp = file;
+ 
+ 		/* Set up the missing parts of the file_lock structure */
+-		mode = lock_to_openmode(&lock->fl);
+ 		lock->fl.c.flc_flags = FL_POSIX;
+-		lock->fl.c.flc_file  = file->f_file[mode];
++		if (is_test)
++			lock->fl.c.flc_file = nlmsvc_file_file(file);
++		else
++			lock->fl.c.flc_file = file->f_file[mode];
+ 		lock->fl.c.flc_pid = current->tgid;
+ 		lock->fl.fl_lmops = &nlmsvc_lock_operations;
+ 		nlmsvc_locks_init_private(&lock->fl, host, (pid_t)lock->svid);
+diff --git a/fs/lockd/svcsubs.c b/fs/lockd/svcsubs.c
+index dd0214dcb69503..b83e6ecd5be34f 100644
+--- a/fs/lockd/svcsubs.c
++++ b/fs/lockd/svcsubs.c
+@@ -82,18 +82,35 @@ int lock_to_openmode(struct file_lock *lock)
+  *
+  * We have to make sure we have the right credential to open
+  * the file.
++ *
++ * mode can be O_RDONLY(0), O_WRONLY(1) or O_RDWR(2). The latter
++ * means success can be achieved with EITHER O_RDONLY or O_WRONLY.
++ * It does NOT mean both read and write are required.
+  */
+ static __be32 nlm_do_fopen(struct svc_rqst *rqstp,
+ 			   struct nlm_file *file, int mode)
+ {
+-	struct file **fp = &file->f_file[mode];
+-	__be32	nfserr;
++	__be32 nfserr = nlm_lck_denied_nolocks;
++	__be32 deferred = 0;
++	struct file **fp;
++	int m;
+ 
+-	if (*fp)
+-		return 0;
+-	nfserr = nlmsvc_ops->fopen(rqstp, &file->f_handle, fp, mode);
+-	if (nfserr)
+-		dprintk("lockd: open failed (error %d)\n", nfserr);
++	for (m = O_RDONLY ; m <= O_WRONLY ; m++) {
++		if (mode != O_RDWR && mode != m)
++			continue;
++
++		fp = &file->f_file[m];
++		if (*fp)
++			return 0;
++		nfserr = nlmsvc_ops->fopen(rqstp, &file->f_handle, fp, m);
++		if (!nfserr)
++			return 0;
++		if (nfserr == nlm_drop_reply)
++			deferred = nfserr;
++	}
++	if (deferred)
++		return deferred;
++	dprintk("lockd: open failed (error %d)\n", ntohl(nfserr));
+ 	return nfserr;
  }
  
- static void kvp_timeout_func(struct work_struct *dummy)
-@@ -186,9 +188,8 @@ static int kvp_handle_handshake(struct h
- 	 */
- 	pr_debug("KVP: userspace daemon ver. %d connected\n",
- 		 msg->kvp_hdr.operation);
--	kvp_register(dm_reg_value);
+@@ -103,17 +120,15 @@ static __be32 nlm_do_fopen(struct svc_rqst *rqstp,
+  */
+ __be32
+ nlm_lookup_file(struct svc_rqst *rqstp, struct nlm_file **result,
+-					struct nlm_lock *lock)
++		struct nlm_lock *lock, int mode)
+ {
+ 	struct nlm_file	*file;
+ 	unsigned int	hash;
+ 	__be32		nfserr;
+-	int		mode;
  
--	return 0;
-+	return kvp_register(dm_reg_value);
- }
+ 	nlm_debug_print_fh("nlm_lookup_file", &lock->fh);
  
+ 	hash = file_hash(&lock->fh);
+-	mode = lock_to_openmode(&lock->fl);
  
+ 	/* Lock file table */
+ 	mutex_lock(&nlm_file_mutex);
+diff --git a/include/linux/lockd/lockd.h b/include/linux/lockd/lockd.h
+index 330e38776bb20d..fe5cdd4d66f484 100644
+--- a/include/linux/lockd/lockd.h
++++ b/include/linux/lockd/lockd.h
+@@ -294,7 +294,7 @@ void		  nlmsvc_locks_init_private(struct file_lock *, struct nlm_host *, pid_t);
+  * File handling for the server personality
+  */
+ __be32		  nlm_lookup_file(struct svc_rqst *, struct nlm_file **,
+-					struct nlm_lock *);
++				  struct nlm_lock *, int);
+ void		  nlm_release_file(struct nlm_file *);
+ void		  nlmsvc_put_lockowner(struct nlm_lockowner *);
+ void		  nlmsvc_release_lockowner(struct nlm_lock *);
+-- 
+2.53.0
+
 
 
 
