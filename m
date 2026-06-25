@@ -1,399 +1,280 @@
-Return-Path: <stable+bounces-268407-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-268404-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id NGxEOSooPWpfyAgAu9opvQ
-	(envelope-from <stable+bounces-268407-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 15:07:54 +0200
+	id 36ugGRwoPWpXyAgAu9opvQ
+	(envelope-from <stable+bounces-268404-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 15:07:40 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3F8E26C5EBE
-	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 15:07:54 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 60B856C5E9A
+	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 15:07:39 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=nrfJQ2q+;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-268407-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-268407-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="p/XoCZvN";
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-268404-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-268404-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E3EDF3010D9C
-	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 13:05:52 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 08037300291A
+	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 13:05:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1512B2BE7DC;
-	Thu, 25 Jun 2026 13:05:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4ADB2877F7;
+	Thu, 25 Jun 2026 13:05:41 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3786D2D0C63;
-	Thu, 25 Jun 2026 13:05:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 686BB29D288;
+	Thu, 25 Jun 2026 13:05:40 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782392751; cv=none; b=njTq2MTAvtO9lVNXn0ACFYtDdPjERsdhRQIysSD8uc5seHW+PBrBnPUqVpQAV1cgjQ9DAleO97M8NHbtOSUBx0AOeFKbZsvaFrpdsoMz6uO1LTpeSRogLzHEmNGe5y+mJIQ4GyBRr1us+CDnRXM/4yPKtgUueTHkglf5FyxGwCY=
+	t=1782392741; cv=none; b=susJUA0c4AfNfp6pmoeExBvyWLaa2HSd3wvKELB8V1Fawo9d0J9OznE62PcTWL9lafzUjhFOK3TMLVDTTSL7OoKFVy+uekaBiNFDh4tU/GiLgGedQwdHKNFU1z8F3XA+lKhN5+WVDBag0Hd6EwplDG0ULdzPVlstlRMGHdQRAas=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782392751; c=relaxed/simple;
-	bh=m2RsO56eJvo5723uidwYkE+M/YTdtdb7o2twIOE2G68=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=J2+p6UPFeS8kNDFlIZUqzZEUonQi54tYum6ys+nPP9bdikYU9yh8bT/7tSBtm8aa65dXp4RkORpRUWDp1DedIN2551A8rozHdrbMhdSmQb129B3QstR61I/quI+eVuX1TdLM6H/Ze11nVL/bMDfgu+3uicFHp3Guu/uRmrhy7qY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nrfJQ2q+; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45B8A1F000E9;
-	Thu, 25 Jun 2026 13:05:49 +0000 (UTC)
+	s=arc-20240116; t=1782392741; c=relaxed/simple;
+	bh=aQ7i8iig58P9wfz1SmOgljh4BjCbeRWljtfDNDqv+uc=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=idAj//SLIQN0q0q/TKYVDxU8ygeu2QBSdh35wgCURXwy7s6IWsWNzOkqWmn2N5mqGlCNlfuOZFeeWPZvwig/y3ZaqrZ4THIGL/QZtkG8qTSrOL8ZRnhu4XDPoJ5EuvIA2aB6pYE10rYAU5Sc5V0Uv45kwwFuQXaCdiecgYhqTk0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=p/XoCZvN; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95C2A1F000E9;
+	Thu, 25 Jun 2026 13:05:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1782392750;
-	bh=N7b+B/7xOZmp8FxvryZJkkFDy1xy4gYhctMvdrWVxEE=;
-	h=From:To:Cc:Subject:Date;
-	b=nrfJQ2q+8Psqu4C/FT4ZDR+rvYsmBzT/t11jl3IAqgDi1//tsvnNI/NOSLGXJaPLB
-	 clHqBtE3C0hrU1eQfM790rbxf/PJrip3Qh3gxzMfD0JvDR2pKeq1XiJuQstC1QOluK
-	 YlkEbY7UPKm/jSTd/DMHz0Q86Q8XEp3qf5XWByAE=
+	s=korg; t=1782392740;
+	bh=iiUlYfdnBy1O+C3WsEuiQVojm1XmFtzn6XL/V16bnOw=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=p/XoCZvNMOFP2eBOfY82WquHauo+ojokEQq2cZebq6vJgNcq26gEanOPAKOEUXKbC
+	 U5gJEfSv9JzCc1AsTlTNYyJ2IYjKsr5zbFTXo/xCXP7CLIaQtAU7PDVwSFiA51IgH1
+	 3I41XHFGauRSwg5qvQ1BbRV5a/eeCAcFXC0QauXE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	torvalds@linux-foundation.org,
-	akpm@linux-foundation.org,
-	linux@roeck-us.net,
-	shuah@kernel.org,
-	patches@kernelci.org,
-	lkft-triage@lists.linaro.org,
-	pavel@nabladev.com,
-	jonathanh@nvidia.com,
-	f.fainelli@gmail.com,
-	sudipm.mukherjee@gmail.com,
-	rwarsow@gmx.de,
-	conor@kernel.org,
-	hargar@microsoft.com,
-	broonie@kernel.org,
-	achill@achill.org,
-	sr@sladewatkins.com
-Subject: [PATCH 6.18 00/60] 6.18.37-rc1 review
-Date: Thu, 25 Jun 2026 14:02:45 +0100
-Message-ID: <20260625125645.554579168@linuxfoundation.org>
+	Gabriel Krisman Bertazi <krisman@suse.de>,
+	Jens Axboe <axboe@kernel.dk>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.18 01/60] io_uring/net: Avoid msghdr on op_connect/op_bind async data
+Date: Thu, 25 Jun 2026 14:02:46 +0100
+Message-ID: <20260625125645.735836213@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
+In-Reply-To: <20260625125645.554579168@linuxfoundation.org>
+References: <20260625125645.554579168@linuxfoundation.org>
+User-Agent: quilt/0.69
+X-stable: review
+X-Patchwork-Hint: ignore
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: quilt/0.69
-X-stable: review
-X-Patchwork-Hint: ignore
-X-KernelTest-Patch: http://kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.18.37-rc1.gz
-X-KernelTest-Tree: git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git
-X-KernelTest-Branch: linux-6.18.y
-X-KernelTest-Patches: git://git.kernel.org/pub/scm/linux/kernel/git/stable/stable-queue.git
-X-KernelTest-Version: 6.18.37-rc1
-X-KernelTest-Deadline: 2026-06-27T12:56+00:00
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-268407-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCPT_COUNT_TWELVE(0.00)[20];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:linux-kernel@vger.kernel.org,m:torvalds@linux-foundation.org,m:akpm@linux-foundation.org,m:linux@roeck-us.net,m:shuah@kernel.org,m:patches@kernelci.org,m:lkft-triage@lists.linaro.org,m:pavel@nabladev.com,m:jonathanh@nvidia.com,m:f.fainelli@gmail.com,m:sudipm.mukherjee@gmail.com,m:rwarsow@gmx.de,m:conor@kernel.org,m:hargar@microsoft.com,m:broonie@kernel.org,m:achill@achill.org,m:sr@sladewatkins.com,m:ffainelli@gmail.com,m:sudipmmukherjee@gmail.com,s:lists@lfdr.de];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,vger.kernel.org,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,nabladev.com,nvidia.com,gmail.com,gmx.de,microsoft.com,achill.org,sladewatkins.com];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-268404-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:krisman@suse.de,m:axboe@kernel.dk,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,msgid.link:url,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,vger.kernel.org:from_smtp,suse.de:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 3F8E26C5EBE
+X-Rspamd-Queue-Id: 60B856C5E9A
+
+6.18-stable review patch.  If anyone has any objections, please let me know.
+
+------------------
+
+From: Gabriel Krisman Bertazi <krisman@suse.de>
+
+[ Upstream commit 3979840cd858f30f43ea9f4e7f7f1f56de82d698 ]
+This fixes a memory leak due to the lack of the cleanup hook for the
+iovec.  The stable backport differs from upstream by dropping the
+io_connect_bpf_populate hunk, which didn't exist at the time and by
+fixing the merge conflict due to the introduction of
+io_bind_file_create.
+
+Both IORING_OP_CONNECT and IORING_OP_BIND reuse the msghdr object just
+to store the sockaddr. Beyond allocating a much larger object than
+needed, msghdr can also wrap an iovec, which will be recycled
+unnecessarily. This uses the sockaddr directly.
+
+Cc: stable@vger.kernel.org
+Signed-off-by: Gabriel Krisman Bertazi <krisman@suse.de>
+Link: https://patch.msgid.link/20260602215327.1885109-2-krisman@suse.de
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Gabriel Krisman Bertazi <krisman@suse.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ io_uring/net.c   | 36 ++++++++++++++++++------------------
+ io_uring/opdef.c |  4 ++--
+ 2 files changed, 20 insertions(+), 20 deletions(-)
+
+diff --git a/io_uring/net.c b/io_uring/net.c
+index a46c7e81704024..3ab2bfca1bd5dd 100644
+--- a/io_uring/net.c
++++ b/io_uring/net.c
+@@ -1771,7 +1771,7 @@ int io_socket(struct io_kiocb *req, unsigned int issue_flags)
+ int io_connect_prep(struct io_kiocb *req, const struct io_uring_sqe *sqe)
+ {
+ 	struct io_connect *conn = io_kiocb_to_cmd(req, struct io_connect);
+-	struct io_async_msghdr *io;
++	struct sockaddr_storage *addr;
+ 
+ 	if (sqe->len || sqe->buf_index || sqe->rw_flags || sqe->splice_fd_in)
+ 		return -EINVAL;
+@@ -1780,17 +1780,17 @@ int io_connect_prep(struct io_kiocb *req, const struct io_uring_sqe *sqe)
+ 	conn->addr_len =  READ_ONCE(sqe->addr2);
+ 	conn->in_progress = conn->seen_econnaborted = false;
+ 
+-	io = io_msg_alloc_async(req);
+-	if (unlikely(!io))
++	addr = io_uring_alloc_async_data(NULL, req);
++	if (unlikely(!addr))
+ 		return -ENOMEM;
+ 
+-	return move_addr_to_kernel(conn->addr, conn->addr_len, &io->addr);
++	return move_addr_to_kernel(conn->addr, conn->addr_len, addr);
+ }
+ 
+ int io_connect(struct io_kiocb *req, unsigned int issue_flags)
+ {
+ 	struct io_connect *connect = io_kiocb_to_cmd(req, struct io_connect);
+-	struct io_async_msghdr *io = req->async_data;
++	struct sockaddr_storage *addr = req->async_data;
+ 	unsigned file_flags;
+ 	int ret;
+ 	bool force_nonblock = issue_flags & IO_URING_F_NONBLOCK;
+@@ -1804,8 +1804,7 @@ int io_connect(struct io_kiocb *req, unsigned int issue_flags)
+ 
+ 	file_flags = force_nonblock ? O_NONBLOCK : 0;
+ 
+-	ret = __sys_connect_file(req->file, &io->addr, connect->addr_len,
+-				 file_flags);
++	ret = __sys_connect_file(req->file, addr, connect->addr_len, file_flags);
+ 	if ((ret == -EAGAIN || ret == -EINPROGRESS || ret == -ECONNABORTED)
+ 	    && force_nonblock) {
+ 		if (ret == -EINPROGRESS) {
+@@ -1834,7 +1833,6 @@ int io_connect(struct io_kiocb *req, unsigned int issue_flags)
+ out:
+ 	if (ret < 0)
+ 		req_set_fail(req);
+-	io_req_msg_cleanup(req, issue_flags);
+ 	io_req_set_res(req, ret, 0);
+ 	return IOU_COMPLETE;
+ }
+@@ -1844,15 +1842,15 @@ int io_connect(struct io_kiocb *req, unsigned int issue_flags)
+  * which in turn end up in mnt_want_write() which will grab the fs
+  * percpu start write sem. This can trigger a lockdep warning.
+  */
+-static int io_bind_file_create(const struct io_async_msghdr *io, int addr_len)
++static int io_bind_file_create(const struct sockaddr_storage *addr, int addr_len)
+ {
+ 	const struct sockaddr_un *sun;
+ 
+-	if (io->addr.ss_family != AF_UNIX)
++	if (addr->ss_family != AF_UNIX)
+ 		return 0;
+ 	if (addr_len <= offsetof(struct sockaddr_un, sun_path))
+ 		return 0;
+-	sun = (const struct sockaddr_un *) &io->addr;
++	sun = (const struct sockaddr_un *) addr;
+ 	return sun->sun_path[0] != '\0';
+ }
+ 
+@@ -1860,7 +1858,7 @@ int io_bind_prep(struct io_kiocb *req, const struct io_uring_sqe *sqe)
+ {
+ 	struct io_bind *bind = io_kiocb_to_cmd(req, struct io_bind);
+ 	struct sockaddr __user *uaddr;
+-	struct io_async_msghdr *io;
++	struct sockaddr_storage *addr;
+ 	int ret;
+ 
+ 	if (sqe->len || sqe->buf_index || sqe->rw_flags || sqe->splice_fd_in)
+@@ -1869,21 +1867,23 @@ int io_bind_prep(struct io_kiocb *req, const struct io_uring_sqe *sqe)
+ 	uaddr = u64_to_user_ptr(READ_ONCE(sqe->addr));
+ 	bind->addr_len =  READ_ONCE(sqe->addr2);
+ 
+-	io = io_msg_alloc_async(req);
+-	if (unlikely(!io))
++	addr = io_uring_alloc_async_data(NULL, req);
++	if (unlikely(!addr))
+ 		return -ENOMEM;
+-	ret = move_addr_to_kernel(uaddr, bind->addr_len, &io->addr);
++
++	ret = move_addr_to_kernel(uaddr, bind->addr_len, addr);
+ 	if (unlikely(ret))
+ 		return ret;
+-	if (io_bind_file_create(io, bind->addr_len))
++	if (io_bind_file_create(addr, bind->addr_len))
+ 		req->flags |= REQ_F_FORCE_ASYNC;
+ 	return 0;
+ }
+ 
++
+ int io_bind(struct io_kiocb *req, unsigned int issue_flags)
+ {
+ 	struct io_bind *bind = io_kiocb_to_cmd(req, struct io_bind);
+-	struct io_async_msghdr *io = req->async_data;
++	struct sockaddr_storage *addr = req->async_data;
+ 	struct socket *sock;
+ 	int ret;
+ 
+@@ -1891,7 +1891,7 @@ int io_bind(struct io_kiocb *req, unsigned int issue_flags)
+ 	if (unlikely(!sock))
+ 		return -ENOTSOCK;
+ 
+-	ret = __sys_bind_socket(sock, &io->addr, bind->addr_len);
++	ret = __sys_bind_socket(sock, addr, bind->addr_len);
+ 	if (ret < 0)
+ 		req_set_fail(req);
+ 	io_req_set_res(req, ret, 0);
+diff --git a/io_uring/opdef.c b/io_uring/opdef.c
+index 932319633eac20..a57c820567f772 100644
+--- a/io_uring/opdef.c
++++ b/io_uring/opdef.c
+@@ -207,7 +207,7 @@ const struct io_issue_def io_issue_defs[] = {
+ 		.unbound_nonreg_file	= 1,
+ 		.pollout		= 1,
+ #if defined(CONFIG_NET)
+-		.async_size		= sizeof(struct io_async_msghdr),
++		.async_size		= sizeof(struct sockaddr_storage),
+ 		.prep			= io_connect_prep,
+ 		.issue			= io_connect,
+ #else
+@@ -504,7 +504,7 @@ const struct io_issue_def io_issue_defs[] = {
+ 		.needs_file		= 1,
+ 		.prep			= io_bind_prep,
+ 		.issue			= io_bind,
+-		.async_size		= sizeof(struct io_async_msghdr),
++		.async_size		= sizeof(struct sockaddr_storage),
+ #else
+ 		.prep			= io_eopnotsupp_prep,
+ #endif
+-- 
+2.53.0
 
-This is the start of the stable review cycle for the 6.18.37 release.
-There are 60 patches in this series, all will be posted as a response
-to this one.  If anyone has any issues with these being applied, please
-let me know.
-
-Responses should be made by Sat, 27 Jun 2026 12:54:50 +0000.
-Anything received after that time might be too late.
-
-The whole patch series can be found in one patch at:
-	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.18.37-rc1.gz
-or in the git tree and branch at:
-	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.18.y
-and the diffstat can be found below.
-
-thanks,
-
-greg k-h
-
--------------
-Pseudo-Shortlog of commits:
-
-Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-    Linux 6.18.37-rc1
-
-Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-    mm: do not copy page tables unnecessarily for VM_UFFD_WP
-
-Miklos Szeredi <mszeredi@redhat.com>
-    virtiofs: fix UAF on submount umount
-
-Ruslan Valiyev <linuxoid@gmail.com>
-    media: vidtv: fix NULL pointer dereference in vidtv_mux_push_si
-
-Gil Portnoy <dddhkts1@gmail.com>
-    ksmbd: reject non-VALID session in compound request branch
-
-Georgi Djakov <georgi.djakov@oss.qualcomm.com>
-    drivers/base/memory: set mem->altmap after successful device registration
-
-Viken Dadhaniya <viken.dadhaniya@oss.qualcomm.com>
-    serial: qcom_geni: Fix RX DMA stall when SE_DMA_RX_LEN_IN is zero
-
-Yi Yang <yiyang13@huawei.com>
-    vc_screen: fix null-ptr-deref in vcs_notifier() during concurrent vcs_write
-
-Giovanni Cabiddu <giovanni.cabiddu@intel.com>
-    crypto: qat - remove unused character device and IOCTLs
-
-Dmitry Torokhov <dmitry.torokhov@gmail.com>
-    Input: rmi4 - fix bit count in bitmap_copy()
-
-Dmitry Torokhov <dmitry.torokhov@gmail.com>
-    Input: rmi4 - iterative IRQ handler
-
-Dmitry Torokhov <dmitry.torokhov@gmail.com>
-    Input: rmi4 - fix memory leak in rmi_set_attn_data()
-
-Dmitry Torokhov <dmitry.torokhov@gmail.com>
-    Input: rmi4 - fix num_subpackets overflow in register descriptor
-
-Dmitry Torokhov <dmitry.torokhov@gmail.com>
-    Input: rmi4 - fix type overflow in register counts
-
-Dmitry Torokhov <dmitry.torokhov@gmail.com>
-    Input: rmi4 - refactor register descriptor parsing
-
-Dmitry Torokhov <dmitry.torokhov@gmail.com>
-    Input: rmi4 - fix register descriptor address calculation
-
-Sam Daly <sam@samdaly.ie>
-    iio: adc: ti-ads1298: add bounds check to pga_settings index
-
-Sam Daly <sam@samdaly.ie>
-    iio: light: veml6075: add bounds check to veml6075_it_ms index
-
-Faicker Mo <faicker.mo@gmail.com>
-    net: net_failover: Fix the deadlock in slave register
-
-Mike Marciniszyn (Meta) <mike.marciniszyn@gmail.com>
-    net: export netif_open for self_test usage
-
-Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-    testing/selftests/mm: add soft-dirty merge self-test
-
-Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-    mm: propagate VM_SOFTDIRTY on merge
-
-Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-    mm: set the VM_MAYBE_GUARD flag on guard region install
-
-Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-    mm: introduce copy-on-fork VMAs and make VM_MAYBE_GUARD one
-
-Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-    mm: implement sticky VMA flags
-
-Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-    mm: update vma_modify_flags() to handle residual flags, document
-
-Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-    mm: add atomic VMA flags and set VM_MAYBE_GUARD as such
-
-Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-    mm: introduce VM_MAYBE_GUARD and make visible in /proc/$pid/smaps
-
-Xin Long <lucien.xin@gmail.com>
-    sctp: disable BH before calling udp_tunnel_xmit_skb()
-
-Tudor Ambarus <tudor.ambarus@linaro.org>
-    firmware: samsung: acpm: Fix cross-thread RX length corruption
-
-Dexuan Cui <decui@microsoft.com>
-    Drivers: hv: vmbus: Improve the logic of reserving fb_mmio on Gen2 VMs
-
-Thorsten Blum <thorsten.blum@linux.dev>
-    hv: utils: handle and propagate errors in kvp_register
-
-André Draszik <andre.draszik@linaro.org>
-    regulator: core: fix locking in regulator_resolve_supply() error path
-
-Bernard Pidoux <bernard.f6bvp@gmail.com>
-    rose: don't free fd-owned sockets when reaping in the heartbeat
-
-Bernard Pidoux <bernard.f6bvp@gmail.com>
-    rose: clear neighbour pointer in rose_kill_by_device()
-
-Bernard Pidoux <bernard.f6bvp@gmail.com>
-    rose: cancel neighbour timers in rose_neigh_put() before freeing
-
-Bernard Pidoux <bernard.f6bvp@gmail.com>
-    rose: drop CALL_REQUEST in loopback timer when device is not running
-
-Bernard Pidoux <bernard.f6bvp@gmail.com>
-    rose: release netdev ref and destroy orphaned incoming sockets
-
-Bernard Pidoux <bernard.f6bvp@gmail.com>
-    rose: fix netdev double-hold in rose_make_new()
-
-Bernard Pidoux <bernard.f6bvp@gmail.com>
-    rose: disconnect orphaned STATE_2 sockets when device is gone
-
-Bernard Pidoux <bernard.f6bvp@gmail.com>
-    rose: set SOCK_DESTROY in rose_kill_by_device() for prompt cleanup
-
-Bernard Pidoux <bernard.f6bvp@gmail.com>
-    rose: fix notifier unregistered too early in rose_exit()
-
-Bernard Pidoux <bernard.f6bvp@gmail.com>
-    rose: fix netdev double-hold in rose_rx_call_request()
-
-Bernard Pidoux <bernard.f6bvp@gmail.com>
-    rose: guard rose_neigh_put() against NULL in timer expiry
-
-Bernard Pidoux <bernard.f6bvp@gmail.com>
-    rose: clear neighbour pointer after rose_neigh_put() in state machines
-
-Bernard Pidoux <bernard.f6bvp@gmail.com>
-    rose: fix race between loopback timer and module removal
-
-Bernard Pidoux <bernard.f6bvp@gmail.com>
-    rose: hold loopback neighbour reference across timer callback
-
-Bernard Pidoux <bernard.f6bvp@gmail.com>
-    rose: fix dev_put() leak in rose_loopback_timer()
-
-Yicong Yang <yang.yicong@picoheart.com>
-    ACPI: scan: Use async schedule function in acpi_scan_clear_dep_fn()
-
-Mingyu Wang <25181214217@stu.xidian.edu.cn>
-    agp/amd64: Fix broken error propagation in agp_amd64_probe()
-
-Weiming Shi <bestswngs@gmail.com>
-    net: qualcomm: rmnet: fix endpoint use-after-free in rmnet_dellink()
-
-Weiming Shi <bestswngs@gmail.com>
-    i2c: stub: Reject I2C block transfers with invalid length
-
-Lord Ulf Henrik Holmberg <henrik.holmberg@defensify.se>
-    RDMA/bnxt_re: zero shared page before exposing to userspace
-
-Waiman Long <longman@redhat.com>
-    debugobjects: Dont call fill_pool() in early boot hardirq context
-
-Helen Koike <koike@igalia.com>
-    debugobjects: Do not fill_pool() if pi_blocked_on
-
-Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-    debugobjects: Use LD_WAIT_CONFIG instead of LD_WAIT_SLEEP
-
-Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-    debugobjects: Allow to refill the pool before SYSTEM_SCHEDULING
-
-Yang Erkun <yangerkun@huawei.com>
-    Revert "NFSD: Defer sub-object cleanup in export put callbacks"
-
-Joanne Koong <joannelkoong@gmail.com>
-    fuse: re-lock request before replacing page cache folio
-
-Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
-    net: stmmac: fix stm32 (and potentially others) resume regression
-
-Gabriel Krisman Bertazi <krisman@suse.de>
-    io_uring/net: Avoid msghdr on op_connect/op_bind async data
-
-
--------------
-
-Diffstat:
-
- Documentation/filesystems/proc.rst                 |   5 +-
- Documentation/userspace-api/ioctl/ioctl-number.rst |   1 -
- Makefile                                           |   4 +-
- drivers/acpi/scan.c                                |  41 +--
- drivers/base/memory.c                              |   3 +-
- drivers/char/agp/amd64-agp.c                       |   2 +-
- drivers/crypto/intel/qat/qat_common/adf_cfg.c      |  10 -
- drivers/crypto/intel/qat/qat_common/adf_cfg.h      |   1 -
- .../crypto/intel/qat/qat_common/adf_cfg_common.h   |  32 --
- drivers/crypto/intel/qat/qat_common/adf_cfg_user.h |  38 --
- .../crypto/intel/qat/qat_common/adf_common_drv.h   |   3 -
- drivers/crypto/intel/qat/qat_common/adf_ctl_drv.c  | 404 +--------------------
- drivers/crypto/intel/qat/qat_common/adf_dev_mgr.c  |  70 ----
- drivers/firmware/samsung/exynos-acpm.c             |  14 +-
- drivers/hv/hv_kvp.c                                |  25 +-
- drivers/hv/vmbus_drv.c                             |  29 +-
- drivers/i2c/i2c-stub.c                             |   5 +
- drivers/iio/adc/ti-ads1298.c                       |   7 +-
- drivers/iio/light/veml6075.c                       |   8 +-
- drivers/infiniband/hw/bnxt_re/ib_verbs.c           |   2 +-
- drivers/input/rmi4/rmi_driver.c                    | 171 +++++----
- drivers/input/rmi4/rmi_driver.h                    |   4 +-
- drivers/input/rmi4/rmi_f12.c                       |   7 +
- drivers/media/test-drivers/vidtv/vidtv_mux.c       |   8 +-
- drivers/net/ethernet/qualcomm/rmnet/rmnet_config.c |   8 +-
- drivers/net/ethernet/qualcomm/rmnet/rmnet_config.h |   1 +
- drivers/net/ethernet/stmicro/stmmac/stmmac_main.c  |   3 +-
- drivers/net/net_failover.c                         |  12 +-
- drivers/regulator/core.c                           |  10 +-
- drivers/tty/serial/qcom_geni_serial.c              |   9 +-
- drivers/tty/vt/vc_screen.c                         |   2 +-
- fs/fuse/dev.c                                      |  19 +-
- fs/fuse/file.c                                     |   8 +-
- fs/nfsd/export.c                                   |  67 +---
- fs/nfsd/export.h                                   |   7 +-
- fs/nfsd/nfsctl.c                                   |   8 +-
- fs/proc/task_mmu.c                                 |   1 +
- fs/smb/server/smb2pdu.c                            |   5 +
- include/linux/mm.h                                 | 104 ++++++
- include/net/rose.h                                 |  12 +
- include/trace/events/mmflags.h                     |   1 +
- io_uring/net.c                                     |  36 +-
- io_uring/opdef.c                                   |   4 +-
- lib/debugobjects.c                                 |  58 ++-
- mm/khugepaged.c                                    |  71 ++--
- mm/madvise.c                                       |  24 +-
- mm/memory.c                                        |  16 +-
- mm/mlock.c                                         |   2 +-
- mm/mprotect.c                                      |   2 +-
- mm/mseal.c                                         |   7 +-
- mm/vma.c                                           |  81 +++--
- mm/vma.h                                           | 130 +++++--
- net/core/dev.c                                     |   1 +
- net/core/failover.c                                |   6 +-
- net/rose/af_rose.c                                 |  49 ++-
- net/rose/rose_in.c                                 |   6 +
- net/rose/rose_loopback.c                           |  61 +++-
- net/rose/rose_timer.c                              |  87 ++++-
- net/sctp/ipv6.c                                    |   2 +
- net/sctp/protocol.c                                |   2 +
- tools/testing/selftests/mm/soft-dirty.c            | 127 ++++++-
- tools/testing/vma/vma.c                            |   3 +-
- tools/testing/vma/vma_internal.h                   |  49 +++
- 63 files changed, 1023 insertions(+), 972 deletions(-)
 
 
 
