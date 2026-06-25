@@ -1,63 +1,98 @@
-Return-Path: <stable+bounces-268310-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-268311-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id DpE0KBfsPGrOuQgAu9opvQ
-	(envelope-from <stable+bounces-268310-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 10:51:35 +0200
+	id Eja/KRLwPGq7uggAu9opvQ
+	(envelope-from <stable+bounces-268311-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 11:08:34 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0E50E6C3F80
-	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 10:51:35 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3A3516C4157
+	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 11:08:34 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ElZBykRK;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-268310-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-268310-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=NSXfHDJp;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-268311-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-268311-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=none) header.from=gmail.com;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 538D13022DCA
-	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 08:50:59 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 8880930C5885
+	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 09:04:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53EBB385D99;
-	Thu, 25 Jun 2026 08:50:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 36104376490;
+	Thu, 25 Jun 2026 09:04:43 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f44.google.com (mail-wr1-f44.google.com [209.85.221.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A07938655C
-	for <stable@vger.kernel.org>; Thu, 25 Jun 2026 08:50:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E54D36828B
+	for <stable@vger.kernel.org>; Thu, 25 Jun 2026 09:04:40 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782377456; cv=none; b=NHyqRFUNzJLboHoEw+E7afuph3Gpu3hTruZUau7fd78M0yO0jE5IGeSQapZMUKlkL4l3yb67swbqS1ZIKOirLcKGITiq6Mt9FkWrYnRB7N8NCSkLcJ+3Q/6yGmbElcHl1JUy67X7/T3p1ZOOyd37sS34l9083UJeIVQ3NiQq2yI=
+	t=1782378283; cv=none; b=Nxa9a2eqshy6sFme/x8KMN2eNTHSHquJtltfVuT3gVuHcrUxiJwTWpbmDQOUG6znMJhHQKuTPi9XaHEofHtzkn2cdlp3nDvlyoCq2mebG3XH5v6xk2YW7gj8qVox04Kr3YZ86MvNsxcHSIyWp0NnkGJjvxgeDO4p1FttrlrQ/Ms=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782377456; c=relaxed/simple;
-	bh=eAUE4cHxHPrECI9jHnsBEOHWjcdZZQoBblRYb2Tehs8=;
+	s=arc-20240116; t=1782378283; c=relaxed/simple;
+	bh=Fxdlux4xKPEUY23/deSXomK7ZVU4GMGdOEjfBvmQcWs=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=nJshN/Ote59DM/SRHCJZhVkSEXrdF0sqHXuk2s2/yTDWCP5vt1+Cc27iIlOy5dEGzf+Dom/7mfniFmjATnXbhIZnVcrqrFIFb8DEG5wxr4nAovKh4npAxTt2KHYxb2ASgwY5AGBKv4IUCD62paMGgMtWDWZO8/UWZl16Ft6UQVs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ElZBykRK; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 343A21F000E9;
-	Thu, 25 Jun 2026 08:50:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782377455;
-	bh=94j9tcH3gHmgqgGGvo6s8vTq5w3oHDWpmmtffj7Lr/0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=ElZBykRKpnvAKp8ZpTdCQ5/E8HvExus66+R6Tx1kILNRrlqkzWC7m0Yul3nArpEAD
-	 Q/1HB8S2T2juGjR53x0A/0VtMbZ63cDvKch3NMj+PALadhSfCAXyA3Df5Op4oAt/jI
-	 3Jkrc9BEBd6+edUqKT8UHd8TuEFmOf+Y+i6h7bs0MDPI22AveLGmK8b+tr31CUiyFP
-	 vQDpBRxltp9BW5DLMC6pRP+wEs3oGoGWhTSf7UW96I0xBL3hINlLN9zeo6n/sVFxnG
-	 eMJJh8Z+JOTRvqe7PvBg8ow0WoZaZVboKdNZjos39hG8Mnk059SgZ2t0878rRk0BSF
-	 LrWU5s1+rGyIA==
-Date: Thu, 25 Jun 2026 10:50:50 +0200
-From: Andi Shyti <andi.shyti@kernel.org>
-To: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
-Cc: Intel graphics driver community testing & development <intel-gfx@lists.freedesktop.org>, 
-	Martin Hodo <martin.hodo@intel.com>, Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
-	Thomas =?utf-8?Q?Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>, Simona Vetter <simona.vetter@ffwll.ch>, stable@vger.kernel.org
-Subject: Re: [PATCH] drm/i915: Return NULL on error in active_instanceg
-Message-ID: <ajznzdwvxSv2YNHp@zenone.zhora.eu>
-References: <20260624090940.74840-1-joonas.lahtinen@linux.intel.com>
- <178230031953.112641.4817434529385736057@jlahtine-mobl>
- <ajvTjodx7LLj_BPO@zenone.zhora.eu>
- <178236741262.19845.6184407491878204182@jlahtine-mobl>
+	 Content-Type:Content-Disposition:In-Reply-To; b=cANYmmJaUsNaydD5i1cRSLgy+/BhQY4p3FezHyvEbL8aS08d7gqKzUkgWXjrxhbWgET24KTkOhYXTjuDlXOndJcR0xo48LhXYAa35Qa+/VGkqUgfGaK54tVxaI2p3vvfMubovQZmp8SrC1ecIdQ47AaGwOQnbtYKnaFJrR1akr8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=NSXfHDJp; arc=none smtp.client-ip=209.85.221.44
+Received: by mail-wr1-f44.google.com with SMTP id ffacd0b85a97d-46e22950091so116227f8f.0
+        for <stable@vger.kernel.org>; Thu, 25 Jun 2026 02:04:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1782378279; x=1782983079; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=twZyJNe4oKAUakpXmtBipZs2eMFjp62u4eaHu+ufJQQ=;
+        b=NSXfHDJp0lc0BwkOvBFnLVC7Xd+dwmRK5UYLfeHXolOjGYZ329uok3SZZXMe9zSLj5
+         DNGCxkW+Yue98Amaj6cydaZJaSqeKsyV7o2/3liNkFCC/e/DxjlSAyphYoaW6nuqRPdq
+         BT24aN5ekHpGV+Dmk/FqHvgRgEWDzVtMyRzjwd3Sp63fBXRS02mES1W0xebBBY4nQ1A6
+         ATYU8eKNmq/7VgXfZnqKKZaYZyIxsRMORi8aNznpHQJy3tsv5HpBUoFyqKiOgDiv0cOt
+         qJBAFTq25JucCO1YqBAIdJGipY8BpDbozBOIOYGWApFcfENY3S4Z4sywhN0ddhBfqJtv
+         ySYQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1782378279; x=1782983079;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=twZyJNe4oKAUakpXmtBipZs2eMFjp62u4eaHu+ufJQQ=;
+        b=hQnQFDcvW1/1vF/NqtGC26SmrYAQQgsWq6C2CBXdty5vfIsLKJPNuGSHSwwbfZhr1/
+         mhl/UrBm4f71m9jH3WC6rSvi68dLyxm/W06WISpcsbyZxksQYrTxF+yvF3MBIXfw7dza
+         we7V5Op0fWzDpSyDNyPnqNnneS+H8Ajzr6ejkJDzC39Jzf3zsgka/inq6qs73loGitKz
+         HvTk5L7RCQ+dC2TxG9zjxxKwUzNaI0W8UB3sM4BDGOXzbUlOl84aT+pzu6bHljHF2nl8
+         9svuknKl/oqr/iqFga4pSquR0qKRfNgLcHN0m+/3M/QxLroqMqNAHtFsG6hsbPoGP361
+         NrQg==
+X-Forwarded-Encrypted: i=1; AFNElJ/K3oRdpZc3SXreytB3lunrtM88cxeMRs5TaCPi8R2ktv6X8PW6lGHMAApnk+xB0BQk/Ze/KqA=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxWFXRN6kF8TewE6xrjrKQDNbsATh5W9EZDy9/TyXTxpg55liKo
+	amSbtbAlCTDUhpWjBZjMOVhJ9fpCjFKH3Jey03a4QBVUD+vzJcUP1yli
+X-Gm-Gg: AfdE7cl1I8w/jBBR6ebkE9bSTE5wSos+zBkuwiaIxogLW3XZxV1oAJJFZFwNnxtjyIp
+	N8dJSKZO3pJnhoTbrwJx4X6yNI7i3W9hMRn+cOQ9E/ips9sExpTEh28ulLgG8JQLAYFzIgH9153
+	Ptkv0Dy2FOdtlxztKdzYl6OUUrW0L1jAtAn1x7GAsIlD7v3+vJk5RqqOWk66c+TIbIxXGeRjN4N
+	gpmXut93rTEZ9sQdYc64gLY/xTxDiL5PJ+/XtQKVfMBu+QCmdzNc8Z9IzCybtPOiLytTAGkBgNK
+	nd+R3b7pRA59QHFwhQSkmfZw9IB80ijXqKcqyYKmrMjR+5dIx+guFxWVk+KS3icknUUpMjIZNLU
+	aEFYUhR6rIjfUVgbO60Y3MLdMcUq7dSpQ80+2va919Zi7sbmeFjdANhqVVLHbWVWSsg==
+X-Received: by 2002:a05:600c:c058:b0:492:48c8:c705 with SMTP id 5b1f17b1804b1-49266865fe5mr18834925e9.1.1782378279131;
+        Thu, 25 Jun 2026 02:04:39 -0700 (PDT)
+Received: from eichest-laptop ([2a02:168:af72::cb4])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4926494f129sm47950825e9.0.2026.06.25.02.04.37
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 25 Jun 2026 02:04:38 -0700 (PDT)
+Date: Thu, 25 Jun 2026 11:04:36 +0200
+From: Stefan Eichenberger <eichest@gmail.com>
+To: Vincent Jardin <vjardin@free.fr>
+Cc: Oleksij Rempel <o.rempel@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Andi Shyti <andi.shyti@kernel.org>, Frank Li <Frank.Li@nxp.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>, Wolfram Sang <wsa@kernel.org>,
+	Kaushal Butala <kaushalkernelmailinglist@gmail.com>,
+	Shawn Guo <shawn.guo@freescale.com>,
+	Stefan Eichenberger <stefan.eichenberger@toradex.com>,
+	linux-i2c@vger.kernel.org, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH v2 1/2] i2c: imx: fix locked bus on SMBus block-read of 0
+ (atomic)
+Message-ID: <ajzvJE5LuzvLmpZN@eichest-laptop>
+References: <20260525-for-upstream-i2c-lx2160-fix-v1-v2-0-26a3cc8cd055@free.fr>
+ <20260525-for-upstream-i2c-lx2160-fix-v1-v2-1-26a3cc8cd055@free.fr>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -66,121 +101,117 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <178236741262.19845.6184407491878204182@jlahtine-mobl>
+In-Reply-To: <20260525-for-upstream-i2c-lx2160-fix-v1-v2-1-26a3cc8cd055@free.fr>
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-5.16 / 15.00];
-	WHITELIST_SPF_DKIM(-3.00)[kernel.org:d:+,kernel.org:s:+];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	MID_RHS_NOT_FQDN(0.50)[];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-268310-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:vjardin@free.fr,m:o.rempel@pengutronix.de,m:kernel@pengutronix.de,m:andi.shyti@kernel.org,m:Frank.Li@nxp.com,m:s.hauer@pengutronix.de,m:festevam@gmail.com,m:wsa@kernel.org,m:kaushalkernelmailinglist@gmail.com,m:shawn.guo@freescale.com,m:stefan.eichenberger@toradex.com,m:linux-i2c@vger.kernel.org,m:imx@lists.linux.dev,m:linux-arm-kernel@lists.infradead.org,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,s:lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-268311-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER(0.00)[andi.shyti@kernel.org,stable@vger.kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS(0.00)[m:joonas.lahtinen@linux.intel.com,m:intel-gfx@lists.freedesktop.org,m:martin.hodo@intel.com,m:maarten.lankhorst@linux.intel.com,m:thomas.hellstrom@linux.intel.com,m:simona.vetter@ffwll.ch,m:stable@vger.kernel.org,s:lists@lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_SENDER(0.00)[eichest@gmail.com,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	MISSING_XM_UA(0.00)[];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	FREEMAIL_TO(0.00)[free.fr];
+	RCPT_COUNT_TWELVE(0.00)[16];
+	FORWARDED(0.00)[lists@lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_CC(0.00)[pengutronix.de,kernel.org,nxp.com,gmail.com,freescale.com,toradex.com,vger.kernel.org,lists.linux.dev,lists.infradead.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[andi.shyti@kernel.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	FROM_NEQ_ENVFROM(0.00)[eichest@gmail.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	ALIAS_RESOLVED(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
+	MISSING_XM_UA(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,zenone.zhora.eu:mid]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[eichest-laptop:mid,vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 0E50E6C3F80
+X-Rspamd-Queue-Id: 3A3516C4157
 
-Hi Joonas,
+Sorry for the late reply.
 
-On Thu, Jun 25, 2026 at 09:03:32AM +0300, Joonas Lahtinen wrote:
-> Quoting Andi Shyti (2026-06-24 15:59:30)
-> > On Wed, Jun 24, 2026 at 02:25:19PM +0300, Joonas Lahtinen wrote:
-> > > Pushed to drm-intel-gt-next, thanks for the reviews.
-> > 
-> > please, next time:
-> > 
-> > - Give people more time to review the patch. Only two hours
-> >   passed between posting it and pushing it
+On Mon, May 25, 2026 at 06:43:15PM +0200, Vincent Jardin wrote:
+> SMBus 3.1 6.5.7 allows a Block Read byte count of 0, but the atomic
+> (polling) path rejects it as -EPROTO. Worse, it returns without a
+> NACK+STOP: the next receive cycle has already started, so the target
+> keeps holding SDA and the bus stays stuck until a power cycle for
+> this i2c controller.
 > 
-> And why exactly is that a problem? I got the review from the original
-> patch author and a yet another person on top while it's a very
-> uncontroversial and trivial patch. Two reviewers per patch is already
-> quite a high bar to clear if you look at git history.
+> Reading I2DR to obtain the count likewise arms the next byte on the
+> count > I2C_SMBUS_BLOCK_MAX path, which also returned -EPROTO directly
+> and left the bus held.
 > 
-> > (during lunch time, BTW).
+> Handle both: NACK the in-flight dummy byte (TXAK) and extend msgs->len so
+> the existing last-byte handling emits STOP; the dummy byte is discarded.
+> A count of 0 is a valid empty block read; a count above
+> I2C_SMBUS_BLOCK_MAX is still reported as -EPROTO, but only after the bus
+> has been released.
 > 
-> Sorry, I did not know there is a universally agreed 2 hour lunch window
-> in UTC timezone that I should follow. I've missed that memo.
-
-It's not a matter of how many reviewers there are or how
-controversial a patch may be. A patch needs to stay on the list
-long enough for the whole community to have a chance to review
-it. Give it one or two days.
-
-Even if you and the other reviewers don't see anything wrong,
-someone else might. As submitters and maintainers, we need to
-give people a reasonable amount of time to look at every patch.
-Two hours, at any time of the day, are definitely not enough.
-
-We often complain when people send new revisions too early for
-exactly the same reason.
-
-> > - There were BAT failures. They were unrelated, but so far we
-> >   have generally held back patches until BAT was green, even for
-> >   the most obvious changes.
+> The interrupt-driven path has the same flaw from a later commit and is
+> fixed separately, as it carries a different Fixes: tag and stable range.
 > 
-> Strong disagree here. That'd have caused the patch to miss -next-fixes
-> PR just due to random noise of CI.
-
-We shouldn't care. The rules are the same for everyone, including
-maintainers. Very often I've been told to wait until the next
-cycle and very often I've asked others to do the same.
-
-Besides, it's unfair to keep a patch on the list for only two
-hours just to avoid missing the current cycle, while everyone
-else is expected to wait.
-
-> If there was a reasonable doubt about the impact of the patch on the
-> failure, that'd of course be different, but here there was absolutely
-> none in this case.
+> Fixes: 8e8782c71595 ("i2c: imx: add SMBus block read support")
+> Cc: <stable@vger.kernel.org> # v3.16+
+> Signed-off-by: Vincent Jardin <vjardin@free.fr>
+> ---
+>  drivers/i2c/busses/i2c-imx.c | 19 ++++++++++++++++---
+>  1 file changed, 16 insertions(+), 3 deletions(-)
 > 
-> As per patchwork automated mail reply:
-> 
-> > If you think the reported changes have nothing to do with the changes
-> > introduced in Patchwork_169089v1, please notify your bug team
+> diff --git a/drivers/i2c/busses/i2c-imx.c b/drivers/i2c/busses/i2c-imx.c
+> index a208fefd3c3b..14107e1ad413 100644
+> --- a/drivers/i2c/busses/i2c-imx.c
+> +++ b/drivers/i2c/busses/i2c-imx.c
+> @@ -1415,6 +1415,7 @@ static int i2c_imx_atomic_read(struct imx_i2c_struct *i2c_imx,
+>  	int i, result;
+>  	unsigned int temp;
+>  	int block_data = msgs->flags & I2C_M_RECV_LEN;
+> +	int block_err = 0;
+>  
+>  	result = i2c_imx_prepare_read(i2c_imx, msgs, false);
+>  	if (result)
+> @@ -1436,8 +1437,20 @@ static int i2c_imx_atomic_read(struct imx_i2c_struct *i2c_imx,
+>  		 */
+>  		if ((!i) && block_data) {
+>  			len = imx_i2c_read_reg(i2c_imx, IMX_I2C_I2DR);
+> -			if ((len == 0) || (len > I2C_SMBUS_BLOCK_MAX))
+> -				return -EPROTO;
+> +			if ((len == 0) || (len > I2C_SMBUS_BLOCK_MAX)) {
+> +				/*
+> +				 * SMBus 3.1 6.5.7: support count byte of 0.
+> +				 * I2C_SMBUS_BLOCK_MAX case should not hold the SDA either.
+> +				 */
+> +				if (len > I2C_SMBUS_BLOCK_MAX)
+> +					block_err = -EPROTO;
+> +				temp = imx_i2c_read_reg(i2c_imx, IMX_I2C_I2CR);
+> +				temp |= I2CR_TXAK;
+> +				imx_i2c_write_reg(temp, i2c_imx, IMX_I2C_I2CR);
+> +				msgs->buf[0] = 0;
+> +				msgs->len = 2;
+> +				continue;
+> +			}
+>  			dev_dbg(&i2c_imx->adapter.dev,
+>  				"<%s> read length: 0x%X\n",
+>  				__func__, len);
+> @@ -1485,7 +1498,7 @@ static int i2c_imx_atomic_read(struct imx_i2c_struct *i2c_imx,
+>  			"<%s> read byte: B%d=0x%X\n",
+>  			__func__, i, msgs->buf[i]);
+>  	}
+> -	return 0;
+> +	return block_err;
+>  }
 
-The bug team is a different matter. Here we're talking about the
-review process.
-
-> That's exactly what was done here. That's a fair ask, but asking for
-> maintainers not to merge any code because of false positives is simply
-> not.
-
-False positive or not, controversial or not, easy or difficult,
-patches have *always* been blocked when BAT was red. The shard
-tests don't even start if BAT is red.
-
-Otherwise, we might as well stop running automatic tests for
-patches considered "non-controversial" and save CI resources.
-
-Andi
-
-> Regards, Joonas
-> 
-> > 
-> > Thanks,
-> > Andi
+Reviewed-by: Stefan Eichenberger <eichest@gmail.com>
 
