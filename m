@@ -1,71 +1,71 @@
-Return-Path: <stable+bounces-268544-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-268545-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id URRbDRsuPWpJyggAu9opvQ
-	(envelope-from <stable+bounces-268544-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 15:33:15 +0200
+	id VINqB70uPWpryggAu9opvQ
+	(envelope-from <stable+bounces-268545-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 15:35:57 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 079C06C6293
-	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 15:33:14 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8A0F06C62C5
+	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 15:35:56 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=amazon.de header.s=amazoncorp2 header.b="YJPxT/uv";
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-268544-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-268544-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=amazon.de header.s=amazoncorp2 header.b=Iubw0+xx;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-268545-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-268545-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=quarantine) header.from=amazon.de;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 3AE07300C7EA
-	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 13:33:09 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 8EA5630D9945
+	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 13:33:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1348D32D45B;
-	Thu, 25 Jun 2026 13:33:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 33EED32ED55;
+	Thu, 25 Jun 2026 13:33:15 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from pdx-out-008.esa.us-west-2.outbound.mail-perimeter.amazon.com (pdx-out-008.esa.us-west-2.outbound.mail-perimeter.amazon.com [52.42.203.116])
+Received: from pdx-out-009.esa.us-west-2.outbound.mail-perimeter.amazon.com (pdx-out-009.esa.us-west-2.outbound.mail-perimeter.amazon.com [35.155.198.111])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7BA23264E0;
-	Thu, 25 Jun 2026 13:33:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E037532B99E;
+	Thu, 25 Jun 2026 13:33:13 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782394387; cv=none; b=IWXUKmQluHzW07siNPhMwPZ2737ixhZnZIpauaaoFD7Tt5j5TpbwltNjZr/52YirgXzNN2GL4shwvUbXl3OdZuZc5/LxuuLZ3xMZrRxCV62fjILIK/aQMpIpKmdRsyHMGdUaM3gBjbws/2tchCFwNj0ZlldPH2E2ZMC7f0tbrWk=
+	t=1782394395; cv=none; b=a8MAxG5TPTqzQ3cr3pNItWMdTN4B6TyTY0XFql4txGMvWa8JTfz2X1xnmeyieXQTm+Ms9F+6JYkpSvbNv2KTw4MJGnMriLDVZ07XBT2Qh6hGYYHHZ/x8YZcXLbz8Ub1iawYxTQnwl+0qROtCnJfyirOMia6jwMF6RDN1XzQX+84=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782394387; c=relaxed/simple;
-	bh=rg7vFX5qDBFSkwgpGj4yB5kmMBYQnCCsRqKYTNCpZsQ=;
+	s=arc-20240116; t=1782394395; c=relaxed/simple;
+	bh=SXhUwl+laSI9u/4qk/+IskF6bDfbnxjEkCdnyyGQ8hw=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=mpGxKN6vuxWZKiWLehV/Q3IseVIO4vOmIRbdh6WartrQHj0rJ+iApyPj9jZhN75yNElnTfj0EveMPolAa2zEB+EKqlaDAIGZpeWshSjhrRsrfAjTaAzMKIWc5Cou8Xp2iOTBNAe3+NoiE0W65iACtFfhULFmFKsqudMx/Y9CnQ8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.de; spf=pass smtp.mailfrom=amazon.de; dkim=pass (2048-bit key) header.d=amazon.de header.i=@amazon.de header.b=YJPxT/uv; arc=none smtp.client-ip=52.42.203.116
+	 MIME-Version:Content-Type; b=bGWBwzM6GmzxhfcawCi9+Hz6DzaNUpCZiSzjmxneZ52qUwm6Hax2B/pkYZusHXU7jqBQeBW1Pxo0pXzIF6akevPAab1Q49iI0IVV+mzilUlDiVP1R/ZYw6mTkDzYpO0L+Kz3LyKKIurYJksMEaxgIDDrJQo6frjjjpe8Z7JRMDE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.de; spf=pass smtp.mailfrom=amazon.de; dkim=pass (2048-bit key) header.d=amazon.de header.i=@amazon.de header.b=Iubw0+xx; arc=none smtp.client-ip=35.155.198.111
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
   d=amazon.de; i=@amazon.de; q=dns/txt; s=amazoncorp2;
-  t=1782394386; x=1813930386;
+  t=1782394393; x=1813930393;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=6+uxmeJYzcAM7HYrFQBJrWvH9UT6aWx1tXAC5iB+vPg=;
-  b=YJPxT/uv8h0HYc9R7+W3v5N5i+vCY0xb3eaidrhsJ9icKCQ2q1nkJVMO
-   kpKfTTlfD38fT+OCng9NzIFggSpRl6UP2VuAwJkIGSTLiOrz9X0+8TI8X
-   GGF3LknwSt9WBQaekSpZ7ksdhSl14t0VeG9tWnsV15GpPs2Ho3xfdmKTM
-   oRtPDqkDN8ACL/DAY2lqCYO+EUSvFZ0USjDkCc54O56zFNuJfyb0AxvrX
-   aaiC5fTpGHrtRn3gLWdPSqVmCv7Glyw/hvtqfidiikZmwvRb5TaeRYCkt
-   3kf3CsoaBcSj90gV1duuVaEhXc/8Re1eiUFAlKCpfVCBibQ8C/N1GOE1M
+  bh=1Pi1Ori/UusSIX4A+OO709SsxBMpol/iraNZc5CkFgM=;
+  b=Iubw0+xxprPE/jeZIhDTHTfgMZno8K8xJqcCVubnu2xxvM8p1dj3x0j/
+   04KRfFsZAXeA2aycRCeWciZTekogRohPQ/JKjXLkGHYX222w9BcCaAifT
+   tF3e11JZW/Es2lfznQ+aj3jeckAC+ANjGKDVE8WBoztrcmswJ6zUpAneV
+   s3aHsk3y23GNdnM2mKA8oKx+M2kVHyjjZcDaaLcwd2mRCxsMk/YKg8Zy6
+   h/yVt/juo3Ac0ERUPHop8N67e4QKbQYJ2DhhfAcCX7BDTtyLnkntCY1j3
+   yfnMX4rGFak5Dw63FZ0Co62xNGgNgsUUBp/lnKj8Lwh3MCgacN9GHCrcT
    g==;
-X-CSE-ConnectionGUID: AFBQJxPEQZaUTjJiImDqqQ==
-X-CSE-MsgGUID: WO9oziArSI2AVkr4+/RRHQ==
+X-CSE-ConnectionGUID: ePwdvc6dSKadaXm6e8pX8Q==
+X-CSE-MsgGUID: cyEeNFEmQX+jt2p593ydzA==
 X-IronPort-AV: E=Sophos;i="6.24,224,1774310400"; 
-   d="scan'208";a="22510404"
-Received: from ip-10-5-6-203.us-west-2.compute.internal (HELO smtpout.naws.us-west-2.prod.farcaster.email.amazon.dev) ([10.5.6.203])
-  by internal-pdx-out-008.esa.us-west-2.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Jun 2026 13:33:03 +0000
-Received: from EX19MTAUWB002.ant.amazon.com [205.251.233.48:13213]
- by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.31.226:2525] with esmtp (Farcaster)
- id d472238d-0318-4d1d-8b40-cdee67326c6d; Thu, 25 Jun 2026 13:33:03 +0000 (UTC)
-X-Farcaster-Flow-ID: d472238d-0318-4d1d-8b40-cdee67326c6d
+   d="scan'208";a="22378713"
+Received: from ip-10-5-12-219.us-west-2.compute.internal (HELO smtpout.naws.us-west-2.prod.farcaster.email.amazon.dev) ([10.5.12.219])
+  by internal-pdx-out-009.esa.us-west-2.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Jun 2026 13:33:11 +0000
+Received: from EX19MTAUWA002.ant.amazon.com [205.251.233.178:12286]
+ by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.37.116:2525] with esmtp (Farcaster)
+ id 678a7bb4-0869-42dd-8705-9e4ab771808f; Thu, 25 Jun 2026 13:33:11 +0000 (UTC)
+X-Farcaster-Flow-ID: 678a7bb4-0869-42dd-8705-9e4ab771808f
 Received: from EX19D001UWA001.ant.amazon.com (10.13.138.214) by
- EX19MTAUWB002.ant.amazon.com (10.250.64.231) with Microsoft SMTP Server
+ EX19MTAUWA002.ant.amazon.com (10.250.64.202) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.43;
- Thu, 25 Jun 2026 13:33:03 +0000
+ Thu, 25 Jun 2026 13:33:10 +0000
 Received: from dev-dsk-simonlie-1b-ad174abf.eu-west-1.amazon.com
  (172.19.78.185) by EX19D001UWA001.ant.amazon.com (10.13.138.214) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.43; Thu, 25 Jun 2026
- 13:33:00 +0000
+ 13:33:08 +0000
 From: Simon Liebold <simonlie@amazon.de>
 To: Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>,
 	Arnaldo Carvalho de Melo <acme@kernel.org>, Mark Rutland
@@ -77,9 +77,9 @@ To: Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>,
 CC: Adrian Hunter <adrian.hunter@intel.com>, Paolo Bonzini
 	<pbonzini@redhat.com>, Sean Christopherson <seanjc@google.com>, "Arnaldo
  Carvalho de Melo" <acme@redhat.com>
-Subject: [PATCH 6.1.y 1/2] perf bench: Avoid NDEBUG warning
-Date: Thu, 25 Jun 2026 13:32:21 +0000
-Message-ID: <20260625133222.3412820-2-simonlie@amazon.de>
+Subject: [PATCH 6.1.y 2/2] perf block-range: Move debug code behind ifndef NDEBUG
+Date: Thu, 25 Jun 2026 13:32:22 +0000
+Message-ID: <20260625133222.3412820-3-simonlie@amazon.de>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20260625133222.3412820-1-simonlie@amazon.de>
 References: <20260625133222.3412820-1-simonlie@amazon.de>
@@ -100,19 +100,19 @@ X-Spamd-Result: default: False [-4.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[amazon.de,quarantine];
 	R_DKIM_ALLOW(-0.20)[amazon.de:s=amazoncorp2];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-268544-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-268545-lists,stable=lfdr.de];
 	RCPT_COUNT_TWELVE(0.00)[16];
 	FORGED_SENDER(0.00)[simonlie@amazon.de,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_RECIPIENTS(0.00)[m:peterz@infradead.org,m:mingo@redhat.com,m:acme@kernel.org,m:mark.rutland@arm.com,m:alexander.shishkin@linux.intel.com,m:jolsa@kernel.org,m:namhyung@kernel.org,m:simonlie@amazon.de,m:irogers@google.com,m:linux-perf-users@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,m:adrian.hunter@intel.com,m:pbonzini@redhat.com,m:seanjc@google.com,m:acme@redhat.com,s:lists@lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,vger.kernel.org:from_smtp,intel.com:email,arm.com:email,amazon.de:dkim,amazon.de:email,amazon.de:mid,amazon.de:from_mime,infradead.org:email];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[amazon.de:dkim,amazon.de:email,amazon.de:mid,amazon.de:from_mime,intel.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp,arm.com:email,infradead.org:email];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
@@ -122,19 +122,17 @@ X-Spamd-Result: default: False [-4.16 / 15.00];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	TAGGED_RCPT(0.00)[stable];
 	RCVD_COUNT_SEVEN(0.00)[7]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 079C06C6293
+X-Rspamd-Queue-Id: 8A0F06C62C5
 
 From: Ian Rogers <irogers@google.com>
 
-[ Upstream commit d1babea9c38282b58a6f822ab95027cba3165a42 ]
+[ Upstream commit 984a785f25e5b5db5fa673130b60dca6ca794406 ]
 
-With NDEBUG set the asserts are compiled out. This yields
-"unused-but-set-variable" variables. Move these variables behind
-NDEBUG to avoid the warning.
+Make good on a comment and avoid a unused-but-set-variable warning.
 
 Signed-off-by: Ian Rogers <irogers@google.com>
 Cc: Adrian Hunter <adrian.hunter@intel.com>
@@ -151,43 +149,26 @@ Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 Stable-dep-of: 616b14b47a86 ("perf build: Conditionally define NDEBUG")
 Signed-off-by: Simon Liebold <simonlie@amazon.de>
 ---
- tools/perf/bench/find-bit-bench.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ tools/perf/util/block-range.c | 6 +-----
+ 1 file changed, 1 insertion(+), 5 deletions(-)
 
-diff --git a/tools/perf/bench/find-bit-bench.c b/tools/perf/bench/find-bit-bench.c
-index 22b5cfe970237..80f051f9c20fd 100644
---- a/tools/perf/bench/find-bit-bench.c
-+++ b/tools/perf/bench/find-bit-bench.c
-@@ -61,7 +61,6 @@ static int do_for_each_set_bit(unsigned int num_bits)
- 	double time_average, time_stddev;
- 	unsigned int bit, i, j;
- 	unsigned int set_bits, skip;
--	unsigned int old;
+diff --git a/tools/perf/util/block-range.c b/tools/perf/util/block-range.c
+index 1be4326575013..680e92774d0cd 100644
+--- a/tools/perf/util/block-range.c
++++ b/tools/perf/util/block-range.c
+@@ -11,11 +11,7 @@ struct {
  
- 	init_stats(&fb_time_stats);
- 	init_stats(&tb_time_stats);
-@@ -73,7 +72,10 @@ static int do_for_each_set_bit(unsigned int num_bits)
- 			set_bit(i, to_test);
- 
- 		for (i = 0; i < outer_iterations; i++) {
--			old = accumulator;
+ static void block_range__debug(void)
+ {
+-	/*
+-	 * XXX still paranoid for now; see if we can make this depend on
+-	 * DEBUG=1 builds.
+-	 */
+-#if 1
 +#ifndef NDEBUG
-+			unsigned int old = accumulator;
-+#endif
-+
- 			gettimeofday(&start, NULL);
- 			for (j = 0; j < inner_iterations; j++) {
- 				for_each_set_bit(bit, to_test, num_bits)
-@@ -85,7 +87,9 @@ static int do_for_each_set_bit(unsigned int num_bits)
- 			runtime_us = diff.tv_sec * USEC_PER_SEC + diff.tv_usec;
- 			update_stats(&fb_time_stats, runtime_us);
+ 	struct rb_node *rb;
+ 	u64 old = 0; /* NULL isn't executable */
  
-+#ifndef NDEBUG
- 			old = accumulator;
-+#endif
- 			gettimeofday(&start, NULL);
- 			for (j = 0; j < inner_iterations; j++) {
- 				for (bit = 0; bit < num_bits; bit++) {
 -- 
 2.50.1
 
