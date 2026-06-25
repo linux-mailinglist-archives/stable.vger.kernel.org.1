@@ -1,259 +1,251 @@
-Return-Path: <stable+bounces-268611-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-268613-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id DVKpLBRTPWpt1QgAu9opvQ
-	(envelope-from <stable+bounces-268611-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 18:11:00 +0200
+	id YrdtBJxUPWrW1QgAu9opvQ
+	(envelope-from <stable+bounces-268613-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 18:17:32 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1DAB36C759E
-	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 18:11:00 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 71F1A6C7660
+	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 18:17:31 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=rowland.harvard.edu header.s=google header.b=BzZsPfVd;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-268611-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-268611-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=none) header.from=rowland.harvard.edu;
-	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
+	dkim=pass header.d=NXP1.onmicrosoft.com header.s=selector1-NXP1-onmicrosoft-com header.b=HPWFHdW1;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-268613-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-268613-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=fail reason="SPF not aligned (relaxed), DKIM not aligned (relaxed)" header.from=nxp.com (policy=none);
+	arc=reject ("cv is fail on i=2")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 468F33014568
-	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 16:08:35 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 30C2B30068F9
+	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 16:16:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ACE863A0B13;
-	Thu, 25 Jun 2026 16:08:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 36C3D2D3733;
+	Thu, 25 Jun 2026 16:16:21 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qk1-f181.google.com (mail-qk1-f181.google.com [209.85.222.181])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from DU2PR03CU002.outbound.protection.outlook.com (mail-northeuropeazon11011042.outbound.protection.outlook.com [52.101.65.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3884D3E1CFF
-	for <stable@vger.kernel.org>; Thu, 25 Jun 2026 16:08:32 +0000 (UTC)
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782403714; cv=none; b=kVYXWAY8HfK1p7fGyDCXvR6X7k+KDN77I2iP33BxRjyrs33oocJcrTUT6dtKqGIGotcvnKuJ7woPQS64+zjH7l9jX9RlJUEFFkv0PtT6C9bhONRxHF9kNJ/2aOz9hO7orfcbQJWeS0E4b52FAHWYoFZka5WJUb3mynWmao0Jhcc=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782403714; c=relaxed/simple;
-	bh=txA3luw49KQYaD3e0kkYooetbGz2U80FDkOLBGwVA5o=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=D85IhreSsffHK3NCrwYZP0x/vRw5OphsVS5iVzdPj2EL1RnBiOKhYTDOJ5FE0jnDZ6dqMZ5E3VpBVc79I8NJsOExhci0R9JjQ8jFBrkWfk9pgtIFy+kYw+K5ewu4RKIvm27cGHovPiAfdNN9u/wp4YbZv2BSpM91FPgHqQjgl6o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rowland.harvard.edu; spf=fail smtp.mailfrom=g.harvard.edu; dkim=pass (2048-bit key) header.d=rowland.harvard.edu header.i=@rowland.harvard.edu header.b=BzZsPfVd; arc=none smtp.client-ip=209.85.222.181
-Received: by mail-qk1-f181.google.com with SMTP id af79cd13be357-922ade88d0aso7213185a.1
-        for <stable@vger.kernel.org>; Thu, 25 Jun 2026 09:08:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=rowland.harvard.edu; s=google; t=1782403711; x=1783008511; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=Ug4SbaeJ/1EYKpxKC0dJskWinTAS7LmFXgKf0w7V/S4=;
-        b=BzZsPfVda2GFeJl0UtWa2juzVDwnwSa9vyvdf3klmEMIy5vQ02QmOu2XQ2KB4XL4VS
-         Poc9XgzmVwSNdXD3WeWvUy8Z2EaOovXb5yleDpvaUIjpW/JdFBHz1JCyqDp9BxwN0VD4
-         EAKeyYKe6InGC2wNH3vZKn2oXlYlVAKmEba84z8PrSP9kmWrdjcsLrobDTDzLqlVxJ/o
-         GUf91FqJqs8vZqRLm4u6zInTH4LZTJ2VlvmqKjnV/v6+VciSj8l8eZzARAbeKjlHMAyd
-         fvefW1Ukocxz4amhgWEtXHo3eEABGY3IDFMxgThpRq2HEjxW+MVrP4Dh39Cf8CL7tdDi
-         WBkw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782403711; x=1783008511;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Ug4SbaeJ/1EYKpxKC0dJskWinTAS7LmFXgKf0w7V/S4=;
-        b=Too+cW8XpqrIn0D1QgL/eOfaZXoPV6eT1VOok38Nxh14Lu/F5AYfFTFC0L5bBYZfEu
-         gM6Hg2PJr+1+vBW6lmatqlmhIIGs06+W0OwBKbIOrwzPBxYyatiGgBFl/jtxnibUuET6
-         DOLOrFq8Ld7XYZpHXZJ2pQSKL1cY3inGUmeA1MnJada6rdKp03JCrTIj0WygJ2LiLZfD
-         Q03cbih+eGctD1Z/SIl4Fin4tjhQUNbj7/ow3hYeTnfq2o0WiP6MPZjjAaqIgd2J03YE
-         JE5ZX9RH7ARo3CWmmly6RocJA8XAc4bHOeoWFXv914MqooNUmgJq9XI5KHjiVvN1XTRf
-         7G5g==
-X-Forwarded-Encrypted: i=1; AFNElJ/CRVvFEthwSMbyDYfC5qL0mSK/0uSh0VXs06G9Qm3QIj0dBC2THSE1zWWS8DDfq1XneDIju74=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyY7JnqoUgVxLAq2meyD5aqgPPS/Gs+xpvIz/4PmPgnbv7D1MoF
-	9WSTlVBEt7YfIi9cynmsBblG2r4C9W1AH8bTq98oFlv95bsH3C5EmvW10OqrA+ksIka+JIoXIVJ
-	0FzdVXQ==
-X-Gm-Gg: AfdE7cmyPsz+sWgWIfgXUBdeENMsCNNLcT8DKAFvtwX6DYsnVKlekxh2Tq1Nqg0ldk5
-	ULlfVTuQG6kkwCpikagupB6R92lk/NgMsu82XrvvKQtYb6t15kiGLt7TiUWSGzqwflajM4zBa2E
-	TwAznU1hq3hmpXLuNQwOszUjec52oaqqeZVwXpzGvKdKiODWT06UB4JU24wekh3k71pCb9zw/DV
-	mysNGXa65k69ywVPZSjmcdaCt9TNoqWgwYOlHsQAFT3Poltd5Z7kVZtQVunGGsghWY2hd71uE3E
-	oMkfYKgqqwiulpFkdwYUnoCr24QUC8IIuozZwJSDwGlV9qQzIxJYAOi0En+rWLmt+UHMkRP1XJt
-	nkxIhnZB5zEoIhSmZvLDsPMkYFG97qvXoUMsXCpklo/cR3n6eIPaX1WWmgQy7X8WCmu+u1mJ8Rv
-	9di+QfB+V83foUzjZtJ+NxPUkuIGwy/bqN
-X-Received: by 2002:a05:620a:4409:b0:923:8612:f15 with SMTP id af79cd13be357-9293bd3b210mr434367185a.18.1782403710911;
-        Thu, 25 Jun 2026 09:08:30 -0700 (PDT)
-Received: from rowland.harvard.edu ([2601:19b:d01:d210:d62f:1911:f952:16ba])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-926004ac1b8sm842832585a.36.2026.06.25.09.08.28
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 25 Jun 2026 09:08:29 -0700 (PDT)
-Date: Thu, 25 Jun 2026 12:08:27 -0400
-From: Alan Stern <stern@rowland.harvard.edu>
-To: Jimmy Hu <hhhuuu@google.com>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH v3] usb: gadget: udc: Fix use-after-free in
- gadget_match_driver
-Message-ID: <ae8d0b9d-ba7c-429d-a660-30e4d175599d@rowland.harvard.edu>
-References: <20260625073705.803880-1-hhhuuu@google.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE9D63AA9E2;
+	Thu, 25 Jun 2026 16:16:19 +0000 (UTC)
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1782404181; cv=fail; b=RI5KuqvsIZ4ltpg+xtNXVITi5hRPq+HJqKQRQY8yIv3EUKuJm+tNIot6OtfRMfpPK6CLVUd+ZQBF9UFBisZvHhnwJY+j5Qb3inaXQ+cFREFJ5DjYiFREnuH/f04lnyefEeqObs/g48d6LztYMvpic9P0w7qOOeNyIWn7s/5B1wQ=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1782404181; c=relaxed/simple;
+	bh=aDNu8SI9XOMsLflidUwkhRPD9dqPl+a2sUeiFYMCuNo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=YzCy0GatAR0nBw1hJrijEUcV69YPDJfC5drP//fMPnPVnhV7ObEdqQ/o1fwe9/mtU0IPvEzG7DdcGHZL3LHOHeQlMGMgR5GygwdpFNSMfD/KPSSXjvTtDJVb06/nn81g/YWOThYNgH2mnimZpnpzyVYKDZAblf9UraGrUYf0LUM=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=HPWFHdW1; arc=fail smtp.client-ip=52.101.65.42
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=VAyq7EuIVbkGTQPK3HIzyoEbJho7z+Lk5Wjw/qTx0jlP9mAqXMmG6XqQ/6uLraHzenzH8J/dUKUcX3oy3o9QdK6bdcgPPavVXAZU9LQMuZyf8iT3L5PtiSz8xwz9ekBfxMFiFWvbR6+IxYm/ciTSx/xbrMQayz9Fd3zDgi7mTOkSa2opP6t3kULcA9VITVpme9Hq4ItGJr6R4v2ztSTgkI+kWPAF7tWcMO1as64LigWtgcQgtZNSS1mQjLrqeNbgN/gchKdJXLUefQq/cJhngqZLNdhsfKlp/GHX+JQvC3O7Gss8qnjkT8nabRHlR//cpdtO+LjF3gfRJ0gjht/IFA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=OPOL0Eqdv4R4nmGH4LgFX2vwQhWwNia4bGgtDOfeSF8=;
+ b=YqPYgDPepFvfvrWzDUbfxJetZD3+kcEl5zDEq53r1jJcqOVwCgSoNpoFb80epkiOGFOzpgt/XipeAREIgrNzsgXjERl4AkjdfzLvhycXSYWu4Hn6Aikdh99jWNZapF8Cwdous/shEEBqSTE/xoJD75i0y+c5Fk92sYVbBO6n6uChm7U/9NcYA+5rJ8FxLXFk0G9iKSHVsOP3+fNjJ46Rr/XJWwsM+x6JOh0PclVYUHchDUplnOVYm5Ih7ph56JKhLHuDRuUncs3F5JjmTL0YdLCt2cWo5NO+vdaf0gATs2Ci285e6OoSkRrDsEeEkJpn5agxqP8ix24M8vosCLltQA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
+ dkim=pass header.d=oss.nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
+ s=selector1-NXP1-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=OPOL0Eqdv4R4nmGH4LgFX2vwQhWwNia4bGgtDOfeSF8=;
+ b=HPWFHdW1IeDEYCS7kU3EoZf74VJyycWEP6v8C0EE0LenaD6n2+3PB5Vqp3Y67H/DiuyOypzf569G9fyz7SJJuMki5sWXmsxZrvMo/Eiy9I3wduM3DsKp5qPvquoRbhNpKayICqvW1UpSEVo3EwZLeD3A6pvqYcuS0gBPvTR0j0uonMLZpSxRskTlQpJ6qkwwV987dPNWrvOOJxoTzGo2ckkl3vt0jTRCsx+B9sqUML4CYwj9GGp/Y6zYOWh+0Tb71XvCXqiwrhjKfYFl43dxq2fHx8C1Qgg8AHQZF87/b87pa3IK/r72CWnc/jfiBdNpFC5S1EB1QycLOYbaYLX1Fg==
+Received: from GV2PR04MB11799.eurprd04.prod.outlook.com (2603:10a6:150:2cf::9)
+ by AM7PR04MB6805.eurprd04.prod.outlook.com (2603:10a6:20b:dc::16) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.159.16; Thu, 25 Jun
+ 2026 16:16:16 +0000
+Received: from GV2PR04MB11799.eurprd04.prod.outlook.com
+ ([fe80::2146:83a2:5329:b7c]) by GV2PR04MB11799.eurprd04.prod.outlook.com
+ ([fe80::2146:83a2:5329:b7c%6]) with mapi id 15.21.0159.007; Thu, 25 Jun 2026
+ 16:16:16 +0000
+Date: Thu, 25 Jun 2026 11:16:07 -0500
+From: Frank Li <Frank.li@oss.nxp.com>
+To: Liem <liem16213@gmail.com>
+Cc: Oleksij Rempel <o.rempel@pengutronix.de>,
+	Andi Shyti <andi.shyti@kernel.org>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>, Biwen Li <biwen.li@nxp.com>,
+	Wolfram Sang <wsa@kernel.org>, linux-i2c@vger.kernel.org,
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH v2] i2c: imx: Fix slave registration error path and
+ missing timer cleanup
+Message-ID: <aj1UR5ddawsdMbZC@SMW015318>
+References: <20260625071130.93544-1-liem16213@gmail.com>
+ <20260625160219.55116-1-liem16213@gmail.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260625160219.55116-1-liem16213@gmail.com>
+X-ClientProxiedBy: SA0PR11CA0195.namprd11.prod.outlook.com
+ (2603:10b6:806:1bc::20) To GV2PR04MB11799.eurprd04.prod.outlook.com
+ (2603:10a6:150:2cf::9)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260625073705.803880-1-hhhuuu@google.com>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: GV2PR04MB11799:EE_|AM7PR04MB6805:EE_
+X-MS-Office365-Filtering-Correlation-Id: e4e898f1-9caf-4e7c-f07a-08ded2d51572
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|19092799006|366016|7416014|376014|1800799024|23010399003|18002099003|22082099003|4143699003|11063799006|56012099006|6133799003;
+X-Microsoft-Antispam-Message-Info:
+	7csmJY2ZgRvPBdjzQ00Y0IVDNT3Xi2+nHrgXG9ki/chTbwU/+Q8dNdg+TjokgD2egpPAhIOF/1QipjuEMj/CHj+z0jEbqHpHB/3fbx2LSz19elmLk4pmNCl4gidc4mIZWmvwONOh1UEILAWEmVYLpp8UmNa/jN5ievPlFSYY+mJt8xLTr9y3uy1q12clWbEbmBKvMESlVM91MZmAP/MQbeD68HVQdQ2G/fpx0EC90xcPdRxNk8Q+Tj4X/nMvvfxrWUA9MUBwHVgdQMn+Ofcuycd8SKgbLomvrZyagEwvdJtWSJyM6O+gCILJiLzPyv21XLytMSPxO466XN6krNlA5U7z72kdKnTzXWMvC/54tgXAV8iNTl0cvH8EZA3QM22b+Mtqp2P2sY9DOuoLa9PqGH9yvsNLMzyW1GWbNf7rD+0oTY8meO0rZl1oE3Z959O33QYczXY7NPMSMI49OC5pcHuSXtVaoBl7VlGVXTI/shrR+n/EY7GHvFL3psd2HRN3x9LVbjOLtIuEZlUkQMwy+YXzPFfoGe0Y0OFqJsw7/WprY/IumXrJHed/NDxu8XogJCGYZGlt0sWTWUMq1uooi3iKvYAfU65Z65o307Zh9btXEpfWSJmijVZQlMLGh/qHCOuoS0GlXrkgI+xK14PT6PjymfB4xYY5XsNWT5BMnlU=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV2PR04MB11799.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(19092799006)(366016)(7416014)(376014)(1800799024)(23010399003)(18002099003)(22082099003)(4143699003)(11063799006)(56012099006)(6133799003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?kjAMQWgWeVM9+wjnyQdKanJjBRQaBBSwACTBPD95lXm1rV6+cEDBAkuaHoby?=
+ =?us-ascii?Q?CyM3RAUteO36qnPSPgSVAK6KWjaSyNBucpEsWTJGyeqKU+rLfWWvOYKU8Yn8?=
+ =?us-ascii?Q?8hLi1IDXrtGNbK1Wa6mS2EDEJKVDOEBWJE2QJZSZYjFwMJMLNBl00WhyiCYM?=
+ =?us-ascii?Q?INT8901HW8EXVmsUhA+FapWUKj8HSqlrrIWYVXQeLXuNkLzTKiVyYmR3E0/V?=
+ =?us-ascii?Q?FQhpS5fIR1xpaBVWFGUjIahE/L41VLWt4Drfck5BftjgpA28AJtdlNWs+Po/?=
+ =?us-ascii?Q?tve7Qn79/VHG1izzn7DYlboY/1Nf4/6PM4g1PTuMp4E0Kz7g9zGkfYCw60pK?=
+ =?us-ascii?Q?EXZM4OJZszg4xN93K6E1sJPls9x7/A82XN83gaJT8PJdnhZ0m2NxbXuFXiBE?=
+ =?us-ascii?Q?4eAFLzrr527ByhYEDoBGGjUW7QLjIx7tGx7szeO3lwIuURXXVGIr4onLnHjl?=
+ =?us-ascii?Q?VpuKZ/RnhxZsnHA47qvphny1QOCLByEgFtJJ74kuZ1fmV8RMPzW2rC2IaPJB?=
+ =?us-ascii?Q?siQPr7jGB9px5FvdfssE76hCJzOdPfNT4ybKU8S9ZM7H1fcg9f7LAbPtoeoI?=
+ =?us-ascii?Q?gjMmayy1fTwiUSVlkgy//v68yFzzeXkGsQbn47aE8djwmKkNNNhDTgSOtjL8?=
+ =?us-ascii?Q?nn1B6ucJAOb15HsK5cXbGa178O9sD1Az4h+GxwvuqJ6hamxxnuqVmTBCzg/t?=
+ =?us-ascii?Q?W2lGrOuU74f1N0SYYeDfYgNK+C6p4YMx405eaMBG2DLiJm1UsMcI2lSHvZE5?=
+ =?us-ascii?Q?6Rb8Uh9ttLrRmYOjN+K7EN7cxqi6R1lmMT9t+Foai1acJ2qbwIT+8DiVT7Nf?=
+ =?us-ascii?Q?8Gm7E+oVkKj2C4HEqEJMYIcXO9d4Apa/OvPPq452LISoLTYaIGB98Nk2hL5L?=
+ =?us-ascii?Q?CrqFr75UHDS8ldUxngpw0jChc8GMMiAxv6ySzAcy0RlfwS/Oi1edVON9XFYd?=
+ =?us-ascii?Q?YvOFXKbmiard4A6fZb7VAi9QE5Y+o0GLpj6qqcOiIHYbN1NjURSX0atWTbou?=
+ =?us-ascii?Q?Vy3OxZkRlP1a7in4XtUeiZVSS0krXs5nS0hfr+f0mKvJkxm/+x7v5jB8Ovvs?=
+ =?us-ascii?Q?yAO9wZgNM1Iv4vZco/39xWgya5gTpEzJ+jJg+KwVlfSxzjskeZCzcUbzbFeb?=
+ =?us-ascii?Q?69L7uS+4lzbGU6trEdQeR+uI6XH85oXB21SD64meEKUqzThK3raG0FtTMpqC?=
+ =?us-ascii?Q?YJjUuEhVsrfaeMMBIMJrXPuwo2G+vYRP9rc1TWUY84AUAgnmd/0L3aemdfpL?=
+ =?us-ascii?Q?cEHyRlweU3KBUI+lYL7UGnd9dJp4Q2ceh//L6Z06wogQZZqHwNv/BkwdQpot?=
+ =?us-ascii?Q?KRh9HgolBxOTkVHu6ybKVrpRCSLeGS1mdgxAmuzP1XCSYIdf/6xdbIQNKWv1?=
+ =?us-ascii?Q?bGIPGo7O1erOtptIlsP2iyDulU9QMp2UhH/JVYWoddybpJBwU6b6OYA1j0v1?=
+ =?us-ascii?Q?MTlaq+0RLHqBzgnegZXviRszIp2o5+qpImPKpBaNnz3MpzRd9WVS5ifM+exf?=
+ =?us-ascii?Q?6m5ClyDVwSsGyEhU3g6f7c1dYnN3bX9IDjMhtYPBgKGSJsXyd8sbV6kDfUp5?=
+ =?us-ascii?Q?+bZiht3JXfcgVdHQ9EIr6LhuFLU3i+adnaMmL+f+j6SV0qlHxFU0R4svChwd?=
+ =?us-ascii?Q?/rVBQRWxJjZqu3/D2kyXZbdAogNjTbDcx8eqqztkR+hrQaeRel8VDfwx+/kJ?=
+ =?us-ascii?Q?aL92bq2ZYkrBAs0uTp8Y5JHg0rn/Zb203vcIkV8swWRQp9A71BwhO3FRY9xe?=
+ =?us-ascii?Q?sfcZSe3LDXePU0/iIT2yd1kxRnSD8/4OpMAN+JbphYKBj158qnbU?=
+X-OriginatorOrg: oss.nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: e4e898f1-9caf-4e7c-f07a-08ded2d51572
+X-MS-Exchange-CrossTenant-AuthSource: GV2PR04MB11799.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Jun 2026 16:16:16.5660
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: M2DIfh0P3fwTG6qCdGAdPwKVMOECxjYqUoUFCjS8D04C+BwhgjtjzAABZ4d/TT5CWZMPRVJXw80fiFvWf7ySJ5erGdkIgB+Gb/Utx76j518DjpxmZS7CQgCSUCvqiCRF
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM7PR04MB6805
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-2.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[rowland.harvard.edu,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[rowland.harvard.edu:s=google];
+X-Spamd-Result: default: False [0.94 / 15.00];
+	ARC_REJECT(1.00)[cv is fail on i=2];
+	MID_RHS_NOT_FQDN(0.50)[];
+	R_DKIM_ALLOW(-0.20)[NXP1.onmicrosoft.com:s=selector1-NXP1-onmicrosoft-com];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
+	DMARC_POLICY_SOFTFAIL(0.10)[nxp.com : SPF not aligned (relaxed), DKIM not aligned (relaxed),none];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[rowland.harvard.edu:+];
 	FORWARDED(0.00)[lists@lfdr.de];
-	TAGGED_FROM(0.00)[bounces-268611-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_SENDER(0.00)[stern@rowland.harvard.edu,stable@vger.kernel.org];
-	FORGED_RECIPIENTS(0.00)[m:hhhuuu@google.com,m:gregkh@linuxfoundation.org,m:linux-usb@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,s:lists@lfdr.de];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MISSING_XM_UA(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:liem16213@gmail.com,m:o.rempel@pengutronix.de,m:andi.shyti@kernel.org,m:kernel@pengutronix.de,m:Frank.Li@nxp.com,m:s.hauer@pengutronix.de,m:festevam@gmail.com,m:biwen.li@nxp.com,m:wsa@kernel.org,m:linux-i2c@vger.kernel.org,m:imx@lists.linux.dev,m:linux-arm-kernel@lists.infradead.org,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,s:lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-268613-lists,stable=lfdr.de];
+	FORGED_SENDER(0.00)[Frank.li@oss.nxp.com,stable@vger.kernel.org];
+	FREEMAIL_TO(0.00)[gmail.com];
 	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
+	DKIM_TRACE(0.00)[NXP1.onmicrosoft.com:+];
+	RCPT_COUNT_TWELVE(0.00)[14];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[stern@rowland.harvard.edu,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[Frank.li@oss.nxp.com,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[pengutronix.de,kernel.org,nxp.com,gmail.com,vger.kernel.org,lists.linux.dev,lists.infradead.org];
 	ALIAS_RESOLVED(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5]
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	TO_DN_SOME(0.00)[]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 1DAB36C759E
+X-Rspamd-Queue-Id: 71F1A6C7660
 
-On Thu, Jun 25, 2026 at 03:37:04PM +0800, Jimmy Hu wrote:
-> The udc structure acts as the management structure for the gadget,
-> but their lifecycles are decoupled. A race condition exists where
-> usb_del_gadget() frees the udc memory (e.g., via mode-switch work)
-> while gadget_match_driver() concurrently accesses the freed udc memory
-> (e.g., via configfs), causing a Use-After-Free (UAF) that triggers a
-> NULL pointer dereference when the freed memory is zeroed:
-> 
-> [39430.908615][ T1171] Unable to handle kernel NULL pointer dereference at virtual address 0000000000000000
-> [39430.911397][ T1171] pc : __pi_strcmp+0x20/0x140
-> [39430.911441][ T1171] lr : gadget_match_driver+0x34/0x60
-> ...
-> [39430.911890][ T1171]  usb_gadget_register_driver_owner+0x50/0xf8
-> [39430.911910][ T1171]  gadget_dev_desc_UDC_store+0xf4/0x140
-> [39430.931308][ T1171]  configfs_write_iter+0xec/0x134
-> 
-> [39430.957058][ T1171] Workqueue: events_freezable __dwc3_set_mode
-> [39430.957287][ T1171]  dwc3_gadget_exit+0x34/0x8c
-> [39430.957304][ T1171]  __dwc3_set_mode+0xc0/0x664
-> 
-> Fix this by ensuring the udc structure remains allocated until the
-> gadget is released. To achieve this, introduce a new
-> usb_gadget_release() routine to the core. When the gadget is added,
-> usb_add_gadget() stores the gadget's release routine in the udc
-> structure and takes a reference to the udc. When the gadget is
-> released, usb_gadget_release() drops the reference to the udc and
-> then calls the gadget's release routine.
-> 
-> Suggested-by: Alan Stern <stern@rowland.harvard.edu>
-> Cc: <stable@vger.kernel.org>
-> Signed-off-by: Jimmy Hu <hhhuuu@google.com>
+On Fri, Jun 26, 2026 at 12:02:19AM +0800, Liem wrote:
+>
+> There are two issues that affect the i2c-imx slave handling:
+>
+> 1. In i2c_imx_reg_slave(), i2c_imx->slave is checked at the beginning
+>    and the function returns -EBUSY if it is non-NULL.  If
+>    pm_runtime_resume_and_get() fails later, the error path returns
+>    without clearing i2c_imx->slave, leaving it non-NULL.  Subsequent
+>    attempts to register a slave will then immediately fail with
+>    -EBUSY, making it impossible to register the slave again.  Fix
+>    by setting i2c_imx->slave = NULL on the error path.
+>
+> 2. In i2c_imx_unreg_slave(), the slave pointer is set to NULL after
+>    disabling interrupts.  However, a pending interrupt might already
+>    have started the hrtimer (i2c_imx_slave_timeout) before the pointer
+>    was cleared.  If the hrtimer fires after i2c_imx->slave is set to
+>    NULL, the timer callback i2c_imx_slave_finish_op() will call
+>    i2c_imx_slave_event() with a NULL slave pointer, and the
+>    last_slave_event check loop in i2c_imx_slave_finish_op() may cause
+>    a system hang because last_slave_event is no longer updated.  Fix
+>    by canceling the hrtimer and waiting for it to complete after
+>    disabling interrupts, before clearing the slave pointer.
+
+Please use two patches to fix these problem. One patch fix one problem.
+
+Frank
+
+>
+> Both issues can trigger a kernel oops, system hang, or permanent
+> slave registration failure under certain race conditions.  Add the
+> missing NULL assignment and the missing hrtimer cleanup to harden
+> the slave path.
+>
+> Fixes: f7414cd6923f ("i2c: imx: support slave mode for imx I2C driver")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Liem <liem16213@gmail.com>
 > ---
-
-Looks good to me.
-
-Reviewed-by: Alan Stern <stern@rowland.harvard.edu>
-
-Alan Stern
-
-> V2 -> V3:
-> - Fix column alignment in struct usb_udc.
-> - Remove redundant NULL check in usb_gadget_release().
-> - Add comments explaining the lifecycle override and error path cleanup.
-> 
-> V1 -> V2: Rework the fix using a new release routine in the core.
-> 
-> v2: https://lore.kernel.org/all/20260624030154.393004-1-hhhuuu@google.com/
-> v1: https://lore.kernel.org/all/20260526070635.839701-1-hhhuuu@google.com/
-> 
->  drivers/usb/gadget/udc/core.c | 29 ++++++++++++++++++++++++++++-
->  1 file changed, 28 insertions(+), 1 deletion(-)
-> 
-> diff --git a/drivers/usb/gadget/udc/core.c b/drivers/usb/gadget/udc/core.c
-> index 60340ff9edbf..f6da12b553a0 100644
-> --- a/drivers/usb/gadget/udc/core.c
-> +++ b/drivers/usb/gadget/udc/core.c
-> @@ -31,8 +31,9 @@ static const struct bus_type gadget_bus_type;
->  /**
->   * struct usb_udc - describes one usb device controller
->   * @driver: the gadget driver pointer. For use by the class code
-> - * @dev: the child device to the actual controller
->   * @gadget: the gadget. For use by the class code
-> + * @gadget_release: the gadget's release routine
-> + * @dev: the child device to the actual controller
->   * @list: for use by the udc class driver
->   * @vbus: for udcs who care about vbus status, this value is real vbus status;
->   * for udcs who do not care about vbus status, this value is always true
-> @@ -53,6 +54,7 @@ static const struct bus_type gadget_bus_type;
->  struct usb_udc {
->  	struct usb_gadget_driver	*driver;
->  	struct usb_gadget		*gadget;
-> +	void				(*gadget_release)(struct device *dev);
->  	struct device			dev;
->  	struct list_head		list;
->  	bool				vbus;
-> @@ -1362,6 +1364,17 @@ static void usb_udc_nop_release(struct device *dev)
->  	dev_vdbg(dev, "%s\n", __func__);
->  }
->  
-> +static void usb_gadget_release(struct device *dev)
-> +{
-> +	struct usb_gadget *gadget = dev_to_usb_gadget(dev);
-> +	struct usb_udc *udc = gadget->udc;
-> +	/* Cache the gadget's release routine to prevent UAF */
-> +	void (*release)(struct device *dev) = udc->gadget_release;
-> +
-> +	put_device(&udc->dev);
-> +	release(dev);
-> +}
-> +
->  /**
->   * usb_initialize_gadget - initialize a gadget and its embedded struct device
->   * @parent: the parent device to this udc. Usually the controller driver's
-> @@ -1418,6 +1431,14 @@ int usb_add_gadget(struct usb_gadget *gadget)
->  	mutex_init(&udc->connect_lock);
->  
->  	udc->started = false;
-> +	/*
-> +	 * Align decoupled lifecycles: take a UDC reference to ensure it
-> +	 * remains allocated until the gadget is released, requiring an
-> +	 * override of the gadget's release routine to drop it.
-> +	 */
-> +	udc->gadget_release = gadget->dev.release;
-> +	gadget->dev.release = usb_gadget_release;
-> +	get_device(&udc->dev);
->  
->  	mutex_lock(&udc_lock);
->  	list_add_tail(&udc->list, &udc_list);
-> @@ -1462,6 +1483,12 @@ int usb_add_gadget(struct usb_gadget *gadget)
->  	mutex_lock(&udc_lock);
->  	list_del(&udc->list);
->  	mutex_unlock(&udc_lock);
-> +	/*
-> +	 * Revert the override and drop the UDC reference to prevent
-> +	 * leaking the UDC if the gadget was statically allocated.
-> +	 */
-> +	gadget->dev.release = udc->gadget_release;
-> +	put_device(&udc->dev);
->  
->   err_put_udc:
->  	put_device(&udc->dev);
-> 
-> base-commit: 502d801f0ab03e4f32f9a33d203154ce84887921
-> -- 
-> 2.55.0.rc0.799.gd6f94ed593-goog
-> 
+> v1 -> v2:
+>   - Instead of adding a NULL check in i2c_imx_slave_event(), cancel
+>     the hrtimer and wait for it to finish in i2c_imx_unreg_slave()
+>     after disabling interrupts, as suggested by <Carlos Song>.
+>     This avoids a potential hang in the last_slave_event loop in
+>     i2c_imx_slave_finish_op().
+> ---
+>  drivers/i2c/busses/i2c-imx.c | 3 ++-
+>  1 file changed, 2 insertions(+), 1 deletion(-)
+>
+> diff --git a/drivers/i2c/busses/i2c-imx.c b/drivers/i2c/busses/i2c-imx.c
+> index 28313d0fad37..04ffb927aba9 100644
+> --- a/drivers/i2c/busses/i2c-imx.c
+> +++ b/drivers/i2c/busses/i2c-imx.c
+> @@ -936,6 +936,7 @@ static int i2c_imx_reg_slave(struct i2c_client *client)
+>         /* Resume */
+>         ret = pm_runtime_resume_and_get(i2c_imx->adapter.dev.parent);
+>         if (ret < 0) {
+> +               i2c_imx->slave = NULL;
+>                 dev_err(&i2c_imx->adapter.dev, "failed to resume i2c controller");
+>                 return ret;
+>         }
+> @@ -957,7 +958,7 @@ static int i2c_imx_unreg_slave(struct i2c_client *client)
+>         imx_i2c_write_reg(0, i2c_imx, IMX_I2C_IADR);
+>
+>         i2c_imx_reset_regs(i2c_imx);
+> -
+> +       hrtimer_cancel(&i2c_imx->slave_timer);
+>         i2c_imx->slave = NULL;
+>
+>         /* Suspend */
+> --
+> 2.53.0
+>
+>
 
