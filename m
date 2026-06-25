@@ -1,61 +1,81 @@
-Return-Path: <stable+bounces-268478-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-268429-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id TN1QL50oPWqcyAgAu9opvQ
-	(envelope-from <stable+bounces-268478-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 15:09:49 +0200
+	id nrv1Od8oPWq9yAgAu9opvQ
+	(envelope-from <stable+bounces-268429-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 15:10:55 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 92E6A6C5F5B
-	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 15:09:49 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6D8BE6C5FAA
+	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 15:10:55 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=Z901PDth;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-268478-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-268478-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=UGC3X9TF;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-268429-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-268429-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 087B9301AB8C
-	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 13:09:49 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 3DE7C303C3D4
+	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 13:07:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7738E2EFD9B;
-	Thu, 25 Jun 2026 13:09:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D47E2D0C84;
+	Thu, 25 Jun 2026 13:07:04 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CB802253EE;
-	Thu, 25 Jun 2026 13:09:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA7B52D0C62;
+	Thu, 25 Jun 2026 13:07:02 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782392987; cv=none; b=uDMO19084OxIQ78yQgDZ0DD76wwQs4aG5bQafgoUEr/SfeH7JWOwTZKx7bZ49p6kZws36Sq+81/RfcKUtke9YIr4ZkVhOHHtQbQtV0ozdvb9zm65erQeXQuFpE8nbw9+ekYsnQlOMH2LPAetnN5ohHgSNKD+7LywUpiQlZJdpRQ=
+	t=1782392824; cv=none; b=HuaKsZQSYXwyn4q2YAN8SYQWB6CgxnMq7iiRvM+KIejUv38MOCbaoKfhWOHkzZXzm94YIvOTtJckWLcm527M0yU9+4j/CKWUkO/QQVMrizxaQZXMlNSTQcnB8BD3ki1cMVsavwf55VrgRV9T6fEY4Ex27gMSKJNIWjQxp8rauNc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782392987; c=relaxed/simple;
-	bh=PJghpI4TUmaraEjGLsvue4B7CRHz2KFKR8OxjkSPgNQ=;
+	s=arc-20240116; t=1782392824; c=relaxed/simple;
+	bh=D4TxbydOi9dHRz9OhnBVAXBqbsS4WAbA4PXirRRKWn4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UqN3T3UZRGdgcy8voOuQ0vHgDiRcc1Cv4jvANjfRrrvuPu86TAissNh2UjK+QD1Qm5xtvg2gfJjIjWtws02Huvi7+h5ZoldkIppdT6IjePpJmnBSgkdGITQaCNm1e6Xl8k0aWHm48mMugaqDZwLSvjLPUUVw5cHiI/E/lZkX33s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z901PDth; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7233B1F00A3A;
-	Thu, 25 Jun 2026 13:09:44 +0000 (UTC)
+	 MIME-Version; b=asbZskMyBgNoxIQshBd7NwpFn/SKNgqTW6Y/2/Qy/rj55bffni6baNUHj3Y16oRVkzC+wb/3EwFpRriKbi4MPvXxmjuSTomMnwHyyzlshQYGbC26sKzFb4hU2nIohjCfMed/yshHveCAAoNXjY5dBCguD6nZNJONpAF+yyeDlAQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UGC3X9TF; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D91ED1F000E9;
+	Thu, 25 Jun 2026 13:07:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1782392985;
-	bh=eTIVKaKdnLwa3k3V6V4jMPKuL3dLCgdT4nRrhaSLRYA=;
+	s=korg; t=1782392822;
+	bh=VBez6G4wPtl4pFKdHLKOiJtk81m2U6bTGBNd6vdrnwQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Z901PDthXmtABG1kQrqIoZwDqJ1qmFguWIwd3Mlmmad95KqBr3pwjOOytVFHT/br1
-	 n3wHeMOCN9b1qJIJWT2BIiynM4HSjFUNrN7Qgcu4+7bk5z7epBoDIyu2zAXnhINqEG
-	 TEFVKOxgwexgwdpqmO1eS74n7C6DthZYWms2B1sk=
+	b=UGC3X9TFh1WBWzcyqf9j/weBrr7NKfQOWk6qCpezZTVLHlV+7BJyG15iAHviIv+co
+	 QTfW7Ffu52MihZzzw5nxa1mm982CUtcsUPpOhUOxGYJN77Hi4mNnN0TzugFUrwzH+A
+	 cWCrdzeHH9L1bSEJVPhH8ki1rxMIAk2OSOUVupjY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tudor Ambarus <tudor.ambarus@linaro.org>,
-	Krzysztof Kozlowski <krzk@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 07/49] firmware: samsung: acpm: Fix false timeouts and Use-After-Free in polling
+	Lorenzo Stoakes <ljs@kernel.org>,
+	Pedro Falcato <pfalcato@suse.de>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	"David Hildenbrand (Red Hat)" <david@kernel.org>,
+	Lance Yang <lance.yang@linux.dev>,
+	Andrei Vagin <avagin@gmail.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	Barry Song <baohua@kernel.org>,
+	Dev Jain <dev.jain@arm.com>,
+	Jann Horn <jannh@google.com>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Liam Howlett <liam.howlett@oracle.com>,
+	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Mike Rapoport <rppt@kernel.org>,
+	Nico Pache <npache@redhat.com>,
+	Ryan Roberts <ryan.roberts@arm.com>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Zi Yan <ziy@nvidia.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Ahmed Elaidy <elaidya225@gmail.com>
+Subject: [PATCH 6.18 34/60] mm: introduce VM_MAYBE_GUARD and make visible in /proc/$pid/smaps
 Date: Thu, 25 Jun 2026 14:03:19 +0100
-Message-ID: <20260625125638.563596935@linuxfoundation.org>
+Message-ID: <20260625125650.574635767@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260625125637.527552689@linuxfoundation.org>
-References: <20260625125637.527552689@linuxfoundation.org>
+In-Reply-To: <20260625125645.554579168@linuxfoundation.org>
+References: <20260625125645.554579168@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,266 +87,259 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUBJECT_HAS_CURRENCY(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-268478-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:tudor.ambarus@linaro.org,m:krzk@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:ljs@kernel.org,m:pfalcato@suse.de,m:vbabka@suse.cz,m:david@kernel.org,m:lance.yang@linux.dev,m:avagin@gmail.com,m:baolin.wang@linux.alibaba.com,m:baohua@kernel.org,m:dev.jain@arm.com,m:jannh@google.com,m:corbet@lwn.net,m:liam.howlett@oracle.com,m:mhiramat@kernel.org,m:mathieu.desnoyers@efficios.com,m:mhocko@suse.com,m:rppt@kernel.org,m:npache@redhat.com,m:ryan.roberts@arm.com,m:rostedt@goodmis.org,m:surenb@google.com,m:ziy@nvidia.com,m:akpm@linux-foundation.org,m:elaidya225@gmail.com,s:lists@lfdr.de];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	FORWARDED(0.00)[lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-268429-lists,stable=lfdr.de];
+	RCPT_COUNT_TWELVE(0.00)[26];
+	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,suse.de,suse.cz,linux.dev,gmail.com,linux.alibaba.com,arm.com,google.com,lwn.net,oracle.com,efficios.com,suse.com,redhat.com,goodmis.org,nvidia.com,linux-foundation.org];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linaro.org:email,vger.kernel.org:from_smtp,msgid.link:url,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sashiko.dev:url]
+	MID_RHS_MATCH_FROM(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 92E6A6C5F5B
+X-Rspamd-Queue-Id: 6D8BE6C5FAA
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tudor Ambarus <tudor.ambarus@linaro.org>
+From: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
 
-[ Upstream commit c889b146478885344a220dd468e5a08de088cbc5 ]
+commit 5dba5cc2e0ffa76f2f6c8922a04469dc9602c396 upstream.
 
-Sashiko identified severe races in the polling state machine [1].
+Patch series "introduce VM_MAYBE_GUARD and make it sticky", v4.
 
-In the ACPM driver's polling mode, threads waited for responses by
-monitoring the globally shared 'bitmap_seqnum'. This caused false
-timeouts because if a thread processed its response and freed the
-sequence number, a concurrent TX thread could immediately reallocate
-it before the polling thread woke up.
+Currently, guard regions are not visible to users except through
+/proc/$pid/pagemap, with no explicit visibility at the VMA level.
 
-Additionally, the driver suffered from a cross-thread Use-After-Free
-(UAF) preemption race. Previously, acpm_get_rx() cleared the sequence
-number of whichever RX message it drained from the hardware queue. This
-meant Thread A could globally free Thread B's sequence slot while
-Thread B was asleep. A new Thread C could then steal the slot,
-overwrite the buffer, and leave Thread B to wake up to corrupted state
-or a timeout.
+This makes the feature less useful, as it isn't entirely apparent which
+VMAs may have these entries present, especially when performing actions
+which walk through memory regions such as those performed by CRIU.
 
-Fix this by rewriting the polling state machine:
-1. Decouple polling from the global allocator by introducing a per-slot
-   'completed' flag, synchronized via smp_store_release() and
-   smp_load_acquire().
-2. Strip acpm_get_saved_rx() out of acpm_get_rx() to make it a pure
-   queue-draining function. Introduce a 'native_match' boolean argument
-   which evaluates to true only if the thread natively processed its
-   own sequence number during the call. This explicitly informs the
-   polling loop whether it must retrieve its payload from the
-   cross-thread cache.
-3. Centralize the cache fallback and sequence number free (clear_bit)
-   inside the polling loop. Crucially, the free operation now strictly
-   targets the thread's own TX sequence number (xfer->txd[0]), rather
-   than the drained RX sequence number. This enforces strict ownership:
-   a thread only ever frees its own allocated sequence slot, and only
-   at the exact moment it completes its poll, eliminating the UAF
-   window.
+This series addresses this issue by introducing the VM_MAYBE_GUARD flag
+which fulfils this role, updating the smaps logic to display an entry for
+these.
 
-Furthermore, explicitly guard the 'native_match' assignment with an
-if (rx_seqnum == tx_seqnum) check, even for zero-length (no payload)
-responses. While an unguarded assignment wouldn't crash (because the
-cache fallback acpm_get_saved_rx() safely returns early on zero-length
-transfers) doing so would "lie" to the state machine. If a thread
-drained the queue and found another thread's zero-length message,
-setting native_match = true would falsely convince the polling loop
-that it natively handled its own response. Maintaining a rigorous state
-machine requires that native_match is only set when a thread explicitly
-processes its own sequence number.
+The semantics of this flag are that a guard region MAY be present if set
+(we cannot be sure, as we can't efficiently track whether an
+MADV_GUARD_REMOVE finally removes all the guard regions in a VMA) - but if
+not set the VMA definitely does NOT have any guard regions present.
 
-Cc: stable@vger.kernel.org
-Fixes: a88927b534ba ("firmware: add Exynos ACPM protocol driver")
-Closes: https://sashiko.dev/#/patchset/20260429-acpm-fixes-sashiko-reports-v3-0-47cf74ab09ad%40linaro.org [1]
-Signed-off-by: Tudor Ambarus <tudor.ambarus@linaro.org>
-Link: https://patch.msgid.link/20260505-acpm-fixes-sashiko-reports-v5-5-43b5ee7f1674@linaro.org
-Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+It's problematic to establish this flag without further action, because
+that means that VMAs with guard regions in them become non-mergeable with
+adjacent VMAs for no especially good reason.
+
+To work around this, this series also introduces the concept of 'sticky'
+VMA flags - that is flags which:
+
+a. if set in one VMA and not in another still permit those VMAs to be
+   merged (if otherwise compatible).
+
+b. When they are merged, the resultant VMA must have the flag set.
+
+The VMA logic is updated to propagate these flags correctly.
+
+Additionally, VM_MAYBE_GUARD being an explicit VMA flag allows us to solve
+an issue with file-backed guard regions - previously these established an
+anon_vma object for file-backed mappings solely to have vma_needs_copy()
+correctly propagate guard region mappings to child processes.
+
+We introduce a new flag alias VM_COPY_ON_FORK (which currently only
+specifies VM_MAYBE_GUARD) and update vma_needs_copy() to check explicitly
+for this flag and to copy page tables if it is present, which resolves
+this issue.
+
+Additionally, we add the ability for allow-listed VMA flags to be
+atomically writable with only mmap/VMA read locks held.
+
+The only flag we allow so far is VM_MAYBE_GUARD, which we carefully ensure
+does not cause any races by being allowed to do so.
+
+This allows us to maintain guard region installation as a read-locked
+operation and not endure the overhead of obtaining a write lock here.
+
+Finally we introduce extensive VMA userland tests to assert that the
+sticky VMA logic behaves correctly as well as guard region self tests to
+assert that smaps visibility is correctly implemented.
+
+This patch (of 9):
+
+Currently, if a user needs to determine if guard regions are present in a
+range, they have to scan all VMAs (or have knowledge of which ones might
+have guard regions).
+
+Since commit 8e2f2aeb8b48 ("fs/proc/task_mmu: add guard region bit to
+pagemap") and the related commit a516403787e0 ("fs/proc: extend the
+PAGEMAP_SCAN ioctl to report guard regions"), users can use either
+/proc/$pid/pagemap or the PAGEMAP_SCAN functionality to perform this
+operation at a virtual address level.
+
+This is not ideal, and it gives no visibility at a /proc/$pid/smaps level
+that guard regions exist in ranges.
+
+This patch remedies the situation by establishing a new VMA flag,
+VM_MAYBE_GUARD, to indicate that a VMA may contain guard regions (it is
+uncertain because we cannot reasonably determine whether a
+MADV_GUARD_REMOVE call has removed all of the guard regions in a VMA, and
+additionally VMAs may change across merge/split).
+
+We utilise 0x800 for this flag which makes it available to 32-bit
+architectures also, a flag that was previously used by VM_DENYWRITE, which
+was removed in commit 8d0920bde5eb ("mm: remove VM_DENYWRITE") and hasn't
+bee reused yet.
+
+We also update the smaps logic and documentation to identify these VMAs.
+
+Another major use of this functionality is that we can use it to identify
+that we ought to copy page tables on fork.
+
+We do not actually implement usage of this flag in mm/madvise.c yet as we
+need to allow some VMA flags to be applied atomically under mmap/VMA read
+lock in order to avoid the need to acquire a write lock for this purpose.
+
+Link: https://lkml.kernel.org/r/cover.1763460113.git.ljs@kernel.org
+Link: https://lkml.kernel.org/r/cf8ef821eba29b6c5b5e138fffe95d6dcabdedb9.1763460113.git.ljs@kernel.org
+Signed-off-by: Lorenzo Stoakes <ljs@kernel.org>
+Reviewed-by: Pedro Falcato <pfalcato@suse.de>
+Reviewed-by: Vlastimil Babka <vbabka@suse.cz>
+Acked-by: David Hildenbrand (Red Hat) <david@kernel.org>
+Reviewed-by: Lance Yang <lance.yang@linux.dev>
+Cc: Andrei Vagin <avagin@gmail.com>
+Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
+Cc: Barry Song <baohua@kernel.org>
+Cc: Dev Jain <dev.jain@arm.com>
+Cc: Jann Horn <jannh@google.com>
+Cc: Jonathan Corbet <corbet@lwn.net>
+Cc: Liam Howlett <liam.howlett@oracle.com>
+Cc: "Masami Hiramatsu (Google)" <mhiramat@kernel.org>
+Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Cc: Michal Hocko <mhocko@suse.com>
+Cc: Mike Rapoport <rppt@kernel.org>
+Cc: Nico Pache <npache@redhat.com>
+Cc: Ryan Roberts <ryan.roberts@arm.com>
+Cc: Steven Rostedt <rostedt@goodmis.org>
+Cc: Suren Baghdasaryan <surenb@google.com>
+Cc: Zi Yan <ziy@nvidia.com>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Ahmed Elaidy <elaidya225@gmail.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/firmware/samsung/exynos-acpm.c |   68 +++++++++++++++++++++++----------
- 1 file changed, 48 insertions(+), 20 deletions(-)
+ Documentation/filesystems/proc.rst |    5 +++--
+ fs/proc/task_mmu.c                 |    1 +
+ include/linux/mm.h                 |    3 +++
+ include/trace/events/mmflags.h     |    1 +
+ mm/memory.c                        |    4 ++++
+ tools/testing/vma/vma_internal.h   |    1 +
+ 6 files changed, 13 insertions(+), 2 deletions(-)
 
---- a/drivers/firmware/samsung/exynos-acpm.c
-+++ b/drivers/firmware/samsung/exynos-acpm.c
-@@ -105,11 +105,14 @@ struct acpm_queue {
-  * @cmd:	pointer to where the data shall be saved.
-  * @n_cmd:	number of 32-bit commands.
-  * @rxcnt:	expected length of the response in 32-bit words.
-+ * @completed:	flag indicating if the firmware response has been fully
-+ *		processed.
-  */
- struct acpm_rx_data {
- 	u32 *cmd;
- 	size_t n_cmd;
- 	size_t rxcnt;
-+	bool completed;
- };
+--- a/Documentation/filesystems/proc.rst
++++ b/Documentation/filesystems/proc.rst
+@@ -553,7 +553,7 @@ otherwise.
+ kernel flags associated with the particular virtual memory area in two letter
+ encoded manner. The codes are the following:
  
- #define ACPM_SEQNUM_MAX    64
-@@ -204,26 +207,28 @@ static void acpm_get_saved_rx(struct acp
+-    ==    =======================================
++    ==    =============================================================
+     rd    readable
+     wr    writeable
+     ex    executable
+@@ -591,7 +591,8 @@ encoded manner. The codes are the follow
+     sl    sealed
+     lf    lock on fault pages
+     dp    always lazily freeable mapping
+-    ==    =======================================
++    gu    maybe contains guard regions (if not set, definitely doesn't)
++    ==    =============================================================
  
- 	rx_seqnum = FIELD_GET(ACPM_PROTOCOL_SEQNUM, rx_data->cmd[0]);
+ Note that there is no guarantee that every flag and associated mnemonic will
+ be present in all further kernel releases. Things get changed, the flags may
+--- a/fs/proc/task_mmu.c
++++ b/fs/proc/task_mmu.c
+@@ -1159,6 +1159,7 @@ static void show_smap_vma_flags(struct s
+ 		[ilog2(VM_MAYSHARE)]	= "ms",
+ 		[ilog2(VM_GROWSDOWN)]	= "gd",
+ 		[ilog2(VM_PFNMAP)]	= "pf",
++		[ilog2(VM_MAYBE_GUARD)]	= "gu",
+ 		[ilog2(VM_LOCKED)]	= "lo",
+ 		[ilog2(VM_IO)]		= "io",
+ 		[ilog2(VM_SEQ_READ)]	= "sr",
+--- a/include/linux/mm.h
++++ b/include/linux/mm.h
+@@ -269,6 +269,8 @@ extern struct rw_semaphore nommu_region_
+ extern unsigned int kobjsize(const void *objp);
+ #endif
  
--	if (rx_seqnum == tx_seqnum) {
-+	if (rx_seqnum == tx_seqnum)
- 		memcpy(xfer->rxd, rx_data->cmd, xfer->rxcnt * sizeof(*xfer->rxd));
--		clear_bit(rx_seqnum - 1, achan->bitmap_seqnum);
--	}
- }
- 
- /**
-  * acpm_get_rx() - get response from RX queue.
-  * @achan:	ACPM channel info.
-  * @xfer:	reference to the transfer to get response for.
-+ * @native_match: pointer to a boolean set to true if the thread natively
-+ *                processed its own sequence number during this call.
-  *
-  * Return: 0 on success, -errno otherwise.
-  */
--static int acpm_get_rx(struct acpm_chan *achan, const struct acpm_xfer *xfer)
-+static int acpm_get_rx(struct acpm_chan *achan, const struct acpm_xfer *xfer,
-+		       bool *native_match)
- {
- 	u32 rx_front, rx_seqnum, tx_seqnum, seqnum;
- 	const void __iomem *base, *addr;
- 	struct acpm_rx_data *rx_data;
- 	u32 i, val, mlen;
--	bool rx_set = false;
++#define VM_MAYBE_GUARD_BIT 11
 +
-+	*native_match = false;
+ /*
+  * vm_flags in vm_area_struct, see mm_types.h.
+  * When changing, update also include/trace/events/mmflags.h
+@@ -294,6 +296,7 @@ extern unsigned int kobjsize(const void
+ #define VM_UFFD_MISSING	0
+ #endif /* CONFIG_MMU */
+ #define VM_PFNMAP	0x00000400	/* Page-ranges managed without "struct page", just pure PFN */
++#define VM_MAYBE_GUARD	BIT(VM_MAYBE_GUARD_BIT)	/* The VMA maybe contains guard regions. */
+ #define VM_UFFD_WP	0x00001000	/* wrprotect pages tracking */
  
- 	guard(mutex)(&achan->rx_lock);
+ #define VM_LOCKED	0x00002000
+--- a/include/trace/events/mmflags.h
++++ b/include/trace/events/mmflags.h
+@@ -213,6 +213,7 @@ IF_HAVE_PG_ARCH_3(arch_3)
+ 	{VM_UFFD_MISSING,		"uffd_missing"	},		\
+ IF_HAVE_UFFD_MINOR(VM_UFFD_MINOR,	"uffd_minor"	)		\
+ 	{VM_PFNMAP,			"pfnmap"	},		\
++	{VM_MAYBE_GUARD,		"maybe_guard"	},		\
+ 	{VM_UFFD_WP,			"uffd_wp"	},		\
+ 	{VM_LOCKED,			"locked"	},		\
+ 	{VM_IO,				"io"		},		\
+--- a/mm/memory.c
++++ b/mm/memory.c
+@@ -1494,6 +1494,10 @@ vma_needs_copy(struct vm_area_struct *ds
+ 	if (src_vma->anon_vma)
+ 		return true;
  
-@@ -232,10 +237,8 @@ static int acpm_get_rx(struct acpm_chan
- 
- 	tx_seqnum = FIELD_GET(ACPM_PROTOCOL_SEQNUM, xfer->txd[0]);
- 
--	if (i == rx_front) {
--		acpm_get_saved_rx(achan, xfer, tx_seqnum);
-+	if (i == rx_front)
- 		return 0;
--	}
- 
- 	base = achan->rx.base;
- 	mlen = achan->mlen;
-@@ -259,8 +262,13 @@ static int acpm_get_rx(struct acpm_chan
- 		if (rx_data->rxcnt) {
- 			if (rx_seqnum == tx_seqnum) {
- 				__ioread32_copy(xfer->rxd, addr, xfer->rxcnt);
--				rx_set = true;
--				clear_bit(seqnum, achan->bitmap_seqnum);
-+				/*
-+				 * Signal completion to the polling thread.
-+				 * Pairs with smp_load_acquire() in polling
-+				 * loop.
-+				 */
-+				smp_store_release(&rx_data->completed, true);
-+				*native_match = true;
- 			} else {
- 				/*
- 				 * The RX data corresponds to another request.
-@@ -270,9 +278,21 @@ static int acpm_get_rx(struct acpm_chan
- 				 */
- 				__ioread32_copy(rx_data->cmd, addr,
- 						rx_data->rxcnt);
-+				/*
-+				 * Signal completion to the polling thread.
-+				 * Pairs with smp_load_acquire() in polling
-+				 * loop.
-+				 */
-+				smp_store_release(&rx_data->completed, true);
- 			}
- 		} else {
--			clear_bit(seqnum, achan->bitmap_seqnum);
-+			/*
-+			 * Signal completion to the polling thread.
-+			 * Pairs with smp_load_acquire() in polling loop.
-+			 */
-+			smp_store_release(&rx_data->completed, true);
-+			if (rx_seqnum == tx_seqnum)
-+				*native_match = true;
- 		}
- 
- 		i = (i + 1) % achan->qlen;
-@@ -281,13 +301,6 @@ static int acpm_get_rx(struct acpm_chan
- 	/* We saved all responses, mark RX empty. */
- 	writel(rx_front, achan->rx.rear);
- 
--	/*
--	 * If the response was not in this iteration of the queue, check if the
--	 * RX data was previously saved.
--	 */
--	if (!rx_set)
--		acpm_get_saved_rx(achan, xfer, tx_seqnum);
--
- 	return 0;
- }
- 
-@@ -302,6 +315,7 @@ static int acpm_dequeue_by_polling(struc
- 				   const struct acpm_xfer *xfer)
- {
- 	struct device *dev = achan->acpm->dev;
-+	bool native_match;
- 	ktime_t timeout;
- 	u32 seqnum;
- 	int ret;
-@@ -310,12 +324,25 @@ static int acpm_dequeue_by_polling(struc
- 
- 	timeout = ktime_add_us(ktime_get(), ACPM_POLL_TIMEOUT_US);
- 	do {
--		ret = acpm_get_rx(achan, xfer);
-+		ret = acpm_get_rx(achan, xfer, &native_match);
- 		if (ret)
- 			return ret;
- 
--		if (!test_bit(seqnum - 1, achan->bitmap_seqnum))
-+		/*
-+		 * Safely check if our specific transaction has been processed.
-+		 * smp_load_acquire prevents the CPU from speculatively
-+		 * executing subsequent instructions before the transaction is
-+		 * synchronized.
-+		 */
-+		if (smp_load_acquire(&achan->rx_data[seqnum - 1].completed)) {
-+			/* Retrieve payload if another thread cached it for us */
-+			if (!native_match)
-+				acpm_get_saved_rx(achan, xfer, seqnum);
++	/* Guard regions have modified page tables that require copying. */
++	if (src_vma->vm_flags & VM_MAYBE_GUARD)
++		return true;
 +
-+			/* Relinquish ownership of the sequence slot */
-+			clear_bit(seqnum - 1, achan->bitmap_seqnum);
- 			return 0;
-+		}
- 
- 		/* Determined experimentally. */
- 		udelay(20);
-@@ -380,6 +407,7 @@ static void acpm_prepare_xfer(struct acp
- 
- 	/* Clear data for upcoming responses */
- 	rx_data = &achan->rx_data[achan->seqnum - 1];
-+	rx_data->completed = false;
- 	memset(rx_data->cmd, 0, sizeof(*rx_data->cmd) * rx_data->n_cmd);
- 	/* zero means no response expected */
- 	rx_data->rxcnt = xfer->rxcnt;
+ 	/*
+ 	 * Don't copy ptes where a page fault will fill them correctly.  Fork
+ 	 * becomes much lighter when there are big shared or private readonly
+--- a/tools/testing/vma/vma_internal.h
++++ b/tools/testing/vma/vma_internal.h
+@@ -56,6 +56,7 @@ extern unsigned long dac_mmap_min_addr;
+ #define VM_MAYEXEC	0x00000040
+ #define VM_GROWSDOWN	0x00000100
+ #define VM_PFNMAP	0x00000400
++#define VM_MAYBE_GUARD	0x00000800
+ #define VM_LOCKED	0x00002000
+ #define VM_IO           0x00004000
+ #define VM_SEQ_READ	0x00008000	/* App will access data sequentially */
 
 
 
