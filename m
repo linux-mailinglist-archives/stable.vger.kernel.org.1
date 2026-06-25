@@ -1,52 +1,52 @@
-Return-Path: <stable+bounces-268236-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-268237-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 1MddNGZ8PGpyoggAu9opvQ
-	(envelope-from <stable+bounces-268236-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 02:55:02 +0200
+	id AfjSA919PGrKoggAu9opvQ
+	(envelope-from <stable+bounces-268237-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 03:01:17 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2A9FC6C20B3
-	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 02:55:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A7326C20DA
+	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 03:01:16 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=vTIQaQRZ;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-268236-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-268236-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=xgR3zRIK;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-268237-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-268237-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=none;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id F12BB303FA91
-	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 00:55:00 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 1AA7A304020C
+	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 01:01:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 759793655F0;
-	Thu, 25 Jun 2026 00:55:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 04CCC366DB4;
+	Thu, 25 Jun 2026 01:01:12 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A8D95B5AB;
-	Thu, 25 Jun 2026 00:54:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADF1B13D886;
+	Thu, 25 Jun 2026 01:01:10 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782348900; cv=none; b=H8ROTJL7RXdOYY3hD+gB6TRhn0dpi4B1bcgGKIV14iOpUDkA6XWIXAgc8Fz6fvahB/jnAuW4bM1D0tldgJ/NS2CERqEfrwmHwi1Omf66woSvlGbJSz0E+yntmHoLpzWHKxsLq3Z6gvo5JQF+2JL6OJzYQctssdYkW46EGuaHxBg=
+	t=1782349271; cv=none; b=btesVh/Mfga8JNqdecRAnM0ofewzkeF3MOsI816bLRT7NpzB9j/2rvOTA77cMfzzuAhVwcI4RZ6kkBovIDh4mWMJI5ojCRbOYrgxZDllrQUqTTVDZJHqLP+JjAKEn45B65E44C1BUwGPp9EAxKr9AX0kxpU2Or3yiXyHSY1WS9Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782348900; c=relaxed/simple;
-	bh=E1QMaLPuXJSmKrpKJ2S/oQ2jD77yOLsebWrvZbksCLQ=;
-	h=Date:To:From:Subject:Message-Id; b=iNZONzT7lxYEv0OBwu6emgIKy4CCZV2r7aKPDDy9BOsyopDOF7Fw/ZksJg+RYJSWeH4qEkQGgq0Es2Qx1xj5jdX57hV8GmEOBmF8t88deenjkLaO7g4lyO3POOlWRRDg/m00Fy3FREEz9RmpkW0bQk1nK6wtTiPoCd7NL1Ullf4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=vTIQaQRZ; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F75F1F000E9;
-	Thu, 25 Jun 2026 00:54:58 +0000 (UTC)
+	s=arc-20240116; t=1782349271; c=relaxed/simple;
+	bh=ogbATqBvOgVMjrqsCiFLRZI0eobdRYxlvrnJRSKow4Q=;
+	h=Date:To:From:Subject:Message-Id; b=CjgVdQmUgmqM8eEN4/97bQNQvS+XMb+6NLsuD7kTYesGYKrsSw2n4FXxazi9BeZ+vMgOAmoVq3xtr+vtLDz2UEASrgciMhMi5WKZCbt/9W8mIqSbTROUhqyYwENKNGmVlmPAgGO+ft55/VFXDu7FwhxmjhODxP1JbbqZlLh3sLU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=xgR3zRIK; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A0FD1F000E9;
+	Thu, 25 Jun 2026 01:01:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1782348898;
-	bh=rPJlVCmVLEVN7l0Dkkg76TNEEyp3cE7p52OjSBpRNJs=;
+	d=linux-foundation.org; s=korg; t=1782349270;
+	bh=lgUqV1C/zhbSfL5NwoscnFHIEsbP5uZz0ginEb8C3m0=;
 	h=Date:To:From:Subject;
-	b=vTIQaQRZrmpZ012qLOlpnG2/oJ+5HT++vLF4ZQkZNPDFLss9HRalgrPnxkYoYo7oL
-	 TMT0bon7huwYOPa59Z6MEDR/zreUS+Ct/iuYfUjBLEsoXc0+37FCfBOvJUioD0r+Fh
-	 hP0wTqwY76J7Uha/A6vbzaLh2ZQxrEmvvogdHoFY=
-Date: Wed, 24 Jun 2026 17:54:58 -0700
-To: mm-commits@vger.kernel.org,vbabka@kernel.org,stable@vger.kernel.org,osalvador@suse.de,muchun.song@linux.dev,kas@kernel.org,david@kernel.org,mclapinski@google.com,akpm@linux-foundation.org
+	b=xgR3zRIK61MoXcrMqFmzEkDTSdxWm6lAf56k8yalHPzMrSGhUXOWdM60pCYdP+l83
+	 jvpP3+Y2F6W4jBL6L5rFkYlrDJlWkTXwlvuzGOqO45Ise22jglTjXPoWv9h/PTWSiP
+	 oHvo7aQM8qAhriKYjo33iRFPNmYhejiuLrbu80JM=
+Date: Wed, 24 Jun 2026 18:01:10 -0700
+To: mm-commits@vger.kernel.org,ziy@nvidia.com,xu.xin16@zte.com.cn,willy@infradead.org,wangkefeng.wang@huawei.com,svetly.todorov@memverge.com,sunnanyong@huawei.com,stable@vger.kernel.org,luizcap@redhat.com,linmiaohe@huawei.com,david@kernel.org,chengming.zhou@linux.dev,tujinjiang@huawei.com,akpm@linux-foundation.org
 From: Andrew Morton <akpm@linux-foundation.org>
-Subject: + mm-hugetlb-init-tails-before-init_migratetype.patch added to mm-hotfixes-unstable branch
-Message-Id: <20260625005458.9F75F1F000E9@smtp.kernel.org>
+Subject: + fs-proc-fix-kpf_ksm-reported-for-all-anonymous-pages.patch added to mm-hotfixes-unstable branch
+Message-Id: <20260625010110.6A0FD1F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -56,46 +56,46 @@ X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linux-foundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-268237-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:mm-commits@vger.kernel.org,m:ziy@nvidia.com,m:xu.xin16@zte.com.cn,m:willy@infradead.org,m:wangkefeng.wang@huawei.com,m:svetly.todorov@memverge.com,m:sunnanyong@huawei.com,m:stable@vger.kernel.org,m:luizcap@redhat.com,m:linmiaohe@huawei.com,m:david@kernel.org,m:chengming.zhou@linux.dev,m:tujinjiang@huawei.com,m:akpm@linux-foundation.org,s:lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-268236-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:mm-commits@vger.kernel.org,m:vbabka@kernel.org,m:stable@vger.kernel.org,m:osalvador@suse.de,m:muchun.song@linux.dev,m:kas@kernel.org,m:david@kernel.org,m:mclapinski@google.com,m:akpm@linux-foundation.org,s:lists@lfdr.de];
-	FROM_NEQ_ENVFROM(0.00)[akpm@linux-foundation.org,stable@vger.kernel.org];
 	DMARC_NA(0.00)[linux-foundation.org];
-	FORWARDED(0.00)[lists@lfdr.de];
+	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linux-foundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	FORWARDED(0.00)[lists@lfdr.de];
 	FORGED_SENDER(0.00)[akpm@linux-foundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_NONE(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[14];
 	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[akpm@linux-foundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	MISSING_XM_UA(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	TAGGED_RCPT(0.00)[stable];
+	TO_DN_NONE(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	MIME_TRACE(0.00)[0:+];
+	ALIAS_RESOLVED(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linux-foundation.org:dkim,linux-foundation.org:email,linux-foundation.org:from_mime,smtp.kernel.org:mid,linux.dev:email]
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linux-foundation.org:dkim,linux-foundation.org:email,linux-foundation.org:from_mime,nvidia.com:email,smtp.kernel.org:mid,infradead.org:email,zte.com.cn:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 2A9FC6C20B3
+X-Rspamd-Queue-Id: 5A7326C20DA
 
 
 The patch titled
-     Subject: mm/hugetlb: init tails before init_migratetype
+     Subject: fs/proc: fix KPF_KSM reported for all anonymous pages
 has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
-     mm-hugetlb-init-tails-before-init_migratetype.patch
+     fs-proc-fix-kpf_ksm-reported-for-all-anonymous-pages.patch
 
 This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-hugetlb-init-tails-before-init_migratetype.patch
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/fs-proc-fix-kpf_ksm-reported-for-all-anonymous-pages.patch
 
 This patch will later appear in the mm-hotfixes-unstable branch at
     git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
@@ -113,119 +113,57 @@ branches at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 and is updated there most days
 
 ------------------------------------------------------
-From: Michal Clapinski <mclapinski@google.com>
-Subject: mm/hugetlb: init tails before init_migratetype
-Date: Mon, 22 Jun 2026 12:19:01 +0200
+From: Jinjiang Tu <tujinjiang@huawei.com>
+Subject: fs/proc: fix KPF_KSM reported for all anonymous pages
+Date: Mon, 22 Jun 2026 17:15:39 +0800
 
-Currently, if you enable HVO, DEFERRED_STRUCT_PAGE_INIT and VM_DEBUG the
-kernel will crash with the following stack trace
+Reading /proc/kpageflags for any anonymous page returns KPF_KSM set, even
+when KSM is not in use.  As a result, tools which use /proc/kpageflags
+(and hwpoison inject on a weird testing interface) misclassify all
+anonymous pages as KSM merged.
 
-get_pfnblock_bitmap_bitidx
-__set_pfnblock_flags_mask
-hugetlb_bootmem_init_migratetype
-prep_and_add_bootmem_folios
-gather_bootmem_prealloc_node
-gather_bootmem_prealloc_parallel
-padata_do_multithreaded
-gather_bootmem_prealloc
-hugetlb_init
+In stable_page_flags(), if the page is anonymous, then use (mapping &
+FOLIO_MAPPING_KSM) check to identify if the anonymous page is KSM page. 
+However, FOLIO_MAPPING_KSM is FOLIO_MAPPING_ANON | FOLIO_MAPPING_ANON_KSM,
+(mapping & FOLIO_MAPPING_KSM) check returns true for all anonymous pages.
 
-on this code
+To fix it, use FOLIO_MAPPING_ANON_KSM instead.
 
-VM_BUG_ON_PAGE(!zone_spans_pfn(page_zone(page), pfn), page);
-
-This code looks inside the struct page which will be uninitialized
-for hugetlb tail pages, which will cause a false positive.
-
-So let's initialize the tail pages before this happens.
-
-Link: https://lore.kernel.org/20260622101901.223961-1-mclapinski@google.com
-Fixes: 622026e87c40 ("mm/hugetlb: remove fake head pages")
-Signed-off-by: Michal Clapinski <mclapinski@google.com>
-Reviewed-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
-Tested-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
+Link: https://lore.kernel.org/20260622091539.836531-1-tujinjiang@huawei.com
+Fixes: dee3d0bef2b0 ("proc: rewrite stable_page_flags()")
+Signed-off-by: Jinjiang Tu <tujinjiang@huawei.com>
+Cc: Chengming Zhou <chengming.zhou@linux.dev>
 Cc: David Hildenbrand <david@kernel.org>
-Cc: Michal Clapinski <mclapinski@google.com>
-Cc: Muchun Song <muchun.song@linux.dev>
-Cc: Oscar Salvador <osalvador@suse.de>
-Cc: Vlastimil Babka <vbabka@kernel.org>
+Cc: Kefeng Wang <wangkefeng.wang@huawei.com>
+Cc: Luiz Capitulino <luizcap@redhat.com>
+Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
+Cc: Miaohe Lin <linmiaohe@huawei.com>
+Cc: Nanyong Sun <sunnanyong@huawei.com>
+Cc: Svetly Todorov <svetly.todorov@memverge.com>
+Cc: xu xin <xu.xin16@zte.com.cn>
+Cc: Zi Yan <ziy@nvidia.com>
 Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
 
- mm/hugetlb.c         |    1 +
- mm/hugetlb_vmemmap.c |   14 +++++++++-----
- mm/hugetlb_vmemmap.h |    5 +++++
- 3 files changed, 15 insertions(+), 5 deletions(-)
+ fs/proc/page.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/mm/hugetlb.c~mm-hugetlb-init-tails-before-init_migratetype
-+++ a/mm/hugetlb.c
-@@ -4127,6 +4127,7 @@ static int __init hugetlb_init(void)
+--- a/fs/proc/page.c~fs-proc-fix-kpf_ksm-reported-for-all-anonymous-pages
++++ a/fs/proc/page.c
+@@ -173,7 +173,7 @@ u64 stable_page_flags(const struct page
+ 		u |= 1 << KPF_MMAP;
+ 	if (is_anon) {
+ 		u |= 1 << KPF_ANON;
+-		if (mapping & FOLIO_MAPPING_KSM)
++		if (mapping & FOLIO_MAPPING_ANON_KSM)
+ 			u |= 1 << KPF_KSM;
  	}
  
- 	hugetlb_init_hstates();
-+	hugetlb_vmemmap_init_tails();
- 	gather_bootmem_prealloc();
- 	report_hugepages();
- 
---- a/mm/hugetlb_vmemmap.c~mm-hugetlb-init-tails-before-init_migratetype
-+++ a/mm/hugetlb_vmemmap.c
-@@ -867,14 +867,10 @@ static const struct ctl_table hugetlb_vm
- 	},
- };
- 
--static int __init hugetlb_vmemmap_init(void)
-+void __init hugetlb_vmemmap_init_tails(void)
- {
--	const struct hstate *h;
- 	struct zone *zone;
- 
--	/* HUGETLB_VMEMMAP_RESERVE_SIZE should cover all used struct pages */
--	BUILD_BUG_ON(__NR_USED_SUBPAGE > HUGETLB_VMEMMAP_RESERVE_PAGES);
--
- 	for_each_zone(zone) {
- 		for (int i = 0; i < NR_VMEMMAP_TAILS; i++) {
- 			struct page *tail, *p;
-@@ -890,6 +886,14 @@ static int __init hugetlb_vmemmap_init(v
- 				init_compound_tail(p + j, NULL, order, zone);
- 		}
- 	}
-+}
-+
-+static int __init hugetlb_vmemmap_init(void)
-+{
-+	const struct hstate *h;
-+
-+	/* HUGETLB_VMEMMAP_RESERVE_SIZE should cover all used struct pages */
-+	BUILD_BUG_ON(__NR_USED_SUBPAGE > HUGETLB_VMEMMAP_RESERVE_PAGES);
- 
- 	for_each_hstate(h) {
- 		if (hugetlb_vmemmap_optimizable(h)) {
---- a/mm/hugetlb_vmemmap.h~mm-hugetlb-init-tails-before-init_migratetype
-+++ a/mm/hugetlb_vmemmap.h
-@@ -20,6 +20,7 @@
- #define HUGETLB_VMEMMAP_RESERVE_PAGES	(HUGETLB_VMEMMAP_RESERVE_SIZE / sizeof(struct page))
- 
- #ifdef CONFIG_HUGETLB_PAGE_OPTIMIZE_VMEMMAP
-+void hugetlb_vmemmap_init_tails(void);
- int hugetlb_vmemmap_restore_folio(const struct hstate *h, struct folio *folio);
- long hugetlb_vmemmap_restore_folios(const struct hstate *h,
- 					struct list_head *folio_list,
-@@ -72,6 +73,10 @@ static inline void hugetlb_vmemmap_optim
- {
- }
- 
-+static inline void hugetlb_vmemmap_init_tails(void)
-+{
-+}
-+
- static inline void hugetlb_vmemmap_optimize_bootmem_folios(struct hstate *h,
- 						struct list_head *folio_list)
- {
 _
 
-Patches currently in -mm which might be from mclapinski@google.com are
+Patches currently in -mm which might be from tujinjiang@huawei.com are
 
-mm-hugetlb-init-tails-before-init_migratetype.patch
+fs-proc-fix-kpf_ksm-reported-for-all-anonymous-pages.patch
 
 
