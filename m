@@ -1,63 +1,64 @@
-Return-Path: <stable+bounces-268474-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-268426-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id BEwAC2cpPWoByQgAu9opvQ
-	(envelope-from <stable+bounces-268474-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 15:13:11 +0200
+	id ihXnH9coPWq4yAgAu9opvQ
+	(envelope-from <stable+bounces-268426-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 15:10:47 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7B9DC6C606D
-	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 15:13:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E2EB66C5F99
+	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 15:10:46 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=nOvROY7H;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-268474-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-268474-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=gkKv2670;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-268426-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-268426-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id F282430F5774
-	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 13:09:33 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 0FA703025D24
+	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 13:06:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CBB7728640B;
-	Thu, 25 Jun 2026 13:09:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 564F52D0C62;
+	Thu, 25 Jun 2026 13:06:54 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 417EF1E633C;
-	Thu, 25 Jun 2026 13:09:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB60E1E633C;
+	Thu, 25 Jun 2026 13:06:52 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782392973; cv=none; b=flX9vSzXNOY+jF/1hHYaJG9sCDlLYQnevG8qUGWxG0kk8VLq6PKXM3iibaKyCx7b3ZaOpSKOMrARnyOz2BwI3OcT3L2Yiy6yhm5+Vml64k0nuWl2hoIDHkXNPxgq51JpsopBbx0dZjv+Y6R0y19lX8xaZ5LEteYYg5JYUQpgtQM=
+	t=1782392814; cv=none; b=MgVV1rAHqosm0tmcfcMLw5YH/c69EguXnajzzb2oLZNWjrHu37dRXqzEsx0lB+lQLVPCZq4ZXp6e+cHLx7MARTZZPmLNeMneGg6el05uerLaOQvDfhFgd5U0npbj9ssLI+T7CtSxb9x8n+cDmLdf36dPpGO1371rcBreCyaAsZE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782392973; c=relaxed/simple;
-	bh=We0+lH7P+X4EG/Djo5FS3t+ukpF8sxG26Bwjv9F92IY=;
+	s=arc-20240116; t=1782392814; c=relaxed/simple;
+	bh=EywkRGPv3g1mobtP+Wo0FXpNOJuc88dAH25ucWmURB4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=swpufYpVPIZMjHchorx07o4ZEZstpM+e1v7ectKca+hT9qD4vWFZh+0xRKgII6HfotxJYmeKImjfGJnVZyimu61Jro+xuf3UXBY6u2tCgMLVCOYLdxj1NwiEmDVks0yZ7Va83Dm+p76hP6Hx1hWLr+iYpdUGqhVrudMqBRDrbdE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nOvROY7H; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 418CA1F000E9;
-	Thu, 25 Jun 2026 13:09:31 +0000 (UTC)
+	 MIME-Version; b=BFtGWfaoWWjlAnyiV1mO6emPhf3LVorrG8tXBigCOQskC5RYncHEYV1IcGhIcOVypTnQX7DrRfqhqqqkh1RugRyivHT0Gxy0Hnakf0UeTZb8Vnxj2ctv/iD6ykh7xDuolTQa/XBO1f0JiSngQJ7F8B0JPlCishiFl1JyCRHeMwQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gkKv2670; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 327B71F000E9;
+	Thu, 25 Jun 2026 13:06:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1782392971;
-	bh=N6dLL5kukwBegsVUyOKvwqYF2qrO9sNr7py+PrYrtSI=;
+	s=korg; t=1782392812;
+	bh=YunuM1Q6mg5hMkPo62k8WpzXP68NwZbTK4ZN2puGXbc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=nOvROY7HQI07SrI7+bdSFP3HtQyTyU+EEJdMTcAj+83hjLtEoVLq+8IEGj39JCpXy
-	 LzodH/Lwp0g2QfdCk2R2CH9iiCyP8NhTsb+UAs9MKX7epXSi8lo4el6QdjcuBR9R0q
-	 I0BxX5J8HnkyT3HkQdZi2DDsHGibACTStGnnOllU=
+	b=gkKv267064v0eDbPkWLHUluPkc/pGMBa2gHCYR9WNgYaNS8TxbIFZ13mRGxWGHvQ3
+	 DU959M5bDMGgPnnjS6O9Rocam31LwDAU666sy5U3cpbzJgkN1wEuqGGTRolpHSx4W2
+	 mtH+24QxnN7LZzPR13PnoiEiMdqR+ZtIZdRb6TEs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tj <tj.iam.tj@proton.me>,
-	Jeff Layton <jlayton@kernel.org>,
-	NeilBrown <neil@brown.name>,
-	Chuck Lever <chuck.lever@oracle.com>,
+	Michael Kelley <mhklinux@outlook.com>,
+	Krister Johansen <kjlx@templeofstupid.com>,
+	Matthew Ruffell <matthew.ruffell@canonical.com>,
+	Dexuan Cui <decui@microsoft.com>,
+	Wei Liu <wei.liu@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 03/49] lockd: fix TEST handling when not all permissions are available.
-Date: Thu, 25 Jun 2026 14:03:15 +0100
-Message-ID: <20260625125637.974589603@linuxfoundation.org>
+Subject: [PATCH 6.18 31/60] Drivers: hv: vmbus: Improve the logic of reserving fb_mmio on Gen2 VMs
+Date: Thu, 25 Jun 2026 14:03:16 +0100
+Message-ID: <20260625125650.116543886@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260625125637.527552689@linuxfoundation.org>
-References: <20260625125637.527552689@linuxfoundation.org>
+In-Reply-To: <20260625125645.554579168@linuxfoundation.org>
+References: <20260625125645.554579168@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,292 +72,189 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-268474-lists,stable=lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,outlook.com,templeofstupid.com,canonical.com,microsoft.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-268426-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:tj.iam.tj@proton.me,m:jlayton@kernel.org,m:neil@brown.name,m:chuck.lever@oracle.com,m:sashal@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:mhklinux@outlook.com,m:kjlx@templeofstupid.com,m:matthew.ruffell@canonical.com,m:decui@microsoft.com,m:wei.liu@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	TO_DN_SOME(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,oracle.com:email,vger.kernel.org:from_smtp,proton.me:email,brown.name:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,canonical.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp,templeofstupid.com:email,outlook.com:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 7B9DC6C606D
+X-Rspamd-Queue-Id: E2EB66C5F99
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: NeilBrown <neil@brown.name>
+From: Dexuan Cui <decui@microsoft.com>
 
-[ Upstream commit 0b474240327cebeff08ad429e8ed3cfc6c8ee816 ]
+[ Upstream commit 016a25e4b0df4d77e7c258edee4aaf982e4ee809 ]
 
-The F_GETLK fcntl can work with either read access or write access or
-both.  It can query F_RDLCK and F_WRLCK locks in either case.
+If vmbus_reserve_fb() in the kdump/kexec kernel fails to properly reserve
+the framebuffer MMIO range (which is below 4GB) due to a Gen2 VM's
+screen.lfb_base being zero [1], there is an MMIO conflict between the
+drivers hyperv-drm and pci-hyperv: when the driver pci-hyperv's
+hv_allocate_config_window() calls vmbus_allocate_mmio() to get an
+MMIO range, typically it gets a 32-bit MMIO range that overlaps with the
+framebuffer MMIO range, and later hv_pci_enter_d0() fails with an
+error message "PCI Pass-through VSP failed D0 Entry with status" since
+the host thinks that PCI devices must not use MMIO space that the
+host has assigned to the framebuffer.
 
-However lockd currently treats F_GETLK similar to F_SETLK in that read
-access is required to query an F_RDLCK lock and write access is required
-to query a F_WRLCK lock.
+This is especially an issue if pci-hyperv is built-in and hyperv-drm is
+built as a module. Consequently, the kdump/kexec kernel fails to detect
+PCI devices via pci-hyperv, and may fail to mount the root file system,
+which may reside in a NVMe disk. The issue described here has existed
+for SR-IOV VF NICs since day one of the pci-hyperv driver, and has been
+worked around on x64 when possible. With the recent introduction of
+ARM64 VMs that boot from NVMe, there is no workaround, so we need a
+formal fix.
 
-This is wrong and can cause problems - e.g.  when qemu accesses a
-read-only (e.g. iso) filesystem image over NFS (though why it queries
-if it can get a write lock - I don't know.  But it does, and this works
-with local filesystems).
+On Gen2 VMs, if the screen.lfb_base is 0 in the kdump/kexec kernel [1],
+fall back to the low MMIO base, which should be equal to the framebuffer
+MMIO base [2] (the statement is true according to my testing on x64
+Windows Server 2016, and on x64 and ARM64 Windows Server 2025 and on
+Azure. I checked with the Hyper-V team and they said the statement should
+continue to be true for Gen2 VMs). In the first kernel, screen.lfb_base
+is not 0; if the user specifies a very high resolution, it's not enough
+to only reserve 8MB: let's always reserve half of the space below 4GB,
+but cap the reservation to 128MB, which is the required framebuffer size
+of the highest resolution 7680*4320 supported by Hyper-V.
 
-So we need TEST requests to be handled differently.  To do this:
+While at it, fix the comparison "end > VTPM_BASE_ADDRESS" by changing
+the > to >=. Here the 'end' is an inclusive end (typically, it's
+0xFFFF_FFFF for the low MMIO range).
 
-- change nlm_do_fopen() to accept O_RDWR as a mode and in that case
-  succeed if either a O_RDONLY or O_WRONLY file can be opened.
-- change nlm_lookup_file() to accept a mode argument from caller,
-  instead of deducing base on lock time, and pass that on to nlm_do_fopen()
-- change nlm4svc_retrieve_args() and nlmsvc_retrieve_args() to detect
-  TEST requests and pass O_RDWR as a mode to nlm_lookup_file, passing
-  the same mode as before for other requests.  Also set
-   lock->fl.c.flc_file to whichever file is available for TEST requests.
-- change nlmsvc_testlock() to also not calculate the mode, but to use
-  whatever was stored in lock->fl.c.flc_file.
+Note: vmbus_reserve_fb() now also reserves an MMIO range at the beginning
+of the low MMIO range on CVMs, which have no framebuffers (the
+'screen.lfb_base' in vmbus_reserve_fb() is 0 for CVMs), just in case the
+host might treat the beginning of the low MMIO range specially [3]. BTW,
+the OpenHCL kernel is not affected by the change, because that kernel
+boots with DeviceTree rather than ACPI (so vmbus_reserve_fb() won't run
+there), and there is no framebuffer device for that kernel.
 
-This behaviour of lockd - requesting O_WRONLY access to TEST for
-exclusive locks - has been present at least since git history began.
-However it was hidden until recently because knfsd ignored the access
-requested by lockd and required only READ access for all locking
-requests (unless the underlying filesystem provided an f_op->open
-function which checked access permissions).
+Note: normally Gen1 VMs don't have the MMIO conflict issue because the
+framebuffer MMIO range (which is hardcoded to base=4GB-128MB and
+size=64MB for Gen1 VMs by the host) is always reported via the legacy PCI
+graphics device's BAR, so the kdump/kexec kernel can reserve the 64MB
+MMIO range; however, if the VM is configured to use a very high resolution
+and the required framebuffer size exceeds 64MB (AFAIK, in practice, this
+isn't a typical configuration by users), the hyperv-drm driver may need to
+allocate an MMIO range above 4GB and change the framebuffer MMIO location
+to the allocated MMIO range -- in this case, there can still be issues [4]
+which can't be easily fixed: any possible affected Gen1 users would have
+to use a resolution whose framebuffer size is <= 64MB, or switch to Gen2
+VMs.
 
-The commit mentioned in Fixes: below changed nfsd_permission() to NOT
-override the access request for LOCK requests and this exposed the bug
-that we are now fixing.
+[1] https://lore.kernel.org/all/SA1PR21MB692176C1BC53BFC9EAE5CF8EBF51A@SA1PR21MB6921.namprd21.prod.outlook.com/
+[2] https://lore.kernel.org/all/SA1PR21MB69218F955B62DFF62E3E88D2BF222@SA1PR21MB6921.namprd21.prod.outlook.com/
+[3] https://lore.kernel.org/all/SN6PR02MB415726B17D5A6027CD1717E8D4342@SN6PR02MB4157.namprd02.prod.outlook.com/
+[4] https://lore.kernel.org/all/SA1PR21MB69213486F821CA5A2C793C81BF342@SA1PR21MB6921.namprd21.prod.outlook.com/
 
-Note that there is another issue that this patch does not address.
-The flock(.., LOCK_EX) call is permitted on a read-only file descriptor.
-Linux NFS maps this to NLM locking as whole-file byte-range locks.
-nfsd will see this as though it were fcntl( F_SETLK (F_WRLCK)) and will
-now require write access, which it might not be able to get.
-It is not clear if this is a problem in practice, or what the best
-solution might be.  So no attempt is made to address it.
-
-Reported-by: Tj <tj.iam.tj@proton.me>
-Link: https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=1128861
-Fixes: 4cc9b9f2bf4d ("nfsd: refine and rename NFSD_MAY_LOCK")
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
-Signed-off-by: NeilBrown <neil@brown.name>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Fixes: 4daace0d8ce8 ("PCI: hv: Add paravirtual PCI front-end for Microsoft Hyper-V VMs")
+CC: stable@vger.kernel.org
+Reviewed-by: Michael Kelley <mhklinux@outlook.com>
+Tested-by: Krister Johansen <kjlx@templeofstupid.com>
+Tested-by: Matthew Ruffell <matthew.ruffell@canonical.com>
+Signed-off-by: Dexuan Cui <decui@microsoft.com>
+Signed-off-by: Wei Liu <wei.liu@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/lockd/svc4proc.c         | 13 ++++++++++---
- fs/lockd/svclock.c          |  4 +---
- fs/lockd/svcproc.c          | 15 ++++++++++++---
- fs/lockd/svcsubs.c          | 35 +++++++++++++++++++++++++----------
- include/linux/lockd/lockd.h |  2 +-
- 5 files changed, 49 insertions(+), 20 deletions(-)
+ drivers/hv/vmbus_drv.c |   29 ++++++++++++++++++++++++++---
+ 1 file changed, 26 insertions(+), 3 deletions(-)
 
-diff --git a/fs/lockd/svc4proc.c b/fs/lockd/svc4proc.c
-index 4b6f18d977343d..75e020a8bfd072 100644
---- a/fs/lockd/svc4proc.c
-+++ b/fs/lockd/svc4proc.c
-@@ -26,6 +26,8 @@ nlm4svc_retrieve_args(struct svc_rqst *rqstp, struct nlm_args *argp,
- 	struct nlm_host		*host = NULL;
- 	struct nlm_file		*file = NULL;
- 	struct nlm_lock		*lock = &argp->lock;
-+	bool			is_test = (rqstp->rq_proc == NLMPROC_TEST ||
-+					   rqstp->rq_proc == NLMPROC_TEST_MSG);
- 	__be32			error = 0;
+--- a/drivers/hv/vmbus_drv.c
++++ b/drivers/hv/vmbus_drv.c
+@@ -2291,8 +2291,8 @@ static acpi_status vmbus_walk_resources(
+ 		return AE_NO_MEMORY;
  
- 	/* nfsd callbacks must have been installed for this procedure */
-@@ -46,15 +48,20 @@ nlm4svc_retrieve_args(struct svc_rqst *rqstp, struct nlm_args *argp,
- 	if (filp != NULL) {
- 		int mode = lock_to_openmode(&lock->fl);
+ 	/* If this range overlaps the virtual TPM, truncate it. */
+-	if (end > VTPM_BASE_ADDRESS && start < VTPM_BASE_ADDRESS)
+-		end = VTPM_BASE_ADDRESS;
++	if (end >= VTPM_BASE_ADDRESS && start < VTPM_BASE_ADDRESS)
++		end = VTPM_BASE_ADDRESS - 1;
  
-+		if (is_test)
-+			mode = O_RDWR;
-+
- 		lock->fl.c.flc_flags = FL_POSIX;
- 
--		error = nlm_lookup_file(rqstp, &file, lock);
-+		error = nlm_lookup_file(rqstp, &file, lock, mode);
- 		if (error)
- 			goto no_locks;
- 		*filp = file;
--
- 		/* Set up the missing parts of the file_lock structure */
--		lock->fl.c.flc_file = file->f_file[mode];
-+		if (is_test)
-+			lock->fl.c.flc_file = nlmsvc_file_file(file);
-+		else
-+			lock->fl.c.flc_file = file->f_file[mode];
- 		lock->fl.c.flc_pid = current->tgid;
- 		lock->fl.fl_start = (loff_t)lock->lock_start;
- 		lock->fl.fl_end = lock->lock_len ?
-diff --git a/fs/lockd/svclock.c b/fs/lockd/svclock.c
-index abc65dc79f8543..382bf0d93ed1c1 100644
---- a/fs/lockd/svclock.c
-+++ b/fs/lockd/svclock.c
-@@ -619,7 +619,6 @@ nlmsvc_testlock(struct svc_rqst *rqstp, struct nlm_file *file,
- 		struct nlm_lock *conflock)
+ 	new_res->name = "hyperv mmio";
+ 	new_res->flags = IORESOURCE_MEM;
+@@ -2359,6 +2359,7 @@ static void vmbus_mmio_remove(void)
+ static void __maybe_unused vmbus_reserve_fb(void)
  {
- 	int			error;
--	int			mode;
- 	__be32			ret;
+ 	resource_size_t start = 0, size;
++	resource_size_t low_mmio_base;
+ 	struct pci_dev *pdev;
  
- 	dprintk("lockd: nlmsvc_testlock(%s/%ld, ty=%d, %Ld-%Ld)\n",
-@@ -637,14 +636,13 @@ nlmsvc_testlock(struct svc_rqst *rqstp, struct nlm_file *file,
- 		goto out;
+ 	if (efi_enabled(EFI_BOOT)) {
+@@ -2366,6 +2367,24 @@ static void __maybe_unused vmbus_reserve
+ 		if (IS_ENABLED(CONFIG_SYSFB)) {
+ 			start = screen_info.lfb_base;
+ 			size = max_t(__u32, screen_info.lfb_size, 0x800000);
++
++			low_mmio_base = hyperv_mmio->start;
++			if (!low_mmio_base || upper_32_bits(low_mmio_base) ||
++			    (start && start < low_mmio_base)) {
++				pr_warn("Unexpected low mmio base %pa\n", &low_mmio_base);
++			} else {
++				/*
++				 * If the kdump/kexec or CVM kernel's lfb_base
++				 * is 0, fall back to the low mmio base.
++				 */
++				if (!start)
++					start = low_mmio_base;
++				/*
++				 * Reserve half of the space below 4GB for high
++				 * resolutions, but cap the reservation to 128MB.
++				 */
++				size = min((SZ_4G - start) / 2, SZ_128M);
++			}
+ 		}
+ 	} else {
+ 		/* Gen1 VM: get FB base from PCI */
+@@ -2386,8 +2405,10 @@ static void __maybe_unused vmbus_reserve
+ 		pci_dev_put(pdev);
  	}
  
--	mode = lock_to_openmode(&lock->fl);
- 	locks_init_lock(&conflock->fl);
- 	/* vfs_test_lock only uses start, end, and owner, but tests flc_file */
- 	conflock->fl.c.flc_file = lock->fl.c.flc_file;
- 	conflock->fl.fl_start = lock->fl.fl_start;
- 	conflock->fl.fl_end = lock->fl.fl_end;
- 	conflock->fl.c.flc_owner = lock->fl.c.flc_owner;
--	error = vfs_test_lock(file->f_file[mode], &conflock->fl);
-+	error = vfs_test_lock(lock->fl.c.flc_file, &conflock->fl);
- 	if (error) {
- 		ret = nlm_lck_denied_nolocks;
- 		goto out;
-diff --git a/fs/lockd/svcproc.c b/fs/lockd/svcproc.c
-index 5817ef272332d9..d98e8d684376b7 100644
---- a/fs/lockd/svcproc.c
-+++ b/fs/lockd/svcproc.c
-@@ -55,6 +55,8 @@ nlmsvc_retrieve_args(struct svc_rqst *rqstp, struct nlm_args *argp,
- 	struct nlm_host		*host = NULL;
- 	struct nlm_file		*file = NULL;
- 	struct nlm_lock		*lock = &argp->lock;
-+	bool			is_test = (rqstp->rq_proc == NLMPROC_TEST ||
-+					   rqstp->rq_proc == NLMPROC_TEST_MSG);
- 	int			mode;
- 	__be32			error = 0;
- 
-@@ -70,15 +72,22 @@ nlmsvc_retrieve_args(struct svc_rqst *rqstp, struct nlm_args *argp,
- 
- 	/* Obtain file pointer. Not used by FREE_ALL call. */
- 	if (filp != NULL) {
--		error = cast_status(nlm_lookup_file(rqstp, &file, lock));
-+		mode = lock_to_openmode(&lock->fl);
-+
-+		if (is_test)
-+			mode = O_RDWR;
-+
-+		error = cast_status(nlm_lookup_file(rqstp, &file, lock, mode));
- 		if (error != 0)
- 			goto no_locks;
- 		*filp = file;
- 
- 		/* Set up the missing parts of the file_lock structure */
--		mode = lock_to_openmode(&lock->fl);
- 		lock->fl.c.flc_flags = FL_POSIX;
--		lock->fl.c.flc_file  = file->f_file[mode];
-+		if (is_test)
-+			lock->fl.c.flc_file = nlmsvc_file_file(file);
-+		else
-+			lock->fl.c.flc_file = file->f_file[mode];
- 		lock->fl.c.flc_pid = current->tgid;
- 		lock->fl.fl_lmops = &nlmsvc_lock_operations;
- 		nlmsvc_locks_init_private(&lock->fl, host, (pid_t)lock->svid);
-diff --git a/fs/lockd/svcsubs.c b/fs/lockd/svcsubs.c
-index dd0214dcb69503..b83e6ecd5be34f 100644
---- a/fs/lockd/svcsubs.c
-+++ b/fs/lockd/svcsubs.c
-@@ -82,18 +82,35 @@ int lock_to_openmode(struct file_lock *lock)
-  *
-  * We have to make sure we have the right credential to open
-  * the file.
-+ *
-+ * mode can be O_RDONLY(0), O_WRONLY(1) or O_RDWR(2). The latter
-+ * means success can be achieved with EITHER O_RDONLY or O_WRONLY.
-+ * It does NOT mean both read and write are required.
-  */
- static __be32 nlm_do_fopen(struct svc_rqst *rqstp,
- 			   struct nlm_file *file, int mode)
- {
--	struct file **fp = &file->f_file[mode];
--	__be32	nfserr;
-+	__be32 nfserr = nlm_lck_denied_nolocks;
-+	__be32 deferred = 0;
-+	struct file **fp;
-+	int m;
- 
--	if (*fp)
--		return 0;
--	nfserr = nlmsvc_ops->fopen(rqstp, &file->f_handle, fp, mode);
--	if (nfserr)
--		dprintk("lockd: open failed (error %d)\n", nfserr);
-+	for (m = O_RDONLY ; m <= O_WRONLY ; m++) {
-+		if (mode != O_RDWR && mode != m)
-+			continue;
-+
-+		fp = &file->f_file[m];
-+		if (*fp)
-+			return 0;
-+		nfserr = nlmsvc_ops->fopen(rqstp, &file->f_handle, fp, m);
-+		if (!nfserr)
-+			return 0;
-+		if (nfserr == nlm_drop_reply)
-+			deferred = nfserr;
+-	if (!start)
++	if (!start) {
++		pr_warn("Unexpected framebuffer mmio base of zero\n");
+ 		return;
 +	}
-+	if (deferred)
-+		return deferred;
-+	dprintk("lockd: open failed (error %d)\n", ntohl(nfserr));
- 	return nfserr;
+ 
+ 	/*
+ 	 * Make a claim for the frame buffer in the resource tree under the
+@@ -2397,6 +2418,8 @@ static void __maybe_unused vmbus_reserve
+ 	 */
+ 	for (; !fb_mmio && (size >= 0x100000); size >>= 1)
+ 		fb_mmio = __request_region(hyperv_mmio, start, size, fb_mmio_name, 0);
++
++	pr_info("hv_mmio=%pR,%pR fb=%pR\n", hyperv_mmio, hyperv_mmio->sibling, fb_mmio);
  }
  
-@@ -103,17 +120,15 @@ static __be32 nlm_do_fopen(struct svc_rqst *rqstp,
-  */
- __be32
- nlm_lookup_file(struct svc_rqst *rqstp, struct nlm_file **result,
--					struct nlm_lock *lock)
-+		struct nlm_lock *lock, int mode)
- {
- 	struct nlm_file	*file;
- 	unsigned int	hash;
- 	__be32		nfserr;
--	int		mode;
- 
- 	nlm_debug_print_fh("nlm_lookup_file", &lock->fh);
- 
- 	hash = file_hash(&lock->fh);
--	mode = lock_to_openmode(&lock->fl);
- 
- 	/* Lock file table */
- 	mutex_lock(&nlm_file_mutex);
-diff --git a/include/linux/lockd/lockd.h b/include/linux/lockd/lockd.h
-index 330e38776bb20d..fe5cdd4d66f484 100644
---- a/include/linux/lockd/lockd.h
-+++ b/include/linux/lockd/lockd.h
-@@ -294,7 +294,7 @@ void		  nlmsvc_locks_init_private(struct file_lock *, struct nlm_host *, pid_t);
-  * File handling for the server personality
-  */
- __be32		  nlm_lookup_file(struct svc_rqst *, struct nlm_file **,
--					struct nlm_lock *);
-+				  struct nlm_lock *, int);
- void		  nlm_release_file(struct nlm_file *);
- void		  nlmsvc_put_lockowner(struct nlm_lockowner *);
- void		  nlmsvc_release_lockowner(struct nlm_lock *);
--- 
-2.53.0
-
+ /**
 
 
 
