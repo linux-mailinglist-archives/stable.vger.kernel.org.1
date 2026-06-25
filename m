@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-268500-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-268441-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id GbEcBeQoPWq/yAgAu9opvQ
-	(envelope-from <stable+bounces-268500-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 15:11:00 +0200
+	id pMfMMygoPWpeyAgAu9opvQ
+	(envelope-from <stable+bounces-268441-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 15:07:52 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D23FA6C5FB2
-	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 15:10:59 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 36F716C5EB9
+	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 15:07:52 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=0SCQN9t5;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-268500-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-268500-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=hdoRJfhW;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-268441-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-268441-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 2AFAE301AC36
-	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 13:10:59 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 1B6CB302DF4F
+	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 13:07:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AAC1B2874F5;
-	Thu, 25 Jun 2026 13:10:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6EA5B2DCC13;
+	Thu, 25 Jun 2026 13:07:44 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7699E1E633C;
-	Thu, 25 Jun 2026 13:10:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A5802571B8;
+	Thu, 25 Jun 2026 13:07:43 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782393055; cv=none; b=QvHTWqk18I8mgOfnXvCEiicqreFvRAwSUi3AlHuWA2svEj1ZLq2oKnuWweWp3yokPJgzwV3dRDC5S+ejJXa5xb+CSpKe7S6U4TTLNECkg/dtBmxOl2A5MggD6uCh5nfJqnK5oETOfvMMr82qmJJ+ParpcwofWDJXrkGu+xaqVG8=
+	t=1782392864; cv=none; b=lEltYGCalZmlIC3zhn32R77/2UeT4paL+CYGO1+wPp4E4RxNOBHe7ZmLh++8lEY/0VHW6EWsrOess8QXzaQKL5QGtgU9VLWOIh+TvoO9hmm6xTleicVKNTe2quq42tKxxSiVqigJHF2Qesc8hEh2LpVmB4NFHPzEdMZnDTRwLIQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782393055; c=relaxed/simple;
-	bh=xIgpn5BwZWzEwN2wO4NySuDNB850CcSmTvTttSlCnok=;
+	s=arc-20240116; t=1782392864; c=relaxed/simple;
+	bh=JQrBHm9DmUbHnJ6S9XHm8Gb3V6/tVYrYxOG4DdqQPoA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GtkLRAWdjthhTUFJc8O1Wc7wT8uQk/j854iIm1rM0N3tht7Bhzgt/L2zjrBP7RWYmS3B05gcbDf8yvCuy93Qr82Q80PymKjGiXOd7y3kyeQO3+pF59I1P8aB62ayKVWblo+S+hPb6DyH1hUGfOr3iBl4XayulkICzs65MG1EyJA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0SCQN9t5; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AFE241F000E9;
-	Thu, 25 Jun 2026 13:10:53 +0000 (UTC)
+	 MIME-Version; b=N8KEJgM2PpNRGbhxATyj4tUedUS2egHYlb6LkVKNMM3g8LFwVopce2Un1kfHEYZCUWjTEn+FUYUnQNRFPIEQlEkfT84zTWaIwj3ZkaAkf7+Mt3I8UDjIzR5rDxeVn7Hkw7O/mzgnrJ6NKLLKDm7CJcnGLV1LwMBTv32VqGJPfFU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hdoRJfhW; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F43B1F000E9;
+	Thu, 25 Jun 2026 13:07:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1782393054;
-	bh=Gs8Mz711/53sL/0+P5fIwatMFiR0NLnAbF07X5384Qg=;
+	s=korg; t=1782392863;
+	bh=Ma5Me+6uM8a8JiqjgmCscttCy58jyPlDPliqZ7PwDmI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=0SCQN9t5yWTRqqQf5NJMvYPbO3vyc8IiAa+JtH118zRG9RYpwDYdjdMz+O0ikkf7z
-	 6VumSbhd/tATDBZZT4X53XH0LtBKWZDnB+CM8IyprWfUyjsv7i52PJuEIvyQ/IcsjX
-	 gMXLKS7BP8WAbZyB+G0SE3sBYxUJ1XV/2ebdPebQ=
+	b=hdoRJfhWc/4bYe8C+XsQTLeTozDjEgMrbQ89znzCho2fz02lWUNqaAztbZoQn5hUl
+	 Oq8g+TTZ/0BRjc7HMhqMg5CSv4tjSq9Mh+USe5OV5fdgSWhXHnS4HTo47z1cJAGvK3
+	 toCaCayvNqy8/8cF59FYXJEuz+TXaqjFnmwdOAXo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bernard Pidoux <bernard.f6bvp@gmail.com>
-Subject: [PATCH 7.0 18/49] rose: fix race between loopback timer and module removal
-Date: Thu, 25 Jun 2026 14:03:30 +0100
-Message-ID: <20260625125640.047807219@linuxfoundation.org>
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Subject: [PATCH 6.18 46/60] Input: rmi4 - fix register descriptor address calculation
+Date: Thu, 25 Jun 2026 14:03:31 +0100
+Message-ID: <20260625125652.430306459@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260625125637.527552689@linuxfoundation.org>
-References: <20260625125637.527552689@linuxfoundation.org>
+In-Reply-To: <20260625125645.554579168@linuxfoundation.org>
+References: <20260625125645.554579168@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,20 +71,20 @@ X-Spamd-Result: default: False [-0.16 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORWARDED(0.00)[lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-268500-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-268441-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:bernard.f6bvp@gmail.com,m:bernardf6bvp@gmail.com,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:dmitry.torokhov@gmail.com,m:dmitrytorokhov@gmail.com,s:lists@lfdr.de];
 	RCPT_COUNT_THREE(0.00)[4];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
@@ -94,121 +94,53 @@ X-Spamd-Result: default: False [-0.16 / 15.00];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,vger.kernel.org:from_smtp,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: D23FA6C5FB2
+X-Rspamd-Queue-Id: 36F716C5EB9
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bernard Pidoux <bernard.f6bvp@gmail.com>
+From: Dmitry Torokhov <dmitry.torokhov@gmail.com>
 
-commit 47dd6ec1a77d77895afb00aa2e68373a48289108 upstream.
+commit a98518e72439fd42cbfe641c2896543cb088e3d1 upstream.
 
-rose_loopback_clear() called timer_delete() which returns immediately
-without waiting for any running callback to complete.  If the timer
-fired concurrently with module removal, rose_loopback_timer() could
-re-arm the timer after timer_delete() returned and then access
-rose_loopback_neigh after it was freed.
+When reading the register descriptor, the base address is incremented by
+1 to read the presence register block. However, after reading the
+presence register block, the address is incorrectly incremented by only
+1 byte (++addr) instead of the actual size of the presence block
+(size_presence_reg). This causes the subsequent structure block read to
+read from the wrong memory location if the presence block is larger than
+1 byte.
 
-Two complementary changes close the race:
+Fix this by advancing the address by size_presence_reg.
 
-1. Add a loopback_stopping atomic flag.  rose_loopback_timer() checks
-   it at entry (before acquiring a reference) and again inside the
-   loop; when set it drains the queue and exits without re-arming the
-   timer.
-
-2. Switch rose_loopback_clear() to timer_delete_sync() so it blocks
-   until any in-flight callback has returned before freeing resources.
-
-The smp_mb() between setting the flag and calling timer_delete_sync()
-ensures the flag is visible to any callback that is about to run.
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Signed-off-by: Bernard Pidoux <bernard.f6bvp@gmail.com>
+Fixes: 2b6a321da9a2 ("Input: synaptics-rmi4 - add support for Synaptics RMI4 devices")
+Cc: stable@vger.kernel.org
+Assisted-by: Gemini:gemini-3.1-pro
+Link: https://patch.msgid.link/20260505045952.1570713-1-dmitry.torokhov@gmail.com
+Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/rose/rose_loopback.c |   31 ++++++++++++++++++++++++-------
- 1 file changed, 24 insertions(+), 7 deletions(-)
+ drivers/input/rmi4/rmi_driver.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/net/rose/rose_loopback.c
-+++ b/net/rose/rose_loopback.c
-@@ -12,13 +12,15 @@
- #include <net/rose.h>
- #include <linux/init.h>
+--- a/drivers/input/rmi4/rmi_driver.c
++++ b/drivers/input/rmi4/rmi_driver.c
+@@ -594,7 +594,7 @@ int rmi_read_register_desc(struct rmi_de
+ 	ret = rmi_read_block(d, addr, buf, size_presence_reg);
+ 	if (ret)
+ 		return ret;
+-	++addr;
++	addr += size_presence_reg;
  
--static struct sk_buff_head loopback_queue;
- #define ROSE_LOOPBACK_LIMIT 1000
--static struct timer_list loopback_timer;
- 
-+static struct timer_list loopback_timer;
-+static struct sk_buff_head loopback_queue;
- static void rose_set_loopback_timer(void);
- static void rose_loopback_timer(struct timer_list *unused);
- 
-+static atomic_t loopback_stopping = ATOMIC_INIT(0);
-+
- void rose_loopback_init(void)
- {
- 	skb_queue_head_init(&loopback_queue);
-@@ -66,6 +68,9 @@ static void rose_loopback_timer(struct t
- 	unsigned int lci_i, lci_o;
- 	int count;
- 
-+	if (atomic_read(&loopback_stopping))
-+		return;
-+
- 	if (rose_loopback_neigh)
- 		rose_neigh_hold(rose_loopback_neigh);
- 	else
-@@ -75,6 +80,13 @@ static void rose_loopback_timer(struct t
- 		skb = skb_dequeue(&loopback_queue);
- 		if (!skb)
- 			goto out;
-+
-+		if (atomic_read(&loopback_stopping)) {
-+			kfree_skb(skb);
-+			skb_queue_purge(&loopback_queue);
-+			goto out;
-+		}
-+
- 		if (skb->len < ROSE_MIN_LEN) {
- 			kfree_skb(skb);
- 			continue;
-@@ -118,7 +130,7 @@ static void rose_loopback_timer(struct t
- out:
- 	rose_neigh_put(rose_loopback_neigh);
- 
--	if (!skb_queue_empty(&loopback_queue))
-+	if (!atomic_read(&loopback_stopping) && !skb_queue_empty(&loopback_queue))
- 		mod_timer(&loopback_timer, jiffies + 1);
- }
- 
-@@ -126,10 +138,15 @@ void __exit rose_loopback_clear(void)
- {
- 	struct sk_buff *skb;
- 
--	timer_delete(&loopback_timer);
-+	atomic_set(&loopback_stopping, 1);
-+	/* Pairs with atomic_read() in rose_loopback_timer(): ensure the
-+	 * stopping flag is visible before we cancel, so a concurrent
-+	 * callback aborts its loop early rather than re-arming the timer.
-+	 */
-+	smp_mb();
-+
-+	timer_delete_sync(&loopback_timer);
- 
--	while ((skb = skb_dequeue(&loopback_queue)) != NULL) {
--		skb->sk = NULL;
-+	while ((skb = skb_dequeue(&loopback_queue)) != NULL)
- 		kfree_skb(skb);
--	}
- }
+ 	if (buf[0] == 0) {
+ 		presense_offset = 3;
 
 
 
