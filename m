@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-268483-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-268442-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id cmLbN60oPWqjyAgAu9opvQ
-	(envelope-from <stable+bounces-268483-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 15:10:05 +0200
+	id CSQ8OycoPWpdyAgAu9opvQ
+	(envelope-from <stable+bounces-268442-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 15:07:51 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C67C16C5F78
-	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 15:10:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 925DB6C5EB6
+	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 15:07:51 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="BlhWUY/2";
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-268483-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-268483-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=Oik6CFzU;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-268442-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-268442-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 41182300D752
-	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 13:10:05 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 0E00830067AA
+	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 13:07:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D7F3628751B;
-	Thu, 25 Jun 2026 13:10:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2C202D94AF;
+	Thu, 25 Jun 2026 13:07:47 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8C5529B77C;
-	Thu, 25 Jun 2026 13:10:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9385C2571B8;
+	Thu, 25 Jun 2026 13:07:46 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782393002; cv=none; b=oKUYQ7Px7j+gBScyoHbBZisUanIlz5rOEEKbIFgvFCQRAc1Q3vH2oKfcpIgIexIx091IrlvyjZC2yZ43DA5obvuBKj8OX6pbqQ8zu1RzrKJMNGs4TBWH+NClr5OqIdx9A/D4DDqJHuimyIlcBIxWadAOJOKpcaSB4E6Y/HX5vuM=
+	t=1782392867; cv=none; b=YPJ/PzQFInzt/aN904rwGipe1yM45gHngPFi5glptxMfh5yL8qQajthKoUGHzizy8Jd8VzRHtqCfIUKFnIdo5oPwF4sTG04P3N/JFj9ehVSA3dS2SbvuiXC9qsYnkd4CJhQL+AcP6meMwRg20YDWxpIBjeCJ9Svc2etx4UHVY8I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782393002; c=relaxed/simple;
-	bh=98ROPIKmV4zfIjaDob6iDw4xSzs5GCaTYqKoLvG5j4I=;
+	s=arc-20240116; t=1782392867; c=relaxed/simple;
+	bh=AIUeuZ/wjYAAtCCwaDYfNYBZ8xOR/WsL52F0zRRvVf8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Jzl5BeHQKKzOPtdkehTOzHkPM0lgccFtFM/8dvwJzayJnrPALL1r59gYUUmyEx+k4SOnPqT0svMkpxWTJfwWwo9H3IU4ARe2SMyo1BjrOPyt87+5LPlPAR2MTMjo8oY4vAdL5m4m82dMHR9zQR16mSH2p9mouT4tokSZFCOpaG8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BlhWUY/2; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ECAA91F000E9;
-	Thu, 25 Jun 2026 13:10:00 +0000 (UTC)
+	 MIME-Version; b=EwRuoQ35zI1qvInBvE0BA3frl83+ownfTXWKaK4WM1BYHgogEySUZjUni6+5YkfzYbuDoqoqy27hV0HX7+w5vPBqOVlzOgAIInOK5aWgYL/zBby7H1tdQ5flSkJFcSuC1b/P+f2Jfi4a3ArDheFFXyD8OzoD9Xx569lz4zwCiZs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Oik6CFzU; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D88DD1F000E9;
+	Thu, 25 Jun 2026 13:07:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1782393001;
-	bh=ELu1XqzLLtw0ftMbKdrxxNGBOOFNd6jDIliOebKBKZo=;
+	s=korg; t=1782392866;
+	bh=8WJ7k3IuIhXMP/EqyB7CmNGwVbuOQRXe25R0oJw7AR8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=BlhWUY/2j1Ktupx1hnG+QZdTJMS7HXyAKcCHlxRTLm6pCSItPHPFw0pVjd4QLR+Ad
-	 BNA3sL6dAqb7SY2202eic/Rk2eBFsYQXSqkaAZuNiF0XohMdvQFd0UGvrFx9F/MZZn
-	 CbihI4ucNlhBnFcu9MgLwMbqmxYJvgm4/Ag+PXv8=
+	b=Oik6CFzU5aLjL7ENV6DGvVkYJYQ6rnKAQpxIYdOgAkllNXiSVw4umjkWoL5YUtsoV
+	 Zxw9CFHxd9vSkaNbXa/cKJx4R6xTq/bhpCnrOjOBUqmrYWE3YUM1TIghNhXIwTqk34
+	 NLcD5/FVPjAN8NWdneG34aMBBBuW2DxzNfjeOlSw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bernard Pidoux <bernard.f6bvp@gmail.com>
-Subject: [PATCH 7.0 19/49] rose: clear neighbour pointer after rose_neigh_put() in state machines
-Date: Thu, 25 Jun 2026 14:03:31 +0100
-Message-ID: <20260625125640.175730670@linuxfoundation.org>
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Subject: [PATCH 6.18 47/60] Input: rmi4 - refactor register descriptor parsing
+Date: Thu, 25 Jun 2026 14:03:32 +0100
+Message-ID: <20260625125652.585033247@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260625125637.527552689@linuxfoundation.org>
-References: <20260625125637.527552689@linuxfoundation.org>
+In-Reply-To: <20260625125645.554579168@linuxfoundation.org>
+References: <20260625125645.554579168@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -78,13 +78,13 @@ X-Spamd-Result: default: False [-0.16 / 15.00];
 	FORWARDED(0.00)[lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-268483-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-268442-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:bernard.f6bvp@gmail.com,m:bernardf6bvp@gmail.com,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:dmitry.torokhov@gmail.com,m:dmitrytorokhov@gmail.com,s:lists@lfdr.de];
 	RCPT_COUNT_THREE(0.00)[4];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
@@ -98,82 +98,233 @@ X-Spamd-Result: default: False [-0.16 / 15.00];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,vger.kernel.org:from_smtp,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: C67C16C5F78
+X-Rspamd-Queue-Id: 925DB6C5EB6
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bernard Pidoux <bernard.f6bvp@gmail.com>
+From: Dmitry Torokhov <dmitry.torokhov@gmail.com>
 
-commit e8eb0c6faa8849ba7769516c1a8c84d9f612acf6 upstream.
+commit 0adb483fbf2dc43c875cd7550a58b41e92efc52d upstream.
 
-After calling rose_neigh_put() in rose_state1_machine() through
-rose_state5_machine(), rose->neighbour was left pointing at the
-potentially freed neighbour structure.  A subsequent timer expiry or
-concurrent teardown path could dereference the stale pointer, causing
-a use-after-free.
+Factor out parsing a register descriptor item from
+rmi_read_register_desc() and ensure there are no out-of-bounds accesses.
 
-Set rose->neighbour to NULL immediately after each rose_neigh_put()
-call in the state machine functions.
+Use get_unaligned_le16() and get_unaligned_le32() for reading multi-byte
+values.
 
-Fixes: d860d1faa6b2 ("net: rose: convert 'use' field to refcount_t")
-Signed-off-by: Bernard Pidoux <bernard.f6bvp@gmail.com>
+Reported-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 2b6a321da9a2 ("Input: synaptics-rmi4 - add support for Synaptics RMI4 devices")
+Cc: stable@vger.kernel.org
+Assisted-by: Gemini:gemini-3.1-pro
+Link: https://patch.msgid.link/20260505045952.1570713-2-dmitry.torokhov@gmail.com
+Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/rose/rose_in.c |    6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/input/rmi4/rmi_driver.c |  124 ++++++++++++++++++++++++----------------
+ 1 file changed, 76 insertions(+), 48 deletions(-)
 
---- a/net/rose/rose_in.c
-+++ b/net/rose/rose_in.c
-@@ -57,6 +57,7 @@ static int rose_state1_machine(struct so
- 		rose_write_internal(sk, ROSE_CLEAR_CONFIRMATION);
- 		rose_disconnect(sk, ECONNREFUSED, skb->data[3], skb->data[4]);
- 		rose_neigh_put(rose->neighbour);
-+		rose->neighbour = NULL;
- 		break;
+--- a/drivers/input/rmi4/rmi_driver.c
++++ b/drivers/input/rmi4/rmi_driver.c
+@@ -22,6 +22,7 @@
+ #include <uapi/linux/input.h>
+ #include <linux/rmi.h>
+ #include <linux/export.h>
++#include <linux/unaligned.h>
+ #include "rmi_bus.h"
+ #include "rmi_driver.h"
  
- 	default:
-@@ -80,11 +81,13 @@ static int rose_state2_machine(struct so
- 		rose_write_internal(sk, ROSE_CLEAR_CONFIRMATION);
- 		rose_disconnect(sk, 0, skb->data[3], skb->data[4]);
- 		rose_neigh_put(rose->neighbour);
-+		rose->neighbour = NULL;
- 		break;
+@@ -558,30 +559,74 @@ int rmi_scan_pdt(struct rmi_device *rmi_
+ 	return retval < 0 ? retval : 0;
+ }
  
- 	case ROSE_CLEAR_CONFIRMATION:
- 		rose_disconnect(sk, 0, -1, -1);
- 		rose_neigh_put(rose->neighbour);
-+		rose->neighbour = NULL;
- 		break;
++static int rmi_parse_register_desc_item(struct rmi_register_desc_item *item,
++					const u8 *buf, size_t size)
++{
++	unsigned int offset = 0;
++	unsigned int map_offset = 0;
++	int b;
++
++	if (offset >= size)
++		return -EIO;
++
++	item->reg_size = buf[offset++];
++	if (item->reg_size == 0) {
++		if (size - offset < 2)
++			return -EIO;
++		item->reg_size = get_unaligned_le16(&buf[offset]);
++		offset += 2;
++	}
++
++	if (item->reg_size == 0) {
++		if (size - offset < 4)
++			return -EIO;
++		item->reg_size = get_unaligned_le32(&buf[offset]);
++		offset += 4;
++	}
++
++	do {
++		if (offset >= size)
++			return -EIO;
++
++		for (b = 0; b < 7; b++) {
++			if (buf[offset] & BIT(b)) {
++				if (map_offset >= RMI_REG_DESC_SUBPACKET_BITS)
++					return -EIO;
++				__set_bit(map_offset, item->subpacket_map);
++			}
++			++map_offset;
++		}
++	} while (buf[offset++] & BIT(7));
++
++	item->num_subpackets = bitmap_weight(item->subpacket_map,
++					     RMI_REG_DESC_SUBPACKET_BITS);
++
++	return offset;
++}
++
+ int rmi_read_register_desc(struct rmi_device *d, u16 addr,
+-				struct rmi_register_descriptor *rdesc)
++			   struct rmi_register_descriptor *rdesc)
+ {
+ 	int ret;
+ 	u8 size_presence_reg;
+ 	u8 buf[35];
+-	int presense_offset = 1;
+-	u8 *struct_buf;
+-	int reg;
+-	int offset = 0;
+-	int map_offset = 0;
++	unsigned int presence_offset;
++	unsigned int map_offset;
++	unsigned int offset;
++	unsigned int reg;
+ 	int i;
+ 	int b;
  
- 	default:
-@@ -122,6 +125,7 @@ static int rose_state3_machine(struct so
- 		rose_write_internal(sk, ROSE_CLEAR_CONFIRMATION);
- 		rose_disconnect(sk, 0, skb->data[3], skb->data[4]);
- 		rose_neigh_put(rose->neighbour);
-+		rose->neighbour = NULL;
- 		break;
+ 	/*
+ 	 * The first register of the register descriptor is the size of
+-	 * the register descriptor's presense register.
++	 * the register descriptor's presence register.
+ 	 */
+ 	ret = rmi_read(d, addr, &size_presence_reg);
+ 	if (ret)
+ 		return ret;
+ 	++addr;
  
- 	case ROSE_RR:
-@@ -235,6 +239,7 @@ static int rose_state4_machine(struct so
- 		rose_write_internal(sk, ROSE_CLEAR_CONFIRMATION);
- 		rose_disconnect(sk, 0, skb->data[3], skb->data[4]);
- 		rose_neigh_put(rose->neighbour);
-+		rose->neighbour = NULL;
- 		break;
+-	if (size_presence_reg < 0 || size_presence_reg > 35)
++	if (size_presence_reg < 1 || size_presence_reg > 35)
+ 		return -EIO;
  
- 	default:
-@@ -255,6 +260,7 @@ static int rose_state5_machine(struct so
- 		rose_write_internal(sk, ROSE_CLEAR_CONFIRMATION);
- 		rose_disconnect(sk, 0, skb->data[3], skb->data[4]);
- 		rose_neigh_put(rose_sk(sk)->neighbour);
-+		rose_sk(sk)->neighbour = NULL;
+ 	memset(buf, 0, sizeof(buf));
+@@ -597,16 +642,23 @@ int rmi_read_register_desc(struct rmi_de
+ 	addr += size_presence_reg;
+ 
+ 	if (buf[0] == 0) {
+-		presense_offset = 3;
+-		rdesc->struct_size = buf[1] | (buf[2] << 8);
++		if (size_presence_reg < 3)
++			return -EIO;
++		presence_offset = 3;
++		rdesc->struct_size = get_unaligned_le16(&buf[1]);
+ 	} else {
++		presence_offset = 1;
+ 		rdesc->struct_size = buf[0];
  	}
  
- 	return 0;
+-	for (i = presense_offset; i < size_presence_reg; i++) {
++	map_offset = 0;
++	for (i = presence_offset; i < size_presence_reg; i++) {
+ 		for (b = 0; b < 8; b++) {
+-			if (buf[i] & (0x1 << b))
++			if (buf[i] & BIT(b)) {
++				if (map_offset >= RMI_REG_DESC_PRESENSE_BITS)
++					return -EIO;
+ 				bitmap_set(rdesc->presense_map, map_offset, 1);
++			}
+ 			++map_offset;
+ 		}
+ 	}
+@@ -626,7 +678,7 @@ int rmi_read_register_desc(struct rmi_de
+ 	 * I'm not using devm_kzalloc here since it will not be retained
+ 	 * after exiting this function
+ 	 */
+-	struct_buf = kzalloc(rdesc->struct_size, GFP_KERNEL);
++	u8 *struct_buf __free(kfree) = kzalloc(rdesc->struct_size, GFP_KERNEL);
+ 	if (!struct_buf)
+ 		return -ENOMEM;
+ 
+@@ -638,56 +690,32 @@ int rmi_read_register_desc(struct rmi_de
+ 	 */
+ 	ret = rmi_read_block(d, addr, struct_buf, rdesc->struct_size);
+ 	if (ret)
+-		goto free_struct_buff;
++		return ret;
+ 
+ 	reg = find_first_bit(rdesc->presense_map, RMI_REG_DESC_PRESENSE_BITS);
++	offset = 0;
+ 	for (i = 0; i < rdesc->num_registers; i++) {
+ 		struct rmi_register_desc_item *item = &rdesc->registers[i];
+-		int reg_size = struct_buf[offset];
++		int item_size;
+ 
+-		++offset;
+-		if (reg_size == 0) {
+-			reg_size = struct_buf[offset] |
+-					(struct_buf[offset + 1] << 8);
+-			offset += 2;
+-		}
+-
+-		if (reg_size == 0) {
+-			reg_size = struct_buf[offset] |
+-					(struct_buf[offset + 1] << 8) |
+-					(struct_buf[offset + 2] << 16) |
+-					(struct_buf[offset + 3] << 24);
+-			offset += 4;
+-		}
++		item_size = rmi_parse_register_desc_item(item,
++							 &struct_buf[offset],
++							 rdesc->struct_size - offset);
++		if (item_size < 0)
++			return item_size;
+ 
+ 		item->reg = reg;
+-		item->reg_size = reg_size;
+-
+-		map_offset = 0;
+-
+-		do {
+-			for (b = 0; b < 7; b++) {
+-				if (struct_buf[offset] & (0x1 << b))
+-					bitmap_set(item->subpacket_map,
+-						map_offset, 1);
+-				++map_offset;
+-			}
+-		} while (struct_buf[offset++] & 0x80);
+-
+-		item->num_subpackets = bitmap_weight(item->subpacket_map,
+-						RMI_REG_DESC_SUBPACKET_BITS);
++		offset += item_size;
+ 
+ 		rmi_dbg(RMI_DEBUG_CORE, &d->dev,
+ 			"%s: reg: %d reg size: %ld subpackets: %d\n", __func__,
+ 			item->reg, item->reg_size, item->num_subpackets);
+ 
+ 		reg = find_next_bit(rdesc->presense_map,
+-				RMI_REG_DESC_PRESENSE_BITS, reg + 1);
++				    RMI_REG_DESC_PRESENSE_BITS, reg + 1);
+ 	}
+ 
+-free_struct_buff:
+-	kfree(struct_buf);
+-	return ret;
++	return 0;
+ }
+ 
+ const struct rmi_register_desc_item *rmi_get_register_desc_item(
 
 
 
