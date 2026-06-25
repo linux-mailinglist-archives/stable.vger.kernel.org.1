@@ -1,59 +1,61 @@
-Return-Path: <stable+bounces-268527-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-268506-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id QWigEOApPWojyQgAu9opvQ
-	(envelope-from <stable+bounces-268527-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 15:15:12 +0200
+	id fBfFBV4pPWr4yAgAu9opvQ
+	(envelope-from <stable+bounces-268506-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 15:13:02 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9524C6C60D0
-	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 15:15:11 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 764C86C6055
+	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 15:13:01 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=rBZoqxCz;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-268527-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-268527-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=RbewKfKq;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-268506-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-268506-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id CC084309142D
-	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 13:12:21 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 398F73056C35
+	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 13:11:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4AF82F7F11;
-	Thu, 25 Jun 2026 13:12:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D4232E0B71;
+	Thu, 25 Jun 2026 13:11:20 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 465B22DCC13;
-	Thu, 25 Jun 2026 13:12:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C5DB28640B;
+	Thu, 25 Jun 2026 13:11:11 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782393141; cv=none; b=rYIJ55X6sY9aTl7wdrx6IrpUV/8HBD9rnKJQympRHgykoGUG21s8eQniK6P3y4SBBj3QNLVfrecy6k4saofYxG45BMH+eCoFOl/uyYePFf5wybQZcB/BZdm5Axkv47+uaQ7TuaJbreWSKgvZJWJv1mEH0OB2eP2pabx6YWaiOi8=
+	t=1782393079; cv=none; b=FgfMxKj4Nn1y6uE2XPBOYE43PH/8MKUOAtbpneObAHqe+T7g2sDjxOC7Hjsd1VENVxW54cqHJ8Pr1QEsvQ0ZnzuUXWACW2b6MhOSH3WMc2qmbCbQjtDUpJ3dBiEE/93E/XzbJJicVPIGob+WXIa8oPIFj4NhvqXbna96/Yid/CI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782393141; c=relaxed/simple;
-	bh=b++CI4q41pVMLiVrajZzwd18WUYuOI1dz3/9FNEGjeM=;
+	s=arc-20240116; t=1782393079; c=relaxed/simple;
+	bh=REPGwhLe6A5Utq3ZPIe1lqaaE1W62BzKQfdqnHe3pp8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VZnVmcCwrVF4vhwe9A5Pz1dioXBWMhU2N2bIoqbzMUBS0Ykb8h1lbMmr507UsanRsA9ILEC6A2tHm++kvQ8UIrxR/iXIc4dAg1n+1jcmZ5aF9nnqTaaM49sXSiRKNz4xajJU4Oqx3gdl2RN3a1c5ZXTpx6aRAAJB1Rii1WTF4Ww=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rBZoqxCz; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 887AF1F000E9;
-	Thu, 25 Jun 2026 13:12:19 +0000 (UTC)
+	 MIME-Version; b=cBxR3cVeLNRf+luDIWE5re2GDbRXmO0SnPjo/vqhu12Hgr8eaxA9O42d+z/35aTe8lNEUEKTN2jp3zBCF0gU7AULo0SIOOBNcItpmbGuYonHcCQhbvR15EbPAkywNcwj4JWgmyjjRJ0m26vlvsuZMjd3yUFSO5w/s+ANFb4JrxE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RbewKfKq; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 419F81F000E9;
+	Thu, 25 Jun 2026 13:11:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1782393140;
-	bh=RTSr4TX5friC0i00IRQBzpYjr0pgarrEYS+1KqbbNw4=;
+	s=korg; t=1782393070;
+	bh=+YXJvxVG08luLR+OrB2B3V7Hs9uMoFvsY9wq+JtEaIw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=rBZoqxCzLWvwj1c4ztnRgbcT70oNn7VqKUvKa9PMLHnJpz+gWiXouOKIYQNczbR+Q
-	 xlvNzMzKjsaWUBJMLLgWWorkzByto0h0/0pePAAp/dp93Um3/2tEpXL9QdBVCWjzir
-	 QFDU+Fn+bGXaybm/0nphwreGbegqq0PGsUlPNdxo=
+	b=RbewKfKqsA4ybV1MCj5+dqfaoNqU9qGY+PrCQtzgNX7DlNad3REtVUvwo8zDvzKDU
+	 iCj88bkgJ+9VtNtdzzlqPOHCWo6hGfX0ZtCyxgtmogKlkmuNBhXdrqh0X4qGXuE5iZ
+	 UKPHKJ5AvTrMVGR7wJNVSGWUQi5uVhybC8qzf0Uc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Subject: [PATCH 7.1 08/21] Input: rmi4 - refactor register descriptor parsing
+	syzbot+814c351d094f4f1a1b86@syzkaller.appspotmail.com,
+	Ruslan Valiyev <linuxoid@gmail.com>,
+	Hans Verkuil <hverkuil+cisco@kernel.org>
+Subject: [PATCH 7.0 48/49] media: vidtv: fix NULL pointer dereference in vidtv_mux_push_si
 Date: Thu, 25 Jun 2026 14:04:00 +0100
-Message-ID: <20260625125614.406492194@linuxfoundation.org>
+Message-ID: <20260625125644.279810098@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260625125613.243729608@linuxfoundation.org>
-References: <20260625125613.243729608@linuxfoundation.org>
+In-Reply-To: <20260625125637.527552689@linuxfoundation.org>
+References: <20260625125637.527552689@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,22 +73,22 @@ X-Spamd-Result: default: False [-0.16 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	RCVD_TLS_LAST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-268506-lists,stable=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:syzbot+814c351d094f4f1a1b86@syzkaller.appspotmail.com,m:linuxoid@gmail.com,m:hverkuil+cisco@kernel.org,m:syzbot@syzkaller.appspotmail.com,m:hverkuil@kernel.org,s:lists@lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-268527-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,syzkaller.appspotmail.com,gmail.com,kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:dmitry.torokhov@gmail.com,m:dmitrytorokhov@gmail.com,s:lists@lfdr.de];
-	RCPT_COUNT_THREE(0.00)[4];
-	TO_DN_SOME(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
@@ -94,237 +96,94 @@ X-Spamd-Result: default: False [-0.16 / 15.00];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,msgid.link:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
+	TAGGED_RCPT(0.00)[stable,814c351d094f4f1a1b86,cisco];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,appspotmail.com:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,syzkaller.appspot.com:url]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 9524C6C60D0
+X-Rspamd-Queue-Id: 764C86C6055
 
-7.1-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+From: Ruslan Valiyev <linuxoid@gmail.com>
 
-commit 0adb483fbf2dc43c875cd7550a58b41e92efc52d upstream.
+commit 7d8bf3d8f91073f4db347ed3aa6302b56107499c upstream.
 
-Factor out parsing a register descriptor item from
-rmi_read_register_desc() and ensure there are no out-of-bounds accesses.
+syzbot reported a general protection fault in
+vidtv_psi_ts_psi_write_into [1].
 
-Use get_unaligned_le16() and get_unaligned_le32() for reading multi-byte
-values.
+vidtv_mux_get_pid_ctx() can return NULL, but vidtv_mux_push_si() does
+not check for this before dereferencing the returned pointer to access
+the continuity counter. This leads to a general protection fault when
+accessing a near-NULL address.
 
-Reported-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Fixes: 2b6a321da9a2 ("Input: synaptics-rmi4 - add support for Synaptics RMI4 devices")
+The root cause is that vidtv_mux_pid_ctx_init() does not check the
+return value of vidtv_mux_create_pid_ctx_once() for PMT section PIDs.
+If the allocation fails, the PID context is never created, but init
+returns success. The subsequent vidtv_mux_push_si() call then gets
+NULL from vidtv_mux_get_pid_ctx() and crashes.
+
+Fix both the root cause (add error check in vidtv_mux_pid_ctx_init
+for PMT PIDs) and add defensive NULL checks in vidtv_mux_push_si for
+all vidtv_mux_get_pid_ctx() calls.
+
+[1]
+Oops: general protection fault, probably for non-canonical address 0xdffffc0000000000: 0000 [#1] SMP KASAN PTI
+KASAN: null-ptr-deref in range [0x0000000000000000-0x0000000000000007]
+Workqueue: events vidtv_mux_tick
+RIP: 0010:vidtv_psi_ts_psi_write_into+0x54a/0xbc0 drivers/media/test-drivers/vidtv/vidtv_psi.c:197
+Call Trace:
+ <TASK>
+ vidtv_psi_table_header_write_into drivers/media/test-drivers/vidtv/vidtv_psi.c:799 [inline]
+ vidtv_psi_pmt_write_into+0x3b2/0xa70 drivers/media/test-drivers/vidtv/vidtv_psi.c:1231
+ vidtv_mux_push_si+0x932/0xe80 drivers/media/test-drivers/vidtv/vidtv_mux.c:196
+ vidtv_mux_tick+0xe9b/0x1480 drivers/media/test-drivers/vidtv/vidtv_mux.c:408
+
+Fixes: f90cf6079bf67 ("media: vidtv: add a bridge driver")
 Cc: stable@vger.kernel.org
-Assisted-by: Gemini:gemini-3.1-pro
-Link: https://patch.msgid.link/20260505045952.1570713-2-dmitry.torokhov@gmail.com
-Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Reported-by: syzbot+814c351d094f4f1a1b86@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=814c351d094f4f1a1b86
+Signed-off-by: Ruslan Valiyev <linuxoid@gmail.com>
+Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/input/rmi4/rmi_driver.c |  124 ++++++++++++++++++++++++----------------
- 1 file changed, 76 insertions(+), 48 deletions(-)
+ drivers/media/test-drivers/vidtv/vidtv_mux.c |    8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
---- a/drivers/input/rmi4/rmi_driver.c
-+++ b/drivers/input/rmi4/rmi_driver.c
-@@ -22,6 +22,7 @@
- #include <uapi/linux/input.h>
- #include <linux/rmi.h>
- #include <linux/export.h>
-+#include <linux/unaligned.h>
- #include "rmi_bus.h"
- #include "rmi_driver.h"
- 
-@@ -558,30 +559,74 @@ int rmi_scan_pdt(struct rmi_device *rmi_
- 	return retval < 0 ? retval : 0;
- }
- 
-+static int rmi_parse_register_desc_item(struct rmi_register_desc_item *item,
-+					const u8 *buf, size_t size)
-+{
-+	unsigned int offset = 0;
-+	unsigned int map_offset = 0;
-+	int b;
-+
-+	if (offset >= size)
-+		return -EIO;
-+
-+	item->reg_size = buf[offset++];
-+	if (item->reg_size == 0) {
-+		if (size - offset < 2)
-+			return -EIO;
-+		item->reg_size = get_unaligned_le16(&buf[offset]);
-+		offset += 2;
-+	}
-+
-+	if (item->reg_size == 0) {
-+		if (size - offset < 4)
-+			return -EIO;
-+		item->reg_size = get_unaligned_le32(&buf[offset]);
-+		offset += 4;
-+	}
-+
-+	do {
-+		if (offset >= size)
-+			return -EIO;
-+
-+		for (b = 0; b < 7; b++) {
-+			if (buf[offset] & BIT(b)) {
-+				if (map_offset >= RMI_REG_DESC_SUBPACKET_BITS)
-+					return -EIO;
-+				__set_bit(map_offset, item->subpacket_map);
-+			}
-+			++map_offset;
-+		}
-+	} while (buf[offset++] & BIT(7));
-+
-+	item->num_subpackets = bitmap_weight(item->subpacket_map,
-+					     RMI_REG_DESC_SUBPACKET_BITS);
-+
-+	return offset;
-+}
-+
- int rmi_read_register_desc(struct rmi_device *d, u16 addr,
--				struct rmi_register_descriptor *rdesc)
-+			   struct rmi_register_descriptor *rdesc)
- {
- 	int ret;
- 	u8 size_presence_reg;
- 	u8 buf[35];
--	int presense_offset = 1;
--	u8 *struct_buf;
--	int reg;
--	int offset = 0;
--	int map_offset = 0;
-+	unsigned int presence_offset;
-+	unsigned int map_offset;
-+	unsigned int offset;
-+	unsigned int reg;
- 	int i;
- 	int b;
- 
- 	/*
- 	 * The first register of the register descriptor is the size of
--	 * the register descriptor's presense register.
-+	 * the register descriptor's presence register.
- 	 */
- 	ret = rmi_read(d, addr, &size_presence_reg);
- 	if (ret)
- 		return ret;
- 	++addr;
- 
--	if (size_presence_reg < 0 || size_presence_reg > 35)
-+	if (size_presence_reg < 1 || size_presence_reg > 35)
- 		return -EIO;
- 
- 	memset(buf, 0, sizeof(buf));
-@@ -597,16 +642,23 @@ int rmi_read_register_desc(struct rmi_de
- 	addr += size_presence_reg;
- 
- 	if (buf[0] == 0) {
--		presense_offset = 3;
--		rdesc->struct_size = buf[1] | (buf[2] << 8);
-+		if (size_presence_reg < 3)
-+			return -EIO;
-+		presence_offset = 3;
-+		rdesc->struct_size = get_unaligned_le16(&buf[1]);
- 	} else {
-+		presence_offset = 1;
- 		rdesc->struct_size = buf[0];
+--- a/drivers/media/test-drivers/vidtv/vidtv_mux.c
++++ b/drivers/media/test-drivers/vidtv/vidtv_mux.c
+@@ -101,7 +101,8 @@ static int vidtv_mux_pid_ctx_init(struct
+ 	/* add a ctx for all PMT sections */
+ 	while (p) {
+ 		pid = vidtv_psi_get_pat_program_pid(p);
+-		vidtv_mux_create_pid_ctx_once(m, pid);
++		if (!vidtv_mux_create_pid_ctx_once(m, pid))
++			goto free;
+ 		p = p->next;
  	}
  
--	for (i = presense_offset; i < size_presence_reg; i++) {
-+	map_offset = 0;
-+	for (i = presence_offset; i < size_presence_reg; i++) {
- 		for (b = 0; b < 8; b++) {
--			if (buf[i] & (0x1 << b))
-+			if (buf[i] & BIT(b)) {
-+				if (map_offset >= RMI_REG_DESC_PRESENSE_BITS)
-+					return -EIO;
- 				bitmap_set(rdesc->presense_map, map_offset, 1);
-+			}
- 			++map_offset;
+@@ -170,6 +171,9 @@ static u32 vidtv_mux_push_si(struct vidt
+ 	nit_ctx = vidtv_mux_get_pid_ctx(m, VIDTV_NIT_PID);
+ 	eit_ctx = vidtv_mux_get_pid_ctx(m, VIDTV_EIT_PID);
+ 
++	if (!pat_ctx || !sdt_ctx || !nit_ctx || !eit_ctx)
++		return 0;
++
+ 	pat_args.offset             = m->mux_buf_offset;
+ 	pat_args.continuity_counter = &pat_ctx->cc;
+ 
+@@ -186,6 +190,8 @@ static u32 vidtv_mux_push_si(struct vidt
  		}
- 	}
-@@ -626,7 +678,7 @@ int rmi_read_register_desc(struct rmi_de
- 	 * I'm not using devm_kzalloc here since it will not be retained
- 	 * after exiting this function
- 	 */
--	struct_buf = kzalloc(rdesc->struct_size, GFP_KERNEL);
-+	u8 *struct_buf __free(kfree) = kzalloc(rdesc->struct_size, GFP_KERNEL);
- 	if (!struct_buf)
- 		return -ENOMEM;
  
-@@ -638,56 +690,32 @@ int rmi_read_register_desc(struct rmi_de
- 	 */
- 	ret = rmi_read_block(d, addr, struct_buf, rdesc->struct_size);
- 	if (ret)
--		goto free_struct_buff;
-+		return ret;
+ 		pmt_ctx = vidtv_mux_get_pid_ctx(m, pmt_pid);
++		if (!pmt_ctx)
++			continue;
  
- 	reg = find_first_bit(rdesc->presense_map, RMI_REG_DESC_PRESENSE_BITS);
-+	offset = 0;
- 	for (i = 0; i < rdesc->num_registers; i++) {
- 		struct rmi_register_desc_item *item = &rdesc->registers[i];
--		int reg_size = struct_buf[offset];
-+		int item_size;
- 
--		++offset;
--		if (reg_size == 0) {
--			reg_size = struct_buf[offset] |
--					(struct_buf[offset + 1] << 8);
--			offset += 2;
--		}
--
--		if (reg_size == 0) {
--			reg_size = struct_buf[offset] |
--					(struct_buf[offset + 1] << 8) |
--					(struct_buf[offset + 2] << 16) |
--					(struct_buf[offset + 3] << 24);
--			offset += 4;
--		}
-+		item_size = rmi_parse_register_desc_item(item,
-+							 &struct_buf[offset],
-+							 rdesc->struct_size - offset);
-+		if (item_size < 0)
-+			return item_size;
- 
- 		item->reg = reg;
--		item->reg_size = reg_size;
--
--		map_offset = 0;
--
--		do {
--			for (b = 0; b < 7; b++) {
--				if (struct_buf[offset] & (0x1 << b))
--					bitmap_set(item->subpacket_map,
--						map_offset, 1);
--				++map_offset;
--			}
--		} while (struct_buf[offset++] & 0x80);
--
--		item->num_subpackets = bitmap_weight(item->subpacket_map,
--						RMI_REG_DESC_SUBPACKET_BITS);
-+		offset += item_size;
- 
- 		rmi_dbg(RMI_DEBUG_CORE, &d->dev,
- 			"%s: reg: %d reg size: %ld subpackets: %d\n", __func__,
- 			item->reg, item->reg_size, item->num_subpackets);
- 
- 		reg = find_next_bit(rdesc->presense_map,
--				RMI_REG_DESC_PRESENSE_BITS, reg + 1);
-+				    RMI_REG_DESC_PRESENSE_BITS, reg + 1);
- 	}
- 
--free_struct_buff:
--	kfree(struct_buf);
--	return ret;
-+	return 0;
- }
- 
- const struct rmi_register_desc_item *rmi_get_register_desc_item(
+ 		pmt_args.offset             = m->mux_buf_offset;
+ 		pmt_args.pmt                = m->si.pmt_secs[i];
 
 
 
