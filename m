@@ -1,102 +1,61 @@
-Return-Path: <stable+bounces-268607-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-268609-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id O7keDvtRPWoR1QgAu9opvQ
-	(envelope-from <stable+bounces-268607-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 18:06:19 +0200
+	id dizfIGFRPWrs1AgAu9opvQ
+	(envelope-from <stable+bounces-268609-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 18:03:45 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id A7BF46C74C9
-	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 18:06:18 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2CE5B6C7460
+	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 18:03:44 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=kRm59YCW;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-268607-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-268607-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=none) header.from=gmail.com;
+	dkim=none ("invalid DKIM record") header.d=stu.xidian.edu.cn header.s=dkim header.b=tOBLxWgM;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-268609-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-268609-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=fail reason="SPF not aligned (relaxed)" header.from=xidian.edu.cn (policy=quarantine);
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id BD4C630A089D
-	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 16:02:36 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id A2FC33018631
+	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 16:03:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B33CB328B75;
-	Thu, 25 Jun 2026 16:02:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E25E3DD877;
+	Thu, 25 Jun 2026 16:03:35 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com [209.85.214.169])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFA0E32BF44
-	for <stable@vger.kernel.org>; Thu, 25 Jun 2026 16:02:33 +0000 (UTC)
+Received: from zg8tmtyylji0my4xnjqumte4.icoremail.net (zg8tmtyylji0my4xnjqumte4.icoremail.net [162.243.164.118])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1D212C11F1;
+	Thu, 25 Jun 2026 16:03:27 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782403355; cv=none; b=mylEHvMvf8ypXJsuEL7drYvOw6JsFmCpFMZLQBIvL5IdiUBHn5H1r+6yzLQzy5F0q+w6hQVmOjlpQ1c7a5JtsiZmy42bz2qRjQF8sJ1xi8C88m/+artu5EUtZa6cNSju9Lu+/CrXkvRZm9kPbAxKJ+TcHOfPgzl/M7dbeRvb4CI=
+	t=1782403414; cv=none; b=VZ9tZ0c/yLxq8Ms5wreKAhft+/ZYpTpTehcxDzlBBCaoCKaFXHGZdFzwCKxseQDMMg1K/UK9aCQncFXfX08QbDUJDfWOLYqpWply9MmyHRqTp8CguVjbgiJQlNPFZU8u6mSyQfj1rbTE5wgyZ3Jxo5MhAlPVSOSN4aILrgC75GA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782403355; c=relaxed/simple;
-	bh=L9c5Szdgt8qF07KpP6DJofk4aMPG49dmybsPbBc1Q4A=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aiEbPR/6Pd/VtVH1AkqJII+0rXo57QocG8Zm1Zan/cSmFyfGPAAhxr+b4VV27J3OB4NJ+BsANyQ9TotEBCz6GDOWc5xtBBQEFJzX5OixL8rSOjrwFVprNY/NbLuFM/E3f0Oo1xPvQiymHLF8RNAcHLy1n2crKTTcNMBfoPGdfwM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=kRm59YCW; arc=none smtp.client-ip=209.85.214.169
-Received: by mail-pl1-f169.google.com with SMTP id d9443c01a7336-2c6c57c5bcfso1090855ad.1
-        for <stable@vger.kernel.org>; Thu, 25 Jun 2026 09:02:33 -0700 (PDT)
+	s=arc-20240116; t=1782403414; c=relaxed/simple;
+	bh=samrj8yHo1D5/fsyySq37fuxzVFvSDkrpjTR0gmCqSA=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=h+ZR4DJ1DR4x/qv8JjSXFnSkD2rv/T27rH27nNQpSViY+9jmPA6Lo/p6XH73oxXblxx4Osz4+sMKMibo7YMTFOv27sO/mmUKBebGynQdLjozNj38EZPZLPCNaTicDpbQceZZN4A+VE77qoqQK8OEuBsLupo4on65/IJ0sbLjiYM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=stu.xidian.edu.cn; spf=pass smtp.mailfrom=stu.xidian.edu.cn; dkim=fail (0-bit key) header.d=stu.xidian.edu.cn header.i=@stu.xidian.edu.cn header.b=tOBLxWgM reason="key not found in DNS"; arc=none smtp.client-ip=162.243.164.118
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1782403353; x=1783008153; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=7uBKJbZacR7qpAxgkxKTYuFWT8lf0EijVUm+JTDcFsE=;
-        b=kRm59YCWFYAvGQCkmCZDJRC4Cm8V/xJYTHnADBD819LZ524O1EJkiwRbBpBsjLRB2r
-         NUwHmNcNMxEGb2oumraGN/uZv65o+6+m9dmuz6LLINRUSGSHH14xqhIeCrdVIk4BqoCX
-         YI/ynEyfH5h2hpeJX/RuN/fwvcvG5KqRsRlArZZVrVoGyqyFfZGO1mPC/XMxPdnTBs21
-         HUV9LLBO90mkk64r8LO9Q3UHGNQd+GV3s3Mvb4oB8779zS7IcWiiLHIaTBt8iZPWV32O
-         /k6LcUSKHx+y45TedvsBhPJEdBSt9Vb/YHH6CFfC7Vjgjy5w0/f6NXhnE4T5lAgLCYfh
-         kzuA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782403353; x=1783008153;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=7uBKJbZacR7qpAxgkxKTYuFWT8lf0EijVUm+JTDcFsE=;
-        b=RcCkGSbd+tbN0+rBmMIbNJTXrOXrXpNtt8bfsw6S3xmmO7g8QV8sJ4DDD3SlPTN5Q3
-         uk4zTiITOQ2EGcfR/yhleP2FAmmkykmYQdBHps2XPKwVDqWZp37QyJIG56CZZPyPOV6P
-         lHssI9Q+l4M+zyljuIu7MNZ1FaVMM6XWLMMVicGrTiE2IpSFVa9qrFW8N3xr9dP+Vp8G
-         5QOI7Zs2rwNNQuAUelPIJezZutFpRe9OhKCMepSY7ABwhnhPz30Fkl2lHX+ba0wqhaGA
-         1bF84Dauw82UQZlw37UV0m/0dEOVdusz5T9qC2Rvg6D/hKLZheYYRlW012cJuyB5VCEF
-         w3Vw==
-X-Forwarded-Encrypted: i=1; AHgh+RoBtghg1B9uGYzxAkA4fVIncsuEjEU3aYmoF3n9LLhELoQmixgvEs/MEnUR34048WTTbi+mC0Y=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzwAjuaFK55SI9+W54LGxuWWYkxu+tUgNes83qEKN3OSAZCfYw9
-	ZRvh/0nHwQ6M/9qhd2M6PJt1NMfNzg1F0OjW32BPJJCBux4y0BMRm+aT
-X-Gm-Gg: AfdE7cnp8sMgHb2C7xNRtUX5djTAKPlm6BRWMeSfBrX3Z2/VIQ93wL2iNEy1j4RO4Uj
-	nD6zbBNJrPxsLGiHFrre0ghBTwLMr3BhV45vOc95ysWF23/9S3A3R4JiAJgZGibThb4KdLpRbNv
-	/a4kfuDXkTAqrsqBj7QCWzXetWzaO/qtF9uLT1g7lZLoSApe7rU9N3yFIzEibWp2O5qGEPTGVUW
-	h0Oh8hUikTQOat26t/UCZg9TZwVBClx5/yB/AfPk8zi+OpXQNEHttu9+TvyEu1P8sZ7H+qy1anb
-	EWw7KtHIDDYjwGfI1n93FsTf54B5ZE5J0omHPbR0RFIBKHhqoFe/II6W36pYyY72QUjmIbVzi41
-	pQ4vlHX9HWpRRDgjHURvkG7MVuHNmgSf25kXVLQSONIoZNkuaLIoU0dxn1RB0pASY60GSUCs4em
-	KcYKugRuIYawkz3M7Fnz2M1fc8183dS71FEREW
-X-Received: by 2002:a17:902:d483:b0:2c6:6424:c79f with SMTP id d9443c01a7336-2c7fc708aa6mr35566035ad.8.1782403352803;
-        Thu, 25 Jun 2026 09:02:32 -0700 (PDT)
-Received: from liem-TUF-Gaming-FX505GM-FX86FM ([240e:39b:ee0:1b70:943:8348:4ae1:4072])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2c7f5ac88cfsm24127925ad.2.2026.06.25.09.02.26
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 25 Jun 2026 09:02:32 -0700 (PDT)
-From: Liem <liem16213@gmail.com>
-To: Oleksij Rempel <o.rempel@pengutronix.de>
-Cc: Andi Shyti <andi.shyti@kernel.org>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Frank Li <Frank.Li@nxp.com>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Biwen Li <biwen.li@nxp.com>,
-	Wolfram Sang <wsa@kernel.org>,
-	linux-i2c@vger.kernel.org,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
+	d=stu.xidian.edu.cn; s=dkim; h=Received:From:To:Cc:Subject:Date:
+	Message-Id:MIME-Version:Content-Transfer-Encoding; bh=T8/WLYardC
+	tv6AXvQJyez5N5S5F59yReGTMgkUtb4vY=; b=tOBLxWgMYVfYBLB/OWvGtfHPl8
+	xK5FUWZGNTZvsHlJ3brp1x8d+BZpUfzWlP0zeuBMzLZARAWPjzcYRB2cyDcbwfXW
+	khjBglHXGXJFqOTsLLVVJ4CaJPJTv8Xet8PBBEUiROGWD92IdgxdbJMvx9MLPZ4n
+	Cz529xigziL3TIpUk=
+Received: from wmy.localdomain (unknown [113.200.174.100])
+	by hzbj-edu-front-4.icoremail.net (Coremail) with SMTP id BrQMCkAmTxVAUT1q3zwBAA--.5710S2;
+	Fri, 26 Jun 2026 00:03:15 +0800 (CST)
+From: Mingyu Wang <25181214217@stu.xidian.edu.cn>
+To: deller@gmx.de,
+	tzimmermann@suse.de,
+	simona@ffwll.ch
+Cc: syoshida@redhat.com,
+	dri-devel@lists.freedesktop.org,
+	linux-fbdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org,
-	Liem <liem16213@gmail.com>
-Subject: [PATCH v2] i2c: imx: Fix slave registration error path and missing timer cleanup
-Date: Fri, 26 Jun 2026 00:02:19 +0800
-Message-ID: <20260625160219.55116-1-liem16213@gmail.com>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260625071130.93544-1-liem16213@gmail.com>
-References: <20260625071130.93544-1-liem16213@gmail.com>
+	w15303746062@163.com,
+	Mingyu Wang <25181214217@stu.xidian.edu.cn>,
+	stable@vger.kernel.org
+Subject: [PATCH v2] fbdev: fbcon: fix out-of-bounds read in err_out of fbcon_do_set_font()
+Date: Fri, 26 Jun 2026 00:03:06 +0800
+Message-Id: <20260625160306.438847-1-25181214217@stu.xidian.edu.cn>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -104,105 +63,118 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:BrQMCkAmTxVAUT1q3zwBAA--.5710S2
+X-Coremail-Antispam: 1UD129KBjvJXoWxGFW7Ww13WFWxCr1DJr1rtFb_yoW5Jw4xp3
+	y3Kw13Kr1ktr1rGa10gw4kCF15Wan7A34jqayxK345Kw15Gr4UXFW0yFyYvF98C3srXF10
+	qw1vg3s29FyDC3DanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUBK14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
+	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
+	1l84ACjcxK6xIIjxv20xvE14v26r1j6r1xM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4j
+	6F4UM28EF7xvwVC2z280aVAFwI0_Jr0_Gr1l84ACjcxK6I8E87Iv6xkF7I0E14v26r4j6r
+	4UJwAac4AC62xK8xCEY4vEwIxC4wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC
+	0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWUJVWUGwAv7VC2z280aVAFwI0_Jr0_Gr
+	1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcxkI7VAKI48JM4x0x7Aq67IIx4CEVc8vx2IE
+	rcIFxwACI402YVCY1x02628vn2kIc2xKxwCY1x0262kKe7AKxVWUtVW8ZwCY02Avz4vE14
+	v_JwCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02F40E14v2
+	6r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_Jw0_GFylIxkGc2
+	Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7CjxVAFwI0_
+	Jr0_Gr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r1j6r4UMI
+	IF0xvEx4A2jsIEc7CjxVAFwI0_Jr0_GrUvcSsGvfC2KfnxnUUI43ZEXa7VUUsXo7UUUUU=
+	=
+X-CM-SenderInfo: qsvrmiqsrujiux6v33wo0lvxldqovvfxof0/1tbiAgUPEWo9RfMFSgABs2
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.66 / 15.00];
+X-Spamd-Result: default: False [1.54 / 15.00];
+	DMARC_POLICY_QUARANTINE(1.50)[xidian.edu.cn : SPF not aligned (relaxed),quarantine];
 	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	FREEMAIL_CC(0.00)[kernel.org,pengutronix.de,nxp.com,gmail.com,vger.kernel.org,lists.linux.dev,lists.infradead.org];
+	FORGED_RECIPIENTS(0.00)[m:deller@gmx.de,m:tzimmermann@suse.de,m:simona@ffwll.ch,m:syoshida@redhat.com,m:dri-devel@lists.freedesktop.org,m:linux-fbdev@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:w15303746062@163.com,m:25181214217@stu.xidian.edu.cn,m:stable@vger.kernel.org,s:lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-268609-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-268607-lists,stable=lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:o.rempel@pengutronix.de,m:andi.shyti@kernel.org,m:kernel@pengutronix.de,m:Frank.Li@nxp.com,m:s.hauer@pengutronix.de,m:festevam@gmail.com,m:biwen.li@nxp.com,m:wsa@kernel.org,m:linux-i2c@vger.kernel.org,m:imx@lists.linux.dev,m:linux-arm-kernel@lists.infradead.org,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,m:liem16213@gmail.com,s:lists@lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[14];
-	FORGED_SENDER(0.00)[liem16213@gmail.com,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FREEMAIL_TO(0.00)[gmx.de,suse.de,ffwll.ch];
+	FORGED_SENDER(0.00)[25181214217@stu.xidian.edu.cn,stable@vger.kernel.org];
 	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	R_DKIM_PERMFAIL(0.00)[stu.xidian.edu.cn:s=dkim];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FREEMAIL_CC(0.00)[redhat.com,lists.freedesktop.org,vger.kernel.org,163.com,stu.xidian.edu.cn];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[liem16213@gmail.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[gmail.com:+];
+	FROM_NEQ_ENVFROM(0.00)[25181214217@stu.xidian.edu.cn,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[stu.xidian.edu.cn:~];
 	ALIAS_RESOLVED(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[10];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	TAGGED_RCPT(0.00)[stable];
 	FROM_HAS_DN(0.00)[]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: A7BF46C74C9
+X-Rspamd-Queue-Id: 2CE5B6C7460
 
-There are two issues that affect the i2c-imx slave handling:
+When fbcon_do_set_font() fails (e.g., due to a memory allocation failure
+inside vc_resize() under heavy memory pressure), it jumps to the `err_out`
+label to roll back the console state. However, the current rollback logic
+forgets to restore the `hi_font` state, leading to a severe state machine
+corruption.
 
-1. In i2c_imx_reg_slave(), i2c_imx->slave is checked at the beginning
-   and the function returns -EBUSY if it is non-NULL.  If
-   pm_runtime_resume_and_get() fails later, the error path returns
-   without clearing i2c_imx->slave, leaving it non-NULL.  Subsequent
-   attempts to register a slave will then immediately fail with
-   -EBUSY, making it impossible to register the slave again.  Fix
-   by setting i2c_imx->slave = NULL on the error path.
+Earlier in the function, `set_vc_hi_font()` might be called to change
+`vc->vc_hi_font_mask` and mutate the screen buffer. If `vc_resize()`
+subsequently fails, the `err_out` path restores `vc_font.charcount`
+but entirely skips rolling back the `vc_hi_font_mask` and the screen
+buffer.
 
-2. In i2c_imx_unreg_slave(), the slave pointer is set to NULL after
-   disabling interrupts.  However, a pending interrupt might already
-   have started the hrtimer (i2c_imx_slave_timeout) before the pointer
-   was cleared.  If the hrtimer fires after i2c_imx->slave is set to
-   NULL, the timer callback i2c_imx_slave_finish_op() will call
-   i2c_imx_slave_event() with a NULL slave pointer, and the
-   last_slave_event check loop in i2c_imx_slave_finish_op() may cause
-   a system hang because last_slave_event is no longer updated.  Fix
-   by canceling the hrtimer and waiting for it to complete after
-   disabling interrupts, before clearing the slave pointer.
+This mismatch leaves the terminal in a desynchronized state. Because
+`vc_hi_font_mask` remains set, the VT subsystem will still accept
+character indices greater than 255 from userspace and write them to the
+screen buffer. Subsequent rendering calls (e.g., `fbcon_putcs()`) will
+then use these inflated indices to access the reverted, 256-character
+font array, leading to a deterministic out-of-bounds read and potential
+kernel memory disclosure.
 
-Both issues can trigger a kernel oops, system hang, or permanent
-slave registration failure under certain race conditions.  Add the
-missing NULL assignment and the missing hrtimer cleanup to harden
-the slave path.
+Fix this by adding the missing rollback logic for the `hi_font` mask
+and screen buffer in the error path.
 
-Fixes: f7414cd6923f ("i2c: imx: support slave mode for imx I2C driver")
+Fixes: a5a923038d70 ("fbdev: fbcon: Properly revert changes when vc_resize() failed")
 Cc: stable@vger.kernel.org
-Signed-off-by: Liem <liem16213@gmail.com>
+Signed-off-by: Mingyu Wang <25181214217@stu.xidian.edu.cn>
+Reviewed-by: Thomas Zimmermann <tzimmermann@suse.de>
 ---
-v1 -> v2:
-  - Instead of adding a NULL check in i2c_imx_slave_event(), cancel
-    the hrtimer and wait for it to finish in i2c_imx_unreg_slave()
-    after disabling interrupts, as suggested by <Carlos Song>.
-    This avoids a potential hang in the last_slave_event loop in
-    i2c_imx_slave_finish_op().
----
- drivers/i2c/busses/i2c-imx.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/video/fbdev/core/fbcon.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/drivers/i2c/busses/i2c-imx.c b/drivers/i2c/busses/i2c-imx.c
-index 28313d0fad37..04ffb927aba9 100644
---- a/drivers/i2c/busses/i2c-imx.c
-+++ b/drivers/i2c/busses/i2c-imx.c
-@@ -936,6 +936,7 @@ static int i2c_imx_reg_slave(struct i2c_client *client)
- 	/* Resume */
- 	ret = pm_runtime_resume_and_get(i2c_imx->adapter.dev.parent);
- 	if (ret < 0) {
-+		i2c_imx->slave = NULL;
- 		dev_err(&i2c_imx->adapter.dev, "failed to resume i2c controller");
- 		return ret;
- 	}
-@@ -957,7 +958,7 @@ static int i2c_imx_unreg_slave(struct i2c_client *client)
- 	imx_i2c_write_reg(0, i2c_imx, IMX_I2C_IADR);
+diff --git a/drivers/video/fbdev/core/fbcon.c b/drivers/video/fbdev/core/fbcon.c
+index 9077d3b99357..37beb93045af 100644
+--- a/drivers/video/fbdev/core/fbcon.c
++++ b/drivers/video/fbdev/core/fbcon.c
+@@ -2405,6 +2405,7 @@ static int fbcon_do_set_font(struct vc_data *vc, int w, int h, int charcount,
+ 	int resize, ret, old_width, old_height, old_charcount;
+ 	font_data_t *old_fontdata = p->fontdata;
+ 	const u8 *old_data = vc->vc_font.data;
++	unsigned short old_hi_font_mask = vc->vc_hi_font_mask;
  
- 	i2c_imx_reset_regs(i2c_imx);
--
-+	hrtimer_cancel(&i2c_imx->slave_timer);
- 	i2c_imx->slave = NULL;
+ 	font_data_get(data);
  
- 	/* Suspend */
+@@ -2451,6 +2452,12 @@ static int fbcon_do_set_font(struct vc_data *vc, int w, int h, int charcount,
+ 	vc->vc_font.height = old_height;
+ 	vc->vc_font.charcount = old_charcount;
+ 
++	/* Restore the hi_font state and screen buffer */
++	if (old_hi_font_mask && !vc->vc_hi_font_mask)
++		set_vc_hi_font(vc, true);
++	else if (!old_hi_font_mask && vc->vc_hi_font_mask)
++		set_vc_hi_font(vc, false);
++
+ 	font_data_put(data);
+ 
+ 	return ret;
 -- 
-2.53.0
+2.34.1
 
 
