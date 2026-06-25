@@ -1,266 +1,209 @@
-Return-Path: <stable+bounces-268257-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-268259-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id QyolJrOuPGqzqQgAu9opvQ
-	(envelope-from <stable+bounces-268257-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 06:29:39 +0200
+	id PL8vB6uvPGriqQgAu9opvQ
+	(envelope-from <stable+bounces-268259-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 06:33:47 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C95306C2A9C
-	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 06:29:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 719706C2AB3
+	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 06:33:46 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b="F/oIFBGC";
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-268257-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-268257-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=none;
+	dkim=pass header.d=qualcomm.com header.s=qcppdkim1 header.b=EWmExZUF;
+	dkim=pass header.d=oss.qualcomm.com header.s=google header.b=PWSH4snW;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-268259-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-268259-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=reject) header.from=qualcomm.com;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A11D8302A514
-	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 04:29:35 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 253DA302B09F
+	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 04:33:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C946A2BDC0F;
-	Thu, 25 Jun 2026 04:29:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E5DE82D97BA;
+	Thu, 25 Jun 2026 04:33:40 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71AEA175A5;
-	Thu, 25 Jun 2026 04:29:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9AC391EB1AA
+	for <stable@vger.kernel.org>; Thu, 25 Jun 2026 04:33:39 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782361774; cv=none; b=JZbrY0iSCAlZW5uiDwx2X0Z4lxn0SR3N4Uyysn7vkkGGCixFY/m2y2SQOXso154SFMFdu3yb69AfrwIV6UnWYWAqtUw+8hYfNM+f5jsVd514az1aWY3e/6Ei30CDxQvIMqcAUXcgizHO/U+PnOong66oUaE8lL13/oJaiQyVKDY=
+	t=1782362020; cv=none; b=IGI6YKvlBPRVm1NTS4CjLk5zk2YzRZhPByR1YNoI3Rro7WXivkaFfJi0c/SSYY9lVHbRTx1DQ2f/QqmF3frW7rSgL1OadcNzKEW0KG/6rsvUSaPqKRtHYgrrXTvyNkdrY+yvQYUU14AqOzEicvB2i33BAB7ykInAFku6XCRHrU0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782361774; c=relaxed/simple;
-	bh=UlySz4DuaXRDRfPr6IdbiYWxZRElJSPUvXxoBOgWpFk=;
-	h=Date:To:From:Subject:Message-Id; b=Dv1qJX/o1qoojdkDtgRGdjv1SNWvkGiQlxs145eVdnWAJNFxyz/VooXb1QlxSuDjZTPCkrWHApSQjrqGHQhMDq9Ktu6rths7V7nbKFDid8O6kpUWwW1mTqnGAFe/Ep3T9mFe46J912i0WWSIzcRucjFzIpcRWbqQo8CGwGJUfSc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=F/oIFBGC; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E9A11F000E9;
-	Thu, 25 Jun 2026 04:29:32 +0000 (UTC)
+	s=arc-20240116; t=1782362020; c=relaxed/simple;
+	bh=di87V4TuWc8GxaW2bpmtLqkg86RNsVY13ZKDNnUAke8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=rwgZ/qhLDNvaoWPXv7BJSfdqtkGEqkaPWHKJ7wELKm1UUDbKnDXEfXlVi1x399A5YOCLEtJtKlGVQyk2jKJQwkpcDW1sexlnhYJbVJdJQkcLPNvGj+Yodw+fTzKlQSXxOAtMc/tBDyoI6la1J0SoCVM4rxYxqkGsIBrQ7wTa+D4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=EWmExZUF; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=PWSH4snW; arc=none smtp.client-ip=205.220.168.131
+Received: from pps.filterd (m0279864.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 65P3eBTN559066
+	for <stable@vger.kernel.org>; Thu, 25 Jun 2026 04:33:39 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	0+FT5jSvovKl8mmSq0cLr6FQpeeAxgbMVrgag/p1Y74=; b=EWmExZUF1I3+nn1z
+	iwUXTnwl0sTFyMMiydaHqbC2SdsIEEj/T8YdA0Z2lp9x3g3z+5Ui/Yf29u7CFRd5
+	ZS5eTePRAFHD4tWDh21LqlNr5oZ9XT+WpRLtFVXeGX+Xd/lAN4oQjCt6SH7RNL58
+	HVWk6A6aVw8rtbBP4920wvJJ/OvKNmEvg8tqX7PwzWtJpH4utoGKh4liwjunQD6W
+	J1bJamDStUNdGsziDCsoXAdLkCoa5aVVxUPCrj4l4CHPzQflZ37lDDyr5EzbErq0
+	bFebqKrzn9MWtRi6HN6cfCv4Qli7LfXjyTV3+WLyuM5Cb6VFHglxqixqV6Q2VFnY
+	nv2AHQ==
+Received: from mail-dy1-f199.google.com (mail-dy1-f199.google.com [74.125.82.199])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4f0d454033-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <stable@vger.kernel.org>; Thu, 25 Jun 2026 04:33:38 +0000 (GMT)
+Received: by mail-dy1-f199.google.com with SMTP id 5a478bee46e88-30c011c7cb9so5194252eec.1
+        for <stable@vger.kernel.org>; Wed, 24 Jun 2026 21:33:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1782361772;
-	bh=kJVGM8wSDVbnbVqKm3ymMFciPHvcmhn0xpg9kQna8VU=;
-	h=Date:To:From:Subject;
-	b=F/oIFBGClR1ZGnQHi2r0RCDoEhwEM1VtA7Q2gXh9J7Z+ALGFsIknkGDvw6zp5In73
-	 MTZTZbIhv7hmCqlgpIyssDhJzAcIGWExW+WgzosxNmEhZXIE92cCKtzk3CVim+bK38
-	 g3nBcMB1hPU0Igc+j1Wu9+/vIGO5YmjfplKS9qBU=
-Date: Wed, 24 Jun 2026 21:29:32 -0700
-To: mm-commits@vger.kernel.org,stable@vger.kernel.org,sj@kernel.org,oleg@redhat.com,lance.yang@linux.dev,dave@stgolabs.net,catalin.marinas@arm.com,cai@lca.pw,leitao@debian.org,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: + mm-kmemleak-avoid-soft-lockup-when-scanning-task-stacks.patch added to mm-new branch
-Message-Id: <20260625042932.6E9A11F000E9@smtp.kernel.org>
+        d=oss.qualcomm.com; s=google; t=1782362018; x=1782966818; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=0+FT5jSvovKl8mmSq0cLr6FQpeeAxgbMVrgag/p1Y74=;
+        b=PWSH4snWfILMzzVwiN+0Bwajlw7779aLYskcLfRHl0JNnfB4QW6AgHRo7WRIFqSlSN
+         IscHnOQCASaLJAQTe2BkElc8W6J5PXQpUM7hjL9/tHd7KsxqhWTc+J+F71JQtQP3m332
+         7asklkRRdj16d/bN+gxfDUeXm0VmuHYS5Yip+ECcHFFmcf33NvizxnRSer7rMZPPyCLy
+         oLFja2eyrfEVfDhaJOKPZwzXVL/SPXhpSswEAuNbNL50X4Ds4itnoQAG+NTBXT9OEEYG
+         zFrXYidpzqwPxy6KAHqoRg5kJ9wyujVWcM/VIXlENW+KHgW6LMkY4f6MXz6Tp9zYJwET
+         QawQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1782362018; x=1782966818;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=0+FT5jSvovKl8mmSq0cLr6FQpeeAxgbMVrgag/p1Y74=;
+        b=AWyE1k1lfI7lkzjKCcdFICAhSzFHVzcb6VuS0LrYBGDayL77KuIY/5TkySmJWKzh45
+         O0vYTr7FcY2g05syveCnM2IHbRuMx1JIHDVehT4gpiE8BQ5xYZXC7k9iwtgxYjLs6zkM
+         zSQcm563SA4o34rTftewhtKrRDuVy52j2Q4dVdwCBjYjnPcHOjE92c5oX14MTfipbPQP
+         OYQC/YCHs2MJRmA0EX2UIk0Re3t7Sq19sLRv2bMpJA5cMauu8Y6gkJvVTtB0UJLPIctC
+         1iR/fybcy10y95kRXPwFp3AzxzVlGbBo5FqtfjQIjUrljjZdQjuoCTd0G3+x2Y6MJhMO
+         pPIw==
+X-Forwarded-Encrypted: i=1; AHgh+RpQJEf41jot42m2dmE3U4hOZWkajyeBT9rMLm7oj+0irLm22UAjXR6Ai7dJJgjHFecAp4wUR/A=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzGOVdrl2o+4F+OaPmFb0qDSbOJknQP6C1BVZqAfQOvxM3Hvk4Q
+	zlmLW8aa41yXG3guvg33p3WUFqi/G4wn0Cw0RQ56noVKasDM75Qzjccl5E2oRzZShl/XdnxM616
+	XTWFbvh0VSXlyVGlpfly80LA23dEbjc2ifCcPduJhvSe0g+JtgFdj+VeR8yU=
+X-Gm-Gg: AfdE7cmBQb9NRNfX/iUYh7YwRxfJH41M3cUvAjqshdNpIayErufgviru0L91dxxX4lq
+	dJ3OcE3up4St0y4sPsLIJNqVVN/T21nETSpfHdB1VVrglrvPEmPF8XQhAQnnZSlvye8SoNGbeF4
+	NX6r7k2z1QokESo2eeEKfqeBahivp0be2hztmp8KCXiFQaXcZ0y28ZlfH1vaEK+CyyrNhW4Fjse
+	8dck0wQCRTZgJbygdigpiNpOeVjLzm3+sB7xYh5Kmg7f7XyFHKSJQMP6kupX7yeJ3phd4lx6TQZ
+	qmlswXr2EiSgFmhs6Ugped6pMcVELsvmCmdfCUXNF/YI5b+AjBSweG5WeQEnYezz5kkRogWesiy
+	a35pUmMrHeu7Ztz86iEjvFGs1SjWgSRBJBL7liZQ=
+X-Received: by 2002:a05:7300:7308:b0:2dd:c066:bf7 with SMTP id 5a478bee46e88-30c84e2074cmr1135173eec.11.1782362018187;
+        Wed, 24 Jun 2026 21:33:38 -0700 (PDT)
+X-Received: by 2002:a05:7300:7308:b0:2dd:c066:bf7 with SMTP id 5a478bee46e88-30c84e2074cmr1135135eec.11.1782362017677;
+        Wed, 24 Jun 2026 21:33:37 -0700 (PDT)
+Received: from [10.218.15.172] ([202.46.22.19])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-30c7c52c664sm4251756eec.8.2026.06.24.21.33.34
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 24 Jun 2026 21:33:37 -0700 (PDT)
+Message-ID: <37f34aff-c68f-43ca-b23c-500cc9bb119e@oss.qualcomm.com>
+Date: Thu, 25 Jun 2026 10:03:32 +0530
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3] pinctrl: qcom: Unconditionally mark gpio as wakeup
+ enable
+To: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Linus Walleij <linusw@kernel.org>,
+        Neil Armstrong <neil.armstrong@linaro.org>,
+        Krzysztof Kozlowski <krzk@kernel.org>
+Cc: linux-arm-msm@vger.kernel.org, linux-gpio@vger.kernel.org,
+        linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+        Maulik Shah <maulik.shah@oss.qualcomm.com>
+References: <20260616-enable_wakeup_capable_gpios-v3-1-fb59647d89cb@oss.qualcomm.com>
+ <d9e778ea-8a67-4576-9c96-9cfd859a266a@oss.qualcomm.com>
+Content-Language: en-US
+From: Sneh Mankad <sneh.mankad@oss.qualcomm.com>
+In-Reply-To: <d9e778ea-8a67-4576-9c96-9cfd859a266a@oss.qualcomm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNjI1MDAzNyBTYWx0ZWRfX2Vg6t+FbXv89
+ A7JWouo4xTiLl/969gRuWEM6F7MpRyxFQEokOfFIBY4CsN0YBy3qg126Pq8BaD5Cx2CgQMUVKhm
+ G6QEp2CxF963wRGn5447yRkzjwigEGXke6BoAKd4y+BpmrfdhIwtsK1fDSAEdReR80PBWlRKVIC
+ 6qfSi6A5mKHdI/SKpGO+ebBwbhJ6u0aSHTb2coiYDZQkeTlo2KLo4+ohCGkwY40bAQuNUIaY6YC
+ /PZUQI8eJ37b6AlZRjnT5jy750t930OC5WizUz4q+/kwDBlHCjkrfwiNWKPrwIsYTyAjLJxJZky
+ BYXdFDcICyXDQq1Mpwc6AvbIZggsJTC2XHJ71H6dyht/1NgXFXHSVUlctuOd0LLYAM8hhlfEU5P
+ XodVyDhFMuuqE5ZuWQUht8U25g3cN1fsD8m9Qd0qpIN/9Kd7gdPEwfycdTc9mbHa/jz0qtIfr+m
+ 8y/hWVFumPQmYFtewgA==
+X-Proofpoint-GUID: MXeRSx3CexT0ucmAH9-b1jgy0eiLWQ1Y
+X-Proofpoint-Spam-Info: AW1haW4tMjYwNjI1MDAzNyBTYWx0ZWRfXzTGTHNzYHgsm
+ Sme696fVu/RlQikSJtx9nLg/Q3FdCt7dv5PSAUVt8shJNO/vQf5SYTPIC/Tfebq/YR1bpUnC9Ia
+ bB6djdAEXu4H3LvwbXyOCdr3215zguE=
+X-Authority-Analysis: v=2.4 cv=Ar7eGu9P c=1 sm=1 tr=0 ts=6a3cafa2 cx=c_pps
+ a=cFYjgdjTJScbgFmBucgdfQ==:117 a=fChuTYTh2wq5r3m49p7fHw==:17
+ a=IkcTkHD0fZMA:10 a=FelO9ux0wxsA:10 a=s4-Qcg_JpJYA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=DJpcGTmdVt4CTyJn9g5Z:22
+ a=K6J0lT_fCWCxxGhrr3QA:9 a=QEXdDO2ut3YA:10 a=scEy_gLbYbu1JhEsrz4S:22
+X-Proofpoint-ORIG-GUID: MXeRSx3CexT0ucmAH9-b1jgy0eiLWQ1Y
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.125,FMLib:17.12.100.49
+ definitions=2026-06-25_01,2026-06-24_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ lowpriorityscore=0 priorityscore=1501 suspectscore=0 spamscore=0
+ malwarescore=0 bulkscore=0 impostorscore=0 phishscore=0 adultscore=0
+ clxscore=1015 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2606150000
+ definitions=main-2606250037
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.16 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64];
-	R_DKIM_ALLOW(-0.20)[linux-foundation.org:s=korg];
+	DMARC_POLICY_ALLOW(-0.50)[qualcomm.com,reject];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[qualcomm.com:s=qcppdkim1,oss.qualcomm.com:s=google];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-268257-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:mm-commits@vger.kernel.org,m:stable@vger.kernel.org,m:sj@kernel.org,m:oleg@redhat.com,m:lance.yang@linux.dev,m:dave@stgolabs.net,m:catalin.marinas@arm.com,m:cai@lca.pw,m:leitao@debian.org,m:akpm@linux-foundation.org,s:lists@lfdr.de];
-	FROM_NEQ_ENVFROM(0.00)[akpm@linux-foundation.org,stable@vger.kernel.org];
-	DMARC_NA(0.00)[linux-foundation.org];
-	FORWARDED(0.00)[lists@lfdr.de];
-	DKIM_TRACE(0.00)[linux-foundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_SENDER(0.00)[akpm@linux-foundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_NONE(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[10];
-	TAGGED_RCPT(0.00)[stable];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[qualcomm.com:+,oss.qualcomm.com:+];
+	FORWARDED(0.00)[lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-268259-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_SENDER(0.00)[sneh.mankad@oss.qualcomm.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS(0.00)[m:konrad.dybcio@oss.qualcomm.com,m:andersson@kernel.org,m:linusw@kernel.org,m:neil.armstrong@linaro.org,m:krzk@kernel.org,m:linux-arm-msm@vger.kernel.org,m:linux-gpio@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,m:maulik.shah@oss.qualcomm.com,s:lists@lfdr.de];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo];
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[sneh.mankad@oss.qualcomm.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	ALIAS_RESOLVED(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[10];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linux-foundation.org:dkim,linux-foundation.org:email,linux-foundation.org:from_mime,stgolabs.net:email,linux.dev:email,arm.com:email,smtp.kernel.org:mid]
+	TAGGED_RCPT(0.00)[stable];
+	RCVD_COUNT_SEVEN(0.00)[7]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: C95306C2A9C
+X-Rspamd-Queue-Id: 719706C2AB3
 
 
-The patch titled
-     Subject: mm/kmemleak: avoid soft lockup when scanning task stacks
-has been added to the -mm mm-new branch.  Its filename is
-     mm-kmemleak-avoid-soft-lockup-when-scanning-task-stacks.patch
 
-This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-kmemleak-avoid-soft-lockup-when-scanning-task-stacks.patch
+[...]
+> 
+> This is a much better commit message, thank you!
+> 
+> One question remains - should we set skip_wake_irqs for MPM too?
+> 
+> My understanding is that no, since the MPM HW is simpler and doesn't
+> have a register for acking IRQs, so we need to do it from the recipient
+> (TLMM). Is that right?
+> 
+Yes that is correct. skip_wake_irqs is set for PDC since PDC can handle interrupts
+during active time and SoC sleep time both, so any wakeup capable interrupt source can
+be handled via PDC at all times. However MPM can only handle interrupts when
+SoC is in low power mode, it does not have the functionality to detect them when SoC
+is active. skip_wake_irqs differentiates this behaviour.
 
-This patch will later appear in the mm-new branch at
-    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-
-Note, mm-new is a provisional staging ground for work-in-progress
-patches, and acceptance into mm-new is a notification for others take
-notice and to finish up reviews.  Please do not hesitate to respond to
-review feedback and post updated versions to replace or incrementally
-fixup patches in mm-new.
-
-The mm-new branch of mm.git is not included in linux-next
-
-If a few days of testing in mm-new is successful, the patch will me moved
-into mm.git's mm-unstable branch, which is included in linux-next
-
-Before you just go and hit "reply", please:
-   a) Consider who else should be cc'ed
-   b) Prefer to cc a suitable mailing list as well
-   c) Ideally: find the original patch on the mailing list and do a
-      reply-to-all to that, adding suitable additional cc's
-
-*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
-
-The -mm tree is included into linux-next via various
-branches at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-and is updated there most days
-
-------------------------------------------------------
-From: Breno Leitao <leitao@debian.org>
-Subject: mm/kmemleak: avoid soft lockup when scanning task stacks
-Date: Mon, 15 Jun 2026 10:49:06 -0700
-
-Patch series "mm/kmemleak: avoid soft lockup when scanning task", v3.
-
-kmemleak_scan() scans every task stack under one rcu_read_lock() with no
-reschedule point, which can trip the soft lockup watchdog on hosts with
-very many threads.
-
-That prints the following message, depending on the workload+host
-configuration:
-
-      watchdog: BUG: soft lockup - CPU#35 stuck for 22s! [kmemleak:537]
-       scan_block
-       kmemleak_scan
-       kmemleak_scan_thread
-       kthread
-
-Patch 1 walks the tasks with find_ge_pid() so the scan reschedules between
-tasks
-
-Patches 2-3 let the scan loops stop early once a scan is interrupted.
-
-
-This patch (of 3):
-
-kmemleak_scan() walks every thread and scans its kernel stack under a
-single rcu_read_lock() with no reschedule point.  On a host with very many
-threads -- amplified by KASAN/lockdep in debug builds -- this loop can hog
-a CPU long enough to trip the soft lockup watchdog:
-
-  watchdog: BUG: soft lockup - CPU#35 stuck for 22s! [kmemleak:537]
-   scan_block
-   kmemleak_scan
-   kmemleak_scan_thread
-   kthread
-
-A cond_resched() cannot be added directly: the loop runs inside an RCU
-read-side critical section.
-
-Walk the tasks one PID at a time with find_ge_pid(), taking the RCU read
-lock only to look up and pin each task.  The stack is then scanned with no
-lock held, so cond_resched() runs between tasks and the scan stops early
-on scan_should_stop().  This follows the next_tgid()/task_seq_get_next()
-iteration pattern and keeps each RCU critical section short.
-
-Link: https://lore.kernel.org/20260615-kmemleak-stack-resched-v3-0-acecd7d7fd92@debian.org
-Link: https://lore.kernel.org/20260615-kmemleak-stack-resched-v3-1-acecd7d7fd92@debian.org
-Fixes: c4b28963fd79 ("mm/kmemleak: rely on rcu for task stack scanning")
-Signed-off-by: Breno Leitao <leitao@debian.org>
-Reviewed-by: Catalin Marinas <catalin.marinas@arm.com>
-Reviewed-by: Davidlohr Bueso <dave@stgolabs.net>
-Reviewed-by: Lance Yang <lance.yang@linux.dev>
-Reviewed-by: Oleg Nesterov <oleg@redhat.com>
-Cc: Qian Cai <cai@lca.pw>
-Cc: SeongJae Park <sj@kernel.org>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
----
-
- mm/kmemleak.c |   51 +++++++++++++++++++++++++++++++++++-------------
- 1 file changed, 38 insertions(+), 13 deletions(-)
-
---- a/mm/kmemleak.c~mm-kmemleak-avoid-soft-lockup-when-scanning-task-stacks
-+++ a/mm/kmemleak.c
-@@ -1696,6 +1696,42 @@ unlock_put:
- }
- 
- /*
-+ * Scan all task kernel stacks, rescheduling between tasks. Each task is looked
-+ * up and pinned within its own RCU read-side section, so no lock is held across
-+ * the scan and the walk cannot trip the soft lockup watchdog.
-+ */
-+static void kmemleak_scan_task_stacks(void)
-+{
-+	struct pid *pid;
-+	int nr = 1;
-+
-+	do {
-+		struct task_struct *p = NULL;
-+
-+		rcu_read_lock();
-+		pid = find_ge_pid(nr, &init_pid_ns);
-+		if (pid) {
-+			nr = pid_nr(pid) + 1;
-+			p = pid_task(pid, PIDTYPE_PID);
-+			if (p)
-+				get_task_struct(p);
-+		}
-+		rcu_read_unlock();
-+
-+		if (p) {
-+			void *stack = try_get_task_stack(p);
-+
-+			if (stack) {
-+				scan_block(stack, stack + THREAD_SIZE, NULL);
-+				put_task_stack(p);
-+			}
-+			put_task_struct(p);
-+		}
-+		cond_resched();
-+	} while (pid && !scan_should_stop());
-+}
-+
-+/*
-  * Print one leak inline. The hex dump is gated on OBJECT_ALLOCATED so it
-  * does not touch user memory that was freed concurrently; the rest of the
-  * report (backtrace, comm, pid) is always emitted since the kmemleak_object
-@@ -1884,19 +1920,8 @@ static void kmemleak_scan(void)
- 	/*
- 	 * Scanning the task stacks (may introduce false negatives).
- 	 */
--	if (kmemleak_stack_scan) {
--		struct task_struct *p, *g;
--
--		rcu_read_lock();
--		for_each_process_thread(g, p) {
--			void *stack = try_get_task_stack(p);
--			if (stack) {
--				scan_block(stack, stack + THREAD_SIZE, NULL);
--				put_task_stack(p);
--			}
--		}
--		rcu_read_unlock();
--	}
-+	if (kmemleak_stack_scan)
-+		kmemleak_scan_task_stacks();
- 
- 	/*
- 	 * Scan the objects already referenced from the sections scanned
-_
-
-Patches currently in -mm which might be from leitao@debian.org are
-
-mm-kmemleak-avoid-soft-lockup-when-scanning-task-stacks.patch
-mm-kmemleak-stop-the-task-stack-scan-early-when-interrupted.patch
-mm-kmemleak-stop-the-per-cpu-and-struct-page-scans-early-too.patch
+Thanks,
+Sneh
 
 
