@@ -1,68 +1,64 @@
-Return-Path: <stable+bounces-268463-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-268490-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id kVi5M44oPWqVyAgAu9opvQ
-	(envelope-from <stable+bounces-268463-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 15:09:34 +0200
+	id x/ViLx0pPWrayAgAu9opvQ
+	(envelope-from <stable+bounces-268490-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 15:11:57 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 47BFA6C5F4B
-	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 15:09:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 648166C6007
+	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 15:11:57 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="B/c7UUbz";
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-268463-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-268463-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="S7OzZ/p3";
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-268490-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-268490-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 64A613049706
-	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 13:09:00 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 168113045B2E
+	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 13:10:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B34432ECE91;
-	Thu, 25 Jun 2026 13:08:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EABFF28751B;
+	Thu, 25 Jun 2026 13:10:25 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26A8F28751B;
-	Thu, 25 Jun 2026 13:08:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C041C29B77C;
+	Thu, 25 Jun 2026 13:10:24 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782392939; cv=none; b=lH5Px+M1HOikX4NQHjQ+cFQM9cvNQGd2Y7KqKzukQmUS4V09U4jw/53FCQnTxpyNS41JVSZpzxbQUSXy9uegjf0A6ktb7g9rZPsCsHdfo8GFS65dk8ngNAUKrFPMXY6RiY3h16PszG85UURiR/xna6KnsUQaZNydy3NenugYj1g=
+	t=1782393025; cv=none; b=nHA8n9oEgQvR2JLF3uTGBjb5/hg1m0pcR0ZzgfYlWbCn9JBYDKc4C6JrbfeIaPRUvXw9RG75iDINk0pZKpUdhTnk0jk0gYPKksj2NxSj7cH8CumFrseuR5MIW8aa0cht/7RcosQZoihQJz/03gC8JWjmPqf/VVL/8m31pIdCIEc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782392939; c=relaxed/simple;
-	bh=2Xkdz8U6YWN9dlGsgaLyy1BzZzOw+TMKTLNnHS4ajuU=;
+	s=arc-20240116; t=1782393025; c=relaxed/simple;
+	bh=5TAtTU2Ev4uBCj2XbNoG64Ogb3SxyCs9PqIC/wwgUGE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SLztIgZv4JBX6zDhAVh77IDd5jY8zc07Ag/n7s8rEvYmZYfmg44Zt67j9+q0UcUj/DHqUBy7A/epWVTErRHcjPAnAtWWTLQdFCg2MXHYzslc4ApN/cUKQorkWHSHLbJ8U3gff66dW1uDgjVN3RFQOsOgv83QdZV3XpmLxPii0JQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=B/c7UUbz; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC33B1F000E9;
-	Thu, 25 Jun 2026 13:08:54 +0000 (UTC)
+	 MIME-Version:Content-Type; b=IITC4HdnJxwC74b60x8WRvK5WOe2naC0aeaZ6IBE0Y+bwZJJWeGKh52x1mjdHFLE1MkxXe/VrcqTOwPQOMWH7CzMK1sj7ENCi5ZtBnbBXjJViz/AFqz/8XaoAVSiN4BHO6eow8ks1qCEUOf1ofWTcrGEHtgsNugmNkWGWJej+gg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S7OzZ/p3; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11AB41F000E9;
+	Thu, 25 Jun 2026 13:10:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1782392935;
-	bh=PcXuE1OwINzyCK6VE9Gdcs+F2erLcX6mG0QApTD+yr8=;
+	s=korg; t=1782393024;
+	bh=JhBai0q7pthUo7ka1itYdt5n6IBoSRoX+zXucFINRMg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=B/c7UUbz2FgUUDI40ttwWjOuTK+V7i1CaXNmQneocd3suo61A+OvldCphIL11DZ+z
-	 M7jbLItklbS5D4DbhD7KE0QzXvU0nhjClPcEd/MkoaKdc2K0naNCG3044RuEsuk5Lo
-	 kuoMTusMKE94rwg0WxzxqIx7naKAX5RhMGL0XA2g=
+	b=S7OzZ/p3oHBfH5Wpr/Ipp3dij0f28hLh8KJ0BEe2RzRX4T3DpQXIRKIZy6WhT6uTE
+	 Xkhzz63nJ3jPJG3psx4MTD4NyWJAEVQrWJaB/oYcxyIs+qvMY+mdxzeogs5DfmBlvU
+	 ZoLC1Zhex+lPrqwcsBiqCoUQEs0EKdRBKAgpvsY0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	Chris Mason <clm@meta.com>,
-	"David Hildenbrand (Red Hat)" <david@kernel.org>,
-	Pedro Falcato <pfalcato@suse.de>,
-	Liam Howlett <liam.howlett@oracle.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.18 60/60] mm: do not copy page tables unnecessarily for VM_UFFD_WP
-Date: Thu, 25 Jun 2026 14:03:45 +0100
-Message-ID: <20260625125654.507572774@linuxfoundation.org>
+	stable <stable@kernel.org>,
+	Jonathan Cameron <jic23@kernel.org>,
+	David Lechner <dlechner@baylibre.com>,
+	=?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>,
+	Andy Shevchenko <andy@kernel.org>,
+	Sam Daly <sam@samdaly.ie>
+Subject: [PATCH 7.0 34/49] iio: adc: ti-ads1298: add bounds check to pga_settings index
+Date: Thu, 25 Jun 2026 14:03:46 +0100
+Message-ID: <20260625125642.322076574@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260625125645.554579168@linuxfoundation.org>
-References: <20260625125645.554579168@linuxfoundation.org>
+In-Reply-To: <20260625125637.527552689@linuxfoundation.org>
+References: <20260625125637.527552689@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,123 +68,96 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-268463-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-268490-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[13];
-	FORWARDED(0.00)[lists@lfdr.de];
+	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:lorenzo.stoakes@oracle.com,m:clm@meta.com,m:david@kernel.org,m:pfalcato@suse.de,m:liam.howlett@oracle.com,m:mhocko@suse.com,m:rppt@kernel.org,m:surenb@google.com,m:vbabka@suse.cz,m:akpm@linux-foundation.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:stable@kernel.org,m:jic23@kernel.org,m:dlechner@baylibre.com,m:nuno.sa@analog.com,m:andy@kernel.org,m:sam@samdaly.ie,s:lists@lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,suse.de:email,linux-foundation.org:email,suse.cz:email,vger.kernel.org:from_smtp,oracle.com:email,meta.com:email]
+	MID_RHS_MATCH_FROM(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,baylibre.com:email,samdaly.ie:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,analog.com:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 47BFA6C5F4B
+X-Rspamd-Queue-Id: 648166C6007
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+From: Sam Daly <sam@samdaly.ie>
 
-commit 35e247032606f06c2f19d90a6562bc315206b7a7 upstream.
+commit 95e8a48d7a85d4226934020e57815a3316d3a14b upstream.
 
-Commit ab04b530e7e8 ("mm: introduce copy-on-fork VMAs and make
-VM_MAYBE_GUARD one") aggregates flags checks in vma_needs_copy(),
-including VM_UFFD_WP.
+ads1298_pga_settings has 7 elements but ADS1298_MASK_CH_PGA can yield
+values 0-7. If it yields a value >= 7, this causes an out-of-bounds
+array access. Add a bounds check and return -EINVAL if the index
+is out of range.
 
-However in doing so, it incorrectly performed this check against src_vma.
-This check was done on the assumption that all relevant flags are copied
-upon fork.
+Note that the remaining value b111 is reserved so should not be seen
+in a correctly functioning system.
 
-However the userfaultfd logic is very innovative in that it implements
-custom logic on fork in dup_userfaultfd(), including a rather well hidden
-case where lacking UFFD_FEATURE_EVENT_FORK causes VM_UFFD_WP to not be
-propagated to the destination VMA.
-
-And indeed, vma_needs_copy(), prior to this patch, did check this property
-on dst_vma, not src_vma.
-
-Since all the other relevant flags are copied on fork, we can simply fix
-this by checking against dst_vma.
-
-While we're here, we fix a comment against VM_COPY_ON_FORK (noting that it
-did indeed already reference dst_vma) to make it abundantly clear that we
-must check against the destination VMA.
-
-Link: https://lkml.kernel.org/r/20260114110006.1047071-1-lorenzo.stoakes@oracle.com
-Fixes: ab04b530e7e8 ("mm: introduce copy-on-fork VMAs and make VM_MAYBE_GUARD one")
-Signed-off-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Reported-by: Chris Mason <clm@meta.com>
-Closes: https://lore.kernel.org/all/20260113231257.3002271-1-clm@meta.com/
-Acked-by: David Hildenbrand (Red Hat) <david@kernel.org>
-Acked-by: Pedro Falcato <pfalcato@suse.de>
-Cc: Liam Howlett <liam.howlett@oracle.com>
-Cc: Michal Hocko <mhocko@suse.com>
-Cc: Mike Rapoport <rppt@kernel.org>
-Cc: Suren Baghdasaryan <surenb@google.com>
-Cc: Vlastimil Babka <vbabka@suse.cz>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Assisted-by: gkh_clanker_2000
+Cc: stable <stable@kernel.org>
+Cc: Jonathan Cameron <jic23@kernel.org>
+Cc: David Lechner <dlechner@baylibre.com>
+Cc: "Nuno Sá" <nuno.sa@analog.com>
+Cc: Andy Shevchenko <andy@kernel.org>
+Signed-off-by: Sam Daly <sam@samdaly.ie>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Jonathan Cameron <jic23@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/mm.h |    6 +++++-
- mm/memory.c        |    6 +++++-
- 2 files changed, 10 insertions(+), 2 deletions(-)
+ drivers/iio/adc/ti-ads1298.c |    7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
---- a/include/linux/mm.h
-+++ b/include/linux/mm.h
-@@ -540,7 +540,11 @@ extern unsigned int kobjsize(const void
- /*
-  * Flags which should result in page tables being copied on fork. These are
-  * flags which indicate that the VMA maps page tables which cannot be
-- * reconsistuted upon page fault, so necessitate page table copying upon
-+ * reconsistuted upon page fault, so necessitate page table copying upon fork.
-+ *
-+ * Note that these flags should be compared with the DESTINATION VMA not the
-+ * source, as VM_UFFD_WP may not be propagated to destination, while all other
-+ * flags will be.
-  *
-  * VM_PFNMAP / VM_MIXEDMAP - These contain kernel-mapped data which cannot be
-  *                           reasonably reconstructed on page fault.
---- a/mm/memory.c
-+++ b/mm/memory.c
-@@ -1479,7 +1479,11 @@ copy_p4d_range(struct vm_area_struct *ds
- static bool
- vma_needs_copy(struct vm_area_struct *dst_vma, struct vm_area_struct *src_vma)
+--- a/drivers/iio/adc/ti-ads1298.c
++++ b/drivers/iio/adc/ti-ads1298.c
+@@ -279,6 +279,7 @@ static const u8 ads1298_pga_settings[] =
+ static int ads1298_get_scale(struct ads1298_private *priv,
+ 			     int channel, int *val, int *val2)
  {
--	if (src_vma->vm_flags & VM_COPY_ON_FORK)
-+	/*
-+	 * We check against dst_vma as while sane VMA flags will have been
-+	 * copied, VM_UFFD_WP may be set only on dst_vma.
-+	 */
-+	if (dst_vma->vm_flags & VM_COPY_ON_FORK)
- 		return true;
- 	/*
- 	 * The presence of an anon_vma indicates an anonymous VMA has page
++	unsigned int pga_idx;
+ 	int ret;
+ 	unsigned int regval;
+ 	u8 gain;
+@@ -302,7 +303,11 @@ static int ads1298_get_scale(struct ads1
+ 	if (ret)
+ 		return ret;
+ 
+-	gain = ads1298_pga_settings[FIELD_GET(ADS1298_MASK_CH_PGA, regval)];
++	pga_idx = FIELD_GET(ADS1298_MASK_CH_PGA, regval);
++	if (pga_idx >= ARRAY_SIZE(ads1298_pga_settings))
++		return -EINVAL;
++
++	gain = ads1298_pga_settings[pga_idx];
+ 	*val /= gain; /* Full scale is VREF / gain */
+ 
+ 	*val2 = ADS1298_BITS_PER_SAMPLE - 1; /* Signed, hence the -1 */
 
 
 
