@@ -1,192 +1,172 @@
-Return-Path: <stable+bounces-268372-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-268373-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 5n+7Ij0bPWpsxAgAu9opvQ
-	(envelope-from <stable+bounces-268372-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 14:12:45 +0200
+	id tVQvCt8bPWqNxAgAu9opvQ
+	(envelope-from <stable+bounces-268373-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 14:15:27 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id DC5286C5716
-	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 14:12:44 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8763E6C576B
+	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 14:15:26 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b="HO/k9oYi";
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-268372-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-268372-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("subspace.kernel.org:s=arc-20240116:i=2")
+	dkim=pass header.d=intel.com header.s=Intel header.b=hOAiF4Ku;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-268373-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-268373-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=none) header.from=intel.com;
+	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 3B9D830B50BF
-	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 12:11:36 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 574B7300FFBB
+	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 12:11:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9792E3E00BC;
-	Thu, 25 Jun 2026 12:11:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B0793DE423;
+	Thu, 25 Jun 2026 12:11:47 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ej1-f53.google.com (mail-ej1-f53.google.com [209.85.218.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F27FA3DE44C
-	for <stable@vger.kernel.org>; Thu, 25 Jun 2026 12:11:32 +0000 (UTC)
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782389494; cv=pass; b=hBcjBEXvp5oLdmeTtpljrTRJCxjwhBxX9l8cZyRYG6eXcEn7uriv056CmeXy9hZEC51xugEEOt1KfwsYqeu3vizx68qqWqnY86VGSSP2Cj5rl9EpF7Q1u80bS40sOfDvolKnmIgb235+3YIJEm60UtHOSH0uKl1kk9R7RDMTrCA=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782389494; c=relaxed/simple;
-	bh=dvfHNjej7ZjvsdyQwyTkaRWLoQAqdpodctTv/A1RL0w=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ovu5cGzbXb2/+R7+DyNpZevOS4il1IA1G4Ed3+UEo8mX0GTzVYBJsGWYpOfNisQj3ROuovvbWLs7S4AHjsxo4SXFqUdVFF+XJKDYvLlALUehPSydtgxe+pzQWRvT9V3B9nB0b+3zndP2kDFfRm+B6F2Rirl606ZfPbbPNHhL6rQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=HO/k9oYi; arc=pass smtp.client-ip=209.85.218.53
-Received: by mail-ej1-f53.google.com with SMTP id a640c23a62f3a-bec423a5265so461567566b.1
-        for <stable@vger.kernel.org>; Thu, 25 Jun 2026 05:11:32 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1782389491; cv=none;
-        d=google.com; s=arc-20260327;
-        b=OBztqe87u118NufjW4iJ4swPkJqW58l2gxX7ZuQhvqNdowMxzbgE3Rv6o4ckGKhsww
-         o+VTbJ3fBblc/QczaqknD05rmlHF5iXcgsB7PyqJFA9vbSfuzOUjvWYz1GufNA5++LKp
-         D+PZvVKICnGfkncZtyIQasFKrB7eF23xv3RVskh9+cnLa9FdzFHR3/sp4TfZ9f+x1adk
-         i39S1vt/la6npZwI1i6SL0KWVhwB67y6rCq0XmQiha8KZl/x4bA2dJok3PdUfV4hRLMe
-         NSVGlKDHQe7mtq6yRQ/EzbaWFpCzL0pKnKw57Q0UesChJ0URiB6Me79yxkW1nx/6VBZp
-         k1Yg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=sy1SYav9SVzosd+VjXbgDMHc4Gpj5+JzoNxVbAKdb/Q=;
-        fh=2mP+pJggPNCdSHANLJ91cUFqhCjso7LAPKRkrBNbUSI=;
-        b=VwjTINiQMyHZh/3eD3ywRX+qnBOPwE4jM7bGyhrCk8oxZ1MkUPGptnekIgPQZHbRSR
-         Nn2Uucu9LBS21yDhCUDVOBi9ro22Ph6ShK3hFeNXRZcWVgdMZWbpvVhSEvO1aasC6LGy
-         5i+CtJvDvgL0YITFCuClCyT4fO6TKvWRZI3S22nP5wnHROwAiiD282wll09vs7tbLGos
-         azdApA0I5G9lY8hT+Ll0kISVwkv35qOd/YAXNxVJcOeAEfWECkTrXt7sutkFmeqkkwgI
-         Cz/y2VBVbUfPlUR7B6XRk2K4lcmX1OrRjXpewCQAh2lGqwMb+gHOdcby7itXX/alCONm
-         6uog==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1782389491; x=1782994291; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=sy1SYav9SVzosd+VjXbgDMHc4Gpj5+JzoNxVbAKdb/Q=;
-        b=HO/k9oYi/arDGukAtXYxzH4hjgQ1CsdM8UXJxl1/ornl2dAw3TyjRt2Gg+0XHthThK
-         cRQG2uLNv112Akm/24/JgE4jJ4LKNs+pbvL7De1Z1yolm66vHNd2sKMKZ+t8rQTi6ZWW
-         CgDoFOlpAICJV3tQ0YjFLuQB/QCeZBOzfO+fgVSTLY7BCrQ6h3ZgzFZaGRCXISxC3RlZ
-         OB0Mu89SsxH9bE9igUv2d+NNXcjuD8IhL2FQ+IwIRkytBpkBZovYcn4fKSF1qDmW+Hdd
-         zlVug21UanpFPk1ilii46nuw013LFI2fvItiDLS6ESTbE0gOJtquxODzyRXTILs09uxc
-         d1Tg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782389491; x=1782994291;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=sy1SYav9SVzosd+VjXbgDMHc4Gpj5+JzoNxVbAKdb/Q=;
-        b=FJxlBUkNDOGrVcmc+Pub8XLMOuPUzNhEZ2TfpEUUhu/WFmyMz6ECEC+uapq5RWbnaa
-         H2S7n7UujcK6hg2dp7PfK94efyUzpa7bGBS95cDuZc7f1GsNlkLKVyNPaJElCZCZOcDF
-         q2aXIOcoTphs31wDbWyDKpmfiSApV9pkhx13kCz3X8CuB9/1lYNqBCCHeskdhQ1tHiLT
-         aut3nYtNNBLDDFAeOp6o91rQXeuBv3asJsPVUwq0rQw84i/tIFRJ9RuEjfa9RFtrrDQm
-         hjhsXQlVfwAVTotULTT2/Be2HBuR0VSgtSTeC2HwzQoxBzHxq3oTpmrnf2agkpS7nA48
-         f6hQ==
-X-Gm-Message-State: AOJu0YzOiPyc2fUQ9tDiyfByzWe75N8gqTITMIsHvsn/75JzEZ7+65VQ
-	yStAXTPTA2ASpieEbGmMlAm6TkRES1s4su4m+kFDFmxXbty9STv47jetUhHBS3mR55nt1ddo7LX
-	64IKaVTiAKgambMVYvI7amjgslX5SlHSzgSWSjyI=
-X-Gm-Gg: AfdE7cm2Zrh15c21rjtra7kHuRG1OU0fBSIu4Ctyi1mGyPCQ6vAn3vlvHog31wmNoW/
-	ZHDp+oEbNQlXu6MiXzDZqEzbVRnQsLODOOT/m5vAjWDYR9MEo6QzGa6dJOvKe1PaJlbl7WAxIux
-	IKcTyY5WOcevhivpEUfvdIq6uZRKsAueX40jcrM9duko0N9kc2IRRWAO0KOUUMivY6qOOaxio7d
-	n4MXHu3WHqMxye5IgtMLspNY1iZTQ11sBBV4VCZrXo+sgW8GAEmdQ37TIip4MBUHppkyuQ=
-X-Received: by 2002:a17:907:944b:b0:bfe:ed35:e857 with SMTP id
- a640c23a62f3a-c1205f24d70mr145337666b.51.1782389491028; Thu, 25 Jun 2026
- 05:11:31 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B44DD3DE44C
+	for <stable@vger.kernel.org>; Thu, 25 Jun 2026 12:11:44 +0000 (UTC)
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1782389507; cv=none; b=XqeD3boP4K7FnWCEyOUOnMpOUw1H5SKShfHucCcZiW73HiUgok1i/O0DOJobsuXlBb7X3PmotjWKHWsliQ11N/VAaEMt9HgUyyksJgabd444V+HTnviXnemfJd5GHsVfj+lSqnWzUnigeo0uE0TTsF4z7tdJD4C4/EWAtpVJP+E=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1782389507; c=relaxed/simple;
+	bh=4RTKbkitcOMjvGsAIVLHY1k5xkmU4W3qB9H7A5Crcx8=;
+	h=Content-Type:MIME-Version:In-Reply-To:References:Subject:From:Cc:
+	 To:Date:Message-ID; b=CdedD0R2mEGeLfkFTb4bH8jMKskjEFlezEzoySE4bNyhxX16rzV9DZZ1Rpbhf6PB4MY32wygL8t4kHAar3oV27ILCbRAvylvi9fkSrHfp8IAu0o7Dfg9C3xgs2B4JUCf1rnx13V3MY5ey0s/J70nTr3wWQHJQwWCOpclE9HPSTY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=hOAiF4Ku; arc=none smtp.client-ip=198.175.65.13
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1782389505; x=1813925505;
+  h=mime-version:content-transfer-encoding:in-reply-to:
+   references:subject:from:cc:to:date:message-id;
+  bh=4RTKbkitcOMjvGsAIVLHY1k5xkmU4W3qB9H7A5Crcx8=;
+  b=hOAiF4Ku+kwbfDg57HKSyKYp0nrt3JbkJxxNf7B3mGt0wxS0XQXlYGAp
+   fYK59MzSv5QZ5jO/3+pjksbMqg5LbPAxB7uuOYxyzGvjAyUidVIskYDrM
+   eyiZtv2q0rbgptP+IdgKwA1u3TOQ7YHWg244JZ39U/9ulIwcCuqJky+Wg
+   Oh7wHUi23Aih+cY+OzDtNJqM9Mdvf8C8lifCCHw8YFt8uO2A9EIL+sakb
+   2S8rkxXNEaSMjGi31q473td7IDtP48hBtsuia8aoXiyKbi1McUm7s1i2f
+   Dbl5MvfLxkeQlQpDK//R0zmhkQK7Qyk0z+buIptPC9fMH9VCWgpEqm+lX
+   w==;
+X-CSE-ConnectionGUID: J41DO6amRBKPqZwCY7JSMg==
+X-CSE-MsgGUID: J2uvSZPNSfiNB/nzWeBuKA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11827"; a="94282432"
+X-IronPort-AV: E=Sophos;i="6.24,224,1774335600"; 
+   d="scan'208";a="94282432"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Jun 2026 05:11:45 -0700
+X-CSE-ConnectionGUID: B7sQKSidSg2K32SffHmesQ==
+X-CSE-MsgGUID: lz2jBwjFRDqWegUGolBNTQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.24,224,1774335600"; 
+   d="scan'208";a="255557697"
+Received: from mkosciow-mobl1.ger.corp.intel.com (HELO localhost) ([10.245.245.75])
+  by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Jun 2026 05:11:42 -0700
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <CAG9krM_RbUhPgkcP6DFJM=jgDxMCNu8032=pM5OS2Agcxm-UKQ@mail.gmail.com>
- <2026062331-bruising-wimp-74a7@gregkh> <2026062320-backtrack-unusable-96e1@gregkh>
- <CAG9krM9398KH27SngNaujagzMz6DYfcSBFYzFaxj8aZMRh7_iQ@mail.gmail.com> <2026062536-pleat-unpiloted-9a6c@gregkh>
-In-Reply-To: <2026062536-pleat-unpiloted-9a6c@gregkh>
-From: Faicker Mo <faicker.mo@gmail.com>
-Date: Thu, 25 Jun 2026 20:11:18 +0800
-X-Gm-Features: AVVi8CcdYKMebHFtXnJXcdA6tNW1dm_JE3nKeL3dD5Qmfal9vO2EPEiGe2hn16o
-Message-ID: <CAG9krM-Ny2dL28umOotOGg8YtXkcReb11_QtyFMg8eJ=kNeiEg@mail.gmail.com>
-Subject: Re: need the upstream commit to be merged to stable kernel
-To: Greg KH <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <ajznzdwvxSv2YNHp@zenone.zhora.eu>
+References: <20260624090940.74840-1-joonas.lahtinen@linux.intel.com> <178230031953.112641.4817434529385736057@jlahtine-mobl> <ajvTjodx7LLj_BPO@zenone.zhora.eu> <178236741262.19845.6184407491878204182@jlahtine-mobl> <ajznzdwvxSv2YNHp@zenone.zhora.eu>
+Subject: Re: [PATCH] drm/i915: Return NULL on error in active_instanceg
+From: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
+Cc: Intel graphics driver community testing & development <intel-gfx@lists.freedesktop.org>, Martin Hodo <martin.hodo@intel.com>, Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Thomas =?utf-8?q?Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>, Simona Vetter <simona.vetter@ffwll.ch>, stable@vger.kernel.org
+To: Andi Shyti <andi.shyti@kernel.org>
+Date: Thu, 25 Jun 2026 15:11:39 +0300
+Message-ID: <178238949911.113301.5828200905284576123@jlahtine-mobl>
+User-Agent: alot/0.13.dev2+g40c57d620
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-2.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+X-Spamd-Result: default: False [-4.66 / 15.00];
+	WHITELIST_SPF_DKIM(-3.00)[intel.com:d:+,kernel.org:s:+];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_RHS_NOT_FQDN(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
+	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:gregkh@linuxfoundation.org,m:stable@vger.kernel.org,s:lists@lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER(0.00)[faickermo@gmail.com,stable@vger.kernel.org];
-	TAGGED_FROM(0.00)[bounces-268372-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	RCPT_COUNT_TWO(0.00)[2];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:intel-gfx@lists.freedesktop.org,m:martin.hodo@intel.com,m:maarten.lankhorst@linux.intel.com,m:thomas.hellstrom@linux.intel.com,m:simona.vetter@ffwll.ch,m:stable@vger.kernel.org,m:andi.shyti@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[joonas.lahtinen@linux.intel.com,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-268373-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FREEMAIL_FROM(0.00)[gmail.com];
 	FORGED_SENDER_FORWARDING(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[faickermo@gmail.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	MID_RHS_MATCH_FROMTLD(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_NEQ_ENVFROM(0.00)[joonas.lahtinen@linux.intel.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[intel.com:+];
+	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,mail.gmail.com:mid,linuxfoundation.org:email]
+	RCPT_COUNT_SEVEN(0.00)[7];
+	TO_DN_SOME(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,jlahtine-mobl:mid,intel.com:dkim,vger.kernel.org:from_smtp,linux.intel.com:from_mime]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: DC5286C5716
+X-Rspamd-Queue-Id: 8763E6C576B
 
-On Thu, Jun 25, 2026 at 3:32=E2=80=AFPM Greg KH <gregkh@linuxfoundation.org=
-> wrote:
->
-> On Thu, Jun 25, 2026 at 11:42:31AM +0800, Faicker Mo wrote:
-> > On Tue, Jun 23, 2026 at 3:06=E2=80=AFPM Greg KH <gregkh@linuxfoundation=
-.org> wrote:
-> > >
-> > > On Tue, Jun 23, 2026 at 09:03:42AM +0200, Greg KH wrote:
-> > > > On Tue, Jun 23, 2026 at 02:35:18PM +0800, Faicker Mo wrote:
-> > > > > Subject: net: net_failover: Fix the deadlock in slave register
-> > > > > Commit: b84c563
-> > > > > Reason: wish the upstream commit to be merged to 7.0, because Ubu=
-ntu
-> > > > > 26.04 (LTS) uses this kernel. Thanks.
-> > > > >
-> > > >
-> > > > Sure, but note that 7.0.y will go end-of-life in a matter of days :=
-)
-> > > >
-> > > > Also applied to 6.18.y which will not go end-of-life.
-> > >
-> > > Nope, breaks the build :(
-> > Hi, I tested it with make defconfig(CONFIG_NET_FAILOVER=3Dy), make
-> > vmlinux, no errors.
-> > Both 7.0.y and 6.18.y branches were tested.
->
-> Here's what I get:
->
-> $ make -j100
->   DESCEND objtool
->   CALL    scripts/checksyscalls.sh
->   INSTALL libsubcmd_headers
->   CC [M]  net/core/failover.o
->   CC [M]  drivers/net/net_failover.o
->   MODPOST Module.symvers
-> ERROR: modpost: "netif_open" [drivers/net/net_failover.ko] undefined!
-> make[2]: *** [scripts/Makefile.modpost:147: Module.symvers] Error 1
-> make[1]: *** [/home/gregkh/linux/stable/linux-7.0.y/Makefile:2061: modpos=
-t] Error 2
-> make: *** [Makefile:248: __sub-make] Error 2
-Got this.
-Need commit 3fdd33697c2b(net: export netif_open for self_test usage)
-Thanks.
+Quoting Andi Shyti (2026-06-25 11:50:50)
+> On Thu, Jun 25, 2026 at 09:03:32AM +0300, Joonas Lahtinen wrote:
+
+<SNIP>
+
+> The bug team is a different matter. Here we're talking about the
+> review process.
+
+What comes to the review process, you're entitled to express your
+opinion how things should be.
+
+If you do a rundown of average time spent on mailing list after R-b
+before merge split per subsystem / driver and show some stats for
+patches that are less than 10 lines, and we can maybe talk further.
+
+Don't see the point otherwise. You do you, and me do me.
+
+> > That's exactly what was done here. That's a fair ask, but asking for
+> > maintainers not to merge any code because of false positives is simply
+> > not.
+>=20
+> False positive or not, controversial or not, easy or difficult,
+> patches have *always* been blocked when BAT was red.
+
+There's a very clear difference between random noise in BAT and something
+being wrong in BAT due to the patch. The whole reason for BAT to be establi=
+shed
+was to have a fast litmus test if the patch would break the world.
+
+Original motivation was to avoid spinning up the more expensive shard
+runs if the litmus test doesn't pass. And it was recognized back then
+that we absolutely can't have false positives in BAT for things to work
+out reasonably.
+
+> Otherwise, we might as well stop running automatic tests for
+> patches considered "non-controversial" and save CI resources.
+
+Now that you bring it up, that's exactly what we should be targeting.
+
+There is zero point in forcibly attaching test results to an individual
+patch if that patch has exactly zero coverage in the test set.
+
+So for example here, if we would have some nice automated code coverage
+analysis that would have declared our tests don't have any coverage for
+the patch in question and skipped shards, that would have absolutely
+made sense (always allowing user to force the run, still).
+
+The shard test run for this specific patch offers no other value than
+an completely disconnected idle run of the test set. A completely
+disconnected idle run would probably be even more valuable as it
+wouldn't connect false positives to unrelated patch.
+
+But I don't think we're there yet. So in the meanwhile let's try to
+live with limitations of reality and fix some bugs.
+
+Regards, Joonas
 
