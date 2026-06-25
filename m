@@ -1,62 +1,81 @@
-Return-Path: <stable+bounces-268481-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-268447-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id RYqPJasoPWqiyAgAu9opvQ
-	(envelope-from <stable+bounces-268481-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 15:10:03 +0200
+	id J/w0ET4oPWppyAgAu9opvQ
+	(envelope-from <stable+bounces-268447-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 15:08:14 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3254A6C5F73
-	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 15:10:03 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id C5AF56C5ED7
+	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 15:08:13 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=DECfiP+N;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-268481-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-268481-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=A+uiwzbp;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-268447-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-268447-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id EBF2A303882B
-	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 13:09:58 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id EF09C3029610
+	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 13:08:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3755288530;
-	Thu, 25 Jun 2026 13:09:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 985562DCC13;
+	Thu, 25 Jun 2026 13:08:04 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4899C29B77C;
-	Thu, 25 Jun 2026 13:09:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B1A92D0C79;
+	Thu, 25 Jun 2026 13:08:03 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782392997; cv=none; b=df2SE8wWkZbn+IYPqLMffb9uC4YJBgb8a5wqxzroKqZ6ZFAGChA8CSJFr6dPtSrE5B+eDljO0iGSAl7YxN/1LLaKsm41Qxubrq9O99ctEpOZpDnSL9conEDrkev/+xmIF823pNpcpsnukBHbJJEd/fXackNkesHfDnoJx08x7fs=
+	t=1782392884; cv=none; b=pQ9dAUyIdhbJcrX2mutM5Gl3GoEkEqCIUFc+qGq2g17rQL3SISkTG3AmszFGQQcdbntv3mfDRZpE39fqF86vwgyp1vm6urSTiTrH5TkP6hkTm9VyRb5yEVI3KlVBRk55m096USK/TGaVYtL3UYi1n5cBxgr8GvQAhZqOPSPwrOE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782392997; c=relaxed/simple;
-	bh=J56y6Yx7/apRcpNkAfWW8CAbpMToIBpQZmntOTkreFs=;
+	s=arc-20240116; t=1782392884; c=relaxed/simple;
+	bh=VPtI3ZmWZ4BLrqvqgy9fdtLcZsE21g9lWtobs0SjWGA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Pkil7C/BY4cyVsNIbVDlLIlVYEh5ghyEjXMBnjIog3lJDor/KGVR88KlvYnBW5p1GQ8e2PCXDClEnsqAGJndTg7u1eFkWl0SKa8R+yEgQglYQEcgeaPebwwmHAPXGvnOe1PqSbFGvFmVJhm+/7dPuvk6B4WS4jTZD+KB2jraL+8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DECfiP+N; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59B5A1F00A3A;
-	Thu, 25 Jun 2026 13:09:54 +0000 (UTC)
+	 MIME-Version; b=AEAOjjaA5jEvwCEtE9YILWMMRvrXXR74/DF7F6O8jPNk5g+AkZgPrgcuFJbLCHPqQCKaXRynpWHfGq6pLKuR3shC1jFuoaUGXM9k4waOw8+V2+n1AcVebdbduYvv/18Q9Zt2hitPtqjKNGX1GtXPlDjjk58AA5/RstEz44k4BtI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A+uiwzbp; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 299891F000E9;
+	Thu, 25 Jun 2026 13:08:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1782392995;
-	bh=xKAo6g9TtzhO1KaH7ebpuf1vHLWxyQQfevggr+U9Rc4=;
+	s=korg; t=1782392883;
+	bh=8LFic2zgFqZXVXFK5JhfoT7JgtTCt+XEsOFOkeo0Wfo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=DECfiP+NXZLpoNsl2eGgmJj7p4IcDBm1P9D+87SGvGFF8Wsr2fgsz9mZxUGxhwsLk
-	 nsx28BnjSq4WOsJwQJV6R0frTUTIebYhDMniBr2P7UVDXd9QDfs/HHo0SAtOoebGoo
-	 x52XvMuOvMDANd5NDHxC+b+dB9s09MqnRHMq+rps=
+	b=A+uiwzbp6sDbsM27qMReLxVbSo67WAa/jeekS1uNx4+VkYl+eFEoknSj3XW3tJMey
+	 az4okEsItvmJmuzwinGFEYppRnA11TUS+5TXSNnHRmRAo72wAgWlJ/upAC0NuneeCw
+	 oO4oQpJ/04GRu6HVCg9OveJXEOR3QzShq+Xxnt64=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jeff Layton <jlayton@kernel.org>,
-	Alexandr Alexandrov <alexandr.alexandrov@oracle.com>,
-	Yang Erkun <yangerkun@huawei.com>,
-	Chuck Lever <chuck.lever@oracle.com>
-Subject: [PATCH 7.0 10/49] Revert "NFSD: Defer sub-object cleanup in export put callbacks"
-Date: Thu, 25 Jun 2026 14:03:22 +0100
-Message-ID: <20260625125638.950980248@linuxfoundation.org>
+	Lorenzo Stoakes <ljs@kernel.org>,
+	Pedro Falcato <pfalcato@suse.de>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	"David Hildenbrand (Red Hat)" <david@kernel.org>,
+	Andrei Vagin <avagin@gmail.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	Barry Song <baohua@kernel.org>,
+	Dev Jain <dev.jain@arm.com>,
+	Jann Horn <jannh@google.com>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Lance Yang <lance.yang@linux.dev>,
+	Liam Howlett <liam.howlett@oracle.com>,
+	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Mike Rapoport <rppt@kernel.org>,
+	Nico Pache <npache@redhat.com>,
+	Ryan Roberts <ryan.roberts@arm.com>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Zi Yan <ziy@nvidia.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Ahmed Elaidy <elaidya225@gmail.com>
+Subject: [PATCH 6.18 38/60] mm: introduce copy-on-fork VMAs and make VM_MAYBE_GUARD one
+Date: Thu, 25 Jun 2026 14:03:23 +0100
+Message-ID: <20260625125651.220918535@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260625125637.527552689@linuxfoundation.org>
-References: <20260625125637.527552689@linuxfoundation.org>
+In-Reply-To: <20260625125645.554579168@linuxfoundation.org>
+References: <20260625125645.554579168@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,283 +89,202 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	RCVD_TLS_LAST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[26];
+	TAGGED_FROM(0.00)[bounces-268447-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:ljs@kernel.org,m:pfalcato@suse.de,m:vbabka@suse.cz,m:david@kernel.org,m:avagin@gmail.com,m:baolin.wang@linux.alibaba.com,m:baohua@kernel.org,m:dev.jain@arm.com,m:jannh@google.com,m:corbet@lwn.net,m:lance.yang@linux.dev,m:liam.howlett@oracle.com,m:mhiramat@kernel.org,m:mathieu.desnoyers@efficios.com,m:mhocko@suse.com,m:rppt@kernel.org,m:npache@redhat.com,m:ryan.roberts@arm.com,m:rostedt@goodmis.org,m:surenb@google.com,m:ziy@nvidia.com,m:akpm@linux-foundation.org,m:elaidya225@gmail.com,s:lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-268481-lists,stable=lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:jlayton@kernel.org,m:alexandr.alexandrov@oracle.com,m:yangerkun@huawei.com,m:chuck.lever@oracle.com,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,suse.de,suse.cz,gmail.com,linux.alibaba.com,arm.com,google.com,lwn.net,linux.dev,oracle.com,efficios.com,suse.com,redhat.com,goodmis.org,nvidia.com,linux-foundation.org];
+	FORWARDED(0.00)[lists@lfdr.de];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	TO_DN_SOME(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,oracle.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,huawei.com:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 3254A6C5F73
+X-Rspamd-Queue-Id: C5AF56C5ED7
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yang Erkun <yangerkun@huawei.com>
+From: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
 
-commit 516403d4d85607fdef3ca41d4a56b54e5566fa9a upstream.
+commit ab04b530e7e8bd5cf9fb0c1ad20e0deee8f569ec upstream.
 
-This reverts commit 48db892356d6cb80f6942885545de4a6dd8d2a29.
+Gather all the VMA flags whose presence implies that page tables must be
+copied on fork into a single bitmap - VM_COPY_ON_FORK - and use this
+rather than specifying individual flags in vma_needs_copy().
 
-Commit 48db892356d6 ("NFSD: Defer sub-object cleanup in export
-put callbacks") moved path_put() and auth_domain_put() out of
-svc_export_put() and expkey_put() and behind queue_rcu_work() to
-close a claimed use-after-free in e_show() and c_show() against
-ex_path and ex_client->name. Discussion in [1] shows neither
-the diagnosis nor the remedy survives review.
+We also add VM_MAYBE_GUARD to this list, as it being set on a VMA implies
+that there may be metadata contained in the page tables (that is - guard
+markers) which would will not and cannot be propagated upon fork.
 
-The downstream teardown of both sub-objects is already RCU-deferred.
-auth_domain_put() reaches svcauth_unix_domain_release(), which frees
-the unix_domain and its ->name through call_rcu(). path_put()
-reaches dentry_free(), which frees the dentry through call_rcu(),
-and prepend_path() is already structured to tolerate concurrent
-dentry teardown. A reader in cache_seq_start_rcu() therefore
-observes both sub-objects through the next grace period regardless
-of whether svc_export_put() runs synchronously, so the synchronous
-form was never unsafe.
+This was already being done manually previously in vma_needs_copy(), but
+this makes it very explicit, alongside VM_PFNMAP, VM_MIXEDMAP and
+VM_UFFD_WP all of which imply the same.
 
-The crash signature in the report cited by commit 48db892356d6
-("NFSD: Defer sub-object cleanup in export put callbacks") has a
-different root cause: a /proc/net/rpc cache file held open across
-network-namespace exit lets cache_destroy_net() free cd->hash_table
-while a reader is still walking it. The correct fix pins cd->net for
-the open fd's lifetime and does not require any deferral inside
-svc_export_put().
+Note that VM_STICKY flags ought generally to be marked VM_COPY_ON_FORK too
+- because equally a flag being VM_STICKY indicates that the VMA contains
+metadat that is not propagated by being faulted in - i.e.  that the VMA
+metadata does not fully describe the VMA alone, and thus we must propagate
+whatever metadata there is on a fork.
 
-Meanwhile, deferring path_put() out of svc_export_put() reintroduces
-the regression that commit 69d803c40ede ("nfsd: Revert "nfsd:
-release svc_expkey/svc_export with rcu_work"") repaired: after
-"exportfs -r" drops the last cache reference, the mount reference
-held through ex_path lingers in the workqueue, so a subsequent
-umount fails with EBUSY.
+However, for maximum flexibility, we do not make this necessarily the case
+here.
 
-Restore the synchronous path_put() and auth_domain_put() in
-svc_export_put() and expkey_put() and the call_rcu()/kfree_rcu()
-free of the containing structures. The unrelated fix for
-ex_uuid/ex_stats from commit 2530766492ec ("nfsd: fix UAF when
-access ex_uuid or ex_stats") is preserved.
-
-Link: https://lore.kernel.org/all/10019b42-4589-4f9f-8d5b-d8197db1ce3c@huawei.com/ [1]
-Fixes: 48db892356d6 ("NFSD: Defer sub-object cleanup in export put callbacks")
-Cc: stable@vger.kernel.org
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
-Tested-by: Alexandr Alexandrov <alexandr.alexandrov@oracle.com>
-Signed-off-by: Yang Erkun <yangerkun@huawei.com>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Link: https://lkml.kernel.org/r/5d41b24e7bc622cda0af92b6d558d7f4c0d1bc8c.1763460113.git.ljs@kernel.org
+Signed-off-by: Lorenzo Stoakes <ljs@kernel.org>
+Reviewed-by: Pedro Falcato <pfalcato@suse.de>
+Reviewed-by: Vlastimil Babka <vbabka@suse.cz>
+Acked-by: David Hildenbrand (Red Hat) <david@kernel.org>
+Cc: Andrei Vagin <avagin@gmail.com>
+Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
+Cc: Barry Song <baohua@kernel.org>
+Cc: Dev Jain <dev.jain@arm.com>
+Cc: Jann Horn <jannh@google.com>
+Cc: Jonathan Corbet <corbet@lwn.net>
+Cc: Lance Yang <lance.yang@linux.dev>
+Cc: Liam Howlett <liam.howlett@oracle.com>
+Cc: "Masami Hiramatsu (Google)" <mhiramat@kernel.org>
+Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Cc: Michal Hocko <mhocko@suse.com>
+Cc: Mike Rapoport <rppt@kernel.org>
+Cc: Nico Pache <npache@redhat.com>
+Cc: Ryan Roberts <ryan.roberts@arm.com>
+Cc: Steven Rostedt <rostedt@goodmis.org>
+Cc: Suren Baghdasaryan <surenb@google.com>
+Cc: Zi Yan <ziy@nvidia.com>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Ahmed Elaidy <elaidya225@gmail.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nfsd/export.c |   63 +++++++------------------------------------------------
- fs/nfsd/export.h |    7 +-----
- fs/nfsd/nfsctl.c |    8 ------
- 3 files changed, 12 insertions(+), 66 deletions(-)
+ include/linux/mm.h               |   26 ++++++++++++++++++++++++++
+ mm/memory.c                      |   18 ++++--------------
+ tools/testing/vma/vma_internal.h |   26 ++++++++++++++++++++++++++
+ 3 files changed, 56 insertions(+), 14 deletions(-)
 
---- a/fs/nfsd/export.c
-+++ b/fs/nfsd/export.c
-@@ -36,30 +36,19 @@
-  * second map contains a reference to the entry in the first map.
-  */
+--- a/include/linux/mm.h
++++ b/include/linux/mm.h
+@@ -539,6 +539,32 @@ extern unsigned int kobjsize(const void
+ #define VM_IGNORE_MERGE (VM_SOFTDIRTY | VM_STICKY)
  
--static struct workqueue_struct *nfsd_export_wq;
--
- #define	EXPKEY_HASHBITS		8
- #define	EXPKEY_HASHMAX		(1 << EXPKEY_HASHBITS)
- #define	EXPKEY_HASHMASK		(EXPKEY_HASHMAX -1)
- 
--static void expkey_release(struct work_struct *work)
-+static void expkey_put(struct kref *ref)
- {
--	struct svc_expkey *key = container_of(to_rcu_work(work),
--					      struct svc_expkey, ek_rwork);
-+	struct svc_expkey *key = container_of(ref, struct svc_expkey, h.ref);
- 
- 	if (test_bit(CACHE_VALID, &key->h.flags) &&
- 	    !test_bit(CACHE_NEGATIVE, &key->h.flags))
- 		path_put(&key->ek_path);
- 	auth_domain_put(key->ek_client);
--	kfree(key);
--}
--
--static void expkey_put(struct kref *ref)
--{
--	struct svc_expkey *key = container_of(ref, struct svc_expkey, h.ref);
--
--	INIT_RCU_WORK(&key->ek_rwork, expkey_release);
--	queue_rcu_work(nfsd_export_wq, &key->ek_rwork);
-+	kfree_rcu(key, ek_rcu);
- }
- 
- static int expkey_upcall(struct cache_detail *cd, struct cache_head *h)
-@@ -364,13 +353,11 @@ static void export_stats_destroy(struct
- 					    EXP_STATS_COUNTERS_NUM);
- }
- 
--static void svc_export_release(struct work_struct *work)
-+static void svc_export_release(struct rcu_head *rcu_head)
- {
--	struct svc_export *exp = container_of(to_rcu_work(work),
--					      struct svc_export, ex_rwork);
-+	struct svc_export *exp = container_of(rcu_head, struct svc_export,
-+			ex_rcu);
- 
--	path_put(&exp->ex_path);
--	auth_domain_put(exp->ex_client);
- 	nfsd4_fslocs_free(&exp->ex_fslocs);
- 	export_stats_destroy(exp->ex_stats);
- 	kfree(exp->ex_stats);
-@@ -382,8 +369,9 @@ static void svc_export_put(struct kref *
- {
- 	struct svc_export *exp = container_of(ref, struct svc_export, h.ref);
- 
--	INIT_RCU_WORK(&exp->ex_rwork, svc_export_release);
--	queue_rcu_work(nfsd_export_wq, &exp->ex_rwork);
-+	path_put(&exp->ex_path);
-+	auth_domain_put(exp->ex_client);
-+	call_rcu(&exp->ex_rcu, svc_export_release);
- }
- 
- static int svc_export_upcall(struct cache_detail *cd, struct cache_head *h)
-@@ -1491,36 +1479,6 @@ const struct seq_operations nfs_exports_
- 	.show	= e_show,
- };
- 
--/**
-- * nfsd_export_wq_init - allocate the export release workqueue
-- *
-- * Called once at module load. The workqueue runs deferred svc_export and
-- * svc_expkey release work scheduled by queue_rcu_work() in the cache put
-- * callbacks.
-- *
-- * Return values:
-- *   %0: workqueue allocated
-- *   %-ENOMEM: allocation failed
-- */
--int nfsd_export_wq_init(void)
--{
--	nfsd_export_wq = alloc_workqueue("nfsd_export", WQ_UNBOUND, 0);
--	if (!nfsd_export_wq)
--		return -ENOMEM;
--	return 0;
--}
--
--/**
-- * nfsd_export_wq_shutdown - drain and free the export release workqueue
-- *
-- * Called once at module unload. Per-namespace teardown in
-- * nfsd_export_shutdown() has already drained all deferred work.
-- */
--void nfsd_export_wq_shutdown(void)
--{
--	destroy_workqueue(nfsd_export_wq);
--}
--
  /*
-  * Initialize the exports module.
++ * Flags which should result in page tables being copied on fork. These are
++ * flags which indicate that the VMA maps page tables which cannot be
++ * reconsistuted upon page fault, so necessitate page table copying upon
++ *
++ * VM_PFNMAP / VM_MIXEDMAP - These contain kernel-mapped data which cannot be
++ *                           reasonably reconstructed on page fault.
++ *
++ *              VM_UFFD_WP - Encodes metadata about an installed uffd
++ *                           write protect handler, which cannot be
++ *                           reconstructed on page fault.
++ *
++ *                           We always copy pgtables when dst_vma has uffd-wp
++ *                           enabled even if it's file-backed
++ *                           (e.g. shmem). Because when uffd-wp is enabled,
++ *                           pgtable contains uffd-wp protection information,
++ *                           that's something we can't retrieve from page cache,
++ *                           and skip copying will lose those info.
++ *
++ *          VM_MAYBE_GUARD - Could contain page guard region markers which
++ *                           by design are a property of the page tables
++ *                           only and thus cannot be reconstructed on page
++ *                           fault.
++ */
++#define VM_COPY_ON_FORK (VM_PFNMAP | VM_MIXEDMAP | VM_UFFD_WP | VM_MAYBE_GUARD)
++
++/*
+  * mapping from the currently active vm_flags protection bits (the
+  * low four bits) to a page protection mask..
   */
-@@ -1582,9 +1540,6 @@ nfsd_export_shutdown(struct net *net)
+--- a/mm/memory.c
++++ b/mm/memory.c
+@@ -1479,25 +1479,15 @@ copy_p4d_range(struct vm_area_struct *ds
+ static bool
+ vma_needs_copy(struct vm_area_struct *dst_vma, struct vm_area_struct *src_vma)
+ {
++	if (src_vma->vm_flags & VM_COPY_ON_FORK)
++		return true;
+ 	/*
+-	 * Always copy pgtables when dst_vma has uffd-wp enabled even if it's
+-	 * file-backed (e.g. shmem). Because when uffd-wp is enabled, pgtable
+-	 * contains uffd-wp protection information, that's something we can't
+-	 * retrieve from page cache, and skip copying will lose those info.
++	 * The presence of an anon_vma indicates an anonymous VMA has page
++	 * tables which naturally cannot be reconstituted on page fault.
+ 	 */
+-	if (userfaultfd_wp(dst_vma))
+-		return true;
+-
+-	if (src_vma->vm_flags & (VM_PFNMAP | VM_MIXEDMAP))
+-		return true;
+-
+ 	if (src_vma->anon_vma)
+ 		return true;
  
- 	cache_unregister_net(nn->svc_expkey_cache, net);
- 	cache_unregister_net(nn->svc_export_cache, net);
--	/* Drain deferred export and expkey release work. */
--	rcu_barrier();
--	flush_workqueue(nfsd_export_wq);
- 	cache_destroy_net(nn->svc_expkey_cache, net);
- 	cache_destroy_net(nn->svc_export_cache, net);
- 	svcauth_unix_purge(net);
---- a/fs/nfsd/export.h
-+++ b/fs/nfsd/export.h
-@@ -7,7 +7,6 @@
- 
- #include <linux/sunrpc/cache.h>
- #include <linux/percpu_counter.h>
--#include <linux/workqueue.h>
- #include <uapi/linux/nfsd/export.h>
- #include <linux/nfs4.h>
- 
-@@ -76,7 +75,7 @@ struct svc_export {
- 	u32			ex_layout_types;
- 	struct nfsd4_deviceid_map *ex_devid_map;
- 	struct cache_detail	*cd;
--	struct rcu_work		ex_rwork;
-+	struct rcu_head		ex_rcu;
- 	unsigned long		ex_xprtsec_modes;
- 	struct export_stats	*ex_stats;
- };
-@@ -93,7 +92,7 @@ struct svc_expkey {
- 	u32			ek_fsid[6];
- 
- 	struct path		ek_path;
--	struct rcu_work		ek_rwork;
-+	struct rcu_head		ek_rcu;
- };
- 
- #define EX_ISSYNC(exp)		(!((exp)->ex_flags & NFSEXP_ASYNC))
-@@ -111,8 +110,6 @@ __be32 check_nfsd_access(struct svc_expo
- /*
-  * Function declarations
+-	/* Guard regions have modified page tables that require copying. */
+-	if (src_vma->vm_flags & VM_MAYBE_GUARD)
+-		return true;
+-
+ 	/*
+ 	 * Don't copy ptes where a page fault will fill them correctly.  Fork
+ 	 * becomes much lighter when there are big shared or private readonly
+--- a/tools/testing/vma/vma_internal.h
++++ b/tools/testing/vma/vma_internal.h
+@@ -145,6 +145,32 @@ extern unsigned long dac_mmap_min_addr;
   */
--int			nfsd_export_wq_init(void);
--void			nfsd_export_wq_shutdown(void);
- int			nfsd_export_init(struct net *);
- void			nfsd_export_shutdown(struct net *);
- void			nfsd_export_flush(struct net *);
---- a/fs/nfsd/nfsctl.c
-+++ b/fs/nfsd/nfsctl.c
-@@ -2269,12 +2269,9 @@ static int __init init_nfsd(void)
- 	if (retval)
- 		goto out_free_pnfs;
- 	nfsd_lockd_init();	/* lockd->nfsd callbacks */
--	retval = nfsd_export_wq_init();
--	if (retval)
--		goto out_free_lockd;
- 	retval = register_pernet_subsys(&nfsd_net_ops);
- 	if (retval < 0)
--		goto out_free_export_wq;
-+		goto out_free_lockd;
- 	retval = register_cld_notifier();
- 	if (retval)
- 		goto out_free_subsys;
-@@ -2303,8 +2300,6 @@ out_free_cld:
- 	unregister_cld_notifier();
- out_free_subsys:
- 	unregister_pernet_subsys(&nfsd_net_ops);
--out_free_export_wq:
--	nfsd_export_wq_shutdown();
- out_free_lockd:
- 	nfsd_lockd_shutdown();
- 	nfsd_drc_slab_free();
-@@ -2325,7 +2320,6 @@ static void __exit exit_nfsd(void)
- 	nfsd4_destroy_laundry_wq();
- 	unregister_cld_notifier();
- 	unregister_pernet_subsys(&nfsd_net_ops);
--	nfsd_export_wq_shutdown();
- 	nfsd_drc_slab_free();
- 	nfsd_lockd_shutdown();
- 	nfsd4_free_slabs();
+ #define VM_IGNORE_MERGE (VM_SOFTDIRTY | VM_STICKY)
+ 
++/*
++ * Flags which should result in page tables being copied on fork. These are
++ * flags which indicate that the VMA maps page tables which cannot be
++ * reconsistuted upon page fault, so necessitate page table copying upon
++ *
++ * VM_PFNMAP / VM_MIXEDMAP - These contain kernel-mapped data which cannot be
++ *                           reasonably reconstructed on page fault.
++ *
++ *              VM_UFFD_WP - Encodes metadata about an installed uffd
++ *                           write protect handler, which cannot be
++ *                           reconstructed on page fault.
++ *
++ *                           We always copy pgtables when dst_vma has uffd-wp
++ *                           enabled even if it's file-backed
++ *                           (e.g. shmem). Because when uffd-wp is enabled,
++ *                           pgtable contains uffd-wp protection information,
++ *                           that's something we can't retrieve from page cache,
++ *                           and skip copying will lose those info.
++ *
++ *          VM_MAYBE_GUARD - Could contain page guard region markers which
++ *                           by design are a property of the page tables
++ *                           only and thus cannot be reconstructed on page
++ *                           fault.
++ */
++#define VM_COPY_ON_FORK (VM_PFNMAP | VM_MIXEDMAP | VM_UFFD_WP | VM_MAYBE_GUARD)
++
+ #define FIRST_USER_ADDRESS	0UL
+ #define USER_PGTABLES_CEILING	0UL
+ 
 
 
 
