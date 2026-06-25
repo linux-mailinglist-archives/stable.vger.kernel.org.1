@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-268412-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-268413-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id GhUIFWAoPWp5yAgAu9opvQ
-	(envelope-from <stable+bounces-268412-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 15:08:48 +0200
+	id DI7CGNcnPWo/yAgAu9opvQ
+	(envelope-from <stable+bounces-268413-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 15:06:31 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B059D6C5F0C
-	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 15:08:47 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id C8AC36C5E57
+	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 15:06:30 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="H/yWJyv5";
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-268412-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-268412-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=qEMFyUJv;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-268413-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-268413-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id EB9563051A81
-	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 13:06:09 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id B70A93040002
+	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 13:06:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6CBD92BE026;
-	Thu, 25 Jun 2026 13:06:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 54F6A2BE026;
+	Thu, 25 Jun 2026 13:06:11 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B08E6149C6F;
-	Thu, 25 Jun 2026 13:06:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 086472D0C63;
+	Thu, 25 Jun 2026 13:06:10 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782392769; cv=none; b=Nh2kkN0TmpG/1RuC/E/+KzfBxS0Ll87HuQxcMNV12m5o38/B6ifR9jSUTvagl8MnFsk6rw/wMVzuMgiQNAsXE5fcv6t29c4NbfBK+hnK7olg+ZWN+EjHrwlYUQ7gI7irPXfhnuI1by8vf6Jh7trV20yp8SjprzqgvmY+/9ymP2k=
+	t=1782392771; cv=none; b=SwkVBkDSwkIRsxlskNeCdnAzhzNN7FbB3GXgUkymPEqDDLugTU/eCWRyQfF14dk30862pwlTd6TTU2axWM3vOpSZFeWXzlc4xioP9JImNhd8tCKDjM2eLeexIDyI86WDQwRXlCD02B7agGyEZ76szkyfg04UOUXTmGQZ/65fl+U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782392769; c=relaxed/simple;
-	bh=SD6Vi0dAttqcFo6ivFISd4EfGoPdb7gQb63k8ATlOFU=;
+	s=arc-20240116; t=1782392771; c=relaxed/simple;
+	bh=QPZ25sqpTcU0ILu+uHoS909k/uCOploOG/bxrnT3oJU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VHgT3ReFl6Axh+k7C8sQtxqgb6aH8HoRKhp23gtxBwnAPpOUTjz55NOxuh+TcTcsqyslzavztIChNfloWZaFRfVbFkEUtnQ6wFRRL7BFPUIBaoJdqhYhzoaXLTDj1HnSjYTO3QGE4xhJU5sAKPWH7ZKouMq9/Zjd2mAVb/YW7nw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H/yWJyv5; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 017121F000E9;
-	Thu, 25 Jun 2026 13:06:05 +0000 (UTC)
+	 MIME-Version; b=HrK+8cyIDgSoVCijL9mOCG6+GV4ODMSG5T794tMS4GzSlp9lJe7t51VnzcyLYUQ68bM3cQEne9+RDlc5h5CrG3/uS3PyszgeeFRaDW04JO3TIp3KBdGVI4VSUiZ1gfSk43Id7kZGyM2D7FBoneAPqwfwCBDGtyixpFTeRSpvQFQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qEMFyUJv; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4AE521F00A3A;
+	Thu, 25 Jun 2026 13:06:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1782392766;
-	bh=9d/k9HaobmEnc+LQM277Ii+TIGFvym55b3oFSE3r7rk=;
+	s=korg; t=1782392769;
+	bh=i8UodB0R8jf/RduQxUpKolVxlHpW//joEYq3gZsjxxo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=H/yWJyv5jVuUPFuxnAQMYhjwlwStKgzNqlLboEfz6GhadW0MfbtDTMrfRUytkTyb1
-	 6shyGdpytXYQ2gligk3ZMlOFnDujqq29THfQkXwB7ff93bI9fWo3X1iWN1UCplbzB2
-	 YmnQVGOB1iEJwmAwcaYKug0EHS6uITqh0qvrjFhA=
+	b=qEMFyUJv5vXg1lZp6f+p6XIGK6tcsPP6C7DrIxxWC2Y/sc3p7kPVyztngntuoBlSA
+	 jB1NPJIUd1ueFOmjqGwEzhOvBHFyg7Svo9nEivYp9BLMR/9ZU7voZgsb7CYqkjoDjM
+	 CpyUEjFIFk79oFgZXWMgeHqS60l4kJoY9lhq+fBI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Bernard Pidoux <bernard.f6bvp@gmail.com>
-Subject: [PATCH 6.18 17/60] rose: clear neighbour pointer after rose_neigh_put() in state machines
-Date: Thu, 25 Jun 2026 14:03:02 +0100
-Message-ID: <20260625125648.070352821@linuxfoundation.org>
+Subject: [PATCH 6.18 18/60] rose: guard rose_neigh_put() against NULL in timer expiry
+Date: Thu, 25 Jun 2026 14:03:03 +0100
+Message-ID: <20260625125648.217028515@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260625125645.554579168@linuxfoundation.org>
 References: <20260625125645.554579168@linuxfoundation.org>
@@ -71,14 +71,14 @@ X-Spamd-Result: default: False [-0.16 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORWARDED(0.00)[lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-268412-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-268413-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com];
@@ -94,13 +94,13 @@ X-Spamd-Result: default: False [-0.16 / 15.00];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: B059D6C5F0C
+X-Rspamd-Queue-Id: C8AC36C5E57
 
 6.18-stable review patch.  If anyone has any objections, please let me know.
 
@@ -108,72 +108,40 @@ X-Rspamd-Queue-Id: B059D6C5F0C
 
 From: Bernard Pidoux <bernard.f6bvp@gmail.com>
 
-commit e8eb0c6faa8849ba7769516c1a8c84d9f612acf6 upstream.
+commit 2b67342c6ff899a0b83359517146a5b7b243af97 upstream.
 
-After calling rose_neigh_put() in rose_state1_machine() through
-rose_state5_machine(), rose->neighbour was left pointing at the
-potentially freed neighbour structure.  A subsequent timer expiry or
-concurrent teardown path could dereference the stale pointer, causing
-a use-after-free.
+In rose_timer_expiry(), the ROSE_STATE_2 branch calls
+rose_neigh_put(rose->neighbour) without first checking whether the
+pointer is NULL.  After commit 5de7665e0a07 ("net: rose: fix timer
+races against user threads") the timer is re-armed when the socket is
+owned by a user thread; between the re-arm and the next firing, a
+device-down event or concurrent teardown via rose_kill_by_device() can
+set rose->neighbour to NULL, leading to a NULL-pointer dereference
+inside rose_neigh_put().
 
-Set rose->neighbour to NULL immediately after each rose_neigh_put()
-call in the state machine functions.
+Add a NULL check before the put and clear the pointer afterwards.
 
-Fixes: d860d1faa6b2 ("net: rose: convert 'use' field to refcount_t")
+Fixes: 5de7665e0a07 ("net: rose: fix timer races against user threads")
 Signed-off-by: Bernard Pidoux <bernard.f6bvp@gmail.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/rose/rose_in.c |    6 ++++++
- 1 file changed, 6 insertions(+)
+ net/rose/rose_timer.c |    5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
---- a/net/rose/rose_in.c
-+++ b/net/rose/rose_in.c
-@@ -57,6 +57,7 @@ static int rose_state1_machine(struct so
- 		rose_write_internal(sk, ROSE_CLEAR_CONFIRMATION);
- 		rose_disconnect(sk, ECONNREFUSED, skb->data[3], skb->data[4]);
- 		rose_neigh_put(rose->neighbour);
-+		rose->neighbour = NULL;
+--- a/net/rose/rose_timer.c
++++ b/net/rose/rose_timer.c
+@@ -180,7 +180,10 @@ static void rose_timer_expiry(struct tim
  		break;
  
- 	default:
-@@ -80,11 +81,13 @@ static int rose_state2_machine(struct so
- 		rose_write_internal(sk, ROSE_CLEAR_CONFIRMATION);
- 		rose_disconnect(sk, 0, skb->data[3], skb->data[4]);
- 		rose_neigh_put(rose->neighbour);
-+		rose->neighbour = NULL;
+ 	case ROSE_STATE_2:	/* T3 */
+-		rose_neigh_put(rose->neighbour);
++		if (rose->neighbour) {
++			rose_neigh_put(rose->neighbour);
++			rose->neighbour = NULL;
++		}
+ 		rose_disconnect(sk, ETIMEDOUT, -1, -1);
  		break;
  
- 	case ROSE_CLEAR_CONFIRMATION:
- 		rose_disconnect(sk, 0, -1, -1);
- 		rose_neigh_put(rose->neighbour);
-+		rose->neighbour = NULL;
- 		break;
- 
- 	default:
-@@ -122,6 +125,7 @@ static int rose_state3_machine(struct so
- 		rose_write_internal(sk, ROSE_CLEAR_CONFIRMATION);
- 		rose_disconnect(sk, 0, skb->data[3], skb->data[4]);
- 		rose_neigh_put(rose->neighbour);
-+		rose->neighbour = NULL;
- 		break;
- 
- 	case ROSE_RR:
-@@ -235,6 +239,7 @@ static int rose_state4_machine(struct so
- 		rose_write_internal(sk, ROSE_CLEAR_CONFIRMATION);
- 		rose_disconnect(sk, 0, skb->data[3], skb->data[4]);
- 		rose_neigh_put(rose->neighbour);
-+		rose->neighbour = NULL;
- 		break;
- 
- 	default:
-@@ -255,6 +260,7 @@ static int rose_state5_machine(struct so
- 		rose_write_internal(sk, ROSE_CLEAR_CONFIRMATION);
- 		rose_disconnect(sk, 0, skb->data[3], skb->data[4]);
- 		rose_neigh_put(rose_sk(sk)->neighbour);
-+		rose_sk(sk)->neighbour = NULL;
- 	}
- 
- 	return 0;
 
 
 
