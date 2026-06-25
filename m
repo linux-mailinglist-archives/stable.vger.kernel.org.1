@@ -1,185 +1,211 @@
-Return-Path: <stable+bounces-268676-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-268677-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 1DKRMA6ZPWrQ4ggAu9opvQ
-	(envelope-from <stable+bounces-268676-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 23:09:34 +0200
+	id a/p0IYudPWpi4wgAu9opvQ
+	(envelope-from <stable+bounces-268677-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 23:28:43 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 369146C8AC9
-	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 23:09:34 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6152D6C8C0A
+	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 23:28:42 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=L0d6gc63;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-268676-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-268676-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=none;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=s+8bikdN;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-268677-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-268677-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=none) header.from=gmail.com;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id D24A8303A666
-	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 21:09:32 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 9945D301FE31
+	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 21:28:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8DA01372ECB;
-	Thu, 25 Jun 2026 21:09:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC05A371885;
+	Thu, 25 Jun 2026 21:28:27 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f45.google.com (mail-wr1-f45.google.com [209.85.221.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 414A430BF52;
-	Thu, 25 Jun 2026 21:09:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8FF936F916
+	for <stable@vger.kernel.org>; Thu, 25 Jun 2026 21:28:25 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782421769; cv=none; b=WIZS3qjNDFjDZRraNX0lMz3iJTvgtgmrKXZ6cu/xfJu7YeAu0g8UxdTevjkXZJenlRhH0IqjHsW6COAzM/m9HTO26By5Mb7kvw91W9Ae8b/at/lGdIPZpZqLNPppsoxP421DRyhyMYcMv9RTxnY80Jk91rBLfVhWnWfkbTEgjOI=
+	t=1782422907; cv=none; b=EGuDRri5hrLi7iVu122BxSdWHJMO3HcY2z96fkUcqET/1MHNXOtSIEz8alkVL3dhRl5XOaVuxKHO5NKUHFTcLHS9pdxMbEmppau9xkIv/AffpdRLdUccaKVtSquEoZF0C12ydQHL6VL/6fpnnrn1OrHiMibio+paCqfju6B/Kug=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782421769; c=relaxed/simple;
-	bh=x8lPMB9iFw3HKoEEo1iPkq9HS6NrGQdWyMDzsDYckdk=;
-	h=Date:To:From:Subject:Message-Id; b=IMhOuwrwS2iwIGR52Qo5u/WbEYsDaa87DAIWgvDLhBPYjMLVf0m8ZgzShReewz9NQcq1HJyCXZmJottQTrGN3v8bOV5KzcSHpkEqUnv5J32oh9QkvUlhErtILmCHE3vTnGlLguURYwJrLzyrlvakL+Ul16jVOZifq8i3j8yk8zU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=L0d6gc63; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8AC41F000E9;
-	Thu, 25 Jun 2026 21:09:27 +0000 (UTC)
+	s=arc-20240116; t=1782422907; c=relaxed/simple;
+	bh=zBU9t405Chy2n1XXD9tDen5hcas/BXe/S1edh++kQpI=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=TyLYF9pr6fg6HjIjJAHKnjqMCtNHLONmkYxAxlfVye0lopCa2kI4qPh+G/Ek1f4OqCDqjhiXZ8GuTTeDXzgUG1hJfHItGIet1a22aosxondZFex0Kar/JyyZfAwKhuTsFO00gt90i6lAWLbJyBIJtH+wh5LlYZv+zSflzkOY0Vw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=s+8bikdN; arc=none smtp.client-ip=209.85.221.45
+Received: by mail-wr1-f45.google.com with SMTP id ffacd0b85a97d-46db3c9a9e0so142746f8f.0
+        for <stable@vger.kernel.org>; Thu, 25 Jun 2026 14:28:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1782421767;
-	bh=a3En7h51SVTLY397zWxNCnhXgLxn2XCd8R1dGxgkZOc=;
-	h=Date:To:From:Subject;
-	b=L0d6gc63BYoVm/LAmI8BbVlbx+PMhyztbAPQLyTUkfXfXh+faa+6rd1DEKVlvX751
-	 ENQ4FaC4HQwlvPRIykJvV64vmaDuEOB0rgApuI47mdMAySNF6c/z7YlLb/u+6Gr2uQ
-	 kYzfaWQWHdQS92rsN5rjB0s0iRuRiwRXblriEs1Q=
-Date: Thu, 25 Jun 2026 14:09:27 -0700
-To: mm-commits@vger.kernel.org,vbabka@kernel.org,stable@vger.kernel.org,ryan.roberts@arm.com,riel@surriel.com,ljs@kernel.org,liam@infradead.org,kas@kernel.org,jannh@google.com,harry@kernel.org,david@kernel.org,anshuman.khandual@arm.com,dev.jain@arm.com,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: [to-be-updated] mm-rmap-use-huge_ptep_get-in-try_to_unmap_one.patch removed from -mm tree
-Message-Id: <20260625210927.B8AC41F000E9@smtp.kernel.org>
+        d=gmail.com; s=20251104; t=1782422904; x=1783027704; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=mJUjpU1D0+bsNa5J5MmmoMrwOEGi/vBVmQ8kR01gZEE=;
+        b=s+8bikdNUR6JKwyVnP7bp97YLEsSCbC0DrSPsI8Goe69BiAKwakMV0BZ8GyoGjGTwL
+         bkmfZafwwQ3At/wAbOpNFsbJyIyb8DdPi6uHoB/3miEAobsV61R7HEjG77KNF3gMhPg+
+         izHnxBI8BujN87oWdpOnPhl6+xpyhWiGVdYsMHq9Qowgq0dBtsCk2s00OjAAmBUbQXwV
+         LVSwx3sAIRIPAt0xvCHd9/C4lBjpoXztc5um4uv42wP6zyEaNC96JmcXCGXG5mmdIows
+         tcw1nS1yapsylXuXhGgQ1IWqNQUnAhss3jUna87zU01aL+lp1KzKFXdmuCcGnotZ+xFv
+         Ymzw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1782422904; x=1783027704;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=mJUjpU1D0+bsNa5J5MmmoMrwOEGi/vBVmQ8kR01gZEE=;
+        b=QJZNjaaEPsWvoKZ6qIXZQ1eAy7+vqve2hLbQYtCNaw/uSaxvyPpOdik0ZWD2lXaQXp
+         JHF/0hoXtQNNXnD38PBDpmDB/6kRqfvZH/G/6heCbIfvxCdMvhTlSSUH3MvNzeOYCVUD
+         pQhmKU0VjE8Qnc6WSKpTFNXk6h80oZfEBOkLRRWnLFwCGhbUdrlWw+BvsK/IbYgfPJFK
+         zJGgvlTVXjCqebt1PafqSZOW5zCgjnG84F/l0xhKNO+3uOkp4hsC8JKRfSdM/AehKRr8
+         p9p5ojrIqwqO6uH9sfa9ATrJo8WfJe2uWGr44GPTSpo/EL4oFx5+EYVh+XyN+7fhMTF9
+         cbNQ==
+X-Gm-Message-State: AOJu0Yx/wiuLxTfuRRkUY3PylkF4pcIwvR3VZE7oEdupnVpZvzjShLDG
+	j5iymawoBGHOyIiXEh9BUo0PEsmCd5M+irbRO1dgMZYgTAz0A5+WlvHUjgYN1sKbdA==
+X-Gm-Gg: AfdE7clAICJe0zg8bjzTUKUvEO5WdrB4z5ZzPVTN8z0ZwbWmuB2KDvRMg4A44/q1OnE
+	pDtGzQd9B2qLlspY35WBfMmR2lFVRQ4kebSMHJnSC5YC1jmGwSggAYh36r/CCUn6ayABRTbSwoq
+	lsjhis5VJQUTGvJWxJ6hPhGu0mR3eg2oW5UohCgETFUYZm7WnweYxD6uc/HzArBY6KQpNdOgbLK
+	/YotwtCkrGXStGu8qKGQTXO/ebEh8Bo7XIafqQp/XL8kgjGhhvQ09jJD83C2HCVT60R7FwS0Aox
+	ahbxERYe3DRu8w4MMEoXlVmhx5zNmr0msljUbsYD8vs0z0qbRW3tf4CIBOEN+r2bOTD3VYB6SlQ
+	Ptyo6kQJSxQpFgq2FYqATEvYDfZLo69aJmx0A0GhMAtFwlSqHEskWFFZPI1woADO/KC49PPE683
+	nXZUu6Ah4xcg8UZU7O9i9XlJTRSfCCCDVUBD62f1rhPYsYInPKtVZ3rJlmAlUQOf3IUPhUQPhD4
+	/bUmfW7KMZwc6SrlizTTLbtM5SUsvv+BvwBVGSnvUo=
+X-Received: by 2002:a05:6000:46c7:b0:46e:5c5d:b2cc with SMTP id ffacd0b85a97d-46e5c5db779mr3370997f8f.23.1782422903900;
+        Thu, 25 Jun 2026 14:28:23 -0700 (PDT)
+Received: from archtop.localdomain (92-242-248-94.broadband.mtnet.hr. [92.242.248.94])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-46cf775a4f0sm13209676f8f.17.2026.06.25.14.28.23
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 25 Jun 2026 14:28:23 -0700 (PDT)
+From: Jakov Novak <jakovnovak30@gmail.com>
+To: stable@vger.kernel.org
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Sasha Levin <sashal@kernel.org>,
+	linux-kernel-mentees@lists.linux.dev,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Yu Zhao <yuzhao@google.com>,
+	syzbot+03fd9b3f71641f0ebf2d@syzkaller.appspotmail.com,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Jakov Novak <jakovnovak30@gmail.com>
+Subject: [PATCH 6.1.y] mm/mglru: skip special VMAs in lru_gen_look_around()
+Date: Thu, 25 Jun 2026 23:27:51 +0200
+Message-ID: <20260625212751.23612-1-jakovnovak30@gmail.com>
+X-Mailer: git-send-email 2.54.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.16 / 15.00];
+X-Spamd-Result: default: False [0.84 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[linux-foundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-268676-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:mm-commits@vger.kernel.org,m:vbabka@kernel.org,m:stable@vger.kernel.org,m:ryan.roberts@arm.com,m:riel@surriel.com,m:ljs@kernel.org,m:liam@infradead.org,m:kas@kernel.org,m:jannh@google.com,m:harry@kernel.org,m:david@kernel.org,m:anshuman.khandual@arm.com,m:dev.jain@arm.com,m:akpm@linux-foundation.org,s:lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	DMARC_NA(0.00)[linux-foundation.org];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linux-foundation.org:+];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_SENDER(0.00)[akpm@linux-foundation.org,stable@vger.kernel.org];
+	TO_DN_SOME(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,kernel.org,lists.linux.dev,google.com,syzkaller.appspotmail.com,linux-foundation.org,gmail.com];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-268677-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:sashal@kernel.org,m:linux-kernel-mentees@lists.linux.dev,m:skhan@linuxfoundation.org,m:yuzhao@google.com,m:syzbot+03fd9b3f71641f0ebf2d@syzkaller.appspotmail.com,m:akpm@linux-foundation.org,m:jakovnovak30@gmail.com,m:syzbot@syzkaller.appspotmail.com,s:lists@lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_SENDER(0.00)[jakovnovak30@gmail.com,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	RCPT_COUNT_TWELVE(0.00)[14];
-	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[akpm@linux-foundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	TO_DN_NONE(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[jakovnovak30@gmail.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[gmail.com:+];
 	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[infradead.org:email,smtp.kernel.org:mid,vger.kernel.org:from_smtp,linux-foundation.org:dkim,linux-foundation.org:email,linux-foundation.org:from_mime,arm.com:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
+	TAGGED_RCPT(0.00)[stable,03fd9b3f71641f0ebf2d];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[appspotmail.com:email,vger.kernel.org:from_smtp,linux-foundation.org:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 369146C8AC9
+X-Rspamd-Queue-Id: 6152D6C8C0A
 
+From: Yu Zhao <yuzhao@google.com>
 
-The quilt patch titled
-     Subject: mm/rmap: use huge_ptep_get() in try_to_unmap_one()
-has been removed from the -mm tree.  Its filename was
-     mm-rmap-use-huge_ptep_get-in-try_to_unmap_one.patch
+[ Upstream commit c28ac3c7eb945fee6e20f47d576af68fdff1392a ]
 
-This patch was dropped because an updated version will be issued
+Special VMAs like VM_PFNMAP can contain anon pages from COW.  There isn't
+much profit in doing lookaround on them.  Besides, they can trigger the
+pte_special() warning in get_pte_pfn().
 
-------------------------------------------------------
-From: Dev Jain <dev.jain@arm.com>
-Subject: mm/rmap: use huge_ptep_get() in try_to_unmap_one()
-Date: Thu, 25 Jun 2026 04:28:51 +0000
+Skip them in lru_gen_look_around().
 
-try_to_unmap_one() handles hugetlb folios when memory failure needs to
-replace a poisoned hugetlb mapping with a hwpoison entry.  In that case
-page_vma_mapped_walk() returns the hugetlb entry in pvmw.pte, but the code
-reads it with ptep_get() before decoding the PFN.
-
-That is wrong on architectures where hugetlb entries are not encoded as
-regular PTEs.  On s390, for example, a raw huge RSTE must be converted by
-huge_ptep_get() before helpers such as pte_pfn() can inspect it.  A raw
-decode can select the wrong subpage, so try_to_unmap_one() can install a
-hwpoison entry for the wrong PFN.
-
-The userspace-visible result is that a later access to the poisoned
-hugetlb subpage can miss the expected SIGBUS.  With DEBUG_VM, the wrong
-subpage can also trip the PageHWPoison check.
-
-Use huge_ptep_get() for hugetlb mappings before decoding the PFN.
-
-Before c7ab0d2fdc84, the bug existed in the form of a plain dereference:
-we would check the head page pfn of the hugetlb with pte_pfn(*pte), and
-bail out on mismatch.  This would mean that the hwpoisoned entry will not
-get installed.
-
-Link: https://lore.kernel.org/20260625042853.2752898-1-dev.jain@arm.com
-Fixes: c7ab0d2fdc84 ("mm: convert try_to_unmap_one() to use page_vma_mapped_walk()")
-Signed-off-by: Dev Jain <dev.jain@arm.com>
-Cc: Anshuman Khandual <anshuman.khandual@arm.com>
-Cc: David Hildenbrand <david@kernel.org>
-Cc: Harry Yoo <harry@kernel.org>
-Cc: Jann Horn <jannh@google.com>
-Cc: Liam R. Howlett <liam@infradead.org>
-Cc: Lorenzo Stoakes <ljs@kernel.org>
-Cc: Rik van Riel <riel@surriel.com>
-Cc: Ryan Roberts <ryan.roberts@arm.com>
-Cc: Vlastimil Babka <vbabka@kernel.org>
-Cc: Kiryl Shutsemau <kas@kernel.org>
+Link: https://lkml.kernel.org/r/20231223045647.1566043-1-yuzhao@google.com
+Fixes: 018ee47f1489 ("mm: multi-gen LRU: exploit locality in rmap")
+Signed-off-by: Yu Zhao <yuzhao@google.com>
+Reported-by: syzbot+03fd9b3f71641f0ebf2d@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/000000000000f9ff00060d14c256@google.com/
 Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+[fix conflicts with variable declarations and vma pointer usage]
+Signed-off-by: Jakov Novak <jakovnovak30@gmail.com>
 ---
+ mm/vmscan.c | 13 +++++++++----
+ 1 file changed, 9 insertions(+), 4 deletions(-)
 
- mm/rmap.c |   16 ++++++++++------
- 1 file changed, 10 insertions(+), 6 deletions(-)
-
---- a/mm/rmap.c~mm-rmap-use-huge_ptep_get-in-try_to_unmap_one
-+++ a/mm/rmap.c
-@@ -2095,11 +2095,16 @@ static bool try_to_unmap_one(struct foli
- 		/* Unexpected PMD-mapped THP? */
- 		VM_BUG_ON_FOLIO(!pvmw.pte, folio);
+diff --git a/mm/vmscan.c b/mm/vmscan.c
+index 1f7a90ecc700..f6f8c18dc45f 100644
+--- a/mm/vmscan.c
++++ b/mm/vmscan.c
+@@ -4622,6 +4622,7 @@ void lru_gen_look_around(struct page_vma_mapped_walk *pvmw)
+ 	struct lru_gen_mm_walk *walk;
+ 	int young = 0;
+ 	unsigned long bitmap[BITS_TO_LONGS(MIN_LRU_BATCH)] = {};
++	struct vm_area_struct *vma = pvmw->vma;
+ 	struct folio *folio = pfn_folio(pvmw->pfn);
+ 	struct mem_cgroup *memcg = folio_memcg(folio);
+ 	struct pglist_data *pgdat = folio_pgdat(folio);
+@@ -4635,11 +4636,15 @@ void lru_gen_look_around(struct page_vma_mapped_walk *pvmw)
+ 	if (spin_is_contended(pvmw->ptl))
+ 		return;
  
--		/*
--		 * Handle PFN swap PTEs, such as device-exclusive ones, that
--		 * actually map pages.
--		 */
--		pteval = ptep_get(pvmw.pte);
-+		address = pvmw.address;
-+		if (folio_test_hugetlb(folio)) {
-+			pteval = huge_ptep_get(mm, address, pvmw.pte);
-+		} else {
-+			/*
-+			 * Handle PFN swap PTEs, such as device-exclusive ones,
-+			 * that actually map pages.
-+			 */
-+			pteval = ptep_get(pvmw.pte);
-+		}
- 		if (likely(pte_present(pteval))) {
- 			pfn = pte_pfn(pteval);
- 		} else {
-@@ -2110,7 +2115,6 @@ static bool try_to_unmap_one(struct foli
- 		}
++	/* exclude special VMAs containing anon pages from COW */
++	if (vma->vm_flags & VM_SPECIAL)
++		return;
++
+ 	/* avoid taking the LRU lock under the PTL when possible */
+ 	walk = current->reclaim_state ? current->reclaim_state->mm_walk : NULL;
  
- 		subpage = folio_page(folio, pfn - folio_pfn(folio));
--		address = pvmw.address;
- 		anon_exclusive = folio_test_anon(folio) &&
- 				 PageAnonExclusive(subpage);
+-	start = max(pvmw->address & PMD_MASK, pvmw->vma->vm_start);
+-	end = min(pvmw->address | ~PMD_MASK, pvmw->vma->vm_end - 1) + 1;
++	start = max(pvmw->address & PMD_MASK, vma->vm_start);
++	end = min(pvmw->address | ~PMD_MASK, vma->vm_end - 1) + 1;
  
-_
-
-Patches currently in -mm which might be from dev.jain@arm.com are
-
-mm-swap-rename-subpage-page-in-folio_dup_swap-folio_put_swap.patch
-mm-mprotect-drop-sub-from-batching-context.patch
+ 	if (end - start > MIN_LRU_BATCH * PAGE_SIZE) {
+ 		if (pvmw->address - start < MIN_LRU_BATCH * PAGE_SIZE / 2)
+@@ -4660,7 +4665,7 @@ void lru_gen_look_around(struct page_vma_mapped_walk *pvmw)
+ 	for (i = 0, addr = start; addr != end; i++, addr += PAGE_SIZE) {
+ 		unsigned long pfn;
+ 
+-		pfn = get_pte_pfn(pte[i], pvmw->vma, addr);
++		pfn = get_pte_pfn(pte[i], vma, addr);
+ 		if (pfn == -1)
+ 			continue;
+ 
+@@ -4671,7 +4676,7 @@ void lru_gen_look_around(struct page_vma_mapped_walk *pvmw)
+ 		if (!folio)
+ 			continue;
+ 
+-		if (!ptep_test_and_clear_young(pvmw->vma, addr, pte + i))
++		if (!ptep_test_and_clear_young(vma, addr, pte + i))
+ 			VM_WARN_ON_ONCE(true);
+ 
+ 		young++;
+-- 
+2.54.0
 
 
