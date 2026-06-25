@@ -1,95 +1,65 @@
-Return-Path: <stable+bounces-268360-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-268362-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id XtXmA+oSPWqhwggAu9opvQ
-	(envelope-from <stable+bounces-268360-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 13:37:14 +0200
+	id TGTjIgcVPWoXwwgAu9opvQ
+	(envelope-from <stable+bounces-268362-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 13:46:15 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 97DCA6C52CC
-	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 13:37:13 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id D113E6C53FF
+	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 13:46:14 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=SsfTEt1e;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-268360-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-268360-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=none) header.from=gmail.com;
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=Znl0J5WX;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-268362-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-268362-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 1438130315F1
-	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 11:37:13 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 3327A305245D
+	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 11:46:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6DFCB3DC4C6;
-	Thu, 25 Jun 2026 11:37:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0C2C3DD843;
+	Thu, 25 Jun 2026 11:45:58 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-dy1-f169.google.com (mail-dy1-f169.google.com [74.125.82.169])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 095F73D9026
-	for <stable@vger.kernel.org>; Thu, 25 Jun 2026 11:37:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 755113DD509;
+	Thu, 25 Jun 2026 11:45:57 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782387429; cv=none; b=P+NEHUs98RgVDwFpc5yOXL5GOasU6YXJmqShwBKi9U1+aigu1U/kdKST2xYDZcj8skqFuwlOB/w9n6b7GO7/vpzAdlufc85/HeA9byHnwmMW3tuWpfrU4jIILyX8vEh6eKGyp0DGTzGErUa/zhK5fgq7kDQSbUs3leuxS2I0uYA=
+	t=1782387958; cv=none; b=gvGILitB7Y8bguFiEQmUbIiv2OhCtAVsTvIrddgNSV3AzPKhKxTwEWpe5+mFtalWcfgSP78Jn0kkj3Pv94L1ELI7bY+yW9OpdaTPfeM6KKlHmGPoHjJLlNyAOXz/hdPOVn6bwUO4IpmLBqwQKHT1jtG5tE8zR3QghtpWDQooD6U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782387429; c=relaxed/simple;
-	bh=HnlHQXGsvp+6F/r93fDYilMWTToRwzIzL5ppp6nRv0w=;
-	h=From:Date:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=rc1ppIGdh+CHTT4bAIuCtc0HnvtWxsEg7uFS9Wnly5DMK1UUTslXYOevWDSTEof21k7RP97WTcTfSpJ0E3MmUMzw7hYviXcm7xReDwS3SJwc8OXTa83U0+Zdmnyq9mxSoGHRGNq6awfpIRiSDJbPSuTex3YWyxxarLuz88zVtzk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=SsfTEt1e; arc=none smtp.client-ip=74.125.82.169
-Received: by mail-dy1-f169.google.com with SMTP id 5a478bee46e88-30c8f2d93baso461736eec.0
-        for <stable@vger.kernel.org>; Thu, 25 Jun 2026 04:37:07 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1782387427; x=1782992227; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:date:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=gnK/0+TnvTsU7klFGLefqowugiRNUuGQYFS44xmyZM8=;
-        b=SsfTEt1eiU9wKiTsdXHaTP3upWuApWjXizLY7yaJ2rcXEzzQoIiSo2QctACj3zPRym
-         NnS6SBmBnFlf3ZYS6Gv1A8GlgdgkOlDjdsbJWHU4yCnyIj641KeJbi2lhyxVRgHv2hNQ
-         QH4147Ggfmsjcccq+PCfBDkVAhHs8XwM5LD0o7Zx8tRF2GH1gYFaMoA/bz3E3gkkljmZ
-         KDbuHwCJB5DGK0GaRh/bZSvtjVCqApi7etFt68UyU607711YiV9RDVEgJOP+HnmXFDT3
-         5v/gWIOvrh2KUl/vzhyxZYpAiDGeFWW/rYjrLduW6UXALXrBy0587iAmnrfMGr1KRhYJ
-         A3Aw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782387427; x=1782992227;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:date:from:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=gnK/0+TnvTsU7klFGLefqowugiRNUuGQYFS44xmyZM8=;
-        b=U+HLVVV+Y83CP54RdWzxEBHiqFg1CCkCnvDnnsd12UTKiQoAKbjIl1yzS5exm0EI+r
-         HWg7CMtZ+zLMxxhpcVkxFL3O5A3xGWtiJvoa9CTP8CG6kt5pi5fMogyLcmTtRZdWmFb1
-         iTk9TyVbvS9fEsXeY24yVyjcFbNUYG7S4s1yNLR6eWuJdACIscjZ6KYwiSALdzN9vcJR
-         z7ZNdUAFv8HrUbcqijYC54dWdVsOJgk0trwiup3CT2EyWqXG2ao2hOPWM8hnU5XuKi/b
-         Q4TWobMdOw2EGzWseaeuRW9IupquAk3+Ux1fu91CVUyW7+HwjJqKxsNnczVxqdeNvrZM
-         EmeQ==
-X-Forwarded-Encrypted: i=1; AHgh+RqtQyHrCTb8HFbGf3C+UTR7EotkZdenRDqTOmEtX8MzigQq8uwSuKCd47J+w5ig1PTWjOoLBA8=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxk0oXuIRcd+xB5xToWklDC3Mi1sgI3y0ljhwxBG+CRIQuO1iG6
-	tJwHDb/3NQSYOInx0g5081ZhcPY5EBtTB9kr7xSr1jB5GadBc71fur6l
-X-Gm-Gg: AfdE7cnrKz8XyHxVWKN/+1LAbBNeGR+MLBqJAOG4rP7niSALEhB88Jj9iztzcmdJ1tO
-	3/g8V3hAfaUtz0pljXVSw39EBN1hruaUE72wVMVX2BBZ6xyzCYJOQpVdEBd7vXDHezDb8pY2uoD
-	f0KzKdssEl8cpfXx+lah+AswyNy7TsiXNwj/WBy6OFYx+rYbH39hP3lacBgZHMGezeZxlejpF/L
-	u7NI6fIGkkjQZK4+ubbuiJvO3P+PhoUXR/mMjrK37SfYWD6h7d7oRakAbctqBuIjXGdW6rcEPYL
-	S7c4bTDl32djVOu5zrG2nkCOtCZoeHP4CnrOsIdy33NPEbqGUn0xaik74rHyJdZUYo83ifT3NvC
-	aL5tNFfvS6PB+3ooYYY6UhgY4+jswMwCeV2WCUXAD7sKputBaSMuIwS12enNmdzkW9blADx5tk4
-	bV4IdAR9yPw8fi9HQzyPJZyTNyrQpyQ8MMwMTvVusauJwGrlhI+weZ6qljXTQe5MH7InL7QyqAS
-	WFtrgo=
-X-Received: by 2002:a05:7300:7c21:b0:30c:6847:c2ec with SMTP id 5a478bee46e88-30c850a9096mr2615045eec.32.1782387427005;
-        Thu, 25 Jun 2026 04:37:07 -0700 (PDT)
-Received: from AnisaLaptop.localdomain (c-73-170-217-179.hsd1.ca.comcast.net. [73.170.217.179])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-30c7ca69c8asm9061887eec.26.2026.06.25.04.37.06
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 25 Jun 2026 04:37:06 -0700 (PDT)
-From: Anisa Su <anisa.su887@gmail.com>
-X-Google-Original-From: Anisa Su <anisa.su@samsung.com>
-Date: Thu, 25 Jun 2026 04:37:04 -0700
-To: Alison Schofield <alison.schofield@intel.com>
-Cc: Davidlohr Bueso <dave@stgolabs.net>,
-	Jonathan Cameron <jic23@kernel.org>,
-	Dave Jiang <dave.jiang@intel.com>,
-	Vishal Verma <vishal.l.verma@intel.com>,
-	Ira Weiny <iweiny@kernel.org>, Dan Williams <djbw@kernel.org>,
-	Li Ming <ming.li@zohomail.com>, linux-cxl@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH] cxl/pmem: Format nvdimm serial numbers as decimal
-Message-ID: <aj0S4AW-V6IMayd-@AnisaLaptop.localdomain>
-References: <20260619055932.1354182-1-alison.schofield@intel.com>
+	s=arc-20240116; t=1782387958; c=relaxed/simple;
+	bh=Nd8YdKOzt+Ca9w1TBuYqUtzZR7XwfY1USeE0VwvaT6I=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=u99wDeQiMpgSFgZsKatsufulilodh3dCvp83WYBjM59fEF8gkrV/Di9+1mrnz5malQqq4U6O13avo6RsI9nlvnBIL34x3Y2PMdcM8k6oKfkSnWg8vsiyOkayfTohe7jiMg7dFB6KVcjVihUZ5o8MZmLGqkngzI9bAIu0WJ2QZcA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Znl0J5WX; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83B1F1F00A3A;
+	Thu, 25 Jun 2026 11:45:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
+	s=korg; t=1782387957;
+	bh=O5Nsrv7dbKI0TRU5J5+1J9WSCqQWpJP9oDy03m9SzNA=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=Znl0J5WXUw2BJePR4uI199t/XyfCjUR1y2S0ZdLOBKfKzFKxD0zqS/V8CB2IYvHNB
+	 d9HimkDYCBzFzBmV7ttG+L7jwRZALoWqvFG0jKBefPxxhwZqAvnbzahqYyj9sYsErX
+	 TfsI9prfOT9Apmv68QSqkDKVko2x38Kx4r0AYTcU=
+Date: Thu, 25 Jun 2026 12:37:31 +0100
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Maximilian Heyne <mheyne@amazon.de>
+Cc: stable@vger.kernel.org, Marc Kleine-Budde <mkl@pengutronix.de>,
+	Vincent Mailhol <mailhol.vincent@wanadoo.fr>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Nikolay Aleksandrov <razor@blackwall.org>,
+	"Eric W. Biederman" <ebiederm@aristanetworks.com>,
+	linux-can@vger.kernel.org, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org, bpf@vger.kernel.org
+Subject: Re: [PATCH 6.12.y] net: add missing ns_capable check for peer netns
+Message-ID: <2026062556-residue-anybody-e756@gregkh>
+References: <20260617-pats-coif-316245c6@mheyne-amazon>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -98,119 +68,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260619055932.1354182-1-alison.schofield@intel.com>
+In-Reply-To: <20260617-pats-coif-316245c6@mheyne-amazon>
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [3.84 / 15.00];
+	MID_END_EQ_FROM_USER_PART(4.00)[];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	MID_RHS_NOT_FQDN(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-268360-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:alison.schofield@intel.com,m:dave@stgolabs.net,m:jic23@kernel.org,m:dave.jiang@intel.com,m:vishal.l.verma@intel.com,m:iweiny@kernel.org,m:djbw@kernel.org,m:ming.li@zohomail.com,m:linux-cxl@vger.kernel.org,m:stable@vger.kernel.org,s:lists@lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER(0.00)[anisasu887@gmail.com,stable@vger.kernel.org];
-	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-268362-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[16];
+	FORGED_RECIPIENTS(0.00)[m:mheyne@amazon.de,m:stable@vger.kernel.org,m:mkl@pengutronix.de,m:mailhol.vincent@wanadoo.fr,m:andrew+netdev@lunn.ch,m:davem@davemloft.net,m:edumazet@google.com,m:kuba@kernel.org,m:pabeni@redhat.com,m:daniel@iogearbox.net,m:razor@blackwall.org,m:ebiederm@aristanetworks.com,m:linux-can@vger.kernel.org,m:netdev@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:bpf@vger.kernel.org,m:andrew@lunn.ch,s:lists@lfdr.de];
+	MIME_TRACE(0.00)[0:+];
 	FORWARDED(0.00)[lists@lfdr.de];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	FREEMAIL_FROM(0.00)[gmail.com];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_FORWARDING(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[anisasu887@gmail.com,stable@vger.kernel.org];
-	MISSING_XM_UA(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[vger.kernel.org,pengutronix.de,wanadoo.fr,lunn.ch,davemloft.net,google.com,kernel.org,redhat.com,iogearbox.net,blackwall.org,aristanetworks.com];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[10];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,vger.kernel.org:from_smtp,cxl-security.sh:url]
+	TO_DN_SOME(0.00)[];
+	TAGGED_RCPT(0.00)[stable,netdev];
+	MISSING_XM_UA(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,gregkh:mid]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 97DCA6C52CC
+X-Rspamd-Queue-Id: D113E6C53FF
 
-On Thu, Jun 18, 2026 at 10:59:29PM -0700, Alison Schofield wrote:
-> The CXL NVDIMM security passphrase key is looked up by the description
-> "nvdimm:" followed by the device serial string. For serial numbers of
-> 10 and above, the kernel auto-unlock path fails to find the key
-> because ndctl names it with a decimal serial and the kernel uses hex.
-> 
-> That means a passphrase-protected device cannot be unlocked after a
-> reboot, and the pmem namespaces it backs do not come up. Devices
-> without an enrolled passphrase are unaffected.
-> 
-> The mismatch occurs for any serial number of 10 and above. Since CXL
-> device serial numbers are vendor-assigned 64-bit values, that covers
-> essentially all real hardware once security is enabled.
-> 
-> The 'id' sysfs attribute is established ABI that ndctl consumes as
-> decimal, so format the kernel's serial string the same way. A u64
-> decimal string requires up to 20 digits plus a NUL byte, so grow
-> CXL_DEV_ID_LEN to fit it.
-> 
-> The issue was exposed by CXL unit test cxl-security.sh when cxl_test
-> mock serial numbers were recently extended to 10 and above.
-> 
-> Cc: <stable@vger.kernel.org>
-> Fixes: b5807c80b5bc ("cxl: add dimm_id support for __nvdimm_create()")
-> Signed-off-by: Alison Schofield <alison.schofield@intel.com>
+On Wed, Jun 17, 2026 at 08:25:31AM +0000, Maximilian Heyne wrote:
+> The upstream commit 7b735ef81286 ("rtnetlink: add missing
+> netlink_ns_capable() check for peer netns") doesn't apply on older
+> stable kernels due to refactoring. Therefore, this patch is an attempt
+> to implement the same capability check just directly in the respective
+> interface types.
 
-Thanks for the fix! Can confirm from my ndctl-test runner runs
-that cxl-security.sh passes when applied on top of DCD v11 patches
+Why can't we take the full series of patches instead?  Otherwise this is
+going to be a pain over time for any other fixes/updates in this area,
+right?
 
-https://github.com/anisa-su993/ndctl-test-runner/actions/workflows/main.yml
+And if not, then we need acks from the maintainers here...
 
-> ---
->  drivers/cxl/core/pmem.c | 10 ++++++----
->  drivers/cxl/cxl.h       |  3 ++-
->  2 files changed, 8 insertions(+), 5 deletions(-)
-> 
-> diff --git a/drivers/cxl/core/pmem.c b/drivers/cxl/core/pmem.c
-> index 68462e38a977..2ccdf04c1f43 100644
-> --- a/drivers/cxl/core/pmem.c
-> +++ b/drivers/cxl/core/pmem.c
-> @@ -219,12 +219,14 @@ static struct cxl_nvdimm *cxl_nvdimm_alloc(struct cxl_nvdimm_bridge *cxl_nvb,
->  	dev->bus = &cxl_bus_type;
->  	dev->type = &cxl_nvdimm_type;
->  	/*
-> -	 * A "%llx" string is 17-bytes vs dimm_id that is max
-> -	 * NVDIMM_KEY_DESC_LEN
-> +	 * dev_id becomes the nvdimm dimm_id used for security key
-> +	 * lookups. Match the decimal serial emitted by the CXL 'id'
-> +	 * sysfs attribute. A u64 decimal string requires 20 digits
-> +	 * plus a NUL byte and must still fit in NVDIMM_KEY_DESC_LEN.
->  	 */
-> -	BUILD_BUG_ON(sizeof(cxl_nvd->dev_id) < 17 ||
-> +	BUILD_BUG_ON(sizeof(cxl_nvd->dev_id) < 21 ||
->  		     sizeof(cxl_nvd->dev_id) > NVDIMM_KEY_DESC_LEN);
-> -	sprintf(cxl_nvd->dev_id, "%llx", cxlmd->cxlds->serial);
-> +	sprintf(cxl_nvd->dev_id, "%lld", cxlmd->cxlds->serial);
->  
->  	return cxl_nvd;
->  }
-> diff --git a/drivers/cxl/cxl.h b/drivers/cxl/cxl.h
-> index 1297594beaec..3463faeb8a15 100644
-> --- a/drivers/cxl/cxl.h
-> +++ b/drivers/cxl/cxl.h
-> @@ -487,7 +487,8 @@ struct cxl_nvdimm_bridge {
->  	struct nvdimm_bus_descriptor nd_desc;
->  };
->  
-> -#define CXL_DEV_ID_LEN 19
-> +/* Holds a u64 serial as a decimal string: up to 20 digits + NUL */
-> +#define CXL_DEV_ID_LEN 21
->  
->  enum {
->  	CXL_NVD_F_INVALIDATED = 0,
-> 
-> base-commit: 8cd9520d35a6c38db6567e97dd93b1f11f185dc6
-> -- 
-> 2.37.3
-> 
+thanks,
+
+greg k-h
 
