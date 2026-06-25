@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-268458-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-268485-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 0j8IKl0oPWp4yAgAu9opvQ
-	(envelope-from <stable+bounces-268458-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 15:08:45 +0200
+	id kMCLNQkpPWrPyAgAu9opvQ
+	(envelope-from <stable+bounces-268485-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 15:11:37 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 589306C5F09
-	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 15:08:45 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 497416C5FD8
+	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 15:11:37 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=wvl+woJZ;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-268458-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-268458-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=K+YfTW1n;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-268485-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-268485-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id C400630087C7
-	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 13:08:44 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id BFC1A307A732
+	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 13:10:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B6D72E0B71;
-	Thu, 25 Jun 2026 13:08:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 678DD1C695;
+	Thu, 25 Jun 2026 13:10:09 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4722B2D5412;
-	Thu, 25 Jun 2026 13:08:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45DC1288530;
+	Thu, 25 Jun 2026 13:10:08 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782392921; cv=none; b=Tk5LwcXYFua6RdybCTHoviE1/AfCAny0My9FoAikfE9FDboAlSSJBp3Pr8UTivcfr3d6xsgKzb8mOuspxt4uOsqI1vVB2u0G8Xi3xdU1eYrwEEgZeo+wqI48CiZs97n4bnA+DosxVm2ozMv1p/GBMec57T0XpjeSn2ol0hfVarc=
+	t=1782393009; cv=none; b=TSmBBD5tOqYB8esUKoDx+3nVJzNJeZcPiiWo3IclYhKg/SJZEG1zTaesWDLJEBlAmhZfVYUwHGmZoB8Z99UioSNf1giCz1RrXmavM/D4SdO2Pvy0tHS/cFtljAbkHc9Kkbkxo+W+EwXMKMSIPSIN+2gWDXLJC7NFAsVSjISPjcs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782392921; c=relaxed/simple;
-	bh=qkkdZO9y4eI9YWUbq0eIexhWNlQgx6suOjZwY3Z73VM=;
+	s=arc-20240116; t=1782393009; c=relaxed/simple;
+	bh=sZBFq2+aHfYFsBRrj/vKSFIiCOS/alBZVEMbcHs1Eq0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=f/xQpQRQxJy4Ojg2iyRzuzQnvvr7N6h2eSeC42oTkRKsY6ayV+IWkil4KOx35F/eKIjmfsfZmkQvdpcEUj+0ZcJr3YXc0dHD/c0Lx2OtO0MQ3seJnn0CgJvMXRdr5BumQguCxstizvZqyo9P5j2o/AxaEzI6VJpLhWrkfARFoK8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wvl+woJZ; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71F591F000E9;
-	Thu, 25 Jun 2026 13:08:38 +0000 (UTC)
+	 MIME-Version; b=qyW0XqW5lriOsi97YvUjfSr7GRMe46KC0SHqpiUG2MsB+vDJBEHiFnfa3S9tKP99kCdra5kOMaTxyioBAl+2PVJJEOrae17vBD9H3zP/TCVSsTbdLkVSY+8pc2X/OaD47/xMXGX/9SIpn7YjVRPzNyVRWIW8eTLPf9kBxu8AEno=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K+YfTW1n; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B4341F000E9;
+	Thu, 25 Jun 2026 13:10:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1782392919;
-	bh=6z+AJt0/KBOWHLWnl1TLFkbEoB5OYQy606dx0tCJwoQ=;
+	s=korg; t=1782393008;
+	bh=8TTZWnYuDabfy3qUr/4RS9wW2i7o0gkBuGJdAGrNRoc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=wvl+woJZlbZl8VFcRppmgknvMyGIqxUtiIGiaLAcLBiSp5TrlSRp0/RwMyEKGXp0N
-	 aqc/iWNlDBea2T7QzcBGWA11Jlops46g2Z21gSkPM4DgedsC91ZLYqDZtoE9SCYX+v
-	 bLYsX1wBs1J5AqNAbzwPBFY6GMJwErw5oSoakHZo=
+	b=K+YfTW1n1SD4qMsgIwfIWCvsbrX1atD7pDaj07b0sAK7jyJfmzQsMEHa72q0gyOfW
+	 GDr3ZgJ1OkOFRbOSR5/vqmE/l4jhWcL1cHqzj4hZsQZWr+M5WzBxvGFZ48wp3ORbV0
+	 0rXKt30r3Ke+TWYQ1E6LjokzY9MaVrV6IoqPCwyQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>,
-	Viken Dadhaniya <viken.dadhaniya@oss.qualcomm.com>
-Subject: [PATCH 6.18 55/60] serial: qcom_geni: Fix RX DMA stall when SE_DMA_RX_LEN_IN is zero
-Date: Thu, 25 Jun 2026 14:03:40 +0100
-Message-ID: <20260625125653.771532369@linuxfoundation.org>
+	Bernard Pidoux <bernard.f6bvp@gmail.com>
+Subject: [PATCH 7.0 29/49] rose: clear neighbour pointer in rose_kill_by_device()
+Date: Thu, 25 Jun 2026 14:03:41 +0100
+Message-ID: <20260625125641.606615670@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260625125645.554579168@linuxfoundation.org>
-References: <20260625125645.554579168@linuxfoundation.org>
+In-Reply-To: <20260625125637.527552689@linuxfoundation.org>
+References: <20260625125637.527552689@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,90 +65,86 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-268458-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:bartosz.golaszewski@oss.qualcomm.com,m:viken.dadhaniya@oss.qualcomm.com,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-268485-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:bernard.f6bvp@gmail.com,m:bernardf6bvp@gmail.com,s:lists@lfdr.de];
+	RCPT_COUNT_THREE(0.00)[4];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,msgid.link:url,qualcomm.com:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 589306C5F09
+X-Rspamd-Queue-Id: 497416C5FD8
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Viken Dadhaniya <viken.dadhaniya@oss.qualcomm.com>
+From: Bernard Pidoux <bernard.f6bvp@gmail.com>
 
-commit b93062b6d8a1b2d9bad235cac25558a909819026 upstream.
+commit 606e42d195b467480d4d405f8814c48d1651a76a upstream.
 
-In qcom_geni_serial_handle_rx_dma(), geni_se_rx_dma_unprep() clears
-port->rx_dma_addr before SE_DMA_RX_LEN_IN is read. If the register is zero,
-for example when the RX stale counter fires on an idle line, the handler
-returns without calling geni_se_rx_dma_prep().
+rose_kill_by_device() drops the neighbour reference but leaves
+rose->neighbour pointing at it, unlike every other rose_neigh_put() site
+(see "rose: clear neighbour pointer after rose_neigh_put() in state
+machines"). The heartbeat STATE_0 reaping path then puts the same
+neighbour a second time, causing a rose_neigh refcount underflow and a
+use-after-free.
 
-The next RX DMA interrupt then hits the !port->rx_dma_addr guard and
-returns immediately, so the RX DMA buffer is never rearmed and later input
-is lost.
+Set rose->neighbour = NULL after the put, restoring the invariant.
 
-Keep the handler on the rearm path when rx_in is zero. Warn about the
-unexpected zero-length DMA completion, skip received-data handling, and
-always call geni_se_rx_dma_prep().
-
-Fixes: 2aaa43c70778 ("tty: serial: qcom-geni-serial: add support for serial engine DMA")
-Cc: stable@vger.kernel.org
-Reviewed-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
-Signed-off-by: Viken Dadhaniya <viken.dadhaniya@oss.qualcomm.com>
-Link: https://patch.msgid.link/20260528-serial-rx-0-byte-fix-v2-1-b4195cfe342f@oss.qualcomm.com
+Signed-off-by: Bernard Pidoux <bernard.f6bvp@gmail.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/tty/serial/qcom_geni_serial.c |    9 +++------
- 1 file changed, 3 insertions(+), 6 deletions(-)
+ net/rose/af_rose.c |   10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
 
---- a/drivers/tty/serial/qcom_geni_serial.c
-+++ b/drivers/tty/serial/qcom_geni_serial.c
-@@ -896,12 +896,9 @@ static void qcom_geni_serial_handle_rx_d
- 	port->rx_dma_addr = 0;
- 
- 	rx_in = readl(uport->membase + SE_DMA_RX_LEN_IN);
--	if (!rx_in) {
--		dev_warn(uport->dev, "serial engine reports 0 RX bytes in!\n");
--		return;
--	}
--
--	if (!drop)
-+	if (!rx_in)
-+		dev_warn_ratelimited(uport->dev, "serial engine reports 0 RX bytes in!\n");
-+	else if (!drop)
- 		handle_rx_uart(uport, rx_in);
- 
- 	ret = geni_se_rx_dma_prep(&port->se, port->rx_buf,
+--- a/net/rose/af_rose.c
++++ b/net/rose/af_rose.c
+@@ -216,8 +216,16 @@ start:
+ 			 * looping forever in ROSE_STATE_0 with no owner.
+ 			 */
+ 			sock_set_flag(sk, SOCK_DESTROY);
+-			if (rose->neighbour)
++			if (rose->neighbour) {
+ 				rose_neigh_put(rose->neighbour);
++				/* Clear the pointer after dropping the reference, as
++				 * every other rose_neigh_put() site does.  Otherwise
++				 * rose_heartbeat_expiry() (STATE_0 reaping) sees a stale
++				 * rose->neighbour and puts it a second time -> rose_neigh
++				 * refcount underflow / use-after-free.
++				 */
++				rose->neighbour = NULL;
++			}
+ 			netdev_put(rose->device, &rose->dev_tracker);
+ 			rose->device = NULL;
+ 		}
 
 
 
