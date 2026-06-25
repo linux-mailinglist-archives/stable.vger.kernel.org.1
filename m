@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-268487-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-268461-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id Dn4hMhIpPWrUyAgAu9opvQ
-	(envelope-from <stable+bounces-268487-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 15:11:46 +0200
+	id FtqpA4coPWqRyAgAu9opvQ
+	(envelope-from <stable+bounces-268461-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 15:09:27 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7B4566C5FF0
-	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 15:11:46 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 724166C5F3B
+	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 15:09:26 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="Z/3sQVVc";
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-268487-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-268487-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="QsFe3K/6";
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-268461-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-268461-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id C9DE7304231C
-	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 13:10:18 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 1CF74304649E
+	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 13:08:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 581B029CB24;
-	Thu, 25 Jun 2026 13:10:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF9682EFD9B;
+	Thu, 25 Jun 2026 13:08:51 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C3C028751B;
-	Thu, 25 Jun 2026 13:10:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D9D52E040D;
+	Thu, 25 Jun 2026 13:08:49 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782393016; cv=none; b=hW7N+d2MvTMbmqHYk2XV2FXDiWYxCvWLbx+uYWPaKSGLcLaZS/WKkWk3enIQQ03aXA+0q8JGdREpv74MskdkN+CM0+dL4cFMyLGhFNgxSxzK/NpKCB++TB09ZgEB/6BEHuuDab0DwcUlvdV06EbifzUoTx6a9LRJPtmW+Yf4wP0=
+	t=1782392931; cv=none; b=frsYkBzaPDRrHhnKZuGyrE62sdv+NfRl06Ai3utbALNWslPoTjVQKjBJCE9UtS5cvtX4HqFeuQV/UPxJ3YPXaLoujf0fXjsYDpdTiNFu1P81/+cyCFengzoHUuedfssozHO5TpWOnVn+hxxKp/H/x58hnoTLryOIZmS8q81O8GA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782393016; c=relaxed/simple;
-	bh=uF9rPhV0LrTClBVtGb0BaWAbEBQeWVRr26fQbUrGv9c=;
+	s=arc-20240116; t=1782392931; c=relaxed/simple;
+	bh=a5GQIiGJ1xHc1NAMRIG4iUmed6IQ90WASgVgPRY3ujk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=njIcBagJLiN+KDNlcAifqKVVlb+CukZAOwdbfRkRQpP9lMStuj57gS/912XrdxRJ/gXwTKmRYUAS8Qca/3bEUG+Swh/+7tNWXcs5sDq+j6vGu7qn0rGqCCR2qmIwJd28GymszUh0oCy/zw221sR74pqcQR9X2KJTfe2h3ST/YTQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z/3sQVVc; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 292AC1F000E9;
-	Thu, 25 Jun 2026 13:10:13 +0000 (UTC)
+	 MIME-Version; b=FAxgR2W3g+rJroF6sz25oHo1Aj1LNZcYMhZtZEPtCUFW6BV8tRsUCd/NUCrKyFlOV4btCEV6FfMddLhQfLzgrKEtBRQZtDzSZq8GPDfGCDG0XkHmWuX7LWXFrxmisxgNSW4pl+j8WVwV+4EUtKR3WrVpJruRmg0BhUgs3nNPvQM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QsFe3K/6; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C7431F000E9;
+	Thu, 25 Jun 2026 13:08:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1782393014;
-	bh=We2hNdC8Mw0Fpw9qD/wAHPCQzfeABGyjFD/TXLvv0k0=;
+	s=korg; t=1782392929;
+	bh=2U6//86pZwwao4IfTUu90B0OVGqTMCvd8zuEzh/OXs4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Z/3sQVVcUN+yzz7VX3C/doT/Chxo+oKBA70mttzdH8gORrA5oorJPO+7gWwMmazrJ
-	 u3Gi3ns7s2i6hpVlks9eAHfkeLXJfMq8Fy668EC0jFaBKIExw+ZdPX1X6xJU0+ZY9I
-	 vV9JoBdY5KavIyOKVPTLcXWmEbeJuGzaRT7kk/S8=
+	b=QsFe3K/6XYghL8yX8NB2Q58SuaQMYnej5Bl6/KFbiDoG2c5z9crjXmqFO1vekUlHj
+	 3+meN3fyK2YgPapgJ+2cKNZfgYsRh5BomJoEc9qJIX7ixue/tzRrHXdh3FdloIs/En
+	 1+BlOsTxGIR5mr1Gv3LgXwi6wNCOGtPw3M5NfIlQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Mike Marciniszyn (Meta)" <mike.marciniszyn@gmail.com>,
-	Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH 7.0 31/49] net: export netif_open for self_test usage
+	syzbot+814c351d094f4f1a1b86@syzkaller.appspotmail.com,
+	Ruslan Valiyev <linuxoid@gmail.com>,
+	Hans Verkuil <hverkuil+cisco@kernel.org>
+Subject: [PATCH 6.18 58/60] media: vidtv: fix NULL pointer dereference in vidtv_mux_push_si
 Date: Thu, 25 Jun 2026 14:03:43 +0100
-Message-ID: <20260625125641.907171607@linuxfoundation.org>
+Message-ID: <20260625125654.217822470@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260625125637.527552689@linuxfoundation.org>
-References: <20260625125637.527552689@linuxfoundation.org>
+In-Reply-To: <20260625125645.554579168@linuxfoundation.org>
+References: <20260625125645.554579168@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,22 +73,22 @@ X-Spamd-Result: default: False [-0.16 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-268487-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-268461-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:mike.marciniszyn@gmail.com,m:pabeni@redhat.com,m:mikemarciniszyn@gmail.com,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:syzbot+814c351d094f4f1a1b86@syzkaller.appspotmail.com,m:linuxoid@gmail.com,m:hverkuil+cisco@kernel.org,m:syzbot@syzkaller.appspotmail.com,m:hverkuil@kernel.org,s:lists@lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,redhat.com];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,syzkaller.appspotmail.com,gmail.com,kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
@@ -95,51 +96,94 @@ X-Spamd-Result: default: False [-0.16 / 15.00];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,vger.kernel.org:from_smtp,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
+	TAGGED_RCPT(0.00)[stable,814c351d094f4f1a1b86,cisco];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,appspotmail.com:email,vger.kernel.org:from_smtp,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 7B4566C5FF0
+X-Rspamd-Queue-Id: 724166C5F3B
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mike Marciniszyn (Meta) <mike.marciniszyn@gmail.com>
+From: Ruslan Valiyev <linuxoid@gmail.com>
 
-commit 3fdd33697c2be9184668c89ba4f24a5ecbc8ec51 upstream.
+commit 7d8bf3d8f91073f4db347ed3aa6302b56107499c upstream.
 
-dev_open() already is exported, but drivers which use the netdev
-instance lock need to use netif_open() instead. netif_close() is
-also already exported [1] so this completes the pairing.
+syzbot reported a general protection fault in
+vidtv_psi_ts_psi_write_into [1].
 
-This export is required for the following fbnic self tests to
-avoid calling ndo_stop() and ndo_open() in favor of the
-more appropriate netif_open() and netif_close() that notifies
-any listeners that the interface went down to test and is now
-coming back up.
+vidtv_mux_get_pid_ctx() can return NULL, but vidtv_mux_push_si() does
+not check for this before dereferencing the returned pointer to access
+the continuity counter. This leads to a general protection fault when
+accessing a near-NULL address.
 
-Link: https://patch.msgid.link/20250309215851.2003708-1-sdf@fomichev.me [1]
-Signed-off-by: Mike Marciniszyn (Meta) <mike.marciniszyn@gmail.com>
-Link: https://patch.msgid.link/20260307105847.1438-2-mike.marciniszyn@gmail.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+The root cause is that vidtv_mux_pid_ctx_init() does not check the
+return value of vidtv_mux_create_pid_ctx_once() for PMT section PIDs.
+If the allocation fails, the PID context is never created, but init
+returns success. The subsequent vidtv_mux_push_si() call then gets
+NULL from vidtv_mux_get_pid_ctx() and crashes.
+
+Fix both the root cause (add error check in vidtv_mux_pid_ctx_init
+for PMT PIDs) and add defensive NULL checks in vidtv_mux_push_si for
+all vidtv_mux_get_pid_ctx() calls.
+
+[1]
+Oops: general protection fault, probably for non-canonical address 0xdffffc0000000000: 0000 [#1] SMP KASAN PTI
+KASAN: null-ptr-deref in range [0x0000000000000000-0x0000000000000007]
+Workqueue: events vidtv_mux_tick
+RIP: 0010:vidtv_psi_ts_psi_write_into+0x54a/0xbc0 drivers/media/test-drivers/vidtv/vidtv_psi.c:197
+Call Trace:
+ <TASK>
+ vidtv_psi_table_header_write_into drivers/media/test-drivers/vidtv/vidtv_psi.c:799 [inline]
+ vidtv_psi_pmt_write_into+0x3b2/0xa70 drivers/media/test-drivers/vidtv/vidtv_psi.c:1231
+ vidtv_mux_push_si+0x932/0xe80 drivers/media/test-drivers/vidtv/vidtv_mux.c:196
+ vidtv_mux_tick+0xe9b/0x1480 drivers/media/test-drivers/vidtv/vidtv_mux.c:408
+
+Fixes: f90cf6079bf67 ("media: vidtv: add a bridge driver")
+Cc: stable@vger.kernel.org
+Reported-by: syzbot+814c351d094f4f1a1b86@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=814c351d094f4f1a1b86
+Signed-off-by: Ruslan Valiyev <linuxoid@gmail.com>
+Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/core/dev.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/media/test-drivers/vidtv/vidtv_mux.c |    8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
---- a/net/core/dev.c
-+++ b/net/core/dev.c
-@@ -1731,6 +1731,7 @@ int netif_open(struct net_device *dev, s
+--- a/drivers/media/test-drivers/vidtv/vidtv_mux.c
++++ b/drivers/media/test-drivers/vidtv/vidtv_mux.c
+@@ -101,7 +101,8 @@ static int vidtv_mux_pid_ctx_init(struct
+ 	/* add a ctx for all PMT sections */
+ 	while (p) {
+ 		pid = vidtv_psi_get_pat_program_pid(p);
+-		vidtv_mux_create_pid_ctx_once(m, pid);
++		if (!vidtv_mux_create_pid_ctx_once(m, pid))
++			goto free;
+ 		p = p->next;
+ 	}
  
- 	return ret;
- }
-+EXPORT_SYMBOL(netif_open);
+@@ -170,6 +171,9 @@ static u32 vidtv_mux_push_si(struct vidt
+ 	nit_ctx = vidtv_mux_get_pid_ctx(m, VIDTV_NIT_PID);
+ 	eit_ctx = vidtv_mux_get_pid_ctx(m, VIDTV_EIT_PID);
  
- static void __dev_close_many(struct list_head *head)
- {
++	if (!pat_ctx || !sdt_ctx || !nit_ctx || !eit_ctx)
++		return 0;
++
+ 	pat_args.offset             = m->mux_buf_offset;
+ 	pat_args.continuity_counter = &pat_ctx->cc;
+ 
+@@ -186,6 +190,8 @@ static u32 vidtv_mux_push_si(struct vidt
+ 		}
+ 
+ 		pmt_ctx = vidtv_mux_get_pid_ctx(m, pmt_pid);
++		if (!pmt_ctx)
++			continue;
+ 
+ 		pmt_args.offset             = m->mux_buf_offset;
+ 		pmt_args.pmt                = m->si.pmt_secs[i];
 
 
 
