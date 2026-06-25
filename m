@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-268398-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-268399-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id Z3XGCOEkPWo6xwgAu9opvQ
-	(envelope-from <stable+bounces-268398-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 14:53:53 +0200
+	id X+usKeElPWqmxwgAu9opvQ
+	(envelope-from <stable+bounces-268399-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 14:58:09 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B26716C5C88
-	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 14:53:52 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F0556C5D1C
+	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 14:58:08 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=u0JJMsIC;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-268398-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-268398-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="G5rbnl+/";
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-268399-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-268399-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 21AAE3053F19
-	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 12:52:41 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 4E43D3043BB4
+	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 12:52:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 417DD3E44F9;
-	Thu, 25 Jun 2026 12:52:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C8DE63E3D98;
+	Thu, 25 Jun 2026 12:52:40 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 047013E172E
-	for <stable@vger.kernel.org>; Thu, 25 Jun 2026 12:52:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8696D3E3C5B
+	for <stable@vger.kernel.org>; Thu, 25 Jun 2026 12:52:39 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782391957; cv=none; b=NRO1fhwwgKRQmgI94v90PaF/E+MEJe/Ib4ZulvCS9CA8ipmzGLdECbVzhZmBPZJqI9kzUZsJGKau5f0Jhb4m2yebuZJ5fpAZa7hlBwziNgS3Q/TfkdsNmiRDBx+rNOcE2r9uRThhJnEN7bZHIa+4MgaAiB+G5tTeVv/r/RSqybs=
+	t=1782391960; cv=none; b=gGE5qFnEeKow4ohS9A656nqtQNc66P4krho9/xqI/wJuz577ydKTSsxfvT2rE/0aDnNnSfZY+ITEnXNZhjys9jJL/upTn8LIatdV7JFbWEtrdgMODf3+0HSpgGPuKGn7N+O1JDMKzq0JMsevCvepLSWtYGgIqVu+tKWbiIT3cPw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782391957; c=relaxed/simple;
-	bh=p4SwRX7cSCdksWTmN4WH93QoC4l0W1nQPawcZmrXnig=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=Bo1q/UzQJpLjcDFhwl3BPBPMLFolAfi/KsVhzIxd6C4KVMkYDjxM8R4QjXkDZtFAfhea5ruFHdtSo/uE1PGTOySP80GCJM1VqJKFZm0UshiT1dAqp4UYSRio0yMQSRcuGGAol2T/BSuJH3jgDBcnGMKY/fZC4O7ip9frlPx1htQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u0JJMsIC; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48BA31F000E9;
-	Thu, 25 Jun 2026 12:52:35 +0000 (UTC)
+	s=arc-20240116; t=1782391960; c=relaxed/simple;
+	bh=+Y7Z7sM8QVRf/Ybbi/i119j1+WeNKg9lWDTk46x3ERE=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=vE2BIb6cJe8wOgmh1sVHU62lY5oh0FPJuuXlFX8xGU/TnTvNBppVYryvTuBuWvXLo3lif3/spEizi2VZDSjj293EGzRhMwLZ1ZsVdw8aZrOzKXGIFH4LLKBiF+l9rD7FohD8SpdFPIKnKHwGLnKVztJ2awP6IknuENfZZAt+FuU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G5rbnl+/; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91E2A1F000E9;
+	Thu, 25 Jun 2026 12:52:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1782391955;
-	bh=VWkVKNREoD/fRB9HSLu3grHHDeyM0W0g+ISjysAbAFQ=;
+	s=korg; t=1782391959;
+	bh=PZ3Qvyy82JuJ4W+hsKheO1WPd46hM5kDJEe0/9awrkY=;
 	h=Subject:To:Cc:From:Date;
-	b=u0JJMsIC4jy5XLDNtLmGrRJCTiE69e0r8nO6mwY6ylZv+pX+vjqUXryxwa1bKMZR+
-	 V3h957DsE8QjMLSHtofNTHXiMXEU9bLoD9UrAkLABZDipaQNBs6hVgG3RI4RkUgfZB
-	 o1Cc5H5rdoRY1ix6WrUeyfwSCoanL+yhrSkAKqXY=
-Subject: FAILED: patch "[PATCH] drivers/base/memory: set mem->altmap after successful device" failed to apply to 6.6-stable tree
-To: georgi.djakov@oss.qualcomm.com,akpm@linux-foundation.org,david@kernel.org,djakov@kernel.org,gregkh@linuxfoundation.org,icheng@nvidia.com,osalvador@kernel.org,rafael@kernel.org,rppt@kernel.org,stable@vger.kernel.org,vishal.l.verma@intel.com
+	b=G5rbnl+/rW4P163QR8S6cRP/n8OsKucGNxUPg4NLCfYs7FceZGvSngdyQzIG0nATU
+	 VPjWgwCO/iDaFLmUyFfgo2Sx60n3eYv1HnZM1E3haXiNfg/Bb7oLKAVeQ/sP2OJu3+
+	 fTJsk8czdOzt04L/+I/wd/E1o9kyHztZfCjmTelI=
+Subject: FAILED: patch "[PATCH] ksmbd: reject non-VALID session in compound request branch" failed to apply to 5.15-stable tree
+To: dddhkts1@gmail.com,linkinjeon@kernel.org,stfrench@microsoft.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Thu, 25 Jun 2026 13:46:57 +0100
-Message-ID: <2026062557-blinker-quartered-5591@gregkh>
+Date: Thu, 25 Jun 2026 13:47:33 +0100
+Message-ID: <2026062533-hypnosis-duffel-ae71@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -62,51 +62,52 @@ X-Spamd-Result: default: False [2.34 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_RHS_NOT_FQDN(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-268398-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-268399-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS(0.00)[m:georgi.djakov@oss.qualcomm.com,m:akpm@linux-foundation.org,m:david@kernel.org,m:djakov@kernel.org,m:gregkh@linuxfoundation.org,m:icheng@nvidia.com,m:osalvador@kernel.org,m:rafael@kernel.org,m:rppt@kernel.org,m:stable@vger.kernel.org,m:vishal.l.verma@intel.com,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MIME_TRACE(0.00)[0:+];
 	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:dddhkts1@gmail.com,m:linkinjeon@kernel.org,m:stfrench@microsoft.com,m:stable@vger.kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FROM_NO_DN(0.00)[];
+	FREEMAIL_TO(0.00)[gmail.com,kernel.org,microsoft.com];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MISSING_XM_UA(0.00)[];
+	RCPT_COUNT_THREE(0.00)[4];
 	TO_DN_NONE(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_TWELVE(0.00)[12];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,gregkh:mid,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:from_mime,nvidia.com:email,qualcomm.com:email,intel.com:email,linux-foundation.org:email]
+	FROM_NO_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[gregkh:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: B26716C5C88
+X-Rspamd-Queue-Id: 9F0556C5D1C
 
 
-The patch below does not apply to the 6.6-stable tree.
+The patch below does not apply to the 5.15-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
 git checkout FETCH_HEAD
-git cherry-pick -x a2b8d7827f48ee54a686cb80e4a1d0ff954ec42a
+git cherry-pick -x 609ca17d869d04ba249e32cdcbf13c0b1c66f43c
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026062557-blinker-quartered-5591@gregkh' --subject-prefix 'PATCH 6.6.y' 'HEAD^..'
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026062533-hypnosis-duffel-ae71@gregkh' --subject-prefix 'PATCH 5.15.y' 'HEAD^..'
 
 Possible dependencies:
 
@@ -118,54 +119,57 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From a2b8d7827f48ee54a686cb80e4a1d0ff954ec42a Mon Sep 17 00:00:00 2001
-From: Georgi Djakov <georgi.djakov@oss.qualcomm.com>
-Date: Thu, 14 May 2026 02:26:57 -0700
-Subject: [PATCH] drivers/base/memory: set mem->altmap after successful device
- registration
+From 609ca17d869d04ba249e32cdcbf13c0b1c66f43c Mon Sep 17 00:00:00 2001
+From: Gil Portnoy <dddhkts1@gmail.com>
+Date: Thu, 11 Jun 2026 22:59:19 +0900
+Subject: [PATCH] ksmbd: reject non-VALID session in compound request branch
 
-If __add_memory_block() fails at xa_store() (under memory pressure for
-example), device_unregister() is called, which eventually triggers
-memory_block_release() with mem->altmap still set, causing a
-WARN_ON(mem->altmap).  This was triggered by modifying virtio-mem driver.
+smb2_check_user_session() takes a shortcut for any operation that is not
+the first in a COMPOUND request: it reuses work->sess (the session bound by
+the first operation) and validates only the SessionId, then returns
+"valid". It never re-checks work->sess->state == SMB2_SESSION_VALID, and a
+SessionId of 0xFFFFFFFFFFFFFFFF (ULLONG_MAX, the MS-SMB2 related-operation
+value) skips even the id comparison. The standalone path
+(ksmbd_session_lookup_all() plus the SESSION_SETUP state machine) does
+enforce the VALID state; the compound branch bypasses all of it.
 
-Fix this by delaying the assignment of mem->altmap until after
-__add_memory_block() has succeeded.
+A SESSION_SETUP carrying only an NTLM Type-1 (NtLmNegotiate) blob publishes
+a fresh SMB2_SESSION_IN_PROGRESS session whose sess->user is still NULL
+(->user is assigned later, by ntlm_authenticate()). Used as operation 1 of
+a COMPOUND with operation 2 = TREE_CONNECT (related, SessionId=ULLONG_MAX,
+\\host\IPC$), the tree-connect then runs on that IN_PROGRESS session and
+reaches ksmbd_ipc_tree_connect_request(), which dereferences
+user_name(sess->user) with sess->user == NULL (transport_ipc.c:687/701/704)
+-> remote NULL-pointer dereference and a kernel Oops that wedges the ksmbd
+worker for all clients.
 
-Link: https://lore.kernel.org/20260514092657.3057141-1-georgi.djakov@oss.qualcomm.com
-Fixes: 1a8c64e11043 ("mm/memory_hotplug: embed vmem_altmap details in memory block")
-Signed-off-by: Georgi Djakov <georgi.djakov@oss.qualcomm.com>
-Acked-by: Oscar Salvador (SUSE) <osalvador@kernel.org>
-Cc: Vishal Verma <vishal.l.verma@intel.com>
-Cc: Mike Rapoport <rppt@kernel.org>
-Cc: Richard Cheng <icheng@nvidia.com>
-Cc: David Hildenbrand <david@kernel.org>
-Cc: Georgi Djakov <djakov@kernel.org>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Reject any non-first compound operation that lands on a session which is
+not SMB2_SESSION_VALID, mirroring the validity the standalone lookup path
+enforces. SESSION_SETUP itself legitimately runs on an IN_PROGRESS session,
+but it is never carried as a non-first compound operation, so multi-leg
+authentication is unaffected by this check.
 
-diff --git a/drivers/base/memory.c b/drivers/base/memory.c
-index d31a421f7483..b318344426fa 100644
---- a/drivers/base/memory.c
-+++ b/drivers/base/memory.c
-@@ -797,7 +797,6 @@ static int add_memory_block(unsigned long block_id, int nid, unsigned long state
- 	mem->start_section_nr = block_id * sections_per_block;
- 	mem->state = state;
- 	mem->nid = nid;
--	mem->altmap = altmap;
- 	INIT_LIST_HEAD(&mem->group_next);
+Fixes: 5005bcb42191 ("ksmbd: validate session id and tree id in the compound request")
+Cc: stable@vger.kernel.org
+Signed-off-by: Gil Portnoy <dddhkts1@gmail.com>
+Acked-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+
+diff --git a/fs/smb/server/smb2pdu.c b/fs/smb/server/smb2pdu.c
+index ae451e77689c..9efafa56c03e 100644
+--- a/fs/smb/server/smb2pdu.c
++++ b/fs/smb/server/smb2pdu.c
+@@ -615,6 +615,11 @@ int smb2_check_user_session(struct ksmbd_work *work)
+ 					sess_id, work->sess->id);
+ 			return -EINVAL;
+ 		}
++		if (work->sess->state != SMB2_SESSION_VALID) {
++			pr_err("compound request on a non-valid session (state %d)\n",
++					work->sess->state);
++			return -EINVAL;
++		}
+ 		return 1;
+ 	}
  
- #ifndef CONFIG_NUMA
-@@ -815,6 +814,8 @@ static int add_memory_block(unsigned long block_id, int nid, unsigned long state
- 	if (ret)
- 		return ret;
- 
-+	mem->altmap = altmap;
-+
- 	if (group) {
- 		mem->group = group;
- 		list_add(&mem->group_next, &group->memory_blocks);
 
 
