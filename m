@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-268494-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-268495-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id /ILTLQQpPWrJyAgAu9opvQ
-	(envelope-from <stable+bounces-268494-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 15:11:32 +0200
+	id kJ/uAy4pPWrnyAgAu9opvQ
+	(envelope-from <stable+bounces-268495-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 15:12:14 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id BE34E6C5FCF
-	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 15:11:31 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6850E6C6024
+	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 15:12:13 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=xffYpM3w;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-268494-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-268494-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=EusIQ3o7;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-268495-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-268495-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id E1BC13012C5D
-	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 13:10:41 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id C30CE30683F5
+	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 13:10:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98C6228725B;
-	Thu, 25 Jun 2026 13:10:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B35C72874F5;
+	Thu, 25 Jun 2026 13:10:42 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75EC32ECE91;
-	Thu, 25 Jun 2026 13:10:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8818326FD9B;
+	Thu, 25 Jun 2026 13:10:41 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782393040; cv=none; b=iThTxyAtqdv9JxEKFJYFggsK9Qurom+E7anT8/kEIsxaa4b/rriMmMQSCs8s7ODEieIjSmh0dm5+Eu+Vnea787HB53SSrrPfdvupVii63KQJHvEBzKlXwGKYr0YvxVCL8jD3nRu+NkwYhvNr4HuPA6/5EcYjjEgJxqGFUX+89k8=
+	t=1782393042; cv=none; b=VeYwkvOtL++4ev5SbcYTBlCSxHGn6mQ8rcWIgDTtqCxLs3tckwAiyQGy+9VX3bgjZ6T+72JfMvGQwtK9mQ1PettJJrx61joVFETQZ9jISsf8J2dXdU4rHUnxlSr475XIHvRh6KhwuaUlzA1MCpQGKM/3fkJOc5sBbALeHfDv+pM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782393040; c=relaxed/simple;
-	bh=BR7p9rBV4eolQ1Yot+VMwLdcCfWtq7f64hUrG77BqbQ=;
+	s=arc-20240116; t=1782393042; c=relaxed/simple;
+	bh=q3rvcvO49zKEAduwEqvG/v+ZAAptUFH6NoGIgeFXiJI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jUgufVEqvnQuTwz/RC/xXrv8Dhcw7fHLTW67/i4XaaSAQzBM5q8PkDTNVUQVOn1vnytkDtNwy9HK39jbIC9KhwC3l2dksOyjTp1s9NBuLUgTJVIxHUdyj1RrK0WMxCvhY/u6jgnHPmRsIz4jOq5SM1icGObR6diVOFJ4BK6SxnI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xffYpM3w; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4248A1F00A3A;
-	Thu, 25 Jun 2026 13:10:37 +0000 (UTC)
+	 MIME-Version; b=emsPMnP7OvPqib+bsVXUDPtjPnIs2M/SEQYFwLedgyaL8XuTjit/FowxBOkAI46PGudAaMeuL0P/KAesoo/vciBr3XKs7zj9zgA8BX52Qx039gWDjdJGSNa+5nR/mB86bjQphCT4pv6uPK7h8ehy+ypLoZXRTy6IgZt3yhOWI0E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EusIQ3o7; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8AC711F000E9;
+	Thu, 25 Jun 2026 13:10:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1782393037;
-	bh=HSw5vc8wNatetnOlzY+FEk8lmaQddXbspZW8dFvsuR8=;
+	s=korg; t=1782393041;
+	bh=a3nshOad5VLjaNUQbjuBqIh76hWkIgelB167FJ4FYj8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=xffYpM3wjt/t/ucTmT6ZcyT7A6zcYuzbhvcxKLQGzGL1MsAzUiyFHCexr48FTTWkJ
-	 WSnuR2zNolqT3INwyRDrafKSlIus/MIpyz4qjb11asc1dlD61bEPH5TOx6DyJe127m
-	 WbHeRb1AtILkUNyEfBx7y2WszXpsxlqlJxoU1iOo=
+	b=EusIQ3o7pyoNPCcBrbRELXpQi/c+9ZWdOooVPpCP3z7lRBECdArtiXMMmDuW/vLxX
+	 Hzwok+OPC4U70SQPOsjLxwb3rGa6hyL6U/WnDaK1uh3jM4Y75D8Bp76ebiEJiShyWK
+	 Qsecub4XFKZIajXLAca/TOMrmb1+zRttprSk8Y2Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Bernard Pidoux <bernard.f6bvp@gmail.com>
-Subject: [PATCH 7.0 23/49] rose: set SOCK_DESTROY in rose_kill_by_device() for prompt cleanup
-Date: Thu, 25 Jun 2026 14:03:35 +0100
-Message-ID: <20260625125640.747640857@linuxfoundation.org>
+Subject: [PATCH 7.0 24/49] rose: disconnect orphaned STATE_2 sockets when device is gone
+Date: Thu, 25 Jun 2026 14:03:36 +0100
+Message-ID: <20260625125640.909268242@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260625125637.527552689@linuxfoundation.org>
 References: <20260625125637.527552689@linuxfoundation.org>
@@ -71,14 +71,14 @@ X-Spamd-Result: default: False [-0.16 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORWARDED(0.00)[lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-268494-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-268495-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com];
@@ -94,13 +94,13 @@ X-Spamd-Result: default: False [-0.16 / 15.00];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: BE34E6C5FCF
+X-Rspamd-Queue-Id: 6850E6C6024
 
 7.0-stable review patch.  If anyone has any objections, please let me know.
 
@@ -108,42 +108,49 @@ X-Rspamd-Queue-Id: BE34E6C5FCF
 
 From: Bernard Pidoux <bernard.f6bvp@gmail.com>
 
-commit 741a4863ad570889c75f7a8e404567d8f3e46335 upstream.
+commit d4f4cf9f09a3f5fafa8f09110a7c1b5d10f2f261 upstream.
 
-When rose_kill_by_device() is called (via NETDEV_DOWN on module exit
-or interface removal), it calls rose_disconnect() which transitions
-sockets to ROSE_STATE_0 and sets SOCK_DEAD.  However,
-rose_heartbeat_expiry() only calls rose_destroy_socket() at
-ROSE_STATE_0 if SOCK_DESTROY is set -- the SOCK_DEAD path is reserved
-for TCP_LISTEN sockets.  Without SOCK_DESTROY, orphaned sockets in
-ROSE_STATE_2 (clearing) loop indefinitely in the heartbeat without
-ever being freed, keeping the module use-count elevated and blocking
-modprobe -r rose until the T1 timer (up to 200 s) expires.
+When ax25stop brings down ROSE interfaces, sockets in ROSE_STATE_2
+(awaiting CLEAR CONFIRM) whose device pointer is already NULL are not
+reached by rose_kill_by_device() and wait for T3 (up to 180s) before
+self-cleaning via rose_timer_expiry().  This keeps the rose module
+usecount at 1, blocking rmmod for the full T3 duration.
 
-Set SOCK_DESTROY immediately after rose_disconnect() so the heartbeat
-destroys the socket at its next tick (within 5 s), allowing clean
-module unload.
+In rose_heartbeat_expiry(), detect ROSE_STATE_2 sockets with no device,
+cancel T3, release the neighbour reference, and call rose_disconnect()
++ sock_set_flag(SOCK_DESTROY).  The next heartbeat tick (<=5s) then
+destroys the socket via the existing ROSE_STATE_0/SOCK_DESTROY path,
+allowing clean module unload within 10s instead of up to 180s.
 
 Signed-off-by: Bernard Pidoux <bernard.f6bvp@gmail.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/rose/af_rose.c |    5 +++++
- 1 file changed, 5 insertions(+)
+ net/rose/rose_timer.c |   14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
 
---- a/net/rose/af_rose.c
-+++ b/net/rose/af_rose.c
-@@ -211,6 +211,11 @@ start:
- 		spin_lock_bh(&rose_list_lock);
- 		if (rose->device == dev) {
- 			rose_disconnect(sk, ENETUNREACH, ROSE_OUT_OF_ORDER, 0);
-+			/* Mark for destruction so rose_heartbeat_expiry()
-+			 * cleans up the socket at its next tick rather than
-+			 * looping forever in ROSE_STATE_0 with no owner.
-+			 */
+--- a/net/rose/rose_timer.c
++++ b/net/rose/rose_timer.c
+@@ -139,6 +139,20 @@ static void rose_heartbeat_expiry(struct
+ 		}
+ 		break;
+ 
++	case ROSE_STATE_2:
++		/* Device gone before CLEAR CONFIRM arrived: stop waiting for T3
++		 * and disconnect now instead of blocking rmmod for up to 180s. */
++		if (!rose->device) {
++			rose_stop_timer(sk);
++			if (rose->neighbour) {
++				rose_neigh_put(rose->neighbour);
++				rose->neighbour = NULL;
++			}
++			rose_disconnect(sk, ENETDOWN, -1, -1);
 +			sock_set_flag(sk, SOCK_DESTROY);
- 			if (rose->neighbour)
- 				rose_neigh_put(rose->neighbour);
- 			netdev_put(rose->device, &rose->dev_tracker);
++		}
++		break;
++
+ 	case ROSE_STATE_3:
+ 		/*
+ 		 * Check for the state of the receive buffer.
 
 
 
