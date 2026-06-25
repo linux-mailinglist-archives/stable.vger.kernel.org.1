@@ -1,62 +1,62 @@
-Return-Path: <stable+bounces-268475-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-268427-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id J14EJmopPWoCyQgAu9opvQ
-	(envelope-from <stable+bounces-268475-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 15:13:14 +0200
+	id mLpsGNkoPWq5yAgAu9opvQ
+	(envelope-from <stable+bounces-268427-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 15:10:49 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id E3EB56C6073
-	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 15:13:13 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B6B196C5F9C
+	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 15:10:48 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=IklQUatF;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-268475-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-268475-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=k19N7OwZ;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-268427-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-268427-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 67AD1305B97D
-	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 13:09:37 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id F2E863028B21
+	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 13:06:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E6DD288530;
-	Thu, 25 Jun 2026 13:09:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 780822D5412;
+	Thu, 25 Jun 2026 13:06:57 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4678B1E633C;
-	Thu, 25 Jun 2026 13:09:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 368322848A7;
+	Thu, 25 Jun 2026 13:06:56 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782392976; cv=none; b=qgOOrIYUHgUJh1N+Fs4rHFPVienhQfwI4DWef+FdIMiIT+pEiDTgoH39ggtbisrT10jixuF8q2j5jsTT2ASrRVPl/uLvbALs3P/ya4h0VCzEaQmJOZ9WHW4oN1/YpeN6Z0zGeVnveafYdWUF1e8L1tzetoUNb3fGb0P+NPj6Hwg=
+	t=1782392817; cv=none; b=VJv8QnwjMbINX2/2nCWTe+rqeFhvSjGGetnEf3sOciCNHjBHg/xISEhQ7Z5HN90gLM7egPs1b+0HGJESCNmMfvo9xlkKoomzbI3As3LOSTyu0zr6FwqqMr497X1cgpmPQFEv4NtCut7JXXxMxqORw8cBD+6ytUUmPdaNmU4pHpI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782392976; c=relaxed/simple;
-	bh=EFAutDcg53Rk1gJSyzdDM6p4hwtqt0cIn73outnI0KU=;
+	s=arc-20240116; t=1782392817; c=relaxed/simple;
+	bh=/F8JHvimZ7U2iQSN6ESjtQyZlqn0ybLxU1zW/1AHjAY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XejgzlqAsO1ji1NUg9ivEDrr3VOy3zGJl9e2cTAlkhzql391sKfYQr1w+HDD0icAWCZe60phQg6UO+NE3ANZ0EIyi71XNjoE1XUWfrfebhfP7Ztxddin0P+BdrpSmo2YFJ61ahjFWD+bpYnPQs+uvOwAwllXBc/nIu81kwMaiX4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IklQUatF; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8AD5C1F000E9;
-	Thu, 25 Jun 2026 13:09:34 +0000 (UTC)
+	 MIME-Version; b=caredIUJMcXAHhh6HlWWlAMsSz7zDIVzUaHsAAcr4X8enZnLnSv+YY/nGc4uZwtrfwFHAvRqhqNm10MAQk2pu3u7DFi73sTppF1BuUBs8dw1jsVPGdEz2wtK07AyLkNoV4OYiSTmaNIGfpoK0z0RwS+JaKq+NEBZs2UqPqcJeZo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k19N7OwZ; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B5F51F000E9;
+	Thu, 25 Jun 2026 13:06:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1782392975;
-	bh=OmCRyb0ezHb3I7x4CSLssWsGRpHUQwie93kO8IfHISM=;
+	s=korg; t=1782392816;
+	bh=1/rrI75J5Sg2r+pWcLT1Ce+tloORQkOGjn5IC/N4apM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=IklQUatFd1PujQyeoL0fOFXx4y2bVgPWyM/ge0KS9GJw+aBw9pzXsKBdFhEsYDiGo
-	 GkY6EzDP+u8PN44O4MaBKAnOOEq4RW9d3G6XenKYgRMjEVkkPnDrOGyMV10Ml6UojH
-	 OZtj2sbIAXgqEOeR1y6AM/2gNCA3Ps2Wael9CM6k=
+	b=k19N7OwZQwu7pmyo4aBKfOVTbCbrLWlz/gJ26JopgKbM/lpd4UxlAy295WSZ79Fh6
+	 uvqNFK/qqejZ52GvL55S4+/jT4QP+U5DZETCZzcDApwG3Z0faoxETOKfzy9ZBXmvgu
+	 rlNAXrJIUbRz3Ch1awpnsTu5pCJEINwrHJZMzr9o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>,
+	Titouan Ameline de Cadeville <titouan.ameline@gmail.com>,
 	Tudor Ambarus <tudor.ambarus@linaro.org>,
 	Krzysztof Kozlowski <krzk@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 04/49] firmware: exynos-acpm: Count number of commands in acpm_xfer
-Date: Thu, 25 Jun 2026 14:03:16 +0100
-Message-ID: <20260625125638.132647960@linuxfoundation.org>
+Subject: [PATCH 6.18 32/60] firmware: samsung: acpm: Fix cross-thread RX length corruption
+Date: Thu, 25 Jun 2026 14:03:17 +0100
+Message-ID: <20260625125650.257724749@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260625125637.527552689@linuxfoundation.org>
-References: <20260625125637.527552689@linuxfoundation.org>
+In-Reply-To: <20260625125645.554579168@linuxfoundation.org>
+References: <20260625125645.554579168@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,236 +68,144 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-268475-lists,stable=lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,linaro.org,kernel.org];
+	TAGGED_FROM(0.00)[bounces-268427-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:krzysztof.kozlowski@oss.qualcomm.com,m:tudor.ambarus@linaro.org,m:krzk@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:titouan.ameline@gmail.com,m:tudor.ambarus@linaro.org,m:krzk@kernel.org,m:sashal@kernel.org,m:titouanameline@gmail.com,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
 	RCVD_COUNT_THREE(0.00)[4];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linaro.org:email,qualcomm.com:email,msgid.link:url,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linaro.org:email,msgid.link:url,vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,sashiko.dev:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: E3EB56C6073
+X-Rspamd-Queue-Id: B6B196C5F9C
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
+From: Tudor Ambarus <tudor.ambarus@linaro.org>
 
-[ Upstream commit 00808ae2e679a97dccc5cf0ee4474ba1e2e8a21a ]
+[ Upstream commit f133bd4b5daf71bccdde0ad1a4f47fac76a6bfb1 ]
 
-Struct acpm_xfer holds two buffers with u32 commands - rxd and txd - and
-counts their size by rxlen and txlen.  "len" suffix is here ambiguous,
-so could mean length of the buffer or length of commands, and these are
-not the same since each command is u32.  Rename these to rxcnt and
-txcnt, and change their usage to count the number of commands in each
-buffer.
+Sashiko identified a cross-thread RX length corruption bug when
+reviewing the thermal addition to ACPM [1].
 
-This will have a benefit of allowing to use __counted_by_ptr later.
+When multiple threads concurrently send IPC requests, the ACPM polling
+mechanism can encounter responses belonging to other threads. To drain
+the queue, the driver saves these concurrent responses into an internal
+cache (`rx_data->cmd`) to be retrieved later by the owning thread.
 
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
-Reviewed-by: Tudor Ambarus <tudor.ambarus@linaro.org>
-Link: https://patch.msgid.link/20260219-firmare-acpm-counted-v2-2-e1f7389237d3@oss.qualcomm.com
+Previously, the driver incorrectly used `xfer->rxcnt` (the expected
+receive length of the *current* polling thread) when copying data for
+*other* threads into this cache. If the threads expected responses of
+different lengths, this resulted in buffer underflows (leading to reads
+of uninitialized memory) or potential buffer overflows.
+
+Fix this by replacing the boolean `response` flag in
+`struct acpm_rx_data` with `rxcnt`, caching the exact expected receive
+length for each specific transaction during transfer preparation. Use
+this cached length when saving concurrent responses.
+
+Consequently, ensure that `xfer->rxcnt` is explicitly zeroed in driver
+helpers (e.g., `acpm_dvfs_set_xfer`) for fire-and-forget messages to
+prevent uninitialized stack garbage from being interpreted as a massive
+expected receive length.
+
+Cc: stable@vger.kernel.org
+Fixes: a88927b534ba ("firmware: add Exynos ACPM protocol driver")
+Closes: https://sashiko.dev/#/patchset/20260420-acpm-tmu-v3-0-3dc8e93f0b26%40linaro.org [1]
+Reported-by: Titouan Ameline de Cadeville <titouan.ameline@gmail.com>
+Closes: https://lore.kernel.org/r/20260426210255.73674-1-titouan.ameline@gmail.com/
+Signed-off-by: Tudor Ambarus <tudor.ambarus@linaro.org>
+Link: https://patch.msgid.link/20260505-acpm-fixes-sashiko-reports-v5-1-43b5ee7f1674@linaro.org
 Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
-Stable-dep-of: f133bd4b5daf ("firmware: samsung: acpm: Fix cross-thread RX length corruption")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/firmware/samsung/exynos-acpm-dvfs.c |    9 +++++----
- drivers/firmware/samsung/exynos-acpm-pmic.c |   14 +++++++-------
- drivers/firmware/samsung/exynos-acpm.c      |   14 +++++++-------
- drivers/firmware/samsung/exynos-acpm.h      |    4 ++--
- 4 files changed, 21 insertions(+), 20 deletions(-)
+ drivers/firmware/samsung/exynos-acpm.c |   14 +++++++-------
+ 1 file changed, 7 insertions(+), 7 deletions(-)
 
---- a/drivers/firmware/samsung/exynos-acpm-dvfs.c
-+++ b/drivers/firmware/samsung/exynos-acpm-dvfs.c
-@@ -5,6 +5,7 @@
-  * Copyright 2025 Linaro Ltd.
-  */
- 
-+#include <linux/array_size.h>
- #include <linux/bitfield.h>
- #include <linux/firmware/samsung/exynos-acpm-protocol.h>
- #include <linux/ktime.h>
-@@ -25,11 +26,11 @@ static void acpm_dvfs_set_xfer(struct ac
- {
- 	xfer->acpm_chan_id = acpm_chan_id;
- 	xfer->txd = cmd;
--	xfer->txlen = cmdlen;
-+	xfer->txcnt = cmdlen;
- 
- 	if (response) {
- 		xfer->rxd = cmd;
--		xfer->rxlen = cmdlen;
-+		xfer->rxcnt = cmdlen;
- 	}
- }
- 
-@@ -50,7 +51,7 @@ int acpm_dvfs_set_rate(struct acpm_handl
- 	u32 cmd[4];
- 
- 	acpm_dvfs_init_set_rate_cmd(cmd, clk_id, rate);
--	acpm_dvfs_set_xfer(&xfer, cmd, sizeof(cmd), acpm_chan_id, false);
-+	acpm_dvfs_set_xfer(&xfer, cmd, ARRAY_SIZE(cmd), acpm_chan_id, false);
- 
- 	return acpm_do_xfer(handle, &xfer);
- }
-@@ -70,7 +71,7 @@ unsigned long acpm_dvfs_get_rate(struct
- 	int ret;
- 
- 	acpm_dvfs_init_get_rate_cmd(cmd, clk_id);
--	acpm_dvfs_set_xfer(&xfer, cmd, sizeof(cmd), acpm_chan_id, true);
-+	acpm_dvfs_set_xfer(&xfer, cmd, ARRAY_SIZE(cmd), acpm_chan_id, true);
- 
- 	ret = acpm_do_xfer(handle, &xfer);
- 	if (ret)
---- a/drivers/firmware/samsung/exynos-acpm-pmic.c
-+++ b/drivers/firmware/samsung/exynos-acpm-pmic.c
-@@ -63,8 +63,8 @@ static void acpm_pmic_set_xfer(struct ac
- {
- 	xfer->txd = cmd;
- 	xfer->rxd = cmd;
--	xfer->txlen = cmdlen;
--	xfer->rxlen = cmdlen;
-+	xfer->txcnt = cmdlen;
-+	xfer->rxcnt = cmdlen;
- 	xfer->acpm_chan_id = acpm_chan_id;
- }
- 
-@@ -86,7 +86,7 @@ int acpm_pmic_read_reg(struct acpm_handl
- 	int ret;
- 
- 	acpm_pmic_init_read_cmd(cmd, type, reg, chan);
--	acpm_pmic_set_xfer(&xfer, cmd, sizeof(cmd), acpm_chan_id);
-+	acpm_pmic_set_xfer(&xfer, cmd, ARRAY_SIZE(cmd), acpm_chan_id);
- 
- 	ret = acpm_do_xfer(handle, &xfer);
- 	if (ret)
-@@ -119,7 +119,7 @@ int acpm_pmic_bulk_read(struct acpm_hand
- 		return -EINVAL;
- 
- 	acpm_pmic_init_bulk_read_cmd(cmd, type, reg, chan, count);
--	acpm_pmic_set_xfer(&xfer, cmd, sizeof(cmd), acpm_chan_id);
-+	acpm_pmic_set_xfer(&xfer, cmd, ARRAY_SIZE(cmd), acpm_chan_id);
- 
- 	ret = acpm_do_xfer(handle, &xfer);
- 	if (ret)
-@@ -159,7 +159,7 @@ int acpm_pmic_write_reg(struct acpm_hand
- 	int ret;
- 
- 	acpm_pmic_init_write_cmd(cmd, type, reg, chan, value);
--	acpm_pmic_set_xfer(&xfer, cmd, sizeof(cmd), acpm_chan_id);
-+	acpm_pmic_set_xfer(&xfer, cmd, ARRAY_SIZE(cmd), acpm_chan_id);
- 
- 	ret = acpm_do_xfer(handle, &xfer);
- 	if (ret)
-@@ -199,7 +199,7 @@ int acpm_pmic_bulk_write(struct acpm_han
- 		return -EINVAL;
- 
- 	acpm_pmic_init_bulk_write_cmd(cmd, type, reg, chan, count, buf);
--	acpm_pmic_set_xfer(&xfer, cmd, sizeof(cmd), acpm_chan_id);
-+	acpm_pmic_set_xfer(&xfer, cmd, ARRAY_SIZE(cmd), acpm_chan_id);
- 
- 	ret = acpm_do_xfer(handle, &xfer);
- 	if (ret)
-@@ -229,7 +229,7 @@ int acpm_pmic_update_reg(struct acpm_han
- 	int ret;
- 
- 	acpm_pmic_init_update_cmd(cmd, type, reg, chan, value, mask);
--	acpm_pmic_set_xfer(&xfer, cmd, sizeof(cmd), acpm_chan_id);
-+	acpm_pmic_set_xfer(&xfer, cmd, ARRAY_SIZE(cmd), acpm_chan_id);
- 
- 	ret = acpm_do_xfer(handle, &xfer);
- 	if (ret)
 --- a/drivers/firmware/samsung/exynos-acpm.c
 +++ b/drivers/firmware/samsung/exynos-acpm.c
-@@ -205,7 +205,7 @@ static void acpm_get_saved_rx(struct acp
+@@ -103,12 +103,12 @@ struct acpm_queue {
+  *
+  * @cmd:	pointer to where the data shall be saved.
+  * @n_cmd:	number of 32-bit commands.
+- * @response:	true if the client expects the RX data.
++ * @rxcnt:	expected length of the response in 32-bit words.
+  */
+ struct acpm_rx_data {
+ 	u32 *cmd;
+ 	size_t n_cmd;
+-	bool response;
++	size_t rxcnt;
+ };
+ 
+ #define ACPM_SEQNUM_MAX    64
+@@ -196,7 +196,7 @@ static void acpm_get_saved_rx(struct acp
+ 	const struct acpm_rx_data *rx_data = &achan->rx_data[tx_seqnum - 1];
+ 	u32 rx_seqnum;
+ 
+-	if (!rx_data->response)
++	if (!rx_data->rxcnt)
+ 		return;
+ 
  	rx_seqnum = FIELD_GET(ACPM_PROTOCOL_SEQNUM, rx_data->cmd[0]);
+@@ -253,7 +253,7 @@ static int acpm_get_rx(struct acpm_chan
+ 		seqnum = rx_seqnum - 1;
+ 		rx_data = &achan->rx_data[seqnum];
  
- 	if (rx_seqnum == tx_seqnum) {
--		memcpy(xfer->rxd, rx_data->cmd, xfer->rxlen);
-+		memcpy(xfer->rxd, rx_data->cmd, xfer->rxcnt * sizeof(*xfer->rxd));
- 		clear_bit(rx_seqnum - 1, achan->bitmap_seqnum);
- 	}
- }
-@@ -258,8 +258,7 @@ static int acpm_get_rx(struct acpm_chan
- 
- 		if (rx_data->response) {
+-		if (rx_data->response) {
++		if (rx_data->rxcnt) {
  			if (rx_seqnum == tx_seqnum) {
--				__ioread32_copy(xfer->rxd, addr,
--						xfer->rxlen / 4);
-+				__ioread32_copy(xfer->rxd, addr, xfer->rxcnt);
- 				rx_set = true;
- 				clear_bit(seqnum, achan->bitmap_seqnum);
- 			} else {
-@@ -269,8 +268,7 @@ static int acpm_get_rx(struct acpm_chan
- 				 * clear yet the bitmap. It will be cleared
+ 				__ioread32_copy(xfer->rxd, addr,
+ 						xfer->rxlen / 4);
+@@ -267,7 +267,7 @@ static int acpm_get_rx(struct acpm_chan
  				 * after the response is copied to the request.
  				 */
--				__ioread32_copy(rx_data->cmd, addr,
+ 				__ioread32_copy(rx_data->cmd, addr,
 -						xfer->rxlen / 4);
-+				__ioread32_copy(rx_data->cmd, addr, xfer->rxcnt);
++						rx_data->rxcnt);
  			}
  		} else {
  			clear_bit(seqnum, achan->bitmap_seqnum);
-@@ -425,7 +423,9 @@ int acpm_do_xfer(struct acpm_handle *han
+@@ -379,8 +379,8 @@ static void acpm_prepare_xfer(struct acp
+ 	/* Clear data for upcoming responses */
+ 	rx_data = &achan->rx_data[achan->seqnum - 1];
+ 	memset(rx_data->cmd, 0, sizeof(*rx_data->cmd) * rx_data->n_cmd);
+-	if (xfer->rxd)
+-		rx_data->response = true;
++	/* zero means no response expected */
++	rx_data->rxcnt = xfer->rxlen / 4;
  
- 	achan = &acpm->chans[xfer->acpm_chan_id];
- 
--	if (!xfer->txd || xfer->txlen > achan->mlen || xfer->rxlen > achan->mlen)
-+	if (!xfer->txd ||
-+	    (xfer->txcnt * sizeof(*xfer->txd) > achan->mlen) ||
-+	    (xfer->rxcnt * sizeof(*xfer->rxd) > achan->mlen))
- 		return -EINVAL;
- 
- 	if (!achan->poll_completion) {
-@@ -448,7 +448,7 @@ int acpm_do_xfer(struct acpm_handle *han
- 
- 		/* Write TX command. */
- 		__iowrite32_copy(achan->tx.base + achan->mlen * tx_front,
--				 xfer->txd, xfer->txlen / 4);
-+				 xfer->txd, xfer->txcnt);
- 
- 		/* Advance TX front. */
- 		writel(idx, achan->tx.front);
---- a/drivers/firmware/samsung/exynos-acpm.h
-+++ b/drivers/firmware/samsung/exynos-acpm.h
-@@ -10,8 +10,8 @@
- struct acpm_xfer {
- 	const u32 *txd;
- 	u32 *rxd;
--	size_t txlen;
--	size_t rxlen;
-+	size_t txcnt;
-+	size_t rxcnt;
- 	unsigned int acpm_chan_id;
- };
- 
+ 	/* Flag the index based on seqnum. (seqnum: 1~63, bitmap: 0~62) */
+ 	set_bit(achan->seqnum - 1, achan->bitmap_seqnum);
 
 
 
