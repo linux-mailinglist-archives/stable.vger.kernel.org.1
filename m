@@ -1,199 +1,160 @@
-Return-Path: <stable+bounces-268343-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-268344-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id kcMnMP8GPWoYwAgAu9opvQ
-	(envelope-from <stable+bounces-268343-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 12:46:23 +0200
+	id tWtTLwYHPWoawAgAu9opvQ
+	(envelope-from <stable+bounces-268344-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 12:46:30 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id C27C56C4CC5
-	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 12:46:22 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id BDD076C4CC9
+	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 12:46:29 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=v5+HoMHQ;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=nCoydn7r;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=v5+HoMHQ;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=nCoydn7r;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-268343-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-268343-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=none;
+	dkim=pass header.d=intel.com header.s=Intel header.b=S040DzGU;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-268344-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-268344-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=none) header.from=intel.com;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 9E6BD3015619
-	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 10:44:27 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 7A92B303F8EB
+	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 10:44:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4EB103D45FA;
-	Thu, 25 Jun 2026 10:44:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3020D3D410A;
+	Thu, 25 Jun 2026 10:44:16 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2E793CF699
-	for <stable@vger.kernel.org>; Thu, 25 Jun 2026 10:44:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D3D93CFF50
+	for <stable@vger.kernel.org>; Thu, 25 Jun 2026 10:44:13 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782384246; cv=none; b=gUNacl2JKSbu0yD1709AEmSEMXZxmSgq9mSa95hHogbY/OUb8eiNEISaDTTarW5400u18gD66DqQTJ2CMmwKxZHQEMQkJNBklg9ZapUbkkGXdP9srBjpi8NIXwOXUdImChds/iC0fgDeaPT3ERV73Yuj1BZez5f56bAchP/4Bdo=
+	t=1782384256; cv=none; b=Eu4JV92pYag+uC8I2azBFdND3k2kMKU8iqIBCeystecdEvHjFNAPjrl+MmiOcW/u5cR+PRAOJh0hgBZAnZtz1NzChRos8ZhmdIkx9W/INX/RyRd+3abwJYBTry8HcJCBCoq5Y1+skWJkBcnmlU5yJ/nbyhKCx5qBEYlY8Il6TBM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782384246; c=relaxed/simple;
-	bh=tnZeXJHehJ+A52w8B4DoKvRqhsJXdVGIORGG61VkSbM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=LXzVk8a+3y8BvMUy4zjg22xoU9su4ko/A0DKRw2e6eT5bR/FFtT/n6JpuHzVRqGSP/PXuy5Vs666Upn/l4tYYaVEP83mGg39kwocPSA74lBMFDJmYEbpnQY0rah7jVGiKytYJ7kdpQP8l3bEAZpyyCAM62il0rd248uJoFQY4+M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz; spf=pass smtp.mailfrom=suse.cz; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=v5+HoMHQ; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=nCoydn7r; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=v5+HoMHQ; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=nCoydn7r; arc=none smtp.client-ip=195.135.223.130
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id DF6DE7182E;
-	Thu, 25 Jun 2026 10:44:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1782384242; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=VIWR4ZG0IOd3ZVwv89DuimxILHVqAiCjPspcDkVjjIw=;
-	b=v5+HoMHQ5jcnGevca330BQxWuIIdlcDtwmqY5Feml7DY2Cxf5n1sOjj1OD2xCuSPxrQQWi
-	5CsL0ff7t080cF0ZIe+qmg0GFoK+H4FzRb2spRNdDDiJZFLbNtKPTJcsBq+WlJhTrjGUg9
-	eLnf4fyNX3TfVGhl0oGEQMEB7vlkjew=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1782384242;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=VIWR4ZG0IOd3ZVwv89DuimxILHVqAiCjPspcDkVjjIw=;
-	b=nCoydn7rOmPosCH95uNSfw1ePXmT3IcMznMe0Hl1f8krkwclFbaX2A4HM9JFVv2TqqgNgS
-	T7wVG9hEFL0W68Ag==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1782384242; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=VIWR4ZG0IOd3ZVwv89DuimxILHVqAiCjPspcDkVjjIw=;
-	b=v5+HoMHQ5jcnGevca330BQxWuIIdlcDtwmqY5Feml7DY2Cxf5n1sOjj1OD2xCuSPxrQQWi
-	5CsL0ff7t080cF0ZIe+qmg0GFoK+H4FzRb2spRNdDDiJZFLbNtKPTJcsBq+WlJhTrjGUg9
-	eLnf4fyNX3TfVGhl0oGEQMEB7vlkjew=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1782384242;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=VIWR4ZG0IOd3ZVwv89DuimxILHVqAiCjPspcDkVjjIw=;
-	b=nCoydn7rOmPosCH95uNSfw1ePXmT3IcMznMe0Hl1f8krkwclFbaX2A4HM9JFVv2TqqgNgS
-	T7wVG9hEFL0W68Ag==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id D3029779A8;
-	Thu, 25 Jun 2026 10:44:02 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id YtV7M3IGPWpXPQAAD6G6ig
-	(envelope-from <jack@suse.cz>); Thu, 25 Jun 2026 10:44:02 +0000
-Received: by quack3.suse.cz (Postfix, from userid 1000)
-	id 7A40DA10A3; Thu, 25 Jun 2026 12:43:54 +0200 (CEST)
-Date: Thu, 25 Jun 2026 12:43:54 +0200
-From: Jan Kara <jack@suse.cz>
-To: Christoph Hellwig <hch@lst.de>
-Cc: cem@kernel.org, linux-xfs@vger.kernel.org, stable@vger.kernel.org, 
-	"Darrick J. Wong" <djwong@kernel.org>, Dave Chinner <david@fromorbit.com>, 
-	Eric Sandeen <sandeen@redhat.com>, "Dr. Thomas Orgis" <thomas.orgis@uni-hamburg.de>, 
-	Jan Kara <jack@suse.cz>, linux-fsdevel@vger.kernel.org, 
-	Christian Brauner <brauner@kernel.org>
-Subject: Re: [PATCH] xfs: fix capabily check in xfs_setattr_nonsize
-Message-ID: <qcsdbdpp23fsu3cqhpjdpwusvl6onc2knnrun522ofrutxpz6j@reh3k2ofqjir>
-References: <20260624101436.362533-1-cem@kernel.org>
- <20260624134039.GB5649@lst.de>
+	s=arc-20240116; t=1782384256; c=relaxed/simple;
+	bh=ox2VHxHbUs26Ni59OI8XgN8aYvGnixGst5y0T/QA9lc=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=MEx2E9KtxLjonWvpJRXKlKW4ztCigEcqM8merGis8on5BKhkf56ey/yakRCCo99xzKHg3TmU/eSOOm/9dXmaSmr4J/8v8mgJzrXHNOvIi1YzQ6ktSVF+hnbKAh0zq0IKCG31rnK5wKbMQKGg5vuKcmNNHOLzvqd3DhbxmwNkOcQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=S040DzGU; arc=none smtp.client-ip=198.175.65.18
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1782384254; x=1813920254;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=ox2VHxHbUs26Ni59OI8XgN8aYvGnixGst5y0T/QA9lc=;
+  b=S040DzGUJ9nfKNBWirgrrjKnHzgL5t2XCu29Z0RazjgXgfp33aAcmn6c
+   SIf0A8UZSdP/0N9lb3nXIkCdofVm7a/ZiBzs6TqRvVVx86nQD/9dKsI7q
+   7Fb3HcwgfX9MRAME8Ofi0BI71OmGkd4M0os1kOU4oRjwIw3uT0DXq/Zko
+   ajJ+byeo7JPwCRWriKFyKp7/kvM55593TJFFj/mgOK1+E0+jVJznpZGuT
+   0JS7CD9dH1fm8SHUPheV1Q8/S9pb+Jzxr5C4FLC7J/5a9xMGQ1fckVs6Y
+   kZv0meXemamtST/Z66tOrSIvJbdf5YzLwqEUIjPQZMqFpnpeD9OLZWC1w
+   w==;
+X-CSE-ConnectionGUID: sIQVl+G+TzaqxYvRDy3SDw==
+X-CSE-MsgGUID: XNVVSGrDTQaUiu2em1yBwg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11827"; a="83254766"
+X-IronPort-AV: E=Sophos;i="6.24,224,1774335600"; 
+   d="scan'208";a="83254766"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Jun 2026 03:44:14 -0700
+X-CSE-ConnectionGUID: qhR+zweIQWOIdCgu//38ww==
+X-CSE-MsgGUID: 401S0iDuQyCIsMcpD2ulQA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.24,224,1774335600"; 
+   d="scan'208";a="250732423"
+Received: from ijarvine-mobl1.ger.corp.intel.com (HELO localhost) ([10.245.245.126])
+  by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Jun 2026 03:44:12 -0700
+From: Jani Nikula <jani.nikula@intel.com>
+To: intel-gfx@lists.freedesktop.org,
+	intel-xe@lists.freedesktop.org
+Cc: jani.nikula@intel.com,
+	Martin Hodo <martin.hodo@intel.com>,
+	stable@vger.kernel.org,
+	Suraj Kandpal <suraj.kandpal@intel.com>
+Subject: [PATCH] drm/i915/hdcp: require monotonically increasing seq_num_v
+Date: Thu, 25 Jun 2026 13:44:07 +0300
+Message-ID: <20260625104407.1025614-1-jani.nikula@intel.com>
+X-Mailer: git-send-email 2.47.3
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260624134039.GB5649@lst.de>
-X-Spam-Flag: NO
-X-Spam-Score: -4.01
-X-Spam-Level: 
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6 krs Bertel Jungin Aukio 5, 02600 Espoo, Finland
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.16 / 15.00];
+X-Spamd-Result: default: False [-3.66 / 15.00];
+	WHITELIST_SPF_DKIM(-3.00)[intel.com:d:+,kernel.org:s:+];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
-	R_DKIM_ALLOW(-0.20)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
+	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-268343-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:hch@lst.de,m:cem@kernel.org,m:linux-xfs@vger.kernel.org,m:stable@vger.kernel.org,m:djwong@kernel.org,m:david@fromorbit.com,m:sandeen@redhat.com,m:thomas.orgis@uni-hamburg.de,m:jack@suse.cz,m:linux-fsdevel@vger.kernel.org,m:brauner@kernel.org,s:lists@lfdr.de];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.cz:dkim,suse.cz:from_mime,vger.kernel.org:from_smtp,suse.com:email,reh3k2ofqjir:mid,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo];
-	DMARC_NA(0.00)[suse.cz];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[suse.cz:+];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_SENDER(0.00)[jack@suse.cz,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-268344-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:intel-gfx@lists.freedesktop.org,m:intel-xe@lists.freedesktop.org,m:jani.nikula@intel.com,m:martin.hodo@intel.com,m:stable@vger.kernel.org,m:suraj.kandpal@intel.com,s:lists@lfdr.de];
 	TO_DN_SOME(0.00)[];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_SENDER(0.00)[jani.nikula@intel.com,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	HAS_ORG_HEADER(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[jack@suse.cz,stable@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[jani.nikula@intel.com,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
+	DKIM_TRACE(0.00)[intel.com:+];
+	RCVD_COUNT_FIVE(0.00)[5];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[11];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	TAGGED_RCPT(0.00)[stable];
-	RCVD_COUNT_SEVEN(0.00)[7]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,intel.com:dkim,intel.com:email,intel.com:mid,intel.com:from_mime,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: C27C56C4CC5
+X-Rspamd-Queue-Id: BDD076C4CC9
 
-On Wed 24-06-26 15:40:39, Christoph Hellwig wrote:
-> Adding Jan and Christian for quota and user_ns knowledge.
-> 
-> On Wed, Jun 24, 2026 at 12:14:29PM +0200, cem@kernel.org wrote:
-> > From: Carlos Maiolino <cem@kernel.org>
-> > 
-> > An user reported a bug where he managed to evade group's quota
-> > by changing a file's gid to a different group id the same user
-> > belonged to, even though quotas were enforced on both gids and the
-> > file's size was big enough to exceed the quota's hardlimit.
-> > 
-> > Commit eba0549bc7d1 replaced a capable() call by a
-> > has_capability_noaudit() to prevent unnecessary selinux audit messages.
-> > Turns out that both calls have slightly different semantics even though
-> > their documentation seems similar. Where in a nutshell:
-> > 
-> > capable() - Tests the task's effective credentials
-> > has_ns_capability_noaudit() - Tests the task's real credentials
-> 
-> Eww..
+The HDCP 2.2 specification requires the seq_num_v to be monotonically
+increasing, and repeated seq_num_v needs to be treated as an integrity
+failure. Make it so.
 
-Yeah, that's a catch.
+For the first message, seq_num_v must be zero, and is already
+checked. We can only check for less-than-or-equal for the subsequent
+messages, where hdcp2_encrypted is true.
 
-> > This most of the time has no practical difference but in some cases like
-> > changing attrs (specifically group id in this case) through a NFS client
-> > this will allow the quota code to use XFS_QMOPT_FORCE_RES, effectively
-> > bypassing quota accounting checks.
-> 
-> Yeah, this does look wrong.  Do the other conversion in the above commit
-> have tthe same issue?
-> 
-> > Using instead ns_capable_noaudit() should fix this issue and prevent
-> > selinux audit messages.
-> 
-> The generic quota code manages to do without either has_capability_noaudit
-> or ns_capable_noaudit.  I think this might be hidden behind
-> inode_owner_or_capable calls.  Any idea why we're different?
+Discovered using AI-assisted static analysis confirmed by Intel Product
+Security.
 
-Actually no. Generic quota code has equivalent checks in ignore_hardlimit()
-function which does capable(CAP_SYS_RESOURCE) check. I guess the reason why
-nobody complained about generic quota code is that we call
-ignore_hardlimit() only if we are above hardlimit whereas XFS calls this
-for every transaction...
+Reported-by: Martin Hodo <martin.hodo@intel.com>
+Fixes: d849178e2c9e ("drm/i915: Implement HDCP2.2 repeater authentication")
+Cc: <stable@vger.kernel.org> # v5.2+
+Cc: Suraj Kandpal <suraj.kandpal@intel.com>
+Signed-off-by: Jani Nikula <jani.nikula@intel.com>
+---
+ drivers/gpu/drm/i915/display/intel_hdcp.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-								Honza
-
+diff --git a/drivers/gpu/drm/i915/display/intel_hdcp.c b/drivers/gpu/drm/i915/display/intel_hdcp.c
+index e88fec24af49..d097b478d010 100644
+--- a/drivers/gpu/drm/i915/display/intel_hdcp.c
++++ b/drivers/gpu/drm/i915/display/intel_hdcp.c
+@@ -1798,9 +1798,10 @@ int hdcp2_authenticate_repeater_topology(struct intel_connector *connector)
+ 		return -EINVAL;
+ 	}
+ 
+-	if (seq_num_v < hdcp->seq_num_v) {
+-		/* Roll over of the seq_num_v from repeater. Reauthenticate. */
+-		drm_dbg_kms(display->drm, "Seq_num_v roll over.\n");
++	if (hdcp->hdcp2_encrypted && seq_num_v <= hdcp->seq_num_v) {
++		/* Reauthenticate on Seq_num_v repeat or rollover */
++		drm_dbg_kms(display->drm, "Seq_num_v %s\n",
++			    seq_num_v == hdcp->seq_num_v ? "repeat" : "rollover");
+ 		return -EINVAL;
+ 	}
+ 
 -- 
-Jan Kara <jack@suse.com>
-SUSE Labs, CR
+2.47.3
+
 
