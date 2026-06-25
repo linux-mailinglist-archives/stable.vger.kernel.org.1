@@ -1,63 +1,62 @@
-Return-Path: <stable+bounces-268466-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-268425-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id EszqLa8oPWqnyAgAu9opvQ
-	(envelope-from <stable+bounces-268466-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 15:10:07 +0200
+	id WG3TBNQoPWq2yAgAu9opvQ
+	(envelope-from <stable+bounces-268425-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 15:10:44 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 270556C5F7B
-	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 15:10:07 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 48C006C5F94
+	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 15:10:43 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=hMmSZKoG;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-268466-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-268466-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=zFAXVLPd;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-268425-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-268425-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 6184E3060791
-	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 13:09:10 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 3E53F301D062
+	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 13:06:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E6562DF6E6;
-	Thu, 25 Jun 2026 13:09:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DAC5423E25B;
+	Thu, 25 Jun 2026 13:06:50 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F42F2E6CC8;
-	Thu, 25 Jun 2026 13:09:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99ABB1E633C;
+	Thu, 25 Jun 2026 13:06:49 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782392946; cv=none; b=ZEaxy4Tlc2y1LZhEoH1YzondE+EOjM6S9sHqtjsN+SeL/aWVUpSFUrZvaafs+2qFJffqBJsMr00hIbDUtMdP3SUrQe8pa/ZaewrNXJCB8c5AUQanXImlDVlcgy3KJe86p9PDIyuQd7lHUsSsnAvVxFOf6Ye61NObV/nLJWD3jpc=
+	t=1782392810; cv=none; b=T3eZ6jxqY1jZW2V8jHini0FdjIdJ71Rv4lyeqGkPg32Te18C6RAibLilSex6OT57e+YG53Dkpbjkgj9+mEErVQAEYfObYipJt0bbDK804x5Oki8RJ6xjRuqIh5/r0cTe3pNI95MUswAXUHx0S9I3bF1QmjULtQ18B5kOwS321io=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782392946; c=relaxed/simple;
-	bh=k2zmTzyutzu2C9c0hxDFAxDnR+zHw+qy6gSsau9+xTM=;
+	s=arc-20240116; t=1782392810; c=relaxed/simple;
+	bh=omfY/PjAVSENlpNHC1f2ODWKEunjFIDtixgKnBgFq3Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pRXGHSQhVI4ksv24cXvxRrjZokB1I8zhWpAoWMc6ByXlTvWR+XHVYknctsxFUeGSUGZO1no1Fj3PsV+vX6veZiAb7uOR5Q9kZp1aiUdbmmOBmhImBoxlUMPvl1NxdxcLOAByyabgBP9q26/0ScfpwboFtU+DJUP5BFqyNnMk0jA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hMmSZKoG; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D415C1F000E9;
-	Thu, 25 Jun 2026 13:09:04 +0000 (UTC)
+	 MIME-Version; b=A/yTH2At4ujy751kLmz+VZYf9L42N02jkgQudg8O4ZXWY9L7+JvFKal+m9BR+n7VC2VaDp9Sax3EbaHGayRXDMkbdhs8yBajM9Oy1LxiA49sUj8lW2nXU1SFuqIR3cFH4WCy9EU0g6xLsD+ucmU8qOWmtsQnrd9/QdX6AUPVKWs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zFAXVLPd; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD59C1F000E9;
+	Thu, 25 Jun 2026 13:06:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1782392945;
-	bh=eGpWu0gIBlSsSajg+qtTRBGZUEyXeIUudSLXMJnzWfQ=;
+	s=korg; t=1782392809;
+	bh=9/8nJ7HyO3qGWAtukuOIBEb2HouQ+yXL0rKx06XXzGA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=hMmSZKoGxvhoYMuLbWsNPzobINBhHNk9+kdFBjW08ygFGlC6BI0XUAin+pg4N/3nk
-	 tNkJ9qRymQtsekzTRBFTRoGn9u46xHHN0swXUaxuRR64OnBK1QyqVz66TBslBc2zLM
-	 G1/SVGefwT40K1/wQNzzmKHtDxwdXb+iKH0aUknE=
+	b=zFAXVLPd8mgbtNNUuarcMjj3uNqQ9Tb1EEPflAr1q6X1m1Ub0nooBtMDKLfAXQz7N
+	 hJ8dwFlv/5cILaY9KnscoOUgTVb9qNGXQqv45RpTOsbMhub5Z28GcETR41BDlsgTRG
+	 ZnuiFCQ5ySKOZfcNSa8/uFtbe/SU83PAkx87dw/E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mathias Stearn <mathias@mongodb.com>,
-	Mark Rutland <mark.rutland@arm.com>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
-	Catalin Marinas <catalin.marinas@arm.com>,
+	Thorsten Blum <thorsten.blum@linux.dev>,
+	Long Li <longli@microsoft.com>,
+	Wei Liu <wei.liu@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 02/49] arm64/entry: Fix arm64-specific rseq brokenness
-Date: Thu, 25 Jun 2026 14:03:14 +0100
-Message-ID: <20260625125637.846442939@linuxfoundation.org>
+Subject: [PATCH 6.18 30/60] hv: utils: handle and propagate errors in kvp_register
+Date: Thu, 25 Jun 2026 14:03:15 +0100
+Message-ID: <20260625125649.972601360@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260625125637.527552689@linuxfoundation.org>
-References: <20260625125637.527552689@linuxfoundation.org>
+In-Reply-To: <20260625125645.554579168@linuxfoundation.org>
+References: <20260625125645.554579168@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -73,22 +72,22 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-268466-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-268425-lists,stable=lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:mathias@mongodb.com,m:mark.rutland@arm.com,m:peterz@infradead.org,m:catalin.marinas@arm.com,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:thorsten.blum@linux.dev,m:longli@microsoft.com,m:wei.liu@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
@@ -97,229 +96,98 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,msgid.link:url,vger.kernel.org:from_smtp,arm.com:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,linux.dev:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 270556C5F7B
+X-Rspamd-Queue-Id: 48C006C5F94
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mark Rutland <mark.rutland@arm.com>
+From: Thorsten Blum <thorsten.blum@linux.dev>
 
-commit 411c1cf430392c905e39f12bc305dd994da0b426 upstream.
+[ Upstream commit 3fcf923302a8f5c0dc3af3d2ca2657cb5fae4297 ]
 
-Mathias Stearn reports that since v6.19, there are two big issues
-affecting rseq:
+Make kvp_register() return an error code instead of silently ignoring
+failures, and propagate the error from kvp_handle_handshake() instead of
+returning success.
 
-(1) On arm64 specifically, rseq critical sections aren't aborted when
-    they should be.
+This propagates both kzalloc_obj() and hvutil_transport_send() failures
+to kvp_handle_handshake() and thus to kvp_on_msg().
 
-(2) The 'cpu_id_start' field is no longer written by the kernel in all
-    cases it used to be, including some cases where TCMalloc depends on
-    the kernel clobbering the field.
-
-This patch fixes issue #1. This patch DOES NOT fix issue #2, which will
-need to be addressed by other patches.
-
-The arm64-specific brokenness is a result of commits:
-
-  2fc0e4b4126c ("rseq: Record interrupt from user space")
-  39a167560a61 ("rseq: Optimize event setting")
-
-The first commit failed to add a call to rseq_note_user_irq_entry() on
-arm64. Thus arm64 never sets rseq_event::user_irq to record that it may
-be necessary to abort an active rseq critical section upon return to
-userspace. On its own, this commit had no functional impact as the value
-of rseq_event::user_irq was not consumed.
-
-The second commit relied upon rseq_event::user_irq to determine whether
-or not to bother to perform rseq work when returning to userspace. As
-rseq_event::user_irq wasn't set on arm64, this work would be skipped,
-and consequently an active rseq critical section would not be aborted.
-
-Fix this by giving arm64 syscall-specific entry/exit paths, and
-performing the relevant logic in syscall and non-syscall paths,
-including calling rseq_note_user_irq_entry() for non-syscall entry.
-
-Currently arm64 cannot use syscall_enter_from_user_mode(),
-syscall_exit_to_user_mode(), and irqentry_exit_to_user_mode(), due to
-ordering constraints with exception masking, and risk of ABI breakage
-for syscall tracing/audit/etc. For the moment the entry/exit logic is
-left as arm64-specific, directly using enter_from_user_mode() and
-exit_to_user_mode(), but mirroring the generic code.
-
-I intend to follow up with refactoring/cleanup, as we did for kernel
-mode entry paths in commit:
-
-  041aa7a85390 ("entry: Split preemption from irqentry_exit_to_kernel_mode()")
-
-... which will allow arm64 to use the GENERIC_IRQ_ENTRY functions directly.
-
-Fixes: 39a167560a61 ("rseq: Optimize event setting")
-Reported-by: Mathias Stearn <mathias@mongodb.com>
-Signed-off-by: Mark Rutland <mark.rutland@arm.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Acked-by: Catalin Marinas <catalin.marinas@arm.com>
-Link: https://lore.kernel.org/regressions/CAHnCjA25b+nO2n5CeifknSKHssJpPrjnf+dtr7UgzRw4Zgu=oA@mail.gmail.com/
-Link: https://patch.msgid.link/20260508142023.3268622-1-mark.rutland@arm.com
-[Mark: fix conflicts in entry-common.c & irq-entry-common.h]
-Signed-off-by: Mark Rutland <mark.rutland@arm.com>
+Fixes: 245ba56a52a3 ("Staging: hv: Implement key/value pair (KVP)")
+Cc: stable@vger.kernel.org
+Signed-off-by: Thorsten Blum <thorsten.blum@linux.dev>
+Reviewed-by: Long Li <longli@microsoft.com>
+Signed-off-by: Wei Liu <wei.liu@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/kernel/entry-common.c | 29 ++++++++++++++++++++++-------
- include/linux/irq-entry-common.h |  8 --------
- include/linux/rseq_entry.h       | 19 -------------------
- 3 files changed, 22 insertions(+), 34 deletions(-)
+ drivers/hv/hv_kvp.c |   27 ++++++++++++++-------------
+ 1 file changed, 14 insertions(+), 13 deletions(-)
 
-diff --git a/arch/arm64/kernel/entry-common.c b/arch/arm64/kernel/entry-common.c
-index 3625797e9ee8f9..e3614cedaf23e7 100644
---- a/arch/arm64/kernel/entry-common.c
-+++ b/arch/arm64/kernel/entry-common.c
-@@ -58,6 +58,12 @@ static void noinstr exit_to_kernel_mode(struct pt_regs *regs,
- 	irqentry_exit(regs, state);
+--- a/drivers/hv/hv_kvp.c
++++ b/drivers/hv/hv_kvp.c
+@@ -93,7 +93,7 @@ static void kvp_send_key(struct work_str
+ static void kvp_respond_to_host(struct hv_kvp_msg *msg, int error);
+ static void kvp_timeout_func(struct work_struct *dummy);
+ static void kvp_host_handshake_func(struct work_struct *dummy);
+-static void kvp_register(int);
++static int kvp_register(int);
+ 
+ static DECLARE_DELAYED_WORK(kvp_timeout_work, kvp_timeout_func);
+ static DECLARE_DELAYED_WORK(kvp_host_handshake_work, kvp_host_handshake_func);
+@@ -127,24 +127,26 @@ static void kvp_register_done(void)
+ 	hv_poll_channel(kvp_transaction.recv_channel, kvp_poll_wrapper);
  }
  
-+static __always_inline void arm64_syscall_enter_from_user_mode(struct pt_regs *regs)
-+{
-+	enter_from_user_mode(regs);
-+	mte_disable_tco_entry(current);
-+}
+-static void
++static int
+ kvp_register(int reg_value)
+ {
+ 
+ 	struct hv_kvp_msg *kvp_msg;
+ 	char *version;
++	int ret;
+ 
+ 	kvp_msg = kzalloc(sizeof(*kvp_msg), GFP_KERNEL);
++	if (!kvp_msg)
++		return -ENOMEM;
+ 
+-	if (kvp_msg) {
+-		version = kvp_msg->body.kvp_register.version;
+-		kvp_msg->kvp_hdr.operation = reg_value;
+-		strcpy(version, HV_DRV_VERSION);
+-
+-		hvutil_transport_send(hvt, kvp_msg, sizeof(*kvp_msg),
+-				      kvp_register_done);
+-		kfree(kvp_msg);
+-	}
++	version = kvp_msg->body.kvp_register.version;
++	kvp_msg->kvp_hdr.operation = reg_value;
++	strcpy(version, HV_DRV_VERSION);
 +
- /*
-  * Handle IRQ/context state management when entering from user mode.
-  * Before this function is called it is not safe to call regular kernel code,
-@@ -66,19 +72,28 @@ static void noinstr exit_to_kernel_mode(struct pt_regs *regs,
- static __always_inline void arm64_enter_from_user_mode(struct pt_regs *regs)
- {
- 	enter_from_user_mode(regs);
-+	rseq_note_user_irq_entry();
- 	mte_disable_tco_entry(current);
++	ret = hvutil_transport_send(hvt, kvp_msg, sizeof(*kvp_msg),
++				    kvp_register_done);
++	kfree(kvp_msg);
++	return ret;
  }
  
-+static __always_inline void arm64_syscall_exit_to_user_mode(struct pt_regs *regs)
-+{
-+	local_irq_disable();
-+	syscall_exit_to_user_mode_prepare(regs);
-+	local_daif_mask();
-+	mte_check_tfsr_exit();
-+	exit_to_user_mode();
-+}
-+
- /*
-  * Handle IRQ/context state management when exiting to user mode.
-  * After this function returns it is not safe to call regular kernel code,
-  * instrumentable code, or any code which may trigger an exception.
-  */
--
- static __always_inline void arm64_exit_to_user_mode(struct pt_regs *regs)
- {
- 	local_irq_disable();
--	exit_to_user_mode_prepare_legacy(regs);
-+	irqentry_exit_to_user_mode_prepare(regs);
- 	local_daif_mask();
- 	mte_check_tfsr_exit();
- 	exit_to_user_mode();
-@@ -86,7 +101,7 @@ static __always_inline void arm64_exit_to_user_mode(struct pt_regs *regs)
+ static void kvp_timeout_func(struct work_struct *dummy)
+@@ -186,9 +188,8 @@ static int kvp_handle_handshake(struct h
+ 	 */
+ 	pr_debug("KVP: userspace daemon ver. %d connected\n",
+ 		 msg->kvp_hdr.operation);
+-	kvp_register(dm_reg_value);
  
- asmlinkage void noinstr asm_exit_to_user_mode(struct pt_regs *regs)
- {
--	arm64_exit_to_user_mode(regs);
-+	arm64_syscall_exit_to_user_mode(regs);
+-	return 0;
++	return kvp_register(dm_reg_value);
  }
  
- /*
-@@ -717,12 +732,12 @@ static void noinstr el0_brk64(struct pt_regs *regs, unsigned long esr)
  
- static void noinstr el0_svc(struct pt_regs *regs)
- {
--	arm64_enter_from_user_mode(regs);
-+	arm64_syscall_enter_from_user_mode(regs);
- 	cortex_a76_erratum_1463225_svc_handler();
- 	fpsimd_syscall_enter();
- 	local_daif_restore(DAIF_PROCCTX);
- 	do_el0_svc(regs);
--	arm64_exit_to_user_mode(regs);
-+	arm64_syscall_exit_to_user_mode(regs);
- 	fpsimd_syscall_exit();
- }
- 
-@@ -869,11 +884,11 @@ static void noinstr el0_cp15(struct pt_regs *regs, unsigned long esr)
- 
- static void noinstr el0_svc_compat(struct pt_regs *regs)
- {
--	arm64_enter_from_user_mode(regs);
-+	arm64_syscall_enter_from_user_mode(regs);
- 	cortex_a76_erratum_1463225_svc_handler();
- 	local_daif_restore(DAIF_PROCCTX);
- 	do_el0_svc_compat(regs);
--	arm64_exit_to_user_mode(regs);
-+	arm64_syscall_exit_to_user_mode(regs);
- }
- 
- static void noinstr el0_bkpt32(struct pt_regs *regs, unsigned long esr)
-diff --git a/include/linux/irq-entry-common.h b/include/linux/irq-entry-common.h
-index d26d1b1bcbfb97..6519b4a30dc1dd 100644
---- a/include/linux/irq-entry-common.h
-+++ b/include/linux/irq-entry-common.h
-@@ -236,14 +236,6 @@ static __always_inline void __exit_to_user_mode_validate(void)
- 	lockdep_sys_exit();
- }
- 
--/* Temporary workaround to keep ARM64 alive */
--static __always_inline void exit_to_user_mode_prepare_legacy(struct pt_regs *regs)
--{
--	__exit_to_user_mode_prepare(regs);
--	rseq_exit_to_user_mode_legacy();
--	__exit_to_user_mode_validate();
--}
--
- /**
-  * syscall_exit_to_user_mode_prepare - call exit_to_user_mode_loop() if required
-  * @regs:	Pointer to pt_regs on entry stack
-diff --git a/include/linux/rseq_entry.h b/include/linux/rseq_entry.h
-index 69bdb93951b904..bbe190269f79aa 100644
---- a/include/linux/rseq_entry.h
-+++ b/include/linux/rseq_entry.h
-@@ -740,24 +740,6 @@ static __always_inline void rseq_irqentry_exit_to_user_mode(void)
- 	ev->events = 0;
- }
- 
--/* Required to keep ARM64 working */
--static __always_inline void rseq_exit_to_user_mode_legacy(void)
--{
--	struct rseq_event *ev = &current->rseq.event;
--
--	rseq_stat_inc(rseq_stats.exit);
--
--	if (static_branch_unlikely(&rseq_debug_enabled))
--		WARN_ON_ONCE(ev->sched_switch);
--
--	/*
--	 * Ensure that event (especially user_irq) is cleared when the
--	 * interrupt did not result in a schedule and therefore the
--	 * rseq processing did not clear it.
--	 */
--	ev->events = 0;
--}
--
- void __rseq_debug_syscall_return(struct pt_regs *regs);
- 
- static __always_inline void rseq_debug_syscall_return(struct pt_regs *regs)
-@@ -773,7 +755,6 @@ static inline bool rseq_exit_to_user_mode_restart(struct pt_regs *regs, unsigned
- }
- static inline void rseq_syscall_exit_to_user_mode(void) { }
- static inline void rseq_irqentry_exit_to_user_mode(void) { }
--static inline void rseq_exit_to_user_mode_legacy(void) { }
- static inline void rseq_debug_syscall_return(struct pt_regs *regs) { }
- static inline bool rseq_grant_slice_extension(bool work_pending) { return false; }
- #endif /* !CONFIG_RSEQ */
--- 
-2.53.0
-
 
 
 
