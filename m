@@ -1,117 +1,221 @@
-Return-Path: <stable+bounces-268598-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-268599-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id WPhsHlBKPWp90wgAu9opvQ
-	(envelope-from <stable+bounces-268598-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 17:33:36 +0200
+	id VHKBMwZJPWo60wgAu9opvQ
+	(envelope-from <stable+bounces-268599-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 17:28:06 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0B5306C7177
-	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 17:33:36 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3A4956C70DE
+	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 17:28:06 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=none;
-	dmarc=none;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-268598-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-268598-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=intel.com header.s=Intel header.b=mR+mD8iv;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-268599-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-268599-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=none) header.from=intel.com;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 68CC530B494D
-	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 15:27:49 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 403663049675
+	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 15:28:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94EA13E8681;
-	Thu, 25 Jun 2026 15:27:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 470C437C918;
+	Thu, 25 Jun 2026 15:28:02 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from bregans-1.gladserv.net (bregans-1.gladserv.net [185.128.211.58])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD3D737C918;
-	Thu, 25 Jun 2026 15:27:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8EA63E6396
+	for <stable@vger.kernel.org>; Thu, 25 Jun 2026 15:28:00 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782401268; cv=none; b=lT84B3xi415hXT5bInN3f4YStoWbLoQP48GcOqc63bLWpiJiEun8uAxwKTZmtY7Q/H+RV35ODGa4x9Mu+xEtNKnujT1dcaZrtDS02yQVoc/47yoJZzKFG4t9ZeukosoJv6gTLoM9Gs5Ym6iigqV22dKHy0zYTJdPW1boiPsTC7c=
+	t=1782401282; cv=none; b=i5pWoL1tXkT5p5n38mxB9TLkLRhTG5xPuk3T4YZKtIZFCeF/SvV2GH1EmEhs9CalnHjHHLKBoN29TDib2Wh3s8/Tcv0SlEZ4pW7Gk+yKpxD6714O4+mamgm4yt6Qq8bymRco2bV9JHcmdVvVlh+QLUFcKEFnHVfyl65yZY0pnCk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782401268; c=relaxed/simple;
-	bh=KJw86/w0U5gKt1KGryPF8gbqM3jaQIdjWp3MF3G9eok=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rAdzfpzuTSKUzzo8SSKPusZpFr2c3Og541o35+p8XloTSiyPSjcWPmGUbjVx4HONg0iWcsoOd6RXsFAc6DTYAEF1Eh1DHYp31KhBjj3dZmaYMdmzyzr46X8wPp0dXGrHWlNAjKH4n9QAiQ05OVi1SstBjeGV+FtyAAuk20S4FoM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=librecast.net; spf=pass smtp.mailfrom=librecast.net; arc=none smtp.client-ip=185.128.211.58
-From: Brett A C Sheffield <bacs@librecast.net>
-To: gregkh@linuxfoundation.org
-Cc: stable@vger.kernel.org,
-	patches@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	torvalds@linux-foundation.org,
-	akpm@linux-foundation.org,
-	linux@roeck-us.net,
-	shuah@kernel.org,
-	patches@kernelci.org,
-	lkft-triage@lists.linaro.org,
-	pavel@nabladev.com,
-	jonathanh@nvidia.com,
-	f.fainelli@gmail.com,
-	sudipm.mukherjee@gmail.com,
-	rwarsow@gmx.de,
-	conor@kernel.org,
-	hargar@microsoft.com,
-	broonie@kernel.org,
-	achill@achill.org,
-	sr@sladewatkins.com,
-	Brett A C Sheffield <bacs@librecast.net>
-Subject: Re: [PATCH 7.1 00/21] 7.1.2-rc1 review
-Date: Thu, 25 Jun 2026 15:27:36 +0000
-Message-ID: <20260625152740.8576-1-bacs@librecast.net>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260625125613.243729608@linuxfoundation.org>
-References: <20260625125613.243729608@linuxfoundation.org>
+	s=arc-20240116; t=1782401282; c=relaxed/simple;
+	bh=vfCzvBFrq4aqLZUqAlJsgQ9pz1xMZKJQzgI6UmSmEI4=;
+	h=Date:From:To:cc:Subject:In-Reply-To:Message-ID:References:
+	 MIME-Version:Content-Type; b=fKP0wxQ1z27ZAxu9JtL1uGSPRHgRBholgJEaUaNTkYTY3YwF90xJHWBf3CV5RKxsAb/54KKRBE7zSzBIIw4ejP1EJoC5iSqEtJYpQSXwpoOth7FE3E9jeF/6m/C8K23xsjdHS7ydfY0zGdS4GCOmKIzCEJEX7gFwbA1LxWf6yvQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=mR+mD8iv; arc=none smtp.client-ip=192.198.163.17
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1782401280; x=1813937280;
+  h=date:from:to:cc:subject:in-reply-to:message-id:
+   references:mime-version;
+  bh=vfCzvBFrq4aqLZUqAlJsgQ9pz1xMZKJQzgI6UmSmEI4=;
+  b=mR+mD8iv39CCTKUdUp5Pt6+kTmy+y4gsl2SODq2DTwts3rzPTel3jakx
+   WZbBd+tB7g0l5cV6ZoF8C4XyhDfxRybwXhDOrH3SKxjqZTg8tgXEYuzrj
+   zT2i9nwSmUHFkhfPClg+ouHvqlT6rtu1V8MsAKQhuYHCMxRXXHz9RyGZM
+   x0vavCCWUGQQ3PUdlHs1IjJgcG1wjeG3ZF2W2U2G8N/zHYkbthjL0VIlS
+   0bpLgTx40ZgMgAKKyr4cDGoSj3gf62hQOAVVVAKZtRL0Ju+X/KFQ903P4
+   mEEeaX7OyIf+Bq2oxVv6drJARWElzVt8r1xM5jjlG/5fY0dHupx2y7Vv3
+   A==;
+X-CSE-ConnectionGUID: 6e0jVfCnQc2MIBzWGbvEHQ==
+X-CSE-MsgGUID: 1vBgBqygQDCWlGNP2t3OKA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11827"; a="83057521"
+X-IronPort-AV: E=Sophos;i="6.24,224,1774335600"; 
+   d="scan'208";a="83057521"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Jun 2026 08:27:59 -0700
+X-CSE-ConnectionGUID: cwTZChLfQoOZDlSBPHTQUA==
+X-CSE-MsgGUID: qoEYF/gQQV+BhVfiKIQ0ow==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.24,224,1774335600"; 
+   d="scan'208";a="251337583"
+Received: from dev-417.igk.intel.com ([10.91.214.181])
+  by orviesa009.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Jun 2026 08:27:58 -0700
+Date: Thu, 25 Jun 2026 17:27:55 +0200 (CEST)
+From: =?ISO-8859-2?Q?Micha=B3_Grzelak?= <michal.grzelak@intel.com>
+To: Jani Nikula <jani.nikula@intel.com>
+cc: intel-gfx@lists.freedesktop.org, intel-xe@lists.freedesktop.org, 
+    Martin Hodo <martin.hodo@intel.com>, stable@vger.kernel.org, 
+    Animesh Manna <animesh.manna@intel.com>, 
+    =?ISO-8859-15?Q?Ville_Syrj=E4l=E4?= <ville.syrjala@intel.com>
+Subject: Re: [PATCH] drm/i915/bios: range check LFP Data Block panel_type2
+In-Reply-To: <20260625135130.1067872-1-jani.nikula@intel.com>
+Message-ID: <37079a8c-8eb7-aaa0-ed21-594f413210a2@intel.com>
+References: <20260625135130.1067872-1-jani.nikula@intel.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/mixed; boundary="8323329-253770812-1782401279=:605841"
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [1.54 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-4.16 / 15.00];
+	WHITELIST_SPF_DKIM(-3.00)[intel.com:d:+,kernel.org:s:+];
+	CTYPE_MIXED_BOGUS(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
 	MAILLIST(-0.15)[generic];
-	MIME_GOOD(-0.10)[text/plain];
+	MIME_GOOD(-0.10)[multipart/mixed,text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	DMARC_NA(0.00)[librecast.net];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-268598-lists,stable=lfdr.de];
-	RCPT_COUNT_TWELVE(0.00)[21];
-	FORGED_RECIPIENTS(0.00)[m:gregkh@linuxfoundation.org,m:stable@vger.kernel.org,m:patches@lists.linux.dev,m:linux-kernel@vger.kernel.org,m:torvalds@linux-foundation.org,m:akpm@linux-foundation.org,m:linux@roeck-us.net,m:shuah@kernel.org,m:patches@kernelci.org,m:lkft-triage@lists.linaro.org,m:pavel@nabladev.com,m:jonathanh@nvidia.com,m:f.fainelli@gmail.com,m:sudipm.mukherjee@gmail.com,m:rwarsow@gmx.de,m:conor@kernel.org,m:hargar@microsoft.com,m:broonie@kernel.org,m:achill@achill.org,m:sr@sladewatkins.com,m:bacs@librecast.net,m:ffainelli@gmail.com,m:sudipmmukherjee@gmail.com,s:lists@lfdr.de];
-	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[intel.com:+];
 	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_SENDER(0.00)[bacs@librecast.net,stable@vger.kernel.org];
-	RCVD_COUNT_THREE(0.00)[3];
+	FORGED_RECIPIENTS(0.00)[m:jani.nikula@intel.com,m:intel-gfx@lists.freedesktop.org,m:intel-xe@lists.freedesktop.org,m:martin.hodo@intel.com,m:stable@vger.kernel.org,m:animesh.manna@intel.com,m:ville.syrjala@intel.com,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[michal.grzelak@intel.com,stable@vger.kernel.org];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-268599-lists,stable=lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[bacs@librecast.net,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FREEMAIL_CC(0.00)[vger.kernel.org,lists.linux.dev,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,nabladev.com,nvidia.com,gmail.com,gmx.de,microsoft.com,achill.org,sladewatkins.com,librecast.net];
-	ALIAS_RESOLVED(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	R_DKIM_NA(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	MIME_TRACE(0.00)[0:+,1:+];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[michal.grzelak@intel.com,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,librecast.net:email,librecast.net:mid,librecast.net:from_mime]
+	ALIAS_RESOLVED(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MISSING_XM_UA(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 0B5306C7177
+X-Rspamd-Queue-Id: 3A4956C70DE
 
-# Librecast Test Results
+  This message is in MIME format.  The first part should be readable text,
+  while the remaining parts are likely unreadable without MIME-aware tools.
 
-020/020 [ OK ] liblcrq
-010/010 [ OK ] libmld
-120/120 [ OK ] liblibrecast
+--8323329-253770812-1782401279=:605841
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8BIT
 
-CPU/kernel: Linux auntie 7.1.2-rc1-gecd7772bf738 #1 SMP PREEMPT_DYNAMIC Thu Jun 25 15:10:53 -00 2026 x86_64 AMD Ryzen 9 9950X 16-Core Processor AuthenticAMD GNU/Linux
+On Thu, 25 Jun 2026, Jani Nikula wrote:
+> While the panel_type from LFP Data Block is range checked, panel_type2
+> is not. Add a few helpers for range checking, and use them to not only
+> check panel_type2, but also imrove clarity and correctness in the panel
 
-Tested-by: Brett A C Sheffield <bacs@librecast.net>
+typo: s/imrove/improve/
+
+> type selection.
+>
+> Discovered using AI-assisted static analysis confirmed by Intel Product
+> Security.
+>
+> Reported-by: Martin Hodo <martin.hodo@intel.com>
+> Fixes: 6434cf630086 ("drm/i915/bios: calculate panel type as per child device index in VBT")
+> Cc: <stable@vger.kernel.org> # v6.0+
+> Cc: Animesh Manna <animesh.manna@intel.com>
+> Cc: Ville Syrjälä <ville.syrjala@intel.com>
+> Signed-off-by: Jani Nikula <jani.nikula@intel.com>
+
+Reviewed-by: Michał Grzelak <michal.grzelak@intel.com>
+
+BR,
+Michał
+
+> ---
+> drivers/gpu/drm/i915/display/intel_bios.c | 29 +++++++++++++++++------
+> 1 file changed, 22 insertions(+), 7 deletions(-)
+>
+> diff --git a/drivers/gpu/drm/i915/display/intel_bios.c b/drivers/gpu/drm/i915/display/intel_bios.c
+> index 15ebadc72b88..0c420019e46a 100644
+> --- a/drivers/gpu/drm/i915/display/intel_bios.c
+> +++ b/drivers/gpu/drm/i915/display/intel_bios.c
+> @@ -623,6 +623,16 @@ get_lfp_data_tail(const struct bdb_lfp_data *data,
+> 		return NULL;
+> }
+>
+> +static bool is_panel_type_valid(int panel_type)
+> +{
+> +	return panel_type >= 0 && panel_type < 16;
+> +}
+> +
+> +static bool is_panel_type_valid_or_pnp(int panel_type)
+> +{
+> +	return is_panel_type_valid(panel_type) || panel_type == 0xff;
+> +}
+> +
+> static int opregion_get_panel_type(struct intel_display *display,
+> 				   const struct intel_bios_encoder_data *devdata,
+> 				   const struct drm_edid *drm_edid, bool use_fallback)
+> @@ -640,15 +650,21 @@ static int vbt_get_panel_type(struct intel_display *display,
+> 	if (!lfp_options)
+> 		return -1;
+>
+> -	if (lfp_options->panel_type > 0xf &&
+> -	    lfp_options->panel_type != 0xff) {
+> +	if (!is_panel_type_valid_or_pnp(lfp_options->panel_type)) {
+> 		drm_dbg_kms(display->drm, "Invalid VBT panel type 0x%x\n",
+> 			    lfp_options->panel_type);
+> 		return -1;
+> 	}
+>
+> -	if (devdata && devdata->child.handle == DEVICE_HANDLE_LFP2)
+> +	if (devdata && devdata->child.handle == DEVICE_HANDLE_LFP2) {
+> +		if (!is_panel_type_valid_or_pnp(lfp_options->panel_type2)) {
+> +			drm_dbg_kms(display->drm, "Invalid VBT panel type 2 0x%x\n",
+> +				    lfp_options->panel_type2);
+> +			return -1;
+> +		}
+> +
+> 		return lfp_options->panel_type2;
+> +	}
+>
+> 	drm_WARN_ON(display->drm,
+> 		    devdata && devdata->child.handle != DEVICE_HANDLE_LFP1);
+> @@ -762,13 +778,12 @@ static int get_panel_type(struct intel_display *display,
+> 				    panel_types[i].name, panel_types[i].panel_type);
+> 	}
+>
+> -	if (panel_types[PANEL_TYPE_OPREGION].panel_type >= 0)
+> +	if (is_panel_type_valid(panel_types[PANEL_TYPE_OPREGION].panel_type))
+> 		i = PANEL_TYPE_OPREGION;
+> 	else if (panel_types[PANEL_TYPE_VBT].panel_type == 0xff &&
+> -		 panel_types[PANEL_TYPE_PNPID].panel_type >= 0)
+> +		 is_panel_type_valid(panel_types[PANEL_TYPE_PNPID].panel_type))
+> 		i = PANEL_TYPE_PNPID;
+> -	else if (panel_types[PANEL_TYPE_VBT].panel_type != 0xff &&
+> -		 panel_types[PANEL_TYPE_VBT].panel_type >= 0)
+> +	else if (is_panel_type_valid(panel_types[PANEL_TYPE_VBT].panel_type))
+> 		i = PANEL_TYPE_VBT;
+> 	else
+> 		i = PANEL_TYPE_FALLBACK;
+> -- 
+> 2.47.3
+>
+>
+--8323329-253770812-1782401279=:605841--
 
