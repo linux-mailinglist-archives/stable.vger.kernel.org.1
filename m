@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-268472-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-268452-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id eCx4KD8pPWruyAgAu9opvQ
-	(envelope-from <stable+bounces-268472-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 15:12:31 +0200
+	id SS+KJ24oPWqIyAgAu9opvQ
+	(envelope-from <stable+bounces-268452-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 15:09:02 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E5E076C602D
-	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 15:12:30 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4EF4A6C5F21
+	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 15:09:02 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=sAnh0HmG;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-268472-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-268472-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="c5id/TD7";
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-268452-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-268452-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 74BA830D26D3
-	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 13:09:30 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 01A1C303670A
+	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 13:08:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31A7C2E8B83;
-	Thu, 25 Jun 2026 13:09:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 929E22DB79C;
+	Thu, 25 Jun 2026 13:08:20 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A69B2DF142;
-	Thu, 25 Jun 2026 13:09:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EAE12D5412;
+	Thu, 25 Jun 2026 13:08:19 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782392967; cv=none; b=WUdbtYdxN0aWLcJ6K6HCQw81knFc9UiLoW+29PLbo0o3ZEuEnfWAQF0wYtk73qLDn5eluIfpEx2KdOmqNeXlfgz0RHJaCKU/cwKgKGACEbZejEnhTIWr7MQ9GF+2HBty/QU6zA96z5cx3K/+HKcFw2NcnuU59Vqg2ht6M3ZRUAI=
+	t=1782392900; cv=none; b=r0JzVl9cSsh89CXYqPCMt1fIMp5aSinSw99yxGZHsUmL4aw2bc8SK3CRtRPbfW++9DtOp93jdtlBztUlI9RCjArKVJgm0UJmQ8SlpW3UOyN6vWw2l4vmp6mGF0eNWCtFeZPYohzOvg7gMYyFy0QkFb0ROEtciGxaEYOdesTO7y8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782392967; c=relaxed/simple;
-	bh=rUfA0pA8Xa/zAJrpbgX9pNFP2EdD54C5ecv/iJ7mzAc=;
+	s=arc-20240116; t=1782392900; c=relaxed/simple;
+	bh=9wJZwcdxlBNQRV3ieOujSrVc/l4yNHpoDRURholtukU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NnCOa+O50g2lLjhtXpitWqxHP7dYa59xy55gbaKtpXSnUbeUYeo8kPOj7IRmQ2D/rngS9nHmmKtLtqvEx6DOSa2ID7ZO4JgJxDUbWmWRPui3cbQlYpepcXKP+P0TDzixINTorWERW/VO4F2iACaHc1seaOC8iisQaGKrdhtwES0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sAnh0HmG; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2B411F000E9;
-	Thu, 25 Jun 2026 13:09:24 +0000 (UTC)
+	 MIME-Version; b=a9SWTyDr79VcHLc1HSs9qfSCIpdkfQ5CWjLamdImRMrOwwOVtYyU0MHni50tc349bibGTcz+ZnY/EzN9KKhhTR6Id6H8ldJrfH9xaGUdVkiSvoI25iML4Pp0OX0+mNRmglpz4qDhcTmB90l+bQpj97uyrUBgj6b0hwxvlNCaIFY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c5id/TD7; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2E071F000E9;
+	Thu, 25 Jun 2026 13:08:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1782392965;
-	bh=j6fz2ELBCmcVIkJoUp0M/2P77tWjJivYilRPOoad/qI=;
+	s=korg; t=1782392899;
+	bh=t4dGv+ic8Todd+00GDYOyKROUlFaTa7BTBV102+wqK8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=sAnh0HmG4RGmUSFL+AjPAXu2r7rKq9aUqZqbTN1HmCfqTJtmCM2Tl2HJAX6PHG4zx
-	 kbwucgT/t7vgojUdYKlYKfnMyXvWUdLXoZZHkAM3cUZgo1/2NZeZnPUQ/7eBoiXtSE
-	 Y6VjiniAjfw2RxJ9UFltEzFMkzMkFZcy5jh8W1Ug=
+	b=c5id/TD7701+DKWvrtOUYyj6cx9ajSvIVkPVug/nANJBF1tmts5nVHrt9FvqmuMAh
+	 GL1QLnnOWJ7G75A6G51luUEM/Vj/lNeRguQI3IY6ojC3DWcdUPj9QMadsH6wCuIcHK
+	 TfJ9UlPPNmYK6+euDpOy/ajmGXud4gDL/bQM0ANk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bernard Pidoux <bernard.f6bvp@gmail.com>
-Subject: [PATCH 7.0 16/49] rose: fix dev_put() leak in rose_loopback_timer()
+	Faicker Mo <faicker.mo@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.18 43/60] net: net_failover: Fix the deadlock in slave register
 Date: Thu, 25 Jun 2026 14:03:28 +0100
-Message-ID: <20260625125639.767732237@linuxfoundation.org>
+Message-ID: <20260625125651.973051627@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260625125637.527552689@linuxfoundation.org>
-References: <20260625125637.527552689@linuxfoundation.org>
+In-Reply-To: <20260625125645.554579168@linuxfoundation.org>
+References: <20260625125645.554579168@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,22 +72,22 @@ X-Spamd-Result: default: False [-0.16 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	RCVD_TLS_LAST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-268452-lists,stable=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:faicker.mo@gmail.com,m:kuba@kernel.org,m:faickermo@gmail.com,s:lists@lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-268472-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:bernard.f6bvp@gmail.com,m:bernardf6bvp@gmail.com,s:lists@lfdr.de];
-	RCPT_COUNT_THREE(0.00)[4];
-	TO_DN_SOME(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
@@ -94,69 +95,121 @@ X-Spamd-Result: default: False [-0.16 / 15.00];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: E5E076C602D
+X-Rspamd-Queue-Id: 4EF4A6C5F21
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bernard Pidoux <bernard.f6bvp@gmail.com>
+From: Faicker Mo <faicker.mo@gmail.com>
 
-commit ff91adc54db2b62c7cdf063ff761eceb5adf2215 upstream.
+commit b84c5632c7b31f8910167075a8128cfb9e50fcfe upstream.
 
-rose_rx_call_request() always consumes or returns the skb but never
-releases the device reference obtained from rose_dev_get().  When
-rose_rx_call_request() succeeds (returns non-zero) dev_put() was never
-called, leaking one reference per loopback CALL_REQUEST.
+There is netdev_lock_ops() before the NETDEV_REGISTER notifier
+in register_netdevice(), so use the non-locking functions
+in net_failover_slave_register().
+failover_slave_register() in failover_existing_slave_register() adds lock
+and unlock ops too.
 
-Move dev_put() outside the conditional so it is called unconditionally
-after rose_rx_call_request() in all cases.
+Call Trace:
+ <TASK>
+ __schedule+0x30d/0x7a0
+ schedule+0x27/0x90
+ schedule_preempt_disabled+0x15/0x30
+ __mutex_lock.constprop.0+0x538/0x9e0
+ __mutex_lock_slowpath+0x13/0x20
+ mutex_lock+0x3b/0x50
+ dev_set_mtu+0x40/0xe0
+ net_failover_slave_register+0x24/0x280
+ failover_slave_register+0x103/0x1b0
+ failover_event+0x15e/0x210
+ ? dropmon_net_event+0xac/0xe0
+ notifier_call_chain+0x5e/0xe0
+ raw_notifier_call_chain+0x16/0x30
+ call_netdevice_notifiers_info+0x52/0xa0
+ register_netdevice+0x5f4/0x7c0
+ register_netdev+0x1e/0x40
+ _mlx5e_probe+0xe2/0x370 [mlx5_core]
+ mlx5e_probe+0x59/0x70 [mlx5_core]
+ ? __pfx_mlx5e_probe+0x10/0x10 [mlx5_core]
 
-Also remove the dead check (!rose_loopback_neigh->dev &&
-!rose_loopback_neigh->loopback) that immediately precedes it: the
-loopback neighbour always has loopback=1 so this condition can never
-be true.
-
-Fixes: 0453c6824595 ("net/rose: fix unbound loop in rose_loopback_timer()")
-Signed-off-by: Bernard Pidoux <bernard.f6bvp@gmail.com>
+Fixes: 4c975fd70002 ("net: hold instance lock during NETDEV_REGISTER/UP")
+Signed-off-by: Faicker Mo <faicker.mo@gmail.com>
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/rose/rose_loopback.c |   11 ++---------
- 1 file changed, 2 insertions(+), 9 deletions(-)
+ drivers/net/net_failover.c |   12 ++++++------
+ net/core/failover.c        |    6 +++++-
+ 2 files changed, 11 insertions(+), 7 deletions(-)
 
---- a/net/rose/rose_loopback.c
-+++ b/net/rose/rose_loopback.c
-@@ -96,22 +96,15 @@ static void rose_loopback_timer(struct t
- 		}
+--- a/drivers/net/net_failover.c
++++ b/drivers/net/net_failover.c
+@@ -502,7 +502,7 @@ static int net_failover_slave_register(s
  
- 		if (frametype == ROSE_CALL_REQUEST) {
--			if (!rose_loopback_neigh->dev &&
--			    !rose_loopback_neigh->loopback) {
--				kfree_skb(skb);
--				continue;
--			}
--
- 			dev = rose_dev_get(dest);
- 			if (!dev) {
- 				kfree_skb(skb);
- 				continue;
- 			}
+ 	/* Align MTU of slave with failover dev */
+ 	orig_mtu = slave_dev->mtu;
+-	err = dev_set_mtu(slave_dev, failover_dev->mtu);
++	err = netif_set_mtu(slave_dev, failover_dev->mtu);
+ 	if (err) {
+ 		netdev_err(failover_dev, "unable to change mtu of %s to %u register failed\n",
+ 			   slave_dev->name, failover_dev->mtu);
+@@ -512,11 +512,11 @@ static int net_failover_slave_register(s
+ 	dev_hold(slave_dev);
  
--			if (rose_rx_call_request(skb, dev, rose_loopback_neigh, lci_o) == 0) {
--				dev_put(dev);
-+			if (rose_rx_call_request(skb, dev, rose_loopback_neigh, lci_o) == 0)
- 				kfree_skb(skb);
--			}
-+			dev_put(dev);
- 		} else {
- 			kfree_skb(skb);
+ 	if (netif_running(failover_dev)) {
+-		err = dev_open(slave_dev, NULL);
++		err = netif_open(slave_dev, NULL);
+ 		if (err && (err != -EBUSY)) {
+ 			netdev_err(failover_dev, "Opening slave %s failed err:%d\n",
+ 				   slave_dev->name, err);
+-			goto err_dev_open;
++			goto err_netif_open;
  		}
+ 	}
+ 
+@@ -562,10 +562,10 @@ static int net_failover_slave_register(s
+ err_vlan_add:
+ 	dev_uc_unsync(slave_dev, failover_dev);
+ 	dev_mc_unsync(slave_dev, failover_dev);
+-	dev_close(slave_dev);
+-err_dev_open:
++	netif_close(slave_dev);
++err_netif_open:
+ 	dev_put(slave_dev);
+-	dev_set_mtu(slave_dev, orig_mtu);
++	netif_set_mtu(slave_dev, orig_mtu);
+ done:
+ 	return err;
+ }
+--- a/net/core/failover.c
++++ b/net/core/failover.c
+@@ -12,6 +12,7 @@
+ #include <uapi/linux/if_arp.h>
+ #include <linux/rtnetlink.h>
+ #include <linux/if_vlan.h>
++#include <net/netdev_lock.h>
+ #include <net/failover.h>
+ 
+ static LIST_HEAD(failover_list);
+@@ -221,8 +222,11 @@ failover_existing_slave_register(struct
+ 	for_each_netdev(net, dev) {
+ 		if (netif_is_failover(dev))
+ 			continue;
+-		if (ether_addr_equal(failover_dev->perm_addr, dev->perm_addr))
++		if (ether_addr_equal(failover_dev->perm_addr, dev->perm_addr)) {
++			netdev_lock_ops(dev);
+ 			failover_slave_register(dev);
++			netdev_unlock_ops(dev);
++		}
+ 	}
+ 	rtnl_unlock();
+ }
 
 
 
