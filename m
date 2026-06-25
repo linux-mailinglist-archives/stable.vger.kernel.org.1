@@ -1,64 +1,67 @@
-Return-Path: <stable+bounces-268524-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-268503-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 7JHXLLkpPWoWyQgAu9opvQ
-	(envelope-from <stable+bounces-268524-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 15:14:33 +0200
+	id o/+vHCApPWrdyAgAu9opvQ
+	(envelope-from <stable+bounces-268503-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 15:12:00 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 143C46C60B3
-	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 15:14:33 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8FF4A6C6010
+	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 15:11:59 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=Ze6p1icP;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-268524-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-268524-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=duNHEkFX;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-268503-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-268503-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A171F30416FD
-	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 13:12:15 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 7C0A5301D50C
+	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 13:11:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 239662EEE8A;
-	Thu, 25 Jun 2026 13:12:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 936FA28751B;
+	Thu, 25 Jun 2026 13:11:05 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE0A92E7374;
-	Thu, 25 Jun 2026 13:12:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EF9226FD9B;
+	Thu, 25 Jun 2026 13:11:04 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782393134; cv=none; b=kx2J9UTfDlNinOADDUyjEdQRbLf5N29CmOJOuW23oZ+nVsa8biIbfZm+H1dFlA8b8ZBp9VaToMKoz+vS2u7LtR4FLL1/NZNFRviAUn0QZQLfUw+gVXB1KBHf/15bpQ0NgiZhla4N+oZU3xiaZ0SAbsKiErgPBe8d0jc3X0BinzA=
+	t=1782393065; cv=none; b=O/FaDGMeWSYLB6jwF0YQJGybrbN/n0yBMwHK3ua27SPqnZcXrPRhkDKpDa/T4ZlxFRHhi6XRiv6Ac/BFY/oPTNlFSPo+F2bVF+CZGOZXA7aBSXo9Cm7nMYb/NXsTwG4XqHbubu9TxrdQGyvtRC5dF2s8qiSK+ywMZO/Dh5g9jc4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782393134; c=relaxed/simple;
-	bh=5iddZ0CxSutvJLVaB3uq9jnn6NtUnk2qKzOrasc2dW8=;
+	s=arc-20240116; t=1782393065; c=relaxed/simple;
+	bh=F+gX7LW2fkLisHTWj40LltLQ4Yt5r046Zc10JCYSI+Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=VympITUOej7Ibi4dbx6+8fo4hFW4CDR5WLPLt6QNKvK6eIK0cOIX6pgcTP7YikG+20yiJQwb7+6htR3eE9JbEBGHFLBRUPbYE/QvJ6GqGCjmAkH2VR4j9nxvQqqY3toc8mh/wBH0Pf408DU4MI+BRcKiJ8JBodUPKZRcLukOglA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ze6p1icP; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED28A1F000E9;
-	Thu, 25 Jun 2026 13:12:12 +0000 (UTC)
+	 MIME-Version; b=OFavK0Z0JVzVbsKX7k4IV5vVqWNWjulh8SfJUXo7M4U2qtqTzHtL44Wt+pc+8j1MKjhzThn2lFkdd3ZieM32GpFa9vhM1KeMg2c97YsP8m3HRCGfgewx623XqZ3kPwUY2Np6M2fe5oV8ZM+ohLbeM3Y7MLyuflJvbJTTN4Wf9iM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=duNHEkFX; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1A661F000E9;
+	Thu, 25 Jun 2026 13:11:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1782393133;
-	bh=pofFyXXR7MljxuiFWNhUWZvXjrAeahp5lcfeE0XioTI=;
+	s=korg; t=1782393064;
+	bh=cITh/T+TNgD7ZH4/dKwx7Tkg3hS5U7o7KKfJEFOF5Ao=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Ze6p1icPkt7Of2u1fBuI//bxb/4bxn4zChW1/sRztG5EX4bWfe4XtLCUXUlppshrG
-	 9CEQF3Nrk+bNLR4l2kbv4oiEOaTiXslS3pey9h6SK12uNNeo0oVyICXQzgDL3nkQBH
-	 MGelA6B27gawcw7Rknar31GwbSyp5m+nM0Ed2qgA=
+	b=duNHEkFXbhh7qTtXHaY43Ql6B6ioYA3LYszkVXKi3nTpv94nKhAeAG3BdiGa1ZZue
+	 q9hB2ZtyN8AGBBrE3zbKMdC5D6f98ugaIyV1oegs7lJKNsX/Key9WwkOJXy3oDJekv
+	 1G8CAEtcXx0pDHKIp0jJucE2ltWUG2EQ9hmYiWsY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Jonathan Cameron <jic23@kernel.org>,
-	David Lechner <dlechner@baylibre.com>,
-	=?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>,
-	Andy Shevchenko <andy@kernel.org>,
-	Sam Daly <sam@samdaly.ie>
-Subject: [PATCH 7.1 06/21] iio: adc: ti-ads1298: add bounds check to pga_settings index
+	Georgi Djakov <georgi.djakov@oss.qualcomm.com>,
+	"Oscar Salvador (SUSE)" <osalvador@kernel.org>,
+	Vishal Verma <vishal.l.verma@intel.com>,
+	Mike Rapoport <rppt@kernel.org>,
+	Richard Cheng <icheng@nvidia.com>,
+	David Hildenbrand <david@kernel.org>,
+	Georgi Djakov <djakov@kernel.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 7.0 46/49] drivers/base/memory: set mem->altmap after successful device registration
 Date: Thu, 25 Jun 2026 14:03:58 +0100
-Message-ID: <20260625125614.113828252@linuxfoundation.org>
+Message-ID: <20260625125643.993666818@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260625125613.243729608@linuxfoundation.org>
-References: <20260625125613.243729608@linuxfoundation.org>
+In-Reply-To: <20260625125637.527552689@linuxfoundation.org>
+References: <20260625125637.527552689@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,96 +71,96 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-268524-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:stable@kernel.org,m:jic23@kernel.org,m:dlechner@baylibre.com,m:nuno.sa@analog.com,m:andy@kernel.org,m:sam@samdaly.ie,s:lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-268503-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[12];
 	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:georgi.djakov@oss.qualcomm.com,m:osalvador@kernel.org,m:vishal.l.verma@intel.com,m:rppt@kernel.org,m:icheng@nvidia.com,m:david@kernel.org,m:djakov@kernel.org,m:rafael@kernel.org,m:akpm@linux-foundation.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	TAGGED_RCPT(0.00)[stable];
-	MID_RHS_MATCH_FROM(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[baylibre.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,analog.com:email,samdaly.ie:email]
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linux-foundation.org:email,intel.com:email,qualcomm.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,vger.kernel.org:from_smtp,nvidia.com:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 143C46C60B3
+X-Rspamd-Queue-Id: 8FF4A6C6010
 
-7.1-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sam Daly <sam@samdaly.ie>
+From: Georgi Djakov <georgi.djakov@oss.qualcomm.com>
 
-commit 95e8a48d7a85d4226934020e57815a3316d3a14b upstream.
+commit a2b8d7827f48ee54a686cb80e4a1d0ff954ec42a upstream.
 
-ads1298_pga_settings has 7 elements but ADS1298_MASK_CH_PGA can yield
-values 0-7. If it yields a value >= 7, this causes an out-of-bounds
-array access. Add a bounds check and return -EINVAL if the index
-is out of range.
+If __add_memory_block() fails at xa_store() (under memory pressure for
+example), device_unregister() is called, which eventually triggers
+memory_block_release() with mem->altmap still set, causing a
+WARN_ON(mem->altmap).  This was triggered by modifying virtio-mem driver.
 
-Note that the remaining value b111 is reserved so should not be seen
-in a correctly functioning system.
+Fix this by delaying the assignment of mem->altmap until after
+__add_memory_block() has succeeded.
 
-Assisted-by: gkh_clanker_2000
-Cc: stable <stable@kernel.org>
-Cc: Jonathan Cameron <jic23@kernel.org>
-Cc: David Lechner <dlechner@baylibre.com>
-Cc: "Nuno Sá" <nuno.sa@analog.com>
-Cc: Andy Shevchenko <andy@kernel.org>
-Signed-off-by: Sam Daly <sam@samdaly.ie>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Jonathan Cameron <jic23@kernel.org>
+Link: https://lore.kernel.org/20260514092657.3057141-1-georgi.djakov@oss.qualcomm.com
+Fixes: 1a8c64e11043 ("mm/memory_hotplug: embed vmem_altmap details in memory block")
+Signed-off-by: Georgi Djakov <georgi.djakov@oss.qualcomm.com>
+Acked-by: Oscar Salvador (SUSE) <osalvador@kernel.org>
+Cc: Vishal Verma <vishal.l.verma@intel.com>
+Cc: Mike Rapoport <rppt@kernel.org>
+Cc: Richard Cheng <icheng@nvidia.com>
+Cc: David Hildenbrand <david@kernel.org>
+Cc: Georgi Djakov <djakov@kernel.org>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: "Rafael J. Wysocki" <rafael@kernel.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/adc/ti-ads1298.c |    7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ drivers/base/memory.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/iio/adc/ti-ads1298.c
-+++ b/drivers/iio/adc/ti-ads1298.c
-@@ -279,6 +279,7 @@ static const u8 ads1298_pga_settings[] =
- static int ads1298_get_scale(struct ads1298_private *priv,
- 			     int channel, int *val, int *val2)
- {
-+	unsigned int pga_idx;
- 	int ret;
- 	unsigned int regval;
- 	u8 gain;
-@@ -302,7 +303,11 @@ static int ads1298_get_scale(struct ads1
+--- a/drivers/base/memory.c
++++ b/drivers/base/memory.c
+@@ -807,7 +807,6 @@ static int add_memory_block(unsigned lon
+ 	mem->start_section_nr = block_id * sections_per_block;
+ 	mem->state = state;
+ 	mem->nid = nid;
+-	mem->altmap = altmap;
+ 	INIT_LIST_HEAD(&mem->group_next);
+ 
+ #ifndef CONFIG_NUMA
+@@ -825,6 +824,8 @@ static int add_memory_block(unsigned lon
  	if (ret)
  		return ret;
  
--	gain = ads1298_pga_settings[FIELD_GET(ADS1298_MASK_CH_PGA, regval)];
-+	pga_idx = FIELD_GET(ADS1298_MASK_CH_PGA, regval);
-+	if (pga_idx >= ARRAY_SIZE(ads1298_pga_settings))
-+		return -EINVAL;
++	mem->altmap = altmap;
 +
-+	gain = ads1298_pga_settings[pga_idx];
- 	*val /= gain; /* Full scale is VREF / gain */
- 
- 	*val2 = ADS1298_BITS_PER_SAMPLE - 1; /* Signed, hence the -1 */
+ 	if (group) {
+ 		mem->group = group;
+ 		list_add(&mem->group_next, &group->memory_blocks);
 
 
 
