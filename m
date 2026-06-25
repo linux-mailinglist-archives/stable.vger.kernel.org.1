@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-268531-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-268532-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id QZllCwkqPWovyQgAu9opvQ
-	(envelope-from <stable+bounces-268531-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 15:15:53 +0200
+	id Wit0GQsqPWowyQgAu9opvQ
+	(envelope-from <stable+bounces-268532-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 15:15:55 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6814E6C60E6
-	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 15:15:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C75886C60EB
+	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 15:15:54 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=zvLkSC2q;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-268531-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-268531-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=zz2kQ8gJ;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-268532-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-268532-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 2452930BF0AF
-	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 13:12:35 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 51BCB30C810B
+	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 13:12:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A47A12877F7;
-	Thu, 25 Jun 2026 13:12:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 844242EEE8A;
+	Thu, 25 Jun 2026 13:12:38 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FAD1292B4B;
-	Thu, 25 Jun 2026 13:12:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 552CC2877F7;
+	Thu, 25 Jun 2026 13:12:37 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782393154; cv=none; b=NZSjyliM47XMDamQTdvzcZ3pfBcTgUHdYf42GbeLTLYE6Ycr35yYDhT3+8BL7axwwgem3KfEr/QYwpb6lrI0Fg3ysaxpryIzVcuxK8Ak+7DTPVdq9yvKfpjYIm015y5EtpPIx90sGSHBR2aPuHXLYDbgMsGvswzYbg9NCc/8idM=
+	t=1782393158; cv=none; b=JvQEToI6PhuFcncyhk6QxWl+92bM4bXdHCfRwA87xJwaFp8hSAQ/gLPMSxp5eZnKUkY19cCZsY1pitUrGAio3vAHdt371K3wgVsbPlVOeGFhVecg6MZ+IMFFAkSA8/RPpdmXrTlahOvqA94RN1tsV0vWGA6AJU3lLruWRLNo30k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782393154; c=relaxed/simple;
-	bh=usZmfC8u7pl71oeZfEmmhPv2m/xnjmsKCYQ4HS4xcEc=;
+	s=arc-20240116; t=1782393158; c=relaxed/simple;
+	bh=q1TvoQpIYP4VxoS3ex/IOKrHkXw0QVlkwvGRO8Rqx+M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=I14lxfv4SUR+624TBjUk1sZEcD40lxitXF623AN9NSGP02ofcT356ITuph4cjuNx7mfp9/XyczjhFPoCl1CWcXBth0E3bLfVbrHJuQdd97CffSdUpc1kjhxXIPbHQzOUsY8QYC4ojRsZhbdkdNP12zQ5cZYBKJLIWu7eEYlrQ0s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zvLkSC2q; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BBC081F000E9;
-	Thu, 25 Jun 2026 13:12:32 +0000 (UTC)
+	 MIME-Version; b=SQ+XL8E3Anf+HkQ5EU9fKVKKYLLSFv/TaeObE4Gc9TdXHaksEWJNPEEliK91SIvP6Ajh/zADZEux98eoJoGnhgd9rZvKGUNVE0uJbs5Sq8MSQKbJnnnDHxXoUigBNctudlnJ+ClT1R1dHwLDomsd+7rAKB2QYDrm8LHeFt/YaxY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zz2kQ8gJ; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 764DC1F000E9;
+	Thu, 25 Jun 2026 13:12:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1782393153;
-	bh=t6Z0Sk4o4Ss4ykn0Dp+hZayhqTQvDRRpYShA1k7SMKI=;
+	s=korg; t=1782393157;
+	bh=MFmuFYwY5MNi6D3TSDmyH9/gmyvEvOSufVOPzAg4zuE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=zvLkSC2q53y4lFJA/EFQg0+dxU7UUVooWOuHj293zWoSPI3/CRdB5dsMa0tWEgiAT
-	 d+Lltu3dlcudCw+rfputUzs1/gGnap/yrWirBIMt8NmtgvXFpnels/5phE8/RLxOlm
-	 IiHha5U4fHuENG+iV8EuEbn+GddfrGfqtWXSVflU=
+	b=zz2kQ8gJA+3yfIi0KuCa8EmPB2boVcnSly5wja/3bI8sFSz3tlVS75jskOR4Ww8j6
+	 Zg9eI7vDpE82hQmC/uk9Rxnji403geHKSjXCL9nseWI/Wmrj5d7oVFbpz8m5gW5Vhl
+	 QrK/FnDnexdmeVGh6yeH6PkYKbl+UuzYZApA5YvA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yi Yang <yiyang13@huawei.com>,
-	Jiri Slaby <jirislaby@kernel.org>
-Subject: [PATCH 7.1 15/21] vc_screen: fix null-ptr-deref in vcs_notifier() during concurrent vcs_write
-Date: Thu, 25 Jun 2026 14:04:07 +0100
-Message-ID: <20260625125615.386571785@linuxfoundation.org>
+	Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>,
+	Viken Dadhaniya <viken.dadhaniya@oss.qualcomm.com>
+Subject: [PATCH 7.1 16/21] serial: qcom_geni: Fix RX DMA stall when SE_DMA_RX_LEN_IN is zero
+Date: Thu, 25 Jun 2026 14:04:08 +0100
+Message-ID: <20260625125615.518034583@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260625125613.243729608@linuxfoundation.org>
 References: <20260625125613.243729608@linuxfoundation.org>
@@ -76,12 +76,12 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-268531-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-268532-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:yiyang13@huawei.com,m:jirislaby@kernel.org,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:bartosz.golaszewski@oss.qualcomm.com,m:viken.dadhaniya@oss.qualcomm.com,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
@@ -97,55 +97,59 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[huawei.com:email,msgid.link:url,vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,qualcomm.com:email,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 6814E6C60E6
+X-Rspamd-Queue-Id: C75886C60EB
 
 7.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yi Yang <yiyang13@huawei.com>
+From: Viken Dadhaniya <viken.dadhaniya@oss.qualcomm.com>
 
-commit a287620312dc6dcb9a093417a0e589bf30fcf38a upstream.
+commit b93062b6d8a1b2d9bad235cac25558a909819026 upstream.
 
-A KASAN null-ptr-deref was observed in vcs_notifier():
+In qcom_geni_serial_handle_rx_dma(), geni_se_rx_dma_unprep() clears
+port->rx_dma_addr before SE_DMA_RX_LEN_IN is read. If the register is zero,
+for example when the RX stale counter fires on an idle line, the handler
+returns without calling geni_se_rx_dma_prep().
 
-BUG: KASAN: null-ptr-deref in vcs_notifier+0x98/0x130
-Read of size 2 at addr qmp_cmd_name: qmp_capabilities, arguments: {}
+The next RX DMA interrupt then hits the !port->rx_dma_addr guard and
+returns immediately, so the RX DMA buffer is never rearmed and later input
+is lost.
 
-The issue is a race condition in vcs_write(). When the console_lock is
-temporarily dropped (to copy data from userspace), the vc_data pointer
-obtained from vcs_vc() may become stale. After re-acquiring the lock,
-vcs_vc() is called again to re-validate the pointer. If the vc has been
-deallocated in the meantime, vcs_vc() returns NULL, and the while loop
-breaks (with written > 0). However, after the loop, vcs_scr_updated(vc)
-is still called with the now-NULL vc pointer, leading to a null pointer
-dereference in the notifier chain (vcs_notifier dereferences param->vc).
+Keep the handler on the rearm path when rx_in is zero. Warn about the
+unexpected zero-length DMA completion, skip received-data handling, and
+always call geni_se_rx_dma_prep().
 
-Fix this by adding a NULL check for vc before calling vcs_scr_updated().
-
-Fixes: 8fb9ea65c9d1 ("vc_screen: reload load of struct vc_data pointer in vcs_write() to avoid UAF")
+Fixes: 2aaa43c70778 ("tty: serial: qcom-geni-serial: add support for serial engine DMA")
 Cc: stable@vger.kernel.org
-Signed-off-by: Yi Yang <yiyang13@huawei.com>
-Reviewed-by: Jiri Slaby <jirislaby@kernel.org>
-Link: https://patch.msgid.link/20260604060734.2914976-1-yiyang13@huawei.com
+Reviewed-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
+Signed-off-by: Viken Dadhaniya <viken.dadhaniya@oss.qualcomm.com>
+Link: https://patch.msgid.link/20260528-serial-rx-0-byte-fix-v2-1-b4195cfe342f@oss.qualcomm.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/tty/vt/vc_screen.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/tty/serial/qcom_geni_serial.c |    9 +++------
+ 1 file changed, 3 insertions(+), 6 deletions(-)
 
---- a/drivers/tty/vt/vc_screen.c
-+++ b/drivers/tty/vt/vc_screen.c
-@@ -686,7 +686,7 @@ vcs_write(struct file *file, const char
- 	}
- 	*ppos += written;
- 	ret = written;
--	if (written)
-+	if (written && vc)
- 		vcs_scr_updated(vc);
+--- a/drivers/tty/serial/qcom_geni_serial.c
++++ b/drivers/tty/serial/qcom_geni_serial.c
+@@ -905,12 +905,9 @@ static void qcom_geni_serial_handle_rx_d
+ 	port->rx_dma_addr = 0;
  
- 	return ret;
+ 	rx_in = readl(uport->membase + SE_DMA_RX_LEN_IN);
+-	if (!rx_in) {
+-		dev_warn(uport->dev, "serial engine reports 0 RX bytes in!\n");
+-		return;
+-	}
+-
+-	if (!drop)
++	if (!rx_in)
++		dev_warn_ratelimited(uport->dev, "serial engine reports 0 RX bytes in!\n");
++	else if (!drop)
+ 		handle_rx_uart(uport, rx_in);
+ 
+ 	ret = geni_se_rx_dma_prep(&port->se, port->rx_buf,
 
 
 
