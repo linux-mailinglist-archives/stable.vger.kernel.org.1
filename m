@@ -1,62 +1,71 @@
-Return-Path: <stable+bounces-268468-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-268449-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 4e3uOH0oPWqOyAgAu9opvQ
-	(envelope-from <stable+bounces-268468-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 15:09:17 +0200
+	id E6bUOUkoPWpsyAgAu9opvQ
+	(envelope-from <stable+bounces-268449-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 15:08:25 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A83B66C5F2E
-	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 15:09:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 603ED6C5EE0
+	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 15:08:25 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="DsvVm3/r";
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-268468-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-268468-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=Y2wt0bXZ;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-268449-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-268449-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 21FC4300C032
-	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 13:09:17 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id E6390303ADBC
+	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 13:08:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6AD70283FFB;
-	Thu, 25 Jun 2026 13:09:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 15EA62E7394;
+	Thu, 25 Jun 2026 13:08:11 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E12D18FDBE;
-	Thu, 25 Jun 2026 13:09:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC9491F03DE;
+	Thu, 25 Jun 2026 13:08:09 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782392953; cv=none; b=k2HpcGGrQksj3+l7dnHxWTErcM3ypGbruY+JGCSBIRsWBuFNu7gmvSCckkFv5tzlcsXO9Y3gDINQ1WUgbWZVFTJg0Znr5TmunLpRHHT82ATPnFXHoU0ZG4qXSSr+CYOMQ/jLzoWMrHjModU/2SHsGz1yBaO+GFb3BWvUJL9jIkw=
+	t=1782392890; cv=none; b=JqjDuVKXrXqXPNHnn4U7hf+SRBVhN/lRcNtw6t/e/AX2TZrRFCTduvxQB6QFy9Vy9VBNOWDjTbiCAcKFIwszOynbjjQgVr/lPj/aT2rG/Wfxq08RXcH013D920sXAdVSgZVcRHFEVpmJm2zxcuXTsMA+y6VBWpXdGOXiAATLqXY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782392953; c=relaxed/simple;
-	bh=D3G2oVUvfSiFxx40HPK8giim99TcGOfFJAT37yK7Pe8=;
+	s=arc-20240116; t=1782392890; c=relaxed/simple;
+	bh=MIpQuIR5TV9Fb/2JJmSjGQTYOcRo5Hca87OXiB5sBhs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YWu3vcvKGG7BzEf8XmJT7C74kiblAIvho4FYpcYCsz+TSlaaKdvLbhs5zKy8yKfCV3xHXgmL3f++XRGR3im3I5QodoLPHL/o7Y4v/h8akrRFxViGs8jBQhKo+FzyL46CGi1TEUuCJsFKHaSbjf+mippkWG9oRTaWnPJXwrE9Wt4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DsvVm3/r; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 735421F000E9;
-	Thu, 25 Jun 2026 13:09:11 +0000 (UTC)
+	 MIME-Version; b=TZQEd5llte0deyjaaV6GuQq8NRXoqOHfHQrflaQG7kfzj8Hyn/3uStSdTuKlx1DiNdoFCti8/9vXryhJwFrR9ehvGyqEwIwir760yiEiZI7vJx3sRbodmt+P4FLLCN/VFLWmc/6csHwnmQvWo3c7F9bQqSpmVEn+obHrBG9IcdA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y2wt0bXZ; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB56D1F000E9;
+	Thu, 25 Jun 2026 13:08:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1782392952;
-	bh=PVTGx0iK+gvXD3TEeGdCko/1HZM54XG4T0vdC04D+yM=;
+	s=korg; t=1782392889;
+	bh=xSXgS8I536bo1Y+B8PR5mqY6WL7k5kVK26medtb3YBo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=DsvVm3/rubtm5hY9bzKeBkeDfudllGJgCww6W4yHtSTO9AHPkEmiAB5wcXMG/lKP1
-	 XLvYQTvtvdYEL2eRtFFtQa6hoAz+SySNrQA+ki4xQuYaduvCVbjeISMzEWyzxwT/6U
-	 KDjxB0fOHHP+ZPIlTDaBGuDBh8DUqd84Kxi5zz6U=
+	b=Y2wt0bXZr7Av8+fKsbyKsM2LRWvH0VcbWMB8taO0Dud2ojz6dDDs11RDAC/5yEkOY
+	 xtLQAHP56fKKuf79PhlYqMNGB2lAQY5EtbIGa8WGUEEFn+GmquTwIt/UOZ0CqrSt/n
+	 GKq8eg/85w4Klc95KM0qjdbEnDhIDKViGIDpyfP0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xiang Mei <xmei5@asu.edu>,
-	Amery Hung <ameryhung@gmail.com>,
-	Weiming Shi <bestswngs@gmail.com>,
-	Martin KaFai Lau <martin.lau@kernel.org>
-Subject: [PATCH 7.0 12/49] bpf: Fix NULL pointer dereference in bpf_sk_storage_clone and diag paths
-Date: Thu, 25 Jun 2026 14:03:24 +0100
-Message-ID: <20260625125639.235482677@linuxfoundation.org>
+	Lorenzo Stoakes <ljs@kernel.org>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	"David Hildenbrand (Red Hat)" <david@kernel.org>,
+	Pedro Falcato <pfalcato@suse.de>,
+	Andrey Vagin <avagin@gmail.com>,
+	Cyrill Gorcunov <gorcunov@gmail.com>,
+	Jann Horn <jannh@google.com>,
+	Liam Howlett <liam.howlett@oracle.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Ahmed Elaidy <elaidya225@gmail.com>
+Subject: [PATCH 6.18 40/60] mm: propagate VM_SOFTDIRTY on merge
+Date: Thu, 25 Jun 2026 14:03:25 +0100
+Message-ID: <20260625125651.549558906@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260625125637.527552689@linuxfoundation.org>
-References: <20260625125637.527552689@linuxfoundation.org>
+In-Reply-To: <20260625125645.554579168@linuxfoundation.org>
+References: <20260625125645.554579168@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -77,132 +86,177 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,asu.edu,gmail.com,kernel.org];
-	TAGGED_FROM(0.00)[bounces-268468-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:xmei5@asu.edu,m:ameryhung@gmail.com,m:bestswngs@gmail.com,m:martin.lau@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[16];
+	TAGGED_FROM(0.00)[bounces-268449-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:ljs@kernel.org,m:vbabka@suse.cz,m:david@kernel.org,m:pfalcato@suse.de,m:avagin@gmail.com,m:gorcunov@gmail.com,m:jannh@google.com,m:liam.howlett@oracle.com,m:mhocko@suse.com,m:rppt@kernel.org,m:surenb@google.com,m:akpm@linux-foundation.org,m:elaidya225@gmail.com,s:lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,suse.cz,suse.de,gmail.com,google.com,oracle.com,suse.com,linux-foundation.org];
+	FORWARDED(0.00)[lists@lfdr.de];
 	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ALIAS_RESOLVED(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	TO_DN_SOME(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,msgid.link:url]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:email,vger.kernel.org:from_smtp,suse.de:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: A83B66C5F2E
+X-Rspamd-Queue-Id: 603ED6C5EE0
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Weiming Shi <bestswngs@gmail.com>
+From: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
 
-commit 375e4e33c18dfa05c5dfd5f3dfffeb29343dd4c7 upstream.
+commit 6707915e030a3258868355f989b80140c1a45bbe upstream.
 
-bpf_selem_unlink_nofail() sets SDATA(selem)->smap to NULL before
-removing the selem from the storage hlist. A concurrent RCU reader in
-bpf_sk_storage_clone() can observe the selem still on the list with
-smap already NULL, causing a NULL pointer dereference.
+Patch series "make VM_SOFTDIRTY a sticky VMA flag", v2.
 
- general protection fault, probably for non-canonical address 0xdffffc000000000a:
- KASAN: null-ptr-deref in range [0x0000000000000050-0x0000000000000057]
- RIP: 0010:bpf_sk_storage_clone+0x1cd/0xaa0 net/core/bpf_sk_storage.c:174
- Call Trace:
-  <IRQ>
-  sk_clone+0xfed/0x1980 net/core/sock.c:2591
-  inet_csk_clone_lock+0x30/0x760 net/ipv4/inet_connection_sock.c:1222
-  tcp_create_openreq_child+0x35/0x2680 net/ipv4/tcp_minisocks.c:571
-  tcp_v4_syn_recv_sock+0x123/0xf90 net/ipv4/tcp_ipv4.c:1729
-  tcp_check_req+0x8e1/0x2580 include/net/tcp.h:855
-  tcp_v4_rcv+0x1845/0x3b80 net/ipv4/tcp_ipv4.c:2347
+Currently we set VM_SOFTDIRTY when a new mapping is set up (whether by
+establishing a new VMA, or via merge) as implemented in __mmap_complete()
+and do_brk_flags().
 
-Add a NULL check for smap in bpf_sk_storage_clone().
+However, when performing a merge of existing mappings such as when
+performing mprotect(), we may lose the VM_SOFTDIRTY flag.
 
-bpf_sk_storage_diag_put_all() has the same issue. Add a NULL check
-and pass the validated smap directly to diag_get(), which is refactored
-to take smap as a parameter instead of reading it internally.
+Now we have the concept of making VMA flags 'sticky', that is that they
+both don't prevent merge and, importantly, are propagated to merged VMAs,
+this seems a sensible alternative to the existing special-casing of
+VM_SOFTDIRTY.
 
-bpf_sk_storage_diag_put() uses diag->maps[i] which is always valid
-under its refcount, so diag->maps[i] is passed directly to diag_get().
+We additionally add a self-test that demonstrates that this logic behaves
+as expected.
 
-Fixes: 5d800f87d0a5 ("bpf: Support lockless unlink when freeing map or local storage")
-Reported-by: Xiang Mei <xmei5@asu.edu>
-Acked-by: Amery Hung <ameryhung@gmail.com>
-Signed-off-by: Weiming Shi <bestswngs@gmail.com>
-Signed-off-by: Martin KaFai Lau <martin.lau@kernel.org>
-Link: https://patch.msgid.link/20260422065411.1007737-2-bestswngs@gmail.com
+This patch (of 2):
+
+Currently we set VM_SOFTDIRTY when a new mapping is set up (whether by
+establishing a new VMA, or via merge) as implemented in __mmap_complete()
+and do_brk_flags().
+
+However, when performing a merge of existing mappings such as when
+performing mprotect(), we may lose the VM_SOFTDIRTY flag.
+
+This is because currently we simply ignore VM_SOFTDIRTY for the purposes
+of merge, so one VMA may possess the flag and another not, and whichever
+happens to be the target VMA will be the one upon which the merge is
+performed which may or may not have VM_SOFTDIRTY set.
+
+Now we have the concept of 'sticky' VMA flags, let's make VM_SOFTDIRTY one
+which solves this issue.
+
+Additionally update VMA userland tests to propagate changes.
+
+[akpm@linux-foundation.org: update comments, per Lorenzo]
+  Link: https://lkml.kernel.org/r/0019e0b8-ee1e-4359-b5ee-94225cbe5588@lucifer.local
+Link: https://lkml.kernel.org/r/cover.1763399675.git.ljs@kernel.org
+Link: https://lkml.kernel.org/r/955478b5170715c895d1ef3b7f68e0cd77f76868.1763399675.git.ljs@kernel.org
+Signed-off-by: Lorenzo Stoakes <ljs@kernel.org>
+Suggested-by: Vlastimil Babka <vbabka@suse.cz>
+Acked-by: David Hildenbrand (Red Hat) <david@kernel.org>
+Reviewed-by: Pedro Falcato <pfalcato@suse.de>
+Acked-by: Andrey Vagin <avagin@gmail.com>
+Reviewed-by: Vlastimil Babka <vbabka@suse.cz>
+Acked-by: Cyrill Gorcunov <gorcunov@gmail.com>
+Cc: Jann Horn <jannh@google.com>
+Cc: Liam Howlett <liam.howlett@oracle.com>
+Cc: Michal Hocko <mhocko@suse.com>
+Cc: Mike Rapoport <rppt@kernel.org>
+Cc: Suren Baghdasaryan <surenb@google.com>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Ahmed Elaidy <elaidya225@gmail.com>
+Fixes: 34228d473efe ("mm: ignore VM_SOFTDIRTY on VMA merging")
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/core/bpf_sk_storage.c |   13 +++++++------
- 1 file changed, 7 insertions(+), 6 deletions(-)
+ include/linux/mm.h               |   15 +++++++--------
+ tools/testing/vma/vma_internal.h |   18 ++++++------------
+ 2 files changed, 13 insertions(+), 20 deletions(-)
 
---- a/net/core/bpf_sk_storage.c
-+++ b/net/core/bpf_sk_storage.c
-@@ -172,7 +172,7 @@ int bpf_sk_storage_clone(const struct so
- 		struct bpf_map *map;
+--- a/include/linux/mm.h
++++ b/include/linux/mm.h
+@@ -515,28 +515,27 @@ extern unsigned int kobjsize(const void
+  * possesses it but the other does not, the merged VMA should nonetheless have
+  * applied to it:
+  *
++ *   VM_SOFTDIRTY - if a VMA is marked soft-dirty, that is has not had its
++ *                  references cleared via /proc/$pid/clear_refs, any merged VMA
++ *                  should be considered soft-dirty also as it operates at a VMA
++ *                  granularity.
++ *
+  * VM_MAYBE_GUARD - If a VMA may have guard regions in place it implies that
+  *                  mapped page tables may contain metadata not described by the
+  *                  VMA and thus any merged VMA may also contain this metadata,
+  *                  and thus we must make this flag sticky.
+  */
+-#define VM_STICKY VM_MAYBE_GUARD
++#define VM_STICKY (VM_SOFTDIRTY | VM_MAYBE_GUARD)
  
- 		smap = rcu_dereference(SDATA(selem)->smap);
--		if (!(smap->map.map_flags & BPF_F_CLONE))
-+		if (!smap || !(smap->map.map_flags & BPF_F_CLONE))
- 			continue;
+ /*
+  * VMA flags we ignore for the purposes of merge, i.e. one VMA possessing one
+  * of these flags and the other not does not preclude a merge.
+  *
+- * VM_SOFTDIRTY - Should not prevent from VMA merging, if we match the flags but
+- *                dirty bit -- the caller should mark merged VMA as dirty. If
+- *                dirty bit won't be excluded from comparison, we increase
+- *                pressure on the memory system forcing the kernel to generate
+- *                new VMAs when old one could be extended instead.
+- *
+  *    VM_STICKY - When merging VMAs, VMA flags must match, unless they are
+  *                'sticky'. If any sticky flags exist in either VMA, we simply
+  *                set all of them on the merged VMA.
+  */
+-#define VM_IGNORE_MERGE (VM_SOFTDIRTY | VM_STICKY)
++#define VM_IGNORE_MERGE VM_STICKY
  
- 		/* Note that for lockless listeners adding new element
-@@ -534,10 +534,10 @@ err_free:
- }
- EXPORT_SYMBOL_GPL(bpf_sk_storage_diag_alloc);
+ /*
+  * Flags which should result in page tables being copied on fork. These are
+--- a/tools/testing/vma/vma_internal.h
++++ b/tools/testing/vma/vma_internal.h
+@@ -122,28 +122,22 @@ extern unsigned long dac_mmap_min_addr;
+  * possesses it but the other does not, the merged VMA should nonetheless have
+  * applied to it:
+  *
+- * VM_MAYBE_GUARD - If a VMA may have guard regions in place it implies that
+- *                  mapped page tables may contain metadata not described by the
+- *                  VMA and thus any merged VMA may also contain this metadata,
+- *                  and thus we must make this flag sticky.
++ *   VM_SOFTDIRTY - if a VMA is marked soft-dirty, that is has not had its
++ *                  references cleared via /proc/$pid/clear_refs, any merged VMA
++ *                  should be considered soft-dirty also as it operates at a VMA
++ *                  granularity.
+  */
+-#define VM_STICKY VM_MAYBE_GUARD
++#define VM_STICKY (VM_SOFTDIRTY | VM_MAYBE_GUARD)
  
--static int diag_get(struct bpf_local_storage_data *sdata, struct sk_buff *skb)
-+static int diag_get(struct bpf_local_storage_map *smap,
-+		    struct bpf_local_storage_data *sdata, struct sk_buff *skb)
- {
- 	struct nlattr *nla_stg, *nla_value;
--	struct bpf_local_storage_map *smap;
+ /*
+  * VMA flags we ignore for the purposes of merge, i.e. one VMA possessing one
+  * of these flags and the other not does not preclude a merge.
+  *
+- * VM_SOFTDIRTY - Should not prevent from VMA merging, if we match the flags but
+- *                dirty bit -- the caller should mark merged VMA as dirty. If
+- *                dirty bit won't be excluded from comparison, we increase
+- *                pressure on the memory system forcing the kernel to generate
+- *                new VMAs when old one could be extended instead.
+- *
+  *    VM_STICKY - When merging VMAs, VMA flags must match, unless they are
+  *                'sticky'. If any sticky flags exist in either VMA, we simply
+  *                set all of them on the merged VMA.
+  */
+-#define VM_IGNORE_MERGE (VM_SOFTDIRTY | VM_STICKY)
++#define VM_IGNORE_MERGE VM_STICKY
  
- 	/* It cannot exceed max nlattr's payload */
- 	BUILD_BUG_ON(U16_MAX - NLA_HDRLEN < BPF_LOCAL_STORAGE_MAX_VALUE_SIZE);
-@@ -546,7 +546,6 @@ static int diag_get(struct bpf_local_sto
- 	if (!nla_stg)
- 		return -EMSGSIZE;
- 
--	smap = rcu_dereference(sdata->smap);
- 	if (nla_put_u32(skb, SK_DIAG_BPF_STORAGE_MAP_ID, smap->map.id))
- 		goto errout;
- 
-@@ -599,9 +598,11 @@ static int bpf_sk_storage_diag_put_all(s
- 	saved_len = skb->len;
- 	hlist_for_each_entry_rcu(selem, &sk_storage->list, snode) {
- 		smap = rcu_dereference(SDATA(selem)->smap);
-+		if (!smap)
-+			continue;
- 		diag_size += nla_value_size(smap->map.value_size);
- 
--		if (nla_stgs && diag_get(SDATA(selem), skb))
-+		if (nla_stgs && diag_get(smap, SDATA(selem), skb))
- 			/* Continue to learn diag_size */
- 			err = -EMSGSIZE;
- 	}
-@@ -668,7 +669,7 @@ int bpf_sk_storage_diag_put(struct bpf_s
- 
- 		diag_size += nla_value_size(diag->maps[i]->value_size);
- 
--		if (nla_stgs && diag_get(sdata, skb))
-+		if (nla_stgs && diag_get((struct bpf_local_storage_map *)diag->maps[i], sdata, skb))
- 			/* Continue to learn diag_size */
- 			err = -EMSGSIZE;
- 	}
+ /*
+  * Flags which should result in page tables being copied on fork. These are
 
 
 
