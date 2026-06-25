@@ -1,87 +1,68 @@
-Return-Path: <stable+bounces-268465-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-268436-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id /JoIOJQoPWqZyAgAu9opvQ
-	(envelope-from <stable+bounces-268465-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 15:09:40 +0200
+	id FE38IBwoPWpYyAgAu9opvQ
+	(envelope-from <stable+bounces-268436-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 15:07:40 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A3276C5F4F
-	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 15:09:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DE85F6C5E9F
+	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 15:07:39 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="iUAc6/zW";
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-268465-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-268465-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=idXImSzQ;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-268436-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-268436-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id A9D13304AC38
-	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 13:09:05 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id D4677302E0E2
+	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 13:07:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E8F502C0F6C;
-	Thu, 25 Jun 2026 13:09:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 503FA2DB79C;
+	Thu, 25 Jun 2026 13:07:27 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4720B29B77C;
-	Thu, 25 Jun 2026 13:09:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 256BE2D060D;
+	Thu, 25 Jun 2026 13:07:25 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782392943; cv=none; b=r/EuoDGX0BFtCWBvTzOGS0BTU5Xs59KvU/GJEuWZbCy3OHIWJQUu4LTKx4s+BFm3RlZ1KVohtK12N1Ue9xXk15rmV8Af4hTWfyopMBD97aL+AKJJPjz2sANcv3UdAFs8QDsi9alWZL2lrGrLbq0+iP02wO/spVD3uhsSPZ67jXA=
+	t=1782392847; cv=none; b=uN+Wo9wz8/g3XVX9CmbTJsZvmhJBX/qJqgTPM3xfnosB/oo9EIa/BvZflVG7tnQ4RI+1lGpTlGzbGn4lqjE/SV5fHqBygnIDNhwlwwTNYYAEw1v7/Jv0PqCqlXWYg+H/EQ6POtWc8tvVrB0y1ZYHnHx1ZXi6xKRgfrMdN115YLk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782392943; c=relaxed/simple;
-	bh=xfx6dz6x9rQMMxpjBCD9DYDG+wCgn6cBEt8ySOmwfQ0=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=iPH8yIbQ7Dd2DQ0ZtoqDGrRyQ2VW41Vy6WYfQzZiHvKK7KQ9UXnZwhFHsQDbjEU4fzv4k3cnfsOW/I3ARMY4M7n0fVnrHr2v/bYmL/3aVjj/iHJCoqjFQfGW4t5fQ1pNh8g1IkSkmIhhQQbK5eOfJdZMT6tTNs9gqSHzdi9Mo40=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iUAc6/zW; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5517C1F000E9;
-	Thu, 25 Jun 2026 13:09:01 +0000 (UTC)
+	s=arc-20240116; t=1782392847; c=relaxed/simple;
+	bh=kDuTVcAS6zv9/ASyxWyG6qsZGR0nlFbcNkfyi44iSnY=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=LCL0CFrA0IyS9t9vxzs7BciKPpP1Ptm0ksWX6P8/210s6T0md7Pi+goQlbWXoGwA0jsgssDsmVi12KYyTmuXa3iAInSkLLWq2BCvxLdfaPcP6IpXE0kaFanONadv6nWZYex43kwHI10lvumMsluAhL00rn7GBGOxjMNOzju0jd4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=idXImSzQ; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 328711F000E9;
+	Thu, 25 Jun 2026 13:07:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1782392942;
-	bh=lH2VAZPI0HVmjI1MpsGfYXLXBC1M68DJljESAdTmG4Y=;
-	h=From:To:Cc:Subject:Date;
-	b=iUAc6/zWlvNGrisjxHWVte5LhsgAlqZUeXU2niBM8XfEYYLuG11w/SA8YQGtG3jGs
-	 CfwzwoqHRHBGpBsFVsKAWwCJK2T1qQO6R409XVhA2Mb47v9rcYsEwYjXkgCF2KjJLA
-	 yU5nbEMrCdtwt5jeO7Grtt0+cExBMh0rkIdZ9hQQ=
+	s=korg; t=1782392845;
+	bh=0CJaZdrV/jZiPZTrcP5dAJ4zi4sOxIDkuL9zJ+qd8Ws=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=idXImSzQhA6E5bYftl53ah150Ag5VvnBD9WkXPredH4WKp3aUS72iMh5gva0Dq78g
+	 622+Vs1qj850WDaiiatloe3arxrOt2hxHWZ+dZWmET4A8atFR4YD7NKxyZhurasG4A
+	 jIg8V7UR46IFjpuHGiqxCqlQjfjWP+DDj3DRitdc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	torvalds@linux-foundation.org,
-	akpm@linux-foundation.org,
-	linux@roeck-us.net,
-	shuah@kernel.org,
-	patches@kernelci.org,
-	lkft-triage@lists.linaro.org,
-	pavel@nabladev.com,
-	jonathanh@nvidia.com,
-	f.fainelli@gmail.com,
-	sudipm.mukherjee@gmail.com,
-	rwarsow@gmx.de,
-	conor@kernel.org,
-	hargar@microsoft.com,
-	broonie@kernel.org,
-	achill@achill.org,
-	sr@sladewatkins.com
-Subject: [PATCH 7.0 00/49] 7.0.14-rc1 review
+	Bernard Pidoux <bernard.f6bvp@gmail.com>
+Subject: [PATCH 6.18 27/60] rose: clear neighbour pointer in rose_kill_by_device()
 Date: Thu, 25 Jun 2026 14:03:12 +0100
-Message-ID: <20260625125637.527552689@linuxfoundation.org>
+Message-ID: <20260625125649.522306490@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
+In-Reply-To: <20260625125645.554579168@linuxfoundation.org>
+References: <20260625125645.554579168@linuxfoundation.org>
+User-Agent: quilt/0.69
+X-stable: review
+X-Patchwork-Hint: ignore
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: quilt/0.69
-X-stable: review
-X-Patchwork-Hint: ignore
-X-KernelTest-Patch: http://kernel.org/pub/linux/kernel/v7.x/stable-review/patch-7.0.14-rc1.gz
-X-KernelTest-Tree: git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git
-X-KernelTest-Branch: linux-7.0.y
-X-KernelTest-Patches: git://git.kernel.org/pub/scm/linux/kernel/git/stable/stable-queue.git
-X-KernelTest-Version: 7.0.14-rc1
-X-KernelTest-Deadline: 2026-06-27T12:56+00:00
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-0.16 / 15.00];
@@ -94,17 +75,17 @@ X-Spamd-Result: default: False [-0.16 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[20];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-268465-lists,stable=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:linux-kernel@vger.kernel.org,m:torvalds@linux-foundation.org,m:akpm@linux-foundation.org,m:linux@roeck-us.net,m:shuah@kernel.org,m:patches@kernelci.org,m:lkft-triage@lists.linaro.org,m:pavel@nabladev.com,m:jonathanh@nvidia.com,m:f.fainelli@gmail.com,m:sudipm.mukherjee@gmail.com,m:rwarsow@gmx.de,m:conor@kernel.org,m:hargar@microsoft.com,m:broonie@kernel.org,m:achill@achill.org,m:sr@sladewatkins.com,m:ffainelli@gmail.com,m:sudipmmukherjee@gmail.com,s:lists@lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,vger.kernel.org,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,nabladev.com,nvidia.com,gmail.com,gmx.de,microsoft.com,achill.org,sladewatkins.com];
-	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-268436-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:bernard.f6bvp@gmail.com,m:bernardf6bvp@gmail.com,s:lists@lfdr.de];
+	RCPT_COUNT_THREE(0.00)[4];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
@@ -117,240 +98,53 @@ X-Spamd-Result: default: False [-0.16 / 15.00];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 5A3276C5F4F
+X-Rspamd-Queue-Id: DE85F6C5E9F
 
-This is the start of the stable review cycle for the 7.0.14 release.
-There are 49 patches in this series, all will be posted as a response
-to this one.  If anyone has any issues with these being applied, please
-let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
-Responses should be made by Sat, 27 Jun 2026 12:54:50 +0000.
-Anything received after that time might be too late.
+------------------
 
-The whole patch series can be found in one patch at:
-	https://www.kernel.org/pub/linux/kernel/v7.x/stable-review/patch-7.0.14-rc1.gz
-or in the git tree and branch at:
-	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-7.0.y
-and the diffstat can be found below.
+From: Bernard Pidoux <bernard.f6bvp@gmail.com>
 
-thanks,
+commit 606e42d195b467480d4d405f8814c48d1651a76a upstream.
 
-greg k-h
+rose_kill_by_device() drops the neighbour reference but leaves
+rose->neighbour pointing at it, unlike every other rose_neigh_put() site
+(see "rose: clear neighbour pointer after rose_neigh_put() in state
+machines"). The heartbeat STATE_0 reaping path then puts the same
+neighbour a second time, causing a rose_neigh refcount underflow and a
+use-after-free.
 
--------------
-Pseudo-Shortlog of commits:
+Set rose->neighbour = NULL after the put, restoring the invariant.
 
-Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-    Linux 7.0.14-rc1
+Signed-off-by: Bernard Pidoux <bernard.f6bvp@gmail.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+---
+ net/rose/af_rose.c |   10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
 
-Miklos Szeredi <mszeredi@redhat.com>
-    virtiofs: fix UAF on submount umount
-
-Ruslan Valiyev <linuxoid@gmail.com>
-    media: vidtv: fix NULL pointer dereference in vidtv_mux_push_si
-
-Gil Portnoy <dddhkts1@gmail.com>
-    ksmbd: reject non-VALID session in compound request branch
-
-Georgi Djakov <georgi.djakov@oss.qualcomm.com>
-    drivers/base/memory: set mem->altmap after successful device registration
-
-Stepan Ionichev <sozdayvek@gmail.com>
-    serial: 8250_dw: unregister 8250 port if clk_notifier_register() fails
-
-Viken Dadhaniya <viken.dadhaniya@oss.qualcomm.com>
-    serial: qcom_geni: Fix RX DMA stall when SE_DMA_RX_LEN_IN is zero
-
-Yi Yang <yiyang13@huawei.com>
-    vc_screen: fix null-ptr-deref in vcs_notifier() during concurrent vcs_write
-
-Giovanni Cabiddu <giovanni.cabiddu@intel.com>
-    crypto: qat - remove unused character device and IOCTLs
-
-Dmitry Torokhov <dmitry.torokhov@gmail.com>
-    Input: rmi4 - fix bit count in bitmap_copy()
-
-Dmitry Torokhov <dmitry.torokhov@gmail.com>
-    Input: rmi4 - iterative IRQ handler
-
-Dmitry Torokhov <dmitry.torokhov@gmail.com>
-    Input: rmi4 - fix memory leak in rmi_set_attn_data()
-
-Dmitry Torokhov <dmitry.torokhov@gmail.com>
-    Input: rmi4 - fix num_subpackets overflow in register descriptor
-
-Dmitry Torokhov <dmitry.torokhov@gmail.com>
-    Input: rmi4 - fix type overflow in register counts
-
-Dmitry Torokhov <dmitry.torokhov@gmail.com>
-    Input: rmi4 - refactor register descriptor parsing
-
-Dmitry Torokhov <dmitry.torokhov@gmail.com>
-    Input: rmi4 - fix register descriptor address calculation
-
-Sam Daly <sam@samdaly.ie>
-    iio: adc: ti-ads1298: add bounds check to pga_settings index
-
-Sam Daly <sam@samdaly.ie>
-    iio: light: veml6075: add bounds check to veml6075_it_ms index
-
-Faicker Mo <faicker.mo@gmail.com>
-    net: net_failover: Fix the deadlock in slave register
-
-Mike Marciniszyn (Meta) <mike.marciniszyn@gmail.com>
-    net: export netif_open for self_test usage
-
-Bernard Pidoux <bernard.f6bvp@gmail.com>
-    rose: don't free fd-owned sockets when reaping in the heartbeat
-
-Bernard Pidoux <bernard.f6bvp@gmail.com>
-    rose: clear neighbour pointer in rose_kill_by_device()
-
-Bernard Pidoux <bernard.f6bvp@gmail.com>
-    rose: cancel neighbour timers in rose_neigh_put() before freeing
-
-Bernard Pidoux <bernard.f6bvp@gmail.com>
-    rose: drop CALL_REQUEST in loopback timer when device is not running
-
-Bernard Pidoux <bernard.f6bvp@gmail.com>
-    rose: release netdev ref and destroy orphaned incoming sockets
-
-Bernard Pidoux <bernard.f6bvp@gmail.com>
-    rose: fix netdev double-hold in rose_make_new()
-
-Bernard Pidoux <bernard.f6bvp@gmail.com>
-    rose: disconnect orphaned STATE_2 sockets when device is gone
-
-Bernard Pidoux <bernard.f6bvp@gmail.com>
-    rose: set SOCK_DESTROY in rose_kill_by_device() for prompt cleanup
-
-Bernard Pidoux <bernard.f6bvp@gmail.com>
-    rose: fix notifier unregistered too early in rose_exit()
-
-Bernard Pidoux <bernard.f6bvp@gmail.com>
-    rose: fix netdev double-hold in rose_rx_call_request()
-
-Bernard Pidoux <bernard.f6bvp@gmail.com>
-    rose: guard rose_neigh_put() against NULL in timer expiry
-
-Bernard Pidoux <bernard.f6bvp@gmail.com>
-    rose: clear neighbour pointer after rose_neigh_put() in state machines
-
-Bernard Pidoux <bernard.f6bvp@gmail.com>
-    rose: fix race between loopback timer and module removal
-
-Bernard Pidoux <bernard.f6bvp@gmail.com>
-    rose: hold loopback neighbour reference across timer callback
-
-Bernard Pidoux <bernard.f6bvp@gmail.com>
-    rose: fix dev_put() leak in rose_loopback_timer()
-
-Mingyu Wang <25181214217@stu.xidian.edu.cn>
-    agp/amd64: Fix broken error propagation in agp_amd64_probe()
-
-Weiming Shi <bestswngs@gmail.com>
-    net: qualcomm: rmnet: fix endpoint use-after-free in rmnet_dellink()
-
-Weiming Shi <bestswngs@gmail.com>
-    i2c: stub: Reject I2C block transfers with invalid length
-
-Weiming Shi <bestswngs@gmail.com>
-    bpf: Fix NULL pointer dereference in bpf_sk_storage_clone and diag paths
-
-Lord Ulf Henrik Holmberg <henrik.holmberg@defensify.se>
-    RDMA/bnxt_re: zero shared page before exposing to userspace
-
-Yang Erkun <yangerkun@huawei.com>
-    Revert "NFSD: Defer sub-object cleanup in export put callbacks"
-
-Joanne Koong <joannelkoong@gmail.com>
-    fuse: re-lock request before replacing page cache folio
-
-Tudor Ambarus <tudor.ambarus@linaro.org>
-    firmware: samsung: acpm: Fix missing LKMM barriers in sequence allocator
-
-Tudor Ambarus <tudor.ambarus@linaro.org>
-    firmware: samsung: acpm: Fix false timeouts and Use-After-Free in polling
-
-Tudor Ambarus <tudor.ambarus@linaro.org>
-    firmware: samsung: acpm: Fix cross-thread RX length corruption
-
-Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
-    firmware: exynos-acpm: Count acpm_xfer buffers with __counted_by_ptr
-
-Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
-    firmware: exynos-acpm: Count number of commands in acpm_xfer
-
-NeilBrown <neil@brown.name>
-    lockd: fix TEST handling when not all permissions are available.
-
-Mark Rutland <mark.rutland@arm.com>
-    arm64/entry: Fix arm64-specific rseq brokenness
-
-Gabriel Krisman Bertazi <krisman@suse.de>
-    io_uring/net: Avoid msghdr on op_connect/op_bind async data
-
-
--------------
-
-Diffstat:
-
- Documentation/userspace-api/ioctl/ioctl-number.rst |   1 -
- Makefile                                           |   4 +-
- arch/arm64/kernel/entry-common.c                   |  29 +-
- drivers/base/memory.c                              |   3 +-
- drivers/char/agp/amd64-agp.c                       |   2 +-
- drivers/crypto/intel/qat/qat_common/adf_cfg.c      |  10 -
- drivers/crypto/intel/qat/qat_common/adf_cfg.h      |   1 -
- .../crypto/intel/qat/qat_common/adf_cfg_common.h   |  32 --
- drivers/crypto/intel/qat/qat_common/adf_cfg_user.h |  38 --
- .../crypto/intel/qat/qat_common/adf_common_drv.h   |   3 -
- drivers/crypto/intel/qat/qat_common/adf_ctl_drv.c  | 404 +--------------------
- drivers/crypto/intel/qat/qat_common/adf_dev_mgr.c  |  70 ----
- drivers/firmware/samsung/exynos-acpm-dvfs.c        |  12 +-
- drivers/firmware/samsung/exynos-acpm-pmic.c        |  14 +-
- drivers/firmware/samsung/exynos-acpm.c             | 109 ++++--
- drivers/firmware/samsung/exynos-acpm.h             |   8 +-
- drivers/i2c/i2c-stub.c                             |   5 +
- drivers/iio/adc/ti-ads1298.c                       |   7 +-
- drivers/iio/light/veml6075.c                       |   8 +-
- drivers/infiniband/hw/bnxt_re/ib_verbs.c           |   2 +-
- drivers/input/rmi4/rmi_driver.c                    | 171 +++++----
- drivers/input/rmi4/rmi_driver.h                    |   4 +-
- drivers/input/rmi4/rmi_f12.c                       |   7 +
- drivers/media/test-drivers/vidtv/vidtv_mux.c       |   8 +-
- drivers/net/ethernet/qualcomm/rmnet/rmnet_config.c |   8 +-
- drivers/net/ethernet/qualcomm/rmnet/rmnet_config.h |   1 +
- drivers/net/net_failover.c                         |  12 +-
- drivers/tty/serial/8250/8250_dw.c                  |   4 +-
- drivers/tty/serial/qcom_geni_serial.c              |   9 +-
- drivers/tty/vt/vc_screen.c                         |   2 +-
- fs/fuse/dev.c                                      |  19 +-
- fs/fuse/file.c                                     |   8 +-
- fs/lockd/svc4proc.c                                |  13 +-
- fs/lockd/svclock.c                                 |   4 +-
- fs/lockd/svcproc.c                                 |  15 +-
- fs/lockd/svcsubs.c                                 |  35 +-
- fs/nfsd/export.c                                   |  67 +---
- fs/nfsd/export.h                                   |   7 +-
- fs/nfsd/nfsctl.c                                   |   8 +-
- fs/smb/server/smb2pdu.c                            |   5 +
- include/linux/irq-entry-common.h                   |   8 -
- include/linux/lockd/lockd.h                        |   2 +-
- include/linux/rseq_entry.h                         |  19 -
- include/net/rose.h                                 |  12 +
- io_uring/net.c                                     |  36 +-
- io_uring/opdef.c                                   |   4 +-
- net/core/bpf_sk_storage.c                          |  13 +-
- net/core/dev.c                                     |   1 +
- net/core/failover.c                                |   6 +-
- net/rose/af_rose.c                                 |  49 ++-
- net/rose/rose_in.c                                 |   6 +
- net/rose/rose_loopback.c                           |  61 +++-
- net/rose/rose_timer.c                              |  87 ++++-
- 53 files changed, 567 insertions(+), 906 deletions(-)
+--- a/net/rose/af_rose.c
++++ b/net/rose/af_rose.c
+@@ -216,8 +216,16 @@ start:
+ 			 * looping forever in ROSE_STATE_0 with no owner.
+ 			 */
+ 			sock_set_flag(sk, SOCK_DESTROY);
+-			if (rose->neighbour)
++			if (rose->neighbour) {
+ 				rose_neigh_put(rose->neighbour);
++				/* Clear the pointer after dropping the reference, as
++				 * every other rose_neigh_put() site does.  Otherwise
++				 * rose_heartbeat_expiry() (STATE_0 reaping) sees a stale
++				 * rose->neighbour and puts it a second time -> rose_neigh
++				 * refcount underflow / use-after-free.
++				 */
++				rose->neighbour = NULL;
++			}
+ 			netdev_put(rose->device, &rose->dev_tracker);
+ 			rose->device = NULL;
+ 		}
 
 
 
