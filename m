@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-268513-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-268522-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 833JDWwpPWoDyQgAu9opvQ
-	(envelope-from <stable+bounces-268513-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 15:13:16 +0200
+	id TP/6HLMpPWoVyQgAu9opvQ
+	(envelope-from <stable+bounces-268522-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 15:14:27 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF9B16C6076
-	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 15:13:15 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id C015F6C60B0
+	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 15:14:26 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=gHsIhUMS;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-268513-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-268513-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=pjwq7p2o;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-268522-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-268522-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 76510306B668
-	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 13:11:39 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id EBED1303CE13
+	for <lists+stable@lfdr.de>; Thu, 25 Jun 2026 13:12:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 820D329B77C;
-	Thu, 25 Jun 2026 13:11:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F5E72EC086;
+	Thu, 25 Jun 2026 13:12:08 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E7821F03DE;
-	Thu, 25 Jun 2026 13:11:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 152CA2E040D;
+	Thu, 25 Jun 2026 13:12:07 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782393098; cv=none; b=TQsjWjpG064f4BJt7MAetRO8NvwT/WYy8D9xEy8FXVuvuagGehWUWiqlEMn72UKTVwbM0Orhsw9EiqlbRTwXNo6ezXa3f+KtRVgMGUfYBChaRt/Xe+EtE75q6YZ5wM/Vm+5gPqyT3yvPaGZgqN5DcDL7rpCtgwiuQiWl/FWdeBU=
+	t=1782393128; cv=none; b=KOZUODhwJ8ymeKPNCrqUL0yCwpwrYuVSYZdGxcNY69yEok+h/B1EwuTOyO6VG9B9bLP1OqyDZQG3vTp/3cUszLinCOlSIxmTYCJvbU0hyrvK653Iitb2YxCSgevyx9VJeVgYlULIeR12/jURJQ1L5tV+QYtfSPWcjg3y1Gwtu90=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782393098; c=relaxed/simple;
-	bh=Jw1mKkzjPPo+zA5y/BEzCZqmn/bFu0aLufrxT2Xh5K8=;
+	s=arc-20240116; t=1782393128; c=relaxed/simple;
+	bh=STjVY59kaZ92By61VpR6H2Tr4VcFW7ZT0bMZ3DVpGD8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=REXUU5JL9qKI0tKH+Nv8sV78c7S2wL9QxXkf5y8Lb9D/qHD5Ji2QAFAMhzB+BHy6YawKhCe4LGysBdoXwdK6cdSPZFD/KGVYEqjYCHNzuT6G20L3USfdjX0wfbrmNqW2lrL6Z2ei07A3T3Dt1Ef5vy5OE0FUN7WfMH/hZUMaFGk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gHsIhUMS; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A38751F000E9;
-	Thu, 25 Jun 2026 13:11:36 +0000 (UTC)
+	 MIME-Version; b=F34Zw+S3EyU74mzcs24C1aJuQ8CCBXglJtIfL/ErGaLfXk9ogxSU4bgQLZHnxjBcr3GAaw7+B8H5Y9Yw6nTq21OZRibMiWhlA/FnlyM4WsJ0jc354f7yVNOOf3PMlgaEkBNRnykgJac7UZ7Ez76eECqlff/18vbSNzlSryj+Seg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pjwq7p2o; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A5171F000E9;
+	Thu, 25 Jun 2026 13:12:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1782393097;
-	bh=+gsUtoPyAQ0cwonMqc6oykYvGpDegwEVMn4Oz11MHdg=;
+	s=korg; t=1782393127;
+	bh=hb4DWf+fRFxnJor3r9V9B4H9TfFTsnARdV9qbOIylKM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=gHsIhUMSTVnDE9oe+PDNllXUsr51SAGt1CYHjJ1+VaK0iPChl1p60ZLhRmA7dEzYB
-	 o8F/kkB8VizraSHrONNohYevQmMDd9YzLUB+iZMPgH29P6J99wTCzQMMQE+DB4PW6b
-	 fOoeLfyEMg89bt70uFgAGiQQEuzhn1ikD/RQXAy8=
+	b=pjwq7p2o4Bwj+AjxToU3AcydvYVUlLZ3Fx1JFw4JdPQVBjp2LCG8uCOT6pUJJzPS4
+	 pt70qcArUKHTlRs1ShC6bJfoGSQ9zjpW+ZlSavsyKofOLspgL0rXF9BQCyNe8I5aZI
+	 pI43ptkFAb76IaYu8m2ptAoaQNrpUA7TllwqS89o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yi Yang <yiyang13@huawei.com>,
-	Jiri Slaby <jirislaby@kernel.org>
-Subject: [PATCH 7.0 43/49] vc_screen: fix null-ptr-deref in vcs_notifier() during concurrent vcs_write
-Date: Thu, 25 Jun 2026 14:03:55 +0100
-Message-ID: <20260625125643.598251409@linuxfoundation.org>
+	Mingyu Wang <25181214217@stu.xidian.edu.cn>,
+	Lukas Wunner <lukas@wunner.de>
+Subject: [PATCH 7.1 04/21] agp/amd64: Fix broken error propagation in agp_amd64_probe()
+Date: Thu, 25 Jun 2026 14:03:56 +0100
+Message-ID: <20260625125613.826123670@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260625125637.527552689@linuxfoundation.org>
-References: <20260625125637.527552689@linuxfoundation.org>
+In-Reply-To: <20260625125613.243729608@linuxfoundation.org>
+References: <20260625125613.243729608@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,21 +71,21 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-268513-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-268522-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:yiyang13@huawei.com,m:jirislaby@kernel.org,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:25181214217@stu.xidian.edu.cn,m:lukas@wunner.de,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
@@ -97,55 +97,61 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,msgid.link:url,vger.kernel.org:from_smtp,huawei.com:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,xidian.edu.cn:email,wunner.de:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: BF9B16C6076
+X-Rspamd-Queue-Id: C015F6C60B0
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+7.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yi Yang <yiyang13@huawei.com>
+From: Mingyu Wang <25181214217@stu.xidian.edu.cn>
 
-commit a287620312dc6dcb9a093417a0e589bf30fcf38a upstream.
+commit b08472db93b1ccff84a7adec5779d47f0e9d3a30 upstream.
 
-A KASAN null-ptr-deref was observed in vcs_notifier():
+A NULL pointer dereference was observed in the AMD64 AGP driver when
+running in a virtualized environment (e.g. qemu/kvm) without a physical
+AMD northbridge. The crash occurs in amd64_fetch_size() when attempting
+to dereference the pointer returned by node_to_amd_nb(0).
 
-BUG: KASAN: null-ptr-deref in vcs_notifier+0x98/0x130
-Read of size 2 at addr qmp_cmd_name: qmp_capabilities, arguments: {}
+The root cause of this crash is broken error propagation in
+agp_amd64_probe(): When no AMD northbridges are found, cache_nbs()
+correctly returns -ENODEV. However, the probe function erroneously
+checks the return value against exactly -1, rather than < 0.
 
-The issue is a race condition in vcs_write(). When the console_lock is
-temporarily dropped (to copy data from userspace), the vc_data pointer
-obtained from vcs_vc() may become stale. After re-acquiring the lock,
-vcs_vc() is called again to re-validate the pointer. If the vc has been
-deallocated in the meantime, vcs_vc() returns NULL, and the while loop
-breaks (with written > 0). However, after the loop, vcs_scr_updated(vc)
-is still called with the now-NULL vc pointer, leading to a null pointer
-dereference in the notifier chain (vcs_notifier dereferences param->vc).
+As a result, the hardware absence error is masked, allowing the driver
+to improperly proceed with initialization. It eventually calls
+agp_add_bridge(), which invokes amd64_fetch_size(). Since the hardware
+does not exist, node_to_amd_nb(0) returns NULL, leading to a General
+Protection Fault (GPF) when accessing its ->misc member.
 
-Fix this by adding a NULL check for vc before calling vcs_scr_updated().
+Fix the issue by correcting the error check in agp_amd64_probe() to
+abort properly when cache_nbs() returns any negative error code. This
+prevents the driver from erroneously proceeding without hardware, thereby
+avoiding the subsequent NULL pointer dereference at its source.
 
-Fixes: 8fb9ea65c9d1 ("vc_screen: reload load of struct vc_data pointer in vcs_write() to avoid UAF")
-Cc: stable@vger.kernel.org
-Signed-off-by: Yi Yang <yiyang13@huawei.com>
-Reviewed-by: Jiri Slaby <jirislaby@kernel.org>
-Link: https://patch.msgid.link/20260604060734.2914976-1-yiyang13@huawei.com
+Fixes: a32073bffc65 ("[PATCH] x86_64: Clean and enhance up K8 northbridge access code")
+Signed-off-by: Mingyu Wang <25181214217@stu.xidian.edu.cn>
+Signed-off-by: Lukas Wunner <lukas@wunner.de>
+Reviewed-by: Lukas Wunner <lukas@wunner.de>
+Cc: stable@vger.kernel.org # v2.6.18+
+Link: https://patch.msgid.link/20260504074823.99377-1-w15303746062@163.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/tty/vt/vc_screen.c |    2 +-
+ drivers/char/agp/amd64-agp.c |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/tty/vt/vc_screen.c
-+++ b/drivers/tty/vt/vc_screen.c
-@@ -686,7 +686,7 @@ vcs_write(struct file *file, const char
- 	}
- 	*ppos += written;
- 	ret = written;
--	if (written)
-+	if (written && vc)
- 		vcs_scr_updated(vc);
+--- a/drivers/char/agp/amd64-agp.c
++++ b/drivers/char/agp/amd64-agp.c
+@@ -546,7 +546,7 @@ static int agp_amd64_probe(struct pci_de
+ 	/* Fill in the mode register */
+ 	pci_read_config_dword(pdev, bridge->capndx+PCI_AGP_STATUS, &bridge->mode);
  
- 	return ret;
+-	if (cache_nbs(pdev, cap_ptr) == -1) {
++	if (cache_nbs(pdev, cap_ptr) < 0) {
+ 		agp_put_bridge(bridge);
+ 		return -ENODEV;
+ 	}
 
 
 
