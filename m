@@ -1,124 +1,317 @@
-Return-Path: <stable+bounces-268736-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-268737-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 5MHYL1cFPmrP+ggAu9opvQ
-	(envelope-from <stable+bounces-268736-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 06:51:35 +0200
+	id ZuslKUAHPmok+wgAu9opvQ
+	(envelope-from <stable+bounces-268737-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 06:59:44 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 12C0C6CA2FD
-	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 06:51:35 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3386B6CA345
+	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 06:59:44 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=P32H+IGo;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-268736-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-268736-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=none) header.from=linux.dev;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=DktboQ2x;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-268737-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-268737-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B0E873023366
-	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 04:51:05 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 82040303320B
+	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 04:59:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2564035F5F8;
-	Fri, 26 Jun 2026 04:51:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 86AC435F5F8;
+	Fri, 26 Jun 2026 04:59:42 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from out-178.mta0.migadu.com (out-178.mta0.migadu.com [91.218.175.178])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD93824A076
-	for <stable@vger.kernel.org>; Fri, 26 Jun 2026 04:51:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CF18149C6F;
+	Fri, 26 Jun 2026 04:59:40 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782449464; cv=none; b=s5I46BEJzZ0JR3qmdliBJKhkkk2Qr0/m4rxBDOfs6TfGlrO8QWFEvzPDO8A3UJ6QUpw+ioJxWd+yVKAGI0TyxKT3OYedH/S25ad+/Qtms4xSONNamntRYVZc9dm0M85OCgH/sBrvThiQiwZcf4QcU1V5fy9CUNQuMMsAR4B3kfo=
+	t=1782449982; cv=none; b=SHhJ+CdqqfuUWPBwtFegL/xmm5rAAJ2VC0yR/1z+88V37bqlTzT7GqfUe09A/ZQh2aEINqBZ2H69GS00UH1H9/Yf8X+LvgoCXvnBM/cvAqpDAm4BHYmwdUTXIUW8Api7GrggqQ99eca6PktpbY1bWvou0YIpR8d+JVeSFL8nN6Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782449464; c=relaxed/simple;
-	bh=7wskW+iSP5DApCTNsrQ1QAy/V2Bq2aLiLOKOm78jcLY=;
+	s=arc-20240116; t=1782449982; c=relaxed/simple;
+	bh=CvyYoi/hge3V7uBG1euhH9djxe5HjOJgSjtxhmmvqqo=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=doIacEtFH2xfGAZdzuYsiKk15iwNdxgxLFq5iH9CvSmvE+3WLUkm6CCzVyY0QhrcQxRfCk6kpADzbeBCZ6+wRhGTlFtIfpQRehHmkAEkLN0k8nHBHjjLbqDtssJ0pZxAgJ6qhPFQzbFxg0AHT8+kSzmiFjxH9NY5bmIzfLGuhks=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=P32H+IGo; arc=none smtp.client-ip=91.218.175.178
-Message-ID: <46eb172e-7b31-48cc-bfd5-ca4777bf37ef@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1782449451;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Y+VAD6kx1YH7226mbPd2tBdtR/GRqu2/JEMjoE4xVok=;
-	b=P32H+IGoTdMWMRX3QdLXm+nN3H1478ZO/lGcErfCRDKgnHC2YsBgCNMd2ry3tau5Vf3TZ/
-	rR0CXvMvsDZF/uO+QEF3yUerRMoy/nRLPqD8/wc68cgs6K1cKKK/G8r+g2tlL9AOzX5Tel
-	iMToO9tmYYWuGJT2qfDm6yoMTFSr4MU=
-Date: Fri, 26 Jun 2026 12:50:33 +0800
+	 In-Reply-To:Content-Type; b=iOJWKywNDYASm4ItG8J1atYzzhNeyKZ4/ZTbvxMlLvzVpLHumwWqX2T+N/6laAk7WLTATOvsIlSL0bomnogqBCFgUDljPJlZrLCBGZJiJ4uA0QxshBLzs9WXUNCKJmZ84TpaLkrXW/mdpGf3x7bOKOY7XTPEslc2ivUCtdBzRbo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DktboQ2x; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2A631F000E9;
+	Fri, 26 Jun 2026 04:59:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1782449980;
+	bh=vQydTLN/cERJBZY6JZKP8VCAhgH15XKAESApLXzuoY8=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=DktboQ2xA0hGMY8Fmh9f0+XpL6P9Zxer7PldlOtFQod5tZmJbgve1NMZVBn4e0J/E
+	 5Owq1HCD0uYZi+FsD3U9FIR5IBme0Xi2HE+p/MmTzlpscizw/dBkyTFK9Iey+ldRq8
+	 YIGP8uK03oodbO4g+D880HpITmhSovgGmTQ+UJMcm9zYtWUepbvU/ZHuiWokMSeuv1
+	 yoqDBvjJs9NWUDeB2cmJn5l8tUiX4usoEJS9OXtrS54hCuAEOXFq80zUF/M/OZG6ci
+	 Xh2uh9CanlkCg+LB3Qw8Znnq4tBpFRy1Dcx51+JsVeMoVS/AAZm2SSlWjPuSLfP+Ya
+	 5aMCGjVmze7+g==
+Message-ID: <afdaff7c-fe6b-40da-8f54-aeeab8fe8867@kernel.org>
+Date: Fri, 26 Jun 2026 13:59:26 +0900
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH v3] mm: mglru: fix stale batch updates after memcg
  reparenting
-To: Peiyang He <peiyang_he@smail.nju.edu.cn>, akpm@linux-foundation.org,
- david@kernel.org, kasong@tencent.com, shakeel.butt@linux.dev,
- baohua@kernel.org, axelrasmussen@google.com, yuanchu@google.com,
- weixugc@google.com, hannes@cmpxchg.org, harry@kernel.org,
- muchun.song@linux.dev, mhocko@kernel.org, roman.gushchin@linux.dev,
- ljs@kernel.org
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+To: Qi Zheng <qi.zheng@linux.dev>, Johannes Weiner <hannes@cmpxchg.org>
+Cc: akpm@linux-foundation.org, david@kernel.org, kasong@tencent.com,
+ shakeel.butt@linux.dev, baohua@kernel.org, axelrasmussen@google.com,
+ yuanchu@google.com, weixugc@google.com, muchun.song@linux.dev,
+ peiyang_he@smail.nju.edu.cn, mhocko@kernel.org, roman.gushchin@linux.dev,
+ ljs@kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
  Qi Zheng <zhengqi.arch@bytedance.com>, stable@vger.kernel.org
 References: <20260625151554.55105-1-qi.zheng@linux.dev>
- <0559695533E1C70F+31684237-e405-48da-ad8f-4ba7ff4ddb38@smail.nju.edu.cn>
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Qi Zheng <qi.zheng@linux.dev>
-In-Reply-To: <0559695533E1C70F+31684237-e405-48da-ad8f-4ba7ff4ddb38@smail.nju.edu.cn>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Migadu-Flow: FLOW_OUT
+ <aj12aVq3he6q7b2C@cmpxchg.org>
+ <4c7b0c46-14f0-4a62-893e-e50714e09b74@linux.dev>
+ <46ac28bf-5be1-4600-b522-0a1aa76c28e6@kernel.org>
+ <08cf8972-6cfc-4452-9a3c-88e0368dbbf9@linux.dev>
+Content-Language: en-US
+From: Harry Yoo <harry@kernel.org>
+In-Reply-To: <08cf8972-6cfc-4452-9a3c-88e0368dbbf9@linux.dev>
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature";
+ boundary="------------5Zw0piV59P0tyDvSf9ksEESi"
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-7.26 / 15.00];
+	WHITELIST_SPF_DKIM(-3.00)[kernel.org:d:+,kernel.org:s:+];
+	SIGNED_PGP(-2.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linux.dev,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[linux.dev:s=key1];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	MIME_GOOD(-0.20)[multipart/signed,multipart/mixed,text/plain];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
 	MAILLIST(-0.15)[generic];
-	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:peiyang_he@smail.nju.edu.cn,m:akpm@linux-foundation.org,m:david@kernel.org,m:kasong@tencent.com,m:shakeel.butt@linux.dev,m:baohua@kernel.org,m:axelrasmussen@google.com,m:yuanchu@google.com,m:weixugc@google.com,m:hannes@cmpxchg.org,m:harry@kernel.org,m:muchun.song@linux.dev,m:mhocko@kernel.org,m:roman.gushchin@linux.dev,m:ljs@kernel.org,m:linux-mm@kvack.org,m:linux-kernel@vger.kernel.org,m:zhengqi.arch@bytedance.com,m:stable@vger.kernel.org,s:lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[3];
-	FORGED_SENDER(0.00)[qi.zheng@linux.dev,stable@vger.kernel.org];
+	FORGED_RECIPIENTS(0.00)[m:qi.zheng@linux.dev,m:hannes@cmpxchg.org,m:akpm@linux-foundation.org,m:david@kernel.org,m:kasong@tencent.com,m:shakeel.butt@linux.dev,m:baohua@kernel.org,m:axelrasmussen@google.com,m:yuanchu@google.com,m:weixugc@google.com,m:muchun.song@linux.dev,m:peiyang_he@smail.nju.edu.cn,m:mhocko@kernel.org,m:roman.gushchin@linux.dev,m:ljs@kernel.org,m:linux-mm@kvack.org,m:linux-kernel@vger.kernel.org,m:zhengqi.arch@bytedance.com,m:stable@vger.kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[harry@kernel.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCPT_COUNT_TWELVE(0.00)[19];
-	TAGGED_FROM(0.00)[bounces-268736-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-268737-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+,1:+,2:+,3:~];
 	FORWARDED(0.00)[lists@lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	HAS_ATTACHMENT(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[qi.zheng@linux.dev,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linux.dev:+];
+	FROM_NEQ_ENVFROM(0.00)[harry@kernel.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	TO_DN_SOME(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linux.dev:dkim,linux.dev:mid,linux.dev:from_mime,vger.kernel.org:from_smtp]
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,bytedance.com:email,nju.edu.cn:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 12C0C6CA2FD
+X-Rspamd-Queue-Id: 3386B6CA345
 
-Hi Peiyang,
+This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
+--------------5Zw0piV59P0tyDvSf9ksEESi
+Content-Type: multipart/mixed; boundary="------------ZRX0Bm9osqEOHrx8TlGs75oJ";
+ protected-headers="v1"
+From: Harry Yoo <harry@kernel.org>
+To: Qi Zheng <qi.zheng@linux.dev>, Johannes Weiner <hannes@cmpxchg.org>
+Cc: akpm@linux-foundation.org, david@kernel.org, kasong@tencent.com,
+ shakeel.butt@linux.dev, baohua@kernel.org, axelrasmussen@google.com,
+ yuanchu@google.com, weixugc@google.com, muchun.song@linux.dev,
+ peiyang_he@smail.nju.edu.cn, mhocko@kernel.org, roman.gushchin@linux.dev,
+ ljs@kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ Qi Zheng <zhengqi.arch@bytedance.com>, stable@vger.kernel.org
+Message-ID: <afdaff7c-fe6b-40da-8f54-aeeab8fe8867@kernel.org>
+Subject: Re: [PATCH v3] mm: mglru: fix stale batch updates after memcg
+ reparenting
+References: <20260625151554.55105-1-qi.zheng@linux.dev>
+ <aj12aVq3he6q7b2C@cmpxchg.org>
+ <4c7b0c46-14f0-4a62-893e-e50714e09b74@linux.dev>
+ <46ac28bf-5be1-4600-b522-0a1aa76c28e6@kernel.org>
+ <08cf8972-6cfc-4452-9a3c-88e0368dbbf9@linux.dev>
+In-Reply-To: <08cf8972-6cfc-4452-9a3c-88e0368dbbf9@linux.dev>
 
-On 6/26/26 12:29 PM, Peiyang He wrote:
-> Hi Qi,
-> 
-> I have applied this patch and tested it against the PoC, the warning is not observed anymore in the kernel log.
-> Thanks for your nice work!
-
-Thanks a ton for testing this!
-
-> 
-> Best,
-> Peiyang
-> 
+--------------ZRX0Bm9osqEOHrx8TlGs75oJ
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
 
+
+On 6/26/26 1:48 PM, Qi Zheng wrote:
+>=20
+>=20
+> On 6/26/26 12:43 PM, Harry Yoo wrote:
+>>
+>>
+>> On 6/26/26 11:27 AM, Qi Zheng wrote:
+>>> Hi Johannes,
+>>>
+>>> On 6/26/26 2:41 AM, Johannes Weiner wrote:
+>>>> On Thu, Jun 25, 2026 at 11:15:54PM +0800, Qi Zheng wrote:
+>>>>> From: Qi Zheng <zhengqi.arch@bytedance.com>
+>>>>>
+>>>>> The mglru page table walker batches per-generation size deltas in
+>>>>> walk->nr_pages while walking page tables without holding the lruvec=
+
+>>>>> lock.
+>>>>> The reset_batch_size() later folds those deltas into walk->lruvec
+>>>>> under
+>>>>> the lruvec lock.
+>>>>>
+>>>>> The page table walker can run concurrently with the memcg reparenti=
+ng
+>>>>> path
+>>>>> as follows:
+>>>>>
+>>>>> CPU0                           CPU1
+>>>>> =3D=3D=3D=3D                           =3D=3D=3D=3D
+>>>>>
+>>>>> walk_mm
+>>>>> --> walk_page_range
+>>>>>       --> update_batch_size
+>>>>>           --> walk->nr_pages +=3D delta
+>>>>>
+>>>>>                                 mem_cgroup_css_offline
+>>>>>                                 --> memcg_reparent_objcgs
+>>>>>                                     --> lock lruvec
+>>>>>                                         lru_gen_reparent_memcg
+>>>>>                                         --> reparent child folios t=
+o
+>>>>> parent
+>>>>>                                         unlock lruvec
+>>>>>
+>>>>>       lock lruvec
+>>>>>       reset_batch_size
+>>>>>       --> child lrugen->nr_pages +=3D delta
+>>>>>
+>>>>> This will trigger the following warning in lru_gen_exit_memcg():
+>>>>>
+>>>>>      VM_WARN_ON_ONCE(memchr_inv(lruvec->lrugen.nr_pages, 0,
+>>>>>                     sizeof(lruvec->lrugen.nr_pages)));
+>>>>>
+>>>>> And the user-visible impact of underestimated nr_pages in MGLRU was=
+
+>>>>> premature OOMs because MGLRU does not try to reclaim memory when
+>>>>> nr_pages
+>>>>> reaches zero, but there are still more pages.
+>>>>>
+>>>>> To fix it, make reset_batch_size() check CSS_DYING under RCU before=
+
+>>>>> flushing the pending batch. A non-dying memcg keeps the original
+>>>>> lruvec
+>>>>> stable against RCU-delayed offlining; a dying memcg redirects the
+>>>>> deltas
+>>>>> to the first non-dying ancestor.
+>>>>>
+>>>>> Reported-by: Peiyang He <peiyang_he@smail.nju.edu.cn>
+>>>>> Closes: https://lore.kernel.org/all/5A9E929D82717101+12fcf643-
+>>>>> efb8-4b9a-a53a-1e28cc894f0b@smail.nju.edu.cn
+>>>>> Fixes: f304652609ea ("mm: vmscan: prepare for reparenting MGLRU
+>>>>> folios")
+>>>>> Cc: <stable@vger.kernel.org>
+>>>>> Signed-off-by: Qi Zheng <zhengqi.arch@bytedance.com>
+>>>>> ---
+>>>>> Changes in v3:
+>>>>>    - re-implement lock_batch_lruvec() by checking CSS_DYING under t=
+he
+>>>>> RCU lock
+>>>>>      (suggested by Harry)
+>>>>>    - update the commit message (suggested by Harry)
+>>>>>    - temporarily drop the previous Reviewed-by tags
+>>>>>      (since the sync method has changed)
+>>>>>    - rebase onto the next-20260624
+>>>>>
+>>>>> Changes in v2:
+>>>>>    - update the commit message (pointed by Barry)
+>>>>>    - collect Reviewed-by
+>>>>>
+>>>>>    mm/vmscan.c | 45 ++++++++++++++++++++++++++++++++++++++-------
+>>>>>    1 file changed, 38 insertions(+), 7 deletions(-)
+>>>>>
+>>>>> diff --git a/mm/vmscan.c b/mm/vmscan.c
+>>>>> index 35c3bb15ae96..1ec8c23c72b9 100644
+>>>>> --- a/mm/vmscan.c
+>>>>> +++ b/mm/vmscan.c
+>>>>> @@ -3262,10 +3262,44 @@ static void update_batch_size(struct
+>>>>> lru_gen_mm_walk *walk, struct folio *folio,
+>>>>>        walk->nr_pages[new_gen][type][zone] +=3D delta;
+>>>>>    }
+>>>>>    +#ifdef CONFIG_MEMCG
+>>>>> +static struct lruvec *lock_batch_lruvec(struct lruvec *lruvec)
+>>>>> +{
+>>>>> +    struct pglist_data *pgdat =3D lruvec_pgdat(lruvec);
+>>>>> +    struct mem_cgroup *memcg =3D lruvec_memcg(lruvec);
+>>>>> +
+>>>>> +    rcu_read_lock();
+>>>>
+>>>> Where is this unlocked?
+>>>
+>>> The lruvec_unlock_irq() in reset_batch_size() will handle the unlocki=
+ng.
+>>>
+>>>>
+>>>>> +    /*
+>>>>> +     * The memcg can be NULL when the memory controller is disable=
+d.
+>>>>> +     * Otherwise, the caller keeps the memcg owning @lruvec alive.=
+
+>>>>> +     */
+>>>>> +    if (!memcg || !css_is_dying(&memcg->css))
+>>>>> +        goto lock;
+>>>>> +
+>>>>> +    do {
+>>>>> +        memcg =3D parent_mem_cgroup(memcg);
+>>>>> +    } while (memcg && css_is_dying(&memcg->css));
+>>>>> +    lruvec =3D mem_cgroup_lruvec(memcg, pgdat);
+>>>>
+>>>>      while (unlikely(memcg && css_is_dying(&memcg->css))) {
+>>>>          memcg =3D parent_mem_cgroup(memcg);
+>>>>          lruvec =3D mem_cgroup_lruvec(memcg, pgdat);
+>>>
+>>> There is no need to acquire the lruvec before finding the first
+>>> non-dying memcg.
+>>
+>> struct pglist_data *pgdat =3D lruvec_pgdat(lruvec);
+>> struct mem_cgroup *memcg =3D lruvec_memcg(lruvec);
+>>
+>> rcu_read_lock()
+>>
+>> while (unlikely(memcg_is_dying(memcg)))
+>>          memcg =3D parent_mem_cgroup(memcg);
+>>
+>> lruvec =3D mem_cgroup_lruvec(memcg, pgdat);
+>=20
+> If the first memcg is already non-dying, there's no need to re-acquire
+> the lruvec. ;)
+
+Oh, right :)
+
+Hmm but I still think Johannes' suggestion makes the code cleaner.
+Observing a dying cgroup should be rare anyway, it's worth focusing
+more on readability?
+
+--=20
+Cheers,
+Harry / Hyeonggon
+
+--------------ZRX0Bm9osqEOHrx8TlGs75oJ--
+
+--------------5Zw0piV59P0tyDvSf9ksEESi
+Content-Type: application/pgp-signature; name="OpenPGP_signature.asc"
+Content-Description: OpenPGP digital signature
+Content-Disposition: attachment; filename="OpenPGP_signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEARYKAB0WIQQQ1ub6gR5ogjaKRmOGXBN6rc5S1gUCaj4HLgAKCRCGXBN6rc5S
+1gGwAQDgsTIu64tG5UvWCyfrIv1RVZyVbf0RbKQAyfsnxC9KtwD/T20rBlrqpe+s
+utP9zOBgC9FpdJDhK3gMwCVJCJvHsgc=
+=ossq
+-----END PGP SIGNATURE-----
+
+--------------5Zw0piV59P0tyDvSf9ksEESi--
 
