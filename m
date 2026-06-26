@@ -1,185 +1,221 @@
-Return-Path: <stable+bounces-268890-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-268885-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 1iL+EKl0PmqgGQkAu9opvQ
-	(envelope-from <stable+bounces-268890-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 14:46:33 +0200
+	id IAjSEflzPmp4GQkAu9opvQ
+	(envelope-from <stable+bounces-268885-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 14:43:37 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id BB7646CD1F4
-	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 14:46:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9B0CF6CD184
+	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 14:43:36 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=ionos.com header.s=google header.b=FlGHj4nt;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-268890-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-268890-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=reject) header.from=ionos.com;
-	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
+	dkim=pass header.d=amd.com header.s=selector1 header.b=qnlmyxlc;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-268885-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-268885-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=quarantine) header.from=amd.com;
+	arc=reject ("cv is fail on i=2")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 02CF23032F75
-	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 12:45:48 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 5567B303643D
+	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 12:43:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6539D3CE0AE;
-	Fri, 26 Jun 2026 12:45:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C7F9D3F58E1;
+	Fri, 26 Jun 2026 12:43:03 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wr1-f43.google.com (mail-wr1-f43.google.com [209.85.221.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from PH8PR06CU001.outbound.protection.outlook.com (mail-westus3azon11012033.outbound.protection.outlook.com [40.107.209.33])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AB542E738E
-	for <stable@vger.kernel.org>; Fri, 26 Jun 2026 12:45:45 +0000 (UTC)
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782477947; cv=none; b=J6sl4PsdwuzThBePQAObVXfOU3YixT7uR/QMUhjDMLSHWKs1DiN9jykb1vwCwVILG5o9IrXrPGrdvEBAfXD7J2XJBfBJexjCYfxyPIdNXQqRUT6fQHsV7jbCp+SwuQBPptpNbsJrTubWP2AbwNSgBN0KUQ37S/GDF0k6/fmtR/g=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782477947; c=relaxed/simple;
-	bh=lfCsK7ke1HwaKiMi+Mmi7QkIFc+E+RHjC9IiY3iFes0=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RJy2v6ymGIK8pjknpCRc+wHu38vJksWCjrT9WwZJP36eT2WM1C9PPJdUutzx/pia3Vf/XTL6oAEtLHuVHvpwVkzlxxHB3up0fHR2yuFKzXTRysP5vpD89S/vXO78M7ej+J3N2tIQDLPE1jJEBJmu/LB81Yj5BkDIBSKEbhffqMg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ionos.com; spf=pass smtp.mailfrom=ionos.com; dkim=pass (2048-bit key) header.d=ionos.com header.i=@ionos.com header.b=FlGHj4nt; arc=none smtp.client-ip=209.85.221.43
-Received: by mail-wr1-f43.google.com with SMTP id ffacd0b85a97d-46cea75d96cso83611f8f.1
-        for <stable@vger.kernel.org>; Fri, 26 Jun 2026 05:45:45 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ionos.com; s=google; t=1782477944; x=1783082744; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=uISU591JVCgH1dSdw17ho6JpPc4Bt/zYx2LHpVhc06I=;
-        b=FlGHj4ntk074qBsGbQxPERo1tQcu3oiPbkOq+BegiF1smr5Bo9sd2bSrckdkNiXe9z
-         EiS889E9oRaQq012z6bQpKig1Jb/fpjLR8sntyl5N8N6nlSilhz5D44vscsGxMcGhAuZ
-         rpXeDoKp6VhK6wqpeLDDCa45FoYQqHoj9IrLg0TiNutuJB8MKkx1DRbKhbxfg/eUewYe
-         mbdiNqZa0VMjl3hCB0nuwupgq3tdTsbCbNRPmoBAcagmGIbjyye24aCvgARUWxJQTBFd
-         nMZkbL0lh5/DaljQacqF47MyDYi0iwHIM5HgyPn/exNntNAxZi8iPOMfzv/5j4U97rmK
-         udWg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782477944; x=1783082744;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=uISU591JVCgH1dSdw17ho6JpPc4Bt/zYx2LHpVhc06I=;
-        b=n9GisN7y1jz3S252bMeNqTM3oHT2Fwn/v9Z2QF0e4O46Vj01I49VIZYtp8yklXqZBu
-         7YQYUBnY1zkck5LmH4s93YJQbF/z9PpGQnIFzOVSx+l4jE4FfYJe5yf+eqN1/96PQ9yt
-         dGMLoaltd5LmBmqCBFYMoxuMaJqbNYbwCeVJ0NU1vegLaGv8aKNHHyPJEC7dPh9bmbkb
-         HB/mTjJefxaZN+reLczCHXj0HBYYsSd31jWIujCXlUsPC7V9tiYjNeBJJUU/pZsyM3Hj
-         w0yGcHjHAHJ6DHAAYTBK+Qj02LAN1oabeGD5KhMfc/s1wrrqPSPoL12RPYRHaJjbyUTL
-         GBuA==
-X-Forwarded-Encrypted: i=1; AFNElJ8yUbRXyWKF0FDy3/+1C+ziVcTkYDhDmro8YPOf2VEl2OgXtouSX9xGohatAqnZ/GPSThEzDlw=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxSu129AJddwCJlbAm0KTj50zf29MCT8IWmf5R6A5owZBoHKdEP
-	wwjNyniB0kEHmNG7i0XRe8P7r53ig0aeMZ6aRDC+scl3x2PxhE6Dw/kJO0WTe0zT2fU=
-X-Gm-Gg: AfdE7clQNa6IJA9zXCUQxYs2/NmC2RvzrOQfhtdzDDGLek/S9psGqXSRyGGPoB3Ansy
-	2c5OEi1NT5C8GgH66Jrg6hBJqxT3PmNVHEFSQcHnTZuEJae5Ej5BM4p8wyKYwW7bybiLx04BHuu
-	wj2ah/q5CpxR7rjRq+ek4WQB1+7imyijuS2E66n7H6nuhwTv8c60xTG8Us+J6rjZoClIdOtsnV6
-	jDT894xJE4WWistvGGlC+bZ+t9bKkX0eIzU3xPimO3yPrBUTkuZCiDSWr2yxa5By8tspwiPDAXp
-	pFGj51TcFlueGUVyxtvyJxBoEKNrUDC9PC0FbGxc2tkgjJHFEfeZhEJh/OfqvNGfcuHd8nZDzQU
-	wUV5m+4CE9rhpf6hIRpc5edRNPCnt4FVSDTxSEbxDlxSlHDdsnuMbopjiCvS4B1hw5gdVuhUch2
-	Pn5xZbFLtyOR6w+3hfW53aW5RJkAisie1/XIcDXKyWNtWp
-X-Received: by 2002:a05:600c:4fc7:b0:490:846d:4edf with SMTP id 5b1f17b1804b1-4926686b3damr48747605e9.1.1782477943777;
-        Fri, 26 Jun 2026 05:45:43 -0700 (PDT)
-Received: from jwang-ThinkPad-T14-Gen-6.fritz.box ([2001:9e8:144d:e00:98f2:1188:3abe:e8d9])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49269020266sm73981765e9.15.2026.06.26.05.45.43
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 26 Jun 2026 05:45:43 -0700 (PDT)
-From: Jack Wang <jinpu.wang@ionos.com>
-To: gregkh@linuxfoundation.org,
-	sashal@kernel.org,
-	stable@vger.kernel.org
-Cc: Sean Christopherson <seanjc@google.com>,
-	Tom Lendacky <thomas.lendacky@amd.com>,
-	Paolo Bonzini <pbonzini@redhat.com>
-Subject: [stable-6.12 3/3] KVM: SEV: Ignore Port I/O requests of length '0'
-Date: Fri, 26 Jun 2026 14:42:23 +0200
-Message-ID: <20260626124539.201250-4-jinpu.wang@ionos.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260626124539.201250-1-jinpu.wang@ionos.com>
-References: <20260626124539.201250-1-jinpu.wang@ionos.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9444B3F54A7;
+	Fri, 26 Jun 2026 12:43:00 +0000 (UTC)
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1782477783; cv=fail; b=iRzkJyomHNd2YjBvvXaBgmdKphFmJZepWrU9jb2/AZbkak6v1vpGZyCOqTG3LdqtS+VHiRTeYyDreXwaRmt5+sWeyMeMkfj7Qvv+YbQ/Ikki919OeWTCb4EZryRDLhKjyp6zPAaZTIQnmK13b5866tQyYY0n60a3sDsFlaBQVfo=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1782477783; c=relaxed/simple;
+	bh=fLEPGKYczTM89SErA0ohgXnP1FIx/XzVb+YpWkGyDhc=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=oKWU53E1Qzie0VrWoWHEsS23aTOxBMgvG8zW5N/Qxx1vvYmWvU4oI0XbRrizurGhtEA04QL6wo8Ztoi6WNuE4TP0rGdH37mCxrjHmvWgPPrR/p0lYGhhhJQKSsLPdjMNYfypY4GOaLRV5jmatgM5CMacS87CgFAQBx1QdBTRx44=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=qnlmyxlc; arc=fail smtp.client-ip=40.107.209.33
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=uaGxm+BxWrHr0l834SNGgVHrZ6GXf388Q5RFyeukfLS0gaq79hHPK53zYJsp2VhGOAHdLXKClZrYDugT9/0YdnrZ18Vn98FWRaOGFZoU3cC8idNkXDZ56R/XvVIszcgyU87deZWGXga/vvPUVaOEgVH0jkRvc3R1qGKRX0/w15FXm5IuuYztYaeuJQOzLVw+dkL5u7DMRVXGo6oZhgmPHAT0bTxxGfhZD4CD761FJv26HCxfs72ZFQf+C0bZKlKJHYgsL2Aph4+nXjUJuwIre1zV5qnCTi6QzNd7c968PwgecDpNHaKGY/i89k6qn/S7j87vglv1GL5Z9ZRI6EYK8g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=BeIKZBoH9QJ9FOobXdjkS2zm5mUreF0cEqUX8n7t3tk=;
+ b=PyPVojkx/PFPbP3D1MHh3J7EM59YjG9u4dpB/zbbqZMQpFa56hBuWvn3D+jkNoPght7bFM8AqemOYWLNb0AgxoWkmg5zLq7nGoWJM/z3x8ZNdFqPblPmJrO59v7PDVD1Ar2MiYzkocV7EJ8RX9vcdEcpCS7sVTtRPeYJ/QIpNPWrKQJM8npYvfKCEt9l/qrmM18rp0tmaWSPicEoj9mSXoNeJPDL2xnV5mrWJmcxzi4TPjxbWD1k2Fu+PpJdyfEa1qaDSj9vVyDQySaHyH5FuQSbl0uicPvgeq3yEqUd6ZVdrm3Gts/zygIGxn6nd6VtwPtVO9x6AIdPBtTUXho59w==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=BeIKZBoH9QJ9FOobXdjkS2zm5mUreF0cEqUX8n7t3tk=;
+ b=qnlmyxlcjvduZzq80LTUTdt1jcmJBvA6ulX+xOnBoq2w+Ep/XjkvysNd7oYhzm6tWhUVDhI7wXkleYJnqVu3J1UbckHApUM0wA1vTqnnpQ3Yxgo/xRs9nba0D6PBZBCccyD0ULyrphusU+OmIlF7NfJ2yJxK6/0VfHxY1RNEFfE=
+Received: from PH7PR12MB5685.namprd12.prod.outlook.com (2603:10b6:510:13c::22)
+ by IA1PR12MB8190.namprd12.prod.outlook.com (2603:10b6:208:3f2::7) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.159.17; Fri, 26 Jun
+ 2026 12:42:55 +0000
+Received: from PH7PR12MB5685.namprd12.prod.outlook.com
+ ([fe80::ce69:cfae:774d:a65c]) by PH7PR12MB5685.namprd12.prod.outlook.com
+ ([fe80::ce69:cfae:774d:a65c%5]) with mapi id 15.21.0159.016; Fri, 26 Jun 2026
+ 12:42:55 +0000
+Message-ID: <07a4bbee-ade1-4aa9-8d17-c9e57dcfe211@amd.com>
+Date: Fri, 26 Jun 2026 14:42:51 +0200
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] fix: dma-buf: unwrap_merge_order: success path leaks
+ chain and array fence references
+To: WenTao Liang <vulab@iscas.ac.cn>, sumit.semwal@linaro.org
+Cc: linux-media@vger.kernel.org, dri-devel@lists.freedesktop.org,
+ linaro-mm-sig@lists.linaro.org, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org
+References: <20260626122145.35549-1-vulab@iscas.ac.cn>
+Content-Language: en-US
+From: =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>
+In-Reply-To: <20260626122145.35549-1-vulab@iscas.ac.cn>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: BN9PR03CA0854.namprd03.prod.outlook.com
+ (2603:10b6:408:13d::19) To PH7PR12MB5685.namprd12.prod.outlook.com
+ (2603:10b6:510:13c::22)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PH7PR12MB5685:EE_|IA1PR12MB8190:EE_
+X-MS-Office365-Filtering-Correlation-Id: 3253b9c3-3869-4c8b-5ba6-08ded38071d3
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|23010399003|1800799024|366016|18002099003|22082099003|11063799006|56012099006;
+X-Microsoft-Antispam-Message-Info:
+	ewdHgOcBVFtJFNhoeGPY54e9NbZjxiOOjNyTFaTq9zZqxI5R5kEC/+E8/QKSpa5xxTn2l/l3uzO6B1ybIeTvEPx8H0x08i+sc2ExInfmuaGee4nBjFfCJ+gG27/hSdt1oYwYK6n/8Gytzqy70BLhZjl/o1BxHiKpRPW21hRn7Yz4xqKOTsWgMhMQV7k1Bek6s+iJM+qf8ZLG/F/szs0G3UWLuaoK/vMwMlH/8+zWgGuQNvfApScUUXDj6FvS4hLp2yva4LYBD7OBNtfXV/CQfAPUpwXT/teJtTz2kFD9dQx9rA0gHFU01LeaprIw2Zqd6Tk5kDzhBbFVNhT5U1xUk7MOn4Q5X2tr3/YkZ0+osdYxJwI9TgE8Q1ty7ENBOw+StkNaVWhzd2fxoR7sn2WcQzBcHtXYm8G1pYPzdMl7Ie6CF8Pks1016nQdTJvo2DwzYZIXCc03htCgFcsLl8sx8newJakiRciVLfKg+T8UvYFwnUzaTjJwigRsN+6/wfCMjdlq9csKc1UaVJFHov7FTco3v8mEJ/MYToE0mZY+I7i3CdwYOXSHtJS9AwN6fbM6kwQcugMJAODpc/Hc/0U74BRrMa7PoQGzCR5WsP05KVqPYKI1Jxc/FHaxXhYkjPVTnD6h9K1r2joNLlmZc6oPvhuI0FZoY6tFPnCik+rmegI=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH7PR12MB5685.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(23010399003)(1800799024)(366016)(18002099003)(22082099003)(11063799006)(56012099006);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?UXIyd3Q4MWZjMnBmNXlVNVUvTEJ0OWRtazVmZmRqOU9pMEU5cFRDS2l1MElQ?=
+ =?utf-8?B?aHQ1VmhTMlJaeURpbWZ3YjhGSWlmUkdWQ3VwK2FncEdhLzNXZk1TVkZPM0Fu?=
+ =?utf-8?B?MlZNWHhyZUtKV1JWOU1SaVYyOEtwc1JGL0NBeVV3SjMzMllBejJNa1orRlRw?=
+ =?utf-8?B?OEJzc3ZXQml0emxMRk92OHE2OHpyWWwrbzU1b05OYXJZSUU0NU5NdzZLZXRl?=
+ =?utf-8?B?U3NqZUtQMUkybU5FbDhBdno5VEU2b1hob1ZlYTJ4V1JTMmpsRVBBQkVKWnVM?=
+ =?utf-8?B?dUp5ZEFKTmJ2N2E1MGF4Q2FmLzJid2IwaExRckRtaVJVYmtFL3RQOFJPY1pZ?=
+ =?utf-8?B?UHdZczlDc3BBaTZVeWFLRzdTd3AveVgweUNYd0RINDNuVHd6UlZjUGYycEs5?=
+ =?utf-8?B?ZU1YLzE1ZmdqTk5pSGhrdElBY21Fc2kza0tJQktYS2JOdlUxSlVzSFFSM2Yr?=
+ =?utf-8?B?ejAzWmx4N3VmMk81QXA5OXdtYk9UWXdySTVVcVJXL3YrM1JqNEtCblltaTFE?=
+ =?utf-8?B?S3lVTlBKcFNpQXUxdmlhUE01YkVXa0FPc0NlMStNVVlLMmV3UjI0THVCV0lM?=
+ =?utf-8?B?V0JvSWE0cExZd2duTzRZMjJnMWJYb2o3Zyt5OVo5MXFNUE5EeFdTQkdydFdx?=
+ =?utf-8?B?aktvSWUvM1UzYW5TUldQTHFwU2Y3VEdhWEVQVXVOamlONmxUQVpZbFl1MWdN?=
+ =?utf-8?B?cUcxYzF4dU9zNmxkbnVoRmxibU5pSG5RaFpZeFdORWxWbDFwQTZhc244U0J1?=
+ =?utf-8?B?dzNXK1BIak5VVEhQNmZDSDZTUDRCY0oxVERRSmtjSkVMdDJpMlMvWlkveTJN?=
+ =?utf-8?B?c3B3S0J0NnIwZTRYZEJSQ2poVjRPdUU5a2VjRFU2cWdzejIvVmFmVmcxQWZX?=
+ =?utf-8?B?bmRYUjEvMXV1eFRLd2FuT3BDZjl5TndTenlMZGxQaGVNcWo5ZjQ4a29xeExq?=
+ =?utf-8?B?dGlheTJZMHpONi9zdDZSYUkxMlJveUhjMVdXOXlESlFMYTNmWTVBeGc1bGhE?=
+ =?utf-8?B?ZGkzOFE5RHlGZUVBZzBkcmF1YlphM2JyWnNOMEY0ZTI4S0lWeTdXNEpTZVBh?=
+ =?utf-8?B?Zk1vRDdmdml6YUl6RXdtUG5iSlhDTlVBbUNvdWluL0VRbWRyeFY2Ni9HUExJ?=
+ =?utf-8?B?M3M0R3dnWmo3bS8xakNkbGpINHdkWFJ1djBwV2NMalpQT1hUem52MjNjTXpV?=
+ =?utf-8?B?Y2pHaUdMN080MDhaKzFVd0hjdEh3VEtIZ2NjTi9oMmduZGFjY0YyUjVWTGJG?=
+ =?utf-8?B?aU15WGMwKzZybnpCdVlsZGViRGZzRGRGNHFUZWl1V2tGUEJ3RUFoN1UxdGoy?=
+ =?utf-8?B?T0tZY01PSEZOL3NvMVlxZVFtL2p0WnQwV1hJZkdYcnVLd3U5K3J1TlZmVWh4?=
+ =?utf-8?B?Rjlta2VwS2wrOCtoNUtzcmlMMXRZZzVaNVpiK1lNaVFiMko4N0hNVUR2OXBz?=
+ =?utf-8?B?UFBpbEZhZWlGakRiZDVORnRsNHB0Q2dMbVBvMUZ5a3lEamRRVXFUWXFFeEcv?=
+ =?utf-8?B?cG5jNlhMZkVlUUdyQU0zWGVGeUJxYno1VE5kYWdpcHliTUNzOStaMHpPVGxw?=
+ =?utf-8?B?aUQzMGxCb09vUTVRc1AydGpUVjN5U2JDWmxhbHBTZGlqbjNIeDR5dndxamtw?=
+ =?utf-8?B?dE9zWkFWbU5rR1FqMExRN3dKakd1TGIxcG52ZUIvWUdtOGdMK05VQWxBT1pY?=
+ =?utf-8?B?RFdxNnpob2p1L3ZwTGxrZDROMGlISGV6aXdVUnQ5TjFIM0Y0eHgxT2dWZU5R?=
+ =?utf-8?B?MmF2U1RmY1RBOGNselg4ak9KNUpWTkhZTi9yaDJlaGg4NmtrYXZTM1F5RnIr?=
+ =?utf-8?B?RytOcmd3SDF0WlUyOWoyMkh1YVd4QlQ3dUpNZDg0UU8za3lCa1l3L1dpVUY4?=
+ =?utf-8?B?N3lpaFIwM0s2c1BONkFLTHA4bXFlWXZ4ZFl5S21jYzFtWWpGSWRlUDFYQitV?=
+ =?utf-8?B?ZEU2UXNUQksxdk9RS0tQTHE4YzFEM05pZjNmaCt1V1lIdFJHWUM2QjUxMFpp?=
+ =?utf-8?B?TEFiRzJ3dzhjWjN5UU0rV2dvSzV3RTVsdEJzNFR1aTN4TkNZd2x3b0V0UWpu?=
+ =?utf-8?B?MFpBaUxDMFM5L296SWVydDZjLyt3LzdJTzE3VllidFZ2RXh6Q2ZrUnRYN1B1?=
+ =?utf-8?B?TE5palNNVkdwREZPWUtTdi9aVEJRZGRubjIvU3pKME9FOWplOWtSN3dRVW5i?=
+ =?utf-8?B?dFBRSUlGUnlXWGhiL0x4Snc4djFGL3A3eG1jTnJJMDNWSVBtWnpEbVl0emdD?=
+ =?utf-8?B?ditiNklYOFBsV1FEVVJUd0FXak1xU0tEd0ZFZFhCbEpzL3EvWTk5TFI4bkRm?=
+ =?utf-8?Q?bhUuHOJClQwdxsIju+?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 3253b9c3-3869-4c8b-5ba6-08ded38071d3
+X-MS-Exchange-CrossTenant-AuthSource: PH7PR12MB5685.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Jun 2026 12:42:55.4047
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: mPDMLfWHV0TRoLtXQvkXoGb5w53JXE4MizysWcMGj3uGa6e2MH1J4AJFOEipN2Bp
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR12MB8190
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-7.66 / 15.00];
-	WHITELIST_DMARC(-7.00)[ionos.com:D:+];
-	MID_CONTAINS_FROM(1.00)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[ionos.com,reject];
-	R_MISSING_CHARSET(0.50)[];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	ARC_REJECT(1.00)[cv is fail on i=2];
+	DMARC_POLICY_ALLOW(-0.50)[amd.com,quarantine];
 	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[ionos.com:s=google];
+	R_DKIM_ALLOW(-0.20)[amd.com:s=selector1];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_RECIPIENTS(0.00)[m:gregkh@linuxfoundation.org,m:sashal@kernel.org,m:stable@vger.kernel.org,m:seanjc@google.com,m:thomas.lendacky@amd.com,m:pbonzini@redhat.com,s:lists@lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER(0.00)[jinpu.wang@ionos.com,stable@vger.kernel.org];
-	RCVD_COUNT_FIVE(0.00)[5];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	TAGGED_FROM(0.00)[bounces-268890-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-268885-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[ionos.com:+];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	FORGED_RECIPIENTS(0.00)[m:vulab@iscas.ac.cn,m:sumit.semwal@linaro.org,m:linux-media@vger.kernel.org,m:dri-devel@lists.freedesktop.org,m:linaro-mm-sig@lists.linaro.org,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_SENDER(0.00)[christian.koenig@amd.com,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	FORWARDED(0.00)[lists@lfdr.de];
+	DKIM_TRACE(0.00)[amd.com:+];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[jinpu.wang@ionos.com,stable@vger.kernel.org];
+	TO_DN_SOME(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[christian.koenig@amd.com,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,ionos.com:dkim,ionos.com:email,ionos.com:mid,ionos.com:from_mime,amd.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,amd.com:dkim,amd.com:mid,amd.com:from_mime,iscas.ac.cn:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: BB7646CD1F4
+X-Rspamd-Queue-Id: 9B0CF6CD184
 
-From: Sean Christopherson <seanjc@google.com>
+On 6/26/26 14:21, WenTao Liang wrote:
+> The success path only releases a2 via dma_fence_put but does not release
+>   a1, c1, or c2. The dma_fence_get calls at lines 440 and 445 were intended
+>   to pass references to mock_chain, but mock_chain already acquires its own
+>   references internally, making these extra gets surplus and permanently
+>   leaked.
+> 
 
-commit 3988bd2723de407ae90fa7a6f6029b4e60238c58 upstream.
+> Cc: stable@vger.kernel.org
+> Fixes: b1cce631e61f ("dma-buf: add selftest for fence order after merge")
 
-Explicitly ignore Port I/O requests of length '0' (or count '0'), so that
-setting up the software scratch area (and other code) doesn't have to
-worry about underflowing the length, and to allow for WARNing on trying
-to configure the scratch area with len==0.
+Please drop that, this is a minor issue in a unit test and not anything which needs backporting.
 
-Fixes: 291bd20d5d88 ("KVM: SVM: Add initial support for a VMGEXIT VMEXIT")
-Cc: stable@vger.kernel.org
-Reviewed-by: Tom Lendacky <thomas.lendacky@amd.com>
-Signed-off-by: Sean Christopherson <seanjc@google.com>
-Message-ID: <20260501202250.2115252-5-seanjc@google.com>
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-Signed-off-by: Jack Wang <jinpu.wang@ionos.com>
----
- arch/x86/kvm/svm/sev.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+> Signed-off-by: WenTao Liang <vulab@iscas.ac.cn>
+> ---
+>  drivers/dma-buf/st-dma-fence-unwrap.c | 2 ++
+>  1 file changed, 2 insertions(+)
+> 
+> diff --git a/drivers/dma-buf/st-dma-fence-unwrap.c b/drivers/dma-buf/st-dma-fence-unwrap.c
+> index 9c74195f47fd..72ca632e3981 100644
+> --- a/drivers/dma-buf/st-dma-fence-unwrap.c
+> +++ b/drivers/dma-buf/st-dma-fence-unwrap.c
+> @@ -472,6 +472,8 @@ static int unwrap_merge_order(void *arg)
+>  	}
+>  
+>  	dma_fence_put(a2);
+> +	dma_fence_put(c2);
+> +	dma_fence_put(a1);
 
-diff --git a/arch/x86/kvm/svm/sev.c b/arch/x86/kvm/svm/sev.c
-index 82b26899b9a4..7e8b5acc2133 100644
---- a/arch/x86/kvm/svm/sev.c
-+++ b/arch/x86/kvm/svm/sev.c
-@@ -4451,6 +4451,11 @@ int sev_handle_vmgexit(struct kvm_vcpu *vcpu)
- 			    control->exit_info_1, control->exit_info_2);
- 		ret = -EINVAL;
- 		break;
-+	case SVM_EXIT_IOIO:
-+		if (!((control->exit_info_1 & SVM_IOIO_SIZE_MASK) >> SVM_IOIO_SIZE_SHIFT))
-+			return 1;
-+
-+		fallthrough;
- 	default:
- 		ret = svm_invoke_exit_handler(vcpu, exit_code);
- 	}
-@@ -4471,6 +4476,9 @@ int sev_es_string_io(struct vcpu_svm *svm, int size, unsigned int port, int in)
- 	if (unlikely(check_mul_overflow(count, size, &bytes)))
- 		return -EINVAL;
- 
-+	if (!bytes)
-+		return 1;
-+
- 	r = setup_vmgexit_scratch(svm, in, bytes);
- 	if (r)
- 		return r;
--- 
-2.43.0
+That looks correct to me, but the error handler below is incorrect as well.
+
+When c2 allocation fails we also need to release c1.
+
+Regards,
+Christian.
+
+>  	return err;
+>  
+>  error_put_a1:
 
 
