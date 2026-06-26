@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-269018-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-269023-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 1dKcMFKlPmovJgkAu9opvQ
-	(envelope-from <stable+bounces-269018-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 18:14:10 +0200
+	id 7MHdEGelPmo4JgkAu9opvQ
+	(envelope-from <stable+bounces-269023-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 18:14:31 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D13E6CED6B
-	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 18:14:10 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id D672A6CED84
+	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 18:14:30 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=narfation.org header.s=20121 header.b=dtudkvoP;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-269018-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-269018-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=narfation.org header.s=20121 header.b=MtUBZM5B;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-269023-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-269023-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=narfation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 35D3B30EE149
+	by sea.lore.kernel.org (Postfix) with ESMTP id EB8F130F819D
 	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 16:10:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 299CB3F8EA2;
-	Fri, 26 Jun 2026 16:10:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF51F3FB7E9;
+	Fri, 26 Jun 2026 16:10:17 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from dvalin.narfation.org (dvalin.narfation.org [213.160.73.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CD723F9F2D
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA9C2309F00
 	for <stable@vger.kernel.org>; Fri, 26 Jun 2026 16:10:10 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782490215; cv=none; b=FIPoDZ+wSZ0Pd/4QaQQlv0UJM65dl195J+IN1WZixOL69ONJSuikGvNptsAR8+OM2pl89GEd0PFBzAEpik1x/7t583qkJJ+I2RM8jdAVCoQSvTdz2VJKCj7YqY2Pz5J/T8LzsG93hj60NiXDSKNNjxx5J4MZFZmGLg23cnS3w18=
+	t=1782490217; cv=none; b=O652kfBjKoDl+AVUoHsmwnHmKlFecwWlBzzl9fQS6S1QQIq8VFNVq4galWRwMVVJpaXaxx52XmqJ+Y3I/FhY5pJTURp4zoipVradIN6mEcErX53e1mgQCgH8PkGNEBpTNuRDuGYFi7JsczcwVSvvwmzWQ8p3LSFLrFEFUEpQbBo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782490215; c=relaxed/simple;
-	bh=T6VL1ig2dvVt+gvQNoHT/vhOZiUeaFAJA9M8ZfEtOT8=;
+	s=arc-20240116; t=1782490217; c=relaxed/simple;
+	bh=qfGB8HsKpO2u9WqxVUfgY+IS8q/shw7An5DbVN3Is4g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DfGrk9ss/sjivsfHICY5Yecr2yWaeCYpa12Izr00w4/2ssAB8FGK5qDCOsJntP594Lo9G1Rw99aJDN1IWoK5zZqNp2To2OM7Raj1gefQq1SwZmzs/lXj0gxvc4rT0Ul/lypelc9zsr9sViKN6RDbUe2/igxVKxOZCSiNYKG1UFI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=narfation.org; spf=pass smtp.mailfrom=narfation.org; dkim=pass (1024-bit key) header.d=narfation.org header.i=@narfation.org header.b=dtudkvoP; arc=none smtp.client-ip=213.160.73.56
-Received: by dvalin.narfation.org (Postfix) id EBE032056F;
-	Fri, 26 Jun 2026 16:09:59 +0000 (UTC)
+	 MIME-Version; b=erBDQAdP+C7YiWxmOtzrm//wKEjewzaHYw0CYHwxTY6f8CxheQBSjTinM9akC0LrTbUm8z0a/YQn7v5svcCflaybUPXN/S/+JM2Nikqwewfxklor13PK/M7QxKi2UkznX76Z7W96+Imenl42K9M5p/0DNRc6JczyqSRk3I387UI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=narfation.org; spf=pass smtp.mailfrom=narfation.org; dkim=pass (1024-bit key) header.d=narfation.org header.i=@narfation.org header.b=MtUBZM5B; arc=none smtp.client-ip=213.160.73.56
+Received: by dvalin.narfation.org (Postfix) id 6291120595;
+	Fri, 26 Jun 2026 16:10:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=narfation.org;
 	s=20121; t=1782490200;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=cvR0SLZ4i0EewDE1pwyW64ott3RzYcU8yW4FQQZB9Bs=;
-	b=dtudkvoPczIHtiskXEqh2dXyFfbNZlnjkmldLw2omoxzUp6cSFql59UOUKa1OsgiVE51aM
-	0SW+Ag148RNEWo2F3FPwxLZ3nwP/yPxU3DJtZyJSXVuEOCocbsafDbmDNENwWR/q7iPhpI
-	Zf7PDs5MlYpObSYGOj9QBarUcUyrRsI=
+	bh=9VZ27Sb8ASbqR6vpFqs80jCKvkE3UJQ0X749XV6KbbY=;
+	b=MtUBZM5BQkwDYkchqS0CazkqNzF2tIzJGBW+JP/DMGolAMi9IgWAmM/N4q+vidZ+kX+mbh
+	8Hh5zSfTDoA9KKUC/1g+Ji3pUpgVrfBVFzYc2F0Pm+U/+kPmQ7vKCH58DW/P17Q/Wm2ppt
+	Rgs/E6/I+09TIbP78p1JdygaLl+MFrg=
 From: Sven Eckelmann <sven@narfation.org>
 To: stable@vger.kernel.org
 Cc: Sven Eckelmann <sven@narfation.org>
-Subject: [PATCH 5.10 13/23] batman-adv: frag: avoid underflow of TTL
-Date: Fri, 26 Jun 2026 18:09:42 +0200
-Message-ID: <20260626160952.123713-14-sven@narfation.org>
+Subject: [PATCH 5.10 14/23] batman-adv: v: prevent OGM aggregation on disabled hardif
+Date: Fri, 26 Jun 2026 18:09:43 +0200
+Message-ID: <20260626160952.123713-15-sven@narfation.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260626160952.123713-1-sven@narfation.org>
 References: <20260626160952.123713-1-sven@narfation.org>
@@ -68,14 +68,14 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[narfation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[narfation.org:s=20121];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-269018-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-269023-lists,stable=lfdr.de];
 	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:sven@narfation.org,s:lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
@@ -91,46 +91,107 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	TAGGED_RCPT(0.00)[stable];
 	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp,narfation.org:dkim,narfation.org:email,narfation.org:mid,narfation.org:from_mime]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 1D13E6CED6B
+X-Rspamd-Queue-Id: D672A6CED84
 
-commit 493d9d2528e1a09b090e4b37f0f553def7bd5ce9 upstream.
+commit d11c00b95b2a3b3934007fc003dccc6fdcc061ad upstream.
 
-Packets with a TTL are using it to limit the amount of time this packet can
-be forwarded. But for batadv_frag_packet, the TTL was always only reduced
-but it was never evaluated. It could even underflow without any effect.
+When an interface gets disabled, the worker is correctly disabled by
+batadv_hardif_disable_interface() -> ... -> batadv_v_ogm_iface_disable().
+In this process, the skb aggr_list is also freed.
 
-Check the TTL in batadv_frag_skb_fwd() before attempting to prepare it for
-forwarding. This keeps it in sync with the not fragmented unicast packet.
+But batadv_v_ogm_send_meshif() can still queue new skbs (via
+batadv_v_ogm_queue_on_if()) to the aggr_list. This will only stop after all
+cores can no longer find the RCU protected list of hard interfaces. These
+queued skbs will never be freed or consumed by batadv_v_ogm_aggr_work.
+
+The batadv_v_ogm_iface_disable() function must block
+batadv_v_ogm_queue_on_if() to avoid leak of skbs.
 
 Cc: stable@kernel.org
-Fixes: 610bfc6bc99b ("batman-adv: Receive fragmented packets and merge")
+Fixes: f89255a02f1d ("batman-adv: BATMAN_V: introduce per hard-iface OGMv2 queues")
+[ Context ]
 Signed-off-by: Sven Eckelmann <sven@narfation.org>
 ---
- net/batman-adv/fragmentation.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ net/batman-adv/bat_v.c     |  1 +
+ net/batman-adv/bat_v_ogm.c | 12 ++++++++++++
+ net/batman-adv/types.h     |  6 ++++++
+ 3 files changed, 19 insertions(+)
 
-diff --git a/net/batman-adv/fragmentation.c b/net/batman-adv/fragmentation.c
-index 95c88bbdbcbee..43dfe86f07a9b 100644
---- a/net/batman-adv/fragmentation.c
-+++ b/net/batman-adv/fragmentation.c
-@@ -421,6 +421,13 @@ bool batadv_frag_skb_fwd(struct sk_buff *skb,
- 	 */
- 	total_size = ntohs(packet->total_size);
- 	if (total_size > neigh_node->if_incoming->net_dev->mtu) {
-+		if (packet->ttl < 2) {
-+			kfree_skb(skb);
-+			*rx_result = NET_RX_DROP;
-+			ret = true;
-+			goto out;
-+		}
+diff --git a/net/batman-adv/bat_v.c b/net/batman-adv/bat_v.c
+index 6dc39fc0350e6..7b9bc8a4bd48f 100644
+--- a/net/batman-adv/bat_v.c
++++ b/net/batman-adv/bat_v.c
+@@ -1084,6 +1084,7 @@ void batadv_v_hardif_init(struct batadv_hard_iface *hard_iface)
+ 
+ 	hard_iface->bat_v.aggr_len = 0;
+ 	skb_queue_head_init(&hard_iface->bat_v.aggr_list);
++	hard_iface->bat_v.aggr_list_enabled = false;
+ 	INIT_DELAYED_WORK(&hard_iface->bat_v.aggr_wq,
+ 			  batadv_v_ogm_aggr_work);
+ }
+diff --git a/net/batman-adv/bat_v_ogm.c b/net/batman-adv/bat_v_ogm.c
+index 939aa4b303ad9..12de9b44064dd 100644
+--- a/net/batman-adv/bat_v_ogm.c
++++ b/net/batman-adv/bat_v_ogm.c
+@@ -255,11 +255,18 @@ static void batadv_v_ogm_queue_on_if(struct batadv_priv *bat_priv,
+ 	}
+ 
+ 	spin_lock_bh(&hard_iface->bat_v.aggr_list.lock);
++	if (!hard_iface->bat_v.aggr_list_enabled) {
++		kfree_skb(skb);
++		goto unlock;
++	}
 +
- 		if (skb_cow(skb, ETH_HLEN) < 0) {
- 			kfree_skb(skb);
- 			*rx_result = NET_RX_DROP;
+ 	if (!batadv_v_ogm_queue_left(skb, hard_iface))
+ 		batadv_v_ogm_aggr_send(bat_priv, hard_iface);
+ 
+ 	hard_iface->bat_v.aggr_len += batadv_v_ogm_len(skb);
+ 	__skb_queue_tail(&hard_iface->bat_v.aggr_list, skb);
++
++unlock:
+ 	spin_unlock_bh(&hard_iface->bat_v.aggr_list.lock);
+ }
+ 
+@@ -422,6 +429,10 @@ int batadv_v_ogm_iface_enable(struct batadv_hard_iface *hard_iface)
+ {
+ 	struct batadv_priv *bat_priv = netdev_priv(hard_iface->soft_iface);
+ 
++	spin_lock_bh(&hard_iface->bat_v.aggr_list.lock);
++	hard_iface->bat_v.aggr_list_enabled = true;
++	spin_unlock_bh(&hard_iface->bat_v.aggr_list.lock);
++
+ 	batadv_v_ogm_start_queue_timer(hard_iface);
+ 	batadv_v_ogm_start_timer(bat_priv);
+ 
+@@ -437,6 +448,7 @@ void batadv_v_ogm_iface_disable(struct batadv_hard_iface *hard_iface)
+ 	cancel_delayed_work_sync(&hard_iface->bat_v.aggr_wq);
+ 
+ 	spin_lock_bh(&hard_iface->bat_v.aggr_list.lock);
++	hard_iface->bat_v.aggr_list_enabled = false;
+ 	batadv_v_ogm_aggr_list_free(hard_iface);
+ 	spin_unlock_bh(&hard_iface->bat_v.aggr_list.lock);
+ }
+diff --git a/net/batman-adv/types.h b/net/batman-adv/types.h
+index 238d9824c2d62..28f239421f74a 100644
+--- a/net/batman-adv/types.h
++++ b/net/batman-adv/types.h
+@@ -131,6 +131,12 @@ struct batadv_hard_iface_bat_v {
+ 	/** @aggr_list: queue for to be aggregated OGM packets */
+ 	struct sk_buff_head aggr_list;
+ 
++	/**
++	 * @aggr_list_enabled: aggr_list is active and new skbs can be
++	 * enqueued. Protected by aggr_list.lock after initialization
++	 */
++	bool aggr_list_enabled:1;
++
+ 	/** @aggr_len: size of the OGM aggregate (excluding ethernet header) */
+ 	unsigned int aggr_len;
+ 
 -- 
 2.47.3
 
