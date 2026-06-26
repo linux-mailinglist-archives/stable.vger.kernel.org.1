@@ -1,68 +1,60 @@
-Return-Path: <stable+bounces-268936-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-268938-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id c6RWKIGMPmoiHwkAu9opvQ
-	(envelope-from <stable+bounces-268936-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 16:28:17 +0200
+	id FcjgBPeMPmo0HwkAu9opvQ
+	(envelope-from <stable+bounces-268938-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 16:30:15 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id E35DD6CDE60
-	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 16:28:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 96D606CDEAB
+	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 16:30:14 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=uHabhH9I;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-268936-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-268936-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=none) header.from=debian.org;
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=SlhftcQo;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-268938-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-268938-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 931D1302F3B9
-	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 14:24:02 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B6D0D30616BC
+	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 14:25:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E5E673F6619;
-	Fri, 26 Jun 2026 14:24:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CDD343F86FA;
+	Fri, 26 Jun 2026 14:25:24 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D0363EFFAE;
-	Fri, 26 Jun 2026 14:23:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24BF03F824B;
+	Fri, 26 Jun 2026 14:25:22 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782483841; cv=none; b=lDIF+t8Uf1AXnN89wq6ae1ihIOyTDmzkqui1mqeMVlrbpynkRAvgx432yfa/97ly96OCu/zJ7zsUqEo1o4j38zIEmjMQfD3T9UpXNOAufk28YC6LIrkIsG9EP66v0DA3pRDK6GXuabRNxDr28SyQCeiamiD0lSo8qC37EQWgHoM=
+	t=1782483924; cv=none; b=gD4IDIZehlDGWeX+fw0rSobnKkXRZL8dc+1Yc5P/4lmIqOXnH9aR8bjQ7tq6ImgBVPY9sL0gQKO/5xedQda4mGou3C15k9CtDHvsPYTPA+Tk9Hi7oi0CxGbnZsbShwTfQyJoXqnU2fsapwrqJD6iwk8FMoVUXIGF0FhKI2iSxa0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782483841; c=relaxed/simple;
-	bh=GnX817I9Dn5YTTh2YnnLw/KGmBvjVUzH+Qx51nCzAQ4=;
+	s=arc-20240116; t=1782483924; c=relaxed/simple;
+	bh=zFXw28tcp2znXE5YvFHH1BdbJpUtf0ZvLVZs71XWQbc=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=NBykZpl/sF7teXQyUN+5Cejpi2Zo8ZueIjJt2XdWftGB6GJrcVzhKAF6T2zxGkAwBOcLyq4jFGF9dg1FLG7c46wSD/5hxMTNJcGDC9a1FA9hA5uPuHv8SVLQj1jmLEB4GnMfU7aAx7wzFPS/jHm6wAGaNzNt5QmEzmvpq5abi50=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=debian.org; dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b=uHabhH9I; arc=none smtp.client-ip=82.195.75.108
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
-	s=smtpauto.stravinsky; h=X-Debian-User:In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=GnX817I9Dn5YTTh2YnnLw/KGmBvjVUzH+Qx51nCzAQ4=; b=uHabhH9I316qhbMCfxGzmP2TIC
-	9m6XaBd276OkV8dmxvQelKHMdkmB5WsEuAOm/WnOkBD7tUUWiYSKb0PNq1FBebLAG+kE9kZuaebES
-	rYXcumoGRLjHBVxJW7vZRmrQxugV23OimSmn+Mts0EraNRGWhvbL6kvjYQ7JwqA+J08atLVM40DAO
-	b7V0e/OjI01LNSSUvWWPpU7D6M+7LcDeavirD7KIBSsHlXzrV2CspO3eng8wu6wkfhkeENmXBnpfP
-	f6p0ss+g19B8nXdzwEj0LMplm5B3q6BXDUprHTUpPkZ9tZJ4mBzJWRf+BteMwlWIUomyp5HJ1LHlI
-	OiO98WRg==;
-Received: from authenticated-user
-	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.96)
-	(envelope-from <leitao@debian.org>)
-	id 1wd7TE-0041xv-1W;
-	Fri, 26 Jun 2026 14:23:52 +0000
-Date: Fri, 26 Jun 2026 07:23:47 -0700
-From: Breno Leitao <leitao@debian.org>
-To: Joshua Hahn <joshua.hahnjy@gmail.com>
-Cc: Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>, 
-	Roman Gushchin <roman.gushchin@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
-	Muchun Song <muchun.song@linux.dev>, Andrew Morton <akpm@linux-foundation.org>, 
-	Michal Hocko <mhocko@suse.com>, cgroups@vger.kernel.org, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, kernel-team@meta.com, stable@vger.kernel.org
-Subject: Re: [PATCH] mm: memcg: initialize *locked in memcg1_oom_prepare()
- stub
-Message-ID: <aj6LKHe0ONwelBmI@gmail.com>
-References: <20260626-memcg-oom-uninit-locked-v1-1-a00175936b39@debian.org>
- <20260626135612.3697893-1-joshua.hahnjy@gmail.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=attyQwY5x6g9jl6XPFbuDWLzS2BVR+9GwPIkIFjvbjbK7RapE0QBeDfsk/SagYU9Lxf/X5nGd2uMBOQQMa+UvsytOUgEHURbt3q95CPKbtJzQemUvGJ3RbN2wxm08cT9DkFVHWhTIDKZO7O2eOg9IuF+Guw4bu2Bs27TOj2DM3Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SlhftcQo; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 441BD1F000E9;
+	Fri, 26 Jun 2026 14:25:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
+	s=korg; t=1782483922;
+	bh=Mq5eB87xLrwNqO+AmRAx98AdQSUns2cVe/ldlPXsX14=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=SlhftcQoyt+CCvsFrPLqCbzrYbKhix2b1KAVgU9jE1ER84hpdJ5RoaGVryqSJBFqK
+	 tlCi2DM/GtanGUCMkLwnL7TXrNNQtXobMg1AspzsQZtDl48fwaKFabEaac4blBeM+0
+	 nibbMs0foCEmhcjqrKp0o117YZG0XpYNydueh2Ng=
+Date: Fri, 26 Jun 2026 15:24:09 +0100
+From: Greg KH <gregkh@linuxfoundation.org>
+To: WenTao Liang <vulab@iscas.ac.cn>
+Cc: krzk@kernel.org, s.nawrocki@samsung.com, cw00.choi@samsung.com,
+	mturquette@baylibre.com, sboyd@kernel.org, alim.akhtar@samsung.com,
+	bmasney@redhat.com, linux-samsung-soc@vger.kernel.org,
+	linux-clk@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH] fix: clk/samsung: exynos_clkout_probe: success path
+ leaks parent clock   references from of_clk_get_by_name
+Message-ID: <2026062612-twiddling-lagged-62ac@gregkh>
+References: <20260626120135.34173-1-vulab@iscas.ac.cn>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -71,57 +63,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260626135612.3697893-1-joshua.hahnjy@gmail.com>
-X-Debian-User: leitao
+In-Reply-To: <20260626120135.34173-1-vulab@iscas.ac.cn>
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [0.34 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	MID_RHS_MATCH_TO(1.00)[];
+X-Spamd-Result: default: False [2.34 / 15.00];
+	MID_END_EQ_FROM_USER_PART(4.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[debian.org,none];
+	MID_RHS_NOT_FQDN(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[debian.org:s=smtpauto.stravinsky];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-268936-lists,stable=lfdr.de];
-	FREEMAIL_TO(0.00)[gmail.com];
-	FORGED_SENDER(0.00)[leitao@debian.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS(0.00)[m:vulab@iscas.ac.cn,m:krzk@kernel.org,m:s.nawrocki@samsung.com,m:cw00.choi@samsung.com,m:mturquette@baylibre.com,m:sboyd@kernel.org,m:alim.akhtar@samsung.com,m:bmasney@redhat.com,m:linux-samsung-soc@vger.kernel.org,m:linux-clk@vger.kernel.org,m:linux-arm-kernel@lists.infradead.org,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-268938-lists,stable=lfdr.de];
 	RCPT_COUNT_TWELVE(0.00)[13];
-	FORGED_RECIPIENTS(0.00)[m:joshua.hahnjy@gmail.com,m:hannes@cmpxchg.org,m:mhocko@kernel.org,m:roman.gushchin@linux.dev,m:shakeel.butt@linux.dev,m:muchun.song@linux.dev,m:akpm@linux-foundation.org,m:mhocko@suse.com,m:cgroups@vger.kernel.org,m:linux-mm@kvack.org,m:linux-kernel@vger.kernel.org,m:kernel-team@meta.com,m:stable@vger.kernel.org,m:joshuahahnjy@gmail.com,s:lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
 	FROM_HAS_DN(0.00)[];
+	MISSING_XM_UA(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[leitao@debian.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[debian.org:+];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	MISSING_XM_UA(0.00)[];
+	TO_DN_SOME(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,iscas.ac.cn:email,gregkh:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: E35DD6CDE60
+X-Rspamd-Queue-Id: 96D606CDEAB
 
-Hello Joshua,
+On Fri, Jun 26, 2026 at 08:01:35PM +0800, WenTao Liang wrote:
+> of_clk_get_by_name() acquires clock references stored in the local
+>   parents[] array. All error paths correctly release these via the clks_put
+>   label, but the success path returns 0 without releasing the parent
+>   references. The references were only needed to obtain clock names for
+>   registration and are permanently leaked after probe completes.
+> 
+> Cc: stable@vger.kernel.org
+> Fixes: 9484f2cb8332 ("clk: samsung: exynos-clkout: convert to module driver")
+> Signed-off-by: WenTao Liang <vulab@iscas.ac.cn>
+> ---
+>  drivers/clk/samsung/clk-exynos-clkout.c | 4 ++++
+>  1 file changed, 4 insertions(+)
 
-On Fri, Jun 26, 2026 at 06:56:11AM -0700, Joshua Hahn wrote:
-> Part of me wonders if we should just initialize locked = false in the
-> caller (mem_cgroup_oom) as to not make the stub have side effects,
-> but your chnage looks correct and this is a fix so perhaps that is
-> not so important.
+For all of these, you are not using the normal kernel style, which means
+a LLM is generating them, which implies that you did not properly
+document what tool found/fixed all of these.  So please go back and fix
+them all up and resend them properly, after telling the
+maintainers/developers that the originals should be ignored.
 
-Nice, your approach seems to be even better than my silly one. I will
-wait for further review and respin with your approach.
+thanks,
 
-Thanks,
---breno
+greg k-h
 
