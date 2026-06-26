@@ -1,287 +1,144 @@
-Return-Path: <stable+bounces-268823-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-268824-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id YKQ5LrhhPmrJEwkAu9opvQ
-	(envelope-from <stable+bounces-268823-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 13:25:44 +0200
+	id TMo/FBliPmrpEwkAu9opvQ
+	(envelope-from <stable+bounces-268824-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 13:27:21 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 632EF6CC694
-	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 13:25:44 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 494226CC6C3
+	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 13:27:20 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=INMmKBW9;
-	dkim=pass header.d=redhat.com header.s=google header.b=BJ3bbWpN;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-268823-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-268823-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	dkim=pass header.d=nabladev.com header.s=dkim header.b=egTfvEA1;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-268824-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-268824-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=reject) header.from=nabladev.com;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 5CC093053F2F
-	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 11:25:06 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 07A0D300F255
+	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 11:25:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 845333F23D5;
-	Fri, 26 Jun 2026 11:24:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0EA1B3F1656;
+	Fri, 26 Jun 2026 11:25:01 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from mx.nabladev.com (mx.nabladev.com [178.251.229.89])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E05163F39DF
-	for <stable@vger.kernel.org>; Fri, 26 Jun 2026 11:24:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13A4636C9CC;
+	Fri, 26 Jun 2026 11:24:57 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782473088; cv=none; b=CfyeYfXGXJhkSJw5o8x5wIq+vwT+CdLDQ4MAv83G0914TT7iOIcdik1VBHo0LnG9O2x+uWCjLtxsypss5N+QpmCSrFKbn06QUhe5Zliu79s+NwIcEihFszza4fnSfPE1Bpo8YzkZBiKZ+fAwmlrCXVDpHkeVzUK8JF/UoEdQL6k=
+	t=1782473100; cv=none; b=cSLCrD+xCbW3bIhxAZ7oYYdswU+RLHZxh7bn7xRtnpt1Ly5eZtQ8s107fCLmEz+MpRkOMkZJJQn4H4tZovWs3Ed7d7BNmvhZwSgDJ+8N0QsPvnz/vsxR8ePttZ0/TMiWq+W/6H6DAnBgyanqLOE7uI5fDGpI8c2a6WEliBGyXVI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782473088; c=relaxed/simple;
-	bh=zvFrns79aj9c24kACaQvFLIPdfxn5F03fJA54sqo/Eo=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=UDyMs6lmHvjf1gm7fTKYUnOCHe4YjBpTfESJP0VnxoDv7ysVwj+oONTqlSPGSFr7Z8NzFxJwJS5bJNZjT7RX0vFMPHYyq1LbjKXmBZLIzkfTPCE5okwScl8MX5CTElYiPClbKM9BtnBxE6SL9eD7J1sbQY5IVOR/yrSRL1Yqfzs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=INMmKBW9; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=BJ3bbWpN; arc=none smtp.client-ip=170.10.133.124
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1782473086;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=NCgXQP8MBrTLQHgZqlchtRiyNKOElomA9/Al3COIg9o=;
-	b=INMmKBW9VHqwKTiEoblSgyuJ1ZcWFhgfK60rYwQutD8j6piGMKULRhsly9KzRjRjQthXIx
-	QlV0kRXm8S5zyHFa1NP0k/aHmMYJp6WMgeYMM7D+J2njIuezBksz6CGAI0pUO+noh/J6SN
-	hP6asPIKwVSn+h4MwedtHzjkTsfpCIQ=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-684-FRiWb3mWMXiJ7aZRBb8G7Q-1; Fri, 26 Jun 2026 07:24:45 -0400
-X-MC-Unique: FRiWb3mWMXiJ7aZRBb8G7Q-1
-X-Mimecast-MFC-AGG-ID: FRiWb3mWMXiJ7aZRBb8G7Q_1782473084
-Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-4924314568cso7703575e9.3
-        for <stable@vger.kernel.org>; Fri, 26 Jun 2026 04:24:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1782473084; x=1783077884; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=NCgXQP8MBrTLQHgZqlchtRiyNKOElomA9/Al3COIg9o=;
-        b=BJ3bbWpNPYHNecFDoVDkNZb0oP5cFtbzOzmqq9XpclEYt0DBTRtZ4FavOPgabxqlOH
-         kaAMRT/X5CaMT0qhcWzSMULy55prMXMfT/iwY/HsEejY2wq2t971BD5Wnxfor+TaFO0/
-         kRjzpJ0Bn0nTudztmeGg3ejqdhCcoY9L17si2kCsfxBKj5kYCcHYOuCehoVwoO00futl
-         kmxU8yP1YuK7z/mErbDC0pYKm1XSIjP5ZLr37K6mo949pGGqvAihip2lJEpQUfu7GCkM
-         UqPko8TUcma/wLJGghlp4jCza/mqu8XojrQ3082sX4H0OVYlVapHDRGbus1Ur/WuHek+
-         ZwhA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782473084; x=1783077884;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=NCgXQP8MBrTLQHgZqlchtRiyNKOElomA9/Al3COIg9o=;
-        b=dcCrVZvQ3iuF7JUYJaKOUmmD8qz727T8oUAkPvU+85oZzC/0RRlueBmG6xUV61mZc9
-         V2Ul4/aOUM7/NLbvCzAJhpFeyKaPbQDhxdNedqzE1vfCSdOEWGjWcB5b1CLE+6bbR145
-         qecP5lvdOqhPIi0z1wRyhCElyjjWmmLmLH0cX5KdumPY6OpK2Jep+HD+rsBiresXA/kM
-         XhpehLAiWOuPSf8vx5/QgrdZnMVj72OgmFY32zhQw6mwgB8P3PYHMeWwEGiSpMERZWrC
-         Z9HtFZ764BNJ8JXqrtBAUUEvNMdQdjUpff9/zuW9pZmitHkO4/1iWUMeO4zC/LCJC922
-         fyHw==
-X-Forwarded-Encrypted: i=1; AFNElJ8s911ktj2TCONd9+mGHmMmxPBdwniBDzf1qMDx+CUdxHqDEQWab5Mqd7g7HZ9DxuekB3X2poY=@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywq3kxfBV8brL2VDIak+aBOViEUZXJ8H6/dH2fzlHw1Yz6gJs9q
-	QX6ZTtHpwRHM87EpSRGyQBNEp0AvfcpUfWsViBA2l9YvQGkwGGDrHRdztdNyro6+FuEbYBr2xU5
-	+zk4A8SjPYiaHm34jMl2Gt+wIqKFYYDLwvDWs07oqZsMnDUmeCtQ41z+F+9CSBt8ZIw==
-X-Gm-Gg: AfdE7cm36Yt+KTI0UnpKTFQjdghhH1LbbN2Q0wi5RE6cu1yiU7m2IfzpXBHvrZ8q1CR
-	1K41UOTmaQef2mz6YAzOxdUt5Wior5lEa2KSnLvwhutBmj/ud1qbhOjAtEt9VCJkH8o7oqk0uSH
-	Iusc8JsaVWNSgcHUpeyzJ5VcEkc7LpM0ecydaxUOUDNiOSN/mjW6QEVyd2XwkvFoRN9uVVxKJCb
-	Wgj1zio5S5ZVuYZWauW7s3OKgkpfK2xu8QyeliDKmOJckE7+Fm9iIEyQVEzHXTNhUS8IYEyblFd
-	nlBtIW8dpLE4Evn7QRtUonkDJO3oJFDT8Yg9N6mV/Z/QujOrqf/4eBZ+zgW/4r98lg0x+u47EkK
-	aX9a49yircfGuAHaJJZ7Mzaq/5yxEO6C6cLchP4kt2cOpnb788v58vn0PHlwB/RnpmzxBtv8DVK
-	xM/9D7uQTW3vF+Iufr
-X-Received: by 2002:a05:600c:e548:20b0:490:b4e5:ce7e with SMTP id 5b1f17b1804b1-49266883322mr68135655e9.25.1782473083623;
-        Fri, 26 Jun 2026 04:24:43 -0700 (PDT)
-X-Received: by 2002:a05:600c:e548:20b0:490:b4e5:ce7e with SMTP id 5b1f17b1804b1-49266883322mr68135125e9.25.1782473083155;
-        Fri, 26 Jun 2026 04:24:43 -0700 (PDT)
-Received: from [192.168.10.48] ([151.95.124.208])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-46c2279bc77sm23041510f8f.32.2026.06.26.04.24.40
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 26 Jun 2026 04:24:41 -0700 (PDT)
-From: Paolo Bonzini <pbonzini@redhat.com>
-To: linux-kernel@vger.kernel.org,
-	kvm@vger.kernel.org,
-	stable@vger.kernel.org
-Cc: Hyunwoo Kim <imv4bel@gmail.com>,
-	Sean Christopherson <seanjc@google.com>,
-	David Matlack <dmatlack@google.com>,
-	James Houghton <jthoughton@google.com>,
-	Alexander Bulekov <bkov@amazon.com>,
-	Fred Griffoul <fgriffo@amazon.co.uk>,
-	Alexander Graf <graf@amazon.de>,
-	David Woodhouse <dwmw@amazon.co.uk>,
-	Filippo Sironi <sironi@amazon.de>,
-	Ivan Orlov <iorlov@amazon.co.uk>
-Subject: [PATCH 6.1.y] KVM: x86/mmu: Ensure hugepage is in by slot before checking max mapping level
-Date: Fri, 26 Jun 2026 13:24:37 +0200
-Message-ID: <20260626112437.1777775-2-pbonzini@redhat.com>
-X-Mailer: git-send-email 2.54.0
+	s=arc-20240116; t=1782473100; c=relaxed/simple;
+	bh=6GdPrW7ZIBvjwaCNgfnAgcM59mBI+Ygg6qq1MFNxKiY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=lPD29HXxAd0LWJsRjEJ1Kr+QiYwk+HeeEcE1qz7jlPid4ATCK/cBVCVd2WQgksjXeExlSJ4ejWhpPBgd0YTmnJktNgWbSR/PH4uut1vmig4VDBFvAborF9NlpwZqAy3Y81YAbcwqAYDF7wST4zMOkJCPPqgCnsFFDbxaRBQiwRE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nabladev.com; spf=pass smtp.mailfrom=nabladev.com; dkim=pass (2048-bit key) header.d=nabladev.com header.i=@nabladev.com header.b=egTfvEA1; arc=none smtp.client-ip=178.251.229.89
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 14FE5117956;
+	Fri, 26 Jun 2026 13:24:44 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nabladev.com;
+	s=dkim; t=1782473089;
+	h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 in-reply-to:references; bh=v4dXydw18kP0Tdpxxs9TmPJXNIrlVp67JEsAHBC2ryM=;
+	b=egTfvEA1VREJZK0rGsiIDNEOCAHkUnAquaiZigh/wXeUsddonC87o/kl83JRouJ/J/4LCy
+	nsY0UnM/2LqlDLNCw4l+5gXBhlkusl/kbCXqojnHNw8wrU4GquYLcw+ioCqXeLPNb+WHXK
+	NLM6dCxNoxODL1m+flCiJ34OSUdxPIJRH4gp5WYesktj2WDnKVRUXsmqCorJ+ThMkCxRbM
+	4NDsl5m3CeUcUHwF9ZFT3Dd4u0cHUX2ResyhQU59mwM2DzNqhK16zwPrt8c86/0vtrkxry
+	HGnAM1fVsbx++bw7slj6V2kt1i6qm6tgfq933mpAwrglUHMwIkcynNdJGzdiFw==
+Date: Fri, 26 Jun 2026 13:24:42 +0200
+From: Pavel Machek <pavel@nabladev.com>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+	patches@kernelci.org, lkft-triage@lists.linaro.org,
+	pavel@nabladev.com, jonathanh@nvidia.com, f.fainelli@gmail.com,
+	sudipm.mukherjee@gmail.com, rwarsow@gmx.de, conor@kernel.org,
+	hargar@microsoft.com, broonie@kernel.org, achill@achill.org,
+	sr@sladewatkins.com
+Subject: Re: [PATCH 7.1 00/21] 7.1.2-rc1 review
+Message-ID: <aj5hen7qThm9X7LU@duo.ucw.cz>
+References: <20260625125613.243729608@linuxfoundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="SJ3ccNs6oOxM2Sr/"
+Content-Disposition: inline
+In-Reply-To: <20260625125613.243729608@linuxfoundation.org>
+X-Last-TLS-Session-Version: TLSv1.3
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [-2.76 / 15.00];
+	SIGNED_PGP(-2.00)[];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[redhat.com,quarantine];
-	R_DKIM_ALLOW(-0.20)[redhat.com:s=mimecast20190719,redhat.com:s=google];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	DMARC_POLICY_ALLOW(-0.50)[nabladev.com,reject];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	MIME_GOOD(-0.20)[multipart/signed,text/plain];
+	R_DKIM_ALLOW(-0.20)[nabladev.com:s=dkim];
 	MAILLIST(-0.15)[generic];
-	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-268823-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[gmail.com,google.com,amazon.com,amazon.co.uk,amazon.de];
-	RCPT_COUNT_TWELVE(0.00)[13];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-268824-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER(0.00)[pbonzini@redhat.com,stable@vger.kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS(0.00)[m:linux-kernel@vger.kernel.org,m:kvm@vger.kernel.org,m:stable@vger.kernel.org,m:imv4bel@gmail.com,m:seanjc@google.com,m:dmatlack@google.com,m:jthoughton@google.com,m:bkov@amazon.com,m:fgriffo@amazon.co.uk,m:graf@amazon.de,m:dwmw@amazon.co.uk,m:sironi@amazon.de,m:iorlov@amazon.co.uk,s:lists@lfdr.de];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[pbonzini@redhat.com,stable@vger.kernel.org];
+	RECEIVED_HELO_LOCALHOST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER(0.00)[pavel@nabladev.com,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[20];
+	FORGED_RECIPIENTS(0.00)[m:gregkh@linuxfoundation.org,m:stable@vger.kernel.org,m:patches@lists.linux.dev,m:linux-kernel@vger.kernel.org,m:torvalds@linux-foundation.org,m:akpm@linux-foundation.org,m:linux@roeck-us.net,m:shuah@kernel.org,m:patches@kernelci.org,m:lkft-triage@lists.linaro.org,m:pavel@nabladev.com,m:jonathanh@nvidia.com,m:f.fainelli@gmail.com,m:sudipm.mukherjee@gmail.com,m:rwarsow@gmx.de,m:conor@kernel.org,m:hargar@microsoft.com,m:broonie@kernel.org,m:achill@achill.org,m:sr@sladewatkins.com,m:ffainelli@gmail.com,m:sudipmmukherjee@gmail.com,s:lists@lfdr.de];
+	MIME_TRACE(0.00)[0:+,1:+,2:~];
+	FORWARDED(0.00)[lists@lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[redhat.com:+];
-	RCVD_COUNT_FIVE(0.00)[6];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	TO_DN_SOME(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[nabladev.com:+];
+	FORGED_SENDER_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[pavel@nabladev.com,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[vger.kernel.org,lists.linux.dev,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,nabladev.com,nvidia.com,gmail.com,gmx.de,microsoft.com,achill.org,sladewatkins.com];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,amazon.co.uk:email,amazon.de:email]
+	MISSING_XM_UA(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,duo.ucw.cz:mid,gitlab.com:url,nabladev.com:dkim,nabladev.com:email,nabladev.com:from_mime]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 632EF6CC694
+X-Rspamd-Queue-Id: 494226CC6C3
 
-From: Sean Christopherson <seanjc@google.com>
 
-commit ef057cbf825e03b63f6edf5980f96abf3c53089d upstream.
+--SJ3ccNs6oOxM2Sr/
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-When recovering hugepages in the shadow MMU, verify that the base gfn of
-the shadow page is actually contained within the target memslot, *before*
-querying the max mapping level given the shadow page's gfn.  Failure to
-pre-check the validity of the gfn can lead to an out-of-bounds access to
-the slot's lpage_info (which typically manifests as a host #PF because the
-lpage_info is vmalloc'd) if the guest creates a hugepage mapping (in its
-PTEs) that extends "below" the bounds of a memslot.
+Hi!
 
-When faulting in memory for a guest, and the size of the guest mapping is
-greater than KVM's (current) max mapping, then KVM will create a "direct"
-shadow page (direct in that there are no gPTEs to shadow, and so the target
-gfn is a direct calculation given the base gfn of the shadow page).  The
-hugepage recovery flow looks for such direct shadow pages, as forcing 4KiB
-mappings when dirty logging generates the guest > host mapping size case.
-When the 4KiB restriction is lifted, then KVM can replace the shadow page
-with a hugepage.
+> This is the start of the stable review cycle for the 7.1.2 release.
+> There are 21 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 
-But if KVM originally used a smaller mapping than the guest because the
-range of memory covered by the guest hugepage exceeds the bounds of a
-memslot, then KVM will link a direct shadow page with a gfn that is outside
-the bounds of the memslot being used to fault in memory.  The rmap entry
-added for the leaf mapping is correct and within bounds, but the gfn of the
-leaf SPTE's parent shadow page will be out of bounds.
+CIP testing did not find any problems here:
 
-  BUG: unable to handle page fault for address: ffffc90000806ffc
-  #PF: supervisor read access in kernel mode
-  #PF: error_code(0x0000) - not-present page
-  PGD 100000067 P4D 100000067 PUD 1002a7067 PMD 10612f067 PTE 0
-  Oops: Oops: 0000 [#1] SMP
-  CPU: 13 UID: 1000 PID: 757 Comm: mmu_stress_test Not tainted 7.1.0-rc1-48ce1e26eace-x86_pir_to_irr_comments-vm #341 PREEMPT
-  Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 0.0.0 02/06/2015
-  RIP: 0010:kvm_mmu_max_mapping_level+0x79/0x2b0 [kvm]
-  Call Trace:
-   <TASK>
-   kvm_mmu_recover_huge_pages+0x21b/0x320 [kvm]
-   kvm_set_memslot+0x1ee/0x590 [kvm]
-   kvm_set_memory_region.part.0+0x3a1/0x4d0 [kvm]
-   kvm_vm_ioctl+0x9bf/0x15d0 [kvm]
-   __x64_sys_ioctl+0x8a/0xd0
-   do_syscall_64+0xb7/0xbb0
-   entry_SYSCALL_64_after_hwframe+0x4b/0x53
-  RIP: 0033:0x7f21c0f1a9bf
-   </TASK>
+https://gitlab.com/cip-project/cip-testing/linux-stable-rc-ci/-/tree/linux-7.1.y
 
-Don't bother pre-checking the bounds of the potential hugepage, i.e. don't
-check that e.g. sp->gfn + KVM_PAGES_PER_HPAGE(sp->role.level + 1) is also
-within the memslot, as the checks performed by kvm_mmu_max_mapping_level()
-are a superset of the basic bounds checks.  I.e. pre-checking the full
-range would be a dubious micro-optimization.
+Tested-by: Pavel Machek (CIP) <pavel@nabladev.com>
 
-Fixes: 9eba50f8d7fc ("KVM: x86/mmu: Consult max mapping level when zapping collapsible SPTEs")
-Cc: stable@vger.kernel.org
-Cc: David Matlack <dmatlack@google.com>
-Cc: James Houghton <jthoughton@google.com>
-Cc: Alexander Bulekov <bkov@amazon.com>
-Cc: Fred Griffoul <fgriffo@amazon.co.uk>
-Cc: Alexander Graf <graf@amazon.de>
-Cc: David Woodhouse <dwmw@amazon.co.uk>
-Cc: Filippo Sironi <sironi@amazon.de>
-Cc: Ivan Orlov <iorlov@amazon.co.uk>
-Signed-off-by: Sean Christopherson <seanjc@google.com>
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
----
- arch/x86/kvm/mmu/mmu.c   | 18 ++++++++++++------
- include/linux/kvm_host.h |  7 ++++++-
- 2 files changed, 18 insertions(+), 7 deletions(-)
+Best regards,
+                                                                Pavel
 
-diff --git a/arch/x86/kvm/mmu/mmu.c b/arch/x86/kvm/mmu/mmu.c
-index a67d013fff4d..aab26f90c285 100644
---- a/arch/x86/kvm/mmu/mmu.c
-+++ b/arch/x86/kvm/mmu/mmu.c
-@@ -6952,13 +6952,19 @@ static bool kvm_mmu_zap_collapsible_spte(struct kvm *kvm,
- 		sp = sptep_to_sp(sptep);
- 
- 		/*
--		 * We cannot do huge page mapping for indirect shadow pages,
--		 * which are found on the last rmap (level = 1) when not using
--		 * tdp; such shadow pages are synced with the page table in
--		 * the guest, and the guest page table is using 4K page size
--		 * mapping if the indirect sp has level = 1.
-+		 * Direct shadow page can be replaced by a hugepage if the host
-+		 * mapping level allows it and the memslot maps all of the host
-+		 * hugepage.  Note!  If the memslot maps only part of the
-+		 * hugepage, sp->gfn may be below slot->base_gfn, and querying
-+		 * the max mapping level would cause an out-of-bounds lpage_info
-+		 * access.  So the gfn bounds check *must* be done first.
-+		 *
-+		 * Indirect shadow pages are created when the guest page tables
-+		 * are using 4K pages.  Since the host mapping is always
-+		 * constrained by the page size in the guest, indirect shadow
-+		 * pages are never collapsible.
- 		 */
--		if (sp->role.direct &&
-+		if (sp->role.direct && is_gfn_in_memslot(slot, sp->gfn) &&
- 		    sp->role.level < kvm_mmu_max_mapping_level(kvm, slot, sp->gfn,
- 							       PG_LEVEL_NUM)) {
- 			kvm_zap_one_rmap_spte(kvm, rmap_head, sptep);
-diff --git a/include/linux/kvm_host.h b/include/linux/kvm_host.h
-index 04b81e2166d5..b4235e99f0a9 100644
---- a/include/linux/kvm_host.h
-+++ b/include/linux/kvm_host.h
-@@ -1745,6 +1745,11 @@ int kvm_request_irq_source_id(struct kvm *kvm);
- void kvm_free_irq_source_id(struct kvm *kvm, int irq_source_id);
- bool kvm_arch_irqfd_allowed(struct kvm *kvm, struct kvm_irqfd *args);
- 
-+static inline bool is_gfn_in_memslot(const struct kvm_memory_slot *slot, gfn_t gfn)
-+{
-+	return gfn >= slot->base_gfn && gfn < slot->base_gfn + slot->npages;
-+}
-+
- /*
-  * Returns a pointer to the memslot if it contains gfn.
-  * Otherwise returns NULL.
-@@ -1755,7 +1760,7 @@ try_get_memslot(struct kvm_memory_slot *slot, gfn_t gfn)
- 	if (!slot)
- 		return NULL;
- 
--	if (gfn >= slot->base_gfn && gfn < slot->base_gfn + slot->npages)
-+	if (is_gfn_in_memslot(slot, gfn))
- 		return slot;
- 	else
- 		return NULL;
--- 
-2.54.0
+--SJ3ccNs6oOxM2Sr/
+Content-Type: application/pgp-signature; name="signature.asc"
 
+-----BEGIN PGP SIGNATURE-----
+
+iF0EABECAB0WIQRPfPO7r0eAhk010v0w5/Bqldv68gUCaj5hegAKCRAw5/Bqldv6
+8g8BAJ0d80vRuMUslkY9MSnOfgVOL4teMgCeKHKDG2RBDpo0TryY3lld2EsDyEI=
+=CpTJ
+-----END PGP SIGNATURE-----
+
+--SJ3ccNs6oOxM2Sr/--
 
