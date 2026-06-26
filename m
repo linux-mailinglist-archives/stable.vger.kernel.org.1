@@ -1,106 +1,112 @@
-Return-Path: <stable+bounces-268852-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-268835-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id borOGLJkPmriFAkAu9opvQ
-	(envelope-from <stable+bounces-268852-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 13:38:26 +0200
+	id Vuq/BgxjPmpHFAkAu9opvQ
+	(envelope-from <stable+bounces-268835-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 13:31:24 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id CA2C06CC8E7
-	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 13:38:25 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id A8F946CC78D
+	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 13:31:23 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=SsntBiIP;
-	dkim=pass header.d=redhat.com header.s=google header.b=NJ6SCMkJ;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-268852-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-268852-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="HYmYipe/";
+	dkim=pass header.d=redhat.com header.s=google header.b=sGFnI+5V;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-268835-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-268835-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=quarantine) header.from=redhat.com;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 56B6330A5F67
-	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 11:30:50 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 1BBBD30F09DB
+	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 11:27:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C3BCE3F2117;
-	Fri, 26 Jun 2026 11:27:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59D5A3F54B6;
+	Fri, 26 Jun 2026 11:26:43 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F4723F2101
-	for <stable@vger.kernel.org>; Fri, 26 Jun 2026 11:27:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3F5B3F4DFD
+	for <stable@vger.kernel.org>; Fri, 26 Jun 2026 11:26:41 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782473267; cv=none; b=coxzngQ8SRytbWWV2SJA2m6LEd8a2T7KfRmwGDs8z10UJVACbr37rBdhgv3tTAwqzzDx4mUFRZUZ1VuI7Nb0PZ3cwIfEd1bovlkwgVZNomQV2kXuOXgsAmJmKgDDw7V24s0RTpmnXK+w4caDubT5/KOoJ/cQp1LHGn6ooHj0xsA=
+	t=1782473203; cv=none; b=lb5MEAvXTriQq399q0Lr4CtKpGSMtUYtgaleb40o+cdN9EDoBxjZEz2sqqgLVeE/K5dmXFHM7CdT0NV98OXvicojP/sgrx1lXaeM8qEQiBvgbaRoy91EprTc/HmCj3td31DbeNKh9qQHCITtY/op27ZS8VFkBzQVk0HzKD5Ptfg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782473267; c=relaxed/simple;
-	bh=qzFqL40tuVr5uJc4Z/ZoRpVEOvYkfO7gT1pHry4dH8I=;
-	h=From:To:Subject:Date:Message-ID:MIME-Version; b=gDeTyC6yRO1fLELVd0Mx4ZNGwRy/7HQLuu8PLH8PGe4NYcUPxIZV2iF4tti5urhUX0tm0r4Fb89fU/eD3Wyl61yNCA32VvxpAIMP7qS1HHU3D6KX1TBIx7AlZ+BY3F9v1qhDBQ9iW2hSkDY+3ETkkCvT/v/2sTol1D4+prjJ114=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=SsntBiIP; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=NJ6SCMkJ; arc=none smtp.client-ip=170.10.133.124
+	s=arc-20240116; t=1782473203; c=relaxed/simple;
+	bh=z5p8zlSV47o/gjXKZEG4K6hFjdVK9QxiHf0gUP5CT5Q=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=k1DsVTQ9pjxx9by8GzxwUYG/t7i44wPBPdVSdeuQHrVkJN64CJ70nL3n+JW+RylJXnkb+rbrs80j/8ty3rfK3sYVenFec8uhR0t1j83/QTdEQT74VSq351El4698A4i1Cn8VFQi/heRyUefEPmDQSBO68X97zDhr2yMg/fBUzd4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=HYmYipe/; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=sGFnI+5V; arc=none smtp.client-ip=170.10.129.124
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1782473265;
+	s=mimecast20190719; t=1782473200;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=d960/iMXCVx2w6Xzf/sxVDFmfLPy0pQ94ged3XDQsPo=;
-	b=SsntBiIPYZRvXSRFzMlxhHH8HY0kZzHW5msDD7g89N/AXc1OQInWafuNAdEUPXZ86NNKEQ
-	My1/F9phwgEI3VJnAiyDhZprDxdZR7ZAcGmML86Hc4Igh6hjyZBUUk0JcueS/wuehj50Z9
-	1ZBjq2mQzsdTahUHXehUY041OmfUW1g=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=ENEuZa7My5usXn5D2jfKTuVzxaRr1sti56rTOiPeclU=;
+	b=HYmYipe/wbLkE9ebJMsmR8iYXAxhWj28la+BEvXxOjAc2gwEQgPIJ96ZiXyS6AVheYu1x4
+	9tJdtuAmWqTMQpUwCm+ZoOMbna8D9O3Yi7T296ljDNHIB1JDza1zOaVKVrlybampf52HFr
+	1eCkIRPCmuFeHUK9z5FMSlzLZCRYmcw=
+Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
+ [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-646-N8O8qu09N6qy_uxT2XVodA-1; Fri, 26 Jun 2026 07:26:37 -0400
-X-MC-Unique: N8O8qu09N6qy_uxT2XVodA-1
-X-Mimecast-MFC-AGG-ID: N8O8qu09N6qy_uxT2XVodA_1782473197
-Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-490ae461f8dso5554215e9.1
-        for <stable@vger.kernel.org>; Fri, 26 Jun 2026 04:26:37 -0700 (PDT)
+ us-mta-681-DqAbIygZPSuzzmVUgdaKbg-1; Fri, 26 Jun 2026 07:26:39 -0400
+X-MC-Unique: DqAbIygZPSuzzmVUgdaKbg-1
+X-Mimecast-MFC-AGG-ID: DqAbIygZPSuzzmVUgdaKbg_1782473198
+Received: by mail-wr1-f72.google.com with SMTP id ffacd0b85a97d-4629f312a67so716929f8f.2
+        for <stable@vger.kernel.org>; Fri, 26 Jun 2026 04:26:39 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1782473196; x=1783077996; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:to
-         :from:from:to:cc:subject:date:message-id:reply-to;
-        bh=d960/iMXCVx2w6Xzf/sxVDFmfLPy0pQ94ged3XDQsPo=;
-        b=NJ6SCMkJy+MtVou3k1vMC0vLtkkErV8pa3s6fVdEfeMfBG0IAWd3FsSoYwbbH1v3HY
-         OkuITdN6Id20RK5ZLFCgAosaYTkp2CTjkeWNSgw1jnOvT7b2/+R/hEL58x7DRcX45g3l
-         zM05UWDLEAYHve+WmYW6ooWpmmuaw7XP0luiCm8PPWHFoZddtP15eOfsG2xpQErCjh4A
-         tLks2KFImKtASxBKNVTeeanisuPrpxKLozL/jNjmsSz4cuYTRjFlboJzA+YrDTL4oM6d
-         bm2oUkhXYfQ12B3EcZPC/f7TTuNOhSCIxeMzNwSVf275dC4EX7nwA3BpWzkABaGzXDYH
-         Bn1g==
+        d=redhat.com; s=google; t=1782473198; x=1783077998; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ENEuZa7My5usXn5D2jfKTuVzxaRr1sti56rTOiPeclU=;
+        b=sGFnI+5VHhZJHXqIlwhkhM3Acwql92SngKUvdoGKnP2Mb9Ja77oURDOMP7IELF2nLU
+         uus/hqpi53rdgM5u31x9ZPQQxBW2u2+sfbltvBImB2VMToMl8VsuDsr4rA9duVZv/qOz
+         c/LNYpOc9AbMTOSSY4JnVwt6nIE7LWxwbC3lfefWayFrEHQH4X37k74ScmFJ20imxyKn
+         dZLqhz9MhUnz9urXplDCuo50n7xtYS8sjsIV8J/XS+cukzcddDH5Vx8gb8FQ1kRmDhmN
+         oRM4InWzSMP1xLYBuFJ3OQqdols/7n+FEr6ssn12dFYkCc7B2AdYL4t652TYJHyfBPG7
+         w8nA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782473196; x=1783077996;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:to
-         :from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=d960/iMXCVx2w6Xzf/sxVDFmfLPy0pQ94ged3XDQsPo=;
-        b=NUrowYZh+/4xUgGcAbOZwXkXaOAnvafDwRmcyGR6I1EqwQ0sNA5JlCOZsOXECBoQ/g
-         OiG2gjQJkGKn3uJE070Cada2MUpFOYD5hZD991NYOjQa+Ke2KVKwrUmsz/2cyC6v6DEK
-         dyRSKbsma6TUvJJVQHRI8HlVQWSc5Zoy2PyxFWHCuQh5bQ3Fmsu+yg2YZpH05OHa5E43
-         SGRRYFzeOBPnc8cbS1BMgRUd0gdmmx0RmJopXV0ANJasyBqLaiL5CFuB5ZdC3iaFbKHr
-         skEW5nXKj7gjMgkQcyDCHe/Dz+UEEW2QgqEfGGPCLh3wNdfzhtMGuIBDl6sXxOEUUHna
-         gqcA==
-X-Forwarded-Encrypted: i=1; AFNElJ+oTlvE884MDPS1nrTU7Dg5t4/TFNnnkhHtvZ5avj4z0QixR7xK6ekm5u7yh2WDfDnOyd/tmzA=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzXxKqx8LPyifBI+Vb8I+PWdoAFGDvUdotnllgB+UIFYEbcOuz3
-	zm0g5N2PddSSYWejOYz1o81D6LTUy+kJhxUOfzKAsNPcHaB2uVt/dv7kabmZ9ZSuz33CNYKzKd/
-	2TJblBRZdLKLB/+acPnylW8FyxAlD9yBdhcXcXh6EaDRywjJ5OFGf5NJAHuCRDstkdQ==
-X-Gm-Gg: AfdE7clH6kgU8DsaCHP/p4UyKAGrOrmHoPL+AG+ZnLwPyiU1qX8y3kGl6zEBn952aAv
-	OWritqvoHNl4VzWBGJRXYHDHSsS75vy2TCoDc0XucfbciUDG4wv4N393z81LLI0JVzvO9mPtsH3
-	Q3pp4RFTPaNpuGwwCAQIiowXaCn7dVupUzjAZOfv+9ZMAW/m3UatNM/GlUOISKO4V1a+X6/A1Zw
-	dLQ2GhtWOpBml+JoDwfAFhYK8Y9G4Uliacyt8BDgpnmUPhY30Nc4a3QtJm+dzEvj1WjEc1AWMCY
-	v5WI8IUPC5b9rpgOQdvBvTNek1RFWF9k+gGID2qWiPhGQ8no+P7hDGktq9zantDvrGx0hiz/nmx
-	GG1VW4lqXD82xHsvoML4HmCrbLN47r8SQ1rsLiOHP1UFlWGD1ejPE8cEY/d+kd1WMPYeECgliKs
-	aYAGhs+uj/ObQAyamU
-X-Received: by 2002:a05:600c:c4a5:b0:492:2e48:81e6 with SMTP id 5b1f17b1804b1-4926684a6b7mr94795455e9.4.1782473196505;
-        Fri, 26 Jun 2026 04:26:36 -0700 (PDT)
-X-Received: by 2002:a05:600c:c4a5:b0:492:2e48:81e6 with SMTP id 5b1f17b1804b1-4926684a6b7mr94795045e9.4.1782473196050;
-        Fri, 26 Jun 2026 04:26:36 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1782473198; x=1783077998;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=ENEuZa7My5usXn5D2jfKTuVzxaRr1sti56rTOiPeclU=;
+        b=haR8tiEBg1qXFNoft0OriraeXoOnLfqI2p6p07WsHb8NAjLUgC0r3PB+umTBmdwkXG
+         mIx4cUH5XI7B2kNRBr+yfpc2uKPdVHtlpMVURQswsMyB5SWv/3crOg9JJLgkMUm46ZtJ
+         HI7T/LSvsBQJxO1UfEYf7YDZ8ZzT44dxqPhbNleohTHDQDzls6Kxfn0G/oscdbj9ha51
+         fU2yq7J4CwwptP9EYUYO0omXbLG2HQgSSxprhv1ilvF7KWlcxveWjK4tAU04eRuOTl/R
+         zeeCOap41hE9EdTugR13U6VoGdwnK6l6E4yrOgEptpulT0pnLpshVPT5hgPxcjHXuQMB
+         AJJw==
+X-Forwarded-Encrypted: i=1; AFNElJ/J0UZHljinxcYqEQhDttiwQjjscQvd/vBLBSA1kRZzxiqCpruHrnNyHsN0Lhv2JejavUzZn98=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyAthdM05+g2zfRwzPAptWQ8JeGPMLezAcQMMsD9fy8D8bx3ZbV
+	oBYAKCXX9SHLTGnuJUs4vOMYL26iIxch1xNYMoQb6NCQ7M3F1kFQE5nHf0gJpyJlcRLcl8zkevr
+	d2OanxQdJmXnCnqBmxAZT5gs6WOAj7XqE/JCTYca1pJMNguAlRRRj2y86/w==
+X-Gm-Gg: AfdE7cn26HrRZyQi4c21cEunZPtkM13dxU4gj3MxSW+6GKNwrKKQLvZCs1S0DBfPghU
+	cSxfNQTsjNrcZaL22wRFFGL+8+BLlqMj9b6Hmo8V4RDF5Q83ySjUCadPcnJ7KbMnCHBg6/f9moj
+	OSg4Xkkf7mTTUwQgzo8TFwpSFxoKK4Wds8k+BslmzKVtwa+l9zOxIuAa++4CafEXkJl+VPbo4Ss
+	G4LhPBjRqYqugH0IYYhsHD59ROUktq2uS5VZqXyLe38S5d7dYhgADmmHIMQSej4E/1ExQq9KHJz
+	O78d0q6MuBRCUAJe4hK50mblOrY4ID1d4DAT5K81wrnYUCxw1S3Wy7hAQUI/Ktunw2g3vC/7pJq
+	4j+oSBWSwwVnU2rWbb5U9cC6v3Wcch5fqn3TFd5O80VYrCa4ui4Qz8I8FQYnKg1UgSxNE8Fox2x
+	KDjeMFWvH9EOwb1mEC
+X-Received: by 2002:a05:600c:c3c1:10b0:490:52fb:12dd with SMTP id 5b1f17b1804b1-4926683fc06mr71944945e9.10.1782473198082;
+        Fri, 26 Jun 2026 04:26:38 -0700 (PDT)
+X-Received: by 2002:a05:600c:c3c1:10b0:490:52fb:12dd with SMTP id 5b1f17b1804b1-4926683fc06mr71944675e9.10.1782473197666;
+        Fri, 26 Jun 2026 04:26:37 -0700 (PDT)
 Received: from [192.168.10.48] ([151.95.124.208])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-46c2279b85csm22611955f8f.28.2026.06.26.04.26.35
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4926c02088dsm37606275e9.0.2026.06.26.04.26.36
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 26 Jun 2026 04:26:35 -0700 (PDT)
+        Fri, 26 Jun 2026 04:26:37 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: linux-kernel@vger.kernel.org,
 	kvm@vger.kernel.org,
 	stable@vger.kernel.org
-Subject: [PATCH 5.10.y 00/17] KVM: fixes for CVE-2026-46113 and related issues
-Date: Fri, 26 Jun 2026 13:26:17 +0200
-Message-ID: <20260626112634.1778506-1-pbonzini@redhat.com>
+Cc: Sean Christopherson <seanjc@google.com>
+Subject: [PATCH 5.10.y 01/17] KVM: x86/mmu: Capture 'mmu' in a local variable when allocating roots
+Date: Fri, 26 Jun 2026 13:26:18 +0200
+Message-ID: <20260626112634.1778506-2-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.54.0
+In-Reply-To: <20260626112634.1778506-1-pbonzini@redhat.com>
+References: <20260626112634.1778506-1-pbonzini@redhat.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -112,82 +118,220 @@ X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[redhat.com,quarantine];
 	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[redhat.com,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[redhat.com:s=mimecast20190719,redhat.com:s=google];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-268852-lists,stable=lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:linux-kernel@vger.kernel.org,m:kvm@vger.kernel.org,m:stable@vger.kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[pbonzini@redhat.com,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	FORWARDED(0.00)[lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[pbonzini@redhat.com,stable@vger.kernel.org];
-	RCPT_COUNT_THREE(0.00)[3];
-	PRECEDENCE_BULK(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
-	TO_DN_NONE(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[6];
+	TAGGED_FROM(0.00)[bounces-268835-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:linux-kernel@vger.kernel.org,m:kvm@vger.kernel.org,m:stable@vger.kernel.org,m:seanjc@google.com,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[pbonzini@redhat.com,stable@vger.kernel.org];
 	DKIM_TRACE(0.00)[redhat.com:+];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[pbonzini@redhat.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	RCPT_COUNT_THREE(0.00)[4];
+	RCVD_COUNT_FIVE(0.00)[6];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	MIME_TRACE(0.00)[0:+];
 	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: CA2C06CC8E7
+X-Rspamd-Queue-Id: A8F946CC78D
 
-Sasha, Greg,
+From: Sean Christopherson <seanjc@google.com>
 
-this is the backport to 5.10 for the above CVE.  Similar to 5.15, the
-fix was relatively simple upstream but only due to years of refactoring
-and cleaning up of the code; fixing from scratch is not really feasible
-so start by applying the patches that are needed.
+commit b37233c911cbecd22a8a2a80137efe706c727d76 upstream.
 
-Paolo
+Grab 'mmu' and do s/vcpu->arch.mmu/mmu to shorten line lengths and yield
+smaller diffs when moving code around in future cleanup without forcing
+the new code to use the same ugly pattern.
 
-David Matlack (2):
-  KVM: x86/mmu: Use a bool for direct
-  KVM: x86/mmu: Stop passing "direct" to mmu_alloc_root()
+No functional change intended.
 
-Lai Jiangshan (2):
-  KVM: X86: Fix missed remote tlb flush in rmap_write_protect()
-  KVM: X86: Synchronize the shadow pagetable before link it
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+Message-Id: <20210305011101.3597423-4-seanjc@google.com>
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+---
+ arch/x86/kvm/mmu/mmu.c | 58 ++++++++++++++++++++++--------------------
+ 1 file changed, 30 insertions(+), 28 deletions(-)
 
-Paolo Bonzini (5):
-  KVM: x86/mmu: Derive shadow MMU page role from parent
-  KVM: x86/mmu: Always pass 0 for @quadrant when gptes are 8 bytes
-  KVM: x86/mmu: pull call to drop_large_spte() into __link_shadow_page()
-  KVM: x86: Fix shadow paging use-after-free due to unexpected role
-
-Sean Christopherson (9):
-  KVM: x86/mmu: Capture 'mmu' in a local variable when allocating roots
-  KVM: x86/mmu: Allocate the lm_root before allocating PAE roots
-  KVM: x86/mmu: Allocate pae_root and lm_root pages in dedicated helper
-  KVM: x86/mmu: Ensure MMU pages are available when allocating roots
-  KVM: x86/mmu: Refactor shadow walk in __direct_map() to reduce
-    indentation
-  KVM: x86/mmu: Check PDPTRs before allocating PAE roots
-  KVM: x86: Fix shadow paging use-after-free due to unexpected GFN
-  KVM: x86/mmu: Pass the memslot to the rmap callbacks
-  KVM: x86/mmu: Ensure hugepage is in by slot before checking max
-    mapping level
-
- arch/x86/kvm/mmu/mmu.c         | 431 ++++++++++++++++++++-------------
- arch/x86/kvm/mmu/paging_tmpl.h |  72 +++---
- arch/x86/kvm/mmu/spte.h        |   5 +
- arch/x86/kvm/mmu/tdp_mmu.c     |  23 +-
- arch/x86/kvm/vmx/vmx_ops.h     |   3 +-
- include/linux/kvm_host.h       |   5 +
- 6 files changed, 308 insertions(+), 231 deletions(-)
-
+diff --git a/arch/x86/kvm/mmu/mmu.c b/arch/x86/kvm/mmu/mmu.c
+index 13bf3198d0ce..c2c76419af0c 100644
+--- a/arch/x86/kvm/mmu/mmu.c
++++ b/arch/x86/kvm/mmu/mmu.c
+@@ -3234,7 +3234,8 @@ static hpa_t mmu_alloc_root(struct kvm_vcpu *vcpu, gfn_t gfn, gva_t gva,
+ 
+ static int mmu_alloc_direct_roots(struct kvm_vcpu *vcpu)
+ {
+-	u8 shadow_root_level = vcpu->arch.mmu->shadow_root_level;
++	struct kvm_mmu *mmu = vcpu->arch.mmu;
++	u8 shadow_root_level = mmu->shadow_root_level;
+ 	hpa_t root;
+ 	unsigned i;
+ 
+@@ -3243,42 +3244,43 @@ static int mmu_alloc_direct_roots(struct kvm_vcpu *vcpu)
+ 
+ 		if (!VALID_PAGE(root))
+ 			return -ENOSPC;
+-		vcpu->arch.mmu->root_hpa = root;
++		mmu->root_hpa = root;
+ 	} else if (shadow_root_level >= PT64_ROOT_4LEVEL) {
+ 		root = mmu_alloc_root(vcpu, 0, 0, shadow_root_level,
+ 				      true);
+ 
+ 		if (!VALID_PAGE(root))
+ 			return -ENOSPC;
+-		vcpu->arch.mmu->root_hpa = root;
++		mmu->root_hpa = root;
+ 	} else if (shadow_root_level == PT32E_ROOT_LEVEL) {
+ 		for (i = 0; i < 4; ++i) {
+-			MMU_WARN_ON(VALID_PAGE(vcpu->arch.mmu->pae_root[i]));
++			MMU_WARN_ON(VALID_PAGE(mmu->pae_root[i]));
+ 
+ 			root = mmu_alloc_root(vcpu, i << (30 - PAGE_SHIFT),
+ 					      i << 30, PT32_ROOT_LEVEL, true);
+ 			if (!VALID_PAGE(root))
+ 				return -ENOSPC;
+-			vcpu->arch.mmu->pae_root[i] = root | PT_PRESENT_MASK;
++			mmu->pae_root[i] = root | PT_PRESENT_MASK;
+ 		}
+-		vcpu->arch.mmu->root_hpa = __pa(vcpu->arch.mmu->pae_root);
++		mmu->root_hpa = __pa(mmu->pae_root);
+ 	} else
+ 		BUG();
+ 
+ 	/* root_pgd is ignored for direct MMUs. */
+-	vcpu->arch.mmu->root_pgd = 0;
++	mmu->root_pgd = 0;
+ 
+ 	return 0;
+ }
+ 
+ static int mmu_alloc_shadow_roots(struct kvm_vcpu *vcpu)
+ {
++	struct kvm_mmu *mmu = vcpu->arch.mmu;
+ 	u64 pdptr, pm_mask;
+ 	gfn_t root_gfn, root_pgd;
+ 	hpa_t root;
+ 	int i;
+ 
+-	root_pgd = vcpu->arch.mmu->get_guest_pgd(vcpu);
++	root_pgd = mmu->get_guest_pgd(vcpu);
+ 	root_gfn = root_pgd >> PAGE_SHIFT;
+ 
+ 	if (mmu_check_root(vcpu, root_gfn))
+@@ -3288,14 +3290,14 @@ static int mmu_alloc_shadow_roots(struct kvm_vcpu *vcpu)
+ 	 * Do we shadow a long mode page table? If so we need to
+ 	 * write-protect the guests page table root.
+ 	 */
+-	if (vcpu->arch.mmu->root_level >= PT64_ROOT_4LEVEL) {
+-		MMU_WARN_ON(VALID_PAGE(vcpu->arch.mmu->root_hpa));
++	if (mmu->root_level >= PT64_ROOT_4LEVEL) {
++		MMU_WARN_ON(VALID_PAGE(mmu->root_hpa));
+ 
+ 		root = mmu_alloc_root(vcpu, root_gfn, 0,
+-				      vcpu->arch.mmu->shadow_root_level, false);
++				      mmu->shadow_root_level, false);
+ 		if (!VALID_PAGE(root))
+ 			return -ENOSPC;
+-		vcpu->arch.mmu->root_hpa = root;
++		mmu->root_hpa = root;
+ 		goto set_root_pgd;
+ 	}
+ 
+@@ -3305,7 +3307,7 @@ static int mmu_alloc_shadow_roots(struct kvm_vcpu *vcpu)
+ 	 * the shadow page table may be a PAE or a long mode page table.
+ 	 */
+ 	pm_mask = PT_PRESENT_MASK;
+-	if (vcpu->arch.mmu->shadow_root_level == PT64_ROOT_4LEVEL) {
++	if (mmu->shadow_root_level == PT64_ROOT_4LEVEL) {
+ 		pm_mask |= PT_ACCESSED_MASK | PT_WRITABLE_MASK | PT_USER_MASK;
+ 
+ 		/*
+@@ -3313,21 +3315,21 @@ static int mmu_alloc_shadow_roots(struct kvm_vcpu *vcpu)
+ 		 * with 64-bit only when needed.  Unlike 32-bit NPT, it doesn't
+ 		 * need to be in low mem.  See also lm_root below.
+ 		 */
+-		if (!vcpu->arch.mmu->pae_root) {
++		if (!mmu->pae_root) {
+ 			WARN_ON_ONCE(!tdp_enabled);
+ 
+-			vcpu->arch.mmu->pae_root = (void *)get_zeroed_page(GFP_KERNEL_ACCOUNT);
+-			if (!vcpu->arch.mmu->pae_root)
++			mmu->pae_root = (void *)get_zeroed_page(GFP_KERNEL_ACCOUNT);
++			if (!mmu->pae_root)
+ 				return -ENOMEM;
+ 		}
+ 	}
+ 
+ 	for (i = 0; i < 4; ++i) {
+-		MMU_WARN_ON(VALID_PAGE(vcpu->arch.mmu->pae_root[i]));
+-		if (vcpu->arch.mmu->root_level == PT32E_ROOT_LEVEL) {
+-			pdptr = vcpu->arch.mmu->get_pdptr(vcpu, i);
++		MMU_WARN_ON(VALID_PAGE(mmu->pae_root[i]));
++		if (mmu->root_level == PT32E_ROOT_LEVEL) {
++			pdptr = mmu->get_pdptr(vcpu, i);
+ 			if (!(pdptr & PT_PRESENT_MASK)) {
+-				vcpu->arch.mmu->pae_root[i] = 0;
++				mmu->pae_root[i] = 0;
+ 				continue;
+ 			}
+ 			root_gfn = pdptr >> PAGE_SHIFT;
+@@ -3339,9 +3341,9 @@ static int mmu_alloc_shadow_roots(struct kvm_vcpu *vcpu)
+ 				      PT32_ROOT_LEVEL, false);
+ 		if (!VALID_PAGE(root))
+ 			return -ENOSPC;
+-		vcpu->arch.mmu->pae_root[i] = root | pm_mask;
++		mmu->pae_root[i] = root | pm_mask;
+ 	}
+-	vcpu->arch.mmu->root_hpa = __pa(vcpu->arch.mmu->pae_root);
++	mmu->root_hpa = __pa(mmu->pae_root);
+ 
+ 	/*
+ 	 * When shadowing 32-bit or PAE NPT with 64-bit NPT, the PML4 and PDP
+@@ -3350,24 +3352,24 @@ static int mmu_alloc_shadow_roots(struct kvm_vcpu *vcpu)
+ 	 * on demand, as running a 32-bit L1 VMM is very rare.  The PDP is
+ 	 * handled above (to share logic with PAE), deal with the PML4 here.
+ 	 */
+-	if (vcpu->arch.mmu->shadow_root_level == PT64_ROOT_4LEVEL) {
+-		if (vcpu->arch.mmu->lm_root == NULL) {
++	if (mmu->shadow_root_level == PT64_ROOT_4LEVEL) {
++		if (mmu->lm_root == NULL) {
+ 			u64 *lm_root;
+ 
+ 			lm_root = (void*)get_zeroed_page(GFP_KERNEL_ACCOUNT);
+ 			if (!lm_root)
+ 				return -ENOMEM;
+ 
+-			lm_root[0] = __pa(vcpu->arch.mmu->pae_root) | pm_mask;
++			lm_root[0] = __pa(mmu->pae_root) | pm_mask;
+ 
+-			vcpu->arch.mmu->lm_root = lm_root;
++			mmu->lm_root = lm_root;
+ 		}
+ 
+-		vcpu->arch.mmu->root_hpa = __pa(vcpu->arch.mmu->lm_root);
++		mmu->root_hpa = __pa(mmu->lm_root);
+ 	}
+ 
+ set_root_pgd:
+-	vcpu->arch.mmu->root_pgd = root_pgd;
++	mmu->root_pgd = root_pgd;
+ 
+ 	return 0;
+ }
 -- 
 2.54.0
 
