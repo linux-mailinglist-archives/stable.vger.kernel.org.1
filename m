@@ -1,95 +1,78 @@
-Return-Path: <stable+bounces-268808-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-268809-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id eB4fMoNYPmr2EAkAu9opvQ
-	(envelope-from <stable+bounces-268808-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 12:46:27 +0200
+	id IevDJX9aPmqlEQkAu9opvQ
+	(envelope-from <stable+bounces-268809-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 12:54:55 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 616296CC292
-	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 12:46:27 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 091736CC363
+	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 12:54:55 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=HcG92g6t;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-268808-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-268808-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=none) header.from=gmail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=YzANUB1a;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-268809-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-268809-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id AB2C13006832
-	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 10:46:26 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 98CCD3047E55
+	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 10:54:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B3DC9382381;
-	Fri, 26 Jun 2026 10:46:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 88F1B3EDAAE;
+	Fri, 26 Jun 2026 10:54:44 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-dy1-f180.google.com (mail-dy1-f180.google.com [74.125.82.180])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC46B3EEAC7
-	for <stable@vger.kernel.org>; Fri, 26 Jun 2026 10:46:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 735211A3160;
+	Fri, 26 Jun 2026 10:54:43 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782470785; cv=none; b=gxvLjADWAYrDozgR7OAPInyemicDPJWnhbc9pTBC0WU9QU7kedTbnezZgzvpWfHjdNdoSICXOApGx8b1tnJKJ/iu0UAfXNuslLBPJQEhhAgajPLfUiOML+ZG11j61zDe5jgpX47FLbLeHcZNBtx6YNbroRMRFZt2HlwE1yRoWQE=
+	t=1782471284; cv=none; b=RRiB3bpnW+gYgNSHC9evOA6rfsYh/dMFgTVaYFH4NJrHCtfodLVze4WsDUb4l6kjWyI1xgKxEhJ+7Ra17zG2N5rablQvo8CJ0LVjNb0YRpvAVQNfygjMKIz+NZfZxEJspZHiiOw/MhFI9gCzkKU49lRocJtqR6nik1EL18QGCqA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782470785; c=relaxed/simple;
-	bh=1JDnbphgkwE1KwABR21Ek6aBBXkftvzLaGcZcBhvZKc=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=DyW9zp1P4I7TqhukO2u1nRa7N6z1o7eKU33CA+5atN5EYVSM2C32P5egUEbk26Cm3LXP2BLOuuW6HByHXMyzW/2M6R6Ics57L+4bet3tV/OpzvrxInX8DZgYVH6jhBQKlErN67LM6ha1O1KgUqvGpRhEtMn5Egp+JwTHqbOrfIM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=HcG92g6t; arc=none smtp.client-ip=74.125.82.180
-Received: by mail-dy1-f180.google.com with SMTP id 5a478bee46e88-30b6dad2382so1799619eec.0
-        for <stable@vger.kernel.org>; Fri, 26 Jun 2026 03:46:23 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1782470783; x=1783075583; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Qk1ykdKswi+f64tQfdwb5C7NxqilUtkk+OdxyKwsqlw=;
-        b=HcG92g6tbt3rTKXu7PWR8gWTyNGiFtAoRRCNppl8Q/WsCTLXhkLyDGBjlxHiGkNK/8
-         ca5dqk9b0nGYmKC6dbcNgRD82W9Pc/+qETfn6kKsZschQeaGSLaIf1UBofqeXmnNBfPC
-         Htw+GXhySSi/QTPKdzhNpmrCWa12L/utGfncviU6rOE8aW011PutxKlmBGWTRYEBOA+8
-         mCUv5XYFmt47lZAFwSfRj54X+qoK8R2ekjjH2r0MPURMKBTVsx6+X2/ruNOxvDr8cIZf
-         uvRL3gDoyhSevPTdiEJX/Wz50Q+q+W8x7Iiq5f7A8aPfg7j9TtShOl4AK1Qigj1kUNwK
-         4BNA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782470783; x=1783075583;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=Qk1ykdKswi+f64tQfdwb5C7NxqilUtkk+OdxyKwsqlw=;
-        b=CgKNcHa+AKh+dBV/xO5IS5ppNtccHhhuuzednXu95/h+V4C9fg2wz9XWLNort/oDwg
-         Uqu2JL8XFPTb8l0mq9uifwajXv7vwjNWdqBbadYlZUf4R4aFFpeywObYKX+A51dHFyQ9
-         6/er/nt+qG4zLC7POkRe8QCiTQeSp0YutMpWr2Sv2jUhQTYeZxZR5kq2mcSTfTShWLtU
-         lg2MENExgFTR9rVlyHkXZxCZ8FJ3ZTyFtiiU4vi7VPzuwAjlDjH9PoJnFQGdcqEzg1EZ
-         fZzfv2JZZnRJcHmS4hbInBUfRBeXAG2JU0lNd93e9z/cbyxv1H/5rRRAoBySTlHICk25
-         vLPQ==
-X-Gm-Message-State: AOJu0YwK0hi56N5ySiPPtMmtGDejVsJHfc+eYEdnSGsIlxZCRYWzspwa
-	TLR1WO95jJxPtZt50RUtZZGEEOi2YD50Xk/kr8M8ouXiLmVK4gZX09cFq+Jvt2k4Oiot9g==
-X-Gm-Gg: AfdE7ckq89bGT81yOVqzNHI+MCiwpjrSMKYpFXLdE7/rCTHBYhpg0cg02WJ6Q9s2lxy
-	4lNXfuhG9vvRG6pqESBmBBFQPlH4MF1+3AWWYQVsZK78fosH7wkSXwdRdPuxqKFoS68W1wQi/8l
-	2LkzTFH8ChKqwWkibHw5EBfYI1+go/rP+SVO2nBIInVkT6K79QZTnIUOLrV0YTDmehtr5d5vjHA
-	zpwVXV+I8e+2kRns5/OGSbqNXu9HxNfIWCtxWyPxV8bjKDJHEKZBwferzhAKAPPce21Nclfymtw
-	5RvCD/LfhHz2iECLJHyi2d5w2ljNvJ9yDl1KnwjG5ddirQZvZT35UtvgnOrHzMxAY+CSciPSOhS
-	SYoGEKZv0WvqsXjeGHyl4NzqQNLRpuM6KpDHLB1jAkEDLk2exwwGlgFZ+ePmEStyWpBa8is0OP1
-	CoZq9ddmUzdVtPJb4dDFS9TkaIs1bl0Si/ts3NgYYKeOrCppxL/d+Ek+hFrw==
-X-Received: by 2002:a05:7301:9f01:b0:2ea:b85c:153d with SMTP id 5a478bee46e88-30c84d435f3mr5453392eec.27.1782470782777;
-        Fri, 26 Jun 2026 03:46:22 -0700 (PDT)
-Received: from naduvan.timesys.com ([122.178.167.70])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-30c7cab28fasm17823093eec.30.2026.06.26.03.46.19
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 26 Jun 2026 03:46:22 -0700 (PDT)
-From: Siva Balasubramanian <sivakumar.bs@gmail.com>
-To: stable@vger.kernel.org
-Cc: tristan@talencesecurity.com,
-	pav@iki.fi,
-	luiz.von.dentz@intel.com,
-	linux-bluetooth@vger.kernel.org,
-	Mikhail Gavrilov <mikhail.v.gavrilov@gmail.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Siva Balasubramanian <sivakumar.bs@gmail.com>
-Subject: [PATCH 2/2] Bluetooth: btmtk: accept too short WMT FUNC_CTRL events
-Date: Fri, 26 Jun 2026 16:16:04 +0530
-Message-Id: <20260626104604.3465124-3-sivakumar.bs@gmail.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20260626104604.3465124-1-sivakumar.bs@gmail.com>
-References: <20260626104604.3465124-1-sivakumar.bs@gmail.com>
+	s=arc-20240116; t=1782471284; c=relaxed/simple;
+	bh=m38eR28kfXr0cfXv77H+KJ+YjtyUQMtyjDrsUuZSb/k=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=Fznh+AULcI0vSNfa/ELR3jUFkSNmzASc7U1zG8TWX8vVBnw+bxU4hGKUQiBwxFb3g6dr3oHuMOXkXSfVcRQ4T+FIC+Gh2FKerY8uhMhC8G7+77iDZWxJNUc9c9oLzU6VBiY1RREUumeZlm1JM+NekPbgXZ+0NtuB1ZMgOdcQM7o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YzANUB1a; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B5891F00A3A;
+	Fri, 26 Jun 2026 10:54:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1782471283;
+	bh=ZqMejLOAB1lQtPADZ7tJuXQq1qqhcSX1bAKtC6GZsxI=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=YzANUB1auHmxtaoHNF4JP0nLlanwZNyD79FcL97ZiqwBkRy+9z9g8UsfH7kT0MCe/
+	 IG2GVwg3xrmz/picdtWJLGsjM0DYDzv1XclG1M4xLohvtHN41CILqy6x8Zkil7ZZgq
+	 g2wFpQE4wYz40Iq8vrQhm9r19vSNBWTe6eBRMICi029t1Du4iG4URoSg7MTPcr1JiE
+	 e6ThV/A09MSktUx8ArY+OTD9cqngFLuYzn004VKr/D/3m7EBpVTRFMP1bdoAQHmUPg
+	 pC92/XHZoM/rDPRY6aTOghLDFZ051Q2TX4V0RyWhpYuArWpmkod+NTF8fjaFDGk7YT
+	 lT/pBbEK0SOsw==
+From: Miguel Ojeda <ojeda@kernel.org>
+To: gregkh@linuxfoundation.org
+Cc: achill@achill.org,
+	akpm@linux-foundation.org,
+	broonie@kernel.org,
+	conor@kernel.org,
+	f.fainelli@gmail.com,
+	hargar@microsoft.com,
+	jonathanh@nvidia.com,
+	linux-kernel@vger.kernel.org,
+	linux@roeck-us.net,
+	lkft-triage@lists.linaro.org,
+	patches@kernelci.org,
+	patches@lists.linux.dev,
+	pavel@nabladev.com,
+	rwarsow@gmx.de,
+	shuah@kernel.org,
+	sr@sladewatkins.com,
+	stable@vger.kernel.org,
+	sudipm.mukherjee@gmail.com,
+	torvalds@linux-foundation.org,
+	Miguel Ojeda <ojeda@kernel.org>
+Subject: Re: [PATCH 7.0 00/49] 7.0.14-rc1 review
+Date: Fri, 26 Jun 2026 12:54:32 +0200
+Message-ID: <20260626105432.733250-1-ojeda@kernel.org>
+In-Reply-To: <20260625125637.527552689@linuxfoundation.org>
+References: <20260625125637.527552689@linuxfoundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -98,88 +81,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.16 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
+	WHITELIST_SPF_DKIM(-3.00)[kernel.org:d:+,kernel.org:s:+];
 	SUSPICIOUS_RECIPS(1.50)[];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[talencesecurity.com,iki.fi,intel.com,vger.kernel.org,gmail.com,linuxfoundation.org];
-	TAGGED_FROM(0.00)[bounces-268808-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-268809-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:tristan@talencesecurity.com,m:pav@iki.fi,m:luiz.von.dentz@intel.com,m:linux-bluetooth@vger.kernel.org,m:mikhail.v.gavrilov@gmail.com,m:gregkh@linuxfoundation.org,m:sivakumar.bs@gmail.com,m:mikhailvgavrilov@gmail.com,m:sivakumarbs@gmail.com,s:lists@lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FORGED_SENDER(0.00)[sivakumarbs@gmail.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS(0.00)[m:gregkh@linuxfoundation.org,m:achill@achill.org,m:akpm@linux-foundation.org,m:broonie@kernel.org,m:conor@kernel.org,m:f.fainelli@gmail.com,m:hargar@microsoft.com,m:jonathanh@nvidia.com,m:linux-kernel@vger.kernel.org,m:linux@roeck-us.net,m:lkft-triage@lists.linaro.org,m:patches@kernelci.org,m:patches@lists.linux.dev,m:pavel@nabladev.com,m:rwarsow@gmx.de,m:shuah@kernel.org,m:sr@sladewatkins.com,m:stable@vger.kernel.org,m:sudipm.mukherjee@gmail.com,m:torvalds@linux-foundation.org,m:ojeda@kernel.org,m:ffainelli@gmail.com,m:sudipmmukherjee@gmail.com,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[ojeda@kernel.org,stable@vger.kernel.org];
+	RCPT_COUNT_TWELVE(0.00)[21];
+	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sivakumarbs@gmail.com,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[achill.org,linux-foundation.org,kernel.org,gmail.com,microsoft.com,nvidia.com,vger.kernel.org,roeck-us.net,lists.linaro.org,kernelci.org,lists.linux.dev,nabladev.com,gmx.de,sladewatkins.com];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[ojeda@kernel.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	FROM_HAS_DN(0.00)[]
+	MISSING_XM_UA(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:email,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 616296CC292
+X-Rspamd-Queue-Id: 091736CC363
 
-From: Pauli Virtanen <pav@iki.fi>
+On Thu, 25 Jun 2026 14:03:12 +0100 Greg Kroah-Hartman <gregkh@linuxfoundation.org> wrote:
+>
+> This is the start of the stable review cycle for the 7.0.14 release.
+> There are 49 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+> 
+> Responses should be made by Sat, 27 Jun 2026 12:54:50 +0000.
+> Anything received after that time might be too late.
 
-commit e3ac0d9f1a205f33a43fba3b79ef74d2f604c78b upstream.
+Boot-tested under QEMU for Rust x86_64, arm64 and riscv64; built-tested
+for loongarch64 and arm32:
 
-MT7925 (USB ID 0e8d:e025) on fw version 20260106153314 sends WMT
-FUNC_CTRL events that are missing the status field.
+Tested-by: Miguel Ojeda <ojeda@kernel.org>
 
-Prior to commit 006b9943b982 ("Bluetooth: btmtk: validate WMT event SKB
-length before struct access") the status was read from out-of-bounds of
-SKB data, which usually would result to success with
-BTMTK_WMT_ON_UNDONE, although I don't know the intent here.  The bounds
-check added in that commit returns with error instead, producing
-"Bluetooth: hci0: Failed to send wmt func ctrl (-22)" and makes the
-device unusable.
+Thanks!
 
-Fix the regression by interpreting too short packet as status
-BTMTK_WMT_ON_UNDONE, which makes the device work normally again.
-
-Fixes: 634a4408c061 ("Bluetooth: btmtk: validate WMT event SKB length before struct access")
-Signed-off-by: Pauli Virtanen <pav@iki.fi>
-Tested-by: Mikhail Gavrilov <mikhail.v.gavrilov@gmail.com> # MT7922 (0489:e0e2)
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-(cherry picked from commit e3ac0d9f1a205f33a43fba3b79ef74d2f604c78b)
-Signed-off-by: Siva Balasubramanian <sivakumar.bs@gmail.com>
----
- drivers/bluetooth/btmtk.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/bluetooth/btmtk.c b/drivers/bluetooth/btmtk.c
-index 5c6f4d4b2e7f..582915f9a8d7 100644
---- a/drivers/bluetooth/btmtk.c
-+++ b/drivers/bluetooth/btmtk.c
-@@ -679,8 +679,8 @@ int btmtk_usb_hci_wmt_sync(struct hci_dev *hdev,
- 	case BTMTK_WMT_FUNC_CTRL:
- 		if (!skb_pull_data(data->evt_skb,
- 				   sizeof(wmt_evt_funcc->status))) {
--			err = -EINVAL;
--			goto err_free_skb;
-+			status = BTMTK_WMT_ON_UNDONE;
-+			break;
- 		}
- 
- 		wmt_evt_funcc = (struct btmtk_hci_wmt_evt_funcc *)wmt_evt;
--- 
-2.34.1
-
+Cheers,
+Miguel
 
