@@ -1,407 +1,159 @@
-Return-Path: <stable+bounces-268981-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-268982-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id rpcGLDWdPmplJAkAu9opvQ
-	(envelope-from <stable+bounces-268981-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 17:39:33 +0200
+	id MX5cH02bPmrQIwkAu9opvQ
+	(envelope-from <stable+bounces-268982-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 17:31:25 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id A81376CE93A
-	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 17:39:32 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1F2E06CE80A
+	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 17:31:25 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=arm.com header.s=foss header.b=HPWX+OQv;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-268981-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-268981-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=none) header.from=arm.com;
+	dkim=none;
+	dmarc=none;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-268982-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-268982-lists+stable=lfdr.de@vger.kernel.org";
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 1DC6D301F1F5
-	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 15:26:29 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C719E3040FB6
+	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 15:29:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BDA2D390217;
-	Fri, 26 Jun 2026 15:26:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF92F39EF11;
+	Fri, 26 Jun 2026 15:29:20 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 76DFA37B3EB;
-	Fri, 26 Jun 2026 15:26:25 +0000 (UTC)
+Received: from cstnet.cn (smtp21.cstnet.cn [159.226.251.21])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CD75388369;
+	Fri, 26 Jun 2026 15:29:18 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782487587; cv=none; b=eIOcHsYRyA918SV90X/ISNIRcSo5ZyQVMCaxS12+zdTHgLpUf8xVen9PM5q/K2tgzF9GOe3ANqLUnNYm6NaX27FEiQ8rO7zmF9ra3+2nx0J5Z9/s+a/Trd0DvTRTYWEG2jQrL0WsSoOoRQjakY44ZZJ9jo3wRnQcL4lnUXdZ9/E=
+	t=1782487760; cv=none; b=HT5496CrsMe5is3sqhr8ETrvwGkRywQG1U9fNYnhaRuvc2TJTyrvaLW2+TepR9KLEfvGanWYKU+uSLkH8qAUg6j9+gX3sGY923q483WBEHw/O3cMxJXS7jMXiq8lH3xdUY0pQLzg3cstsMCqUoI2iY7TorhZAcRJTz3Q5737ce0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782487587; c=relaxed/simple;
-	bh=yOf+G2zy8ADquUCJfsyMqZ/X84D8NfSOq31ye18BdJw=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=FCB4dasTqjC6kRX6eSvw6gbdflA3zaDgLy0Rp/e0KlRm/NlpmrWl0qj1upZ9tiwSHrPluiJxlFUreyczl10iI6zY7ieljg6Mqwq3magj7Tt2H9DxYHDaxq6ylJFqHqdu3WKcDlbsFXoLIXFmr7wi2Y7acWT44cA0LJfCLhgXeHI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=HPWX+OQv; arc=none smtp.client-ip=217.140.110.172
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 2F8141E7D;
-	Fri, 26 Jun 2026 08:26:20 -0700 (PDT)
-Received: from [10.164.19.14] (unknown [10.164.19.14])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 16F953F632;
-	Fri, 26 Jun 2026 08:26:15 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1782487584; bh=yOf+G2zy8ADquUCJfsyMqZ/X84D8NfSOq31ye18BdJw=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=HPWX+OQvHHGLA0mG7rFu8R4aEdwcCIs86zgcB9uBuanhWnSUYFniYlzVNmOzpyp7M
-	 g42qZoFvzyFUlheZPHu1daTb7uIiuv58nPK5uNdnP9ifY0Eu6uwPQ4JdnM7C39S3xf
-	 qqvxo7D4SjnM1RSCG7t/kNd+umJbp+/bD5o/xZlc=
-Message-ID: <61e9fcf7-02a5-4285-948b-62fba4dcd69c@arm.com>
-Date: Fri, 26 Jun 2026 20:56:13 +0530
+	s=arc-20240116; t=1782487760; c=relaxed/simple;
+	bh=bw4QDJpE6mXmIGwuYewL7Sw/4TaK5NCZ2rZp+7CBf3o=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=Zk3G8ABguuP6mqv3nLU5/1QRb7mnIze7ayabUk0iy/focPkIGnySXh9WnNg1lybnjmswIbkgBc668h/U9Q2KNRePtkNyiZqUIm7e7ZUGlV+CSzO6f/6qd/F6AKa2riodQWdtAtC98oY2eikMY4Bv+b4GQwZafHqdUV9tHggm4Zk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.21
+Received: from localhost.localdomain (unknown [117.182.75.66])
+	by APP-01 (Coremail) with SMTP id qwCowAC3UsvDmj5q5DZsAw--.57009S2;
+	Fri, 26 Jun 2026 23:29:08 +0800 (CST)
+From: WenTao Liang <vulab@iscas.ac.cn>
+To: Siddharth Vadapalli <s-vadapalli@ti.com>,
+	Roger Quadros <rogerq@kernel.org>,
+	netdev@vger.kernel.org
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	linux-omap@vger.kernel.org,
+	stable@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	WenTao Liang <vulab@iscas.ac.cn>
+Subject: [PATCH] fix: net: ti: cpsw_probe_dt: fix phy_node reference leak on error paths
+Date: Fri, 26 Jun 2026 23:29:06 +0800
+Message-Id: <20260626152906.52112-1-vulab@iscas.ac.cn>
+X-Mailer: git-send-email 2.39.5 (Apple Git-154)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 4/5] mm/page_vma_mapped: use huge_ptep_get() for hugetlb
-To: Lance Yang <lance.yang@linux.dev>, linmiaohe@huawei.com
-Cc: muchun.song@linux.dev, osalvador@suse.de, akpm@linux-foundation.org,
- ljs@kernel.org, david@kernel.org, liam@infradead.org, riel@surriel.com,
- vbabka@kernel.org, harry@kernel.org, jannh@google.com, kas@kernel.org,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org, rcampbell@nvidia.com,
- apopple@nvidia.com, ziy@nvidia.com, matthew.brost@intel.com,
- joshua.hahnjy@gmail.com, rakie.kim@sk.com, byungchul@sk.com,
- gourry@gourry.net, ying.huang@linux.alibaba.com, mel@csn.ul.ie,
- nao.horiguchi@gmail.com, ak@linux.intel.com, j-nomura@ce.jp.nec.com,
- pfalcato@suse.de, dave.hansen@intel.com, tglx@kernel.org,
- jpoimboe@kernel.org, ryan.roberts@arm.com, anshuman.khandual@arm.com,
- stable@vger.kernel.org
-References: <e6d1b813-0893-458e-9d58-8d3a9bd979c4@arm.com>
- <20260626141031.14309-1-lance.yang@linux.dev>
-Content-Language: en-US
-From: Dev Jain <dev.jain@arm.com>
-In-Reply-To: <20260626141031.14309-1-lance.yang@linux.dev>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:qwCowAC3UsvDmj5q5DZsAw--.57009S2
+X-Coremail-Antispam: 1UD129KBjvJXoW7tr1rXF1fWw1xCw48CFy7trb_yoW8XF4kpr
+	W5GayYvrn7JFZ2g3WIq34DZFZ0ka1jqrW3uFWjya1furn8t347Ar4jgFyYq3W5ArZ5Gr90
+	yrWUAr9rXr1DG37anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUU9Y14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
+	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
+	1l84ACjcxK6xIIjxv20xvE14v26r4j6ryUM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26F4j
+	6r4UJwA2z4x0Y4vEx4A2jsIE14v26rxl6s0DM28EF7xvwVC2z280aVCY1x0267AKxVW0oV
+	Cq3wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0
+	I7IYx2IY67AKxVWUAVWUtwAv7VC2z280aVAFwI0_Gr0_Cr1lOx8S6xCaFVCjc4AY6r1j6r
+	4UM4x0Y48IcxkI7VAKI48JM4x0x7Aq67IIx4CEVc8vx2IErcIFxwACI402YVCY1x02628v
+	n2kIc2xKxwCY1x0262kKe7AKxVWUtVW8ZwCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7x
+	kEbVWUJVW8JwC20s026c02F40E14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E
+	67AF67kF1VAFwI0_Jw0_GFylIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCw
+	CI42IY6xIIjxv20xvEc7CjxVAFwI0_Gr0_Cr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1x
+	MIIF0xvEx4A2jsIE14v26r4j6F4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Gr1j6F4UJbIYCT
+	nIWIevJa73UjIFyTuYvjfU5dgADUUUU
+X-CM-SenderInfo: pyxotu46lvutnvoduhdfq/1tbiCRIKA2o+iCg0OAAAsq
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.66 / 15.00];
+X-Spamd-Result: default: False [1.54 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[arm.com,none];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
-	R_DKIM_ALLOW(-0.20)[arm.com:s=foss];
+	MID_CONTAINS_FROM(1.00)[];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	RCPT_COUNT_TWELVE(0.00)[35];
-	TAGGED_FROM(0.00)[bounces-268981-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:lance.yang@linux.dev,m:linmiaohe@huawei.com,m:muchun.song@linux.dev,m:osalvador@suse.de,m:akpm@linux-foundation.org,m:ljs@kernel.org,m:david@kernel.org,m:liam@infradead.org,m:riel@surriel.com,m:vbabka@kernel.org,m:harry@kernel.org,m:jannh@google.com,m:kas@kernel.org,m:linux-mm@kvack.org,m:linux-kernel@vger.kernel.org,m:rcampbell@nvidia.com,m:apopple@nvidia.com,m:ziy@nvidia.com,m:matthew.brost@intel.com,m:joshua.hahnjy@gmail.com,m:rakie.kim@sk.com,m:byungchul@sk.com,m:gourry@gourry.net,m:ying.huang@linux.alibaba.com,m:mel@csn.ul.ie,m:nao.horiguchi@gmail.com,m:ak@linux.intel.com,m:j-nomura@ce.jp.nec.com,m:pfalcato@suse.de,m:dave.hansen@intel.com,m:tglx@kernel.org,m:jpoimboe@kernel.org,m:ryan.roberts@arm.com,m:anshuman.khandual@arm.com,m:stable@vger.kernel.org,m:joshuahahnjy@gmail.com,m:naohoriguchi@gmail.com,s:lists@lfdr.de];
+	DMARC_NA(0.00)[iscas.ac.cn];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_SENDER(0.00)[dev.jain@arm.com,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[linux.dev,suse.de,linux-foundation.org,kernel.org,infradead.org,surriel.com,google.com,kvack.org,vger.kernel.org,nvidia.com,intel.com,gmail.com,sk.com,gourry.net,linux.alibaba.com,csn.ul.ie,linux.intel.com,ce.jp.nec.com,arm.com];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[dev.jain@arm.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[arm.com:+];
-	ALIAS_RESOLVED(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-268982-lists,stable=lfdr.de];
+	RCPT_COUNT_TWELVE(0.00)[12];
+	FORGED_RECIPIENTS(0.00)[m:s-vadapalli@ti.com,m:rogerq@kernel.org,m:netdev@vger.kernel.org,m:andrew+netdev@lunn.ch,m:davem@davemloft.net,m:edumazet@google.com,m:kuba@kernel.org,m:pabeni@redhat.com,m:linux-omap@vger.kernel.org,m:stable@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:vulab@iscas.ac.cn,m:andrew@lunn.ch,s:lists@lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_SENDER(0.00)[vulab@iscas.ac.cn,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	TO_DN_SOME(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,vger.kernel.org:from_smtp,arm.com:dkim,arm.com:email,arm.com:mid,arm.com:from_mime]
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[vulab@iscas.ac.cn,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	R_DKIM_NA(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	TAGGED_RCPT(0.00)[stable,netdev];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp,iscas.ac.cn:email,iscas.ac.cn:mid,iscas.ac.cn:from_mime]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: A81376CE93A
+X-Rspamd-Queue-Id: 1F2E06CE80A
 
+After slave_data->phy_node is assigned (via of_node_get or
+  of_parse_phandle), if subsequent calls like of_get_phy_mode or
+  ti_cm_get_macid fail, the error path jumps to err_node_put which only
+  releases the loop's port_np reference but not the phy_node reference.
+  This causes a device_node reference leak.
 
+Release slave_data->phy_node via of_node_put before jumping to
+  err_node_put on error paths after phy_node has been acquired.
 
-On 26/06/26 7:40 pm, Lance Yang wrote:
-> 
-> On Fri, Jun 26, 2026 at 06:53:10PM +0530, Dev Jain wrote:
->>
->>
->> On 26/06/26 1:18 pm, Lance Yang wrote:
->>>
->>> On Thu, Jun 25, 2026 at 11:29:53AM +0000, Dev Jain wrote:
->>>> check_pte() is the final validation step in page_vma_mapped_walk().
->>>> It reads pvmw->pte with ptep_get() to decide whether the entry maps
->>>> the PFN range being walked. For hugetlb VMAs, that pointer refers
->>>> to a hugetlb entry.
->>>>
->>>> On arches which provide their own huge_ptep_get() to dereference a huge
->>>> pte pointer, accessing via ptep_get() would cause pte_pfn(),
->>>> pte_present() etc to misbehave.
->>>>
->>>> It is not clear whether this has a trivially visible effect to userspace.
->>>>
->>>> Use huge_ptep_get() to dereference a huge pte pointer.
->>>>
->>>> Fixes: ace71a19cec5 ("mm: introduce page_vma_mapped_walk()")
->>>> Cc: stable@vger.kernel.org
->>>> Signed-off-by: Dev Jain <dev.jain@arm.com>
->>>> ---
->>>> mm/page_vma_mapped.c | 8 +++++++-
->>>> 1 file changed, 7 insertions(+), 1 deletion(-)
->>>>
->>>> diff --git a/mm/page_vma_mapped.c b/mm/page_vma_mapped.c
->>>> index 2ccbabfb2cc17..18e1d341f463c 100644
->>>> --- a/mm/page_vma_mapped.c
->>>> +++ b/mm/page_vma_mapped.c
->>>> @@ -107,7 +107,13 @@ static bool map_pte(struct page_vma_mapped_walk *pvmw, pmd_t *pmdvalp,
->>>> static bool check_pte(struct page_vma_mapped_walk *pvmw, unsigned long pte_nr)
->>>> {
->>>> 	unsigned long pfn;
->>>> -	pte_t ptent = ptep_get(pvmw->pte);
->>>> +	pte_t ptent;
->>>> +
->>>> +	if (is_vm_hugetlb_page(pvmw->vma))
->>>> +		ptent = huge_ptep_get(pvmw->vma->vm_mm, pvmw->address,
->>>> +				      pvmw->pte);
->>>
->>> I think check_pte() can pass a wrong address to huge_ptep_get() ...
->>
->> Won't this be handled by rmap_walk_anon/rmap_walk_file - they are the ones
->> performing the rmap traversal and passing address to try_to_unmap_one/folio_referenced_one
->> etc ...
-> 
-> Right, that should cover the rmap callbacks. The bit I was worried about
-> is page_mapped_in_vma() though.
-> 
->>>
->>> Not sure that is wrong in the first place. For memory failure,
->>> page_mapped_in_vma() can be called with a poisoned tail page of a hugetlb
->>> folio. In that case, pvmw->address need not be hugepage-aligned.
->>>
->>> @Miaohe
-> 
-> For hugetlb memory failure we start with the poisoned PFN:
-> 
-> static int try_memory_failure_hugetlb(unsigned long pfn, int flags)
-> {
-> 	...
-> 	struct page *p = pfn_to_page(pfn);
-> 	struct folio *folio;
-> 	...
-> 
-> 	folio = page_folio(p);
-> 
-> 	...
-> 
-> 	if (!hwpoison_user_mappings(folio, p, pfn, flags)) {
-> 		...
-> 	}
-> 
-> 	...
-> }
-> 
-> and pass the same p down:
-> 
-> static bool hwpoison_user_mappings(struct folio *folio, struct page *p,
-> 		unsigned long pfn, int flags)
-> {
-> 	...
-> 
-> 	collect_procs(folio, p, &tokill, flags & MF_ACTION_REQUIRED);
-> 
-> 	...
-> }
-> 
-> static void collect_procs(const struct folio *folio, const struct page *page,
-> 		struct list_head *tokill, int force_early)
-> {
-> 	...
-> 
-> 	if (unlikely(folio_test_ksm(folio)))
-> 		...
-> 	else if (folio_test_anon(folio))
-> 		collect_procs_anon(folio, page, tokill, force_early);
-> 	else
-> 		...
-> }
-> 
-> So collect_procs_anon() still gets the poisoned page, not &folio->page:
-> 
-> static void collect_procs_anon(const struct folio *folio,
-> 		const struct page *page, struct list_head *to_kill,
-> 		int force_early)
-> {
-> 	...
-> 
-> 	pgoff = page_pgoff(folio, page);
-> 	rcu_read_lock();
-> 	for_each_process(tsk) {
-> 		...
-> 		
-> 		anon_vma_interval_tree_foreach(vmac, &av->rb_root,
-> 					       pgoff, pgoff) {
-> 			...
-> 			addr = page_mapped_in_vma(page, vma);
-> 			...
-> 		}
-> 	}
-> 	rcu_read_unlock();
-> 	anon_vma_unlock_read(av);
-> }
-> 
-> page_mapped_in_vma() then builds pvmw for that page:
-> 
-> unsigned long page_mapped_in_vma(const struct page *page,
-> 		struct vm_area_struct *vma)
-> {
-> 	const struct folio *folio = page_folio(page);
-> 	struct page_vma_mapped_walk pvmw = {
-> 		.pfn = page_to_pfn(page),
-> 		.nr_pages = 1,
-> 		.vma = vma,
-> 		.flags = PVMW_SYNC,
-> 	};
-> 
-> 	pvmw.address = vma_address(vma, page_pgoff(folio, page), 1);
-> 	...
-> }
-> 
-> and page_pgoff() includes the subpage index:
-> 
-> static inline pgoff_t page_pgoff(const struct folio *folio,
-> 		const struct page *page)
-> {
-> 	return folio->index + folio_page_idx(folio, page);
-> }
-> 
-> So if the poisoned PFN points to a tail page, pvmw->address can be offset
-> from the start of the hugetlb mapping by
-> 
-> folio_page_idx(folio, page) << PAGE_SHIFT
-> 
-> Should check_pte() pass the hugepage-aligned address to huge_ptep_get()
-> for that case?
+Cc: stable@vger.kernel.org
+Fixes: ed3525eda4c4 ("net: ethernet: ti: introduce cpsw switchdev based driver part 1 - dual-emac")
+Signed-off-by: WenTao Liang <vulab@iscas.ac.cn>
+---
+ drivers/net/ethernet/ti/cpsw_new.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-Thanks! This looks correct.
-
-I can indeed fix this up in check_pte. But in the memory-failure path
-it has always been confusing to me for hugetlb folios why we are bothering
-with the tail page. I am sure that area can also be simplified. But for
-now I'll just do a simple fix here itself.
-
-
-> 
-> Cheers, Lance
-> 
->>>
->>> For arm64, CONT_PMD_SIZE is one supported HugeTLB size. With such a VMA,
->>> page_vma_mapped_walk() passes that size to hugetlb_walk():
->>>
->>> bool page_vma_mapped_walk(struct page_vma_mapped_walk *pvmw)
->>> {
->>> 	...
->>> 	if (unlikely(is_vm_hugetlb_page(vma))) {
->>> 		...
->>> 		pvmw->pte = hugetlb_walk(vma, pvmw->address, size);
->>> 		...
->>> 	}
->>> 	...
->>> }
->>>
->>> hugetlb_walk() then calls arm64 huge_pte_offset(mm, addr, sz). For
->>> sz == CONT_PMD_SIZE, huge_pte_offset() aligns its local addr before
->>> calculating pmdp:
->>>
->>> pte_t *huge_pte_offset(struct mm_struct *mm,
->>> 		       unsigned long addr, unsigned long sz)
->>> {
->>> 	...
->>> 	if (sz == CONT_PMD_SIZE)
->>> 		addr &= CONT_PMD_MASK;
->>>
->>> 	pmdp = pmd_offset(pudp, addr);
->>> 	pmd = READ_ONCE(*pmdp);
->>> 	...
->>> }
->>>
->>> So for that case, pvmw->pte is calculated from the aligned addr, not
->>> necessarily from the original pvmw->address. But check_pte() passes the
->>> original address together with pvmw->pte:
->>>
->>> +		ptent = huge_ptep_get(pvmw->vma->vm_mm, pvmw->address,
->>> +				      pvmw->pte);
->>>
->>> arm64 then uses that addr again to choose ncontig:
->>>
->>> pte_t huge_ptep_get(struct mm_struct *mm, unsigned long addr, pte_t *ptep)
->>> {
->>> 	...
->>> 	ncontig = find_num_contig(mm, addr, ptep, &pgsize);
->>> 	for (i = 0; i < ncontig; i++, ptep++) {
->>> 		...
->>> 	}
->>> 	return orig_pte;
->>> }
->>>
->>> static int find_num_contig(struct mm_struct *mm, unsigned long addr,
->>> 			   pte_t *ptep, size_t *pgsize)
->>> {
->>> 	pgd_t *pgdp = pgd_offset(mm, addr);
->>> 	p4d_t *p4dp;
->>> 	pud_t *pudp;
->>> 	pmd_t *pmdp;
->>>
->>> 	*pgsize = PAGE_SIZE;
->>> 	p4dp = p4d_offset(pgdp, addr);
->>> 	pudp = pud_offset(p4dp, addr);
->>> 	pmdp = pmd_offset(pudp, addr);
->>> 	if ((pte_t *)pmdp == ptep) {
->>> 		*pgsize = PMD_SIZE;
->>> 		return CONT_PMDS;
->>> 	}
->>> 	return CONT_PTES;
->>> }
->>>
->>> With a tail address, pmdp may no longer point at pvmw->pte, so
->>> find_num_contig() can return CONT_PTES for a CONT_PMD HugeTLB mapping.
->>>
->>> On 16K arm64, that changes ncontig from 32 to 128. So huge_ptep_get()
->>> can walk past the CONT_PMD entries, and possibly past the PMD table.
->>>
->>> Should check_pte() pass the address matching pvmw->pte, sth like:
->>>
->>> ---8<---
->>> diff --git a/mm/page_vma_mapped.c b/mm/page_vma_mapped.c
->>> index 406fd50bbd8f..58463493bd3d 100644
->>> --- a/mm/page_vma_mapped.c
->>> +++ b/mm/page_vma_mapped.c
->>> @@ -109,11 +109,14 @@ static bool check_pte(struct page_vma_mapped_walk *pvmw, unsigned long pte_nr)
->>>  	unsigned long pfn;
->>>  	pte_t ptent;
->>>
->>> -	if (is_vm_hugetlb_page(pvmw->vma))
->>> -		ptent = huge_ptep_get(pvmw->vma->vm_mm, pvmw->address,
->>> -				      pvmw->pte);
->>> -	else
->>> +	if (is_vm_hugetlb_page(pvmw->vma)) {
->>> +		struct hstate *hstate = hstate_vma(pvmw->vma);
->>> +		unsigned long haddr = pvmw->address & huge_page_mask(hstate);
->>> +
->>> +		ptent = huge_ptep_get(pvmw->vma->vm_mm, haddr, pvmw->pte);
->>> +	} else {
->>>  		ptent = ptep_get(pvmw->pte);
->>> +	}
->>>
->>>  	if (pvmw->flags & PVMW_MIGRATION) {
->>>  		const softleaf_t entry = softleaf_from_pte(ptent);
->>> --
->>>
->>> while leaving pvmw->address unchanged for page_mapped_in_vma()?
->>>
->>> Cheers, Lance
->>>
->>>> +	else
->>>> +		ptent = ptep_get(pvmw->pte);
->>>>
->>>> 	if (pvmw->flags & PVMW_MIGRATION) {
->>>> 		const softleaf_t entry = softleaf_from_pte(ptent);
->>>> -- 
->>>> 2.43.0
->>>>
->>>>
->>
->>
-> 
+diff --git a/drivers/net/ethernet/ti/cpsw_new.c b/drivers/net/ethernet/ti/cpsw_new.c
+index c5be359f3c66..9f90d5a9d39f 100644
+--- a/drivers/net/ethernet/ti/cpsw_new.c
++++ b/drivers/net/ethernet/ti/cpsw_new.c
+@@ -1337,6 +1337,7 @@ static int cpsw_probe_dt(struct cpsw_common *cpsw)
+ 		if (ret) {
+ 			dev_err(dev, "%pOF read phy-mode err %d\n",
+ 				port_np, ret);
++			of_node_put(slave_data->phy_node);
+ 			goto err_node_put;
+ 		}
+ 
+@@ -1344,8 +1345,10 @@ static int cpsw_probe_dt(struct cpsw_common *cpsw)
+ 		if (ret) {
+ 			ret = ti_cm_get_macid(dev, port_id - 1,
+ 					      slave_data->mac_addr);
+-			if (ret)
++			if (ret) {
++				of_node_put(slave_data->phy_node);
+ 				goto err_node_put;
++			}
+ 		}
+ 
+ 		if (of_property_read_u32(port_np, "ti,dual-emac-pvid",
+-- 
+2.39.5 (Apple Git-154)
 
 
