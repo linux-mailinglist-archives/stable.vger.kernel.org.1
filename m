@@ -1,67 +1,78 @@
-Return-Path: <stable+bounces-268801-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-268802-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id pI1hOOJUPmqcDwkAu9opvQ
-	(envelope-from <stable+bounces-268801-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 12:30:58 +0200
+	id 5HFEIJJWPmpUEAkAu9opvQ
+	(envelope-from <stable+bounces-268802-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 12:38:10 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB5AA6CC18F
-	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 12:30:57 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id CED686CC21A
+	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 12:38:09 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=KRmOXlfN;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-268801-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-268801-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=VWQdDSM8;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-268802-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-268802-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 06863302B75A
-	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 10:30:04 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 50CCA300D684
+	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 10:38:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 816A03A7F4F;
-	Fri, 26 Jun 2026 10:29:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 446063A452E;
+	Fri, 26 Jun 2026 10:38:05 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA4553EEAC4;
-	Fri, 26 Jun 2026 10:29:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33744379990;
+	Fri, 26 Jun 2026 10:38:00 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782469794; cv=none; b=D/Yzwykok+X8HW54q7FCfrWC2q2e1rYfZZekmXv5g45FhBtgvQWWNJOY6eIb+AeSAKpCMHV4Tf8QnEpJS1f96w4S7Vs/oYTPpFTaCsFtLvn+dDVFXtWH72bBt+67pF/kxgUUA/of0R9KG25yjbIJSKSxHu01bNyNgYd1FUneaBQ=
+	t=1782470284; cv=none; b=hkCCxi5XcdUhgyxPB3PJZAourT/womFQ+eDjJiCHkkOgWNwCzfgPEeKS4Pvkf4H1+MAd+nQsDePVbFtYeRaDoTc3vq+TQXIFjrr1vnsVyoKsMnPxcFkebgmze42h4XfofQpyuPCErCvBSUI9p3ENqvxHmbygjzzZ9ymGJZxA0wM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782469794; c=relaxed/simple;
-	bh=EsCnv2zmPQtUII0ivM5AHcOr5T7brTfAfOxKCs5CIts=;
+	s=arc-20240116; t=1782470284; c=relaxed/simple;
+	bh=w2+vorRUkr7Us9UAT2hpzbdfVvJ1kth8bAjN40dOlCI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MxgjqsPWzOiJ15krYutUewz272bL25qRac4NS4gccjnhO2/UPO+/PH7/MGewQiwS+lFBi4COd0qKF45XkfKuhQEoiP5ubXUEF/uTkoIEKZFIUK+JAuxGKgPs8BO8L1tTGCWovf1wJanky54GBa3RMBVJIEqVJczmx2zcTSCUlMk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KRmOXlfN; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7D091F00A3A;
-	Fri, 26 Jun 2026 10:29:48 +0000 (UTC)
+	 MIME-Version; b=gNZWFaGgS2Fxi80aJI3xzGAWbENDaDaJnlxFTN+Nl7w9nI/6G2LvOdBlAIRKtXLHlALNyf5pejAcvsTxwPAgx2fG50fFyDcMDbHsoZq/fsC8KR1rkGH2M5UqZk6MhRvuF4GsXHlNr8y3jzzTDM2Wip6+3veabuguyM81DOaP8Go=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VWQdDSM8; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ECA9A1F000E9;
+	Fri, 26 Jun 2026 10:37:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782469790;
-	bh=cvducXg29uuJnpCPgKOHgyWH7lcPyLlmDYyWrhgzOjE=;
+	s=k20260515; t=1782470279;
+	bh=1pVJ6qJgF8wbJ3CGxmn+mkF8xzZ5fzZFXfjBDXSUrCs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=KRmOXlfNBznIxjyH7lRRO76bIPs4WnnU4R99ybql2ZMYtGqMAaW0sojoWDwtVsofB
-	 VSJk5Bh4xUPH72eYQPe4hOJVKFtzJ0cKcKIimP4TWopA2KoIcQMaM0inqTMmwPMO4v
-	 o+dnQGoy1zSIoTvtzuyD0Ld57BlvXfxpgMLToMG7m+aONE+IlLxJvyQ8FtbcXj5533
-	 EPvOY2eSfZrGtAJPgNFx6iA1rwQWd9ZBPbQlsuoo5tU2QFkizU1c+MpxdrMWHeTQDv
-	 GPiOK+RdnJrZjZECbvRdfbNbb5VuOHf4KUGhL5fhE4a3GD0YIwibMQRGvAPY4Xbcow
-	 HtVkhGgBw9kfw==
-From: cem@kernel.org
-To: linux-xfs@vger.kernel.org
-Cc: Carlos Maiolino <cem@kernel.org>,
+	b=VWQdDSM8zVVcd6RnejWFPZF2exs7HkmiZ+UmQYEUVjNc13w2spQwl2srv4cZ0bVbW
+	 HjFvxpLKdba0F0mqYjHT7N10jTCxVftoLSyrPQHnGfQKTAmkX4if9vCwUEB43fSlKM
+	 wBm+3T6RpmHdyihNO55Hzy3/xZbh4zx4ggULsn+7oDK2kTnDe0LqVgUCC5EPJ1INq3
+	 65TXdltRwW6q1w3XouyL7ETBx3WGCSaBZy8ngcj9orF8OVuofXLob58QTpX4pk9ehz
+	 iU+Naphf3G+xH4p4AIwFIKwLxdce9L6B/tCfEFW1p9BS17R1ZPP6RfeYukTKpoCVhG
+	 KXFQ2cYbDfuDw==
+From: Miguel Ojeda <ojeda@kernel.org>
+To: gregkh@linuxfoundation.org
+Cc: achill@achill.org,
+	akpm@linux-foundation.org,
+	broonie@kernel.org,
+	conor@kernel.org,
+	f.fainelli@gmail.com,
+	hargar@microsoft.com,
+	jonathanh@nvidia.com,
+	linux-kernel@vger.kernel.org,
+	linux@roeck-us.net,
+	lkft-triage@lists.linaro.org,
+	patches@kernelci.org,
+	patches@lists.linux.dev,
+	pavel@nabladev.com,
+	rwarsow@gmx.de,
+	shuah@kernel.org,
+	sr@sladewatkins.com,
 	stable@vger.kernel.org,
-	"Darrick J. Wong" <djwong@kernel.org>,
-	Eric Sandeen <sandeen@redhat.com>,
-	Christoph Hellwig <hch@lst.de>,
-	Jan Kara <jack@suse.cz>,
-	Dave Chinner <david@fromorbit.com>,
-	"Dr. Thomas Orgis" <thomas.orgis@uni-hamburg.de>
-Subject: [PATCH 1/2] xfs: fix capabily check in xfs
-Date: Fri, 26 Jun 2026 12:29:24 +0200
-Message-ID: <20260626102934.57834-2-cem@kernel.org>
-X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260626102934.57834-1-cem@kernel.org>
-References: <20260626102934.57834-1-cem@kernel.org>
+	sudipm.mukherjee@gmail.com,
+	torvalds@linux-foundation.org,
+	Miguel Ojeda <ojeda@kernel.org>
+Subject: Re: [PATCH 7.1 00/21] 7.1.2-rc1 review
+Date: Fri, 26 Jun 2026 12:37:38 +0200
+Message-ID: <20260626103738.731281-1-ojeda@kernel.org>
+In-Reply-To: <20260625125613.243729608@linuxfoundation.org>
+References: <20260625125613.243729608@linuxfoundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -70,123 +81,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-3.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	WHITELIST_SPF_DKIM(-3.00)[kernel.org:d:+,kernel.org:s:+];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	SUSPICIOUS_RECIPS(1.50)[];
 	MID_CONTAINS_FROM(1.00)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-268801-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
 	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_SENDER(0.00)[cem@kernel.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS(0.00)[m:linux-xfs@vger.kernel.org,m:cem@kernel.org,m:stable@vger.kernel.org,m:djwong@kernel.org,m:sandeen@redhat.com,m:hch@lst.de,m:jack@suse.cz,m:david@fromorbit.com,m:thomas.orgis@uni-hamburg.de,s:lists@lfdr.de];
-	FROM_NO_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-268802-lists,stable=lfdr.de];
+	FORGED_SENDER(0.00)[ojeda@kernel.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCPT_COUNT_TWELVE(0.00)[21];
+	FORGED_RECIPIENTS(0.00)[m:gregkh@linuxfoundation.org,m:achill@achill.org,m:akpm@linux-foundation.org,m:broonie@kernel.org,m:conor@kernel.org,m:f.fainelli@gmail.com,m:hargar@microsoft.com,m:jonathanh@nvidia.com,m:linux-kernel@vger.kernel.org,m:linux@roeck-us.net,m:lkft-triage@lists.linaro.org,m:patches@kernelci.org,m:patches@lists.linux.dev,m:pavel@nabladev.com,m:rwarsow@gmx.de,m:shuah@kernel.org,m:sr@sladewatkins.com,m:stable@vger.kernel.org,m:sudipm.mukherjee@gmail.com,m:torvalds@linux-foundation.org,m:ojeda@kernel.org,m:ffainelli@gmail.com,m:sudipmmukherjee@gmail.com,s:lists@lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	TO_DN_SOME(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[cem@kernel.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[ojeda@kernel.org,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[achill.org,linux-foundation.org,kernel.org,gmail.com,microsoft.com,nvidia.com,vger.kernel.org,roeck-us.net,lists.linaro.org,kernelci.org,lists.linux.dev,nabladev.com,gmx.de,sladewatkins.com];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.cz:email,uni-hamburg.de:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,fromorbit.com:email,vger.kernel.org:from_smtp]
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	MISSING_XM_UA(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	FROM_HAS_DN(0.00)[]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: DB5AA6CC18F
+X-Rspamd-Queue-Id: CED686CC21A
 
-From: Carlos Maiolino <cem@kernel.org>
+On Thu, 25 Jun 2026 14:03:52 +0100 Greg Kroah-Hartman <gregkh@linuxfoundation.org> wrote:
+>
+> This is the start of the stable review cycle for the 7.1.2 release.
+> There are 21 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+> 
+> Responses should be made by Sat, 27 Jun 2026 12:54:50 +0000.
+> Anything received after that time might be too late.
 
-An user reported a bug where he managed to evade group's quota
-by changing a file's gid to a different group id the same user
-belonged to, even though quotas were enforced on both gids and the
-file's size was big enough to exceed the quota's hardlimit.
+Boot-tested under QEMU for Rust x86_64, arm64 and riscv64; built-tested
+for loongarch64 and arm32:
 
-Commit eba0549bc7d1 replaced a capable() call by a
-has_capability_noaudit() to prevent unnecessary selinux audit messages.
-Turns out that both calls have slightly different semantics even though
-their documentation seems similar. Where in a nutshell:
+Tested-by: Miguel Ojeda <ojeda@kernel.org>
 
-capable() - Tests the task's effective credentials
-has_ns_capability_noaudit() - Tests the task's real credentials
+Thanks!
 
-This most of the time has no practical difference but in some cases like
-changing attrs (specifically group id in this case) through a NFS client
-this will allow the quota code to use XFS_QMOPT_FORCE_RES, effectively
-bypassing quota accounting checks.
-
-Using instead ns_capable_noaudit() should fix this issue and prevent
-selinux audit messages.
-
-This also fix the remaining calls to has_capability_noaudit()
-
-Fixes: eba0549bc7d1 ("xfs: don't generate selinux audit messages for capability testing")
-Cc: <stable@vger.kernel.org> # v5.18
-Cc: Darrick J. Wong <djwong@kernel.org>
-Cc: Eric Sandeen <sandeen@redhat.com>
-Cc: Christoph Hellwig <hch@lst.de>
-Cc: Jan Kara <jack@suse.cz>
-Cc: Dave Chinner <david@fromorbit.com>
-Reported-by: Dr. Thomas Orgis <thomas.orgis@uni-hamburg.de>
-Signed-off-by: Carlos Maiolino <cmaiolino@redhat.com>
----
- fs/xfs/xfs_fsmap.c | 2 +-
- fs/xfs/xfs_ioctl.c | 2 +-
- fs/xfs/xfs_iops.c  | 3 ++-
- 3 files changed, 4 insertions(+), 3 deletions(-)
-
-diff --git a/fs/xfs/xfs_fsmap.c b/fs/xfs/xfs_fsmap.c
-index b6a3bc9f143c..7c79fbe0a74c 100644
---- a/fs/xfs/xfs_fsmap.c
-+++ b/fs/xfs/xfs_fsmap.c
-@@ -1175,7 +1175,7 @@ xfs_getfsmap(
- 		return -EINVAL;
- 
- 	use_rmap = xfs_has_rmapbt(mp) &&
--		   has_capability_noaudit(current, CAP_SYS_ADMIN);
-+		   ns_capable_noaudit(&init_user_ns, CAP_SYS_ADMIN);
- 	head->fmh_entries = 0;
- 
- 	/* Set up our device handlers. */
-diff --git a/fs/xfs/xfs_ioctl.c b/fs/xfs/xfs_ioctl.c
-index 96af6b62ce39..852ff2ab4531 100644
---- a/fs/xfs/xfs_ioctl.c
-+++ b/fs/xfs/xfs_ioctl.c
-@@ -647,7 +647,7 @@ xfs_ioctl_setattr_get_trans(
- 		goto out_error;
- 
- 	error = xfs_trans_alloc_ichange(ip, NULL, NULL, pdqp,
--			has_capability_noaudit(current, CAP_FOWNER), &tp);
-+			ns_capable_noaudit(&init_user_ns, CAP_FOWNER), &tp);
- 	if (error)
- 		goto out_error;
- 
-diff --git a/fs/xfs/xfs_iops.c b/fs/xfs/xfs_iops.c
-index 325c2200c501..9db9ef1d8c3a 100644
---- a/fs/xfs/xfs_iops.c
-+++ b/fs/xfs/xfs_iops.c
-@@ -835,7 +835,8 @@ xfs_setattr_nonsize(
- 	}
- 
- 	error = xfs_trans_alloc_ichange(ip, udqp, gdqp, NULL,
--			has_capability_noaudit(current, CAP_FOWNER), &tp);
-+				ns_capable_noaudit(&init_user_ns, CAP_FOWNER),
-+				&tp);
- 	if (error)
- 		goto out_dqrele;
- 
--- 
-2.54.0
-
+Cheers,
+Miguel
 
