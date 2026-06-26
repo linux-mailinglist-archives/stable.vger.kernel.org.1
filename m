@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-269129-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-269133-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id Fb1EMvCoPmpbJwkAu9opvQ
-	(envelope-from <stable+bounces-269129-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 18:29:36 +0200
+	id 0K3ONP6mPmrBJgkAu9opvQ
+	(envelope-from <stable+bounces-269133-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 18:21:18 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 444206CF0F0
-	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 18:29:36 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 866656CEF21
+	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 18:21:18 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=narfation.org header.s=20121 header.b=CjK6ZKOZ;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-269129-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-269129-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=narfation.org header.s=20121 header.b=z6gDPDjO;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-269133-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-269133-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=narfation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 55BA3316BDCA
-	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 16:13:28 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 96E1230B912A
+	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 16:13:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D662B3FE67B;
-	Fri, 26 Jun 2026 16:12:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C24B3FF1C0;
+	Fri, 26 Jun 2026 16:12:06 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from dvalin.narfation.org (dvalin.narfation.org [213.160.73.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AE643FDBFD
-	for <stable@vger.kernel.org>; Fri, 26 Jun 2026 16:12:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50E893FE34D
+	for <stable@vger.kernel.org>; Fri, 26 Jun 2026 16:12:03 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782490324; cv=none; b=lKAL1UDp82a61eufqrZKm/BInSUQ/fq1knG+N4Xm+ltj9MOqpd+IOaWxWyI0m9s5naLUwVMxBUAgW8G7BK48r+gHtWDKG3t+U82exnm+fbaldGWApl0Zz5WB87jLAbEcZ+oL6P8CISbmOzjhsZA08EUa1+pII8ZPcbE7EDvmwpA=
+	t=1782490326; cv=none; b=JHQUlg2UzWqJ9uWzfsMxQqTxqbJEMPu9dCF3k5YOt36+/wj32fHKbgt30LC20z3lP9NG4i2NABMWp9ERyfAwPSUiIsgHLeR+wLfr0uLHNDrv1whyNMIGCzQqSiCObPfKJZ8PDHTY+TICA0cYahFgzliDRkJUtuB4HYy4mutxbVY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782490324; c=relaxed/simple;
-	bh=+n5lFq2bEDvVovsZeU1OKuAD4nIUZiPlndedQq+MIR8=;
+	s=arc-20240116; t=1782490326; c=relaxed/simple;
+	bh=GUL8yGybeI2Ts18PAUAtSGIOE1BbdL6TY5Q5W1M4c78=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DLrAJ8Z6omMP2cRzcQKAGQuNzbGF7Co2C4LEAfl9wBNXInbdwOPifXq82ki0YhBEeef6OSLGhEP/BnNiieTWzgnOUaxzMfjXFMjxqJt8LkfkY8/K6fQAg52OOQZVNF5RJEJc6a7lBOnVEQAYpwHZ8rXb4z4lXwyauNRbYSzgkqc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=narfation.org; spf=pass smtp.mailfrom=narfation.org; dkim=pass (1024-bit key) header.d=narfation.org header.i=@narfation.org header.b=CjK6ZKOZ; arc=none smtp.client-ip=213.160.73.56
-Received: by dvalin.narfation.org (Postfix) id BE65320535;
-	Fri, 26 Jun 2026 16:12:00 +0000 (UTC)
+	 MIME-Version; b=a+MPaj16RJuErVqrvQQWSe/ixI7fwVjXGHG/c4tNnooCKyaUHRloeDwZcx0+V/iqBMHFmX7NonPB3FPSq3m0xT95igzz7I7tC2PvvGVkmeS3UdDJUq5cgcrjLujOYDLlei1/EYBQwCEckVVoKDYV59k6Ze1WRoZ+MEG4bzo/vEA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=narfation.org; spf=pass smtp.mailfrom=narfation.org; dkim=pass (1024-bit key) header.d=narfation.org header.i=@narfation.org header.b=z6gDPDjO; arc=none smtp.client-ip=213.160.73.56
+Received: by dvalin.narfation.org (Postfix) id 2AC8B20536;
+	Fri, 26 Jun 2026 16:12:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=narfation.org;
-	s=20121; t=1782490320;
+	s=20121; t=1782490321;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=sfp2sPiCTZvhv86H6SUzdV6ctR4NV/LOQ7ikI///V9k=;
-	b=CjK6ZKOZ38bA2vLYtqFwpPz1J0OUWz2ajgcZFklfRazowH0jbNZJ6FXpNqKNdEIeNjm824
-	mTP+EVKbfVIeW6dbN1zcxBYf6NwLXv5Z4DawwkwQ99i4MS1LnXAb3ujtb8LaJZYrm7qBGT
-	+HOsB49W/iCCc1w11lqJsOGkN8EETGA=
+	bh=Ns9tj+zoJbI+kY0/c3wzt4i80bd08A3jWPqKtharB+k=;
+	b=z6gDPDjOggRdYmvHZ53wQRO4IMlpnah+vzLnsSpOPLNP/1iedfArclGPEi4M9MgIC6zsQq
+	txyIs5uD8xoHuic4l5vbsXra1zgIgUsloDn95u30ReTk8gOZCYwv0KLjDfSTMtDWLB3uWQ
+	yjjHfDF+u0YHZdBJrWcLqAS0hDY5x50=
 From: Sven Eckelmann <sven@narfation.org>
 To: stable@vger.kernel.org
 Cc: Sven Eckelmann <sven@narfation.org>
-Subject: [PATCH 6.12 13/25] batman-adv: fix (m|b)cast csum after decrementing TTL
-Date: Fri, 26 Jun 2026 18:11:42 +0200
-Message-ID: <20260626161154.124562-14-sven@narfation.org>
+Subject: [PATCH 6.12 14/25] batman-adv: frag: ensure fragment is writable before modifying TTL
+Date: Fri, 26 Jun 2026 18:11:43 +0200
+Message-ID: <20260626161154.124562-15-sven@narfation.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260626161154.124562-1-sven@narfation.org>
 References: <20260626161154.124562-1-sven@narfation.org>
@@ -68,14 +68,14 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[narfation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[narfation.org:s=20121];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-269129-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-269133-lists,stable=lfdr.de];
 	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:sven@narfation.org,s:lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
@@ -91,129 +91,108 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp,narfation.org:dkim,narfation.org:email,narfation.org:mid,narfation.org:from_mime]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,narfation.org:dkim,narfation.org:email,narfation.org:mid,narfation.org:from_mime,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 444206CF0F0
+X-Rspamd-Queue-Id: 866656CEF21
 
-commit e728bbdf32660c8f32b8f5e8d09427a2c131ad60 upstream.
+commit b7293c6e8c15b2db77809b25cf8389e35331b27a upstream.
 
-The broadcast and multicast packets can be received at the same time by the
-local system and forwarded to other nodes. Both are simply decrementing the
-TTL at the beginning of the receive path - independent of chosen paths
-(receive/forward). But such a modification of the data conflicts with the
-hw csum. This is not a problem when the packet is directly forwarded but
-can cause errors in the local receive path.
+Before batman-adv is allowed to write to an skb, it either has to have its
+own copy of the skb or use skb_cow() to ensure that the data part is not
+shared. But batadv_frag_skb_fwd() modifies the TTL even when it is shared.
 
-Such a problem can then trigger a "hw csum failure". The receiver path must
-therefore ensure that the csum is fixed for each modification of the
-payload before batadv_interface_rx() is reached.
-
-Since all batman-adv packet types with a ttl have it as u8 at offset 2, a
-helper can be used for all of them. But it is only used at the moment for
-batadv_bcast_packet and batadv_mcast_packet because they are the only ones
-which deliver the packet locally but unconditionally modify the TTL.
+Adding a skb_cow() right before this operation avoids this and can at the
+same time prepare it for the modifications required to forward the
+fragment.
 
 Cc: stable@kernel.org
-Fixes: 3f69339068f9 ("batman-adv: bcast: queue per interface, if needed")
-Fixes: 07afe1ba288c ("batman-adv: mcast: implement multicast packet reception and forwarding")
+Fixes: 610bfc6bc99b ("batman-adv: Receive fragmented packets and merge")
 [ Context ]
 Signed-off-by: Sven Eckelmann <sven@narfation.org>
 ---
- net/batman-adv/routing.c | 58 ++++++++++++++++++++++++++++++++++++++--
- 1 file changed, 56 insertions(+), 2 deletions(-)
+ net/batman-adv/fragmentation.c | 15 ++++++++++++++-
+ net/batman-adv/fragmentation.h |  3 ++-
+ net/batman-adv/routing.c       |  3 +--
+ 3 files changed, 17 insertions(+), 4 deletions(-)
 
+diff --git a/net/batman-adv/fragmentation.c b/net/batman-adv/fragmentation.c
+index fd7cb789ae9a6..f6714405b0f94 100644
+--- a/net/batman-adv/fragmentation.c
++++ b/net/batman-adv/fragmentation.c
+@@ -384,6 +384,8 @@ bool batadv_frag_skb_buffer(struct sk_buff **skb,
+  * @skb: skb to forward
+  * @recv_if: interface that the skb is received on
+  * @orig_node_src: originator that the skb is received from
++ * @rx_result: set to NET_RX_SUCCESS when the fragment was forwarded and
++ *  NET_RX_DROP when it was dropped; only valid when true is returned
+  *
+  * Look up the next-hop of the fragments payload and check if the merged packet
+  * will exceed the MTU towards the next-hop. If so, the fragment is forwarded
+@@ -393,7 +395,8 @@ bool batadv_frag_skb_buffer(struct sk_buff **skb,
+  */
+ bool batadv_frag_skb_fwd(struct sk_buff *skb,
+ 			 struct batadv_hard_iface *recv_if,
+-			 struct batadv_orig_node *orig_node_src)
++			 struct batadv_orig_node *orig_node_src,
++			 int *rx_result)
+ {
+ 	struct batadv_priv *bat_priv = netdev_priv(recv_if->soft_iface);
+ 	struct batadv_neigh_node *neigh_node = NULL;
+@@ -412,12 +415,22 @@ bool batadv_frag_skb_fwd(struct sk_buff *skb,
+ 	 */
+ 	total_size = ntohs(packet->total_size);
+ 	if (total_size > neigh_node->if_incoming->net_dev->mtu) {
++		if (skb_cow(skb, ETH_HLEN) < 0) {
++			kfree_skb(skb);
++			*rx_result = NET_RX_DROP;
++			ret = true;
++			goto out;
++		}
++
++		packet = (struct batadv_frag_packet *)skb->data;
++
+ 		batadv_inc_counter(bat_priv, BATADV_CNT_FRAG_FWD);
+ 		batadv_add_counter(bat_priv, BATADV_CNT_FRAG_FWD_BYTES,
+ 				   skb->len + ETH_HLEN);
+ 
+ 		packet->ttl--;
+ 		batadv_send_unicast_skb(skb, neigh_node);
++		*rx_result = NET_RX_SUCCESS;
+ 		ret = true;
+ 	}
+ 
+diff --git a/net/batman-adv/fragmentation.h b/net/batman-adv/fragmentation.h
+index dbf0871f87030..51e281027ab63 100644
+--- a/net/batman-adv/fragmentation.h
++++ b/net/batman-adv/fragmentation.h
+@@ -19,7 +19,8 @@ void batadv_frag_purge_orig(struct batadv_orig_node *orig,
+ 			    bool (*check_cb)(struct batadv_frag_table_entry *));
+ bool batadv_frag_skb_fwd(struct sk_buff *skb,
+ 			 struct batadv_hard_iface *recv_if,
+-			 struct batadv_orig_node *orig_node_src);
++			 struct batadv_orig_node *orig_node_src,
++			 int *rx_result);
+ bool batadv_frag_skb_buffer(struct sk_buff **skb,
+ 			    struct batadv_orig_node *orig_node);
+ int batadv_frag_send_packet(struct sk_buff *skb,
 diff --git a/net/batman-adv/routing.c b/net/batman-adv/routing.c
-index 32a40c1c115c6..85bc2d284a779 100644
+index 85bc2d284a779..6fd18b69e5f6b 100644
 --- a/net/batman-adv/routing.c
 +++ b/net/batman-adv/routing.c
-@@ -8,6 +8,7 @@
- #include "main.h"
+@@ -1175,10 +1175,9 @@ int batadv_recv_frag_packet(struct sk_buff *skb,
  
- #include <linux/atomic.h>
-+#include <linux/build_bug.h>
- #include <linux/byteorder/generic.h>
- #include <linux/compiler.h>
- #include <linux/errno.h>
-@@ -205,6 +206,59 @@ bool batadv_check_management_packet(struct sk_buff *skb,
- 	return true;
- }
+ 	/* Route the fragment if it is not for us and too big to be merged. */
+ 	if (!batadv_is_my_mac(bat_priv, frag_packet->dest) &&
+-	    batadv_frag_skb_fwd(skb, recv_if, orig_node_src)) {
++	    batadv_frag_skb_fwd(skb, recv_if, orig_node_src, &ret)) {
+ 		/* skb was consumed */
+ 		skb = NULL;
+-		ret = NET_RX_SUCCESS;
+ 		goto put_orig_node;
+ 	}
  
-+/**
-+ * batadv_skb_decrement_ttl() - decrement ttl in a batman-adv header, csum-safe
-+ * @skb: the received packet with @skb->data pointing to the batman-adv header
-+ *
-+ * Supports the following packet types, all of which carry the TTL at offset 2:
-+ *
-+ * - batadv_ogm_packet
-+ * - batadv_ogm2_packet
-+ * - batadv_icmp_header
-+ * - batadv_icmp_packet
-+ * - batadv_icmp_tp_packet
-+ * - batadv_icmp_packet_rr
-+ * - batadv_unicast_packet
-+ * - batadv_frag_packet
-+ * - batadv_bcast_packet
-+ * - batadv_mcast_packet
-+ * - batadv_coded_packet
-+ * - batadv_unicast_tvlv_packet
-+ *
-+ * Return: true if the packet may be forwarded (ttl decremented),
-+ *  false if it must be dropped (ttl would expire)
-+ */
-+static bool batadv_skb_decrement_ttl(struct sk_buff *skb)
-+{
-+	static const size_t ttl_offset = 2;
-+	u8 *ttl_pos;
-+
-+	BUILD_BUG_ON(offsetof(struct batadv_ogm_packet, ttl) != ttl_offset);
-+	BUILD_BUG_ON(offsetof(struct batadv_ogm2_packet, ttl) != ttl_offset);
-+	BUILD_BUG_ON(offsetof(struct batadv_icmp_header, ttl) != ttl_offset);
-+	BUILD_BUG_ON(offsetof(struct batadv_icmp_packet, ttl) != ttl_offset);
-+	BUILD_BUG_ON(offsetof(struct batadv_icmp_tp_packet, ttl) != ttl_offset);
-+	BUILD_BUG_ON(offsetof(struct batadv_icmp_packet_rr, ttl) != ttl_offset);
-+	BUILD_BUG_ON(offsetof(struct batadv_unicast_packet, ttl) != ttl_offset);
-+	BUILD_BUG_ON(offsetof(struct batadv_frag_packet, ttl) != ttl_offset);
-+	BUILD_BUG_ON(offsetof(struct batadv_bcast_packet, ttl) != ttl_offset);
-+	BUILD_BUG_ON(offsetof(struct batadv_mcast_packet, ttl) != ttl_offset);
-+	BUILD_BUG_ON(offsetof(struct batadv_coded_packet, ttl) != ttl_offset);
-+	BUILD_BUG_ON(offsetof(struct batadv_unicast_tvlv_packet, ttl) != ttl_offset);
-+
-+	ttl_pos = skb->data + ttl_offset;
-+
-+	/* would expire on this hop -> drop, leave header + csum untouched */
-+	if (*ttl_pos < 2)
-+		return false;
-+
-+	skb_postpull_rcsum(skb, ttl_pos, 1);
-+	(*ttl_pos)--;
-+	skb_postpush_rcsum(skb, ttl_pos, 1);
-+
-+	return true;
-+}
-+
- /**
-  * batadv_recv_my_icmp_packet() - receive an icmp packet locally
-  * @bat_priv: the bat priv with all the soft interface information
-@@ -1204,7 +1258,7 @@ int batadv_recv_bcast_packet(struct sk_buff *skb,
- 
- 	bcast_packet = (struct batadv_bcast_packet *)skb->data;
- 
--	if (bcast_packet->ttl-- < 2)
-+	if (!batadv_skb_decrement_ttl(skb))
- 		goto free_skb;
- 
- 	orig_node = batadv_orig_hash_find(bat_priv, bcast_packet->orig);
-@@ -1311,7 +1365,7 @@ int batadv_recv_mcast_packet(struct sk_buff *skb,
- 		goto free_skb;
- 
- 	mcast_packet = (struct batadv_mcast_packet *)skb->data;
--	if (mcast_packet->ttl-- < 2)
-+	if (!batadv_skb_decrement_ttl(skb))
- 		goto free_skb;
- 
- 	tvlv_buff = (unsigned char *)(skb->data + hdr_size);
 -- 
 2.47.3
 
