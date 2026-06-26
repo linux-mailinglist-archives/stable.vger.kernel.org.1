@@ -1,66 +1,81 @@
-Return-Path: <stable+bounces-268763-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-268765-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id o1eKDUolPmrEAQkAu9opvQ
-	(envelope-from <stable+bounces-268763-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 09:07:54 +0200
+	id j2bPBWomPmoGAgkAu9opvQ
+	(envelope-from <stable+bounces-268765-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 09:12:42 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id CAC736CAD2B
-	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 09:07:53 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 78D346CAD92
+	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 09:12:41 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=uniontech.com header.s=onoh2408 header.b=e4nlL3id;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-268763-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-268763-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=none) header.from=uniontech.com;
+	dkim=pass header.d=qq.com header.s=s201512 header.b="Q4uD/o4j";
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-268765-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-268765-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=quarantine) header.from=qq.com;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 5329B301EB61
-	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 07:06:59 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 9810C30E0E45
+	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 07:09:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A423B3DC4B6;
-	Fri, 26 Jun 2026 07:06:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5793A3DD50C;
+	Fri, 26 Jun 2026 07:09:44 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtpbgsg2.qq.com (smtpbgsg2.qq.com [54.254.200.128])
+Received: from out162-62-57-252.mail.qq.com (out162-62-57-252.mail.qq.com [162.62.57.252])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 080AC3D88E3;
-	Fri, 26 Jun 2026 07:06:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8ECC63D891B;
+	Fri, 26 Jun 2026 07:09:35 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782457617; cv=none; b=etdYcuYSDl1v7nTVlzreN5ucIs/zb1ZGH3DgJNIWJLuuzoy++0Zpnc3S6UskSI6uQyUeoNm3wsrtj1Oe8fIdqnV5GwoO36O9Gptuk+oeVHt43uH9Fsk6LspakYcTSeBfm0s4P5uG69KIOLimh64w5WqMz6YEplrzu8xVmMgaFjA=
+	t=1782457783; cv=none; b=Yu1gjL+6Ws70w1LlktUvtw2h+7l0iSS2/pR0+QeYTvNyudrxchE3cvOD4DnHGdy3WYHJ4WsYw9/mgJk6DK3WT76fXXWjwYqk2wMaHPrnKJQpf3h5lUejSmsu2kh9VzmVk32mX+ggtMkOeV5okRiQguPzhvO6VLy2e86pyATJB5Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782457617; c=relaxed/simple;
-	bh=Nb9xg8I7O5dI9Quw5ZIkI7Mjl17b1sJ8iAmhI9Cf1tg=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=uG3iGC5MF7qtjm2V3af/RNqF5L+pTYcZI1TODlm6smbHhaLG+jp5V0ooAEuZTihRcLkin/IjVu/NwgHlzCqYFk5d+F0l4OEdK+kVG5Z145Z5PgSxZjMm+akeddUb+XgXXShsFpjlzlkZUxg3SQ+ZQS22Z8wLxfusn9vcn476YZQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniontech.com; spf=pass smtp.mailfrom=uniontech.com; dkim=pass (1024-bit key) header.d=uniontech.com header.i=@uniontech.com header.b=e4nlL3id; arc=none smtp.client-ip=54.254.200.128
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=uniontech.com;
-	s=onoh2408; t=1782457589;
-	bh=Y4W/r58Q3W/dWz2m7sS0Ii3kXhsGKStDl7s2/hoHkxQ=;
-	h=From:To:Subject:Date:Message-ID:MIME-Version;
-	b=e4nlL3idc29w8pWdKLa025YG9KYcGH+NvY2ybfze5VPZ2Qzb4I2nWKdFveiofatKu
-	 W8L/cGx4RcwrGqdBu7jd+uZ4RTIlC3c7Df0T1ZgOt1VUcuF/+WRz6YAXF168GWUQYo
-	 b0Yaiq9U1vA+O1/v/eJcwh0Sp3EbUMMSHPBj/ZuA=
-X-QQ-mid: esmtpgz12t1782457571ta26b18e1
-X-QQ-Originating-IP: BpomGn1BFIDJ/YTZkQXfR4Y5obiQ7PKkNtMtN8XtDJc=
-Received: from PEN202512010004 ( [113.57.152.160])
-	by bizesmtp.qq.com (ESMTP) with 
-	id ; Fri, 26 Jun 2026 15:06:09 +0800 (CST)
-X-QQ-SSF: 0000000000000000000000000000000
-X-QQ-GoodBg: 1
-X-BIZMAIL-ID: 11897432787244039745
-EX-QQ-RecipientCnt: 7
-From: raoxu <raoxu@uniontech.com>
-To: stern@rowland.harvard.edu
-Cc: gregkh@linuxfoundation.org,
-	linux-usb@vger.kernel.org,
-	usb-storage@lists.one-eyed-alien.net,
+	s=arc-20240116; t=1782457783; c=relaxed/simple;
+	bh=H0rIl8IMroax6WrZL4md7RY9Ay+Hp5SuVhxcFaXxkcQ=;
+	h=Message-ID:From:To:Cc:Subject:Date:In-Reply-To:References:
+	 MIME-Version; b=jLlD6h8u+FQaCLKU3VZ+tVzEKUQ2dtK+C0rngLLuYZR+i/GZmRfiT2++d0TzGdRMkdknKvtAsmOq+Hy5dYABlPqUT9F+hq/zu6kudthl9bFg2dYCUMoh9i4W/Af8tDtUHxOF6nmu2J6K42oKCX+fR5w5+jwLKEbqcQusAyUH7zg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com; spf=pass smtp.mailfrom=qq.com; dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b=Q4uD/o4j; arc=none smtp.client-ip=162.62.57.252
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qq.com; s=s201512;
+	t=1782457771; bh=H0rIl8IMroax6WrZL4md7RY9Ay+Hp5SuVhxcFaXxkcQ=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=Q4uD/o4j0PZj6eT4cS3gNY94ZMMslIIMKjyGlM+M0l8x/qLMKZgMvTnA0s0VB8RWx
+	 iaF7mbRwVgVm+hg0gnSgHNVoE7pnDPPMKBxx/zZSQy1v1jdPK2DZP5vVPk0PB0xZ2z
+	 0maVXWXVWUxiVrIYehLKvI3likQgtYjBK9Sw+pAY=
+Received: from June.localdomain ([123.121.145.35])
+	by newxmesmtplogicsvrszb51-0.qq.com (NewEsmtp) with SMTP
+	id 21586E06; Fri, 26 Jun 2026 15:08:21 +0800
+X-QQ-mid: xmsmtpt1782457701tpq07hp1i
+Message-ID: <tencent_E1AD8BE1AA3FE434224010902B7526A0BC09@qq.com>
+X-QQ-XMAILINFO: MiFcTO7j4Hd/Xgi7YcbabokbXn9GjppQ2RnQR43i//0mq+NZIZK51I7PnjSnHC
+	 LIFBA60+NkhD0AbOhwf5N2Xb8UQSY9RrFEnqkEyzGDNafKKc7tWyI0XT97ga4qiofSpJGoFUJtWY
+	 ZqyQqGado9juaw8kVYXof3gTWy+pIQdukJzkUdjCgczmJcclkPC0RpuUeYNO1LWzIoUZwMdFfr6p
+	 q9oWDfAG5erWFksyZZO65r3hZIQvQT6V75uZ8wmXe6P8HkeUihedmhBSRV1itgzlM9U+jXXeNfOI
+	 7R/78D5SKaxiJQ7gSma7qoOTkiFiy3wHnpNCIF3tleX5A3FDAkuQK4pgCOtsnd2My54SQbWP4pjp
+	 Lg/VXC184RbZ12a73UoJCOtVu+budkE2JyuiED4FvUFw0Lnc1SGtLsNboRw37CLBJQVE7hDl8hs4
+	 kYVoRFz3kTrfDX3fQgKBUTrlQAXbB3HqcP/k7Lf5aG6ezTolGFIxstThIy/j0xz501/vFevW2Egm
+	 +x0cJGyS5TYkbcIB/QbxNMtE2jPnpclYTcZptY1HFds68s9c4joEgrtrM2n1KCxdTgld8Lil4D1I
+	 1XUTO0+o6cNGdPLd54BcM33NtaMUBocQXClv1JcGaBaqmwYISDDWT2XoKFiLM3XTYwvlVNh6XxJX
+	 CKT55KtZfz1uFqQW+qJ1aRwpjgIq6DtSomWzYcgPmILQAhRnRKK/3RCoROfMgHR43bHAfmtnFwo4
+	 spCKWaQQ1p5rlHgMEXTZimxX4fxwD4q9dZe4qqt5VUCs4gLnrmsdwxLz1BhearwcnUEyVkJvGDXT
+	 WbkbDObX6EurS7YjUTFolf/Ham3kQ/VnL0Fj/TedhOUVBp2L6tE8T7QeslVtUjXUvn5y2Ougw3g+
+	 eJ1hJOGN4vFnT2zK7I+rwFSmU8bT3cE+ffcdTeNHSyjdB6dYJxa2uD8N2JQ21Q+Idad4ME73iGrr
+	 89U7Blb5Jt+do5BwAbmJQmEhhz7jScQSilgcnSGwlXmO4YfT3DI8Nf75/O/DkW+i7SpspuOJnxNH
+	 UOpSUq9A8fEDhDowhK4OC+KsiKnHaqrXV1GG4bOlnLZztg6OSkRpRIVt4TDLfRK5HqHJmzylQggK
+	 ivd88gZ2LCT3LYBI75b44TYJRVGRkabKqMdgH7
+X-QQ-XMRINFO: NI4Ajvh11aEjEMj13RCX7UuhPEoou2bs1g==
+From: Wang Jun <1742789905@qq.com>
+To: tytso@mit.edu
+Cc: adilger.kernel@dilger.ca,
+	linux-ext4@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	raoxu@uniontech.com,
-	stable@vger.kernel.org
-Subject: [PATCH] USB: usb-storage: ene_ub6250: restore media-ready check
-Date: Fri, 26 Jun 2026 15:06:07 +0800
-Message-ID: <F42641386E32404F+20260626070607.4119527-1-raoxu@uniontech.com>
-X-Mailer: git-send-email 2.50.1
+	stable@vger.kernel.org,
+	libaokun1@huawei.com,
+	25125332@bjtu.edu.cn
+Subject: Re: [PATCH] ext4: fix crash when ext4_ext_insert_extent() returns error
+Date: Fri, 26 Jun 2026 15:08:21 +0800
+X-OQ-MSGID: <20260626070821.15979-1-1742789905@qq.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <2026062643-tamer-limes-a320@gregkh>
+References: <2026062643-tamer-limes-a320@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -68,102 +83,58 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-QQ-SENDSIZE: 520
-Feedback-ID: esmtpgz:uniontech.com:qybglogicsvrgz:qybglogicsvrgz6b-0
-X-QQ-XMAILINFO: NWujniBqiFoNpJH9EpvNOowZ6Rgffau97gsI5BJwYrqety1klK/GGQIa
-	HOwee4ZnABMm00n3nGPxxmd1PiOUaLK0vD0sbHrWE0KuCirpvykIOmiv68ZH5daZsitKVOH
-	ZDE0USsbh+mLyK1uHyGCabi9AzFKisB5f7ixudvjY0N+UGl0BioGtnZfCfD5Y6e24VNfQ6t
-	06LJ8Jgw+5MLTnbcEoeipcHVlib0KYIQV2vB98fc4drybO3G21Y7vrFyq93O6IUgNZEMxyw
-	68mcScDujSu+q4PMpK9m7a2JHNj5+98FuD2DUoxquQp4kRmK98kbz/z4Pflm4R+ChYzYcGV
-	od8cvvwU0F/WOB7vyzmosRXX8zmNu5n8vluMm8rnRot2YJ9aAxgKSnHwqQHjVlQ6Yms/YyG
-	is2p7hirw+zGT1zQ8iKKFWPBHAMK99gU8jl4yt7TwUpMzSpwpIxJrVBHqM8MX2nYlBLScIg
-	IKnSoiPRPXWL1f1wmYL0qq9p330OqOZXtzMj6ITUdr5oh+lvhPDm6ZXtqNrxNy7cqOt53gD
-	MmF7EZMAh/ZJ/N2IoYPflUU0CC9UpSzYmnjbmo52lx/rj2bYF3DDABd8wBqGjrZ2fxg+7nQ
-	DZz16tPklDLZCl+u/6lI7ObwQrn2sULuVjLmaBMK7Y6EtysJsPGB/6XisercGM/Hhw0s55A
-	QgD3abJsUygSjMgYi+QKGN4o9+I8/lvpr4/u57toUlfYXZLOtWvsNaO4Gpdaava+gXmTAEa
-	ukZEOGUZeNW5QuiKIjtjW20hVwZNh0g1K7hh9axmwwV3kKm0YPBCWf4qGY3HB+0TuBBz8PN
-	s9VFNivIiXjY4Cmfp52MW8CeWCmJ9VlkMCrjmUH2po3JjbT+LqNgoQuNG5cn+HnLzPdmE9u
-	jrRanCd48qTtOicfPHHE4gBs5yIqRQJgZ3VwAFhU5iPolorFF3LG975xbbHWpTHin2AJ6m1
-	1boQ75Kcc8JPowNBkYnd8fMZ9iT5LXiHQ/l+30wqG1Q8Oo2MqXQwjwzQ6EAj95s26QZA8hG
-	FZf5QqPQbTIy2mbYT64fX2jBQcmjWUVs6Zn5R7FdheTP7h3c9/yNAccmN3rtM6diyUfOT9X
-	w==
-X-QQ-XMRINFO: OWPUhxQsoeAVwkVaQIEGSKwwgKCxK/fD5g==
-X-QQ-RECHKSPAM: 0
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.66 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[uniontech.com,none];
+	DMARC_POLICY_ALLOW(-0.50)[qq.com,quarantine];
 	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[uniontech.com:s=onoh2408];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[qq.com:s=s201512];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-268763-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:stern@rowland.harvard.edu,m:gregkh@linuxfoundation.org,m:linux-usb@vger.kernel.org,m:usb-storage@lists.one-eyed-alien.net,m:linux-kernel@vger.kernel.org,m:raoxu@uniontech.com,m:stable@vger.kernel.org,s:lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-268765-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:tytso@mit.edu,m:adilger.kernel@dilger.ca,m:linux-ext4@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,m:libaokun1@huawei.com,m:25125332@bjtu.edu.cn,s:lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER(0.00)[raoxu@uniontech.com,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[qq.com:+];
 	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_SENDER(0.00)[1742789905@qq.com,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[raoxu@uniontech.com,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FREEMAIL_FROM(0.00)[qq.com];
 	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[1742789905@qq.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	TO_DN_NONE(0.00)[];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	ALIAS_RESOLVED(0.00)[];
-	TO_DN_NONE(0.00)[];
-	DKIM_TRACE(0.00)[uniontech.com:+];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	MIME_TRACE(0.00)[0:+];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,vger.kernel.org:from_smtp,uniontech.com:dkim,uniontech.com:email,uniontech.com:mid,uniontech.com:from_mime]
+	MID_RHS_MATCH_FROM(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,qq.com:dkim,qq.com:mid,qq.com:from_mime]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: CAC736CAD2B
+X-Rspamd-Queue-Id: 78D346CAD92
 
-From: Xu Rao <raoxu@uniontech.com>
+Hi,
 
-Commit 1892bf90677a ("USB: usb-storage: Fix use of bitfields for
-hardware data in ene_ub6250.c") converted the media status fields from
-bitfields to bit masks.
+This patch fixes a NULL/error pointer dereference issue that I triggered
+and verified on the v6.6.142 kernel using syzkaller.
 
-The original ene_transport() test called ene_init() only when neither
-media type was ready:
+Based on this, I believe this fix should be backported to the **v6.6.y**
+stable kernel series.
 
-        !(sd_ready || ms_ready)
+For other currently supported stable series (e.g., v6.1.y, v5.15.y,
+v5.10.y, etc.), I have not yet verified if they contain the same
+vulnerable code path. It would be prudent to check and potentially
+backport the fix there as well, if applicable.
 
-The converted test became:
+Please let me know if you need any further information or testing.
 
-        !sd_ready || ms_ready
-
-This is not equivalent. Restore the original semantics by testing that
-both ready bits are clear before calling ene_init().
-
-Fixes: 1892bf90677a ("USB: usb-storage: Fix use of bitfields for hardware data in ene_ub6250.c")
-Cc: stable@vger.kernel.org
-Signed-off-by: Xu Rao <raoxu@uniontech.com>
----
- drivers/usb/storage/ene_ub6250.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/usb/storage/ene_ub6250.c b/drivers/usb/storage/ene_ub6250.c
-index 8770de01a384..ed49a3bc859c 100644
---- a/drivers/usb/storage/ene_ub6250.c
-+++ b/drivers/usb/storage/ene_ub6250.c
-@@ -2305,7 +2305,8 @@ static int ene_transport(struct scsi_cmnd *srb, struct us_data *us)
-
- 	/*US_DEBUG(usb_stor_show_command(us, srb)); */
- 	scsi_set_resid(srb, 0);
--	if (unlikely(!(info->SD_Status & SD_Ready) || (info->MS_Status & MS_Ready)))
-+	if (unlikely(!(info->SD_Status & SD_Ready) &&
-+		     !(info->MS_Status & MS_Ready)))
- 		result = ene_init(us);
- 	if (result == USB_STOR_XFER_GOOD) {
- 		result = USB_STOR_TRANSPORT_ERROR;
---
-2.50.1
+Thanks,
+Wang Jun
 
 
