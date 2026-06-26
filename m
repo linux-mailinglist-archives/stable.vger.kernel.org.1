@@ -1,223 +1,278 @@
-Return-Path: <stable+bounces-268766-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-268770-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id WX7nGB4nPmomAgkAu9opvQ
-	(envelope-from <stable+bounces-268766-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 09:15:42 +0200
+	id F7MvK50rPmpcAwkAu9opvQ
+	(envelope-from <stable+bounces-268770-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 09:34:53 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF9896CADC0
-	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 09:15:41 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4D4856CAFBA
+	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 09:34:53 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=OxwOaYpa;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-268766-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-268766-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=n80+wOrW;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-268770-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-268770-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 2A9093008749
-	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 07:15:39 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 94E143026AAD
+	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 07:34:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C43C3DCDB0;
-	Fri, 26 Jun 2026 07:15:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D04DF3E16A9;
+	Fri, 26 Jun 2026 07:34:45 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E03E131E857;
-	Fri, 26 Jun 2026 07:15:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A2903DB62F;
+	Fri, 26 Jun 2026 07:34:44 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782458135; cv=none; b=tdcVmU/SoIcgcMLyjIBfmQj3bls+yyLl4ki3XtkGLJaG1knJtyDzI0hSXSlHcWwtO2uQeJ2Y6VzjcXueLQxVAK5oDHQuqtpcihg38TQ5RfQGVgmxVt4MVdkceOUrlVeMsvkCnj9qpM4kQeuqnq+ZJzsnCm0sOwATQtHL6Ba0Hss=
+	t=1782459285; cv=none; b=fzfFUOCY9hsFLrZcBWYiPnQoA6AEDYsZQA/DpDMrhPAr1he0R+UG+r8Ys00tOSwwv99sxDOCL/xbmW7tvdSrROO13Smv+/yNDkWPueTCCnJUeOOPTLzFkyjGButtVLN8fY0nTbgesUyGO994hSXHtfcypmRZgq0RHVYKHZBEYS0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782458135; c=relaxed/simple;
-	bh=9RR1bBMY56xbcT+FAcSx+2o3Qwm6rpAKLhB42TGTEHI=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=f4qE7ljkwzaeRRRT3+VZ0t7E3NU6rM2dDCgMjrKuXrr4d1pDVBECG8wV0ehiccaLf1i8OWj+myC9TeEMsvzR7lmX3hJfRMTsWXmGJzZCAF34DcHzw60jUpc9QbpJPZxbceAQVEyWpYDYDQK0Zgj4DSRL+hFdTHFNQxNH14CKnI0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OxwOaYpa; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B840A1F000E9;
-	Fri, 26 Jun 2026 07:15:29 +0000 (UTC)
+	s=arc-20240116; t=1782459285; c=relaxed/simple;
+	bh=XibRtr3lArfBwIX108UOrQuWbqvLRRJQahUof7b9dK4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=P3aTa6PfLR89pJOcZGN5B0HsqrMrveP27uxZeFqlR0dfXdA45kUUswIAmXgvW/F0cyFREp/m+7Pb0Ngg2jcuTE0Xda3yftjdV8jrfC4oxEu5dT5yK1G4qy1cEbjbb1+00T4NKCFodFdMM6fNsOXpQD56bVvQ2WV6ZigdiLiQ2hQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=n80+wOrW; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C13911F00A3A;
+	Fri, 26 Jun 2026 07:34:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782458133;
-	bh=3lVxdm0Ep0/M2ZYIKTC77sSAb+8Ja64CITv1+WKNFCo=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=OxwOaYpaqmr2aOcT0SoHP1REiLiNj80JROVsNPvrfmy/4xobxnTZ8DFNS8aLhzsG2
-	 pc1JYInzhAEN2BaPLK5IIiAOHveUeNvdS1h9ZGykqqnp5ZGjRF3zukUH5/xWpDaG4a
-	 RLnkTDu6Q+3/Z+sAuJ4XlXT4mNqSWDTTOVDsTtQi8inuy+EB/yIT2FcP2ihzw3bZqr
-	 j+iVV5RthEeDUHnj51btEokTNkIRCnngT+INPOu+UcePKVCbVPX4EZKw+Tlt7lv3My
-	 3mwPy1OWlmkE3FxK8W0FsHXg9gLrC5vSd88rLK6Wzytl3VcjKiIyKvITr5gkqr/kZ9
-	 26sUDDbQD9wjA==
-Message-ID: <dc5e47af-1434-4e43-8ca7-f90de3dc3f63@kernel.org>
-Date: Fri, 26 Jun 2026 16:15:24 +0900
+	s=k20260515; t=1782459284;
+	bh=aY6yBcadbyrJ7uPn7rxhL8zgDn4sJwvT0MNe17nykgQ=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=n80+wOrW9gYIE+hX25DQBtQnemZCnGh1I5SwOIx3lvE7Td5jTVD1nOu9JpO/8gIYS
+	 iCAxOQS4FhSTgKrlVoKf5pLQrkNXxXXD70pXL+ngSJ1d/vg2SCLsQol8bMojsbpgAk
+	 swY0LOpk0Xi70RKSqObS9S5sQ/Qbe24zv16HVRlIquhEcjIluGtzUzAFeqXLlVh0NY
+	 ljiuJQgANbqABzrazNnwlknWlAbdO1v0CqX/jn3UQVNAlkZJuDaZrjIBfMLdaiXze8
+	 4t2OV9lz4f96TeEv/mv4T1EdrqkEMTA71AKhMJ5OphtkhX18JooVDt9vJ552PuQGWB
+	 08O+QZPfI5g3g==
+Date: Fri, 26 Jun 2026 09:34:38 +0200
+From: Carlos Maiolino <cem@kernel.org>
+To: "Darrick J. Wong" <djwong@kernel.org>
+Cc: Christoph Hellwig <hch@lst.de>, Jan Kara <jack@suse.cz>, 
+	linux-xfs@vger.kernel.org, stable@vger.kernel.org, Dave Chinner <david@fromorbit.com>, 
+	Eric Sandeen <sandeen@redhat.com>, "Dr. Thomas Orgis" <thomas.orgis@uni-hamburg.de>, 
+	linux-fsdevel@vger.kernel.org, Christian Brauner <brauner@kernel.org>
+Subject: Re: [PATCH] xfs: fix capabily check in xfs_setattr_nonsize
+Message-ID: <aj4qgCpFTXewu6gh@nidhogg.toxiclabs.cc>
+References: <20260624101436.362533-1-cem@kernel.org>
+ <20260624134039.GB5649@lst.de>
+ <qcsdbdpp23fsu3cqhpjdpwusvl6onc2knnrun522ofrutxpz6j@reh3k2ofqjir>
+ <20260625123754.GA19947@lst.de>
+ <aj1CdKwE3A40vQhQ@nidhogg.toxiclabs.cc>
+ <20260625160317.GY6078@frogsfrogsfrogs>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3] mm: mglru: fix stale batch updates after memcg
- reparenting
-To: Qi Zheng <qi.zheng@linux.dev>, akpm@linux-foundation.org,
- david@kernel.org, kasong@tencent.com, shakeel.butt@linux.dev,
- baohua@kernel.org, axelrasmussen@google.com, yuanchu@google.com,
- weixugc@google.com, hannes@cmpxchg.org, muchun.song@linux.dev,
- peiyang_he@smail.nju.edu.cn, mhocko@kernel.org, roman.gushchin@linux.dev,
- ljs@kernel.org
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- Qi Zheng <zhengqi.arch@bytedance.com>, stable@vger.kernel.org
-References: <20260625151554.55105-1-qi.zheng@linux.dev>
-Content-Language: en-US
-From: Harry Yoo <harry@kernel.org>
-In-Reply-To: <20260625151554.55105-1-qi.zheng@linux.dev>
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature";
- boundary="------------m7QUOiwKcAfVY02vm0zfaXUG"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260625160317.GY6078@frogsfrogsfrogs>
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-7.26 / 15.00];
+X-Spamd-Result: default: False [-5.16 / 15.00];
 	WHITELIST_SPF_DKIM(-3.00)[kernel.org:d:+,kernel.org:s:+];
-	SIGNED_PGP(-2.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	MIME_GOOD(-0.20)[multipart/signed,multipart/mixed,text/plain];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
 	MAILLIST(-0.15)[generic];
+	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:qi.zheng@linux.dev,m:akpm@linux-foundation.org,m:david@kernel.org,m:kasong@tencent.com,m:shakeel.butt@linux.dev,m:baohua@kernel.org,m:axelrasmussen@google.com,m:yuanchu@google.com,m:weixugc@google.com,m:hannes@cmpxchg.org,m:muchun.song@linux.dev,m:peiyang_he@smail.nju.edu.cn,m:mhocko@kernel.org,m:roman.gushchin@linux.dev,m:ljs@kernel.org,m:linux-mm@kvack.org,m:linux-kernel@vger.kernel.org,m:zhengqi.arch@bytedance.com,m:stable@vger.kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[harry@kernel.org,stable@vger.kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[19];
-	TAGGED_FROM(0.00)[bounces-268766-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+,1:+,2:+,3:~];
-	FORWARDED(0.00)[lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-268770-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:djwong@kernel.org,m:hch@lst.de,m:jack@suse.cz,m:linux-xfs@vger.kernel.org,m:stable@vger.kernel.org,m:david@fromorbit.com,m:sandeen@redhat.com,m:thomas.orgis@uni-hamburg.de,m:linux-fsdevel@vger.kernel.org,m:brauner@kernel.org,s:lists@lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	HAS_ATTACHMENT(0.00)[];
+	FORGED_SENDER(0.00)[cem@kernel.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	MISSING_XM_UA(0.00)[];
+	TO_DN_SOME(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[harry@kernel.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	MID_RHS_MATCH_FROM(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[cem@kernel.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[10];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,bytedance.com:email,nju.edu.cn:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp,nidhogg.toxiclabs.cc:mid]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: AF9896CADC0
+X-Rspamd-Queue-Id: 4D4856CAFBA
 
-This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
---------------m7QUOiwKcAfVY02vm0zfaXUG
-Content-Type: multipart/mixed; boundary="------------5KW8ae2yJZ4W4qD8pteHlVMf";
- protected-headers="v1"
-From: Harry Yoo <harry@kernel.org>
-To: Qi Zheng <qi.zheng@linux.dev>, akpm@linux-foundation.org,
- david@kernel.org, kasong@tencent.com, shakeel.butt@linux.dev,
- baohua@kernel.org, axelrasmussen@google.com, yuanchu@google.com,
- weixugc@google.com, hannes@cmpxchg.org, muchun.song@linux.dev,
- peiyang_he@smail.nju.edu.cn, mhocko@kernel.org, roman.gushchin@linux.dev,
- ljs@kernel.org
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- Qi Zheng <zhengqi.arch@bytedance.com>, stable@vger.kernel.org
-Message-ID: <dc5e47af-1434-4e43-8ca7-f90de3dc3f63@kernel.org>
-Subject: Re: [PATCH v3] mm: mglru: fix stale batch updates after memcg
- reparenting
-References: <20260625151554.55105-1-qi.zheng@linux.dev>
-In-Reply-To: <20260625151554.55105-1-qi.zheng@linux.dev>
+On Thu, Jun 25, 2026 at 09:03:17AM -0700, Darrick J. Wong wrote:
+> On Thu, Jun 25, 2026 at 05:00:21PM +0200, Carlos Maiolino wrote:
+> > On Thu, Jun 25, 2026 at 02:37:54PM +0200, Christoph Hellwig wrote:
+> > > On Thu, Jun 25, 2026 at 12:43:54PM +0200, Jan Kara wrote:
+> > > > On Wed 24-06-26 15:40:39, Christoph Hellwig wrote:
+> > > > > Adding Jan and Christian for quota and user_ns knowledge.
+> > > > > 
+> > > > > On Wed, Jun 24, 2026 at 12:14:29PM +0200, cem@kernel.org wrote:
+> > > > > > From: Carlos Maiolino <cem@kernel.org>
+> > > > > > 
+> > > > > > An user reported a bug where he managed to evade group's quota
+> > > > > > by changing a file's gid to a different group id the same user
+> > > > > > belonged to, even though quotas were enforced on both gids and the
+> > > > > > file's size was big enough to exceed the quota's hardlimit.
+> > > > > > 
+> > > > > > Commit eba0549bc7d1 replaced a capable() call by a
+> > > > > > has_capability_noaudit() to prevent unnecessary selinux audit messages.
+> > > > > > Turns out that both calls have slightly different semantics even though
+> > > > > > their documentation seems similar. Where in a nutshell:
+> > > > > > 
+> > > > > > capable() - Tests the task's effective credentials
+> > > > > > has_ns_capability_noaudit() - Tests the task's real credentials
+> > > > > 
+> > > > > Eww..
+> > > > 
+> > > > Yeah, that's a catch.
+> 
+> I spent a while trying to figure out how I went wrong in selecting the
+> function name:
+> 
+>  * capable - Determine if the current task has a superior capability in effect
+>  * @cap: The capability to be tested for
+>  *
+>  * Return true if the current task has the given superior capability currently
+>  * available for use, false if not.
+> 
+> vs.
+> 
+>  * has_capability_noaudit - Does a task have a capability (unaudited) in the
+>  * initial user ns
+>  * @t: The task in question
+>  * @cap: The capability to be tested for
+>  *
+>  * Return true if the specified task has the given superior capability
+>  * currently in effect to init_user_ns, false if not.  Don't write an
+>  * audit message for the check.
+> 
+> vs.
+> 
+>  * ns_capable_noaudit - Determine if the current task has a superior capability
+>  * (unaudited) in effect
+>  * @ns:  The usernamespace we want the capability in
+>  * @cap: The capability to be tested for
+>  *
+>  * Return true if the current task has the given superior capability currently
+>  * available for use, false if not.
+> 
+> All three of these sound the same to me.  But what about the call path?
 
---------------5KW8ae2yJZ4W4qD8pteHlVMf
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Yup, I reached the same conclusion, they are all the same, so I decided
+to look at the implementation...
+
+> 
+> capable -> ns_capable -> ns_capable_common
+> 
+> has_capability_noaudit -> has_ns_capability_noaudit
+> 
+> ns_capable_noaudit -> ns_capable_common
+> 
+> Hum, maybe that's the difference -- ns_capable_common vs.
+> has_ns_capability_noaudit?
+> 
+> ns_capable_common calls security_capable() with current_cred(), whereas
+> has_ns_capability_noaudit calls it with __task_cred(t), which is
+> @current in the xfs_trans_alloc_ichange case.
+> 
+> Aha!  current_cred is current->cred, whereas __task_cred(current) is
+> current->real_cred, and these aren't the same thing:
+> 
+> 	/* Objective and real subjective task credentials (COW): */
+> 	const struct cred __rcu		*real_cred;
+> 
+> 	/* Effective (overridable) subjective task credentials (COW): */
+> 	const struct cred __rcu		*cred;
+> 
+> So I guess ns_capable_common (and wrappers) are testing the process'
+> effective credentials, whereas has_ns_capability_noaudit is testing the
+> process' real credentials?
+> 
+> It would have been *really* nice if the documentation for those
+> functions mentioned that distinction!
+
+Yup, this is a much more detailed versions from my same findings :)
 
 
+> 
+> > > > > > This most of the time has no practical difference but in some cases like
+> > > > > > changing attrs (specifically group id in this case) through a NFS client
+> > > > > > this will allow the quota code to use XFS_QMOPT_FORCE_RES, effectively
+> > > > > > bypassing quota accounting checks.
+> > > > > 
+> > > > > Yeah, this does look wrong.  Do the other conversion in the above commit
+> > > > > have tthe same issue?
+> > > > > 
+> > > > > > Using instead ns_capable_noaudit() should fix this issue and prevent
+> > > > > > selinux audit messages.
+> > > > > 
+> > > > > The generic quota code manages to do without either has_capability_noaudit
+> > > > > or ns_capable_noaudit.  I think this might be hidden behind
+> > > > > inode_owner_or_capable calls.  Any idea why we're different?
+> > > > 
+> > > > Actually no. Generic quota code has equivalent checks in ignore_hardlimit()
+> > > > function which does capable(CAP_SYS_RESOURCE) check. I guess the reason why
+> > > > nobody complained about generic quota code is that we call
+> > > > ignore_hardlimit() only if we are above hardlimit whereas XFS calls this
+> > > > for every transaction...
+> > > 
+> > > I guess we should aim for the same to avoid the spurious audit logs.
+> > > 
+> > > I.e. xfs_trans_alloc_ichange is currently always called either with
+> > > force = true or force = this capable check.  So as a first step we can
+> > > move the check into xfs_trans_alloc_ichange for the !force case, and the
+> > > propagate that through XFS_QMOPT_FORCE_RES into xfs_trans_dqresv, i.e.
+> > > only set XFS_QMOPT_FORCE_RES for the real forced case and instead
+> > > have the capable check down in xfs_trans_dqresv.
+> > > 
+> > 
+> > Sounds fair, I'll give it a try tomorrow.
+> 
+> So yeah, I agree we should change that to:
+> 
+> 	ns_capable_noaudit(&init_user_ns, CAP_FOWNER)
+> 
+> Though it's also weird that XFS gates it on CAP_FOWNER whereas the VFS
+> checks CAP_SYS_RESOURCE.  Though I would have added this:
 
-On 6/26/26 12:15 AM, Qi Zheng wrote:
-> From: Qi Zheng <zhengqi.arch@bytedance.com>
->=20
-> The mglru page table walker batches per-generation size deltas in
-> walk->nr_pages while walking page tables without holding the lruvec loc=
-k.
-> The reset_batch_size() later folds those deltas into walk->lruvec under=
+Same to me, I think there is no real reason for us to be using
+CAP_FOWNER? I thought about changing it to CAP_SYS_RESOURCE but honestly
+I'd avoid doing that for LTS and just stick with CAP_FOWNER initially.
 
-> the lruvec lock.
->=20
-> The page table walker can run concurrently with the memcg reparenting p=
-ath
-> as follows:
->=20
-> CPU0                           CPU1
-> =3D=3D=3D=3D                           =3D=3D=3D=3D
->=20
-> walk_mm
-> --> walk_page_range
->     --> update_batch_size
->         --> walk->nr_pages +=3D delta
->=20
->                               mem_cgroup_css_offline
->                               --> memcg_reparent_objcgs
->                                   --> lock lruvec
->                                       lru_gen_reparent_memcg
->                                       --> reparent child folios to pare=
-nt
->                                       unlock lruvec
->=20
->     lock lruvec
->     reset_batch_size
->     --> child lrugen->nr_pages +=3D delta
->=20
-> This will trigger the following warning in lru_gen_exit_memcg():
->=20
-> 	VM_WARN_ON_ONCE(memchr_inv(lruvec->lrugen.nr_pages, 0,
-> 				   sizeof(lruvec->lrugen.nr_pages)));
->=20
-> And the user-visible impact of underestimated nr_pages in MGLRU was
-> premature OOMs because MGLRU does not try to reclaim memory when nr_pag=
-es
-> reaches zero, but there are still more pages.
->=20
-> To fix it, make reset_batch_size() check CSS_DYING under RCU before
-> flushing the pending batch. A non-dying memcg keeps the original lruvec=
+> 
+> static inline bool
+> current_may_ignore_quota_limits(void)
+> {
+> 	/*
+> 	 * If the current process' effective credentials include
+> 	 * CAP_FOWNER, then they're allowed to ignore the hard limit.
+> 	 */
+> 	return ns_capable_noaudit(&init_user_ns, CAP_FOWNER);
+> }
+> 
+> and then changed the callsites in xfs_ioctl/xfs_iops.c to:
+> 
+> 	error = xfs_trans_alloc_ichange(ip, udqp, gdqp, NULL,
+> 			current_may_ignore_quota_limits(), &tp);
+> 
+> The has_capability_noaudit call in xfs_fsmap.c should change to
+> ns_capable_noaudit.
 
-> stable against RCU-delayed offlining; a dying memcg redirects the delta=
-s
-> to the first non-dying ancestor.
->=20
-> Reported-by: Peiyang He <peiyang_he@smail.nju.edu.cn>
-> Closes: https://lore.kernel.org/all/5A9E929D82717101+12fcf643-efb8-4b9a=
--a53a-1e28cc894f0b@smail.nju.edu.cn
-> Fixes: f304652609ea ("mm: vmscan: prepare for reparenting MGLRU folios"=
-)
-> Cc: <stable@vger.kernel.org>
-> Signed-off-by: Qi Zheng <zhengqi.arch@bytedance.com>
-> ---
+I'm working on a version now adding some bits hch suggested. At the end
+I think we should add a new helper in kernel/capabililty, but I want to
+avoid doing that now so LTS can cleanly backport a fix. Then we can
+update it.
+I'm working on both things in parallel and see how it goes. I'll Cc you
+folks.
 
-besides some nits mentioned elsewhere in the thread,
-the approach looks good to me, so:
-
-Reviewed-by: Harry Yoo (Oracle) <harry@kernel.org>
-
---=20
-Cheers,
-Harry / Hyeonggon
-
---------------5KW8ae2yJZ4W4qD8pteHlVMf--
-
---------------m7QUOiwKcAfVY02vm0zfaXUG
-Content-Type: application/pgp-signature; name="OpenPGP_signature.asc"
-Content-Description: OpenPGP digital signature
-Content-Disposition: attachment; filename="OpenPGP_signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEARYKAB0WIQQQ1ub6gR5ogjaKRmOGXBN6rc5S1gUCaj4nDAAKCRCGXBN6rc5S
-1vJdAP41DQ/Adn/NHl8DrlVUlhHpdYGNd+BlOc6FRwocVOTrGQEA/zSmKeZqWesI
-TcJfcwrQQoZKB/v7BJGNTnJRLM7YEg0=
-=xY2b
------END PGP SIGNATURE-----
-
---------------m7QUOiwKcAfVY02vm0zfaXUG--
+> 
+> --D
+> 
 
