@@ -1,51 +1,51 @@
-Return-Path: <stable+bounces-269264-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-269266-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id lmX4Gd29PmoiLAkAu9opvQ
-	(envelope-from <stable+bounces-269264-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 19:58:53 +0200
+	id 39BmHBa+Pmo6LAkAu9opvQ
+	(envelope-from <stable+bounces-269266-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 19:59:50 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 252BE6CF8AE
-	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 19:58:53 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2C5DE6CF8ED
+	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 19:59:50 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=BucADCAB;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-269264-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-269264-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=how95+WC;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-269266-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-269266-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id EFB683118C61
-	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 17:55:15 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id DAE87304BE5B
+	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 17:55:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A9983A759C;
-	Fri, 26 Jun 2026 17:55:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F29F83AD535;
+	Fri, 26 Jun 2026 17:55:05 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53D453A83AC
-	for <stable@vger.kernel.org>; Fri, 26 Jun 2026 17:55:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A04573A9851
+	for <stable@vger.kernel.org>; Fri, 26 Jun 2026 17:55:03 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782496504; cv=none; b=m3n2i0u6HFphiUROkHEiOWtg+rJRWiXeNxkjPKICmJLVQ34guOc2obEg28f4vPWJ4yb6VkLu1yytE1E2MHNYBewB4GMrbRe+suFF3tPj6dHB1aT1v04wWlObU/dBU5E4wfIc1YKhcTYUh2Io3dZYqhOR5KN+m5gEyC/zis1ukDs=
+	t=1782496505; cv=none; b=nTRIDhJRP4B7kwhzVBlKGWlxiZtS9r5swBiMjsHgsWIy8p/HFTMBwRmPlfLcnyhnlyCZiXbN8jBkKBl2xkpLRBOxcZiYDoQ8oBOsHf2L+DSA3YM85KVFJMY3oNkwFlmUfD4wncnIGaj4xE8g113q2Wp9lofdQfW712xnMRUpAQ0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782496504; c=relaxed/simple;
-	bh=rzv89d7x0CS/lgx+sOybxv2ybeQTLerIGI9OP9tctMI=;
+	s=arc-20240116; t=1782496505; c=relaxed/simple;
+	bh=PvkNmZ8aXYyrA9y5a4yHNaQ34eLBVWHtv5sxJEmjNeg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DWkQkO1ZiEO1lieAobesyQjfB5K1muPsjdM8Il0hmadTpDK52E3gtZSmBVpcr9PRySwp4uw4Zhl3zOyffK5kNM9gAI4UObltSEU1qXdKcHMFiQDr4ru34DaAyJOh1uiSVsrca1e8wKVu331e2z5J59paStklcDydOMPgXqaxGQ8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BucADCAB; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0ACF21F00ACF;
-	Fri, 26 Jun 2026 17:55:00 +0000 (UTC)
+	 MIME-Version; b=PR1PrFilQlqyL2VXicV+w06aR29BroToyfUhJOHxM3W4DANyKV7TtyTKLrBrDXFbFk8h99rwMHfBkgC+MwUERgHNCzQLpM4sLSPMidQfF9nIvTu2wyyyqp/khYFwSsNkBAgMdA2l9zNNJdqXIzVKUO4PBrNfZ2jEEoPGus+a6WM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=how95+WC; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4796F1F00ADB;
+	Fri, 26 Jun 2026 17:55:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782496502;
-	bh=qIDhNn27LtiZ78FO/Hnj+1740GHIkWRZOms0c1Rzsx8=;
+	s=k20260515; t=1782496503;
+	bh=Pdn0E5Y5Nj/fQCduvqhoJH4aFkxsGQNt0zWn1FUQEuo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=BucADCABOCDh2uX0z3LDDOSiwSZVqi3vQh8ftDfm9LVNImPw5aSoLIOWQ5sfu3jbE
-	 jdP345fJFQ5phqNuU47plYQJQXYXGrqi5k404nK5Pp3RIOCAovTojSHGOhP1tjRzKl
-	 KpjT9G4xwd1gNQxlf+iWQ4uLIZk2Pless73vVEETOWhF4JyBU6rcy5z0KK3tiPKoau
-	 hB7iTRNmbpvDM4cBnlqylWoTvApp3hIX1ttowd3OjPsoWZHQGTQurb7rC2Lf/F9+Y+
-	 O7BiDNps9fytB+6ET0ywxPo7gFR0SRWQa9rJlsCkjaYShkfDTryxnN/aiZpD5hiNQl
-	 YfjXRipy9KCgw==
+	b=how95+WCM80h3Igw2zPYuF9DZ8HIv6DQ7fZT7He4ckFBCPVeFgmhPmCqy1cQpshhd
+	 sOpoD4eL9YjqTWwAcVLV9pp2PnmQKTgFnM9QK35D44DXG71ApvwhTjU7Vabvw/WrQz
+	 M48wuO2KJq95CAWgYdJpHfE3jV6GIJ7T3sbrMpQT50Tv/PJcx0rgeAeZ8r+d8o+b7n
+	 sDqmFhy1LLzohDpmPjYXclNY/1eEw6wFBuO3Lq44IOgyLWYAlALPDjm9XdVRu3e/Ir
+	 aPmO/daj6P8uBjV9ht7ga1Exz+1e78LGk2RXdTFOuCBMWkRGEOoiNkeOoTMxx2bBxt
+	 QUBeeq67HeH9w==
 From: Sasha Levin <sashal@kernel.org>
 To: Greg KH <gregkh@linuxfoundation.org>
 Cc: Sasha Levin <sashal@kernel.org>,
@@ -56,12 +56,12 @@ Cc: Sasha Levin <sashal@kernel.org>,
 	Shuah Khan <shuah@kernel.org>,
 	Richard Cochran <richardcochran@gmail.com>,
 	Yong Wang <yongwang@nvidia.com>
-Subject: Re: [PATCH 6.6.y] Revert "ptp: add testptp mask test"
-Date: Fri, 26 Jun 2026 13:54:29 -0400
-Message-ID: <stable-reply-item013-ptp-revert-66-20260626@kernel.org>
+Subject: Re: [PATCH 6.1.y] Revert "ptp: add testptp mask test"
+Date: Fri, 26 Jun 2026 13:54:30 -0400
+Message-ID: <stable-reply-item014-ptp-revert-61-20260626@kernel.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <3651ff8e1f7ef3a6e8f40592a1759e494d7b3a6d.1782385355.git.petrm@nvidia.com>
-References: <3651ff8e1f7ef3a6e8f40592a1759e494d7b3a6d.1782385355.git.petrm@nvidia.com>
+In-Reply-To: <07d9593140f9b608272e5f2ae312d94f9d9a743f.1782381059.git.petrm@nvidia.com>
+References: <07d9593140f9b608272e5f2ae312d94f9d9a743f.1782381059.git.petrm@nvidia.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -75,12 +75,12 @@ X-Spamd-Result: default: False [-4.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-269264-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-269266-lists,stable=lfdr.de];
 	FREEMAIL_CC(0.00)[kernel.org,nvidia.com,vger.kernel.org,google.com,gmail.com];
 	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
@@ -99,17 +99,17 @@ X-Spamd-Result: default: False [-4.66 / 15.00];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	RCPT_COUNT_SEVEN(0.00)[9];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 252BE6CF8AE
+X-Rspamd-Queue-Id: 2C5DE6CF8ED
 
-> [PATCH 6.6.y] Revert "ptp: add testptp mask test"
+> [PATCH 6.1.y] Revert "ptp: add testptp mask test"
 
-Queued for 6.6, thanks.
+Queued for 6.1, thanks.
 
 -- 
 Thanks,
