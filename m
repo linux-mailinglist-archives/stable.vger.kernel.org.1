@@ -1,104 +1,103 @@
-Return-Path: <stable+bounces-268712-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-268713-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id Nz55DJDoPWpZ8AgAu9opvQ
-	(envelope-from <stable+bounces-268712-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 04:48:48 +0200
+	id y8/EOPrqPWqJ8QgAu9opvQ
+	(envelope-from <stable+bounces-268713-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 04:59:06 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF4496C9DDE
-	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 04:48:47 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id E80896C9E14
+	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 04:59:05 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=fluxnic.net header.s=fm1 header.b=OA4tOhhx;
-	dkim=pass header.d=messagingengine.com header.s=fm1 header.b=E6nxl5kg;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-268712-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-268712-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=none) header.from=fluxnic.net;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=XwLo9oBx;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-268713-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-268713-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=none) header.from=gmail.com;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E9BAB303F7DC
-	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 02:48:38 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 08A31300D79F
+	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 02:59:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98DF23955CD;
-	Fri, 26 Jun 2026 02:48:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B460E39DBC0;
+	Fri, 26 Jun 2026 02:58:59 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from fhigh-b1-smtp.messagingengine.com (fhigh-b1-smtp.messagingengine.com [202.12.124.152])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com [209.85.214.180])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 159501A9FBD;
-	Fri, 26 Jun 2026 02:48:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E7C739DBDB
+	for <stable@vger.kernel.org>; Fri, 26 Jun 2026 02:58:58 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782442117; cv=none; b=eHAcTuyq0y2f4Yfi66gGaS5+C0GnyewB5bGVJveIUX2YNJ6iXcVuyXJoSIoWvM+nJp1fsgYvPtAKrXfdqhlCtOpIwMFjKmG05ZHiyKuqolXnKDlO8PuGxIUS9warzxTGYc1QToZO0V1lIgskU4K2y30fmw5fAuaoA1Nsk3p2xhU=
+	t=1782442739; cv=none; b=bQYsyJ3KSM/ng0p/jfnColxPvnCRZl3fFilvhjVLtdVM4q06hYIIinzYIHVyve13bB84kN7nKgGcES3zJf5aSPrf4fiftOBmGqzMGh0HmuxuRM09D1r+LpDW0yXQ0u0VQWzIqRWlU5YvuoYKZgl4g9HNZaSscYMxZGNxz5tSYRo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782442117; c=relaxed/simple;
-	bh=wvskUSEmn3eqb2Q7GWIrAzIS4bqD5byfetLgL6eN7yE=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=qNr0azM506S4LJbZeoi69Ksw7vPDFlJFZOHxbjX3NQDwLc15uAcCNIODKuzrxjR+LtH5jWEIswNWBF8IDiteQjc1fye8KXtXtcnl4nCt/E6tFxlJdXVHqf5ZAz5ZXw1D1nHfitnXc+Ohpa1vTTlLZgbM+5foZWZDy25qwZ7pGGY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fluxnic.net; spf=pass smtp.mailfrom=fluxnic.net; dkim=pass (2048-bit key) header.d=fluxnic.net header.i=@fluxnic.net header.b=OA4tOhhx; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=E6nxl5kg; arc=none smtp.client-ip=202.12.124.152
-Received: from phl-compute-02.internal (phl-compute-02.internal [10.202.2.42])
-	by mailfhigh.stl.internal (Postfix) with ESMTP id 5B9847A00E2;
-	Thu, 25 Jun 2026 22:48:35 -0400 (EDT)
-Received: from phl-frontend-02 ([10.202.2.161])
-  by phl-compute-02.internal (MEProxy); Thu, 25 Jun 2026 22:48:35 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=fluxnic.net; h=
-	cc:cc:content-transfer-encoding:content-type:date:date:from:from
-	:in-reply-to:message-id:mime-version:reply-to:subject:subject:to
-	:to; s=fm1; t=1782442115; x=1782528515; bh=vKxjbEXFAfyWL7XswsMlE
-	3bPTcJ1B7Lf7VkFWORwfQI=; b=OA4tOhhxAZuuPBqYSRMyTdEMBQ6rYPKJLyzk0
-	xnXBhLrE7qt7hfpYrBQGbMgBIROPDso2i3OvfZm6fZbITCi1RGhwBdt0vQU2DDKM
-	I+CE+rXW2eKb7F3ancV/M7tAyQh8YoLS5xmfrNk+5krXB0jkXF6Spf+aeAuzKDfN
-	Cg60+naMpyC9A1QidylsHwQnreLXT/hQFinXFQYms6+WRiIfF1hg3DSfjmbBmags
-	vHJwNeiJzU/ogEtiGnfVZ8DiS5YRkFaXCOCDVAdXjeN8Aaq0PPY2z6bYIxqYCXgY
-	nNUFZEOO2kPIVxKc0VBQ/2mI1V2NmtDPqIQwtctw64rx8L+Zw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:date:date:feedback-id:feedback-id:from:from
-	:in-reply-to:message-id:mime-version:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=
-	1782442115; x=1782528515; bh=vKxjbEXFAfyWL7XswsMlE3bPTcJ1B7Lf7Vk
-	FWORwfQI=; b=E6nxl5kge8Jm442ya7SA15FrwGlfCXIaOgzBnn0AwUwDHX3eX3+
-	LkonPENS1Jw+Y6MPjQvx1oVWgLJ7emC7KyM8BzbHALGS9UnEr20Z6FMw+LmmNSyO
-	znnlTEWmnovF13Eo+2BKAdHAOQ6pyYB1f4SHpLzMLr4oRXLxCe3bqvS6tcSBSiId
-	FgyDpOtX0OPVGii8QdhByUQMM3YpiSEH8ihvqOhfkOwmRaHWKolGssvZXSeHMIh/
-	nzk83eSGqOMTsLavGNMrR+Nvb1KYjB7rZDJkPd/1LR5lS74s6psID0Uw17aatGSt
-	duGycDp8G0qmBsAySzPcLpHO2DzWCjuCCEQ==
-X-ME-Sender: <xms:gug9avsbtIZK1qvjJ6UNeajSv19fSgX4p0E1u7gHPtIdt52Udx4TMQ>
-    <xme:gug9ajBM69Pv-goUixH3rfx5zJ1d1WLbE5vf7v1UTL-CtT0Ir0i1-4srT2kVjNLd6
-    wPei9Wqxlvja7JnjixC0OS2V-uBdK00_TWcNnomqZ0aQVW6bvKgTLQ>
-X-ME-Received: <xmr:gug9amZlAAUCOI525gZoYryhXLBHYLn7S3JQ0LYLj_Ey1yBmeoLgSEPlvimNiYO17-npVktkEv4YQPRKuXhNAMoFHRIGFnXfzHSe_-P0uEjqPBU>
-X-ME-Proxy-Cause: dmFkZTESxluzVC2KcRUFSvlDgfOqBYmKh2Au24yxyLSGlr5/+JwEZlzAbWiDcZRIrouDmi
-    lGm/wtfeYG0YAcqJYKLNQLKIiLBMWBWMMaqaB4QhEQ4HnzgA81OGyBxWVI7qUj9srvgB1F
-    nk1xIZD7GG60w+DIk5dxQzi0tKZQSRMZqLh8vxto5Htsa2ILyaL/4WJgEcIwv/mNoR28Bw
-    vaDwVYiA1ehM14Ox3oIl9ZG0IViCYxO2pB1gZqQXRvdL2fZSoCwGnVPxg8aFgRP+7obe1d
-    7VjsW6EN6vh+EgZgCfpit/XCHvVbbF7coWc/miHeWkg8JZw+eUAQWYDuNiRHla1HY0UjpQ
-    qq2ZGVJXznd/B2xYskQ1SIwq8yJDIZQgjGF86zpXF/AqK415hu4zpYAkSrcUoBmEy9BeF9
-    P/Ziza211KlAxY601d18K/M5dMbb6JtL28HGiCnNqQbN40oG4rO9K+81J9MA3yr86j2tZo
-    Zk85PUA2l/JTSRVfOldBax6EyvmclfDYwCMIL7nS7wrmQ5OTSUpbmS/XGbX0lclFufyccd
-    HKTcG0l4WrN4f6/Q13q/pEgyFmYrnp0jwlhsqyvwQ6+oeibLk/PG75fvPJFhsSHmhUKsCx
-    VjtUx3HByooGUX39CzxlyTCTbXSajIclJDReSjjik2h3WKsekCLLlQKHaucw
-X-ME-Proxy: <xmx:gug9auWF2Xd_RNRBLAGd-SIAH4hbqByjKUZWDh3d8EFL_r1FMfDfww>
-    <xmx:gug9alPwhfxpluRCE8CbOB2XeJU4rFLMnA_LekVvV1lSNp06Qn_nKQ>
-    <xmx:gug9aoabF3PAlDIPJhJb3fbRwOS4JMtekpPL33miRmHff1MQbrJX0g>
-    <xmx:gug9ak-YVpMe-G9Q1s75Uu5y9bW5nlEvXZzmR4-bkFHMqFKm_FeA4Q>
-    <xmx:g-g9apbvwexXdyLoFVmDoWXmvcEjifA7rFwdhOZfznDoEf-unmZl9k6D>
-Feedback-ID: i58514971:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
- 25 Jun 2026 22:48:34 -0400 (EDT)
-Received: from xanadu.lan (_gateway [192.168.1.1])
-	by yoda.fluxnic.net (Postfix) with ESMTPSA id E222D169F00A;
-	Thu, 25 Jun 2026 22:48:33 -0400 (EDT)
-From: Nicolas Pitre <nico@fluxnic.net>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Jiri Slaby <jirislaby@kernel.org>
-Cc: Nicolas Pitre <npitre@baylibre.com>,
-	Alexey Gladkov <legion@kernel.org>,
-	linux-serial@vger.kernel.org,
+	s=arc-20240116; t=1782442739; c=relaxed/simple;
+	bh=aG0d86+VStYCLhrRw4TkiqCfZ90Xd/Y/zoM5y23rOFY=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=SVMO5tA4Rf1b/+jvqd6WM6TpH9dBoHieZjGLE3h8k2LQ3LmtTmeJmCI0+wqT8LXX7BgsOzzv6YgN4iPMoGHZWU2Z/s96SpdlhcUC57SQAr3oSgBx2vD2h0ZDJrYsBp1YY50pRMWPP4AzHAC5n7HWTnWHunp6gjqHlzJ93nWnHvs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=XwLo9oBx; arc=none smtp.client-ip=209.85.214.180
+Received: by mail-pl1-f180.google.com with SMTP id d9443c01a7336-2c6be9cd89bso2182945ad.2
+        for <stable@vger.kernel.org>; Thu, 25 Jun 2026 19:58:58 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1782442738; x=1783047538; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=vVsjU9yKl2cJB/WfxCzz06jvF+n5PC9ZLu0AFLXamVs=;
+        b=XwLo9oBxqluE6pY0EON2hm6P7RuqqkUhGaRoqB+qQT5sCROnn/EKsDa0JezXNCdsIO
+         XBZsR5PrTVIvqw36QBbjIDYv80YGL/OAVa1t/PB7i7LLjtMkeEY+Osb2wmAwfULyYYej
+         lazycJAdzx399o7Av+7nBvX/EYAgp07eEqPAPVAjYlXPXkVmW7Gwbr7Io4ilQoae401p
+         sAs46jPo/Xsf7dvq39oDzJeepzFRHlfki7jtbyOaPkaxT/Uo0ChGoaRTDdQkJqjT4/vR
+         L6Fc/O+JlBKluZHSrI/9Levry6nCa3UjRe31VPjj9ZSq2koRAgmXJAB/lZs2f9TV63E9
+         fksA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1782442738; x=1783047538;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=vVsjU9yKl2cJB/WfxCzz06jvF+n5PC9ZLu0AFLXamVs=;
+        b=V42YhvouuvyzuuO9npBSls5NdweYKDbwU2dwqbkfUwuj8gRA0CPxuvl2uXP4ErLSLh
+         /M6eye0kOBJ1XoHyLnQUtPbE6puMXz7+7puTa/jKtiWC72npjWHaTmqhvZcc3hXJ1VbR
+         wBkmI+nN8r0hf5/DLGTzQZdl4sPSIlPo7Bws/5ciFEYo8Lz/X6dZp8SrDD0gMX4KCvpz
+         5uJ8jLqriEqVy+Pl/G9Pf8mCkXfKz5oJJw6FN4iftMBXOmH1FU0gcHtUpwRPaoFG3E6o
+         G5eWhQFkZf2/inUUBdlNjBccajk+ug+hQSnbGW9/pl2D2OnNKiSKWN8Vx5tnKKkplcaO
+         9jjA==
+X-Forwarded-Encrypted: i=1; AHgh+RrJ4q9ucGiL27pANFLCeCV/ghvjAyboJ/wxwNdovvSJTqlxzXg6e/IAVIQQ3lC5K/k5JcORn+g=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzv+RneAbL8BcyKkUICyatNpbRSZc6GMACGfsRdvjXYEUkaL0ea
+	FXez1Dp5PzC85l8YULsXccvMuYOCONmp/m3LcuoA3nX2UGCuLLabuIcV
+X-Gm-Gg: AfdE7cl1Tgf1xkdWTAQ3KCLIxcQsEzOLTZQjPbLJ2CJXU633h3GT2JHe6rFHxrrvCB7
+	Oc9vc/M3QQqefGmGLjStkTg6yVpuMUBL0SF2vq97YAqoNtTfN7qVAO1qmd5dfMbnoNDtW9eI/Ej
+	skz55zYRXLOMVrMNFuaR8dQx60Su8q9MejjqMS1vsNjFMC16P4QgE7+elxtHIJig/NMbr0e50+w
+	hsz1Pifkzvx9+oA72+uOLMXtAWca6CuK6Mw0O3qcoeCv7ZUFD5/IB32Pm7o73xJV172R6GzWzpn
+	S57pp/RS456xOjZIAuJZqcGOIxvSOeFhYEZNq3BCqa0nfZyEMhZ8dXWmZbHtRE+EwzqTK0PpFzI
+	fUQhY6WC7FI+rIig5HRKd8gdWllAlabuGI0NWvE35+j1rzST6hLDNXsZaSeTrfpUuGotMGrzl80
+	ZNs+vrqt7qSHU=
+X-Received: by 2002:a17:903:46c8:b0:2c7:d071:3ef1 with SMTP id d9443c01a7336-2c7fca19129mr53387105ad.19.1782442737717;
+        Thu, 25 Jun 2026 19:58:57 -0700 (PDT)
+Received: from archermind.. ([182.150.55.91])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2c7f5afb1e0sm31252535ad.29.2026.06.25.19.58.53
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 25 Jun 2026 19:58:57 -0700 (PDT)
+From: Liem <liem16213@gmail.com>
+To: frank.li@oss.nxp.com
+Cc: Frank.Li@nxp.com,
+	andi.shyti@kernel.org,
+	biwen.li@nxp.com,
+	festevam@gmail.com,
+	imx@lists.linux.dev,
+	kernel@pengutronix.de,
+	liem16213@gmail.com,
+	linux-arm-kernel@lists.infradead.org,
+	linux-i2c@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
+	o.rempel@pengutronix.de,
+	s.hauer@pengutronix.de,
 	stable@vger.kernel.org,
-	kbd@lists.linux.dev
-Subject: [PATCH] vt: fix spurious modifier in CSI/cursor key sequences
-Date: Thu, 25 Jun 2026 22:48:33 -0400
-Message-ID: <20260626024833.3419086-1-nico@fluxnic.net>
-X-Mailer: git-send-email 2.54.0
+	wsa@kernel.org
+Subject: [PATCH v3 0/2] Fix slave mode corner issues
+Date: Fri, 26 Jun 2026 10:58:44 +0800
+Message-Id: <20260626025846.106157-1-liem16213@gmail.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <aj1UR5ddawsdMbZC@SMW015318>
+References: <aj1UR5ddawsdMbZC@SMW015318>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -110,108 +109,63 @@ X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[fluxnic.net,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[fluxnic.net:s=fm1,messagingengine.com:s=fm1];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-268712-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:gregkh@linuxfoundation.org,m:jirislaby@kernel.org,m:npitre@baylibre.com,m:legion@kernel.org,m:linux-serial@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,m:kbd@lists.linux.dev,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[nico@fluxnic.net,stable@vger.kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS(0.00)[m:frank.li@oss.nxp.com,m:Frank.Li@nxp.com,m:andi.shyti@kernel.org,m:biwen.li@nxp.com,m:festevam@gmail.com,m:imx@lists.linux.dev,m:kernel@pengutronix.de,m:liem16213@gmail.com,m:linux-arm-kernel@lists.infradead.org,m:linux-i2c@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:o.rempel@pengutronix.de,m:s.hauer@pengutronix.de,m:stable@vger.kernel.org,m:wsa@kernel.org,s:lists@lfdr.de];
+	RCPT_COUNT_TWELVE(0.00)[15];
+	FREEMAIL_CC(0.00)[nxp.com,kernel.org,gmail.com,lists.linux.dev,pengutronix.de,lists.infradead.org,vger.kernel.org];
 	FORWARDED(0.00)[lists@lfdr.de];
-	FROM_NEQ_ENVFROM(0.00)[nico@fluxnic.net,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-268713-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_SENDER(0.00)[liem16213@gmail.com,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	FREEMAIL_FROM(0.00)[gmail.com];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[liem16213@gmail.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
 	ALIAS_RESOLVED(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,messagingengine.com:dkim,vger.kernel.org:from_smtp];
-	DKIM_TRACE(0.00)[fluxnic.net:+,messagingengine.com:+];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_NONE(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_SEVEN(0.00)[7]
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: BF4496C9DDE
+X-Rspamd-Queue-Id: E80896C9E14
 
-From: Nicolas Pitre <npitre@baylibre.com>
+This series fixes two issues in the i2c-imx slave mode.
 
-csi_modifier_param() builds the xterm modifier parameter from
-shift_state, counting KG_SHIFTL/KG_SHIFTR as Shift, KG_ALTGR as Alt
-and KG_CTRLL/KG_CTRLR as Ctrl in addition to the canonical KG_SHIFT,
-KG_ALT and KG_CTRL.
+Patch 1 clears the slave pointer on registration failure to allow
+subsequent re-registration.
 
-That is wrong when those weights are not plain modifiers. Keymaps
-derived from XKB layouts (by kbd's xkbsupport, and by the
-console-setup used in Debian, Ubuntu and others) encode the active
-layout group using KG_SHIFTL/KG_SHIFTR:
+Patch 2 cancels the hrtimer before clearing the slave pointer during
+unregistration, preventing a potential use-after-free / NULL pointer
+dereference.
 
-	group 1: -
-	group 2: shiftl
-	group 3: shiftr
-	group 4: shiftl | shiftr
+Changes in v3:
+- Split the original patch into two separate patches as suggested by
+  Frank Li.
+- v2: https://lore.kernel.org/imx/
+  20260625160219.55116-1-liem16213@gmail.com/
 
-So while a non-default layout group is selected, KG_SHIFTL and/or
-KG_SHIFTR are set in shift_state with no Shift key held.
-csi_modifier_param() then adds a spurious Shift to every cursor and
-CSI key: pressing Up while group 2 is active emits ESC[1;2A (Shift+Up)
-instead of ESC[A. KG_ALTGR has the same problem since it is the
-standard third-level selector.
+Liem (2):
+  i2c: imx: Clear slave pointer on registration error
+  i2c: imx: Cancel hrtimer before clearing slave pointer
 
-Normal keymaps bind the physical Shift/Ctrl/Alt keys to KG_SHIFT,
-KG_CTRL and KG_ALT, leaving the left/right and AltGr weights free for
-layout and level selection. Count only those canonical weights, so
-genuine modifiers are still encoded while layout/level selectors are
-not.
+ drivers/i2c/busses/i2c-imx.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-Fixes: 4af70f151671 ("vt: add modifier support to cursor keys")
-Reported-by: Alexey Gladkov <legion@kernel.org>
-Closes: https://lore.kernel.org/kbd/aj2gR0Y7sM6i9s2G@example.org/
-Cc: stable@vger.kernel.org
-Signed-off-by: Nicolas Pitre <npitre@baylibre.com>
----
- drivers/tty/vt/keyboard.c | 12 +++++++++---
- 1 file changed, 9 insertions(+), 3 deletions(-)
-
-diff --git a/drivers/tty/vt/keyboard.c b/drivers/tty/vt/keyboard.c
-index dfdea0842149..763a3f1b7be0 100644
---- a/drivers/tty/vt/keyboard.c
-+++ b/drivers/tty/vt/keyboard.c
-@@ -765,16 +765,22 @@ static void k_fn(struct vc_data *vc, unsigned char value, char up_flag)
- /*
-  * Compute xterm-style modifier parameter for CSI sequences.
-  * Returns 1 + (shift ? 1 : 0) + (alt ? 2 : 0) + (ctrl ? 4 : 0)
-+ *
-+ * Only the canonical modifier weights are counted. The left/right variants
-+ * (KG_SHIFTL, KG_SHIFTR, KG_CTRLL, KG_CTRLR) and KG_ALTGR are commonly
-+ * repurposed as keymap layout-group or level selectors rather than as plain
-+ * modifiers (for instance XKB-derived keymaps select the layout group with
-+ * KG_SHIFTL/KG_SHIFTR), so counting them would encode a spurious modifier.
-  */
- static int csi_modifier_param(void)
- {
- 	int mod = 1;
- 
--	if (shift_state & (BIT(KG_SHIFT) | BIT(KG_SHIFTL) | BIT(KG_SHIFTR)))
-+	if (shift_state & BIT(KG_SHIFT))
- 		mod += 1;
--	if (shift_state & (BIT(KG_ALT) | BIT(KG_ALTGR)))
-+	if (shift_state & BIT(KG_ALT))
- 		mod += 2;
--	if (shift_state & (BIT(KG_CTRL) | BIT(KG_CTRLL) | BIT(KG_CTRLR)))
-+	if (shift_state & BIT(KG_CTRL))
- 		mod += 4;
- 	return mod;
- }
 -- 
-2.54.0
+2.34.1
 
 
