@@ -1,78 +1,94 @@
-Return-Path: <stable+bounces-268802-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-268804-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 5HFEIJJWPmpUEAkAu9opvQ
-	(envelope-from <stable+bounces-268802-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 12:38:10 +0200
+	id dZV9OZJXPmqkEAkAu9opvQ
+	(envelope-from <stable+bounces-268804-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 12:42:26 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id CED686CC21A
-	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 12:38:09 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 833D76CC25D
+	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 12:42:26 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=VWQdDSM8;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-268802-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-268802-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=fHBy03Tu;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-268804-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-268804-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=none) header.from=gmail.com;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 50CCA300D684
-	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 10:38:08 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 00BE9302BECC
+	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 10:42:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 446063A452E;
-	Fri, 26 Jun 2026 10:38:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC4FC3B52E6;
+	Fri, 26 Jun 2026 10:42:21 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-dy1-f181.google.com (mail-dy1-f181.google.com [74.125.82.181])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33744379990;
-	Fri, 26 Jun 2026 10:38:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CA063812EB
+	for <stable@vger.kernel.org>; Fri, 26 Jun 2026 10:42:20 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782470284; cv=none; b=hkCCxi5XcdUhgyxPB3PJZAourT/womFQ+eDjJiCHkkOgWNwCzfgPEeKS4Pvkf4H1+MAd+nQsDePVbFtYeRaDoTc3vq+TQXIFjrr1vnsVyoKsMnPxcFkebgmze42h4XfofQpyuPCErCvBSUI9p3ENqvxHmbygjzzZ9ymGJZxA0wM=
+	t=1782470541; cv=none; b=lfvZkksh+4VS5C1wOaJnE+6KCgfQfYU5IDCCImx/BJUCUzSnn+y39vq2I2ROyDWIPssTStLN0AyctjVLXG6XjKQ2RU2trtWNC7QvVhUpDzgGqrF56pTOACwl9mVFn3bcj8ZtL3pYP18QGLvFrhrbqHNBUNT4Be3JE1VUaHlmTr4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782470284; c=relaxed/simple;
-	bh=w2+vorRUkr7Us9UAT2hpzbdfVvJ1kth8bAjN40dOlCI=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gNZWFaGgS2Fxi80aJI3xzGAWbENDaDaJnlxFTN+Nl7w9nI/6G2LvOdBlAIRKtXLHlALNyf5pejAcvsTxwPAgx2fG50fFyDcMDbHsoZq/fsC8KR1rkGH2M5UqZk6MhRvuF4GsXHlNr8y3jzzTDM2Wip6+3veabuguyM81DOaP8Go=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VWQdDSM8; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ECA9A1F000E9;
-	Fri, 26 Jun 2026 10:37:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782470279;
-	bh=1pVJ6qJgF8wbJ3CGxmn+mkF8xzZ5fzZFXfjBDXSUrCs=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=VWQdDSM8zVVcd6RnejWFPZF2exs7HkmiZ+UmQYEUVjNc13w2spQwl2srv4cZ0bVbW
-	 HjFvxpLKdba0F0mqYjHT7N10jTCxVftoLSyrPQHnGfQKTAmkX4if9vCwUEB43fSlKM
-	 wBm+3T6RpmHdyihNO55Hzy3/xZbh4zx4ggULsn+7oDK2kTnDe0LqVgUCC5EPJ1INq3
-	 65TXdltRwW6q1w3XouyL7ETBx3WGCSaBZy8ngcj9orF8OVuofXLob58QTpX4pk9ehz
-	 iU+Naphf3G+xH4p4AIwFIKwLxdce9L6B/tCfEFW1p9BS17R1ZPP6RfeYukTKpoCVhG
-	 KXFQ2cYbDfuDw==
-From: Miguel Ojeda <ojeda@kernel.org>
-To: gregkh@linuxfoundation.org
-Cc: achill@achill.org,
-	akpm@linux-foundation.org,
-	broonie@kernel.org,
-	conor@kernel.org,
-	f.fainelli@gmail.com,
-	hargar@microsoft.com,
-	jonathanh@nvidia.com,
-	linux-kernel@vger.kernel.org,
-	linux@roeck-us.net,
-	lkft-triage@lists.linaro.org,
-	patches@kernelci.org,
-	patches@lists.linux.dev,
-	pavel@nabladev.com,
-	rwarsow@gmx.de,
-	shuah@kernel.org,
-	sr@sladewatkins.com,
+	s=arc-20240116; t=1782470541; c=relaxed/simple;
+	bh=vKEWT6O9bP3DpdrhVvIho3UWnDQ9SYmZ2ge7bd0ghi0=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=qjO/HRCLCTrNUzlevl9L5vjbn2B8h5vhfLKWM4nhAhjbeazvbidacwaengLWKvEPGV/uMiXUL45xA8yDlkycdTgEqvveqoh64x6OnRrkgRYDlZGYVSCQdQ5O3zWiZAMBxwdKYVpez3SoZK4kYHb1MqFBcua8TD3ojKTJrI9+l6c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=fHBy03Tu; arc=none smtp.client-ip=74.125.82.181
+Received: by mail-dy1-f181.google.com with SMTP id 5a478bee46e88-30bc871ecdfso1100032eec.1
+        for <stable@vger.kernel.org>; Fri, 26 Jun 2026 03:42:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1782470539; x=1783075339; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=qP0J1iWyaoP+HLz+xwVairx0bDAZ93dXt6GX/Ei5LK4=;
+        b=fHBy03Tu8aWNwiNoaYzg4OYrJP0AQIjPljRbJNW2ZHM7XRNAwgd/99RgeN1qx/cOlT
+         Omt1uq7m+Z8kGKMbqlv2D+PjxXyZ5XafIf0F9wreEP419/oI5muTPFGv9qPdwHEzGf/N
+         csma4i+FabdXk+Fu5vNUUbrdDHfDSV331lb+yGc7DiQEBuw3mnjxsiC0GXii7OGwLtRi
+         rDMXdgnzDQWW6kMvRLWh2pKt5Gd5CLUHOKpCIY89fKb5D1m0i0Nn+B2yGPEfIq//0ZMI
+         qIXRlHGAfUzLkEldaDZDKNWswOESWCXbv2vHY26GKCQkY7aw7cg4/3YQBSfaBoQjV41Z
+         qtsw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1782470539; x=1783075339;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=qP0J1iWyaoP+HLz+xwVairx0bDAZ93dXt6GX/Ei5LK4=;
+        b=gg7qo04/xAJiIdM1PW9BvH7D+CDCkaHXZpGKuxxz/kaJXKGVtK8jt1wKgiHPBu/uto
+         4mSGMqHu05mBCo4MWQaOIAJ9dg9k5JMY98a7M2SoSid/woAPi9SmOTfEj1UTnFWZ093W
+         zgWssM1YzWqYwPXeJz4FmttmNkBOa7ekctXU9e2Dx/q/ku2+pEAzGCKF3j7h2+r3SLjv
+         Oqme3aLLV3mnkwIdR5WSn9gkDp4E6f9UQW+9m7O1VEikuP/pv9EBgWn5ETWR3pbeMg5f
+         +YGnX18Bjj2JJvY583og60DcL9nbcCAIs6MtMQ3HjhU1/DNz1ojbz1YHVchrWtydAwOx
+         Rehg==
+X-Forwarded-Encrypted: i=1; AHgh+RrVLirVFaXCz8VnHgnYVncSH2As7jSFf2//NjL29hyIyYYy4VlZAMkczloPs1hfe2x7Nx+AzYs=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyUDAyF7x0d1/+lY42QVHX9FsSENFtUDW7GV1bZeLg1BTRBdCOC
+	Tdj0ruJ2l3PxWTRWVoUMvBx9v6sTDSACktXTrmJR7l6OPd5/qnyBIpXO56OXpPA8f9bceA==
+X-Gm-Gg: AfdE7cmSIQxa0+SL+1ZY3D+NUZuiVgMgpH4sDwJFkKymg237v9Mm1fZHftnbam8Ra9c
+	ggKO1RVOrOFkQu3Iv7rWwlLzSCbY83nwEtQNruHocKxf4rOUDWWkDv1BAutmuuuc/4l+ESJfgoh
+	WAazGvwMcg9PXsL+Uaa8v4pIDdUu5ygQ2ZZQXXRcfJFJULvDzBt6M4n7mlmzG/KQCnV7KlIjcmG
+	wh4A3dddoiJE25WKVp0+kQ+kP9iEsnNAmeOZ6+DD2ZLjzPxYRvNhLUupfQsU3X2FgVvRsmm20Wi
+	MiYRIjbI7ZbM4rkw0WbfNMi6IiNReGTZDcRt5FdcPrCUhWBVpBSNpAWyLXurz+Jcwv0W4B9kGMM
+	3n42X8JYlDaYk86LDZfQsaQccbC9s56zd4VuIEzSjEw+BkK3AhjZJeRDAzss3b/IQ7LTbrY6eve
+	NEVO9wczz1O8qvLBa6ss5sUWEYUyBmpPN6SZNJC9OH588ChbiBIB0BTt1JSQ==
+X-Received: by 2002:a05:7300:8b85:b0:304:bce9:25fa with SMTP id 5a478bee46e88-30c84cf58edmr5969617eec.4.1782470539345;
+        Fri, 26 Jun 2026 03:42:19 -0700 (PDT)
+Received: from naduvan.timesys.com ([122.178.167.70])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-30c7c8b1ae5sm18956056eec.16.2026.06.26.03.42.16
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 26 Jun 2026 03:42:18 -0700 (PDT)
+From: Siva Balasubramanian <sivakumar.bs@gmail.com>
+To: sivakumar.bs@gmail.com
+Cc: sivakumarb82@gmail.com,
+	Tristan Madani <tristan@talencesecurity.com>,
 	stable@vger.kernel.org,
-	sudipm.mukherjee@gmail.com,
-	torvalds@linux-foundation.org,
-	Miguel Ojeda <ojeda@kernel.org>
-Subject: Re: [PATCH 7.1 00/21] 7.1.2-rc1 review
-Date: Fri, 26 Jun 2026 12:37:38 +0200
-Message-ID: <20260626103738.731281-1-ojeda@kernel.org>
-In-Reply-To: <20260625125613.243729608@linuxfoundation.org>
-References: <20260625125613.243729608@linuxfoundation.org>
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Subject: [PATCH 1/2] Bluetooth: btmtk: validate WMT event SKB length before struct access
+Date: Fri, 26 Jun 2026 16:12:00 +0530
+Message-Id: <20260626104201.3463460-2-sivakumar.bs@gmail.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20260626104201.3463460-1-sivakumar.bs@gmail.com>
+References: <20260626104201.3463460-1-sivakumar.bs@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -81,61 +97,102 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-2.16 / 15.00];
-	WHITELIST_SPF_DKIM(-3.00)[kernel.org:d:+,kernel.org:s:+];
+X-Spamd-Result: default: False [-0.16 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
-	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
 	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-268804-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	TAGGED_FROM(0.00)[bounces-268802-lists,stable=lfdr.de];
-	FORGED_SENDER(0.00)[ojeda@kernel.org,stable@vger.kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCPT_COUNT_TWELVE(0.00)[21];
-	FORGED_RECIPIENTS(0.00)[m:gregkh@linuxfoundation.org,m:achill@achill.org,m:akpm@linux-foundation.org,m:broonie@kernel.org,m:conor@kernel.org,m:f.fainelli@gmail.com,m:hargar@microsoft.com,m:jonathanh@nvidia.com,m:linux-kernel@vger.kernel.org,m:linux@roeck-us.net,m:lkft-triage@lists.linaro.org,m:patches@kernelci.org,m:patches@lists.linux.dev,m:pavel@nabladev.com,m:rwarsow@gmx.de,m:shuah@kernel.org,m:sr@sladewatkins.com,m:stable@vger.kernel.org,m:sudipm.mukherjee@gmail.com,m:torvalds@linux-foundation.org,m:ojeda@kernel.org,m:ffainelli@gmail.com,m:sudipmmukherjee@gmail.com,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:sivakumar.bs@gmail.com,m:sivakumarb82@gmail.com,m:tristan@talencesecurity.com,m:stable@vger.kernel.org,m:luiz.von.dentz@intel.com,m:gregkh@linuxfoundation.org,m:sivakumarbs@gmail.com,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[sivakumarbs@gmail.com,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[kernel.org:+];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	FREEMAIL_TO(0.00)[gmail.com];
 	TO_DN_SOME(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[ojeda@kernel.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[achill.org,linux-foundation.org,kernel.org,gmail.com,microsoft.com,nvidia.com,vger.kernel.org,roeck-us.net,lists.linaro.org,kernelci.org,lists.linux.dev,nabladev.com,gmx.de,sladewatkins.com];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FORWARDED(0.00)[lists@lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_CC(0.00)[gmail.com,talencesecurity.com,vger.kernel.org,intel.com,linuxfoundation.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[sivakumarbs@gmail.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	MISSING_XM_UA(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	FROM_HAS_DN(0.00)[]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: CED686CC21A
+X-Rspamd-Queue-Id: 833D76CC25D
 
-On Thu, 25 Jun 2026 14:03:52 +0100 Greg Kroah-Hartman <gregkh@linuxfoundation.org> wrote:
->
-> This is the start of the stable review cycle for the 7.1.2 release.
-> There are 21 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
-> 
-> Responses should be made by Sat, 27 Jun 2026 12:54:50 +0000.
-> Anything received after that time might be too late.
+From: Tristan Madani <tristan@talencesecurity.com>
 
-Boot-tested under QEMU for Rust x86_64, arm64 and riscv64; built-tested
-for loongarch64 and arm32:
+commit 634a4408c0615c523cf7531790f4f14a422b9206 upstream.
 
-Tested-by: Miguel Ojeda <ojeda@kernel.org>
+btmtk_usb_hci_wmt_sync() casts the WMT event response SKB data to
+struct btmtk_hci_wmt_evt (7 bytes) and struct btmtk_hci_wmt_evt_funcc
+(9 bytes) without first checking that the SKB contains enough data.
+A short firmware response causes out-of-bounds reads from SKB tailroom.
 
-Thanks!
+Use skb_pull_data() to validate and advance past the base WMT event
+header. For the FUNC_CTRL case, pull the additional status field bytes
+before accessing them.
 
-Cheers,
-Miguel
+Fixes: d019930b0049 ("Bluetooth: btmtk: move btusb_mtk_hci_wmt_sync to btmtk.c")
+Cc: stable@vger.kernel.org
+Signed-off-by: Tristan Madani <tristan@talencesecurity.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+(cherry picked from commit 634a4408c0615c523cf7531790f4f14a422b9206)
+Signed-off-by: Siva Balasubramanian <sivakumar.bs@gmail.com>
+---
+ drivers/bluetooth/btmtk.c | 15 +++++++++++++--
+ 1 file changed, 13 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/bluetooth/btmtk.c b/drivers/bluetooth/btmtk.c
+index ad8753dda826..5c6f4d4b2e7f 100644
+--- a/drivers/bluetooth/btmtk.c
++++ b/drivers/bluetooth/btmtk.c
+@@ -655,8 +655,13 @@ int btmtk_usb_hci_wmt_sync(struct hci_dev *hdev,
+ 	if (data->evt_skb == NULL)
+ 		goto err_free_wc;
+ 
+-	/* Parse and handle the return WMT event */
+-	wmt_evt = (struct btmtk_hci_wmt_evt *)data->evt_skb->data;
++	wmt_evt = skb_pull_data(data->evt_skb, sizeof(*wmt_evt));
++	if (!wmt_evt) {
++		bt_dev_err(hdev, "WMT event too short (%u bytes)",
++			   data->evt_skb->len);
++		err = -EINVAL;
++		goto err_free_skb;
++	}
+ 	if (wmt_evt->whdr.op != hdr->op) {
+ 		bt_dev_err(hdev, "Wrong op received %d expected %d",
+ 			   wmt_evt->whdr.op, hdr->op);
+@@ -672,6 +677,12 @@ int btmtk_usb_hci_wmt_sync(struct hci_dev *hdev,
+ 			status = BTMTK_WMT_PATCH_DONE;
+ 		break;
+ 	case BTMTK_WMT_FUNC_CTRL:
++		if (!skb_pull_data(data->evt_skb,
++				   sizeof(wmt_evt_funcc->status))) {
++			err = -EINVAL;
++			goto err_free_skb;
++		}
++
+ 		wmt_evt_funcc = (struct btmtk_hci_wmt_evt_funcc *)wmt_evt;
+ 		if (be16_to_cpu(wmt_evt_funcc->status) == 0x404)
+ 			status = BTMTK_WMT_ON_DONE;
+-- 
+2.34.1
+
 
