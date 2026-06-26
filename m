@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-269193-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-269204-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id fd3tHwKpPmpoJwkAu9opvQ
-	(envelope-from <stable+bounces-269193-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 18:29:54 +0200
+	id 2xbqFoGpPmqQJwkAu9opvQ
+	(envelope-from <stable+bounces-269204-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 18:32:01 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 085B66CF11F
-	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 18:29:54 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id DB1276CF1B1
+	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 18:32:00 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=narfation.org header.s=20121 header.b=l8VeT5wG;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-269193-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-269193-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=narfation.org header.s=20121 header.b=P82+aJKm;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-269204-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-269204-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=narfation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 6F3DA3165D60
-	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 16:15:33 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 947A831269E0
+	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 16:15:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EBC47402BB3;
-	Fri, 26 Jun 2026 16:12:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB2DE403AF8;
+	Fri, 26 Jun 2026 16:12:50 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from dvalin.narfation.org (dvalin.narfation.org [213.160.73.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C230E403144
-	for <stable@vger.kernel.org>; Fri, 26 Jun 2026 16:12:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A56F23F99E6
+	for <stable@vger.kernel.org>; Fri, 26 Jun 2026 16:12:46 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782490361; cv=none; b=enTeyjMJiGF4RN2N8XELtWcLPqw2DmOhUe4l4ggmFc3l/VEigm191teBgknoKX9M1tUvCQAf4Z6qoRG4+ohTgor0MJRBqOtrqNSrZiAgcSscmaG2grH4O01T69zJ3nArSmrgz8i1erXEvxyVLm7GTmt09uKQEk+cOouYUJeGdjQ=
+	t=1782490370; cv=none; b=mfsLqlemx54bsL3RAe9YCZ35Xk9/k5RNXkAWmX2dytSAVR22X10WRYLjvPES16qp2IOyb802dgiVZwZ5lUbD5RWqbWSSvQlm4bLcpwLesYGEh9xor4zx1EDcUAVJKz3Q70mMQ8EHxcO4riotYVlHKWtoTmiaTD91F/hGI4+0gfQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782490361; c=relaxed/simple;
-	bh=YQ4o3ZiDFg0uZY20GRh45Tc12zssa0lIOUEJywvb6cA=;
+	s=arc-20240116; t=1782490370; c=relaxed/simple;
+	bh=PXTFLasdbor8sCU1RD8RI4t04idnaIPVCj4SCtEOxDo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ClUz5X7hrVAOvGv7MOVbAml0mTP8P/c2uGgbGgirD7bCTeeVfkKu/IktkKZL1kVDcxAw67oEYH1Z0DqOvsq4SZ3F3kSbVn0ceti4QROwVxLQLURCmoCMFG2THWlPKAfoItcQ8xDcrmihbwHf0wGTOUS6SnOD/FPOFnQ7cpzGhfk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=narfation.org; spf=pass smtp.mailfrom=narfation.org; dkim=pass (1024-bit key) header.d=narfation.org header.i=@narfation.org header.b=l8VeT5wG; arc=none smtp.client-ip=213.160.73.56
-Received: by dvalin.narfation.org (Postfix) id 2F596203E0;
-	Fri, 26 Jun 2026 16:12:36 +0000 (UTC)
+	 MIME-Version; b=qKK5qEMKT1ezq7CilfiBzZu6ENEQXAoTt/F6c2B6xNBr4STiQzmDARgIy8sgQnVBsb4BOhZ6h7+j14LcDelygoi+jXh83qk6QF3Og704sbd+EOu4bsXpdxqkTcsGvo/aqmto0NDxXB9UkKEqd1fFeRzjrn0T0zoILZhUd8bghss=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=narfation.org; spf=pass smtp.mailfrom=narfation.org; dkim=pass (1024-bit key) header.d=narfation.org header.i=@narfation.org header.b=P82+aJKm; arc=none smtp.client-ip=213.160.73.56
+Received: by dvalin.narfation.org (Postfix) id 0EAFE2045E;
+	Fri, 26 Jun 2026 16:12:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=narfation.org;
-	s=20121; t=1782490356;
+	s=20121; t=1782490365;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=jjb3J3pnl0UoZYXnu+0oCd8temxV7aOFimp5ioF5e5U=;
-	b=l8VeT5wGaAd+W2/5ek7yZxkOqArRd/2OgcZ5ijI94fNox+cpYH4yY0yxYk/txeAguV3pbZ
-	7XG4AmNwKnDc1ryJJsTajSvTOuVDP35HQftjTqYgt6UvgDQY1kTztFXj3UERNjkxk/xUNc
-	rRMMlPlP+bm92HFvxku/6I4nyOhzn5E=
+	bh=9OSopJtj7ppYSjnEhqIsscCBXht2wUAZgGyIq+VEtIk=;
+	b=P82+aJKmMndjlG5RR61Pi4K5s6tTYgwy9oLtWm+Slu7ZoKOdvzEPICb7YctQJPGA7ypZkX
+	2F8nTT8AWA6Bdr0RLQp5HirMuWKDNYZjKFqHZL0+ujLhSXgtejxGMuRcaOWG5kXldVJo10
+	cFFFK3KfUUWxxuSqfu6uYNKFZ4Ffb2k=
 From: Sven Eckelmann <sven@narfation.org>
 To: stable@vger.kernel.org
 Cc: Sven Eckelmann <sven@narfation.org>
-Subject: [PATCH 7.0 22/26] batman-adv: tt: don't merge change entries with different VIDs
+Subject: [PATCH 7.1 06/26] batman-adv: tp_meter: fix fast recovery precondition
 Date: Fri, 26 Jun 2026 18:12:21 +0200
-Message-ID: <20260626161225.124839-23-sven@narfation.org>
+Message-ID: <20260626161241.124988-7-sven@narfation.org>
 X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260626161225.124839-1-sven@narfation.org>
-References: <20260626161225.124839-1-sven@narfation.org>
+In-Reply-To: <20260626161241.124988-1-sven@narfation.org>
+References: <20260626161241.124988-1-sven@narfation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -68,14 +68,14 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[narfation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[narfation.org:s=20121];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-269193-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-269204-lists,stable=lfdr.de];
 	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:sven@narfation.org,s:lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
@@ -91,46 +91,49 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[narfation.org:dkim,narfation.org:email,narfation.org:mid,narfation.org:from_mime,vger.kernel.org:from_smtp,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,narfation.org:dkim,narfation.org:email,narfation.org:mid,narfation.org:from_mime,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 085B66CF11F
+X-Rspamd-Queue-Id: DB1276CF1B1
 
-commit f08e06c2d5c3e2434e7c773f2213f4a7dce6bc1e upstream.
+commit 2b0d08f08ed3b2174f05c43089ec65f3543a025b upstream.
 
-batadv_tt_local_event() merges/cancels events for the same client which
-would conflict or be duplicates. The matching of the queued events only
-compares the MAC address - the VLAN ID stored in each event is ignored.
+The fast recovery precondition checks if the recover (initialized to
+BATADV_TP_FIRST_SEQ) is bigger than the received ack. But since recover is
+only updated when this check is successful, it will never enter the fast
+recovery mode.
 
-If a MAC would now appear on multiple VID, the two ADD change events (for
-VID 1 and VID 2) would be merged to a single vid event. The remote can
-therefore not calculate the correct TT table and desync. A full translation
-table exchange is required to recover from this state.
+According to RFC6582 Section 3.2 step 2, the check should actually be
+different:
 
-A check of VID is therefore necessary to avoid such wrong merges/cancels.
+> When the third duplicate ACK is received, the TCP sender first
+> checks the value of recover to see if the Cumulative
+> Acknowledgment field covers more than recover
+
+The precondition must therefore check if recover is smaller than the
+received ack - basically swapping the operands of the current check.
 
 Cc: stable@kernel.org
-Fixes: c018ad3de61a ("batman-adv: add the VLAN ID attribute to the TT entry")
+Fixes: 33a3bb4a3345 ("batman-adv: throughput meter implementation")
 Signed-off-by: Sven Eckelmann <sven@narfation.org>
 ---
- net/batman-adv/translation-table.c | 3 +++
- 1 file changed, 3 insertions(+)
+ net/batman-adv/tp_meter.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/batman-adv/translation-table.c b/net/batman-adv/translation-table.c
-index 9f6e67771ffa8..acd8af4446671 100644
---- a/net/batman-adv/translation-table.c
-+++ b/net/batman-adv/translation-table.c
-@@ -446,6 +446,9 @@ static void batadv_tt_local_event(struct batadv_priv *bat_priv,
- 		if (!batadv_compare_eth(entry->change.addr, common->addr))
- 			continue;
+diff --git a/net/batman-adv/tp_meter.c b/net/batman-adv/tp_meter.c
+index e4f76c141af3e..77bc69573a562 100644
+--- a/net/batman-adv/tp_meter.c
++++ b/net/batman-adv/tp_meter.c
+@@ -733,7 +733,7 @@ static void batadv_tp_recv_ack(struct batadv_priv *bat_priv,
+ 		if (atomic_read(&tp_vars->dup_acks) != 3)
+ 			goto out;
  
-+		if (entry->change.vid != tt_change_node->change.vid)
-+			continue;
-+
- 		del_op_entry = entry->change.flags & BATADV_TT_CLIENT_DEL;
- 		if (del_op_requested != del_op_entry) {
- 			/* DEL+ADD in the same orig interval have no effect and
+-		if (recv_ack >= tp_vars->recover)
++		if (tp_vars->recover >= recv_ack)
+ 			goto out;
+ 
+ 		/* if this is the third duplicate ACK do Fast Retransmit */
 -- 
 2.47.3
 
