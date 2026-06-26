@@ -1,189 +1,189 @@
-Return-Path: <stable+bounces-269002-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-269003-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id BNrAH+ahPmqBJQkAu9opvQ
-	(envelope-from <stable+bounces-269002-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 17:59:34 +0200
+	id HhFQLaeiPmqpJQkAu9opvQ
+	(envelope-from <stable+bounces-269003-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 18:02:47 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id C7A876CEBC1
-	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 17:59:33 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id CE3956CEC07
+	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 18:02:46 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=KlAGXW+z;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-269002-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-269002-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=none) header.from=gmail.com;
+	dkim=pass header.d=rajagiritech-edu-in.20251104.gappssmtp.com header.s=20251104 header.b=sGlsvYoq;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-269003-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-269003-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=none;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=2")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 094BB310A2CF
-	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 15:54:00 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 879C0301F5F9
+	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 15:59:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6970C3DB336;
-	Fri, 26 Jun 2026 15:53:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E31633E2AD6;
+	Fri, 26 Jun 2026 15:59:32 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-vk1-f172.google.com (mail-vk1-f172.google.com [209.85.221.172])
+Received: from mail-ed1-f45.google.com (mail-ed1-f45.google.com [209.85.208.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C14CA3E2AB7
-	for <stable@vger.kernel.org>; Fri, 26 Jun 2026 15:53:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 594A53E2AB7
+	for <stable@vger.kernel.org>; Fri, 26 Jun 2026 15:59:31 +0000 (UTC)
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782489239; cv=pass; b=sxI5bXecAllTzSdX479jyDzoq5KHTKyZg6cQmAGHPt0Qb1z6v89OmEduf1sjyeRwu8lPZjBqG2uj6PIUnlvjwmjycZtgLvEHabw67WJbpbALVY/xM4p2eKDI1QoVrqRXDKqjkk4YH+Fnw/Cg+S0B+9TGMHrpN+yV5VmN9a1WrcU=
+	t=1782489572; cv=pass; b=PmUpJmIpaJGyvzxgvNCXi3xBZxbbR32YAKVN9MTJZstpQAS6GHb33mO17ymXb/VLvb/MhWktpMTtEs/kVO4W522F2Lwbvbfx5I3iBubTt4uQfH6psi6MeFYKosOfzRdcJYK1eINHGw1V0iI6TNhuQ2zIScaoK+q06GgICzUAUm4=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782489239; c=relaxed/simple;
-	bh=mI6PSqoZZc8G+CX+UdlFEy/yy8s7E/3zxWzWl0O+Z7Y=;
+	s=arc-20240116; t=1782489572; c=relaxed/simple;
+	bh=sa77kVbAwLb6akjpKfyR0FVo5MP9BFTqAcnkd0xKDjQ=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Content-Type; b=DdWwE5ksUPTGU0kY0l0fvrKyK1cPbR+QdywnY+MpmHxGVjPpNlIP9jJXxmrE7OMGWa7QmEW2Fqq0e8fVxcm/coxbQU0WvcA77mneMi+ZLmVDZfmF3aY5Nr40c7g2JEnscXtm2SKbuMbGoKyG1BuvTGnBKiyTMHV3nSlhPI5+4nI=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=KlAGXW+z; arc=pass smtp.client-ip=209.85.221.172
-Received: by mail-vk1-f172.google.com with SMTP id 71dfb90a1353d-5bd7c7ec0b2so215129e0c.1
-        for <stable@vger.kernel.org>; Fri, 26 Jun 2026 08:53:57 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1782489237; cv=none;
+	 To:Cc:Content-Type; b=PL9JhpI78A68qhOMG5HyMVRPh1NOjNdt+7J4Qt+rnj1S2FuKv1rPHdD4pzoey4HaxdCqFuZCbrx4rq/xXlp4vnAIKA3dof4IdoAqe7i7SnA+v58Scjy6jljRRORSwIBco/QRihRECOOcqoEXjRTGDrj4HB6bKUfa1YeidxglUMg=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=rajagiritech.edu.in; spf=none smtp.mailfrom=rajagiritech.edu.in; dkim=pass (2048-bit key) header.d=rajagiritech-edu-in.20251104.gappssmtp.com header.i=@rajagiritech-edu-in.20251104.gappssmtp.com header.b=sGlsvYoq; arc=pass smtp.client-ip=209.85.208.45
+Received: by mail-ed1-f45.google.com with SMTP id 4fb4d7f45d1cf-697bd21fdc2so2034969a12.1
+        for <stable@vger.kernel.org>; Fri, 26 Jun 2026 08:59:31 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1782489570; cv=none;
         d=google.com; s=arc-20260327;
-        b=SDuKEizfs3K7o0P8Y5QfL+iR98TkUAkoVqCRhlLZ+hCfNJf0LtBR/JYcoV6vLX57Or
-         e7EGWmMWKuiKUvGmztT4eDUfPsGVl6pm9A/qy0u0h92xPh+w+I6VgLgssbNt1dFRC/IA
-         IuCcjd8IWm5SoMJ/HFI3Rxh6s41ISz5SxsyBgibHTSMB/WaihxYIpQXkvY/Alfcpa8Wr
-         sRxAbxYj1Hfp97guHdirHaZxzQGe/lQdOj1tABX6FcHD2M8DPrf4dY6MsZls16a/OTLA
-         xj35GjS4+8X5izf8NC6kb6QXX0iLzKfWREuzAh2V3+IPYWTyr7djze164ZXODfLeiVBS
-         DJlw==
+        b=lleTuA9AZrDipYTnHLDaYaAwxo5DCGb0jxV5GuE52W2UYteAWK2+oLCAoiVhnDQL4G
+         R7ZI46p8NhmBPNW3vj2SW6iaDUC5Zbfybszezct3WeEfY3m9U6JKiT/kFU7PN20ocb5w
+         FVFL7FeoYx2jzKekrjn59+1nn4xRruWU8Wa20S1vvMTxC8h0VH348U1XgjUZ/Muok9CR
+         K6XqStztL4z/pRJlou3G38ngzyLX7h53tgqkXYOYojV/5j3bQMz0IPHO1+PtU5fM98h+
+         m4x0g4vGnW5/hQ25pc6qAuWbmfG2GIXqT2VHvcSEk99I7dNZuT1KBnD0EAfHfjfXUIRp
+         NpuQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=to:subject:message-id:date:from:in-reply-to:references:mime-version
-         :dkim-signature;
-        bh=i9qW95xvby9BJnQuija+QYZkZMY5tmcyevPKsxEUV+A=;
-        fh=RvEWwL4CdzthXqFPrJY1v5EhszSUJtREhzms1oh7XMQ=;
-        b=IqmAHhoZ4vU0Qt79aoSNAWqZ9lHaG4XtNZFVzk5c6+LNZVRbkvDblNrLDrw2SellSX
-         IBoAJ+f+jEk4CnE+iwdz5iZRJV/O1HWVvEBMDGv8hBrTR0wRvxQK5Uuo3lqABN/Z79Zy
-         pKsY3v3wN9JwvWLYolk+VAt58xFNLLfCkuSJ5UTs6Ixa7WiZOsgb29dvFr9hS2ULrNPE
-         ERpDbR1AL+WgPbfyz0xhCC91wW0zCX1ET0lVW0mzUfXkJclSHx6ZRRTdivK42ezTu6Am
-         TjFeYqPY8hDKxBuLoNSn7zsJNCaBlgyN4Pdrkxe5q9Q1C3KdgjO3B7eOgzamr8pbdKQZ
-         U9yw==;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=bSdNcjBKXhemYGAFxDX0HcEA04mDXXcRsTRsV6T4JXY=;
+        fh=Wz8J5UEBOCqQDV8EGy7SaS7auVxYFAJQ5oaobiGaD9E=;
+        b=TvBMyUUPDhX3Il7DnSDPDNPf/x/Vu/zWZhpTSI1CxNVkhiqqO63zVy2aOoK470Gy99
+         REkLuyPO6VyGqlHO+UjlrJbpmsQSw7Inpde0TazoShr8E1tXSmFLngplqZ4WP/Y39VFD
+         ZFQT1fKJjCzF7wo/kgtkc1XIQefWIrrPixNJlr2b9fZJ33aZoHiVlOVq1SuwV4M1L52z
+         YEe/csUNc0NAwtbu11H/lQYSGWOnvDr4kOo+tgjpn1oUCiy+GFlAnUKIyysmBiutszV6
+         y5qit5Lr8cxZLJsLAoAJ2RTXdRgLxt8QrGjE/nNVxkoUADkvyJ3aPQtHMYfJc5QrFg6f
+         bPSg==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1782489237; x=1783094037; darn=vger.kernel.org;
-        h=to:subject:message-id:date:from:in-reply-to:references:mime-version
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=i9qW95xvby9BJnQuija+QYZkZMY5tmcyevPKsxEUV+A=;
-        b=KlAGXW+zuK4JO8IKuQcHmfJlQbJllajhGibOmS3GCkVWJmzMNFH3zMv1xJra0SLGu/
-         8D87fwdH61s2x7OSG0LIbTRlmfyQsiFeFhw9f6lR5Yljf2j/L+RnkmfHMJXQaDZj+vQQ
-         xSTSoY0PaRiIp0b1oerFkWpkW8uwTudKqlHUlGuAiOe0RzE8us2rP9OhVOtnb2FBAQUQ
-         TuL5M5Fx5EJXc5Fp48YqPeDTyIu4Kp48FdHgcPIsghhJxrYBzcAkdHc4XiXc5eZt297A
-         VSxVGHYPV/x4zg4Qrcv673e4b5j2s61yZVCHnoPNfHswcZBsM0jd1r7GG5mGvImo+6kG
-         wXag==
+        d=rajagiritech-edu-in.20251104.gappssmtp.com; s=20251104; t=1782489570; x=1783094370; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=bSdNcjBKXhemYGAFxDX0HcEA04mDXXcRsTRsV6T4JXY=;
+        b=sGlsvYoqUouUKkZpLqc8T2x8unpWJ3aA2q4r3asF21ConTTRxIJ0wPls2VmM8R45Mq
+         ugV1tlXUFDnki6RINkXgSySKq6ok4jaZaSouO4vwbt3rcDqpms6mNANuQz+sdcT2sQ9z
+         jQjGaoME87HIXADtp8qna0uMhAi18/q3IVsMzGGzo/bLU8Vhf6pBuLIXquRD0UqNMgKW
+         nh9853imMOUJLPVl9vn76sKFQnkDPC/lKXrrFmy61+LmL/JBqY4AbU4qOdwFKmgms8dz
+         iwP8+pWrv+mCXijgVpyYm51z46lUJF93/bWr2YH4hCmyCxZXZq/wClc9gKnntnczCxkd
+         Nljg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782489237; x=1783094037;
-        h=to:subject:message-id:date:from:in-reply-to:references:mime-version
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=i9qW95xvby9BJnQuija+QYZkZMY5tmcyevPKsxEUV+A=;
-        b=nYeVb7nXBMIt0MPmMbjJXNmn1UZmGWlhucebXdQF2S6cps8HAILG73UAoesAZA3X4n
-         j8IVwHsP/cV02Q/7DpFlT9gHMIUSTbf74qjX7K6jxXBgBLvnUZUWuYBiH7HPKv9uKa7X
-         7ZUlE4YCNLOyWJe7w1IaGJ035b9ccdPGtG/zxIg+U8Wd473LQsfKzJGWR2XDGJ67CG5c
-         YOQ+vpzPmgjEmQtO8yWWJSuxV5qxr9Wj2hqMo3FGBGidebk1ptkeENmgT7jYDYfmhmea
-         ChtIJNLAfJ26gmy1drQLO/0PRwH0dUwqqn2erDHlV4Rx/kgv9lMcBV7EFgyJ1KrBIR3L
-         nDMw==
-X-Gm-Message-State: AOJu0Yww/y8RzEQ57h+fTTxqpRFw7WsCUgnFCgKeU/8Oq+HKhKrDMvG3
-	TSi95jq/t+36MezeKGsMyebYtTr3dNtA7fsxy3pxsI7GhYzojbbe9M4frtDUc+h+Fc14uie3/ec
-	WUGNSwn4ycpGhPAq8zUrO8VRlb3JVgkX+9MEI
-X-Gm-Gg: AfdE7clH5AG5lXsg1IsJ6d4iAebo+jmGzF0DvajC3eJKhualU0shoYzMOZwbxzmrw7N
-	i37W46xjlUCAydx4iqMMFqPHKSA+RAVwskMsUqJ6K6/9nGbeaOymHuAMb91fxAWc0hCZoKgBOx1
-	Vdbk6iYS4aZv5kz99VXlhcPCF4J9iodIbG0I5byNEmtt5CwoZJyxUX9kJQOxRfiM9+6lqSGzqvW
-	I8e1y0kxUFPmFTgkHIQthM/l+L14Iek+z6RnHOK3mjOMY90b7V2LFXQYfF9qoz8waoDB3bwZA==
-X-Received: by 2002:a05:6102:424a:b0:62f:406b:1baf with SMTP id
- ada2fe7eead31-73633af71c9mr695400137.20.1782489236733; Fri, 26 Jun 2026
- 08:53:56 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1782489570; x=1783094370;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=bSdNcjBKXhemYGAFxDX0HcEA04mDXXcRsTRsV6T4JXY=;
+        b=SwusfQ8zzSI5WLMTwlqTjF7rBStALLec/pfMc39S7Cp4/JEQvBYviGIPJ3zPCleJfv
+         HiIeyESgqtd4ppU8IyUg/OdMmlVcq1CeMp69kSMbOfb/8xgzGHPWvbz0sM6JECGNV7E3
+         M/SNGwKYUhEjprULWcunSE01G04KbMxaMIEuM/Ij1+emes7iisEqA22DCDvcxoEwmZCF
+         m7A4Fm4LE6q9yTv0rQ5Cx3MtmtW31gYcaKuw1fsQL8cmKPAsKSiZfI00mgLi4SmT4uHE
+         /2x4qCroDBZ5GBjfUA8MwMCUyofIjAlygfccW1g1U8Gt2EVqbkEA3RTVN5vgvuduFyNQ
+         WkOQ==
+X-Gm-Message-State: AOJu0YwUVxdjgigFxO8xH9DzsQ93p1cn6HMydVfYFC39MunOyGjY87Ke
+	Sb/uLmXl1PFC1VCzWvpJ13WQms3pwBG+uxeEbBZWEzU6PwR/dGEjD7gkKs/kH06J6imL7jR2hoe
+	3sibZC3ggXxVbNJlRhsqWpkzvrT0f4PLkKn58cmjYSA==
+X-Gm-Gg: AfdE7cl2Z452FLXbDgn0JU4NZBQoO7ftxOsHrsx7I0OyPaOEsAWNRrEizSwbNZwwcPS
+	p8AzfFGYrInXn+NDJrblqSFFTenJCgWxgUpjja0SZ8CD4zUgaQB0N9UNyKjX0o1NON4ZNgi0yT5
+	cjpEj5jAv4l+U/WCnF0l1gSS9Y1VpUUNhE78dfCQx2soIiBfJkvwXTq7OVmpSVqvBuhPCBgwDOB
+	b1f2UyO7dPdK6EWP9nvosmevdgAveRLXIDUbBcPmheVuerp6nnxEiAtYx6klbyYdmUkzRfzlsfL
+	7lJzuL/AFC2aHy60PSThvrotcNHgMf8frtsfl8g+HX791vYmsADGBXcuqJNc3ZW6JmWDcBPgRea
+	PSQ3hDhmk0oVNliBXKYu89ujDK5Hdj60cwp5hdlp3
+X-Received: by 2002:a17:907:c49a:b0:c11:f528:869f with SMTP id
+ a640c23a62f3a-c1205dc1c57mr485522066b.19.1782489569622; Fri, 26 Jun 2026
+ 08:59:29 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260620011956.37181-1-honza.klos@gmail.com>
-In-Reply-To: <20260620011956.37181-1-honza.klos@gmail.com>
-From: Jan Klos <honza.klos@gmail.com>
-Date: Fri, 26 Jun 2026 17:53:44 +0200
-X-Gm-Features: AVVi8Cdx0afEriOnm7EoZYihHBp-13OcE-Nb7aUdwrWB9vQtXcbLMi5yh1Y3UQI
-Message-ID: <CAMm4rXLpwdyL87gTGJB-4TNDfc+d3YHYOdwqdOx-Mf3PQ2-rQQ@mail.gmail.com>
-Subject: Re: [PATCH net v2] net: phy: realtek: Clear MDIO_AN_10GBT_CTRL_ADV10G bit
-To: stable@vger.kernel.org
+References: <20260625125613.243729608@linuxfoundation.org>
+In-Reply-To: <20260625125613.243729608@linuxfoundation.org>
+From: Jeffrin Thalakkottoor <jeffrin@rajagiritech.edu.in>
+Date: Fri, 26 Jun 2026 21:28:53 +0530
+X-Gm-Features: AVVi8CcVlvFIWZ3IZYi9detLPFCd_waRaCiCuFqo098eJ3zgk-_5YmbutM7qhfU
+Message-ID: <CAG=yYwmzH+qbJPpZpk6UEWGzS-S-4VJ=az46wPJuJUuZrGyU-A@mail.gmail.com>
+Subject: Re: [PATCH 7.1 00/21] 7.1.2-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@nabladev.com, 
+	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
+	rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, broonie@kernel.org, 
+	achill@achill.org, sr@sladewatkins.com
 Content-Type: text/plain; charset="UTF-8"
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	R_DKIM_ALLOW(-0.20)[rajagiritech-edu-in.20251104.gappssmtp.com:s=20251104];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-269002-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER(0.00)[honzaklos@gmail.com,stable@vger.kernel.org];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:gregkh@linuxfoundation.org,m:stable@vger.kernel.org,m:patches@lists.linux.dev,m:linux-kernel@vger.kernel.org,m:torvalds@linux-foundation.org,m:akpm@linux-foundation.org,m:linux@roeck-us.net,m:shuah@kernel.org,m:patches@kernelci.org,m:lkft-triage@lists.linaro.org,m:pavel@nabladev.com,m:jonathanh@nvidia.com,m:f.fainelli@gmail.com,m:sudipm.mukherjee@gmail.com,m:rwarsow@gmx.de,m:conor@kernel.org,m:hargar@microsoft.com,m:broonie@kernel.org,m:achill@achill.org,m:sr@sladewatkins.com,m:ffainelli@gmail.com,m:sudipmmukherjee@gmail.com,s:lists@lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_SENDER(0.00)[jeffrin@rajagiritech.edu.in,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-269003-lists,stable=lfdr.de];
+	RCPT_COUNT_TWELVE(0.00)[20];
+	DMARC_NA(0.00)[rajagiritech.edu.in];
 	MIME_TRACE(0.00)[0:+];
-	RCPT_COUNT_ONE(0.00)[1];
-	FORWARDED(0.00)[lists@lfdr.de];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[rajagiritech-edu-in.20251104.gappssmtp.com:+];
+	TO_DN_SOME(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
-	TO_DN_NONE(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[honzaklos@gmail.com,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[jeffrin@rajagiritech.edu.in,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[vger.kernel.org,lists.linux.dev,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,nabladev.com,nvidia.com,gmail.com,gmx.de,microsoft.com,achill.org,sladewatkins.com];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	TAGGED_RCPT(0.00)[stable];
-	MID_RHS_MATCH_FROMTLD(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	MISSING_XM_UA(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[mail.gmail.com:mid,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,mail.gmail.com:mid,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: C7A876CEBC1
+X-Rspamd-Queue-Id: CE3956CEC07
 
-Hello,
+hello,
 
-now thinking of it, I think this should make it into stable - RTL8127
-is supported since 6.16, so I think it should go into 6.18, 7.0 & 7.1.
+ Compiled and booted  7.1.2-rc1+
+----------------x---------------------x-------------------
+$sudo dmesg -l err
+[   23.704215] ACPI Error: No handler for Region [VRTC]
+(0000000042f760aa) [SystemCMOS] (20251212/evregion-131)
+[   23.704246] ACPI Error: Region SystemCMOS (ID=5) has no handler
+(20251212/exfldio-261)
+[   23.704275] ACPI Error: Aborting method \TAAD.RTWT due to previous
+error (AE_NOT_EXIST) (20251212/psparse-529)
+[   23.704359] ACPI Error: Aborting method \TAAD._GRT due to previous
+error (AE_NOT_EXIST) (20251212/psparse-529)
+[   28.080686] ACPI BIOS Error (bug): AE_AML_BUFFER_LIMIT, Index
+(0x000000032) is beyond end of object (length 0x32)
+(20251212/exoparg2-393)
+[   28.080708] ACPI Error: Aborting method \_SB.WMID.WQBZ due to
+previous error (AE_AML_BUFFER_LIMIT) (20251212/psparse-529)
+[   28.080732] ACPI Error: Aborting method \_SB.WMID.WQBE due to
+previous error (AE_AML_BUFFER_LIMIT) (20251212/psparse-529)
+[   28.081634] ACPI BIOS Error (bug): AE_AML_BUFFER_LIMIT, Field
+[D008] at bit offset/length 128/8 exceeds size of target Buffer (128
+bits) (20251212/dsopcode-198)
+[   28.081647] ACPI Error: Aborting method \HWMC due to previous error
+(AE_AML_BUFFER_LIMIT) (20251212/psparse-529)
+[   28.081662] ACPI Error: Aborting method \_SB.WMID.WMAA due to
+previous error (AE_AML_BUFFER_LIMIT) (20251212/psparse-529)
+$
+-----------------x---------------------x------------------
 
-The mainline commit is 510a283f4d12367a3f811f382a2c89202954bbd1 .
+Tested-by: Jeffrin Jose T <jeffrin@rajagiritech.edu.in>
 
-Regards,
 
-Jan Klos
-
-On Sat, 20 Jun 2026 at 03:21, Jan Klos <honza.klos@gmail.com> wrote:
->
-> On RTL8127A connected to a link partner that advertises 10000baseT
-> speed cannot be changed to anything other than 10000baseT as 10GbE
-> is always advertised regardless of any setting. Fix this by
-> clearing MDIO_AN_10GBT_CTRL_ADV10G bit in rtl822x_config_aneg()'s
-> call to phy_modify_mmd_changed().
->
-> Fixes: 83d962316128 ("net: phy: realtek: add RTL8127-internal PHY")
-> Reviewed-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
-> Signed-off-by: Jan Klos <honza.klos@gmail.com>
-> ---
-> v2: Patch formalities (rebase, tree name, tags, ccs)
->
->  drivers/net/phy/realtek/realtek_main.c | 3 ++-
->  1 file changed, 2 insertions(+), 1 deletion(-)
->
-> diff --git a/drivers/net/phy/realtek/realtek_main.c b/drivers/net/phy/realtek/realtek_main.c
-> index 27268811f564..b65d0f5fa1a0 100644
-> --- a/drivers/net/phy/realtek/realtek_main.c
-> +++ b/drivers/net/phy/realtek/realtek_main.c
-> @@ -1802,7 +1802,8 @@ static int rtl822x_config_aneg(struct phy_device *phydev)
->                 ret = phy_modify_mmd_changed(phydev, MDIO_MMD_VEND2,
->                                              RTL_MDIO_AN_10GBT_CTRL,
->                                              MDIO_AN_10GBT_CTRL_ADV2_5G |
-> -                                            MDIO_AN_10GBT_CTRL_ADV5G, adv);
-> +                                            MDIO_AN_10GBT_CTRL_ADV5G |
-> +                                            MDIO_AN_10GBT_CTRL_ADV10G, adv);
->                 if (ret < 0)
->                         return ret;
->         }
-> --
-> 2.54.0
->
+--
+software engineer
+rajagiri school of engineering and technology
 
