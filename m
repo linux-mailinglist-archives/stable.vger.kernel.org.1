@@ -1,150 +1,182 @@
-Return-Path: <stable+bounces-268894-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-268895-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id H49gBCF3PmpIGgkAu9opvQ
-	(envelope-from <stable+bounces-268894-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 14:57:05 +0200
+	id gKe3N4N2PmowGgkAu9opvQ
+	(envelope-from <stable+bounces-268895-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 14:54:27 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3CCB16CD389
-	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 14:57:04 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 37AF26CD348
+	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 14:54:27 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=none;
-	dmarc=none;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-268894-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-268894-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="P5dqnI/z";
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-268895-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-268895-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 6B17731007E7
-	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 12:52:01 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 0F7213020039
+	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 12:54:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0F273F65E7;
-	Fri, 26 Jun 2026 12:51:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 95F1A3F44F4;
+	Fri, 26 Jun 2026 12:54:12 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from cstnet.cn (smtp25.cstnet.cn [159.226.251.25])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E9373F54DD;
-	Fri, 26 Jun 2026 12:51:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 653423B637E
+	for <stable@vger.kernel.org>; Fri, 26 Jun 2026 12:54:11 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782478296; cv=none; b=MlZbnN7vpp3GXseP+B0qa34VY7viBesGX1XpNZNGsFlOV/OOazlXWPoiDhdIR4DvyylIP93eR3dTCFNUnjSOIBRDy4wmLGWz7C7X3RhsyR9x/8NaDLK5gv7C5eYKjH8DTuxMcJB5YsYcbYGt4n5OBzpMWeqdm++nJPoHYofvrdg=
+	t=1782478452; cv=none; b=Yew0f2Trg12twgDE6Iukdjhw2+H8dJRSI3nDVwHJNIbcYyHCRlOsmvH8YnH+gEEAEOBM31EfnYcKq8GTg9la8iWATq0YFQBBQwqoeKGT4EQ18GbzbpRXI+xDP6u0t+C6Npy5zM7XV8Kce0tYU2jMg1OPk2OkNIEZ2dr7XP6L0T4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782478296; c=relaxed/simple;
-	bh=msBvLHnQH1+eJzwPCNUYBKIHo9Za+JpPkpFg9W5BL/A=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=VtjjOcuXAnwlq41xfUgIdncq0bOgC7fXiNicf6J/pqWVVVPRS1+1tlriLKoaWIQcq9KoWm9rmtuWuPmcCoPlerg1MLDxFtdLundxDwu5fLSVYudbAYmN2SV7erbXbSJu8cVTvx4lJL4kJcT7jakd772dDHraGDSJt7qM/UdTxkI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.25
-Received: from localhost.localdomain (unknown [117.182.75.66])
-	by APP-05 (Coremail) with SMTP id zQCowABHntHHdT5qTwJpFQ--.42803S2;
-	Fri, 26 Jun 2026 20:51:20 +0800 (CST)
-From: WenTao Liang <vulab@iscas.ac.cn>
-To: maarten.lankhorst@linux.intel.com,
-	mripard@kernel.org,
-	tzimmermann@suse.de,
-	airlied@gmail.com,
-	simona@ffwll.ch
-Cc: dmitry.baryshkov@oss.qualcomm.com,
-	kees@kernel.org,
-	liviu.dudau@arm.com,
-	vulab@iscas.ac.cn,
-	suraj.kandpal@intel.com,
-	dri-devel@lists.freedesktop.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: [PATCH] fix: drm/display: drm_dp_mst_topology_mgr_set_mst: error path after DPCD   write failure leaks MST branch device reference
-Date: Fri, 26 Jun 2026 20:51:17 +0800
-Message-Id: <20260626125117.37153-1-vulab@iscas.ac.cn>
-X-Mailer: git-send-email 2.39.5 (Apple Git-154)
+	s=arc-20240116; t=1782478452; c=relaxed/simple;
+	bh=v/aB+4XObJl2hgdsV4eb6n+rU8/fCF9koyw0AyTg5GA=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=OSTFKcofBstsBvU30gdYxeKmm6XYOdibILjr1TwNQcmdgXgosuKJw7PypQlvvBXTK8kXFwsZzFazeL1m6HHmF8V4NYky4puW1f5Qcotadzes69ZyIbI2Wo5wnqb5fYQnVLbDTxTGrUrSBAHduCcAh5H6TPGULzpZ0+/TvpF3oCM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=P5dqnI/z; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C1FB1F000E9
+	for <stable@vger.kernel.org>; Fri, 26 Jun 2026 12:54:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1782478451;
+	bh=gOZngT+Ri4gGCfrzkPoShqljnzYJYp5zUHHKBBaWlgo=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=P5dqnI/zegeuNH9Nt4PbfYssL9dYV9fSLDJgSoVAccD9VUg1Bbjud/5WCoBvJYDJ+
+	 mB9fBTHEY3nsEqY9C2JksyB0BjMyOozYcYEP+YtuL4z2/R+1dFlJoIbCAw+Pxi6QDv
+	 gkwmSd7tUc3lU1+jOyw6dDpiC8O4wWVOSc7nKr7Et7g7kQjSYaSegZzaba8bjpGCja
+	 K1qBEKyY73P/8n4T79T6jb/Km+yckkEC2AJ6jKpb5svp4VV38hlngcT/TJgmM+X4pK
+	 X8YNXYLuEr0GciW1VoIJKkAPlxCpLQP257Xdr/vcoIJjhQNyJ1g+Rlh7QbmAeZKl1k
+	 fs61s4/srWrxA==
+Received: by mail-lf1-f52.google.com with SMTP id 2adb3069b0e04-5ad5e719157so808649e87.2
+        for <stable@vger.kernel.org>; Fri, 26 Jun 2026 05:54:11 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AHgh+RoPoBgi9U29GE1cxm662L/ZCT6p0o7QfiTEVcLtShxRL0+0XqUNx8UMgoKQ4ZalYmtFgk0sk7k=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yyh4INp+XjajQlxwz/OHnmx2My2fwjTgLwE003GfO0+RSRsSxiI
+	SJQy7iop9FF+fkn1ZW1ht3gLg7idpZ12NncXCDj8DJHL43RawdnnMwDz9k7cldoZyGkdOiX7AIy
+	1b1RvVFHDcTg1kr7ETzJQVpI9KSzBIWg=
+X-Received: by 2002:a05:6512:6712:b0:5ad:4ebc:e072 with SMTP id
+ 2adb3069b0e04-5aea1f293e2mr2033119e87.11.1782478450038; Fri, 26 Jun 2026
+ 05:54:10 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:zQCowABHntHHdT5qTwJpFQ--.42803S2
-X-Coremail-Antispam: 1UD129KBjvJXoW7urWrXw43AFWkWFyfWw4DArb_yoW8JFy3pr
-	42kry2yryvyanFyr4UZF18WFWDGa97Aa4fGF4UWw43Ww1UAr10ga48KFyagF17ArWjkF1f
-	t39rCFy8CFyqk3DanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUU9F14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
-	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
-	1l84ACjcxK6xIIjxv20xvE14v26ryj6F1UM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26F4j
-	6r4UJwA2z4x0Y4vEx4A2jsIE14v26rxl6s0DM28EF7xvwVC2z280aVCY1x0267AKxVW0oV
-	Cq3wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0
-	I7IYx2IY67AKxVWUXVWUAwAv7VC2z280aVAFwI0_Gr0_Cr1lOx8S6xCaFVCjc4AY6r1j6r
-	4UM4x0Y48IcxkI7VAKI48JM4x0x7Aq67IIx4CEVc8vx2IErcIFxwACI402YVCY1x02628v
-	n2kIc2xKxwCY1x0262kKe7AKxVWUtVW8ZwCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7x
-	kEbVWUJVW8JwC20s026c02F40E14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E
-	67AF67kF1VAFwI0_Jw0_GFylIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCw
-	CI42IY6xIIjxv20xvEc7CjxVAFwI0_Cr0_Gr1UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWU
-	CwCI42IY6I8E87Iv67AKxVW8JVWxJwCI42IY6I8E87Iv6xkF7I0E14v26r4UJVWxJrUvcS
-	sGvfC2KfnxnUUI43ZEXa7VUbzpBDUUUUU==
-X-CM-SenderInfo: pyxotu46lvutnvoduhdfq/1tbiCQ4KA2o+TZN13gABsu
+References: <kJqktbpLphg_Pk5I5SPptgTLjl3E3eq5mN5UzCslyFj7Q1Irp-wDid4mj5eQVd2iZtRGXgeZd8goq195EkXdjyt864YMc8mVb2B9NGH91NQ=@protonmail.com>
+In-Reply-To: <kJqktbpLphg_Pk5I5SPptgTLjl3E3eq5mN5UzCslyFj7Q1Irp-wDid4mj5eQVd2iZtRGXgeZd8goq195EkXdjyt864YMc8mVb2B9NGH91NQ=@protonmail.com>
+From: Linus Walleij <linusw@kernel.org>
+Date: Fri, 26 Jun 2026 14:53:56 +0200
+X-Gmail-Original-Message-ID: <CAD++jL=YJGFf+9o8KV+OO_61EL+_z3b7P+eLK=6=r+GOuJiWAg@mail.gmail.com>
+X-Gm-Features: AVVi8Cf7mdL5Xz9eEcaUEG2_vqpf6O9ZpYfxv2z6UZl9xqnxBWGbraHskpl3Kmc
+Message-ID: <CAD++jL=YJGFf+9o8KV+OO_61EL+_z3b7P+eLK=6=r+GOuJiWAg@mail.gmail.com>
+Subject: Re: [REGRESSION] 32-bit ARM's BKPT instruction no longer works
+To: slipher <slipher@protonmail.com>, Nathan Chancellor <nathan@kernel.org>, 
+	Kees Cook <kees@kernel.org>, Sami Tolvanen <samitolvanen@google.com>
+Cc: "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, 
+	"stable@vger.kernel.org" <stable@vger.kernel.org>, 
+	"regressions@lists.linux.dev" <regressions@lists.linux.dev>, 
+	"linus.walleij@linaro.org" <linus.walleij@linaro.org>, 
+	"rmk+kernel@armlinux.org.uk" <rmk+kernel@armlinux.org.uk>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [0.04 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [-3.66 / 15.00];
+	WHITELIST_SPF_DKIM(-3.00)[kernel.org:d:+,kernel.org:s:+];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DMARC_NA(0.00)[iscas.ac.cn];
+	TAGGED_FROM(0.00)[bounces-268895-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-268894-lists,stable=lfdr.de];
+	FORGED_SENDER(0.00)[linusw@kernel.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS(0.00)[m:slipher@protonmail.com,m:nathan@kernel.org,m:kees@kernel.org,m:samitolvanen@google.com,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,m:regressions@lists.linux.dev,m:linus.walleij@linaro.org,m:rmk+kernel@armlinux.org.uk,m:rmk@armlinux.org.uk,s:lists@lfdr.de];
+	FREEMAIL_TO(0.00)[protonmail.com,kernel.org,google.com];
 	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_SENDER(0.00)[vulab@iscas.ac.cn,stable@vger.kernel.org];
-	FREEMAIL_TO(0.00)[linux.intel.com,kernel.org,suse.de,gmail.com,ffwll.ch];
-	FORGED_RECIPIENTS(0.00)[m:maarten.lankhorst@linux.intel.com,m:mripard@kernel.org,m:tzimmermann@suse.de,m:airlied@gmail.com,m:simona@ffwll.ch,m:dmitry.baryshkov@oss.qualcomm.com,m:kees@kernel.org,m:liviu.dudau@arm.com,m:vulab@iscas.ac.cn,m:suraj.kandpal@intel.com,m:dri-devel@lists.freedesktop.org,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,s:lists@lfdr.de];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[vulab@iscas.ac.cn,stable@vger.kernel.org];
+	TO_DN_EQ_ADDR_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
+	MISSING_XM_UA(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_NONE(0.00)[];
-	R_DKIM_NA(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
 	ALIAS_RESOLVED(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[13];
-	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,iscas.ac.cn:email,iscas.ac.cn:mid,iscas.ac.cn:from_mime]
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[linusw@kernel.org,stable@vger.kernel.org];
+	PRECEDENCE_BULK(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	TAGGED_RCPT(0.00)[stable,kernel];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,protonmail.com:email,arm.com:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,mail.gmail.com:mid,jwhitham.org:url]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 3CCB16CD389
+X-Rspamd-Queue-Id: 37AF26CD348
 
-drm_dp_add_mst_branch_device initializes mstb with refcount 1, and
-  drm_dp_mst_topology_get_mstb increments it to 2. When
-  drm_dp_dpcd_write_byte fails, out_unlock performs only one
-  drm_dp_mst_topology_put_mstb, leaving the other reference stored in
-  mgr->mst_primary. Since MST was not successfully enabled, no disable path
-  will clean it up.
+[Adding Nathan and Kees so we can figure out how best to deal with this]
 
-Cc: stable@vger.kernel.org
-Fixes: 7a3cbf590e63 ("drm/mst: Some style improvements in drm_dp_mst_topology_mgr_set_mst()")
-Signed-off-by: WenTao Liang <vulab@iscas.ac.cn>
----
- drivers/gpu/drm/display/drm_dp_mst_topology.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+On Sun, Jun 21, 2026 at 9:15=E2=80=AFPM slipher <slipher@protonmail.com> wr=
+ote:
 
-diff --git a/drivers/gpu/drm/display/drm_dp_mst_topology.c b/drivers/gpu/drm/display/drm_dp_mst_topology.c
-index 8757972e8e24..db9441c80cd5 100644
---- a/drivers/gpu/drm/display/drm_dp_mst_topology.c
-+++ b/drivers/gpu/drm/display/drm_dp_mst_topology.c
-@@ -3679,8 +3679,10 @@ int drm_dp_mst_topology_mgr_set_mst(struct drm_dp_mst_topology_mgr *mgr, bool ms
- 					     DP_MST_EN |
- 					     DP_UP_REQ_EN |
- 					     DP_UPSTREAM_IS_SRC);
--		if (ret < 0)
-+		if (ret < 0) {
-+			mgr->mst_primary = NULL;
- 			goto out_unlock;
-+		}
- 
- 		/* Write reset payload */
- 		drm_dp_dpcd_clear_payload(mgr->aux);
--- 
-2.39.5 (Apple Git-154)
+> Consider the C program for 32-bit ARM architectures:
+>
+>
+> int main() {
+>         __asm__ __volatile__ ("BKPT");
+>         return 0;
+> }
+>
+> Expected behavior is that this raises SIGTRAP. Since Linux 6.10 this no
+> longer happens; instead execution perpetually resumes at the same
+> instruction, using 100% of CPU. It does not matter whether GDB is
+> attached. I have tested with an armv7l CPU, but I imagine any other
+> variants with the BKPT instruction would be equally affected.
+>
+> I believe the culprit to be commit
+> c3f89986fde7bb9ccc86a901bf28e1f7d69fc3b3 "ARM: 9391/2: hw_breakpoint:
+> Handle CFI breakpoints".  The commit defines the method-of-entry code 3
+> as "ARM_ENTRY_CFI_BREAKPOINT", but this is the code used for any BKPT
+> instruction - see
+> https://developer.arm.com/documentation/ddi0379/a/Debug-Register-Referenc=
+e/Control-and-status-registers/Debug-Status-and-Control-Register--DSCR-?lan=
+g=3Den
+> "Method of Debug Entry (MOE), bits [5:2]". If the CFI option is disabled
+> in the kernel config,  hw_breakpoint_pending() returns 0 indicating the
+> breakpoint was handled, but takes no action. So breakpoints cannot be
+> used by user-space code, regardless of how CONFIG_CFI is set. The blog
+> post
+> https://www.jwhitham.org/2015/04/the-mystery-of-fifteen-millisecond.html
+> gives a nice overview of the control flow in older, working kernels.
 
+Does simply reverting the patch solve the issue?
+
+> The following Systemtap script can be used to demonstrate that the
+> ARM_ENTRY_CFI_BREAKPOINT path is used, when running the above C program.
+
+Yeah it's definitely that one causing it.
+
+I sent the naive solution to it, and before anyone point it out: no it does
+not allow custom breakpoints to be mixed with kernel CFI, but it
+probably makes legacy systems work on newer kernels since they
+probably don't select CFI.
+https://lore.kernel.org/linux-arm-kernel/20260626-arm32-cfi-bug-v1-1-a467b5=
+050c0b@kernel.org/T/#u
+
+I understand that this is not solving everything.
+
+If it is under all circumstances unacceptable to be able to construct
+a userspace which will change the user-facing behaviour of BKPT,
+I think we need to revert CFI breakpoint handling, back put the patch,
+disable CFI on ARM and wait for the compiler(s) to start behaving
+differently on ARM.
+
+CFI folks: any ideas on what we could do instead of BKPT
+when we hit a CFI snag? Any ideas from other architectures?
+
+Yours,
+Linus Walleij
 
