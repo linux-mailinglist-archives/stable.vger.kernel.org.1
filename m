@@ -1,309 +1,145 @@
-Return-Path: <stable+bounces-268803-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-268805-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id aP3CEJZXPmqmEAkAu9opvQ
-	(envelope-from <stable+bounces-268803-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 12:42:30 +0200
+	id 84aXNTdYPmrNEAkAu9opvQ
+	(envelope-from <stable+bounces-268805-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 12:45:11 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id C82EA6CC260
-	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 12:42:29 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 240E86CC27A
+	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 12:45:11 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=lugqbHiO;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-268803-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-268803-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	dkim=none;
+	dmarc=none;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-268805-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-268805-lists+stable=lfdr.de@vger.kernel.org";
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 4FDCC3012BE9
-	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 10:42:24 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id EDCB6300917E
+	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 10:45:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5CCCB39B4BF;
-	Fri, 26 Jun 2026 10:42:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5001B3EA96F;
+	Fri, 26 Jun 2026 10:45:06 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from cstnet.cn (smtp81.cstnet.cn [159.226.251.81])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9D26392C2C;
-	Fri, 26 Jun 2026 10:42:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB9AE3812EB;
+	Fri, 26 Jun 2026 10:45:02 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782470541; cv=none; b=pM0Yu2UIiKatjrBcDeqZ1IsBJzRPYXvvpLdqDdn8DEQ7432Rx4CgK4CHYDs6g+fA6qRfu1pIQ2OVZ9jbYRT6AScGGCmIOyS55kpUuqEgYRSW4ikkTknlVKyn8mT0ZXVBERdycTXtCpM1+ez6QaPulPgdZy3HiHZlJ/zorSdyq8U=
+	t=1782470706; cv=none; b=fP1qzo/Hf8fGesGO7mnzqlkvpnDKNFlSzcQfZNIneOp/lgNj2I7I4I/Dw5RtmlFzbNYZZHJTHjnSlXra9S4IrlbQZcFW7Q/pOxu47HSKNnKyeg0SuDKmvd7YEgPjwDa07eD9R968NTMiagVqIRQtyFBrV0MH2qB2ZwJRajD8zd0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782470541; c=relaxed/simple;
-	bh=ifmE2fTTYxC5X2K9/+qgYtK9IlDAJFEqdYMOf7u7BPs=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=lra9spIlYvSoeK6SzXykRooP1ggb7KDICmVmcfpvuWK0fTm9jE1JIa4pN+y3dg9WKtIFP/10qlj25BJTvd7e77TLfyBIcqEfG/7IgzRO5fjHYIwIDrxjuqcuiOIqEk/SjDNtGDAVMBzM/CASLTEUJTVIQLMACJUr5du1FDon6+c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lugqbHiO; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2EA221F000E9;
-	Fri, 26 Jun 2026 10:42:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782470539;
-	bh=Z7InqrhYDZxSMwx3T3i/srdxrW6Z6e1Zj0iTt0IoNFo=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=lugqbHiOMkQrqlrzp0U15pRPuhDteUk5H7BEdJONshnVNA0CXIbHdRc2edNnUu1E2
-	 7Bi1hgNrF0B2RyqdJ2o81qk8D59rNSdiLSfOwGASJ+k6dO6ysZICDG4octJwRi1nFd
-	 OCEO+fXQ0H5psDRdzNu/4ocXbTBEmFo0pd3a2mqUUxKjrbPMyNeW5GMb7X8X3C4+BI
-	 K666MVGJ99s4fTHO8Cn8/YcNYRWR/6t5sdBx+6ZYFznId8LQntosa/9e+gdDpOHGfe
-	 +23hHPYqeGQeYP76l30eT4T93pbk30s2YwQWI7q/ZuP1QRWmO/QcENqGsH1CiAdeA9
-	 nGiR+WLH7lBmg==
-Date: Fri, 26 Jun 2026 11:42:10 +0100
-From: Lorenzo Stoakes <ljs@kernel.org>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Wei Yang <richard.weiyang@gmail.com>, akpm@linux-foundation.org, 
-	riel@surriel.com, liam@infradead.org, vbabka@kernel.org, harry@kernel.org, 
-	jannh@google.com, ziy@nvidia.com, sj@kernel.org, balbirs@nvidia.com, 
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
-	Lance Yang <lance.yang@linux.dev>
-Subject: Re: [Patch mm-hotfixes v4] mm/page_vma_mapped: fix device-private
- PMD handling
-Message-ID: <aj5XVwsQ4rOLTzr5@lucifer>
-References: <20260624065353.1622-1-richard.weiyang@gmail.com>
- <d060cadd-34f8-42da-b7f7-c8d295050436@kernel.org>
+	s=arc-20240116; t=1782470706; c=relaxed/simple;
+	bh=kbgL/77dRi1UkZ1PI/3lHE2ryj4p4DYdnsfs6THkuwk=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=OM89mDPl9munJiFJZ522Z2/2On5veIE/h/JeeDrNftd1dU2kVy5WwO3Cg62lhdb3m9jwvZSs6YMBNSkOsb1WiZ3HqOwKCvhiTgK7z1OV/ZIP/PWNhkt5BO7vClnV2V2d7nK5t/0//0sv1JyICBv6aIQiIs5sNiVTJFnXuq2eL3Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.81
+Received: from localhost.localdomain (unknown [117.182.75.66])
+	by APP-03 (Coremail) with SMTP id rQCowACni+InWD5qhTzsFQ--.357S2;
+	Fri, 26 Jun 2026 18:44:57 +0800 (CST)
+From: WenTao Liang <vulab@iscas.ac.cn>
+To: koby.elbaz@intel.com,
+	konstantin.sinyuk@intel.com,
+	ogabbay@kernel.org
+Cc: vulab@iscas.ac.cn,
+	kees@kernel.org,
+	dri-devel@lists.freedesktop.org,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: [PATCH] fix: accel/habanalabs: hl_cs_signal_sob_wraparound_handler: missing   hw_sob_get when need_reset is true and encaps_sig is false
+Date: Fri, 26 Jun 2026 18:44:53 +0800
+Message-Id: <20260626104453.32301-1-vulab@iscas.ac.cn>
+X-Mailer: git-send-email 2.39.5 (Apple Git-154)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <d060cadd-34f8-42da-b7f7-c8d295050436@kernel.org>
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:rQCowACni+InWD5qhTzsFQ--.357S2
+X-Coremail-Antispam: 1UD129KBjvJXoW7Zr17Zr1DWw4fZr1DXw1kXwb_yoW8GFWkpa
+	s8GF4rJF9Fqr9rAFnrCw45ZFyrXa9xKr9F9a1xG395urn8Ga4xJryYkayF9rWj9rs3Xa18
+	XF9Fq3yUC3WrAa7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUkl14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
+	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
+	1l84ACjcxK6xIIjxv20xvE14v26r4j6ryUM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4j
+	6F4UM28EF7xvwVC2z280aVAFwI0_GcCE3s1l84ACjcxK6I8E87Iv6xkF7I0E14v26rxl6s
+	0DM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xII
+	jxv20xvE14v26r1j6r18McIj6I8E87Iv67AKxVWUJVW8JwAm72CE4IkC6x0Yz7v_Jr0_Gr
+	1lF7xvr2IYc2Ij64vIr41lF7I21c0EjII2zVCS5cI20VAGYxC7MxkF7I0En4kS14v26r12
+	6r1DMxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrVAFwI
+	0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWUtVW8ZwCIc40Y
+	0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267AKxV
+	WUJVW8JwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Jr0_Gr1l
+	IxAIcVC2z280aVCY1x0267AKxVW8JVW8JrUvcSsGvfC2KfnxnUUI43ZEXa7VUbSfO7UUUU
+	U==
+X-CM-SenderInfo: pyxotu46lvutnvoduhdfq/1tbiDAYKA2o+ThINvAABs7
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-3.16 / 15.00];
-	WHITELIST_SPF_DKIM(-3.00)[kernel.org:d:+,kernel.org:s:+];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [0.04 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
+	MID_CONTAINS_FROM(1.00)[];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	FORGED_RECIPIENTS(0.00)[m:koby.elbaz@intel.com,m:konstantin.sinyuk@intel.com,m:ogabbay@kernel.org,m:vulab@iscas.ac.cn,m:kees@kernel.org,m:dri-devel@lists.freedesktop.org,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,s:lists@lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-268803-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:david@kernel.org,m:richard.weiyang@gmail.com,m:akpm@linux-foundation.org,m:riel@surriel.com,m:liam@infradead.org,m:vbabka@kernel.org,m:harry@kernel.org,m:jannh@google.com,m:ziy@nvidia.com,m:sj@kernel.org,m:balbirs@nvidia.com,m:linux-mm@kvack.org,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,m:lance.yang@linux.dev,m:richardweiyang@gmail.com,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[ljs@kernel.org,stable@vger.kernel.org];
-	MIME_TRACE(0.00)[0:+];
+	DMARC_NA(0.00)[iscas.ac.cn];
+	FORGED_SENDER_FORWARDING(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER(0.00)[vulab@iscas.ac.cn,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-268805-lists,stable=lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	RCPT_COUNT_TWELVE(0.00)[15];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[ljs@kernel.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[gmail.com,linux-foundation.org,surriel.com,infradead.org,kernel.org,google.com,nvidia.com,kvack.org,vger.kernel.org,linux.dev];
+	FROM_NEQ_ENVFROM(0.00)[vulab@iscas.ac.cn,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	R_DKIM_NA(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
+	TO_DN_NONE(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	MIME_TRACE(0.00)[0:+];
 	TAGGED_RCPT(0.00)[stable];
-	MISSING_XM_UA(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	TO_DN_SOME(0.00)[]
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FROM_HAS_DN(0.00)[]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: C82EA6CC260
+X-Rspamd-Queue-Id: 240E86CC27A
 
-On Fri, Jun 26, 2026 at 12:07:56PM +0200, David Hildenbrand (Arm) wrote:
-> On 6/24/26 08:53, Wei Yang wrote:
-> > Commit 65edfda6f3f2 ("mm/rmap: extend rmap and migration support
-> > device-private entries") introduced the concept of device-private
-> > PMD entries, but did not correctly update the rmap walk code to
-> > account for them.
-> >
-> > As a result, when page_vma_mapped_walk() encounters device-private
-> > PMD entries, it takes no action other than to acquire the PMD lock
-> > and exit.
-> >
-> > However this is highly problematic for two reasons - firstly,
-> > device private entries possess a PFN so check_pmd() needs to be
-> > called to ensure an overlapping PFN range.
-> >
-> > Secondly, and more importantly, if PVMW_MIGRATION is set the
-> > caller assumes the returned entry is a migration entry, resulting
-> > in memory corruption when the caller tries to interpret the device
-> > private entry as such.
-> >
-> > In addition, commit 146287290023 ("mm/huge_memory: implement
-> > device-private THP splitting") allowed device private PMDs to be
-> > split like THP mappings, but again did not update this code path.
-> >
-> > As a result, we might race a PMD split prior to acquiring the PMD
-> > lock.
-> >
-> > This patch addresses all of these issues by invoking check_pmd(),
-> > ensuring PMVW_MIGRATION is not set and checks whether a split raced
-> > us we do for PMD THP and migration entries.
-> >
-> > Fixes: 65edfda6f3f2 ("mm/rmap: extend rmap and migration support device-private entries")
-> > Cc: <stable@vger.kernel.org>
-> > Signed-off-by: Wei Yang <richard.weiyang@gmail.com>
-> > Suggested-by: David Hildenbrand <david@kernel.org>
-> > Cc: David Hildenbrand <david@kernel.org>
-> > Cc: Balbir Singh <balbirs@nvidia.com>
-> > Cc: SeongJae Park <sj@kernel.org>
-> > Cc: Zi Yan <ziy@nvidia.com>
-> > Cc: Lorenzo Stoakes <ljs@kernel.org>
-> > Cc: Lance Yang <lance.yang@linux.dev>
-> >
-> > ---
-> > v4:
-> >   * refine subject and commit log based on Lorenzo's suggestion
-> >   * put pmd device-private entry handling in its own if branch,
-> >     suggested by Lorenzo
-> >
-> > v3:
-> >   * remove cleanup part, only fix the issue for device-private entry
-> >   * refine user effect description based on Lorenzo's suggestion
-> >
-> > v2: https://lore.kernel.org/all/20260616063436.20455-1-richard.weiyang@gmail.com/T/#u
-> >   * specify the possible error case of current code and user visible effect
-> >   * besides fix, cleanup the pmd entry handling based on David's suggestion
-> >
-> > v1: https://lore.kernel.org/linux-mm/20260508013728.21285-1-richard.weiyang@gmail.com/
-> > ---
-> >  mm/page_vma_mapped.c | 20 +++++++++++++++-----
-> >  1 file changed, 15 insertions(+), 5 deletions(-)
-> >
-> > diff --git a/mm/page_vma_mapped.c b/mm/page_vma_mapped.c
-> > index 2ccbabfb2cc1..17dff8aab9f9 100644
-> > --- a/mm/page_vma_mapped.c
-> > +++ b/mm/page_vma_mapped.c
-> > @@ -269,14 +269,24 @@ bool page_vma_mapped_walk(struct page_vma_mapped_walk *pvmw)
-> >  			/* THP pmd was split under us: handle on pte level */
-> >  			spin_unlock(pvmw->ptl);
-> >  			pvmw->ptl = NULL;
-> > -		} else if (!pmd_present(pmde)) {
-> > -			const softleaf_t entry = softleaf_from_pmd(pmde);
-> > +		} else if (pmd_is_device_private_entry(pmde)) {
-> > +			softleaf_t entry;
-> > +
-> > +			pvmw->ptl = pmd_lock(mm, pvmw->pmd);
-> > +			pmde = *pvmw->pmd;
-> > +			entry = softleaf_from_pmd(pmde);
-> >
-> > -			if (softleaf_is_device_private(entry)) {
-> > -				pvmw->ptl = pmd_lock(mm, pvmw->pmd);
-> > +			if (likely(softleaf_is_device_private(entry))) {
-> > +				if (pvmw->flags & PVMW_MIGRATION)
-> > +					return not_found(pvmw);
-> > +				if (!check_pmd(softleaf_to_pfn(entry), pvmw))
-> > +					return not_found(pvmw);
-> >  				return true;
-> >  			}
-> > -
-> > +			/* device-private pmd was split under us: handle on pte level */
-> > +			spin_unlock(pvmw->ptl);
-> > +			pvmw->ptl = NULL;
-> > +		} else if (!pmd_present(pmde)) {
-> >  			if ((pvmw->flags & PVMW_SYNC) &&
-> >  			    thp_vma_suitable_order(vma, pvmw->address,
-> >  						   PMD_ORDER) &&
->
-> This is extremely hard to review given the existing crap handling here. I'm
-> really sorry, but it makes my head hurt (I'm not kidding :) ).
->
-> It's completely unclear why we only have to check for a subset of the cases
-> after taking the lock.
->
-> Could we simply extend the existing migration pmd handling and leave the
-> !pmd_present() case for pmd_none()?
->
-> That leaves no question to "which transitions are actually allowed", including
-> "could we accidentally assume something is a page table when really it isn't".
->
->
-> So what about something like the following?
->
-> The "thp_migration_supported()" is not required when checking for
-> pmd_is_migration_entry(), as that defaults to "false" when not compiled in.
->
-> Untested:
->
->
-> From 048ecd33673ec649e168fbbb97749a7c0e344fcd Mon Sep 17 00:00:00 2001
-> From: "David Hildenbrand (Arm)" <david@kernel.org>
-> Date: Fri, 26 Jun 2026 12:03:40 +0200
-> Subject: [PATCH] tmp
->
-> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
-> ---
->  mm/page_vma_mapped.c | 29 +++++++++++++++++------------
->  1 file changed, 17 insertions(+), 12 deletions(-)
->
-> diff --git a/mm/page_vma_mapped.c b/mm/page_vma_mapped.c
-> index 2ccbabfb2cc17..ed2a23a90e8dd 100644
-> --- a/mm/page_vma_mapped.c
-> +++ b/mm/page_vma_mapped.c
-> @@ -243,21 +243,31 @@ bool page_vma_mapped_walk(struct page_vma_mapped_walk *pvmw)
->  		 */
->  		pmde = pmdp_get_lockless(pvmw->pmd);
->
-> -		if (pmd_trans_huge(pmde) || pmd_is_migration_entry(pmde)) {
-> +		if (pmd_trans_huge(pmde) || pmd_is_migration_entry(pmde) ||
-> +		    pmd_is_device_private_entry(pmde)) {
->  			pvmw->ptl = pmd_lock(mm, pvmw->pmd);
->  			pmde = *pvmw->pmd;
-> -			if (!pmd_present(pmde)) {
-> +			if (pmd_is_migration_entry(pmde)) {
->  				softleaf_t entry;
->
-> -				if (!thp_migration_supported() ||
+When other_sob->need_reset is true and encaps_sig is false,
+  hw_sob_put(other_sob) decrements the kref to 0, but the matching
+  hw_sob_get(other_sob) is skipped because it is inside the encaps_sig
+  block. The function returns other_sob with kref=0, causing a subsequent
+  kref_put to underflow. Fix by adding hw_sob_get(other_sob) in the else
+  branch.
 
-Do we care about this? Or is !tmp_migration_supported() -> implies you
-wouldn't see a migration entry here anyway?
+Cc: stable@vger.kernel.org
+Fixes: dadf17abb724 ("habanalabs: add support for encapsulated signals reservation")
+Signed-off-by: WenTao Liang <vulab@iscas.ac.cn>
+---
+ drivers/accel/habanalabs/common/command_submission.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-Maybe worth a VM_WARN_ON_ONCE()?
+diff --git a/drivers/accel/habanalabs/common/command_submission.c b/drivers/accel/habanalabs/common/command_submission.c
+index ba4257bda77b..675301dfc0ef 100644
+--- a/drivers/accel/habanalabs/common/command_submission.c
++++ b/drivers/accel/habanalabs/common/command_submission.c
+@@ -1860,11 +1860,10 @@ int hl_cs_signal_sob_wraparound_handler(struct hl_device *hdev, u32 q_idx,
+ 		if (other_sob->need_reset)
+ 			hw_sob_put(other_sob);
+ 
+-		if (encaps_sig) {
++		if (encaps_sig)
+ 			/* set reset indication for the sob */
+ 			sob->need_reset = true;
+-			hw_sob_get(other_sob);
+-		}
++		hw_sob_get(other_sob);
+ 
+ 		dev_dbg(hdev->dev, "switched to SOB %d, q_idx: %d\n",
+ 				prop->curr_sob_offset, q_idx);
+-- 
+2.39.5 (Apple Git-154)
 
-> -				    !(pvmw->flags & PVMW_MIGRATION))
-> +				if (!(pvmw->flags & PVMW_MIGRATION))
->  					return not_found(pvmw);
->  				entry = softleaf_from_pmd(pmde);
-> +				if (!check_pmd(softleaf_to_pfn(entry), pvmw))
-> +					return not_found(pvmw);
-> +				return true;
-> +			} else if (pmd_is_device_private_entry(pmde)) {
-> +				softleaf_t entry;
->
-> -				if (!softleaf_is_migration(entry) ||
-> -				    !check_pmd(softleaf_to_pfn(entry), pvmw))
-> +				if (pvmw->flags & PVMW_MIGRATION)
-> +					return not_found(pvmw);
-> +				entry = softleaf_from_pmd(pmde);
-> +				if (!check_pmd(softleaf_to_pfn(entry), pvmw))
->  					return not_found(pvmw);
->  				return true;
-> +			} else if (!pmd_present(pmde) ){
-> +				return not_found(pvmw);
->  			}
->  			if (likely(pmd_trans_huge(pmde))) {
->  				if (pvmw->flags & PVMW_MIGRATION)
-> @@ -270,12 +280,7 @@ bool page_vma_mapped_walk(struct page_vma_mapped_walk *pvmw)
->  			spin_unlock(pvmw->ptl);
->  			pvmw->ptl = NULL;
->  		} else if (!pmd_present(pmde)) {
-> -			const softleaf_t entry = softleaf_from_pmd(pmde);
-> -
-> -			if (softleaf_is_device_private(entry)) {
-> -				pvmw->ptl = pmd_lock(mm, pvmw->pmd);
-> -				return true;
-> -			}
->
->  			if ((pvmw->flags & PVMW_SYNC) &&
->  			    thp_vma_suitable_order(vma, pvmw->address,
-
-Overall though this seems fine to me.
-
-> --
-> 2.43.0
->
->
-> --
-> Cheers,
->
-> David
-
-Thanks, Lorenzo
 
