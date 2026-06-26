@@ -1,156 +1,189 @@
-Return-Path: <stable+bounces-269000-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-269002-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id IOBAIBahPmpnJQkAu9opvQ
-	(envelope-from <stable+bounces-269000-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 17:56:06 +0200
+	id BNrAH+ahPmqBJQkAu9opvQ
+	(envelope-from <stable+bounces-269002-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 17:59:34 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 789206CEB6E
-	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 17:56:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C7A876CEBC1
+	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 17:59:33 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=intel.com header.s=Intel header.b=OAgnI+1J;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-269000-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-269000-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=none) header.from=intel.com;
-	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=KlAGXW+z;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-269002-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-269002-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("subspace.kernel.org:s=arc-20240116:i=2")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 6BF3330AC9EE
-	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 15:50:50 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 094BB310A2CF
+	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 15:54:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BDC473E2AD6;
-	Fri, 26 Jun 2026 15:50:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6970C3DB336;
+	Fri, 26 Jun 2026 15:53:59 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-vk1-f172.google.com (mail-vk1-f172.google.com [209.85.221.172])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5A6B3F2118;
-	Fri, 26 Jun 2026 15:50:45 +0000 (UTC)
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782489047; cv=none; b=IHslA5KSZW833r7VIAZqVsCpCcm+BG1zdTw7gR8hJydrGPx1AX6UsHZofMnvtuXWDjFK122LoNZj4jaUwg5gHS48zG2pVAzQ3X/aMoF83WrevE6zrO8Gy/2HCP7Iufn5aiZ6F/6uIc+JYOnrBxImql8CIQPAOSRUtbKYLvq7iwc=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782489047; c=relaxed/simple;
-	bh=O5Ow04ThfQgKVd0s20nIu6kWvFvR6nyFgYGrtR+dK64=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=EmN4jQyiMKrQSGmJmPmA8ILbznU1HaPysf4KBTrBNxpZ3hSrrUZO0BfKVuGAq85PhJZvgaJLhCLWdQDs9hULXK4/LLtUjCYnR0LwAOsTu4Vg5RKE702FQ10HRYvNsXB5jZOLSl3OBs2vlqBCGdm9ixKDHgVcFiLvm7exnRaTNIk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=OAgnI+1J; arc=none smtp.client-ip=198.175.65.15
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1782489046; x=1814025046;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=O5Ow04ThfQgKVd0s20nIu6kWvFvR6nyFgYGrtR+dK64=;
-  b=OAgnI+1JgzujrCn7A22Kb9wfiylr8s+secFbgMgM+Sx9guuAwwAwMkNl
-   lcNotfgVETr+b0h3LngJrV+qvAML+iXFbjkd/9K3I+0WMVFxMJRtC4DsX
-   3M+0A98AJlYPY8T666g9G/i3QlTXtaofBItHBWaKYhAmalMM1TFkuV2xN
-   ZhZEAKbDMrUOu/f/9yRxxL9Kg+fssJazWQxE0/sBNVeTgDjGz8UmtK6Ec
-   WDBBAhogs0+EImQPTPEVNfSRNXuf98DFuhGM5jjOcwfDFbpoc3R1Ng89N
-   8/tsHx7oWme9Sab2YnmLgiiH2YkfnsnqEowoYrnKyeBvyLt6rV7QMwj3s
-   g==;
-X-CSE-ConnectionGUID: j7GPlUQZTZiRDmZOOrl05A==
-X-CSE-MsgGUID: Ln+ZSp6lS0uhnm+zO8E6ug==
-X-IronPort-AV: E=McAfee;i="6800,10657,11829"; a="86962610"
-X-IronPort-AV: E=Sophos;i="6.24,226,1774335600"; 
-   d="scan'208";a="86962610"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
-  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Jun 2026 08:50:45 -0700
-X-CSE-ConnectionGUID: PcwQfAFCTWieNtxVodj7TQ==
-X-CSE-MsgGUID: WZhpPImmQweU5utaEkSGPg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.24,226,1774335600"; 
-   d="scan'208";a="251512698"
-Received: from dnelso2-mobl.amr.corp.intel.com (HELO [10.125.109.96]) ([10.125.109.96])
-  by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Jun 2026 08:50:45 -0700
-Message-ID: <0d8051f0-a753-4e84-81be-39256cc44eef@intel.com>
-Date: Fri, 26 Jun 2026 08:50:44 -0700
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C14CA3E2AB7
+	for <stable@vger.kernel.org>; Fri, 26 Jun 2026 15:53:57 +0000 (UTC)
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1782489239; cv=pass; b=sxI5bXecAllTzSdX479jyDzoq5KHTKyZg6cQmAGHPt0Qb1z6v89OmEduf1sjyeRwu8lPZjBqG2uj6PIUnlvjwmjycZtgLvEHabw67WJbpbALVY/xM4p2eKDI1QoVrqRXDKqjkk4YH+Fnw/Cg+S0B+9TGMHrpN+yV5VmN9a1WrcU=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1782489239; c=relaxed/simple;
+	bh=mI6PSqoZZc8G+CX+UdlFEy/yy8s7E/3zxWzWl0O+Z7Y=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Content-Type; b=DdWwE5ksUPTGU0kY0l0fvrKyK1cPbR+QdywnY+MpmHxGVjPpNlIP9jJXxmrE7OMGWa7QmEW2Fqq0e8fVxcm/coxbQU0WvcA77mneMi+ZLmVDZfmF3aY5Nr40c7g2JEnscXtm2SKbuMbGoKyG1BuvTGnBKiyTMHV3nSlhPI5+4nI=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=KlAGXW+z; arc=pass smtp.client-ip=209.85.221.172
+Received: by mail-vk1-f172.google.com with SMTP id 71dfb90a1353d-5bd7c7ec0b2so215129e0c.1
+        for <stable@vger.kernel.org>; Fri, 26 Jun 2026 08:53:57 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1782489237; cv=none;
+        d=google.com; s=arc-20260327;
+        b=SDuKEizfs3K7o0P8Y5QfL+iR98TkUAkoVqCRhlLZ+hCfNJf0LtBR/JYcoV6vLX57Or
+         e7EGWmMWKuiKUvGmztT4eDUfPsGVl6pm9A/qy0u0h92xPh+w+I6VgLgssbNt1dFRC/IA
+         IuCcjd8IWm5SoMJ/HFI3Rxh6s41ISz5SxsyBgibHTSMB/WaihxYIpQXkvY/Alfcpa8Wr
+         sRxAbxYj1Hfp97guHdirHaZxzQGe/lQdOj1tABX6FcHD2M8DPrf4dY6MsZls16a/OTLA
+         xj35GjS4+8X5izf8NC6kb6QXX0iLzKfWREuzAh2V3+IPYWTyr7djze164ZXODfLeiVBS
+         DJlw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=to:subject:message-id:date:from:in-reply-to:references:mime-version
+         :dkim-signature;
+        bh=i9qW95xvby9BJnQuija+QYZkZMY5tmcyevPKsxEUV+A=;
+        fh=RvEWwL4CdzthXqFPrJY1v5EhszSUJtREhzms1oh7XMQ=;
+        b=IqmAHhoZ4vU0Qt79aoSNAWqZ9lHaG4XtNZFVzk5c6+LNZVRbkvDblNrLDrw2SellSX
+         IBoAJ+f+jEk4CnE+iwdz5iZRJV/O1HWVvEBMDGv8hBrTR0wRvxQK5Uuo3lqABN/Z79Zy
+         pKsY3v3wN9JwvWLYolk+VAt58xFNLLfCkuSJ5UTs6Ixa7WiZOsgb29dvFr9hS2ULrNPE
+         ERpDbR1AL+WgPbfyz0xhCC91wW0zCX1ET0lVW0mzUfXkJclSHx6ZRRTdivK42ezTu6Am
+         TjFeYqPY8hDKxBuLoNSn7zsJNCaBlgyN4Pdrkxe5q9Q1C3KdgjO3B7eOgzamr8pbdKQZ
+         U9yw==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1782489237; x=1783094037; darn=vger.kernel.org;
+        h=to:subject:message-id:date:from:in-reply-to:references:mime-version
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=i9qW95xvby9BJnQuija+QYZkZMY5tmcyevPKsxEUV+A=;
+        b=KlAGXW+zuK4JO8IKuQcHmfJlQbJllajhGibOmS3GCkVWJmzMNFH3zMv1xJra0SLGu/
+         8D87fwdH61s2x7OSG0LIbTRlmfyQsiFeFhw9f6lR5Yljf2j/L+RnkmfHMJXQaDZj+vQQ
+         xSTSoY0PaRiIp0b1oerFkWpkW8uwTudKqlHUlGuAiOe0RzE8us2rP9OhVOtnb2FBAQUQ
+         TuL5M5Fx5EJXc5Fp48YqPeDTyIu4Kp48FdHgcPIsghhJxrYBzcAkdHc4XiXc5eZt297A
+         VSxVGHYPV/x4zg4Qrcv673e4b5j2s61yZVCHnoPNfHswcZBsM0jd1r7GG5mGvImo+6kG
+         wXag==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1782489237; x=1783094037;
+        h=to:subject:message-id:date:from:in-reply-to:references:mime-version
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=i9qW95xvby9BJnQuija+QYZkZMY5tmcyevPKsxEUV+A=;
+        b=nYeVb7nXBMIt0MPmMbjJXNmn1UZmGWlhucebXdQF2S6cps8HAILG73UAoesAZA3X4n
+         j8IVwHsP/cV02Q/7DpFlT9gHMIUSTbf74qjX7K6jxXBgBLvnUZUWuYBiH7HPKv9uKa7X
+         7ZUlE4YCNLOyWJe7w1IaGJ035b9ccdPGtG/zxIg+U8Wd473LQsfKzJGWR2XDGJ67CG5c
+         YOQ+vpzPmgjEmQtO8yWWJSuxV5qxr9Wj2hqMo3FGBGidebk1ptkeENmgT7jYDYfmhmea
+         ChtIJNLAfJ26gmy1drQLO/0PRwH0dUwqqn2erDHlV4Rx/kgv9lMcBV7EFgyJ1KrBIR3L
+         nDMw==
+X-Gm-Message-State: AOJu0Yww/y8RzEQ57h+fTTxqpRFw7WsCUgnFCgKeU/8Oq+HKhKrDMvG3
+	TSi95jq/t+36MezeKGsMyebYtTr3dNtA7fsxy3pxsI7GhYzojbbe9M4frtDUc+h+Fc14uie3/ec
+	WUGNSwn4ycpGhPAq8zUrO8VRlb3JVgkX+9MEI
+X-Gm-Gg: AfdE7clH5AG5lXsg1IsJ6d4iAebo+jmGzF0DvajC3eJKhualU0shoYzMOZwbxzmrw7N
+	i37W46xjlUCAydx4iqMMFqPHKSA+RAVwskMsUqJ6K6/9nGbeaOymHuAMb91fxAWc0hCZoKgBOx1
+	Vdbk6iYS4aZv5kz99VXlhcPCF4J9iodIbG0I5byNEmtt5CwoZJyxUX9kJQOxRfiM9+6lqSGzqvW
+	I8e1y0kxUFPmFTgkHIQthM/l+L14Iek+z6RnHOK3mjOMY90b7V2LFXQYfF9qoz8waoDB3bwZA==
+X-Received: by 2002:a05:6102:424a:b0:62f:406b:1baf with SMTP id
+ ada2fe7eead31-73633af71c9mr695400137.20.1782489236733; Fri, 26 Jun 2026
+ 08:53:56 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] fix: ntb: perf_copy_chunk: fix tx descriptor and unmap
- kref leak on dmaengine_submit failure
-To: WenTao Liang <vulab@iscas.ac.cn>, Jon Mason <jdmason@kudzu.us>,
- Allen Hubbe <allenbh@gmail.com>, linux-ntb@googlegroups.com
-Cc: stable@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20260626153917.53128-1-vulab@iscas.ac.cn>
-Content-Language: en-US
-From: Dave Jiang <dave.jiang@intel.com>
-In-Reply-To: <20260626153917.53128-1-vulab@iscas.ac.cn>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+References: <20260620011956.37181-1-honza.klos@gmail.com>
+In-Reply-To: <20260620011956.37181-1-honza.klos@gmail.com>
+From: Jan Klos <honza.klos@gmail.com>
+Date: Fri, 26 Jun 2026 17:53:44 +0200
+X-Gm-Features: AVVi8Cdx0afEriOnm7EoZYihHBp-13OcE-Nb7aUdwrWB9vQtXcbLMi5yh1Y3UQI
+Message-ID: <CAMm4rXLpwdyL87gTGJB-4TNDfc+d3YHYOdwqdOx-Mf3PQ2-rQQ@mail.gmail.com>
+Subject: Re: [PATCH net v2] net: phy: realtek: Clear MDIO_AN_10GBT_CTRL_ADV10G bit
+To: stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-5.16 / 15.00];
-	WHITELIST_SPF_DKIM(-3.00)[intel.com:d:+,kernel.org:s:+];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
-	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
+X-Spamd-Result: default: False [-2.16 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
 	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:vulab@iscas.ac.cn,m:jdmason@kudzu.us,m:allenbh@gmail.com,m:linux-ntb@googlegroups.com,m:stable@vger.kernel.org,m:linux-kernel@vger.kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_TO(0.00)[iscas.ac.cn,kudzu.us,gmail.com,googlegroups.com];
-	FORGED_SENDER(0.00)[dave.jiang@intel.com,stable@vger.kernel.org];
-	TAGGED_FROM(0.00)[bounces-269000-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-269002-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[dave.jiang@intel.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[intel.com:+];
-	ALIAS_RESOLVED(0.00)[];
+	FORGED_SENDER(0.00)[honzaklos@gmail.com,stable@vger.kernel.org];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,s:lists@lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	RCPT_COUNT_ONE(0.00)[1];
+	FORWARDED(0.00)[lists@lfdr.de];
+	DKIM_TRACE(0.00)[gmail.com:+];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	TO_DN_NONE(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[honzaklos@gmail.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,linux.dev:email,iscas.ac.cn:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,intel.com:dkim,intel.com:mid,intel.com:from_mime]
+	MID_RHS_MATCH_FROMTLD(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[mail.gmail.com:mid,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 789206CEB6E
+X-Rspamd-Queue-Id: C7A876CEBC1
 
+Hello,
 
+now thinking of it, I think this should make it into stable - RTL8127
+is supported since 6.16, so I think it should go into 6.18, 7.0 & 7.1.
 
-On 6/26/26 8:39 AM, WenTao Liang wrote:
-> When dmaengine_submit fails after dma_set_unmap has been called, the
->   unmap object has two references (one from dmaengine_get_unmap_data and
->   one from dma_set_unmap held by the tx descriptor). The error path
->   err_free_resource only calls dmaengine_unmap_put once, leaving the tx
->   descriptor's reference and the descriptor itself leaked.
-> 
-> Add dmaengine_desc_put(tx) in the err_free_resource path to properly
->   release the tx descriptor and its held unmap reference.
-> 
-> Cc: stable@vger.kernel.org
-> Fixes: 282a2feeb9bf ("NTB: Use DMA Engine to Transmit and Receive")
-> Signed-off-by: WenTao Liang <vulab@iscas.ac.cn>
+The mainline commit is 510a283f4d12367a3f811f382a2c89202954bbd1 .
 
-Same comment. Please resend to ntb@lists.linux.dev.
+Regards,
 
+Jan Klos
 
+On Sat, 20 Jun 2026 at 03:21, Jan Klos <honza.klos@gmail.com> wrote:
+>
+> On RTL8127A connected to a link partner that advertises 10000baseT
+> speed cannot be changed to anything other than 10000baseT as 10GbE
+> is always advertised regardless of any setting. Fix this by
+> clearing MDIO_AN_10GBT_CTRL_ADV10G bit in rtl822x_config_aneg()'s
+> call to phy_modify_mmd_changed().
+>
+> Fixes: 83d962316128 ("net: phy: realtek: add RTL8127-internal PHY")
+> Reviewed-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
+> Signed-off-by: Jan Klos <honza.klos@gmail.com>
 > ---
->  drivers/ntb/test/ntb_perf.c | 1 +
->  1 file changed, 1 insertion(+)
-> 
-> diff --git a/drivers/ntb/test/ntb_perf.c b/drivers/ntb/test/ntb_perf.c
-> index dfd175f79e8f..64783bfa5a2c 100644
-> --- a/drivers/ntb/test/ntb_perf.c
-> +++ b/drivers/ntb/test/ntb_perf.c
-> @@ -851,6 +851,7 @@ static int perf_copy_chunk(struct perf_thread *pthr,
->  	return likely(atomic_read(&pthr->perf->tsync) > 0) ? 0 : -EINTR;
->  
->  err_free_resource:
-> +	dmaengine_desc_put(tx);
->  	dmaengine_unmap_put(unmap);
->  
->  	return ret;
-
+> v2: Patch formalities (rebase, tree name, tags, ccs)
+>
+>  drivers/net/phy/realtek/realtek_main.c | 3 ++-
+>  1 file changed, 2 insertions(+), 1 deletion(-)
+>
+> diff --git a/drivers/net/phy/realtek/realtek_main.c b/drivers/net/phy/realtek/realtek_main.c
+> index 27268811f564..b65d0f5fa1a0 100644
+> --- a/drivers/net/phy/realtek/realtek_main.c
+> +++ b/drivers/net/phy/realtek/realtek_main.c
+> @@ -1802,7 +1802,8 @@ static int rtl822x_config_aneg(struct phy_device *phydev)
+>                 ret = phy_modify_mmd_changed(phydev, MDIO_MMD_VEND2,
+>                                              RTL_MDIO_AN_10GBT_CTRL,
+>                                              MDIO_AN_10GBT_CTRL_ADV2_5G |
+> -                                            MDIO_AN_10GBT_CTRL_ADV5G, adv);
+> +                                            MDIO_AN_10GBT_CTRL_ADV5G |
+> +                                            MDIO_AN_10GBT_CTRL_ADV10G, adv);
+>                 if (ret < 0)
+>                         return ret;
+>         }
+> --
+> 2.54.0
+>
 
