@@ -1,188 +1,296 @@
-Return-Path: <stable+bounces-268773-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-268774-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id g795FicvPmo6BAkAu9opvQ
-	(envelope-from <stable+bounces-268773-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 09:49:59 +0200
+	id VAAKEjsvPmo9BAkAu9opvQ
+	(envelope-from <stable+bounces-268774-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 09:50:19 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id E75616CB11F
-	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 09:49:58 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9510E6CB125
+	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 09:50:18 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=189LUFVV;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-268773-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-268773-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=none) header.from=linuxfoundation.org;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=H35J3o1t;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-268774-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-268774-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=none) header.from=linux.dev;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 7368B30A2902
-	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 07:48:38 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D1A5B302768C
+	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 07:49:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4973C302742;
-	Fri, 26 Jun 2026 07:48:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55FE2372EC5;
+	Fri, 26 Jun 2026 07:49:18 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from out-182.mta0.migadu.com (out-182.mta0.migadu.com [91.218.175.182])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE13A372EC5;
-	Fri, 26 Jun 2026 07:48:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C265B3E00A3
+	for <stable@vger.kernel.org>; Fri, 26 Jun 2026 07:49:15 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782460118; cv=none; b=GxnaQROH8AJCpRJkGFY/t4PAcE9D+jcn30NrTTRE75YysC0qTAyt+40hUC9zmPzHfClHU20bcO2rCF2iM/xCjpb3Um24oikwKYMft2Ij4jEyYVlV2hCL5pHHY27dMWLemijjjTDBPuKDAGm0/mGqs3Pxw0pPKZtClmfpVXvW7GQ=
+	t=1782460158; cv=none; b=B+Rh+lgpL7oslv+K845fshurgloVELvzXGqUwOwW1jRGUBuW9cRMRKvygsVDdt61RE1nsyL8NeTwmPyt53zaoA0P/OpYmoyllKBMxhFVNT8H5RPQvlWVjZTt5+bbtLUTwbm3RizeF+9qMlecqyfmMTbFII+skQjb3WdIOIGoVNc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782460118; c=relaxed/simple;
-	bh=9/wnZYGiw5BX/H48k6GHhZ2VZquIF4wcS5MnFY1QA8U=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=s9PX+d2ony88nHV4COOvaWGSxPYtLyriYywlFnalNxNp1XiLRbLKPPR1NhlxqO9ZesCR8loQdUAbxK0pTt+ErFHB8CcJGSrkqrF/08c50Q9Cztc+d5OkCt5V86RFcRJW/K/DwNWlt7g6tReiQ4Ii2kR+LnEGzrlPpK7CcshO9N0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=189LUFVV; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DFAAC1F000E9;
-	Fri, 26 Jun 2026 07:48:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1782460116;
-	bh=KnMOkiEFGTcRc3gnwyUBZHMnucCU3hCP7342uw+A/EQ=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=189LUFVVzxixg/NIUmZLVKjK+/lscpy8/cjhBKk8dGSc8rX8/d9UPvhQABw6Cp6cC
-	 DWPnyXE0lEIvqeosfHv1MpNHAC+hn8wxAEhHWs9oe1IF+7UZ26flcPMqhuoiufUmki
-	 6QLe52WECex3aXQJ12qUv8FuS9/sGqZu4SoeffIk=
-Date: Fri, 26 Jun 2026 08:47:24 +0100
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Shiming Cheng <shiming.cheng@mediatek.com>
-Cc: netdev@vger.kernel.org, davem@davemloft.net, edumazet@google.com,
-	kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
-	matthias.bgg@gmail.com, angelogioacchino.delregno@collabora.com,
-	willemb@google.com, imv4bel@gmail.com, alice@isovalent.com,
-	eilaimemedsnaimel@gmail.com, sd@queasysnail.net,
-	lena.wang@mediatek.com, stable@vger.kernel.org
-Subject: Re: [PATCH] Subject: [PATCH] net: gro: fix double aggregation of
- flush-marked skbs
-Message-ID: <2026062614-dress-rethink-c6f8@gregkh>
-References: <20260626074059.25244-1-shiming.cheng@mediatek.com>
+	s=arc-20240116; t=1782460158; c=relaxed/simple;
+	bh=3mmVUnGqZU5Kg32h/t+ALZB8z95jhiBcGelMloDglFA=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=KUtGXAm2jF2QFcFZbPWyi2f5F6+y/XQXpDPCvlnszVRl7e0itSkhHCdb0IwSfpKfzukD7ksggkTG+U8numZ7kaCPUBQOue2LX02JPPTYPhxuEgoPQcPIBG37lUzwmc9fCVA7alV2OPwMhN+aHwrkameOsozhQYc37/f3KHuDYJc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=H35J3o1t; arc=none smtp.client-ip=91.218.175.182
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1782460153;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=4Saw4kFCjm19eZ20/zw2nrOG00PSR+Clz1dVZWS52fs=;
+	b=H35J3o1t13TjTi237Lp3SqddEjsRv4f4RSM+qpBCWodWmTU01xwsDYze/P7OXfzjcf8x2g
+	L7azLrthFwB7ZdhxgEggy38cPs2ercxpdv9beZWDVQANtMSOQiQChT4wFBsUqAUhMh2/tR
+	dSogqoEyYVbj2LI7Bo0ef8Z4euSG7cs=
+From: Lance Yang <lance.yang@linux.dev>
+To: dev.jain@arm.com,
+	linmiaohe@huawei.com
+Cc: muchun.song@linux.dev,
+	osalvador@suse.de,
+	akpm@linux-foundation.org,
+	ljs@kernel.org,
+	david@kernel.org,
+	liam@infradead.org,
+	riel@surriel.com,
+	vbabka@kernel.org,
+	harry@kernel.org,
+	jannh@google.com,
+	lance.yang@linux.dev,
+	kas@kernel.org,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	rcampbell@nvidia.com,
+	apopple@nvidia.com,
+	ziy@nvidia.com,
+	matthew.brost@intel.com,
+	joshua.hahnjy@gmail.com,
+	rakie.kim@sk.com,
+	byungchul@sk.com,
+	gourry@gourry.net,
+	ying.huang@linux.alibaba.com,
+	mel@csn.ul.ie,
+	nao.horiguchi@gmail.com,
+	ak@linux.intel.com,
+	j-nomura@ce.jp.nec.com,
+	pfalcato@suse.de,
+	dave.hansen@intel.com,
+	tglx@kernel.org,
+	jpoimboe@kernel.org,
+	ryan.roberts@arm.com,
+	anshuman.khandual@arm.com,
+	stable@vger.kernel.org
+Subject: Re: [PATCH 4/5] mm/page_vma_mapped: use huge_ptep_get() for hugetlb
+Date: Fri, 26 Jun 2026 15:48:55 +0800
+Message-Id: <20260626074855.97652-1-lance.yang@linux.dev>
+In-Reply-To: <20260625112955.3254283-5-dev.jain@arm.com>
+References: <20260625112955.3254283-5-dev.jain@arm.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260626074059.25244-1-shiming.cheng@mediatek.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [3.84 / 15.00];
-	MID_END_EQ_FROM_USER_PART(4.00)[];
+X-Spamd-Result: default: False [0.34 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[linux.dev,none];
+	R_DKIM_ALLOW(-0.20)[linux.dev:s=key1];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-268774-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linux.dev,suse.de,linux-foundation.org,kernel.org,infradead.org,surriel.com,google.com,kvack.org,vger.kernel.org,nvidia.com,intel.com,gmail.com,sk.com,gourry.net,linux.alibaba.com,csn.ul.ie,linux.intel.com,ce.jp.nec.com,arm.com];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-268773-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[16];
-	FORGED_RECIPIENTS(0.00)[m:shiming.cheng@mediatek.com,m:netdev@vger.kernel.org,m:davem@davemloft.net,m:edumazet@google.com,m:kuba@kernel.org,m:pabeni@redhat.com,m:horms@kernel.org,m:matthias.bgg@gmail.com,m:angelogioacchino.delregno@collabora.com,m:willemb@google.com,m:imv4bel@gmail.com,m:alice@isovalent.com,m:eilaimemedsnaimel@gmail.com,m:sd@queasysnail.net,m:lena.wang@mediatek.com,m:stable@vger.kernel.org,m:matthiasbgg@gmail.com,s:lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[3];
+	FORGED_SENDER(0.00)[lance.yang@linux.dev,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS(0.00)[m:dev.jain@arm.com,m:linmiaohe@huawei.com,m:muchun.song@linux.dev,m:osalvador@suse.de,m:akpm@linux-foundation.org,m:ljs@kernel.org,m:david@kernel.org,m:liam@infradead.org,m:riel@surriel.com,m:vbabka@kernel.org,m:harry@kernel.org,m:jannh@google.com,m:lance.yang@linux.dev,m:kas@kernel.org,m:linux-mm@kvack.org,m:linux-kernel@vger.kernel.org,m:rcampbell@nvidia.com,m:apopple@nvidia.com,m:ziy@nvidia.com,m:matthew.brost@intel.com,m:joshua.hahnjy@gmail.com,m:rakie.kim@sk.com,m:byungchul@sk.com,m:gourry@gourry.net,m:ying.huang@linux.alibaba.com,m:mel@csn.ul.ie,m:nao.horiguchi@gmail.com,m:ak@linux.intel.com,m:j-nomura@ce.jp.nec.com,m:pfalcato@suse.de,m:dave.hansen@intel.com,m:tglx@kernel.org,m:jpoimboe@kernel.org,m:ryan.roberts@arm.com,m:anshuman.khandual@arm.com,m:stable@vger.kernel.org,m:joshuahahnjy@gmail.com,m:naohoriguchi@gmail.com,s:lists@lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	RCPT_COUNT_TWELVE(0.00)[36];
 	FORGED_SENDER_FORWARDING(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
+	TO_DN_NONE(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[vger.kernel.org,davemloft.net,google.com,kernel.org,redhat.com,gmail.com,collabora.com,isovalent.com,queasysnail.net,mediatek.com];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[lance.yang@linux.dev,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linux.dev:+];
+	ALIAS_RESOLVED(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	MISSING_XM_UA(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,mediatek.com:email]
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.dev:dkim,linux.dev:mid,linux.dev:from_mime,vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,arm.com:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: E75616CB11F
+X-Rspamd-Queue-Id: 9510E6CB125
 
-On Fri, Jun 26, 2026 at 03:40:59PM +0800, Shiming Cheng wrote:
-> The new skb_gro_receive_list() function is missing a critical safety check
-> present in the legacy skb_gro_receive() path. Specifically, it does not
-> validate NAPI_GRO_CB(skb)->flush before allowing packet aggregation.
-> 
-> This allows already-GRO'd packets with existing frag_list to be
-> re-aggregated into a new GRO session, corrupting the frag_list chain
-> structure. When skb_segment() attempts to unpack these malformed packets,
-> it encounters invalid state and triggers a kernel panic.
-> 
-> Scenario (Tethering/Device forwarding):
->   1. Driver: Driver Generated aggregated packet P1 via LRO with frag_list
->   2. Dev A: Receives aggregated fraglist packet and flush flag set
->   2. Dev A: Re-enters GRO, skb_gro_receive_list() is called
->   4. Missing flush check allows re-aggregation despite flush flag
->   5. Frag_list chain becomes corrupted (loops or dangling refs)
->   6. Dev B: TX path calls skb_segment(), crashes on corrupted frag_list
-> 
-> Root cause in skb_segment():
->   The check at line ~4891:
->     if (hsize <= 0 && i >= nfrags && skb_headlen(list_skb) &&
->         (skb_headlen(list_skb) == len || sg)) {
-> 
->   When frag_list is corrupted by double aggregation, when list_skb is
->   a NULL pointer from skb->next, skb_headlen(list_skb) dereference
->   NULL/corrupted pointers occurs.
-> 
-> Call Trace:
->  skb_headlen(NULL skb)
->  skb_segment
->  tcp_gso_segment
->  tcp4_gso_segment
->  inet_gso_segment
->  skb_mac_gso_segment
->  __skb_gso_segment
->  skb_gso_segment
->  validate_xmit_skb
->  validate_xmit_skb_list
->  sch_direct_xmit
->  qdisc_restart
->  __qdisc_run
->  qdisc_run
->  net_tx_action
-> 
-> Fix: Add NAPI_GRO_CB(skb)->flush validation to the early-return check in
-> skb_gro_receive_list(), matching the defensive programming pattern of
-> skb_gro_receive().
-> 
-> Fixes: 9dc2c3cd6c11 ("net: add fraglist GRO/GSO support")
-> Signed-off-by: Shiming Cheng <shiming.cheng@mediatek.com>
-> ---
->  net/core/gro.c | 3 ++-
->  1 file changed, 2 insertions(+), 1 deletion(-)
-> 
-> diff --git a/net/core/gro.c b/net/core/gro.c
-> index 35f2f708f010..076247c1e662 100644
-> --- a/net/core/gro.c
-> +++ b/net/core/gro.c
-> @@ -229,7 +229,8 @@ int skb_gro_receive(struct sk_buff *p, struct sk_buff *skb)
->  
->  int skb_gro_receive_list(struct sk_buff *p, struct sk_buff *skb)
->  {
-> -	if (unlikely(p->len + skb->len >= 65536))
-> +	if (unlikely(p->len + skb->len >= 65536 ||
-> +		     NAPI_GRO_CB(skb)->flush))
->  		return -E2BIG;
->  
->  	if (!pskb_may_pull(skb, skb_gro_offset(skb))) {
-> -- 
-> 2.45.2
-> 
-> 
 
-<formletter>
+On Thu, Jun 25, 2026 at 11:29:53AM +0000, Dev Jain wrote:
+>check_pte() is the final validation step in page_vma_mapped_walk().
+>It reads pvmw->pte with ptep_get() to decide whether the entry maps
+>the PFN range being walked. For hugetlb VMAs, that pointer refers
+>to a hugetlb entry.
+>
+>On arches which provide their own huge_ptep_get() to dereference a huge
+>pte pointer, accessing via ptep_get() would cause pte_pfn(),
+>pte_present() etc to misbehave.
+>
+>It is not clear whether this has a trivially visible effect to userspace.
+>
+>Use huge_ptep_get() to dereference a huge pte pointer.
+>
+>Fixes: ace71a19cec5 ("mm: introduce page_vma_mapped_walk()")
+>Cc: stable@vger.kernel.org
+>Signed-off-by: Dev Jain <dev.jain@arm.com>
+>---
+> mm/page_vma_mapped.c | 8 +++++++-
+> 1 file changed, 7 insertions(+), 1 deletion(-)
+>
+>diff --git a/mm/page_vma_mapped.c b/mm/page_vma_mapped.c
+>index 2ccbabfb2cc17..18e1d341f463c 100644
+>--- a/mm/page_vma_mapped.c
+>+++ b/mm/page_vma_mapped.c
+>@@ -107,7 +107,13 @@ static bool map_pte(struct page_vma_mapped_walk *pvmw, pmd_t *pmdvalp,
+> static bool check_pte(struct page_vma_mapped_walk *pvmw, unsigned long pte_nr)
+> {
+> 	unsigned long pfn;
+>-	pte_t ptent = ptep_get(pvmw->pte);
+>+	pte_t ptent;
+>+
+>+	if (is_vm_hugetlb_page(pvmw->vma))
+>+		ptent = huge_ptep_get(pvmw->vma->vm_mm, pvmw->address,
+>+				      pvmw->pte);
 
-This is not the correct way to submit patches for inclusion in the
-stable kernel tree.  Please read:
-    https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html
-for how to do this properly.
+I think check_pte() can pass a wrong address to huge_ptep_get() ...
 
-</formletter>
+Not sure that is wrong in the first place. For memory failure,
+page_mapped_in_vma() can be called with a poisoned tail page of a hugetlb
+folio. In that case, pvmw->address need not be hugepage-aligned.
+
+@Miaohe
+
+For arm64, CONT_PMD_SIZE is one supported HugeTLB size. With such a VMA,
+page_vma_mapped_walk() passes that size to hugetlb_walk():
+
+bool page_vma_mapped_walk(struct page_vma_mapped_walk *pvmw)
+{
+	...
+	if (unlikely(is_vm_hugetlb_page(vma))) {
+		...
+		pvmw->pte = hugetlb_walk(vma, pvmw->address, size);
+		...
+	}
+	...
+}
+
+hugetlb_walk() then calls arm64 huge_pte_offset(mm, addr, sz). For
+sz == CONT_PMD_SIZE, huge_pte_offset() aligns its local addr before
+calculating pmdp:
+
+pte_t *huge_pte_offset(struct mm_struct *mm,
+		       unsigned long addr, unsigned long sz)
+{
+	...
+	if (sz == CONT_PMD_SIZE)
+		addr &= CONT_PMD_MASK;
+
+	pmdp = pmd_offset(pudp, addr);
+	pmd = READ_ONCE(*pmdp);
+	...
+}
+
+So for that case, pvmw->pte is calculated from the aligned addr, not
+necessarily from the original pvmw->address. But check_pte() passes the
+original address together with pvmw->pte:
+
++		ptent = huge_ptep_get(pvmw->vma->vm_mm, pvmw->address,
++				      pvmw->pte);
+
+arm64 then uses that addr again to choose ncontig:
+
+pte_t huge_ptep_get(struct mm_struct *mm, unsigned long addr, pte_t *ptep)
+{
+	...
+	ncontig = find_num_contig(mm, addr, ptep, &pgsize);
+	for (i = 0; i < ncontig; i++, ptep++) {
+		...
+	}
+	return orig_pte;
+}
+
+static int find_num_contig(struct mm_struct *mm, unsigned long addr,
+			   pte_t *ptep, size_t *pgsize)
+{
+	pgd_t *pgdp = pgd_offset(mm, addr);
+	p4d_t *p4dp;
+	pud_t *pudp;
+	pmd_t *pmdp;
+
+	*pgsize = PAGE_SIZE;
+	p4dp = p4d_offset(pgdp, addr);
+	pudp = pud_offset(p4dp, addr);
+	pmdp = pmd_offset(pudp, addr);
+	if ((pte_t *)pmdp == ptep) {
+		*pgsize = PMD_SIZE;
+		return CONT_PMDS;
+	}
+	return CONT_PTES;
+}
+
+With a tail address, pmdp may no longer point at pvmw->pte, so
+find_num_contig() can return CONT_PTES for a CONT_PMD HugeTLB mapping.
+
+On 16K arm64, that changes ncontig from 32 to 128. So huge_ptep_get()
+can walk past the CONT_PMD entries, and possibly past the PMD table.
+
+Should check_pte() pass the address matching pvmw->pte, sth like:
+
+---8<---
+diff --git a/mm/page_vma_mapped.c b/mm/page_vma_mapped.c
+index 406fd50bbd8f..58463493bd3d 100644
+--- a/mm/page_vma_mapped.c
++++ b/mm/page_vma_mapped.c
+@@ -109,11 +109,14 @@ static bool check_pte(struct page_vma_mapped_walk *pvmw, unsigned long pte_nr)
+ 	unsigned long pfn;
+ 	pte_t ptent;
+
+-	if (is_vm_hugetlb_page(pvmw->vma))
+-		ptent = huge_ptep_get(pvmw->vma->vm_mm, pvmw->address,
+-				      pvmw->pte);
+-	else
++	if (is_vm_hugetlb_page(pvmw->vma)) {
++		struct hstate *hstate = hstate_vma(pvmw->vma);
++		unsigned long haddr = pvmw->address & huge_page_mask(hstate);
++
++		ptent = huge_ptep_get(pvmw->vma->vm_mm, haddr, pvmw->pte);
++	} else {
+ 		ptent = ptep_get(pvmw->pte);
++	}
+
+ 	if (pvmw->flags & PVMW_MIGRATION) {
+ 		const softleaf_t entry = softleaf_from_pte(ptent);
+--
+
+while leaving pvmw->address unchanged for page_mapped_in_vma()?
+
+Cheers, Lance
+
+>+	else
+>+		ptent = ptep_get(pvmw->pte);
+> 
+> 	if (pvmw->flags & PVMW_MIGRATION) {
+> 		const softleaf_t entry = softleaf_from_pte(ptent);
+>-- 
+>2.43.0
+>
+>
 
