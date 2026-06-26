@@ -1,52 +1,52 @@
-Return-Path: <stable+bounces-269236-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-269237-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id zRLODvCuPmrYKAkAu9opvQ
-	(envelope-from <stable+bounces-269236-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 18:55:12 +0200
+	id ++sKFvutPmqbKAkAu9opvQ
+	(envelope-from <stable+bounces-269237-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 18:51:07 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 947676CF48A
-	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 18:55:11 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id E473B6CF430
+	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 18:51:06 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b="rQ2ihM/q";
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-269236-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-269236-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=kvyIqDii;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-269237-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-269237-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=none;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E4D2F30427C7
-	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 16:50:51 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 0B7E13008D40
+	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 16:50:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C26263FF890;
-	Fri, 26 Jun 2026 16:50:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D1443FF89B;
+	Fri, 26 Jun 2026 16:50:50 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FA493FE37C;
-	Fri, 26 Jun 2026 16:50:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C94A3FE668;
+	Fri, 26 Jun 2026 16:50:46 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782492649; cv=none; b=HdFA5khuIdqybbSYXriGgVoEirePBxrxXnjPmK7sDLdAcnsyQIKl6koC0Qm05qVGRGsX+VCfQIy8lueOiU9kEm2H8pIMJM6LVBMe7mNPGmNPEaYiJVQZIPzblIO6O+lkMN4JUz5cEcd6iBzydz2uiWsep6WFVgkytiR95h7Egsw=
+	t=1782492649; cv=none; b=QZ7yGuU7CGN3bSdethQetXz713dPd18aZDMDyQpwKSVky5hoy1/u53G1hZVEy0rzl2j4bVqlQQuqmlyY2mKb4CkTUbymYDM+1a5Zc/lknLcqfeaGrn7EjIjYY1gz83J8XfFWb0LGtKqg2JUNPwKGfPEP5cYWOtVfw858C7QM68c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1782492649; c=relaxed/simple;
-	bh=B++2b+HZFi53LEA6K++93M5y9N7V+BQgGOoJjBhHbvI=;
-	h=Date:To:From:Subject:Message-Id; b=TS8IL/9AB0MxtZxljaNeq8h8Rd2cUYhXDcX+XAf9lS0WYTepSEfWiEgRkzeiYkjvJDD29Slrzlxq/Lc2X8zcnf2EbmEDTdTgOZ49hYP5hUh72v1j7ZHZ8SjTyfFRARvIbb0bUWKTIpyC1a0JP3UZ3+8qf63kR6sK/0CF8H0SMJs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=rQ2ihM/q; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B274F1F00A3A;
-	Fri, 26 Jun 2026 16:50:44 +0000 (UTC)
+	bh=IEcd81ljtMrBNEBHEtxTNTq0HlbccbabNlUUo0MHkpw=;
+	h=Date:To:From:Subject:Message-Id; b=r+5cGm2XhfBpPAhnZNJyN4vrv6hxE1ztwtX+tuCOK+VECbeNmZZigCimq+gBgUiWCrTd/2aaI3dS5f8v85m4sTLPAnttdAQxyxQcqVoCJCqQrKCONuqmVTXXURLxRvyX3KefZxVBcWPntm1VcFrMJleiyg5M6GdBlp2eLtO9hF4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=kvyIqDii; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D45F01F00A3D;
+	Fri, 26 Jun 2026 16:50:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1782492644;
-	bh=8Cs7bMrGB8UWOF+SzDf0hzrnSN5Wx1Mu3hlKuFODmLI=;
+	d=linux-foundation.org; s=korg; t=1782492645;
+	bh=1BDr4k4b7PNNTJBp/fS6Z6fkAm4IwyqPuu3Zg5UZpcE=;
 	h=Date:To:From:Subject;
-	b=rQ2ihM/q4XkL1rVjPAV65cdeTNPHqPSi15N1TN2JgEq6GyiU7cEecJhlaK6jIl7NZ
-	 y63Fx0b/s4+Ka4/88Fe5uc4BiIoOCi/UGhzF0ttXh4cHSbP9kl3piZcceREQjeqyUG
-	 mDrPZ/pomIcVv6PR96bXMVOeB6ZJQ6xXvOVAwswI=
-Date: Fri, 26 Jun 2026 09:50:44 -0700
+	b=kvyIqDii6PtkNLdJ9Is4wWdZjRD+9q+4X1yxhaevbbhVFf0ZvrkLI1Kgx9zb7vSfn
+	 H6y98skCw2CRLp6BLmXXu9BRYZzCk3AxtOdYFU2tLESkNWzU2uh0Y8+t4bAFVM/SNm
+	 k1+EhSELqEvfLTbj1+zdIueEgAod60NBnGlsma/o=
+Date: Fri, 26 Jun 2026 09:50:45 -0700
 To: mm-commits@vger.kernel.org,stable@vger.kernel.org,pmladek@suse.com,npiggin@gmail.com,mpe@ellerman.id.au,maddy@linux.ibm.com,dianders@chromium.org,include@grrlz.net,akpm@linux-foundation.org
 From: Andrew Morton <akpm@linux-foundation.org>
-Subject: [to-be-updated] watchdog-use-sys_info_with_filter-to-avoid-duplicate-backtraces.patch removed from -mm tree
-Message-Id: <20260626165044.B274F1F00A3A@smtp.kernel.org>
+Subject: [to-be-updated] powerpc-watchdog-use-sys_info_with_filter-to-avoid-duplicate-backtraces.patch removed from -mm tree
+Message-Id: <20260626165045.D45F01F00A3D@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -56,7 +56,7 @@ X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linux-foundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -64,7 +64,7 @@ X-Spamd-Result: default: False [-1.16 / 15.00];
 	FROM_NEQ_ENVFROM(0.00)[akpm@linux-foundation.org,stable@vger.kernel.org];
 	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-269236-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-269237-lists,stable=lfdr.de];
 	FORGED_RECIPIENTS(0.00)[m:mm-commits@vger.kernel.org,m:stable@vger.kernel.org,m:pmladek@suse.com,m:npiggin@gmail.com,m:mpe@ellerman.id.au,m:maddy@linux.ibm.com,m:dianders@chromium.org,m:include@grrlz.net,m:akpm@linux-foundation.org,s:lists@lfdr.de];
 	DMARC_NA(0.00)[linux-foundation.org];
 	FREEMAIL_TO(0.00)[vger.kernel.org,suse.com,gmail.com,ellerman.id.au,linux.ibm.com,chromium.org,grrlz.net,linux-foundation.org];
@@ -73,7 +73,7 @@ X-Spamd-Result: default: False [-1.16 / 15.00];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FORGED_SENDER(0.00)[akpm@linux-foundation.org,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	FROM_HAS_DN(0.00)[];
 	TO_DN_NONE(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
@@ -85,31 +85,31 @@ X-Spamd-Result: default: False [-1.16 / 15.00];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linux-foundation.org:dkim,linux-foundation.org:email,linux-foundation.org:from_mime,vger.kernel.org:from_smtp,chromium.org:email,suse.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,grrlz.net:email,smtp.kernel.org:mid]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,smtp.kernel.org:mid,grrlz.net:email,linux-foundation.org:dkim,linux-foundation.org:email,linux-foundation.org:from_mime,suse.com:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,ellerman.id.au:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 947676CF48A
+X-Rspamd-Queue-Id: E473B6CF430
 
 
 The quilt patch titled
-     Subject: watchdog: use sys_info_with_filter() to avoid duplicate backtraces
+     Subject: powerpc/watchdog: use sys_info_with_filter() to avoid duplicate backtraces
 has been removed from the -mm tree.  Its filename was
-     watchdog-use-sys_info_with_filter-to-avoid-duplicate-backtraces.patch
+     powerpc-watchdog-use-sys_info_with_filter-to-avoid-duplicate-backtraces.patch
 
 This patch was dropped because an updated version will be issued
 
 ------------------------------------------------------
 From: Bradley Morgan <include@grrlz.net>
-Subject: watchdog: use sys_info_with_filter() to avoid duplicate backtraces
-Date: Thu, 25 Jun 2026 15:25:56 +0000
+Subject: powerpc/watchdog: use sys_info_with_filter() to avoid duplicate backtraces
+Date: Thu, 25 Jun 2026 15:25:57 +0000
 
-The watchdog prints all CPU backtraces itself.  When the watchdog mask
-contains only SYS_INFO_ALL_BT, stripping that bit leaves zero and
+The powerpc watchdog prints all CPU backtraces itself.  When the watchdog
+mask contains only SYS_INFO_ALL_BT, stripping that bit leaves zero and
 sys_info(0) falls back to kernel_sys_info.
 
 Use sys_info_with_filter() so an explicit all_bt mask does not request the
 global default.
 
-Link: https://lore.kernel.org/20260625152558.7450-3-include@grrlz.net
+Link: https://lore.kernel.org/20260625152558.7450-4-include@grrlz.net
 Fixes: a9af76a78760 ("watchdog: add sys_info sysctls to dump sys info on system lockup")
 Signed-off-by: Bradley Morgan <include@grrlz.net>
 Cc: Doug Anderson <dianders@chromium.org>
@@ -121,70 +121,66 @@ Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
 
- kernel/watchdog.c |   12 ++++++++----
+ arch/powerpc/kernel/watchdog.c |   12 ++++++++----
  1 file changed, 8 insertions(+), 4 deletions(-)
 
---- a/kernel/watchdog.c~watchdog-use-sys_info_with_filter-to-avoid-duplicate-backtraces
-+++ a/kernel/watchdog.c
-@@ -208,6 +208,7 @@ void watchdog_hardlockup_check(unsigned
+--- a/arch/powerpc/kernel/watchdog.c~powerpc-watchdog-use-sys_info_with_filter-to-avoid-duplicate-backtraces
++++ a/arch/powerpc/kernel/watchdog.c
+@@ -201,6 +201,7 @@ static bool set_cpu_stuck(int cpu)
+ static void watchdog_smp_panic(int cpu)
  {
- 	int hardlockup_all_cpu_backtrace;
- 	unsigned int this_cpu;
+ 	static cpumask_t wd_smp_cpus_ipi; // protected by reporting
 +	unsigned long si_mask;
  	unsigned long flags;
+ 	u64 tb, last_reset;
+ 	int c;
+@@ -236,8 +237,9 @@ static void watchdog_smp_panic(int cpu)
+ 	pr_emerg("CPU %d TB:%lld, last SMP heartbeat TB:%lld (%lldms ago)\n",
+ 		 cpu, tb, last_reset, tb_to_ns(tb - last_reset) / 1000000);
  
- 	if (per_cpu(watchdog_hardlockup_touched, cpu)) {
-@@ -216,7 +217,8 @@ void watchdog_hardlockup_check(unsigned
- 		return;
- 	}
- 
--	hardlockup_all_cpu_backtrace = (hardlockup_si_mask & SYS_INFO_ALL_BT) ?
 +	si_mask = READ_ONCE(hardlockup_si_mask);
-+	hardlockup_all_cpu_backtrace = (si_mask & SYS_INFO_ALL_BT) ?
- 					1 : sysctl_hardlockup_all_cpu_backtrace;
- 	/*
- 	 * Check for a hardlockup by making sure the CPU's timer
-@@ -286,7 +288,7 @@ void watchdog_hardlockup_check(unsigned
- 			clear_bit_unlock(0, &hard_lockup_nmi_warn);
+ 	if (sysctl_hardlockup_all_cpu_backtrace ||
+-	    (hardlockup_si_mask & SYS_INFO_ALL_BT)) {
++	    (si_mask & SYS_INFO_ALL_BT)) {
+ 		trigger_allbutcpu_cpu_backtrace(cpu);
+ 		cpumask_clear(&wd_smp_cpus_ipi);
+ 	} else {
+@@ -251,7 +253,7 @@ static void watchdog_smp_panic(int cpu)
+ 		}
  	}
  
 -	sys_info(hardlockup_si_mask & ~SYS_INFO_ALL_BT);
 +	sys_info_with_filter(si_mask, SYS_INFO_ALL_BT);
  	if (hardlockup_panic)
- 		nmi_panic(regs, "Hard LOCKUP");
+ 		nmi_panic(NULL, "Hard LOCKUP");
  
-@@ -798,6 +800,7 @@ static enum hrtimer_restart watchdog_tim
- 	struct pt_regs *regs = get_irq_regs();
- 	int softlockup_all_cpu_backtrace;
- 	int duration, thresh_count;
+@@ -371,6 +373,7 @@ static void watchdog_timer_interrupt(int
+ 
+ DEFINE_INTERRUPT_HANDLER_NMI(soft_nmi_interrupt)
+ {
 +	unsigned long si_mask;
  	unsigned long flags;
+ 	int cpu = raw_smp_processor_id();
+ 	u64 tb;
+@@ -418,11 +421,12 @@ DEFINE_INTERRUPT_HANDLER_NMI(soft_nmi_in
  
- 	if (!watchdog_enabled)
-@@ -809,7 +812,8 @@ static enum hrtimer_restart watchdog_tim
- 	if (panic_in_progress())
- 		return HRTIMER_NORESTART;
+ 		xchg(&__wd_nmi_output, 1); // see wd_lockup_ipi
  
--	softlockup_all_cpu_backtrace = (softlockup_si_mask & SYS_INFO_ALL_BT) ?
-+	si_mask = READ_ONCE(softlockup_si_mask);
-+	softlockup_all_cpu_backtrace = (si_mask & SYS_INFO_ALL_BT) ?
- 					1 : sysctl_softlockup_all_cpu_backtrace;
++		si_mask = READ_ONCE(hardlockup_si_mask);
+ 		if (sysctl_hardlockup_all_cpu_backtrace ||
+-		    (hardlockup_si_mask & SYS_INFO_ALL_BT))
++		    (si_mask & SYS_INFO_ALL_BT))
+ 			trigger_allbutcpu_cpu_backtrace(cpu);
  
- 	watchdog_hardlockup_kick();
-@@ -900,7 +904,7 @@ static enum hrtimer_restart watchdog_tim
- 		}
- 
- 		add_taint(TAINT_SOFTLOCKUP, LOCKDEP_STILL_OK);
--		sys_info(softlockup_si_mask & ~SYS_INFO_ALL_BT);
+-		sys_info(hardlockup_si_mask & ~SYS_INFO_ALL_BT);
 +		sys_info_with_filter(si_mask, SYS_INFO_ALL_BT);
- 		thresh_count = duration / get_softlockup_thresh();
+ 		if (hardlockup_panic)
+ 			nmi_panic(regs, "Hard LOCKUP");
  
- 		if (softlockup_panic && thresh_count >= softlockup_panic)
 _
 
 Patches currently in -mm which might be from include@grrlz.net are
 
-powerpc-watchdog-use-sys_info_with_filter-to-avoid-duplicate-backtraces.patch
 panic-use-sys_info_with_filter-to-avoid-duplicate-backtraces.patch
 lib-string-fix-memchr_inv-for-large-ranges.patch
 
