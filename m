@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-269170-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-269184-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id zkAlBG6nPmrmJgkAu9opvQ
-	(envelope-from <stable+bounces-269170-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 18:23:10 +0200
+	id YdYxBaanPmryJgkAu9opvQ
+	(envelope-from <stable+bounces-269184-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 18:24:06 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5436D6CEF82
-	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 18:23:09 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 61E4A6CEFB0
+	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 18:24:05 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=narfation.org header.s=20121 header.b=pD6GtuWo;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-269170-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-269170-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=narfation.org header.s=20121 header.b=0r8cjGFS;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-269184-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-269184-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=narfation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 6F7C731A9F83
-	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 16:14:57 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 328D531CD757
+	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 16:15:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 691804028CE;
-	Fri, 26 Jun 2026 16:12:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 63424403138;
+	Fri, 26 Jun 2026 16:12:37 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from dvalin.narfation.org (dvalin.narfation.org [213.160.73.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 342823FFFB5
-	for <stable@vger.kernel.org>; Fri, 26 Jun 2026 16:12:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AF073FD14F
+	for <stable@vger.kernel.org>; Fri, 26 Jun 2026 16:12:33 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782490349; cv=none; b=EE5AAUjyXBAlVEEHh9BWxYJds7oNBVoewFONsg6Gp0XVgAnRzKRwEsNHEPZ2UDXORbw/E8C5cZZf70bwxwx1asBaKUDd7jijqyzJcqy3Kv38cYNGRCRTu/KQODWRR8tlBuInzlwZZw+0B5TSY3v2jFBoLjPmm0miODMrusitvQw=
+	t=1782490356; cv=none; b=dNb+5uYJ6wLMoX1jWRPjUV9hoz1EP01JJMbrOTI2OD2hAPZ69vuAkV+HyfNfxK2v5eqJaUgNCouTeMZZfHLnHidl5/+jubYZYF7lARWLKZfOvwUHSXd01rXmD/NgCHgwsf/vZPwLTOnwmyBLoA2W796JofvDOQB9jGBaW09Fu4E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782490349; c=relaxed/simple;
-	bh=ZJ99bHUa/88zbXff+SPwLQGzU199j8KZtjjGbehrd+Y=;
+	s=arc-20240116; t=1782490356; c=relaxed/simple;
+	bh=AVBnUsvppe1nl3U+wKR4KaDwfr9ajUCmH5foOd/d08Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TZDB8oeD8AT3R3Rp3JuqXb6Cpic58Woz8v76r16PZeNvjv2bf8rgaKHzr84XwtpGK7JSNS99C/Z4Z09vqutTaWNwqJDlNdmizJNUBnHB74c6CT8gemPpOG26DjE/9z9Amzmr7m2610r3HEaT8fBqMtQ4Jj1KWi9mWnldjIPAV0Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=narfation.org; spf=pass smtp.mailfrom=narfation.org; dkim=pass (1024-bit key) header.d=narfation.org header.i=@narfation.org header.b=pD6GtuWo; arc=none smtp.client-ip=213.160.73.56
-Received: by dvalin.narfation.org (Postfix) id 97B4320541;
-	Fri, 26 Jun 2026 16:12:22 +0000 (UTC)
+	 MIME-Version; b=bSeGIX+S6AoDOW/58vf4oQUiv/qMLLF9zQYp01tWH7pWKhLD38Mq9l23TLUz0LpU4OU2Uxf97ljJRt7YeSU6RZaMlwzl3h9tC56uAeuZ7fvF6qzFmfDG7dJRqANBW0XxZOAW8qrZNKoIOoKg1GRmDf/4YPU+xpzPruVFwDEB1Jw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=narfation.org; spf=pass smtp.mailfrom=narfation.org; dkim=pass (1024-bit key) header.d=narfation.org header.i=@narfation.org header.b=0r8cjGFS; arc=none smtp.client-ip=213.160.73.56
+Received: by dvalin.narfation.org (Postfix) id 3276D203D3;
+	Fri, 26 Jun 2026 16:12:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=narfation.org;
-	s=20121; t=1782490342;
+	s=20121; t=1782490351;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=J8EISdNrouSM4rjnSAT3ezb+To8jTsXeC0bQto2Gt/c=;
-	b=pD6GtuWoxFHn1ZzBmrfTyo4ajtJ7vEn1lj0R2pyhblrDQdjcgyVqHJqdxt1YlCNGt8r9U1
-	pURfWAywXU2Lri+pLV0udfGokS58eoy3j6nSh1Fi8Nykl5um4DWfU39SkpM91Z7vQi2eXy
-	hBMLNBebAuLVj4gcdlc9u8pD6skPxs4=
+	bh=2+LUyL2is44G0RqZTxGaJmna5RtNBKr4/nOs5HPtErc=;
+	b=0r8cjGFS2vfDVJvtLakOAwWQWIxijWhXyQwov6tCROy+9v5LkysCtEA8cLuabfWmzgYrLV
+	Tp97spluCQTmcZTdHN4ItvbgUx5iWm2HO94lGwiljdegBI8eZjns+o5JR0axfz5YFidCku
+	gX6tq8mdMx7IEUv7omdOINBpLaz9qSw=
 From: Sven Eckelmann <sven@narfation.org>
 To: stable@vger.kernel.org
 Cc: Sven Eckelmann <sven@narfation.org>
-Subject: [PATCH 6.18 26/26] batman-adv: tvlv: avoid race of cifsnotfound handler state
-Date: Fri, 26 Jun 2026 18:12:10 +0200
-Message-ID: <20260626161210.124712-27-sven@narfation.org>
+Subject: [PATCH 7.0 12/26] batman-adv: gw: don't deselect gateway with active hardif
+Date: Fri, 26 Jun 2026 18:12:11 +0200
+Message-ID: <20260626161225.124839-13-sven@narfation.org>
 X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260626161210.124712-1-sven@narfation.org>
-References: <20260626161210.124712-1-sven@narfation.org>
+In-Reply-To: <20260626161225.124839-1-sven@narfation.org>
+References: <20260626161225.124839-1-sven@narfation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -68,14 +68,14 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[narfation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[narfation.org:s=20121];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-269170-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-269184-lists,stable=lfdr.de];
 	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:sven@narfation.org,s:lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
@@ -91,155 +91,85 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	TAGGED_RCPT(0.00)[stable];
 	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,narfation.org:dkim,narfation.org:email,narfation.org:mid,narfation.org:from_mime,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 5436D6CEF82
+X-Rspamd-Queue-Id: 61E4A6CEFB0
 
-commit edb557b2ba38fea2c5eb710cf366c797e187218c upstream.
+commit df97a7107b16375a10a36d7a63e9b4291a8ac680 upstream.
 
-TVLV handlers can have the flag BATADV_TVLV_HANDLER_OGM_CIFNOTFND set to
-signal that the OGM handler should be called (with NULL for data) when the
-specific TVLV container was not found in the OGM. This is used by:
+The batadv_hardif_cnt() was previously checking if there is an
+batadv_hard_iface->mesh_iface which is has the same mesh_iface. And since
+batadv_hardif_disable_interface() was resetting the
+batadv_hard_iface->mesh_iface after this check, it had to verify whether
+*1* interface was still part of the mesh_iface before it started the
+gateway deselection.
 
-* DAT
-* GW
-* Multicast (OGM + Tracker)
+But after batadv_hardif_cnt() is now checking the lower interfaces of
+mesh_iface and batadv_hardif_disable_interface() already removed the
+interface via netdev_upper_dev_unlink() earlier in this function, the check
+must now make sure that *0* interfaces can be found by batadv_hardif_cnt()
+before selected gateway must be deselected. Otherwise the deselection would
+already happen one batadv_hard_iface too early.
 
-The state whether the handler was executed was stored in the struct
-batadv_tvlv_handler. But the TVLV processing is started without any lock.
-Multiple parallel contexts processing TVLVs would therefore overwrite each
-others BATADV_TVLV_HANDLER_OGM_CALLED flag in the shared
-batadv_tvlv_handler.
-
-Drop the shared BATADV_TVLV_HANDLER_OGM_CALLED flag and instead determine,
-per TVLV buffer, whether a matching container was present by scanning the
-packet's buffer.
+Because a 0 hardif count from batadv_hardif_cnt() is equal to an empty
+list, it is possible to replace the counting with a simple list_empty().
 
 Cc: stable@kernel.org
-Fixes: ef26157747d4 ("batman-adv: tvlv - basic infrastructure")
+Fixes: 7dc284702bcd ("batman-adv: store hard_iface as iflink private data")
+Reviewed-by: Nora Schiffer <neocturne@universe-factory.net>
 Signed-off-by: Sven Eckelmann <sven@narfation.org>
 ---
- net/batman-adv/tvlv.c  | 63 ++++++++++++++++++++++++++++++++++++++----
- net/batman-adv/types.h |  7 -----
- 2 files changed, 57 insertions(+), 13 deletions(-)
+ net/batman-adv/hard-interface.c | 28 ++--------------------------
+ 1 file changed, 2 insertions(+), 26 deletions(-)
 
-diff --git a/net/batman-adv/tvlv.c b/net/batman-adv/tvlv.c
-index 63fb54024d154..a91f1891747c0 100644
---- a/net/batman-adv/tvlv.c
-+++ b/net/batman-adv/tvlv.c
-@@ -398,7 +398,6 @@ static int batadv_tvlv_call_handler(struct batadv_priv *bat_priv,
- 		tvlv_handler->ogm_handler(bat_priv, orig_node,
- 					  BATADV_NO_FLAGS,
- 					  tvlv_value, tvlv_value_len);
--		tvlv_handler->flags |= BATADV_TVLV_HANDLER_OGM_CALLED;
- 		break;
- 	case BATADV_UNICAST_TVLV:
- 		if (!skb)
-@@ -430,6 +429,48 @@ static int batadv_tvlv_call_handler(struct batadv_priv *bat_priv,
- 	return NET_RX_SUCCESS;
+diff --git a/net/batman-adv/hard-interface.c b/net/batman-adv/hard-interface.c
+index d6732c34aeafc..c7dbd24ea1998 100644
+--- a/net/batman-adv/hard-interface.c
++++ b/net/batman-adv/hard-interface.c
+@@ -786,30 +786,6 @@ int batadv_hardif_enable_interface(struct batadv_hard_iface *hard_iface,
+ 	return ret;
  }
  
-+/**
-+ * batadv_tvlv_containers_contain() - check if a tvlv buffer holds a container
-+ * @tvlv_value: tvlv content
-+ * @tvlv_value_len: tvlv content length
-+ * @type: tvlv container type to look for
-+ * @version: tvlv container version to look for
-+ *
-+ * Return: true if a container of the given type and version is present in the
-+ * tvlv buffer, false otherwise.
-+ */
-+static bool batadv_tvlv_containers_contain(void *tvlv_value,
-+					   u16 tvlv_value_len, u8 type,
-+					   u8 version)
-+{
-+	struct batadv_tvlv_hdr *tvlv_hdr;
-+	u16 tvlv_value_cont_len;
-+
-+	while (tvlv_value_len >= sizeof(*tvlv_hdr)) {
-+		tvlv_hdr = tvlv_value;
-+		tvlv_value_cont_len = ntohs(tvlv_hdr->len);
-+		tvlv_value = tvlv_hdr + 1;
-+		tvlv_value_len -= sizeof(*tvlv_hdr);
-+
-+		if (tvlv_value_cont_len > tvlv_value_len)
-+			break;
-+
-+		/* the next tvlv header is accessed assuming (at least) 2-byte
-+		 * alignment, so it must start at an even offset.
-+		 */
-+		if (tvlv_value_cont_len & 1)
-+			break;
-+
-+		if (tvlv_hdr->type == type && tvlv_hdr->version == version)
-+			return true;
-+
-+		tvlv_value = (u8 *)tvlv_value + tvlv_value_cont_len;
-+		tvlv_value_len -= tvlv_value_cont_len;
-+	}
-+
-+	return false;
-+}
-+
- /**
-  * batadv_tvlv_containers_process() - parse the given tvlv buffer to call the
-  *  appropriate handlers
-@@ -449,7 +490,9 @@ int batadv_tvlv_containers_process(struct batadv_priv *bat_priv,
- 				   struct sk_buff *skb, void *tvlv_value,
- 				   u16 tvlv_value_len)
- {
-+	u16 tvlv_value_start_len = tvlv_value_len;
- 	struct batadv_tvlv_handler *tvlv_handler;
-+	void *tvlv_value_start = tvlv_value;
- 	struct batadv_tvlv_hdr *tvlv_hdr;
- 	u16 tvlv_value_cont_len;
- 	u8 cifnotfound = BATADV_TVLV_HANDLER_OGM_CIFNOTFND;
-@@ -493,12 +536,20 @@ int batadv_tvlv_containers_process(struct batadv_priv *bat_priv,
- 		if (!tvlv_handler->ogm_handler)
- 			continue;
- 
--		if ((tvlv_handler->flags & BATADV_TVLV_HANDLER_OGM_CIFNOTFND) &&
--		    !(tvlv_handler->flags & BATADV_TVLV_HANDLER_OGM_CALLED))
--			tvlv_handler->ogm_handler(bat_priv, orig_node,
--						  cifnotfound, NULL, 0);
-+		if (!(tvlv_handler->flags & BATADV_TVLV_HANDLER_OGM_CIFNOTFND))
-+			continue;
- 
--		tvlv_handler->flags &= ~BATADV_TVLV_HANDLER_OGM_CALLED;
-+		/* if the corresponding container was present then the handler
-+		 * was already called from the loop above
-+		 */
-+		if (batadv_tvlv_containers_contain(tvlv_value_start,
-+						   tvlv_value_start_len,
-+						   tvlv_handler->type,
-+						   tvlv_handler->version))
-+			continue;
-+
-+		tvlv_handler->ogm_handler(bat_priv, orig_node,
-+					  cifnotfound, NULL, 0);
- 	}
- 	rcu_read_unlock();
- 
-diff --git a/net/batman-adv/types.h b/net/batman-adv/types.h
-index ef712ba4fff2c..ac4494f1b8e2a 100644
---- a/net/batman-adv/types.h
-+++ b/net/batman-adv/types.h
-@@ -2245,13 +2245,6 @@ enum batadv_tvlv_handler_flags {
- 	 *  will call this handler even if its type was not found (with no data)
- 	 */
- 	BATADV_TVLV_HANDLER_OGM_CIFNOTFND = BIT(1),
+-/**
+- * batadv_hardif_cnt() - get number of interfaces enslaved to mesh interface
+- * @mesh_iface: mesh interface to check
+- *
+- * This function is only using RCU for locking - the result can therefore be
+- * off when another function is modifying the list at the same time. The
+- * caller can use the rtnl_lock to make sure that the count is accurate.
+- *
+- * Return: number of connected/enslaved hard interfaces
+- */
+-static size_t batadv_hardif_cnt(struct net_device *mesh_iface)
+-{
+-	struct batadv_hard_iface *hard_iface;
+-	struct list_head *iter;
+-	size_t count = 0;
 -
--	/**
--	 * @BATADV_TVLV_HANDLER_OGM_CALLED: interval tvlv handling flag - the
--	 *  API marks a handler as being called, so it won't be called if the
--	 *  BATADV_TVLV_HANDLER_OGM_CIFNOTFND flag was set
--	 */
--	BATADV_TVLV_HANDLER_OGM_CALLED = BIT(2),
- };
+-	rcu_read_lock();
+-	netdev_for_each_lower_private_rcu(mesh_iface, hard_iface, iter)
+-		count++;
+-	rcu_read_unlock();
+-
+-	return count;
+-}
+-
+ /**
+  * batadv_hardif_disable_interface() - Remove hard interface from mesh interface
+  * @hard_iface: hard interface to be removed
+@@ -850,8 +826,8 @@ void batadv_hardif_disable_interface(struct batadv_hard_iface *hard_iface)
+ 	netdev_upper_dev_unlink(hard_iface->net_dev, hard_iface->mesh_iface);
+ 	batadv_hardif_recalc_extra_skbroom(hard_iface->mesh_iface);
  
- #endif /* _NET_BATMAN_ADV_TYPES_H_ */
+-	/* nobody uses this interface anymore */
+-	if (batadv_hardif_cnt(hard_iface->mesh_iface) <= 1)
++	/* nobody uses this mesh interface anymore */
++	if (list_empty(&hard_iface->mesh_iface->adj_list.lower))
+ 		batadv_gw_check_client_stop(bat_priv);
+ 
+ 	hard_iface->mesh_iface = NULL;
 -- 
 2.47.3
 
