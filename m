@@ -1,115 +1,106 @@
-Return-Path: <stable+bounces-268818-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-268820-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id Ceo7E6hiPmoeFAkAu9opvQ
-	(envelope-from <stable+bounces-268818-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 13:29:44 +0200
+	id WHR2LIphPmqxEwkAu9opvQ
+	(envelope-from <stable+bounces-268820-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 13:24:58 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A120A6CC73E
-	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 13:29:43 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 72BEA6CC65C
+	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 13:24:58 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=aNGA8jmH;
-	dkim=pass header.d=redhat.com header.s=google header.b=TUyoxkZp;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-268818-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-268818-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=VWbHRe5c;
+	dkim=pass header.d=redhat.com header.s=google header.b=Va7huqeL;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-268820-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-268820-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=quarantine) header.from=redhat.com;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 8673331269E1
-	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 11:24:15 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 87FF2303CB74
+	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 11:24:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BFF6836C9CC;
-	Fri, 26 Jun 2026 11:24:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A41613F23A1;
+	Fri, 26 Jun 2026 11:24:33 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 107273E023E
-	for <stable@vger.kernel.org>; Fri, 26 Jun 2026 11:24:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38EEC377EC2
+	for <stable@vger.kernel.org>; Fri, 26 Jun 2026 11:24:32 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782473054; cv=none; b=lAbrQTtDfit5ThN3xBuuoT2jlinGkP3gxHtIG6+6tKTiIdfyCV9END+ZEy5fvImBwTpdzNwvGLEjWoLr0QIrBDnowOZoxv7fprUcY0G55zVZ6OiwHicWtW/LSVufFVDVYpZvq5L1AXNhfnwOKgJI82wgxaHB2EO+hj3sJYt4gxU=
+	t=1782473073; cv=none; b=sqxj17hkt/dsWJ0mJxuov/IaQs5y94P8JUGNWRlJIpifQqOFRAWDD5MoiMWC7ehdv1WOrJE0h/kJzS12zxp9fDoG4il8Cih6y3WW52/5UC3/N0o7y7JNwgeMDDL9mbRnKVb2BEEOPNgUGnMR4J2UMYP4HZn+Z9v69POSwSQhdwc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782473054; c=relaxed/simple;
-	bh=zvFrns79aj9c24kACaQvFLIPdfxn5F03fJA54sqo/Eo=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=dB7O0NNYvAeor2ftqH0jrCpamB2cdO51nDinkOsfvXXsELIdKm5WTZsd0y45DIBXuwSykpgeJ89kBNpS+9SyZN6/xxcXA7xcja+n9l0wiv5Gpp/zTb/MyTC8dz7rnQqc1jxqi++pRH/qI9KDcrgshzg0TUlGbRh3tJWvynLcYvY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=aNGA8jmH; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=TUyoxkZp; arc=none smtp.client-ip=170.10.133.124
+	s=arc-20240116; t=1782473073; c=relaxed/simple;
+	bh=XlzafqtqzssCQn0fo6uVy5EqI86whNIzBdn0viwW6Fg=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=AAhWwuf3gCDH3i7whlGYUn9kV04RKaNsoDKkBBiLKbUpISbHCJsbr6SbKCj+TbMDYCSpDpo12gVoz91gwi3oRrvg7OZfdWn/Xm8ZMWzXgwtf6qc5p+pKqPiAErFtuZ8pRN5CEFPGPVcsHBq4ECqNif7RGSzuC4X2XojXAtJUVik=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=VWbHRe5c; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=Va7huqeL; arc=none smtp.client-ip=170.10.133.124
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1782473052;
+	s=mimecast20190719; t=1782473071;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding;
-	bh=NCgXQP8MBrTLQHgZqlchtRiyNKOElomA9/Al3COIg9o=;
-	b=aNGA8jmHr1Y+2FvURwYVcI7JbvbYH1EhT5MvTepI9npZt4F88Ru01i3UaIPoMvVSyoNkY7
-	8hpdSPTs8PWURX0SJuztHUH8TOmFhJSzsd26vb4zx12VntYnzCkXXzcH/1UBRX7RnxiIY1
-	SCJd1reBuKDmnoAx1FHNA7lx8eJR7j0=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=/74rsUhBrFOpgTK5uyMNeeX5nCLK5VE3Yzf3wlvBABs=;
+	b=VWbHRe5cw4p43dEKk+ApWo+uKZTh7+e7OJhQFeRUjxncM4lrMc2zz2r6poViZcNiIlLEKe
+	TU1vNY13PRrHll+8PPU0IuPI9aSUJQY0wkHQjUHJbZDwQ3QM8Sr7ue4FG7VlLrzmbwGMqu
+	/flrr4YxKEIpyobYNGOluubw3nfcwo0=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-610-4AKPd-pHO6Cl2zoyBisY6A-1; Fri, 26 Jun 2026 07:24:10 -0400
-X-MC-Unique: 4AKPd-pHO6Cl2zoyBisY6A-1
-X-Mimecast-MFC-AGG-ID: 4AKPd-pHO6Cl2zoyBisY6A_1782473050
-Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-490bae3a39bso5640215e9.1
-        for <stable@vger.kernel.org>; Fri, 26 Jun 2026 04:24:10 -0700 (PDT)
+ us-mta-384-DB7zKTOeMDKkZVh-egsgQg-1; Fri, 26 Jun 2026 07:24:29 -0400
+X-MC-Unique: DB7zKTOeMDKkZVh-egsgQg-1
+X-Mimecast-MFC-AGG-ID: DB7zKTOeMDKkZVh-egsgQg_1782473068
+Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-4629f312a67so715068f8f.2
+        for <stable@vger.kernel.org>; Fri, 26 Jun 2026 04:24:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1782473049; x=1783077849; darn=vger.kernel.org;
+        d=redhat.com; s=google; t=1782473068; x=1783077868; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=NCgXQP8MBrTLQHgZqlchtRiyNKOElomA9/Al3COIg9o=;
-        b=TUyoxkZpy08PPzmmoc57XtiGMdqiWKgs2cydi5mnYJnI5OPRErZtByrVkkRDrD7SFC
-         ylt10wssA9xfuoaiBmPbZaTbbFrf1w0SlRGLKRfNVtpp4kuAsSn0eT9jF1qKcQ+iZTbv
-         hMjLlEg4RaxtpgrdeRIXtKZqOjYGtU1pF/aV/n2IxEuH9ZY7PSWPy++t21wSbv1cL3rD
-         vLsKaZCmwWm0hctnEwhIIqT3JgAaH1Nj4IsjXIXU+Sqirep0kPejK7o5hFxU8OwWhNsP
-         O8c7Mv97SFX/y0BB6MTQdR/a1asHbrbhMMjME/sR3cDMeI6rFTc2ZclcOK/a1vIYRm5Y
-         q9Rg==
+        bh=/74rsUhBrFOpgTK5uyMNeeX5nCLK5VE3Yzf3wlvBABs=;
+        b=Va7huqeLrkZJIr3TS/Mp98wY9kQTND1RzMJSPt97dh1e+ye5j+QfwLmsI9SBeMcKim
+         VEnofBfuHEZjAR/8J5oFvCJxK4k4Z1uz/dtOO0fnyF6CIL/OoQtL4RTMyLtSHPl4S04d
+         wTIDIjD1Q/Wy6H97Y8aKqoLRxKZF8lCBKVfthLAPUzlmatrPds7oNRo9VWLMA9nxTT08
+         1+qptYr7NYf7sor3WZXJfYJxvfMT3KXxcpSj2Krqeh6C9GiKCbQfvO/9ymgVVlsPbPdR
+         lefOLeUFtc0syMpP/7HXvmQbewRDBzZF6IxF/g2rfNvMjAeqhiwTuDQQz65QaOVt4JId
+         n4zA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782473049; x=1783077849;
+        d=1e100.net; s=20251104; t=1782473068; x=1783077868;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=NCgXQP8MBrTLQHgZqlchtRiyNKOElomA9/Al3COIg9o=;
-        b=LZ44L9HeeGpkpQdGYru0UO1XOJwCdjz9OZz0zXpNxIPzn6fdLulsb2ugn68dTE0x97
-         BdgFvX/L3mYrZUcy7cDqwey1+h4P1vgwslObH+qKm+aZe/rVqQEqaG0KmVgiRorzN999
-         6Am73ODZau8uJ8ZRil3izi+wFVZmlIiXXUXsWRpB5XhYHVf4RToJQhbLMb2ojefKxqi8
-         p7spE31ryXbdlK2MAWeh/pnoJCHQQzIGNwuzuuofKT5LmQQq2afzawI1bMXA1id4Ls47
-         VVVKcbtzNVb2q8vN9PkJkYIxwkS7v9yGBdEzFxG9K19f29cmbdo7Du+ykyyb8PMt3xhi
-         bdXQ==
-X-Forwarded-Encrypted: i=1; AFNElJ8h8D6wTfOalcWro120R4MQdSuAxsEl6cq1uhXjp89/nkfrIUKfEz8mGCjMp0K2wwJSWNhf9/U=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyqQOSHhDdKXvaCqdagxuKSXFu8VpbIGqHQF4cUbmxw5Q7oy/af
-	klzCLgxD0KR12cIOu8ISUjPKzFxoojOdp3g1+mvXBjAfNNbzzOJIY1ZJ9WZmJF4W2slNV/x2qN6
-	lyAY2mSJbHFnaHhMfO1PxOsanel76kc/gL/m9b3j1+xbe6VZDwjJ6CDk1Bg==
-X-Gm-Gg: AfdE7clpsK1UyBRZ/8H4qFe3/IjyiSkDuBkfv2awA2nWecBjnzIZaE01tTP8lf0Bcgk
-	6NCOD7i9m0Wn4P9EApTabKiwy+PFAKNYYG4Z8w+JrE/jB4R9EBbKU/TiYfuFjCX5clIWIe/JujO
-	s+hdQhifkz0EZfLSCinGdcrd1An/67lDoRI7FIJUkzGP/8DNuqJJQg5fmRQkzKrWC3HVUZMdqKc
-	KDtTT/Mlilcw6p6W5BchyPUBh4gBKaQgZYet99GkxpvrNRIj9+zNaJ/t8k+oFh8cVcqYhe8NxS8
-	lGe6lWv2cTbAixNydZXLh2d/5Wg6YDLaSJ7pzQqYA1/qRBqC9yX3SYBAx/7denwTq05r65UMjns
-	uY/2dbKgZBWccZCrYCVfGnepMYFqNXrMcxwI0B6eJsFku3nRMzKgS48u8Z+l9HhqX5MZf941bP/
-	Vh0NO2/XcUW7BIvF4F
-X-Received: by 2002:a05:600c:34ca:b0:492:463d:b2af with SMTP id 5b1f17b1804b1-4926689f461mr83759525e9.31.1782473049491;
-        Fri, 26 Jun 2026 04:24:09 -0700 (PDT)
-X-Received: by 2002:a05:600c:34ca:b0:492:463d:b2af with SMTP id 5b1f17b1804b1-4926689f461mr83759005e9.31.1782473049047;
-        Fri, 26 Jun 2026 04:24:09 -0700 (PDT)
+        bh=/74rsUhBrFOpgTK5uyMNeeX5nCLK5VE3Yzf3wlvBABs=;
+        b=KKDjFNqaaGCB0uzGUQ4DovBPQ2qw70UTKU+fZZXWDVO366DDVwDUjgInHqGpbKc7Jq
+         uCBHGsrqUd7+VqjB0BqZKnnSE4oeWCasYp2CFnLovGuF7LBc2+KbPVSGjOEKJdljHUTP
+         AguxrCnGRpqb0bD2jbWJRx5sOuSWDpDLxGtsRrUANMP6Vq8pkoejOFfjyUbZ7r5kGbwX
+         PebXzaQSixWq9l9n5vdsJDHRPA9yY7gzKvP8p+hKOx3Rlq8oo+ZjNZ2lJZ3ZYcxrUYyd
+         TXmAwZxw/L7+TC2h4gcmmMFOzq4IpxlEicGJYvg3gTdKLKONkWqwFzM1cP91QCuaQux+
+         +nqQ==
+X-Forwarded-Encrypted: i=1; AFNElJ9ExRy6OpJKNbUNrMo2Ic7hcSJnjuduPaV+qbqm+ry3f08wXDAge0TcwlXMHhlwqNbnVJ9Zh2Y=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzR80ezgnfHBNpKw/UtfXgT1cApWqij7d5R8XWBzQvDnWpvV4YX
+	x64FD7ddTapHYnGWuD9GVRn9jLBlc+4Yp47uPTYv7KKa/uxWMCU5VNoKEE0TxWWC15+fSafkbWJ
+	VVyrLwDIVknx6ydhE1ygIgY5LdZ4PIv2RUQkvZeuO2lmkNtmWKLEpMBJuqw==
+X-Gm-Gg: AfdE7cmJnpTWaZl6lL+uosAyh6wZ6nzCS5ocMe6jVw0FxZcwrwr80V6XBmKLBHbFNiX
+	JHEJkBsi1Kc19V7HOdUZA7GLHgMT9k/2TmpW1KKmYiKzsQV9DjlTuIrlIBgghuTyk1TxMwhYw07
+	ckdX0gtorBt9c8Bn5BUAmv3kbyLMFeDattva+SZZTYEhlFmhR0zrnfbIwXd/oxADOh9ELieb+TM
+	zJcH7C0xPakTRv2sN1FBAP15ivJXYOS3hJbeBRfv2mcswBlWdcu9a91wJ3aLTaz7+fwKW3Tw6Aq
+	yMlcTKhf+EZFws7xex5DibMPpqRwFm27ZbSAltJCibFTyWgWdvxge4StahQhnIyxZ+cHYaB3Hp3
+	GkUI1vEaoLbwd4rKLT8/tYq0z1PU7jtvShoeiiW6sqjoVEBHiH5n3QH8q3rn57HRXeUMFbOLo3d
+	AIG1vzNSbd7cwmZmCR
+X-Received: by 2002:a05:600c:6308:b0:492:5e36:155a with SMTP id 5b1f17b1804b1-4926688f440mr95373305e9.34.1782473067792;
+        Fri, 26 Jun 2026 04:24:27 -0700 (PDT)
+X-Received: by 2002:a05:600c:6308:b0:492:5e36:155a with SMTP id 5b1f17b1804b1-4926688f440mr95372715e9.34.1782473067259;
+        Fri, 26 Jun 2026 04:24:27 -0700 (PDT)
 Received: from [192.168.10.48] ([151.95.124.208])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49269002511sm70776235e9.8.2026.06.26.04.24.07
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49269016362sm67309945e9.13.2026.06.26.04.24.26
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 26 Jun 2026 04:24:08 -0700 (PDT)
+        Fri, 26 Jun 2026 04:24:26 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: linux-kernel@vger.kernel.org,
 	kvm@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Hyunwoo Kim <imv4bel@gmail.com>,
-	Sean Christopherson <seanjc@google.com>,
-	David Matlack <dmatlack@google.com>,
-	James Houghton <jthoughton@google.com>,
-	Alexander Bulekov <bkov@amazon.com>,
-	Fred Griffoul <fgriffo@amazon.co.uk>,
-	Alexander Graf <graf@amazon.de>,
-	David Woodhouse <dwmw@amazon.co.uk>,
-	Filippo Sironi <sironi@amazon.de>,
-	Ivan Orlov <iorlov@amazon.co.uk>
-Subject: [PATCH 6.12.y] KVM: x86/mmu: Ensure hugepage is in by slot before checking max mapping level
-Date: Fri, 26 Jun 2026 13:24:05 +0200
-Message-ID: <20260626112405.1777340-2-pbonzini@redhat.com>
+Cc: Hyunwoo Kim <imv4bel@gmail.com>
+Subject: [PATCH 6.6.y] KVM: x86: Fix shadow paging use-after-free due to unexpected role
+Date: Fri, 26 Jun 2026 13:24:24 +0200
+Message-ID: <20260626112425.1777712-1-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.54.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -125,21 +116,21 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[redhat.com,quarantine];
 	R_DKIM_ALLOW(-0.20)[redhat.com:s=mimecast20190719,redhat.com:s=google];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-268818-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[gmail.com,google.com,amazon.com,amazon.co.uk,amazon.de];
-	RCPT_COUNT_TWELVE(0.00)[13];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER(0.00)[pbonzini@redhat.com,stable@vger.kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS(0.00)[m:linux-kernel@vger.kernel.org,m:kvm@vger.kernel.org,m:stable@vger.kernel.org,m:imv4bel@gmail.com,m:seanjc@google.com,m:dmatlack@google.com,m:jthoughton@google.com,m:bkov@amazon.com,m:fgriffo@amazon.co.uk,m:graf@amazon.de,m:dwmw@amazon.co.uk,m:sironi@amazon.de,m:iorlov@amazon.co.uk,s:lists@lfdr.de];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[gmail.com];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-268820-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:linux-kernel@vger.kernel.org,m:kvm@vger.kernel.org,m:stable@vger.kernel.org,m:imv4bel@gmail.com,s:lists@lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_SENDER(0.00)[pbonzini@redhat.com,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	RCPT_COUNT_THREE(0.00)[4];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[pbonzini@redhat.com,stable@vger.kernel.org];
@@ -151,136 +142,70 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	ALIAS_RESOLVED(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[amazon.de:email,vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,amazon.co.uk:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: A120A6CC73E
+X-Rspamd-Queue-Id: 72BEA6CC65C
 
-From: Sean Christopherson <seanjc@google.com>
+commit 81ccda30b4e83d8f5cc4fd50503c44e3a33abfeb upstream.
 
-commit ef057cbf825e03b63f6edf5980f96abf3c53089d upstream.
+Commit 0cb2af2ea66ad ("KVM: x86: Fix shadow paging use-after-free due
+to unexpected GFN") fixed a shadow paging mismatch between stored and
+computed GFNs; the bug could be triggered by changing a PDE mapping from
+outside the guest, and then deleting a memslot.  The rmap_remove()
+call would miss entries created after the PDE change because the GFN
+of the leaf SPTE does not match the GFN of the struct kvm_mmu_page.
 
-When recovering hugepages in the shadow MMU, verify that the base gfn of
-the shadow page is actually contained within the target memslot, *before*
-querying the max mapping level given the shadow page's gfn.  Failure to
-pre-check the validity of the gfn can lead to an out-of-bounds access to
-the slot's lpage_info (which typically manifests as a host #PF because the
-lpage_info is vmalloc'd) if the guest creates a hugepage mapping (in its
-PTEs) that extends "below" the bounds of a memslot.
+A similar hole however remains if the modified PDE points to a non-leaf
+page.  In this case the gfn can be made to match, but the role does not
+match: the original large 2MB page creates a kvm_mmu_page with direct=1,
+while the new 4KB needs a kvm_mmu_page with direct=0.  However,
+kvm_mmu_get_child_sp() does not compare the role, and therefore reuses
+the page.
 
-When faulting in memory for a guest, and the size of the guest mapping is
-greater than KVM's (current) max mapping, then KVM will create a "direct"
-shadow page (direct in that there are no gPTEs to shadow, and so the target
-gfn is a direct calculation given the base gfn of the shadow page).  The
-hugepage recovery flow looks for such direct shadow pages, as forcing 4KiB
-mappings when dirty logging generates the guest > host mapping size case.
-When the 4KiB restriction is lifted, then KVM can replace the shadow page
-with a hugepage.
+The next step is installing a leaf (4KB) SPTE on the new path which
+records an rmap entry under the gfn resolved by the walk.  But when
+that child is zapped its parent kvm_mmu_page has direct=1 and
+kvm_mmu_page_get_gfn() computes the gfn for the 4KB page as
+sp->gfn + index instead of using sp->shadowed_translation[] (or sp->gfns[]
+in older kernels).  It therefore fails to remove the recorded entry.
 
-But if KVM originally used a smaller mapping than the guest because the
-range of memory covered by the guest hugepage exceeds the bounds of a
-memslot, then KVM will link a direct shadow page with a gfn that is outside
-the bounds of the memslot being used to fault in memory.  The rmap entry
-added for the leaf mapping is correct and within bounds, but the gfn of the
-leaf SPTE's parent shadow page will be out of bounds.
+When the memslot is dropped the shadow page is freed but the rmap
+entry survives, as in the scenario that was already fixed.  Code that
+later walks that gfn (dirty logging, MMU notifier invalidation, and
+so on) dereferences an sptep that lies in the freed page, causing the
+use-after-free.
 
-  BUG: unable to handle page fault for address: ffffc90000806ffc
-  #PF: supervisor read access in kernel mode
-  #PF: error_code(0x0000) - not-present page
-  PGD 100000067 P4D 100000067 PUD 1002a7067 PMD 10612f067 PTE 0
-  Oops: Oops: 0000 [#1] SMP
-  CPU: 13 UID: 1000 PID: 757 Comm: mmu_stress_test Not tainted 7.1.0-rc1-48ce1e26eace-x86_pir_to_irr_comments-vm #341 PREEMPT
-  Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 0.0.0 02/06/2015
-  RIP: 0010:kvm_mmu_max_mapping_level+0x79/0x2b0 [kvm]
-  Call Trace:
-   <TASK>
-   kvm_mmu_recover_huge_pages+0x21b/0x320 [kvm]
-   kvm_set_memslot+0x1ee/0x590 [kvm]
-   kvm_set_memory_region.part.0+0x3a1/0x4d0 [kvm]
-   kvm_vm_ioctl+0x9bf/0x15d0 [kvm]
-   __x64_sys_ioctl+0x8a/0xd0
-   do_syscall_64+0xb7/0xbb0
-   entry_SYSCALL_64_after_hwframe+0x4b/0x53
-  RIP: 0033:0x7f21c0f1a9bf
-   </TASK>
-
-Don't bother pre-checking the bounds of the potential hugepage, i.e. don't
-check that e.g. sp->gfn + KVM_PAGES_PER_HPAGE(sp->role.level + 1) is also
-within the memslot, as the checks performed by kvm_mmu_max_mapping_level()
-are a superset of the basic bounds checks.  I.e. pre-checking the full
-range would be a dubious micro-optimization.
-
-Fixes: 9eba50f8d7fc ("KVM: x86/mmu: Consult max mapping level when zapping collapsible SPTEs")
-Cc: stable@vger.kernel.org
-Cc: David Matlack <dmatlack@google.com>
-Cc: James Houghton <jthoughton@google.com>
-Cc: Alexander Bulekov <bkov@amazon.com>
-Cc: Fred Griffoul <fgriffo@amazon.co.uk>
-Cc: Alexander Graf <graf@amazon.de>
-Cc: David Woodhouse <dwmw@amazon.co.uk>
-Cc: Filippo Sironi <sironi@amazon.de>
-Cc: Ivan Orlov <iorlov@amazon.co.uk>
-Signed-off-by: Sean Christopherson <seanjc@google.com>
+Fixes: 2032a93d66fa ("KVM: MMU: Don't allocate gfns page for direct mmu pages")
+Reported-by: Hyunwoo Kim <imv4bel@gmail.com>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- arch/x86/kvm/mmu/mmu.c   | 18 ++++++++++++------
- include/linux/kvm_host.h |  7 ++++++-
- 2 files changed, 18 insertions(+), 7 deletions(-)
+ arch/x86/kvm/mmu/mmu.c | 10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
 
 diff --git a/arch/x86/kvm/mmu/mmu.c b/arch/x86/kvm/mmu/mmu.c
-index a67d013fff4d..aab26f90c285 100644
+index d288c60ae200..a67d013fff4d 100644
 --- a/arch/x86/kvm/mmu/mmu.c
 +++ b/arch/x86/kvm/mmu/mmu.c
-@@ -6952,13 +6952,19 @@ static bool kvm_mmu_zap_collapsible_spte(struct kvm *kvm,
- 		sp = sptep_to_sp(sptep);
+@@ -2329,13 +2329,15 @@ static struct kvm_mmu_page *kvm_mmu_get_child_sp(struct kvm_vcpu *vcpu,
+ 						 u64 *sptep, gfn_t gfn,
+ 						 bool direct, unsigned int access)
+ {
+-	union kvm_mmu_page_role role;
++	union kvm_mmu_page_role role = kvm_mmu_child_role(sptep, direct, access);
  
- 		/*
--		 * We cannot do huge page mapping for indirect shadow pages,
--		 * which are found on the last rmap (level = 1) when not using
--		 * tdp; such shadow pages are synced with the page table in
--		 * the guest, and the guest page table is using 4K page size
--		 * mapping if the indirect sp has level = 1.
-+		 * Direct shadow page can be replaced by a hugepage if the host
-+		 * mapping level allows it and the memslot maps all of the host
-+		 * hugepage.  Note!  If the memslot maps only part of the
-+		 * hugepage, sp->gfn may be below slot->base_gfn, and querying
-+		 * the max mapping level would cause an out-of-bounds lpage_info
-+		 * access.  So the gfn bounds check *must* be done first.
-+		 *
-+		 * Indirect shadow pages are created when the guest page tables
-+		 * are using 4K pages.  Since the host mapping is always
-+		 * constrained by the page size in the guest, indirect shadow
-+		 * pages are never collapsible.
- 		 */
--		if (sp->role.direct &&
-+		if (sp->role.direct && is_gfn_in_memslot(slot, sp->gfn) &&
- 		    sp->role.level < kvm_mmu_max_mapping_level(kvm, slot, sp->gfn,
- 							       PG_LEVEL_NUM)) {
- 			kvm_zap_one_rmap_spte(kvm, rmap_head, sptep);
-diff --git a/include/linux/kvm_host.h b/include/linux/kvm_host.h
-index 04b81e2166d5..b4235e99f0a9 100644
---- a/include/linux/kvm_host.h
-+++ b/include/linux/kvm_host.h
-@@ -1745,6 +1745,11 @@ int kvm_request_irq_source_id(struct kvm *kvm);
- void kvm_free_irq_source_id(struct kvm *kvm, int irq_source_id);
- bool kvm_arch_irqfd_allowed(struct kvm *kvm, struct kvm_irqfd *args);
+-	if (is_shadow_present_pte(*sptep) && !is_large_pte(*sptep) &&
+-	    spte_to_child_sp(*sptep) && spte_to_child_sp(*sptep)->gfn == gfn)
++	if (is_shadow_present_pte(*sptep) &&
++	    !is_large_pte(*sptep) &&
++	    spte_to_child_sp(*sptep) &&
++	    spte_to_child_sp(*sptep)->gfn == gfn &&
++	    spte_to_child_sp(*sptep)->role.word == role.word)
+ 		return ERR_PTR(-EEXIST);
  
-+static inline bool is_gfn_in_memslot(const struct kvm_memory_slot *slot, gfn_t gfn)
-+{
-+	return gfn >= slot->base_gfn && gfn < slot->base_gfn + slot->npages;
-+}
-+
- /*
-  * Returns a pointer to the memslot if it contains gfn.
-  * Otherwise returns NULL.
-@@ -1755,7 +1760,7 @@ try_get_memslot(struct kvm_memory_slot *slot, gfn_t gfn)
- 	if (!slot)
- 		return NULL;
+-	role = kvm_mmu_child_role(sptep, direct, access);
+ 	return kvm_mmu_get_shadow_page(vcpu, gfn, role);
+ }
  
--	if (gfn >= slot->base_gfn && gfn < slot->base_gfn + slot->npages)
-+	if (is_gfn_in_memslot(slot, gfn))
- 		return slot;
- 	else
- 		return NULL;
 -- 
 2.54.0
 
