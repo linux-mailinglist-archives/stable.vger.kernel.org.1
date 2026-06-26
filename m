@@ -1,51 +1,51 @@
-Return-Path: <stable+bounces-269262-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-269260-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 6FljHMq9PmoeLAkAu9opvQ
-	(envelope-from <stable+bounces-269262-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 19:58:34 +0200
+	id epiYNFy9Pmr9KwkAu9opvQ
+	(envelope-from <stable+bounces-269260-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 19:56:44 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3A65E6CF89E
-	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 19:58:34 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 636036CF83C
+	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 19:56:44 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Nln8U2kM;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-269262-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-269262-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=laQTvovn;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-269260-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-269260-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 478C0310BC4D
-	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 17:55:14 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id F2E58303BB89
+	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 17:55:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6F323AA1B5;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C9093A9601;
 	Fri, 26 Jun 2026 17:55:03 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9EA103A7F6E;
-	Fri, 26 Jun 2026 17:54:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E88139E190;
+	Fri, 26 Jun 2026 17:54:58 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782496503; cv=none; b=OLD7akWfC8M0iXMv4SuKlss2lAHeT6EERaGmosl1R77hfBfFlAIOEPyJO7I/Yq/39JDL+/vFG3SimzryrbS2tM9tBuabnp1d+B/Q1CuQ67G3LeWKAd5ukZAvt2Nr1g5yF/a8+t+Pxi3PIJxqIUpuDpeI2K3fp1E43B5YMVxQNN0=
+	t=1782496503; cv=none; b=Bm+u9dhqPCidHXFzLhiKpqhHG45nImeQbSiGu0g2RItd0juAWFVCQ4OFJ2f4UU87ExadzH0zyEwc588hYaWQ3mI73ShsZZxS1S2IpUdt/nHYUtJJbAOFpCv1zAmNURpGTJQHb5YJ0mORoRg7Ag4hTXnwYE7Z8juDjdMgxwsB4vo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1782496503; c=relaxed/simple;
-	bh=Jg2TlGtVz0m+rZvTPiVKfKC14M/U4mgFBygVo76eHog=;
+	bh=06d5uVBN2Ciy3rYnnQahGW8rFiLbpJJuftkDVFAmDio=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=efvo5g4HLhzuaxLlYw/6Oz8UGZx82oUobkmhLkwsrBDjzwoBecqzLxY80GPk1rGJbaEXhnND5nSuYgJRSGZ14XAiFwneikX8yKDoeBXd0HgoysElHauVcPJQSReMsEdzHg3ie9lS/DbKcmaGN+i3OJNAwMQwCb2kjcR6Qu9NqGk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Nln8U2kM; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36ED01F00A3F;
-	Fri, 26 Jun 2026 17:54:55 +0000 (UTC)
+	 MIME-Version; b=HOLrm2jnih/EoBT6S0dDwMShAKEEuMCTAuRW41WW6kIdRg+XKlTCVFU2HNRAc3qZ+g2jEFoThJGD9dLGxlCFvhMIyvH+W4jaxD/tngSQz3mk9yaFW4Ofd58STKJ3XG0CZTZkm0REXZv2Esrek3oQ69XqxknvG08rpfC0ZTqSwTU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=laQTvovn; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E538D1F00AC4;
+	Fri, 26 Jun 2026 17:54:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782496496;
-	bh=4VIulwJUfa0xQa9hP/IddMMtjm75/S8X5O+aEMj+3zo=;
+	s=k20260515; t=1782496498;
+	bh=v9iG/7GG+ArpDv+swKv59Tccl8BIyxRTE8loiVLJmOw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Nln8U2kMFfugG2XE3t1ypfc8V3inpQU5HK1aJlDDcjWJ4XNNaneZFwU/Z5Zm03/a8
-	 NJhK9QX5HP2q8cXUnH8ccI0fNWiW8Xdd+n5Im7GcG73PKe6VMF6Xt3mnauJhowv4l/
-	 iRAImJQFFxp+icVX3/OO9fA2VRc74lYIuxV6DZFnOHQsKAHTJho5aEmZeD5hMqKwbU
-	 zKpSh3ZvcOWis51xL6waTLH8wiNnzpQMSPiwTavBJvfzbYL7Uxx2zhg0G0gud3GOXt
-	 xiuU3NYOTaAjdvaLytD8rAmE9SXjrCnLeRvGF1o959RQ1zxLmq9Ri2zKXEOX9I99j7
-	 KEAWrETTU2nUQ==
+	b=laQTvovnboIetO+z02M7o4VfZOI9fjRNP79Mg7P0ML2zh3YalhtIXiHfnfRJrVTcY
+	 bVlXHalsBnzN7m42xKFnPfeS86t5mkMvs46RLIFcABWkUxEfz3FA4jx3hMOka+1iD8
+	 jEQ0CsBqmtuP/7PpMVlzqQNtji+JSMFvX5Ia8HxJIFUkLY7H7grnmYuXsQulkUbzgi
+	 bHzjWvp/nqFh3BDEa5Wl6kNhXxjDaBWYrA9esl+L7760VVsq+BTVRRhpoIVjPhUdjU
+	 SS/brNiukF0+K8PbWbaUck2NTIc4UP7M0QfmhqGANor7VFWOHuxiLI8oDl3kkUjDn6
+	 IzgvkTIqJS2jA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	kvm@vger.kernel.org,
@@ -62,12 +62,12 @@ Cc: Sasha Levin <sashal@kernel.org>,
 	Filippo Sironi <sironi@amazon.de>,
 	Ivan Orlov <iorlov@amazon.co.uk>,
 	Paolo Bonzini <pbonzini@redhat.com>
-Subject: Re: [PATCH 6.6.y] KVM: x86/mmu: Ensure hugepage is in by slot before checking max mapping level
-Date: Fri, 26 Jun 2026 13:54:26 -0400
-Message-ID: <stable-reply-item007-hugepage-66-20260626@kernel.org>
+Subject: Re: [PATCH 6.1.y] KVM: x86/mmu: Ensure hugepage is in by slot before checking max mapping level
+Date: Fri, 26 Jun 2026 13:54:27 -0400
+Message-ID: <stable-reply-item007-hugepage-61-20260626@kernel.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260626112425.1777712-2-pbonzini@redhat.com>
-References: <20260626112425.1777712-2-pbonzini@redhat.com>
+In-Reply-To: <20260626112437.1777775-2-pbonzini@redhat.com>
+References: <20260626112437.1777775-2-pbonzini@redhat.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -82,11 +82,11 @@ X-Spamd-Result: default: False [-4.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-269262-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-269260-lists,stable=lfdr.de];
 	RCPT_COUNT_TWELVE(0.00)[15];
 	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
@@ -105,17 +105,17 @@ X-Spamd-Result: default: False [-4.66 / 15.00];
 	DKIM_TRACE(0.00)[kernel.org:+];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 3A65E6CF89E
+X-Rspamd-Queue-Id: 636036CF83C
 
 > KVM: x86/mmu: Ensure hugepage is in by slot before checking max mapping level
 
-Queued for 6.6, thanks.
+Queued for 6.1, thanks.
 
 -- 
 Thanks,
