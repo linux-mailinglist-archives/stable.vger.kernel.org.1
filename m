@@ -1,154 +1,144 @@
-Return-Path: <stable+bounces-268911-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-268912-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id WJQwL6Z+Pmr/GwkAu9opvQ
-	(envelope-from <stable+bounces-268911-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 15:29:10 +0200
+	id uxlJOYV/PmogHAkAu9opvQ
+	(envelope-from <stable+bounces-268912-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 15:32:53 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B857F6CD702
-	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 15:29:09 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3D07F6CD74A
+	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 15:32:53 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=none;
-	dmarc=none;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-268911-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-268911-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="JjxSZ/kB";
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-268912-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-268912-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id B5B3E300B52E
-	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 13:29:06 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E4A0E300D339
+	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 13:32:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 901D83F54BF;
-	Fri, 26 Jun 2026 13:29:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31D203F54C4;
+	Fri, 26 Jun 2026 13:32:47 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from cstnet.cn (smtp25.cstnet.cn [159.226.251.25])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 073E53CE0AE;
-	Fri, 26 Jun 2026 13:29:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1AE6C3ED5D4
+	for <stable@vger.kernel.org>; Fri, 26 Jun 2026 13:32:45 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782480544; cv=none; b=U2bem87+9XBMdSHBluLLYblHAGr4UpyBMdngvXHa//3LbpzoO24d3iO2CffbehK+3kmu9xBh2/yxYWRfxQW3UXmDxg5BbMv1HWOKJ1GylhltBgbLpJyqxxMrxK2pi0aj7yJCWNUihOlRuUEVV9GyaFxFrQmLoavWyzq4Mq8bIRg=
+	t=1782480767; cv=none; b=YOV+lGqozNRwOxToiSRKCgJ1WvVMuMrnhf1MM7KwzDUu15h05RMtD3TaxX4tILZIJgPoWscR0gdihH3j/rURRMWb40kPkkDuDP5Ag4VUvtqxtQnTOmXMKHOYs119p5JMNjh2GWg0Yz7ZXpsUquVv8PvZNb5SAznhPngWsTkNNCo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782480544; c=relaxed/simple;
-	bh=hKEZwqPNskEKNm1Gp5SUMeJaXKNboiCFB8tc0+1/Jxo=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=gZ9EJSkf6cYRq8EaDlYnMVdy2gE2bsT7q4snhqv2di8YRCGUl7CPxPif/9ocipmZuBytdyIH63Fj60byTzj014gusaKnqzK5PhyFSiO9juURlTdEUqy53w9OaHQUFj1dzHO9JYQ4nO22kXzqgqVqb7dq6IjpGT7BEAymbpVLlw0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.25
-Received: from localhost.localdomain (unknown [117.182.75.66])
-	by APP-05 (Coremail) with SMTP id zQCowABHntGSfj5qhXFqFQ--.43105S2;
-	Fri, 26 Jun 2026 21:28:52 +0800 (CST)
-From: WenTao Liang <vulab@iscas.ac.cn>
-To: chunkuang.hu@kernel.org,
-	p.zabel@pengutronix.de,
-	airlied@gmail.com,
-	simona@ffwll.ch,
-	matthias.bgg@gmail.com,
-	angelogioacchino.delregno@collabora.com
-Cc: dri-devel@lists.freedesktop.org,
-	linux-mediatek@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	WenTao Liang <vulab@iscas.ac.cn>,
-	stable@vger.kernel.org
-Subject: [PATCH] fix: drm/mediatek: mtk_drm_probe: of_node_get in loop overwrites previous   node references without release
-Date: Fri, 26 Jun 2026 21:28:49 +0800
-Message-Id: <20260626132849.38694-1-vulab@iscas.ac.cn>
-X-Mailer: git-send-email 2.39.5 (Apple Git-154)
+	s=arc-20240116; t=1782480767; c=relaxed/simple;
+	bh=eYxbnzJlUlHT/UQT0GR28dDPGvcgtBeIxCBm3lsj8w4=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=GuT7CG0I0piSgaYhK41E1YICdrFDdL8KeKZ6hKdgl87/mTggaJ8JcqCcVUmuTwOPdA4FXgc9pcz/jUhtGKbUcqs7f7EfB/dNItZd+lhNHJ+IgOh/6wmx5yMVJcwCT8CrmNB64L9OcZglphquUsiKy1bjz+xQKzeYx2DwGmx7muk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JjxSZ/kB; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1E4B1F00A3F
+	for <stable@vger.kernel.org>; Fri, 26 Jun 2026 13:32:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1782480765;
+	bh=eYxbnzJlUlHT/UQT0GR28dDPGvcgtBeIxCBm3lsj8w4=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=JjxSZ/kBxcmtwAqzE/ltO1VCK1f8+F+qAH8t90OaOV/BL++OTTOOehxD3UuzrxTxB
+	 XRKvG/uwAlbDebtZjh0h3TvxBKeGMjgX0cPYp4Ttb8LUjqkznybAVsEi7eBxPI6FPz
+	 aLBUJ0CeEyw+dNCGllQDWUX1bmkfzDO6uh8EjTB0hvHsjB3i5AQgeXG83PxabZ87AL
+	 lgzIA8Sd25T3WyeUiXeTDIE02PFUpTjNyHQT0uOJu7JRSKQoZj9U769K702zggTYJs
+	 Wl5fBGG0ldqv5EyJYRLaz3xncka0Am6E6PBMYwSGZZhsVDSmocGmL54MudwuG9I1vR
+	 yKNElLnsuwBew==
+Received: by mail-lj1-f175.google.com with SMTP id 38308e7fff4ca-396771119c4so8719981fa.0
+        for <stable@vger.kernel.org>; Fri, 26 Jun 2026 06:32:45 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AHgh+RolTcpaQ3IZ/U3CYuBfzy2oE0TbNDCd0AO26RvP0maEIAN/OjWown+sMRm9cClt0XljW3ORSVw=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyvbAPS0XPJKz2upHXgsmUyKd6hsNbsw7LGnCleuFrDGFJjaW/Z
+	WETj3fVRb1RtzPpFc8dUE0z5nRvsfwxmQ9WomsM5zT3ZUYVugPW7XD5s/ds2gvSBoC+LRFmHp+G
+	MLDQoXRrsbQp1YxGiugZylzxxp6QbBVg=
+X-Received: by 2002:ac2:5dc6:0:b0:5ae:a9ed:249b with SMTP id
+ 2adb3069b0e04-5aea9ed24ffmr8111e87.60.1782480764654; Fri, 26 Jun 2026
+ 06:32:44 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:zQCowABHntGSfj5qhXFqFQ--.43105S2
-X-Coremail-Antispam: 1UD129KBjvJXoW7AFy8ur4ktF43Ar4xCF4fGrg_yoW8XryfpF
-	WUKFWYyry0gr4xKFyvyF1Uuryay3WIqayxWa12ga1xZws5tFyUXFyFqay7KFZ2yFy8CF13
-	JFn8AFyfur17AFJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUU9F14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
-	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
-	1l84ACjcxK6xIIjxv20xvE14v26ryj6F1UM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4U
-	JVWxJr1l84ACjcxK6I8E87Iv67AKxVW0oVCq3wA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_Gc
-	CE3s1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xvF2IEw4CE5I8CrVC2j2WlYx0E
-	2Ix0cI8IcVAFwI0_Jrv_JF1lYx0Ex4A2jsIE14v26r4j6F4UMcvjeVCFs4IE7xkEbVWUJV
-	W8JwACjcxG0xvY0x0EwIxGrwACjI8F5VA0II8E6IAqYI8I648v4I1lFIxGxcIEc7CjxVA2
-	Y2ka0xkIwI1lc7CjxVAaw2AFwI0_Jw0_GFyl42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x
-	0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2
-	zVAF1VAY17CE14v26r1q6r43MIIYrxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF
-	4lIxAIcVC0I7IYx2IY6xkF7I0E14v26r4j6F4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWU
-	CwCI42IY6I8E87Iv67AKxVW8JVWxJwCI42IY6I8E87Iv6xkF7I0E14v26r4UJVWxJrUvcS
-	sGvfC2KfnxnUUI43ZEXa7VUbzpBDUUUUU==
-X-CM-SenderInfo: pyxotu46lvutnvoduhdfq/1tbiBwwKA2o+TTuTHAAAsv
+References: <kJqktbpLphg_Pk5I5SPptgTLjl3E3eq5mN5UzCslyFj7Q1Irp-wDid4mj5eQVd2iZtRGXgeZd8goq195EkXdjyt864YMc8mVb2B9NGH91NQ=@protonmail.com>
+ <CAD++jL=YJGFf+9o8KV+OO_61EL+_z3b7P+eLK=6=r+GOuJiWAg@mail.gmail.com> <aj55z9_pk7G7vOha@shell.armlinux.org.uk>
+In-Reply-To: <aj55z9_pk7G7vOha@shell.armlinux.org.uk>
+From: Linus Walleij <linusw@kernel.org>
+Date: Fri, 26 Jun 2026 15:32:31 +0200
+X-Gmail-Original-Message-ID: <CAD++jL=r5PKpKHK+OCWvDmzPJCAz-706x-8KheDj4+u+uJt_jA@mail.gmail.com>
+X-Gm-Features: AVVi8CcrlZ5QTECLa-eRqzbPFMzfDHmxJ2msoXvrQi5mCDDz3n3yUknq4PEtLd0
+Message-ID: <CAD++jL=r5PKpKHK+OCWvDmzPJCAz-706x-8KheDj4+u+uJt_jA@mail.gmail.com>
+Subject: Re: [REGRESSION] 32-bit ARM's BKPT instruction no longer works
+To: Russell King <linux@armlinux.org.uk>
+Cc: slipher <slipher@protonmail.com>, Nathan Chancellor <nathan@kernel.org>, 
+	Kees Cook <kees@kernel.org>, Sami Tolvanen <samitolvanen@google.com>, 
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, 
+	"stable@vger.kernel.org" <stable@vger.kernel.org>, 
+	"regressions@lists.linux.dev" <regressions@lists.linux.dev>, 
+	"linus.walleij@linaro.org" <linus.walleij@linaro.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [1.54 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [-5.16 / 15.00];
+	WHITELIST_SPF_DKIM(-3.00)[kernel.org:d:+,kernel.org:s:+];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_RECIPIENTS(0.00)[m:chunkuang.hu@kernel.org,m:p.zabel@pengutronix.de,m:airlied@gmail.com,m:simona@ffwll.ch,m:matthias.bgg@gmail.com,m:angelogioacchino.delregno@collabora.com,m:dri-devel@lists.freedesktop.org,m:linux-mediatek@lists.infradead.org,m:linux-kernel@vger.kernel.org,m:linux-arm-kernel@lists.infradead.org,m:vulab@iscas.ac.cn,m:stable@vger.kernel.org,m:matthiasbgg@gmail.com,s:lists@lfdr.de];
-	RCPT_COUNT_TWELVE(0.00)[12];
-	DMARC_NA(0.00)[iscas.ac.cn];
+	FREEMAIL_CC(0.00)[protonmail.com,kernel.org,google.com,vger.kernel.org,lists.linux.dev,linaro.org];
 	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER(0.00)[vulab@iscas.ac.cn,stable@vger.kernel.org];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FREEMAIL_TO(0.00)[kernel.org,pengutronix.de,gmail.com,ffwll.ch,collabora.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-268911-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[vulab@iscas.ac.cn,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-268912-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
+	TO_DN_EQ_ADDR_SOME(0.00)[];
 	TO_DN_SOME(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:linux@armlinux.org.uk,m:slipher@protonmail.com,m:nathan@kernel.org,m:kees@kernel.org,m:samitolvanen@google.com,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,m:regressions@lists.linux.dev,m:linus.walleij@linaro.org,s:lists@lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER(0.00)[linusw@kernel.org,stable@vger.kernel.org];
+	FORWARDED(0.00)[lists@lfdr.de];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	MISSING_XM_UA(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
-	R_DKIM_NA(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[linusw@kernel.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,vger.kernel.org:from_smtp,iscas.ac.cn:email,iscas.ac.cn:mid,iscas.ac.cn:from_mime]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[mail.gmail.com:mid,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: B857F6CD702
+X-Rspamd-Queue-Id: 3D07F6CD74A
 
-In the for_each_child_of_node loop, private->comp_node[comp_id] and
-  private->mutex_node are assigned via of_node_get without first releasing
-  any previously stored reference for the same index. When the same comp_id
-  or mmsys_id matches multiple nodes, earlier node references are
-  overwritten and permanently leaked.
+On Fri, Jun 26, 2026 at 3:08=E2=80=AFPM Russell King <linux@armlinux.org.uk=
+> wrote:
 
-Cc: stable@vger.kernel.org
-Fixes: 1ef7ed48356c ("drm/mediatek: Modify mediatek-drm for mt8195 multi mmsys support")
-Signed-off-by: WenTao Liang <vulab@iscas.ac.cn>
----
- drivers/gpu/drm/mediatek/mtk_drm_drv.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+> Aren't regressions wonderful!
 
-diff --git a/drivers/gpu/drm/mediatek/mtk_drm_drv.c b/drivers/gpu/drm/mediatek/mtk_drm_drv.c
-index c86a3f54f35b..2c0d8db9ade2 100644
---- a/drivers/gpu/drm/mediatek/mtk_drm_drv.c
-+++ b/drivers/gpu/drm/mediatek/mtk_drm_drv.c
-@@ -1138,6 +1138,7 @@ static int mtk_drm_probe(struct platform_device *pdev)
- 
- 			id = of_alias_get_id(node, "mutex");
- 			if (id < 0 || id == private->data->mmsys_id) {
-+				of_node_put(private->mutex_node);
- 				private->mutex_node = of_node_get(node);
- 				dev_dbg(dev, "get mutex for mmsys %d", private->data->mmsys_id);
- 			}
-@@ -1153,7 +1154,7 @@ static int mtk_drm_probe(struct platform_device *pdev)
- 
- 		if (!mtk_drm_find_mmsys_comp(private, comp_id))
- 			continue;
--
-+		of_node_put(private->comp_node[comp_id]);
- 		private->comp_node[comp_id] = of_node_get(node);
- 
- 		/*
--- 
-2.39.5 (Apple Git-154)
+Makes me feel alive! ;)
 
+> So I think safest is that everyone just moves away from BKPT.
+
+I agree.
+
+I'm waiting for the compiler guys to see if they have some good idea
+on what to do istead.
+
+Since it is a security feature, to me hanging in an eternal loop waiting
+for watchdog reset or power off is better than issuing BKPT.
+But that's pretty nasty.
+
+Can the compiler simply use a read of the guard region at ffc00000
+to raise a SIGBUS? (This is inherently a Linux-only solution but,
+perhaps this can be parameterized?)
+
+Yours,
+Linus Walleij
 
