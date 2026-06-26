@@ -1,327 +1,170 @@
-Return-Path: <stable+bounces-269321-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-269312-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id NQkWGSssP2rNPgkAu9opvQ
-	(envelope-from <stable+bounces-269321-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 27 Jun 2026 03:49:31 +0200
+	id 8SqPNj4LP2qOOQkAu9opvQ
+	(envelope-from <stable+bounces-269312-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 27 Jun 2026 01:29:02 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A53286D0BC8
-	for <lists+stable@lfdr.de>; Sat, 27 Jun 2026 03:49:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5266A6D0840
+	for <lists+stable@lfdr.de>; Sat, 27 Jun 2026 01:29:02 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=synopsys.com header.s=pfptdkimsnps header.b=iv9tGkQE;
-	dkim=pass header.d=synopsys.com header.s=mail header.b=AV2MvNFF;
-	dkim=fail ("headers rsa verify failed") header.d=synopsys.com header.s=selector1 header.b=YKRBoXrO;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-269321-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-269321-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=quarantine) header.from=synopsys.com;
-	arc=reject ("cv is fail on i=2")
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Vtg3LD4H;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-269312-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-269312-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 935FA302737D
-	for <lists+stable@lfdr.de>; Sat, 27 Jun 2026 01:49:29 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 3CD3C303026B
+	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 23:29:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B415F233D9E;
-	Sat, 27 Jun 2026 01:49:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A7CAD37DE97;
+	Fri, 26 Jun 2026 23:29:00 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mx0a-00230701.pphosted.com (mx0a-00230701.pphosted.com [148.163.156.19])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B38B53C2D;
-	Sat, 27 Jun 2026 01:49:26 +0000 (UTC)
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782524968; cv=fail; b=Na6PjHL5JiUN00oS7bmRM6lZ6HbupzfgC+7Lwd8weq0hZDysTMM4MXP/NteUHjzJb8AyCN5ymEWoaBMj4QbA0K/Pn5zn0+lCdAbQ/ntprgT793SEjgpDeQTSDgIkgMaQvxbNn3UrEfiYybBugmtN9PgDXz2R3igbvvpUyCN90+g=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782524968; c=relaxed/simple;
-	bh=5TQLy6z2jBqBEuMGaWFiHdFB6nW6PLpEDH5n2ALWXc0=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=CoeWkdlX1qvH9jq3KeoZCvIvSzJDIB6/f21uf60jKA0Dve4HG7GEvuVCa04SCjru7vXYfGDQNm6JRAZ9YQPajOdQalBFTDOJIRz0hlrsM3yjF/QyVByRcM4XrOuRVUYcvWwdxgccCJYr6fc/7Gd6HgRSWCDvwA3AufXZiaL2drQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=synopsys.com; spf=pass smtp.mailfrom=synopsys.com; dkim=pass (2048-bit key) header.d=synopsys.com header.i=@synopsys.com header.b=iv9tGkQE; dkim=pass (2048-bit key) header.d=synopsys.com header.i=@synopsys.com header.b=AV2MvNFF; dkim=fail (1024-bit key) header.d=synopsys.com header.i=@synopsys.com header.b=YKRBoXrO reason="signature verification failed"; arc=fail smtp.client-ip=148.163.156.19
-Received: from pps.filterd (m0297266.ppops.net [127.0.0.1])
-	by mx0a-00230701.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 65QNI6832380294;
-	Fri, 26 Jun 2026 16:21:05 -0700
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=synopsys.com; h=
-	cc:content-id:content-transfer-encoding:content-type:date:from
-	:in-reply-to:message-id:mime-version:references:subject:to; s=
-	pfptdkimsnps; bh=5TQLy6z2jBqBEuMGaWFiHdFB6nW6PLpEDH5n2ALWXc0=; b=
-	iv9tGkQEH6gnD/bYbYAR3JO01nAwjvWFH9zEPSWRcboVJoAhE/KIenkhUkYomgy+
-	P0jhHEk/p5kcw4+Chb7t9AQEVcBwwdOCQu4ULJG3Z41+kZkjMuE1wH5UCcLffliZ
-	8EOsmInnBOjZkfkx+OIotPgfHf1aZ4LLJTV5IGQlX7eKD+AN9ULRQFzS7MgxcI13
-	q8Zf42TxI7pzkkfCRYeAwVghLvu5pQKhGPyMgHQOi94Qsy4scaTYWqZXWUl5Q4d6
-	elxAZDnta5H33ScEGpb5vX4ObXneGRurH3LSsBqSHhmrl1L3Hb+CgLFqHesdFDXj
-	kpWMHTeeaBPWlVi8ItaDPA==
-Received: from smtprelay-out1.synopsys.com (smtprelay-out1.synopsys.com [149.117.73.133])
-	by mx0a-00230701.pphosted.com (PPS) with ESMTPS id 4f1mwk81nr-1
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
-	Fri, 26 Jun 2026 16:21:05 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=synopsys.com; s=mail;
-	t=1782516065; bh=5TQLy6z2jBqBEuMGaWFiHdFB6nW6PLpEDH5n2ALWXc0=;
-	h=From:To:CC:Subject:Date:References:In-Reply-To:From;
-	b=AV2MvNFF6rWa+IGTNgyzNPJY9NMVH87Nj3jgyC6Bea4p3kgM8s0x7BSO0bdfUJ3L5
-	 JBVkXRog2DAPM8fQ4HP6TePAbS+aY7LxWj2AOFpDYEl23gmbRwfLf8Lh0/cSv+45Y4
-	 f8MFxFDCMYJY+L4TNcVwo9jRwrVqOE1Z2hV82MIF9pPl0+ZdzlIT2z+8VCQQ5y8/rT
-	 h8DrRfMIQnOcMrtOl7jbY+0dxYk52w2Vs7cOecpZ5Zxik6x5iMK91800ucg/Cvt8hO
-	 TDEcwqmbh5aK/wfk1B7nHf+wLISYIvsXyyOBma2Iii9L7naJUxpUAn+bvQtwWilidF
-	 DOZnPVp+5frNw==
-Received: from mailhost.synopsys.com (badc-mailhost3.synopsys.com [10.192.0.81])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits)
-	 client-signature RSA-PSS (2048 bits))
-	(Client CN "mailhost.synopsys.com", Issuer "SNPSica2" (verified OK))
-	by smtprelay-out1.synopsys.com (Postfix) with ESMTPS id 44B284012F;
-	Fri, 26 Jun 2026 23:21:02 +0000 (UTC)
-Received: from o365relay-in.synopsys.com (us03-o365relay1.synopsys.com [10.4.161.137])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256
-	 client-signature RSA-PSS (2048 bits) client-digest SHA256)
-	(Client CN "o365relay-in.synopsys.com", Issuer "Sectigo Public Server Authentication CA OV R36" (not verified))
-	by mailhost.synopsys.com (Postfix) with ESMTPS id 51408A0063;
-	Fri, 26 Jun 2026 23:21:02 +0000 (UTC)
-Received: from CO1PR07CU001.outbound.protection.outlook.com (mail-co1pr07cu00100.outbound.protection.outlook.com [40.93.10.88])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-384) server-signature RSA-PSS (2048 bits) server-digest SHA256
-	 client-signature RSA-PSS (2048 bits) client-digest SHA256)
-	(Client CN "mail.protection.outlook.com", Issuer "DigiCert Cloud Services CA-1" (verified OK))
-	by o365relay-in.synopsys.com (Postfix) with ESMTPS id 14F75401BC;
-	Fri, 26 Jun 2026 23:20:58 +0000 (UTC)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=GYwxTKKCL7+4BcS2a5LXdk9CwdBgJaL+otaRAIfwIN7DqGFsIG/HeOcjm/UjwmAV8UYnEXlZLlamLbq6dpPZaS30oPh/2sv6RCUTq8XvrfY/szH3DMSck+7gdht3POqvogzl8HuDZrxvbYSGudUptTjFgObTgH3w9zcTu2XpMcHSNbKig9ZKWI/tktmJRzTmgObylfSGjxyVhfEuy4HbGKQRcwKG6cByW0q2A3fv520j1czsXr4+vEA5s+FpTZFp5wPScvaHI7W8Jjo9nj7ftHx1ZQIJJmrJGIKLb5kJFgzc9+mgI8nuBjVNM7Mu7p88hSeCadDccZ/HiaWopG3t2A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=5TQLy6z2jBqBEuMGaWFiHdFB6nW6PLpEDH5n2ALWXc0=;
- b=jRhmP165pv10juJZJee8jUZa7tC0OW71Tmf+PwynVUTHLO5SLzPl5kO5+GFh3CHUPPQn1JmH2DRA9vkroITYK73Fkli1+Jqa5+p0dnAsWY0MmN8v1Vqs9+q7ZpLDLP0G1agx7F8h3RH+O+IqeqZqEgBBcNRrPRyreSrgitdgXcHOYsffx6ozICORTuYb34oNYpWO1+BTVLUDM5gOK79/CVC9rjrLdYjubgJ9p2gwG2aOKL9qhr8AOjjXF9dULLc1cs90FBHcs6H1fFxhSPxu/H6KU2IoGJZ4n9k9QKDedMbzIkCxdWP09ixQmU7sGdtJ0ETi99cfYf6jOId3kik6Rw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=synopsys.com; dmarc=pass action=none header.from=synopsys.com;
- dkim=pass header.d=synopsys.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=synopsys.com;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=5TQLy6z2jBqBEuMGaWFiHdFB6nW6PLpEDH5n2ALWXc0=;
- b=YKRBoXrOikfjU+L+XBvp1J6Vqqn9YSzT88G9L/TMBJlXLv9iCFiuaM+G27uoqtzfv+Bdmtd5MKeH9nzNUU8uMz847lFvk8xn0rBS4blBB+kIvLdmbuNBdpSjseH09PIiXOSSN+crapCLm3iAqqNtRp5d6csa30iKFyv8p1QeelI=
-Received: from PH0PR12MB7486.namprd12.prod.outlook.com (2603:10b6:510:1e9::6)
- by DM6PR12MB4369.namprd12.prod.outlook.com (2603:10b6:5:2a1::9) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.159.18; Fri, 26 Jun
- 2026 23:20:51 +0000
-Received: from PH0PR12MB7486.namprd12.prod.outlook.com
- ([fe80::7df9:b25e:9216:f109]) by PH0PR12MB7486.namprd12.prod.outlook.com
- ([fe80::7df9:b25e:9216:f109%6]) with mapi id 15.21.0159.015; Fri, 26 Jun 2026
- 23:20:51 +0000
-X-SNPS-Relay: synopsys.com
-From: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
-To: WenTao Liang <vulab@iscas.ac.cn>
-CC: Thinh Nguyen <Thinh.Nguyen@synopsys.com>,
-        "gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>,
-        "neil.armstrong@linaro.org" <neil.armstrong@linaro.org>,
-        "khilman@baylibre.com" <khilman@baylibre.com>,
-        "jbrunet@baylibre.com" <jbrunet@baylibre.com>,
-        "martin.blumenstingl@googlemail.com" <martin.blumenstingl@googlemail.com>,
-        "linux-usb@vger.kernel.org" <linux-usb@vger.kernel.org>,
-        "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
-        "linux-amlogic@lists.infradead.org" <linux-amlogic@lists.infradead.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "stable@vger.kernel.org" <stable@vger.kernel.org>
-Subject: Re: [PATCH] usb: dwc3: meson-g12a: fix refcount leak in
- dwc3_meson_g12a_resume()
-Thread-Topic: [PATCH] usb: dwc3: meson-g12a: fix refcount leak in
- dwc3_meson_g12a_resume()
-Thread-Index: AQHc+aPdMDtukPvz0UCSyfOE2A5fjrZRkZCA
-Date: Fri, 26 Jun 2026 23:20:51 +0000
-Message-ID: <aj8Gyn2ClDFDqRx0@vbox>
-References: <20260611131121.81784-1-vulab@iscas.ac.cn>
-In-Reply-To: <20260611131121.81784-1-vulab@iscas.ac.cn>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: PH0PR12MB7486:EE_|DM6PR12MB4369:EE_
-x-ms-office365-filtering-correlation-id: 47695296-7d76-4530-18af-08ded3d99009
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam:
- BCL:0;ARA:13230040|23010399003|1800799024|376014|7416014|366016|56012099006|11063799006|6133799003|38070700021|22082099003|18002099003;
-x-microsoft-antispam-message-info:
- BX4JogoYhWstzop066JUCqfYQ2sDnHLv+HJQOWrKp9LmyG7evQTUpdFYZaiExMoymnKdPsFGKDOTzj3ohNFZjmny7mj42XMpKq/0GkBHhTf6j+Vhtysm2Q0QunphuWMXlraFG93CSZn5Oo8sLYXgEt1VxvMD6A05oIs7q1Uz36ZrKoxEU4N+OORGByYEGC29tmoo39zVyMIuJS6GfVNsncoxlSBgk5ybqE5/BQUHwIidPSS8cCbCDatn+N0k9zrFm2GE8BCpUC5Xrn3bVg/gm2azgjgFAgezsAffolMrr4iHUqrOcL3Hna9mleQw4RKtUgs1BqgmNcPxVE6bNE2J85jbcbKYQB+D6pL6LGJYowt24Ir5yVEEDuj/ms3RxzKQBhL2TbROg6nl+sW2psl6g5UKaYUf2SKe/1u5Xe8le9dHBa1xLHo6sGrcCTUEHbwY9msw50BwlqwK++R4MJHkrmnEGDbfa8TIL4q9SKACRBr/zAWV4LSN/cxqbk3qoVUgSC8s2d/+PeQLdzTRyWTInvRe5l0cz8JP3nZNeY9x/zbMW3KB2VBb4rWrCCosUHkFHr6HVrU5xhSGCqHG9CTBu0rH9T86vlkK5Vm9q/ZduNxXvX1iDhsETfHBSkoix1HQo3mjWgdzJOaxp1tHP/WWJOg5f3RovpOg9CeZ3RGT5li8oblnb3ghM10P23PHsUH9ZgRXIOwgo8hHmk2YGVLQQ2Q/Em+knVxdzQJuT0Szl3I=
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH0PR12MB7486.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(1800799024)(376014)(7416014)(366016)(56012099006)(11063799006)(6133799003)(38070700021)(22082099003)(18002099003);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?utf-8?B?anZpR2IzbnNYU2pSb1oybnBqaTN5VUs4NWZYcmRsaGNtN1ZtK0hVMlFqay80?=
- =?utf-8?B?d3ZjYkF2ay9aZml2VDhlOXRPN3haNGg4K3FETU12UnE4b1ZwY1BnUFBZb3B3?=
- =?utf-8?B?a2UzU0ZiRkJ6VFN2ZlFhMFd3VWltL241eWVBOGFETHFjL1E2RDBZKzNhc0Js?=
- =?utf-8?B?RlYxc2liZ0FuZXNNME01U1ZlNjh1WThRYTBpbldkSGRBZGdOL0Z3TkVaOGx5?=
- =?utf-8?B?aVhQbjlKaWtOY1E3QnpWNkpmRnJOamhXUE0rS1NtSXIyL09hYWJrckhLSzVG?=
- =?utf-8?B?VWJ6UFhQMENIUkVMRkZqSVRLT0ZqNkwySU9VQlRFaE1oV0lrWDJIWHhPTjdD?=
- =?utf-8?B?ajAvWERyWmIzZnloM2VndWJlQm03OFd6SlIzMUZGRFNwdlkrbVBTbnlUOTRz?=
- =?utf-8?B?Tk8zaVRTcHJteUphaEFyalVTcy9WT0NlMkdqbFhrdW13aVlOL01BOE9YQzNO?=
- =?utf-8?B?QXZodXZzWC9iTStES2YvVjltdDVsWS81bGcrN3M1RmxHaDFKWkZ6YnVXakJw?=
- =?utf-8?B?RlRCdHFlTm5vUkZsRXFKVlVCWGk0L1IzQzNkVzVBb0ZMSG9hVi9FL3U5cjdB?=
- =?utf-8?B?WGRLSDhOWFFPTnppUzFxZjZPZXlIYUVWcVltN1podFlsSnVac2ZLbjJLOHBl?=
- =?utf-8?B?c0JGV1Z0UStCOEl6aUs3SlRaL0FnNjc3ME9KWWkvT2gxbEFKZkd5RG5adS9B?=
- =?utf-8?B?K1YxMUU5Mi9CSnpScmtuNDdLZlVpbWUzc29YZHRoQTNicm1qNGhOQ1ZPN2l3?=
- =?utf-8?B?dEVsd3ErTzFVMEVOa2ZpSDQybGRacEZ0R1Y3ZUFQZ3A5QWE3Ry9sN2ZDS0Ny?=
- =?utf-8?B?dWQ2QnptS2Z2c0t0aFNTOGk2S3hIdEtPQzNVUXRKSkV1a1loUHN4YmJrRWUy?=
- =?utf-8?B?U1Vpd2ZJWTRFMUdvOUpQcmtyeDg0Nk54cTRMRy9BSHV1R3dxTWFSNW9QN2k3?=
- =?utf-8?B?RXdCaStTejZQUTNkSWVQTFZyaGdtQkFORHgzUUtXckxKSUZUTlllc0tpRjEy?=
- =?utf-8?B?Zmtod2NSOVVHNmRQVzZ4aDBCZHNLdnlXSElsRGNPRjhTcHJIU3pkTHBRZW9Z?=
- =?utf-8?B?aFY4VnpnMnVaRldZem10bDNlaWxOSUlDLzhuUDF0ODV1NG55SnRFK0VQVFZ5?=
- =?utf-8?B?NldkQm5NTlprL0hxNUYvRlE3T2h0MHdHSkE2Y3hNTnBHa2JqMUh2NDRoZWJw?=
- =?utf-8?B?bGNOZHUwMURRRGIxRHJIdkRVSFR1TTJHOTREQkFPaGhHTEVHUzhXSUw4QjFW?=
- =?utf-8?B?S3RUZjRkVmw0T3pWNkkwWDBVZVJuYkgxS2JwLzlRTkpFbStHV0hoZmpQdmhR?=
- =?utf-8?B?c3dCZ3RJTEVEWG1TNVEzOVozWW5GRHVhYnRqeTI2Y0Y5WTd1ajduYy9wWnVw?=
- =?utf-8?B?WGdvazhoRXJVRGVubDA4eHFpRHpkWWtLanNlQnJHTmV3Z3VTb211a0JUREw1?=
- =?utf-8?B?MWJ2aGprOG5QVE5ac09OWGxtR0VYd3VuSkJ4eUxRcE5jWVNJUThINWlRNnFN?=
- =?utf-8?B?WU8zREpJMy9lMmd0ZHR0QldTRWcvSVlTT2U5WWNjNnhIb3U4dkhiM3Z2dDR5?=
- =?utf-8?B?VGtuYzVSdnd3eWZHcnlCTExRWXd2bXR5UDU0bE1tL2ZaNExSdVR2TFRTRUNJ?=
- =?utf-8?B?eUg5ZXd1ZW51SXRHZVBEV2RnNlJnOGwxMDVNa0xaVUVuaDBZY3FoWWpQRXVo?=
- =?utf-8?B?K2Fwd0lTVTA1U0YvZDQ0bnhETXk5bzlVaVZOLzRodlI2Kzk0UWtnWjg0L1NS?=
- =?utf-8?B?UWxEU0xrU0JmSElxRDRLeWVKWm1vVkJZbG5vRm5taGZncGM5d2pGeEVPcS8y?=
- =?utf-8?B?WWg1U0FqbzROdE1kTE0vQklyQ1dCakEwNDcyT0t1WFplcm5FWkErbnk1ZlZY?=
- =?utf-8?B?Q2s1VVJpUUFWRU1rRW9sWnB4TFJubFJPdWdrYlZKaCs4NFJ2WG1QKzhNTTZ5?=
- =?utf-8?B?OGoxa1NGOXcyTEZiZGVYUFkzZ0hvV2JFMGZ1L1JGeGtvSmF0TlJxd2diclpz?=
- =?utf-8?B?ajBBK29jcEFxUUdXSzNuZjd5ZzZyOWwyaEFBYnJLQkc4TlM0Y20vQ2F2Nk5w?=
- =?utf-8?B?Ri9HbnFHS2lCU2pBTkYxYU4zK3V3UFdFSWN3cWVwNjg1U3VEanlmMjJzWCtU?=
- =?utf-8?B?ZVJyQ2V2RUVnN0ZYV0s2Zk42dFRXREdMNTB2bWVTNWoyaEpLK0RyK1B0TmR0?=
- =?utf-8?B?UVJHUUxEc3NFenY3dnB0OXdBVEdDNEEydzlnc2VRVmdpOUFianYrbGdtQ25C?=
- =?utf-8?B?SWlQVGhmQ0V6VU0wU3BmZWZDUlFVVy9QUXAyNEdXNWd5a1ppVnpCM0pPY2xK?=
- =?utf-8?B?a1REb1h6eHpKN1R6Z0V5OGZIVnF0UVJ0ODdGbnRqVGxhTjM2Vld1dz09?=
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <D4526738E2457C4DA652FD945D2619F1@namprd12.prod.outlook.com>
-Content-Transfer-Encoding: base64
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D26536EAA7;
+	Fri, 26 Jun 2026 23:28:59 +0000 (UTC)
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1782516540; cv=none; b=OzE7nlQNnE9IMRD/3tfwQLPPdQPFPZN8N9Ezsg6qHUFGFFzue2SKLcwaYyI8x5B5JFwlSW67DQNqmAaVq7DPRZ94X5hQBEQ/HFqxGcRXzggbyEc1WeCL0GGN5JAk3rPZo/SZur+Uz640Ma8UnXw2fD4Ufnn/VZj87uIMH5UzVLs=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1782516540; c=relaxed/simple;
+	bh=sLF0j9k5G3sPV9pXs8Bhs34ZVftOmCDqL0XjTnI072o=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ObyQOG3sIxdlB5fvt1NG2b3AvcInDlJY2OCxy+gBeBYaXzrE1lTbeBaA3ygQvRYATjxTANx20ShMLr9NPFRZJq9JD45Rake3cC9XmADN7yH7SpHq9PhCpKOmmqRVbCI6o6ryq/BbniI+x6NpZ2ojsKvPZS586my+gsvwXiaEAx0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Vtg3LD4H; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 370CB1F000E9;
+	Fri, 26 Jun 2026 23:28:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1782516539;
+	bh=Q54CGCbAfRqpkJYxsYQ2H4AQ6E9u9/Ki7MJECVS1P88=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=Vtg3LD4HaeTBcd33IOKYYyWyiAmjKfaAq8PPfM+fNk4iQrGGaK8jvVJZ/2i2nGTZL
+	 JjZnEOaALksz7sgBG5bDAS+56TY5tUI/3qg4mZAnlXpjkjy252LGjk176kp0Jd1nyN
+	 GGWNTaSd2VeuhmI0QnydHeSBwjpbmJh4sgNzHv1RBgniebFyuzacG1SsnATygkgFPS
+	 bSq4j4l+aYTXxFzFkwRF/dz396dw0zU9xS6V8Z0vrKnyd/I0aQzewuEF0Qz9I79uKK
+	 oL0PsNOy+h5Jp1bCMFCJDO2KFeNaL6//6q8KCc2BRacWwcFgPRJHMNMRla0xX+Cly6
+	 sYzI77Du5cQTg==
+Date: Fri, 26 Jun 2026 16:28:53 -0700
+From: Nathan Chancellor <nathan@kernel.org>
+To: David Laight <david.laight.linux@gmail.com>
+Cc: Ingo Molnar <mingo@kernel.org>, Peter Zijlstra <peterz@infradead.org>,
+	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
+	Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+	Ard Biesheuvel <ardb@kernel.org>,
+	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
+	Bill Wendling <morbo@google.com>,
+	Justin Stitt <justinstitt@google.com>, linux-kernel@vger.kernel.org,
+	llvm@lists.linux.dev, stable@vger.kernel.org
+Subject: Re: [PATCH] x86/boot/compressed: Disable jump tables for clang
+Message-ID: <20260626232853.GA547411@ax162>
+References: <20260623-x86-boot-compressed-disable-jt-clang-v1-1-575fccd58107@kernel.org>
+ <ajulLtY29HtgWokg@gmail.com>
+ <20260624093848.GA48970@noisy.programming.kicks-ass.net>
+ <ajuoqIk4tSV7CmFC@gmail.com>
+ <ajupfkcZTTxGP2dG@gmail.com>
+ <20260624221739.GA7516@ax162>
+ <20260625090617.4f3f68bf@pumpkin>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Exchange-RoutingPolicyChecked:
-	INFYhEOZtXGQ4LYVuptFeZw05Rfnl43nOpecPs/QWzMrlkGiwEaRhAqbovDFXeoiabHol6EpW76s/ajCB3Xus+Sg3UanTJodcYlHJ35DehclcAZt4/GSiugeLmJ7lQH5iZuwJ7BhuNHWm+F30vAbxsLhPSHFlNIv8id/LYEYzknWHf9SjWJ784o4q5xo93jBBefvgPnPajFmYai1E22HEGj2VzLBRBQuNtwlms8ymJfqXfGYQEwrxXaknFX5kDiObLxbe7afEv/aDKQenpAM3/NjqHfodDtmmjclbw/n2eR2+8ntenQBy0Kd0divx/N7c3IUc6P8nh17fj4ajyJamw==
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
-	hmsVhIL3AI2198ahKhed9fYCTsL1vjnA4mNXwTCFWmGVhr+/r5JNTNur8cD6zgYVdWfAvuQ8DP5rD13Xa0+tmQX47bTZqpQ8C6w3u6I7wwbqk0c8O5aOIusFRePjm35ZvgKY3yjFL4i/DQKbd7bNDBCO03G9mUq593LJEpD5YA0G8MmL7nV13Ey+JhrZs8RBrhs1R+dboQTF1LTHvynBe/quc0KZ4DtTEeOAi0do+9nZ4Cwpl3WfYVKyOIJD0nJ4EHqShJhdXDWEEmnE9Bs/jZb2egkRVVEHhmgdbtNSoNbv1koKDOp+79RfvSdNw/b6BGzDxjEYibSjmlwZWHdXq+2CgHiFwEI4o07W7mkynTgC1GCT/qv5I4B8/gPJXq3MoQXxsOByDqHM5AaXY/t56oBW0fDIwVVDKKoCEPbGVVYqbxBjMJX1E0qwh9raq97xX5sBjarB9cWb4gsesQNm3jUngzgJMife/m9chHGL9LF86Aa/54vhLgIHF77zWiucfbR4AuE2V+oykaggduVFJ6NxhyR7njHeseLe6JAp+asK3KiX+TmMMv/T2yDEKQcfcRXdppPhQCBH0+Q9TXW6dLotqi/kDlhc0Sjnvp3u6ynB9PyVUNOi9RlWxHe7sB8Bid0tjoXTaqcAd9K2Ix7ehQ==
-X-OriginatorOrg: synopsys.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: PH0PR12MB7486.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 47695296-7d76-4530-18af-08ded3d99009
-X-MS-Exchange-CrossTenant-originalarrivaltime: 26 Jun 2026 23:20:51.1005
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: c33c9f88-1eb7-4099-9700-16013fd9e8aa
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: vgsHJb1usQUX164cYKG3e2lvunbcHh2AYdgFhDixj2Bdfb9kz8UXmTVU1kVzEE9m2RsyJskkbmdQ2yOg5xVjCw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM6PR12MB4369
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNjI2MDE5NCBTYWx0ZWRfX9J4WCyucF0An
- LC0klYZsxFFrv5yc7cBhBlJ+09YpwVBva4VJXlFjr1IFhkP/WuKdlLjmiiaqOK5jhj+n/IRdkS3
- H2jKR4E18BdakLInqiMTOlfsxvOJbuoW0/fR64rA3ZYcB0d4CtKR3rdIUbnafM/pigNYn4Z/dbf
- EMB2jvZtAwbF+4briDIC3Z7WzZ6sG5hnqURNJFDY5Nb48JljfVsRLC1iUiUgyo4pyNg+DpRdlMx
- bcjcLM67rz7+ojeccqcsFPv8y3aW7Gu5GqDJgk6/GcxSWha3d7IiBh45GDVAQjj7QlQi4vZd4GK
- 2Zo0JJhdR4UKWgBThQ2Mm4h17KEXel1YUny0wQCIIgPvAjd/Oxp2uwxT4eGsoHLot3fpKHM3j3X
- Dh++hE4bPbWGFP1lo9HSlMdjswXo4fYtfrs465ghPZ2wDBeQDTspASFzUO8//U36bBnVfyMcW5A
- hqmIeinS4oDjIyC0Oig==
-X-Proofpoint-Spam-Info: AW1haW4tMjYwNjI2MDE5NCBTYWx0ZWRfX8mG31V9FKMTd
- Rx74cxTWCMhqP016vGI0QJySPPX5cU7sfoRJlC+NOvdyGUBOnuibyfELkxx745ula2poSr62H0B
- dZdN4tWRwI+lh83D/UTmIaUjUNIfDWY=
-X-Authority-Analysis: v=2.4 cv=PN4/P/qC c=1 sm=1 tr=0 ts=6a3f0961 cx=c_pps
- a=8EbXvwLXkpGsT4ql/pYRAw==:117 a=8EbXvwLXkpGsT4ql/pYRAw==:17
- a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19 a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19
- a=xqWC_Br6kY4A:10 a=IkcTkHD0fZMA:10 a=FelO9ux0wxsA:10 a=qPHU084jO2kA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=tU_645BZ7FZt8VqRJtHG:22 a=Wo6YDfOMAEstGd-0DxeT:22
- a=VwQbUJbxAAAA:8 a=hohcdOfaH-Cr7FVGXBoA:9 a=QEXdDO2ut3YA:10
-X-Proofpoint-GUID: snoLXmUCKRjvv5G7OVIAjgf97rkD0Gvk
-X-Proofpoint-ORIG-GUID: snoLXmUCKRjvv5G7OVIAjgf97rkD0Gvk
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.125,FMLib:17.12.100.49
- definitions=2026-06-26_06,2026-06-26_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_active_cloned_notspam
- policy=outbound_active_cloned score=0 clxscore=1011 malwarescore=0
- impostorscore=0 suspectscore=0 priorityscore=1501 adultscore=0 bulkscore=0
- lowpriorityscore=0 spamscore=0 phishscore=0 classifier=typeunknown
- authscore=0 authtc= authcc= route=outbound adjust=0 reason=mlx scancount=1
- engine=8.22.0-2606150000 definitions=main-2606260194
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260625090617.4f3f68bf@pumpkin>
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [2.94 / 15.00];
+X-Spamd-Result: default: False [-3.16 / 15.00];
+	WHITELIST_SPF_DKIM(-3.00)[kernel.org:d:+,kernel.org:s:+];
 	SUSPICIOUS_RECIPS(1.50)[];
-	MIME_BASE64_TEXT_BOGUS(1.00)[];
-	ARC_REJECT(1.00)[cv is fail on i=2];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_RHS_NOT_FQDN(0.50)[];
-	DMARC_POLICY_ALLOW_WITH_FAILURES(-0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
-	R_DKIM_ALLOW(-0.20)[synopsys.com:s=pfptdkimsnps,synopsys.com:s=mail];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
-	MIME_BASE64_TEXT(0.10)[];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCPT_COUNT_TWELVE(0.00)[12];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-269321-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS(0.00)[m:vulab@iscas.ac.cn,m:Thinh.Nguyen@synopsys.com,m:gregkh@linuxfoundation.org,m:neil.armstrong@linaro.org,m:khilman@baylibre.com,m:jbrunet@baylibre.com,m:martin.blumenstingl@googlemail.com,m:linux-usb@vger.kernel.org,m:linux-arm-kernel@lists.infradead.org,m:linux-amlogic@lists.infradead.org,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,m:martinblumenstingl@gmail.com,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[Thinh.Nguyen@synopsys.com,stable@vger.kernel.org];
 	FORWARDED(0.00)[lists@lfdr.de];
-	DKIM_MIXED(0.00)[];
-	TO_DN_EQ_ADDR_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,vbox:mid,synopsys.com:dkim,synopsys.com:from_mime,iscas.ac.cn:email];
-	DMARC_POLICY_ALLOW(0.00)[synopsys.com,quarantine];
-	FREEMAIL_CC(0.00)[synopsys.com,linuxfoundation.org,linaro.org,baylibre.com,googlemail.com,vger.kernel.org,lists.infradead.org];
-	FORGED_SENDER_FORWARDING(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:david.laight.linux@gmail.com,m:mingo@kernel.org,m:peterz@infradead.org,m:tglx@kernel.org,m:mingo@redhat.com,m:bp@alien8.de,m:dave.hansen@linux.intel.com,m:x86@kernel.org,m:ardb@kernel.org,m:nick.desaulniers+lkml@gmail.com,m:morbo@google.com,m:justinstitt@google.com,m:linux-kernel@vger.kernel.org,m:llvm@lists.linux.dev,m:stable@vger.kernel.org,m:davidlaightlinux@gmail.com,m:nickdesaulniers@gmail.com,s:lists@lfdr.de];
+	RCPT_COUNT_TWELVE(0.00)[15];
+	FREEMAIL_TO(0.00)[gmail.com];
+	FORGED_SENDER(0.00)[nathan@kernel.org,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-269312-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[Thinh.Nguyen@synopsys.com,stable@vger.kernel.org];
-	R_DKIM_REJECT(0.00)[synopsys.com:s=selector1];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	TO_DN_SOME(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	DKIM_TRACE(0.00)[synopsys.com:+,synopsys.com:-];
-	MISSING_XM_UA(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[nathan@kernel.org,stable@vger.kernel.org];
+	PRECEDENCE_BULK(0.00)[];
+	FREEMAIL_CC(0.00)[kernel.org,infradead.org,redhat.com,alien8.de,linux.intel.com,gmail.com,google.com,vger.kernel.org,lists.linux.dev];
+	TAGGED_RCPT(0.00)[stable,lkml];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_COUNT_SEVEN(0.00)[10]
+	MISSING_XM_UA(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,vger.kernel.org:from_smtp,ax162:mid]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: A53286D0BC8
+X-Rspamd-Queue-Id: 5266A6D0840
 
-T24gVGh1LCBKdW4gMTEsIDIwMjYsIFdlblRhbyBMaWFuZyB3cm90ZToNCj4gSWYgZHdjM19tZXNv
-bl9nMTJhX3Jlc3VtZSgpIHN1Y2NlZWRzIGluIGNhbGxpbmcNCj4gcmVzZXRfY29udHJvbF9yZXNl
-dCgpLCBhbiBpbnRlcm5hbCB0cmlnZ2VyZWRfY291bnQgcmVmZXJlbmNlIGlzDQo+IGFjcXVpcmVk
-LiBJZiBhbnkgbGF0ZXIgc3RlcCBmYWlscyAodXNiX2luaXQsIHBoeV9pbml0LA0KPiBwaHlfcG93
-ZXJfb24sIHJlZ3VsYXRvcl9lbmFibGUsIG9yIHVzYl9wb3N0X2luaXQpLCB0aGUgZnVuY3Rpb24N
-Cj4gcmV0dXJucyB0aGUgZXJyb3Igd2l0aG91dCByZWFybWluZyB0aGUgcmVzZXQgY29udHJvbC4g
-VGhpcyBsZWFrcw0KPiB0aGUgcmVmZXJlbmNlIGFuZCBsZWF2ZXMgdGhlIHJlc2V0IGNvbnRyb2wg
-aW4gYSB0cmlnZ2VyZWQgc3RhdGUsDQo+IGNhdXNpbmcgZnV0dXJlIHJlc2V0X2NvbnRyb2xfcmVz
-ZXQoKSBjYWxscyB0byBpbmNvcnJlY3RseSByZXR1cm4NCj4gZWFybHkgYXMgaWYgYWxyZWFkeSBy
-ZXNldC4NCj4gDQo+IEFkZCBhbiBlcnJvciBwYXRoIHRoYXQgY2FsbHMgcmVzZXRfY29udHJvbF9y
-ZWFybSgpIHRvIGJhbGFuY2UNCj4gdGhlIHJlZmVyZW5jZSBiZWZvcmUgcmV0dXJuaW5nIHRoZSBl
-cnJvci4NCj4gDQo+IENjOiBzdGFibGVAdmdlci5rZXJuZWwub3JnDQo+IEZpeGVzOiA1YjBiYTBj
-YWFmM2EgKCJ1c2I6IGR3YzM6IG1lc29uLWcxMmE6IHJlZmFjdG9yIHVzYiBpbml0IikNCj4gU2ln
-bmVkLW9mZi1ieTogV2VuVGFvIExpYW5nIDx2dWxhYkBpc2Nhcy5hYy5jbj4NCj4gLS0tDQo+ICBk
-cml2ZXJzL3VzYi9kd2MzL2R3YzMtbWVzb24tZzEyYS5jIHwgMTQgKysrKysrKysrLS0tLS0NCj4g
-IDEgZmlsZSBjaGFuZ2VkLCA5IGluc2VydGlvbnMoKyksIDUgZGVsZXRpb25zKC0pDQo+IA0KPiBk
-aWZmIC0tZ2l0IGEvZHJpdmVycy91c2IvZHdjMy9kd2MzLW1lc29uLWcxMmEuYyBiL2RyaXZlcnMv
-dXNiL2R3YzMvZHdjMy1tZXNvbi1nMTJhLmMNCj4gaW5kZXggNTVlMTQ0YmE4Y2ZjLi40ZDYxMWMw
-OGU4YTQgMTAwNjQ0DQo+IC0tLSBhL2RyaXZlcnMvdXNiL2R3YzMvZHdjMy1tZXNvbi1nMTJhLmMN
-Cj4gKysrIGIvZHJpdmVycy91c2IvZHdjMy9kd2MzLW1lc29uLWcxMmEuYw0KPiBAQCAtOTA3LDM1
-ICs5MDcsMzkgQEAgc3RhdGljIGludCBfX21heWJlX3VudXNlZCBkd2MzX21lc29uX2cxMmFfcmVz
-dW1lKHN0cnVjdCBkZXZpY2UgKmRldikNCj4gIA0KPiAgCXJldCA9IHByaXYtPmRydmRhdGEtPnVz
-Yl9pbml0KHByaXYpOw0KPiAgCWlmIChyZXQpDQo+IC0JCXJldHVybiByZXQ7DQo+ICsJCWdvdG8g
-ZXJyX3JlYXJtOw0KPiAgDQo+ICAJLyogSW5pdCBQSFlzICovDQo+ICAJZm9yIChpID0gMCA7IGkg
-PCBQSFlfQ09VTlQgOyArK2kpIHsNCj4gIAkJcmV0ID0gcGh5X2luaXQocHJpdi0+cGh5c1tpXSk7
-DQo+ICAJCWlmIChyZXQpDQo+IC0JCQlyZXR1cm4gcmV0Ow0KPiArCQkJZ290byBlcnJfcmVhcm07
-DQoNClNob3VsZCB3ZSB1bndpbmQgaGVyZSBhbmQgYmVsb3cgaW5zdGVhZCBvZiBqdXN0IHJlc2V0
-X2NvbnRyb2xfcmVhcm0/IEkNCnNlZSB3ZSBkbyB0aGF0IGluIHByb2JlKCkgZXJyb3IgcGF0aC4N
-Cg0KQlIsDQpUaGluaA0KDQo+ICAJfQ0KPiAgDQo+ICAJLyogU2V0IFBIWSBQb3dlciAqLw0KPiAg
-CWZvciAoaSA9IDAgOyBpIDwgUEhZX0NPVU5UIDsgKytpKSB7DQo+ICAJCXJldCA9IHBoeV9wb3dl
-cl9vbihwcml2LT5waHlzW2ldKTsNCj4gIAkJaWYgKHJldCkNCj4gLQkJCXJldHVybiByZXQ7DQo+
-ICsJCQlnb3RvIGVycl9yZWFybTsNCj4gIAl9DQo+ICANCj4gIAlpZiAocHJpdi0+dmJ1cyAmJiBw
-cml2LT5vdGdfcGh5X21vZGUgPT0gUEhZX01PREVfVVNCX0hPU1QpIHsNCj4gIAkJcmV0ID0gcmVn
-dWxhdG9yX2VuYWJsZShwcml2LT52YnVzKTsNCj4gIAkJaWYgKHJldCkNCj4gLQkJCXJldHVybiBy
-ZXQ7DQo+ICsJCQlnb3RvIGVycl9yZWFybTsNCj4gIAl9DQo+ICANCj4gIAlpZiAocHJpdi0+ZHJ2
-ZGF0YS0+dXNiX3Bvc3RfaW5pdCkgew0KPiAgCQlyZXQgPSBwcml2LT5kcnZkYXRhLT51c2JfcG9z
-dF9pbml0KHByaXYpOw0KPiAgCQlpZiAocmV0KQ0KPiAtCQkJcmV0dXJuIHJldDsNCj4gKwkJCWdv
-dG8gZXJyX3JlYXJtOw0KPiAgCX0NCj4gIA0KPiAgCXJldHVybiAwOw0KPiArDQo+ICtlcnJfcmVh
-cm06DQo+ICsJcmVzZXRfY29udHJvbF9yZWFybShwcml2LT5yZXNldCk7DQo+ICsJcmV0dXJuIHJl
-dDsNCj4gIH0NCj4gIA0KPiAgc3RhdGljIGNvbnN0IHN0cnVjdCBkZXZfcG1fb3BzIGR3YzNfbWVz
-b25fZzEyYV9kZXZfcG1fb3BzID0gew0KPiAtLSANCj4gMi41MC4xIChBcHBsZSBHaXQtMTU1KQ0K
-PiA=
+On Thu, Jun 25, 2026 at 09:06:17AM +0100, David Laight wrote:
+> On Wed, 24 Jun 2026 15:17:39 -0700
+> Nathan Chancellor <nathan@kernel.org> wrote:
+> 
+> > On Wed, Jun 24, 2026 at 11:55:10AM +0200, Ingo Molnar wrote:
+> > > 
+> > > * Ingo Molnar <mingo@kernel.org> wrote:
+> > > 
+> > >   
+> > > > > I'm sitting on a patch to unconditionally disable jump-tables for
+> > > > > x86_64:
+> > > > > 
+> > > > >   https://web.git.kernel.org/pub/scm/linux/kernel/git/peterz/queue.git/log/?h=x86/syscall  
+> > > > 
+> > > > In particular:
+> > > > 
+> > > >   https://web.git.kernel.org/pub/scm/linux/kernel/git/peterz/queue.git/commit/?h=x86/syscall&id=76612388fe7aa41a8eb88f890d451bc17255eda0  
+> > > 
+> > > Side note: since arch/x86/boot/compressed/Makefile constructs
+> > > its own KBUILD_CFLAGS, so a change to that Makefile will still
+> > > be required to universally apply -fno-jump-tables and work
+> > > around this Clang optimization in the decompression code.  
+> > 
+> > Right. I had intentionally kept my change scoped to clang to be less
+> > controversial but in the face of Peter's series, it makes sense to do it
+> > for all compilers like Ingo suggested. I have no preference for how we
+> > proceed here. I don't mind sending a v2 with something like
+> 
+> Isn't this solving a different problem?
+> Jump tables are disabled for the kernel build to avoid speculation of
+> mispredicted indirect jumps.
+> Here they are needed to stop the compiler output containing 'things' the
+> restricted environment can't support.
+
+Yeah but if the end result for both is just -fno-jump-tables, it is not
+like the reasoning really matters all that much? Maybe it matters for
+the person that comes along to blame -fno-jump-tables in the compressed
+boot Makefile. In that case, my patch could be added to Peter's series
+with its original justification but applied to all compilers like Ingo
+suggested? Again, no real preference.
+
+> Someone building a kernel for a local machine may want to disable all of
+> the mitigations to avoid their associated costs and also enable jump
+> tables to avoid the cost of all the mispredicted branches in the comparison
+> tree.
+
+Then they get to deal with the fallout of such a change :)
+
+-- 
+Cheers,
+Nathan
 
