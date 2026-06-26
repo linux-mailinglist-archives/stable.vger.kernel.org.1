@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-269208-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-269212-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 8/4PC/CnPmoOJwkAu9opvQ
-	(envelope-from <stable+bounces-269208-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 18:25:20 +0200
+	id HugpIoupPmqUJwkAu9opvQ
+	(envelope-from <stable+bounces-269212-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 18:32:11 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id C0BEC6CF00D
-	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 18:25:19 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 58B776CF1C1
+	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 18:32:10 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=narfation.org header.s=20121 header.b=hCM5DU2+;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-269208-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-269208-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=narfation.org header.s=20121 header.b=ZAXydP7h;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-269212-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-269212-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=narfation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 17CF7325CD07
-	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 16:15:59 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 4A8163270CAA
+	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 16:16:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2DFCF403B0C;
-	Fri, 26 Jun 2026 16:12:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CAFE1403AF4;
+	Fri, 26 Jun 2026 16:12:54 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from dvalin.narfation.org (dvalin.narfation.org [213.160.73.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52FA73FA5E5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB27E403B0D
 	for <stable@vger.kernel.org>; Fri, 26 Jun 2026 16:12:49 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782490372; cv=none; b=HS6fYbR3OAlXPVZkUOOOItBP1DuY72ecEub9H3v0ujFsJi/dQSAH9oe0RbMguLQ//ePlFVCoi5YmqRHuBoXDI7FBVned4KAebf8SxBSIsqH6Hc4au2SsRLsqgmmUmnKkw+ObCwr3wJ1vxS4jW79nZYcXAqgcErRMYHWfgjJzO8M=
+	t=1782490374; cv=none; b=hZPmTnlgYBCOLZox5owVKqrrla5S1gG0nVsf3k4woaZs/J3iqKKXka+/kCXmUgL0NlYGyQ7t2PTqJ4a0XnxgVHBrUaSUflvU0GqanHKqpa94TBd8Izu4lKkDarprTg8m2ARVNTQjWGncYI7dunSxSqw4kAkxBrJ1XP+y/dP40ak=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782490372; c=relaxed/simple;
-	bh=OIjgvbOFwtvF21MRI+apHYjtG9B1yMRpNRnVvn0GA24=;
+	s=arc-20240116; t=1782490374; c=relaxed/simple;
+	bh=AVBnUsvppe1nl3U+wKR4KaDwfr9ajUCmH5foOd/d08Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DE70ekJcIKeK/9QaRspU/E4MvL5I3GymYSRQfbYGModAuva5X0y5y3dPkAwF+16VKM50AjQQX0Tpo2S6zrZUMWMqw2r9T5deJFXzu72F0ZyhnqH/dhSmlQodOZF8ITeO6uQ9/par+bEjPD/ZAQpTKbdRJ+R08OIiMI2AFiLlK4k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=narfation.org; spf=pass smtp.mailfrom=narfation.org; dkim=pass (1024-bit key) header.d=narfation.org header.i=@narfation.org header.b=hCM5DU2+; arc=none smtp.client-ip=213.160.73.56
-Received: by dvalin.narfation.org (Postfix) id 3D73C2053A;
-	Fri, 26 Jun 2026 16:12:47 +0000 (UTC)
+	 MIME-Version; b=bSzSyKnhG/d8sdlXDCSLN4B/FxooYV2VRzYz08LD2LEnHIksTaoxLJoDO2MGVXFVq5FdfNnVDzK6R2yP5QEupKit+mGKF+04qea+WfqAbkRRyGB/RwtnXGTkklcA4PJV4N5hj1bojGGHRWdRtpGMhYCC5s/OR1C1ozWf00Wu/sk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=narfation.org; spf=pass smtp.mailfrom=narfation.org; dkim=pass (1024-bit key) header.d=narfation.org header.i=@narfation.org header.b=ZAXydP7h; arc=none smtp.client-ip=213.160.73.56
+Received: by dvalin.narfation.org (Postfix) id 12332202D1;
+	Fri, 26 Jun 2026 16:12:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=narfation.org;
-	s=20121; t=1782490367;
+	s=20121; t=1782490368;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=5lYXlpVr6qlRGKzmgN9vhbzYl61kKAPI7n2TxgM2+Ps=;
-	b=hCM5DU2+gIKDoIUtyPVpoDN/mcRSr8fUxeM+4O/gFVbu/6LD9q0fPZUukuX4ff+UCqA2r1
-	af7KGvRvKHFyZAUgu/aWX/zK2pjzLvgtodvxKFAcMhoL0W4HpqaeqAfm3xiDsSn8bUHwqT
-	HBN+fv1piS2SJoFB7I+g4eoya+lRAFc=
+	bh=2+LUyL2is44G0RqZTxGaJmna5RtNBKr4/nOs5HPtErc=;
+	b=ZAXydP7hUHtlW6YTPH5Hgfj8bWAQ4CC7I/TZxnnsYqEEXxUEn5HrFuFKJ4SAvHDF4u+bzx
+	rXbuACSNoqKI1ZPzUnsEe8vsTALAeS5OdMCpLws9WWsBqpw3cMwBXO9LAdKEuBY+fa2Jyv
+	I0R14lx+JGrut4lo76b+C9cL/tY2Seo=
 From: Sven Eckelmann <sven@narfation.org>
 To: stable@vger.kernel.org
 Cc: Sven Eckelmann <sven@narfation.org>
-Subject: [PATCH 7.1 11/26] batman-adv: tp_meter: initialize last_recv_time during init
-Date: Fri, 26 Jun 2026 18:12:26 +0200
-Message-ID: <20260626161241.124988-12-sven@narfation.org>
+Subject: [PATCH 7.1 12/26] batman-adv: gw: don't deselect gateway with active hardif
+Date: Fri, 26 Jun 2026 18:12:27 +0200
+Message-ID: <20260626161241.124988-13-sven@narfation.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260626161241.124988-1-sven@narfation.org>
 References: <20260626161241.124988-1-sven@narfation.org>
@@ -68,14 +68,14 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[narfation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[narfation.org:s=20121];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-269208-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-269212-lists,stable=lfdr.de];
 	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:sven@narfation.org,s:lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
@@ -91,69 +91,85 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,narfation.org:dkim,narfation.org:email,narfation.org:mid,narfation.org:from_mime,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,narfation.org:dkim,narfation.org:email,narfation.org:mid,narfation.org:from_mime,vger.kernel.org:from_smtp,universe-factory.net:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: C0BEC6CF00D
+X-Rspamd-Queue-Id: 58B776CF1C1
 
-commit 811cb00fa8cdc3f0a7f6eefc000a6888367c8c8f upstream.
+commit df97a7107b16375a10a36d7a63e9b4291a8ac680 upstream.
 
-The last_recv_time is the most important indicator for a receiver session
-to figure out whether a session timed out or not. But this information was
-only initialized after the session was added to the tp_receiver_list and
-after the timer was started.
+The batadv_hardif_cnt() was previously checking if there is an
+batadv_hard_iface->mesh_iface which is has the same mesh_iface. And since
+batadv_hardif_disable_interface() was resetting the
+batadv_hard_iface->mesh_iface after this check, it had to verify whether
+*1* interface was still part of the mesh_iface before it started the
+gateway deselection.
 
-In the worst case, the timer (function) could have tried to access this
-information before the actual initialization was reached. Like rest of the
-variables of the tp_meter receiver session, this field has to be filled out
-before any other (parallel running) context has the chance to access it.
+But after batadv_hardif_cnt() is now checking the lower interfaces of
+mesh_iface and batadv_hardif_disable_interface() already removed the
+interface via netdev_upper_dev_unlink() earlier in this function, the check
+must now make sure that *0* interfaces can be found by batadv_hardif_cnt()
+before selected gateway must be deselected. Otherwise the deselection would
+already happen one batadv_hard_iface too early.
+
+Because a 0 hardif count from batadv_hardif_cnt() is equal to an empty
+list, it is possible to replace the counting with a simple list_empty().
 
 Cc: stable@kernel.org
-Fixes: 33a3bb4a3345 ("batman-adv: throughput meter implementation")
-[ Context ]
+Fixes: 7dc284702bcd ("batman-adv: store hard_iface as iflink private data")
+Reviewed-by: Nora Schiffer <neocturne@universe-factory.net>
 Signed-off-by: Sven Eckelmann <sven@narfation.org>
 ---
- net/batman-adv/tp_meter.c | 10 +++++++---
- 1 file changed, 7 insertions(+), 3 deletions(-)
+ net/batman-adv/hard-interface.c | 28 ++--------------------------
+ 1 file changed, 2 insertions(+), 26 deletions(-)
 
-diff --git a/net/batman-adv/tp_meter.c b/net/batman-adv/tp_meter.c
-index 7bfad65c862e9..397b945635356 100644
---- a/net/batman-adv/tp_meter.c
-+++ b/net/batman-adv/tp_meter.c
-@@ -1403,8 +1403,10 @@ batadv_tp_init_recv(struct batadv_priv *bat_priv,
+diff --git a/net/batman-adv/hard-interface.c b/net/batman-adv/hard-interface.c
+index d6732c34aeafc..c7dbd24ea1998 100644
+--- a/net/batman-adv/hard-interface.c
++++ b/net/batman-adv/hard-interface.c
+@@ -786,30 +786,6 @@ int batadv_hardif_enable_interface(struct batadv_hard_iface *hard_iface,
+ 	return ret;
+ }
  
- 	tp_vars = batadv_tp_list_find_session(bat_priv, icmp->orig,
- 					      icmp->session, BATADV_TP_RECEIVER);
--	if (tp_vars)
-+	if (tp_vars) {
-+		tp_vars->last_recv_time = jiffies;
- 		goto out_unlock;
-+	}
+-/**
+- * batadv_hardif_cnt() - get number of interfaces enslaved to mesh interface
+- * @mesh_iface: mesh interface to check
+- *
+- * This function is only using RCU for locking - the result can therefore be
+- * off when another function is modifying the list at the same time. The
+- * caller can use the rtnl_lock to make sure that the count is accurate.
+- *
+- * Return: number of connected/enslaved hard interfaces
+- */
+-static size_t batadv_hardif_cnt(struct net_device *mesh_iface)
+-{
+-	struct batadv_hard_iface *hard_iface;
+-	struct list_head *iter;
+-	size_t count = 0;
+-
+-	rcu_read_lock();
+-	netdev_for_each_lower_private_rcu(mesh_iface, hard_iface, iter)
+-		count++;
+-	rcu_read_unlock();
+-
+-	return count;
+-}
+-
+ /**
+  * batadv_hardif_disable_interface() - Remove hard interface from mesh interface
+  * @hard_iface: hard interface to be removed
+@@ -850,8 +826,8 @@ void batadv_hardif_disable_interface(struct batadv_hard_iface *hard_iface)
+ 	netdev_upper_dev_unlink(hard_iface->net_dev, hard_iface->mesh_iface);
+ 	batadv_hardif_recalc_extra_skbroom(hard_iface->mesh_iface);
  
- 	if (!atomic_add_unless(&bat_priv->tp_num, 1, BATADV_TP_MAX_NUM)) {
- 		batadv_dbg(BATADV_DBG_TP_METER, bat_priv,
-@@ -1432,6 +1434,8 @@ batadv_tp_init_recv(struct batadv_priv *bat_priv,
- 	kref_get(&tp_vars->refcount);
- 	timer_setup(&tp_vars->timer, batadv_tp_receiver_shutdown, 0);
+-	/* nobody uses this interface anymore */
+-	if (batadv_hardif_cnt(hard_iface->mesh_iface) <= 1)
++	/* nobody uses this mesh interface anymore */
++	if (list_empty(&hard_iface->mesh_iface->adj_list.lower))
+ 		batadv_gw_check_client_stop(bat_priv);
  
-+	tp_vars->last_recv_time = jiffies;
-+
- 	kref_get(&tp_vars->refcount);
- 	hlist_add_head_rcu(&tp_vars->list, &bat_priv->tp_list);
- 
-@@ -1480,9 +1484,9 @@ static void batadv_tp_recv_msg(struct batadv_priv *bat_priv,
- 				   icmp->orig);
- 			goto out;
- 		}
--	}
- 
--	tp_vars->last_recv_time = jiffies;
-+		tp_vars->last_recv_time = jiffies;
-+	}
- 
- 	/* if the packet is a duplicate, it may be the case that an ACK has been
- 	 * lost. Resend the ACK
+ 	hard_iface->mesh_iface = NULL;
 -- 
 2.47.3
 
