@@ -1,51 +1,51 @@
-Return-Path: <stable+bounces-268735-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-268736-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id MLCJBtIEPmqy+ggAu9opvQ
-	(envelope-from <stable+bounces-268735-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 06:49:22 +0200
+	id 5MHYL1cFPmrP+ggAu9opvQ
+	(envelope-from <stable+bounces-268736-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 06:51:35 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D61626CA2DA
-	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 06:49:20 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 12C0C6CA2FD
+	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 06:51:35 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=u6W1Mh5t;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-268735-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-268735-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linux.dev header.s=key1 header.b=P32H+IGo;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-268736-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-268736-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linux.dev;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id CD5A4301F9C7
-	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 04:48:53 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B0E873023366
+	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 04:51:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4070530F547;
-	Fri, 26 Jun 2026 04:48:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2564035F5F8;
+	Fri, 26 Jun 2026 04:51:05 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from out-189.mta1.migadu.com (out-189.mta1.migadu.com [95.215.58.189])
+Received: from out-178.mta0.migadu.com (out-178.mta0.migadu.com [91.218.175.178])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B5262F7EF3
-	for <stable@vger.kernel.org>; Fri, 26 Jun 2026 04:48:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD93824A076
+	for <stable@vger.kernel.org>; Fri, 26 Jun 2026 04:51:03 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782449333; cv=none; b=VaL7M03EIaRMZ9KDT08/O/KKrbygtM8r/sEFkyJe0/+ASTEtIZtJ5e6vMp08BkOW61Ixw4t/i2+yVQ3K1FXntxZWbmQDUht63LJEzHw8u/6h3vRpAOsROasnPv6D0HE5ywvLDtKjQu45NKg+UH9qGtIp29f84mylWAPy6pZ85bg=
+	t=1782449464; cv=none; b=s5I46BEJzZ0JR3qmdliBJKhkkk2Qr0/m4rxBDOfs6TfGlrO8QWFEvzPDO8A3UJ6QUpw+ioJxWd+yVKAGI0TyxKT3OYedH/S25ad+/Qtms4xSONNamntRYVZc9dm0M85OCgH/sBrvThiQiwZcf4QcU1V5fy9CUNQuMMsAR4B3kfo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782449333; c=relaxed/simple;
-	bh=pshs9cS8z+GYnIH28HABDCqbCrv1qSUXb3AJw/fA3Qc=;
+	s=arc-20240116; t=1782449464; c=relaxed/simple;
+	bh=7wskW+iSP5DApCTNsrQ1QAy/V2Bq2aLiLOKOm78jcLY=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=cuVHqSuwjt6o0rnLF/iPD3fdVbt2Uk2SvKSSsvf7RLAn2ZwcrqZoKWuEw97m+pDD95XdikBLoLfQSGWpNqLroXmBe0BBokD23Ts+86hB52ktmpsrr1JRWDSUz5mOPXppQN8eA9vLH/UKFZ4mnY3ktnpry7JCBraOChgmxGWYs7E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=u6W1Mh5t; arc=none smtp.client-ip=95.215.58.189
-Message-ID: <08cf8972-6cfc-4452-9a3c-88e0368dbbf9@linux.dev>
+	 In-Reply-To:Content-Type; b=doIacEtFH2xfGAZdzuYsiKk15iwNdxgxLFq5iH9CvSmvE+3WLUkm6CCzVyY0QhrcQxRfCk6kpADzbeBCZ6+wRhGTlFtIfpQRehHmkAEkLN0k8nHBHjjLbqDtssJ0pZxAgJ6qhPFQzbFxg0AHT8+kSzmiFjxH9NY5bmIzfLGuhks=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=P32H+IGo; arc=none smtp.client-ip=91.218.175.178
+Message-ID: <46eb172e-7b31-48cc-bfd5-ca4777bf37ef@linux.dev>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1782449328;
+	t=1782449451;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=hXWAjRXwVjfvQ2EeAYBpqAd/3dxRlR+I4BBsCU5i8SU=;
-	b=u6W1Mh5tSI/Kxm1HgHeZwa/QlBHUNxcYuSPz2Jt+pfXZ9gjN1Ra9iT1TBy5lDtQH3pB0Dv
-	WL+8IYnioDUK/Cs/3jMFCkweHWzC0/LkkwQIKhLtDgpOHEyn04+66sZSZs0BrAPBJ6qm1z
-	K7PpuICdv8vceJ68w5R598mrhjnWb2s=
-Date: Fri, 26 Jun 2026 12:48:37 +0800
+	bh=Y+VAD6kx1YH7226mbPd2tBdtR/GRqu2/JEMjoE4xVok=;
+	b=P32H+IGoTdMWMRX3QdLXm+nN3H1478ZO/lGcErfCRDKgnHC2YsBgCNMd2ry3tau5Vf3TZ/
+	rR0CXvMvsDZF/uO+QEF3yUerRMoy/nRLPqD8/wc68cgs6K1cKKK/G8r+g2tlL9AOzX5Tel
+	iMToO9tmYYWuGJT2qfDm6yoMTFSr4MU=
+Date: Fri, 26 Jun 2026 12:50:33 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -54,39 +54,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Subject: Re: [PATCH v3] mm: mglru: fix stale batch updates after memcg
  reparenting
-To: Harry Yoo <harry@kernel.org>, Johannes Weiner <hannes@cmpxchg.org>
-Cc: akpm@linux-foundation.org, david@kernel.org, kasong@tencent.com,
- shakeel.butt@linux.dev, baohua@kernel.org, axelrasmussen@google.com,
- yuanchu@google.com, weixugc@google.com, muchun.song@linux.dev,
- peiyang_he@smail.nju.edu.cn, mhocko@kernel.org, roman.gushchin@linux.dev,
- ljs@kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+To: Peiyang He <peiyang_he@smail.nju.edu.cn>, akpm@linux-foundation.org,
+ david@kernel.org, kasong@tencent.com, shakeel.butt@linux.dev,
+ baohua@kernel.org, axelrasmussen@google.com, yuanchu@google.com,
+ weixugc@google.com, hannes@cmpxchg.org, harry@kernel.org,
+ muchun.song@linux.dev, mhocko@kernel.org, roman.gushchin@linux.dev,
+ ljs@kernel.org
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
  Qi Zheng <zhengqi.arch@bytedance.com>, stable@vger.kernel.org
 References: <20260625151554.55105-1-qi.zheng@linux.dev>
- <aj12aVq3he6q7b2C@cmpxchg.org>
- <4c7b0c46-14f0-4a62-893e-e50714e09b74@linux.dev>
- <46ac28bf-5be1-4600-b522-0a1aa76c28e6@kernel.org>
+ <0559695533E1C70F+31684237-e405-48da-ad8f-4ba7ff4ddb38@smail.nju.edu.cn>
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 From: Qi Zheng <qi.zheng@linux.dev>
-In-Reply-To: <46ac28bf-5be1-4600-b522-0a1aa76c28e6@kernel.org>
+In-Reply-To: <0559695533E1C70F+31684237-e405-48da-ad8f-4ba7ff4ddb38@smail.nju.edu.cn>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 X-Migadu-Flow: FLOW_OUT
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linux.dev,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linux.dev:s=key1];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:harry@kernel.org,m:hannes@cmpxchg.org,m:akpm@linux-foundation.org,m:david@kernel.org,m:kasong@tencent.com,m:shakeel.butt@linux.dev,m:baohua@kernel.org,m:axelrasmussen@google.com,m:yuanchu@google.com,m:weixugc@google.com,m:muchun.song@linux.dev,m:peiyang_he@smail.nju.edu.cn,m:mhocko@kernel.org,m:roman.gushchin@linux.dev,m:ljs@kernel.org,m:linux-mm@kvack.org,m:linux-kernel@vger.kernel.org,m:zhengqi.arch@bytedance.com,m:stable@vger.kernel.org,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:peiyang_he@smail.nju.edu.cn,m:akpm@linux-foundation.org,m:david@kernel.org,m:kasong@tencent.com,m:shakeel.butt@linux.dev,m:baohua@kernel.org,m:axelrasmussen@google.com,m:yuanchu@google.com,m:weixugc@google.com,m:hannes@cmpxchg.org,m:harry@kernel.org,m:muchun.song@linux.dev,m:mhocko@kernel.org,m:roman.gushchin@linux.dev,m:ljs@kernel.org,m:linux-mm@kvack.org,m:linux-kernel@vger.kernel.org,m:zhengqi.arch@bytedance.com,m:stable@vger.kernel.org,s:lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[3];
 	FORGED_SENDER(0.00)[qi.zheng@linux.dev,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCPT_COUNT_TWELVE(0.00)[19];
-	TAGGED_FROM(0.00)[bounces-268735-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-268736-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
 	FORWARDED(0.00)[lists@lfdr.de];
 	FROM_HAS_DN(0.00)[];
@@ -101,158 +100,25 @@ X-Spamd-Result: default: False [-2.16 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	TO_DN_SOME(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,bytedance.com:email,linux.dev:dkim,linux.dev:mid,linux.dev:from_mime,nju.edu.cn:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linux.dev:dkim,linux.dev:mid,linux.dev:from_mime,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: D61626CA2DA
+X-Rspamd-Queue-Id: 12C0C6CA2FD
 
+Hi Peiyang,
 
+On 6/26/26 12:29 PM, Peiyang He wrote:
+> Hi Qi,
+> 
+> I have applied this patch and tested it against the PoC, the warning is not observed anymore in the kernel log.
+> Thanks for your nice work!
 
-On 6/26/26 12:43 PM, Harry Yoo wrote:
-> 
-> 
-> On 6/26/26 11:27 AM, Qi Zheng wrote:
->> Hi Johannes,
->>
->> On 6/26/26 2:41 AM, Johannes Weiner wrote:
->>> On Thu, Jun 25, 2026 at 11:15:54PM +0800, Qi Zheng wrote:
->>>> From: Qi Zheng <zhengqi.arch@bytedance.com>
->>>>
->>>> The mglru page table walker batches per-generation size deltas in
->>>> walk->nr_pages while walking page tables without holding the lruvec
->>>> lock.
->>>> The reset_batch_size() later folds those deltas into walk->lruvec under
->>>> the lruvec lock.
->>>>
->>>> The page table walker can run concurrently with the memcg reparenting
->>>> path
->>>> as follows:
->>>>
->>>> CPU0                           CPU1
->>>> ====                           ====
->>>>
->>>> walk_mm
->>>> --> walk_page_range
->>>>       --> update_batch_size
->>>>           --> walk->nr_pages += delta
->>>>
->>>>                                 mem_cgroup_css_offline
->>>>                                 --> memcg_reparent_objcgs
->>>>                                     --> lock lruvec
->>>>                                         lru_gen_reparent_memcg
->>>>                                         --> reparent child folios to
->>>> parent
->>>>                                         unlock lruvec
->>>>
->>>>       lock lruvec
->>>>       reset_batch_size
->>>>       --> child lrugen->nr_pages += delta
->>>>
->>>> This will trigger the following warning in lru_gen_exit_memcg():
->>>>
->>>>      VM_WARN_ON_ONCE(memchr_inv(lruvec->lrugen.nr_pages, 0,
->>>>                     sizeof(lruvec->lrugen.nr_pages)));
->>>>
->>>> And the user-visible impact of underestimated nr_pages in MGLRU was
->>>> premature OOMs because MGLRU does not try to reclaim memory when
->>>> nr_pages
->>>> reaches zero, but there are still more pages.
->>>>
->>>> To fix it, make reset_batch_size() check CSS_DYING under RCU before
->>>> flushing the pending batch. A non-dying memcg keeps the original lruvec
->>>> stable against RCU-delayed offlining; a dying memcg redirects the deltas
->>>> to the first non-dying ancestor.
->>>>
->>>> Reported-by: Peiyang He <peiyang_he@smail.nju.edu.cn>
->>>> Closes: https://lore.kernel.org/all/5A9E929D82717101+12fcf643-
->>>> efb8-4b9a-a53a-1e28cc894f0b@smail.nju.edu.cn
->>>> Fixes: f304652609ea ("mm: vmscan: prepare for reparenting MGLRU folios")
->>>> Cc: <stable@vger.kernel.org>
->>>> Signed-off-by: Qi Zheng <zhengqi.arch@bytedance.com>
->>>> ---
->>>> Changes in v3:
->>>>    - re-implement lock_batch_lruvec() by checking CSS_DYING under the
->>>> RCU lock
->>>>      (suggested by Harry)
->>>>    - update the commit message (suggested by Harry)
->>>>    - temporarily drop the previous Reviewed-by tags
->>>>      (since the sync method has changed)
->>>>    - rebase onto the next-20260624
->>>>
->>>> Changes in v2:
->>>>    - update the commit message (pointed by Barry)
->>>>    - collect Reviewed-by
->>>>
->>>>    mm/vmscan.c | 45 ++++++++++++++++++++++++++++++++++++++-------
->>>>    1 file changed, 38 insertions(+), 7 deletions(-)
->>>>
->>>> diff --git a/mm/vmscan.c b/mm/vmscan.c
->>>> index 35c3bb15ae96..1ec8c23c72b9 100644
->>>> --- a/mm/vmscan.c
->>>> +++ b/mm/vmscan.c
->>>> @@ -3262,10 +3262,44 @@ static void update_batch_size(struct
->>>> lru_gen_mm_walk *walk, struct folio *folio,
->>>>        walk->nr_pages[new_gen][type][zone] += delta;
->>>>    }
->>>>    +#ifdef CONFIG_MEMCG
->>>> +static struct lruvec *lock_batch_lruvec(struct lruvec *lruvec)
->>>> +{
->>>> +    struct pglist_data *pgdat = lruvec_pgdat(lruvec);
->>>> +    struct mem_cgroup *memcg = lruvec_memcg(lruvec);
->>>> +
->>>> +    rcu_read_lock();
->>>
->>> Where is this unlocked?
->>
->> The lruvec_unlock_irq() in reset_batch_size() will handle the unlocking.
->>
->>>
->>>> +    /*
->>>> +     * The memcg can be NULL when the memory controller is disabled.
->>>> +     * Otherwise, the caller keeps the memcg owning @lruvec alive.
->>>> +     */
->>>> +    if (!memcg || !css_is_dying(&memcg->css))
->>>> +        goto lock;
->>>> +
->>>> +    do {
->>>> +        memcg = parent_mem_cgroup(memcg);
->>>> +    } while (memcg && css_is_dying(&memcg->css));
->>>> +    lruvec = mem_cgroup_lruvec(memcg, pgdat);
->>>
->>>      while (unlikely(memcg && css_is_dying(&memcg->css))) {
->>>          memcg = parent_mem_cgroup(memcg);
->>>          lruvec = mem_cgroup_lruvec(memcg, pgdat);
->>
->> There is no need to acquire the lruvec before finding the first
->> non-dying memcg.
-> 
-> struct pglist_data *pgdat = lruvec_pgdat(lruvec);
-> struct mem_cgroup *memcg = lruvec_memcg(lruvec);
-> 
-> rcu_read_lock()
-> 
-> while (unlikely(memcg_is_dying(memcg)))
->          memcg = parent_mem_cgroup(memcg);
-> 
-> lruvec = mem_cgroup_lruvec(memcg, pgdat);
+Thanks a ton for testing this!
 
-If the first memcg is already non-dying, there's no need to re-acquire
-the lruvec. ;)
+> 
+> Best,
+> Peiyang
+> 
 
-Thanks,
-Qi
-
-> spin_lock_irq(&lruvec->lru_lock);
-> 
-> return lruvec;
-> 
-> should work?
-> 
-> if the memory controller is disabled, it's equivalent to:
-> 
-> rcu_read_lock();
-> spin_lock_irq(&lruvec->lru_lock);
-> return lruvec;
-> 
 
 
