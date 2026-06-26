@@ -1,145 +1,147 @@
-Return-Path: <stable+bounces-268964-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-268965-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id KAjlGWSWPmpoIgkAu9opvQ
-	(envelope-from <stable+bounces-268964-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 17:10:28 +0200
+	id +XPKEmuWPmpsIgkAu9opvQ
+	(envelope-from <stable+bounces-268965-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 17:10:35 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id BFD966CE576
-	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 17:10:27 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C8786CE585
+	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 17:10:34 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=none;
-	dmarc=none;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-268964-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-268964-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="fD/4lAjE";
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-268965-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-268965-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 7584930DFC22
-	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 15:05:28 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 6D3DB304047E
+	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 15:06:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF7BD376467;
-	Fri, 26 Jun 2026 15:05:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 995B737B02A;
+	Fri, 26 Jun 2026 15:06:42 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from cstnet.cn (smtp21.cstnet.cn [159.226.251.21])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19B93372058;
-	Fri, 26 Jun 2026 15:05:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71810376BE2
+	for <stable@vger.kernel.org>; Fri, 26 Jun 2026 15:06:36 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782486322; cv=none; b=vB0RPJgXR0qHbWRBh+QDX7zsZRVyrQY4ALutPRip6LpUdKI5MtJXBzit+z00UyGcsNUQwjMFefkLU+X0+3cf3s+5Ow+A/Y6F1HkdsZzF7xDTbHGGDLyfFMmNyQay7PM8g9xyVvRdBVyOqLqfpsb44RfE5sDZu5hNbNcaOB7evxQ=
+	t=1782486401; cv=none; b=X29p2Bf6zsKS3MPyfDu4d04IkygBDdCGJIxL3JubnGx/IuifX6bPOriOwtWuBUvZzD9IUz0Yx0xeUqYs10bLTiJKvYJKOkmKOFvXtELAMUXn+ye20r2gJmYISW0QjZH+fuzvnmc9cHX1bmA/2z725kMKzYpmfilgpEMkj1ln1+4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782486322; c=relaxed/simple;
-	bh=cfg60twu84mX2v3dZUQeQgTuXAJSzfa0guMyntcP4V0=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=N/zxcb7Nj4jGBlTMr9gOVy0Bta7ElREjfkkqf8c6cR/+4YBXBF+Q0vAshfV7Wtrx8NQLxBGXv3EVYfDM3Ac8FCh00+agFHwhiCGUmyAqgKjrMV1suGbXhBqPi9bcyienPG+Ai96Z+1qm4i6R84A2apg161H6MIU776+zc3CXy+Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.21
-Received: from localhost.localdomain (unknown [117.182.75.66])
-	by APP-01 (Coremail) with SMTP id qwCowAAnzNQnlT5qeGZrAw--.16679S2;
-	Fri, 26 Jun 2026 23:05:12 +0800 (CST)
-From: WenTao Liang <vulab@iscas.ac.cn>
-To: Jason Gunthorpe <jgg@ziepe.ca>,
-	Leon Romanovsky <leon@kernel.org>,
-	linux-rdma@vger.kernel.org
-Cc: stable@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	WenTao Liang <vulab@iscas.ac.cn>
-Subject: [PATCH] fix: infiniband/rxe: check_rkey: fix refcount underflow due to unchecked   rxe_get return value
-Date: Fri, 26 Jun 2026 23:05:11 +0800
-Message-Id: <20260626150511.50084-1-vulab@iscas.ac.cn>
-X-Mailer: git-send-email 2.39.5 (Apple Git-154)
+	s=arc-20240116; t=1782486401; c=relaxed/simple;
+	bh=WxThccFU6fqH1o7MU/b8IjeGX/MbGDadiHicR6Np6Es=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=RvEr61UZpGWU1bu8z2bSjtB3cRvqJeOxVkNFi/w22KEcLvnruCOOBJjzmNIOIFVIducD0DV2fZEXIwuMqQlMri8o/OsyGXt/1HR5L1ik/brf5xo+9/QfWdqDlh0AywA4ulqWCBoo2U7qBpcnZ1/GR9GQ7cbA+s536sDQo3UUGRs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=fD/4lAjE; arc=none smtp.client-ip=170.10.129.124
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1782486395;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=WxThccFU6fqH1o7MU/b8IjeGX/MbGDadiHicR6Np6Es=;
+	b=fD/4lAjEyFtIb9Jk86YObDcdRhliZeqLO2sz1MKVzMQgdK0PD+oaPZ+vr8dU8LuGk794J/
+	jZQf6yjuLGzDyQjlwZbPk6/YoSSPgLG80nDZkW6LjC40zWDGiBqqKf4ZeJ9n2JYgd+4RXj
+	SQhIyeFrjY8Il/Gi0rcJD20YTSO65cE=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-683-dZPTgASaNzCfbsZgxDOP4Q-1; Fri,
+ 26 Jun 2026 11:06:31 -0400
+X-MC-Unique: dZPTgASaNzCfbsZgxDOP4Q-1
+X-Mimecast-MFC-AGG-ID: dZPTgASaNzCfbsZgxDOP4Q_1782486390
+Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 7FC0C1955DD3;
+	Fri, 26 Jun 2026 15:06:29 +0000 (UTC)
+Received: from fedora (unknown [10.44.33.126])
+	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with SMTP id D9B34180057F;
+	Fri, 26 Jun 2026 15:06:24 +0000 (UTC)
+Received: by fedora (nbSMTP-1.00) for uid 1000
+	oleg@redhat.com; Fri, 26 Jun 2026 17:06:29 +0200 (CEST)
+Date: Fri, 26 Jun 2026 17:06:19 +0200
+From: Oleg Nesterov <oleg@redhat.com>
+To: Bradley Morgan <include@grrlz.net>
+Cc: Andrew Morton <akpm@linux-foundation.org>, ebiederm@xmission.com,
+	Christian Brauner <brauner@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Adrian Huang <adrianhuang0701@gmail.com>,
+	Marco Elver <elver@google.com>,
+	Kexin Sun <kexinsun@smail.nju.edu.cn>,
+	Thomas Gleixner <tglx@kernel.org>, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH] signal: avoid shared siginfo namespace rewrites
+Message-ID: <aj6Va2nNBZvDJqP5@redhat.com>
+References: <20260622164029.11474-1-include@grrlz.net>
+ <aj6Ms6uygc1vtySn@redhat.com>
+ <FC7EAB84-0845-4DA3-AD43-3B30B47507E5@grrlz.net>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:qwCowAAnzNQnlT5qeGZrAw--.16679S2
-X-Coremail-Antispam: 1UD129KBjvJXoW7Ar4fJF15Xry5XFyrWry8Zrb_yoW8JF43pr
-	WfK34Ykr1fXay7ZanFyr1UXFZ0ka4DtFyDKa9293srZr15Gr47WFnI9FW3Wr4kAFyrA3ya
-	qF1jyan5Ga1rGFJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUkE14x267AKxVWUJVW8JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
-	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
-	1l84ACjcxK6xIIjxv20xvE14v26r4j6ryUM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4U
-	JVWxJr1l84ACjcxK6I8E87Iv67AKxVW0oVCq3wA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_Gc
-	CE3s1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xvF2IEw4CE5I8CrVC2j2WlYx0E
-	2Ix0cI8IcVAFwI0_Jw0_WrylYx0Ex4A2jsIE14v26r4j6F4UMcvjeVCFs4IE7xkEbVWUJV
-	W8JwACjcxG0xvY0x0EwIxGrwACjI8F5VA0II8E6IAqYI8I648v4I1lc7CjxVAaw2AFwI0_
-	JF0_Jw1l42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67
-	AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r126r1DMIIY
-	rxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_JFI_Gr1lIxAIcVC0I7IYx2IY6xkF7I0E14
-	v26F4j6r4UJwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Gr0_
-	Cr1lIxAIcVC2z280aVCY1x0267AKxVW8Jr0_Cr1UYxBIdaVFxhVjvjDU0xZFpf9x0JU2Q6
-	JUUUUU=
-X-CM-SenderInfo: pyxotu46lvutnvoduhdfq/1tbiCRMKA2o+iCglxgAAsE
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <FC7EAB84-0845-4DA3-AD43-3B30B47507E5@grrlz.net>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [0.04 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[redhat.com,quarantine];
+	R_DKIM_ALLOW(-0.20)[redhat.com:s=mimecast20190719];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	FREEMAIL_CC(0.00)[linux-foundation.org,xmission.com,kernel.org,infradead.org,gmail.com,google.com,smail.nju.edu.cn,vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-268965-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	DMARC_NA(0.00)[iscas.ac.cn];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORWARDED(0.00)[lists@lfdr.de];
-	TAGGED_FROM(0.00)[bounces-268964-lists,stable=lfdr.de];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo];
+	FORGED_RECIPIENTS(0.00)[m:include@grrlz.net,m:akpm@linux-foundation.org,m:ebiederm@xmission.com,m:brauner@kernel.org,m:peterz@infradead.org,m:adrianhuang0701@gmail.com,m:elver@google.com,m:kexinsun@smail.nju.edu.cn,m:tglx@kernel.org,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,s:lists@lfdr.de];
 	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[redhat.com:+];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_SENDER(0.00)[oleg@redhat.com,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_SENDER(0.00)[vulab@iscas.ac.cn,stable@vger.kernel.org];
-	FORGED_RECIPIENTS(0.00)[m:jgg@ziepe.ca,m:leon@kernel.org,m:linux-rdma@vger.kernel.org,m:stable@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:vulab@iscas.ac.cn,s:lists@lfdr.de];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[vulab@iscas.ac.cn,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
-	R_DKIM_NA(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[oleg@redhat.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[11];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[iscas.ac.cn:email,iscas.ac.cn:mid,iscas.ac.cn:from_mime,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,vger.kernel.org:from_smtp]
+	RCVD_COUNT_SEVEN(0.00)[7]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: BFD966CE576
+X-Rspamd-Queue-Id: 5C8786CE585
 
-rxe_get is a conditional get (kref_get_unless_zero) that returns 0 when
-  the object's refcount is already zero. In check_rkey, the return value of
-  rxe_get(mr) is ignored. If rxe_get fails (returns 0), the code continues
-  to use mr without a valid reference, and error paths will call
-  rxe_put(mr) on an unheld reference, causing a refcount underflow.
+On 06/26, Bradley Morgan wrote:
+>
+> On June 26, 2026 3:29:07 PM GMT+01:00, Oleg Nesterov <oleg@redhat.com>
+> wrote:
+> >To avoid the confusion, let me reply to V1 again.
+> >
+> >Acked-by: Oleg Nesterov <oleg@redhat.com>
+> >
+> >IIUC Eric is fine with this change too.
+> >
+> >Andrew, can you take this fix please? We will send more changes on top
+> >of it.
+>
+> Thanks again oleg.
+>
+> Andrew did reply to V2.
 
-Check the return value of rxe_get and bail out with an error when it fails.
+OOPS... where? I didn't get any email from him in this thread...
 
-Cc: stable@vger.kernel.org
-Fixes: 290c4a902b79 ("RDMA/rxe: Fix \"Replace mr by rkey in responder resources\"")
-Signed-off-by: WenTao Liang <vulab@iscas.ac.cn>
----
- drivers/infiniband/sw/rxe/rxe_resp.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/infiniband/sw/rxe/rxe_resp.c b/drivers/infiniband/sw/rxe/rxe_resp.c
-index 9cb2f6fbf2dd..0c3f3930b494 100644
---- a/drivers/infiniband/sw/rxe/rxe_resp.c
-+++ b/drivers/infiniband/sw/rxe/rxe_resp.c
-@@ -514,7 +514,12 @@ static enum resp_states check_rkey(struct rxe_qp *qp,
- 		if (mw->access & IB_ZERO_BASED)
- 			qp->resp.offset = mw->addr;
- 
--		rxe_get(mr);
-+		if (!rxe_get(mr)) {
-+			rxe_put(mw);
-+			mw = NULL;
-+			state = get_rkey_violation_state(pkt);
-+			goto err;
-+		}
- 		rxe_put(mw);
- 		mw = NULL;
- 	} else {
--- 
-2.39.5 (Apple Git-154)
+Oleg.
 
 
