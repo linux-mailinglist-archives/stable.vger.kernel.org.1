@@ -1,195 +1,281 @@
-Return-Path: <stable+bounces-268919-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-268915-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id JsleIPWDPmqVHQkAu9opvQ
-	(envelope-from <stable+bounces-268919-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 15:51:49 +0200
+	id q5tcFFGCPmoxHQkAu9opvQ
+	(envelope-from <stable+bounces-268915-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 15:44:49 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id CA1CF6CDB84
-	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 15:51:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A197C6CDA89
+	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 15:44:48 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=lankhorst.se header.s=default header.b=KIQdaBNS;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-268919-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-268919-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=none) header.from=lankhorst.se;
+	dkim=pass header.d=yandex.ru header.s=mail header.b=LIj3K3Es;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-268915-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-268915-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=none) header.from=yandex.ru;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 6CD6E30071DA
-	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 13:47:08 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 0346C30C16C8
+	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 13:40:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5DDFF3F23B7;
-	Fri, 26 Jun 2026 13:47:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4CB7D3F786F;
+	Fri, 26 Jun 2026 13:40:14 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from lankhorst.se (unknown [141.105.120.124])
+Received: from forward100a.mail.yandex.net (forward100a.mail.yandex.net [178.154.239.83])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81C7F3F7897
-	for <stable@vger.kernel.org>; Fri, 26 Jun 2026 13:47:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 406CB3F6C25;
+	Fri, 26 Jun 2026 13:40:09 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782481627; cv=none; b=abO5gVfQ9V2TRiCEuhctqtvJzyqy52POgp+6z6cmPiVGB+o4QlH3zoxyR0zDj0ocqkFcPFML+amjbCyVEJ+c2rgQlMf4RBVm0tn5kWU1JCtn/OZcNgZVmqFNmmvmYd/g4wmf2lIPz0RjR5i0M23cZYIkqxyxVn4/rZLyIrHSk2M=
+	t=1782481214; cv=none; b=ebm2MEelUCApZuh27N82CJ22SVkUphn1XdDn/BijY3UovfTHjLq6lrYkzNAmAIDDjxp/vB6QLgIIuDNVz5+9TcAq8+hnNuVCwvHl7jZ0T7Uz3e8ql5cGaPInVeW3s7lwfY+0aok5bKkPvXZUgyYNldlHuFLEDFMyGpRlMdolWf4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782481627; c=relaxed/simple;
-	bh=q3+6V4eUQTKeZdpgI2StYKFRIAAyMrDmrm4eav+dXXY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=DfEJYAA31tecewy9mRHdAKVExeLbCEeRjpryoCXg4tO9dEJQkm2jtZZnhWrrBCARR+WChV/YJWDJFUbuPNyRUG3JZuzjf8hN1XbpsjhV+iGT9zbw3hyKs8hWwZTsL6UYfhBFMHBRQX/dF5oMjtNMMl5uOUZRWbj+pyHKc8+0Tfo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lankhorst.se; spf=pass smtp.mailfrom=lankhorst.se; dkim=pass (2048-bit key) header.d=lankhorst.se header.i=@lankhorst.se header.b=KIQdaBNS; arc=none smtp.client-ip=141.105.120.124
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=lankhorst.se;
-	s=default; t=1782481022;
-	bh=q3+6V4eUQTKeZdpgI2StYKFRIAAyMrDmrm4eav+dXXY=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=KIQdaBNS3t8bzt7l/l2ZUCs+9sorsb/73JMeAScFYOKkFEbu0vK5ClFC6ww9Hcwc3
-	 aPIOSKP4u9nuKTVKywNDTPcPhbW+lzI9SJSBQKUA8ADoHDdVdBLGuszILh0QaRBlyA
-	 YFArkJSzmf2mMetBT5Vds8SqlHpVqjqrKi3ecnNXzVnsoucZXpMLVEFUkcdM9PXLeo
-	 ODuwyJ8zZXg3fAMvUcX5t/fJghlp758Qn5yX+0A4BCL1XNzGstzAUPEKqoNFYiuCd8
-	 CYlfnP3ibAO/qKO8CIe2+FdI+66zZgUlnSru+Bttwv9cJSTutLV2euCmEhK1cDToNg
-	 EwyZKcgi1TSHA==
-Message-ID: <9924291e-5108-41b3-9131-12b292e8bcd2@lankhorst.se>
-Date: Fri, 26 Jun 2026 15:37:31 +0200
+	s=arc-20240116; t=1782481214; c=relaxed/simple;
+	bh=+yIcYd7txG+ZhB7z6YVw2+F3PLGEia3MKLJeXMjyEKE=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=UAydsiphA+YPhFjVwVegMnJtVdHLkEa3VfAvzT4sZ5GbYLYf8xw6q12d1eE90Eej/fbyUY2awm/c9xoZ8c/TQDbb/nDaTgM4JT+8Tk1/QpGaxjkCWDH2SaV4aDg6L+P0TCa1lGadJBwx5Frv/3IxCFyCt/jtGObwEkr3enYpajs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yandex.ru; spf=pass smtp.mailfrom=yandex.ru; dkim=pass (1024-bit key) header.d=yandex.ru header.i=@yandex.ru header.b=LIj3K3Es; arc=none smtp.client-ip=178.154.239.83
+Received: from mail-nwsmtp-smtp-production-main-55.vla.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-55.vla.yp-c.yandex.net [IPv6:2a02:6b8:c1f:582e:0:640:200:0])
+	by forward100a.mail.yandex.net (Yandex) with ESMTPS id C44DDC0735;
+	Fri, 26 Jun 2026 16:40:01 +0300 (MSK)
+Received: by mail-nwsmtp-smtp-production-main-55.vla.yp-c.yandex.net (smtp) with ESMTPSA id rdanEUkf5Gk0-AkfTld3r;
+	Fri, 26 Jun 2026 16:40:00 +0300
+X-Yandex-Fwd: 1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex.ru; s=mail;
+	t=1782481200; bh=e9YMAmOw7IfaTS4/uOeKkF1326th313osWzDsbfnnqo=;
+	h=Message-ID:Date:Cc:Subject:To:From;
+	b=LIj3K3EsdqMFaoe1y6wJVJzk0ObBELltGEm3Mf5hqdoomBHz5B2NUaF4Gw2FEtyXT
+	 +n5leGC6MSBb1Zqj9s6SMJcVDK52G/Xo0i5Cm26D73OT6z6W+//x+GXD9n1vD36dcG
+	 0dYGAWirlFQF0LxVv7qo8YNHWpATZ4FaoOM4sLZg=
+From: Evgenii Burenchev <evg28bur@yandex.ru>
+To: stable@vger.kernel.org,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Evgenii Burenchev <evg28bur@yandex.ru>,
+	harry.wentland@amd.com,
+	sunpeng.li@amd.com,
+	siqueira@igalia.com,
+	alexander.deucher@amd.com,
+	christian.koenig@amd.com,
+	airlied@gmail.com,
+	simona@ffwll.ch,
+	mario.limonciello@amd.com,
+	alex.hung@amd.com,
+	superm1@kernel.org,
+	timur.kristof@gmail.com,
+	ivan.lipski@amd.com,
+	ray.wu@amd.com,
+	aurabindo.pillai@amd.com,
+	chen-yu.chen@amd.com,
+	mripard@kernel.org,
+	Dillon.Varone@amd.com,
+	mwen@igalia.com,
+	chiahsuan.chung@amd.com,
+	kenneth.feng@amd.com,
+	srinivasan.shanmugam@amd.com,
+	contact@emersion.fr,
+	Alvin.Lee2@amd.com,
+	chaitanya.kumar.borah@intel.com,
+	dmitry.baryshkov@oss.qualcomm.com,
+	pierre-eric.pelloux-prayer@amd.com,
+	ekurzinger@gmail.com,
+	HaoPing.Liu@amd.com,
+	Tony.Cheng@amd.com,
+	amd-gfx@lists.freedesktop.org,
+	dri-devel@lists.freedesktop.org,
+	linux-kernel@vger.kernel.org,
+	lvc-project@linuxtesting.org
+Subject: [PATCH v2] drm/amd/display: Fix dangling pointers in state reset functions on allocation failure
+Date: Fri, 26 Jun 2026 16:38:49 +0300
+Message-ID: <20260626133859.21492-1-evg28bur@yandex.ru>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] drm/xe/display: consider DPT when WA 22019338487 is
- active
-To: Matthew Auld <matthew.auld@intel.com>, intel-xe@lists.freedesktop.org
-Cc: =?UTF-8?Q?Thomas_Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
- Matthew Brost <matthew.brost@intel.com>,
- Rodrigo Vivi <rodrigo.vivi@intel.com>, Nikolay Mikhaylov <sonny@milton.pro>,
- Uma Shankar <uma.shankar@intel.com>, Jani Nikula <jani.nikula@intel.com>,
- stable@vger.kernel.org
-References: <20260623090155.268763-2-matthew.auld@intel.com>
- <9e04ec82-712d-41b6-9fe8-78aeb015d67c@intel.com>
-Content-Language: en-US
-From: Maarten Lankhorst <dev@lankhorst.se>
-In-Reply-To: <9e04ec82-712d-41b6-9fe8-78aeb015d67c@intel.com>
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [0.84 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[lankhorst.se,none];
-	R_DKIM_ALLOW(-0.20)[lankhorst.se:s=default];
+	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[yandex.ru,none];
+	R_MISSING_CHARSET(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[yandex.ru:s=mail];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-268919-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-268915-lists,stable=lfdr.de];
+	FORGED_SENDER(0.00)[evg28bur@yandex.ru,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[yandex.ru,amd.com,igalia.com,gmail.com,ffwll.ch,kernel.org,emersion.fr,intel.com,oss.qualcomm.com,lists.freedesktop.org,vger.kernel.org,linuxtesting.org];
+	FREEMAIL_FROM(0.00)[yandex.ru];
+	RCPT_COUNT_TWELVE(0.00)[36];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:matthew.auld@intel.com,m:intel-xe@lists.freedesktop.org,m:thomas.hellstrom@linux.intel.com,m:matthew.brost@intel.com,m:rodrigo.vivi@intel.com,m:sonny@milton.pro,m:uma.shankar@intel.com,m:jani.nikula@intel.com,m:stable@vger.kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[dev@lankhorst.se,stable@vger.kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	RCVD_COUNT_THREE(0.00)[3];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:evg28bur@yandex.ru,m:harry.wentland@amd.com,m:sunpeng.li@amd.com,m:siqueira@igalia.com,m:alexander.deucher@amd.com,m:christian.koenig@amd.com,m:airlied@gmail.com,m:simona@ffwll.ch,m:mario.limonciello@amd.com,m:alex.hung@amd.com,m:superm1@kernel.org,m:timur.kristof@gmail.com,m:ivan.lipski@amd.com,m:ray.wu@amd.com,m:aurabindo.pillai@amd.com,m:chen-yu.chen@amd.com,m:mripard@kernel.org,m:Dillon.Varone@amd.com,m:mwen@igalia.com,m:chiahsuan.chung@amd.com,m:kenneth.feng@amd.com,m:srinivasan.shanmugam@amd.com,m:contact@emersion.fr,m:Alvin.Lee2@amd.com,m:chaitanya.kumar.borah@intel.com,m:dmitry.baryshkov@oss.qualcomm.com,m:pierre-eric.pelloux-prayer@amd.com,m:ekurzinger@gmail.com,m:HaoPing.Liu@amd.com,m:Tony.Cheng@amd.com,m:amd-gfx@lists.freedesktop.org,m:dri-devel@lists.freedesktop.org,m:linux-kernel@vger.kernel.org,m:lvc-project@linuxtesting.org,m:timurkristof@gmail.com,s:lists@lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[lankhorst.se:+];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[dev@lankhorst.se,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[evg28bur@yandex.ru,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[yandex.ru:+];
+	RCVD_COUNT_FIVE(0.00)[5];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	ALIAS_RESOLVED(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[lankhorst.se:dkim,lankhorst.se:mid,lankhorst.se:from_mime,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp,intel.com:email,gitlab.freedesktop.org:url,milton.pro:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxtesting.org:url]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: CA1CF6CDB84
+X-Rspamd-Queue-Id: A197C6CDA89
 
-Hey,
+Multiple reset functions in amdgpu_dm free the old state before allocating
+a new one. If kzalloc_obj() fails, the function returns without updating
+the state pointer, leaving a dangling pointer to already freed memory.
 
-On 6/26/26 12:27, Matthew Auld wrote:
-> On 23/06/2026 10:01, Matthew Auld wrote:
->> WA 22019338487 (22019338487_display) indicates that stolen memory should
->> not be used for display allocations on affected platforms (like Lunar
->> Lake). In particular we need to be mindful of not hammering stolen over
->> the BAR from the host side, like with issuing many writes.
->>
->> While the fbdev allocation in xe_display_bo.c properly respected this
->> workaround, the Display Page Table (DPT) allocation in xe_fb_pin.c
->> continued to unconditionally attempt to allocate from stolen memory on
->> all integrated GPUs.
->>
->> Check XE_DEVICE_WA(xe, 22019338487_display) before attempting to
->> allocate the DPT from stolen memory. If the workaround applies, skip the
->> stolen allocation attempt and let the driver naturally fall back to
->> allocating from system memory.
->>
->> Without this we will end up hammering stolen when programming the DPT on
->> the host side during the normal operation, which seems to be exactly
->> what the WA wants us to avoid.
->>
->> There are a bunch of users all getting some kind of hard hang in the fb
->> pin programming sequence on LNL, so wondering if this could help there.
->>
->> v2 (Jani):
->>    - Invert the WA check. No functional change.
->>
->> Assisted-by: Gemini:gemini-3.1-pro-preview
->> Link: https://gitlab.freedesktop.org/drm/xe/kernel/-/work_items/7513
->> Signed-off-by: Matthew Auld <matthew.auld@intel.com>
->> Fixes: 775d0adc01a5 ("drm/xe/fbdev: Limit the usage of stolen for LNL+")
->> Cc: "Thomas Hellström" <thomas.hellstrom@linux.intel.com>
->> Cc: Matthew Brost <matthew.brost@intel.com>
->> Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
->> Cc: Nikolay Mikhaylov <sonny@milton.pro>
->> Cc: Uma Shankar <uma.shankar@intel.com>
->> Cc: Jani Nikula <jani.nikula@intel.com>
->> Cc: <stable@vger.kernel.org> # v6.12+
-> 
-> Ping on this? So far two separate users report this fixes the hard machine hang for them, after several days of testing.
+Fix this by allocating the new state first. If allocation fails, warn and
+return without touching the old state, as it remains valid and the caller
+will handle the error appropriately.
 
-Can we instead disable stolen entirely so we no longer need this workaround?
+This affects three functions:
+- amdgpu_dm_plane_drm_plane_reset()
+- amdgpu_dm_crtc_reset_state()
+- amdgpu_dm_connector_funcs_reset()
 
-https://patchwork.freedesktop.org/patch/735208/?series=159035&rev=19
-https://patchwork.freedesktop.org/patch/735215/?series=159035&rev=19
-https://patchwork.freedesktop.org/patch/735223/?series=159035&rev=19
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
 
-Sending a new version soon, I can split out those patches if needed.
-Ideally we find a way to preserve the initial framebuffer by blitting
-from the DSB FB to a system memory FB, but this may affect module load time.
+Fixes: 5d945cbcd4b1 ("drm/amd/display: Create a file dedicated to planes")
+Fixes: 473683a03495 ("drm/amd/display: Create a file dedicated for CRTC")
+Fixes: e7b07ceef2a6 ("drm/amd/display: Merge amdgpu_dm_types and amdgpu_dm")
+Signed-off-by: Evgenii Burenchev <evg28bur@yandex.ru>
+---
+Changes in v2:
+- Also fix amdgpu_dm_crtc_reset_state() and amdgpu_dm_connector_funcs_reset()
+---
+ .../gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c | 48 ++++++++++---------
+ .../amd/display/amdgpu_dm/amdgpu_dm_crtc.c    |  8 ++--
+ .../amd/display/amdgpu_dm/amdgpu_dm_plane.c   | 14 +++---
+ 3 files changed, 37 insertions(+), 33 deletions(-)
 
-Kind regards,
-~Maarten Lankhorst
-
-> https://gitlab.freedesktop.org/drm/xe/kernel/-/work_items/7513#note_3537314
-> 
-> https://gitlab.freedesktop.org/drm/xe/kernel/-/work_items/7513#note_3531435
-> 
-> Looking through the HSD I think it is clear we need something like this for the WA.
-> 
->> ---
->>   drivers/gpu/drm/xe/display/xe_fb_pin.c | 5 +++++
->>   1 file changed, 5 insertions(+)
->>
->> diff --git a/drivers/gpu/drm/xe/display/xe_fb_pin.c b/drivers/gpu/drm/xe/display/xe_fb_pin.c
->> index f93c98bec5b5..8ebb52741ea6 100644
->> --- a/drivers/gpu/drm/xe/display/xe_fb_pin.c
->> +++ b/drivers/gpu/drm/xe/display/xe_fb_pin.c
->> @@ -20,6 +20,9 @@
->>   #include "xe_pat.h"
->>   #include "xe_pm.h"
->>   #include "xe_vram_types.h"
->> +#include "xe_wa.h"
->> +
->> +#include <generated/xe_device_wa_oob.h>
->>     static void
->>   write_dpt_rotated(struct xe_bo *bo, struct iosys_map *map, u32 *dpt_ofs, u32 bo_ofs,
->> @@ -172,6 +175,8 @@ static int __xe_pin_fb_vma_dpt(struct drm_gem_object *obj,
->>                              XE_BO_FLAG_GGTT |
->>                              XE_BO_FLAG_PAGETABLE,
->>                              pin_params->alignment, false);
->> +    else if (XE_DEVICE_WA(xe, 22019338487_display))
->> +        dpt = ERR_PTR(-ENODEV);
->>       else
->>           dpt = xe_bo_create_pin_map_at_novm(xe, tile0,
->>                              dpt_size,  ~0ull,
-> 
+diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+index 97ab1e83b318..6ef1b07ec251 100644
+--- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
++++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+@@ -8151,33 +8151,35 @@ static void amdgpu_dm_connector_destroy(struct drm_connector *connector)
+ 
+ void amdgpu_dm_connector_funcs_reset(struct drm_connector *connector)
+ {
+-	struct dm_connector_state *state =
+-		to_dm_connector_state(connector->state);
+-
+-	if (connector->state)
+-		__drm_atomic_helper_connector_destroy_state(connector->state);
+-
+-	kfree(state);
++	struct dm_connector_state *state;
+ 
++	/* Allocate new state first */
+ 	state = kzalloc_obj(*state);
++	if (WARN_ON(!state))
++		return;
+ 
+-	if (state) {
+-		state->scaling = RMX_OFF;
+-		state->underscan_enable = false;
+-		state->underscan_hborder = 0;
+-		state->underscan_vborder = 0;
+-		state->base.max_requested_bpc = 8;
+-		state->vcpi_slots = 0;
+-		state->pbn = 0;
+-
+-		if (connector->connector_type == DRM_MODE_CONNECTOR_eDP) {
+-			if (amdgpu_dm_abm_level <= 0)
+-				state->abm_level = ABM_LEVEL_IMMEDIATE_DISABLE;
+-			else
+-				state->abm_level = amdgpu_dm_abm_level;
+-		}
++	/* Destroy old state only after successful allocation */
++	if (connector->state)
++		__drm_atomic_helper_connector_destroy_state(connector->state);
+ 
+-		__drm_atomic_helper_connector_reset(connector, &state->base);
++	/* Let DRM core install the new state */
++	__drm_atomic_helper_connector_reset(connector, &state->base);
++
++	/* Initialize driver-specific fields */
++	state->scaling = RMX_OFF;
++	state->underscan_enable = false;
++	state->underscan_hborder = 0;
++	state->underscan_vborder = 0;
++	state->base.max_requested_bpc = 8;
++	state->vcpi_slots = 0;
++	state->pbn = 0;
++
++	/* eDP-specific initialization */
++	if (connector->connector_type == DRM_MODE_CONNECTOR_eDP) {
++		if (amdgpu_dm_abm_level <= 0)
++			state->abm_level = ABM_LEVEL_IMMEDIATE_DISABLE;
++		else
++			state->abm_level = amdgpu_dm_abm_level;
+ 	}
+ }
+ 
+diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_crtc.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_crtc.c
+index 3dcedaa67ed8..6146fbc528c3 100644
+--- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_crtc.c
++++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_crtc.c
+@@ -437,13 +437,15 @@ static void amdgpu_dm_crtc_reset_state(struct drm_crtc *crtc)
+ {
+ 	struct dm_crtc_state *state;
+ 
+-	if (crtc->state)
+-		amdgpu_dm_crtc_destroy_state(crtc, crtc->state);
+-
++	/* Allocate new state first */
+ 	state = kzalloc_obj(*state);
+ 	if (WARN_ON(!state))
+ 		return;
+ 
++	/* Destroy old state only after successful allocation */
++	if (crtc->state)
++		amdgpu_dm_crtc_destroy_state(crtc, crtc->state);
++
+ 	__drm_atomic_helper_crtc_reset(crtc, &state->base);
+ }
+ 
+diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_plane.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_plane.c
+index e957657b06c7..eb1c0a26f20d 100644
+--- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_plane.c
++++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_plane.c
+@@ -1488,17 +1488,17 @@ static const struct drm_plane_helper_funcs dm_primary_plane_helper_funcs = {
+ 
+ static void amdgpu_dm_plane_drm_plane_reset(struct drm_plane *plane)
+ {
+-	struct dm_plane_state *amdgpu_state = NULL;
+-
+-	if (plane->state)
+-		plane->funcs->atomic_destroy_state(plane, plane->state);
++	struct dm_plane_state *amdgpu_state;
+ 
++	/* Allocate new state first */
+ 	amdgpu_state = kzalloc_obj(*amdgpu_state);
+-	WARN_ON(amdgpu_state == NULL);
+-
+-	if (!amdgpu_state)
++	if (WARN_ON(!amdgpu_state))
+ 		return;
+ 
++	/* Destroy old state only after successful allocation */
++	if (plane->state)
++		plane->funcs->atomic_destroy_state(plane, plane->state);
++
+ 	__drm_atomic_helper_plane_reset(plane, &amdgpu_state->base);
+ 	amdgpu_state->degamma_tf = AMDGPU_TRANSFER_FUNCTION_DEFAULT;
+ 	amdgpu_state->hdr_mult = AMDGPU_HDR_MULT_DEFAULT;
+-- 
+2.43.0
 
 
