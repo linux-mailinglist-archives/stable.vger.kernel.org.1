@@ -1,172 +1,150 @@
-Return-Path: <stable+bounces-268893-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-268894-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 3TCzMWR1PmrbGQkAu9opvQ
-	(envelope-from <stable+bounces-268893-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 14:49:40 +0200
+	id H49gBCF3PmpIGgkAu9opvQ
+	(envelope-from <stable+bounces-268894-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 14:57:05 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3E2886CD260
-	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 14:49:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3CCB16CD389
+	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 14:57:04 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=COwRB3bH;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-268893-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-268893-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	dkim=none;
+	dmarc=none;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-268894-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-268894-lists+stable=lfdr.de@vger.kernel.org";
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 3B279308B11D
-	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 12:48:42 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 6B17731007E7
+	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 12:52:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6F0A72627;
-	Fri, 26 Jun 2026 12:48:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0F273F65E7;
+	Fri, 26 Jun 2026 12:51:36 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from cstnet.cn (smtp25.cstnet.cn [159.226.251.25])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D0843E4C87;
-	Fri, 26 Jun 2026 12:48:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E9373F54DD;
+	Fri, 26 Jun 2026 12:51:31 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782478107; cv=none; b=aWjgJLTk4KSAsJ4+kZc+P9JXWHCL9AKfHKAmoVJIZOSddwiW0Bh0DeredBvpTGToJHYjTOBv6JJL/93DqYuRu+5ZRKl92LKJDrGbFPC0W55Ipzw3A3NV+byPawN2UN2zwWhpXe+Rx7I1nLV3AKG8p9eThoS8lnfKPhqHqBqBXVM=
+	t=1782478296; cv=none; b=MlZbnN7vpp3GXseP+B0qa34VY7viBesGX1XpNZNGsFlOV/OOazlXWPoiDhdIR4DvyylIP93eR3dTCFNUnjSOIBRDy4wmLGWz7C7X3RhsyR9x/8NaDLK5gv7C5eYKjH8DTuxMcJB5YsYcbYGt4n5OBzpMWeqdm++nJPoHYofvrdg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782478107; c=relaxed/simple;
-	bh=PA80dt2xYrNoJk4Xe8b2EGm9HbRXb8OAlk/dIonJtk4=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=dbgd1ytggq+bAemjZEt0T2EGHa20maRso1e78T27ohTbInbdsk+9deYOswaQxoJmUbV9qks00nAf4xPnOCSA+BRf5o5xN1GCmVGmZVz3qdNELIH6r7QLlVblPLljPDHu9qiY8rEHvBwVP+cxSqHBrdsW3yUryBhdt3Wb3Z+cb3g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=COwRB3bH; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C2181F000E9;
-	Fri, 26 Jun 2026 12:48:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782478101;
-	bh=8P/TDVoY9rLolsMoac+hbxM6rYfibWe7vkJCayuCM5Y=;
-	h=From:Date:Subject:To:Cc;
-	b=COwRB3bHX7JbzfEIqHNm5i6LDtPiGuuXL2YxJ7np25HxrHbhL+zI8lar7sEOIb9sU
-	 mdzb6UR6tlfMQbGbzS/SRWiJWiX1wXKzqM4fDj+UNRcoECO/KxAcdiyXKAk+d3mlca
-	 aVWG0euHCIcCjL+EtZNVXTEsco3861e7yI+YA9loqGf6MABg3MeHGFm/Ab1Q8GEmEl
-	 TmOxc/F7En4/KVpRoqF3FFfyMPsEqLzc+GUEFpCTJVRiyGNFpq7TArX8eul9+K9dKx
-	 9kAC2dV8R1qWc2qcOfa7e+Yj4zMRnY1dKT0gd1h6kKR1c5fskNa/NxLhsQvKUxr8xy
-	 jN17KC/2ipyYQ==
-From: Linus Walleij <linusw@kernel.org>
-Date: Fri, 26 Jun 2026 14:48:15 +0200
-Subject: [PATCH] RFC: ARM: breakpoint: CFI breakpoints only on demand
+	s=arc-20240116; t=1782478296; c=relaxed/simple;
+	bh=msBvLHnQH1+eJzwPCNUYBKIHo9Za+JpPkpFg9W5BL/A=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=VtjjOcuXAnwlq41xfUgIdncq0bOgC7fXiNicf6J/pqWVVVPRS1+1tlriLKoaWIQcq9KoWm9rmtuWuPmcCoPlerg1MLDxFtdLundxDwu5fLSVYudbAYmN2SV7erbXbSJu8cVTvx4lJL4kJcT7jakd772dDHraGDSJt7qM/UdTxkI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.25
+Received: from localhost.localdomain (unknown [117.182.75.66])
+	by APP-05 (Coremail) with SMTP id zQCowABHntHHdT5qTwJpFQ--.42803S2;
+	Fri, 26 Jun 2026 20:51:20 +0800 (CST)
+From: WenTao Liang <vulab@iscas.ac.cn>
+To: maarten.lankhorst@linux.intel.com,
+	mripard@kernel.org,
+	tzimmermann@suse.de,
+	airlied@gmail.com,
+	simona@ffwll.ch
+Cc: dmitry.baryshkov@oss.qualcomm.com,
+	kees@kernel.org,
+	liviu.dudau@arm.com,
+	vulab@iscas.ac.cn,
+	suraj.kandpal@intel.com,
+	dri-devel@lists.freedesktop.org,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: [PATCH] fix: drm/display: drm_dp_mst_topology_mgr_set_mst: error path after DPCD   write failure leaks MST branch device reference
+Date: Fri, 26 Jun 2026 20:51:17 +0800
+Message-Id: <20260626125117.37153-1-vulab@iscas.ac.cn>
+X-Mailer: git-send-email 2.39.5 (Apple Git-154)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260626-arm32-cfi-bug-v1-1-a467b5050c0b@kernel.org>
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/yXMTQ5AMBBA4avIrE1SJRWuIhZaU0biJ62KRNxds
- fwW713gyTF5qJMLHB3seV0isjQBM3bLQMh9NEghlVBSYefmXKKxjDoMmAmrKyXKojIFxGZzZPn
- 8fk372wc9kdnfCdz3A7MJL+pxAAAA
-X-Change-ID: 20260626-arm32-cfi-bug-10fb960749c4
-To: Russell King <linux@armlinux.org.uk>, 
- Nathan Chancellor <nathan@kernel.org>, 
- Sami Tolvanen <samitolvanen@google.com>, Kees Cook <kees@kernel.org>, 
- "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>
-Cc: linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
- stable@vger.kernel.org, slipher <slipher@protonmail.com>, 
- Linus Walleij <linusw@kernel.org>
-X-Mailer: b4 0.15.2
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:zQCowABHntHHdT5qTwJpFQ--.42803S2
+X-Coremail-Antispam: 1UD129KBjvJXoW7urWrXw43AFWkWFyfWw4DArb_yoW8JFy3pr
+	42kry2yryvyanFyr4UZF18WFWDGa97Aa4fGF4UWw43Ww1UAr10ga48KFyagF17ArWjkF1f
+	t39rCFy8CFyqk3DanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUU9F14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
+	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
+	1l84ACjcxK6xIIjxv20xvE14v26ryj6F1UM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26F4j
+	6r4UJwA2z4x0Y4vEx4A2jsIE14v26rxl6s0DM28EF7xvwVC2z280aVCY1x0267AKxVW0oV
+	Cq3wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0
+	I7IYx2IY67AKxVWUXVWUAwAv7VC2z280aVAFwI0_Gr0_Cr1lOx8S6xCaFVCjc4AY6r1j6r
+	4UM4x0Y48IcxkI7VAKI48JM4x0x7Aq67IIx4CEVc8vx2IErcIFxwACI402YVCY1x02628v
+	n2kIc2xKxwCY1x0262kKe7AKxVWUtVW8ZwCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7x
+	kEbVWUJVW8JwC20s026c02F40E14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E
+	67AF67kF1VAFwI0_Jw0_GFylIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCw
+	CI42IY6xIIjxv20xvEc7CjxVAFwI0_Cr0_Gr1UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWU
+	CwCI42IY6I8E87Iv67AKxVW8JVWxJwCI42IY6I8E87Iv6xkF7I0E14v26r4UJVWxJrUvcS
+	sGvfC2KfnxnUUI43ZEXa7VUbzpBDUUUUU==
+X-CM-SenderInfo: pyxotu46lvutnvoduhdfq/1tbiCQ4KA2o+TZN13gABsu
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-3.66 / 15.00];
-	WHITELIST_SPF_DKIM(-3.00)[kernel.org:d:+,kernel.org:s:+];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [0.04 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
+	R_MISSING_CHARSET(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-268893-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:linux@armlinux.org.uk,m:nathan@kernel.org,m:samitolvanen@google.com,m:kees@kernel.org,m:rmk+kernel@armlinux.org.uk,m:linux-arm-kernel@lists.infradead.org,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,m:slipher@protonmail.com,m:linusw@kernel.org,m:rmk@armlinux.org.uk,s:lists@lfdr.de];
-	FREEMAIL_CC(0.00)[lists.infradead.org,vger.kernel.org,protonmail.com,kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_SENDER(0.00)[linusw@kernel.org,stable@vger.kernel.org];
+	DMARC_NA(0.00)[iscas.ac.cn];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-268894-lists,stable=lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_SENDER(0.00)[vulab@iscas.ac.cn,stable@vger.kernel.org];
+	FREEMAIL_TO(0.00)[linux.intel.com,kernel.org,suse.de,gmail.com,ffwll.ch];
+	FORGED_RECIPIENTS(0.00)[m:maarten.lankhorst@linux.intel.com,m:mripard@kernel.org,m:tzimmermann@suse.de,m:airlied@gmail.com,m:simona@ffwll.ch,m:dmitry.baryshkov@oss.qualcomm.com,m:kees@kernel.org,m:liviu.dudau@arm.com,m:vulab@iscas.ac.cn,m:suraj.kandpal@intel.com,m:dri-devel@lists.freedesktop.org,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,s:lists@lfdr.de];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[vulab@iscas.ac.cn,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
+	TO_DN_NONE(0.00)[];
+	R_DKIM_NA(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[linusw@kernel.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	RCPT_COUNT_SEVEN(0.00)[10];
-	TAGGED_RCPT(0.00)[stable,kernel];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,protonmail.com:email]
+	RCPT_COUNT_TWELVE(0.00)[13];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,iscas.ac.cn:email,iscas.ac.cn:mid,iscas.ac.cn:from_mime]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 3E2886CD260
+X-Rspamd-Queue-Id: 3CCB16CD389
 
-This removes the stub hw_breakpoint_cfi_handler() from ARM, making
-it not steal breakpoint type 0x03 (ARM_ENTRY_CFI_BREAKPOINT) unless
-CFI is actively used in the kernel.
+drm_dp_add_mst_branch_device initializes mstb with refcount 1, and
+  drm_dp_mst_topology_get_mstb increments it to 2. When
+  drm_dp_dpcd_write_byte fails, out_unlock performs only one
+  drm_dp_mst_topology_put_mstb, leaving the other reference stored in
+  mgr->mst_primary. Since MST was not successfully enabled, no disable path
+  will clean it up.
 
-When not instrumenting with CFI, we fall through to return 1 from
-hw_breakpoint_pending() "unhandled fault" so userspace can make use
-of this breakpoint.
-
-This of course does not work if userspace want to use CFI and custom
-breakpoints at the same time, and CONFIG_CFI does exist as something
-users might want to select for their kernel. If this is not good
-acceptable we need to think about other ways for CFI to interfer, such
-as not using BKPT at all (rather something like BUG()) and back out
-the offending patch until the compiler behaviour has changed.
-
-Fixes: c3f89986fde7 ("ARM: 9391/2: hw_breakpoint: Handle CFI breakpoints")
-Reported-by: slipher <slipher@protonmail.com>
-Closes: https://lore.kernel.org/lkml/kJqktbpLphg_Pk5I5SPptgTLjl3E3eq5mN5UzCslyFj7Q1Irp-wDid4mj5eQVd2iZtRGXgeZd8goq195EkXdjyt864YMc8mVb2B9NGH91NQ=@protonmail.com/
-Signed-off-by: Linus Walleij <linusw@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: 7a3cbf590e63 ("drm/mst: Some style improvements in drm_dp_mst_topology_mgr_set_mst()")
+Signed-off-by: WenTao Liang <vulab@iscas.ac.cn>
 ---
-Trying to solve the CFI bug. Let's see of this first
-approach is acceptable for the reporter.
----
- arch/arm/kernel/hw_breakpoint.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ drivers/gpu/drm/display/drm_dp_mst_topology.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/arch/arm/kernel/hw_breakpoint.c b/arch/arm/kernel/hw_breakpoint.c
-index cd4b34c96e35..007023db6a5d 100644
---- a/arch/arm/kernel/hw_breakpoint.c
-+++ b/arch/arm/kernel/hw_breakpoint.c
-@@ -929,10 +929,6 @@ static void hw_breakpoint_cfi_handler(struct pt_regs *regs)
- 		break;
- 	}
- }
--#else
--static void hw_breakpoint_cfi_handler(struct pt_regs *regs)
--{
--}
- #endif
+diff --git a/drivers/gpu/drm/display/drm_dp_mst_topology.c b/drivers/gpu/drm/display/drm_dp_mst_topology.c
+index 8757972e8e24..db9441c80cd5 100644
+--- a/drivers/gpu/drm/display/drm_dp_mst_topology.c
++++ b/drivers/gpu/drm/display/drm_dp_mst_topology.c
+@@ -3679,8 +3679,10 @@ int drm_dp_mst_topology_mgr_set_mst(struct drm_dp_mst_topology_mgr *mgr, bool ms
+ 					     DP_MST_EN |
+ 					     DP_UP_REQ_EN |
+ 					     DP_UPSTREAM_IS_SRC);
+-		if (ret < 0)
++		if (ret < 0) {
++			mgr->mst_primary = NULL;
+ 			goto out_unlock;
++		}
  
- /*
-@@ -964,9 +960,11 @@ static int hw_breakpoint_pending(unsigned long addr, unsigned int fsr,
- 	case ARM_ENTRY_SYNC_WATCHPOINT:
- 		watchpoint_handler(addr, fsr, regs);
- 		break;
-+#ifdef CONFIG_CFI
- 	case ARM_ENTRY_CFI_BREAKPOINT:
- 		hw_breakpoint_cfi_handler(regs);
- 		break;
-+#endif
- 	default:
- 		ret = 1; /* Unhandled fault. */
- 	}
-
----
-base-commit: 8cd9520d35a6c38db6567e97dd93b1f11f185dc6
-change-id: 20260626-arm32-cfi-bug-10fb960749c4
-
-Best regards,
---  
-Linus Walleij <linusw@kernel.org>
+ 		/* Write reset payload */
+ 		drm_dp_dpcd_clear_payload(mgr->aux);
+-- 
+2.39.5 (Apple Git-154)
 
 
