@@ -1,60 +1,56 @@
-Return-Path: <stable+bounces-269158-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-269172-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id +0EUDDqpPmp5JwkAu9opvQ
-	(envelope-from <stable+bounces-269158-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 18:30:50 +0200
+	id 1m3EKOeoPmpZJwkAu9opvQ
+	(envelope-from <stable+bounces-269172-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 18:29:27 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E4626CF159
-	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 18:30:49 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 16CA36CF0E8
+	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 18:29:27 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=narfation.org header.s=20121 header.b=T0VTxaL6;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-269158-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-269158-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=narfation.org header.s=20121 header.b=UXuH16GB;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-269172-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-269172-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=narfation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 2E29630FA153
-	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 16:14:35 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 9FC4F30D12B0
+	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 16:15:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB73D401A14;
-	Fri, 26 Jun 2026 16:12:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ECC2F401A02;
+	Fri, 26 Jun 2026 16:12:30 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from dvalin.narfation.org (dvalin.narfation.org [213.160.73.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB4563FFAA6
-	for <stable@vger.kernel.org>; Fri, 26 Jun 2026 16:12:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF732402420
+	for <stable@vger.kernel.org>; Fri, 26 Jun 2026 16:12:26 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782490343; cv=none; b=HQAUpfWafmiV1oLFZWmLVtMTYnqJT8SOn7uAlbZRWLvGy6e5yABvrSA6yg03uJ7Mu6K9LtcRyxc6eiAL2MOnq7S7BrlwVKh6sLtoSaqiEMYftgQDjdHNoH76nd4kXuEfIna+d2kWHfXW3XQHWrEmM0T/yXR/GKqsZ+bj1WOvLuA=
+	t=1782490350; cv=none; b=NemyksS+gHEx1qIzxj4oTad1izkm3EdneJhXjffd0KcY8BItrLLGnklBINEnCxlJqoC4WY0AhWaXAixyzTtLLQmdGpXpRn7gVT5TgWETrTvry6vi9+jGbOPhOx9IuZbAn/l45hfFFlAsrp5WvxzrCI1H/Zs6S5ndbStoDaJSWYU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782490343; c=relaxed/simple;
-	bh=1zdBQLh6VbdNF/qgGFypGmVWcuaJvpJFoXA7NLhzPoM=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=P/zrv1drwWPLD0gAZUwpVPEuINSx98/rCbPYduoYD7igM3uGAAgGfx9XRbeTzKsMlcyGBXhrkexLaxcF6xLmtNYUho7v89o+QpGT4x1P4M2zawGfeG/mtQ21M0bGVhkLuaRDFp1DOMokeUa779J6Obza8D27lo//KHNe/aybhac=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=narfation.org; spf=pass smtp.mailfrom=narfation.org; dkim=pass (1024-bit key) header.d=narfation.org header.i=@narfation.org header.b=T0VTxaL6; arc=none smtp.client-ip=213.160.73.56
-Received: by dvalin.narfation.org (Postfix) id 3763B202D1;
-	Fri, 26 Jun 2026 16:12:17 +0000 (UTC)
+	s=arc-20240116; t=1782490350; c=relaxed/simple;
+	bh=fpBE1P91gUJy8zz15MB+j5V+i8KFjTb2v7p06q5E5XU=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=hmZKQjTcgUQGlgR1/pX2OEocDl3lc+TwcRpxnMd0aBCQhv5EbC9J+lx8w+kp/5DMemNxf//c/OCECiGNKJgkIJWc4HtJWncgpM6HiMYfcKa109u94j3zOqAKdAnbHJgW3GsfJ6mUIgQdqZd8HBJ+LbaAi/jPs2sytYZyKvhKmNA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=narfation.org; spf=pass smtp.mailfrom=narfation.org; dkim=pass (1024-bit key) header.d=narfation.org header.i=@narfation.org header.b=UXuH16GB; arc=none smtp.client-ip=213.160.73.56
+Received: by dvalin.narfation.org (Postfix) id 67728202D1;
+	Fri, 26 Jun 2026 16:12:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=narfation.org;
-	s=20121; t=1782490337;
+	s=20121; t=1782490345;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=OqXGrLIE/n7Iu5ho9yEiQfxleYNo/2gumelsQFN5n0c=;
-	b=T0VTxaL6iQRqpdTESCo7BTnJNF9k2UpUaef1a0ooWARyh3td/UkEI+kk1yd0H4jUvzGpEM
-	gficApOz2961eZjnA/oQhvMZyv0dFaTGEIWhVOIEt6UqgWWTRwXe1rJdiYDar4tRB0+ILi
-	qxvYADwfts3Lps3C0b23P5+bfwIX7bQ=
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=cYPlTcSjzDBQSIg9LlnmWYW7KPjdh/tyz489A+I4jCQ=;
+	b=UXuH16GB4Vg3Zx+Ii8Kz/34XnTAS+wPeXHQTI6Rti3zsdNZ8U9cVNOasMDOs/I2JAu2KAG
+	mhVYeltoSRdWIyaVRw/HhXI80BjgVIRzWh/7RSYKGopBxyxAT2KlcUxEf4pv93es1z/u5s
+	nV1MN7mz/h0fCs7fxaD8GQAHXRmJseY=
 From: Sven Eckelmann <sven@narfation.org>
 To: stable@vger.kernel.org
 Cc: Sven Eckelmann <sven@narfation.org>
-Subject: [PATCH 6.18 14/26] batman-adv: fix (m|b)cast csum after decrementing TTL
-Date: Fri, 26 Jun 2026 18:11:58 +0200
-Message-ID: <20260626161210.124712-15-sven@narfation.org>
+Subject: [PATCH 7.0 00/26] batman-adv: 7.2 merge window fixes backports
+Date: Fri, 26 Jun 2026 18:11:59 +0200
+Message-ID: <20260626161225.124839-1-sven@narfation.org>
 X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260626161210.124712-1-sven@narfation.org>
-References: <20260626161210.124712-1-sven@narfation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -68,14 +64,14 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[narfation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[narfation.org:s=20121];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-269158-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-269172-lists,stable=lfdr.de];
 	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:sven@narfation.org,s:lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
@@ -91,128 +87,79 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp,narfation.org:dkim,narfation.org:email,narfation.org:mid,narfation.org:from_mime]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,vger.kernel.org:from_smtp,open-mesh.org:url,narfation.org:dkim,narfation.org:mid,narfation.org:from_mime]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 8E4626CF159
+X-Rspamd-Queue-Id: 16CA36CF0E8
 
-commit e728bbdf32660c8f32b8f5e8d09427a2c131ad60 upstream.
+Hi Greg & Sasha,
 
-The broadcast and multicast packets can be received at the same time by the
-local system and forwarded to other nodes. Both are simply decrementing the
-TTL at the beginning of the receive path - independent of chosen paths
-(receive/forward). But such a modification of the data conflicts with the
-hw csum. This is not a problem when the packet is directly forwarded but
-can cause errors in the local receive path.
+there were quite some stable targetting fixes in the Linux 7.2 merge
+window. Unfortunately, there will be quiet some conflicts for older
+versions and some order dependencies (often to patches which have
+conflicts with older kernels).
 
-Such a problem can then trigger a "hw csum failure". The receiver path must
-therefore ensure that the csum is fixed for each modification of the
-payload before batadv_interface_rx() is reached.
+I would therefore just submit my backporting branch
+https://git.open-mesh.org/batadv.git/log/?h=batadv/lts/7.0 to directly
+provide the backported version of each patch. If it is completely
+incompatible with your workflow then please ignore it.
 
-Since all batman-adv packet types with a ttl have it as u8 at offset 2, a
-helper can be used for all of them. But it is only used at the moment for
-batadv_bcast_packet and batadv_mcast_packet because they are the only ones
-which deliver the packet locally but unconditionally modify the TTL.
+There is no urgency for these patches. I just want to reduce the number
+of conflicts and patches which are accidentally missed.
 
-Cc: stable@kernel.org
-Fixes: 3f69339068f9 ("batman-adv: bcast: queue per interface, if needed")
-Fixes: 07afe1ba288c ("batman-adv: mcast: implement multicast packet reception and forwarding")
-Signed-off-by: Sven Eckelmann <sven@narfation.org>
----
- net/batman-adv/routing.c | 58 ++++++++++++++++++++++++++++++++++++++--
- 1 file changed, 56 insertions(+), 2 deletions(-)
+Sorry for the noise. I hope to have less stable fixes future (at least
+the ones which have extra dependencies).
 
-diff --git a/net/batman-adv/routing.c b/net/batman-adv/routing.c
-index 0672dc30bed3b..cdcea90db6123 100644
---- a/net/batman-adv/routing.c
-+++ b/net/batman-adv/routing.c
-@@ -8,6 +8,7 @@
- #include "main.h"
- 
- #include <linux/atomic.h>
-+#include <linux/build_bug.h>
- #include <linux/byteorder/generic.h>
- #include <linux/compiler.h>
- #include <linux/errno.h>
-@@ -204,6 +205,59 @@ bool batadv_check_management_packet(struct sk_buff *skb,
- 	return true;
- }
- 
-+/**
-+ * batadv_skb_decrement_ttl() - decrement ttl in a batman-adv header, csum-safe
-+ * @skb: the received packet with @skb->data pointing to the batman-adv header
-+ *
-+ * Supports the following packet types, all of which carry the TTL at offset 2:
-+ *
-+ * - batadv_ogm_packet
-+ * - batadv_ogm2_packet
-+ * - batadv_icmp_header
-+ * - batadv_icmp_packet
-+ * - batadv_icmp_tp_packet
-+ * - batadv_icmp_packet_rr
-+ * - batadv_unicast_packet
-+ * - batadv_frag_packet
-+ * - batadv_bcast_packet
-+ * - batadv_mcast_packet
-+ * - batadv_coded_packet
-+ * - batadv_unicast_tvlv_packet
-+ *
-+ * Return: true if the packet may be forwarded (ttl decremented),
-+ *  false if it must be dropped (ttl would expire)
-+ */
-+static bool batadv_skb_decrement_ttl(struct sk_buff *skb)
-+{
-+	static const size_t ttl_offset = 2;
-+	u8 *ttl_pos;
-+
-+	BUILD_BUG_ON(offsetof(struct batadv_ogm_packet, ttl) != ttl_offset);
-+	BUILD_BUG_ON(offsetof(struct batadv_ogm2_packet, ttl) != ttl_offset);
-+	BUILD_BUG_ON(offsetof(struct batadv_icmp_header, ttl) != ttl_offset);
-+	BUILD_BUG_ON(offsetof(struct batadv_icmp_packet, ttl) != ttl_offset);
-+	BUILD_BUG_ON(offsetof(struct batadv_icmp_tp_packet, ttl) != ttl_offset);
-+	BUILD_BUG_ON(offsetof(struct batadv_icmp_packet_rr, ttl) != ttl_offset);
-+	BUILD_BUG_ON(offsetof(struct batadv_unicast_packet, ttl) != ttl_offset);
-+	BUILD_BUG_ON(offsetof(struct batadv_frag_packet, ttl) != ttl_offset);
-+	BUILD_BUG_ON(offsetof(struct batadv_bcast_packet, ttl) != ttl_offset);
-+	BUILD_BUG_ON(offsetof(struct batadv_mcast_packet, ttl) != ttl_offset);
-+	BUILD_BUG_ON(offsetof(struct batadv_coded_packet, ttl) != ttl_offset);
-+	BUILD_BUG_ON(offsetof(struct batadv_unicast_tvlv_packet, ttl) != ttl_offset);
-+
-+	ttl_pos = skb->data + ttl_offset;
-+
-+	/* would expire on this hop -> drop, leave header + csum untouched */
-+	if (*ttl_pos < 2)
-+		return false;
-+
-+	skb_postpull_rcsum(skb, ttl_pos, 1);
-+	(*ttl_pos)--;
-+	skb_postpush_rcsum(skb, ttl_pos, 1);
-+
-+	return true;
-+}
-+
- /**
-  * batadv_recv_my_icmp_packet() - receive an icmp packet locally
-  * @bat_priv: the bat priv with all the mesh interface information
-@@ -1197,7 +1251,7 @@ int batadv_recv_bcast_packet(struct sk_buff *skb,
- 
- 	bcast_packet = (struct batadv_bcast_packet *)skb->data;
- 
--	if (bcast_packet->ttl-- < 2)
-+	if (!batadv_skb_decrement_ttl(skb))
- 		goto free_skb;
- 
- 	orig_node = batadv_orig_hash_find(bat_priv, bcast_packet->orig);
-@@ -1304,7 +1358,7 @@ int batadv_recv_mcast_packet(struct sk_buff *skb,
- 		goto free_skb;
- 
- 	mcast_packet = (struct batadv_mcast_packet *)skb->data;
--	if (mcast_packet->ttl-- < 2)
-+	if (!batadv_skb_decrement_ttl(skb))
- 		goto free_skb;
- 
- 	tvlv_buff = (unsigned char *)(skb->data + hdr_size);
+Regards,
+  Sven
+
+Sven Eckelmann (26):
+  batman-adv: tp_meter: keep unacked list in ascending ordered
+  batman-adv: tp_meter: initialize dup_acks explicitly
+  batman-adv: tp_meter: initialize dec_cwnd explicitly
+  batman-adv: tp_meter: avoid window underflow
+  batman-adv: tp_meter: avoid divide-by-zero for dec_cwnd
+  batman-adv: tp_meter: fix fast recovery precondition
+  batman-adv: tp_meter: handle seqno wrap-around for fast recovery
+    detection
+  batman-adv: tp_meter: add only finished tp_vars to lists
+  batman-adv: bla: annotate lasttime access with READ/WRITE_ONCE
+  batman-adv: prevent ELP transmission interval underflow
+  batman-adv: tp_meter: initialize last_recv_time during init
+  batman-adv: gw: don't deselect gateway with active hardif
+  batman-adv: ensure bcast is writable before modifying TTL
+  batman-adv: fix (m|b)cast csum after decrementing TTL
+  batman-adv: frag: ensure fragment is writable before modifying TTL
+  batman-adv: frag: avoid underflow of TTL
+  batman-adv: v: prevent OGM aggregation on disabled hardif
+  batman-adv: tp_meter: restrict number of unacked list entries
+  batman-adv: tp_meter: annotate last_recv_time access with
+    READ/WRITE_ONCE
+  batman-adv: tp_meter: prevent parallel modifications of last_recv
+  batman-adv: tp_meter: handle overlapping packets
+  batman-adv: tt: don't merge change entries with different VIDs
+  batman-adv: tt: track roam count per VID
+  batman-adv: dat: prevent false sharing between VLANs
+  batman-adv: tvlv: enforce 2-byte alignment
+  batman-adv: tvlv: avoid race of cifsnotfound handler state
+
+ net/batman-adv/bat_iv_ogm.c            |  11 ++-
+ net/batman-adv/bat_v.c                 |   1 +
+ net/batman-adv/bat_v_ogm.c             |  23 ++++-
+ net/batman-adv/bridge_loop_avoidance.c |  28 +++---
+ net/batman-adv/distributed-arp-table.c |  12 ++-
+ net/batman-adv/fragmentation.c         |  22 ++++-
+ net/batman-adv/fragmentation.h         |   3 +-
+ net/batman-adv/hard-interface.c        |  28 +-----
+ net/batman-adv/netlink.c               |   6 ++
+ net/batman-adv/routing.c               |  73 +++++++++++++++-
+ net/batman-adv/tp_meter.c              | 115 ++++++++++++++++---------
+ net/batman-adv/translation-table.c     |  12 ++-
+ net/batman-adv/tvlv.c                  |  69 +++++++++++++--
+ net/batman-adv/types.h                 |  21 +++--
+ 14 files changed, 318 insertions(+), 106 deletions(-)
+
 -- 
 2.47.3
 
