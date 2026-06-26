@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-269153-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-269142-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id zPwFI8aoPmpUJwkAu9opvQ
-	(envelope-from <stable+bounces-269153-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 18:28:54 +0200
+	id bMZ8N+6mPmq/JgkAu9opvQ
+	(envelope-from <stable+bounces-269142-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 18:21:02 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2551B6CF0D3
-	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 18:28:54 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 396D86CEF18
+	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 18:21:02 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=narfation.org header.s=20121 header.b=aSDMqSTF;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-269153-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-269153-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=narfation.org header.s=20121 header.b=WzRPvnfD;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-269142-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-269142-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=narfation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 57C1C30C6A77
-	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 16:14:22 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B39973172847
+	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 16:13:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14873401491;
-	Fri, 26 Jun 2026 16:12:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A37203FF890;
+	Fri, 26 Jun 2026 16:12:13 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from dvalin.narfation.org (dvalin.narfation.org [213.160.73.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71B7C3FF8A3
-	for <stable@vger.kernel.org>; Fri, 26 Jun 2026 16:12:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDE5D3FC5DD
+	for <stable@vger.kernel.org>; Fri, 26 Jun 2026 16:12:08 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782490341; cv=none; b=Q1v7M6pQLUBGEsRH9wXl0mnVvFWUBpPDb0VFZaTh+63AUoY7Qdke9L6oOewUPMRB+WaqYRWI9Aw+fzG36t9uUdTmAcpw45Mb6v5IbwKX/BtaXxo8sS8OQC3cemFCcqP+ab7eAlGloqa9LfiA5/jn3uKgHuxf1oDMsRyBa11VGfY=
+	t=1782490332; cv=none; b=sezI5ziG1fou1ZCz8A42G5sGrNA5O5y7wTL6Jaira1+yrmUKWYehsp97bGE8BXSon2Ui4w2uCyOAY+2AQRENAaMCoTPLj6vF3eimZqq4vzdcLMXFnIAbNYqZGwY5uUQgoyuTE8aci8QKLd0WM6D50p6HsL42jcTzOACAn8CDdHM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782490341; c=relaxed/simple;
-	bh=x1n3JUfjs0YWfq0Wwc4Lwo25SxNM6L3Mzr6EuqpT3TQ=;
+	s=arc-20240116; t=1782490332; c=relaxed/simple;
+	bh=5wIXnF5Il0Uuu58C7TYJJHgC7EYKprjzrXfnxseyeKo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=O8OmCQbXQLmKYs6zKvD7WNN02JAJgniVUf7aM01fUiAbsnfvI/2goElZL1M6vrQvGkKJ9kiCbj9OwXb33NJbuuLym70uctK1yKNv94srQqdPbPJxguGXd1jweNp8X8jCODmCLClcNLvml/CjM4m5Xr9WAFMUTLU5oeq8MVPaNr0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=narfation.org; spf=pass smtp.mailfrom=narfation.org; dkim=pass (1024-bit key) header.d=narfation.org header.i=@narfation.org header.b=aSDMqSTF; arc=none smtp.client-ip=213.160.73.56
-Received: by dvalin.narfation.org (Postfix) id DD57620536;
-	Fri, 26 Jun 2026 16:12:14 +0000 (UTC)
+	 MIME-Version; b=pSaBrbO2KUWnyWo5QXzfKX7ZzWHUddb3Lrav9Jf307Gg1FSkvLYx3n7kA8ygP+FPwDRitKiqNB1OE70s3Gu80/b9Vt9pnBCa/mnFdnlpPIUJ3gsoTpur0Wy4+6I2EV5/m51o3Gs2X3CwT5dbPMvaaM0z3SOHTOz5DUOKOF8EDjo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=narfation.org; spf=pass smtp.mailfrom=narfation.org; dkim=pass (1024-bit key) header.d=narfation.org header.i=@narfation.org header.b=WzRPvnfD; arc=none smtp.client-ip=213.160.73.56
+Received: by dvalin.narfation.org (Postfix) id 3BBEA203D3;
+	Fri, 26 Jun 2026 16:12:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=narfation.org;
-	s=20121; t=1782490335;
+	s=20121; t=1782490327;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=ezJqIuQAwEd06GBWh/nYtyCrcWxHd4dCYf/hBQMydu0=;
-	b=aSDMqSTF5D5MoFQQbcnTvPYrGk+PB37peXcoPujs/SE6xE9+lxECCtqiMTEUT2bp/4NOBa
-	LdGTbVcYE6b4alUQtklox/9iHDKABi/I1MmlLLjahmMl/059YnRu2jw7oRZriwoS+hyK8K
-	br5vb9an2iXJebhGQN4mL+w6+quGTcw=
+	bh=qJpYTHEUkYQfgC0VRzBuN7EQqmsViWbEbCSDW3sqjKs=;
+	b=WzRPvnfDlQwadw07XUOk7SQCUwl0oqZuEY5ES7DQTZsHdnWIItoVJs74b0ztbAchqVx4zO
+	vClMW7KxCaSObp7NKjt3LsFOAZMHn6yebeyfitSMKwtuTA2jHzp6e+mCQaXDTLN1BQUW8Y
+	l2M7Rs0Mh2QPhXwPoPqacLVTf+JLzbk=
 From: Sven Eckelmann <sven@narfation.org>
 To: stable@vger.kernel.org
 Cc: Sven Eckelmann <sven@narfation.org>
-Subject: [PATCH 6.18 09/26] batman-adv: bla: annotate lasttime access with READ/WRITE_ONCE
-Date: Fri, 26 Jun 2026 18:11:53 +0200
-Message-ID: <20260626161210.124712-10-sven@narfation.org>
+Subject: [PATCH 6.12 25/25] batman-adv: tvlv: avoid race of cifsnotfound handler state
+Date: Fri, 26 Jun 2026 18:11:54 +0200
+Message-ID: <20260626161154.124562-26-sven@narfation.org>
 X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260626161210.124712-1-sven@narfation.org>
-References: <20260626161210.124712-1-sven@narfation.org>
+In-Reply-To: <20260626161154.124562-1-sven@narfation.org>
+References: <20260626161154.124562-1-sven@narfation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -68,14 +68,14 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[narfation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[narfation.org:s=20121];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-269153-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-269142-lists,stable=lfdr.de];
 	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:sven@narfation.org,s:lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
@@ -91,157 +91,155 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,vger.kernel.org:from_smtp,narfation.org:dkim,narfation.org:email,narfation.org:mid,narfation.org:from_mime]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,narfation.org:dkim,narfation.org:email,narfation.org:mid,narfation.org:from_mime,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 2551B6CF0D3
+X-Rspamd-Queue-Id: 396D86CEF18
 
-commit 98b0fb191c878a64cbaebfe231d96d57576acf8c upstream.
+commit edb557b2ba38fea2c5eb710cf366c797e187218c upstream.
 
-The lasttime field for claim, backbone_gw, and loopdetect tracks the
-jiffies value of the most recent activity and is used to detect timeouts.
-These accesses are not consistently protected by a lock, so
-READ_ONCE/WRITE_ONCE must be used to prevent data races caused by compiler
-optimizations.
+TVLV handlers can have the flag BATADV_TVLV_HANDLER_OGM_CIFNOTFND set to
+signal that the OGM handler should be called (with NULL for data) when the
+specific TVLV container was not found in the OGM. This is used by:
+
+* DAT
+* GW
+* Multicast (OGM + Tracker)
+
+The state whether the handler was executed was stored in the struct
+batadv_tvlv_handler. But the TVLV processing is started without any lock.
+Multiple parallel contexts processing TVLVs would therefore overwrite each
+others BATADV_TVLV_HANDLER_OGM_CALLED flag in the shared
+batadv_tvlv_handler.
+
+Drop the shared BATADV_TVLV_HANDLER_OGM_CALLED flag and instead determine,
+per TVLV buffer, whether a matching container was present by scanning the
+packet's buffer.
 
 Cc: stable@kernel.org
-Fixes: 23721387c409 ("batman-adv: add basic bridge loop avoidance code")
+Fixes: ef26157747d4 ("batman-adv: tvlv - basic infrastructure")
 Signed-off-by: Sven Eckelmann <sven@narfation.org>
 ---
- net/batman-adv/bridge_loop_avoidance.c | 28 +++++++++++++-------------
- 1 file changed, 14 insertions(+), 14 deletions(-)
+ net/batman-adv/tvlv.c  | 63 ++++++++++++++++++++++++++++++++++++++----
+ net/batman-adv/types.h |  7 -----
+ 2 files changed, 57 insertions(+), 13 deletions(-)
 
-diff --git a/net/batman-adv/bridge_loop_avoidance.c b/net/batman-adv/bridge_loop_avoidance.c
-index 3072f94275ac6..2c6e2b0d1ded4 100644
---- a/net/batman-adv/bridge_loop_avoidance.c
-+++ b/net/batman-adv/bridge_loop_avoidance.c
-@@ -513,7 +513,7 @@ batadv_bla_get_backbone_gw(struct batadv_priv *bat_priv, const u8 *orig,
- 		return NULL;
- 
- 	entry->vid = vid;
--	entry->lasttime = jiffies;
-+	WRITE_ONCE(entry->lasttime, jiffies);
- 	entry->crc = BATADV_BLA_CRC_INIT;
- 	entry->bat_priv = bat_priv;
- 	spin_lock_init(&entry->crc_lock);
-@@ -581,7 +581,7 @@ batadv_bla_update_own_backbone_gw(struct batadv_priv *bat_priv,
- 	if (unlikely(!backbone_gw))
- 		return;
- 
--	backbone_gw->lasttime = jiffies;
-+	WRITE_ONCE(backbone_gw->lasttime, jiffies);
- 	batadv_backbone_gw_put(backbone_gw);
+diff --git a/net/batman-adv/tvlv.c b/net/batman-adv/tvlv.c
+index e1cd27b99bd11..cc66e231ccb8a 100644
+--- a/net/batman-adv/tvlv.c
++++ b/net/batman-adv/tvlv.c
+@@ -398,7 +398,6 @@ static int batadv_tvlv_call_handler(struct batadv_priv *bat_priv,
+ 		tvlv_handler->ogm_handler(bat_priv, orig_node,
+ 					  BATADV_NO_FLAGS,
+ 					  tvlv_value, tvlv_value_len);
+-		tvlv_handler->flags |= BATADV_TVLV_HANDLER_OGM_CALLED;
+ 		break;
+ 	case BATADV_UNICAST_TVLV:
+ 		if (!skb)
+@@ -430,6 +429,48 @@ static int batadv_tvlv_call_handler(struct batadv_priv *bat_priv,
+ 	return NET_RX_SUCCESS;
  }
  
-@@ -715,7 +715,7 @@ static void batadv_bla_add_claim(struct batadv_priv *bat_priv,
- 		ether_addr_copy(claim->addr, mac);
- 		spin_lock_init(&claim->backbone_lock);
- 		claim->vid = vid;
--		claim->lasttime = jiffies;
-+		WRITE_ONCE(claim->lasttime, jiffies);
- 		kref_get(&backbone_gw->refcount);
- 		claim->backbone_gw = backbone_gw;
- 		kref_init(&claim->refcount);
-@@ -737,7 +737,7 @@ static void batadv_bla_add_claim(struct batadv_priv *bat_priv,
- 			return;
- 		}
- 	} else {
--		claim->lasttime = jiffies;
-+		WRITE_ONCE(claim->lasttime, jiffies);
- 		if (claim->backbone_gw == backbone_gw)
- 			/* no need to register a new backbone */
- 			goto claim_free_ref;
-@@ -770,7 +770,7 @@ static void batadv_bla_add_claim(struct batadv_priv *bat_priv,
- 	spin_lock_bh(&backbone_gw->crc_lock);
- 	backbone_gw->crc ^= crc16(0, claim->addr, ETH_ALEN);
- 	spin_unlock_bh(&backbone_gw->crc_lock);
--	backbone_gw->lasttime = jiffies;
-+	WRITE_ONCE(backbone_gw->lasttime, jiffies);
++/**
++ * batadv_tvlv_containers_contain() - check if a tvlv buffer holds a container
++ * @tvlv_value: tvlv content
++ * @tvlv_value_len: tvlv content length
++ * @type: tvlv container type to look for
++ * @version: tvlv container version to look for
++ *
++ * Return: true if a container of the given type and version is present in the
++ * tvlv buffer, false otherwise.
++ */
++static bool batadv_tvlv_containers_contain(void *tvlv_value,
++					   u16 tvlv_value_len, u8 type,
++					   u8 version)
++{
++	struct batadv_tvlv_hdr *tvlv_hdr;
++	u16 tvlv_value_cont_len;
++
++	while (tvlv_value_len >= sizeof(*tvlv_hdr)) {
++		tvlv_hdr = tvlv_value;
++		tvlv_value_cont_len = ntohs(tvlv_hdr->len);
++		tvlv_value = tvlv_hdr + 1;
++		tvlv_value_len -= sizeof(*tvlv_hdr);
++
++		if (tvlv_value_cont_len > tvlv_value_len)
++			break;
++
++		/* the next tvlv header is accessed assuming (at least) 2-byte
++		 * alignment, so it must start at an even offset.
++		 */
++		if (tvlv_value_cont_len & 1)
++			break;
++
++		if (tvlv_hdr->type == type && tvlv_hdr->version == version)
++			return true;
++
++		tvlv_value = (u8 *)tvlv_value + tvlv_value_cont_len;
++		tvlv_value_len -= tvlv_value_cont_len;
++	}
++
++	return false;
++}
++
+ /**
+  * batadv_tvlv_containers_process() - parse the given tvlv buffer to call the
+  *  appropriate handlers
+@@ -449,7 +490,9 @@ int batadv_tvlv_containers_process(struct batadv_priv *bat_priv,
+ 				   struct sk_buff *skb, void *tvlv_value,
+ 				   u16 tvlv_value_len)
+ {
++	u16 tvlv_value_start_len = tvlv_value_len;
+ 	struct batadv_tvlv_handler *tvlv_handler;
++	void *tvlv_value_start = tvlv_value;
+ 	struct batadv_tvlv_hdr *tvlv_hdr;
+ 	u16 tvlv_value_cont_len;
+ 	u8 cifnotfound = BATADV_TVLV_HANDLER_OGM_CIFNOTFND;
+@@ -493,12 +536,20 @@ int batadv_tvlv_containers_process(struct batadv_priv *bat_priv,
+ 		if (!tvlv_handler->ogm_handler)
+ 			continue;
  
- claim_free_ref:
- 	batadv_claim_put(claim);
-@@ -859,7 +859,7 @@ static bool batadv_handle_announce(struct batadv_priv *bat_priv, u8 *an_addr,
- 		return true;
+-		if ((tvlv_handler->flags & BATADV_TVLV_HANDLER_OGM_CIFNOTFND) &&
+-		    !(tvlv_handler->flags & BATADV_TVLV_HANDLER_OGM_CALLED))
+-			tvlv_handler->ogm_handler(bat_priv, orig_node,
+-						  cifnotfound, NULL, 0);
++		if (!(tvlv_handler->flags & BATADV_TVLV_HANDLER_OGM_CIFNOTFND))
++			continue;
  
- 	/* handle as ANNOUNCE frame */
--	backbone_gw->lasttime = jiffies;
-+	WRITE_ONCE(backbone_gw->lasttime, jiffies);
- 	crc = ntohs(*((__force __be16 *)(&an_addr[4])));
- 
- 	batadv_dbg(BATADV_DBG_BLA, bat_priv,
-@@ -1254,7 +1254,7 @@ static void batadv_bla_purge_backbone_gw(struct batadv_priv *bat_priv, int now)
- 						  head, hash_entry) {
- 				if (now)
- 					goto purge_now;
--				if (!batadv_has_timed_out(backbone_gw->lasttime,
-+				if (!batadv_has_timed_out(READ_ONCE(backbone_gw->lasttime),
- 							  BATADV_BLA_BACKBONE_TIMEOUT))
- 					continue;
- 
-@@ -1335,7 +1335,7 @@ static void batadv_bla_purge_claims(struct batadv_priv *bat_priv,
- 						primary_if->net_dev->dev_addr))
- 				goto skip;
- 
--			if (!batadv_has_timed_out(claim->lasttime,
-+			if (!batadv_has_timed_out(READ_ONCE(claim->lasttime),
- 						  BATADV_BLA_CLAIM_TIMEOUT))
- 				goto skip;
- 
-@@ -1495,7 +1495,7 @@ static void batadv_bla_periodic_work(struct work_struct *work)
- 		eth_random_addr(bat_priv->bla.loopdetect_addr);
- 		bat_priv->bla.loopdetect_addr[0] = 0xba;
- 		bat_priv->bla.loopdetect_addr[1] = 0xbe;
--		bat_priv->bla.loopdetect_lasttime = jiffies;
-+		WRITE_ONCE(bat_priv->bla.loopdetect_lasttime, jiffies);
- 		atomic_set(&bat_priv->bla.loopdetect_next,
- 			   BATADV_BLA_LOOPDETECT_PERIODS);
- 
-@@ -1516,7 +1516,7 @@ static void batadv_bla_periodic_work(struct work_struct *work)
- 						primary_if->net_dev->dev_addr))
- 				continue;
- 
--			backbone_gw->lasttime = jiffies;
-+			WRITE_ONCE(backbone_gw->lasttime, jiffies);
- 
- 			batadv_bla_send_announce(bat_priv, backbone_gw);
- 			if (send_loopdetect)
-@@ -1934,7 +1934,7 @@ batadv_bla_loopdetect_check(struct batadv_priv *bat_priv, struct sk_buff *skb,
- 	/* If the packet came too late, don't forward it on the mesh
- 	 * but don't consider that as loop. It might be a coincidence.
- 	 */
--	if (batadv_has_timed_out(bat_priv->bla.loopdetect_lasttime,
-+	if (batadv_has_timed_out(READ_ONCE(bat_priv->bla.loopdetect_lasttime),
- 				 BATADV_BLA_LOOPDETECT_TIMEOUT))
- 		return true;
- 
-@@ -2049,7 +2049,7 @@ bool batadv_bla_rx(struct batadv_priv *bat_priv, struct sk_buff *skb,
- 
- 	if (own_claim) {
- 		/* ... allow it in any case */
--		claim->lasttime = jiffies;
-+		WRITE_ONCE(claim->lasttime, jiffies);
- 		goto allow;
+-		tvlv_handler->flags &= ~BATADV_TVLV_HANDLER_OGM_CALLED;
++		/* if the corresponding container was present then the handler
++		 * was already called from the loop above
++		 */
++		if (batadv_tvlv_containers_contain(tvlv_value_start,
++						   tvlv_value_start_len,
++						   tvlv_handler->type,
++						   tvlv_handler->version))
++			continue;
++
++		tvlv_handler->ogm_handler(bat_priv, orig_node,
++					  cifnotfound, NULL, 0);
  	}
+ 	rcu_read_unlock();
  
-@@ -2151,7 +2151,7 @@ bool batadv_bla_tx(struct batadv_priv *bat_priv, struct sk_buff *skb,
- 		/* if yes, the client has roamed and we have
- 		 * to unclaim it.
- 		 */
--		if (batadv_has_timed_out(claim->lasttime, 100)) {
-+		if (batadv_has_timed_out(READ_ONCE(claim->lasttime), 100)) {
- 			/* only unclaim if the last claim entry is
- 			 * older than 100 ms to make sure we really
- 			 * have a roaming client here.
-@@ -2396,7 +2396,7 @@ batadv_bla_backbone_dump_entry(struct sk_buff *msg, u32 portid,
- 	backbone_crc = backbone_gw->crc;
- 	spin_unlock_bh(&backbone_gw->crc_lock);
+diff --git a/net/batman-adv/types.h b/net/batman-adv/types.h
+index 9bde0469e748c..0022bee14574d 100644
+--- a/net/batman-adv/types.h
++++ b/net/batman-adv/types.h
+@@ -2483,13 +2483,6 @@ enum batadv_tvlv_handler_flags {
+ 	 *  will call this handler even if its type was not found (with no data)
+ 	 */
+ 	BATADV_TVLV_HANDLER_OGM_CIFNOTFND = BIT(1),
+-
+-	/**
+-	 * @BATADV_TVLV_HANDLER_OGM_CALLED: interval tvlv handling flag - the
+-	 *  API marks a handler as being called, so it won't be called if the
+-	 *  BATADV_TVLV_HANDLER_OGM_CIFNOTFND flag was set
+-	 */
+-	BATADV_TVLV_HANDLER_OGM_CALLED = BIT(2),
+ };
  
--	msecs = jiffies_to_msecs(jiffies - backbone_gw->lasttime);
-+	msecs = jiffies_to_msecs(jiffies - READ_ONCE(backbone_gw->lasttime));
- 
- 	if (is_own)
- 		if (nla_put_flag(msg, BATADV_ATTR_BLA_OWN)) {
+ #endif /* _NET_BATMAN_ADV_TYPES_H_ */
 -- 
 2.47.3
 
