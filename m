@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-269200-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-269188-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id xZ4PO9WnPmoHJwkAu9opvQ
-	(envelope-from <stable+bounces-269200-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 18:24:53 +0200
+	id 7SRxDM2nPmoCJwkAu9opvQ
+	(envelope-from <stable+bounces-269188-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 18:24:45 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 45C9D6CEFEF
-	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 18:24:53 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D21746CEFDC
+	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 18:24:44 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=narfation.org header.s=20121 header.b=hDlTasVT;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-269200-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-269200-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=narfation.org header.s=20121 header.b=vJnlkTgL;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-269188-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-269188-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=narfation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 5558E312457A
-	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 16:15:48 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id BAFF1315FCC7
+	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 16:15:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF14A3FA5CE;
-	Fri, 26 Jun 2026 16:12:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D18C6402B8C;
+	Fri, 26 Jun 2026 16:12:39 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from dvalin.narfation.org (dvalin.narfation.org [213.160.73.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FA70403AE8
-	for <stable@vger.kernel.org>; Fri, 26 Jun 2026 16:12:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9AE99401A00
+	for <stable@vger.kernel.org>; Fri, 26 Jun 2026 16:12:35 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782490368; cv=none; b=umpEM53qBnqs8nrdHKuIY8JGkhxJl2BngZwFAsL6PUsryBdgxHHvFL7R1xKPFZzFff24vRqwzW3z2ZPkN9l6KtxrVVxDGOy5eGxCcNZC1ziNNWmhOIYAmxeJSoiChmgNKygXx1YkmbLZgOUEhVYRXjLx6HbegA9PvUyMkvfb1NE=
+	t=1782490358; cv=none; b=ru5uIBMhHgCoK1MOkW99/6cBWwA+nj66btm25yYvpBLKmjx9tg/MlSIgYtPJSqBaeQF13szmudwNWQeS1oV1jB6H2cKLm1qooz4oDStzka240yxYQxRlpnsUJQylwVkAFeRXieoTNT8vojv3FHdVZsHLthnxA8F14SSlo3IkViE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782490368; c=relaxed/simple;
-	bh=nIOBTqtXaNicAAbBotp5wagALODNwwdVh8RJHTczSPQ=;
+	s=arc-20240116; t=1782490358; c=relaxed/simple;
+	bh=Qpj0EmqwDcOOJM5e2SjBqKJr5p7KRIuo2fAU7zRRvqc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KBllkShJga6a17hsoxSMmyiy2yhyNR8rVsWv5chz4Pso1KKc/E9mXFXRiLpwIpIg7GBZ6I957whTR+I2Bcsx9JgOFtGyHcNMqYBfYH7IovDSrHAA/+aXIbCONR+venZ1p7xIHoiyUVWeXqbYCuUYW55qF9gzMmxfpA9FGl58TEg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=narfation.org; spf=pass smtp.mailfrom=narfation.org; dkim=pass (1024-bit key) header.d=narfation.org header.i=@narfation.org header.b=hDlTasVT; arc=none smtp.client-ip=213.160.73.56
-Received: by dvalin.narfation.org (Postfix) id B9F34203D3;
-	Fri, 26 Jun 2026 16:12:42 +0000 (UTC)
+	 MIME-Version; b=nGMh5pW9euxhfhuM5uN6e/PukMP2RlprGxc9lzl+XIS2fkJ/jjshPBEicsBfvXaZZ6Lly6q7zOJmToGvZsLqLpVV98UNQPsEvBd6g8doKnTA4kmoOlJcBTM0eqw0g4CKZcMKF8rClFqylbOEg1v5AmyIzIMBOoarx0iM4r49nos=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=narfation.org; spf=pass smtp.mailfrom=narfation.org; dkim=pass (1024-bit key) header.d=narfation.org header.i=@narfation.org header.b=vJnlkTgL; arc=none smtp.client-ip=213.160.73.56
+Received: by dvalin.narfation.org (Postfix) id D1AD82045E;
+	Fri, 26 Jun 2026 16:12:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=narfation.org;
-	s=20121; t=1782490362;
+	s=20121; t=1782490353;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=QHfFMx5YrNodyNiMhjpOEDKUEe5qTtQMlNHpNDXdZKc=;
-	b=hDlTasVTaPNrmeKqETo1JjcFJhH/AhYG9IuWAIjw4BeAP+OeI2nboFJnqL22+CjUFQjQJ8
-	/FwDdD5XTS+bi7k3yvbqkkQQl9xhQxgEIufjyNU9S+70bwTYoG3KqMM45gPnUXZMkjY7ux
-	aKzE95WGiDMKCcqxUOCiHIldqvdDb38=
+	bh=fUdCZZYQUIYU07HKy3eBdJ1d4wtpy9ToKmw15y8HR2c=;
+	b=vJnlkTgLRGFfO3xvPVfYKzofnussXtlo0Ad7UulfmotA74w4zv6f8m3pKVc9WLNTfpxh3E
+	GV/b9EXr0D6ggI2RAsnR0DzMlX4oOW4bpfE8Ej5jknzCzHnoYHVrzg5RMJsxEiWd12EYOh
+	QHvfVF5dpi0MwY8fklRFdYm4f0cdl5c=
 From: Sven Eckelmann <sven@narfation.org>
 To: stable@vger.kernel.org
 Cc: Sven Eckelmann <sven@narfation.org>
-Subject: [PATCH 7.1 01/26] batman-adv: tp_meter: keep unacked list in ascending ordered
+Subject: [PATCH 7.0 17/26] batman-adv: v: prevent OGM aggregation on disabled hardif
 Date: Fri, 26 Jun 2026 18:12:16 +0200
-Message-ID: <20260626161241.124988-2-sven@narfation.org>
+Message-ID: <20260626161225.124839-18-sven@narfation.org>
 X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260626161241.124988-1-sven@narfation.org>
-References: <20260626161241.124988-1-sven@narfation.org>
+In-Reply-To: <20260626161225.124839-1-sven@narfation.org>
+References: <20260626161225.124839-1-sven@narfation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -68,14 +68,14 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[narfation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[narfation.org:s=20121];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-269200-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-269188-lists,stable=lfdr.de];
 	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:sven@narfation.org,s:lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
@@ -91,45 +91,107 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,narfation.org:dkim,narfation.org:email,narfation.org:mid,narfation.org:from_mime,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[narfation.org:dkim,narfation.org:email,narfation.org:mid,narfation.org:from_mime,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 45C9D6CEFEF
+X-Rspamd-Queue-Id: D21746CEFDC
 
-commit 5aa8651527ea0b610e7a09fb3b8204c1398b9525 upstream.
+commit d11c00b95b2a3b3934007fc003dccc6fdcc061ad upstream.
 
-When batadv_tp_handle_out_of_order inserts a new entry in the list of
-unacked (out of order) packets, it searches from the entry with the newest
-sequence number towards oldest sequence number. If an entry is found which
-is older than the newly entry, the new entry has to be added after the
-found one to keep the ascending order.
+When an interface gets disabled, the worker is correctly disabled by
+batadv_hardif_disable_interface() -> ... -> batadv_v_ogm_iface_disable().
+In this process, the skb aggr_list is also freed.
 
-But for this operation list_add_tail() was used. But this function adds an
-entry _before_ another one. As result, the list would contain a lot of
-swapped sequence numbers. The consumer of this list
-(batadv_tp_ack_unordered()) would then fail to correctly ack packets.
+But batadv_v_ogm_send_meshif() can still queue new skbs (via
+batadv_v_ogm_queue_on_if()) to the aggr_list. This will only stop after all
+cores can no longer find the RCU protected list of hard interfaces. These
+queued skbs will never be freed or consumed by batadv_v_ogm_aggr_work.
+
+The batadv_v_ogm_iface_disable() function must block
+batadv_v_ogm_queue_on_if() to avoid leak of skbs.
 
 Cc: stable@kernel.org
-Fixes: 33a3bb4a3345 ("batman-adv: throughput meter implementation")
+Fixes: f89255a02f1d ("batman-adv: BATMAN_V: introduce per hard-iface OGMv2 queues")
+[ Context ]
 Signed-off-by: Sven Eckelmann <sven@narfation.org>
 ---
- net/batman-adv/tp_meter.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/batman-adv/bat_v.c     |  1 +
+ net/batman-adv/bat_v_ogm.c | 12 ++++++++++++
+ net/batman-adv/types.h     |  6 ++++++
+ 3 files changed, 19 insertions(+)
 
-diff --git a/net/batman-adv/tp_meter.c b/net/batman-adv/tp_meter.c
-index 0fc4ca78e84eb..e8941f753a969 100644
---- a/net/batman-adv/tp_meter.c
-+++ b/net/batman-adv/tp_meter.c
-@@ -1325,7 +1325,7 @@ static bool batadv_tp_handle_out_of_order(struct batadv_tp_vars *tp_vars,
- 		 * one is attached _after_ it. In this way the list is kept in
- 		 * ascending order
- 		 */
--		list_add_tail(&new->list, &un->list);
-+		list_add(&new->list, &un->list);
- 		added = true;
- 		break;
+diff --git a/net/batman-adv/bat_v.c b/net/batman-adv/bat_v.c
+index de94447142642..17d2a1ccdce67 100644
+--- a/net/batman-adv/bat_v.c
++++ b/net/batman-adv/bat_v.c
+@@ -817,6 +817,7 @@ void batadv_v_hardif_init(struct batadv_hard_iface *hard_iface)
+ 
+ 	hard_iface->bat_v.aggr_len = 0;
+ 	skb_queue_head_init(&hard_iface->bat_v.aggr_list);
++	hard_iface->bat_v.aggr_list_enabled = false;
+ 	INIT_DELAYED_WORK(&hard_iface->bat_v.aggr_wq,
+ 			  batadv_v_ogm_aggr_work);
+ }
+diff --git a/net/batman-adv/bat_v_ogm.c b/net/batman-adv/bat_v_ogm.c
+index d66ca77b1aaa3..6852bf5da8c55 100644
+--- a/net/batman-adv/bat_v_ogm.c
++++ b/net/batman-adv/bat_v_ogm.c
+@@ -252,11 +252,18 @@ static void batadv_v_ogm_queue_on_if(struct batadv_priv *bat_priv,
  	}
+ 
+ 	spin_lock_bh(&hard_iface->bat_v.aggr_list.lock);
++	if (!hard_iface->bat_v.aggr_list_enabled) {
++		kfree_skb(skb);
++		goto unlock;
++	}
++
+ 	if (!batadv_v_ogm_queue_left(skb, hard_iface))
+ 		batadv_v_ogm_aggr_send(bat_priv, hard_iface);
+ 
+ 	hard_iface->bat_v.aggr_len += batadv_v_ogm_len(skb);
+ 	__skb_queue_tail(&hard_iface->bat_v.aggr_list, skb);
++
++unlock:
+ 	spin_unlock_bh(&hard_iface->bat_v.aggr_list.lock);
+ }
+ 
+@@ -417,6 +424,10 @@ int batadv_v_ogm_iface_enable(struct batadv_hard_iface *hard_iface)
+ {
+ 	struct batadv_priv *bat_priv = netdev_priv(hard_iface->mesh_iface);
+ 
++	spin_lock_bh(&hard_iface->bat_v.aggr_list.lock);
++	hard_iface->bat_v.aggr_list_enabled = true;
++	spin_unlock_bh(&hard_iface->bat_v.aggr_list.lock);
++
+ 	batadv_v_ogm_start_queue_timer(hard_iface);
+ 	batadv_v_ogm_start_timer(bat_priv);
+ 
+@@ -432,6 +443,7 @@ void batadv_v_ogm_iface_disable(struct batadv_hard_iface *hard_iface)
+ 	cancel_delayed_work_sync(&hard_iface->bat_v.aggr_wq);
+ 
+ 	spin_lock_bh(&hard_iface->bat_v.aggr_list.lock);
++	hard_iface->bat_v.aggr_list_enabled = false;
+ 	batadv_v_ogm_aggr_list_free(hard_iface);
+ 	spin_unlock_bh(&hard_iface->bat_v.aggr_list.lock);
+ }
+diff --git a/net/batman-adv/types.h b/net/batman-adv/types.h
+index a01ee46d97f34..765ba71fe8c69 100644
+--- a/net/batman-adv/types.h
++++ b/net/batman-adv/types.h
+@@ -130,6 +130,12 @@ struct batadv_hard_iface_bat_v {
+ 	/** @aggr_list: queue for to be aggregated OGM packets */
+ 	struct sk_buff_head aggr_list;
+ 
++	/**
++	 * @aggr_list_enabled: aggr_list is active and new skbs can be
++	 * enqueued. Protected by aggr_list.lock after initialization
++	 */
++	bool aggr_list_enabled:1;
++
+ 	/** @aggr_len: size of the OGM aggregate (excluding ethernet header) */
+ 	unsigned int aggr_len;
+ 
 -- 
 2.47.3
 
