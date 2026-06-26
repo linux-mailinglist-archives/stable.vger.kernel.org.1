@@ -1,150 +1,214 @@
-Return-Path: <stable+bounces-268791-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-268793-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id n2reEe1NPmpLDAkAu9opvQ
-	(envelope-from <stable+bounces-268791-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 12:01:17 +0200
+	id yPLEGDxPPmrkDAkAu9opvQ
+	(envelope-from <stable+bounces-268793-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 12:06:52 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 825016CBE4F
-	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 12:01:15 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id B89406CBEBA
+	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 12:06:51 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=none;
-	dmarc=none;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-268791-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-268791-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=PZs6rUkY;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-268793-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-268793-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 850A53024DF6
-	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 10:01:02 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id AFDA4305808F
+	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 10:05:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF04B3EB0F0;
-	Fri, 26 Jun 2026 10:00:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3074A3EB0F4;
+	Fri, 26 Jun 2026 10:05:48 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from cstnet.cn (smtp81.cstnet.cn [159.226.251.81])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F07AC3EBF04;
-	Fri, 26 Jun 2026 10:00:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA47218B0F;
+	Fri, 26 Jun 2026 10:05:46 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782468058; cv=none; b=MZObO2rgfoOuMvqLuE4G2dVTretEuo+TaJKkvTDk58k9rOBnygy//cTJpOsOFGH3E/dG5ndxZmq5EvIG7BEtmLrt0c1Mj4h79R3gdBs0qvLgEJrwYVwnJY98RWNDqEtBPeGxNazjzHhM9VWnvHP+OwEnkXgRNONdIQ26F1e3HlM=
+	t=1782468348; cv=none; b=PjxODKDDrshXPvCIium7EfA0BDQUq11zMWyFxWhog/xcffCdqiNIseG/aqtqtksbIpccuwxHKuPjKPjbXD46ecAOAYjUQBBwC2xgFaPZ745Tby7B4k6BgZHUNPC9DvxJVpfnLx3SAsBQOuIv3bA8dB4PoZ1il9KZmXMddk991QA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782468058; c=relaxed/simple;
-	bh=UQVMOzVSc1P4F67Vk3YGL4CKtzNcOICf4bkwy2cjU/M=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=qYdF1/PeownP+r0qiSdQrtpvznM75nPT2cujg4uQHYvN0GIKdwu/i0lT1uGyqlSTmaMWPc4AAoQJ1nlEXMu+ElaPl0MfEs8BgzgWwXo8iaV2Pz7nO9jY/BDsZ3n90EwPWeVUjl4pHVyiXrI6hPISmQNp5ACYc3h5JFkqUjri0Ss=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.81
-Received: from localhost.localdomain (unknown [117.182.75.66])
-	by APP-03 (Coremail) with SMTP id rQCowACXaZDBTT5qhSXrFQ--.21S2;
-	Fri, 26 Jun 2026 18:00:35 +0800 (CST)
-From: WenTao Liang <vulab@iscas.ac.cn>
-To: peterz@infradead.org,
-	mingo@redhat.com,
-	acme@kernel.org,
-	namhyung@kernel.org,
-	tglx@kernel.org,
-	bp@alien8.de,
-	dave.hansen@linux.intel.com,
-	x86@kernel.org
-Cc: mark.rutland@arm.com,
-	alexander.shishkin@linux.intel.com,
-	jolsa@kernel.org,
-	irogers@google.com,
-	adrian.hunter@intel.com,
-	james.clark@linaro.org,
-	hpa@zytor.com,
-	linux-perf-users@vger.kernel.org,
+	s=arc-20240116; t=1782468348; c=relaxed/simple;
+	bh=on9Q0e33q3+ivfeVYwsV14w3mzatq3uHmWd8eu5xlJ0=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=eupasVUVyh17EQkyvKeEBLBWBLUG7vv7JOA/frc/lz1oZzJqObUeHxfHtwUdsNjeOoWG3bQK9jAFaDOQ28fOS6MEU4v5S9AdHniF5Wgz1u3UhfAwXF8IMfxnfNW61icWF5QmHYHtLlfK3w1h6sd8JTFcuOdeb1BZZ5Blyr5cpQI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PZs6rUkY; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B83101F000E9;
+	Fri, 26 Jun 2026 10:05:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1782468346;
+	bh=XPOnL3YaXcY5m5ZE7tv6kcrdVXllWoBe5sPRf2jXnF4=;
+	h=From:To:Cc:Subject:Date;
+	b=PZs6rUkYf9rAESRZeLEJuYSARXc9W6t080JPfO71cLYWXcyEgTuFTkHXIYKclq6gG
+	 euJHYHsWp6jtUC8y3lCHYOjKKbyhia1WduFm6BhN3rQxzTUQIYvkAKMeNnseHV8hl6
+	 bsbCOzZzZgga2sfNdrNj21lttW90LocD4TXyKqy5Y+zx1DOxX/5rmUN8YcbZc9pMW9
+	 sMtuu+LOqvFonMMC2nK+Jsih17DBX4ORaR4DrbrCSkN0qbULQ6sH5MmidGqOBqadZu
+	 p8hOYT6WDeHqrnd3lP3LA4fyeVVf4cfm114K50otfqHf4cGHPOrsNb4iEDgcfutswq
+	 26VioYZkSBhCA==
+From: Philipp Stanner <phasta@kernel.org>
+To: Sumit Semwal <sumit.semwal@linaro.org>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Boris Brezillon <boris.brezillon@collabora.com>,
+	Tvrtko Ursulin <tvrtko.ursulin@igalia.com>,
+	=?UTF-8?q?Andr=C3=A9=20Draszik?= <andre.draszik@linaro.org>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Gary Guo <gary@garyguo.net>,
+	"Paul E . McKenney" <paulmck@kernel.org>,
+	Boqun Feng <boqun@kernel.org>
+Cc: linux-media@vger.kernel.org,
+	dri-devel@lists.freedesktop.org,
+	linaro-mm-sig@lists.linaro.org,
 	linux-kernel@vger.kernel.org,
-	WenTao Liang <vulab@iscas.ac.cn>,
+	Philipp Stanner <phasta@kernel.org>,
 	stable@vger.kernel.org
-Subject: [PATCH] fix: x86/events/intel/uncore: discover_upi_topology: inner loop leaks PCI   device references from pci_get_domain_bus_and_slot
-Date: Fri, 26 Jun 2026 18:00:31 +0800
-Message-Id: <20260626100031.31494-1-vulab@iscas.ac.cn>
-X-Mailer: git-send-email 2.39.5 (Apple Git-154)
+Subject: [PATCH] dma-buf: dma-fence: Fix potential NULL pointer dereference
+Date: Fri, 26 Jun 2026 12:04:42 +0200
+Message-ID: <20260626100442.2202221-2-phasta@kernel.org>
+X-Mailer: git-send-email 2.54.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:rQCowACXaZDBTT5qhSXrFQ--.21S2
-X-Coremail-Antispam: 1UD129KBjvJXoW7KrykuFWfGw1fKw1ktFWUJwb_yoW8JF4fpF
-	WaqFy7Kr1fWas2ga98u3WS9rZFvF4kGF9Yg3yIg34I9wn8Xr17JFW2g3WYga48CrykXr1a
-	y3W2vw48X34UAaDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUU9Y14x267AKxVW5JVWrJwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
-	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
-	1l84ACjcxK6xIIjxv20xvE14v26w1j6s0DM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4U
-	JVWxJr1l84ACjcxK6I8E87Iv67AKxVW0oVCq3wA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_Gc
-	CE3s1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xvF2IEw4CE5I8CrVC2j2WlYx0E
-	2Ix0cI8IcVAFwI0_Jr0_Jr4lYx0Ex4A2jsIE14v26r1j6r4UMcvjeVCFs4IE7xkEbVWUJV
-	W8JwACjcxG0xvY0x0EwIxGrwACjI8F5VA0II8E6IAqYI8I648v4I1lFIxGxcIEc7CjxVA2
-	Y2ka0xkIwI1lc7CjxVAaw2AFwI0_GFv_Wryl42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x
-	0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2
-	zVAF1VAY17CE14v26r4a6rW5MIIYrxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF
-	4lIxAIcVC0I7IYx2IY6xkF7I0E14v26r4j6F4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWU
-	CwCI42IY6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E87Iv6xkF7I0E14v26r4j6r4UJbIYCT
-	nIWIevJa73UjIFyTuYvjTRNJ5oDUUUU
-X-CM-SenderInfo: pyxotu46lvutnvoduhdfq/1tbiBgoKA2o+SxkLIQAAsp
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [0.04 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [-4.16 / 15.00];
+	WHITELIST_SPF_DKIM(-3.00)[kernel.org:d:+,kernel.org:s:+];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCPT_COUNT_TWELVE(0.00)[19];
+	TAGGED_FROM(0.00)[bounces-268793-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:peterz@infradead.org,m:mingo@redhat.com,m:acme@kernel.org,m:namhyung@kernel.org,m:tglx@kernel.org,m:bp@alien8.de,m:dave.hansen@linux.intel.com,m:x86@kernel.org,m:mark.rutland@arm.com,m:alexander.shishkin@linux.intel.com,m:jolsa@kernel.org,m:irogers@google.com,m:adrian.hunter@intel.com,m:james.clark@linaro.org,m:hpa@zytor.com,m:linux-perf-users@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:vulab@iscas.ac.cn,m:stable@vger.kernel.org,s:lists@lfdr.de];
-	DMARC_NA(0.00)[iscas.ac.cn];
 	MIME_TRACE(0.00)[0:+];
-	FORWARDED(0.00)[lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_SENDER(0.00)[vulab@iscas.ac.cn,stable@vger.kernel.org];
-	TAGGED_FROM(0.00)[bounces-268791-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	TO_DN_SOME(0.00)[];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:sumit.semwal@linaro.org,m:christian.koenig@amd.com,m:boris.brezillon@collabora.com,m:tvrtko.ursulin@igalia.com,m:andre.draszik@linaro.org,m:dakr@kernel.org,m:gary@garyguo.net,m:paulmck@kernel.org,m:boqun@kernel.org,m:linux-media@vger.kernel.org,m:dri-devel@lists.freedesktop.org,m:linaro-mm-sig@lists.linaro.org,m:linux-kernel@vger.kernel.org,m:phasta@kernel.org,m:stable@vger.kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[phasta@kernel.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[15];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[vulab@iscas.ac.cn,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[phasta@kernel.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	ALIAS_RESOLVED(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	R_DKIM_NA(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	FROM_HAS_DN(0.00)[]
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 825016CBE4F
+X-Rspamd-Queue-Id: B89406CBEBA
 
-In the inner for loop, dev is repeatedly overwritten by
-  pci_get_domain_bus_and_slot() without first releasing the previous dev 
-  via pci_dev_put(). The err label only releases the last ubox and dev
-  references, while the references from earlier loop iterations are
-  permanently leaked. Fix by adding pci_dev_put(dev) before the overwriting
-  assignment.
+The commit mentioned in the fixes tag below introduced a mechanism
+through which fence producers can fully decouple from fence consumers.
+This, desirable, mechanism is based on the fence's signaled-bit as the
+"decoupling point".
+
+A sophisticated interaction between RCU and atomic instructions attempts
+to ensure that fence consumers can still interact with fence producers
+through the dma_fence_ops, callback pointers into the producer.
+
+This is the desired behavior: to check for decoupling, the signaled-bit
+is first checked. If it's not yet signaled, RCU ensures that the ops
+pointer cannot yet be NULL.
+
+Hereby, dma_fence_signal_timestamp_locked() first sets the signaled-bit,
+and then sets the ops pointer to NULL. Readers first load the ops
+pointer, and then check through the signaled-bit whether the pointer can
+legally be accessed.
+
+These set and load operations could occur out of order on weakly ordered
+platforms. Hence, we need to enforce strict ordering all the time.
+
+Add the appropriate memory barriers.
 
 Cc: stable@vger.kernel.org
-Fixes: fdd041028f22 ("perf/x86/intel/uncore: Factor out topology_gidnid_map()")
-Signed-off-by: WenTao Liang <vulab@iscas.ac.cn>
+Fixes: f4cc3ab824d6 ("dma-buf: protected fence ops by RCU v8")
+Signed-off-by: Philipp Stanner <phasta@kernel.org>
 ---
- arch/x86/events/intel/uncore_snbep.c | 1 +
- 1 file changed, 1 insertion(+)
+Tested with dmabuf and drm_sched unit tests.
 
-diff --git a/arch/x86/events/intel/uncore_snbep.c b/arch/x86/events/intel/uncore_snbep.c
-index 215d33e260ed..cecc1ce0a248 100644
---- a/arch/x86/events/intel/uncore_snbep.c
-+++ b/arch/x86/events/intel/uncore_snbep.c
-@@ -5494,6 +5494,7 @@ static int discover_upi_topology(struct intel_uncore_type *type, int ubox_did, i
- 		for (idx = 0; idx < type->num_boxes; idx++) {
- 			upi = &type->topology[lgc_pkg][idx];
- 			devfn = PCI_DEVFN(dev_link0 + idx, ICX_UPI_REGS_ADDR_FUNCTION);
-+			pci_dev_put(dev);
- 			dev = pci_get_domain_bus_and_slot(pci_domain_nr(ubox->bus),
- 							  ubox->bus->number,
- 							  devfn);
+Memory barriers are notoriously difficult, so I would appreciate if some
+of the more experienced folks can check this. Notably, I am not sure
+whether the smp_wmb() is necessary.
+
+The documentation for test_and_set_bit() makes the mysterious statement
+"This is an atomic fully-ordered operation (implied full memory
+barrier)", but the kcsan_mb() seems to be some sort of debugging
+barrier, and in any case the docu doesn't make it obvious to me whether
+that "full barrier" comes before or after the bit setting takes place.
+
+Moreover, in my opinion we should order dma_fence_is_signaled(), too –
+but if we agree to merge Christian's new series [1] that need should
+disappear.
+
+
+[1] https://lore.kernel.org/dri-devel/20260624122917.2483-1-christian.koenig@amd.com/ 
+---
+ drivers/dma-buf/dma-fence.c | 24 ++++++++++++++++++++++++
+ 1 file changed, 24 insertions(+)
+
+diff --git a/drivers/dma-buf/dma-fence.c b/drivers/dma-buf/dma-fence.c
+index c7ea1e75d38a..2e80b01499de 100644
+--- a/drivers/dma-buf/dma-fence.c
++++ b/drivers/dma-buf/dma-fence.c
+@@ -363,6 +363,18 @@ void dma_fence_signal_timestamp_locked(struct dma_fence *fence,
+ 				      &fence->flags)))
+ 		return;
+ 
++	/*
++	 * Fully order setting of the bit above with setting of the ops pointer
++	 * to NULL below, so that all parties can use the signaled flag to
++	 * detect that the fence decoupled from its ops in a safe manner.
++	 *
++	 * The counter parts of this barrier are in dma_fence_timeline_name()
++	 * and dma_fence_driver_name(). All other future parties that rely on
++	 * the signaled flag for valid access to the ops pointer will need a
++	 * memory barrier.
++	 */
++	smp_wmb();
++
+ 	trace_dma_fence_signaled(fence);
+ 
+ 	/*
+@@ -1170,6 +1182,12 @@ const char __rcu *dma_fence_driver_name(struct dma_fence *fence)
+ 
+ 	/* RCU protection is required for safe access to returned string */
+ 	ops = rcu_dereference(fence->ops);
++	/*
++	 * Fully order the dereference above with the flag check. Otherwise,
++	 * ops could be dereferenced as a NULL pointer. The barrier's
++	 * counterpart is in dma_fence_signal_timestamp_locked().
++	 */
++	smp_rmb();
+ 	if (!dma_fence_test_signaled_flag(fence))
+ 		return (const char __rcu *)ops->get_driver_name(fence);
+ 	else
+@@ -1203,6 +1221,12 @@ const char __rcu *dma_fence_timeline_name(struct dma_fence *fence)
+ 
+ 	/* RCU protection is required for safe access to returned string */
+ 	ops = rcu_dereference(fence->ops);
++	/*
++	 * Fully order the dereference above with the flag check. Otherwise,
++	 * ops could be dereferenced as a NULL pointer. The barrier's
++	 * counterpart is in dma_fence_signal_timestamp_locked().
++	 */
++	smp_rmb();
+ 	if (!dma_fence_test_signaled_flag(fence))
+ 		return (const char __rcu *)ops->get_driver_name(fence);
+ 	else
+
+base-commit: cdeb2ccd993ed8647adbbda2c3b103aa717fd6f7
 -- 
-2.39.5 (Apple Git-154)
+2.54.0
 
 
