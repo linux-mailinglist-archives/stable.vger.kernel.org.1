@@ -1,247 +1,141 @@
-Return-Path: <stable+bounces-269033-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-269031-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id AquRGMmlPmplJgkAu9opvQ
-	(envelope-from <stable+bounces-269033-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 18:16:09 +0200
+	id 4vNyJKqlPmpZJgkAu9opvQ
+	(envelope-from <stable+bounces-269031-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 18:15:38 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B145F6CEDF9
-	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 18:16:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D60D56CEDDF
+	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 18:15:37 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=narfation.org header.s=20121 header.b=Amtue0Ie;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-269033-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-269033-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=none) header.from=narfation.org;
+	dkim=pass header.d=lunn.ch header.s=20171124 header.b="Zw JG6c5";
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-269031-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-269031-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=none) header.from=lunn.ch;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C2C33312D554
-	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 16:10:26 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 71633311FBFD
+	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 16:10:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5DD943FADED;
-	Fri, 26 Jun 2026 16:10:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 97EAB3FC5A2;
+	Fri, 26 Jun 2026 16:10:21 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from dvalin.narfation.org (dvalin.narfation.org [213.160.73.56])
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F345D39E6FD
-	for <stable@vger.kernel.org>; Fri, 26 Jun 2026 16:10:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3C48373BE7;
+	Fri, 26 Jun 2026 16:10:16 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782490222; cv=none; b=jK6S1xzwUlUB7BJux7V+ZsJN63+cQ/nm141Xhqbyx6daRoaPFSBZ8ovVrcMO/mrJL9p+lqwQwW/KbwrlcaFtdIf88HlcY3Efc7Zax7v9pqtZXs/3RtnAd3xhhnt1YEJmXgZC0yh8q3YnklNH6e1C9AT3IRbzMgIdoc0vg7fGbDk=
+	t=1782490221; cv=none; b=AwR5aGpdTZEiJiR87zF77mpRMgAHpXsP2Gw8m4BdXMcY3y2luzZKBZ/9vCArHC2PeRT4y/yqJdV2QIfg4lE9eFFsa8arFlmdM/+eMJ5lVlWhBkf7rMRezMDuFfjwklrTeu7JZTXyFV38DhksB2UrESjnxbF+KGeyq6iH2Pg6Le8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782490222; c=relaxed/simple;
-	bh=LGLqHhwVnDBwQaW/w1o/zc7GJA4eA85piq53j9wiTLw=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GWAbbe8HvEhyz+cY3qZco35CnuGP5+6VIusB/oOlULfSA/7YZxrWQFjWZEfTazfAhmJ0Q7BU8dr6az+rdVqVzYreQp6dhSzjctDwdqrSx4kcK1tBMgY/3vYH/fEAdp8C+ZWJo1CmybC7+Lxy/3xnVEHpE5n5yIRO0eNPmzPXEzM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=narfation.org; spf=pass smtp.mailfrom=narfation.org; dkim=pass (1024-bit key) header.d=narfation.org header.i=@narfation.org header.b=Amtue0Ie; arc=none smtp.client-ip=213.160.73.56
-Received: by dvalin.narfation.org (Postfix) id ED46F20877;
-	Fri, 26 Jun 2026 16:10:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=narfation.org;
-	s=20121; t=1782490205;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=8IcgmhPiZQfVmzvK2rHYCjqEd5Nn490gTElA/LtgX4w=;
-	b=Amtue0Ie5bTCP8ykmEG4s34/Ax3HCvGyomNHu1YTFvkepczFnT/v49aBWIGfUmTa9rlKin
-	4J7kvCeRl4GxC7Cd0sb2NtQlA32rsQ2UAQiaVY126mTYM4LAh41iqc9wmjlGimG04r9KnV
-	7GTg/2zENzLC1BGwp8CrhYPyQR4MyKA=
-From: Sven Eckelmann <sven@narfation.org>
-To: stable@vger.kernel.org
-Cc: Sven Eckelmann <sven@narfation.org>
-Subject: [PATCH 5.10 23/23] batman-adv: tvlv: avoid race of cifsnotfound handler state
-Date: Fri, 26 Jun 2026 18:09:52 +0200
-Message-ID: <20260626160952.123713-24-sven@narfation.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260626160952.123713-1-sven@narfation.org>
-References: <20260626160952.123713-1-sven@narfation.org>
+	s=arc-20240116; t=1782490221; c=relaxed/simple;
+	bh=jM0fxqGdN3P1GRFOqvJj8Dwt0iyeQLQRZCEcZ8CaIGQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=k0wtvO5wwXKZbuuRT4Huhl3SphO5hR2ym9kpWv6U7RQk/T55r0pexhL2zOOB4ZsyWnUsrK5zE0nVm3xU60mga4AAxnqOLB0eRnkBigJBoFh3Bou8gO+xfQmFNPCPTu+uonCZJ8W0k9oO3v4wSE5pJ1R4AqMbwPNBl7RqtrBTco8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=ZwJG6c54; arc=none smtp.client-ip=156.67.10.101
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Transfer-Encoding:Content-Disposition:
+	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:From:
+	Sender:Reply-To:Subject:Date:Message-ID:To:Cc:MIME-Version:Content-Type:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Content-Disposition:
+	In-Reply-To:References; bh=LqTmciX5H0Eo9RMsPQbpjVewR3Vqa3rOZ1Ov7e2wKPY=; b=Zw
+	JG6c54b7NeCbaLn2bGVxYPD5LPxalaTXM3AfBxDQSS6sPYoCnAeYN6UotAh0IvIIrNUmzBqUZE3Lp
+	LZ3zOJiKgb1YW192TEa/yAwujtR0wS9xve+iFkqmT19qewRqfaxRhYl/NYm+8Yxle+Svhz2ZB8cE2
+	y/SdkO71A5Mgets=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1wd983-009OEP-Il; Fri, 26 Jun 2026 18:10:07 +0200
+Date: Fri, 26 Jun 2026 18:10:07 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: WenTao Liang <vulab@iscas.ac.cn>
+Cc: netdev@vger.kernel.org,
+	Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
+	"David S . Miller" <davem@davemloft.net>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	stable@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2] fix: net: renesas: rswitch_mii_register: fix double
+ of_node_put after   of_mdiobus_register
+Message-ID: <fdb2120d-5d0e-445f-97a5-ef2307ebd4d1@lunn.ch>
+References: <20260626152430.51835-1-vulab@iscas.ac.cn>
+ <20260626152550.51911-1-vulab@iscas.ac.cn>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <20260626152550.51911-1-vulab@iscas.ac.cn>
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[narfation.org,none];
-	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[lunn.ch,none];
+	R_DKIM_ALLOW(-0.20)[lunn.ch:s=20171124];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[narfation.org:s=20121];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-269031-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-269033-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:sven@narfation.org,s:lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWO(0.00)[2];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_SENDER(0.00)[sven@narfation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sven@narfation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[narfation.org:+];
-	FORGED_SENDER_FORWARDING(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER(0.00)[andrew@lunn.ch,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS(0.00)[m:vulab@iscas.ac.cn,m:netdev@vger.kernel.org,m:yoshihiro.shimoda.uh@renesas.com,m:davem@davemloft.net,m:kuba@kernel.org,m:pabeni@redhat.com,m:stable@vger.kernel.org,m:linux-kernel@vger.kernel.org,s:lists@lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[lunn.ch:+];
+	MISSING_XM_UA(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[andrew@lunn.ch,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,narfation.org:dkim,narfation.org:email,narfation.org:mid,narfation.org:from_mime]
+	MID_RHS_MATCH_FROM(0.00)[];
+	TO_DN_SOME(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[lunn.ch:dkim,lunn.ch:mid,lunn.ch:from_mime,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: B145F6CEDF9
+X-Rspamd-Queue-Id: D60D56CEDDF
 
-commit edb557b2ba38fea2c5eb710cf366c797e187218c upstream.
+On Fri, Jun 26, 2026 at 11:25:50PM +0800, WenTao Liang wrote:
+> After of_mdiobus_register succeeds, the mdio_np reference ownership is
+>   transferred to the mii_bus device (released via fwnode_handle_put during
+>   mdiobus_release). The success path calls of_node_put(mdio_np) which,
+>   combined with the automatic release via bus teardown, results in a double
+>   put and refcount underflow.
+> 
+> Move of_node_put so it is only called in the error path where
+>   of_mdiobus_register failed. On success, the bus driver manages the
+>   reference lifecycle.
 
-TVLV handlers can have the flag BATADV_TVLV_HANDLER_OGM_CIFNOTFND set to
-signal that the OGM handler should be called (with NULL for data) when the
-specific TVLV container was not found in the OGM. This is used by:
+Please stop with these patches.
 
-* DAT
-* GW
-* Multicast (OGM + Tracker)
+First please read:
 
-The state whether the handler was executed was stored in the struct
-batadv_tvlv_handler. But the TVLV processing is started without any lock.
-Multiple parallel contexts processing TVLVs would therefore overwrite each
-others BATADV_TVLV_HANDLER_OGM_CALLED flag in the shared
-batadv_tvlv_handler.
+https://www.kernel.org/doc/html/latest/process/maintainer-netdev.html
 
-Drop the shared BATADV_TVLV_HANDLER_OGM_CALLED flag and instead determine,
-per TVLV buffer, whether a matching container was present by scanning the
-packet's buffer.
+and
 
-Cc: stable@kernel.org
-Fixes: ef26157747d4 ("batman-adv: tvlv - basic infrastructure")
-[ Context ]
-Signed-off-by: Sven Eckelmann <sven@narfation.org>
----
- net/batman-adv/tvlv.c  | 63 ++++++++++++++++++++++++++++++++++++++----
- net/batman-adv/types.h |  7 -----
- 2 files changed, 57 insertions(+), 13 deletions(-)
+https://docs.kernel.org/process/submitting-patches.html
 
-diff --git a/net/batman-adv/tvlv.c b/net/batman-adv/tvlv.c
-index 84f0fb175b331..2c224951d0195 100644
---- a/net/batman-adv/tvlv.c
-+++ b/net/batman-adv/tvlv.c
-@@ -394,7 +394,6 @@ static int batadv_tvlv_call_handler(struct batadv_priv *bat_priv,
- 		tvlv_handler->ogm_handler(bat_priv, orig_node,
- 					  BATADV_NO_FLAGS,
- 					  tvlv_value, tvlv_value_len);
--		tvlv_handler->flags |= BATADV_TVLV_HANDLER_OGM_CALLED;
- 	} else {
- 		if (!src)
- 			return NET_RX_SUCCESS;
-@@ -413,6 +412,48 @@ static int batadv_tvlv_call_handler(struct batadv_priv *bat_priv,
- 	return NET_RX_SUCCESS;
- }
- 
-+/**
-+ * batadv_tvlv_containers_contain() - check if a tvlv buffer holds a container
-+ * @tvlv_value: tvlv content
-+ * @tvlv_value_len: tvlv content length
-+ * @type: tvlv container type to look for
-+ * @version: tvlv container version to look for
-+ *
-+ * Return: true if a container of the given type and version is present in the
-+ * tvlv buffer, false otherwise.
-+ */
-+static bool batadv_tvlv_containers_contain(void *tvlv_value,
-+					   u16 tvlv_value_len, u8 type,
-+					   u8 version)
-+{
-+	struct batadv_tvlv_hdr *tvlv_hdr;
-+	u16 tvlv_value_cont_len;
-+
-+	while (tvlv_value_len >= sizeof(*tvlv_hdr)) {
-+		tvlv_hdr = tvlv_value;
-+		tvlv_value_cont_len = ntohs(tvlv_hdr->len);
-+		tvlv_value = tvlv_hdr + 1;
-+		tvlv_value_len -= sizeof(*tvlv_hdr);
-+
-+		if (tvlv_value_cont_len > tvlv_value_len)
-+			break;
-+
-+		/* the next tvlv header is accessed assuming (at least) 2-byte
-+		 * alignment, so it must start at an even offset.
-+		 */
-+		if (tvlv_value_cont_len & 1)
-+			break;
-+
-+		if (tvlv_hdr->type == type && tvlv_hdr->version == version)
-+			return true;
-+
-+		tvlv_value = (u8 *)tvlv_value + tvlv_value_cont_len;
-+		tvlv_value_len -= tvlv_value_cont_len;
-+	}
-+
-+	return false;
-+}
-+
- /**
-  * batadv_tvlv_containers_process() - parse the given tvlv buffer to call the
-  *  appropriate handlers
-@@ -433,7 +474,9 @@ int batadv_tvlv_containers_process(struct batadv_priv *bat_priv,
- 				   u8 *src, u8 *dst,
- 				   void *tvlv_value, u16 tvlv_value_len)
- {
-+	u16 tvlv_value_start_len = tvlv_value_len;
- 	struct batadv_tvlv_handler *tvlv_handler;
-+	void *tvlv_value_start = tvlv_value;
- 	struct batadv_tvlv_hdr *tvlv_hdr;
- 	u16 tvlv_value_cont_len;
- 	u8 cifnotfound = BATADV_TVLV_HANDLER_OGM_CIFNOTFND;
-@@ -474,12 +517,20 @@ int batadv_tvlv_containers_process(struct batadv_priv *bat_priv,
- 	rcu_read_lock();
- 	hlist_for_each_entry_rcu(tvlv_handler,
- 				 &bat_priv->tvlv.handler_list, list) {
--		if ((tvlv_handler->flags & BATADV_TVLV_HANDLER_OGM_CIFNOTFND) &&
--		    !(tvlv_handler->flags & BATADV_TVLV_HANDLER_OGM_CALLED))
--			tvlv_handler->ogm_handler(bat_priv, orig_node,
--						  cifnotfound, NULL, 0);
-+		if (!(tvlv_handler->flags & BATADV_TVLV_HANDLER_OGM_CIFNOTFND))
-+			continue;
- 
--		tvlv_handler->flags &= ~BATADV_TVLV_HANDLER_OGM_CALLED;
-+		/* if the corresponding container was present then the handler
-+		 * was already called from the loop above
-+		 */
-+		if (batadv_tvlv_containers_contain(tvlv_value_start,
-+						   tvlv_value_start_len,
-+						   tvlv_handler->type,
-+						   tvlv_handler->version))
-+			continue;
-+
-+		tvlv_handler->ogm_handler(bat_priv, orig_node,
-+					  cifnotfound, NULL, 0);
- 	}
- 	rcu_read_unlock();
- 
-diff --git a/net/batman-adv/types.h b/net/batman-adv/types.h
-index 88831374e8174..79ffd25fd4eba 100644
---- a/net/batman-adv/types.h
-+++ b/net/batman-adv/types.h
-@@ -2492,13 +2492,6 @@ enum batadv_tvlv_handler_flags {
- 	 *  will call this handler even if its type was not found (with no data)
- 	 */
- 	BATADV_TVLV_HANDLER_OGM_CIFNOTFND = BIT(1),
--
--	/**
--	 * @BATADV_TVLV_HANDLER_OGM_CALLED: interval tvlv handling flag - the
--	 *  API marks a handler as being called, so it won't be called if the
--	 *  BATADV_TVLV_HANDLER_OGM_CIFNOTFND flag was set
--	 */
--	BATADV_TVLV_HANDLER_OGM_CALLED = BIT(2),
- };
- 
- /**
--- 
-2.47.3
+You are getting a lot of things wrong. 
 
+* don’t repost your patches within one 24h period
+* Don't thread new versions of a patch to the old one
+* Include version history, how is v2 different to v1
+* When you see your own patch is broken, reply with NACK, and explain
+  what is wrong with it.
+
+Until you learn how to correctly submit patches, please only submit
+them one at a time, get it accepted, and move onto the next. Otherwise
+you are wasting peoples time, and getting yourself a bad reputation.
+
+     Andrew
 
