@@ -1,41 +1,41 @@
-Return-Path: <stable+bounces-268872-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-268873-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id rfbIBItuPmoGGAkAu9opvQ
-	(envelope-from <stable+bounces-268872-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 14:20:27 +0200
+	id UnQALztvPmouGAkAu9opvQ
+	(envelope-from <stable+bounces-268873-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 14:23:23 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 388646CCEE4
-	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 14:20:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0BA256CCF20
+	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 14:23:23 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
 	dkim=none;
 	dmarc=none;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-268872-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-268872-lists+stable=lfdr.de@vger.kernel.org";
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-268873-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-268873-lists+stable=lfdr.de@vger.kernel.org";
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 786DB3014DA6
-	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 12:18:38 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id BF2283039893
+	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 12:21:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09CBD3F485D;
-	Fri, 26 Jun 2026 12:18:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4DE53F4849;
+	Fri, 26 Jun 2026 12:21:54 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from cstnet.cn (smtp25.cstnet.cn [159.226.251.25])
 	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A71A63E5EC9;
-	Fri, 26 Jun 2026 12:18:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7EB541DFFB;
+	Fri, 26 Jun 2026 12:21:52 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782476316; cv=none; b=Rt/H2lyIg4M0ZWCAKkLYz7EMB3/uAW47kzS/kNJQzXT8I7fA+TI8ny8hcgV6sGP0617ES/jiF7sf0cK7A6nnkKD29ReEkN1MtxK+moqlwPk2S0QLWS/cPKGkRxBGrty5gTmSnqTtr8oralp3xOhVcaNz1XmSEIMTLpAZK4o+TRY=
+	t=1782476514; cv=none; b=lhkl4vG6ZIAG5duoEXkaxc5zzIDSAwrD8E2US84/g2XiPHydR2E8WOOEb77C4x5Yu+fhpydUyLwUHJfJ6/mJvJl2DRkk1G9kXpGkighL1e0pWilK98QM93f3A16MPkL3UlULseM+aH/2n5rYg1S3AYDDu3dfH7wx2kiH9tPxluE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782476316; c=relaxed/simple;
-	bh=o6Q2eIS9pDEgn2VocqHd66JeSMLwlQBezNr3n/ezLLc=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=kxVM8TqU416wMXpc5OOroXdISKUQ6+EPMa0COEBDWt1kMVGWjpmzRFgcfSgOm3VS/pCn86ZGcjnuC2UsmKX52L1GyilTrjtDTB2htLI1Nt6iX88bbwzD9AiM4u8UcNqdxL1Hik9/85JrdonmQbQJbu+KnhSwJmz50OtiDD8QuRw=
+	s=arc-20240116; t=1782476514; c=relaxed/simple;
+	bh=vLOKBcrc63VddPsDy6p81z6kYwZ+TobrdCmhG/cIbCI=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=XDWuRnPojdM6IF39OmU6ohmznzp9WgZj+ROReOb6jRAZ3LDRcSiY4lGVIw+YCTr4r0KZAO6qgZbHupOwX+SsRbx0i8910XPvo8g9lIDcOTCDy7Rroix0rzW5sZ2nU4iDpUYwxVPtnJzpYlx2HKsgJaLtRKGxcXMhEL3MYv/3eA8=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.25
 Received: from localhost.localdomain (unknown [117.182.75.66])
-	by APP-05 (Coremail) with SMTP id zQCowACnMwcTbj5qSbNnFQ--.22821S2;
-	Fri, 26 Jun 2026 20:18:29 +0800 (CST)
+	by APP-05 (Coremail) with SMTP id zQCowACXCOzabj5qp9NnFQ--.11068S2;
+	Fri, 26 Jun 2026 20:21:47 +0800 (CST)
 From: WenTao Liang <vulab@iscas.ac.cn>
 To: sumit.semwal@linaro.org,
 	christian.koenig@amd.com
@@ -45,9 +45,9 @@ Cc: linux-media@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	WenTao Liang <vulab@iscas.ac.cn>,
 	stable@vger.kernel.org
-Subject: [PATCH] fix: dma-buf: fence_chains_init: error unwind path leaks   enable_sw_signaling reference
-Date: Fri, 26 Jun 2026 20:18:25 +0800
-Message-Id: <20260626121825.35310-1-vulab@iscas.ac.cn>
+Subject: [PATCH] fix: dma-buf: unwrap_merge_order: success path leaks chain and array   fence references
+Date: Fri, 26 Jun 2026 20:21:45 +0800
+Message-Id: <20260626122145.35549-1-vulab@iscas.ac.cn>
 X-Mailer: git-send-email 2.39.5 (Apple Git-154)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -56,14 +56,14 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:zQCowACnMwcTbj5qSbNnFQ--.22821S2
-X-Coremail-Antispam: 1UD129KBjvJXoWrKw18XF17GFyUXw45Ary8Grg_yoW8Jryrpa
-	93Kr1UKr98K3WxZayDAF1DtFyFkr4rXry8WF4jka4Sv3s8ZFyUXr4vy3y2qF98Cr97GFZ8
-	J345Cry5WF1rAF7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUkl14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
-	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
-	1l84ACjcxK6xIIjxv20xvE14v26ryj6F1UM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4j
-	6F4UM28EF7xvwVC2z280aVAFwI0_GcCE3s1l84ACjcxK6I8E87Iv6xkF7I0E14v26rxl6s
+X-CM-TRANSID:zQCowACXCOzabj5qp9NnFQ--.11068S2
+X-Coremail-Antispam: 1UD129KBjvdXoW7JF4UGw1UXFy8ur4rXF48tFb_yoWDXrbE9a
+	18GFn3X34vyFsxtr17AFn0vr9akryUZrs5Crn2qFyay345ZFnxWw4DWFs7X3W8Xw48WFWD
+	Jr92q34rJry7ujkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
+	9fnUUIcSsGvfJTRUUUb4xFF20E14v26r4j6ryUM7CY07I20VC2zVCF04k26cxKx2IYs7xG
+	6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48ve4kI8w
+	A2z4x0Y4vE2Ix0cI8IcVAFwI0_Xr0_Ar1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI0_Cr0_
+	Gr1UM28EF7xvwVC2z280aVAFwI0_GcCE3s1l84ACjcxK6I8E87Iv6xkF7I0E14v26rxl6s
 	0DM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xII
 	jxv20xvE14v26r1Y6r17McIj6I8E87Iv67AKxVW8JVWxJwAm72CE4IkC6x0Yz7v_Jr0_Gr
 	1lF7xvr2IYc2Ij64vIr41lF7I21c0EjII2zVCS5cI20VAGYxC7MxkF7I0En4kS14v26r12
@@ -71,25 +71,25 @@ X-Coremail-Antispam: 1UD129KBjvJXoWrKw18XF17GFyUXw45Ary8Grg_yoW8Jryrpa
 	0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWUtVW8ZwCIc40Y
 	0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267AKxV
 	W8JVWxJwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Gr0_Cr1l
-	IxAIcVC2z280aVCY1x0267AKxVW8JVW8JrUvcSsGvfC2KfnxnUUI43ZEXa7VUjMqcUUUUU
-	U==
-X-CM-SenderInfo: pyxotu46lvutnvoduhdfq/1tbiDAcKA2o+ThJiEgAAs6
+	IxAIcVC2z280aVCY1x0267AKxVW8Jr0_Cr1UYxBIdaVFxhVjvjDU0xZFpf9x0JUhtxDUUU
+	UU=
+X-CM-SenderInfo: pyxotu46lvutnvoduhdfq/1tbiCQ4KA2o+TZNnCwAAso
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [0.04 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-268872-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-268873-lists,stable=lfdr.de];
 	DMARC_NA(0.00)[iscas.ac.cn];
-	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:sumit.semwal@linaro.org,m:christian.koenig@amd.com,m:linux-media@vger.kernel.org,m:dri-devel@lists.freedesktop.org,m:linaro-mm-sig@lists.linaro.org,m:linux-kernel@vger.kernel.org,m:vulab@iscas.ac.cn,m:stable@vger.kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[vulab@iscas.ac.cn,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS(0.00)[m:sumit.semwal@linaro.org,m:christian.koenig@amd.com,m:linux-media@vger.kernel.org,m:dri-devel@lists.freedesktop.org,m:linaro-mm-sig@lists.linaro.org,m:linux-kernel@vger.kernel.org,m:vulab@iscas.ac.cn,m:stable@vger.kernel.org,s:lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORWARDED(0.00)[lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -104,39 +104,36 @@ X-Spamd-Result: default: False [0.04 / 15.00];
 	ALIAS_RESOLVED(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_SEVEN(0.00)[8];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,iscas.ac.cn:email,iscas.ac.cn:mid,iscas.ac.cn:from_mime]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[iscas.ac.cn:email,iscas.ac.cn:mid,iscas.ac.cn:from_mime,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 388646CCEE4
+X-Rspamd-Queue-Id: 0BA256CCF20
 
-dma_fence_enable_sw_signaling acquires an extra reference on each chain
-  fence. The error unwind loop calls dma_fence_put only once per
-  chain/fence without first signaling the fence to trigger the callback
-  that releases the signaling reference. This prevents the chain fence kref
-  from reaching 0, permanently leaking the chain and its contained fence.
+The success path only releases a2 via dma_fence_put but does not release
+  a1, c1, or c2. The dma_fence_get calls at lines 440 and 445 were intended
+  to pass references to mock_chain, but mock_chain already acquires its own
+  references internally, making these extra gets surplus and permanently
+  leaked.
 
 Cc: stable@vger.kernel.org
-Fixes: dc2f7e67a28a ("dma-buf: Exercise dma-fence-chain under selftests")
+Fixes: b1cce631e61f ("dma-buf: add selftest for fence order after merge")
 Signed-off-by: WenTao Liang <vulab@iscas.ac.cn>
 ---
- drivers/dma-buf/st-dma-fence-chain.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/dma-buf/st-dma-fence-unwrap.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/dma-buf/st-dma-fence-chain.c b/drivers/dma-buf/st-dma-fence-chain.c
-index 821023dd34df..7dc18e294387 100644
---- a/drivers/dma-buf/st-dma-fence-chain.c
-+++ b/drivers/dma-buf/st-dma-fence-chain.c
-@@ -152,7 +152,10 @@ static int fence_chains_init(struct fence_chains *fc, unsigned int count,
- 
- unwind:
- 	for (i = 0; i < count; i++) {
--		dma_fence_put(fc->fences[i]);
-+		if (fc->fences[i]) {
-+			dma_fence_signal(fc->fences[i]);
-+			dma_fence_put(fc->fences[i]);
-+		}
- 		dma_fence_put(fc->chains[i]);
+diff --git a/drivers/dma-buf/st-dma-fence-unwrap.c b/drivers/dma-buf/st-dma-fence-unwrap.c
+index 9c74195f47fd..72ca632e3981 100644
+--- a/drivers/dma-buf/st-dma-fence-unwrap.c
++++ b/drivers/dma-buf/st-dma-fence-unwrap.c
+@@ -472,6 +472,8 @@ static int unwrap_merge_order(void *arg)
  	}
- 	kvfree(fc->fences);
+ 
+ 	dma_fence_put(a2);
++	dma_fence_put(c2);
++	dma_fence_put(a1);
+ 	return err;
+ 
+ error_put_a1:
 -- 
 2.39.5 (Apple Git-154)
 
