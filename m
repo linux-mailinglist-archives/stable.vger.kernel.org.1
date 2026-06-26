@@ -1,541 +1,664 @@
-Return-Path: <stable+bounces-268769-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-268775-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id j89pKhIpPmqfAgkAu9opvQ
-	(envelope-from <stable+bounces-268769-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 09:24:02 +0200
+	id wuGfFYg1Pmr6BQkAu9opvQ
+	(envelope-from <stable+bounces-268775-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 10:17:12 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id E3C296CAE7C
-	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 09:24:01 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id A330E6CB42D
+	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 10:17:11 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=qWoP+vs0;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-268769-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-268769-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=quarantine) header.from=huawei.com;
+	dkim=fail ("headers rsa verify failed") header.d=igalia.com header.s=20170329 header.b=huYCIoNR;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-268775-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-268775-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=fail reason="SPF not aligned (relaxed)" header.from=igalia.com (policy=none);
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 95AE1303BAEA
-	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 07:22:46 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id AEDAE303D708
+	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 08:16:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9FCBA3E0090;
-	Fri, 26 Jun 2026 07:22:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9016D3BD241;
+	Fri, 26 Jun 2026 08:16:36 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from canpmsgout01.his.huawei.com (canpmsgout01.his.huawei.com [113.46.200.216])
+Received: from fanzine2.igalia.com (fanzine2.igalia.com [213.97.179.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BF123DFC62;
-	Fri, 26 Jun 2026 07:22:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1274349CDD;
+	Fri, 26 Jun 2026 08:16:31 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782458553; cv=none; b=eopHB2vYjXP9DspCd41PRX/Y5hASCImPSuUaBB1rHPXC+KxOhaiyzmB7+3m+o8GcHIerMY6YRy6F4qYTZb6PvkpPdfaGlT3yfl4DxE97qKrJ0O/U+hjUOp2TAJDiYaNW0kMgX1vc1CeD21vosjpo2ME7gWwHqPPG4Z9bvSGyZCQ=
+	t=1782461796; cv=none; b=ZhVWdVMTMtXl1t8tJOIbFxbzZCm2g6noABL68L/5j+r6WFxAwP/Qew7El0a+YF5CDxq7jMdhs92spOSPAeaiURgAzn4lnBj//5KeWQW1WN9xlghO950L/XicQilAUv+inHllvxKDMyp2PLBcOWyWo2jeXhZO8/q8PVCGhdkh/6c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782458553; c=relaxed/simple;
-	bh=+tozrg+0D5yE9+dlOufwYTzFrFJL2NFXHJX655wIIfA=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=JfZbgYd4KlnAe0JuTQJoM1dtto2YCdGSaJoS3muTGgzhlyhETqM9xUOwvM5DnwDl4Kcw0BkZ2Z0IHuCpx0ZpCN0LeCzeK6QUFdqgkdGnEs+pVefCT8WW691BGjcCoFY6Z5OihdimyeiVNZXWTq7HwjueQPI3crvDWDnP6HCoV8A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=qWoP+vs0; arc=none smtp.client-ip=113.46.200.216
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=KkKfziXQ+YXLWoUfp5dvtPMNeA1OLzRkTEKopOwviQ0=;
-	b=qWoP+vs09sTy0fFz/F0Mf2Be+7C8k9tghTz7EyuNOwcXbsbipllqdX3qfAB7AJOSjfEnpbs02
-	xRLrtGP5NiPLr2giGvyioVN5a4yZoQiJrzawpq+uBXuciIH6C9Lw0whmlVgd2s34Zlr2hTGxuk0
-	TSB45kD/NdAxGpQJQuiCd5c=
-Received: from mail.maildlp.com (unknown [172.19.163.0])
-	by canpmsgout01.his.huawei.com (SkyGuard) with ESMTPS id 4gmn2v4spPz1T4J3;
-	Fri, 26 Jun 2026 15:13:43 +0800 (CST)
-Received: from dggemv712-chm.china.huawei.com (unknown [10.1.198.32])
-	by mail.maildlp.com (Postfix) with ESMTPS id 3DCEB40576;
-	Fri, 26 Jun 2026 15:22:27 +0800 (CST)
-Received: from kwepemq200017.china.huawei.com (7.202.195.228) by
- dggemv712-chm.china.huawei.com (10.1.198.32) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Fri, 26 Jun 2026 15:22:17 +0800
-Received: from octopus.huawei.com (10.67.174.191) by
- kwepemq200017.china.huawei.com (7.202.195.228) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Fri, 26 Jun 2026 15:22:16 +0800
-From: Cai Xinchen <caixinchen1@huawei.com>
-To: <viro@zeniv.linux.org.uk>, <brauner@kernel.org>, <jack@suse.cz>,
-	<miklos@szeredi.hu>, <amir73il@gmail.com>, <paul@paul-moore.com>,
-	<jmorris@namei.org>, <serge@hallyn.com>, <stephen.smalley.work@gmail.com>,
-	<omosnace@redhat.com>, <gregkh@linuxfoundation.org>,
-	<bboscaccy@linux.microsoft.com>, <caixinchen1@huawei.com>
-CC: <linux-fsdevel@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-	<linux-unionfs@vger.kernel.org>, <linux-security-module@vger.kernel.org>,
-	<selinux@vger.kernel.org>, <bpf@vger.kernel.org>, <stable@vger.kernel.org>,
-	<lujialin4@huawei.com>
-Subject: [PATCH v2 stable/linux-6.18.y 2/2] selinux: fix overlayfs mmap() and mprotect() access checks
-Date: Fri, 26 Jun 2026 15:50:35 +0800
-Message-ID: <20260626075035.143419-3-caixinchen1@huawei.com>
-X-Mailer: git-send-email 2.18.0.huawei.25
-In-Reply-To: <20260626075035.143419-1-caixinchen1@huawei.com>
-References: <20260626075035.143419-1-caixinchen1@huawei.com>
+	s=arc-20240116; t=1782461796; c=relaxed/simple;
+	bh=sSd/2kMoEmTArtzQeAGNVhHiUWUFOza+B62xdetRdMU=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=HblpsqjqZ/DyQoGIIHbk27VOFuCJ36vJprQGj/Vk2cFBPBwbeK7hEMCBeyL7+a+0lRX6amDmkhQcv1QD6b8yisXTaU/nsEbeBynUIwwRF+Z/4S+TTQWQZZ8N9JxfdnzmNvTJG6BhV/2EUjNpBB/pgO/OBktLi5OaJBbApSoey6s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com; spf=pass smtp.mailfrom=igalia.com; dkim=pass (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b=huYCIoNR; arc=none smtp.client-ip=213.97.179.56
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
+	s=20170329; h=Content-Transfer-Encoding:Content-Type:MIME-Version:Message-ID:
+	Date:References:In-Reply-To:Subject:Cc:To:From:Sender:Reply-To:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+	List-Post:List-Owner:List-Archive;
+	bh=+bbbtbDlctaXR88F8KPb3YKDrHW4vAzQeJWGC6101SU=; b=huYCIoNRdbZd3gNostBamdNmNu
+	7Aloo5g+Mgmgx9POxwU62cvPbFRHp4GQfY1MIWub7PeJCKbYE4/2wa+qlQxLNSQyjbboqVE/TqWqU
+	fURyBIRxaiRFPlJVJnmDOdd+en4cGXqAv2PNRL+IIqSjLNX6+aYEYLRMG7WFr5MUOklGjcBfuQ0lP
+	t+GhkhXcBu0MnUUaKpQ8uTlpZJOp0Bc4FAL0N8Lzy36QQve9ZaXq7GkQ38L2LfXSqjSxllsRIT/mK
+	zvKELXHU298g9hzUvUkTGouqWOfUGc4HstJ3fUNbnRXGgsfZBfmA+IJMC3494MBg4C7OMemAlom8f
+	Ck5qKSJw==;
+Received: from bl21-120-122.dsl.telepac.pt ([2.82.120.122] helo=localhost)
+	by fanzine2.igalia.com with utf8esmtpsa 
+	(Cipher TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256) (Exim)
+	id 1wd1jg-005PA0-16; Fri, 26 Jun 2026 10:16:28 +0200
+From: Luis Henriques <luis@igalia.com>
+To: Eric Biggers <ebiggers@kernel.org>
+Cc: linux-fscrypt@vger.kernel.org,  Theodore Ts'o <tytso@mit.edu>,  Jaegeuk
+ Kim <jaegeuk@kernel.org>,  Jarkko Sakkinen <jarkko@kernel.org>,
+  linux-fsdevel@vger.kernel.org,  keyrings@vger.kernel.org,
+  linux-kernel@vger.kernel.org,
+  syzbot+f55b043dacf43776b50c@syzkaller.appspotmail.com,  Mohammed EL
+ Kadiri <med08elkadiri@gmail.com>,  stable@vger.kernel.org
+Subject: Re: [PATCH] fscrypt: Replace mk_users keyring with simple list
+In-Reply-To: <20260618221921.87896-1-ebiggers@kernel.org> (Eric Biggers's
+	message of "Thu, 18 Jun 2026 15:19:21 -0700")
+References: <20260618221921.87896-1-ebiggers@kernel.org>
+Date: Fri, 26 Jun 2026 09:16:35 +0100
+Message-ID: <87tsqpd8d8.fsf@wotan.olymp>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-ClientProxiedBy: kwepems100002.china.huawei.com (7.221.188.206) To
- kwepemq200017.china.huawei.com (7.202.195.228)
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-6.16 / 15.00];
-	WHITELIST_DMARC(-7.00)[huawei.com:D:+];
+X-Spamd-Result: default: False [1.14 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
-	MID_CONTAINS_FROM(1.00)[];
+	R_DKIM_REJECT(1.00)[igalia.com:s=20170329];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[huawei.com,quarantine];
-	R_DKIM_ALLOW(-0.20)[huawei.com:s=dkim];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
+	DMARC_POLICY_SOFTFAIL(0.10)[igalia.com : SPF not aligned (relaxed),none];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER(0.00)[caixinchen1@huawei.com,stable@vger.kernel.org];
-	FORGED_RECIPIENTS(0.00)[m:viro@zeniv.linux.org.uk,m:brauner@kernel.org,m:jack@suse.cz,m:miklos@szeredi.hu,m:amir73il@gmail.com,m:paul@paul-moore.com,m:jmorris@namei.org,m:serge@hallyn.com,m:stephen.smalley.work@gmail.com,m:omosnace@redhat.com,m:gregkh@linuxfoundation.org,m:bboscaccy@linux.microsoft.com,m:caixinchen1@huawei.com,m:linux-fsdevel@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:linux-unionfs@vger.kernel.org,m:linux-security-module@vger.kernel.org,m:selinux@vger.kernel.org,m:bpf@vger.kernel.org,m:stable@vger.kernel.org,m:lujialin4@huawei.com,m:stephensmalleywork@gmail.com,s:lists@lfdr.de];
-	FREEMAIL_TO(0.00)[zeniv.linux.org.uk,kernel.org,suse.cz,szeredi.hu,gmail.com,paul-moore.com,namei.org,hallyn.com,redhat.com,linuxfoundation.org,linux.microsoft.com,huawei.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-268769-lists,stable=lfdr.de];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[caixinchen1@huawei.com,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-268775-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[huawei.com:+];
-	TO_DN_NONE(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER(0.00)[luis@igalia.com,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS(0.00)[m:ebiggers@kernel.org,m:linux-fscrypt@vger.kernel.org,m:tytso@mit.edu,m:jaegeuk@kernel.org,m:jarkko@kernel.org,m:linux-fsdevel@vger.kernel.org,m:keyrings@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:syzbot+f55b043dacf43776b50c@syzkaller.appspotmail.com,m:med08elkadiri@gmail.com,m:stable@vger.kernel.org,m:syzbot@syzkaller.appspotmail.com,s:lists@lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[vger.kernel.org,mit.edu,kernel.org,syzkaller.appspotmail.com,gmail.com];
+	MISSING_XM_UA(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[21];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[paul-moore.com:email,vger.kernel.org:from_smtp,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,huawei.com:dkim,huawei.com:email,huawei.com:mid,huawei.com:from_mime];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_NEQ_ENVFROM(0.00)[luis@igalia.com,stable@vger.kernel.org];
+	PRECEDENCE_BULK(0.00)[];
+	DKIM_TRACE(0.00)[igalia.com:-];
+	RCPT_COUNT_SEVEN(0.00)[11];
+	TAGGED_RCPT(0.00)[stable,f55b043dacf43776b50c];
+	TO_DN_SOME(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCVD_COUNT_SEVEN(0.00)[7]
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,syzkaller.appspot.com:url,appspotmail.com:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: E3C296CAE7C
+X-Rspamd-Queue-Id: A330E6CB42D
 
-From: Paul Moore <paul@paul-moore.com>
+Hi Eric!
 
-[ Upstream commit 82544d36b1729153c8aeb179e84750f0c085d3b1 ]
+On Thu, Jun 18 2026, Eric Biggers wrote:
 
-The existing SELinux security model for overlayfs is to allow access if
-the current task is able to access the top level file (the "user" file)
-and the mounter's credentials are sufficient to access the lower
-level file (the "backing" file).  Unfortunately, the current code does
-not properly enforce these access controls for both mmap() and mprotect()
-operations on overlayfs filesystems.
+> Change mk_users (the set of user claims to an fscrypt master key) from a
+> 'struct key' keyring to a simple linked list.
+>
+> It's still a collection of 'struct key' for quota tracking.  It was
+> originally thought to be natural that a collection of 'struct key'
+> should be held in a 'struct key' keyring.  In reality, it's just been
+> causing problems, similar to how using 'struct key' for the filesystem
+> keyring caused problems and was removed in commit d7e7b9af104c
+> ("fscrypt: stop using keyrings subsystem for fscrypt_master_key").
+>
+> Commit d3a7bd420076 ("fscrypt: clear keyring before calling key_put()")
+> fixed mk_users cleanup to be synchronous.  But that apparently wasn't
+> enough: the keyring subsystem's redundant locking is still generating
+> lockdep false positives due to the interaction with filesystem reclaim.
+>
+> With the simple list, the redundant locking and lockdep issue goes away.
+>
+> Of course, searching a linked list is linear-time whereas the
+> 'struct key' keyring used a fancy constant-time associative array.  But
+> that's fine here, since in practice there's just one entry in the list.
+> In fact the new code is much faster in practice, since it's much smaller
+> and doesn't have to convert the kuid_t into a string to search for it.
+>
+> Reported-by: syzbot+f55b043dacf43776b50c@syzkaller.appspotmail.com
+> Closes: https://syzkaller.appspot.com/bug?extid=3Df55b043dacf43776b50c
+> Reported-by: Mohammed EL Kadiri <med08elkadiri@gmail.com>
+> Closes: https://lore.kernel.org/keyrings/20260614150041.21172-1-med08elka=
+diri@gmail.com/
+> Fixes: 23c688b54016 ("fscrypt: allow unprivileged users to add/remove key=
+s for v2 policies")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Eric Biggers <ebiggers@kernel.org>
+> ---
+>
+> I'm planning to take this via the fscrypt tree for 7.2
 
-This patch makes use of the newly created security_mmap_backing_file()
-LSM hook to provide the missing backing file enforcement for mmap()
-operations, and leverages the backing file API and new LSM blob to
-provide the necessary information to properly enforce the mprotect()
-access controls.
+I was hoping to have some more time to test this patch, but I don't think
+that will happen any time soon.
 
-Cc: stable@vger.kernel.org
-Acked-by: Amir Goldstein <amir73il@gmail.com>
-Signed-off-by: Paul Moore <paul@paul-moore.com>
-Signed-off-by: Cai Xinchen <caixinchen1@huawei.com>
----
- security/selinux/hooks.c          | 242 ++++++++++++++++++++++--------
- security/selinux/include/objsec.h |  11 ++
- 2 files changed, 189 insertions(+), 64 deletions(-)
+I've done a review of the patch and couldn't find any obvious problem.
+Though, again, a more in-depth review would require more time as it has
+been a while since I took a look into this code.
 
-diff --git a/security/selinux/hooks.c b/security/selinux/hooks.c
-index 3da3017ad2ca..f96ee8f372e3 100644
---- a/security/selinux/hooks.c
-+++ b/security/selinux/hooks.c
-@@ -1739,49 +1739,72 @@ static inline int file_path_has_perm(const struct cred *cred,
- static int bpf_fd_pass(const struct file *file, u32 sid);
- #endif
- 
--/* Check whether a task can use an open file descriptor to
--   access an inode in a given way.  Check access to the
--   descriptor itself, and then use dentry_has_perm to
--   check a particular permission to the file.
--   Access to the descriptor is implicitly granted if it
--   has the same SID as the process.  If av is zero, then
--   access to the file is not checked, e.g. for cases
--   where only the descriptor is affected like seek. */
--static int file_has_perm(const struct cred *cred,
--			 struct file *file,
--			 u32 av)
-+static int __file_has_perm(const struct cred *cred, const struct file *file,
-+			   u32 av, bool bf_user_file)
-+
- {
--	struct file_security_struct *fsec = selinux_file(file);
--	struct inode *inode = file_inode(file);
- 	struct common_audit_data ad;
--	u32 sid = cred_sid(cred);
-+	struct inode *inode;
-+	u32 ssid = cred_sid(cred);
-+	u32 tsid_fd;
- 	int rc;
- 
--	ad.type = LSM_AUDIT_DATA_FILE;
--	ad.u.file = file;
-+	if (bf_user_file) {
-+		struct backing_file_security_struct *bfsec;
-+		const struct path *path;
- 
--	if (sid != fsec->sid) {
--		rc = avc_has_perm(sid, fsec->sid,
--				  SECCLASS_FD,
--				  FD__USE,
--				  &ad);
-+		if (WARN_ON(!(file->f_mode & FMODE_BACKING)))
-+			return -EIO;
-+
-+		bfsec = selinux_backing_file(file);
-+		path = backing_file_user_path(file);
-+		tsid_fd = bfsec->uf_sid;
-+		inode = d_inode(path->dentry);
-+
-+		ad.type = LSM_AUDIT_DATA_PATH;
-+		ad.u.path = *path;
-+	} else {
-+		struct file_security_struct *fsec = selinux_file(file);
-+
-+		tsid_fd = fsec->sid;
-+		inode = file_inode(file);
-+
-+		ad.type = LSM_AUDIT_DATA_FILE;
-+		ad.u.file = file;
-+	}
-+
-+	if (ssid != tsid_fd) {
-+		rc = avc_has_perm(ssid, tsid_fd, SECCLASS_FD, FD__USE, &ad);
- 		if (rc)
--			goto out;
-+			return rc;
- 	}
- 
- #ifdef CONFIG_BPF_SYSCALL
--	rc = bpf_fd_pass(file, cred_sid(cred));
-+	/* regardless of backing vs user file, use the underlying file here */
-+	rc = bpf_fd_pass(file, ssid);
- 	if (rc)
- 		return rc;
- #endif
- 
- 	/* av is zero if only checking access to the descriptor. */
--	rc = 0;
- 	if (av)
--		rc = inode_has_perm(cred, inode, av, &ad);
-+		return inode_has_perm(cred, inode, av, &ad);
- 
--out:
--	return rc;
-+	return 0;
-+}
-+
-+/* Check whether a task can use an open file descriptor to
-+   access an inode in a given way.  Check access to the
-+   descriptor itself, and then use dentry_has_perm to
-+   check a particular permission to the file.
-+   Access to the descriptor is implicitly granted if it
-+   has the same SID as the process.  If av is zero, then
-+   access to the file is not checked, e.g. for cases
-+   where only the descriptor is affected like seek. */
-+static inline int file_has_perm(const struct cred *cred,
-+				const struct file *file, u32 av)
-+{
-+	return __file_has_perm(cred, file, av, false);
- }
- 
- /*
-@@ -3799,6 +3822,17 @@ static int selinux_file_alloc_security(struct file *file)
- 	return 0;
- }
- 
-+static int selinux_backing_file_alloc(struct file *backing_file,
-+				      const struct file *user_file)
-+{
-+	struct backing_file_security_struct *bfsec;
-+
-+	bfsec = selinux_backing_file(backing_file);
-+	bfsec->uf_sid = selinux_file(user_file)->sid;
-+
-+	return 0;
-+}
-+
- /*
-  * Check whether a task has the ioctl permission and cmd
-  * operation to an inode.
-@@ -3916,42 +3950,55 @@ static int selinux_file_ioctl_compat(struct file *file, unsigned int cmd,
- 
- static int default_noexec __ro_after_init;
- 
--static int file_map_prot_check(struct file *file, unsigned long prot, int shared)
-+static int __file_map_prot_check(const struct cred *cred,
-+				 const struct file *file, unsigned long prot,
-+				 bool shared, bool bf_user_file)
- {
--	const struct cred *cred = current_cred();
--	u32 sid = cred_sid(cred);
--	int rc = 0;
-+	struct inode *inode = NULL;
-+	bool prot_exec = prot & PROT_EXEC;
-+	bool prot_write = prot & PROT_WRITE;
-+
-+	if (file) {
-+		if (bf_user_file)
-+			inode = d_inode(backing_file_user_path(file)->dentry);
-+		else
-+			inode = file_inode(file);
-+	}
-+
-+	if (default_noexec && prot_exec &&
-+	    (!file || IS_PRIVATE(inode) || (!shared && prot_write))) {
-+		int rc;
-+		u32 sid = cred_sid(cred);
- 
--	if (default_noexec &&
--	    (prot & PROT_EXEC) && (!file || IS_PRIVATE(file_inode(file)) ||
--				   (!shared && (prot & PROT_WRITE)))) {
- 		/*
--		 * We are making executable an anonymous mapping or a
--		 * private file mapping that will also be writable.
--		 * This has an additional check.
-+		 * We are making executable an anonymous mapping or a private
-+		 * file mapping that will also be writable.
- 		 */
--		rc = avc_has_perm(sid, sid, SECCLASS_PROCESS,
--				  PROCESS__EXECMEM, NULL);
-+		rc = avc_has_perm(sid, sid, SECCLASS_PROCESS, PROCESS__EXECMEM,
-+				  NULL);
- 		if (rc)
--			goto error;
-+			return rc;
- 	}
- 
- 	if (file) {
--		/* read access is always possible with a mapping */
-+		/* "read" always possible, "write" only if shared */
- 		u32 av = FILE__READ;
--
--		/* write access only matters if the mapping is shared */
--		if (shared && (prot & PROT_WRITE))
-+		if (shared && prot_write)
- 			av |= FILE__WRITE;
--
--		if (prot & PROT_EXEC)
-+		if (prot_exec)
- 			av |= FILE__EXECUTE;
- 
--		return file_has_perm(cred, file, av);
-+		return __file_has_perm(cred, file, av, bf_user_file);
- 	}
- 
--error:
--	return rc;
-+	return 0;
-+}
-+
-+static inline int file_map_prot_check(const struct cred *cred,
-+				      const struct file *file,
-+				      unsigned long prot, bool shared)
-+{
-+	return __file_map_prot_check(cred, file, prot, shared, false);
- }
- 
- static int selinux_mmap_addr(unsigned long addr)
-@@ -3967,36 +4014,80 @@ static int selinux_mmap_addr(unsigned long addr)
- 	return rc;
- }
- 
--static int selinux_mmap_file(struct file *file,
--			     unsigned long reqprot __always_unused,
--			     unsigned long prot, unsigned long flags)
-+static int selinux_mmap_file_common(const struct cred *cred, struct file *file,
-+				    unsigned long prot, bool shared)
- {
--	struct common_audit_data ad;
--	int rc;
--
- 	if (file) {
-+		int rc;
-+		struct common_audit_data ad;
-+
- 		ad.type = LSM_AUDIT_DATA_FILE;
- 		ad.u.file = file;
--		rc = inode_has_perm(current_cred(), file_inode(file),
--				    FILE__MAP, &ad);
-+		rc = inode_has_perm(cred, file_inode(file), FILE__MAP, &ad);
- 		if (rc)
- 			return rc;
- 	}
- 
--	return file_map_prot_check(file, prot,
--				   (flags & MAP_TYPE) == MAP_SHARED);
-+	return file_map_prot_check(cred, file, prot, shared);
-+}
-+
-+static int selinux_mmap_file(struct file *file,
-+			     unsigned long reqprot __always_unused,
-+			     unsigned long prot, unsigned long flags)
-+{
-+	return selinux_mmap_file_common(current_cred(), file, prot,
-+					(flags & MAP_TYPE) == MAP_SHARED);
-+}
-+
-+/**
-+ * selinux_mmap_backing_file - Check mmap permissions on a backing file
-+ * @vma: memory region
-+ * @backing_file: stacked filesystem backing file
-+ * @user_file: user visible file
-+ *
-+ * This is called after selinux_mmap_file() on stacked filesystems, and it
-+ * is this function's responsibility to verify access to @backing_file and
-+ * setup the SELinux state for possible later use in the mprotect() code path.
-+ *
-+ * By the time this function is called, mmap() access to @user_file has already
-+ * been authorized and @vma->vm_file has been set to point to @backing_file.
-+ *
-+ * Return zero on success, negative values otherwise.
-+ */
-+static int selinux_mmap_backing_file(struct vm_area_struct *vma,
-+				     struct file *backing_file,
-+				     struct file *user_file __always_unused)
-+{
-+	unsigned long prot = 0;
-+
-+	/* translate vma->vm_flags perms into PROT perms */
-+	if (vma->vm_flags & VM_READ)
-+		prot |= PROT_READ;
-+	if (vma->vm_flags & VM_WRITE)
-+		prot |= PROT_WRITE;
-+	if (vma->vm_flags & VM_EXEC)
-+		prot |= PROT_EXEC;
-+
-+	return selinux_mmap_file_common(backing_file->f_cred, backing_file,
-+					prot, vma->vm_flags & VM_SHARED);
- }
- 
- static int selinux_file_mprotect(struct vm_area_struct *vma,
- 				 unsigned long reqprot __always_unused,
- 				 unsigned long prot)
- {
-+	int rc;
- 	const struct cred *cred = current_cred();
- 	u32 sid = cred_sid(cred);
-+	const struct file *file = vma->vm_file;
-+	bool backing_file;
-+	bool shared = vma->vm_flags & VM_SHARED;
-+
-+	/* check if we need to trigger the "backing files are awful" mode */
-+	backing_file = file && (file->f_mode & FMODE_BACKING);
- 
- 	if (default_noexec &&
- 	    (prot & PROT_EXEC) && !(vma->vm_flags & VM_EXEC)) {
--		int rc = 0;
- 		/*
- 		 * We don't use the vma_is_initial_heap() helper as it has
- 		 * a history of problems and is currently broken on systems
-@@ -4010,11 +4101,15 @@ static int selinux_file_mprotect(struct vm_area_struct *vma,
- 		    vma->vm_end <= vma->vm_mm->brk) {
- 			rc = avc_has_perm(sid, sid, SECCLASS_PROCESS,
- 					  PROCESS__EXECHEAP, NULL);
--		} else if (!vma->vm_file && (vma_is_initial_stack(vma) ||
-+			if (rc)
-+				return rc;
-+		} else if (!file && (vma_is_initial_stack(vma) ||
- 			    vma_is_stack_for_current(vma))) {
- 			rc = avc_has_perm(sid, sid, SECCLASS_PROCESS,
- 					  PROCESS__EXECSTACK, NULL);
--		} else if (vma->vm_file && vma->anon_vma) {
-+			if (rc)
-+				return rc;
-+		} else if (file && vma->anon_vma) {
- 			/*
- 			 * We are making executable a file mapping that has
- 			 * had some COW done. Since pages might have been
-@@ -4022,13 +4117,29 @@ static int selinux_file_mprotect(struct vm_area_struct *vma,
- 			 * modified content.  This typically should only
- 			 * occur for text relocations.
- 			 */
--			rc = file_has_perm(cred, vma->vm_file, FILE__EXECMOD);
-+			rc = __file_has_perm(cred, file, FILE__EXECMOD,
-+					     backing_file);
-+			if (rc)
-+				return rc;
-+			if (backing_file) {
-+				rc = file_has_perm(file->f_cred, file,
-+						   FILE__EXECMOD);
-+				if (rc)
-+					return rc;
-+			}
- 		}
-+	}
-+
-+	rc = __file_map_prot_check(cred, file, prot, shared, backing_file);
-+	if (rc)
-+		return rc;
-+	if (backing_file) {
-+		rc = file_map_prot_check(file->f_cred, file, prot, shared);
- 		if (rc)
- 			return rc;
- 	}
- 
--	return file_map_prot_check(vma->vm_file, prot, vma->vm_flags&VM_SHARED);
-+	return 0;
- }
- 
- static int selinux_file_lock(struct file *file, unsigned int cmd)
-@@ -7140,6 +7251,7 @@ struct lsm_blob_sizes selinux_blob_sizes __ro_after_init = {
- 	.lbs_cred = sizeof(struct cred_security_struct),
- 	.lbs_task = sizeof(struct task_security_struct),
- 	.lbs_file = sizeof(struct file_security_struct),
-+	.lbs_backing_file = sizeof(struct backing_file_security_struct),
- 	.lbs_inode = sizeof(struct inode_security_struct),
- 	.lbs_ipc = sizeof(struct ipc_security_struct),
- 	.lbs_key = sizeof(struct key_security_struct),
-@@ -7363,9 +7475,11 @@ static struct security_hook_list selinux_hooks[] __ro_after_init = {
- 
- 	LSM_HOOK_INIT(file_permission, selinux_file_permission),
- 	LSM_HOOK_INIT(file_alloc_security, selinux_file_alloc_security),
-+	LSM_HOOK_INIT(backing_file_alloc, selinux_backing_file_alloc),
- 	LSM_HOOK_INIT(file_ioctl, selinux_file_ioctl),
- 	LSM_HOOK_INIT(file_ioctl_compat, selinux_file_ioctl_compat),
- 	LSM_HOOK_INIT(mmap_file, selinux_mmap_file),
-+	LSM_HOOK_INIT(mmap_backing_file, selinux_mmap_backing_file),
- 	LSM_HOOK_INIT(mmap_addr, selinux_mmap_addr),
- 	LSM_HOOK_INIT(file_mprotect, selinux_file_mprotect),
- 	LSM_HOOK_INIT(file_lock, selinux_file_lock),
-diff --git a/security/selinux/include/objsec.h b/security/selinux/include/objsec.h
-index 816fde5a5896..fcb46793898f 100644
---- a/security/selinux/include/objsec.h
-+++ b/security/selinux/include/objsec.h
-@@ -86,6 +86,10 @@ struct file_security_struct {
- 	u32 pseqno; /* Policy seqno at the time of file open */
- };
- 
-+struct backing_file_security_struct {
-+	u32 uf_sid; /* associated user file fsec->sid */
-+};
-+
- struct superblock_security_struct {
- 	u32 sid; /* SID of file system superblock */
- 	u32 def_sid; /* default SID for labeling */
-@@ -190,6 +194,13 @@ static inline struct file_security_struct *selinux_file(const struct file *file)
- 	return file->f_security + selinux_blob_sizes.lbs_file;
- }
- 
-+static inline struct backing_file_security_struct *
-+selinux_backing_file(const struct file *backing_file)
-+{
-+	void *blob = backing_file_security(backing_file);
-+	return blob + selinux_blob_sizes.lbs_backing_file;
-+}
-+
- static inline struct inode_security_struct *
- selinux_inode(const struct inode *inode)
- {
--- 
-2.18.0.huawei.25
+I just wonder if this is really stable material.  It's a bit intrusive
+(doesn't even apply cleanly in mainline), but above all it's fixing a
+lockdep false positive.  Other than syzbot, has this been seen in the
+wild?
+
+Cheers,
+--=20
+Lu=C3=ADs
+
+>
+>  fs/crypto/fscrypt_private.h |  32 ++++--
+>  fs/crypto/keyring.c         | 216 +++++++++++++++---------------------
+>  2 files changed, 113 insertions(+), 135 deletions(-)
+>
+> diff --git a/fs/crypto/fscrypt_private.h b/fs/crypto/fscrypt_private.h
+> index 4263cac24b32..0053b5c45412 100644
+> --- a/fs/crypto/fscrypt_private.h
+> +++ b/fs/crypto/fscrypt_private.h
+> @@ -494,10 +494,23 @@ fscrypt_is_key_prepared(const struct fscrypt_prepar=
+ed_key *prep_key,
+>  }
+>  #endif /* !CONFIG_FS_ENCRYPTION_INLINE_CRYPT */
+>=20=20
+>  /* keyring.c */
+>=20=20
+> +/*
+> + * fscrypt_master_key_user - a user's claim to a master key
+> + */
+> +struct fscrypt_master_key_user {
+> +	struct list_head link;
+> +	kuid_t uid;
+> +	/*
+> +	 * This 'struct key' contains no secret.  It exists solely to charge the
+> +	 * appropriate user's key quota.
+> +	 */
+> +	struct key *quota_key;
+> +};
+> +
+>  /*
+>   * fscrypt_master_key_secret - secret key material of an in-use master k=
+ey
+>   */
+>  struct fscrypt_master_key_secret {
+>=20=20
+> @@ -609,23 +622,22 @@ struct fscrypt_master_key {
+>  	 * For v2 policy keys: a cryptographic hash of this key (->identifier).
+>  	 */
+>  	struct fscrypt_key_specifier		mk_spec;
+>=20=20
+>  	/*
+> -	 * Keyring which contains a key of type 'key_type_fscrypt_user' for each
+> -	 * user who has added this key.  Normally each key will be added by just
+> -	 * one user, but it's possible that multiple users share a key, and in
+> -	 * that case we need to keep track of those users so that one user can't
+> -	 * remove the key before the others want it removed too.
+> +	 * List of user claims to this key (struct fscrypt_master_key_user).
+> +	 * Normally each key will be added by just one user, but it's possible
+> +	 * that multiple users share a key, and in that case we need to keep
+> +	 * track of those users so that one user can't remove the key before the
+> +	 * others want it removed too.
+>  	 *
+> -	 * This is NULL for v1 policy keys; those can only be added by root.
+> +	 * Used only for v2 policy keys.  v1 policy keys can be added only by
+> +	 * root, so user tracking doesn't apply to them.
+>  	 *
+> -	 * Locking: protected by ->mk_sem.  (We don't just rely on the keyrings
+> -	 * subsystem semaphore ->mk_users->sem, as we need support for atomic
+> -	 * search+insert along with proper synchronization with other fields.)
+> +	 * Locking: protected by ->mk_sem.
+>  	 */
+> -	struct key		*mk_users;
+> +	struct list_head	mk_users;
+>=20=20
+>  	/*
+>  	 * List of inodes that were unlocked using this key.  This allows the
+>  	 * inodes to be evicted efficiently if the key is removed.
+>  	 */
+> diff --git a/fs/crypto/keyring.c b/fs/crypto/keyring.c
+> index 6ce6b436c34f..16bc348213ca 100644
+> --- a/fs/crypto/keyring.c
+> +++ b/fs/crypto/keyring.c
+> @@ -63,26 +63,23 @@ static void fscrypt_free_master_key(struct rcu_head *=
+head)
+>  	 * Nevertheless, use kfree_sensitive() in case anything was missed.
+>  	 */
+>  	kfree_sensitive(mk);
+>  }
+>=20=20
+> +static void clear_mk_users(struct fscrypt_master_key *mk);
+> +
+>  void fscrypt_put_master_key(struct fscrypt_master_key *mk)
+>  {
+>  	if (!refcount_dec_and_test(&mk->mk_struct_refs))
+>  		return;
+>  	/*
+> -	 * No structural references left, so free ->mk_users, and also free the
+> +	 * No structural references left, so clear ->mk_users, and also free the
+>  	 * fscrypt_master_key struct itself after an RCU grace period ensures
+>  	 * that concurrent keyring lookups can no longer find it.
+>  	 */
+>  	WARN_ON_ONCE(refcount_read(&mk->mk_active_refs) !=3D 0);
+> -	if (mk->mk_users) {
+> -		/* Clear the keyring so the quota gets released right away. */
+> -		keyring_clear(mk->mk_users);
+> -		key_put(mk->mk_users);
+> -		mk->mk_users =3D NULL;
+> -	}
+> +	clear_mk_users(mk);
+>  	call_rcu(&mk->mk_rcu_head, fscrypt_free_master_key);
+>  }
+>=20=20
+>  void fscrypt_put_master_key_activeref(struct super_block *sb,
+>  				      struct fscrypt_master_key *mk)
+> @@ -163,12 +160,12 @@ static void fscrypt_user_key_describe(const struct =
+key *key, struct seq_file *m)
+>  {
+>  	seq_puts(m, key->description);
+>  }
+>=20=20
+>  /*
+> - * Type of key in ->mk_users.  Each key of this type represents a partic=
+ular
+> - * user who has added a particular master key.
+> + * Type of fscrypt_master_key_user::quota_key.  This contains no secret;=
+ it
+> + * exists solely to charge a user's key quota.
+>   *
+>   * Note that the name of this key type really should be something like
+>   * ".fscrypt-user" instead of simply ".fscrypt".  But the shorter name i=
+s chosen
+>   * mainly for simplicity of presentation in /proc/keys when read by a no=
+n-root
+>   * user.  And it is expected to be rare that a key is actually added by =
+multiple
+> @@ -178,34 +175,13 @@ static struct key_type key_type_fscrypt_user =3D {
+>  	.name			=3D ".fscrypt",
+>  	.instantiate		=3D fscrypt_user_key_instantiate,
+>  	.describe		=3D fscrypt_user_key_describe,
+>  };
+>=20=20
+> -#define FSCRYPT_MK_USERS_DESCRIPTION_SIZE	\
+> -	(CONST_STRLEN("fscrypt-") + 2 * FSCRYPT_KEY_IDENTIFIER_SIZE + \
+> -	 CONST_STRLEN("-users") + 1)
+> -
+>  #define FSCRYPT_MK_USER_DESCRIPTION_SIZE	\
+>  	(2 * FSCRYPT_KEY_IDENTIFIER_SIZE + CONST_STRLEN(".uid.") + 10 + 1)
+>=20=20
+> -static void format_mk_users_keyring_description(
+> -			char description[FSCRYPT_MK_USERS_DESCRIPTION_SIZE],
+> -			const u8 mk_identifier[FSCRYPT_KEY_IDENTIFIER_SIZE])
+> -{
+> -	sprintf(description, "fscrypt-%*phN-users",
+> -		FSCRYPT_KEY_IDENTIFIER_SIZE, mk_identifier);
+> -}
+> -
+> -static void format_mk_user_description(
+> -			char description[FSCRYPT_MK_USER_DESCRIPTION_SIZE],
+> -			const u8 mk_identifier[FSCRYPT_KEY_IDENTIFIER_SIZE])
+> -{
+> -
+> -	sprintf(description, "%*phN.uid.%u", FSCRYPT_KEY_IDENTIFIER_SIZE,
+> -		mk_identifier, __kuid_val(current_fsuid()));
+> -}
+> -
+>  /* Create ->s_master_keys if needed.  Synchronized by fscrypt_add_key_mu=
+tex. */
+>  static int allocate_filesystem_keyring(struct super_block *sb)
+>  {
+>  	struct fscrypt_keyring *keyring;
+>=20=20
+> @@ -336,95 +312,98 @@ fscrypt_find_master_key(struct super_block *sb,
+>  out:
+>  	rcu_read_unlock();
+>  	return mk;
+>  }
+>=20=20
+> -static int allocate_master_key_users_keyring(struct fscrypt_master_key *=
+mk)
+> -{
+> -	char description[FSCRYPT_MK_USERS_DESCRIPTION_SIZE];
+> -	struct key *keyring;
+> -
+> -	format_mk_users_keyring_description(description,
+> -					    mk->mk_spec.u.identifier);
+> -	keyring =3D keyring_alloc(description, GLOBAL_ROOT_UID, GLOBAL_ROOT_GID,
+> -				current_cred(), KEY_POS_SEARCH |
+> -				  KEY_USR_SEARCH | KEY_USR_READ | KEY_USR_VIEW,
+> -				KEY_ALLOC_NOT_IN_QUOTA, NULL, NULL);
+> -	if (IS_ERR(keyring))
+> -		return PTR_ERR(keyring);
+> -
+> -	mk->mk_users =3D keyring;
+> -	return 0;
+> -}
+> -
+> -/*
+> - * Find the current user's "key" in the master key's ->mk_users.
+> - * Returns ERR_PTR(-ENOKEY) if not found.
+> - */
+> -static struct key *find_master_key_user(struct fscrypt_master_key *mk)
+> +/* Find the current user's claim in ->mk_users.  ->mk_sem must be held. =
+*/
+> +static struct fscrypt_master_key_user *
+> +find_master_key_user(struct fscrypt_master_key *mk)
+>  {
+> -	char description[FSCRYPT_MK_USER_DESCRIPTION_SIZE];
+> -	key_ref_t keyref;
+> +	struct fscrypt_master_key_user *mk_user;
+> +	kuid_t uid =3D current_fsuid();
+>=20=20
+> -	format_mk_user_description(description, mk->mk_spec.u.identifier);
+> -
+> -	/*
+> -	 * We need to mark the keyring reference as "possessed" so that we
+> -	 * acquire permission to search it, via the KEY_POS_SEARCH permission.
+> -	 */
+> -	keyref =3D keyring_search(make_key_ref(mk->mk_users, true /*possessed*/=
+),
+> -				&key_type_fscrypt_user, description, false);
+> -	if (IS_ERR(keyref)) {
+> -		if (PTR_ERR(keyref) =3D=3D -EAGAIN || /* not found */
+> -		    PTR_ERR(keyref) =3D=3D -EKEYREVOKED) /* recently invalidated */
+> -			keyref =3D ERR_PTR(-ENOKEY);
+> -		return ERR_CAST(keyref);
+> +	list_for_each_entry(mk_user, &mk->mk_users, link) {
+> +		if (uid_eq(mk_user->uid, uid))
+> +			return mk_user;
+>  	}
+> -	return key_ref_to_ptr(keyref);
+> +	return NULL;
+>  }
+>=20=20
+>  /*
+> - * Give the current user a "key" in ->mk_users.  This charges the user's=
+ quota
+> + * Give the current user a claim in ->mk_users.  This charges the user's=
+ quota
+>   * and marks the master key as added by the current user, so that it can=
+not be
+>   * removed by another user with the key.  Either ->mk_sem must be held f=
+or
+>   * write, or the master key must be still undergoing initialization.
+>   */
+>  static int add_master_key_user(struct fscrypt_master_key *mk)
+>  {
+> +	kuid_t uid =3D current_fsuid();
+>  	char description[FSCRYPT_MK_USER_DESCRIPTION_SIZE];
+> -	struct key *mk_user;
+> +	struct key *quota_key;
+> +	struct fscrypt_master_key_user *mk_user;
+>  	int err;
+>=20=20
+> -	format_mk_user_description(description, mk->mk_spec.u.identifier);
+> -	mk_user =3D key_alloc(&key_type_fscrypt_user, description,
+> -			    current_fsuid(), current_gid(), current_cred(),
+> -			    KEY_POS_SEARCH | KEY_USR_VIEW, 0, NULL);
+> -	if (IS_ERR(mk_user))
+> -		return PTR_ERR(mk_user);
+> +	snprintf(description, sizeof(description), "%*phN.uid.%u",
+> +		 FSCRYPT_KEY_IDENTIFIER_SIZE, mk->mk_spec.u.identifier,
+> +		 __kuid_val(uid));
+> +	quota_key =3D key_alloc(&key_type_fscrypt_user, description, uid,
+> +			      current_gid(), current_cred(),
+> +			      KEY_POS_SEARCH | KEY_USR_VIEW, 0, NULL);
+> +	if (IS_ERR(quota_key))
+> +		return PTR_ERR(quota_key);
+> +
+> +	err =3D key_instantiate_and_link(quota_key, NULL, 0, NULL, NULL);
+> +	if (err) {
+> +		key_put(quota_key);
+> +		return err;
+> +	}
+>=20=20
+> -	err =3D key_instantiate_and_link(mk_user, NULL, 0, mk->mk_users, NULL);
+> -	key_put(mk_user);
+> -	return err;
+> +	mk_user =3D kzalloc_obj(*mk_user);
+> +	if (!mk_user) {
+> +		key_put(quota_key);
+> +		return -ENOMEM;
+> +	}
+> +	mk_user->uid =3D uid;
+> +	mk_user->quota_key =3D quota_key;
+> +	list_add(&mk_user->link, &mk->mk_users);
+> +	return 0;
+> +}
+> +
+> +static void unlink_and_free_mk_user(struct fscrypt_master_key_user *mk_u=
+ser)
+> +{
+> +	list_del(&mk_user->link);
+> +	key_put(mk_user->quota_key);
+> +	kfree(mk_user);
+>  }
+>=20=20
+>  /*
+> - * Remove the current user's "key" from ->mk_users.
+> + * Remove the current user's claim from ->mk_users.
+>   * ->mk_sem must be held for write.
+>   *
+> - * Returns 0 if removed, -ENOKEY if not found, or another -errno code.
+> + * Returns 0 if removed or -ENOKEY if not found.
+>   */
+>  static int remove_master_key_user(struct fscrypt_master_key *mk)
+>  {
+> -	struct key *mk_user;
+> -	int err;
+> +	struct fscrypt_master_key_user *mk_user;
+>=20=20
+>  	mk_user =3D find_master_key_user(mk);
+> -	if (IS_ERR(mk_user))
+> -		return PTR_ERR(mk_user);
+> -	err =3D key_unlink(mk->mk_users, mk_user);
+> -	key_put(mk_user);
+> -	return err;
+> +	if (!mk_user)
+> +		return -ENOKEY;
+> +	unlink_and_free_mk_user(mk_user);
+> +	return 0;
+> +}
+> +
+> +/*
+> + * Clear ->mk_users.  Either ->mk_sem must be held for write, or 'mk' mu=
+st have
+> + * no structural references left.
+> + */
+> +static void clear_mk_users(struct fscrypt_master_key *mk)
+> +{
+> +	struct fscrypt_master_key_user *mk_user, *tmp;
+> +
+> +	list_for_each_entry_safe(mk_user, tmp, &mk->mk_users, link)
+> +		unlink_and_free_mk_user(mk_user);
+>  }
+>=20=20
+>  /*
+>   * Allocate a new fscrypt_master_key, transfer the given secret over to =
+it, and
+>   * insert it into sb->s_master_keys.
+> @@ -443,19 +422,18 @@ static int add_new_master_key(struct super_block *s=
+b,
+>=20=20
+>  	init_rwsem(&mk->mk_sem);
+>  	refcount_set(&mk->mk_struct_refs, 1);
+>  	mk->mk_spec =3D *mk_spec;
+>=20=20
+> +	INIT_LIST_HEAD(&mk->mk_users);
+> +
+>  	INIT_LIST_HEAD(&mk->mk_decrypted_inodes);
+>  	spin_lock_init(&mk->mk_decrypted_inodes_lock);
+>=20=20
+>  	INIT_LIST_HEAD(&mk->mk_mode_keys);
+>=20=20
+>  	if (mk_spec->type =3D=3D FSCRYPT_KEY_SPEC_TYPE_IDENTIFIER) {
+> -		err =3D allocate_master_key_users_keyring(mk);
+> -		if (err)
+> -			goto out_put;
+>  		err =3D add_master_key_user(mk);
+>  		if (err)
+>  			goto out_put;
+>  	}
+>=20=20
+> @@ -480,23 +458,17 @@ static int add_existing_master_key(struct fscrypt_m=
+aster_key *mk,
+>  				   struct fscrypt_master_key_secret *secret)
+>  {
+>  	int err;
+>=20=20
+>  	/*
+> -	 * If the current user is already in ->mk_users, then there's nothing to
+> -	 * do.  Otherwise, we need to add the user to ->mk_users.  (Neither is
+> -	 * applicable for v1 policy keys, which have NULL ->mk_users.)
+> +	 * For v2 policy keys (FSCRYPT_KEY_SPEC_TYPE_IDENTIFIER): If the current
+> +	 * user is already in ->mk_users, then there's nothing to do.
+> +	 * Otherwise, add the user to ->mk_users.
+>  	 */
+> -	if (mk->mk_users) {
+> -		struct key *mk_user =3D find_master_key_user(mk);
+> -
+> -		if (mk_user !=3D ERR_PTR(-ENOKEY)) {
+> -			if (IS_ERR(mk_user))
+> -				return PTR_ERR(mk_user);
+> -			key_put(mk_user);
+> +	if (mk->mk_spec.type =3D=3D FSCRYPT_KEY_SPEC_TYPE_IDENTIFIER) {
+> +		if (find_master_key_user(mk) !=3D NULL)
+>  			return 0;
+> -		}
+>  		err =3D add_master_key_user(mk);
+>  		if (err)
+>  			return err;
+>  	}
+>=20=20
+> @@ -890,11 +862,10 @@ int fscrypt_add_test_dummy_key(struct super_block *=
+sb,
+>  int fscrypt_verify_key_added(struct super_block *sb,
+>  			     const u8 identifier[FSCRYPT_KEY_IDENTIFIER_SIZE])
+>  {
+>  	struct fscrypt_key_specifier mk_spec;
+>  	struct fscrypt_master_key *mk;
+> -	struct key *mk_user;
+>  	int err;
+>=20=20
+>  	mk_spec.type =3D FSCRYPT_KEY_SPEC_TYPE_IDENTIFIER;
+>  	memcpy(mk_spec.u.identifier, identifier, FSCRYPT_KEY_IDENTIFIER_SIZE);
+>=20=20
+> @@ -902,17 +873,14 @@ int fscrypt_verify_key_added(struct super_block *sb,
+>  	if (!mk) {
+>  		err =3D -ENOKEY;
+>  		goto out;
+>  	}
+>  	down_read(&mk->mk_sem);
+> -	mk_user =3D find_master_key_user(mk);
+> -	if (IS_ERR(mk_user)) {
+> -		err =3D PTR_ERR(mk_user);
+> -	} else {
+> -		key_put(mk_user);
+> +	if (find_master_key_user(mk) !=3D NULL)
+>  		err =3D 0;
+> -	}
+> +	else
+> +		err =3D -ENOKEY;
+>  	up_read(&mk->mk_sem);
+>  	fscrypt_put_master_key(mk);
+>  out:
+>  	if (err =3D=3D -ENOKEY && capable(CAP_FOWNER))
+>  		err =3D 0;
+> @@ -1100,20 +1068,22 @@ static int do_remove_key(struct file *filp, void =
+__user *_uarg, bool all_users)
+>  	if (!mk)
+>  		return -ENOKEY;
+>  	down_write(&mk->mk_sem);
+>=20=20
+>  	/* If relevant, remove current user's (or all users) claim to the key */
+> -	if (mk->mk_users && mk->mk_users->keys.nr_leaves_on_tree !=3D 0) {
+> -		if (all_users)
+> -			err =3D keyring_clear(mk->mk_users);
+> -		else
+> +	if (!list_empty(&mk->mk_users)) {
+> +		if (all_users) {
+> +			clear_mk_users(mk);
+> +			err =3D 0;
+> +		} else {
+>  			err =3D remove_master_key_user(mk);
+> +		}
+>  		if (err) {
+>  			up_write(&mk->mk_sem);
+>  			goto out_put_key;
+>  		}
+> -		if (mk->mk_users->keys.nr_leaves_on_tree !=3D 0) {
+> +		if (!list_empty(&mk->mk_users)) {
+>  			/*
+>  			 * Other users have still added the key too.  We removed
+>  			 * the current user's claim to the key, but we still
+>  			 * can't remove the key itself.
+>  			 */
+> @@ -1195,10 +1165,12 @@ EXPORT_SYMBOL_GPL(fscrypt_ioctl_remove_key_all_us=
+ers);
+>  int fscrypt_ioctl_get_key_status(struct file *filp, void __user *uarg)
+>  {
+>  	struct super_block *sb =3D file_inode(filp)->i_sb;
+>  	struct fscrypt_get_key_status_arg arg;
+>  	struct fscrypt_master_key *mk;
+> +	kuid_t uid;
+> +	const struct fscrypt_master_key_user *mk_user;
+>  	int err;
+>=20=20
+>  	if (copy_from_user(&arg, uarg, sizeof(arg)))
+>  		return -EFAULT;
+>=20=20
+> @@ -1227,23 +1199,17 @@ int fscrypt_ioctl_get_key_status(struct file *fil=
+p, void __user *uarg)
+>  		err =3D 0;
+>  		goto out_release_key;
+>  	}
+>=20=20
+>  	arg.status =3D FSCRYPT_KEY_STATUS_PRESENT;
+> -	if (mk->mk_users) {
+> -		struct key *mk_user;
+>=20=20
+> -		arg.user_count =3D mk->mk_users->keys.nr_leaves_on_tree;
+> -		mk_user =3D find_master_key_user(mk);
+> -		if (!IS_ERR(mk_user)) {
+> +	uid =3D current_fsuid();
+> +	list_for_each_entry(mk_user, &mk->mk_users, link) {
+> +		arg.user_count++;
+> +		if (uid_eq(mk_user->uid, uid))
+>  			arg.status_flags |=3D
+>  				FSCRYPT_KEY_STATUS_FLAG_ADDED_BY_SELF;
+> -			key_put(mk_user);
+> -		} else if (mk_user !=3D ERR_PTR(-ENOKEY)) {
+> -			err =3D PTR_ERR(mk_user);
+> -			goto out_release_key;
+> -		}
+>  	}
+>  	err =3D 0;
+>  out_release_key:
+>  	up_read(&mk->mk_sem);
+>  	fscrypt_put_master_key(mk);
+>
+> base-commit: 83f1454877cc292b88baf13c829c16ce6937d120
+> prerequisite-patch-id: 319d2891e88c7df1ebb5ebf434d18b68f770399f
+> prerequisite-patch-id: 5330c9e4b65644baae81bd177a46be6223d2b494
+> --=20
+> 2.54.0
+>
 
 
