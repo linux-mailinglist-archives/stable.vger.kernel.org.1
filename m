@@ -1,214 +1,124 @@
-Return-Path: <stable+bounces-268690-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-268691-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id EbTrH6XMPWpj6ggAu9opvQ
-	(envelope-from <stable+bounces-268690-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 02:49:41 +0200
+	id HysZHcTOPWqy6ggAu9opvQ
+	(envelope-from <stable+bounces-268691-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 02:58:44 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D07566C9545
-	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 02:49:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E9CBE6C959D
+	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 02:58:43 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=QL1mPHAe;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-268690-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-268690-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=G6Hk0z2y;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-268691-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-268691-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=none;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A4290309569F
-	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 00:46:46 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 087A13044094
+	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 00:58:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47AA61EEA31;
-	Fri, 26 Jun 2026 00:46:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 892E72BEC52;
+	Fri, 26 Jun 2026 00:58:22 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BC2E64AA4;
-	Fri, 26 Jun 2026 00:46:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7ECCD2BE026;
+	Fri, 26 Jun 2026 00:58:21 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782434805; cv=none; b=UvthRB7jzGQyj1nGqAqjkYjcsMIAGpT+I0dbEnvmBmcshCcc09y+TIyTe1BlTugFxb1qzAlFIE94/5Y/fjwIdS8nmr90WnzKc5RhB6rKrgB/u+V0hrDhNH/aM7lQnxQg+M37JmvSWWqMIpM5eSFIWU0bVOsEaEYKdw4LUNjFuLA=
+	t=1782435502; cv=none; b=PN59J2D3qZFA+/a0uCf0bc7jCYXu3o/C+U3mJlmTxjHhAcZ0hW1xqej8qB6gYVYjCzYz/8n7oPgmJ0N6EWQhY4KFtBc06MboTmwsqWhSi7f8mIEtbA9dMMrHCngTXUX04cggofYeC06c1ct+eqYpQjxXhBugESAnoWE+Oh0Yh9Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782434805; c=relaxed/simple;
-	bh=yktQmGAHquSq02GuLsLeNTscAi8DvFCnDel1wHsMS28=;
-	h=Date:To:From:Subject:Message-Id; b=X6/jz3xb43JIrbjbTvKlkDLX3GXsMaCpBL1pBij9HfHdbz9spTzAP2EnfZHsDk0AW//2UNoycmgg8zE31/MZ7xdYqjUN4fYVJo7XKJ8h+Y90ChtwXpAN653ztceyjXheWvN63GRUvV47jBcQHKaVP1/2A6RX2RYdNcd6h/k9M9o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=QL1mPHAe; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F3221F000E9;
-	Fri, 26 Jun 2026 00:46:43 +0000 (UTC)
+	s=arc-20240116; t=1782435502; c=relaxed/simple;
+	bh=jWLTZ/AXVNOgS6js3xuxXtAxE4a0xngRkEbgyFI0d2c=;
+	h=Date:From:To:Cc:Subject:Message-Id:In-Reply-To:References:
+	 Mime-Version:Content-Type; b=hV/TUQgyOAoQvxJ0/WtHwYSilSB5md33LLFXQiBc/I7HDdXKilknlUqurLAgds8Rn4z2FxWs2X0UT67R+mFS3oA1/9KRlHkln1iSMB7KP4Uevx7FO6SExSRh79I1PmI/+jewSE0vn9hZtukd4F1+ieI93rTiuR9H1WrS577IQ5k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=G6Hk0z2y; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8AA5C1F000E9;
+	Fri, 26 Jun 2026 00:58:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1782434803;
-	bh=KEukRefTHyO5CrlGIeWAAXB+3DCk726I+3/AN6vz+LI=;
-	h=Date:To:From:Subject;
-	b=QL1mPHAeZJTPe6euLbL21LDy8VGF6feH3JvC6/ac6SEqA5Gxj+QOaUvUMjXumNFg9
-	 y+AvBw8JX7JMTh8BAAI5dO3XubZsr7UZZvLp3GcrPGPXbAvw/GnCqeye5U3gkefFPl
-	 oKvnmseN98CNvSSLhiSdmM5cBaYKXmeNJCRu9DnI=
-Date: Thu, 25 Jun 2026 17:46:43 -0700
-To: mm-commits@vger.kernel.org,vbabka@kernel.org,stable@vger.kernel.org,osalvador@suse.de,muchun.song@linux.dev,kas@kernel.org,david@kernel.org,mclapinski@google.com,akpm@linux-foundation.org
+	d=linux-foundation.org; s=korg; t=1782435501;
+	bh=TAkkL3sPm5ZfzdmjNmlGFuALBQCcFtDjbOh35GYhvNM=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=G6Hk0z2ylq/Oy/aFJH+415QHc50i7/EYqo3wFynduArUqCpblGlirmquZkLrq10MR
+	 I8AL3Vdu7/MaQPVyeo6ceuWiGIEwARnndQz4E/EbdM90ufIi2Nz/MhJD5da/cwD+Ve
+	 3bsn8HctYrKuNFCbsfe7/CGUvVz5Klqt4L58aXiY=
+Date: Thu, 25 Jun 2026 17:58:20 -0700
 From: Andrew Morton <akpm@linux-foundation.org>
-Subject: [alternative-merged] mm-hugetlb-init-tails-before-init_migratetype.patch removed from -mm tree
-Message-Id: <20260626004643.9F3221F000E9@smtp.kernel.org>
+To: Wei Yang <richard.weiyang@gmail.com>
+Cc: Balbir Singh <balbirs@nvidia.com>, david@kernel.org, ljs@kernel.org,
+ riel@surriel.com, liam@infradead.org, vbabka@kernel.org, harry@kernel.org,
+ jannh@google.com, ziy@nvidia.com, sj@kernel.org, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org, Lance Yang
+ <lance.yang@linux.dev>
+Subject: Re: [Patch mm-hotfixes v4] mm/page_vma_mapped: fix device-private
+ PMD handling
+Message-Id: <20260625175820.cdc6716095c3355257726afe@linux-foundation.org>
+In-Reply-To: <20260626004416.vm4funxhn42hbi3c@master>
+References: <20260624065353.1622-1-richard.weiyang@gmail.com>
+	<38410976-ddac-4848-a4ff-e6a9f7d9c828@nvidia.com>
+	<20260626004416.vm4funxhn42hbi3c@master>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.16 / 15.00];
+X-Spamd-Result: default: False [0.34 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	MV_CASE(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linux-foundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-268690-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:mm-commits@vger.kernel.org,m:vbabka@kernel.org,m:stable@vger.kernel.org,m:osalvador@suse.de,m:muchun.song@linux.dev,m:kas@kernel.org,m:david@kernel.org,m:mclapinski@google.com,m:akpm@linux-foundation.org,s:lists@lfdr.de];
-	FROM_NEQ_ENVFROM(0.00)[akpm@linux-foundation.org,stable@vger.kernel.org];
-	DMARC_NA(0.00)[linux-foundation.org];
-	FORWARDED(0.00)[lists@lfdr.de];
-	DKIM_TRACE(0.00)[linux-foundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_SENDER(0.00)[akpm@linux-foundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:richard.weiyang@gmail.com,m:balbirs@nvidia.com,m:david@kernel.org,m:ljs@kernel.org,m:riel@surriel.com,m:liam@infradead.org,m:vbabka@kernel.org,m:harry@kernel.org,m:jannh@google.com,m:ziy@nvidia.com,m:sj@kernel.org,m:linux-mm@kvack.org,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,m:lance.yang@linux.dev,m:richardweiyang@gmail.com,s:lists@lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	TO_DN_NONE(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
+	FORGED_SENDER(0.00)[akpm@linux-foundation.org,stable@vger.kernel.org];
+	FREEMAIL_TO(0.00)[gmail.com];
+	RCPT_COUNT_TWELVE(0.00)[15];
+	DMARC_NA(0.00)[linux-foundation.org];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORWARDED(0.00)[lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-268691-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
+	FROM_NEQ_ENVFROM(0.00)[akpm@linux-foundation.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linux-foundation.org:+];
+	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	MIME_TRACE(0.00)[0:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linux-foundation.org:dkim,linux-foundation.org:email,linux-foundation.org:from_mime,vger.kernel.org:from_smtp,linux.dev:email,suse.de:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp,linux-foundation.org:dkim,linux-foundation.org:mid,linux-foundation.org:from_mime]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: D07566C9545
+X-Rspamd-Queue-Id: E9CBE6C959D
 
+On Fri, 26 Jun 2026 00:44:16 +0000 Wei Yang <richard.weiyang@gmail.com> wrote:
 
-The quilt patch titled
-     Subject: mm/hugetlb: init tails before init_migratetype
-has been removed from the -mm tree.  Its filename was
-     mm-hugetlb-init-tails-before-init_migratetype.patch
+> >Should be PVMW_MIGRATION and "us we do" -> "as we do"
+> >
+> 
+> Hi, Balbir
+> 
+> Sorry for missing your comment.
+> 
+> Hmm... looks you are right.
+> 
+> Andrew,
+> 
+> Would you mind handling it or prefer a v2?
 
-This patch was dropped because an alternative patch was or shall be merged
-
-------------------------------------------------------
-From: Michal Clapinski <mclapinski@google.com>
-Subject: mm/hugetlb: init tails before init_migratetype
-Date: Mon, 22 Jun 2026 12:19:01 +0200
-
-Currently, if you enable HVO, DEFERRED_STRUCT_PAGE_INIT and VM_DEBUG the
-kernel will crash with the following stack trace
-
-get_pfnblock_bitmap_bitidx
-__set_pfnblock_flags_mask
-hugetlb_bootmem_init_migratetype
-prep_and_add_bootmem_folios
-gather_bootmem_prealloc_node
-gather_bootmem_prealloc_parallel
-padata_do_multithreaded
-gather_bootmem_prealloc
-hugetlb_init
-
-on this code
-
-VM_BUG_ON_PAGE(!zone_spans_pfn(page_zone(page), pfn), page);
-
-This code looks inside the struct page which will be uninitialized
-for hugetlb tail pages, which will cause a false positive.
-
-So let's initialize the tail pages before this happens.
-
-Link: https://lore.kernel.org/20260622101901.223961-1-mclapinski@google.com
-Fixes: 622026e87c40 ("mm/hugetlb: remove fake head pages")
-Signed-off-by: Michal Clapinski <mclapinski@google.com>
-Reviewed-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
-Tested-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
-Cc: David Hildenbrand <david@kernel.org>
-Cc: Michal Clapinski <mclapinski@google.com>
-Cc: Muchun Song <muchun.song@linux.dev>
-Cc: Oscar Salvador <osalvador@suse.de>
-Cc: Vlastimil Babka <vbabka@kernel.org>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
----
-
- mm/hugetlb.c         |    1 +
- mm/hugetlb_vmemmap.c |   14 +++++++++-----
- mm/hugetlb_vmemmap.h |    5 +++++
- 3 files changed, 15 insertions(+), 5 deletions(-)
-
---- a/mm/hugetlb.c~mm-hugetlb-init-tails-before-init_migratetype
-+++ a/mm/hugetlb.c
-@@ -4127,6 +4127,7 @@ static int __init hugetlb_init(void)
- 	}
- 
- 	hugetlb_init_hstates();
-+	hugetlb_vmemmap_init_tails();
- 	gather_bootmem_prealloc();
- 	report_hugepages();
- 
---- a/mm/hugetlb_vmemmap.c~mm-hugetlb-init-tails-before-init_migratetype
-+++ a/mm/hugetlb_vmemmap.c
-@@ -867,14 +867,10 @@ static const struct ctl_table hugetlb_vm
- 	},
- };
- 
--static int __init hugetlb_vmemmap_init(void)
-+void __init hugetlb_vmemmap_init_tails(void)
- {
--	const struct hstate *h;
- 	struct zone *zone;
- 
--	/* HUGETLB_VMEMMAP_RESERVE_SIZE should cover all used struct pages */
--	BUILD_BUG_ON(__NR_USED_SUBPAGE > HUGETLB_VMEMMAP_RESERVE_PAGES);
--
- 	for_each_zone(zone) {
- 		for (int i = 0; i < NR_VMEMMAP_TAILS; i++) {
- 			struct page *tail, *p;
-@@ -890,6 +886,14 @@ static int __init hugetlb_vmemmap_init(v
- 				init_compound_tail(p + j, NULL, order, zone);
- 		}
- 	}
-+}
-+
-+static int __init hugetlb_vmemmap_init(void)
-+{
-+	const struct hstate *h;
-+
-+	/* HUGETLB_VMEMMAP_RESERVE_SIZE should cover all used struct pages */
-+	BUILD_BUG_ON(__NR_USED_SUBPAGE > HUGETLB_VMEMMAP_RESERVE_PAGES);
- 
- 	for_each_hstate(h) {
- 		if (hugetlb_vmemmap_optimizable(h)) {
---- a/mm/hugetlb_vmemmap.h~mm-hugetlb-init-tails-before-init_migratetype
-+++ a/mm/hugetlb_vmemmap.h
-@@ -20,6 +20,7 @@
- #define HUGETLB_VMEMMAP_RESERVE_PAGES	(HUGETLB_VMEMMAP_RESERVE_SIZE / sizeof(struct page))
- 
- #ifdef CONFIG_HUGETLB_PAGE_OPTIMIZE_VMEMMAP
-+void hugetlb_vmemmap_init_tails(void);
- int hugetlb_vmemmap_restore_folio(const struct hstate *h, struct folio *folio);
- long hugetlb_vmemmap_restore_folios(const struct hstate *h,
- 					struct list_head *folio_list,
-@@ -72,6 +73,10 @@ static inline void hugetlb_vmemmap_optim
- {
- }
- 
-+static inline void hugetlb_vmemmap_init_tails(void)
-+{
-+}
-+
- static inline void hugetlb_vmemmap_optimize_bootmem_folios(struct hstate *h,
- 						struct list_head *folio_list)
- {
-_
-
-Patches currently in -mm which might be from mclapinski@google.com are
-
-
+I have made those edits.
 
