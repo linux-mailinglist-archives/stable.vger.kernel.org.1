@@ -1,165 +1,201 @@
-Return-Path: <stable+bounces-269307-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-269308-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id nRilFMfrPmoFNAkAu9opvQ
-	(envelope-from <stable+bounces-269307-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 23:14:47 +0200
+	id 72idCGrsPmoeNAkAu9opvQ
+	(envelope-from <stable+bounces-269308-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 23:17:30 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id DFA346D0331
-	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 23:14:46 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8E26D6D0364
+	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 23:17:29 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=WNISukl8;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-269307-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-269307-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=CEpeZgKe;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-269308-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-269308-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=none) header.from=gmail.com;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 85B6A3010DB5
-	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 21:14:43 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 8844D3015858
+	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 21:17:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C02F43BF660;
-	Fri, 26 Jun 2026 21:14:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5FEDE3BFACC;
+	Fri, 26 Jun 2026 21:17:20 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-dy1-f177.google.com (mail-dy1-f177.google.com [74.125.82.177])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97F2634A79D;
-	Fri, 26 Jun 2026 21:14:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10CA719995E
+	for <stable@vger.kernel.org>; Fri, 26 Jun 2026 21:17:17 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782508482; cv=none; b=RwbFTUuoSzbiy3g1n2NBSwyivL/UpSkjJNC07VpsOuJ7IheVF08q4VvWu4Wzpj0CDWfps5lsWrepzsTjcB+1sEKHwtPFfJwXbWLSbZVJdRPZCGNE7wF5kK2v4Md0F4KClcaR131ABZ7bzfh1aUJ9zWm11YSWDXZO9rXryGIdLlk=
+	t=1782508640; cv=none; b=UlVSollmmDdzWFHzRDK8UPWhyhhQgGHuF4OBQvoozq6AYx8JrL4nBbE/dEZMdmtaA1TEkSrdPHJe1X04I+ppmRWMSpoatGQhJSC+Q8duGSwrNc16RvoFxR31/A9Cz+VeulskH93ehI8KODMq17strhuNPjQSdJm3Zaj5ciZ6puw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782508482; c=relaxed/simple;
-	bh=qxOAVD2IVgxGYDXAssIoyviDaflFIw5rrqHn+lcy97E=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=jIAAfIBMLb50D27f9/upZW6v+Y3J5u3vK9WkTafUeYu3ARaz7aK1NogYxAR0qogkS87FwfF1xi7rxHQtXRFkNv5UWsCMJ5ldhCEgB/7S4pLsUTfqbnroS1CVJ8qNpf/DJS51CBeuB536O8Iljr6JhO8BilQbOzPGsjGFoqXV94g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WNISukl8; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB2611F000E9;
-	Fri, 26 Jun 2026 21:14:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782508481;
-	bh=lOkQRA9yEqIS0HRbN4Jb3YffZ0tu56nPTonrEBLDaCU=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=WNISukl8DdfiIe1sWNuew3iqtHAzuC69CtB3W3vBrVvOR9O19q2QY+oPR/LhdOrsc
-	 pK02+uoFNLQ+aFUW5JzBUdgJt7N3vN0grGI3oiG8qJgRiGFkDIZJEf4ORZwMX7DRWc
-	 4ZiahtD7cee+YdbR9ArNDi2kIIA6yU4uvj8Ce6mSQ4wIbxEx04Q2LoA2E+GrmCwJ7y
-	 MgsA3QNmi295PJp/rk/ywSKl6Yqx421+3OSoDlgYjfxDbkX8atephUda9TTx2/7O+X
-	 SsFZhDzEtgSHYEIdbiB75NZStxv2YswexsAeynX37SKZYG4WGUunVbZb/i3YzA3b4X
-	 rhwOXbRzH7ysg==
-Message-ID: <7d4b85ca-ec2a-4c43-aa39-58148ccef82e@kernel.org>
-Date: Fri, 26 Jun 2026 16:14:39 -0500
+	s=arc-20240116; t=1782508640; c=relaxed/simple;
+	bh=f8+P0j7bKuD7GBbgiceDtmS1hF48EPud963cenzQPP8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=KEJqyR4kHXBrboadOLuExQ+0XEMv5d9qXzTDRL1NNOWIkzJNpmVGt8OpbigktSxw3iCWIVaMkHgxtQWwCQ3Zikwf4+RQAZeLVCpJ8chC6Rvl5/Ydh6cOuSu3E3E1UYNUk5oJZnZE6yqvXk0VtL0Ykiclg/psCp6WzDXtQ9/kvRQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=CEpeZgKe; arc=none smtp.client-ip=74.125.82.177
+Received: by mail-dy1-f177.google.com with SMTP id 5a478bee46e88-30bf132969bso2206024eec.0
+        for <stable@vger.kernel.org>; Fri, 26 Jun 2026 14:17:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1782508637; x=1783113437; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=5FYxptaek7EQM9lggJzimluJgqrrJTIoBQ9J0q20K0I=;
+        b=CEpeZgKeSR2aBH0X+MO5XwWVEuOZzJi3F05ZRrbbbUowQdeHsLRTulTjSe2AoPfB0K
+         d1CFP0BjwXfnN5macQPDgy7r3foUIuxF+Okuk7TNOAETwO8vYVvoQz/QiQ3e448fD1YE
+         F6Uuzzr6maADTdbI3o/hMH+to/stmcbYxb6Vawwzs/5InoBZShQMV/VqrWp46MwEUNKS
+         JFTDCTKXia5gRZhdZ572Ri4ihFY6CL5zjryr4gzeqWWZi3k9HlYpe2XUMBls1yKwqlTF
+         jbD1KrSdZMfAQ+oaULE1kns/7i+ID4cw/k2JaHhiORlU1LlzIK2L4qi2zpGXoig8Y6gr
+         BHHQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1782508637; x=1783113437;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=5FYxptaek7EQM9lggJzimluJgqrrJTIoBQ9J0q20K0I=;
+        b=In5fheZN65l1XQpP/Nf3u8Dw6iGRZUqpXzMFC0ziQyx2Y4bfAEhlOWIc8tSjJPAzaK
+         zGBmK9aDvIXoN6IdBbLP7EfzBNljntnEfTd4bD2C5J37TWa8Y2mw3HMtGUvmt9oeaGew
+         J1RdComREkPLrsKJzX+t3cWxo2D8oqUsREXmUyu0wWfaMT1uHIrBRjCn5t6hlDvAJgVH
+         FBllt/B+HlBR8P/InrHkEUKuQPojH20CL6lXRt5YxKTI37PmEPmBWycUZNR5O9GwS9xR
+         ffrXEMYv3s4WcGoXoRUp6/n70J/WsZ/3HypAXnH44p9PG20DLjyKIALcch4q4I8500zS
+         EUzA==
+X-Forwarded-Encrypted: i=1; AHgh+RqKVwsP/yZFVrv2hHCcqrVY5KkLtUyZckla7BV7332eOGPbKuTTjruCBW0lie/C8nZhoWDXIvw=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxALxtVQJLMEy/+xp1+ftS2zfNkEpcomVs3+WGh5j80UQZySqHW
+	wNAnhtT3HjVQo1HAaPRQLx5hkkL3g8SXqIlIex+nGNEuhzGL0MYehQ7u
+X-Gm-Gg: AfdE7clplRVPVPuwRxvvynaoD4D/XDf2vXYCdkxmhFw8DlJ6j5SUnD+Mp36hx3iURjG
+	jVPBX/cEl+fqlE2i4bbCbuidAQDT/i7He+gDaB/hd+5CWtClZBS1wOQ33r7AAW40pMpgmB+obIq
+	O+NqHYWTgTdUvl5b3tSyQjeiqbnNWPpxlfLiRk3iOtbygrsAdfhjJuDI77wYe6fbhm0XdKElbwR
+	RwRA3P/uIDoan5/BPjy5+6GwsoWSZYpOfqqq3uEuyZkKi69n36TLSwtEDuRcY4F1GyDOtgDfKtT
+	0Qw1w/Lzw+X4yV7VVd0nTRXt9rY1ZnxlKUM47nSOkCnyZuasp9NxV6ygiq9vowKyAjPo0O1tV6h
+	lDtkDCVeyO7vU7DK4Z6e4WerTH1wToeyeEv7HxyH0CMpjNALJTpK2D4YANAGRlVy1FujTHbDzmo
+	3nW1CKfOH8HUDPsudjSQJBLrioNC9ozlh11sZbjDToWZ2EBoq2OKr2ag==
+X-Received: by 2002:a05:7300:760a:b0:30b:f0c6:12c8 with SMTP id 5a478bee46e88-30c84ba31edmr8054304eec.9.1782508637000;
+        Fri, 26 Jun 2026 14:17:17 -0700 (PDT)
+Received: from google.com ([2a00:79e0:2ebe:8:a474:bf4a:4966:8d97])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-30c7c8b1a80sm20444292eec.18.2026.06.26.14.17.15
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 26 Jun 2026 14:17:16 -0700 (PDT)
+Date: Fri, 26 Jun 2026 14:17:13 -0700
+From: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+To: "Barry K. Nathan" <barryn@pobox.com>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	stable@vger.kernel.org, patches@lists.linux.dev, linux-kernel@vger.kernel.org, 
+	torvalds@linux-foundation.org, akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@nabladev.com, 
+	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, rwarsow@gmx.de, 
+	conor@kernel.org, hargar@microsoft.com, broonie@kernel.org, achill@achill.org, 
+	sr@sladewatkins.com
+Subject: Re: [PATCH 7.1 00/21] 7.1.2-rc1 review
+Message-ID: <aj7r1Eqt2SEnWsMZ@google.com>
+References: <20260625125613.243729608@linuxfoundation.org>
+ <b7bd471b-e9da-4bfc-ad1d-24b378bd1e44@pobox.com>
+ <aj7RmyBck8EkPn_s@google.com>
+ <ab7df7bf-1b30-40c0-9463-a469abfa2bda@pobox.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 0/2] platform/x86: hp-bioscfg: fix attribute enumeration
- on older HP BIOS
-To: Muhammad Bilal <meatuni001@gmail.com>, Jorge Lopez <jorge.lopez2@hp.com>,
- Hans de Goede <hansg@kernel.org>,
- =?UTF-8?Q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
-Cc: =?UTF-8?Q?Thomas_Wei=C3=9Fschuh?= <linux@weissschuh.net>,
- platform-driver-x86@vger.kernel.org, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org
-References: <20260626204945.18868-1-meatuni001@gmail.com>
-Content-Language: en-US
-From: Mario Limonciello <superm1@kernel.org>
-In-Reply-To: <20260626204945.18868-1-meatuni001@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ab7df7bf-1b30-40c0-9463-a469abfa2bda@pobox.com>
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-5.16 / 15.00];
-	WHITELIST_SPF_DKIM(-3.00)[kernel.org:d:+,kernel.org:s:+];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-269308-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:barryn@pobox.com,m:gregkh@linuxfoundation.org,m:stable@vger.kernel.org,m:patches@lists.linux.dev,m:linux-kernel@vger.kernel.org,m:torvalds@linux-foundation.org,m:akpm@linux-foundation.org,m:linux@roeck-us.net,m:shuah@kernel.org,m:patches@kernelci.org,m:lkft-triage@lists.linaro.org,m:pavel@nabladev.com,m:jonathanh@nvidia.com,m:f.fainelli@gmail.com,m:sudipm.mukherjee@gmail.com,m:rwarsow@gmx.de,m:conor@kernel.org,m:hargar@microsoft.com,m:broonie@kernel.org,m:achill@achill.org,m:sr@sladewatkins.com,m:ffainelli@gmail.com,m:sudipmmukherjee@gmail.com,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[dmitrytorokhov@gmail.com,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:meatuni001@gmail.com,m:jorge.lopez2@hp.com,m:hansg@kernel.org,m:ilpo.jarvinen@linux.intel.com,m:linux@weissschuh.net,m:platform-driver-x86@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,s:lists@lfdr.de];
-	FREEMAIL_TO(0.00)[gmail.com,hp.com,kernel.org,linux.intel.com];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,vger.kernel.org,lists.linux.dev,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,nabladev.com,nvidia.com,gmail.com,gmx.de,microsoft.com,achill.org,sladewatkins.com];
+	RCPT_COUNT_TWELVE(0.00)[21];
 	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_SENDER(0.00)[superm1@kernel.org,stable@vger.kernel.org];
-	TAGGED_FROM(0.00)[bounces-269307-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[superm1@kernel.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[dmitrytorokhov@gmail.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	ALIAS_RESOLVED(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	MISSING_XM_UA(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,11.xxx:url,vger.kernel.org:from_smtp]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: DFA346D0331
+X-Rspamd-Queue-Id: 8E26D6D0364
 
+On Fri, Jun 26, 2026 at 01:41:38PM -0700, Barry K. Nathan wrote:
+> On 6/26/26 12:56 PM, Dmitry Torokhov wrote:
+> > Hi Barry,
+> > 
+> > On Fri, Jun 26, 2026 at 10:56:21AM -0700, Barry K. Nathan wrote:
+> > > (cc Dmitry Torokhov because this is related to two of your commits)
+> > > 
+> > > On 6/25/26 6:03 AM, Greg Kroah-Hartman wrote:
+> > > > This is the start of the stable review cycle for the 7.1.2 release.
+> > > > There are 21 patches in this series, all will be posted as a response
+> > > > to this one.  If anyone has any issues with these being applied, please
+> > > > let me know.
+> > > > 
+> > > > Responses should be made by Sat, 27 Jun 2026 12:54:50 +0000.
+> > > > Anything received after that time might be too late.
+> > > > 
+> > > > The whole patch series can be found in one patch at:
+> > > > 	https://www.kernel.org/pub/linux/kernel/v7.x/stable-review/patch-7.1.2-rc1.gz
+> > > > or in the git tree and branch at:
+> > > > 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-7.1.y
+> > > > and the diffstat can be found below.
+> > > > 
+> > > > thanks,
+> > > > 
+> > > > greg k-h
+> > > > 
+> > > Unfortunately, 7.1.2-rc1 breaks the Synaptics touchpad on my Lenovo
+> > > ThinkPad T14 Gen 1 -- the pointer no longer moves when I touch the
+> > > touchpad. Potentially relevant line from dmesg:
+> > > 
+> > > rmi4_f01 rmi4-00.fn01: found RMI device, manufacturer: Synaptics, product: TM3471-020, fw id: 3972349
+> > > 
+> > > > Dmitry Torokhov<dmitry.torokhov@gmail.com>
+> > > >       Input: rmi4 - refactor register descriptor parsing
+> > > > 
+> > > > Dmitry Torokhov<dmitry.torokhov@gmail.com>
+> > > >       Input: rmi4 - fix register descriptor address calculation
+> > > > > Both of these patches seem bad in my testing. Either one, individually,
+> > > causes the pointer to no longer move when I touch the touchpad. If I
+> > > revert both of them, then my touchpad works again.
+> > > 
+> > > I have not yet tested 7.0.14-rc1 or 6.18.37-rc1. However, the problem
+> > > also reproduces on current mainline as of this writing (commit
+> > > 51cb1aa1250c36269474b8b6ca6b6319e170f5a5).
+> > 
+> > Could you please try applying this debug patch and send me dmesg?
+> 
+> Sure, I applied the patch on top of mainline, and the dmesg output is
+> below.
 
+Thank you! So I messed up and "Input: rmi4 - fix register descriptor
+address calculation" is totally wrong.
 
-On 6/26/26 15:49, Muhammad Bilal wrote:
-> The hp_bioscfg driver silently fails to enumerate BIOS attributes on
-> HP EliteBook 840 G2 (and potentially other older HP models) because:
-> 
->    1. hp_init_bios_package_attribute() hard-fails when a WMI ACPI package
->       contains fewer elements than the per-type expected count (11 < 13),
->       even though only the first 10 common elements are required to
->       register an attribute.
-> 
->    2. hp_populate_enumeration_elements_from_package() returns -EIO and
->       discards the entire attribute when any single element has an
->       unexpected ACPI object type — typically after a BIOS AML error
->       returns malformed data.
-> 
-> Hardware affected:
->    HP EliteBook 840 G2 (DMI: Hewlett-Packard HP EliteBook 840 G2/2216)
->    BIOS: M71 Ver. 01.31 (02/24/2020)
-> 
-> How to reproduce:
->    1. Boot a kernel with CONFIG_HP_BIOSCFG=m on an HP EliteBook 840 G2
->    2. modprobe hp_bioscfg
->    3. Observe dmesg:
->         hp_bioscfg: ACPI-package does not have enough elements: 11 < 13
->         Error expected type 2 for elem 13, but got type 1 instead
-> 
-> Testing notes:
->    Tested on HP EliteBook 840 G2 running Arch Linux kernel 7.0.13-arch1-1.
->    After patches, hp_bioscfg loads successfully and enumerates available
->    BIOS attributes. Attributes with shortened packages are partially
->    populated and accessible via sysfs. No regressions on systems that
->    return full 13-element packages (checked via code inspection —
->    pr_warn path is only reached when count < min_elements).
-> 
-> Relevant dmesg (before fix):
->    [   11.xxx] hp_bioscfg: ACPI-package does not have enough elements:
->                11 < 13
->    [   11.xxx] ACPI BIOS Error (bug): AE_AML_BUFFER_LIMIT,
->                Index (0x000000032) is beyond end of object (length 0x32)
->    [   11.xxx] ACPI Error: Aborting method \_SB.WMID.WQBE
->    [   11.xxx] Error expected type 2 for elem 13, got type 1
->    [   11.xxx] hp_bioscfg: Returned error 0x3
-> 
-> Muhammad Bilal (2):
->    platform/x86: hp-bioscfg: accept reduced ACPI packages from older HP
->      BIOS
->    platform/x86: hp-bioscfg: warn on element type mismatch instead of
->      failing
-> 
->   drivers/platform/x86/hp/hp-bioscfg/bioscfg.c         | 11 ++++++++---
->   drivers/platform/x86/hp/hp-bioscfg/bioscfg.h         |  3 +++
->   drivers/platform/x86/hp/hp-bioscfg/enum-attributes.c |  7 ++++---
->   3 files changed, 15 insertions(+), 6 deletions(-)
-> 
-Reviewed-by: Mario Limonciello (AMD) <superm1@kernel.org>
+Can you please revert it (keeping the debug patch) and try booting again
+and if the touchpad still does not work post the dmesg again.
+
+Thanks!
+
+-- 
+Dmitry
 
