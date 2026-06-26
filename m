@@ -1,62 +1,63 @@
-Return-Path: <stable+bounces-268717-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-268718-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id YJfGIh7xPWq48wgAu9opvQ
-	(envelope-from <stable+bounces-268717-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 05:25:18 +0200
+	id C0i2EhjzPWpQ9AgAu9opvQ
+	(envelope-from <stable+bounces-268718-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 05:33:44 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id D3B4A6C9EB1
-	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 05:25:17 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D005A6C9EEB
+	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 05:33:42 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="WLMnuF//";
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-268717-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-268717-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linux.dev header.s=key1 header.b=lpdVZb7d;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-268718-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-268718-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linux.dev;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id C3A6A30347E2
-	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 03:25:16 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 827AF3044F1E
+	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 03:33:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E94F42EEE63;
-	Fri, 26 Jun 2026 03:25:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CAC2223507C;
+	Fri, 26 Jun 2026 03:33:39 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from out-182.mta1.migadu.com (out-182.mta1.migadu.com [95.215.58.182])
+Received: from out-171.mta0.migadu.com (out-171.mta0.migadu.com [91.218.175.171])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3F3F3C1F
-	for <stable@vger.kernel.org>; Fri, 26 Jun 2026 03:25:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA17718FC80
+	for <stable@vger.kernel.org>; Fri, 26 Jun 2026 03:33:37 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782444313; cv=none; b=dGoXpdgumFUIWiLO8PqAH85QfBlSo/++uSu1f65GUV3cllwnxX+RcLEJ01mLkLnr8yIFpLR+xZ/ANFj8ltz0FbTR+ZIS0K0tY9u2Q5dwlGn6MrbofuFagcfqqlJFWmTpYCfP0XV4oUV6up3Q2HMzMIdVG4TUXa/sMr4wsdt5Th8=
+	t=1782444819; cv=none; b=jFC8pwlUIEq/zxRmaZcFx4iSYC/geQmeYMdtZ8S3+S6i/xWXTtE5Hc0PwBlTCSNq6UYUil7RfGjTE/FH1clpahGl3WYjy3Pq7H/U+TcEjfVJSCXvW6WeG8+skZ8XKQai87XWT9ESFxtXawd8eQEkSP+8UMTxA/z4LdEMLn/GLUc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782444313; c=relaxed/simple;
-	bh=Ux5+lGJwP6LBbsjx9rLhMSCweHr13fiQdtUrbhOlobM=;
+	s=arc-20240116; t=1782444819; c=relaxed/simple;
+	bh=0HCGQZ57BsFjU/yjnNeadFJo2JebiPKo37EWE7E6eNU=;
 	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=Tv06IZVeVORlXDhVtiD9a5G0octvUsLnnK4/RJ0SbruV5IPm1d7Dd1zsNKPdaKrXhJp/QFzdce9zK5zx0QAsEKfktJmZhMD9cVGWE2tZ5YJe8GboU3LwN0z4uSG+mcM3R2eY2NBOzfEDdw4ub+Qsk61OSRKfqdvFOg4N/HaZYaQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=WLMnuF//; arc=none smtp.client-ip=95.215.58.182
+	 Message-Id:References:To; b=YM+pSwqagrZb8w6V6y7l6vdxflSBnPYY/cTuCVSot58FAvH4XQu3gqkKSsj0rdX9cpuRe4pc6jX4MQXPtWKgDLAJbZ82GKRF+fgCxGL9GWrhplRF/YlJHIRgvfCr9JQFKUa8ErQl3X+R2BOJ6hU02NY/L98k53nqNHghPqNo3Tw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=lpdVZb7d; arc=none smtp.client-ip=91.218.175.171
 Content-Type: text/plain;
 	charset=us-ascii
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1782444309;
+	t=1782444815;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=OAXxVgUjspFRwFL/RkyK5xtXWU1EaEUoL3fXnAC+ilY=;
-	b=WLMnuF//u9tPPAqJrZxZn4i0N40nEjPTUdUTFBNYBZ7b+NqKnvWWIXEkhC2M94T7rwC5nt
-	slSAhdl1ejlz0D1vl4f8SzrXb1zgQXA9z6YzMaCN5NYNf/Q2xuiUPczuiuecOgCXc09z/z
-	7EQW8Ec7zgRmcMiA6NYQYQjWZW0fcio=
+	bh=0HCGQZ57BsFjU/yjnNeadFJo2JebiPKo37EWE7E6eNU=;
+	b=lpdVZb7dYZBVQfZG9ALV8QZZPn5pCWrHjojmjbeGjIU4iPSQOMA0ewkkkcghYLsUKx63Fm
+	FoGY+IQM4XOitUE4lPfMPkCtzcm8hmMBnJ7uP/l4sNIDU4BIqK3VLTQRPgIQLuwoydkHzj
+	J4haBNrsxLdlCOvXEsR5ZnsgyWgo3Nk=
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3864.600.51.1.1\))
-Subject: Re: [PATCH 2/5] mm/rmap: use huge_ptep_get() in try_to_migrate_one()
+Subject: Re: [PATCH 3/5] mm/migrate: use huge_ptep_get() in
+ remove_migration_pte()
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 From: Muchun Song <muchun.song@linux.dev>
-In-Reply-To: <20260625112955.3254283-3-dev.jain@arm.com>
-Date: Fri, 26 Jun 2026 11:24:28 +0800
+In-Reply-To: <20260625112955.3254283-4-dev.jain@arm.com>
+Date: Fri, 26 Jun 2026 11:32:03 +0800
 Cc: osalvador@suse.de,
  akpm@linux-foundation.org,
  ljs@kernel.org,
@@ -90,10 +91,10 @@ Cc: osalvador@suse.de,
  ryan.roberts@arm.com,
  anshuman.khandual@arm.com,
  stable@vger.kernel.org
-Content-Transfer-Encoding: 7bit
-Message-Id: <35399716-4B47-4492-8168-B1F0AEFF6672@linux.dev>
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <7E9EBE58-C2D0-44F4-8797-D8077E26AFEC@linux.dev>
 References: <20260625112955.3254283-1-dev.jain@arm.com>
- <20260625112955.3254283-3-dev.jain@arm.com>
+ <20260625112955.3254283-4-dev.jain@arm.com>
 To: Dev Jain <dev.jain@arm.com>
 X-Migadu-Flow: FLOW_OUT
 X-Rspamd-Action: no action
@@ -102,13 +103,13 @@ X-Spamd-Result: default: False [-0.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MV_CASE(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linux.dev,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64];
 	R_DKIM_ALLOW(-0.20)[linux.dev:s=key1];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-268717-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-268718-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
 	FORGED_SENDER(0.00)[muchun.song@linux.dev,stable@vger.kernel.org];
 	FORGED_RECIPIENTS(0.00)[m:osalvador@suse.de,m:akpm@linux-foundation.org,m:ljs@kernel.org,m:david@kernel.org,m:liam@infradead.org,m:riel@surriel.com,m:vbabka@kernel.org,m:harry@kernel.org,m:jannh@google.com,m:lance.yang@linux.dev,m:kas@kernel.org,m:linux-mm@kvack.org,m:linux-kernel@vger.kernel.org,m:rcampbell@nvidia.com,m:apopple@nvidia.com,m:ziy@nvidia.com,m:matthew.brost@intel.com,m:joshua.hahnjy@gmail.com,m:rakie.kim@sk.com,m:byungchul@sk.com,m:gourry@gourry.net,m:ying.huang@linux.alibaba.com,m:mel@csn.ul.ie,m:nao.horiguchi@gmail.com,m:ak@linux.intel.com,m:j-nomura@ce.jp.nec.com,m:pfalcato@suse.de,m:dave.hansen@intel.com,m:tglx@kernel.org,m:jpoimboe@kernel.org,m:ryan.roberts@arm.com,m:anshuman.khandual@arm.com,m:stable@vger.kernel.org,m:dev.jain@arm.com,m:joshuahahnjy@gmail.com,m:naohoriguchi@gmail.com,s:lists@lfdr.de];
@@ -129,37 +130,43 @@ X-Spamd-Result: default: False [-0.16 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	MISSING_XM_UA(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.dev:dkim,linux.dev:email,linux.dev:mid,linux.dev:from_mime,arm.com:email,vger.kernel.org:from_smtp]
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.dev:dkim,linux.dev:email,linux.dev:mid,linux.dev:from_mime,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp,arm.com:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: D3B4A6C9EB1
+X-Rspamd-Queue-Id: D005A6C9EEB
 
 
 
 > On Jun 25, 2026, at 19:29, Dev Jain <dev.jain@arm.com> wrote:
-> 
-> try_to_migrate_one() is used by folio migration to replace a present
-> mapping with a migration entry. For hugetlb folios, page_vma_mapped_walk()
-> returns the pte pointer to the hugetlb folio in pvmw.pte, but the code
-> reads the huge pte entry with ptep_get().
-> 
-> On arches which provide their own huge_ptep_get() to dereference a huge
-> pte pointer, accessing via ptep_get() would cause pte_pfn(), pte_present()
-> etc to misbehave.
-> 
-> It is not clear whether this has a trivially visible effect to userspace.
-> 
+>=20
+> remove_migration_pte() converts migration entries back to present PTEs
+> after folio migration completes. For hugetlb folios,
+> page_vma_mapped_walk() returns the pte pointer to the hugetlb folio in
+> pvmw.pte, but the code reads it with ptep_get().
+>=20
+> On arches which provide their own huge_ptep_get() to dereference a =
+huge
+> pte pointer, accessing via ptep_get() would cause pte_pfn(),
+> pte_present() etc to misbehave.
+>=20
+> It is not clear whether this has a trivially visible effect to =
+userspace.
+
+We are dealing with migration entries here, so the issue mentioned =
+shouldn't
+be a problem with any of the architectures. Semantically speaking, we =
+definitely
+should fix this.
+
+>=20
 > Use huge_ptep_get() to dereference a huge pte pointer.
-> 
-> Commit a98a2f0c8ce1 copied the bug from try_to_unmap_one into
-> try_to_migrate_one.
-> 
-> Fixes: a98a2f0c8ce1 ("mm/rmap: split migration into its own function")
+>=20
+> Fixes: 290408d4a250 ("hugetlb: hugepage migration core")
 > Cc: stable@vger.kernel.org
 > Signed-off-by: Dev Jain <dev.jain@arm.com>
 
 Acked-by: Muchun Song <muchun.song@linux.dev>
 
-Thanks.	
+Thanks
 
 
