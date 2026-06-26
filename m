@@ -1,132 +1,125 @@
-Return-Path: <stable+bounces-269145-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-269120-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id g4KhAECnPmrQJgkAu9opvQ
-	(envelope-from <stable+bounces-269145-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 18:22:24 +0200
+	id c9cJML2mPmqyJgkAu9opvQ
+	(envelope-from <stable+bounces-269120-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 18:20:13 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5BE3F6CEF4D
-	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 18:22:23 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 223836CEEEE
+	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 18:20:13 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=narfation.org header.s=20121 header.b=hVSWNzvX;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-269145-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-269145-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=none) header.from=narfation.org;
+	dkim=pass header.d=lunn.ch header.s=20171124 header.b="WwulOg/u";
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-269120-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-269120-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=none) header.from=lunn.ch;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 606E93126E02
-	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 16:14:03 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 8E5A03164664
+	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 16:12:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9CD6F3FF88D;
-	Fri, 26 Jun 2026 16:12:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C81DD3FBB68;
+	Fri, 26 Jun 2026 16:12:01 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from dvalin.narfation.org (dvalin.narfation.org [213.160.73.56])
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13CD93FC5DD
-	for <stable@vger.kernel.org>; Fri, 26 Jun 2026 16:12:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5B0F3FAE1D;
+	Fri, 26 Jun 2026 16:11:57 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782490337; cv=none; b=Djw2LtXsS0ubfwii9M4NDmnvFiBWc46t80trBEfb/0nS/UbBr+ZZQw1aqbbXleK6ALfas3KN5b9YRPKBYSth2+gg+Tik+/LD12BKtXeiUv/+ekkim2Yv652iNaka8O77lOzZFZS5XrgOG6oOIdxNsG+yGIIxDKlWti5pxbR+tsA=
+	t=1782490321; cv=none; b=IlaWf+R4QRPUJ6PNREZKekcPAJi8XeOq4qUDyQlYsAJGpGjLeHi3pBL3U2IDMzP/6tlWw2nATo1SB/Fc+XdQjDwJfTtAPXRnvGvW+neT0oA6OP9m6ncR2fcoEmHc07st9h53FwoxqLc4FC2l/PS7YHkbRCW5tNizxI6Ccx0DVDQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782490337; c=relaxed/simple;
-	bh=HFV9zMSfz6y9vsz6bD3pnBRlsupfWeZlLoKChZFVrug=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=quSeizCZI/hTlEuwMiabBSGEIXcaGQL7Djt9THsi4BG7jsNceuhCAS3dIgX4N4qH+kFU45JPKbIHyPr2X966AVmHJD70X66H41XzcjvBIn+4oF5S4Yxp+aEWWuCgWztVPA9sRzWlNgX8jIQS9CmtW0zSDLozSzPGyB2YLlnBzUE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=narfation.org; spf=pass smtp.mailfrom=narfation.org; dkim=pass (1024-bit key) header.d=narfation.org header.i=@narfation.org header.b=hVSWNzvX; arc=none smtp.client-ip=213.160.73.56
-Received: by dvalin.narfation.org (Postfix) id 7082D203F3;
-	Fri, 26 Jun 2026 16:12:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=narfation.org;
-	s=20121; t=1782490332;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=NU4QrmwGiT0OpK327eM37959cvI+bPaZj6rT15wqN1g=;
-	b=hVSWNzvXYPVZTurxj3F6Kv+LHODmgqWsXRYLeZQazQ1fZSOSF4EbawLhea5nnZ9GJeoKhS
-	eLpvLBcG/Vg6BLs75lSl9tnMV5exiuUozuwBv/4CWONckwJCbxtJATr75YVysplEQfbHcl
-	R+4W5IGs54te7tILVMBzKUTUm+BDUB8=
-From: Sven Eckelmann <sven@narfation.org>
-To: stable@vger.kernel.org
-Cc: Sven Eckelmann <sven@narfation.org>
-Subject: [PATCH 6.18 03/26] batman-adv: tp_meter: initialize dec_cwnd explicitly
-Date: Fri, 26 Jun 2026 18:11:47 +0200
-Message-ID: <20260626161210.124712-4-sven@narfation.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260626161210.124712-1-sven@narfation.org>
-References: <20260626161210.124712-1-sven@narfation.org>
+	s=arc-20240116; t=1782490321; c=relaxed/simple;
+	bh=iSfR+9zbKksmHcBVuOe/NurIL4kLG4GXXN2/ltuck8U=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=gbeDVVkMgQTWB3lyRho2rHh+1bSXnmNo0424tyxb1dMYHMnAYUh9KilqD/Bme6aPolyrTuBShtInLLZBCHTsL2z77buWC1mQAG4mCJWEeKAagyJCh48qmk20OIVdvnSLL7TLGsi8l5+ZjIJk2jFYzxuz12COubbDf/dfmDi26Tw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=WwulOg/u; arc=none smtp.client-ip=156.67.10.101
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=xpb0OgYrP34zH14FJQRa4tbViBikysXim0c8FtbtJd4=; b=WwulOg/ugjEm32QXtlxjbxk0wY
+	6x5bdZcw5jYLXj0wfIu9D7A7bSpXWwXPx3E49q6VCM/9FFU7hYCOMLVl/IPcpOGFAc2wOgumkZsfw
+	B10JCthIHCXibfxIE9H7eChT/CkJEVSnFjsFsN8qE68m4WJSWeNeQU3jJqe3p4f9q9hs=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1wd99g-009OGL-TV; Fri, 26 Jun 2026 18:11:48 +0200
+Date: Fri, 26 Jun 2026 18:11:48 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: WenTao Liang <vulab@iscas.ac.cn>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>, netdev@vger.kernel.org,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Grygorii Strashko <grygorii.strashko@ti.com>,
+	linux-omap@vger.kernel.org, stable@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] fix: net: ti: cpts_of_mux_clk_setup: fix device_node
+ reference leak on   success path
+Message-ID: <64f44697-ecdd-4324-8112-c26ddc46da01@lunn.ch>
+References: <20260626153148.52612-1-vulab@iscas.ac.cn>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260626153148.52612-1-vulab@iscas.ac.cn>
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[narfation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
-	R_DKIM_ALLOW(-0.20)[narfation.org:s=20121];
+	DMARC_POLICY_ALLOW(-0.50)[lunn.ch,none];
+	R_DKIM_ALLOW(-0.20)[lunn.ch:s=20171124];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-269145-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:sven@narfation.org,s:lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWO(0.00)[2];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_SENDER(0.00)[sven@narfation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sven@narfation.org,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-269120-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[narfation.org:+];
-	FORGED_SENDER_FORWARDING(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER(0.00)[andrew@lunn.ch,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS(0.00)[m:vulab@iscas.ac.cn,m:andrew+netdev@lunn.ch,m:netdev@vger.kernel.org,m:davem@davemloft.net,m:edumazet@google.com,m:kuba@kernel.org,m:pabeni@redhat.com,m:grygorii.strashko@ti.com,m:linux-omap@vger.kernel.org,m:stable@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:andrew@lunn.ch,s:lists@lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[lunn.ch:+];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	TO_DN_SOME(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[narfation.org:dkim,narfation.org:email,narfation.org:mid,narfation.org:from_mime,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,vger.kernel.org:from_smtp]
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[andrew@lunn.ch,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[11];
+	TAGGED_RCPT(0.00)[stable,netdev];
+	MID_RHS_MATCH_FROM(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[iscas.ac.cn:email,lunn.ch:dkim,lunn.ch:mid,lunn.ch:from_mime,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 5BE3F6CEF4D
+X-Rspamd-Queue-Id: 223836CEEEE
 
-commit febfb1b86224489535312296ecfa3d4bf467f339 upstream.
+On Fri, Jun 26, 2026 at 11:31:48PM +0800, WenTao Liang wrote:
+> of_get_child_by_name acquires a device_node reference for refclk_np, and
+>   of_clk_add_hw_provider additionally takes an extra reference internally.
+>   On the success path, the function returns 0 without calling
+>   of_node_put(refclk_np), leaking the initial reference.
+> 
+> Add of_node_put(refclk_np) before returning success to properly release
+>   the acquired reference.
+> 
+> Cc: stable@vger.kernel.org
+> Fixes: a3047a81ba13 ("net: ethernet: ti: cpts: add support for ext rftclk selection")
+> Signed-off-by: WenTao Liang <vulab@iscas.ac.cn>
 
-When batadv_tp_update_cwnd() is called, dec_cwnd is increased. But dec_cwnd
-is only initialixed (to 0) when a duplicate Ack was received or when cwnd
-is below the ss_threshold.
 
-Just initialize the cwnd during the initialization to avoid any potential
-access of uninitialized data.
+    Andrew
 
-Cc: stable@kernel.org
-Fixes: 33a3bb4a3345 ("batman-adv: throughput meter implementation")
-Signed-off-by: Sven Eckelmann <sven@narfation.org>
 ---
- net/batman-adv/tp_meter.c | 2 ++
- 1 file changed, 2 insertions(+)
-
-diff --git a/net/batman-adv/tp_meter.c b/net/batman-adv/tp_meter.c
-index fe9a447643074..473641d32dc68 100644
---- a/net/batman-adv/tp_meter.c
-+++ b/net/batman-adv/tp_meter.c
-@@ -1055,6 +1055,8 @@ void batadv_tp_start(struct batadv_priv *bat_priv, const u8 *dst,
- 	 * mesh_interface, hence its MTU
- 	 */
- 	tp_vars->cwnd = BATADV_TP_PLEN * 3;
-+	tp_vars->dec_cwnd = 0;
-+
- 	/* at the beginning initialise the SS threshold to the biggest possible
- 	 * window size, hence the AWND size
- 	 */
--- 
-2.47.3
-
+pw-bot: cr
 
