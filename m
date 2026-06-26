@@ -1,216 +1,195 @@
-Return-Path: <stable+bounces-269274-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-269273-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id eUrKAGW9PmoDLAkAu9opvQ
-	(envelope-from <stable+bounces-269274-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 19:56:53 +0200
+	id 30u1EVK9Pmr7KwkAu9opvQ
+	(envelope-from <stable+bounces-269273-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 19:56:34 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 450816CF845
-	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 19:56:50 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8E65F6CF832
+	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 19:56:33 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b="AsaF/zB4";
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-269274-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-269274-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=none) header.from=ibm.com;
+	dkim=pass header.d=pobox.com header.s=fm3 header.b=Ogwpuh5u;
+	dkim=pass header.d=messagingengine.com header.s=fm1 header.b="N 2ZoJ5H";
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-269273-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-269273-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=none) header.from=pobox.com;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id EF5BF3033E55
-	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 17:56:46 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id EDD26301830D
+	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 17:56:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D5FB53A9D80;
-	Fri, 26 Jun 2026 17:56:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B0EE39E190;
+	Fri, 26 Jun 2026 17:56:29 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Received: from fout-b8-smtp.messagingengine.com (fout-b8-smtp.messagingengine.com [202.12.124.151])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 432B039E190;
-	Fri, 26 Jun 2026 17:56:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47B253A3E7A;
+	Fri, 26 Jun 2026 17:56:27 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782496602; cv=none; b=H8oIZeQllT9lhSN5OKG3ZVt+quhhhGegSLTMJmdPt9W1vZ50zkqITLqQgf5goM3SLT610e1KrjxQAF3w1ljxMXDaDt2ofQrUOg7Y237cjWzQdYhk0p+vENYdecPmmqCv6mw0gYVrp4I4luc7oi8f2Xq1YKIdqAE37w9rA8jGTp4=
+	t=1782496588; cv=none; b=pYVJvFEDjRNzDFR2ZrUsdRoR6z3+JkIulOoVNJTPBEG4+LnzyuKMrMrRnStYWP5hus4GdzDFicdJOffe2oEMMzf4FlNizMVzhKayXCyjLs3cVt4k01MW+28erw1sn/QW8+6POsKP6odcShLmMP8XWYSFT1n1asZJZ2DXZ9yY5vU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782496602; c=relaxed/simple;
-	bh=MNFffotkc3sbM9n5Wo6cfZhCXqNaLzI/23NNBH/KLM0=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WtS6UWQWZqwlkuex8G70vyBpcIkgjP19nd6auA3BQUOCilYS0ZoJFpkrsYycXLHm6jDIZT/QfJqdaMm/EgwklVJ2rDR4ZEYRhznJvbPau3xcwavxI/bOQY3VJCnylIiVB/cnHjWceERIC+ZB1DZWIiKrRSTJHgytF6hZsFutXdw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=AsaF/zB4; arc=none smtp.client-ip=148.163.158.5
-Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 65QFnZ0p3362220;
-	Fri, 26 Jun 2026 17:56:38 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=pp1; bh=cGWDYzD7sk2qYfWo8
-	Y1/9AftxDK7t1eHT6ZHFONArtw=; b=AsaF/zB45V1jNxNo+YbvrV55AZm4XQ20n
-	bR900k4ZSWG6bp0m+xqOij9BADnrBJRdqw+ESjIO0h97CGhfFHcaoXjT1a1Dx3dy
-	8QqqIwkVZPd0jr9njyO+Xft2vZFrIXmolme8NoqKwYeQk6FiPHds8o2DHUVVZyrp
-	apk6aISEa5lf5R4qmvxpgpgjwZ/KavpzH+vJXmIAGIFjhiUXXhETAptzzI1gjSNA
-	Z0gXh+oiBrfzNYauB1cxyQRNblBLSdn0W9wPjHRzcXSmn05lT31nO4E2kQaAkUid
-	Ba8SxzrACpuHpNuiTgTz3cNXtdzzr2+2HET2WGsRiH1IwcajCzv+A==
-Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4ewg9j86ce-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 26 Jun 2026 17:56:38 +0000 (GMT)
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma13.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 65QHnesP010322;
-	Fri, 26 Jun 2026 17:56:37 GMT
-Received: from smtprelay03.wdc07v.mail.ibm.com ([172.16.1.70])
-	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 4ex7dgky8e-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 26 Jun 2026 17:56:37 +0000 (GMT)
-Received: from smtpav04.wdc07v.mail.ibm.com (smtpav04.wdc07v.mail.ibm.com [10.39.53.231])
-	by smtprelay03.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 65QHu1p03736240
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 26 Jun 2026 17:56:01 GMT
-Received: from smtpav04.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 6140658050;
-	Fri, 26 Jun 2026 17:56:34 +0000 (GMT)
-Received: from smtpav04.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id A9ECE58052;
-	Fri, 26 Jun 2026 17:56:32 +0000 (GMT)
-Received: from Mac.ibm.com (unknown [9.61.243.21])
-	by smtpav04.wdc07v.mail.ibm.com (Postfix) with ESMTP;
-	Fri, 26 Jun 2026 17:56:32 +0000 (GMT)
-From: Omar Elghoul <oelghoul@linux.ibm.com>
-To: linux-s390@vger.kernel.org, linux-kernel@vger.kernel.org,
-        kvm@vger.kernel.org
-Cc: oelghoul@linux.ibm.com, hca@linux.ibm.com, gor@linux.ibm.com,
-        agordeev@linux.ibm.com, borntraeger@linux.ibm.com, svens@linux.ibm.com,
-        schnelle@linux.ibm.com, mjrosato@linux.ibm.com, alifm@linux.ibm.com,
-        farman@linux.ibm.com, gbayer@linux.ibm.com, alex@shazbot.org,
-        stable@vger.kernel.org
-Subject: [PATCH v5 1/4] s390/pci: Hold fmb_lock when enabling or disabling PCI devices
-Date: Fri, 26 Jun 2026 13:55:22 -0400
-Message-ID: <20260626175525.37370-2-oelghoul@linux.ibm.com>
-X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260626175525.37370-1-oelghoul@linux.ibm.com>
-References: <20260626175525.37370-1-oelghoul@linux.ibm.com>
+	s=arc-20240116; t=1782496588; c=relaxed/simple;
+	bh=QFdhdzcUL0orhGT7Yr98m0IH+vUgMv5RxV9hC6+Dgtk=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=hs+FqZFnawUGRD24hHc5Xs0cLTmiiUelOAWh2tfrwd2ZTw0+/0KS6jwo9unHpwmFxlkaHqEzfk1FrLAlbPXiA8HHSx34VlmKhqIp6ka4DQJrMopp0X4AWDbcz2V2qRwl1iJyOBmlbxjzwC7YjiNyR7L7XeCr4PwCJzqIJZ7O/MA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=pobox.com; spf=pass smtp.mailfrom=pobox.com; dkim=pass (2048-bit key) header.d=pobox.com header.i=@pobox.com header.b=Ogwpuh5u; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=N2ZoJ5Hq; arc=none smtp.client-ip=202.12.124.151
+Received: from phl-compute-02.internal (phl-compute-02.internal [10.202.2.42])
+	by mailfout.stl.internal (Postfix) with ESMTP id 261451D000DA;
+	Fri, 26 Jun 2026 13:56:26 -0400 (EDT)
+Received: from phl-frontend-01 ([10.202.2.160])
+  by phl-compute-02.internal (MEProxy); Fri, 26 Jun 2026 13:56:26 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pobox.com; h=cc
+	:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm3; t=1782496586;
+	 x=1782582986; bh=x+IZSo79L5d786Ze9SgP5T+ZDMTtg4MvJShj+brkfOU=; b=
+	Ogwpuh5ulGIfgj8Jp75EJCQWyEBe1lNnu1fk1Ne+4A1baSfyBSY0rUDPaNkG1stO
+	Q8vfF7BgLrTR6/npjgMn+qckMV4IEHbVv6iyHItWxfKxO3DnNksFV95Z3IJEkdN+
+	ajBw0qepSEGMMxY7VGUIvfJeaPBfdMNVtQqMr317r+BP6S/QoAw+fZ0OG6BFl27s
+	xYJa24tUl0Up2FGW8wHpPgEzL401aUOE+6i+RTsd7zV6rtKh0jCDaL68JOhbL+f0
+	jQLFuxY59FgMJsWq891xraYhR5w8buO4vlLMuGZ3D1oppAI0SbfghUCYOFJhePNm
+	ybJ7XubTPFffCwXFHVFo6Q==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1782496586; x=
+	1782582986; bh=x+IZSo79L5d786Ze9SgP5T+ZDMTtg4MvJShj+brkfOU=; b=N
+	2ZoJ5Hq4GpQsRlXxuUpVdtLStsCYpG+5s5dQTev8LBX6LaANK6DT0hX/nXB342dT
+	PGr5x7hBEh+Syb98/luBUiZsKuhfQILkCa9lZum0+6ihMAHIVzq+JnYQojTxJ9mQ
+	bBqaIR8hZsby637DDXNzTrD1yXg77HsIzZprznYKsG4JXi+Jpq+r46AnDfGEqVau
+	FI4zKuoQ4Vx6JkzAZZ/wJK7wjD3dB2OpKF075qdKpccq3Z0QsFzLxt2KehgZ9TeX
+	+AZuoYj1H5+XqdN6z+eg/dVcJPvPWpfXkp4Pcoy0UtDLIZb3cu5y4K0d09erXQlQ
+	mFGdN/z0trG2yEFNNjB6w==
+X-ME-Sender: <xms:Sb0-amPQYRPgYrhGWo1gHd5Sd3RMRrMmVxpDM4G90DWGDXxxBSVvbQ>
+    <xme:Sb0-alVgMeEvYKkcpPsxec3nv7cmp1yNkl9jz6iIzmQCs9aXzAo8TtlodxXUNH8JA
+    f_x0bTP4co9WKs5HLGDsQJ-qATVzgPTlzh4TKMQuVyLbmxFarMeLA>
+X-ME-Received: <xmr:Sb0-auZvqEEBU2-Dmy1EcsUffG6G414gTIrVCGavqCYzpTx7lFlv0MGpeGZq3LMz0otPsr7yBSRayZvDs0L0s_U8p4PGj4wO>
+X-ME-Proxy-Cause: dmFkZTFAaUqo/uEEHncEkuOnwkupeLhuCjBbGn90FZPQlh1vlrygtOoZ41ShuFKY4QHHuQ
+    jYMJ5J6/0jFxI+GnOpYxOLJnAdfZVZHmjXhL06MSpl+X5LXBx4LmuVhaSiRAmlOkWhnSvj
+    oj9M1lYSBhSe4+hykrhfWXmCQ5T7VqI2h53/nggBxLg82xIRS4J708zzPEaIDG50LcqIjr
+    AMrKIVZrEkHGpWXgKP1K3jVv+5WL9YT+JtWBdj230XXEkkXMxUWra8LHy4zzP5pXtWwlQq
+    A5KP993LZKiv6O+Ve3mNKCpwBhKwiJWze2SLg4aDFiLtACbajLWH2N97LEl6dKsdaqloZT
+    SYNY4tQ0/gahmFgN7eCUheQPfex/6OxS0kblVWj04kGaUp1kFLHgOxdy9t+UFTCe/xk8sh
+    +XVX/0gGHv31gaI5z3uB1yB3siE3sHgpCi6fcq8muUbxKf+srYmTmYeVujWXVyVebOp18q
+    we8m3VAtFYkBxfvkA+zldriotx0L5nTLeAEQCwIOx7FxrspjNHQpT+V1MNoj6F/TZBOxKT
+    uAYC2lEyr26Q6LP1HJPPVjb8Pv5JEfOyfZytmNcIIhoqs0MRMRH3cji1ngKMdSg+QmIKQC
+    KWKks9Awe3iao4hxVz/tSphMlU4dQec0Fl7gcHmzKvNxEMlvXla68d1gkSBw
+X-ME-Proxy: <xmx:Sb0-aiv6GYM6LYkCDSz-B_LCzmCKh2aoHwQ2DbVUNK519A-NbArHNg>
+    <xmx:Sb0-atkqpa03HiMA30V0u_Hw3Q1MsgL_rQIfr3IaDwgN3D2d8aIWrw>
+    <xmx:Sb0-ajXcmaw8OGTbffbw4Our8JC0WHI7ZyzgMw3odZtBq9PBwInCzQ>
+    <xmx:Sb0-agn-W_bX_X3AeEWI-13nfajg5r98h56q-9X9px27DStNsa0Qog>
+    <xmx:Sr0-ak1nzaL7KBrZeddB2mDIMd3Qs78NxbQhl5O60REOS4pq-TQ-veLN>
+Feedback-ID: i6289494f:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
+ 26 Jun 2026 13:56:22 -0400 (EDT)
+Message-ID: <b7bd471b-e9da-4bfc-ad1d-24b378bd1e44@pobox.com>
+Date: Fri, 26 Jun 2026 10:56:21 -0700
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: dwWJiPbn--97nCv2RXfb9G5fr0jT7Y5M
-X-Proofpoint-GUID: dwWJiPbn--97nCv2RXfb9G5fr0jT7Y5M
-X-Authority-Analysis: v=2.4 cv=Y4XIdBeN c=1 sm=1 tr=0 ts=6a3ebd56 cx=c_pps
- a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
- a=FelO9ux0wxsA:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
- a=Y2IxJ9c9Rs8Kov3niI8_:22 a=VwQbUJbxAAAA:8 a=VnNF1IyMAAAA:8
- a=5NbLduwtq9nBFWGw9KEA:9
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNjI2MDE0OCBTYWx0ZWRfX9Lf1MGw+PJ97
- F6TX64UT18CrhLqq7Rp9zO0T4BkZf7p/GQa+QMMfEpQgc7yT+WA+8EejwDHK+yCvPMAQfsrspnf
- 2brYh0oTo2raejO0I0Y+k4McnmOcJ8gcPxk8+yj8Jny4ABTD3U+T9vVJ1xzUIVrbJwav1Ys5r7r
- H7hsEh2LhSrBg+GDhHjrn266es89GRmNaNP9VE4ythytpy/muK/tcYRTaYBeaqNa+7iHCAOIr78
- dehnsXuL7sgdwBPbCDSLSkxsqUrpWXUUiYa1Tbgy2GNwqnVwkneEK26BgWqPPxMYTWof4f6LTOC
- LBEbZqQD91XyVrJGpa5BP6cE7tdAVqixNmx+alBSYIeYrY6HyK+iKIhdI9KOHbAaxyXj3FQPTu0
- qQOv7A0I92167Xxf9iSug+hMRAXmK0YwSu8ljnPeOEvhLkj0x0ihVH5BRg8BUztu+T6cdqGDR5O
- auyWtuW7/yK5dQkfb+A==
-X-Proofpoint-Spam-Info: AW1haW4tMjYwNjI2MDE0OCBTYWx0ZWRfX59DT8whO9JPO
- VhXEtKwEX3LxWapjVh2J+EmcLgO0SDlnZ89ptaZ1m+mE57xlHNxnLzEoqZiI+6VYyfKy+ZCcBDA
- nCatUufk9vNJOKCf2al/gfQhEF1Nwus=
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.125,FMLib:17.12.100.49
- definitions=2026-06-26_04,2026-06-26_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- adultscore=0 priorityscore=1501 malwarescore=0 lowpriorityscore=0 spamscore=0
- clxscore=1015 suspectscore=0 impostorscore=0 phishscore=0 bulkscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2606260148
+User-Agent: Mozilla Thunderbird Beta
+Subject: Re: [PATCH 7.1 00/21] 7.1.2-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@nabladev.com, jonathanh@nvidia.com,
+ f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, rwarsow@gmx.de,
+ conor@kernel.org, hargar@microsoft.com, broonie@kernel.org,
+ achill@achill.org, sr@sladewatkins.com,
+ Dmitry Torokhov <dmitry.torokhov@gmail.com>
+References: <20260625125613.243729608@linuxfoundation.org>
+Content-Language: en-US
+From: "Barry K. Nathan" <barryn@pobox.com>
+In-Reply-To: <20260625125613.243729608@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[ibm.com,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
-	R_DKIM_ALLOW(-0.20)[ibm.com:s=pp1];
+	DMARC_POLICY_ALLOW(-0.50)[pobox.com,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_DKIM_ALLOW(-0.20)[pobox.com:s=fm3,messagingengine.com:s=fm1];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	TAGGED_FROM(0.00)[bounces-269274-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:linux-s390@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:kvm@vger.kernel.org,m:oelghoul@linux.ibm.com,m:hca@linux.ibm.com,m:gor@linux.ibm.com,m:agordeev@linux.ibm.com,m:borntraeger@linux.ibm.com,m:svens@linux.ibm.com,m:schnelle@linux.ibm.com,m:mjrosato@linux.ibm.com,m:alifm@linux.ibm.com,m:farman@linux.ibm.com,m:gbayer@linux.ibm.com,m:alex@shazbot.org,m:stable@vger.kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[oelghoul@linux.ibm.com,stable@vger.kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	MIME_TRACE(0.00)[0:+];
 	FORWARDED(0.00)[lists@lfdr.de];
-	FROM_NEQ_ENVFROM(0.00)[oelghoul@linux.ibm.com,stable@vger.kernel.org];
+	RCPT_COUNT_TWELVE(0.00)[21];
+	TAGGED_FROM(0.00)[bounces-269273-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:gregkh@linuxfoundation.org,m:stable@vger.kernel.org,m:patches@lists.linux.dev,m:linux-kernel@vger.kernel.org,m:torvalds@linux-foundation.org,m:akpm@linux-foundation.org,m:linux@roeck-us.net,m:shuah@kernel.org,m:patches@kernelci.org,m:lkft-triage@lists.linaro.org,m:pavel@nabladev.com,m:jonathanh@nvidia.com,m:f.fainelli@gmail.com,m:sudipm.mukherjee@gmail.com,m:rwarsow@gmx.de,m:conor@kernel.org,m:hargar@microsoft.com,m:broonie@kernel.org,m:achill@achill.org,m:sr@sladewatkins.com,m:dmitry.torokhov@gmail.com,m:ffainelli@gmail.com,m:sudipmmukherjee@gmail.com,m:dmitrytorokhov@gmail.com,s:lists@lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_SENDER(0.00)[barryn@pobox.com,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[lists.linux.dev,vger.kernel.org,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,nabladev.com,nvidia.com,gmail.com,gmx.de,microsoft.com,achill.org,sladewatkins.com];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[barryn@pobox.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[pobox.com:+,messagingengine.com:+];
 	ALIAS_RESOLVED(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linux.ibm.com:mid,linux.ibm.com:from_mime,vger.kernel.org:from_smtp];
-	TO_DN_NONE(0.00)[];
-	DKIM_TRACE(0.00)[ibm.com:+];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[16];
+	TO_DN_SOME(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	RCVD_COUNT_SEVEN(0.00)[11]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,messagingengine.com:dkim,pobox.com:dkim,pobox.com:email,pobox.com:mid,pobox.com:from_mime]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 450816CF845
+X-Rspamd-Queue-Id: 8E65F6CF832
 
-Ensure that fmb_lock is held by pcibios_enable_device() and
-pcibios_disable_device() when calling zpci_fmb_enable_device() or
-zpci_fmb_disable_device(), respectively. Additionally, assert that the
-fmb_lock is held within the latter two functions to prevent future race
-conditions regarding new callers.
+(cc Dmitry Torokhov because this is related to two of your commits)
 
-Fixes: af0a8a8453f7 ("s390/pci: implement pcibios_add_device")
-Fixes: 944239c59e93 ("s390/pci: implement pcibios_release_device")
-Cc: stable@vger.kernel.org
-Signed-off-by: Omar Elghoul <oelghoul@linux.ibm.com>
-Reviewed-by: Niklas Schnelle <schnelle@linux.ibm.com>
----
- arch/s390/pci/pci.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+On 6/25/26 6:03 AM, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 7.1.2 release.
+> There are 21 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+> 
+> Responses should be made by Sat, 27 Jun 2026 12:54:50 +0000.
+> Anything received after that time might be too late.
+> 
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v7.x/stable-review/patch-7.1.2-rc1.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-7.1.y
+> and the diffstat can be found below.
+> 
+> thanks,
+> 
+> greg k-h
+> 
 
-diff --git a/arch/s390/pci/pci.c b/arch/s390/pci/pci.c
-index 39bd2adfc240..2910d4038d39 100644
---- a/arch/s390/pci/pci.c
-+++ b/arch/s390/pci/pci.c
-@@ -173,6 +173,8 @@ int zpci_fmb_enable_device(struct zpci_dev *zdev)
- 	unsigned long flags;
- 	u8 cc, status;
- 
-+	lockdep_assert_held(&zdev->fmb_lock);
-+
- 	if (zdev->fmb || sizeof(*zdev->fmb) < zdev->fmb_length)
- 		return -EINVAL;
- 
-@@ -211,6 +213,8 @@ int zpci_fmb_disable_device(struct zpci_dev *zdev)
- 	struct zpci_fib fib = {0};
- 	u8 cc, status;
- 
-+	lockdep_assert_held(&zdev->fmb_lock);
-+
- 	if (!zdev->fmb)
- 		return -EINVAL;
- 
-@@ -639,7 +643,9 @@ int pcibios_enable_device(struct pci_dev *pdev, int mask)
- 	struct zpci_dev *zdev = to_zpci(pdev);
- 
- 	zpci_debug_init_device(zdev, dev_name(&pdev->dev));
-+	mutex_lock(&zdev->fmb_lock);
- 	zpci_fmb_enable_device(zdev);
-+	mutex_unlock(&zdev->fmb_lock);
- 
- 	return pci_enable_resources(pdev, mask);
- }
-@@ -648,7 +654,9 @@ void pcibios_disable_device(struct pci_dev *pdev)
- {
- 	struct zpci_dev *zdev = to_zpci(pdev);
- 
-+	mutex_lock(&zdev->fmb_lock);
- 	zpci_fmb_disable_device(zdev);
-+	mutex_unlock(&zdev->fmb_lock);
- 	zpci_debug_exit_device(zdev);
- }
- 
+Unfortunately, 7.1.2-rc1 breaks the Synaptics touchpad on my Lenovo
+ThinkPad T14 Gen 1 -- the pointer no longer moves when I touch the
+touchpad. Potentially relevant line from dmesg:
+
+rmi4_f01 rmi4-00.fn01: found RMI device, manufacturer: Synaptics, product: TM3471-020, fw id: 3972349
+
+> Dmitry Torokhov<dmitry.torokhov@gmail.com>
+>      Input: rmi4 - refactor register descriptor parsing
+> 
+> Dmitry Torokhov<dmitry.torokhov@gmail.com>
+>      Input: rmi4 - fix register descriptor address calculation
+
+Both of these patches seem bad in my testing. Either one, individually,
+causes the pointer to no longer move when I touch the touchpad. If I
+revert both of them, then my touchpad works again.
+
+I have not yet tested 7.0.14-rc1 or 6.18.37-rc1. However, the problem
+also reproduces on current mainline as of this writing (commit
+51cb1aa1250c36269474b8b6ca6b6319e170f5a5).
+
 -- 
-2.54.0
-
+-Barry K. Nathan  <barryn@pobox.com>
 
