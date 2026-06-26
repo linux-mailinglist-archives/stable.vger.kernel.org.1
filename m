@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-269147-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-269135-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 88sFKAunPmrGJgkAu9opvQ
-	(envelope-from <stable+bounces-269147-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 18:21:31 +0200
+	id gbztCeamPmq6JgkAu9opvQ
+	(envelope-from <stable+bounces-269135-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 18:20:54 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 113AC6CEF31
-	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 18:21:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 718AB6CEF10
+	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 18:20:53 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=narfation.org header.s=20121 header.b=foARyhp1;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-269147-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-269147-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=narfation.org header.s=20121 header.b=uBtITi7Y;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-269135-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-269135-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=narfation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D831B30EB6FD
-	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 16:14:07 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 0569D3061263
+	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 16:13:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3F47400DE0;
-	Fri, 26 Jun 2026 16:12:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 015983FE367;
+	Fri, 26 Jun 2026 16:12:07 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from dvalin.narfation.org (dvalin.narfation.org [213.160.73.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F29A83FF891
-	for <stable@vger.kernel.org>; Fri, 26 Jun 2026 16:12:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58A223FADE5
+	for <stable@vger.kernel.org>; Fri, 26 Jun 2026 16:12:05 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782490338; cv=none; b=Bgeym73rJ/OQ+Q/vK8HGCZ2752rY3i/ThLrMDbhMVtcw3rAEQGbXcE/4pR8yW8w7xH4fz63AbiDXfb6dpJqDyU7GrQgoGsEMg8iTu82s9e+Oy9OxdiG7I+il6WAhMqAwmgP0YeonMbFamIXCAhLc7CIoIqrZ3JleHG9kRpzW4z4=
+	t=1782490326; cv=none; b=OSmArKjxNdWMUDUNtb/xIl93MKaUXhmA8RiDVpulKeD++a/TFLSk9uTV3vTELSC1KU5xo11pjBJySwsTj7Yxzqr9pBKk5nvvT/0sGBwWXMUb3pHf7GNEr6VX6vF+KEoPsvBagin8eJaFJSI/Y5cP3xr8J+7c1FouUChCpMi6GMY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782490338; c=relaxed/simple;
-	bh=/M2LSQ9/Tu4jhaK5HlezaQBpMboiP4RW0fx4VhdeeJU=;
+	s=arc-20240116; t=1782490326; c=relaxed/simple;
+	bh=rnz2zYpLVsGL6xJOaxRVd40K8qrJK+5XhZmORCe8U24=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Jr5f0HB6/uNlHd3P2MvYAkuK5Sfev7nebqVyyiCpHMxtpHyYRlY9EdnTjcMrOREDg/uR5dZoK6rq6WplfB0s9rpfMZtILsXygOXFgVT2odPgO7tVsn54fTOUMewINORlVgofO3NtPVHaob0zwjLD3N43K7xytun4YxwhyyfqRrw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=narfation.org; spf=pass smtp.mailfrom=narfation.org; dkim=pass (1024-bit key) header.d=narfation.org header.i=@narfation.org header.b=foARyhp1; arc=none smtp.client-ip=213.160.73.56
-Received: by dvalin.narfation.org (Postfix) id F2AC21FDCC;
-	Fri, 26 Jun 2026 16:12:11 +0000 (UTC)
+	 MIME-Version; b=iQy2HjrlkqelIecpm2Kt6JJ8jp23NfrI4jY2/WLnI76QxI13/dUwkf1VgmMCfMPCau2yeiGrrhK/AZYCZVaXNBSPzjsCq2hDH/IuBMht8U/dXD8232VlwKFB/JmA1qtpeUVkV5hG7C/BfwR6R/uvyfs4F//uzJbEFiHNbyWDrUQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=narfation.org; spf=pass smtp.mailfrom=narfation.org; dkim=pass (1024-bit key) header.d=narfation.org header.i=@narfation.org header.b=uBtITi7Y; arc=none smtp.client-ip=213.160.73.56
+Received: by dvalin.narfation.org (Postfix) id 084DA203D3;
+	Fri, 26 Jun 2026 16:12:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=narfation.org;
-	s=20121; t=1782490332;
+	s=20121; t=1782490324;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=CiRnwruOtFW/Mt9gcW5oNBrEBVlXVHddrKt/KFH4+Oc=;
-	b=foARyhp1PXrrQ7PxlopNlgLDng5NW+bSkGwhE4/zNfMsHukvC0N8rm0v/OWL+uxJXeGcIl
-	qTUVuuof2qnj4nfKtpTkZvL7/5GDw8fUCL+fokH3grtmN5NZiDPlTAPQfLgrT46+RvNpEu
-	KjevKMdf/WSWwXMe9Qbg+XR2bnbZkk8=
+	bh=SwW0svO/v1tz1TarQp+TEvI4xGw6tlSn7FbNjRYcM4k=;
+	b=uBtITi7YZgG2mVBmGsp84CzNBJaX/aJ+EBJTRX/+ozuH4W9/Jvvtc2HN6+Y/axS5pHwiEX
+	b4lnPhJDPGWQCoEqFvyv6s1xnq5JDC94MSvr3Vt8+s8Qk7OwARG0iol96kZrIn+z2cg3N9
+	UYS28y1I8YA8OjhSe89x+X4irBFm/T4=
 From: Sven Eckelmann <sven@narfation.org>
 To: stable@vger.kernel.org
 Cc: Sven Eckelmann <sven@narfation.org>
-Subject: [PATCH 6.18 02/26] batman-adv: tp_meter: initialize dup_acks explicitly
-Date: Fri, 26 Jun 2026 18:11:46 +0200
-Message-ID: <20260626161210.124712-3-sven@narfation.org>
+Subject: [PATCH 6.12 18/25] batman-adv: tp_meter: annotate last_recv_time access with READ/WRITE_ONCE
+Date: Fri, 26 Jun 2026 18:11:47 +0200
+Message-ID: <20260626161154.124562-19-sven@narfation.org>
 X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260626161210.124712-1-sven@narfation.org>
-References: <20260626161210.124712-1-sven@narfation.org>
+In-Reply-To: <20260626161154.124562-1-sven@narfation.org>
+References: <20260626161154.124562-1-sven@narfation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -75,7 +75,7 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-269147-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-269135-lists,stable=lfdr.de];
 	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:sven@narfation.org,s:lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
@@ -95,39 +95,62 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,narfation.org:dkim,narfation.org:email,narfation.org:mid,narfation.org:from_mime,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 113AC6CEF31
+X-Rspamd-Queue-Id: 718AB6CEF10
 
-commit b2b68b32a715e0328662801576974aa37b942b00 upstream.
+commit d67c728f07fca2ee6ffdc6dd4421cf2e8691f4d1 upstream.
 
-When an ack with a sequence number equal to the last_acked is received, the
-dup_acks counter is increased to decide whether fast retransmit should be
-performed. Only when the sequence numbers are not equal, the dup_acks is
-set to the initial value (0).
-
-But if the initial packet would have the sequence number
-BATADV_TP_FIRST_SEQ, dup_acks would not be initialized and atomic_inc would
-operate on an undefined starting value. It is therefore required to have it
-explicitly initialized during the start of the sender session.
+The last_recv_time field for batadv_tp_receiver tracks the jiffies value of
+the most recent activity and is used to detect timeouts. These accesses are
+not consistently protected by a lock, so READ_ONCE/WRITE_ONCE must be used
+to prevent data races caused by compiler optimizations.
 
 Cc: stable@kernel.org
 Fixes: 33a3bb4a3345 ("batman-adv: throughput meter implementation")
 Signed-off-by: Sven Eckelmann <sven@narfation.org>
 ---
- net/batman-adv/tp_meter.c | 1 +
- 1 file changed, 1 insertion(+)
+ net/batman-adv/tp_meter.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
 diff --git a/net/batman-adv/tp_meter.c b/net/batman-adv/tp_meter.c
-index f222c5093b647..fe9a447643074 100644
+index 638dd438a6c05..b882919a868ca 100644
 --- a/net/batman-adv/tp_meter.c
 +++ b/net/batman-adv/tp_meter.c
-@@ -1045,6 +1045,7 @@ void batadv_tp_start(struct batadv_priv *bat_priv, const u8 *dst,
- 	tp_vars->icmp_uid = icmp_uid;
+@@ -1183,7 +1183,7 @@ static void batadv_tp_receiver_shutdown(struct timer_list *t)
+ 	bat_priv = tp_vars->bat_priv;
  
- 	tp_vars->last_sent = BATADV_TP_FIRST_SEQ;
-+	atomic_set(&tp_vars->dup_acks, 0);
- 	atomic_set(&tp_vars->last_acked, BATADV_TP_FIRST_SEQ);
- 	tp_vars->fast_recovery = false;
- 	tp_vars->recover = BATADV_TP_FIRST_SEQ;
+ 	/* if there is recent activity rearm the timer */
+-	if (!batadv_has_timed_out(tp_vars->last_recv_time,
++	if (!batadv_has_timed_out(READ_ONCE(tp_vars->last_recv_time),
+ 				  BATADV_TP_RECV_TIMEOUT)) {
+ 		/* reset the receiver shutdown timer */
+ 		batadv_tp_reset_receiver_timer(tp_vars);
+@@ -1424,7 +1424,7 @@ batadv_tp_init_recv(struct batadv_priv *bat_priv,
+ 	tp_vars = batadv_tp_list_find_session(bat_priv, icmp->orig,
+ 					      icmp->session, BATADV_TP_RECEIVER);
+ 	if (tp_vars) {
+-		tp_vars->last_recv_time = jiffies;
++		WRITE_ONCE(tp_vars->last_recv_time, jiffies);
+ 		goto out_unlock;
+ 	}
+ 
+@@ -1455,7 +1455,7 @@ batadv_tp_init_recv(struct batadv_priv *bat_priv,
+ 	kref_get(&tp_vars->refcount);
+ 	timer_setup(&tp_vars->timer, batadv_tp_receiver_shutdown, 0);
+ 
+-	tp_vars->last_recv_time = jiffies;
++	WRITE_ONCE(tp_vars->last_recv_time, jiffies);
+ 
+ 	kref_get(&tp_vars->refcount);
+ 	hlist_add_head_rcu(&tp_vars->list, &bat_priv->tp_list);
+@@ -1506,7 +1506,7 @@ static void batadv_tp_recv_msg(struct batadv_priv *bat_priv,
+ 			goto out;
+ 		}
+ 
+-		tp_vars->last_recv_time = jiffies;
++		WRITE_ONCE(tp_vars->last_recv_time, jiffies);
+ 	}
+ 
+ 	/* if the packet is a duplicate, it may be the case that an ACK has been
 -- 
 2.47.3
 
