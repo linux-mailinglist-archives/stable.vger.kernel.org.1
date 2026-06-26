@@ -1,67 +1,64 @@
-Return-Path: <stable+bounces-268724-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-268722-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id QU2UEuT8PWoY+AgAu9opvQ
-	(envelope-from <stable+bounces-268724-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 06:15:32 +0200
+	id Dej8Mwj9PWou+AgAu9opvQ
+	(envelope-from <stable+bounces-268722-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 06:16:08 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id E68F66CA12D
-	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 06:15:31 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 40ED66CA148
+	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 06:16:08 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=uniontech.com header.s=onoh2408 header.b=e9yBbd5h;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-268724-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-268724-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=uniontech.com header.s=onoh2408 header.b=ZUdAwHCJ;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-268722-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-268722-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=uniontech.com;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 4ACF7302C4B8
-	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 04:15:31 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 8384230480F1
+	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 04:15:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C7992571D7;
-	Fri, 26 Jun 2026 04:15:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 282A4211A14;
+	Fri, 26 Jun 2026 04:15:14 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtpbgbr2.qq.com (smtpbgbr2.qq.com [54.207.22.56])
+Received: from smtpbg151.qq.com (smtpbg151.qq.com [18.169.211.239])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C12024E4C6
-	for <stable@vger.kernel.org>; Fri, 26 Jun 2026 04:15:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3105D233951
+	for <stable@vger.kernel.org>; Fri, 26 Jun 2026 04:15:10 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782447328; cv=none; b=jueJ3B2RQTn06M1vgITovcvctXdkB4kud3uRisEBu07bKycNi+aNW6cmCQZAKIrs/XyLq60+NeKBCh6K3FvchNZaTPEPoi6cZX3pXpdrS6EjaEKGuyHrqn64/lSjeQs6vrPohR3kEDdoSFo3ecuoN4q7INSAS8AN65HkkRmST9U=
+	t=1782447313; cv=none; b=eEpl3qCId0DkWZz8pmQBio4VWI9PK6NMHRzOSMVN+0y+2YOpHmpKlEDpfMIHBj64WMDkXo/FWgZxlkbhA5qTEKwWgtvslszt1s0dzJUCRM5OZZra2WRwA+qmphKdVMNXJKx/dvweafoRdkCWvfYlI33qgjky6p/u/ItzpxCQjZ4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782447328; c=relaxed/simple;
-	bh=b0hwOyHZBQXBuXPleLjrOyffa6xRckVe1PzWDbLAWrQ=;
+	s=arc-20240116; t=1782447313; c=relaxed/simple;
+	bh=z++v/tOAkB/xY5xp6h5Efl3dYmC+M50gpEF/JuT04ic=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=XozGO5fMjEiCcpDczJjpifP4+672OMvvQVttI2113RVLw5B2miA4XLTCcn4ujUWjeBheFFIdfxYEudjGUlR542SiwWoQKHV8vUlTir3PftvJe2EBXoJCGYm2tK46+jm6cZa1BsfOytxiZG/HqjkBE3iWoBgfU5AiXAoFTRWKoig=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniontech.com; spf=pass smtp.mailfrom=uniontech.com; dkim=pass (1024-bit key) header.d=uniontech.com header.i=@uniontech.com header.b=e9yBbd5h; arc=none smtp.client-ip=54.207.22.56
+	 MIME-Version; b=g7985iqt9m7mSAd8y1faXUbfaJihObhtBGisRrh1/oyPU3zgIZH3OE0qWz7KGsEKfAHwFiVziBnlwV0ZY2tHRZ699KO5xMFKUdKv5tQG5VruvXYY6Wjf/Nsqh1W6PZt/fj4R6uLd7R7I5Y0cDgcivY63ctK/5x9tcO/0oQBdSiY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniontech.com; spf=pass smtp.mailfrom=uniontech.com; dkim=pass (1024-bit key) header.d=uniontech.com header.i=@uniontech.com header.b=ZUdAwHCJ; arc=none smtp.client-ip=18.169.211.239
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=uniontech.com;
-	s=onoh2408; t=1782447282;
-	bh=ZO0vYdG8+zInot9nuVfLo2AsAw1+BulTmqCbYLPKuCY=;
+	s=onoh2408; t=1782447275;
+	bh=vB3sV795Uip7jngFsQultFYfOEDt/kChAFd6+YNtQOE=;
 	h=From:To:Subject:Date:Message-Id:MIME-Version;
-	b=e9yBbd5ho0S3UJ+9+64Zin8wr9O7ardhywAIY3tngtcuEaW5ICfgXGmix3tSh443M
-	 amiR+nJLdohGVvUD1oiZzWUO6yBTXL9+sVRWkyJQRdUjL6BWlTpw1usmat6JSn1HMf
-	 k00JsUuLXiyl65gbHwFgK5kxkQpzvJ4yWmIjC01w=
-X-QQ-mid: zesmtpgz1t1782447263t0acdc1f9
-X-QQ-Originating-IP: PF6cpuBJGM44mDSwuuqFk91hSuRF5oj+Z8gGBBuAnvQ=
+	b=ZUdAwHCJ1qN5DNpmDLe7xlg/VIRu6UVhvuaxuXIUyYvMykPIJFrgWhJoTqWkexx7l
+	 +liNkl73eJmbTY6OXrxGxyjG26jTTckI+7njIBN3QPUB53NwUr50a/H8OxOFTRN/Ek
+	 1PkBe9yS/TtR8gMzf96SyBc4urNw0crn0ERfj9cc=
+X-QQ-mid: zesmtpgz1t1782447267tadb7af20
+X-QQ-Originating-IP: ZsDvMu+xmAK0S0o9RNmGVGxzI0ks3hqZcG726xrxkgk=
 Received: from localhost.localdomain ( [113.57.152.160])
 	by bizesmtp.qq.com (ESMTP) with 
-	id ; Fri, 26 Jun 2026 12:14:13 +0800 (CST)
+	id ; Fri, 26 Jun 2026 12:14:26 +0800 (CST)
 X-QQ-SSF: 0000000000000000000000000000000
 X-QQ-GoodBg: 1
-X-BIZMAIL-ID: 4374435766956898301
-EX-QQ-RecipientCnt: 8
+X-BIZMAIL-ID: 7067703450046998064
 From: Wentao Guan <guanwentao@uniontech.com>
 To: sashal@kernel.org,
 	gregkh@linuxfoundation.org,
 	foss+kernel@0leil.net
 Cc: stable@vger.kernel.org,
 	brauner@kernel.org,
-	Josef Bacik <josef@toxicpanda.com>,
-	Jeff Layton <jlayton@kernel.org>,
-	Wentao Guan <guanwentao@uniontech.com>
-Subject: [PATCH 6.6.y 1/8] file: add fput() cleanup helper
-Date: Fri, 26 Jun 2026 12:13:56 +0800
-Message-Id: <20260626041403.85968-2-guanwentao@uniontech.com>
+	Quentin Schulz <quentin.schulz@cherry.de>
+Subject: [PATCH 6.6.y 2/8] eventpoll: use hlist_is_singular_node() in __ep_remove()
+Date: Fri, 26 Jun 2026 12:13:57 +0800
+Message-Id: <20260626041403.85968-3-guanwentao@uniontech.com>
 X-Mailer: git-send-email 2.30.2
 In-Reply-To: <20260626041403.85968-1-guanwentao@uniontech.com>
 References: <20260626041403.85968-1-guanwentao@uniontech.com>
@@ -74,97 +71,90 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-QQ-SENDSIZE: 520
 Feedback-ID: zesmtpgz:uniontech.com:qybglogicsvrgz:qybglogicsvrgz3a-0
-X-QQ-XMAILINFO: OcJU98wqb2Ke9iBTwsHPFiCiFNJHuyzXfRbLZac/qSrzsd9+M9PqSoH2
-	OpR/Sn7MAk3847uiT3snYfabC4POn4CnawHsrrR09gPvnXLEYqUHCa4DEZt1lyJ3z6A2tHU
-	IrG6Ai0niX5nRi97DDNh+HVy9hByGcXyPDnl4RdLv0v+5oIu+d1wLN8PnNwC/ILGfAiGv/P
-	XQpQ4n9H+ROKpLN+mqkAAAbcvYEQbQQRdOm8ivKh2rT2H7sEv/BdTQz5WAyoc04zIbgQEWk
-	M6HoeKiQJDQu8TFDmagUAQlxKR5KoO8Erl8fqwsBEUnkFcHqNPvc+lNk4LFdTRi1fXp6A+s
-	N9U/2fRXSO93LieCtgYN6Doyyx0vsdRebVearR1chVDEEyJ+348IcULH8p7yESHN8m2i91+
-	lPv1xT1oRI8it9RSRFFXMEe+Mb9kA0KhuAJmodHCxFeXdbQkGDyiiSfTTDJGaQ9Ply29heH
-	Iu9y13sGg3xc6huq0iTlkUQtH4FzjsShLc/5mUdDNqmj+y6AEIjapKiUbG6Mns5K8FURMmS
-	YKv2lsoYuXoX7GDfuVH5qAqD6xsSv4nn+W86KWhgLrIkxaK70grDOP3MmyrQJMsOOz7X6sN
-	empmyorrRNLABObSbP/6+gON/MTsstU3pZoudpWwzRuIeDXw9ZEVkKN2SVCulc6Q0ROUnEu
-	2mxDooC8ILegogK+25umcpFpTCVRggDGFJJbMJ9yVeOP0vGXsS81pwbfFBD/SbE1VEP5oqy
-	pAywNe3RpaEtyRYBKtB7l9FZkdCYTx4ugCVmU2Y5jxer6x/7/AyE4UEgIo14oWxAR5NA67A
-	guHRY5cprLP+7utF6PvyG32BaNkQzGDdru2QPuRqQ9IBbd+7L/Swmwe54oMVOqMJm8PZX8G
-	dEG10rvLXy3gm6OWH4+c5PwwBKmRuIQAFp+SHyjSIq9P581JkYIg3WKBLwocwNMwIHrrPGT
-	QtS4vuTQrzawLpFYDcHgoR4uykGoYiPKWohW1WiBEMXkN2Ebd+taWDFI0ehzcQfjY0NT5Rn
-	OgVbQ9YAkTQwRhx+NXZs7gseMbhgDEAjIAOubLpWkG4gBYevQMEXnNfpjAO+JRW/YJVlI2W
-	3HGD4p+h8pZ6RKHFIerX8c97ovaNSVFu//8aX2ve6o3
-X-QQ-XMRINFO: OWPUhxQsoeAVwkVaQIEGSKwwgKCxK/fD5g==
+X-QQ-XMAILINFO: Of6ml/llp+z5a3urhMmYEYPeyXiO9iU0Gy8tPu3xm3he2ojV79OmTSIs
+	nWVF6c/NRlfd+EIRgarVefbAN6PLUa7hQf2kKCpPoluPSiGMX82AKHJdX9b2dltKewJtOWA
+	UjG/frThsvxxsM2uiscdKtu7N10a75Xlxi3ElyOe+QJWZYDffOm94LLDzo32ABvByU+6X9B
+	ufoSnchiTGWah6O7UGhWQYlgko09O+B7rh+Pj05nkAuR8fT46KfoiGQtsG9kaz+XIGMV9w6
+	ExAX+ChcFm1vdx8nc6/PWW/2GmgIpT3MhiAkXpqEBwVN5wM9iY+lpFcPRSnB5J1/WZ+jm0/
+	2lzriAMaZBZS1GyB1Hxa30uSCt25SuVWTUJXc70gJ4jENf+HqRZfcB1rNI+gww7qmp2x9c1
+	p95ZUsomjxTsC2kwYn8XjiVCIj0hNX8zyPZwM4GazyOHqi1rJOqjVair+woJvokZ3PPeIG0
+	5DfhrFHPQbsSlQdv9yLUQhOgzFakZtc4NP+kq4U3gOuzcE9ZMQeXg/9z4Pcnc+figoW8Hpy
+	g7tAx1VfmRKxBL+zy9l7S3n6cnHYSdKa3Arqdh4EZ1vLOXImoGCyQ0FW+PTERUflxLd4dYD
+	lf4NcuDshN6H06I712mLR+OKv0SmxOsbR1DKmAyFdCXNRNMB4xtqWduQoEwoNCtqhJW0Lm7
+	6sJJY3oc498vAMb9bxmhA0JfFTJbzM/ZnWDV6xz3uKr8iWhwLcKEwUyTHao291zOIluZ/FC
+	K7REq02FqWZ9jM/ryaFN17ztqn5nH2vNlrtL762D8UcYh6i+LRpI2s2/cHBBRwjRsAzS/pU
+	nnm+XXw7XvnPyHdneHL0DC5MdnjIyIjbRwXHTs/ZymzgmYp8ZkTQKJBNJlwvCo967ixP6xq
+	oEOLkdIWSQ4JqpnnKDCavoF4sTP5dR9KBJcELabN6vzlFKhLwAiGnAIJ8YXDhRvjEoqtJ9c
+	CdPtKypD+kG41lduOjT9uwqNkDoqhP77fYGd1obssaGu0i5EzJ+eod0zKkFINyi/pygqZ+X
+	S8D90AqnoyyRL69Na0I4GTCm5rNZjwJ29PE5nE50pgkdBu+mFgcmPbjTiBZS/W0SHvziVQh
+	x8cqoeKmkiczKcRBnlvgHs=
+X-QQ-XMRINFO: Nq+8W0+stu50tPAe92KXseR0ZZmBTk3gLg==
 X-QQ-RECHKSPAM: 0
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [0.84 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[uniontech.com,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[uniontech.com:s=onoh2408];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-268724-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS(0.00)[m:sashal@kernel.org,m:gregkh@linuxfoundation.org,m:foss+kernel@0leil.net,m:stable@vger.kernel.org,m:brauner@kernel.org,m:josef@toxicpanda.com,m:jlayton@kernel.org,m:guanwentao@uniontech.com,m:foss@0leil.net,s:lists@lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_SENDER(0.00)[guanwentao@uniontech.com,stable@vger.kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:sashal@kernel.org,m:gregkh@linuxfoundation.org,m:foss+kernel@0leil.net,m:stable@vger.kernel.org,m:brauner@kernel.org,m:quentin.schulz@cherry.de,m:foss@0leil.net,s:lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-268722-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
+	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER(0.00)[guanwentao@uniontech.com,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	DKIM_TRACE(0.00)[uniontech.com:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[guanwentao@uniontech.com,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[uniontech.com:+];
-	ALIAS_RESOLVED(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_SENDER_FORWARDING(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	ALIAS_RESOLVED(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	TAGGED_RCPT(0.00)[stable,kernel];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,msgid.link:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,uniontech.com:dkim,uniontech.com:mid,uniontech.com:from_mime,cherry.de:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: E68F66CA12D
+X-Rspamd-Queue-Id: 40ED66CA148
 
 From: Christian Brauner <brauner@kernel.org>
 
-[ Upstream commit 257b1c2c78c25643526609dee0c15f1544eb3252 ]
+[ Upstream commit 3d9fd0abc94d8cd430cc7cd7d37ce5e5aae2cd2b ]
 
-Add a simple helper to put a file reference.
+Replace the open-coded "epi is the only entry in file->f_ep" check
+with hlist_is_singular_node(). Same semantics, and the helper avoids
+the head-cacheline access in the common false case.
 
-Link: https://lore.kernel.org/r/20240719-work-mount-namespace-v1-4-834113cab0d2@kernel.org
-Reviewed-by: Josef Bacik <josef@toxicpanda.com>
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
-Signed-off-by: Christian Brauner <brauner@kernel.org>
-(cherry picked from commit 257b1c2c78c25643526609dee0c15f1544eb3252)
-Signed-off-by: Wentao Guan <guanwentao@uniontech.com>
+Link: https://patch.msgid.link/20260423-work-epoll-uaf-v1-1-2470f9eec0f5@kernel.org
+Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
+Stable-dep-of: a6dc643c6931 ("eventpoll: fix ep_remove struct eventpoll / struct file UAF")
+Signed-off-by: Quentin Schulz <quentin.schulz@cherry.de>
 ---
- include/linux/file.h | 2 ++
- 1 file changed, 2 insertions(+)
+ fs/eventpoll.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/include/linux/file.h b/include/linux/file.h
-index 6e9099d293436..221ba0888107a 100644
---- a/include/linux/file.h
-+++ b/include/linux/file.h
-@@ -11,6 +11,7 @@
- #include <linux/posix_types.h>
- #include <linux/errno.h>
- #include <linux/cleanup.h>
-+#include <linux/err.h>
+diff --git a/fs/eventpoll.c b/fs/eventpoll.c
+index 8a556560a5b2f..4f05d12a05031 100644
+--- a/fs/eventpoll.c
++++ b/fs/eventpoll.c
+@@ -745,7 +745,7 @@ static bool __ep_remove(struct eventpoll *ep, struct epitem *epi, bool force)
  
- struct file;
- 
-@@ -93,6 +94,7 @@ extern void put_unused_fd(unsigned int fd);
- 
- DEFINE_CLASS(get_unused_fd, int, if (_T >= 0) put_unused_fd(_T),
- 	     get_unused_fd_flags(flags), unsigned flags)
-+DEFINE_FREE(fput, struct file *, if (!IS_ERR_OR_NULL(_T)) fput(_T))
- 
- extern void fd_install(unsigned int fd, struct file *file);
- 
+ 	to_free = NULL;
+ 	head = file->f_ep;
+-	if (head->first == &epi->fllink && !epi->fllink.next) {
++	if (hlist_is_singular_node(&epi->fllink, head)) {
+ 		/* See eventpoll_release() for details. */
+ 		WRITE_ONCE(file->f_ep, NULL);
+ 		if (!is_file_epoll(file)) {
 -- 
 2.30.2
 
