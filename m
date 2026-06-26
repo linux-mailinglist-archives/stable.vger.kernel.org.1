@@ -1,70 +1,89 @@
-Return-Path: <stable+bounces-269272-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-269274-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 4WivFEi+PmpMLAkAu9opvQ
-	(envelope-from <stable+bounces-269272-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 20:00:40 +0200
+	id eUrKAGW9PmoDLAkAu9opvQ
+	(envelope-from <stable+bounces-269274-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 19:56:53 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D7006CF90C
-	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 20:00:40 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 450816CF845
+	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 19:56:50 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Hnv6DS5V;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-269272-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-269272-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b="AsaF/zB4";
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-269274-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-269274-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=none) header.from=ibm.com;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 358953108133
-	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 17:55:45 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id EF5BF3033E55
+	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 17:56:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 945233B2D0D;
-	Fri, 26 Jun 2026 17:55:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D5FB53A9D80;
+	Fri, 26 Jun 2026 17:56:42 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B445F3AEF21;
-	Fri, 26 Jun 2026 17:55:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 432B039E190;
+	Fri, 26 Jun 2026 17:56:41 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782496513; cv=none; b=HmpodTtkwUDHpPoAfeyzDnlbm/zjqRGxb6U6ONFqofHeo+wee6FFKlCFuHwBrM9348O6uZ68Yq3TjkW+BzfMyX/bBQ1Z8GaZxsYRSqpqUC58PEkmhZ4MRaCWJp/AYagzLZaqOaz8+5r9ZroXY0H0wBbC9cECvhz9h5NENbT2Wok=
+	t=1782496602; cv=none; b=H8oIZeQllT9lhSN5OKG3ZVt+quhhhGegSLTMJmdPt9W1vZ50zkqITLqQgf5goM3SLT610e1KrjxQAF3w1ljxMXDaDt2ofQrUOg7Y237cjWzQdYhk0p+vENYdecPmmqCv6mw0gYVrp4I4luc7oi8f2Xq1YKIdqAE37w9rA8jGTp4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782496513; c=relaxed/simple;
-	bh=IUhNWIgpjRgv1iTrQJwpKyLWt/jk18U4zmaqfR7xr20=;
+	s=arc-20240116; t=1782496602; c=relaxed/simple;
+	bh=MNFffotkc3sbM9n5Wo6cfZhCXqNaLzI/23NNBH/KLM0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Re90B2/tb9MbFNO6XdGwssZ530L9HRNqxaPNcovld8u7WjSBMJu5M3MwFf+i4+EB6wYJ/1t8J5x9jLfp2VwaFQS4+/IxyWQCq+urfvVdL+M9Zy/A7iXvOhCOp9+AKr26C/5ihehFOR8IfexWOla1RsaVJH/EXLIuoP/8s2HWbc0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Hnv6DS5V; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B30351F00A3A;
-	Fri, 26 Jun 2026 17:55:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782496511;
-	bh=vYlgsN9Z4AbjSHyymQFtlqN19ZbyPZhF2fYXASOTKeE=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Hnv6DS5V3l7VxROMr6+6TE9utD8/wVjwlubrWA/K+8Bsyx5L3pfTWw+WzGxmTL7/a
-	 dyXDE+kI5y3o6imS7Nk2s894HMRpbSHRus8RD1/CbFBgmE/Ky+lRMRML/Lc6U4wj6p
-	 ZRDkW4tCRWqXAn7V8EELCUacRYF5VFjzu6UcAV40jeN8PTPc1kxdUNzjAHDyU65nbX
-	 5/0kihAiyUUXRC2IK2/5LJ1woUwwuMsg+cZnYLNdfQ86iTYl99nDy8qpzaTcdLPKcZ
-	 95q7izOkwRSdwkimsz2E/4Fm+ilciL8tFOmpG5H2WaIYoXR0aqRqVxiyfbZ4w3EFka
-	 VDQoeZnYDkrng==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org,
-	gregkh@linuxfoundation.org
-Cc: Sasha Levin <sashal@kernel.org>,
-	shuah@kernel.org,
-	linux-kernel@vger.kernel.org,
-	will@kernel.org,
-	catalin.marinas@arm.com,
-	broonie@kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kselftest@vger.kernel.org,
-	cristian.marussi@arm.com,
-	Yijia Wang <wangyijia.yeah@bytedance.com>
-Subject: Re: [PATCH 5.15.y] selftests: arm64: signal: skip SVE VL change test with single VL
-Date: Fri, 26 Jun 2026 13:54:36 -0400
-Message-ID: <stable-reply-item017-arm64-sve-resend-20260626@kernel.org>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260626-b4-arm64-515-preview-clean-v1-1-ad19e286e322@bytedance.com>
-References: <20260626-b4-arm64-515-preview-clean-v1-1-ad19e286e322@bytedance.com>
+	 MIME-Version; b=WtS6UWQWZqwlkuex8G70vyBpcIkgjP19nd6auA3BQUOCilYS0ZoJFpkrsYycXLHm6jDIZT/QfJqdaMm/EgwklVJ2rDR4ZEYRhznJvbPau3xcwavxI/bOQY3VJCnylIiVB/cnHjWceERIC+ZB1DZWIiKrRSTJHgytF6hZsFutXdw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=AsaF/zB4; arc=none smtp.client-ip=148.163.158.5
+Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 65QFnZ0p3362220;
+	Fri, 26 Jun 2026 17:56:38 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:date:from:in-reply-to:message-id
+	:mime-version:references:subject:to; s=pp1; bh=cGWDYzD7sk2qYfWo8
+	Y1/9AftxDK7t1eHT6ZHFONArtw=; b=AsaF/zB45V1jNxNo+YbvrV55AZm4XQ20n
+	bR900k4ZSWG6bp0m+xqOij9BADnrBJRdqw+ESjIO0h97CGhfFHcaoXjT1a1Dx3dy
+	8QqqIwkVZPd0jr9njyO+Xft2vZFrIXmolme8NoqKwYeQk6FiPHds8o2DHUVVZyrp
+	apk6aISEa5lf5R4qmvxpgpgjwZ/KavpzH+vJXmIAGIFjhiUXXhETAptzzI1gjSNA
+	Z0gXh+oiBrfzNYauB1cxyQRNblBLSdn0W9wPjHRzcXSmn05lT31nO4E2kQaAkUid
+	Ba8SxzrACpuHpNuiTgTz3cNXtdzzr2+2HET2WGsRiH1IwcajCzv+A==
+Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4ewg9j86ce-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 26 Jun 2026 17:56:38 +0000 (GMT)
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma13.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 65QHnesP010322;
+	Fri, 26 Jun 2026 17:56:37 GMT
+Received: from smtprelay03.wdc07v.mail.ibm.com ([172.16.1.70])
+	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 4ex7dgky8e-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 26 Jun 2026 17:56:37 +0000 (GMT)
+Received: from smtpav04.wdc07v.mail.ibm.com (smtpav04.wdc07v.mail.ibm.com [10.39.53.231])
+	by smtprelay03.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 65QHu1p03736240
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 26 Jun 2026 17:56:01 GMT
+Received: from smtpav04.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 6140658050;
+	Fri, 26 Jun 2026 17:56:34 +0000 (GMT)
+Received: from smtpav04.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id A9ECE58052;
+	Fri, 26 Jun 2026 17:56:32 +0000 (GMT)
+Received: from Mac.ibm.com (unknown [9.61.243.21])
+	by smtpav04.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+	Fri, 26 Jun 2026 17:56:32 +0000 (GMT)
+From: Omar Elghoul <oelghoul@linux.ibm.com>
+To: linux-s390@vger.kernel.org, linux-kernel@vger.kernel.org,
+        kvm@vger.kernel.org
+Cc: oelghoul@linux.ibm.com, hca@linux.ibm.com, gor@linux.ibm.com,
+        agordeev@linux.ibm.com, borntraeger@linux.ibm.com, svens@linux.ibm.com,
+        schnelle@linux.ibm.com, mjrosato@linux.ibm.com, alifm@linux.ibm.com,
+        farman@linux.ibm.com, gbayer@linux.ibm.com, alex@shazbot.org,
+        stable@vger.kernel.org
+Subject: [PATCH v5 1/4] s390/pci: Hold fmb_lock when enabling or disabling PCI devices
+Date: Fri, 26 Jun 2026 13:55:22 -0400
+Message-ID: <20260626175525.37370-2-oelghoul@linux.ibm.com>
+X-Mailer: git-send-email 2.54.0
+In-Reply-To: <20260626175525.37370-1-oelghoul@linux.ibm.com>
+References: <20260626175525.37370-1-oelghoul@linux.ibm.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -72,49 +91,126 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: dwWJiPbn--97nCv2RXfb9G5fr0jT7Y5M
+X-Proofpoint-GUID: dwWJiPbn--97nCv2RXfb9G5fr0jT7Y5M
+X-Authority-Analysis: v=2.4 cv=Y4XIdBeN c=1 sm=1 tr=0 ts=6a3ebd56 cx=c_pps
+ a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
+ a=FelO9ux0wxsA:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
+ a=Y2IxJ9c9Rs8Kov3niI8_:22 a=VwQbUJbxAAAA:8 a=VnNF1IyMAAAA:8
+ a=5NbLduwtq9nBFWGw9KEA:9
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNjI2MDE0OCBTYWx0ZWRfX9Lf1MGw+PJ97
+ F6TX64UT18CrhLqq7Rp9zO0T4BkZf7p/GQa+QMMfEpQgc7yT+WA+8EejwDHK+yCvPMAQfsrspnf
+ 2brYh0oTo2raejO0I0Y+k4McnmOcJ8gcPxk8+yj8Jny4ABTD3U+T9vVJ1xzUIVrbJwav1Ys5r7r
+ H7hsEh2LhSrBg+GDhHjrn266es89GRmNaNP9VE4ythytpy/muK/tcYRTaYBeaqNa+7iHCAOIr78
+ dehnsXuL7sgdwBPbCDSLSkxsqUrpWXUUiYa1Tbgy2GNwqnVwkneEK26BgWqPPxMYTWof4f6LTOC
+ LBEbZqQD91XyVrJGpa5BP6cE7tdAVqixNmx+alBSYIeYrY6HyK+iKIhdI9KOHbAaxyXj3FQPTu0
+ qQOv7A0I92167Xxf9iSug+hMRAXmK0YwSu8ljnPeOEvhLkj0x0ihVH5BRg8BUztu+T6cdqGDR5O
+ auyWtuW7/yK5dQkfb+A==
+X-Proofpoint-Spam-Info: AW1haW4tMjYwNjI2MDE0OCBTYWx0ZWRfX59DT8whO9JPO
+ VhXEtKwEX3LxWapjVh2J+EmcLgO0SDlnZ89ptaZ1m+mE57xlHNxnLzEoqZiI+6VYyfKy+ZCcBDA
+ nCatUufk9vNJOKCf2al/gfQhEF1Nwus=
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.125,FMLib:17.12.100.49
+ definitions=2026-06-26_04,2026-06-26_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ adultscore=0 priorityscore=1501 malwarescore=0 lowpriorityscore=0 spamscore=0
+ clxscore=1015 suspectscore=0 impostorscore=0 phishscore=0 bulkscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2606260148
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-4.66 / 15.00];
-	WHITELIST_SPF_DKIM(-3.00)[kernel.org:d:+,kernel.org:s:+];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[ibm.com,none];
 	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_DKIM_ALLOW(-0.20)[ibm.com:s=pp1];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	TAGGED_FROM(0.00)[bounces-269274-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[12];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:sashal@kernel.org,m:shuah@kernel.org,m:linux-kernel@vger.kernel.org,m:will@kernel.org,m:catalin.marinas@arm.com,m:broonie@kernel.org,m:linux-arm-kernel@lists.infradead.org,m:linux-kselftest@vger.kernel.org,m:cristian.marussi@arm.com,m:wangyijia.yeah@bytedance.com,s:lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:linux-s390@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:kvm@vger.kernel.org,m:oelghoul@linux.ibm.com,m:hca@linux.ibm.com,m:gor@linux.ibm.com,m:agordeev@linux.ibm.com,m:borntraeger@linux.ibm.com,m:svens@linux.ibm.com,m:schnelle@linux.ibm.com,m:mjrosato@linux.ibm.com,m:alifm@linux.ibm.com,m:farman@linux.ibm.com,m:gbayer@linux.ibm.com,m:alex@shazbot.org,m:stable@vger.kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[oelghoul@linux.ibm.com,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_SENDER(0.00)[sashal@kernel.org,stable@vger.kernel.org];
-	TAGGED_FROM(0.00)[bounces-269272-lists,stable=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[oelghoul@linux.ibm.com,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
 	ALIAS_RESOLVED(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linux.ibm.com:mid,linux.ibm.com:from_mime,vger.kernel.org:from_smtp];
+	TO_DN_NONE(0.00)[];
+	DKIM_TRACE(0.00)[ibm.com:+];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	TO_DN_SOME(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[16];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	RCVD_COUNT_SEVEN(0.00)[11]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 1D7006CF90C
+X-Rspamd-Queue-Id: 450816CF845
 
-> [PATCH 5.15.y] selftests: arm64: signal: skip SVE VL change test with single VL
+Ensure that fmb_lock is held by pcibios_enable_device() and
+pcibios_disable_device() when calling zpci_fmb_enable_device() or
+zpci_fmb_disable_device(), respectively. Additionally, assert that the
+fmb_lock is held within the latter two functions to prevent future race
+conditions regarding new callers.
 
-Can we keep the commit message the same as upstream? Is there a reason to
-rewrite it?
+Fixes: af0a8a8453f7 ("s390/pci: implement pcibios_add_device")
+Fixes: 944239c59e93 ("s390/pci: implement pcibios_release_device")
+Cc: stable@vger.kernel.org
+Signed-off-by: Omar Elghoul <oelghoul@linux.ibm.com>
+Reviewed-by: Niklas Schnelle <schnelle@linux.ibm.com>
+---
+ arch/s390/pci/pci.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
+diff --git a/arch/s390/pci/pci.c b/arch/s390/pci/pci.c
+index 39bd2adfc240..2910d4038d39 100644
+--- a/arch/s390/pci/pci.c
++++ b/arch/s390/pci/pci.c
+@@ -173,6 +173,8 @@ int zpci_fmb_enable_device(struct zpci_dev *zdev)
+ 	unsigned long flags;
+ 	u8 cc, status;
+ 
++	lockdep_assert_held(&zdev->fmb_lock);
++
+ 	if (zdev->fmb || sizeof(*zdev->fmb) < zdev->fmb_length)
+ 		return -EINVAL;
+ 
+@@ -211,6 +213,8 @@ int zpci_fmb_disable_device(struct zpci_dev *zdev)
+ 	struct zpci_fib fib = {0};
+ 	u8 cc, status;
+ 
++	lockdep_assert_held(&zdev->fmb_lock);
++
+ 	if (!zdev->fmb)
+ 		return -EINVAL;
+ 
+@@ -639,7 +643,9 @@ int pcibios_enable_device(struct pci_dev *pdev, int mask)
+ 	struct zpci_dev *zdev = to_zpci(pdev);
+ 
+ 	zpci_debug_init_device(zdev, dev_name(&pdev->dev));
++	mutex_lock(&zdev->fmb_lock);
+ 	zpci_fmb_enable_device(zdev);
++	mutex_unlock(&zdev->fmb_lock);
+ 
+ 	return pci_enable_resources(pdev, mask);
+ }
+@@ -648,7 +654,9 @@ void pcibios_disable_device(struct pci_dev *pdev)
+ {
+ 	struct zpci_dev *zdev = to_zpci(pdev);
+ 
++	mutex_lock(&zdev->fmb_lock);
+ 	zpci_fmb_disable_device(zdev);
++	mutex_unlock(&zdev->fmb_lock);
+ 	zpci_debug_exit_device(zdev);
+ }
+ 
 -- 
-Thanks,
-Sasha
+2.54.0
+
 
