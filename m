@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-269166-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-269183-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 9tu5GI6nPmrsJgkAu9opvQ
-	(envelope-from <stable+bounces-269166-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 18:23:42 +0200
+	id +rzMEvioPmpfJwkAu9opvQ
+	(envelope-from <stable+bounces-269183-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 18:29:44 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 135976CEF97
-	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 18:23:42 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id EEEF76CF100
+	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 18:29:43 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=narfation.org header.s=20121 header.b=A8QagHnZ;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-269166-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-269166-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=narfation.org header.s=20121 header.b="Kuyu/pOp";
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-269183-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-269183-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=narfation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 09EB2313BBBA
-	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 16:14:49 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 02A4031585BD
+	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 16:15:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B8FE402430;
-	Fri, 26 Jun 2026 16:12:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 74A7A402B8F;
+	Fri, 26 Jun 2026 16:12:36 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from dvalin.narfation.org (dvalin.narfation.org [213.160.73.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 027654014A1
-	for <stable@vger.kernel.org>; Fri, 26 Jun 2026 16:12:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1F434028D9
+	for <stable@vger.kernel.org>; Fri, 26 Jun 2026 16:12:30 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782490347; cv=none; b=ktCOTDYab0ByXZv1TuKUbFUR8gqzSqF5GQPY7leHihL2FoHrORVo8m8DxpVftC7VXxpf4jM/wuWWtvEM/kppAQ7DMIQZKEIb1u4aG+wnJNzEbDIC2IrhjmtNgPNcuK1JQTZVxAZZPtjZvB3XT6RUmzQ7oxEsqeLitVWnsVgyLlg=
+	t=1782490355; cv=none; b=B6J1k6+9Zo18AvP6MdCkfn2cLOs/b1RBCSVTIpPaB06CRwUZfAaEtHCCHKXV2gj1xnB127HT8DJbaP35JjXbHhhcBIGnw5e4Y2f3xbZDHKHjMfjCBxhuKs1pzyjT3OhBqOrBsmbo7qq6dJXqSfX2YAG5f8y1zLoegzrglkKdjSs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782490347; c=relaxed/simple;
-	bh=IhGr1Urjh2zeY6GxLIf/Cj8hEzQjEGhcbIeDlu/nbfo=;
+	s=arc-20240116; t=1782490355; c=relaxed/simple;
+	bh=2bw8lECYP5YRxDX3TAXXxwOF+sdTRAOXhe0MU7tX8fo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=I89ardEHvo2wrozCOV2YMgp4Wt/XhBTCnrKnqv56tEb1A/uRYxgjt/nQps/jbwImSre9TYkRntiyUvHk0+fksI6mmjsRKadOM9Pdt1YIWePyzvDF1pF55BBL/X/Rt1q+WuSjM1w7OWmmMyMlvCQyr089IEv+4LaTHS+9sZHQSKo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=narfation.org; spf=pass smtp.mailfrom=narfation.org; dkim=pass (1024-bit key) header.d=narfation.org header.i=@narfation.org header.b=A8QagHnZ; arc=none smtp.client-ip=213.160.73.56
-Received: by dvalin.narfation.org (Postfix) id 441782045E;
-	Fri, 26 Jun 2026 16:12:21 +0000 (UTC)
+	 MIME-Version; b=Rn0MbwvmwEhdXOQgYUBjgr3BmIxWNdwNAAfCy3TUgwdsFKJdRDh6t3d96eLTkKQwMiumzlO0Wn+Qi9Ixl3II3D2KfBiXI3CKtzdrl5nRty8iorupqZzHCWRZQ+9fNHKCiCsFaThtfLE58uUf4BJuPrdVIDBZ4rRmNAm1xenDYyI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=narfation.org; spf=pass smtp.mailfrom=narfation.org; dkim=pass (1024-bit key) header.d=narfation.org header.i=@narfation.org header.b=Kuyu/pOp; arc=none smtp.client-ip=213.160.73.56
+Received: by dvalin.narfation.org (Postfix) id EA0C3203E0;
+	Fri, 26 Jun 2026 16:12:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=narfation.org;
-	s=20121; t=1782490341;
+	s=20121; t=1782490349;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=NZ8uq1CecCQDMRO2uxtaCX3IvuF52vn+dSbi27x+whw=;
-	b=A8QagHnZnHEwSvVF/5dqdbiQWqai48xgM11lmXxGp0YxY2WeXq2U851tTCAy0L/KKz1Ea0
-	r/OBTj/fP6D2jR4syh7szWY5ih/hEco63kfz1jQtaoNJKdiC0/fb1iWz4+Qsdo7kuG0zM4
-	JLynYpLCOCElwLO5yvowOHWPHR7lWFo=
+	bh=mMVrLpBkUkr9wnx44tlSa6A1+6l5cEK76Xh70lBinec=;
+	b=Kuyu/pOpGWw2LfSj1pmEkZNjXId93i+ReDlplCVAgXE+QUXChcGWQ+Me1RXZ89RaAzS/Li
+	8Z17w8rgaX0wd/kQR2FvkI7DbTr3bNmeud36xxhwfx0n2g3FFvfc3mhJjBKW0uxB6hSdf6
+	oVXRSbvsbsYJVEfjH3G5wVblbE5lPBE=
 From: Sven Eckelmann <sven@narfation.org>
 To: stable@vger.kernel.org
 Cc: Sven Eckelmann <sven@narfation.org>
-Subject: [PATCH 6.18 23/26] batman-adv: tt: track roam count per VID
+Subject: [PATCH 7.0 08/26] batman-adv: tp_meter: add only finished tp_vars to lists
 Date: Fri, 26 Jun 2026 18:12:07 +0200
-Message-ID: <20260626161210.124712-24-sven@narfation.org>
+Message-ID: <20260626161225.124839-9-sven@narfation.org>
 X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260626161210.124712-1-sven@narfation.org>
-References: <20260626161210.124712-1-sven@narfation.org>
+In-Reply-To: <20260626161225.124839-1-sven@narfation.org>
+References: <20260626161225.124839-1-sven@narfation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -68,14 +68,14 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[narfation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[narfation.org:s=20121];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-269166-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-269183-lists,stable=lfdr.de];
 	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:sven@narfation.org,s:lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
@@ -91,89 +91,75 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,narfation.org:dkim,narfation.org:email,narfation.org:mid,narfation.org:from_mime,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,vger.kernel.org:from_smtp,narfation.org:dkim,narfation.org:email,narfation.org:mid,narfation.org:from_mime]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 135976CEF97
+X-Rspamd-Queue-Id: EEEF76CF100
 
-commit 12407d5f61c2653a64f2ff4b22f3c267f8420ef1 upstream.
+commit 15ccbf685222274f5add1387af58c2a41a95f81e upstream.
 
-batadv_tt_check_roam_count() is supposed to track roaming of a TT entry.
-But TT entries are for a MAC + VID. The VID was completely missed and thus
-leads to incorrect detection of ROAM counts when a client MAC exists in
-multiple VLANs.
+When the receiver variables (aka "session") are initialized, then they are
+added to the list of sessions before the timer is set up. A RCU protected
+reader could therefore find the entry and run mod_setup before
+batadv_tp_init_recv() finished the timer initialization.
+
+The same is true for batadv_tp_start(), which must first initialize the
+finish_work and the test_length to avoid a similar problem.
 
 Cc: stable@kernel.org
-Fixes: c018ad3de61a ("batman-adv: add the VLAN ID attribute to the TT entry")
+Fixes: 33a3bb4a3345 ("batman-adv: throughput meter implementation")
 Signed-off-by: Sven Eckelmann <sven@narfation.org>
 ---
- net/batman-adv/translation-table.c | 9 +++++++--
- net/batman-adv/types.h             | 3 +++
- 2 files changed, 10 insertions(+), 2 deletions(-)
+ net/batman-adv/tp_meter.c | 18 +++++++++---------
+ 1 file changed, 9 insertions(+), 9 deletions(-)
 
-diff --git a/net/batman-adv/translation-table.c b/net/batman-adv/translation-table.c
-index acd8af4446671..83dfd804a143a 100644
---- a/net/batman-adv/translation-table.c
-+++ b/net/batman-adv/translation-table.c
-@@ -3442,6 +3442,7 @@ static void batadv_tt_roam_purge(struct batadv_priv *bat_priv)
-  * batadv_tt_check_roam_count() - check if a client has roamed too frequently
-  * @bat_priv: the bat priv with all the mesh interface information
-  * @client: mac address of the roaming client
-+ * @vid: VLAN identifier
-  *
-  * This function checks whether the client already reached the
-  * maximum number of possible roaming phases. In this case the ROAMING_ADV
-@@ -3449,7 +3450,7 @@ static void batadv_tt_roam_purge(struct batadv_priv *bat_priv)
-  *
-  * Return: true if the ROAMING_ADV can be sent, false otherwise
-  */
--static bool batadv_tt_check_roam_count(struct batadv_priv *bat_priv, u8 *client)
-+static bool batadv_tt_check_roam_count(struct batadv_priv *bat_priv, u8 *client, u16 vid)
- {
- 	struct batadv_tt_roam_node *tt_roam_node;
- 	bool ret = false;
-@@ -3462,6 +3463,9 @@ static bool batadv_tt_check_roam_count(struct batadv_priv *bat_priv, u8 *client)
- 		if (!batadv_compare_eth(tt_roam_node->addr, client))
- 			continue;
+diff --git a/net/batman-adv/tp_meter.c b/net/batman-adv/tp_meter.c
+index 0801dcf93540a..7bfad65c862e9 100644
+--- a/net/batman-adv/tp_meter.c
++++ b/net/batman-adv/tp_meter.c
+@@ -1096,21 +1096,21 @@ void batadv_tp_start(struct batadv_priv *bat_priv, const u8 *dst,
+ 	tp_vars->prerandom_offset = 0;
+ 	spin_lock_init(&tp_vars->prerandom_lock);
  
-+		if (tt_roam_node->vid != vid)
-+			continue;
+-	kref_get(&tp_vars->refcount);
+-	hlist_add_head_rcu(&tp_vars->list, &bat_priv->tp_list);
+-	spin_unlock_bh(&bat_priv->tp_list_lock);
+-
+ 	tp_vars->test_length = test_length;
+ 	if (!tp_vars->test_length)
+ 		tp_vars->test_length = BATADV_TP_DEF_TEST_LENGTH;
+ 
++	/* init work item for finished tp tests */
++	INIT_DELAYED_WORK(&tp_vars->finish_work, batadv_tp_sender_finish);
 +
- 		if (batadv_has_timed_out(tt_roam_node->first_time,
- 					 BATADV_ROAMING_MAX_TIME))
- 			continue;
-@@ -3483,6 +3487,7 @@ static bool batadv_tt_check_roam_count(struct batadv_priv *bat_priv, u8 *client)
- 		atomic_set(&tt_roam_node->counter,
- 			   BATADV_ROAMING_MAX_COUNT - 1);
- 		ether_addr_copy(tt_roam_node->addr, client);
-+		tt_roam_node->vid = vid;
++	kref_get(&tp_vars->refcount);
++	hlist_add_head_rcu(&tp_vars->list, &bat_priv->tp_list);
++	spin_unlock_bh(&bat_priv->tp_list_lock);
++
+ 	batadv_dbg(BATADV_DBG_TP_METER, bat_priv,
+ 		   "Meter: starting throughput meter towards %pM (length=%ums)\n",
+ 		   dst, test_length);
  
- 		list_add(&tt_roam_node->list, &bat_priv->tt.roam_list);
- 		ret = true;
-@@ -3519,7 +3524,7 @@ static void batadv_send_roam_adv(struct batadv_priv *bat_priv, u8 *client,
- 	/* before going on we have to check whether the client has
- 	 * already roamed to us too many times
+-	/* init work item for finished tp tests */
+-	INIT_DELAYED_WORK(&tp_vars->finish_work, batadv_tp_sender_finish);
+-
+ 	/* start tp kthread. This way the write() call issued from userspace can
+ 	 * happily return and avoid to block
  	 */
--	if (!batadv_tt_check_roam_count(bat_priv, client))
-+	if (!batadv_tt_check_roam_count(bat_priv, client, vid))
- 		goto out;
+@@ -1430,10 +1430,10 @@ batadv_tp_init_recv(struct batadv_priv *bat_priv,
+ 	INIT_LIST_HEAD(&tp_vars->unacked_list);
  
- 	batadv_dbg(BATADV_DBG_TT, bat_priv,
-diff --git a/net/batman-adv/types.h b/net/batman-adv/types.h
-index 84de2570eac3e..ef712ba4fff2c 100644
---- a/net/batman-adv/types.h
-+++ b/net/batman-adv/types.h
-@@ -1912,6 +1912,9 @@ struct batadv_tt_roam_node {
- 	/** @addr: mac address of the client in the roaming phase */
- 	u8 addr[ETH_ALEN];
+ 	kref_get(&tp_vars->refcount);
+-	hlist_add_head_rcu(&tp_vars->list, &bat_priv->tp_list);
++	timer_setup(&tp_vars->timer, batadv_tp_receiver_shutdown, 0);
  
-+	/** @vid: VLAN identifier */
-+	u16 vid;
-+
- 	/**
- 	 * @counter: number of allowed roaming events per client within a single
- 	 * OGM interval (changes are committed with each OGM)
+ 	kref_get(&tp_vars->refcount);
+-	timer_setup(&tp_vars->timer, batadv_tp_receiver_shutdown, 0);
++	hlist_add_head_rcu(&tp_vars->list, &bat_priv->tp_list);
+ 
+ 	batadv_tp_reset_receiver_timer(tp_vars);
+ 
 -- 
 2.47.3
 
