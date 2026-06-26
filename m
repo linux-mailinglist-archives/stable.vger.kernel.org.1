@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-268704-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-268706-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id uegvIxjjPWqa7ggAu9opvQ
-	(envelope-from <stable+bounces-268704-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 04:25:28 +0200
+	id ABJyFyTjPWqe7ggAu9opvQ
+	(envelope-from <stable+bounces-268706-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 04:25:40 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id D6F4E6C9BDA
-	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 04:25:27 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id CA82A6C9BE2
+	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 04:25:39 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=JxIo4ZxT;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-268704-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-268704-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=QyncXI8N;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-268706-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-268706-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 6658130414A1
-	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 02:25:16 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 021853045DEF
+	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 02:25:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9DA642F9D85;
-	Fri, 26 Jun 2026 02:25:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94CA72FD7C3;
+	Fri, 26 Jun 2026 02:25:16 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 766E22F7F12
-	for <stable@vger.kernel.org>; Fri, 26 Jun 2026 02:25:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 400BE2F8E9F
+	for <stable@vger.kernel.org>; Fri, 26 Jun 2026 02:25:15 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782440715; cv=none; b=X9otl51bXNd8b+U3yuiD09ENi5n9tqE/bX5rdE/LOqrol8tiwfLLA1LX/iNhh2iizOVBy/hGIsBAAA+TO+RrN/AdG/Iw5Gzd+aSwqGD0SjrqGYGZYmjqYVEAnBw3ZC5tPf7z+gnzr/k6YNTB4NjfITyCgRA1xSsF3PIfFMiVzgg=
+	t=1782440716; cv=none; b=rdnL85v9s8+LuZ2iYF7mhdSRpRlFGqAGgTdYS6apOfIB2iyIJyesQjbNyb9+OZWb62jiuGpUtotfATWb7sdg1oUaP4fll7fVaFekygMWu4k+4XpPRUq3f81cljwha4auEPHi+1CJu9GuhezmrBMMdSKj0I7msXrrnbeCPk2kovQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782440715; c=relaxed/simple;
-	bh=Vv3ERcPlveoJgVcNLPvMr1QYGpJp1B1GrjA93zjoK+M=;
+	s=arc-20240116; t=1782440716; c=relaxed/simple;
+	bh=QvPpdu1S7XtFohDYvWJP06XYC2uiL3uWAOD+atCq5lQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JoQlWkmMSpV5Ri4or8J25LfzWnyUSlCDYAamdgeBcOZ57qP3hv/utsuY1Tff/KZglEGgdQOr0CUPF6wESbKRy5MvAsjbK/8ndSGryowJdr7HwH3pL4gBDeMQ1rPUxHiPrd9P+hN3Im8U8bsCP0JBDPpfawWGVizmCL4BbbEsUww=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JxIo4ZxT; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AEA731F00A3A;
-	Fri, 26 Jun 2026 02:25:13 +0000 (UTC)
+	 MIME-Version:Content-Type; b=PV/YCeIQMMfd2uV0b3TXCaGjX9MWM0mEKluonu2N70Py3hTLShT4BNfiSfcOVeRHBNZAzWHuKGoPnZH/O76L62gjsIQKf1zzul6BIKtt2QmMmeTzvZYbzsHzxlBMHqO3DmiQa56ZEA99trC+I/kcyBQqkMiW7HtXR9lEYPkNRKg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QyncXI8N; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E9501F00A3E;
+	Fri, 26 Jun 2026 02:25:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782440714;
-	bh=3F7sIy7abS9doLi/+eZfPDTqfDA1eA3Erl7Y3JUNKGE=;
+	s=k20260515; t=1782440715;
+	bh=F3gyp5uVNfI6k6XYFGqgaSyy2zT90Fgva1nkF6xZP1g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=JxIo4ZxTtsxgo8zkHIuiFAzWnE0DABYTUH3uLsEhgrzTnKTVrS+aw5HfiJXbaxcmc
-	 cKOKvI8TzW/z7aDotcnQcef4FvzzOYvXJVPkYTfj3wh9x4BrhBiduhUVa4Pi1k+RTV
-	 35YVxq4khnolO8tuMUSPn9NNzhBBt4ND4Eqf87tjz+gvd2CJif9vy9bPeVexTyJON2
-	 hSpwHIm9ybAY7WuqUS40YW9ZnyrkSaE2lZVARmNFN7DwsdniOsZIUiaHA/nyyWefDc
-	 ha26UTTBXPto0TToJbeTLxEc2XlpW+Xam9+VK49CTKrReBq5pH7LSTomi86soI+oFM
-	 bfgcRLD5bzQGg==
+	b=QyncXI8NEqyIpmVzxdMKjLD9ritSYKV+kdBdG7FQOjU1QGbvC/JnoI1hNPZJRbY8b
+	 tiRMqg8xUN/NA4Yex0KRHqHTo8YmivVem0wehsPkObe+J4YxgL8MLsKzFvyWEGZ5Df
+	 HLudEy5ZRRCurLH3i2KCLibxkg+fEwfPr9bq1Fv0iZHPC8mnqSwaPEmt0fW1Rw0k6X
+	 MR0QI0vCFkjcpkGkIMW8za4ji6NiFBX4Cdwj/zKvRvo1LKAWu1VF0q/bCaaS3yVLeI
+	 LPSg4VPBVA2H80Iztk1AcUCkXYaetLQ0ARJpy4+sBehEBYONJq3OT3a0gEfh376Usc
+	 bc9u6WC0wylCQ==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Thorsten Blum <thorsten.blum@linux.dev>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
+Cc: Herbert Xu <herbert@gondor.apana.org.au>,
+	Thorsten Blum <thorsten.blum@linux.dev>,
+	Giovanni Cabiddu <giovanni.cabiddu@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10.y 2/4] crypto: qat - Replace kzalloc() + copy_from_user() with memdup_user()
-Date: Thu, 25 Jun 2026 22:25:09 -0400
-Message-ID: <20260626022511.2700937-2-sashal@kernel.org>
+Subject: [PATCH 5.10.y 3/4] crypto: qat - Return pointer directly in adf_ctl_alloc_resources
+Date: Thu, 25 Jun 2026 22:25:10 -0400
+Message-ID: <20260626022511.2700937-3-sashal@kernel.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260626022511.2700937-1-sashal@kernel.org>
 References: <2026062535-sprawl-tile-e5e9@gregkh>
@@ -64,91 +65,160 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-3.66 / 15.00];
+X-Spamd-Result: default: False [-4.16 / 15.00];
 	WHITELIST_SPF_DKIM(-3.00)[kernel.org:d:+,kernel.org:s:+];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-268704-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER(0.00)[sashal@kernel.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:thorsten.blum@linux.dev,m:herbert@gondor.apana.org.au,m:sashal@kernel.org,s:lists@lfdr.de];
-	RCPT_COUNT_THREE(0.00)[4];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:herbert@gondor.apana.org.au,m:thorsten.blum@linux.dev,m:giovanni.cabiddu@intel.com,m:sashal@kernel.org,s:lists@lfdr.de];
 	FROM_HAS_DN(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	FORGED_SENDER(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	FORWARDED(0.00)[lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-268706-lists,stable=lfdr.de];
 	DKIM_TRACE(0.00)[kernel.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	RCPT_COUNT_FIVE(0.00)[5];
 	ALIAS_RESOLVED(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp,linux.dev:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.dev:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp,intel.com:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: D6F4E6C9BDA
+X-Rspamd-Queue-Id: CA82A6C9BE2
 
-From: Thorsten Blum <thorsten.blum@linux.dev>
+From: Herbert Xu <herbert@gondor.apana.org.au>
 
-[ Upstream commit 1e26339703e2afd397037defa798682b2b93dcc0 ]
+[ Upstream commit 5ce9891ea928208a915411ce8227f8c3e37e5ad9 ]
 
-Replace kzalloc() followed by copy_from_user() with memdup_user() to
-improve and simplify adf_ctl_alloc_resources(). memdup_user() returns
-either -ENOMEM or -EFAULT (instead of -EIO) if an error occurs.
+Returning values through arguments is confusing and that has
+upset the compiler with the recent change to memdup_user:
 
-Remove the unnecessary device id initialization, since memdup_user()
-(like copy_from_user()) immediately overwrites it.
+../drivers/crypto/intel/qat/qat_common/adf_ctl_drv.c: In function ‘adf_ctl_ioctl’:
+../drivers/crypto/intel/qat/qat_common/adf_ctl_drv.c:308:26: warning: ‘ctl_data’ may be used uninitialized [-Wmaybe-uninitialized]
+  308 |                  ctl_data->device_id);
+      |                          ^~
+../drivers/crypto/intel/qat/qat_common/adf_ctl_drv.c:294:39: note: ‘ctl_data’ was declared here
+  294 |         struct adf_user_cfg_ctl_data *ctl_data;
+      |                                       ^~~~~~~~
+In function ‘adf_ctl_ioctl_dev_stop’,
+    inlined from ‘adf_ctl_ioctl’ at ../drivers/crypto/intel/qat/qat_common/adf_ctl_drv.c:386:9:
+../drivers/crypto/intel/qat/qat_common/adf_ctl_drv.c:273:48: warning: ‘ctl_data’ may be used uninitialized [-Wmaybe-uninitialized]
+  273 |         ret = adf_ctl_is_device_in_use(ctl_data->device_id);
+      |                                        ~~~~~~~~^~~~~~~~~~~
+../drivers/crypto/intel/qat/qat_common/adf_ctl_drv.c: In function ‘adf_ctl_ioctl’:
+../drivers/crypto/intel/qat/qat_common/adf_ctl_drv.c:261:39: note: ‘ctl_data’ was declared here
+  261 |         struct adf_user_cfg_ctl_data *ctl_data;
+      |                                       ^~~~~~~~
+In function ‘adf_ctl_ioctl_dev_config’,
+    inlined from ‘adf_ctl_ioctl’ at ../drivers/crypto/intel/qat/qat_common/adf_ctl_drv.c:382:9:
+../drivers/crypto/intel/qat/qat_common/adf_ctl_drv.c:192:54: warning: ‘ctl_data’ may be used uninitialized [-Wmaybe-uninitialized]
+  192 |         accel_dev = adf_devmgr_get_dev_by_id(ctl_data->device_id);
+      |                                              ~~~~~~~~^~~~~~~~~~~
+../drivers/crypto/intel/qat/qat_common/adf_ctl_drv.c: In function ‘adf_ctl_ioctl’:
+../drivers/crypto/intel/qat/qat_common/adf_ctl_drv.c:185:39: note: ‘ctl_data’ was declared here
+  185 |         struct adf_user_cfg_ctl_data *ctl_data;
+      |                                       ^~~~~~~~
 
-No functional changes intended other than returning the more idiomatic
-error code -EFAULT.
+Fix this by returning the pointer directly.
 
-Signed-off-by: Thorsten Blum <thorsten.blum@linux.dev>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Reviewed-by: Thorsten Blum <thorsten.blum@linux.dev>
+Acked-by: Giovanni Cabiddu <giovanni.cabiddu@intel.com>
 Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Stable-dep-of: d237230728c5 ("crypto: qat - remove unused character device and IOCTLs")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/crypto/qat/qat_common/adf_ctl_drv.c | 13 +++----------
- 1 file changed, 3 insertions(+), 10 deletions(-)
+ drivers/crypto/qat/qat_common/adf_ctl_drv.c | 31 +++++++++------------
+ 1 file changed, 13 insertions(+), 18 deletions(-)
 
 diff --git a/drivers/crypto/qat/qat_common/adf_ctl_drv.c b/drivers/crypto/qat/qat_common/adf_ctl_drv.c
-index eb9b3be9d8ebed..cd2ab4e9c7c4e6 100644
+index cd2ab4e9c7c4e6..543ffe00de67b2 100644
 --- a/drivers/crypto/qat/qat_common/adf_ctl_drv.c
 +++ b/drivers/crypto/qat/qat_common/adf_ctl_drv.c
-@@ -87,17 +87,10 @@ static int adf_ctl_alloc_resources(struct adf_user_cfg_ctl_data **ctl_data,
+@@ -82,19 +82,14 @@ static int adf_chr_drv_create(void)
+ 	return -EFAULT;
+ }
+ 
+-static int adf_ctl_alloc_resources(struct adf_user_cfg_ctl_data **ctl_data,
+-				   unsigned long arg)
++static struct adf_user_cfg_ctl_data *adf_ctl_alloc_resources(unsigned long arg)
  {
  	struct adf_user_cfg_ctl_data *cfg_data;
  
--	cfg_data = kzalloc(sizeof(*cfg_data), GFP_KERNEL);
--	if (!cfg_data)
--		return -ENOMEM;
--
--	/* Initialize device id to NO DEVICE as 0 is a valid device id */
--	cfg_data->device_id = ADF_CFG_NO_DEVICE;
--
--	if (copy_from_user(cfg_data, (void __user *)arg, sizeof(*cfg_data))) {
-+	cfg_data = memdup_user((void __user *)arg, sizeof(*cfg_data));
-+	if (IS_ERR(cfg_data)) {
+ 	cfg_data = memdup_user((void __user *)arg, sizeof(*cfg_data));
+-	if (IS_ERR(cfg_data)) {
++	if (IS_ERR(cfg_data))
  		pr_err("QAT: failed to copy from user cfg_data.\n");
--		kfree(cfg_data);
--		return -EIO;
-+		return PTR_ERR(cfg_data);
- 	}
+-		return PTR_ERR(cfg_data);
+-	}
+-
+-	*ctl_data = cfg_data;
+-	return 0;
++	return cfg_data;
+ }
  
- 	*ctl_data = cfg_data;
+ static int adf_add_key_value_data(struct adf_accel_dev *accel_dev,
+@@ -173,13 +168,13 @@ static int adf_copy_key_value_data(struct adf_accel_dev *accel_dev,
+ static int adf_ctl_ioctl_dev_config(struct file *fp, unsigned int cmd,
+ 				    unsigned long arg)
+ {
+-	int ret;
+ 	struct adf_user_cfg_ctl_data *ctl_data;
+ 	struct adf_accel_dev *accel_dev;
++	int ret = 0;
+ 
+-	ret = adf_ctl_alloc_resources(&ctl_data, arg);
+-	if (ret)
+-		return ret;
++	ctl_data = adf_ctl_alloc_resources(arg);
++	if (IS_ERR(ctl_data))
++		return PTR_ERR(ctl_data);
+ 
+ 	accel_dev = adf_devmgr_get_dev_by_id(ctl_data->device_id);
+ 	if (!accel_dev) {
+@@ -254,9 +249,9 @@ static int adf_ctl_ioctl_dev_stop(struct file *fp, unsigned int cmd,
+ 	int ret;
+ 	struct adf_user_cfg_ctl_data *ctl_data;
+ 
+-	ret = adf_ctl_alloc_resources(&ctl_data, arg);
+-	if (ret)
+-		return ret;
++	ctl_data = adf_ctl_alloc_resources(arg);
++	if (IS_ERR(ctl_data))
++		return PTR_ERR(ctl_data);
+ 
+ 	if (adf_devmgr_verify_id(ctl_data->device_id)) {
+ 		pr_err("QAT: Device %d not found\n", ctl_data->device_id);
+@@ -288,9 +283,9 @@ static int adf_ctl_ioctl_dev_start(struct file *fp, unsigned int cmd,
+ 	struct adf_user_cfg_ctl_data *ctl_data;
+ 	struct adf_accel_dev *accel_dev;
+ 
+-	ret = adf_ctl_alloc_resources(&ctl_data, arg);
+-	if (ret)
+-		return ret;
++	ctl_data = adf_ctl_alloc_resources(arg);
++	if (IS_ERR(ctl_data))
++		return PTR_ERR(ctl_data);
+ 
+ 	ret = -ENODEV;
+ 	accel_dev = adf_devmgr_get_dev_by_id(ctl_data->device_id);
 -- 
 2.53.0
 
