@@ -1,195 +1,178 @@
-Return-Path: <stable+bounces-269273-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-269277-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 30u1EVK9Pmr7KwkAu9opvQ
-	(envelope-from <stable+bounces-269273-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 19:56:34 +0200
+	id ZlmoItnAPmrNLAkAu9opvQ
+	(envelope-from <stable+bounces-269277-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 20:11:37 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E65F6CF832
-	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 19:56:33 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id ED0A56CFA67
+	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 20:11:36 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=pobox.com header.s=fm3 header.b=Ogwpuh5u;
-	dkim=pass header.d=messagingengine.com header.s=fm1 header.b="N 2ZoJ5H";
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-269273-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-269273-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=none) header.from=pobox.com;
+	dkim=pass header.d=uniontech.com header.s=onoh2408 header.b=gUrG8Dow;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-269277-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-269277-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=none) header.from=uniontech.com;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id EDD26301830D
-	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 17:56:32 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 50430304D72C
+	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 18:08:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B0EE39E190;
-	Fri, 26 Jun 2026 17:56:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 145BD3A8755;
+	Fri, 26 Jun 2026 18:08:46 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from fout-b8-smtp.messagingengine.com (fout-b8-smtp.messagingengine.com [202.12.124.151])
+Received: from smtpbgbr1.qq.com (smtpbgbr1.qq.com [54.207.19.206])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47B253A3E7A;
-	Fri, 26 Jun 2026 17:56:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E42D23AEF3E
+	for <stable@vger.kernel.org>; Fri, 26 Jun 2026 18:08:42 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782496588; cv=none; b=pYVJvFEDjRNzDFR2ZrUsdRoR6z3+JkIulOoVNJTPBEG4+LnzyuKMrMrRnStYWP5hus4GdzDFicdJOffe2oEMMzf4FlNizMVzhKayXCyjLs3cVt4k01MW+28erw1sn/QW8+6POsKP6odcShLmMP8XWYSFT1n1asZJZ2DXZ9yY5vU=
+	t=1782497325; cv=none; b=t8LuK1BEHU/UmtAvyq9XdTpwCilHXHOR1GQFKeUjHwT2XweNl54M3e2kGDk+8+ZhvKRy8npLlyOn1Dc4tdzqYYz5blU8ul6FrYIA31c5T5IlYXms4xX4leckhEOyPmtmuEC0LoyERJP8O406ASPQXrZ3HAM1aWTrZeT95bOvM6E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782496588; c=relaxed/simple;
-	bh=QFdhdzcUL0orhGT7Yr98m0IH+vUgMv5RxV9hC6+Dgtk=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=hs+FqZFnawUGRD24hHc5Xs0cLTmiiUelOAWh2tfrwd2ZTw0+/0KS6jwo9unHpwmFxlkaHqEzfk1FrLAlbPXiA8HHSx34VlmKhqIp6ka4DQJrMopp0X4AWDbcz2V2qRwl1iJyOBmlbxjzwC7YjiNyR7L7XeCr4PwCJzqIJZ7O/MA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=pobox.com; spf=pass smtp.mailfrom=pobox.com; dkim=pass (2048-bit key) header.d=pobox.com header.i=@pobox.com header.b=Ogwpuh5u; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=N2ZoJ5Hq; arc=none smtp.client-ip=202.12.124.151
-Received: from phl-compute-02.internal (phl-compute-02.internal [10.202.2.42])
-	by mailfout.stl.internal (Postfix) with ESMTP id 261451D000DA;
-	Fri, 26 Jun 2026 13:56:26 -0400 (EDT)
-Received: from phl-frontend-01 ([10.202.2.160])
-  by phl-compute-02.internal (MEProxy); Fri, 26 Jun 2026 13:56:26 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pobox.com; h=cc
-	:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm3; t=1782496586;
-	 x=1782582986; bh=x+IZSo79L5d786Ze9SgP5T+ZDMTtg4MvJShj+brkfOU=; b=
-	Ogwpuh5ulGIfgj8Jp75EJCQWyEBe1lNnu1fk1Ne+4A1baSfyBSY0rUDPaNkG1stO
-	Q8vfF7BgLrTR6/npjgMn+qckMV4IEHbVv6iyHItWxfKxO3DnNksFV95Z3IJEkdN+
-	ajBw0qepSEGMMxY7VGUIvfJeaPBfdMNVtQqMr317r+BP6S/QoAw+fZ0OG6BFl27s
-	xYJa24tUl0Up2FGW8wHpPgEzL401aUOE+6i+RTsd7zV6rtKh0jCDaL68JOhbL+f0
-	jQLFuxY59FgMJsWq891xraYhR5w8buO4vlLMuGZ3D1oppAI0SbfghUCYOFJhePNm
-	ybJ7XubTPFffCwXFHVFo6Q==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1782496586; x=
-	1782582986; bh=x+IZSo79L5d786Ze9SgP5T+ZDMTtg4MvJShj+brkfOU=; b=N
-	2ZoJ5Hq4GpQsRlXxuUpVdtLStsCYpG+5s5dQTev8LBX6LaANK6DT0hX/nXB342dT
-	PGr5x7hBEh+Syb98/luBUiZsKuhfQILkCa9lZum0+6ihMAHIVzq+JnYQojTxJ9mQ
-	bBqaIR8hZsby637DDXNzTrD1yXg77HsIzZprznYKsG4JXi+Jpq+r46AnDfGEqVau
-	FI4zKuoQ4Vx6JkzAZZ/wJK7wjD3dB2OpKF075qdKpccq3Z0QsFzLxt2KehgZ9TeX
-	+AZuoYj1H5+XqdN6z+eg/dVcJPvPWpfXkp4Pcoy0UtDLIZb3cu5y4K0d09erXQlQ
-	mFGdN/z0trG2yEFNNjB6w==
-X-ME-Sender: <xms:Sb0-amPQYRPgYrhGWo1gHd5Sd3RMRrMmVxpDM4G90DWGDXxxBSVvbQ>
-    <xme:Sb0-alVgMeEvYKkcpPsxec3nv7cmp1yNkl9jz6iIzmQCs9aXzAo8TtlodxXUNH8JA
-    f_x0bTP4co9WKs5HLGDsQJ-qATVzgPTlzh4TKMQuVyLbmxFarMeLA>
-X-ME-Received: <xmr:Sb0-auZvqEEBU2-Dmy1EcsUffG6G414gTIrVCGavqCYzpTx7lFlv0MGpeGZq3LMz0otPsr7yBSRayZvDs0L0s_U8p4PGj4wO>
-X-ME-Proxy-Cause: dmFkZTFAaUqo/uEEHncEkuOnwkupeLhuCjBbGn90FZPQlh1vlrygtOoZ41ShuFKY4QHHuQ
-    jYMJ5J6/0jFxI+GnOpYxOLJnAdfZVZHmjXhL06MSpl+X5LXBx4LmuVhaSiRAmlOkWhnSvj
-    oj9M1lYSBhSe4+hykrhfWXmCQ5T7VqI2h53/nggBxLg82xIRS4J708zzPEaIDG50LcqIjr
-    AMrKIVZrEkHGpWXgKP1K3jVv+5WL9YT+JtWBdj230XXEkkXMxUWra8LHy4zzP5pXtWwlQq
-    A5KP993LZKiv6O+Ve3mNKCpwBhKwiJWze2SLg4aDFiLtACbajLWH2N97LEl6dKsdaqloZT
-    SYNY4tQ0/gahmFgN7eCUheQPfex/6OxS0kblVWj04kGaUp1kFLHgOxdy9t+UFTCe/xk8sh
-    +XVX/0gGHv31gaI5z3uB1yB3siE3sHgpCi6fcq8muUbxKf+srYmTmYeVujWXVyVebOp18q
-    we8m3VAtFYkBxfvkA+zldriotx0L5nTLeAEQCwIOx7FxrspjNHQpT+V1MNoj6F/TZBOxKT
-    uAYC2lEyr26Q6LP1HJPPVjb8Pv5JEfOyfZytmNcIIhoqs0MRMRH3cji1ngKMdSg+QmIKQC
-    KWKks9Awe3iao4hxVz/tSphMlU4dQec0Fl7gcHmzKvNxEMlvXla68d1gkSBw
-X-ME-Proxy: <xmx:Sb0-aiv6GYM6LYkCDSz-B_LCzmCKh2aoHwQ2DbVUNK519A-NbArHNg>
-    <xmx:Sb0-atkqpa03HiMA30V0u_Hw3Q1MsgL_rQIfr3IaDwgN3D2d8aIWrw>
-    <xmx:Sb0-ajXcmaw8OGTbffbw4Our8JC0WHI7ZyzgMw3odZtBq9PBwInCzQ>
-    <xmx:Sb0-agn-W_bX_X3AeEWI-13nfajg5r98h56q-9X9px27DStNsa0Qog>
-    <xmx:Sr0-ak1nzaL7KBrZeddB2mDIMd3Qs78NxbQhl5O60REOS4pq-TQ-veLN>
-Feedback-ID: i6289494f:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
- 26 Jun 2026 13:56:22 -0400 (EDT)
-Message-ID: <b7bd471b-e9da-4bfc-ad1d-24b378bd1e44@pobox.com>
-Date: Fri, 26 Jun 2026 10:56:21 -0700
+	s=arc-20240116; t=1782497325; c=relaxed/simple;
+	bh=5IMepZ/Da3Y91Digr8egqHe4xMwDE3MqQTLyJVBWVpo=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=mxz7Sd/nFd5AFqmxWwUgFlcnVWkCSYuLb1NJg0M2oBd8FGa/8YH3+1rb4xsiYxp5ZuGnWrnW3iy6SXNio698JTMbv6ullBR4L8n6u4bx8Mka1aOEUVpUCWq5m6FWXwl46t+0a8XwT/lIQhrvTZhLLLcD84bVznQTfefo+mZsg9c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniontech.com; spf=pass smtp.mailfrom=uniontech.com; dkim=pass (1024-bit key) header.d=uniontech.com header.i=@uniontech.com header.b=gUrG8Dow; arc=none smtp.client-ip=54.207.19.206
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=uniontech.com;
+	s=onoh2408; t=1782497282;
+	bh=aN0VHnpgeIuDDuBFVLSyfGxovRoghhsjJFX244cZt1Y=;
+	h=From:To:Subject:Date:Message-Id:MIME-Version;
+	b=gUrG8Dowine10zSg4XNnadED4Yzq0QyilYBQOaeT5grC1Y+eW7CuUWAeya3yajEp6
+	 4jTVOVtRsSg3dfqFOoLE2wOjYWhqjP75QuC6zIU+8uWqnC3clw2tT7G1HNKX4Ddj/7
+	 1Us+/drZTxetegGUbh4BHDb/YcNHLjfoK5PtmHP8=
+X-QQ-mid: zesmtpgz6t1782497260tcdb310cb
+X-QQ-Originating-IP: IwmEtnmR2j5k3hfK2Sm5PoBjKg4pwKzgE1/RnZ9N8Mo=
+Received: from localhost.localdomain ( [113.57.152.160])
+	by bizesmtp.qq.com (ESMTP) with 
+	id ; Sat, 27 Jun 2026 02:07:38 +0800 (CST)
+X-QQ-SSF: 0000000000000000000000000000000
+X-QQ-GoodBg: 1
+X-BIZMAIL-ID: 4986354597952941750
+EX-QQ-RecipientCnt: 17
+From: Wentao Guan <guanwentao@uniontech.com>
+To: sashal@kernel.org
+Cc: 2045gemini@gmail.com,
+	davem@davemloft.net,
+	dcaratti@redhat.com,
+	gregkh@linuxfoundation.org,
+	guanwentao@uniontech.com,
+	jhs@mojatatu.com,
+	keenanat2000@gmail.com,
+	kuba@kernel.org,
+	pctammela@mojatatu.com,
+	rajat.gupta@oss.qualcomm.com,
+	rollkingzzc@gmail.com,
+	simon.horman@corigine.com,
+	stable@vger.kernel.org,
+	toke@redhat.com,
+	victor@mojatatu.com,
+	yimingqian591@gmail.com
+Subject: [PATCH 5.10.y v3 00/10] net/sched: fix pedit partial COW leading to page cache corruption
+Date: Sat, 27 Jun 2026 02:07:25 +0800
+Message-Id: <20260626180735.297017-1-guanwentao@uniontech.com>
+X-Mailer: git-send-email 2.30.2
+In-Reply-To: <stable-reply-item001-act-pedit-510-20260626@kernel.org>
+References: <stable-reply-item001-act-pedit-510-20260626@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird Beta
-Subject: Re: [PATCH 7.1 00/21] 7.1.2-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
- torvalds@linux-foundation.org, akpm@linux-foundation.org,
- linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
- lkft-triage@lists.linaro.org, pavel@nabladev.com, jonathanh@nvidia.com,
- f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, rwarsow@gmx.de,
- conor@kernel.org, hargar@microsoft.com, broonie@kernel.org,
- achill@achill.org, sr@sladewatkins.com,
- Dmitry Torokhov <dmitry.torokhov@gmail.com>
-References: <20260625125613.243729608@linuxfoundation.org>
-Content-Language: en-US
-From: "Barry K. Nathan" <barryn@pobox.com>
-In-Reply-To: <20260625125613.243729608@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-QQ-SENDSIZE: 520
+Feedback-ID: zesmtpgz:uniontech.com:qybglogicsvrgz:qybglogicsvrgz3a-0
+X-QQ-XMAILINFO: MOfwHzgDpc8I6vAMhILsjXzxJha5Rprv3r0adgB5OdibKAlf+J77eAU4
+	moHd6qkZwRrQwUlqPgp2pqMR+rtJritZF+k3PW7OwgS2GcV0KL2e4Mz4m10HgAmfaPBKAIC
+	cUO+q361p7rq2Me9/s/e+qYApsP6JpnAjOt+VzO7BwJTynPYM1qyCveO6KwNuwxU3wYqH0L
+	OpGnQjX8ffwl0v5uT3ccr5mdUhV1I2dqJDEtmZK4TxhYfOIwqCJNaHgrwACJZ3vLyZvRF1P
+	nC3wMh0moTYwKq/HcjmAugRL+29taPFPXNw0uUiQKLciwvscR75pW3ZPqzZsxRl4IuetJ9o
+	IGUeyHefb5Cghs1aku26yB5928Aa4eBJ9j0LXLKYDZH9mKJjrIpI8EbSlilmVJKtIQaepcU
+	jqNFRaEOyvlo02AA4xEIR7UEqEwlXrRqYWIYH0lOTMHLX11NBqKLzkxD03NG9DTwPmHPEDy
+	lKMNYs/+ucz5/qB7qP3z1PuBG8kSGqki137+HbelGlAoTUZj2N33cMbDU2GvSYJKU78RB5h
+	VMtGMy7gvQNdHSFt7jUjJ6sV5gdUdjuziRfI5CGaFjducTd1JuBZu7C5coKmMaFq6CNfXZv
+	ymAnNuKQr5pnm+aW32LTlY5jtLPwhnyeMKxjagU7Th2m8BMPNUhZvywib/08XK3LSCPBjlN
+	Sq+Upb3tOhEJuUrhc+jM+VzrOxneMQ4gItYIYhD26h/IWRWarZvRUZgbd3a+EmTdNNcua7u
+	dHEm8myHXyTYnqWTqP2foQB7PO15lK9sxEv9MRiZnRi1azNITcZjbz7fElCYL20+MZ4e9Li
+	vN4Jt8tjmTew3DIVETZ1s1E8TIMnhUGx+dQQBDoAVlrgzo3+Y3AlE2Nuer3+OMmLEJCkCc/
+	kbJ0vemiQl2vhaCkYf4lAciLlhduq+Fd9TEwPDlj18FdsCDc/WvWZolBgkS99l49c0W/+6z
+	mLkYcUUdG7N/ee0MAFD7N/hJLOSbFqRr2ZyLu3vIuv3+pI8P2caefQGJPlQBa1RITyldN/o
+	4G+a6i46um8ZlY7RMi1qMmDKm/Ht2RFT24Q1didH93476enLwGVwrkilQsRXU7rwOHpOb9S
+	rByEfgnOWD7obGWehziDa4=
+X-QQ-XMRINFO: MPJ6Tf5t3I/ylTmHUqvI8+Wpn+Gzalws3A==
+X-QQ-RECHKSPAM: 0
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.16 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[pobox.com,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
-	R_DKIM_ALLOW(-0.20)[pobox.com:s=fm3,messagingengine.com:s=fm1];
+	DMARC_POLICY_ALLOW(-0.50)[uniontech.com,none];
+	R_DKIM_ALLOW(-0.20)[uniontech.com:s=onoh2408];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	RCPT_COUNT_TWELVE(0.00)[21];
-	TAGGED_FROM(0.00)[bounces-269273-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_CC(0.00)[gmail.com,davemloft.net,redhat.com,linuxfoundation.org,uniontech.com,mojatatu.com,kernel.org,oss.qualcomm.com,corigine.com,vger.kernel.org];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:gregkh@linuxfoundation.org,m:stable@vger.kernel.org,m:patches@lists.linux.dev,m:linux-kernel@vger.kernel.org,m:torvalds@linux-foundation.org,m:akpm@linux-foundation.org,m:linux@roeck-us.net,m:shuah@kernel.org,m:patches@kernelci.org,m:lkft-triage@lists.linaro.org,m:pavel@nabladev.com,m:jonathanh@nvidia.com,m:f.fainelli@gmail.com,m:sudipm.mukherjee@gmail.com,m:rwarsow@gmx.de,m:conor@kernel.org,m:hargar@microsoft.com,m:broonie@kernel.org,m:achill@achill.org,m:sr@sladewatkins.com,m:dmitry.torokhov@gmail.com,m:ffainelli@gmail.com,m:sudipmmukherjee@gmail.com,m:dmitrytorokhov@gmail.com,s:lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-269277-lists,stable=lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:sashal@kernel.org,m:2045gemini@gmail.com,m:davem@davemloft.net,m:dcaratti@redhat.com,m:gregkh@linuxfoundation.org,m:guanwentao@uniontech.com,m:jhs@mojatatu.com,m:keenanat2000@gmail.com,m:kuba@kernel.org,m:pctammela@mojatatu.com,m:rajat.gupta@oss.qualcomm.com,m:rollkingzzc@gmail.com,m:simon.horman@corigine.com,m:stable@vger.kernel.org,m:toke@redhat.com,m:victor@mojatatu.com,m:yimingqian591@gmail.com,s:lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_SENDER(0.00)[barryn@pobox.com,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[lists.linux.dev,vger.kernel.org,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,nabladev.com,nvidia.com,gmail.com,gmx.de,microsoft.com,achill.org,sladewatkins.com];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER(0.00)[guanwentao@uniontech.com,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[17];
 	FORGED_SENDER_FORWARDING(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[barryn@pobox.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[pobox.com:+,messagingengine.com:+];
-	ALIAS_RESOLVED(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[guanwentao@uniontech.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[uniontech.com:+];
+	TO_DN_NONE(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	TO_DN_SOME(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,messagingengine.com:dkim,pobox.com:dkim,pobox.com:email,pobox.com:mid,pobox.com:from_mime]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,uniontech.com:dkim,uniontech.com:mid,uniontech.com:from_mime,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 8E65F6CF832
+X-Rspamd-Queue-Id: ED0A56CFA67
 
-(cc Dmitry Torokhov because this is related to two of your commits)
+Fixes CVE-2026-46331: net/sched: fix pedit partial COW leading to page cache corruption
 
-On 6/25/26 6:03 AM, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 7.1.2 release.
-> There are 21 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
-> 
-> Responses should be made by Sat, 27 Jun 2026 12:54:50 +0000.
-> Anything received after that time might be too late.
-> 
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v7.x/stable-review/patch-7.1.2-rc1.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-7.1.y
-> and the diffstat can be found below.
-> 
-> thanks,
-> 
-> greg k-h
-> 
+Link: https://lore.kernel.org/all/2026061625-CVE-2026-46331-47be@gregkh/
 
-Unfortunately, 7.1.2-rc1 breaks the Synaptics touchpad on my Lenovo
-ThinkPad T14 Gen 1 -- the pointer no longer moves when I touch the
-touchpad. Potentially relevant line from dmesg:
+changelog v3:
+    Add ("net/sched: act_pedit: fix action bind logic") commit,
+    it also fixed the memleak in tcf_pedit_init() -> if (bind) -> tcfp_keys_ex leak.
 
-rmi4_f01 rmi4-00.fn01: found RMI device, manufacturer: Synaptics, product: TM3471-020, fw id: 3972349
+v2 Link: https://lore.kernel.org/stable/20260618075342.1599593-1-guanwentao@uniontech.com/
 
-> Dmitry Torokhov<dmitry.torokhov@gmail.com>
->      Input: rmi4 - refactor register descriptor parsing
-> 
-> Dmitry Torokhov<dmitry.torokhov@gmail.com>
->      Input: rmi4 - fix register descriptor address calculation
+changelog v2:
+    Add ("net/sched: act_pedit: Parse L3 Header for L4 offset") commit.
+v1 Link: https://lore.kernel.org/stable/20260618043539.1557035-1-guanwentao@uniontech.com/T/#ma9ef6d260833405f60ae88a1686e967b1416d80c
 
-Both of these patches seem bad in my testing. Either one, individually,
-causes the pointer to no longer move when I touch the touchpad. If I
-revert both of them, then my touchpad works again.
+Max Tottenham (1):
+  net/sched: act_pedit: Parse L3 Header for L4 offset
 
-I have not yet tested 7.0.14-rc1 or 6.18.37-rc1. However, the problem
-also reproduces on current mainline as of this writing (commit
-51cb1aa1250c36269474b8b6ca6b6319e170f5a5).
+Pedro Tammela (8):
+  net/sched: act_pedit: use NLA_POLICY for parsing 'ex' keys
+  net/sched: transition act_pedit to rcu and percpu stats
+  net/sched: simplify tcf_pedit_act
+  net/sched: act_pedit: remove extra check for key type
+  net/sched: act_pedit: check static offsets a priori
+  net/sched: act_pedit: rate limit datapath messages
+  net/sched: act_pedit: free pedit keys on bail from offset check
+  net/sched: act_pedit: fix action bind logic
+
+Rajat Gupta (1):
+  net/sched: fix pedit partial COW leading to page cache corruption
+
+ include/net/tc_act/tc_pedit.h |  80 +++++--
+ net/sched/act_pedit.c         | 390 +++++++++++++++++++---------------
+ 2 files changed, 289 insertions(+), 181 deletions(-)
 
 -- 
--Barry K. Nathan  <barryn@pobox.com>
+2.30.2
+
 
