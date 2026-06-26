@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-269057-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-269065-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id kPvsGVelPmoxJgkAu9opvQ
-	(envelope-from <stable+bounces-269057-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 18:14:15 +0200
+	id OUMyEXWmPmqgJgkAu9opvQ
+	(envelope-from <stable+bounces-269065-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 18:19:01 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id D292A6CED74
-	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 18:14:14 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D09206CEEB7
+	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 18:19:00 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=narfation.org header.s=20121 header.b=14yTyTH3;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-269057-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-269057-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=narfation.org header.s=20121 header.b=XB7Jp+sE;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-269065-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-269065-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=narfation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 2A57830C4C90
-	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 16:11:27 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 87DDD314F801
+	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 16:11:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC4AF3F9F30;
-	Fri, 26 Jun 2026 16:11:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9CDC93F5BF9;
+	Fri, 26 Jun 2026 16:11:29 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from dvalin.narfation.org (dvalin.narfation.org [213.160.73.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C6023FA5DD
-	for <stable@vger.kernel.org>; Fri, 26 Jun 2026 16:11:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E7D238B146
+	for <stable@vger.kernel.org>; Fri, 26 Jun 2026 16:11:28 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782490278; cv=none; b=PRVjosPwnrJhECI/TUZDpKIbSxkEpt/lANqKuqELoat0g7PvlI+9kGOQeNNX1uo7X8duzRRWw0ESbrxXE0PvvS0yvNX3vCkhrh93j+lIfqhjc/BEcR6PvmJ9DnLtGuQyM7frJz0uLV2wKU9ml+b7B+J701F8Cx7GYSRKN1STL94=
+	t=1782490289; cv=none; b=uw2NiXeOrra5txtRb17tsexZbjZZVFRB+asNLSw0XOCEQVIPcE5exrsj3sTL0pzPYU5XcXGnkrr0teOc2aUgW3dufqeed3IPAFp6n1ujU1nQ3X7lR85910xP9uHI8YZT02YpfMbyonkTJrtparxBBkgK0geqcvfjT32URavTWLc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782490278; c=relaxed/simple;
-	bh=ekh0ECbh/o62b7rBjcpNrYKtIp8dDmXH6fkZPIcsWEo=;
+	s=arc-20240116; t=1782490289; c=relaxed/simple;
+	bh=44zC080o2feE4lXK5+Ws4oC9VoaMk5L5HGfIv6FZxeY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dJbOXFcrBWmHzIuOx0j9hVbqOv+ZFdAoOfCu+FJo3S+nmoVl8gVApmlgoviqWL6CNsRcSA90vnSoQk2bGnVI2wpH7hJtKD+ojw0raNvkShDWDg18ARs1wsyFpuwphh2maOfN1fD6RkxqoACsOo/N3l9DbDfG6LofzllH+zWO1s4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=narfation.org; spf=pass smtp.mailfrom=narfation.org; dkim=pass (1024-bit key) header.d=narfation.org header.i=@narfation.org header.b=14yTyTH3; arc=none smtp.client-ip=213.160.73.56
-Received: by dvalin.narfation.org (Postfix) id C2CC6203D3;
-	Fri, 26 Jun 2026 16:11:15 +0000 (UTC)
+	 MIME-Version; b=Mpds+adk+QiRHi+y2Ny02oVqZhEvzpd9Y5zHDXDa33Ne5/kVxEn64nkVaUyutrEiK2Zgeg9X1frqKlLEgcI/lWXhF2EHqgQKyn//2LLE+FoJ7sVYUD3DLg6mvl+1vsD4TLqRMCFqn0P8c+zjyvwXIwUF+owOOJZa6VuTPxplA58=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=narfation.org; spf=pass smtp.mailfrom=narfation.org; dkim=pass (1024-bit key) header.d=narfation.org header.i=@narfation.org header.b=XB7Jp+sE; arc=none smtp.client-ip=213.160.73.56
+Received: by dvalin.narfation.org (Postfix) id 8D31C203FC;
+	Fri, 26 Jun 2026 16:11:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=narfation.org;
-	s=20121; t=1782490275;
+	s=20121; t=1782490286;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=okgXo6mcSLl33xNOhmqfaUjl16hXuTTzrXX2UlI1+Ww=;
-	b=14yTyTH3GbRUdBxWSAs3pNGjOjc6NXzIcUE/paMwlmQGvWvNWwCgYspBiVHrLOIy3o4Kc5
-	CCyF87C4kX0rOc9pvZTQXlyrNkvKP45NLbzi+rH7AI0CsDZky/uU++aCCYXJDsjhKnRNRg
-	nR6rL8eVLSfc4TijWv0nMLcN0SuZM80=
+	bh=8xSdkX64CvI5SFX38RxDskz1mseUxr/uCS8oHCOhrp8=;
+	b=XB7Jp+sE5yAYZZtQ63xWfeARSiGjdDO9wa6PmUuNyBPgc6HsSjdgdIrIswyvvywzRispVA
+	7lEC8Z4CqpecN7AlaJOEYJ+6h7gSLjuEZS47hJpueALazBZfOOHDjoNiXlfnSpyWyvmeGI
+	wlVXEFL1qUQfMbdVrXpwpkSaa6EHG3Y=
 From: Sven Eckelmann <sven@narfation.org>
 To: stable@vger.kernel.org
 Cc: Sven Eckelmann <sven@narfation.org>
-Subject: [PATCH 5.15 23/25] batman-adv: dat: prevent false sharing between VLANs
-Date: Fri, 26 Jun 2026 18:11:02 +0200
-Message-ID: <20260626161105.124113-24-sven@narfation.org>
+Subject: [PATCH 6.1 05/25] batman-adv: tp_meter: avoid divide-by-zero for dec_cwnd
+Date: Fri, 26 Jun 2026 18:11:03 +0200
+Message-ID: <20260626161123.124273-6-sven@narfation.org>
 X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260626161105.124113-1-sven@narfation.org>
-References: <20260626161105.124113-1-sven@narfation.org>
+In-Reply-To: <20260626161123.124273-1-sven@narfation.org>
+References: <20260626161123.124273-1-sven@narfation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -68,14 +68,14 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[narfation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[narfation.org:s=20121];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-269057-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-269065-lists,stable=lfdr.de];
 	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:sven@narfation.org,s:lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
@@ -91,58 +91,65 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[narfation.org:dkim,narfation.org:email,narfation.org:mid,narfation.org:from_mime,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,vger.kernel.org:from_smtp]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,narfation.org:dkim,narfation.org:email,narfation.org:mid,narfation.org:from_mime,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: D292A6CED74
+X-Rspamd-Queue-Id: D09206CEEB7
 
-commit 20d7658b74169f86d4ac01b9185b3eadddf71f28 upstream.
+commit 33ccd52f3cc9ed46ce395199f89aa3234dc83314 upstream.
 
-The local hash of DAT entries is supposed to be VLAN (VID) aware. But
-the adding to the hash and the search in the hash were not checking the VID
-information of the hash entries. The entries would therefore only be
-correctly separated when batadv_hash_dat() didn't select the same buckets
-for different VIDs.
+The cwnd is always MSS <= cwnd <= 0x20000000. But the calculation in
+batadv_tp_update_cwnd() assumes unsigned 32 bit arithmetics.
+
+    ((mss * 8) ** 2) / (cwnd * 8)
+
+In case cwnd is actually 0x20000000, it will be shifted by 3 bit to the
+left end up at 0x100000000 or U32_MAX + 1. It will therefore wrap around
+and be 0 - resulting in:
+
+    ((mss * 8) ** 2) / 0
+
+This is of course invalid and cannot be calculated. The calculation should
+must be simplified to avoid this overflow:
+
+   (mss ** 2) * 8 / cwnd
+
+It will keep the precision enhancement from the scaling (by 8) but avoid
+the overflow in the divisor.
+
+In theory, there could still be an overflow in the dividend. It is at the
+moment fixed to BATADV_TP_PLEN in batadv_tp_recv_ack() - so it is not an
+imminent problem. But allowing it to use the whole u32 bit range, would
+mean that it can still use up to 67 bits. To keep this calculation safe for
+32 bit arithmetic, mss must never use more than floor((32 - 3) / 2) bits -
+or in other words: must never be larger than 16383.
 
 Cc: stable@kernel.org
-Fixes: be1db4f6615b ("batman-adv: make the Distributed ARP Table vlan aware")
+Fixes: 33a3bb4a3345 ("batman-adv: throughput meter implementation")
 Signed-off-by: Sven Eckelmann <sven@narfation.org>
 ---
- net/batman-adv/distributed-arp-table.c | 12 +++++++++---
- 1 file changed, 9 insertions(+), 3 deletions(-)
+ net/batman-adv/tp_meter.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/net/batman-adv/distributed-arp-table.c b/net/batman-adv/distributed-arp-table.c
-index 9f561ea95f730..b8d471dae2888 100644
---- a/net/batman-adv/distributed-arp-table.c
-+++ b/net/batman-adv/distributed-arp-table.c
-@@ -215,10 +215,13 @@ static void batadv_dat_purge(struct work_struct *work)
-  */
- static bool batadv_compare_dat(const struct hlist_node *node, const void *data2)
- {
--	const void *data1 = container_of(node, struct batadv_dat_entry,
--					 hash_entry);
-+	const struct batadv_dat_entry *entry1;
-+	const struct batadv_dat_entry *entry2;
+diff --git a/net/batman-adv/tp_meter.c b/net/batman-adv/tp_meter.c
+index 0fdcafca3aa02..4ff80e4214ff0 100644
+--- a/net/batman-adv/tp_meter.c
++++ b/net/batman-adv/tp_meter.c
+@@ -154,9 +154,12 @@ static void batadv_tp_update_cwnd(struct batadv_tp_vars *tp_vars, u32 mss)
+ 		return;
+ 	}
  
--	return memcmp(data1, data2, sizeof(__be32)) == 0;
-+	entry1 = container_of(node, struct batadv_dat_entry, hash_entry);
-+	entry2 = data2;
++	/* prevent overflow in (mss * mss) << 3 */
++	mss = min_t(u32, mss, (1U << 14) - 1);
 +
-+	return entry1->ip == entry2->ip && entry1->vid == entry2->vid;
- }
- 
- /**
-@@ -345,6 +348,9 @@ batadv_dat_entry_hash_find(struct batadv_priv *bat_priv, __be32 ip,
- 		if (dat_entry->ip != ip)
- 			continue;
- 
-+		if (dat_entry->vid != vid)
-+			continue;
-+
- 		if (!kref_get_unless_zero(&dat_entry->refcount))
- 			continue;
- 
+ 	/* increment CWND at least of 1 (section 3.1 of RFC5681) */
+ 	tp_vars->dec_cwnd += max_t(u32, 1U << 3,
+-				   ((mss * mss) << 6) / (tp_vars->cwnd << 3));
++				   ((mss * mss) << 3) / tp_vars->cwnd);
+ 	if (tp_vars->dec_cwnd < (mss << 3)) {
+ 		spin_unlock_bh(&tp_vars->cwnd_lock);
+ 		return;
 -- 
 2.47.3
 
