@@ -1,139 +1,141 @@
-Return-Path: <stable+bounces-268969-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-268970-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 1Dl4CgCXPmqcIgkAu9opvQ
-	(envelope-from <stable+bounces-268969-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 17:13:04 +0200
+	id YxEiLjmXPmqkIgkAu9opvQ
+	(envelope-from <stable+bounces-268970-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 17:14:01 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6B3EF6CE5DF
-	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 17:13:03 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2C7E26CE5FC
+	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 17:14:01 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=grrlz.net header.s=stigmate header.b=WTKB4QMl;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-268969-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-268969-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=reject) header.from=grrlz.net;
+	dkim=none;
+	dmarc=none;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-268970-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-268970-lists+stable=lfdr.de@vger.kernel.org";
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B54C13028B28
-	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 15:08:28 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 756DD30FD079
+	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 15:08:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20347379EFE;
-	Fri, 26 Jun 2026 15:08:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4DFE237BE75;
+	Fri, 26 Jun 2026 15:08:56 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from devianza.investici.org (devianza.investici.org [198.167.222.108])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from cstnet.cn (smtp21.cstnet.cn [159.226.251.21])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC17C376BE2;
-	Fri, 26 Jun 2026 15:08:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 849D137B417;
+	Fri, 26 Jun 2026 15:08:52 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782486506; cv=none; b=tuZuunyPr08ONKs1knwWIQiYOq/ATvGj3CqoTYJlYWhEFjGEvdv+Z7ej0sVfL35eVVV5eJW9K6Sa6Ev4e8RI6n7c9aEfcd3oTmJI366xbx7vM1qVyNKGz6glXBnZq6g1ZWJhWZcChv/xReY+nMDrhfoob6TZ5x/PXgt+v7Qb2Gg=
+	t=1782486535; cv=none; b=iExya2fXlJm4GvRSDe98g7FQy6Oq8b1ZVLtV7ygvtwQfy6HTZ2+fEliazLWxgaOjNg7dYf17inM0l97Vj7mVJdS8iFkmpc5iHtr9Gh606UtTgOw+4v9y2JfglJ2pc8aQ8nlXoX0Yhp8XId5bslCIZpmZy/6NMmvP0agwQPu/nww=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782486506; c=relaxed/simple;
-	bh=F4ljnoGc/56n7H6lPb2KzFJOK3AWxFO1R1S0xmBERp8=;
-	h=Date:From:To:CC:Subject:In-Reply-To:References:Message-ID:
-	 MIME-Version:Content-Type; b=dxCIhBwd6+XkT0nTWtE4K6lcVYuzPh8wDQEb86+5c+s1FVXf7/GKo11n1sDMtHFoNvHcIaI5nY0sNXOwnyc37pxvX5HTTpuvYyn92jTIjpwrswujx8Py6etpdP9V+2k7syBDfJyTudswC+aTc64agxVQ9c5A/y+u3YFtLWv5CCk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=grrlz.net; spf=pass smtp.mailfrom=grrlz.net; dkim=pass (1024-bit key) header.d=grrlz.net header.i=@grrlz.net header.b=WTKB4QMl; arc=none smtp.client-ip=198.167.222.108
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=grrlz.net;
-	s=stigmate; t=1782486501;
-	bh=F4ljnoGc/56n7H6lPb2KzFJOK3AWxFO1R1S0xmBERp8=;
-	h=Date:From:To:CC:Subject:In-Reply-To:References:From;
-	b=WTKB4QMl8XYzBMKheH0O26pR7Uov5N4X83dtdsq8IRYuXuL456THRQK2HBTixEonP
-	 LxLz8G0VUP96ahsVlgJIF3wydWm0rtyfzc1izyVpjux0KbXTkoBGCf/CwYhjylo9vn
-	 rx+aHYfVjBZ2+3W6pidqFKbqXaxgG3j6PwRopEZ0=
-Received: from mx2.investici.org (unknown [127.0.0.1])
-	by devianza.investici.org (Postfix) with ESMTP id 4gmzZY640wz6vX9;
-	Fri, 26 Jun 2026 15:08:21 +0000 (UTC)
-Received: by mx2.investici.org (Postfix) id 4gmzZY32x9z4y2q;
-	Fri, 26 Jun 2026 15:08:21 +0000 (UTC)
-Date: Fri, 26 Jun 2026 16:08:22 +0100
-From: Bradley Morgan <include@grrlz.net>
-To: Oleg Nesterov <oleg@redhat.com>
-CC: Andrew Morton <akpm@linux-foundation.org>, ebiederm@xmission.com,
- Christian Brauner <brauner@kernel.org>,
- Peter Zijlstra <peterz@infradead.org>,
- Adrian Huang <adrianhuang0701@gmail.com>, Marco Elver <elver@google.com>,
- Kexin Sun <kexinsun@smail.nju.edu.cn>, Thomas Gleixner <tglx@kernel.org>,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH] signal: avoid shared siginfo namespace rewrites
-In-Reply-To: <aj6Va2nNBZvDJqP5@redhat.com>
-References: <20260622164029.11474-1-include@grrlz.net> <aj6Ms6uygc1vtySn@redhat.com> <FC7EAB84-0845-4DA3-AD43-3B30B47507E5@grrlz.net> <aj6Va2nNBZvDJqP5@redhat.com>
-Message-ID: <D25A403E-7A0F-4654-B4E5-F6411B4C7A4C@grrlz.net>
+	s=arc-20240116; t=1782486535; c=relaxed/simple;
+	bh=dDvBir5NQdT7dHT8o2KC6ZUoCUML6B7AvxdHFvam8r4=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=AKZy5EPiMvMPBCfx4UvNkzxRlOSue9y3bBK/TWu/4WO6IoV9imUfO5R2trbFehksQKucnyCr9ySMgWq2qz7wTC8F/HUM1ijLf/V9haK70jWOU956qy8K3DT9Pg+Xib2+8Y7lOo/S8ee1I4MrM1x3OGJxuOuz9iXGbpwScj9BuAw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.21
+Received: from localhost.localdomain (unknown [117.182.75.66])
+	by APP-01 (Coremail) with SMTP id qwCowAA329P+lT5q4ohrAw--.36775S2;
+	Fri, 26 Jun 2026 23:08:47 +0800 (CST)
+From: WenTao Liang <vulab@iscas.ac.cn>
+To: Alasdair Kergon <agk@redhat.com>,
+	Mike Snitzer <snitzer@kernel.org>,
+	dm-devel@lists.linux.dev
+Cc: Mikulas Patocka <mpatocka@redhat.com>,
+	stable@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	WenTao Liang <vulab@iscas.ac.cn>
+Subject: [PATCH] fix: md: kset_replay: fix use-after-free after cache_key_put
+Date: Fri, 26 Jun 2026 23:08:45 +0800
+Message-Id: <20260626150845.50456-1-vulab@iscas.ac.cn>
+X-Mailer: git-send-email 2.39.5 (Apple Git-154)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
 Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:qwCowAA329P+lT5q4ohrAw--.36775S2
+X-Coremail-Antispam: 1UD129KBjvJXoW7Zw1DuF1xtF45ZFWDZrWxCrg_yoW8JFW7pF
+	W7WryYg3yfXrWIkwsrJ3W0vFyFqa98Jayqg3y7twn5uwn3Zry2vrWIvrWjgry7Xr1fJF43
+	AF1UtFs8uF1qqrJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUkE14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
+	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
+	1l84ACjcxK6xIIjxv20xvE14v26ryj6F1UM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4U
+	JVWxJr1l84ACjcxK6I8E87Iv67AKxVW0oVCq3wA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_Gc
+	CE3s1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xvF2IEw4CE5I8CrVC2j2WlYx0E
+	2Ix0cI8IcVAFwI0_Jw0_WrylYx0Ex4A2jsIE14v26r4j6F4UMcvjeVCFs4IE7xkEbVWUJV
+	W8JwACjcxG0xvY0x0EwIxGrwACjI8F5VA0II8E6IAqYI8I648v4I1lc7CjxVAaw2AFwI0_
+	JF0_Jw1l42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67
+	AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r126r1DMIIY
+	rxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_JFI_Gr1lIxAIcVC0I7IYx2IY6xkF7I0E14
+	v26F4j6r4UJwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Gr0_
+	Cr1lIxAIcVC2z280aVCY1x0267AKxVW8Jr0_Cr1UYxBIdaVFxhVjvjDU0xZFpf9x0JUTnQ
+	UUUUUU=
+X-CM-SenderInfo: pyxotu46lvutnvoduhdfq/1tbiDAEKA2o+idsgsAACsQ
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [0.04 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[grrlz.net,reject];
-	R_DKIM_ALLOW(-0.20)[grrlz.net:s=stigmate];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	MID_CONTAINS_FROM(1.00)[];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[linux-foundation.org,xmission.com,kernel.org,infradead.org,gmail.com,google.com,smail.nju.edu.cn,vger.kernel.org];
-	TAGGED_FROM(0.00)[bounces-268969-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:oleg@redhat.com,m:akpm@linux-foundation.org,m:ebiederm@xmission.com,m:brauner@kernel.org,m:peterz@infradead.org,m:adrianhuang0701@gmail.com,m:elver@google.com,m:kexinsun@smail.nju.edu.cn,m:tglx@kernel.org,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,s:lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-268970-lists,stable=lfdr.de];
+	DMARC_NA(0.00)[iscas.ac.cn];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER(0.00)[vulab@iscas.ac.cn,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[grrlz.net:+];
+	FORGED_RECIPIENTS(0.00)[m:agk@redhat.com,m:snitzer@kernel.org,m:dm-devel@lists.linux.dev,m:mpatocka@redhat.com,m:stable@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:vulab@iscas.ac.cn,s:lists@lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_SENDER(0.00)[include@grrlz.net,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MISSING_XM_UA(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	TO_DN_SOME(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[include@grrlz.net,stable@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[vulab@iscas.ac.cn,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	R_DKIM_NA(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[11];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,grrlz.net:dkim,grrlz.net:mid,grrlz.net:from_mime]
+	RCPT_COUNT_SEVEN(0.00)[7];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,iscas.ac.cn:email,iscas.ac.cn:mid,iscas.ac.cn:from_mime,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 6B3EF6CE5DF
+X-Rspamd-Queue-Id: 2C7E26CE5FC
 
-On June 26, 2026 4:06:19 PM GMT+01:00, Oleg Nesterov <oleg@redhat.com>
-wrote:
->On 06/26, Bradley Morgan wrote:
->>
->> On June 26, 2026 3:29:07 PM GMT+01:00, Oleg Nesterov <oleg@redhat.com>
->> wrote:
->> >To avoid the confusion, let me reply to V1 again.
->> >
->> >Acked-by: Oleg Nesterov <oleg@redhat.com>
->> >
->> >IIUC Eric is fine with this change too.
->> >
->> >Andrew, can you take this fix please? We will send more changes on top
->> >of it.
->>
->> Thanks again oleg.
->>
->> Andrew did reply to V2.
->
->OOPS... where? I didn't get any email from him in this thread...
->
->Oleg.
->
->
+When key->seg_gen is less than cache_seg->gen, the code calls
+  cache_key_put(key) which decrements the refcount to 0 and frees the key
+  via cache_key_destroy. However, execution falls through to
+  cache_seg_get(key->cache_pos.cache_seg) which accesses the freed key's
+  memory, causing a use-after-free.
 
-Ahh, it was a off list email, apologies..
+Add a continue statement after cache_key_put to skip the subsequent
+  operations on the freed key.
 
-I don't read much to the To: field.
+Cc: stable@vger.kernel.org
+Fixes: 1d57628ff95b ("dm-pcache: add persistent cache target in device-mapper")
+Signed-off-by: WenTao Liang <vulab@iscas.ac.cn>
+---
+ drivers/md/dm-pcache/cache_key.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-My bad.
+diff --git a/drivers/md/dm-pcache/cache_key.c b/drivers/md/dm-pcache/cache_key.c
+index e068e878231b..c33d6b37f58d 100644
+--- a/drivers/md/dm-pcache/cache_key.c
++++ b/drivers/md/dm-pcache/cache_key.c
+@@ -733,6 +733,7 @@ static int kset_replay(struct pcache_cache *cache, struct pcache_cache_kset_onme
+ 		/* Check if the segment generation is valid for insertion. */
+ 		if (key->seg_gen < key->cache_pos.cache_seg->gen) {
+ 			cache_key_put(key);
++			continue;
+ 		} else {
+ 			cache_subtree = get_subtree(&cache->req_key_tree, key->off);
+ 			spin_lock(&cache_subtree->tree_lock);
+-- 
+2.39.5 (Apple Git-154)
 
-Thanks!
 
