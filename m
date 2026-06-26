@@ -1,51 +1,50 @@
-Return-Path: <stable+bounces-269227-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-269228-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 0Lc+HF6oPmouJwkAu9opvQ
-	(envelope-from <stable+bounces-269227-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 18:27:10 +0200
+	id i+B6EqKnPmrwJgkAu9opvQ
+	(envelope-from <stable+bounces-269228-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 18:24:02 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 95EF06CF07B
-	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 18:27:09 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 33A946CEFAC
+	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 18:24:01 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
 	dkim=none;
 	dmarc=none;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-269227-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-269227-lists+stable=lfdr.de@vger.kernel.org";
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-269228-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-269228-lists+stable=lfdr.de@vger.kernel.org";
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 8C76F30E9F76
-	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 16:16:40 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 0D674300A664
+	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 16:23:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4DCF73F7AB2;
-	Fri, 26 Jun 2026 16:14:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E21703F8EA2;
+	Fri, 26 Jun 2026 16:23:55 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from cstnet.cn (smtp21.cstnet.cn [159.226.251.21])
 	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2018239D6EC;
-	Fri, 26 Jun 2026 16:14:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D0E33E2AD1;
+	Fri, 26 Jun 2026 16:23:53 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782490448; cv=none; b=uo01pXyeV6HhCCAh2LA1xwNxk0LE2IKQPyHtb6xOgD1Wurl5FiTHrkK9NCSkibDOjgkBgZbH9xukM1DphXeJpBjz5JmxO7FdLIpTl5sqRy08jscY5Q++yIyX0cg4puu8IVKVhflQGE+xzHVNDBQO9LfOQckxQHarHiMvcaZBriU=
+	t=1782491035; cv=none; b=gGT0GdUBlSVg7tZj9PkTEF8nUlWZJ+S7ugPqg+F6JYwkiYJrfucGEks93idxl0hXyAAiyjhBSCuJGbbF5M3iEa+fIq5Ub8c0joRbA/jlsfRRoPYQLbi84DgPB3iccAwfE0O6tTvjT1k3go0Mv7tJAtgR5RRCs1dycKpeX/rcUTw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782490448; c=relaxed/simple;
-	bh=2aX4giEZdlVXO12J1yUnHz4/HsPYtJ4yf4ZpxmIaBdo=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=MggU+kd6G8KFJbDyvsk5SbzwW4L0CgYm/tMmFsBbQBGW7WAF082yYPZ3/vZdSNTzUSQNHKyRWBo6Y5EU3QHpFzkD3PvuYh/W9AWFzUs5BIgqMdNd0d2hYz0zC1gbQfx5aM1iaKXdAe+DL7JP8YP94Lx1BTvlVf77nkDelS0Jips=
+	s=arc-20240116; t=1782491035; c=relaxed/simple;
+	bh=WMAQjwmHvvTBUfwzCc5KXHhq77yD+5TWIbi5Bk7J7sM=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=V/913XWoiq7Nau/niduUMmhTwYGIa81gitTbBA4TgWRJooKFRWiZPjTz4ybXrbscN9lOM42DsEDFvVQRWwt0z9dxn+SMQfyCKSgC9wRQJMEFRZLgqRcQPUeUxEjuOIzPOIHIlHDXncEgSmHfLwg+e1vpK5lJEA0K5R1C7QzvmGI=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.21
 Received: from localhost.localdomain (unknown [117.182.75.66])
-	by APP-01 (Coremail) with SMTP id qwCowACXO9RLpT5qBqVtAw--.4863S2;
-	Sat, 27 Jun 2026 00:14:03 +0800 (CST)
+	by APP-01 (Coremail) with SMTP id qwCowAAHpc2Upz5qg_dtAw--.54841S2;
+	Sat, 27 Jun 2026 00:23:50 +0800 (CST)
 From: WenTao Liang <vulab@iscas.ac.cn>
-To: James Bottomley <jejb@linux.ibm.com>,
-	"Martin K . Petersen" <martin.petersen@oracle.com>,
-	linux-scsi@vger.kernel.org
-Cc: stable@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
+To: linux-kernel@vger.kernel.org
+Cc: Qiang Zhao <qiang.zhao@nxp.com>,
+	Li Yang <leoyang.li@nxp.com>,
+	stable@vger.kernel.org,
 	WenTao Liang <vulab@iscas.ac.cn>
-Subject: [PATCH] fix: scsi: srp_reconnect_rport: unbalanced   scsi_block_targets/scsi_target_unblock
-Date: Sat, 27 Jun 2026 00:14:02 +0800
-Message-Id: <20260626161402.55116-1-vulab@iscas.ac.cn>
+Subject: [PATCH] fix: soc: fsl/qe: tsa_of_parse_tdms: fix copy-paste errors in clock   cleanup blocks
+Date: Sat, 27 Jun 2026 00:23:48 +0800
+Message-Id: <20260626162348.55243-1-vulab@iscas.ac.cn>
 X-Mailer: git-send-email 2.39.5 (Apple Git-154)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -54,45 +53,45 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:qwCowACXO9RLpT5qBqVtAw--.4863S2
-X-Coremail-Antispam: 1UD129KBjvJXoW7CryfZry7Xw4rtF1fXw43Jrb_yoW5Jr45pF
-	9xGasF9rWkJrZ7u3Z8Cr45KryayayrWryUCF1fW34rCaykKry3JanrKFZFgFn5tFsFqFyD
-	ZFsFvFyDGFW8JrJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+X-CM-TRANSID:qwCowAAHpc2Upz5qg_dtAw--.54841S2
+X-Coremail-Antispam: 1UD129KBjvJXoW7ury7Aw18tr1xtFW7Xw4Dtwb_yoW8uFyxpr
+	Z3KrWFvrZ2qF1vgFnxG3y2gF1rta17ta4xGrsxCa1IkrZxJF1Utr1DCa4xuF18Cr1UCFsr
+	JFyUKFWrG3ZrArJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
 	9KBjDU0xBIdaVrnRJUUUkG14x267AKxVWUJVW8JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
 	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
 	1l84ACjcxK6xIIjxv20xvE14v26r4j6ryUM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4j
 	6F4UM28EF7xvwVC2z280aVAFwI0_Gr0_Cr1l84ACjcxK6I8E87Iv6xkF7I0E14v26r4j6r
 	4UJwAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0
-	I7IYx2IY67AKxVWUAVWUtwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFVCjc4AY6r1j6r
+	I7IYx2IY67AKxVWUXVWUAwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFVCjc4AY6r1j6r
 	4UM4x0Y48IcxkI7VAKI48JM4x0x7Aq67IIx4CEVc8vx2IErcIFxwCY1x0262kKe7AKxVWU
 	AVWUtwCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02F40E14
 	v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_JF0_Jw1lIxkG
 	c2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7CjxVAFwI
 	0_Gr0_Cr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r1j6r4U
-	MIIF0xvEx4A2jsIEc7CjxVAFwI0_Gr0_Gr1UYxBIdaVFxhVjvjDU0xZFpf9x0JU6v38UUU
+	MIIF0xvEx4A2jsIEc7CjxVAFwI0_Gr0_Gr1UYxBIdaVFxhVjvjDU0xZFpf9x0JUDpnQUUU
 	UU=
-X-CM-SenderInfo: pyxotu46lvutnvoduhdfq/1tbiBwUKA2o+ikVFzQAAsY
+X-CM-SenderInfo: pyxotu46lvutnvoduhdfq/1tbiBgIKA2o+h0FRrgABsh
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [0.04 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	DMARC_NA(0.00)[iscas.ac.cn];
-	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:linux-kernel@vger.kernel.org,m:qiang.zhao@nxp.com,m:leoyang.li@nxp.com,m:stable@vger.kernel.org,m:vulab@iscas.ac.cn,s:lists@lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
-	TAGGED_FROM(0.00)[bounces-269227-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-269228-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FORGED_SENDER(0.00)[vulab@iscas.ac.cn,stable@vger.kernel.org];
-	FORGED_RECIPIENTS(0.00)[m:jejb@linux.ibm.com,m:martin.petersen@oracle.com,m:linux-scsi@vger.kernel.org,m:stable@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:vulab@iscas.ac.cn,s:lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[vulab@iscas.ac.cn,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
@@ -100,68 +99,66 @@ X-Spamd-Result: default: False [0.04 / 15.00];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	R_DKIM_NA(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,iscas.ac.cn:email,iscas.ac.cn:mid,iscas.ac.cn:from_mime,vger.kernel.org:from_smtp]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,iscas.ac.cn:email,iscas.ac.cn:mid,iscas.ac.cn:from_mime]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 95EF06CF07B
+X-Rspamd-Queue-Id: 33A946CEFAC
 
-In srp_reconnect_rport(), scsi_block_targets() is called only when
-rport->state is not FAIL_FAST and not LOST. However,
-scsi_target_unblock() is called unconditionally on the success path and
-on some error paths, causing an extra kref_put on sdev_gendev when block
-was never called.
+In tsa_of_parse_tdms(), the error cleanup label (err) contains copy-paste
+errors in the if blocks for l1tsync_clk and l1tclk_clk. The l1tsync_clk
+cleanup block mistakenly operates on l1rsync_clk, and the l1tclk_clk
+cleanup block operates on l1rclk_clk instead of the correct clock
+pointers. This causes double-put of l1rsync_clk and l1rclk_clk while
+leaking l1tsync_clk and l1tclk_clk references.
 
-Introduce a 'blocked' flag to track whether scsi_block_targets() was
-called, and only call scsi_target_unblock() when blocked is true.
+Fix the clock pointer references in the cleanup blocks.
 
 Cc: stable@vger.kernel.org
-Fixes: 09345f65058b ("[SCSI] add srp transport class")
+Fixes: 1d4ba0b81c1c ("soc: fsl: cpm1: Add support for TSA")
 Signed-off-by: WenTao Liang <vulab@iscas.ac.cn>
 ---
- drivers/scsi/scsi_transport_srp.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ drivers/soc/fsl/qe/tsa.c | 16 ++++++++--------
+ 1 file changed, 8 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/scsi/scsi_transport_srp.c b/drivers/scsi/scsi_transport_srp.c
-index d71ab5fdb758..b9f67e143b52 100644
---- a/drivers/scsi/scsi_transport_srp.c
-+++ b/drivers/scsi/scsi_transport_srp.c
-@@ -535,6 +535,7 @@ int srp_reconnect_rport(struct srp_rport *rport)
- 	struct srp_internal *i = to_srp_internal(shost->transportt);
- 	struct scsi_device *sdev;
- 	int res;
-+	bool blocked = false;
- 
- 	pr_debug("SCSI host %s\n", dev_name(&shost->shost_gendev));
- 
-@@ -549,6 +550,7 @@ int srp_reconnect_rport(struct srp_rport *rport)
- 		 * treats SDEV_TRANSPORT_OFFLINE like SDEV_BLOCK.
- 		 */
- 		scsi_block_targets(shost, &shost->shost_gendev);
-+		blocked = true;
- 	res = rport->state != SRP_RPORT_LOST ? i->f->reconnect(rport) : -ENODEV;
- 	pr_debug("%s (state %d): transport.reconnect() returned %d\n",
- 		 dev_name(&shost->shost_gendev), rport->state, res);
-@@ -558,7 +560,8 @@ int srp_reconnect_rport(struct srp_rport *rport)
- 
- 		rport->failed_reconnects = 0;
- 		srp_rport_set_state(rport, SRP_RPORT_RUNNING);
--		scsi_target_unblock(&shost->shost_gendev, SDEV_RUNNING);
-+		if (blocked)
-+			scsi_target_unblock(&shost->shost_gendev, SDEV_RUNNING);
- 		/*
- 		 * If the SCSI error handler has offlined one or more devices,
- 		 * invoking scsi_target_unblock() won't change the state of
-@@ -579,7 +582,8 @@ int srp_reconnect_rport(struct srp_rport *rport)
- 		__rport_fail_io_fast(rport);
- 		__srp_start_tl_fail_timers(rport);
- 	} else if (rport->state != SRP_RPORT_BLOCKED) {
--		scsi_target_unblock(&shost->shost_gendev,
-+		if (blocked)
-+			scsi_target_unblock(&shost->shost_gendev,
- 				    SDEV_TRANSPORT_OFFLINE);
+diff --git a/drivers/soc/fsl/qe/tsa.c b/drivers/soc/fsl/qe/tsa.c
+index 4a88e54d25b9..502e2ffe8689 100644
+--- a/drivers/soc/fsl/qe/tsa.c
++++ b/drivers/soc/fsl/qe/tsa.c
+@@ -865,12 +865,12 @@ static int tsa_of_parse_tdms(struct tsa *tsa, struct device_node *np)
+ 			clk_put(tsa->tdm[i].l1rclk_clk);
+ 		}
+ 		if (tsa->tdm[i].l1tsync_clk) {
+-			clk_disable_unprepare(tsa->tdm[i].l1rsync_clk);
+-			clk_put(tsa->tdm[i].l1rsync_clk);
++			clk_disable_unprepare(tsa->tdm[i].l1tsync_clk);
++			clk_put(tsa->tdm[i].l1tsync_clk);
+ 		}
+ 		if (tsa->tdm[i].l1tclk_clk) {
+-			clk_disable_unprepare(tsa->tdm[i].l1rclk_clk);
+-			clk_put(tsa->tdm[i].l1rclk_clk);
++			clk_disable_unprepare(tsa->tdm[i].l1tclk_clk);
++			clk_put(tsa->tdm[i].l1tclk_clk);
+ 		}
  	}
- 	mutex_unlock(&rport->mutex);
+ 	return ret;
+@@ -1039,12 +1039,12 @@ static void tsa_remove(struct platform_device *pdev)
+ 			clk_put(tsa->tdm[i].l1rclk_clk);
+ 		}
+ 		if (tsa->tdm[i].l1tsync_clk) {
+-			clk_disable_unprepare(tsa->tdm[i].l1rsync_clk);
+-			clk_put(tsa->tdm[i].l1rsync_clk);
++			clk_disable_unprepare(tsa->tdm[i].l1tsync_clk);
++			clk_put(tsa->tdm[i].l1tsync_clk);
+ 		}
+ 		if (tsa->tdm[i].l1tclk_clk) {
+-			clk_disable_unprepare(tsa->tdm[i].l1rclk_clk);
+-			clk_put(tsa->tdm[i].l1rclk_clk);
++			clk_disable_unprepare(tsa->tdm[i].l1tclk_clk);
++			clk_put(tsa->tdm[i].l1tclk_clk);
+ 		}
+ 	}
+ }
 -- 
 2.39.5 (Apple Git-154)
 
