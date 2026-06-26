@@ -1,75 +1,71 @@
-Return-Path: <stable+bounces-269251-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-269252-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id g4PaIvG8PmrgKwkAu9opvQ
-	(envelope-from <stable+bounces-269251-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 19:54:57 +0200
+	id yVwFLPa8PmrhKwkAu9opvQ
+	(envelope-from <stable+bounces-269252-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 19:55:02 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id E28736CF7DE
-	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 19:54:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6DD126CF7E3
+	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 19:55:02 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=M6OBWLcD;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-269251-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-269251-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="NL/uvHU9";
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-269252-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-269252-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 76CC2300D45D
-	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 17:54:45 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 8F3F530276AD
+	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 17:54:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 956A839FCC5;
-	Fri, 26 Jun 2026 17:54:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 421F23A7F4C;
+	Fri, 26 Jun 2026 17:54:46 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8386B2D0C62
-	for <stable@vger.kernel.org>; Fri, 26 Jun 2026 17:54:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32C7D2D0C62;
+	Fri, 26 Jun 2026 17:54:44 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782496484; cv=none; b=iSVkPF02KETh2I38ANR+c4t1/a+eezRINrxitmvy7l5WMukK4wXZrRyX166n8PeBUDH2Iy8jMhQfb7qJTXOu0yXeZog2AuhiULEBz4Dwovs7GXpG2ExO6gpmzYEWNSce1nkzOFvpS2w3He5VR2GskLS3qi9lWF+F2DvDaBP9mOE=
+	t=1782496486; cv=none; b=lV8N2BMdkaJdnronbBF0MUUPxD28Xc2TQGrGbjgVTMIA002xEVQllwwzPTaQ4bXuDtk28CVaT3H2/6z6Xessg54mvOjpHP3+x/Xtpj4lV2f3N7iul/YVcmGwmUTJE2afGjKxYycp+p1VPzzF2wYuu44//dHJ5TfxPPu2aOWTtqU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782496484; c=relaxed/simple;
-	bh=nLnB2Xjah1r2bogmBgPF9tW85l1QmtRoKwet5+p+QDM=;
+	s=arc-20240116; t=1782496486; c=relaxed/simple;
+	bh=UHeMgYsEFPFa7fjEu6BlWGRq2scTdgJgwgSRkL6rGEU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lKHZv6B6j/+u5ycJPjIadNH/4hEBzFOCVyahrZts59zaHjU5Md3mRW1ZuUuld0GO1Vl+DYQMixCYB37FVkl16ttTf0NUFwxQkwysISFN9RFja6w81bz6ykLC2lBhHr9tIWLZHBqz/+wBDRns12MYuFcyMYFQ4zp1vsFf1HFO5sI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=M6OBWLcD; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 810A11F000E9;
-	Fri, 26 Jun 2026 17:54:41 +0000 (UTC)
+	 MIME-Version; b=bUADuj0dJgcpzetizFn3aCpoewMHx7UFd0Pk3PeONWh/NBzOV3d2KIQho0eVhHq55l9d5Wv0bqpDv/Rak93wZgTK5aGNaMEHnXrIlfwz55Xx7+K2XsAG8Asv4hjIrcSjMopJKRIwDQO71AM0AMgIqmiIOCVJOEmsV5M+cAOtK6g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NL/uvHU9; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 738C91F00A3E;
+	Fri, 26 Jun 2026 17:54:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782496483;
-	bh=IuTng+WZ10GkqQ8CWvgAuIHMWXedK3vE/BHHr/26VvM=;
+	s=k20260515; t=1782496484;
+	bh=4P0w2YkHaT7J926lwF6hEjqu7vYpYBfmrEfUE95GkIM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=M6OBWLcDAQ4WDYRWaKvYUpHkG3GR9WskL1Pmou/I4oS7aXrO/S6SI1gcriNDUK+f5
-	 G+MfatfeGGcvFEjM1LRpMFKIBJw2WaFbOX5Ho5uhGSBm2YBSGB/4OPlcaYN53VCdxm
-	 utaWphuQGCzSBalcJ73dMv+N4YuSYEWpgKllUaQGZjASvGBg3hjAbi16/fEJLdebkZ
-	 QjGnvX8PyX/hCOeZL0BbmIuvOx8JkSO02002QrGzRbRGazR+PvNZ23vFcKNjHaWUwU
-	 vcp3aKOKGg8sAE+yrw/2ojlLRmSzYXBPUV0KTm7zCmKBQgVssqJOFwSmN4Bnw5PEfy
-	 g/l0Q3hXAFHgA==
+	b=NL/uvHU9nw9WmwCaB99aZ6QwI44OEqvTGdd9X7I3y5sh4NG5LVXjXeDjzmV5Bbsr2
+	 0HZX6umbvCAq/dp6MrRPeXxKQyKMSZIk8ftkNetahX1B465OWkoy3kzddgT9jn7qD4
+	 bimGNOqh7UEl6fE4GKJQgTYYICX1TJS/jP49Zc12IEFcnYvJF8C1OB88giv+SVIEdd
+	 1S+5Lq8XyMJO5sV8TX+H6DPfWnuw1uwgPGLjBErmIIJUH3nB8s5eEQIt4dAaJlHkJC
+	 DWCwBxIMKImaB8ILFTRGrR3BqDETBSj0R3SdKz+hkkUUEZwKBtiBA8fx61cmveFQob
+	 GA/PR+PlppF2Q==
 From: Sasha Levin <sashal@kernel.org>
-To: guanwentao@uniontech.com
-Cc: Sasha Levin <sashal@kernel.org>,
-	2045gemini@gmail.com,
-	dcaratti@redhat.com,
-	gregkh@linuxfoundation.org,
-	jhs@mojatatu.com,
-	keenanat2000@gmail.com,
-	kuba@kernel.org,
-	rajat.gupta@oss.qualcomm.com,
-	rollkingzzc@gmail.com,
-	stable@vger.kernel.org,
-	toke@redhat.com,
-	victor@mojatatu.com,
-	yimingqian591@gmail.com,
-	Pedro Tammela <pctammela@mojatatu.com>,
-	Simon Horman <simon.horman@corigine.com>,
-	"David S . Miller" <davem@davemloft.net>
-Subject: Re: [PATCH 5.10.y v2 0/9] net/sched: fix pedit partial COW leading to page cache corruption
-Date: Fri, 26 Jun 2026 13:54:15 -0400
-Message-ID: <stable-reply-item001-act-pedit-510-20260626@kernel.org>
+To: Peter Zijlstra <peterz@infradead.org>,
+	Ingo Molnar <mingo@redhat.com>,
+	Arnaldo Carvalho de Melo <acme@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Namhyung Kim <namhyung@kernel.org>,
+	Simon Liebold <simonlie@amazon.de>,
+	Ian Rogers <irogers@google.com>,
+	linux-perf-users@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Cc: Sasha Levin <sashal@kernel.org>
+Subject: Re: [PATCH 6.1.y 0/2] Backport dependency commits for 616b14b47a86 ("perf build: Conditionally define NDEBUG")
+Date: Fri, 26 Jun 2026 13:54:16 -0400
+Message-ID: <stable-reply-item002-perf-ndebug-61-20260626@kernel.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260625054005.0011.act-pedit-510@kernel.org>
-References: <20260625054005.0011.act-pedit-510@kernel.org>
+In-Reply-To: <20260625133222.3412820-1-simonlie@amazon.de>
+References: <20260625133222.3412820-1-simonlie@amazon.de>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -88,18 +84,17 @@ X-Spamd-Result: default: False [-4.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-269251-lists,stable=lfdr.de];
-	RCPT_COUNT_TWELVE(0.00)[17];
 	RCVD_TLS_LAST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[13];
+	FORGED_RECIPIENTS(0.00)[m:peterz@infradead.org,m:mingo@redhat.com,m:acme@kernel.org,m:mark.rutland@arm.com,m:alexander.shishkin@linux.intel.com,m:jolsa@kernel.org,m:namhyung@kernel.org,m:simonlie@amazon.de,m:irogers@google.com,m:linux-perf-users@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:guanwentao@uniontech.com,m:sashal@kernel.org,m:2045gemini@gmail.com,m:dcaratti@redhat.com,m:gregkh@linuxfoundation.org,m:jhs@mojatatu.com,m:keenanat2000@gmail.com,m:kuba@kernel.org,m:rajat.gupta@oss.qualcomm.com,m:rollkingzzc@gmail.com,m:stable@vger.kernel.org,m:toke@redhat.com,m:victor@mojatatu.com,m:yimingqian591@gmail.com,m:pctammela@mojatatu.com,m:simon.horman@corigine.com,m:davem@davemloft.net,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[sashal@kernel.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[kernel.org,gmail.com,redhat.com,linuxfoundation.org,mojatatu.com,oss.qualcomm.com,vger.kernel.org,corigine.com,davemloft.net];
 	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_SENDER(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-269252-lists,stable=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
@@ -107,21 +102,18 @@ X-Spamd-Result: default: False [-4.66 / 15.00];
 	DKIM_TRACE(0.00)[kernel.org:+];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	TO_DN_SOME(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: E28736CF7DE
+X-Rspamd-Queue-Id: 6DD126CF7E3
 
-> pls add 10/9 backport (net/sched: act_pedit: fix action bind logic)
+> [PATCH 6.1.y 0/2] Backport dependency commits for 616b14b47a86
+> ("perf build: Conditionally define NDEBUG")
 
-Thanks Wentao. The inline-pasted backport got mangled by mail reflow (the
-@@ hunk counts no longer match the body), so it's not git-am'able, and a
-plain cherry-pick of e9e42292ea76 doesn't apply on top of the queued v2
-series. Could you resend it as a standalone [PATCH 5.10.y] via
-git send-email?
+Both patches queued for 6.1, thanks.
 
 -- 
 Thanks,
