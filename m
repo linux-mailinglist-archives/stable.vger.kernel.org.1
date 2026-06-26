@@ -1,66 +1,64 @@
-Return-Path: <stable+bounces-268703-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-268705-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id EAn8BRThPWoV7ggAu9opvQ
-	(envelope-from <stable+bounces-268703-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 04:16:52 +0200
+	id BLvwOh3jPWqb7ggAu9opvQ
+	(envelope-from <stable+bounces-268705-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 04:25:33 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F07B6C9B7E
-	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 04:16:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 200646C9BDF
+	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 04:25:33 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=uniontech.com header.s=onoh2408 header.b=ej4UE7Xt;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-268703-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-268703-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=none) header.from=uniontech.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=SiwYUVtd;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-268705-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-268705-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C6B0D304BE49
-	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 02:14:40 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A51293043D15
+	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 02:25:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 890FC2F49FD;
-	Fri, 26 Jun 2026 02:14:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 049612FB97B;
+	Fri, 26 Jun 2026 02:25:16 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtpbg150.qq.com (smtpbg150.qq.com [18.132.163.193])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1D882C21DF;
-	Fri, 26 Jun 2026 02:14:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC51A2D6E5C
+	for <stable@vger.kernel.org>; Fri, 26 Jun 2026 02:25:13 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782440078; cv=none; b=RzZ/iu3EvqYEwoVzf7Jd1GGw3Kpx6xlfiqx2L/nhYqET+0mxdKD3uH8ogUHgD0nlQXMERRKjIiuBUjU5vGPYN0TSEv6jvneJLppdlJCqzHmeTSnqUiiXDBjevcrDeSpfD32OpbUOWS697gxtPFBcy/2LnY4cb786A7bmkBad0qg=
+	t=1782440715; cv=none; b=RMVomoM7fT7vLUZ3MSbmJtDeES9CpZzbG9aOShHsonS8VQAn28q/PZ9XAObhzHl8oqw9quqYdI4OWCG6losfl7VeM1CTvIg0ZL1ZV5FPjYoBFkIV3ld5CusNJ790hIAY+81Ux/rPGw3A3wJ0OPADsaWfS5gSa8ELYLLvwbTGJEM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782440078; c=relaxed/simple;
-	bh=odo2qeiMEbS8A/yWNvf06x9KxeN6NKSlu6gwTixzCsY=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ossmwAUBMGXdICvTIPz4nZ9g0DQS5eE6oaMvl3CC7ovtd2/o+Pm0rWZJ0CO1GgBc4ivKxGhzTKs31aAbv6YQ4C0cXU7i/2msDcdab31LEDyPbddAwN2l8QQGDOV4pz08g4e9SWTWPq3/0Xos7PZj6b+m3/fjUvv3lWEgpVxa1Lw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniontech.com; spf=pass smtp.mailfrom=uniontech.com; dkim=pass (1024-bit key) header.d=uniontech.com header.i=@uniontech.com header.b=ej4UE7Xt; arc=none smtp.client-ip=18.132.163.193
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=uniontech.com;
-	s=onoh2408; t=1782440025;
-	bh=a5hzfcY1agv4TmXP7SyF5ysB26HFjfIb0LglhHv0lSw=;
-	h=From:To:Subject:Date:Message-ID:MIME-Version;
-	b=ej4UE7Xtdz6qZmDtV9mrhNK2nJANbquC80Sai/bdYJobVGXBMbluTKr1RTSbqIVyy
-	 KiAKVex9p0ZI6MPp2kP0bwO3L7ZF3M27vb5fYLVIqK7AO8L51BstlL1UQm+b51oznE
-	 IctDOAnY/fT0laIRk0NEfljHVo+HX5OpalBjb+VE=
-X-QQ-mid: esmtpgz16t1782440021t575635e8
-X-QQ-Originating-IP: MoEoy4lkfilPPY2vRr5yX8VQ78pqebMiJchDmCFV+EI=
-Received: from PEN202512010004 ( [113.57.152.160])
-	by bizesmtp.qq.com (ESMTP) with 
-	id ; Fri, 26 Jun 2026 10:13:39 +0800 (CST)
-X-QQ-SSF: 0000000000000000000000000000000
-X-QQ-GoodBg: 1
-X-BIZMAIL-ID: 692030438400580657
-EX-QQ-RecipientCnt: 7
-From: raoxu <raoxu@uniontech.com>
-To: miquel.raynal@bootlin.com
-Cc: richard@nod.at,
-	vigneshr@ti.com,
-	linux-mtd@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	raoxu@uniontech.com,
-	stable@vger.kernel.org
-Subject: [PATCH v2] mtd: virt-concat: free duplicate generated name
-Date: Fri, 26 Jun 2026 10:13:38 +0800
-Message-ID: <A9EF5AD55FADC312+20260626021338.3744161-1-raoxu@uniontech.com>
-X-Mailer: git-send-email 2.50.1
+	s=arc-20240116; t=1782440715; c=relaxed/simple;
+	bh=DexJ0YdztpRA88W5ggw1femGSAJT+B7jXFJsP5GrfCg=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=bf6GUHUWKrT7yJ3a4AoEJ0oX6yjCE20vJdTP3zvB1Ed6EeTHXTGfNXGR4E7cAOKhYdknuX3Ud2UJOhzvniim4RrbGTv7GelmIf2jRyH7ZMkA107064uaf8WiDebJ6EU5iNb3+nAlGjm2S+v8EuRlXS29Xglh3GWGx4uy0f8TwbE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SiwYUVtd; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3AED1F000E9;
+	Fri, 26 Jun 2026 02:25:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1782440713;
+	bh=glfIjs+KIcWYr1a4vfzGNIPA12Vh6L7B0UowTSgYQXs=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=SiwYUVtd0qtYk1SgJwQ2jIttGqBtTYW+C5JzP5DjyY3kDgfbGxOxMOiOe6M+270qo
+	 1VOXUcTcAAzThiXWNsy6xG/6HkNNLyL0r3YlNgZ0ivqszoI99ptAcMRww28RjTLIBj
+	 y+jVjkP6d+30R3EzbmUsix8kIdOP/HqSGQUX2SpB5vfwL2Nmsiky1AbiEmMhSBgSm9
+	 LgPCqPAtVDuermjoO8KTwxSlFft4QbR2bOITvlK2XlLfn3BpxpPpAmH0snY2Y8wW7d
+	 JJHOlGVmYcXPBvdnHY5lrvPAu5fCSg2SokPOOVV5ampBaFB9fSfZpZgBPw85p36bs5
+	 WVm2AzsNOvhJQ==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: Bagas Sanjaya <bagasdotme@gmail.com>,
+	Haren Myneni <haren@linux.ibm.com>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10.y 1/4] Documentation: ioctl-number: Extend "Include File" column width
+Date: Thu, 25 Jun 2026 22:25:08 -0400
+Message-ID: <20260626022511.2700937-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <2026062535-sprawl-tile-e5e9@gregkh>
+References: <2026062535-sprawl-tile-e5e9@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -68,97 +66,582 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-QQ-SENDSIZE: 520
-Feedback-ID: esmtpgz:uniontech.com:qybglogicsvrgz:qybglogicsvrgz6b-0
-X-QQ-XMAILINFO: MBKLumFSBSSxcrQuXmw8jLY+gEcfnrdKLz7gNLw9JKo83h69DW02hqTX
-	FSdwqgH9CKVPS0QtWTYSG09RfbGneqDWopbMNi51AIbuuMqXoxPcdlXlT9eOvtviQxSqeEe
-	PkdnlfIhlCp5sMLqpEAmNiD/DC7VPxwJc1NAShIMi+kaRDQnhZFqOPVqPTwY8OvkhvEI9Ro
-	+4heaEcHDRYzq++EktItyVPl+LTTEkjwHGB55wzlXaP2t6WUNFSAVQi1c8HCNTq1COAVls2
-	+X94R5mgdrFuZDxey1fG4Fx8zV86i487749nELhltUEoebFPA4DCe1iyIcOwUqyznQXeb6T
-	8gxepCeqJ/TmOtHowoccJ0SII6z63Xo3nfrjrVq7iY+a6z1cGTzwGSwJR3BYtmPwhu552Vi
-	u1q5TJYHeEtmyA8mf9j//9KmMXijKK8Xyuu2XXn3h3Kov4SsSBkIDl59Mjn/Vtrj8hv/ZPP
-	zp+xIPBoiOSGMGHGkj+fQoHJ/ntJAqlSDHuJfEQkrkZdMRRYDcTEIl4q296alDjgSvk0jy3
-	TuSVubT08gFITUyI6itF7rsPZhcK71gDV7bRcLPOTxM/vb7tKkbV0O2TM+rDxJquvJNHm40
-	I6P9BGRJCF5ZrFIYw5D1+CTss4uLSgRs23BjMXT2o0CwTQH5sPCAFulMsOeiSmLxQo8kDiM
-	P61GU5W9veUeEVtFf4M2G8+AILb6/Hff2+hv7cIuTNcDZF8IG77ytLsCOWuloktRRd1dW6T
-	WK6KphA0/D+bwtjtlz2JYaiRFQrAElCXYK2QdpfVDmKAKwjhJ3iYlJJNsJ6hcYSIcTEs3Fi
-	COO1mQHPJ5+OpUmBaNsUe0Cmjes6UEPj8+e01NhXf3e/b76XVrzarMTBu+sWGtOdNzy8cwV
-	XaTukXVma2PO57fPWRloLMfQ8svCy8rMeKgybj810LMyvI/9skqLxz2A11SpGTxpFC/BOJL
-	LcnrqGwFroehQEfW8mp0Mk7jWSwt95hd7rdVEGPw3IYWsiUyHqdwTLkSVI3TmBDzdezzzJB
-	aHaYcOST4E0u5tr0fqO58Wqjx4nfx3ZWseZCR1MxMJIRvXVKdck3ULcO7nIgh1fXkxLzAyz
-	dr3DRYJRaoj
-X-QQ-XMRINFO: MSVp+SPm3vtSI1QTLgDHQqIV1w2oNKDqfg==
-X-QQ-RECHKSPAM: 0
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.66 / 15.00];
+X-Spamd-Result: default: False [-3.66 / 15.00];
+	WHITELIST_SPF_DKIM(-3.00)[kernel.org:d:+,kernel.org:s:+];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[uniontech.com,none];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[uniontech.com:s=onoh2408];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-268703-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-268705-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:miquel.raynal@bootlin.com,m:richard@nod.at,m:vigneshr@ti.com,m:linux-mtd@lists.infradead.org,m:linux-kernel@vger.kernel.org,m:raoxu@uniontech.com,m:stable@vger.kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[raoxu@uniontech.com,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:bagasdotme@gmail.com,m:haren@linux.ibm.com,m:maddy@linux.ibm.com,m:corbet@lwn.net,m:sashal@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[raoxu@uniontech.com,stable@vger.kernel.org];
+	FORGED_SENDER(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FREEMAIL_CC(0.00)[gmail.com,linux.ibm.com,lwn.net,kernel.org];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	ALIAS_RESOLVED(0.00)[];
-	TO_DN_NONE(0.00)[];
-	DKIM_TRACE(0.00)[uniontech.com:+];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	MIME_TRACE(0.00)[0:+];
 	TAGGED_RCPT(0.00)[stable];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,uniontech.com:dkim,uniontech.com:email,uniontech.com:mid,uniontech.com:from_mime]
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 7F07B6C9B7E
+X-Rspamd-Queue-Id: 200646C9BDF
 
-From: Xu Rao <raoxu@uniontech.com>
+From: Bagas Sanjaya <bagasdotme@gmail.com>
 
-Every MTD registration runs mtd_virt_concat_create_join().  Once a
-virtual concat has already been registered, the function builds the same
-name again and takes the equal-name branch.  That branch skips to the
-next item without freeing the newly allocated string.
+[ Upstream commit 15afd5def819e4df2a29cef6fcfa6ae7ba167c0f ]
 
-Free the temporary name before continuing.
+Extend width of "Include File" column to fit full path to
+papr-physical-attestation.h in later commit.
 
-Fixes: 43db6366fc2d ("mtd: Add driver for concatenating devices")
-Cc: stable@vger.kernel.org
-Signed-off-by: Xu Rao <raoxu@uniontech.com>
+Reviewed-by: Haren Myneni <haren@linux.ibm.com>
+Signed-off-by: Bagas Sanjaya <bagasdotme@gmail.com>
+Acked-by: Madhavan Srinivasan <maddy@linux.ibm.com>
+Signed-off-by: Jonathan Corbet <corbet@lwn.net>
+Link: https://lore.kernel.org/r/20250714015711.14525-3-bagasdotme@gmail.com
+Stable-dep-of: d237230728c5 ("crypto: qat - remove unused character device and IOCTLs")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
-Changes in v2:
-- Fix the subject prefix for a single patch.
+ .../userspace-api/ioctl/ioctl-number.rst      | 428 +++++++++---------
+ 1 file changed, 214 insertions(+), 214 deletions(-)
 
- drivers/mtd/mtd_virt_concat.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/mtd/mtd_virt_concat.c b/drivers/mtd/mtd_virt_concat.c
-index 37075ead0f33..5db6e648927e 100644
---- a/drivers/mtd/mtd_virt_concat.c
-+++ b/drivers/mtd/mtd_virt_concat.c
-@@ -321,8 +321,10 @@ int mtd_virt_concat_create_join(void)
+diff --git a/Documentation/userspace-api/ioctl/ioctl-number.rst b/Documentation/userspace-api/ioctl/ioctl-number.rst
+index a7373d4e3984cf..aa8d0cf534a3d6 100644
+--- a/Documentation/userspace-api/ioctl/ioctl-number.rst
++++ b/Documentation/userspace-api/ioctl/ioctl-number.rst
+@@ -66,17 +66,17 @@ This table lists ioctls visible from user land for Linux/x86.  It contains
+ most drivers up to 2.6.31, but I know I am missing some.  There has been
+ no attempt to list non-X86 architectures or ioctls from drivers/staging/.
  
- 			if (concat->mtd.name) {
- 				ret = memcmp(concat->mtd.name, name, name_sz);
--				if (ret == 0)
-+				if (ret == 0) {
-+					kfree(name);
- 					continue;
-+				}
- 			}
- 			mtd = mtd_concat_create(concat->subdev, concat->num_subdev, name);
- 			if (!mtd) {
+-====  =====  ======================================================= ================================================================
+-Code  Seq#    Include File                                           Comments
++====  =====  ========================================================= ================================================================
++Code  Seq#    Include File                                             Comments
+       (hex)
+-====  =====  ======================================================= ================================================================
+-0x00  00-1F  linux/fs.h                                              conflict!
+-0x00  00-1F  scsi/scsi_ioctl.h                                       conflict!
+-0x00  00-1F  linux/fb.h                                              conflict!
+-0x00  00-1F  linux/wavefront.h                                       conflict!
++====  =====  ========================================================= ================================================================
++0x00  00-1F  linux/fs.h                                                conflict!
++0x00  00-1F  scsi/scsi_ioctl.h                                         conflict!
++0x00  00-1F  linux/fb.h                                                conflict!
++0x00  00-1F  linux/wavefront.h                                         conflict!
+ 0x02  all    linux/fd.h
+ 0x03  all    linux/hdreg.h
+-0x04  D2-DC  linux/umsdos_fs.h                                       Dead since 2.6.11, but don't reuse these.
++0x04  D2-DC  linux/umsdos_fs.h                                         Dead since 2.6.11, but don't reuse these.
+ 0x06  all    linux/lp.h
+ 0x09  all    linux/raid/md_u.h
+ 0x10  00-0F  drivers/char/s390/vmcp.h
+@@ -84,282 +84,282 @@ Code  Seq#    Include File                                           Comments
+ 0x10  20-2F  arch/s390/include/uapi/asm/hypfs.h
+ 0x12  all    linux/fs.h
+              linux/blkpg.h
+-0x1b  all                                                            InfiniBand Subsystem
+-                                                                     <http://infiniband.sourceforge.net/>
++0x1b  all                                                              InfiniBand Subsystem
++                                                                       <http://infiniband.sourceforge.net/>
+ 0x20  all    drivers/cdrom/cm206.h
+ 0x22  all    scsi/sg.h
+ '!'   00-1F  uapi/linux/seccomp.h
+-'#'   00-3F                                                          IEEE 1394 Subsystem
+-                                                                     Block for the entire subsystem
++'#'   00-3F                                                            IEEE 1394 Subsystem
++                                                                       Block for the entire subsystem
+ '$'   00-0F  linux/perf_counter.h, linux/perf_event.h
+-'%'   00-0F  include/uapi/linux/stm.h                                System Trace Module subsystem
+-                                                                     <mailto:alexander.shishkin@linux.intel.com>
++'%'   00-0F  include/uapi/linux/stm.h                                  System Trace Module subsystem
++                                                                       <mailto:alexander.shishkin@linux.intel.com>
+ '&'   00-07  drivers/firewire/nosy-user.h
+-'1'   00-1F  linux/timepps.h                                         PPS kit from Ulrich Windl
+-                                                                     <ftp://ftp.de.kernel.org/pub/linux/daemons/ntp/PPS/>
++'1'   00-1F  linux/timepps.h                                           PPS kit from Ulrich Windl
++                                                                       <ftp://ftp.de.kernel.org/pub/linux/daemons/ntp/PPS/>
+ '2'   01-04  linux/i2o.h
+-'3'   00-0F  drivers/s390/char/raw3270.h                             conflict!
+-'3'   00-1F  linux/suspend_ioctls.h,                                 conflict!
++'3'   00-0F  drivers/s390/char/raw3270.h                               conflict!
++'3'   00-1F  linux/suspend_ioctls.h,                                   conflict!
+              kernel/power/user.c
+-'8'   all                                                            SNP8023 advanced NIC card
+-                                                                     <mailto:mcr@solidum.com>
++'8'   all                                                              SNP8023 advanced NIC card
++                                                                       <mailto:mcr@solidum.com>
+ ';'   64-7F  linux/vfio.h
+-'@'   00-0F  linux/radeonfb.h                                        conflict!
+-'@'   00-0F  drivers/video/aty/aty128fb.c                            conflict!
+-'A'   00-1F  linux/apm_bios.h                                        conflict!
+-'A'   00-0F  linux/agpgart.h,                                        conflict!
++'@'   00-0F  linux/radeonfb.h                                          conflict!
++'@'   00-0F  drivers/video/aty/aty128fb.c                              conflict!
++'A'   00-1F  linux/apm_bios.h                                          conflict!
++'A'   00-0F  linux/agpgart.h,                                          conflict!
+              drivers/char/agp/compat_ioctl.h
+-'A'   00-7F  sound/asound.h                                          conflict!
+-'B'   00-1F  linux/cciss_ioctl.h                                     conflict!
+-'B'   00-0F  include/linux/pmu.h                                     conflict!
+-'B'   C0-FF  advanced bbus                                           <mailto:maassen@uni-freiburg.de>
+-'C'   all    linux/soundcard.h                                       conflict!
+-'C'   01-2F  linux/capi.h                                            conflict!
+-'C'   F0-FF  drivers/net/wan/cosa.h                                  conflict!
++'A'   00-7F  sound/asound.h                                            conflict!
++'B'   00-1F  linux/cciss_ioctl.h                                       conflict!
++'B'   00-0F  include/linux/pmu.h                                       conflict!
++'B'   C0-FF  advanced bbus                                             <mailto:maassen@uni-freiburg.de>
++'C'   all    linux/soundcard.h                                         conflict!
++'C'   01-2F  linux/capi.h                                              conflict!
++'C'   F0-FF  drivers/net/wan/cosa.h                                    conflict!
+ 'D'   all    arch/s390/include/asm/dasd.h
+ 'D'   40-5F  drivers/scsi/dpt/dtpi_ioctl.h
+ 'D'   05     drivers/scsi/pmcraid.h
+-'E'   all    linux/input.h                                           conflict!
+-'E'   00-0F  xen/evtchn.h                                            conflict!
+-'F'   all    linux/fb.h                                              conflict!
+-'F'   01-02  drivers/scsi/pmcraid.h                                  conflict!
+-'F'   20     drivers/video/fsl-diu-fb.h                              conflict!
+-'F'   20     drivers/video/intelfb/intelfb.h                         conflict!
+-'F'   20     linux/ivtvfb.h                                          conflict!
+-'F'   20     linux/matroxfb.h                                        conflict!
+-'F'   20     drivers/video/aty/atyfb_base.c                          conflict!
+-'F'   00-0F  video/da8xx-fb.h                                        conflict!
+-'F'   80-8F  linux/arcfb.h                                           conflict!
+-'F'   DD     video/sstfb.h                                           conflict!
+-'G'   00-3F  drivers/misc/sgi-gru/grulib.h                           conflict!
+-'H'   00-7F  linux/hiddev.h                                          conflict!
+-'H'   00-0F  linux/hidraw.h                                          conflict!
+-'H'   01     linux/mei.h                                             conflict!
+-'H'   02     linux/mei.h                                             conflict!
+-'H'   03     linux/mei.h                                             conflict!
+-'H'   00-0F  sound/asound.h                                          conflict!
+-'H'   20-40  sound/asound_fm.h                                       conflict!
+-'H'   80-8F  sound/sfnt_info.h                                       conflict!
+-'H'   10-8F  sound/emu10k1.h                                         conflict!
+-'H'   10-1F  sound/sb16_csp.h                                        conflict!
+-'H'   10-1F  sound/hda_hwdep.h                                       conflict!
+-'H'   40-4F  sound/hdspm.h                                           conflict!
+-'H'   40-4F  sound/hdsp.h                                            conflict!
++'E'   all    linux/input.h                                             conflict!
++'E'   00-0F  xen/evtchn.h                                              conflict!
++'F'   all    linux/fb.h                                                conflict!
++'F'   01-02  drivers/scsi/pmcraid.h                                    conflict!
++'F'   20     drivers/video/fsl-diu-fb.h                                conflict!
++'F'   20     drivers/video/intelfb/intelfb.h                           conflict!
++'F'   20     linux/ivtvfb.h                                            conflict!
++'F'   20     linux/matroxfb.h                                          conflict!
++'F'   20     drivers/video/aty/atyfb_base.c                            conflict!
++'F'   00-0F  video/da8xx-fb.h                                          conflict!
++'F'   80-8F  linux/arcfb.h                                             conflict!
++'F'   DD     video/sstfb.h                                             conflict!
++'G'   00-3F  drivers/misc/sgi-gru/grulib.h                             conflict!
++'H'   00-7F  linux/hiddev.h                                            conflict!
++'H'   00-0F  linux/hidraw.h                                            conflict!
++'H'   01     linux/mei.h                                               conflict!
++'H'   02     linux/mei.h                                               conflict!
++'H'   03     linux/mei.h                                               conflict!
++'H'   00-0F  sound/asound.h                                            conflict!
++'H'   20-40  sound/asound_fm.h                                         conflict!
++'H'   80-8F  sound/sfnt_info.h                                         conflict!
++'H'   10-8F  sound/emu10k1.h                                           conflict!
++'H'   10-1F  sound/sb16_csp.h                                          conflict!
++'H'   10-1F  sound/hda_hwdep.h                                         conflict!
++'H'   40-4F  sound/hdspm.h                                             conflict!
++'H'   40-4F  sound/hdsp.h                                              conflict!
+ 'H'   90     sound/usb/usx2y/usb_stream.h
+-'H'   00-0F  uapi/misc/habanalabs.h                                  conflict!
++'H'   00-0F  uapi/misc/habanalabs.h                                    conflict!
+ 'H'   A0     uapi/linux/usb/cdc-wdm.h
+-'H'   C0-F0  net/bluetooth/hci.h                                     conflict!
+-'H'   C0-DF  net/bluetooth/hidp/hidp.h                               conflict!
+-'H'   C0-DF  net/bluetooth/cmtp/cmtp.h                               conflict!
+-'H'   C0-DF  net/bluetooth/bnep/bnep.h                               conflict!
+-'H'   F1     linux/hid-roccat.h                                      <mailto:erazor_de@users.sourceforge.net>
++'H'   C0-F0  net/bluetooth/hci.h                                       conflict!
++'H'   C0-DF  net/bluetooth/hidp/hidp.h                                 conflict!
++'H'   C0-DF  net/bluetooth/cmtp/cmtp.h                                 conflict!
++'H'   C0-DF  net/bluetooth/bnep/bnep.h                                 conflict!
++'H'   F1     linux/hid-roccat.h                                        <mailto:erazor_de@users.sourceforge.net>
+ 'H'   F8-FA  sound/firewire.h
+-'I'   all    linux/isdn.h                                            conflict!
+-'I'   00-0F  drivers/isdn/divert/isdn_divert.h                       conflict!
+-'I'   40-4F  linux/mISDNif.h                                         conflict!
++'I'   all    linux/isdn.h                                              conflict!
++'I'   00-0F  drivers/isdn/divert/isdn_divert.h                         conflict!
++'I'   40-4F  linux/mISDNif.h                                           conflict!
+ 'J'   00-1F  drivers/scsi/gdth_ioctl.h
+ 'K'   all    linux/kd.h
+-'L'   00-1F  linux/loop.h                                            conflict!
+-'L'   10-1F  drivers/scsi/mpt3sas/mpt3sas_ctl.h                      conflict!
++'L'   00-1F  linux/loop.h                                              conflict!
++'L'   10-1F  drivers/scsi/mpt3sas/mpt3sas_ctl.h                        conflict!
+ 'L'   20-2F  linux/lightnvm.h
+-'L'   E0-FF  linux/ppdd.h                                            encrypted disk device driver
+-                                                                     <http://linux01.gwdg.de/~alatham/ppdd.html>
+-'M'   all    linux/soundcard.h                                       conflict!
+-'M'   01-16  mtd/mtd-abi.h                                           conflict!
++'L'   E0-FF  linux/ppdd.h                                              encrypted disk device driver
++                                                                       <http://linux01.gwdg.de/~alatham/ppdd.html>
++'M'   all    linux/soundcard.h                                         conflict!
++'M'   01-16  mtd/mtd-abi.h                                             conflict!
+       and    drivers/mtd/mtdchar.c
+ 'M'   01-03  drivers/scsi/megaraid/megaraid_sas.h
+-'M'   00-0F  drivers/video/fsl-diu-fb.h                              conflict!
++'M'   00-0F  drivers/video/fsl-diu-fb.h                                conflict!
+ 'N'   00-1F  drivers/usb/scanner.h
+ 'N'   40-7F  drivers/block/nvme.c
+-'O'   00-06  mtd/ubi-user.h                                          UBI
+-'P'   all    linux/soundcard.h                                       conflict!
+-'P'   60-6F  sound/sscape_ioctl.h                                    conflict!
+-'P'   00-0F  drivers/usb/class/usblp.c                               conflict!
+-'P'   01-09  drivers/misc/pci_endpoint_test.c                        conflict!
++'O'   00-06  mtd/ubi-user.h                                            UBI
++'P'   all    linux/soundcard.h                                         conflict!
++'P'   60-6F  sound/sscape_ioctl.h                                      conflict!
++'P'   00-0F  drivers/usb/class/usblp.c                                 conflict!
++'P'   01-09  drivers/misc/pci_endpoint_test.c                          conflict!
+ 'Q'   all    linux/soundcard.h
+-'R'   00-1F  linux/random.h                                          conflict!
+-'R'   01     linux/rfkill.h                                          conflict!
++'R'   00-1F  linux/random.h                                            conflict!
++'R'   01     linux/rfkill.h                                            conflict!
+ 'R'   C0-DF  net/bluetooth/rfcomm.h
+-'S'   all    linux/cdrom.h                                           conflict!
+-'S'   80-81  scsi/scsi_ioctl.h                                       conflict!
+-'S'   82-FF  scsi/scsi.h                                             conflict!
+-'S'   00-7F  sound/asequencer.h                                      conflict!
+-'T'   all    linux/soundcard.h                                       conflict!
+-'T'   00-AF  sound/asound.h                                          conflict!
+-'T'   all    arch/x86/include/asm/ioctls.h                           conflict!
+-'T'   C0-DF  linux/if_tun.h                                          conflict!
+-'U'   all    sound/asound.h                                          conflict!
+-'U'   00-CF  linux/uinput.h                                          conflict!
++'S'   all    linux/cdrom.h                                             conflict!
++'S'   80-81  scsi/scsi_ioctl.h                                         conflict!
++'S'   82-FF  scsi/scsi.h                                               conflict!
++'S'   00-7F  sound/asequencer.h                                        conflict!
++'T'   all    linux/soundcard.h                                         conflict!
++'T'   00-AF  sound/asound.h                                            conflict!
++'T'   all    arch/x86/include/asm/ioctls.h                             conflict!
++'T'   C0-DF  linux/if_tun.h                                            conflict!
++'U'   all    sound/asound.h                                            conflict!
++'U'   00-CF  linux/uinput.h                                            conflict!
+ 'U'   00-EF  linux/usbdevice_fs.h
+ 'U'   C0-CF  drivers/bluetooth/hci_uart.h
+-'V'   all    linux/vt.h                                              conflict!
+-'V'   all    linux/videodev2.h                                       conflict!
+-'V'   C0     linux/ivtvfb.h                                          conflict!
+-'V'   C0     linux/ivtv.h                                            conflict!
+-'V'   C0     media/davinci/vpfe_capture.h                            conflict!
+-'V'   C0     media/si4713.h                                          conflict!
+-'W'   00-1F  linux/watchdog.h                                        conflict!
+-'W'   00-1F  linux/wanrouter.h                                       conflict! (pre 3.9)
+-'W'   00-3F  sound/asound.h                                          conflict!
++'V'   all    linux/vt.h                                                conflict!
++'V'   all    linux/videodev2.h                                         conflict!
++'V'   C0     linux/ivtvfb.h                                            conflict!
++'V'   C0     linux/ivtv.h                                              conflict!
++'V'   C0     media/davinci/vpfe_capture.h                              conflict!
++'V'   C0     media/si4713.h                                            conflict!
++'W'   00-1F  linux/watchdog.h                                          conflict!
++'W'   00-1F  linux/wanrouter.h                                         conflict! (pre 3.9)
++'W'   00-3F  sound/asound.h                                            conflict!
+ 'W'   40-5F  drivers/pci/switch/switchtec.c
+ 'W'   60-61  linux/watch_queue.h
+-'X'   all    fs/xfs/xfs_fs.h,                                        conflict!
++'X'   all    fs/xfs/xfs_fs.h,                                          conflict!
+              fs/xfs/linux-2.6/xfs_ioctl32.h,
+              include/linux/falloc.h,
+              linux/fs.h,
+-'X'   all    fs/ocfs2/ocfs_fs.h                                      conflict!
+-'X'   01     linux/pktcdvd.h                                         conflict!
++'X'   all    fs/ocfs2/ocfs_fs.h                                        conflict!
++'X'   01     linux/pktcdvd.h                                           conflict!
+ 'Y'   all    linux/cyclades.h
+ 'Z'   14-15  drivers/message/fusion/mptctl.h
+-'['   00-3F  linux/usb/tmc.h                                         USB Test and Measurement Devices
+-                                                                     <mailto:gregkh@linuxfoundation.org>
+-'a'   all    linux/atm*.h, linux/sonet.h                             ATM on linux
+-                                                                     <http://lrcwww.epfl.ch/>
+-'a'   00-0F  drivers/crypto/qat/qat_common/adf_cfg_common.h          conflict! qat driver
+-'b'   00-FF                                                          conflict! bit3 vme host bridge
+-                                                                     <mailto:natalia@nikhefk.nikhef.nl>
+-'c'   all    linux/cm4000_cs.h                                       conflict!
+-'c'   00-7F  linux/comstats.h                                        conflict!
+-'c'   00-7F  linux/coda.h                                            conflict!
+-'c'   00-1F  linux/chio.h                                            conflict!
+-'c'   80-9F  arch/s390/include/asm/chsc.h                            conflict!
++'['   00-3F  linux/usb/tmc.h                                           USB Test and Measurement Devices
++                                                                       <mailto:gregkh@linuxfoundation.org>
++'a'   all    linux/atm*.h, linux/sonet.h                               ATM on linux
++                                                                       <http://lrcwww.epfl.ch/>
++'a'   00-0F  drivers/crypto/qat/qat_common/adf_cfg_common.h            conflict! qat driver
++'b'   00-FF                                                            conflict! bit3 vme host bridge
++                                                                       <mailto:natalia@nikhefk.nikhef.nl>
++'c'   all    linux/cm4000_cs.h                                         conflict!
++'c'   00-7F  linux/comstats.h                                          conflict!
++'c'   00-7F  linux/coda.h                                              conflict!
++'c'   00-1F  linux/chio.h                                              conflict!
++'c'   80-9F  arch/s390/include/asm/chsc.h                              conflict!
+ 'c'   A0-AF  arch/x86/include/asm/msr.h conflict!
+-'d'   00-FF  linux/char/drm/drm.h                                    conflict!
+-'d'   02-40  pcmcia/ds.h                                             conflict!
++'d'   00-FF  linux/char/drm/drm.h                                      conflict!
++'d'   02-40  pcmcia/ds.h                                               conflict!
+ 'd'   F0-FF  linux/digi1.h
+-'e'   all    linux/digi1.h                                           conflict!
+-'f'   00-1F  linux/ext2_fs.h                                         conflict!
+-'f'   00-1F  linux/ext3_fs.h                                         conflict!
+-'f'   00-0F  fs/jfs/jfs_dinode.h                                     conflict!
+-'f'   00-0F  fs/ext4/ext4.h                                          conflict!
+-'f'   00-0F  linux/fs.h                                              conflict!
+-'f'   00-0F  fs/ocfs2/ocfs2_fs.h                                     conflict!
++'e'   all    linux/digi1.h                                             conflict!
++'f'   00-1F  linux/ext2_fs.h                                           conflict!
++'f'   00-1F  linux/ext3_fs.h                                           conflict!
++'f'   00-0F  fs/jfs/jfs_dinode.h                                       conflict!
++'f'   00-0F  fs/ext4/ext4.h                                            conflict!
++'f'   00-0F  linux/fs.h                                                conflict!
++'f'   00-0F  fs/ocfs2/ocfs2_fs.h                                       conflict!
+ 'f'   13-27  linux/fscrypt.h
+ 'f'   81-8F  linux/fsverity.h
+ 'g'   00-0F  linux/usb/gadgetfs.h
+ 'g'   20-2F  linux/usb/g_printer.h
+-'h'   00-7F                                                          conflict! Charon filesystem
+-                                                                     <mailto:zapman@interlan.net>
+-'h'   00-1F  linux/hpet.h                                            conflict!
++'h'   00-7F                                                            conflict! Charon filesystem
++                                                                       <mailto:zapman@interlan.net>
++'h'   00-1F  linux/hpet.h                                              conflict!
+ 'h'   80-8F  fs/hfsplus/ioctl.c
+-'i'   00-3F  linux/i2o-dev.h                                         conflict!
+-'i'   0B-1F  linux/ipmi.h                                            conflict!
++'i'   00-3F  linux/i2o-dev.h                                           conflict!
++'i'   0B-1F  linux/ipmi.h                                              conflict!
+ 'i'   80-8F  linux/i8k.h
+ 'j'   00-3F  linux/joystick.h
+-'k'   00-0F  linux/spi/spidev.h                                      conflict!
+-'k'   00-05  video/kyro.h                                            conflict!
+-'k'   10-17  linux/hsi/hsi_char.h                                    HSI character device
+-'l'   00-3F  linux/tcfs_fs.h                                         transparent cryptographic file system
+-                                                                     <http://web.archive.org/web/%2A/http://mikonos.dia.unisa.it/tcfs>
+-'l'   40-7F  linux/udf_fs_i.h                                        in development:
+-                                                                     <http://sourceforge.net/projects/linux-udf/>
+-'m'   00-09  linux/mmtimer.h                                         conflict!
+-'m'   all    linux/mtio.h                                            conflict!
+-'m'   all    linux/soundcard.h                                       conflict!
+-'m'   all    linux/synclink.h                                        conflict!
+-'m'   00-19  drivers/message/fusion/mptctl.h                         conflict!
+-'m'   00     drivers/scsi/megaraid/megaraid_ioctl.h                  conflict!
++'k'   00-0F  linux/spi/spidev.h                                        conflict!
++'k'   00-05  video/kyro.h                                              conflict!
++'k'   10-17  linux/hsi/hsi_char.h                                      HSI character device
++'l'   00-3F  linux/tcfs_fs.h                                           transparent cryptographic file system
++                                                                       <http://web.archive.org/web/%2A/http://mikonos.dia.unisa.it/tcfs>
++'l'   40-7F  linux/udf_fs_i.h                                          in development:
++                                                                       <http://sourceforge.net/projects/linux-udf/>
++'m'   00-09  linux/mmtimer.h                                           conflict!
++'m'   all    linux/mtio.h                                              conflict!
++'m'   all    linux/soundcard.h                                         conflict!
++'m'   all    linux/synclink.h                                          conflict!
++'m'   00-19  drivers/message/fusion/mptctl.h                           conflict!
++'m'   00     drivers/scsi/megaraid/megaraid_ioctl.h                    conflict!
+ 'n'   00-7F  linux/ncp_fs.h and fs/ncpfs/ioctl.c
+-'n'   80-8F  uapi/linux/nilfs2_api.h                                 NILFS2
+-'n'   E0-FF  linux/matroxfb.h                                        matroxfb
+-'o'   00-1F  fs/ocfs2/ocfs2_fs.h                                     OCFS2
+-'o'   00-03  mtd/ubi-user.h                                          conflict! (OCFS2 and UBI overlaps)
+-'o'   40-41  mtd/ubi-user.h                                          UBI
+-'o'   01-A1  `linux/dvb/*.h`                                         DVB
+-'p'   00-0F  linux/phantom.h                                         conflict! (OpenHaptics needs this)
+-'p'   00-1F  linux/rtc.h                                             conflict!
++'n'   80-8F  uapi/linux/nilfs2_api.h                                   NILFS2
++'n'   E0-FF  linux/matroxfb.h                                          matroxfb
++'o'   00-1F  fs/ocfs2/ocfs2_fs.h                                       OCFS2
++'o'   00-03  mtd/ubi-user.h                                            conflict! (OCFS2 and UBI overlaps)
++'o'   40-41  mtd/ubi-user.h                                            UBI
++'o'   01-A1  `linux/dvb/*.h`                                           DVB
++'p'   00-0F  linux/phantom.h                                           conflict! (OpenHaptics needs this)
++'p'   00-1F  linux/rtc.h                                               conflict!
+ 'p'   40-7F  linux/nvram.h
+-'p'   80-9F  linux/ppdev.h                                           user-space parport
+-                                                                     <mailto:tim@cyberelk.net>
+-'p'   A1-A5  linux/pps.h                                             LinuxPPS
+-                                                                     <mailto:giometti@linux.it>
++'p'   80-9F  linux/ppdev.h                                             user-space parport
++                                                                       <mailto:tim@cyberelk.net>
++'p'   A1-A5  linux/pps.h                                               LinuxPPS
++                                                                       <mailto:giometti@linux.it>
+ 'q'   00-1F  linux/serio.h
+-'q'   80-FF  linux/telephony.h                                       Internet PhoneJACK, Internet LineJACK
+-             linux/ixjuser.h                                         <http://web.archive.org/web/%2A/http://www.quicknet.net>
++'q'   80-FF  linux/telephony.h                                         Internet PhoneJACK, Internet LineJACK
++             linux/ixjuser.h                                           <http://web.archive.org/web/%2A/http://www.quicknet.net>
+ 'r'   00-1F  linux/msdos_fs.h and fs/fat/dir.c
+ 's'   all    linux/cdk.h
+ 't'   00-7F  linux/ppp-ioctl.h
+ 't'   80-8F  linux/isdn_ppp.h
+-'t'   90-91  linux/toshiba.h                                         toshiba and toshiba_acpi SMM
+-'u'   00-1F  linux/smb_fs.h                                          gone
+-'u'   20-3F  linux/uvcvideo.h                                        USB video class host driver
+-'u'   40-4f  linux/udmabuf.h                                         userspace dma-buf misc device
+-'v'   00-1F  linux/ext2_fs.h                                         conflict!
+-'v'   00-1F  linux/fs.h                                              conflict!
+-'v'   00-0F  linux/sonypi.h                                          conflict!
+-'v'   00-0F  media/v4l2-subdev.h                                     conflict!
+-'v'   20-27  arch/powerpc/include/uapi/asm/vas-api.h		     VAS API
+-'v'   C0-FF  linux/meye.h                                            conflict!
+-'w'   all                                                            CERN SCI driver
+-'y'   00-1F                                                          packet based user level communications
+-                                                                     <mailto:zapman@interlan.net>
+-'z'   00-3F                                                          CAN bus card conflict!
+-                                                                     <mailto:hdstich@connectu.ulm.circular.de>
+-'z'   40-7F                                                          CAN bus card conflict!
+-                                                                     <mailto:oe@port.de>
+-'z'   10-4F  drivers/s390/crypto/zcrypt_api.h                        conflict!
++'t'   90-91  linux/toshiba.h                                           toshiba and toshiba_acpi SMM
++'u'   00-1F  linux/smb_fs.h                                            gone
++'u'   20-3F  linux/uvcvideo.h                                          USB video class host driver
++'u'   40-4f  linux/udmabuf.h                                           userspace dma-buf misc device
++'v'   00-1F  linux/ext2_fs.h                                           conflict!
++'v'   00-1F  linux/fs.h                                                conflict!
++'v'   00-0F  linux/sonypi.h                                            conflict!
++'v'   00-0F  media/v4l2-subdev.h                                       conflict!
++'v'   20-27  arch/powerpc/include/uapi/asm/vas-api.h                   VAS API
++'v'   C0-FF  linux/meye.h                                              conflict!
++'w'   all                                                              CERN SCI driver
++'y'   00-1F                                                            packet based user level communications
++                                                                       <mailto:zapman@interlan.net>
++'z'   00-3F                                                            CAN bus card conflict!
++                                                                       <mailto:hdstich@connectu.ulm.circular.de>
++'z'   40-7F                                                            CAN bus card conflict!
++                                                                       <mailto:oe@port.de>
++'z'   10-4F  drivers/s390/crypto/zcrypt_api.h                          conflict!
+ '|'   00-7F  linux/media.h
+ 0x80  00-1F  linux/fb.h
+ 0x89  00-06  arch/x86/include/asm/sockios.h
+ 0x89  0B-DF  linux/sockios.h
+-0x89  E0-EF  linux/sockios.h                                         SIOCPROTOPRIVATE range
+-0x89  F0-FF  linux/sockios.h                                         SIOCDEVPRIVATE range
++0x89  E0-EF  linux/sockios.h                                           SIOCPROTOPRIVATE range
++0x89  F0-FF  linux/sockios.h                                           SIOCDEVPRIVATE range
+ 0x8B  all    linux/wireless.h
+-0x8C  00-3F                                                          WiNRADiO driver
+-                                                                     <http://www.winradio.com.au/>
++0x8C  00-3F                                                            WiNRADiO driver
++                                                                       <http://www.winradio.com.au/>
+ 0x90  00     drivers/cdrom/sbpcd.h
+ 0x92  00-0F  drivers/usb/mon/mon_bin.c
+ 0x93  60-7F  linux/auto_fs.h
+-0x94  all    fs/btrfs/ioctl.h                                        Btrfs filesystem
+-             and linux/fs.h                                          some lifted to vfs/generic
+-0x97  00-7F  fs/ceph/ioctl.h                                         Ceph file system
+-0x99  00-0F                                                          537-Addinboard driver
+-                                                                     <mailto:buk@buks.ipn.de>
+-0xA0  all    linux/sdp/sdp.h                                         Industrial Device Project
+-                                                                     <mailto:kenji@bitgate.com>
+-0xA1  0      linux/vtpm_proxy.h                                      TPM Emulator Proxy Driver
+-0xA3  80-8F                                                          Port ACL  in development:
+-                                                                     <mailto:tlewis@mindspring.com>
++0x94  all    fs/btrfs/ioctl.h                                          Btrfs filesystem
++             and linux/fs.h                                            some lifted to vfs/generic
++0x97  00-7F  fs/ceph/ioctl.h                                           Ceph file system
++0x99  00-0F                                                            537-Addinboard driver
++                                                                       <mailto:buk@buks.ipn.de>
++0xA0  all    linux/sdp/sdp.h                                           Industrial Device Project
++                                                                       <mailto:kenji@bitgate.com>
++0xA1  0      linux/vtpm_proxy.h                                        TPM Emulator Proxy Driver
++0xA3  80-8F                                                            Port ACL  in development:
++                                                                       <mailto:tlewis@mindspring.com>
+ 0xA3  90-9F  linux/dtlk.h
+-0xA4  00-1F  uapi/linux/tee.h                                        Generic TEE subsystem
++0xA4  00-1F  uapi/linux/tee.h                                          Generic TEE subsystem
+ 0xAA  00-3F  linux/uapi/linux/userfaultfd.h
+ 0xAB  00-1F  linux/nbd.h
+ 0xAC  00-1F  linux/raw.h
+-0xAD  00                                                             Netfilter device in development:
+-                                                                     <mailto:rusty@rustcorp.com.au>
+-0xAE  00-1F  linux/kvm.h                                             Kernel-based Virtual Machine
+-                                                                     <mailto:kvm@vger.kernel.org>
+-0xAE  40-FF  linux/kvm.h                                             Kernel-based Virtual Machine
+-                                                                     <mailto:kvm@vger.kernel.org>
+-0xAE  20-3F  linux/nitro_enclaves.h                                  Nitro Enclaves
+-0xAF  00-1F  linux/fsl_hypervisor.h                                  Freescale hypervisor
+-0xB0  all                                                            RATIO devices in development:
+-                                                                     <mailto:vgo@ratio.de>
+-0xB1  00-1F                                                          PPPoX
+-                                                                     <mailto:mostrows@styx.uwaterloo.ca>
++0xAD  00                                                               Netfilter device in development:
++                                                                       <mailto:rusty@rustcorp.com.au>
++0xAE  00-1F  linux/kvm.h                                               Kernel-based Virtual Machine
++                                                                       <mailto:kvm@vger.kernel.org>
++0xAE  40-FF  linux/kvm.h                                               Kernel-based Virtual Machine
++                                                                       <mailto:kvm@vger.kernel.org>
++0xAE  20-3F  linux/nitro_enclaves.h                                    Nitro Enclaves
++0xAF  00-1F  linux/fsl_hypervisor.h                                    Freescale hypervisor
++0xB0  all                                                              RATIO devices in development:
++                                                                       <mailto:vgo@ratio.de>
++0xB1  00-1F                                                            PPPoX
++                                                                       <mailto:mostrows@styx.uwaterloo.ca>
+ 0xB3  00     linux/mmc/ioctl.h
+-0xB4  00-0F  linux/gpio.h                                            <mailto:linux-gpio@vger.kernel.org>
+-0xB5  00-0F  uapi/linux/rpmsg.h                                      <mailto:linux-remoteproc@vger.kernel.org>
++0xB4  00-0F  linux/gpio.h                                              <mailto:linux-gpio@vger.kernel.org>
++0xB5  00-0F  uapi/linux/rpmsg.h                                        <mailto:linux-remoteproc@vger.kernel.org>
+ 0xB6  all    linux/fpga-dfl.h
+-0xB7  all    uapi/linux/remoteproc_cdev.h                            <mailto:linux-remoteproc@vger.kernel.org>
++0xB7  all    uapi/linux/remoteproc_cdev.h                              <mailto:linux-remoteproc@vger.kernel.org>
+ 0xC0  00-0F  linux/usb/iowarrior.h
+ 0xCA  00-0F  uapi/misc/cxl.h
+ 0xCA  10-2F  uapi/misc/ocxl.h
+ 0xCA  80-BF  uapi/scsi/cxlflash_ioctl.h
+-0xCB  00-1F                                                          CBM serial IEC bus in development:
+-                                                                     <mailto:michael.klein@puffin.lb.shuttle.de>
+-0xCC  00-0F  drivers/misc/ibmvmc.h                                   pseries VMC driver
++0xCB  00-1F                                                            CBM serial IEC bus in development:
++                                                                       <mailto:michael.klein@puffin.lb.shuttle.de>
++0xCC  00-0F  drivers/misc/ibmvmc.h                                     pseries VMC driver
+ 0xCD  01     linux/reiserfs_fs.h
+ 0xCF  02     fs/cifs/ioctl.c
+ 0xDB  00-0F  drivers/char/mwave/mwavepub.h
+-0xDD  00-3F                                                          ZFCP device driver see drivers/s390/scsi/
+-                                                                     <mailto:aherrman@de.ibm.com>
++0xDD  00-3F                                                            ZFCP device driver see drivers/s390/scsi/
++                                                                       <mailto:aherrman@de.ibm.com>
+ 0xE5  00-3F  linux/fuse.h
+-0xEC  00-01  drivers/platform/chrome/cros_ec_dev.h                   ChromeOS EC driver
+-0xF3  00-3F  drivers/usb/misc/sisusbvga/sisusb.h                     sisfb (in development)
+-                                                                     <mailto:thomas@winischhofer.net>
+-0xF6  all                                                            LTTng Linux Trace Toolkit Next Generation
+-                                                                     <mailto:mathieu.desnoyers@efficios.com>
++0xEC  00-01  drivers/platform/chrome/cros_ec_dev.h                     ChromeOS EC driver
++0xF3  00-3F  drivers/usb/misc/sisusbvga/sisusb.h                       sisfb (in development)
++                                                                       <mailto:thomas@winischhofer.net>
++0xF6  all                                                              LTTng Linux Trace Toolkit Next Generation
++                                                                       <mailto:mathieu.desnoyers@efficios.com>
+ 0xFD  all    linux/dm-ioctl.h
+ 0xFE  all    linux/isst_if.h
+-====  =====  ======================================================= ================================================================
++====  =====  ========================================================= ================================================================
 -- 
-2.50.1
+2.53.0
+
 
