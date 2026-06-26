@@ -1,40 +1,40 @@
-Return-Path: <stable+bounces-269090-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-269091-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id DJVVJQSmPmp+JgkAu9opvQ
-	(envelope-from <stable+bounces-269090-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 18:17:08 +0200
+	id ta87MQ2mPmqEJgkAu9opvQ
+	(envelope-from <stable+bounces-269091-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 18:17:17 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0A7C46CEE47
-	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 18:17:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2BB576CEE56
+	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 18:17:17 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=narfation.org header.s=20121 header.b=XJmBAu06;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-269090-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-269090-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=narfation.org header.s=20121 header.b=nZG4Lgye;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-269091-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-269091-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=narfation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id DBB4B30F56DE
-	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 16:11:53 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id C544B30F82EC
+	for <lists+stable@lfdr.de>; Fri, 26 Jun 2026 16:11:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB44A3F9F26;
-	Fri, 26 Jun 2026 16:11:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A1DD3F9F22;
+	Fri, 26 Jun 2026 16:11:44 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from dvalin.narfation.org (dvalin.narfation.org [213.160.73.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E67F3EB0E6
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB9223F99FE
 	for <stable@vger.kernel.org>; Fri, 26 Jun 2026 16:11:42 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782490303; cv=none; b=EMXDJgo9xQURRzG3P8V+1GxGeewGaE+7Mbd3G6X3mBZ91CJXKTVcXLo5Yt7iT7I+85Z9gjlDKXmlZ6D7bEsYTdx7SN/L3xU4L643Xsac8QsImo3zc+fm7cxUkAWwlgIYc9KReTb4/gNrTm57CehA81acNhaI9rYJawCTuQ4L7ZA=
+	t=1782490304; cv=none; b=iGAG+/JT2jDLUUwNo2hv7F6hPVm0ccV6kO8cUrjPPdEUABkehtielIdoJ+s3uSG8q8dkFJYoW6S47PHjQTuQMJ8lnHWibc+MG+ZiJViQP2qpsiosdV4JueqvMWTKmEZXmn97qro3BAq11AafKOiUvLNHOiNXoRAT7cnKheEJSX8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782490303; c=relaxed/simple;
-	bh=8HIKyq4BSb8qVt3HqOP7c9x5E1T7lWQcfvTnjkEPCmY=;
+	s=arc-20240116; t=1782490304; c=relaxed/simple;
+	bh=zwAThkbUo7uLI085bpnJZYNkhWQl2aIAz6Cbp/faPm4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=R2Y96FIPD7Be8Seej0fUWXqg9q9AkW6drrtVSuXczXycgz4BWEKD+ckh0ScexkUVjhWIr2DxfHxlB/QcleVAWwzhrJQe9/jnhBpHX1rQtlJzKNR/OICqEpA/CRPH/SFM4bj5isammQiN8YmuKuvr5x3UQOeIGpJWHhC3yLcTY9Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=narfation.org; spf=pass smtp.mailfrom=narfation.org; dkim=pass (1024-bit key) header.d=narfation.org header.i=@narfation.org header.b=XJmBAu06; arc=none smtp.client-ip=213.160.73.56
-Received: by dvalin.narfation.org (Postfix) id 1224E203E0;
+	 MIME-Version; b=p0SWBtLAwV2BgEnjsr/J58nx86ezWRDIVa5ffItW9fpw/4jNC4xPspYfvE8yLmhz8ecvyV1RFA7mhHAqdPTYYEryaVsh7s7TJL/fKOfa4eMUfy1lamS4SMvZxUtkz2j0ph3o71ZmGmjYW76SWNUH5oTCLQ8YKgi+wm6fmixIxoI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=narfation.org; spf=pass smtp.mailfrom=narfation.org; dkim=pass (1024-bit key) header.d=narfation.org header.i=@narfation.org header.b=nZG4Lgye; arc=none smtp.client-ip=213.160.73.56
+Received: by dvalin.narfation.org (Postfix) id 752A1203F3;
 	Fri, 26 Jun 2026 16:11:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=narfation.org;
 	s=20121; t=1782490301;
@@ -42,16 +42,16 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=narfation.org;
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=l2Z+W0DL4p3ivSDcSwcRqMFiAbkqyH2J0VIzY3641l8=;
-	b=XJmBAu06Ec3JNXd7WvlXKD/xHYcbwOclA2s5v3ieb/kwpNmCF2lJgBFmQDEZwlT8Ulos2y
-	PZd9Qru4srvFZJXur673PnIy7zc5zMp44dTXaazh2ToBXrPdBDnHZfz/C3xvSk3gtkdgOL
-	3LQSe7sh2O3rkpeFEXs5KXVD8ErWaAU=
+	bh=YsN9N4Ncr1XBwBc+jSexSwkY0AGyzatpp6r9NLB28q8=;
+	b=nZG4Lgye1NTixy76gzX/MHEaDxuTYElVqUTry/QcdXtkH73Sg2apw/YT43S9VF4UFkuSkx
+	FL6FulnQ8awvQ83MCWeVC3WbXZ7wXe5oocqZTTye7aFE5c5rwxUWFaS8Ja32EmGeeL0CP1
+	KivhGB497LQnrAZm1h3WbSqgXGiQ1g4=
 From: Sven Eckelmann <sven@narfation.org>
 To: stable@vger.kernel.org
 Cc: Sven Eckelmann <sven@narfation.org>
-Subject: [PATCH 6.6 03/25] batman-adv: tp_meter: initialize dec_cwnd explicitly
-Date: Fri, 26 Jun 2026 18:11:17 +0200
-Message-ID: <20260626161139.124425-4-sven@narfation.org>
+Subject: [PATCH 6.6 04/25] batman-adv: tp_meter: avoid window underflow
+Date: Fri, 26 Jun 2026 18:11:18 +0200
+Message-ID: <20260626161139.124425-5-sven@narfation.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260626161139.124425-1-sven@narfation.org>
 References: <20260626161139.124425-1-sven@narfation.org>
@@ -75,7 +75,7 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-269090-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-269091-lists,stable=lfdr.de];
 	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:sven@narfation.org,s:lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
@@ -95,37 +95,53 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,narfation.org:dkim,narfation.org:email,narfation.org:mid,narfation.org:from_mime,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 0A7C46CEE47
+X-Rspamd-Queue-Id: 2BB576CEE56
 
-commit febfb1b86224489535312296ecfa3d4bf467f339 upstream.
+commit 765947b81fb54b6ebb0bc1cfe55c0fa399e002b8 upstream.
 
-When batadv_tp_update_cwnd() is called, dec_cwnd is increased. But dec_cwnd
-is only initialixed (to 0) when a duplicate Ack was received or when cwnd
-is below the ss_threshold.
+In batadv_tp_avail(), win_left is calculated with 32-bit unsigned
+arithmetic: win_left = win_limit - tp_vars->last_sent;
 
-Just initialize the cwnd during the initialization to avoid any potential
-access of uninitialized data.
+During Fast Recovery, cwnd is inflated and last_sent advances rapidly. When
+Fast Recovery ends, cwnd drops abruptly back to ss_threshold. If the newly
+shrunk win_limit is less than last_sent, the unsigned subtraction will
+underflow, wrapping to a massive positive value. Instead of returning that
+the window is full (unavailable), it returns that the sender can continue
+sending.
+
+To handle this situation, it must be checked whether the windows end
+sequence number (win_limit) has to be compared with the last sent sequence
+number. If it would be before the last sent sequence number, then more acks
+are needed before the transmission can be started again.
 
 Cc: stable@kernel.org
 Fixes: 33a3bb4a3345 ("batman-adv: throughput meter implementation")
 Signed-off-by: Sven Eckelmann <sven@narfation.org>
 ---
- net/batman-adv/tp_meter.c | 2 ++
- 1 file changed, 2 insertions(+)
+ net/batman-adv/tp_meter.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
 diff --git a/net/batman-adv/tp_meter.c b/net/batman-adv/tp_meter.c
-index 750e5e9d3dc9d..f6ccb639744a2 100644
+index f6ccb639744a2..0fdcafca3aa02 100644
 --- a/net/batman-adv/tp_meter.c
 +++ b/net/batman-adv/tp_meter.c
-@@ -1055,6 +1055,8 @@ void batadv_tp_start(struct batadv_priv *bat_priv, const u8 *dst,
- 	 * soft_interface, hence its MTU
- 	 */
- 	tp_vars->cwnd = BATADV_TP_PLEN * 3;
-+	tp_vars->dec_cwnd = 0;
+@@ -817,10 +817,15 @@ static void batadv_tp_recv_ack(struct batadv_priv *bat_priv,
+ static bool batadv_tp_avail(struct batadv_tp_vars *tp_vars,
+ 			    size_t payload_len)
+ {
++	u32 last_sent = READ_ONCE(tp_vars->last_sent);
+ 	u32 win_left, win_limit;
+ 
+ 	win_limit = atomic_read(&tp_vars->last_acked) + tp_vars->cwnd;
+-	win_left = win_limit - tp_vars->last_sent;
 +
- 	/* at the beginning initialise the SS threshold to the biggest possible
- 	 * window size, hence the AWND size
- 	 */
++	if (batadv_seq_before(last_sent, win_limit))
++		win_left = win_limit - last_sent;
++	else
++		win_left = 0;
+ 
+ 	return win_left >= payload_len;
+ }
 -- 
 2.47.3
 
