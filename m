@@ -1,94 +1,61 @@
-Return-Path: <stable+bounces-269384-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-269385-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id PfQcBnOyP2ryXAkAu9opvQ
-	(envelope-from <stable+bounces-269384-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 27 Jun 2026 13:22:27 +0200
+	id n+BKCmazP2pYXQkAu9opvQ
+	(envelope-from <stable+bounces-269385-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 27 Jun 2026 13:26:30 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 659636D1D3D
-	for <lists+stable@lfdr.de>; Sat, 27 Jun 2026 13:22:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6AC0F6D1D57
+	for <lists+stable@lfdr.de>; Sat, 27 Jun 2026 13:26:29 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=HcQrRhMw;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-269384-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-269384-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=none) header.from=gmail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=VQ67QVI8;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-269385-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-269385-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 1285E302AE3C
-	for <lists+stable@lfdr.de>; Sat, 27 Jun 2026 11:22:20 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id EC34130107D4
+	for <lists+stable@lfdr.de>; Sat, 27 Jun 2026 11:26:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0192839E19C;
-	Sat, 27 Jun 2026 11:22:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0080280A58;
+	Sat, 27 Jun 2026 11:26:22 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-dy1-f182.google.com (mail-dy1-f182.google.com [74.125.82.182])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B19C7393DFB
-	for <stable@vger.kernel.org>; Sat, 27 Jun 2026 11:22:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87E4C2C21F0
+	for <stable@vger.kernel.org>; Sat, 27 Jun 2026 11:26:21 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782559337; cv=none; b=CLAyme4UAothNwf8rbVzCA170Mxw0QvED//1BoHKlfzYT/wJDQxF1ioF5+HfSbX8gMWebkXUWZsYiY+cib8pjRjofuPPD4WYSdKEjdTJjwYwz1Bl561n5n3JxukDbYGAJnRaawHSuNEPKYrVSfl4DuwfteF+gmvs+jME1yxwsck=
+	t=1782559582; cv=none; b=kX9lTU2Rci6gF60Oy83ZikYrEyT93u/og413NtCrRfrOLH81hB8j0JTUShK06P67uMNzKqusmN/PUKRS7dgJkqwZE2mYT7NV89FLSQearXvaG2t0hAAHDyZ8e0gAz/wBvXvJIiL8r3B1/tvkuMXJTyo1/IOMTI8UC5SQFxXQL1k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782559337; c=relaxed/simple;
-	bh=ZT/PZtgzdYRy73XPl/aMR13wYjd5GdwxwhY+llB5HPQ=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=sN23WWMkiO2aOEH1NwHEuPnfpfNqH1a+eBUf9aJ7RLTJSf3D284tCMDtv4Y+swkAt0RuTYBKhXz9hkQxOQ3my1ILb7ZdtKFhwVb2ZLVHt+VKAVemihhRwBcE3gOjo5PkQc6sN2vm7XGhZYjiBZMN/+aWlfsofPCKCpST4nwXChQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=HcQrRhMw; arc=none smtp.client-ip=74.125.82.182
-Received: by mail-dy1-f182.google.com with SMTP id 5a478bee46e88-30c965eab27so2148330eec.0
-        for <stable@vger.kernel.org>; Sat, 27 Jun 2026 04:22:16 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1782559336; x=1783164136; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=LMRgtKqlNRIjgH8R3D1T5Dz4r8PEuj4RA5dDt7dU0ek=;
-        b=HcQrRhMwvSYam7mQCwcSzigvBaMw9j20dVZ/FuWSu6avhFjD6Iav0cXWor1ZqucbAQ
-         6wGTDDSs9grIKwX/6b/9IRbabo6oiTEdvKq8KJiAPLtgxMG9FtCZnXF59AFAq3Ayd04/
-         lMuydaIMWkV7gpjMSJLjJ1hwA68BtQbEfcDRWM7LpLtmNDPf1nlebr5TK0iiwOOrOi66
-         kfzQcOdeWqUegxCfcKUXmu3eSOVqGFpdL/sjNmMqwRfgJhEnJIufu5c+MkDnZrWtwwvw
-         O+rM5kNQk8zXylfVDrVvHy+bvz9jyfHBFcCPu7ECw5RhFNw7VydG7HQ0kDGTFA3V74zM
-         Rv4Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782559336; x=1783164136;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=LMRgtKqlNRIjgH8R3D1T5Dz4r8PEuj4RA5dDt7dU0ek=;
-        b=bSqdzGZ09knT45TBLa3/CIXj4nGlhla3D0NhGp0dbuoKx+GgqLrCzRh44LbeoJytjm
-         PZSJFfG2YBFdgdHcg8Y7okvqUifyz5z4KsG1wV1yoUOQqPvSbgeTn33xu9hdE3wdaICw
-         T2pqWx0N+xGG3MtNTYzoqet/mATWiV9WDsgnnmKSjdkdTV3nCXhX12UuUOCz73sRWnPH
-         d6MKW2GpSmaplHRlpfH7cipmcZQL+sJAbaCPhGAFx0Pbb3U2uWJ0yNZZXdFbPLLdzBz/
-         cqFvSTEeEkwpkSh6cxctt4Yf9E44/Oqa4AknDMf7yzsoDNTlZ0x5POG76RmT23bjvN8M
-         Tl/Q==
-X-Forwarded-Encrypted: i=1; AHgh+RqkuERMLLCG4Ox1MFGmuOLnm07GnTsq/p496IOWHfFyApgGGUQzM7YuIk8tbsXC3abgDsjVRd0=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxd9GJieztbCAYxIpACi+fyKCGZC0Yx2jVHGXTQPRC80lueUL1p
-	tT8JbVWDbwiGAlqPF3DzQoS59nidCRymSST7rA6n8jKJ+mFlUZ9GxEtD
-X-Gm-Gg: AfdE7cmizBg3+NzA4kvjV6EW7bG2lvZKJGLksByo/uQ1uRgHQIy37dQWAVhFyzJP26s
-	GirudcHyY5+wSr4LovEXVIgYwsEi4WdH2ROEWbjg3VuAZTOZ/yTgYysJ/DCpmevmNx8S2pynFX7
-	AMR3klb17FY+BpWvQl9izw9gBWTS00+BPbStM0skjRxdWJJ5LIU8NCX4eEg2wY9c5DLF9XgHoCF
-	7ts/Pg57P08nNS/jiM/Dtf5/5Q5oqxRmm8XVB/wxk2d3syUDtcWlZAPG0w9tWJ/ILDgFR1bP1GB
-	qWUxo0174IS7sTbH+YRnbOQhWB2urQn9QexPmrcqOQuWC1Cf8uywN8ldehrv/FxD37ZRoqo1e7K
-	XauSKMuXjGamrP9azvH39Xouot9jBX4+NOapEI3EYWEQ47K502a28MfOhHJFUBnIEOk7i9HWTJc
-	6NlCAlvSiFIG8N6/GiJgZlVhNVdNsRZTpYuOmFXVaf97s4CgcRO4y9qWFyWUz/3SuNtT+jWyhRf
-	ItM
-X-Received: by 2002:a05:7300:6dac:b0:30c:9f31:b631 with SMTP id 5a478bee46e88-30c9f31c2f3mr5761269eec.33.1782559335623;
-        Sat, 27 Jun 2026 04:22:15 -0700 (PDT)
-Received: from moksh-Nitro-ANV15-51.. ([45.118.104.214])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-30c7c58831asm29719037eec.13.2026.06.27.04.22.11
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 27 Jun 2026 04:22:14 -0700 (PDT)
-From: Moksh Panicker <mokshpanicker.7@gmail.com>
-To: jic23@kernel.org
-Cc: nuno.sa@analog.com,
-	Michael.Hennerich@analog.com,
-	dlechner@baylibre.com,
-	linux-iio@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org,
-	skhan@linuxfoundation.org,
-	Moksh Panicker <mokshpanicker.7@gmail.com>
-Subject: [PATCH] iio: adc: ad7779: Initialize completion before requesting IRQ
-Date: Sat, 27 Jun 2026 11:22:05 +0000
-Message-Id: <20260627112205.31409-1-mokshpanicker.7@gmail.com>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1782559582; c=relaxed/simple;
+	bh=5RB+9jzTPZpewwSxcSkM8uNEhb/obFPOuP3WMNT2PYc=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=XuAVNdfu7GqIy8PKLBuH15abrJTonKCd1FcvYZtUyYIzKU1xEB3hhphsHpmmogs8dadQNdJhLLKLwcVcKKMJh+gr91ITR0J2Z1ckPez4wPKqbqkUSjkNtidtAjtWcTakjNtQfCAMXdzwA4uLpX/sHQ+lyLfKKe20q85o3OE493Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VQ67QVI8; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BDB3B1F000E9;
+	Sat, 27 Jun 2026 11:26:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1782559581;
+	bh=zUs6dy7C3Ey1u+hFvlQjq3YzPcIeTGOik68VOFqqA1k=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=VQ67QVI8pU+QryUfKRhl2v8WMXprSpNt+etDLqNyMn+Xp1psSn0TytKKlF1UZLQ/M
+	 rp4PtKHZnjK1LIVUgJA2vyfXP31B1hqAtFfhGyJNxWcH7nerGR+KbxZKSC2QB8c1yu
+	 zox2lRFZrBFen30vhBNaygqK3BvMpWIOlFz56FGpXivEn4JA1ImGwt77nStlr8wziS
+	 Ek2UsSjMnk2wVGmAqUA6Ubt3DF5FIzTWJKlmfnamJWyq86i3Q7bsvIVcG0iFvfkgy1
+	 mzwkNEcTVUSqGW6+4VfMC7Iuql2sa+WT7wBKN2uwe+S+f6Gkz1Am2O8Q0fhx0EQhHa
+	 VCDidhlXtUccg==
+From: Sasha Levin <sashal@kernel.org>
+To: Sven Eckelmann <sven@narfation.org>
+Cc: Sasha Levin <sashal@kernel.org>,
+	stable@vger.kernel.org
+Subject: Re: [PATCH 5.10 10/23] batman-adv: prevent ELP transmission interval underflow
+Date: Sat, 27 Jun 2026 07:26:17 -0400
+Message-ID: <stable-reply-item015-batman-adv-elp-p10-20260627@kernel.org>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20260626160952.123713-11-sven@narfation.org>
+References: <20260626160952.123713-1-sven@narfation.org> <20260626160952.123713-11-sven@narfation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -97,81 +64,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-4.66 / 15.00];
+	WHITELIST_SPF_DKIM(-3.00)[kernel.org:d:+,kernel.org:s:+];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
 	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FREEMAIL_CC(0.00)[analog.com,baylibre.com,vger.kernel.org,linuxfoundation.org,gmail.com];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-269384-lists,stable=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:jic23@kernel.org,m:nuno.sa@analog.com,m:Michael.Hennerich@analog.com,m:dlechner@baylibre.com,m:linux-iio@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,m:skhan@linuxfoundation.org,m:mokshpanicker.7@gmail.com,m:mokshpanicker7@gmail.com,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[mokshpanicker7@gmail.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[mokshpanicker7@gmail.com,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-269385-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:sven@narfation.org,m:sashal@kernel.org,m:stable@vger.kernel.org,s:lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORWARDED(0.00)[lists@lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_SENDER(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCPT_COUNT_THREE(0.00)[3];
+	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	TO_DN_SOME(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	RCPT_COUNT_SEVEN(0.00)[9];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 659636D1D3D
+X-Rspamd-Queue-Id: 6AC0F6D1D57
 
-init_completion() is called after devm_request_irq() in
-ad7779_setup_trigger(). If the IRQ fires before init_completion()
-runs, the completion is in an undefined state.
+Hi Sven,
 
-Move init_completion() before devm_request_irq() to ensure the
-completion is ready before the IRQ handler can signal it.
+> @@ -939,7 +939,13 @@ static int batadv_netlink_set_hardif(struct sk_buff *skb,
+>  #ifdef CONFIG_BATMAN_ADV_BATMAN_V
+>  
+>  	if (info->attrs[BATADV_ATTR_ELP_INTERVAL]) {
+> +		u32 elp_interval;
+> +
+>  		attr = info->attrs[BATADV_ATTR_ELP_INTERVAL];
+> +		elp_interval = nla_get_u32(attr);
+> +
+> +		elp_interval = min_t(u32, elp_interval, INT_MAX);
+> +		elp_interval = max_t(u32, elp_interval, BATADV_JITTER);
+>  
+>  		atomic_set(&hard_iface->bat_v.elp_interval, nla_get_u32(attr));
+>  	}
 
-Fixes: c9a3f8c7bfcb ("drivers: iio: adc: add support for ad777x family")
-Cc: stable@vger.kernel.org
-Signed-off-by: Moksh Panicker <mokshpanicker.7@gmail.com>
----
- drivers/iio/adc/ad7779.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+The backport computes the clamped elp_interval but then stores the raw
+nla_get_u32(attr) again, so the min_t()/max_t() clamping is dead code and
+the underflow this patch is meant to prevent is still reachable. The store
+should use the clamped local, matching the sibling orig_interval block just
+above it in the same function:
 
-diff --git a/drivers/iio/adc/ad7779.c b/drivers/iio/adc/ad7779.c
-index 695cc79e78da..db8f5f4c6d6a 100644
---- a/drivers/iio/adc/ad7779.c
-+++ b/drivers/iio/adc/ad7779.c
-@@ -838,6 +838,8 @@ static int ad7779_setup_without_backend(struct ad7779_state *st, struct iio_dev
- 	st->trig->ops = &ad7779_trigger_ops;
- 
- 	iio_trigger_set_drvdata(st->trig, st);
-+	init_completion(&st->completion);
-+
- 
- 	ret = devm_request_irq(dev, st->spi->irq, iio_trigger_generic_data_rdy_poll,
- 			       IRQF_NO_THREAD | IRQF_NO_AUTOEN, indio_dev->name,
-@@ -852,8 +854,6 @@ static int ad7779_setup_without_backend(struct ad7779_state *st, struct iio_dev
- 
- 	indio_dev->trig = iio_trigger_get(st->trig);
- 
--	init_completion(&st->completion);
--
- 	ret = devm_iio_triggered_buffer_setup(dev, indio_dev,
- 					      &iio_pollfunc_store_time,
- 					      &ad7779_trigger_handler,
+		atomic_set(&hard_iface->bat_v.elp_interval, elp_interval);
+
 -- 
-2.34.1
-
+Thanks,
+Sasha
 
