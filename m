@@ -1,152 +1,140 @@
-Return-Path: <stable+bounces-269332-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-269333-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id GG1KKilCP2oAQgkAu9opvQ
-	(envelope-from <stable+bounces-269332-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 27 Jun 2026 05:23:21 +0200
+	id 9XVSO01GP2pQRAkAu9opvQ
+	(envelope-from <stable+bounces-269333-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 27 Jun 2026 05:41:01 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 08E806D0D7E
-	for <lists+stable@lfdr.de>; Sat, 27 Jun 2026 05:23:21 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id E5D6D6D0F99
+	for <lists+stable@lfdr.de>; Sat, 27 Jun 2026 05:41:00 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=bytedance.com header.s=2212171451 header.b=a7l1dtQF;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-269332-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-269332-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=quarantine) header.from=bytedance.com;
+	dkim=none;
+	dmarc=none;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-269333-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-269333-lists+stable=lfdr.de@vger.kernel.org";
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id A65F3302D4F0
-	for <lists+stable@lfdr.de>; Sat, 27 Jun 2026 03:23:16 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id E8232306F432
+	for <lists+stable@lfdr.de>; Sat, 27 Jun 2026 03:34:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 26110349AFF;
-	Sat, 27 Jun 2026 03:23:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A8891A6813;
+	Sat, 27 Jun 2026 03:34:19 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from va-1-112.ptr.blmpb.com (va-1-112.ptr.blmpb.com [209.127.230.112])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from cstnet.cn (smtp21.cstnet.cn [159.226.251.21])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A321F2459EA
-	for <stable@vger.kernel.org>; Sat, 27 Jun 2026 03:23:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73BFF158DCF;
+	Sat, 27 Jun 2026 03:34:16 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782530592; cv=none; b=Jfgljxzso1lCdJloaeUxpiwQlzern9OZuGc/hcq1iaSMF8/h0zBOFaw8PPifZ4NCx2tk6q8HlRbuOenXgQVfsUbw8ElelfqmBKkF6X7sASGI2KiMw24VBBWYKy/4mq23iT8YBRjN72kqzZ3jxvxGIru8b5lfDBjdP0Gs9Cpwr1s=
+	t=1782531259; cv=none; b=F3jBUGsaFng7QyaPTqCgF+qxrC24B9Y6pfDLh9W/Bke1qMmxOTIZELlnCjfkqyXH1VhyG0buVMQv1M3+R/HxtXZ6wcvTM2L11R9Y7VkRSychTk6ALGR2brTgx4KJSCrq0ThLrdjw3kIi131Mpo9fzghWDRuhdDvm+y9X8nwbWjg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782530592; c=relaxed/simple;
-	bh=SV6EY6XCUwkEMMddd2iO2o2cI8JPUmgYKWu3JcsREQM=;
-	h=Mime-Version:Cc:Message-Id:From:References:Content-Type:To:
-	 Subject:Date:In-Reply-To; b=rJuFRjn9xhj4nrBGrC08UvVWHcTK/5WKX7O/sAHMGM5w6BD0SNr3e/ZjZlnMhpGwZO02Zb5Ivi1gMOJW0B5kKZ8jLZ5l+idfgF39lfc+9W0oLRCGUcl3xZGPL82jyrTBNQzmY3gkYcNBTsdQn+MOuJj+lD8J3zxxjtSkkOyj2as=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=bytedance.com; spf=pass smtp.mailfrom=bytedance.com; dkim=pass (2048-bit key) header.d=bytedance.com header.i=@bytedance.com header.b=a7l1dtQF; arc=none smtp.client-ip=209.127.230.112
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- s=2212171451; d=bytedance.com; t=1782530584; h=from:subject:
- mime-version:from:date:message-id:subject:to:cc:reply-to:content-type:
- mime-version:in-reply-to:message-id;
- bh=JaDRtHNksBp8HzdSWMeH/ZqouUwL9AyNRTvyVWjch9k=;
- b=a7l1dtQFFIdUJGTYAu0dWZ8R7wwFtJZLDqXJlzQJhnqoCLuBQ9X6S4bqjNXFeqB8ywvlRT
- IQEX9IfeDpRCJMVTYn35ZzuNCq4AQfW+wFB3wUetRkmZ/lvtJsu1td/SXgFrA7oVeQpKst
- mnhDTUN3e5yBQGyAIDAMFs2ZIXqooWyi4UzAnMmsdthx/T7DKx4K+T7i7FIqvhuVS9YFup
- N5RxpRVsZY8jRormmRDRUNX/flfAiN3uR/Lmiek14w61yiWuX+2s0grbPuQhs4ttrSjGf3
- E3xD2piuQIJFDkj9JVfkuY3deIvuAHw9km22Va5Vf8EvzPgsBjjcTphnNJM+GA==
+	s=arc-20240116; t=1782531259; c=relaxed/simple;
+	bh=cWxeTg/S4C9B63XCq6h5vziPOmiEId00rALtb3Kl1Wc=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=FSCuAD6hZ8HWJxB8b4m+6HppaRImVinvSa/jWrJf/MSY1P8ISe9mnW3rF0KdADc2lGYgWQ1WJU3wOKKeTRt5zs1RZufaXbNf9OCTiCxM7AEpoIPM3+nSl4aIhsiQPjBiqv8DqsSK9Igrd/czKc4GsWURK0NW+KVhGPGwGJmvjCE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.21
+Received: from localhost.localdomain (unknown [117.182.75.66])
+	by APP-01 (Coremail) with SMTP id qwCowAAHpc20RD9qyhuBAw--.60231S2;
+	Sat, 27 Jun 2026 11:34:14 +0800 (CST)
+From: WenTao Liang <vulab@iscas.ac.cn>
+To: johan@kernel.org,
+	gregkh@linuxfoundation.org
+Cc: linux-usb@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	WenTao Liang <vulab@iscas.ac.cn>,
+	stable@vger.kernel.org
+Subject: [PATCH] fix: drivers/usb/serial: usb_console_setup: unmatched usb_serial_put on error paths
+Date: Sat, 27 Jun 2026 11:34:10 +0800
+Message-Id: <20260627033410.58709-1-vulab@iscas.ac.cn>
+X-Mailer: git-send-email 2.39.5 (Apple Git-154)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Cc: <andre.przywara@arm.com>, <linux-kernel@vger.kernel.org>, 
-	<cristian.marussi@arm.com>, <will@kernel.org>, <catalin.marinas@arm.com>, 
-	<broonie@kernel.org>, <shuah@kernel.org>, 
-	<linux-arm-kernel@lists.infradead.org>, 
-	<linux-kselftest@vger.kernel.org>, 
-	"Yijia Wang" <wangyijia.yeah@bytedance.com>
-Message-Id: <20260627032259.2086191-1-wangyijia.yeah@bytedance.com>
-X-Mailer: git-send-email 2.43.0
-X-Lms-Return-Path: <lba+26a3f4216+081747+vger.kernel.org+wangyijia.yeah@bytedance.com>
-From: "Yijia Wang" <wangyijia.yeah@bytedance.com>
-References: <stable-reply-item017-arm64-sve-resend-20260626@kernel.org>
-Content-Transfer-Encoding: 7bit
-Content-Type: text/plain; charset=UTF-8
-To: <stable@vger.kernel.org>, <sashal@kernel.org>, 
-	<gregkh@linuxfoundation.org>
-Subject: [PATCH v2 5.15.y] kselftest/arm64: signal: Skip SVE signal test if not enough VLs supported
-Date: Sat, 27 Jun 2026 11:22:59 +0800
-In-Reply-To: <stable-reply-item017-arm64-sve-resend-20260626@kernel.org>
-X-Original-From: Yijia Wang <wangyijia.yeah@bytedance.com>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:qwCowAAHpc20RD9qyhuBAw--.60231S2
+X-Coremail-Antispam: 1UD129KBjvdXoWrZryUurykXry5Zr1kGF45Jrb_yoWkurX_G3
+	4DurW8ZryUuFW5Kry7JrW3Jr4SkrnrZFn2v3W8Kry3Ca4q9FZ3tF1qqr929F4xXw4UXryD
+	AwnxuryI9r1UWjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
+	9fnUUIcSsGvfJTRUUUb4xFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2IYs7xG
+	6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48ve4kI8w
+	A2z4x0Y4vE2Ix0cI8IcVAFwI0_Gr0_Xr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI0_Gr0_
+	Cr1l84ACjcxK6I8E87Iv67AKxVWxJr0_GcWl84ACjcxK6I8E87Iv6xkF7I0E14v26F4UJV
+	W0owAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0
+	I7IYx2IY67AKxVWUJVWUGwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFVCjc4AY6r1j6r
+	4UM4x0Y48IcxkI7VAKI48JM4x0x7Aq67IIx4CEVc8vx2IErcIFxwCY1x0262kKe7AKxVWU
+	AVWUtwCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02F40E14
+	v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_JF0_Jw1lIxkG
+	c2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7CjxVAFwI
+	0_Jr0_Gr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r1j6r4U
+	MIIF0xvEx4A2jsIEc7CjxVAFwI0_Gr0_Gr1UYxBIdaVFxhVjvjDU0xZFpf9x0JUSNtxUUU
+	UU=
+X-CM-SenderInfo: pyxotu46lvutnvoduhdfq/1tbiCRMLA2o-DxBvewAAsM
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+X-Spamd-Result: default: False [0.04 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[bytedance.com,quarantine];
-	MV_CASE(0.50)[];
-	R_DKIM_ALLOW(-0.20)[bytedance.com:s=2212171451];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_RECIPIENTS(0.00)[m:andre.przywara@arm.com,m:linux-kernel@vger.kernel.org,m:cristian.marussi@arm.com,m:will@kernel.org,m:catalin.marinas@arm.com,m:broonie@kernel.org,m:shuah@kernel.org,m:linux-arm-kernel@lists.infradead.org,m:linux-kselftest@vger.kernel.org,m:wangyijia.yeah@bytedance.com,m:stable@vger.kernel.org,m:sashal@kernel.org,m:gregkh@linuxfoundation.org,s:lists@lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER(0.00)[wangyijia.yeah@bytedance.com,stable@vger.kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[13];
-	RCVD_COUNT_THREE(0.00)[3];
-	MIME_TRACE(0.00)[0:+];
-	FORWARDED(0.00)[lists@lfdr.de];
-	TAGGED_FROM(0.00)[bounces-269332-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[wangyijia.yeah@bytedance.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[bytedance.com:+];
-	ALIAS_RESOLVED(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	DMARC_NA(0.00)[iscas.ac.cn];
+	FORGED_RECIPIENTS(0.00)[m:johan@kernel.org,m:gregkh@linuxfoundation.org,m:linux-usb@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:vulab@iscas.ac.cn,m:stable@vger.kernel.org,s:lists@lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-269333-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_SENDER(0.00)[vulab@iscas.ac.cn,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[arm.com:email,vger.kernel.org:from_smtp,bytedance.com:dkim,bytedance.com:email,bytedance.com:mid,bytedance.com:from_mime,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
+	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[vulab@iscas.ac.cn,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	R_DKIM_NA(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,vger.kernel.org:from_smtp,iscas.ac.cn:email,iscas.ac.cn:mid,iscas.ac.cn:from_mime]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 08E806D0D7E
+X-Rspamd-Queue-Id: E5D6D6D0F99
 
-[ Upstream commit 78c09c0f4df89fabdcfb3e5e53d3196cf67f64ef ]
+In usb_console_setup(), serial is obtained via a simple pointer
+assignment (port->serial) which does not increment the reference count.
+However, all error paths that reach error_get_interface call
+usb_serial_put(serial), decrementing a reference that was never acquired
+within the function. This causes a refcount underflow on the serial
+device.
 
-On platform where SVE is supported but there are less than 2 VLs available
-the signal SVE change test should be skipped instead of failing.
+Remove the unmatched usb_serial_put(serial) call from the error path.
 
-Reported-by: Andre Przywara <andre.przywara@arm.com>
-Tested-by: Andre Przywara <andre.przywara@arm.com>
-Cc: Mark Brown <broonie@kernel.org>
-Signed-off-by: Cristian Marussi <cristian.marussi@arm.com>
-Reviewed-by: Mark Brown <broonie@kernel.org>
-Link: https://lore.kernel.org/r/20220524103149.2802-1-cristian.marussi@arm.com
-Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
-Signed-off-by: Yijia Wang <wangyijia.yeah@bytedance.com>
+Cc: stable@vger.kernel.org
+Fixes: 61dfa797c731 ("USB: serial: console: move mutex_unlock() before usb_serial_put()")
+Signed-off-by: WenTao Liang <vulab@iscas.ac.cn>
 ---
-Changes in v2:
-- Keep the commit message aligned with the upstream commit, as requested by
-  Sasha.
-- Link to v1:
-  https://lore.kernel.org/r/20260626-b4-arm64-515-preview-clean-v1-1-ad19e286e322@bytedance.com
+ drivers/usb/serial/console.c | 1 -
+ 1 file changed, 1 deletion(-)
 
- .../arm64/signal/testcases/fake_sigreturn_sve_change_vl.c       | 2 ++
- 1 file changed, 2 insertions(+)
-
-diff --git a/tools/testing/selftests/arm64/signal/testcases/fake_sigreturn_sve_change_vl.c b/tools/testing/selftests/arm64/signal/testcases/fake_sigreturn_sve_change_vl.c
-index bb50b5adb..915821375 100644
---- a/tools/testing/selftests/arm64/signal/testcases/fake_sigreturn_sve_change_vl.c
-+++ b/tools/testing/selftests/arm64/signal/testcases/fake_sigreturn_sve_change_vl.c
-@@ -6,6 +6,7 @@
-  * supported and is expected to segfault.
-  */
- 
-+#include <kselftest.h>
- #include <signal.h>
- #include <ucontext.h>
- #include <sys/prctl.h>
-@@ -40,6 +41,7 @@ static bool sve_get_vls(struct tdescr *td)
- 	/* We need at least two VLs */
- 	if (nvls < 2) {
- 		fprintf(stderr, "Only %d VL supported\n", nvls);
-+		td->result = KSFT_SKIP;
- 		return false;
- 	}
+diff --git a/drivers/usb/serial/console.c b/drivers/usb/serial/console.c
+index 29f09190846e..e97520cdc43d 100644
+--- a/drivers/usb/serial/console.c
++++ b/drivers/usb/serial/console.c
+@@ -190,7 +190,6 @@ static int usb_console_setup(struct console *co, char *options)
+ 	usb_autopm_put_interface(serial->interface);
+  error_get_interface:
+ 	mutex_unlock(&serial->disc_mutex);
+-	usb_serial_put(serial);
+ 	return retval;
+ }
  
 -- 
-2.43.0
+2.39.5 (Apple Git-154)
+
 
