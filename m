@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-269413-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-269414-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id SCCkKWUTQGpYbgkAu9opvQ
-	(envelope-from <stable+bounces-269413-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 27 Jun 2026 20:16:05 +0200
+	id Jz95N88XQGrhbgkAu9opvQ
+	(envelope-from <stable+bounces-269414-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 27 Jun 2026 20:34:55 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id E60B36D278C
-	for <lists+stable@lfdr.de>; Sat, 27 Jun 2026 20:16:04 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7D81C6D27C7
+	for <lists+stable@lfdr.de>; Sat, 27 Jun 2026 20:34:55 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=ixit.cz header.s=dkim header.b=RAYZJFRE;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-269413-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-269413-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=ixit.cz header.s=dkim header.b=IdVmxyBK;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-269414-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-269414-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=quarantine) header.from=ixit.cz;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 003F33004D9E
-	for <lists+stable@lfdr.de>; Sat, 27 Jun 2026 18:16:02 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 70647301DB88
+	for <lists+stable@lfdr.de>; Sat, 27 Jun 2026 18:34:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5F363112BD;
-	Sat, 27 Jun 2026 18:15:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59ABB33ADA4;
+	Sat, 27 Jun 2026 18:34:48 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from ixit.cz (ixit.cz [185.100.197.86])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3615F274FD0;
-	Sat, 27 Jun 2026 18:15:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D913970836;
+	Sat, 27 Jun 2026 18:34:46 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782584158; cv=none; b=nl9+df/DH3pSFVYvmwd6peZxkktr7RCrwuI0gmtc5hFml9dsRJbGxCRwZUIukYTxzaAyf9WtxTrN2BDmmJhDDS4/gQ33tFh+8pLIDfXZ6BYath/C2gOxXHt7zV1Qp2jOtWjebXOPbD0mrBC1W4GtPxGniLqVNi7+u9AUmczFBTk=
+	t=1782585288; cv=none; b=kIVi9Ziy+xur3VmdjD2Kt4zk8Dd8Y1QJXzz8NFn4VFYfcFRLaM21fNVrP5WA4yv8maOthk42IbJJBg7nRb3Bxu/nlR6Ffq88IpdSVUO1Buor8isr5V0yMSDrjcilyas6jLby3WL54FNOG4UvnIfEGJqZn099jCPpYtcZBw2KJ7I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782584158; c=relaxed/simple;
-	bh=YdXT8d9HZM7ftd6dZcHIQSZOZIfHESE0LumULEoQkrg=;
+	s=arc-20240116; t=1782585288; c=relaxed/simple;
+	bh=6tCBMxDFaeqqJK4Mf0mwYHZrm/sQz4wtQDBINyYP6Ww=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=kRRrkVAKTQRS1mVQNAonRj/O7ZQf4EDVVFrlCa4ZCwf8ndh0J/IIBSSHJcbRqrJRiFUidFF/qspgK7fG2YDVimSPmGNSAJb0a1X73K94CjDdxg+10Wx3/9V45lieI2/9Lius9O6PJM4UBQ4QPs2zuumKUhk7harihPV+tSfveeA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz; spf=pass smtp.mailfrom=ixit.cz; dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b=RAYZJFRE; arc=none smtp.client-ip=185.100.197.86
+	 In-Reply-To:Content-Type; b=CqrZ1kkWiQGxArZCq/o3rGhCluafMdJ2/qpwDh84InejLO7UkBhaBzRSwAy7LoCPqKezhtuJmwtrpz7MGnV4/ZT9/FMrGax8KHJDPE0bxEO/zY2jB/2e5j6GjHrua/p4ijKY8X+3R3unIu9lAsLz46CLAG2GoJqKdz1hZVqQUak=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz; spf=pass smtp.mailfrom=ixit.cz; dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b=IdVmxyBK; arc=none smtp.client-ip=185.100.197.86
 Received: from [10.0.0.200] (unknown [10.88.125.21])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange x25519)
 	(No client certificate requested)
-	by ixit.cz (Postfix) with ESMTPSA id 181F0534058D;
-	Sat, 27 Jun 2026 20:15:52 +0200 (CEST)
+	by ixit.cz (Postfix) with ESMTPSA id 00B275341425;
+	Sat, 27 Jun 2026 20:34:43 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ixit.cz; s=dkim;
-	t=1782584152;
+	t=1782585284;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=oEE0s9z2KUkGFMtiVRxqelZcjlSqtQUIHE3wkMUwk/g=;
-	b=RAYZJFREThD6TR5SsyDJtPe+enhZtmUriURm+AvAB5SeY0KKzQTlPgjUVx2n1B5qNtNqYk
-	zK+REKMxFCt3743JEuIqjo+G5Fg1hRziHYEfQnpxi+oVIlCMQUusuFmfl45IRwnxrLQpIJ
-	i1Hj8188bBH41EoMXdopE5M8vh51ncY=
-Message-ID: <6a1705f7-32a3-4c96-9f26-c76de72026b5@ixit.cz>
-Date: Sat, 27 Jun 2026 20:15:51 +0200
+	bh=izLJ2zuftsQScaboFk39BP7z4LDBN5N7/SMR6bRiZCU=;
+	b=IdVmxyBKkbY22eDUcQhY8+1CnhryYG/o3DM93Y5QZspcki0D776L0R86hpyF55qJ44dsK0
+	tRq+dEQCRHaMkePDbKI57ttyREOXuPtVxfVujPW6yn6CX0Un3WNYqsBWd0R7tM5c49ETKb
+	Zr+UkCwOxn01arrdJgMMCus67z9jyUg=
+Message-ID: <90e244e9-8e8a-48a4-a9f2-977dbe00ecc8@ixit.cz>
+Date: Sat, 27 Jun 2026 20:34:43 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -59,15 +59,15 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net v2] nfc: nci: fix uninit-value in
- nci_core_init_rsp_packet()
+Subject: Re: [PATCH net] nfc: nci: fix out-of-bounds write in
+ nci_target_auto_activated()
 To: Samuel Page <sam@bynar.io>
 Cc: "David S . Miller" <davem@davemloft.net>,
  Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
  Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
  oe-linux-nfc@lists.linux.dev, netdev@vger.kernel.org,
  linux-kernel@vger.kernel.org, stable@vger.kernel.org
-References: <20260624224455.999374-1-sam@bynar.io>
+References: <20260622145243.3167276-1-sam@bynar.io>
 Content-Language: en-US
 From: David Heidelberg <david@ixit.cz>
 Autocrypt: addr=david@ixit.cz; keydata=
@@ -113,19 +113,19 @@ Autocrypt: addr=david@ixit.cz; keydata=
  zRKcgRumz2Tc1ouHj6qINlzEe3a5ldctIn/dvR1l2Ko7GBTG+VGp9U5NOAEkGpxHG9yg6eeY
  fFYnMme51H/HKiyUlFiE3yd5LSmv8Dhbf+vsI4x6BOOOq4Iyop/Exavj1owGxW0hpdUGcCl1
  ovlwVPO/6l/XLAmSGwdnGqok5eGZQzSst0tj9RC9O0dXO1TZocOsf0tJ8dR2egX4kxM=
-In-Reply-To: <20260624224455.999374-1-sam@bynar.io>
+In-Reply-To: <20260622145243.3167276-1-sam@bynar.io>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[ixit.cz,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[ixit.cz:s=dkim];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-269413-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-269414-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
@@ -135,7 +135,7 @@ X-Spamd-Result: default: False [-2.16 / 15.00];
 	FORWARDED(0.00)[lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[ixit.cz:+];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
@@ -147,18 +147,18 @@ X-Spamd-Result: default: False [-2.16 / 15.00];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,ixit.cz:dkim,ixit.cz:email,ixit.cz:mid,ixit.cz:from_mime,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp,ixit.cz:dkim,ixit.cz:email,ixit.cz:mid,ixit.cz:from_mime]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: E60B36D278C
+X-Rspamd-Queue-Id: 7D81C6D27C7
 
 
-On Wed, 24 Jun 2026 23:44:55 +0100, Samuel Page wrote:
- > nfc: nci: fix uninit-value in nci_core_init_rsp_packet()
+On Mon, 22 Jun 2026 16:52:43 +0200, Samuel Page wrote:
+ > nfc: nci: fix out-of-bounds write in nci_target_auto_activated()
 
 Applied, thanks!
 
-[1/1] nfc: nci: fix uninit-value in nci_core_init_rsp_packet()
-       commit: 27d431711a3a6e23e7f961ec2934de20e2ed7cac
+[1/1] nfc: nci: fix out-of-bounds write in nci_target_auto_activated()
+       commit: e87faad807329d1348595dbcea3444acd7bb0ca6
 
 Best regards,
 -- 
