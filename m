@@ -1,165 +1,154 @@
-Return-Path: <stable+bounces-269348-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-269345-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id b3UFIvZMP2pARQkAu9opvQ
-	(envelope-from <stable+bounces-269348-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 27 Jun 2026 06:09:26 +0200
+	id mJc7H+5KP2r7RAkAu9opvQ
+	(envelope-from <stable+bounces-269345-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 27 Jun 2026 06:00:46 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A9F76D118F
-	for <lists+stable@lfdr.de>; Sat, 27 Jun 2026 06:09:25 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id ECF776D112A
+	for <lists+stable@lfdr.de>; Sat, 27 Jun 2026 06:00:45 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=none;
-	dmarc=none;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-269348-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-269348-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=huawei.com header.s=dkim header.b="n/1O8hT2";
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-269345-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-269345-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=quarantine) header.from=huawei.com;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id BECB9300B538
-	for <lists+stable@lfdr.de>; Sat, 27 Jun 2026 04:09:22 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 291B1303A102
+	for <lists+stable@lfdr.de>; Sat, 27 Jun 2026 04:00:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 21AB3388394;
-	Sat, 27 Jun 2026 04:09:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F64D26FD9B;
+	Sat, 27 Jun 2026 04:00:26 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from cstnet.cn (smtp21.cstnet.cn [159.226.251.21])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+Received: from canpmsgout02.his.huawei.com (canpmsgout02.his.huawei.com [113.46.200.217])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96BA42459D1;
-	Sat, 27 Jun 2026 04:09:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E62363128D4;
+	Sat, 27 Jun 2026 04:00:20 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782533359; cv=none; b=l/uhINk961jFUL9J8vAnoHCT+38wOdrecBgdxYlrdlJw0sgOGsQHsgRhWmACzYcxk2jHHfPi7rI2DhaIjMJTiJupCSU6GfNUq/E83DOoThgesPCVm/qijQoKKw2e/ZvCSrJ/AY1t347GhSXbXQSRokfVzmrF96mSC+FtvDXaZUE=
+	t=1782532825; cv=none; b=S54/ydFEChL+8cZsOd55aaXYtAjK7+se497NggGqnKWqzIVBC+QGaVFFoMVKlO7GibNkjZYJs+xnpTcDrQLdB51v1lSW0G+CK5RkuUSyidvZwjLUDWfpBRMTiNoBrQfCiy4gnAs5KK7MJDkBJFfh85hk6R/rIUF2jQPNUJYGbtw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782533359; c=relaxed/simple;
-	bh=GtPUSB1RFjwFZZyr7jWp0vtOCYMSfjvAaMpplHyl8sg=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=F0sltiDR37Ov8f0MFSe2UI9c2dhNNxjQq5PbdbPNDDe6LvY9KI98l9+6pDtiBjkYuQoX4tfA0yS4StJ9E9b2fieUBLNi5EYnETnoENTP5CeXd6EpT+FCyhbLXaFUnzUjgCbOTjzauZLW3BVWJ+lg5L8wkArSm07FSk11JGd1ofc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.21
-Received: from localhost.localdomain (unknown [117.182.75.66])
-	by APP-01 (Coremail) with SMTP id qwCowABnB9DlTD9qoSeCAw--.6498S2;
-	Sat, 27 Jun 2026 12:09:11 +0800 (CST)
-From: WenTao Liang <vulab@iscas.ac.cn>
-To: perex@perex.cz,
-	tiwai@suse.com
-Cc: kees@kernel.org,
-	vulab@iscas.ac.cn,
-	linux-sound@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: [PATCH] fix: sound/usb: snd_media_device_create: incorrect media_device_delete on borrowed reference
-Date: Sat, 27 Jun 2026 12:09:07 +0800
-Message-Id: <20260627040907.60784-1-vulab@iscas.ac.cn>
-X-Mailer: git-send-email 2.39.5 (Apple Git-154)
+	s=arc-20240116; t=1782532825; c=relaxed/simple;
+	bh=5WioYOdkftj4Trcm7BEyYvsRddN1exgX2MN++Iva60I=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=rUre8he2atFwLDTOV2wbU9NXGQhuXwUdCoKbbo0RXEyyAk6pVYC2rb2JbrRZbq9oyTmNq1NMTI7u3yd+35Nw+VF4ZLgyMPH+Lk2VJY53L3Yr1BiEgiRqBRnWTl5oJ8nnEjDlg1kO4rx6NlJ9bPdAVD1aRq72rADAAZE4XYIVt1E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=n/1O8hT2; arc=none smtp.client-ip=113.46.200.217
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=b1uPAzThSzd6EJ5lYoL6dx42p8gcMb26cxd/40Y4GBs=;
+	b=n/1O8hT23GEWtntMSXhkM8MWc7mHqZBzdblQoOJuyq1lkOSIoWIH/JVmnr0PbDAtpthbmBvIW
+	VvJteLFcZL8AwsF2wSBAA6hY+UCwrG/1ke8rcmy0XGa7ZAa9aAdc4z4y4zjjTDnPAETVM30xIAq
+	8rH5fIr/ciWuIMVFIcHYLG4=
+Received: from mail.maildlp.com (unknown [172.19.162.197])
+	by canpmsgout02.his.huawei.com (SkyGuard) with ESMTPS id 4gnJWB2YrdzcZxv;
+	Sat, 27 Jun 2026 11:51:34 +0800 (CST)
+Received: from dggemv706-chm.china.huawei.com (unknown [10.3.19.33])
+	by mail.maildlp.com (Postfix) with ESMTPS id 0118E40576;
+	Sat, 27 Jun 2026 12:00:17 +0800 (CST)
+Received: from kwepemq200017.china.huawei.com (7.202.195.228) by
+ dggemv706-chm.china.huawei.com (10.3.19.33) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Sat, 27 Jun 2026 12:00:16 +0800
+Received: from octopus.huawei.com (10.67.174.191) by
+ kwepemq200017.china.huawei.com (7.202.195.228) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Sat, 27 Jun 2026 12:00:15 +0800
+From: Cai Xinchen <caixinchen1@huawei.com>
+To: <viro@zeniv.linux.org.uk>, <brauner@kernel.org>, <jack@suse.cz>,
+	<miklos@szeredi.hu>, <amir73il@gmail.com>, <paul@paul-moore.com>,
+	<jmorris@namei.org>, <serge@hallyn.com>, <stephen.smalley.work@gmail.com>,
+	<omosnace@redhat.com>, <gregkh@linuxfoundation.org>,
+	<bboscaccy@linux.microsoft.com>, <caixinchen1@huawei.com>
+CC: <linux-fsdevel@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<linux-unionfs@vger.kernel.org>, <linux-security-module@vger.kernel.org>,
+	<selinux@vger.kernel.org>, <bpf@vger.kernel.org>, <stable@vger.kernel.org>,
+	<lujialin4@huawei.com>
+Subject: [PATCH v2 stable/linux-6.12.y 0/2] Backport Fix incorrect overlayfs mmap() and mprotect() LSM access controls
+Date: Sat, 27 Jun 2026 12:28:33 +0800
+Message-ID: <20260627042835.1492435-1-caixinchen1@huawei.com>
+X-Mailer: git-send-email 2.18.0.huawei.25
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:qwCowABnB9DlTD9qoSeCAw--.6498S2
-X-Coremail-Antispam: 1UD129KBjvJXoW7ur4Dtw1fAw4fZrykGw13CFg_yoW8ur4DpF
-	48KFyUJrWUXw4Dtw4UWw1kWF1Y9wn8ta1fCw4xXwsIgr4fJasaq34qg3WSv3y7CrWkKa4j
-	qr47Wry8uryrGaDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUkK14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
-	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
-	1l84ACjcxK6xIIjxv20xvE14v26r4j6ryUM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4j
-	6F4UM28EF7xvwVC2z280aVAFwI0_Cr1j6rxdM28EF7xvwVC2z280aVCY1x0267AKxVWxJr
-	0_GcWle2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xvF2IEw4CE5I8CrVC2j2WlYx0E
-	2Ix0cI8IcVAFwI0_JrI_JrylYx0Ex4A2jsIE14v26r4j6F4UMcvjeVCFs4IE7xkEbVWUJV
-	W8JwACjcxG0xvY0x0EwIxGrwACjI8F5VA0II8E6IAqYI8I648v4I1lc7CjxVAaw2AFwI0_
-	JF0_Jw1l42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67
-	AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r126r1DMIIY
-	rxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14
-	v26r4j6F4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVW8JVWx
-	JwCI42IY6I8E87Iv6xkF7I0E14v26r4UJVWxJrUvcSsGvfC2KfnxnUUI43ZEXa7VUbVOJ7
-	UUUUU==
-X-CM-SenderInfo: pyxotu46lvutnvoduhdfq/1tbiCRMLA2o-DxB2sQAEsb
+Content-Type: text/plain
+X-ClientProxiedBy: kwepems200001.china.huawei.com (7.221.188.67) To
+ kwepemq200017.china.huawei.com (7.202.195.228)
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [0.04 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+X-Spamd-Result: default: False [-6.16 / 15.00];
+	WHITELIST_DMARC(-7.00)[huawei.com:D:+];
+	SUSPICIOUS_RECIPS(1.50)[];
 	MID_CONTAINS_FROM(1.00)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	DMARC_POLICY_ALLOW(-0.50)[huawei.com,quarantine];
+	R_DKIM_ALLOW(-0.20)[huawei.com:s=dkim];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	DMARC_NA(0.00)[iscas.ac.cn];
-	TAGGED_FROM(0.00)[bounces-269348-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:perex@perex.cz,m:tiwai@suse.com,m:kees@kernel.org,m:vulab@iscas.ac.cn,m:linux-sound@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,s:lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
 	FORWARDED(0.00)[lists@lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_SENDER(0.00)[vulab@iscas.ac.cn,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[vulab@iscas.ac.cn,stable@vger.kernel.org];
-	ALIAS_RESOLVED(0.00)[];
-	TO_DN_NONE(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	R_DKIM_NA(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	MIME_TRACE(0.00)[0:+];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[iscas.ac.cn:email,iscas.ac.cn:mid,iscas.ac.cn:from_mime,vger.kernel.org:from_smtp]
+	FORGED_SENDER(0.00)[caixinchen1@huawei.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS(0.00)[m:viro@zeniv.linux.org.uk,m:brauner@kernel.org,m:jack@suse.cz,m:miklos@szeredi.hu,m:amir73il@gmail.com,m:paul@paul-moore.com,m:jmorris@namei.org,m:serge@hallyn.com,m:stephen.smalley.work@gmail.com,m:omosnace@redhat.com,m:gregkh@linuxfoundation.org,m:bboscaccy@linux.microsoft.com,m:caixinchen1@huawei.com,m:linux-fsdevel@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:linux-unionfs@vger.kernel.org,m:linux-security-module@vger.kernel.org,m:selinux@vger.kernel.org,m:bpf@vger.kernel.org,m:stable@vger.kernel.org,m:lujialin4@huawei.com,m:stephensmalleywork@gmail.com,s:lists@lfdr.de];
+	FREEMAIL_TO(0.00)[zeniv.linux.org.uk,kernel.org,suse.cz,szeredi.hu,gmail.com,paul-moore.com,namei.org,hallyn.com,redhat.com,linuxfoundation.org,linux.microsoft.com,huawei.com];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-269345-lists,stable=lfdr.de];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[caixinchen1@huawei.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[huawei.com:+];
+	TO_DN_NONE(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[21];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp,huawei.com:dkim,huawei.com:mid,huawei.com:from_mime];
+	TAGGED_RCPT(0.00)[stable];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	RCVD_COUNT_SEVEN(0.00)[7]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 8A9F76D118F
+X-Rspamd-Queue-Id: ECF776D112A
 
-In snd_media_device_create(), when chip->media_dev is already set, mdev
-borrows the reference without incrementing the refcount. On error paths
-through create_fail, media_device_delete() is called which releases the
-borrowed reference, corrupting the reference count. Additionally,
-chip->media_dev is set to NULL, losing the original reference.
+v2: Add static to struct kmem_cache *lsm_backing_file_cache; and define
+lbs_backing_file as int for keeping the same type as 6.12.
 
-Introduce an 'allocated' flag to distinguish between borrowed and
-self-allocated references, and only call media_device_delete() when the
-reference was actually acquired by this function invocation.
+Backport the patch series
+"Fix incorrect overlayfs mmap() and mprotect() LSM access controls" [1]
+to 6.12 lts
 
-Cc: stable@vger.kernel.org
-Fixes: 66354f18fe5f ("media: sound/usb: Use Media Controller API to share media resources")
-Signed-off-by: WenTao Liang <vulab@iscas.ac.cn>
----
- sound/usb/media.c | 10 +++++++---
- 1 file changed, 7 insertions(+), 3 deletions(-)
+I test selinux-testsuite[2] overlay test, it pass 135 tests.
 
-diff --git a/sound/usb/media.c b/sound/usb/media.c
-index b7497d18ee3f..290bd24bf301 100644
---- a/sound/usb/media.c
-+++ b/sound/usb/media.c
-@@ -255,6 +255,7 @@ int snd_media_device_create(struct snd_usb_audio *chip,
- 	struct media_device *mdev;
- 	struct usb_device *usbdev = interface_to_usbdev(iface);
- 	int ret = 0;
-+	bool allocated = false;
- 
- 	/* usb-audio driver is probed for each usb interface, and
- 	 * there are multiple interfaces per device. Avoid calling
-@@ -272,6 +273,7 @@ int snd_media_device_create(struct snd_usb_audio *chip,
- 
- 	/* save media device - avoid lookups */
- 	chip->media_dev = mdev;
-+	allocated = true;
- 
- snd_mixer_init:
- 	/* Create media entities for mixer and control dev */
-@@ -292,9 +294,11 @@ int snd_media_device_create(struct snd_usb_audio *chip,
- create_fail:
- 		if (ret) {
- 			snd_media_mixer_delete(chip);
--			media_device_delete(mdev, KBUILD_MODNAME, THIS_MODULE);
--			/* clear saved media_dev */
--			chip->media_dev = NULL;
-+			if (allocated) {
-+				media_device_delete(mdev, KBUILD_MODNAME, THIS_MODULE);
-+				/* clear saved media_dev */
-+				chip->media_dev = NULL;
-+			}
- 			dev_err(&usbdev->dev,
- 				"Couldn't register media device. Error: %d\n",
- 				ret);
+[1] https://lore.kernel.org/all/20260403030848.731867-5-paul@paul-moore.com/
+[2] https://github.com/SELinuxProject/selinux-testsuite
+
+Paul Moore (2):
+  lsm: add backing_file LSM hooks
+  selinux: fix overlayfs mmap() and mprotect() access checks
+
+ fs/backing-file.c                 |  18 ++-
+ fs/file_table.c                   |  27 +++-
+ fs/fuse/passthrough.c             |   2 +-
+ fs/internal.h                     |   3 +-
+ fs/overlayfs/dir.c                |   2 +-
+ fs/overlayfs/file.c               |   3 +-
+ include/linux/backing-file.h      |   4 +-
+ include/linux/fs.h                |  13 ++
+ include/linux/lsm_audit.h         |   2 +-
+ include/linux/lsm_hook_defs.h     |   5 +
+ include/linux/lsm_hooks.h         |   1 +
+ include/linux/security.h          |  22 +++
+ security/security.c               | 109 ++++++++++++++
+ security/selinux/hooks.c          | 242 ++++++++++++++++++++++--------
+ security/selinux/include/objsec.h |  11 ++
+ 15 files changed, 384 insertions(+), 80 deletions(-)
+
 -- 
-2.39.5 (Apple Git-154)
+2.18.0.huawei.25
 
 
