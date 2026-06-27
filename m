@@ -1,194 +1,201 @@
-Return-Path: <stable+bounces-269389-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-269390-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id LQYJAxm6P2rkXgkAu9opvQ
-	(envelope-from <stable+bounces-269389-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 27 Jun 2026 13:55:05 +0200
+	id 7LS/MJ+8P2orXwkAu9opvQ
+	(envelope-from <stable+bounces-269390-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 27 Jun 2026 14:05:51 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED24C6D1DE4
-	for <lists+stable@lfdr.de>; Sat, 27 Jun 2026 13:55:03 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1BE4B6D1E06
+	for <lists+stable@lfdr.de>; Sat, 27 Jun 2026 14:05:51 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=none;
-	dmarc=none;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-269389-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-269389-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=narfation.org header.s=20121 header.b=ywby2RbY;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-269390-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-269390-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=none) header.from=narfation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id BB6F43008467
-	for <lists+stable@lfdr.de>; Sat, 27 Jun 2026 11:55:00 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id CA7933010C05
+	for <lists+stable@lfdr.de>; Sat, 27 Jun 2026 12:05:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F846393DF9;
-	Sat, 27 Jun 2026 11:54:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20981389118;
+	Sat, 27 Jun 2026 12:05:48 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from cstnet.cn (smtp81.cstnet.cn [159.226.251.81])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+Received: from dvalin.narfation.org (dvalin.narfation.org [213.160.73.56])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F223C3A7F6E;
-	Sat, 27 Jun 2026 11:54:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D846313E31
+	for <stable@vger.kernel.org>; Sat, 27 Jun 2026 12:05:46 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782561297; cv=none; b=k2LJZ7y1qDPreOwhBFh3uvdipaX8g5B4pFAUsJjlD90yxRBBkdm5069BXmtsoquCBNlDNbcLQlZSXh3+OnMTeUUcsEfsTnopCpVKnvvtUfTG+w6WGMjG/xO/I0nhYbC0AXi7HXr+ZeYJlAbHuRLIhWQ51nf3ennfZBxvL6c0l18=
+	t=1782561947; cv=none; b=cu5xF0zer3E/7MYXxGrYUXSnJTihSRgP7OPIJMCx3kyC5pvJchSHCOzUYOWc5QVIkpkFF6NdZITaHedIKvCyET55bQDDeFBgpjVbe6StnXs4qiDBQY9tse+wpdZY5XoQIpt183V5sGumcF9upKWqqF46lYNmo5wIjQtV22IAcaI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782561297; c=relaxed/simple;
-	bh=7i98l035op1QyJjauVNN2ukHuuyBemrfagykpB/s7zk=;
-	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=iAI73kWmVi/iDzfB0NyevTnMOUMXlf1AItl1FsP2bwIobu7T/5zk9BME0s2bUPRQYHZ5wyF+9KChHoFDbfNh7TlsKy+OjQs0FvwG+MJXLuZOV7opTumQvXkiXchjzeb1h79KuNA/IMg51ksadb2rmborv3TXp7Z5hpNlmLD5tVk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.81
-Received: from smtpclient.apple (unknown [117.182.75.66])
-	by APP-03 (Coremail) with SMTP id rQCowADHq+IEuj9qIkkMFg--.11853S2;
-	Sat, 27 Jun 2026 19:54:46 +0800 (CST)
-Content-Type: text/plain;
-	charset=utf-8
+	s=arc-20240116; t=1782561947; c=relaxed/simple;
+	bh=305pDADChAkwm0KBlyaPLtqzfeYppM8yGtxTK+jbZ1U=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=aRqCv1RpOe+acRWWuvorCx1PEGOaE+MVj4J40HzAErve9ogG/x+DY7WuH5iM4NegGbCbFbLpJiBUwS7J60pkZjm7QlPPnKHMR18rHB3vMOOGxzYoTlekLZHXjr2Tez6xvS/mp5PTwlpJeRwPUINV3gt0R1p2y05FR1hRqibvikA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=narfation.org; spf=pass smtp.mailfrom=narfation.org; dkim=pass (1024-bit key) header.d=narfation.org header.i=@narfation.org header.b=ywby2RbY; arc=none smtp.client-ip=213.160.73.56
+Received: by dvalin.narfation.org (Postfix) id D121C1FECA;
+	Sat, 27 Jun 2026 12:05:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=narfation.org;
+	s=20121; t=1782561944;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=C8KWviT29stvgYD5ay7PcMajFqBUMZfzkXWLD9zkhpo=;
+	b=ywby2RbYirDWRDDUMBxs6O5bTL1Ucmjy4GXBTuR9u5PvXVYSSjeh5KlGua1zONUK+c6YVr
+	tbomiFBu1mW97BOUqzd6Sv/jHHMz9WZ1GBb0JO6S/5Lcy6KtvDVY2ybxhj6RTTf+qurI+8
+	zDJ71tCXldLmeDwCVJ8xEo6D8TUD1OE=
+From: Sven Eckelmann <sven@narfation.org>
+To: Sasha Levin <sashal@kernel.org>
+Cc: Sasha Levin <sashal@kernel.org>, stable@vger.kernel.org
+Subject:
+ Re: [PATCH 5.10 10/23] batman-adv: prevent ELP transmission interval
+ underflow
+Date: Sat, 27 Jun 2026 14:05:39 +0200
+Message-ID: <2307937.irdbgypaU6@sven-desktop>
+In-Reply-To: <stable-reply-item015-batman-adv-elp-p10-20260627@kernel.org>
+References:
+ <20260626160952.123713-1-sven@narfation.org>
+ <20260626160952.123713-11-sven@narfation.org>
+ <stable-reply-item015-batman-adv-elp-p10-20260627@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.700.81.1.8\))
-Subject: Re: [PATCH] fix: drm/amd/display: dm_update_crtc_state: skip_modeset
- path leaves new_stream dangling, causing double release
-From: WenTao Liang <vulab@iscas.ac.cn>
-In-Reply-To: <35dee3d1-f114-4eda-8185-244bc429c021@amd.com>
-Date: Sat, 27 Jun 2026 19:54:34 +0800
-Cc: harry.wentland@amd.com,
- sunpeng.li@amd.com,
- alexander.deucher@amd.com,
- christian.koenig@amd.com,
- airlied@gmail.com,
- simona@ffwll.ch,
- siqueira@igalia.com,
- alex.hung@amd.com,
- superm1@kernel.org,
- timur.kristof@gmail.com,
- ivan.lipski@amd.com,
- aurabindo.pillai@amd.com,
- chen-yu.chen@amd.com,
- amd-gfx@lists.freedesktop.org,
- dri-devel@lists.freedesktop.org,
- linux-kernel@vger.kernel.org,
- stable@vger.kernel.org
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <785A9F48-8192-4C1A-B61F-FFBAC9E92D41@iscas.ac.cn>
-References: <20260626124128.36625-1-vulab@iscas.ac.cn>
- <35dee3d1-f114-4eda-8185-244bc429c021@amd.com>
-To: Mario Limonciello <mario.limonciello@amd.com>
-X-Mailer: Apple Mail (2.3826.700.81.1.8)
-X-CM-TRANSID:rQCowADHq+IEuj9qIkkMFg--.11853S2
-X-Coremail-Antispam: 1UD129KBjvJXoW7Zr43uFW5Jw45JrWDZrWxCrg_yoW8CF48pr
-	4fJw1Yvr9rZ3WIqa47C3WY9Fyjk34fX340kr4UAw1Sv345Ar15Ja4rXr1kWrZ7uFW2vw4a
-	qFyDG39rXF1qv3DanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUvCb7Iv0xC_Zr1lb4IE77IF4wAFF20E14v26ryj6rWUM7CY07I2
-	0VC2zVCF04k26cxKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rw
-	A2F7IY1VAKz4vEj48ve4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Gr0_Xr1l84ACjcxK6xII
-	jxv20xvEc7CjxVAFwI0_Cr0_Gr1UM28EF7xvwVC2z280aVAFwI0_GcCE3s1l84ACjcxK6I
-	8E87Iv6xkF7I0E14v26rxl6s0DM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI
-	64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r1Y6r17McIj6I8E87Iv67AKxVW8JVWxJw
-	Am72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IYc2Ij64vIr41lFIxGxcIEc7CjxVA2Y2ka0xkI
-	wI1lc7CjxVAaw2AFwI0_GFv_Wryl42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr
-	0_Gr1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY
-	17CE14v26r4a6rW5MIIYrxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcV
-	C0I7IYx2IY6xkF7I0E14v26r4j6F4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY
-	6I8E87Iv67AKxVW8JVWxJwCI42IY6I8E87Iv6xkF7I0E14v26r4UJVWxJrUvcSsGvfC2Kf
-	nxnUUI43ZEXa7IUnTq2tUUUUU==
-X-CM-SenderInfo: pyxotu46lvutnvoduhdfq/1tbiDAQLA2o-mA9ApAAAsm
+MIME-Version: 1.0
+Content-Type: multipart/signed; boundary="nextPart14078849.uLZWGnKmhe";
+ micalg="pgp-sha512"; protocol="application/pgp-signature"
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [0.54 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-3.76 / 15.00];
+	SIGNED_PGP(-2.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MV_CASE(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	MID_RHS_NOT_FQDN(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[narfation.org,none];
+	MIME_GOOD(-0.20)[multipart/signed,text/plain];
+	R_DKIM_ALLOW(-0.20)[narfation.org:s=20121];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64];
 	MAILLIST(-0.15)[generic];
-	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_RECIPIENTS(0.00)[m:harry.wentland@amd.com,m:sunpeng.li@amd.com,m:alexander.deucher@amd.com,m:christian.koenig@amd.com,m:airlied@gmail.com,m:simona@ffwll.ch,m:siqueira@igalia.com,m:alex.hung@amd.com,m:superm1@kernel.org,m:timur.kristof@gmail.com,m:ivan.lipski@amd.com,m:aurabindo.pillai@amd.com,m:chen-yu.chen@amd.com,m:amd-gfx@lists.freedesktop.org,m:dri-devel@lists.freedesktop.org,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,m:mario.limonciello@amd.com,m:timurkristof@gmail.com,s:lists@lfdr.de];
-	DMARC_NA(0.00)[iscas.ac.cn];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER(0.00)[vulab@iscas.ac.cn,stable@vger.kernel.org];
-	TAGGED_FROM(0.00)[bounces-269389-lists,stable=lfdr.de];
-	RCPT_COUNT_TWELVE(0.00)[18];
-	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-269390-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER(0.00)[sven@narfation.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+,1:+,2:~];
+	FORGED_RECIPIENTS(0.00)[m:sashal@kernel.org,m:stable@vger.kernel.org,s:lists@lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[vulab@iscas.ac.cn,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[amd.com,gmail.com,ffwll.ch,igalia.com,kernel.org,lists.freedesktop.org,vger.kernel.org];
-	R_DKIM_NA(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_THREE(0.00)[3];
 	TO_DN_SOME(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[iscas.ac.cn:email,iscas.ac.cn:mid,iscas.ac.cn:from_mime,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,amd.com:email,vger.kernel.org:from_smtp]
+	FORGED_SENDER_FORWARDING(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[sven@narfation.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[narfation.org:+];
+	ALIAS_RESOLVED(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: ED24C6D1DE4
+X-Rspamd-Queue-Id: 1BE4B6D1E06
+
+--nextPart14078849.uLZWGnKmhe
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="utf-8"; protected-headers="v1"
+From: Sven Eckelmann <sven@narfation.org>
+To: Sasha Levin <sashal@kernel.org>
+Cc: Sasha Levin <sashal@kernel.org>, stable@vger.kernel.org
+Date: Sat, 27 Jun 2026 14:05:39 +0200
+Message-ID: <2307937.irdbgypaU6@sven-desktop>
+MIME-Version: 1.0
+
+Hi Sasha,
+
+On Saturday, 27 June 2026 13:26:17 CEST Sasha Levin wrote:
+> > @@ -939,7 +939,13 @@ static int batadv_netlink_set_hardif(struct sk_buff *skb,
+> >  #ifdef CONFIG_BATMAN_ADV_BATMAN_V
+> >  
+> >  	if (info->attrs[BATADV_ATTR_ELP_INTERVAL]) {
+> > +		u32 elp_interval;
+> > +
+> >  		attr = info->attrs[BATADV_ATTR_ELP_INTERVAL];
+> > +		elp_interval = nla_get_u32(attr);
+> > +
+> > +		elp_interval = min_t(u32, elp_interval, INT_MAX);
+> > +		elp_interval = max_t(u32, elp_interval, BATADV_JITTER);
+> >  
+> >  		atomic_set(&hard_iface->bat_v.elp_interval, nla_get_u32(attr));
+> >  	}
+> 
+> The backport computes the clamped elp_interval but then stores the raw
+> nla_get_u32(attr) again, so the min_t()/max_t() clamping is dead code and
+> the underflow this patch is meant to prevent is still reachable. The store
+> should use the clamped local, matching the sibling orig_interval block just
+> above it in the same function:
+> 
+> 		atomic_set(&hard_iface->bat_v.elp_interval, elp_interval);
+
+You are correct. I copied basically this backporting error from 7.1 up until 
+5.10. This makes this specific patch invalid in each patch series from yesterday.
+
+Correct one (as you already wrote) should have looked like this in each stable 
+kernel version:
+
+--- a/net/batman-adv/netlink.c
++++ b/net/batman-adv/netlink.c
+@@ -939,9 +939,15 @@ static int batadv_netlink_set_hardif(struct sk_buff *skb,
+ #ifdef CONFIG_BATMAN_ADV_BATMAN_V
+ 
+ 	if (info->attrs[BATADV_ATTR_ELP_INTERVAL]) {
+-		attr = info->attrs[BATADV_ATTR_ELP_INTERVAL];
++		u32 elp_interval;
+ 
+-		atomic_set(&hard_iface->bat_v.elp_interval, nla_get_u32(attr));
++		attr = info->attrs[BATADV_ATTR_ELP_INTERVAL];
++		elp_interval = nla_get_u32(attr);
++
++		elp_interval = min_t(u32, elp_interval, INT_MAX);
++		elp_interval = max_t(u32, elp_interval, BATADV_JITTER);
++
++		atomic_set(&hard_iface->bat_v.elp_interval, elp_interval);
+ 	}
+ 
+ 	if (info->attrs[BATADV_ATTR_THROUGHPUT_OVERRIDE]) {
+
+Do you just want to drop this from each patchset and we deal separately with 
+it? Or do you propose a different approach?
 
 
+Btw. If anyone wants to do range-diffs of these patchsets against the upstream 
+patches:
 
-> 2026=E5=B9=B46=E6=9C=8827=E6=97=A5 00:45=EF=BC=8CMario Limonciello =
-<mario.limonciello@amd.com> =E5=86=99=E9=81=93=EF=BC=9A
->=20
->=20
->=20
-> On 6/26/26 07:41, WenTao Liang wrote:
->> The skip_modeset path calls dc_stream_release(new_stream) but does =
-not
->>   set new_stream to NULL. If a subsequent error (e.g., color =
-management
->>   failure) triggers goto fail, the fail label executes a second
->>   dc_stream_release on the same pointer, causing a use-after-free or =
-excess
->>   put on the stream reference.
->> Cc: stable@vger.kernel.org
->> Fixes: 3ce51649cdf2 ("drm/amdgpu/display: add quirk handling for =
-stutter mode")
->> Signed-off-by: WenTao Liang <vulab@iscas.ac.cn>
->=20
-> The code change looks good to me, but this Fixes hash doesn't really =
-make sense to me.
->=20
-> Are you sure about that?
->=20
-> I /think/ this is the correct hash:
->=20
-> Fixes: 9b690ef3c7042 ("drm/amd/display: Avoid full modeset when not =
-required")
->=20
->> ---
->>  drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c | 1 +
->>  1 file changed, 1 insertion(+)
->> diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c =
-b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
->> index 5fc5d5608506..acf0b01d6f62 100644
->> --- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
->> +++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
->> @@ -11708,6 +11708,7 @@ static int dm_update_crtc_state(struct =
-amdgpu_display_manager *dm,
->>  	/* Release extra reference */
->>  	if (new_stream)
->>  		dc_stream_release(new_stream);
->> +	new_stream =3D NULL;
->>    	/*
->>  	 * We want to do dc stream updates that do not require a
+git checkout -B reference 1e2fa2b10c234578d3c98c70f89c04a7aba4db92
+git cherry-pick df97a7107b16375a10a36d7a63e9b4291a8ac680~1..edb557b2ba38fea2c5eb710cf366c797e187218c
+
+# here just my own batadv/lts/7.1 branch:
+git range-diff stable/linux-7.1.y..batadv/lts/7.1 3bd64ca11d9a1672d67d3130a7264c2cf7f93cdf..reference
+
+Regards,
+	Sven
+
+--nextPart14078849.uLZWGnKmhe
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: This is a digitally signed message part.
+Content-Transfer-Encoding: 7Bit
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYKAB0WIQS81G/PswftH/OW8cVND3cr0xT1ywUCaj+8kwAKCRBND3cr0xT1
+y0DuAP4yVAIMpFhQrmJF7jwRwgc/BeS4wNacHl4ZqX95dZanlgEAk8daM7dfpV0x
+KdiSnOtOUSHaKbOkqMC5rjiSUla9XQw=
+=4gpv
+-----END PGP SIGNATURE-----
+
+--nextPart14078849.uLZWGnKmhe--
 
 
-
-Thank you for the review and for catching this. You are right =E2=80=94 =
-I used
-the wrong Fixes hash. The correct one is indeed:
-
-Fixes: 9b690ef3c7042 ("drm/amd/display: Avoid full modeset when not =
-required")
-
-I will update it in the next version.
-
-Thanks again for your help.
-
-Best regards,
-WenTao Liang
 
 
