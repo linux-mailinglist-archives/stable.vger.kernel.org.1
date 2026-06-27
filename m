@@ -1,178 +1,173 @@
-Return-Path: <stable+bounces-269422-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-269423-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id mnuENVdYQGr5ewkAu9opvQ
-	(envelope-from <stable+bounces-269422-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 28 Jun 2026 01:10:15 +0200
+	id HZ10CeRiQGoCfQkAu9opvQ
+	(envelope-from <stable+bounces-269423-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 28 Jun 2026 01:55:16 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2BE156D2CED
-	for <lists+stable@lfdr.de>; Sun, 28 Jun 2026 01:10:15 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 729436D2D65
+	for <lists+stable@lfdr.de>; Sun, 28 Jun 2026 01:55:15 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=XPjgvX6y;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-269422-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-269422-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=none;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=mEpFZpac;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-269423-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-269423-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=none) header.from=gmail.com;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 33A7B3019532
-	for <lists+stable@lfdr.de>; Sat, 27 Jun 2026 23:10:11 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A55673015E17
+	for <lists+stable@lfdr.de>; Sat, 27 Jun 2026 23:55:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28ACB334681;
-	Sat, 27 Jun 2026 23:10:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C531E35838A;
+	Sat, 27 Jun 2026 23:55:11 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yx1-f42.google.com (mail-yx1-f42.google.com [74.125.224.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6D6D81ACD;
-	Sat, 27 Jun 2026 23:10:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 612E13382C3
+	for <stable@vger.kernel.org>; Sat, 27 Jun 2026 23:55:10 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782601809; cv=none; b=WwSZhQTe1QfxGSt1QUPhokb6aECcAgNyYnGjX9ArrFmiar7JCtgoi8d3NkLN3wpnkR3/2vjo3Mo+wLuo59/hXowTl1mmNOwL1eTwm+EVRXdi0kTC6O9r2TapZ7fGpLiCOXzPp5cndPBSG+lYNnjPQg/OGxBRXshFcUvwN9LfB/0=
+	t=1782604511; cv=none; b=HZpbHnPc+yKdZ5vYyNhnq7ujT9YlOZj8D25KUIEjkN3h5tk0Dq62Kw0RfLeQ2/Eeqjjxp7YeZ//lgMzpDyhVAqtGzYH+5Uv945jOX+0dDAHhhcSB2uoY6e1wi7EaMe67H/NKiV574+GNtn2R8L/N82jRepePStTg5ewD8vFpkKI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782601809; c=relaxed/simple;
-	bh=WdwYo/UyB+hRWCV4QsPYStri1u0uQFQDmrNTN1mznEI=;
-	h=Date:From:To:Cc:Subject:Message-Id:In-Reply-To:References:
-	 Mime-Version:Content-Type; b=KEO1EcgmIUe0e1TkjWkz9z8tCybIaBmyMyYWfmbNRwmJGmUK+YqMPI2JeMy9+rtooA1DvNaaP+9Brede7+AAhynOGpm/6ErmfbblSs5maYyT+fySHMiEUuCKrlYVyvW0FgC0rYhulX/gyHEaZ4EPRAm5IGlFW9uJ/QbwTcuZFEY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=XPjgvX6y; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EABA91F000E9;
-	Sat, 27 Jun 2026 23:10:07 +0000 (UTC)
+	s=arc-20240116; t=1782604511; c=relaxed/simple;
+	bh=MoymQWTzLpOpVNBaGC1gfrCxK7bYuK6bn2S89oG53Is=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=iMHg4GqDOlOukPpS3efaoQY2CByL/+SmWC6p0eVFx2cIJaNceC70/Y83T6KtGZk35pp7kmDPO+U6XDkg+uHzCrXN3kfljOpyuWFsRwXTZ+Q/YigsxtMH42gIn3gEMn96L/FQ4VJ+QLw+xfg1fnBoWIFVyMzZLuPfxkzhVmSJgSw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=mEpFZpac; arc=none smtp.client-ip=74.125.224.42
+Received: by mail-yx1-f42.google.com with SMTP id 956f58d0204a3-6647bc8f900so2618862d50.0
+        for <stable@vger.kernel.org>; Sat, 27 Jun 2026 16:55:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1782601808;
-	bh=5D6v0GXcAFL77pAcQTrYWtPV+T9YBufpS6c20apcpxQ=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=XPjgvX6ycSUd9Pjzv07W94UUP0I2rXBsMn1XGQ1TtVVprC6RaHbLLOlm8YRdyA82Y
-	 gjAuEtnZwvYXdnZ2FS0zk9vkPz9y4ULh4V4ZNZ2hhggC1WwyU+AJXPnrrYwlTlN2Vc
-	 ntMsz8r1/oJhB4GpC55pla69W3RJZN1NpPWFYtwk=
-Date: Sat, 27 Jun 2026 16:10:07 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Gregory Price <gourry@gourry.net>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, kernel-team@meta.com,
- rppt@kernel.org, vbabka@kernel.org, mgorman@techsingularity.net,
- hannes@cmpxchg.org, stable@vger.kernel.org
-Subject: Re: [PATCH v2] mm/vmstat: fold stranded per-cpu node stats when a
- node comes online
-Message-Id: <20260627161007.81e4533ce561c2951a69f927@linux-foundation.org>
-In-Reply-To: <20260627202243.758289-1-gourry@gourry.net>
-References: <20260627202243.758289-1-gourry@gourry.net>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+        d=gmail.com; s=20251104; t=1782604509; x=1783209309; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=L1oasJ1uwrqjIjP3B2dhR4LOo4j09mY2wVNm1F23els=;
+        b=mEpFZpacBNQ0Mpk6BYQsLJnKBxacPrnhcFJKXSEHC9V0HDCtmKc6EgQJmODWQXJ2sX
+         6J/pRx3QY2Ei+1xJNeBSU5N3o8wtGP/3Vq2HBEv60A121+vNUDQwdPeS4zdM/C8LIUOR
+         w2qUTOVbpcHr/pfby2hz3IMGQ18L/TiFpcBqgiEWZ0mCywejmSGmaGOktBLpbjnRW12S
+         aE4Q+Kr6bkWZpW/McGjoKn8N1pilX/yKzjApZuredO+jwikr01tE8/Tpb3eZbGrDhfcm
+         wpyj5kLLrdthH1NL+WAaTMVFkKfeutt36DNTNGks6o0qmpwPa6kO35wJgV8ggAJsVB/K
+         tDmg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1782604509; x=1783209309;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=L1oasJ1uwrqjIjP3B2dhR4LOo4j09mY2wVNm1F23els=;
+        b=HBRyYgmEOvK3lBSVbRT6K7vzNO71iGpFecYAaY1BKQl8O8/RJx7R7sAzeJ3QY8SYVd
+         41OiqzYlGKv9dQYowGtgckpjG0Ig/WT3YFrbRiZDE02KsNcZN07jPO1vboG8bhCgRx6S
+         pqCwxW6tlYPCJ2U0P2YhsziuhOghJRppZZgOdwZeM+orAQvA4m6PsJMLVuq2EUqswVTl
+         hJo/6oUEhOYyRfQ+Ab6ks1ZiXaAIKyKWH9GtMbwtGpolMQGOUEy9i02MLoiBu6SmofK5
+         U2hSe2bJTlKjCaI7ixqwC1jppWa503Zzm7K/m0SytVy0Jm7Q2Jy1b5+f3NXHfQT3CD6c
+         Q85A==
+X-Forwarded-Encrypted: i=1; AHgh+Rogl3xhWbfR4O/W1ss+6frliIkBW14/dA8zXaUSqQF4H6n6lC36lLOmHkNkvXmb6+Av/7ilxvA=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz7PQdg6TNC0kXaN5q/WKR51kCQDe6D2pcMfXpcM/cWMuwee0N0
+	Xdr8BS+6k9wYYMVTSUY+D/qzwS89Na4jZ1OsZTQu6vPGzbX1tArnxcTt
+X-Gm-Gg: AfdE7clEz6Md9SIo1wsoWMHXpWw3yW85+g7QMBNXJNhWvnlXjGfWjkANZQqbsQOrbbg
+	CPpRbXi6pJaJ363SQKpFPtTfvraHxMpK6D430d274wxtEEV6KvPOInRAk/CUo0QEdmCL/dJxfim
+	9uiigF8oL88+/IS+qAiSAPrOicT/VnJn5a90wbEVGZEfuO0yY6th4s5IV4IIKSGBL1FWGFQVAUI
+	gwloY3mJjubj2/YgxgDQEQVt8+HH0fmFS2F0Sf1TmoCcSqdMueMazOgzdHvlQIotsVVvWWwuI22
+	eiW8l/AUB2kd6AjrlGRjFkMYASUSbZfw4oc7n3UcBJqD1tV/9y0N61kxolWC4RPnRpau0IzG981
+	pMeg3Yb24UxdxgLgmwqkFPTKacjfkN7d4XNswQOqGeMRYHfwCsX91YLVdJQjgKIeNEv83xGCwDD
+	6ZZKXS84EO6AScBIbXT2IjnOFelA==
+X-Received: by 2002:a53:d985:0:b0:664:ae6a:e9a9 with SMTP id 956f58d0204a3-664ae6b0ca0mr4092905d50.79.1782604509328;
+        Sat, 27 Jun 2026 16:55:09 -0700 (PDT)
+Received: from Dev-Null-MSI ([2a0d:3344:52ac:a808:98a4:4381:be45:536f])
+        by smtp.gmail.com with ESMTPSA id 956f58d0204a3-664c061fda0sm938837d50.9.2026.06.27.16.55.07
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 27 Jun 2026 16:55:08 -0700 (PDT)
+From: Yousef Alhouseen <alhouseenyousef@gmail.com>
+To: "Michael S . Tsirkin" <mst@redhat.com>,
+	Gabriel Somlo <somlo@cmu.edu>
+Cc: qemu-devel@nongnu.org,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org,
+	Yousef Alhouseen <alhouseenyousef@gmail.com>
+Subject: [PATCH] firmware: qemu_fw_cfg: reject overflowing file directories
+Date: Sun, 28 Jun 2026 01:54:28 +0200
+Message-ID: <20260627235428.16263-1-alhouseenyousef@gmail.com>
+X-Mailer: git-send-email 2.54.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.16 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MV_CASE(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[linux-foundation.org:s=korg];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:gourry@gourry.net,m:linux-mm@kvack.org,m:linux-kernel@vger.kernel.org,m:kernel-team@meta.com,m:rppt@kernel.org,m:vbabka@kernel.org,m:mgorman@techsingularity.net,m:hannes@cmpxchg.org,m:stable@vger.kernel.org,s:lists@lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	TAGGED_FROM(0.00)[bounces-269422-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	DMARC_NA(0.00)[linux-foundation.org];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_SENDER(0.00)[akpm@linux-foundation.org,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[nongnu.org,vger.kernel.org,gmail.com];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	TAGGED_FROM(0.00)[bounces-269423-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linux-foundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[akpm@linux-foundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	TAGGED_RCPT(0.00)[stable];
-	MID_RHS_MATCH_FROM(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:mst@redhat.com,m:somlo@cmu.edu,m:qemu-devel@nongnu.org,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,m:alhouseenyousef@gmail.com,s:lists@lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER(0.00)[alhouseenyousef@gmail.com,stable@vger.kernel.org];
 	TO_DN_SOME(0.00)[];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[alhouseenyousef@gmail.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	RCVD_COUNT_FIVE(0.00)[5];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	ALIAS_RESOLVED(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sashiko.dev:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp]
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 2BE156D2CED
+X-Rspamd-Queue-Id: 729436D2D65
 
-On Sat, 27 Jun 2026 16:22:43 -0400 Gregory Price <gourry@gourry.net> wrote:
+The fw_cfg file count is supplied by the VMM. On 32-bit systems,
+multiplying a large count by the directory entry size can wrap, resulting
+in a short allocation and an out-of-bounds walk of the directory.
 
-> A per-node vmstat counter is pgdat->vm_stat[] plus per-cpu deltas.
-> A balanced counter can sit split as global=+N / per-cpu=-N.
-> 
-> The folds reconciling the split only walk online nodes, so when
-> try_offline_node() marks a node offline the per-cpu deltas are stranded.
-> 
-> A subsequent online resets the per-cpu area but not pgdat->vm_stat[],
-> orphaning the +N permanently.  All NR_VM_NODE_STAT_ITEMS are affected.
+Reject counts whose directory size cannot be represented by size_t before
+allocating or reading the directory.
 
-Geeze, simple mistake, been there ten years...
+Fixes: 75f3e8e47f38 ("firmware: introduce sysfs driver for QEMU's fw_cfg device")
 
-> The existing code zeroes the per-cpu counters and causes a permanent
-> skew. Fold the stranded deltas instead, before the node rejoins the
-> online set. The node is not online yet and the hotplug lock is held,
-> so the remote access to per-cpu values is safe.
+Cc: stable@vger.kernel.org
+Signed-off-by: Yousef Alhouseen <alhouseenyousef@gmail.com>
+---
+ drivers/firmware/qemu_fw_cfg.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-Oh.  Shouldn't we be doing this during offlining?
-
-> Discovered when node compaction hung for a nearly empty node, as the
-> math to determine throttling broke.  Reproduced by repeated memory
-> hotplug/unplug cycles on a node under pressure: NR_ISOLATED_ANON
-> ratchets up and never returns to zero.
-> 
-> ...
->
-> --- a/mm/mm_init.c
-> +++ b/mm/mm_init.c
-> @@ -1536,7 +1536,7 @@ void __ref free_area_init_core_hotplug(struct pglist_data *pgdat)
->  {
->  	int nid = pgdat->node_id;
->  	enum zone_type z;
-> -	int cpu;
-> +	int cpu, i;
->  
->  	pgdat_init_internals(pgdat);
->  
-> @@ -1554,10 +1554,17 @@ void __ref free_area_init_core_hotplug(struct pglist_data *pgdat)
->  	pgdat->node_start_pfn = 0;
->  	pgdat->node_present_pages = 0;
->  
-> -	for_each_online_cpu(cpu) {
-> -		struct per_cpu_nodestat *p;
-> +	/*
-> +	 * Hot-unplug can leave per-cpu vmstat deltas unfolded (folders skip
-> +	 * offline nodes) - reconcile this at online. Foreign access to counters
-> +	 * is safe: the node is not online yet and we hold the hotplug lock.
-> +	 */
-> +	for_each_possible_cpu(cpu) {
-
-That's a lot of CPUs
-
-> +		struct per_cpu_nodestat *p = per_cpu_ptr(pgdat->per_cpu_nodestats, cpu);
->  
-> -		p = per_cpu_ptr(pgdat->per_cpu_nodestats, cpu);
-> +		for (i = 0; i < NR_VM_NODE_STAT_ITEMS; i++)
-
-and that's a lot of items.
-
-I guess the overall loop count won't be large enough to cause issues,
-but it's large!
-
-Perhaps there's some simple test we can do on the per_cpu_nodestat to
-avoid the inner loop?  Perhaps might need to add a field for this?
-
-btw, "for(int i..." is allowed nowadays.  It'll make this code nicer, IMO.
-
-And... Sashiko seems to have found a pre-existing issue:
-	https://sashiko.dev/#/patchset/20260627202243.758289-1-gourry@gourry.net
-
-> +			if (p->vm_node_stat_diff[i])
-> +				node_page_state_add(p->vm_node_stat_diff[i], pgdat, i);
->  		memset(p, 0, sizeof(*p));
->  	}
+diff --git a/drivers/firmware/qemu_fw_cfg.c b/drivers/firmware/qemu_fw_cfg.c
+index 0c51a9df5..3d5eece35 100644
+--- a/drivers/firmware/qemu_fw_cfg.c
++++ b/drivers/firmware/qemu_fw_cfg.c
+@@ -34,6 +34,7 @@
+ #include <linux/slab.h>
+ #include <linux/io.h>
+ #include <linux/ioport.h>
++#include <linux/overflow.h>
+ #include <uapi/linux/qemu_fw_cfg.h>
+ #include <linux/delay.h>
+ #include <linux/crash_dump.h>
+@@ -642,7 +643,8 @@ static int fw_cfg_register_dir_entries(void)
+ 		return ret;
+ 
+ 	count = be32_to_cpu(files_count);
+-	dir_size = count * sizeof(struct fw_cfg_file);
++	if (check_mul_overflow((size_t)count, sizeof(*dir), &dir_size))
++		return -EOVERFLOW;
+ 
+ 	dir = kmalloc(dir_size, GFP_KERNEL);
+ 	if (!dir)
+-- 
+2.54.0
 
 
