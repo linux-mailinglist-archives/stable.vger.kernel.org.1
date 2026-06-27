@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-269414-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-269415-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id Jz95N88XQGrhbgkAu9opvQ
-	(envelope-from <stable+bounces-269414-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 27 Jun 2026 20:34:55 +0200
+	id NMoHCnUZQGoubwkAu9opvQ
+	(envelope-from <stable+bounces-269415-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 27 Jun 2026 20:41:57 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7D81C6D27C7
-	for <lists+stable@lfdr.de>; Sat, 27 Jun 2026 20:34:55 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7837A6D27F7
+	for <lists+stable@lfdr.de>; Sat, 27 Jun 2026 20:41:56 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=ixit.cz header.s=dkim header.b=IdVmxyBK;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-269414-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-269414-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=ixit.cz header.s=dkim header.b="TDgN/AO0";
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-269415-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-269415-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=quarantine) header.from=ixit.cz;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 70647301DB88
-	for <lists+stable@lfdr.de>; Sat, 27 Jun 2026 18:34:49 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id CDA1C3017FA0
+	for <lists+stable@lfdr.de>; Sat, 27 Jun 2026 18:41:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59ABB33ADA4;
-	Sat, 27 Jun 2026 18:34:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC51D336896;
+	Sat, 27 Jun 2026 18:41:36 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from ixit.cz (ixit.cz [185.100.197.86])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D913970836;
-	Sat, 27 Jun 2026 18:34:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58ECE3346BE;
+	Sat, 27 Jun 2026 18:41:34 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782585288; cv=none; b=kIVi9Ziy+xur3VmdjD2Kt4zk8Dd8Y1QJXzz8NFn4VFYfcFRLaM21fNVrP5WA4yv8maOthk42IbJJBg7nRb3Bxu/nlR6Ffq88IpdSVUO1Buor8isr5V0yMSDrjcilyas6jLby3WL54FNOG4UvnIfEGJqZn099jCPpYtcZBw2KJ7I=
+	t=1782585696; cv=none; b=sLhDS8fRgNi9IFB2AmGXmSKn7G3aLtMn9WXcLYqGizKpqZh43QWN0HteAGC15YyLIS515bkXp7yw8Rc1anNRHmOHgHISEyHlXP8UMecvRbrZjHHgNj6iE1xl82ut5vS6qoqflY+ciLIciIa+r712jhMTH5ErR3E3PYaAoJDmfz0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782585288; c=relaxed/simple;
-	bh=6tCBMxDFaeqqJK4Mf0mwYHZrm/sQz4wtQDBINyYP6Ww=;
+	s=arc-20240116; t=1782585696; c=relaxed/simple;
+	bh=QZNQ+e4BVaaC1y3o6kYngdL5GYG73cIridplAakBZJ8=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=CqrZ1kkWiQGxArZCq/o3rGhCluafMdJ2/qpwDh84InejLO7UkBhaBzRSwAy7LoCPqKezhtuJmwtrpz7MGnV4/ZT9/FMrGax8KHJDPE0bxEO/zY2jB/2e5j6GjHrua/p4ijKY8X+3R3unIu9lAsLz46CLAG2GoJqKdz1hZVqQUak=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz; spf=pass smtp.mailfrom=ixit.cz; dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b=IdVmxyBK; arc=none smtp.client-ip=185.100.197.86
+	 In-Reply-To:Content-Type; b=WNoLLNjelmwhv02czeBV2zt8oGbwq+EwO7SqhB5thEUrkMTGjC0Q+NwsohLyoy6tr8S6YkVqJ8eCef92S/ENhmvAiNe0uhe7FLLzjVOPz/z4Llgpt1NlBOb35wN3oHCxCxzO48+047vL2zm0IDODh0Hh24t98OJQ8fz7WRCaLCc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz; spf=pass smtp.mailfrom=ixit.cz; dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b=TDgN/AO0; arc=none smtp.client-ip=185.100.197.86
 Received: from [10.0.0.200] (unknown [10.88.125.21])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange x25519)
+	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by ixit.cz (Postfix) with ESMTPSA id 00B275341425;
-	Sat, 27 Jun 2026 20:34:43 +0200 (CEST)
+	by ixit.cz (Postfix) with ESMTPSA id CA6E05340388;
+	Sat, 27 Jun 2026 20:41:30 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ixit.cz; s=dkim;
-	t=1782585284;
+	t=1782585691;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=izLJ2zuftsQScaboFk39BP7z4LDBN5N7/SMR6bRiZCU=;
-	b=IdVmxyBKkbY22eDUcQhY8+1CnhryYG/o3DM93Y5QZspcki0D776L0R86hpyF55qJ44dsK0
-	tRq+dEQCRHaMkePDbKI57ttyREOXuPtVxfVujPW6yn6CX0Un3WNYqsBWd0R7tM5c49ETKb
-	Zr+UkCwOxn01arrdJgMMCus67z9jyUg=
-Message-ID: <90e244e9-8e8a-48a4-a9f2-977dbe00ecc8@ixit.cz>
-Date: Sat, 27 Jun 2026 20:34:43 +0200
+	bh=H5ZuPliwujTR0g99pdBMRRoQcAtc+Sz0EJZdDsLuwlU=;
+	b=TDgN/AO0nFyyiUtqXXYsOZh/Ls346J8g0cD6OcZRyV/dCY4reJuPG3DTsv0FVnygX8ZH8q
+	IKOYjzDKyVjn53EgEBlCcoWoGLDNzhpC2cdGd4D+oHCDbv9tzpn5bw3B/gcSiZ+a51UkXl
+	qDmu8kZQQmU+fqLOH89CYAz7shM9nWg=
+Message-ID: <9f73948f-7045-4ef3-bc8c-731fde943c1e@ixit.cz>
+Date: Sat, 27 Jun 2026 20:41:30 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -59,15 +59,15 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net] nfc: nci: fix out-of-bounds write in
- nci_target_auto_activated()
+Subject: Re: [PATCH net v2] nfc: nci: fix uninit-value in the RF
+ discover/activated NTF handlers
 To: Samuel Page <sam@bynar.io>
 Cc: "David S . Miller" <davem@davemloft.net>,
  Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
  Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
  oe-linux-nfc@lists.linux.dev, netdev@vger.kernel.org,
  linux-kernel@vger.kernel.org, stable@vger.kernel.org
-References: <20260622145243.3167276-1-sam@bynar.io>
+References: <20260626090301.2139500-1-sam@bynar.io>
 Content-Language: en-US
 From: David Heidelberg <david@ixit.cz>
 Autocrypt: addr=david@ixit.cz; keydata=
@@ -113,19 +113,19 @@ Autocrypt: addr=david@ixit.cz; keydata=
  zRKcgRumz2Tc1ouHj6qINlzEe3a5ldctIn/dvR1l2Ko7GBTG+VGp9U5NOAEkGpxHG9yg6eeY
  fFYnMme51H/HKiyUlFiE3yd5LSmv8Dhbf+vsI4x6BOOOq4Iyop/Exavj1owGxW0hpdUGcCl1
  ovlwVPO/6l/XLAmSGwdnGqok5eGZQzSst0tj9RC9O0dXO1TZocOsf0tJ8dR2egX4kxM=
-In-Reply-To: <20260622145243.3167276-1-sam@bynar.io>
+In-Reply-To: <20260626090301.2139500-1-sam@bynar.io>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[ixit.cz,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[ixit.cz:s=dkim];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-269414-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-269415-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
@@ -135,7 +135,7 @@ X-Spamd-Result: default: False [-2.16 / 15.00];
 	FORWARDED(0.00)[lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[ixit.cz:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
@@ -147,20 +147,63 @@ X-Spamd-Result: default: False [-2.16 / 15.00];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp,ixit.cz:dkim,ixit.cz:email,ixit.cz:mid,ixit.cz:from_mime]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,ixit.cz:dkim,ixit.cz:mid,ixit.cz:from_mime,bynar.io:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 7D81C6D27C7
+X-Rspamd-Queue-Id: 7837A6D27F7
 
+On 26/06/2026 11:03, Samuel Page wrote:
+> nci_rf_discover_ntf_packet() and nci_rf_intf_activated_ntf_packet() each
+> parse a notification into an on-stack struct (nci_rf_discover_ntf /
+> nci_rf_intf_activated_ntf) that is not initialised. The RF
+> technology-specific parameters are only extracted when
+> rf_tech_specific_params_len is non-zero, so a notification that reports a
+> zero length leaves the rf_tech_specific_params union uninitialised - and
+> both handlers then pass it to nci_add_new_protocol(), which reads it:
+> 
+>   - discover:  nci_add_new_target() -> nci_add_new_protocol();
+>   - activated: nci_target_auto_activated() -> nci_add_new_protocol().
+> 
+> nci_add_new_protocol() uses nfca_poll->nfcid1_len as both a branch
+> condition and a memcpy() length and copies nfcid1/sens_res/sel_res into
+> ndev->targets, which is later exposed to user space via NFC_CMD_GET_TARGET.
+> 
+>    BUG: KMSAN: uninit-value in nci_add_new_protocol+0x624/0x6c0
+>     nci_add_new_protocol+0x624/0x6c0
+>     nci_ntf_packet+0x25b2/0x3c30
+>     nci_rx_work+0x318/0x5d0
+>     process_scheduled_works+0x84b/0x17a0
+>     worker_thread+0xc10/0x11b0
+>     kthread+0x376/0x500
+>    Local variable ntf.i created at:
+>     nci_ntf_packet+0xbc2/0x3c30
+> 
+> Zero-initialise both on-stack notifications so the union reads back as
+> zero when no technology-specific parameters are present.
+> 
+> Fixes: 019c4fbaa790 ("NFC: Add NCI multiple targets support")
+> Fixes: e8c0dacd9836 ("NFC: Update names and structs to NCI spec 1.0 d18")
+> Link: https://lore.kernel.org/netdev/20260623172109.1105965-2-horms@kernel.org/
+> Cc: stable@vger.kernel.org
+> Assisted-by: Bynario AI
 
-On Mon, 22 Jun 2026 16:52:43 +0200, Samuel Page wrote:
- > nfc: nci: fix out-of-bounds write in nci_target_auto_activated()
+Hello Samuel,
 
-Applied, thanks!
+the fix look good, may I ask you to follow the Assisted-by syntax as requested 
+in [1]?
 
-[1/1] nfc: nci: fix out-of-bounds write in nci_target_auto_activated()
-       commit: e87faad807329d1348595dbcea3444acd7bb0ca6
+Thank you
+David
 
-Best regards,
--- 
-David Heidelberg <david@ixit.cz>
+[1] https://docs.kernel.org/process/coding-assistants.html
+
+> Signed-off-by: Samuel Page <sam@bynar.io>
+> ---
+> v2: Drop the inaccurate activation_params / NFC_ATTR_TARGET_ATS scenario
+>      from the commit message. No code change; the ntf = {} fix is unchanged.
+> 
+>   net/nfc/nci/ntf.c | 4 ++--
+>   1 file changed, 2 insertions(+), 2 deletions(-)
+> 
+
+[...]
 
