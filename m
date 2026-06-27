@@ -1,131 +1,234 @@
-Return-Path: <stable+bounces-269385-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-269386-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id n+BKCmazP2pYXQkAu9opvQ
-	(envelope-from <stable+bounces-269385-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 27 Jun 2026 13:26:30 +0200
+	id fk9XDQW3P2pbXgkAu9opvQ
+	(envelope-from <stable+bounces-269386-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 27 Jun 2026 13:41:57 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6AC0F6D1D57
-	for <lists+stable@lfdr.de>; Sat, 27 Jun 2026 13:26:29 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id BD18B6D1D78
+	for <lists+stable@lfdr.de>; Sat, 27 Jun 2026 13:41:56 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=VQ67QVI8;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-269385-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-269385-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=emMGtJpl;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-269386-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-269386-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=none) header.from=gmail.com;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id EC34130107D4
-	for <lists+stable@lfdr.de>; Sat, 27 Jun 2026 11:26:22 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id D8883300CE96
+	for <lists+stable@lfdr.de>; Sat, 27 Jun 2026 11:41:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0080280A58;
-	Sat, 27 Jun 2026 11:26:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14E4239524D;
+	Sat, 27 Jun 2026 11:41:52 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f46.google.com (mail-ed1-f46.google.com [209.85.208.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87E4C2C21F0
-	for <stable@vger.kernel.org>; Sat, 27 Jun 2026 11:26:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9174722097
+	for <stable@vger.kernel.org>; Sat, 27 Jun 2026 11:41:50 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782559582; cv=none; b=kX9lTU2Rci6gF60Oy83ZikYrEyT93u/og413NtCrRfrOLH81hB8j0JTUShK06P67uMNzKqusmN/PUKRS7dgJkqwZE2mYT7NV89FLSQearXvaG2t0hAAHDyZ8e0gAz/wBvXvJIiL8r3B1/tvkuMXJTyo1/IOMTI8UC5SQFxXQL1k=
+	t=1782560511; cv=none; b=WI7nfeV8Bxew7BUzFd5Qp+PyYABWitnCAiAwcUxvISNTqkpEBvXGoon2oHYBvTJy4H2sTt9jcLMQ7SlJQNxPsaWetoIoo9gtN96Tb2jsLrAlLl/E919HyCHsOFbrLAObvNpnE6wGQwRlkbop9nLZLZuTHJ/xIA/ypm+KnBIpo4o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782559582; c=relaxed/simple;
-	bh=5RB+9jzTPZpewwSxcSkM8uNEhb/obFPOuP3WMNT2PYc=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XuAVNdfu7GqIy8PKLBuH15abrJTonKCd1FcvYZtUyYIzKU1xEB3hhphsHpmmogs8dadQNdJhLLKLwcVcKKMJh+gr91ITR0J2Z1ckPez4wPKqbqkUSjkNtidtAjtWcTakjNtQfCAMXdzwA4uLpX/sHQ+lyLfKKe20q85o3OE493Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VQ67QVI8; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BDB3B1F000E9;
-	Sat, 27 Jun 2026 11:26:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782559581;
-	bh=zUs6dy7C3Ey1u+hFvlQjq3YzPcIeTGOik68VOFqqA1k=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=VQ67QVI8pU+QryUfKRhl2v8WMXprSpNt+etDLqNyMn+Xp1psSn0TytKKlF1UZLQ/M
-	 rp4PtKHZnjK1LIVUgJA2vyfXP31B1hqAtFfhGyJNxWcH7nerGR+KbxZKSC2QB8c1yu
-	 zox2lRFZrBFen30vhBNaygqK3BvMpWIOlFz56FGpXivEn4JA1ImGwt77nStlr8wziS
-	 Ek2UsSjMnk2wVGmAqUA6Ubt3DF5FIzTWJKlmfnamJWyq86i3Q7bsvIVcG0iFvfkgy1
-	 mzwkNEcTVUSqGW6+4VfMC7Iuql2sa+WT7wBKN2uwe+S+f6Gkz1Am2O8Q0fhx0EQhHa
-	 VCDidhlXtUccg==
-From: Sasha Levin <sashal@kernel.org>
-To: Sven Eckelmann <sven@narfation.org>
-Cc: Sasha Levin <sashal@kernel.org>,
-	stable@vger.kernel.org
-Subject: Re: [PATCH 5.10 10/23] batman-adv: prevent ELP transmission interval underflow
-Date: Sat, 27 Jun 2026 07:26:17 -0400
-Message-ID: <stable-reply-item015-batman-adv-elp-p10-20260627@kernel.org>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260626160952.123713-11-sven@narfation.org>
-References: <20260626160952.123713-1-sven@narfation.org> <20260626160952.123713-11-sven@narfation.org>
+	s=arc-20240116; t=1782560511; c=relaxed/simple;
+	bh=euKj73nb/oKaG6oK8vnS8Te7tyBUZFb4ZRGbSHlk+lY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=qaVzMa2Ywq969/pW43vWBPZ04/qEkqqcmo35afwJcXKzh07J+jBJKlKHhip1cY9fxipfLT19fATBO0l0UuS+4f48dC2u9OOvvMQ5dGK4qqhXp/zAQNflTK3EQtdwDaaaYroFFboah15pwMFIwxSQHVV2017QA2w+IHs0c8Vnw5o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=emMGtJpl; arc=none smtp.client-ip=209.85.208.46
+Received: by mail-ed1-f46.google.com with SMTP id 4fb4d7f45d1cf-697f3af8749so2785867a12.2
+        for <stable@vger.kernel.org>; Sat, 27 Jun 2026 04:41:50 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1782560509; x=1783165309; darn=vger.kernel.org;
+        h=user-agent:in-reply-to:content-disposition:mime-version:references
+         :reply-to:message-id:subject:cc:to:from:date:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=5MsGEy5Adg9XX//QZzyVthhl1GGb0HZKXz/vMlwCOV0=;
+        b=emMGtJplRFMv+JWsJpxfEudL9OauEhobNhBKBG6UiehojXBdfhxdI6QeViLhq9R8cn
+         qP9qVtP1eVMOQnjyxVASzDdG9qeNveUzjXgE8lGUU03YC4tHaHiQ/2gyeyFS1WHrzB3s
+         Fk670dnUzZFUw3Tog3kxN2KNqGehbx+LHhX88+7+ebNpcedvG6bKJsAmmkB1xEgdLZnV
+         MSqQQwfAUF+e72ilSY5suixR7WPfJjxsGsp2t5B4XrE5iXt5CDTk6O/QC9JJTfw5dOYi
+         ceDF5PIn2W6UEo8A85f8Rlb7ldFAZB9egOh2SwtJoMM47A2/WUGO5ASgj8KU8LWPjJ4h
+         SOkQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1782560509; x=1783165309;
+        h=user-agent:in-reply-to:content-disposition:mime-version:references
+         :reply-to:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=5MsGEy5Adg9XX//QZzyVthhl1GGb0HZKXz/vMlwCOV0=;
+        b=I9cPjp7PdHPiI8QAkUnbGXvlfF36Hvdbxy6nVRFvd8UleGuSnRV1BYn6fohF4dCwN/
+         eRvbup1Lk0W/IzKy5GGi6D1jJHok8oRLuq3rkrro0sW7Lg8UmQus8sfiFqCxyvxSIeGR
+         mqc3T9eIeNYNlMgAeLHyKyu+f/92IrDXKjFxA8o9M8UHjwFj6AchJVsUz6fcsgVH3m4i
+         qqzMwqAh6wbFRUTovj9Np4atut9tThJ5lpwM+YVNmmQOR0T5Jq72KKrLTr3d2mthlTAZ
+         /4ReUEYGjCmmCxG8Muc8ia0XPErZytJM7fPZJ/cKVaYYPDrOXns/XWmgIoADU+n9tKMx
+         hFtw==
+X-Forwarded-Encrypted: i=1; AHgh+RodIXCFz86hucQQUWDsuo1nf97qDSvJ4cF5k/bUNQb6JQGdjajGqwk9MXpkNlzHXvw3DdzUkoA=@vger.kernel.org
+X-Gm-Message-State: AOJu0YytNOtJV4VkuaFRS4z3xzwJb3Rg9zOY7GORfhPbFhTPa16Z+U40
+	OqfY8QDsh4vbR87ZqmyD9dTPEXpdZo5Xzex0JiiO8NNd0fDJgNJSbNZO
+X-Gm-Gg: AfdE7ckKlJp+82BhKVLwLYKA4AJ80wBrapWByTYFukz3vl8dD3wTNmshPMDuKmrKBTO
+	ReCL4XYBt+JtzdCbJNKQj0/SJCn7BvUEUF2LrOZE7kOTswmSfjkA3rNXKzdKR4+Yqz+y2/GdTHT
+	Ulr0n1RQ/jHS4FPR9tQe0fdbD7W0zTM4RlMPgw4wo9aCIO4bLudmFTnQll7bPO/jA13in7Q9vLz
+	FP9Azi2U28UTSzcAgMCsVTw+hyxFea0nKQUAXCm1AnICCvFIe9vbty9FoM+5aiaorY//NHYBxI5
+	ynWcd+b1PemZGOehU02OyULM9TTVZI+5yRQ8KbRWui76N5n4x7EBe0IrFHrKdYINECaB1/Fkh9a
+	I1PbNGi4c/g3Qjvh2OefMH1oQCSJ1MswYgat8R1aErF7liwDhmfaUz54IFsTVkFoWkhXJQMUQVZ
+	a6UwOssKSFEN8=
+X-Received: by 2002:a17:907:c705:b0:c12:3d5e:65f8 with SMTP id a640c23a62f3a-c123d5e7db2mr75082266b.4.1782560508661;
+        Sat, 27 Jun 2026 04:41:48 -0700 (PDT)
+Received: from localhost ([185.92.221.13])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c11fbec3514sm467854066b.57.2026.06.27.04.41.47
+        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
+        Sat, 27 Jun 2026 04:41:47 -0700 (PDT)
+Date: Sat, 27 Jun 2026 11:41:47 +0000
+From: Wei Yang <richard.weiyang@gmail.com>
+To: Lance Yang <lance.yang@linux.dev>
+Cc: Wei Yang <richard.weiyang@gmail.com>, akpm@linux-foundation.org,
+	ljs@kernel.org, riel@surriel.com, liam@infradead.org,
+	vbabka@kernel.org, harry@kernel.org, jannh@google.com,
+	ziy@nvidia.com, sj@kernel.org, balbirs@nvidia.com,
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org,
+	"David Hildenbrand (Arm)" <david@kernel.org>
+Subject: Re: [Patch mm-hotfixes v4] mm/page_vma_mapped: fix device-private
+ PMD handling
+Message-ID: <20260627114147.d6csxmiha6whfyb2@master>
+Reply-To: Wei Yang <richard.weiyang@gmail.com>
+References: <20260624065353.1622-1-richard.weiyang@gmail.com>
+ <d060cadd-34f8-42da-b7f7-c8d295050436@kernel.org>
+ <20260627020719.ipzfrlhfbvr6ac35@master>
+ <b7cfc04e-7a57-489e-9459-82d7eb818675@linux.dev>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <b7cfc04e-7a57-489e-9459-82d7eb818675@linux.dev>
+User-Agent: NeoMutt/20170113 (1.7.2)
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-4.66 / 15.00];
-	WHITELIST_SPF_DKIM(-3.00)[kernel.org:d:+,kernel.org:s:+];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	MID_RHS_NOT_FQDN(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	RECEIVED_HELO_LOCALHOST(0.00)[];
+	FREEMAIL_REPLYTO(0.00)[gmail.com];
 	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	FORGED_RECIPIENTS(0.00)[m:lance.yang@linux.dev,m:richard.weiyang@gmail.com,m:akpm@linux-foundation.org,m:ljs@kernel.org,m:riel@surriel.com,m:liam@infradead.org,m:vbabka@kernel.org,m:harry@kernel.org,m:jannh@google.com,m:ziy@nvidia.com,m:sj@kernel.org,m:balbirs@nvidia.com,m:linux-mm@kvack.org,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,m:david@kernel.org,m:richardweiyang@gmail.com,s:lists@lfdr.de];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-269385-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:sven@narfation.org,m:sashal@kernel.org,m:stable@vger.kernel.org,s:lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FORGED_SENDER(0.00)[sashal@kernel.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCPT_COUNT_THREE(0.00)[3];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	ALIAS_RESOLVED(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FORGED_SENDER(0.00)[richardweiyang@gmail.com,stable@vger.kernel.org];
 	TO_DN_SOME(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[16];
+	FORWARDED(0.00)[lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-269386-lists,stable=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,master:mid];
+	HAS_REPLYTO(0.00)[richard.weiyang@gmail.com];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[richardweiyang@gmail.com,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[gmail.com,linux-foundation.org,kernel.org,surriel.com,infradead.org,google.com,nvidia.com,kvack.org,vger.kernel.org];
+	ALIAS_RESOLVED(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp]
+	DKIM_TRACE(0.00)[gmail.com:+];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	REPLYTO_EQ_FROM(0.00)[]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 6AC0F6D1D57
+X-Rspamd-Queue-Id: BD18B6D1D78
 
-Hi Sven,
+On Sat, Jun 27, 2026 at 10:59:16AM +0800, Lance Yang wrote:
+>
+>
+>On 2026/6/27 10:07, Wei Yang wrote:
+>[...]
+>> 
+>> Hi David
+>> 
+>> I did a little adjustment like below. Want to check with you at first.
+>> 
+>> > 
+>> > >From 048ecd33673ec649e168fbbb97749a7c0e344fcd Mon Sep 17 00:00:00 2001
+>> > From: "David Hildenbrand (Arm)" <david@kernel.org>
+>> > Date: Fri, 26 Jun 2026 12:03:40 +0200
+>> > Subject: [PATCH] tmp
+>> > 
+>> > Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
+>> > ---
+>> > mm/page_vma_mapped.c | 29 +++++++++++++++++------------
+>> > 1 file changed, 17 insertions(+), 12 deletions(-)
+>> > 
+>> > diff --git a/mm/page_vma_mapped.c b/mm/page_vma_mapped.c
+>> > index 2ccbabfb2cc17..ed2a23a90e8dd 100644
+>> > --- a/mm/page_vma_mapped.c
+>> > +++ b/mm/page_vma_mapped.c
+>> > @@ -243,21 +243,31 @@ bool page_vma_mapped_walk(struct page_vma_mapped_walk *pvmw)
+>> > 		 */
+>> > 		pmde = pmdp_get_lockless(pvmw->pmd);
+>> > 
+>> > -		if (pmd_trans_huge(pmde) || pmd_is_migration_entry(pmde)) {
+>> > +		if (pmd_trans_huge(pmde) || pmd_is_migration_entry(pmde) ||
+>> > +		    pmd_is_device_private_entry(pmde)) {
+>> > 			pvmw->ptl = pmd_lock(mm, pvmw->pmd);
+>> > 			pmde = *pvmw->pmd;
+>> > -			if (!pmd_present(pmde)) {
+>> > +			if (pmd_is_migration_entry(pmde)) {
+>> > 				softleaf_t entry;
+>> > 
+>> 
+>> How about:
+>> 				const softleaf_t entry = softleaf_from_pmd(pmde);
+>> 
+>> > -				if (!thp_migration_supported() ||
+>> > -				    !(pvmw->flags & PVMW_MIGRATION))
+>> > +				if (!(pvmw->flags & PVMW_MIGRATION))
+>> > 					return not_found(pvmw);
+>> > 				entry = softleaf_from_pmd(pmde);
+>> 
+>> could be removed.
+>> 
+>> > +				if (!check_pmd(softleaf_to_pfn(entry), pvmw))
+>> > +					return not_found(pvmw);
+>> > +				return true;
+>> > +			} else if (pmd_is_device_private_entry(pmde)) {
+>> > +				softleaf_t entry;
+>> 
+>> The same.
+>> 
+>> > 
+>> > -				if (!softleaf_is_migration(entry) ||
+>> > -				    !check_pmd(softleaf_to_pfn(entry), pvmw))
+>> > +				if (pvmw->flags & PVMW_MIGRATION)
+>> > +					return not_found(pvmw);
+>> > +				entry = softleaf_from_pmd(pmde);
+>> > +				if (!check_pmd(softleaf_to_pfn(entry), pvmw))
+>> > 					return not_found(pvmw);
+>> > 				return true;
+>> > +			} else if (!pmd_present(pmde) ){
+>> > +				return not_found(pvmw);
+>> > 			}
+>> > 			if (likely(pmd_trans_huge(pmde))) {
+>> > 				if (pvmw->flags & PVMW_MIGRATION)
+>> 
+>> How about merge this with above? And put at the first case?
+>> 
+>> Below is what it looks like:
+>
+>Why add more churn to a fix with a stable tag? Cleanup can come later no?
+>
 
-> @@ -939,7 +939,13 @@ static int batadv_netlink_set_hardif(struct sk_buff *skb,
->  #ifdef CONFIG_BATMAN_ADV_BATMAN_V
->  
->  	if (info->attrs[BATADV_ATTR_ELP_INTERVAL]) {
-> +		u32 elp_interval;
-> +
->  		attr = info->attrs[BATADV_ATTR_ELP_INTERVAL];
-> +		elp_interval = nla_get_u32(attr);
-> +
-> +		elp_interval = min_t(u32, elp_interval, INT_MAX);
-> +		elp_interval = max_t(u32, elp_interval, BATADV_JITTER);
->  
->  		atomic_set(&hard_iface->bat_v.elp_interval, nla_get_u32(attr));
->  	}
-
-The backport computes the clamped elp_interval but then stores the raw
-nla_get_u32(attr) again, so the min_t()/max_t() clamping is dead code and
-the underflow this patch is meant to prevent is still reachable. The store
-should use the clamped local, matching the sibling orig_interval block just
-above it in the same function:
-
-		atomic_set(&hard_iface->bat_v.elp_interval, elp_interval);
+OK, will leave it for future cleanup.
 
 -- 
-Thanks,
-Sasha
+Wei Yang
+Help you, Help me
 
