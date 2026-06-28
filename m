@@ -1,173 +1,127 @@
-Return-Path: <stable+bounces-269490-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-269491-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id SmedJ8nNQGodiQkAu9opvQ
-	(envelope-from <stable+bounces-269490-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 28 Jun 2026 09:31:21 +0200
+	id xyzSB57OQGo6iQkAu9opvQ
+	(envelope-from <stable+bounces-269491-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 28 Jun 2026 09:34:54 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id F41506D35B2
-	for <lists+stable@lfdr.de>; Sun, 28 Jun 2026 09:31:20 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 762876D35C9
+	for <lists+stable@lfdr.de>; Sun, 28 Jun 2026 09:34:53 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=none;
-	dmarc=none;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-269490-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-269490-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=Afr0EmOa;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-269491-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-269491-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 7959030151C2
-	for <lists+stable@lfdr.de>; Sun, 28 Jun 2026 07:31:09 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id DC77B300F184
+	for <lists+stable@lfdr.de>; Sun, 28 Jun 2026 07:34:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E0A833F5BA;
-	Sun, 28 Jun 2026 07:31:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 465C735C180;
+	Sun, 28 Jun 2026 07:34:46 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from cstnet.cn (smtp25.cstnet.cn [159.226.251.25])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4937626ADC;
-	Sun, 28 Jun 2026 07:31:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2C8231716A;
+	Sun, 28 Jun 2026 07:34:44 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782631868; cv=none; b=AwnYJLFIZLj2w/p1nIbl0vRbuASswSjEQijdVNfiLGvsQg3uXOZSTKX4a6BL0Q2EkkY5hJP4AjGYoItpjJhOBei+VF617Qj1sG/H6HhxizjexwFBPlaZXKh8oJZ5/hudNSh4g6hu5ZMatKkTdsUG6Tq4bkgETWa5ui0Z32azauA=
+	t=1782632086; cv=none; b=u3yPUOoMp5ZYXIHL8uLBtHVZglpamD3yPLkS4Y1LimgZAJ8J06GiVTiT2Uz3rOWpVrjkBmKzSOEimZHHNzM2ygxSCWVogkhFK0GEJ0IG9YnVhySIewrYxbAVsgilOBVTtshR8YJkXkndqwBrGesPTdszdW5jEt/6usdoO82ptIA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782631868; c=relaxed/simple;
-	bh=EZuM9tIjkK9Bm52oBPRRnOgm/j1TJt1t7FG52vTzUSE=;
-	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=IrGfRf1XWiWwTB9QlowczLkTws9kM+DKx/dClADBkBdaEGPviFHLgq7AkKoddTaiQoXiuSv5yVzi1fsoEDw3IHbP3CJWDL1x6u0/+TkbnD56uiJE2nfEKViELQK1QImuZlwWnmWdO7ZXyxSGqWMMUg85YBON0y+KeI5rJdGjkKE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.25
-Received: from smtpclient.apple (unknown [117.182.74.7])
-	by APP-05 (Coremail) with SMTP id zQCowAB3zhGfzUBq4rG6FQ--.42871S2;
-	Sun, 28 Jun 2026 15:30:40 +0800 (CST)
-Content-Type: text/plain;
-	charset=utf-8
+	s=arc-20240116; t=1782632086; c=relaxed/simple;
+	bh=OkaeamBGsVLAuYRbIgqS1XrmemmCfSeAVuk86wku4L8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=pP47g9n7mqUnYK9oPrT5O0swjGOTMMrgA9phcXVVngnRT9+3ibNLX3q7y7tUCuJrK38Refn82HAt2Ho+IkfXgs2C7cHpbpDrzNfJCDoq/NDCvtKpXI2JgXIN5n/1f/ERIPBT3F0+i5tLBsnuMUeIu/PB8T3HuRHdioUuPI2+aWE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Afr0EmOa; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90F061F000E9;
+	Sun, 28 Jun 2026 07:34:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
+	s=korg; t=1782632084;
+	bh=Ln2Tw+sGy7ydx3N8w0OkVCZpqvk/JGyFu6srxkz+XKI=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=Afr0EmOa6NBBjm3Xh270RvPlky6vA6jlGxZXo7PE0y/xZUUsuNbJz84uzMsThfL/J
+	 bF7+54lJR1rxvyTr7aW4T1SvwPGMDe6Ehat6J9FOAsrrK3twV7tu8GanRDy3aPwPKn
+	 x3Zk+L4JHEeYovpICqR9MCQB9G0COGKtAEwy/OgY=
+Date: Sun, 28 Jun 2026 09:33:30 +0200
+From: Greg KH <gregkh@linuxfoundation.org>
+To: WenTao Liang <vulab@iscas.ac.cn>
+Cc: Harry Wentland <harry.wentland@amd.com>, Leo Li <sunpeng.li@amd.com>,
+	Rodrigo Siqueira <siqueira@igalia.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Christian =?iso-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>,
+	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Alex Hung <alex.hung@amd.com>,
+	Aurabindo Pillai <aurabindo.pillai@amd.com>,
+	amd-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH v2] drm/amd/display: set new_stream to NULL after release
+Message-ID: <2026062816-contour-womankind-1646@gregkh>
+References: <20260628072740.8884-1-vulab@iscas.ac.cn>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.700.81.1.8\))
-Subject: Re: [PATCH] fix: net/batman-adv: batadv_interface_kill_vid: extra
- batadv_meshif_vlan_put after destroy
-From: WenTao Liang <vulab@iscas.ac.cn>
-In-Reply-To: <20260627034636.59693-1-vulab@iscas.ac.cn>
-Date: Sun, 28 Jun 2026 15:30:28 +0800
-Cc: horms@kernel.org,
- b.a.t.m.a.n@lists.open-mesh.org,
- netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org,
- stable@vger.kernel.org
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <60CD91EB-833B-40D9-8DCA-A982CE336041@iscas.ac.cn>
-References: <20260627034636.59693-1-vulab@iscas.ac.cn>
-To: marek.lindner@mailbox.org,
- sw@simonwunderlich.de,
- antonio@mandelbit.com,
- sven@narfation.org,
- davem@davemloft.net,
- edumazet@google.com,
- kuba@kernel.org,
- pabeni@redhat.com
-X-Mailer: Apple Mail (2.3826.700.81.1.8)
-X-CM-TRANSID:zQCowAB3zhGfzUBq4rG6FQ--.42871S2
-X-Coremail-Antispam: 1UD129KBjvJXoW7Kr18XF17Jr1UJrWrXFyfXrb_yoW8Xr4kpr
-	WUKFW3KFZxCayxKa9rKFy5uF1j9w4Skry0kF9akw4rAwnrta4Iga4F9r9rXFn5CFWxKF17
-	Jr4UCas7X3WDWrJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUvCb7Iv0xC_tr1lb4IE77IF4wAFF20E14v26r4j6ryUM7CY07I2
-	0VC2zVCF04k26cxKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rw
-	A2F7IY1VAKz4vEj48ve4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Gr0_Xr1l84ACjcxK6xII
-	jxv20xvEc7CjxVAFwI0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVWxJr0_GcWl84ACjcxK6I
-	8E87Iv6xkF7I0E14v26rxl6s0DM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI
-	64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r106r15McIj6I8E87Iv67AKxVWUJVW8Jw
-	Am72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IYc2Ij64vIr41lFIxGxcIEc7CjxVA2Y2ka0xkI
-	wI1lc7CjxVAaw2AFwI0_Jw0_GFyl42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr
-	0_Gr1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY
-	17CE14v26r1q6r43MIIYrxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcV
-	C0I7IYx2IY6xkF7I0E14v26r4j6F4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY
-	6I8E87Iv67AKxVW8JVWxJwCI42IY6I8E87Iv6xkF7I0E14v26r4UJVWxJrUvcSsGvfC2Kf
-	nxnUUI43ZEXa7IU8U5r7UUUUU==
-X-CM-SenderInfo: pyxotu46lvutnvoduhdfq/1tbiBwIMA2pAixFu8QAAsl
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260628072740.8884-1-vulab@iscas.ac.cn>
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.96 / 15.00];
+X-Spamd-Result: default: False [2.34 / 15.00];
+	MID_END_EQ_FROM_USER_PART(4.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MV_CASE(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	MID_RHS_NOT_FQDN(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	TAGGED_FROM(0.00)[bounces-269490-lists,stable=lfdr.de];
-	DMARC_NA(0.00)[iscas.ac.cn];
-	FORGED_RECIPIENTS(0.00)[m:horms@kernel.org,m:b.a.t.m.a.n@lists.open-mesh.org,m:netdev@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,m:marek.lindner@mailbox.org,m:sw@simonwunderlich.de,m:antonio@mandelbit.com,m:sven@narfation.org,m:davem@davemloft.net,m:edumazet@google.com,m:kuba@kernel.org,m:pabeni@redhat.com,s:lists@lfdr.de];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER(0.00)[vulab@iscas.ac.cn,stable@vger.kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[13];
+	TAGGED_FROM(0.00)[bounces-269491-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:vulab@iscas.ac.cn,m:harry.wentland@amd.com,m:sunpeng.li@amd.com,m:siqueira@igalia.com,m:alexander.deucher@amd.com,m:christian.koenig@amd.com,m:airlied@gmail.com,m:simona@ffwll.ch,m:mario.limonciello@amd.com,m:alex.hung@amd.com,m:aurabindo.pillai@amd.com,m:amd-gfx@lists.freedesktop.org,m:dri-devel@lists.freedesktop.org,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[15];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FREEMAIL_CC(0.00)[amd.com,igalia.com,gmail.com,ffwll.ch,lists.freedesktop.org,vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[vulab@iscas.ac.cn,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	TO_DN_NONE(0.00)[];
-	R_DKIM_NA(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	MID_RHS_MATCH_FROM(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[iscas.ac.cn:email,iscas.ac.cn:mid,iscas.ac.cn:from_mime,vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+	MISSING_XM_UA(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,iscas.ac.cn:email,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: F41506D35B2
+X-Rspamd-Queue-Id: 762876D35C9
 
-
-
-> 2026=E5=B9=B46=E6=9C=8827=E6=97=A5 11:46=EF=BC=8CWenTao Liang =
-<vulab@iscas.ac.cn> =E5=86=99=E9=81=93=EF=BC=9A
->=20
-> In batadv_interface_kill_vid(), batadv_meshif_vlan_get() acquires a
-> reference on the vlan object. batadv_meshif_destroy_vlan() internally
-> calls batadv_meshif_vlan_put() which balances that reference. However, =
-an
-> additional batadv_meshif_vlan_put(vlan) is called after
-> batadv_meshif_destroy_vlan(), causing a refcount underflow and =
-potential
-> use-after-free of the vlan object.
->=20
-> Remove the extra batadv_meshif_vlan_put(vlan) call.
->=20
+On Sun, Jun 28, 2026 at 03:27:40PM +0800, WenTao Liang wrote:
+> In dm_update_crtc_state(), the skip_modeset path releases new_stream
+> via dc_stream_release() but does not set the pointer to NULL.
+> 
+> If a later error (e.g., color management failure) triggers the fail
+> label, the error path calls dc_stream_release() again on the same
+> dangling pointer, causing a double release and potential use-after-free.
+> 
+> Fix this by setting new_stream to NULL after the initial release.
+> 
+> Fixes: 9b690ef3c7042 ("drm/amd/display: Avoid full modeset when not required")
 > Cc: stable@vger.kernel.org
-> Fixes: 5d2c05b21337 ("batman-adv: add per VLAN interface attribute =
-framework")
 > Signed-off-by: WenTao Liang <vulab@iscas.ac.cn>
 > ---
-> net/batman-adv/mesh-interface.c | 3 ---
-> 1 file changed, 3 deletions(-)
->=20
-> diff --git a/net/batman-adv/mesh-interface.c =
-b/net/batman-adv/mesh-interface.c
-> index e7aa45bc6b7a..cc974f243200 100644
-> --- a/net/batman-adv/mesh-interface.c
-> +++ b/net/batman-adv/mesh-interface.c
-> @@ -691,9 +691,6 @@ static int batadv_interface_kill_vid(struct =
-net_device *dev, __be16 proto,
->=20
-> 	batadv_meshif_destroy_vlan(bat_priv, vlan);
->=20
-> -	/* finally free the vlan object */
-> -	batadv_meshif_vlan_put(vlan);
-> -
-> 	return 0;
-> }
->=20
-> --=20
-> 2.39.5 (Apple Git-154)
+> Changes in v2:
+> - Correct Fixes hash based on reviewer feedback
 
-Please ignore this patch. I will resend a proper version after
-learning the kernel submission process.
-
-Apologies for the noise.
-
-Best regards,
-WenTao Liang=
-
+Did you forget to include an Assisted-by: tag?
 
