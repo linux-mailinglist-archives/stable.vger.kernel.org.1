@@ -1,42 +1,42 @@
-Return-Path: <stable+bounces-269461-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-269462-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id vur8L0GcQGqQggkAu9opvQ
-	(envelope-from <stable+bounces-269461-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 28 Jun 2026 06:00:01 +0200
+	id zGmxFY6bQGp0ggkAu9opvQ
+	(envelope-from <stable+bounces-269462-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 28 Jun 2026 05:57:02 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D27BD6D318B
-	for <lists+stable@lfdr.de>; Sun, 28 Jun 2026 06:00:00 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 55FEA6D3154
+	for <lists+stable@lfdr.de>; Sun, 28 Jun 2026 05:57:01 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
 	dkim=none;
 	dmarc=none;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-269461-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-269461-lists+stable=lfdr.de@vger.kernel.org";
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-269462-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-269462-lists+stable=lfdr.de@vger.kernel.org";
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 4ECC03053E8D
-	for <lists+stable@lfdr.de>; Sun, 28 Jun 2026 03:56:31 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 1591E300B807
+	for <lists+stable@lfdr.de>; Sun, 28 Jun 2026 03:56:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 36F252DE702;
-	Sun, 28 Jun 2026 03:56:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BAB702E03EA;
+	Sun, 28 Jun 2026 03:56:41 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from cstnet.cn (smtp21.cstnet.cn [159.226.251.21])
 	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 996982C15BB;
-	Sun, 28 Jun 2026 03:56:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E62D2DF6F4;
+	Sun, 28 Jun 2026 03:56:32 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782618985; cv=none; b=DqNewBU+15+Bv9kEV+X7wvOaPRdK8bAJg7o3gNFxMAyZYC1Puda9JJPSgEzPfK5LdOJRFUiIiIzcVnkK8uo53JoZqSo0pSGmi6RoVSYyPOSEzA4p+4Cun3qA0vRx3GDtYlXHlHJRvjnrfE/AwI3gmenVGeThtLB2rK/C4xaos6M=
+	t=1782619001; cv=none; b=JR3voqqmOPICOMLcgEmb9ZUyLpM6Uk2ekeCMEpf71QddBSAwR15ne0k3q2QhFBVsTMP5XpPdl9YVmcMEHpFnmbuoqvx+Y68U6I5uPFNqgrhLORHxq+Cg1x/spqVYGuLCfvYTc3updQL+IJrNF0ZQbMDY2NWuRlp4RHPVFYf6k5c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782618985; c=relaxed/simple;
-	bh=raZmtM0TIxFLHq71q24EKQcptdNMiIodaVJVqcXAnZ8=;
+	s=arc-20240116; t=1782619001; c=relaxed/simple;
+	bh=vKtRwQF+7hIK/l0uYSsexdjIflByjXJfN0T01BVqn3I=;
 	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=lh1KHNeqod0/MjFn1W6NxLcvfA6Kg/G+pcm7/blLWWwer7rs6/uMHekH7Arn3PImlTg/polq9RP/EvZisyuPM1Puy0E9n6YTmfxvB4oddYJdLeW1XIFPANOeFsWIuqsw+3SCAS4/iF780y1TPiI//HTMYAAoWZ1i7Pv0kbKkA14=
+	 Message-Id:References:To; b=GHUCjAPWeH1ySi7bn5XAQs4dFqmU8guvT636vcEYO/uZV6fUKHDA+Mttdl8IcdxXfqLYLGPx/nnmCKm4O7rPitELlFsQiVku8mxuH96hTjiKOH8ELx6PwGQm/Ckcc71ceikPWYiz0FO1k+xNl9Tc/54J/Q7WSnBybJdHYja238A=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.21
 Received: from smtpclient.apple (unknown [117.182.74.7])
-	by APP-01 (Coremail) with SMTP id qwCowADXfdYKm0BqqCuqAw--.7249S8;
-	Sun, 28 Jun 2026 11:56:10 +0800 (CST)
+	by APP-01 (Coremail) with SMTP id qwCowADXfdYKm0BqqCuqAw--.7249S9;
+	Sun, 28 Jun 2026 11:56:25 +0800 (CST)
 Content-Type: text/plain;
 	charset=utf-8
 Precedence: bulk
@@ -45,11 +45,11 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.700.81.1.8\))
-Subject: Re: [PATCH] fix: drm/nouveau: validate_init: break paths after
- drm_gem_object_lookup   leak GEM reference
+Subject: Re: [PATCH] fix: drm/nouveau: nvkm_chan_new_: multiple error paths
+ return without   releasing acquired references
 From: WenTao Liang <vulab@iscas.ac.cn>
-In-Reply-To: <20260626142631.48578-1-vulab@iscas.ac.cn>
-Date: Sun, 28 Jun 2026 11:55:59 +0800
+In-Reply-To: <20260626143953.48952-1-vulab@iscas.ac.cn>
+Date: Sun, 28 Jun 2026 11:56:14 +0800
 Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
  Maxime Ripard <mripard@kernel.org>,
  Thomas Zimmermann <tzimmermann@suse.de>,
@@ -60,16 +60,16 @@ Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
  stable@vger.kernel.org,
  linux-kernel@vger.kernel.org
 Content-Transfer-Encoding: quoted-printable
-Message-Id: <5B889F03-AAEF-4576-AD51-8B75FBE2E985@iscas.ac.cn>
-References: <20260626142631.48578-1-vulab@iscas.ac.cn>
+Message-Id: <93B2CF9E-410D-4F0A-B95F-9DCD67402A25@iscas.ac.cn>
+References: <20260626143953.48952-1-vulab@iscas.ac.cn>
 To: Lyude Paul <lyude@redhat.com>,
  Danilo Krummrich <dakr@kernel.org>,
  dri-devel@lists.freedesktop.org
 X-Mailer: Apple Mail (2.3826.700.81.1.8)
-X-CM-TRANSID:qwCowADXfdYKm0BqqCuqAw--.7249S8
-X-Coremail-Antispam: 1UD129KBjvJXoW7Cw47tFW8XF45CF1UtFy3CFg_yoW8WFyxpr
-	ZxKF1jvrZ8tw47Kr4IyF1UA3WS9a9YgrW8GF9ay34F9r1fAFyxXry5GwnxXryftr43G3yY
-	qw1DtasaqFWYyaDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+X-CM-TRANSID:qwCowADXfdYKm0BqqCuqAw--.7249S9
+X-Coremail-Antispam: 1UD129KBjvJXoWxGry5ur17XF17Jw45KFy8Xwb_yoW5Zr4xpF
+	45WFyY9rWftrs3K3WIqr48Ka4Yy3yDKw4jk34UCw1SvrnxJry8CrWrCa1IvayrGrs7Gr45
+	ZFsIvFZa9F15tr7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
 	9KBjDU0xBIdaVrnRJUUUm2b7Iv0xC_Kw4lb4IE77IF4wAFF20E14v26rWj6s0DM7CY07I2
 	0VC2zVCF04k26cxKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28IrcIa0xkI8VA2jI
 	8067AKxVWUAVCq3wA2048vs2IY020Ec7CjxVAFwI0_Xr0E3s1l8cAvFVAK0II2c7xJM28C
@@ -84,12 +84,12 @@ X-Coremail-Antispam: 1UD129KBjvJXoW7Cw47tFW8XF45CF1UtFy3CFg_yoW8WFyxpr
 	6xIIjxv20xvEc7CjxVAFwI0_Gr1j6F4UJwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIx
 	AIcVC2z280aVAFwI0_Gr0_Cr1lIxAIcVC2z280aVCY1x0267AKxVW8Jr0_Cr1UYxBIdaVF
 	xhVjvjDU0xZFpf9x07bnUDAUUUUU=
-X-CM-SenderInfo: pyxotu46lvutnvoduhdfq/1tbiCRQMA2pAiNkecgAAsF
+X-CM-SenderInfo: pyxotu46lvutnvoduhdfq/1tbiDAMMA2pAioobPgAAsP
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-0.96 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MV_CASE(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
@@ -100,11 +100,11 @@ X-Spamd-Result: default: False [-0.96 / 15.00];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER(0.00)[vulab@iscas.ac.cn,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-269461-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-269462-lists,stable=lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FREEMAIL_CC(0.00)[linux.intel.com,kernel.org,suse.de,gmail.com,ffwll.ch,redhat.com,lists.freedesktop.org,vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
@@ -117,55 +117,117 @@ X-Spamd-Result: default: False [-0.96 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: D27BD6D318B
+X-Rspamd-Queue-Id: 55FEA6D3154
 
 
 
-> 2026=E5=B9=B46=E6=9C=8826=E6=97=A5 22:26=EF=BC=8CWenTao Liang =
+> 2026=E5=B9=B46=E6=9C=8826=E6=97=A5 22:39=EF=BC=8CWenTao Liang =
 <vulab@iscas.ac.cn> =E5=86=99=E9=81=93=EF=BC=9A
 >=20
-> drm_gem_object_lookup acquires a GEM object reference at the start of
->  each loop iteration. Two break paths (ttm_bo_reserve failure =
-non-EDEADLK
->  and "vma not found") exit the loop without adding the gem to any =
-cleanup
->  list and without calling drm_gem_object_put, causing a GEM object
->  reference leak.
+> After allocating chan and acquiring references on cgrp, vmm, memory, =
+and
+>  chid, numerous subsequent error paths return ret directly without =
+calling
+>  kfree, nvkm_cgrp_unref, nvkm_vmm_unref, nvkm_memory_unref, or
+>  nvkm_chid_put. Every error return after the initial allocations leaks =
+one
+>  or more acquired resources.
 >=20
 > Cc: stable@vger.kernel.org
-> Fixes: 9242829a87e9 ("drm/nouveau: Keep only a single list for =
-validation.")
-> Fixes: 19ca10d82e33 ("drm/nouveau/gem: lookup VMAs for buffers =
-referenced by pushbuf ioctl")
+> Fixes: 06db7fded6de ("drm/nouveau/fifo: add new channel classes")
 > Signed-off-by: WenTao Liang <vulab@iscas.ac.cn>
 > ---
-> drivers/gpu/drm/nouveau/nouveau_gem.c | 2 ++
-> 1 file changed, 2 insertions(+)
+> .../gpu/drm/nouveau/nvkm/engine/fifo/chan.c   | 25 +++++++++++++------
+> 1 file changed, 17 insertions(+), 8 deletions(-)
 >=20
-> diff --git a/drivers/gpu/drm/nouveau/nouveau_gem.c =
-b/drivers/gpu/drm/nouveau/nouveau_gem.c
-> index 20dba02d6175..c654256f4081 100644
-> --- a/drivers/gpu/drm/nouveau/nouveau_gem.c
-> +++ b/drivers/gpu/drm/nouveau/nouveau_gem.c
-> @@ -513,6 +513,7 @@ validate_init(struct nouveau_channel *chan, struct =
-drm_file *file_priv,
-> 			if (unlikely(ret)) {
-> 				if (ret !=3D -ERESTARTSYS)
-> 					NV_PRINTK(err, cli, "fail =
-reserve\n");
-> +				drm_gem_object_put(gem);
-> 				break;
-> 			}
+> diff --git a/drivers/gpu/drm/nouveau/nvkm/engine/fifo/chan.c =
+b/drivers/gpu/drm/nouveau/nvkm/engine/fifo/chan.c
+> index 418a8918bcb8..1bf595bafa9a 100644
+> --- a/drivers/gpu/drm/nouveau/nvkm/engine/fifo/chan.c
+> +++ b/drivers/gpu/drm/nouveau/nvkm/engine/fifo/chan.c
+> @@ -410,18 +410,18 @@ nvkm_chan_new_(const struct nvkm_chan_func =
+*func, struct nvkm_runl *runl, int ru
+> 			      &chan->inst);
+> 	if (ret) {
+> 		RUNL_DEBUG(runl, "inst %d", ret);
+> -		return ret;
+> +		goto done;
+> 	}
+>=20
+> 	/* Initialise virtual address-space. */
+> 	if (func->inst->vmm) {
+> 		if (WARN_ON(vmm->mmu !=3D device->mmu))
+> -			return -EINVAL;
+> +			goto done;
+>=20
+> 		ret =3D nvkm_vmm_join(vmm, chan->inst->memory);
+> 		if (ret) {
+> 			RUNL_DEBUG(runl, "vmm %d", ret);
+> -			return ret;
+> +			goto done;
 > 		}
-> @@ -523,6 +524,7 @@ validate_init(struct nouveau_channel *chan, struct =
-drm_file *file_priv,
-> 			if (!vma) {
-> 				NV_PRINTK(err, cli, "vma not found!\n");
-> 				ret =3D -EINVAL;
-> +				drm_gem_object_put(gem);
-> 				break;
+>=20
+> 		chan->vmm =3D nvkm_vmm_ref(vmm);
+> @@ -432,7 +432,7 @@ nvkm_chan_new_(const struct nvkm_chan_func *func, =
+struct nvkm_runl *runl, int ru
+> 		ret =3D nvkm_object_bind(&dmaobj->object, chan->inst, =
+-16, &chan->push);
+> 		if (ret) {
+> 			RUNL_DEBUG(runl, "bind %d", ret);
+> -			return ret;
+> +			goto done;
+> 		}
+> 	}
+>=20
+> @@ -443,13 +443,13 @@ nvkm_chan_new_(const struct nvkm_chan_func =
+*func, struct nvkm_runl *runl, int ru
+> 			if (ouserd + chan->func->userd->size >=3D
+> 				nvkm_memory_size(userd)) {
+> 				RUNL_DEBUG(runl, "ouserd %llx", ouserd);
+> -				return -EINVAL;
+> +				goto done;
 > 			}
 >=20
+> 			ret =3D nvkm_memory_kmap(userd, =
+&chan->userd.mem);
+> 			if (ret) {
+> 				RUNL_DEBUG(runl, "userd %d", ret);
+> -				return ret;
+> +				goto done;
+> 			}
+>=20
+> 			chan->userd.base =3D ouserd;
+> @@ -461,7 +461,7 @@ nvkm_chan_new_(const struct nvkm_chan_func *func, =
+struct nvkm_runl *runl, int ru
+>=20
+> 	if (chan->id < 0) {
+> 		RUNL_ERROR(runl, "!chids");
+> -		return -ENOSPC;
+> +		goto done;
+> 	}
+>=20
+> 	if (cgrp->id < 0)
+> @@ -475,8 +475,17 @@ nvkm_chan_new_(const struct nvkm_chan_func *func, =
+struct nvkm_runl *runl, int ru
+> 	ret =3D chan->func->ramfc->write(chan, offset, length, devm, =
+priv);
+> 	if (ret) {
+> 		RUNL_DEBUG(runl, "ramfc %d", ret);
+> -		return ret;
+> +		goto done;
+> 	}
+>=20
+> 	return 0;
+> +
+> +done:
+> +	if (chan->id >=3D 0)
+> +		nvkm_chid_put(runl->chid, chan->id, &chan->cgrp->lock);
+> +	nvkm_memory_unref(&chan->userd.mem);
+> +	nvkm_vmm_unref(&chan->vmm);
+> +	nvkm_cgrp_unref(&chan->cgrp);
+> +	*pchan =3D NULL;
+> +	return ret;
+> }
 > --=20
 > 2.39.5 (Apple Git-154)
 
