@@ -1,91 +1,90 @@
-Return-Path: <stable+bounces-269427-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-269428-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 0bHUG3hpQGq1fQkAu9opvQ
-	(envelope-from <stable+bounces-269427-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 28 Jun 2026 02:23:20 +0200
+	id qfVIEQ9qQGrOfQkAu9opvQ
+	(envelope-from <stable+bounces-269428-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 28 Jun 2026 02:25:51 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A64AC6D2DD3
-	for <lists+stable@lfdr.de>; Sun, 28 Jun 2026 02:23:19 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id CC6E46D2DEB
+	for <lists+stable@lfdr.de>; Sun, 28 Jun 2026 02:25:50 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=rKrOz57X;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-269427-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-269427-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=gmail.com header.s=20251104 header.b="Yy5/MvoO";
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-269428-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-269428-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=gmail.com;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 296AE3017254
-	for <lists+stable@lfdr.de>; Sun, 28 Jun 2026 00:23:16 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 09FEA3007BA6
+	for <lists+stable@lfdr.de>; Sun, 28 Jun 2026 00:25:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4948B823DE;
-	Sun, 28 Jun 2026 00:23:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9FFE614A62B;
+	Sun, 28 Jun 2026 00:25:46 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wr1-f41.google.com (mail-wr1-f41.google.com [209.85.221.41])
+Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3AB934CDD
-	for <stable@vger.kernel.org>; Sun, 28 Jun 2026 00:23:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1397034CDD
+	for <stable@vger.kernel.org>; Sun, 28 Jun 2026 00:25:44 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782606195; cv=none; b=tNiLPhEPE0Xw+MGeVNSWFLLcuPb19Q4Rj35X7aIjRo2S8LruwPeK2oXpcClQ6S9Ay51EpTTr4KYrQLoUwWTAPffRPKAAPwpdaugR1G3R0zkEBc3GsHPm9aFbAdtaOTegbnwkJ4qOlxquEaY/RlNLiLggkprLzXi+5hh0Tw/GnY8=
+	t=1782606346; cv=none; b=REQItUS8G7g35u92lAmt5qYu35yjg70QJYklJUnRSSjurkdQKx5ZcYZKuPuZf57UD/QWOyNo3Jx7FkR+rglLwlaBZjg4tGJfCbPi8GaSPIguBIa5GTSrWfB/YWksHxb6uJKUNOWBbJcn+arLFYaTCogpIjz6jBKSQznFXAOSlGM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782606195; c=relaxed/simple;
-	bh=HKwgogJWfXcsMKewL+kysH6TG/wJTdGDT1IW/gI30mc=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=fEdmX9kGJW7ojPOLHiVBkCtKxbYwz47ZgcFVVtL7+O0TPerz0kjZ7Q3MMZjUNPCR9+ZVwFxFifmK93Ro5SLOP8YIAwGGVoWb23EOMOf/M3OQxwH1H3w6/HVV2l3gBOCq5+LXrO/MESEua8W4PHwVkCzty1ApRkh1StRzDFhbR4Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=rKrOz57X; arc=none smtp.client-ip=209.85.221.41
-Received: by mail-wr1-f41.google.com with SMTP id ffacd0b85a97d-46cbe01d4b6so1210022f8f.2
-        for <stable@vger.kernel.org>; Sat, 27 Jun 2026 17:23:13 -0700 (PDT)
+	s=arc-20240116; t=1782606346; c=relaxed/simple;
+	bh=Gp9heeZl8YOVXLS81sRHuvkbEUIKeicfYWTiUjTKSBE=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=DgMZRDwileaG4fQQkeJolIZGfnWyJwuv43Bu1JxwMvSIhd9b/LYt5wL8hXCMJ4agtMVDlS+o476Gzb36AlnwBrs+t4XxLB2nDBkzrpFSXLWJvMeoBWxCCbwOg5rw3MnXONHzU57z9mIczRtnBmc7xnMcaNwMlY24GI9Wu8w6U6M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Yy5/MvoO; arc=none smtp.client-ip=209.85.128.46
+Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-4921eed3fa2so15547425e9.0
+        for <stable@vger.kernel.org>; Sat, 27 Jun 2026 17:25:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1782606192; x=1783210992; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1782606343; x=1783211143; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=/OXIfP8Zs3vii+BF/lVuJKai0eCajAz7G0PCYf1wmmA=;
-        b=rKrOz57XmV72SGetT/MbbnC5rdUcRDBwUYGP1SRtPp9MsNGsS0UElwhaVVTVQmN8IJ
-         8aObuSVuDUNcuG3/oNR1ULr93Bso/7hZQYeMkDVcIARq4o82Ptr03+PZV1Ou5a5w8DuZ
-         xeQbEQ3JQluBWCMVJ2xJBQm5AKCfsUepyrb0W/x55XiXjtDGsxfT7KMr2E2gOzzmrJJC
-         +KsNISin8NtAlKDtkVlcJwdGb/DxgU8uExTsurFTPAXfCCV0T5oIYdXUeeQZ6sVit5To
-         Mvr7SfOEM0wPGvwsW6GNKISD+ZvtCsAe31mPynZoS4RVv/RphzYir/QZkgIIJOgKheVd
-         rkLA==
+        bh=w+ggCHBmTIi4iroEDf3wYeBaqmZKkqX7ae5VYLvC2Dk=;
+        b=Yy5/MvoOFUCHwQQi3KX9W+0IZlV5baCQ2HyMk8lARPWRP2fkJZsbAMDKPLnEJAb1s+
+         O/JBp10mly4ZQR801vCxhpgstqA+uOys8Tz4rQQuFkuEojiNGsIYBnhnKF/JoYvP0BfM
+         x9t1JlN/DeX8oXXdg2H4C6qyuJbXrfqfkWfJEEfIx2c+V6VgjWB7mmvoSziKXefekkue
+         IcOFSJwJF2T1MpC7Ol8UFb3VSIwFI3ihxnE1ggSs5YB/YDDJ8n4c16ZUS+/5sv5LmBsz
+         vAh8iu5MMKQVHEUDuRcjeiTmQ9yckZBbhDHYMSomD2Wq6/l/gZE0HBQjXSiwcNTtWe6m
+         rNhQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782606192; x=1783210992;
+        d=1e100.net; s=20251104; t=1782606343; x=1783211143;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=/OXIfP8Zs3vii+BF/lVuJKai0eCajAz7G0PCYf1wmmA=;
-        b=NfiTqfXDKY32/TiiPFuOBovESSk7ew3yeSVjT2oilPz6L/V6ctqBPV0SQGGq7fJkxR
-         IgGj2CK6KrI6HUOP3rAmaFO5OO0Ze5WcRVGvZhshld5aDFxmudWY7FndgRSdnztwy105
-         NMochHxmodT36cJVbVdG64+sVgiHV16cJTm7kYmR40CFtVSjBZHxedyUki49FUg3qkBk
-         qU5ZqDYY8ufAqp0UB0q+mnSZjx5HfSrArpjzfU8rhVN+OZALiwaMOtXIVMzLM1m8RI1u
-         62h6QTv4Tw4b/RMeFzwkGER5KGGYf0Um4cGDKB+R1bgLiR8lZO+FRNTK1w9V4RMH9MpC
-         po1g==
-X-Forwarded-Encrypted: i=1; AHgh+Rrb4OzD8DxVasHvTUd7KP0vTTTnJ08SzTOSvMwDg/lxfiprj5J5tX2GUOXDTQcvneqvAdYC2TM=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw0Gpgdj8JG9QKBlxhUiWaTy77eI8O5Y4ZTcRPkJOYWNNSyt55R
-	PFRbcDLiQ+N565Zxx2efMotpb6orCFUUVfOPngfRYoXQqk5uyLYdZTfsy8XLP0fJMPw=
-X-Gm-Gg: AfdE7cl+PKRUes7PtP1wIetyvEaSN4IKRMesRRiwt25+PFIFuutGIWzNi/++RnJMtF8
-	0w4aHZzekM+vnBFMKRwX9zCpXPtGe8GVAvn20jjCohVVy2fmtyj4hTSAl+6jvyPEWNO3VAk/pNu
-	97roAsI54lTkXMqv2mW8N9iU11U9FdDxk95gNXcTvCGCieQoBVrCGV/4jgzU4XA5lPZSZIzAV/y
-	+ZkM7aYXaH8dNkvbstCsS5MPUQ+yDaivJyRTjVRPBslN/C5CvLSec+1/BH00jzJGRbw+iNKL5mi
-	uqON3vIzAhiSFIdaVxn4Ocu0pVG/g/Z1THss6eGPvBCONX3uONs1pS9m6nf08qN+AWZDVTBdlUC
-	LAl4u80tfHBFCnK54/LkJrQRrSWHCKItskk36M/4g13SxKXPPJMXFMdCznyYSXGCe7vLmKT0+JY
-	SgjqMnJxLEnG+/cjHlD8vIaQs87nGdbyM24HJM
-X-Received: by 2002:a05:6000:4692:b0:46e:6210:bd8d with SMTP id ffacd0b85a97d-46e6210be90mr12463565f8f.17.1782606192121;
-        Sat, 27 Jun 2026 17:23:12 -0700 (PDT)
+        bh=w+ggCHBmTIi4iroEDf3wYeBaqmZKkqX7ae5VYLvC2Dk=;
+        b=hZGqK9q82J00Llb+wDzJT69ehQrN1avxKbj/p4pA/nRfvsL4Wv2h6EV752ZIJ70OcK
+         C0phNiNh5GWBT0M/aoVRdLs9rYCZD3YSG5JnEPTJPOcqc4FW9aGZrMtwI7gv5N9tuG3N
+         UA6ggKVmuSzVugOcQ3+umbTXiOh/Ci7j2jn9YuWn99L5faSgBP2kE4oVrR/qmXYwFIsd
+         eG03TSimSmYKsKSdZ48BiG1HLIwVjhCE83JzelrVkTHVrmiHnq8W0t7dUYhePBj80ztB
+         GnR3ZjgBtyDNDBt08cyE45yKcMsydqzbeZDyCNN0gfZ5NjoWDJTx19lbGn7iA32vEDHs
+         jsaQ==
+X-Forwarded-Encrypted: i=1; AFNElJ/NKTQn3Mbmy0qzZeZr9R1XriNKh/RQevo609qzb7Oy4A33vczlQGvPhWzkOhoZtCyqnv95u18=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwcCk9Vg/JsyeehxzPTI5MTNa+UQ/VZU1ifZyY+JcQ3e/U83Enn
+	7M2/r+ofIkp6hl9yThiH9JfyAJnvlZIyYCkag/EYMGrxg5NymnWP/zae
+X-Gm-Gg: AfdE7cky12uI42KUR+z7oKMt+r+vKHkr6YV80S7Le/nNZi+AaFKN4+iOYoM0yEKITXY
+	SiXpMSE/qRAeSO8wcCG94VtfPkWLNR2fSOSx0MQNAAP59jxlH+B6mCpT9ZkXHLEbhx0rny0aDUU
+	KboxRrXhVpgfBH6F+M3oOC4056IMCocJ6jNF7JgTwWuQxBHa/SYBI8sjii9F8i47LmqKkd3Fsy2
+	cuz02C2BNYmlqmsBCQWLS0A1oSIUfMqYRUi+/UoD49PHtXtftZGolyDpla6cC9ezJNkohexw84y
+	C0u3i2AGH30U/vxmIVd1h5Wg+srvlRnjadhNCWfDOLmzqMurtJ9VxoCtL44oYRHZF2eoNbApXt3
+	Vv/JIGU/+xaq7Il0DQ4FpmZb0Sw9LpqhOBsfgq3IZIMOxAUKaE2IHuw83RNTZ5FSVbsjeOq42Tr
+	HwjanDoT7waii74LPawVzYP5YJUA==
+X-Received: by 2002:a05:600c:6792:b0:492:7187:aa67 with SMTP id 5b1f17b1804b1-4927187aa7dmr68432665e9.30.1782606343532;
+        Sat, 27 Jun 2026 17:25:43 -0700 (PDT)
 Received: from Dev-Null-MSI ([2a0d:3344:52ac:a808:98a4:4381:be45:536f])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-46fccca2781sm12320616f8f.6.2026.06.27.17.23.10
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4926f94f213sm145611055e9.12.2026.06.27.17.25.42
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 27 Jun 2026 17:23:11 -0700 (PDT)
+        Sat, 27 Jun 2026 17:25:43 -0700 (PDT)
 From: Yousef Alhouseen <alhouseenyousef@gmail.com>
-To: Marcel Holtmann <marcel@holtmann.org>,
-	Luiz Augusto von Dentz <luiz.dentz@gmail.com>
-Cc: linux-bluetooth@vger.kernel.org,
+To: Johannes Berg <johannes@sipsolutions.net>
+Cc: linux-wireless@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	Safa Karakus <safa.karakus@secunnix.com>,
+	Benjamin Berg <benjamin.berg@intel.com>,
 	stable@vger.kernel.org,
-	syzbot+674ff7e4d7fdfd572afc@syzkaller.appspotmail.com,
+	syzbot+21629c14aa749636db9d@syzkaller.appspotmail.com,
 	Yousef Alhouseen <alhouseenyousef@gmail.com>
-Subject: [PATCH] Bluetooth: fix UAF in bt_accept_dequeue()
-Date: Sun, 28 Jun 2026 02:23:05 +0200
-Message-ID: <20260628002305.22823-1-alhouseenyousef@gmail.com>
+Subject: [PATCH] wifi: mac80211_hwsim: avoid treating MCS as legacy rate index
+Date: Sun, 28 Jun 2026 02:25:37 +0200
+Message-ID: <20260628002537.23550-1-alhouseenyousef@gmail.com>
 X-Mailer: git-send-email 2.54.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -97,27 +96,26 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [0.84 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64];
 	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[vger.kernel.org,secunnix.com,syzkaller.appspotmail.com,gmail.com];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-269427-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
+	FREEMAIL_CC(0.00)[vger.kernel.org,intel.com,syzkaller.appspotmail.com,gmail.com];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:marcel@holtmann.org,m:luiz.dentz@gmail.com,m:linux-bluetooth@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:safa.karakus@secunnix.com,m:stable@vger.kernel.org,m:syzbot+674ff7e4d7fdfd572afc@syzkaller.appspotmail.com,m:alhouseenyousef@gmail.com,m:luizdentz@gmail.com,m:syzbot@syzkaller.appspotmail.com,s:lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_TO(0.00)[holtmann.org,gmail.com];
+	TAGGED_FROM(0.00)[bounces-269428-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:johannes@sipsolutions.net,m:linux-wireless@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:benjamin.berg@intel.com,m:stable@vger.kernel.org,m:syzbot+21629c14aa749636db9d@syzkaller.appspotmail.com,m:alhouseenyousef@gmail.com,m:syzbot@syzkaller.appspotmail.com,s:lists@lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
 	FORGED_SENDER(0.00)[alhouseenyousef@gmail.com,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FREEMAIL_FROM(0.00)[gmail.com];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
@@ -126,104 +124,76 @@ X-Spamd-Result: default: False [0.84 / 15.00];
 	DKIM_TRACE(0.00)[gmail.com:+];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,674ff7e4d7fdfd572afc];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,appspotmail.com:email,syzkaller.appspot.com:url,vger.kernel.org:from_smtp]
+	TAGGED_RCPT(0.00)[stable,21629c14aa749636db9d];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[syzkaller.appspot.com:url,appspotmail.com:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: A64AC6D2DD3
+X-Rspamd-Queue-Id: CC6E46D2DEB
 
-bt_accept_get() takes a temporary reference before dropping the accept
-queue lock. bt_accept_dequeue() currently drops that reference before
-bt_accept_unlink(), leaving only the queue reference.
+Injected HT and VHT rates store an MCS value in rates[0].idx rather
+than an index into the legacy bitrate table. hwsim nevertheless passes
+these rates to ieee80211_get_tx_rate() while generating monitor frames
+and timestamps.
 
-bt_accept_unlink() drops the queue reference. The subsequent
-sock_hold() therefore accesses freed memory if it was the final
-reference, as observed by KASAN during listening L2CAP socket cleanup.
+A crafted injected frame can therefore read beyond the bitrate table.
+If the resulting bitrate is zero, mac80211_hwsim_write_tsf() also
+divides by zero, as observed by syzbot.
 
-Retain the temporary queue-walk reference through unlink and hand it to
-the caller on success. Drop it explicitly on the closed and
-not-yet-connected paths.
+Use ieee80211_get_tx_rate() only for legacy rates. The existing fallback
+continues to supply a conservative bitrate where hwsim does not yet
+calculate MCS rates.
 
-Fixes: ab1513597c6c ("Bluetooth: fix UAF in l2cap_sock_cleanup_listen() vs l2cap_conn_del()")
-Reported-by: syzbot+674ff7e4d7fdfd572afc@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=674ff7e4d7fdfd572afc
+Fixes: e75129031f1c ("wifi: mac80211_hwsim: move timestamp writing later in the datapath")
+Reported-by: syzbot+21629c14aa749636db9d@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=21629c14aa749636db9d
 Cc: stable@vger.kernel.org
 Signed-off-by: Yousef Alhouseen <alhouseenyousef@gmail.com>
 ---
- net/bluetooth/af_bluetooth.c | 17 +++--------------
- net/bluetooth/l2cap_sock.c   |  4 ++--
- 2 files changed, 5 insertions(+), 16 deletions(-)
+ .../net/wireless/virtual/mac80211_hwsim_main.c    | 15 +++++++++++++--
+ 1 file changed, 13 insertions(+), 2 deletions(-)
 
-diff --git a/net/bluetooth/af_bluetooth.c b/net/bluetooth/af_bluetooth.c
-index bcbc11c9cb15..a2290ffdc2c1 100644
---- a/net/bluetooth/af_bluetooth.c
-+++ b/net/bluetooth/af_bluetooth.c
-@@ -305,7 +305,7 @@ struct sock *bt_accept_dequeue(struct sock *parent, struct socket *newsock)
- 
- restart:
- 	for (sk = bt_accept_get(parent, NULL); sk; sk = next) {
--		/* Prevent early freeing of sk due to unlink and sock_kill */
-+		/* The reference from bt_accept_get() keeps sk alive. */
- 		lock_sock(sk);
- 
- 		/* Check sk has not already been unlinked via
-@@ -321,13 +321,11 @@ struct sock *bt_accept_dequeue(struct sock *parent, struct socket *newsock)
- 
- 		next = bt_accept_get(parent, sk);
- 
--		/* sk is safely in the parent list so reduce reference count */
--		sock_put(sk);
--
- 		/* FIXME: Is this check still needed */
- 		if (sk->sk_state == BT_CLOSED) {
- 			bt_accept_unlink(sk);
- 			release_sock(sk);
-+			sock_put(sk);
- 			continue;
- 		}
- 
-@@ -337,16 +335,6 @@ struct sock *bt_accept_dequeue(struct sock *parent, struct socket *newsock)
- 			if (newsock)
- 				sock_graft(sk, newsock);
- 
--			/* Hand the caller a reference taken while sk is
--			 * still locked.  bt_accept_unlink() just dropped
--			 * the accept-queue reference; without this hold a
--			 * concurrent teardown (e.g. l2cap_conn_del() ->
--			 * l2cap_sock_kill()) could free sk between
--			 * release_sock() and the caller using it.  Every
--			 * caller drops this with sock_put() when done.
--			 */
--			sock_hold(sk);
--
- 			release_sock(sk);
- 			if (next)
- 				sock_put(next);
-@@ -354,6 +342,7 @@ struct sock *bt_accept_dequeue(struct sock *parent, struct socket *newsock)
- 		}
- 
- 		release_sock(sk);
-+		sock_put(sk);
+diff --git a/drivers/net/wireless/virtual/mac80211_hwsim_main.c b/drivers/net/wireless/virtual/mac80211_hwsim_main.c
+index 0dd8a6c85953..4a66272526f3 100644
+--- a/drivers/net/wireless/virtual/mac80211_hwsim_main.c
++++ b/drivers/net/wireless/virtual/mac80211_hwsim_main.c
+@@ -1324,6 +1324,17 @@ static void mac80211_hwsim_set_tsf(struct ieee80211_hw *hw,
  	}
+ }
  
- 	return NULL;
-diff --git a/net/bluetooth/l2cap_sock.c b/net/bluetooth/l2cap_sock.c
-index 4853f1b33449..de56ca691afa 100644
---- a/net/bluetooth/l2cap_sock.c
-+++ b/net/bluetooth/l2cap_sock.c
-@@ -1492,8 +1492,8 @@ static void l2cap_sock_cleanup_listen(struct sock *parent)
++static struct ieee80211_rate *
++mac80211_hwsim_get_tx_rate(struct ieee80211_hw *hw,
++			   struct ieee80211_tx_info *info)
++{
++	if (info->control.rates[0].flags &
++	    (IEEE80211_TX_RC_MCS | IEEE80211_TX_RC_VHT_MCS))
++		return NULL;
++
++	return ieee80211_get_tx_rate(hw, info);
++}
++
+ static void mac80211_hwsim_monitor_rx(struct ieee80211_hw *hw,
+ 				      struct sk_buff *tx_skb,
+ 				      struct ieee80211_channel *chan)
+@@ -1333,7 +1344,7 @@ static void mac80211_hwsim_monitor_rx(struct ieee80211_hw *hw,
+ 	struct hwsim_radiotap_hdr *hdr;
+ 	u16 flags, bitrate;
+ 	struct ieee80211_tx_info *info = IEEE80211_SKB_CB(tx_skb);
+-	struct ieee80211_rate *txrate = ieee80211_get_tx_rate(hw, info);
++	struct ieee80211_rate *txrate = mac80211_hwsim_get_tx_rate(hw, info);
  
- 	/* Close not yet accepted channels.
- 	 *
--	 * bt_accept_dequeue() now returns sk with an extra reference held
--	 * (taken while sk was still locked) so a concurrent l2cap_conn_del()
-+	 * bt_accept_dequeue() returns sk with its temporary queue-walk
-+	 * reference held, so a concurrent l2cap_conn_del()
- 	 * -> l2cap_sock_kill() cannot free sk under us.
- 	 *
- 	 * cleanup_listen() runs under the parent sk lock, so unlike
+ 	if (!txrate)
+ 		bitrate = 0;
+@@ -1603,7 +1614,7 @@ static void mac80211_hwsim_write_tsf(struct mac80211_hwsim_data *data,
+ 
+ 	spin_lock_bh(&data->tsf_offset_lock);
+ 
+-	txrate = ieee80211_get_tx_rate(data->hw, info);
++	txrate = mac80211_hwsim_get_tx_rate(data->hw, info);
+ 	if (txrate)
+ 		bitrate = txrate->bitrate;
+ 
 -- 
 2.54.0
 
