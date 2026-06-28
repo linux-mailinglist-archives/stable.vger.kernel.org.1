@@ -1,129 +1,257 @@
-Return-Path: <stable+bounces-269577-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-269579-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id h6EJB3ByQWpZqwkAu9opvQ
-	(envelope-from <stable+bounces-269577-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 28 Jun 2026 21:13:52 +0200
+	id i9OnCnhzQWrLqwkAu9opvQ
+	(envelope-from <stable+bounces-269579-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 28 Jun 2026 21:18:16 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9B4FC6D4B69
-	for <lists+stable@lfdr.de>; Sun, 28 Jun 2026 21:13:51 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 227C46D4BF4
+	for <lists+stable@lfdr.de>; Sun, 28 Jun 2026 21:18:15 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=sntech.de header.s=gloria202408 header.b=o8vyMWwP;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-269577-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-269577-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=quarantine) header.from=sntech.de;
+	dkim=pass header.d=rowland.harvard.edu header.s=google header.b=Xxul7sXu;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-269579-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-269579-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=none) header.from=rowland.harvard.edu;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 121E23013A9C
-	for <lists+stable@lfdr.de>; Sun, 28 Jun 2026 19:13:41 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 4546F3002B78
+	for <lists+stable@lfdr.de>; Sun, 28 Jun 2026 19:18:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB9CE3126AD;
-	Sun, 28 Jun 2026 19:13:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B4AF31328C;
+	Sun, 28 Jun 2026 19:18:09 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from gloria.sntech.de (gloria.sntech.de [185.11.138.130])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f176.google.com (mail-qt1-f176.google.com [209.85.160.176])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB002262D0B;
-	Sun, 28 Jun 2026 19:13:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B0572FFFB8
+	for <stable@vger.kernel.org>; Sun, 28 Jun 2026 19:18:07 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782674019; cv=none; b=G7+Sa+D7UBrNCT1MSun4zm8wAK8GA7QlWhjVpmIG91ZO5Zn6z4Ee82T8PuqOF1DMGQE3geZbyI8K/f0txFM1cQq+ug3yhKLzr8mHpf3qRAQLclzhzbEiR0s2JSiq3h7PMQPnVZIuhYL56uWOHCn5SChjKQYJphtAQvuIl6jjOVA=
+	t=1782674289; cv=none; b=qcseK33jjVDUR5fBsbHBP2BOYlHmn2ArB6eLfVdtIysNxqbsLXgCtukq7PWWpHwMT/i/bwitMF5nhkhYCNlaeZNCnL6ef67vdXcr1bQ1ivNRmjipynyHnjy7F50qkHIvFz0p/QSlsRh05NgLcdTzfO3qZby8f4YNHaJG4DSLgHo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782674019; c=relaxed/simple;
-	bh=f0zvPyYrWMaHQwMn7JRTbhUeKXMcrorNRIVcPJcfaZ4=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=C1MkutWZ9CIukqafud3rYvBwQkFZFPJx7jXAmbGaSH3aex2yLshuNkQcDLLYwSLxb5D6OBvj0GfxXatjRAwwhUY8d98MGyP5rli3ibfh9sLiSMOI3Y62+TDs1N+Vdj7gn5VMoZZwILROGKIXoj9n6ChdaQEMRdZ+r6cA/qTteP0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=sntech.de; spf=pass smtp.mailfrom=sntech.de; dkim=pass (2048-bit key) header.d=sntech.de header.i=@sntech.de header.b=o8vyMWwP; arc=none smtp.client-ip=185.11.138.130
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=sntech.de;
-	s=gloria202408; h=Content-Transfer-Encoding:Content-Type:MIME-Version:
-	References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Reply-To;
-	bh=ZdaTmsRuUwlAr3UAk7TqOg1bWsvPp5lljQQumQI6/0A=; b=o8vyMWwPbG74igvWIsnM00asfz
-	WD+MMBbFUyATcL8lGW3uE5VnB9CrP4qqkDPyFvXL1wdi3v08JifaWOEMCEN5VVLKSEgY+hCGloJqs
-	8Of91hPQFGhzBqbgqOJZ38mepZ9Av9D7Pz3C0zN8jbqsRqeUDf4FgVSvIfmL9OrB3tMWWocPfi/zO
-	1ezD960yhDJ7Nx3sBiejGpEDVA3QVpU60rWUzzx32X/Rm5QuTznbfS8RMfJfTdqs26AB2cBpEV5b6
-	M528rX6lP1tRWSVhjIR0voiJ8He81MuzzZWgcnZk1p9+JOnhxY+Gz85JyGV7vD+k5BIjzyZTuBdU5
-	vAObhV7w==;
-From: Heiko Stuebner <heiko@sntech.de>
-To: Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Jakob Unterwurzacher <jakob.unterwurzacher@cherry.de>,
-	Quentin Schulz <quentin.schulz@cherry.de>,
-	Jakob Unterwurzacher <jakobunt@gmail.com>
-Cc: Heiko Stuebner <heiko@sntech.de>,
-	stable@vger.kernel.org,
-	Heiko Stuebner <heiko.stuebner@cherry.de>,
-	devicetree@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-rockchip@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2] arm64: dts: rockchip: fix emmc reset polarity on px30-cobra
-Date: Sun, 28 Jun 2026 21:13:25 +0200
-Message-ID: <178267399837.3089434.7647542691250454782.b4-ty@sntech.de>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260609081728.30616-2-jakobunt@gmail.com>
-References: <20260609081728.30616-2-jakobunt@gmail.com>
+	s=arc-20240116; t=1782674289; c=relaxed/simple;
+	bh=n/G92GrsA9ruso1DbYIYE4AnAPuAZp/VAjINM+B7Ly0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=o2y5xJn5zwYzblxToh+3JrgBix/eQ0hMS+R3YHjrO8ztZ6Go9GhOK/jZHW2Id8QJXLgBfIyNshBkioHAJac+i2FdHuQ4CyMFVEQjxeWCfGzKy/3KN9D3Kggbmo5lpTQw9qZLCZUfds1cS27nBTv/ZNGsdYjD6aetNGsnFS7cnEs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rowland.harvard.edu; spf=fail smtp.mailfrom=g.harvard.edu; dkim=pass (2048-bit key) header.d=rowland.harvard.edu header.i=@rowland.harvard.edu header.b=Xxul7sXu; arc=none smtp.client-ip=209.85.160.176
+Received: by mail-qt1-f176.google.com with SMTP id d75a77b69052e-51bfe9a1550so1349711cf.0
+        for <stable@vger.kernel.org>; Sun, 28 Jun 2026 12:18:07 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=rowland.harvard.edu; s=google; t=1782674287; x=1783279087; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=oo5Z8Yt77eV159eB51RytXZ95igPn7LmT+HtkoqhKVU=;
+        b=Xxul7sXuHGHi+ll0holyF4sdpxdTJvRDQ7SnP+xGyabk8dvVpGkDlSeYwy7o3xPkIh
+         tJ1nqASfQ0mKMDEnEji7qpgBMUkWQgL2GJlWhIDGRwgZwLrQcWWLYRT3V4KXlffRx7l9
+         KvPXVtSvwMXFKNXOsnGK5+wM2pdezRLxt2rhe0m6Oyg5WrLUkz8dkr6hFjVdLB+ZH50o
+         9p6xtkoW0Zaje1gJdK11HMu48alPaC8mLQ2b/mMvBL3EhfG732/5UwFTXA+pknJTRdpw
+         EsnOikqJMpwdq3QuF8Cz8VduDFm8Sll1HxflbQ3b+58VC1TQLAhQuttrzFn1jSsusGmo
+         Ca/A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1782674287; x=1783279087;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=oo5Z8Yt77eV159eB51RytXZ95igPn7LmT+HtkoqhKVU=;
+        b=PW+qWjh9DYnSow7IkZ2Ea7S5IiVpSihBsa6fy1Jwa7xGql11THNS5hc+KVFw35S2TX
+         XcCu8YBJYP7ChxcTGVXKyCyi0Jp+EtGbjL1tmi3gRDFaF7a+au2X0mP4+lBLL8xxSQMl
+         1ChKMYPem93lUtIy01e7ai3Tjavn/gjhoxzbJ4hbxYkocPi8Ya6GTuGKm6PzjOSbXASm
+         ughIHRa7oTX1KCVHq+Q690ZPvXkQAkR+fHc4LIVgan4WX39QrarSv88YfUoFNF34+l2Z
+         FwRe+Ea9A87eCCYghZEsy0B5WTfa1xp0Ewbi1H3DJBbUte9X6vKx4jkdht3koYjBLE5w
+         OcPA==
+X-Forwarded-Encrypted: i=1; AFNElJ/+tcJamBVZ66WXDxEvEJRUxW5eRo2QvSRBqHRWqhANH4sHKuAtaW+clSGWsNxqOQnuTyoicNc=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyBJViLsMHJwbBH62Nk7fnvAgbg4IBbhXs/+/Jg+gmqLjLYGlxZ
+	RTLxVLEJt2TOuk8TesT2tqrixWbmZnvJ4Li8Ah7CMtdP5H18D44fiLfJJzieZkN9yQ==
+X-Gm-Gg: AfdE7cnzZ2rx6MUnGTSAnpzAnmJ5wR8HfibNgH40alrYy0LA5LDsFKfaGwgTfEvuagW
+	pdG48Ea1EixJcbvRxKYIVaUndbT8OgnucKs5bKrDRiO43V89mC1sm+a/N27ByaKHjh7dP0XQ6Pb
+	xrU6DcWcX9vXD5FRkpMMCgKwQMY8OOLFlUbBw0FIGmFmGVwXjxCNZH8WLZiPwNP9ZI20RjYilT/
+	lmxAfNeQcs/7EQna91XKYONIXyw5cfjcLzPru6RSxEGXYNAHnHIOwPWkW3d2wZxV7WtX0V0rKtn
+	0E1OkGKT/WwFG3XUXk6Ao5Up9d9fLdzLoof3FKqYrVTLRPLD8P7FzNHDtY8TGYPnfglPvC1nQ8c
+	E+0p8cDQt1AWBzMJXMA2uTbzdFZly/tQtj2CBlfjxjdLDUya+WCaifk8Qm+zd7RYTuEvPwIl1NR
+	XLaEx5qXcs4IV/t6XADcdSrwCLZU54yf7a
+X-Received: by 2002:a05:620a:a0c6:20b0:92b:a2f6:d1a9 with SMTP id af79cd13be357-92ba2f6d1f0mr646592985a.44.1782674286568;
+        Sun, 28 Jun 2026 12:18:06 -0700 (PDT)
+Received: from rowland.harvard.edu ([2601:19b:d01:d210:d62f:1911:f952:16ba])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-926000c343bsm1872097985a.28.2026.06.28.12.18.04
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 28 Jun 2026 12:18:05 -0700 (PDT)
+Date: Sun, 28 Jun 2026 15:18:02 -0400
+From: Alan Stern <stern@rowland.harvard.edu>
+To: Michal Pecio <michal.pecio@gmail.com>
+Cc: Nikhil Solanke <nikhilsolanke5@gmail.com>, linux-usb@vger.kernel.org,
+	gregkh@linuxfoundation.org, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org, corbet@lwn.net, skhan@linuxfoundation.org,
+	linux-doc@vger.kernel.org
+Subject: Re: [PATCH v2] usbcore: Add quirk for 255-bytes initial config read
+Message-ID: <8f5bb295-fc1b-4698-8f2f-2d40fb4d9f93@rowland.harvard.edu>
+References: <567e8866-4308-4e5f-819c-fe778dbf74f8@rowland.harvard.edu>
+ <CAFgddhJk0EYG71fnKdio=RHC-cH+JmL-EZ7-oVD-LdHoa2TBSA@mail.gmail.com>
+ <5159fd69-dddf-4073-a8e7-95fa77de0b7f@rowland.harvard.edu>
+ <CAFgddhJ2HeJ=oTBX_axMJcgJq7GXH9abe+LH+x9NGekGO4BMyw@mail.gmail.com>
+ <eb0dfd45-91c5-49ba-a297-b183dbc52c8c@rowland.harvard.edu>
+ <CAFgddhLZ9SuOzG_6mW09j9aDkCp6TedpNkzJ6TUD+DnR3TDLKA@mail.gmail.com>
+ <02060df3-b8c5-4a86-b3ab-3a28eea8a562@rowland.harvard.edu>
+ <20260628165040.76fd608d.michal.pecio@gmail.com>
+ <62e1fab3-1045-41f3-bc74-4c7624011619@rowland.harvard.edu>
+ <20260628190201.00afdccf.michal.pecio@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260628190201.00afdccf.michal.pecio@gmail.com>
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-0.66 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[sntech.de,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[sntech.de:s=gloria202408];
+	DMARC_POLICY_ALLOW(-0.50)[rowland.harvard.edu,none];
+	R_DKIM_ALLOW(-0.20)[rowland.harvard.edu:s=google];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_RECIPIENTS(0.00)[m:robh@kernel.org,m:krzk+dt@kernel.org,m:conor+dt@kernel.org,m:jakob.unterwurzacher@cherry.de,m:quentin.schulz@cherry.de,m:jakobunt@gmail.com,m:heiko@sntech.de,m:stable@vger.kernel.org,m:heiko.stuebner@cherry.de,m:devicetree@vger.kernel.org,m:linux-arm-kernel@lists.infradead.org,m:linux-rockchip@lists.infradead.org,m:linux-kernel@vger.kernel.org,m:krzk@kernel.org,m:conor@kernel.org,s:lists@lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	FREEMAIL_TO(0.00)[kernel.org,cherry.de,gmail.com];
-	FORGED_SENDER(0.00)[heiko@sntech.de,stable@vger.kernel.org];
-	RCPT_COUNT_TWELVE(0.00)[13];
-	RCVD_COUNT_THREE(0.00)[3];
+	FREEMAIL_CC(0.00)[gmail.com,vger.kernel.org,linuxfoundation.org,lwn.net];
+	TAGGED_FROM(0.00)[bounces-269579-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:michal.pecio@gmail.com,m:nikhilsolanke5@gmail.com,m:linux-usb@vger.kernel.org,m:gregkh@linuxfoundation.org,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,m:corbet@lwn.net,m:skhan@linuxfoundation.org,m:linux-doc@vger.kernel.org,m:michalpecio@gmail.com,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[stern@rowland.harvard.edu,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_TO(0.00)[gmail.com];
 	FORWARDED(0.00)[lists@lfdr.de];
-	TAGGED_FROM(0.00)[bounces-269577-lists,stable=lfdr.de];
-	DKIM_TRACE(0.00)[sntech.de:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[heiko@sntech.de,stable@vger.kernel.org];
-	TO_DN_SOME(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[rowland.harvard.edu:+];
+	MISSING_XM_UA(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	ALIAS_RESOLVED(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[stern@rowland.harvard.edu,stable@vger.kernel.org];
+	PRECEDENCE_BULK(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	TAGGED_RCPT(0.00)[stable,dt];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sntech.de:dkim,sntech.de:email,sntech.de:mid,sntech.de:from_mime,vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,rowland.harvard.edu:dkim,rowland.harvard.edu:mid,rowland.harvard.edu:from_mime]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 9B4FC6D4B69
+X-Rspamd-Queue-Id: 227C46D4BF4
 
-
-On Tue, 09 Jun 2026 10:17:25 +0200, Jakob Unterwurzacher wrote:
-> Technically, the reset signal is active low - it's called RST_n after all.
+On Sun, Jun 28, 2026 at 07:02:01PM +0200, Michal Pecio wrote:
+> On Sun, 28 Jun 2026 11:48:36 -0400, Alan Stern wrote:
+> > > How about "keep unrelated changes out of a stable patch", i.e. always
+> > > do the delay (if any) after the first request, regardless of size?  
+> > 
+> > This is not an unrelated change.  Rather, it's deciding on how to behave 
+> > in an entirely new control pathway -- the one where the 255-byte quirk 
+> > flag is set.  The old pathway is completely unaffected.
+> > 
+> > I suspect no devices will have both this quirk flag and the DELAY_INIT 
+> > flag set, which means the location of any delays in the new pathway 
+> > won't matter at all since they will never be used.
 > 
-> But it is ignored completely unless RST_n_FUNCTION=1 (byte 162 in extcsd)
-> is set in the emmc. It is 0 per default.
+> If no devices will have both quirks then new delay added before the
+> first configuration request will never execute.
+
+Correct.
+
+> If such devices will exist, then it probably won't matter whether the
+> delay comes after or before the first request. Purpose isn't known,
+> but it appears to be rate limiting configuration descriptor requests
+> or delaying other requests after this function returns.
+
+In fact, the commit that talks about the Logitech webcams does describe 
+their buggy behavior to some extent.  It says that they seem to reply 
+with stale video data instead of the real config information, and from 
+there it's a short guess that adding a delay gives time for the video 
+pipeline to drain or time out.
+
+In addition, the fact that the delay is needed after the first request 
+but before the second suggests that the data corruption only affects 
+transfers longer than 9 bytes -- which the new first request would be.  
+Therefore it would be appropriate to have the delay before the new first 
+request.  Whether another delay would be needed before the second 
+request (if there is one) is unknown.
+
+> Either way, no known need exists to add another delay before the first
+> request or alter the existing delay (or its conditions) in any way.
+
+See the reasoning above.
+
+> In general, I always object to code which serves no purpose because
+> such code is easy to add but very hard to remove when it gets in the
+> way. There are no known users, no test cases, only paranoia.
 > 
-> For emmcs that have RST_n_FUNCTION=1 we failed like this:
+> So I would keep the delay code completely unchaged.
+
+At this point it's entirely theoretical anyway, since the devices that 
+would get the new 255-byte quirk flag don't also have the DELAY_INIT 
+quirk.
+
+> And skip other random changes like error string nitpicking. Reliable
+> and up to date information about how many bytes are requested,
+> "expected" (what does it even mean, to somebody reading dmesg?),
+> received or verified to exist can be gained from source and usbmon.
+
+Good point.  But I dislike messages that actively produce wrong 
+information.  Nikhil could get rid of the parts of the log messages you 
+don't like, but he shouldn't leave them as they are.  He could even do 
+that in a second patch, separate from this one.
+
+> A stable patch is supposedly supposed to be 100 lines with context ;)
+
+Nonsense.  An excellent stable patch is 7 lines, including context.  :-)
+
+> I really think it could (and should) be a simple patch.
 > 
-> [...]
+> This is what I wrote a few weeks ago. It's an unconditional change
+> for all devices, but it would be easy to turn it into a quirk.
+> 
+> 
+> --- a/drivers/usb/core/config.c
+> +++ b/drivers/usb/core/config.c
+> @@ -938,15 +938,14 @@ int usb_get_configuration(struct usb_device *dev)
+>  	if (!dev->rawdescriptors)
+>  		return -ENOMEM;
+>  
+> -	desc = kmalloc(USB_DT_CONFIG_SIZE, GFP_KERNEL);
+> +	desc = kmalloc(255, GFP_KERNEL);
+>  	if (!desc)
+>  		return -ENOMEM;
+>  
+>  	for (cfgno = 0; cfgno < ncfg; cfgno++) {
+> -		/* We grab just the first descriptor so we know how long
+> -		 * the whole configuration is */
+> +		/* Try 255 bytes first because that's what Windows does */
+>  		result = usb_get_descriptor(dev, USB_DT_CONFIG, cfgno,
+> -		    desc, USB_DT_CONFIG_SIZE);
+> +		    desc, 255);
+>  		if (result < 0) {
+>  			dev_err(ddev, "unable to read config index %d "
+>  			    "descriptor/%s: %d\n", cfgno, "start", result);
+> @@ -975,8 +974,12 @@ int usb_get_configuration(struct usb_device *dev)
+>  		if (dev->quirks & USB_QUIRK_DELAY_INIT)
+>  			msleep(200);
+>  
+> -		result = usb_get_descriptor(dev, USB_DT_CONFIG, cfgno,
+> -		    bigbuffer, length);
+> +		/* Don't bother if we already have it all */
+> +		if (length <= result)
+> +			memcpy(bigbuffer, desc, length);
+> +		else
+> +			result = usb_get_descriptor(dev, USB_DT_CONFIG, cfgno,
+> +					bigbuffer, length);
+>  		if (result < 0) {
+>  			dev_err(ddev, "unable to read config index %d "
+>  			    "descriptor/%s\n", cfgno, "all");
 
-Applied, thanks!
+Making this depend on a quirk flag instead of being unconditional would 
+yield a patch very similar to what Nikhil has already posted.
 
-[1/1] arm64: dts: rockchip: fix emmc reset polarity on px30-cobra
-      commit: 85babf47515e2adf266dcc3be9804e31f752083e
-
-Best regards,
--- 
-Heiko Stuebner <heiko@sntech.de>
+Alan Stern
 
