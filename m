@@ -1,66 +1,58 @@
-Return-Path: <stable+bounces-269510-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-269511-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id z56BNf4CQWrQkAkAu9opvQ
-	(envelope-from <stable+bounces-269510-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 28 Jun 2026 13:18:22 +0200
+	id HYmWBjoEQWrskAkAu9opvQ
+	(envelope-from <stable+bounces-269511-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 28 Jun 2026 13:23:38 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id CA0036D3AC7
-	for <lists+stable@lfdr.de>; Sun, 28 Jun 2026 13:18:21 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 24C766D3AD5
+	for <lists+stable@lfdr.de>; Sun, 28 Jun 2026 13:23:36 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=none;
-	dmarc=none;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-269510-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-269510-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=seu.edu.cn header.s=default header.b=FSutw9O5;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-269511-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-269511-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=none) header.from=seu.edu.cn;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 57253300E165
-	for <lists+stable@lfdr.de>; Sun, 28 Jun 2026 11:18:19 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id CE50F300D614
+	for <lists+stable@lfdr.de>; Sun, 28 Jun 2026 11:23:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6DBD63A1691;
-	Sun, 28 Jun 2026 11:18:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 13A463A1A58;
+	Sun, 28 Jun 2026 11:23:33 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from cstnet.cn (smtp25.cstnet.cn [159.226.251.25])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+Received: from mail-m155101.qiye.163.com (mail-m155101.qiye.163.com [101.71.155.101])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1765F35E936;
-	Sun, 28 Jun 2026 11:18:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C1F8194AE6;
+	Sun, 28 Jun 2026 11:23:28 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782645495; cv=none; b=sniOZnaXofyrwC0Vjf8o5gBwAB7IexccE1uEk1NFcZUtyS6gKEfizboPfzj7H5NrXYdhRZlEHzml73mCmYk4Wou8jOKr/WueSGKWjyqBGF1umyhe2Ooh1t4w5DLoGEYVF6LzJnPCBhUdBOJSRTxRAIxWT6lN7N3voIbiKm9K+t0=
+	t=1782645812; cv=none; b=loajmLx1E3qRzphcLMeZ4K4xHObeHiaEZ5XVBbpadew9t85SKa70lfz4YA2QP4vfqYneGXS3zJqLz9Jr+VLbRVaZuDLa0bIijOnJc5Amohysu++q3CQ6YN/pS0wj7Wq6c8b60sPw4MkvWkrGkMyboZV0KiDtud/wm3nUtus8wIk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782645495; c=relaxed/simple;
-	bh=eybrTZFW+5aGnf77L00LY6WYIYBuAr3zDWx/OvIhanc=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=p2Pk9CNPaQi0TzoPaOchc5AL+Rl+jkoLazRvD/YNEKh6rzUc09seJ2EYI/oGdsItSHTq26eGTTsoGLewAAclD/kAiBfo/KAeMFEPasZP9TZGOgaQhTpAeHNoZwjpOyt2nTfvtVHvFPFItgDdZnSygvlV5UtJzfNUXHrPX4FUkHs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.25
-Received: from localhost.localdomain (unknown [117.182.74.7])
-	by APP-05 (Coremail) with SMTP id zQCowAAHfO_ZAkFqYAzCFQ--.32658S2;
-	Sun, 28 Jun 2026 19:17:48 +0800 (CST)
-From: WenTao Liang <vulab@iscas.ac.cn>
-To: linux-perf-users@vger.kernel.org
-Cc: peterz@infradead.org,
-	mingo@redhat.com,
-	acme@kernel.org,
-	namhyung@kernel.org,
-	mark.rutland@arm.com,
-	alexander.shishkin@linux.intel.com,
-	jolsa@kernel.org,
-	irogers@google.com,
-	adrian.hunter@intel.com,
-	james.clark@linaro.org,
-	tglx@kernel.org,
-	bp@alien8.de,
-	dave.hansen@linux.intel.com,
-	x86@kernel.org,
-	hpa@zytor.com,
+	s=arc-20240116; t=1782645812; c=relaxed/simple;
+	bh=+m4Zd+dC0Qbx+qEE6dG5GGnHVT/5LNDO3C75LwBTaFA=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=Omzchk9GUftU6KnUOC0LMl/xWootX1Uullb+3urVJ+CMX/lgOXT5HKhlaq2wG6tAEtzWpk5jNqLnd1rrQ33D43nd0Ij5wymkNcWXjkjj2s3bdHjVDAN+r/NZx4LPyB27T/hgzpt7tkChnehbZXKP5wpziTp6pzLyCZO2lTTnNwA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=seu.edu.cn; spf=pass smtp.mailfrom=seu.edu.cn; dkim=pass (1024-bit key) header.d=seu.edu.cn header.i=@seu.edu.cn header.b=FSutw9O5; arc=none smtp.client-ip=101.71.155.101
+Received: from DESKTOP-SUEFNF9.taila7e912.ts.net (unknown [221.228.238.82])
+	by smtp.qiye.163.com (Hmail) with ESMTP id 440b0cabd;
+	Sun, 28 Jun 2026 19:18:02 +0800 (GMT+08:00)
+From: Dawei Feng <dawei.feng@seu.edu.cn>
+To: stern@rowland.harvard.edu
+Cc: dawei.feng@seu.edu.cn,
+	gregkh@linuxfoundation.org,
+	jianhao.xu@seu.edu.cn,
+	linusw@kernel.org,
 	linux-kernel@vger.kernel.org,
+	linux-usb@vger.kernel.org,
 	stable@vger.kernel.org,
-	WenTao Liang <vulab@iscas.ac.cn>,
-	Greg KH <gregkh@linuxfoundation.org>
-Subject: [PATCH v2] x86/events/intel/uncore: fix PCI refcount leak in discover_upi_topology
-Date: Sun, 28 Jun 2026 19:17:39 +0800
-Message-Id: <20260628111739.43731-1-vulab@iscas.ac.cn>
-X-Mailer: git-send-email 2.39.5 (Apple Git-154)
+	zilin@seu.edu.cn
+Subject: Re: [PATCH] usb: free iso schedules on failed submit
+Date: Sun, 28 Jun 2026 19:18:02 +0800
+Message-Id: <20260628111802.3342187-1-dawei.feng@seu.edu.cn>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <1b80afec-0263-4e7a-8f9f-94abf15ae239@rowland.harvard.edu>
+References: <1b80afec-0263-4e7a-8f9f-94abf15ae239@rowland.harvard.edu>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -68,90 +60,71 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:zQCowAAHfO_ZAkFqYAzCFQ--.32658S2
-X-Coremail-Antispam: 1UD129KBjvJXoW7KrykuFWfGw1fKw1ktFWUJwb_yoW8GFyUpr
-	W3tF9rtr4fW3s2ga98C3WI9rW2vFs8Gr9Ygr4UK34I9wn8Xr1xJFW2gw15KFy8CrykJr1a
-	v3Wjvw48X34UAaDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUU9014x267AKxVW5JVWrJwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
-	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
-	1l84ACjcxK6xIIjxv20xvE14v26r4j6ryUM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4j
-	6F4UM28EF7xvwVC2z280aVAFwI0_GcCE3s1l84ACjcxK6I8E87Iv6xkF7I0E14v26rxl6s
-	0DM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xII
-	jxv20xvE14v26r1j6r18McIj6I8E87Iv67AKxVW8JVWxJwAm72CE4IkC6x0Yz7v_Jr0_Gr
-	1lF7xvr2IYc2Ij64vIr41lF7I21c0EjII2zVCS5cI20VAGYxC7M4IIrI8v6xkF7I0E8cxa
-	n2IY04v7MxkF7I0En4kS14v26r4a6rW5MxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4
-	AY6r1j6r4UMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE
-	17CEb7AF67AKxVW8ZVWrXwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMI
-	IF0xvE2Ix0cI8IcVCY1x0267AKxVW8JVWxJwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4l
-	IxAIcVC2z280aVAFwI0_Gr0_Cr1lIxAIcVC2z280aVCY1x0267AKxVW8Jr0_Cr1UYxBIda
-	VFxhVjvjDU0xZFpf9x0pRx-BiUUUUU=
-X-CM-SenderInfo: pyxotu46lvutnvoduhdfq/1tbiCRQMA2pAiNnF5gABsL
+X-HM-Tid: 0a9f0df3648903a2kunm572a28491346a8
+X-HM-MType: 10
+X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
+	tZV1koWUFITzdXWRgWCB1ZQUpXWS1ZQUlXWQ8JGhUIEh9ZQVkaSB8dVkxPShgdTBhMGBpPGFYeHw
+	5VEwETFhoSFyQUDg9ZV1kYEgtZQVlJSUpVSUlDVUlIQ1VDSVlXWRYaDxIVHRRZQVlPS0hVSktISk
+	9ITFVKS0tVSkJLS1kG
+DKIM-Signature: a=rsa-sha256;
+	b=FSutw9O57RfWwxc4mNC+yCPqdug2u76yWFJEZyzI8ryYgxuaiNi8nDxGn0O1VYkwAUEfcRZUJAUwpgedqXNtJvACV7YQlfE9cnGVTPZUnnjEq8RzMcUK3e282jxaTDcBRdJzkCCdX1dtgbk88SUwcNEKDfLNg6XYKQlhxTyc+pM=; c=relaxed/relaxed; s=default; d=seu.edu.cn; v=1;
+	bh=XR4XxvDozcd87t19jJawNld0zWG0g6kjr2+cWPEjprM=;
+	h=date:mime-version:subject:message-id:from;
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [0.04 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[seu.edu.cn,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_DKIM_ALLOW(-0.20)[seu.edu.cn:s=default];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[20];
-	DMARC_NA(0.00)[iscas.ac.cn];
-	FORGED_RECIPIENTS(0.00)[m:linux-perf-users@vger.kernel.org,m:peterz@infradead.org,m:mingo@redhat.com,m:acme@kernel.org,m:namhyung@kernel.org,m:mark.rutland@arm.com,m:alexander.shishkin@linux.intel.com,m:jolsa@kernel.org,m:irogers@google.com,m:adrian.hunter@intel.com,m:james.clark@linaro.org,m:tglx@kernel.org,m:bp@alien8.de,m:dave.hansen@linux.intel.com,m:x86@kernel.org,m:hpa@zytor.com,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,m:vulab@iscas.ac.cn,m:gregkh@linuxfoundation.org,s:lists@lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
-	TAGGED_FROM(0.00)[bounces-269510-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_SENDER(0.00)[vulab@iscas.ac.cn,stable@vger.kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[vulab@iscas.ac.cn,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
-	R_DKIM_NA(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-269511-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:stern@rowland.harvard.edu,m:dawei.feng@seu.edu.cn,m:gregkh@linuxfoundation.org,m:jianhao.xu@seu.edu.cn,m:linusw@kernel.org,m:linux-kernel@vger.kernel.org,m:linux-usb@vger.kernel.org,m:stable@vger.kernel.org,m:zilin@seu.edu.cn,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[dawei.feng@seu.edu.cn,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[dawei.feng@seu.edu.cn,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	ALIAS_RESOLVED(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	TO_DN_NONE(0.00)[];
+	DKIM_TRACE(0.00)[seu.edu.cn:+];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:email]
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,seu.edu.cn:dkim,seu.edu.cn:mid,seu.edu.cn:from_mime]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: CA0036D3AC7
+X-Rspamd-Queue-Id: 24C766D3AD5
 
-In the inner for loop, dev is repeatedly overwritten by
-pci_get_domain_bus_and_slot() without first releasing the previous dev
-via pci_dev_put(). The err label only releases the last ubox and dev
-references, while the references from earlier loop iterations are
-permanently leaked. Fix by adding pci_dev_put(dev) before the overwriting
-assignment.
+Hi, Alan,
 
-Suggested-by: Greg KH <gregkh@linuxfoundation.org>
-Fixes: fdd041028f22 ("perf/x86/intel/uncore: Factor out topology_gidnid_map()")
-Cc: stable@vger.kernel.org
-Signed-off-by: WenTao Liang <vulab@iscas.ac.cn>
----
-Changes in v2:
-- Fix patch format based on reviewer feedback
----
----
- arch/x86/events/intel/uncore_snbep.c | 1 +
- 1 file changed, 1 insertion(+)
+Thanks for the review.
 
-diff --git a/arch/x86/events/intel/uncore_snbep.c b/arch/x86/events/intel/uncore_snbep.c
-index 215d33e260ed..cecc1ce0a248 100644
---- a/arch/x86/events/intel/uncore_snbep.c
-+++ b/arch/x86/events/intel/uncore_snbep.c
-@@ -5494,6 +5494,7 @@ static int discover_upi_topology(struct intel_uncore_type *type, int ubox_did, i
- 		for (idx = 0; idx < type->num_boxes; idx++) {
- 			upi = &type->topology[lgc_pkg][idx];
- 			devfn = PCI_DEVFN(dev_link0 + idx, ICX_UPI_REGS_ADDR_FUNCTION);
-+			pci_dev_put(dev);
- 			dev = pci_get_domain_bus_and_slot(pci_domain_nr(ubox->bus),
- 							  ubox->bus->number,
- 							  devfn);
--- 
-2.39.5 (Apple Git-154)
+On Sat, 27 Jun 2026 15:05:57 -0400, Alan Stern wrote:
+>>  	}
+>>   done_not_linked:
+>> +	if (status < 0) {
+>> +		iso_sched_free(stream, urb->hcpriv);
+>> +		urb->hcpriv = NULL;
+>> +	}
+>
+>That's not quite optimal, because iso_stream_schedule() already calls 
+>iso_sched_free() whenever its return value is < 0.  You should remove 
+>that call now that the deallocation is being done down here.  And also 
+>have iso_stream_schedule() clear urb->hcpriv in the other place where it 
+>calls iso_sched_free().
 
+You are right. I'll update it in v2.
+
+Best regards,
+Dawei
 
