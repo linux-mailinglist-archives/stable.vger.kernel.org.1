@@ -1,71 +1,66 @@
-Return-Path: <stable+bounces-269605-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-269606-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id nTs7CJOpQWrftAkAu9opvQ
-	(envelope-from <stable+bounces-269605-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 29 Jun 2026 01:09:07 +0200
+	id XOerJ+SrQWpQtQkAu9opvQ
+	(envelope-from <stable+bounces-269606-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 29 Jun 2026 01:19:00 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 73B0D6D53B4
-	for <lists+stable@lfdr.de>; Mon, 29 Jun 2026 01:09:06 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 86AC46D5434
+	for <lists+stable@lfdr.de>; Mon, 29 Jun 2026 01:18:59 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=PHqGHSQJ;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-269605-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-269605-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ZJwcNw51;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-269606-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-269606-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 371453009555
-	for <lists+stable@lfdr.de>; Sun, 28 Jun 2026 23:09:05 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 0A3123004D0E
+	for <lists+stable@lfdr.de>; Sun, 28 Jun 2026 23:18:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D5CA536F903;
-	Sun, 28 Jun 2026 23:09:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1F73373BEA;
+	Sun, 28 Jun 2026 23:18:50 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB5A11DC985;
-	Sun, 28 Jun 2026 23:09:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD8A229B77C;
+	Sun, 28 Jun 2026 23:18:49 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782688143; cv=none; b=UOVyrD7fLWBdB76oXjDGfHn4Arl6axlfMi4f7KDnnQMPw/AyeOyiOJH1SGIcAaC87K69+n3Ynsfk7qA8YEai2aG8NcILuAHU6G99AccGc1B2J0tDDNa4Fwh8og+w1io64Ju8l31d+BVuvxWkzFR0/iS7wNZ5uolMZoM3Ud7OU/E=
+	t=1782688730; cv=none; b=HA42m/t75dv60Ap9j7ZxuHbNSfkmIVAIs90bLP0dQG+QYD2nD/d5IoeYy81npLlH3lHdv9G4yPP3FK0JQkaPIc2XB1xcd1LQUtaOvxzfWyJTn6vI9j8ErEuu/ezEIsjR4j5UxOXNJCTj1SkIAHZa57ZahcHG3cLS889zhQryIyI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782688143; c=relaxed/simple;
-	bh=vpucwcrz0yIGGuQhtNz1MkSTqCKSrrRzNcxGO3GUZNo=;
+	s=arc-20240116; t=1782688730; c=relaxed/simple;
+	bh=daN9yDTyzllmJb95sFxNeH9icNCjcuJiQmDVHyt4r2k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=aC4LgVmH6dExSya7spOAtbEMlknEBVDsq1LCz9uy+s2W/IdyXzHaLPyRQ2IZAeVApZLiNWK+vMvSZxL9YFH350lK1JUVgExjcRBwuOEMA+VEzZIsQJDVdHjiFc6PhvmC7JZl4PZ0GjUc4rvCQ23l7NG+VBr7nong6KiqMTGsKAE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PHqGHSQJ; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2DF61F000E9;
-	Sun, 28 Jun 2026 23:08:59 +0000 (UTC)
+	 MIME-Version:Content-Type; b=ixUJi5zaKLATA2WzoajUEd5lfJU9ME5xAhuHLS8xTh2j6xdwvbYt0zrMcUKndRSk7afqstqXGg70kQiPFxgZ8+/lORI4Ea7TqzQdllcu8LWyUfYyfUi7hH1tZQEQvgAMvD2O6c2czCNDw7nrCyKTqdMip5SJXtnKozi+VCawNV8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZJwcNw51; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A8791F000E9;
+	Sun, 28 Jun 2026 23:18:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782688142;
-	bh=6HB9ne7se5fKQqWKCBXbtR4ksGRhmshThDdr3tHubv8=;
+	s=k20260515; t=1782688729;
+	bh=N+wAdu33iwEmwAs7LyBV/cvUDjaSWb7NO8ad1laYz78=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=PHqGHSQJUOicbB9Y8qgSNQEcnFjEJKhhpQHRU1OSf4mEYgTCK84lYOpouCNoGLiTl
-	 U9LhlZRlKby1JP9U3wX6w6BZt9TphvEXql6SkwiQkfuAu0NmTX/GMJCSxoe/JBJJtQ
-	 gQDao7wRAEX8aF9jtmiNadOSC22b9bhDrn4IpcxgBrKSnWoSdRhkJVC67cfc2XbWv1
-	 i119bKVoPTC4JlIg8/+6H24kno1559p3zTC8ROmTvY8rEPIGPzrsjJYmBrF80aLF6G
-	 i4ZXK5Is19EAhSfBiau5kJB5PknmXdAZBuik1RflEcVEIV5LoCxQtlXiQLqD9JkzX4
-	 +Bz+Ne05j1u6w==
+	b=ZJwcNw515qih9tcr+pTAgKsF5vyEOpaf0jHYuppcXStK4+nUb5xuwgljk7rivvrSQ
+	 JO+gmmTUMGthSp/t5fJwczjUYdvzxzNKOup2ZHySthKjmghuZVffcxJFnmFgWpRiDg
+	 nftEWbX3rXGMu/Su9KWyXMdJlHnxRoRcMg5iO5nBdV/2FNrgWTgrld6s6BHWQjaI11
+	 +37KCFA4Px+ZfHrovp4B0Jhm/yA0GasHkg++vZRXKIYKemcQSqrnhR71dFH5DDrWS0
+	 EnNWytd3wBIpmxsL/0fTOkCNDTsINvFvsdjExw6aZv7h0hOm7e3B+phCqM+Ey/g9TH
+	 XExfDHDZ1cjFg==
 From: Danilo Krummrich <dakr@kernel.org>
-To: Chun-Yi Lee <joeyli.kernel@gmail.com>
-Cc: "Rafael J . Wysocki" <rafael@kernel.org>,
-	Chun-Yi Lee <jlee@suse.com>,
-	David Howells <dhowells@redhat.com>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	Andy Shevchenko <andy.shevchenko@gmail.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Matthew Garrett <mjg59@srcf.ucam.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+To: Randy Dunlap <rdunlap@infradead.org>
+Cc: linux-kernel@vger.kernel.org,
+	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <linux@weissschuh.net>,
+	"Rafael J . Wysocki" <rafael@kernel.org>,
 	Danilo Krummrich <dakr@kernel.org>,
 	driver-core@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	stable@vger.kernel.org
-Subject: Re: [PATCH v2] debugfs: Fix lockdown check for mmap_prepare
-Date: Mon, 29 Jun 2026 01:08:56 +0200
-Message-ID: <20260628230856.2700057-1-dakr@kernel.org>
+Subject: Re: [PATCH] driver core: add missing kernel-doc for union members
+Date: Mon, 29 Jun 2026 01:18:45 +0200
+Message-ID: <20260628231845.2708894-1-dakr@kernel.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260615104750.1000-1-jlee@suse.com>
-References: <20260615104750.1000-1-jlee@suse.com>
+In-Reply-To: <20260623190023.407781-1-rdunlap@infradead.org>
+References: <20260623190023.407781-1-rdunlap@infradead.org>
 X-Patch-Reply: applied
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -76,58 +71,54 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-2.66 / 15.00];
+X-Spamd-Result: default: False [-4.16 / 15.00];
 	WHITELIST_SPF_DKIM(-3.00)[kernel.org:d:+,kernel.org:s:+];
-	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORWARDED(0.00)[lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-269606-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:joeyli.kernel@gmail.com,m:rafael@kernel.org,m:jlee@suse.com,m:dhowells@redhat.com,m:ljs@kernel.org,m:andy.shevchenko@gmail.com,m:tglx@linutronix.de,m:mjg59@srcf.ucam.org,m:gregkh@linuxfoundation.org,m:dakr@kernel.org,m:driver-core@lists.linux.dev,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,m:joeylikernel@gmail.com,m:andyshevchenko@gmail.com,s:lists@lfdr.de];
-	RCPT_COUNT_TWELVE(0.00)[13];
-	FREEMAIL_TO(0.00)[gmail.com];
-	FORGED_SENDER(0.00)[dakr@kernel.org,stable@vger.kernel.org];
-	TAGGED_FROM(0.00)[bounces-269605-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:rdunlap@infradead.org,m:linux-kernel@vger.kernel.org,m:linux@weissschuh.net,m:rafael@kernel.org,m:dakr@kernel.org,m:driver-core@lists.linux.dev,m:gregkh@linuxfoundation.org,m:stable@vger.kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_SENDER(0.00)[dakr@kernel.org,stable@vger.kernel.org];
+	FORWARDED(0.00)[lists@lfdr.de];
 	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[dakr@kernel.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[kernel.org,suse.com,redhat.com,gmail.com,linutronix.de,srcf.ucam.org,linuxfoundation.org,lists.linux.dev,vger.kernel.org];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	DKIM_TRACE(0.00)[kernel.org:+];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	TAGGED_RCPT(0.00)[stable];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 73B0D6D53B4
+X-Rspamd-Queue-Id: 86AC46D5434
 
-On Mon, 15 Jun 2026 18:47:50 +0800, Chun-Yi Lee wrote:
-> [PATCH v2] debugfs: Fix lockdown check for mmap_prepare
+On Tue, 23 Jun 2026 12:00:22 -0700, Randy Dunlap wrote:
+> [PATCH] driver core: add missing kernel-doc for union members
 
 Applied, thanks!
 
-  Branch: driver-core-testing
+  Branch: driver-core-linus
   Tree:   git://git.kernel.org/pub/scm/linux/kernel/git/driver-core/driver-core.git
 
-[1/1] debugfs: Fix lockdown check for mmap_prepare
-      commit: f81808de3733
+[1/1] driver core: add missing kernel-doc for union members
+      commit: 667d0fb32149
 
 The patch will appear in the next linux-next integration (typically within 24
 hours on weekdays).
 
-The patch is in the driver-core-testing branch and will be promoted to
-driver-core-next after validation.
+The patch is queued up for Linus's tree and should land in the next -rc release.
 
