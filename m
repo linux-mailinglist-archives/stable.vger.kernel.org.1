@@ -1,91 +1,92 @@
-Return-Path: <stable+bounces-269433-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-269434-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id XgP1ETJuQGo6fgkAu9opvQ
-	(envelope-from <stable+bounces-269433-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 28 Jun 2026 02:43:30 +0200
+	id ybPyJw5vQGpMfgkAu9opvQ
+	(envelope-from <stable+bounces-269434-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 28 Jun 2026 02:47:10 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 940366D2E45
-	for <lists+stable@lfdr.de>; Sun, 28 Jun 2026 02:43:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E5D406D2E51
+	for <lists+stable@lfdr.de>; Sun, 28 Jun 2026 02:47:09 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=nhslLRqX;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-269433-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-269433-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=Zg4yAB+y;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-269434-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-269434-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=gmail.com;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 667C130160EA
-	for <lists+stable@lfdr.de>; Sun, 28 Jun 2026 00:43:28 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 24BCF3016CB2
+	for <lists+stable@lfdr.de>; Sun, 28 Jun 2026 00:47:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C22EC18871F;
-	Sun, 28 Jun 2026 00:43:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CBBAE126BF1;
+	Sun, 28 Jun 2026 00:47:05 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wr1-f46.google.com (mail-wr1-f46.google.com [209.85.221.46])
+Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3980881AA8
-	for <stable@vger.kernel.org>; Sun, 28 Jun 2026 00:43:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C7EE1C68F
+	for <stable@vger.kernel.org>; Sun, 28 Jun 2026 00:47:04 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782607407; cv=none; b=chtYAkPuH6QhgNmdLb5V0mK6s8PmuXinMklteGai5DRv1BX7vRFTsa6RmK25cDDFMlYa8D4oKD5w4DO5QRFCGT62TbU76p5soUzoNshStjUKrup7ytH7McFsAqsvchWn8RZN4k35SK6nMxrzZ77hGFYuojkuY69HcmxyI9eF4BE=
+	t=1782607625; cv=none; b=n7WKbs/AAGyRA802T3eQlO8q8K5ANdA/jbvyX3kR7qQwsIKqPH9N7j341+O1iOArQ1kHH5ixlTprJo3Z4jmadcXFYVlXPyMtVNlWER2kV7A+jSkmSU7xQo0cvcaKJX4KiHR/qqsnSh8nbgoUXTG0013NgFjwkZGQcCXamuMaG5c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782607407; c=relaxed/simple;
-	bh=9wSyaoXnq89nLIWOctnPdcX2pwbON+qF3C0UyKebbrs=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=cy5lTPoS9vOxVBgj5Dkdkx7yZsrr66VFarfVNYZKAKlZb0lmsrQI89sy2wYY99KKn/HZ6+2x0BCi9Ad9V5veY3bs9jV6Ys7NgAe7h7GpfCsUO37pdTt7NBPg6aJae+DO/DQSu5zRtpSniSkjyiAuga9XFlhGiiYMKrzcUbLJjok=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=nhslLRqX; arc=none smtp.client-ip=209.85.221.46
-Received: by mail-wr1-f46.google.com with SMTP id ffacd0b85a97d-4626fdc829aso1358726f8f.3
-        for <stable@vger.kernel.org>; Sat, 27 Jun 2026 17:43:25 -0700 (PDT)
+	s=arc-20240116; t=1782607625; c=relaxed/simple;
+	bh=JWA380ctDhP6cb9yiDI+v1kSZBNiU/P0ELQGPGUNjQA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=SfBxpdWBCQwW5Py/BtaHQMkkzyvH20JOn+3iH7KOX/iGcKvKKf3MH+IZ2irDwapb+M6xjlZ+HjzjG3EKnD+TShmFw6WwgNHSvYMzDGyTDpSgE6WhJMrph1ooJbop6V9tqgvTRCh0EFxG2CUohzOg24g+rV814MQNt6CCUsdPl60=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Zg4yAB+y; arc=none smtp.client-ip=209.85.128.53
+Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-4921eed3fa2so15608955e9.0
+        for <stable@vger.kernel.org>; Sat, 27 Jun 2026 17:47:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1782607404; x=1783212204; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1782607623; x=1783212423; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=P/K0oyqX2HpaNhJgmG557ds5Wum+B6nCD3i5NrtHbg4=;
-        b=nhslLRqXQYCRAfPRZo7wDBfGpb/+Wy2ztIQT0p0VIjJmJiXNjQB03tTTWrLLqCiOGI
-         QQ/lQePwylF3N14T3RKwtwE4e1/I/axLJNM1H+HtVZMV/ieBpGhUoYTq8NWNzthg2MJu
-         XdL6oUxlRR5Wt/XdBML+iKt5jaGnfFPI4rzCugQbh7ZgXsMa0VKuvB0XxQdbfWFUVrls
-         aTWAi3rjO4c5W10/egsxMdmbcNvctwN4DZM1p0O2b0HsLq4v4yI4mW3EfNsPhlnj9cDh
-         ibk6MZ2pnUpw/GzT3Y0dGvpua9RzNy0LQONbzXvcxxFWQRj6PkpQEkmZl1puwK7r3rkU
-         xYbw==
+        bh=lr5H8TFwybM+AlW1rdMOQH0Q1+oaaC7QfC19uDCbRGc=;
+        b=Zg4yAB+yK5jIxwbJPoV0JS6WvmmpFKbf1j3pzVfrwKvj6j+pscPkCq27rGXLNlKiBO
+         Y1TQKMLv/7K2r/eibKqN4pTRDHwSzizbEcqOt0YDKrGiEyHIg6F2vjPZD9/+Pj7QSjYR
+         YdfpC27SXtq44wmH7IhX49Zs880oEMSTwd7cW6brOGvpQDk1uabvLf1EHYtU819x/Vp8
+         h+6mKKwW//IkzltaKRj7iMoPi6xOlCMSzq6mnsAWWuUzkEsKIc7CfCOtQe2FFX4mDvVq
+         1YrQ3IGVhCfzg9fJRq1Qt0IJkegd48wmO8El56e5zeds1b0vMH/3PqiTxFDxbfS+bLaO
+         sxFQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782607404; x=1783212204;
+        d=1e100.net; s=20251104; t=1782607623; x=1783212423;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=P/K0oyqX2HpaNhJgmG557ds5Wum+B6nCD3i5NrtHbg4=;
-        b=DRhxfKdpv0DdjFsl5k3W72N3ZR80CxpkCILZ3jNJ4DiTOV8hRnZ4PfHkxg2l3LqaPs
-         ZN6bLzcRGFE8OJzXlVdunoXnOERDFnB8gc4l+WYhFB+W0Ut455cnUi6cIfhf2JA/dxXG
-         LA70COu1pBFg36rjKLHgsb4YiX+O1m1z2TRkkb1+F2r7fpnPFbwiszgm1lULBfCEIlx8
-         xcJXfSXsXDLvYsq42shh8xPK8Hz5ntM3blmSSonN9FULEXGp+GcbWlSwfMTI1Xi/rWka
-         OrLu+CfQvJWRk58cjP3DMTRAPM0mt/ol7YJEi7XHQMBm1N4vQcjDe0sRhr0xqvuueHwk
-         E7jA==
-X-Forwarded-Encrypted: i=1; AHgh+Ro9lGWb9xqg5Qk1wr5rvkTeV/ALz5i+tzPA1xTbDZRelfjo6KHyAsprKEjY3eAgCwYvqTnCTWs=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxLCRgIzIZ393Jz2d2GCxBvwUsik+SaSTf32MBjyFMcGwA2eE8I
-	GpDC8lAuCiomkXPXz/RTtrc50i8dhWgWne5ADUZS70Tcb9/I7jmv0qQk
-X-Gm-Gg: AfdE7cmfvBo1lCFYMRV5kjGnY24bjVqKo3FhfYEmu2srlgkkMkU2i6T20kHlIGcMvbq
-	U7t+m5K9xRtZxc9HHaVY2W5Gl8hSmHCnDCko2hKPV3AYfX2a9toebiGG8CAgSdjJOf2q6J4pZf5
-	8HuMHEyV692pkLroD85Vs65kwvDywyQxHXyL+/1jW0/w62CqyBCQfSEsX2H57v46lAY8l9A6lRH
-	1Wlqtjoi+nxK+ZQK36BHCk2euKyklyurFor3kgBC4uk3227OdF+tRM4yQkrQyR2XRGSnx+Wv0Nx
-	q9BBaJBnMMV7UY6QMEl4j20tTTM/e20H7zhs6XLgL0m4ImoHsLJgRpPeT1Qkdw2TuXDZ2UF8K0W
-	C8x81MQbIQcrZbJJ+N4RQ4OPKrFtK5ffiJ3XhlnLGf0wB8nx/yV3SZiJEW8HkHaL6tHaVMcfPTx
-	x7RmGY2aCnKh4mTYdgG3p/Re0hBg==
-X-Received: by 2002:a05:6000:1841:b0:472:22b4:fd55 with SMTP id ffacd0b85a97d-47222b5015cmr3741851f8f.13.1782607404584;
-        Sat, 27 Jun 2026 17:43:24 -0700 (PDT)
+        bh=lr5H8TFwybM+AlW1rdMOQH0Q1+oaaC7QfC19uDCbRGc=;
+        b=Qi9uUqjcd1AMVP7qXMPRbJlVexKoWsfnU/i1oAbRtldKieBr37JuSXNqxZd3wFcnc9
+         I95vESyznWL+LoITlXAd7uurMBhAsbaCXeQa+L04h+HnPOK+ao4+S2+Th4mEZ8Yut9Jf
+         Cw+2eTptGoM4KCST2ph6dFO8eeIXI2Fuf7cGRXT/U4UMbD/xTO+Fw6CvvYL5jbv4X1rv
+         NjbwuYSoJCiU7GvaQjpbhpuDDTXxJzFQXo0SB3fOyULjctZMQSJ61ApePFX/OKo9soDy
+         I5VE2/5GVa3n7ioTSdtcjcsfOhB1zdo5X8x5B3vYjFfpzqTcuGzFqW+ouOhRayItZLa3
+         0SOA==
+X-Forwarded-Encrypted: i=1; AFNElJ/rvxRks1LdXbkuNQbi8ICCG/yUMpHhzIo60U41pt8WtxvGa8puSeTLo7Loi8uiCs5InSBA1Hw=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwnVvAsCbHwhJORwhLvtNzY/N7YGfHikbbW8L9z9jYFNRViB0mf
+	ISTaWmONyOnTIJOTT0Hll+JxVq2G/oYaFpE2lQqoHewj35oXKpT8otPb
+X-Gm-Gg: AfdE7cmJ3BnPJ4TKyULt2SK0Ql3qQaDZFhvAu5Ae3gHG2bTvgZ1cKzJVk7EkDc0NOmj
+	th6szbt2/wXjLft3YtUHQegnUZ2RA+c1JU/dlGnPV9Np6ON6b0as92h1SyvmDLBjidECg7uzcJ/
+	TYLweveiJNHQNpQaALOJFZZvtni4X8SuOFWR3aBvVH87SQYBKsNFYTL56vBX4fdKegZI3SD1jfn
+	etIlMUirFoQuqWj6PpGNj6JfFpVKYOp5CHXdIewrMSsLzcj8oPTRvb7jsuOhmaTYA+dGe+OMdxk
+	aIUpJiC3QKA2qLabhpGv7U+00as2Gm3iUDRT5VdkF8ut4VMZrIHvH254t+9e4qelnDROO9rZrZn
+	OW/0UAWGCDlh0oISHDF440tLiSTuaZPAfEqNU4grWhasajep9ojD03QH7+mhxWP1x62lKzkoSio
+	z7AkBP5HwKRNcpK1SAT2aX3wd55Q==
+X-Received: by 2002:a05:600c:1d08:b0:493:a607:f3b8 with SMTP id 5b1f17b1804b1-493a607f49amr14531755e9.0.1782607622662;
+        Sat, 27 Jun 2026 17:47:02 -0700 (PDT)
 Received: from Dev-Null-MSI ([2a0d:3344:52ac:a808:98a4:4381:be45:536f])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-470f55acda0sm8612218f8f.23.2026.06.27.17.43.22
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-46e6167c05fsm24063111f8f.25.2026.06.27.17.47.00
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 27 Jun 2026 17:43:24 -0700 (PDT)
+        Sat, 27 Jun 2026 17:47:01 -0700 (PDT)
 From: Yousef Alhouseen <alhouseenyousef@gmail.com>
-To: Hugh Dickins <hughd@google.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	linux-mm@kvack.org,
+To: Steven Rostedt <rostedt@goodmis.org>,
+	Masami Hiramatsu <mhiramat@kernel.org>
+Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Petr Pavlu <petr.pavlu@suse.com>,
+	linux-trace-kernel@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org,
-	syzbot+bf5586280a66e9ccdfa9@syzkaller.appspotmail.com,
+	syzbot+2dd9d02f60775ce5c1fb@syzkaller.appspotmail.com,
 	Yousef Alhouseen <alhouseenyousef@gmail.com>
-Subject: [PATCH] tmpfs: zero unused folio tail for long symlinks
-Date: Sun, 28 Jun 2026 02:43:14 +0200
-Message-ID: <20260628004314.27370-1-alhouseenyousef@gmail.com>
+Subject: [PATCH] ring-buffer: serialize read-page order with subbuffer resize
+Date: Sun, 28 Jun 2026 02:46:53 +0200
+Message-ID: <20260628004653.28065-1-alhouseenyousef@gmail.com>
 X-Mailer: git-send-email 2.54.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -101,18 +102,18 @@ X-Spamd-Result: default: False [0.84 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64];
 	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
 	TO_DN_SOME(0.00)[];
-	FREEMAIL_CC(0.00)[linux-foundation.org,kvack.org,vger.kernel.org,syzkaller.appspotmail.com,gmail.com];
+	FREEMAIL_CC(0.00)[efficios.com,suse.com,vger.kernel.org,syzkaller.appspotmail.com,gmail.com];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-269433-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:hughd@google.com,m:baolin.wang@linux.alibaba.com,m:akpm@linux-foundation.org,m:linux-mm@kvack.org,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,m:syzbot+bf5586280a66e9ccdfa9@syzkaller.appspotmail.com,m:alhouseenyousef@gmail.com,m:syzbot@syzkaller.appspotmail.com,s:lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-269434-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:rostedt@goodmis.org,m:mhiramat@kernel.org,m:mathieu.desnoyers@efficios.com,m:petr.pavlu@suse.com,m:linux-trace-kernel@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,m:syzbot+2dd9d02f60775ce5c1fb@syzkaller.appspotmail.com,m:alhouseenyousef@gmail.com,m:syzbot@syzkaller.appspotmail.com,s:lists@lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
 	FORGED_SENDER(0.00)[alhouseenyousef@gmail.com,stable@vger.kernel.org];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
@@ -126,45 +127,71 @@ X-Spamd-Result: default: False [0.84 / 15.00];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	FREEMAIL_FROM(0.00)[gmail.com];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,bf5586280a66e9ccdfa9];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,syzkaller.appspot.com:url,vger.kernel.org:from_smtp,appspotmail.com:email]
+	TAGGED_RCPT(0.00)[stable,2dd9d02f60775ce5c1fb];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[syzkaller.appspot.com:url,appspotmail.com:email,vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 940366D2E45
+X-Rspamd-Queue-Id: E5D406D2E51
 
-shmem_symlink() marks the entire folio uptodate after copying only the
-NUL-terminated link target. The remainder of the freshly allocated folio
-is left uninitialized.
+ring_buffer_read_page() checks that its spare page has the current
+subbuffer order before taking cpu_buffer->reader_lock. A concurrent
+ring_buffer_subbuf_order_set() can change the order and replace the
+reader page after that check. The reader then copies a larger subbuffer
+into the old allocation, causing an out-of-bounds write.
 
-Reclaim may pass the whole folio to a swap compressor. KMSAN observed
-sw842_compress() computing a checksum over the uninitialized tail. If
-the folio is written to a swap device, those bytes can also leave the
-kernel.
+Keep spare-page allocation and release under buffer->mutex, which already
+serializes order changes. Move the read-side order check under
+reader_lock, the lock used by resize when replacing per-CPU pages.
 
-Zero the remainder of the folio before marking it uptodate and dirty.
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Reported-by: syzbot+bf5586280a66e9ccdfa9@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=bf5586280a66e9ccdfa9
+Fixes: f9b94daa542a ("ring-buffer: Set new size of the ring buffer sub page")
+Reported-by: syzbot+2dd9d02f60775ce5c1fb@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=2dd9d02f60775ce5c1fb
 Cc: stable@vger.kernel.org
 Signed-off-by: Yousef Alhouseen <alhouseenyousef@gmail.com>
 ---
- mm/shmem.c | 1 +
- 1 file changed, 1 insertion(+)
+ kernel/trace/ring_buffer.c | 9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
-diff --git a/mm/shmem.c b/mm/shmem.c
-index b51f83c970bb..b06c1ae2f50c 100644
---- a/mm/shmem.c
-+++ b/mm/shmem.c
-@@ -4057,6 +4057,7 @@ static int shmem_symlink(struct mnt_idmap *idmap, struct inode *dir,
- 			goto out_remove_offset;
- 		inode->i_op = &shmem_symlink_inode_operations;
- 		memcpy(folio_address(folio), symname, len);
-+		folio_zero_range(folio, len, folio_size(folio) - len);
- 		folio_mark_uptodate(folio);
- 		folio_mark_dirty(folio);
- 		folio_unlock(folio);
+diff --git a/kernel/trace/ring_buffer.c b/kernel/trace/ring_buffer.c
+index 56a328e94395..eed5d7cffdee 100644
+--- a/kernel/trace/ring_buffer.c
++++ b/kernel/trace/ring_buffer.c
+@@ -6950,6 +6950,8 @@ ring_buffer_alloc_read_page(struct trace_buffer *buffer, int cpu)
+ 	if (!cpumask_test_cpu(cpu, buffer->cpumask))
+ 		return ERR_PTR(-ENODEV);
+ 
++	guard(mutex)(&buffer->mutex);
++
+ 	bpage = kzalloc_obj(*bpage);
+ 	if (!bpage)
+ 		return ERR_PTR(-ENOMEM);
+@@ -7000,6 +7002,8 @@ void ring_buffer_free_read_page(struct trace_buffer *buffer, int cpu,
+ 	if (!buffer || !buffer->buffers || !buffer->buffers[cpu])
+ 		return;
+ 
++	guard(mutex)(&buffer->mutex);
++
+ 	cpu_buffer = buffer->buffers[cpu];
+ 
+ 	/*
+@@ -7091,14 +7095,13 @@ int ring_buffer_read_page(struct trace_buffer *buffer,
+ 	if (!data_page || !data_page->data)
+ 		return -1;
+ 
+-	if (data_page->order != buffer->subbuf_order)
+-		return -1;
+-
+ 	dpage = data_page->data;
+ 	if (!dpage)
+ 		return -1;
+ 
+ 	guard(raw_spinlock_irqsave)(&cpu_buffer->reader_lock);
++	if (data_page->order != buffer->subbuf_order)
++		return -1;
+ 
+ 	reader = rb_get_reader_page(cpu_buffer);
+ 	if (!reader)
 -- 
 2.54.0
 
