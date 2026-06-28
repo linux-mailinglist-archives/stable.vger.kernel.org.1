@@ -1,265 +1,463 @@
-Return-Path: <stable+bounces-269507-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-269509-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id y138BxH1QGojjwkAu9opvQ
-	(envelope-from <stable+bounces-269507-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 28 Jun 2026 12:18:57 +0200
+	id kWqiLskBQWqnkAkAu9opvQ
+	(envelope-from <stable+bounces-269509-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 28 Jun 2026 13:13:13 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 771DE6D3944
-	for <lists+stable@lfdr.de>; Sun, 28 Jun 2026 12:18:56 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id B57786D3A79
+	for <lists+stable@lfdr.de>; Sun, 28 Jun 2026 13:13:12 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=nyu.edu header.s=20180315 header.b=Md+xHcmJ;
-	dkim=pass header.d=nyu.edu header.s=nyu-googleapps1 header.b=d1iOmTAO;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-269507-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-269507-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=reject) header.from=nyu.edu;
-	arc=pass ("subspace.kernel.org:s=arc-20240116:i=2")
+	dkim=pass header.d=mojatatu.com header.s=google header.b=te+G3WaV;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-269509-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-269509-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=none;
+	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id BB7DF3003D03
-	for <lists+stable@lfdr.de>; Sun, 28 Jun 2026 10:18:55 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D1CAE300DDEE
+	for <lists+stable@lfdr.de>; Sun, 28 Jun 2026 11:13:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 70753394EBD;
-	Sun, 28 Jun 2026 10:18:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 43796342CB2;
+	Sun, 28 Jun 2026 11:13:10 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mx0a-00256a01.pphosted.com (mx0a-00256a01.pphosted.com [148.163.150.240])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qk1-f181.google.com (mail-qk1-f181.google.com [209.85.222.181])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03C112FDC5E
-	for <stable@vger.kernel.org>; Sun, 28 Jun 2026 10:18:51 +0000 (UTC)
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782641934; cv=pass; b=uo+5staipd6OVNACk6l5XlZ43m/WeZYmYT84pjv6wyAAqVp/laBPRt9uA4tGyI+UmkH5TfS1YiS4Mr/x7qyGt6FA51bmgGWPwlS5nVxNJvaZI3Z0x+y4YumEsOIceqIcZ2U5uV5TRgn8wNNBfZlJxEmmkhMP8BH4r3yxeASxS8g=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782641934; c=relaxed/simple;
-	bh=DvFXAFCO9tcZqdlLmhVk/h5vnLge5f1OqFfZkggU5zA=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=QC98/PmlOvZFTZO06EYG8570vYfyYyscBEb+heB7/L9KWg6CL3kL1lLQ20jcXMxZSuTaXdrSYsicrnTX73gv7wohLvGwsu6KjtxRsu02LBVr5Xsj/Uprqa1BeNMtN0KPFQV42e5upKM2RkysCeYLb1Eolwua95Orhpat1v3uvIk=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nyu.edu; spf=pass smtp.mailfrom=nyu.edu; dkim=pass (2048-bit key) header.d=nyu.edu header.i=@nyu.edu header.b=Md+xHcmJ; dkim=pass (2048-bit key) header.d=nyu.edu header.i=@nyu.edu header.b=d1iOmTAO; arc=pass smtp.client-ip=148.163.150.240
-Received: from pps.filterd (m0355795.ppops.net [127.0.0.1])
-	by mx0b-00256a01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 65S9XtDF3851466
-	for <stable@vger.kernel.org>; Sun, 28 Jun 2026 06:18:51 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nyu.edu; h=cc
-	:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=20180315; bh=IqIUFv8eyNO2DKWR0kEueaSzy
-	xNdYsgSTleO4QX3P+k=; b=Md+xHcmJaAM5DZklTrqr+kCJUp3Ox9WP8ZyARl3zZ
-	hrhv9GzB5beVYuals8qVoylFKSErqAIzaXkvgOnQ0gkTXaxLv7P5ZJQxBGy7VlTm
-	UQWmiFAena6dZQVPGIVC88O/kz1claUlC3IWFFT4rjgxCol2magmsFgPZCQkrzhI
-	3xS892bFQ3XDXBGsNDnFyw1T+TanAaRm0UjyytuQtya9d3Pp0avttC+Ka+++vNQk
-	J6wUDeH002PscOoTVF5kG/HihChHjWVvsNjYq1xYluy2dRCwxUQS3Rf6xT192U+4
-	yb7pLEnPGOE/jzjwi2h2WL3HdAZGNg0qihHRttOrEjxEw==
-Received: from mail-pj1-f71.google.com (mail-pj1-f71.google.com [209.85.216.71])
-	by mx0b-00256a01.pphosted.com (PPS) with ESMTPS id 4f2v2mhgs7-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <stable@vger.kernel.org>; Sun, 28 Jun 2026 06:18:51 -0400 (EDT)
-Received: by mail-pj1-f71.google.com with SMTP id 98e67ed59e1d1-37fc0aaa94cso562784a91.1
-        for <stable@vger.kernel.org>; Sun, 28 Jun 2026 03:18:51 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1782641930; cv=none;
-        d=google.com; s=arc-20260327;
-        b=LgfkXU1TuH7RRgFLJySmRVnOkyYiFow7qhrlNjkUzqnFtNWDP59LpBXTxotkaMqCq7
-         v3jDLGZeABB8wo6tVqOEg4z/Gc/CG2PYXfeVvGzEZHEkDh+IE+oTWQLWpAqa5fZXflzc
-         EbINI0ZmXSxNuJIAmBkOmnDAqUseccDW8zpHSpC3jRGpGVnfbSk2SKcncwdZAJJof4rT
-         imXxzSmclzHbFlr5VkoHoIhsWzK/P2ZHZN6cUhA4FLDh06H6GvjUBLt4+5MYSbo8eZwe
-         w5qWSzX+fHApI7+aU9QsodFGqZ+v+LDh2PF37lzfo/FH8CC5EBZgZhTIL/bfYz7F3OCp
-         yDtA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=IqIUFv8eyNO2DKWR0kEueaSzyxNdYsgSTleO4QX3P+k=;
-        fh=1PeJOQfFxHC9HxiKbS4E31xJhWGJ2n0wAcz+g0b/4YI=;
-        b=I3l/d7BceplbEooJbySPqEEAPyE7SOe3TtFV0/l6j/AwlNAilsQiqw2f+57jArh9Jo
-         GHhQwxnNZq5QozWpNhrey2tqCia48XEqAtPG/AAfLii50XuPp6ruIxJfVWUF6gYOeRSY
-         6LXHKG0MPgAHQHLDWhfavoMdawqXLbqJ7ZyNEZEEgD/0CfbyEsMc8pEIq1eLDq2zrplo
-         OdEefi+PY/nUD+s4G0/NVx0859E1pnumRY44iTWN1iV6NTV3st0K3lXAbth1FUGNhiWy
-         mBildI0vO8yFfMr+RoMF9lTOYVyn35l1vGHHVOQqUyLBNGAZ64BL7e3+tWOcvi+42IFA
-         hbAg==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57D6226B764
+	for <stable@vger.kernel.org>; Sun, 28 Jun 2026 11:13:08 +0000 (UTC)
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1782645190; cv=none; b=Nm+wwHrYr5TSjF0gclwc269imt0XnOEGHeeMHaP52/FtjI+RSzt9P9LqvtK91y76QIWTNJFfs3T5d/bFkADCnvoRhl89sfy19Mhvq7nfsm6Ppykc/XtHFA3vwoQeO38FteNu8xmYy4Dt8uaLUxRB16l/O2AF8tYuZQN/zX21/Wo=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1782645190; c=relaxed/simple;
+	bh=/HuH1IYSueDw0bo6V8qM1IOyNOcXxeTGKHvADJLStBg=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=p+wuv7gkUqtZyk992K3rQHCIpwVT5H101AjAv3fMYC3bDfznZBHbALhyYNw40lSatwMcvvUOQTv74Id5SKp9A+8G+FElUVC+8CaGNUnY3sKEXeJjNdFPNFy5xIgcIdTQikJh3vf4O4E8MVWBc+y3e7iQEdCRjqVv28oBKwucZbE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com; spf=none smtp.mailfrom=mojatatu.com; dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b=te+G3WaV; arc=none smtp.client-ip=209.85.222.181
+Received: by mail-qk1-f181.google.com with SMTP id af79cd13be357-92c7a0a701aso69931585a.3
+        for <stable@vger.kernel.org>; Sun, 28 Jun 2026 04:13:08 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=nyu.edu; s=nyu-googleapps1; t=1782641930; x=1783246730; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=IqIUFv8eyNO2DKWR0kEueaSzyxNdYsgSTleO4QX3P+k=;
-        b=d1iOmTAOoQA+TT9ZAudDugMB4X0BNgjxADbfRwKnswAD6/2XxtuVKM1ZtA3HDhdNtR
-         3FgGakZP1Mc+f2mGnx40EfWSQUBprZHf1W4lY3T7vqT4IQsVc7sdjePDGILS0TiNKkVH
-         aCAeXb6Jn/dBH4AAxE761G1HBohjIWJirAM/rZh2Qyur69rufv2etnPFAtGDgHCrHPp6
-         Gd07w76lzOzxvU8ZJMkFcARoyyyXwAkjeJvIe3knF0dzjQ0QpjmLHuUd1cbtZOtnSnKv
-         PYn0LO7rFhMFrxrzXv2dsB5U93h0s8ax+288ndp8yDwjdivOg1aebkeZV37M1Tq4f0uC
-         Iz6w==
+        d=mojatatu.com; s=google; t=1782645187; x=1783249987; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=3UgPg6DIBbOx8NWbHsuvFVLyMA+HywY5jsKyVEL2lB8=;
+        b=te+G3WaVbugoeova3Bn0LZkjsM8Vnswvu1IlSdxTuVi4lyppAsJQHm3D4tEW3gGEhY
+         VwOpS5FVhm8z4pkHH4NbSPJIMBrKWWUsv7eqgW7RDj2K2pn7MYD5f0lviygtuWCAdvq8
+         /NK2M1+UDlJF7HDpQrbMTdRoK4gmwaI3haTPg=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782641930; x=1783246730;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=1e100.net; s=20251104; t=1782645187; x=1783249987;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=IqIUFv8eyNO2DKWR0kEueaSzyxNdYsgSTleO4QX3P+k=;
-        b=M6yxAdrXXuLlbVCIFv+FQmE28DXVvuWe05JShARWXEmC6y5bLZ3b6jBoKUGd9S8Nf+
-         X638EOfyYCVAolQ2REBy9Z9uVtdbTuUqOsgA2KOdJrlyhkOzC2WEwIVeH0REOmx1GFSv
-         UppYSNcv+4trU7Hq5Lhz+gO4jjV5tAUNgYpUd91w/n40XXagWqkxP+9jfPNANTJf18Xr
-         sWNnQjuBNP/Rav4EQxXRq+5i9AtGpxlKS1JooyYzMsa4Sxz3GaQ86puJNgjN59JMYV9Q
-         ppSJEqe6qbf0NHg8UAQCJCMBgfM9uIjoji+3H0EhoOroMHmqUN0gKM91T/0MS0H4ocAP
-         FBvA==
-X-Forwarded-Encrypted: i=1; AHgh+RoDwfdhrmK6P/yId3WSqjCLv1oOIycOkMtut8EJ7nJjxdPU7reJPGahyh5Sqz0+A0ZRokWrTnM=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx4PNbOR8YCMMyBKpRyHjb2oc6OeC1eOJqqWnK8+R+kOvsuFtTd
-	YC2+0KilZVNSJg7Hxh/7ZufYQnfwNlAqhxBHXrNerUFQHDJHy1im3ZST2bPgNAgdeS2lBjnefak
-	gXicSbHKq2HpaKMd+JW90ggHNiM5jwDZ5qev22ViaE2L5HLVrXMz/pBkG6UF6lqNQrw4wwvVwIJ
-	TYvb9r9RySVeNNMO/xj4slPNYUUJo7aA==
-X-Gm-Gg: AfdE7claGJTrgqrKt8+sqGhgbnQVQGImzHaoQfkM8IYDN7khWFaHjnV9z2PG2JaSbwa
-	Bt7Z7NDO3cGC7Fmuvr5t0vwj98FbT7vqXJjWbD9s3ApxgouHFrxFVCfGGnAUvUK+xmEsBv4hjlU
-	Odiy9ydXHP+0Ca7VMNYtLRCRQx4/mxvn89MI/2QSmbJogW2fFKP7Ox/Bi7t+hooWOisXSc
-X-Received: by 2002:a17:90b:1c81:b0:37c:6910:5758 with SMTP id 98e67ed59e1d1-37f7a52c19fmr5834462a91.1.1782641930517;
-        Sun, 28 Jun 2026 03:18:50 -0700 (PDT)
-X-Received: by 2002:a17:90b:1c81:b0:37c:6910:5758 with SMTP id
- 98e67ed59e1d1-37f7a52c19fmr5834447a91.1.1782641930109; Sun, 28 Jun 2026
- 03:18:50 -0700 (PDT)
+        bh=3UgPg6DIBbOx8NWbHsuvFVLyMA+HywY5jsKyVEL2lB8=;
+        b=VBJX8bSzTyvMdGzb2Jk5r/wUvayaE2nLs81jerjkFNBqNSC/BN0wB++/QUUgp5J5qr
+         gO9M4V9QgrfQI56osOo2SLfcPW4YnsKr5Sn+tHYVJWvUtCma9FRJpXVwth+oBYiRyLfM
+         HhmELh5003ZWeAOChf+xBw5GzA4AwMC83xAVuza4TdyJ9+jEO56QQeNk1qDkzv4a7bgi
+         kjfxpYBXFU2mtFVnC01sDT5HoIymUnSQy89ZyR8HJsYZt/i5nRPCFS1QlMIBR14cvPNI
+         f+j0iDsLe9SPoWN84URRpTYewTh5dlHF0MtBN1TxL4CzJkhGuaRcP2AW/9fmWcEktzVZ
+         adbQ==
+X-Forwarded-Encrypted: i=1; AFNElJ/3aTjvu7qW/9RCSkZOqXU/nc9Du8hdT77rD7QV8TH2D7Z0dty5/Tnd4ymz8yrQ0ssEiDtap34=@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywmv7sWDzwp/aGz4dZIxU1QvNt/dLQ4C7fHyIyGKrRxq7+DW5wP
+	If3rgwBgWL8a6mwQjB9KmzuvMd18w1S+/4UgO603RGJqQWVPraMd/de6jThMCNEo+Q==
+X-Gm-Gg: AfdE7cnlfrGVK6s+pWp4jRdKdibaJSB76d2ALWBM9qEVfIHJ4K2FDX2iXH5/ny0KA05
+	+0v/jHBWKek6wYbeP/Zp0PYVdSnW7ATBcmocczaXP8BLrb1XS6sGaJ/a3wTx/W7rrpAShhZZVDN
+	kyhF3V9p1dvRLbayN5BbMmZVeF0jPGXfC/0vnefhj+Ngp2atnk0Qvgh9tXQUw82EdWr9jREpb7B
+	6B/tXQqSTuoTREDg1v1NH5EfFIz1nI+LmzG+lkLS96gEwecZiSv+VCh7W6t2IwI8wBkx8VwvWMW
+	Ln3WEaKBv48xAGfL6cvUShVhuZKzc0P/uo+LuOjJw5X3/0uaFyfcKkpOr0J9qpefMGrT8fs/s9T
+	kzAFuICZwPqy4YnHqfUVhx5vDqOYCeav1Ltuht37RXcf9UP7DaeTcVub/QuxRXk7HJ5tYUXz0N4
+	F2ObwRVQ==
+X-Received: by 2002:a05:620a:45ac:b0:915:cf88:1e26 with SMTP id af79cd13be357-92b3e676792mr974760985a.48.1782645187131;
+        Sun, 28 Jun 2026 04:13:07 -0700 (PDT)
+Received: from majuu.waya ([184.144.29.222])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-926005a2530sm1736607385a.39.2026.06.28.04.13.04
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 28 Jun 2026 04:13:05 -0700 (PDT)
+From: Jamal Hadi Salim <jhs@mojatatu.com>
+To: netdev@vger.kernel.org
+Cc: davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	horms@kernel.org,
+	victor@mojatatu.com,
+	jiri@resnulli.us,
+	security@kernel.org,
+	zdi-disclosures@trendmicro.com,
+	stable@vger.kernel.org,
+	Jamal Hadi Salim <jhs@mojatatu.com>
+Subject: [PATCH net v3 1/1] net/sched: sch_teql: Introduce slaves_lock to avoid race condition and UAF
+Date: Sun, 28 Jun 2026 07:12:29 -0400
+Message-Id: <20260628111229.669751-1-jhs@mojatatu.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <CAMt2zv5c0cYzfe0RQ5AfoUdm+b4bAshgjCs23NjFBhQXDKLniQ@mail.gmail.com>
-In-Reply-To: <CAMt2zv5c0cYzfe0RQ5AfoUdm+b4bAshgjCs23NjFBhQXDKLniQ@mail.gmail.com>
-From: Yang Liu <liu.y@nyu.edu>
-Date: Sun, 28 Jun 2026 03:18:14 -0700
-X-Gm-Features: AVVi8Cf8t9Ato-3g7XWUk93rEfgPTT4Ew3KvNQiLLSuTjXEG34M_PT0p9XJVcFI
-Message-ID: <CAMt2zv5gsy-vbjfZC5jQaNsOj1NnkhNrQuCKSQ2Sn32gmnCcag@mail.gmail.com>
-Subject: Re: [PATCH] wifi: mt76: mt7996: fix TX DMA mapping leak for ADDBA-req frames
-To: nbd@nbd.name, lorenzo@kernel.org, ryder.lee@mediatek.com
-Cc: shayne.chen@mediatek.com, sean.wang@mediatek.com,
-        linux-wireless@vger.kernel.org, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-X-Proofpoint-Spam-Info: AW1haW4tMjYwNjI4MDA4OSBTYWx0ZWRfX2x7HRnxZFvHn
- XVFZipKLOxcjuQHnosn5xtxjdvXwLk1a6TQq9vsvBW+vMxrSlzSZ+qzhbdEWH38tU2g1hpCFYNk
- H0e02Om9f0vCDzcL/1SRCHCt3ky84e8=
-X-Authority-Analysis: v=2.4 cv=YfSNIQRf c=1 sm=1 tr=0 ts=6a40f50b cx=c_pps
- a=UNFcQwm+pnOIJct1K4W+Mw==:117 a=IkcTkHD0fZMA:10 a=FelO9ux0wxsA:10
- a=x7bEGLp0ZPQA:10 a=S0S_EcBMpFAA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=Se5WoFf3ZZRiLcel0nel:22 a=Lu3rmdZLeA08KL8VqJdF:22 a=VwQbUJbxAAAA:8
- a=BIFNTvHFq2Y8mDqsfgwA:9 a=QEXdDO2ut3YA:10 a=uKXjsCUrEbL0IQVhDsJ9:22
-X-Proofpoint-GUID: OYvRiO5Lk-t_eITKqUcaxLL7jNzi9uTF
-X-Proofpoint-ORIG-GUID: OYvRiO5Lk-t_eITKqUcaxLL7jNzi9uTF
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNjI4MDA4OSBTYWx0ZWRfX2o0FjEXqjg8D
- bCBAnVPtAjjX852f92ltk11cFyy9eCYq1L2ifpfUt6nKj6wX4gAnRwoq4CY4CYzUX/cy9zfgQlH
- bEGjcJ1pacmHIg7RG5GzblJRLdB2WSsF6OkoQ8/AwaHUTnnsgpR26EAV0hagwXbJ5cQTujqMG6F
- Pz8ajES+d3ANfzgccxN/1PNPopqiQYJWPDun+hX2gB+iLX38slG7u8dIzoV2yxPryy4T6jmxaou
- 90ESeCq6gIQMUgdxzd1vXCQOh9foxsPjfDwAsXorKe6MI49W2Wp/6B6Ptux+FPtVFyoWsRNABTX
- 3UcCtrCg65Yeh+1tbKaH95ZJhQJFS0Hb9MmFpUFtOZlzUBCoVRYCLsCiYAmg/zpIz4N+ZzC1eiN
- 7/7qhyEUbtdCHU7am8Xf6AslxiCMeoTGz81TTvBVwhtS4eiCWkegmwd8LFHs2fAqh5gmLp5ViKM
- 8JfNu4LHgy5bIEQ1Dww==
-X-Orig-IP: 209.85.216.71
-X-Proofpoint-Spam-Details: rule=outbound_bp_notspam policy=outbound_bp score=0
- priorityscore=1501 adultscore=0 clxscore=1011 malwarescore=0 phishscore=0
- suspectscore=0 spamscore=0 lowpriorityscore=0 impostorscore=0 bulkscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2606280089
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-2.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
-	DMARC_POLICY_ALLOW(-0.50)[nyu.edu,reject];
-	R_DKIM_ALLOW(-0.20)[nyu.edu:s=20180315,nyu.edu:s=nyu-googleapps1];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[mojatatu.com:s=google];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[nyu.edu:+];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:nbd@nbd.name,m:lorenzo@kernel.org,m:ryder.lee@mediatek.com,m:shayne.chen@mediatek.com,m:sean.wang@mediatek.com,m:linux-wireless@vger.kernel.org,m:stable@vger.kernel.org,s:lists@lfdr.de];
-	TAGGED_FROM(0.00)[bounces-269507-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER(0.00)[liu.y@nyu.edu,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-269509-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:netdev@vger.kernel.org,m:davem@davemloft.net,m:edumazet@google.com,m:kuba@kernel.org,m:pabeni@redhat.com,m:horms@kernel.org,m:victor@mojatatu.com,m:jiri@resnulli.us,m:security@kernel.org,m:zdi-disclosures@trendmicro.com,m:stable@vger.kernel.org,m:jhs@mojatatu.com,s:lists@lfdr.de];
+	DMARC_NA(0.00)[mojatatu.com];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[12];
+	FORGED_SENDER(0.00)[jhs@mojatatu.com,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[6];
+	FORWARDED(0.00)[lists@lfdr.de];
+	DKIM_TRACE(0.00)[mojatatu.com:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[liu.y@nyu.edu,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	TO_DN_NONE(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	ALIAS_RESOLVED(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[jhs@mojatatu.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,mail.gmail.com:mid,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
+	ALIAS_RESOLVED(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,trendmicro.com:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 771DE6D3944
+X-Rspamd-Queue-Id: B57786D3A79
 
-MT7996 hands the firmware a HW MAC-TXP for ADDBA-req action frames
-(MT_TXD7_MAC_TXD, set in mt7996_mac_write_txwi_80211()), but the chip is a
-FW-TXP device, so on TX completion mt76_connac_txp_skb_unmap() decodes
-the per-frame txp as a struct mt76_connac_fw_txp.  For a MAC-TXP the
-fw_txp.nbuf byte aliases the high byte of the TID word
-(MT_TXP1_TID_ADDBA, GENMASK(14, 12)), which is always zero, so the
-unmap loop runs zero times and buf[1] (the skb DMA mapping) is never
-unmapped. mt7996_tx_prepare_skb() also sets buf[1].skip_unmap
-unconditionally, so the generic mt76 DMA-ring cleanup skips it as well.
+The teql master->slaves singly linked list is not protected against
+multiple writes. It can be mod'ed concurently from teql_master_xmit(),
+teql_dequeue(), teql_init() and teql_destroy() without holding any list
+lock or RCU protection.
 
-Each ADDBA req therefore leaks one TX DMA mapping, i.e. roughly one per
-(re)association.  When WED is enabled the mt76 DMA device bounces these
-mappings through the WED swiotlb pool, so under continuous client
-reconnect churn the pool is exhausted after ~1-2 days, after which DMA
-mapping fails for WED, the WiFi MCU and other on-SoC consumers.
+zdi-disclosures@trendmicro.com has demonstrated that the qdisc is freed
+after an RCU grace period, but teql_master_xmit() running on another
+CPU can still hold a stale pointer into the list, resulting in a
+slab-use-after-free:
 
-Only set buf[1].skip_unmap on the FW-TXP path. For MAC-TXD frames
-leave it clear so mt76_dma_tx_cleanup_idx() unmaps buf[1]. The FW
-unmap is a no-op for these frames (nbuf reads 0), so there is no double
-free.
+BUG: KASAN: slab-use-after-free in teql_master_xmit+0xf0f/0x16b0
+Read of size 8 at addr ffff888013fb0440 by task poc/332
+Freed 512-byte region [ffff888013fb0400, ffff888013fb0600) (kmalloc-512)
 
-Fixes: cb6ebbdffef2 ("wifi: mt76: mt7996: support writing MAC TXD for
-AddBA Request")
-Cc: stable@vger.kernel.org
-Assisted-by: Claude-Code:claude-opus-4-8
-Signed-off-by: Yang Liu <liu.y@nyu.edu>
+The fix?
+Add a per-master slaves_lock spinlock that serializes all mutations of
+master->slaves and the NEXT_SLAVE() links in teql_destroy() and
+teql_qdisc_init(). teql_master_xmit() also takes the same slaves_lock
+around those updates.
+Annotate master->slaves and the per-slave ->next pointer with __rcu and
+use the appropriate RCU accessors everywhere they are touched:
+rcu_assign_pointer() on the writer side (under slaves_lock),
+rcu_dereference_protected() for the writer-side loads (also under
+slaves_lock), rcu_dereference_bh() for the loads in teql_master_xmit() and
+rtnl_dereference() for the loads in teql_master_open()/teql_master_mtu(),
+which run under RTNL.
+Pair this with rcu_read_lock_bh()/rcu_read_unlock_bh() around the list
+traversal in teql_master_xmit(), so that readers either observe a fully
+linked list or are deferred until the in-flight mutation completes. The two
+early-return paths in teql_master_xmit() are updated to release the RCU-bh
+read-side critical section before returning, since leaving it held would
+disable BH on that CPU for good.
+
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Reported-by: zdi-disclosures@trendmicro.com
+Tested-by: Victor Nogueira <victor@mojatatu.com>
+Signed-off-by: Jamal Hadi Salim <jhs@mojatatu.com>
 ---
-Tested on a Banana Pi R4 Pro (MT7988A, MT7996/BE14, WED enabled, 6.18.35):
-under a continuous client (re)association reproducer (~51 reassoc/min),
-/sys/kernel/debug/swiotlb/io_tlb_used grew ~25 slots/min before this
-patch (steady leak; pool exhaustion and the resulting DMA failures after
-~1-2 days) and is flat after it, with no double free.
+v2->v3
+1) Thanks to Simon's persistence:
+ The writeback in teql_master_xmit() should not blindly write NEXT_SLAVE(q)
+ into master->slaves. It should re-read master->slaves under slaves_lock and
+ only update it if q is still the current head
+2) Appease sashiko by mentioning teql_dequeue() on the commit and ensuring
+ consistency on rcu_dereference_bh()/rcu_dereference_protected()
+---
 
- drivers/net/wireless/mediatek/mt76/mt7996/mac.c | 10 ++++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mac.c
-b/drivers/net/wireless/mediatek/mt76/mt7996/mac.c
-index 0eebc81..962dad4 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7996/mac.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7996/mac.c
-@@ -1010,6 +1010,7 @@ int mt7996_tx_prepare_skb(struct mt76_dev *mdev,
-void *txwi_ptr,
-     struct mt76_txwi_cache *t;
-     int id, i, pid, nbuf = tx_info->nbuf - 1;
-     bool is_8023 = info->flags & IEEE80211_TX_CTL_HW_80211_ENCAP;
-+    bool mac_txd;
-     __le32 *ptr = (__le32 *)txwi_ptr;
-     u8 *txwi = (u8 *)txwi_ptr;
-     u8 link_id;
-@@ -1096,7 +1097,8 @@ int mt7996_tx_prepare_skb(struct mt76_dev *mdev,
-void *txwi_ptr,
-     /* MT7996 and MT7992 require driver to provide the MAC TXP for AddBA
-      * req
-      */
--    if (le32_to_cpu(ptr[7]) & MT_TXD7_MAC_TXD) {
-+    mac_txd = le32_to_cpu(ptr[7]) & MT_TXD7_MAC_TXD;
-+    if (mac_txd) {
-         u32 val, mac_txp_size = sizeof(struct mt76_connac_hw_txp);
-
-         ptr = (__le32 *)(txwi + MT_TXD_SIZE);
-@@ -1167,7 +1169,11 @@ int mt7996_tx_prepare_skb(struct mt76_dev
-*mdev, void *txwi_ptr,
-
-     /* pass partial skb header to fw */
-     tx_info->buf[1].len = MT_CT_PARSE_LEN;
--    tx_info->buf[1].skip_unmap = true;
-+    /* MAC-TXD (ADDBA-req) frames use a HW MAC-TXP that the fw-txp
-+     * mt76_connac_txp_skb_unmap() path does not unmap; free buf[1] via the
-+     * DMA-ring cleanup for them instead (see commit message).
-+     */
-+    tx_info->buf[1].skip_unmap = !mac_txd;
-     tx_info->nbuf = MT_CT_DMA_BUF_NUM;
-
-     return 0;
--- 
-2.53.0
+diff --git a/net/sched/sch_teql.c b/net/sched/sch_teql.c
+index e7bbc9e5174d..78c74c1182d7 100644
+--- a/net/sched/sch_teql.c
++++ b/net/sched/sch_teql.c
+@@ -52,7 +52,8 @@
+ struct teql_master {
+ 	struct Qdisc_ops qops;
+ 	struct net_device *dev;
+-	struct Qdisc *slaves;
++	struct Qdisc __rcu	*slaves;
++	spinlock_t		slaves_lock; /* serializes writes to ->slaves */
+ 	struct list_head master_list;
+ 	unsigned long	tx_bytes;
+ 	unsigned long	tx_packets;
+@@ -61,7 +62,7 @@ struct teql_master {
+ };
+ 
+ struct teql_sched_data {
+-	struct Qdisc *next;
++	struct Qdisc __rcu	*next;
+ 	struct teql_master *m;
+ 	struct sk_buff_head q;
+ };
+@@ -101,7 +102,9 @@ teql_dequeue(struct Qdisc *sch)
+ 	if (skb == NULL) {
+ 		struct net_device *m = qdisc_dev(q);
+ 		if (m) {
+-			dat->m->slaves = sch;
++			spin_lock_bh(&dat->m->slaves_lock);
++			rcu_assign_pointer(dat->m->slaves, sch);
++			spin_unlock_bh(&dat->m->slaves_lock);
+ 			netif_wake_queue(m);
+ 		}
+ 	} else {
+@@ -132,34 +135,49 @@ teql_destroy(struct Qdisc *sch)
+ 	struct Qdisc *q, *prev;
+ 	struct teql_sched_data *dat = qdisc_priv(sch);
+ 	struct teql_master *master = dat->m;
++	struct netdev_queue *txq = NULL;
++	bool reset_master_queue = false;
+ 
+ 	if (!master)
+ 		return;
+ 
+-	prev = master->slaves;
++	spin_lock_bh(&master->slaves_lock);
++	prev = rcu_dereference_protected(master->slaves,
++					 lockdep_is_held(&master->slaves_lock));
+ 	if (prev) {
+ 		do {
+-			q = NEXT_SLAVE(prev);
+-			if (q == sch) {
+-				NEXT_SLAVE(prev) = NEXT_SLAVE(q);
+-				if (q == master->slaves) {
+-					master->slaves = NEXT_SLAVE(q);
+-					if (q == master->slaves) {
+-						struct netdev_queue *txq;
+-
+-						txq = netdev_get_tx_queue(master->dev, 0);
+-						master->slaves = NULL;
+-
+-						dev_reset_queue(master->dev,
+-								txq, NULL);
+-					}
+-				}
+-				skb_queue_purge(&dat->q);
+-				break;
++			struct Qdisc *head, *next;
++
++			q = rcu_dereference_protected(NEXT_SLAVE(prev),
++						      lockdep_is_held(&master->slaves_lock));
++			if (q != sch) {
++				prev = q;
++				continue;
+ 			}
+ 
+-		} while ((prev = q) != master->slaves);
++			next = rcu_dereference_protected(NEXT_SLAVE(q),
++							 lockdep_is_held(&master->slaves_lock));
++			rcu_assign_pointer(NEXT_SLAVE(prev), next);
++
++			head = rcu_dereference_protected(master->slaves,
++							 lockdep_is_held(&master->slaves_lock));
++			if (q == head) {
++				rcu_assign_pointer(master->slaves, next);
++				if (q == next) {
++					txq = netdev_get_tx_queue(master->dev, 0);
++					rcu_assign_pointer(master->slaves, NULL);
++					reset_master_queue = true;
++				}
++			}
++			skb_queue_purge(&dat->q);
++			break;
++		} while (prev != rcu_dereference_protected(master->slaves,
++							   lockdep_is_held(&master->slaves_lock)));
+ 	}
++	spin_unlock_bh(&master->slaves_lock);
++
++	if (reset_master_queue)
++		dev_reset_queue(master->dev, txq, NULL);
+ }
+ 
+ static int teql_qdisc_init(struct Qdisc *sch, struct nlattr *opt,
+@@ -168,6 +186,7 @@ static int teql_qdisc_init(struct Qdisc *sch, struct nlattr *opt,
+ 	struct net_device *dev = qdisc_dev(sch);
+ 	struct teql_master *m = (struct teql_master *)sch->ops;
+ 	struct teql_sched_data *q = qdisc_priv(sch);
++	struct Qdisc *first;
+ 
+ 	if (dev->hard_header_len > m->dev->hard_header_len)
+ 		return -EINVAL;
+@@ -184,7 +203,9 @@ static int teql_qdisc_init(struct Qdisc *sch, struct nlattr *opt,
+ 
+ 	skb_queue_head_init(&q->q);
+ 
+-	if (m->slaves) {
++	spin_lock_bh(&m->slaves_lock);
++	first = rcu_dereference_protected(m->slaves, lockdep_is_held(&m->slaves_lock));
++	if (first) {
+ 		if (m->dev->flags & IFF_UP) {
+ 			if ((m->dev->flags & IFF_POINTOPOINT &&
+ 			     !(dev->flags & IFF_POINTOPOINT)) ||
+@@ -192,8 +213,10 @@ static int teql_qdisc_init(struct Qdisc *sch, struct nlattr *opt,
+ 			     !(dev->flags & IFF_BROADCAST)) ||
+ 			    (m->dev->flags & IFF_MULTICAST &&
+ 			     !(dev->flags & IFF_MULTICAST)) ||
+-			    dev->mtu < m->dev->mtu)
++			    dev->mtu < m->dev->mtu) {
++				spin_unlock_bh(&m->slaves_lock);
+ 				return -EINVAL;
++			}
+ 		} else {
+ 			if (!(dev->flags&IFF_POINTOPOINT))
+ 				m->dev->flags &= ~IFF_POINTOPOINT;
+@@ -204,14 +227,17 @@ static int teql_qdisc_init(struct Qdisc *sch, struct nlattr *opt,
+ 			if (dev->mtu < m->dev->mtu)
+ 				m->dev->mtu = dev->mtu;
+ 		}
+-		q->next = NEXT_SLAVE(m->slaves);
+-		NEXT_SLAVE(m->slaves) = sch;
++		rcu_assign_pointer(q->next,
++				   rcu_dereference_protected(NEXT_SLAVE(first),
++							     lockdep_is_held(&m->slaves_lock)));
++		rcu_assign_pointer(NEXT_SLAVE(first), sch);
+ 	} else {
+-		q->next = sch;
+-		m->slaves = sch;
++		rcu_assign_pointer(q->next, sch);
++		rcu_assign_pointer(m->slaves, sch);
+ 		m->dev->mtu = dev->mtu;
+ 		m->dev->flags = (m->dev->flags&~FMASK)|(dev->flags&FMASK);
+ 	}
++	spin_unlock_bh(&m->slaves_lock);
+ 	return 0;
+ }
+ 
+@@ -285,7 +311,9 @@ static netdev_tx_t teql_master_xmit(struct sk_buff *skb, struct net_device *dev)
+ 	int subq = skb_get_queue_mapping(skb);
+ 	struct sk_buff *skb_res = NULL;
+ 
+-	start = master->slaves;
++	rcu_read_lock_bh();
++
++	start = rcu_dereference_bh(master->slaves);
+ 
+ restart:
+ 	nores = 0;
+@@ -317,10 +345,17 @@ static netdev_tx_t teql_master_xmit(struct sk_buff *skb, struct net_device *dev)
+ 				    netdev_start_xmit(skb, slave, slave_txq, false) ==
+ 				    NETDEV_TX_OK) {
+ 					__netif_tx_unlock(slave_txq);
+-					master->slaves = NEXT_SLAVE(q);
++					spin_lock_bh(&master->slaves_lock);
++					if (rcu_dereference_protected(master->slaves,
++								      lockdep_is_held(&master->slaves_lock)) == q)
++						rcu_assign_pointer(master->slaves,
++								   rcu_dereference_protected(NEXT_SLAVE(q),
++											     lockdep_is_held(&master->slaves_lock)));
++					spin_unlock_bh(&master->slaves_lock);
+ 					netif_wake_queue(dev);
+ 					master->tx_packets++;
+ 					master->tx_bytes += length;
++					rcu_read_unlock_bh();
+ 					return NETDEV_TX_OK;
+ 				}
+ 				__netif_tx_unlock(slave_txq);
+@@ -329,14 +364,21 @@ static netdev_tx_t teql_master_xmit(struct sk_buff *skb, struct net_device *dev)
+ 				busy = 1;
+ 			break;
+ 		case 1:
+-			master->slaves = NEXT_SLAVE(q);
++			spin_lock_bh(&master->slaves_lock);
++			if (rcu_dereference_protected(master->slaves,
++						      lockdep_is_held(&master->slaves_lock)) == q)
++				rcu_assign_pointer(master->slaves,
++						   rcu_dereference_protected(NEXT_SLAVE(q),
++									     lockdep_is_held(&master->slaves_lock)));
++			spin_unlock_bh(&master->slaves_lock);
++			rcu_read_unlock_bh();
+ 			return NETDEV_TX_OK;
+ 		default:
+ 			nores = 1;
+ 			break;
+ 		}
+ 		__skb_pull(skb, skb_network_offset(skb));
+-	} while ((q = NEXT_SLAVE(q)) != start);
++	} while ((q = rcu_dereference_bh(NEXT_SLAVE(q))) != start);
+ 
+ 	if (nores && skb_res == NULL) {
+ 		skb_res = skb;
+@@ -345,29 +387,32 @@ static netdev_tx_t teql_master_xmit(struct sk_buff *skb, struct net_device *dev)
+ 
+ 	if (busy) {
+ 		netif_stop_queue(dev);
++		rcu_read_unlock_bh();
+ 		return NETDEV_TX_BUSY;
+ 	}
+ 	master->tx_errors++;
+ 
+ drop:
+ 	master->tx_dropped++;
++	rcu_read_unlock_bh();
+ 	dev_kfree_skb(skb);
+ 	return NETDEV_TX_OK;
+ }
+ 
+ static int teql_master_open(struct net_device *dev)
+ {
+-	struct Qdisc *q;
++	struct Qdisc *q, *first;
+ 	struct teql_master *m = netdev_priv(dev);
+ 	int mtu = 0xFFFE;
+ 	unsigned int flags = IFF_NOARP | IFF_MULTICAST;
+ 
+-	if (m->slaves == NULL)
++	first = rtnl_dereference(m->slaves);
++	if (!first)
+ 		return -EUNATCH;
+ 
+ 	flags = FMASK;
+ 
+-	q = m->slaves;
++	q = first;
+ 	do {
+ 		struct net_device *slave = qdisc_dev(q);
+ 
+@@ -389,7 +434,7 @@ static int teql_master_open(struct net_device *dev)
+ 			flags &= ~IFF_BROADCAST;
+ 		if (!(slave->flags&IFF_MULTICAST))
+ 			flags &= ~IFF_MULTICAST;
+-	} while ((q = NEXT_SLAVE(q)) != m->slaves);
++	} while ((q = rtnl_dereference(NEXT_SLAVE(q))) != first);
+ 
+ 	m->dev->mtu = mtu;
+ 	m->dev->flags = (m->dev->flags&~FMASK) | flags;
+@@ -417,14 +462,15 @@ static void teql_master_stats64(struct net_device *dev,
+ static int teql_master_mtu(struct net_device *dev, int new_mtu)
+ {
+ 	struct teql_master *m = netdev_priv(dev);
+-	struct Qdisc *q;
++	struct Qdisc *q, *first;
+ 
+-	q = m->slaves;
++	first = rtnl_dereference(m->slaves);
++	q = first;
+ 	if (q) {
+ 		do {
+ 			if (new_mtu > qdisc_dev(q)->mtu)
+ 				return -EINVAL;
+-		} while ((q = NEXT_SLAVE(q)) != m->slaves);
++		} while ((q = rtnl_dereference(NEXT_SLAVE(q))) != first);
+ 	}
+ 
+ 	WRITE_ONCE(dev->mtu, new_mtu);
+@@ -444,6 +490,7 @@ static __init void teql_master_setup(struct net_device *dev)
+ 	struct teql_master *master = netdev_priv(dev);
+ 	struct Qdisc_ops *ops = &master->qops;
+ 
++	spin_lock_init(&master->slaves_lock);
+ 	master->dev	= dev;
+ 	ops->priv_size  = sizeof(struct teql_sched_data);
+ 
 
