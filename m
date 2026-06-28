@@ -1,95 +1,61 @@
-Return-Path: <stable+bounces-269587-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-269588-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id Hv4sIymXQWqssQkAu9opvQ
-	(envelope-from <stable+bounces-269587-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 28 Jun 2026 23:50:33 +0200
+	id EJ3XCjWYQWrFsQkAu9opvQ
+	(envelope-from <stable+bounces-269588-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 28 Jun 2026 23:55:01 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D76F76D507F
-	for <lists+stable@lfdr.de>; Sun, 28 Jun 2026 23:50:32 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7013F6D508F
+	for <lists+stable@lfdr.de>; Sun, 28 Jun 2026 23:55:00 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=BlmrVxOL;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-269587-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-269587-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=none) header.from=gmail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=odQNqTH2;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-269588-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-269588-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 63DBD300CBC2
-	for <lists+stable@lfdr.de>; Sun, 28 Jun 2026 21:50:29 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id DC76D300CE74
+	for <lists+stable@lfdr.de>; Sun, 28 Jun 2026 21:54:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 338CB3B8BD1;
-	Sun, 28 Jun 2026 21:50:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD1843B71C5;
+	Sun, 28 Jun 2026 21:54:54 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8264348C47
-	for <stable@vger.kernel.org>; Sun, 28 Jun 2026 21:50:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C4223B71D7;
+	Sun, 28 Jun 2026 21:54:53 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782683428; cv=none; b=Dp7Ro9TM9cItiVb7mhDrutC3t4+u91h8TMYvZIU6wTahRUKfoaqp5LITJ78DxQamjT66JiVeqbCPMkoLLZo6MJKp1R5h7PuzJJomI/rRDGhdlhLUg5GqODtX6CJ+8CmEuPAezettL5cxMLte4fJKmFIz8T/pTapdyWdTF+B463A=
+	t=1782683694; cv=none; b=E03eSEJMSJp6Zr891zbpIoskBkEOQKAqfkqJBtdJaKGH5VTWJQ6cw+IJw+ofrAw1dcIlia0ATPC2Ri1W//rBBT2Ga+9JGzk4TzczHut4dqpwWxXDSLVrOC6WzzWTczop82bCcs2rRsAI89PjU2Nw93sPh9xCeCQi9cJ8d/+erjA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782683428; c=relaxed/simple;
-	bh=4qFHrJ8TjRhzwg9eX6E4uCk78ScEs4rJofH5o2OZmu8=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=lvgYMxP58XAAVwio4qL5zQjQFQyqevDw08QkMBFr4CcnwjKT9kOy+/CqehpDkuMdB7kDGMBYB7uNdG+Eycqw6iw2FGfsRtg+tCxbxND9268cjbvXx5dgLMp1i+Du2Nrq3RPP367pL5RNgCuhFYDwaSW/aTpXwJhy+Rt7E1BbXP0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=BlmrVxOL; arc=none smtp.client-ip=209.85.214.170
-Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-2c825c88744so15484655ad.1
-        for <stable@vger.kernel.org>; Sun, 28 Jun 2026 14:50:26 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1782683426; x=1783288226; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=4xJeWro39OB82LbHgE7JTjiXJkNJO0xjWGuLEsvgMVw=;
-        b=BlmrVxOLuMWywpvxEAR7aOzqiogLp74+5JIaPgaEwcmYgoLPqdOnaDCRJOhbynQ0p0
-         T8XUfsRe1WseWBB5V0zm8MpcVoU70WqAuzJ0Dcsrlod/aUXr/3ySL8OY2ECd00R3U+ZK
-         CN8F94HYkVYkaFfravcdCP9hiQQU7FQQgnXrsrBeETJI86uZl9Tcrbd+ltj7S3oO+BWx
-         +OGLOHMyCukZ3YtoARPQnT7lfc7PqctmxbjMbjueC2IzyWsqm5mi1y0GzX3d1nT52HUp
-         ntWCjXIL86LT5obNzfQd2romE50TPWQUM13i8kRDPJfCMy4FEDsePt6stIRwSbUGQcga
-         UjNg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782683426; x=1783288226;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=4xJeWro39OB82LbHgE7JTjiXJkNJO0xjWGuLEsvgMVw=;
-        b=kXFbUEPI605PboluF1WUMI7zmA+PAfyJOR43077n7fXy8OdBAdMW6fxwwtE3vQ/Jqd
-         ibXojjACPwzO5YBoJd0ojnQjJiuPyrvL8A3fjc8vGdzjoxNGI/yitnbevNmzMkVy9Wbm
-         ySWpDFES8TEHbgrlpnyKJ2VDFtHEYkhpVAqFu2VxlIxN74rZSELpQOmOcNiXQNyf1LYi
-         JMcwDZh7XM33pbfU8+zso8jZr4LpNZxJYLFBy4CKyyc/8wo1yTAyOaEjO2FaHVfNssgt
-         WXrXcQxsI/409GLYIK1E+qY4xb1kRkierdLVl+rTOp8A5mEeU8vTSl5AGzTE/QHTb8vK
-         NKcA==
-X-Forwarded-Encrypted: i=1; AHgh+RpX1gz7m8wKXq9GB2ZI+lx9iIgvs1x54yak9KOyXqz6hv9kPdqXuRD6cDl43IPw8XBoM/qW9tU=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz0bPEzxlC9QsZ9RPptIGx18gr+L2QIiQCy+9qzc/e7bf7T79Q/
-	ujNEFpOB7aelRLTJExazTDntm7kEAWng66LawopErpTmYb7QOC4ofqoc
-X-Gm-Gg: AfdE7ckBABSY6T2V6/GxX7lXWtJtf/lxJKeZFRCPlbpXoj5jYEvWnq13JtdELBusV6p
-	C/xMRmQ7b6AkcNh7vusWPJGKm1c/Eiau6rDqTOD+eZodjq5aIUknIbvXyyuFWa5vs+DFs61MpFO
-	x6i2d44G1ht2wbHjEbliMKleMyfaGvjZcRFy6y7708g59U5GELH9Zj3MCNZ9wixUpBQNJXt87gQ
-	3ohSbW2fdIUWs5CVvlfTwuc/QCZPSpgvz3JkLg8FG1R/YFC+IO1f4mGz7yT6ZqRu+/yZn04LW0z
-	NJbNO7QmGJO4pMvdp5rh3v13xayt0CWGeySP6fh3oaY4aiW4NcEl51gXzXZHrYnTqMiCz12D5Jf
-	0u0DSPFDtR4fmbeWVixyuH4zVskFXcXOv9RzLouGC+cYZgW4bJxcbpgevAG5jtApQrPgjCp8a1t
-	cQgav91mp4uWwAF/TibXL/RmKFKkUF3NxKL0/v9e+dPS+f0vU6U/CwXU3pI/VwSQ==
-X-Received: by 2002:a17:903:1cc:b0:2ca:281:27fa with SMTP id d9443c01a7336-2ca02812986mr8901775ad.37.1782683426051;
-        Sun, 28 Jun 2026 14:50:26 -0700 (PDT)
-Received: from node ([149.40.62.34])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2c9e95e49efsm14044425ad.52.2026.06.28.14.50.20
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 28 Jun 2026 14:50:25 -0700 (PDT)
-From: Muhammad Bilal <meatuni001@gmail.com>
-To: david@ixit.cz
-Cc: netdev@vger.kernel.org,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	horms@kernel.org,
-	oe-linux-nfc@lists.linux.dev,
+	s=arc-20240116; t=1782683694; c=relaxed/simple;
+	bh=RCTr6WzinCBRJCf76iFIZiBNOnNNLIMbUYmMVNswliY=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=fr7TdGB4AIfqmxEDSYReYxUrlhInTfe24x/tGudSsWMeIWC10oEkAczqcJq6VfU7UF6bXKE7e5zvSOC3CcVYvJzD7JljFffG1C/3AUSOXd7/vzjcnvEEMG58LGggS8BaIndQpFPYQjOiKuGpE+cHBIWb+evYTvU8mr5MR2C7Ees=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=odQNqTH2; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E499F1F000E9;
+	Sun, 28 Jun 2026 21:54:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1782683693;
+	bh=wb/G2WI6U+bmHwkuU5P84fH/ZMN31r6Got3AOveygXo=;
+	h=From:To:Cc:Subject:Date;
+	b=odQNqTH2ZMrhe7ZozN5h/oAQeRqYWv82de3+V/fqJgmGDBk4t48gPKmL9/QgDbl3O
+	 hFyMymvuoOnpaWxR5Qg5jdHIU8rv7ZTf2fJUom07/pKHToC8vka2u23rxOUJUQ5TRg
+	 F0X0RE3Wl1TOgopWvBD075KKymx+dKmtqlbGxm3PrPDERUwc5ojjy8piMxg1fkRzK/
+	 HSkLXPUm/qb8YSM5yN5WDE1RCcvuAhjNB/1Pk6K1DJ99Xcs4fcEwSqb6TXH7LUKKUm
+	 LnGig2acjXxO5jfQ4/0ej89esSErXW2DdRqMWI/gWdnfLnGTPg5V9UVeE/7ytF6ueK
+	 JUxZyyoShCbFw==
+From: SJ Park <sj@kernel.org>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: SJ Park <sj@kernel.org>,
+	"# 6 . 14 . x" <stable@vger.kernel.org>,
+	damon@lists.linux.dev,
 	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org,
-	Muhammad Bilal <meatuni001@gmail.com>
-Subject: [PATCH net v2] nfc: nci: fix use of uninitialized memory in NFC-DEP general bytes
-Date: Mon, 29 Jun 2026 02:49:29 +0500
-Message-ID: <20260628214929.135152-1-meatuni001@gmail.com>
-X-Mailer: git-send-email 2.54.0
+	linux-mm@kvack.org
+Subject: [PATCH 0/6] samples/damon: handle damon_{start,stop}() failures
+Date: Sun, 28 Jun 2026 14:54:39 -0700
+Message-ID: <20260628215447.96166-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -98,100 +64,82 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.66 / 15.00];
+X-Spamd-Result: default: False [-3.66 / 15.00];
+	WHITELIST_SPF_DKIM(-3.00)[kernel.org:d:+,kernel.org:s:+];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
 	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FREEMAIL_CC(0.00)[vger.kernel.org,davemloft.net,google.com,kernel.org,redhat.com,lists.linux.dev,gmail.com];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-269587-lists,stable=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:david@ixit.cz,m:netdev@vger.kernel.org,m:davem@davemloft.net,m:edumazet@google.com,m:kuba@kernel.org,m:pabeni@redhat.com,m:horms@kernel.org,m:oe-linux-nfc@lists.linux.dev,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,m:meatuni001@gmail.com,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[meatuni001@gmail.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FREEMAIL_FROM(0.00)[gmail.com];
+	TAGGED_FROM(0.00)[bounces-269588-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS(0.00)[m:akpm@linux-foundation.org,m:sj@kernel.org,m:stable@vger.kernel.org,m:damon@lists.linux.dev,m:linux-kernel@vger.kernel.org,m:linux-mm@kvack.org,s:lists@lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_SENDER(0.00)[sj@kernel.org,stable@vger.kernel.org];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[meatuni001@gmail.com,stable@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[sj@kernel.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	RCPT_COUNT_SEVEN(0.00)[11];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	ALIAS_RESOLVED(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: D76F76D507F
+X-Rspamd-Queue-Id: 7013F6D508F
 
-nci_store_general_bytes_nfc_dep() derives the length of the NFC-DEP
-general bytes by subtracting the fixed general-bytes offset from the ATR
-length:
+All DAMON sample modules are not correctly handling failures from
+damon_start().  Among those, mtier also has an additional problem for
+handling of damon_stop() failures.  wsse and prcl also have a problem in
+their damon_call() failure handling.  As a result, memory leaks, next
+DAMON operation disruptions, and use-after-free can happen.  Fix those.
 
-  atr_res_len - NFC_ATR_RES_GT_OFFSET   (poll, offset 15)
-  atr_req_len - NFC_ATR_REQ_GT_OFFSET   (listen, offset 14)
+Note that only the damon_start() failure caused issues can reliably be
+reproduced.  Reproducing those issues require the admin permission,
+though.
 
-It never checks that the ATR is at least that long.  When a
-RF_INTF_ACTIVATED_NTF reports an ATR shorter than the offset the
-subtraction is negative; because min_t() casts its arguments to __u8 the
-negative value becomes large and is then capped at
-NFC_ATR_RES_GB_MAXSIZE / NFC_ATR_REQ_GB_MAXSIZE.  remote_gb_len is thus
-set to up to 47/48 even though only atr_res_len/atr_req_len bytes of the
-on-stack atr_res/atr_req buffer were copied from the packet, and the
-following memcpy() reads the uninitialized remainder into
-ndev->remote_gb.
+Changes from RFC v4
+- RFC v4: https://lore.kernel.org/20260610135546.64943-1-sj@kernel.org/
+- Collect R-b: from Zenghui Yu.
+- Rebase to latest mm-new.
+- Drop RFC.
+Changes from RFC v3
+- RFC v3: https://lore.kernel.org/20260610011420.3018-1-sj@kernel.org
+- Add damon_Call() failure handling fixes for wsse and prcl.
+Changes from RFC v2
+- RFC v2: https://lore.kernel.org/20260609142119.68120-1-sj@kernel.org
+- Add damon_start() failure handling fixes for wsse and prcl.
+Changes from RFC v1
+- RFC v1: https://lore.kernel.org/20260609005443.2122-1-sj@kernel.org
+- Add damon_stop() failure handling fix to the series.
 
-Zero remote_gb_len and skip storing the general bytes when the ATR is
-shorter than the general-bytes offset, so that a stale remote_gb_len
-from a previous activation does not survive into the new session.
+SJ Park (6):
+  samples/damon/wsse: handle damon_start() failure
+  samples/damon/prcl: handle damon_start() failure
+  samples/damon/mtier: handle damon_start() failure
+  samples/damon/mtier: handle damon_stop() failure
+  samples/damon/wsse: stop and free damon ctx when damon_call() fails
+  samples/damon/prcl: stop and free damon ctx when damon_call() fails
 
-Fixes: a99903ec4566 ("NFC: NCI: Handle Target mode activation")
-Cc: stable@vger.kernel.org
-Signed-off-by: Muhammad Bilal <meatuni001@gmail.com>
----
- net/nfc/nci/ntf.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ samples/damon/mtier.c | 14 ++++++++++++--
+ samples/damon/prcl.c  | 11 +++++++++--
+ samples/damon/wsse.c  | 11 +++++++++--
+ 3 files changed, 30 insertions(+), 6 deletions(-)
 
-diff --git a/net/nfc/nci/ntf.c b/net/nfc/nci/ntf.c
-index 802928ca4d51e..b72545daa2051 100644
---- a/net/nfc/nci/ntf.c
-+++ b/net/nfc/nci/ntf.c
-@@ -654,8 +654,10 @@ static int nci_store_general_bytes_nfc_dep(struct nci_dev *ndev,
- 	case NCI_NFC_A_PASSIVE_POLL_MODE:
- 	case NCI_NFC_F_PASSIVE_POLL_MODE:
- 		if (ntf->activation_params.poll_nfc_dep.atr_res_len <
--		    NFC_ATR_RES_GT_OFFSET)
-+		    NFC_ATR_RES_GT_OFFSET) {
-+			ndev->remote_gb_len = 0;
- 			break;
-+		}
- 		ndev->remote_gb_len = min_t(__u8,
- 			(ntf->activation_params.poll_nfc_dep.atr_res_len
- 						- NFC_ATR_RES_GT_OFFSET),
-@@ -669,8 +671,10 @@ static int nci_store_general_bytes_nfc_dep(struct nci_dev *ndev,
- 	case NCI_NFC_A_PASSIVE_LISTEN_MODE:
- 	case NCI_NFC_F_PASSIVE_LISTEN_MODE:
- 		if (ntf->activation_params.listen_nfc_dep.atr_req_len <
--		    NFC_ATR_REQ_GT_OFFSET)
-+		    NFC_ATR_REQ_GT_OFFSET) {
-+			ndev->remote_gb_len = 0;
- 			break;
-+		}
- 		ndev->remote_gb_len = min_t(__u8,
- 			(ntf->activation_params.listen_nfc_dep.atr_req_len
- 						- NFC_ATR_REQ_GT_OFFSET),
+
+base-commit: 77fe35dfe005f7d55c8e729e1543b87cfc805a21
 -- 
-2.54.0
-
+2.47.3
 
