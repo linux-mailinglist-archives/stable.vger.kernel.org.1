@@ -1,61 +1,61 @@
-Return-Path: <stable+bounces-269444-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-269445-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id o3/HMC+WQGrKgQkAu9opvQ
-	(envelope-from <stable+bounces-269444-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 28 Jun 2026 05:34:07 +0200
+	id wU3xHjCWQGrLgQkAu9opvQ
+	(envelope-from <stable+bounces-269445-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 28 Jun 2026 05:34:08 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 87FF46D3064
-	for <lists+stable@lfdr.de>; Sun, 28 Jun 2026 05:34:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 66AE26D3067
+	for <lists+stable@lfdr.de>; Sun, 28 Jun 2026 05:34:08 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="Grr/001m";
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-269444-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-269444-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=i0v0bqfC;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-269445-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-269445-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 78E8C3007B95
+	by sto.lore.kernel.org (Postfix) with ESMTP id E628F300A4A1
 	for <lists+stable@lfdr.de>; Sun, 28 Jun 2026 03:33:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E134827816C;
-	Sun, 28 Jun 2026 03:33:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 93D492773D3;
+	Sun, 28 Jun 2026 03:33:49 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA58B261B8D
-	for <stable@vger.kernel.org>; Sun, 28 Jun 2026 03:33:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F977271471
+	for <stable@vger.kernel.org>; Sun, 28 Jun 2026 03:33:48 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782617628; cv=none; b=qxE/XSPzrLQCWRhcLMv7WB7OdBRISyFwoYLRwTbnnNqoeMOZ7MLn4N+JyAZFOB2vmb3U7oQPV3Wh/N4KJjXeorm0MEnKfrEpDIGxXV3KJmdFjyKHbS7hD5YRZSkcPmY3gtGNJFKw7LNyu1KVdMCikWJabZJcwp2woN/Lsz7jy4Q=
+	t=1782617629; cv=none; b=OMZhPTKXV7aL7g/2baFYdNs53FPTBr4ay0P6dDW3RKiCvLidhLYoA6mNkTBG7Qz5MRaNcTs2jujiMr/SLJpD2uAz2ygKDpFaW37tUstoSJvbuY6rKftwjS4sO7JAOaHAnmptQoPQQcL6Ci+FwNbiMd4gq1a1KbTBYvojZ88bfFU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782617628; c=relaxed/simple;
-	bh=+7kILXoFyJu3adRKjSfxuo1ItOcMXU4rmrcR6mbom/g=;
+	s=arc-20240116; t=1782617629; c=relaxed/simple;
+	bh=QnvkAfOZVaQn5xyDv9YRDyyQUEF5N8fy/29X8gpx0k0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Fz+szCy/g0EIVy47nJdkGihiOhE0KBiNHtL0V3v2jO6zQsAcDBfbFbYzcphcJFYD+VHt27TqyHbo1HsL8XRT8DjpR34oai8WkOSBb689XLIRPc+lp/oBaSS7mfNRwS91zG50bEFdPPphWaY/58I4JhUDHtQ9W3LjBizIXZkxSak=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Grr/001m; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A1EA1F000E9;
+	 MIME-Version; b=nb9TV2VUeL1OL9FXuEP+Fcevm3KBEqegt02uW1tJD/Ly4HKJRXQU0S0rYsNzE9pdYvpTuZHOj5/GETyRbJhRS0rO1OfD0a3Zr2Alc2gUIRpU/hqL4YXluUvmtyHKPBklHb4Iy+SbSYzmX2fWtcEPK9hv3aXjn5Vrw+vqWc7pKWU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=i0v0bqfC; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2DA21F00A3D;
 	Sun, 28 Jun 2026 03:33:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782617627;
-	bh=+7kILXoFyJu3adRKjSfxuo1ItOcMXU4rmrcR6mbom/g=;
+	s=k20260515; t=1782617628;
+	bh=QnvkAfOZVaQn5xyDv9YRDyyQUEF5N8fy/29X8gpx0k0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Grr/001m9GznrYoR2qh+9pedHbKCkSd5eMtqMtInnWz5LufksfIlEGa48wUJwpH9z
-	 f4mygdAFBg/e2hDly99puIiU713DjrFXU/4+T9sRs8Hh5YJuh528KACAOK4dynZn9S
-	 jdAg7BZTMFpdUda3APguavSIzhrWDYclZ81lG8pmpEle33NKTLdLcButN5DyiaaBl1
-	 7tReLYLQV/M9ZlXA10ZxSEPGEBUzhgfGH0iHjzzuZw3+JMgyOo/OvT2w2ae1yQJBT7
-	 tPb4oTkjRqBeMkyUqil30wgSUl/8rObG+lqFf3O4UZG0igDydQ1TBZ8EVq5Z8W1ZHh
-	 EK87zxZvWw0VQ==
+	b=i0v0bqfCb4eFXrCsy50tT2XuO49jQPMjsOl/+t/vr1Jm6RlqIHk5ofyF1sbOQl3j6
+	 l4fEH917WuZTCW5FlFifL7KCRfGRe0RAM4ICMX6iDyukLemTwaGZs+nr70joXg5KQn
+	 BCPXRQvrbcRqBhGnt7Od4MBA8tvi2pM/giHfiix3U/+0j6m9SfPJIkNrxjlhuL9/S2
+	 ObNqdxR5m0FSBQAzSBtpPuOZPJlh+HpGjZYhcsvZ9DeNbmBAv9yQ4mVWngPVZYM7ot
+	 cDXEK5vhvaFnBfcWb3Oe6qn7SG1OojVEnvuaeVoBxDDxGX8Wg1TUi0EeAiMaHBf40Z
+	 Ka+BXdDAcWTIg==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
 Cc: Sasha Levin <sashal@kernel.org>,
 	Sven Eckelmann <sven@narfation.org>
-Subject: Re: [PATCH 6.1 00/25] batman-adv: 7.2 merge window fixes backports
-Date: Sat, 27 Jun 2026 23:33:36 -0400
-Message-ID: <20260628032401.0006-1-sashal@kernel.org>
+Subject: Re: [PATCH 5.15 00/25] batman-adv: 7.2 merge window fixes backports
+Date: Sat, 27 Jun 2026 23:33:37 -0400
+Message-ID: <20260628032401.0007-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260626161123.124273-1-sven@narfation.org>
-References: <20260626161123.124273-1-sven@narfation.org>
+In-Reply-To: <20260626161105.124113-1-sven@narfation.org>
+References: <20260626161105.124113-1-sven@narfation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -75,7 +75,7 @@ X-Spamd-Result: default: False [-3.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-269444-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-269445-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER(0.00)[sashal@kernel.org,stable@vger.kernel.org];
@@ -97,12 +97,12 @@ X-Spamd-Result: default: False [-3.66 / 15.00];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	FROM_HAS_DN(0.00)[]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 87FF46D3064
+X-Rspamd-Queue-Id: 66AE26D3067
 
-On Fri, Jun 26, 2026 at 06:10:58PM +0200, Sven Eckelmann wrote:
-> [PATCH 6.1 00/25] batman-adv: 7.2 merge window fixes backports
+On Fri, Jun 26, 2026 at 06:10:39PM +0200, Sven Eckelmann wrote:
+> [PATCH 5.15 00/25] batman-adv: 7.2 merge window fixes backports
 
-All 25 patches are queued for 6.1, thanks.
+All 25 patches are queued for 5.15, thanks.
 
 --
 Thanks,
