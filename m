@@ -1,61 +1,65 @@
-Return-Path: <stable+bounces-269588-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-269589-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id EJ3XCjWYQWrFsQkAu9opvQ
-	(envelope-from <stable+bounces-269588-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 28 Jun 2026 23:55:01 +0200
+	id 5a4rGDyYQWrJsQkAu9opvQ
+	(envelope-from <stable+bounces-269589-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 28 Jun 2026 23:55:08 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7013F6D508F
-	for <lists+stable@lfdr.de>; Sun, 28 Jun 2026 23:55:00 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id C53466D5092
+	for <lists+stable@lfdr.de>; Sun, 28 Jun 2026 23:55:07 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=odQNqTH2;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-269588-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-269588-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ZKTtMy9Y;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-269589-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-269589-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id DC76D300CE74
-	for <lists+stable@lfdr.de>; Sun, 28 Jun 2026 21:54:55 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id AEDF63011855
+	for <lists+stable@lfdr.de>; Sun, 28 Jun 2026 21:54:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD1843B71C5;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EDF963B8BB9;
 	Sun, 28 Jun 2026 21:54:54 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C4223B71D7;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0E643B8BC1;
 	Sun, 28 Jun 2026 21:54:53 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782683694; cv=none; b=E03eSEJMSJp6Zr891zbpIoskBkEOQKAqfkqJBtdJaKGH5VTWJQ6cw+IJw+ofrAw1dcIlia0ATPC2Ri1W//rBBT2Ga+9JGzk4TzczHut4dqpwWxXDSLVrOC6WzzWTczop82bCcs2rRsAI89PjU2Nw93sPh9xCeCQi9cJ8d/+erjA=
+	t=1782683694; cv=none; b=H8H94G0y50v2T4Z30CZSzbBoMQ4YZAmR5HqokQoKRQQgxrNIE2hpUejQSERf3be/fsuwOHFJJt4SeVHs9pvFu+J263bVLB+FBvGngiYb9qdAgR1ALerp/1oxDPCrCdMnVyBzDGWERSmDCir+qGoO4SC0smK+QaOsr+P3e3zsvQg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1782683694; c=relaxed/simple;
-	bh=RCTr6WzinCBRJCf76iFIZiBNOnNNLIMbUYmMVNswliY=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=fr7TdGB4AIfqmxEDSYReYxUrlhInTfe24x/tGudSsWMeIWC10oEkAczqcJq6VfU7UF6bXKE7e5zvSOC3CcVYvJzD7JljFffG1C/3AUSOXd7/vzjcnvEEMG58LGggS8BaIndQpFPYQjOiKuGpE+cHBIWb+evYTvU8mr5MR2C7Ees=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=odQNqTH2; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E499F1F000E9;
-	Sun, 28 Jun 2026 21:54:52 +0000 (UTC)
+	bh=7fVm9icn6sKU/rKHJWCkZo6ETFPuyGhj+szQjYMHi24=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=sVG0pYrs3bPF9VOfvkW3dTNBNbRx/VOnDqzGzv1rdMLR9k3jGcukmqM5URzg7iGNq8dG/Lw8e9pIV1r2aJ6vf3wat6qffz8NFpyw7Z2qfq2VxqZRVwrgdWxDBptnHW8388GuV9OkEyRs541XNPkFrfosibdK7ZF+rRKIF1BeBf8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZKTtMy9Y; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45BCD1F00A3D;
+	Sun, 28 Jun 2026 21:54:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
 	s=k20260515; t=1782683693;
-	bh=wb/G2WI6U+bmHwkuU5P84fH/ZMN31r6Got3AOveygXo=;
-	h=From:To:Cc:Subject:Date;
-	b=odQNqTH2ZMrhe7ZozN5h/oAQeRqYWv82de3+V/fqJgmGDBk4t48gPKmL9/QgDbl3O
-	 hFyMymvuoOnpaWxR5Qg5jdHIU8rv7ZTf2fJUom07/pKHToC8vka2u23rxOUJUQ5TRg
-	 F0X0RE3Wl1TOgopWvBD075KKymx+dKmtqlbGxm3PrPDERUwc5ojjy8piMxg1fkRzK/
-	 HSkLXPUm/qb8YSM5yN5WDE1RCcvuAhjNB/1Pk6K1DJ99Xcs4fcEwSqb6TXH7LUKKUm
-	 LnGig2acjXxO5jfQ4/0ej89esSErXW2DdRqMWI/gWdnfLnGTPg5V9UVeE/7ytF6ueK
-	 JUxZyyoShCbFw==
+	bh=6LhATUSGD9m/hcobL+nNhDihLIC7y6gv8GROPInzLpc=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=ZKTtMy9YQwzoIIXw6bWxoHKkXepftHvlvWAIKn640TsyYsJnqSFrUaNega3+rheZh
+	 limtahpHqTOS5bSRny8jkRsw6FRXXEaF0+3ARkqAQp68Yt9xSAfbQkx7Ur1f0vwHJ8
+	 kIyp8fJvw1lwqp4LUuLQwT71qZFS0DtIIzZwmQlI9Rpoalvj0zdSsEaWN3gnACFGwV
+	 0g4cNSE24Sgw59JlmeMKrfdpOzrcJeVEIVYsmNkBNMy6nEpsXDX4v1Vpd74PPynpDf
+	 rFL1e0++Il5f8P8CiCZPV1SiXr3RSwnOFSkxS3xeEZLC5Jy8cnQCILeXQv4m5WqsNP
+	 2zOUYL4N4PG1w==
 From: SJ Park <sj@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>
 Cc: SJ Park <sj@kernel.org>,
 	"# 6 . 14 . x" <stable@vger.kernel.org>,
 	damon@lists.linux.dev,
 	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: [PATCH 0/6] samples/damon: handle damon_{start,stop}() failures
-Date: Sun, 28 Jun 2026 14:54:39 -0700
-Message-ID: <20260628215447.96166-1-sj@kernel.org>
+	linux-mm@kvack.org,
+	Zenghui Yu <zenghui.yu@linux.dev>
+Subject: [PATCH 1/6] samples/damon/wsse: handle damon_start() failure
+Date: Sun, 28 Jun 2026 14:54:40 -0700
+Message-ID: <20260628215447.96166-2-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260628215447.96166-1-sj@kernel.org>
+References: <20260628215447.96166-1-sj@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -66,80 +70,90 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-3.66 / 15.00];
 	WHITELIST_SPF_DKIM(-3.00)[kernel.org:d:+,kernel.org:s:+];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-269588-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:akpm@linux-foundation.org,m:sj@kernel.org,m:stable@vger.kernel.org,m:damon@lists.linux.dev,m:linux-kernel@vger.kernel.org,m:linux-mm@kvack.org,m:zenghui.yu@linux.dev,s:lists@lfdr.de];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS(0.00)[m:akpm@linux-foundation.org,m:sj@kernel.org,m:stable@vger.kernel.org,m:damon@lists.linux.dev,m:linux-kernel@vger.kernel.org,m:linux-mm@kvack.org,s:lists@lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-269589-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_SENDER(0.00)[sj@kernel.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sj@kernel.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[kernel.org:+];
 	ALIAS_RESOLVED(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp]
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 7013F6D508F
+X-Rspamd-Queue-Id: C53466D5092
 
-All DAMON sample modules are not correctly handling failures from
-damon_start().  Among those, mtier also has an additional problem for
-handling of damon_stop() failures.  wsse and prcl also have a problem in
-their damon_call() failure handling.  As a result, memory leaks, next
-DAMON operation disruptions, and use-after-free can happen.  Fix those.
+damon_sample_wsse_start() callers assume it will clean up resources when
+it fails.  And the function does the cleanup for context buildup
+failures.  However, it is not doing the cleanup for damon_start()
+failure.  As a result, when damon_start() fails, it leaks the memory for
+DAMON context.  Free the context in case of the failure to fix the
+issues.
 
-Note that only the damon_start() failure caused issues can reliably be
-reproduced.  Reproducing those issues require the admin permission,
+Note that the issue can reliably be reproduced because the module calls
+damon_start() in the exclusive mode.  For example,
+
+    $ sudo damo start
+    $ echo $$ | sudo tee /sys/module/damon_sample_wsse/parameters/target_pid
+    $ echo Y | sudo tee /sys/module/damon_sample_wsse/parameters/enabled
+    $ sudo cat /proc/allocinfo | grep damon_new_ctx
+
+Because the first command is running another DAMON instance, the third
+command fails the damon_start() call because the new DAMON instance
+cannot exclusively run.  And without this fix, by repeating the third
+and the fourth commands above, we can show the memory consumption is
+only increasing due to the leaks.  It requires the sudo permission
 though.
 
-Changes from RFC v4
-- RFC v4: https://lore.kernel.org/20260610135546.64943-1-sj@kernel.org/
-- Collect R-b: from Zenghui Yu.
-- Rebase to latest mm-new.
-- Drop RFC.
-Changes from RFC v3
-- RFC v3: https://lore.kernel.org/20260610011420.3018-1-sj@kernel.org
-- Add damon_Call() failure handling fixes for wsse and prcl.
-Changes from RFC v2
-- RFC v2: https://lore.kernel.org/20260609142119.68120-1-sj@kernel.org
-- Add damon_start() failure handling fixes for wsse and prcl.
-Changes from RFC v1
-- RFC v1: https://lore.kernel.org/20260609005443.2122-1-sj@kernel.org
-- Add damon_stop() failure handling fix to the series.
+The issue was discovered [1] by Sashiko.
 
-SJ Park (6):
-  samples/damon/wsse: handle damon_start() failure
-  samples/damon/prcl: handle damon_start() failure
-  samples/damon/mtier: handle damon_start() failure
-  samples/damon/mtier: handle damon_stop() failure
-  samples/damon/wsse: stop and free damon ctx when damon_call() fails
-  samples/damon/prcl: stop and free damon ctx when damon_call() fails
+[1] https://lore.kernel.org/20260609145814.70163-1-sj@kernel.org
 
- samples/damon/mtier.c | 14 ++++++++++++--
- samples/damon/prcl.c  | 11 +++++++++--
- samples/damon/wsse.c  | 11 +++++++++--
- 3 files changed, 30 insertions(+), 6 deletions(-)
+Fixes: b757c6cfc696 ("samples/damon/wsse: start and stop DAMON as the user requests")
+Cc: <stable@vger.kernel.org> # 6.14.x
+Reviewed-by: Zenghui Yu <zenghui.yu@linux.dev>
+Signed-off-by: SJ Park <sj@kernel.org>
+---
+ samples/damon/wsse.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-
-base-commit: 77fe35dfe005f7d55c8e729e1543b87cfc805a21
+diff --git a/samples/damon/wsse.c b/samples/damon/wsse.c
+index 799ad44439434..bbd9392ab5b36 100644
+--- a/samples/damon/wsse.c
++++ b/samples/damon/wsse.c
+@@ -87,8 +87,10 @@ static int damon_sample_wsse_start(void)
+ 	target->pid = target_pidp;
+ 
+ 	err = damon_start(&ctx, 1, true);
+-	if (err)
++	if (err) {
++		damon_destroy_ctx(ctx);
+ 		return err;
++	}
+ 	repeat_call_control.data = ctx;
+ 	return damon_call(ctx, &repeat_call_control);
+ }
 -- 
 2.47.3
 
