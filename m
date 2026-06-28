@@ -1,53 +1,92 @@
-Return-Path: <stable+bounces-269506-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-269505-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id FdQpO/LxQGrbjgkAu9opvQ
-	(envelope-from <stable+bounces-269506-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 28 Jun 2026 12:05:38 +0200
+	id Kpf1JRfxQGq9jgkAu9opvQ
+	(envelope-from <stable+bounces-269505-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 28 Jun 2026 12:01:59 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4675B6D38F0
-	for <lists+stable@lfdr.de>; Sun, 28 Jun 2026 12:05:33 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9BF316D38DC
+	for <lists+stable@lfdr.de>; Sun, 28 Jun 2026 12:01:58 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=temperror ("DNS error when getting key") header.d=seu.edu.cn header.s=default header.b=XPrPBr1d;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-269506-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-269506-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=temperror reason="SPF/DKIM temp error" header.from=seu.edu.cn (policy=temperror);
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=oS+ukM0S;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-269505-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-269505-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=none) header.from=gmail.com;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id B4AD53006106
-	for <lists+stable@lfdr.de>; Sun, 28 Jun 2026 10:05:32 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 651003010522
+	for <lists+stable@lfdr.de>; Sun, 28 Jun 2026 10:01:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB446305689;
-	Sun, 28 Jun 2026 10:05:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5BE86331A53;
+	Sun, 28 Jun 2026 10:01:54 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-m49198.qiye.163.com (mail-m49198.qiye.163.com [45.254.49.198])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E556F31D367;
-	Sun, 28 Jun 2026 10:05:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA8AC23EAAD
+	for <stable@vger.kernel.org>; Sun, 28 Jun 2026 10:01:52 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782641130; cv=none; b=KLe3UM2SQ25R0TZy+Hb5QZfEE5sqC9iaS+goY6iV3FfSVR1W0YkxxN4hGOBfurul1rok474SHK/4umUgoHXUdBpSzif3SgWxXzl6sZN0DQ0AWmizvkRCWfSL37rXZpw+KJ4vXGCF90ibV6jZT7f1ggsXZOFdjCldhzvD4kbvbT4=
+	t=1782640914; cv=none; b=eAadtix5W/8Djjs/le+LXyo6RLKZltNop17r9QynUzsAfCG4UskYX6WrDUmvjTYwxU91tMGHj6XDdN+dsy/MDQTT5n8/OI4gBjjzXgDBjgBeK6QUX7WuPsONI+BhawTj8CthaMKFw+0CL5WAqUJJrc1FldrXQwiyVaVKtB2QkrQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782641130; c=relaxed/simple;
-	bh=ziOarTxiU5t2wYhDW+TpH/vrMu5Ta+UEo4lQ7fXutTw=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=Xz+Ot1YczDNXiYh5sTy39xdU27ec7VYfGoTUGzYLFDT0hIEn/Kr/8toj8zQnN0giogL05fA5II1Iw2N+B7lZri+KddSV8R5q9gvde/3ftlOTkpTWF7RXFDHQMKsRFD4q09gRRl5Jyfb8RQTzKD4cz1RJyhBLJCywm2ROhogSA6Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=seu.edu.cn; spf=pass smtp.mailfrom=seu.edu.cn; dkim=pass (1024-bit key) header.d=seu.edu.cn header.i=@seu.edu.cn header.b=XPrPBr1d; arc=none smtp.client-ip=45.254.49.198
-Received: from DESKTOP-SUEFNF9.taila7e912.ts.net (unknown [58.241.16.34])
-	by smtp.qiye.163.com (Hmail) with ESMTP id 440a7b284;
-	Sun, 28 Jun 2026 18:00:01 +0800 (GMT+08:00)
-From: Dawei Feng <dawei.feng@seu.edu.cn>
-To: johannes@sipsolutions.net
-Cc: linux-wireless@vger.kernel.org,
+	s=arc-20240116; t=1782640914; c=relaxed/simple;
+	bh=2t5a9qB6hNVDxj5S5IvP3ktU8+lgMMAZlQSPGY+2cYo=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Zb1tfKBII5mkEj1PmCn5v3T20O1VYvcw4v2af3U4GhU4z5ZkSTQN5cL6Rbxxv9K/QN40CKhh/zdgpKdvD6SzE2ZqnLE5IkIAqsKTP20EAwgG4oh5mH1F7zgqx5wuvgxJ/wgchxH9PL5KPCLEBKXdUwZiRsjZ2y1NKdQ/BNSRY0o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=oS+ukM0S; arc=none smtp.client-ip=209.85.128.42
+Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-49319ebb3a9so5995995e9.3
+        for <stable@vger.kernel.org>; Sun, 28 Jun 2026 03:01:52 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1782640911; x=1783245711; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=/GcbpUykRobBfdlA1r4jXGTM9YzHADH53GFKveeipoE=;
+        b=oS+ukM0S6XxhNWJ01URy4Y6Tr1K/gSix2ZsqKk6v37kajwpS6v+S3jLaA4DWYhEIaf
+         WXVL5P8CUEekhySWm2UG9gUm8XVMVfPfU1a5Xz5cJTrtpuro4Rj1V1ePG4Q0uC+ouMu3
+         Vt5DuuydsyycBSvX3fkYlCUg0VaLoKG17JgK5uPsZwtB4+bhhDDJ36n6TR9CvyGjBHC9
+         wTR0HeqbjEDiz4IOV9zPUkJTM/qEP//j+ElDIwvX9+JjROgR9BIpVEqMrV2bh7EDQuX4
+         c5tycSeRgRqqKV2JmGX81ELctYENtJPLzY1qeqncjT0cYV9MW4elDYVcjt+ocETS5DYm
+         eoeg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1782640911; x=1783245711;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=/GcbpUykRobBfdlA1r4jXGTM9YzHADH53GFKveeipoE=;
+        b=rvbYdskIrs9C4jqPQJmWASJNeQXZZqockj+TkXxGHjOqrtl4m3aoHcgFNKnY6o+dxe
+         RYmumdmBdVUnKGCtUkSUbWtHm2m8nzzMhSOMzufoyugWsJgIvfgfUjpOZIkeJfLI/mmh
+         tbA+iK9rrFNEWTQysBbllNdjK3VQuwgPdaL2jPBRwWQIT4EPxjfzNyJZJ2pukvY1KQaJ
+         LIGS67m+x+2CZXUjOKFcofbUxmrjoyJIeLSp2pfrtB4cHRjybCDyCgLlGsdZ7S6+slYJ
+         bZjDyulzYuiihlE+nP7ASqYS0S3ZN6O04HCna78ygKYbhR8ZQIivXI/U4mO695K4eaXC
+         BxuA==
+X-Forwarded-Encrypted: i=1; AFNElJ+fP+Q9XcrrGlKpN02XBxYIofeStGLBvQg9qxPGzCtj+CI9Tb5awVF+gKFCUQHLmQUnorMZC14=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzWqY7xcIwU7fLCT5tZ9JTBnus1EoFU2gTuVDZ7Ui9D/3OmX4Zu
+	EYYyOI3svSBFfxC8wkn5zmxOv7yNFK9KfZ20nF9xeoGdL7DE5QCcrn/P
+X-Gm-Gg: AfdE7clXtL/BwRD+UThVLq97SpMU2j6oIdExdKf8WhcmhodSy+UGCvp0pSnekOQ2nLU
+	jnHsqTTSjgRBEswU1VVyTuPFymN7pcHRkmOdqOsFeL1Dg2QGwehiCUs3U1EtJuAEBRhj9EsErv2
+	FKWPXN9KfnchniPFi9YAzoSFwDj44JMIlkybYVbHdlo+SG6jZy/U1QvPNUhl3p8U6essaXzm80m
+	/JQjFeH24/37SS78Ymrzf3p7UQ8fIq+VtBQ/TaaiL2WiJb+znexlNDVjQLV6KlhuiNGovGpW82C
+	WYpv1/5L84hFAnV6LID5f0qKM12dzCUAFgd91LSL2uFqoYpPMzqj3/R5v44XtiYP7YUfUBtEyx+
+	0lUTg9aUSlQ67K1kBiWDBpp+jKn7GqSAXesVnfXXuvHurZ4ViF5/3xNyFbMDuYGIAQu8lSe3xgg
+	8Kq9j+63cgeZ5SJx/AF73AlGGPdQ==
+X-Received: by 2002:a05:600c:3581:b0:492:66fb:5dc5 with SMTP id 5b1f17b1804b1-49266fb5f1bmr205698715e9.24.1782640911113;
+        Sun, 28 Jun 2026 03:01:51 -0700 (PDT)
+Received: from Dev-Null-MSI ([2a0d:3344:52ac:a808:98a4:4381:be45:536f])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-472bca3caccsm5286932f8f.33.2026.06.28.03.01.49
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 28 Jun 2026 03:01:49 -0700 (PDT)
+From: Yousef Alhouseen <alhouseenyousef@gmail.com>
+To: Mauro Carvalho Chehab <mchehab@kernel.org>
+Cc: linux-media@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	zilin@seu.edu.cn,
-	jianhao.xu@seu.edu.cn,
-	Dawei Feng <dawei.feng@seu.edu.cn>,
-	stable@vger.kernel.org
-Subject: [PATCH net v2] wifi: mac80211: fix memory leak in ieee80211_register_hw()
-Date: Sun, 28 Jun 2026 17:59:57 +0800
-Message-Id: <20260628095957.3287265-1-dawei.feng@seu.edu.cn>
-X-Mailer: git-send-email 2.34.1
+	stable@vger.kernel.org,
+	syzbot+d37184d9d8cc34602616@syzkaller.appspotmail.com,
+	syzbot+d445a71e1c011b592c16@syzkaller.appspotmail.com,
+	syzbot+2e428058cafb408fb695@syzkaller.appspotmail.com,
+	Yousef Alhouseen <alhouseenyousef@gmail.com>
+Subject: [PATCH] media: dvb-core: publish device minors after registration succeeds
+Date: Sun, 28 Jun 2026 12:00:58 +0200
+Message-ID: <20260628100058.48760-1-alhouseenyousef@gmail.com>
+X-Mailer: git-send-email 2.54.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -55,102 +94,109 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-HM-Tid: 0a9f0dabf65f03a2kunm465a675f13105d
-X-HM-MType: 10
-X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
-	tZV1koWUFITzdXWRgWCB1ZQUpXWS1ZQUlXWQ8JGhUIEh9ZQVkaSE0fVk8aTklNHUlOHx5OT1YeHw
-	5VEwETFhoSFyQUDg9ZV1kYEgtZQVlOQ1VJT0pVSk1VSE9ZV1kWGg8SFR0UWUFZT0tIVUpLSEpPSE
-	xVSktLVUpCS0tZBg++
-DKIM-Signature: a=rsa-sha256;
-	b=XPrPBr1d0+1J9hKuleyAmrLbrfGUJbLmf9M+IrwU85bHYKOPNoBjp8l4Y+GkuTVYoAWOkzq/yqcSCoEMi03BhC9hjrdDIkj0QkvoftDXc/bYMEg0Wj8YMFYfnO7uiJpKojy3m7pWELrIkx52RrHxemr3848pmELeJ+HlVj6YdGU=; c=relaxed/relaxed; s=default; d=seu.edu.cn; v=1;
-	bh=b1UaDR2iLazLg8c7ScbQi5yYX/+5Jz1jnMyB8t9G7cQ=;
-	h=date:mime-version:subject:message-id:from;
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [0.04 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+X-Spamd-Result: default: False [0.84 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	MID_CONTAINS_FROM(1.00)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-269506-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:johannes@sipsolutions.net,m:linux-wireless@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:zilin@seu.edu.cn,m:jianhao.xu@seu.edu.cn,m:dawei.feng@seu.edu.cn,m:stable@vger.kernel.org,s:lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER(0.00)[dawei.feng@seu.edu.cn,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	FORWARDED(0.00)[lists@lfdr.de];
-	DKIM_TRACE(0.00)[seu.edu.cn:?];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	DMARC_DNSFAIL(0.00)[seu.edu.cn : SPF/DKIM temp error,none];
-	ALIAS_RESOLVED(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	R_DKIM_TEMPFAIL(0.00)[seu.edu.cn:s=default];
-	TAGGED_RCPT(0.00)[stable];
-	FROM_NEQ_ENVFROM(0.00)[dawei.feng@seu.edu.cn,stable@vger.kernel.org];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[seu.edu.cn:email,seu.edu.cn:mid,seu.edu.cn:from_mime,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,vger.kernel.org:from_smtp]
+	FREEMAIL_CC(0.00)[vger.kernel.org,syzkaller.appspotmail.com,gmail.com];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-269505-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:mchehab@kernel.org,m:linux-media@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,m:syzbot+d37184d9d8cc34602616@syzkaller.appspotmail.com,m:syzbot+d445a71e1c011b592c16@syzkaller.appspotmail.com,m:syzbot+2e428058cafb408fb695@syzkaller.appspotmail.com,m:alhouseenyousef@gmail.com,m:syzbot@syzkaller.appspotmail.com,s:lists@lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_SENDER(0.00)[alhouseenyousef@gmail.com,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[alhouseenyousef@gmail.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable,d37184d9d8cc34602616,d445a71e1c011b592c16,2e428058cafb408fb695];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp,appspotmail.com:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 4675B6D38F0
+X-Rspamd-Queue-Id: 9BF316D38DC
 
-If kmemdup() fails while copying supported band structures, the error
-path jumps to fail_rate. This skips rate_control_deinitialize() and
-leaks the initialized local->rate_ctrl.
+dvb_register_device() publishes dvbdev in the minor table before media
+graph and class-device creation, both of which can still fail. Their error
+paths then free dvbdev directly without removing the table entry or
+dropping its minor reference. Opening a manually created device node can
+race with or follow that failure, causing refcount corruption and
+use-after-free; without an open, the minor reference is leaked.
 
-Fix this by adding a fail_band label that shares the rate-control cleanup
-path before falling through to the remaining teardown.
+Keep the chosen minor private until all fallible registration steps have
+succeeded. On failure, release the initial reference through
+dvb_device_put() rather than bypassing the kref.
 
-The bug was first flagged by an experimental analysis tool we are
-developing for kernel memory-management bugs while analyzing
-v6.13-rc1. The tool is still under development and is not yet publicly
-available. Manual inspection confirms that the bug is still present in
-v7.1-rc7.
-
-An x86_64 allyesconfig build showed no new warnings. As we do not have a
-suitable mac80211 device/driver combination to test with, no runtime
-testing was able to be performed.
-
-Fixes: 09b4a4faf9d0 ("mac80211: introduce capability flags for VHT EXT NSS support")
+Fixes: 0fc044b2b5e2 ("media: dvbdev: adopts refcnt to avoid UAF")
+Reported-by: syzbot+d37184d9d8cc34602616@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=d37184d9d8cc34602616
+Reported-by: syzbot+d445a71e1c011b592c16@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=d445a71e1c011b592c16
+Reported-by: syzbot+2e428058cafb408fb695@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=2e428058cafb408fb695
 Cc: stable@vger.kernel.org
-Signed-off-by: Zilin Guan <zilin@seu.edu.cn>
-Signed-off-by: Dawei Feng <dawei.feng@seu.edu.cn>
+Signed-off-by: Yousef Alhouseen <alhouseenyousef@gmail.com>
 ---
-Changes in v2:
-- Add a fail_band label for the band-copy failure path instead of jumping
-  directly to fail_wiphy_register.
+ drivers/media/dvb-core/dvbdev.c | 9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
- net/mac80211/main.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
-
-diff --git a/net/mac80211/main.c b/net/mac80211/main.c
-index f47dd58770ad..dba66dd964af 100644
---- a/net/mac80211/main.c
-+++ b/net/mac80211/main.c
-@@ -1599,7 +1599,7 @@ int ieee80211_register_hw(struct ieee80211_hw *hw)
- 		sband = kmemdup(sband, sizeof(*sband), GFP_KERNEL);
- 		if (!sband) {
- 			result = -ENOMEM;
--			goto fail_rate;
-+			goto fail_band;
- 		}
+diff --git a/drivers/media/dvb-core/dvbdev.c b/drivers/media/dvb-core/dvbdev.c
+index d753d329502a..ca4d61a94270 100644
+--- a/drivers/media/dvb-core/dvbdev.c
++++ b/drivers/media/dvb-core/dvbdev.c
+@@ -545,7 +545,6 @@ int dvb_register_device(struct dvb_adapter *adap, struct dvb_device **pdvbdev,
+ 	}
  
- 		wiphy_dbg(hw->wiphy, "copying sband (band %d) due to VHT EXT NSS BW flag\n",
-@@ -1675,6 +1675,7 @@ int ieee80211_register_hw(struct ieee80211_hw *hw)
- #endif
- 	wiphy_unregister(local->hw.wiphy);
-  fail_wiphy_register:
-+ fail_band:
- 	rtnl_lock();
- 	rate_control_deinitialize(local);
- 	ieee80211_remove_interfaces(local);
+ 	dvbdev->minor = minor;
+-	dvb_minors[minor] = dvb_device_get(dvbdev);
+ 	up_write(&minor_rwsem);
+ 	ret = dvb_register_media_device(dvbdev, type, minor, demux_sink_pads);
+ 	if (ret) {
+@@ -558,7 +557,7 @@ int dvb_register_device(struct dvb_adapter *adap, struct dvb_device **pdvbdev,
+ 		}
+ 		dvb_media_device_free(dvbdev);
+ 		list_del(&dvbdev->list_head);
+-		kfree(dvbdev);
++		dvb_device_put(dvbdev);
+ 		*pdvbdev = NULL;
+ 		mutex_unlock(&dvbdev_register_lock);
+ 		return ret;
+@@ -577,12 +576,16 @@ int dvb_register_device(struct dvb_adapter *adap, struct dvb_device **pdvbdev,
+ 		}
+ 		dvb_media_device_free(dvbdev);
+ 		list_del(&dvbdev->list_head);
+-		kfree(dvbdev);
++		dvb_device_put(dvbdev);
+ 		*pdvbdev = NULL;
+ 		mutex_unlock(&dvbdev_register_lock);
+ 		return PTR_ERR(clsdev);
+ 	}
+ 
++	down_write(&minor_rwsem);
++	dvb_minors[minor] = dvb_device_get(dvbdev);
++	up_write(&minor_rwsem);
++
+ 	dprintk("DVB: register adapter%d/%s%d @ minor: %i (0x%02x)\n",
+ 		adap->num, dnames[type], id, minor, minor);
+ 
 -- 
-2.34.1
+2.54.0
 
 
