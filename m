@@ -1,90 +1,53 @@
-Return-Path: <stable+bounces-269504-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-269506-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id L8umC/XvQGqQjgkAu9opvQ
-	(envelope-from <stable+bounces-269504-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 28 Jun 2026 11:57:09 +0200
+	id FdQpO/LxQGrbjgkAu9opvQ
+	(envelope-from <stable+bounces-269506-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 28 Jun 2026 12:05:38 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 22C6B6D38C1
-	for <lists+stable@lfdr.de>; Sun, 28 Jun 2026 11:57:08 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4675B6D38F0
+	for <lists+stable@lfdr.de>; Sun, 28 Jun 2026 12:05:33 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=BlRvGMne;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-269504-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-269504-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=none) header.from=gmail.com;
+	dkim=temperror ("DNS error when getting key") header.d=seu.edu.cn header.s=default header.b=XPrPBr1d;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-269506-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-269506-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=temperror reason="SPF/DKIM temp error" header.from=seu.edu.cn (policy=temperror);
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 4EC60300516A
-	for <lists+stable@lfdr.de>; Sun, 28 Jun 2026 09:57:05 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id B4AD53006106
+	for <lists+stable@lfdr.de>; Sun, 28 Jun 2026 10:05:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30B6A357D1E;
-	Sun, 28 Jun 2026 09:57:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB446305689;
+	Sun, 28 Jun 2026 10:05:30 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wr1-f42.google.com (mail-wr1-f42.google.com [209.85.221.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail-m49198.qiye.163.com (mail-m49198.qiye.163.com [45.254.49.198])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDFB83370EC
-	for <stable@vger.kernel.org>; Sun, 28 Jun 2026 09:56:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E556F31D367;
+	Sun, 28 Jun 2026 10:05:19 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782640622; cv=none; b=XzkTMNf7qXibwHYHNPfbUJEWR/H1IZ9UtsxeZ7nS6QryjfRUdIaPfeORvNdZ6B4vCKxJFXC1wRIhH9JVG40V4t/0dVFl6uUQYnSxXtNu1q/1ZTXMtDxHzjQV42YNiYI3SFMZHefMv4LpK8jdxMaOnFwa3X6AfXVt2OMgiAxjPXU=
+	t=1782641130; cv=none; b=KLe3UM2SQ25R0TZy+Hb5QZfEE5sqC9iaS+goY6iV3FfSVR1W0YkxxN4hGOBfurul1rok474SHK/4umUgoHXUdBpSzif3SgWxXzl6sZN0DQ0AWmizvkRCWfSL37rXZpw+KJ4vXGCF90ibV6jZT7f1ggsXZOFdjCldhzvD4kbvbT4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782640622; c=relaxed/simple;
-	bh=iI6UpRpfUgXDkri4EcJW5TuLXyA/5MefvjbCl/LO6PE=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Dn0w0En62qjBXQfVNPHAePdTQUXpXg6MXJohAtaML9yXBJuruteWrxhV2tiUo1tCN1LWp32QUNO43Dx7UNTXcXAmTUffRleRgaHFVMxHLMgJ0712VOSpoBPqNdxjcQElWZUDSHOFD4fxVeM+PORB+L24iAgRe8z1ZLs1/84CatA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=BlRvGMne; arc=none smtp.client-ip=209.85.221.42
-Received: by mail-wr1-f42.google.com with SMTP id ffacd0b85a97d-4626fdc829aso1477042f8f.3
-        for <stable@vger.kernel.org>; Sun, 28 Jun 2026 02:56:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1782640617; x=1783245417; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=Jg43f+XEb4q5xqiQSXTBL+eF+ouBz+XEK14Aa67BdH8=;
-        b=BlRvGMneybrpiyDA7FgSdX//ugILgGi6Cm3Es0POJq3ejan/qfFn6kklnAfuMo1Hzw
-         p7F7GADnOqunXDLlOknalzGaKZYU43NnMcOWp77R3d3n/BLTf/6v5FniKVonl3i/Ex5S
-         zcjdIRSVY6y4JCTfguSioHD6QSoFCcSv9AT4LkDrSk29esJKnHw/nUqR3o5NWiyPlzQy
-         LXCWZSW2O6QzUVBM/66tle3HZuHxstJYS5VXIzbycydtz+u474mnV1/wi4HkIAmzWHCp
-         w4N47xKp94mmYJN3WoC7xQzZXYXBQkey8I68R74TLs4NP0ctaeUs4RQf2geHOmJ1nlqE
-         loTA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782640617; x=1783245417;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Jg43f+XEb4q5xqiQSXTBL+eF+ouBz+XEK14Aa67BdH8=;
-        b=eJ8XaAl6ashoS5Q/agM+Kf4+kLb0OXDk5PXIorhkmrnn24eOdXACasq/BWIlgghdVn
-         uAV5YeidRK6MOPWIDMcuISMVc7eRIubGNgnzdMCiRjghTwAVBRKmqTPl8MGG2aqgbOpV
-         iMiWIgCN6EboKfwNBvDRQgxefCoG48kpyZlW1YP95poFRza9p2DP92txMn5v0J3S8r+t
-         s5fRtn3lYbQPAp9xPptP5yGQbfgoOFF3c1gyLqSXZeIBVYoZP7lxonPrkbB7P53IuIZx
-         cO4Y/oFmztzJZqvHD20u4do37Ma2NwdpJhyeVgzlwUyU7xSY2AUr6IFNf345mNUiqvSM
-         XIZA==
-X-Forwarded-Encrypted: i=1; AHgh+Rp2WLfeUrXnO9Ub3ynMFghLDGho0/LNK0nNHanFZKCB8CjXNKuRYTjwcRAh9i9IZWo3JhplfbM=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzIRH49O7O5N4ZLw3QGDYGXJIj8zK7QXuEa3i+0JvWh7xwPUfXL
-	g/V54IJGMlpX+VKex/4f5p1paGkZBNC5FIpxgiWXY+TXltuYutiP3TzK
-X-Gm-Gg: AfdE7clhGQ4vJkwIoFANI165SyyhzHj26pSxN/xj8NqPTkaASaaLPQnDLbsZIUS2rKJ
-	BuOJarKIXC6t2cah2PZWkN/YNhrKmhFiuasxV7hYD3m33toEP7a6F4ylKB1gs1Ln1wJS9X7vKRe
-	gz8EDqXCxpP5sLI31xK6J9hmizmryPWcwHZ1OKinHbktGLzmuVeIFttKEyWNRKdary6rhSROWHd
-	b9ygsXsFgD3hh+LzD8+NyeAFBvOK6aogREAgqdtregjvH6QTHz4q1JpK+oFoyPK732PX5cdHvad
-	meDIty73b7ba9tM6BQEh5A7WxmWvvGIgwPGK/8BCdBLzAi3u9S1xTehmdfZIewzovYI+2NaJl7H
-	gM0sxQztizcAmciiuAd5w1htPetmFh0JKMqIwryTHdnDShZ6n44LAa+440jSd9i3v58xxF7pzGA
-	ZJFXiXb/oIw8eVAAd9IUzJFm6h212+P3J2PDTq
-X-Received: by 2002:a05:6000:4286:b0:45e:e9ac:42e8 with SMTP id ffacd0b85a97d-46dc0839ffbmr20802510f8f.18.1782640617140;
-        Sun, 28 Jun 2026 02:56:57 -0700 (PDT)
-Received: from Dev-Null-MSI ([2a0d:3344:52ac:a808:98a4:4381:be45:536f])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-47327c47122sm2959694f8f.34.2026.06.28.02.56.56
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 28 Jun 2026 02:56:56 -0700 (PDT)
-From: Yousef Alhouseen <alhouseenyousef@gmail.com>
-To: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
-Cc: ntfs3@lists.linux.dev,
+	s=arc-20240116; t=1782641130; c=relaxed/simple;
+	bh=ziOarTxiU5t2wYhDW+TpH/vrMu5Ta+UEo4lQ7fXutTw=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=Xz+Ot1YczDNXiYh5sTy39xdU27ec7VYfGoTUGzYLFDT0hIEn/Kr/8toj8zQnN0giogL05fA5II1Iw2N+B7lZri+KddSV8R5q9gvde/3ftlOTkpTWF7RXFDHQMKsRFD4q09gRRl5Jyfb8RQTzKD4cz1RJyhBLJCywm2ROhogSA6Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=seu.edu.cn; spf=pass smtp.mailfrom=seu.edu.cn; dkim=pass (1024-bit key) header.d=seu.edu.cn header.i=@seu.edu.cn header.b=XPrPBr1d; arc=none smtp.client-ip=45.254.49.198
+Received: from DESKTOP-SUEFNF9.taila7e912.ts.net (unknown [58.241.16.34])
+	by smtp.qiye.163.com (Hmail) with ESMTP id 440a7b284;
+	Sun, 28 Jun 2026 18:00:01 +0800 (GMT+08:00)
+From: Dawei Feng <dawei.feng@seu.edu.cn>
+To: johannes@sipsolutions.net
+Cc: linux-wireless@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org,
-	syzbot+45ef5a8d661162757547@syzkaller.appspotmail.com,
-	Yousef Alhouseen <alhouseenyousef@gmail.com>
-Subject: [PATCH] ntfs3: bound index head insertions by buffer capacity
-Date: Sun, 28 Jun 2026 11:55:59 +0200
-Message-ID: <20260628095559.47891-1-alhouseenyousef@gmail.com>
-X-Mailer: git-send-email 2.54.0
+	zilin@seu.edu.cn,
+	jianhao.xu@seu.edu.cn,
+	Dawei Feng <dawei.feng@seu.edu.cn>,
+	stable@vger.kernel.org
+Subject: [PATCH net v2] wifi: mac80211: fix memory leak in ieee80211_register_hw()
+Date: Sun, 28 Jun 2026 17:59:57 +0800
+Message-Id: <20260628095957.3287265-1-dawei.feng@seu.edu.cn>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -92,101 +55,102 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-HM-Tid: 0a9f0dabf65f03a2kunm465a675f13105d
+X-HM-MType: 10
+X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
+	tZV1koWUFITzdXWRgWCB1ZQUpXWS1ZQUlXWQ8JGhUIEh9ZQVkaSE0fVk8aTklNHUlOHx5OT1YeHw
+	5VEwETFhoSFyQUDg9ZV1kYEgtZQVlOQ1VJT0pVSk1VSE9ZV1kWGg8SFR0UWUFZT0tIVUpLSEpPSE
+	xVSktLVUpCS0tZBg++
+DKIM-Signature: a=rsa-sha256;
+	b=XPrPBr1d0+1J9hKuleyAmrLbrfGUJbLmf9M+IrwU85bHYKOPNoBjp8l4Y+GkuTVYoAWOkzq/yqcSCoEMi03BhC9hjrdDIkj0QkvoftDXc/bYMEg0Wj8YMFYfnO7uiJpKojy3m7pWELrIkx52RrHxemr3848pmELeJ+HlVj6YdGU=; c=relaxed/relaxed; s=default; d=seu.edu.cn; v=1;
+	bh=b1UaDR2iLazLg8c7ScbQi5yYX/+5Jz1jnMyB8t9G7cQ=;
+	h=date:mime-version:subject:message-id:from;
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [0.84 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [0.04 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-269504-lists,stable=lfdr.de];
-	FORGED_SENDER(0.00)[alhouseenyousef@gmail.com,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[lists.linux.dev,vger.kernel.org,syzkaller.appspotmail.com,gmail.com];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	TO_DN_SOME(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:almaz.alexandrovich@paragon-software.com,m:ntfs3@lists.linux.dev,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,m:syzbot+45ef5a8d661162757547@syzkaller.appspotmail.com,m:alhouseenyousef@gmail.com,m:syzbot@syzkaller.appspotmail.com,s:lists@lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[alhouseenyousef@gmail.com,stable@vger.kernel.org];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-269506-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:johannes@sipsolutions.net,m:linux-wireless@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:zilin@seu.edu.cn,m:jianhao.xu@seu.edu.cn,m:dawei.feng@seu.edu.cn,m:stable@vger.kernel.org,s:lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	RCVD_COUNT_FIVE(0.00)[5];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	FORGED_SENDER(0.00)[dawei.feng@seu.edu.cn,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	FORWARDED(0.00)[lists@lfdr.de];
+	DKIM_TRACE(0.00)[seu.edu.cn:?];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	DMARC_DNSFAIL(0.00)[seu.edu.cn : SPF/DKIM temp error,none];
 	ALIAS_RESOLVED(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,45ef5a8d661162757547];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,vger.kernel.org:from_smtp,syzkaller.appspot.com:url,appspotmail.com:email]
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	R_DKIM_TEMPFAIL(0.00)[seu.edu.cn:s=default];
+	TAGGED_RCPT(0.00)[stable];
+	FROM_NEQ_ENVFROM(0.00)[dawei.feng@seu.edu.cn,stable@vger.kernel.org];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[seu.edu.cn:email,seu.edu.cn:mid,seu.edu.cn:from_mime,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 22C6B6D38C1
+X-Rspamd-Queue-Id: 4675B6D38F0
 
-hdr_insert_head() shifts the existing index entries by ins_bytes without
-checking that the resulting used size fits within hdr->total. A directory
-index root larger than the newly allocated index buffer can therefore make
-the memmove write beyond the buffer.
+If kmemdup() fails while copying supported band structures, the error
+path jumps to fail_rate. This skips rate_control_deinitialize() and
+leaks the initialized local->rate_ctrl.
 
-Reject insertions whose size would exceed the index header capacity and
-make both split callers unwind the new node when that happens.
+Fix this by adding a fail_band label that shares the rate-control cleanup
+path before falling through to the remaining teardown.
 
-Fixes: 82cae269cfa9 ("fs/ntfs3: Add initialization of super block")
-Reported-by: syzbot+45ef5a8d661162757547@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=45ef5a8d661162757547
+The bug was first flagged by an experimental analysis tool we are
+developing for kernel memory-management bugs while analyzing
+v6.13-rc1. The tool is still under development and is not yet publicly
+available. Manual inspection confirms that the bug is still present in
+v7.1-rc7.
+
+An x86_64 allyesconfig build showed no new warnings. As we do not have a
+suitable mac80211 device/driver combination to test with, no runtime
+testing was able to be performed.
+
+Fixes: 09b4a4faf9d0 ("mac80211: introduce capability flags for VHT EXT NSS support")
 Cc: stable@vger.kernel.org
-Signed-off-by: Yousef Alhouseen <alhouseenyousef@gmail.com>
+Signed-off-by: Zilin Guan <zilin@seu.edu.cn>
+Signed-off-by: Dawei Feng <dawei.feng@seu.edu.cn>
 ---
- fs/ntfs3/index.c | 13 +++++++++++--
- 1 file changed, 11 insertions(+), 2 deletions(-)
+Changes in v2:
+- Add a fail_band label for the band-copy failure path instead of jumping
+  directly to fail_wiphy_register.
 
-diff --git a/fs/ntfs3/index.c b/fs/ntfs3/index.c
-index 5344b29b0577..64e1be9b7aca 100644
---- a/fs/ntfs3/index.c
-+++ b/fs/ntfs3/index.c
-@@ -594,6 +594,8 @@ static const struct NTFS_DE *hdr_insert_head(struct INDEX_HDR *hdr,
+ net/mac80211/main.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/net/mac80211/main.c b/net/mac80211/main.c
+index f47dd58770ad..dba66dd964af 100644
+--- a/net/mac80211/main.c
++++ b/net/mac80211/main.c
+@@ -1599,7 +1599,7 @@ int ieee80211_register_hw(struct ieee80211_hw *hw)
+ 		sband = kmemdup(sband, sizeof(*sband), GFP_KERNEL);
+ 		if (!sband) {
+ 			result = -ENOMEM;
+-			goto fail_rate;
++			goto fail_band;
+ 		}
  
- 	if (!e)
- 		return NULL;
-+	if (size_add(used, ins_bytes) > le32_to_cpu(hdr->total))
-+		return NULL;
- 
- 	/* Now we just make room for the inserted entries and jam it in. */
- 	to_move = used - le32_to_cpu(hdr->de_off);
-@@ -1743,7 +1745,10 @@ static int indx_insert_into_root(struct ntfs_index *indx, struct ntfs_inode *ni,
- 	hdr_total = le32_to_cpu(hdr->total);
- 
- 	/* Copy root entries into new buffer. */
--	hdr_insert_head(hdr, re, to_move);
-+	if (!hdr_insert_head(hdr, re, to_move)) {
-+		err = -EINVAL;
-+		goto out_put_n;
-+	}
- 
- 	/* Update bitmap attribute. */
- 	indx_mark_used(indx, ni, new_vbn >> indx->idx2vbn_bits);
-@@ -1881,7 +1886,11 @@ indx_insert_into_buffer(struct ntfs_index *indx, struct ntfs_inode *ni,
- 	/* Copy all the entries <= sp into the new buffer. */
- 	de_t = hdr_first_de(hdr1);
- 	to_copy = PtrOffset(de_t, sp);
--	hdr_insert_head(hdr2, de_t, to_copy);
-+	if (!hdr_insert_head(hdr2, de_t, to_copy)) {
-+		err = -EINVAL;
-+		put_indx_node(n2);
-+		goto out;
-+	}
- 
- 	/* Remove all entries (sp including) from hdr1. */
- 	used = used1 - to_copy - sp_size;
+ 		wiphy_dbg(hw->wiphy, "copying sband (band %d) due to VHT EXT NSS BW flag\n",
+@@ -1675,6 +1675,7 @@ int ieee80211_register_hw(struct ieee80211_hw *hw)
+ #endif
+ 	wiphy_unregister(local->hw.wiphy);
+  fail_wiphy_register:
++ fail_band:
+ 	rtnl_lock();
+ 	rate_control_deinitialize(local);
+ 	ieee80211_remove_interfaces(local);
 -- 
-2.54.0
+2.34.1
 
 
