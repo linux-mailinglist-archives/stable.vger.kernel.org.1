@@ -1,183 +1,203 @@
-Return-Path: <stable+bounces-269567-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-269569-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id YvkXJZlTQWq0ngkAu9opvQ
-	(envelope-from <stable+bounces-269567-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 28 Jun 2026 19:02:17 +0200
+	id FG71IrtYQWqanwkAu9opvQ
+	(envelope-from <stable+bounces-269569-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 28 Jun 2026 19:24:11 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 05B4C6D478F
-	for <lists+stable@lfdr.de>; Sun, 28 Jun 2026 19:02:17 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0844E6D4889
+	for <lists+stable@lfdr.de>; Sun, 28 Jun 2026 19:24:11 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b="pEOUIvb/";
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-269567-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-269567-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=none) header.from=gmail.com;
+	dkim=pass header.d=ideco.ru header.s=ics header.b=bypqMA9Y;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-269569-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-269569-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=none) header.from=ideco.ru;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 3F040300D91C
-	for <lists+stable@lfdr.de>; Sun, 28 Jun 2026 17:02:14 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 757703004DFE
+	for <lists+stable@lfdr.de>; Sun, 28 Jun 2026 17:24:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E52AE2DCF74;
-	Sun, 28 Jun 2026 17:02:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 144D62E8DEC;
+	Sun, 28 Jun 2026 17:24:07 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.ideco.ru (smtp.ideco.ru [51.250.56.165])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BCE329994B
-	for <stable@vger.kernel.org>; Sun, 28 Jun 2026 17:02:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DFF523BD1B;
+	Sun, 28 Jun 2026 17:24:03 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782666129; cv=none; b=VOEnQF8RczFSwmYqGsJSGRZrPZq/f0IVNtZ2+Bl7/VtBFjq0GJrRPMBI7gU5OCkIX6D2PAMavBOdXuz5IraV0XFdCbdAqy7DLStvbRSeeOYcaPW+ml/qALK0HV4Ef+Z2qekuyxaZ5Fk+/9M3oi99iV7Ibbt+RB5rJbM+E7cXq+Q=
+	t=1782667446; cv=none; b=g33qAI2nkFOzjbsn4+YkLbWwTGXj1yqHe2xi3km24hdVnZf7IsaIuMhDDhNasHuXGPJsoJdosgRPqQtp6mgkFxGOX9CJwbiwsBkf1iYQZXSwLi5qq0G3LWFxNpMkkNqeug1TLFzgtTq80pWxotN8db14SLXYhDRaec9jFFlWVqo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782666129; c=relaxed/simple;
-	bh=3OsNKGn84AmZ7EpZHONA4D/sDqC0/NfOYHvlRuLYVb0=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=C3SUYBCKeAYGldQg9XcFgDGaxmYqv+NVnbRMcK2a18P+pTdHLBqU9kqU68f4xOC4K/KmpzJY/xv85cmUZjx15XlHT9o97zY/g3xaCUJgERq5/dkFUQkoSJIF39ZsZXhX6FSgHT5fgYDXPrlf5G2ahmXgJ+1quytLyqKd78Ly10g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=pEOUIvb/; arc=none smtp.client-ip=209.85.128.51
-Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-4903d730b1fso33271215e9.2
-        for <stable@vger.kernel.org>; Sun, 28 Jun 2026 10:02:08 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1782666127; x=1783270927; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=aVQvFBwvnO1RdffMStECk4dJQSfRULIl6EHx460540M=;
-        b=pEOUIvb/4MIZkIuL+pC95YgEKqOE62Ma0vBd6s+iBvLfa4aFcauDFP3TOK8NtSvGUZ
-         BsbIp2vR3PdopNLUsJLT/zMjgai8EU709ZC0npyt2918w53PA7OBXsPZKo5KjtiOoLbs
-         zJrcloJG42z+LzTu1ns6hXqIcI+o9dSrwujg2oyeOMl263JyOwnnAJ6eAJz+xvxTBMgq
-         iyLq6Cw4Ao76/hK9xS/Av8cNk+2yXcjfwo9fnQ5pjL5h4CSwH4GUIGPt6BcPIJTRr/o2
-         K8T7FU9Z6+4xhLBFB59bLLzSmXxJ4pSWCrDYX6j0i40+4aSnqtZjxR6+5R/xQATe7UR7
-         v2nQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782666127; x=1783270927;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=aVQvFBwvnO1RdffMStECk4dJQSfRULIl6EHx460540M=;
-        b=MYSSGQY23wpHHvYLcyBz1DxlGkYJQCAspC2EeDWQ4pNaZZ49Wf5lSphcPDTNemkmgo
-         uiOp59AvW3slpBi3RS9qF+i71hJRbw3/JgZtr+X4V/gbmQi1nkRhsEFAzv+2cgNFEcNt
-         FKowIyZWcelHG0k9ookhlPFqF1y2QpWRYJLWKfkWnAJEHkjicW3rYIw569aHpxJqL0DO
-         pNZmwiLGxtsxEHxdgZZo34IR13FDrVkCUYn5XjbhL5RtGrAO/1BJKWspbGTRVaKOnwWk
-         9JJ6wS4IGX/9BeCYFVpPIIr0ob7D9Ak+wASp0ENakHXC/73U4wmWpQVdLW6FSC4OAOMt
-         LR2A==
-X-Forwarded-Encrypted: i=1; AFNElJ9Q49Eq7cmussHdLcbtctiJ0LHAUqQDnOkQb55xfsVYg7B9ox3af0A6eyLPhEcBbuCOccgeAi0=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzzgQOrzAE2OhIKJzDILkVB5Y9I4DTrGV4/euzcRShiAjnVEyby
-	WdDSfvVwx52l1olhzh7qnw4oFC8IdToAyKXxXb950U2T1fMZsPh7syYSCAFE5Q==
-X-Gm-Gg: AfdE7ckJ2b/dBSHymWOyYerYKltqIUkp01rNOy9xWvW9G4tSz/b4QirgJHHLam15KSy
-	7x5Rmw5ntipYDWEq74M18kH7ByDsYIrgrHPdRKYTgT802jaKLMWxdb4eGaiRUPzX/PUKJDktmIy
-	e8k/ZwatgKMwWOdCfOfuO3hcMu7iFzWskAm4wcvhtQF/w/EG22lmJKuUQNjOvVcfWt3Tq05/viQ
-	chE0bctZhizvR+iQKN0kUPK87551bQnAFfIUoUcFPt62M9j4VoL3OPa9N2NxXCNn3aW9w/EcYF4
-	Dstk6Tb14SJJp/r13hftLM1k/v2kF36mjlrcgoGP2LBPNkzT2QogPTliIUvvyvKo0HCunD4fNUe
-	36mnx4+rpN56hKMMraO8K4j2E96fMgSmeIwcJP7e/K2sWqezuKEQqX0Qj2t+VWz/dcTPZgHsFlY
-	1NV7JshA5u/Q0T96DJG+367EtF
-X-Received: by 2002:a05:600c:c16f:b0:493:a7fd:15d6 with SMTP id 5b1f17b1804b1-493a7fd1852mr32215115e9.9.1782666126285;
-        Sun, 28 Jun 2026 10:02:06 -0700 (PDT)
-Received: from foxbook (bgu190.neoplus.adsl.tpnet.pl. [83.28.84.190])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4926c2954efsm160059395e9.2.2026.06.28.10.02.05
-        (version=TLS1_2 cipher=AES128-SHA bits=128/128);
-        Sun, 28 Jun 2026 10:02:05 -0700 (PDT)
-Date: Sun, 28 Jun 2026 19:02:01 +0200
-From: Michal Pecio <michal.pecio@gmail.com>
-To: Alan Stern <stern@rowland.harvard.edu>
-Cc: Nikhil Solanke <nikhilsolanke5@gmail.com>, linux-usb@vger.kernel.org,
- gregkh@linuxfoundation.org, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org, corbet@lwn.net, skhan@linuxfoundation.org,
- linux-doc@vger.kernel.org
-Subject: Re: [PATCH v2] usbcore: Add quirk for 255-bytes initial config read
-Message-ID: <20260628190201.00afdccf.michal.pecio@gmail.com>
-In-Reply-To: <62e1fab3-1045-41f3-bc74-4c7624011619@rowland.harvard.edu>
-References: <20260623161035.5792-1-nikhilsolanke5@gmail.com>
-	<567e8866-4308-4e5f-819c-fe778dbf74f8@rowland.harvard.edu>
-	<CAFgddhJk0EYG71fnKdio=RHC-cH+JmL-EZ7-oVD-LdHoa2TBSA@mail.gmail.com>
-	<5159fd69-dddf-4073-a8e7-95fa77de0b7f@rowland.harvard.edu>
-	<CAFgddhJ2HeJ=oTBX_axMJcgJq7GXH9abe+LH+x9NGekGO4BMyw@mail.gmail.com>
-	<eb0dfd45-91c5-49ba-a297-b183dbc52c8c@rowland.harvard.edu>
-	<CAFgddhLZ9SuOzG_6mW09j9aDkCp6TedpNkzJ6TUD+DnR3TDLKA@mail.gmail.com>
-	<02060df3-b8c5-4a86-b3ab-3a28eea8a562@rowland.harvard.edu>
-	<20260628165040.76fd608d.michal.pecio@gmail.com>
-	<62e1fab3-1045-41f3-bc74-4c7624011619@rowland.harvard.edu>
+	s=arc-20240116; t=1782667446; c=relaxed/simple;
+	bh=m/JFcdNqXAlOb67qP11H0qB+sU69+zhGRiDPVdVITes=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=P7FB0EQ1GkjF6a9RUJjShhBLMuY3VThfX+OpbIJYh4nT2cvg7W9TEYb2CjTTk/4FUFZj5bse6hBQU0bUMR0sPAVVGzXA9GtrCk8fV3caQwEJjIy70RCJG3Yh4ybrde+DOzXD1SgqLWVJFqy7sFcMec+VfADhstiu0MVAsNELelg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideco.ru; spf=pass smtp.mailfrom=ideco.ru; dkim=pass (2048-bit key) header.d=ideco.ru header.i=@ideco.ru header.b=bypqMA9Y; arc=none smtp.client-ip=51.250.56.165
+Received: from [169.254.254.254] (localhost [127.0.0.1])
+	by smtp.ideco.ru (Postfix) with ESMTP id C04EB10118D6;
+	Sun, 28 Jun 2026 22:14:05 +0500 (+05)
+Received: from fedora.. (unknown [193.168.176.213])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp.ideco.ru (Postfix) with ESMTPSA id 7E11D1011629;
+	Sun, 28 Jun 2026 22:13:59 +0500 (+05)
+DKIM-Filter: OpenDKIM Filter v2.11.0 smtp.ideco.ru 7E11D1011629
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ideco.ru; s=ics;
+	t=1782666844; bh=w8+eO+UV6N5/meMNXwHwUho8i2+aCYEdL8tBame8cA0=;
+	h=From:To:Cc:Subject:Date;
+	b=bypqMA9YCHJYScmxlhE1yBy4UtBmfJBR77B+e4CSPpb3tGceF29D8tqiNZ7XnVKfu
+	 XVwYF/lGtHlYvHnW0RCZkz9HQ7f2RUIfU/RLoOP6g9mkF8bdPwH8esrn73jO6ut0dJ
+	 6GdsGpJR42npJG1MgzlSjf/dPpumolYhEHdEbfXie6+zINSn+DvWhwTwZoFvRCbl2M
+	 ZJDXbzzA/BH3k9FVkxqcWKDJAh1ktsKEMHq6so33s3+xj97Ktkn6G6y8CBwDhO81vH
+	 i8wEusJhSewsoKSuolQG5kTZ4ilCEnJP+1iEqW6LDppWlYj4GTRjKIxMsb1KxQySi+
+	 KqciT4+HRi/BA==
+From: Petr Vaganov <p.vaganov@ideco.ru>
+To: stable@vger.kernel.org,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Petr Vaganov <p.vaganov@ideco.ru>,
+	"James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Jens Axboe <axboe@kernel.dk>,
+	Tejun Heo <htejun@gmail.com>,
+	linux-scsi@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	lvc-project@linuxtesting.org
+Subject: [PATCH v3] scsi: fill in DMA padding bytes in scsi_alloc_sgtables
+Date: Mon, 29 Jun 2026 00:13:44 +0700
+Message-ID: <20260628171348.8613-1-p.vaganov@ideco.ru>
+X-Mailer: git-send-email 2.49.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[ideco.ru,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_DKIM_ALLOW(-0.20)[ideco.ru:s=ics];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-269567-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[gmail.com,vger.kernel.org,linuxfoundation.org,lwn.net];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stern@rowland.harvard.edu,m:nikhilsolanke5@gmail.com,m:linux-usb@vger.kernel.org,m:gregkh@linuxfoundation.org,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,m:corbet@lwn.net,m:skhan@linuxfoundation.org,m:linux-doc@vger.kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[michalpecio@gmail.com,stable@vger.kernel.org];
-	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	FREEMAIL_FROM(0.00)[gmail.com];
+	TAGGED_FROM(0.00)[bounces-269569-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[ideco.ru,HansenPartnership.com,oracle.com,kernel.dk,gmail.com,vger.kernel.org,linuxtesting.org];
 	FORGED_SENDER_FORWARDING(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
+	FORGED_SENDER(0.00)[p.vaganov@ideco.ru,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:p.vaganov@ideco.ru,m:James.Bottomley@HansenPartnership.com,m:martin.petersen@oracle.com,m:axboe@kernel.dk,m:htejun@gmail.com,m:linux-scsi@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:lvc-project@linuxtesting.org,s:lists@lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[p.vaganov@ideco.ru,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[michalpecio@gmail.com,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[10];
 	ALIAS_RESOLVED(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	RCPT_COUNT_SEVEN(0.00)[9];
+	RCVD_COUNT_FIVE(0.00)[5];
+	DKIM_TRACE(0.00)[ideco.ru:+];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 05B4C6D478F
+X-Rspamd-Queue-Id: 0844E6D4889
 
-On Sun, 28 Jun 2026 11:48:36 -0400, Alan Stern wrote:
-> > How about "keep unrelated changes out of a stable patch", i.e. always
-> > do the delay (if any) after the first request, regardless of size?  
-> 
-> This is not an unrelated change.  Rather, it's deciding on how to behave 
-> in an entirely new control pathway -- the one where the 255-byte quirk 
-> flag is set.  The old pathway is completely unaffected.
-> 
-> I suspect no devices will have both this quirk flag and the DELAY_INIT 
-> flag set, which means the location of any delays in the new pathway 
-> won't matter at all since they will never be used.
+During fuzz testing, the following issue was discovered:
 
-If no devices will have both quirks then new delay added before the
-first configuration request will never execute.
+BUG: KMSAN: uninit-value in __dma_map_sg_attrs+0x217/0x310
+ __dma_map_sg_attrs+0x217/0x310
+ dma_map_sg_attrs+0x4a/0x70
+ ata_qc_issue+0x9f8/0x1420
+ __ata_scsi_queuecmd+0x1657/0x1740
+ ata_scsi_queuecmd+0x79a/0x920
+ scsi_queue_rq+0x4472/0x4f40
+ blk_mq_dispatch_rq_list+0x1cca/0x3ee0
+ __blk_mq_sched_dispatch_requests+0x458/0x630
+ blk_mq_sched_dispatch_requests+0x15b/0x340
+ __blk_mq_run_hw_queue+0xe5/0x250
+ __blk_mq_delay_run_hw_queue+0x138/0x780
+ blk_mq_run_hw_queue+0x4bb/0x7e0
+ blk_mq_sched_insert_request+0x2a7/0x4c0
+ blk_execute_rq+0x497/0x8a0
+ sg_io+0xbe0/0xe20
+ scsi_ioctl+0x2b36/0x3c60
+ sr_block_ioctl+0x319/0x440
+ blkdev_ioctl+0x80f/0xd70
+ __se_sys_ioctl+0x219/0x420
+ __x64_sys_ioctl+0x93/0xe0
+ x64_sys_call+0x1d6c/0x3ad0
+ do_syscall_64+0x4c/0xa0
+ entry_SYSCALL_64_after_hwframe+0x6e/0xd8
 
-If such devices will exist, then it probably won't matter whether the
-delay comes after or before the first request. Purpose isn't known,
-but it appears to be rate limiting configuration descriptor requests
-or delaying other requests after this function returns.
+Uninit was created at:
+ __alloc_pages+0x5c0/0xc80
+ alloc_pages+0xe0e/0x1050
+ blk_rq_map_user_iov+0x2b77/0x6100
+ blk_rq_map_user_io+0x2fa/0x4d0
+ sg_io+0xad6/0xe20
+ scsi_ioctl+0x2b36/0x3c60
+ sr_block_ioctl+0x319/0x440
+ blkdev_ioctl+0x80f/0xd70
+ __se_sys_ioctl+0x219/0x420
+ __x64_sys_ioctl+0x93/0xe0
+ x64_sys_call+0x1d6c/0x3ad0
+ do_syscall_64+0x4c/0xa0
+ entry_SYSCALL_64_after_hwframe+0x6e/0xd8
 
-Either way, no known need exists to add another delay before the first
-request or alter the existing delay (or its conditions) in any way.
+Bytes 14-15 of 16 are uninitialized
+Memory access of size 16 starts at ffff88800cbdb000
 
-In general, I always object to code which serves no purpose because
-such code is easy to add but very hard to remove when it gets in the
-way. There are no known users, no test cases, only paranoia.
+When processing the last unaligned element of the scatterlist,
+it is supplemented with missing bytes in the amount of pad_len.
+These bytes remain uninitialized, which leads to a problem.
 
-So I would keep the delay code completely unchaged.
+Add zeroing pad_len bytes of padding by pad_offset offset before
+increasing its length. This ensures that the DMA does not receive
+uninitialized data and eliminates the KMSAN warning.
 
-And skip other random changes like error string nitpicking. Reliable
-and up to date information about how many bytes are requested,
-"expected" (what does it even mean, to somebody reading dmesg?),
-received or verified to exist can be gained from source and usbmon.
+In this case, the pages are not located in highmem, but in the
+general case they might be, so kmap_local_page() is used for mapping.
 
-A stable patch is supposedly supposed to be 100 lines with context ;)
+Found by Linux Verification Center (linuxtesting.org) with Syzkaller.
 
-Regards,
-Michal
+Fixes: 40b01b9bbdf5 ("block: update bio according to DMA alignment padding")
+Cc: stable@vger.kernel.org
+Signed-off-by: Petr Vaganov <p.vaganov@ideco.ru>
+---
+v2: Added tag "Cc: stable@vger.kernel.org".
+v3: Resending this patch as the issue is still present in the current
+kernel and the previous submission did not receive review.
+---
+ drivers/scsi/scsi_lib.c | 5 +++++
+ 1 file changed, 5 insertions(+)
+
+diff --git a/drivers/scsi/scsi_lib.c b/drivers/scsi/scsi_lib.c
+index 22e2e3223..c75b86059 100644
+--- a/drivers/scsi/scsi_lib.c
++++ b/drivers/scsi/scsi_lib.c
+@@ -1187,6 +1187,11 @@ blk_status_t scsi_alloc_sgtables(struct scsi_cmnd *cmd)
+ 	if (blk_rq_bytes(rq) & rq->q->limits.dma_pad_mask) {
+ 		unsigned int pad_len =
+ 			(rq->q->limits.dma_pad_mask & ~blk_rq_bytes(rq)) + 1;
++		unsigned int pad_offset = last_sg->offset + last_sg->length;
++		void *vaddr = kmap_local_page(sg_page(last_sg));
++
++		memset(vaddr + pad_offset, 0, pad_len);
++		kunmap_local(vaddr);
+ 
+ 		last_sg->length += pad_len;
+ 		cmd->extra_len += pad_len;
+-- 
+2.49.0
+
+
 
