@@ -1,188 +1,203 @@
-Return-Path: <stable+bounces-269568-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-269570-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id QborC01YQWp8nwkAu9opvQ
-	(envelope-from <stable+bounces-269568-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 28 Jun 2026 19:22:21 +0200
+	id CrhdALRdQWoooQkAu9opvQ
+	(envelope-from <stable+bounces-269570-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 28 Jun 2026 19:45:24 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B76FF6D486E
-	for <lists+stable@lfdr.de>; Sun, 28 Jun 2026 19:22:20 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4957E6D4930
+	for <lists+stable@lfdr.de>; Sun, 28 Jun 2026 19:45:23 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=p9ZMZPeK;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-269568-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-269568-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=none) header.from=gmail.com;
+	dkim=none;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-269570-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-269570-lists+stable=lfdr.de@vger.kernel.org";
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E64AE3003EF8
-	for <lists+stable@lfdr.de>; Sun, 28 Jun 2026 17:22:12 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 6A9C33011851
+	for <lists+stable@lfdr.de>; Sun, 28 Jun 2026 17:45:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5BFF2F3C13;
-	Sun, 28 Jun 2026 17:22:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 615862F8E87;
+	Sun, 28 Jun 2026 17:45:15 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wr1-f42.google.com (mail-wr1-f42.google.com [209.85.221.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 643231EB5FD
-	for <stable@vger.kernel.org>; Sun, 28 Jun 2026 17:22:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 396DD1531E8;
+	Sun, 28 Jun 2026 17:45:13 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782667331; cv=none; b=eB0rGQPUP7plsFbtxQrfUvfQYNwANXqnkcHgHhzL1m0dKpCBVwtfLtGflbKz8NRC4KIMCGVJln0pyZ9rGxMEnBPU0p5UM247yMtSofPlrpz+ZM3XeFtIYuzD2razSRs1iiYjw9qY5nGy6pKsrPU/gyPML67nG27r81zz4q6y2qQ=
+	t=1782668715; cv=none; b=VzYSYZwlp4FGLj/LXIjH9qZG72ynUDAbFD7lR/swKQwW83EjKU+JjkFaNVEJHuSvHBnd7Ks7ygSIfUyAVW2XWEa2t9aYw5K/2G5J7mpWEJXCIc3nmCCYrEhioTzwA5iq1NzVptNNYXBZiyEtwdcymlWqhoRvw0zqeJ6RapyYRwk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782667331; c=relaxed/simple;
-	bh=K3EOnm1FTPPIVgm7ZBKpbKmC5oI+YrXDEzBB1/dVpHY=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=QEaJdRcdubIgkEbixU8ZTbOZx7KLzlDsXCjXFrMdsVCdHV3rQB6E4/26sNRYNDwi1I2QU2VGxzozEF6F6lNpnaLDDw75agMFbmssZ2RZyHDRMRE2q8BQMqeETmZAFAoZeF4Al5r7O5tGCpRYtqCoHrjNA+UhsO7hXkgYoSMgNHs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=p9ZMZPeK; arc=none smtp.client-ip=209.85.221.42
-Received: by mail-wr1-f42.google.com with SMTP id ffacd0b85a97d-46cbe01d4b6so1433450f8f.2
-        for <stable@vger.kernel.org>; Sun, 28 Jun 2026 10:22:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1782667328; x=1783272128; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=BBABlV/y3tcVRj6J4pCvx1ErOlS8DPYAimesttySdoE=;
-        b=p9ZMZPeKYklW9y9bTUWZv3xL6SxinrYKC5qxU3P6Z7EqCWdR8yfWyWcsx4c4uga1cS
-         aqSPWK32B7VKgYG0SbA1DKqWFF4SvPv9n+/PKDkyEzkHFDjPJ3IsmHjP/OZhmjsyLmYC
-         /kGnBW3J+e62qCJiqiTZ/KOPwYF6x+P8OLWnJKDqDpYhglZp68xomAami1etPoSCVcs3
-         AEH4SIKd70Sv8N0g6Csgxpi6OY4yn+VBPMprnCVb7DoJI+FIbJEAZ24qSCFhw7cqUbSB
-         +95cB+MjtzRMKa4aDrWNVLpo+LRybZd1wwMXxcx2zaoaiOA0RhvbBQgyZegVuyJ7uygk
-         oLCg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782667328; x=1783272128;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=BBABlV/y3tcVRj6J4pCvx1ErOlS8DPYAimesttySdoE=;
-        b=fAVY/fTnkYv5U8PyjKzn6EepDa7GICHgxehj4/w9/ge9aPp4qReKWtuwX8A8bVKpoy
-         e1app2kJ1/l35wnLwkgEklESDqbRXqGyCqGcX6TDXK2/zCTeDX65VlBMy0xBuKUZOCym
-         uO5mknH7ZogfkYbF/VPU7JHO0JzzoSUm5WnqWKn/8xee8l1htnoK+G7cuKNGqp5bU+CG
-         jOh9AXsrv2k/MtcvvKwCP/iq3f9jiz/iIvCpRXr8qytEK28Yog+YsL6zDiScluUnzgAR
-         diVTqjbAt0rrhh80hGdebXn1am/xadgeWA8L406YSR+yQQuUCYXNmtxYTC6wKkZ6Yv1f
-         jv3A==
-X-Forwarded-Encrypted: i=1; AHgh+RrmvkuPvXgT2ekLl14wo4/Q/6GmOIqWiE28YfkIsGlbuBdEMKrsRcc3UpARb3YU+Nj07TBzTHE=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwdpVo8VGjBsCWgDxugZN5SrLOxRCzjnDCNjDP5NT1YOgEra4zN
-	H+FctLqnWIGMaa0kOuwqgbimfEQTm46VQupi6jtzWRLp9PVLdME0DqGM
-X-Gm-Gg: AfdE7cm6FY77XwzgR2n1bhei3esPLDXz0zQS4AKlGgctlez30aJoK0e9qXiHKLC8UJV
-	a7fA2PZG2mRPt80JVVmXAuPdlihHjK8ymCCBXOssNHFG1a6USUrreVMa4cbDdzd1uv9v2dF7xXe
-	1BLElYBGY44OIYPjfelEH6Oy4E7vzPamKbnfTKlCHXOg7obGjaZ+/v7zVsjxGi8YqT1YLbCgMzr
-	6aqlmNe120krYHIlxoYtvsSzBtqkJ47JadJU1BXUH6HXd7Vvou/xkRmVj2Qi0cXDfFfe63lZM6P
-	oqzU9KwKVnSYjJzFFppaFNMU/tgpkmTEt3KAb12CN0ETig5SEeGW/7UXUXwnRZc7R062GhUwR8U
-	YAFluiAF28r/rVcGolfKIyIkGooUYVt8hR0c6/zjZYA+WynZpEJ4czMRNwV/juJhU99OCTvRCqZ
-	3sAnp6hzIc3EalzidDrsm7totg
-X-Received: by 2002:a05:6000:1867:b0:46d:8695:f49d with SMTP id ffacd0b85a97d-46dc2a1614cmr23514992f8f.34.1782667327708;
-        Sun, 28 Jun 2026 10:22:07 -0700 (PDT)
-Received: from foxbook (bgu190.neoplus.adsl.tpnet.pl. [83.28.84.190])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-472c7bec9c2sm7927088f8f.12.2026.06.28.10.22.06
-        (version=TLS1_2 cipher=AES128-SHA bits=128/128);
-        Sun, 28 Jun 2026 10:22:07 -0700 (PDT)
-Date: Sun, 28 Jun 2026 19:22:03 +0200
-From: Michal Pecio <michal.pecio@gmail.com>
-To: Alan Stern <stern@rowland.harvard.edu>
-Cc: Nikhil Solanke <nikhilsolanke5@gmail.com>, linux-usb@vger.kernel.org,
- gregkh@linuxfoundation.org, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org, corbet@lwn.net, skhan@linuxfoundation.org,
- linux-doc@vger.kernel.org
-Subject: Re: [PATCH v2] usbcore: Add quirk for 255-bytes initial config read
-Message-ID: <20260628192203.5fb9daac.michal.pecio@gmail.com>
-In-Reply-To: <20260628190201.00afdccf.michal.pecio@gmail.com>
-References: <20260623161035.5792-1-nikhilsolanke5@gmail.com>
-	<567e8866-4308-4e5f-819c-fe778dbf74f8@rowland.harvard.edu>
-	<CAFgddhJk0EYG71fnKdio=RHC-cH+JmL-EZ7-oVD-LdHoa2TBSA@mail.gmail.com>
-	<5159fd69-dddf-4073-a8e7-95fa77de0b7f@rowland.harvard.edu>
-	<CAFgddhJ2HeJ=oTBX_axMJcgJq7GXH9abe+LH+x9NGekGO4BMyw@mail.gmail.com>
-	<eb0dfd45-91c5-49ba-a297-b183dbc52c8c@rowland.harvard.edu>
-	<CAFgddhLZ9SuOzG_6mW09j9aDkCp6TedpNkzJ6TUD+DnR3TDLKA@mail.gmail.com>
-	<02060df3-b8c5-4a86-b3ab-3a28eea8a562@rowland.harvard.edu>
-	<20260628165040.76fd608d.michal.pecio@gmail.com>
-	<62e1fab3-1045-41f3-bc74-4c7624011619@rowland.harvard.edu>
-	<20260628190201.00afdccf.michal.pecio@gmail.com>
+	s=arc-20240116; t=1782668715; c=relaxed/simple;
+	bh=k+F/+3LgpveYbZ7cPWi4gj6oKSTw1m+Vdzon0wGmV/Y=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=U9tGbsgiegMq6f+pIHkVIeFGyFuc1WQyka/eCCIUfcFe8jaj7CFpoWplRFieTW39GWoBaoIwNYo4AcVwsGOdfJSrTin820QkhC3OM1ANyz9DiMc7MZr3idaWuo8DirMu0nSx1Ie9wdCyEZErcdkQBxqn13oXzDDsw6kkS8AKMeY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AFDA41F000E9;
+	Sun, 28 Jun 2026 17:45:09 +0000 (UTC)
+From: Danilo Krummrich <dakr@kernel.org>
+To: gregkh@linuxfoundation.org,
+	rafael@kernel.org,
+	dakr@kernel.org,
+	ojeda@kernel.org,
+	boqun@kernel.org,
+	gary@garyguo.net,
+	bjorn3_gh@protonmail.com,
+	a.hindborg@kernel.org,
+	aliceryhl@google.com,
+	tmgross@umich.edu,
+	daniel.almeida@collabora.com,
+	tamird@kernel.org,
+	acourbot@nvidia.com,
+	work@onurozkan.dev,
+	lyude@redhat.com
+Cc: driver-core@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	rust-for-linux@vger.kernel.org,
+	stable@vger.kernel.org,
+	Sashiko <sashiko-bot@kernel.org>
+Subject: [PATCH] rust: devres: fix race between concurrent revokers
+Date: Sun, 28 Jun 2026 19:44:38 +0200
+Message-ID: <20260628174451.2275679-1-dakr@kernel.org>
+X-Mailer: git-send-email 2.54.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-0.46 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-269568-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[gmail.com,vger.kernel.org,linuxfoundation.org,lwn.net];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stern@rowland.harvard.edu,m:nikhilsolanke5@gmail.com,m:linux-usb@vger.kernel.org,m:gregkh@linuxfoundation.org,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,m:corbet@lwn.net,m:skhan@linuxfoundation.org,m:linux-doc@vger.kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[michalpecio@gmail.com,stable@vger.kernel.org];
-	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	MIME_TRACE(0.00)[0:+];
+	RCPT_COUNT_TWELVE(0.00)[20];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-269570-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:gregkh@linuxfoundation.org,m:rafael@kernel.org,m:dakr@kernel.org,m:ojeda@kernel.org,m:boqun@kernel.org,m:gary@garyguo.net,m:bjorn3_gh@protonmail.com,m:a.hindborg@kernel.org,m:aliceryhl@google.com,m:tmgross@umich.edu,m:daniel.almeida@collabora.com,m:tamird@kernel.org,m:acourbot@nvidia.com,m:work@onurozkan.dev,m:lyude@redhat.com,m:driver-core@lists.linux.dev,m:linux-kernel@vger.kernel.org,m:rust-for-linux@vger.kernel.org,m:stable@vger.kernel.org,m:sashiko-bot@kernel.org,s:lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
 	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[michalpecio@gmail.com,stable@vger.kernel.org];
+	FORGED_SENDER(0.00)[dakr@kernel.org,stable@vger.kernel.org];
+	FREEMAIL_TO(0.00)[linuxfoundation.org,kernel.org,garyguo.net,protonmail.com,google.com,umich.edu,collabora.com,nvidia.com,onurozkan.dev,redhat.com];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[dakr@kernel.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
+	R_DKIM_NA(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: B76FF6D486E
+X-Rspamd-Queue-Id: 4957E6D4930
 
-I really think it could (and should) be a simple patch.
+There is a potential race condition when two paths try to revoke a
+Devres concurrently.
 
-This is what I wrote a few weeks ago. It's an unconditional change
-for all devices, but it would be easy to turn it into a quirk.
+The driver core's devres_release_all() calls Revocable::revoke() via the
+release callback, while Devres::drop() calls revoke_nosync() on another
+CPU.
 
+The revoker that does not claim the is_available swap returns
+immediately, but the revoker that did may still be executing
+drop_in_place() on the inner data. This can cause a use-after-free when
+the other revoker's caller proceeds to drop adjacent resources that
+drop_in_place() still references (e.g., Devres<DmaMappedSgt> racing with
+SGTable freeing the backing sg_table and pages).
 
---- a/drivers/usb/core/config.c
-+++ b/drivers/usb/core/config.c
-@@ -938,15 +938,14 @@ int usb_get_configuration(struct usb_device *dev)
- 	if (!dev->rawdescriptors)
- 		return -ENOMEM;
+Fix this by adding a Completion. The release callback signals the
+Completion after revoke() finishes, and Devres::drop() waits for it when
+it loses the is_available swap. This ensures the wrapped object is fully
+torn down before Devres::drop() returns.
+
+Cc: stable@vger.kernel.org
+Reported-by: Sashiko <sashiko-bot@kernel.org>
+Closes: https://lore.kernel.org/dri-devel/20260612202841.2577C1F000E9@smtp.kernel.org/
+Fixes: 05aa6fb1c21d ("rust: scatterlist: Add abstraction for sg_table")
+Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+---
+ rust/kernel/devres.rs | 18 ++++++++++++++++--
+ 1 file changed, 16 insertions(+), 2 deletions(-)
+
+diff --git a/rust/kernel/devres.rs b/rust/kernel/devres.rs
+index 11ce500e9b76..11d862f1e6de 100644
+--- a/rust/kernel/devres.rs
++++ b/rust/kernel/devres.rs
+@@ -21,7 +21,8 @@
+     sync::{
+         aref::ARef,
+         rcu,
+-        Arc, //
++        Arc,
++        Completion, //
+     },
+     types::{
+         ForeignOwnable,
+@@ -37,6 +38,8 @@ struct Inner<T> {
+     node: Opaque<bindings::devres_node>,
+     #[pin]
+     data: Revocable<T>,
++    #[pin]
++    revocation: Completion,
+ }
  
--	desc = kmalloc(USB_DT_CONFIG_SIZE, GFP_KERNEL);
-+	desc = kmalloc(255, GFP_KERNEL);
- 	if (!desc)
- 		return -ENOMEM;
+ /// This abstraction is meant to be used by subsystems to containerize [`Device`] bound resources to
+@@ -53,6 +56,10 @@ struct Inner<T> {
+ /// After the [`Devres`] has been unbound it is not possible to access the encapsulated resource
+ /// anymore.
+ ///
++/// When a [`Devres`] is dropped, it is guaranteed that `T` has been fully dropped by the time
++/// [`Devres::drop`] returns, even if a concurrent revocation through the release callback is in
++/// progress.
++///
+ /// [`Devres`] users should make sure to simply free the corresponding backing resource in `T`'s
+ /// [`Drop`] implementation.
+ ///
+@@ -217,6 +224,7 @@ pub fn new<E>(dev: &Device<Bound>, data: impl PinInit<T, E>) -> Result<Self>
+                     };
+                 }),
+                 data <- Revocable::new(data),
++                revocation <- Completion::new(),
+             }),
+             GFP_KERNEL,
+         )?;
+@@ -254,7 +262,9 @@ fn data(&self) -> &Revocable<T> {
+         // SAFETY: `inner` is a valid `Inner<T>` pointer.
+         let inner = unsafe { &*inner };
  
- 	for (cfgno = 0; cfgno < ncfg; cfgno++) {
--		/* We grab just the first descriptor so we know how long
--		 * the whole configuration is */
-+		/* Try 255 bytes first because that's what Windows does */
- 		result = usb_get_descriptor(dev, USB_DT_CONFIG, cfgno,
--		    desc, USB_DT_CONFIG_SIZE);
-+		    desc, 255);
- 		if (result < 0) {
- 			dev_err(ddev, "unable to read config index %d "
- 			    "descriptor/%s: %d\n", cfgno, "start", result);
-@@ -975,8 +974,12 @@ int usb_get_configuration(struct usb_device *dev)
- 		if (dev->quirks & USB_QUIRK_DELAY_INIT)
- 			msleep(200);
+-        inner.data.revoke();
++        if inner.data.revoke() {
++            inner.revocation.complete_all();
++        }
+     }
  
--		result = usb_get_descriptor(dev, USB_DT_CONFIG, cfgno,
--		    bigbuffer, length);
-+		/* Don't bother if we already have it all */
-+		if (length <= result)
-+			memcpy(bigbuffer, desc, length);
-+		else
-+			result = usb_get_descriptor(dev, USB_DT_CONFIG, cfgno,
-+					bigbuffer, length);
- 		if (result < 0) {
- 			dev_err(ddev, "unable to read config index %d "
- 			    "descriptor/%s\n", cfgno, "all");
+     #[allow(clippy::missing_safety_doc)]
+@@ -361,6 +371,10 @@ fn drop(&mut self) {
+                 // this additional reference count.
+                 drop(unsafe { Arc::from_raw(Arc::as_ptr(&self.inner)) });
+             }
++        } else {
++            // The release callback is concurrently revoking; wait for it to finish
++            // `drop_in_place()` of the wrapped object before returning.
++            self.inner.revocation.wait_for_completion();
+         }
+     }
+ }
+
+base-commit: 0716f9b9338a86dd27796e00ed0fd560c653323a
+-- 
+2.54.0
+
 
