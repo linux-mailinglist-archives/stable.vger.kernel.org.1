@@ -1,199 +1,218 @@
-Return-Path: <stable+bounces-269485-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-269486-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id dSPENLW0QGq1hQkAu9opvQ
-	(envelope-from <stable+bounces-269485-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 28 Jun 2026 07:44:21 +0200
+	id NnmTDfe7QGqRhgkAu9opvQ
+	(envelope-from <stable+bounces-269486-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 28 Jun 2026 08:15:19 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A4C756D33D4
-	for <lists+stable@lfdr.de>; Sun, 28 Jun 2026 07:44:20 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7FCBC6D343A
+	for <lists+stable@lfdr.de>; Sun, 28 Jun 2026 08:15:18 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=UbSaXfGF;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-269485-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-269485-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=none) header.from=linux.dev;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=1vMfiFGz;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-269486-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-269486-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=none;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 903E33003720
-	for <lists+stable@lfdr.de>; Sun, 28 Jun 2026 05:44:17 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E739030160FE
+	for <lists+stable@lfdr.de>; Sun, 28 Jun 2026 06:15:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B275931E849;
-	Sun, 28 Jun 2026 05:44:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C019F36D9EE;
+	Sun, 28 Jun 2026 06:15:11 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from out-179.mta0.migadu.com (out-179.mta0.migadu.com [91.218.175.179])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2FA83101A7
-	for <stable@vger.kernel.org>; Sun, 28 Jun 2026 05:44:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C23B23EA9B;
+	Sun, 28 Jun 2026 06:15:09 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782625455; cv=none; b=Twto/Lx63he11SdMPnTYJ7IxsOw07cqmss50cVEGCLN+z0g2WbOHfZfas9uz4DCRa7oPR+N3O9luk+MosA3VwkUa7kV0rtlj6qhFrzVQrU9QaOyGv/Pj5vCYQ4fTvNszG9otusibzz8015SR7qfE2FBZ0zxeQoC5FFEJIjVCjyA=
+	t=1782627311; cv=none; b=tRTiRX1QtZ1EkfGcJtPoCXpAMjg9z7BzSynW9jUvOfK0NL510teSfa1bGVbKoIjrDJugEUC+mOtE0woKIpeAMT1W2SiPrnNKNAn+dgF7xdjVh1i5qUG3scR9VI23k0RpuBstJf8Rhh0jP4T06hn13BL1Qu7GqTpwH9b1rigYOCU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782625455; c=relaxed/simple;
-	bh=dNZCXESJIirjwyAMEv7eRRxz/LQxEHp62a7BqiVbM60=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=e4+dKpo3f45DY9dmVI+2ODO8gfDOkxUXMMhNCDOvsR+MNzT7qJkcVbA1YOnIXx+zclbsm3L8HmJ10s5tY+crv09naZfA+XALcCHdoANw6TdAYlFDS810K8R9YP0KSOiY6opDexZzZKfq7CMKht/yjttczeAcgYwW52XNVADfcTo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=UbSaXfGF; arc=none smtp.client-ip=91.218.175.179
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1782625451;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Hh2gd/qWylLtYWmFXLrDcR+MvqoGGuVJgOfm4/cNwnU=;
-	b=UbSaXfGFeBZY8DWvD4BZijtH1P+LU+jU7J+yZCcXnK6fzLcMgDZfFgvUOZ6QoZ+3q31NgQ
-	RuPz+1jUO6Q6d6PczVunELVw6rDH7vqb9rxNAFzlsoaC8oCQBa633o30AfId7jm4PvZ3jj
-	dW1Of102EdtUGtUOHDuvE8cA1aDtamw=
-From: Lance Yang <lance.yang@linux.dev>
-To: dev.jain@arm.com
-Cc: lance.yang@linux.dev,
-	linmiaohe@huawei.com,
-	muchun.song@linux.dev,
-	osalvador@suse.de,
-	akpm@linux-foundation.org,
-	ljs@kernel.org,
-	david@kernel.org,
-	liam@infradead.org,
-	riel@surriel.com,
-	vbabka@kernel.org,
-	harry@kernel.org,
-	jannh@google.com,
-	kas@kernel.org,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	rcampbell@nvidia.com,
-	apopple@nvidia.com,
-	ziy@nvidia.com,
-	matthew.brost@intel.com,
-	joshua.hahnjy@gmail.com,
-	rakie.kim@sk.com,
-	byungchul@sk.com,
-	gourry@gourry.net,
-	ying.huang@linux.alibaba.com,
-	mel@csn.ul.ie,
-	nao.horiguchi@gmail.com,
-	ak@linux.intel.com,
-	j-nomura@ce.jp.nec.com,
-	pfalcato@suse.de,
-	dave.hansen@intel.com,
-	tglx@kernel.org,
-	jpoimboe@kernel.org,
-	ryan.roberts@arm.com,
-	anshuman.khandual@arm.com,
-	stable@vger.kernel.org
-Subject: Re: [PATCH 4/5] mm/page_vma_mapped: use huge_ptep_get() for hugetlb
-Date: Sun, 28 Jun 2026 13:44:02 +0800
-Message-Id: <20260628054402.76978-1-lance.yang@linux.dev>
-In-Reply-To: <82395f5a-31d4-406b-b7ec-10d1a9d067d4@arm.com>
-References: <82395f5a-31d4-406b-b7ec-10d1a9d067d4@arm.com>
+	s=arc-20240116; t=1782627311; c=relaxed/simple;
+	bh=dAxgJ32TxadDNfSRf4uvpKQCSw2P3xHAndPT3XKTfWA=;
+	h=Date:From:To:Cc:Subject:Message-Id:In-Reply-To:References:
+	 Mime-Version:Content-Type; b=AHGYlHgT5A0kxo677aJeF00tSRz590syixQlDBobZyAx6rK5GRPgKHW5UXt2nWI4cObCiLb22WyduZ4vLj+SSerFdqRCyD70N5hr13PjK4nLCpUPFXau+CmVch2kGe6nVqIFaj4u0nVjqCb4xbMHVDSsYh4vT5lEyo2ICxdbFJA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=1vMfiFGz; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 218AA1F00A3A;
+	Sun, 28 Jun 2026 06:15:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux-foundation.org; s=korg; t=1782627309;
+	bh=VkkL8K8aCSzDTAg0nFKvhBKMX/LzxqzMm81D3QZBmr4=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=1vMfiFGzpFlK50ISLwhCIpnGS9/F4F53x4sETU7muK/IHh6I3XuS+U4DyKjnWFoWw
+	 G5L9rq2Od82BJBKBztldCEdnToq6i7OQUPtbk2bm13prYOTs8FY0RjChRuso6mLVol
+	 Tb25ONWZT0A7AxNY5UINAxc0zd+bXLCqvWtk9MM8=
+Date: Sat, 27 Jun 2026 23:15:08 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Farhad Alemi <farhad.alemi@berkeley.edu>
+Cc: Waiman Long <longman@redhat.com>, Farhad Alemi <falemi@asu.edu>, David
+ Hildenbrand <david@kernel.org>, Gregory Price <gourry@gourry.net>, Yury
+ Norov <ynorov@nvidia.com>, Joshua Hahn <joshua.hahnjy@gmail.com>, Zi Yan
+ <ziy@nvidia.com>, Matthew Brost <matthew.brost@intel.com>, Rakie Kim
+ <rakie.kim@sk.com>, Byungchul Park <byungchul@sk.com>, Ying Huang
+ <ying.huang@linux.alibaba.com>, Alistair Popple <apopple@nvidia.com>,
+ Rasmus Villemoes <linux@rasmusvillemoes.dk>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, cgroups@vger.kernel.org,
+ stable@vger.kernel.org, Tejun Heo <tj@kernel.org>
+Subject: Re: [PATCH v2] cgroup/cpuset: rebind mm mempolicy to
+ effective_mems, not mems_allowed
+Message-Id: <20260627231508.74201ca47c883507be97d8c2@linux-foundation.org>
+In-Reply-To: <CA+0ovCgfHJHv5d1mzapWWvF-LhjppzDX8NPPLvCPZxPKg8RiYw@mail.gmail.com>
+References: <CA+0ovCg05rUk1-3k2ysdxmbcER8aG-wVh9SSTrrbp6LPWpPHYA@mail.gmail.com>
+	<CA+0ovCgfHJHv5d1mzapWWvF-LhjppzDX8NPPLvCPZxPKg8RiYw@mail.gmail.com>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [0.34 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[linux.dev,none];
-	R_DKIM_ALLOW(-0.20)[linux.dev:s=key1];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	MV_CASE(0.50)[];
+	R_DKIM_ALLOW(-0.20)[linux-foundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-269485-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linux.dev,huawei.com,suse.de,linux-foundation.org,kernel.org,infradead.org,surriel.com,google.com,kvack.org,vger.kernel.org,nvidia.com,intel.com,gmail.com,sk.com,gourry.net,linux.alibaba.com,csn.ul.ie,linux.intel.com,ce.jp.nec.com,arm.com];
+	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:dev.jain@arm.com,m:lance.yang@linux.dev,m:linmiaohe@huawei.com,m:muchun.song@linux.dev,m:osalvador@suse.de,m:akpm@linux-foundation.org,m:ljs@kernel.org,m:david@kernel.org,m:liam@infradead.org,m:riel@surriel.com,m:vbabka@kernel.org,m:harry@kernel.org,m:jannh@google.com,m:kas@kernel.org,m:linux-mm@kvack.org,m:linux-kernel@vger.kernel.org,m:rcampbell@nvidia.com,m:apopple@nvidia.com,m:ziy@nvidia.com,m:matthew.brost@intel.com,m:joshua.hahnjy@gmail.com,m:rakie.kim@sk.com,m:byungchul@sk.com,m:gourry@gourry.net,m:ying.huang@linux.alibaba.com,m:mel@csn.ul.ie,m:nao.horiguchi@gmail.com,m:ak@linux.intel.com,m:j-nomura@ce.jp.nec.com,m:pfalcato@suse.de,m:dave.hansen@intel.com,m:tglx@kernel.org,m:jpoimboe@kernel.org,m:ryan.roberts@arm.com,m:anshuman.khandual@arm.com,m:stable@vger.kernel.org,m:joshuahahnjy@gmail.com,m:naohoriguchi@gmail.com,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[lance.yang@linux.dev,stable@vger.kernel.org];
+	FORGED_RECIPIENTS(0.00)[m:farhad.alemi@berkeley.edu,m:longman@redhat.com,m:falemi@asu.edu,m:david@kernel.org,m:gourry@gourry.net,m:ynorov@nvidia.com,m:joshua.hahnjy@gmail.com,m:ziy@nvidia.com,m:matthew.brost@intel.com,m:rakie.kim@sk.com,m:byungchul@sk.com,m:ying.huang@linux.alibaba.com,m:apopple@nvidia.com,m:linux@rasmusvillemoes.dk,m:linux-mm@kvack.org,m:linux-kernel@vger.kernel.org,m:cgroups@vger.kernel.org,m:stable@vger.kernel.org,m:tj@kernel.org,m:joshuahahnjy@gmail.com,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[akpm@linux-foundation.org,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-269486-lists,stable=lfdr.de];
+	RCPT_COUNT_TWELVE(0.00)[19];
+	DMARC_NA(0.00)[linux-foundation.org];
 	MIME_TRACE(0.00)[0:+];
-	RCVD_COUNT_THREE(0.00)[3];
-	FORWARDED(0.00)[lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	FORWARDED(0.00)[lists@lfdr.de];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[36];
+	DKIM_TRACE(0.00)[linux-foundation.org:+];
 	FORGED_SENDER_FORWARDING(0.00)[];
-	TO_DN_NONE(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[lance.yang@linux.dev,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linux.dev:+];
 	ALIAS_RESOLVED(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[akpm@linux-foundation.org,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[redhat.com,asu.edu,kernel.org,gourry.net,nvidia.com,gmail.com,intel.com,sk.com,linux.alibaba.com,rasmusvillemoes.dk,kvack.org,vger.kernel.org];
+	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,linux.dev:dkim,linux.dev:mid,linux.dev:from_mime]
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: A4C756D33D4
+X-Rspamd-Queue-Id: 7FCBC6D343A
+
+On Sun, 14 Jun 2026 06:25:55 -0700 Farhad Alemi <farhad.alemi@berkeley.edu> wrote:
+
+> Creating a child cpuset where cpuset.mems is never set leads to a div/0
+> when a VMA mempolicy with MPOL_F_RELATIVE_NODES rebinds in response to a
+> CPU hotplug event.
+> 
+> Reproduction steps:
+>  1) Create a cgroup w/ cpuset controls (do not set cpuset.mems)
+>  2) Move the task into the child cpuset
+>  3) Create a VMA mempolicy for that task with MPOL_F_RELATIVE_NODES
+>  4) unplug and hotplug a cpu
+>       echo 0 > /sys/devices/system/cpu/cpu1/online
+>       echo 1 > /sys/devices/system/cpu/cpu1/online
+>  5) mempolicy rebind does a div/0 in mpol_relative_nodemask on the
+>     call to __nodes_fold()
+
+Oops.
+
+> The cpuset code passes (cs->mems_allowed) which is not guaranteed to have
+> nodes to the rebind routine.  Use cs->effective_mems instead, which is
+> guaranteed to have a non-empty nodemask.
+
+Well gee, what happened with this patch.
+
+I apologize for misfiling a cc:stable bugfix into my post-rc1 backlog
+pile, but I got there in the end.
+
+I guess this is an MM patch, even though it's against
+kernel/cgroup/cpuset.c.
+
+Nobody cc'ed Tejun.  Fixed.
+
+David acked v1 but is being coy about the v2 patch?
+
+Sashiko AI review suggests that there's a similar bug in
+sys_set_mempolicy():
+
+	https://sashiko.dev/#/patchset/CA+0ovCgfHJHv5d1mzapWWvF-LhjppzDX8NPPLvCPZxPKg8RiYw@mail.gmail.com
 
 
-On Sat, Jun 27, 2026 at 12:43:31PM +0530, Dev Jain wrote:
->
->
->On 26/06/26 10:16 pm, Lance Yang wrote:
-[...]
->> 
->> Just thinking out loud: given that huge_ptep_get() already assumes that
->> addr matches the huge pte, at least on arm64, would it make sense to
->> have a small hugetlb wrapper around it that takes hstate and aligns
->> the address before calling the arch helper?
->> 
->> Might make the rule clearer, and a bit harder to get wrong again :)
->
->Are you suggesting something like:
+Anyway, I'll queue the v2 patch as an mm.git hotfix, but not with a lot
+of confidence at this time.  Can people please refocus on this and help
+recommend a way forward?
 
-Yes, that's what I had in mind :) thanks!
 
->diff --git a/include/linux/hugetlb.h b/include/linux/hugetlb.h
->index fdb7bdf7645c..xxxxxxxxxxxx 100644
->--- a/include/linux/hugetlb.h
->+++ b/include/linux/hugetlb.h
->@@ -825,6 +825,15 @@ static inline struct folio *filemap_lock_hugetlb_folio(struct hstate *h,
->
-> #include <asm/hugetlb.h>
+From: Farhad Alemi <farhad.alemi@berkeley.edu>
+Subject: cgroup/cpuset: rebind mm mempolicy to effective_mems, not mems_allowed
+Date: Sun, 14 Jun 2026 06:25:55 -0700
 
-Maybe worth spelling out the rule as well: 
+Creating a child cpuset where cpuset.mems is never set leads to a div/0
+when a VMA mempolicy with MPOL_F_RELATIVE_NODES rebinds in response to a
+CPU hotplug event.
 
-For arch helpers that use addr, huge_ptep_get() assumes addr is the
-address for the hugetlb entry ptep points to. arm64 already makes that
-assumption.
+Reproduction steps:
+ 1) Create a cgroup w/ cpuset controls (do not set cpuset.mems)
+ 2) Move the task into the child cpuset
+ 3) Create a VMA mempolicy for that task with MPOL_F_RELATIVE_NODES
+ 4) unplug and hotplug a cpu
+      echo 0 > /sys/devices/system/cpu/cpu1/online
+      echo 1 > /sys/devices/system/cpu/cpu1/online
+ 5) mempolicy rebind does a div/0 in mpol_relative_nodemask on the
+    call to __nodes_fold()
 
-Callers where addr may not be hugepage-aligned should use
-hugetlb_ptep_get() instead.
+The cpuset code passes (cs->mems_allowed) which is not guaranteed to have
+nodes to the rebind routine.  Use cs->effective_mems instead, which is
+guaranteed to have a non-empty nodemask.
 
->+static inline pte_t hugetlb_ptep_get(struct vm_area_struct *vma,
->+				     unsigned long addr, pte_t *ptep)
->+{
->+	struct hstate *h = hstate_vma(vma);
->+
->+	return huge_ptep_get(vma->vm_mm, addr & huge_page_mask(h), ptep);
->+}
->+
-> #ifndef is_hugepage_only_range
-> static inline int is_hugepage_only_range(struct mm_struct *mm,
-> 					unsigned long addr, unsigned long len)
->diff --git a/mm/page_vma_mapped.c b/mm/page_vma_mapped.c
->index 18e1d341f463..xxxxxxxxxxxx 100644
->--- a/mm/page_vma_mapped.c
->+++ b/mm/page_vma_mapped.c
->@@ -110,8 +110,7 @@ static bool check_pte(struct page_vma_mapped_walk *pvmw, unsigned long pte_nr)
-> 	pte_t ptent;
->
-> 	if (is_vm_hugetlb_page(pvmw->vma))
->-		ptent = huge_ptep_get(pvmw->vma->vm_mm, pvmw->address,
->-				      pvmw->pte);
->+		ptent = hugetlb_ptep_get(pvmw->vma, pvmw->address, pvmw->pte);
-> 	else
-> 		ptent = ptep_get(pvmw->pte);
+Link: https://lore.kernel.org/linux-mm/CA+0ovCgxbZkXa+OU8w3s84R3KNPNxxRfmsNR-udh+afQBbGNmw@mail.gmail.com/
+Link: https://lore.kernel.org/all/CA+0ovCiEz6SP_sn3kN4Tb+_oC=eHMXy_Ffj=usV3wREdQrUtww@mail.gmail.com/
+Link: https://lore.kernel.org/CA+0ovCgfHJHv5d1mzapWWvF-LhjppzDX8NPPLvCPZxPKg8RiYw@mail.gmail.com
+Fixes: ae1c802382f7 ("cpuset: apply cs->effective_{cpus,mems}")
+Signed-off-by: Farhad Alemi <farhad.alemi@berkeley.edu>
+Suggested-by: Gregory Price <gourry@gourry.net>
+Suggested-by: Waiman Long <longman@redhat.com>
+Closes: https://lore.kernel.org/linux-mm/CA+0ovCgxbZkXa+OU8w3s84R3KNPNxxRfmsNR-udh+afQBbGNmw@mail.gmail.com/
+Acked-by: Waiman Long <longman@redhat.com>
+Cc: Alistair Popple <apopple@nvidia.com>
+Cc: Byungchul Park <byungchul@sk.com>
+Cc: David Hildenbrand <david@kernel.org>
+Cc: Gregory Price <gourry@gourry.net>
+Cc: "Huang, Ying" <ying.huang@linux.alibaba.com>
+Cc: Joshua Hahn <joshua.hahnjy@gmail.com>
+Cc: Matthew Brost <matthew.brost@intel.com>
+Cc: Rakie Kim <rakie.kim@sk.com>
+Cc: Rasmus Villemoes <linux@rasmusvillemoes.dk>
+Cc: Zi Yan <ziy@nvidia.com>
+Cc: Tejun Heo <tj@kernel.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+---
 
-[...]
+ kernel/cgroup/cpuset.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Cheers, Lance
+--- a/kernel/cgroup/cpuset.c~cgroup-cpuset-rebind-mm-mempolicy-to-effective_mems-not-mems_allowed
++++ a/kernel/cgroup/cpuset.c
+@@ -2653,7 +2653,7 @@ void cpuset_update_tasks_nodemask(struct
+ 
+ 		migrate = is_memory_migrate(cs);
+ 
+-		mpol_rebind_mm(mm, &cs->mems_allowed);
++		mpol_rebind_mm(mm, &cs->effective_mems);
+ 		if (migrate)
+ 			cpuset_migrate_mm(mm, &cs->old_mems_allowed, &newmems);
+ 		else
+_
+
 
