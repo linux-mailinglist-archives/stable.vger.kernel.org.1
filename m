@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-269537-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-269540-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 8ha6HThKQWqqnAkAu9opvQ
-	(envelope-from <stable+bounces-269537-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 28 Jun 2026 18:22:16 +0200
+	id wgNeA0pKQWq3nAkAu9opvQ
+	(envelope-from <stable+bounces-269540-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 28 Jun 2026 18:22:34 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C32246D45A3
-	for <lists+stable@lfdr.de>; Sun, 28 Jun 2026 18:22:07 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id BC2336D45B0
+	for <lists+stable@lfdr.de>; Sun, 28 Jun 2026 18:22:28 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=temperror ("DNS error when getting key") header.d=uniontech.com header.s=onoh2408 header.b="SOUc1Ug/";
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-269537-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-269537-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=temperror reason="query timed out" header.from=uniontech.com (policy=temperror);
+	dkim=pass header.d=uniontech.com header.s=onoh2408 header.b=BUAnSBVH;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-269540-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-269540-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=none) header.from=uniontech.com;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 77E0D300CE57
-	for <lists+stable@lfdr.de>; Sun, 28 Jun 2026 16:22:00 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 8112A3004905
+	for <lists+stable@lfdr.de>; Sun, 28 Jun 2026 16:22:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BAB06548EE;
-	Sun, 28 Jun 2026 16:21:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 996D0548EE;
+	Sun, 28 Jun 2026 16:22:21 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtpbg151.qq.com (smtpbg151.qq.com [18.169.211.239])
+Received: from smtpbgbr1.qq.com (smtpbgbr1.qq.com [54.207.19.206])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D60DBE63
-	for <stable@vger.kernel.org>; Sun, 28 Jun 2026 16:21:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A12FBE63
+	for <stable@vger.kernel.org>; Sun, 28 Jun 2026 16:22:17 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782663719; cv=none; b=hZn4UVdCKgyBvn//9LLQFyDgA7R+g/ccgAYKlOfDVP/j86pomFyD4jrdFt7fwGlVU0AjWZOnr7wcz7fdXSvX2qJPkA5nbT7QAgG55lym8Zk+0fOoiGpjJkD3x8AbK2WoOADzQeXfcBeD5b2lsdtfy1zMz7utRkJxmHdQfE9LUZ8=
+	t=1782663741; cv=none; b=YBuBY6bgKcoEEYKRrni65OZp0VheGNB8Ip3pQCA0lbMgCEwq0IpC5fHpb1w+fbkYeoHciceQrV1pv8tkvOCnbvOcaULZdEtRqPsiYcI+3/RP38Ki6h+CnYJpQjn3ko3IpdnEp7t4ejN7/bqZ5QGPvS0lKe+1Ig1NM4qtFQIcnsA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782663719; c=relaxed/simple;
-	bh=V9dPZVhSl1WmXIHqxsuOZCctoAvl0OPrfAf+tSMSN6Y=;
+	s=arc-20240116; t=1782663741; c=relaxed/simple;
+	bh=SyO52oEdfQxgiRa+CHW5k7K2oKaIRSygP3XK/Gxcw2s=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=AmJOfD5DqXlVHKF92az7cJYm/hxIqaIJGLXqkvRPmi7EGPky7FGHq6Uflx8uaubFD/sUvVKac0zg8RaxkUkWrIZvb2R93NX+gcwR3MsPajUaSIN1XN0ZU+WuWAntiCZgR/RWI5lsnVBOyvBoJD0wr/h+z3hR1Ad5V0+9gXu3jgQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniontech.com; spf=pass smtp.mailfrom=uniontech.com; dkim=pass (1024-bit key) header.d=uniontech.com header.i=@uniontech.com header.b=SOUc1Ug/; arc=none smtp.client-ip=18.169.211.239
+	 MIME-Version; b=WXiz0gvjv/wiyQjEpm4BAe816bTBcEKhY27JhJAH6R4dKYNEOTbm9bGri3ceBdjCCtxevRhGucLW5QZg11sgkLKyr/B5MT9zwch3tezSrsqVOHJq2qW/+tmHPBg9CuTCP2BQ2zbrB4J0Y/+zK1VkoreEe0B61bUQ+7tNhnGJV7k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniontech.com; spf=pass smtp.mailfrom=uniontech.com; dkim=pass (1024-bit key) header.d=uniontech.com header.i=@uniontech.com header.b=BUAnSBVH; arc=none smtp.client-ip=54.207.19.206
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=uniontech.com;
-	s=onoh2408; t=1782663602;
-	bh=oRufOCmVA0Ihg9851JZMkHYDljX0/aDamz/obioBOSU=;
+	s=onoh2408; t=1782663616;
+	bh=YwOpjHlkjEKGh3HVY41PKAPNuBw7M9OFBiqUuoBEI9s=;
 	h=From:To:Subject:Date:Message-Id:MIME-Version;
-	b=SOUc1Ug/VmnPFiiGl4n7mF6N4/3wubko1LdU7ATowQ3kJpBP7miTLdhjcPm6mm2Ax
-	 Jx2HSHUtACBC/hWN84cmZwvuaT6EdZxQTkg8aVj8gW7J/ibYsn+oAYKXbO7gRaxIs0
-	 /s6RymwqLNhiKEZkzamwMU53R8giefY+OSUtE3DI=
-X-QQ-mid: esmtpgz10t1782663582tff009cf0
-X-QQ-Originating-IP: 9tN6RBIUr66Pf4UUkXoMsMGXO1fKTr5edDXYCapZM3c=
+	b=BUAnSBVHD1TduDHMD5BwQDkNtmUrq4kc9JocRboGMnGOdXiHo5KwRxK7ZyiLkWcyF
+	 8vaPnv/VLIMDcOezHAMwmaGk1iYcHwwry2D0wp1yrX2ULZ1XCs9bmJgAoHuJ/1/DkD
+	 thf6bc6dXsxg766imDI37KgegoXn8wYu1kBv7k1A=
+X-QQ-mid: esmtpgz10t1782663591t2d475ce5
+X-QQ-Originating-IP: 8g9jK+n5HdNhPKDlb8Wcpcr5yHFhW8v8IBR+W+u/7CQ=
 Received: from localhost.localdomain ( [113.57.152.160])
 	by bizesmtp.qq.com (ESMTP) with 
-	id ; Mon, 29 Jun 2026 00:19:41 +0800 (CST)
+	id ; Mon, 29 Jun 2026 00:19:45 +0800 (CST)
 X-QQ-SSF: 0000000000000000000000000000000
 X-QQ-GoodBg: 1
-X-BIZMAIL-ID: 2034262738733494244
-EX-QQ-RecipientCnt: 8
+X-BIZMAIL-ID: 17640922023262748992
+EX-QQ-RecipientCnt: 12
 From: Wentao Guan <guanwentao@uniontech.com>
 To: carnil@debian.org
 Cc: benh@debian.org,
@@ -58,10 +58,14 @@ Cc: benh@debian.org,
 	gregkh@linuxfoundation.org,
 	guanwentao@uniontech.com,
 	sashal@kernel.org,
-	stable@vger.kernel.org
-Subject: [PATCH 6.1.y 0/9] eventpoll: fix ep_remove struct eventpoll / struct file UAF
-Date: Mon, 29 Jun 2026 00:19:25 +0800
-Message-Id: <20260628161933.532572-1-guanwentao@uniontech.com>
+	stable@vger.kernel.org,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	Jann Horn <jannh@google.com>,
+	Alexander Viro <viro@zeniv.linux.org.uk>,
+	Jan Kara <jack@suse.cz>
+Subject: [PATCH 6.1.y 1/9] eventpoll: don't decrement ep refcount while still holding the ep mutex
+Date: Mon, 29 Jun 2026 00:19:27 +0800
+Message-Id: <20260628161933.532572-2-guanwentao@uniontech.com>
 X-Mailer: git-send-email 2.30.2
 In-Reply-To: <akEtsUNOcuws0xPC@eldamar.lan>
 References: <akEtsUNOcuws0xPC@eldamar.lan>
@@ -74,96 +78,176 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-QQ-SENDSIZE: 520
 Feedback-ID: esmtpgz:uniontech.com:qybglogicsvrgz:qybglogicsvrgz3a-0
-X-QQ-XMAILINFO: OPdvjVtisQSKdlJzx0CmbsfyZL/ai7OvFAyIwAmfmghADBU27JxvzLht
-	OaOjqG2ivcskW4CfcWapwt+BmWguh0jTyZhorjHXUNQ1LIlRVBzJhXaSwdSx07Gi28C+kw5
-	5pFh0HX5t/662eCg04/A392ZGQiHbJzBqhKkKikD3FLxsUqUczo/YJcDWt3dyAYvu0DVWdj
-	yeN1NzHxN85/xlklgL2D4QRDGxbq8WIVhOosVIEcQrhWQjseGOg+OMo7PTk5/1c9bJNc2ai
-	KdLGvcSSb/FJy8NfWmMCOoDRUyWRzCxG5sE8ue1h9xIfNnapXXYHpbRT2y1ObPWiHkaYJ49
-	ES84Nwk3AoY3aP2xVuAHpsF7lVEr+gX/j/diSdDRKQzK+itW/ef6fa+pZa9jxWhYlZ7vV0+
-	c1z6lgDrUo79qnmazoloCeAOGGXSnEz58EwKcV8uyqYKHt0RUcWXBaQqKz1sh8HkMQLIX5V
-	KoZgm5sXkhJ5NELHxS8KYPIAwaNnbtBtFJKXPBtnvfGFd7tLJTK+3bCCwgztO3DXf2ps8M5
-	KPXupLbnVIruDTzuvgJtRe8ytWlfvB4Wdp5FFSxxXsdXPJgZyGF+YHELL3dX74EJAv/y8V9
-	83JciyD+4x0nhtppMq8pz+ddd0ucWtmaJSWGnKWrBHb0GyIMQikQFjCnyCwg53cvcz+9Oew
-	T38YjPnBs7OyBWxiBeW88H2PVOacSPI3KK8VDvl4v9nhIus2FiAkUTItYMSDfgXWYqfA8ju
-	JXERWnUmPpLcHjkeEGpbs4jEH1xWYBj/Eh+hk1x25lu5hdk5YREeClQS0nlPo9iYi8vrCUO
-	flO33IqGZEu8JX5O1uGhonE6Fsj7vsjau1MGV1gTX1xXMe41ErKsTRac2sW9p5tyu+RRRQI
-	z5hgz6ahVfxUYnKgqOdfuJQnqPNZwUS9OlD3DXA78LdBNLS24Dn9eFpW0lnfhGAOPy6BrHO
-	y59g1eJ5880nSbuCLj3b0koYAKEQt/fK0puLjUXduW6JXkcVmKy9M28MN68OPj/x6xifZQc
-	gJqxfS6QRtQxg2PMSMplfldFlryrP95Iuq7TjOUSup26o1/ocuKaq9L7mj8Bs=
-X-QQ-XMRINFO: OD9hHCdaPRBwH5bRRRw8tsiH4UAatJqXfg==
+X-QQ-XMAILINFO: MjQ00mYXMHtuRQZDozm0ze1ybe2xRBSrNqt4vU8X+tlScuYUEOW3e1kJ
+	IawMlPrOTKI/hYa7MmhT2vYPgBRMLPAp05dLbEh1EZRcKIiBGMfaNKgV3wYM7hfuLu8m9DR
+	TAd/wTapOcmHf25fFUrKygxzjZDXafG7w87ZFMF9Udgu4zOsjrAynBYiOwH5fY5DRBCQFZ0
+	crtAblTOUFHoM4gk7R1OWHM/tCGaoSIQ94iT6h4DKjB3tQIllRotp+2rN0fs4XM9ENsOYyd
+	dH3fl1XbpMu1sSDqaRZn7kivAYQ+sPiJr7NKe1z7HsbYsAtd0AQwfdzBJm0F7hQ4VwvoC7q
+	+PqlVhrQoqRZDq76xCOZ6P/E61fcUkQHLIu9gYRYWV+bbtHg9dWLKevIUGkrzVIgZo9E3+b
+	lTIxCbZ1glZjr9ZB0s4buSudvUFLzo/Ml7dbTz+Y68kezeqAEuuGC2c3G5XR9W/gKFFgvT9
+	OCbsVjhTTmOkh9n1mfVEuj9vHZwRjcZY3iJlu6lDOw3vSsa09Z4YLO3ZrNWr6kECl/szz8L
+	ymBar9+8f4l01oPTES6rfueuycbgTeSvBQKZrKFCAn8Wzf0VfcZJYD9kS+RrxovfRkaMBxs
+	RACv3dbdRY5h24HlS0h67QVKyMDiSXbrL0C1TXNBVPN9zEcRCezp5qGY0rup/jjJTVYE2CD
+	Wk6e55dPuK0g1sYcD24Df3U1ZPBK/MExlrhbzXAEJ6SNU9Ja71baY8l/nBSF8BZKpsrXeBt
+	K7VCCfzWqXx1Sz3f0zCei/f9Ss4jNzuPtXFc7zzP3UUL35uEULeO3QSpk6mi+0LZ8P8hL0e
+	mo36ppPMU/vJvOueE4yNVwCWiwk9u0OJNc44fg2SBCTyu/Y8LU0+h9wXSshoIq5/7rjtt7c
+	Bwrs/qkqMxx4ThxBTlcXr2XgvsYcbToFnvPI3TjPtcHyFbR561jXkNOQ5Cfn9vhhifA6slh
+	kSOGwIJSgLKebCQMpOyng+73lDdOm5SxWvNWHFnpYhgZ/5B1EtpJpBrv0UKKPHIRPoYCkb7
+	ifLE6F5/oPI+8zRg6kB7QHNuZPbqq1jok7mvAIuL7a+swZOs/8zrcsPYSd1vjpM7Lbpa7+9
+	2hbMp0GPOZ8KFcKyCembmY=
+X-QQ-XMRINFO: NI4Ajvh11aEjEMj13RCX7UuhPEoou2bs1g==
 X-QQ-RECHKSPAM: 0
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [1.54 / 15.00];
+X-Spamd-Result: default: False [0.84 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
-	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[uniontech.com,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[uniontech.com:s=onoh2408];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-269537-lists,stable=lfdr.de];
-	URIBL_MULTI_FAIL(0.00)[uniontech.com:query timed out];
-	TO_DN_NONE(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[guanwentao@uniontech.com,stable@vger.kernel.org];
-	FORGED_RECIPIENTS(0.00)[m:carnil@debian.org,m:benh@debian.org,m:brauner@kernel.org,m:foss+kernel@0leil.net,m:gregkh@linuxfoundation.org,m:guanwentao@uniontech.com,m:sashal@kernel.org,m:stable@vger.kernel.org,m:foss@0leil.net,s:lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-269540-lists,stable=lfdr.de];
+	RCPT_COUNT_TWELVE(0.00)[12];
+	URIBL_MULTI_FAIL(0.00)[vger.kernel.org:query timed out];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	DKIM_TRACE(0.00)[uniontech.com:?];
-	FORWARDED(0.00)[lists@lfdr.de];
+	MIME_TRACE(0.00)[0:+];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RSPAMD_URIBL_FAIL(0.00)[uniontech.com:query timed out];
+	FORGED_RECIPIENTS(0.00)[m:carnil@debian.org,m:benh@debian.org,m:brauner@kernel.org,m:foss+kernel@0leil.net,m:gregkh@linuxfoundation.org,m:guanwentao@uniontech.com,m:sashal@kernel.org,m:stable@vger.kernel.org,m:torvalds@linux-foundation.org,m:jannh@google.com,m:viro@zeniv.linux.org.uk,m:jack@suse.cz,m:foss@0leil.net,s:lists@lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
 	FORGED_SENDER(0.00)[guanwentao@uniontech.com,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RSPAMD_EMAILBL_FAIL(0.00)[stable@vger.kernel.org:query timed out];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DMARC_DNSFAIL(0.00)[uniontech.com : query timed out];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	ALIAS_RESOLVED(0.00)[];
-	DBL_FAIL(0.00)[sea.lore.kernel.org:query timed out];
-	SURBL_MULTI_FAIL(0.00)[sea.lore.kernel.org:query timed out];
+	TO_DN_SOME(0.00)[];
+	MSBL_EBL_FAIL(0.00)[jack@suse.cz:query timed out];
 	FORGED_SENDER_FORWARDING(0.00)[];
-	SEM_URIBL_UNKNOWN_FAIL(0.00)[uniontech.com:query timed out];
-	TAGGED_RCPT(0.00)[stable,kernel];
 	PRECEDENCE_BULK(0.00)[];
-	BLOCKLISTDE_FAIL(0.00)[113.57.152.160:query timed out,100.90.174.1:query timed out];
-	MIME_TRACE(0.00)[0:+];
-	R_DKIM_TEMPFAIL(0.00)[uniontech.com:s=onoh2408];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[uniontech.com:mid,uniontech.com:from_mime,vger.kernel.org:from_smtp]
+	FROM_HAS_DN(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[guanwentao@uniontech.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[uniontech.com:+];
+	DBL_FAIL(0.00)[vger.kernel.org:query timed out,linux.org.uk:query timed out];
+	BLOCKLISTDE_FAIL(0.00)[172.232.135.74:query timed out];
+	RSPAMD_EMAILBL_FAIL(0.00)[jack.suse.cz:query timed out];
+	ALIAS_RESOLVED(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	TAGGED_RCPT(0.00)[stable,kernel];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,uniontech.com:dkim,uniontech.com:email,uniontech.com:mid,uniontech.com:from_mime]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: C32246D45A3
+X-Rspamd-Queue-Id: BC2336D45B0
 
-Fixes CVE-2026-46242 eventpoll: fix ep_remove struct eventpoll / struct file UAF
+From: Linus Torvalds <torvalds@linux-foundation.org>
 
-base on link: https://lore.kernel.org/stable/20260619-6-12-cve-2026-46242-v1-0-e15a6de43c11@cherry.de/
+commit 8c2e52ebbe885c7eeaabd3b7ddcdc1246fc400d2 upstream.
 
-add commit ("file: add fput() cleanup helper") to fix build error in v6.6.y :
-error: cleanup argument not a function
-struct file *file __free(fput) = NULL;
+Jann Horn points out that epoll is decrementing the ep refcount and then
+doing a
 
-add commit ("eventpoll: don't decrement ep refcount while still holding the ep mutex")
-to fix context different in v6.1.y
+    mutex_unlock(&ep->mtx);
 
-Christian Brauner (8):
-  file: add fput() cleanup helper
-  eventpoll: use hlist_is_singular_node() in __ep_remove()
-  eventpoll: split __ep_remove()
-  eventpoll: kill __ep_remove()
-  eventpoll: drop vestigial __ prefix from ep_remove_{file,epi}()
-  eventpoll: rename ep_remove_safe() back to ep_remove()
-  eventpoll: move epi_fget() up
-  eventpoll: fix ep_remove struct eventpoll / struct file UAF
+afterwards. That's very wrong, because it can lead to a use-after-free.
 
-Linus Torvalds (1):
-  eventpoll: don't decrement ep refcount while still holding the ep
-    mutex
+That pattern is actually fine for the very last reference, because the
+code in question will delay the actual call to "ep_free(ep)" until after
+it has unlocked the mutex.
 
- fs/eventpoll.c       | 152 +++++++++++++++++++++++--------------------
- include/linux/file.h |   2 +
- 2 files changed, 85 insertions(+), 69 deletions(-)
+But it's wrong for the much subtler "next to last" case when somebody
+*else* may also be dropping their reference and free the ep while we're
+still using the mutex.
 
+Note that this is true even if that other user is also using the same ep
+mutex: mutexes, unlike spinlocks, can not be used for object ownership,
+even if they guarantee mutual exclusion.
+
+A mutex "unlock" operation is not atomic, and as one user is still
+accessing the mutex as part of unlocking it, another user can come in
+and get the now released mutex and free the data structure while the
+first user is still cleaning up.
+
+See our mutex documentation in Documentation/locking/mutex-design.rst,
+in particular the section [1] about semantics:
+
+	"mutex_unlock() may access the mutex structure even after it has
+	 internally released the lock already - so it's not safe for
+	 another context to acquire the mutex and assume that the
+	 mutex_unlock() context is not using the structure anymore"
+
+So if we drop our ep ref before the mutex unlock, but we weren't the
+last one, we may then unlock the mutex, another user comes in, drops
+_their_ reference and releases the 'ep' as it now has no users - all
+while the mutex_unlock() is still accessing it.
+
+Fix this by simply moving the ep refcount dropping to outside the mutex:
+the refcount itself is atomic, and doesn't need mutex protection (that's
+the whole _point_ of refcounts: unlike mutexes, they are inherently
+about object lifetimes).
+
+Reported-by: Jann Horn <jannh@google.com>
+Link: https://docs.kernel.org/locking/mutex-design.html#semantics [1]
+Cc: Alexander Viro <viro@zeniv.linux.org.uk>
+Cc: Christian Brauner <brauner@kernel.org>
+Cc: Jan Kara <jack@suse.cz>
+Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+(cherry picked from commit 521e9ff0b67c66a17d6f9593dfccafaa984aae4c)
+Signed-off-by: Wentao Guan <guanwentao@uniontech.com>
+---
+ fs/eventpoll.c | 12 +++++-------
+ 1 file changed, 5 insertions(+), 7 deletions(-)
+
+diff --git a/fs/eventpoll.c b/fs/eventpoll.c
+index f6038819fe79f..7ca1b5931480c 100644
+--- a/fs/eventpoll.c
++++ b/fs/eventpoll.c
+@@ -777,7 +777,7 @@ static bool __ep_remove(struct eventpoll *ep, struct epitem *epi, bool force)
+ 	call_rcu(&epi->rcu, epi_rcu_free);
+ 
+ 	percpu_counter_dec(&ep->user->epoll_watches);
+-	return ep_refcount_dec_and_test(ep);
++	return true;
+ }
+ 
+ /*
+@@ -785,14 +785,14 @@ static bool __ep_remove(struct eventpoll *ep, struct epitem *epi, bool force)
+  */
+ static void ep_remove_safe(struct eventpoll *ep, struct epitem *epi)
+ {
+-	WARN_ON_ONCE(__ep_remove(ep, epi, false));
++	if (__ep_remove(ep, epi, false))
++		WARN_ON_ONCE(ep_refcount_dec_and_test(ep));
+ }
+ 
+ static void ep_clear_and_put(struct eventpoll *ep)
+ {
+ 	struct rb_node *rbp, *next;
+ 	struct epitem *epi;
+-	bool dispose;
+ 
+ 	/* We need to release all tasks waiting for these file */
+ 	if (waitqueue_active(&ep->poll_wait))
+@@ -825,10 +825,8 @@ static void ep_clear_and_put(struct eventpoll *ep)
+ 		cond_resched();
+ 	}
+ 
+-	dispose = ep_refcount_dec_and_test(ep);
+ 	mutex_unlock(&ep->mtx);
+-
+-	if (dispose)
++	if (ep_refcount_dec_and_test(ep))
+ 		ep_free(ep);
+ }
+ 
+@@ -1008,7 +1006,7 @@ void eventpoll_release_file(struct file *file)
+ 		dispose = __ep_remove(ep, epi, true);
+ 		mutex_unlock(&ep->mtx);
+ 
+-		if (dispose)
++		if (dispose && ep_refcount_dec_and_test(ep))
+ 			ep_free(ep);
+ 		goto again;
+ 	}
 -- 
 2.30.2
 
