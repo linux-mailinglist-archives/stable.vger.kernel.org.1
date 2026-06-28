@@ -1,197 +1,151 @@
-Return-Path: <stable+bounces-269551-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-269552-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id aAdWCHxMQWofnQkAu9opvQ
-	(envelope-from <stable+bounces-269551-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 28 Jun 2026 18:31:56 +0200
+	id HdiNJ1xNQWpDnQkAu9opvQ
+	(envelope-from <stable+bounces-269552-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 28 Jun 2026 18:35:40 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id A6FE66D4638
-	for <lists+stable@lfdr.de>; Sun, 28 Jun 2026 18:31:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A10F56D4648
+	for <lists+stable@lfdr.de>; Sun, 28 Jun 2026 18:35:39 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=Bd1f3474;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-269551-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-269551-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("subspace.kernel.org:s=arc-20240116:i=2")
+	dkim=pass header.d=uniontech.com header.s=onoh2408 header.b=gVZN1Xk8;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-269552-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-269552-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=none) header.from=uniontech.com;
+	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E4A12301175E
-	for <lists+stable@lfdr.de>; Sun, 28 Jun 2026 16:31:48 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 1294230086F2
+	for <lists+stable@lfdr.de>; Sun, 28 Jun 2026 16:35:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CEB5C2D592C;
-	Sun, 28 Jun 2026 16:31:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F18D246774;
+	Sun, 28 Jun 2026 16:35:36 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ed1-f44.google.com (mail-ed1-f44.google.com [209.85.208.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtpbg151.qq.com (smtpbg151.qq.com [18.169.211.239])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 490112C029D
-	for <stable@vger.kernel.org>; Sun, 28 Jun 2026 16:31:46 +0000 (UTC)
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782664307; cv=pass; b=d4R5pw/+PbZOzeg6lHJVBCqPJ+qOEKenXgQy3d6NWIwZqJnRbPAEw1MmF6jPN/+KAg7OOGEClAO3m7BNZlsnTi11dlZe1X5haTwSBb1DuSkB5mN7PtiVP+ftSxomxPZbreyRxBLD5E/oN9J9b70TwQVyPrbie+E0jkmVehr4uc0=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782664307; c=relaxed/simple;
-	bh=5l1bZXAfKUSX0ItYfzxbNxOUmUVQ5YgkicP6K61SLbI=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=H+tlbpDM+eXYzA+tUiKXmjRvdJkBIHOAALKG9LuzBO2lxnfGKUFqLVFjmhCAIKH6Cpmsn2Ji8+RMlQvlcE6E9VL0fBZyFB2xKHnbbmDYQiQL4q0suaIyl38X7py8XBOWxpXdFsQcGXB8pIUDW5YqybgLjyGPpz1iDigtuDCOYgQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Bd1f3474; arc=pass smtp.client-ip=209.85.208.44
-Received: by mail-ed1-f44.google.com with SMTP id 4fb4d7f45d1cf-697cee2eb6dso2433830a12.0
-        for <stable@vger.kernel.org>; Sun, 28 Jun 2026 09:31:46 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1782664305; cv=none;
-        d=google.com; s=arc-20260327;
-        b=d38+N9W7QDFUONO0ftvjiGoYRoIuR/0zMWLTwHNq+MGR756vG9lVpYJG9Z8LIXBrfN
-         WGqFm6YCYdS8V1V2b+X4lOATDtumQptNFvCQhmXDiFZQlX4BOrvhW/r7QJFCPbmsF5fy
-         WvNZTDhmfHClbBwT9Ecw7wR4aUEp/+98AzfezSgQC1L1pPsA37T76Ib7/81x0GFK/TfR
-         tHHlHK6eG9OcRredCVlVQS0YY6tXpJNVN+8ct4nmUnrDSTwkF/ZRBLy6+krMxnG4Sgmf
-         zNB4hcnNCQvkcwEVQ1F/M64Wqbo8S78ksEtoxKpVnhAssqKujTbTgxfv/aOeNdQN0atz
-         bSdQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=NwIs/NzgKCDhYw7/WT2FuLFglQDbPL5SvJrcFuoFlVM=;
-        fh=YX7IeCcUnKHW+UvKrv+m3o/4CvPwcotqRxvUXyHn1/I=;
-        b=gA8ThP2cOTpTjeLA4WxVNXmkwRBNyFygYnH0LWYJrtIoeOQr4TjGL+ZsO1opIAQUuh
-         DD2kawQ0fT2roo4uQxxmKxIHrNOEWp51KuDl5S/Sb0/KsvNM1S/eL/nYRZAUklei8F39
-         Pd9TBhXrC07Frsfes0xt3MZ3+nV/S76dYsZMI8pjoakWD6iyUKiduaX++Qnr2WCOsW9Z
-         dvcwINT65hxw5jafrKQmS/QHoj1swRuIoBnBbYLcj8Vv+N/50i65TsuM5la1q5EM8s+W
-         PApEIkMfsN7RxlI7SGCGZP9qbWJ6COqh31WpLIqZBg4DnKWKsAgwQUwAC3XDuqHTXAZC
-         3Pcg==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1782664305; x=1783269105; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=NwIs/NzgKCDhYw7/WT2FuLFglQDbPL5SvJrcFuoFlVM=;
-        b=Bd1f34740muALFdIz0yfIB/KxWR1AnpECIewflPt3T1dsz2t1bLid8NECOx0395x/D
-         anFROMa8CLdpUb6n8t84M9iM4mfDZEQwTCICAg/BXfbtUhu0rLIzO7MDY+wpdqAunjRc
-         g3zFzoCXBOfV/F5gj8tGIOkYSG8XD0+2e0ttxEi7GeHVea9V8Gi6ugtS+hX0NgOpWhd9
-         ueVIdMq+ElqnLmoqbMxL+P3qqvuRon5zvO8PviEwOAg8hn7GUy5AoVolHlOkLCfDN4xM
-         eIoBqmkNiHC/1c1Syy0Mx8Y8+WcK9l5vnUqwBsQBtxSSPfgWA2wPAvJ6Hbe/Q2meYg1g
-         RFdQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782664305; x=1783269105;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=NwIs/NzgKCDhYw7/WT2FuLFglQDbPL5SvJrcFuoFlVM=;
-        b=F3gTyiRFd9C8Dcexypt4x1BKqlLytzHddJhdjLEAR1cSxwlWB1HAIQEkwQkpLw5Zu6
-         4/H52cOew2H1TMeYszzRfJUn/RGZBQnWwQ/SjD4Lu2mL8zeqbNcc3zn/V/4L2EwDm/Od
-         2x7wlNNKH/swjTwr06buDvjFwr2WGwND/cNN+ypG74IsnyNRWbtOM4VkeOMJPSqbZAom
-         IXyGeXb4vJ3ZlvYgFauK5ymMnlMQNG2vj/RhvHCBJfruw8dVy5akuVGbogntK768AtkU
-         0t+O4YYVYNG7o8zYMX3QSlU8A0RoIkxSihZFESz2pcOJcjau9fFZkPveLJTXKAivNHDu
-         RFKg==
-X-Forwarded-Encrypted: i=1; AHgh+Rr56KAmxBZqLCr9TkVhqAeKGLewOzOHRFJNMore2h5+HxUS5JOQurxJG4vh7MDm+gZBmEwfBFE=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzZvrtzfhYwY0Q42Z7VHDqiloMGabKmbgTAZ8P+8obTiVmt8mow
-	IlOBRD6ZjoRVWJJGnlx66qW3S/jiQtofpjNTKrBxnb1roEvn4mmk+J36GnpIQO+edxJ49cLRcS2
-	kTYQ2scJv9xKMReX7IBiut6rEOuIuucQ=
-X-Gm-Gg: AfdE7cmXQiZ3T96ZgcWJWYxHMrZSpXiqymLmlhjVeZ898R+BWLKdkpQuv5iGJGuWqZD
-	cDxfxrmtAvuyZ63ngdCLWDczwi6hsVCszX0Sx1wY4iM/v2rwkDu8EA+fuVA5kz3FiLuAeQ+r73T
-	l/DxhNFPpDH+b1rkz3IyTKB3VJdjgGaYU6mOjQkzG2VMCGBm2AO9jewmrQnVg45zWz0zpFY9ScG
-	VgmdyL7RpsppGct2ch4i0UFFEwxMtw5hdkSyOFSWm3/D1cc24OG0CPkTYEm1JhvEe1lAyTt
-X-Received: by 2002:a17:907:3c8b:b0:c12:f84:85d4 with SMTP id
- a640c23a62f3a-c120f8487bamr640300966b.24.1782664304274; Sun, 28 Jun 2026
- 09:31:44 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52F9B22126D
+	for <stable@vger.kernel.org>; Sun, 28 Jun 2026 16:35:30 +0000 (UTC)
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1782664536; cv=none; b=DYiwki59Ov13CNqap2ILXox8FMJhnj38qHO1NYQI9kcjf6NTh/3lreZ6XH/Y2/hH1BGk+fbgXqaYfDLLXeVdqZE0XwaEugAF3A7ecGd6ipNd2C10dcD9vhKmtAHkUo91zahr/APrVOtMtSZ+cRXvd+KGctFHqeDdYBkiWNdJYbo=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1782664536; c=relaxed/simple;
+	bh=feg1jQgep3XR90ITS/HWLD3TLt1/jzWD+k/1w96IknI=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=tbsfQGShBrIx5GM4xuJG/q10DBT5QsBDM2syxMC3ss1DnbbW8PpM5ZcxfYO5OdGYW1TLTo9b70jkS6ICOyIdDcEfQSL9B1KfCF3us/UkC21vtMfAABYhDrX5vwdbXj8nIwXhIhdB3nQJ0lLj9uj0BSqI1bEyQkd9FlHYvo70eK8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniontech.com; spf=pass smtp.mailfrom=uniontech.com; dkim=pass (1024-bit key) header.d=uniontech.com header.i=@uniontech.com header.b=gVZN1Xk8; arc=none smtp.client-ip=18.169.211.239
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=uniontech.com;
+	s=onoh2408; t=1782664489;
+	bh=KZ6jSBwNNI4Xu1MQJ+17fgv9rybtJ1/OlFvMQWLDTmo=;
+	h=From:To:Subject:Date:Message-Id:MIME-Version;
+	b=gVZN1Xk8Dah+0azCAd7yMpICZ/Woa5TB9zsiOicPfPkNji+08sSUWG7L/aWd5R2Q3
+	 yT5isSYKY8v8XfX2jtNUHw0HRq6nW/ySDWEuIutgn+n5D/+7uzORoVhFWkODqBci2y
+	 Mw5nIywcFjB39NGekI38cSVMPYKIla9kN0NCN1HA=
+X-QQ-mid: zesmtpsz5t1782664470t02600310
+X-QQ-Originating-IP: BmeNeBLdVSKPVhNaji4wBBoXlp74sj3ntAJ6/bHH+BQ=
+Received: from localhost.localdomain ( [113.57.152.160])
+	by bizesmtp.qq.com (ESMTP) with 
+	id ; Mon, 29 Jun 2026 00:34:28 +0800 (CST)
+X-QQ-SSF: 0000000000000000000000000000000
+X-QQ-GoodBg: 1
+X-BIZMAIL-ID: 16407297633576573590
+EX-QQ-RecipientCnt: 8
+From: Wentao Guan <guanwentao@uniontech.com>
+To: carnil@debian.org,
+	sashal@kernel.org
+Cc: benh@debian.org,
+	brauner@kernel.org,
+	foss+kernel@0leil.net,
+	gregkh@linuxfoundation.org,
+	guanwentao@uniontech.com,
+	stable@vger.kernel.org
+Subject: Re: [PATCH 6.6.y 0/8] eventpoll: fix ep_remove struct eventpoll / struct file UAF
+Date: Mon, 29 Jun 2026 00:34:27 +0800
+Message-Id: <20260628163427.619452-1-guanwentao@uniontech.com>
+X-Mailer: git-send-email 2.30.2
+In-Reply-To: <akEtsUNOcuws0xPC@eldamar.lan>
+References: <akEtsUNOcuws0xPC@eldamar.lan>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260623161035.5792-1-nikhilsolanke5@gmail.com>
- <567e8866-4308-4e5f-819c-fe778dbf74f8@rowland.harvard.edu>
- <CAFgddhJk0EYG71fnKdio=RHC-cH+JmL-EZ7-oVD-LdHoa2TBSA@mail.gmail.com>
- <5159fd69-dddf-4073-a8e7-95fa77de0b7f@rowland.harvard.edu>
- <CAFgddhJ2HeJ=oTBX_axMJcgJq7GXH9abe+LH+x9NGekGO4BMyw@mail.gmail.com>
- <eb0dfd45-91c5-49ba-a297-b183dbc52c8c@rowland.harvard.edu>
- <CAFgddhLZ9SuOzG_6mW09j9aDkCp6TedpNkzJ6TUD+DnR3TDLKA@mail.gmail.com> <02060df3-b8c5-4a86-b3ab-3a28eea8a562@rowland.harvard.edu>
-In-Reply-To: <02060df3-b8c5-4a86-b3ab-3a28eea8a562@rowland.harvard.edu>
-From: Nikhil Solanke <nikhilsolanke5@gmail.com>
-Date: Sun, 28 Jun 2026 22:01:32 +0530
-X-Gm-Features: AVVi8CciSyj9HcmsKDyCiGg7VrCDEm8PTgxDVOrwRIGUvZ81AFhzla4U4iZ5FyQ
-Message-ID: <CAFgddh+dEgtJf=3rL_48x5aQx7q3FH20CAw-50J32JOJCYdtMQ@mail.gmail.com>
-Subject: Re: [PATCH v2] usbcore: Add quirk for 255-bytes initial config read
-To: Alan Stern <stern@rowland.harvard.edu>
-Cc: linux-usb@vger.kernel.org, gregkh@linuxfoundation.org, 
-	linux-kernel@vger.kernel.org, michal.pecio@gmail.com, stable@vger.kernel.org, 
-	corbet@lwn.net, skhan@linuxfoundation.org, linux-doc@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+X-QQ-SENDSIZE: 520
+Feedback-ID: zesmtpsz:uniontech.com:qybglogicsvrgz:qybglogicsvrgz3a-0
+X-QQ-XMAILINFO: NzbGdlyIBzohUZO34sG7To0iw0mz22/8DU8wlQ0GN9QQDiBzD/lxP5Gm
+	AgpzTT7OoXTFjcAhSaPaW1+Gb8QQ7VhuQaay64fHtCZpeENZHII6tOoyakv0HZoUF+YZW+5
+	klGVCLy9XRkVEMlvdOkkjopMJkvgsLCAB+49f2bG6DoJJpeWi/aY/qAXED4mk3NlcyhXRqM
+	RMMjVSkoEUZrYmPYAvhR9TnKW0U5gDHnALHQVSfrLT9ENlyBYPYSO/a4fHEqlQyDWu+fw6O
+	hXExhmvLPVeGbGYLGjkUdn+LPLtl/NwNqk732JEPb5VA41DiAH6C1PC4nlEIPgPPBN/UtIP
+	0+oTteKHxQ2RZ9vuDcSoto8FpMVmVF1XJ8txynLsUlkfuQ+oVVlCZWX50Igg9czDvNqdl6k
+	Pb3VPxBoxt1urbVnCqVVrJ/Rz94mVWkdHlK4eROw5i6m1xiIHGCNfqXiCV5FqIAf/LzAqjV
+	oUOtwmu/HyxZDjkzQim2NmmqVbolvIVPJRoL7kzleZOi2l2qyouqI0YxajvOAe25efJ73+b
+	OFadiA4dxQjk0MiNLjOksASjI51ZAlfKx4feifxf99n+C72B3C7n+rGAQiK1/Ix24zvDaAL
+	bf/QFoHFyl+x0HBORBHTbYUeAVbnBbh6EXb77iMB8HwPqmL0uXe1+ezFocQbfD7OpoRANtt
+	zZCegRcD3jFSecZh1J78Rg7SUkUI6jeGVdmtVZaWXP5rGP7TIT+mHyN2cukQ5GVOoZtP01b
+	lyKVNbeQOZL5j1Nh4eLG5RU2Pe8LliOUMymshoK9xyQfWKwdoe/CxsL6msnWiZrHIZ9UTmr
+	Co3nPfO2FbosvjuBOwp3nquqY5P+3udi+QjXbzuqbJ3U2WG7t2HfCadjVLM8LRpUqhCrham
+	d21CETe5sLC3RuhAEYC7I6NNgqSAjl5ZE1miQseDdDvpG/a/mW9m9EmeH5yXwv1vM3fkuwj
+	hODVgvSePt3Jc9lGKW8B8/k284CmPFGTVaqFgoGA589dDakvv3zQlwRVIWaqkkrGOcn6qJA
+	6XduOZgx1156z/V38+we62+Dc98yKZdVFn5FrAYkwgRdQGFYrOU4rjyu61qpZs4w6Vs6N2j
+	wPR+l6xJkHMjnj3Y5iYAY2u8QuQTmmm6QP3XqNouPqiUMrOWwGH3uEB/wuOfJK9fR/MTcXT
+	cZrN
+X-QQ-XMRINFO: NyFYKkN4Ny6FuXrnB5Ye7Aabb3ujjtK+gg==
+X-QQ-RECHKSPAM: 0
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.66 / 15.00];
+X-Spamd-Result: default: False [0.84 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	MID_CONTAINS_FROM(1.00)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[uniontech.com,none];
 	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[uniontech.com:s=onoh2408];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-269551-lists,stable=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
-	FREEMAIL_CC(0.00)[vger.kernel.org,linuxfoundation.org,gmail.com,lwn.net];
-	FORGED_RECIPIENTS(0.00)[m:stern@rowland.harvard.edu,m:linux-usb@vger.kernel.org,m:gregkh@linuxfoundation.org,m:linux-kernel@vger.kernel.org,m:michal.pecio@gmail.com,m:stable@vger.kernel.org,m:corbet@lwn.net,m:skhan@linuxfoundation.org,m:linux-doc@vger.kernel.org,m:michalpecio@gmail.com,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[nikhilsolanke5@gmail.com,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_SENDER(0.00)[guanwentao@uniontech.com,stable@vger.kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-269552-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:carnil@debian.org,m:sashal@kernel.org,m:benh@debian.org,m:brauner@kernel.org,m:foss+kernel@0leil.net,m:gregkh@linuxfoundation.org,m:guanwentao@uniontech.com,m:stable@vger.kernel.org,m:foss@0leil.net,s:lists@lfdr.de];
+	DKIM_TRACE(0.00)[uniontech.com:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	MIME_TRACE(0.00)[0:+];
+	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[guanwentao@uniontech.com,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	FORGED_SENDER_FORWARDING(0.00)[];
+	TO_DN_NONE(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	ALIAS_RESOLVED(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[nikhilsolanke5@gmail.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	MID_RHS_MATCH_FROMTLD(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	TAGGED_RCPT(0.00)[stable,kernel];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	MISSING_XM_UA(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[mail.gmail.com:mid,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,uniontech.com:dkim,uniontech.com:mid,uniontech.com:from_mime,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: A6FE66D4638
+X-Rspamd-Queue-Id: A10F56D4648
 
-On Sun, 28 Jun 2026 at 19:25, Alan Stern <stern@rowland.harvard.edu> wrote:
->
-> On Sun, Jun 28, 2026 at 11:53:09AM +0530, Nikhil Solanke wrote:
-> > I need some help with the USB_QUIRK_DELAY_INIT part. I can't figure
-> > out how to make it properly work with my patch because of the
-> > following reasons:
-> >
-> > 1. I don't want to move it to the top because, from my pov, there must
-> > have been some reason for placing that quirk where it is now. so i
-> > don't want to mess with it.
-> >
-> > 2. Regarding my idea of adding a condition =E2=80=94 so that it doesn't=
- change
-> > the behavior when the quirk isn't set =E2=80=94 if the full configurati=
-on set
-> > exceeds 255 bytes, we would have to issue a 2nd request. In this case
-> > the existing behavior would be more justified.
-> >
-> > So, I'm a bit confused about how to implement this properly. Adding
-> > yet another condition to fix the second case doesn't feel right to me.
-> > It would look unnecessarily complicated. I would appreciate a bit of
-> > help and advice.
->
-> If the 255-byte quirk flag isn't set, do the delay before the second
-> transfer just as it is now.
->
-> If the 255-byte quirk flag is set, do the delay before the first
-> transfer.  If a second transfer is needed, you can do a second delay
-> before it or not -- I suspect it doesn't matter.  If you want to be
-> safe, add the second delay.
->
-> Alan Stern
+Hello,
 
-Ok thanks! Just to make sure, because the change I will introduce
-won't affect any existing behavior, these changes (relating to
-DELAY_INIT quirk) won't belong in a new patch, right?
+> On Fri, Jun 26, 2026 at 01:54:18PM -0400, Sasha Levin wrote:
+> > > [PATCH 6.6.y 0/8] eventpoll: fix ep_remove struct eventpoll /
+> > > struct file UAF (CVE-2026-46242)
+> >
+> > Whole series queued for 6.6, thanks.
+> 
+> 58c9b016e128 ("epoll: use refcount to reduce ep_mutex contention") got
+> backported as well to v6.1.175 and v5.15.209, will you provide
+> backports for the 6.1.y and 5.15.y series as well?
+You can try it for 6.1.y, it also clean apply and build successfuly for 5.15.y:
+https://lore.kernel.org/stable/20260628161933.532572-1-guanwentao@uniontech.com/
 
-Thanks,
-Nikhil Solanke
+please give a review.
+
+BRs
+Wentao Guan
 
