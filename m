@@ -1,42 +1,42 @@
-Return-Path: <stable+bounces-269451-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-269452-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id p/04CQybQGpPggkAu9opvQ
-	(envelope-from <stable+bounces-269451-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 28 Jun 2026 05:54:52 +0200
+	id LpUJIy6bQGpbggkAu9opvQ
+	(envelope-from <stable+bounces-269452-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 28 Jun 2026 05:55:26 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id ABB476D30EC
-	for <lists+stable@lfdr.de>; Sun, 28 Jun 2026 05:54:51 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id DC5D66D3103
+	for <lists+stable@lfdr.de>; Sun, 28 Jun 2026 05:55:25 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
 	dkim=none;
 	dmarc=none;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-269451-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-269451-lists+stable=lfdr.de@vger.kernel.org";
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-269452-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-269452-lists+stable=lfdr.de@vger.kernel.org";
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id F149C3022A95
-	for <lists+stable@lfdr.de>; Sun, 28 Jun 2026 03:53:15 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id DB7FD302591C
+	for <lists+stable@lfdr.de>; Sun, 28 Jun 2026 03:53:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 593B824887E;
-	Sun, 28 Jun 2026 03:53:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E9B22459EA;
+	Sun, 28 Jun 2026 03:53:21 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from cstnet.cn (smtp21.cstnet.cn [159.226.251.21])
 	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3608223EA8B;
-	Sun, 28 Jun 2026 03:53:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B8BF242D9D;
+	Sun, 28 Jun 2026 03:53:19 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782618795; cv=none; b=qawnEsF2R8lVwvMZoKBFs9j9XzhAyw80qxyNB2RSdEkr27B7IKPNqDfn05xZAIjenO9IGClvCiS/qUMK/q0wx2pMs5fcLihjVMeVELd4/fLA+0IomtAEEjst4aIPfbVwc50QVkqaB9bZV6yqOVqj2oxbguwz8kz+hoe3fogSM54=
+	t=1782618801; cv=none; b=uw3j3w6YE5gXZpL21vH+yIG2UXLch57cFmVDvVI5HX+eVUmvgaCcCUzBBW3+cs6xScukYtxhkGzWBGnkoP39BKOyhq5Pvtgdy4lkYI/xBmZItsPviv17emS3R4lMzXOYkly8qDTg0cAWe6MilhBs+MrTlGRUdiHBuK2ilnbhlHY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782618795; c=relaxed/simple;
-	bh=4l+wqMths9Y6tGgCRMV3bKormV2+6aG8+Oz82kG8SW0=;
+	s=arc-20240116; t=1782618801; c=relaxed/simple;
+	bh=q55WIu/94elAF8NuvORDojNqFHG4KRi15yUTnwSd6yQ=;
 	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=kMzy3IsX5Rij1+XyNLZf0q4Xk4gA6kjmCKbwR8r8jAcMvs9YC5yQ9AIdqqPyuwKSAM2xKK27H9ZJx9mGyvINZrRbVPhDcFt7+dhB9MgRI2EsHiPc/k7TlXs3stSwvDsWqBZdXJG1npWW5dTg6SGaVuqdz52AEDpDR+DsFiXkg0A=
+	 Message-Id:References:To; b=gYjYmmoPZVhvfd0J4NCpiH0bEswmqFkVmAXmxPymeqipf0d+GOsrf7Gt9UKhQJkQbv3WOMTo8iOVYLveL0FmBGVM+JZaoMMAsCUh7Ey/7c3ObtqsFY6iZTzvJAopu2mVW/ElODZgDbA5ny6A/l1yC8Hjkr34+7ZtAUuibqbaHD8=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.21
 Received: from smtpclient.apple (unknown [117.182.74.7])
-	by APP-01 (Coremail) with SMTP id qwCowAA33NRbmkBqExKqAw--.34181S6;
-	Sun, 28 Jun 2026 11:53:08 +0800 (CST)
+	by APP-01 (Coremail) with SMTP id qwCowAA33NRbmkBqExKqAw--.34181S7;
+	Sun, 28 Jun 2026 11:53:17 +0800 (CST)
 Content-Type: text/plain;
 	charset=utf-8
 Precedence: bulk
@@ -45,108 +45,116 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.700.81.1.8\))
-Subject: Re: [PATCH] fix: accel/qaic: qaic_attach_slice_bo_ioctl: success path
- missing   drm_gem_object_put
+Subject: Re: [PATCH] fix: clocksource: timer-nxp-pit: pit_timer_init:
+ cpuhp_setup_state   failure leaks clockevent device
 From: WenTao Liang <vulab@iscas.ac.cn>
-In-Reply-To: <20260626114359.32938-1-vulab@iscas.ac.cn>
-Date: Sun, 28 Jun 2026 11:52:58 +0800
-Cc: carl.vanderlip@oss.qualcomm.com,
- linux-arm-msm@vger.kernel.org,
- dri-devel@lists.freedesktop.org,
- linux-kernel@vger.kernel.org,
+In-Reply-To: <20260626121215.34748-1-vulab@iscas.ac.cn>
+Date: Sun, 28 Jun 2026 11:53:07 +0800
+Cc: linux-kernel@vger.kernel.org,
  stable@vger.kernel.org
 Content-Transfer-Encoding: quoted-printable
-Message-Id: <3CC7319B-899B-42C4-AA98-729288B9E95D@iscas.ac.cn>
-References: <20260626114359.32938-1-vulab@iscas.ac.cn>
-To: jeff.hugo@oss.qualcomm.com,
- ogabbay@kernel.org
+Message-Id: <68A5F40A-4FB8-42C5-8C2A-38AD98FBD6B6@iscas.ac.cn>
+References: <20260626121215.34748-1-vulab@iscas.ac.cn>
+To: daniel.lezcano@kernel.org,
+ tglx@kernel.org
 X-Mailer: Apple Mail (2.3826.700.81.1.8)
-X-CM-TRANSID:qwCowAA33NRbmkBqExKqAw--.34181S6
-X-Coremail-Antispam: 1UD129KBjvJXoW7uw4xKF4xGF18JFW3Xw4UCFg_yoW8GF45pr
-	WagFW7trZ8XrWUKrW2vr1DWFyjkw1Y93yUKayrA34S9rnYgFyUZa45WFZ8XFn3try7CFZ0
-	qr1jv3ZYg3W2ya7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUBlb7Iv0xC_tr1lb4IE77IF4wAFF20E14v26rWj6s0DM7CY07I2
+X-CM-TRANSID:qwCowAA33NRbmkBqExKqAw--.34181S7
+X-Coremail-Antispam: 1UD129KBjvJXoW7CF18tF1fAw48ZrWUury5CFg_yoW8Ary3pr
+	40v343tr90gr429r42qF4DXF97C3ZYkrWakFyUt343ZrnxJFyrXF4DtFWUXFyUGrWfAwsI
+	vanYya1ruFWUZFJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUU9mb7Iv0xC_tr1lb4IE77IF4wAFF20E14v26rWj6s0DM7CY07I2
 	0VC2zVCF04k26cxKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28IrcIa0xkI8VA2jI
 	8067AKxVWUAVCq3wA2048vs2IY020Ec7CjxVAFwI0_Xr0E3s1l8cAvFVAK0II2c7xJM28C
 	jxkF64kEwVA0rcxSw2x7M28EF7xvwVC0I7IYx2IY67AKxVW7JVWDJwA2z4x0Y4vE2Ix0cI
-	8IcVCY1x0267AKxVWxJVW8Jr1l84ACjcxK6I8E87Iv67AKxVWxJr0_GcWl84ACjcxK6I8E
-	87Iv6xkF7I0E14v26F4UJVW0owAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0V
-	AKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWUJVWUGwAv7VC2z280aVAFwI0_Jr0_Gr1l
-	Ox8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcxkI7VAKI48JMxkF7I0En4kS14v26r126r1DMx
-	AIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrVAFwI0_Jr0_
-	Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWUAVWUtwCIc40Y0x0EwI
-	xGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267AKxVW8JVWx
-	JwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Jr0_Gr1lIxAIcV
-	C2z280aVCY1x0267AKxVW8JVW8JrUvcSsGvfC2KfnxnUUI43ZEXa7IU8geOJUUUUU==
-X-CM-SenderInfo: pyxotu46lvutnvoduhdfq/1tbiBwAMA2pAixEZagAAsL
+	8IcVCY1x0267AKxVW8Jr0_Cr1UM28EF7xvwVC2z280aVAFwI0_Cr1j6rxdM28EF7xvwVC2
+	z280aVCY1x0267AKxVWxJr0_GcWle2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xvF2
+	IEw4CE5I8CrVC2j2WlYx0E2Ix0cI8IcVAFwI0_Jr0_Jr4lYx0Ex4A2jsIE14v26r1j6r4U
+	McvjeVCFs4IE7xkEbVWUJVW8JwACjcxG0xvY0x0EwIxGrwCF04k20xvY0x0EwIxGrwCFx2
+	IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02F40E14v26r1j6r18MI8I3I0E7480Y4vE14v2
+	6r106r1rMI8E67AF67kF1VAFwI0_JF0_Jw1lIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67
+	AKxVWUCVW8JwCI42IY6xIIjxv20xvEc7CjxVAFwI0_Gr0_Cr1lIxAIcVCF04k26cxKx2IY
+	s7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r1j6r4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Gr
+	0_Gr1UYxBIdaVFxhVjvjDU0xZFpf9x07j0uWLUUUUU=
+X-CM-SenderInfo: pyxotu46lvutnvoduhdfq/1tbiCRMMA2pAiNkdUwAAsg
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-0.96 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MV_CASE(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-269451-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	TAGGED_FROM(0.00)[bounces-269452-lists,stable=lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:carl.vanderlip@oss.qualcomm.com,m:linux-arm-msm@vger.kernel.org,m:dri-devel@lists.freedesktop.org,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,m:jeff.hugo@oss.qualcomm.com,m:ogabbay@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	DMARC_NA(0.00)[iscas.ac.cn];
-	FORGED_SENDER(0.00)[vulab@iscas.ac.cn,stable@vger.kernel.org];
+	FORGED_RECIPIENTS(0.00)[m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,m:daniel.lezcano@kernel.org,m:tglx@kernel.org,s:lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_SENDER(0.00)[vulab@iscas.ac.cn,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORWARDED(0.00)[lists@lfdr.de];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[vulab@iscas.ac.cn,stable@vger.kernel.org];
-	FORWARDED(0.00)[lists@lfdr.de];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	TO_DN_NONE(0.00)[];
 	R_DKIM_NA(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
 	MIME_TRACE(0.00)[0:+]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: ABB476D30EC
+X-Rspamd-Queue-Id: DC5D66D3103
 
 
 
-> 2026=E5=B9=B46=E6=9C=8826=E6=97=A5 19:43=EF=BC=8CWenTao Liang =
+> 2026=E5=B9=B46=E6=9C=8826=E6=97=A5 20:12=EF=BC=8CWenTao Liang =
 <vulab@iscas.ac.cn> =E5=86=99=E9=81=93=EF=BC=9A
 >=20
-> drm_gem_object_lookup() acquires a GEM object reference on success. =
-All
->  error paths correctly release it via put_bo, but the success path =
-returns
->  without calling drm_gem_object_put(obj). Since list_add_tail does not
->  transfer ownership, the GEM object reference is permanently leaked on
->  each successful call.
+> After pit_clockevent_per_cpu_init succeeds (registering a clockevent
+>  device and requesting an IRQ), if cpuhp_setup_state subsequently =
+fails,
+>  the error path only unregisters the clocksource but not the =
+clockevent
+>  device. This leaves the IRQ handler registered and per-CPU data =
+uncleaned
+>  before kfree(pit), causing both a resource leak and potential
+>  use-after-free.
 >=20
 > Cc: stable@vger.kernel.org
-> Fixes: 75af0a585af9 ("accel/qaic: Grab ch_lock during =
-QAIC_ATTACH_SLICE_BO")
+> Fixes: bee33f22d7c3 ("clocksource/drivers/nxp-pit: Add NXP Automotive =
+s32g2 / s32g3 support")
 > Signed-off-by: WenTao Liang <vulab@iscas.ac.cn>
 > ---
-> drivers/accel/qaic/qaic_data.c | 1 +
-> 1 file changed, 1 insertion(+)
+> drivers/clocksource/timer-nxp-pit.c | 5 +++--
+> 1 file changed, 3 insertions(+), 2 deletions(-)
 >=20
-> diff --git a/drivers/accel/qaic/qaic_data.c =
-b/drivers/accel/qaic/qaic_data.c
-> index 1e4c579d2725..b17df7bf565d 100644
-> --- a/drivers/accel/qaic/qaic_data.c
-> +++ b/drivers/accel/qaic/qaic_data.c
-> @@ -1084,6 +1084,7 @@ int qaic_attach_slice_bo_ioctl(struct drm_device =
-*dev, void *data, struct drm_fi
+> diff --git a/drivers/clocksource/timer-nxp-pit.c =
+b/drivers/clocksource/timer-nxp-pit.c
+> index bc5157e2ba57..b77966faa112 100644
+> --- a/drivers/clocksource/timer-nxp-pit.c
+> +++ b/drivers/clocksource/timer-nxp-pit.c
+> @@ -329,11 +329,12 @@ static int pit_timer_init(struct device_node =
+*np)
+> 		ret =3D cpuhp_setup_state(CPUHP_AP_ONLINE_DYN, "PIT =
+timer:starting",
+> 					pit_clockevent_starting_cpu, =
+NULL);
+> 		if (ret < 0)
+> -			goto out_pit_clocksource_unregister;
+> +			goto out_pit_clockevent_unregister;
+> 	}
 >=20
-> 	bo->sliced =3D true;
-> 	list_add_tail(&bo->bo_list, &bo->dbc->bo_lists);
-> +	drm_gem_object_put(obj);
-> 	srcu_read_unlock(&dbc->ch_lock, rcu_id);
-> 	mutex_unlock(&bo->lock);
-> 	kfree(slice_ent);
+> 	return 0;
+> -
+> +out_pit_clockevent_unregister:
+> +	pit_clockevent_per_cpu_exit(pit, pit_instances - 1);
+> out_pit_clocksource_unregister:
+> 	clocksource_unregister(&pit->cs);
+> out_pit_module_disable:
 > --=20
 > 2.39.5 (Apple Git-154)
 
