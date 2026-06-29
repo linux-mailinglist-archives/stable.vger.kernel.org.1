@@ -1,541 +1,259 @@
-Return-Path: <stable+bounces-269641-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-269658-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id CGuAN2kTQmoMzwkAu9opvQ
-	(envelope-from <stable+bounces-269641-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 29 Jun 2026 08:40:41 +0200
+	id Dzs4MCIbQmpO0QkAu9opvQ
+	(envelope-from <stable+bounces-269658-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 29 Jun 2026 09:13:38 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7D1DE6D66AB
-	for <lists+stable@lfdr.de>; Mon, 29 Jun 2026 08:40:41 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id D92156D6D6D
+	for <lists+stable@lfdr.de>; Mon, 29 Jun 2026 09:13:37 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=huawei.com header.s=dkim header.b="gh/kqK7G";
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-269641-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-269641-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=quarantine) header.from=huawei.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=EZL6yowT;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-269658-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-269658-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=none) header.from=intel.com;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A2E493046066
-	for <lists+stable@lfdr.de>; Mon, 29 Jun 2026 06:36:04 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id EB2D23041351
+	for <lists+stable@lfdr.de>; Mon, 29 Jun 2026 07:07:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA89D39C01E;
-	Mon, 29 Jun 2026 06:36:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89EC53C0606;
+	Mon, 29 Jun 2026 07:06:25 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from canpmsgout06.his.huawei.com (canpmsgout06.his.huawei.com [113.46.200.221])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE7B137F755;
-	Mon, 29 Jun 2026 06:35:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0D9932D7FA;
+	Mon, 29 Jun 2026 07:06:22 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782714960; cv=none; b=IJGOCC4QFOm9y2I9+/BTUbNnX9Z/j3nIdWQqLqKsgVNqz0QZV42rboYHfTD8zXhVouxWZzY4tUysXs51EaOn7CnHyeuPoLLse+Nt8oVRFjLVtXd5iq/puTy8EscRaYZFl7BieM3F78uuclITCWmb3nzg6FfA/ILDwx7laZ42fPY=
+	t=1782716785; cv=none; b=HAtX9PbKuWDedeNkbA9bwWqjX1x/GTBH4iID5zHB6FIVQk2o/3OmsmudRPth5w5UvjDb1EfUYuPnk7lCnFQu90wgXx5tDrRfS9UG6H/+yl0E3vG7Ep0TRZXXGXI5wH382KNmAjPdKBfB7ErRHDwcCslG8vsW7l68GDclhxoWlpQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782714960; c=relaxed/simple;
-	bh=szGm/a96QDdHcg0Je9tX3v4P5PhBEnScUWx4vy4U41U=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=fY1f0+cU4pbpDRe+olJDhIN0mTLgfFutreWmJsN+blDo7EkimFb5RfZzZubHrdNAVpKbO0yj3Jsuiv27tkj8Lahzrtdj80sD3oAOmfotBzfBiWWNsOMsQe1rgrCp8ip1DBQ6rupn3OnmX1suH3b6Rzntc/RHIrYtQ+3y7d/Bgf8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=gh/kqK7G; arc=none smtp.client-ip=113.46.200.221
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=IvOYDCaBnPAJXTFsIWqKmfhHVBRc6cTjb0THQx0YgXo=;
-	b=gh/kqK7GXnGVPCAfz+GqUB2J+2ieA2iGf/XNVTyxVZhovqZsXOcT5l1K6e8lNJj/VpvvNGwAA
-	31sNjLnXeJ21yEvq/k0fpQKQ/W5rDmcIyns6V2dj1AFc9wJbKtmfsbXGT01vfJt3MyrxlUbmIFG
-	NmNba0me5NiaWhy0T3CtVzU=
-Received: from mail.maildlp.com (unknown [172.19.162.144])
-	by canpmsgout06.his.huawei.com (SkyGuard) with ESMTPS id 4gpbsJ44JfzRhwT;
-	Mon, 29 Jun 2026 14:26:44 +0800 (CST)
-Received: from dggemv705-chm.china.huawei.com (unknown [10.3.19.32])
-	by mail.maildlp.com (Postfix) with ESMTPS id A2E7040538;
-	Mon, 29 Jun 2026 14:35:51 +0800 (CST)
-Received: from kwepemq200017.china.huawei.com (7.202.195.228) by
- dggemv705-chm.china.huawei.com (10.3.19.32) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Mon, 29 Jun 2026 14:35:51 +0800
-Received: from octopus.huawei.com (10.67.174.191) by
- kwepemq200017.china.huawei.com (7.202.195.228) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Mon, 29 Jun 2026 14:35:50 +0800
-From: Cai Xinchen <caixinchen1@huawei.com>
-To: <viro@zeniv.linux.org.uk>, <brauner@kernel.org>, <jack@suse.cz>,
-	<miklos@szeredi.hu>, <amir73il@gmail.com>, <paul@paul-moore.com>,
-	<jmorris@namei.org>, <serge@hallyn.com>, <stephen.smalley.work@gmail.com>,
-	<omosnace@redhat.com>, <gregkh@linuxfoundation.org>, <sashal@kernel.org>,
-	<bboscaccy@linux.microsoft.com>, <caixinchen1@huawei.com>
-CC: <linux-fsdevel@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-	<linux-unionfs@vger.kernel.org>, <linux-security-module@vger.kernel.org>,
-	<selinux@vger.kernel.org>, <bpf@vger.kernel.org>, <stable@vger.kernel.org>,
-	<lujialin4@huawei.com>
-Subject: [PATCH v3 stable/linux-6.12.y 3/3] selinux: fix overlayfs mmap() and mprotect() access checks
-Date: Mon, 29 Jun 2026 15:03:38 +0800
-Message-ID: <20260629070338.578858-4-caixinchen1@huawei.com>
-X-Mailer: git-send-email 2.18.0.huawei.25
-In-Reply-To: <20260629070338.578858-1-caixinchen1@huawei.com>
-References: <20260629070338.578858-1-caixinchen1@huawei.com>
+	s=arc-20240116; t=1782716785; c=relaxed/simple;
+	bh=fm//Z/sEN83LXAQ9nhz6Cuyn6ACep7//Iaeq01RQoYY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=kvF4erKMExyPJPrD+cgPkp5rnNAGA9qK86t+1iK5Z0JcHBuOv9EOQ1y72C+Z0iYzoH2mI+IFGH3xzHYhrb+OMOWW6Pi0Jk/2M9VHqZXm8kbf3O6jor/9h5UIrs7O277U2EebRJDuMq1SOEb0DrBkIWUEhStRmKK0ToQv9Ra/9EU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=EZL6yowT; arc=none smtp.client-ip=192.198.163.17
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1782716783; x=1814252783;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=fm//Z/sEN83LXAQ9nhz6Cuyn6ACep7//Iaeq01RQoYY=;
+  b=EZL6yowTedbWVX34VbMuvZgv5+xWbbNh55m0R4Ucwl7hrVEV7G8AYJ6X
+   cz+5Uxke6j45LFN+XhhvsuiPIZikx7rWTN8e1a37wjZFbXpLBmE4x3EoC
+   dznFurA+7t8tHr/6ER+52GEnZ1uyrySl8OKxLgUPjfhD24x5iBpcJfsK9
+   VtZnqDuAZ/Me5eQFRAQ8J+r1qp5jPQCrbHsyrJ+xlfDsoHKT5EjTCHRgm
+   THyORTmXjVE7t7G2czJy/S2ghyEZccq5AQl6i/fOnd7XnaJY1OAqqimuI
+   J/8oRePxi8OlIqQGuJ7nAOoEZgb16q9Acrnr0i1msi7YuNxX6HiichCGW
+   Q==;
+X-CSE-ConnectionGUID: sX4Tnt3WTySVAyi4vQ2KCQ==
+X-CSE-MsgGUID: qrJMhQJ6RVKz+xE9Sl9ZRA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11831"; a="83271919"
+X-IronPort-AV: E=Sophos;i="6.24,231,1774335600"; 
+   d="scan'208";a="83271919"
+Received: from orviesa010.jf.intel.com ([10.64.159.150])
+  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Jun 2026 00:06:22 -0700
+X-CSE-ConnectionGUID: jIlYiO37TquiUvgq3OPcMA==
+X-CSE-MsgGUID: Fnv2K9z5TI+Y80YMH83S+g==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.24,231,1774335600"; 
+   d="scan'208";a="250810112"
+Received: from dapengmi-mobl1.ccr.corp.intel.com (HELO [10.124.232.65]) ([10.124.232.65])
+  by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Jun 2026 00:06:18 -0700
+Message-ID: <cbd90339-f6c1-4986-8727-50a6c1b24d76@linux.intel.com>
+Date: Mon, 29 Jun 2026 15:06:15 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-ClientProxiedBy: kwepems500001.china.huawei.com (7.221.188.70) To
- kwepemq200017.china.huawei.com (7.202.195.228)
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] perf/core: Fix group leader use-after-free after sibling
+ detach
+To: Aditya Chillara <aditya.chillara@oss.qualcomm.com>,
+ Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>,
+ Arnaldo Carvalho de Melo <acme@kernel.org>,
+ Namhyung Kim <namhyung@kernel.org>, Mark Rutland <mark.rutland@arm.com>,
+ Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+ Jiri Olsa <jolsa@kernel.org>, Ian Rogers <irogers@google.com>,
+ Adrian Hunter <adrian.hunter@intel.com>, James Clark <james.clark@linaro.org>
+Cc: Peter Zijlstra <a.p.zijlstra@chello.nl>, Ingo Molnar <mingo@elte.hu>,
+ linux-perf-users@vger.kernel.org, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org
+References: <20260626-fix-group-leader-uaf-v1-1-ac54652ca944@oss.qualcomm.com>
+ <67f56151-3164-4922-a85b-e511b2c448e8@linux.intel.com>
+ <bdca57f5-fb8a-4556-b5f3-13beec0cdda1@oss.qualcomm.com>
+Content-Language: en-US
+From: "Mi, Dapeng" <dapeng1.mi@linux.intel.com>
+In-Reply-To: <bdca57f5-fb8a-4556-b5f3-13beec0cdda1@oss.qualcomm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-6.16 / 15.00];
-	WHITELIST_DMARC(-7.00)[huawei.com:D:+];
-	SUSPICIOUS_RECIPS(1.50)[];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [-5.16 / 15.00];
+	WHITELIST_SPF_DKIM(-3.00)[intel.com:d:+,kernel.org:s:+];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[huawei.com,quarantine];
-	R_DKIM_ALLOW(-0.20)[huawei.com:s=dkim];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
+	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-269658-lists,stable=lfdr.de];
+	RCPT_COUNT_TWELVE(0.00)[16];
 	RCVD_TLS_LAST(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER(0.00)[caixinchen1@huawei.com,stable@vger.kernel.org];
-	FORGED_RECIPIENTS(0.00)[m:viro@zeniv.linux.org.uk,m:brauner@kernel.org,m:jack@suse.cz,m:miklos@szeredi.hu,m:amir73il@gmail.com,m:paul@paul-moore.com,m:jmorris@namei.org,m:serge@hallyn.com,m:stephen.smalley.work@gmail.com,m:omosnace@redhat.com,m:gregkh@linuxfoundation.org,m:sashal@kernel.org,m:bboscaccy@linux.microsoft.com,m:caixinchen1@huawei.com,m:linux-fsdevel@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:linux-unionfs@vger.kernel.org,m:linux-security-module@vger.kernel.org,m:selinux@vger.kernel.org,m:bpf@vger.kernel.org,m:stable@vger.kernel.org,m:lujialin4@huawei.com,m:stephensmalleywork@gmail.com,s:lists@lfdr.de];
-	FREEMAIL_TO(0.00)[zeniv.linux.org.uk,kernel.org,suse.cz,szeredi.hu,gmail.com,paul-moore.com,namei.org,hallyn.com,redhat.com,linuxfoundation.org,linux.microsoft.com,huawei.com];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-269641-lists,stable=lfdr.de];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[caixinchen1@huawei.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS(0.00)[m:aditya.chillara@oss.qualcomm.com,m:peterz@infradead.org,m:mingo@redhat.com,m:acme@kernel.org,m:namhyung@kernel.org,m:mark.rutland@arm.com,m:alexander.shishkin@linux.intel.com,m:jolsa@kernel.org,m:irogers@google.com,m:adrian.hunter@intel.com,m:james.clark@linaro.org,m:a.p.zijlstra@chello.nl,m:mingo@elte.hu,m:linux-perf-users@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[dapeng1.mi@linux.intel.com,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[chello.nl,elte.hu,vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[huawei.com:+];
-	TO_DN_NONE(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[dapeng1.mi@linux.intel.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[intel.com:+];
 	ALIAS_RESOLVED(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[22];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[huawei.com:dkim,huawei.com:email,huawei.com:mid,huawei.com:from_mime,vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,paul-moore.com:email];
-	TAGGED_RCPT(0.00)[stable];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCVD_COUNT_SEVEN(0.00)[7]
+	MID_RHS_MATCH_FROM(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[qualcomm.com:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,intel.com:dkim,vger.kernel.org:from_smtp,linux.intel.com:mid,linux.intel.com:from_mime]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 7D1DE6D66AB
+X-Rspamd-Queue-Id: D92156D6D6D
 
-From: Paul Moore <paul@paul-moore.com>
 
-[ Upstream commit 82544d36b1729153c8aeb179e84750f0c085d3b1 ]
+On 6/29/2026 12:00 PM, Aditya Chillara wrote:
+> On 6/29/2026 8:28 AM, Mi, Dapeng wrote:
+>> On 6/26/2026 5:54 PM, Aditya Chillara wrote:
+>>> perf_group_detach() handles leader and sibling detach differently. When the
+>>> group leader is detached, all siblings are promoted to singleton events and
+>>> their group_leader pointer is reset to themselves. When a sibling is
+>>> detached, it is removed from the leader's sibling_list, but its
+>>> group_leader pointer is left pointing at the old leader.
+>>>
+>>> That is harmless when the sibling is being closed and freed immediately, as
+>>> in the DETACH_DEAD path. It is not safe when the sibling is detached but
+>>> kept alive, such as during CPU hotplug with DETACH_GROUP. In that case the
+>>> sibling is removed from the context, while its file descriptor can still
+>>> keep it alive.
+>>>
+>>> A typical failing sequence is:
+>>>
+>>>   - A group contains leader L and sibling S.
+>>>   - CPU hot-unplug detaches S with DETACH_GROUP, removing it from
+>>>     L->sibling_list but leaving S->group_leader == L.
+>>>   - L is later closed and freed.
+>>>   - A PERF_IOC_FLAG_GROUP ioctl on S follows S->group_leader and
+>>>     dereferences the freed leader.
+>>>
+>>> This was reproduced by running the perf event fuzzer, CPU hotplug, and a
+>>> stress workload concurrently:
+>>>
+>>> Unable to handle kernel paging request at virtual address 006b6b6b6b6b6cdb
+>>> CPU: 2 PID: 12489 Comm: perf_fuzzer 6.18.7 PREEMPT
+>>> pc : perf_ioctl+0x34c/0xc68
+>>> x20: ffffff89a3fa2c70 x8 : 6b6b6b6b6b6b6b6b
+>>> Code: 943c4a0e 340047a0 f9404a94 f9411e88 (f940b908)
+>>> Call trace:
+>>> perf_ioctl+0x34c/0xc68 (P)
+>>> __arm64_sys_ioctl+0xa0/0xf4
+>>> invoke_syscall+0x58/0xe4
+>>> el0_svc_common+0xa8/0xdc
+>>> do_el0_svc+0x1c/0x28
+>>> el0_svc+0x40/0xc0
+>>> el0t_64_sync_handler+0x68/0xdc
+>>> el0t_64_sync+0x1c4/0x1c8
+>>>
+>>> The fault happened in perf_ioctl(), where perf_event_for_each() follows
+>>> the stale group_leader pointer and perf_event_for_each_child() then
+>>> dereferences the freed leader's context.
+>>>
+>>> Fix the use-after-free by promoting the detached sibling to a singleton.
+>>>
+>>> Fixes: 8a49542c0554 ("perf_events: Fix races in group composition")
+>>> Assisted-by: PatchWise:gpt-5.5
+>>> Signed-off-by: Aditya Chillara <aditya.chillara@oss.qualcomm.com>
+>>> ---
+>>>  kernel/events/core.c | 20 ++++++++++++++++++++
+>>>  1 file changed, 20 insertions(+)
+>>>
+>>> diff --git a/kernel/events/core.c b/kernel/events/core.c
+>>> index 954c36e28101..dd9892040ab2 100644
+>>> --- a/kernel/events/core.c
+>>> +++ b/kernel/events/core.c
+>>> @@ -2605,6 +2605,26 @@ __perf_remove_from_context(struct perf_event *event,
+>>>  		perf_child_detach(event);
+>>>  	list_del_event(event, ctx);
+>>>  
+>>> +	if ((flags & DETACH_GROUP) && event->group_leader != event) {
+>>> +		/*
+>>> +		 * list_del_event() needed the old group_leader to tell a real
+>>> +		 * leader from a sibling. That's done now, so make the detached
+>>> +		 * sibling self-contained.
+>>> +		 */
+>>> +		event->group_leader = event;
+>>> +		event->group_caps = event->event_caps;
+>>> +
+>>> +		/*
+>>> +		 * PERF_EV_CAP_SIBLING event requires being part of a group, so move
+>>> +		 * the event to ERROR state if it is still alive.
+>>> +		 */
+>>> +		if ((event->event_caps & PERF_EV_CAP_SIBLING) &&
+>>> +		    event->state > PERF_EVENT_STATE_ERROR)
+>>> +			perf_event_set_state(event, PERF_EVENT_STATE_ERROR);
+>>> +
+>>> +		perf_event__header_size(event);
+>>> +	}
+>>> +
+>> Why not move this part of fixing code into perf_group_detach()? It seems a
+>> better place to fix the issue. Thanks.
+> Because list_del_event() just above my change does:
+>
+> 	if (event->group_leader == event)
+> 		del_event_from_groups(event, ctx);
+>
+> so resetting the group leader in perf_group_detach() would attempt removing sibling
+> event->group_node from a group rb-tree it was never added to (only leader gets added
+> in list_add_event()).
 
-The existing SELinux security model for overlayfs is to allow access if
-the current task is able to access the top level file (the "user" file)
-and the mounter's credentials are sufficient to access the lower
-level file (the "backing" file).  Unfortunately, the current code does
-not properly enforce these access controls for both mmap() and mprotect()
-operations on overlayfs filesystems.
+Yeah, but I don't see why we can't do same thing for the sibling event
+detaching in perf_group_detach(). Just like the group leader detaching,
+each sibling event would be re-added into ctx groups by calling
+add_event_to_groups(). Suppose we can do same thing for the sibling event
+detaching, call add_event_to_groups() to add the standalone event into ctx
+groups, right?
 
-This patch makes use of the newly created security_mmap_backing_file()
-LSM hook to provide the missing backing file enforcement for mmap()
-operations, and leverages the backing file API and new LSM blob to
-provide the necessary information to properly enforce the mprotect()
-access controls.
 
-Cc: stable@vger.kernel.org
-Acked-by: Amir Goldstein <amir73il@gmail.com>
-Signed-off-by: Paul Moore <paul@paul-moore.com>
-Signed-off-by: Cai Xinchen <caixinchen1@huawei.com>
----
- security/selinux/hooks.c          | 242 ++++++++++++++++++++++--------
- security/selinux/include/objsec.h |  11 ++
- 2 files changed, 189 insertions(+), 64 deletions(-)
+        if (sibling->attach_state & PERF_ATTACH_CONTEXT) {
+            add_event_to_groups(sibling, event->ctx);
 
-diff --git a/security/selinux/hooks.c b/security/selinux/hooks.c
-index 8e31d3b60fc6..1b89c8d5fa2f 100644
---- a/security/selinux/hooks.c
-+++ b/security/selinux/hooks.c
-@@ -1724,49 +1724,72 @@ static inline int file_path_has_perm(const struct cred *cred,
- static int bpf_fd_pass(const struct file *file, u32 sid);
- #endif
- 
--/* Check whether a task can use an open file descriptor to
--   access an inode in a given way.  Check access to the
--   descriptor itself, and then use dentry_has_perm to
--   check a particular permission to the file.
--   Access to the descriptor is implicitly granted if it
--   has the same SID as the process.  If av is zero, then
--   access to the file is not checked, e.g. for cases
--   where only the descriptor is affected like seek. */
--static int file_has_perm(const struct cred *cred,
--			 struct file *file,
--			 u32 av)
-+static int __file_has_perm(const struct cred *cred, const struct file *file,
-+			   u32 av, bool bf_user_file)
-+
- {
--	struct file_security_struct *fsec = selinux_file(file);
--	struct inode *inode = file_inode(file);
- 	struct common_audit_data ad;
--	u32 sid = cred_sid(cred);
-+	struct inode *inode;
-+	u32 ssid = cred_sid(cred);
-+	u32 tsid_fd;
- 	int rc;
- 
--	ad.type = LSM_AUDIT_DATA_FILE;
--	ad.u.file = file;
-+	if (bf_user_file) {
-+		struct backing_file_security_struct *bfsec;
-+		const struct path *path;
- 
--	if (sid != fsec->sid) {
--		rc = avc_has_perm(sid, fsec->sid,
--				  SECCLASS_FD,
--				  FD__USE,
--				  &ad);
-+		if (WARN_ON(!(file->f_mode & FMODE_BACKING)))
-+			return -EIO;
-+
-+		bfsec = selinux_backing_file(file);
-+		path = backing_file_user_path(file);
-+		tsid_fd = bfsec->uf_sid;
-+		inode = d_inode(path->dentry);
-+
-+		ad.type = LSM_AUDIT_DATA_PATH;
-+		ad.u.path = *path;
-+	} else {
-+		struct file_security_struct *fsec = selinux_file(file);
-+
-+		tsid_fd = fsec->sid;
-+		inode = file_inode(file);
-+
-+		ad.type = LSM_AUDIT_DATA_FILE;
-+		ad.u.file = file;
-+	}
-+
-+	if (ssid != tsid_fd) {
-+		rc = avc_has_perm(ssid, tsid_fd, SECCLASS_FD, FD__USE, &ad);
- 		if (rc)
--			goto out;
-+			return rc;
- 	}
- 
- #ifdef CONFIG_BPF_SYSCALL
--	rc = bpf_fd_pass(file, cred_sid(cred));
-+	/* regardless of backing vs user file, use the underlying file here */
-+	rc = bpf_fd_pass(file, ssid);
- 	if (rc)
- 		return rc;
- #endif
- 
- 	/* av is zero if only checking access to the descriptor. */
--	rc = 0;
- 	if (av)
--		rc = inode_has_perm(cred, inode, av, &ad);
-+		return inode_has_perm(cred, inode, av, &ad);
- 
--out:
--	return rc;
-+	return 0;
-+}
-+
-+/* Check whether a task can use an open file descriptor to
-+   access an inode in a given way.  Check access to the
-+   descriptor itself, and then use dentry_has_perm to
-+   check a particular permission to the file.
-+   Access to the descriptor is implicitly granted if it
-+   has the same SID as the process.  If av is zero, then
-+   access to the file is not checked, e.g. for cases
-+   where only the descriptor is affected like seek. */
-+static inline int file_has_perm(const struct cred *cred,
-+				const struct file *file, u32 av)
-+{
-+	return __file_has_perm(cred, file, av, false);
- }
- 
- /*
-@@ -3653,6 +3676,17 @@ static int selinux_file_alloc_security(struct file *file)
- 	return 0;
- }
- 
-+static int selinux_backing_file_alloc(struct file *backing_file,
-+				      const struct file *user_file)
-+{
-+	struct backing_file_security_struct *bfsec;
-+
-+	bfsec = selinux_backing_file(backing_file);
-+	bfsec->uf_sid = selinux_file(user_file)->sid;
-+
-+	return 0;
-+}
-+
- /*
-  * Check whether a task has the ioctl permission and cmd
-  * operation to an inode.
-@@ -3770,42 +3804,55 @@ static int selinux_file_ioctl_compat(struct file *file, unsigned int cmd,
- 
- static int default_noexec __ro_after_init;
- 
--static int file_map_prot_check(struct file *file, unsigned long prot, int shared)
-+static int __file_map_prot_check(const struct cred *cred,
-+				 const struct file *file, unsigned long prot,
-+				 bool shared, bool bf_user_file)
- {
--	const struct cred *cred = current_cred();
--	u32 sid = cred_sid(cred);
--	int rc = 0;
-+	struct inode *inode = NULL;
-+	bool prot_exec = prot & PROT_EXEC;
-+	bool prot_write = prot & PROT_WRITE;
-+
-+	if (file) {
-+		if (bf_user_file)
-+			inode = d_inode(backing_file_user_path(file)->dentry);
-+		else
-+			inode = file_inode(file);
-+	}
-+
-+	if (default_noexec && prot_exec &&
-+	    (!file || IS_PRIVATE(inode) || (!shared && prot_write))) {
-+		int rc;
-+		u32 sid = cred_sid(cred);
- 
--	if (default_noexec &&
--	    (prot & PROT_EXEC) && (!file || IS_PRIVATE(file_inode(file)) ||
--				   (!shared && (prot & PROT_WRITE)))) {
- 		/*
--		 * We are making executable an anonymous mapping or a
--		 * private file mapping that will also be writable.
--		 * This has an additional check.
-+		 * We are making executable an anonymous mapping or a private
-+		 * file mapping that will also be writable.
- 		 */
--		rc = avc_has_perm(sid, sid, SECCLASS_PROCESS,
--				  PROCESS__EXECMEM, NULL);
-+		rc = avc_has_perm(sid, sid, SECCLASS_PROCESS, PROCESS__EXECMEM,
-+				  NULL);
- 		if (rc)
--			goto error;
-+			return rc;
- 	}
- 
- 	if (file) {
--		/* read access is always possible with a mapping */
-+		/* "read" always possible, "write" only if shared */
- 		u32 av = FILE__READ;
--
--		/* write access only matters if the mapping is shared */
--		if (shared && (prot & PROT_WRITE))
-+		if (shared && prot_write)
- 			av |= FILE__WRITE;
--
--		if (prot & PROT_EXEC)
-+		if (prot_exec)
- 			av |= FILE__EXECUTE;
- 
--		return file_has_perm(cred, file, av);
-+		return __file_has_perm(cred, file, av, bf_user_file);
- 	}
- 
--error:
--	return rc;
-+	return 0;
-+}
-+
-+static inline int file_map_prot_check(const struct cred *cred,
-+				      const struct file *file,
-+				      unsigned long prot, bool shared)
-+{
-+	return __file_map_prot_check(cred, file, prot, shared, false);
- }
- 
- static int selinux_mmap_addr(unsigned long addr)
-@@ -3821,36 +3868,80 @@ static int selinux_mmap_addr(unsigned long addr)
- 	return rc;
- }
- 
--static int selinux_mmap_file(struct file *file,
--			     unsigned long reqprot __always_unused,
--			     unsigned long prot, unsigned long flags)
-+static int selinux_mmap_file_common(const struct cred *cred, struct file *file,
-+				    unsigned long prot, bool shared)
- {
--	struct common_audit_data ad;
--	int rc;
--
- 	if (file) {
-+		int rc;
-+		struct common_audit_data ad;
-+
- 		ad.type = LSM_AUDIT_DATA_FILE;
- 		ad.u.file = file;
--		rc = inode_has_perm(current_cred(), file_inode(file),
--				    FILE__MAP, &ad);
-+		rc = inode_has_perm(cred, file_inode(file), FILE__MAP, &ad);
- 		if (rc)
- 			return rc;
- 	}
- 
--	return file_map_prot_check(file, prot,
--				   (flags & MAP_TYPE) == MAP_SHARED);
-+	return file_map_prot_check(cred, file, prot, shared);
-+}
-+
-+static int selinux_mmap_file(struct file *file,
-+			     unsigned long reqprot __always_unused,
-+			     unsigned long prot, unsigned long flags)
-+{
-+	return selinux_mmap_file_common(current_cred(), file, prot,
-+					(flags & MAP_TYPE) == MAP_SHARED);
-+}
-+
-+/**
-+ * selinux_mmap_backing_file - Check mmap permissions on a backing file
-+ * @vma: memory region
-+ * @backing_file: stacked filesystem backing file
-+ * @user_file: user visible file
-+ *
-+ * This is called after selinux_mmap_file() on stacked filesystems, and it
-+ * is this function's responsibility to verify access to @backing_file and
-+ * setup the SELinux state for possible later use in the mprotect() code path.
-+ *
-+ * By the time this function is called, mmap() access to @user_file has already
-+ * been authorized and @vma->vm_file has been set to point to @backing_file.
-+ *
-+ * Return zero on success, negative values otherwise.
-+ */
-+static int selinux_mmap_backing_file(struct vm_area_struct *vma,
-+				     struct file *backing_file,
-+				     struct file *user_file __always_unused)
-+{
-+	unsigned long prot = 0;
-+
-+	/* translate vma->vm_flags perms into PROT perms */
-+	if (vma->vm_flags & VM_READ)
-+		prot |= PROT_READ;
-+	if (vma->vm_flags & VM_WRITE)
-+		prot |= PROT_WRITE;
-+	if (vma->vm_flags & VM_EXEC)
-+		prot |= PROT_EXEC;
-+
-+	return selinux_mmap_file_common(backing_file->f_cred, backing_file,
-+					prot, vma->vm_flags & VM_SHARED);
- }
- 
- static int selinux_file_mprotect(struct vm_area_struct *vma,
- 				 unsigned long reqprot __always_unused,
- 				 unsigned long prot)
- {
-+	int rc;
- 	const struct cred *cred = current_cred();
- 	u32 sid = cred_sid(cred);
-+	const struct file *file = vma->vm_file;
-+	bool backing_file;
-+	bool shared = vma->vm_flags & VM_SHARED;
-+
-+	/* check if we need to trigger the "backing files are awful" mode */
-+	backing_file = file && (file->f_mode & FMODE_BACKING);
- 
- 	if (default_noexec &&
- 	    (prot & PROT_EXEC) && !(vma->vm_flags & VM_EXEC)) {
--		int rc = 0;
- 		/*
- 		 * We don't use the vma_is_initial_heap() helper as it has
- 		 * a history of problems and is currently broken on systems
-@@ -3864,11 +3955,15 @@ static int selinux_file_mprotect(struct vm_area_struct *vma,
- 		    vma->vm_end <= vma->vm_mm->brk) {
- 			rc = avc_has_perm(sid, sid, SECCLASS_PROCESS,
- 					  PROCESS__EXECHEAP, NULL);
--		} else if (!vma->vm_file && (vma_is_initial_stack(vma) ||
-+			if (rc)
-+				return rc;
-+		} else if (!file && (vma_is_initial_stack(vma) ||
- 			    vma_is_stack_for_current(vma))) {
- 			rc = avc_has_perm(sid, sid, SECCLASS_PROCESS,
- 					  PROCESS__EXECSTACK, NULL);
--		} else if (vma->vm_file && vma->anon_vma) {
-+			if (rc)
-+				return rc;
-+		} else if (file && vma->anon_vma) {
- 			/*
- 			 * We are making executable a file mapping that has
- 			 * had some COW done. Since pages might have been
-@@ -3876,13 +3971,29 @@ static int selinux_file_mprotect(struct vm_area_struct *vma,
- 			 * modified content.  This typically should only
- 			 * occur for text relocations.
- 			 */
--			rc = file_has_perm(cred, vma->vm_file, FILE__EXECMOD);
-+			rc = __file_has_perm(cred, file, FILE__EXECMOD,
-+					     backing_file);
-+			if (rc)
-+				return rc;
-+			if (backing_file) {
-+				rc = file_has_perm(file->f_cred, file,
-+						   FILE__EXECMOD);
-+				if (rc)
-+					return rc;
-+			}
- 		}
-+	}
-+
-+	rc = __file_map_prot_check(cred, file, prot, shared, backing_file);
-+	if (rc)
-+		return rc;
-+	if (backing_file) {
-+		rc = file_map_prot_check(file->f_cred, file, prot, shared);
- 		if (rc)
- 			return rc;
- 	}
- 
--	return file_map_prot_check(vma->vm_file, prot, vma->vm_flags&VM_SHARED);
-+	return 0;
- }
- 
- static int selinux_file_lock(struct file *file, unsigned int cmd)
-@@ -6960,6 +7071,7 @@ static void selinux_bpf_token_free(struct bpf_token *token)
- struct lsm_blob_sizes selinux_blob_sizes __ro_after_init = {
- 	.lbs_cred = sizeof(struct task_security_struct),
- 	.lbs_file = sizeof(struct file_security_struct),
-+	.lbs_backing_file = sizeof(struct backing_file_security_struct),
- 	.lbs_inode = sizeof(struct inode_security_struct),
- 	.lbs_ipc = sizeof(struct ipc_security_struct),
- 	.lbs_key = sizeof(struct key_security_struct),
-@@ -7165,9 +7277,11 @@ static struct security_hook_list selinux_hooks[] __ro_after_init = {
- 
- 	LSM_HOOK_INIT(file_permission, selinux_file_permission),
- 	LSM_HOOK_INIT(file_alloc_security, selinux_file_alloc_security),
-+	LSM_HOOK_INIT(backing_file_alloc, selinux_backing_file_alloc),
- 	LSM_HOOK_INIT(file_ioctl, selinux_file_ioctl),
- 	LSM_HOOK_INIT(file_ioctl_compat, selinux_file_ioctl_compat),
- 	LSM_HOOK_INIT(mmap_file, selinux_mmap_file),
-+	LSM_HOOK_INIT(mmap_backing_file, selinux_mmap_backing_file),
- 	LSM_HOOK_INIT(mmap_addr, selinux_mmap_addr),
- 	LSM_HOOK_INIT(file_mprotect, selinux_file_mprotect),
- 	LSM_HOOK_INIT(file_lock, selinux_file_lock),
-diff --git a/security/selinux/include/objsec.h b/security/selinux/include/objsec.h
-index c88cae81ee4c..dc42282a2c05 100644
---- a/security/selinux/include/objsec.h
-+++ b/security/selinux/include/objsec.h
-@@ -61,6 +61,10 @@ struct file_security_struct {
- 	u32 pseqno; /* Policy seqno at the time of file open */
- };
- 
-+struct backing_file_security_struct {
-+	u32 uf_sid; /* associated user file fsec->sid */
-+};
-+
- struct superblock_security_struct {
- 	u32 sid; /* SID of file system superblock */
- 	u32 def_sid; /* default SID for labeling */
-@@ -159,6 +163,13 @@ static inline struct file_security_struct *selinux_file(const struct file *file)
- 	return file->f_security + selinux_blob_sizes.lbs_file;
- }
- 
-+static inline struct backing_file_security_struct *
-+selinux_backing_file(const struct file *backing_file)
-+{
-+	void *blob = backing_file_security(backing_file);
-+	return blob + selinux_blob_sizes.lbs_backing_file;
-+}
-+
- static inline struct inode_security_struct *
- selinux_inode(const struct inode *inode)
- {
--- 
-2.18.0.huawei.25
+            if (sibling->state == PERF_EVENT_STATE_ACTIVE)
+                list_add_tail(&sibling->active_list, get_event_list(sibling));
+        }
 
+
+>
+> Thank you,
+> Aditya
+>
+>>
+>>>  	if (!pmu_ctx->nr_events) {
+>>>  		pmu_ctx->rotate_necessary = 0;
+>>>  
+>>>
+>>> ---
+>>> base-commit: ab9de95c9cf952332ab79453b4b5d1bfca8e514f
+>>> change-id: 20260626-fix-group-leader-uaf-c46960e525e0
+>>>
+>>> Best regards,
+>>> --  
+>>> Aditya Chillara <aditya.chillara@oss.qualcomm.com>
+>>>
+>>>
+>
 
