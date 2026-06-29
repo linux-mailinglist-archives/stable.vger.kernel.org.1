@@ -1,76 +1,77 @@
-Return-Path: <stable+bounces-270411-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-272056-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id cQQWEm9KRmqANwsAu9opvQ
-	(envelope-from <stable+bounces-270411-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 13:24:31 +0200
+	id ZszCJ41jSmrlCAEAu9opvQ
+	(envelope-from <stable+bounces-272056-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 05 Jul 2026 16:00:45 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8321F6F6A49
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 13:24:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3168D70A30F
+	for <lists+stable@lfdr.de>; Sun, 05 Jul 2026 16:00:45 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=jeTdrDsU;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-270411-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-270411-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Gg3gPeZn;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-272056-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-272056-lists+stable=lfdr.de@vger.kernel.org";
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 5BDAD305900E
-	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 11:17:38 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 17F14300DDF2
+	for <lists+stable@lfdr.de>; Sun,  5 Jul 2026 14:00:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C43B3ED5B3;
-	Thu,  2 Jul 2026 11:17:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5532137E308;
+	Sun,  5 Jul 2026 14:00:38 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0535A3EB0E6;
-	Thu,  2 Jul 2026 11:17:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29E2437883E;
+	Sun,  5 Jul 2026 14:00:36 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782991055; cv=none; b=CsbBjc5Eto1y6gAGLSamZQUbILtTQp6dgnV1KU5XSAEC78qfd/TraQRqsm+TPBTAhnphxXqQtL2+sAmAXMQdsaLTYx2jn36QdHOaQz8uzB/wN/1GZyBdGCTewNd+CGE0n73Ai1+OebUfDeIFgQZvLBA/Iqf3JxiZvwTbQbs3cMA=
+	t=1783260038; cv=none; b=ggZUlrAj/McqlvK9KTGyEPEUgN2r6ijVLncMPQOlzRETMDuczaJTZ+FnYfsQ/bGwVA56aEvYac1dk+EiG1G1uyaAOQ7YJDz5TnEAzPP5xR8LIeqPCfbq2vdhOESqbkGityOnggxX+1EuvpZ0Rh+a1Ve6DSEHNVyEeFrOjcjNoY4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782991055; c=relaxed/simple;
-	bh=LhOXCibg9a5drTPSzz1LQIpCrkavwlW99AeY8rvjAHg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=WmxXHFjTUfEZWMHfXjVe+ADR9sGN/+H0cMpWoXwWXTs22ALI7WVWSL1620DREwMNcvfJdLC62ov7+rBVV5R9mJLMIwrJElDyTvdYgUxrA6rMmQqz4rXfGXsaiCVeTCSev/ALtEUhQjEN3GQIZDLF3nN3JAXs76RbAqX5P8eM2oU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jeTdrDsU; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA6DD1F000E9;
-	Thu,  2 Jul 2026 11:17:31 +0000 (UTC)
+	s=arc-20240116; t=1783260038; c=relaxed/simple;
+	bh=png50S20ShN43oQFZ0KFX6+JBP2QoOZjdSEZIbE7nGc=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=boGTKIul6O6bwG0oMuGOWmq0vGnqZd8EEAlBdtqyaAnrCAWN7bX4XTz0ZvOCmT1xldpcilDzuOyuXP5rNFxrB3S2/nfk2T8l9vjoEUxH31bVSnFmlJMQEuR2RVUQBMORlhJq3MZML6juOzoTbLTEp/7nZvaUXaTFhE++40rw0s4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Gg3gPeZn; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 262AB1F000E9;
+	Sun,  5 Jul 2026 14:00:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782991054;
-	bh=B6qx0fV5Kuct++leTThUpa0sfGnYf2tKGKYlTAvI5PM=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=jeTdrDsUpWlyRENZ5SuOv40SOfygUjbYr5ohbvCL0H6KeKqJ5xpnjqG4A7+CC3SU/
-	 SA+XzP/+GdgXLgZnBiqwBvqRB9T4Qe+xPMnpm9jM5Aqve+Bemm+XvrDTEgUFi9wtu+
-	 VGTBkz/CUtT1R5jqtJbTlHKoekOuQ9yMMCpwXxxQF1ZOwxez+DSQok0RTe76DhsD8y
-	 iVQ/7bp+Fxfkec2UKWa2G3w0myWjHdHKyxy9esAlwv7peMRJOFzCFt7VL2fZEweg6j
-	 aIAjQqtx/AWB2hYLED67A3rpurffS/rpgHV/gHC7hVmewp1lljPws0/icVyn1SXj/T
-	 /uhGO1qliYBkg==
-Date: Thu, 2 Jul 2026 13:17:29 +0200
-From: Carlos Maiolino <cem@kernel.org>
-To: Christoph Hellwig <hch@lst.de>
-Cc: stable@vger.kernel.org, Jan Kara <jack@suse.cz>, 
-	"Serge E. Hallyn" <serge@hallyn.com>, "Darrick J. Wong" <djwong@kernel.org>, 
-	Dave Chinner <david@fromorbit.com>, Eric Sandeen <sandeen@redhat.com>, linux-xfs@vger.kernel.org, 
-	linux-fsdevel@vger.kernel.org, linux-security-module@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, "Dr. Thomas Orgis" <thomas.orgis@uni-hamburg.de>
-Subject: Re: [PATCH v3 1/5] xfs: fix capability check in xfs
-Message-ID: <akZITB_FDP1nl2_S@nidhogg.toxiclabs.cc>
-References: <20260702093324.127450-1-cem@kernel.org>
- <20260702093324.127450-3-cem@kernel.org>
- <20260702103052.GA6670@lst.de>
+	s=k20260515; t=1783260036;
+	bh=5uxf4qWbZxrE+bclyeo+X4WWa+BNtCzdTw3O82BRkVg=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date;
+	b=Gg3gPeZnv+nztE73c3L1kKLTkcDrfYYajG6/oBuEmNSbAA675tFKtLbraQxpXioYL
+	 DDrq4KywljsnuF8lvsR6ptsUlvT683TOVPDlYuWQqRfZl6leGMszYEXRYgusGVS+RT
+	 MFn4jWKS+wd+Rdww+MNy2VCCCgzqrJUVR8a/uejK7Vbi6VzL/i3SX669H0nHTkAgIN
+	 SLwmJMT+1gDytydeE1z0MnbANUTzPOhj6RR9hEkox3edHHF7OfdFCCW7eft0MJQsEU
+	 b6zjdv0lxWq7SCtcckyji1vl8w/Vo4T6aobJ4w4RU/QavZcxliKwHcxRj9Xt+7Sk86
+	 sDgP7dJFHpmgw==
+From: Leon Romanovsky <leon@kernel.org>
+To: Jason Gunthorpe <jgg@ziepe.ca>, Leon Romanovsky <leon@kernel.org>, 
+ Michael Bommarito <michael.bommarito@gmail.com>
+Cc: linux-rdma@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ stable@vger.kernel.org, Vlad Dumitrescu <vdumitrescu@nvidia.com>, 
+ Or Har-Toov <ohartoov@nvidia.com>, Bob Pearson <rpearsonhpe@gmail.com>, 
+ Sean Hefty <shefty@nvidia.com>, Kees Cook <kees@kernel.org>
+In-Reply-To: <3170ff3bc389a930bb1641f2caa394a0b2241579.1780774907.git.michael.bommarito@gmail.com>
+References: <3170ff3bc389a930bb1641f2caa394a0b2241579.1780774907.git.michael.bommarito@gmail.com>
+Subject: Re: [PATCH v3] IB/mad: drop unmatched RMPP responses before
+ reassembly
+Message-Id: <178273508232.133362.14163993593921420714.b4-ty@kernel.org>
+Date: Mon, 29 Jun 2026 08:11:22 -0400
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260702103052.GA6670@lst.de>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.15-dev-18f8f
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-5.16 / 15.00];
+X-Spamd-Result: default: False [-4.16 / 15.00];
 	WHITELIST_SPF_DKIM(-3.00)[kernel.org:d:+,kernel.org:s:+];
+	DATE_IN_PAST(1.00)[145];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
@@ -78,60 +79,56 @@ X-Spamd-Result: default: False [-5.16 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	FROM_HAS_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-272056-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:hch@lst.de,m:stable@vger.kernel.org,m:jack@suse.cz,m:serge@hallyn.com,m:djwong@kernel.org,m:david@fromorbit.com,m:sandeen@redhat.com,m:linux-xfs@vger.kernel.org,m:linux-fsdevel@vger.kernel.org,m:linux-security-module@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:thomas.orgis@uni-hamburg.de,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[cem@kernel.org,stable@vger.kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[12];
-	TAGGED_FROM(0.00)[bounces-270411-lists,stable=lfdr.de];
+	FREEMAIL_TO(0.00)[ziepe.ca,kernel.org,gmail.com];
+	FORGED_SENDER(0.00)[leon@kernel.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS(0.00)[m:jgg@ziepe.ca,m:leon@kernel.org,m:michael.bommarito@gmail.com,m:linux-rdma@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,m:vdumitrescu@nvidia.com,m:ohartoov@nvidia.com,m:rpearsonhpe@gmail.com,m:shefty@nvidia.com,m:kees@kernel.org,m:michaelbommarito@gmail.com,s:lists@lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
-	FROM_HAS_DN(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[vger.kernel.org,nvidia.com,gmail.com,kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[cem@kernel.org,stable@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[leon@kernel.org,stable@vger.kernel.org];
 	DKIM_TRACE(0.00)[kernel.org:+];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[11];
 	TAGGED_RCPT(0.00)[stable];
-	MISSING_XM_UA(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp,nidhogg.toxiclabs.cc:mid]
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 8321F6F6A49
+X-Rspamd-Queue-Id: 3168D70A30F
 
-On Thu, Jul 02, 2026 at 12:30:52PM +0200, Christoph Hellwig wrote:
-> On Thu, Jul 02, 2026 at 11:33:17AM +0200, cem@kernel.org wrote:
-> > index 6339f4956ecb..205fe2dae732 100644
-> > --- a/fs/xfs/xfs_iops.c
-> > +++ b/fs/xfs/xfs_iops.c
-> > @@ -835,7 +835,8 @@ xfs_setattr_nonsize(
-> >  	}
-> >  
-> >  	error = xfs_trans_alloc_ichange(ip, udqp, gdqp, NULL,
-> > -			has_capability_noaudit(current, CAP_FOWNER), &tp);
-> > +					ns_capable_noaudit(&init_user_ns, CAP_FOWNER),
+
+On Sat, 06 Jun 2026 16:01:55 -0400, Michael Bommarito wrote:
+> Kernel-handled RMPP receive processing starts reassembly for active
+> DATA responses before the response is matched to an outstanding send.
+> The normal match happens later, after ib_process_rmpp_recv_wc() has
+> either assembled a complete message or consumed the segment.
 > 
-
-Thanks, I tried to keep the parameters aligned, but I can bring it one
-tab back. Do you mind if I fix it at commit time if -unlikely- no other
-change is required?
-
-This is what it will look like:
-
-        error = xfs_trans_alloc_ichange(ip, udqp, gdqp, NULL,
--                       has_capability_noaudit(current, CAP_FOWNER), &tp);
-+                               ns_capable_noaudit(&init_user_ns, CAP_FOWNER),
-+                               &tp);
-
-
-
-> Extra indentation and an overly long line caused by that here.
+> That ordering lets an unsolicited response that routes to a kernel
+> RMPP agent by the high TID bits allocate or extend RMPP receive state
+> before the full TID and source address are checked against a real
+> request. A reordered burst can therefore reach the receive-side
+> insertion path even though the response would not match any send.
 > 
-> Otherwise looks good.
-> 
+> [...]
+
+Applied, thanks!
+
+[1/1] IB/mad: drop unmatched RMPP responses before reassembly
+      https://git.kernel.org/rdma/rdma/c/d2e52d610b9b09
+
+Best regards,
+-- 
+Leon Romanovsky <leon@kernel.org>
+
 
