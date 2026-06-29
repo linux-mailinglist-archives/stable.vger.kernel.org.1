@@ -1,180 +1,160 @@
-Return-Path: <stable+bounces-269657-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-269642-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id btZBKBkZQmqe0AkAu9opvQ
-	(envelope-from <stable+bounces-269657-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 29 Jun 2026 09:04:57 +0200
+	id X76SM8wTQmoezwkAu9opvQ
+	(envelope-from <stable+bounces-269642-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 29 Jun 2026 08:42:20 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3F5ED6D6B35
-	for <lists+stable@lfdr.de>; Mon, 29 Jun 2026 09:04:57 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 24AC96D66E8
+	for <lists+stable@lfdr.de>; Mon, 29 Jun 2026 08:42:20 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=mailbox.org header.s=mail20150812 header.b=OpZpETnl;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-269657-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-269657-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=reject) header.from=mailbox.org;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=ZA6ERwOb;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-269642-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-269642-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=quarantine) header.from=huawei.com;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id B1A2D3001330
-	for <lists+stable@lfdr.de>; Mon, 29 Jun 2026 07:00:26 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 8F874303B4DB
+	for <lists+stable@lfdr.de>; Mon, 29 Jun 2026 06:36:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2CA9E3B42C6;
-	Mon, 29 Jun 2026 06:59:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82E9039A078;
+	Mon, 29 Jun 2026 06:36:37 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mout-p-201.mailbox.org (mout-p-201.mailbox.org [80.241.56.171])
+Received: from canpmsgout09.his.huawei.com (canpmsgout09.his.huawei.com [113.46.200.224])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CD683A169F;
-	Mon, 29 Jun 2026 06:59:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 531A938E8C4;
+	Mon, 29 Jun 2026 06:36:34 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782716397; cv=none; b=k37TqD1xDSJKzb5NDqS4JIK8FSwleDFzJOQaya8ryg/E/BvEpvi5CFqlbFohCSjoIfb2PJa9dPDTYCWG7orJmwnZjJdnFBUiZHUk3lAVU49sMg2NTOHp4M8GW8A07FM5MvHeL7q7bIXgHaRyUFKBsuFtzJ72diTNTOF3C9RHuFI=
+	t=1782714997; cv=none; b=QbWD9Z+U0kwXvnvt8HrCfL13a0RT48nB8+/0I0bursq135K1ZfVAqJUhdxvJLogzC0zmLEhBrUVstbsewIe++Y5GMxjGKFoebeIaVirXpIgMQf5T0wYopNg2avfBgmQ0Vr3C7sYbgzD4BNAwgk7OmgBKulWngV35uZabIlmEmWY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782716397; c=relaxed/simple;
-	bh=cfj6qsLX7lbSG0og6v/xy08fwwUJ7Cuhaei+hCrYdR0=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=odXrXz7z5gqpjeZRmF55fuaEW+pP7Wig98LoXz65/3MT7DA886AepkvbnTfAC8KReHHyzGQD+VP6zl0I+YOyFoUgMvxXlp62yQXkJ+PxgdhsR6aUQA1lKNmRnimlOkCBKVbhEHe7VvqfZkvAw1K3i8NsfxIZ2EGXFpEk/DadMYQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org; spf=pass smtp.mailfrom=mailbox.org; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=OpZpETnl; arc=none smtp.client-ip=80.241.56.171
-Received: from smtp1.mailbox.org (smtp1.mailbox.org [IPv6:2001:67c:2050:b231:465::1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mout-p-201.mailbox.org (Postfix) with ESMTPS id 4gpcbW4kVfz9tv4;
-	Mon, 29 Jun 2026 08:59:51 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
-	t=1782716391; h=from:from:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=3hbzEnZLAxVe7ov2oMC76sAGhhFWZLnsRyY/MSpvDoM=;
-	b=OpZpETnl2QbkF2dT5mnB5Yni7iy5P50niEkB/W2TSRxOOM32j7izTnQjyiENXcbK26PltS
-	v3NslQjcrwoKez3ZUrZeKNsdYHpJHIyjJ/W/Yo0Bmqa5kWhPS3uachHQX+TLXQMJ4mLHI9
-	Nm6hQ4d3/UPJEIxR56wmEXB4WubGN9NYpyDKIQq6m5x28UeyHv2dLCXaiKWeywrWktbL5K
-	OQOuuge2wOLZ9QiSbbvZ2p3dfhWJDa7/lqSexq1rdxFq1+2mt40I5JgScnzON9FQ1TLjxb
-	qiTOtHvA+Jgak4v64ATZwUhVlPVFSugA0cHre/RSPjKxRu3SQNTIjPILaeL/BA==
-Message-ID: <e5b833e4c3764efa84f57e1b9691b946e0d3b1cd.camel@mailbox.org>
-Subject: Re: [PATCH] dma-fence: Make dma_fence_dedup_array() robust against
- 0-count input
-From: Philipp Stanner <phasta@mailbox.org>
-Reply-To: phasta@kernel.org
-To: Baineng Shou <shoubaineng@gmail.com>, Sumit Semwal
- <sumit.semwal@linaro.org>,  Christian =?ISO-8859-1?Q?K=F6nig?=	
- <christian.koenig@amd.com>
-Cc: Tvrtko Ursulin <tursulin@ursulin.net>, Philipp Stanner
- <phasta@kernel.org>,  Akash Goel <akash.goel@arm.com>,
- linux-media@vger.kernel.org, dri-devel@lists.freedesktop.org, 
-	linaro-mm-sig@lists.linaro.org, linux-kernel@vger.kernel.org, 
-	stable@vger.kernel.org
-Date: Mon, 29 Jun 2026 08:59:47 +0200
-In-Reply-To: <20260629031346.3875683-1-shoubaineng@gmail.com>
-References: <20260629031346.3875683-1-shoubaineng@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+	s=arc-20240116; t=1782714997; c=relaxed/simple;
+	bh=dbn89cqNncvD/YGttjdzMR40/PFeyf0xzyIYbKZorpg=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=IIhmk2WfqM3s50o2K7D/XvFHvqccfBom4nm/p5xixpAKPUNWKNfqJF2thgaruoNTZHHYdwbAa0CoIfF+U4nEzEPPZr7lrRSUlMUWFEraKhpTrigMfyyyfkN1Pv8vqNYx596+wyj1SWE5I7mVCpeEhEVgvufS05wOiLVtB4XIwo8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=ZA6ERwOb; arc=none smtp.client-ip=113.46.200.224
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=g7I0MmSFE5vIlYE0PpCqKellJZf4i4LqXVJT/+dD1XQ=;
+	b=ZA6ERwObo9jmqQWb2W4WvfyoTFm/T6eeF0AZ1pIICCG+qlJ1seSDpwJpaKQgK4WS3SIHaPbVa
+	Ek/ohFtF9zXvqJV18wB1bMTVGVNMfynUpanRlkNyD+fASuJr/E+4tpRocRzxT4yvfkTvogx/hqk
+	+oxXxWxX+YAsbbO7K+0BduE=
+Received: from mail.maildlp.com (unknown [172.19.163.15])
+	by canpmsgout09.his.huawei.com (SkyGuard) with ESMTPS id 4gpbsD0qVrz1d09x;
+	Mon, 29 Jun 2026 14:26:40 +0800 (CST)
+Received: from dggemv705-chm.china.huawei.com (unknown [10.3.19.32])
+	by mail.maildlp.com (Postfix) with ESMTPS id 110C740592;
+	Mon, 29 Jun 2026 14:35:47 +0800 (CST)
+Received: from kwepemq200017.china.huawei.com (7.202.195.228) by
+ dggemv705-chm.china.huawei.com (10.3.19.32) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Mon, 29 Jun 2026 14:35:46 +0800
+Received: from octopus.huawei.com (10.67.174.191) by
+ kwepemq200017.china.huawei.com (7.202.195.228) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Mon, 29 Jun 2026 14:35:45 +0800
+From: Cai Xinchen <caixinchen1@huawei.com>
+To: <viro@zeniv.linux.org.uk>, <brauner@kernel.org>, <jack@suse.cz>,
+	<miklos@szeredi.hu>, <amir73il@gmail.com>, <paul@paul-moore.com>,
+	<jmorris@namei.org>, <serge@hallyn.com>, <stephen.smalley.work@gmail.com>,
+	<omosnace@redhat.com>, <gregkh@linuxfoundation.org>, <sashal@kernel.org>,
+	<bboscaccy@linux.microsoft.com>, <caixinchen1@huawei.com>
+CC: <linux-fsdevel@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<linux-unionfs@vger.kernel.org>, <linux-security-module@vger.kernel.org>,
+	<selinux@vger.kernel.org>, <bpf@vger.kernel.org>, <stable@vger.kernel.org>,
+	<lujialin4@huawei.com>
+Subject: [PATCH v3 stable/linux-6.12.y 0/3] Backport Fix incorrect overlayfs mmap() and mprotect() LSM access controls
+Date: Mon, 29 Jun 2026 15:03:35 +0800
+Message-ID: <20260629070338.578858-1-caixinchen1@huawei.com>
+X-Mailer: git-send-email 2.18.0.huawei.25
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MBO-RS-META: bbk6f6twdq8kmn36mzidwpfnhkk5qc61
-X-MBO-RS-ID: 236d4085a3bc31e8aaf
+Content-Type: text/plain
+X-ClientProxiedBy: kwepems500001.china.huawei.com (7.221.188.70) To
+ kwepemq200017.china.huawei.com (7.202.195.228)
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-6.16 / 15.00];
+	WHITELIST_DMARC(-7.00)[huawei.com:D:+];
+	SUSPICIOUS_RECIPS(1.50)[];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[mailbox.org,reject];
-	R_DKIM_ALLOW(-0.20)[mailbox.org:s=mail20150812];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[huawei.com,quarantine];
+	R_DKIM_ALLOW(-0.20)[huawei.com:s=dkim];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-269657-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FREEMAIL_TO(0.00)[gmail.com,linaro.org,amd.com];
-	FORGED_SENDER(0.00)[phasta@mailbox.org,stable@vger.kernel.org];
-	TO_DN_SOME(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:shoubaineng@gmail.com,m:sumit.semwal@linaro.org,m:christian.koenig@amd.com,m:tursulin@ursulin.net,m:phasta@kernel.org,m:akash.goel@arm.com,m:linux-media@vger.kernel.org,m:dri-devel@lists.freedesktop.org,m:linaro-mm-sig@lists.linaro.org,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,s:lists@lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
-	REPLYTO_DOM_NEQ_FROM_DOM(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER(0.00)[caixinchen1@huawei.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS(0.00)[m:viro@zeniv.linux.org.uk,m:brauner@kernel.org,m:jack@suse.cz,m:miklos@szeredi.hu,m:amir73il@gmail.com,m:paul@paul-moore.com,m:jmorris@namei.org,m:serge@hallyn.com,m:stephen.smalley.work@gmail.com,m:omosnace@redhat.com,m:gregkh@linuxfoundation.org,m:sashal@kernel.org,m:bboscaccy@linux.microsoft.com,m:caixinchen1@huawei.com,m:linux-fsdevel@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:linux-unionfs@vger.kernel.org,m:linux-security-module@vger.kernel.org,m:selinux@vger.kernel.org,m:bpf@vger.kernel.org,m:stable@vger.kernel.org,m:lujialin4@huawei.com,m:stephensmalleywork@gmail.com,s:lists@lfdr.de];
+	FREEMAIL_TO(0.00)[zeniv.linux.org.uk,kernel.org,suse.cz,szeredi.hu,gmail.com,paul-moore.com,namei.org,hallyn.com,redhat.com,linuxfoundation.org,linux.microsoft.com,huawei.com];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-269642-lists,stable=lfdr.de];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[mailbox.org:+];
-	ALIAS_RESOLVED(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[11];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[phasta@mailbox.org,stable@vger.kernel.org];
 	PRECEDENCE_BULK(0.00)[];
-	REPLYTO_DOM_NEQ_TO_DOM(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	HAS_REPLYTO(0.00)[phasta@kernel.org];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[caixinchen1@huawei.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[huawei.com:+];
+	TO_DN_NONE(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[22];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp,huawei.com:dkim,huawei.com:mid,huawei.com:from_mime];
 	TAGGED_RCPT(0.00)[stable];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[mailbox.org:dkim,mailbox.org:mid,mailbox.org:from_mime,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,vger.kernel.org:from_smtp]
+	RCVD_COUNT_SEVEN(0.00)[7]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 3F5ED6D6B35
+X-Rspamd-Queue-Id: 24AC96D66E8
 
-On Mon, 2026-06-29 at 11:13 +0800, Baineng Shou wrote:
-> dma_fence_dedup_array() returns 1 when called with num_fences =3D=3D 0:
-> the for-loop body never executes, j stays at 0, and the final
-> `return ++j` yields 1. This contradicts both the kernel-doc ("Return:
-> Number of unique fences remaining in the array") and the natural
-> expectation that 0 input gives 0 output.
->=20
-> All in-tree callers currently filter num_fences =3D=3D 0 before invoking
-> this helper (__dma_fence_unwrap_merge() bails out via the
-> `if (count =3D=3D 0 || count =3D=3D 1)` fast path; amdgpu_userq_wait_*()
-> cannot reach the dedup call with a zero local count because the
-> amdgpu_userq_wait_add_fence() helper guarantees num_fences stays in
-> [0, wait_info->num_fences], and wait_info->num_fences > 0 is enforced
-> at the ioctl entry).
->=20
-> However, dma_fence_dedup_array() is EXPORT_SYMBOL_GPL, so any future
-> caller that forgets to pre-filter the zero case will get a misleading
-> return value of 1. Depending on how that caller uses the result, it
-> could dereference an uninitialized fence slot in the array, since the
-> caller's array may have been allocated but not yet populated.
->=20
-> Make the contract match the documentation by returning 0 early. This
-> also skips an unnecessary sort() call on an empty array.
->=20
-> Signed-off-by: Baineng Shou <shoubaineng@gmail.com>
-> ---
-> =C2=A0drivers/dma-buf/dma-fence-unwrap.c | 3 +++
-> =C2=A01 file changed, 3 insertions(+)
->=20
-> diff --git a/drivers/dma-buf/dma-fence-unwrap.c b/drivers/dma-buf/dma-fen=
-ce-unwrap.c
-> index 53bb40e70b27..364cbf79ad73 100644
-> --- a/drivers/dma-buf/dma-fence-unwrap.c
-> +++ b/drivers/dma-buf/dma-fence-unwrap.c
-> @@ -97,6 +97,9 @@ int dma_fence_dedup_array(struct dma_fence **fences, in=
-t num_fences)
-> =C2=A0{
-> =C2=A0	int i, j;
-> =C2=A0
-> +	if (!num_fences)
-> +		return 0;
+v3: Backport 4e301d858af17a ("fs: constify file ptr in backing_file
+accessor helpers") to fix const-discard warnings
 
-Hm, since you're adding this, what about num_fences =3D -5 ?
+v2: Add static to struct kmem_cache *lsm_backing_file_cache; and define
+lbs_backing_file as int for keeping the same type as 6.12.
 
+Backport the patch series
+"Fix incorrect overlayfs mmap() and mprotect() LSM access controls" [1]
+to 6.12 lts
 
-Let me use this opportunity to also highlight that we should, in C, in
-general get away from using int for everything.
+I test selinux-testsuite[2] overlay test, it pass 135 tests.
 
-__dma_fence_unwrap_merge() directly below uses unsigned int, as you
-would expect. dma_fence_dedup_array() has almost no users. Probably we
-should change that API to unsigned int, too?
+[1] https://lore.kernel.org/all/20260403030848.731867-5-paul@paul-moore.com/
+[2] https://github.com/SELinuxProject/selinux-testsuite
 
+Amir Goldstein (1):
+  fs: constify file ptr in backing_file accessor helpers
 
-Regards
-P.
+Paul Moore (2):
+  lsm: add backing_file LSM hooks
+  selinux: fix overlayfs mmap() and mprotect() access checks
 
-> +
-> =C2=A0	sort(fences, num_fences, sizeof(*fences), fence_cmp, NULL);
-> =C2=A0
-> =C2=A0	/*
+ fs/backing-file.c                 |  22 ++-
+ fs/file_table.c                   |  40 +++--
+ fs/fuse/passthrough.c             |   2 +-
+ fs/internal.h                     |   4 +-
+ fs/overlayfs/dir.c                |   2 +-
+ fs/overlayfs/file.c               |   3 +-
+ include/linux/backing-file.h      |   4 +-
+ include/linux/fs.h                |  19 ++-
+ include/linux/lsm_audit.h         |   2 +-
+ include/linux/lsm_hook_defs.h     |   5 +
+ include/linux/lsm_hooks.h         |   1 +
+ include/linux/security.h          |  22 +++
+ security/security.c               | 109 ++++++++++++++
+ security/selinux/hooks.c          | 242 ++++++++++++++++++++++--------
+ security/selinux/include/objsec.h |  11 ++
+ 15 files changed, 398 insertions(+), 90 deletions(-)
+
+-- 
+2.18.0.huawei.25
+
 
