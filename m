@@ -1,266 +1,170 @@
-Return-Path: <stable+bounces-269834-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-269835-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id RB3DN7vlQmpcHQoAu9opvQ
-	(envelope-from <stable+bounces-269834-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 29 Jun 2026 23:38:03 +0200
+	id +QeBHgLmQmqQHQoAu9opvQ
+	(envelope-from <stable+bounces-269835-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 29 Jun 2026 23:39:14 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 485E46DEE8B
-	for <lists+stable@lfdr.de>; Mon, 29 Jun 2026 23:38:03 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id C89F96DEEC5
+	for <lists+stable@lfdr.de>; Mon, 29 Jun 2026 23:39:13 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=Azeuf5ot;
-	dkim=pass header.d=redhat.com header.s=google header.b="e8nxc/KG";
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-269834-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-269834-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
+	dkim=pass header.d=collabora.com header.s=zohomail header.b=imviU+FJ;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-269835-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-269835-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=none) header.from=collabora.com;
+	arc=pass ("subspace.kernel.org:s=arc-20240116:i=2")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 1C69230305C8
-	for <lists+stable@lfdr.de>; Mon, 29 Jun 2026 21:37:24 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 5E3B13023DE8
+	for <lists+stable@lfdr.de>; Mon, 29 Jun 2026 21:39:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B1A83C9EF1;
-	Mon, 29 Jun 2026 21:37:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E9893CA4A0;
+	Mon, 29 Jun 2026 21:39:10 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from sender4-op-o11.zoho.com (sender4-op-o11.zoho.com [136.143.188.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC2C73C9EF6
-	for <stable@vger.kernel.org>; Mon, 29 Jun 2026 21:37:21 +0000 (UTC)
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782769043; cv=none; b=ltwgqeM7YlLVKr8KWEIgtxCYn3x8Ycv0W8Xn7JmZC2rocdt0L2wxv8PZlqE9xHBSchsGu8WNYy+e1q6iJieNKMD/9wgIoZ9MalQutUm6G2hBwtCgFwZijNoMNLrYaPKNHXLiaMqDByXb1u1kPC5zUFdAA9h9ASvGhSj3nvtPN8g=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782769043; c=relaxed/simple;
-	bh=AZQ+cjOZHCfOyxMgYdne5WnISx9eGyDfgFzs+70859A=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=jBu+CKWx47HsYHAqSueixN+93T+6jG0Cizo4qwffQnSqBolXaSzgCqHR/t8EVu48jMmk2GXQb2lIyF5ezhk5pChjAMpelhSwgthtq3NggyDD6aqMdaHjdUpILO5359C+S1YCit8sMh3h7SgBYh7Pr+6hqA/wLn7wGKkCPH2L6To=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Azeuf5ot; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=e8nxc/KG; arc=none smtp.client-ip=170.10.129.124
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1782769041;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=4h5QDGQfeC12aIw9GPepcb1Zj6xE1bUvcgth2ziWe1A=;
-	b=Azeuf5otafjuZ75H82kAasb7+RR4SH03O7Eqweb/fEEn03clBvrJIXl7YSX+LMy0dWxGKD
-	n3rhXDVMKIE0EjI6nAOA1QJRd7j4s59Hr4dNgzvf4vhFaOMm/yFedQF6SlL0wPiJTYihrO
-	3M+vVzDwnxDV3msPMfv0P+RL7/KpOuM=
-Received: from mail-qt1-f200.google.com (mail-qt1-f200.google.com
- [209.85.160.200]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-433-bVBCw5pbMUKRLhLyN2yccg-1; Mon, 29 Jun 2026 17:37:19 -0400
-X-MC-Unique: bVBCw5pbMUKRLhLyN2yccg-1
-X-Mimecast-MFC-AGG-ID: bVBCw5pbMUKRLhLyN2yccg_1782769039
-Received: by mail-qt1-f200.google.com with SMTP id d75a77b69052e-51bf321d786so19874561cf.1
-        for <stable@vger.kernel.org>; Mon, 29 Jun 2026 14:37:19 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1782769039; x=1783373839; darn=vger.kernel.org;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=4h5QDGQfeC12aIw9GPepcb1Zj6xE1bUvcgth2ziWe1A=;
-        b=e8nxc/KGJg91ceP1zXUJVzcaNR06dP3R/mXSCRvW7YCCFHkQVSrXC7diZXKPlKUFOa
-         6zTV7PHAb22njPwyBwl29K3/L2DgQVjAlUaAbe59nPjgC7wk21Ihy0PLJYslXhqxLI36
-         FFi3duNb8uoU7iNHI+qiYh78Aa4uSAkydDVVOvnp8YtXDSGHKckGwhLpLIj8j74IBLlJ
-         6NbOMpO/XlMsCpMhuhu99iWrMgkab1oHdzjdn1j3FM9msK8j6f3w2eSQt/57HdHb6MBS
-         cjAuztpz2JnA+BG8Gdiz72yzKEd2ItCKyl4LwaMoke9zC14O7QVUnitWuKtzqGH1j1+G
-         ZGpg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782769039; x=1783373839;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=4h5QDGQfeC12aIw9GPepcb1Zj6xE1bUvcgth2ziWe1A=;
-        b=fyG+rJfAnKGeBIrmywmFCzm8LqJdrtYUgm4NS2m9/8mbGm5IWOrnenmVLxH6ebXDS2
-         byKEaClZ3NLB4vj6CRLOO13SRLe15jTJ3/7aZc9ZekflDlmq7c2QJEOZFdCYyZerv5vz
-         gXBe6Fw1/D+Vy3AcOrabRo+CTM9iAfBbSnWeuKHjpNpJDrUiGuP6Jlw5Fqgr/TTyWYlV
-         sBlKfxuufAe5ltHPyidpyWMEQYiKdR+HNoVthE2BJvcgRlZOJN69UIww7l5YcyG4sHC8
-         Dlf0DlyDJxLDIBtNiErnadX4lHZ8zfTxed5hnN6YQRhyU7e7M0ABBmiic1aK8IjbVaCD
-         DF+A==
-X-Forwarded-Encrypted: i=1; AFNElJ92hqB2Uo93AsL+CRkBQb3wRPafO8OOvJiIRBXZ3N9tpTknr9JjuyT3FKzCx8VThv6dKtnaMyM=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzx9ePKzKZR42f44WpVCFIO8ujVHOiETCN46sZPhgBfUrv6IyFp
-	Tdpgma8P3CzRGqrAfcP1/WTxwltHJm1rTer/XfXI5b6987VQmzmjBG360QN/4+8/cuFwjdrhSDr
-	SvE1430ivl5sTCmdOcgNjFeA7IkeScjv91LDRsF40lk9i+N73/6F30qbDTg==
-X-Gm-Gg: AfdE7cniym9TZvtLWYcv+Pv+J44Fvlbbb6EFCjOV4JZliTRUG7zrlvjjwJSVwAPE5kW
-	tqrUKESo06Qz+1Tmky/ePQ28u8gOpcjksZZDXljnRhjKx06zmPJbkNvLmJd/UUFClQ2aPkAQRV3
-	thFXkTOOMq0UpfEo5jtDzpJ30NvJxY4jwRL0WIOVDEaiarVIkOF4WLojXAdoBYEkYKGC2pMJ888
-	HAX+tZmwCO4WLQsDzUw+myt/1z2S+onljZJkpgiC7AO6eCZNnGMhfeUXR1AqcrmU3QfJhajWi3E
-	cfdsOHOj36e+MgTQWPAZNvj3W20ORtrKg3mazg4E89ZE6yj6qPgp6OZ4Cb4EQigSuvOoRX5+6JJ
-	bFw3p5FE=
-X-Received: by 2002:ac8:5811:0:b0:51c:1d9:e95c with SMTP id d75a77b69052e-51c10716e14mr16826041cf.5.1782769038988;
-        Mon, 29 Jun 2026 14:37:18 -0700 (PDT)
-X-Received: by 2002:ac8:5811:0:b0:51c:1d9:e95c with SMTP id d75a77b69052e-51c10716e14mr16825551cf.5.1782769038320;
-        Mon, 29 Jun 2026 14:37:18 -0700 (PDT)
-Received: from [192.168.8.4] ([100.0.180.93])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-8f1a69c25absm7952766d6.27.2026.06.29.14.37.17
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 29 Jun 2026 14:37:17 -0700 (PDT)
-Message-ID: <88003b81e8dc83f675ab94280409a1202a0c2959.camel@redhat.com>
-Subject: Re: [PATCH v5 16/19] drm: fix race between partial
- drm_dev_register() failure and ioctl
-From: lyude@redhat.com
-To: Danilo Krummrich <dakr@kernel.org>, aliceryhl@google.com, 
-	daniel.almeida@collabora.com, acourbot@nvidia.com, ecourtney@nvidia.com, 
-	ojeda@kernel.org, boqun@kernel.org, gary@garyguo.net,
- bjorn3_gh@protonmail.com, 	lossin@kernel.org, a.hindborg@kernel.org,
- tmgross@umich.edu, 	deborah.brouwer@collabora.com,
- boris.brezillon@collabora.com
-Cc: driver-core@lists.linux.dev, linux-kernel@vger.kernel.org, 
-	nova-gpu@lists.linux.dev, dri-devel@lists.freedesktop.org, 
-	rust-for-linux@vger.kernel.org, stable@vger.kernel.org,
- sashiko-bot@kernel.org
-Date: Mon, 29 Jun 2026 17:37:17 -0400
-In-Reply-To: <20260628145406.2107056-17-dakr@kernel.org>
-References: <20260628145406.2107056-1-dakr@kernel.org>
-	 <20260628145406.2107056-17-dakr@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.58.3 (3.58.3-1.fc43) 
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 164103AE1A9;
+	Mon, 29 Jun 2026 21:39:08 +0000 (UTC)
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1782769150; cv=pass; b=UZI+TdEnyDapiW0KsfK8w0oBHAJkkfONio79sS4OUCDTMUknQSN/MWTUb84gaDeOwVOul/m0+BhyYfRlNL8Jappk+30LecP0RAcCKGdVf7zC8MFJqJILMnyjOMvOp3QpL2bNgCxRDPs/nuNonDI+LT//M2fKnec11A9kon1C0M0=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1782769150; c=relaxed/simple;
+	bh=MG7URKinLILQgqbXAb09lkk9Apc2dNsIP7hZWloi3ik=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=rF/MN+tjAyI47OA9hJsQwvpxyzNdqd5PwIPt10sUHlWn8yVC1r1cDJ7Oya/DlRZuHISIwCAFFyGFiNHiE4d9C9kekbTzd6Kt+N10+1/OQU/ig+oMx/9W8KKdJt164gtzMSoYO3NbUJP4tstnnf9VEBEH0RHhr1t7rArPyoFb2G4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=dmitry.osipenko@collabora.com header.b=imviU+FJ; arc=pass smtp.client-ip=136.143.188.11
+ARC-Seal: i=1; a=rsa-sha256; t=1782769140; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=DD/G1CVE2B7GRYG27hevrGTBCBUP1rcQjQvxFbuW/RfJ6BAdLNR38g1SsBl16uXFxv+wYk8FAJ5sVAdwrSSWKDQXQpLFvGRW1vd/NiVnko+G65ObN+CxGz9rZjtfMeJso9u/JeFjiiHGkHhXNLIAwRUEwaRQAlXyxOlm6ppSFzE=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1782769140; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=V2dWuEpkhVjMLm2lL6us2OpMnJ/fy5SE2u+UJZd6w+A=; 
+	b=RRlCaK/WngedPTBqZDaiRyn9RHPWfXwDvw7G+zK4WRKIxMPqy9dH1u6REDwFeEzMLfWY9bLj/MY7n3zIt0DzlcrqdRLeltMv0rA07APljGu+LWb6cYHLjcYjP9/JcJ8Ug9WlrJJa5UmPA3HNN4wfTnsLJN8ylcXifi+U0RfO/O0=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=collabora.com;
+	spf=pass  smtp.mailfrom=dmitry.osipenko@collabora.com;
+	dmarc=pass header.from=<dmitry.osipenko@collabora.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1782769140;
+	s=zohomail; d=collabora.com; i=dmitry.osipenko@collabora.com;
+	h=Message-ID:Date:Date:MIME-Version:Subject:Subject:To:To:Cc:Cc:References:From:From:In-Reply-To:Content-Type:Content-Transfer-Encoding:Message-Id:Reply-To;
+	bh=V2dWuEpkhVjMLm2lL6us2OpMnJ/fy5SE2u+UJZd6w+A=;
+	b=imviU+FJpvekMZlnS7Pal/ELSKOzwENl6rbn16EmzQk4C/PmZvw3I/+JrF+k+mhr
+	Z0F+4ZuT11T/VGsUQxJPh1UKNqXvXzfVfH4q81QhlT3UMejF9gl6KWVidFvfBYwD85e
+	6dvbJiiHSohVPgq1p9vpdtETUIyBsa/5SPzAw1X8=
+Received: by mx.zohomail.com with SMTPS id 1782769138029866.4526666587577;
+	Mon, 29 Jun 2026 14:38:58 -0700 (PDT)
+Message-ID: <7202d2dc-b6fe-440e-88b0-aefb26c38b86@collabora.com>
+Date: Tue, 30 Jun 2026 00:38:54 +0300
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] drm/virtio: Don't detach GEM from a non-created context
+To: Jason Macnak <natsu@google.com>, David Airlie <airlied@redhat.com>,
+ Gerd Hoffmann <kraxel@redhat.com>,
+ Gurchetan Singh <gurchetansingh@chromium.org>
+Cc: dri-devel@lists.freedesktop.org, virtualization@lists.linux.dev,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org
+References: <20260625170828.3335431-1-natsu@google.com>
+Content-Language: en-US
+From: Dmitry Osipenko <dmitry.osipenko@collabora.com>
+In-Reply-To: <20260625170828.3335431-1-natsu@google.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-ZohoMailClient: External
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-2.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[redhat.com,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[redhat.com:s=mimecast20190719,redhat.com:s=google];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
+	DMARC_POLICY_ALLOW(-0.50)[collabora.com,none];
+	R_DKIM_ALLOW(-0.20)[collabora.com:s=zohomail];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FROM_NEQ_ENVFROM(0.00)[lyude@redhat.com,stable@vger.kernel.org];
-	TAGGED_FROM(0.00)[bounces-269834-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-269835-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:dakr@kernel.org,m:aliceryhl@google.com,m:daniel.almeida@collabora.com,m:acourbot@nvidia.com,m:ecourtney@nvidia.com,m:ojeda@kernel.org,m:boqun@kernel.org,m:gary@garyguo.net,m:bjorn3_gh@protonmail.com,m:lossin@kernel.org,m:a.hindborg@kernel.org,m:tmgross@umich.edu,m:deborah.brouwer@collabora.com,m:boris.brezillon@collabora.com,m:driver-core@lists.linux.dev,m:linux-kernel@vger.kernel.org,m:nova-gpu@lists.linux.dev,m:dri-devel@lists.freedesktop.org,m:rust-for-linux@vger.kernel.org,m:stable@vger.kernel.org,m:sashiko-bot@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[lyude@redhat.com,stable@vger.kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[21];
-	FREEMAIL_TO(0.00)[kernel.org,google.com,collabora.com,nvidia.com,garyguo.net,protonmail.com,umich.edu];
+	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER(0.00)[dmitry.osipenko@collabora.com,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS(0.00)[m:natsu@google.com,m:airlied@redhat.com,m:kraxel@redhat.com,m:gurchetansingh@chromium.org,m:dri-devel@lists.freedesktop.org,m:virtualization@lists.linux.dev,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,s:lists@lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
-	DKIM_TRACE(0.00)[redhat.com:+];
-	FROM_NO_DN(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[collabora.com:+];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[6];
-	ALIAS_RESOLVED(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[dmitry.osipenko@collabora.com,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	TAGGED_RCPT(0.00)[stable];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 485E46DEE8B
+X-Rspamd-Queue-Id: C89F96DEEC5
 
-Reviewed-by: Lyude Paul <lyude@redhat.com>
+Hi,
 
-On Sun, 2026-06-28 at 16:53 +0200, Danilo Krummrich wrote:
-> If drm_dev_register() fails after registering a minor (e.g. render
-> minor
-> registered, primary minor fails), userspace could have opened the
-> first
-> minor and entered a drm_dev_enter() critical section. Since the
-> unplugged flag was never set, the ioctl proceeds while the error path
-> tears down device resources.
->=20
-> Fix this by introducing drm_dev_synchronize_unplug(), which sets the
-> unplugged flag and waits for the SRCU barrier, ensuring all in-flight
-> drm_dev_enter() critical sections complete before cleanup proceeds;
-> call
-> it on the error path of drm_dev_register().
->=20
-> Fixes: bee330f3d672 ("drm: Use srcu to protect drm_device.unplugged")
-> Cc: stable@vger.kernel.org
-> Reported-by: sashiko-bot@kernel.org
-> Closes:
-> https://lore.kernel.org/all/20260620190648.2E9F61F000E9@smtp.kernel.org/
-> Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+On 6/25/26 20:08, Jason Macnak wrote:
+> Applies the same treatment as commit 7cf6dd467e87 ("drm/virtio:
+> Don't attach GEM to a non-created context in gem_object_open()")
+> to virtio_gpu_gem_object_close() to avoid trying to detach
+> a resource that was never attached due to a context
+> never being created when context_init is supported.
+> 
+> Fixes: 086b9f27f0ab ("drm/virtio: Don't create a context with default param if context_init is supported")
+> Cc: <stable@vger.kernel.org> # v6.14+
+> Signed-off-by: Jason Macnak <natsu@google.com>
 > ---
-> =C2=A0drivers/gpu/drm/drm_drv.c | 34 +++++++++++++++++++++++++---------
-> =C2=A01 file changed, 25 insertions(+), 9 deletions(-)
->=20
-> diff --git a/drivers/gpu/drm/drm_drv.c b/drivers/gpu/drm/drm_drv.c
-> index 675675480da4..e890052061f3 100644
-> --- a/drivers/gpu/drm/drm_drv.c
-> +++ b/drivers/gpu/drm/drm_drv.c
-> @@ -473,6 +473,22 @@ void drm_dev_exit(int idx)
-> =C2=A0}
-> =C2=A0EXPORT_SYMBOL(drm_dev_exit);
-> =C2=A0
-> +/*
-> + * Mark the device as unplugged and wait for any in-flight
-> drm_dev_enter()
-> + * critical sections to complete.
-> + */
-> +static void drm_dev_synchronize_unplug(struct drm_device *dev)
-> +{
-> +	/*
-> +	 * After synchronizing any critical read section is
-> guaranteed to see
-> +	 * the new value of ->unplugged, and any critical section
-> which might
-> +	 * still have seen the old value of ->unplugged is
-> guaranteed to have
-> +	 * finished.
-> +	 */
-> +	dev->unplugged =3D true;
-> +	synchronize_srcu(&drm_unplug_srcu);
-> +}
-> +
-> =C2=A0/**
-> =C2=A0 * drm_dev_unplug - unplug a DRM device
-> =C2=A0 * @dev: DRM device
-> @@ -485,15 +501,7 @@ EXPORT_SYMBOL(drm_dev_exit);
-> =C2=A0 */
-> =C2=A0void drm_dev_unplug(struct drm_device *dev)
-> =C2=A0{
-> -	/*
-> -	 * After synchronizing any critical read section is
-> guaranteed to see
-> -	 * the new value of ->unplugged, and any critical section
-> which might
-> -	 * still have seen the old value of ->unplugged is
-> guaranteed to have
-> -	 * finished.
-> -	 */
-> -	dev->unplugged =3D true;
-> -	synchronize_srcu(&drm_unplug_srcu);
-> -
-> +	drm_dev_synchronize_unplug(dev);
-> =C2=A0	drm_dev_unregister(dev);
-> =C2=A0
-> =C2=A0	/* Clear all CPU mappings pointing to this device */
-> @@ -1091,6 +1099,7 @@ int drm_dev_register(struct drm_device *dev,
-> unsigned long flags)
-> =C2=A0		goto err_minors;
-> =C2=A0
-> =C2=A0	dev->registered =3D true;
-> +	dev->unplugged =3D false;
-> =C2=A0
-> =C2=A0	if (driver->load) {
-> =C2=A0		ret =3D driver->load(dev, flags);
-> @@ -1118,6 +1127,13 @@ int drm_dev_register(struct drm_device *dev,
-> unsigned long flags)
-> =C2=A0	if (dev->driver->unload)
-> =C2=A0		dev->driver->unload(dev);
-> =C2=A0err_minors:
-> +	/*
-> +	 * If a minor was registered before the failure, userspace
-> could have
-> +	 * opened it and entered a drm_dev_enter() critical section.
-> Ensure all
-> +	 * such sections complete before we clean up.
-> +	 */
-> +	drm_dev_synchronize_unplug(dev);
-> +
-> =C2=A0	remove_compat_control_link(dev);
-> =C2=A0	drm_minor_unregister(dev, DRM_MINOR_ACCEL);
-> =C2=A0	drm_minor_unregister(dev, DRM_MINOR_PRIMARY);
+>  drivers/gpu/drm/virtio/virtgpu_gem.c | 14 ++++++++------
+>  1 file changed, 8 insertions(+), 6 deletions(-)
+> 
+> diff --git a/drivers/gpu/drm/virtio/virtgpu_gem.c b/drivers/gpu/drm/virtio/virtgpu_gem.c
+> index 435d37d36034..66c3f6f74e9c 100644
+> --- a/drivers/gpu/drm/virtio/virtgpu_gem.c
+> +++ b/drivers/gpu/drm/virtio/virtgpu_gem.c
+> @@ -139,13 +139,15 @@ void virtio_gpu_gem_object_close(struct drm_gem_object *obj,
+>  	if (!vgdev->has_virgl_3d)
+>  		return;
+>  
+> -	objs = virtio_gpu_array_alloc(1);
+> -	if (!objs)
+> -		return;
+> -	virtio_gpu_array_add_obj(objs, obj);
+> +	if (vfpriv->context_created) {
+> +		objs = virtio_gpu_array_alloc(1);
+> +		if (!objs)
+> +			return;
+> +		virtio_gpu_array_add_obj(objs, obj);
+>  
+> -	virtio_gpu_cmd_context_detach_resource(vgdev, vfpriv->ctx_id,
+> -					       objs);
+> +		virtio_gpu_cmd_context_detach_resource(vgdev, vfpriv->ctx_id,
+> +						       objs);
+> +	}
+>  	virtio_gpu_notify(vgdev);
+>  }
 
+The following scenario still will be troubling:
+
+1. vgdev->has_context_init = true
+2. virtio_gpu_gem_object_open() invoked, GEM created and not attached to ctx
+3. virtio_gpu_context_init_ioctl() invoked, now vfpriv->context_created
+= true
+4. virtio_gpu_gem_object_close() will detach resource that wasn't attached
+
+Add obj->ctx_attached member to struct virtio_gpu_object. See
+virtio_gpu_object_attach() that uses obj->attached, do the same for
+virtio_gpu_cmd_context_attach_resource().
+
+-- 
+Best regards,
+Dmitry
 
