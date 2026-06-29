@@ -1,165 +1,215 @@
-Return-Path: <stable+bounces-269820-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-269821-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id k0nQJlrHQmqnBgoAu9opvQ
-	(envelope-from <stable+bounces-269820-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 29 Jun 2026 21:28:26 +0200
+	id eUjuCUrNQmr0CgoAu9opvQ
+	(envelope-from <stable+bounces-269821-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 29 Jun 2026 21:53:46 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 99B7B6DE61A
-	for <lists+stable@lfdr.de>; Mon, 29 Jun 2026 21:28:25 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9037E6DE841
+	for <lists+stable@lfdr.de>; Mon, 29 Jun 2026 21:53:45 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=HJhwnM+s;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-269820-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-269820-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("subspace.kernel.org:s=arc-20240116:i=2")
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=r06bz4ct;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-269821-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-269821-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id C3D613015D62
-	for <lists+stable@lfdr.de>; Mon, 29 Jun 2026 19:26:44 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B79D330530FC
+	for <lists+stable@lfdr.de>; Mon, 29 Jun 2026 19:52:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6086F3BF66D;
-	Mon, 29 Jun 2026 19:26:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 74A071E4AF;
+	Mon, 29 Jun 2026 19:52:24 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wr1-f43.google.com (mail-wr1-f43.google.com [209.85.221.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD774416D0B
-	for <stable@vger.kernel.org>; Mon, 29 Jun 2026 19:26:20 +0000 (UTC)
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782761182; cv=pass; b=XP6buIQukTnOmt2hyhuOOZdAg8lAAmkDGCUawk910kJIBq2/6kqepGOx3ykcwym1aWCjIyujFg3QrCeyxJgo7xzuudLnFxlzBtwYSyRop0ZUcg7jREH9UymbkcN3+zlNfYUmeuAMelor+AVIity4abHaslGXbwaZeHVe8edNe2o=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782761182; c=relaxed/simple;
-	bh=hqeITJcmzESdb8H22X37VmV0f9rGwZrzNOxw/dDpThg=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=IDgaUyBEJBUkVOxQsLltbjX/5JUGJ3c0IOONDPb4+OiTvRHCbUfFdnFZprV+XisB8Vs8kw8gtLr4yKeJqHr6EzOUwDXE/4Rf1iaT0ETHxdrNN3H2Y7WMV1rcwMhw8jG/1b0/kKHr/jICqjVcZCwwo8+dpH45rr4YxhHjEcBWimw=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=HJhwnM+s; arc=pass smtp.client-ip=209.85.221.43
-Received: by mail-wr1-f43.google.com with SMTP id ffacd0b85a97d-4720d22c94aso1679729f8f.1
-        for <stable@vger.kernel.org>; Mon, 29 Jun 2026 12:26:20 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1782761177; cv=none;
-        d=google.com; s=arc-20260327;
-        b=cg+GxwlgDXDqGDVb+/T3lPaaSnEwF1aHBuEdRqftNbhL2nNGV2YD/6Y+8UNsxxn3HP
-         hQTBkWFftEeieXETPMXz/07oiYqX2COnlqc0sYwTEzMXtybUdDQoLRjCV287K32PC+hg
-         X1r3b2B5jelsSizPispjT3XSlsbiu21jTGgnnOCcAHCXI2ssGWEmNE2OKkc128rIBt5E
-         ltbN6YIWDuZcczpQ8czvtWybpf6Q15Qhvj2tikNZVcEhVcdWA/2TgEP15AjSn3Py1cjC
-         tLVMBGRy3Hnl2x+SZW6i6XvQxwblg0kFItKDiZUmnjQqlFhxynJl1FCZixdMdutDDP5t
-         qX/g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=ikcNibTeUf+UPMUiFV8fQCysHoWKcq3FilBwnxi5AHA=;
-        fh=CWFxdju8lHwNwpyT71qDrwiaWZNrEYrarvRDc6ugtyw=;
-        b=n1/uB2fcrDQhunk032/DOmq4s9AsKR8j25ob3idGtty9tGfS/xjL1aQqzOqTruzC9E
-         3b5Wc43fG941Idt2OUusIMXEiuC0kV8zDvQRkW1LheXy6ZYEqn42cOt2+iqfj/NOWbfD
-         b7uefpJTcj12DnZi2oAlG6HnbaDpvhq9YCD+3GZSWIDI24ZV3yMyQIxJyaGVEFEZzS5n
-         80zWhMktd4tf9gDm8FW32NQ1AXzv6bhVmdHP3o9AWYBSFtWhEkT8wtM3+Y7eFgcnqZ3D
-         0wGPSOwgX/zO2XrOqorAfvD6IlAaYXHJuhEBeTt0fzet3OmB+A5QwE3yajL0COMCsxWy
-         UILQ==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1782761177; x=1783365977; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=ikcNibTeUf+UPMUiFV8fQCysHoWKcq3FilBwnxi5AHA=;
-        b=HJhwnM+staapGFHwqM808eeWNnUJZe5blKYBHytAshQ0R4cD0s/2bIoY7UPdFNHzWN
-         8Lzhz40YD/asdAi/2VM1/lpYEkIGW82FSK1CepGND16DwoImx9o2vaeBU/7MazJl+2hW
-         9enHuZY1BYbPqDDbYvYcM9K6Vu+yEZoOFi3YmMiiw1JchXIhHC4tjOWFwf+VUVNZarAr
-         gSyHzfMozR6b08+MS8JH647bbcGooDHe1Y6QGk2AoBBjZMHFh+Q703hU4khl4WjOCmGA
-         nwu4zPNKSN99x6VUtk/b93lZpMI7QfSJPLRmgm2XKds6De2peb2dXQfpwLr/iTF7U3cv
-         xI5g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782761177; x=1783365977;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ikcNibTeUf+UPMUiFV8fQCysHoWKcq3FilBwnxi5AHA=;
-        b=U8qwnGelbLF88tUWYyUrY7qK6YKoccCOt8hc5bVCvvdTCi8Xyg/9ttLM7Fd3ZYsE7Z
-         Qr0M1XIq2hCRNuStqG5T9PEeIOOnwyt6b+D1Q+mQjsBqt89mlCEpGMkDS9oJRa1Sdi/Z
-         K0TzsvvgAKxualCNx2svCNeanrMNaVrjiyb7p6zm5QXy49DoUckTN3fJqfpnOBj79BD2
-         kQUZoE7JqsRSgmE7SfEf4HTgjGxNsK5cFDus0bPeRUSP8Usy/5eD8ZcARFm5IPLl8uiH
-         Jt59TSAShI8ug+5Xl4AZBOycoyRy+YxuROOj4OsPPLi+garl82nTgwtC9qRUKkNIFeVJ
-         v3CA==
-X-Forwarded-Encrypted: i=1; AHgh+Ro8ZqshfZykWRKwhLYXjKOLpEHtmuv6lRUrVjFzaASArIfYLpcwsEQ9P+ymKt+BMEkY3WVVMGA=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwyuJhDgJyPf6TKEe4oVkiCQmxD0tPaDonhCLpxdqRZCWc99a9W
-	bb+/Mij4SYHXHW0EhRIYWlQiiV+MMdVp3IFSWcO/2lFmWRlYIfU1RPRcFrgPU2jqxNO92DPIVjp
-	plobh5ekvlBBZtVjrw+ahQ26EPgtNxIg=
-X-Gm-Gg: AfdE7cnzu/tKq/lK2sfxMlm0eVCKGCZ3UMrwAVJaqmeoEgHEQUdAhRSoTHWTmsrZhLR
-	lD40vMzU1RWj2d9xdaAlutyrQ1HkT5WCB3zeWmv/nrr9X9ExpqJnwdLZ3joahvIaJEIhU0vERYL
-	p4/gH6KwfqWTHSv2MD7JPieah7OvJ9oDzfsGxyoH/ZUVAeaa99uGyBnv+djUtbP3cIxtPb/PswJ
-	XFo8GqkcOHMWwmlHERd3/xX+Nd/opF6bsW8QaqxNbrLJdsMkdVZWI7LJNqqcXscWtJ/xD8Oy2d6
-	4NyyYsGzrNUq77gCANmFm3WgzNZCE4YL/+6cDCnJ0n2SKS/zoOZExVh5Bb3jqv293HCR7WK7a2p
-	fhXyFXSBGM1J7F3FNT/srmiL/ZkL1Toc0hnGQv11phLHub/o8lizBn7414rYU/0yr/PoxlP/Ylu
-	+sBI6k/uq3
-X-Received: by 2002:a05:6000:1889:b0:473:1ccc:15be with SMTP id
- ffacd0b85a97d-47553028b4bmr602442f8f.39.1782761177156; Mon, 29 Jun 2026
- 12:26:17 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36CA529430;
+	Mon, 29 Jun 2026 19:52:23 +0000 (UTC)
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1782762744; cv=none; b=TuZjn4RjV1b8tCNFXqw/OUnYEzHT6/xfrNEUs6lH5vjpUGvLId8Ky7MPmofoUXG1n0fWeOK+KzSNY1o1vpLio8flTs3OJLg1WIAl2Jrhlg9c0NN0uUnMBvtdb6MBjh//bhSuDbJo46alYYGezwaEr0WzU6MmSIQaElaLXPwx4b0=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1782762744; c=relaxed/simple;
+	bh=L2gzR1egjYQSUH7Gk+JXE9HC6cSCCnkjvNyRofRmJZI=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=dPuOOsp0E5POJYGif7OWTcYyd25wUbIN+Eb4CwZH2A4jNMLJhSYcOwpEu84J8WsHkKzx5Wd6iT/BCvZ0r1tPMYzxx3kAkkDFnFKAq1NbUna9CqZR76klUq5MHhjZ7vU2KP3G/4SrhV1Ors4+AZZaqWKbvNQkEtcWnYB/yheT5eI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=r06bz4ct; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPS id B262BC2BCB8;
+	Mon, 29 Jun 2026 19:52:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1782762743;
+	bh=L2gzR1egjYQSUH7Gk+JXE9HC6cSCCnkjvNyRofRmJZI=;
+	h=From:Date:Subject:To:Cc:Reply-To:From;
+	b=r06bz4ct329clznzAVMaU4NXPP8bO/89j+vIzotzkII1EOKgC8EjwKQPdXwI7e/GM
+	 FyV/m9nSIOy85U94GxWHsn4tmmi1E84EwXHXuM5rs4WkxXQTn49KT9MRdMVTZINJSr
+	 zABIScIAlS18yyAyPc4t5MQIO9Rhy82GxxNFVIzAQiryqze0bnM9kI3WAokGV1GX0o
+	 rZtIAFimpJCxQbCiequ+a4KcTP1ZFf0JCXnhv+BfLZgre6G1HBcdM7YkbqsGcjJuUU
+	 UTH4PP2u+bfAChVdA7u8OLdHvneDEM5Kp+F2Njhpg4OqIlW/LJuYT4+sV6NL9M1RU4
+	 XRSTpyZi7p4qA==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 98B5BC43458;
+	Mon, 29 Jun 2026 19:52:23 +0000 (UTC)
+From: Jean-Baptiste Maneyrol via B4 Relay <devnull+jean-baptiste.maneyrol.tdk.com@kernel.org>
+Date: Mon, 29 Jun 2026 21:51:55 +0200
+Subject: [PATCH v2] iio: imu: inv_icm42600: fix timestamping by limiting
+ FIFO reading
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260629-add-kconfig-deps-v1-0-8104df929b1a@gmail.com> <20260629-add-kconfig-deps-v1-3-8104df929b1a@gmail.com>
-In-Reply-To: <20260629-add-kconfig-deps-v1-3-8104df929b1a@gmail.com>
-From: Joshua Crofts <joshua.crofts1@gmail.com>
-Date: Mon, 29 Jun 2026 21:26:05 +0200
-X-Gm-Features: AVVi8CfEl_y46MafrE7csTYiPyLlcXEigCUk7Ai-r1lwTXi99wRl7GGWu2NrwYs
-Message-ID: <CALoEA-yewRwGCVKUS02m3WqPsVF5amF83HZTsk0H+QW=8fKKvw@mail.gmail.com>
-Subject: Re: [PATCH 3/3] hwmon: (max6679) add missing 'select REGMAP_I2C' to Kconfig
-To: Guenter Roeck <linux@roeck-us.net>, Tzung-Bi Shih <tzungbi@kernel.org>, 
-	Alexandru Tachici <alexandru.tachici@analog.com>
-Cc: linux-hwmon@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+Message-Id: <20260629-inv-icm42600-fix-watermark-fifo-reading-v2-1-967e375db7b3@tdk.com>
+X-B4-Tracking: v=1; b=H4sIANrMQmoC/5WOQQ7CIBQFr9Kw9hugFKsr72G6QArt1xQMIGqa3
+ l1aT+ByksmbN5NoAppITtVMgskY0bsCfFcRPSo3GMC+MOGUSyp5DegyoJ5EQQoW3/BSyYRJhXs
+ h6yEY1aMbQHKhlaUtPTSClLVHMMXeSpfux/F5vRmd1vnVGDEmHz7blcxW7/9qZsDA1raRR6Fa1
+ qpz6u977SfSLcvyBbqWBZHuAAAA
+X-Change-ID: 20260623-inv-icm42600-fix-watermark-fifo-reading-624caf080754
+To: Jonathan Cameron <jic23@kernel.org>, 
+ David Lechner <dlechner@baylibre.com>, 
+ =?utf-8?q?Nuno_S=C3=A1?= <nuno.sa@analog.com>, 
+ Andy Shevchenko <andy@kernel.org>
+Cc: Jean-Baptiste Maneyrol <jmaneyrol@invensense.com>, 
+ linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Jonathan Cameron <jic23@kernel.org>, stable@vger.kernel.org, 
+ Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
+X-Mailer: b4 0.15.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1782762742; l=3459;
+ i=jean-baptiste.maneyrol@tdk.com; s=20240923; h=from:subject:message-id;
+ bh=nQhkZPtLs3PxMsL5AOyaO81u0Ro6Jo38fVYTn+BsJME=;
+ b=yNVbPmWmarrbpNgNuwBQ178hkXzXHqoQp/X8hWQ65VmW5iY76m8EurFHMdJuhiYWYIGd3L5jT
+ SWPomtYGum/BbS0QinLJhieEwMKSikWg4wbFY+i32wgeOde28Se91zn
+X-Developer-Key: i=jean-baptiste.maneyrol@tdk.com; a=ed25519;
+ pk=bRqF1WYk0hR3qrnAithOLXSD0LvSu8DUd+quKLxCicI=
+X-Endpoint-Received: by B4 Relay for
+ jean-baptiste.maneyrol@tdk.com/20240923 with auth_id=218
+X-Original-From: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
+Reply-To: jean-baptiste.maneyrol@tdk.com
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-2.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+X-Spamd-Result: default: False [-5.16 / 15.00];
+	WHITELIST_SPF_DKIM(-3.00)[kernel.org:d:+,kernel.org:s:+];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_RECIPIENTS(0.00)[m:linux@roeck-us.net,m:tzungbi@kernel.org,m:alexandru.tachici@analog.com,m:linux-hwmon@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,s:lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-269821-lists,stable=lfdr.de,jean-baptiste.maneyrol.tdk.com];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-269820-lists,stable=lfdr.de];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	FORGED_SENDER(0.00)[joshuacrofts1@gmail.com,stable@vger.kernel.org];
-	TO_DN_SOME(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS(0.00)[m:jic23@kernel.org,m:dlechner@baylibre.com,m:nuno.sa@analog.com,m:andy@kernel.org,m:jmaneyrol@invensense.com,m:linux-iio@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,m:jean-baptiste.maneyrol@tdk.com,s:lists@lfdr.de];
 	FROM_HAS_DN(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	FORGED_SENDER(0.00)[devnull@kernel.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	FORWARDED(0.00)[lists@lfdr.de];
+	REPLYTO_DOM_NEQ_FROM_DOM(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
+	REPLYTO_DOM_NEQ_TO_DOM(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[joshuacrofts1@gmail.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	MID_RHS_MATCH_FROMTLD(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_NEQ_ENVFROM(0.00)[devnull@kernel.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[mail.gmail.com:mid,vger.kernel.org:from_smtp,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
+	HAS_REPLYTO(0.00)[jean-baptiste.maneyrol@tdk.com];
+	RCPT_COUNT_SEVEN(0.00)[10];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,baylibre.com:email,huawei.com:email,vger.kernel.org:from_smtp,analog.com:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 99B7B6DE61A
+X-Rspamd-Queue-Id: 9037E6DE841
 
-On Mon, 29 Jun 2026 at 21:17, Joshua Crofts <joshua.crofts1@gmail.com> wrote:
->
-> The Kconfig entry for the MAX6679 sensor doesn't contain a
-> `select REGMAP_I2C` parameter, causing build failures if regmap
-> isn't selected previously during the build process.
+From: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
 
-Oops, typo in the commit message, it should be 6697 in the title and
-body. Shall I send
-a new version or can it be tweaked when applying?
+Timestamps are made by measuring the chip clock using the watermark
+interrupts. If we read more than watermark samples as done today, we
+are reducing the period between interrupts and distort the time
+measurement. Fix that by reading only watermark samples in the
+interrupt case.
 
--- 
-Kind regards
+Fixes: 7f85e42a6c54 ("iio: imu: inv_icm42600: add buffer support in iio devices")
+Cc: stable@vger.kernel.org
+Signed-off-by: Jean-Baptiste Maneyrol <jmaneyrol@invensense.com>
+---
+Signed-off-by: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
+---
+Changes in v2:
+- Delete watermark computation rework, keep only FIFO read fix.
+- Link to v1: https://patch.msgid.link/20260623-inv-icm42600-fix-watermark-fifo-reading-v1-1-f3f5694a818a@tdk.com
 
-CJD
+To: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
+To: Jonathan Cameron <jic23@kernel.org>
+To: David Lechner <dlechner@baylibre.com>
+To: Nuno Sá <nuno.sa@analog.com>
+To: Andy Shevchenko <andy@kernel.org>
+Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Cc: Jean-Baptiste Maneyrol <jmaneyrol@invensense.com>
+Cc: linux-iio@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org
+---
+ drivers/iio/imu/inv_icm42600/inv_icm42600_buffer.c | 9 +++++----
+ drivers/iio/imu/inv_icm42600/inv_icm42600_buffer.h | 1 +
+ 2 files changed, 6 insertions(+), 4 deletions(-)
+
+diff --git a/drivers/iio/imu/inv_icm42600/inv_icm42600_buffer.c b/drivers/iio/imu/inv_icm42600/inv_icm42600_buffer.c
+index 68a395758031..5c3840acf085 100644
+--- a/drivers/iio/imu/inv_icm42600/inv_icm42600_buffer.c
++++ b/drivers/iio/imu/inv_icm42600/inv_icm42600_buffer.c
+@@ -248,6 +248,7 @@ int inv_icm42600_buffer_update_watermark(struct inv_icm42600_state *st)
+ 
+ 	/* compute watermark value in bytes */
+ 	wm_size = watermark * packet_size;
++	st->fifo.watermark.value = watermark;
+ 
+ 	/* changing FIFO watermark requires to turn off watermark interrupt */
+ 	ret = regmap_update_bits_check(st->map, INV_ICM42600_REG_INT_SOURCE0,
+@@ -454,11 +455,10 @@ int inv_icm42600_buffer_fifo_read(struct inv_icm42600_state *st,
+ 	st->fifo.nb.accel = 0;
+ 	st->fifo.nb.total = 0;
+ 
+-	/* compute maximum FIFO read size */
++	/* compute maximum FIFO read size (watermark for max = 0 interrupt case) */
+ 	if (max == 0)
+-		max_count = sizeof(st->fifo.data);
+-	else
+-		max_count = max * inv_icm42600_get_packet_size(st->fifo.en);
++		max = st->fifo.watermark.value;
++	max_count = max * inv_icm42600_get_packet_size(st->fifo.en);
+ 
+ 	/* read FIFO count value */
+ 	raw_fifo_count = (__be16 *)st->buffer;
+@@ -574,6 +574,7 @@ int inv_icm42600_buffer_init(struct inv_icm42600_state *st)
+ 
+ 	st->fifo.watermark.eff_gyro = 1;
+ 	st->fifo.watermark.eff_accel = 1;
++	st->fifo.watermark.value = 1;
+ 
+ 	/*
+ 	 * Default FIFO configuration (bits 7 to 5)
+diff --git a/drivers/iio/imu/inv_icm42600/inv_icm42600_buffer.h b/drivers/iio/imu/inv_icm42600/inv_icm42600_buffer.h
+index ffca4da1e249..88b8b9f780af 100644
+--- a/drivers/iio/imu/inv_icm42600/inv_icm42600_buffer.h
++++ b/drivers/iio/imu/inv_icm42600/inv_icm42600_buffer.h
+@@ -34,6 +34,7 @@ struct inv_icm42600_fifo {
+ 		unsigned int accel;
+ 		unsigned int eff_gyro;
+ 		unsigned int eff_accel;
++		unsigned int value;
+ 	} watermark;
+ 	size_t count;
+ 	struct {
+
+---
+base-commit: cc746297b23e89bd5df9f91f3a0ca209e8991763
+change-id: 20260623-inv-icm42600-fix-watermark-fifo-reading-624caf080754
+
+Best regards,
+--  
+Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
+
+
 
