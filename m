@@ -1,217 +1,160 @@
-Return-Path: <stable+bounces-269712-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-269713-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id qYb8NQNGQmre3QkAu9opvQ
-	(envelope-from <stable+bounces-269712-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 29 Jun 2026 12:16:35 +0200
+	id D7hGE75GQmpf3gkAu9opvQ
+	(envelope-from <stable+bounces-269713-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 29 Jun 2026 12:19:42 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 73FEC6D8C87
-	for <lists+stable@lfdr.de>; Mon, 29 Jun 2026 12:16:35 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id D5FC56D8D1A
+	for <lists+stable@lfdr.de>; Mon, 29 Jun 2026 12:19:41 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=LJmwljJb;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b="/KKhNtV/";
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=sNSU7e0D;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=BpMJ1ntC;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-269712-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-269712-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=none) header.from=suse.de;
+	dkim=pass header.d=mailbox.org header.s=mail20150812 header.b="jK/op6iK";
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-269713-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-269713-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=reject) header.from=mailbox.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 9B4EF300F77A
-	for <lists+stable@lfdr.de>; Mon, 29 Jun 2026 10:16:08 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 67CFC305852A
+	for <lists+stable@lfdr.de>; Mon, 29 Jun 2026 10:16:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E4833F86FB;
-	Mon, 29 Jun 2026 10:15:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A90E3FB079;
+	Mon, 29 Jun 2026 10:16:14 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mout-p-102.mailbox.org (mout-p-102.mailbox.org [80.241.56.152])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB42D3FE347
-	for <stable@vger.kernel.org>; Mon, 29 Jun 2026 10:15:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 205733E5579;
+	Mon, 29 Jun 2026 10:16:10 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782728152; cv=none; b=QXjS25MBCzlOnFE40NpApbSY7hk2g5gYnABC/fYc0HkagSqSBG76ivNI99z8lLON8Mznz2Qe6nMDF5ElwaR83+GV1vcIa/FoN8TEHILy8E4bms4YH1eNdUqxM/ix5LdEdJbD9K0CpHfdKA4HcGkL7klUAx2ChAvwYDmeTPB+fDI=
+	t=1782728174; cv=none; b=kjjnHPC6BfyFI00/jLX4OgxQmnVtcChuN8VfNZgv6UeWI/NQ0QF90aGO+Ancz55SJz4vRkY6st+ibS3lbJxjMGiRxzmOl2Ku/t6BABjtm7/rs2aVfXOlLGxvuu46iS1thKmrpsjQqokipSVHCCbvEu7Gnjd3kB7H4bbP1dru9wE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782728152; c=relaxed/simple;
-	bh=lQmgQs5IwiG1DL5ek9CXp3Y5TZZWbH9+aAHkY115yL4=;
-	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=JuJQutC51jXPVA1mvHcHBZN1FsfBHV8hY83AhDVRN2WDqWNkJH0m+/mM/Mp7HLlXSdEB4cWfDrmo6Rg7MOZuilhdZHVPsrIkTt34jJO7N4zcUKi34A9idknI/5wF3PjMptY7uHxKSATLtN4Cek15Einv5RUuqC/OIIf459+432I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=LJmwljJb; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=/KKhNtV/; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=sNSU7e0D; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=BpMJ1ntC; arc=none smtp.client-ip=195.135.223.131
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	s=arc-20240116; t=1782728174; c=relaxed/simple;
+	bh=HW+BWg1JW9BNHOp4E3b5w+CbOMquiIMjz4qFrzocohs=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=MJVOyTPk6Jl8zz+cWpS4iB2H/zhLyKqyHxbh+uIYS7jHS6rpz+Wm1HQ7rEg8KH12CRblOcBovcgUNfxHz1TER2ZzefuR5ZhrE7xGLXtmy5DRUvtB3WgFPHM9YfuIg86y/odYKDQY5OOnzL3/8WXIBUVcGqZ893noHiKVzE8O5Vk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org; spf=pass smtp.mailfrom=mailbox.org; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=jK/op6iK; arc=none smtp.client-ip=80.241.56.152
+Received: from smtp202.mailbox.org (smtp202.mailbox.org [10.196.197.202])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id CBBE475D7B;
-	Mon, 29 Jun 2026 10:15:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1782728149; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
+	by mout-p-102.mailbox.org (Postfix) with ESMTPS id 4gphxz4gTyz9v8L;
+	Mon, 29 Jun 2026 12:16:07 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
+	t=1782728167; h=from:from:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=xk5jXTH0rPYDTmpQI6nSdSsvy17M4jYVpe4SU8tiahY=;
-	b=LJmwljJb3pyfb2MfeuBUan7sxJD2En7Mz4/KtzTDbIH3bduYi/r0yAeSYx1jCR5k6z+UUt
-	E7zEW3M+48hsm/5+6u6+aKXEFamnNlLiVWEkvr7Pi+8gCn1uB1xDbe9UopoDiKAW3Sjfiu
-	QxS4F4IYpQWDRx3Kjfa/FRqwNYCFJlw=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1782728149;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=xk5jXTH0rPYDTmpQI6nSdSsvy17M4jYVpe4SU8tiahY=;
-	b=/KKhNtV/huD1pKcmJ5t6qHg1PVuyFppNCPiFR9DhPpBPpl9+510AZkjTrps3b1xNkqYRbt
-	lbFQ/UFlQdZZ1IBw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1782728148; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=xk5jXTH0rPYDTmpQI6nSdSsvy17M4jYVpe4SU8tiahY=;
-	b=sNSU7e0DPYIsqhI0nnX0d0QInczDzTkoBrBgNuEqtMppTLaji8mobjbHKA7pLkEYJmmrXp
-	ppFCygeGvvYh60MIVSdVQDYssnu8wdJtnMV2mKk121nUPorWMw+7QKWRNFVTBbE9nRTwmv
-	DWY95PzTzr++QCkAHUV6u+/7ZDLWFpg=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1782728148;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=xk5jXTH0rPYDTmpQI6nSdSsvy17M4jYVpe4SU8tiahY=;
-	b=BpMJ1ntCeLVlOKolhbN8HaUmsGiwB83lBGT4W1uFWU6t2F++hQ0/aA8zwOTtg11WzACXj+
-	QdFIpnfLyKoR1RAg==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 90F06779A8;
-	Mon, 29 Jun 2026 10:15:48 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id CcDDIdRFQmo9DAAAD6G6ig
-	(envelope-from <tiwai@suse.de>); Mon, 29 Jun 2026 10:15:48 +0000
-Date: Mon, 29 Jun 2026 12:15:48 +0200
-Message-ID: <87a4sdr6sr.wl-tiwai@suse.de>
-From: Takashi Iwai <tiwai@suse.de>
-To: WenTao Liang <vulab@iscas.ac.cn>
-Cc: perex@perex.cz,
-	tiwai@suse.com,
-	kees@kernel.org,
-	linux-sound@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
+	bh=HW+BWg1JW9BNHOp4E3b5w+CbOMquiIMjz4qFrzocohs=;
+	b=jK/op6iKOf1vTXFwaDd/0zgNygsmmHaCv3tMcFv5+iH3+DDblF/MSPxD75wLznpekMTSWv
+	Lkph52uqTDvIzBN7QoROOJsWOa0bM2mNUwancglKHe4kvMs0AMBGipFw3WO6SCQ4XpP1Oz
+	J6FRq/PVuGdEDCt4R9MR8AQkulWZpqkuSFiMRTHCT1U7ndySQz0gR/Ab1/yWTGuZqBZhE+
+	GlMM+rDgzf9LYeGob4ZWgqvdZDb/lwmMjjuT4UhPPlaAsFYN6Iz95DnUcFhHtT63qhytxT
+	J5F12TJTLxeXcYfkQ3TOF4iqZWES9oywB7+vht13SmcJYV49gsGwE43V0jqEYg==
+Message-ID: <9bd4bd923eacca9da25b6b9fda33057455d084c3.camel@mailbox.org>
+Subject: Re: [PATCH] dma-fence: Make dma_fence_dedup_array() robust against
+ 0-count input
+From: Philipp Stanner <phasta@mailbox.org>
+Reply-To: phasta@kernel.org
+To: Christian =?ISO-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>, 
+	phasta@kernel.org, Baineng Shou <shoubaineng@gmail.com>, Sumit Semwal
+	 <sumit.semwal@linaro.org>
+Cc: Tvrtko Ursulin <tursulin@ursulin.net>, Akash Goel <akash.goel@arm.com>, 
+	linux-media@vger.kernel.org, dri-devel@lists.freedesktop.org, 
+	linaro-mm-sig@lists.linaro.org, linux-kernel@vger.kernel.org, 
 	stable@vger.kernel.org
-Subject: Re: [PATCH] fix: sound/usb: snd_media_device_create: incorrect media_device_delete on borrowed reference
-In-Reply-To: <20260627040907.60784-1-vulab@iscas.ac.cn>
-References: <20260627040907.60784-1-vulab@iscas.ac.cn>
-User-Agent: Wanderlust/2.15.9 (Almost Unreal) Emacs/30.2 Mule/6.0
+Date: Mon, 29 Jun 2026 12:16:02 +0200
+In-Reply-To: <349ada65-c788-4c5e-9992-0278cf1382dd@amd.com>
+References: <20260629031346.3875683-1-shoubaineng@gmail.com>
+	 <becd29b5-9e40-4104-b6c9-3d91e2ddddff@amd.com>
+	 <058f4bb261e408cf17deca9ff7354460675eacbf.camel@mailbox.org>
+	 <66344c20-ea97-4dfa-ac42-c9d6e061eb95@amd.com>
+	 <7dc78d8ae9903c215ec492ee39b27cc504da8307.camel@mailbox.org>
+	 <349ada65-c788-4c5e-9992-0278cf1382dd@amd.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
-Content-Type: text/plain; charset=US-ASCII
-X-Spam-Flag: NO
-X-Spam-Score: -3.51
-X-Spam-Level: 
+MIME-Version: 1.0
+X-MBO-RS-ID: a61e13d958b385de307
+X-MBO-RS-META: zr99d7yz1wiidqwq7p49y3w987uhfuxh
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.16 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[suse.de,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
-	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	DMARC_POLICY_ALLOW(-0.50)[mailbox.org,reject];
+	R_DKIM_ALLOW(-0.20)[mailbox.org:s=mail20150812];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FORWARDED(0.00)[lists@lfdr.de];
-	TAGGED_FROM(0.00)[bounces-269712-lists,stable=lfdr.de];
-	FORGED_SENDER(0.00)[tiwai@suse.de,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-269713-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:vulab@iscas.ac.cn,m:perex@perex.cz,m:tiwai@suse.com,m:kees@kernel.org,m:linux-sound@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,s:lists@lfdr.de];
-	DKIM_TRACE(0.00)[suse.de:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
+	FREEMAIL_TO(0.00)[amd.com,kernel.org,gmail.com,linaro.org];
+	FORGED_SENDER(0.00)[phasta@mailbox.org,stable@vger.kernel.org];
 	TO_DN_SOME(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[tiwai@suse.de,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	FORGED_RECIPIENTS(0.00)[m:christian.koenig@amd.com,m:phasta@kernel.org,m:shoubaineng@gmail.com,m:sumit.semwal@linaro.org,m:tursulin@ursulin.net,m:akash.goel@arm.com,m:linux-media@vger.kernel.org,m:dri-devel@lists.freedesktop.org,m:linaro-mm-sig@lists.linaro.org,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,s:lists@lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORWARDED(0.00)[lists@lfdr.de];
+	REPLYTO_DOM_NEQ_FROM_DOM(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	REPLYTO_DOM_NEQ_TO_DOM(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[11];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[phasta@mailbox.org,stable@vger.kernel.org];
+	PRECEDENCE_BULK(0.00)[];
+	DKIM_TRACE(0.00)[mailbox.org:+];
+	MID_RHS_MATCH_FROM(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	HAS_REPLYTO(0.00)[phasta@kernel.org];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,suse.de:dkim,suse.de:mid,suse.de:from_mime,iscas.ac.cn:email]
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[mailbox.org:dkim,mailbox.org:mid,mailbox.org:from_mime,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 73FEC6D8C87
+X-Rspamd-Queue-Id: D5FC56D8D1A
 
-On Sat, 27 Jun 2026 06:09:07 +0200,
-WenTao Liang wrote:
-> 
-> In snd_media_device_create(), when chip->media_dev is already set, mdev
-> borrows the reference without incrementing the refcount. On error paths
-> through create_fail, media_device_delete() is called which releases the
-> borrowed reference, corrupting the reference count. Additionally,
-> chip->media_dev is set to NULL, losing the original reference.
-> 
-> Introduce an 'allocated' flag to distinguish between borrowed and
-> self-allocated references, and only call media_device_delete() when the
-> reference was actually acquired by this function invocation.
+On Mon, 2026-06-29 at 11:52 +0200, Christian K=C3=B6nig wrote:
+> On 6/29/26 11:06, Philipp Stanner wrote:
+> > On Mon, 2026-06-29 at 10:52 +0200, Christian K=C3=B6nig wrote:
+> > > On 6/29/26 10:49, Philipp Stanner wrote:
+> > > > >=20
+> > > > > I will add a CC stable before pushing to drm-misc-fixes.
+> > > >=20
+> > > > No offense intended or taken, but don't the DRM rules say that
+> > > > things
+> > > > do not get merged while there are outstanding concerns or
+> > > > significant
+> > > > points in review feedback?
+> > >=20
+> > > I haven't seen that before writing the response.
+> > >=20
+> > > I usually go over my mails till the end and wait a couple of
+> > > hours before pushing anything.
+> > >=20
+> > > > What about my comments?
+> > >=20
+> > > Looks valid to me as well, but I think that is a separate issue.
+> >=20
+> > But if we keep it an integer for now, and if that check is added,
+> > and
+> > it most certainly should also catch negative integers, shouldn't
+> > it?
+>=20
+> Maybe with a WARN_ON(), but not as regular code path.
+>=20
+> The thing is I think we need to backport this fix to stable kernels,
+> but switching from signed to unsigned is only a minor cleanup when no
+> real users are currently affected.
 
-Does this really happen?  The code in question is after the check by
-media_devnode_is_registered(), and if chip->media_dev has been already
-set, it means that it should have been already registered, hence this
-code path won't hit.
+Fine by me.
 
-
-thanks,
-
-Takashi
-
-
-> 
-> Cc: stable@vger.kernel.org
-> Fixes: 66354f18fe5f ("media: sound/usb: Use Media Controller API to share media resources")
-> Signed-off-by: WenTao Liang <vulab@iscas.ac.cn>
-> ---
->  sound/usb/media.c | 10 +++++++---
->  1 file changed, 7 insertions(+), 3 deletions(-)
-> 
-> diff --git a/sound/usb/media.c b/sound/usb/media.c
-> index b7497d18ee3f..290bd24bf301 100644
-> --- a/sound/usb/media.c
-> +++ b/sound/usb/media.c
-> @@ -255,6 +255,7 @@ int snd_media_device_create(struct snd_usb_audio *chip,
->  	struct media_device *mdev;
->  	struct usb_device *usbdev = interface_to_usbdev(iface);
->  	int ret = 0;
-> +	bool allocated = false;
->  
->  	/* usb-audio driver is probed for each usb interface, and
->  	 * there are multiple interfaces per device. Avoid calling
-> @@ -272,6 +273,7 @@ int snd_media_device_create(struct snd_usb_audio *chip,
->  
->  	/* save media device - avoid lookups */
->  	chip->media_dev = mdev;
-> +	allocated = true;
->  
->  snd_mixer_init:
->  	/* Create media entities for mixer and control dev */
-> @@ -292,9 +294,11 @@ int snd_media_device_create(struct snd_usb_audio *chip,
->  create_fail:
->  		if (ret) {
->  			snd_media_mixer_delete(chip);
-> -			media_device_delete(mdev, KBUILD_MODNAME, THIS_MODULE);
-> -			/* clear saved media_dev */
-> -			chip->media_dev = NULL;
-> +			if (allocated) {
-> +				media_device_delete(mdev, KBUILD_MODNAME, THIS_MODULE);
-> +				/* clear saved media_dev */
-> +				chip->media_dev = NULL;
-> +			}
->  			dev_err(&usbdev->dev,
->  				"Couldn't register media device. Error: %d\n",
->  				ret);
-> -- 
-> 2.39.5 (Apple Git-154)
-> 
+P.
 
