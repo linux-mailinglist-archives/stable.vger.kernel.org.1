@@ -1,93 +1,51 @@
-Return-Path: <stable+bounces-269803-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-269809-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id lHCdKfqkQmqu/AkAu9opvQ
-	(envelope-from <stable+bounces-269803-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 29 Jun 2026 19:01:46 +0200
+	id SVDhOPiuQmqs/gkAu9opvQ
+	(envelope-from <stable+bounces-269809-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 29 Jun 2026 19:44:24 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2FEC76DD928
-	for <lists+stable@lfdr.de>; Mon, 29 Jun 2026 19:01:46 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3C1816DDD85
+	for <lists+stable@lfdr.de>; Mon, 29 Jun 2026 19:44:24 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=rowland.harvard.edu header.s=google header.b=YsFHHwbp;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-269803-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-269803-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=none) header.from=rowland.harvard.edu;
+	dkim=none;
+	dmarc=none;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-269809-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-269809-lists+stable=lfdr.de@vger.kernel.org";
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 39E04300A506
-	for <lists+stable@lfdr.de>; Mon, 29 Jun 2026 17:01:45 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id CEA4F30465F1
+	for <lists+stable@lfdr.de>; Mon, 29 Jun 2026 17:39:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 397CE4657FE;
-	Mon, 29 Jun 2026 17:01:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B926382F02;
+	Mon, 29 Jun 2026 17:39:52 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qt1-f169.google.com (mail-qt1-f169.google.com [209.85.160.169])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4793428841
-	for <stable@vger.kernel.org>; Mon, 29 Jun 2026 17:01:42 +0000 (UTC)
+Received: from elvis.franken.de (elvis.franken.de [193.175.24.41])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6BE7C374E63;
+	Mon, 29 Jun 2026 17:39:47 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782752504; cv=none; b=ZSMOry332TRp5yBrbiwvcWDj8N/rfAOTEezhVsKK50XaUTKnX1kLOFMm2XoTWrY7GOGi9o9+8Znf5x8OjekCzThXj3fO21e54i+9lrm876xBbXV+daOsZY6ypAjXmuQ/9GTNtTplwQhRGW2gRoP4CebuJ8QFghiMrJw6vFrQXTQ=
+	t=1782754792; cv=none; b=Mq+5VJQkfXqTc0Z6TFXRb6VsTLm2X4wyEXQA79iFmddbT1iNQM5oKNnc1eCvxdwaujO6cdmxhUlnaMbJ0+GPHHXIC2B5CcW2Aryj78QD9xcjOnPlibdDhyG30QrOxumbv5ppr+KpVQFLl201MRgcaAmriAmBeOK3mRkSIh7qZ4c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782752504; c=relaxed/simple;
-	bh=0ZbNq3krgb6G8hdaDapKsW5xowxyl35n00VG63vlvsE=;
+	s=arc-20240116; t=1782754792; c=relaxed/simple;
+	bh=Ej3rdP+msPj7ZdoJHeG5VaheOUmHRQHs9VfwmJSIK/c=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=H2PZ/BvyLMjMpzOUhtnTuSBqW/QQgl+SnWc6yOx3oD9Ndy5iez6aGnMaOV1SBNpf5eBWQXdtk86Bneum5QQO+wLtMP8KZe2znbv35zN4AxkOJVSSO8DL+twQO0rIah8vM5xiNX4Cqq8673oPf7PvGFS/rUzj8YT/c7eLSUfjpNI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rowland.harvard.edu; spf=fail smtp.mailfrom=g.harvard.edu; dkim=pass (2048-bit key) header.d=rowland.harvard.edu header.i=@rowland.harvard.edu header.b=YsFHHwbp; arc=none smtp.client-ip=209.85.160.169
-Received: by mail-qt1-f169.google.com with SMTP id d75a77b69052e-51a0188b92fso37894611cf.3
-        for <stable@vger.kernel.org>; Mon, 29 Jun 2026 10:01:42 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=rowland.harvard.edu; s=google; t=1782752502; x=1783357302; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=YeHN7utODULOILBow3SQ4SKTKi+vOT1iFpqN2h/hBuo=;
-        b=YsFHHwbpRsX5WjoNxm3vYRCqhksFNPQnB0Jc2ywinYZG01tXjjJH3fkHn/Div+1sMs
-         ZhqEsZ3KP5/hCtwmCB0sggQycScKKihHnrWvN4HLpcOJuNZTlKnq+N2iGObngd0tVmR2
-         sNCaSLYR9ResDcJSB9fXvvlTivQR+tJU0vmOPohlYuGpV8zozEEJARYh8Cc8bA0gcbt/
-         mPAqGodfzl0Ws6ujYVGVqZHCS1Omy0pqmvxo2PmF2iMoXoZYTgsg4O1eIA98ZRCZYVFz
-         SIZNs95vuTXa4A2PxaBZ2HnF6UIEM5kPpV4hO2xHaCIgQsKcJicrKhkSKSda3VKHsaRQ
-         GEKA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782752502; x=1783357302;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=YeHN7utODULOILBow3SQ4SKTKi+vOT1iFpqN2h/hBuo=;
-        b=jRpKVIOkCxz7zi2FTmbTzK25d8wtZZr0/RcR9Bsef+ESQW8eTmWU/EE8Gy4/eHl1Q1
-         +xRM/s83qUEelpuHcJ1P8CwhTewxNGgx3NthdnK61FyyIr2Jb4oFH5W6w8iXXz6WGdOZ
-         yPMzAXWKEkeJqEyf6r8WihjXogu9lma+2Yr3bkvAtzyedscp1YvxHEBEDBtFy4wagdwz
-         qr9WNGuRke0ruAnWD8spg/4DaDgX27a4ILZmPRadnor/TZl6hAl5LK/0V5jsJO+WL8fQ
-         KU1e6gcY0O1vuX4YYPkCQst27YOlPFJpUhctisuuGxyxpZDeb5q1mRHl3KG1shrEWEEc
-         HoGw==
-X-Forwarded-Encrypted: i=1; AFNElJ+kWt0llNhk4LY+M1gAfw/uf9jcaEF1lYTPrPVtLawYip4+myyKpeInkDQhVat9MqCZ0lrfm2A=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxXT8nKY+sLguObkU3CHdlpxI9k8xCMuWB7KF+71NmirLh0/uh6
-	6DbXfO6UcA/7jJ9awjDkFtWo9x0F3nwVirCBi+1rm0XWlRHBD1qd2BdgNjFFXjEjesVVX552ar1
-	TIFk=
-X-Gm-Gg: AfdE7cmlVIXMI6IN7vmBbAahHHPZh5mxkgC6cU7yQVK+MDFswIrMgja9LFNhPZ2vwtS
-	Rq19IRlWS9OWOsPMiViayuKgFL1e/9IOb8D97zEksmIVmaEqp3YYrLUGxFs0vk+gOlr6nCVQjr+
-	Wm7bXTWkdF6kBS43iHoZ2KhhHsG0FAIo0bgwpbr9hMylvgcaZVLqk2aKB5qkZA6em8achIRAQux
-	gvcffkRUYhcQJt9MqrqOzAH/V0S6S8gepANnPkM2MyTkJBUaW/RBNnu5lFcIh7JT2caAzzVQb8T
-	MJRB+5slCOlbhwyllyChsdeOxUBS6ADOo4pk44BoVjMyMWJUOcH4pOlCee85wAf3GPCwDiJ5zAV
-	KhGsh+HgUbabOcQOQeo2FMnW57VUuzQMldErJtzYieFMVLq2da6MubheYXcPhZ+aopIuNREmma1
-	BKyWcqvqngm9ffqHUBGDz5dKK9Vk+JnzANGAFO2HdhLTsgqJZZqHP0sbek
-X-Received: by 2002:a05:622a:551b:b0:517:8446:3afc with SMTP id d75a77b69052e-51c1074e85cmr2361671cf.14.1782752501737;
-        Mon, 29 Jun 2026 10:01:41 -0700 (PDT)
-Received: from rowland.harvard.edu ([2607:fb60:1011:2006:2008:aeb7:73d7:d8ff])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-51c1080d4f4sm881251cf.4.2026.06.29.10.01.40
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 29 Jun 2026 10:01:41 -0700 (PDT)
-Date: Mon, 29 Jun 2026 13:01:38 -0400
-From: Alan Stern <stern@rowland.harvard.edu>
-To: Nikhil Solanke <nikhilsolanke5@gmail.com>
-Cc: Michal Pecio <michal.pecio@gmail.com>, linux-usb@vger.kernel.org,
-	gregkh@linuxfoundation.org, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org, corbet@lwn.net, skhan@linuxfoundation.org,
-	linux-doc@vger.kernel.org
-Subject: Re: [PATCH v2] usbcore: Add quirk for 255-bytes initial config read
-Message-ID: <e7d49127-0215-4b29-9a2a-e1dc0d889b70@rowland.harvard.edu>
-References: <20260623161035.5792-1-nikhilsolanke5@gmail.com>
- <20260628231634.6752f74d.michal.pecio@gmail.com>
- <CAFgddh+AUNH9Ji-Qd=BKEDZWJrzPMWN20-g-htQDPSdSehZStQ@mail.gmail.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=mb0fuyFZDEjv49AU1MM8na9oIPQrfmOKtohhmQ7zMPTLvbH6U2b0jyV+vd2S07E0+DsKE50P6Hw9ZjABF4KpBDugz7l6fMVyEg4+CoTTZRkJa2Se84Uoul3eGbzr2dyeakaw2QzdcYtt/GGOXtbWniiNehQGeQSBk1CWeYjmDUw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=alpha.franken.de; spf=pass smtp.mailfrom=alpha.franken.de; arc=none smtp.client-ip=193.175.24.41
+Received: from uucp by elvis.franken.de with local-rmail (Exim 3.36 #1)
+	id 1weFd2-0005id-00; Mon, 29 Jun 2026 19:18:40 +0200
+Received: by alpha.franken.de (Postfix, from userid 1000)
+	id 94EDFC013E; Mon, 29 Jun 2026 19:16:51 +0200 (CEST)
+Date: Mon, 29 Jun 2026 19:16:51 +0200
+From: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+To: raoxu <raoxu@uniontech.com>
+Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+	kuba@kernel.org, pabeni@redhat.com, linux-mips@vger.kernel.org,
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH net] net: sgi: ioc3-eth: fix split TX DMA mapping lengths
+Message-ID: <akKog7-ppsYUs7z0@alpha.franken.de>
+References: <4E1486BC4536407E+20260629080623.908426-1-raoxu@uniontech.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -96,63 +54,94 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <CAFgddh+AUNH9Ji-Qd=BKEDZWJrzPMWN20-g-htQDPSdSehZStQ@mail.gmail.com>
+In-Reply-To: <4E1486BC4536407E+20260629080623.908426-1-raoxu@uniontech.com>
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.66 / 15.00];
+X-Spamd-Result: default: False [0.04 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[rowland.harvard.edu,none];
-	R_DKIM_ALLOW(-0.20)[rowland.harvard.edu:s=google];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FROM_HAS_DN(0.00)[];
-	FREEMAIL_CC(0.00)[gmail.com,vger.kernel.org,linuxfoundation.org,lwn.net];
-	TAGGED_FROM(0.00)[bounces-269803-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:nikhilsolanke5@gmail.com,m:michal.pecio@gmail.com,m:linux-usb@vger.kernel.org,m:gregkh@linuxfoundation.org,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,m:corbet@lwn.net,m:skhan@linuxfoundation.org,m:linux-doc@vger.kernel.org,m:michalpecio@gmail.com,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[stern@rowland.harvard.edu,stable@vger.kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_TO(0.00)[gmail.com];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[rowland.harvard.edu:+];
-	MISSING_XM_UA(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	ALIAS_RESOLVED(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[stern@rowland.harvard.edu,stable@vger.kernel.org];
-	PRECEDENCE_BULK(0.00)[];
+	TAGGED_FROM(0.00)[bounces-269809-lists,stable=lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	TAGGED_RCPT(0.00)[stable];
+	RCVD_TLS_LAST(0.00)[];
+	DMARC_NA(0.00)[franken.de];
+	FORGED_RECIPIENTS(0.00)[m:raoxu@uniontech.com,m:andrew+netdev@lunn.ch,m:davem@davemloft.net,m:edumazet@google.com,m:kuba@kernel.org,m:pabeni@redhat.com,m:linux-mips@vger.kernel.org,m:netdev@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,m:andrew@lunn.ch,s:lists@lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_SENDER(0.00)[tsbogend@alpha.franken.de,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[tsbogend@alpha.franken.de,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	ALIAS_RESOLVED(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[10];
+	R_DKIM_NA(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
+	TAGGED_RCPT(0.00)[stable,netdev];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[uniontech.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,franken.de:email,vger.kernel.org:from_smtp,alpha.franken.de:mid,alpha.franken.de:from_mime]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 2FEC76DD928
+X-Rspamd-Queue-Id: 3C1816DDD85
 
-On Mon, Jun 29, 2026 at 11:00:44AM +0530, Nikhil Solanke wrote:
-> On that note, I discovered that usb_get_descriptor just blindly trusts
-> the caller with the allocation of buf, it never checks if buf is null
-> or not. There is only a check for the size. and then there is a
-> memset(buf, 0, size). This results in a segfault if buf is NULL and
-> size > 0. Perhaps it's time for a new patch to fix this?
+On Mon, Jun 29, 2026 at 04:06:23PM +0800, raoxu wrote:
+> From: Xu Rao <raoxu@uniontech.com>
+> 
+> When a linear skb crosses a 16 KiB boundary, ioc3_start_xmit()
+> splits it into two buffers of lengths s1 and s2.  The descriptor
+> advertises those lengths through B1CNT and B2CNT.
+> 
+> The first buffer is mapped with s1, but the second buffer is also
+> mapped with s1 even though the device is told to fetch s2 bytes from
+> it.  When the lengths differ, the DMA mapping does not cover the same
+> region as the second descriptor buffer, which can result in incorrect
+> cache maintenance or a DMA fault on implementations that enforce the
+> mapped range.
+> 
+> There is a separate mismatch in the error path.  If mapping the second
+> buffer fails, only d1 needs to be unmapped.  d1 was mapped for s1 bytes,
+> but the driver unmaps it using the full packet length.  Streaming DMA
+> mappings must be unmapped with the same size used for the corresponding
+> map operation.
+> 
+> Map the second buffer with s2 and unmap the first buffer with s1 when
+> the second mapping fails.
+> 
+> Fixes: ed870f6a7aa2 ("net: sgi: ioc3-eth: use dma-direct for dma allocations")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Xu Rao <raoxu@uniontech.com>
+> ---
+>  drivers/net/ethernet/sgi/ioc3-eth.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/net/ethernet/sgi/ioc3-eth.c b/drivers/net/ethernet/sgi/ioc3-eth.c
+> index 3973106..261f2d3 100644
+> --- a/drivers/net/ethernet/sgi/ioc3-eth.c
+> +++ b/drivers/net/ethernet/sgi/ioc3-eth.c
+> @@ -1061,9 +1061,9 @@ static netdev_tx_t ioc3_start_xmit(struct sk_buff *skb, struct net_device *dev)
+>  		d1 = dma_map_single(ip->dma_dev, skb->data, s1, DMA_TO_DEVICE);
+>  		if (dma_mapping_error(ip->dma_dev, d1))
+>  			goto drop_packet;
+> -		d2 = dma_map_single(ip->dma_dev, (void *)b2, s1, DMA_TO_DEVICE);
+> +		d2 = dma_map_single(ip->dma_dev, (void *)b2, s2, DMA_TO_DEVICE);
+>  		if (dma_mapping_error(ip->dma_dev, d2)) {
+> -			dma_unmap_single(ip->dma_dev, d1, len, DMA_TO_DEVICE);
+> +			dma_unmap_single(ip->dma_dev, d1, s1, DMA_TO_DEVICE);
+>  			goto drop_packet;
+>  		}
+>  		desc->p1     = cpu_to_be64(ioc3_map(d1, PCI64_ATTR_PREF));
+> -- 
+> 2.47.3
 
-There's nothing wrong with trusting the caller to do the right thing.  
-Besides, if a segfault does occur then it will be pretty obvious that 
-the caller needs to be fixed.
+Reviewed-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
 
-What would you do if buf is NULL?  Return an error code?  That won't 
-help anyone locate the bug.  Put an error message in the log?  Segfaults 
-are much more visible.
-
-Not to mention that nobody has complained about this code failing, so it 
-seems unlikely that buf ever is NULL.
-
-Alan Stern
+-- 
+Crap can work. Given enough thrust pigs will fly, but it's not necessarily a
+good idea.                                                [ RFC1925, 2.3 ]
 
