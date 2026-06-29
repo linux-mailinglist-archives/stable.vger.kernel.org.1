@@ -1,68 +1,91 @@
-Return-Path: <stable+bounces-269699-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-269704-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id uJoMKxw7Qmps2QkAu9opvQ
-	(envelope-from <stable+bounces-269699-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 29 Jun 2026 11:30:04 +0200
+	id Ti1gJZQ9Qmoa2gkAu9opvQ
+	(envelope-from <stable+bounces-269704-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 29 Jun 2026 11:40:36 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4494B6D8391
-	for <lists+stable@lfdr.de>; Mon, 29 Jun 2026 11:30:04 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 28D0B6D855C
+	for <lists+stable@lfdr.de>; Mon, 29 Jun 2026 11:40:36 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=h-partners.com header.s=dkim header.b=jeUP7WDj;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-269699-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-269699-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=quarantine) header.from=h-partners.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b="Q/R7v/Ib";
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-269704-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-269704-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=none) header.from=gmail.com;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 1F8EC30549E7
-	for <lists+stable@lfdr.de>; Mon, 29 Jun 2026 09:23:56 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id AFA8D30087E3
+	for <lists+stable@lfdr.de>; Mon, 29 Jun 2026 09:40:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5B853F99E5;
-	Mon, 29 Jun 2026 09:23:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14B893F9F3B;
+	Mon, 29 Jun 2026 09:40:26 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from canpmsgout03.his.huawei.com (canpmsgout03.his.huawei.com [113.46.200.218])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f52.google.com (mail-wr1-f52.google.com [209.85.221.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 659593F8EDE;
-	Mon, 29 Jun 2026 09:23:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DE4C3B19B9
+	for <stable@vger.kernel.org>; Mon, 29 Jun 2026 09:40:24 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782725020; cv=none; b=i219GvF+LiJtE5toHZJyIsYIZJKMC4qKo3MjcYWe/+BM4Zm55VzOuTXG4zYNPAeUbPDzYcN77HA1hjlRU5u9ZRD+BE3X1Eyuk6MIM066EmlswIKJiTRH7SCG9s8AIjlBLYBLzuiZBEUa4uPYQZhNkeD8XyW5gTgacf3Oh0/oe20=
+	t=1782726025; cv=none; b=H4w8YAGBA61HsGZHEb9qK1k4P/PSTqhluyBRK4yH4QGQ8C5YOADrvZ5CXXb0iT62WJb6xBaTNU0EMA0jkRSzl2pr8xlFh54sqSWPlx+JpDDPbnrVCPDTzwpXlbP4NQ9FbATZxHju4e28ENce3EOHYRmxMwMIuxQz8t+JYEekiMQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782725020; c=relaxed/simple;
-	bh=NOinlIUHK1O7KsV8/Sws+CeKyYdx2R8D9bQpxtImFts=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=ZcMbnGtE8E8Ot+Fz2WpwJ8iouEq9odDP60tjdIOimugy8f4cU7OMGetsnNCmhTAkbhUyNb7zF+p1jwpyi56YSgu7NR+NVc80hNlfpYinkBhlmH+GJJzuwqMNnqf+qcScV9Zp0eAhSpbnFPeBLr05jrtisiGcm7tOx22magRu5cw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=h-partners.com; spf=pass smtp.mailfrom=h-partners.com; dkim=pass (1024-bit key) header.d=h-partners.com header.i=@h-partners.com header.b=jeUP7WDj; arc=none smtp.client-ip=113.46.200.218
-dkim-signature: v=1; a=rsa-sha256; d=h-partners.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=G2M8dDHxD+jz6xgmK0NGrGGjxPFhsJR72vzpL2rXGAg=;
-	b=jeUP7WDjEepo3brfJMCRdy1wLlb/PDs6Ih+yaMuvj7+GJo/FHzp8clzSgCltX7I5GbJD6d/cz
-	t/Wl56isEll41nk/w6Gk//1zIDW2YyVs6xSlbUMwNO1W37YQYXtGhLrA+kzzvqiApWOPh0CB8S3
-	tM1tkkiIa+o4+jdSctm3Ivc=
-Received: from mail.maildlp.com (unknown [172.19.162.197])
-	by canpmsgout03.his.huawei.com (SkyGuard) with ESMTPS id 4gpgbS6gYtzpSyh;
-	Mon, 29 Jun 2026 17:15:00 +0800 (CST)
-Received: from kwepemr100001.china.huawei.com (unknown [7.202.195.168])
-	by mail.maildlp.com (Postfix) with ESMTPS id 363204057D;
-	Mon, 29 Jun 2026 17:23:25 +0800 (CST)
-Received: from huawei.com (10.50.159.234) by kwepemr100001.china.huawei.com
- (7.202.195.168) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.36; Mon, 29 Jun
- 2026 17:23:24 +0800
-From: xietangxin <xietangxin@h-partners.com>
-To: Pablo Neira Ayuso <pablo@netfilter.org>, Florian Westphal <fw@strlen.de>,
-	Phil Sutter <phil@nwl.cc>, "David S . Miller" <davem@davemloft.net>, Eric
- Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
-	<pabeni@redhat.com>, Simon Horman <horms@kernel.org>
-CC: gaoxingwang <gaoxingwang1@huawei.com>, huyizhen <huyizhen2@huawei.com>,
-	<netfilter-devel@vger.kernel.org>, <coreteam@netfilter.org>,
-	<netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-	<stable@vger.kernel.org>
-Subject: [PATCH net] netfilter: nf_nat_masquerade: recalculate TCP TS offset when port is randomized
-Date: Mon, 29 Jun 2026 17:34:08 +0800
-Message-ID: <20260629093408.3927103-1-xietangxin@h-partners.com>
-X-Mailer: git-send-email 2.43.0
+	s=arc-20240116; t=1782726025; c=relaxed/simple;
+	bh=0NRnwOTkYqoD8DBF+bYtIQoBIoqPd4HJRoOYSMROJzA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=gxyKOoUl/N9vhNVXU9sGF2jyvo4jm4cxs9HFekJFT2g0bM/dVSI082968E99Gsv7LHxzkKUxNzYfJ4iC9B7WlhmLO7PKfPwhwTRiVLlAo1a8AodWUj7grMQEcraTX9ZC6b8n79vK0Ao3mtMq4XrzskLQU+M4z373G4JENAwTIFY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Q/R7v/Ib; arc=none smtp.client-ip=209.85.221.52
+Received: by mail-wr1-f52.google.com with SMTP id ffacd0b85a97d-4629051c946so1659721f8f.1
+        for <stable@vger.kernel.org>; Mon, 29 Jun 2026 02:40:24 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1782726023; x=1783330823; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=buX7wAG0nhZSHN5FfnjkD/cPhw+ScyqwYDleMV3fgho=;
+        b=Q/R7v/IbW/MXL9vYsMmuXIdmmf4kmy4eLhHST0v/lqLqqeDzxfLzOSXM/PYWjC92ZD
+         hPK4i0YCrcd164/Lp3bQalGKGiviGwXW/QGTiLDynuuSGTyw7c4AIukOOA9l3ytZYwCX
+         Jpj0w5rFayKJzK0w64+9H32DR6/BQa4FZG+3mgeptocGzHVOKx/fYlGxwdaObfvI4xtt
+         sWRY9jaXk94hTVp2kevnCqeWrFgNMyYgAgcR1lRCpyo/EWct5RspFKzbPUiA354THwqS
+         eF1NikejQ8Nqk0Gu99K8zadvttX/tmV80lS6ks3Uv1xil9QLovl30+rQ1AzUaNyq/0Vn
+         dw0Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1782726023; x=1783330823;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=buX7wAG0nhZSHN5FfnjkD/cPhw+ScyqwYDleMV3fgho=;
+        b=T77AHdgT22QbMaKv9sEr8xhMvv/rjjm2smL0KPftHhjwyKu+h0bvfX0mvmSjt4hmS3
+         5a2As6tapMj0ediwXoRCwkWuiaYAJXPokhrU/3s5JlOVvQ017R+/k4xD7wI3BraadJlO
+         ShfSFnsQlBmTb8ffjsk2Exh1iMN9eRsfEA5MNobQfxTTZv1A/cB9AkTSfuQeJAwlRVlM
+         a2R1mwOZ66e4ZJJjQjGvJfGQK9F1QA7ahuyOYuzz72Z3M4o6nYOcH3UhQwpZ1m28SW4O
+         hGP22t4WtQeLC9A3tEA7+nQS3sQr49VRGwtvDx8nDhpPozRoCvh1w7Pfa4vR6ss+ICBK
+         hFKQ==
+X-Gm-Message-State: AOJu0YzRuuLMo3t6w870HwNXprAv3GplR3DKggqouTgSeIInaNpbuxQI
+	RD2C86IG3CwY8KWoN8NSiQF1bJIg3Zf2Gdr6PUsp77rvYa9aZ9DE3ahMFvBbwrgaovE=
+X-Gm-Gg: AfdE7clyh49GDCgZrB2+gbC+m38//xVykfSMYb0loVpZ9YjHFaRxV3caZnfdHYJkX62
+	tWq1X14kAAL9Hcn6G8Mr+4Ap2Qs7+748AoLWpXQ7FzDLhvn2ERNdw+FZJVHJLrW1EfV4zY2Xctz
+	rzQANWmASZ1uTzAr22IsjS6MYPEqsQLi7su171LX0v8UGONWVnMbKrK/XjHvEM7WEUGfUqIUk/9
+	0YxQVnjYr6x1WUCj7Rs0+7t2yCUTXm+R0scXiukOV90K3ZFI3xEDXdIFRdX3FcaHH3566PSkdx+
+	64wwvKj1/ckoquxb6j+M4uCwpCwXHlq39/qI/Wql6KuDBqzRe9vhOTOXA4ibuCQMsYzD4B1xLtI
+	WjD91i0VlZJdVJAMqWKIFpootV10GWZ44I0EoUssRy97cRdyxNgS1vfihxx9yLS71bcUXY/iYeV
+	4W3Z5LpTfhNE23qtN7h/Nvb2e2EDvl9R7iWLFglTtHwO7HI3y3ZDkmt+UxTTENIKKL/PV9qSc+
+X-Received: by 2002:a5d:5f90:0:b0:474:c3a5:4132 with SMTP id ffacd0b85a97d-474c3a541a4mr732878f8f.9.1782726022624;
+        Mon, 29 Jun 2026 02:40:22 -0700 (PDT)
+Received: from localhost.localdomain (94-43-5-44.dsl.utg.ge. [94.43.5.44])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4726b76e6f8sm17704409f8f.13.2026.06.29.02.40.20
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 29 Jun 2026 02:40:22 -0700 (PDT)
+From: Igor Ushakov <sysroot314@gmail.com>
+To: stable@vger.kernel.org
+Cc: Kuniyuki Iwashima <kuniyu@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	netdev@vger.kernel.org,
+	Igor Ushakov <sysroot314@gmail.com>
+Subject: [PATCH 6.6.y] af_unix: Set gc_in_progress to true in unix_gc().
+Date: Mon, 29 Jun 2026 12:39:50 +0300
+Message-ID: <20260629093954.195016-1-sysroot314@gmail.com>
+X-Mailer: git-send-email 2.47.3
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -70,219 +93,107 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: kwepems100002.china.huawei.com (7.221.188.206) To
- kwepemr100001.china.huawei.com (7.202.195.168)
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_CONTAINS_FROM(1.00)[];
 	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[h-partners.com,quarantine];
-	R_DKIM_ALLOW(-0.20)[h-partners.com:s=dkim];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCPT_COUNT_TWELVE(0.00)[15];
-	TAGGED_FROM(0.00)[bounces-269699-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
 	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_SENDER(0.00)[xietangxin@h-partners.com,stable@vger.kernel.org];
-	FORGED_RECIPIENTS(0.00)[m:pablo@netfilter.org,m:fw@strlen.de,m:phil@nwl.cc,m:davem@davemloft.net,m:edumazet@google.com,m:kuba@kernel.org,m:pabeni@redhat.com,m:horms@kernel.org,m:gaoxingwang1@huawei.com,m:huyizhen2@huawei.com,m:netfilter-devel@vger.kernel.org,m:coreteam@netfilter.org,m:netdev@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,s:lists@lfdr.de];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	FREEMAIL_CC(0.00)[google.com,kernel.org,redhat.com,davemloft.net,vger.kernel.org,gmail.com];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-269704-lists,stable=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:kuniyu@google.com,m:kuba@kernel.org,m:pabeni@redhat.com,m:davem@davemloft.net,m:edumazet@google.com,m:netdev@vger.kernel.org,m:sysroot314@gmail.com,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[sysroot314@gmail.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	FREEMAIL_FROM(0.00)[gmail.com];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[xietangxin@h-partners.com,stable@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[sysroot314@gmail.com,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[h-partners.com:+];
-	RCVD_COUNT_FIVE(0.00)[6];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
-	TO_DN_SOME(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[h-partners.com:dkim,h-partners.com:email,h-partners.com:mid,h-partners.com:from_mime,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,vger.kernel.org:from_smtp]
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,msgid.link:url]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 4494B6D8391
+X-Rspamd-Queue-Id: 28D0B6D855C
 
-Problem observed in Kubernetes environments where MASQUERADE target with
---random-fully is configured by default. after commit
-165573e41f2f ("tcp: secure_seq: add back ports to TS offset") TCP short
-connection QPS dropped from ~20000 to ~10000. This added source and
-destination ports into TS offset calculation.
+From: Kuniyuki Iwashima <kuniyu@google.com>
 
-However, with MASQUERADE --random-fully, when multiple internal connections
-(e.g sport 10000,20000) are mapped to the same external port (e.g 30000),
-their TS offsets are calculated as ts_offset(10000) and ts_offset(20000).
-If the server reuses the TIME_WAIT slot from the first connection, there is
-a chance that ts_offset(20000) < ts_offset(10000), breaking TSval
-monotonicity for the same 4-tuple and causing RST packets:
-  Client -> Server 24870 -> 80 [SYN] TSval=2294041168
-  Server -> Client 80 -> 24870 [ACK] TSecr=2846236456
-  Client -> Server 24870 -> 80 [RST] Seq=855605690
+[ Upstream commit d82ba05263c69fa2437fe93e4e561cc40f4c03af ]
 
-After nf_nat_setup_info() successfully assigns a new randomized
-source port, recalculate the TS offset using the new port and
-update the SYN packet's TSval accordingly.
+Igor Ushakov reported that unix_gc() could run with gc_in_progress
+being false if the work is scheduled while running:
 
-Test results on 4U4G VM with
-`./wrk -t8 -c200 -H "Connection: close" -d10s --latency http://5.5.5.5:80`
-Before:
-  random:10712 req/s, random-fully:10986 req/s
-After:
-  random:21463 req/s, random-fully:19181 req/s
+  Thread 1         Thread 2                     Thread 3
+  --------         --------                     --------
+                   unix_schedule_gc()           unix_schedule_gc()
+                   `- if (!gc_in_progress)      `- if (!gc_in_progress)
+                      |- gc_in_progress = true     |
+                      `- queue_work()              |
+  unix_gc() <----------------/                     |
+  |                                                |- gc_in_progress = true
+  ...                                              `- queue_work()
+  |                                                       |
+  `- gc_in_progress = false                               |
+                                                          |
+  unix_gc() <---------------------------------------------'
+  |
+  ... /* gc_in_progress == false */
+  |
+  `- gc_in_progress = false
 
-Fixes: 165573e41f2f ("tcp: secure_seq: add back ports to TS offset")
-Cc: stable@vger.kernel.org
-Closes:https://lore.kernel.org/all/92935c00-e0be-4591-ac44-5978c7804d57@yeah.net/
-Signed-off-by: xietangxin <xietangxin@h-partners.com>
+unix_peek_fpl() relies on gc_in_progress not to confuse GC
+by MSG_PEEK.
+
+Let's set gc_in_progress to true in unix_gc().
+
+Fixes: 8b90a9f819dc ("af_unix: Run GC on only one CPU.")
+Reported-by: Igor Ushakov <sysroot314@gmail.com>
+Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
+Link: https://patch.msgid.link/20260501073945.1884564-1-kuniyu@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+[ move WRITE_ONCE(gc_in_progress, true) into the __unix_gc() work function and drop it from unix_gc(). ]
+Signed-off-by: Igor Ushakov <sysroot314@gmail.com>
 ---
- net/netfilter/nf_nat_masquerade.c | 91 ++++++++++++++++++++++++++++++-
- 1 file changed, 89 insertions(+), 2 deletions(-)
+ net/unix/garbage.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/net/netfilter/nf_nat_masquerade.c b/net/netfilter/nf_nat_masquerade.c
-index 4de6e0a51701..8c9ca5a051cc 100644
---- a/net/netfilter/nf_nat_masquerade.c
-+++ b/net/netfilter/nf_nat_masquerade.c
-@@ -6,8 +6,11 @@
- #include <linux/netfilter.h>
- #include <linux/netfilter_ipv4.h>
- #include <linux/netfilter_ipv6.h>
-+#include <linux/tcp.h>
+diff --git a/net/unix/garbage.c b/net/unix/garbage.c
+index 1cdb54c616..82dfb1ad34 100644
+--- a/net/unix/garbage.c
++++ b/net/unix/garbage.c
+@@ -583,6 +583,8 @@ static void __unix_gc(struct work_struct *work)
+ 	struct sk_buff_head hitlist;
+ 	struct sk_buff *skb;
  
-+#include <net/tcp.h>
- #include <net/netfilter/nf_nat_masquerade.h>
-+#include <net/secure_seq.h>
++	WRITE_ONCE(gc_in_progress, true);
++
+ 	spin_lock(&unix_gc_lock);
  
- struct masq_dev_work {
- 	struct work_struct work;
-@@ -24,6 +27,76 @@ static DEFINE_MUTEX(masq_mutex);
- static unsigned int masq_refcnt __read_mostly;
- static atomic_t masq_worker_count __read_mostly;
+ 	if (!unix_graph_maybe_cyclic) {
+@@ -613,7 +615,6 @@ static DECLARE_WORK(unix_gc_work, __unix_gc);
  
-+static __be32 *tcp_ts_option_ptr(const struct sk_buff *skb)
-+{
-+	const struct tcphdr *th;
-+	unsigned char *ptr;
-+	unsigned char opsize;
-+	unsigned int optlen, offset;
-+
-+	th = tcp_hdr(skb);
-+	optlen = (th->doff - 5) * 4;
-+	ptr = (unsigned char *)(th + 1);
-+	offset = 0;
-+
-+	while (offset < optlen) {
-+		unsigned char opcode = ptr[offset];
-+
-+		if (opcode == TCPOPT_EOL)
-+			break;
-+		if (opcode == TCPOPT_NOP) {
-+			offset++;
-+			continue;
-+		}
-+
-+		if (offset + 1 >= optlen)
-+			break;
-+
-+		opsize = ptr[offset + 1];
-+		if (opsize < 2 || offset + opsize > optlen)
-+			break;
-+
-+		if (opcode == TCPOPT_TIMESTAMP && opsize == TCPOLEN_TIMESTAMP)
-+			return (__be32 *)(ptr + offset + 2);
-+
-+		offset += opsize;
-+	}
-+
-+	return NULL;
-+}
-+
-+static void masquerade_update_tcp_ts_offset(struct nf_conn *ct, struct sk_buff *skb)
-+{
-+	__be32 *tsptr;
-+	struct net *net;
-+	struct tcphdr *th;
-+	struct tcp_sock *tp;
-+	union tcp_seq_and_ts_off st;
-+	struct nf_conntrack_tuple *tuple;
-+
-+	th = tcp_hdr(skb);
-+	net = nf_ct_net(ct);
-+	tuple = &ct->tuplehash[IP_CT_DIR_REPLY].tuple;
-+
-+	if (th && th->syn && !th->ack && skb->sk &&
-+	    READ_ONCE(net->ipv4.sysctl_tcp_timestamps) == 1) {
-+		tp = tcp_sk(skb->sk);
-+		tsptr = tcp_ts_option_ptr(skb);
-+		if (!tsptr)
-+			return;
-+
-+		if (nf_ct_l3num(ct) == NFPROTO_IPV4)
-+			st = secure_tcp_seq_and_ts_off(net, tuple->src.u3.ip, tuple->dst.u3.ip,
-+				tuple->src.u.tcp.port, tuple->dst.u.tcp.port);
-+		else
-+			st = secure_tcpv6_seq_and_ts_off(net, tuple->src.u3.ip6,
-+				tuple->dst.u3.ip6, tuple->src.u.tcp.port, tuple->dst.u.tcp.port);
-+
-+		*tsptr = htonl(tcp_skb_timestamp_ts(tp->tcp_usec_ts, skb) + st.ts_off);
-+		WRITE_ONCE(tp->tsoffset, st.ts_off);
-+	}
-+}
-+
- unsigned int
- nf_nat_masquerade_ipv4(struct sk_buff *skb, unsigned int hooknum,
- 		       const struct nf_nat_range2 *range,
-@@ -35,6 +108,7 @@ nf_nat_masquerade_ipv4(struct sk_buff *skb, unsigned int hooknum,
- 	struct nf_nat_range2 newrange;
- 	const struct rtable *rt;
- 	__be32 newsrc, nh;
-+	unsigned int ret;
- 
- 	WARN_ON(hooknum != NF_INET_POST_ROUTING);
- 
-@@ -71,7 +145,13 @@ nf_nat_masquerade_ipv4(struct sk_buff *skb, unsigned int hooknum,
- 	newrange.max_proto   = range->max_proto;
- 
- 	/* Hand modified range to generic setup. */
--	return nf_nat_setup_info(ct, &newrange, NF_NAT_MANIP_SRC);
-+	ret = nf_nat_setup_info(ct, &newrange, NF_NAT_MANIP_SRC);
-+
-+	if (ret == NF_ACCEPT && nf_ct_protonum(ct) == IPPROTO_TCP &&
-+	    (range->flags & NF_NAT_RANGE_PROTO_RANDOM_ALL))
-+		masquerade_update_tcp_ts_offset(ct, skb);
-+
-+	return ret;
+ void unix_gc(void)
+ {
+-	WRITE_ONCE(gc_in_progress, true);
+ 	queue_work(system_unbound_wq, &unix_gc_work);
  }
- EXPORT_SYMBOL_GPL(nf_nat_masquerade_ipv4);
- 
-@@ -229,6 +309,7 @@ nf_nat_masquerade_ipv6(struct sk_buff *skb, const struct nf_nat_range2 *range,
- 	struct in6_addr src;
- 	struct nf_conn *ct;
- 	struct nf_nat_range2 newrange;
-+	unsigned int ret;
- 
- 	ct = nf_ct_get(skb, &ctinfo);
- 	WARN_ON(!(ct && (ctinfo == IP_CT_NEW || ctinfo == IP_CT_RELATED ||
-@@ -248,7 +329,13 @@ nf_nat_masquerade_ipv6(struct sk_buff *skb, const struct nf_nat_range2 *range,
- 	newrange.min_proto	= range->min_proto;
- 	newrange.max_proto	= range->max_proto;
- 
--	return nf_nat_setup_info(ct, &newrange, NF_NAT_MANIP_SRC);
-+	ret = nf_nat_setup_info(ct, &newrange, NF_NAT_MANIP_SRC);
-+
-+	if (ret == NF_ACCEPT && nf_ct_protonum(ct) == IPPROTO_TCP &&
-+	    (range->flags & NF_NAT_RANGE_PROTO_RANDOM_ALL))
-+		masquerade_update_tcp_ts_offset(ct, skb);
-+
-+	return ret;
- }
- EXPORT_SYMBOL_GPL(nf_nat_masquerade_ipv6);
  
 -- 
-2.43.0
+2.47.3
 
 
