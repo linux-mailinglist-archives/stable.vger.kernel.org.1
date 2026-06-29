@@ -1,179 +1,230 @@
-Return-Path: <stable+bounces-269673-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-269674-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id fD7tLzUpQmqN1AkAu9opvQ
-	(envelope-from <stable+bounces-269673-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 29 Jun 2026 10:13:41 +0200
+	id aev2MnIrQmoi1QkAu9opvQ
+	(envelope-from <stable+bounces-269674-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 29 Jun 2026 10:23:14 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 51BD26D759F
-	for <lists+stable@lfdr.de>; Mon, 29 Jun 2026 10:13:41 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1E5E06D7773
+	for <lists+stable@lfdr.de>; Mon, 29 Jun 2026 10:23:14 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=uniontech.com header.s=onoh2408 header.b=LviCPR3Z;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-269673-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-269673-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=none) header.from=uniontech.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=ev1aNmXq;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-269674-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-269674-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=none) header.from=linux.dev;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id F3C12301DDA7
-	for <lists+stable@lfdr.de>; Mon, 29 Jun 2026 08:09:11 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 8D9A6300D1FE
+	for <lists+stable@lfdr.de>; Mon, 29 Jun 2026 08:23:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B98933EA947;
-	Mon, 29 Jun 2026 08:09:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9D033C1099;
+	Mon, 29 Jun 2026 08:23:11 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtpbg150.qq.com (smtpbg150.qq.com [18.132.163.193])
+Received: from out-182.mta0.migadu.com (out-182.mta0.migadu.com [91.218.175.182])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A8803DCDAD;
-	Mon, 29 Jun 2026 08:09:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C498233ADAC
+	for <stable@vger.kernel.org>; Mon, 29 Jun 2026 08:23:08 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782720549; cv=none; b=LA+5TGFByGsdn54K7z11q0uebFUVvLzbNU0dqJL/tyEfYcu5yg0wAC1IjXX720ufkLulYUUnu6ONi8F07bIp0WYofa3vH1erqYVFz3+Yihm7kLNRqXc0rN7A/HA4sDhTI7kQjx0gdHEnk6tHOAk7RJf8f4Pn3oXPEwC1WCH3sCU=
+	t=1782721391; cv=none; b=CsyK3a7XU3gxsYu0W0GFuJ4BXl+Ii0Viun8anGgwyB46UGkBU5eAqB7mEk0q3u6ZyWEqY2AlogmAxfKEz5q5KQ60u1HQclY5k37WQlYCWx3ePZYctoAL1fY9eFCGs6SUOqgH0n4aqpfj5OCdPnhsLF9UMhWdp1gI9fTe8HTbMJ8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782720549; c=relaxed/simple;
-	bh=Vxoi1cmDZfQArHjfngvHJ3m+cmHDV9o3Lr0fhwyX5is=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=RZY7g8g0YSwp5KJpxBuT81RdwSuv0F0iz+Noumop8jdb7IWgXI0ODZgOlNuQm5MJoITln2ia9Eryvu47+tAIldSXRr6wOkmfHd0SROZzeTcqS/s5VDUx5YzA+7GAOMkgjod+S1nkgpbj2FyBRiwjpB/TDn77zNgeTfDnBaPgSwg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniontech.com; spf=pass smtp.mailfrom=uniontech.com; dkim=pass (1024-bit key) header.d=uniontech.com header.i=@uniontech.com header.b=LviCPR3Z; arc=none smtp.client-ip=18.132.163.193
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=uniontech.com;
-	s=onoh2408; t=1782720405;
-	bh=i2DdokORhd2J9b8fMGYTamdftk3sCUnAFClIAvIlENQ=;
-	h=From:To:Subject:Date:Message-ID:MIME-Version;
-	b=LviCPR3Z9ksI/Cgwjqaw3FIWaOyix7Pv7T5FkjvKA7IW/ZzdjUAeXLkO5c5QPH8v7
-	 Bak0qRAbrSP0prGSIyNqi62R4p6MZMlIWOClWDRgg2g4jh/r6Dlr4dnsuEqr0XxDBm
-	 uz6I443MNLFbKTUf8NAa5/UL3nbO1a/QSuFvpB5U=
-X-QQ-mid: esmtpgz14t1782720386t569d4ab0
-X-QQ-Originating-IP: 261MedjCVxDuM4UpNE1QoVSXNH3HdjfqTuqpgpoG9j0=
-Received: from PEN202512010004 ( [113.57.152.160])
-	by bizesmtp.qq.com (ESMTP) with 
-	id ; Mon, 29 Jun 2026 16:06:24 +0800 (CST)
-X-QQ-SSF: 0000000000000000000000000000000
-X-QQ-GoodBg: 1
-X-BIZMAIL-ID: 8126023900001592942
-EX-QQ-RecipientCnt: 11
-From: raoxu <raoxu@uniontech.com>
-To: tsbogend@alpha.franken.de
-Cc: andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	linux-mips@vger.kernel.org,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	raoxu@uniontech.com,
-	stable@vger.kernel.org
-Subject: [PATCH net] net: sgi: ioc3-eth: fix split TX DMA mapping lengths
-Date: Mon, 29 Jun 2026 16:06:23 +0800
-Message-ID: <4E1486BC4536407E+20260629080623.908426-1-raoxu@uniontech.com>
-X-Mailer: git-send-email 2.50.1
+	s=arc-20240116; t=1782721391; c=relaxed/simple;
+	bh=YxIPHSNC47f3A+LcnpLMRfV9Z1FvXBtSeeEpllaqegE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=ciXuHdoUIZ46Ai7Yy9qaF15DzijLANJxDY8V6/HRvrWOVa8jehC/exajKpHshfLz/mvglB3tgGiccbR836A14OR3OdL8LvaNZrxDYjJnhuUl11OLqc3mv3yvg77WhoXBycNnfLkWJnuTZ+71xY07T5jBeuscHQhqJkHSfoJrnio=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=ev1aNmXq; arc=none smtp.client-ip=91.218.175.182
+Message-ID: <458f63e2-6ee4-44c7-a230-636e1927f857@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1782721385;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=hFxUO7tgIcr0aaRoeEv4WTyZn0JslVlD209KcTGHDqc=;
+	b=ev1aNmXq7ogiDIfLA6fwdm8/E4svVMoXrQk1fT8rGFz3UmiKKzsl/hv4jM6VSXvdeRIXSY
+	+hGUGRGHVpH/oq+1s7hpJexHb9LmvsPTB68wx+kCIH4MG4qC7Bk/doclxFP0JZyxlaaHbm
+	u4aXlpHb3wvosR2bMj24RfY4WpKOuaI=
+Date: Mon, 29 Jun 2026 16:22:49 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-QQ-SENDSIZE: 520
-Feedback-ID: esmtpgz:uniontech.com:qybglogicsvrgz:qybglogicsvrgz6b-0
-X-QQ-XMAILINFO: Naz1YHCzw2jIHC7m24qCCb6HuBzpVCcNaxUWCyk2JEeHoRtla8cPwZHV
-	Rlo5N8f2MPQPpbng4adW1FV48Af4rwt/xtI0rCbEWtlIvcgY8tsTZkFHtGMtjGUVVapoCTc
-	QiVnzxod3Mekjnqv6yxkUuaTYay4UiIs036oY34n6APLG1wzOc8GManQq730KraNTU02pok
-	RNoe9kIdvyUPab39n+Kh/4SGcNmK9450AnUNOJI4CZTvVhhn5gQbbVVpAAj4NzVYqk2jfrr
-	t+Y9wt+1sdzkdpSmMeWYc2URGDvzm35CaXSi6pEagmPattZxB1Nbj8jEmG+VdzbLiWIV7ZD
-	ZBMR8cub91hA5fAJtBnSMSvfPpa6/W9M1dTlMIo8euMo5V/pzw1AwrG8FdNPkXDMEdjMfjs
-	5Da5bTcDKTuJ16XGvU3LP/tri+aDLkwyArbQNSLYThz/ChcKiRT05ifxxduZOhe74hKNzHJ
-	wv6FJCrgdzI2HDjYKf1cykX8MAnI5NxkXawpg6oZlXoEC8eKqUnNz2hB1PTu5WHDZ11kEaR
-	DU30KgxXbfb+it8NQbH2gvllmARQhif+pxJIoVjVeDjzK58nAfvDy9x2zt2HLEes637IkGL
-	mkQcp5bHS9GtA2uwOi7IH5kc9Fgi6/nm4zF3ThYoCFPDOf50GEsZxrKtIaNVaXXIuM3ONWC
-	IJQoNRKUtVkH/lCGVTv9v4xYzt6BtbXhvijUOdSseNivTCQtphy2E8xIrz+f9gK3iag29+r
-	SM//FR37LLdh6VPa0oh6nvYyQoPmpcQL6A8wTNW0eXBv+0IOG9ph1c7uDCOvg3VNHB1BJro
-	dQwknvyYBJzIH2PXZS9wc92jUOab+WStqKH0wHp8NfycbTJk+/7CzYBoZyDQhLGI0FSZW3n
-	jgTDVxQGEuAOLZ7DmSdx1qGxbdUfjrqQrzaS5UlV66sTjOSZGJf3wu3SVvINDBXOw402lDb
-	EIlITKvAM0+MDYl+mYSpEZF0uUAkYBUG1tTK2zvFr4O9pP/QhCc+wuwZs3vjrpGH2JlNOIQ
-	szpsj+43W+tOAgw7GdDpNenHr+P3iTIzYwUt6d4g==
-X-QQ-XMRINFO: NyFYKkN4Ny6FuXrnB5Ye7Aabb3ujjtK+gg==
-X-QQ-RECHKSPAM: 0
+Subject: Re: [PATCH 4/5] mm/page_vma_mapped: use huge_ptep_get() for hugetlb
+To: "David Hildenbrand (Arm)" <david@kernel.org>, dev.jain@arm.com
+Cc: linmiaohe@huawei.com, muchun.song@linux.dev, osalvador@suse.de,
+ akpm@linux-foundation.org, ljs@kernel.org, liam@infradead.org,
+ riel@surriel.com, vbabka@kernel.org, harry@kernel.org, jannh@google.com,
+ kas@kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ rcampbell@nvidia.com, apopple@nvidia.com, ziy@nvidia.com,
+ matthew.brost@intel.com, joshua.hahnjy@gmail.com, rakie.kim@sk.com,
+ byungchul@sk.com, gourry@gourry.net, ying.huang@linux.alibaba.com,
+ mel@csn.ul.ie, nao.horiguchi@gmail.com, ak@linux.intel.com,
+ j-nomura@ce.jp.nec.com, pfalcato@suse.de, dave.hansen@intel.com,
+ tglx@kernel.org, jpoimboe@kernel.org, ryan.roberts@arm.com,
+ anshuman.khandual@arm.com, stable@vger.kernel.org
+References: <0fabee2a-edb7-41c8-91ec-8cf0646c9e83@kernel.org>
+ <20260629074802.42727-1-lance.yang@linux.dev>
+ <a1c6c3dd-8db1-4db6-b032-e350bacc4577@kernel.org>
+Content-Language: en-US
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Lance Yang <lance.yang@linux.dev>
+In-Reply-To: <a1c6c3dd-8db1-4db6-b032-e350bacc4577@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Migadu-Flow: FLOW_OUT
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [0.84 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
-	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[uniontech.com,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
-	R_DKIM_ALLOW(-0.20)[uniontech.com:s=onoh2408];
+	DMARC_POLICY_ALLOW(-0.50)[linux.dev,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_DKIM_ALLOW(-0.20)[linux.dev:s=key1];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_SENDER(0.00)[raoxu@uniontech.com,stable@vger.kernel.org];
-	FORGED_RECIPIENTS(0.00)[m:tsbogend@alpha.franken.de,m:andrew+netdev@lunn.ch,m:davem@davemloft.net,m:edumazet@google.com,m:kuba@kernel.org,m:pabeni@redhat.com,m:linux-mips@vger.kernel.org,m:netdev@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:raoxu@uniontech.com,m:stable@vger.kernel.org,m:andrew@lunn.ch,s:lists@lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-269673-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	DKIM_TRACE(0.00)[uniontech.com:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	MIME_TRACE(0.00)[0:+];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[raoxu@uniontech.com,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-269674-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:david@kernel.org,m:dev.jain@arm.com,m:linmiaohe@huawei.com,m:muchun.song@linux.dev,m:osalvador@suse.de,m:akpm@linux-foundation.org,m:ljs@kernel.org,m:liam@infradead.org,m:riel@surriel.com,m:vbabka@kernel.org,m:harry@kernel.org,m:jannh@google.com,m:kas@kernel.org,m:linux-mm@kvack.org,m:linux-kernel@vger.kernel.org,m:rcampbell@nvidia.com,m:apopple@nvidia.com,m:ziy@nvidia.com,m:matthew.brost@intel.com,m:joshua.hahnjy@gmail.com,m:rakie.kim@sk.com,m:byungchul@sk.com,m:gourry@gourry.net,m:ying.huang@linux.alibaba.com,m:mel@csn.ul.ie,m:nao.horiguchi@gmail.com,m:ak@linux.intel.com,m:j-nomura@ce.jp.nec.com,m:pfalcato@suse.de,m:dave.hansen@intel.com,m:tglx@kernel.org,m:jpoimboe@kernel.org,m:ryan.roberts@arm.com,m:anshuman.khandual@arm.com,m:stable@vger.kernel.org,m:joshuahahnjy@gmail.com,m:naohoriguchi@gmail.com,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[lance.yang@linux.dev,stable@vger.kernel.org];
+	RCPT_COUNT_TWELVE(0.00)[35];
+	RCVD_COUNT_THREE(0.00)[3];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FREEMAIL_CC(0.00)[huawei.com,linux.dev,suse.de,linux-foundation.org,kernel.org,infradead.org,surriel.com,google.com,kvack.org,vger.kernel.org,nvidia.com,intel.com,gmail.com,sk.com,gourry.net,linux.alibaba.com,csn.ul.ie,linux.intel.com,ce.jp.nec.com,arm.com];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_NONE(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[11];
+	TO_DN_SOME(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
-	TAGGED_RCPT(0.00)[stable,netdev];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[lance.yang@linux.dev,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linux.dev:+];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,uniontech.com:dkim,uniontech.com:email,uniontech.com:mid,uniontech.com:from_mime,vger.kernel.org:from_smtp]
+	MISSING_XM_UA(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,sashiko.dev:url,linux.dev:dkim,linux.dev:mid,linux.dev:from_mime,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 51BD26D759F
+X-Rspamd-Queue-Id: 1E5E06D7773
 
-From: Xu Rao <raoxu@uniontech.com>
 
-When a linear skb crosses a 16 KiB boundary, ioc3_start_xmit()
-splits it into two buffers of lengths s1 and s2.  The descriptor
-advertises those lengths through B1CNT and B2CNT.
 
-The first buffer is mapped with s1, but the second buffer is also
-mapped with s1 even though the device is told to fetch s2 bytes from
-it.  When the lengths differ, the DMA mapping does not cover the same
-region as the second descriptor buffer, which can result in incorrect
-cache maintenance or a DMA fault on implementations that enforce the
-mapped range.
+On 2026/6/29 16:05, David Hildenbrand (Arm) wrote:
+> On 6/29/26 09:48, Lance Yang wrote:
+>>
+>> On Mon, Jun 29, 2026 at 09:25:48AM +0200, David Hildenbrand (Arm) wrote:
+>>> On 6/29/26 08:48, Dev Jain wrote:
+>>>>
+>>>>
+>>>>
+>>>> Sashiko notes other places:
+>>>>
+>>>> https://sashiko.dev/#/patchset/20260625112955.3254283-1-dev.jain%40arm.com
+>>>
+>>> Yeah, that looks shaky. We do seem to have a bunch of these cases, primarily
+>> >from pagewalk code (where some users like pagemap need the actual address).
+>>
+>> Indeed ...
+>>
+>>> I think we have two options
+>>>
+>>> 1) To prevent any (further) issues, make huge_ptep_get() always consume the
+>>> hstate, and let the arch code deal with aligning it. Invasive.
+>>
+>> Kinda lean toward option 1, even if it's more invasive. If we pass the
+>> hstate down, each arch can figure out the right addr from there.
+>>
+>>> 2) Make the arch code handle aligning without the hstate.
+>>>
+>>> diff --git a/arch/arm64/mm/hugetlbpage.c b/arch/arm64/mm/hugetlbpage.c
+>>> index 30772a909aea3..303a1b74796c9 100644
+>>> --- a/arch/arm64/mm/hugetlbpage.c
+>>> +++ b/arch/arm64/mm/hugetlbpage.c
+>>> @@ -126,6 +126,9 @@ pte_t huge_ptep_get(struct mm_struct *mm, unsigned long addr, pte_t *ptep)
+>>>                 return orig_pte;
+>>>
+>>>         ncontig = find_num_contig(mm, addr, ptep, &pgsize);
+>>> +       ptep = PTR_ALIGN_DOWN(ptep, sizeof(*ptep) * ncontig);
+>>> +       orig_pte = __ptep_get(ptep);
+>>> +
+>>>         for (i = 0; i < ncontig; i++, ptep++) {
+>>>                 pte_t pte = __ptep_get(ptep);
+>>>
+>>> (nshift/order instead of ncontig might avoid a multiplication, but not sure if that matters in practice)
+>>>
+>>> IIUC, that's similar to what huge_ptep_get() does on ppc.
+>>>
+>>>
+>>> static inline pte_t huge_ptep_get(struct mm_struct *mm, unsigned long addr, pte_t *ptep)
+>>> {
+>>> 	if (ptep_is_8m_pmdp(mm, addr, ptep))
+>>> 		ptep = pte_offset_kernel((pmd_t *)ptep, ALIGN_DOWN(addr, SZ_8M));
+>>> 	return ptep_get(ptep);
+>>> }
+>>>
+>>> I'd assume we could do the same on riscv. Besides that, I don't think any arch has cont
+>>> entries.
+>>
+>> AFAICT, for huge_ptep_get() the addr users are arm64 and powerpc, riscv
+>> doesn't really care about addr there. Looks mostly arm64-specific ...
+> powerpc handles it correctly in the weird "span two PMD entries" case by
+> aligning the PMD down.
+> 
+> Risc-v copied from arm64, but can simply derive the #entries from the PTE value.
+> it doesn't have to re-walk the table using the address.
 
-There is a separate mismatch in the error path.  If mapping the second
-buffer fails, only d1 needs to be unmapped.  d1 was mapped for s1 bytes,
-but the driver unmaps it using the full packet length.  Streaming DMA
-mappings must be unmapped with the same size used for the corresponding
-map operation.
+Yeah, fair enough, thanks for spelling that out!
 
-Map the second buffer with s2 and unmap the first buffer with s1 when
-the second mapping fails.
+> But I think the following is required to fix, no?
+> 
+> diff --git a/arch/riscv/mm/hugetlbpage.c b/arch/riscv/mm/hugetlbpage.c
+> index a6d217112cf46..7e25cc13b3dba 100644
+> --- a/arch/riscv/mm/hugetlbpage.c
+> +++ b/arch/riscv/mm/hugetlbpage.c
+> @@ -5,6 +5,7 @@
+>   #ifdef CONFIG_RISCV_ISA_SVNAPOT
+>   pte_t huge_ptep_get(struct mm_struct *mm, unsigned long addr, pte_t *ptep)
+>   {
+> -       unsigned long pte_num;
+> +       unsigned long pte_num, pte_order;
+>          int i;
+>          pte_t orig_pte = ptep_get(ptep);
+> @@ -12,7 +13,11 @@ pte_t huge_ptep_get(struct mm_struct *mm, unsigned long addr,
+> pte_t *ptep)
+>          if (!pte_present(orig_pte) || !pte_napot(orig_pte))
+>                  return orig_pte;
+> 
+> -       pte_num = napot_pte_num(napot_cont_order(orig_pte));
+> +       pte_order = napot_cont_order(orig_pte);
+> +       pte_num = napot_pte_num(pte_order);
+> +
+> +       ptep = PTR_ALIGN_DOWN(ptep, sizeof(*ptep) << pte_order);
+> +       orig_pte = ptep_get(ptep);
+> 
+>          for (i = 0; i < pte_num; i++, ptep++) {
+>                  pte_t pte = ptep_get(ptep);
+> 
+> 
+> 
+> I'd prefer (2) as a simple stable fix first.
 
-Fixes: ed870f6a7aa2 ("net: sgi: ioc3-eth: use dma-direct for dma allocations")
-Cc: stable@vger.kernel.org
-Signed-off-by: Xu Rao <raoxu@uniontech.com>
----
- drivers/net/ethernet/sgi/ioc3-eth.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+Right. I'm good with (2) as the stable fix first :)
 
-diff --git a/drivers/net/ethernet/sgi/ioc3-eth.c b/drivers/net/ethernet/sgi/ioc3-eth.c
-index 3973106..261f2d3 100644
---- a/drivers/net/ethernet/sgi/ioc3-eth.c
-+++ b/drivers/net/ethernet/sgi/ioc3-eth.c
-@@ -1061,9 +1061,9 @@ static netdev_tx_t ioc3_start_xmit(struct sk_buff *skb, struct net_device *dev)
- 		d1 = dma_map_single(ip->dma_dev, skb->data, s1, DMA_TO_DEVICE);
- 		if (dma_mapping_error(ip->dma_dev, d1))
- 			goto drop_packet;
--		d2 = dma_map_single(ip->dma_dev, (void *)b2, s1, DMA_TO_DEVICE);
-+		d2 = dma_map_single(ip->dma_dev, (void *)b2, s2, DMA_TO_DEVICE);
- 		if (dma_mapping_error(ip->dma_dev, d2)) {
--			dma_unmap_single(ip->dma_dev, d1, len, DMA_TO_DEVICE);
-+			dma_unmap_single(ip->dma_dev, d1, s1, DMA_TO_DEVICE);
- 			goto drop_packet;
- 		}
- 		desc->p1     = cpu_to_be64(ioc3_map(d1, PCI64_ATTR_PREF));
--- 
-2.47.3
+Still pretty new to arch code, but happy to stare at it some more.
 
+> If we do (1) on top, huge_ptep_get() on arm64 could stop walking the page table
+> another time.
+> 
+> If we pass the hstate (or vma) to set_huge_pte_at(), huge_pte_clear(),
+> huge_ptep_get_and_clear(), we could likely get rid of the re-walk in
+> num_contig_ptes() entirely and possibly just remove it.
+> 
+> That would probably be cleanest.
+
+Agreed!
 
