@@ -1,555 +1,314 @@
-Return-Path: <stable+bounces-269648-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-269659-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id R52SHtkUQmphzwkAu9opvQ
-	(envelope-from <stable+bounces-269648-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 29 Jun 2026 08:46:49 +0200
+	id /6ToMq8dQmr60QkAu9opvQ
+	(envelope-from <stable+bounces-269659-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 29 Jun 2026 09:24:31 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0EFC36D67E0
-	for <lists+stable@lfdr.de>; Mon, 29 Jun 2026 08:46:49 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3E4F76D6F6D
+	for <lists+stable@lfdr.de>; Mon, 29 Jun 2026 09:24:31 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=oBbCSgL9;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-269648-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-269648-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=quarantine) header.from=huawei.com;
-	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
+	dkim=pass header.d=amd.com header.s=selector1 header.b=CZgU6lYS;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-269659-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-269659-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=quarantine) header.from=amd.com;
+	arc=reject ("cv is fail on i=2")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 7D81A3034551
-	for <lists+stable@lfdr.de>; Mon, 29 Jun 2026 06:39:57 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id CCBB63030B06
+	for <lists+stable@lfdr.de>; Mon, 29 Jun 2026 07:17:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 314B93AC0CD;
-	Mon, 29 Jun 2026 06:39:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 48E9F3C378A;
+	Mon, 29 Jun 2026 07:17:29 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from canpmsgout05.his.huawei.com (canpmsgout05.his.huawei.com [113.46.200.220])
+Received: from PH8PR06CU001.outbound.protection.outlook.com (mail-westus3azon11012018.outbound.protection.outlook.com [40.107.209.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 309143A7F72;
-	Mon, 29 Jun 2026 06:39:06 +0000 (UTC)
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782715149; cv=none; b=PvA4ExI2Ef0wqvnuPqO8RD6vSCLX/AGlOIvTqPUtZfubPLiFqLhVkk8M8o7whdMtNxJ2o32anKFA1z1rh94atlSR5AN809HuZz6wXStEtvOPQJwWcw3TCkbswg4JxXR0MJyuuWXhodp7kTqx3qGqIX7SrSysbHSp8nNJEAO9BIw=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782715149; c=relaxed/simple;
-	bh=ZT04T3IUQYJWxpoZxIQZJnwsvT/n1pz7+Rojx5OGfOI=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=mCkill1+Xzl/6LTCjvtr0378KWv5X0ujcTJa/mhe1uqWkosD5rDRfzmnRrWkPKPQORjFOut5Tl4FU0yJDv32Rjo4N9O0A8eAwJoUO5ZS2BPMIZZizWWegoEbpjBXOCPBAnqR8Q/Hahm6B1gsrqHSkjiXskPlf6boLSKKSPOxOjo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=oBbCSgL9; arc=none smtp.client-ip=113.46.200.220
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=JERjemWMazbzgv3eH1TR6f1/mewYdhsfmaHQlE+mYUY=;
-	b=oBbCSgL9dtJUQRIS3I9BgzVQJcPavny3sj0Wfe4aCPU3mtLJVlp4JQMAW+oNxPvzhASNziWrB
-	+eOadU5RdUJDwd/lSQ5/RQNBl44xAfECMNMIVKprwgF2B27+VZHUOCg6GOHHcokf0MPh4ploggG
-	E26xTkTHxv2xfGdJ+wvYQTI=
-Received: from mail.maildlp.com (unknown [172.19.163.104])
-	by canpmsgout05.his.huawei.com (SkyGuard) with ESMTPS id 4gpbxK2TF3z12LD8;
-	Mon, 29 Jun 2026 14:30:13 +0800 (CST)
-Received: from dggemv706-chm.china.huawei.com (unknown [10.3.19.33])
-	by mail.maildlp.com (Postfix) with ESMTPS id B20734057F;
-	Mon, 29 Jun 2026 14:38:57 +0800 (CST)
-Received: from kwepemq200017.china.huawei.com (7.202.195.228) by
- dggemv706-chm.china.huawei.com (10.3.19.33) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Mon, 29 Jun 2026 14:38:57 +0800
-Received: from octopus.huawei.com (10.67.174.191) by
- kwepemq200017.china.huawei.com (7.202.195.228) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Mon, 29 Jun 2026 14:38:56 +0800
-From: Cai Xinchen <caixinchen1@huawei.com>
-To: <viro@zeniv.linux.org.uk>, <brauner@kernel.org>, <jack@suse.cz>,
-	<miklos@szeredi.hu>, <amir73il@gmail.com>, <paul@paul-moore.com>,
-	<jmorris@namei.org>, <serge@hallyn.com>, <stephen.smalley.work@gmail.com>,
-	<omosnace@redhat.com>, <gregkh@linuxfoundation.org>, <sashal@kernel.org>,
-	<bboscaccy@linux.microsoft.com>, <caixinchen1@huawei.com>
-CC: <linux-fsdevel@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-	<linux-unionfs@vger.kernel.org>, <linux-security-module@vger.kernel.org>,
-	<selinux@vger.kernel.org>, <bpf@vger.kernel.org>, <stable@vger.kernel.org>,
-	<lujialin4@huawei.com>
-Subject: [PATCH stable/linux-5.10.y 7/7] selinux: fix overlayfs mmap() and mprotect() access checks
-Date: Mon, 29 Jun 2026 15:06:53 +0800
-Message-ID: <20260629070653.580879-8-caixinchen1@huawei.com>
-X-Mailer: git-send-email 2.18.0.huawei.25
-In-Reply-To: <20260629070653.580879-1-caixinchen1@huawei.com>
-References: <20260629070653.580879-1-caixinchen1@huawei.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 965373C1F5B
+	for <stable@vger.kernel.org>; Mon, 29 Jun 2026 07:17:24 +0000 (UTC)
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1782717448; cv=fail; b=OjSF3yPhWKs9DcC3jqzyAJo4FTpZwxlPzbJukPWlzsouGM8PCB+BEA4qElyslesqvmFsXyG6iIEfBnBorCmiRFeaPw/cnLRZfJ5b02cg3wpKRlyk5pXnlyEV1/GpDtYnD3a6nxMNY+9XP74BFRqPSp1STfkcCiWZ/3Rt4i+r9ws=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1782717448; c=relaxed/simple;
+	bh=vCTUGJoofDpOksU2zuZaEtR57fzzStyOWMEj2BIqsA0=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=rmFfn8XHK48gO2qDxZtRShX2iYme+RUKNiLQN6p7OuCoLRXlU4SL9f/xpVR6pDTpKWE3Tidjn534CIACGg0qrNaiFL9nJE1TNgw3RFC0YSaCpHepRiZWFviK5YxohywOid2f78NdpPFjwa9dzZsEjMgpsf3a7Ur+4aQ7vydX7gk=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=CZgU6lYS; arc=fail smtp.client-ip=40.107.209.18
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=dAIJH77FUedHUCFENHteeKzAS5MGydDedJirRvvl0nCQK+jN/CFjgLd23OXKdFRGthXk3gIbtiCGE2Gcw5uVy98FQOww5lD1w93gR8BgXOXNiyrXQMjPsh9YqKnl1G8GTDzanlcK7S33C0f/nV5lyt1e+SUKc0u6uIKG7Dyb/H+tp9y6HVhFSFm+zyVH6RF8zvYj+BpUUB8v5SqSKdBL4Z5Fmc+FbGlSqR30SWghU6Igh3c6cmLEAYBzi3VYfT/7/78GBvNWoY3JWyn2HWz9mIM14jlsjUX4cuYwl1XNWXap0e8ddVrD91Soi8hvBS+Y/nVxWjwVci+PEFMc7j4L0g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=m8Ue8ruBUM3So0yR+Ftgl8cKq6bqCTwNlWBnLd6sjRY=;
+ b=b5YOqTu49CuGlYaerhx5Y7HHzkXOmq6BpFghi3OeNPL/8MbrpO17XWiEfLqluZP0e08b9YgOx4Kn30D53dDr9bHNPmCfSx2j326dckwwIDNgNvk9+bwWq9dyEDHlEd863vhQKTnSv1ihnNgwqsVLtJYRsofS52gurljAyjEBTd6vIhzg5jXEJt1UwPBkNUVvYNI1y+DrAfU9Hg6R6NOD9YYFNtmosaPODwT0+1sIv7+FIP4sWYZ11G2wz7DBtnNINQ0NbI8t8W7IYE8JkGPR4v2sIqhgnsU75Gmb1UvvUKqLeG5gjGcWf6OIsNFmfcubMeS/A5txlmDrbMxt+nO4kg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=m8Ue8ruBUM3So0yR+Ftgl8cKq6bqCTwNlWBnLd6sjRY=;
+ b=CZgU6lYSKbXR0NWc8/xlopmBw9AOheJrB5kg0Wa9lGUEVxlOBtSTovVX1GnxE1/AkMKtalmLUdjlUjkGGxz2DUSD6VEbaBHKiCM0u/KV2tIYP4d7aob2N/z9QCyW0W1sk6XB8lu+RIKnTy10I6s4irvjCNV1qkrn5hZ8NaWzcFc=
+Received: from EAYPR12MB999132.namprd12.prod.outlook.com
+ (2603:10b6:303:2c2::11) by SJ2PR12MB8956.namprd12.prod.outlook.com
+ (2603:10b6:a03:53a::6) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.159.18; Mon, 29 Jun
+ 2026 07:17:21 +0000
+Received: from EAYPR12MB999132.namprd12.prod.outlook.com
+ ([fe80::7798:60c4:e3f0:d3f8]) by EAYPR12MB999132.namprd12.prod.outlook.com
+ ([fe80::7798:60c4:e3f0:d3f8%4]) with mapi id 15.21.0159.018; Mon, 29 Jun 2026
+ 07:17:19 +0000
+Message-ID: <c930b53d-6cb2-4d0c-9d3d-f895377649a8@amd.com>
+Date: Mon, 29 Jun 2026 12:47:13 +0530
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] gpu/buddy: bail out of try_harder when alignment cannot
+ be honoured
+To: Matthew Auld <matthew.auld@intel.com>, christian.koenig@amd.com,
+ dri-devel@lists.freedesktop.org, intel-gfx@lists.freedesktop.org,
+ intel-xe@lists.freedesktop.org, amd-gfx@lists.freedesktop.org
+Cc: alexander.deucher@amd.com, =?UTF-8?Q?Timur_Krist=C3=B3f?=
+ <timur.kristof@gmail.com>, John Olender <john.olender@gmail.com>,
+ stable@vger.kernel.org
+References: <20260618124755.2751205-1-Arunpravin.PaneerSelvam@amd.com>
+ <4c7300dc-ab5e-464f-9704-d8da378ee1af@intel.com>
+Content-Language: en-US
+From: Arunpravin Paneer Selvam <arunpravin.paneerselvam@amd.com>
+In-Reply-To: <4c7300dc-ab5e-464f-9704-d8da378ee1af@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: MA5P287CA0244.INDP287.PROD.OUTLOOK.COM
+ (2603:1096:a01:1ae::10) To EAYPR12MB999132.namprd12.prod.outlook.com
+ (2603:10b6:303:2c2::11)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-ClientProxiedBy: kwepems500001.china.huawei.com (7.221.188.70) To
- kwepemq200017.china.huawei.com (7.202.195.228)
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: EAYPR12MB999132:EE_|SJ2PR12MB8956:EE_
+X-MS-Office365-Filtering-Correlation-Id: 920b7734-c32d-41c8-272b-08ded5ae7497
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|23010399003|366016|376014|6133799003|4143699003|22082099003|56012099006|11063799006|18002099003;
+X-Microsoft-Antispam-Message-Info:
+	wUq/JbFb6IIZIEmK0+dQC1g8zxYTlmpt04UWgHwvlreCxOD1sKgtx7n/l9/1XVOjmibB2M7d4OHFin77eXuKfCIJQKfgj5/uuU8zx1TRL4ds3ib7VZc2W49tnE9vsTnCGn2tB2R/Iq0EW2nO7PaOahn1g6meTjleU4+6La/pXhRWcxWyYLtyrNZM++nFrkTH/rdOxiKZxzY7NZePH1EuTsiM3OM++5yZTF/zZ20OiAJ7Ak+XO17ILFcD+GykRRGvzHandc1O9n1iM7JZm4IkAnjDxLGE9tmv5Y0Er41ppCm3QMZkNvOo9AQvA9k3pn9OfdLr4o9jIhJg5kXJSAX80Y5HsjHmtdAuzSmRVhLew2d0emM7oUjXgzThUdsWVP8C20YHCKrtjWIjlMT7v40w5nv3+FsW51rOyoTma5te+DfVkJdgzX4Z8XtsKEmR9xg2dWs/K2ALiDc4q0+oT852fjbViTNQb3Z7O6JQrWTBWPiaKmZUpRpBFHc/9b6qYNGbvTgBIfKR4z98MNhDuNMnvts/a5+KwWxglPzcslTfPO8kKRniTO1iqomnpQAreeHD8NMP0qtgauSuNUfeLec9mFC4zPncOTTVFaURV/hktztZlXmFHNZ4hke8GaHgtFlSzeq07k8HUlpEjteoJqom75V7jlsnYuP7CuAX0Jk5NSY=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:EAYPR12MB999132.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(23010399003)(366016)(376014)(6133799003)(4143699003)(22082099003)(56012099006)(11063799006)(18002099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?Qjl0RTVlMzZpL2JFbytnWlBrZFlYSTQ0azRpK0dzVVVNZmhRTnk1dUZPQjdk?=
+ =?utf-8?B?bWsydENzZTBabHpOMWRsZEJ6SmJCelA1ejRkVGkrbWV1cXRlVTZTMllwUGlp?=
+ =?utf-8?B?dGNmSUd0Nk5XODgxeVM5Y2RpZStVZ2UyVHEySzFsVW1jUlZvRmlLMWVUeTlR?=
+ =?utf-8?B?RG9BUG44ODc3aVBNbnlvY1lHSE83UENHSDlPT29NNW9COEZiTTNnZk9yWHBa?=
+ =?utf-8?B?SDNIaURXeUNqUVErZ0kyV0RKeTBVUjZsSEFaY204dm85amE3RVV5TVpLdVBz?=
+ =?utf-8?B?d21mMTlqMUZET2ErZk5QZENyTG96QUgyOGl4RFNYZUVFYWJzK3BhdDAwemFa?=
+ =?utf-8?B?TjIzVHlIY0FSaXJxcDBlWVhhalo2clZMcDFIT1p6ZTcwNnpBVE0xamo3WUtS?=
+ =?utf-8?B?TldQYnFxeHBxWFZOSnRMN3IyWno5NEg5NUtDa05XL01PUm05RGk2aERkaTNT?=
+ =?utf-8?B?SjV0aTZyQVdyY1BWSTI4Q2JkajZQWTFtR1M4VWVQNW5YKzl1M1l6YjhaWWdi?=
+ =?utf-8?B?Sm9rRmhDTTRMYnB0SUJiTTBBUXVoM0ZzTUowQjEzamJmTzNGOVBLcEYyS1hD?=
+ =?utf-8?B?ald6K2loM1F5N2F0c0YrZEJQZWY3YU9pamNaVDdzMTNxbzJ3TUVuQ0FwdEFK?=
+ =?utf-8?B?VWtYdm1IVU9mV3MvMW5ualhCT3hCYUxNeTl4eXpLV2I4WnZhaHN0TFZyVFNw?=
+ =?utf-8?B?Umx0WlNJbGRvblEyTjJMSlJtZVpEdXRBVXBFamt4WjR3QUkzeUozL2g0bm9z?=
+ =?utf-8?B?SEMzdUxMbXEvMmt2VGRyTUNER3pnUzhSSWlzYkpmNTFEbGViV01yYTg4ekRi?=
+ =?utf-8?B?TmdlRkc4bkxUV1VEWkt6RUlhVCtqQlZDK0FxaFJzaUFWMG5XZndVMEVHOXFk?=
+ =?utf-8?B?TGJFNjMvRnRUVGdGVkpZcThWajZMOVdCVDZ0TzNTSFV4U0R6U2J3U1I1YkEz?=
+ =?utf-8?B?WStRcG5JYVRnNXFoS0w2R0lCWWhNSnJhSjRkWVdXOFBiTE9yZGNYVnkvOXZl?=
+ =?utf-8?B?dVFTVzVwNUhtOGU4aGRzU3lvemVaSUNZUFNnODVuOUNhT2F0NHBMcUhIWGVV?=
+ =?utf-8?B?SE1kNkJ3ZXJrQWJLVXRXcitKaFhKdFd3MEk4eERQN0xNMGI1YVRsRkMzTmFR?=
+ =?utf-8?B?aEw5K1F0ckREY0liTlNjRlVlYytScFdySXNjSG1ybjlhTmgzRVRFM1JuQ0to?=
+ =?utf-8?B?TnRhQ2R2bTVpN2c3WDROTEltU3ZVR2c4V1VkYVVDRE84T2NMUzQ2NWJGQTFK?=
+ =?utf-8?B?dnhVSXU3R2tNaGJuSURKSFUrQUZkanhNejZsQittRGRSejd2dEF5TTUwYUlp?=
+ =?utf-8?B?SHBudy9GbGxlNUZUL3pFUFd2NGhFa1MxQ0tUR1V2TzhVb2N3Sis3TUFuV081?=
+ =?utf-8?B?VzVyT0FIaG9XNndDemg3QWdONEdva1VVYkRvTm5HZWQ2d1VmMkxOQnBiSHpq?=
+ =?utf-8?B?bU1RbFZwbUZrVkVobGd4R2ZpRUZDcHErUnNVOU01VU50OW1qTzhPVFVzOGpp?=
+ =?utf-8?B?OGNsaVhwL3N5Y1RrM2RwTmdVWWhNT285eEZyYnBXS1JjUUxuQTlvbndtSHJq?=
+ =?utf-8?B?RFp0WkhEcWpHcmp1TVcydm5XK3loL0s3WGtwSCtoYWhvTCs2MnR3dVplQ2p0?=
+ =?utf-8?B?dERtN285UFpLYXpVeHByVXF4ZjZTNVBIc1VKVW1mUWVHTi9SblFLaEVMZ3M0?=
+ =?utf-8?B?V1lUMmNhVVhpQ2laSXFTcWRubXd5R1pDamtiOEtmVXJ0M1UyUXpFTW1ueDRC?=
+ =?utf-8?B?a2NOamtONkNEL2tjRDhQVStENW5ZY3NYUm9GcGdqb2xWYm8zOW1rd0ZNaHZ1?=
+ =?utf-8?B?c3lBeWg2YXVhcjVSN0tRczE4TjRWaVE4TEM4bTdHWFZpU25wK0U4MUVIV2di?=
+ =?utf-8?B?MU1yWFNOR2RXWHkyV2JpS3lIQytCSDA3SFJVNGxHeU9QQ1NOTkdpdlVPbFVU?=
+ =?utf-8?B?U1FkMHZoUkpsOFBPd1pOd2xhSDB5MEkrZWpqNTZqRTdONERuUWpyMGJ1L2kv?=
+ =?utf-8?B?UFI0b3hPczFpTm9ibUtITGl5TU0vaVJ1RkZ6S0pDYnlhcFdMY016ZDJxVVl1?=
+ =?utf-8?B?dXVVU2tsMks3Tk8yUTdKNFdkaXUyR3pnWFFPa1dxeWV0d3JOTEYxSFZzUzB2?=
+ =?utf-8?B?SWNDYTViT0o5QjNxVWZzU1FwVXZCQzZheEI1NmpDWmF1VVVjcTN6NjlWaFZz?=
+ =?utf-8?B?MWR2dEEyN3NyNmprcURBVFpLb0ovZnBFTlozTTFPS1FLN05aSEQ5emY3NWVT?=
+ =?utf-8?B?cEJKbGQ2ZlEzN3RzWVZ2dG9zWEZhKzdFb2pXY1BBb1M4dld2SkZuQ2R6cEtP?=
+ =?utf-8?B?a0RxSklvNGZKWGdMNVczTVdKYytGM3RIY21rYTh5akJES2NwNS9udz09?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 920b7734-c32d-41c8-272b-08ded5ae7497
+X-MS-Exchange-CrossTenant-AuthSource: EAYPR12MB999132.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Jun 2026 07:17:19.7412
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: NfcoEhYbSogxb+TdjUBEnQwETsWchXFangtRqu5fkUct+EBraYeTVmzPnr/W7r9BhZOSle7J7Xuhu8+Sx+4B+A==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ2PR12MB8956
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-6.16 / 15.00];
-	WHITELIST_DMARC(-7.00)[huawei.com:D:+];
+X-Spamd-Result: default: False [1.34 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
-	MID_CONTAINS_FROM(1.00)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[huawei.com,quarantine];
-	R_DKIM_ALLOW(-0.20)[huawei.com:s=dkim];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	ARC_REJECT(1.00)[cv is fail on i=2];
+	DMARC_POLICY_ALLOW(-0.50)[amd.com,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[amd.com:s=selector1];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER(0.00)[caixinchen1@huawei.com,stable@vger.kernel.org];
-	FORGED_RECIPIENTS(0.00)[m:viro@zeniv.linux.org.uk,m:brauner@kernel.org,m:jack@suse.cz,m:miklos@szeredi.hu,m:amir73il@gmail.com,m:paul@paul-moore.com,m:jmorris@namei.org,m:serge@hallyn.com,m:stephen.smalley.work@gmail.com,m:omosnace@redhat.com,m:gregkh@linuxfoundation.org,m:sashal@kernel.org,m:bboscaccy@linux.microsoft.com,m:caixinchen1@huawei.com,m:linux-fsdevel@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:linux-unionfs@vger.kernel.org,m:linux-security-module@vger.kernel.org,m:selinux@vger.kernel.org,m:bpf@vger.kernel.org,m:stable@vger.kernel.org,m:lujialin4@huawei.com,m:stephensmalleywork@gmail.com,s:lists@lfdr.de];
-	FREEMAIL_TO(0.00)[zeniv.linux.org.uk,kernel.org,suse.cz,szeredi.hu,gmail.com,paul-moore.com,namei.org,hallyn.com,redhat.com,linuxfoundation.org,linux.microsoft.com,huawei.com];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-269648-lists,stable=lfdr.de];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[caixinchen1@huawei.com,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	FORWARDED(0.00)[lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-269659-lists,stable=lfdr.de];
+	FORGED_SENDER(0.00)[arunpravin.paneerselvam@amd.com,stable@vger.kernel.org];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:matthew.auld@intel.com,m:christian.koenig@amd.com,m:dri-devel@lists.freedesktop.org,m:intel-gfx@lists.freedesktop.org,m:intel-xe@lists.freedesktop.org,m:amd-gfx@lists.freedesktop.org,m:alexander.deucher@amd.com,m:timur.kristof@gmail.com,m:john.olender@gmail.com,m:stable@vger.kernel.org,m:timurkristof@gmail.com,m:johnolender@gmail.com,s:lists@lfdr.de];
+	FREEMAIL_CC(0.00)[amd.com,gmail.com,vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[huawei.com:+];
-	TO_DN_NONE(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[arunpravin.paneerselvam@amd.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[amd.com:+];
 	ALIAS_RESOLVED(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[22];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,paul-moore.com:email,vger.kernel.org:from_smtp,huawei.com:dkim,huawei.com:email,huawei.com:mid,huawei.com:from_mime];
-	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCVD_COUNT_SEVEN(0.00)[7]
+	RCPT_COUNT_SEVEN(0.00)[10];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[amd.com:dkim,amd.com:email,amd.com:mid,amd.com:from_mime,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp,intel.com:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 0EFC36D67E0
+X-Rspamd-Queue-Id: 3E4F76D6F6D
 
-From: Paul Moore <paul@paul-moore.com>
 
-[ Upstream commit 82544d36b1729153c8aeb179e84750f0c085d3b1 ]
 
-The existing SELinux security model for overlayfs is to allow access if
-the current task is able to access the top level file (the "user" file)
-and the mounter's credentials are sufficient to access the lower
-level file (the "backing" file).  Unfortunately, the current code does
-not properly enforce these access controls for both mmap() and mprotect()
-operations on overlayfs filesystems.
+On 6/19/2026 6:15 PM, Matthew Auld wrote:
+> On 18/06/2026 13:47, Arunpravin Paneer Selvam wrote:
+>> The try_harder contiguous fallback could return a range whose start
+>> offset did not match the caller's min_block_size. Check each candidate
+>> against the requested alignment and reject the allocation when no
+>> candidate satisfies it, instead of handing back a misaligned range.
+>>
+>> Suggested-by: Christian König <christian.koenig@amd.com>
+>> Fixes: 0a1844bf0b53 ("drm/buddy: Improve contiguous memory allocation")
+>> Cc: Matthew Auld <matthew.auld@intel.com>
+>> Cc: Christian König <christian.koenig@amd.com>
+>> Cc: Timur Kristóf <timur.kristof@gmail.com>
+>> Cc: John Olender <john.olender@gmail.com>
+>> Cc: stable@vger.kernel.org
+>> Signed-off-by: Arunpravin Paneer Selvam 
+>> <Arunpravin.PaneerSelvam@amd.com>
+>> ---
+>>   drivers/gpu/buddy.c | 33 +++++++++++++++++++++------------
+>>   1 file changed, 21 insertions(+), 12 deletions(-)
+>>
+>> diff --git a/drivers/gpu/buddy.c b/drivers/gpu/buddy.c
+>> index dc81fe0301ce..28ed3250ac57 100644
+>> --- a/drivers/gpu/buddy.c
+>> +++ b/drivers/gpu/buddy.c
+>> @@ -1127,13 +1127,11 @@ static int __alloc_contig_try_harder(struct 
+>> gpu_buddy *mm,
+>>       struct gpu_buddy_block *block;
+>>       unsigned int tree, order;
+>>       LIST_HEAD(blocks_lhs);
+>> -    unsigned long pages;
+>>       u64 modify_size;
+>>       int err;
+>>         modify_size = rounddown_pow_of_two(size);
+>> -    pages = modify_size >> ilog2(mm->chunk_size);
+>> -    order = fls(pages) - 1;
+>> +    order = ilog2(modify_size) - ilog2(mm->chunk_size);
+>>       if (order == 0)
+>>           return -ENOSPC;
+>>   @@ -1149,31 +1147,42 @@ static int __alloc_contig_try_harder(struct 
+>> gpu_buddy *mm,
+>>           while (iter) {
+>>               block = rbtree_get_free_block(iter);
+>>   -            /* Allocate blocks traversing RHS */
+>>               rhs_offset = gpu_buddy_block_offset(block);
+>> +
+>> +            /* Allocate blocks traversing RHS */
+>>               err =  __gpu_buddy_alloc_range(mm, rhs_offset, size,
+>>                                  &filled, blocks);
+>> -            if (!err || err != -ENOSPC)
+>> +            if (err && err != -ENOSPC)
+>>                   return err;
+>> +            if (!err && IS_ALIGNED(rhs_offset, min_block_size))
+>> +                return 0;
+>> +            if (!err)
+>
+> Should we do some kind of rhs = round_down(rhs, min_block_size) at the 
+> start? Just wondering if we can get something misaligned here, that 
+> should have succeeded if we just applied the round_down first, in some 
+> edge case?
+  Done - when the whole size fits at rhs_offset but the start is 
+misaligned, we drop it and realign to the min_block_size boundary below 
+instead of bailing.
+>
+>> +                goto next;
+>>   -            lhs_size = max((size - filled), min_block_size);
+>> -            if (!IS_ALIGNED(lhs_size, min_block_size))
+>> -                lhs_size = round_up(lhs_size, min_block_size);
+>> +            lhs_size = round_up(max((size - filled), min_block_size),
+>> +                        min_block_size);
+>
+> Can this be simplified as: round_up(size - filled, min_block_size) ?
+Dropped round_up/lhs_size entirely, we realign and allocate exactly 
+size, so the max/round_up is gone.
+>
+>> +
+>> +            if (lhs_size > rhs_offset)
+>
+> What is the idea with this check?
+We reach here only on a partial RHS fill, so the leftover size - filled 
+must be taken from the space left of rhs_offset;
+if that leftover exceeds rhs_offset there isn't room, so we skip.
+It also prevents the next line's u64 rhs_offset - (size - filled) from 
+underflowing.
 
-This patch makes use of the newly created security_mmap_backing_file()
-LSM hook to provide the missing backing file enforcement for mmap()
-operations, and leverages the backing file API and new LSM blob to
-provide the necessary information to properly enforce the mprotect()
-access controls.
+>
+>> +                goto next;
+>>                 /* Allocate blocks traversing LHS */
+>> -            lhs_offset = gpu_buddy_block_offset(block) - lhs_size;
+>> +            lhs_offset = rhs_offset - lhs_size;
+>> +
+>> +            if (!IS_ALIGNED(lhs_offset, min_block_size))
+>> +                goto next;
+>
+> Would it make sense to just align the lhs down, if misaligned, instead 
+> of baling? If the final size we get back is slightly too large, we can 
+> just apply a trim at the end?
+Done -  we realign lhs_offset (round_down) and request exactly size, so 
+there is no surplus to trim.
+Please review the v2.
 
-Cc: stable@vger.kernel.org
-Acked-by: Amir Goldstein <amir73il@gmail.com>
-Signed-off-by: Paul Moore <paul@paul-moore.com>
-[backing_file_user_path() not available
-Mainline uses backing_file_user_path(file) to obtain the user-visible path
-from a backing file. The 5.10.y version uses &file->f_path directly]
-Signed-off-by: Cai Xinchen <caixinchen1@huawei.com>
----
- security/selinux/hooks.c          | 244 ++++++++++++++++++++++--------
- security/selinux/include/objsec.h |  11 ++
- 2 files changed, 190 insertions(+), 65 deletions(-)
-
-diff --git a/security/selinux/hooks.c b/security/selinux/hooks.c
-index e1bbdef0bcd3..76cc0cbd1fd2 100644
---- a/security/selinux/hooks.c
-+++ b/security/selinux/hooks.c
-@@ -1703,52 +1703,75 @@ static inline int file_path_has_perm(const struct cred *cred,
- static int bpf_fd_pass(const struct file *file, u32 sid);
- #endif
- 
--/* Check whether a task can use an open file descriptor to
--   access an inode in a given way.  Check access to the
--   descriptor itself, and then use dentry_has_perm to
--   check a particular permission to the file.
--   Access to the descriptor is implicitly granted if it
--   has the same SID as the process.  If av is zero, then
--   access to the file is not checked, e.g. for cases
--   where only the descriptor is affected like seek. */
--static int file_has_perm(const struct cred *cred,
--			 struct file *file,
--			 u32 av)
-+static int __file_has_perm(const struct cred *cred, const struct file *file,
-+			   u32 av, bool bf_user_file)
-+
- {
--	struct file_security_struct *fsec = selinux_file(file);
--	struct inode *inode = file_inode(file);
- 	struct common_audit_data ad;
--	u32 sid = cred_sid(cred);
-+	struct inode *inode;
-+	u32 ssid = cred_sid(cred);
-+	u32 tsid_fd;
- 	int rc;
- 
--	ad.type = LSM_AUDIT_DATA_FILE;
--	ad.u.file = file;
-+	if (bf_user_file) {
-+		struct backing_file_security_struct *bfsec;
-+		const struct path *path;
- 
--	if (sid != fsec->sid) {
--		rc = avc_has_perm(&selinux_state,
--				  sid, fsec->sid,
--				  SECCLASS_FD,
--				  FD__USE,
--				  &ad);
-+		if (WARN_ON(!(file->f_mode & FMODE_BACKING)))
-+			return -EIO;
-+
-+		bfsec = selinux_backing_file(file);
-+		path = &file->f_path;
-+		tsid_fd = bfsec->uf_sid;
-+		inode = d_inode(path->dentry);
-+
-+		ad.type = LSM_AUDIT_DATA_PATH;
-+		ad.u.path = *path;
-+	} else {
-+		struct file_security_struct *fsec = selinux_file(file);
-+
-+		tsid_fd = fsec->sid;
-+		inode = file_inode(file);
-+
-+		ad.type = LSM_AUDIT_DATA_FILE;
-+		ad.u.file = file;
-+	}
-+
-+	if (ssid != tsid_fd) {
-+		rc = avc_has_perm(&selinux_state, ssid, tsid_fd, SECCLASS_FD, FD__USE, &ad);
- 		if (rc)
--			goto out;
-+			return rc;
- 	}
- 
- #ifdef CONFIG_BPF_SYSCALL
--	rc = bpf_fd_pass(file, cred_sid(cred));
-+	/* regardless of backing vs user file, use the underlying file here */
-+	rc = bpf_fd_pass(file, ssid);
- 	if (rc)
- 		return rc;
- #endif
- 
- 	/* av is zero if only checking access to the descriptor. */
--	rc = 0;
- 	if (av)
--		rc = inode_has_perm(cred, inode, av, &ad);
-+		return inode_has_perm(cred, inode, av, &ad);
- 
--out:
--	return rc;
-+	return 0;
- }
- 
-+/* Check whether a task can use an open file descriptor to
-+   access an inode in a given way.  Check access to the
-+   descriptor itself, and then use dentry_has_perm to
-+   check a particular permission to the file.
-+   Access to the descriptor is implicitly granted if it
-+   has the same SID as the process.  If av is zero, then
-+   access to the file is not checked, e.g. for cases
-+   where only the descriptor is affected like seek. */
-+static inline int file_has_perm(const struct cred *cred,
-+				const struct file *file, u32 av)
-+{
-+	return __file_has_perm(cred, file, av, false);
-+}
-+
-+
- /*
-  * Determine the label for an inode that might be unioned.
-  */
-@@ -3572,6 +3595,17 @@ static int selinux_file_alloc_security(struct file *file)
- 	return 0;
- }
- 
-+static int selinux_backing_file_alloc(struct file *backing_file,
-+				      const struct file *user_file)
-+{
-+	struct backing_file_security_struct *bfsec;
-+
-+	bfsec = selinux_backing_file(backing_file);
-+	bfsec->uf_sid = selinux_file(user_file)->sid;
-+
-+	return 0;
-+}
-+
- /*
-  * Check whether a task has the ioctl permission and cmd
-  * operation to an inode.
-@@ -3691,43 +3725,55 @@ static int selinux_file_ioctl_compat(struct file *file, unsigned int cmd,
- 
- static int default_noexec __ro_after_init;
- 
--static int file_map_prot_check(struct file *file, unsigned long prot, int shared)
-+static int __file_map_prot_check(const struct cred *cred,
-+				 const struct file *file, unsigned long prot,
-+				 bool shared, bool bf_user_file)
- {
--	const struct cred *cred = current_cred();
--	u32 sid = cred_sid(cred);
--	int rc = 0;
-+	struct inode *inode = NULL;
-+	bool prot_exec = prot & PROT_EXEC;
-+	bool prot_write = prot & PROT_WRITE;
-+
-+	if (file) {
-+		if (bf_user_file)
-+			inode = d_inode(file->f_path.dentry);
-+		else
-+			inode = file_inode(file);
-+	}
-+
-+	if (default_noexec && prot_exec &&
-+	    (!file || IS_PRIVATE(inode) || (!shared && prot_write))) {
-+		int rc;
-+		u32 sid = cred_sid(cred);
- 
--	if (default_noexec &&
--	    (prot & PROT_EXEC) && (!file || IS_PRIVATE(file_inode(file)) ||
--				   (!shared && (prot & PROT_WRITE)))) {
- 		/*
--		 * We are making executable an anonymous mapping or a
--		 * private file mapping that will also be writable.
--		 * This has an additional check.
-+		 * We are making executable an anonymous mapping or a private
-+		 * file mapping that will also be writable.
- 		 */
--		rc = avc_has_perm(&selinux_state,
--				  sid, sid, SECCLASS_PROCESS,
--				  PROCESS__EXECMEM, NULL);
-+		rc = avc_has_perm(&selinux_state, sid, sid, SECCLASS_PROCESS, PROCESS__EXECMEM,
-+				  NULL);
- 		if (rc)
--			goto error;
-+			return rc;
- 	}
- 
- 	if (file) {
--		/* read access is always possible with a mapping */
-+		/* "read" always possible, "write" only if shared */
- 		u32 av = FILE__READ;
--
--		/* write access only matters if the mapping is shared */
--		if (shared && (prot & PROT_WRITE))
-+		if (shared && prot_write)
- 			av |= FILE__WRITE;
--
--		if (prot & PROT_EXEC)
-+		if (prot_exec)
- 			av |= FILE__EXECUTE;
- 
--		return file_has_perm(cred, file, av);
-+		return __file_has_perm(cred, file, av, bf_user_file);
- 	}
- 
--error:
--	return rc;
-+	return 0;
-+}
-+
-+static inline int file_map_prot_check(const struct cred *cred,
-+				      const struct file *file,
-+				      unsigned long prot, bool shared)
-+{
-+	return __file_map_prot_check(cred, file, prot, shared, false);
- }
- 
- static int selinux_mmap_addr(unsigned long addr)
-@@ -3744,17 +3790,16 @@ static int selinux_mmap_addr(unsigned long addr)
- 	return rc;
- }
- 
--static int selinux_mmap_file(struct file *file, unsigned long reqprot,
--			     unsigned long prot, unsigned long flags)
-+static int selinux_mmap_file_common(const struct cred *cred, struct file *file,
-+				    unsigned long reqprot, unsigned long prot, bool shared)
- {
--	struct common_audit_data ad;
--	int rc;
--
- 	if (file) {
-+		int rc;
-+		struct common_audit_data ad;
-+
- 		ad.type = LSM_AUDIT_DATA_FILE;
- 		ad.u.file = file;
--		rc = inode_has_perm(current_cred(), file_inode(file),
--				    FILE__MAP, &ad);
-+		rc = inode_has_perm(cred, file_inode(file), FILE__MAP, &ad);
- 		if (rc)
- 			return rc;
- 	}
-@@ -3762,36 +3807,86 @@ static int selinux_mmap_file(struct file *file, unsigned long reqprot,
- 	if (checkreqprot_get(&selinux_state))
- 		prot = reqprot;
- 
--	return file_map_prot_check(file, prot,
--				   (flags & MAP_TYPE) == MAP_SHARED);
-+	return file_map_prot_check(cred, file, prot, shared);
-+}
-+
-+static int selinux_mmap_file(struct file *file,
-+			     unsigned long reqprot,
-+			     unsigned long prot, unsigned long flags)
-+{
-+	return selinux_mmap_file_common(current_cred(), file, reqprot, prot,
-+					(flags & MAP_TYPE) == MAP_SHARED);
-+}
-+
-+/**
-+ * selinux_mmap_backing_file - Check mmap permissions on a backing file
-+ * @vma: memory region
-+ * @backing_file: stacked filesystem backing file
-+ * @user_file: user visible file
-+ *
-+ * This is called after selinux_mmap_file() on stacked filesystems, and it
-+ * is this function's responsibility to verify access to @backing_file and
-+ * setup the SELinux state for possible later use in the mprotect() code path.
-+ *
-+ * By the time this function is called, mmap() access to @user_file has already
-+ * been authorized and @vma->vm_file has been set to point to @backing_file.
-+ *
-+ * Return zero on success, negative values otherwise.
-+ */
-+static int selinux_mmap_backing_file(struct vm_area_struct *vma,
-+				     struct file *backing_file,
-+				     struct file *user_file __always_unused)
-+{
-+	unsigned long prot = 0;
-+
-+	/* translate vma->vm_flags perms into PROT perms */
-+	if (vma->vm_flags & VM_READ)
-+		prot |= PROT_READ;
-+	if (vma->vm_flags & VM_WRITE)
-+		prot |= PROT_WRITE;
-+	if (vma->vm_flags & VM_EXEC)
-+		prot |= PROT_EXEC;
-+
-+	return selinux_mmap_file_common(backing_file->f_cred, backing_file,
-+					prot, prot, vma->vm_flags & VM_SHARED);
- }
- 
- static int selinux_file_mprotect(struct vm_area_struct *vma,
- 				 unsigned long reqprot,
- 				 unsigned long prot)
- {
-+	int rc;
- 	const struct cred *cred = current_cred();
- 	u32 sid = cred_sid(cred);
-+	const struct file *file = vma->vm_file;
-+	bool backing_file;
-+	bool shared = vma->vm_flags & VM_SHARED;
-+
-+	/* check if we need to trigger the "backing files are awful" mode */
-+	backing_file = file && (file->f_mode & FMODE_BACKING);
- 
- 	if (checkreqprot_get(&selinux_state))
- 		prot = reqprot;
- 
- 	if (default_noexec &&
- 	    (prot & PROT_EXEC) && !(vma->vm_flags & VM_EXEC)) {
--		int rc = 0;
- 		if (vma->vm_start >= vma->vm_mm->start_brk &&
- 		    vma->vm_end <= vma->vm_mm->brk) {
- 			rc = avc_has_perm(&selinux_state,
- 					  sid, sid, SECCLASS_PROCESS,
- 					  PROCESS__EXECHEAP, NULL);
--		} else if (!vma->vm_file &&
-+			if (rc)
-+				return rc;
-+		} else if (!file &&
- 			   ((vma->vm_start <= vma->vm_mm->start_stack &&
- 			     vma->vm_end >= vma->vm_mm->start_stack) ||
- 			    vma_is_stack_for_current(vma))) {
- 			rc = avc_has_perm(&selinux_state,
- 					  sid, sid, SECCLASS_PROCESS,
- 					  PROCESS__EXECSTACK, NULL);
--		} else if (vma->vm_file && vma->anon_vma) {
-+			if (rc)
-+				return rc;
-+		} else if (file && vma->anon_vma) {
- 			/*
- 			 * We are making executable a file mapping that has
- 			 * had some COW done. Since pages might have been
-@@ -3799,13 +3894,29 @@ static int selinux_file_mprotect(struct vm_area_struct *vma,
- 			 * modified content.  This typically should only
- 			 * occur for text relocations.
- 			 */
--			rc = file_has_perm(cred, vma->vm_file, FILE__EXECMOD);
-+			rc = __file_has_perm(cred, file, FILE__EXECMOD,
-+					     backing_file);
-+			if (rc)
-+				return rc;
-+			if (backing_file) {
-+				rc = file_has_perm(file->f_cred, file,
-+						   FILE__EXECMOD);
-+				if (rc)
-+					return rc;
-+			}
- 		}
-+	}
-+
-+	rc = __file_map_prot_check(cred, file, prot, shared, backing_file);
-+	if (rc)
-+		return rc;
-+	if (backing_file) {
-+		rc = file_map_prot_check(file->f_cred, file, prot, shared);
- 		if (rc)
- 			return rc;
- 	}
- 
--	return file_map_prot_check(vma->vm_file, prot, vma->vm_flags&VM_SHARED);
-+	return 0;
- }
- 
- static int selinux_file_lock(struct file *file, unsigned int cmd)
-@@ -6924,6 +7035,7 @@ static int selinux_lockdown(enum lockdown_reason what)
- struct lsm_blob_sizes selinux_blob_sizes __lsm_ro_after_init = {
- 	.lbs_cred = sizeof(struct task_security_struct),
- 	.lbs_file = sizeof(struct file_security_struct),
-+	.lbs_backing_file = sizeof(struct backing_file_security_struct),
- 	.lbs_inode = sizeof(struct inode_security_struct),
- 	.lbs_ipc = sizeof(struct ipc_security_struct),
- 	.lbs_msg_msg = sizeof(struct msg_security_struct),
-@@ -7075,9 +7187,11 @@ static struct security_hook_list selinux_hooks[] __lsm_ro_after_init = {
- 
- 	LSM_HOOK_INIT(file_permission, selinux_file_permission),
- 	LSM_HOOK_INIT(file_alloc_security, selinux_file_alloc_security),
-+	LSM_HOOK_INIT(backing_file_alloc, selinux_backing_file_alloc),
- 	LSM_HOOK_INIT(file_ioctl, selinux_file_ioctl),
- 	LSM_HOOK_INIT(file_ioctl_compat, selinux_file_ioctl_compat),
- 	LSM_HOOK_INIT(mmap_file, selinux_mmap_file),
-+	LSM_HOOK_INIT(mmap_backing_file, selinux_mmap_backing_file),
- 	LSM_HOOK_INIT(mmap_addr, selinux_mmap_addr),
- 	LSM_HOOK_INIT(file_mprotect, selinux_file_mprotect),
- 	LSM_HOOK_INIT(file_lock, selinux_file_lock),
-diff --git a/security/selinux/include/objsec.h b/security/selinux/include/objsec.h
-index 330b7b6d44e0..b4be6588827c 100644
---- a/security/selinux/include/objsec.h
-+++ b/security/selinux/include/objsec.h
-@@ -60,6 +60,10 @@ struct file_security_struct {
- 	u32 pseqno;		/* Policy seqno at the time of file open */
- };
- 
-+struct backing_file_security_struct {
-+	u32 uf_sid; /* associated user file fsec->sid */
-+};
-+
- struct superblock_security_struct {
- 	struct super_block *sb;		/* back pointer to sb object */
- 	u32 sid;			/* SID of file system superblock */
-@@ -159,6 +163,13 @@ static inline struct file_security_struct *selinux_file(const struct file *file)
- 	return file->f_security + selinux_blob_sizes.lbs_file;
- }
- 
-+static inline struct backing_file_security_struct *
-+selinux_backing_file(const struct file *backing_file)
-+{
-+	void *blob = backing_file_security(backing_file);
-+	return blob + selinux_blob_sizes.lbs_backing_file;
-+}
-+
- static inline struct inode_security_struct *selinux_inode(
- 						const struct inode *inode)
- {
--- 
-2.18.0.huawei.25
+Regards,
+Arun.
+>
+>> +
+>>               err =  __gpu_buddy_alloc_range(mm, lhs_offset, lhs_size,
+>>                                  NULL, &blocks_lhs);
+>>               if (!err) {
+>>                   list_splice(&blocks_lhs, blocks);
+>>                   return 0;
+>> -            } else if (err != -ENOSPC) {
+>> +            }
+>> +            if (err != -ENOSPC) {
+>>                   gpu_buddy_free_list_internal(mm, blocks);
+>>                   return err;
+>>               }
+>> -            /* Free blocks for the next iteration */
+>> +next:
+>>               gpu_buddy_free_list_internal(mm, blocks);
+>> -
+>>               iter = rb_prev(iter);
+>>           }
+>>       }
+>>
+>> base-commit: b9e2d5cdaab05c997be3a69d9b372d7676683e1b
+>
 
 
