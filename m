@@ -1,63 +1,62 @@
-Return-Path: <stable+bounces-269697-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-269700-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id RDQgCX48QmrJ2QkAu9opvQ
-	(envelope-from <stable+bounces-269697-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 29 Jun 2026 11:35:58 +0200
+	id K1r7HPw7Qmqm2QkAu9opvQ
+	(envelope-from <stable+bounces-269700-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 29 Jun 2026 11:33:48 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0D1E66D8495
-	for <lists+stable@lfdr.de>; Mon, 29 Jun 2026 11:35:57 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B44F6D843C
+	for <lists+stable@lfdr.de>; Mon, 29 Jun 2026 11:33:48 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=nsI5JgCR;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-269697-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-269697-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=oXF6XuGF;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-269700-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-269700-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id A0C3230172FD
-	for <lists+stable@lfdr.de>; Mon, 29 Jun 2026 09:22:24 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 1F76E305CEB6
+	for <lists+stable@lfdr.de>; Mon, 29 Jun 2026 09:28:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 498473F9A0F;
-	Mon, 29 Jun 2026 09:18:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B6B23F871C;
+	Mon, 29 Jun 2026 09:28:43 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10C4E3FC5BE;
-	Mon, 29 Jun 2026 09:18:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E49F21A6822;
+	Mon, 29 Jun 2026 09:28:41 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782724705; cv=none; b=SmNA+4P4ElJz1qHa0ySoQrvDa7ZDcCnohsumHzv3iJFkxB1rnUnEN3pMfGRvDnK6WfyQ0xq5gztyELox/YYXMlP9TFAWb2kIubsOFqATWvo/s3iZ/FFFZwx8VuDB9pLtLMfxQEhve6WqRwnweECg6Ori/RzTxyDN04LSsqquozw=
+	t=1782725322; cv=none; b=Fuvw8k00jPAFJD7J/X2RT76YWfhD1XjwsOYSmbrkcK7SCihfEyRX9ORHyKYFDcXQh4OMNV4fBZxG2bUKFcE2ek+0MK3rVDE3ojVg7uzQKRfXbWyR1waqmLXXGGJzm92FQJMVnfm2Jb8sgVjcLMKIPSsrNVkU8UGSKH/7C4nAaz0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782724705; c=relaxed/simple;
-	bh=sJKNtE95R5L+yo7q9jl3+KbIcC66zPXSE+Ab5FZZs7o=;
+	s=arc-20240116; t=1782725322; c=relaxed/simple;
+	bh=K4jU7F6muLVLr/hezJMUij9Sn0zB6OjemcazGDqW+/4=;
 	h=Date:From:To:cc:Subject:In-Reply-To:Message-ID:References:
-	 MIME-Version:Content-Type; b=tSbL9751ZxOzRTHDPIDiKQ6zs11PAWHxqNlIrTqhu/Z7YOgb1fcBItDDDdMMnsxtjNtH8d9QWfCuDw+aDMj2UeptEC6lUDlwIYLir6xy+q1YkSt1VT3/Ztn1U5bsn+iS1LNsaEyJe8m15n3N+pW7LF99/vZpz48uO90+O/ZuMOM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nsI5JgCR; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C7F11F000E9;
-	Mon, 29 Jun 2026 09:18:22 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Ze+WD8vm8FNc9CrTajkt3e5Ocy7Jjb1igLHppbXUw1cNsFGhM5Sl8QDYRblifmdaPIxGB0Ft/005D22bTacUtDFE7lhnlnThNlgWr+WruPBOEnIq5tGhWrWL+eCrPZloMxoVjtgLgtvzrqoSGzvGuVq9zKjM0N+3QO+UQbue+6g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oXF6XuGF; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07BB11F000E9;
+	Mon, 29 Jun 2026 09:28:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782724703;
-	bh=7JktU4sf7enyE9ymlnEnWDK2ubbaQM7VRZFQOV/uzsw=;
+	s=k20260515; t=1782725321;
+	bh=EOgfBcGwHQnas0NoGW1tw3GieJSXGVhk2AHTPYXXB/M=;
 	h=Date:From:To:cc:Subject:In-Reply-To:References;
-	b=nsI5JgCREXFgGS/h6fw5pb7ioF6D/w6HGbVK0PphL9vzHMAPIYlJAEo1eRDYqhUVm
-	 QUCFg54pedBvK9iRJH8hURe9aDSBiCtQ37wW8qArBow/fSSntWsOTSz6bHYtUiVACf
-	 /DKuGHNr/6bed38uAUUMDxDhwCUF2E9WzyXSkQX/KV+QdcEzJcefV57Pddh5/Scg3K
-	 KDyInWNXfCjjVTCMODZvcxcGico4rxI21qZFKEb5NRxPALggLDqpITH4Hv7qAGvx67
-	 EmxyHU0lGWmxRSTp2IsKc35tBA5sWjKgYE7TWcqpCDZxUyjIQaS6tcvuB1DyqTHW35
-	 v5jM4K4jVC/Zw==
-Date: Mon, 29 Jun 2026 11:18:21 +0200 (CEST)
+	b=oXF6XuGFTXZDDz4vsG5ePhJVeU5ohvFsXbkWcZi4RgRktX3W2MXZLBsZBVuAyFBCS
+	 g7J7Cf6vdhlQ6g2Nif/gnO+ABKFRk+83HYtHOSq4D8rCNrmbtaF1Mnk7K7KO7cfEaa
+	 c7ocjTrQ4xiG9BU+EYdXVmp4EiyFpC92rF3NClIXXogH4rI/nO6oPb4B2LwTDDFyM/
+	 YB80sJTkdSh60bVcmmOzthxEgnehwcAQhhAL5BAyDLnFxpiOljAT0t6f97aE8a5fme
+	 GIZsC/EzjwZ/U+Fonw83AYk7h5UudJvaoBmZUiWFqV/Zdn6BZE1wVsBdyQHjXDJrAl
+	 041rMjB4/HgEA==
+Date: Mon, 29 Jun 2026 11:28:38 +0200 (CEST)
 From: Jiri Kosina <jikos@kernel.org>
-To: HyeongJun An <sammiee5311@gmail.com>
-cc: Benjamin Tissoires <bentiss@kernel.org>, 
-    =?ISO-8859-15?Q?Filipe_La=EDns?= <lains@riseup.net>, 
-    Lee Jones <lee@kernel.org>, linux-input@vger.kernel.org, 
+To: Haoxiang Li <haoxiang_li2024@163.com>
+cc: jic23@kernel.org, srinivas.pandruvada@linux.intel.com, bentiss@kernel.org, 
+    linux-input@vger.kernel.org, linux-iio@vger.kernel.org, 
     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH] HID: logitech-dj: Fix maxfield check in DJ short report
- validation
-In-Reply-To: <20260618063737.211468-1-sammiee5311@gmail.com>
-Message-ID: <5s454s07-8sso-p157-9047-o3o5r1276p86@xreary.bet>
-References: <20260618063737.211468-1-sammiee5311@gmail.com>
+Subject: Re: [PATCH] HID: hid-sensor-custom: Fix sysfs group leak on
+ failure
+In-Reply-To: <20260623021950.1736413-1-haoxiang_li2024@163.com>
+Message-ID: <spo507np-44rr-o950-7s7n-r47nno9p0782@xreary.bet>
+References: <20260623021950.1736413-1-haoxiang_li2024@163.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -70,20 +69,20 @@ X-Spamd-Result: default: False [-5.16 / 15.00];
 	WHITELIST_SPF_DKIM(-3.00)[kernel.org:d:+,kernel.org:s:+];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:sammiee5311@gmail.com,m:bentiss@kernel.org,m:lains@riseup.net,m:lee@kernel.org,m:linux-input@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:haoxiang_li2024@163.com,m:jic23@kernel.org,m:srinivas.pandruvada@linux.intel.com,m:bentiss@kernel.org,m:linux-input@vger.kernel.org,m:linux-iio@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	FREEMAIL_TO(0.00)[gmail.com];
+	FREEMAIL_TO(0.00)[163.com];
 	FORWARDED(0.00)[lists@lfdr.de];
 	FORGED_SENDER(0.00)[jikos@kernel.org,stable@vger.kernel.org];
-	TAGGED_FROM(0.00)[bounces-269697-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-269700-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
 	MISSING_XM_UA(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -92,56 +91,62 @@ X-Spamd-Result: default: False [-5.16 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[jikos@kernel.org,stable@vger.kernel.org];
 	DKIM_TRACE(0.00)[kernel.org:+];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[xreary.bet:mid,vger.kernel.org:from_smtp]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[xreary.bet:mid,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 0D1E66D8495
+X-Rspamd-Queue-Id: 0B44F6D843C
 
-On Thu, 18 Jun 2026, HyeongJun An wrote:
+On Tue, 23 Jun 2026, Haoxiang Li wrote:
 
-> Commit b6a57912854e ("HID: logitech-dj: Prevent REPORT_ID_DJ_SHORT
-> related user initiated OOB write") added validation for the DJ short
-> output report, but the error path dereferences rep->field[0] even when
-> rep->maxfield is zero.
+> hid_sensor_custom_add_attributes() creates one sysfs group for each
+> custom sensor field. If sysfs_create_group() fails after some groups
+> have already been created, the function currently breaks out of the
+> loop and returns the error directly.
 > 
-> Commit 8b9a097eb2fc ("HID: logitech-dj: fix wrong detection of bad
-> DJ_SHORT output report") made the check conditional on rep being present,
-> but a crafted descriptor can still create report ID 0x20 with only padding
-> output items. hid-core registers the report, ignores the padding field,
-> and leaves rep->maxfield as zero.
+> Fix this by adding a local unwind path when sysfs_create_group() fails.
+> The unwind path removes all sysfs groups that were successfully created
+> before the failure and frees sensor_inst->fields.
 > 
-> In that case the validation enters the rep->maxfield < 1 branch and then
-> dereferences rep->field[0]->report_count while printing the error message,
-> causing a NULL pointer dereference during probe. This is reproducible with
-> uhid by emulating a Logitech receiver with a padding-only DJ short output
-> report:
-> 
->   BUG: KASAN: null-ptr-deref in logi_dj_probe+0xb1/0x754 [hid_logitech_dj]
->   Read of size 4 at addr 0000000000000028 by task kworker/4:1/129
->   ...
->   Call Trace:
->    logi_dj_probe+0xb1/0x754 [hid_logitech_dj]
->    hid_device_probe+0x329/0x3f0 [hid]
->    really_probe+0x162/0x570
->    __device_attach+0x137/0x2c0
->    bus_probe_device+0x38/0xc0
->    device_add+0xa56/0xce0
->    hid_add_device+0x19c/0x280 [hid]
->    uhid_device_add_worker+0x2c/0xb0 [uhid]
-> 
-> Reject the zero-field report before printing the field report_count.
-> 
-> Fixes: b6a57912854e ("HID: logitech-dj: Prevent REPORT_ID_DJ_SHORT related user initiated OOB write")
+> Fixes: 4a7de0519df5 ("HID: sensor: Custom and Generic sensor support")
 > Cc: stable@vger.kernel.org
-> Assisted-by: Claude:claude-opus-4-8
-> Signed-off-by: HyeongJun An <sammiee5311@gmail.com>
+> Signed-off-by: Haoxiang Li <haoxiang_li2024@163.com>
+> ---
+>  drivers/hid/hid-sensor-custom.c | 9 ++++++++-
+>  1 file changed, 8 insertions(+), 1 deletion(-)
+> 
+> diff --git a/drivers/hid/hid-sensor-custom.c b/drivers/hid/hid-sensor-custom.c
+> index afffea894021..cd676516e6b0 100644
+> --- a/drivers/hid/hid-sensor-custom.c
+> +++ b/drivers/hid/hid-sensor-custom.c
+> @@ -609,7 +609,7 @@ static int hid_sensor_custom_add_attributes(struct hid_sensor_custom
+>  					 &sensor_inst->fields[i].
+>  					 hid_custom_attribute_group);
+>  		if (ret)
+> -			break;
+> +			goto err_remove_groups;
+>  
+>  		/* For power or report field store indexes */
+>  		if (sensor_inst->fields[i].attribute.attrib_id ==
+> @@ -621,6 +621,13 @@ static int hid_sensor_custom_add_attributes(struct hid_sensor_custom
+>  	}
+>  
+>  	return ret;
+> +
+> +err_remove_groups:
+> +	while (--i >= 0)
+> +		sysfs_remove_group(&sensor_inst->pdev->dev.kobj,
+> +				   &sensor_inst->fields[i].hid_custom_attribute_group);
+> +	kfree(sensor_inst->fields);
 
-Applied, thanks.
+I believe Sashiko is right here abou the UAF. Could you please fix that 
+and resubmit?
+
+Thanks,
 
 -- 
 Jiri Kosina
