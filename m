@@ -1,203 +1,237 @@
-Return-Path: <stable+bounces-269812-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-269813-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id bCkCMOO5QmoJAQoAu9opvQ
-	(envelope-from <stable+bounces-269812-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 29 Jun 2026 20:30:59 +0200
+	id AIUGFoS7QmpRAQoAu9opvQ
+	(envelope-from <stable+bounces-269813-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 29 Jun 2026 20:37:56 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4A6DD6DE100
-	for <lists+stable@lfdr.de>; Mon, 29 Jun 2026 20:30:59 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id B2B3F6DE172
+	for <lists+stable@lfdr.de>; Mon, 29 Jun 2026 20:37:53 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=ZSKW5IWI;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b="XiK/ozan";
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=0Ip6Kwgp;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=EeYyMfbh;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-269812-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-269812-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=none) header.from=suse.de;
-	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=U5Fp93nT;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-269813-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-269813-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("subspace.kernel.org:s=arc-20240116:i=2")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 51EAB302A2D6
-	for <lists+stable@lfdr.de>; Mon, 29 Jun 2026 18:30:52 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id CBBF63007B2B
+	for <lists+stable@lfdr.de>; Mon, 29 Jun 2026 18:37:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29CA3391822;
-	Mon, 29 Jun 2026 18:30:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D46D39A048;
+	Mon, 29 Jun 2026 18:37:41 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75FCF38837E
-	for <stable@vger.kernel.org>; Mon, 29 Jun 2026 18:30:49 +0000 (UTC)
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782757852; cv=none; b=X7ivfNb55JfTgqzHOupqzqpA/GDMlrorLtVXN/ZGcdu2k3Q8Kvjy7Jr23975SRnFKQZrT5RBOf4QZv9t632ykiu66fiGqfMPQhhn7YjLj5e5QkacFhARmHSBs3TIPgAsW9BSZO2r6M2xTp0BBzzSzV+tiJOWQy5AxQ6VfKO1G6A=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782757852; c=relaxed/simple;
-	bh=NSyl7BT1TjFj5gSTLMOULowrGNab8nMNFh4Un9s5lk8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Wg5ewWbdxAYyW6o3t6ZSa26IZU2Y51C3AMrUBvZ61E0VMjuy983223qGMTt3wMw3ngFSdL34ZFSR/rHBAT8U08as3ZpmhjEHE8WtyKOBtqr1OKQMBIQ73nFcgPxNY10jdMvLUeJVs3Drx1slkhbraqCH9F1FVUE0OmuMWHgHjoQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=ZSKW5IWI; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=XiK/ozan; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=0Ip6Kwgp; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=EeYyMfbh; arc=none smtp.client-ip=195.135.223.130
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 8C5DC73213;
-	Mon, 29 Jun 2026 18:30:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1782757847; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=+4unOw1kC7PDoCyOC3Zep6sOEjf/lsnW9nQUlS74aFs=;
-	b=ZSKW5IWIhLmI75H5Ru137+UQ9cwp0wZYNWh0wLLIwO5UeUdvIAf2J7wD49hRckfFtQs5te
-	KCzC0YssaeSjr9FGF/D0OVQ2YRkDRna7X85nfuOKVE/gp+B0yhLSpINVrqY3eRm3M7t9q+
-	m/I00eAYwiTNDvSUCNHwMzn1k11kjAA=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1782757847;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=+4unOw1kC7PDoCyOC3Zep6sOEjf/lsnW9nQUlS74aFs=;
-	b=XiK/ozan+2lMDL5Detpi57el9beS/jZlYoacw9yUkD5LGELLMmDbFuIPMzf6NDHVdguh8N
-	ri9mJsShahj+JlAg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1782757846; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=+4unOw1kC7PDoCyOC3Zep6sOEjf/lsnW9nQUlS74aFs=;
-	b=0Ip6KwgpFhy8F4Ou3+lH/mzi+xCwIOYpRGCQ3A3XNcrAfHKigDU/sszYi08H5tg4Xv6+1R
-	xdZV1ik8foXtGbd1KHMUkOLd9PFKWatLgTqBU/lEqi7pgcAv4zo/Ll41gcTaMmwmOWKLxP
-	wJEC8RthywEFKzfWtAYS9zFXCNRqa/E=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1782757846;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=+4unOw1kC7PDoCyOC3Zep6sOEjf/lsnW9nQUlS74aFs=;
-	b=EeYyMfbhRr8oQQjM/Igb3SEFQJcXtgZp4ynHWIVDTLcZcStgOopApUqSajIw8RiD8N7NHY
-	ZiPQqv8eCeLo1ZDA==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 8D138779A8;
-	Mon, 29 Jun 2026 18:30:45 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id uIrYHtW5Qmr0dwAAD6G6ig
-	(envelope-from <pfalcato@suse.de>); Mon, 29 Jun 2026 18:30:45 +0000
-Date: Mon, 29 Jun 2026 19:30:43 +0100
-From: Pedro Falcato <pfalcato@suse.de>
-To: Christian Brauner <brauner@kernel.org>
-Cc: Jan Kara <jack@suse.cz>, Alexander Viro <viro@zeniv.linux.org.uk>, 
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>, Andrew Morton <akpm@linux-foundation.org>, 
-	"Liam R. Howlett" <liam@infradead.org>, David Hildenbrand <david@kernel.org>, 
-	Vlastimil Babka <vbabka@kernel.org>, Jann Horn <jannh@google.com>, linux-fsdevel@vger.kernel.org, 
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH] mm: do file ownership checks with the proper mount idmap
-Message-ID: <akK4CRgiv9G29UiM@pedro-suse.lan>
-References: <20260625153853.913949-1-pfalcato@suse.de>
- <s6mr3j7gew2cgerzrvqzenjctctrtnhvlynmcccxb24uszcauz@5iapd6wnbfxg>
- <20260629-sektor-gaben-gepokert-58db0a3528a3@brauner>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E59B39A04F
+	for <stable@vger.kernel.org>; Mon, 29 Jun 2026 18:37:38 +0000 (UTC)
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1782758261; cv=pass; b=souB0GnvslKZd7+QQElB0FR1JWsY94PWj0tHsz95VvWCEVOhBlGjBXHSOfk/6Y0w0onLML9NoERqV/jWeCWa0Pw45IX/RzNujuKR4O2TUpCveP5aSjrQHIbPpzNKbfFUTnm/9nf0vB5WuWDQ7WlzQ81LdlV5uVmdQu5yfwnNz+M=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1782758261; c=relaxed/simple;
+	bh=8aAWH9rSKkLqi+1sE6zKTPYetQDRKFAsL6S7Z65BNdc=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=kgPjhE0PpSM3Ev2w7EgaiJrIyvx8yv3TcKZy/k6kc44eelSEAnj6wV8kDZ4QsRCzCZKbGprMtV1Qf9/nHWvM0QOmrpxg3UqAR8n8/cSAHGBWA8Lmml7tQzDCHQRdSuTNABDCHrHjeCzkkXBZTT14Ni9lAf1+M2rpGtDbShb3wYs=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=U5Fp93nT; arc=pass smtp.client-ip=209.85.128.52
+Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-4938d5f86f3so15221275e9.1
+        for <stable@vger.kernel.org>; Mon, 29 Jun 2026 11:37:38 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1782758257; cv=none;
+        d=google.com; s=arc-20260327;
+        b=MPj6j8pFZ4q4vECuNOpm2uwRb0sBI1zP1RjRWAHizjOJzabChz6ECgmXvGapAHOT/n
+         AdddHJ9rJqhNRooCrX7GBI1AMA0t6KwfW2uco1kC8jianhcwzJCJMEwn0BZ6reIfmJ5q
+         RvDYq8rxqFJOMhlH3r5TP1Tlj+CBlhzpuc6ww8RhLBY+o6TzjShra5cOx9a1KYPMErp1
+         abx9a0qqGwsZcUKs15uplwY0906ElC/D6tDJp/2XL1cDlW2ANIrLSrO7/M7sihBmrv3Q
+         iP7ihtxXhEEtrNcJ8RPqRSJKgFvSG+RIu+Ah/mrtawP4VkJjBpwCzgOirOZlMlyBaiux
+         ewjw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=66IdtV4A4O3twwyEenTNgYY676iFrQKRg0yaSc+sXIk=;
+        fh=E0nCF11lGGoIr0MInWabkua5VrF8c69GcO+ZS7KXsKo=;
+        b=orYRy50/dW5C3yjPl4QsfIRPPboLE5aunPcg3MAAjEFTqCndryYBJbP4htQNpZ9QSA
+         s0wQvGAPtyhINBQgs7gMAP6PtkmUZ5xrv6NSaw8jKkDHg3+2ZvH5IZGhMTOz+L29ebqS
+         J2zf6siES7kjXWuXhak05DE1Faw2au9GcuoMsvo8tziES7CNi/gaRFntpXFSd2r6UX05
+         780FrQOq7dv7AFaKdiN6rYzeqk8aVHYURSPs/Xt6yu2jLZDPIxwmLVoil1kcNz/xMQ6k
+         SYYWc0g3QJnxde8XY1dzrMNs9lOzu3sShMuY34YIVE87jgdg8gWN7F1juK2Q4qlM++Ds
+         0Epw==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1782758257; x=1783363057; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=66IdtV4A4O3twwyEenTNgYY676iFrQKRg0yaSc+sXIk=;
+        b=U5Fp93nTXSbWZZCX2vfq+8hUv0N+r81FKZYkh4BVQtSTh+9asUjllfKaBOnSbste5H
+         LcGUKugFN7YVsczAoPr73GXhXH7TwNUjpz9+1gBJca9w3D4DYgqmzzZeA30UDDN8hDV0
+         AmdPxp1P6JZnjyvIu2QsLjNx0nDEZnL7ySTvHJE3SH9uuuPoB55iq+wAkj4hSAKhW+nT
+         +DaM0sQisepBX609REXRWmwh6KNEzyFdkEB/2fwELanP4/WqtOlNqEvYAYnu9ooLL39r
+         ybSn8GFPwUBxqC5wfk0A/cs8agheZEZXw8AMoyVDcJxk7XmOyPPFl0+S57ZsuVLPOoPM
+         T2Zw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1782758257; x=1783363057;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=66IdtV4A4O3twwyEenTNgYY676iFrQKRg0yaSc+sXIk=;
+        b=TUa1MHiNblpJKJIEiVSAPkLKvd7n/EUIAbpDXLfNBWTz1+rJ2oQ1Mvq99K5IQKYXNV
+         3d69IBQRfFD1zh3vfy2TxldTk7bkd3+yifYEgdCL3QUyV8hgtexcm61XMGZcwr+g/AY+
+         mUEXej/Y1NBYOfyHUUBx0Jc6piTAExkgz3h1CsCXkUbYxVFnk+abq8yM4epSnGMGI3qS
+         P/VddrPgAFnfWhrPD/Q5/E/Y4iVKwbqsJf00fj3YT2cZhgdUsorh2PG5r1lRJkGVi2xn
+         6WVRgWfIl8D42fOcJW2rCu+HmRN8+6YmaK2T0Ip5KRlP5y4OvdDvp81hTFbqPHTDJnhJ
+         0w1g==
+X-Forwarded-Encrypted: i=1; AFNElJ/SRlKt7NKH+u2bO4f86VKVJe/x/pLHfq0jpGrdMd6SwokVdSsZoxbKBBUuazpVXNdXlefqjj4=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzD+sQ05XQWSHuhDD35tTbK9776jqmVox8FW+8YlCdOoo8ggksU
+	1qxs8d72BHifAfCJCRS0dmWzEFkbwzivocX8OzcHLzvyX7G+dZ95yQ/WZ0njdIY1wO+CffJ6ASt
+	AHWjII1KZrPfyW+C8hGaDXWuRxb7Jy6g=
+X-Gm-Gg: AfdE7cn1kNYScENI9keeFVQnSv7f2diRe/wnV+lLNH/UE2nghO5XawS/7nhqgXy4KXS
+	4rwYEf8lRAckMKNRCA8V8NQ4zCEbOy6byzSbKrGV0PAZVG7tvi5AnuBGPwkJQgMAmRy6+s2bAr0
+	PTjIQHBm8kbRTPj4O7CFA5O8kPRu+D5x1Q+Rarx+qcgxgIVE9wwAKH7x90WiTbnSSjxD7B4PNkq
+	hkNrYLZioc2Ocy+OoEUS8geJjXP7eiv+2A7lhIyxpu9Ufv0epykwZjasSNihOcUrIYE1V9QzZaI
+	OTgD0knNlWl6BlAqFGkHonKi7SWQ
+X-Received: by 2002:a05:600c:524e:b0:48f:e230:29f5 with SMTP id
+ 5b1f17b1804b1-493b8ce540fmr4782905e9.16.1782758257412; Mon, 29 Jun 2026
+ 11:37:37 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260629-sektor-gaben-gepokert-58db0a3528a3@brauner>
-X-Spam-Flag: NO
-X-Spam-Score: -4.30
-X-Spam-Level: 
+References: <20260629112032.20423-1-jiahao.kernel@gmail.com> <20260629112032.20423-2-jiahao.kernel@gmail.com>
+In-Reply-To: <20260629112032.20423-2-jiahao.kernel@gmail.com>
+From: Nhat Pham <nphamcs@gmail.com>
+Date: Mon, 29 Jun 2026 11:37:24 -0700
+X-Gm-Features: AVVi8CeUNnnZ1b5gr34nY8C8rkHWBFp3tMR1RyjfkvKK-T1UYPS0l8SmSsuAXg0
+Message-ID: <CAKEwX=MniM-4-aV17aH3UiDd_Xd2RH743fFZaxEnYX9qvnokeA@mail.gmail.com>
+Subject: Re: [PATCH v5 1/6] mm/zswap: Fix global shrinker when memory cgroup
+ is disabled
+To: Hao Jia <jiahao.kernel@gmail.com>
+Cc: akpm@linux-foundation.org, tj@kernel.org, hannes@cmpxchg.org, 
+	shakeel.butt@linux.dev, mhocko@kernel.org, yosry@kernel.org, mkoutny@suse.com, 
+	chengming.zhou@linux.dev, muchun.song@linux.dev, roman.gushchin@linux.dev, 
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org, 
+	Hao Jia <jiahao1@lixiang.com>, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-2.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[suse.de,none];
-	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-269812-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:brauner@kernel.org,m:jack@suse.cz,m:viro@zeniv.linux.org.uk,m:willy@infradead.org,m:akpm@linux-foundation.org,m:liam@infradead.org,m:david@kernel.org,m:vbabka@kernel.org,m:jannh@google.com,m:linux-fsdevel@vger.kernel.org,m:linux-mm@kvack.org,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,s:lists@lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[13];
-	FORGED_SENDER(0.00)[pfalcato@suse.de,stable@vger.kernel.org];
-	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS(0.00)[m:jiahao.kernel@gmail.com,m:akpm@linux-foundation.org,m:tj@kernel.org,m:hannes@cmpxchg.org,m:shakeel.butt@linux.dev,m:mhocko@kernel.org,m:yosry@kernel.org,m:mkoutny@suse.com,m:chengming.zhou@linux.dev,m:muchun.song@linux.dev,m:roman.gushchin@linux.dev,m:linux-mm@kvack.org,m:linux-kernel@vger.kernel.org,m:linux-doc@vger.kernel.org,m:jiahao1@lixiang.com,m:stable@vger.kernel.org,m:jiahaokernel@gmail.com,s:lists@lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FREEMAIL_TO(0.00)[gmail.com];
+	FORGED_SENDER(0.00)[nphamcs@gmail.com,stable@vger.kernel.org];
 	FORWARDED(0.00)[lists@lfdr.de];
-	DKIM_TRACE(0.00)[suse.de:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	MISSING_XM_UA(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[pfalcato@suse.de,stable@vger.kernel.org];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[16];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-269813-lists,stable=lfdr.de];
+	DKIM_TRACE(0.00)[gmail.com:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[nphamcs@gmail.com,stable@vger.kernel.org];
+	TO_DN_SOME(0.00)[];
+	MID_RHS_MATCH_FROMTLD(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	TAGGED_RCPT(0.00)[stable];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp,suse.de:dkim,suse.de:email,suse.de:from_mime]
+	MISSING_XM_UA(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[lixiang.com:email,mail.gmail.com:mid,vger.kernel.org:from_smtp,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 4A6DD6DE100
+X-Rspamd-Queue-Id: B2B3F6DE172
 
-On Mon, Jun 29, 2026 at 02:15:19PM +0200, Christian Brauner wrote:
-> On 2026-06-26 16:19:18+02:00, Jan Kara wrote:
-> > On Thu 25-06-26 16:38:53, Pedro Falcato wrote:
-> > 
-> > > Ever since idmapped mounts were introduced, inode ownership checks
-> > > (for side-channel protection) in mincore() and madvise(MADV_PAGEOUT) were
-> > > done against the nop_mnt_idmap, which completely ignores the file's mount's
-> > > idmap. This results in odd edgecases like:
-> > > 
-> > > 1) mount/bind-mount with an idmap userA:userB:1
-> > > 2) userB runs an owner_or_capable() check on file that is owned by userA
-> > > on-disk/in-memory, but owned by userB after idmap translation
-> > > 3) owner_or_capable() mysteriously fails as the correct idmap wasn't supplied
-> > > 
-> > > In the case of mincore/madvise MADV_PAGEOUT, this is usually benign, because
-> > > file_permission(file, MAY_WRITE) will probably succeed, as it uses the proper
-> > > idmap internally, but it does not need to be the case on e.g a 0444 file
-> > > where even the owner itself doesn't have permissions to write to it.
-> > > 
-> > > Since this is clearly not trivial to get right, introduce a
-> > > file_owner_or_capable() that can carry the correct semantics, and switch
-> > > the various users in mm to it.
-> > > 
-> > > The issue was found by manual code inspection & an off-list discussion with
-> > > Jan Kara.
-> > > 
-> > > Fixes: 9caccd41541a ("fs: introduce MOUNT_ATTR_IDMAP")
-> > > Cc: stable@vger.kernel.org
-> > > Signed-off-by: Pedro Falcato <pfalcato@suse.de>
-> > 
-> > This looks good to me. I'm a bit curious why Christian initially (in 2021)
-> > used init_user_ns here instead of the file namespace... Anyway feel free to
-> > add:
-> 
-> Back when this was added only the do_mincore() codepath existed and that
-> was intentionally left unconverted because it exposes the cache
-> residency status. So it was effectively a massive side-channel.
+On Mon, Jun 29, 2026 at 4:20=E2=80=AFAM Hao Jia <jiahao.kernel@gmail.com> w=
+rote:
+>
+> From: Hao Jia <jiahao1@lixiang.com>
+>
+> When memory cgroup is disabled, mem_cgroup_iter() always returns NULL.
+> Therefore, the global shrinker shrink_worker() always takes the !memcg
+> branch. After MAX_RECLAIM_RETRIES empty walks, the worker simply gives up=
+,
+> so it fails to write back anything.
+>
+> Therefore, when memory cgroup is disabled, fall through with the !memcg
+> branch and shrink the root memcg directly. Stop the loop once
+> shrink_memcg() reports -ENOENT, since the root LRU is the only target and
+> -ENOENT means it has been exhausted.
+>
+> Fixes: a65b0e7607cc ("zswap: make shrinking memcg-aware")
+> Cc: stable@vger.kernel.org
+> Reported-by: Yosry Ahmed <yosry@kernel.org>
+> Closes: https://lore.kernel.org/all/CAO9r8zPVzMKFbCixxD-qgtRrkFxWVrHiZZeL=
+c=3DeyTPKPVQgX4g@mail.gmail.com
+> Signed-off-by: Hao Jia <jiahao1@lixiang.com>
 
-Hmm. I'm not sure what you mean by this. Wouldn't it be more correct to respect
-the mount idmap (given that a mount-ns-capable user mounted it with an idmap for
-someone else, or itself) for mincore? Am I missing something? Or maybe I'm
-misunderstanding that paragraph.
+Ah good catch.
 
-> 
-> Both fd3b1bc3c86e ("mm/madvise: fix madvise_pageout for private file mappings")
-> and specifically cachestat() came way after all that.
-> 
-> I'm otherwise fine with the change.
-> 
-> Reviewed-by: Christian Brauner (Amutable) <brauner@kernel.org> 
 
-Thanks!
 
--- 
-Pedro
+> ---
+>  mm/zswap.c | 16 ++++++++++++++--
+>  1 file changed, 14 insertions(+), 2 deletions(-)
+>
+> diff --git a/mm/zswap.c b/mm/zswap.c
+> index 761cd699e0a3..0f8f04f22888 100644
+> --- a/mm/zswap.c
+> +++ b/mm/zswap.c
+> @@ -1356,7 +1356,12 @@ static void shrink_worker(struct work_struct *w)
+>                 } while (memcg && !mem_cgroup_tryget_online(memcg));
+>                 spin_unlock(&zswap_shrink_lock);
+>
+> -               if (!memcg) {
+> +               /*
+> +                * Reaching a NULL memcg means a full hierarchy pass comp=
+leted.
+> +                * Exclude the memcg-disabled case, where it is always NU=
+LL, and
+> +                * fall through to shrink the root LRU directly.
+> +                */
+> +               if (!memcg && !mem_cgroup_disabled()) {
+>                         /*
+>                          * Continue shrinking without incrementing failur=
+es if
+>                          * we found candidate memcgs in the last tree wal=
+k.
+
+nit: I wonder if we can just merge this comment with the new comment
+you just added.
+
+> @@ -1378,8 +1383,15 @@ static void shrink_worker(struct work_struct *w)
+>                  * with pages in zswap. Skip this without incrementing at=
+tempts
+>                  * and failures.
+>                  */
+> -               if (ret =3D=3D -ENOENT)
+> +               if (ret =3D=3D -ENOENT) {
+> +                       /*
+> +                        * With memcg disabled the root LRU is the only t=
+arget, so
+> +                        * we should abort if it has no writeback-candida=
+te pages.
+> +                        */
+> +                       if (mem_cgroup_disabled())
+> +                               break;
+
+Hmm do we need to do this? Consider a system with cgroup enabled but
+with just one cgroup (root?). The behavior would just be trying that
+cgroup for MAX_RECLAIM_RETRIES failure attempts, correct?
+
+In that case, we don't need to do this check, and we would get the
+same behavior. The loop would terminate after MAX_RECLAIM_RETRIES :)
+
+Could you fact-check me? :)
 
