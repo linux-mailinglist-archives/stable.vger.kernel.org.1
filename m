@@ -1,278 +1,239 @@
-Return-Path: <stable+bounces-269695-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-269698-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id FsNUOsA3Qmod2AkAu9opvQ
-	(envelope-from <stable+bounces-269695-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 29 Jun 2026 11:15:44 +0200
+	id LpdUBCw+QmpP2gkAu9opvQ
+	(envelope-from <stable+bounces-269698-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 29 Jun 2026 11:43:08 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 62CA66D7F9D
-	for <lists+stable@lfdr.de>; Mon, 29 Jun 2026 11:15:44 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0EA386D85FD
+	for <lists+stable@lfdr.de>; Mon, 29 Jun 2026 11:43:07 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=qualcomm.com header.s=qcppdkim1 header.b="isT3VW3/";
-	dkim=pass header.d=oss.qualcomm.com header.s=google header.b="Nm1M/j00";
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-269695-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-269695-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=reject) header.from=qualcomm.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=LzGQnWFG;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-269698-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-269698-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=none) header.from=intel.com;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 72BFE303B14E
-	for <lists+stable@lfdr.de>; Mon, 29 Jun 2026 09:13:20 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 0035A3045C1C
+	for <lists+stable@lfdr.de>; Mon, 29 Jun 2026 09:22:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B403B3FA5E9;
-	Mon, 29 Jun 2026 09:13:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D1343FD152;
+	Mon, 29 Jun 2026 09:18:37 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22B143F99F4
-	for <stable@vger.kernel.org>; Mon, 29 Jun 2026 09:13:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BCD23FD15F
+	for <stable@vger.kernel.org>; Mon, 29 Jun 2026 09:18:34 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782724385; cv=none; b=pWa1tNfWCoZrMd2WLtixqsfjqcKEPjE5iGSBtnTVxr9LCIYMDw+tz25z07mwzT1uYuBLH890w0nDlAXeClTF3DB0SaWZ0vKMOaGt+sYdVkWdyq6a2N8R6/fQytcgb4z+jrvriIPQZ4pk3v1APBoiNMGxmIspqiy7GKshxULTFfw=
+	t=1782724717; cv=none; b=ZXfZGgBK6ICJI3Na5IjrzWrWIkZbyN42VEuSyN/84A70vW2sHJCzCrnCvmA8rJDx+0vVMAGmM/95cMIPqw+LXeg3DJt43z/rQ+rlj2RAa4EyANjh6qpFHvGNYtEeCv00/ofA6GxRqi3C19SW3ZaFeNiNa5al/EoqFnmreeCzMjI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782724385; c=relaxed/simple;
-	bh=d5jcui5x9J+nHSVyJps5DuSu5oenM0O/Al9uUGEdnso=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=rFIzgzfGnbMDH95j/UTP4MuOdKpDF6B3hO03Mi+7UMXA/4BImxIBsd9Lp+3CxzBQTzIXy6peX/R/1swjVcpv2eQ08q1xoIjs/DWdmRmy/L6bDZ+STPq/jLEI+jv/DmfUSHuuLbXCDolspoKUpHbRQDH88JXHL2kuyu+TpbUEBVw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=isT3VW3/; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=Nm1M/j00; arc=none smtp.client-ip=205.220.168.131
-Received: from pps.filterd (m0279867.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 65T8OO452349158
-	for <stable@vger.kernel.org>; Mon, 29 Jun 2026 09:13:02 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	4jemJMg1mPxTimQgHduXv2Tk1YXpvQTVBHPayB9K7NY=; b=isT3VW3/K/PEvzSt
-	0eA9gwQkZ8kGNcHXyYP/wm8BjPG1k2/0bZmE8+1VRn8sVkzUKeHuemwQ+7Q6iNaW
-	g4hP1vbZNgohSVU4LwijTPFCUGCwC334q+d9wkz+u/1W3s3Bry317p/IMW2eXaNo
-	9/dY+oE+w3vrNs078sXFz/YBaNmRtbCOJkQ2fp5B6/B4hLkNSvAr9oFxQwffENlu
-	187qH7MGU2hi/VBn4z3yehsAJt2rFyyiXaSj7y0CPtxHy89C8wPDdEAt0M9nidlf
-	qeXHCGlQa05Wx+S79iWEve+eNIoqX2EK+5eUadVOBM8IH25kg/oxZwFqn2kJRM7x
-	vK+4Gw==
-Received: from mail-qk1-f200.google.com (mail-qk1-f200.google.com [209.85.222.200])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4f3n5s078n-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <stable@vger.kernel.org>; Mon, 29 Jun 2026 09:13:02 +0000 (GMT)
-Received: by mail-qk1-f200.google.com with SMTP id af79cd13be357-92da6f3cc81so343160885a.2
-        for <stable@vger.kernel.org>; Mon, 29 Jun 2026 02:13:01 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1782724381; x=1783329181; darn=vger.kernel.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=4jemJMg1mPxTimQgHduXv2Tk1YXpvQTVBHPayB9K7NY=;
-        b=Nm1M/j00x+GSslrZ0r2S5xS8MhdjTHtS4uNEQRdyBi0eEndmZ8vS6jCNwSddHolKWB
-         NBpXGcsWflaCjhCQHPaw2k09pL0egkHwxGR5bSD6vzCqNRtZqalHw/DdWiC8ScFX7dIs
-         HoLIsyD+zoEawia7qqoxSzwYRTyeTXejmVzMpnxPRI1/WKuvUwDndtbkT9Nv8NmfiVII
-         8SzCocI7Yajd79gU8jsHFvGGOps+gbxn7sROrwiqnxRQP5E/9X3IbH+TNBSSO3PZMt24
-         NdOeR1bZTwSmje9ve8pOD0ba557Ei5SgwJYyjyf977gKEunOOUjhctIZpnvmMvXvOYPa
-         c0QA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782724381; x=1783329181;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=4jemJMg1mPxTimQgHduXv2Tk1YXpvQTVBHPayB9K7NY=;
-        b=cBUnHiVBdaK2PZo5nCGXmuliiEFk7WllZy16PH2HgS3BH6jiNkAX4TOxyggsqEpdu5
-         i5nm1wB+O1+nRiiLEWalGhxsH1uDpgvFncA8eh22PygvqeQNOaZ2o9OszpvKRePUQXpa
-         DzspXo38Nv8vm40DuuNVFc0zjluvcjC5sVKemruT6iq/BdKynFDK/ohhKnrac5E+XZ1f
-         nhj7Bdss/fpc4dd23tyM/pKAHBb5+u8etG7bTzlpS81441aXD67SXtZO1ayfqVQayOlp
-         vumpogtfpkpXC9XWD+OzFaMw58BDZJpOLDvQBSouEPgWTmWcVrH5ajMHQeicKEqTXFT8
-         h1BA==
-X-Forwarded-Encrypted: i=1; AFNElJ88Yjuz5a1Chy3IS21Qot8PBSq582il7hZ6YKZtXSd4bMtSZ1LBWpWkH/9Oxq470GYCDvIqTXA=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyF+KndCk5UWi94MEYV4CepejyMib3Oksp+eqBNU7MO34Nc9cvM
-	Pvwbid/fqvHs2qtqPxO2znlRlITx3vjgKyUqFWuTYKlPYcFaFZmMY5/6VSAdOuDaLjP+ZYB46eY
-	Fm2ru3INbyZVuj5gE7QPGbMUXjm4TmUe92T6QU2s4n3sXNJxNADUr2gcYYzU=
-X-Gm-Gg: AfdE7cnV+RRzmWAuYehiXbemU/B25smxMkFjyTqvk9KQanA5w9y6zPg3U2ZAvtYyIzf
-	OrPLHbCH2aNTXHuH2MrVvIjMp2OywCkoC6BJl9FDs+Onz4arvNbkhV/nWLYZ5E7S7TrWPw7aCzJ
-	Y5sf/7Bf9V+3cYq5+nSqOdoavl17axgWnF5LBTlF6A4g89zBC9l0Sftq52hax0PeXKAGeLeSY6K
-	egzrHvqJXKNmsAIm5SlxtrN9IyuSuHaBBZ8MFefCKNkOraXjTmiXuzFFdT2nRlLQQq+VFkIDiq9
-	KFXAZRr/p3+jwgxUGBX+5WZF3c3vEf02TpnV80LcIL95jdQ78a8UUM4BcfsHNcOyMUK1a2DtDMy
-	2pGqbYqPN7ePxf6AXEf3Zx6XjaPWjTyfY+OApc47m
-X-Received: by 2002:a05:620a:29d5:b0:92e:46e7:79a with SMTP id af79cd13be357-92e46e70a7emr695284085a.2.1782724381047;
-        Mon, 29 Jun 2026 02:13:01 -0700 (PDT)
-X-Received: by 2002:a05:620a:29d5:b0:92e:46e7:79a with SMTP id af79cd13be357-92e46e70a7emr695281985a.2.1782724380556;
-        Mon, 29 Jun 2026 02:13:00 -0700 (PDT)
-Received: from brgl-qcom.local ([2a01:cb1d:dc:7e00:4640:d76a:6126:9b65])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-470f55acda0sm20109240f8f.23.2026.06.29.02.12.57
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 29 Jun 2026 02:12:59 -0700 (PDT)
-From: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
-Date: Mon, 29 Jun 2026 11:12:24 +0200
-Subject: [PATCH v2 01/19] powerpc/powermac: fix OF node refcount
+	s=arc-20240116; t=1782724717; c=relaxed/simple;
+	bh=VXGReo7ab2OKkmaZ2FbFu+urBDyiDuPMgysRMWQylX4=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=L5Cy5cNy1F/iTrmMq05YeCJu8r3OoaCOzG91SIActQ0wSBWPlM7Ct+A4brbHzAEVJ2A2gcOyg7lMoj3rdmuH/npopfXY0ipArFl9IGD5FyCuZ3yblhEdeZOmlD47VhYIwR2iYCbbOosrQ0F/DV0ZUZnJ1EBib33tV34g4xoqF6w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=LzGQnWFG; arc=none smtp.client-ip=198.175.65.10
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1782724715; x=1814260715;
+  h=message-id:subject:from:to:cc:date:in-reply-to:
+   references:content-transfer-encoding:mime-version;
+  bh=VXGReo7ab2OKkmaZ2FbFu+urBDyiDuPMgysRMWQylX4=;
+  b=LzGQnWFG7JWyJo3kF0FhzdIX4CkARFxvkLWXa4AmdM1AbDRo8rHAlHTG
+   r2Ic0f7jpMZ4jsGI4AiIbJ7Vzmf+EfuIBVQIQsWn7mrOwJoPC3UmBv6UA
+   wIh44pkc4VeGaca16WUna7qezj70AV5+mw890VksXK8dy0K6gKG3RaJTl
+   UmdZQO4kS4ImoKZsrOlzyxSrAGferxax4tT9MyLtGBm/nngNHbsoDud22
+   YeoEV/WxvReqc6++s2aZHtMsmmQORWpBvqHiMdW/oG750lopiXQVQkRnA
+   HWheF1v20tB785mdWzctY3NPTjB5npGAxy4fgZdYTYfG8R3yBkbtRIMea
+   A==;
+X-CSE-ConnectionGUID: 8ANAt4KWQW+B+CewKhA2BA==
+X-CSE-MsgGUID: sGJGXI+iQkG4UEX41vUfVA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11831"; a="100843501"
+X-IronPort-AV: E=Sophos;i="6.24,231,1774335600"; 
+   d="scan'208";a="100843501"
+Received: from fmviesa004.fm.intel.com ([10.60.135.144])
+  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Jun 2026 02:18:34 -0700
+X-CSE-ConnectionGUID: vtOm/KE8TVmRwlS0kMDFBQ==
+X-CSE-MsgGUID: d3KR/EcUTDGWL8yaFbOGrg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.24,231,1774335600"; 
+   d="scan'208";a="253812014"
+Received: from ettammin-mobl2.ger.corp.intel.com (HELO [10.245.245.28]) ([10.245.245.28])
+  by fmviesa004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Jun 2026 02:18:32 -0700
+Message-ID: <a034ee3637d8e2b849759b3935992f6d195ab52d.camel@linux.intel.com>
+Subject: Re: [PATCH] drm/ttm: Fix UAF on dma-buf attach failure for sg BOs
+From: Thomas =?ISO-8859-1?Q?Hellstr=F6m?= <thomas.hellstrom@linux.intel.com>
+To: Nitin Gote <nitin.r.gote@intel.com>, intel-xe@lists.freedesktop.org
+Cc: stable@vger.kernel.org, Christian Konig <christian.koenig@amd.com>, 
+ Matthew Auld <matthew.auld@intel.com>
+Date: Mon, 29 Jun 2026 11:18:16 +0200
+In-Reply-To: <20260625055734.2831607-2-nitin.r.gote@intel.com>
+References: <20260625055734.2831607-2-nitin.r.gote@intel.com>
+Organization: Intel Sweden AB, Registration Number: 556189-6027
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.58.3 (3.58.3-1.fc43) 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260629-pdev-fwnode-ref-v2-1-8abe2513f96e@oss.qualcomm.com>
-References: <20260629-pdev-fwnode-ref-v2-0-8abe2513f96e@oss.qualcomm.com>
-In-Reply-To: <20260629-pdev-fwnode-ref-v2-0-8abe2513f96e@oss.qualcomm.com>
-To: Lee Jones <lee@kernel.org>,
-        Mark Brown <broonie@opensource.wolfsonmicro.com>,
-        Thierry Reding <thierry.reding@avionic-design.de>,
-        Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>,
-        Andrew Lunn <andrew+netdev@lunn.ch>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Srinivas Kandagatla <srini@kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Vinod Koul <vkoul@kernel.org>, "Rafael J. Wysocki" <rafael@kernel.org>,
-        Danilo Krummrich <dakr@kernel.org>, Rob Herring <robh@kernel.org>,
-        Saravana Kannan <saravanak@kernel.org>,
-        Madhavan Srinivasan <maddy@linux.ibm.com>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Nicholas Piggin <npiggin@gmail.com>,
-        "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
-        Andi Shyti <andi.shyti@kernel.org>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Joerg Roedel <joro@8bytes.org>, Will Deacon <will@kernel.org>,
-        Robin Murphy <robin.murphy@arm.com>, Doug Berger <opendmb@gmail.com>,
-        Florian Fainelli <florian.fainelli@broadcom.com>,
-        Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
-        Ulf Hansson <ulfh@kernel.org>, Frank Li <Frank.Li@nxp.com>,
-        Sascha Hauer <s.hauer@pengutronix.de>,
-        Pengutronix Kernel Team <kernel@pengutronix.de>,
-        Fabio Estevam <festevam@gmail.com>,
-        Matthew Brost <matthew.brost@intel.com>,
-        =?utf-8?q?Thomas_Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
-        Rodrigo Vivi <rodrigo.vivi@intel.com>,
-        David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
-        Peter Chen <peter.chen@kernel.org>,
-        Paul Cercueil <paul@crapouillou.net>, Bin Liu <b-liu@ti.com>,
-        Philipp Zabel <p.zabel@pengutronix.de>,
-        Maximilian Luz <luzmaximilian@gmail.com>,
-        Hans de Goede <hansg@kernel.org>,
-        =?utf-8?q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-        Krzysztof Kozlowski <krzk@kernel.org>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>
-Cc: brgl@kernel.org, linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
-        linux-arm-msm@vger.kernel.org, linux-sound@vger.kernel.org,
-        driver-core@lists.linux.dev, devicetree@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org, linux-i2c@vger.kernel.org,
-        iommu@lists.linux.dev, linux-pm@vger.kernel.org, imx@lists.linux.dev,
-        linux-arm-kernel@lists.infradead.org, intel-xe@lists.freedesktop.org,
-        dri-devel@lists.freedesktop.org, linux-usb@vger.kernel.org,
-        linux-mips@vger.kernel.org, platform-driver-x86@vger.kernel.org,
-        Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>,
-        stable@vger.kernel.org
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1407;
- i=bartosz.golaszewski@oss.qualcomm.com; h=from:subject:message-id;
- bh=d5jcui5x9J+nHSVyJps5DuSu5oenM0O/Al9uUGEdnso=;
- b=owEBbQKS/ZANAwAKAQWdLsv/NoTDAcsmYgBqQjcGKkeSuvIIpV/DPVwpxHoLTRKrAfS3RpiE8
- glH24pgdmqJAjMEAAEKAB0WIQSR5RMt5bVGHXuiZfwFnS7L/zaEwwUCakI3BgAKCRAFnS7L/zaE
- wyj8EACLmIPboyJTTr0o6LOahtd8r1OD1ezaEmjdr9MNJUTSB3k2wDSW0EQmYLVfEyIxWFqTHHQ
- 5em3qpvbnfRXSUTJK47zbWG9K/UnsiqlMpjX5BO2mxMlnhYLAFPyVULoWSYAo4JfO2VgNDIxVPQ
- NYJNAPo4fTyS1JEL+okr8KZYFPtT3oUZ1JPZCcrrYlcxTh/PMXG6kxw61fR5aPve3RlVUy4q+cu
- xDHqpPRq9+YS5DOUYpIJ9ufFDc4vabR3feAsDHsFOQqyqXY7sjjr90XFN2LLwl+PI1CIDGSY6L3
- whzLq2A4djBjppjKi4TTwI+3zzMKrtFDRigP4zS5NmCdTy6qGYl7JwcDlQbluwfgemH2ry9a+3M
- 3z5f+rfhXQNTX8/esd9xzkVFTaPeL8ICuj1FxrYaxXoeTFqeyiIketmNBN3700viVsmhjoRgbe1
- 9wSaJr2PxNmod6oepFw5/rlmqPndAgbwuSsvgexu2OziA4AgA/oltqCHu0SanP3qC5pEAy/c1du
- cr70pKyU3od2xGUpnPOkWsxtWotnF3EVvY5Lm2TcMNoj4uQLY+ursm0qNcqoGpJc5ct99YHcLF2
- tuTPMUvUHkuoWGpprlKF8rxr/TJgkGTao/Eah0YjzNcsNjZCXfJn95wN7lxX4tVoQLUtvLmUYCv
- b4yTpi6iddu/94g==
-X-Developer-Key: i=bartosz.golaszewski@oss.qualcomm.com; a=openpgp;
- fpr=169DEB6C0BC3C46013D2C79F11A72EA01471D772
-X-Proofpoint-Spam-Info: AW1haW4tMjYwNjI5MDA3NCBTYWx0ZWRfX8YNzVY5AinMg
- 6bbC3ZiUNcB6QnpEP/SQpEjD5HExDYVqx74BIzIizDhgl+NZT3yLIigaTbQpXbi3YgbcCzdE/As
- l4U2TCKG4KDirhgq+CopodHXofSqSe4=
-X-Proofpoint-ORIG-GUID: 0pf1a95FkEK3bZmd_u8pvNf7uPvRuyoe
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNjI5MDA3NCBTYWx0ZWRfX44EgSPL/XKYV
- TrQQNWNiI/r4G4xyP7Ic04wmIRtgAV6Rzr3yZOXdhQ9XdxogaI0Tw5teATAD9FRjHcF2xadlLGM
- qBohkeZ11l2beFd5V/bQRSD+GQNdW4f5t/PH3rS9zN/PGfcqFHHGeE6DJQxM6s25HyvOhtm2i1i
- Rr55Y//tJ8yid79rOQsEh05oIgVpTN+s9t256bVY7utOip6Jg0VRHBxTBRVYy/1U6Dbzl0YmNGq
- dHs6XKISvgYurRUdT/oUDSTU1uAMRA9UaMX9hwgbY+aGl/Qjs5wPQEBHzT24woo501/bOSelei2
- dv+aTmkSq8IIEbQfaNz4+I4RQquMdwmcNNPv8LaIIvPoumgobghr+6TY/eWywHFHy0ngFt499Kt
- 7z2YhJaqjtdl7XAsPYSd8afWXFDEkH1ep0j4n9XGNZdqINJ2/JOUgkFh9TpEValy09r7XiGyIO7
- fk1IiKHhE14meCA6GkA==
-X-Authority-Analysis: v=2.4 cv=NZzWEWD4 c=1 sm=1 tr=0 ts=6a42371e cx=c_pps
- a=hnmNkyzTK/kJ09Xio7VxxA==:117 a=xqWC_Br6kY4A:10 a=IkcTkHD0fZMA:10
- a=FelO9ux0wxsA:10 a=s4-Qcg_JpJYA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=u7WPNUs3qKkmUXheDGA7:22 a=eoimf2acIAo5FJnRuUoq:22 a=VwQbUJbxAAAA:8
- a=EUspDBNiAAAA:8 a=lFaTzyIiLygvDfm8gxsA:9 a=QEXdDO2ut3YA:10
- a=PEH46H7Ffwr30OY-TuGO:22
-X-Proofpoint-GUID: 0pf1a95FkEK3bZmd_u8pvNf7uPvRuyoe
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.125,FMLib:17.12.100.49
- definitions=2026-06-29_02,2026-06-26_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- phishscore=0 impostorscore=0 spamscore=0 adultscore=0 suspectscore=0
- clxscore=1015 bulkscore=0 priorityscore=1501 malwarescore=0
- lowpriorityscore=0 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2606150000
- definitions=main-2606290074
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-5.16 / 15.00];
+	WHITELIST_SPF_DKIM(-3.00)[intel.com:d:+,kernel.org:s:+];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[qualcomm.com,reject];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
-	R_DKIM_ALLOW(-0.20)[qualcomm.com:s=qcppdkim1,oss.qualcomm.com:s=google];
+	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
+	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-269695-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:lee@kernel.org,m:broonie@opensource.wolfsonmicro.com,m:thierry.reding@avionic-design.de,m:sebastian.hesselbarth@gmail.com,m:andrew+netdev@lunn.ch,m:davem@davemloft.net,m:edumazet@google.com,m:kuba@kernel.org,m:pabeni@redhat.com,m:srini@kernel.org,m:gregkh@linuxfoundation.org,m:vkoul@kernel.org,m:rafael@kernel.org,m:dakr@kernel.org,m:robh@kernel.org,m:saravanak@kernel.org,m:maddy@linux.ibm.com,m:mpe@ellerman.id.au,m:npiggin@gmail.com,m:chleroy@kernel.org,m:andi.shyti@kernel.org,m:andriy.shevchenko@linux.intel.com,m:joro@8bytes.org,m:will@kernel.org,m:robin.murphy@arm.com,m:opendmb@gmail.com,m:florian.fainelli@broadcom.com,m:bcm-kernel-feedback-list@broadcom.com,m:ulfh@kernel.org,m:Frank.Li@nxp.com,m:s.hauer@pengutronix.de,m:kernel@pengutronix.de,m:festevam@gmail.com,m:matthew.brost@intel.com,m:thomas.hellstrom@linux.intel.com,m:rodrigo.vivi@intel.com,m:airlied@gmail.com,m:simona@ffwll.ch,m:peter.chen@kernel.org,m:paul@crapouillou.net,m:b-liu@ti.com,m:p.zabel
- @pengutronix.de,m:luzmaximilian@gmail.com,m:hansg@kernel.org,m:ilpo.jarvinen@linux.intel.com,m:krzk@kernel.org,m:benh@kernel.crashing.org,m:brgl@kernel.org,m:linux-kernel@vger.kernel.org,m:netdev@vger.kernel.org,m:linux-arm-msm@vger.kernel.org,m:linux-sound@vger.kernel.org,m:driver-core@lists.linux.dev,m:devicetree@vger.kernel.org,m:linuxppc-dev@lists.ozlabs.org,m:linux-i2c@vger.kernel.org,m:iommu@lists.linux.dev,m:linux-pm@vger.kernel.org,m:imx@lists.linux.dev,m:linux-arm-kernel@lists.infradead.org,m:intel-xe@lists.freedesktop.org,m:dri-devel@lists.freedesktop.org,m:linux-usb@vger.kernel.org,m:linux-mips@vger.kernel.org,m:platform-driver-x86@vger.kernel.org,m:bartosz.golaszewski@oss.qualcomm.com,m:stable@vger.kernel.org,m:sebastianhesselbarth@gmail.com,m:andrew@lunn.ch,s:lists@lfdr.de];
-	FREEMAIL_TO(0.00)[kernel.org,opensource.wolfsonmicro.com,avionic-design.de,gmail.com,lunn.ch,davemloft.net,google.com,redhat.com,linuxfoundation.org,linux.ibm.com,ellerman.id.au,linux.intel.com,8bytes.org,arm.com,broadcom.com,nxp.com,pengutronix.de,intel.com,ffwll.ch,crapouillou.net,ti.com,kernel.crashing.org];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[qualcomm.com:+,oss.qualcomm.com:+];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_SENDER(0.00)[bartosz.golaszewski@oss.qualcomm.com,stable@vger.kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[oss.qualcomm.com:dkim,oss.qualcomm.com:mid,oss.qualcomm.com:from_mime,vger.kernel.org:from_smtp,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,qualcomm.com:dkim,qualcomm.com:email];
+	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[bartosz.golaszewski@oss.qualcomm.com,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:nitin.r.gote@intel.com,m:intel-xe@lists.freedesktop.org,m:stable@vger.kernel.org,m:christian.koenig@amd.com,m:matthew.auld@intel.com,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[thomas.hellstrom@linux.intel.com,stable@vger.kernel.org];
+	FORWARDED(0.00)[lists@lfdr.de];
+	HAS_ORG_HEADER(0.00)[];
+	TAGGED_FROM(0.00)[bounces-269698-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	RCPT_COUNT_GT_50(0.00)[67];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[thomas.hellstrom@linux.intel.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[intel.com:+];
 	ALIAS_RESOLVED(0.00)[];
-	TAGGED_RCPT(0.00)[stable,netdev];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCVD_COUNT_SEVEN(0.00)[7]
+	MID_RHS_MATCH_FROM(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,vger.kernel.org:from_smtp,intel.com:dkim,intel.com:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 62CA66D7F9D
+X-Rspamd-Queue-Id: 0EA386D85FD
 
-Platform devices created with platform_device_alloc() call
-platform_device_release() when the last reference to the device's
-kobject is dropped. This function calls of_node_put() unconditionally.
-This works fine for devices created with platform_device_register_full()
-but users of the split approach (platform_device_alloc() +
-platform_device_add()) must bump the reference of the of_node they
-assign manually. Add the missing call to of_node_get().
+On Thu, 2026-06-25 at 11:27 +0530, Nitin Gote wrote:
+> When a dma-buf importer creates a ttm_bo_type_sg BO with bo-
+> >base.resv
+> pointing at the exporter's dma_buf->resv and dma_buf_dynamic_attach()
+> fails, no dma_buf reference is held. The exporter can be freed before
+> the delayed_delete worker calls dma_resv_lock(bo->base.resv), causing
+> a
+> use-after-free:
+>=20
+> =C2=A0 Oops: general protection fault, probably for non-canonical address
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 0x6b6b6b6b6b6b6b9c
+> =C2=A0 Workqueue: ttm ttm_bo_delayed_delete [ttm]
+> =C2=A0 RIP: 0010:mutex_can_spin_on_owner+0x3f/0xc0
+>=20
+> ttm_bo_individualize_resv() skips the resv swap for all sg BOs to
+> keep
+> the shared resv available for delayed_delete to release the dma-buf
+> mapping. A BO whose attach never succeeded has no mapping to release,
+> yet it keeps bo->base.resv pointing at the exporter resv that
+> delayed_delete later locks once the exporter is gone.
+>=20
+> Fix this by checking bo->base.import_attach, which is only set after
+> successful dma_buf_dynamic_attach(). Failed imports now individualize
+> normally, so delayed_delete operates on the BO's private _resv. The
+> exporter remains alive during individualize as it runs synchronously
+> in ttm_bo_release(), while the gem_prime_import caller still holds
+> its dma_buf reference.
 
-Cc: stable@vger.kernel.org
-Fixes: 81e5d8646ff6 ("i2c/powermac: Register i2c devices from device-tree")
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
----
- arch/powerpc/platforms/powermac/low_i2c.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+I think since the bo is published on the LRU, a LRU walk can still grab
+a bo reference before the prime_import caller calls put(). So this
+doesn't necessarily hold?
 
-diff --git a/arch/powerpc/platforms/powermac/low_i2c.c b/arch/powerpc/platforms/powermac/low_i2c.c
-index da72a30ab8657e6dc7e6f3437af612155783d8f9..973f58771d9636605ed5d3e91b45008543b584d3 100644
---- a/arch/powerpc/platforms/powermac/low_i2c.c
-+++ b/arch/powerpc/platforms/powermac/low_i2c.c
-@@ -1471,7 +1471,7 @@ static int __init pmac_i2c_create_platform_devices(void)
- 		if (bus->platform_dev == NULL)
- 			return -ENOMEM;
- 		bus->platform_dev->dev.platform_data = bus;
--		bus->platform_dev->dev.of_node = bus->busnode;
-+		bus->platform_dev->dev.of_node = of_node_get(bus->busnode);
- 		platform_device_add(bus->platform_dev);
- 	}
- 
+>=20
+> Closes:
+> https://gitlab.freedesktop.org/drm/xe/kernel/-/work_items/8023
+> Fixes: d99fbd9aab62 ("drm/ttm: Always take the bo delayed cleanup
+> path for imported bos")
+> Cc: stable@vger.kernel.org=C2=A0# v6.8+
+> Cc: Thomas Hellstrom <thomas.hellstrom@linux.intel.com>
+> Cc: Christian Konig <christian.koenig@amd.com>
+> Cc: Matthew Auld <matthew.auld@intel.com>
+> Assisted-by: GitHub_Copilot:claude-sonnet-4.6
+> Signed-off-by: Nitin Gote <nitin.r.gote@intel.com>
+> ---
+> v3:
+> - Dropped the xe-side reordering approach since importer_priv must be
+> =C2=A0 valid when dma_buf_dynamic_attach() publishes the attachment.
+> - Per Christian's suggestion on the v1 thread, keyed the check on
+> =C2=A0 import_attach rather than removing the sg guard entirely.
+> - Exporter lifetime: individualize runs synchronously inside
+> =C2=A0 ttm_bo_release(), called from drm_gem_object_put() in the
+> =C2=A0 gem_prime_import error path while drm_gem_prime_fd_to_handle()
+> =C2=A0 still holds its dma_buf reference.
+> - Fixes both xe and amdgpu in a single TTM patch.
+>=20
+> =C2=A0drivers/gpu/drm/ttm/ttm_bo.c | 24 +++++++++++++++---------
+> =C2=A01 file changed, 15 insertions(+), 9 deletions(-)
+>=20
+> diff --git a/drivers/gpu/drm/ttm/ttm_bo.c
+> b/drivers/gpu/drm/ttm/ttm_bo.c
+> index bcd76f6bb7f0..bf8eaec0e9ca 100644
+> --- a/drivers/gpu/drm/ttm/ttm_bo.c
+> +++ b/drivers/gpu/drm/ttm/ttm_bo.c
+> @@ -196,6 +196,14 @@ static int ttm_bo_individualize_resv(struct
+> ttm_buffer_object *bo)
+> =C2=A0	if (bo->base.resv =3D=3D &bo->base._resv)
+> =C2=A0		return 0;
+> =C2=A0
+> +	/*
+> +	 * Successfully imported sg BOs need the shared resv for
+> dma-buf
+> +	 * cleanup. Failed imports have no attachment or mapping and
+> can
+> +	 * use the private _resv.
+> +	 */
+> +	if (bo->type =3D=3D ttm_bo_type_sg && bo->base.import_attach)
+> +		return 0;
+> +
 
--- 
-2.47.3
+You would still need to copy the current fences to _resv here, because
+otherwise, the object can be premaurely released. It's considered idle
+when the fences attached to _resv have all signaled. So this needs to
+be moved below the fence duplication below.
 
+Thanks,
+Thomas
+
+
+
+> =C2=A0	BUG_ON(!dma_resv_trylock(&bo->base._resv));
+> =C2=A0
+> =C2=A0	r =3D dma_resv_copy_fences(&bo->base._resv, bo->base.resv);
+> @@ -203,15 +211,13 @@ static int ttm_bo_individualize_resv(struct
+> ttm_buffer_object *bo)
+> =C2=A0	if (r)
+> =C2=A0		return r;
+> =C2=A0
+> -	if (bo->type !=3D ttm_bo_type_sg) {
+> -		/* This works because the BO is about to be
+> destroyed and nobody
+> -		 * reference it any more. The only tricky case is
+> the trylock on
+> -		 * the resv object while holding the lru_lock.
+> -		 */
+> -		spin_lock(&bo->bdev->lru_lock);
+> -		bo->base.resv =3D &bo->base._resv;
+> -		spin_unlock(&bo->bdev->lru_lock);
+> -	}
+> +	/* This works because the BO is about to be destroyed and
+> nobody
+> +	 * references it any more. The only tricky case is the
+> trylock on
+> +	 * the resv object while holding the lru_lock.
+> +	 */
+> +	spin_lock(&bo->bdev->lru_lock);
+> +	bo->base.resv =3D &bo->base._resv;
+> +	spin_unlock(&bo->bdev->lru_lock);
+> =C2=A0
+> =C2=A0	return r;
+> =C2=A0}
 
