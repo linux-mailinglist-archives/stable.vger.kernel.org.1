@@ -1,39 +1,39 @@
-Return-Path: <stable+bounces-269653-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-269652-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id KuTSOBoWQmqqzwkAu9opvQ
-	(envelope-from <stable+bounces-269653-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 29 Jun 2026 08:52:10 +0200
+	id pjdKDoUVQmqOzwkAu9opvQ
+	(envelope-from <stable+bounces-269652-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 29 Jun 2026 08:49:41 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3909B6D68D5
-	for <lists+stable@lfdr.de>; Mon, 29 Jun 2026 08:52:10 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 758526D6866
+	for <lists+stable@lfdr.de>; Mon, 29 Jun 2026 08:49:40 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
 	dkim=pass header.d=huawei.com header.s=dkim header.b=Pf8xFVKV;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-269653-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-269653-lists+stable=lfdr.de@vger.kernel.org";
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-269652-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-269652-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=quarantine) header.from=huawei.com;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E7F85302A6F6
-	for <lists+stable@lfdr.de>; Mon, 29 Jun 2026 06:46:40 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id B583330148DA
+	for <lists+stable@lfdr.de>; Mon, 29 Jun 2026 06:41:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0DD33A6B8E;
-	Mon, 29 Jun 2026 06:46:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E53BD39E19A;
+	Mon, 29 Jun 2026 06:41:15 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from canpmsgout04.his.huawei.com (canpmsgout04.his.huawei.com [113.46.200.219])
+Received: from canpmsgout01.his.huawei.com (canpmsgout01.his.huawei.com [113.46.200.216])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03878303A37;
-	Mon, 29 Jun 2026 06:46:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D60F639A078;
+	Mon, 29 Jun 2026 06:41:10 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782715597; cv=none; b=ntz3sl/C0eDeKEMEQLJHMCh4kM0mg7OSbbCPLDVNBOriCrxf/iuu4OBxAsqjaxp/N3AMtOSuD2T8TGkXN8aY352sLBY6Hn++YRN/Oqv8gzw9N8QPsRBNNohWijySiENKOCvvOtVI6oE9z8/Rs0ThXMLesmr+0Fsa3y6SYVWUxiw=
+	t=1782715275; cv=none; b=iBOtiBiOduiLgDMt9n03h+fZT43t9QIlWXRY+l4aeTK+igJyfhRHNQUOh4DeA/Bq+0CIoxjEfRuY9P5yJVCho4Jlwmb4GcNCqfv0GZlBMSurXrzpki/Rbbwf9L7bj7H+yN2bNS+VWgZC4rXCjksRZ8n2bfDEJXRE9gc4zFmoZXw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782715597; c=relaxed/simple;
+	s=arc-20240116; t=1782715275; c=relaxed/simple;
 	bh=/RkF59PZPSOpnNK7H4vSewsvE7k7qKrBfk8PqJeAOGk=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=QztfKnP9F0DqMMpKOOKUJQ+8AFCsA53diNSeYp1ShUEmh11tUkUuiGeQPRIzdq/vHFyEJRM+L7DvZhVEOxRT7Mv8zK+yUSK5TR01q6Ui8PJM0ryqaPtVLaWxoPPsXN8CBcaLsk1pFqJogUVInjuXj2aKYiEm5FKBCzqNKRZbVkk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=Pf8xFVKV; arc=none smtp.client-ip=113.46.200.219
+	 MIME-Version:Content-Type; b=TKRqkViBcGPwgqb74CIaErX0zyBbH7nPPQFm7q+5VWCzZR2wYpQmk/5wNDLpWULteH9FhlJ2zK+jztfzSEnjHXeNJsbj0HrVQz6//YQpkqKDbPbhpTpcYN3iZj/UHISWYG3OJNmEyfeg4A5pX8aXItlvF0Q5LkZaE6bvSKZOhE8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=Pf8xFVKV; arc=none smtp.client-ip=113.46.200.216
 dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
 	c=relaxed/relaxed; q=dns/txt;
 	h=From;
@@ -42,8 +42,8 @@ dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
 	ibVAbAhUF+36GfePQVri0qT96uHUm/BOTvg0vlTBrl+8ABQ912GjNC5VEMWpIfE4f4W55jLbdSn
 	yruVYRqvh8INTdcvZknYNcc=
 Received: from mail.maildlp.com (unknown [172.19.162.144])
-	by canpmsgout04.his.huawei.com (SkyGuard) with ESMTPS id 4gpc5V4cWTz1prM5;
-	Mon, 29 Jun 2026 14:37:18 +0800 (CST)
+	by canpmsgout01.his.huawei.com (SkyGuard) with ESMTPS id 4gpbxC48kDz1T4Jk;
+	Mon, 29 Jun 2026 14:30:07 +0800 (CST)
 Received: from dggemv706-chm.china.huawei.com (unknown [10.3.19.33])
 	by mail.maildlp.com (Postfix) with ESMTPS id 5549F40538;
 	Mon, 29 Jun 2026 14:38:55 +0800 (CST)
@@ -89,7 +89,7 @@ X-Spamd-Result: default: False [-6.16 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[huawei.com,quarantine];
 	R_DKIM_ALLOW(-0.20)[huawei.com:s=dkim];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
@@ -100,8 +100,8 @@ X-Spamd-Result: default: False [-6.16 / 15.00];
 	FORGED_RECIPIENTS(0.00)[m:viro@zeniv.linux.org.uk,m:brauner@kernel.org,m:jack@suse.cz,m:miklos@szeredi.hu,m:amir73il@gmail.com,m:paul@paul-moore.com,m:jmorris@namei.org,m:serge@hallyn.com,m:stephen.smalley.work@gmail.com,m:omosnace@redhat.com,m:gregkh@linuxfoundation.org,m:sashal@kernel.org,m:bboscaccy@linux.microsoft.com,m:caixinchen1@huawei.com,m:linux-fsdevel@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:linux-unionfs@vger.kernel.org,m:linux-security-module@vger.kernel.org,m:selinux@vger.kernel.org,m:bpf@vger.kernel.org,m:stable@vger.kernel.org,m:lujialin4@huawei.com,m:stephensmalleywork@gmail.com,s:lists@lfdr.de];
 	FREEMAIL_TO(0.00)[zeniv.linux.org.uk,kernel.org,suse.cz,szeredi.hu,gmail.com,paul-moore.com,namei.org,hallyn.com,redhat.com,linuxfoundation.org,linux.microsoft.com,huawei.com];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-269653-lists,stable=lfdr.de];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	TAGGED_FROM(0.00)[bounces-269652-lists,stable=lfdr.de];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
@@ -111,12 +111,12 @@ X-Spamd-Result: default: False [-6.16 / 15.00];
 	TO_DN_NONE(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	RCPT_COUNT_TWELVE(0.00)[22];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,paul-moore.com:email,vger.kernel.org:from_smtp,huawei.com:dkim,huawei.com:email,huawei.com:mid,huawei.com:from_mime];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[paul-moore.com:email,huawei.com:dkim,huawei.com:email,huawei.com:mid,huawei.com:from_mime,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,vger.kernel.org:from_smtp];
 	TAGGED_RCPT(0.00)[stable];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	RCVD_COUNT_SEVEN(0.00)[7]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 3909B6D68D5
+X-Rspamd-Queue-Id: 758526D6866
 
 From: Khadija Kamran <kamrankhadijadj@gmail.com>
 
