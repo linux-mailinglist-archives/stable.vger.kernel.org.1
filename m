@@ -1,70 +1,70 @@
-Return-Path: <stable+bounces-269733-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-269734-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id qarlM4pTQmpf4wkAu9opvQ
-	(envelope-from <stable+bounces-269733-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 29 Jun 2026 13:14:18 +0200
+	id 4Nw2OeNTQmp14wkAu9opvQ
+	(envelope-from <stable+bounces-269734-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 29 Jun 2026 13:15:47 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C75666D9414
-	for <lists+stable@lfdr.de>; Mon, 29 Jun 2026 13:14:17 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id E854B6D945D
+	for <lists+stable@lfdr.de>; Mon, 29 Jun 2026 13:15:46 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=microchip.com header.s=mchp header.b=iTrfFQbs;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-269733-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-269733-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=microchip.com header.s=mchp header.b=HKvbkZeu;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-269734-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-269734-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=reject) header.from=microchip.com;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 50D64301C1A0
-	for <lists+stable@lfdr.de>; Mon, 29 Jun 2026 11:10:43 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id DF388302365D
+	for <lists+stable@lfdr.de>; Mon, 29 Jun 2026 11:11:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 69A003B9DA5;
-	Mon, 29 Jun 2026 11:09:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9FDEC3BB694;
+	Mon, 29 Jun 2026 11:10:02 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.154.123])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8590400E1E;
-	Mon, 29 Jun 2026 11:09:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BEBE401A21;
+	Mon, 29 Jun 2026 11:10:00 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782731391; cv=none; b=N+93b+KlL5BWyCMg+sdzW8NNveHw9/uACuO001zZMjW3gpO6GFMDXHFWPLNUJA50ngAB+s2MVJDBY/HkC/zoOUvwwHKslkfQKeBwf1JKFxzFhsQSFSIgBXr3uRBADqIRmUVAIHirM8AKLZ6qpGGqTKHUraSbAPJFl0hMnR2z2sg=
+	t=1782731402; cv=none; b=FVEB0rUypPuDWpGERKnqAOWaFrcB2kZvPuowoobm59BaYdrHAuy3rD7N0dfA3N+ty7KallUNrtx+O7S3PMMI6krUQ8/qQ1+w14+sgTTLo0LmIK/RWtPAdB6j+94j1sh3DJANI2ubDJaXYJdIG82fItMCtxezZXrNXsPC0MuPpbk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782731391; c=relaxed/simple;
-	bh=13gOV7y53/OaFfLIEPAL0LSpK9N+zhp4tOFZKUoPAFE=;
+	s=arc-20240116; t=1782731402; c=relaxed/simple;
+	bh=qxWdVD0AsoiU45oXdsmwcyX0G+gw2bxgoYJjzFSHfZs=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-ID:References:
-	 In-Reply-To:To:CC; b=bZjFg14NX5OjZYYxlftwTqn84BW72pk0/07TE6JRkwcOCsG7+dceGnitZoGJn5rLBYlccT6mNcQ8+v7hqn4K9QMGZprDNUgZNmUrgK1vxk4XOcKeA10v8lqocUU+iZn+T7eRlUquo+Evskm0pTtu/ksE0gPllA8r3tXv2Dfgy/Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=iTrfFQbs; arc=none smtp.client-ip=68.232.154.123
+	 In-Reply-To:To:CC; b=ICLI6T8GrBbSp1ul+hvYnxthnKvd50yTgykRlKz6qAveFr4KvxAI4ArikeV5t3VbQsr4EfvbcijGSmX9cnN5s9dXZZgpBh8PIpewod9M9/CZ6I6BNHnjrqKuwQvorUZLgMUWq5CJpbz8rGSqruUeHLQKT9k6mAQ0UA5S/6pEF/s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=HKvbkZeu; arc=none smtp.client-ip=68.232.154.123
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
-  t=1782731389; x=1814267389;
+  t=1782731400; x=1814267400;
   h=from:date:subject:mime-version:content-transfer-encoding:
    message-id:references:in-reply-to:to:cc;
-  bh=13gOV7y53/OaFfLIEPAL0LSpK9N+zhp4tOFZKUoPAFE=;
-  b=iTrfFQbsT2rvvZ4nqnytv12IhliEGasacSP1GCIuTEqJQfULkltc/6k8
-   S955R4J25RHqXlHJTZpSgx7IW9oKXbJZ/JHh1uzo8iFtnvAXph1J0sia1
-   IZAwaofYE2NSOtRcBNRcuCh8ERKfDxl0S4kHCxXZozIMcLizP88BN2ME6
-   tgdLRnm7RNyXgxnjBA/hgDC9YDOKzjahDiNhIyTsIatyMoH8WLFlsGJZ7
-   bIpO2f/uUclSWvfzSdUrZ/Z6hPcDz+DYVk88djs/ZOhchAOxBgRp0NqFd
-   eUKaFFmuKBgnjLwm/DYiXnf17qNQFmy5WG2vdbYRq8nRuBLYClJEWX5D9
-   g==;
-X-CSE-ConnectionGUID: 1OvRvY3TTV29mauALtiXEw==
-X-CSE-MsgGUID: wk4+17tvSw2eZFmLhut70Q==
+  bh=qxWdVD0AsoiU45oXdsmwcyX0G+gw2bxgoYJjzFSHfZs=;
+  b=HKvbkZeuGHHr4rGahjl4HO7HO/r4fBBmbrLG6pVzKVIjwdYaEevy6pm3
+   rIGARKe0kLGz9qCzJpf0HcGR156XnJjx/Ryu4nqPSlGVyk1wabJiubjR+
+   u1F9JZIrCy22ABK9/o433i8KpLWV+Io/KhZgDASc7hEXRAWmhI+kMU7gM
+   AZPOFGNaUsIpAmMseNj6EFPTXnDKIiSage9eYydfTLzeY7GsFhVJNcbEh
+   Oi4IH0UUvH4EIR4uN446sTXYbeaNKF5d+VwjCd4X+j4gT6ijBFgewhdWr
+   cO1ocVGb9ahA6ASgQuxYsrahTjFsn6V0fs4Zkl6aVNr7ZhPFeeCK+kcsp
+   w==;
+X-CSE-ConnectionGUID: c+kGyjGTTaGkbIwaGQznMQ==
+X-CSE-MsgGUID: 2YjBCCn4SS+34Lo4ICUmGQ==
 X-IronPort-AV: E=Sophos;i="6.24,231,1774335600"; 
-   d="scan'208";a="226994163"
+   d="scan'208";a="58973949"
 X-Amp-Result: SKIPPED(no attachment in message)
 Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
-  by esa6.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 29 Jun 2026 04:09:49 -0700
-Received: from chn-vm-ex01.mchp-main.com (10.10.85.143) by
- chn-vm-ex03.mchp-main.com (10.10.85.151) with Microsoft SMTP Server
+  by esa4.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Jun 2026 04:10:00 -0700
+Received: from chn-vm-ex01.mchp-main.com (10.10.87.71) by
+ chn-vm-ex3.mchp-main.com (10.10.87.32) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.58; Mon, 29 Jun 2026 04:09:49 -0700
+ 15.2.2562.43; Mon, 29 Jun 2026 04:10:00 -0700
 Received: from [127.0.0.1] (10.10.85.11) by chn-vm-ex01.mchp-main.com
  (10.10.85.143) with Microsoft SMTP Server id 15.1.2507.58 via Frontend
- Transport; Mon, 29 Jun 2026 04:09:46 -0700
+ Transport; Mon, 29 Jun 2026 04:09:56 -0700
 From: Balakrishnan Sambath <balakrishnan.s@microchip.com>
-Date: Mon, 29 Jun 2026 16:39:30 +0530
-Subject: [PATCH v2 05/10] media: microchip-isc: do not touch WB registers
- when not streaming
+Date: Mon, 29 Jun 2026 16:39:33 +0530
+Subject: [PATCH v2 08/10] media: microchip-isc: fix PM runtime leak in AWB
+ work handler
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -73,7 +73,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-ID: <20260629-balki-isc-prefix-fixes-v1-v2-5-3b120cc3742f@microchip.com>
+Message-ID: <20260629-balki-isc-prefix-fixes-v1-v2-8-3b120cc3742f@microchip.com>
 References: <20260629-balki-isc-prefix-fixes-v1-v2-0-3b120cc3742f@microchip.com>
 In-Reply-To: <20260629-balki-isc-prefix-fixes-v1-v2-0-3b120cc3742f@microchip.com>
 To: Eugen Hristev <ehristev@kernel.org>, Mauro Carvalho Chehab
@@ -88,12 +88,12 @@ X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[microchip.com,reject];
 	R_DKIM_ALLOW(-0.20)[microchip.com:s=mchp];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-269733-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-269734-lists,stable=lfdr.de];
 	RECEIVED_HELO_LOCALHOST(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_SENDER(0.00)[balakrishnan.s@microchip.com,stable@vger.kernel.org];
@@ -102,7 +102,7 @@ X-Spamd-Result: default: False [-2.16 / 15.00];
 	FORWARDED(0.00)[lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[microchip.com:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	RCVD_COUNT_FIVE(0.00)[6];
@@ -114,66 +114,42 @@ X-Spamd-Result: default: False [-2.16 / 15.00];
 	RCPT_COUNT_SEVEN(0.00)[8];
 	TO_DN_SOME(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,microchip.com:dkim,microchip.com:email,microchip.com:mid,microchip.com:from_mime,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[microchip.com:dkim,microchip.com:email,microchip.com:mid,microchip.com:from_mime,vger.kernel.org:from_smtp,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: C75666D9414
+X-Rspamd-Queue-Id: E854B6D945D
 
-isc_s_awb_ctrl() called isc_update_awb_ctrls() unconditionally, writing
-the white balance registers even when the device is runtime suspended;
-on many ARM platforms accessing the unclocked registers is an external
-abort. The write was also done without awb_lock, racing isc_awb_work(),
-which holds it so the DMA done IRQ cannot latch a half-updated pipeline.
-
-Write the registers only while streaming and not stopping, under
-awb_lock, and update the profile there. The isc->stop check covers the
-window where isc_stop_streaming() has gated the clocks but vb2 still
-reports streaming. Otherwise the new values stay cached and
-isc_configure() programs them at the next stream start.
+Early return when streaming stops skips pm_runtime_put_sync(),
+leaking the reference and preventing runtime suspend.
 
 Fixes: 91b4e487b0c6 ("media: microchip: add ISC driver as Microchip ISC")
 Cc: stable@vger.kernel.org
 Signed-off-by: Balakrishnan Sambath <balakrishnan.s@microchip.com>
+Reviewed-by: Eugen Hristev <ehristev@kernel.org>
 ---
- .../media/platform/microchip/microchip-isc-base.c    | 20 ++++++++++++--------
- 1 file changed, 12 insertions(+), 8 deletions(-)
+ drivers/media/platform/microchip/microchip-isc-base.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
 diff --git a/drivers/media/platform/microchip/microchip-isc-base.c b/drivers/media/platform/microchip/microchip-isc-base.c
-index f7fbd3cd8edc..a2f7035f4418 100644
+index 4e87e5f45ac4..1a9b97edfa32 100644
 --- a/drivers/media/platform/microchip/microchip-isc-base.c
 +++ b/drivers/media/platform/microchip/microchip-isc-base.c
-@@ -1509,20 +1509,24 @@ static int isc_s_awb_ctrl(struct v4l2_ctrl *ctrl)
- 		if (ctrl->cluster[ISC_CTRL_GB_OFF]->is_new)
- 			ctrls->offset[ISC_HIS_CFG_MODE_GB] = isc->gb_off_ctrl->val;
+@@ -1432,7 +1432,7 @@ static void isc_awb_work(struct work_struct *w)
+ 	/* streaming is not active anymore */
+ 	if (isc->stop) {
+ 		mutex_unlock(&isc->awb_mutex);
+-		return;
++		goto out_pm_put;
+ 	}
  
--		isc_update_awb_ctrls(isc);
--
- 		mutex_lock(&isc->awb_mutex);
--		if (vb2_is_streaming(&isc->vb2_vidq)) {
-+		if (vb2_is_streaming(&isc->vb2_vidq) && !isc->stop) {
-+			unsigned long flags;
-+
- 			/*
--			 * If we are streaming, we can update profile to
--			 * have the new settings in place.
-+			 * awb_lock keeps the DMA done IRQ from latching a
-+			 * partially written WB pipeline.
- 			 */
-+			spin_lock_irqsave(&isc->awb_lock, flags);
-+			isc_update_awb_ctrls(isc);
-+			spin_unlock_irqrestore(&isc->awb_lock, flags);
-+
- 			isc_update_profile(isc);
- 		} else {
- 			/*
--			 * The auto cluster will activate automatically this
--			 * control. This has to be deactivated when not
--			 * streaming.
-+			 * Not streaming: keep the cached values for the next
-+			 * stream start and deactivate the cluster-activated
-+			 * do_white_balance button.
- 			 */
- 			v4l2_ctrl_activate(isc->do_wb_ctrl, false);
- 		}
+ 	isc_update_profile(isc);
+@@ -1443,6 +1443,7 @@ static void isc_awb_work(struct work_struct *w)
+ 	if (ctrls->awb)
+ 		regmap_write(regmap, ISC_CTRLEN, ISC_CTRL_HISREQ);
+ 
++out_pm_put:
+ 	pm_runtime_put_sync(isc->dev);
+ }
+ 
 
 -- 
 2.34.1
