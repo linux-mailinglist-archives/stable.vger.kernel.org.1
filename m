@@ -1,189 +1,289 @@
-Return-Path: <stable+bounces-269661-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-269666-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id XAOJOUMgQmqj0gkAu9opvQ
-	(envelope-from <stable+bounces-269661-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 29 Jun 2026 09:35:31 +0200
+	id D5dWGQUmQmrr0wkAu9opvQ
+	(envelope-from <stable+bounces-269666-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 29 Jun 2026 10:00:05 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A0BE76D70D9
-	for <lists+stable@lfdr.de>; Mon, 29 Jun 2026 09:35:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C5BDD6D73F2
+	for <lists+stable@lfdr.de>; Mon, 29 Jun 2026 10:00:04 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=none;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-269661-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-269661-lists+stable=lfdr.de@vger.kernel.org";
-	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
+	dkim=pass header.d=amd.com header.s=selector1 header.b=z2WmSo0d;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-269666-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-269666-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=quarantine) header.from=amd.com;
+	arc=reject ("cv is fail on i=2")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 77B81308405D
-	for <lists+stable@lfdr.de>; Mon, 29 Jun 2026 07:28:36 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id A462030DC741
+	for <lists+stable@lfdr.de>; Mon, 29 Jun 2026 07:46:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0BAAA3BBFD9;
-	Mon, 29 Jun 2026 07:28:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5382E3C3781;
+	Mon, 29 Jun 2026 07:43:51 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from PH7PR06CU001.outbound.protection.outlook.com (mail-westus3azon11010069.outbound.protection.outlook.com [52.101.201.69])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93F3C3D34A0;
-	Mon, 29 Jun 2026 07:28:00 +0000 (UTC)
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782718083; cv=none; b=K2sdxHRNQKBUVtrhQoHhUpne8Mm4LfSugUW4gp5P6XXG2zOtZjfsU7VutVLaKAQsboZ1FtQ28PQS5LlyO2IUnMsHBHDewJCkfxH8l34eXLDdKWvORQCYyvsWtlq6LCR0aq94qOcb9vy3SV2QOdkjcAaP1eFNcdvuCL2TRD3ym+w=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782718083; c=relaxed/simple;
-	bh=ifzOW5xRhoRUg6/BDIT+EDopmK6Cx/+YTe6yGEWjuQI=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=nrFg3sPpLN0aM2gKnwKApWENtPhA/mAIWPrmn27DrGte2BxCHjtLHo9pCVuIXNtUZ7WidXLrLEsfSziBEM0uGr1YH6JUAKnh6Y+ZIXfcxIdV9cOOtG7uN8ilHn4Icwcl+CLunhwIL09eenH3TYWDcebzAqaoxcnIscwQu6aGuSU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A04FF1F000E9;
-	Mon, 29 Jun 2026 07:27:54 +0000 (UTC)
-Message-ID: <fd16413a-95a7-4503-80df-2d71303498fa@kernel.org>
-Date: Mon, 29 Jun 2026 09:27:23 +0200
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8417E3CCFDB
+	for <stable@vger.kernel.org>; Mon, 29 Jun 2026 07:43:42 +0000 (UTC)
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1782719030; cv=fail; b=hukF1R1g16ShRxbEu0heXKOL+G+cgzKFYDuQ3iNotr1BQoZgYsScx6F2dgizhcCHYVRkGHOuSyWlqeR21WM9cI27HO5Jxd/15n0ZQRJSi1VerVIhgilgs8pp8UW3+Dy1fFNIWgNehlhQ0sYloyoWarMJGfPWPBLxH2qFyaIKxwk=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1782719030; c=relaxed/simple;
+	bh=rNKO1wPCSsfKkUXdkz2u7HZpw8vOW8osh3f7Jk8gQTc=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=fxX+31++dClSB5dBo8u2ZOugBBHJ4PNiXJTiqInVDJFyUJAz4ozE07ATaGP0eBowJmNtrx0K48B+p0h1ytPjjxe70dP++dlP0fqwsXGSkBXSUsXd3hxYNx/bIHHC+G78bQVUNAv6QR0ZHI1UrbffLd7WcQQvYKEMHkCCSK/ytBw=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=z2WmSo0d; arc=fail smtp.client-ip=52.101.201.69
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=oyotn+Hy2/TdkjYUxyPmyt2m1V0L0VujpCiO7ZA3qHeHEQjqPh5q7WwpyUmz52l0YXqCkZyyRiDJPbTdq34EOx8xtgYCzt3eT9ELoBFXtZyVW4t/ttSQDMDVYqheuy+ig4Zd84IHCAvuPYgRph/Pw0MRP/2Xu0yLAmyNgOtnK+Fk3NSOGPpJAFTaDK+47MnADYaPs8aryd7YJyuOJbAnUCgnasbZGz02QwObCw9GhyUhyk8buGh3PvSFMVEccTfOVuOYPDMW5yUPAkxo7SJEnRa49GTCKMydpyDmtbBeldC1+OCCdOkUys3rCpo+Vug6uA6UKon/bvT/IM+9vanBnQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=eGI/vVqlZHJz4JlzpwIrut/PT3weaDmCXgB/ZgDr4uA=;
+ b=kjw8Q0XgeWRy7gEVWvKRrvFhTQN0HQfPMbVlYvN8JdmU5dj1GrU51P0wji0FZrcBphJzO5uRTXg6CK27pEZT/QRBTnIi0qfOworVN7un3m2gHlrTMCVxOPy+I1LYdJzwBJRkdrm5CDYGfslZ7Eifsr3c6yki+gJ1s8fGWtGhGIsAAkei3Y0o/sPNaZ4a4yLBHww7WDrDgvQQMalMppFFU1lIW/Fx67bGKWd1aBAq28XWzr5wyHKeYUtY0dqqJt38wBu43v+csEDNkbdAFfWucnB03fBdLXL9hKMCA3h9rr/0syQ1TesKtyT0vGwodWMKBqowYLMOq23P+3TJVCapTQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=intel.com smtp.mailfrom=amd.com; dmarc=pass
+ (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=eGI/vVqlZHJz4JlzpwIrut/PT3weaDmCXgB/ZgDr4uA=;
+ b=z2WmSo0d3c7vPExjZm1/aE72ohZ+WSc6IggLzjOxg9rNesL9PW8r787JAc722fEaGCd51oCD/ITGdt2SiTV72WvuqqPg3Thjkf40xOwv98/slhpez79OiWtdz+YbUT/rSWEZUPeq8CJf3QEcRQU1l9p8l1OMZgeLv7Q1JwrbF/U=
+Received: from CH0PR03CA0051.namprd03.prod.outlook.com (2603:10b6:610:b3::26)
+ by MW4PR12MB6898.namprd12.prod.outlook.com (2603:10b6:303:207::6) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.159.19; Mon, 29 Jun
+ 2026 07:43:36 +0000
+Received: from CH1PEPF0000AD7B.namprd04.prod.outlook.com
+ (2603:10b6:610:b3:cafe::ab) by CH0PR03CA0051.outlook.office365.com
+ (2603:10b6:610:b3::26) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.159.19 via Frontend Transport; Mon,
+ 29 Jun 2026 07:43:36 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
+Received: from satlexmb07.amd.com (165.204.84.17) by
+ CH1PEPF0000AD7B.mail.protection.outlook.com (10.167.244.58) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.181.6 via Frontend Transport; Mon, 29 Jun 2026 07:43:36 +0000
+Received: from arun-nv33.amd.com (10.180.168.240) by satlexmb07.amd.com
+ (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.41; Mon, 29 Jun
+ 2026 02:43:32 -0500
+From: Arunpravin Paneer Selvam <Arunpravin.PaneerSelvam@amd.com>
+To: <matthew.auld@intel.com>, <christian.koenig@amd.com>,
+	<dri-devel@lists.freedesktop.org>, <intel-gfx@lists.freedesktop.org>,
+	<intel-xe@lists.freedesktop.org>, <amd-gfx@lists.freedesktop.org>
+CC: <alexander.deucher@amd.com>, Arunpravin Paneer Selvam
+	<Arunpravin.PaneerSelvam@amd.com>, =?UTF-8?q?Timur=20Krist=C3=B3f?=
+	<timur.kristof@gmail.com>, John Olender <john.olender@gmail.com>,
+	<stable@vger.kernel.org>
+Subject: [PATCH v2] gpu/buddy: bail out of try_harder when alignment cannot be honoured
+Date: Mon, 29 Jun 2026 13:13:11 +0530
+Message-ID: <20260629074311.68836-1-Arunpravin.PaneerSelvam@amd.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] cgroup/cpuset: rebind mm mempolicy to effective_mems,
- not mems_allowed
-To: Andrew Morton <akpm@linux-foundation.org>,
- Farhad Alemi <farhad.alemi@berkeley.edu>
-Cc: Waiman Long <longman@redhat.com>, Farhad Alemi <falemi@asu.edu>,
- Gregory Price <gourry@gourry.net>, Yury Norov <ynorov@nvidia.com>,
- Joshua Hahn <joshua.hahnjy@gmail.com>, Zi Yan <ziy@nvidia.com>,
- Matthew Brost <matthew.brost@intel.com>, Rakie Kim <rakie.kim@sk.com>,
- Byungchul Park <byungchul@sk.com>, Ying Huang
- <ying.huang@linux.alibaba.com>, Alistair Popple <apopple@nvidia.com>,
- Rasmus Villemoes <linux@rasmusvillemoes.dk>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, cgroups@vger.kernel.org,
- stable@vger.kernel.org, Tejun Heo <tj@kernel.org>
-References: <CA+0ovCg05rUk1-3k2ysdxmbcER8aG-wVh9SSTrrbp6LPWpPHYA@mail.gmail.com>
- <CA+0ovCgfHJHv5d1mzapWWvF-LhjppzDX8NPPLvCPZxPKg8RiYw@mail.gmail.com>
- <20260627231508.74201ca47c883507be97d8c2@linux-foundation.org>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <20260627231508.74201ca47c883507be97d8c2@linux-foundation.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: satlexmb08.amd.com (10.181.42.217) To satlexmb07.amd.com
+ (10.181.42.216)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH1PEPF0000AD7B:EE_|MW4PR12MB6898:EE_
+X-MS-Office365-Filtering-Correlation-Id: e23fe91c-890b-4e4d-a886-08ded5b220b4
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|23010399003|376014|1800799024|82310400026|36860700016|18002099003|11063799006|56012099006|6133799003;
+X-Microsoft-Antispam-Message-Info:
+	ji9fu/TSOMhQzh5ZuLSwejICE5xkb6SrcR7lluwuNTNNijHFn302K1hBhpbQWDO2WJ9AO33hlQ+9IPrYYBvxKDwvfmESUYRWL78W8PRWXrF9GIisQyGBKXucLj4hm0wejZO3h0mfMF6MFkstqJlbtn8XDIf+E2FVTGZz6bDYxxGvU1UQ0tCYhhFDGL4DrEtrx6sOVaOxGAerUUppxj12xWblrDEEhAWg6JjG7Zl6iI5MrUqazMiACeweiqODJojaDzc7/zOqO3YzvHqeLCQccEIt9CuyaWYD+61iRJtvuT71QITvPY4ojjg4imwTlLJqCyOH2CXSerpeugy7b45igbC4MjJ629TPkVorU2/IIjcpfSfS5IFYmEfCPaRSWWLlIPNZv5N527Yg4A3dQj0T8OKR7QviLr5CJdhWwp9Lu5UAcwwllny0Hy4IXFS8SN7WIV/Ab+sgjQMCLqBxfbjiHbvTSeDx+cjSNNNxwHsGFfKHMusT2Cl6JkSDOhnIuyxq/sSA9sjvhOhwskrFyiMFhzvfJxCwK0Zgd+20y8Ed/tpDpz/gdrTEP6R3zGO8bIF2dRdcVdHIFCZA3eV54XwvwJTg3EwHxQ66tW5ZB+kbVg2VY45GAJyboeYKifuPEfHy8x6GIw4iv7nudXkUPaR/0QpkKATFg0jFe5SyGI3Ce3trQN1gef+NJAEZWVy7A2+jSWZEX+43qBXKATAk1dnang==
+X-Forefront-Antispam-Report:
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(23010399003)(376014)(1800799024)(82310400026)(36860700016)(18002099003)(11063799006)(56012099006)(6133799003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	3Qr12JGewYSbtEpcpOVuwNau5xyIsIs4wq3i/hM7V+ovrmJINrgXFtoAYLd+zb+ItqshqnbEF6meB0tqZHbUlyOpYaPEOwWlLL8v35htORzjaQ5jIdmSfTxwqWYVTo3CWsfjZEzbsYwvB6+7pYWtEGqolJxE4rGMwnoigK/B2Jebo7+UjZFGLhInT8mfufR7mHSYpBEO/zEDfHoXMjbicu/bjxNe4623iOh54ykOVeXe/p0qQV9AZJdgobANIhp5R+rUh5G++TelWck6ckkm8htlCVVs8oooh3wNBT5kCzPwyb+LZ+WRf8sVmcwUOoTNJXJd13MqTqmdJrh8lR4JLLAVl9xl1aM7jM+F9Mddh7CwSOojz8ZWSHadXkOv6NDzxp0b5WloeSnzGrkvIc+ZSIQEMcp99caWYAytwz+0HKPS0wF56JT80pTi1Pa6Q94O
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Jun 2026 07:43:36.2528
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: e23fe91c-890b-4e4d-a886-08ded5b220b4
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	CH1PEPF0000AD7B.namprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW4PR12MB6898
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.46 / 15.00];
+X-Spamd-Result: default: False [2.34 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	MID_CONTAINS_FROM(1.00)[];
+	ARC_REJECT(1.00)[cv is fail on i=2];
+	DMARC_POLICY_ALLOW(-0.50)[amd.com,quarantine];
+	R_DKIM_ALLOW(-0.20)[amd.com:s=selector1];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_RECIPIENTS(0.00)[m:akpm@linux-foundation.org,m:farhad.alemi@berkeley.edu,m:longman@redhat.com,m:falemi@asu.edu,m:gourry@gourry.net,m:ynorov@nvidia.com,m:joshua.hahnjy@gmail.com,m:ziy@nvidia.com,m:matthew.brost@intel.com,m:rakie.kim@sk.com,m:byungchul@sk.com,m:ying.huang@linux.alibaba.com,m:apopple@nvidia.com,m:linux@rasmusvillemoes.dk,m:linux-mm@kvack.org,m:linux-kernel@vger.kernel.org,m:cgroups@vger.kernel.org,m:stable@vger.kernel.org,m:tj@kernel.org,m:joshuahahnjy@gmail.com,s:lists@lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-269661-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER(0.00)[david@kernel.org,stable@vger.kernel.org];
-	RCPT_COUNT_TWELVE(0.00)[19];
-	FREEMAIL_CC(0.00)[redhat.com,asu.edu,gourry.net,nvidia.com,gmail.com,intel.com,sk.com,linux.alibaba.com,rasmusvillemoes.dk,kvack.org,vger.kernel.org,kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[amd.com,gmail.com,vger.kernel.org];
 	FORWARDED(0.00)[lists@lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[david@kernel.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS(0.00)[m:matthew.auld@intel.com,m:christian.koenig@amd.com,m:dri-devel@lists.freedesktop.org,m:intel-gfx@lists.freedesktop.org,m:intel-xe@lists.freedesktop.org,m:amd-gfx@lists.freedesktop.org,m:alexander.deucher@amd.com,m:Arunpravin.PaneerSelvam@amd.com,m:timur.kristof@gmail.com,m:john.olender@gmail.com,m:stable@vger.kernel.org,m:timurkristof@gmail.com,m:johnolender@gmail.com,s:lists@lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-269666-lists,stable=lfdr.de];
+	FORGED_SENDER(0.00)[Arunpravin.PaneerSelvam@amd.com,stable@vger.kernel.org];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[amd.com:dkim,amd.com:email,amd.com:mid,amd.com:from_mime,vger.kernel.org:from_smtp,intel.com:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo];
+	DKIM_TRACE(0.00)[amd.com:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	R_DKIM_NA(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	MID_RHS_MATCH_FROM(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[Arunpravin.PaneerSelvam@amd.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[11];
 	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,vger.kernel.org:from_smtp]
+	TAGGED_RCPT(0.00)[stable];
+	RCVD_COUNT_SEVEN(0.00)[7]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: A0BE76D70D9
+X-Rspamd-Queue-Id: C5BDD6D73F2
 
-On 6/28/26 08:15, Andrew Morton wrote:
-> On Sun, 14 Jun 2026 06:25:55 -0700 Farhad Alemi <farhad.alemi@berkeley.edu> wrote:
-> 
->> Creating a child cpuset where cpuset.mems is never set leads to a div/0
->> when a VMA mempolicy with MPOL_F_RELATIVE_NODES rebinds in response to a
->> CPU hotplug event.
->>
->> Reproduction steps:
->>  1) Create a cgroup w/ cpuset controls (do not set cpuset.mems)
->>  2) Move the task into the child cpuset
->>  3) Create a VMA mempolicy for that task with MPOL_F_RELATIVE_NODES
->>  4) unplug and hotplug a cpu
->>       echo 0 > /sys/devices/system/cpu/cpu1/online
->>       echo 1 > /sys/devices/system/cpu/cpu1/online
->>  5) mempolicy rebind does a div/0 in mpol_relative_nodemask on the
->>     call to __nodes_fold()
-> 
-> Oops.
-> 
->> The cpuset code passes (cs->mems_allowed) which is not guaranteed to have
->> nodes to the rebind routine.  Use cs->effective_mems instead, which is
->> guaranteed to have a non-empty nodemask.
-> 
-> Well gee, what happened with this patch.
-> 
-> I apologize for misfiling a cc:stable bugfix into my post-rc1 backlog
-> pile, but I got there in the end.
-> 
-> I guess this is an MM patch, even though it's against
-> kernel/cgroup/cpuset.c.
-> 
-> Nobody cc'ed Tejun.  Fixed.
-> 
-> David acked v1 but is being coy about the v2 patch?
+The try_harder contiguous fallback could return a range whose start
+offset did not match the caller's min_block_size. When a candidate's
+start is misaligned, realign it: free the misaligned run and reallocate
+exactly @size at the next lower min_block_size boundary. This keeps the
+returned size unchanged with no surplus to trim, and rejects the request
+only when no aligned candidate fits.
 
-Yes, after the discussion, I think we should add comment similar to what I proposed.
+v2: align misaligned candidates down to min_block_size instead of
+    bailing out, for both the RHS and LHS paths (Matthew).
+
+Suggested-by: Christian König <christian.koenig@amd.com>
+Fixes: 0a1844bf0b53 ("drm/buddy: Improve contiguous memory allocation")
+Cc: Matthew Auld <matthew.auld@intel.com>
+Cc: Christian König <christian.koenig@amd.com>
+Cc: Timur Kristóf <timur.kristof@gmail.com>
+Cc: John Olender <john.olender@gmail.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Arunpravin Paneer Selvam <Arunpravin.PaneerSelvam@amd.com>
+---
+ drivers/gpu/buddy.c | 63 +++++++++++++++++++++++++++++++--------------
+ 1 file changed, 44 insertions(+), 19 deletions(-)
+
+diff --git a/drivers/gpu/buddy.c b/drivers/gpu/buddy.c
+index dc81fe0301ce..3c73ae87f3c5 100644
+--- a/drivers/gpu/buddy.c
++++ b/drivers/gpu/buddy.c
+@@ -1118,22 +1118,30 @@ static int __gpu_buddy_alloc_range(struct gpu_buddy *mm,
+ 			     blocks, total_allocated_on_err);
+ }
+ 
++static int __alloc_contig_aligned_retry(struct gpu_buddy *mm,
++					u64 unaligned_offset,
++					u64 size,
++					u64 min_block_size,
++					struct list_head *blocks)
++{
++	u64 aligned_offset = round_down(unaligned_offset, min_block_size);
++
++	return __gpu_buddy_alloc_range(mm, aligned_offset, size, NULL, blocks);
++}
++
+ static int __alloc_contig_try_harder(struct gpu_buddy *mm,
+ 				     u64 size,
+ 				     u64 min_block_size,
+ 				     struct list_head *blocks)
+ {
+-	u64 rhs_offset, lhs_offset, lhs_size, filled;
++	u64 rhs_offset, lhs_offset, filled;
+ 	struct gpu_buddy_block *block;
+ 	unsigned int tree, order;
+-	LIST_HEAD(blocks_lhs);
+-	unsigned long pages;
+ 	u64 modify_size;
+ 	int err;
+ 
+ 	modify_size = rounddown_pow_of_two(size);
+-	pages = modify_size >> ilog2(mm->chunk_size);
+-	order = fls(pages) - 1;
++	order = ilog2(modify_size) - ilog2(mm->chunk_size);
+ 	if (order == 0)
+ 		return -ENOSPC;
+ 
+@@ -1149,31 +1157,48 @@ static int __alloc_contig_try_harder(struct gpu_buddy *mm,
+ 		while (iter) {
+ 			block = rbtree_get_free_block(iter);
+ 
+-			/* Allocate blocks traversing RHS */
+ 			rhs_offset = gpu_buddy_block_offset(block);
++
++			/* Allocate blocks traversing RHS */
+ 			err =  __gpu_buddy_alloc_range(mm, rhs_offset, size,
+ 						       &filled, blocks);
+-			if (!err || err != -ENOSPC)
++			if (err && err != -ENOSPC)
+ 				return err;
++			if (!err && IS_ALIGNED(rhs_offset, min_block_size))
++				return 0;
++			if (!err) {
++				/* Allocate the unaligned RHS offset using round_down */
++				gpu_buddy_free_list_internal(mm, blocks);
++				err = __alloc_contig_aligned_retry(mm, rhs_offset,
++								   size,
++								   min_block_size,
++								   blocks);
++				if (!err)
++					return 0;
++				if (err != -ENOSPC) {
++					gpu_buddy_free_list_internal(mm, blocks);
++					return err;
++				}
++				goto next;
++			}
+ 
+-			lhs_size = max((size - filled), min_block_size);
+-			if (!IS_ALIGNED(lhs_size, min_block_size))
+-				lhs_size = round_up(lhs_size, min_block_size);
++			if (size - filled > rhs_offset)
++				goto next;
+ 
+-			/* Allocate blocks traversing LHS */
+-			lhs_offset = gpu_buddy_block_offset(block) - lhs_size;
+-			err =  __gpu_buddy_alloc_range(mm, lhs_offset, lhs_size,
+-						       NULL, &blocks_lhs);
+-			if (!err) {
+-				list_splice(&blocks_lhs, blocks);
++			lhs_offset = rhs_offset - (size - filled);
++
++			/* Allocate the unaligned LHS offset using round_down */
++			gpu_buddy_free_list_internal(mm, blocks);
++			err = __alloc_contig_aligned_retry(mm, lhs_offset, size,
++							   min_block_size, blocks);
++			if (!err)
+ 				return 0;
+-			} else if (err != -ENOSPC) {
++			if (err != -ENOSPC) {
+ 				gpu_buddy_free_list_internal(mm, blocks);
+ 				return err;
+ 			}
+-			/* Free blocks for the next iteration */
++next:
+ 			gpu_buddy_free_list_internal(mm, blocks);
+-
+ 			iter = rb_prev(iter);
+ 		}
+ 	}
+
+base-commit: 6648301c5bb2ef23f0fb15bcb01d21ff66f36799
 -- 
-Cheers,
+2.34.1
 
-David
 
