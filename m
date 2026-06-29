@@ -1,302 +1,171 @@
-Return-Path: <stable+bounces-269681-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-269683-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id tip9F10xQmo11gkAu9opvQ
-	(envelope-from <stable+bounces-269681-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 29 Jun 2026 10:48:29 +0200
+	id 2i5CFp8xQmpD1gkAu9opvQ
+	(envelope-from <stable+bounces-269683-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 29 Jun 2026 10:49:35 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 592566D7A7E
-	for <lists+stable@lfdr.de>; Mon, 29 Jun 2026 10:48:28 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 143A96D7AAF
+	for <lists+stable@lfdr.de>; Mon, 29 Jun 2026 10:49:35 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=google.com header.s=20251104 header.b=Bnbvm6Iz;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-269681-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-269681-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=reject) header.from=google.com;
+	dkim=pass header.d=mailbox.org header.s=mail20150812 header.b=Xo2DxI3n;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-269683-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-269683-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=reject) header.from=mailbox.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 6DB56300B094
-	for <lists+stable@lfdr.de>; Mon, 29 Jun 2026 08:48:25 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 2D9F4301105F
+	for <lists+stable@lfdr.de>; Mon, 29 Jun 2026 08:49:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99D1A2DEA9D;
-	Mon, 29 Jun 2026 08:48:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 542A73F825F;
+	Mon, 29 Jun 2026 08:49:25 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mout-p-102.mailbox.org (mout-p-102.mailbox.org [80.241.56.152])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8D483033DE
-	for <stable@vger.kernel.org>; Mon, 29 Jun 2026 08:48:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69C2E3F0A9C;
+	Mon, 29 Jun 2026 08:49:22 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782722902; cv=none; b=tQcYUTquopGmFj0noYVQnfDZl/E2zZm+/8FyXVPUJPeMjTE0k2vhoNFKaZCLQXSrOqyd4+QP994ddWlfDFzI2MO1hcbs9lPK62ppXvb3GHpXUD6IJxoTvyKfaJx2CgQpoXXKLFKkY/j9Nc8DuAM3bvisydGq7xeM8Ktlw3C/3mk=
+	t=1782722965; cv=none; b=KnIwjV7GW6z6Rs4vNhvRn5jpSc45FO0Ij2YYhd1IRWHDLZZbL/7fTjAO5TeWx6jMMsIYFN56o7I9INKcZ9tRtwEtHAST8Hr82EgD7V59mfdsQsM3r5flXtGVTTroULm+RF55LFLWGnPYNVES0xwBJenBFEkhE+rD1azDUvq8+EQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782722902; c=relaxed/simple;
-	bh=qjBuJ33yZlfHL1S9SrLYPjB31Lz1hU3VJgkUNM2s+hU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=QbLSEjzhYFOZWLFqsfy9oS+uJzTtKoDhsPKFU06c+ILDoItPHKcC+ishgXVZXpw8pF25N0eBr40OEg2xJ2kYE57wb3WOJT80PaOnMF5sjh34tnv2DU7ekDgu5sTBQH38PaAjHcngbxSmoaARSEJE33NtcIsk/tQo+G2aAKxF18Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Bnbvm6Iz; arc=none smtp.client-ip=209.85.214.171
-Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-2c81db32393so66295ad.0
-        for <stable@vger.kernel.org>; Mon, 29 Jun 2026 01:48:20 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1782722900; x=1783327700; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=2CYHaiLd9ywNSZ9pftV2yPbkytXEfUK5AIl8p5DJYxA=;
-        b=Bnbvm6Iz421a3hEiQdhKX59PJBYRZq3a5gyeppw1b3Me17EAdpDZtsAW7bARBJqPfa
-         9c45MOz5otxVxuD2jl4jD1zvsnUOlJ13CiaYPRH2+4X0SptD9CjVR44+PWT6qmYME5uI
-         +PTCnkJWX1dOIF/AxmXkbEhnZbpBmaTAuviS9Y3sOYCOUmpK5K65SAqfHVGegxZmGPH4
-         UDUl3WBaYtCIS/Rn5DKoz+zdguMfmIAwmYWYhs2bxDO9+XdLgkoIHERDytpxivsJ4wSa
-         TEzT3VTNCUhicZJTU2CMaiJl5AKKK2Tse50DJFoxB/s0G6wm84Bq/GC7xlhRq6zbLXul
-         TeHA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782722900; x=1783327700;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=2CYHaiLd9ywNSZ9pftV2yPbkytXEfUK5AIl8p5DJYxA=;
-        b=E4bcUe++XZiS3GTSm7ThkFm7kWAPz4EU1yz35eo8ezFq5+YgPh+D2AaWOktdRtAq7K
-         qkPMA98lvuamtbNzAuJ+1VwoWwfExoG0/kWY3NR3JLKZqfwvgJ+NkhDlG/K9w+D4pJth
-         8BgUcik6AZRrDgVQ3VGmbDtZROFof31WCnhrFyjT09GDpo9sgeVu3vEvZMzAzfWGo2+R
-         ScO2BSvGghfTBYvEoUYcMD5bC97SkujNQaN6EyB2HTJPS6hvftViuV70F4Msw5PXAohu
-         A0pe5hZbgA5mdz85aTZ+xuERnl7ydvM4zSLL6gnWKecWWN1yYmp+QTTpUfR5bA/raRJz
-         zPzw==
-X-Forwarded-Encrypted: i=1; AHgh+RoI99PEVRVHTJqO+XTQTBKDWOMoRKd4PudNvwriAUd9smM9L+LQcRia2pESDBK8EaPZuxUlGKA=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw0Lfsy/RROiVgou3uULdtMa4pySZjM8uskAUygyHg1GRJnHiiS
-	KlkPKuzxs/lN6SPOrUIAxgwHv371mlki2g8cefc4JaaVmhzwM4AgJiX8OQ07QJt1+Q==
-X-Gm-Gg: AfdE7ck/DqxCUGG2EKhAFuiRQvyJWGBXm69trSqcvx5hJUB8CytQBCk80kJulqeDRCk
-	Vg7dILf6T8/qfQ2hDVbsUFXSNvUhipiOY+/+OhBA6FtRXEVObGlgFe6oGPJlXWuIw3M/QGIWwFH
-	KE0vZpc5vzLNllOLE7ufRCk9ybLha93e0Wll20iVyZvr94/NRsbB7yCh37gpIdKwOoTQSw1NlZw
-	ozEszi3QzKL8yWEirCqnkOyCeqiy2oaMvqvE/y3CuIvDW2e5QnBJWyTRmCZ8VSM/bZ00K7Vs03V
-	+qR1HGucqwEsQyZCInYw7Lo9wZVgGsqRYI63XLtH0RhWfU/KEQMFzMbHi/5HxSqmedNnbsyvDM7
-	Djmchhr9FRNUjRgAJWNn+rZ+9m2TLbRTgJZ8r/gwkO4lU5ZbRqnNS10MiQG+U/jw0EvdjIdDo9H
-	bfN+hKrqDEOFkJPplyc95rgZs4fVDLpsiLJGuLgQGBsh9sTl8=
-X-Received: by 2002:a17:902:f612:b0:2c7:9e6a:1a8d with SMTP id d9443c01a7336-2c9a24512fcmr3816645ad.12.1782722899601;
-        Mon, 29 Jun 2026 01:48:19 -0700 (PDT)
-Received: from google.com (10.129.124.34.bc.googleusercontent.com. [34.124.129.10])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-846de12ed24sm2482229b3a.8.2026.06.29.01.48.15
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 29 Jun 2026 01:48:18 -0700 (PDT)
-Date: Mon, 29 Jun 2026 08:48:11 +0000
-From: Pranjal Shrivastava <praan@google.com>
-To: Nicolin Chen <nicolinc@nvidia.com>
-Cc: will@kernel.org, robin.murphy@arm.com, jgg@nvidia.com, joro@8bytes.org,
-	kees@kernel.org, baolu.lu@linux.intel.com, kevin.tian@intel.com,
-	miko.lenczewski@arm.com, smostafa@google.com,
-	linux-arm-kernel@lists.infradead.org, iommu@lists.linux.dev,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-	jamien@nvidia.com
-Subject: Re: [PATCH rc v6 3/7] iommu/arm-smmu-v3: Do not enable EVTQ/PRIQ
- interrupts in kdump kernel
-Message-ID: <akIxS7kuhuLRHAMg@google.com>
-References: <cover.1779265413.git.nicolinc@nvidia.com>
- <e643786d849d274c1d8dcfc03795f572aef812bd.1779265413.git.nicolinc@nvidia.com>
+	s=arc-20240116; t=1782722965; c=relaxed/simple;
+	bh=bNexwtP6qx9lBB2uR84+WnHRT3J5jrJo35qB4/OoSvo=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=er/LeWQPeyAY+fkR25TtydurpyzOfAbP0z1uFjS15oQEB6RVg1mqvioEWDOWq1yVvYlMMTjBxJ0pJLoK2+N/BEgM4aGp3HY0I6jfp91dXwdGG5wLDGveBwQNXJXldSMMRi6WuCVD1ruroov2ApqUTK3iT3XTqkm67RZeDiI4UTI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org; spf=pass smtp.mailfrom=mailbox.org; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=Xo2DxI3n; arc=none smtp.client-ip=80.241.56.152
+Received: from smtp202.mailbox.org (smtp202.mailbox.org [IPv6:2001:67c:2050:b231:465::202])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mout-p-102.mailbox.org (Postfix) with ESMTPS id 4gpg1j70zzz9vCB;
+	Mon, 29 Jun 2026 10:49:13 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
+	t=1782722954; h=from:from:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=bNexwtP6qx9lBB2uR84+WnHRT3J5jrJo35qB4/OoSvo=;
+	b=Xo2DxI3nSm1iCegJk8MQv5Ll1eLaAPBnhGRqiegbYbTjCxRaGQqzDB3W07+kH4nKtBOK3X
+	dxkTDCXuQUDwC3ZesbR6kjyCUEGGStztrYbNGILYnuOljcBSgRh5/6RAXtVP+gguGSSf+x
+	Yp9xjAj2QGvTgG5xfjoDECXVfis/ea/aNTXlV72Invo1LvyMebH9dEi7iC4S+JDfzfAdnQ
+	NRnFSdYbz+GRaxibti2WUcwH/Eu4d6B7AwsMUUcfxA9sx16NZNKM+5nDCFuW7+7BGqOKXG
+	6xcZzlTKT1me4aIiAYV/TZQcQYu1viLrzGkqyS1iVNviQ4rGqBMWAmeqkCMbHw==
+Message-ID: <058f4bb261e408cf17deca9ff7354460675eacbf.camel@mailbox.org>
+Subject: Re: [PATCH] dma-fence: Make dma_fence_dedup_array() robust against
+ 0-count input
+From: Philipp Stanner <phasta@mailbox.org>
+Reply-To: phasta@kernel.org
+To: Christian =?ISO-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>, Baineng
+ Shou <shoubaineng@gmail.com>, Sumit Semwal <sumit.semwal@linaro.org>
+Cc: Tvrtko Ursulin <tursulin@ursulin.net>, Philipp Stanner
+ <phasta@kernel.org>,  Akash Goel <akash.goel@arm.com>,
+ linux-media@vger.kernel.org, dri-devel@lists.freedesktop.org, 
+	linaro-mm-sig@lists.linaro.org, linux-kernel@vger.kernel.org, 
+	stable@vger.kernel.org
+Date: Mon, 29 Jun 2026 10:49:08 +0200
+In-Reply-To: <becd29b5-9e40-4104-b6c9-3d91e2ddddff@amd.com>
+References: <20260629031346.3875683-1-shoubaineng@gmail.com>
+	 <becd29b5-9e40-4104-b6c9-3d91e2ddddff@amd.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <e643786d849d274c1d8dcfc03795f572aef812bd.1779265413.git.nicolinc@nvidia.com>
+X-MBO-RS-META: qsgddayaj8bgcsbnm6438m7kgxrxucpg
+X-MBO-RS-ID: eb9239d37414620f1a5
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[google.com,reject];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
-	R_DKIM_ALLOW(-0.20)[google.com:s=20251104];
+	DMARC_POLICY_ALLOW(-0.50)[mailbox.org,reject];
+	R_DKIM_ALLOW(-0.20)[mailbox.org:s=mail20150812];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-269681-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-269683-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:nicolinc@nvidia.com,m:will@kernel.org,m:robin.murphy@arm.com,m:jgg@nvidia.com,m:joro@8bytes.org,m:kees@kernel.org,m:baolu.lu@linux.intel.com,m:kevin.tian@intel.com,m:miko.lenczewski@arm.com,m:smostafa@google.com,m:linux-arm-kernel@lists.infradead.org,m:iommu@lists.linux.dev,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,m:jamien@nvidia.com,s:lists@lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER(0.00)[praan@google.com,stable@vger.kernel.org];
-	RCPT_COUNT_TWELVE(0.00)[15];
-	DKIM_TRACE(0.00)[google.com:+];
+	FREEMAIL_TO(0.00)[amd.com,gmail.com,linaro.org];
+	FORGED_SENDER(0.00)[phasta@mailbox.org,stable@vger.kernel.org];
+	TO_DN_SOME(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:christian.koenig@amd.com,m:shoubaineng@gmail.com,m:sumit.semwal@linaro.org,m:tursulin@ursulin.net,m:phasta@kernel.org,m:akash.goel@arm.com,m:linux-media@vger.kernel.org,m:dri-devel@lists.freedesktop.org,m:linaro-mm-sig@lists.linaro.org,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,s:lists@lfdr.de];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
+	REPLYTO_DOM_NEQ_FROM_DOM(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	TO_DN_SOME(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[praan@google.com,stable@vger.kernel.org];
-	MISSING_XM_UA(0.00)[];
+	REPLYTO_DOM_NEQ_TO_DOM(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[11];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[phasta@mailbox.org,stable@vger.kernel.org];
+	PRECEDENCE_BULK(0.00)[];
+	DKIM_TRACE(0.00)[mailbox.org:+];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	HAS_REPLYTO(0.00)[phasta@kernel.org];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,intel.com:email,vger.kernel.org:from_smtp,bootlin.com:url]
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,amd.com:email,vger.kernel.org:from_smtp,mailbox.org:dkim,mailbox.org:mid,mailbox.org:from_mime]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 592566D7A7E
+X-Rspamd-Queue-Id: 143A96D7AAF
 
-On Wed, May 20, 2026 at 10:03:20AM -0700, Nicolin Chen wrote:
-> In kdump cases, the crashed kernel's CDs and page tables can be corrupted,
-> which could trigger event spamming. Also, we cannot serve page requests.
-> 
-> Skip the IRQ setup for EVTQ/PRIQ in arm_smmu_setup_irqs().
-> 
-> Skip their IRQ handler registration in unique-IRQ and combined-IRQ cases.
-> 
-> Fixes: b63b3439b856 ("iommu/arm-smmu-v3: Abort all transactions if SMMU is enabled in kdump kernel")
-> Cc: stable@vger.kernel.org # v6.12+
-> Reviewed-by: Kevin Tian <kevin.tian@intel.com>
-> Signed-off-by: Nicolin Chen <nicolinc@nvidia.com>
-> ---
->  drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c | 58 ++++++++++++++-------
->  1 file changed, 39 insertions(+), 19 deletions(-)
-> 
-> diff --git a/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c b/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c
-> index 2d7eb42449eaf..e00b28e36f9c4 100644
-> --- a/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c
-> +++ b/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c
-> @@ -2464,7 +2464,11 @@ static irqreturn_t arm_smmu_combined_irq_thread(int irq, void *dev)
->  
->  static irqreturn_t arm_smmu_combined_irq_handler(int irq, void *dev)
->  {
-> -	arm_smmu_gerror_handler(irq, dev);
-> +	irqreturn_t ret = arm_smmu_gerror_handler(irq, dev);
-> +
-> +	/* In kdump, EVTQ/PRIQ are disabled and there is no thread to wake */
-> +	if (is_kdump_kernel())
-> +		return ret;
->  	return IRQ_WAKE_THREAD;
->  }
->  
-> @@ -4963,6 +4967,21 @@ static void arm_smmu_setup_unique_irqs(struct arm_smmu_device *smmu)
->  	arm_smmu_setup_msis(smmu);
->  
->  	/* Request interrupt lines */
-> +	irq = smmu->gerr_irq;
-> +	if (irq) {
-> +		ret = devm_request_irq(smmu->dev, irq, arm_smmu_gerror_handler,
-> +				       0, "arm-smmu-v3-gerror", smmu);
-> +		if (ret < 0)
-> +			dev_warn(smmu->dev, "failed to enable gerror irq\n");
-> +	} else {
-> +		dev_warn(smmu->dev,
-> +			 "no gerr irq - errors will not be reported!\n");
-> +	}
-> +
-> +	/* No EVTQ/PRIQ interrupts in kdump -- queues are disabled */
-> +	if (is_kdump_kernel())
-> +		return;
-> +
->  	irq = smmu->evtq.q.irq;
->  	if (irq) {
->  		ret = devm_request_threaded_irq(smmu->dev, irq, NULL,
-> @@ -4975,16 +4994,6 @@ static void arm_smmu_setup_unique_irqs(struct arm_smmu_device *smmu)
->  		dev_warn(smmu->dev, "no evtq irq - events will not be reported!\n");
->  	}
->  
-> -	irq = smmu->gerr_irq;
-> -	if (irq) {
-> -		ret = devm_request_irq(smmu->dev, irq, arm_smmu_gerror_handler,
-> -				       0, "arm-smmu-v3-gerror", smmu);
-> -		if (ret < 0)
-> -			dev_warn(smmu->dev, "failed to enable gerror irq\n");
-> -	} else {
-> -		dev_warn(smmu->dev, "no gerr irq - errors will not be reported!\n");
-> -	}
-> -
->  	if (smmu->features & ARM_SMMU_FEAT_PRI) {
->  		irq = smmu->priq.q.irq;
->  		if (irq) {
-> @@ -5005,7 +5014,7 @@ static void arm_smmu_setup_unique_irqs(struct arm_smmu_device *smmu)
->  static int arm_smmu_setup_irqs(struct arm_smmu_device *smmu)
->  {
->  	int ret, irq;
-> -	u32 irqen_flags = IRQ_CTRL_EVTQ_IRQEN | IRQ_CTRL_GERROR_IRQEN;
-> +	u32 irqen_flags = IRQ_CTRL_GERROR_IRQEN;
->  
->  	/* Disable IRQs first */
->  	ret = arm_smmu_write_reg_sync(smmu, 0, ARM_SMMU_IRQ_CTRL,
-> @@ -5020,19 +5029,30 @@ static int arm_smmu_setup_irqs(struct arm_smmu_device *smmu)
->  		/*
->  		 * Cavium ThunderX2 implementation doesn't support unique irq
->  		 * lines. Use a single irq line for all the SMMUv3 interrupts.
-> +		 *
-> +		 * In kdump, EVTQ/PRIQ are disabled, so no threaded handling.
->  		 */
-> -		ret = devm_request_threaded_irq(smmu->dev, irq,
-> -					arm_smmu_combined_irq_handler,
-> -					arm_smmu_combined_irq_thread,
-> -					IRQF_ONESHOT,
-> -					"arm-smmu-v3-combined-irq", smmu);
-> +		if (is_kdump_kernel())
-> +			ret = devm_request_irq(smmu->dev, irq,
-> +					       arm_smmu_combined_irq_handler, 0,
-> +					       "arm-smmu-v3-combined-irq",
-> +					       smmu);
+On Mon, 2026-06-29 at 10:45 +0200, Christian K=C3=B6nig wrote:
+> On 6/29/26 05:13, Baineng Shou wrote:
+> > dma_fence_dedup_array() returns 1 when called with num_fences =3D=3D 0:
+> > the for-loop body never executes, j stays at 0, and the final
+> > `return ++j` yields 1. This contradicts both the kernel-doc ("Return:
+> > Number of unique fences remaining in the array") and the natural
+> > expectation that 0 input gives 0 output.
+>=20
+> Good catch.
+>=20
+> >=20
+> > All in-tree callers currently filter num_fences =3D=3D 0 before invokin=
+g
+> > this helper (__dma_fence_unwrap_merge() bails out via the
+> > `if (count =3D=3D 0 || count =3D=3D 1)` fast path; amdgpu_userq_wait_*(=
+)
+> > cannot reach the dedup call with a zero local count because the
+> > amdgpu_userq_wait_add_fence() helper guarantees num_fences stays in
+> > [0, wait_info->num_fences], and wait_info->num_fences > 0 is enforced
+> > at the ioctl entry).
+>=20
+> That's not correct, wait_info->num_fences is just the maximum amount of f=
+ences we return.
+>=20
+> It is perfectly possible that amdgpu never finds any fences to add to the=
+ array.
+>=20
+> >=20
+> > However, dma_fence_dedup_array() is EXPORT_SYMBOL_GPL, so any future
+> > caller that forgets to pre-filter the zero case will get a misleading
+> > return value of 1. Depending on how that caller uses the result, it
+> > could dereference an uninitialized fence slot in the array, since the
+> > caller's array may have been allocated but not yet populated.
+> >=20
+> > Make the contract match the documentation by returning 0 early. This
+> > also skips an unnecessary sort() call on an empty array.
+> >=20
+> > Signed-off-by: Baineng Shou <shoubaineng@gmail.com>
+>=20
+> Reviewed-by: Christian K=C3=B6nig <christian.koenig@amd.com>
+>=20
+> I will add a CC stable before pushing to drm-misc-fixes.
 
-This `if` isn't needed, we can continue using devm_request_threaded_irq,
-if you look at the doc for devm_request_threaded_irq [1] it says:
+No offense intended or taken, but don't the DRM rules say that things
+do not get merged while there are outstanding concerns or significant
+points in review feedback?
 
-/**
- * devm_request_threaded_irq - allocate an interrupt line for a managed device with error logging
- * @dev:	Device to request interrupt for
- * @irq:	Interrupt line to allocate
- * @handler:	Function to be called when the interrupt occurs
- * @thread_fn:	Function to be called in a threaded interrupt context. NULL
- *		for devices which handle everything in @handler
- * @irqflags:	Interrupt type flags
- * @devname:	An ascii name for the claiming device, dev_name(dev) if NULL
- * @dev_id:	A cookie passed back to the handler function
-[...]
-*/
+What about my comments?
 
-So, we can pass handler() here while leaving the thread_fn == NULL:
 
-ret = devm_request_threaded_irq(smmu->dev, irq,
-         arm_smmu_combined_irq_handler,
-         is_kdump_kernel() ? NULL : arm_smmu_combined_irq_thread,
-         IRQF_ONESHOT,
-         "arm-smmu-v3-combined-irq", smmu);
-
-(In fact that's exactly what devm_request_irq does under the hood [2])
-
-Additionally, the arm_smmu_combined_irq_handler() returns 
-IRQ_WAKE_THREAD unconditionally, which causes us to hit the warn_on[3] in
-__handle_irq_event_percpu.
-
-Hence, we'd need to refactor the arm_smmu_combined_irq_handler() to
-return IRQ_HANDLED / _NONE if is_kdump_kernel().
-
-> +		else
-> +			ret = devm_request_threaded_irq(
-> +				smmu->dev, irq, arm_smmu_combined_irq_handler,
-> +				arm_smmu_combined_irq_thread, IRQF_ONESHOT,
-> +				"arm-smmu-v3-combined-irq", smmu);
->  		if (ret < 0)
->  			dev_warn(smmu->dev, "failed to enable combined irq\n");
->  	} else
->  		arm_smmu_setup_unique_irqs(smmu);
->  
-> -	if (smmu->features & ARM_SMMU_FEAT_PRI)
-> -		irqen_flags |= IRQ_CTRL_PRIQ_IRQEN;
-> +	/* No EVTQ/PRIQ IRQ generation in kdump -- queues are disabled */
-> +	if (!is_kdump_kernel()) {
-> +		irqen_flags |= IRQ_CTRL_EVTQ_IRQEN;
-> +		if (smmu->features & ARM_SMMU_FEAT_PRI)
-> +			irqen_flags |= IRQ_CTRL_PRIQ_IRQEN;
-> +	}
->  
->  	/* Enable interrupt generation on the SMMU */
->  	ret = arm_smmu_write_reg_sync(smmu, irqen_flags,
-> -- 
-> 2.43.0
-> 
-
-Thanks,
-Praan
-
-[1] https://elixir.bootlin.com/linux/v7.1.1/source/kernel/irq/devres.c#L75
-[2] https://elixir.bootlin.com/linux/v7.1.1/source/include/linux/interrupt.h#L218
-[3] https://elixir.bootlin.com/linux/v7.1.1/source/kernel/irq/handle.c#L225
+P.
 
