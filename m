@@ -1,259 +1,159 @@
-Return-Path: <stable+bounces-269658-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-269643-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id Dzs4MCIbQmpO0QkAu9opvQ
-	(envelope-from <stable+bounces-269658-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 29 Jun 2026 09:13:38 +0200
+	id uoySKQQTQmr2zgkAu9opvQ
+	(envelope-from <stable+bounces-269643-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 29 Jun 2026 08:39:00 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id D92156D6D6D
-	for <lists+stable@lfdr.de>; Mon, 29 Jun 2026 09:13:37 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4155F6D664B
+	for <lists+stable@lfdr.de>; Mon, 29 Jun 2026 08:39:00 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=intel.com header.s=Intel header.b=EZL6yowT;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-269658-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-269658-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=none) header.from=intel.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=1W6n+TRN;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-269643-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-269643-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=quarantine) header.from=huawei.com;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id EB2D23041351
-	for <lists+stable@lfdr.de>; Mon, 29 Jun 2026 07:07:10 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 4BC453009F62
+	for <lists+stable@lfdr.de>; Mon, 29 Jun 2026 06:38:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89EC53C0606;
-	Mon, 29 Jun 2026 07:06:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3873539A7F5;
+	Mon, 29 Jun 2026 06:38:57 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
+Received: from canpmsgout07.his.huawei.com (canpmsgout07.his.huawei.com [113.46.200.222])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0D9932D7FA;
-	Mon, 29 Jun 2026 07:06:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD749399D10;
+	Mon, 29 Jun 2026 06:38:54 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782716785; cv=none; b=HAtX9PbKuWDedeNkbA9bwWqjX1x/GTBH4iID5zHB6FIVQk2o/3OmsmudRPth5w5UvjDb1EfUYuPnk7lCnFQu90wgXx5tDrRfS9UG6H/+yl0E3vG7Ep0TRZXXGXI5wH382KNmAjPdKBfB7ErRHDwcCslG8vsW7l68GDclhxoWlpQ=
+	t=1782715137; cv=none; b=ebOxAvY+YloHYlkxaJDjDiexZkga3bT9sIAUQY3G0dZwzVOnQzciwBNFmHrrFd+0JrcAUAf6mGj5DKFPss1VmAku5j5IVbIVhGcIa13bRD739Efx1FapzBSfuKblM5mW0rWW0XKCg7wj5gZwkdF6Zv8ALBv72zAeySYq2yxodOI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782716785; c=relaxed/simple;
-	bh=fm//Z/sEN83LXAQ9nhz6Cuyn6ACep7//Iaeq01RQoYY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=kvF4erKMExyPJPrD+cgPkp5rnNAGA9qK86t+1iK5Z0JcHBuOv9EOQ1y72C+Z0iYzoH2mI+IFGH3xzHYhrb+OMOWW6Pi0Jk/2M9VHqZXm8kbf3O6jor/9h5UIrs7O277U2EebRJDuMq1SOEb0DrBkIWUEhStRmKK0ToQv9Ra/9EU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=EZL6yowT; arc=none smtp.client-ip=192.198.163.17
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1782716783; x=1814252783;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=fm//Z/sEN83LXAQ9nhz6Cuyn6ACep7//Iaeq01RQoYY=;
-  b=EZL6yowTedbWVX34VbMuvZgv5+xWbbNh55m0R4Ucwl7hrVEV7G8AYJ6X
-   cz+5Uxke6j45LFN+XhhvsuiPIZikx7rWTN8e1a37wjZFbXpLBmE4x3EoC
-   dznFurA+7t8tHr/6ER+52GEnZ1uyrySl8OKxLgUPjfhD24x5iBpcJfsK9
-   VtZnqDuAZ/Me5eQFRAQ8J+r1qp5jPQCrbHsyrJ+xlfDsoHKT5EjTCHRgm
-   THyORTmXjVE7t7G2czJy/S2ghyEZccq5AQl6i/fOnd7XnaJY1OAqqimuI
-   J/8oRePxi8OlIqQGuJ7nAOoEZgb16q9Acrnr0i1msi7YuNxX6HiichCGW
-   Q==;
-X-CSE-ConnectionGUID: sX4Tnt3WTySVAyi4vQ2KCQ==
-X-CSE-MsgGUID: qrJMhQJ6RVKz+xE9Sl9ZRA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11831"; a="83271919"
-X-IronPort-AV: E=Sophos;i="6.24,231,1774335600"; 
-   d="scan'208";a="83271919"
-Received: from orviesa010.jf.intel.com ([10.64.159.150])
-  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Jun 2026 00:06:22 -0700
-X-CSE-ConnectionGUID: jIlYiO37TquiUvgq3OPcMA==
-X-CSE-MsgGUID: Fnv2K9z5TI+Y80YMH83S+g==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.24,231,1774335600"; 
-   d="scan'208";a="250810112"
-Received: from dapengmi-mobl1.ccr.corp.intel.com (HELO [10.124.232.65]) ([10.124.232.65])
-  by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Jun 2026 00:06:18 -0700
-Message-ID: <cbd90339-f6c1-4986-8727-50a6c1b24d76@linux.intel.com>
-Date: Mon, 29 Jun 2026 15:06:15 +0800
+	s=arc-20240116; t=1782715137; c=relaxed/simple;
+	bh=wT+1VqkUfVlajCfSh30VOX8IdgOsqcLaACfaLGo+jf8=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=J76GcJx+pc1g8FTylwvSxTKbMe/Mk829GPFVNAIAXkb3tayB/OZzqJEIO7ONXOk0qtiGzFVcabqQRJDpvDwhUWRxhwLZ6Crr7RlhEg1MK68hDH4xf1OIuLQgI8yLsZ1W3wOJFVvt5SJkJkhO+NPyfXJ0nWQ3dL6R2ueGc34WEOg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=1W6n+TRN; arc=none smtp.client-ip=113.46.200.222
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=vNOk6xP1MRsuuLNQDyth3iMzKUHZQtoXBgGpmNwJC+E=;
+	b=1W6n+TRNAYw2xqpWpURFlIsKrKbZQDuKfPmknRTGx9CQa06TgzZ9KJYHJWE8cwZ926ClQBCFq
+	CbScyOR56017c5h9GKKB7SwiPJ7YvdS91PE57x6UCQjDe2eGIhJriIo1fZLMKHORIjmdxAUEG+B
+	S7cuiFR9I2cloDffbOhds+s=
+Received: from mail.maildlp.com (unknown [172.19.163.200])
+	by canpmsgout07.his.huawei.com (SkyGuard) with ESMTPS id 4gpbwl5C4fzLm4W;
+	Mon, 29 Jun 2026 14:29:43 +0800 (CST)
+Received: from dggemv705-chm.china.huawei.com (unknown [10.3.19.32])
+	by mail.maildlp.com (Postfix) with ESMTPS id 1C5724055B;
+	Mon, 29 Jun 2026 14:38:52 +0800 (CST)
+Received: from kwepemq200017.china.huawei.com (7.202.195.228) by
+ dggemv705-chm.china.huawei.com (10.3.19.32) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Mon, 29 Jun 2026 14:38:51 +0800
+Received: from octopus.huawei.com (10.67.174.191) by
+ kwepemq200017.china.huawei.com (7.202.195.228) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Mon, 29 Jun 2026 14:38:50 +0800
+From: Cai Xinchen <caixinchen1@huawei.com>
+To: <viro@zeniv.linux.org.uk>, <brauner@kernel.org>, <jack@suse.cz>,
+	<miklos@szeredi.hu>, <amir73il@gmail.com>, <paul@paul-moore.com>,
+	<jmorris@namei.org>, <serge@hallyn.com>, <stephen.smalley.work@gmail.com>,
+	<omosnace@redhat.com>, <gregkh@linuxfoundation.org>, <sashal@kernel.org>,
+	<bboscaccy@linux.microsoft.com>, <caixinchen1@huawei.com>
+CC: <linux-fsdevel@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<linux-unionfs@vger.kernel.org>, <linux-security-module@vger.kernel.org>,
+	<selinux@vger.kernel.org>, <bpf@vger.kernel.org>, <stable@vger.kernel.org>,
+	<lujialin4@huawei.com>
+Subject: [PATCH stable/linux-5.10.y 0/7] Backport Fix incorrect overlayfs mmap() and mprotect() LSM access controls
+Date: Mon, 29 Jun 2026 15:06:46 +0800
+Message-ID: <20260629070653.580879-1-caixinchen1@huawei.com>
+X-Mailer: git-send-email 2.18.0.huawei.25
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] perf/core: Fix group leader use-after-free after sibling
- detach
-To: Aditya Chillara <aditya.chillara@oss.qualcomm.com>,
- Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>,
- Arnaldo Carvalho de Melo <acme@kernel.org>,
- Namhyung Kim <namhyung@kernel.org>, Mark Rutland <mark.rutland@arm.com>,
- Alexander Shishkin <alexander.shishkin@linux.intel.com>,
- Jiri Olsa <jolsa@kernel.org>, Ian Rogers <irogers@google.com>,
- Adrian Hunter <adrian.hunter@intel.com>, James Clark <james.clark@linaro.org>
-Cc: Peter Zijlstra <a.p.zijlstra@chello.nl>, Ingo Molnar <mingo@elte.hu>,
- linux-perf-users@vger.kernel.org, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org
-References: <20260626-fix-group-leader-uaf-v1-1-ac54652ca944@oss.qualcomm.com>
- <67f56151-3164-4922-a85b-e511b2c448e8@linux.intel.com>
- <bdca57f5-fb8a-4556-b5f3-13beec0cdda1@oss.qualcomm.com>
-Content-Language: en-US
-From: "Mi, Dapeng" <dapeng1.mi@linux.intel.com>
-In-Reply-To: <bdca57f5-fb8a-4556-b5f3-13beec0cdda1@oss.qualcomm.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: kwepems500001.china.huawei.com (7.221.188.70) To
+ kwepemq200017.china.huawei.com (7.202.195.228)
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-5.16 / 15.00];
-	WHITELIST_SPF_DKIM(-3.00)[intel.com:d:+,kernel.org:s:+];
+X-Spamd-Result: default: False [-6.16 / 15.00];
+	WHITELIST_DMARC(-7.00)[huawei.com:D:+];
+	SUSPICIOUS_RECIPS(1.50)[];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
-	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[huawei.com,quarantine];
+	R_DKIM_ALLOW(-0.20)[huawei.com:s=dkim];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-269658-lists,stable=lfdr.de];
-	RCPT_COUNT_TWELVE(0.00)[16];
 	RCVD_TLS_LAST(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER(0.00)[caixinchen1@huawei.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS(0.00)[m:viro@zeniv.linux.org.uk,m:brauner@kernel.org,m:jack@suse.cz,m:miklos@szeredi.hu,m:amir73il@gmail.com,m:paul@paul-moore.com,m:jmorris@namei.org,m:serge@hallyn.com,m:stephen.smalley.work@gmail.com,m:omosnace@redhat.com,m:gregkh@linuxfoundation.org,m:sashal@kernel.org,m:bboscaccy@linux.microsoft.com,m:caixinchen1@huawei.com,m:linux-fsdevel@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:linux-unionfs@vger.kernel.org,m:linux-security-module@vger.kernel.org,m:selinux@vger.kernel.org,m:bpf@vger.kernel.org,m:stable@vger.kernel.org,m:lujialin4@huawei.com,m:stephensmalleywork@gmail.com,s:lists@lfdr.de];
+	FREEMAIL_TO(0.00)[zeniv.linux.org.uk,kernel.org,suse.cz,szeredi.hu,gmail.com,paul-moore.com,namei.org,hallyn.com,redhat.com,linuxfoundation.org,linux.microsoft.com,huawei.com];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:aditya.chillara@oss.qualcomm.com,m:peterz@infradead.org,m:mingo@redhat.com,m:acme@kernel.org,m:namhyung@kernel.org,m:mark.rutland@arm.com,m:alexander.shishkin@linux.intel.com,m:jolsa@kernel.org,m:irogers@google.com,m:adrian.hunter@intel.com,m:james.clark@linaro.org,m:a.p.zijlstra@chello.nl,m:mingo@elte.hu,m:linux-perf-users@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[dapeng1.mi@linux.intel.com,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[chello.nl,elte.hu,vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-269643-lists,stable=lfdr.de];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[dapeng1.mi@linux.intel.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[intel.com:+];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[caixinchen1@huawei.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[huawei.com:+];
+	TO_DN_NONE(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	RCPT_COUNT_TWELVE(0.00)[22];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,huawei.com:dkim,huawei.com:mid,huawei.com:from_mime,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[qualcomm.com:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,intel.com:dkim,vger.kernel.org:from_smtp,linux.intel.com:mid,linux.intel.com:from_mime]
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	RCVD_COUNT_SEVEN(0.00)[7]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: D92156D6D6D
+X-Rspamd-Queue-Id: 4155F6D664B
 
+ackport the patch series
+"Fix incorrect overlayfs mmap() and mprotect() LSM access controls" [1]
+to 5.10 lts
 
-On 6/29/2026 12:00 PM, Aditya Chillara wrote:
-> On 6/29/2026 8:28 AM, Mi, Dapeng wrote:
->> On 6/26/2026 5:54 PM, Aditya Chillara wrote:
->>> perf_group_detach() handles leader and sibling detach differently. When the
->>> group leader is detached, all siblings are promoted to singleton events and
->>> their group_leader pointer is reset to themselves. When a sibling is
->>> detached, it is removed from the leader's sibling_list, but its
->>> group_leader pointer is left pointing at the old leader.
->>>
->>> That is harmless when the sibling is being closed and freed immediately, as
->>> in the DETACH_DEAD path. It is not safe when the sibling is detached but
->>> kept alive, such as during CPU hotplug with DETACH_GROUP. In that case the
->>> sibling is removed from the context, while its file descriptor can still
->>> keep it alive.
->>>
->>> A typical failing sequence is:
->>>
->>>   - A group contains leader L and sibling S.
->>>   - CPU hot-unplug detaches S with DETACH_GROUP, removing it from
->>>     L->sibling_list but leaving S->group_leader == L.
->>>   - L is later closed and freed.
->>>   - A PERF_IOC_FLAG_GROUP ioctl on S follows S->group_leader and
->>>     dereferences the freed leader.
->>>
->>> This was reproduced by running the perf event fuzzer, CPU hotplug, and a
->>> stress workload concurrently:
->>>
->>> Unable to handle kernel paging request at virtual address 006b6b6b6b6b6cdb
->>> CPU: 2 PID: 12489 Comm: perf_fuzzer 6.18.7 PREEMPT
->>> pc : perf_ioctl+0x34c/0xc68
->>> x20: ffffff89a3fa2c70 x8 : 6b6b6b6b6b6b6b6b
->>> Code: 943c4a0e 340047a0 f9404a94 f9411e88 (f940b908)
->>> Call trace:
->>> perf_ioctl+0x34c/0xc68 (P)
->>> __arm64_sys_ioctl+0xa0/0xf4
->>> invoke_syscall+0x58/0xe4
->>> el0_svc_common+0xa8/0xdc
->>> do_el0_svc+0x1c/0x28
->>> el0_svc+0x40/0xc0
->>> el0t_64_sync_handler+0x68/0xdc
->>> el0t_64_sync+0x1c4/0x1c8
->>>
->>> The fault happened in perf_ioctl(), where perf_event_for_each() follows
->>> the stale group_leader pointer and perf_event_for_each_child() then
->>> dereferences the freed leader's context.
->>>
->>> Fix the use-after-free by promoting the detached sibling to a singleton.
->>>
->>> Fixes: 8a49542c0554 ("perf_events: Fix races in group composition")
->>> Assisted-by: PatchWise:gpt-5.5
->>> Signed-off-by: Aditya Chillara <aditya.chillara@oss.qualcomm.com>
->>> ---
->>>  kernel/events/core.c | 20 ++++++++++++++++++++
->>>  1 file changed, 20 insertions(+)
->>>
->>> diff --git a/kernel/events/core.c b/kernel/events/core.c
->>> index 954c36e28101..dd9892040ab2 100644
->>> --- a/kernel/events/core.c
->>> +++ b/kernel/events/core.c
->>> @@ -2605,6 +2605,26 @@ __perf_remove_from_context(struct perf_event *event,
->>>  		perf_child_detach(event);
->>>  	list_del_event(event, ctx);
->>>  
->>> +	if ((flags & DETACH_GROUP) && event->group_leader != event) {
->>> +		/*
->>> +		 * list_del_event() needed the old group_leader to tell a real
->>> +		 * leader from a sibling. That's done now, so make the detached
->>> +		 * sibling self-contained.
->>> +		 */
->>> +		event->group_leader = event;
->>> +		event->group_caps = event->event_caps;
->>> +
->>> +		/*
->>> +		 * PERF_EV_CAP_SIBLING event requires being part of a group, so move
->>> +		 * the event to ERROR state if it is still alive.
->>> +		 */
->>> +		if ((event->event_caps & PERF_EV_CAP_SIBLING) &&
->>> +		    event->state > PERF_EVENT_STATE_ERROR)
->>> +			perf_event_set_state(event, PERF_EVENT_STATE_ERROR);
->>> +
->>> +		perf_event__header_size(event);
->>> +	}
->>> +
->> Why not move this part of fixing code into perf_group_detach()? It seems a
->> better place to fix the issue. Thanks.
-> Because list_del_event() just above my change does:
->
-> 	if (event->group_leader == event)
-> 		del_event_from_groups(event, ctx);
->
-> so resetting the group leader in perf_group_detach() would attempt removing sibling
-> event->group_node from a group rb-tree it was never added to (only leader gets added
-> in list_add_event()).
+I test selinux-testsuite[2] overlay test, it pass 135 tests.
 
-Yeah, but I don't see why we can't do same thing for the sibling event
-detaching in perf_group_detach(). Just like the group leader detaching,
-each sibling event would be re-added into ctx groups by calling
-add_event_to_groups(). Suppose we can do same thing for the sibling event
-detaching, call add_event_to_groups() to add the standalone event into ctx
-groups, right?
+[1] https://lore.kernel.org/all/20260403030848.731867-5-paul@paul-moore.com/
+[2] https://github.com/SELinuxProject/selinux-testsuite
 
+Amir Goldstein (4):
+  ovl: pass layer mnt to ovl_open_realfile()
+  fs: move kmem_cache_zalloc() into alloc_empty_file*() helpers
+  fs: use backing_file container for internal files with "fake" f_path
+  fs: prepare for adding LSM blob to backing_file
 
-        if (sibling->attach_state & PERF_ATTACH_CONTEXT) {
-            add_event_to_groups(sibling, event->ctx);
+Khadija Kamran (1):
+  lsm: constify the 'file' parameter in security_binder_transfer_file()
 
-            if (sibling->state == PERF_EVENT_STATE_ACTIVE)
-                list_add_tail(&sibling->active_list, get_event_list(sibling));
-        }
+Paul Moore (2):
+  lsm: add backing_file LSM hooks
+  selinux: fix overlayfs mmap() and mprotect() access checks
 
+ fs/file_table.c                   | 125 +++++++++++++--
+ fs/internal.h                     |   6 +-
+ fs/open.c                         |  46 ++++--
+ fs/overlayfs/file.c               |  32 ++--
+ fs/overlayfs/overlayfs.h          |   1 +
+ fs/overlayfs/util.c               |  14 ++
+ include/linux/fs.h                |  46 +++++-
+ include/linux/lsm_audit.h         |   2 +-
+ include/linux/lsm_hook_defs.h     |   7 +-
+ include/linux/lsm_hooks.h         |   1 +
+ include/linux/security.h          |  26 ++-
+ security/security.c               | 112 ++++++++++++-
+ security/selinux/hooks.c          | 252 ++++++++++++++++++++++--------
+ security/selinux/include/objsec.h |  11 ++
+ 14 files changed, 560 insertions(+), 121 deletions(-)
 
->
-> Thank you,
-> Aditya
->
->>
->>>  	if (!pmu_ctx->nr_events) {
->>>  		pmu_ctx->rotate_necessary = 0;
->>>  
->>>
->>> ---
->>> base-commit: ab9de95c9cf952332ab79453b4b5d1bfca8e514f
->>> change-id: 20260626-fix-group-leader-uaf-c46960e525e0
->>>
->>> Best regards,
->>> --  
->>> Aditya Chillara <aditya.chillara@oss.qualcomm.com>
->>>
->>>
->
+-- 
+2.18.0.huawei.25
+
 
