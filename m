@@ -1,52 +1,52 @@
-Return-Path: <stable+bounces-269631-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-269632-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 42siCsD6QWrpxgkAu9opvQ
-	(envelope-from <stable+bounces-269631-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 29 Jun 2026 06:55:28 +0200
+	id g3eMH8H6QWrsxgkAu9opvQ
+	(envelope-from <stable+bounces-269632-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 29 Jun 2026 06:55:29 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E2466D5F03
-	for <lists+stable@lfdr.de>; Mon, 29 Jun 2026 06:55:27 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id A170F6D5F08
+	for <lists+stable@lfdr.de>; Mon, 29 Jun 2026 06:55:28 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=1j5lmJN7;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-269631-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-269631-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=wIP00Ftd;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-269632-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-269632-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=none;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 7370F30062E5
-	for <lists+stable@lfdr.de>; Mon, 29 Jun 2026 04:55:26 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id A52533005E89
+	for <lists+stable@lfdr.de>; Mon, 29 Jun 2026 04:55:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B14CD2868AB;
-	Mon, 29 Jun 2026 04:55:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F152283CAF;
+	Mon, 29 Jun 2026 04:55:27 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 514D9282F23;
-	Mon, 29 Jun 2026 04:55:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0CAB28D8DA;
+	Mon, 29 Jun 2026 04:55:25 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782708925; cv=none; b=nXBRkDaVVzfWSCcXaalMz64zC5CoyCcJPlPwR4Cilz7HY78IgcuhRY1jqkLE36f2iaYWyQpjAp2ROZvu2mzz7hG04GMF8UL1cXMn4eACoGpVHNfOKZD84endNlpXPGY8nHNr0x51pSBZBC+nqxpTeAosISKFARYlRZ/BKNACocs=
+	t=1782708927; cv=none; b=tjzttJEAdv0gh9LcnjMl7epN+XLagPGRmxwaVNvwlYnFN+ITCxIkNReEdconM0TSfSsQvfSbbGMIIxJutapszBLabjDdKCCZnJVCQYHg06weafFBBtvV2GcrCTCFdbTVERaX7hOUATLvEIWNo3SI5E09zPid7uVKpXCBYzwNWA8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782708925; c=relaxed/simple;
-	bh=og7A5tlgKnmugtyE7BhibcPYh0EhZ3gUtGV5ORvNPJM=;
-	h=Date:To:From:Subject:Message-Id; b=YYzKCKyVto3y9EIYSuTbuxOwW3be6/Upvkb344o0DUsiXh4nJDRYvhmYFvFHFkVmR8IU0O1M2TnW7po3jMgw0Sk4jLokoedbCHwzj8QoU5cSSgUEpf4qObLAvJgqLJmvSQQfz3gK2DlkMGZlwXRFINv/J9iZLhIjmgtR95kWCIs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=1j5lmJN7; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ABA8A1F000E9;
-	Mon, 29 Jun 2026 04:55:23 +0000 (UTC)
+	s=arc-20240116; t=1782708927; c=relaxed/simple;
+	bh=VDyS2KUexwdQdGpfb3n5VHoxSPdYz+Jn0wgdSPi6/sY=;
+	h=Date:To:From:Subject:Message-Id; b=DW5ow8XHop4czw3dBENs8z3cTg8FyJiHKHOvdO555nioDw98o3ydQBcHXp5LkI4PPczbBs42aSJvO+KTIMrt+bvC9imxkVaRZp8IUvntmOAGj0Fc57yR/ngpdPha2XIBYJMo6wE034TFrbChs5VJCgWgq1sX10CBbeq9DNJowSc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=wIP00Ftd; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98ABC1F000E9;
+	Mon, 29 Jun 2026 04:55:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1782708923;
-	bh=lRZbZwxcosAT82HGOqfiPybzZikR7YiG88/AaNYe50Y=;
+	d=linux-foundation.org; s=korg; t=1782708925;
+	bh=FSfYmJge6ypJS5F7/TGx5JRdrBa6lqDbRc6ijitqm1o=;
 	h=Date:To:From:Subject;
-	b=1j5lmJN7QmosEJZZnS+CDP35dYgj8s1X0mltXJQaJTB3uB6TVzk74tSuE5En4iVHR
-	 /iSgFA0OdNoBsr7K9Vo+ZX4hDDiZThhESesLrVvDCkVNLxJrbqaat9O6bYOzUQyKGm
-	 XeBuj78d8wD0RAuhCiPgg+CzzIh84N+RH9zeISis=
-Date: Sun, 28 Jun 2026 21:55:23 -0700
+	b=wIP00FtdaQEeVDoKEzG5DS6js1eX/ZSZErVeYLpgC5MR63Gh4+GjRtWE5qVwhQpIl
+	 mMp/OTF1vhmOJ2G77AIxrIk9cnadgs2hGQKxk8+bTeJBZZ5bk+s92MhQhScf1FyvWO
+	 hIt7PG70EzDjoe5UcOLNJh9r/N7vTwnOyN7gf+zM=
+Date: Sun, 28 Jun 2026 21:55:25 -0700
 To: mm-commits@vger.kernel.org,stable@vger.kernel.org,sj@kernel.org,akpm@linux-foundation.org
 From: Andrew Morton <akpm@linux-foundation.org>
-Subject: + mm-damon-sysfs-kobject_del-target-normal-context-and-kdamond-dirs.patch added to mm-new branch
-Message-Id: <20260629045523.ABA8A1F000E9@smtp.kernel.org>
+Subject: + mm-damon-sysfs-kobject_del-region-and-target-error-dirs.patch added to mm-new branch
+Message-Id: <20260629045525.98ABC1F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -57,12 +57,12 @@ X-Spamd-Result: default: False [-1.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linux-foundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-269631-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-269632-lists,stable=lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FORGED_RECIPIENTS(0.00)[m:mm-commits@vger.kernel.org,m:stable@vger.kernel.org,m:sj@kernel.org,m:akpm@linux-foundation.org,s:lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
@@ -72,7 +72,7 @@ X-Spamd-Result: default: False [-1.16 / 15.00];
 	DMARC_NA(0.00)[linux-foundation.org];
 	FORGED_SENDER(0.00)[akpm@linux-foundation.org,stable@vger.kernel.org];
 	RCPT_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	MIME_TRACE(0.00)[0:+];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
@@ -86,16 +86,16 @@ X-Spamd-Result: default: False [-1.16 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linux-foundation.org:dkim,linux-foundation.org:email,linux-foundation.org:from_mime,vger.kernel.org:from_smtp,smtp.kernel.org:mid]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 8E2466D5F03
+X-Rspamd-Queue-Id: A170F6D5F08
 
 
 The patch titled
-     Subject: mm/damon/sysfs: kobject_del() target (normal), context and kdamond dirs
+     Subject: mm/damon/sysfs: kobject_del() region and target (error) dirs
 has been added to the -mm mm-new branch.  Its filename is
-     mm-damon-sysfs-kobject_del-target-normal-context-and-kdamond-dirs.patch
+     mm-damon-sysfs-kobject_del-region-and-target-error-dirs.patch
 
 This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-damon-sysfs-kobject_del-target-normal-context-and-kdamond-dirs.patch
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-damon-sysfs-kobject_del-region-and-target-error-dirs.patch
 
 This patch will later appear in the mm-new branch at
     git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
@@ -125,143 +125,55 @@ and is updated there most days
 
 ------------------------------------------------------
 From: SJ Park <sj@kernel.org>
-Subject: mm/damon/sysfs: kobject_del() target (normal), context and kdamond dirs
-Date: Sun, 28 Jun 2026 15:01:10 -0700
-
-Patch series "mm/damon/sysfs: kobject_del() directories that users can
-create/remove".
-
-DAMON sysfs interface allows users to create and remove arbitrary number
-of directories on sysfs, using a few files having 'nr_' prefix.  For
-example, 'nr_kdamonds'.  When the user writes a number 'N' to the files,
-directories having name starting from '0' to 'N - 1' are created in the
-same directory.  The pre-existing number-named directories are removed
-before creating the new directories.
-
-For the removal of the existing directories, DAMON sysfs interface use
-only kobject_put().  Because DAMON sysfs interface is the only kernel
-component that manages the directories, there is no problem in normal
-situations.  However, if CONFIG_DEBUG_KOBJECT_RELEASE is enabled, the
-removal of dirs are delayed.  Let's suppose a user writes a non-zero
-number to the 'nr_*' files while there are pre-existing number-named
-directories, on the config enabled kernel.  DAMON sysfs interface
-decreases the reference counts of the existing directories and immediately
-creates new directories.  Because the removal of the sysfs directories is
-delayed, it shows some pre-existing directories of the same names when it
-tries to create the new directories, and fails.
-
-For example, the issue can be triggered like below:
-
-    # grep DEBUG_KOBJECT_RELEASE /boot/config-$(uname -r)
-    CONFIG_DEBUG_KOBJECT_RELEASE=y
-    # ls
-    nr_kdamonds
-    # echo 1 > nr_kdamonds
-    # echo 1 > nr_kdamonds
-    bash: echo: write error: File exists
-    # dmesg
-    [...]
-    [  300.880458] kobject: kobject_add_internal failed for 0 with -EEXIST, don't try to register things with the same name in the same directory.
-    [...]
-
-Some of the error handling paths of the directories also lack the
-kobject_del() call.  If the user uses nr_* file right after the errors,
-similar issues can happen.
-
-This doesn't cause catastrophic issues like kernel panics or memory
-corruptions.  Users can work around by removing all directories first
-(write 0 to the nr_* files) and then create new directories after
-confirming the old directories are gone.  But, this is definitely a bug
-that causes a bad user experience.
-
-Fix the issues by calling kobject_del() before creating new directories.
-
-
-This patch (of 11)
+Subject: mm/damon/sysfs: kobject_del() region and target (error) dirs
+Date: Sun, 28 Jun 2026 15:01:11 -0700
 
 On CONFIG_DEBUG_KOBJECT_RELEASE enabled kernel, lack of kobject_del()
 could cause directories creation failures due to the name conflicts.  Fix
-those issues for normal creation paths of target, context and kdamond
-directories, and error paths of context and kdamond directories by adding
-kobject_del() calls.
+those issues for the normal creation path of region directories and the
+error path of target directories, by adding kobject_del() calls.
 
-Note that this fix for target directories is not complete since it has a
-similar issue in the damon_sysfs_targets_add_dirs() error path.  Because
-the normal path issue and the error path issue are introduced by different
-commits, this commit is fixing only the normal path issue.  A commit for
-the error path will be added next.
-
-Link: https://lore.kernel.org/20260628220121.97360-1-sj@kernel.org
-Link: https://lore.kernel.org/20260628220121.97360-2-sj@kernel.org
-Fixes: c951cd3b8901 ("mm/damon: implement a minimal stub for sysfs-based DAMON interface")
+Link: https://lore.kernel.org/20260628220121.97360-3-sj@kernel.org
+Fixes: 2031b14ea757 ("mm/damon/sysfs: support the physical address space monitoring")
 Signed-off-by: SJ Park <sj@kernel.org>
 Cc: <stable@vger.kernel.org> # 5.18.x
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
 
- mm/damon/sysfs.c |   11 +++++++++--
- 1 file changed, 9 insertions(+), 2 deletions(-)
+ mm/damon/sysfs.c |    8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
---- a/mm/damon/sysfs.c~mm-damon-sysfs-kobject_del-target-normal-context-and-kdamond-dirs
+--- a/mm/damon/sysfs.c~mm-damon-sysfs-kobject_del-region-and-target-error-dirs
 +++ a/mm/damon/sysfs.c
-@@ -331,6 +331,7 @@ static void damon_sysfs_targets_rm_dirs(
+@@ -105,8 +105,10 @@ static void damon_sysfs_regions_rm_dirs(
+ 	struct damon_sysfs_region **regions_arr = regions->regions_arr;
+ 	int i;
  
- 	for (i = 0; i < targets->nr; i++) {
- 		damon_sysfs_target_rm_dirs(targets_arr[i]);
-+		kobject_del(&targets_arr[i]->kobj);
- 		kobject_put(&targets_arr[i]->kobj);
- 	}
- 	targets->nr = 0;
-@@ -1640,6 +1641,7 @@ static void damon_sysfs_contexts_rm_dirs
+-	for (i = 0; i < regions->nr; i++)
++	for (i = 0; i < regions->nr; i++) {
++		kobject_del(&regions_arr[i]->kobj);
+ 		kobject_put(&regions_arr[i]->kobj);
++	}
+ 	regions->nr = 0;
+ 	kfree(regions_arr);
+ 	regions->regions_arr = NULL;
+@@ -370,13 +372,15 @@ static int damon_sysfs_targets_add_dirs(
  
- 	for (i = 0; i < contexts->nr; i++) {
- 		damon_sysfs_context_rm_dirs(contexts_arr[i]);
-+		kobject_del(&contexts_arr[i]->kobj);
- 		kobject_put(&contexts_arr[i]->kobj);
- 	}
- 	contexts->nr = 0;
-@@ -1678,13 +1680,15 @@ static int damon_sysfs_contexts_add_dirs
- 
- 		err = damon_sysfs_context_add_dirs(context);
+ 		err = damon_sysfs_target_add_dirs(target);
  		if (err)
 -			goto out;
 +			goto del_out;
  
- 		contexts_arr[i] = context;
- 		contexts->nr++;
+ 		targets_arr[i] = target;
+ 		targets->nr++;
  	}
  	return 0;
  
 +del_out:
-+	kobject_del(&context->kobj);
++	kobject_del(&target->kobj);
  out:
- 	damon_sysfs_contexts_rm_dirs(contexts);
- 	kobject_put(&context->kobj);
-@@ -2499,6 +2503,7 @@ static void damon_sysfs_kdamonds_rm_dirs
- 
- 	for (i = 0; i < kdamonds->nr; i++) {
- 		damon_sysfs_kdamond_rm_dirs(kdamonds_arr[i]);
-+		kobject_del(&kdamonds_arr[i]->kobj);
- 		kobject_put(&kdamonds_arr[i]->kobj);
- 	}
- 	kdamonds->nr = 0;
-@@ -2553,13 +2558,15 @@ static int damon_sysfs_kdamonds_add_dirs
- 
- 		err = damon_sysfs_kdamond_add_dirs(kdamond);
- 		if (err)
--			goto out;
-+			goto del_out;
- 
- 		kdamonds_arr[i] = kdamond;
- 		kdamonds->nr++;
- 	}
- 	return 0;
- 
-+del_out:
-+	kobject_del(&kdamond->kobj);
- out:
- 	damon_sysfs_kdamonds_rm_dirs(kdamonds);
- 	kobject_put(&kdamond->kobj);
+ 	damon_sysfs_targets_rm_dirs(targets);
+ 	kobject_put(&target->kobj);
 _
 
 Patches currently in -mm which might be from sj@kernel.org are
