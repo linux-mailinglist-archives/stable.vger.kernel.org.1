@@ -1,40 +1,40 @@
-Return-Path: <stable+bounces-269780-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-269781-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id SaQWO/iGQmq19AkAu9opvQ
-	(envelope-from <stable+bounces-269780-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 29 Jun 2026 16:53:44 +0200
+	id JgUGBd6FQmph9AkAu9opvQ
+	(envelope-from <stable+bounces-269781-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 29 Jun 2026 16:49:02 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 051C96DC534
-	for <lists+stable@lfdr.de>; Mon, 29 Jun 2026 16:53:44 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 551256DC43B
+	for <lists+stable@lfdr.de>; Mon, 29 Jun 2026 16:49:01 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linutronix.de header.s=2020 header.b=yvqQT69A;
-	dkim=pass header.d=linutronix.de header.s=2020e header.b=AmUBT119;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-269780-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-269780-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linutronix.de header.s=2020 header.b=S0l8vau+;
+	dkim=pass header.d=linutronix.de header.s=2020e header.b="LaYG/hC9";
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-269781-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-269781-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linutronix.de;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 00E0F3021BF8
+	by sea.lore.kernel.org (Postfix) with ESMTP id 923D63185F98
 	for <lists+stable@lfdr.de>; Mon, 29 Jun 2026 14:41:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 674A03A2549;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5B533E51F5;
 	Mon, 29 Jun 2026 14:41:41 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA7F63B6366
-	for <stable@vger.kernel.org>; Mon, 29 Jun 2026 14:41:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65C5C3B83F0
+	for <stable@vger.kernel.org>; Mon, 29 Jun 2026 14:41:40 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782744101; cv=none; b=DYB251zEal/RtkXngyOFnNUcaoljPi5VMXmaRbuqvLaI0HmcvKhV4RXuoa/d5+99xsaqFyhz1ZEvDvVmWIw1bMBj1NFy25ndCqIXrGK6Cs1ISU1Qm2fDP4lQ4CFtXv3mOXu0z7+nWilhWwXLwApDNSSw8pHjU4WWvw2dBKBQ29g=
+	t=1782744101; cv=none; b=l9iAPix2NtHtEjogMtC0o5VdzOkGqiu1pVkOF8fEussGgY2afrT+ybMbsAkllnFQ/O2VETR6MNu3rgnQrs0A+IgDpIdLVQLxBIymShiLe/lCzGBZQOaH+3I8uuOhyVGDEJsfwjq56mBahUIRc5vw6zzIkA5Zn53nX8+oxbwrBIE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1782744101; c=relaxed/simple;
-	bh=aNxmFevyw/OGWflCkChzZ1Ua7/gHf6xA5aB3eat+Pxc=;
+	bh=G3ecOnlCcL4XHdbt8TofXa72d59ab3mXOGkhB8Z5qsA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OptMzICEGVOkYN/AhUrxTQWjKJMaqLseztNEv5iyIPAF1kI+v0lXOO+JJsVFSvteq/5ZRt5XYw1iBzpDjazrHwi8cp4cseYubfmHvVr+wLBOYoUbuBaLf61ShNk6u9uHzpqbEynSbAcsK3+xjFq3ICXGl99TNUjeb0bROCSBpvc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=yvqQT69A; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=AmUBT119; arc=none smtp.client-ip=193.142.43.55
+	 MIME-Version; b=L4ZDP7cCMXwBDgGCARokqapVOOPjx6TElbQJmk94ChdV12l1bjzCbzby6CSUxngDG1iYwt9NDwKZi24k9zsRYBjt+SVFKB+utmQtuTQva/jFYirwlpfNXbgvPnutn2w+gCpIBvykqnDwS0D8O5FG9okQhv8tPlKzQ6M3yObhtAI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=S0l8vau+; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=LaYG/hC9; arc=none smtp.client-ip=193.142.43.55
 From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
 	s=2020; t=1782744098;
@@ -42,30 +42,31 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=gw+2wAMnJQovU/U8ZXY7DgQ5GNeZYXVr6rqiZz2TyWw=;
-	b=yvqQT69AuRhUrWWpWxI1l7ne44cJEwvD3F2GsWBCkChRzfXLFwO/mesqY0k+E5+4zA37Ka
-	gM2IxNvqGmezmwB3Q4VWcQS52iqC8fr5wBkTBgrnRiR3q/6YYUbZiOJ0/KI4/7EVgygZdo
-	NbzQzKwn6wd5Iu+enR21xcxgHDrwP4Iv5O7YWr6Axp8ZmRL0JbcNw9wL/2Lv8IjdzKjhig
-	SvOLCf2qlu5/GEknlEp44pwwrFKf1ucntZYdOoL5Lw7MXhZ9izBcjN4kHMeS6ERrjSIrCj
-	b2rbhPyyAQoAZQTgCH3nvzC0d0+38UCnQpq3xRYEU4FcvZqzDY6mMXej1wbRKQ==
+	bh=EWkYkdV3HEvlQ4FebCydtjkVMKddRipyq8YMkecXl64=;
+	b=S0l8vau+4Ign9GWt/gRc+LvGaTTi4pTnQzvnxzMJIBQCogt4tl/yFcGtxGRcTQLXU7FJDW
+	N9tmdTGiF1oMLS8eFA1KO2VnACipoPh9TlZFOolTCVRRrdTMhhgaTZ/t9RGLnO0OLIl2Xe
+	8P0+I70+38POlHaWIgNxJzvKmUVOFJ6ksvJhTDFfld68AyRVF6izW4Dk7aMLixvxmT3cTM
+	jJTI+RkM8ExVJX3ZWCzO+abM1tFXjDndpYzpjYeOeLcywkKI6LBLj0O9hUajcMbFEIV5XQ
+	zK5TSHN+JnHD18jwuITAS4bjw2pvWynkI3WHBmSAGk71j1ZMstGQF3WylZXkfw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
 	s=2020e; t=1782744098;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=gw+2wAMnJQovU/U8ZXY7DgQ5GNeZYXVr6rqiZz2TyWw=;
-	b=AmUBT119iYZfjXkVyzN5YEndyCqXLzB3zs2K4ZmNvzC9SgLW1f3mAXbYDrz53tUHE9EI1/
-	xvsVAYa+pwGzO5Cg==
+	bh=EWkYkdV3HEvlQ4FebCydtjkVMKddRipyq8YMkecXl64=;
+	b=LaYG/hC9Ycme9TJDrHaniyz987aRx3FSLxCEnLAouRxbu4pZbpx99G9iX+ZAy2bfZAkQoB
+	Kl6yJGW64yC+tABA==
 To: stable@vger.kernel.org
 Cc: Jan Kiszka <jan.kiszka@siemens.com>,
 	Jon Humphreys <j-humphreys@ti.com>,
 	Russell King <rmk+kernel@armlinux.org.uk>,
-	"Yadi.hu" <yadi.hu@windriver.com>,
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Subject: [PATCH v6.18 2/3] ARM: ensure interrupts are enabled in __do_user_fault()
-Date: Mon, 29 Jun 2026 16:41:30 +0200
-Message-ID: <20260629144131.788576-3-bigeasy@linutronix.de>
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Arnd Bergmann <arnd@arndb.de>
+Subject: [PATCH v6.18 3/3] ARM: 9463/1: Allow to enable RT
+Date: Mon, 29 Jun 2026 16:41:31 +0200
+Message-ID: <20260629144131.788576-4-bigeasy@linutronix.de>
 In-Reply-To: <20260629144131.788576-1-bigeasy@linutronix.de>
 References: <20260629144131.788576-1-bigeasy@linutronix.de>
 Precedence: bulk
@@ -80,93 +81,64 @@ X-Spamd-Result: default: False [0.84 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[linutronix.de,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linutronix.de,none];
 	R_DKIM_ALLOW(-0.20)[linutronix.de:s=2020,linutronix.de:s=2020e];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:jan.kiszka@siemens.com,m:j-humphreys@ti.com,m:rmk+kernel@armlinux.org.uk,m:yadi.hu@windriver.com,m:bigeasy@linutronix.de,m:rmk@armlinux.org.uk,s:lists@lfdr.de];
-	TAGGED_FROM(0.00)[bounces-269780-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER(0.00)[bigeasy@linutronix.de,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-269781-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
 	RCVD_COUNT_THREE(0.00)[3];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_SENDER(0.00)[bigeasy@linutronix.de,stable@vger.kernel.org];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:jan.kiszka@siemens.com,m:j-humphreys@ti.com,m:rmk+kernel@armlinux.org.uk,m:bigeasy@linutronix.de,m:linus.walleij@linaro.org,m:arnd@arndb.de,m:rmk@armlinux.org.uk,s:lists@lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	MISSING_XM_UA(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[bigeasy@linutronix.de,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[linutronix.de:+];
 	ALIAS_RESOLVED(0.00)[];
-	TAGGED_RCPT(0.00)[stable,kernel];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,linutronix.de:dkim,linutronix.de:email,linutronix.de:mid,linutronix.de:from_mime,vger.kernel.org:from_smtp,armlinux.org.uk:email,yadi.hu:url]
+	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	TAGGED_RCPT(0.00)[stable,kernel];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[arndb.de:email,linaro.org:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 051C96DC534
+X-Rspamd-Queue-Id: 551256DC43B
 
-From: "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>
+commit c6e61c06d6061750597e79c598acb5dead44c35b upstream.
 
-commit 59e4f3b45b96a24fc9b7a89e5f8a2168b30f95af upstream.
+All known issues have been adressed.
+Allow to select RT.
 
-__do_user_fault() may be called from fault handling paths where the
-interrupts are enabled or disabled. E.g. do_page_fault() calls this
-with interrupts enabled, whereas do_sect_fault()->do_bad_area()
-will call this with interrupts disabled. Since this is a userspace
-fault, we know that interrupts were enabled in the parent context,
-so call local_irq_enable() here to give a consistent interrupt state.
-
-This is necessary for force_sig_info() when PREEMPT_RT is enabled.
-
-Reported-by: Yadi.hu <yadi.hu@windriver.com>
-Reviewed-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Acked-by: Linus Walleij <linus.walleij@linaro.org>
+Reviewed-by: Arnd Bergmann <arnd@arndb.de>
+Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
 Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 ---
- arch/arm/mm/fault.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ arch/arm/Kconfig | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/arm/mm/fault.c b/arch/arm/mm/fault.c
-index ed4330cc3f4e6..6c27ebd490938 100644
---- a/arch/arm/mm/fault.c
-+++ b/arch/arm/mm/fault.c
-@@ -190,7 +190,8 @@ __do_kernel_fault(struct mm_struct *mm, unsigned long a=
-ddr, unsigned int fsr,
-=20
- /*
-  * Something tried to access memory that isn't in our memory map..
-- * User mode accesses just cause a SIGSEGV
-+ * User mode accesses just cause a SIGSEGV. Ensure interrupts are enabled
-+ * for preempt RT.
-  */
- static void
- __do_user_fault(unsigned long addr, unsigned int fsr, unsigned int sig,
-@@ -198,6 +199,8 @@ __do_user_fault(unsigned long addr, unsigned int fsr, u=
-nsigned int sig,
- {
- 	struct task_struct *tsk =3D current;
-=20
-+	local_irq_enable();
-+
- #ifdef CONFIG_DEBUG_USER
- 	if (((user_debug & UDBG_SEGV) && (sig =3D=3D SIGSEGV)) ||
- 	    ((user_debug & UDBG_BUS)  && (sig =3D=3D SIGBUS))) {
-@@ -268,6 +271,7 @@ do_kernel_address_page_fault(struct mm_struct *mm, unsi=
-gned long addr,
- 		 * should not be faulting in kernel space, which includes the
- 		 * vector/khelper page. Handle the branch predictor hardening
- 		 * while interrupts are still disabled, then send a SIGSEGV.
-+		 * Note that __do_user_fault() will enable interrupts.
- 		 */
- 		harden_branch_predictor();
- 		__do_user_fault(addr, fsr, SIGSEGV, SEGV_MAPERR, regs);
+diff --git a/arch/arm/Kconfig b/arch/arm/Kconfig
+index b7f3ad66ff15f..bfb1734e50bec 100644
+--- a/arch/arm/Kconfig
++++ b/arch/arm/Kconfig
+@@ -41,6 +41,7 @@ config ARM
+ 	select ARCH_SUPPORTS_CFI
+ 	select ARCH_SUPPORTS_HUGETLBFS if ARM_LPAE
+ 	select ARCH_SUPPORTS_PER_VMA_LOCK
++	select ARCH_SUPPORTS_RT
+ 	select ARCH_USE_BUILTIN_BSWAP
+ 	select ARCH_USE_CMPXCHG_LOCKREF
+ 	select ARCH_USE_MEMTEST
 --=20
 2.53.0
 
