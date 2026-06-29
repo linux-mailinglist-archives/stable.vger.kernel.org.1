@@ -1,190 +1,148 @@
-Return-Path: <stable+bounces-269811-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-269954-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id ItmnE4WwQmoU/wkAu9opvQ
-	(envelope-from <stable+bounces-269811-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 29 Jun 2026 19:51:01 +0200
+	id 96l0IS+pQ2rkeQoAu9opvQ
+	(envelope-from <stable+bounces-269954-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 30 Jun 2026 13:31:59 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4412D6DDE32
-	for <lists+stable@lfdr.de>; Mon, 29 Jun 2026 19:51:00 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 198E56E3A11
+	for <lists+stable@lfdr.de>; Tue, 30 Jun 2026 13:31:59 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=RDRWYMEA;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-269811-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-269811-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=none;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=YCJ+wqT3;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-269954-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-269954-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 717FA300C7E3
-	for <lists+stable@lfdr.de>; Mon, 29 Jun 2026 17:41:50 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 9D1EF30878EE
+	for <lists+stable@lfdr.de>; Tue, 30 Jun 2026 11:19:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C150C384232;
-	Mon, 29 Jun 2026 17:41:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CEF1F40B6E5;
+	Tue, 30 Jun 2026 11:17:41 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8D9737B417;
-	Mon, 29 Jun 2026 17:41:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD7AE23A99F;
+	Tue, 30 Jun 2026 11:17:40 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782754908; cv=none; b=Cu4vhfta/ymUhAz79UgyuXoubJrWBGtCSByd2iARmyH07wjfrfvMQxh+65SA8AlKrHevluH1WZcJUolKejTxYRcgOn70wviYL/l5curxnJD/tD0J96+4iJUCVmfuoMR81h6lciO924GVfcofTTCmtVuFZE2hFMVu0DFZGpVyw38=
+	t=1782818261; cv=none; b=MifYUjlTHO1BdhNxQ1DxxLGQTjkEeE4OFh+LMqDyMpCmnutKQxQtcjbxLmAbv/tIomy7O628//kNylmB9WI/DfDPCn9fKwoVAUfW5Zo+OJAAVnw43NGktfEb3EVxlfk3pzXVfRHPw5S3j9VmqdwFjl37btIm07XrjH2RWpSSiMQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782754908; c=relaxed/simple;
-	bh=umCHY0WzhRo9BnV9a4Rue5Pb9esGaLf2ekRSTfsrgUg=;
-	h=Date:To:From:Subject:Message-Id; b=QMEliudPhOTBl+IwcjQDmko4zQ/rYvzy+YefZUrIHMz8+2wDy7pJXbkt94n7UFr6tGlaTAiZ3xISPEesEDT5TLIPaP9uPN2bPNl7hP1Cde/kS2ASvryJBpI0lt6Lok1AFjCi87Xf+zAFJzCnmHjQVbWPpZhM5rP4ZeFQfmwwCAo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=RDRWYMEA; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 425081F00A3A;
-	Mon, 29 Jun 2026 17:41:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1782754904;
-	bh=mon0FP5pD7CxKi+sn0r1+EpOnERjsocTWpwnXmAnPI8=;
-	h=Date:To:From:Subject;
-	b=RDRWYMEAV7bqH1etaXbD6Tc5oPw5YnEa2+0lhYBqjftznK1hhZ54kN0DrSiLOyxo8
-	 HELTaBFsStKZeL8Lf2aY23+/FwRD/eCqW2BQjFNkCmYrkVdCUDqse3ljSeoYaFRem+
-	 fMJVCSx+dIENi0a+s7wTUFK3i34l0App+BSbNgbo=
-Date: Mon, 29 Jun 2026 10:41:43 -0700
-To: mm-commits@vger.kernel.org,stable@vger.kernel.org,sj@kernel.org,yuzenghui@huawei.com,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: + samples-damon-mtier-fail-early-if-address-range-parameters-are-invalid.patch added to mm-hotfixes-unstable branch
-Message-Id: <20260629174144.425081F00A3A@smtp.kernel.org>
+	s=arc-20240116; t=1782818261; c=relaxed/simple;
+	bh=+pzVlDLY1JAWqC87iVkSYzzMIyWnp7ilg0qVsvTgGYo=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=HxrzwqA5eMqgyLnU1GtMxutkFw2nNLwxfjDbLLUMwHhiI/ZPMHpdI0Sb8ocErhi6fQ2NP800gFUONII/tnfjmAA4/DPg0ds5lLPdQo1APVqLY35Uv2h7x2zHF9PzCaWZdV+9PkXCgqTX3xJru2mX0Ofr1ZChzOjICjT+KSxmdWg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YCJ+wqT3; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 181871F000E9;
+	Tue, 30 Jun 2026 11:17:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1782818260;
+	bh=eWErjEHMXrBAqZq3Vq7mxcKe/AWtpJ3hBdzLT4L4FaM=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date;
+	b=YCJ+wqT3GlL0vlsc2XBaRSnsNz/cNj4xnc4DbIn7dI1oBWDOLDQJfptWJgRqpptt8
+	 /5HoWFgJpaUcZPWB3B9IFbQIForqb6XoZkBPjBBsfdd+UyxSc55HnLL5RCgxpEfk9o
+	 O/OfTGUMFkKBLvNaJF9so7sHYzBljZ6S4x6JtEFpTlUBdRY+Ow9BwvYoBc04Ujl5eP
+	 dTGbxqMtep2zxQ81cABG5KWSehuSNdNsu4vrY+4IOB40C/Z8yxUcma7s9mQd0yG/0N
+	 YF4xrbNQWu4EljaaL/mGAsSvf6W8Lr649eN2bbwIW1Im5711UV+hcGWQgDAuS378Yy
+	 iGrD2CPH/ncGQ==
+From: Mark Brown <broonie@kernel.org>
+To: lgirdwood@gmail.com, perex@perex.cz, tiwai@suse.com, 
+ emillbrandt@dekaresearch.com, Haoxiang Li <haoxiang_li2024@163.com>
+Cc: linux-sound@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ stable@vger.kernel.org
+In-Reply-To: <20260622094822.926166-1-haoxiang_li2024@163.com>
+References: <20260622094822.926166-1-haoxiang_li2024@163.com>
+Subject: Re: [PATCH] ASoC: fsl: mpc5200-i2s: Free DMA resources on probe
+ failure
+Message-Id: <178275534193.47562.5080617272977636428.b4-ty@b4>
+Date: Mon, 29 Jun 2026 18:49:01 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.16-dev
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1135; i=broonie@kernel.org;
+ h=from:subject:message-id; bh=+pzVlDLY1JAWqC87iVkSYzzMIyWnp7ilg0qVsvTgGYo=;
+ b=owGbwMvMwMWocq27KDak/QLjabUkhiznpZc+NX6T22xu5c8YtyTwvMZXlfi7xxt+aNpL1PK02
+ ISERzF2MhqzMDByMciKKbKsfZaxKj1cYuv8R/NfwQxiZQKZwsDFKQAT8Z3F/pv9Lo+/eo5yvmSN
+ s+nlU48dlonG8OZsfvP8p4t9i3rFpcN6Ymd+u+54khKy9eI67cokkaDTCywWXg3vLvjSxTopOOu
+ xxQGt3B+xvS13bT818u54ebpIOP/hjq6413xHXk6//VJGLpv5sVkyj8H3AI75Uw94TmS958Slv2
+ hhypq2/123Sz80VKcucrOT2yeYrnBbvKPd0tQvX1TD8+s9ifZZ89S//pMzCnQLOsvPf+HB61THp
+ nbntMmHt5vLK/l9/XRSKZKPM4kt3SKrJeCo8jSp91Ls7402cAnzF5rNvPJps0bdlxTTh97Las+9
+ Znvmd8PhgsxM279GU1a9j/SKl9OZMFmWYUl59SeHHQdLAA==
+X-Developer-Key: i=broonie@kernel.org; a=openpgp;
+ fpr=3F2568AAC26998F9E813A1C5C3F436CA30F5D8EB
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.16 / 15.00];
+X-Spamd-Result: default: False [-4.66 / 15.00];
+	WHITELIST_SPF_DKIM(-3.00)[kernel.org:d:+,kernel.org:s:+];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[linux-foundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	MID_RHS_NOT_FQDN(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-269811-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:lgirdwood@gmail.com,m:perex@perex.cz,m:tiwai@suse.com,m:emillbrandt@dekaresearch.com,m:haoxiang_li2024@163.com,m:linux-sound@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,s:lists@lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:mm-commits@vger.kernel.org,m:stable@vger.kernel.org,m:sj@kernel.org,m:yuzenghui@huawei.com,m:akpm@linux-foundation.org,s:lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	DMARC_NA(0.00)[linux-foundation.org];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linux-foundation.org:+];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_SENDER(0.00)[akpm@linux-foundation.org,stable@vger.kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[akpm@linux-foundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	TO_DN_NONE(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FREEMAIL_TO(0.00)[gmail.com,perex.cz,suse.com,dekaresearch.com,163.com];
+	FORGED_SENDER(0.00)[broonie@kernel.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-269954-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[broonie@kernel.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,smtp.kernel.org:mid,huawei.com:email,linux-foundation.org:dkim,linux-foundation.org:email,linux-foundation.org:from_mime]
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 4412D6DDE32
+X-Rspamd-Queue-Id: 198E56E3A11
 
+On Mon, 22 Jun 2026 17:48:22 +0800, Haoxiang Li wrote:
+> ASoC: fsl: mpc5200-i2s: Free DMA resources on probe failure
 
-The patch titled
-     Subject: samples/damon/mtier: fail early if address range parameters are invalid
-has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
-     samples-damon-mtier-fail-early-if-address-range-parameters-are-invalid.patch
+Applied to
 
-This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/samples-damon-mtier-fail-early-if-address-range-parameters-are-invalid.patch
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-7.3
 
-This patch will later appear in the mm-hotfixes-unstable branch at
-    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+Thanks!
 
-Before you just go and hit "reply", please:
-   a) Consider who else should be cc'ed
-   b) Prefer to cc a suitable mailing list as well
-   c) Ideally: find the original patch on the mailing list and do a
-      reply-to-all to that, adding suitable additional cc's
+[1/1] ASoC: fsl: mpc5200-i2s: Free DMA resources on probe failure
+      https://git.kernel.org/broonie/sound/c/3a89ddcf0c3d
 
-*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
 
-The -mm tree is included into linux-next via various
-branches at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-and is updated there most days
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
 
-------------------------------------------------------
-From: Zenghui Yu <yuzenghui@huawei.com>
-Subject: samples/damon/mtier: fail early if address range parameters are invalid
-Date: Mon, 29 Jun 2026 07:44:31 -0700
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
 
-The comment on top of `struct damon_region` clearly says that
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
 
-    For any use case, @ar should be non-zero positive size.
-
-which is now verified in damon_verify_new_region() if the kernel is built
-with DAMON_DEBUG_SANITY.
-
-The WARN_ONCE() can be triggered if the mtier sample module is enabled
-before node{0,1}_{start,end}_addr have been properly initialized, which is
-obviously not good.
-
- ------------[ cut here ]------------
- start 0 >= end 0
- WARNING: mm/damon/core.c:217 at damon_new_region+0xf4/0x118, CPU#59: bash/341468
- Call trace:
-  damon_new_region+0xf4/0x118 (P)
-  damon_set_regions+0xfc/0x3c0
-  damon_sample_mtier_build_ctx+0xe8/0x3a8
-  damon_sample_mtier_start+0x1c/0x90
-  damon_sample_mtier_enable_store+0x98/0xb0
-  param_attr_store+0xb4/0x128
-  module_attr_store+0x2c/0x50
-  sysfs_kf_write+0x58/0x90
-  kernfs_fop_write_iter+0x16c/0x238
-  vfs_write+0x2c0/0x370
-  ksys_write+0x74/0x118
-  __arm64_sys_write+0x24/0x38
-  invoke_syscall+0xa8/0x118
-  el0_svc_common.constprop.0+0x48/0xf0
-  do_el0_svc+0x24/0x38
-  el0_svc+0x54/0x370
-  el0t_64_sync_handler+0xa0/0xe8
-  el0t_64_sync+0x1ac/0x1b0
- ---[ end trace 0000000000000000 ]---
-
-Note that the same issue can happen if detect_node_addresses is true, and
-node 0 or 1 is memoryless.  Fix it together by checking the validity of
-parameters right before damon_new_region() and fail early if they're
-invalid.
-
-Link: https://lore.kernel.org/20260629144432.133962-1-sj@kernel.org
-Fixes: 82a08bde3cf7 ("samples/damon: implement a DAMON module for memory tiering")
-Signed-off-by: Zenghui Yu <yuzenghui@huawei.com>
-Signed-off-by: SJ Park <sj@kernel.org>
-Reviewed-by: SJ Park <sj@kernel.org>
-Cc: <stable@vger.kernel.org> # 6.16.x
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
----
-
- samples/damon/mtier.c |    3 +++
- 1 file changed, 3 insertions(+)
-
---- a/samples/damon/mtier.c~samples-damon-mtier-fail-early-if-address-range-parameters-are-invalid
-+++ a/samples/damon/mtier.c
-@@ -120,6 +120,9 @@ static struct damon_ctx *damon_sample_mt
- 		addr.end = promote ? node1_end_addr : node0_end_addr;
- 	}
- 
-+	if (addr.start >= addr.end)
-+		goto free_out;
-+
- 	range.start = addr.start;
- 	range.end = addr.end;
- 
-_
-
-Patches currently in -mm which might be from yuzenghui@huawei.com are
-
-samples-damon-mtier-fail-early-if-address-range-parameters-are-invalid.patch
+Thanks,
+Mark
 
 
