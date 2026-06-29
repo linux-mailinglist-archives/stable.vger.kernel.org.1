@@ -1,52 +1,81 @@
-Return-Path: <stable+bounces-269810-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-269804-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id JaWVEnquQmqc/gkAu9opvQ
-	(envelope-from <stable+bounces-269810-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 29 Jun 2026 19:42:18 +0200
+	id tFPfF26pQmpR/QkAu9opvQ
+	(envelope-from <stable+bounces-269804-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 29 Jun 2026 19:20:46 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id E321E6DDD5A
-	for <lists+stable@lfdr.de>; Mon, 29 Jun 2026 19:42:17 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id AA1306DDA39
+	for <lists+stable@lfdr.de>; Mon, 29 Jun 2026 19:20:45 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=none;
-	dmarc=none;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-269810-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-269810-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=intel.com header.s=Intel header.b=Vb4sF2Wx;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-269804-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-269804-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=none) header.from=intel.com;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 1EFFA302E0D0
-	for <lists+stable@lfdr.de>; Mon, 29 Jun 2026 17:40:23 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 05E6A30293E5
+	for <lists+stable@lfdr.de>; Mon, 29 Jun 2026 17:20:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C40CE3DA5CF;
-	Mon, 29 Jun 2026 17:40:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F16043D4F4;
+	Mon, 29 Jun 2026 17:20:40 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from elvis.franken.de (elvis.franken.de [193.175.24.41])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E4DCB3C6A5C;
-	Mon, 29 Jun 2026 17:40:11 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17CE83655F1;
+	Mon, 29 Jun 2026 17:20:38 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782754813; cv=none; b=q73mQbCbUzXe3zpK+qIydXkB4IRzyEXI5cnpk150oSLeTqwshP9qE+TZwvc64sLOtOmIdecosRw1GiIVE/HiFaKC+5Aizd8viUUd1uZwcFfMbwL6MTxUZmYt/ya8Co4Yb8lqt8FsK8bI2vEFoFNf86FKt9oTCruGD2Dqpye0rJI=
+	t=1782753640; cv=none; b=q9qDkNUK+YT0kuE3asg7QUF6X4XZ6usyXGcrvYqjHGEwVoOGcYAoN/t6vhNWi0WODq2Ev3HnPBvtHCGPomfYkAP6JAl4RR1cgcV3VXoco7qgrHhIqiewwIGsp5MrmlDAtWJjP5+2f4lmJOFCbtVHKGfE9Zorib1RFQB1bFbkEkU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782754813; c=relaxed/simple;
-	bh=suPZDoIjc7imHpWyaxyx0h9JyD2nnVd0qCwkq8i2i60=;
+	s=arc-20240116; t=1782753640; c=relaxed/simple;
+	bh=al5yQE0+dYMsecaa6NaCOaeK0Yanl/mTELVPQXEbJIs=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=j1+kQcf2MUOkEMkzE9ozd+DPi+IxyORVd8D8lk19/Vx9ySF1IeU7qg14CzbPnreTFU5wIqaRetyp45U12ImtON0gESq9rYUAOepiuq9TXrMhoZ0jHKDbFtaYlRuXYLxRgQiiVMA6vPjOEIuW9TPy4s0GoNUZ//eFRCpuIS2e94c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=alpha.franken.de; spf=pass smtp.mailfrom=alpha.franken.de; arc=none smtp.client-ip=193.175.24.41
-Received: from uucp by elvis.franken.de with local-rmail (Exim 3.36 #1)
-	id 1weFd2-0005ih-00; Mon, 29 Jun 2026 19:18:40 +0200
-Received: by alpha.franken.de (Postfix, from userid 1000)
-	id 407A1C0148; Mon, 29 Jun 2026 19:18:30 +0200 (CEST)
-Date: Mon, 29 Jun 2026 19:18:30 +0200
-From: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-To: raoxu <raoxu@uniontech.com>
-Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
-	kuba@kernel.org, pabeni@redhat.com, linux-mips@vger.kernel.org,
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+	 Content-Type:Content-Disposition:In-Reply-To; b=m+3BtZsVBd+Avq8MrHaa7vDT6RwZIS33PDc6ohcUrmwKtCUHh1UKnTK2wlhC67K4gV6f872PXq3RQkHGZSYGGuhT/P4yc8kYbw0ojUQLA62A8f2Pw5cO38DeRSfWr8tjC4MS8MA5cpX87Y3GZbCFtImXP0TqWyNTwg0SCnzlOZQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Vb4sF2Wx; arc=none smtp.client-ip=198.175.65.16
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1782753639; x=1814289639;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=al5yQE0+dYMsecaa6NaCOaeK0Yanl/mTELVPQXEbJIs=;
+  b=Vb4sF2WxOaICnsuNCJ8qXijkTZHz+/fEE/XSjY6ELFGj5WUGsWXVPWRI
+   5IZuuyvDaOXZlr0HZC8t6CGrcFzPVCA9qbzsZxP/15dp144DM+HisLQHj
+   NMCF3pnQTLTyVdRBcrzSVl1pn6gOi0swPVmnp9PIR8f0rTWlau/I4zHEC
+   4m6le2SEg9cEZ6pyh4tcYWxiS6G0YAWpEuEEhb0e0XQ25knz6MauZJJjK
+   bEiuu7pk07xz9z5xtp74eT+Fw4M2QAO59fSRD49ymtBW6p4/afPy/fxIa
+   UlA7gmwYVepu6oyubMz6dATKVRSG6Gm+ST1vNu0nY1+0Ug0FsUcDAKUdQ
+   Q==;
+X-CSE-ConnectionGUID: Xvxip7/uQ0ecSRnjAJUoTQ==
+X-CSE-MsgGUID: wtTNEFijRvm0kEBEk9mnRA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11832"; a="83651019"
+X-IronPort-AV: E=Sophos;i="6.24,232,1774335600"; 
+   d="scan'208";a="83651019"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Jun 2026 10:20:38 -0700
+X-CSE-ConnectionGUID: 0vRtVAJ/SG22+p1DOcbZCg==
+X-CSE-MsgGUID: sNaMJrLLR/K0VUi71Nij5Q==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.24,232,1774335600"; 
+   d="scan'208";a="250315835"
+Received: from lkp-server02.sh.intel.com (HELO ea128546eb3d) ([10.239.97.151])
+  by orviesa006.jf.intel.com with ESMTP; 29 Jun 2026 10:20:36 -0700
+Received: from kbuild by ea128546eb3d with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1weFer-000000007bt-3yh3;
+	Mon, 29 Jun 2026 17:20:33 +0000
+Date: Tue, 30 Jun 2026 01:19:41 +0800
+From: kernel test robot <lkp@intel.com>
+To: Peiyang He <peiyang_he@smail.nju.edu.cn>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Hyunchul Lee <hyc.lee@gmail.com>
+Cc: oe-kbuild-all@lists.linux.dev, syzkaller@googlegroups.com,
+	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Subject: Re: [PATCH net] net: sgi: ioc3-eth: unregister netdev before freeing
- DMA rings
-Message-ID: <akKo5i95wiQu6SLY@alpha.franken.de>
-References: <40CD736C4911C181+20260629085053.964383-1-raoxu@uniontech.com>
+Subject: Re: [PATCH] ntfs: fix mrec_lock ABBA deadlock in rename
+Message-ID: <202606300141.H6Io52CJ-lkp@intel.com>
+References: <53BDDD94CF346272+20260629105036.2137914-1-peiyang_he@smail.nju.edu.cn>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -55,92 +84,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <40CD736C4911C181+20260629085053.964383-1-raoxu@uniontech.com>
+In-Reply-To: <53BDDD94CF346272+20260629105036.2137914-1-peiyang_he@smail.nju.edu.cn>
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [0.04 / 15.00];
+X-Spamd-Result: default: False [-2.66 / 15.00];
+	WHITELIST_SPF_DKIM(-3.00)[intel.com:d:+,kernel.org:s:+];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10];
+	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-269810-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-269804-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	DMARC_NA(0.00)[franken.de];
-	FORGED_RECIPIENTS(0.00)[m:raoxu@uniontech.com,m:andrew+netdev@lunn.ch,m:davem@davemloft.net,m:edumazet@google.com,m:kuba@kernel.org,m:pabeni@redhat.com,m:linux-mips@vger.kernel.org,m:netdev@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,m:andrew@lunn.ch,s:lists@lfdr.de];
+	FREEMAIL_TO(0.00)[smail.nju.edu.cn,kernel.org,gmail.com];
+	FORGED_SENDER(0.00)[lkp@intel.com,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:peiyang_he@smail.nju.edu.cn,m:linkinjeon@kernel.org,m:hyc.lee@gmail.com,m:oe-kbuild-all@lists.linux.dev,m:syzkaller@googlegroups.com,m:linux-fsdevel@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,m:hyclee@gmail.com,s:lists@lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_SENDER(0.00)[tsbogend@alpha.franken.de,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MISSING_XM_UA(0.00)[];
 	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
+	RCVD_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[tsbogend@alpha.franken.de,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[lkp@intel.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[intel.com:+];
 	ALIAS_RESOLVED(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[10];
-	R_DKIM_NA(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable,netdev];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[uniontech.com:email,franken.de:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,vger.kernel.org:from_smtp,alpha.franken.de:mid,alpha.franken.de:from_mime]
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[01.org:url,vger.kernel.org:from_smtp,intel.com:dkim,intel.com:email,intel.com:mid,intel.com:from_mime,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: E321E6DDD5A
+X-Rspamd-Queue-Id: AA1306DDA39
 
-On Mon, Jun 29, 2026 at 04:50:53PM +0800, raoxu wrote:
-> From: Xu Rao <raoxu@uniontech.com>
-> 
-> ioc3eth_remove() frees the coherent RX and TX descriptor rings before
-> unregistering the netdev. If the interface is running,
-> unregister_netdev() invokes ioc3_close() through ndo_stop.
-> 
-> ioc3_close() stops the device and then calls ioc3_free_rx_bufs() and
-> ioc3_clean_tx_ring(). Both cleanup functions access descriptors in the
-> rings, so the current ordering causes CPU accesses to freed coherent
-> memory. Until ioc3_stop() disables RX and TX DMA, the device may also
-> continue using the freed ring addresses.
-> 
-> Unregister the netdev before releasing the rings. This lets the core
-> close a running interface and quiesce the device while the rings are
-> still valid. Keep the explicit timer deletion because ndo_stop is not
-> called when the interface is already down.
-> 
-> Fixes: c7b572747549 ("net: sgi: ioc3-eth: allocate space for desc rings only once")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Xu Rao <raoxu@uniontech.com>
-> ---
->  drivers/net/ethernet/sgi/ioc3-eth.c | 5 +++--
->  1 file changed, 3 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/net/ethernet/sgi/ioc3-eth.c b/drivers/net/ethernet/sgi/ioc3-eth.c
-> index 261f2d35d579..009f37105eaf 100644
-> --- a/drivers/net/ethernet/sgi/ioc3-eth.c
-> +++ b/drivers/net/ethernet/sgi/ioc3-eth.c
-> @@ -967,11 +967,12 @@ static void ioc3eth_remove(struct platform_device *pdev)
->  	struct net_device *dev = platform_get_drvdata(pdev);
->  	struct ioc3_private *ip = netdev_priv(dev);
->  
-> +	unregister_netdev(dev);
-> +	timer_delete_sync(&ip->ioc3_timer);
-> +
->  	dma_free_coherent(ip->dma_dev, RX_RING_SIZE, ip->rxr, ip->rxr_dma);
->  	dma_free_coherent(ip->dma_dev, TX_RING_SIZE + SZ_16K - 1, ip->tx_ring, ip->txr_dma);
->  
-> -	unregister_netdev(dev);
-> -	timer_delete_sync(&ip->ioc3_timer);
->  	free_netdev(dev);
->  }
->  
-> -- 
-> 2.50.1
+Hi Peiyang,
 
-Reviewed-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+kernel test robot noticed the following build errors:
 
--- 
-Crap can work. Given enough thrust pigs will fly, but it's not necessarily a
-good idea.                                                [ RFC1925, 2.3 ]
+[auto build test ERROR on 1a3746ccbb0a97bed3c06ccde6b880013b1dddc1]
+
+url:    https://github.com/intel-lab-lkp/linux/commits/Peiyang-He/ntfs-fix-mrec_lock-ABBA-deadlock-in-rename/20260629-185343
+base:   1a3746ccbb0a97bed3c06ccde6b880013b1dddc1
+patch link:    https://lore.kernel.org/r/53BDDD94CF346272%2B20260629105036.2137914-1-peiyang_he%40smail.nju.edu.cn
+patch subject: [PATCH] ntfs: fix mrec_lock ABBA deadlock in rename
+config: arm-randconfig-001-20260629 (https://download.01.org/0day-ci/archive/20260630/202606300141.H6Io52CJ-lkp@intel.com/config)
+compiler: arm-linux-gnueabi-gcc (GCC) 10.5.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260630/202606300141.H6Io52CJ-lkp@intel.com/reproduce)
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202606300141.H6Io52CJ-lkp@intel.com/
+
+All errors (new ones prefixed by >>, old ones prefixed by <<):
+
+>> ERROR: modpost: "d_ancestor" [fs/ntfs/ntfs.ko] undefined!
+
+--
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
