@@ -1,288 +1,116 @@
-Return-Path: <stable+bounces-269701-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-269703-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id oLSBOuI/QmrJ2gkAu9opvQ
-	(envelope-from <stable+bounces-269701-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 29 Jun 2026 11:50:26 +0200
+	id toS9AMM+Qmp92gkAu9opvQ
+	(envelope-from <stable+bounces-269703-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 29 Jun 2026 11:45:39 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E3F676D873D
-	for <lists+stable@lfdr.de>; Mon, 29 Jun 2026 11:50:25 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4572E6D8664
+	for <lists+stable@lfdr.de>; Mon, 29 Jun 2026 11:45:38 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=nxp.com header.s=selector1 header.b=SHshhBEj;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-269701-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-269701-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=none) header.from=nxp.com;
-	arc=reject ("cv is fail on i=2")
+	dkim=pass header.d=seu.edu.cn header.s=default header.b=DMrU01HW;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-269703-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-269703-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=none) header.from=seu.edu.cn;
+	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 049EB300E90A
-	for <lists+stable@lfdr.de>; Mon, 29 Jun 2026 09:30:24 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id AA44F3047BE1
+	for <lists+stable@lfdr.de>; Mon, 29 Jun 2026 09:36:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 264893F8EB3;
-	Mon, 29 Jun 2026 09:30:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 90EB03FBB6B;
+	Mon, 29 Jun 2026 09:35:58 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from DB3PR0202CU003.outbound.protection.outlook.com (mail-northeuropeazon11010048.outbound.protection.outlook.com [52.101.84.48])
+Received: from mail-m155101.qiye.163.com (mail-m155101.qiye.163.com [101.71.155.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5765B3F88A3;
-	Mon, 29 Jun 2026 09:30:17 +0000 (UTC)
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782725418; cv=fail; b=JDiqtBggMcL9kxCZzAys23Q4FjtHAoVTA8c63oOCOlemevW8RplTrMFZgCJJqqo+LNhWsiNEqTPdJyDl5xVKdz2YKvqihHiUjuUeMzQwAnUaeO9yWpFxisw9pc7Q02l6dPHghWo8XqYTS6uqUTMIGZuezOuTSwkiivg2fvjji2I=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782725418; c=relaxed/simple;
-	bh=7XYaweA7TsI8h7KSAyJCTfYY2qK2If7scSfteuRjZFI=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=UG/5U/ZSpQEbudkkZUuFqSR1/CHTdIlz5FzkiBJgLb13gn9qetlT+f5t4AcJVZVrqTdOwrPVyumpMPJKkHqbt9x0s/agDSxRw+t9vdOQQErYde0U7XHdOg0WZa6iTeuoxdL4oowO6/0QM3U1QcL7/Z2HHULoZoziCXok3unbQF4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=SHshhBEj; arc=fail smtp.client-ip=52.101.84.48
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=K1Ymmo02u4ZEskbMZf0cs13//V1+nwEaCexo0qiwsyqZboBV5FfUxrtQYvnMax2DEk9XxNv0Osg0pYcmYeDH/5kjhbUxekFs3JSzhMKThr7KtiOGfUgsi8/llFn6k+IjgbeA3UUiPTSIqBoYJnr4trBBsjhwoI2jRg4ELo/BGes0y8pFsRbn54cHi0tvJNBeyl1BUJBwNRV2G9+/XWGy7fjQY/WoRVefirsTx2ohM0ciGAyIZq/Q3Z2KyZSQzw7G0+s8Z6Kfg8yht7QME3epENWme3CwZNxWQRPM9Rw4JVVH7Oj/LD/rlkInST6z3wYFjijvdugk4T5HXt53Cj8NVg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=6f8DACVvbhtUJCw1DAtzBvyTOcdwPV0ysXW0l4SzZ1c=;
- b=QHIBFe+jWUDplAr7rp+JZvY1eV+zygo2kK2oasCssdf7HZHw64qSj39ohgZfrRPDYB+NEJhT3yKUxJcFGMjnXkabysvOCZZNRLKtpZFwKHYj7eSXvVwcKTwn9QRjDI3ubDk67N694WgNPT6dD9bq7lwytQomts0HATTHlgx6nMXNq++46Aaqhlp6/irXl3uCTJ76xocHUgjunSwQ5WvQsm6okGFsER0VLdT7E2fs53ChvjJ1vJsMc3dSVFjnZjcv0KHtPE7i4LHhWgx7Pied9Ojsk+p8XOidqXOo5OGm8t6/Ns5YhxMMF8ZTf5eXiO2gfrQOBMftb8xGoLvHzrSxQA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=6f8DACVvbhtUJCw1DAtzBvyTOcdwPV0ysXW0l4SzZ1c=;
- b=SHshhBEjOyUV5HtsyCwJmU4dEXQtV2TWCFEe/B4rDJMQEr8RUUEq+vv5LC+LuEG4QSnV1NYiItAGUjne3WP9Olls+mtkb7Oyq4e6iK/GItGpnxXjUvBiMxFt8MmPOfBpg0r9XmMWAFPQeWVvP40f/zcKLzrM0FRPyIJvKF1tTTh3R0ucgljNv5h7z9Zo9Vj0xMvLSBU/5u2vEg6i6TfTK4yvek2XOn6T+3sEAiXCJExapEr3Jz2HwpuS5y1G9FUVrzsgwmgSZM6kypf+B3FkWJFIBF3kKBbdTvx+FBnyTZViHH3Frkd/zir6ZDh/L8qWPEPw89Y2iPKYxdsspGVtMA==
-Received: from AM0PR04MB6802.eurprd04.prod.outlook.com (2603:10a6:208:184::17)
- by AS8PR04MB8055.eurprd04.prod.outlook.com (2603:10a6:20b:2a4::7) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.159.19; Mon, 29 Jun
- 2026 09:30:14 +0000
-Received: from AM0PR04MB6802.eurprd04.prod.outlook.com
- ([fe80::dc36:17b6:e5b1:fa51]) by AM0PR04MB6802.eurprd04.prod.outlook.com
- ([fe80::dc36:17b6:e5b1:fa51%4]) with mapi id 15.21.0159.018; Mon, 29 Jun 2026
- 09:30:14 +0000
-From: Carlos Song <carlos.song@nxp.com>
-To: Liem <liem16213@gmail.com>, "Carlos Song (OSS)" <carlos.song@oss.nxp.com>
-CC: "andi.shyti@kernel.org" <andi.shyti@kernel.org>, Biwen Li
-	<biwen.li@nxp.com>, "festevam@gmail.com" <festevam@gmail.com>, Frank Li
-	<frank.li@nxp.com>, "Frank Li (OSS)" <frank.li@oss.nxp.com>,
-	"imx@lists.linux.dev" <imx@lists.linux.dev>, "kernel@pengutronix.de"
-	<kernel@pengutronix.de>, "linux-arm-kernel@lists.infradead.org"
-	<linux-arm-kernel@lists.infradead.org>, "linux-i2c@vger.kernel.org"
-	<linux-i2c@vger.kernel.org>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>, "o.rempel@pengutronix.de"
-	<o.rempel@pengutronix.de>, "s.hauer@pengutronix.de" <s.hauer@pengutronix.de>,
-	"stable@vger.kernel.org" <stable@vger.kernel.org>, "wsa@kernel.org"
-	<wsa@kernel.org>
-Subject: RE: [PATCH v4 1/2] i2c: imx: Fix slave registration race and error
- handling
-Thread-Topic: [PATCH v4 1/2] i2c: imx: Fix slave registration race and error
- handling
-Thread-Index: AQHdB6njrpEtRieVbECqYNWZBJ3keg==
-Date: Mon, 29 Jun 2026 09:30:13 +0000
-Message-ID:
- <AM0PR04MB6802B76DD86D74C25D9B05DEE8E82@AM0PR04MB6802.eurprd04.prod.outlook.com>
-References:
- <AM0PR04MB6802B863CD9B9AE1609C1785E8EB2@AM0PR04MB6802.eurprd04.prod.outlook.com>
- <20260629023829.152651-1-liem16213@gmail.com>
- <20260629023829.152651-2-liem16213@gmail.com>
-In-Reply-To: <20260629023829.152651-2-liem16213@gmail.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: AM0PR04MB6802:EE_|AS8PR04MB8055:EE_
-x-ms-office365-filtering-correlation-id: c0f75615-4252-4fcb-affd-08ded5c105fa
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam:
- BCL:0;ARA:13230040|23010399003|376014|7416014|19092799006|1800799024|366016|18002099003|22082099003|38070700021|11063799006|56012099006|6133799003|4143699003;
-x-microsoft-antispam-message-info:
- BnXvvGTiwLrxosKtYXfS5ENwm0sjRAKMi7iHMih62kzsiJVLp2MzN/kzDfpJyg6u4pptWA5eO4WiTWM9oQ2a6LEr0FXi6sJROwsbWdUJZXRERez87HUinBJFrF0mi3hIFrjV1g4wQvKw7cmiUHmVLZ+Q0eskpxIGQyia9QihXh3DLOCzpQyim2nZuByvFHKSBGLj3LSPgn0RnYdZxq94pxTH3FLSKEwzd62eqfa7TfdkYvNDsfr4wyhmAgs1nNl/v/avmeHDQjyaxDqI01rMfCr5gwHTyA6h0hXGl1x8MVAF5wdptd8RObnirnj+2DNJq9KVTaa/d4iT1QzV94CgGQGVxZn0qe1rAKh5jEUFsQpvd+za1tuRuTSv2089xybf8+uek/VnzNoLZTKhZwxm/oBpJsDamOTCTvH1HVvy3TT5scwRdH2UXCtvvTGxxfU2V3DxI0t5dh7RTGCBF4PGFk20Dl8zsBUvpRUP0SpzQVz7nNtpW9epBQtNGQGfAQZ1HRpiCSdLd/7FdcUjQg8qmUtn/NOWPxwPtFC9ksIFbkfHMlYIyWsfKawlAhZRWowd3SSrm5coSSAqFK35uBduof7DpnrGJoDV+aeUH+Th8asiFdmsjYgsmu3catlvQkl2uvgKyIRw/71I+WSuNwfUmgSjhA3pEUTiAcOOUJQ2xBRa7cbaVMWxttAOY0F61DDdVyqf8IEWrA+T5esMJthCwTQzaOKqnLIyF8bdQJqPEV0=
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM0PR04MB6802.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(376014)(7416014)(19092799006)(1800799024)(366016)(18002099003)(22082099003)(38070700021)(11063799006)(56012099006)(6133799003)(4143699003);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?us-ascii?Q?c9JRapUidK3Y6Y9cCHbIYrJMS3ZxwPO0sYqUSX4IySFevjwjkJl+XbZfPcMu?=
- =?us-ascii?Q?pgprUWyPjjccB2mJgV2LLvjLpcynWYr2zLQdH4yXmo/KKrzL64zdTmEbxShS?=
- =?us-ascii?Q?9uQCgsOJO4o+2fQgFll1vHCtGpQAB+3OAXGwbly4mj4EkmusaP01UKAlKIhj?=
- =?us-ascii?Q?LTdOzcDr3TEPzIi6JMSiWiD7s9jLTuxyR4KGMVrkOvAODZS680Lsu8bDVFz2?=
- =?us-ascii?Q?tsIBPMU7Y3Q23/BQ06sUw8CJef1yJXUxd22gsl589SMpDuugO8Vo+iqqei5q?=
- =?us-ascii?Q?DPoRe2223JyV+4DtssmJBKd0qTzMDFFV6fMdZYVrQdZk4tbEjA+tvf+P+hgT?=
- =?us-ascii?Q?rZAnGQZxTbUXRfDDJbvwwXWqr7EQ/t7GfWGMfX737SgHYFda5yUySpboSwwP?=
- =?us-ascii?Q?Kq7ZdJ7R7PxmjRNWSVQdhKA0sUCirGDGqIX90pW47gVsSCCAnTRG3TrYYjvz?=
- =?us-ascii?Q?9FcP5SFRId3VMVnGnaKlP3jwJ2ZcqKKqa+MybQSStoBuWw49ltojEQbqaOZb?=
- =?us-ascii?Q?VUvvS+eI3oPl0AWNVuBYwvjCp77OqNis31CUzMXZc3OthGicuHv0YTYvBeuJ?=
- =?us-ascii?Q?/xp0Yggj00/PYlrFlihaumBVnYPJwLji7uKpawMEkRzc380d7/k+Drho0DPO?=
- =?us-ascii?Q?ZUwYWxhza1cntwgZAdOEym7lYDxF0zIo9eGvDSN8NRpcStiLZ2fRZcvAyAk+?=
- =?us-ascii?Q?1laFzMeSxPhnBWLMfGf9ECYLkOkOeL2PqGOEEDUOvcnzzv00WxHYBcazxR4b?=
- =?us-ascii?Q?VRXR8FpUJzRZ4M2/arQm9cKEDteW0STqU1+5eR1ByqXHuUSMEfVKBPf6CuPt?=
- =?us-ascii?Q?zoive8JJb4fCkXvmrxa1a1Y5MmqNY9jxwJ+190ozmiBCQkH+h+F4Iqki9TFj?=
- =?us-ascii?Q?swaWEotuBk4iURbTu87/uzfcCTuThy+Ec/4KJ3bB698I1YTrYPHfqbrM1PmM?=
- =?us-ascii?Q?4pYb6LQzjUQHVzpOzJ2ITBMsuugdaSo8q6s8sEVL5l1ru0wjUkTmMY3MCgkT?=
- =?us-ascii?Q?WpaTg+v6dzlyx9iOgLja0piSI8+R+xbTJT0G56MNMHLDtfuimelx+NdwYjaY?=
- =?us-ascii?Q?bGlHBG3kxfqg8m36lsEl7JGvwzK+UIEiNVzZexVsyrvKTJRhbyAxI9ALs31e?=
- =?us-ascii?Q?aKoV5FRzAF8uy0IvtED3YlOpWzFwKYfRuVE/Jt4Kkfx0a1ByqLjyFh/3bkYH?=
- =?us-ascii?Q?4zXS/+zUN0Lf3inMjpAw+b826C59CSutt3zBo05JLGzhRWax9kx0aR9QWKDw?=
- =?us-ascii?Q?yWBHZ2k3DTpLRrlRpJ62Ycl0iXy0dLHuT6gbSkPhTslGZH1q0TxQ9TQGV6Xt?=
- =?us-ascii?Q?iiqL8A2EsuWz+Nb259MS9gpcmnAD8SlTJjFp17b+QjMH5tafthMjxeZAPeA6?=
- =?us-ascii?Q?QfmaoQ5YJTbp3AN9jdkF74D4TpN4Uu3LGnAfEN6Z5oHvow9eRT7ZDEsapS/1?=
- =?us-ascii?Q?iw70HfrIbdrhmOI3InApNBajxZFOJTRC8qhVve7ot/V9Urgj0h0pJGVss1gC?=
- =?us-ascii?Q?bEhp08RRO2UoJpMNB6U15+Z5xMKuW/75TvWZjxWWKLJbGAXXzWflP6Z1Dwcm?=
- =?us-ascii?Q?eay7DMnZ9sCtW9zQEoWAt/y17AhkNr1stqGeNQDaDHh5/RxrFHO1bHCMZe51?=
- =?us-ascii?Q?Ru8jM4l9tCLLoUA+J7E3YlUFT+iLr6oTjgb13MkrZLD7OuV4b8a7JrI81huU?=
- =?us-ascii?Q?aMaVmU6pSUTm4W4g9R03Vb+kmKd0DZvVD/eCCFh7+m+IJ8O7?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 288D33FA5D8;
+	Mon, 29 Jun 2026 09:35:48 +0000 (UTC)
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1782725757; cv=none; b=DiMiuXfW8ka8Q1f7PqrV9/5QJpHIp6acEDM+Hn/qaMaGjBqvTloLbMD6YhWWn0vdUqaKPX9zP6LLgkXL/Xsk2SCfKyGbVn3qibjmOcm6m8duPqrIpd8TFe8gSNlECijyUl0XocifLIyUlbFblo1a96Cdy8FjyD/L882xKX9oeFs=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1782725757; c=relaxed/simple;
+	bh=t71dDtqkyRt9nKjhx791To5KGBDCv+dCocQrLeqjJlQ=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=YTFL4rraId3oSIhTcDWF51uamKZiaINshKFEsff6RSDa1L90SrgmmOs9mlajb31l0q6uosEw0UT9vJkWnQLsBLpj768DHDdhtsvsPqe5AAznF3OSDwqs/eN1xY9Vgt5UQggC+MI9viKvbqoCNCzEJ4i37tbLuZBx25Mq8mBWWYk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=seu.edu.cn; spf=pass smtp.mailfrom=seu.edu.cn; dkim=pass (1024-bit key) header.d=seu.edu.cn header.i=@seu.edu.cn header.b=DMrU01HW; arc=none smtp.client-ip=101.71.155.101
+Received: from DESKTOP-SUEFNF9.taila7e912.ts.net (unknown [58.241.16.34])
+	by smtp.qiye.163.com (Hmail) with ESMTP id 44277315b;
+	Mon, 29 Jun 2026 17:30:36 +0800 (GMT+08:00)
+From: Dawei Feng <dawei.feng@seu.edu.cn>
+To: dawei.feng@seu.edu.cn
+Cc: gregkh@linuxfoundation.org,
+	jianhao.xu@seu.edu.cn,
+	linusw@kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-usb@vger.kernel.org,
+	stable@vger.kernel.org,
+	stern@rowland.harvard.edu,
+	zilin@seu.edu.cn
+Subject: Re: [PATCH] usb: free iso schedules on failed submit
+Date: Mon, 29 Jun 2026 17:30:37 +0800
+Message-Id: <20260629093037.3943535-1-dawei.feng@seu.edu.cn>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20260629082530.3905845-1-dawei.feng@seu.edu.cn>
+References: <20260629082530.3905845-1-dawei.feng@seu.edu.cn>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: AM0PR04MB6802.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: c0f75615-4252-4fcb-affd-08ded5c105fa
-X-MS-Exchange-CrossTenant-originalarrivaltime: 29 Jun 2026 09:30:13.8576
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: PbN6hut3eoCGa4Necdr8DCrksDoxHRqPGJF/lJwmQqcp7AmMs1G0DNo/9MN6l39p3k5ltA4DKB7mqg9D3A9rgA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR04MB8055
+Content-Transfer-Encoding: 8bit
+X-HM-Tid: 0a9f12b7638f03a2kunm2221069317030d
+X-HM-MType: 10
+X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
+	tZV1koWUFITzdXWRgWCB1ZQUpXWS1ZQUlXWQ8JGhUIEh9ZQVlDT09MVh9OTUpLTx9DGhhMSVYeHw
+	5VEwETFhoSFyQUDg9ZV1kYEgtZQVlOQ1VJT0pVSk1VSE9ZV1kWGg8SFR0UWUFZT0tIVUpLSEpPSE
+	xVSktLVUpCS0tZBg++
+DKIM-Signature: a=rsa-sha256;
+	b=DMrU01HWPYmmRsCVlWhaGW1VAN3F3RUBEwTDDjeQn6yHLu7AsZ5u7HUKtvRPtly2gArOVCYMuu8xl47bq1d7nPDcxGmuKfG2Uo7Kd8tJOMppXh4CSmQce9qM58sC3YMA+qp5MH0VqCPoiqvHevOtAOkd8poO2OdOuD/cPRbxUUk=; c=relaxed/relaxed; s=default; d=seu.edu.cn; v=1;
+	bh=t71dDtqkyRt9nKjhx791To5KGBDCv+dCocQrLeqjJlQ=;
+	h=date:mime-version:subject:message-id:from;
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	ARC_REJECT(1.00)[cv is fail on i=2];
-	DMARC_POLICY_ALLOW(-0.50)[nxp.com,none];
-	R_DKIM_ALLOW(-0.20)[nxp.com:s=selector1];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[seu.edu.cn,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_DKIM_ALLOW(-0.20)[seu.edu.cn:s=default];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-269701-lists,stable=lfdr.de];
+	FORGED_SENDER_FORWARDING(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:liem16213@gmail.com,m:carlos.song@oss.nxp.com,m:andi.shyti@kernel.org,m:biwen.li@nxp.com,m:festevam@gmail.com,m:frank.li@nxp.com,m:frank.li@oss.nxp.com,m:imx@lists.linux.dev,m:kernel@pengutronix.de,m:linux-arm-kernel@lists.infradead.org,m:linux-i2c@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:o.rempel@pengutronix.de,m:s.hauer@pengutronix.de,m:stable@vger.kernel.org,m:wsa@kernel.org,s:lists@lfdr.de];
-	FREEMAIL_TO(0.00)[gmail.com,oss.nxp.com];
-	FORGED_SENDER(0.00)[carlos.song@nxp.com,stable@vger.kernel.org];
-	RCPT_COUNT_TWELVE(0.00)[16];
-	FREEMAIL_CC(0.00)[kernel.org,nxp.com,gmail.com,oss.nxp.com,lists.linux.dev,pengutronix.de,lists.infradead.org,vger.kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_EQ_ADDR_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-269703-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:dawei.feng@seu.edu.cn,m:gregkh@linuxfoundation.org,m:jianhao.xu@seu.edu.cn,m:linusw@kernel.org,m:linux-kernel@vger.kernel.org,m:linux-usb@vger.kernel.org,m:stable@vger.kernel.org,m:stern@rowland.harvard.edu,m:zilin@seu.edu.cn,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[dawei.feng@seu.edu.cn,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[dawei.feng@seu.edu.cn,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[carlos.song@nxp.com,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[nxp.com:+];
-	RCVD_COUNT_FIVE(0.00)[5];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	MISSING_XM_UA(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	ALIAS_RESOLVED(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	TO_DN_NONE(0.00)[];
+	DKIM_TRACE(0.00)[seu.edu.cn:+];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,vger.kernel.org:from_smtp,nxp.com:dkim,nxp.com:email,nxp.com:from_mime,linux.dev:email,AM0PR04MB6802.eurprd04.prod.outlook.com:mid,pengutronix.de:email,infradead.org:email]
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[seu.edu.cn:dkim,seu.edu.cn:mid,seu.edu.cn:from_mime,vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: E3F676D873D
+X-Rspamd-Queue-Id: 4572E6D8664
 
+On Mon, 29 Jun 2026 16:25:30 +0800, Dawei Feng wrote:
+>Subject: [PATCH] usb: free iso schedules on failed submit
+>EHCI and FOTG210 isochronous submits build an ehci_iso_sched before
 
+Hi all,
 
-> -----Original Message-----
-> From: Liem <liem16213@gmail.com>
-> Sent: Monday, June 29, 2026 10:38 AM
-> To: Carlos Song (OSS) <carlos.song@oss.nxp.com>
-> Cc: andi.shyti@kernel.org; Biwen Li <biwen.li@nxp.com>; festevam@gmail.co=
-m;
-> Frank Li <frank.li@nxp.com>; Frank Li (OSS) <frank.li@oss.nxp.com>;
-> imx@lists.linux.dev; kernel@pengutronix.de; liem16213@gmail.com;
-> linux-arm-kernel@lists.infradead.org; linux-i2c@vger.kernel.org;
-> linux-kernel@vger.kernel.org; o.rempel@pengutronix.de;
-> s.hauer@pengutronix.de; stable@vger.kernel.org; wsa@kernel.org
-> Subject: [EXT] [PATCH v4 1/2] i2c: imx: Fix slave registration race and e=
-rror
-> handling
->=20
-> Caution: This is an external email. Please take care when clicking links =
-or opening
-> attachments. When in doubt, report the message using the 'Report this ema=
-il'
-> button
->=20
->=20
-> In i2c_imx_reg_slave(), the slave pointer was assigned before
-> pm_runtime_resume_and_get().  If pm_runtime_resume_and_get() failed, the
-> error path returned without clearing i2c_imx->slave, leaving it non-NULL =
-and
-> causing all subsequent registration attempts to fail with -EBUSY.
->=20
-> Additionally, because this driver uses a shared IRQ, the interrupt handle=
-r
-> i2c_imx_isr() can execute concurrently and, after acquiring slave_lock,
-> dereference i2c_imx->slave.  The previous fix attempt added a lockless
-> i2c_imx->slave =3D NULL on the error path, but that could race with the I=
-SR under
-> the lock and still cause a NULL pointer dereference.
->=20
-> Fix both issues by deferring the assignment of i2c_imx->slave and
-> i2c_imx->last_slave_event to after a successful resume, and by performing=
- the
-> assignment inside the slave_lock critical section.
-> This guarantees that the slave pointer is never left stale on the error p=
-ath and is
-> always valid when observed by the interrupt handler.
->=20
-> Fixes: f7414cd6923f ("i2c: imx: support slave mode for imx I2C driver")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Liem <liem16213@gmail.com>
-
-Hi, Liem
-
-LGTM. Thank you very much.
-
-Acked-by: Carlos Song <carlos.song@nxp.com>
-
-> ---
-> v3 -> v4:
->   - Instead of clearing the slave pointer on error, defer the
->     assignment until after pm_runtime_resume_and_get() succeeds,
->     and take slave_lock to avoid racing with the shared IRQ handler.
->     Suggested by Sashiko and Carlos Song
-> ---
->  drivers/i2c/busses/i2c-imx.c | 8 +++++---
->  1 file changed, 5 insertions(+), 3 deletions(-)
->=20
-> diff --git a/drivers/i2c/busses/i2c-imx.c b/drivers/i2c/busses/i2c-imx.c =
-index
-> 28313d0fad37..2398c406e913 100644
-> --- a/drivers/i2c/busses/i2c-imx.c
-> +++ b/drivers/i2c/busses/i2c-imx.c
-> @@ -930,9 +930,6 @@ static int i2c_imx_reg_slave(struct i2c_client *clien=
-t)
->         if (i2c_imx->slave)
->                 return -EBUSY;
->=20
-> -       i2c_imx->slave =3D client;
-> -       i2c_imx->last_slave_event =3D I2C_SLAVE_STOP;
-> -
->         /* Resume */
->         ret =3D pm_runtime_resume_and_get(i2c_imx->adapter.dev.parent);
->         if (ret < 0) {
-> @@ -940,6 +937,11 @@ static int i2c_imx_reg_slave(struct i2c_client *clie=
-nt)
->                 return ret;
->         }
->=20
-> +       scoped_guard(spinlock_irqsave, &i2c_imx->slave_lock) {
-> +               i2c_imx->slave =3D client;
-> +               i2c_imx->last_slave_event =3D I2C_SLAVE_STOP;
-> +       }
-> +
->         i2c_imx_slave_init(i2c_imx);
->=20
->         return 0;
-> --
-> 2.34.1
->=20
->=20
-
+Please ignore this patch. It was sent accidentally as a duplicate of the
+previous submission. Sorry for the noise.
 
