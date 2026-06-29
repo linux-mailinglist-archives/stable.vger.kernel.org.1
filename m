@@ -1,162 +1,203 @@
-Return-Path: <stable+bounces-269953-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-269812-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id aJVkD3KoQ2qpeQoAu9opvQ
-	(envelope-from <stable+bounces-269953-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 30 Jun 2026 13:28:50 +0200
+	id bCkCMOO5QmoJAQoAu9opvQ
+	(envelope-from <stable+bounces-269812-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 29 Jun 2026 20:30:59 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 209B16E3985
-	for <lists+stable@lfdr.de>; Tue, 30 Jun 2026 13:28:50 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4A6DD6DE100
+	for <lists+stable@lfdr.de>; Mon, 29 Jun 2026 20:30:59 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=iSPZY21t;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-269953-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-269953-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=ZSKW5IWI;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b="XiK/ozan";
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=0Ip6Kwgp;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=EeYyMfbh;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-269812-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-269812-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=none) header.from=suse.de;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 52F9830357B8
-	for <lists+stable@lfdr.de>; Tue, 30 Jun 2026 11:16:35 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 51EAB302A2D6
+	for <lists+stable@lfdr.de>; Mon, 29 Jun 2026 18:30:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC5E23ED3CA;
-	Tue, 30 Jun 2026 11:16:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29CA3391822;
+	Mon, 29 Jun 2026 18:30:52 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9D5D3CB8F1;
-	Tue, 30 Jun 2026 11:16:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75FCF38837E
+	for <stable@vger.kernel.org>; Mon, 29 Jun 2026 18:30:49 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782818190; cv=none; b=Q5Qz6OZbt7V0hpyGDTTCzUTsmZ+GVzAmenaBnJt9iQ+V3h9cIEqsPHSOOzqrzBIkhSGQsx4yvdMXJNd6yVy+wwbw8Q2bNjmxEUEJxF2ov72zblN8C3tEPo7VfBwTXULs0UsKDvSk3WKWFGYTBLO/UzExVK+dtrAMZdh3QOZybvU=
+	t=1782757852; cv=none; b=X7ivfNb55JfTgqzHOupqzqpA/GDMlrorLtVXN/ZGcdu2k3Q8Kvjy7Jr23975SRnFKQZrT5RBOf4QZv9t632ykiu66fiGqfMPQhhn7YjLj5e5QkacFhARmHSBs3TIPgAsW9BSZO2r6M2xTp0BBzzSzV+tiJOWQy5AxQ6VfKO1G6A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782818190; c=relaxed/simple;
-	bh=YV6YJpcGwfQvseMKoKnas43u5Hxx1rnlDUu4/Nw/DGA=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=Y+UH2nv9M96mRL+9BV8XZejG2isjmA2SZ3Nzo1TpC56cInEx8uRvMRIB3tAozhTGFDp1unavM19HSarijmJ439zNoqepNtcm41QnKIosfdrXPwMHJkZb0aADHXIbyOsSZOWf0q60TNlofSwzY9yCH5keGFXu+4STDa+atqUy2A0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iSPZY21t; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00A591F000E9;
-	Tue, 30 Jun 2026 11:16:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782818189;
-	bh=7uk3YhrWEUg+nWNZmn8lka+Y14/S6FL8oxksKWCkBzA=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Date;
-	b=iSPZY21tUzZI3mSVAns2pmoP4+ViGPrR5XdX85l/Ln5ve31xO1MP1z/3qBNrml4by
-	 nlYuzU8StaOLqHUBBM7mVnQ2GIWLEoOXg9WVx4TZZCZ/gPsc5+R4BMWNu9NKxc7T/l
-	 4ShnRP2L8n4HZKDP8qt6T4ApG72v1memvv009JoJGvxlmU91LkhQbiPt2HvnpnTUFy
-	 qMeosOKayOX27UBnkR4MGhO/euoPVotFYQ4IiCFoGMEn0NKwDor9jZNg1W+5idJ0UF
-	 miGlbrfUgUaNIU862RyhHtAVPMFFTDyH42jqfMnVAse3iSPa5622uOI8A3umXPpClh
-	 D/laua+JWlMpg==
-From: Mark Brown <broonie@kernel.org>
-To: Liam Girdwood <lgirdwood@gmail.com>, Rob Herring <robh@kernel.org>, 
- Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, Konrad Dybcio <konradybcio@kernel.org>, 
- Kathiravan Thirumoorthy <kathiravan.thirumoorthy@oss.qualcomm.com>
-Cc: linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org, 
- devicetree@vger.kernel.org, stable@vger.kernel.org, 
- Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>, 
- Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
-In-Reply-To: <20260617-ipq9650_refgen-v4-0-c505ea6c6661@oss.qualcomm.com>
-References: <20260617-ipq9650_refgen-v4-0-c505ea6c6661@oss.qualcomm.com>
-Subject: Re: [PATCH v4 0/3] Add support for the REFGEN in the IPQ9650 SoC
-Message-Id: <178275629145.47562.9789998445156549572.b4-ty@b4>
-Date: Mon, 29 Jun 2026 19:04:51 +0100
+	s=arc-20240116; t=1782757852; c=relaxed/simple;
+	bh=NSyl7BT1TjFj5gSTLMOULowrGNab8nMNFh4Un9s5lk8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Wg5ewWbdxAYyW6o3t6ZSa26IZU2Y51C3AMrUBvZ61E0VMjuy983223qGMTt3wMw3ngFSdL34ZFSR/rHBAT8U08as3ZpmhjEHE8WtyKOBtqr1OKQMBIQ73nFcgPxNY10jdMvLUeJVs3Drx1slkhbraqCH9F1FVUE0OmuMWHgHjoQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=ZSKW5IWI; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=XiK/ozan; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=0Ip6Kwgp; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=EeYyMfbh; arc=none smtp.client-ip=195.135.223.130
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 8C5DC73213;
+	Mon, 29 Jun 2026 18:30:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1782757847; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=+4unOw1kC7PDoCyOC3Zep6sOEjf/lsnW9nQUlS74aFs=;
+	b=ZSKW5IWIhLmI75H5Ru137+UQ9cwp0wZYNWh0wLLIwO5UeUdvIAf2J7wD49hRckfFtQs5te
+	KCzC0YssaeSjr9FGF/D0OVQ2YRkDRna7X85nfuOKVE/gp+B0yhLSpINVrqY3eRm3M7t9q+
+	m/I00eAYwiTNDvSUCNHwMzn1k11kjAA=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1782757847;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=+4unOw1kC7PDoCyOC3Zep6sOEjf/lsnW9nQUlS74aFs=;
+	b=XiK/ozan+2lMDL5Detpi57el9beS/jZlYoacw9yUkD5LGELLMmDbFuIPMzf6NDHVdguh8N
+	ri9mJsShahj+JlAg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1782757846; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=+4unOw1kC7PDoCyOC3Zep6sOEjf/lsnW9nQUlS74aFs=;
+	b=0Ip6KwgpFhy8F4Ou3+lH/mzi+xCwIOYpRGCQ3A3XNcrAfHKigDU/sszYi08H5tg4Xv6+1R
+	xdZV1ik8foXtGbd1KHMUkOLd9PFKWatLgTqBU/lEqi7pgcAv4zo/Ll41gcTaMmwmOWKLxP
+	wJEC8RthywEFKzfWtAYS9zFXCNRqa/E=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1782757846;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=+4unOw1kC7PDoCyOC3Zep6sOEjf/lsnW9nQUlS74aFs=;
+	b=EeYyMfbhRr8oQQjM/Igb3SEFQJcXtgZp4ynHWIVDTLcZcStgOopApUqSajIw8RiD8N7NHY
+	ZiPQqv8eCeLo1ZDA==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 8D138779A8;
+	Mon, 29 Jun 2026 18:30:45 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id uIrYHtW5Qmr0dwAAD6G6ig
+	(envelope-from <pfalcato@suse.de>); Mon, 29 Jun 2026 18:30:45 +0000
+Date: Mon, 29 Jun 2026 19:30:43 +0100
+From: Pedro Falcato <pfalcato@suse.de>
+To: Christian Brauner <brauner@kernel.org>
+Cc: Jan Kara <jack@suse.cz>, Alexander Viro <viro@zeniv.linux.org.uk>, 
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>, Andrew Morton <akpm@linux-foundation.org>, 
+	"Liam R. Howlett" <liam@infradead.org>, David Hildenbrand <david@kernel.org>, 
+	Vlastimil Babka <vbabka@kernel.org>, Jann Horn <jannh@google.com>, linux-fsdevel@vger.kernel.org, 
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH] mm: do file ownership checks with the proper mount idmap
+Message-ID: <akK4CRgiv9G29UiM@pedro-suse.lan>
+References: <20260625153853.913949-1-pfalcato@suse.de>
+ <s6mr3j7gew2cgerzrvqzenjctctrtnhvlynmcccxb24uszcauz@5iapd6wnbfxg>
+ <20260629-sektor-gaben-gepokert-58db0a3528a3@brauner>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.16-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1685; i=broonie@kernel.org;
- h=from:subject:message-id; bh=YV6YJpcGwfQvseMKoKnas43u5Hxx1rnlDUu4/Nw/DGA=;
- b=owEBbQGS/pANAwAKASTWi3JdVIfQAcsmYgBqQ6WJ3gs57rxjOYInD2MF9f70GjUy2TeB0g/30
- HGlGgu5FpeJATMEAAEKAB0WIQSt5miqZ1cYtZ/in+ok1otyXVSH0AUCakOliQAKCRAk1otyXVSH
- 0AygB/4weS7fOFEV/Z0PlEhepkVD4y5TuXvddWKlAAjgw8nIXPWn7jbUbSbRi/WDmjhOYTEUZpj
- V6dYcOhzVh592w8H950ox5WAVxWmBiySqVDYffEc8WAJMsKKR4SS0iQvd1wybjws/X7MxRqIjni
- LlOSTDK1ov/1NN+F/4w2ny4Kr5Ph76svAogSdPIibgV+hZMPe5sd8FR3IHOZgdOrKN6YbDl1Vkv
- caYA0vKOCLB3esiXvs7ZJZkYT2fXWN41kSQOr+edO4SkRjWENO1BAjFQ6IT2PPNdF13qoI6yuye
- ypWVxhjdXZa2VN8MefEy7znvZSSz2RwuNsuwwx1PyJ7RVVOo
-X-Developer-Key: i=broonie@kernel.org; a=openpgp;
- fpr=3F2568AAC26998F9E813A1C5C3F436CA30F5D8EB
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260629-sektor-gaben-gepokert-58db0a3528a3@brauner>
+X-Spam-Flag: NO
+X-Spam-Score: -4.30
+X-Spam-Level: 
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-4.66 / 15.00];
-	WHITELIST_SPF_DKIM(-3.00)[kernel.org:d:+,kernel.org:s:+];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	DMARC_POLICY_ALLOW(-0.50)[suse.de,none];
+	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:lgirdwood@gmail.com,m:robh@kernel.org,m:krzk+dt@kernel.org,m:conor+dt@kernel.org,m:konradybcio@kernel.org,m:kathiravan.thirumoorthy@oss.qualcomm.com,m:linux-arm-msm@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:devicetree@vger.kernel.org,m:stable@vger.kernel.org,m:konrad.dybcio@oss.qualcomm.com,m:krzysztof.kozlowski@oss.qualcomm.com,m:krzk@kernel.org,m:conor@kernel.org,s:lists@lfdr.de];
-	FREEMAIL_TO(0.00)[gmail.com,kernel.org,oss.qualcomm.com];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-269812-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:brauner@kernel.org,m:jack@suse.cz,m:viro@zeniv.linux.org.uk,m:willy@infradead.org,m:akpm@linux-foundation.org,m:liam@infradead.org,m:david@kernel.org,m:vbabka@kernel.org,m:jannh@google.com,m:linux-fsdevel@vger.kernel.org,m:linux-mm@kvack.org,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,s:lists@lfdr.de];
 	FROM_HAS_DN(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[12];
-	FORGED_SENDER(0.00)[broonie@kernel.org,stable@vger.kernel.org];
+	RCPT_COUNT_TWELVE(0.00)[13];
+	FORGED_SENDER(0.00)[pfalcato@suse.de,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
 	FORWARDED(0.00)[lists@lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	TO_DN_SOME(0.00)[];
+	DKIM_TRACE(0.00)[suse.de:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	MISSING_XM_UA(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[broonie@kernel.org,stable@vger.kernel.org];
-	TAGGED_FROM(0.00)[bounces-269953-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,dt];
+	FROM_NEQ_ENVFROM(0.00)[pfalcato@suse.de,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp]
+	ALIAS_RESOLVED(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp,suse.de:dkim,suse.de:email,suse.de:from_mime]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 209B16E3985
+X-Rspamd-Queue-Id: 4A6DD6DE100
 
-On Wed, 17 Jun 2026 23:08:42 +0530, Kathiravan Thirumoorthy wrote:
-> Add support for the REFGEN in the IPQ9650 SoC
+On Mon, Jun 29, 2026 at 02:15:19PM +0200, Christian Brauner wrote:
+> On 2026-06-26 16:19:18+02:00, Jan Kara wrote:
+> > On Thu 25-06-26 16:38:53, Pedro Falcato wrote:
+> > 
+> > > Ever since idmapped mounts were introduced, inode ownership checks
+> > > (for side-channel protection) in mincore() and madvise(MADV_PAGEOUT) were
+> > > done against the nop_mnt_idmap, which completely ignores the file's mount's
+> > > idmap. This results in odd edgecases like:
+> > > 
+> > > 1) mount/bind-mount with an idmap userA:userB:1
+> > > 2) userB runs an owner_or_capable() check on file that is owned by userA
+> > > on-disk/in-memory, but owned by userB after idmap translation
+> > > 3) owner_or_capable() mysteriously fails as the correct idmap wasn't supplied
+> > > 
+> > > In the case of mincore/madvise MADV_PAGEOUT, this is usually benign, because
+> > > file_permission(file, MAY_WRITE) will probably succeed, as it uses the proper
+> > > idmap internally, but it does not need to be the case on e.g a 0444 file
+> > > where even the owner itself doesn't have permissions to write to it.
+> > > 
+> > > Since this is clearly not trivial to get right, introduce a
+> > > file_owner_or_capable() that can carry the correct semantics, and switch
+> > > the various users in mm to it.
+> > > 
+> > > The issue was found by manual code inspection & an off-list discussion with
+> > > Jan Kara.
+> > > 
+> > > Fixes: 9caccd41541a ("fs: introduce MOUNT_ATTR_IDMAP")
+> > > Cc: stable@vger.kernel.org
+> > > Signed-off-by: Pedro Falcato <pfalcato@suse.de>
+> > 
+> > This looks good to me. I'm a bit curious why Christian initially (in 2021)
+> > used init_user_ns here instead of the file namespace... Anyway feel free to
+> > add:
 > 
-> IPQ9650 SoC has 2 REFGEN blocks providing the reference current to
-> the PCIe and USB, UNIPHY PHYs. For the other SoCs, clocks for this block
-> is enabled on power up but that's not the case for IPQ9650 and we have
-> to explicitly enable those clocks.
+> Back when this was added only the do_mincore() codepath existed and that
+> was intentionally left unconverted because it exposes the cache
+> residency status. So it was effectively a massive side-channel.
+
+Hmm. I'm not sure what you mean by this. Wouldn't it be more correct to respect
+the mount idmap (given that a mount-ns-capable user mounted it with an idmap for
+someone else, or itself) for mincore? Am I missing something? Or maybe I'm
+misunderstanding that paragraph.
+
 > 
-> [...]
-
-Applied to
-
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/regulator.git for-7.3
+> Both fd3b1bc3c86e ("mm/madvise: fix madvise_pageout for private file mappings")
+> and specifically cachestat() came way after all that.
+> 
+> I'm otherwise fine with the change.
+> 
+> Reviewed-by: Christian Brauner (Amutable) <brauner@kernel.org> 
 
 Thanks!
 
-[1/3] regulator: qcom-refgen: correct the regulator type to CURRENT
-      https://git.kernel.org/broonie/regulator/c/05dfeb2d0ccf
-[2/3] regulator: dt-bindings: qcom,sdm845-refgen-regulator: Document IPQ9650
-      https://git.kernel.org/broonie/regulator/c/7b5cd466e488
-[3/3] regulator: qcom-refgen: add support for the IPQ9650 SoC
-      https://git.kernel.org/broonie/regulator/c/ca5c1a0ca229
-
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.
-
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
-
+-- 
+Pedro
 
