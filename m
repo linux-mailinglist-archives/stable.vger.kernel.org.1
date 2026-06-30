@@ -1,193 +1,190 @@
-Return-Path: <stable+bounces-269939-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-269942-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id /bV0FjWVQ2q/cgoAu9opvQ
-	(envelope-from <stable+bounces-269939-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 30 Jun 2026 12:06:45 +0200
+	id asGgCXmXQ2pMcwoAu9opvQ
+	(envelope-from <stable+bounces-269942-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 30 Jun 2026 12:16:25 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id E38526E29F3
-	for <lists+stable@lfdr.de>; Tue, 30 Jun 2026 12:06:44 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6B8FA6E2B47
+	for <lists+stable@lfdr.de>; Tue, 30 Jun 2026 12:16:24 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=nbCkmdtv;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-269939-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-269939-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=none) header.from=gmail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="WW/woxRp";
+	dkim=pass header.d=redhat.com header.s=google header.b="IW16Uj/m";
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-269942-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-269942-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 55F4A300598B
-	for <lists+stable@lfdr.de>; Tue, 30 Jun 2026 10:06:44 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D74EF306F359
+	for <lists+stable@lfdr.de>; Tue, 30 Jun 2026 10:11:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B3F673EB10C;
-	Tue, 30 Jun 2026 10:06:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3843B3ECBE5;
+	Tue, 30 Jun 2026 10:11:31 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-yw1-f171.google.com (mail-yw1-f171.google.com [209.85.128.171])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 463E33E44E0
-	for <stable@vger.kernel.org>; Tue, 30 Jun 2026 10:06:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEDB53C943F
+	for <stable@vger.kernel.org>; Tue, 30 Jun 2026 10:11:29 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782814000; cv=none; b=nFZqfYc7ecCSOrkou6bN2Idrl6X0ikX9xwMmh3N6VyHxzVlHXxYqTeAP8krg1hYJHshFmSZHhnP7sslFtl6QRJI18xP0NgGsmXAAc6kScuem97POO9lEFJAx3gKMiSaVRoSBWvKm2GaV3lOZirZjbxIwL1Agx8Vs0peC0//pQko=
+	t=1782814291; cv=none; b=Y6ubwEm1xcRNE+klzZlSZlST+0TOFie8dxFY4g1MNbw1ECnWBScYehr8cJLsFmRLDvU+R3cprNr2fpvx/0nLjNvHmbItjy8ckPeZDmsWRfMtkk6MNXj+ciPigtl4tD5SBM9gwUOTV+Vr4gdyZacqQqxJAHwi/PhkQP7sd1P0cIs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782814000; c=relaxed/simple;
-	bh=jLHPncpWDl0+2GMPq5aycjfL2hE5xvIsIfTOWjV86Ak=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=nlcg2NfciB5ATfekA7SO0tovTsTdHCDkglcRjytnewgMrsgxG7rz5W5XxNoWrJAzX0ZOp6RO1aUpiMS2ebW/lIEyKyRYKKNR5bjXs576R2ED6Xs0oXMK1Tjk10a6xiue2thdQ291q8GfZzg+Qe9ajw8o4z3+jzdOlzhKBlRVFmY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=nbCkmdtv; arc=none smtp.client-ip=209.85.128.171
-Received: by mail-yw1-f171.google.com with SMTP id 00721157ae682-80cbb0688c8so28670247b3.1
-        for <stable@vger.kernel.org>; Tue, 30 Jun 2026 03:06:39 -0700 (PDT)
+	s=arc-20240116; t=1782814291; c=relaxed/simple;
+	bh=S7AI+YFxLu2eH+drottiu3LDKyfzmbZsb6AyqgvPOSE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=OQcr+V7aEidIf6Vi5cUC5owucTKUqwha7W/MPaaqZyDgv8aFiUqZTs5c/H3ixUPYZ6KvRSKDaDg+yL44EAlZBXeyx5WGkVM2oVTg6AWIhGfgh78IZUuqXQ8NwYlVCEenECB/AARMCnAmFLN2wVwVNqOpXFwV5xt7b+sIYMNcnA4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=WW/woxRp; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=IW16Uj/m; arc=none smtp.client-ip=170.10.129.124
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1782814288;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=KAnQNF/BG2hzcnpQlhZdj2/19/pQbi7MYSIKu9RdeiU=;
+	b=WW/woxRpQbCPLChN7Aa4R+dthYW4yMg21JuibeFO5a1rBgBUs/OHTjPKyn1rOK1TNn4xTs
+	ES1h8bulSeHMiKAuUNlZOnbgAL2If0ZYuRex35rVwMrsBtpHX6DtecgkIh5LazbjeEf/+/
+	fYML/sqEkAS9wSwlQrV3HjVLU1ME3eM=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-29-MOBMvkmWPi-EOJsymLCFUw-1; Tue, 30 Jun 2026 06:11:25 -0400
+X-MC-Unique: MOBMvkmWPi-EOJsymLCFUw-1
+X-Mimecast-MFC-AGG-ID: MOBMvkmWPi-EOJsymLCFUw_1782814284
+Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-492488f8583so46455615e9.2
+        for <stable@vger.kernel.org>; Tue, 30 Jun 2026 03:11:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1782813998; x=1783418798; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=sMhrCDxHf7aAooYY94uRPeuetG8ov61hCXcWeNIKwUg=;
-        b=nbCkmdtvH7U3XjDz65UKLKoc1LpXnyacN4uuQciKW28jvtyioLkOVJgKznMwD6KzEJ
-         5rsub8axUdBD/0Zg6cc+kHCGPqCk/OwS9tvaQn7LiWV7QrjLs3JmLlbxMW1Pnutqeo5A
-         kmVnmwO9G0LeFjNw/kp0uXyC7M6d/cEt0fZK5j4VMozrqFMvb27jVLDbEa7Ofjzvpdu4
-         WIXVYZKhfAvnDAKsPRAIMIMaThyEwk6s7wvRbeaGxB4SgxW1SUFHq4vkxpVNrBCGSg0b
-         12gUeUoZTmmb7qgLZoutdb4dXyB5GunghT03gAnjonPAeX99H5PmNKVsu0VyMyLHlbuv
-         pSfw==
+        d=redhat.com; s=google; t=1782814284; x=1783419084; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:content-language:from
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=KAnQNF/BG2hzcnpQlhZdj2/19/pQbi7MYSIKu9RdeiU=;
+        b=IW16Uj/mgrPaWGXQz+65l4gIZRF6EwG1EIpJd6BXfxI/FfoGes+lv4y4NfHYgH9LF1
+         AiidRFtKqzxMLz1NuhxSldcOhRYBurXAtaY2Rax3MrfHvWrxvp06kB78lX4jGuyxlCQ4
+         lZ1EBOm2xD5IDndlgTISSpqfs5ZRayBNIUBrpqpldLZMLJY8DzhKTac5z9jssHS0TF4w
+         /h/3sfUkrh+pmXfvnhhXVClU3oQMKeqCji9Lv1byP9AVMpklbFrtvQ4lBg45KB9nI/JH
+         5T0x9mbmAtKlSrvuwyUexnprcF8gfh/2JC7/YZKTHBdvACJoh1WKSDlm/7Sxv969Coum
+         sF5A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782813998; x=1783418798;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=sMhrCDxHf7aAooYY94uRPeuetG8ov61hCXcWeNIKwUg=;
-        b=eDkL2SCrl2QGrt1SoeBqOVA528g+Msr/U2QYRdAaNp0yFDwiwzWIMrjtXA+bJiqRlg
-         DJz41BOK1hD0zjl1oIvotq0IrsvUs9Pyv84mgj9HanDdpaAjNH2sl4xHGVXenpK4qbYr
-         sVf1LjmggQ0FYnuNvrKClVTknVLenBJNt65jmB3dktSqyLnU2wjdqVAS7NdR4qfk2RZM
-         wm9NZTJvlshPjh5NeEWiC+khHlQJqALQH4xaVW1+ZOMnTeP3rWYDoz52F0cx4GSx4vzk
-         gq5kr54ct5c+H8ahSJy2Giyzf9iLVRsaa78HRFFdGiSHQrJvE4I/U/i0kTypU0k/NqOQ
-         dXOA==
-X-Forwarded-Encrypted: i=1; AHgh+RozTwOlQUXw799dBdAE2a94KcXcOREPCONUBmLCa30UcgpZqbLrsydRWDJXuLJVW2uL7PmG3rY=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwKeHdxsDZ/35NcIhcgizdeN0j5qcourpYPywm/LxlZW0JfYuPd
-	rfKqHCoq1b1w7ZSIFnx+wzOSMQn8E8HJS92VREf3y1nKYm2XzTR72bg6pxilyejsEY0=
-X-Gm-Gg: AfdE7ck77ZmsZQju6TAHEl902CmZ4AZq6g7uAjFyauMMbPSOPXNRG5wjQPOz1s3MpER
-	O1Nr+pYFf8rznPUGQcp3AtI0iIVjCt6yenFsV6HzFu6/w47wS8NaWquSnISJCSSwZ8ZM6Rp/TGY
-	1Kubx45yLw1aOhrkdUDblU8CGMzKucFx1aAM3K6QLNn+bPU7nZtjmWjhwAk0HbQUIlJpoE6tANw
-	YtoARuqC/ErdTd6vKnMUF7DGkr/+d/XOvHsU0h/cNAKWuxNUFBc/eG0RNLUlNQbI0cHcPZczRar
-	Nzf0d0n1hlWSoL9wOz0LPwBD/0bK766ZQ8nNw9D6VDJ5/gBjMvUJKHgcJXNDBYWqX83DjiGYEGY
-	b+E30NmNtB6O42Bb2qICdK3hp2dynq9MvfG1axx9nxFFjuSDA37hqHQLGdm8SY1YzbaaIPtw5MN
-	slwP5sy/NrSTlSJzzoHeWW2qSGBYNKO50kiuaQ
-X-Received: by 2002:a05:690c:e373:b0:80c:72a1:fca3 with SMTP id 00721157ae682-810d7ebe061mr34389197b3.16.1782813998261;
-        Tue, 30 Jun 2026 03:06:38 -0700 (PDT)
-Received: from Dev-Null-MSI ([2a0d:3344:52ac:a808:98a4:4381:be45:536f])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-810e7c6e9f3sm8837187b3.19.2026.06.30.03.06.35
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 30 Jun 2026 03:06:37 -0700 (PDT)
-From: Yousef Alhouseen <alhouseenyousef@gmail.com>
-To: Carlos Maiolino <cem@kernel.org>
-Cc: "Darrick J . Wong" <djwong@kernel.org>,
-	linux-xfs@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org,
-	syzbot+97f2c05378c5d68dcb8c@syzkaller.appspotmail.com,
-	Yousef Alhouseen <alhouseenyousef@gmail.com>
-Subject: [PATCH v2] xfs: zero newly allocated btree root space
-Date: Tue, 30 Jun 2026 12:06:21 +0200
-Message-ID: <20260630100621.7173-1-alhouseenyousef@gmail.com>
-X-Mailer: git-send-email 2.54.0
+        d=1e100.net; s=20251104; t=1782814284; x=1783419084;
+        h=content-transfer-encoding:in-reply-to:content-language:from
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=KAnQNF/BG2hzcnpQlhZdj2/19/pQbi7MYSIKu9RdeiU=;
+        b=nIAzziHkbxUOnI00kpM4/j3ZvQGtnLXhku3LACIy0quGppegfeM4IkF+pDDTG2yP9A
+         elKyc3CAlkz30zaAhUixBUxjSxLQSPEoRnZi0b5MZYvJsBJ8+y7Zl6LLHIvIjuXhHFQT
+         WeqR1gC2M/Hcn/RNjoUWTBtRhzsT9jKxsMr3+JNAivmIsQLYkfF6JT2BnWnvhsExfQxR
+         VM24Ss35iRyqrlgR5AJm5RU4pA2zzsjmq/Dcv11KX7r7lSkG9dLupzGdDgb7k+zPM4uG
+         VhidWMI1y37SkLrc2paN5vl8qNkU8dZSLqkCRQ+xbV6vcfwiVBUaRKMg+rz/JcwBsUhU
+         bO2Q==
+X-Forwarded-Encrypted: i=1; AHgh+Rosel3LtAGOa1UGc6Nc/gHvx/h7vPjJNWA6d9DVs919RQaHjIRnWJfCJPiLcGr1QnU3Hx+WeCY=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwtKaCTMdMqgpI0Eg0ZCCu0A7xtyBNKNkwx9GEjKwYkMxIjm+E1
+	FbTmYJSNRLJVQOkmc0yn0sHE5EGBwbE/t3mLSHEBw/emb6i7l5t/pKENgNTx31085YiT4QHgKuV
+	+SPPU4jgJCr5K9Xk6IOXndHmPS+nu3PQ9A9/DrDjL6Ynh7QorJXQKaHKVBQ==
+X-Gm-Gg: AfdE7ckGLi4IilXW15oMcF0xi32W82FwDqH4OtEihL9YO/XDOyKKmrk5GtrK1Nh+UpK
+	IN0ou8P5/pvD8DfV797MgCaxkWmQn3ARoXOWA/9v8PHNjiBt+hPF71xh5cBSKAyzqKAIE4yLtHH
+	/TPYQBUYOXZE3iTBWVAE3joerezej8QLojRGAn+ZlVvtnvb+pi1cDt9cnCG0cDZ89e48iw5frBC
+	pvyncdF3qY5NnqunGpkpuLkF+S+GculDk+dAeAgS3Bw5HoRKlwuQfaBspeObDpnLbIDkTQT0Wyj
+	Mvq30+OHNLy6M3DqYe/T/5Ii3hoa88WI5O1LPT4sHm8KJdplCY40vGm22j3FEwUux04i6x6lsyy
+	8nVKm6J4ZzN47truXHmDtZmDU5EluyLo1UESfmY1mUs5kPhb1Xwt3+yEh/ZKfLy1sAFJ6UFrfIp
+	HunTus02GKkw==
+X-Received: by 2002:a05:6000:25e3:b0:46f:7d90:8128 with SMTP id ffacd0b85a97d-47551737cf2mr3519497f8f.14.1782814284113;
+        Tue, 30 Jun 2026 03:11:24 -0700 (PDT)
+X-Received: by 2002:a05:6000:25e3:b0:46f:7d90:8128 with SMTP id ffacd0b85a97d-47551737cf2mr3519449f8f.14.1782814283688;
+        Tue, 30 Jun 2026 03:11:23 -0700 (PDT)
+Received: from ?IPV6:2a0d:3344:5521:6b10:2eb7:f61a:75:4534? ([2a0d:3344:5521:6b10:2eb7:f61a:75:4534])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-47563d194b0sm6739249f8f.1.2026.06.30.03.11.22
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 30 Jun 2026 03:11:22 -0700 (PDT)
+Message-ID: <2a1c4eb4-a4ba-4fc7-9bda-6a7a8d0be2f1@redhat.com>
+Date: Tue, 30 Jun 2026 12:11:21 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net] selftests: net: make busywait timeout clock portable
+To: Nirmoy Das <nirmoyd@nvidia.com>, "David S. Miller" <davem@davemloft.net>,
+ Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+ Shuah Khan <shuah@kernel.org>
+Cc: netdev@vger.kernel.org, linux-kselftest@vger.kernel.org,
+ stable@vger.kernel.org
+References: <20260626144902.3214350-1-nirmoyd@nvidia.com>
+From: Paolo Abeni <pabeni@redhat.com>
+Content-Language: en-US
+In-Reply-To: <20260626144902.3214350-1-nirmoyd@nvidia.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	DMARC_POLICY_ALLOW(-0.50)[redhat.com,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[redhat.com:s=mimecast20190719,redhat.com:s=google];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-269939-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[kernel.org,vger.kernel.org,syzkaller.appspotmail.com,gmail.com];
-	TO_DN_SOME(0.00)[];
-	FORGED_SENDER(0.00)[alhouseenyousef@gmail.com,stable@vger.kernel.org];
-	FORWARDED(0.00)[lists@lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS(0.00)[m:cem@kernel.org,m:djwong@kernel.org,m:linux-xfs@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,m:syzbot+97f2c05378c5d68dcb8c@syzkaller.appspotmail.com,m:alhouseenyousef@gmail.com,m:syzbot@syzkaller.appspotmail.com,s:lists@lfdr.de];
+	DKIM_TRACE(0.00)[redhat.com:+];
+	FORWARDED(0.00)[lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-269942-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	FORGED_SENDER(0.00)[pabeni@redhat.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS(0.00)[m:nirmoyd@nvidia.com,m:davem@davemloft.net,m:edumazet@google.com,m:kuba@kernel.org,m:shuah@kernel.org,m:netdev@vger.kernel.org,m:linux-kselftest@vger.kernel.org,m:stable@vger.kernel.org,s:lists@lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[alhouseenyousef@gmail.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[pabeni@redhat.com,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	ALIAS_RESOLVED(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,97f2c05378c5d68dcb8c];
-	FROM_HAS_DN(0.00)[]
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp,nvidia.com:email,vlan_bridge_binding.sh:url]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: E38526E29F3
+X-Rspamd-Queue-Id: 6B8FA6E2B47
 
-xfs_broot_realloc() preserves the existing in-inode btree root while
-growing its allocation, but leaves the added bytes uninitialized.  The
-inode log formatter copies if_broot_bytes bytes into the journal, so those
-bytes reach the log record and its CRC calculation before every location
-has necessarily been overwritten by btree updates.
+On 6/26/26 4:49 PM, Nirmoy Das wrote:
+> loopy_wait() expects millisecond timestamps. However, Ubuntu Resolute
+> can use uutils date, where `date -u +%s%3N` returns seconds plus full
+> nanoseconds instead of a 3-digit millisecond field. This makes
+> busywait expire too early and can make vlan_bridge_binding.sh read a
+> stale operstate.
+> 
+> Fixes: 25ae948b4478 ("selftests/net: add lib.sh")
+> Cc: stable@vger.kernel.org # 6.8+
+> Link: https://github.com/uutils/coreutils/issues/11658
+> Signed-off-by: Nirmoy Das <nirmoyd@nvidia.com>
+> ---
+>  tools/testing/selftests/net/lib.sh | 19 +++++++++++++++++--
+>  1 file changed, 17 insertions(+), 2 deletions(-)
+> 
+> diff --git a/tools/testing/selftests/net/lib.sh b/tools/testing/selftests/net/lib.sh
+> index b40694573f4c7..fcaec058be6d0 100644
+> --- a/tools/testing/selftests/net/lib.sh
+> +++ b/tools/testing/selftests/net/lib.sh
+> @@ -70,12 +70,27 @@ ksft_exit_status_merge()
+>  		$ksft_xfail $ksft_pass $ksft_skip $ksft_fail
+>  }
+>  
+> +timestamp_ms()
+> +{
+> +	local now=$(date -u +%s:%N)
 
-Request __GFP_ZERO for the initial allocation and every subsequent
-allocation or reallocation, as required by krealloc() semantics.  This
-keeps stale heap contents out of the filesystem log without a separate
-memset after each growth.
+shellcheck says:
 
-Fixes: 6c1c55ac3c05 ("xfs: refactor the inode fork memory allocation functions")
-Suggested-by: Darrick J. Wong <djwong@kernel.org>
-Reported-by: syzbot+97f2c05378c5d68dcb8c@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=97f2c05378c5d68dcb8c
-Cc: stable@vger.kernel.org
-Signed-off-by: Yousef Alhouseen <alhouseenyousef@gmail.com>
----
-Changes in v2:
-- Use __GFP_ZERO instead of an explicit memset after krealloc().
-- Apply __GFP_ZERO consistently across the allocation lifetime.
+ ^-^ SC2155 (warning): Declare and assign separately to avoid masking
+return values.
 
- fs/xfs/libxfs/xfs_inode_fork.c | 8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+/P
 
-diff --git a/fs/xfs/libxfs/xfs_inode_fork.c b/fs/xfs/libxfs/xfs_inode_fork.c
-index 606a36526ce2..dc05540fa85b 100644
---- a/fs/xfs/libxfs/xfs_inode_fork.c
-+++ b/fs/xfs/libxfs/xfs_inode_fork.c
-@@ -384,7 +384,8 @@ xfs_broot_alloc(
- 	ASSERT(ifp->if_broot == NULL);
- 
- 	ifp->if_broot = kmalloc(new_size,
--				GFP_KERNEL | __GFP_NOLOCKDEP | __GFP_NOFAIL);
-+				GFP_KERNEL | __GFP_NOLOCKDEP | __GFP_NOFAIL |
-+				__GFP_ZERO);
- 	ifp->if_broot_bytes = new_size;
- 	return ifp->if_broot;
- }
-@@ -417,7 +418,8 @@ xfs_broot_realloc(
- 	if (ifp->if_broot_bytes > 0 && ifp->if_broot_bytes > new_size) {
- 		struct xfs_btree_block	*old_broot = ifp->if_broot;
- 
--		ifp->if_broot = kmalloc(new_size, GFP_KERNEL | __GFP_NOFAIL);
-+		ifp->if_broot = kmalloc(new_size,
-+					GFP_KERNEL | __GFP_NOFAIL | __GFP_ZERO);
- 		ifp->if_broot_bytes = new_size;
- 		memcpy(ifp->if_broot, old_broot, new_size);
- 		kfree(old_broot);
-@@ -429,7 +431,7 @@ xfs_broot_realloc(
- 	 * object.
- 	 */
- 	ifp->if_broot = krealloc(ifp->if_broot, new_size,
--			GFP_KERNEL | __GFP_NOFAIL);
-+			GFP_KERNEL | __GFP_NOFAIL | __GFP_ZERO);
- 	ifp->if_broot_bytes = new_size;
- 	return ifp->if_broot;
- }
--- 
-2.54.0
 
