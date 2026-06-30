@@ -1,170 +1,179 @@
-Return-Path: <stable+bounces-270046-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-270047-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id CJ75ItMtRGpWqAoAu9opvQ
-	(envelope-from <stable+bounces-270046-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 30 Jun 2026 22:57:55 +0200
+	id Spi1KIwyRGq6qQoAu9opvQ
+	(envelope-from <stable+bounces-270047-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 30 Jun 2026 23:18:04 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id C5AA26E7F5E
-	for <lists+stable@lfdr.de>; Tue, 30 Jun 2026 22:57:54 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id F16216E813E
+	for <lists+stable@lfdr.de>; Tue, 30 Jun 2026 23:18:03 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=gourry.net header.s=google header.b=UwaKNwoT;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-270046-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-270046-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=none;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=I1AIU53+;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-270047-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-270047-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=none) header.from=gmail.com;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id EFBA83037171
-	for <lists+stable@lfdr.de>; Tue, 30 Jun 2026 20:57:51 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 4039B3020018
+	for <lists+stable@lfdr.de>; Tue, 30 Jun 2026 21:18:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5738647B431;
-	Tue, 30 Jun 2026 20:57:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5884E2D594F;
+	Tue, 30 Jun 2026 21:18:00 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qk1-f181.google.com (mail-qk1-f181.google.com [209.85.222.181])
+Received: from mail-yw1-f172.google.com (mail-yw1-f172.google.com [209.85.128.172])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B972944B693
-	for <stable@vger.kernel.org>; Tue, 30 Jun 2026 20:57:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA3411DDC37
+	for <stable@vger.kernel.org>; Tue, 30 Jun 2026 21:17:58 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782853071; cv=none; b=ZbHJB/QETUlQW625WFRVT4hvaGKSMm2SUEolAYxcQb8s7pARBL191P6oDQYFOkDHkig9Fz7+orJAmyAononkCl16QCA5FY6xLCOXAIz3Jy/vDtJnxc3D76LqUuVtiHs43tWW34ofZkk9OqKCO4+xfaymyuG04pQIYzKgR+CLJpU=
+	t=1782854280; cv=none; b=dXAwi5VjS/mAUUitYR25u6D2zyN6o46tewOEzuOl6qw9Pg4Jw48Jj99n8DxxlD8YeKYerfENm6I2cZvYGz4iy01HwI6DGcwxwl+EORNuAQ94zV1G/PVOgM5u0CRUZQApFb3BfhrMylosQIgguYZMOCCwXorhQ8tIv8tWYbR5eMc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782853071; c=relaxed/simple;
-	bh=tki8VYOorrL7Vh2P/GhEe6UqvDv1psdAe9UhD9ggn0c=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=IKktuyBvzcJIw7G1xSdV8w+e0WUp+vGyv+0E44uk6OaCGKLM75+NHoCB+sw3BlPB4KTbO4+Jp0uzRVkajv3bB+N1cWGF1e/0FiaZnwqB8VB5NON2/G0qxFIgkuJuZWS8VFscxOCFHFTI1DBSiXgxACk0T0dz1cq3E5SGQZWe7v8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gourry.net; spf=pass smtp.mailfrom=gourry.net; dkim=pass (2048-bit key) header.d=gourry.net header.i=@gourry.net header.b=UwaKNwoT; arc=none smtp.client-ip=209.85.222.181
-Received: by mail-qk1-f181.google.com with SMTP id af79cd13be357-92e51d3d83cso205347485a.2
-        for <stable@vger.kernel.org>; Tue, 30 Jun 2026 13:57:49 -0700 (PDT)
+	s=arc-20240116; t=1782854280; c=relaxed/simple;
+	bh=1gfTG8r17InAvWVOuauyVqtQhqiNXbc6nH97XNyOiec=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Sqysz8Ll7kO4B9aGmfzoylfCpRstydyeTUAB4mQUsev77NKsA8fJf1jxRvt0G8RTH3CSPuMJVFBted4ybYBY7MAcO61hrnMphke5gwIsoxyLq+FQz3G/l7Xzp1Kx8ZP3I4kE8AVEEwBnd/dL3JOIS5C0fuiwv9DftBEHHwtxGXE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=I1AIU53+; arc=none smtp.client-ip=209.85.128.172
+Received: by mail-yw1-f172.google.com with SMTP id 00721157ae682-7ff05e5d009so37142117b3.1
+        for <stable@vger.kernel.org>; Tue, 30 Jun 2026 14:17:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1782853069; x=1783457869; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=P+IJodXzk6nIKTwEHgsn4EfzwEPSclnTV/6cyemr0hQ=;
-        b=UwaKNwoTNQ4yh1q4/sOwnEh8nbMAnQuRNK5UaNzfkulZ+TQWZRtoYR6IbpzBkxVl1Y
-         R8xaphWVkot1fA01WHVK1RYNVip1jzzLv73dwVgWQwu5zyHgYTG/7ySxc4l3V8dS+IGq
-         e1mLfvmX2JGyxlzmzLMnqv2LkO9MGUlwoHW1Fa5IL/Yl+74j2bFipkwcrw5rL8Q4rJYk
-         gtLaW0HEQXgjpUkO+3AXrefKDeJH6AoF9ScZ8HBH40Lv2ZWETLLxO/Cux6oPs9ZDR5xI
-         hqhQM1UDvWNBbl3cuJALJd3dCxmtTXdPAbDzV5Ijy6Jh9BVFsu3MQ239zlePeozDpxp0
-         r4og==
+        d=gmail.com; s=20251104; t=1782854278; x=1783459078; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=xPhVhhlEs/4/VupytmipRMbVj77VuW2OuCbqLDIFyug=;
+        b=I1AIU53+mkXf8gnACaus9jvVWmHmjdaEkyG/XjqRUT1WVL2mD4vxtt1vkdoTM23Rx4
+         Xw8gFRpDNn3nKgWe2i4zy1TiavG7ml2LFPPlrfuYz5czT+ex2r7CaOeh63EJNCqH9teT
+         o5vYhOXR0Lg3QR+zfN4ridCdy5NtMAy3+bmEqhxASiuLJeky8i+dIDQYYXBIOxWRbYJ+
+         6rg0PzOMUCjx6F0zHJZIqoiZOrECaFA0Ch3xQwRodL5svuS2fcANzFIkK7xxnqrg68hX
+         rpH/lGRgq7Xsc7kZfDzgbYA4MRuB5JgyWk5OhshK2RdHzzdnb7iwFFx4mFyh0Ts4qR31
+         eDkw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782853069; x=1783457869;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=P+IJodXzk6nIKTwEHgsn4EfzwEPSclnTV/6cyemr0hQ=;
-        b=fR22DvZAcBkD7J1BKEHv6G4AZg0u73gl+1+gnPT0qaqNXbH243PVwZzKADM2cS+C4N
-         XGDgTEo1aodSLpPTMjYcedCcyMGwdS6i8W6J39Q4uXVLZaIe+lI3OBSvmB4NV4LY2Exa
-         ARi40T7p/jRb4fDYBgcL+d89yTPiEY0e9Kc7tYo4L441A4ZdHcat5SU3fJU3saUK61S7
-         elot4x0AG2dfJbGUqLPV246RtaNQ9dz2Q7D9+W8EaK903QhNUDm1IE6kDZOfGGf7TA1T
-         3Ybnu/7igFJLl02tTANhczn+HXz6+C3sC8aQzgue6ugOHTKCrtfvk2Qv/M4quaF1+/Uf
-         5YiQ==
-X-Forwarded-Encrypted: i=1; AFNElJ/cw4LLuRxY+FEyWcmeu4/lBkqytlLFttyEJF0mmdpaqeOvQE2euemwryWqXwAcW8whhcFKaWE=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzc9tG0dEMG0yxe3bOG3qIyVPflOrlterW+tvRD5sEL3loPm0I9
-	ZJtDuUJxEsaqGN10DtvrcdJyYZIJS8G8dRykjRQFl4b23TRcN66RvSEwHS3DBpRcXBw=
-X-Gm-Gg: AfdE7cl0N39ARjNGfqOzZ+4ueAg+dM5xDndrPzCG9ttnldudtZwmYz3bqzUAaTJE67o
-	Ep/FcSY/ooLEJbqVdaSJFU/O3JvCMr2wRBs8wXxfOHg0Gr/Obttlyr0NE0mayPl3XRggcMHnzMf
-	UJegqDORoEqgaCqpcBeQ0fPvQ8j5Yda74YaJ1u6h7YYG4B70OrqpbxVj4sAgJtj1eHRFeqce46U
-	EVrQM2pWjaRRayN7nmM/8NcoGjED+53ijfFM03Ilc02HBI4P2rYXWYwa0qQodEm5UyRJYSsHOZJ
-	aVPKqH1Mb/nHQjWsC2tDjEHueAwShRuaG6ZLBpOas7cffC5pwVfW4oH8nLiMoJBWKSfr7lPnCb5
-	Sucfzw3GIV/edbguYu5crlVkXAkhCTwKYl81dCH9Jf+ctpwut2iDVganyT1BxtNpUkSUVmdUPKN
-	BXsbR1f8u7KjPJcnR4dPS75PYoiMOs9176tvzQHlQj035O8JOTG90Zd8Jw3xbxreS6NG/4
-X-Received: by 2002:a05:620a:40d3:b0:92e:4a4a:4478 with SMTP id af79cd13be357-92e6d840616mr373996485a.31.1782853068602;
-        Tue, 30 Jun 2026 13:57:48 -0700 (PDT)
-Received: from gourry-fedora-PF4VCD3F (pool-173-79-60-52.washdc.fios.verizon.net. [173.79.60.52])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-92e622e7473sm348604085a.25.2026.06.30.13.57.47
+        d=1e100.net; s=20251104; t=1782854278; x=1783459078;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=xPhVhhlEs/4/VupytmipRMbVj77VuW2OuCbqLDIFyug=;
+        b=UNZMyLQaN/lM5qmTELrL07WYyIThXjfqlYr9zp1Ik/FX2eaHC2E7MFQylgXgEJqulI
+         IIPgPJPXl8FDVLMykBmqdtRihQkpZFOLDqrYmwj4g/bmoe5dGi4qSj1Q30VlbewlYE8M
+         ekhLgFsmHxBvNiz/dha0jrFeZk44nu9b50vMzQiRqpEwqSKwW2zXBSRNWLMl06vVRwRe
+         FbJMEzWpVZuwIcweLcPvo9gYUnHRi1LhmjdjaMOVaT+GL+pkaGac2+ujjvsU3FK0f1+e
+         LDay7Ze+phtb31QuJY6MBj0YBILQU0vg/5pTehdh3pCg/X1QVXsDU/OhsvoRHbFg4Qyh
+         RNNA==
+X-Forwarded-Encrypted: i=1; AHgh+Rpgtw2Bc81WcYcA+wqixzQZ/jCXHFJQZcjwYqYhbpBRdoupPIyDb5Ac6wlsEgylhk+XZIPjKHU=@vger.kernel.org
+X-Gm-Message-State: AOJu0YytNyiRIEnvgei8fbaYnaJxlkxF9OVTRJIyWqzYhIqd9nIdpTB2
+	6axswZEXEO/g9nbEWmisKMN3t5A3MROSkyhp/XiuNwxOir9dbWtZOzNQ
+X-Gm-Gg: AfdE7cnQEiUx2h6AEtIsfHYlAUInS5SIRd219hEf3KZ83KRyF+kQhENUWuloNtg9CfQ
+	Sl82jCQ6NoWlJ6Oh9Yg1crS6XByM0uB5jlHM9i3tLV2scrpVQuWgd+M1MN2PQTv4GOflin+E8K3
+	2wPYGs1Y9Tydai9fdWY2ztVnzbTZGFtcQpoG7d6i2S4n/fVeHBz6XrnJ7YClwTWjw0rq18QM8HN
+	+9CCxw5P/y9pUY01Dz0/T1xM+iAJ8MVQosnbW8A9nEqJxQbyfN+DWcWKR2nGvUN5Y1Bj3nm+vwN
+	jO2inBCeHY/fnQANe1zikAyBaESbjvvqwVCS0eAl93LxjXQWRDhnr5rRih5Ar/v+nqtPo8gDBpm
+	oIU/BvuhwJlRYcYcI8Sm0H9+DoVexH0/q8vd857uKWUpRw43dzUWDvQuz/PQwXjDAdgPFlYpeb6
+	zFEekSf84SN1Dc/+//4Omil1xgy07TqRAKNCJt
+X-Received: by 2002:a05:690c:670f:b0:80c:85b6:765f with SMTP id 00721157ae682-810da90d417mr63206517b3.68.1782854277959;
+        Tue, 30 Jun 2026 14:17:57 -0700 (PDT)
+Received: from Dev-Null-MSI ([2a0d:3344:52ac:a808:98a4:4381:be45:536f])
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-8128d450908sm13827b3.36.2026.06.30.14.17.55
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 30 Jun 2026 13:57:48 -0700 (PDT)
-Date: Tue, 30 Jun 2026 16:57:43 -0400
-From: Gregory Price <gourry@gourry.net>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, kernel-team@meta.com,
-	rppt@kernel.org, vbabka@kernel.org, mgorman@techsingularity.net,
-	hannes@cmpxchg.org, stable@vger.kernel.org
-Subject: Re: [PATCH v2] mm/vmstat: fold stranded per-cpu node stats when a
- node comes online
-Message-ID: <akQtx7zhP7pxNCiy@gourry-fedora-PF4VCD3F>
-References: <20260627202243.758289-1-gourry@gourry.net>
- <20260627161007.81e4533ce561c2951a69f927@linux-foundation.org>
+        Tue, 30 Jun 2026 14:17:57 -0700 (PDT)
+From: Yousef Alhouseen <alhouseenyousef@gmail.com>
+To: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
+Cc: ntfs3@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org,
+	syzbot+4b4ec878e25fafefa70f@syzkaller.appspotmail.com,
+	Yousef Alhouseen <alhouseenyousef@gmail.com>
+Subject: [PATCH] ntfs3: reject empty iomap before reading its LCN
+Date: Tue, 30 Jun 2026 23:17:43 +0200
+Message-ID: <20260630211743.50400-1-alhouseenyousef@gmail.com>
+X-Mailer: git-send-email 2.55.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260627161007.81e4533ce561c2951a69f927@linux-foundation.org>
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.16 / 15.00];
+X-Spamd-Result: default: False [0.84 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10];
-	R_DKIM_ALLOW(-0.20)[gourry.net:s=google];
+	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-270047-lists,stable=lfdr.de];
+	FORGED_SENDER(0.00)[alhouseenyousef@gmail.com,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[lists.linux.dev,vger.kernel.org,syzkaller.appspotmail.com,gmail.com];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	TO_DN_SOME(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-270046-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:akpm@linux-foundation.org,m:linux-mm@kvack.org,m:linux-kernel@vger.kernel.org,m:kernel-team@meta.com,m:rppt@kernel.org,m:vbabka@kernel.org,m:mgorman@techsingularity.net,m:hannes@cmpxchg.org,m:stable@vger.kernel.org,s:lists@lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	DMARC_NA(0.00)[gourry.net];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[gourry.net:+];
+	FORGED_RECIPIENTS(0.00)[m:almaz.alexandrovich@paragon-software.com,m:ntfs3@lists.linux.dev,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,m:syzbot+4b4ec878e25fafefa70f@syzkaller.appspotmail.com,m:alhouseenyousef@gmail.com,m:syzbot@syzkaller.appspotmail.com,s:lists@lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_SENDER(0.00)[gourry@gourry.net,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	TO_DN_SOME(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gourry@gourry.net,stable@vger.kernel.org];
-	MISSING_XM_UA(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[alhouseenyousef@gmail.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	RCVD_COUNT_FIVE(0.00)[5];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	ALIAS_RESOLVED(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sashiko.dev:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,gourry.net:dkim,gourry.net:email,gourry.net:from_mime]
+	TAGGED_RCPT(0.00)[stable,4b4ec878e25fafefa70f];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,syzkaller.appspot.com:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: C5AA26E7F5E
+X-Rspamd-Queue-Id: F16216E813E
 
-On Sat, Jun 27, 2026 at 04:10:07PM -0700, Andrew Morton wrote:
-> On Sat, 27 Jun 2026 16:22:43 -0400 Gregory Price <gourry@gourry.net> wrote:
-> 
-> > +		struct per_cpu_nodestat *p = per_cpu_ptr(pgdat->per_cpu_nodestats, cpu);
-> >  
-> > -		p = per_cpu_ptr(pgdat->per_cpu_nodestats, cpu);
-> > +		for (i = 0; i < NR_VM_NODE_STAT_ITEMS; i++)
-> 
-> and that's a lot of items.
-> 
-> I guess the overall loop count won't be large enough to cause issues,
-> but it's large!
-> 
-> Perhaps there's some simple test we can do on the per_cpu_nodestat to
-> avoid the inner loop?  Perhaps might need to add a field for this?
->
+attr_data_get_block() can return success with a zero run length when no
+cached or on-disk mapping covers a read VCN. In that case it does not
+initialize the LCN output.
 
-I took a look, but that would involve adding another per-cpu field and
-then making sure all the races on that field are respected as well.
+Check the returned length before comparing the LCN against the special
+mapping values. This preserves the existing -EINVAL result for an empty
+mapping without passing an uninitialized LCN to the comparisons.
 
-Not sure it's worth it for such an extremely rare event.
+Fixes: ecbb433f9a8e ("fs/ntfs3: fold file size handling into ntfs_set_size()")
+Reported-by: syzbot+4b4ec878e25fafefa70f@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=4b4ec878e25fafefa70f
+Cc: stable@vger.kernel.org
+Signed-off-by: Yousef Alhouseen <alhouseenyousef@gmail.com>
+---
+ fs/ntfs3/inode.c | 7 ++-----
+ 1 file changed, 2 insertions(+), 5 deletions(-)
 
-I can try to get clever on the folding logic if you'd like, let me know.
+diff --git a/fs/ntfs3/inode.c b/fs/ntfs3/inode.c
+index c43101cc064d..a428f03a695d 100644
+--- a/fs/ntfs3/inode.c
++++ b/fs/ntfs3/inode.c
+@@ -777,6 +777,8 @@ static int ntfs_iomap_begin(struct inode *inode, loff_t offset, loff_t length,
+ 	if (err) {
+ 		return err;
+ 	}
++	if (!clen)
++		return -EINVAL;
+ 
+ 	if (lcn == EOF_LCN) {
+ 		/* request out of file. */
+@@ -811,11 +813,6 @@ static int ntfs_iomap_begin(struct inode *inode, loff_t offset, loff_t length,
+ 		return 0;
+ 	}
+ 
+-	if (!clen) {
+-		/* broken file? */
+-		return -EINVAL;
+-	}
+-
+ 	iomap->bdev = inode->i_sb->s_bdev;
+ 	iomap->offset = offset;
+ 	iomap->length = ((loff_t)clen << cluster_bits) - off;
+-- 
+2.55.0
 
-> btw, "for(int i..." is allowed nowadays.  It'll make this code nicer, IMO.
-> 
-
-Otherwise i can send you a respin for this.
-
-> And... Sashiko seems to have found a pre-existing issue:
-> 	https://sashiko.dev/#/patchset/20260627202243.758289-1-gourry@gourry.net
-> 
-
-Incoming patch for this shortly.  Pretty trivial.
-
-~Gregory
 
