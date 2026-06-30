@@ -1,152 +1,283 @@
-Return-Path: <stable+bounces-269944-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-269949-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id +iCEFIybQ2rrdAoAu9opvQ
-	(envelope-from <stable+bounces-269944-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 30 Jun 2026 12:33:48 +0200
+	id D4/2KyGoQ2qMeQoAu9opvQ
+	(envelope-from <stable+bounces-269949-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 30 Jun 2026 13:27:29 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 730296E2E9A
-	for <lists+stable@lfdr.de>; Tue, 30 Jun 2026 12:33:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 298396E394C
+	for <lists+stable@lfdr.de>; Tue, 30 Jun 2026 13:27:29 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=COQPLKmv;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-269944-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-269944-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=none) header.from=linux.dev;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=bQ+mzJRw;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-269949-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-269949-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=none) header.from=gmail.com;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 122F03045446
-	for <lists+stable@lfdr.de>; Tue, 30 Jun 2026 10:28:49 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 5B9D431E5025
+	for <lists+stable@lfdr.de>; Tue, 30 Jun 2026 10:52:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E70CB3EF65F;
-	Tue, 30 Jun 2026 10:28:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B75F24028CA;
+	Tue, 30 Jun 2026 10:51:31 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from out-184.mta0.migadu.com (out-184.mta0.migadu.com [91.218.175.184])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A0A63E6DE7;
-	Tue, 30 Jun 2026 10:28:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89B2D3F8EB7
+	for <stable@vger.kernel.org>; Tue, 30 Jun 2026 10:51:25 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782815327; cv=none; b=HQ8DxV4hD+ftzXblf0wGLzps4D/FHgdAfJZRi3/yyeK1doP+9MVse9VUSNMMvvWjMoVVdAPrANaKAp5TN1JUeGrEZDfHhWrqWgvK0HpchkqeACaLZMKyJ/o3uLBf4XkHPFMb8y8fcQB80n+MFJUQZEHQUN8o7vTMZBzfhunGMhI=
+	t=1782816690; cv=none; b=MrtjHLYQdIZZ4WJY65ONsIFANfc59Blu/pbG7OKJHLKfwEznsttIDtIg0r9x7TR2A6LdZbFWLL4aNV4XHCOcG+NxA6qJ6CsCEQLloORoLNb6ob3tUcIXav2cKTtceM2ZUwzS4tzGvpjlBVR4TBI/aG8pvzmKHOcApSWm/vvjKLM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782815327; c=relaxed/simple;
-	bh=+pX07a2u5TkbqrO4azJbx+91thfYIYeQVNU0vPSkC7I=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=D9FiDK0G9TohKjfJ9qiypupS/mIhBUWR0yYr5GoxORjbEVPLLbS2NkAVJtavaO5L/fl14b6MRuhR1GeIkG4UytWtfPefpWjRNoByGvK8+hOP9AkCKEISIREsYz5ggTK+zNsE9BzugteBKMP9cbXev7z3FrfmT+mRKbZKMbMv0cA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=COQPLKmv; arc=none smtp.client-ip=91.218.175.184
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1782815324;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=sRyqpi+BAHs5WUp31Tgpjj0ZLVkhU0Gr2GsoSexZcO4=;
-	b=COQPLKmvp3nt6ZbZQIVudhiGCgGCEPJrfnbR1T06o8vWsf9wvIf/QVayAZ20/gHRA979tp
-	Jl6V28cRxvERUg9G1mXzxYOlhQjpeGA6X86chStFwtbH7okRabIMvtpeaA0VMVx9xGCxFX
-	8USVIVDv7D4K6371CUpUIVU5Oq/J3QE=
-From: Thorsten Blum <thorsten.blum@linux.dev>
-To: Thomas Gleixner <tglx@kernel.org>,
-	Ingo Molnar <mingo@redhat.com>,
-	Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	x86@kernel.org,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	Pekka Enberg <penberg@cs.helsinki.fi>,
-	Yinghai Lu <yinghai@kernel.org>
-Cc: Thorsten Blum <thorsten.blum@linux.dev>,
-	stable@vger.kernel.org,
-	"H. Peter Anvin" <hpa@linux.intel.com>,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH RESEND] x86/boot: Validate console=uart8250 baud rate to avoid early boot hang
-Date: Tue, 30 Jun 2026 12:28:11 +0200
-Message-ID: <20260630102810.685658-3-thorsten.blum@linux.dev>
+	s=arc-20240116; t=1782816690; c=relaxed/simple;
+	bh=sABWBCPSix0Ac0AzPgCOi8BFXz2KuAhR+MoVhVTMzps=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=mHhxkMqhmbomEDdI9l7rz1l75/pP9wpxUnGAGUNEeWgWlVGtmORf1FqZe5hPww7xXKcnJ3oReJhPes0Wf4WLUyZF/x4ybe5vQo5+Gv4GxqvjJV7RgnzSP4ExPz3QfdlkBHmeq4DZq91YixpF07jG2GuRuFbVdtnOeI/pTjy51SQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=bQ+mzJRw; arc=none smtp.client-ip=209.85.214.174
+Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-2c9b42be8feso25140905ad.2
+        for <stable@vger.kernel.org>; Tue, 30 Jun 2026 03:51:25 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1782816684; x=1783421484; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to:subject
+         :user-agent:mime-version:date:message-id:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=zOCmAhk2QZilrROnFdYyZ9E7NHFNJQbLWBKSgKarjZM=;
+        b=bQ+mzJRw/1C86mnD7zXv7koQo/fphihKfKRDqtawV+u0xAsDGGvllS9y++8uQFrMu1
+         FfKdlCZhQIBHKYk3ddAKHhBgVgDTUAY1H8ok5Fc0d6Qkl0seOdRwDiSiYHpW1qls08n4
+         TY2ocytRZJpu77tgFW8TI6h3xursK2HhgZdUhFsmrdVDyIXTWlvqMiVXqjH7Kce88bSR
+         duzMHmJRiXjLIIpJcfqEYc36TVA2+jVPO9T0od5quA9VFYLtdLCRbdQ81+W9m3MlD8lh
+         odJGxYtZvnjwXr4r4q9iLX8Ta4iVE2OnTdnZEGpWYgWVqgiccpP74nfjUUUKRWnEjA76
+         lWTw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1782816684; x=1783421484;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to:subject
+         :user-agent:mime-version:date:message-id:x-gm-gg:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=zOCmAhk2QZilrROnFdYyZ9E7NHFNJQbLWBKSgKarjZM=;
+        b=XSL3G0sfWo3D21tLmRbPI5VvEfVuhnSZicZNMAR/mA4V9gSFIllmdb1rc+mdypojLp
+         hKS8pyDdA+I6x12Sv+E+EdL4f9WVng384eG7/cm+9DTcIEOYHJ5Mpr6eTnSzLwUbreCE
+         zaDo5f7Jb9RrzGiLWUmOFX+kcrYDVMf6yR8NK8XAmQNYQ8qCV2db9I8WMYaZDMj/HJmR
+         ZdPLVxRa3b/A0FAVyd0rO+IwEsWWgwOc+otaLFVdgeb7ZTORubC/0HH11dAs53hwCmXj
+         i9DACmZRhyuPjh6PZwjuuXcr9ZDOUsWBGPK37hLofWPOA5tJEOnXIDdPuClizJRHTgbw
+         sGKQ==
+X-Forwarded-Encrypted: i=1; AHgh+RpGLAppjSOTCYxQbJr0c1fCu5B9BMGmcBf+OlJLsN1h1C2H3t6A59bMQ1BWv7dlNvZc9qVkBqs=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx9mnmj3sKOuud+oTfSRYYmJanqwLgukdK+OZf0VSom/aP1jZPK
+	i6pZr2Ltdh+wRgjRshcN1i/NIrczwPgk9JBqBhkuP/39kA/EiD3k5bO09R5ZbQ==
+X-Gm-Gg: AfdE7clxj5RkPtYxW2Q78c3gewHVRZ8+f0t1r2oV9bDAMxVKNMAqaqGFAh8wTs8RPG9
+	loDKQyUzlpwyPsdQyV0aiVEeWM/pL5vLmXtssy7m0cNnvuS9DkemyMd1ll8iFNz1fmGiuTlwhgs
+	R7ZdNhpy/Px4Cl+peWVOMMYGWG7vB3Xrrq7aO9pzTiL+j/Q0mC4SlrCOSJGRVXJbMaEmU+QNgRh
+	ko4Djgg/mxme/ASgJ41VBkUn2nElhq8tZX7R2UZ3Q4HcIxAvtG0h3PgKkjmN2DeSFWlwxnlUVMS
+	UNG7yeZjiJV0h0Xutx0/clCDXTRGSvmWOF9hMobm/QEnYQlsjs0uXjFv6sw/cKVuIs1+aLnQlvo
+	g78PASSfJQAnTUSmpWysDjJqFuUy3xJGxu+9NylTjWQBCbM8Bn6/RofrwtTe28GuGVXQXooba+h
+	u3Vzcc4uPAzVghJZmrpquWYxT+fV5E3wwN
+X-Received: by 2002:a17:902:f68e:b0:2c2:bd7f:ccd4 with SMTP id d9443c01a7336-2ca2d56ab0fmr23156785ad.21.1782816683996;
+        Tue, 30 Jun 2026 03:51:23 -0700 (PDT)
+Received: from [10.125.192.77] ([210.184.73.204])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2ca3828c950sm10687625ad.51.2026.06.30.03.51.17
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 30 Jun 2026 03:51:23 -0700 (PDT)
+Message-ID: <fe15eb9f-0b6c-dcaa-d0a7-5f08c3f92bfb@gmail.com>
+Date: Tue, 30 Jun 2026 18:51:14 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1402; i=thorsten.blum@linux.dev; h=from:subject; bh=+pX07a2u5TkbqrO4azJbx+91thfYIYeQVNU0vPSkC7I=; b=owGbwMvMwCUWt7pQ4caZUj3G02pJDFnOs6yUOX5raP0zXfb2r8Dywy/k1b0L/v++cmTyYiX+f +zXfi5V7ShlYRDjYpAVU2R5MOvHDN/SmspNJhE7YeawMoEMYeDiFICJBCUxMtxtPJu9vvrItwMK KYeaDqbzfDXmSz5/9tG7JTwFp/d+WirLyHAnoYo9oyfDwVXy5JO11pNtEo5pa5haZzzbeGlf2d6 kX+wA
-X-Developer-Key: i=thorsten.blum@linux.dev; a=openpgp; fpr=1D60735E8AEF3BE473B69D84733678FD8DFEEAD4
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.15.0
+Subject: Re: [PATCH v5 1/6] mm/zswap: Fix global shrinker when memory cgroup
+ is disabled
+To: Nhat Pham <nphamcs@gmail.com>, yosry@kernel.org
+Cc: akpm@linux-foundation.org, tj@kernel.org, hannes@cmpxchg.org,
+ shakeel.butt@linux.dev, mhocko@kernel.org, mkoutny@suse.com,
+ chengming.zhou@linux.dev, muchun.song@linux.dev, roman.gushchin@linux.dev,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
+ Hao Jia <jiahao1@lixiang.com>, stable@vger.kernel.org
+References: <20260629112032.20423-1-jiahao.kernel@gmail.com>
+ <20260629112032.20423-2-jiahao.kernel@gmail.com>
+ <CAKEwX=MniM-4-aV17aH3UiDd_Xd2RH743fFZaxEnYX9qvnokeA@mail.gmail.com>
+From: Hao Jia <jiahao.kernel@gmail.com>
+In-Reply-To: <CAKEwX=MniM-4-aV17aH3UiDd_Xd2RH743fFZaxEnYX9qvnokeA@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[linux.dev,none];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[linux.dev:s=key1];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCPT_COUNT_TWELVE(0.00)[12];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-269944-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:tglx@kernel.org,m:mingo@redhat.com,m:bp@alien8.de,m:dave.hansen@linux.intel.com,m:x86@kernel.org,m:hpa@zytor.com,m:penberg@cs.helsinki.fi,m:yinghai@kernel.org,m:thorsten.blum@linux.dev,m:stable@vger.kernel.org,m:hpa@linux.intel.com,m:linux-kernel@vger.kernel.org,s:lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[3];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_SENDER(0.00)[thorsten.blum@linux.dev,stable@vger.kernel.org];
+	RCPT_COUNT_TWELVE(0.00)[16];
 	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	RCVD_TLS_LAST(0.00)[];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:nphamcs@gmail.com,m:yosry@kernel.org,m:akpm@linux-foundation.org,m:tj@kernel.org,m:hannes@cmpxchg.org,m:shakeel.butt@linux.dev,m:mhocko@kernel.org,m:mkoutny@suse.com,m:chengming.zhou@linux.dev,m:muchun.song@linux.dev,m:roman.gushchin@linux.dev,m:linux-mm@kvack.org,m:linux-kernel@vger.kernel.org,m:linux-doc@vger.kernel.org,m:jiahao1@lixiang.com,m:stable@vger.kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[jiahaokernel@gmail.com,stable@vger.kernel.org];
+	FREEMAIL_TO(0.00)[gmail.com,kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[thorsten.blum@linux.dev,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-269949-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linux.dev:+];
-	ALIAS_RESOLVED(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	MISSING_XM_UA(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.dev:dkim,linux.dev:email,linux.dev:mid,linux.dev:from_mime,vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[jiahaokernel@gmail.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	TO_DN_SOME(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp,lixiang.com:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 730296E2E9A
+X-Rspamd-Queue-Id: 298396E394C
 
-When the baud rate is empty, 0, invalid, or overflows to 0 when stored
-as an int, the system will hang during early boot because of a division
-by zero in early_serial_init().
 
-Fall back to DEFAULT_BAUD when the resulting baud rate is 0 to prevent
-an early system hang.
 
-Fixes: ce0aa5dd20e4 ("x86, setup: Make the setup code also accept console=uart8250")
-Cc: stable@vger.kernel.org
-Signed-off-by: Thorsten Blum <thorsten.blum@linux.dev>
----
- arch/x86/boot/early_serial_console.c | 11 +++++++----
- 1 file changed, 7 insertions(+), 4 deletions(-)
+On 2026/6/30 02:37, Nhat Pham wrote:
+> On Mon, Jun 29, 2026 at 4:20 AM Hao Jia <jiahao.kernel@gmail.com> wrote:
+>>
+>> From: Hao Jia <jiahao1@lixiang.com>
+>>
+>> When memory cgroup is disabled, mem_cgroup_iter() always returns NULL.
+>> Therefore, the global shrinker shrink_worker() always takes the !memcg
+>> branch. After MAX_RECLAIM_RETRIES empty walks, the worker simply gives up,
+>> so it fails to write back anything.
+>>
+>> Therefore, when memory cgroup is disabled, fall through with the !memcg
+>> branch and shrink the root memcg directly. Stop the loop once
+>> shrink_memcg() reports -ENOENT, since the root LRU is the only target and
+>> -ENOENT means it has been exhausted.
+>>
+>> Fixes: a65b0e7607cc ("zswap: make shrinking memcg-aware")
+>> Cc: stable@vger.kernel.org
+>> Reported-by: Yosry Ahmed <yosry@kernel.org>
+>> Closes: https://lore.kernel.org/all/CAO9r8zPVzMKFbCixxD-qgtRrkFxWVrHiZZeLc=eyTPKPVQgX4g@mail.gmail.com
+>> Signed-off-by: Hao Jia <jiahao1@lixiang.com>
+> 
+> Ah good catch.
+> 
+> 
+> 
+>> ---
+>>   mm/zswap.c | 16 ++++++++++++++--
+>>   1 file changed, 14 insertions(+), 2 deletions(-)
+>>
+>> diff --git a/mm/zswap.c b/mm/zswap.c
+>> index 761cd699e0a3..0f8f04f22888 100644
+>> --- a/mm/zswap.c
+>> +++ b/mm/zswap.c
+>> @@ -1356,7 +1356,12 @@ static void shrink_worker(struct work_struct *w)
+>>                  } while (memcg && !mem_cgroup_tryget_online(memcg));
+>>                  spin_unlock(&zswap_shrink_lock);
+>>
+>> -               if (!memcg) {
+>> +               /*
+>> +                * Reaching a NULL memcg means a full hierarchy pass completed.
+>> +                * Exclude the memcg-disabled case, where it is always NULL, and
+>> +                * fall through to shrink the root LRU directly.
+>> +                */
+>> +               if (!memcg && !mem_cgroup_disabled()) {
+>>                          /*
+>>                           * Continue shrinking without incrementing failures if
+>>                           * we found candidate memcgs in the last tree walk.
+> 
+> nit: I wonder if we can just merge this comment with the new comment
+> you just added.
 
-diff --git a/arch/x86/boot/early_serial_console.c b/arch/x86/boot/early_serial_console.c
-index 023bf1c3de8b..5b83beab89e1 100644
---- a/arch/x86/boot/early_serial_console.c
-+++ b/arch/x86/boot/early_serial_console.c
-@@ -117,7 +117,7 @@ static unsigned int probe_baud(int port)
- static void parse_console_uart8250(void)
- {
- 	char optstr[64], *options;
--	int baud = DEFAULT_BAUD;
-+	int baud;
- 	int port = 0;
- 
- 	/*
-@@ -136,10 +136,13 @@ static void parse_console_uart8250(void)
- 	else
- 		return;
- 
--	if (options && (options[0] == ','))
--		baud = simple_strtoull(options + 1, &options, 0);
--	else
-+	if (options && (options[0] == ',')) {
-+		baud = simple_strtoull(options + 1, NULL, 0);
-+		if (!baud)
-+			baud = DEFAULT_BAUD;
-+	} else {
- 		baud = probe_baud(port);
-+	}
- 
- 	if (port)
- 		early_serial_init(port, baud);
+Updated. Please see below.
+
+> 
+>> @@ -1378,8 +1383,15 @@ static void shrink_worker(struct work_struct *w)
+>>                   * with pages in zswap. Skip this without incrementing attempts
+>>                   * and failures.
+>>                   */
+>> -               if (ret == -ENOENT)
+>> +               if (ret == -ENOENT) {
+>> +                       /*
+>> +                        * With memcg disabled the root LRU is the only target, so
+>> +                        * we should abort if it has no writeback-candidate pages.
+>> +                        */
+>> +                       if (mem_cgroup_disabled())
+>> +                               break;
+> 
+> Hmm do we need to do this? Consider a system with cgroup enabled but
+> with just one cgroup (root?). The behavior would just be trying that
+> cgroup for MAX_RECLAIM_RETRIES failure attempts, correct?
+> 
+> In that case, we don't need to do this check, and we would get the
+> same behavior. The loop would terminate after MAX_RECLAIM_RETRIES :)
+> 
+> Could you fact-check me? :)
+
+Exactly. When memcg is disabled, shrink_memcg() returns -ENOENT only if 
+the root LRU is empty. An empty root LRU implies that the total pages 
+have already dropped below the threshold (thr). At this point, the loop 
+safely terminates because of the zswap_total_pages() <= thr check. In 
+all other cases (where shrink_memcg() returns anything other than 
+-ENOENT), the loop will eventually exit either by hitting the 
+MAX_RECLAIM_RETRIES limit or when zswap_total_pages() <= thr.
+
+How about something like this? If there are no objections, I'll fold 
+this into the next version.
+
+     mm/zswap: Fix global shrinker when memory cgroup is disabled
+
+     When memory cgroup is disabled, mem_cgroup_iter() always returns NULL.
+     Therefore, the global shrinker shrink_worker() always takes the !memcg
+     branch. After MAX_RECLAIM_RETRIES empty walks, the worker simply 
+gives up,
+     so it fails to write back anything.
+
+     Therefore, when memory cgroup is disabled, fall through with the !memcg
+     branch and shrink the root memcg directly.
+
+     With memcg disabled, shrink_memcg() only returns -ENOENT when the root
+     LRU is empty, which means the total pages are already below thr. 
+The loop
+     then safely bails out via the zswap_total_pages() <= thr check. For any
+     other return value from shrink_memcg(), the loop is guaranteed to 
+terminate,
+     either after MAX_RECLAIM_RETRIES failures or once the threshold is met.
+
+     Fixes: a65b0e7607cc ("zswap: make shrinking memcg-aware")
+     Cc: stable@vger.kernel.org
+     Reported-by: Yosry Ahmed <yosry@kernel.org>
+     Closes: 
+https://lore.kernel.org/all/CAO9r8zPVzMKFbCixxD-qgtRrkFxWVrHiZZeLc=eyTPKPVQgX4g@mail.gmail.com
+     Signed-off-by: Hao Jia <jiahao1@lixiang.com>
+
+diff --git a/mm/zswap.c b/mm/zswap.c
+index 4b5149173b0e..9d4f19fc440e 100644
+--- a/mm/zswap.c
++++ b/mm/zswap.c
+@@ -1361,11 +1361,12 @@ static void shrink_worker(struct work_struct *w)
+                 } while (memcg && !mem_cgroup_tryget_online(memcg));
+                 spin_unlock(&zswap_shrink_lock);
+
+-               if (!memcg) {
+-                       /*
+-                        * Continue shrinking without incrementing 
+failures if
+-                        * we found candidate memcgs in the last tree walk.
+-                        */
++               /*
++                * A NULL memcg ends a full hierarchy pass (except when 
+memcg is
++                * disabled, where it is always NULL: fall through to 
+the root LRU).
++                * Count a failure only if the pass found no candidates.
++                */
++               if (!memcg && !mem_cgroup_disabled()) {
+                         if (!attempts && ++failures == MAX_RECLAIM_RETRIES)
+                                 break;
+
+Thanks,
+Hao
 
