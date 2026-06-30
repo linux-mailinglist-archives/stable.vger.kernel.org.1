@@ -1,66 +1,75 @@
-Return-Path: <stable+bounces-269904-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-269902-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id wk1SObtvQ2qhYQoAu9opvQ
-	(envelope-from <stable+bounces-269904-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 30 Jun 2026 09:26:51 +0200
+	id ZudHLWhuQ2pcYQoAu9opvQ
+	(envelope-from <stable+bounces-269902-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 30 Jun 2026 09:21:12 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4223D6E120B
-	for <lists+stable@lfdr.de>; Tue, 30 Jun 2026 09:26:51 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A9E66E114A
+	for <lists+stable@lfdr.de>; Tue, 30 Jun 2026 09:21:12 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=seu.edu.cn header.s=default header.b="C1RU/7O2";
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-269904-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-269904-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=none) header.from=seu.edu.cn;
+	dkim=pass header.d=ilvokhin.com header.s=mail header.b=syXOtjay;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-269902-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-269902-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=reject) header.from=ilvokhin.com;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 41029308BAC1
-	for <lists+stable@lfdr.de>; Tue, 30 Jun 2026 07:21:54 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 403713085AA7
+	for <lists+stable@lfdr.de>; Tue, 30 Jun 2026 07:17:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5668139A063;
-	Tue, 30 Jun 2026 07:21:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9DC733D7A15;
+	Tue, 30 Jun 2026 07:17:30 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-m49198.qiye.163.com (mail-m49198.qiye.163.com [45.254.49.198])
+Received: from mail.ilvokhin.com (mail.ilvokhin.com [178.62.254.231])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83AC278F2F;
-	Tue, 30 Jun 2026 07:21:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 608202E62A9;
+	Tue, 30 Jun 2026 07:17:27 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782804113; cv=none; b=mNI7CZBeB4PvX7cRnsUwh77dz7EwGGy5I5fB5sikKGIk/V2bXV1kwpM5sMKPiiJprf8hrI/TMrAN9Wq7auTOmDOv/G8ukYLGr5CDK7me0ePtPAXBdepMoFBOM9oR+uzyl7mcK3inp/OJrxc2U/m+Bkf+0ONkIDihiOOe8Il+KPc=
+	t=1782803850; cv=none; b=CJrPhK1iF+ZnO0u0JvLtyvpjZW1/dKxbuoiBed4uc2jam8RHNnmfiFaucbIkx+r24ioyyTHyYg0ePaP4lnc4I0Y3TocERtgUOydSFOxpoXC6GwBtdhNknPQZxWfK/d4mHW7dmlHMhqKoL61S+N1TJIvwsKryoIxF09J2K86cKXg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782804113; c=relaxed/simple;
-	bh=OdcC6x/d01X8Zoz5vtiz0YK7mL1Z51asCo1ShgRdG2M=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=bZ4T67tSCegbEXFWmfZ5JvKBwoQXz2Qb+idQHbF+ya8Ymfu7jVJh9jMhM8zLbIYFTGdFAKUrWvSkPkGlQznblGTWrOeEaOdTiqWqJLUktbMKYxtweqam3nUXUAlNF+7x/QPukvZmFag7LP7k8FnjvQDCKdM+cEC1vLWPxNkCOd4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=seu.edu.cn; spf=pass smtp.mailfrom=seu.edu.cn; dkim=pass (1024-bit key) header.d=seu.edu.cn header.i=@seu.edu.cn header.b=C1RU/7O2; arc=none smtp.client-ip=45.254.49.198
-Received: from DESKTOP-SUEFNF9.taila7e912.ts.net (unknown [58.241.16.34])
-	by smtp.qiye.163.com (Hmail) with ESMTP id 444c2becd;
-	Tue, 30 Jun 2026 15:16:29 +0800 (GMT+08:00)
-From: Dawei Feng <dawei.feng@seu.edu.cn>
-To: sgoutham@marvell.com
-Cc: rkannoth@marvell.com,
-	gakula@marvell.com,
-	sbhatta@marvell.com,
-	hkelam@marvell.com,
-	bbhushan2@marvell.com,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	jbrandeb@kernel.org,
-	richardcochran@gmail.com,
-	amakarov@marvell.com,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org,
-	jianhao.xu@seu.edu.cn,
-	zilin@seu.edu.cn,
-	Dawei Feng <dawei.feng@seu.edu.cn>
-Subject: [PATCH net v2] octeontx2-pf: fix SQB pointer leak on init failure
-Date: Tue, 30 Jun 2026 15:16:25 +0800
-Message-Id: <20260630071625.349996-1-dawei.feng@seu.edu.cn>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1782803850; c=relaxed/simple;
+	bh=VWIgefliV8YxJIbhhZyhjZxdSIhdnTh39pYWt+2ts2s=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=rkzo6/0tBpQ05DFx/s83GheEpTEU7C0ERfeiWApm9TMZeV4OqZmHHD8fh52SWWnDBGzDGDtOEl4j8W/mKe+nWEsxuONycpPY7291r+z550ukntO1K5u6efwGjrvhchDtuUiUplwk/yeucz0P4vG8arfU4dB047NSWf1/p5l8oDU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ilvokhin.com; spf=pass smtp.mailfrom=ilvokhin.com; dkim=pass (1024-bit key) header.d=ilvokhin.com header.i=@ilvokhin.com header.b=syXOtjay; arc=none smtp.client-ip=178.62.254.231
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ilvokhin.com;
+	s=mail; t=1782803845;
+	bh=HlWLwSH0iFYuJaopVbi6zi7vSTxiIWcw9qQ4QUSqZts=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=syXOtjayWzIu4PLb1tTRsEjaJ2um72liKmyOg546sUjeNz16SplOi5tG0tbA/DCFN
+	 DO62VCeoK0m+hKLUC6t+dCFvOSG4X218jt2khCTA+UbH5X0jHU73gVZenxhNm1W0Wg
+	 bRT2XTRlV4p09W9uABVQ89D+D0NerYMGdSvwfYDM=
+Received: from localhost.localdomain (shell.ilvokhin.com [138.68.190.75])
+	(Authenticated sender: d@ilvokhin.com)
+	by mail.ilvokhin.com (Postfix) with ESMTPSA id 37538DB246;
+	Tue, 30 Jun 2026 07:17:25 +0000 (UTC)
+From: Dmitry Ilvokhin <d@ilvokhin.com>
+To: Peter Zijlstra <peterz@infradead.org>,
+	Ingo Molnar <mingo@redhat.com>,
+	Arnaldo Carvalho de Melo <acme@kernel.org>,
+	Namhyung Kim <namhyung@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Ian Rogers <irogers@google.com>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	James Clark <james.clark@linaro.org>,
+	Nick Terrell <terrelln@fb.com>,
+	David Sterba <dsterba@suse.com>
+Cc: linux-kernel@vger.kernel.org,
+	linux-perf-users@vger.kernel.org,
+	kernel-team@meta.com,
+	Farid Zakaria <fmzakari@meta.com>,
+	Dmitry Ilvokhin <d@ilvokhin.com>,
+	stable@vger.kernel.org
+Subject: [PATCH v2 1/3] perf record: Fix multiple PERF_RECORD_COMPRESSED2 records per push
+Date: Tue, 30 Jun 2026 07:17:00 +0000
+Message-ID: <079503c01a3e28d3775947f3449cadacfa1f4117.1782743187.git.d@ilvokhin.com>
+X-Mailer: git-send-email 2.54.0
+In-Reply-To: <cover.1782743187.git.d@ilvokhin.com>
+References: <cover.1782743187.git.d@ilvokhin.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -68,128 +77,259 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-HM-Tid: 0a9f1762f76a03a2kunm902ae0401aabee
-X-HM-MType: 10
-X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
-	tZV1koWUFITzdXWRgWCB1ZQUpXWS1ZQUlXWQ8JGhUIEh9ZQVkaSUlMVhpNT00ZSE1IQ01KTVYeHw
-	5VEwETFhoSFyQUDg9ZV1kYEgtZQVlOQ1VJT0pVSk1VSE9ZV1kWGg8SFR0UWUFZT0tIVUpLSEpPSE
-	xVSktLVUpCS0tZBg++
-DKIM-Signature: a=rsa-sha256;
-	b=C1RU/7O21k/2k+xueF8mLAKd7K1Tdcq8ibjilpoJA+LsPo/JOBTwSIQvZ5dWuB/pwSI9+Q2LfVTc97UJvWpprt5yo3zmK5r/msXPybGsG8567v08c8R2v00sp6mxewBagFNzgi3R5q6IgJbcAuA1DrYdNwUpv0sD+qQJBgThz6Y=; c=relaxed/relaxed; s=default; d=seu.edu.cn; v=1;
-	bh=9At5R7iJVdLl+b9yYFudoALdZ+Azmft7oDz1KkJjsHI=;
-	h=date:mime-version:subject:message-id:from;
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [0.84 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[seu.edu.cn,none];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[seu.edu.cn:s=default];
+	DMARC_POLICY_ALLOW(-0.50)[ilvokhin.com,reject];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[ilvokhin.com:s=mail];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_RECIPIENTS(0.00)[m:sgoutham@marvell.com,m:rkannoth@marvell.com,m:gakula@marvell.com,m:sbhatta@marvell.com,m:hkelam@marvell.com,m:bbhushan2@marvell.com,m:andrew+netdev@lunn.ch,m:davem@davemloft.net,m:edumazet@google.com,m:kuba@kernel.org,m:pabeni@redhat.com,m:jbrandeb@kernel.org,m:richardcochran@gmail.com,m:amakarov@marvell.com,m:netdev@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,m:jianhao.xu@seu.edu.cn,m:zilin@seu.edu.cn,m:dawei.feng@seu.edu.cn,m:andrew@lunn.ch,s:lists@lfdr.de];
-	TAGGED_FROM(0.00)[bounces-269904-lists,stable=lfdr.de];
-	RCPT_COUNT_TWELVE(0.00)[20];
-	FORWARDED(0.00)[lists@lfdr.de];
+	RCPT_COUNT_TWELVE(0.00)[18];
 	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER(0.00)[dawei.feng@seu.edu.cn,stable@vger.kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-269902-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:peterz@infradead.org,m:mingo@redhat.com,m:acme@kernel.org,m:namhyung@kernel.org,m:mark.rutland@arm.com,m:alexander.shishkin@linux.intel.com,m:jolsa@kernel.org,m:irogers@google.com,m:adrian.hunter@intel.com,m:james.clark@linaro.org,m:terrelln@fb.com,m:dsterba@suse.com,m:linux-kernel@vger.kernel.org,m:linux-perf-users@vger.kernel.org,m:kernel-team@meta.com,m:fmzakari@meta.com,m:d@ilvokhin.com,m:stable@vger.kernel.org,s:lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	DKIM_TRACE(0.00)[seu.edu.cn:+];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_SENDER(0.00)[d@ilvokhin.com,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[dawei.feng@seu.edu.cn,stable@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[d@ilvokhin.com,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FREEMAIL_CC(0.00)[marvell.com,lunn.ch,davemloft.net,google.com,kernel.org,redhat.com,gmail.com,vger.kernel.org,seu.edu.cn];
+	DKIM_TRACE(0.00)[ilvokhin.com:+];
 	ALIAS_RESOLVED(0.00)[];
-	TAGGED_RCPT(0.00)[stable,netdev];
+	TAGGED_RCPT(0.00)[stable];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp,seu.edu.cn:dkim,seu.edu.cn:email,seu.edu.cn:mid,seu.edu.cn:from_mime,marvell.com:email]
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,perf.data:url,vger.kernel.org:from_smtp,meta.com:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 4223D6E120B
+X-Rspamd-Queue-Id: 0A9E66E114A
 
-otx2_init_hw_resources() initializes SQ aura and pool resources before
-several later setup steps. On failure, err_free_sq_ptrs only frees SQB
-pages, leaving the per-SQ sqb_ptrs arrays behind.
+With Zstd compression enabled ('perf record -z'), a single mmap push
+whose compressed output exceeds the maximum record size makes
+zstd_compress_stream_to_records() emit several PERF_RECORD_COMPRESSED2
+records back to back. record__pushfn() however rewrote only the first
+record's header to describe the whole blob as one record:
 
-Use otx2_free_sq_res() for the SQ unwind path and let it free sqb_ptrs
-even when sq->sqe has not been allocated yet.
+  event->data_size   = compressed - sizeof(struct perf_record_compressed2);
+  event->header.size = PERF_ALIGN(compressed, sizeof(u64));
+  padding            = event->header.size - compressed;
+  ...
+  record__write(rec, map, &pad, padding);
 
-The bug was first flagged by an experimental analysis tool we are
-developing for kernel memory-management bugs while analyzing
-v6.13-rc1. The tool is still under development and is not yet publicly
-available. Manual inspection confirms that the bug is still
-present in v7.1.1.
+perf_event_header::size is a __u16, so once the compressed blob no
+longer fits in it the header.size assignment truncates and 'padding'
+(size_t) underflows. write() is then handed that bogus length and fails
+with EFAULT, aborting the recording:
 
-An x86_64 allyesconfig build showed no new warnings. As we do not have an
-OcteonTX2 PF device and the corresponding AF mailbox setup to test with,
-no runtime testing was able to be performed.
+  failed to write perf data, error: Bad address
 
-Fixes: caa2da34fd25 ("octeontx2-pf: Initialize and config queues")
+The bytes that did reach the file are mis-framed, so reading it back
+cannot be decompressed.
+
+This is easy to hit with a high event rate and a large buffer, e.g.:
+
+  perf record -z -F max -m 32M --per-thread -- perf test -w thloop 5 1
+
+The single-record fixup is wrong by construction: because header.size is
+16 bits a compressed record cannot exceed 64KB, so the compressor must
+split a push into a chain of records, and the session reader already
+consumes them as such.
+
+Frame each record where it is produced instead: make
+process_comp_header() set the per-record data_size, 8-byte-align
+header.size and zero the trailing padding, and let record__pushfn()
+write the resulting blob, as the AIO path already does. Reduce
+max_record_size by sizeof(u64) so the per-record alignment padding
+cannot push header.size past its u16 field.
+
+There is no on-disk format change; a perf.data written by the fixed tool
+is still read by existing perf.
+
+Fixes: 208c0e168344 ("perf record: Add 8-byte aligned event type PERF_RECORD_COMPRESSED2")
+Reported-by: Farid Zakaria <fmzakari@meta.com>
+Signed-off-by: Dmitry Ilvokhin <d@ilvokhin.com>
 Cc: stable@vger.kernel.org
-Reviewed-by: Ratheesh Kannoth <rkannoth@marvell.com>
-Signed-off-by: Dawei Feng <dawei.feng@seu.edu.cn>
 ---
-v2:
-- Rebase on net/main.
-- Drop the timestamp qmem cleanup and the PTP Fixes tag because net/main
-  already has commit a056db30de92 ("octeontx2-pf: Fix leak of SQ timestamp
-  buffer on teardown").
+ tools/perf/builtin-record.c                   | 41 ++++++------
+ .../record+zstd_comp_decomp_multi_record.sh   | 64 +++++++++++++++++++
+ tools/perf/util/zstd.c                        |  2 +-
+ 3 files changed, 87 insertions(+), 20 deletions(-)
+ create mode 100755 tools/perf/tests/shell/record+zstd_comp_decomp_multi_record.sh
 
- .../ethernet/marvell/octeontx2/nic/otx2_pf.c  | 21 +++++++++----------
- 1 file changed, 10 insertions(+), 11 deletions(-)
-
-diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_pf.c b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_pf.c
-index b63df5737ff2..88ac85354445 100644
---- a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_pf.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_pf.c
-@@ -1568,15 +1568,15 @@ static void otx2_free_sq_res(struct otx2_nic *pf)
- 	otx2_sq_free_sqbs(pf);
- 	for (qidx = 0; qidx < otx2_get_total_tx_queues(pf); qidx++) {
- 		sq = &qset->sq[qidx];
--		/* Skip freeing Qos queues if they are not initialized */
--		if (!sq->sqe)
--			continue;
--		qmem_free(pf->dev, sq->sqe);
--		qmem_free(pf->dev, sq->sqe_ring);
--		qmem_free(pf->dev, sq->cpt_resp);
--		qmem_free(pf->dev, sq->tso_hdrs);
--		qmem_free(pf->dev, sq->timestamps);
--		kfree(sq->sg);
-+		/* sq->sqe is not initialized for unused QoS queues */
-+		if (sq->sqe) {
-+			qmem_free(pf->dev, sq->sqe);
-+			qmem_free(pf->dev, sq->sqe_ring);
-+			qmem_free(pf->dev, sq->cpt_resp);
-+			qmem_free(pf->dev, sq->tso_hdrs);
-+			qmem_free(pf->dev, sq->timestamps);
-+			kfree(sq->sg);
-+		}
- 		kfree(sq->sqb_ptrs);
+diff --git a/tools/perf/builtin-record.c b/tools/perf/builtin-record.c
+index 4a5eba498c02..2562c3177eae 100644
+--- a/tools/perf/builtin-record.c
++++ b/tools/perf/builtin-record.c
+@@ -652,27 +652,14 @@ static int record__pushfn(struct mmap *map, void *to, void *bf, size_t size)
+ 	struct record *rec = to;
+ 
+ 	if (record__comp_enabled(rec)) {
+-		struct perf_record_compressed2 *event = map->data;
+-		size_t padding = 0;
+-		u8 pad[8] = {0};
+ 		ssize_t compressed = zstd_compress(rec->session, map, map->data,
+ 						   mmap__mmap_len(map), bf, size);
+ 
+ 		if (compressed < 0)
+ 			return (int)compressed;
+ 
+-		bf = event;
+ 		thread->samples++;
+-
+-		/*
+-		 * The record from `zstd_compress` is not 8 bytes aligned, which would cause asan
+-		 * error. We make it aligned here.
+-		 */
+-		event->data_size = compressed - sizeof(struct perf_record_compressed2);
+-		event->header.size = PERF_ALIGN(compressed, sizeof(u64));
+-		padding = event->header.size - compressed;
+-		return record__write(rec, map, bf, compressed) ||
+-		       record__write(rec, map, &pad, padding);
++		return record__write(rec, map, map->data, compressed);
+ 	}
+ 
+ 	thread->samples++;
+@@ -1590,18 +1577,29 @@ static void record__adjust_affinity(struct record *rec, struct mmap *map)
  	}
  }
-@@ -1711,13 +1711,12 @@ int otx2_init_hw_resources(struct otx2_nic *pf)
- 	return err;
  
- err_free_nix_queues:
--	otx2_free_sq_res(pf);
- 	otx2_free_cq_res(pf);
- 	otx2_ctx_disable(mbox, NIX_AQ_CTYPE_RQ, false);
- err_free_txsch:
- 	otx2_txschq_stop(pf);
- err_free_sq_ptrs:
--	otx2_sq_free_sqbs(pf);
-+	otx2_free_sq_res(pf);
- err_free_rq_ptrs:
- 	otx2_free_aura_ptr(pf, AURA_NIX_RQ);
- 	otx2_ctx_disable(mbox, NPA_AQ_CTYPE_POOL, true);
+-static size_t process_comp_header(void *record, size_t increment)
++/*
++ * Called once with data_size == 0 to start a record, then once with
++ * data_size == compressed payload size to finalize and 8-byte-pad it
++ * (unaligned records trip ASan in the reader).
++ */
++static size_t process_comp_header(void *record, size_t data_size)
+ {
+ 	struct perf_record_compressed2 *event = record;
+ 	size_t size = sizeof(*event);
+ 
+-	if (increment) {
+-		event->header.size += increment;
+-		return increment;
++	if (data_size) {
++		size_t padding;
++
++		event->data_size = data_size;
++		event->header.size = PERF_ALIGN(size + data_size, sizeof(u64));
++		padding = event->header.size - size - data_size;
++		memset(record + size + data_size, 0, padding);
++		return data_size + padding;
+ 	}
+ 
+ 	event->header.type = PERF_RECORD_COMPRESSED2;
+ 	event->header.size = size;
++	event->data_size = 0;
+ 
+ 	return size;
+ }
+@@ -1610,7 +1608,12 @@ static ssize_t zstd_compress(struct perf_session *session, struct mmap *map,
+ 			    void *dst, size_t dst_size, void *src, size_t src_size)
+ {
+ 	ssize_t compressed;
+-	size_t max_record_size = PERF_SAMPLE_MAX_SIZE - sizeof(struct perf_record_compressed2) - 1;
++	/*
++	 * Reserve space so per-record PERF_ALIGN() padding keeps header.size
++	 * within u16.
++	 */
++	size_t max_record_size = PERF_SAMPLE_MAX_SIZE
++		- sizeof(struct perf_record_compressed2) - sizeof(u64);
+ 	struct zstd_data *zstd_data = &session->zstd_data;
+ 
+ 	if (map && map->file)
+diff --git a/tools/perf/tests/shell/record+zstd_comp_decomp_multi_record.sh b/tools/perf/tests/shell/record+zstd_comp_decomp_multi_record.sh
+new file mode 100755
+index 000000000000..42efe7260def
+--- /dev/null
++++ b/tools/perf/tests/shell/record+zstd_comp_decomp_multi_record.sh
+@@ -0,0 +1,64 @@
++#!/bin/bash
++# Zstd perf.data compression/decompression of multi-record data
++
++# SPDX-License-Identifier: GPL-2.0
++
++perfdata=$(mktemp /tmp/__perf_test.perf.data.XXXXX)
++recout=$(mktemp /tmp/__perf_test.zstd.rec.XXXXX)
++injout=$(mktemp /tmp/__perf_test.zstd.inj.XXXXX)
++perf_tool=perf
++
++cleanup() {
++	rm -f "${perfdata}" "${perfdata}".old "${perfdata}".decomp "${recout}" "${injout}"
++}
++trap cleanup EXIT TERM INT
++
++skip_if_no_z_record() {
++	$perf_tool record -h 2>&1 | grep -q -- '-z, --compression-level'
++}
++
++collect_z_record() {
++	echo "Collecting compressed record file:"
++	[ "$(uname -m)" != s390x ] && gflag='-g'
++	$perf_tool record -o "${perfdata}" $gflag -z -F max -m 32M --per-thread -- \
++		$perf_tool test -w thloop 5 1 \
++		>/dev/null 2>"${recout}"
++}
++
++check_record() {
++	echo "Checking record did not fail to write data:"
++	if grep -q "failed to write perf data" "${recout}"; then
++		cat "${recout}"
++		return 1
++	fi
++}
++
++check_decompress() {
++	echo "Checking compressed file decompresses cleanly:"
++	if ! $perf_tool inject -i "${perfdata}" -o "${perfdata}".decomp 2>"${injout}"; then
++		cat "${injout}"
++		return 1
++	fi
++	if grep -Eqi "decompress|corrupt|failed to process type" "${injout}"; then
++		cat "${injout}"
++		return 1
++	fi
++}
++
++skip_if_no_z_record || exit 2
++collect_z_record
++check_record || exit 1
++
++# Need >1 record, else the multi-record path wasn't exercised.
++# Skip rather than pass/fail spuriously.
++nr=$($perf_tool report -i "${perfdata}" --stats 2>/dev/null |
++	awk '/COMPRESSED2 events:/ { print $3 }')
++if [ -z "${nr}" ] || [ "${nr}" -lt 2 ]; then
++	echo "less than two compressed records (${nr:-0}), skipping"
++	exit 2
++fi
++echo "Produced ${nr} compressed records"
++
++check_decompress
++err=$?
++exit $err
+diff --git a/tools/perf/util/zstd.c b/tools/perf/util/zstd.c
+index 57027e0ac7b6..1955fa2431d1 100644
+--- a/tools/perf/util/zstd.c
++++ b/tools/perf/util/zstd.c
+@@ -30,7 +30,7 @@ int zstd_fini(struct zstd_data *data)
+ 
+ ssize_t zstd_compress_stream_to_records(struct zstd_data *data, void *dst, size_t dst_size,
+ 				       void *src, size_t src_size, size_t max_record_size,
+-				       size_t process_header(void *record, size_t increment))
++				       size_t process_header(void *record, size_t data_size))
+ {
+ 	size_t ret, size, compressed = 0;
+ 	ZSTD_inBuffer input = { src, src_size, 0 };
 -- 
-2.34.1
+2.53.0-Meta
+
 
