@@ -1,174 +1,155 @@
-Return-Path: <stable+bounces-269993-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-269994-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id m/tvDZ7dQ2qakgoAu9opvQ
-	(envelope-from <stable+bounces-269993-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 30 Jun 2026 17:15:42 +0200
+	id EZ9JHWLdQ2qNkgoAu9opvQ
+	(envelope-from <stable+bounces-269994-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 30 Jun 2026 17:14:42 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 32E7C6E5D2E
-	for <lists+stable@lfdr.de>; Tue, 30 Jun 2026 17:15:41 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id C91226E5D01
+	for <lists+stable@lfdr.de>; Tue, 30 Jun 2026 17:14:41 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=kDY90qwS;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-269993-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-269993-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	dkim=pass header.d=google.com header.s=20251104 header.b=MPbOB8hx;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-269994-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-269994-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=reject) header.from=google.com;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id E348E3055747
-	for <lists+stable@lfdr.de>; Tue, 30 Jun 2026 15:08:26 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 2871F301F981
+	for <lists+stable@lfdr.de>; Tue, 30 Jun 2026 15:12:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 978D92F5A12;
-	Tue, 30 Jun 2026 15:08:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C6CC30D409;
+	Tue, 30 Jun 2026 15:12:29 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f202.google.com (mail-pf1-f202.google.com [209.85.210.202])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6361630DEBE
-	for <stable@vger.kernel.org>; Tue, 30 Jun 2026 15:08:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0CE12DB794
+	for <stable@vger.kernel.org>; Tue, 30 Jun 2026 15:12:27 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782832100; cv=none; b=ljbzvKPHX2RZklfgvBRMH3olRNcE7LkTq5unZoPlmLqWd65EH9RZryJtoyNuXDTCEsydjyJswaxnwcorDRM+jb2g5uEbsCQCJa4RXHZh+ncoDEBUJNIlcaMV1pvvt4rUZKwB4KYDe45OhRL/w0O0upThswWVI1kIvFbZ78AVHcI=
+	t=1782832349; cv=none; b=Gt7xN0ZIJD2Efs6bUlH59TuqJ+ROb0mFvwXkEjVlnDTxAZOOjFvW7ifClx5/P+4mRT3rY2E3V/E321YjQK1Y/ZqgGeT2r1soffvGU+zOtHUe2c3kAF6HxgPVH3hRdIw25ul2w0LfJ/15k3m515x15JjNsmFiKICw54EFEjRoVFU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782832100; c=relaxed/simple;
-	bh=lvgzVHd8xmq+ZFJ3B41MXnvMhzO2v8n51MqmChy4uOo=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=b/nKrGYctLUkkjB9+V5c635pOXsM6MPMUV8J+k9uBn0XEk4DiCjnlD0VwU03fLnZJ1mVwdbu+vKNRM+IqrBPiYCu3jGxdo3DeErZ0OwsPjGrvx5BvE2L8smOrpKAiOMtC9519/ZTiaTpDKx+hYMteFV8/HkjORKVB7X3bi7nzjU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kDY90qwS; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 935BE1F00A3A;
-	Tue, 30 Jun 2026 15:08:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782832099;
-	bh=1q5BW/mbdi3JHVhqZhzf/6C8nWV+HxHxbjoKP/q4ZWg=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=kDY90qwSHF0ssSox3pM80yCAKa/JcLC1BlDtVY4Zzc7Wo7AUj3rkd6SOqkTckqR/E
-	 Mu9GqALYcrmLo5domxFR5RS+UOnpZPXIFditcwdnlecA8ILv24uOZqNidTKmQKimr5
-	 pBs/utD58Sl+R49hU+3n3DaSRoQ9xT2dHtanKqQ0d7MRXH+Bngizl3Bn4vq4Vu1qFI
-	 xM0PqEiuhLv86u3Cd4WMgDJmvrj66ut7oW4E2NmKEvkciO508HK7DKpYtdQQppM4cj
-	 /YjSUtj5hcgRpTlTcANc0ip7a68HvH1HWso8HI8BByz/5CaM0rf60XnYk4nV0GKMgL
-	 Tzs4isog52hng==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: Wongi Lee <qw3rtyp0@gmail.com>,
-	Jungwoo Lee <jwlee2217@gmail.com>,
-	Ido Schimmel <idosch@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1.y] ipv6: account for fraggap on the paged allocation path
-Date: Tue, 30 Jun 2026 11:08:14 -0400
-Message-ID: <20260630150814.2524002-1-sashal@kernel.org>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <2026063005-reorder-clubhouse-6def@gregkh>
-References: <2026063005-reorder-clubhouse-6def@gregkh>
+	s=arc-20240116; t=1782832349; c=relaxed/simple;
+	bh=PPb7LwoRuRfYmu8/Ofq1YjRYWdVv967WMagcT07Y2ds=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=BiUsWTIYgqRFKNKOtPzWG6JAG3CZB5wuU5sbBc9YD58S6/zcnareuA0MAndriuBGAUPuWry/ScjKqzvuX9Dgl9lDk6dOTujJVPOxtsV0kEj8ncOkBjRpYKxELRi4aGCS7A4EDKz37Q44gvDyrlrLSa37pIqPKu5VjHe5JHOoKCg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=MPbOB8hx; arc=none smtp.client-ip=209.85.210.202
+Received: by mail-pf1-f202.google.com with SMTP id d2e1a72fcca58-847ad67cc51so336451b3a.3
+        for <stable@vger.kernel.org>; Tue, 30 Jun 2026 08:12:27 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1782832347; x=1783437147; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=8+GLy3sWXadxiqMyqom/+rAtrEu0gob/aAStimBhbEM=;
+        b=MPbOB8hx7nddZol4mdKUJx9Qh4zU7ITtWtk63SC5k6F0WWiM5f+RI09vig2Cd+psb1
+         BmGl67cjiPqU7P28xF89SC4bpzxP6wV/+ZG+qf+kmSEkvvzl1HmgV+hmcAiQkKvzkNm3
+         84bEV6S2UbAi7Iv+uupDZAxEUrJPgTWi0QyvxMZpCOs63GHUROVrCML/4l3Gn9WXG67r
+         omriM67cxrvVmEbkrGpSmGgK3pKgTXKv+yIjrxCdWLipHcj4z685bho0hQfmOMJ/h7aZ
+         5W1XJmPxVpPqwA2qR8SpY6hL/GYj9QFIqWk7gYIRtfru2OKuzDV6459XUHJfYSClY3su
+         wl2g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1782832347; x=1783437147;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=8+GLy3sWXadxiqMyqom/+rAtrEu0gob/aAStimBhbEM=;
+        b=Xw8c8maHC1FTAGS0D9jZAGk0ibVI4v1ZRpB3SX1jUFWKrriVhdS12U2PB31J1foe7q
+         IzYRV8EGeeukjdxCpktL/7ktnumXVLWzmziHQRDpmBRtQePxjjeUMIohhPSuexxgFcI6
+         doUbsOVIssZorbDhuGeu8P6TPeFyCPvGtvnj7NcRxT8ELheAR3/QaYvBaDQTj+9OGVoz
+         mllw1AIFgg9B0vLy0nHaJ9lY9pgUwBuV+gxrvzdLZ91iIwUzNMVOxZbw09uDpHeoQ8Hf
+         JoVi2HOCoWEV4RxiYRmcs0oAuAFnoypOm/a2eMlHKQo6lXwT176f2dmvjoCl8Hscyyz+
+         wLeQ==
+X-Forwarded-Encrypted: i=1; AHgh+RqtCA5f9XfmfwqI/DmAAQjMIPpHd+qiD/Baoj50TDFzpByzH416A1VJKZycdhpqJE6pAopj7nE=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx4GNnZTMSMrdsSA3eu8LO1PGJi2TnOXL7PnnxVRPb/LJ3i4BcV
+	Dp9BEaILNflXKzLOMcMqTyyhws1KyKGWxdwEHB7jKy9tvajcWU3qlHueX0MDLNpa49eKat4HWKk
+	W7zajqw==
+X-Received: from pfbgj9.prod.google.com ([2002:a05:6a00:8409:b0:845:38af:5fa5])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:4c86:b0:845:d286:1fb8
+ with SMTP id d2e1a72fcca58-847adf22b13mr956323b3a.54.1782832346871; Tue, 30
+ Jun 2026 08:12:26 -0700 (PDT)
+Date: Tue, 30 Jun 2026 08:12:26 -0700
+In-Reply-To: <20260630114701.319917-1-jinpu.wang@ionos.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+References: <20260630114701.319917-1-jinpu.wang@ionos.com>
+Message-ID: <akPc2raibHy-QnPH@google.com>
+Subject: Re: [stable-6.12] KVM: SEV: Unmap and unpin the GHCB as needed on
+ vCPU free
+From: Sean Christopherson <seanjc@google.com>
+To: Jack Wang <jinpu.wang@ionos.com>
+Cc: gregkh@linuxfoundation.org, sashal@kernel.org, stable@vger.kernel.org, 
+	Michael Roth <michael.roth@amd.com>, Tom Lendacky <thomas.lendacky@amd.com>, 
+	Paolo Bonzini <pbonzini@redhat.com>
+Content-Type: text/plain; charset="us-ascii"
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-3.66 / 15.00];
-	WHITELIST_SPF_DKIM(-3.00)[kernel.org:d:+,kernel.org:s:+];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
+	DMARC_POLICY_ALLOW(-0.50)[google.com,reject];
+	MV_CASE(0.50)[];
+	R_DKIM_ALLOW(-0.20)[google.com:s=20251104];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-269993-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:qw3rtyp0@gmail.com,m:jwlee2217@gmail.com,m:idosch@nvidia.com,m:kuba@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_SENDER(0.00)[sashal@kernel.org,stable@vger.kernel.org];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FREEMAIL_CC(0.00)[gmail.com,nvidia.com,kernel.org];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-269994-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:jinpu.wang@ionos.com,m:gregkh@linuxfoundation.org,m:sashal@kernel.org,m:stable@vger.kernel.org,m:michael.roth@amd.com,m:thomas.lendacky@amd.com,m:pbonzini@redhat.com,s:lists@lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
-	ALIAS_RESOLVED(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	FORGED_SENDER(0.00)[seanjc@google.com,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[google.com:+];
+	MISSING_XM_UA(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[nvidia.com:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,vger.kernel.org:from_smtp]
+	FORGED_SENDER_FORWARDING(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[seanjc@google.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TO_DN_SOME(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[amd.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp,ionos.com:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 32E7C6E5D2E
+X-Rspamd-Queue-Id: C91226E5D01
 
-From: Wongi Lee <qw3rtyp0@gmail.com>
+On Tue, Jun 30, 2026, Jack Wang wrote:
+> From: Sean Christopherson <seanjc@google.com>
+> 
+> commit a847a44f67eaf99faad905da38c080f0ba7ee02a upstream.
 
-[ Upstream commit 736b380e28d0480c7bc3e022f1950f31fe53a7c5 ]
+Wrong hash, the upstream commit is db38bcb3311053954f62b865cd2d86e164b04351.
 
-In __ip6_append_data(), when the paged-allocation branch is taken
-(MSG_MORE / NETIF_F_SG / large fraglen), alloclen and pagedlen are
-computed as
+> Unmap and unpin the GHCB as needed when freeing a vCPU.  If the VM is
+> destroyed after mapping+pinning the GHCB on #VMGEXIT, without re-running
+> the vCPU, KVM will effectively leak the GHCB and any mappings created for
+> the GHCB.
+> 
+> Fixes: 291bd20d5d88 ("KVM: SVM: Add initial support for a VMGEXIT VMEXIT")
+> Cc: stable@vger.kernel.org
+> Tested-by: Michael Roth <michael.roth@amd.com>
+> Reviewed-by: Tom Lendacky <thomas.lendacky@amd.com>
+> Reviewed-by: Michael Roth <michael.roth@amd.com>
+> Signed-off-by: Sean Christopherson <seanjc@google.com>
+> Message-ID: <20260501202250.2115252-18-seanjc@google.com>
+> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+> Message-ID: <20260529183549.1104619-18-pbonzini@redhat.com>
+> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 
-	alloclen = fragheaderlen + transhdrlen;
-	pagedlen = datalen - transhdrlen;
-
-datalen already includes fraggap (datalen = length + fraggap). When
-fraggap is non-zero, this is not the first skb and transhdrlen is zero.
-The fraggap bytes carried over from the previous skb are copied just past
-the fragment headers in the new skb's linear area. The linear area is
-therefore undersized by fraggap bytes while pagedlen is overstated by the
-same amount, and the copy writes past skb->end into the trailing
-skb_shared_info.
-
-An unprivileged user can trigger this via a UDPv6 socket using
-MSG_MORE together with MSG_SPLICE_PAGES.
-
-The bad accounting was introduced by commit 773ba4fe9104 ("ipv6:
-avoid partial copy for zc"). Before commit ce650a166335 ("udp6: Fix
-__ip6_append_data()'s handling of MSG_SPLICE_PAGES"), the negative
-copy value caused -EINVAL to be returned. That later commit allowed
-MSG_SPLICE_PAGES to proceed in this case, making the corruption
-triggerable.
-
-The non-paged branch sets alloclen to fraglen, which already accounts
-for fraggap because datalen does. Bring the paged branch in line by
-adding fraggap to alloclen and subtracting it from pagedlen.
-
-After this adjustment, copy no longer collapses to -fraggap on the
-paged path, so remove the stale comment describing that old arithmetic.
-Since a negative copy is no longer expected for a valid MSG_SPLICE_PAGES
-case, remove the MSG_SPLICE_PAGES exception from the negative copy check.
-
-Fixes: 773ba4fe9104 ("ipv6: avoid partial copy for zc")
-Signed-off-by: Jungwoo Lee <jwlee2217@gmail.com>
-Signed-off-by: Wongi Lee <qw3rtyp0@gmail.com>
-Reviewed-by: Ido Schimmel <idosch@nvidia.com>
-Link: https://patch.msgid.link/ajFTqRljatR17fFy@DESKTOP-19IMU7U.localdomain
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- net/ipv6/ip6_output.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/net/ipv6/ip6_output.c b/net/ipv6/ip6_output.c
-index 1e491fa7793ad8..d8ce708fcb3c45 100644
---- a/net/ipv6/ip6_output.c
-+++ b/net/ipv6/ip6_output.c
-@@ -1622,8 +1622,8 @@ static int __ip6_append_data(struct sock *sk,
- 				  !(rt->dst.dev->features & NETIF_F_SG)))
- 				alloclen = fraglen;
- 			else {
--				alloclen = fragheaderlen + transhdrlen;
--				pagedlen = datalen - transhdrlen;
-+				alloclen = fragheaderlen + transhdrlen + fraggap;
-+				pagedlen = datalen - transhdrlen - fraggap;
- 			}
- 			alloclen += alloc_extra;
+Please document what you adjusted.  That matters very much, because I would much
+rather backport 08385c5e1814 ("KVM: SEV: Move sev_free_vcpu() down below
+sev_es_unmap_ghcb()") than shuffle things around on the fly.  That was the entire
+point of tagging 08385c5e1814 for stable.
  
--- 
-2.53.0
+> Signed-off-by: Jack Wang <jinpu.wang@ionos.com>
 
+NAK, I'll send backports of the two patches (I ended up doing them anyways to
+figure out what was changing in this backport).
 
