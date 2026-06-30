@@ -1,251 +1,230 @@
-Return-Path: <stable+bounces-269903-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-269905-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id rPI+AZ1uQ2pgYQoAu9opvQ
-	(envelope-from <stable+bounces-269903-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 30 Jun 2026 09:22:05 +0200
+	id yvuXKtFzQ2qbYgoAu9opvQ
+	(envelope-from <stable+bounces-269905-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 30 Jun 2026 09:44:17 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 50C336E1156
-	for <lists+stable@lfdr.de>; Tue, 30 Jun 2026 09:22:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F2E8E6E1501
+	for <lists+stable@lfdr.de>; Tue, 30 Jun 2026 09:44:16 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=none ("invalid DKIM record") header.d=siliconsignals.io header.s=selector1 header.b=maKNuCHN;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-269903-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-269903-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=fail reason="SPF not aligned (relaxed)" header.from=siliconsignals.io (policy=quarantine);
-	arc=reject ("cv is fail on i=2")
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="CkRZKX/b";
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-269905-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-269905-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 100E4301A91E
-	for <lists+stable@lfdr.de>; Tue, 30 Jun 2026 07:18:04 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B1D3C300F110
+	for <lists+stable@lfdr.de>; Tue, 30 Jun 2026 07:44:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7634A39989C;
-	Tue, 30 Jun 2026 07:18:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C5403A8384;
+	Tue, 30 Jun 2026 07:44:15 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from PNYPR01CU001.outbound.protection.outlook.com (mail-centralindiaazon11020137.outbound.protection.outlook.com [52.101.225.137])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D879B26B742;
-	Tue, 30 Jun 2026 07:18:01 +0000 (UTC)
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782803883; cv=fail; b=cjz7NJW7GsQBtiu6DsTNOXku3Xj5sAlYyaNdVliuJIjxYU9KGUMwJpKFiUeYVN4b+5PmveMInZLEgfivaxaEQ/oUq83TjQCDJyei2BZMxU1i/AgOtC0FA67anww8F9xs8HpUzgXb1Rq/SwDNRleaue2Ua8c5vTwzGiXm/DDrsLs=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782803883; c=relaxed/simple;
-	bh=wOmVjKjVZLmgZWde9tb8yFkKXi85XPLmA3J4fbBG5bg=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=b8Cj+RKZyV6OcHzYR6B0iXg91YvvaMF7GhfRrTlz0gRZOh/+VU6sXijUfPtdu5qYmU+oGEwfZRxIFqdN+D/8sw4PjVi63Wbaw6quvoD/fm8I6ERIS+WypYZdjaKmjsFqRoU3vHl/NJ8Utk39zrVyIWMWlj0JrrwgIc+U8r3oMsc=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=siliconsignals.io; spf=pass smtp.mailfrom=siliconsignals.io; dkim=fail (0-bit key) header.d=siliconsignals.io header.i=@siliconsignals.io header.b=maKNuCHN reason="key not found in DNS"; arc=fail smtp.client-ip=52.101.225.137
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=aeJq+sic01FHQn1w/KggnZEBXJ6bQ0IIJN50Tus+jHtm7CinXtpYfNNa1GAU7GVx3JnQwZGMQDblFS+NNdk4u0vMwnsvSK4NZHydRaVeR9GiUIf081UX16J+fFmVyJF3O+Uw66pYyy/daAYlpJaVNDem5u9pPm8NmXx6LorlMbjREebQGDPhqMDyYqSouJjODiXEkD8x6+fRzZyNMfWi7wD0Pwov1QWSk4vGe/MGgCI0KCDh1FMpdIPsqJUfa2QRBNvNbphB+Gqy4oifSuKa1CWDWGvoOeNqKI4WWUn8Byn35LpQBpHdUosq5YhKOsqAsRqwG6gonS1t7IQ4WmujCQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=V0CngVb/KpSE7q+fzqxrfA8IrurwHYZjAzLBKXxitTA=;
- b=bmJ0+Sa7+9Eliyhs4nYzL1YWtCGr1NHQZmoKwnh7wtkuVvs+iU4z09SZqbrhgidt8EIq8jz2pps0leeBjIhu+G8vkX1ne8+BOVvLIbmHzpI7WGKyfJSEzUDcvEW6INQflgMI3RKaR0tOKWok7+M/7alkiB/1I+GO8veVl9fTzIk/HNtMoCoG2yd9gyq1DzVts7J+XciGyw4W/ujr7UUke1xcy/4gMkWvuTWHpr+lReHbRwMIe5wEO40awlIxdXs+K1S5yjlqfjbM+Q1riAA+yE4sxM512vbUs2bJgBIV7TEY/Yv/tFVpL1t/iQNZYh+gKmTnbPxxEGZ3444FrPzzmQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=siliconsignals.io; dmarc=pass action=none
- header.from=siliconsignals.io; dkim=pass header.d=siliconsignals.io; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=siliconsignals.io;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=V0CngVb/KpSE7q+fzqxrfA8IrurwHYZjAzLBKXxitTA=;
- b=maKNuCHN7skUXCmLwXD+mfAD1Aj+DIgWeWVRNkoJKgFEqYlLop3vpAFpPy5yKMloyZXi3w2ta+iOX43lu1Y5M6eZjzrfOW/h1NCKBILpB1YXz2P2Ye263Y/VQJMViws+9CX8T4vhL5uzOuJTWtwNQeheLxr7eJ1rQHKoLlGX18W8+dYLwXDnYoSj9xNoRPKstsEaew2eemZRPQBO0yC+QiGonQ5NhpRQGwQfTbcp95wU+nJ6sp63ITeYTKK+mSLIoyFXcJZjZIgFnfzImBF+eK3W80YDaoX3niD9TsI/xSLpJR3+4JFQkQiQjr8qd0sA2tkiqdnK0avN74/vkR0UpA==
-Received: from PN3P287MB1829.INDP287.PROD.OUTLOOK.COM (2603:1096:c01:199::7)
- by MA0P287MB0555.INDP287.PROD.OUTLOOK.COM (2603:1096:a01:116::8) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.181.8; Tue, 30 Jun
- 2026 07:17:56 +0000
-Received: from PN3P287MB1829.INDP287.PROD.OUTLOOK.COM
- ([fe80::ce63:5749:b390:508b]) by PN3P287MB1829.INDP287.PROD.OUTLOOK.COM
- ([fe80::ce63:5749:b390:508b%6]) with mapi id 15.21.0181.008; Tue, 30 Jun 2026
- 07:17:55 +0000
-From: Tarang Raval <tarang.raval@siliconsignals.io>
-To: Mehdi Djait <mehdi.djait@linux.intel.com>
-CC: Sakari Ailus <sakari.ailus@linux.intel.com>, "stable@vger.kernel.org"
-	<stable@vger.kernel.org>, Himanshu Bhavani
-	<himanshu.bhavani@siliconsignals.io>, Elgin Perumbilly
-	<elgin.perumbilly@siliconsignals.io>, Mauro Carvalho Chehab
-	<mchehab@kernel.org>, Hans Verkuil <hverkuil+cisco@kernel.org>, Vladimir
- Zapolskiy <vladimir.zapolskiy@linaro.org>, "linux-media@vger.kernel.org"
-	<linux-media@vger.kernel.org>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v2 01/15] media: i2c: os05b10: Use
- pm_runtime_get_if_active() when applying controls
-Thread-Topic: [PATCH v2 01/15] media: i2c: os05b10: Use
- pm_runtime_get_if_active() when applying controls
-Thread-Index: AQHcvE0VYEyGpKrPCUqCSgEd3XhlMbZWPXoAgAEDjnI=
-Date: Tue, 30 Jun 2026 07:17:55 +0000
-Message-ID:
- <PN3P287MB18296B5F265EB5961F25FF758BF72@PN3P287MB1829.INDP287.PROD.OUTLOOK.COM>
-References: <20260325114404.95188-1-tarang.raval@siliconsignals.io>
- <20260325114404.95188-2-tarang.raval@siliconsignals.io>
- <akKM6VhoLNep5UZB@mdjait-mobl>
-In-Reply-To: <akKM6VhoLNep5UZB@mdjait-mobl>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-msip_labels:
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: PN3P287MB1829:EE_|MA0P287MB0555:EE_
-x-ms-office365-filtering-correlation-id: b190bed8-ebc4-4eec-5c11-08ded677b4cc
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam:
- BCL:0;ARA:13230040|1800799024|366016|376014|23010399003|18002099003|22082099003|38070700021|4143699003|56012099006;
-x-microsoft-antispam-message-info:
- fE5DRcVC7VZ4YHV35IeXEpJhIGHBM69jvB0FL+iNz3B2Nmt9FxFoHonP+PsVtvEwdAL0Hk5EhSqU6ecoPSWrmmEawGh1S9OnKad5kbtqflEdAul32kbbcmo5xUO+h4T6rL/wxhTGC8DhI7oc68MRmtLl5wTMiGsYnxWUbSjdClTNb/y2XWo6Lj2rZ3H9z8q9AIK8CZG0rST1AuO9reM4sWhh67Bq6cGco/ywFLpSOEwCVZBL0WwOe8Ok2PuxCvM7FI0ImtmMo3FKJcT3qcuFSYzie8t45iwGYXlauuDktLGm4MMUK67174KGM90il61JR2i5UVGuqcPPI1CUJDMXfBtoR7UfbpIrM7sEYKhPZ0wzAoR7Y71neZHvpnjxCL8gD8JaHDbm9IF4mY+IwshD/FUWIGgnx17Uf9F1pkBDL0JIp6wRmGChijg+rmP+bM92J2G2HGTrBjiNc3XME8FvK/LciKdQXWB4wt8tk5EopgwE7JWOjVYF4CjqO4JY1/32zJQ7xYGkQOGguB4B5t0ha2aOsR8QTWEXJnV5BsGNQNmMCxwdkmMc2ENk2F7rOhDbAWyqYtbErt+qHxzzLaiQeWbZ9wa6CKN6VG5vWJMvvf4QQo130hhqZcmAenCYdKRuZa/qfrNC3uFuQ0CuShsMO/p3ChYHnhawAtLA5jsvA0uNJ3z7iNfWdrwAa+gARDiaDcHxdyEjE/GWEe6Ct2bxJ4X1Af5qS8G1AHs2w8/BsBE=
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PN3P287MB1829.INDP287.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(23010399003)(18002099003)(22082099003)(38070700021)(4143699003)(56012099006);DIR:OUT;SFP:1102;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?iso-8859-1?Q?SaTKw1IpDwxZ1SrB/5YaF9apUYkEiuINQJalw3L9naoOtQ7UDM/xV+HI3r?=
- =?iso-8859-1?Q?ejplNDHPNazByHCDov1YNFiv+ug3lxYn+Vf/8zy5HnUPbGnpIh3UPkrkb+?=
- =?iso-8859-1?Q?bpOlGpAbG9sZ7WbrqMWjq9pwDlNjFYhFdkfqQB+r64xlLVM3Dz88VZ9J0y?=
- =?iso-8859-1?Q?9ywgEMv7LszsdXGuNyysjk7Ho/xqWmj3IRapEcwHES7cqXiHBATUcfcYJ+?=
- =?iso-8859-1?Q?chwgvx+wQFSfFhSmFbUe1IOa5HckbA9W5Kj+MrGzIDe6fYnHyC8Fx6lAZD?=
- =?iso-8859-1?Q?v46ojZIyuTaOMRt2XXRNXVs2KeGZ9M2PLrO6MNtNSDZzZ6ql664OfGp55B?=
- =?iso-8859-1?Q?pOFFQ+MG32NJXQDNh01D7+Wj15ATcO7k4r5+Xn+AWgyOU8K01F1to7SOy8?=
- =?iso-8859-1?Q?zXVs2VEDO/zy/MnD0X3+uV6IqLZq2SQyfqBJtQClzV9na1y+wVo5pbObHT?=
- =?iso-8859-1?Q?1rx+obOTllGaBMvgohClwNOAT5NR9VxzylVG8iadEJJw+XafjBZe+lzlmZ?=
- =?iso-8859-1?Q?LPiHo6TMWtwK1NWGtSKnYWsWRyL0csP18mUm8h8pSsimo43P7VrJ5WS3BQ?=
- =?iso-8859-1?Q?8DALTJDbU1JbPyr8gt/OHoJY9LWJTC9vyhQkG/E27Th6WME5MOZchrNmGo?=
- =?iso-8859-1?Q?h/Uq/2HoWhtNQYiDNhDLEbXBstH44DMv0rSXdIu0+hJIM7nLbJsjCyXstl?=
- =?iso-8859-1?Q?u9T3E8960Uvj5CKhrxpE2xMCaQkNlqflgosLgOO9SY4eJRt0vmx6yq/Dr0?=
- =?iso-8859-1?Q?frFLZP2Y+Pigouc5jIU//Gs+CaYB6OXXZHMO3EalZ14nQIK/BxGdY89/+O?=
- =?iso-8859-1?Q?skKwlyWzlKYrSgBlBe/fcz+O2lJsY5eDDgRkiE1s33aXpRG1gyKxyS1GzC?=
- =?iso-8859-1?Q?4k9B7aMsdJXF11hjHuX54RCIoe0kantLG+o4bRmV4X0hVOFTfzyNgJLdRC?=
- =?iso-8859-1?Q?SFJtjDzjqX4Rhhs94SbZdGJABzg/fZlK0QFgi6MB9Hc1v23rZCunjvfxLp?=
- =?iso-8859-1?Q?/4E5Lwu/3FQiYr+K8FE4l3QD5ghOsYX9QZBvBIGdxHdzHRL7K/gpEl7iJH?=
- =?iso-8859-1?Q?rwCHU6D40W+hLn9Zvz4RTyWobYshs1vfzspWtA4I4Lj/27oMcgzqRtPbKq?=
- =?iso-8859-1?Q?wtDfs9+3t+pRBRj5NvdZlJqIQCgrbh1uyvzTsV2fI3zZeev1Gt3ElCYx6+?=
- =?iso-8859-1?Q?klQNXzx762+zTaSZNldW35Dg23YSdcEk0utv8Y7DHzM8M019ois5/XoR8D?=
- =?iso-8859-1?Q?+KJq8wjh++FU0ESWD3D+NiUZPcGzCJBlhmZBdp7eLIgg4WSZ2XdD3JI2dn?=
- =?iso-8859-1?Q?jzaWLHLSq7j9yCqAklWckMLi+lfrMkf8Evfm5odfEIL4mQD7E8rGtnT2Cz?=
- =?iso-8859-1?Q?Bli9R8t+PGsxI1kbn82fmRZVcgth86BTRaK/Ix9Pp/rjW5qdi8zKCjsSwe?=
- =?iso-8859-1?Q?NLXcBClorQ+4lHhmicrciFcrfT1vbHb/bHeZp3IUaz2UJmwmEFlVZlNMIK?=
- =?iso-8859-1?Q?EqnZgLNpFA+jLdKKV1JYnLqofmWFUQDQ+PlTS2JUY/VlEkf7VxperQMHuV?=
- =?iso-8859-1?Q?mkpM3ok2e79ZEcsKylla+an7NRiZI47FnaaNu7z7zLU1AqPZ5/UKJC3m0r?=
- =?iso-8859-1?Q?BSqvZHEa6cA7sJi/WHT3vippGNktJ6QTMsCi+QsTQB7KhKFZahz0GskflJ?=
- =?iso-8859-1?Q?jDs1b09aAbw1XxHiN/sXIrmmyrm1+SR+RVH0k8g/wOsZzGyDt8QVp23Smy?=
- =?iso-8859-1?Q?EduxRu86zOImnNjbVhH8o9gA7ZV4hIAWxOHcaaEZFzcKDt89HxBzWlpWW8?=
- =?iso-8859-1?Q?z520Ui2M+w=3D=3D?=
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBD6A3D1CCF;
+	Tue, 30 Jun 2026 07:44:13 +0000 (UTC)
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1782805454; cv=none; b=B84Q7xGac/NhGseKSV3J5D9guzt1B2nvpVHgZvjrJElZUx0RGWHMtgH26YW7LMUTIWKV120dKXglSLqS+atG1IHkL0rjFHUIfm1YmM+n5NoXnhjTWUky4YlkszbRzCb0teW9Oa9SS9bEXazQDJqolCkzASdjjjoMpZ91a8RWU88=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1782805454; c=relaxed/simple;
+	bh=7DbOLKL0rLvcvNDP28oH6c82QlbGx/4fWe6uzgVFgRc=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=D/TrApZv88t67cT84+wVRzht12Q+yY5RZXGkP0uZsytlMUiVGUAyDNeX403rhjILqZOZfy+wPjrzsmjk4QotMMzI0ofq4FrWq+GjpRzoL6cCjEiz3BcubhQP0nygAfPt9BxRRoIrk6+t7vpsOvocevFcVZ/Xad2jSynk6OGY+28=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CkRZKX/b; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED68B1F00A3A;
+	Tue, 30 Jun 2026 07:44:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1782805453;
+	bh=E0KgZjmuVYnhggcedT+cDC7Ty8G96rX4EfII0AXlJBc=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=CkRZKX/bA42/uEJ5XxOREyoadqjTygMIt74dA2qVxbuawMc1GSM0yzs633B3Tz2Mp
+	 beFyyifGnnR5RMB9iDUdGHwTYb7nThu3cByxooWGzkC9q5L0DgNlp4RGKOF0mb2gYw
+	 Tk+3eY1YbRGGBk5/z7rDeqxVdHEoll1eEUlccMfvQDJs6EgAJi2iB7gOrgZVXfld0Z
+	 sL7A/q9rmCpWOrvANDV7DVruik0tM2zCCbGGtmzNJIhjfP8Tuo91RuvXdzBCEEWFJt
+	 mCO/ihVsbG9zr37T8zLuH+OVGAlb/m4Afew6Hs3XrUsKe0UnlwMSF+ITUKsOl1HXNS
+	 4C8x5cWcUc55Q==
+Message-ID: <4549ad0e-abb1-4156-95c6-5e3c1319dffe@kernel.org>
+Date: Tue, 30 Jun 2026 09:44:08 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-OriginatorOrg: siliconsignals.io
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: PN3P287MB1829.INDP287.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-Network-Message-Id: b190bed8-ebc4-4eec-5c11-08ded677b4cc
-X-MS-Exchange-CrossTenant-originalarrivaltime: 30 Jun 2026 07:17:55.5650
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 7ec5089e-a433-4bd1-a638-82ee62e21d37
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: xXY7IFejndbXRV6UEvB7m0shYgCOSfu3Qf5CZiiZYRoCoEXceTrSFsQa7JOmAbZpwIv0i5pPTl6Q8HrjtCQgWURdI8hzV2MiR1uZ5MVveQY=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MA0P287MB0555
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] mm/page_alloc: free allocated PFNs if the range does not
+ match
+Content-Language: en-US
+To: Zi Yan <ziy@nvidia.com>, Andrew Morton <akpm@linux-foundation.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ Brendan Jackman <jackmanb@google.com>, Johannes Weiner <hannes@cmpxchg.org>,
+ David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
+ "Liam R. Howlett" <liam@infradead.org>, Mike Rapoport <rppt@kernel.org>,
+ Yu Zhao <yuzhao@google.com>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
+References: <20260629-free-pfn-on-alloc-contig-range-error-path-v1-1-496ff9ca22db@nvidia.com>
+From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+Autocrypt: addr=vbabka@kernel.org; keydata=
+ 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
+In-Reply-To: <20260629-free-pfn-on-alloc-contig-range-error-path-v1-1-496ff9ca22db@nvidia.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [2.04 / 15.00];
-	DMARC_POLICY_QUARANTINE(1.50)[siliconsignals.io : SPF not aligned (relaxed),quarantine];
-	ARC_REJECT(1.00)[cv is fail on i=2];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10];
+X-Spamd-Result: default: False [-5.16 / 15.00];
+	WHITELIST_SPF_DKIM(-3.00)[kernel.org:d:+,kernel.org:s:+];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	DKIM_TRACE(0.00)[siliconsignals.io:~];
+	FORGED_RECIPIENTS(0.00)[m:ziy@nvidia.com,m:akpm@linux-foundation.org,m:surenb@google.com,m:mhocko@suse.com,m:jackmanb@google.com,m:hannes@cmpxchg.org,m:david@kernel.org,m:ljs@kernel.org,m:liam@infradead.org,m:rppt@kernel.org,m:yuzhao@google.com,m:linux-mm@kvack.org,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,s:lists@lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-269903-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:mehdi.djait@linux.intel.com,m:sakari.ailus@linux.intel.com,m:stable@vger.kernel.org,m:himanshu.bhavani@siliconsignals.io,m:elgin.perumbilly@siliconsignals.io,m:mchehab@kernel.org,m:hverkuil+cisco@kernel.org,m:vladimir.zapolskiy@linaro.org,m:linux-media@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:hverkuil@kernel.org,s:lists@lfdr.de];
-	R_DKIM_PERMFAIL(0.00)[siliconsignals.io:s=selector1];
-	TO_DN_SOME(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_EQ_ADDR_SOME(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER(0.00)[vbabka@kernel.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FORGED_SENDER(0.00)[tarang.raval@siliconsignals.io,stable@vger.kernel.org];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[tarang.raval@siliconsignals.io,stable@vger.kernel.org];
+	RCPT_COUNT_TWELVE(0.00)[14];
+	TAGGED_FROM(0.00)[bounces-269905-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	FORWARDED(0.00)[lists@lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	RCPT_COUNT_SEVEN(0.00)[10];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
-	TAGGED_RCPT(0.00)[stable,cisco];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[vbabka@kernel.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,vger.kernel.org:from_smtp]
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,sashiko.dev:url,vger.kernel.org:from_smtp,nvidia.com:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 50C336E1156
+X-Rspamd-Queue-Id: F2E8E6E1501
 
-Hi, Mehdi.=0A=
-=0A=
-> On Wed, Mar 25, 2026 at 05:13:47PM +0530, Tarang Raval wrote:=0A=
-> > os05b10_set_ctrl() currently uses pm_runtime_get_if_in_use() to decide=
-=0A=
-> > whether controls should be applied to hardware.=0A=
-> >=0A=
-> > This is not correct for the intended behavior. If the runtime PM usage=
-=0A=
-> > count is 0 while the device is still active, pm_runtime_get_if_in_use()=
-=0A=
-> > returns 0 and the control update is skipped, leaving the software state=
-=0A=
-> > updated but not the hardware state.=0A=
-> >=0A=
-> > Use pm_runtime_get_if_active() instead so controls are applied whenever=
-=0A=
-> > the device is runtime-active, regardless of the current usage count.=0A=
-> >=0A=
-> > Cc: stable@vger.kernel.org=0A=
-> > Fixes: 3aa9296a23ec4("media: i2c: add os05b10 image sensor driver")=0A=
->=0A=
-> A space is missing here after the commit hash.=0A=
-> See https://docs.kernel.org/process/submitting-patches.html=0A=
->=0A=
-> checkpatch will warn you about it.=0A=
-=0A=
-Recently, I found that this is not actually a bug. Using=0A=
-pm_runtime_get_if_active() would simply allow more control updates to be=0A=
-written over I=B2C while the device is runtime-active, even when the PM=0A=
-usage count is zero. Since this is not a bug fix, I'll remove the Fixes=0A=
-tag.=0A=
-=0A=
-> with that:=0A=
-> Reviewed-by: Mehdi Djait <mehdi.djait@linux.intel.com>=0A=
->=0A=
-> > Signed-off-by: Tarang Raval <tarang.raval@siliconsignals.io>=0A=
-> > ---=0A=
-> >  drivers/media/i2c/os05b10.c | 2 +-=0A=
-> >  1 file changed, 1 insertion(+), 1 deletion(-)=0A=
-> >=0A=
-> > diff --git a/drivers/media/i2c/os05b10.c b/drivers/media/i2c/os05b10.c=
-=0A=
-> > index e0453c988e4a..5da5b7d21f31 100644=0A=
-> > --- a/drivers/media/i2c/os05b10.c=0A=
-> > +++ b/drivers/media/i2c/os05b10.c=0A=
-> > @@ -531,7 +531,7 @@ static int os05b10_set_ctrl(struct v4l2_ctrl *ctrl)=
-=0A=
-> >                       return ret;=0A=
-> >       }=0A=
-> >=0A=
-> > -     if (pm_runtime_get_if_in_use(os05b10->dev) =3D=3D 0)=0A=
-> > +     if (pm_runtime_get_if_active(os05b10->dev) =3D=3D 0)=0A=
->=0A=
-> small nit: how about=0A=
->         if (!pm_runtime_get_if_active(os05b10->dev))=0A=
->=0A=
-> consistent with other drivers using this call but really not important,=
-=0A=
-> up to you if you want to change it.=0A=
-=0A=
-Sure, I will update.=0A=
-=0A=
-Best Regards,=0A=
-Tarang=
+On 6/30/26 03:35, Zi Yan wrote:
+> When using __GFP_COMP in alloc_contig_frozen_range(), if the allocated
+> range does not match the requested one, the code errors out with EINVAL
+> without freeing the allocated PFNs and causes free page leaks. Fix it by
+> calling release_free_list() in the error path.
+> 
+> The issue is reported by Sashiko[1].
+
+So this?
+Reported-by: Sashiko <sashiko-bot@kernel.org>
+
+> Fixes: e98337d11bbd ("mm/contig_alloc: support __GFP_COMP")
+> Link: https://sashiko.dev/#/patchset/20260628-keep-subpage-private-zero-at-free-v1-0-f4ce3930d10f@nvidia.com [1]
+> Signed-off-by: Zi Yan <ziy@nvidia.com>
+> Cc: stable@vger.kernel.org
+
+Hm well, it's a path that warns, can only happen due to a development error?
+Not sure we care about stable then. Anyway.
+
+Reviewed-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
+
+> ---
+> Sashiko reports that if alloc_contig_range() with __GFP_COMP cannot
+> allocate PFNs with the given range, it returns EINVAL without freeing the
+> allocated PFNs and causes free memory leaks. Fix it by properly freeing the
+> isolated free pages and adjusting WARN message for clarification.
+> ---
+>  mm/compaction.c | 2 +-
+>  mm/internal.h   | 1 +
+>  mm/page_alloc.c | 6 ++++--
+>  3 files changed, 6 insertions(+), 3 deletions(-)
+> 
+> diff --git a/mm/compaction.c b/mm/compaction.c
+> index b776f35ad020..4e3f06ff9304 100644
+> --- a/mm/compaction.c
+> +++ b/mm/compaction.c
+> @@ -88,7 +88,7 @@ static struct page *mark_allocated_noprof(struct page *page, unsigned int order,
+>  }
+>  #define mark_allocated(...)	alloc_hooks(mark_allocated_noprof(__VA_ARGS__))
+>  
+> -static unsigned long release_free_list(struct list_head *freepages)
+> +unsigned long release_free_list(struct list_head *freepages)
+>  {
+>  	int order;
+>  	unsigned long high_pfn = 0;
+> diff --git a/mm/internal.h b/mm/internal.h
+> index 181e79f1d6a2..6f9e5c2a6065 100644
+> --- a/mm/internal.h
+> +++ b/mm/internal.h
+> @@ -821,6 +821,7 @@ static inline void clear_zone_contiguous(struct zone *zone)
+>  }
+>  
+>  extern int __isolate_free_page(struct page *page, unsigned int order);
+> +extern unsigned long release_free_list(struct list_head *freepages);
+>  extern void __putback_isolated_page(struct page *page, unsigned int order,
+>  				    int mt);
+>  extern void memblock_free_pages(unsigned long pfn, unsigned int order);
+> diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+> index ee902a468c2f..c1a35adb40f1 100644
+> --- a/mm/page_alloc.c
+> +++ b/mm/page_alloc.c
+> @@ -7235,9 +7235,11 @@ int alloc_contig_frozen_range_noprof(unsigned long start, unsigned long end,
+>  		check_new_pages(head, order);
+>  		prep_new_page(head, order, gfp_mask, 0);
+>  	} else {
+> +		release_free_list(cc.freepages);
+>  		ret = -EINVAL;
+> -		WARN(true, "PFN range: requested [%lu, %lu), allocated [%lu, %lu)\n",
+> -		     start, end, outer_start, outer_end);
+> +		WARN(true,
+> +		     "PFN range: allocated [%lu, %lu) does not match requested [%lu, %lu), freeing allocated PFNs\n",
+> +		     outer_start, outer_end, start, end);
+>  	}
+>  done:
+>  	undo_isolate_page_range(start, end);
+> 
+> ---
+> base-commit: dc59e4fea9d83f03bad6bddf3fa2e52491777482
+> change-id: 20260629-free-pfn-on-alloc-contig-range-error-path-acc001232468
+> 
+> Best regards,
+
 
