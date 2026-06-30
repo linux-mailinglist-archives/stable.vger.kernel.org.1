@@ -1,202 +1,152 @@
-Return-Path: <stable+bounces-269948-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-269944-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id zAqkKyycQ2o1dQoAu9opvQ
-	(envelope-from <stable+bounces-269948-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 30 Jun 2026 12:36:28 +0200
+	id +iCEFIybQ2rrdAoAu9opvQ
+	(envelope-from <stable+bounces-269944-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 30 Jun 2026 12:33:48 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 484C16E2F5D
-	for <lists+stable@lfdr.de>; Tue, 30 Jun 2026 12:36:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 730296E2E9A
+	for <lists+stable@lfdr.de>; Tue, 30 Jun 2026 12:33:47 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=bootlin.com header.s=dkim header.b=asQfwexg;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-269948-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-269948-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=reject) header.from=bootlin.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=COQPLKmv;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-269944-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-269944-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=none) header.from=linux.dev;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id BFCD8310907A
-	for <lists+stable@lfdr.de>; Tue, 30 Jun 2026 10:30:35 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 122F03045446
+	for <lists+stable@lfdr.de>; Tue, 30 Jun 2026 10:28:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9B223F4138;
-	Tue, 30 Jun 2026 10:30:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E70CB3EF65F;
+	Tue, 30 Jun 2026 10:28:47 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
+Received: from out-184.mta0.migadu.com (out-184.mta0.migadu.com [91.218.175.184])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D54183F4117;
-	Tue, 30 Jun 2026 10:30:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A0A63E6DE7;
+	Tue, 30 Jun 2026 10:28:46 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782815402; cv=none; b=VoKPrSqk/Tfufv/7pzXFb6XBlAbIqDcAJjJSKAJ5muAWbZM9kV7+bvQKaJmWISyE0Uk4URkg50FJMvaxzmreUuRZd82RUIfAesTTO5KgMaWCwLmx+3V7Ej1K+kca8VL/348+0ArouTe8dC23a6Djhw0K2EZ077M4D+tyCjpyNvo=
+	t=1782815327; cv=none; b=HQ8DxV4hD+ftzXblf0wGLzps4D/FHgdAfJZRi3/yyeK1doP+9MVse9VUSNMMvvWjMoVVdAPrANaKAp5TN1JUeGrEZDfHhWrqWgvK0HpchkqeACaLZMKyJ/o3uLBf4XkHPFMb8y8fcQB80n+MFJUQZEHQUN8o7vTMZBzfhunGMhI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782815402; c=relaxed/simple;
-	bh=+7+4O5fexn2P7o7P9QxEX5lg+4piQeI+90SQQp56hLM=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QAOU5mCmNKWb/8V+LXX3HAFZGj3bh3uR1Qiyl7WpSLuODGiVbMtdGT8YjveynQAdLZH3BYfFCss2W8cu+jtH+18R8ts01Uz0/ZdZNmjKDGRbnzYl9BM7lE30HDmU89wcF4X2SlyAgDQ9H4Hvlt8GFM7xYl4HO7WtQgoRbF1G2wg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=asQfwexg; arc=none smtp.client-ip=185.246.84.56
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-02.galae.net (Postfix) with ESMTPS id 841281A0D5C;
-	Tue, 30 Jun 2026 10:29:59 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 4DADC6025A;
-	Tue, 30 Jun 2026 10:29:59 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 26334106F1D9C;
-	Tue, 30 Jun 2026 12:29:52 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1782815397; h=from:subject:date:message-id:to:cc:mime-version:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=ea/m19/1/A2BviwgniEPZ+okOOHte+59EBY28mb5F+I=;
-	b=asQfwexgwCbRCz0qq0VFUBqHnxQUnvDfv1O6eQE8Kcp0x9EV1vVr+PHBXCDLItOUdxnQxc
-	/HadkvEpUjiiRhBtpLbs6c9LOMNm21gqVCla/wpIq7CJYWhl4V4qSe1m/Uj+i8oBCDXmMD
-	B8s1P+4G0xVB8GrivpOXvYo1WAM/boqlZ+YepvlTYc3mZ1abtna4X3/V9Nv0YqOaLqdoOf
-	Z8Y12TawfMbO9PsWNxdmyHRARp7opaEJeZwtfG13vPCVJ3UIO3BvJ40k7R8YmuiS7RQ6C7
-	WSgSEtZGbXRV7OTQ40qCCpNv/JmnhSBLkC8ehbLzNrhFZVJ4dWofj+U8QeOFug==
-From: Herve Codina <herve.codina@bootlin.com>
-To: Andrew Lunn <andrew@lunn.ch>,
-	Rob Herring <robh@kernel.org>,
-	Saravana Kannan <saravanak@kernel.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	David Rhodes <david.rhodes@cirrus.com>,
-	Richard Fitzgerald <rf@opensource.cirrus.com>,
-	Charles Keepax <ckeepax@opensource.cirrus.com>,
-	Linus Walleij <linusw@kernel.org>,
-	Len Brown <lenb@kernel.org>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Daniel Scally <djrscally@gmail.com>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Davidlohr Bueso <dave@stgolabs.net>,
-	Jonathan Cameron <jic23@kernel.org>,
-	Dave Jiang <dave.jiang@intel.com>,
-	Alison Schofield <alison.schofield@intel.com>,
-	Vishal Verma <vishal.l.verma@intel.com>,
-	Dan Williams <djbw@kernel.org>,
-	Ira Weiny <iweiny@kernel.org>,
-	Li Ming <ming.li@zohomail.com>,
-	Lizhi Hou <lizhi.hou@amd.com>,
-	Herve Codina <herve.codina@bootlin.com>
-Cc: driver-core@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	linux-pci@vger.kernel.org,
-	linux-sound@vger.kernel.org,
-	patches@opensource.cirrus.com,
-	linux-gpio@vger.kernel.org,
-	linux-acpi@vger.kernel.org,
-	linux-cxl@vger.kernel.org,
-	Allan Nielsen <allan.nielsen@microchip.com>,
-	Horatiu Vultur <horatiu.vultur@microchip.com>,
-	Daniel Machon <daniel.machon@microchip.com>,
-	Steen Hegelund <steen.hegelund@microchip.com>,
-	Luca Ceresoli <luca.ceresoli@bootlin.com>,
-	Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
-	stable@vger.kernel.org
-Subject: [PATCH v8 8/8] PCI: of: Remove fwnode_dev_initialized() call for a PCI root bridge node
-Date: Tue, 30 Jun 2026 12:28:02 +0200
-Message-ID: <20260630102804.413563-9-herve.codina@bootlin.com>
-X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260630102804.413563-1-herve.codina@bootlin.com>
-References: <20260630102804.413563-1-herve.codina@bootlin.com>
+	s=arc-20240116; t=1782815327; c=relaxed/simple;
+	bh=+pX07a2u5TkbqrO4azJbx+91thfYIYeQVNU0vPSkC7I=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=D9FiDK0G9TohKjfJ9qiypupS/mIhBUWR0yYr5GoxORjbEVPLLbS2NkAVJtavaO5L/fl14b6MRuhR1GeIkG4UytWtfPefpWjRNoByGvK8+hOP9AkCKEISIREsYz5ggTK+zNsE9BzugteBKMP9cbXev7z3FrfmT+mRKbZKMbMv0cA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=COQPLKmv; arc=none smtp.client-ip=91.218.175.184
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1782815324;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=sRyqpi+BAHs5WUp31Tgpjj0ZLVkhU0Gr2GsoSexZcO4=;
+	b=COQPLKmvp3nt6ZbZQIVudhiGCgGCEPJrfnbR1T06o8vWsf9wvIf/QVayAZ20/gHRA979tp
+	Jl6V28cRxvERUg9G1mXzxYOlhQjpeGA6X86chStFwtbH7okRabIMvtpeaA0VMVx9xGCxFX
+	8USVIVDv7D4K6371CUpUIVU5Oq/J3QE=
+From: Thorsten Blum <thorsten.blum@linux.dev>
+To: Thomas Gleixner <tglx@kernel.org>,
+	Ingo Molnar <mingo@redhat.com>,
+	Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	x86@kernel.org,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	Pekka Enberg <penberg@cs.helsinki.fi>,
+	Yinghai Lu <yinghai@kernel.org>
+Cc: Thorsten Blum <thorsten.blum@linux.dev>,
+	stable@vger.kernel.org,
+	"H. Peter Anvin" <hpa@linux.intel.com>,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH RESEND] x86/boot: Validate console=uart8250 baud rate to avoid early boot hang
+Date: Tue, 30 Jun 2026 12:28:11 +0200
+Message-ID: <20260630102810.685658-3-thorsten.blum@linux.dev>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1402; i=thorsten.blum@linux.dev; h=from:subject; bh=+pX07a2u5TkbqrO4azJbx+91thfYIYeQVNU0vPSkC7I=; b=owGbwMvMwCUWt7pQ4caZUj3G02pJDFnOs6yUOX5raP0zXfb2r8Dywy/k1b0L/v++cmTyYiX+f +zXfi5V7ShlYRDjYpAVU2R5MOvHDN/SmspNJhE7YeawMoEMYeDiFICJBCUxMtxtPJu9vvrItwMK KYeaDqbzfDXmSz5/9tG7JTwFp/d+WirLyHAnoYo9oyfDwVXy5JO11pNtEo5pa5haZzzbeGlf2d6 kX+wA
+X-Developer-Key: i=thorsten.blum@linux.dev; a=openpgp; fpr=1D60735E8AEF3BE473B69D84733678FD8DFEEAD4
 Content-Transfer-Encoding: 8bit
-X-Last-TLS-Session-Version: TLSv1.3
+X-Migadu-Flow: FLOW_OUT
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-0.66 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[bootlin.com,reject];
+	DMARC_POLICY_ALLOW(-0.50)[linux.dev,none];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[bootlin.com:s=dkim];
+	R_DKIM_ALLOW(-0.20)[linux.dev:s=key1];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCPT_COUNT_TWELVE(0.00)[41];
+	RCPT_COUNT_TWELVE(0.00)[12];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-269948-lists,stable=lfdr.de];
-	RECEIVED_HELO_LOCALHOST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:andrew@lunn.ch,m:robh@kernel.org,m:saravanak@kernel.org,m:gregkh@linuxfoundation.org,m:rafael@kernel.org,m:dakr@kernel.org,m:bhelgaas@google.com,m:david.rhodes@cirrus.com,m:rf@opensource.cirrus.com,m:ckeepax@opensource.cirrus.com,m:linusw@kernel.org,m:lenb@kernel.org,m:andriy.shevchenko@linux.intel.com,m:djrscally@gmail.com,m:heikki.krogerus@linux.intel.com,m:sakari.ailus@linux.intel.com,m:dave@stgolabs.net,m:jic23@kernel.org,m:dave.jiang@intel.com,m:alison.schofield@intel.com,m:vishal.l.verma@intel.com,m:djbw@kernel.org,m:iweiny@kernel.org,m:ming.li@zohomail.com,m:lizhi.hou@amd.com,m:herve.codina@bootlin.com,m:driver-core@lists.linux.dev,m:linux-kernel@vger.kernel.org,m:linux-pci@vger.kernel.org,m:linux-sound@vger.kernel.org,m:patches@opensource.cirrus.com,m:linux-gpio@vger.kernel.org,m:linux-acpi@vger.kernel.org,m:linux-cxl@vger.kernel.org,m:allan.nielsen@microchip.com,m:horatiu.vultur@microchip.com,m:daniel.machon@microchip.com,m:steen.hegelund@microchip
- .com,m:luca.ceresoli@bootlin.com,m:thomas.petazzoni@bootlin.com,m:stable@vger.kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[herve.codina@bootlin.com,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-269944-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:tglx@kernel.org,m:mingo@redhat.com,m:bp@alien8.de,m:dave.hansen@linux.intel.com,m:x86@kernel.org,m:hpa@zytor.com,m:penberg@cs.helsinki.fi,m:yinghai@kernel.org,m:thorsten.blum@linux.dev,m:stable@vger.kernel.org,m:hpa@linux.intel.com,m:linux-kernel@vger.kernel.org,s:lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[3];
 	FORWARDED(0.00)[lists@lfdr.de];
-	FREEMAIL_TO(0.00)[lunn.ch,kernel.org,linuxfoundation.org,google.com,cirrus.com,opensource.cirrus.com,linux.intel.com,gmail.com,stgolabs.net,intel.com,zohomail.com,amd.com,bootlin.com];
+	FORGED_SENDER(0.00)[thorsten.blum@linux.dev,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[herve.codina@bootlin.com,stable@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[thorsten.blum@linux.dev,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[bootlin.com:+];
-	RCVD_COUNT_FIVE(0.00)[6];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DKIM_TRACE(0.00)[linux.dev:+];
 	ALIAS_RESOLVED(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp,bootlin.com:dkim,bootlin.com:email,bootlin.com:mid,bootlin.com:from_mime]
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.dev:dkim,linux.dev:email,linux.dev:mid,linux.dev:from_mime,vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 484C16E2F5D
+X-Rspamd-Queue-Id: 730296E2E9A
 
-During the instantiation of devices described by a device-tree overlay
-applied on a PCI device, devlink displays the following kind of debug
-messages instead of creating the expected links:
-   'Not linking xxxx - might never become dev'
+When the baud rate is empty, 0, invalid, or overflows to 0 when stored
+as an int, the system will hang during early boot because of a division
+by zero in early_serial_init().
 
-Without those expected links, the device removal order cannot be
-correct.
+Fall back to DEFAULT_BAUD when the resulting baud rate is 0 to prevent
+an early system hang.
 
-Those debug traces are printed by fw_devlink_create_devlink(). In our
-use case, they are all printed because the supplier of the link has at
-least one of its ancestor with its fwnode flag FWNODE_FLAG_INITIALIZED
-set.
-
-The culprit ancestor is the PCI root bridge.
-
-The fwnode related to the PCI root bridge is created dynamically by the
-of_pci_make_host_bridge_node() function. During this creation
-fwnode_dev_initialized() is called which set the FWNODE_FLAG_INITIALIZED
-flag.
-
-Calling fwnode_dev_initialized() tells devlink that the device related
-to this node is handled out of the driver core. This is not correct in
-our case. Indeed the device related to this firmware node is handled
-using driver core mechanisms and is fully compliant devlink
-expectations.
-
-Simply remove the fwnode_dev_initialized() call. With that done, the
-devlink debug messages are no more displayed and links that were missing
-are correctly created.
-
-Fixes: 1f340724419e ("PCI: of: Create device tree PCI host bridge node")
+Fixes: ce0aa5dd20e4 ("x86, setup: Make the setup code also accept console=uart8250")
 Cc: stable@vger.kernel.org
-Signed-off-by: Herve Codina <herve.codina@bootlin.com>
-Acked-by: Bjorn Helgaas <bhelgaas@google.com>
+Signed-off-by: Thorsten Blum <thorsten.blum@linux.dev>
 ---
- drivers/pci/of.c | 1 -
- 1 file changed, 1 deletion(-)
+ arch/x86/boot/early_serial_console.c | 11 +++++++----
+ 1 file changed, 7 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/pci/of.c b/drivers/pci/of.c
-index eda14cefca5e..3e12f70fe538 100644
---- a/drivers/pci/of.c
-+++ b/drivers/pci/of.c
-@@ -811,7 +811,6 @@ void of_pci_make_host_bridge_node(struct pci_host_bridge *bridge)
- 	 */
- 	of_node_set_flag(np, OF_POPULATED);
- 	fw_devlink_set_device(&np->fwnode, &bridge->dev);
--	fwnode_dev_initialized(&np->fwnode, true);
+diff --git a/arch/x86/boot/early_serial_console.c b/arch/x86/boot/early_serial_console.c
+index 023bf1c3de8b..5b83beab89e1 100644
+--- a/arch/x86/boot/early_serial_console.c
++++ b/arch/x86/boot/early_serial_console.c
+@@ -117,7 +117,7 @@ static unsigned int probe_baud(int port)
+ static void parse_console_uart8250(void)
+ {
+ 	char optstr[64], *options;
+-	int baud = DEFAULT_BAUD;
++	int baud;
+ 	int port = 0;
  
- 	ret = of_changeset_apply(cset);
- 	if (ret)
--- 
-2.54.0
-
+ 	/*
+@@ -136,10 +136,13 @@ static void parse_console_uart8250(void)
+ 	else
+ 		return;
+ 
+-	if (options && (options[0] == ','))
+-		baud = simple_strtoull(options + 1, &options, 0);
+-	else
++	if (options && (options[0] == ',')) {
++		baud = simple_strtoull(options + 1, NULL, 0);
++		if (!baud)
++			baud = DEFAULT_BAUD;
++	} else {
+ 		baud = probe_baud(port);
++	}
+ 
+ 	if (port)
+ 		early_serial_init(port, baud);
 
