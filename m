@@ -1,244 +1,186 @@
-Return-Path: <stable+bounces-270003-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-270005-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id tYE9GZPlQ2rdlAoAu9opvQ
-	(envelope-from <stable+bounces-270003-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 30 Jun 2026 17:49:39 +0200
+	id wpjAHDDqQ2r5lQoAu9opvQ
+	(envelope-from <stable+bounces-270005-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 30 Jun 2026 18:09:20 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id E91E66E619B
-	for <lists+stable@lfdr.de>; Tue, 30 Jun 2026 17:49:38 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id C281B6E6460
+	for <lists+stable@lfdr.de>; Tue, 30 Jun 2026 18:09:19 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=rowland.harvard.edu header.s=google header.b=tR9ajE1d;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-270003-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-270003-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=none) header.from=rowland.harvard.edu;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=AyU9pysZ;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-270005-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-270005-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 1C626304D174
-	for <lists+stable@lfdr.de>; Tue, 30 Jun 2026 15:49:10 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 9FB4D309143E
+	for <lists+stable@lfdr.de>; Tue, 30 Jun 2026 16:03:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D41546AEFC;
-	Tue, 30 Jun 2026 15:48:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7FEDB472794;
+	Tue, 30 Jun 2026 16:02:58 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qt1-f172.google.com (mail-qt1-f172.google.com [209.85.160.172])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC63D4657CF
-	for <stable@vger.kernel.org>; Tue, 30 Jun 2026 15:48:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83D1046AEF1
+	for <stable@vger.kernel.org>; Tue, 30 Jun 2026 16:02:55 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782834536; cv=none; b=mHyEuX+91lmmKkqKymz6boOsnI/OSDZw/feehiRdeExuPXYTCT3DFGOg+MjvZvlPtZOglHhxdQ+o5Jc/ZH8E8kscpB4BDLOqcuRdoVVvebqi0wWqJJjW2Nsu/rl1ETUTdUm6T98gDwPhbqSBx3FnC/ViqRJ+g6U+fho+xo2VhOc=
+	t=1782835377; cv=none; b=QlmU3PbTBfLVciSqi63RmSM50gXX5lYAL1Iw2cyT5172VvbFFcgXAXIt7oGrGQlgPEaAyYZI49vYEjzG57qxfii4R2L/5woZe4N1pk0EKk61SjuGlRIGCze7kbs8WJOhvTJ2IP5p4PtPbQ/i8IDX/smk+veO8R45EDZP3CgFtfw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782834536; c=relaxed/simple;
-	bh=+Nu8T2P5J4piOI6iPNLzOouVdCkgquRY6nHCGOeDlSI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=hphYUBW/5c5uNvnfSfAC4hYdieqwOM1GYpMmWzLbz14moM+V0i692pRMOMAZ97/rBG0MZkOnQBsaZj965vgI50LQGIc6CgHlT2QAMe4moW4NrXaWa+lTDWOjHhVQCRth+cL2JlSMGXcvmFX07BQ1aAL4pjWj8A3a1pZqaZZ+vVM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rowland.harvard.edu; spf=fail smtp.mailfrom=g.harvard.edu; dkim=pass (2048-bit key) header.d=rowland.harvard.edu header.i=@rowland.harvard.edu header.b=tR9ajE1d; arc=none smtp.client-ip=209.85.160.172
-Received: by mail-qt1-f172.google.com with SMTP id d75a77b69052e-51a0188b92fso48530281cf.3
-        for <stable@vger.kernel.org>; Tue, 30 Jun 2026 08:48:53 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=rowland.harvard.edu; s=google; t=1782834533; x=1783439333; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=T+E4S6GTRJ9jJ/udD9Nkt2a9cnzXt0ecKVKDowSdAYc=;
-        b=tR9ajE1dR3A5NMBnNqf4AYx7AGFybH5Dd/TrgdysOKnd5O5zwMAiarlTJ8VlOJ6pFH
-         VUtjLkB0j96oRiAgu9CbYRqj7ZkU5YRNSfbUx7DfmvWRYP/YGPm4h0HfaSKkeyOLs+a2
-         QqCtERDkuiN7FX/Nt68a4CiU8McrPG+Nd/N+h0U27tdnnk1aQJBNAp9Qy+KslS0O+MgT
-         Nh5dy0CkFSmRTLxev7JfI1XEMuFM9h4Vp3JQszQu+zos+BIGi12luxvOBPgGVEVV88/D
-         KWHo7qTq2KPhNrxKi+UBl1MjzJvTWLCbEOHZsSPCD2JEbt2jlcVxCzlyaAeAAEI1b2qa
-         EgQQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782834533; x=1783439333;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=T+E4S6GTRJ9jJ/udD9Nkt2a9cnzXt0ecKVKDowSdAYc=;
-        b=cJGT7tJ3jYhyutcfmd6mV9ZdKB1OjENqG3/3xZDfaTscZUYf2+263rPT0qmVKkJ1Ry
-         dBO+Q7SBIAdArStNQgSeREVHMTCxJWY6mbVDn2TVXyCiMg1RqUttAAy3Uo1aBl38vqhd
-         hOjvCELo6XjXgX9wFVNU4k9rCoFWE2ijb5HC8L6x2IOtp1hnEKfMft9CX0D1sHl8kMjR
-         u5GRPihu6Gad7ydojXew2HZPKJ7Y/hipsShecfbg34mH6UFuh4jeiC4zx7A7nnOo+0Zs
-         Cj4auRK/f+4DO/elAYgI8NQCCpXJN4FbVh6WIrSb6+O2VOMzjsBzJyEEi+CZtFAdrpfj
-         nnQg==
-X-Forwarded-Encrypted: i=1; AFNElJ+CYRgNBm9XW99Y08KDHM+BMmD642zFXt6Koga9G5/pLkXkPh4IIlxtNeoujHvVpqbn3pCDVOM=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzR3CbfBZfNR5RWbwk76JGWu00DlxhRcMErcht+8bQrmRbAiwmm
-	aHIZLtQ2bcwkXgWxJcXnk8vF2LSkWzHmouUzWTULVtMnPAs57FnI8VBV2r120xuE1MA2MdxwSmw
-	Q4pshvg==
-X-Gm-Gg: AfdE7ckF7xLkoZkbulVV0UZ7hLfmMITd47TWqPLPkZGa12Y+5LSuvJAFUNg2DBM6PMX
-	w0u/jr0Yt2OVTzN4rHrsl8sdzDqK9BUwHt/curKszHXLICBZyfiQU/A5/bqBWvEwRlfgqUlFpwj
-	skeaw4RAO4RzAh3pjjD25CIgPIj7E+SfIUW1CijyBmzFz29WkMkkn7XYJBVq4zaU1Om2yWQpCTy
-	IYc5jDPfpAIGP+7ncEnBiRSIEX82cD1Pg55M1cPUwBkfwLuvZVE/0ITHvgtWVkG41m4T4rwoyTw
-	tanleO8B10vf/v6Snr7kF1qUhkwDKNZRXO1UI1M19LIY3DH6R/5teSXuu06lgwm+obM2FikmE9h
-	wOBWqU6UUWBi9Z0GZI5q941syc04wCqqJCTMfxizC4qPrrBYiLSREU1Ju9iD0FIX6QKnEWEahae
-	9r0CnW9smTJb1QIA==
-X-Received: by 2002:ac8:7191:0:b0:51c:147d:9bec with SMTP id d75a77b69052e-51c147d9e47mr27863881cf.6.1782834532456;
-        Tue, 30 Jun 2026 08:48:52 -0700 (PDT)
-Received: from rowland.harvard.edu ([2601:19b:d01:d210::883a])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-51c10a265efsm21250581cf.27.2026.06.30.08.48.51
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 30 Jun 2026 08:48:51 -0700 (PDT)
-Date: Tue, 30 Jun 2026 11:48:49 -0400
-From: Alan Stern <stern@rowland.harvard.edu>
-To: Dawei Feng <dawei.feng@seu.edu.cn>
-Cc: gregkh@linuxfoundation.org, linusw@kernel.org,
-	linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org,
-	jianhao.xu@seu.edu.cn, zilin@seu.edu.cn, stable@vger.kernel.org
-Subject: Re: [PATCH v2] usb: free iso schedules on failed submit
-Message-ID: <667e59f6-c91f-4bcc-ae70-5fc211d9e606@rowland.harvard.edu>
-References: <20260630071419.349161-1-dawei.feng@seu.edu.cn>
+	s=arc-20240116; t=1782835377; c=relaxed/simple;
+	bh=rJypcviBg/vRv6ioQRUNiFCv1YHZxZVbYVHtKG9g1HM=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Jy8lPiVhrUF9e9/Rkmynr3TpFREZ39/7PHtb1W+Wd89Rjltq78ZG9KOphJQTL3+fwHrwJG/xZvKpkN2UrzVqYSsJ3nvfw2z6m1LvRsAM4HoFI+jlcs1Okrd3Ofy5anlKtjXS9N+1vGsQOgZZey8iAAkWzFRqQAw9QA3rBk4NYuU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AyU9pysZ; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B184C1F000E9
+	for <stable@vger.kernel.org>; Tue, 30 Jun 2026 16:02:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1782835374;
+	bh=umGH+O+Vn9L4EN4GsKIUG29QvvcbPRfahOmTYYjIzwc=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=AyU9pysZa5FxM5bEif2ni0OwUQmdao9QscH4hMMt+ZWZM4lIgtdPnS9OXCYVe4lm0
+	 q//YDfVL4qBjWIeJNn/jZlg0zD8yT0UkIEAMAbD87yHmaE/185XWq7j4f1V7QOtqpV
+	 Kw3wyyBL6PUijpi5T7ZyOXh5fkvPtXQehQuuTLJadJoSlvqU56jN783lGpOs0dn63n
+	 7+XJ4Jm5DaRCGqNix95VcdUIPiM/AW6xm93426tp8YeBKNRAznkJasR+bMO/PXtUm0
+	 RDjCHK+IIKV+eAGxEJlWEl7ebtNNd1e6IAU+C5p3DVCZwZ/vQCGXpkrNYDiS6dFItr
+	 iybeKb3UU0iDA==
+Received: by mail-ej1-f41.google.com with SMTP id a640c23a62f3a-c12629c937eso309203966b.3
+        for <stable@vger.kernel.org>; Tue, 30 Jun 2026 09:02:54 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AHgh+RqjLv1GdE9UMAtoLJvxHKAgiXirX869OrM0Nw330Fn4y5cQ/JS49Z3O9Y37V3HV4AYQQGvdA2g=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzi5lVjr8AFGgpWrwJFCj0acBGy1WEYUxcXhlSo/HzQusJ6Dbvq
+	mGmtst2472GNCJ+SU4sCiJjbsx9cmneocS3PQr2wW1YNWA3WpdHaO577xePSLL5i33A9GnHuHNk
+	+qj2m8u8KMgJdpUnQWp5ZcjEfV1Hozc4=
+X-Received: by 2002:a17:906:70c8:b0:c12:350b:7c6c with SMTP id
+ a640c23a62f3a-c1297c30894mr52377366b.28.1782835370961; Tue, 30 Jun 2026
+ 09:02:50 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260630071419.349161-1-dawei.feng@seu.edu.cn>
+References: <20260629112032.20423-1-jiahao.kernel@gmail.com>
+ <20260629112032.20423-2-jiahao.kernel@gmail.com> <CAKEwX=MniM-4-aV17aH3UiDd_Xd2RH743fFZaxEnYX9qvnokeA@mail.gmail.com>
+ <fe15eb9f-0b6c-dcaa-d0a7-5f08c3f92bfb@gmail.com>
+In-Reply-To: <fe15eb9f-0b6c-dcaa-d0a7-5f08c3f92bfb@gmail.com>
+From: Yosry Ahmed <yosry@kernel.org>
+Date: Tue, 30 Jun 2026 09:02:39 -0700
+X-Gmail-Original-Message-ID: <CAO9r8zPBe9BPwP8NXz7pdH7T+8HLNsRAckL2Vfcnz0c23TH=iw@mail.gmail.com>
+X-Gm-Features: AVVi8CcCxY3djerzT5lNld_VLCKVnmzQBQkQgjO1_FN5S20hdx2Xm_guHNHu7_I
+Message-ID: <CAO9r8zPBe9BPwP8NXz7pdH7T+8HLNsRAckL2Vfcnz0c23TH=iw@mail.gmail.com>
+Subject: Re: [PATCH v5 1/6] mm/zswap: Fix global shrinker when memory cgroup
+ is disabled
+To: Hao Jia <jiahao.kernel@gmail.com>
+Cc: Nhat Pham <nphamcs@gmail.com>, akpm@linux-foundation.org, tj@kernel.org, 
+	hannes@cmpxchg.org, shakeel.butt@linux.dev, mhocko@kernel.org, 
+	mkoutny@suse.com, chengming.zhou@linux.dev, muchun.song@linux.dev, 
+	roman.gushchin@linux.dev, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	linux-doc@vger.kernel.org, Hao Jia <jiahao1@lixiang.com>, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-3.66 / 15.00];
+	WHITELIST_SPF_DKIM(-3.00)[kernel.org:d:+,kernel.org:s:+];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[rowland.harvard.edu,none];
-	R_DKIM_ALLOW(-0.20)[rowland.harvard.edu:s=google];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	DKIM_TRACE(0.00)[rowland.harvard.edu:+];
-	TAGGED_FROM(0.00)[bounces-270003-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-270005-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:dawei.feng@seu.edu.cn,m:gregkh@linuxfoundation.org,m:linusw@kernel.org,m:linux-usb@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:jianhao.xu@seu.edu.cn,m:zilin@seu.edu.cn,m:stable@vger.kernel.org,s:lists@lfdr.de];
+	FREEMAIL_TO(0.00)[gmail.com];
+	FREEMAIL_CC(0.00)[gmail.com,linux-foundation.org,kernel.org,cmpxchg.org,linux.dev,suse.com,kvack.org,vger.kernel.org,lixiang.com];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:jiahao.kernel@gmail.com,m:nphamcs@gmail.com,m:akpm@linux-foundation.org,m:tj@kernel.org,m:hannes@cmpxchg.org,m:shakeel.butt@linux.dev,m:mhocko@kernel.org,m:mkoutny@suse.com,m:chengming.zhou@linux.dev,m:muchun.song@linux.dev,m:roman.gushchin@linux.dev,m:linux-mm@kvack.org,m:linux-kernel@vger.kernel.org,m:linux-doc@vger.kernel.org,m:jiahao1@lixiang.com,m:stable@vger.kernel.org,m:jiahaokernel@gmail.com,s:lists@lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_SENDER(0.00)[stern@rowland.harvard.edu,stable@vger.kernel.org];
+	FORGED_SENDER(0.00)[yosry@kernel.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[16];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[stern@rowland.harvard.edu,stable@vger.kernel.org];
-	MISSING_XM_UA(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[yosry@kernel.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	ALIAS_RESOLVED(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,rowland.harvard.edu:dkim,rowland.harvard.edu:mid,rowland.harvard.edu:from_mime,harvard.edu:email]
+	MISSING_XM_UA(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: E91E66E619B
+X-Rspamd-Queue-Id: C281B6E6460
 
-On Tue, Jun 30, 2026 at 03:14:19PM +0800, Dawei Feng wrote:
-> EHCI and FOTG210 isochronous submits build an ehci_iso_sched before
-> linking the URB to the endpoint queue, and keep the staged schedule in
-> urb->hcpriv until iso_stream_schedule() and the link helpers consume it.
-> If the controller is no longer accessible, or usb_hcd_link_urb_to_ep()
-> fails, submit jumps to done_not_linked before that handoff happens and
-> leaks the staged schedule still attached to urb->hcpriv.
-> 
-> Free the staged schedule from done_not_linked when submit fails before
-> the URB is linked and clear urb->hcpriv after the free.
-> 
-> The bug was first flagged by an experimental analysis tool we are
-> developing for kernel memory-management bugs while analyzing
-> v6.13-rc1. The tool is still under development and is not yet publicly
-> available. Manual inspection confirms that the bug is still
-> present in v7.1.1.
-> 
-> An x86_64 allyesconfig build showed no new warnings. As we do not have an
-> EHCI host controller with a USB isochronous device to test with, no
-> runtime testing was able to be performed.
-> 
-> Fixes: 8de98402652c ("[PATCH] USB: Fix USB suspend/resume crasher (#2)")
-> Fixes: e9df41c5c589 ("USB: make HCDs responsible for managing endpoint queues")
-> Fixes: 7d50195f6c50 ("usb: host: Faraday fotg210-hcd driver")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Dawei Feng <dawei.feng@seu.edu.cn>
-> ---
-> Changes in v2:
-> - Move negative iso_stream_schedule() cleanup to the submit failure path.
-> - Clear urb->hcpriv after iso_stream_schedule() frees the schedule for an
->   immediately completed EHCI URB.
+> How about something like this? If there are no objections, I'll fold
+> this into the next version.
+>
+>      mm/zswap: Fix global shrinker when memory cgroup is disabled
+>
+>      When memory cgroup is disabled, mem_cgroup_iter() always returns NULL.
+>      Therefore, the global shrinker shrink_worker() always takes the !memcg
+>      branch. After MAX_RECLAIM_RETRIES empty walks, the worker simply
+> gives up,
+>      so it fails to write back anything.
+>
+>      Therefore, when memory cgroup is disabled, fall through with the !memcg
+>      branch and shrink the root memcg directly.
+>
+>      With memcg disabled, shrink_memcg() only returns -ENOENT when the root
+>      LRU is empty, which means the total pages are already below thr.
+> The loop
+>      then safely bails out via the zswap_total_pages() <= thr check. For any
+>      other return value from shrink_memcg(), the loop is guaranteed to
+> terminate,
+>      either after MAX_RECLAIM_RETRIES failures or once the threshold is met.
+>
+>      Fixes: a65b0e7607cc ("zswap: make shrinking memcg-aware")
+>      Cc: stable@vger.kernel.org
+>      Reported-by: Yosry Ahmed <yosry@kernel.org>
+>      Closes:
+> https://lore.kernel.org/all/CAO9r8zPVzMKFbCixxD-qgtRrkFxWVrHiZZeLc=eyTPKPVQgX4g@mail.gmail.com
+>      Signed-off-by: Hao Jia <jiahao1@lixiang.com>
 
-For the ehci-sched portion:
+Feel free to add:
 
-Reviewed-by: Alan Stern <stern@rowland.harvard.edu>
+Acked-by: Yosry Ahmed <yosry@kernel.org>
 
->  drivers/usb/fotg210/fotg210-hcd.c |  6 ++++--
->  drivers/usb/host/ehci-sched.c     | 11 +++++++++--
->  2 files changed, 13 insertions(+), 4 deletions(-)
-> 
-> diff --git a/drivers/usb/fotg210/fotg210-hcd.c b/drivers/usb/fotg210/fotg210-hcd.c
-> index 1a48329a4e08..956be5b56510 100644
-> --- a/drivers/usb/fotg210/fotg210-hcd.c
-> +++ b/drivers/usb/fotg210/fotg210-hcd.c
-> @@ -4267,8 +4267,6 @@ static int iso_stream_schedule(struct fotg210_hcd *fotg210, struct urb *urb,
->  	return 0;
->  
->  fail:
-> -	iso_sched_free(stream, sched);
-> -	urb->hcpriv = NULL;
->  	return status;
->  }
->  
-> @@ -4562,6 +4560,10 @@ static int itd_submit(struct fotg210_hcd *fotg210, struct urb *urb,
->  	else
->  		usb_hcd_unlink_urb_from_ep(fotg210_to_hcd(fotg210), urb);
->  done_not_linked:
-> +	if (status < 0) {
-> +		iso_sched_free(stream, urb->hcpriv);
-> +		urb->hcpriv = NULL;
-> +	}
->  	spin_unlock_irqrestore(&fotg210->lock, flags);
->  done:
->  	return status;
-> diff --git a/drivers/usb/host/ehci-sched.c b/drivers/usb/host/ehci-sched.c
-> index a241337c9af8..57d07d1c2dfa 100644
-> --- a/drivers/usb/host/ehci-sched.c
-> +++ b/drivers/usb/host/ehci-sched.c
-> @@ -1623,6 +1623,7 @@ iso_stream_schedule(
->  			status = 1;	/* and give it back immediately */
->  			iso_sched_free(stream, sched);
->  			sched = NULL;
-> +			urb->hcpriv = NULL;
->  		}
->  	}
->  	urb->error_count = skip / period;
-> @@ -1653,8 +1654,6 @@ iso_stream_schedule(
->  	return status;
->  
->   fail:
-> -	iso_sched_free(stream, sched);
-> -	urb->hcpriv = NULL;
->  	return status;
->  }
->  
-> @@ -1966,6 +1965,10 @@ static int itd_submit(struct ehci_hcd *ehci, struct urb *urb,
->  		usb_hcd_unlink_urb_from_ep(ehci_to_hcd(ehci), urb);
->  	}
->   done_not_linked:
-> +	if (status < 0) {
-> +		iso_sched_free(stream, urb->hcpriv);
-> +		urb->hcpriv = NULL;
-> +	}
->  	spin_unlock_irqrestore(&ehci->lock, flags);
->   done:
->  	return status;
-> @@ -2343,6 +2346,10 @@ static int sitd_submit(struct ehci_hcd *ehci, struct urb *urb,
->  		usb_hcd_unlink_urb_from_ep(ehci_to_hcd(ehci), urb);
->  	}
->   done_not_linked:
-> +	if (status < 0) {
-> +		iso_sched_free(stream, urb->hcpriv);
-> +		urb->hcpriv = NULL;
-> +	}
->  	spin_unlock_irqrestore(&ehci->lock, flags);
->   done:
->  	return status;
-> -- 
-> 2.34.1
+A small nit below.
+
+>
+> diff --git a/mm/zswap.c b/mm/zswap.c
+> index 4b5149173b0e..9d4f19fc440e 100644
+> --- a/mm/zswap.c
+> +++ b/mm/zswap.c
+> @@ -1361,11 +1361,12 @@ static void shrink_worker(struct work_struct *w)
+>                  } while (memcg && !mem_cgroup_tryget_online(memcg));
+>                  spin_unlock(&zswap_shrink_lock);
+>
+> -               if (!memcg) {
+> -                       /*
+> -                        * Continue shrinking without incrementing
+> failures if
+> -                        * we found candidate memcgs in the last tree walk.
+> -                        */
+> +               /*
+> +                * A NULL memcg ends a full hierarchy pass (except when
+> memcg is
+> +                * disabled, where it is always NULL: fall through to
+> the root LRU).
+> +                * Count a failure only if the pass found no candidates.
+
+I think "last pass" is clearer than just "pass" here?
+
+> +                */
+> +               if (!memcg && !mem_cgroup_disabled()) {
+>                          if (!attempts && ++failures == MAX_RECLAIM_RETRIES)
+>                                  break;
+>
+> Thanks,
+> Hao
 
