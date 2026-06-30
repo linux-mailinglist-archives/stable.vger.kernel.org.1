@@ -1,186 +1,184 @@
-Return-Path: <stable+bounces-270039-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-270042-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id XreUGPEjRGpRpQoAu9opvQ
-	(envelope-from <stable+bounces-270039-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 30 Jun 2026 22:15:45 +0200
+	id Q8aND50oRGo6pwoAu9opvQ
+	(envelope-from <stable+bounces-270042-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 30 Jun 2026 22:35:41 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8233D6E7BFC
-	for <lists+stable@lfdr.de>; Tue, 30 Jun 2026 22:15:44 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id CDDFF6E7E0D
+	for <lists+stable@lfdr.de>; Tue, 30 Jun 2026 22:35:40 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=paul-moore.com header.s=google header.b=H5LecyNZ;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-270039-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-270039-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=none) header.from=paul-moore.com;
+	dkim=pass header.d=kroah.com header.s=fm1 header.b=G0pLmH91;
+	dkim=pass header.d=messagingengine.com header.s=fm1 header.b="c DYSWU8";
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-270042-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-270042-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=none) header.from=kroah.com;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 8EDE43023D9B
-	for <lists+stable@lfdr.de>; Tue, 30 Jun 2026 20:15:43 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 1C2ED30B167F
+	for <lists+stable@lfdr.de>; Tue, 30 Jun 2026 20:30:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 038302135C5;
-	Tue, 30 Jun 2026 20:15:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2EFA047AF5D;
+	Tue, 30 Jun 2026 20:30:44 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qt1-f170.google.com (mail-qt1-f170.google.com [209.85.160.170])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from fout-b5-smtp.messagingengine.com (fout-b5-smtp.messagingengine.com [202.12.124.148])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DEA51DDC37
-	for <stable@vger.kernel.org>; Tue, 30 Jun 2026 20:15:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C5B3243367;
+	Tue, 30 Jun 2026 20:30:42 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782850542; cv=none; b=mhcSzYCb5tcoXoQr83rJ66CKbQIGu3JsM1dfHCI9zbc3cHVW5ucqcl7vWHV8xDypxyCSwMoZ822nupE9QT8qvKzc5gwU0Xda/n2zW3Q0Rj/Bkrnbn1VFYM4PTU4vGfXq+Mf6MyT8SBi94WXFP8gzlUeqRC7AArPmPvT78VtZ/N0=
+	t=1782851443; cv=none; b=f804gMt49hsQY8k2JarUkH6NcLzQR0RqN7hsnNkBTc5Gi/4+46DnOJisCgWRSCp4jN8dTiFRD9gAUOiu4I4d8NPmZmwQ2L5gQAeHDXf4JUMy/2hGvO1pJuvqa4OPPd9KddPMjnxpzLXTswjAn14ZE5xojmYqRmOh1WDza0TGXrM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782850542; c=relaxed/simple;
-	bh=KIFyvcUp0DrVIt8fHT9eaTmd9j+JW0nG/kc0JEntHo0=;
-	h=Date:Message-ID:MIME-Version:Content-Type:From:To:Cc:Subject:
-	 References:In-Reply-To; b=HYoH5DZhMM7W3AyVvR4Twox4QYZvGhIoE8oJ/ZkM4OjQPd1dJUj+KSIqKB4NqzhaWVEYR5oeuqnLitVb/ltvbBZVKSJZcZqhZPjLYVTIOFkzcHDMcJsqDf5Slqmw62f9zGkevbbLl0uPx0dzQUoxDpCYLqD0s2laTGXepE1frqQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=paul-moore.com; spf=pass smtp.mailfrom=paul-moore.com; dkim=pass (2048-bit key) header.d=paul-moore.com header.i=@paul-moore.com header.b=H5LecyNZ; arc=none smtp.client-ip=209.85.160.170
-Received: by mail-qt1-f170.google.com with SMTP id d75a77b69052e-51a1fe8f578so51277401cf.2
-        for <stable@vger.kernel.org>; Tue, 30 Jun 2026 13:15:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=paul-moore.com; s=google; t=1782850540; x=1783455340; darn=vger.kernel.org;
-        h=in-reply-to:references:subject:cc:to:from:content-transfer-encoding
-         :mime-version:message-id:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=kFbHVAQO3lUQEfR1Rl9bV17oIFy3lRBFLhFrds1anbs=;
-        b=H5LecyNZ6LGZ2KRWNnVCeCb5OtKt3yilbGl1jWJTb0+APodq9+4kjVxAEcIJ76Ll7l
-         rE8QY+P8UbdtIAosO/kLyiV+VqwNkNs3NF0O52nrLolnLLq9k/i+6Fb//6eWIkUgN6FN
-         PFVPmRuBFdMKQQYddLfTzPwxHlfpcnF+WGcrfEiQnjMtAf3JjPVy29KsB+y3qxRUmrXE
-         yhosmBf7njB3Qg/zrVWEN00Qj7D3WPxHGafGpmUEvh7pShCm8YjzAhoDB+RdP6GV7SJh
-         6nEDKDxuYZCEreZtl10qy+dNHZZ0GFRSBzCHdE/JdjlJ+YQsJF9DHCSgEuo5xxNucLMg
-         tHTg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782850540; x=1783455340;
-        h=in-reply-to:references:subject:cc:to:from:content-transfer-encoding
-         :mime-version:message-id:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=kFbHVAQO3lUQEfR1Rl9bV17oIFy3lRBFLhFrds1anbs=;
-        b=YxVziODjfBf4VjDi5iUf2TIWeDbBL00UtSjbezi3uLEjPEHL3JbXEQuiBbbpXPvd+M
-         WNBZ95YyVri2B59ISF9tGRra9h5FbvhAARAkv6ytlcBI/io0Wft63jLLvVMhnC0w7od3
-         hArL6SkT4zAcZ25bmSZYC0LEyhXg7Ic1IqJXtwtIySbVL74qh4dzVDPMyr8xVozxzW7e
-         ZQDWtj+oah+b0+tMjsrElGtAtdgC4hxR3EpdDhtO9e48pCn7KRuQpJSiQj1D25MpylnU
-         lDtWiAwGDESaOoHQXvoqPgrCLluKnFYWx0MlKMbTQrSupPrTNq2w2DxJQXxUYHFhTiKw
-         wtTg==
-X-Forwarded-Encrypted: i=1; AFNElJ+FnzJs4HOeUatC/fjDHdUQTudKUSwIHhVkqmoO549uqrZgA/C6U33CeILfOHjxAD/2rgmJ078=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxGAHbpnjNgCcZi3WpZE7UsD72j6HdsVrSQGoRWipGPy7oGZ4jd
-	f+0c9XRWWXqCfd0QX4lPEsGUiG7cS5vWD4Lp/00dsWFdxZNxUnhUggoOdRt/BItdxQ==
-X-Gm-Gg: AfdE7ckRyBR6W7S+Qh2hxOmF1HxDqXFtM5/fY9F2Hq5L36NBda47it8Fgr1aduqpX43
-	zcyakQy6ZJ945wdQGghAzHjt4MMCK03y2stdtWGSrpLiULAsoGECJVtQhkf/ifpLwvXJkCm4HpU
-	A94FmGWoJldDkJJbx3jLMTJ9F2VHm6i1vWFKDRJVhfksObJGiC2ctxHfH4o4EGogJW4riW2QpmG
-	afTLruC/QPjzGl4/vpSzlyyAdnTaOfFEFggZqYixpf4mFAM0uB4AMyIW5fWFL7/PUXDIhFZRsTO
-	PkZKhEUmSjEMcBNyEebNYiFIRssmzlJ7piWAVElxNrZU4WIA0oBoN+oW+JWnaG5YL6421TZihMr
-	smfevvRVjVPEczjFWa65cP2B9dwXGFzSR/XWYylm1DMPZYHWpfKUgluhYocpiQp6buSi3rJwJA2
-	SB+qm4zTm0wryonBjdyJ0e6Pz9qDNeNmugLbbE0AwV0ly6x7KAIwZKwizMgg==
-X-Received: by 2002:ac8:7d52:0:b0:51a:8c97:9375 with SMTP id d75a77b69052e-51c108d823bmr65449501cf.61.1782850540414;
-        Tue, 30 Jun 2026 13:15:40 -0700 (PDT)
-Received: from localhost (pool-71-126-255-178.bstnma.fios.verizon.net. [71.126.255.178])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-8f1a727429fsm32068956d6.37.2026.06.30.13.15.39
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 30 Jun 2026 13:15:39 -0700 (PDT)
-Date: Tue, 30 Jun 2026 16:15:38 -0400
-Message-ID: <790e5ee50f15c85b8b1e36c85f0e7f2f@paul-moore.com>
+	s=arc-20240116; t=1782851443; c=relaxed/simple;
+	bh=N7YxzN8QAHzOTRjrqPBYvPuAQvgxClHSYHdMXxAXvDY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=r4dSP0Vua/WTOKPwtoxgdWZDlrTgeLpwPS7SMciVhMwrB0rEbtZLGoibX22ODaLMyC33QZ3zK2u2G5KSB7Ydnim8BgF63hmDa+G/2m241aNbEH5fVXqCNh2cixK9NIpO3PQuP4jqiZPBo3PjrNTRHDeU32SvXqJ3XcYNqut9YfI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com; spf=pass smtp.mailfrom=kroah.com; dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b=G0pLmH91; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=cDYSWU8y; arc=none smtp.client-ip=202.12.124.148
+Received: from phl-compute-04.internal (phl-compute-04.internal [10.202.2.44])
+	by mailfout.stl.internal (Postfix) with ESMTP id 066D41D000D1;
+	Tue, 30 Jun 2026 16:30:41 -0400 (EDT)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-04.internal (MEProxy); Tue, 30 Jun 2026 16:30:42 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kroah.com; h=cc
+	:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm1; t=1782851440;
+	 x=1782937840; bh=bEmKaF/mWTazaoAG0lVKHqHXydq3O35JbDhcIvj/Y1s=; b=
+	G0pLmH91luv2LfAlEWCtnvwi45rkQSIgdfT6ZhTeYKxAnXajUFk59Y24CpB4J/bM
+	glbkvD4tlpIWJvDZr60rHHZk9Lj/VSOl1k+7uPtCi8rYf2lghk4MN/Ot+/dm8wie
+	QhFop1GJiemTG6Je0miK8meBiCCJhzeMw1YGB/9CKsTfy1V+CRP2zTBi4L6vlI4M
+	Q8zTXf+O1rB2HT40n68vP86NxHQnaAMG1/3AhUNqfDEo48XxGFKQnMC6sLdgoH/x
+	9gIg/SYdWAOOGwEGDY0QdZIzCWdcBl+uLDONMxGwRc9TD70uuy/n+uWqKLaJ28hL
+	ZcWUnBoNgivBoazjWuyn1g==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1782851440; x=
+	1782937840; bh=bEmKaF/mWTazaoAG0lVKHqHXydq3O35JbDhcIvj/Y1s=; b=c
+	DYSWU8ylgh0WuKDRtcGLwn6Gjyz2ta8z/toNHaPa82aM+tp6KMm8L5hNXB1wGRk7
+	Uv2jelfKrAfuZ4RYFIOh/qP5O6p25l+/+NcQlyYzUhoiFylAT3Prt7LoRRLli4gE
+	6bEgrByGgji1MGInAJlSbCg8ocRJDyoKGXjGQA31T/xOP5PDk+c+rEUwwwtFRt6w
+	NfmBvyl/oTJRWDJYoBmeFiJocFAduNPZy8kwgXCQR0FdJuRMvZo9y2ui75nsFSLm
+	1EVFH0TT3qOJgmfh7MSe8ZM0aygPXmgpr1J48qbie7FIZZc4CwHRHC8i1EnbWjQf
+	NI0DIrwnWe0pdBRPFH6LQ==
+X-ME-Sender: <xms:cCdEalWOd6gI8vOdY_eHTEW9nEGtRKIHJSUoMUvRec6gv139Z7i74A>
+    <xme:cCdEagthl1WpGRxVFFhRjzNQyab9PIlfSvXSeHDS8V5keQBh3rrVQgMuW21RL1qAR
+    LcKqx0Wj0a0wzByuCEctVfgYl9-fbQ5JMRPOfoizhyIFg-s_E4>
+X-ME-Received: <xmr:cCdEanzadQWwTMxECXj7qLzVCpeZOIxOzh3dBeqIUnPH_8jIio4o2oJ0QYKuOZvqOCwckUcBHf-ptcRnmuad5aUotw>
+X-ME-Proxy-Cause: dmFkZTFPbMYa3UrMstpQ+++z9Rr80bW5m1jbp1QicDpHjIwx+Hg/aNNrh2+4yTfzLL1K2x
+    q6A4F9nBbVpBDrsTcObfnTsvxrypUaqvHokBp4l2nwVlXv+sj55LtObgqgh/y3ECIk7uUf
+    w3fZ0h5RiXj6eyyZghkgz04VRntP82R1I5BTQNyObqE9ra/3BlPcUGKFrFzmHQ0/s1e+eB
+    HkuEno4uYofyqpiIo1in0bk+eawNcNaI76TWa8mtHFVM+hGfU3CeVkf/JIhYSXcYyw4M0L
+    XpsVgq4Itd3i80hDKH9VZvnWtTttJCBcXyAKmbAkdQ+pTi4ojWYxJ1CmMaSZ12un22yrMQ
+    4pd9MMPaBHE1xOIpe/GRRQCahRPLnC0P/La7/QtzTpvzlNFrZsY6tFS3XSyasBzdvWeOtR
+    R3AYPJ6vObsMFXiIEKxmSgvnzjzx1absUYpiobe91WWWvC8qlr5pW0BZE9iTqSrxvFBTk8
+    A8QYQzROyb2OtNaPF4aMmoR2tW+lROdnljI+AtK52l2EfTWwKuQ8JM5OSLwd/dj84ihy29
+    uL76uP5n84NtCcwOI2el3ZZ2aQDkDzSU7lGhCQqRiteCMZ9oIZciCAzRlnxOWd3UruGrSp
+    74bCMYO90EPIXQjuMZb2xscogC0IntbOdInaRV8RX66ntb8T3dRSgOXDvnkw
+X-ME-Proxy: <xmx:cCdEajRfXGppUa_e07ysJrmbyREQ1oMkOfuC0n0juNG57Xj8HW2JKQ>
+    <xmx:cCdEah92ffa790esdKPdesa4Us9qGScvgeX6s0nLlLaF2D1Ts9UNIQ>
+    <xmx:cCdEahZzIgeQ4siJCV0UkRRtXs0ugl-j7zw1pXtzwHQV6iVJNbjWyw>
+    <xmx:cCdEaipilOOfsOSMFvcfe1YakMcswhi-Jrez0_w1nt0hxaikRwhsig>
+    <xmx:cCdEaoieTlYX9habJUq2HxbmUPkfQM4YbwP1wcMExVdsSxqJfyEpfmH4>
+Feedback-ID: i787e41f1:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
+ 30 Jun 2026 16:30:39 -0400 (EDT)
+Date: Tue, 30 Jun 2026 22:29:25 +0200
+From: Greg KH <greg@kroah.com>
+To: Ujjal Roy <royujjal@gmail.com>
+Cc: Sasha Levin <sashal@kernel.org>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Nikolay Aleksandrov <razor@blackwall.org>,
+	Ido Schimmel <idosch@nvidia.com>, David Ahern <dsahern@kernel.org>,
+	Shuah Khan <shuah@kernel.org>, Andy Roulin <aroulin@nvidia.com>,
+	Yong Wang <yongwang@nvidia.com>, Petr Machata <petrm@nvidia.com>,
+	stable@vger.kernel.org, Ujjal Roy <ujjal@alumnux.com>,
+	bridge@lists.linux.dev, Kernel <netdev@vger.kernel.org>,
+	Kernel <linux-kernel@vger.kernel.org>,
+	linux-kselftest@vger.kernel.org
+Subject: Re: Please backport bridge multicast exponential field encoding fix
+ series to stable kernels
+Message-ID: <2026063019-crummy-mosaic-d9bb@gregkh>
+References: <CAE2MWknz4X_gcNo6jkR87Lg8F0zfubkOc4Ujr57CS3aBMWrjEA@mail.gmail.com>
+ <20260625054005.0016.bridge-mcast@kernel.org>
+ <CAE2MWkn=azz3gUKGBYc1jjvVnLxDHuHk9M7wAJHdAW8v=dP5GA@mail.gmail.com>
+ <CAE2MWkkON7HuB+Szc1VhaPL8ZTYMAyfzmPM_7FkXvOPnjnF5rQ@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0 
-Content-Type: text/plain; charset=UTF-8 
-Content-Transfer-Encoding: 8bit 
-X-Mailer: pstg-pwork:20260630_1523/pstg-lib:20260630_1303/pstg-pwork:20260630_1523
-From: Paul Moore <paul@paul-moore.com>
-To: Chi Wang <wangchi@kylinos.cn>, Eric Paris <eparis@redhat.com>
-Cc: audit@vger.kernel.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org, Ricardo Robaina <rrobaina@redhat.com>, Chi Wang <wangchi@kylinos.cn>
-Subject: Re: [PATCH v2] audit: Fix data races of skb_queue_len() readers on  audit_queue
-References: <20260619074244.377226-1-wangchi@kylinos.cn>
-In-Reply-To: <20260619074244.377226-1-wangchi@kylinos.cn>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAE2MWkkON7HuB+Szc1VhaPL8ZTYMAyfzmPM_7FkXvOPnjnF5rQ@mail.gmail.com>
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[paul-moore.com,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
-	R_DKIM_ALLOW(-0.20)[paul-moore.com:s=google];
+	MID_RHS_NOT_FQDN(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[kroah.com,none];
+	R_DKIM_ALLOW(-0.20)[kroah.com:s=fm1,messagingengine.com:s=fm1];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-270039-lists,stable=lfdr.de];
-	RECEIVED_HELO_LOCALHOST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[paul-moore.com:+];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS(0.00)[m:wangchi@kylinos.cn,m:eparis@redhat.com,m:audit@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,m:rrobaina@redhat.com,s:lists@lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_SENDER(0.00)[paul@paul-moore.com,stable@vger.kernel.org];
+	RCVD_TLS_LAST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	RCPT_COUNT_TWELVE(0.00)[20];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_TO(0.00)[gmail.com];
+	FORGED_RECIPIENTS(0.00)[m:royujjal@gmail.com,m:sashal@kernel.org,m:davem@davemloft.net,m:edumazet@google.com,m:kuba@kernel.org,m:pabeni@redhat.com,m:horms@kernel.org,m:razor@blackwall.org,m:idosch@nvidia.com,m:dsahern@kernel.org,m:shuah@kernel.org,m:aroulin@nvidia.com,m:yongwang@nvidia.com,m:petrm@nvidia.com,m:stable@vger.kernel.org,m:ujjal@alumnux.com,m:bridge@lists.linux.dev,m:netdev@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:linux-kselftest@vger.kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[greg@kroah.com,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-270042-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
+	MISSING_XM_UA(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	TO_DN_SOME(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
+	RCVD_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[paul@paul-moore.com,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[greg@kroah.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[kroah.com:+,messagingengine.com:+];
 	ALIAS_RESOLVED(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,vger.kernel.org:from_smtp,paul-moore.com:dkim,paul-moore.com:mid,paul-moore.com:url,paul-moore.com:from_mime]
+	TO_DN_SOME(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp,messagingengine.com:dkim,kroah.com:dkim,kroah.com:from_mime]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 8233D6E7BFC
+X-Rspamd-Queue-Id: CDDFF6E7E0D
 
-On Jun 19, 2026 Chi Wang <wangchi@kylinos.cn> wrote:
+On Wed, Jul 01, 2026 at 01:33:07AM +0530, Ujjal Roy wrote:
+> On Thu, Jun 25, 2026 at 8:20 PM Ujjal Roy <royujjal@gmail.com> wrote:
+> >
+> > On Thu, Jun 25, 2026 at 4:12 PM Sasha Levin <sashal@kernel.org> wrote:
+> > >
+> > > > Please backport the 5-patch bridge multicast exponential field
+> > > > encoding series (726fa7da2d8c, 12cfb4ecc471, 95bfd196f0dc,
+> > > > e51560f4220a, 529dbe762de0) to the stable kernels.
+> > >
+> > > I tried, but it doesn't apply to 7.1. Could you provide a backport please?
+> > >
+> > > --
+> > > Thanks,
+> > > Sasha
+> >
+> > I will create patches on top of 7.1. But tell me what about all other
+> > stable releases? I have to create patches to all stables and how to
+> > share the patches to you? Via this email or any other process? I am a
+> > fresh on backporting my changes to all stables.
 > 
-> Multiple readers access audit_queue.qlen via skb_queue_len() without
-> holding the queue lock or using READ_ONCE(), while kauditd writes to
-> this field via the skb_dequeue() → __skb_unlink() path with WRITE_ONCE()
-> protected by a spinlock. This constitutes data races.
+> I have prepared the patches for stable releases mentioned in kernel.org.
 > 
-> All affected skb_queue_len(&audit_queue) call sites:
->   - kauditd_thread() wait_event_freezable() condition
->   - audit_receive_msg() AUDIT_GET handler (s.backlog assignment)
->   - audit_receive() backlog check
->   - audit_log_start() backlog check and pr_warn()
-> 
-> KCSAN reports the following conflicting access pattern (one example):
-> ==================================================================
-> BUG: KCSAN: data-race in audit_log_start / skb_dequeue
-> 
-> write (marked) to 0xffffffff8512ee20 of 4 bytes by task 661 on cpu 57:
->  skb_dequeue+0x70/0xf0
->  kauditd_send_queue+0x71/0x220
->  kauditd_thread+0x1cb/0x430
->  kthread+0x1c2/0x210
->  ret_from_fork+0x162/0x1a0
->  ret_from_fork_asm+0x1a/0x30
-> 
-> read to 0xffffffff8512ee20 of 4 bytes by task 36586 on cpu 1:
->  audit_log_start+0x2a0/0x6b0
->  audit_core_dumps+0x64/0xa0
->  do_coredump+0x14b/0x1260
->  get_signal+0xeb2/0xf70
->  arch_do_signal_or_restart+0x41/0x170
->  exit_to_user_mode_loop+0xa2/0x1c0
->  do_syscall_64+0x1a3/0x1c0
->  entry_SYSCALL_64_after_hwframe+0x76/0xe0
-> 
-> value changed: 0x00000001 -> 0x00000000
-> ==================================================================
-> 
-> Resolve the race by switching to lockless helper skb_queue_len_lockless(),
-> which internally uses READ_ONCE() and properly pairs with the WRITE_ONCE()
-> write accesses already present on the writer side.
-> 
-> Fixes: 3197542482df ("audit: rework audit_log_start()")
-> Signed-off-by: Chi Wang <wangchi@kylinos.cn>
-> Cc: stable@vger.kernel.org
-> Reviewed-by: Ricardo Robaina <rrobaina@redhat.com>
-> ---
->  kernel/audit.c | 10 +++++-----
->  1 file changed, 5 insertions(+), 5 deletions(-)
+> And I am waiting for your response so that I can send you the patchset.
 
-Merged into stable-7.2, thanks.
-
---
-paul-moore.com
+Please just send the patches :)
 
