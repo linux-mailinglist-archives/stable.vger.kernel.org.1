@@ -1,81 +1,66 @@
-Return-Path: <stable+bounces-269862-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-269863-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id eSvsIpkrQ2rxTAoAu9opvQ
-	(envelope-from <stable+bounces-269862-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 30 Jun 2026 04:36:09 +0200
+	id dehRD30tQ2osTgoAu9opvQ
+	(envelope-from <stable+bounces-269863-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 30 Jun 2026 04:44:13 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 05F226DFD01
-	for <lists+stable@lfdr.de>; Tue, 30 Jun 2026 04:36:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B641F6DFD71
+	for <lists+stable@lfdr.de>; Tue, 30 Jun 2026 04:44:11 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=mediatek.com header.s=dk header.b=UTxYgOo8;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-269862-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-269862-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=quarantine) header.from=mediatek.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=JOg43IoH;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-269863-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-269863-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=none) header.from=linux.dev;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 6DD7A300A101
-	for <lists+stable@lfdr.de>; Tue, 30 Jun 2026 02:35:53 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 80AE73007CA4
+	for <lists+stable@lfdr.de>; Tue, 30 Jun 2026 02:44:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC034348C61;
-	Tue, 30 Jun 2026 02:35:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C6483672B1;
+	Tue, 30 Jun 2026 02:44:08 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mailgw02.mediatek.com (unknown [210.61.82.184])
+Received: from out-185.mta0.migadu.com (out-185.mta0.migadu.com [91.218.175.185])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2AEC1E5B88;
-	Tue, 30 Jun 2026 02:35:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C1B1279DCA
+	for <stable@vger.kernel.org>; Tue, 30 Jun 2026 02:44:05 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782786951; cv=none; b=nAGU9UVwO8SqWAkBQCKRNA7afhksx+f96OBYyhsSSQlnQ9kjRxIzpmZzU6VvOsHxsWFp3KQAoYrVySO4iP0hmgptJPeFFdZq/6LURLhuUhfO7VU+aVIQ60+HqE4mbPDrqiBAQq7ji7eHZ9m9K2aAszRyYr/5EU3Pm705rzeokko=
+	t=1782787448; cv=none; b=eTmpkwBkTrQIEoK67O2RMj6FPkdKBjq3m2Vrdv/YrvFSYrGNusP2FH0B/YWEGdlS/GCQ9aAPUAmNaXbHHSYk2SwHrXXX5M40C+q6GuCIFuZFgBTffAgKsEkccsqIMIgPWkG+xLY5LD56zLc5cezNbxVkjMfihZU4k4GiDkVkYEw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782786951; c=relaxed/simple;
-	bh=4zXRYB+fkG9JLPCj3JM/53AYPEKpg3SY0dCqPkLx5mU=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=HB791bLXfapLHSndlig10PN/AdsOky2tTEi5O0UM2+iCHXO8zQxmOk8JEPgFoCfGozkEUeO/3FwJSP+9HrTMpWyfDMJpPIgcGtxg0noIf/grWtPG6EV6PoGafbQtAdYg7HGoX3D1qaT2rl/aD00dZxqocmJB/DC6mbMQIbnslaE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com; spf=pass smtp.mailfrom=mediatek.com; dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b=UTxYgOo8; arc=none smtp.client-ip=210.61.82.184
-X-UUID: 5fb8fa18742c11f18dc8c9802ae25ab1-20260630
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
-	h=Content-Type:Content-Transfer-Encoding:MIME-Version:Message-ID:Date:Subject:CC:To:From; bh=roUf/zuvB6EYzKdWEjz0GHQvKg6pHRTjmrvxGeJquGQ=;
-	b=UTxYgOo8+DKdBRGUkC3/T+MFxh6zOnDiQlpfKCFkQYAsONkqlfoPj8k+DWUZSGVWrLAr0sF4FMrazm7Bp0OVi0LfNeDCapGwrsz6iYOGGidQhWnokL+ZziCCQTWvpLE7AuZAi0sQBzlujzyZVSh1B1Y/k0I+PMF86iWoWbYsXS8=;
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.3.17,REQID:40b4e8a5-a00a-4d1c-a7ec-708d17f55a75,IP:0,U
-	RL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
-	release,TS:0
-X-CID-META: VersionHash:d497b38,CLOUDID:a4f51b04-3795-4a90-800e-68e9393a343e,B
-	ulkID:nil,BulkQuantity:0,SF:102|836|865|888|898,TC:-5,Content:0|15|50|99,E
-	DM:-3,IP:nil,URL:0,File:130,RT:0,Bulk:nil,QS:nil,BEC:-1,COL:0,OSI:0,OSA:0,
-	AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
-X-CID-BVR: 2,SSN|SDN
-X-CID-BAS: 2,SSN|SDN,0,_
-X-CID-FACTOR: TF_CID_SPAM_SNR
-X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
-X-UUID: 5fb8fa18742c11f18dc8c9802ae25ab1-20260630
-Received: from mtkmbs14n2.mediatek.inc [(172.21.101.76)] by mailgw02.mediatek.com
-	(envelope-from <shiming.cheng@mediatek.com>)
-	(Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
-	with ESMTP id 1004192259; Tue, 30 Jun 2026 10:35:35 +0800
-Received: from mtkmbs13n1.mediatek.inc (172.21.101.193) by
- MTKMBS14N2.mediatek.inc (172.21.101.76) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.29; Tue, 30 Jun 2026 10:35:34 +0800
-Received: from mbjsdccf07.gcn.mediatek.inc (10.15.20.246) by
- mtkmbs13n1.mediatek.inc (172.21.101.73) with Microsoft SMTP Server id
- 15.2.2562.29 via Frontend Transport; Tue, 30 Jun 2026 10:35:33 +0800
-From: Shiming Cheng <shiming.cheng@mediatek.com>
-To: <davem@davemloft.net>, <edumazet@google.com>, <kuba@kernel.org>,
-	<pabeni@redhat.com>, <horms@kernel.org>, <matthias.bgg@gmail.com>,
-	<angelogioacchino.delregno@collabora.com>, <willemb@google.com>,
-	<daniel.zahka@gmail.com>, <alice@isovalent.com>, <sd@queasysnail.net>,
-	<eilaimemedsnaimel@gmail.com>, <imv4bel@gmail.com>, <nbd@nbd.name>,
-	<dsahern@kernel.org>, <netdev@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
-	<linux-mediatek@lists.infradead.org>
-CC: <stable@vger.kernel.org>, <lena.wang@mediatek.com>,
-	<shiming.cheng@mediatek.com>
-Subject: [PATCH v3] Subject: [PATCH] net: gro: fix double aggregation of flush-marked skbs
-Date: Tue, 30 Jun 2026 10:35:02 +0800
-Message-ID: <20260630023512.26927-1-shiming.cheng@mediatek.com>
-X-Mailer: git-send-email 2.45.2
+	s=arc-20240116; t=1782787448; c=relaxed/simple;
+	bh=eBSBGs6aNScPUCKpo+vT+qvFs9XAbRAhYVfZTVQpduA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=iXVF5QHU/K1BKT8pPt3OKixkjwznhUuv5tlzvhyNswDAtrEoKsop8/TiH+D1O0Ovwf3rUJYXkJgDJWfrseshtbi8OvOzNrQkUA8i5bOo24k8MEL1EfmfDqK/fuQIQHQ6OIMvw4+MqAuStsFlA9dPgq1XielDjf4r+kxFSH5brs4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=JOg43IoH; arc=none smtp.client-ip=91.218.175.185
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1782787443;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=przQJnpstYbr3eVo4htMKq85wkvryQTqcf4xu3NpvDY=;
+	b=JOg43IoH/WE5Oo93MNa7XuGTzkdCdWIfByQQECpkoeup9Vvtuzez//jZzxPlCLNseepAwL
+	gQAUnp0FhKuIW1XBMoYMn6Ioe1EdJFBpxOqS8A/oE1S5CYsvxPv/Xp/EYX0Zdny3E02UDw
+	aqHK+MCn95+QgNTaeLnn+b3NzgpNlxs=
+From: Shakeel Butt <shakeel.butt@linux.dev>
+To: Vlastimil Babka <vbabka@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>
+Cc: Harry Yoo <harry@kernel.org>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Hao Li <hao.li@linux.dev>,
+	Christoph Lameter <cl@gentwo.org>,
+	David Rientjes <rientjes@google.com>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Usama Arif <usama.arif@linux.dev>,
+	Meta kernel team <kernel-team@meta.com>,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	Danielle Costantino <dcostantino@meta.com>,
+	stable@vger.kernel.org
+Subject: [PATCH v2] mm/slub: serve slabobj_ext array from a strictly larger kmalloc cache
+Date: Mon, 29 Jun 2026 19:43:57 -0700
+Message-ID: <20260630024357.3591304-1-shakeel.butt@linux.dev>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -83,114 +68,176 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-MTK: N
+X-Migadu-Flow: FLOW_OUT
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [0.84 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[mediatek.com,quarantine];
-	R_DKIM_ALLOW(-0.20)[mediatek.com:s=dk];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	DMARC_POLICY_ALLOW(-0.50)[linux.dev,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10];
+	R_DKIM_ALLOW(-0.20)[linux.dev:s=key1];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-269862-lists,stable=lfdr.de];
+	RCPT_COUNT_TWELVE(0.00)[14];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-269863-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[3];
+	FORGED_RECIPIENTS(0.00)[m:vbabka@kernel.org,m:akpm@linux-foundation.org,m:harry@kernel.org,m:roman.gushchin@linux.dev,m:hao.li@linux.dev,m:cl@gentwo.org,m:rientjes@google.com,m:surenb@google.com,m:usama.arif@linux.dev,m:kernel-team@meta.com,m:linux-mm@kvack.org,m:linux-kernel@vger.kernel.org,m:dcostantino@meta.com,m:stable@vger.kernel.org,s:lists@lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_SENDER(0.00)[shakeel.butt@linux.dev,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_SENDER(0.00)[shiming.cheng@mediatek.com,stable@vger.kernel.org];
-	FORGED_RECIPIENTS(0.00)[m:davem@davemloft.net,m:edumazet@google.com,m:kuba@kernel.org,m:pabeni@redhat.com,m:horms@kernel.org,m:matthias.bgg@gmail.com,m:angelogioacchino.delregno@collabora.com,m:willemb@google.com,m:daniel.zahka@gmail.com,m:alice@isovalent.com,m:sd@queasysnail.net,m:eilaimemedsnaimel@gmail.com,m:imv4bel@gmail.com,m:nbd@nbd.name,m:dsahern@kernel.org,m:netdev@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:linux-arm-kernel@lists.infradead.org,m:linux-mediatek@lists.infradead.org,m:stable@vger.kernel.org,m:lena.wang@mediatek.com,m:shiming.cheng@mediatek.com,m:matthiasbgg@gmail.com,m:danielzahka@gmail.com,s:lists@lfdr.de];
-	FREEMAIL_TO(0.00)[davemloft.net,google.com,kernel.org,redhat.com,gmail.com,collabora.com,isovalent.com,queasysnail.net,nbd.name,vger.kernel.org,lists.infradead.org];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[shiming.cheng@mediatek.com,stable@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[shakeel.butt@linux.dev,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[mediatek.com:+];
-	RCVD_COUNT_FIVE(0.00)[6];
+	DKIM_TRACE(0.00)[linux.dev:+];
 	ALIAS_RESOLVED(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[22];
-	TO_DN_NONE(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp]
+	MISSING_XM_UA(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linux.dev:dkim,linux.dev:email,linux.dev:mid,linux.dev:from_mime,meta.com:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 05F226DFD01
+X-Rspamd-Queue-Id: B641F6DFD71
 
-The new skb_gro_receive_list() function is missing a critical safety check
-present in the legacy skb_gro_receive() path. Specifically, it does not
-validate NAPI_GRO_CB(skb)->flush before allowing packet aggregation.
+A production host in the Meta fleet (6.16 kernel, memory allocation
+profiling enabled) panicked with a kernel stack overflow while a kernel
+driver was freeing a resource:
 
-This allows already-GRO'd packets with existing frag_list to be
-re-aggregated into a new GRO session, corrupting the frag_list chain
-structure. When skb_segment() attempts to unpack these malformed packets,
-it encounters invalid state and triggers a kernel panic.
+  BUG: TASK stack guard page was hit
+  Oops: stack guard page
+  RIP: 0010:kfree+0x8/0x5d0
+  Call Trace:
+   __free_slab+0x66/0xc0
+   kfree+0x3f0/0x5d0
+   ... ( ~125x __free_slab <-> kfree ) ...
+   <kernel driver freeing a resource>
+   do_syscall_64
 
-Scenario (Tethering/Device forwarding):
-  1. Driver: Generated aggregated packet P1 via LRO with frag_list
-  2. Dev A: Receives aggregated fraglist packet and flush flag set
-  3. Dev A: Re-enters GRO, skb_gro_receive_list() is called
-  4. Missing flush check allows re-aggregation despite flush flag
-  5. Frag_list chain becomes corrupted (loops or dangling refs)
-  6. Dev B: TX path calls skb_segment(), crashes on corrupted frag_list
+The crash dump shows a 125-deep __free_slab<->kfree recursion that
+overflowed the 16 KiB kernel stack.
 
-Root cause in skb_segment():
-  The check at line ~4891:
-    if (hsize <= 0 && i >= nfrags && skb_headlen(list_skb) &&
-        (skb_headlen(list_skb) == len || sg)) {
+What happened: a KMALLOC_NORMAL slab's obj_exts array (used by allocation
+profiling / memcg accounting) is itself kmalloc()'d from a KMALLOC_NORMAL
+cache, so the "slab holds another slab's obj_exts array" relation can form
+cycles.  With sizeof(struct slabobj_ext) == 16 and the host's geometry:
 
-  When frag_list is corrupted by double aggregation, when list_skb is
-  a NULL pointer from skb->next, skb_headlen(list_skb) dereference
-  NULL/corrupted pointers occurs.
+  - kmalloc-512 has 64 objects/slab -> array is 64*16 == 1024 bytes,
+    served from kmalloc-1k;
+  - kmalloc-1k  has 32 objects/slab -> array is 32*16 ==  512 bytes,
+    served from kmalloc-512.
 
-Call Trace:
- skb_headlen(NULL skb)
- skb_segment
- tcp_gso_segment
- tcp4_gso_segment
- inet_gso_segment
- skb_mac_gso_segment
- __skb_gso_segment
- skb_gso_segment
- validate_xmit_skb
- validate_xmit_skb_list
- sch_direct_xmit
- qdisc_restart
- __qdisc_run
- qdisc_run
- net_tx_action
+A kmalloc-512 slab and a kmalloc-1k slab therefore hold each other's
+obj_exts array.  Discarding one frees the other's array, which empties and
+discards that slab, which frees the first's array, and so on:
+__free_slab() -> free_slab_obj_exts() -> kfree() -> discard_slab() ->
+__free_slab() recurses along the cycle until the stack is exhausted.  The
+dump confirms it: the recursion's slabs strictly alternate kmalloc-512
+(obj_exts in kmalloc-1k) and kmalloc-1k (obj_exts in kmalloc-512), and
+mem_alloc_profiling_key was enabled.
 
-Fix: Add NAPI_GRO_CB(skb)->flush validation to the early-return check in
-skb_gro_receive_list(), matching the defensive programming pattern of
-skb_gro_receive().
+Commit 280ea9c3154b ("mm/slab: avoid allocating slabobj_ext array from
+its own slab") is not sufficient: it bumps the allocation size only when
+the array would come from the *same* cache (object_size ==).  At the
+geometry above neither cache is self-referential (512 != 1024 and
+1024 != 512), so the bump never triggers and the kmalloc-512 <-> kmalloc-1k
+cross cycle remains.
 
-Fixes: 8928756d53d5 ("net: add fraglist GRO/GSO support")
+Fix it structurally by removing cycles of every shape: serve the array
+from a cache strictly larger than the one it describes whenever it would
+otherwise come from the same or a smaller cache.  Every reference edge
+then points from a smaller to a larger cache (here kmalloc-1k's array
+moves to kmalloc-2k), so the relation is a DAG and cannot contain a cycle.
+No slab can be self- or cross-pinned, the tear-down recursion is bounded
+by the number of kmalloc size classes (it terminates at the large-kmalloc
+path, which carries no obj_exts), and profiling/accounting coverage is
+unchanged - the array is still allocated, only relocated.
+
+Reproduced on next-20260623 at the same geometry: churning
+kmalloc-512/kmalloc-1k under vm.mem_profiling and then shrinking leaves
+kmalloc-512 with thousands of unreclaimable objects without this patch
+(8056) and at baseline with it (847).
+
+Fixes: 4b8736964640 ("mm/slab: add allocation accounting into slab allocation and free paths")
+Reported-by: Danielle Costantino <dcostantino@meta.com>
 Cc: stable@vger.kernel.org
-Signed-off-by: Shiming Cheng <shiming.cheng@mediatek.com>
+Signed-off-by: Shakeel Butt <shakeel.butt@linux.dev>
 ---
- net/core/gro.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+Changes in v2:
+- Drop the now-stale comment above the object_size comparison (Harry Yoo).
+- Add a comment above the !is_kmalloc_normal() check explaining that the
+  size is bumped only when the object itself comes from KMALLOC_NORMAL,
+  i.e. via memory allocation profiling or memcg on SLUB_TINY (Harry Yoo).
+- Add Cc: stable; v6.12 and v6.18 are affected (Harry Yoo).
+- Restore the Reported-by tag.
+No functional change from v1 (comments and tags only).
 
-diff --git a/net/core/gro.c b/net/core/gro.c
-index 35f2f708f010..076247c1e662 100644
---- a/net/core/gro.c
-+++ b/net/core/gro.c
-@@ -229,7 +229,8 @@ int skb_gro_receive(struct sk_buff *p, struct sk_buff *skb)
+v1: https://lore.kernel.org/all/20260625230029.703750-1-shakeel.butt@linux.dev/
+
+ mm/slub.c | 32 ++++++++++++++++----------------
+ 1 file changed, 16 insertions(+), 16 deletions(-)
+
+diff --git a/mm/slub.c b/mm/slub.c
+index 9ec774dc7009..0c30d689820a 100644
+--- a/mm/slub.c
++++ b/mm/slub.c
+@@ -2124,15 +2124,14 @@ static inline void init_slab_obj_exts(struct slab *slab)
+ }
  
- int skb_gro_receive_list(struct sk_buff *p, struct sk_buff *skb)
- {
--	if (unlikely(p->len + skb->len >= 65536))
-+	if (unlikely(p->len + skb->len >= 65536 ||
-+		     NAPI_GRO_CB(skb)->flush))
- 		return -E2BIG;
+ /*
+- * Calculate the allocation size for slabobj_ext array.
++ * Size of the slabobj_ext array for @slab.
+  *
+- * When memory allocation profiling is enabled, the obj_exts array
+- * could be allocated from the same slab cache it's being allocated for.
+- * This would prevent the slab from ever being freed because it would
+- * always contain at least one allocated object (its own obj_exts array).
+- *
+- * To avoid this, increase the allocation size when we detect the array
+- * may come from the same cache, forcing it to use a different cache.
++ * The array is itself kmalloc()'d. If it came from the same or a smaller
++ * kmalloc cache than @s, the "slab holds another slab's array" relation could
++ * form a cycle (self, or e.g. kmalloc-512 <-> kmalloc-1k) that pins the slabs
++ * forever and recurses via free_slab_obj_exts() -> kfree() -> discard_slab()
++ * at teardown. Force it into a strictly larger cache to keep that relation a
++ * DAG (acyclic).
+  */
+ static inline size_t obj_exts_alloc_size(struct kmem_cache *s,
+ 					 struct slab *slab, gfp_t gfp)
+@@ -2143,18 +2142,19 @@ static inline size_t obj_exts_alloc_size(struct kmem_cache *s,
+ 	if (sz > KMALLOC_MAX_CACHE_SIZE)
+ 		return sz;
  
- 	if (!pskb_may_pull(skb, skb_gro_offset(skb))) {
++	/*
++	 * Only bump the size when the object (not the obj_exts array) is
++	 * allocated from KMALLOC_NORMAL, either by memory allocation profiling
++	 * or memcg on SLUB_TINY with __GFP_RECLAIMABLE|__GFP_ACCOUNT.
++	 * Otherwise, obj_exts allocations cannot form a cycle between
++	 * kmalloc caches.
++	 */
+ 	if (!is_kmalloc_normal(s))
+ 		return sz;
+ 
+ 	obj_exts_cache = kmalloc_slab(sz, NULL, gfp, __kmalloc_token(0));
+-	/*
+-	 * We can't simply compare s with obj_exts_cache, because partitioned kmalloc
+-	 * caches have multiple caches per size, selected by caller address or type.
+-	 * Since caller address or type may differ between kmalloc_slab() and actual
+-	 * allocation, bump size when sizes are equal.
+-	 */
+-	if (s->object_size == obj_exts_cache->object_size)
+-		return obj_exts_cache->object_size + 1;
++	if (obj_exts_cache->object_size <= s->object_size)
++		return s->object_size + 1;
+ 
+ 	return sz;
+ }
 -- 
-2.45.2
+2.53.0-Meta
 
 
