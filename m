@@ -1,192 +1,190 @@
-Return-Path: <stable+bounces-270065-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-270066-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id uEv6NHNJRGoEsAoAu9opvQ
-	(envelope-from <stable+bounces-270065-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 01 Jul 2026 00:55:47 +0200
+	id cAKGCixLRGqgsAoAu9opvQ
+	(envelope-from <stable+bounces-270066-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 01 Jul 2026 01:03:08 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 76C336E8863
-	for <lists+stable@lfdr.de>; Wed, 01 Jul 2026 00:55:47 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C1056E8904
+	for <lists+stable@lfdr.de>; Wed, 01 Jul 2026 01:03:07 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=1DvMYIGR;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-270065-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-270065-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=none;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="P5f/0Kqj";
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-270066-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-270066-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 4E4813004914
-	for <lists+stable@lfdr.de>; Tue, 30 Jun 2026 22:55:35 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 9BA7A30DB485
+	for <lists+stable@lfdr.de>; Tue, 30 Jun 2026 22:58:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80D5932B134;
-	Tue, 30 Jun 2026 22:55:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3597D33067C;
+	Tue, 30 Jun 2026 22:58:49 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31A8E21CC51;
-	Tue, 30 Jun 2026 22:55:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B67C21CC51;
+	Tue, 30 Jun 2026 22:58:47 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782860131; cv=none; b=QtKGgffVz6YY4vuiHKAH8Cj+KlqZlzdzxPthyEtddWMRsP1XX+o2azd5fxNJK8IJJkjObFIJVvH1pIqCMPfAR7Pgk2uRDZjP2sRmepmlMVIqC7vNnoBLy1A2LzgJNK8sB+rt7jRg2JO1hlkqda1wi0Pm2yMAS04EpB7fCuSpGvA=
+	t=1782860329; cv=none; b=HVfPa5ZfeS6oHubyBlQ760E5HSRTLUymde3WUOagDhCDrMTzBfugt9F/FDrKFCYtxLjELB905TMeL3j9qYByR+2SuDWiMvWx3cH3vRHyWSwwTFz3F+2vh59hfmFblb8uP0zRr0wFNI84QGQB/QBtSlD4HPeD5THnS8+Oms125yk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782860131; c=relaxed/simple;
-	bh=PJHuKndL1Ty7Hzyb9y0N59/fYRssMKPdJ7wJr7ZVk6w=;
-	h=Date:To:From:Subject:Message-Id; b=on3AsZDnistLiJ3gjh3WioFvYsWAcIdXmIGA6xQnea55UbsGEeFjQhJHC5nJ/GOuf1zkj6b5SHCbjumX+X4vRKNqKHXWk9Kt61YtW0I9efZq9yEt8O4rgNeGjwUAIzL6SOl4S8oFLuOHjWJghE0G5qWZo4kiCRUIHkCwFxbDgGs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=1DvMYIGR; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ABC331F000E9;
-	Tue, 30 Jun 2026 22:55:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1782860129;
-	bh=sEARnuA1AIjYngcy4Yz7fWEcrZY4Nv0lMLJrzcEyJA8=;
-	h=Date:To:From:Subject;
-	b=1DvMYIGRgJYkjlW1pJvksxf1bwodpwWEU8Q3Y7tj35yMDpt+JtMwxl1rQvWgHuXJU
-	 j9vslvErngwCYklFBtShOB3q2j+1qRyzEjgBAddVlNo6fcy3SV5lzWSAcXJH++8GQL
-	 ZRuwx2MmQ4D1paCZlLNYjnJmiX3HbjjlHb7Bd/mE=
-Date: Tue, 30 Jun 2026 15:55:29 -0700
-To: mm-commits@vger.kernel.org,vbabka@kernel.org,stable@vger.kernel.org,rppt@kernel.org,mgorman@techsingularity.net,hannes@cmpxchg.org,gourry@gourry.net,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: + mm-vmstat-fold-stranded-per-cpu-node-stats-when-a-node-comes-online.patch added to mm-hotfixes-unstable branch
-Message-Id: <20260630225529.ABC331F000E9@smtp.kernel.org>
+	s=arc-20240116; t=1782860329; c=relaxed/simple;
+	bh=aq9jJsGvYEawxXGAy0iuy6oK59s02bFHbdyTTS22zLs=;
+	h=Date:From:To:Cc:Subject:Message-Id:In-Reply-To:References:
+	 Mime-Version:Content-Type; b=OnS3jfucg5Exo/3vMgfbNkD15RU8e/F7PxQR4tLZZSWOMrzrtCpEtoG5d3uyxsU+OLdqZsUyjk/TSFuxzzzKbkHJCQpVhxm7D6lDAJSFgXJ8fZzLjEFGST/jj2eeQqGerseRbQDVFT4kRiQ2R7t4QEgP6T9RZMyUdbo/WIbl5rc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=P5f/0Kqj; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EDD7A1F000E9;
+	Tue, 30 Jun 2026 22:58:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1782860327;
+	bh=LzgO/WtP3CHsUyiGKcx7YHKu/av/Fuaej/8zHHRDb7w=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=P5f/0Kqj6lvAulhzPauZEJUAACK0UeYeG67JPeOoa7qkcO1dP7Myuuhm4UNucWKW2
+	 9wyUc/pJrFwZNZJK4e3fwBHIyN2qhib0otVdORx2OTuX8JypEzFW1zSdHGvaI+e3kG
+	 F0D9X3WwbFvOQwBCsqfAWFWi53X9n/FbXJQND2VazLnhy63w8RJB9CqUz+PmL0q2c3
+	 Xsuj2OJn52BohKAcEmdS4AwsoicttbXsbDSbdnBo+tTB6zm879yreGjfM+nn3INXaF
+	 vVm/pKAas7BfW29vrOIlstDTbcSg2QmhyRtaxg/QthsnkKzETOb4VMGdzoPa+jbWiV
+	 SxcxGhczVzkkg==
+Date: Wed, 1 Jul 2026 07:58:43 +0900
+From: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+To: Bradley Morgan <include@grrlz.net>
+Cc: akpm@linux-foundation.org, linux-kernel@vger.kernel.org,
+ linux-trace-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH v2] lib/bootconfig: fix undefined behavior involving
+ NULL pointer arithmetic
+Message-Id: <20260701075843.a308d7dadf327eda4015236b@kernel.org>
+In-Reply-To: <20260630174746.14795-1-include@grrlz.net>
+References: <20260630174746.14795-1-include@grrlz.net>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.16 / 15.00];
+X-Spamd-Result: default: False [-4.66 / 15.00];
+	WHITELIST_SPF_DKIM(-3.00)[kernel.org:d:+,kernel.org:s:+];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
-	R_DKIM_ALLOW(-0.20)[linux-foundation.org:s=korg];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	MV_CASE(0.50)[];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-270065-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:mm-commits@vger.kernel.org,m:vbabka@kernel.org,m:stable@vger.kernel.org,m:rppt@kernel.org,m:mgorman@techsingularity.net,m:hannes@cmpxchg.org,m:gourry@gourry.net,m:akpm@linux-foundation.org,s:lists@lfdr.de];
-	FROM_NEQ_ENVFROM(0.00)[akpm@linux-foundation.org,stable@vger.kernel.org];
-	DMARC_NA(0.00)[linux-foundation.org];
-	FORWARDED(0.00)[lists@lfdr.de];
-	DKIM_TRACE(0.00)[linux-foundation.org:+];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:include@grrlz.net,m:akpm@linux-foundation.org,m:linux-kernel@vger.kernel.org,m:linux-trace-kernel@vger.kernel.org,m:stable@vger.kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[mhiramat@kernel.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_SENDER(0.00)[akpm@linux-foundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-270066-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	FORWARDED(0.00)[lists@lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	TO_DN_NONE(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	FROM_NEQ_ENVFROM(0.00)[mhiramat@kernel.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	MIME_TRACE(0.00)[0:+];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,techsingularity.net:email,smtp.kernel.org:mid,vger.kernel.org:from_smtp]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 76C336E8863
+X-Rspamd-Queue-Id: 6C1056E8904
+
+On Tue, 30 Jun 2026 17:47:46 +0000
+Bradley Morgan <include@grrlz.net> wrote:
+
+> When xbc_snprint_cmdline() is called during the size-probing phase
+> (with buf = NULL and size = 0), the function computes the end pointer
+> as 'buf + size' (NULL + 0) and repeatedly advances 'buf' via 'buf += ret'.
+> 
+> Under the C standard, performing pointer arithmetic on a NULL pointer is
+> undefined behavior. While harmless inside the kernel, this code is also
+> compiled into the userspace host tool 'tools/bootconfig', where host
+> compilers with UBSan or FORTIFY_SOURCE enabled abort the build when they
+> detect NULL pointer arithmetic.
+> 
+> Fix this by guarding the pointer arithmetic so 'buf' is only advanced when
+> non-NULL, and track the running written length in a separate 'len' counter
+> for the return value (which cannot be recovered from pointer math when
+> 'buf' is NULL). The rest() helper and snprintf call sites are unchanged.
+> 
+> Fixes: 51887d03aca1 ("bootconfig: init: Allow admin to use bootconfig for kernel command line")
+> Cc: stable@vger.kernel.org
+> Assisted-by: GLM:glm-5.2
+> Signed-off-by: Bradley Morgan <include@grrlz.net>
+
+Thanks for the fix!
+Let me pick this to bootconfig/fixes.
+
+Thank you,
+
+> ---
+>  lib/bootconfig.c | 13 +++++++++----
+>  1 file changed, 9 insertions(+), 4 deletions(-)
+> 
+> Changes since v1:
+> - Got the big guns out! :) (see Assisted-by).
+> - Addressed review from Masami Hiramatsu and Breno Leitao.
+> 
+> diff --git a/lib/bootconfig.c b/lib/bootconfig.c
+> index f445b7703fdd..c913259c80ce 100644
+> --- a/lib/bootconfig.c
+> +++ b/lib/bootconfig.c
+> @@ -427,8 +427,9 @@ static char xbc_namebuf[XBC_KEYLEN_MAX] __initdata;
+>  int __init xbc_snprint_cmdline(char *buf, size_t size, struct xbc_node *root)
+>  {
+>  	struct xbc_node *knode, *vnode;
+> -	char *end = buf + size;
+> +	char *end = buf ? buf + size : NULL;
+>  	const char *val, *q;
+> +	size_t len = 0;
+>  	int ret;
+>  
+>  	xbc_node_for_each_key_value(root, knode, val) {
+> @@ -442,7 +443,9 @@ int __init xbc_snprint_cmdline(char *buf, size_t size, struct xbc_node *root)
+>  			ret = snprintf(buf, rest(buf, end), "%s ", xbc_namebuf);
+>  			if (ret < 0)
+>  				return ret;
+> -			buf += ret;
+> +			len += ret;
+> +			if (buf)
+> +				buf += ret;
+>  			continue;
+>  		}
+>  		xbc_array_for_each_value(vnode, val) {
+> @@ -456,11 +459,13 @@ int __init xbc_snprint_cmdline(char *buf, size_t size, struct xbc_node *root)
+>  				       xbc_namebuf, q, val, q);
+>  			if (ret < 0)
+>  				return ret;
+> -			buf += ret;
+> +			len += ret;
+> +			if (buf)
+> +				buf += ret;
+>  		}
+>  	}
+>  
+> -	return buf - (end - size);
+> +	return len;
+>  }
+>  #undef rest
+>  
+> -- 
+> 2.53.0
+> 
 
 
-The patch titled
-     Subject: mm/vmstat: fold stranded per-cpu node stats when a node comes online
-has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
-     mm-vmstat-fold-stranded-per-cpu-node-stats-when-a-node-comes-online.patch
-
-This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-vmstat-fold-stranded-per-cpu-node-stats-when-a-node-comes-online.patch
-
-This patch will later appear in the mm-hotfixes-unstable branch at
-    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-
-Before you just go and hit "reply", please:
-   a) Consider who else should be cc'ed
-   b) Prefer to cc a suitable mailing list as well
-   c) Ideally: find the original patch on the mailing list and do a
-      reply-to-all to that, adding suitable additional cc's
-
-*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
-
-The -mm tree is included into linux-next via various
-branches at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-and is updated there most days
-
-------------------------------------------------------
-From: Gregory Price <gourry@gourry.net>
-Subject: mm/vmstat: fold stranded per-cpu node stats when a node comes online
-Date: Sat, 27 Jun 2026 16:22:43 -0400
-
-A per-node vmstat counter is pgdat->vm_stat[] plus per-cpu deltas.  A
-balanced counter can sit split as global=+N / per-cpu=-N.
-
-The folds reconciling the split only walk online nodes, so when
-try_offline_node() marks a node offline the per-cpu deltas are stranded.
-
-A subsequent online resets the per-cpu area but not pgdat->vm_stat[],
-orphaning the +N permanently.  All NR_VM_NODE_STAT_ITEMS are affected.
-
-The existing code zeroes the per-cpu counters and causes a permanent skew.
-Fold the stranded deltas instead, before the node rejoins the online set.
-The node is not online yet and the hotplug lock is held, so the remote
-access to per-cpu values is safe.
-
-Discovered when node compaction hung for a nearly empty node, as the math
-to determine throttling broke.  Reproduced by repeated memory
-hotplug/unplug cycles on a node under pressure: NR_ISOLATED_ANON ratchets
-up and never returns to zero.
-
-Link: https://lore.kernel.org/20260627202243.758289-1-gourry@gourry.net
-Fixes: 75ef71840539 ("mm, vmstat: add infrastructure for per-node vmstats")
-Signed-off-by: Gregory Price <gourry@gourry.net>
-Cc: Johannes Weiner <hannes@cmpxchg.org>
-Cc: Mel Gorman <mgorman@techsingularity.net>
-Cc: Mike Rapoport <rppt@kernel.org>
-Cc: Vlastimil Babka <vbabka@kernel.org>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
----
-
- mm/mm_init.c |   15 +++++++++++----
- 1 file changed, 11 insertions(+), 4 deletions(-)
-
---- a/mm/mm_init.c~mm-vmstat-fold-stranded-per-cpu-node-stats-when-a-node-comes-online
-+++ a/mm/mm_init.c
-@@ -1540,7 +1540,7 @@ void __ref free_area_init_core_hotplug(s
- {
- 	int nid = pgdat->node_id;
- 	enum zone_type z;
--	int cpu;
-+	int cpu, i;
- 
- 	pgdat_init_internals(pgdat);
- 
-@@ -1558,10 +1558,17 @@ void __ref free_area_init_core_hotplug(s
- 	pgdat->node_start_pfn = 0;
- 	pgdat->node_present_pages = 0;
- 
--	for_each_online_cpu(cpu) {
--		struct per_cpu_nodestat *p;
-+	/*
-+	 * Hot-unplug can leave per-cpu vmstat deltas unfolded (folders skip
-+	 * offline nodes) - reconcile this at online. Foreign access to counters
-+	 * is safe: the node is not online yet and we hold the hotplug lock.
-+	 */
-+	for_each_possible_cpu(cpu) {
-+		struct per_cpu_nodestat *p = per_cpu_ptr(pgdat->per_cpu_nodestats, cpu);
- 
--		p = per_cpu_ptr(pgdat->per_cpu_nodestats, cpu);
-+		for (i = 0; i < NR_VM_NODE_STAT_ITEMS; i++)
-+			if (p->vm_node_stat_diff[i])
-+				node_page_state_add(p->vm_node_stat_diff[i], pgdat, i);
- 		memset(p, 0, sizeof(*p));
- 	}
- 
-_
-
-Patches currently in -mm which might be from gourry@gourry.net are
-
-mm-vmstat-fold-stranded-per-cpu-node-stats-when-a-node-comes-online.patch
-mm-constify-oom_control-scan_control-and-alloc_context-nodemask.patch
-
+-- 
+Masami Hiramatsu (Google) <mhiramat@kernel.org>
 
