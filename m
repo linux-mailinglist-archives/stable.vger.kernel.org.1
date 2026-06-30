@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-269946-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-269947-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id KwOgC2mcQ2pPdQoAu9opvQ
-	(envelope-from <stable+bounces-269946-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 30 Jun 2026 12:37:29 +0200
+	id qMNYCUWcQ2pDdQoAu9opvQ
+	(envelope-from <stable+bounces-269947-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 30 Jun 2026 12:36:53 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id B78FD6E2FA1
-	for <lists+stable@lfdr.de>; Tue, 30 Jun 2026 12:37:28 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id C82E86E2F82
+	for <lists+stable@lfdr.de>; Tue, 30 Jun 2026 12:36:52 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=bootlin.com header.s=dkim header.b=FfKBAm4E;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-269946-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-269946-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=bootlin.com header.s=dkim header.b=m8vYgJnM;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-269947-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-269947-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=reject) header.from=bootlin.com;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D24B730CC699
-	for <lists+stable@lfdr.de>; Tue, 30 Jun 2026 10:30:09 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 35C853095976
+	for <lists+stable@lfdr.de>; Tue, 30 Jun 2026 10:30:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F09853F23C2;
-	Tue, 30 Jun 2026 10:29:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D159C3F39D0;
+	Tue, 30 Jun 2026 10:29:56 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BE783F1659;
-	Tue, 30 Jun 2026 10:29:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E1ED3F0A97;
+	Tue, 30 Jun 2026 10:29:55 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782815390; cv=none; b=uNynIjBTKabwG/I+i82W7/rAx7U4vVrekK9bY3PEHthZI9cUYYPKwdztZaJ8T4NwSU5fznxsD3udYYnl6daZvt5S1Qcx+9Eh43klWrlkNCKtrTMrzY3C7KmF8JL0m1qDc560JDOQscLt7lP0a7lDl7NSFwSsVzhVxE4JDqi86Ro=
+	t=1782815396; cv=none; b=J1fbBkbUb6phKqKWrxCbXgQQBkxv4u1UNtuV3PJg0+LfN2vUgIHuk1ZxM+PVYLQFnzPtpQP3/sNmJARYG8ucuFgmB2jgaZ1cNNMwWAHCP1RsTp5OZRlwQwX8qdbZMOqmzCI/VpFoFygf++USRmEz43Az/uYeRdyE5qGzWrE3FAQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782815390; c=relaxed/simple;
-	bh=xyfH6doCc7i4sKmvbyl3EEgYdlvB7hed8KKE/NxYwQE=;
+	s=arc-20240116; t=1782815396; c=relaxed/simple;
+	bh=JtHNH4m847l5mtPzd0VHeP+WOUOiH+Uc9gql/erzMUc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=l+OjofyLwHa7Hjrc6K0DqWS4n6n/P4AreIIV1M4C4f0uDIPTDkCGxzcjAO1QlFtZ5KdRpMhgp4M6UszTSJMZwUwm0rfaqM9Y5cio1bUAr5fXfafiIrtSwXc1r6Fom43tPL9NVTyR9cbbem/OCb7mzsp8aPuO1S5ocZdashLFpYM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=FfKBAm4E; arc=none smtp.client-ip=185.171.202.116
+	 MIME-Version; b=Af68jfgCtfK3ADbeFAguoDfdgvUdKmO0dsf2UUGbs6N9hQAnM+xvQ/fMFm+gqxDx0q1Y3nZINuKxgZWIp+V3qQYe4BFImw2widKrrEnFTiDT0YmZos03WmDztIGLN/GhMgt8HiwM+fwSqEARkQE2f4tF4sabQkL/3B7li42lBMs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=m8vYgJnM; arc=none smtp.client-ip=185.171.202.116
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-04.galae.net (Postfix) with ESMTPS id A4523C5CD4B;
-	Tue, 30 Jun 2026 10:29:58 +0000 (UTC)
+	by smtpout-04.galae.net (Postfix) with ESMTPS id 860FFC5CD47;
+	Tue, 30 Jun 2026 10:30:04 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 2D5026025A;
-	Tue, 30 Jun 2026 10:29:48 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 59B50106F1D96;
-	Tue, 30 Jun 2026 12:29:40 +0200 (CEST)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 103E26025A;
+	Tue, 30 Jun 2026 10:29:54 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 28508106F1D9A;
+	Tue, 30 Jun 2026 12:29:46 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1782815385; h=from:subject:date:message-id:to:cc:mime-version:
+	t=1782815391; h=from:subject:date:message-id:to:cc:mime-version:
 	 content-transfer-encoding:in-reply-to:references;
-	bh=w9+HL8YzUCvPl39+FuJI3IoQ23qvAeEZjFCCDFbNqtk=;
-	b=FfKBAm4E2lAOPrQQebeq2XB9ZOtdPYuKt6g2cNrTqaTYAtcMjiDiug1Jg3IdiQWk3eyP0W
-	wdTC1aZQRdz36T+FCQGao5+ntKH6fHAxLjM5ZSOo30cz0qhqfr1ML0jLJBJe6mc0/hbamb
-	NwxJK3BzsqjJndqcX0tYMhKJ91E4OmIoKND5ESPh3legr9Bn3NYSwsha74xklc7aJm+Ani
-	U8OEafL0fsCs1Q3bWalQtc2Z8Fp0OHtXw2B1jl7EV9rnYKW3Z3/DaB4/uAdbUIeWH32pAy
-	0sUOB1AENYLtrU+VBLMVret52H9VLPIjSedpNsy6/dwMP+MEgB0+hUCnU8rN0g==
+	bh=wEM807POe4trG4Qi2FA+FagRQw2RIVnWZHNQKyw2iOM=;
+	b=m8vYgJnM+ZWEYXYbE2thSFunZHblYIMG05iP/GorDlyuJYTAZWwpgCJnTFwSJx+3jWUtTP
+	wkRJ3bB8DmQIQz1RoF98UMxyEBFFtK9nLSnbRkxI9j4HGcxWNZpWUr5b+Hf2INhSUJVdNI
+	vR9HZhsi8Xitq8AfZ02LR5lzOs9K22Xxu6Z7CaTXDqjppJY0PiBBpTIRoWf9WvsGpvMrlO
+	KtCXOCATXou91LjnBnb1kYPRLVpKuIaBxvtec4P/V9UmX+xeBhUyYgPqDq1sqN+FcCHSYQ
+	SyNX+5r33GhmpsawABN7tgeXxNZkapVBeB0Kq6BoR4QJ/7GJoqVvXSE+fJ0h3g==
 From: Herve Codina <herve.codina@bootlin.com>
 To: Andrew Lunn <andrew@lunn.ch>,
 	Rob Herring <robh@kernel.org>,
@@ -93,9 +93,9 @@ Cc: driver-core@lists.linux.dev,
 	Luca Ceresoli <luca.ceresoli@bootlin.com>,
 	Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
 	stable@vger.kernel.org
-Subject: [PATCH v8 6/8] PCI: of: Use fw_devlink_set_device()
-Date: Tue, 30 Jun 2026 12:28:00 +0200
-Message-ID: <20260630102804.413563-7-herve.codina@bootlin.com>
+Subject: [PATCH v8 7/8] PCI: of: Set fwnode device of newly created PCI device nodes
+Date: Tue, 30 Jun 2026 12:28:01 +0200
+Message-ID: <20260630102804.413563-8-herve.codina@bootlin.com>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260630102804.413563-1-herve.codina@bootlin.com>
 References: <20260630102804.413563-1-herve.codina@bootlin.com>
@@ -113,14 +113,14 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[bootlin.com,reject];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[bootlin.com:s=dkim];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCPT_COUNT_TWELVE(0.00)[41];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-269946-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-269947-lists,stable=lfdr.de];
 	RECEIVED_HELO_LOCALHOST(0.00)[];
 	FORGED_RECIPIENTS(0.00)[m:andrew@lunn.ch,m:robh@kernel.org,m:saravanak@kernel.org,m:gregkh@linuxfoundation.org,m:rafael@kernel.org,m:dakr@kernel.org,m:bhelgaas@google.com,m:david.rhodes@cirrus.com,m:rf@opensource.cirrus.com,m:ckeepax@opensource.cirrus.com,m:linusw@kernel.org,m:lenb@kernel.org,m:andriy.shevchenko@linux.intel.com,m:djrscally@gmail.com,m:heikki.krogerus@linux.intel.com,m:sakari.ailus@linux.intel.com,m:dave@stgolabs.net,m:jic23@kernel.org,m:dave.jiang@intel.com,m:alison.schofield@intel.com,m:vishal.l.verma@intel.com,m:djbw@kernel.org,m:iweiny@kernel.org,m:ming.li@zohomail.com,m:lizhi.hou@amd.com,m:herve.codina@bootlin.com,m:driver-core@lists.linux.dev,m:linux-kernel@vger.kernel.org,m:linux-pci@vger.kernel.org,m:linux-sound@vger.kernel.org,m:patches@opensource.cirrus.com,m:linux-gpio@vger.kernel.org,m:linux-acpi@vger.kernel.org,m:linux-cxl@vger.kernel.org,m:allan.nielsen@microchip.com,m:horatiu.vultur@microchip.com,m:daniel.machon@microchip.com,m:steen.hegelund@microchip
  .com,m:luca.ceresoli@bootlin.com,m:thomas.petazzoni@bootlin.com,m:stable@vger.kernel.org,s:lists@lfdr.de];
@@ -138,42 +138,56 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	DKIM_TRACE(0.00)[bootlin.com:+];
 	RCVD_COUNT_FIVE(0.00)[6];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	ALIAS_RESOLVED(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,bootlin.com:dkim,bootlin.com:email,bootlin.com:mid,bootlin.com:from_mime,fwnode.dev:url]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,bootlin.com:dkim,bootlin.com:email,bootlin.com:mid,bootlin.com:from_mime]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: B78FD6E2FA1
+X-Rspamd-Queue-Id: C82E86E2F82
 
-The code set directly fwnode.dev field.
+Device-tree node can be created when CONFIG_PCI_DYNAMIC_OF_NODES. Those
+nodes are created and filled based on PCI core information but the
+fwnode device field is not set.
 
-Use the dedicated fw_devlink_set_device() helper to perform this
-operation.
+When later an overlay is applied, this confuses fw_devlink. Indeed,
+without any device attached to the node, fw_devlink considers that this
+node will never become a device. When this node is pointed as a
+supplier, devlink looks at its ancestors in order to find a node with a
+device that could be used as the supplier.
 
+In the PCI use case, this leads to links that wrongly use the PCI root
+bridge device as the supplier instead of the expected PCI device.
+
+Setting the fwnode device to the device of the PCI device allows devlink
+to use this device as a supplier and so, correct links are created.
+
+Fixes: 407d1a51921e ("PCI: Create device tree node for bridge")
 Cc: stable@vger.kernel.org
 Signed-off-by: Herve Codina <herve.codina@bootlin.com>
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 Acked-by: Bjorn Helgaas <bhelgaas@google.com>
 ---
-Cc stable because used by other patches with Fixes + Cc stable
----
- drivers/pci/of.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/pci/of.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
 diff --git a/drivers/pci/of.c b/drivers/pci/of.c
-index 8b18c4ba845c..ee9eb384b377 100644
+index ee9eb384b377..eda14cefca5e 100644
 --- a/drivers/pci/of.c
 +++ b/drivers/pci/of.c
-@@ -803,7 +803,7 @@ void of_pci_make_host_bridge_node(struct pci_host_bridge *bridge)
- 	 * bus. Avoid any new device creation.
- 	 */
- 	of_node_set_flag(np, OF_POPULATED);
--	np->fwnode.dev = &bridge->dev;
-+	fw_devlink_set_device(&np->fwnode, &bridge->dev);
- 	fwnode_dev_initialized(&np->fwnode, true);
+@@ -709,6 +709,13 @@ void of_pci_make_dev_node(struct pci_dev *pdev)
+ 	if (ret)
+ 		goto out_free_node;
  
++	/*
++	 * Set the fwnode device in order to have fw_devlink creating links
++	 * pointing to this PCI device instead of walking up to the PCI host
++	 * bridge.
++	 */
++	fw_devlink_set_device(&np->fwnode, &pdev->dev);
++
  	ret = of_changeset_apply(cset);
+ 	if (ret)
+ 		goto out_free_node;
 -- 
 2.54.0
 
