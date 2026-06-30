@@ -1,231 +1,177 @@
-Return-Path: <stable+bounces-269877-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-269878-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id WV+yFV1JQ2pAWgoAu9opvQ
-	(envelope-from <stable+bounces-269877-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 30 Jun 2026 06:43:09 +0200
+	id HMgdOoxLQ2qKWgoAu9opvQ
+	(envelope-from <stable+bounces-269878-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 30 Jun 2026 06:52:28 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4CBCD6E051A
-	for <lists+stable@lfdr.de>; Tue, 30 Jun 2026 06:43:08 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5AD596E0550
+	for <lists+stable@lfdr.de>; Tue, 30 Jun 2026 06:52:28 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=bytedance.com header.s=google header.b=Lt1+DV48;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-269877-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-269877-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=quarantine) header.from=bytedance.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b="hV/KgXS7";
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-269878-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-269878-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=none) header.from=gmail.com;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=2")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 653C93029E6F
-	for <lists+stable@lfdr.de>; Tue, 30 Jun 2026 04:43:06 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 679CC301302D
+	for <lists+stable@lfdr.de>; Tue, 30 Jun 2026 04:52:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 164C83E121F;
-	Tue, 30 Jun 2026 04:43:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4DF73DDDB8;
+	Tue, 30 Jun 2026 04:52:24 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-oi1-f181.google.com (mail-oi1-f181.google.com [209.85.167.181])
+Received: from mail-lj1-f182.google.com (mail-lj1-f182.google.com [209.85.208.182])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FCDE3E0C67
-	for <stable@vger.kernel.org>; Tue, 30 Jun 2026 04:43:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47CEE386C16
+	for <stable@vger.kernel.org>; Tue, 30 Jun 2026 04:52:23 +0000 (UTC)
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782794584; cv=pass; b=ZEGNQi2EF2rHv2C22KIwgg2fFVOscvCR1P5bnG6WsXuiDKiaNvIEqqd4G+yU/1v72g5N1ZalRK1B6rJdoYtMcGmDJxMledmokMeHNru5IzuevRGUf5KaF/F9lZWNdktnPfq/dYeIXAnWNXqR6KlL0J6Pt15DZcSAdtlQ63Jh5TU=
+	t=1782795144; cv=pass; b=JkdbUGzAbpZ06Ei+q5uEKfH60mLQlRfb9aVgVWJhQno5/iy9+Jzf1sioAnbAOu/JBrXk3zvsLlSmcx+IouO/rk33gkNgJWwTscw33MOwqMCvnTPjB/CbyDBX0cROZ3wU8vfTo1O+PafAUu35mHvgmXBBaHExLo8wRDZDtcDUdOc=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782794584; c=relaxed/simple;
-	bh=ML7QEKbCRptYZgAfgwwWP1fX1s6dzYdPXJ7jhGC8qnA=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=fRxsKYgHqTIHy/4Y+pAIYyGrdyh10nKaMx0U+4Dl0z3SQHWIBYPSc0M1xPKDOt4nHzZEzQszAqxU79MbA3SCtSF47yegKpv+tSHxBcRDE/Dl054jnm0loYTpbCzE6Foxy+KTSfPyFzrTwgFEXQnk0fmx2NF0kvfQ52hi8o+4ibY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=bytedance.com; spf=pass smtp.mailfrom=bytedance.com; dkim=pass (2048-bit key) header.d=bytedance.com header.i=@bytedance.com header.b=Lt1+DV48; arc=pass smtp.client-ip=209.85.167.181
-Received: by mail-oi1-f181.google.com with SMTP id 5614622812f47-495f312b086so38946b6e.3
-        for <stable@vger.kernel.org>; Mon, 29 Jun 2026 21:43:01 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1782794580; cv=none;
+	s=arc-20240116; t=1782795144; c=relaxed/simple;
+	bh=5Tyzaisr5mGbfjEU5rXfoq0BZD3jnlSX9RSNvWmwSSs=;
+	h=MIME-Version:From:Date:Message-ID:Subject:To:Content-Type; b=lDdzyUbVap5nCuVamRtdpteycmNDoYvuslXiOxF0Dc0ETb5OATI+mpfM9Hu5IZ56hdDvDOKACmH/rFMvQfTg18hzhLnBalnNOeq1KUVxEb91j0PPvpG5UEFGaFrMYKn4QsgdzOqL2t+2MQsEF1rR1u4w8WSoWibjWyzZMH4xqDg=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hV/KgXS7; arc=pass smtp.client-ip=209.85.208.182
+Received: by mail-lj1-f182.google.com with SMTP id 38308e7fff4ca-39af6402933so26595441fa.2
+        for <stable@vger.kernel.org>; Mon, 29 Jun 2026 21:52:23 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1782795141; cv=none;
         d=google.com; s=arc-20260327;
-        b=axpKKYPxARq2KmulMvksw3krIOVxlK6V9DVTD0g/cifrdtwT0QRc1cnnbF9+1vZURg
-         1xF9KUuRqoSWD62BYgGg1rBohMEo1y22eMlk38defnx89cat4AXuhSy5MktIkXH3bMZa
-         pwA9X8cia95nhwcmEOF3XSxjlUqofB37X359poVwlYILO3+pkBivOp5y8Qb8MSnP8l2+
-         zUgOInG5RrdeMnTJzmQnVX89cHdohRRPlUtuy6fePYDOsq2dGGlqKSbXk/qNRpCPWS9k
-         t9KXK2XpzVPCbKV9Pq/QsCYgil+fkOcOb6JQpO5WhTHXPI+dyMiisTzPQSFINUPyfN2M
-         Qt+g==
+        b=p+Kv4DZZaWxWmWPoP9TNwTSUWuTv6or8MjEwUpzXnrd4GMhowhMzOYfzpLRxELdMFE
+         TCSvedgtTL6o7G4aILKJAfsquNcG2PJyFl86vvaZZtwgPlz+UGoyPIGfRdjDoiPSF7QD
+         x2AAJ+E47m08igalvl6fJBlD4aRwUu88BgolaswO3zPvTqwT7Y0HrUhaMdw19eDBzDvz
+         6wREDbtUJNgN/ccsAiDIIZEyGf0pA1NKnqqJiXwdfGl08H8ZNayBfEJKq4BfXErzm40z
+         f2u9NKkERIUDEKA8+9+tFa6dmSsVlP4FGi2XkTbtuaBIBo12Qs4jnKQKzuRWBee2L11u
+         MWnQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=TkcngDtZZBcSBYuktpVSvj/Zq3c5gyjbDMX0CALcXeM=;
-        fh=u5W5ejdjkavZXOnnkDm47pDkHlazHViYWQ5KBXug7b0=;
-        b=aoRkQvpkvU2rq3G0BUDyitbOyED7mzWiBGyvNk/xDlAnCmPUngAbziq6stzw0lzy9T
-         MvQ58nkzEOfRnL1rMsWH+0rzUS4zPiL04QC+3uL7Ju61bmEqpkNG3LnXQRmjPLsvVlxU
-         AOEuruJpXrzhYPDvVHA0vzAypb3vH2tDjeAVK6qjws4QsdBYMfNJ1jaMgad4D2FOYtde
-         5716GG36f32o0ITu9cZYQNl1uDXSWwkPlGHDaPzteGbGlieKAA/VpKeBy3bpwcfj4JJU
-         x1R2ZoAdB5FOnqAon2KYDHxYk7l0NlwLv9Znux4v8HICZa7d0LAeRT3qcy7rAoEMYJWC
-         Nl/g==;
+        h=to:subject:message-id:date:from:mime-version:dkim-signature;
+        bh=ihd90CtfnqycEvSiqZr6Hb8+VpZm2glxj7azajIlDCQ=;
+        fh=9+8ija87vT2b2KzYq7hCy4+sxAPK7rZM4Ef40ZoxGEg=;
+        b=E+wVaxuwL1iqUATi8k6WEem6aY0ShbhnYuFz8PchA3UqvlanxVnoJ/bHKRWhNCuuTR
+         52t56k0n1kM3OV+fRTDPWsWBc6ZACm/sQMwyykoBc42R8ndFz7I6wT6h9Ydw4oBQV4Ir
+         EnRhqUw9KA7kFIkpNIde5gJwtBWoY/zqWK8byUP88shV3AeUO0RAralgb/3x+VBMzt6l
+         0cmCYyMVqr5BKzfEYrfhl4U0mxfLP3yH1VIngvif/XOI1/1yVC6XbSEpDag0y9iS9SIe
+         zw9rrHIdjfpn9VRjMFSQRTHVgNveggxfjNuFQhjSjJCh8vYqhGE9KMoW4yLqPWGGywMB
+         uqnQ==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bytedance.com; s=google; t=1782794580; x=1783399380; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=TkcngDtZZBcSBYuktpVSvj/Zq3c5gyjbDMX0CALcXeM=;
-        b=Lt1+DV486SFojwft46ivqfDysbSDBR6BUn+OpJMg79zzaeUNhxyeWH0ASO07p/kDAB
-         tUMxmgiFoud7HAeMbEBbdMSnMqwthQK3/58HBrM81LEq1lrjRjWwXvBM7lXB9+txWXEv
-         qR53Fvgfont+KErXhAra8U69x/rEbZjkwWcXx+YRwEuTHFMYetoMNg/RaknimpXUUDcC
-         BlxSgat/eJqJndmzGccghQrzJtRnbq/0qAUooPMjfu9UT8YpkGPL+tufUhMo1XVtSFWS
-         P8ylJhRjHs09cMkE1RgYZ1cOuKut19tph8rZ7j4lBkm0osmtkMNyXm6ofg/k+I4j2KFR
-         t9Ng==
+        d=gmail.com; s=20251104; t=1782795141; x=1783399941; darn=vger.kernel.org;
+        h=to:subject:message-id:date:from:mime-version:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=ihd90CtfnqycEvSiqZr6Hb8+VpZm2glxj7azajIlDCQ=;
+        b=hV/KgXS72gA7Tnuw+FXMwBOPe3NF8bZ86OPEVjaTIVOathpJZbNRc9xp5lgHfnfOi6
+         SLwaqLwcCGrkA4dGDhKbSmvNSbMcXEVCB1vMgQP6BrrEhBXIV4JrtVxKGclJ/Lnte2UD
+         mLuEG1OOuKYgafu4a8y30USZg0KR8B5iO8gJgJZXNFnJf0+j81RXnTKrVmHhPOsvqWtE
+         dOoTmc6L963N7SOME+VlE92JmHGIqXEjGYOI1b890bs3vnp3bD5kWB3ojnvuC+BXl7rW
+         qV8CV/KLMXv7pcPSDg5578xaWdLp5BaIxMBDrB2M3Hj7wza3ApnVCf9IcJA5cUs8sPsd
+         YylQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782794580; x=1783399380;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=TkcngDtZZBcSBYuktpVSvj/Zq3c5gyjbDMX0CALcXeM=;
-        b=TbwJ/E077pO3GYBaE8NFyow6TlrPoMZHRnmdmkfP66P9yvCZhzRJH0Og1YFx9Vy3z/
-         1mx6RMpbGiuUwg+ZMJ2PNXJ8NXpcuGiRWWGOxNX3Tcx69rPtHI0v1x83sYh4riV/AUcB
-         W3O4gRv4xegamUidnTraxuqyEX1NWU3mCDB/fh+K5xwqh7Ps7mOrdRBkMhvxVNUIMM+D
-         4q0VoQYnYu+2dJn2a04B3OhEzJIUFEZf/9jp4tvnc+lBQB4TMqN0XqyWr8gnlKr+L6lF
-         JzgkyESoiANLaeCZBlwBi+iNnXhMgwmaCZZI2JQOnfptYgBgj1pJxJYc677VJNbrC/Vs
-         SU+A==
-X-Forwarded-Encrypted: i=1; AFNElJ/ZZ3SjO/vkrMUNVr3PAsWA38gMCzxAK3uEtIdd8nhMIw0krmTk7Lm3H8cqZ0l+Nd2Uhejspts=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy1d/IhBK2wiv+c96Zpw+ThnocfuKJtAqTMRwInkOaHRC53UfSV
-	Ad6dJRG4mn40jQTjycRL5XNMr+VV5vXSp6gkgIhaXb3WEp950yj0ac/u/ZxpBmYjmSN+bCOigId
-	E4HUr+P5NCVFjsaQs3fGl98Y99Xi/iFldgZK42CuQGA==
-X-Gm-Gg: AfdE7cnPtIz8cF+N2g02hK7ExxIKwnI1+QGEYq6qeMg4IHXHWGk1QLojXgsk8aNQdGT
-	crV5a4154i6uxU/F6BMiOywXPnSRYTBBy0rfBIh3RQX7NeJgG2jEAYHxSxGhYNDz94NaJmamDps
-	qfbuvRqJazA5LsUWgRKA0dNchbHlz8amQhNWymDbYBYbTZ7TVeUoDHKxbMhFqTlED/7nEuzcBco
-	ZADJ6ll22tXMvssUrJva+rkjkLavYVzuM44d7undf6dAf10qupKq6bFZVvl9hS/fbqSGT3dMBQ=
-X-Received: by 2002:a05:6808:c2f8:b0:492:5bf0:d29e with SMTP id
- 5614622812f47-495eafc41a8mr2097270b6e.34.1782794580112; Mon, 29 Jun 2026
- 21:43:00 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1782795141; x=1783399941;
+        h=to:subject:message-id:date:from:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=ihd90CtfnqycEvSiqZr6Hb8+VpZm2glxj7azajIlDCQ=;
+        b=O0LmD6txcePnhg606RoDytGn1ai4AdX+VDP+vuxjlEJtUf9bq4TWlmmT2D8hLadlJD
+         bf0LY0hEQrXSxufaH9d30ovcNW+btMp5paschqZ1yC7spnWq+Uj6ukFqIY2bujnbQgPl
+         iT69Vx3CW4jAQzkwUewhGiOixTF0IUcTWfHV9sSE015HHPpVT7otXl5umFPLtH9t6RCw
+         GKRpXSjFl70Aa7+b7nJlUrxkCHUTYGydIlBlUg+0kpJ4KHk0OwNTwkYKJ6d/dbfTHTqC
+         xAgXBlXSJo8gMEv1pCe9siXeBYxYr/tfofkTrNrr2CZxaN3/ceEqiYNmPgqvF3uH/JVZ
+         zHDA==
+X-Gm-Message-State: AOJu0YxPzqdhmDJOL0xW6NKCZXah5CgndH0yaEkt8jFFgFeEY5DdkK7d
+	3ZCa1CTn1iKPfzbXTX2p4z5p0nJ5rvCK2pesrAVyMBzq3Rcl6ornRfcn/ivcyMp7ByVREBGXmht
+	PI0Lf/+yzzjabBrML5cZMxoimwstLaXqOCV8RbaC62fo9WD0=
+X-Gm-Gg: AfdE7clFgghjKmZ0uF4B7LwoXvtG7voojNhpjHq8r35FGh3moxL/vWK9pbLNu9yNTpC
+	exg8ryusdfcFau3bbNhFWfBIwuflpcYXqmzJ20TzYqbDLcEhfpLkud697WZiucRkA+uK+oA/hSP
+	j8QIGPnWu2JEFvbhvevig6ZLZMhU4YCv0zaM+Cdm5uoAbIf8lCVC7S3ayt4i9L5Z3XQ6eYX0GEf
+	u1/fSPqqwOT+H9bACld7a27lWeF3v12PNTh9m1awxI7LPZPzN27Eb1JdfnVQVpxIoV1gkZxeQAr
+	ckwyWKvcYgd86SJncGqtWIwN9lAsoSrL2uP4/Gu+IT58GmRAPBpj27vo
+X-Received: by 2002:a05:6512:251:b0:5aa:6aba:76f8 with SMTP id
+ 2adb3069b0e04-5aebdbbd837mr309085e87.30.1782795141202; Mon, 29 Jun 2026
+ 21:52:21 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260523042052.35476-1-cuiyunhui@bytedance.com> <20260629210432.ef76ce885cd9ccd28b7a2127@linux-foundation.org>
-In-Reply-To: <20260629210432.ef76ce885cd9ccd28b7a2127@linux-foundation.org>
-From: yunhui cui <cuiyunhui@bytedance.com>
-Date: Tue, 30 Jun 2026 12:42:48 +0800
-X-Gm-Features: AVVi8Cf2cA6T1Xo7mNpI3K1o6jk4PWx27zkWEacArefsJbxedBCHcATc89AHDzk
-Message-ID: <CAEEQ3w=XVq_y1kG8YTHkwavB59R3kJXonX1G+QmB+TTin-BFOA@mail.gmail.com>
-Subject: Re: [External] Re: [RESEND PATCH] riscv: mm: exclude invalid THP PMDs
- from page table check
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: paul.walmsley@sifive.com, palmer@dabbelt.com, aou@eecs.berkeley.edu, 
-	tongtiangen@huawei.com, pasha.tatashin@soleen.com, 
-	linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org, 
-	stable@vger.kernel.org
+From: Steve Yang <steveyang137@gmail.com>
+Date: Tue, 30 Jun 2026 12:52:09 +0800
+X-Gm-Features: AVVi8CeFkNsB9g3cMVwEg23dz9vvGrf-budlrJHsQ94Si_PmDWSoCTlOm4cXgNk
+Message-ID: <CAMNbjovbZED1G_fuWjpTYRGnUrHddpYVV24P_S+QzyFHh_zVoA@mail.gmail.com>
+Subject: Re: [PATCH AUTOSEL 7.0-6.12] HID: i2c-hid: add reset quirk for
+ BLTP7853 touchpad
+To: stable@vger.kernel.org, linux-input@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.16 / 15.00];
+	FAKE_REPLY(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
-	DMARC_POLICY_ALLOW(-0.50)[bytedance.com,quarantine];
-	R_DKIM_ALLOW(-0.20)[bytedance.com:s=google];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-269877-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER(0.00)[cuiyunhui@bytedance.com,stable@vger.kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS(0.00)[m:akpm@linux-foundation.org,m:paul.walmsley@sifive.com,m:palmer@dabbelt.com,m:aou@eecs.berkeley.edu,m:tongtiangen@huawei.com,m:pasha.tatashin@soleen.com,m:linux-riscv@lists.infradead.org,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,s:lists@lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[bytedance.com:+];
-	MISSING_XM_UA(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[cuiyunhui@bytedance.com,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
+	RCPT_COUNT_TWO(0.00)[2];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:linux-input@vger.kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[steveyang137@gmail.com,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-269878-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	TO_DN_NONE(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[steveyang137@gmail.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	ALIAS_RESOLVED(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp,bytedance.com:dkim,bytedance.com:email,bytedance.com:from_mime,linux-foundation.org:email,mail.gmail.com:mid]
+	FREEMAIL_FROM(0.00)[gmail.com];
+	MID_RHS_MATCH_FROMTLD(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,mail.gmail.com:mid]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 4CBCD6E051A
+X-Rspamd-Queue-Id: 5AD596E0550
 
-Hi Andrew,
+Hello,
 
-On Tue, Jun 30, 2026 at 12:04=E2=80=AFPM Andrew Morton
-<akpm@linux-foundation.org> wrote:
->
-> On Sat, 23 May 2026 12:20:52 +0800 Yunhui Cui <cuiyunhui@bytedance.com> w=
-rote:
->
-> > RISC-V THP splitting uses a temporary invalid PMD state where
-> > pmd_mkinvalid() clears _PAGE_PRESENT and _PAGE_PROT_NONE but leaves
-> > _PAGE_LEAF set so the MM code can still recognize the PMD as a THP spli=
-t
-> > in-progress entry.
-> >
-> > That temporary state no longer describes a user-accessible mapping, but
-> > page_table_check currently treats it as one because the RISC-V PMD
-> > user-accessibility test only checks whether the PMD is a leaf and has
-> > user permissions.
-> >
-> > As a result, when a PMD-sized anonymous THP is split during a COW fault=
-,
-> > page_table_check can account the invalid intermediate PMD as a live PMD
-> > mapping, and then account the replacement PTE mappings again when the
-> > split installs the PTE table. This leaves stale PMD accounting behind a=
-nd
-> > later triggers page_table_check failures such as a non-zero
-> > anon_map_count when the folio is freed.
-> >
-> > Fix this by tightening pmd_user_accessible_page() so PMD page-table-che=
-ck
-> > accounting only considers leaf PMDs that still carry either
-> > _PAGE_PRESENT or _PAGE_PROT_NONE. This preserves the THP split semantic=
-s
-> > required by the MM code while preventing page_table_check from treating
-> > invalid split PMDs as live user mappings.
-> >
-> > With CONFIG_PAGE_TABLE_CHECK=3Dy and CONFIG_PAGE_TABLE_CHECK_ENFORCED=
-=3Dy,
-> > tools/testing/selftests/mm/cow completes successfully on RISC-V after
-> > this change.
->
-> Thanks.  This seems to have slipped through cracks.
->
-> AI review appears to have found a couple of related and serious issues
-> in this code.
->
->         https://sashiko.dev/#/patchset/20260523042052.35476-1-cuiyunhui@b=
-ytedance.com
->
-> perhaps you have time to take a look?
+I can confirm that the BLTP7853 i2c-hid reset quirk fixes the internal
+touchpad on my laptop.
 
-Thanks Andrew, I looked into the Sashiko findings.
+Tested-by: Steve Yang <steveyang137@gmail.com>
 
-Both findings are pre-existing and do not appear to be regressions
-introduced by this patch. This patch only changes
-pmd_user_accessible_page() for page_table_check accounting.
+Hardware:
 
-The pmd_present() / _PAGE_LEAF / swap soft-dirty interaction looks worth
-checking separately, especially with CONFIG_MEM_SOFT_DIRTY enabled. The
-pud_present() / _PAGE_PROT_NONE case also looks like a pre-existing helper
-inconsistency for PUD-size huge mappings.
+  MECHREVO XINGYAO Series / XINGYAO Series-P916F-PTL
+  BIOS: 1.00, 03/14/2026
+  Touchpad: BLTP7853:00 347D:7853 Touchpad
+  ACPI device: i2c-BLTP7853:00
+  Driver stack: i2c_hid_acpi + hid-multitouch
 
-I will investigate both separately and send follow-up fixes if they turn
-out to be real issues.
+Broken kernel:
 
->
-> > Fixes: 3fee229a8eb9 ("riscv/mm: enable ARCH_SUPPORTS_PAGE_TABLE_CHECK")
-> > Cc: stable@vger.kernel.org
-> > Signed-off-by: Yunhui Cui <cuiyunhui@bytedance.com>
-> > ---
-> >  arch/riscv/include/asm/pgtable.h | 9 ++++++++-
-> >  1 file changed, 8 insertions(+), 1 deletion(-)
->
-> I'm not even slightly a riscv maintainer, but I'll queue this up for
-> some linux-next testing and so I can keep an eye on the issue, thanks.
->
->
->
+  Linux 7.0.14-arch1-1
+
+Symptoms before the fix:
+
+  The touchpad enumerated successfully and the HID report descriptor
+was readable.
+  The input device was created and udev tagged it as ID_INPUT_TOUCHPAD=1.
+  However, the touchpad produced no input events in evtest.
+
+Fixed kernel:
+
+  A kernel containing upstream commit a991aa5e89365ba1959fae6847fd288125b209e5
+  (HID: i2c-hid: add reset quirk for BLTP7853 touchpad)
+
+After booting the fixed kernel, the internal touchpad works normally.
 
 Thanks,
-Yunhui
+Steve
 
