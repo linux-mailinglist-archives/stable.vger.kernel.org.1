@@ -1,51 +1,51 @@
-Return-Path: <stable+bounces-269976-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-269975-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id AU7+CCjKQ2odiAoAu9opvQ
-	(envelope-from <stable+bounces-269976-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 30 Jun 2026 15:52:40 +0200
+	id py8zHRvKQ2oXiAoAu9opvQ
+	(envelope-from <stable+bounces-269975-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 30 Jun 2026 15:52:27 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A027F6E5130
-	for <lists+stable@lfdr.de>; Tue, 30 Jun 2026 15:52:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 11A826E511C
+	for <lists+stable@lfdr.de>; Tue, 30 Jun 2026 15:52:27 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=simonwunderlich.de header.s=09092022 header.b=N0Qy26RZ;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-269976-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-269976-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=simonwunderlich.de header.s=09092022 header.b=InxosmK1;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-269975-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-269975-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=simonwunderlich.de;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 8AEAC311ECB0
+	by sea.lore.kernel.org (Postfix) with ESMTP id 1623F311965A
 	for <lists+stable@lfdr.de>; Tue, 30 Jun 2026 13:50:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 37E133947B5;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 21045388E64;
 	Tue, 30 Jun 2026 13:50:15 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from mail.simonwunderlich.de (mail.simonwunderlich.de [23.88.38.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2EDF334692;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2FF93655CF;
 	Tue, 30 Jun 2026 13:50:12 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782827415; cv=none; b=mNOssWK1YW2EUQikghsefwfzfGYZZ2mey2bHIaLXoiisf993QdOF2RxMaMZhhJ2PxAb0Ra9ZGlRiIHYL89KeRiI5XVI2OUvHyF5qlZuu2LO+Ty1YS1RLb12bIqM39LdtJRmMw6bNytRA5aL65oLynX+GlGMUq7tGIP8iJ+N8XL8=
+	t=1782827414; cv=none; b=nS6kJyiaAyCVV0uHTWGm/kv7tnGat9R6oVm2rugp5v+aMK2Jkb4PWKvG5I4SxfYKrRhhD/wwkZDT7G8215L4EVTmVseAMgFyE975/IBNnjQNGT+LSkHrOHyMRjcihFpEtdVCAosCY8DywhTZG2UFHD9fUck/VMAENW0yT3e/LO0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782827415; c=relaxed/simple;
-	bh=H1yo+HRogQu4ENymrsf+ZWvKvtld0kPKC9EmM3xCAfQ=;
+	s=arc-20240116; t=1782827414; c=relaxed/simple;
+	bh=dEfcVMqAagf5Z/KbO/YMEcTRUts5sKjg9t3G2nt5OUQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nPN1fqFlylHI6u3V3K0mJoZgtE7PqqsFAxG3HTcHPx2AmhBjlr0rAIjjVZu2l0ndYFHS43wMAPzODlY9OmbbkNTxuZ/5wOxYPlSsiZ8tu7KP917ZTJmUuVypnizFUR8fv5duKJJBKO7AucMw5/+0z8XixXVEKSpdwdUvDHIsGLs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=simonwunderlich.de; spf=pass smtp.mailfrom=simonwunderlich.de; dkim=pass (2048-bit key) header.d=simonwunderlich.de header.i=@simonwunderlich.de header.b=N0Qy26RZ; arc=none smtp.client-ip=23.88.38.48
+	 MIME-Version; b=IHIpmmf7vqhvcp8qXrrILUeqT7xHuB8gYuvQMOxfX8k94AJQjOObK3hvYy6Kqlz0nZDTfRMLvnKIEQGudzynOp0P9WQhmcqHbpPC2Y2ZqzoH4mJ5pBn2MzMRfQv6EHU30hPZ4Zcqp29VcSb2SRtBZvs6njPzdFtUPYuLLjG7S+Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=simonwunderlich.de; spf=pass smtp.mailfrom=simonwunderlich.de; dkim=pass (2048-bit key) header.d=simonwunderlich.de header.i=@simonwunderlich.de header.b=InxosmK1; arc=none smtp.client-ip=23.88.38.48
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=simonwunderlich.de;
-	s=09092022; t=1782827073;
+	s=09092022; t=1782827074;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=RDZ3PHvn8kVTKOAlVFvdCUxJ/aGwbeZvfumNwXha63c=;
-	b=N0Qy26RZxx693ZUJkuy7Wm71ywlmlhnK2NXjhMCVgrcNRYLLup5LDJkJIPUT24H4LusegP
-	SE1ntiSDgZdlVU1bTbjfaWqhL4xgJ2cz7Uclon6jUBzUm4vprVKqTpEEwWtXdg3kW/HRum
-	ZuWoFZ1AZCshTGoiipIfzyyb4tToDHQjgPZSvNmGeNMxxvHZmqryG4spnGbfpak67hbwBy
-	CXA3tvncZmuaPrlpMawcmxg/c5Klu9iI+ODV1uDnU0mMT7dPeJ3lA0wFC34FjnB9wOgf/M
-	YsY6rvYjqh2pZaWe2luT+qOaAHj3mngn3cIRAwMneF5LG0HkrTmtoQtSkLdwjw==
+	bh=JBuHPZ3Gw+mxEmOkIIjrkJNU1dKRnB7h3kisH349Hag=;
+	b=InxosmK1H4dBLqnjRvXv8/9FIZjpGJzRKYs6i7DJrTtsB0sA9lDmbj6mQVVUb1ruxDE9SN
+	I/ETKihQZlImJOidz2lWiDk/tBdPM076Jzg6dxEerRixHCo2BAUoVM5IzhT/ig8VCVL7br
+	v+hRDptzhwlKxAQvOmJkt8ybClTmNbgVGx8hUiyj1jr0kLczS76lNsUxhE7bITB4zrN3Sq
+	iudM3agVD3ZQ1AhCweabAxgLuJScwlPCFv+m96ypwxk+VEF5Kt8lr20/dDZjs2SsU22sAq
+	rz47rE7gIxGqoIFQxOCd18hUgpHpOFp3X5Z3ci3tYPuPoSl3qs0Yhoa04IXpkA==
 From: Simon Wunderlich <sw@simonwunderlich.de>
 To: netdev@vger.kernel.org
 Cc: "David S. Miller" <davem@davemloft.net>,
@@ -56,11 +56,10 @@ Cc: "David S. Miller" <davem@davemloft.net>,
 	b.a.t.m.a.n@lists.open-mesh.org,
 	Sven Eckelmann <sven@narfation.org>,
 	stable@vger.kernel.org,
-	Sashiko <sashiko-bot@kernel.org>,
 	Simon Wunderlich <sw@simonwunderlich.de>
-Subject: [PATCH net 2/6] batman-adv: access unicast_ttvn skb->data only after skb realloc
-Date: Tue, 30 Jun 2026 15:44:26 +0200
-Message-ID: <20260630134430.85786-3-sw@simonwunderlich.de>
+Subject: [PATCH net 3/6] batman-adv: gw: acquire ethernet header only after skb realloc
+Date: Tue, 30 Jun 2026 15:44:27 +0200
+Message-ID: <20260630134430.85786-4-sw@simonwunderlich.de>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260630134430.85786-1-sw@simonwunderlich.de>
 References: <20260630134430.85786-1-sw@simonwunderlich.de>
@@ -83,8 +82,8 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-269976-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:netdev@vger.kernel.org,m:davem@davemloft.net,m:edumazet@google.com,m:kuba@kernel.org,m:pabeni@redhat.com,m:horms@kernel.org,m:b.a.t.m.a.n@lists.open-mesh.org,m:sven@narfation.org,m:stable@vger.kernel.org,m:sashiko-bot@kernel.org,m:sw@simonwunderlich.de,s:lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-269975-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:netdev@vger.kernel.org,m:davem@davemloft.net,m:edumazet@google.com,m:kuba@kernel.org,m:pabeni@redhat.com,m:horms@kernel.org,m:b.a.t.m.a.n@lists.open-mesh.org,m:sven@narfation.org,m:stable@vger.kernel.org,m:sw@simonwunderlich.de,s:lists@lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[3];
 	FORGED_SENDER_MAILLIST(0.00)[];
@@ -99,12 +98,12 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	DKIM_TRACE(0.00)[simonwunderlich.de:+];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[11];
+	RCPT_COUNT_SEVEN(0.00)[10];
 	TO_DN_SOME(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,simonwunderlich.de:dkim,simonwunderlich.de:email,simonwunderlich.de:mid,simonwunderlich.de:from_mime,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,narfation.org:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: A027F6E5130
+X-Rspamd-Queue-Id: 11A826E511C
 
 From: Sven Eckelmann <sven@narfation.org>
 
@@ -112,32 +111,33 @@ The pskb_may_pull() called by batadv_get_vid() could reallocate the buffer
 behind the skb. Variables which were pointing to the old buffer need to be
 reassigned to avoid an use-after-free.
 
-This was done correctly for the ethernet header but missed for the
-unicast_packet pointer.
-
 Cc: stable@vger.kernel.org
-Reported-by: Sashiko <sashiko-bot@kernel.org>
-Fixes: c018ad3de61a ("batman-adv: add the VLAN ID attribute to the TT entry")
+Fixes: 6c413b1c22a2 ("batman-adv: send every DHCP packet as bat-unicast")
 Signed-off-by: Sven Eckelmann <sven@narfation.org>
 Signed-off-by: Simon Wunderlich <sw@simonwunderlich.de>
 ---
- net/batman-adv/routing.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/batman-adv/gateway_client.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/net/batman-adv/routing.c b/net/batman-adv/routing.c
-index c05fcc9241add..2cc2307a41702 100644
---- a/net/batman-adv/routing.c
-+++ b/net/batman-adv/routing.c
-@@ -855,8 +855,8 @@ static bool batadv_check_unicast_ttvn(struct batadv_priv *bat_priv,
- 	if (skb_cow(skb, sizeof(*unicast_packet)) < 0)
- 		return false;
+diff --git a/net/batman-adv/gateway_client.c b/net/batman-adv/gateway_client.c
+index 305488a74a256..a5ac82eabd250 100644
+--- a/net/batman-adv/gateway_client.c
++++ b/net/batman-adv/gateway_client.c
+@@ -684,12 +684,13 @@ bool batadv_gw_out_of_range(struct batadv_priv *bat_priv,
+ 	struct batadv_gw_node *gw_node = NULL;
+ 	struct batadv_gw_node *curr_gw = NULL;
+ 	struct batadv_neigh_ifinfo *curr_ifinfo, *old_ifinfo;
+-	struct ethhdr *ethhdr = (struct ethhdr *)skb->data;
++	struct ethhdr *ethhdr;
+ 	bool out_of_range = false;
+ 	u8 curr_tq_avg;
+ 	unsigned short vid;
  
--	unicast_packet = (struct batadv_unicast_packet *)skb->data;
- 	vid = batadv_get_vid(skb, hdr_len);
-+	unicast_packet = (struct batadv_unicast_packet *)skb->data;
- 	ethhdr = (struct ethhdr *)(skb->data + hdr_len);
+ 	vid = batadv_get_vid(skb, 0);
++	ethhdr = (struct ethhdr *)skb->data;
  
- 	/* do not reroute multicast frames in a unicast header */
+ 	if (is_multicast_ether_addr(ethhdr->h_dest))
+ 		goto out;
 -- 
 2.47.3
 
