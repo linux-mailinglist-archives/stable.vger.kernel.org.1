@@ -1,83 +1,83 @@
-Return-Path: <stable+bounces-269880-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-269881-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 9kMJIZFNQ2oDWwoAu9opvQ
-	(envelope-from <stable+bounces-269880-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 30 Jun 2026 07:01:05 +0200
+	id jwt5BgJOQ2oXWwoAu9opvQ
+	(envelope-from <stable+bounces-269881-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 30 Jun 2026 07:02:58 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA6606E066A
-	for <lists+stable@lfdr.de>; Tue, 30 Jun 2026 07:01:04 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 53B4B6E068C
+	for <lists+stable@lfdr.de>; Tue, 30 Jun 2026 07:02:57 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=google.com header.s=20251104 header.b="l8YmT/ii";
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-269880-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-269880-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=google.com header.s=20251104 header.b=rCHgPUQ4;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-269881-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-269881-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=reject) header.from=google.com;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 00CE430160D3
-	for <lists+stable@lfdr.de>; Tue, 30 Jun 2026 05:01:04 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id CFA2D3040D87
+	for <lists+stable@lfdr.de>; Tue, 30 Jun 2026 05:01:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42EAA388E71;
-	Tue, 30 Jun 2026 05:01:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD8FE331ED8;
+	Tue, 30 Jun 2026 05:01:39 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
+Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7EB523392C
-	for <stable@vger.kernel.org>; Tue, 30 Jun 2026 05:01:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 905902F4A0C
+	for <stable@vger.kernel.org>; Tue, 30 Jun 2026 05:01:38 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782795663; cv=none; b=iijFgQYxKjXGioCdx6ccdrLTcA2SmSJtV+1px8GybYvp2zTI4Zi4jfdaOvhoi5CxMw1cvx1M63Rs/8b21TY1RP3DLAHui+cDBl/iFBaqRoyjckdJf+kJCIFXU6eC1NpI+IEt8dQdeZdD2oU5moEsJPQIxUIFR7YZw1r7uJGZnls=
+	t=1782795699; cv=none; b=E3ft8fNcYChQev+ocJdhL46pT0wLLqzhwOemXXxtu5ye6FQbISYXCAzD6YDKEACKoMpVKbClFxNSq0Kb/dl/Qcena8M3K8DY33u5gE6LpCNAcRyQeXdkYY7fimqCn/3Am9UIudOHcRstw1bKuOr0JKY/mOEPX8sE35WrmpVDhEg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782795663; c=relaxed/simple;
-	bh=cshp6EzvH/z+lGb8qp51J7AAzfUL7EToPgWpEXGShdA=;
+	s=arc-20240116; t=1782795699; c=relaxed/simple;
+	bh=LbBL6mPFjg+PWrpu211fjZc7jz53pUAwVRjjUNY3QVU=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=p0kkgZVaucyZtNsSHkHpPIvZ61zoILMHuTlIdNAL6ll0o8Ylf+al1kPIYmgjjUkWajKkTljJf3nBJQNVOixEmqwl/RviTmyhxfX50Bfs9FlCxl2Ug1vUeOBUSg4pVpO7U/jvvXOs7+Gqxd2jW7n6s+V6bmag2D0MgL+WTXrDkWg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=l8YmT/ii; arc=none smtp.client-ip=209.85.214.174
-Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-2c9b2ac97cdso19525ad.1
-        for <stable@vger.kernel.org>; Mon, 29 Jun 2026 22:01:01 -0700 (PDT)
+	 Content-Type:Content-Disposition:In-Reply-To; b=knqmwOIoqvSzuITshyBGh1gKSxcaKwDPe6QOd8DHdNogbnFIuQEYg7kkQ+OHUbQhfgC/za3s6QUFHKd9NeyxZgl0GHV8dPakHuSVcCEHOi35aFyGIPEUv5YgRFgL9RJOnNqAEumHZ+OHCQkdz3Jigdx3IXRJySulzqq6dGcLT8c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=rCHgPUQ4; arc=none smtp.client-ip=209.85.214.179
+Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-2c9b1db4964so25325ad.0
+        for <stable@vger.kernel.org>; Mon, 29 Jun 2026 22:01:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1782795661; x=1783400461; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1782795698; x=1783400498; darn=vger.kernel.org;
         h=in-reply-to:content-disposition:content-type:mime-version
          :references:message-id:subject:cc:to:from:date:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=qZlx3+QrS8E5J6yUhrTaagwhrce5Kq0xuQVQ07nl46w=;
-        b=l8YmT/iiNVu0b0Yk8Clfeu1rVtvq075YlSg2Uu6daDWI11rUQUO7SDELb7sqU3Yrz0
-         cUMQ6PL4kBoYr3Wt6SkvCRnPVqFrM+/YkkK30ERDpl854tEUqCRLYvi2C6npUX2ZEwng
-         N/I7ABaMj4zexAa5U6dRa4qit7ZBUUth//lnlHEecM9MNuYsQ2ZcRy20OXjW5itVv9vm
-         JptNrdK+4EA3cV4Dw3ExbfmGxCW1f4sDbTudfBwL3Rjdv7xicfLBtM2V1Xb4gaFI5dHu
-         iF4XhlD7nS2y6/N0w8N4AB3IJ5HMAz2mVyD/bQbQM1m5Up6E1Qv9Mcsx5Yp7EfvSQSIA
-         DS6g==
+        bh=PUHXAQhop2N6I4yFe6BAtOJ0PNQXYFAlD9Rf6jdS8+4=;
+        b=rCHgPUQ40isEEKtMgh/NRPr/dZ2dJyMwLq2kJnI8lTH9tArW86B8QEOINzHKqdSMWW
+         NQ39nRiOGzaHWwOn0Ze7ImGpLmZ0Rm5lc8ID/srawQupa+2lE5FZKTWwG6xV8PqLxKe9
+         UPZxcxNixUUmhHLH9TbRvkcrTbGUPxSmCxNuoWgQIf1vHxzz6b80EASSWybsPz7R5pDu
+         9ceZgryL9LedHRTddes6H+p5z/K7QF3incCnzHfr6uEH5yJFlgTHyl6WVyCZQySb51iX
+         MB+J7LgcgAs2d9YyMxRmI9NVmhBjPKX+nQdwE8N2S06+913Ctkxmz871DqBSIaHlFKyL
+         xKFg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782795661; x=1783400461;
+        d=1e100.net; s=20251104; t=1782795698; x=1783400498;
         h=in-reply-to:content-disposition:content-type:mime-version
          :references:message-id:subject:cc:to:from:date:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=qZlx3+QrS8E5J6yUhrTaagwhrce5Kq0xuQVQ07nl46w=;
-        b=BZI1GAtz0h/zkFlfYig+ECA0ELFekeUyCqtGNI0SLoMWK8M9Fj1mzUIuJWciQm7gXW
-         kRs0xGhS3EDRxR1kClxZuWR0pYCfHn/aW3MOZhR+xW34Ay3gi8N/H+rC7pxtf3FKk3Wd
-         /ZVinknGbr0rd+K3FQ3kcWX+RSHkAHLmAZ0QbIo1E+2l4Tte32jidvGprmLhrLou1tA8
-         iXxZBQujc/TZwdq89UsMEmdfPamCpub92Jh7xyQfWTfLAFA+IbQu0vBmVnIZ/RlaPgUB
-         /VGuK7KglPBQa4qKX6P+sNXzZenM2Fou2hCt7lmVLBhzav72qSLS5/yVPtXOX8XNlnvP
-         B8jg==
-X-Forwarded-Encrypted: i=1; AHgh+RrmbsLohA9RhQO5fvT2KNSJZRDWDuXd5kTe/IRtPnPCWRqE+zYvjnYSi/DvICbd//dtzBgJ7ro=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz5XB3TRF1NeFeb7fu2QFZ54egywzVEsIuQ8bg1iArG6xQMFxIW
-	YQXlHqYPX02TNSzv2DbF3D3FxXy2x4nykzCsU06EqqhpDqA/g4rcPHLxK/2zboY/nw==
-X-Gm-Gg: AfdE7clpBNrDw4KPEjIUf3xC4E1X38pZhzB77lNhcndUVQF3R/I3V72tM2rQ9DZ0aFf
-	eRl0NoVcjmCyjvyTOoz7jf6A4N/psEonil2KOe9vk1RHbF7yDTGuw4opciKGGTBJrzicqUu3SJe
-	bPDC2DzSX0FBs4Nu3P61pYUeyXnREVRwWVLW3m0p9RXvQvbGbF/qSiGeaFknP5bRmchd+VQwCGp
-	h10Phw+kuSns6hQPvcGIX8qdX3c3j3igxsY0hdh2jJ3SJLHFplE9Dc0t7n7qxWyNmOTjbjF26M2
-	+AK9Kamqed44h2TydCgbd2onkHau2cOKU/enTJdNx22iSlJvMMnjFC+QzdRWjzPhmvb3IU9TC9G
-	31iYfO7UxQ3j2QM8gZN473ughqcypRtcOKhwtBWwOx9lQX9MlJ8QCb2cQ1JqDuqk87Wl9RnrL4L
-	MQ3YIPmyEfKpYtGtpe+Hvd6gNzo+eP7fGIsCpM6+igf2zydys=
-X-Received: by 2002:a17:903:240c:b0:2c1:ee6e:be1d with SMTP id d9443c01a7336-2ca3df01df2mr507815ad.27.1782795660514;
-        Mon, 29 Jun 2026 22:01:00 -0700 (PDT)
+        bh=PUHXAQhop2N6I4yFe6BAtOJ0PNQXYFAlD9Rf6jdS8+4=;
+        b=dnfC2rvwT1nKdLQ0QmHvh+2T8XTJHZ7lBnojBQDFRZq0807ue+zxLzdefPVMWxwWmp
+         3oX4HibdkfhuoKuKuA7bMomwZqFR7l2OM6kOw+ziU4CIERBu6bS8hlqsmo95reZryO5/
+         ygSZwz52EsUonUStSG5MfJdworOe3LHJ2tJM7KOMf9mR/gvLo/aNOGF5QjxuWOyzUaj5
+         9iZM7WzZcNigGj8qouHUi8o/Xj1Cw9QCEsTxy0+bc10r92gBhFTpg58OhiPQECLrip5s
+         Mau2YZ133K/LFd7/mXOqszCoaMhtGHLyJE5Km9cJHPcMUQQrJyRfLKZpWXnx4g4N4ZKg
+         cvMw==
+X-Forwarded-Encrypted: i=1; AHgh+RpbVZUJHb7SxwuJT0RPR1fy2K932+pee3lDQFq/3NE+37sPB7p8GKyxoSjzbSvNWbvTsuHx9rg=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzCRM2a71iB8BG1n7+NmRpPvNPnjFjZipvMaImRk/8NQOwylEw9
+	nguB4pIK0PUwiPMejr/TN7m1wuBrggnQ+/HVSzLJYgBLxFSL/Jx3qNFqnQYEu+7+Zw==
+X-Gm-Gg: AfdE7ck8SrSEtyaCYOaa/yzeOp6YXOxQZPIN43N2umWzgEtiO5VwEJj7kbwaQ8afw13
+	DNbIz1UQZZV37qLQcn9aBvCEzraDdgcM59DHAUsGK3sgWEfyWW3zptvSjaTunq55nzGSxcISw1B
+	ZykQaOTy4F8kgWCLul1jaQqi9NnVM9KtnIZ6ouQPrxnzYkbogHLBjGz+OrVSR94aTov67R1mz/Y
+	xLBaETsbJDYj9NXYvx20+sXpDdESgC4QhJydmRG2Q1Qlj/EDQ3FN5Ro61UdMQTQSyftGCDvk4/d
+	lZEozRz6vrd9ssbrS6RZrFtVhRJxMPrjCVSHJI/pz6hEie0UJrwZY349tINXNWDIo+kIv1bDOrR
+	Z/pkkMMN2Ze0kNcf1bRPfYB2gzGuOitkOsW9hgbc22PJ9PFJE57yPSUfRd9OPNVMxvsGhosvMh/
+	zxhCbLnW+iLEMoH8mhMwFurTHNF1NtOt5h85GyCgph/zt9Uz4=
+X-Received: by 2002:a17:903:4b4b:b0:2bd:6dad:3dfb with SMTP id d9443c01a7336-2ca3def6034mr542235ad.25.1782795697347;
+        Mon, 29 Jun 2026 22:01:37 -0700 (PDT)
 Received: from google.com (10.129.124.34.bc.googleusercontent.com. [34.124.129.10])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-847a02cd237sm986590b3a.32.2026.06.29.22.00.56
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2ca37a70a21sm5627295ad.7.2026.06.29.22.01.33
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 29 Jun 2026 22:00:59 -0700 (PDT)
-Date: Tue, 30 Jun 2026 05:00:54 +0000
+        Mon, 29 Jun 2026 22:01:36 -0700 (PDT)
+Date: Tue, 30 Jun 2026 05:01:31 +0000
 From: Pranjal Shrivastava <praan@google.com>
 To: Nicolin Chen <nicolinc@nvidia.com>
 Cc: will@kernel.org, robin.murphy@arm.com, jgg@nvidia.com, joro@8bytes.org,
@@ -86,14 +86,13 @@ Cc: will@kernel.org, robin.murphy@arm.com, jgg@nvidia.com, joro@8bytes.org,
 	linux-arm-kernel@lists.infradead.org, iommu@lists.linux.dev,
 	linux-kernel@vger.kernel.org, stable@vger.kernel.org,
 	jamien@nvidia.com
-Subject: Re: [PATCH rc v6 3/7] iommu/arm-smmu-v3: Do not enable EVTQ/PRIQ
- interrupts in kdump kernel
-Message-ID: <akNNhjmOulawZwX1@google.com>
+Subject: Re: [PATCH rc v6 4/7] iommu/arm-smmu-v3: Skip EVTQ/PRIQ setup in
+ kdump kernel
+Message-ID: <akNNqx_aEp35h0Ys@google.com>
 References: <cover.1779265413.git.nicolinc@nvidia.com>
- <e643786d849d274c1d8dcfc03795f572aef812bd.1779265413.git.nicolinc@nvidia.com>
- <akIxS7kuhuLRHAMg@google.com>
- <akNCuEfZ30Gf21iQ@nvidia.com>
- <akNM5peYovV3GdV4@google.com>
+ <1280ac4fdb37f998fd6dcb2bf8f4437283279395.1779265413.git.nicolinc@nvidia.com>
+ <akKMCYsdH4lVSyf7@google.com>
+ <akNDZM7n/EpBmajY@nvidia.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -102,17 +101,17 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <akNM5peYovV3GdV4@google.com>
+In-Reply-To: <akNDZM7n/EpBmajY@nvidia.com>
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[google.com,reject];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[google.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-269880-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-269881-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS(0.00)[m:nicolinc@nvidia.com,m:will@kernel.org,m:robin.murphy@arm.com,m:jgg@nvidia.com,m:joro@8bytes.org,m:kees@kernel.org,m:baolu.lu@linux.intel.com,m:kevin.tian@intel.com,m:miko.lenczewski@arm.com,m:smostafa@google.com,m:linux-arm-kernel@lists.infradead.org,m:iommu@lists.linux.dev,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,m:jamien@nvidia.com,s:lists@lfdr.de];
 	FROM_HAS_DN(0.00)[];
@@ -123,7 +122,7 @@ X-Spamd-Result: default: False [-2.16 / 15.00];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	TO_DN_SOME(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	RCVD_COUNT_FIVE(0.00)[5];
@@ -135,62 +134,35 @@ X-Spamd-Result: default: False [-2.16 / 15.00];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: EA6606E066A
+X-Rspamd-Queue-Id: 53B4B6E068C
 
-On Tue, Jun 30, 2026 at 04:58:14AM +0000, Pranjal Shrivastava wrote:
-> On Mon, Jun 29, 2026 at 09:14:48PM -0700, Nicolin Chen wrote:
-> > On Mon, Jun 29, 2026 at 08:48:11AM +0000, Pranjal Shrivastava wrote:
-> > > On Wed, May 20, 2026 at 10:03:20AM -0700, Nicolin Chen wrote:
-> > > > @@ -5020,19 +5029,30 @@ static int arm_smmu_setup_irqs(struct arm_smmu_device *smmu)
-> > > >  		/*
-> > > >  		 * Cavium ThunderX2 implementation doesn't support unique irq
-> > > >  		 * lines. Use a single irq line for all the SMMUv3 interrupts.
-> > > > +		 *
-> > > > +		 * In kdump, EVTQ/PRIQ are disabled, so no threaded handling.
-> > > >  		 */
-> > > > -		ret = devm_request_threaded_irq(smmu->dev, irq,
-> > > > -					arm_smmu_combined_irq_handler,
-> > > > -					arm_smmu_combined_irq_thread,
-> > > > -					IRQF_ONESHOT,
-> > > > -					"arm-smmu-v3-combined-irq", smmu);
-> > > > +		if (is_kdump_kernel())
-> > > > +			ret = devm_request_irq(smmu->dev, irq,
-> > > > +					       arm_smmu_combined_irq_handler, 0,
-> > > > +					       "arm-smmu-v3-combined-irq",
-> > > > +					       smmu);
-> > > 
+On Mon, Jun 29, 2026 at 09:17:40PM -0700, Nicolin Chen wrote:
+> On Mon, Jun 29, 2026 at 03:15:21PM +0000, Pranjal Shrivastava wrote:
+> > On Wed, May 20, 2026 at 10:03:21AM -0700, Nicolin Chen wrote:
+> > > +	if (!is_kdump_kernel()) {
+> > > +		writeq_relaxed(smmu->evtq.q.q_base,
+> > > +			       smmu->base + ARM_SMMU_EVTQ_BASE);
+> > > +		writel_relaxed(smmu->evtq.q.llq.prod,
+> > > +			       smmu->page1 + ARM_SMMU_EVTQ_PROD);
+> > > +		writel_relaxed(smmu->evtq.q.llq.cons,
+> > > +			       smmu->page1 + ARM_SMMU_EVTQ_CONS);
+> > > +
+> > > +		enables |= CR0_EVTQEN;
+> > > +		ret = arm_smmu_write_reg_sync(smmu, enables, ARM_SMMU_CR0,
+> > > +					      ARM_SMMU_CR0ACK);
 > > 
-> > Are you sure?
-> > 
-> > __setup_irq():
-> > 1497-   /*
-> > 1498:    * IRQF_ONESHOT means the interrupt source in the IRQ chip will be
-> > 1499-    * masked until the threaded handled is done. If there is no thread
-> > 1500:    * handler then it makes no sense to have IRQF_ONESHOT.
-> > 1501-    */
-> > 1502:   WARN_ON_ONCE(new->flags & IRQF_ONESHOT && !new->thread_fn);
+> > Nit:
+> > I believe only the write_reg_sync(CR0) should be under this if condition
+> > do we see any weird behavior if we perform the reg writes in
+> > kdump_kernel?
 > 
-> I meant without IRQF_ONESHOT: 
+> Since CR0_EVTQEN isn't set, the other three writes are dead code.
 > 
-> is_kdump_kernel() ? 0 : IRQF_ONESHOT, note that devm_request_irq is just:
-> 
-> static inline int __must_check
-> devm_request_irq(struct device *dev, unsigned int irq, irq_handler_t handler,
-> 		 unsigned long irqflags, const char *devname, void *dev_id)
-> {
-> 	return devm_request_threaded_irq(dev, irq, handler, NULL, irqflags | IRQF_COND_ONESHOT,
-> 					 devname, dev_id);
-> }
-> 
-> Not a strong opinion though, just suggesting a way to remove the if.
-> 
+> So, I skipped them.
 
-I though I had given an R-b earlier, but I didn't.
-With that nit:
-Reviewed-by: Pranjal Shrivastava <praan@google.com>
+Ack,
 
-Thanks,
 Praan
 
