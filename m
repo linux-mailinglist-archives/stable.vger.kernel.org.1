@@ -1,174 +1,151 @@
-Return-Path: <stable+bounces-269952-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-270004-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id wIpIHg6mQ2oVeQoAu9opvQ
-	(envelope-from <stable+bounces-269952-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 30 Jun 2026 13:18:38 +0200
+	id LMjiC8DlQ2rslAoAu9opvQ
+	(envelope-from <stable+bounces-270004-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 30 Jun 2026 17:50:24 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id E1D956E37F2
-	for <lists+stable@lfdr.de>; Tue, 30 Jun 2026 13:18:37 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B585F6E61C1
+	for <lists+stable@lfdr.de>; Tue, 30 Jun 2026 17:50:23 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=i9mMHZPy;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-269952-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-269952-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=none) header.from=gmail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=UewBZu4D;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-270004-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-270004-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id E6CA93013EE4
-	for <lists+stable@lfdr.de>; Tue, 30 Jun 2026 11:16:09 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 157D4305BD42
+	for <lists+stable@lfdr.de>; Tue, 30 Jun 2026 15:49:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C9C73CB8FB;
-	Tue, 30 Jun 2026 11:16:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3CE8466B7D;
+	Tue, 30 Jun 2026 15:49:07 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wr1-f41.google.com (mail-wr1-f41.google.com [209.85.221.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E30A3E3C5A
-	for <stable@vger.kernel.org>; Tue, 30 Jun 2026 11:16:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D20D74657CC;
+	Tue, 30 Jun 2026 15:49:06 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782818168; cv=none; b=Qa8eoaf/Ip90VRQoCQfn/apwXi/7nsgK6m+I7xrdkBA8dwXzpPOYnCu6NMCEzw2S8KsmFa/Oaf1NpfAZonGH0Gd8pPmDJFBj0AVsFjkk3dF0K3ZVEn4JtAr5btj4rG0GAKPVUTJEW0g4UgQKAECkdzjcs5I3XIn67FIQY/tboPo=
+	t=1782834547; cv=none; b=M1+dSXfAZZygqQhBE1MK7Qnk84USpIo2XegN3uAEYFZngY7SrtHmIERvYqhdYYudKL92TllBEAhmTdM4PpgpRfe4o3q+DUw2xTjlK2UH4hFkG7RS5Q10NP4C7zRoN5Pg9tjJ4N9RJv5cO5lFSPXHGQ1dRvqWnG4zUr/ecCet6dk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782818168; c=relaxed/simple;
-	bh=s5LFEK1Pa253fBmuQHxQ2azSIMnGRrnpfip1MZDg1Ss=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=H9jyfi9aWQ7AjVBkGKTXdeUk99pEe2RHYzj+mUusiqDGMdf/ykiTylj7lw3kDKCwKfea3MNseSoKtw35u45hgAWJkVridXpIFBp0/fZmyTquM5+Rk0iP/CKYIp6zjUg3Folpu8XycUdP0vN599y89MdTHZxYH968QO9ZEjIvX8Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=i9mMHZPy; arc=none smtp.client-ip=209.85.221.41
-Received: by mail-wr1-f41.google.com with SMTP id ffacd0b85a97d-472326ca506so1410032f8f.2
-        for <stable@vger.kernel.org>; Tue, 30 Jun 2026 04:16:07 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1782818166; x=1783422966; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=Zvb8CfoUDD5Z1NJ95/7IaMiF39Bs5qAnQxdvVT+CaO8=;
-        b=i9mMHZPya2f9QJKbyUWzyPY7ulChkJdJcUfrgfYneDxC1jC3EkSND831L6YgdN9MU9
-         Xn9dGbrHUS+k32uNF/ynjJBq7aI/sQixR3CGInVMgryLCgM4xz5JmcE3jQyo0f0euGZ7
-         Cm42bad/WG8UpzDAfLw2tUdSQu1ejHwK7K/M10A5XJyI8duwdC+HUfuACJWtCiwNvY/8
-         oo3iK+F3OCJXpgxHfpxGajfGQRY3XoRsw3jMnmavnYS3CuYVaaM+7BqxU4nOdA50Ao2f
-         jPL++CaFpKWRvvSdhdPPKZ0vrLILBYMFSNPhkBR93GQOpcf/u3/ElbpwkTk17cEhY5ng
-         Upjg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782818166; x=1783422966;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Zvb8CfoUDD5Z1NJ95/7IaMiF39Bs5qAnQxdvVT+CaO8=;
-        b=SDQ82rXWcXS+NAYZ3JoZGCUwwOAmRwWAUWo3gEz7TzwWm+JGD6wZuoeFzoTcS3Dajw
-         wo2BeXoZP1+nu3DxKbXM+FWhSFMqARTJY2guVdJYKAwILWcS/gU1LhYz6DfUlopWHe5n
-         vvqbf2OfwstTwETKcx5GNkyh8zMAugKHUriwsUStQozSs8WIzAkaAHLSj7IzCObMx0zE
-         qjkDJZsQ+H58EHXWUhg93KlOVXnP0xtvrhSBLVwqIsd+tU/HHhGpQ6q1Pro7/9vKjHv+
-         dlfeYshS8/lsC463BaHP3i9MpIMSGX0qgXwHJbCyHvZqalhb6G4R6fmrszxrH0C1CJJs
-         NLXA==
-X-Forwarded-Encrypted: i=1; AHgh+RoxLoiqjlju5/P98ic9qG2SSRJmIpKbdZRn8iJWHTX85nZq7w4vTgLFcOiSBid8scAYpxRbF04=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx9IMiECXXPECViy2Or4QWw2wYXXspV/B9jPRSJHN94kPaIxkbK
-	IquiiVdbbgbehWH1vpltMJAUfF3DX3ZvxA3CoRxfhun2CJHzcTAS5oYE
-X-Gm-Gg: AfdE7cl+lturG0Fd2QadBCAJ/5AYNqkX/oSeLRg+HD2sourjyfNKeBj144uyxPGw9OF
-	TQipcER6h9foQHNfYWva13Tv3WfuGPnhlvgoJTNvyUXqzIwACHo0CfDgr7cFHiYyEGVYsM65CGE
-	9JEQVuXkZHV0CQCtKGVNzHWf8W2WS5bo7CHJhK9qi6CRhB4FljZNPU2vW/E03njlKUn76d16LS7
-	Fn/QEnGwE0SN/LQFA43q8aqzen4L8Kbmx340CzmiYKqQwWhDcynP3DxZx91noQCKxw4pgWcibYi
-	Fn/dypNiCZ86zVLANpQobnKuaxV7WRYy5rQXohVmhBdL1RMQIpLDLOUXLo2Zhz1uksdd3KRYUV6
-	fI25xWO9xhwKSM+/mr80LhMDWIOmXnpsyL9NdsFixnzjWwOSsB0Hp0K2u2N8K9HG6msbuT/hAFa
-	lx8mGWUF81QasJO0m0QWFfsqFeUBukK/yKUl9+WHNEZnsnlwl1BHXgZMM=
-X-Received: by 2002:a05:6000:2884:b0:461:a5d3:915a with SMTP id ffacd0b85a97d-475507dde46mr4416732f8f.6.1782818165524;
-        Tue, 30 Jun 2026 04:16:05 -0700 (PDT)
-Received: from tolga-Legion-5-15AKP10.local ([78.188.87.47])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4756636cf26sm6263329f8f.19.2026.06.30.04.16.04
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 30 Jun 2026 04:16:05 -0700 (PDT)
-From: coredumpdev <muzaffertolgayakar@gmail.com>
-To: ali.sabri@zetasavunma.com
-Cc: Xu Rao <raoxu@uniontech.com>,
-	stable@vger.kernel.org,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Subject: [PATCH] Input: gscps2 - advance receive buffer write index
-Date: Tue, 30 Jun 2026 14:15:52 +0300
-Message-ID: <20260630111552.9612-1-muzaffertolgayakar@gmail.com>
-X-Mailer: git-send-email 2.53.0
+	s=arc-20240116; t=1782834547; c=relaxed/simple;
+	bh=2Ws7P6BOYP/iMzX2LpzDFt3jxCfbZZ0tRoZaRPsgeg8=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=AqvhPc4YMKDblIx72Hq53jO5yvJyNzQJugk5wIFXUtaENkklHDTYa4CqRcgXsY4QN+QgX7q9mXE/hrk8/nThLtZBGna0Q1mue+yQQMniZeRVEmk7VOGSPCtZIh7Hv+PBOX8l78LWZ+6drOa06CZxg275xloMtr+i7+/CmuWr0GQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UewBZu4D; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E783A1F00A3A;
+	Tue, 30 Jun 2026 15:49:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1782834546;
+	bh=zbDc8XvKfWhyJZCvaNUfBHlhmN+srBYnmv7WiPYXZMU=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date;
+	b=UewBZu4DfaJZR3z/lfKqySeicVUNufZxMF6HaP1JEMAbE+9wgvT//86VLMTH9dzbR
+	 yz82/qFpmHBKfKKna+DjuwFxjd7WZWiJDt3MMJM6zZn3B6RpLIjgHVT1PbfgdCjscC
+	 2RCk3TuMEN4W8ehWGwN3GorV9ZGHnr6uIzijmUr58dWTRVIJr8a3pLeGZY9XIijHIU
+	 W2LSMsTq/4U1Lebr9mwUsV6jGFlVLcV3FWM18Y6V16Q1pU+QLWGKLJVY62hFW8AXA/
+	 GUF8xAkzJsamO/4MJHqpn/o10kdaYK9kqimikopoDskFeUmRgre1XB71cWM0DEt2PR
+	 oVLxyVsxuFKRw==
+From: Mark Brown <broonie@kernel.org>
+To: cezary.rojewski@intel.com, liam.r.girdwood@linux.intel.com, 
+ peter.ujfalusi@linux.intel.com, yung-chuan.liao@linux.intel.com, 
+ kai.vehmanen@linux.intel.com, pierre-louis.bossart@linux.dev, 
+ perex@perex.cz, tiwai@suse.com, subhransu.s.prusty@intel.com, 
+ vkoul@kernel.org, Haoxiang Li <haoxiang_li2024@163.com>
+Cc: linux-sound@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ stable@vger.kernel.org
+In-Reply-To: <20260622091620.897478-1-haoxiang_li2024@163.com>
+References: <20260622091620.897478-1-haoxiang_li2024@163.com>
+Subject: Re: [PATCH] AsoC: intel: sst: fix PCI device reference leak on
+ probe failure
+Message-Id: <178281880553.79320.14011856942727285355.b4-ty@b4>
+Date: Tue, 30 Jun 2026 12:26:45 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.16-dev
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1145; i=broonie@kernel.org;
+ h=from:subject:message-id; bh=2Ws7P6BOYP/iMzX2LpzDFt3jxCfbZZ0tRoZaRPsgeg8=;
+ b=owEBbQGS/pANAwAKASTWi3JdVIfQAcsmYgBqQ+Vuv8hZl91x79U9+h9u6ZEn5M30sk8byUnpr
+ UxGm+c13nuJATMEAAEKAB0WIQSt5miqZ1cYtZ/in+ok1otyXVSH0AUCakPlbgAKCRAk1otyXVSH
+ 0HRaB/98TpHdgY32MfnLUEZShVWSWsp2x+bfxE+Q6uCO/2P1C7jggMiMfPVlXPftCfslNoWac6F
+ SsQMlZAeSknCk80DiH7VAvZnJTLa8ai8k/bQ9g+MHzxwus9UNluIX7TKvWfvvRPDz52lhDCIggr
+ 7owAOPonoE5c1qofJ0fP9/TGX/e3aMSlB6JkNhQOrY5wJZ0PkQX2J4qZDrudo4rHpKbZLJHk0ea
+ P+SZ936J50O7ODBmBfTUjmYy7go7mdUNsWyIh+XAVW7x4xnNJyZXSN+hMrWV331hzuO3ktO6km8
+ RYE/JD8Q00STLxGhHWDkA+pY+nDiwOwu3GhKTOorVDA6JmOT
+X-Developer-Key: i=broonie@kernel.org; a=openpgp;
+ fpr=3F2568AAC26998F9E813A1C5C3F436CA30F5D8EB
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [0.84 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-4.66 / 15.00];
+	WHITELIST_SPF_DKIM(-3.00)[kernel.org:d:+,kernel.org:s:+];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	MID_RHS_NOT_FQDN(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-269952-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:ali.sabri@zetasavunma.com,m:raoxu@uniontech.com,m:stable@vger.kernel.org,m:dmitry.torokhov@gmail.com,m:dmitrytorokhov@gmail.com,s:lists@lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FREEMAIL_CC(0.00)[uniontech.com,vger.kernel.org,gmail.com];
-	MIME_TRACE(0.00)[0:+];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_SENDER(0.00)[muzaffertolgayakar@gmail.com,stable@vger.kernel.org];
-	RCPT_COUNT_THREE(0.00)[4];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[muzaffertolgayakar@gmail.com,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:cezary.rojewski@intel.com,m:liam.r.girdwood@linux.intel.com,m:peter.ujfalusi@linux.intel.com,m:yung-chuan.liao@linux.intel.com,m:kai.vehmanen@linux.intel.com,m:pierre-louis.bossart@linux.dev,m:perex@perex.cz,m:tiwai@suse.com,m:subhransu.s.prusty@intel.com,m:vkoul@kernel.org,m:haoxiang_li2024@163.com,m:linux-sound@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,s:lists@lfdr.de];
+	FREEMAIL_TO(0.00)[intel.com,linux.intel.com,linux.dev,perex.cz,suse.com,kernel.org,163.com];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	RCVD_COUNT_FIVE(0.00)[5];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[14];
+	FORGED_SENDER(0.00)[broonie@kernel.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	TO_DN_SOME(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[broonie@kernel.org,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-270004-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,msgid.link:url,vger.kernel.org:from_smtp]
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: E1D956E37F2
+X-Rspamd-Queue-Id: B585F6E61C1
 
-From: Xu Rao <raoxu@uniontech.com>
+On Mon, 22 Jun 2026 17:16:20 +0800, Haoxiang Li wrote:
+> AsoC: intel: sst: fix PCI device reference leak on probe failure
 
-Commit 44f920069911 ("Input: gscps2 - use guard notation when
-acquiring spinlock") moved the receive loop into gscps2_read_data()
-and gscps2_report_data().
+Applied to
 
-While moving the code, it preserved the writes to
-buffer[ps2port->append], but omitted the following producer index
-update from the original loop:
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-7.3
 
-	ps2port->append = (ps2port->append + 1) & BUFFER_SIZE;
+Thanks!
 
-As a result, append never advances. Since gscps2_report_data() only
-reports bytes while act != append, the receive buffer always appears
-empty and no keyboard or mouse data reaches the serio core.
+[1/1] AsoC: intel: sst: fix PCI device reference leak on probe failure
+      https://git.kernel.org/broonie/sound/c/016f29997ebd
 
-Restore the omitted index update.
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
 
-Fixes: 44f920069911 ("Input: gscps2 - use guard notation when acquiring spinlock")
-Cc: stable@vger.kernel.org # 6.13+
-Signed-off-by: Xu Rao <raoxu@uniontech.com>
-Link: https://patch.msgid.link/460B5655BA580C60+20260624094739.850306-1-raoxu@uniontech.com
-Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
----
- drivers/input/serio/gscps2.c | 1 +
- 1 file changed, 1 insertion(+)
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
 
-diff --git a/drivers/input/serio/gscps2.c b/drivers/input/serio/gscps2.c
-index 22b2f57fd91f..bf9b993f5733 100644
---- a/drivers/input/serio/gscps2.c
-+++ b/drivers/input/serio/gscps2.c
-@@ -219,6 +219,7 @@ static void gscps2_read_data(struct gscps2port *ps2port)
- 		ps2port->buffer[ps2port->append].str = status;
- 		ps2port->buffer[ps2port->append].data =
- 				gscps2_readb_input(ps2port->addr);
-+		ps2port->append = (ps2port->append + 1) & BUFFER_SIZE;
- 	} while (true);
- }
- 
--- 
-2.53.0
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark
 
 
