@@ -1,287 +1,355 @@
-Return-Path: <stable+bounces-269941-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-269943-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 0qTsCAuWQ2rucgoAu9opvQ
-	(envelope-from <stable+bounces-269941-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 30 Jun 2026 12:10:19 +0200
+	id HhpAOQ2ZQ2rYcwoAu9opvQ
+	(envelope-from <stable+bounces-269943-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 30 Jun 2026 12:23:09 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4145F6E2A7B
-	for <lists+stable@lfdr.de>; Tue, 30 Jun 2026 12:10:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4146D6E2C5E
+	for <lists+stable@lfdr.de>; Tue, 30 Jun 2026 12:23:09 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=NXP1.onmicrosoft.com header.s=selector1-NXP1-onmicrosoft-com header.b=tbxBaZWs;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-269941-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-269941-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=fail reason="SPF not aligned (relaxed), DKIM not aligned (relaxed)" header.from=nxp.com (policy=none);
-	arc=reject ("cv is fail on i=2")
+	dkim=pass header.d=chromium.org header.s=google header.b=Xr8WVZjH;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-269943-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-269943-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=none) header.from=chromium.org;
+	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 0F7EE3073879
-	for <lists+stable@lfdr.de>; Tue, 30 Jun 2026 10:08:32 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 692A230EE379
+	for <lists+stable@lfdr.de>; Tue, 30 Jun 2026 10:17:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF06E3EAC8B;
-	Tue, 30 Jun 2026 10:08:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89C4A3F0743;
+	Tue, 30 Jun 2026 10:17:36 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from AM0PR83CU005.outbound.protection.outlook.com (mail-westeuropeazon11010014.outbound.protection.outlook.com [52.101.69.14])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f54.google.com (mail-ed1-f54.google.com [209.85.208.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F96E395D8E;
-	Tue, 30 Jun 2026 10:08:30 +0000 (UTC)
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782814111; cv=fail; b=pUXIHV9actEBRzAarD5fDxVdYg36dpy+g9QX1x19RGLbonb5SQ5QefpJmWDSMEm3iuiceLCOZKdVtSacl3SqRShKZRMHlPOtk7Uzcq0/02N7g3w84y+bA5qEMKRq6CebFKsxJQc3QvhCSrKWRHE99810hhuXxM9b4s9YRYLdazA=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782814111; c=relaxed/simple;
-	bh=asp6OUZXq7HNhxcftcuDMkQY7T7B7wYTOIW/giuZ1SI=;
-	h=From:Date:Subject:Content-Type:Message-Id:References:In-Reply-To:
-	 To:Cc:MIME-Version; b=WSEbhSj8r80o4Y8cRKfYG/9ZFHPdLXOvw/Tg9pmw5zhZQODKv24yVCOZ1PYSDBe07y69rVugLKeETW5r/VyT5VARQD9uT4O8PM/K1GoEdji30D3CoVhnzgY0oCu/QPTviEN+uMgteEyQsThFURSUv87uiBhdSHJtTaoEI+Y89dU=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=tbxBaZWs; arc=fail smtp.client-ip=52.101.69.14
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=ar6axYN1ytSyae+a+bFAC/BDXZdGEaM/5ikyCtTIl9fBH2JGGH6N4UW8PHWHZJDr0xFA3GeV51MvT8GP4PyJeZhQLWcvuTvFsAy0XzD4kNRdxvZy9/dKhbCnAEUTWe1LPg5/QWV8PtwRMc6XR5WWso1FwsAbyi0GLABb+AiWsiTLMhKR4NkWbCyeY9c6nuKM6KUFUkHPKD75j5L5M+t9gRGoOeI6mat10+Fo9faZ39o3dQyXaETCZ+taK7+MGJJ6daOZtUk794T0EBspFBaQUpA3W64gb5k5IuuI5O2ZVYsuRk7NDOTiaAqO7niz+Gp02g41cJppp0+ij8XdivTz6Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=wsAwIdcRzLQSSuoPlFTgUIS0fFb3ny7t/oWSNgCMddc=;
- b=f2h9icaDrSRk9SL9JGSiozvUBorwjtqI4EV9CAo4bgGZZ02kW6RQ0eEnTwrSFj5RVusxpSD+JTk7lO92s2okLrOdjKdfrQv0HQF2W7JERMFjY1f+2SAEUC+3W/2Pfsf0L9DKgBDECC210GxM5ifQePafv1EddSWOG5+yDVSQHbRWJXhT1rueNnblcl4NJ1WJxGbN/ywPVwUESC5KRR7KoD2f2K0Gks+BuMeFpaNmukhj9MTZ/ir5mHVgJtN6Ssj3iKJdrxqQad3UklUgei6VNX+jCT1LoButfC0bwjU4vRaUgDwOFXQ0qnJyapDIK6Sv4SF87bXi81a/rhbzFZ0zYQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
- dkim=pass header.d=oss.nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
- s=selector1-NXP1-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=wsAwIdcRzLQSSuoPlFTgUIS0fFb3ny7t/oWSNgCMddc=;
- b=tbxBaZWs1Ca7vHYjd/GtaSqYCQgn72HCnsSKSy0XnCzzSq/NPzB4anCujX2wz8ulrRQ45onMusz5xNUwJkfVJsqPi1vJj8WtVPHCHpRdfV16Noq29FKxQBZBSU8qYPA/mRUyOC2HXG3lObOnutoXSDJ6lqjErno+08/koZNpC8pkNVJYboQgQu5AL0BcT/+yJMBb69PqLRTY2820x1hHNm7c1WXlni6+hgXyebYrt0L4qxG1uHvTpCJmVcNpxIi94jopM5FLHjpbBE1tTF9FxYgBVlihNJS4thh38MX1VOfic29nDOvVaa3FcbG9FguRNTW+g6gjMuYFmvCEBkzqEQ==
-Received: from PAXPR04MB9422.eurprd04.prod.outlook.com (2603:10a6:102:2b4::21)
- by GV1PR04MB10991.eurprd04.prod.outlook.com (2603:10a6:150:206::14) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.159.19; Tue, 30 Jun
- 2026 10:08:26 +0000
-Received: from PAXPR04MB9422.eurprd04.prod.outlook.com
- ([fe80::54e:28bf:aa85:d25d]) by PAXPR04MB9422.eurprd04.prod.outlook.com
- ([fe80::54e:28bf:aa85:d25d%4]) with mapi id 15.21.0159.018; Tue, 30 Jun 2026
- 10:08:26 +0000
-From: Xu Yang <xu.yang_2@oss.nxp.com>
-Date: Tue, 30 Jun 2026 18:11:28 +0800
-Subject: [PATCH v5 1/5] phy: fsl-imx8mq-usb: fix typec switch leak on probe
- error path
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260630-imx8mp-usb-phy-improvement-v5-1-25d616403844@nxp.com>
-References: <20260630-imx8mp-usb-phy-improvement-v5-0-25d616403844@nxp.com>
-In-Reply-To: <20260630-imx8mp-usb-phy-improvement-v5-0-25d616403844@nxp.com>
-To: Vinod Koul <vkoul@kernel.org>, 
- Neil Armstrong <neil.armstrong@linaro.org>, Frank Li <Frank.Li@nxp.com>, 
- Sascha Hauer <s.hauer@pengutronix.de>, 
- Pengutronix Kernel Team <kernel@pengutronix.de>, 
- Fabio Estevam <festevam@gmail.com>, Jun Li <jun.li@nxp.com>
-Cc: linux-phy@lists.infradead.org, imx@lists.linux.dev, 
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
- Felix Gu <ustc.gu@gmail.com>, stable@vger.kernel.org, 
- Xu Yang <xu.yang_2@nxp.com>
-X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1782814305; l=2772;
- i=xu.yang_2@nxp.com; s=20250815; h=from:subject:message-id;
- bh=hgj+TrREdOALikJMDoQq0uH1ivsCUZ/lmK++agAs5FY=;
- b=oDSFE743r4G2pFOI9bQKGS1NfXCzqqtZwrd2W+s0Lfkc4hki04YIg09QZjxyEr7WPhrNnxQQ5
- L/oCYW9T590A84KFRtBFut1aUmKuHVwTG3c7G300puTEdCPUpQG9UQh
-X-Developer-Key: i=xu.yang_2@nxp.com; a=ed25519;
- pk=5c2HwftfKxFlMJboUe40+xawMtfnp5F8iEiv5CiKS+4=
-X-ClientProxiedBy: MA5P287CA0217.INDP287.PROD.OUTLOOK.COM
- (2603:1096:a01:1b4::13) To PAXPR04MB9422.eurprd04.prod.outlook.com
- (2603:10a6:102:2b4::21)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EF073EF649
+	for <stable@vger.kernel.org>; Tue, 30 Jun 2026 10:17:30 +0000 (UTC)
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1782814655; cv=none; b=iqtE3crbqrf3qa4wDn8airBya3MLSfnsuvtJfLXwQn1tf9mx0tUP8KJpJrYduvBR+ygRNSzDaX+G9gZaBKP4zNLqGEaOR/seM220oDLz5q0LEuGaHApvRbJkatf+TDlf7xcGhqj9nSHvxjru5P06RffeWiAuSAtGru27Wgogh8s=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1782814655; c=relaxed/simple;
+	bh=I1Qm67onnUx3+aBNG1G7KSZ0V2hHxDazuuRE58dDFu8=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=b5GDPcdmLp+w1gYHDqbYDn5NqqlG2+SsUZFsNzg4fVdpUXhwNCCbKPYibJYkeJpQyNX4OYKC1z6ARqHwOO2O4fOFco9id7f1CsoXK0PgSzzljTZQr/lNVrCRgRk74J9tkfY543XCS+iY3gVHKNx/zIfB94trmaZrMHx3UqimE0A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=Xr8WVZjH; arc=none smtp.client-ip=209.85.208.54
+Received: by mail-ed1-f54.google.com with SMTP id 4fb4d7f45d1cf-6986578d8c0so3453624a12.1
+        for <stable@vger.kernel.org>; Tue, 30 Jun 2026 03:17:30 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google; t=1782814649; x=1783419449; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=Kenl4z+b5ADFgQxBu4DhaPDSzuS0lZBClA4yc0iErsI=;
+        b=Xr8WVZjHA3tCMxVauIOvATJA4aQTuI0l8LQgTVGj3VIYhOMpqjOqhZ2l4hDnxhcAgc
+         ztoz2qxif3/SwsdVJ0/aXpysxlNgilFpsWGyFIQhQFNdQ+wt0qU05ZdTLrDlTy75XMlV
+         qb9k/DUhlLOv4613mHd+Q0Nr2m346xTl66f+w=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1782814649; x=1783419449;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Kenl4z+b5ADFgQxBu4DhaPDSzuS0lZBClA4yc0iErsI=;
+        b=EK+P0cTWA/NdFJUPCKe3PabkE6Lz0OacyZw8UBSzEYY7oGdTxsHW8Ij/nEyzQO2HqZ
+         hRdhwnCXHJnUnwU+4jF+m5Dc6aAgH3YWd46dM1NUD8g0qggMT4RoWXv14fi4R63X3X2B
+         2QoEKMjWZbBkrEXcgd/6RmljHEpEpuFYQkyV6B6ekiv9N0eUzAYtcY95E9GwQUbdvEHo
+         URYxcq5UyKduFWa5QYgcobw63UrazkCyKnz+xd4ldp3AQ6rNfmJilpeHY4NJ/60v/pam
+         wESz6mfP2YiJ+SVHSfr8pLY59UzLKdwer+5FdLcwke+3FYU74MBi7UGTH+/CIPSc3smn
+         IkbQ==
+X-Forwarded-Encrypted: i=1; AHgh+Rp3tapAeTLaLnlLUppzRYEEFkweD2G9ke3iQxFoznm0xoUJOJ5ZA3IU3g38LycvwpE2Bp0KhCk=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyutbhpRMOojAAo2HmOWUnUCUbTKAdL65Gk/ZIUf39Z0zT5zKIe
+	lg3Ytm1S5Q+5TcfaCU/ZpsW8XxiElebk50zgmpKNCThSRXXcufGY4hJlSBoM/3e3UNUj7ZV7EH0
+	oiyhJcP2+
+X-Gm-Gg: AfdE7cng06vrh+7VvgYThcZUbnC7720enPst1N86EV5N9LPKRuvGS9CIjk7Z3uArfGk
+	fcYFKqMQjaEnVw8Q8ki8feLLnwBjpcZ8R1VjnQPc1ZMsL7ZSb91BCFqnJbjkWNCTBjdCNShf4/e
+	R1GOGPanhscYH30J9qy0HkhpY+WNetwU/Y1yi+13Y+Jp7EiiV4oPG7MAqkzovyArWYc62vnJ0Q/
+	SANDMXqwBwTiDYGGAJczarnvd0zuEAebZn7VKGJZrFvcbMj1UcwDeMfBxfhSPjKxwIMtccAa+rA
+	O6zqDoMJzhkxLi0XuQMyGfrqD7Ep2GnRJ669PMhTjtsAdGa4NrkTX7UXA5n4LItSAKZxcVvPVNd
+	Qd43FU3pTRCBpQansmO9KRib0Wj4PjLzBwpiiFR5nxRwLsioOUmUKUfjpOo83Np5r/Fsg9lF2II
+	9DvfRjISG7wCG2/jVNOeETvQPOW7AzSjKlG5FvULf/G+Z6M0uKKVN6I4XDtM7C
+X-Received: by 2002:a05:6402:350f:b0:698:52b4:c2c9 with SMTP id 4fb4d7f45d1cf-69879e0d835mr1394670a12.31.1782814648578;
+        Tue, 30 Jun 2026 03:17:28 -0700 (PDT)
+Received: from mail-ej1-f45.google.com (mail-ej1-f45.google.com. [209.85.218.45])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-6987c968201sm894665a12.24.2026.06.30.03.17.25
+        for <stable@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 30 Jun 2026 03:17:27 -0700 (PDT)
+Received: by mail-ej1-f45.google.com with SMTP id a640c23a62f3a-c125c082ee2so232123466b.0
+        for <stable@vger.kernel.org>; Tue, 30 Jun 2026 03:17:25 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AHgh+Rq/7LIlaxLeGQSDK02yTz2C/YyVc987R8tmKvBlfzUdbQwPZFDOFRJB7Dz/pBSZ5rRT3t6qrWA=@vger.kernel.org
+X-Received: by 2002:a17:906:3b5a:b0:c11:fd32:33a2 with SMTP id
+ a640c23a62f3a-c12872d677bmr95588266b.34.1782814644604; Tue, 30 Jun 2026
+ 03:17:24 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR04MB9422:EE_|GV1PR04MB10991:EE_
-X-MS-Office365-Filtering-Correlation-Id: 4bea8938-f56f-48f3-95b8-08ded68f8676
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|7416014|366016|23010399003|19092799006|1800799024|22082099003|18002099003|11063799006|56012099006;
-X-Microsoft-Antispam-Message-Info:
-	uhKtmfqBollMNxdiiydKJLCGXZTL/9sWLuYxixjykCjjY3TGE8dCdxHnGSHe7ekUtMmqnhPzI7sJo1qG/NfsjTFmnTR+0yk2oH4+SezN7doNgdic6DSGrYWReHxcqBo6UVMeofpqYD22M+1cOWn+V0DavPFiNmOoaAxt9aDOouN3Jy7DUB3qFYzSS9qDNTcXA17YMWvkTZ/+uON1NtPu+i/XBKQGO6Z1DqqhpBjBeDf3VMnP/LpCwXmc75L0a2ofnchIHT4Zx50seMMg+hzfZQEmcTSH/h5/OzrprWUCrcY7m8/6USO6BSYmhg4JKsso7vtG9QB6O/tWj38N1d7zhVQ1yIhebs1yERPNGVR3QeawkwXp+Ov9g37vyzvq64do5wwvMvdnd8YGE6hylrt5S1zK4IuncKoF2nX0suLxwpNsBWffV8p0G964tGqGUUBaw0JhiBg5zFvZSgHiVsbEhjDQoZ6cswxerNr0veD4dwlGvqKKL8/oZKFkSkkt9Nc7rPmc7hav9qNuSaDwkiyka+msxwS5pdgdjMCYcHl3TxiexoRrLyIKgv4NVqJF9mgZwbD5Gl2GX8H9BXi69UREwuruoNWLQRM9Nq3mqoPpJW8Syhzd06YOHXyvNvr/ONsS0wNZNZIO3pUiZ7P5xY7+MsROOPJMhJ1xrJ1TovmDNf4=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9422.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(366016)(23010399003)(19092799006)(1800799024)(22082099003)(18002099003)(11063799006)(56012099006);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?Ly84M1NMR2hTbEZoVG95ZDA0d1N4YlQ5NC9mczJUblJPN1JFVnBxK0VLQWdl?=
- =?utf-8?B?bnFvRWFST3JJcm1yR2JOZm5Wd0NFeHpKSFVzczFqNjR2M2lmV040a2VDRDI3?=
- =?utf-8?B?WUZjM2tncDA2bG5zbFlsQXMyMHlINXZvOWt0ZnptOVpPdUhLdE9oRW9LcGJY?=
- =?utf-8?B?SFE5TmU5ajFKSnNXak90VkdQNTFnczQyWEVRYnlaWFRxLytXb2tlNjdFTlgy?=
- =?utf-8?B?V3hHRTIvWUhHMmlBVlU1bFNxZEpzYmcxb1ZVTFRjNWNQUXIyNkFzalBEcjB2?=
- =?utf-8?B?VUpJdW4yQVNXdmZTR3JLdU42d1VpTWh1WW1PN2owV1FRaEg5enpHVzlXV1R4?=
- =?utf-8?B?b2htM3FIS04yWVNSSk8weXRQaU52R2lMNGg5YWlKazBrbS9mTXNQSDk3cmJr?=
- =?utf-8?B?QUFLb3NkOU85bStvYlJlZU95V2RNdXRwZEE0bHZzNEYxcWxseXZUaTJDRkYz?=
- =?utf-8?B?TUVpdlluRGR6SmswWGJlNEViQXJ3aVROWURGSVo5RkZtdDg0U2xBUThhR0JF?=
- =?utf-8?B?ekE5YzJjQ3pZUy8yb1BEWDhhdFRJV01RQlloZUNYbFdiRlkzdnZReisyREMx?=
- =?utf-8?B?S0tFRUpwc3JzZ2JMS1c0TjIxS1F5c0xTYzd5NXBrNCtLRU5RclhPaXhwbVdu?=
- =?utf-8?B?U0RVdVBnSVI0UzM5OU9PVFpyUWczQU54VS9EcWh0ZUtDN2RORzRUSnVEeEZP?=
- =?utf-8?B?dWEvTU5YQ2U4Kys3aUxKNGhLTnVUdHc2endiaTl1MmlBS2hmaVZOdHhzS3BZ?=
- =?utf-8?B?aE0zaDVGaXJLcVVqT3VkWnlyUW8ycXI0S1RubjNOUzRTV09YczR0WWgyMlFm?=
- =?utf-8?B?TEcxc0ltVXAzQnZKQnFZK0hxMzZjbEtZM1FvRFZuM3dwVWszVU5pWnZzYmZ2?=
- =?utf-8?B?SURTMitNZklPRDBKTVljdmk2R2FYQTBabWl5SkttblhaZGs3V0ZKcVJmaGN1?=
- =?utf-8?B?K2E0NE5rY2RjYlFWU21ybTVrTzFlOUxqYXZHV3g2Wm5DVlBQRk9rTWIzaHlN?=
- =?utf-8?B?bWNmcElXbnpsUlpQWUlaMlhXVnk3MUxaRU5DZ05XWkIreEtNSnJkdUY0T2la?=
- =?utf-8?B?NTVySitBWUJzc2E2WXhONmNYamtBdHVCUDJ3M3d0Ujhhcm9penRGYlphRDZM?=
- =?utf-8?B?OXlxUHA5QlcxakJQSDk5bWcvZ0ZIb3RjQnU0dG1JWklTeEZEajE5TVlpOEZh?=
- =?utf-8?B?T1UyNDBUL3FaMVY3cjE0N0M2QzRLR1crQlJmZy9hZy9qVjdTdy8yaTZRVW5x?=
- =?utf-8?B?c0xldzBMS3Y2QlBxU1JDQXA4RmlDd1FjeUc1Z21TaXU2ckc3L2tSQnZQeVN4?=
- =?utf-8?B?SzZjTHJ3dFpKRW0vbGFQWDZ5Snk2RWNtYkNRMGFGemJ4bUxjUWg3a3h6RCtl?=
- =?utf-8?B?aEpGTFhpYzNwUDN6NXF1MVhBV21iS3BQa1VWV0pPaTljR0JpVDdOUHd3ZjV1?=
- =?utf-8?B?N0hqdmRjeTgxTWxKc3hkVFloRXRyVkRybUQyMUVidnZWay9CZ3Q3WDhNdXRu?=
- =?utf-8?B?emRweHhjTXNRdWYzMEZ4Y0lHem1MYnF2ajZ6VDJlMzVqd3ZSMjhsSG8xemcz?=
- =?utf-8?B?M2RUT0VqL29jWGlsL0VJUFVFTEhYL2greTVCRTR5bjlLVlpTZTQ4WDgxOE9a?=
- =?utf-8?B?YWtKNWYvL3J6N1RaNWNTNWd2YzhvblBsZVArUWJaZitYUUFhVHo4Tnh0dHk0?=
- =?utf-8?B?cExPSS9QWHFyS0RWc0haQlZsQm16UXNwYlllK0d4U1hld3FsVmdKYURGTmZV?=
- =?utf-8?B?NlBhbUJaSmFvODhlYUZITkZGdzNVZlhaOXR3am55dTNvK2E0cW5sbGE0bDgw?=
- =?utf-8?B?elNKVWYrSTlOcFNzalNGK09HaUtnSnRZN0JGcS9iK0ppQmlGTlhtT1p2WGdK?=
- =?utf-8?B?c2lQazhsRWEvdUFIVEF3K0lla2dWNWlTUDYvMVFneTI2ZEN6cFZGb1p5VFJL?=
- =?utf-8?B?Z3AwcTd1ME9yRjNSMDc1OGU3MlF4cUFtVy85OXRnMk5PK3AxRitvRXpreW9M?=
- =?utf-8?B?YWlHVS85REdtY05Ha0NRc09ON1NXUDBrd0RDVzhNbFR0TXFYZjZ2dmYxZlU1?=
- =?utf-8?B?ajlJdnVTNWV2U0tBN29QM1BoUlRSUWg1RlZaT3E0Q2RkNTFUd3REaENMdjdy?=
- =?utf-8?B?ZzcvbmdTcTBlOVJMYkUxRDFrYjN6ZlhEYXg5STBMcmtGNzgwK1FJNkU2c0Ru?=
- =?utf-8?B?VXc5QlZzWlRKT1pWb1h5YmpMWGtubDBqQko2amFzcUxrTFg4WWxORHU2Rk5U?=
- =?utf-8?B?Z3dwWXdoY2k3aVlrV3NYTEVESDB2eGFIVUxBcTh1QTl3cTRxNW5YMTZiSVdN?=
- =?utf-8?B?Z0lycmIrbXhKbW5rL2dFZE11bWtsZE1BQ3lXN3pFbElDRExjZkJmSWNjZnp6?=
- =?utf-8?Q?Zwdn8XdAGjw29hX3pPzXthjW5Qz1l8aErVuk8?=
-X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 4bea8938-f56f-48f3-95b8-08ded68f8676
-X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9422.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Jun 2026 10:08:26.1028
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 0OqoQvfVA+w0sGhBfcYsKVNCues4uWAYs0N2OmOgs1HcedWuT84Jkm6GxwiKI+ONFD3Z3IzYcdjxJLpJMH7ppiEBzndZZDjgHVlqJfMWrHB0lRVMiFok7fYnXuTuakXR
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: GV1PR04MB10991
+References: <20260629-uvc-racemeta-v2-0-10e91d2afba0@chromium.org>
+ <20260629-uvc-racemeta-v2-1-10e91d2afba0@chromium.org> <a0e4d412-f0bf-4415-9e4b-2c6347bf8c69@kernel.org>
+In-Reply-To: <a0e4d412-f0bf-4415-9e4b-2c6347bf8c69@kernel.org>
+From: Ricardo Ribalda <ribalda@chromium.org>
+Date: Tue, 30 Jun 2026 12:17:11 +0200
+X-Gmail-Original-Message-ID: <CANiDSCtv_ZmTWUzbuxuEy0JmLmFs2Wqj31O3neGZ4ee=p065-g@mail.gmail.com>
+X-Gm-Features: AVVi8CcQvEIh8vdS6YSwyEb--6mLCsTlu9WGcgR5xhasRxc1tv3K3sQYopg7UBw
+Message-ID: <CANiDSCtv_ZmTWUzbuxuEy0JmLmFs2Wqj31O3neGZ4ee=p065-g@mail.gmail.com>
+Subject: Re: [PATCH v2 1/2] media: uvcvideo: Fix race condition for meta
+ buffer list
+To: Hans de Goede <hansg@kernel.org>
+Cc: Laurent Pinchart <laurent.pinchart@ideasonboard.com>, 
+	Mauro Carvalho Chehab <mchehab@kernel.org>, 
+	Guennadi Liakhovetski <guennadi.liakhovetski@intel.com>, linux-media@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [1.94 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_REJECT(1.00)[cv is fail on i=2];
+X-Spamd-Result: default: False [-2.16 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	DMARC_POLICY_ALLOW(-0.50)[chromium.org,none];
 	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[NXP1.onmicrosoft.com:s=selector1-NXP1-onmicrosoft-com];
+	R_DKIM_ALLOW(-0.20)[chromium.org:s=google];
 	MAILLIST(-0.15)[generic];
-	DMARC_POLICY_SOFTFAIL(0.10)[nxp.com : SPF not aligned (relaxed), DKIM not aligned (relaxed),none];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCPT_COUNT_TWELVE(0.00)[14];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-269941-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:vkoul@kernel.org,m:neil.armstrong@linaro.org,m:Frank.Li@nxp.com,m:s.hauer@pengutronix.de,m:kernel@pengutronix.de,m:festevam@gmail.com,m:jun.li@nxp.com,m:linux-phy@lists.infradead.org,m:imx@lists.linux.dev,m:linux-arm-kernel@lists.infradead.org,m:linux-kernel@vger.kernel.org,m:ustc.gu@gmail.com,m:stable@vger.kernel.org,m:xu.yang_2@nxp.com,m:ustcgu@gmail.com,s:lists@lfdr.de];
 	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_TO(0.00)[kernel.org,linaro.org,nxp.com,pengutronix.de,gmail.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_SENDER(0.00)[xu.yang_2@oss.nxp.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[chromium.org:+];
 	FORWARDED(0.00)[lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-269943-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_SENDER(0.00)[ribalda@chromium.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS(0.00)[m:hansg@kernel.org,m:laurent.pinchart@ideasonboard.com,m:mchehab@kernel.org,m:guennadi.liakhovetski@intel.com,m:linux-media@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,s:lists@lfdr.de];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MISSING_XM_UA(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[NXP1.onmicrosoft.com:+];
 	TO_DN_SOME(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
+	RCVD_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[xu.yang_2@oss.nxp.com,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[lists.infradead.org,lists.linux.dev,vger.kernel.org,gmail.com,nxp.com];
-	ALIAS_RESOLVED(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MID_RHS_MATCH_FROMTLD(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[ribalda@chromium.org,stable@vger.kernel.org];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,NXP1.onmicrosoft.com:dkim,nxp.com:mid,nxp.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,chromium.org:dkim,chromium.org:email,chromium.org:from_mime,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,ideasonboard.com:email,mail.gmail.com:mid]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 4145F6E2A7B
+X-Rspamd-Queue-Id: 4146D6E2C5E
 
-From: Felix Gu <ustc.gu@gmail.com>
+Hi Hans,
 
-If probe fails after imx95_usb_phy_get_tca() succeeds, the typec
-switch leaks because the only cleanup path was in .remove, which
-never runs on probe failure.
+Thanks for the prompt reply.
 
-Use devm_add_action_or_reset() so the switch is cleaned up on both
-probe failure and driver removal.  The .remove callback and
-imx95_usb_phy_put_tca() are no longer needed.
+On Tue, 30 Jun 2026 at 11:47, Hans de Goede <hansg@kernel.org> wrote:
+>
+> Hi Ricardo,
+>
+> On 29-Jun-26 19:31, Ricardo Ribalda wrote:
+> > queue->irqueue contains a list of the buffers owned by the driver. The
+> > list is protected by queue->irqlock. uvc_queue_get_current_buffer()
+> > returns a pointer to the current buffer in that list, but does not
+> > remove the buffer from it. This can lead to race conditions.
+> >
+> > Inspecting the code, it seems that the candidate for such race is
+> > uvc_queue_return_buffers(). For the capture queue, that function is
+> > called with the device streamoff, so no race can occur. On the other
+> > hand, the metadata queue, could trigger a race condition, because
+> > stop_streaming can be called with the device in any streaming state.
+> >
+> > We can solve this issue introducing a flag, stream->meta.in_flight,
+> > protected with a spinlock. When there is a buffer in flight that can
+> > write into metadata the flag is raised, notifying the stop streaming
+> > that it needs to wait.
+> >
+> > Reported-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+> > Closes: https://lore.kernel.org/linux-media/20250630141707.GG20333@pendragon.ideasonboard.com/
+> > Cc: stable@vger.kernel.org
+> > Fixes: 088ead255245 ("media: uvcvideo: Add a metadata device node")
+> > Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
+>
+> First of all thank you for looking into fixing this.
+>
+> I'm sorry, but this feels more like a band-aid then a proper fix.
+>
+> How about adding a started bool to struct uvc_streaming which gets
+> set to 1 by uvc_video_start_streaming() and 0 by uvc_video_stop_streaming().
+>
+> And then call uvc_video_stop_streaming() from either
+> uvc_stop_streaming_video() or uvc_stop_streaming_meta()
+> depending on which one gets called first ?
+>
+> With a mutex protecting the started bool and being held
+> over calling uvc_video_stop_streaming() ?
+>
+> So stop the actual hw streaming when either of the
+> 2 possible /dev/video0 nodes gets its vb2_ops.stop_streaming
+> callback called?
+>
+> And to this before draining the buffer queue.
+>
+> That seems cleaner then this approach?
 
-Fixes: b58f0f86fd61 ("phy: fsl-imx8mq-usb: add tca function driver for imx95")
-Cc: stable@vger.kernel.org
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
-Reviewed-by: Xu Yang <xu.yang_2@nxp.com>
-Signed-off-by: Felix Gu <ustc.gu@gmail.com>
-Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
+Assuming /dev/video0 is the video node and /dev/video1 is the meta device.
 
----
-Changes in v5:
- - keep remove() callback as patch #3 needs it
-Changes in v4:
- - add my signed-off tag
-Changes in v3:
- - add R-b tag
- - cc statble
- - drop "sw = data" conversion
----
- drivers/phy/freescale/phy-fsl-imx8mq-usb.c | 21 +++++++--------------
- 1 file changed, 7 insertions(+), 14 deletions(-)
+Currently, we support something like:
 
-diff --git a/drivers/phy/freescale/phy-fsl-imx8mq-usb.c b/drivers/phy/freescale/phy-fsl-imx8mq-usb.c
-index b05d80e849a1..9a33c06d6fc3 100644
---- a/drivers/phy/freescale/phy-fsl-imx8mq-usb.c
-+++ b/drivers/phy/freescale/phy-fsl-imx8mq-usb.c
-@@ -173,9 +173,9 @@ static struct typec_switch_dev *tca_blk_get_typec_switch(struct platform_device
- 	return sw;
- }
- 
--static void tca_blk_put_typec_switch(struct typec_switch_dev *sw)
-+static void tca_blk_put_typec_switch(void *data)
- {
--	typec_switch_unregister(sw);
-+	typec_switch_unregister(data);
- }
- 
- static void tca_blk_orientation_set(struct tca_blk *tca,
-@@ -248,6 +248,7 @@ static struct tca_blk *imx95_usb_phy_get_tca(struct platform_device *pdev,
- 	struct device *dev = &pdev->dev;
- 	struct resource *res;
- 	struct tca_blk *tca;
-+	int ret;
- 
- 	res = platform_get_resource(pdev, IORESOURCE_MEM, 1);
- 	if (!res)
-@@ -266,17 +267,11 @@ static struct tca_blk *imx95_usb_phy_get_tca(struct platform_device *pdev,
- 	tca->orientation = TYPEC_ORIENTATION_NORMAL;
- 	tca->sw = tca_blk_get_typec_switch(pdev, imx_phy);
- 
--	return tca;
--}
--
--static void imx95_usb_phy_put_tca(struct imx8mq_usb_phy *imx_phy)
--{
--	struct tca_blk *tca = imx_phy->tca;
--
--	if (!tca)
--		return;
-+	ret = devm_add_action_or_reset(&pdev->dev, tca_blk_put_typec_switch, tca->sw);
-+	if (ret)
-+		return ERR_PTR(ret);
- 
--	tca_blk_put_typec_switch(tca->sw);
-+	return tca;
- }
- 
- static u32 phy_tx_vref_tune_from_property(u32 percent)
-@@ -741,9 +736,7 @@ static int imx8mq_usb_phy_probe(struct platform_device *pdev)
- 
- static void imx8mq_usb_phy_remove(struct platform_device *pdev)
- {
--	struct imx8mq_usb_phy *imx_phy = platform_get_drvdata(pdev);
- 
--	imx95_usb_phy_put_tca(imx_phy);
- }
- 
- static struct platform_driver imx8mq_usb_phy_driver = {
+1) yavta -c /dev/video0 &
+2) yavta --capture=2 /dev/video1
+3) yavta --capture=2 /dev/video1
+4) kill %1
+
+
+If I understood correctly, your proposal would cause the camera to
+stop streaming when step 2 completes.
+
+I think this risks breaking use cases.
+
+As I see it, the issue is that the camera's live capture cycle is
+controlled solely by video0. We need some kind of synchronization
+mechanism with video1 if we do not want to change the behaviour and
+risk breaking apps.
+
+>
+> Regards,
+>
+> Hans
+>
+> p.s.
+>
+> 1. It is tempting to also apply the same approach to
+> vb2_ops.start_streaming, but allowing the meta queue to be
+> the one to start streaming will likely cause issues. E.g.
+> the streaming code assumes having a meta-queue active is
+> optional, but not the other way around.
+>
+> TL;DR: vb2_ops.start_streaming should stay as is.
+>
+> 2. While looking into this I noticed that struct uvc_streaming
+> already has an active member, but unless I'm missing something
+> that ever only gets initialized to 0. So I think that can be
+> dropped. (If you re-use this please change it to a bool, no
+> need to have it atomic while protected by a mutex).
+
+I will send a patch to fix this. Thanks for noticing :)
+
+>
+>
+>
+> > ---
+> >  drivers/media/usb/uvc/uvc_queue.c | 14 ++++++++++++++
+> >  drivers/media/usb/uvc/uvc_video.c | 30 +++++++++++++++++++++++++++++-
+> >  drivers/media/usb/uvc/uvcvideo.h  |  2 ++
+> >  3 files changed, 45 insertions(+), 1 deletion(-)
+> >
+> > diff --git a/drivers/media/usb/uvc/uvc_queue.c b/drivers/media/usb/uvc/uvc_queue.c
+> > index 3c002c8f442f..af9dbfcf6f53 100644
+> > --- a/drivers/media/usb/uvc/uvc_queue.c
+> > +++ b/drivers/media/usb/uvc/uvc_queue.c
+> > @@ -209,10 +209,24 @@ static void uvc_stop_streaming_video(struct vb2_queue *vq)
+> >  static void uvc_stop_streaming_meta(struct vb2_queue *vq)
+> >  {
+> >       struct uvc_video_queue *queue = vb2_get_drv_priv(vq);
+> > +     struct uvc_streaming *stream = queue->stream;
+> >
+> >       lockdep_assert_irqs_enabled();
+> >
+> > +     spin_lock_irq(&stream->meta.irqlock);
+> > +     while (stream->meta.in_flight) {
+> > +             spin_unlock_irq(&stream->meta.irqlock);
+> > +             schedule();
+> > +             spin_lock_irq(&stream->meta.irqlock);
+> > +     }
+> > +     stream->meta.in_flight = true;
+> > +     spin_unlock_irq(&stream->meta.irqlock);
+> > +
+> >       uvc_queue_return_buffers(queue, UVC_BUF_STATE_ERROR);
+> > +
+> > +     scoped_guard(spinlock_irq, &stream->meta.irqlock) {
+> > +             stream->meta.in_flight = false;
+> > +     }
+> >  }
+> >
+> >  static const struct vb2_ops uvc_queue_qops = {
+> > diff --git a/drivers/media/usb/uvc/uvc_video.c b/drivers/media/usb/uvc/uvc_video.c
+> > index fc3536a4399f..f6b55b3a3308 100644
+> > --- a/drivers/media/usb/uvc/uvc_video.c
+> > +++ b/drivers/media/usb/uvc/uvc_video.c
+> > @@ -1732,6 +1732,26 @@ static void uvc_video_encode_bulk(struct uvc_urb *uvc_urb,
+> >       urb->transfer_buffer_length = stream->urb_size - len;
+> >  }
+> >
+> > +static struct uvc_buffer *
+> > +uvc_video_get_current_meta_buffer(struct uvc_streaming *stream)
+> > +{
+> > +     struct uvc_video_queue *queue = &stream->meta.queue;
+> > +     struct uvc_buffer *buf;
+> > +
+> > +     buf = uvc_queue_get_current_buffer(queue);
+> > +     if (!buf)
+> > +             return NULL;
+> > +
+> > +     guard(spinlock_irqsave)(&stream->meta.irqlock);
+> > +
+> > +     if (stream->meta.in_flight)
+> > +             return NULL;
+> > +
+> > +     stream->meta.in_flight = true;
+> > +
+> > +     return buf;
+> > +}
+> > +
+> >  static void uvc_video_complete(struct urb *urb)
+> >  {
+> >       struct uvc_urb *uvc_urb = urb->context;
+> > @@ -1767,7 +1787,7 @@ static void uvc_video_complete(struct urb *urb)
+> >       buf = uvc_queue_get_current_buffer(queue);
+> >
+> >       if (vb2_qmeta)
+> > -             buf_meta = uvc_queue_get_current_buffer(qmeta);
+> > +             buf_meta = uvc_video_get_current_meta_buffer(stream);
+> >
+> >       /* Re-initialise the URB async work. */
+> >       uvc_urb->async_operations = 0;
+> > @@ -1778,6 +1798,12 @@ static void uvc_video_complete(struct urb *urb)
+> >        */
+> >       stream->decode(uvc_urb, buf, buf_meta);
+> >
+> > +     if (buf_meta) {
+> > +             scoped_guard(spinlock_irqsave, &stream->meta.irqlock) {
+> > +                     stream->meta.in_flight = false;
+> > +             }
+> > +     }
+> > +
+> >       /* If no async work is needed, resubmit the URB immediately. */
+> >       if (!uvc_urb->async_operations) {
+> >               ret = usb_submit_urb(uvc_urb->urb, GFP_ATOMIC);
+> > @@ -2330,6 +2356,8 @@ int uvc_video_init(struct uvc_streaming *stream)
+> >       for_each_uvc_urb(uvc_urb, stream)
+> >               INIT_WORK(&uvc_urb->work, uvc_video_copy_data_work);
+> >
+> > +     spin_lock_init(&stream->meta.irqlock);
+> > +
+> >       return 0;
+> >  }
+> >
+> > diff --git a/drivers/media/usb/uvc/uvcvideo.h b/drivers/media/usb/uvc/uvcvideo.h
+> > index b6bcee4a222f..6f1a3381d392 100644
+> > --- a/drivers/media/usb/uvc/uvcvideo.h
+> > +++ b/drivers/media/usb/uvc/uvcvideo.h
+> > @@ -484,6 +484,8 @@ struct uvc_streaming {
+> >               struct uvc_video_queue queue;
+> >               u32 format;
+> >               u32 buffersize;
+> > +             bool in_flight;
+> > +             spinlock_t irqlock; /* Protects in_flight. */
+> >       } meta;
+> >
+> >       /* Context data used by the bulk completion handler. */
+> >
+>
+
 
 -- 
-2.34.1
-
+Ricardo Ribalda
 
