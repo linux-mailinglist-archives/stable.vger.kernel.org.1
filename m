@@ -1,133 +1,153 @@
-Return-Path: <stable+bounces-270061-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-270062-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 58+oMDVFRGrCrgoAu9opvQ
-	(envelope-from <stable+bounces-270061-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 01 Jul 2026 00:37:41 +0200
+	id KNrPIjNHRGolrwoAu9opvQ
+	(envelope-from <stable+bounces-270062-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 01 Jul 2026 00:46:11 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 28C9E6E8735
-	for <lists+stable@lfdr.de>; Wed, 01 Jul 2026 00:37:41 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9A8F06E8776
+	for <lists+stable@lfdr.de>; Wed, 01 Jul 2026 00:46:10 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=amazon.com header.s=amazoncorp2 header.b=P25bn9D4;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-270061-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-270061-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=quarantine) header.from=amazon.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=Ym4+Py18;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-270062-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-270062-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=none) header.from=intel.com;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 75AF3302A716
-	for <lists+stable@lfdr.de>; Tue, 30 Jun 2026 22:37:32 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 063603018BCE
+	for <lists+stable@lfdr.de>; Tue, 30 Jun 2026 22:46:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ACAA5317150;
-	Tue, 30 Jun 2026 22:37:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D93D277C96;
+	Tue, 30 Jun 2026 22:46:05 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from pdx-out-007.esa.us-west-2.outbound.mail-perimeter.amazon.com (pdx-out-007.esa.us-west-2.outbound.mail-perimeter.amazon.com [52.34.181.151])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A51E1E47C5;
-	Tue, 30 Jun 2026 22:37:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98D143B28D;
+	Tue, 30 Jun 2026 22:46:02 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782859051; cv=none; b=dervKNvE1bZKhgIRLV4ORmvVyuooUjzc8CHo4gsU0ZOhIShMzSfr8dOrlo8D1HcAIuwgmWnf6d63gu2rGIdcNLZ17r/w4PoWnFr6rMLAAuKdJqu18PMTptip4/JqPvmuoPumF4Zb1wVtFedX64yhynFgYARiCk1PUyflA2Y6/f8=
+	t=1782859564; cv=none; b=MDQKH4uK2a+/8vOiDuZozXlwuYp6jHIOgVlMchSAW6h8yBXXo2EP3bfJFC662Yw5SX5P9yiKWCb4xFkdC7dNH7+l13TA3YvJ6lAylBssWCyU3xvD/ZOOox+9JSq2fVXqQQxpaVd6ZN96bbnUunY0roKJoH/t8NS0GXUOnV7Mfww=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782859051; c=relaxed/simple;
-	bh=in7mPo4C6ACXr0Pq9kDFAU6aCviXWc4Kzq1KHs1G980=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=f1pIJ8uVsARLa2lj7xgNGPaTr0XAHLFhomdEFBKaX08l4w1SB2r9LFBeajxAPfOUNO+Rf8eaSwkHh5gxyaErXejnTA+qnRV8OYMPX4oI2yjG4HdflyHxi2+LVvG6XLzjy5sKwZ5043K/+OwCX09Id8qIJz7d67Wpe2YvItQb1JU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.com; dkim=pass (2048-bit key) header.d=amazon.com header.i=@amazon.com header.b=P25bn9D4; arc=none smtp.client-ip=52.34.181.151
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazoncorp2;
-  t=1782859050; x=1814395050;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=5YkH6Qf/i5JrCI3DdmIDJDZi0IXbWa1/DAyXW2C45Io=;
-  b=P25bn9D4TGVxvAPe077pXcK1QrfNW3O2JuN754Sl1FAjMXWOfVF3qbwg
-   6Rdm+z3W/B8+2tYlpDZ/h7uPBOpUQ4Iqu2YrP9fYyvbA020MzM/YNodO1
-   BaJ54/5DcFwJLqFCUTgpRz4UAz2TWTH0nF+9Iq2S2dJW4UqdZ03LDyE/1
-   C7H09STulJMLZb17AeDO2SkXtmRRytOH5vPyT+OUYTTnSlExW4sl3xfIJ
-   30B+Ebhx9kgQV8kolI8YDpE1crKiQbaEccpJnZ1MUVK1fGhH7rCHch7hU
-   P2o2qOt8ByF0NhxJmx3JWCYu8vduxqgOSVoVgfQpaLEgCT/V1AQz1h7rY
-   g==;
-X-CSE-ConnectionGUID: nsOYh9xXRzGrNxXoiVRK5g==
-X-CSE-MsgGUID: V8Mp3iX5QqaEeZO6P8I05w==
-X-IronPort-AV: E=Sophos;i="6.24,234,1774310400"; 
-   d="scan'208";a="22792786"
-Received: from ip-10-5-0-115.us-west-2.compute.internal (HELO smtpout.naws.us-west-2.prod.farcaster.email.amazon.dev) ([10.5.0.115])
-  by internal-pdx-out-007.esa.us-west-2.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Jun 2026 22:37:30 +0000
-Received: from EX19MTAUWA001.ant.amazon.com [205.251.233.182:4678]
- by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.4.192:2525] with esmtp (Farcaster)
- id b662b5e3-5bb4-443f-925f-bbee2fbe9f4d; Tue, 30 Jun 2026 22:37:29 +0000 (UTC)
-X-Farcaster-Flow-ID: b662b5e3-5bb4-443f-925f-bbee2fbe9f4d
-Received: from EX19D001UWA001.ant.amazon.com (10.13.138.214) by
- EX19MTAUWA001.ant.amazon.com (10.250.64.217) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.43;
- Tue, 30 Jun 2026 22:37:29 +0000
-Received: from 6c7e67c92ceb.amazon.com (10.187.170.26) by
- EX19D001UWA001.ant.amazon.com (10.13.138.214) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.43;
- Tue, 30 Jun 2026 22:37:29 +0000
-From: Nathan Gao <zcgao@amazon.com>
-To: <pbonzini@redhat.com>
-CC: <bkov@amazon.com>, <doebel@amazon.de>, <fgriffo@amazon.co.uk>,
-	<kvm@vger.kernel.org>, <linux-kernel@vger.kernel.org>, <seanjc@google.com>,
-	<stable@vger.kernel.org>, <zcgao@amazon.com>, <awallace@redhat.com>
-Subject: Re: stable backports for "KVM: x86: Fix shadow paging use-after-free due to unexpected GFN"
-Date: Tue, 30 Jun 2026 15:37:23 -0700
-Message-ID: <20260630223723.83727-1-zcgao@amazon.com>
-X-Mailer: git-send-email 2.50.1
-In-Reply-To: <CABgObfawkiKRDz0to=oCjo1vygVAkHyZXAzpsLWT2GXwkszV_A@mail.gmail.com>
-References: <CABgObfawkiKRDz0to=oCjo1vygVAkHyZXAzpsLWT2GXwkszV_A@mail.gmail.com>
+	s=arc-20240116; t=1782859564; c=relaxed/simple;
+	bh=jAFuBAT9xXbB1xeE/uSftQUaSLmCxG/VY/pSUxPNaGM=;
+	h=Date:From:To:cc:Subject:In-Reply-To:Message-ID:References:
+	 MIME-Version:Content-Type; b=Fl3zIcHgBE+IDYZ7Vg/aa21tmb/lxhD0g2C2MFptB7FC9MwApAHzOpmSXEYGm6IobRqPwi3U+oOI0WVd0lqEVb936amVTNpjCdu1DDmaVcY/M/h9XSrTpRXDRTbxx4lmew6LEbMnQRTc5GsaVMxVrUEEFao7ylzo2idYfyQ7uRw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Ym4+Py18; arc=none smtp.client-ip=192.198.163.14
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1782859563; x=1814395563;
+  h=date:from:to:cc:subject:in-reply-to:message-id:
+   references:mime-version;
+  bh=jAFuBAT9xXbB1xeE/uSftQUaSLmCxG/VY/pSUxPNaGM=;
+  b=Ym4+Py18p9znkF5H1NzY1p1dFh5LOfSbhwJE0Eg8//Wni6JNFUbI5ZIO
+   foqsKCaGnR0gQp7101oJZPKrFEfrgoj08OxkeMA6v9YZUZAYD9m1/zc0K
+   bsqP88rclVxCdV06R1iOAx4Dl+vPCkXWlXQgTLiGzJyfGnYVapbrvalQx
+   TLUbj13dXNCUV8wchiF0WT7+BCvUbnqDMSIFP0RzNBpBYfed28nmPt9pA
+   adwK5ybEqbDNXSCKFvr+tK2fxzx6O5E1YF4CeNx3PNs/oPPz8iqhxG8q1
+   JuZOXZLXpk1e7f5qdtib7hsxxqbK400PR9rZBZKu0+54WASDEzrwvXQ/W
+   w==;
+X-CSE-ConnectionGUID: Dh5wQJGPSjG+dpStU992dQ==
+X-CSE-MsgGUID: TvQmS2mSQ7S4yBb/jvbagA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11833"; a="83641605"
+X-IronPort-AV: E=Sophos;i="6.24,234,1774335600"; 
+   d="scan'208";a="83641605"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Jun 2026 15:46:02 -0700
+X-CSE-ConnectionGUID: 9P+qy8IPT9qhnGNq1S3EnQ==
+X-CSE-MsgGUID: uxI62YlzTAWutGO00C4pqA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.24,234,1774335600"; 
+   d="scan'208";a="251966044"
+Received: from hrotuna-mobl2.ger.corp.intel.com ([10.245.245.166])
+  by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Jun 2026 15:45:59 -0700
+Date: Wed, 1 Jul 2026 01:45:45 +0300 (EEST)
+From: Kai Vehmanen <kai.vehmanen@linux.intel.com>
+To: Alexander Kaplan <alexander.kaplan@sms-medipool.de>
+cc: Kai Vehmanen <kai.vehmanen@linux.intel.com>, 
+    =?ISO-8859-15?Q?P=E9ter_Ujfalusi?= <peter.ujfalusi@intel.com>, 
+    =?ISO-8859-15?Q?P=E9ter_Ujfalusi?= <peter.ujfalusi@linux.intel.com>, 
+    Takashi Iwai <tiwai@suse.com>, linux-sound@vger.kernel.org, 
+    Jaroslav Kysela <perex@perex.cz>, 
+    Pierre-Louis Bossart <pierre-louis.bossart@linux.dev>, 
+    stable@vger.kernel.org, Uma Shankar <uma.shankar@intel.com>
+Subject: Re: [PATCH] ALSA: hda/hdmi: disable KAE for Intel Panther Lake
+In-Reply-To: <b6e4caac-53f1-729f-51d2-aa0ca514ab04@linux.intel.com>
+Message-ID: <765b713e-d2a0-6859-2923-53f8e60cb00e@linux.intel.com>
+References: <f7d26e4d-8810-430a-b727-52c00d2d6edc@intel.com> <20260612181314.5577-1-alexander.kaplan@sms-medipool.de> <e5a56b3c-1fd7-35ad-f072-e490e2b471a9@linux.intel.com> <178196763509.3248.8656978100050911066@sms-medipool.de>
+ <b6e4caac-53f1-729f-51d2-aa0ca514ab04@linux.intel.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7 02160 Espoo
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: EX19D046UWA001.ant.amazon.com (10.13.139.112) To
- EX19D001UWA001.ant.amazon.com (10.13.138.214)
+Content-Type: text/plain; charset=US-ASCII
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-10.66 / 15.00];
-	WHITELIST_DMARC(-7.00)[amazon.com:D:+];
-	WHITELIST_SPF_DKIM(-3.00)[amazon.com:d:+,kernel.org:s:+];
+X-Spamd-Result: default: False [-5.16 / 15.00];
+	WHITELIST_SPF_DKIM(-3.00)[intel.com:d:+,kernel.org:s:+];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[amazon.com,quarantine];
-	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[amazon.com:s=amazoncorp2];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
+	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[zcgao@amazon.com,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-270062-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-270061-lists,stable=lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:pbonzini@redhat.com,m:bkov@amazon.com,m:doebel@amazon.de,m:fgriffo@amazon.co.uk,m:kvm@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:seanjc@google.com,m:stable@vger.kernel.org,m:zcgao@amazon.com,m:awallace@redhat.com,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:alexander.kaplan@sms-medipool.de,m:kai.vehmanen@linux.intel.com,m:peter.ujfalusi@intel.com,m:peter.ujfalusi@linux.intel.com,m:tiwai@suse.com,m:linux-sound@vger.kernel.org,m:perex@perex.cz,m:pierre-louis.bossart@linux.dev,m:stable@vger.kernel.org,m:uma.shankar@intel.com,s:lists@lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER(0.00)[zcgao@amazon.com,stable@vger.kernel.org];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	DKIM_TRACE(0.00)[amazon.com:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[10];
-	ALIAS_RESOLVED(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,vger.kernel.org:from_smtp];
-	TAGGED_RCPT(0.00)[stable];
-	TO_DN_NONE(0.00)[];
+	HAS_ORG_HEADER(0.00)[];
+	TO_DN_SOME(0.00)[];
+	FORGED_SENDER(0.00)[kai.vehmanen@linux.intel.com,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	RCVD_COUNT_SEVEN(0.00)[7]
+	FORWARDED(0.00)[lists@lfdr.de];
+	DKIM_TRACE(0.00)[intel.com:+];
+	MISSING_XM_UA(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[kai.vehmanen@linux.intel.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[10];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp,intel.com:dkim,linux.intel.com:mid,linux.intel.com:from_mime,gitlab.freedesktop.org:url]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 28C9E6E8735
+X-Rspamd-Queue-Id: 9A8F06E8776
 
-We identified commit a955cad84cda ("KVM: x86/mmu: Retry page fault if root is invalidated by memslot update")
-may be the missing piece. After backporting this patch, it's no longer reproducible after 20 consecutive attempts.  
+Hi,
 
-Thanks to Nicolas Saenz Julienne <nsaenz@amazon.com> who found this regression initially.
+On Wed, 24 Jun 2026, Kai Vehmanen wrote:
 
-Best,
-Nathan
+> On Sat, 20 Jun 2026, Alexander Kaplan wrote:
+> 
+[...]
+> > So the wedge happens earlier in the sequence, as you suspected, not at
+> > the re-arm.
+> > The trigger looks like the multichannel DMA start itself once the KAE
+> > block has been active in the running power cycle, below the codec verb
+> > level.
+> 
+> thanks for the quick test. I'm working with our display folks to test
+> this out with some Synaptic DP-alt HDMI converter. This same test
+> worked ok with one converter (Lenovo USB-C to HDMI Adapter GX90K37871),
+[...]
+> I filed a bug to Xe/display to track this effort:
+> https://gitlab.freedesktop.org/drm/xe/kernel/-/work_items/8412
+
+some progress with this. I attached a work-in-progress patch that fixes 
+the issue with at least one setup using Club3D CAC-2505 DP-alt HDMI 
+converter to the bug at:
+https://gitlab.freedesktop.org/drm/xe/kernel/-/work_items/8412#note_3543741
+
+Needs more work still, but if this approach works, I'll send a proper 
+patch later to the list.
+
+Br, Kai
 
