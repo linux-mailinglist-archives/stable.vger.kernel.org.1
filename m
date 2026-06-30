@@ -1,186 +1,173 @@
-Return-Path: <stable+bounces-269846-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-269847-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id b83qIyERQ2qkOwoAu9opvQ
-	(envelope-from <stable+bounces-269846-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 30 Jun 2026 02:43:13 +0200
+	id 2V5KFwUSQ2opPAoAu9opvQ
+	(envelope-from <stable+bounces-269847-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 30 Jun 2026 02:47:01 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED0B16DF6BB
-	for <lists+stable@lfdr.de>; Tue, 30 Jun 2026 02:43:12 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id E50D26DF6F7
+	for <lists+stable@lfdr.de>; Tue, 30 Jun 2026 02:47:00 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=SI+wfI7J;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-269846-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-269846-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=none) header.from=gmail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=SUP3bVRD;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-269847-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-269847-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id D14C7302F6B3
-	for <lists+stable@lfdr.de>; Tue, 30 Jun 2026 00:43:11 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 5F1EE300F5F7
+	for <lists+stable@lfdr.de>; Tue, 30 Jun 2026 00:47:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C0F511F91D6;
-	Tue, 30 Jun 2026 00:43:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CDDF472623;
+	Tue, 30 Jun 2026 00:46:56 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wr1-f43.google.com (mail-wr1-f43.google.com [209.85.221.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54B771DDC2B
-	for <stable@vger.kernel.org>; Tue, 30 Jun 2026 00:43:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 534531D63F3;
+	Tue, 30 Jun 2026 00:46:55 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782780188; cv=none; b=F2co8dK+CZhqWyz09tBhwgtvY5ivbT1m6p9XKNJvTkFLZNwObVNmMMKAtJ1Tn5TuaYAJaT+gARrz9ASHL+iuDbiZ7hv5S+HELKUXj6SwTAcpv6bERUHn3zgw/wMGZ+oGCj6nyFHdexNNSIhcT28BpQzzAMNg0vWrCwOYbC1uX7A=
+	t=1782780416; cv=none; b=sZWjm1gdZN4Api6n+wYR1UNKJr+EIJInpwqHEu9d+vlv+6tyP0etDocvzFqsOcY5m6J93TI6dZ461bqUMILpCfY5tCYKq9Nw/x2Y4X4APfs745BW32ZmLwXBXZ/SHFW8AI+ojhPrwDez/VV8EDspBpAlk1VhkHsyUdNWOhnVFfU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782780188; c=relaxed/simple;
-	bh=z99q+4jS1qUXEL6QiDspninof00PQ76INtiJ8XzQErA=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=KDbxKUbrE4BuUiCCypCvaLju/K7ZEfBUy67LcAfHNEj7VlsCkfSM0KtvPSle9CWR25XdmTVuRxYj7aF3LfRMJvu0+OyMIRgSqpTwmCIg2Cfmm05lbO3P6xYRoRdMXC7OntJsoWXJwzBebBX262l196gp2LdNjZkzLlUJGHR0MR4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=SI+wfI7J; arc=none smtp.client-ip=209.85.221.43
-Received: by mail-wr1-f43.google.com with SMTP id ffacd0b85a97d-47488efcf30so711668f8f.3
-        for <stable@vger.kernel.org>; Mon, 29 Jun 2026 17:43:07 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1782780186; x=1783384986; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=8EU/r7lx6aT8TqQKRkjOJMDGUCG2zOVOTTvJBrER2oM=;
-        b=SI+wfI7JASa6HrZygwYdZH98jvnkmfI6kz84RxiFMxdJ3ib0vM4KAMC6BvFi8uNySt
-         6DO8Y1zAR4YnMFh7zQaxyRbtfNMZ1O7B9n6ny9ANZ/wdoKQTePYWj6d2PWDDSn8rk3iI
-         tSya6coVpMdHreA3gdttMLoH3t2gxXmm9m2uiED37KR/prQiECf0QQS2jNsFY1IRCwzn
-         7HRONz11BqZ7f3B25rrh4LyEZln3BeWiI3mn+HFu3YxnZTCkN/C8+A6Ga3XoHpwJf/8x
-         wGNJaGbvCjdM4I2oGcyL37aXhJc3UY40r10SeWdR9pAWnmM/pgolSWjriCVD4BdDZ+Vb
-         QA6w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782780186; x=1783384986;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=8EU/r7lx6aT8TqQKRkjOJMDGUCG2zOVOTTvJBrER2oM=;
-        b=NVsbm9pTHTzlVVvnNmMlpi4A5e0uvBXzyFlcq+DsPIoS9ff4lBRqEFZdMyx35TrERC
-         sgnav9VyR3W6afpbAISlHDvXlpxox5qKjFR0koYmgzqBoAo04RaIzF6tdkp8/Bq8V+yz
-         jVTfPp8kTciuZsLJnyEDtlMiQ6EhrwGHguXiyPpU7dowziVqcKKaPZZXrmtUyYg/+sy5
-         e1hmRgWXI/HLp/SHURPs05swfcoXaC6ymbglPhQuxI0xi832shNQfnpFek5PsZl9vc4f
-         zRh+VEaE9FhlNprefA+M8M5xtf2y4mnGHkezzCfOPgBbWj3bMxeQ+ZpRHLN9mGc1ahZN
-         xVUQ==
-X-Forwarded-Encrypted: i=1; AFNElJ/XBoOjy2RJqGdK/WRDsJIZ4JQ0oAfMpawB1RlzMxwFmh6VhkYBvFyMuhtqIgZxzZ4wUCQ6FwE=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzratRzZ/laT8/S02B0Hh7EOCIA3SdhfEJmK19yIMlTt+hjprgJ
-	rLnkB7B1GR12QnTtWoALXUZJj0TseS1dej1eTQ3I0oFIL+wCP8MKkXpx
-X-Gm-Gg: AfdE7cnlOMxmDdXvichM0HzGE34ppLluVxo2uOM7MPSRQg+U8RMXCFZsWqVljdhcwHs
-	YXsSJyEx05lLqaIJWCDCf1vOK58pqQLKSb0ttgvDhUbl0A112kEjjlcJsZXkMD7Lo0z4zezPSDE
-	oVSX49+HmWDvzUIzyy3gnuyU/LBMWMWXo8DeyI/UPhrKttZdH4YQw4QWmzLTuHsmS1WPVumpe5c
-	jIawVZdB7Ml5B/dnXdeJtjUmZ1sbh5xYrtPGLokh3ra3z64wXd8zLWMgWCBlsGLmHePxRwBkVWV
-	dU5rY4DvM4R39H3rafYBmYIL7U7i7gufaqb7ErOrVLaR5ApZIfVeQNl0LJ8DCsyi2Q52j6Hodxs
-	BwO0f6R7ttz4K4VTOUtt+egjl4ApcwD3ldmricwr9D9j/d4mwhRw9PpB2Hu0wJe7VvR6WBd2gDu
-	efh2LE0uvxqv+0nbZ9enngHzjuPJ3uBqA8PiTrKRQ/XuSYR/Ak27dRr8AZCyKEGn98BHBFUaWED
-	wKri/0qbGDA
-X-Received: by 2002:a05:600c:46c9:b0:493:b24e:649b with SMTP id 5b1f17b1804b1-493b827c8ccmr25844095e9.6.1782780185616;
-        Mon, 29 Jun 2026 17:43:05 -0700 (PDT)
-Received: from snakeroot ([2a05:87c3:2001:7400:25e9:cccc:54ef:5829])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-493b8cb0896sm29909195e9.13.2026.06.29.17.43.04
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 29 Jun 2026 17:43:05 -0700 (PDT)
-From: Stuart Hayhurst <stuart.a.hayhurst@gmail.com>
-To: linux-input@vger.kernel.org
-Cc: Stuart Hayhurst <stuart.a.hayhurst@gmail.com>,
-	linux-kernel@vger.kernel.org,
-	Benjamin Tissoires <bentiss@kernel.org>,
-	Jiri Kosina <jikos@kernel.org>,
-	stable@vger.kernel.org
-Subject: [PATCH] HID: corsair-void: Check size of status and firmware events before reading them
-Date: Tue, 30 Jun 2026 01:40:01 +0100
-Message-ID: <20260630004003.579171-2-stuart.a.hayhurst@gmail.com>
-X-Mailer: git-send-email 2.53.0
+	s=arc-20240116; t=1782780416; c=relaxed/simple;
+	bh=Ff2+/saOZWl49ppdlAwA0NO4KvmkJ+pzLbZXbig2LKk=;
+	h=Date:From:To:Cc:Subject:Message-Id:In-Reply-To:References:
+	 Mime-Version:Content-Type; b=nyQ6vRhKV3lfpWNWVS7GQ02i8WZeJ7fLhm1afqJNKeBpZjCu5dBH8tFynOjkP3d41NSHizxFx6vbfhAh+dGMs+VOeI0aL2t+E51o47l8F7nQCKCqt6exzDfe8+1b2ibvYo84oF62Uoeky2jaHwezdWpOdXapz7bjUar3GehXycY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SUP3bVRD; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 008D51F000E9;
+	Tue, 30 Jun 2026 00:46:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1782780414;
+	bh=oQuLM8bdAxGQlcNZ/nGpA3fPi1oLAX8SqOqtOB9RlDA=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=SUP3bVRDMICpoWRQ9CYvbW4onk42cJtF7CTKtMbwjV3bwAw9lSJRMfDP7IVaPevUm
+	 PmWejbxaO9HZKRVmXZstRkLsl0rXh/Jy/cAMPFQXG8FC468FioMLZHFDJmPAVQ1zQ8
+	 xJuKnciPgkI82ZOrSK7HGWFa0bORbrLYve2aEmAQp4ps3doCjzZZUJ892M553P/pDO
+	 vicNZIrPDYy3iiXOty09DQ6CtTwMvBnJOixw6l7UDBRvdObWsIzknv16DtqPz3cG4/
+	 El4b4GkH2Zj565ZDWXOdEkXyX8LD27EBxWAKBjNb4n6a6TMw9TsGFXTNkpDfv2egRC
+	 7aLwBNwYagAcw==
+Date: Tue, 30 Jun 2026 09:46:50 +0900
+From: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+To: Bradley Morgan <include@grrlz.net>
+Cc: Breno Leitao <leitao@debian.org>, akpm@linux-foundation.org,
+ mhiramat@kernel.org, linux-kernel@vger.kernel.org,
+ linux-trace-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH] lib/bootconfig: fix undefined behavior involving NULL
+ pointer arithmetic
+Message-Id: <20260630094650.7c4882c3adbdd4d8f3779e3e@kernel.org>
+In-Reply-To: <0B594835-45AD-4B37-85A3-C7F54F8D668A@grrlz.net>
+References: <20260628115617.3190-1-include@grrlz.net>
+	<akJ0f2gsiEt01spu@gmail.com>
+	<0B594835-45AD-4B37-85A3-C7F54F8D668A@grrlz.net>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-4.66 / 15.00];
+	WHITELIST_SPF_DKIM(-3.00)[kernel.org:d:+,kernel.org:s:+];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	MV_CASE(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-269846-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	FREEMAIL_CC(0.00)[gmail.com,vger.kernel.org,kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:linux-input@vger.kernel.org,m:stuart.a.hayhurst@gmail.com,m:linux-kernel@vger.kernel.org,m:bentiss@kernel.org,m:jikos@kernel.org,m:stable@vger.kernel.org,m:stuartahayhurst@gmail.com,s:lists@lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER(0.00)[stuartahayhurst@gmail.com,stable@vger.kernel.org];
-	FORWARDED(0.00)[lists@lfdr.de];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[stuartahayhurst@gmail.com,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-269847-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:include@grrlz.net,m:leitao@debian.org,m:akpm@linux-foundation.org,m:mhiramat@kernel.org,m:linux-kernel@vger.kernel.org,m:linux-trace-kernel@vger.kernel.org,m:stable@vger.kernel.org,s:lists@lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	FORGED_SENDER(0.00)[mhiramat@kernel.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,vger.kernel.org:from_smtp]
+	FORGED_SENDER_FORWARDING(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[mhiramat@kernel.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: ED0B16DF6BB
+X-Rspamd-Queue-Id: E50D26DF6F7
 
-Malformed status and firmware events could cause an out-of-bounds read since
-the size wasn't being checked. Check the size and warn on unexpected values to
-avoid this.
+On Mon, 29 Jun 2026 14:53:05 +0100
+Bradley Morgan <include@grrlz.net> wrote:
 
-Fixes: 6ea2a6fd3872 ("HID: corsair-void: Add Corsair Void headset family driver")
-Cc: stable@vger.kernel.org
-Signed-off-by: Stuart Hayhurst <stuart.a.hayhurst@gmail.com>
----
- drivers/hid/hid-corsair-void.c | 13 +++++++++++++
- 1 file changed, 13 insertions(+)
+> On 29 June 2026 14:41:37 BST, Breno Leitao <leitao@debian.org> wrote:
+> >On Sun, Jun 28, 2026 at 11:56:16AM +0000, Bradley Morgan wrote:
+> >> When xbc_snprint_cmdline() is called during the size-probing phase
+> >> (with buf = NULL and size = 0), the function computes the end pointer
+> >> as 'buf + size' (NULL + 0) and repeatedly advances the pointer via
+> >> 'buf += ret'.
+> >> 
+> >> Under the C standard, performing pointer arithmetic on a NULL pointer is
+> >> undefined behavior. While harmless inside the kernel, this code is also
+> >> compiled into the userspace host tool 'tools/bootconfig', where host
+> >> compilers with UBSan or FORTIFY_SOURCE enabled abort the build when they
+> >> detect NULL pointer arithmetic.
+> >> 
+> >> Fix this by tracking the running written length as an integer offset
+> >> ('len') rather than advancing 'buf' directly. Only perform pointer
+> >> arithmetic if 'buf' is actually non-NULL.
+> >> 
+> >> Fixes: 5a643e462323 ("bootconfig: move xbc_snprint_cmdline() to
+> >lib/bootconfig.c")
+> >
+> >Isn't commit 5a643e462323 ("bootconfig: move xbc_snprint_cmdline() to
+> >lib/bootconfig.c") just a code movement?
+> 
+> Ugh, Geminis bullcrap, you are right. I should've just manually looked
+> for the fixes tag (as I always do)
 
-diff --git a/drivers/hid/hid-corsair-void.c b/drivers/hid/hid-corsair-void.c
-index 5e9a5b8f7f16..fdcc4b8cd272 100644
---- a/drivers/hid/hid-corsair-void.c
-+++ b/drivers/hid/hid-corsair-void.c
-@@ -92,6 +92,9 @@
- #define CORSAIR_VOID_STATUS_REPORT_ID		0x64
- #define CORSAIR_VOID_FIRMWARE_REPORT_ID		0x66
- 
-+#define CORSAIR_VOID_STATUS_REPORT_SIZE		5
-+#define CORSAIR_VOID_FIRMWARE_REPORT_SIZE	5
-+
- #define CORSAIR_VOID_USB_SIDETONE_REQUEST	0x1
- #define CORSAIR_VOID_USB_SIDETONE_REQUEST_TYPE	0x21
- #define CORSAIR_VOID_USB_SIDETONE_VALUE		0x200
-@@ -742,6 +745,11 @@ static int corsair_void_raw_event(struct hid_device *hid_dev,
- 
- 	/* Description of packets are documented at the top of this file */
- 	if (hid_report->id == CORSAIR_VOID_STATUS_REPORT_ID) {
-+		if (size != CORSAIR_VOID_STATUS_REPORT_SIZE) {
-+			hid_warn(hid_dev, "unexpected status report of size %d", size);
-+			return 1;
-+		}
-+
- 		drvdata->mic_up = FIELD_GET(CORSAIR_VOID_MIC_MASK, data[2]);
- 		drvdata->connected = (data[3] == CORSAIR_VOID_WIRELESS_CONNECTED) ||
- 				     drvdata->is_wired;
-@@ -750,6 +758,11 @@ static int corsair_void_raw_event(struct hid_device *hid_dev,
- 					      FIELD_GET(CORSAIR_VOID_CAPACITY_MASK, data[2]),
- 					      data[3], data[4]);
- 	} else if (hid_report->id == CORSAIR_VOID_FIRMWARE_REPORT_ID) {
-+		if (size != CORSAIR_VOID_FIRMWARE_REPORT_SIZE) {
-+			hid_warn(hid_dev, "unexpected firmware report of size %d", size);
-+			return 1;
-+		}
-+
- 		drvdata->fw_receiver_major = data[1];
- 		drvdata->fw_receiver_minor = data[2];
- 		drvdata->fw_headset_major = data[3];
+Yeah, please use the latest linus kernel. (v7.2-rc1, for now)
+
+> 
+> >>  	xbc_node_for_each_key_value(root, knode, val) {
+> >> @@ -439,10 +437,12 @@ int __init xbc_snprint_cmdline(char *buf, size_t
+> >size, struct xbc_node *root)
+> >>  
+> >>  		vnode = xbc_node_get_child(knode);
+> >>  		if (!vnode) {
+> >> -			ret = snprintf(buf, rest(buf, end), "%s ", xbc_namebuf);
+> >> +			ret = snprintf(buf ? buf + len : NULL,
+> >> +				       size > len ? size - len : 0,
+> >
+> >Why not keeping rest() and updating it, instead of open coding it?
+> >
+> >Thanks for the fix.
+> 
+> sure I'll do V2, btw if u didn't read, gemini found and fixed this.
+> As in fully. :)
+
+Hint: for fixing an issue, please just focus on fixing the issue
+and try minimizing the change for keeping backportability.
+
+Thanks,
+
+> 
+> 
+> 
+> >--breno
+> >
+> 
+> Thanks!
+
+
 -- 
-2.53.0
-
+Masami Hiramatsu (Google) <mhiramat@kernel.org>
 
