@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-270194-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-270195-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id kD5+M/EwRWrV8QoAu9opvQ
-	(envelope-from <stable+bounces-270194-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 01 Jul 2026 17:23:29 +0200
+	id ip94DxQxRWrZ8QoAu9opvQ
+	(envelope-from <stable+bounces-270195-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 01 Jul 2026 17:24:04 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2CBCD6EF35F
-	for <lists+stable@lfdr.de>; Wed, 01 Jul 2026 17:23:29 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8CD8E6EF367
+	for <lists+stable@lfdr.de>; Wed, 01 Jul 2026 17:24:03 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=seu.edu.cn header.s=default header.b=dDxEB+PM;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-270194-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-270194-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=seu.edu.cn header.s=default header.b=laeO97db;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-270195-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-270195-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=seu.edu.cn;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A8BFC31A4104
-	for <lists+stable@lfdr.de>; Wed,  1 Jul 2026 15:11:18 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id CF5B030C133E
+	for <lists+stable@lfdr.de>; Wed,  1 Jul 2026 15:12:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4196C47F2F9;
-	Wed,  1 Jul 2026 15:10:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CCF81480DEC;
+	Wed,  1 Jul 2026 15:11:33 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from mail-m155101.qiye.163.com (mail-m155101.qiye.163.com [101.71.155.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C041B3B960B;
-	Wed,  1 Jul 2026 15:10:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 448E5480962;
+	Wed,  1 Jul 2026 15:11:26 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782918610; cv=none; b=tGzuOZnFbTDkH58uAFOanEmcseghT2WvzZcthWiXYPZBDO0oltJ4qK1HAHQHo4aR+6RdTEVLV43WFMCueh8QsGe1h21tyl+tyYSJojPhA5ejBhbX//vGhJjOj+9mTvC9rMNE1QuThUuc7HSQB9U39QMsfoFZLCVYF3Fof+yO+IU=
+	t=1782918692; cv=none; b=qEBVdNRg7phnFQVWrzfRjwbUhMabO+3YOeJXGiKEhx5Z4huFWNoKgd5tp/sXKMZWRFZROWds+D0Kj+RslD8nX58HitJUXR7End+mhtjrQAVenloy2O/5UoIBG+LvESr6U6PHDzxT37odtNDoeA4top6PihYay4FvVYKm/y/jfJA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782918610; c=relaxed/simple;
-	bh=1YsAFSLztBNTbJTOaOF3NEdOyV5z4rSistGaGl9Yf+E=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=n5BTWVpjeCFDHZrkyxPARohaTmsjkNBOSkRWVOoYUM8lqlQ+cfyDqM7TdLey7Fs+kZ+XUpVP3th+wJiSQQReIHf0Gh/lkunhL6oA5PRHAKQTxz/DyDpAbKZNPhrm5lUhES2org4H6YJOebv0/4OPaX4JPnaE9pjAGHKZP3fLoyg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=seu.edu.cn; spf=pass smtp.mailfrom=seu.edu.cn; dkim=pass (1024-bit key) header.d=seu.edu.cn header.i=@seu.edu.cn header.b=dDxEB+PM; arc=none smtp.client-ip=101.71.155.101
+	s=arc-20240116; t=1782918692; c=relaxed/simple;
+	bh=pqXDIwoAyt2quUPbgSaISF8Jx1KHm3fHKzGycjMi/JU=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=XpJn+FPkbWZJGuJK6y4VBnoEGp9rl29w1NmZl2NmRrhKrK9PCn1sBFuzOKn4LLiBzA8ZdFrPlptIGu1nPfLc61KerpYYYZRoNgmvCzF1oLq411V/T3xMbcUyPYpUIA9MIJdvFemdO2imCBQYPV6P1alq1RBEj8aBBjBVTxLvlpw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=seu.edu.cn; spf=pass smtp.mailfrom=seu.edu.cn; dkim=pass (1024-bit key) header.d=seu.edu.cn header.i=@seu.edu.cn header.b=laeO97db; arc=none smtp.client-ip=101.71.155.101
 Received: from PC-202605011814.localdomain (unknown [58.241.16.34])
-	by smtp.qiye.163.com (Hmail) with ESMTP id 4484c23b8;
-	Wed, 1 Jul 2026 23:04:46 +0800 (GMT+08:00)
+	by smtp.qiye.163.com (Hmail) with ESMTP id 4484c23de;
+	Wed, 1 Jul 2026 23:06:15 +0800 (GMT+08:00)
 From: Runyu Xiao <runyu.xiao@seu.edu.cn>
-To: Peter Huewe <peterhuewe@gmx.de>,
-	Jarkko Sakkinen <jarkko@kernel.org>
-Cc: Jason Gunthorpe <jgg@ziepe.ca>,
-	linux-integrity@vger.kernel.org,
+To: Hugues Fruchet <hugues.fruchet@foss.st.com>,
+	Mauro Carvalho Chehab <mchehab@kernel.org>
+Cc: Peter Griffin <peter.griffin@linaro.org>,
+	linux-media@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org,
 	Runyu Xiao <runyu.xiao@seu.edu.cn>,
 	Jianhao Xu <jianhao.xu@seu.edu.cn>
-Subject: [PATCH] tpm: st33zp24: use unaligned accessors for TPM header fields
-Date: Wed,  1 Jul 2026 23:04:33 +0800
-Message-Id: <20260701150433.1220774-1-runyu.xiao@seu.edu.cn>
+Subject: [PATCH] media: sti: delta: use unaligned accessors for MJPEG SOF fields
+Date: Wed,  1 Jul 2026 23:06:10 +0800
+Message-Id: <20260701150610.1243552-1-runyu.xiao@seu.edu.cn>
 X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -56,15 +56,15 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-HM-Tid: 0a9f1e360c5403a1kunm60b814a21a2092
+X-HM-Tid: 0a9f1e37685f03a1kunm2a8d56bf1a2157
 X-HM-MType: 10
 X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
-	tZV1koWUFITzdXWRgWCB1ZQUpXWS1ZQUlXWQ8JGhUIEh9ZQVlCTRlCVkodQ09JSE1LGUgZTlYeHw
+	tZV1koWUFITzdXWRgWCB1ZQUpXWS1ZQUlXWQ8JGhUIEh9ZQVkZGBlPVh0YShhDSE9KQhlNHlYeHw
 	5VEwETFhoSFyQUDg9ZV1kYEgtZQVlOQ1VJT0pVSk1VSE9ZV1kWGg8SFR0UWUFZT0tIVUpLSEpPSE
 	xVSktLVUpCS0tZBg++
 DKIM-Signature: a=rsa-sha256;
-	b=dDxEB+PM+X3BsN0J1Q2+dPG0sq1PKK2YXugCEdYvwwaxoikIAE9uxLT4jQBR6hRn5vVd81Vqu68DiSc0sVTO+tZUojtrg+17ycfx4QR15gEeEpdUSrkBq4L/4we+ZpjfBGL7ePRrnUVroHWvTHI+fo7h7Zxe3iTe0FaIU+xrFNQ=; c=relaxed/relaxed; s=default; d=seu.edu.cn; v=1;
-	bh=OLXQGO6r/9j6+BXT0ROONL8TinGEenBbrQkhFP0G7J0=;
+	b=laeO97dbyxKIjEgKBD+ucg0FHJrITvFZ5wZFl4UVNea1YbF3u72dFM2J+HU3LkpnGYFhnLnKgsU4nSjJbDwR7gL6IfWrE85oCux32xfQdJd81zpBAco7cDXsAimeUHVcJWxZpApMDlqLIqvS+ZdG4TteBAZHy0tt6uSzPBDtL3U=; c=relaxed/relaxed; s=default; d=seu.edu.cn; v=1;
+	bh=WSg39v+YA5YT+PhbNRAE4fCI3WcM3DFOR25HCKVnYFY=;
 	h=date:mime-version:subject:message-id:from;
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-0.66 / 15.00];
@@ -73,21 +73,20 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[seu.edu.cn,none];
 	R_DKIM_ALLOW(-0.20)[seu.edu.cn:s=default];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-270194-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:peterhuewe@gmx.de,m:jarkko@kernel.org,m:jgg@ziepe.ca,m:linux-integrity@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,m:runyu.xiao@seu.edu.cn,m:jianhao.xu@seu.edu.cn,s:lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-270195-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:hugues.fruchet@foss.st.com,m:mchehab@kernel.org,m:peter.griffin@linaro.org,m:linux-media@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,m:runyu.xiao@seu.edu.cn,m:jianhao.xu@seu.edu.cn,s:lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_TO(0.00)[gmx.de,kernel.org];
 	FORWARDED(0.00)[lists@lfdr.de];
 	FORGED_SENDER(0.00)[runyu.xiao@seu.edu.cn,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[runyu.xiao@seu.edu.cn,stable@vger.kernel.org];
@@ -96,66 +95,66 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	RCPT_COUNT_SEVEN(0.00)[8];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	TO_DN_SOME(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,seu.edu.cn:dkim,seu.edu.cn:email,seu.edu.cn:mid,seu.edu.cn:from_mime,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,seu.edu.cn:dkim,seu.edu.cn:email,seu.edu.cn:mid,seu.edu.cn:from_mime,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,st.com:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 2CBCD6EF35F
+X-Rspamd-Queue-Id: 8CD8E6EF367
 
-The ST33ZP24 driver parses TPM command and response headers from byte
-transport buffers. st33zp24_recv() reads the response size from bytes
-2..5 of the TPM header, and st33zp24_send() reads the command ordinal
-from bytes 6..9 when IRQ mode waits for command completion.
+delta_mjpeg_read_header() scans a compressed MJPEG access unit byte by
+byte and passes the bytes after an SOF marker to delta_mjpeg_read_sof().
+The SOF parser then reads 16-bit big-endian fields directly from that
+byte stream.
 
-Those fields are 32-bit big-endian protocol fields, but their TPM
-header offsets are not 32-bit aligned: the header starts with a 2-byte
-tag, so both offsets 2 and 6 are 2 modulo 4. Even if the caller buffer
-is 4-byte aligned, casting buf + 2 or buf + 6 to __be32 * still creates
-a misaligned typed access.
+The SOF payload is not an aligned object. The marker scan can find the
+payload at any byte position, and the SOF layout also puts frame_height
+and frame_width after a one-byte sample_precision field. Those fields
+therefore sit at odd offsets within the payload even when the payload
+base happens to be 2-byte aligned.
 
-Use get_unaligned_be32() for both TPM header fields.
+Avoid casting the byte stream to __be16 pointers and use
+get_unaligned_be16() for the SOF length, height, and width fields.
 
 This issue was detected by our static analysis tool and confirmed by
 manual audit. A focused UBSAN alignment validation of the same typed
-load shape reported a misaligned __be32 access in st33zp24_recv().
+load shape reported a misaligned __be16 access in delta_mjpeg_read_sof().
 
-Fixes: bf38b8710892 ("tpm/tpm_i2c_stm_st33: Split tpm_i2c_tpm_st33 in 2 layers (core + phy)")
+Fixes: 433ff5b4a29b ("[media] st-delta: add mjpeg support")
 Cc: stable@vger.kernel.org
 Signed-off-by: Runyu Xiao <runyu.xiao@seu.edu.cn>
 ---
- drivers/char/tpm/st33zp24/st33zp24.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/media/platform/st/sti/delta/delta-mjpeg-hdr.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/char/tpm/st33zp24/st33zp24.c b/drivers/char/tpm/st33zp24/st33zp24.c
-index e2b7451ea7cc..2d74f30c2fc0 100644
---- a/drivers/char/tpm/st33zp24/st33zp24.c
-+++ b/drivers/char/tpm/st33zp24/st33zp24.c
-@@ -18,6 +18,7 @@
- #include <linux/uaccess.h>
- #include <linux/io.h>
- #include <linux/slab.h>
+diff --git a/drivers/media/platform/st/sti/delta/delta-mjpeg-hdr.c b/drivers/media/platform/st/sti/delta/delta-mjpeg-hdr.c
+index 90e5b2f72c82..849a5e118aec 100644
+--- a/drivers/media/platform/st/sti/delta/delta-mjpeg-hdr.c
++++ b/drivers/media/platform/st/sti/delta/delta-mjpeg-hdr.c
+@@ -4,6 +4,7 @@
+  * Author: Hugues Fruchet <hugues.fruchet@st.com> for STMicroelectronics.
+  */
+ 
 +#include <linux/unaligned.h>
+ #include "delta.h"
+ #include "delta-mjpeg.h"
  
- #include "../tpm.h"
- #include "st33zp24.h"
-@@ -364,7 +365,7 @@ static int st33zp24_send(struct tpm_chip *chip, unsigned char *buf,
- 		goto out_err;
+@@ -48,13 +49,13 @@ static int delta_mjpeg_read_sof(struct delta_ctx *pctx,
+ 		goto err_no_more;
  
- 	if (chip->flags & TPM_CHIP_FLAG_IRQ) {
--		ordinal = be32_to_cpu(*((__be32 *) (buf + 6)));
-+		ordinal = get_unaligned_be32(buf + 6);
- 
- 		ret = wait_for_stat(chip, TPM_STS_DATA_AVAIL | TPM_STS_VALID,
- 				tpm_calc_ordinal_duration(chip, ordinal),
-@@ -400,7 +401,7 @@ static int st33zp24_recv(struct tpm_chip *chip, unsigned char *buf,
- 		goto out;
- 	}
- 
--	expected = be32_to_cpu(*(__be32 *)(buf + 2));
-+	expected = get_unaligned_be32(buf + 2);
- 	if (expected > count || expected < TPM_HEADER_SIZE) {
- 		size = -EIO;
- 		goto out;
+ 	memset(header, 0, sizeof(*header));
+-	header->length           = be16_to_cpu(*(__be16 *)(data + offset));
++	header->length           = get_unaligned_be16(data + offset);
+ 	offset += sizeof(u16);
+ 	header->sample_precision = *(u8 *)(data + offset);
+ 	offset += sizeof(u8);
+-	header->frame_height     = be16_to_cpu(*(__be16 *)(data + offset));
++	header->frame_height     = get_unaligned_be16(data + offset);
+ 	offset += sizeof(u16);
+-	header->frame_width      = be16_to_cpu(*(__be16 *)(data + offset));
++	header->frame_width      = get_unaligned_be16(data + offset);
+ 	offset += sizeof(u16);
+ 	header->nb_of_components = *(u8 *)(data + offset);
+ 	offset += sizeof(u8);
 -- 
 2.34.1
 
