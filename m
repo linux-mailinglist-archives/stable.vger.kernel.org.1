@@ -1,91 +1,91 @@
-Return-Path: <stable+bounces-270137-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-270138-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id Qk1gElf2RGph4AoAu9opvQ
-	(envelope-from <stable+bounces-270137-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 01 Jul 2026 13:13:27 +0200
+	id enAGKwX4RGr74AoAu9opvQ
+	(envelope-from <stable+bounces-270138-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 01 Jul 2026 13:20:37 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id D679E6EC9E6
-	for <lists+stable@lfdr.de>; Wed, 01 Jul 2026 13:13:26 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id F16B46ECB9F
+	for <lists+stable@lfdr.de>; Wed, 01 Jul 2026 13:20:36 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=shutemov.name header.s=fm3 header.b="1 HNGK6P";
-	dkim=pass header.d=messagingengine.com header.s=fm1 header.b=DK3NQ4XE;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-270137-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-270137-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=shutemov.name header.s=fm3 header.b="A z8LmbY";
+	dkim=pass header.d=messagingengine.com header.s=fm1 header.b=WmQpulop;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-270138-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-270138-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=none;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id D272F309FAB0
-	for <lists+stable@lfdr.de>; Wed,  1 Jul 2026 11:07:55 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 20E67313C383
+	for <lists+stable@lfdr.de>; Wed,  1 Jul 2026 11:08:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2EB6A449EB6;
-	Wed,  1 Jul 2026 11:05:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67B0C44D6B2;
+	Wed,  1 Jul 2026 11:06:00 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from flow-a2-smtp.messagingengine.com (flow-a2-smtp.messagingengine.com [103.168.172.137])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55D9F43637D;
-	Wed,  1 Jul 2026 11:05:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5484844A718;
+	Wed,  1 Jul 2026 11:05:58 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782903958; cv=none; b=WtgXZhz6+MOtUqAG2xI7geQ8U+NtiJoes77BSYGiH824Gk7bfhWv85kfTbEMa78R+Hyusy58y1lByrJibsFljcZZEGk/MTWcDa/jdY0HRu7ORawLI14r45pbMAHKIMMpHt3KJhnYzw1DkLcKXWjRWnFdjlhLtDbAYtl279ba/uQ=
+	t=1782903960; cv=none; b=sv3/kG8HZAVl/e0t6y+zVlRE7/49t8VMOFIsQQQJUdz1tA6rILQNjk8/q4a29Cx1uBzHFSngNBNPhPQk9D3rktr8HrCZ8L5BqPC78K/hcMGgsARvwmr7LQMjWlF3f21gLDHRHCNVmJeVLmjmJVfqM1fUX+WmXoTiLepbpZU8PYs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782903958; c=relaxed/simple;
-	bh=vnWYLlGY+VUiBZLruci3hdmZHoM/Y601xdlONF5cgd0=;
+	s=arc-20240116; t=1782903960; c=relaxed/simple;
+	bh=zbfTA2VJjWQfugM0y3HKDpUMdj5msjiIH2TZdK1WrjI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZNHGzc7G6e0cbBSN19ZCFzrE0ORbqRoJV6GSIdan8GyVU1yCjIbhIgHJShMJnJrTToyCvlDVk9P2pb59CwtuZEcFhGrKGmEGzOaDIjd4JZM3lWFlgg+HtFCoHfLHQmZd8EcgrznkSo6HdPKFhiMzdmz3RzWD0YYDslTM/hGzbpI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=shutemov.name; spf=pass smtp.mailfrom=shutemov.name; dkim=pass (2048-bit key) header.d=shutemov.name header.i=@shutemov.name header.b=1HNGK6PG; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=DK3NQ4XE; arc=none smtp.client-ip=103.168.172.137
-Received: from phl-compute-06.internal (phl-compute-06.internal [10.202.2.46])
-	by mailflow.phl.internal (Postfix) with ESMTP id A084013803F4;
-	Wed,  1 Jul 2026 07:05:55 -0400 (EDT)
+	 MIME-Version; b=ROacXLT46LDhySTIGW0RbSc3hKOH6YiDt+UcXCJwqrZqaP2EHBs8cQLovqGvghv7FCR3RpAAhm8jGncoI5pAWLVsgdYQSHLTwFFWD+cPnSu/qXligTt8FiqsMuLJHqWijcoHVNdPb9hZcXnxXGPJenUM4/4RjD4Yk+t392+i52U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=shutemov.name; spf=pass smtp.mailfrom=shutemov.name; dkim=pass (2048-bit key) header.d=shutemov.name header.i=@shutemov.name header.b=Az8LmbYm; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=WmQpulop; arc=none smtp.client-ip=103.168.172.137
+Received: from phl-compute-01.internal (phl-compute-01.internal [10.202.2.41])
+	by mailflow.phl.internal (Postfix) with ESMTP id 9A10E13803F8;
+	Wed,  1 Jul 2026 07:05:57 -0400 (EDT)
 Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-06.internal (MEProxy); Wed, 01 Jul 2026 07:05:55 -0400
+  by phl-compute-01.internal (MEProxy); Wed, 01 Jul 2026 07:05:57 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shutemov.name;
 	 h=cc:cc:content-transfer-encoding:content-type:date:date:from
 	:from:in-reply-to:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to; s=fm3; t=1782903955; x=
-	1782911155; bh=INf90bYj02ZOXa5gxGLhfm9g3GjFI2Y+RZknOVHeSVI=; b=1
-	HNGK6PGm8lhBoLfx+bsLsMjEUvmy57/G9Ychy/jiJidAPi5kNOCnuOVfa6OR7kW9
-	OaDFM8sskNpaq7zacqhkgljLiXALkUxzl+Rn0r+CAtqN+n18L9rG8Hz6Amg78kLt
-	TN/2ac/ONpDgeAfhq8C+BbvU5CA/E4QNdl1zXU1I/el7TKoE9WloFwrhIDbKmD5F
-	EocRUEAPGNmUUrE6BhYTVU94Ik1YJUyN1i33OKvhmne2fpGrg8VQ/2xWWCzw8lXT
-	5h6777Lwpi4zOK7S1MKd5eLBVuwdo0oUiXGHE/gwk6IZlSlwmQzsyY9yIeG4HFM7
-	XsAhA9BqdmrMzOoY2NrZA==
+	:reply-to:subject:subject:to:to; s=fm3; t=1782903957; x=
+	1782911157; bh=112Yvu8MDmd9GxnWgYRo8OOQeNBIsEEGqTciWSFqlIs=; b=A
+	z8LmbYmjvPWAmMrAqBDP/A3213iIS8zPl7rpuHyv0PnrNDkGRM0sa60SAl5nUtJj
+	uyIiihV6ixPExRxmQ9TLwDCNY+v+zp8bBiQoXqHb3M9iNlJEusKe+Q1VM6/XwEPF
+	Eu7UvpB4XnH1+xGEXBKzN9oxgD7hphrkO/buRj+dwg7viBPp8X5hN2sEHmrqz4Id
+	bg8xaS4ba7CHGApCgOkDJpiIi0GPtRu/lcq590dv8N7zxalyFi4P2MjKV5mo4+m+
+	s7OqYY9SGeq5c31NsI//98iYNctmw3sfRStI72kMCapYlS+OqtXj2LDVkb8n+TWY
+	HOlcURTTfOaNRj7bz7IFw==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
 	messagingengine.com; h=cc:cc:content-transfer-encoding
 	:content-type:date:date:feedback-id:feedback-id:from:from
 	:in-reply-to:in-reply-to:message-id:mime-version:references
 	:reply-to:subject:subject:to:to:x-me-proxy:x-me-sender
-	:x-me-sender:x-sasl-enc; s=fm1; t=1782903955; x=1782911155; bh=I
-	Nf90bYj02ZOXa5gxGLhfm9g3GjFI2Y+RZknOVHeSVI=; b=DK3NQ4XEkzFZZXQdR
-	56X2m4X9xudR2huhIYvJADnJA6xM2FtYasc4LVgWWzg6zwA1ZeoO4fcr5SgB3CuX
-	Mv1WjRIe6+LafgMNPOEQ5/RIdu4On/rPKlUk1Ao9Ka7RVz0D5axHlQCFchObvSbT
-	RlOTLdxNQrezSGRtPswMNG1YdNaUuVSAqI6V35TibxrgQoqxnvfNGL+XpShwAaYu
-	inY3d+zV/UqN3NYDLbX2zGRMnaflNSj7UuEfMNdrSwNg7rQLAOLnAuDFj2Y1Oizy
-	RVo43iFwM9Fvd+ph1MnYBk8tge18Fxhv3TBA8Ybp7Kn/OvDurIAlMH2vw1QCuLr4
-	hI+7A==
-X-ME-Sender: <xms:k_REap1SOYH0tPFzXmEpY-VmA-8CBpr8N97cZ29IsnTlVWVRpQyehA>
-    <xme:k_REatSRlerK8LvYAaC0NXAMNRw6Mggujg3jTimA9Ak8VS7wO87VuNdPHm7CWqytm
-    HH2Kikra7f2IfasgybcxUgs5NhWD4aXufh9lP2EghcRitEUct2cwKo>
-X-ME-Received: <xmr:k_REauYH24EIC0Dh6g2LMp1oT56wV71vlaLWX6bK45O4fIjW_w5kl_LEZ43xcQ>
-X-ME-Proxy-Cause: dmFkZTG1WSuQ4n80upOxybLx7D4c9WF4TSUsQHN7nA5ZgVwSLIcrLvfGVrCliwa4vJT3lR
-    P9dv/PFF4rsFhBDneGlP6wSoLg+1MglTYuX2mBzi6RfF6x0Z2DrDLWcE5E0xq10HLkHsdU
-    ZOIPsDYdruBhfOMCqig8YFU8vwPEenbaGOEuLD/ruEVlteQ+r5gklfQyTq/swIAzAxWjjX
-    RTlgqQGsfDhGK3TAVgg99XA7WyvNJjamDMgtVWq7MDShrBdoFGaf6e28fK3rTUFlTIGczH
-    qR3P60m7UGL3FGdWiVAh7bKRTXZamkJrYsmzSAzWdw/VuV5EjBgANMNR8H/7m2Uh9nM3Uv
-    T82BrB6KsGVPy1GvMF5GFyFNQZ7WJVN+vzpWMyDsYvgIqTX0hjUpKNmhJ288/1wL5ZxMUn
-    XFJ0ygiKlK/Rr3tbv/ng9OJrOeELeJNG2II+pUCu3fFYMU7A3cTEYuke83X0HA4jf2CfsT
-    eJLg2xOxL7pXBuZ4tx/rI28O/6k1z6sCVPaix3LHmP7YqfeFTh4Vos0yb1dh8Mbqur/nFp
-    DXPmiX0lKmkHwkHPwDITFjBCt87QVdUT1lp5s5ZrtsASA3EyeM9OiL/NixD/IQqM5N+3b9
-    oTMxRnIPxBpgNrt5/bM7i2dl4uVky8ZXbHXUKvOwH/+T+wptdv/Lq9y6Y+wg
-X-ME-Proxy: <xmx:k_REajAILOV4LHZp2ww3Gzv0uDDxyKR2oJ5BTiwmvMqo4vGdMdRhIw>
-    <xmx:k_REatCBHLYSyJnr3q2c8UJKB7IWfHpCjXCQ5ACzjPFV3cpj1p9lGA>
-    <xmx:k_REanHMlfhtuOkwgN2w0xenkNt1yeszzeeNRfQLykpE0eVlOcQvRQ>
-    <xmx:k_REaokunLE-y-FoT92hZvaVsvvt1Zv-yjkEv8ow7pmLlVLSFEKN7w>
-    <xmx:k_REaqNIPK7YrMQ8pQpBu7vM2DKpfuXBZMVjQs9quwInor9HK1aKSekI>
+	:x-me-sender:x-sasl-enc; s=fm1; t=1782903957; x=1782911157; bh=1
+	12Yvu8MDmd9GxnWgYRo8OOQeNBIsEEGqTciWSFqlIs=; b=WmQpulopXQ9xFiOKn
+	pWP+mq7Paimh4vny+IBOmKHfGDlZTqI3C1iFry5fKoEpPAZqsqWSNuQhbBc6v4GC
+	G5aFR1uYtc6ohG6bnYGFtlgCyxySFJPsEDpoXwcaACDUCivX5M1L57Hd4C1RF0k/
+	puBSYtaAR3xD9OL+fkxqinXR7RIzHMqZ4kjPYSAJjfdNl1kNTjLt0v4HqSmh1n7U
+	GpWl2xT6RNdPFh2miKPcTZsJRAg03KITAJvUrYoAibp1oB9xljEpOVoxyosjZ+sC
+	IUj0dCrEJqaBxY+kNSm+aEkPaLvt+QqSitZvdFSsi9SaF75WsmXj3E+/y60mv+ac
+	uDG/g==
+X-ME-Sender: <xms:lfREanf5L5wqq7v9QyyXeOeF3qDbHsa6DwC9l3tuQ2VCysAA-z1_bw>
+    <xme:lfREaqZ4etyFKVWXSJQGXc-9dejLHKX1xLITQ-JRsKFGl0IKYF9qH_5v9tawoPJxq
+    rGYPmgDH91ZyZ9kCA229han5SRdRXz8Sskl_KveA6nYGXnMGZrVrLs>
+X-ME-Received: <xmr:lfREalD7SQ3jeb-AajfGLY2acmBCWmz89Sm6oqg7RtXDKSOlnnGw3mjgEujB2A>
+X-ME-Proxy-Cause: dmFkZTE0CVziHoiM8lzCNq0CXTDvT1m8g9dMJX/ma1Phno0+DXyt3F2epyBsPzLGmuODEG
+    w+lKAQKeIhJbndgynfjWNe3aLFPuXJC7KrfHrflE9Zcvqzigau48rDuGMiujwVKGzkxGJr
+    ff59+opHRvZgty57A2ecfNVQ2MzFmGJeWTYY7Ocv2TCPIZc0BdhaKS2GE4lY3W3pRR9ayT
+    W8eTKuF/yDs7o8PUE5UEZbuPBNm34DTNlZM1JgU6HQadcwGavxXtQt3Erssu8rRnm9nIOO
+    QK4cb0e8dX2TgcIBxKcwTGesaEkuFsrm+rSw7w7vu/nxAXi9tazUrQLkxIFXg00QluzGjT
+    CT8Q1SHN4ekxslxD78/pL4o5acLYLuJV7kjeUuCSyQM4YQi7ax+ebT5LpM1n2MBpn+GrUo
+    xy8Cf69HoghnrVXAiC4xfpze6NkBXmEqLySjlgBOlEZlA5uj32INTqCIeyoIv2ldBiQTUs
+    oABHQtAy4A41OHnUAHXRPhrdKCBsZW61jS1cu9CZkbz1SPHL7jIEYlXPqNYocRzYGpBAfJ
+    lm5lvTFT8ajU/q6VzlGjclgsdEnBE0SJk2s/phdQeXf0Wu8LAlfHoLRwgevUQLTx9UuAds
+    YLDkI+MF0sn7TAJ9E4cYGY5mLrMsDW8X60KNqV4FqssOV5xEv7FXZRTYQMOQ
+X-ME-Proxy: <xmx:lfREalLo0kPNrOa3H4Cy-cB31_ufEJ34fu4RFdbdeHGEpdnAOdZMyw>
+    <xmx:lfREakp84AuAY5sD4wR7vdqxiG-N4cO-Xrujsu0BEvOr2k-ukdl9oQ>
+    <xmx:lfREamMOiUS3zVetYthzoppE9mTjRxathlQlbXHtJkYt8N2ozKb9xA>
+    <xmx:lfREapOuhjx3hkfCgTPwFWDwL-caC9ifbgZriOlMNiBKLqcDW2y3ag>
+    <xmx:lfREal3sCyZg4v5VK8QR8dz2a1p9kJni_zK92vLuj7B8wwXcIq1plXH->
 Feedback-ID: ie3994620:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
- 1 Jul 2026 07:05:54 -0400 (EDT)
+ 1 Jul 2026 07:05:56 -0400 (EDT)
 From: Kiryl Shutsemau <kirill@shutemov.name>
 To: Dave Hansen <dave.hansen@linux.intel.com>,
 	Thomas Gleixner <tglx@kernel.org>,
@@ -108,9 +108,9 @@ Cc: Sean Christopherson <seanjc@google.com>,
 	linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org,
 	"Kiryl Shutsemau (Meta)" <kas@kernel.org>
-Subject: [PATCH v5 2/3] x86/insn-eval: Add insn_assign_reg() helper
-Date: Wed,  1 Jul 2026 12:05:46 +0100
-Message-ID: <20260701110547.764083-3-kirill@shutemov.name>
+Subject: [PATCH v5 3/3] x86/tdx: Fix zero-extension for 32-bit port I/O
+Date: Wed,  1 Jul 2026 12:05:47 +0100
+Message-ID: <20260701110547.764083-4-kirill@shutemov.name>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260701110547.764083-1-kirill@shutemov.name>
 References: <20260701110547.764083-1-kirill@shutemov.name>
@@ -128,14 +128,14 @@ X-Spamd-Result: default: False [1.34 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[shutemov.name:s=fm3,messagingengine.com:s=fm1];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
 	RCPT_COUNT_TWELVE(0.00)[21];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-270137-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-270138-lists,stable=lfdr.de];
 	FORGED_SENDER(0.00)[kirill@shutemov.name,stable@vger.kernel.org];
 	FORGED_RECIPIENTS(0.00)[m:dave.hansen@linux.intel.com,m:tglx@kernel.org,m:mingo@redhat.com,m:bp@alien8.de,m:x86@kernel.org,m:seanjc@google.com,m:pbonzini@redhat.com,m:sathyanarayanan.kuppuswamy@linux.intel.com,m:kai.huang@intel.com,m:xiaoyao.li@intel.com,m:rick.p.edgecombe@intel.com,m:binbin.wu@linux.intel.com,m:david.laight.linux@gmail.com,m:ak@linux.intel.com,m:djbw@kernel.org,m:tsyrulnikov.borys@gmail.com,m:kvm@vger.kernel.org,m:linux-coco@lists.linux.dev,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,m:kas@kernel.org,m:davidlaightlinux@gmail.com,m:tsyrulnikovborys@gmail.com,s:lists@lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
@@ -151,150 +151,63 @@ X-Spamd-Result: default: False [1.34 / 15.00];
 	DKIM_TRACE(0.00)[shutemov.name:+,messagingengine.com:+];
 	RCVD_COUNT_FIVE(0.00)[6];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	ALIAS_RESOLVED(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,shutemov.name:dkim,shutemov.name:mid,shutemov.name:from_mime]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[shutemov.name:dkim,shutemov.name:mid,shutemov.name:from_mime,vger.kernel.org:from_smtp,messagingengine.com:dkim,intel.com:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,instruction.io:url]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: D679E6EC9E6
+X-Rspamd-Queue-Id: F16B46ECB9F
 
 From: "Kiryl Shutsemau (Meta)" <kas@kernel.org>
 
-KVM's instruction emulator has a small helper, assign_register(), that
-writes a value into a sub-register with x86 partial-register-write
-semantics: 1- and 2-byte writes leave the upper bits of the destination
-untouched, 4-byte writes zero-extend to 64 bits, 8-byte writes overwrite
-the full register.
+According to x86 architecture rules, 32-bit operations zero-extend the
+result to 64 bits. The current implementation of handle_in() only masks
+the lower 32 bits, which preserves the upper 32 bits of RAX when a
+32-bit port IN instruction is emulated.
 
-The TDX guest #VE handler needs the same logic for port I/O emulation
-to get 32-bit zero-extension right.  Rather than copy-pasting the
-helper, lift it to <asm/insn-eval.h> as insn_assign_reg() so both can
-use it.
+Use insn_assign_reg() to write the result back into RAX with proper
+partial-register-write semantics: 1- and 2-byte forms leave the upper
+bits untouched, the 4-byte form zero-extends to the full register.
 
-Add <asm/insn.h> to the header's includes so it builds standalone in
-callers that have not pulled it in transitively.
-
-No functional change.
-
+Fixes: 03149948832a ("x86/tdx: Port I/O: Add runtime hypercalls")
+Reported-by: Borys Tsyrulnikov <tsyrulnikov.borys@gmail.com>
+Link: https://lore.kernel.org/all/CAKw_Dz96rfSQc6Rn+9QBcUFHhmkK+9zu+P=bxowfZwxrATCBRg@mail.gmail.com/
 Signed-off-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
-Cc: stable@vger.kernel.org # prerequisite for the following 32-bit port I/O zero-extension fix
+Reviewed-by: Binbin Wu <binbin.wu@linux.intel.com>
+Cc: stable@vger.kernel.org
 ---
- arch/x86/include/asm/insn-eval.h | 30 ++++++++++++++++++++++++++++++
- arch/x86/kvm/emulate.c           | 26 ++++----------------------
- 2 files changed, 34 insertions(+), 22 deletions(-)
+ arch/x86/coco/tdx/tdx.c | 8 +++-----
+ 1 file changed, 3 insertions(+), 5 deletions(-)
 
-diff --git a/arch/x86/include/asm/insn-eval.h b/arch/x86/include/asm/insn-eval.h
-index 4733e9064ee5..0c87759816d3 100644
---- a/arch/x86/include/asm/insn-eval.h
-+++ b/arch/x86/include/asm/insn-eval.h
-@@ -9,6 +9,7 @@
- #include <linux/compiler.h>
- #include <linux/bug.h>
- #include <linux/err.h>
-+#include <asm/insn.h>
- #include <asm/ptrace.h>
+diff --git a/arch/x86/coco/tdx/tdx.c b/arch/x86/coco/tdx/tdx.c
+index b8bbd715fb62..f904a636d449 100644
+--- a/arch/x86/coco/tdx/tdx.c
++++ b/arch/x86/coco/tdx/tdx.c
+@@ -694,8 +694,8 @@ static bool handle_in(struct pt_regs *regs, int size, int port)
+ 		.r13 = PORT_READ,
+ 		.r14 = port,
+ 	};
+-	u64 mask = GENMASK(BITS_PER_BYTE * size - 1, 0);
+ 	bool success;
++	u64 val;
  
- #define INSN_CODE_SEG_ADDR_SZ(params) ((params >> 4) & 0xf)
-@@ -46,4 +47,33 @@ enum insn_mmio_type insn_decode_mmio(struct insn *insn, int *bytes);
+ 	/*
+ 	 * Emulate the I/O read via hypercall. More info about ABI can be found
+@@ -703,11 +703,9 @@ static bool handle_in(struct pt_regs *regs, int size, int port)
+ 	 * "TDG.VP.VMCALL<Instruction.IO>".
+ 	 */
+ 	success = !__tdx_hypercall(&args);
++	val = success ? args.r11 : 0;
  
- bool insn_is_nop(struct insn *insn);
+-	/* Update part of the register affected by the emulated instruction */
+-	regs->ax &= ~mask;
+-	if (success)
+-		regs->ax |= args.r11 & mask;
++	insn_assign_reg(&regs->ax, val, size);
  
-+/*
-+ * Write @val into *@reg with x86 partial-register-write semantics: a 1-
-+ * or 2-byte write leaves the upper bits of the destination untouched; a
-+ * 4-byte write zero-extends to 64 bits (matching IN[BWL], MOV[BWL]
-+ * etc.); an 8-byte write overwrites the full register.
-+ *
-+ * @reg need not be 8-byte aligned: KVM's instruction emulator points
-+ * into the middle of a register slot to address the high-byte
-+ * registers (AH, CH, DH, BH).  Use narrow stores for the sub-word
-+ * cases so that the access width matches @bytes.
-+ */
-+static inline void insn_assign_reg(unsigned long *reg, u64 val, int bytes)
-+{
-+	switch (bytes) {
-+	case 1:
-+		*(u8 *)reg = (u8)val;
-+		break;
-+	case 2:
-+		*(u16 *)reg = (u16)val;
-+		break;
-+	case 4:
-+		*reg = (u32)val;
-+		break;
-+	case 8:
-+		*reg = val;
-+		break;
-+	}
-+}
-+
- #endif /* _ASM_X86_INSN_EVAL_H */
-diff --git a/arch/x86/kvm/emulate.c b/arch/x86/kvm/emulate.c
-index b566ab5c7515..c6dcb5ac48af 100644
---- a/arch/x86/kvm/emulate.c
-+++ b/arch/x86/kvm/emulate.c
-@@ -24,6 +24,7 @@
- #include "kvm_emulate.h"
- #include <linux/stringify.h>
- #include <asm/debugreg.h>
-+#include <asm/insn-eval.h>
- #include <asm/nospec-branch.h>
- #include <asm/ibt.h>
- #include <asm/text-patching.h>
-@@ -439,25 +440,6 @@ static void assign_masked(ulong *dest, ulong src, ulong mask)
- 	*dest = (*dest & ~mask) | (src & mask);
+ 	return success;
  }
- 
--static void assign_register(unsigned long *reg, u64 val, int bytes)
--{
--	/* The 4-byte case *is* correct: in 64-bit mode we zero-extend. */
--	switch (bytes) {
--	case 1:
--		*(u8 *)reg = (u8)val;
--		break;
--	case 2:
--		*(u16 *)reg = (u16)val;
--		break;
--	case 4:
--		*reg = (u32)val;
--		break;	/* 64b: zero-extend */
--	case 8:
--		*reg = val;
--		break;
--	}
--}
--
- static inline unsigned long ad_mask(struct x86_emulate_ctxt *ctxt)
- {
- 	return (1UL << (ctxt->ad_bytes << 3)) - 1;
-@@ -505,7 +487,7 @@ register_address_increment(struct x86_emulate_ctxt *ctxt, int reg, int inc)
- {
- 	ulong *preg = reg_rmw(ctxt, reg);
- 
--	assign_register(preg, *preg + inc, ctxt->ad_bytes);
-+	insn_assign_reg(preg, *preg + inc, ctxt->ad_bytes);
- }
- 
- static void rsp_increment(struct x86_emulate_ctxt *ctxt, int inc)
-@@ -1767,7 +1749,7 @@ static int load_segment_descriptor(struct x86_emulate_ctxt *ctxt,
- 
- static void write_register_operand(struct operand *op)
- {
--	return assign_register(op->addr.reg, op->val, op->bytes);
-+	return insn_assign_reg(op->addr.reg, op->val, op->bytes);
- }
- 
- static int writeback(struct x86_emulate_ctxt *ctxt, struct operand *op)
-@@ -2008,7 +1990,7 @@ static int em_popa(struct x86_emulate_ctxt *ctxt)
- 		rc = emulate_pop(ctxt, &val, ctxt->op_bytes);
- 		if (rc != X86EMUL_CONTINUE)
- 			break;
--		assign_register(reg_rmw(ctxt, reg), val, ctxt->op_bytes);
-+		insn_assign_reg(reg_rmw(ctxt, reg), val, ctxt->op_bytes);
- 		--reg;
- 	}
- 	return rc;
 -- 
 2.54.0
 
