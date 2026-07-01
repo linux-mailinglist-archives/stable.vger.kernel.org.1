@@ -1,186 +1,170 @@
-Return-Path: <stable+bounces-270257-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-270258-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id WjwWM3qTRWq5CQsAu9opvQ
-	(envelope-from <stable+bounces-270257-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 00:23:54 +0200
+	id g3K1JcqYRWrZCgsAu9opvQ
+	(envelope-from <stable+bounces-270258-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 00:46:34 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 359A36F20F9
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 00:23:54 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2CB376F2252
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 00:46:34 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=paul-moore.com header.s=google header.b="b9/JBzma";
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-270257-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-270257-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=none) header.from=paul-moore.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=i18iBZCM;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-270258-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-270258-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=none;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id DD0233061A07
-	for <lists+stable@lfdr.de>; Wed,  1 Jul 2026 22:22:25 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 9E501302A4F7
+	for <lists+stable@lfdr.de>; Wed,  1 Jul 2026 22:46:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 227BA420E70;
-	Wed,  1 Jul 2026 22:22:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9E4B34D4C9;
+	Wed,  1 Jul 2026 22:46:29 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qv1-f50.google.com (mail-qv1-f50.google.com [209.85.219.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09F2E3749E7
-	for <stable@vger.kernel.org>; Wed,  1 Jul 2026 22:22:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74DEF431E64;
+	Wed,  1 Jul 2026 22:46:28 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782944544; cv=none; b=qiOuKGL0c2RXG+FofHCUZj49F0jGaW4YY0xff3bTsavk4XlghuMdObz9osiwfu5BKHpRx599ZIl2p84w1Hcr7iRkZ1fTpgALQAuXFlVQuK3ggbsPCURpntXzUTrpzGZZE+UsF6KlZRM6/XrEFCYY6wG20+rZbWXOyTV/rkDNTAE=
+	t=1782945989; cv=none; b=b02kOSp97HJjlrX/e4Kdz4bkGKSB5Tv9lbBFhgWvLHA1mmN5XllRiJnatTM1MB8t8HWJUVQylDo9N1aodNK5wZp5Md1M/kWRPpzLtDaePcwmQypFNjStoPcvd+0rN0EIwe3XnaNmPyITY/fWFzSfodFgp1Q20lPQBDzKc4t27oc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782944544; c=relaxed/simple;
-	bh=nsC8NFJSg8O/cmJlglfgAIYEwbzzUARXd3KnJnP1he4=;
-	h=Date:Message-ID:MIME-Version:Content-Type:From:To:Cc:Subject:
-	 References:In-Reply-To; b=iSA3TKcPTGeG8+5dFSbmijVUMk2ev2hnD+EYNgoxGDMhQz1InSqSnYb8cTENu1/4RvpSqZPbS4NjCs5SDtDc9tx+D17ZoO5qxSkjHRauE9IOVZC4bHrLGshg3D/RQ3iAMI86AEOHsLq4oO0bGw/mHBF1hRbv2xAFNeyJuRAp0zM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=paul-moore.com; spf=pass smtp.mailfrom=paul-moore.com; dkim=pass (2048-bit key) header.d=paul-moore.com header.i=@paul-moore.com header.b=b9/JBzma; arc=none smtp.client-ip=209.85.219.50
-Received: by mail-qv1-f50.google.com with SMTP id 6a1803df08f44-8f0e5e36912so7895316d6.2
-        for <stable@vger.kernel.org>; Wed, 01 Jul 2026 15:22:22 -0700 (PDT)
+	s=arc-20240116; t=1782945989; c=relaxed/simple;
+	bh=4BQJ6/La1Zi2CpPURsblT4GCBiuiaNq4adJS1fpqD7I=;
+	h=Date:To:From:Subject:Message-Id; b=dM9P3p0XOffh/4PIXYD0ZuxQ5I5JZ4LD2MdoEAE1sgbY2HvaC6PoZnSAzwhYpspoobRk8pIsY60I+cJ9NUQFysV86WFrY7WAzjEsmR198dMUNN9rWNQsBTroAzgOuHo8hovFopRQWDdoprr1DsgGCWdozil5ogjHITZN3fGurQs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=i18iBZCM; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E07E61F000E9;
+	Wed,  1 Jul 2026 22:46:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=paul-moore.com; s=google; t=1782944542; x=1783549342; darn=vger.kernel.org;
-        h=in-reply-to:references:subject:cc:to:from:content-transfer-encoding
-         :mime-version:message-id:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=fDjVbAPkrL6odl57wphrkqpaqgjfsBhCuJy+AzVkWyk=;
-        b=b9/JBzmajA1J46/l6ayN9WrxEGU9lxfMeQIpquWhmV/EstyuqJLXmix32Nagjqtp8/
-         bj8XHMZvqePrhuJLFGIhoy5iomO/UACJIEUYDahCzIY54WlZTm3C4hFu16nw3F+zS5bd
-         Ar2MLfZERweKG8RS+4rEm94d+J4ViH/4cR8Nkq/m8IiaWTKgtNKsgoCQaR3AZxk/L39M
-         lFS467afguJUbvtQy0ZDVDUHtW5U83X1cQmWB3ICwWp6EV5GDwCNhcEa09zPVlCjuG8w
-         eFHLmwrn+UuAtjT0uUfi28PIHh/bywoFoRrD9PqSdK+ABUcz8pJivHX3E2D8uOuRK9E3
-         Iprw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782944542; x=1783549342;
-        h=in-reply-to:references:subject:cc:to:from:content-transfer-encoding
-         :mime-version:message-id:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=fDjVbAPkrL6odl57wphrkqpaqgjfsBhCuJy+AzVkWyk=;
-        b=FV2+qx2YH38kyBfNPz3Cxn8pYOI2hBlJ9ARLOo3sPcHcDHLcfr+NUTrRbRq7k7gr1c
-         YjB8CB/oOqdv56st1xnYGErlwyMaG9q8tQHZh2BXy3XgQVXVpmoo7rMAiLoawhH8GVS6
-         OVaDcYmW+GGBrPTimC/zOncbJPwWbcyHahT8Cm+uxmK7/RvEHupXz4Icx6nJ1ZrBrclU
-         qrlelxyxl8XwDBlEDjfEp2erLvRB2c+ZcjV4vSUF1MJ5xypKZTaNmLtz8UF9ugkb5aEw
-         VWa8/KeK151+c+Jc6z8IJrX9nS0IBMYrgj9k5bLcg7Oh6M2YpIu7zUscmFCRzLvpBo0s
-         xkQw==
-X-Forwarded-Encrypted: i=1; AHgh+RoHVG2kWywefc9nnqCrQrkkOBnYCVQIg4tp4kPLR4HokYiv6bXj21pyzR6nRh+HXsLO8skrjKI=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzkqw7fqJgk5n0PrbWEsfrfzvn4OiAmFS5iQE5TRfNEYhOdNE59
-	+KJYqtIB/NzvgOuP4ipVQmOBHEtzMHBGqEci8avti6jVkkYS8PuqceRrAQ70mZWOUQ==
-X-Gm-Gg: AfdE7ckhr4dTeP9MJSkX2R9dciIZdDBPazSm+OTYthKyiasfIMsPQcwEN44YBC3NCTG
-	vZcVkyR5kIGUnIqzUvvEAwa76QpOQUXtQuOe8TQBS0i7bY/yG2xpeQIPM5RDNv9rfqrZHWKCIE/
-	timSW6Pg6c0V1zALxL2MUwVEzxE27fuGe463vGa50AbmNMkrdOfC8WU7oJrrepBd4MhVz/cHyLK
-	XklVGJAvspl8vL1qHb1A3Z/IkQLG7OsX6xtDWEeFBDjSCxgIKGnQyOs9IuoG1gmLKLLffLpNMg6
-	bd3nHdwDzDnxgzDf1OZOLU2SymZgbB7GfgE4lRmmvbh3dLEUW/Y5he5Kdrh9vRhD0SIAceQJ1/M
-	rED37rcAPy4Q+gn+hMXkpbcx1tf21BI74bWB0C0/OLAgdJUCxbv/92HgShQrOe/smjSvvjpGwow
-	6G6aFQX/tTUpUj3HYUiA+FLuuJWJVfEnCcV6eb71CgBe15hFyC7bKblNPQsw==
-X-Received: by 2002:a05:6214:2a47:b0:8f3:b922:b54f with SMTP id 6a1803df08f44-8f3ca37a4d6mr52803116d6.51.1782944542073;
-        Wed, 01 Jul 2026 15:22:22 -0700 (PDT)
-Received: from localhost (pool-71-126-255-178.bstnma.fios.verizon.net. [71.126.255.178])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-8f4718141e6sm9298786d6.24.2026.07.01.15.22.20
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 01 Jul 2026 15:22:21 -0700 (PDT)
-Date: Wed, 01 Jul 2026 18:22:20 -0400
-Message-ID: <0fa8e2f769f889368756a1ed1f12ea8e@paul-moore.com>
+	d=linux-foundation.org; s=korg; t=1782945988;
+	bh=W6fw8oIYPIPzVJtISldNy1Ra4fPh7hv35nBAA7MOXeA=;
+	h=Date:To:From:Subject;
+	b=i18iBZCMsnU5FSyElcXjd7gJNcnOAmaznCriHLx9lOgagi/2LoYZQsPgGIC5T4r/8
+	 nDT93b9ODG4SXu2k+UqSSaKafaxi5Nf6m7aVnGbY3InXTqqTiw8S2oUCWqLb1rk5wM
+	 Qj17U+mVOSlGkybsPdwg9ciiAeZbYnx/cL486EbU=
+Date: Wed, 01 Jul 2026 15:46:27 -0700
+To: mm-commits@vger.kernel.org,stable@vger.kernel.org,nathan@kernel.org,david.laight.linux@gmail.com,rkr0k0r@gmail.com,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: + tools-compiler-match-glibc-242-definition-of-__attribute_const__.patch added to mm-nonmm-unstable branch
+Message-Id: <20260701224627.E07E61F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0 
-Content-Type: text/plain; charset=UTF-8 
-Content-Transfer-Encoding: 8bit 
-X-Mailer: pstg-pwork:20260701_1640/pstg-lib:20260701_1540/pstg-pwork:20260701_1640
-From: Paul Moore <paul@paul-moore.com>
-To: Tristan Madani <tristmd@gmail.com>, Stephen Smalley <stephen.smalley.work@gmail.com>
-Cc: Ondrej Mosnacek <omosnace@redhat.com>, Richard Haines <richard_c_haines@btinternet.com>, selinux@vger.kernel.org, stable@vger.kernel.org, linux-kernel@vger.kernel.org, tristan@talencesecurity.com
-Subject: Re: [PATCH v3] selinux: avoid sk_socket dereference in  selinux_sctp_bind_connect()
-References: <20260625235336.3641828-1-tristmd@gmail.com>
-In-Reply-To: <20260625235336.3641828-1-tristmd@gmail.com>
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.66 / 15.00];
+X-Spamd-Result: default: False [0.34 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[paul-moore.com,none];
-	R_DKIM_ALLOW(-0.20)[paul-moore.com:s=google];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_DKIM_ALLOW(-0.20)[linux-foundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-270257-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	RECEIVED_HELO_LOCALHOST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:tristmd@gmail.com,m:stephen.smalley.work@gmail.com,m:omosnace@redhat.com,m:richard_c_haines@btinternet.com,m:selinux@vger.kernel.org,m:stable@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:tristan@talencesecurity.com,m:stephensmalleywork@gmail.com,s:lists@lfdr.de];
-	FREEMAIL_TO(0.00)[gmail.com];
 	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[redhat.com,btinternet.com,vger.kernel.org,talencesecurity.com];
 	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_SENDER(0.00)[paul@paul-moore.com,stable@vger.kernel.org];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-270258-lists,stable=lfdr.de];
+	FREEMAIL_TO(0.00)[vger.kernel.org,kernel.org,gmail.com,linux-foundation.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	ALIAS_RESOLVED(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[paul@paul-moore.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS(0.00)[m:mm-commits@vger.kernel.org,m:stable@vger.kernel.org,m:nathan@kernel.org,m:david.laight.linux@gmail.com,m:rkr0k0r@gmail.com,m:akpm@linux-foundation.org,m:davidlaightlinux@gmail.com,s:lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	DMARC_NA(0.00)[linux-foundation.org];
+	FORGED_SENDER(0.00)[akpm@linux-foundation.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linux-foundation.org:+];
+	MISSING_XM_UA(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
-	DKIM_TRACE(0.00)[paul-moore.com:+];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[akpm@linux-foundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TO_DN_NONE(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	ALIAS_RESOLVED(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,talencesecurity.com:email,vger.kernel.org:from_smtp,paul-moore.com:dkim,paul-moore.com:mid,paul-moore.com:url,paul-moore.com:from_mime]
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[smtp.kernel.org:mid,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 359A36F20F9
+X-Rspamd-Queue-Id: 2CB376F2252
 
-On Jun 25, 2026 Tristan Madani <tristmd@gmail.com> wrote:
-> 
-> selinux_sctp_bind_connect() dereferences sk->sk_socket to pass a
-> struct socket * to selinux_socket_bind() and
-> selinux_socket_connect_helper().  However, when the hook is invoked
-> from the ASCONF softirq path (sctp_process_asconf), there is no file
-> reference guaranteeing that sk->sk_socket is non-NULL.  The setsockopt
-> callers (bindx, connectx, set_primary, sendmsg connect) hold a file
-> reference and are not affected.
-> 
-> Both selinux_socket_bind() and selinux_socket_connect_helper()
-> immediately resolve sock->sk, never using the struct socket * for
-> anything else.  Refactor the inner logic into helpers that take a
-> struct sock * directly so that selinux_sctp_bind_connect() never needs
-> to touch sk->sk_socket at all.
-> 
-> Suggested-by: Stephen Smalley <stephen.smalley.work@gmail.com>
-> Fixes: d452930fd3b9 ("selinux: Add SCTP support")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Tristan Madani <tristan@talencesecurity.com>
-> Reviewed-by: Stephen Smalley <stephen.smalley.work@gmail.com>
-> Tested-by: Stephen Smalley <stephen.smalley.work@gmail.com>
-> ---
-> Changes in v3:
->   - Keep comment describing IPv4/IPv6 address processing loop
->     (Stephen Smalley).
-> 
-> Changes in v2:
->   - Refactor selinux_socket_bind() and selinux_socket_connect_helper()
->     into sk-based inner helpers instead of adding a NULL check on
->     sk->sk_socket (Stephen Smalley).
-> 
->  security/selinux/hooks.c | 19 ++++++++++---------
->  1 file changed, 10 insertions(+), 9 deletions(-)
 
-Thanks, this looks good to me, I'm going to merge it into
-selinux/stable-7.2 now.
+The patch titled
+     Subject: tools/compiler: match glibc 2.42 definition of __attribute_const__
+has been added to the -mm mm-nonmm-unstable branch.  Its filename is
+     tools-compiler-match-glibc-242-definition-of-__attribute_const__.patch
 
-However, there is another issue relating to the SCTP softirq code paths:
-the fact that we call into sock_has_perm() in both
-__selinux_socket_bind() and selinux_socket_connect_helper().  The
-sock_has_perm() function uses current_sid() as the subject in the
-avc_has_perm() call, and in the softirq case that is not what we want.
+This patch will shortly appear at
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/tools-compiler-match-glibc-242-definition-of-__attribute_const__.patch
 
-It's been few years since I spent any serious time with SCTP so it isn't
-immediately clear to me what the solution is to this problem, but if you
-wanted to look into this and come up with some ideas that would be a big
-help!
+This patch will later appear in the mm-nonmm-unstable branch at
+    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
---
-paul-moore.com
+Before you just go and hit "reply", please:
+   a) Consider who else should be cc'ed
+   b) Prefer to cc a suitable mailing list as well
+   c) Ideally: find the original patch on the mailing list and do a
+      reply-to-all to that, adding suitable additional cc's
+
+*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
+
+The -mm tree is included into linux-next via various
+branches at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+and is updated there most days
+
+------------------------------------------------------
+From: "Joy H.J. Lee" <rkr0k0r@gmail.com>
+Subject: tools/compiler: match glibc 2.42 definition of __attribute_const__
+Date: Thu, 2 Jul 2026 05:06:35 +0900
+
+glibc 2.42 added __attribute_const__ to sys/cdefs.h:
+
+    # define __attribute_const__ __attribute__ ((__const__))
+
+GCC 15 warns when a macro is redefined to a different replacement list
+(-Wbuiltin-macro-redefined). Since host tool Makefiles (resolve_btfids,
+objtool) pass -Werror, this conflict becomes fatal.
+
+The warning is suppressed on standard native builds because GCC treats
+/usr/include as a system header path (-isystem), and macro-redefinition
+warnings from system headers are silently suppressed by GCC. It fires
+when glibc headers are on a regular include path (-I) instead, which
+is the case in cross-compilation setups such as NixOS, where the
+sysroot's glibc is passed explicitly via -I rather than -isystem.
+
+Per (C11 6.10.3), identical replacement lists are accepted silently.
+Match the glibc definition exactly, including the space before "((", so
+the redefinition is accepted without warning regardless of whether
+glibc headers are treated as system or non-system includes.
+
+Link: https://lore.kernel.org/20260701200635.3992767-1-rkr0k0r@gmail.com
+Signed-off-by: Joy H.J. Lee <rkr0k0r@gmail.com>
+Cc: Nathan Chancellor <nathan@kernel.org>
+Cc: David Laight <david.laight.linux@gmail.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+---
+
+ tools/include/linux/compiler.h |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+--- a/tools/include/linux/compiler.h~tools-compiler-match-glibc-242-definition-of-__attribute_const__
++++ a/tools/include/linux/compiler.h
+@@ -119,7 +119,7 @@
+ #define __read_mostly
+ 
+ #ifndef __attribute_const__
+-# define __attribute_const__
++# define __attribute_const__ __attribute__ ((__const__))
+ #endif
+ 
+ #ifndef __maybe_unused
+_
+
+Patches currently in -mm which might be from rkr0k0r@gmail.com are
+
+tools-compiler-match-glibc-242-definition-of-__attribute_const__.patch
+
 
