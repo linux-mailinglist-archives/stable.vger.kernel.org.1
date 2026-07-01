@@ -1,297 +1,444 @@
-Return-Path: <stable+bounces-270196-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-270198-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id ClGgBFIyRWoj8goAu9opvQ
-	(envelope-from <stable+bounces-270196-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 01 Jul 2026 17:29:22 +0200
+	id 2wNeE8IzRWqB8goAu9opvQ
+	(envelope-from <stable+bounces-270198-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 01 Jul 2026 17:35:30 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E59656EF412
-	for <lists+stable@lfdr.de>; Wed, 01 Jul 2026 17:29:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9CACB6EF4DE
+	for <lists+stable@lfdr.de>; Wed, 01 Jul 2026 17:35:29 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=intel.com header.s=Intel header.b="Hyt/uq5e";
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-270196-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-270196-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=none) header.from=intel.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=e4QkH7cQ;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-270198-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-270198-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 1A323304420D
-	for <lists+stable@lfdr.de>; Wed,  1 Jul 2026 15:23:22 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 67FCA30D652A
+	for <lists+stable@lfdr.de>; Wed,  1 Jul 2026 15:30:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9FABC40B6EF;
-	Wed,  1 Jul 2026 15:23:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2CADD48C402;
+	Wed,  1 Jul 2026 15:30:30 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B6CF411670
-	for <stable@vger.kernel.org>; Wed,  1 Jul 2026 15:23:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16AF748C8D4;
+	Wed,  1 Jul 2026 15:30:26 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782919401; cv=none; b=bJq0PzjGapVvU9UF6GfmBa9QJf98ftC+ht6owzyLTexznlb3PB5/63ktD51gKVY98RWgYoeo9p5I3p8zTR17lSWvMm7gMg2TEvKEzW4sl7fxd71FK6pMQ89nO1i3VtZFDH7cmDqpOB2OAFgntGw5E7Gjl6Ei2ioN+l9IfV23rEU=
+	t=1782919830; cv=none; b=tbrabmIrmQaE61BQJPS3fYPy4DtOvQv7j30bDmfPtlCPYUCSvTlkHHrZNP/iF0O0h0+EYJtdXZ4O/GvuVfoegtp7ScCxtPUhwkxzdF12/0UfPrTppTU9eAdO6NQrIn9o5KGkmQaz2Sidwn+fV/usSCFms8438Rp61Pv8HpYys8I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782919401; c=relaxed/simple;
-	bh=11rMUklXb0pqNOKXlW6EemWO3Cy6rhYqZNz+Hsxi7Ic=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=sgXKqmdfQJt38/sJYinKYJqq5Lp34jhesLzdy/Xpjq6nwoX4OBed1OSPzI6F5qZkK0bLIlM37otl7mWv6wCsvLsihYQcr7m4NOj2AUyrNCYN+DWg2tzU4wPlglcQ93WZiIjfO6rgnEsz4FeDhmcygfB9JWGPQjohK/3/eIVVovE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Hyt/uq5e; arc=none smtp.client-ip=192.198.163.15
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1782919399; x=1814455399;
-  h=message-id:subject:from:to:cc:date:in-reply-to:
-   references:content-transfer-encoding:mime-version;
-  bh=11rMUklXb0pqNOKXlW6EemWO3Cy6rhYqZNz+Hsxi7Ic=;
-  b=Hyt/uq5eW5fwCGvlYuU4KUyjTYk+4qrPD68qebGTKA76hNs/VveRGuGL
-   22E9VMH9PCPSeDcAdBKjZYA9ZHUsp7Hc4XF+ee48pf0I2u1kyOopqKCfJ
-   rHYr/imYzWCjNt0zyPDmAzGV+0Q1RoxjleNA04RCZuG4NOPnYKQIbe59b
-   +367cCvgbePhTlJSNlohXukTpJ5vX0c7rUgI23ZXKj9LRTa01NYo/Gu8/
-   dSgs5tbjsZRmPNJwwAItnnct1L76yFSU6SpLTAlZDhXlEz97DsfZ5XFjX
-   Vt7BZybjOgjF26Y57x7jg+Zq1t/GS8HfUmFkq4rfhZn6vz8xspHnxoQ24
-   w==;
-X-CSE-ConnectionGUID: HpJuc3S0QlKBTiCAZdeEGA==
-X-CSE-MsgGUID: R/yYWV+URqCVJ1yLJtnG/g==
-X-IronPort-AV: E=McAfee;i="6800,10657,11834"; a="83789255"
-X-IronPort-AV: E=Sophos;i="6.25,142,1779174000"; 
-   d="scan'208";a="83789255"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
-  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Jul 2026 08:23:19 -0700
-X-CSE-ConnectionGUID: fAmO+TmlRpmiBDAiEP2W2g==
-X-CSE-MsgGUID: xsORQ27NRSuvz1RHDfTk+w==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,142,1779174000"; 
-   d="scan'208";a="252727577"
-Received: from ettammin-mobl3.ger.corp.intel.com (HELO [10.245.244.120]) ([10.245.244.120])
-  by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Jul 2026 08:23:17 -0700
-Message-ID: <fead429b4ee46bfb7cd1f1dee27912e155797fc6.camel@linux.intel.com>
-Subject: Re: [PATCH] drm/ttm: Fix UAF on dma-buf attach failure for sg BOs
-From: Thomas =?ISO-8859-1?Q?Hellstr=F6m?= <thomas.hellstrom@linux.intel.com>
-To: Christian =?ISO-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>, Nitin
- Gote	 <nitin.r.gote@intel.com>, intel-xe@lists.freedesktop.org
-Cc: stable@vger.kernel.org, Matthew Auld <matthew.auld@intel.com>
-Date: Wed, 01 Jul 2026 17:23:15 +0200
-In-Reply-To: <b32a5081-545f-4703-ad88-ce54cc1efe09@amd.com>
-References: <20260701062559.3731993-2-nitin.r.gote@intel.com>
-	 <dfed18b63a7b6cf164b3af7f65df8b4a1b9dbdf2.camel@linux.intel.com>
-	 <b32a5081-545f-4703-ad88-ce54cc1efe09@amd.com>
-Organization: Intel Sweden AB, Registration Number: 556189-6027
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.58.3 (3.58.3-1.fc43) 
+	s=arc-20240116; t=1782919830; c=relaxed/simple;
+	bh=StIsgS8IPeOvKDmoZgZPhDOue1XyUafR06J7QwaShPE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=bjDtRTWoSsdvFbZiIHVQMO/kajI2g6hlZ456FNuUWXREJ9BORwcZRZq97jHjIOSRKet9F2TF8Kzj+EzEoxnAU3vi2ufWCyxPtlmSx3mQ7QO9L/WnqkC90Ej70jtbKW7JbyfumKi8z8SVHTS6BA9IU9Xi1BAB7c3TeJLCyafl2/k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=e4QkH7cQ; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ADA5B1F000E9;
+	Wed,  1 Jul 2026 15:30:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1782919826;
+	bh=9TxYdKHNjSZ/BE0adprsUfmAAOdcr8uI2pyh4XYomAE=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=e4QkH7cQ05Q3I77X8kbiVVtqiwatM1eLIVM3QikjoL8sX+goKOtTMfUKBwAIZ4svK
+	 P9pDoc18gZPHe12bOGgbYLuvjToJ9OJb64mqoHr/Q/8ZCmfsNiZnEM9LRP+j9onFY0
+	 /Z4PLNL52m+V3vXm3076VT5AuYuG1Ym7jU7/KCNca4+i+HQtVA/zKTNezc1sUGoaC4
+	 6KObv2JZK9KfICbZAqB2MDpDcSqBWJJ8C/DxXCySwpXsWpz6Cwvmxp9ju/AxdD140i
+	 BdblVtG4F603p4xMIXaLmsr5OiXPiUbkfFTk65nwAAVtgk09UmcJeonFMbzh6qA2o2
+	 zOv4Y6O64lU5w==
+Message-ID: <15b919c9-158a-45ca-8566-bf20447d397c@kernel.org>
+Date: Wed, 1 Jul 2026 17:30:22 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 1/2] media: uvcvideo: Fix race condition for meta
+ buffer list
+To: Ricardo Ribalda <ribalda@chromium.org>
+Cc: Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+ Mauro Carvalho Chehab <mchehab@kernel.org>,
+ Guennadi Liakhovetski <guennadi.liakhovetski@intel.com>,
+ linux-media@vger.kernel.org, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org
+References: <20260629-uvc-racemeta-v2-0-10e91d2afba0@chromium.org>
+ <20260629-uvc-racemeta-v2-1-10e91d2afba0@chromium.org>
+ <a0e4d412-f0bf-4415-9e4b-2c6347bf8c69@kernel.org>
+ <CANiDSCtv_ZmTWUzbuxuEy0JmLmFs2Wqj31O3neGZ4ee=p065-g@mail.gmail.com>
+ <5327bf8c-270e-4650-8f44-6026dce36457@kernel.org>
+ <CANiDSCskW6qhuGsDj2JN9UqAobAzqxEn7bKxVLZKEpEi0P9bWA@mail.gmail.com>
+From: Hans de Goede <hansg@kernel.org>
+Content-Language: en-US, nl
+In-Reply-To: <CANiDSCskW6qhuGsDj2JN9UqAobAzqxEn7bKxVLZKEpEi0P9bWA@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-5.16 / 15.00];
-	WHITELIST_SPF_DKIM(-3.00)[intel.com:d:+,kernel.org:s:+];
+	WHITELIST_SPF_DKIM(-3.00)[kernel.org:d:+,kernel.org:s:+];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
-	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:christian.koenig@amd.com,m:nitin.r.gote@intel.com,m:intel-xe@lists.freedesktop.org,m:stable@vger.kernel.org,m:matthew.auld@intel.com,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[thomas.hellstrom@linux.intel.com,stable@vger.kernel.org];
-	FORWARDED(0.00)[lists@lfdr.de];
-	HAS_ORG_HEADER(0.00)[];
-	TAGGED_FROM(0.00)[bounces-270196-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-270198-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:ribalda@chromium.org,m:laurent.pinchart@ideasonboard.com,m:mchehab@kernel.org,m:guennadi.liakhovetski@intel.com,m:linux-media@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,s:lists@lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[thomas.hellstrom@linux.intel.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[intel.com:+];
-	ALIAS_RESOLVED(0.00)[];
+	FORGED_SENDER(0.00)[hansg@kernel.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	TO_DN_SOME(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[hansg@kernel.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:dkim,intel.com:email,vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,amd.com:email,gitlab.freedesktop.org:url,linux.intel.com:mid,linux.intel.com:from_mime]
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp,chromium.org:email,quotefancy.com:url,ideasonboard.com:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: E59656EF412
+X-Rspamd-Queue-Id: 9CACB6EF4DE
 
-On Wed, 2026-07-01 at 15:20 +0200, Christian K=C3=B6nig wrote:
-> On 7/1/26 14:59, Thomas Hellstr=C3=B6m wrote:
-> > Hi, Nitin
-> >=20
-> > On Wed, 2026-07-01 at 11:56 +0530, Nitin Gote wrote:
-> > > When a dma-buf importer creates a ttm_bo_type_sg BO with bo-
-> > > > base.resv
-> > > pointing at the exporter's dma_buf->resv and
-> > > dma_buf_dynamic_attach()
-> > > fails, no dma_buf reference is held. The exporter can be freed
-> > > before
-> > > the delayed_delete worker calls dma_resv_lock(bo->base.resv),
-> > > causing
-> > > a
-> > > use-after-free:
-> > >=20
-> > > =C2=A0 Oops: general protection fault, probably for non-canonical
-> > > address
-> > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 0x6b6b6b6b6b6b6b9c
-> > > =C2=A0 Workqueue: ttm ttm_bo_delayed_delete [ttm]
-> > > =C2=A0 RIP: 0010:mutex_can_spin_on_owner+0x3f/0xc0
-> > >=20
-> > > ttm_bo_individualize_resv() skips the resv swap for all sg BOs to
-> > > keep
-> > > the shared resv available for delayed_delete to release the dma-
-> > > buf
-> > > mapping. A BO whose attach never succeeded has no mapping to
-> > > release,
-> > > yet it keeps bo->base.resv pointing at the exporter resv that
-> > > delayed_delete later locks once the exporter is gone.
-> > >=20
-> > > Fix this by checking bo->base.import_attach, which is set only
-> > > after
-> > > a
-> > > successful attach. The check is placed after
-> > > dma_resv_copy_fences()
-> > > so
-> > > successful imports still copy fences to _resv before returning,
-> > > keeping
-> > > the shared resv for delayed_delete. Failed imports fall through
-> > > to
-> > > swap
-> > > resv to _resv, so delayed_delete never locks the stale exporter
-> > > resv.
-> > >=20
-> > > Closes:
-> > > https://gitlab.freedesktop.org/drm/xe/kernel/-/work_items/8023
-> > > Fixes: d99fbd9aab62 ("drm/ttm: Always take the bo delayed cleanup
-> > > path for imported bos")
-> > > Cc: stable@vger.kernel.org=C2=A0# v6.8+
-> > > Cc: Thomas Hellstrom <thomas.hellstrom@linux.intel.com>
-> > > Cc: Christian Konig <christian.koenig@amd.com>
-> > > Cc: Matthew Auld <matthew.auld@intel.com>
-> > > Assisted-by: GitHub_Copilot:claude-sonnet-4.6
-> > > Signed-off-by: Nitin Gote <nitin.r.gote@intel.com>
-> > > ---
-> > > Hi Thomas/Christian,
-> > > Thank you for the review. Addressed the v3 review comments in
-> > > this=20
-> > > v4 version.
-> > >=20
-> > > v4:
-> > > - Moved import_attach check to after dma_resv_copy_fences() so
-> > > fences
-> > > =C2=A0 are copied before returning for successful imports (Thomas).
-> > > - Removed exporter-alive claim from commit message (Thomas).
-> >=20
-> > That's not sufficient. What I meant was that this invalidates the
-> > approach in its current form:
-> >=20
-> > A			B
-> > prime_import()	=09
-> > exported_get();
-> > exported_lock();
-> > bo_create();		lru_walk():
-> > attach_fail();		bo_get();
-> > bo_put();	=09
-> > exported_unlock();	bo_lock() // exporter_lock
-> > exporter_put();	=09
-> > exporter_free();=09
-> > 			bo_unlock(); //UAF
-> > 		=09
-> > There is no guarantee that the exporter stays alive until
-> > resv individualization happens.
->=20
-> IIRC at least for AMDGPU that shouldn't be possible.
->=20
-> We intentionally create the imported BO as empty shell without
-> ttm_resource object, so it is not on any LRU list.
->=20
-> But to be honest I haven't looked into that in years, so it is
-> perfectly possible that this is messed up again.
+Hi Ricardo,
 
-Yeah, this was recently changed in xe, but I'm not 100% sure we
-actually create a bo resource.
+On 30-Jun-26 16:10, Ricardo Ribalda wrote:
+> Hi Hans,
+> 
+> On Tue, 30 Jun 2026 at 15:21, Hans de Goede <hansg@kernel.org> wrote:
+>>
+>> Hi Ricardo,
+>>
+>> On 30-Jun-26 12:17, Ricardo Ribalda wrote:
+>>> Hi Hans,
+>>>
+>>> Thanks for the prompt reply.
+>>>
+>>> On Tue, 30 Jun 2026 at 11:47, Hans de Goede <hansg@kernel.org> wrote:
+>>>>
+>>>> Hi Ricardo,
+>>>>
+>>>> On 29-Jun-26 19:31, Ricardo Ribalda wrote:
+>>>>> queue->irqueue contains a list of the buffers owned by the driver. The
+>>>>> list is protected by queue->irqlock. uvc_queue_get_current_buffer()
+>>>>> returns a pointer to the current buffer in that list, but does not
+>>>>> remove the buffer from it. This can lead to race conditions.
+>>>>>
+>>>>> Inspecting the code, it seems that the candidate for such race is
+>>>>> uvc_queue_return_buffers(). For the capture queue, that function is
+>>>>> called with the device streamoff, so no race can occur. On the other
+>>>>> hand, the metadata queue, could trigger a race condition, because
+>>>>> stop_streaming can be called with the device in any streaming state.
+>>>>>
+>>>>> We can solve this issue introducing a flag, stream->meta.in_flight,
+>>>>> protected with a spinlock. When there is a buffer in flight that can
+>>>>> write into metadata the flag is raised, notifying the stop streaming
+>>>>> that it needs to wait.
+>>>>>
+>>>>> Reported-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+>>>>> Closes: https://lore.kernel.org/linux-media/20250630141707.GG20333@pendragon.ideasonboard.com/
+>>>>> Cc: stable@vger.kernel.org
+>>>>> Fixes: 088ead255245 ("media: uvcvideo: Add a metadata device node")
+>>>>> Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
+>>>>
+>>>> First of all thank you for looking into fixing this.
+>>>>
+>>>> I'm sorry, but this feels more like a band-aid then a proper fix.
+>>>>
+>>>> How about adding a started bool to struct uvc_streaming which gets
+>>>> set to 1 by uvc_video_start_streaming() and 0 by uvc_video_stop_streaming().
+>>>>
+>>>> And then call uvc_video_stop_streaming() from either
+>>>> uvc_stop_streaming_video() or uvc_stop_streaming_meta()
+>>>> depending on which one gets called first ?
+>>>>
+>>>> With a mutex protecting the started bool and being held
+>>>> over calling uvc_video_stop_streaming() ?
+>>>>
+>>>> So stop the actual hw streaming when either of the
+>>>> 2 possible /dev/video0 nodes gets its vb2_ops.stop_streaming
+>>>> callback called?
+>>>>
+>>>> And to this before draining the buffer queue.
+>>>>
+>>>> That seems cleaner then this approach?
+>>>
+>>> Assuming /dev/video0 is the video node and /dev/video1 is the meta device.
+>>>
+>>> Currently, we support something like:
+>>>
+>>> 1) yavta -c /dev/video0 &
+>>> 2) yavta --capture=2 /dev/video1
+>>> 3) yavta --capture=2 /dev/video1
+>>> 4) kill %1
+>>>
+>>>
+>>> If I understood correctly, your proposal would cause the camera to
+>>> stop streaming when step 2 completes.
+>>
+>> Yes. But this very much feels like a case of:
+>>
+>> https://quotefancy.com/media/wallpaper/1600x900/5523002-Henny-Youngman-Quote-The-patient-says-Doctor-it-hurts-when-I-do.jpg
+> 
+> We have a similar joke in Spanish:
+> Doctor, doctor, it hurts here, here, here, here, here. What do I have?
+> A broken finger :P
+> 
+>>
+>>> I think this risks breaking use cases.
+>>
+>> That would have to be some rather convoluted use-case.
+> 
+> I believe we have a similar scheme to test the metadata node in
+> ChromeOS... but we can change that.
 
-In any case if we add an assert
+That seems unlikely? Either I would expect some app/lib/dameon to
+do a quick test stream for a few frames at init time to determine metadata
+support, in which case I would expect streaming on both queues to get
+stopped after the quick test.
 
-WARN_ON_ONCE(bo->type =3D=3D ttm_bo_type_sg && bo->res);
+Or testing is delayed till the first real start-streaming moment in which
+case it makes no sense to stop + restart the metadata queue. What I guess
+may happen is stopping the metadata queue when it does not generate any
+data for a few frames, assuming there simply is no metadata support.
 
-just before / after=C2=A0
-bo->base.resv =3D &bo->base._resv;
+Hmm, that might actually be a troublesome case.
 
-or something similar, we would hit that if the bo is published on the
-LRU and would need an additional fix in the driver.
+> My worry is the outside apps that we do not control.
 
-/Thomas
+Ack, thinking more about this, this might be more likely then
+I assumed in the non metadata available case, see above.
+
+So I'm no longer really convinced of my own proposal.
+
+>> IMHO the simplicity of fixing the race you're trying to fix is
+>> worth the userspace regression risk (which I deem low).
+>>
+>> Worst case we revert the fix and go back to the drawing board.
+> 
+> Are you concerned of this asymmetric behaviour, or do you think that it is fine?
+> 
+> open /dev/video0 (streaming starts)
+> open /dev/video1
+> close /dev/video1 (streaming stops)
+> open /dev/video1 (streaming still off)
+> 
+> 
+> vs
+> 
+> open /dev/video0 (streaming starts)
+> open /dev/video1
+> close /dev/video0 (streaming stops)
+> open /dev/video0 (streaming resumes)
+
+That second one actually is broken already, we don't flush
+the metadata queue on streaming stop on the regular queue, so
+it will possibly contain a half-filled metadata buffer which
+we then continue to append to with fresh metadata. So any
+multi-packet metadata will get corrupted for the first frame
+in the second stream start in that case.
+
+In hindsight having the metadata queue be a fully independent
+queue without clearly defining how start/stop on both queues
+works and enforcing the defined behavior at the driver level
+was a mistake.
+
+I'm starting to think that ideally we would simply flush both
+queues on the stop on the regular node and not have a stop
+queue-op on the metadata queue at all, but that is not possible
+I'm afraid.
+
+So I think we do need something like this series +
+flush metadata-queue on regular queue stop.
+
+I'll try to make some time to review this series as is, since
+although the waiting solution still feels ugly it may be the
+best we can do.
+
+Regards,
+
+Hans
 
 
->=20
-> Regards,
-> Christian.
->=20
-> >=20
-> > /Thomas
-> >=20
-> >=20
-> > >=20
-> > > v3:
-> > > - Dropped the xe-side reordering approach since importer_priv
-> > > must be
-> > > =C2=A0 valid when dma_buf_dynamic_attach() publishes the attachment.
-> > > - Per Christian's suggestion on the v1 thread, keyed the check on
-> > > =C2=A0 import_attach rather than removing the sg guard entirely.
-> > > - Fixes both xe and amdgpu in a single TTM patch.
-> > >=20
-> > > =C2=A0drivers/gpu/drm/ttm/ttm_bo.c | 24 +++++++++++++++---------
-> > > =C2=A01 file changed, 15 insertions(+), 9 deletions(-)
-> > >=20
-> > > diff --git a/drivers/gpu/drm/ttm/ttm_bo.c
-> > > b/drivers/gpu/drm/ttm/ttm_bo.c
-> > > index bcd76f6bb7f0..9b6341f69805 100644
-> > > --- a/drivers/gpu/drm/ttm/ttm_bo.c
-> > > +++ b/drivers/gpu/drm/ttm/ttm_bo.c
-> > > @@ -203,15 +203,21 @@ static int ttm_bo_individualize_resv(struct
-> > > ttm_buffer_object *bo)
-> > > =C2=A0	if (r)
-> > > =C2=A0		return r;
-> > > =C2=A0
-> > > -	if (bo->type !=3D ttm_bo_type_sg) {
-> > > -		/* This works because the BO is about to be
-> > > destroyed and nobody
-> > > -		 * reference it any more. The only tricky case
-> > > is
-> > > the trylock on
-> > > -		 * the resv object while holding the lru_lock.
-> > > -		 */
-> > > -		spin_lock(&bo->bdev->lru_lock);
-> > > -		bo->base.resv =3D &bo->base._resv;
-> > > -		spin_unlock(&bo->bdev->lru_lock);
-> > > -	}
-> > > +	/*
-> > > +	 * Successfully imported sg BOs need the shared resv for
-> > > dma-buf
-> > > +	 * cleanup. Failed imports have no attachment or mapping
-> > > and
-> > > can
-> > > +	 * use the private _resv.
-> > > +	 */
-> > > +	if (bo->type =3D=3D ttm_bo_type_sg && bo-
-> > > >base.import_attach)
-> > > +		return 0;
-> > > +
-> > > +	/* This works because the BO is about to be destroyed
-> > > and
-> > > nobody
-> > > +	 * references it any more. The only tricky case is the
-> > > trylock on
-> > > +	 * the resv object while holding the lru_lock.
-> > > +	 */
-> > > +	spin_lock(&bo->bdev->lru_lock);
-> > > +	bo->base.resv =3D &bo->base._resv;
-> > > +	spin_unlock(&bo->bdev->lru_lock);
-> > > =C2=A0
-> > > =C2=A0	return r;
-> > > =C2=A0}
+
+
+
+> 
+> 
+>>
+>>> As I see it, the issue is that the camera's live capture cycle is
+>>> controlled solely by video0. We need some kind of synchronization
+>>> mechanism with video1 if we do not want to change the behaviour and
+>>> risk breaking apps.
+>>
+>> IMHO for a device with multiple /dev/video# nodes it makes sense
+>> to wait with actually starting streaming/DMA-engines until all
+>> enabled queues are started and stop when the first queue is stopped.
+>>
+>> The problem with uvcvideo is that we do not know if the metadata
+>> queue is going to get used at all. In hindsight we should maybe
+>> have had some way for userspace to explictly enable/disable metadata
+>> support.
+>>
+>> So we start as soon as the main video node is opened, still I think
+>> that stopping as soon as one of the queues is stopped makes sense.
+>>
+>> Laurent, do you have any input here?
+>>
+>> Regards,
+>>
+>> Hans
+>>
+>>
+>>
+>>
+>>>> p.s.
+>>>>
+>>>> 1. It is tempting to also apply the same approach to
+>>>> vb2_ops.start_streaming, but allowing the meta queue to be
+>>>> the one to start streaming will likely cause issues. E.g.
+>>>> the streaming code assumes having a meta-queue active is
+>>>> optional, but not the other way around.
+>>>>
+>>>> TL;DR: vb2_ops.start_streaming should stay as is.
+>>>>
+>>>> 2. While looking into this I noticed that struct uvc_streaming
+>>>> already has an active member, but unless I'm missing something
+>>>> that ever only gets initialized to 0. So I think that can be
+>>>> dropped. (If you re-use this please change it to a bool, no
+>>>> need to have it atomic while protected by a mutex).
+>>>
+>>> I will send a patch to fix this. Thanks for noticing :)
+>>>
+>>>>
+>>>>
+>>>>
+>>>>> ---
+>>>>>  drivers/media/usb/uvc/uvc_queue.c | 14 ++++++++++++++
+>>>>>  drivers/media/usb/uvc/uvc_video.c | 30 +++++++++++++++++++++++++++++-
+>>>>>  drivers/media/usb/uvc/uvcvideo.h  |  2 ++
+>>>>>  3 files changed, 45 insertions(+), 1 deletion(-)
+>>>>>
+>>>>> diff --git a/drivers/media/usb/uvc/uvc_queue.c b/drivers/media/usb/uvc/uvc_queue.c
+>>>>> index 3c002c8f442f..af9dbfcf6f53 100644
+>>>>> --- a/drivers/media/usb/uvc/uvc_queue.c
+>>>>> +++ b/drivers/media/usb/uvc/uvc_queue.c
+>>>>> @@ -209,10 +209,24 @@ static void uvc_stop_streaming_video(struct vb2_queue *vq)
+>>>>>  static void uvc_stop_streaming_meta(struct vb2_queue *vq)
+>>>>>  {
+>>>>>       struct uvc_video_queue *queue = vb2_get_drv_priv(vq);
+>>>>> +     struct uvc_streaming *stream = queue->stream;
+>>>>>
+>>>>>       lockdep_assert_irqs_enabled();
+>>>>>
+>>>>> +     spin_lock_irq(&stream->meta.irqlock);
+>>>>> +     while (stream->meta.in_flight) {
+>>>>> +             spin_unlock_irq(&stream->meta.irqlock);
+>>>>> +             schedule();
+>>>>> +             spin_lock_irq(&stream->meta.irqlock);
+>>>>> +     }
+>>>>> +     stream->meta.in_flight = true;
+>>>>> +     spin_unlock_irq(&stream->meta.irqlock);
+>>>>> +
+>>>>>       uvc_queue_return_buffers(queue, UVC_BUF_STATE_ERROR);
+>>>>> +
+>>>>> +     scoped_guard(spinlock_irq, &stream->meta.irqlock) {
+>>>>> +             stream->meta.in_flight = false;
+>>>>> +     }
+>>>>>  }
+>>>>>
+>>>>>  static const struct vb2_ops uvc_queue_qops = {
+>>>>> diff --git a/drivers/media/usb/uvc/uvc_video.c b/drivers/media/usb/uvc/uvc_video.c
+>>>>> index fc3536a4399f..f6b55b3a3308 100644
+>>>>> --- a/drivers/media/usb/uvc/uvc_video.c
+>>>>> +++ b/drivers/media/usb/uvc/uvc_video.c
+>>>>> @@ -1732,6 +1732,26 @@ static void uvc_video_encode_bulk(struct uvc_urb *uvc_urb,
+>>>>>       urb->transfer_buffer_length = stream->urb_size - len;
+>>>>>  }
+>>>>>
+>>>>> +static struct uvc_buffer *
+>>>>> +uvc_video_get_current_meta_buffer(struct uvc_streaming *stream)
+>>>>> +{
+>>>>> +     struct uvc_video_queue *queue = &stream->meta.queue;
+>>>>> +     struct uvc_buffer *buf;
+>>>>> +
+>>>>> +     buf = uvc_queue_get_current_buffer(queue);
+>>>>> +     if (!buf)
+>>>>> +             return NULL;
+>>>>> +
+>>>>> +     guard(spinlock_irqsave)(&stream->meta.irqlock);
+>>>>> +
+>>>>> +     if (stream->meta.in_flight)
+>>>>> +             return NULL;
+>>>>> +
+>>>>> +     stream->meta.in_flight = true;
+>>>>> +
+>>>>> +     return buf;
+>>>>> +}
+>>>>> +
+>>>>>  static void uvc_video_complete(struct urb *urb)
+>>>>>  {
+>>>>>       struct uvc_urb *uvc_urb = urb->context;
+>>>>> @@ -1767,7 +1787,7 @@ static void uvc_video_complete(struct urb *urb)
+>>>>>       buf = uvc_queue_get_current_buffer(queue);
+>>>>>
+>>>>>       if (vb2_qmeta)
+>>>>> -             buf_meta = uvc_queue_get_current_buffer(qmeta);
+>>>>> +             buf_meta = uvc_video_get_current_meta_buffer(stream);
+>>>>>
+>>>>>       /* Re-initialise the URB async work. */
+>>>>>       uvc_urb->async_operations = 0;
+>>>>> @@ -1778,6 +1798,12 @@ static void uvc_video_complete(struct urb *urb)
+>>>>>        */
+>>>>>       stream->decode(uvc_urb, buf, buf_meta);
+>>>>>
+>>>>> +     if (buf_meta) {
+>>>>> +             scoped_guard(spinlock_irqsave, &stream->meta.irqlock) {
+>>>>> +                     stream->meta.in_flight = false;
+>>>>> +             }
+>>>>> +     }
+>>>>> +
+>>>>>       /* If no async work is needed, resubmit the URB immediately. */
+>>>>>       if (!uvc_urb->async_operations) {
+>>>>>               ret = usb_submit_urb(uvc_urb->urb, GFP_ATOMIC);
+>>>>> @@ -2330,6 +2356,8 @@ int uvc_video_init(struct uvc_streaming *stream)
+>>>>>       for_each_uvc_urb(uvc_urb, stream)
+>>>>>               INIT_WORK(&uvc_urb->work, uvc_video_copy_data_work);
+>>>>>
+>>>>> +     spin_lock_init(&stream->meta.irqlock);
+>>>>> +
+>>>>>       return 0;
+>>>>>  }
+>>>>>
+>>>>> diff --git a/drivers/media/usb/uvc/uvcvideo.h b/drivers/media/usb/uvc/uvcvideo.h
+>>>>> index b6bcee4a222f..6f1a3381d392 100644
+>>>>> --- a/drivers/media/usb/uvc/uvcvideo.h
+>>>>> +++ b/drivers/media/usb/uvc/uvcvideo.h
+>>>>> @@ -484,6 +484,8 @@ struct uvc_streaming {
+>>>>>               struct uvc_video_queue queue;
+>>>>>               u32 format;
+>>>>>               u32 buffersize;
+>>>>> +             bool in_flight;
+>>>>> +             spinlock_t irqlock; /* Protects in_flight. */
+>>>>>       } meta;
+>>>>>
+>>>>>       /* Context data used by the bulk completion handler. */
+>>>>>
+>>>>
+>>>
+>>>
+>>
+> 
+> 
+
 
