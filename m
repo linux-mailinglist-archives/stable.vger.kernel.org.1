@@ -1,76 +1,97 @@
-Return-Path: <stable+bounces-270099-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-270106-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id JWYLLXaqRGqoygoAu9opvQ
-	(envelope-from <stable+bounces-270099-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 01 Jul 2026 07:49:42 +0200
+	id oXF5OiC2RGplzQoAu9opvQ
+	(envelope-from <stable+bounces-270106-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 01 Jul 2026 08:39:28 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 185946E9EDB
-	for <lists+stable@lfdr.de>; Wed, 01 Jul 2026 07:49:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 85CAB6EA47B
+	for <lists+stable@lfdr.de>; Wed, 01 Jul 2026 08:39:28 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=intel.com header.s=Intel header.b=lqX89Ggl;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-270099-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-270099-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=none) header.from=intel.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=EuxziFIJ;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-270106-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-270106-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=none) header.from=gmail.com;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 84CFE3022B5F
-	for <lists+stable@lfdr.de>; Wed,  1 Jul 2026 05:49:41 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 26F283036B27
+	for <lists+stable@lfdr.de>; Wed,  1 Jul 2026 06:39:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 251A7390998;
-	Wed,  1 Jul 2026 05:49:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C3373AF676;
+	Wed,  1 Jul 2026 06:39:21 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f54.google.com (mail-wr1-f54.google.com [209.85.221.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47534363082
-	for <stable@vger.kernel.org>; Wed,  1 Jul 2026 05:49:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 235EA2DB78C
+	for <stable@vger.kernel.org>; Wed,  1 Jul 2026 06:39:18 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782884977; cv=none; b=oSZUyy/sz1BP4iltr7DcuABynRnbCrDOvEpVGktySB6N0FREKTyf+P3Dst3DbOI+i4KRdna9O9xYJOtCCJtFwSyMwNR88HcDVhZxmB2qcwEyrYuZ4E5ZtIeiZ7cXrostDtsDqWcgo2KVB+oQDmvEaw0+DvYIdaIx3jGhszoruXs=
+	t=1782887961; cv=none; b=FFp3qm3jqy/I998KfnxUvXwFHRF+iSbDEFkiQH5etY1H4iOh6l09xb93TmUXmyq4CyR8TDw7igO7MhRk/6qyWi4AaUFbXB7RATT3o+uVLkU+nKNeg2qP9mhhN2L8Zp3sUWrrButQ6R8ktVondjUmkffKtPiZWSm+y2g8Htt/BZ0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782884977; c=relaxed/simple;
-	bh=v1ueM0dwe6N3NoizG/3DpBtYbUPxQDnS5+MX8TeAjmo=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=dauTD4RYwBAAdCY/+OVDbiarXNoIW/k22C37rRPVqXzzAscAJIL33Axxm9z3rbWg9AxjU8+AStyetrP6Lx/Fg+WCEBDh1gVIubwdAbj32KcGqUUwDFtmblpgXfmZCd8AVprpDVobxY15wa70pNpE42/HGV2wyou1/XkHB4uqPdo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=lqX89Ggl; arc=none smtp.client-ip=198.175.65.14
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1782884977; x=1814420977;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=v1ueM0dwe6N3NoizG/3DpBtYbUPxQDnS5+MX8TeAjmo=;
-  b=lqX89GglZJznOOCgPb+6nl6d8tB3oOrBvO/BGRnbz950I3U3gaRt659t
-   nUO9WxrFeVtcYTMt7I8+S2QFetqXLjekCzYOhB6MZ2bnuVD+aYVNDIvo0
-   wtT/m/sICRuihF02sPsZefDEw6UIa6mr6hbFQKAH0I3/LIzkReuAv2gtA
-   j92qoiEae6Ag3fGVHpCOBIhjxeI5lZh2YusGejXtRN/MGmGsH7vkpdC55
-   wzeLAkU8GNFTXiEOGbOrLkFlUE2bhuy5LCInH3EREQQr9nH6884fL/jJi
-   CuoZ0ECZoA7BBn/ZywJc55bMJknAETdE3YPwqUxd1ryDrxiYCE6l8IVcC
-   A==;
-X-CSE-ConnectionGUID: Hw3DgvUzSZC2fFr1juZ3wg==
-X-CSE-MsgGUID: 0nVBPWQ3TGqfeJQDX9/+kw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11833"; a="87519362"
-X-IronPort-AV: E=Sophos;i="6.24,235,1774335600"; 
-   d="scan'208";a="87519362"
-Received: from fmviesa009.fm.intel.com ([10.60.135.149])
-  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Jun 2026 22:49:36 -0700
-X-CSE-ConnectionGUID: WUeu4p63SRKS5gWOuRkQDA==
-X-CSE-MsgGUID: K/6vQlLiThe1xmDbEOa7OA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.24,235,1774335600"; 
-   d="scan'208";a="246119054"
-Received: from nitin-super-server.iind.intel.com ([10.190.238.72])
-  by fmviesa009.fm.intel.com with ESMTP; 30 Jun 2026 22:49:33 -0700
-From: Nitin Gote <nitin.r.gote@intel.com>
-To: intel-xe@lists.freedesktop.org
-Cc: Nitin Gote <nitin.r.gote@intel.com>,
+	s=arc-20240116; t=1782887961; c=relaxed/simple;
+	bh=c3UXkmSf/U+KQu2LbfQINtMaYbmZc76jB9bbaDgnsC0=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=utDo+wdQq4hkj1ZtamVY2KCqQn/GpIsWAuBsNaR0RI++gYC7YgoRRGHiztnubG4MeZ5D+ftGXnV6VmEaI1V4TKn/n6sl2OjfoIOOckIAi2N2vX4XMGgekdjrLYKvlY+R48DvwIhNu7V/ueOxEXhk6v2yDaYSRp5KTxRkKewDTt4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=EuxziFIJ; arc=none smtp.client-ip=209.85.221.54
+Received: by mail-wr1-f54.google.com with SMTP id ffacd0b85a97d-474e7ba9fd6so131353f8f.1
+        for <stable@vger.kernel.org>; Tue, 30 Jun 2026 23:39:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1782887957; x=1783492757; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=L9lS47Kg6rDUlabcBxfm0AD8NjNyWC3LZqIIiOY+ZJo=;
+        b=EuxziFIJv5R/EkQllUWaovqol6oj4qfkobLr0ujMtxhcZF93swOGZeEokU3Dp8qJLI
+         d5Q4D/eJB5LD1rVz89LiJBY6DwE9lDPCqwqYUyhmt7BkTml4dWx9yz/kKzC2MxLrPfUE
+         1LvsjFIRjVWKbbhgR89YeHPlgSuZiKy4XVbMsiq5pzOOC609AnUYqstX68IqQz/MRqCn
+         m3bCVawOXu0QJ78R32CehmIoZ8lvjALxT7p22s0srun1AttdQQIjV0N/aV377ekTyjyw
+         QGsPFA46IezdtmW1JeSLkAaUD0Sl+jRQ3a7qWove72lDwf+sIQFQep/X9Koodio/f/rN
+         P79Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1782887957; x=1783492757;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=L9lS47Kg6rDUlabcBxfm0AD8NjNyWC3LZqIIiOY+ZJo=;
+        b=b2zJpwDPAsgu43H4UJqGJXNCPfWC7RRC93AAW6Hax0zrOMBT9t/M9goYlynN7WH9H5
+         cRqzkFsB7P/Crf7l7823kZvxNhkwM5iHYJlV/e6ikuQUZHl088IKjMkYbkiVlOUSX79z
+         6O58KCUAnVRJ/8GIfqChklvfjbluqzrxmoCovjyc/p3uDABVVubtFmNJgeewILhwB4NZ
+         A+C2XPKSfbMKgsyPqdGlIhqnZn1FyoNsEKclHvGLiUUvGm+NcmutkxdHA0cyHYWBtwna
+         AVfng51ZPYE7nYoqln3/PSNnslaUqrMxFUQeOC3iZ+hINCnY99QOt0rZ8YqtUrsTAetD
+         dh8A==
+X-Forwarded-Encrypted: i=1; AFNElJ+8Wa4Ms+b+FwNVphup5f+ILwE9hJqebjf0FcNurcAANKxJhVMqlA0upU/LfueqfwE2LC6uv3U=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyD+PRrmaR3dhsZ5MHIN2UiStua97yi4OjqtCDkJremBWHcZt+Z
+	g5/qIvpj589ZP7yOigyQU22tsu9/BRkv3Ep/8heMWNh6qF7gqxNz2YKI
+X-Gm-Gg: AfdE7cnvsm350hDScekOk2EilI1FyohgErOsDVUy8PfY5MbLctvZa0biyLMnqLthUGC
+	k/9YnLZ8m76kslJYVKY/SszGR8HH7xK/GvaqxT8RtpCtKjMLJ1IY3p0lY6O/lEQPw6OMzl2ujm9
+	OBKk42Srd9dxmGz9+ZpeENDIRJ7FAgRXXTAqk5uEdTAQ5yPSHLrCuFt6i3bqdZufbkvPrMYuea2
+	2veWta+xvvMt6tWMsJb5II1852ahpJdSU8FZY+iAo6D/tZKMjzvf6gV4YbfTbjc6fnundutMiLr
+	LjhBMJvSo1B03Yqzi84xyPzMBIX5pWxoStMUXpQPpu7728dCOxIUMXregNOd6bf2Uhdt6H/RFJk
+	TJsD/iNLFkv4XE0qE7rBhwRQ7ohBpsV6OqUmzTC+qwb8i3Id6iu/xSiM7984DRNtRgOhbutnsiw
+	aZ5R0ux2gzgGp/aL3sxLIb6cbrW3tLYg4MmLwIMzIOfdQkshyqMa8YMna6u4Xx0g/hm10Cq2b/
+X-Received: by 2002:a05:600d:6409:20b0:493:c21a:11f9 with SMTP id 5b1f17b1804b1-493c2b38eddmr3043765e9.6.1782887957236;
+        Tue, 30 Jun 2026 23:39:17 -0700 (PDT)
+Received: from localhost.localdomain (94-43-5-44.dsl.utg.ge. [94.43.5.44])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-493be4bfd47sm70551775e9.2.2026.06.30.23.39.15
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 30 Jun 2026 23:39:16 -0700 (PDT)
+From: Igor Ushakov <sysroot314@gmail.com>
+To: sashal@kernel.org
+Cc: davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	kuniyu@google.com,
+	netdev@vger.kernel.org,
+	pabeni@redhat.com,
 	stable@vger.kernel.org,
-	Thomas Hellstrom <thomas.hellstrom@linux.intel.com>,
-	Christian Konig <christian.koenig@amd.com>,
-	Matthew Auld <matthew.auld@intel.com>
-Subject: [PATCH] drm/ttm: Fix UAF on dma-buf attach failure for sg BOs
-Date: Wed,  1 Jul 2026 11:56:00 +0530
-Message-ID: <20260701062559.3731993-2-nitin.r.gote@intel.com>
-X-Mailer: git-send-email 2.50.1
+	sysroot314@gmail.com
+Subject: [PATCH v2 6.6.y/6.12.y/6.18.y] af_unix: Set gc_in_progress to true in unix_gc().
+Date: Wed,  1 Jul 2026 09:39:00 +0300
+Message-ID: <20260701063900.280980-1-sysroot314@gmail.com>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <stable-reply-item009-af-unix-gc-20260630181642@kernel.org>
+References: <stable-reply-item009-af-unix-gc-20260630181642@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -79,128 +100,99 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-3.66 / 15.00];
-	WHITELIST_SPF_DKIM(-3.00)[intel.com:d:+,kernel.org:s:+];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
 	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
-	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-270099-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-270106-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[davemloft.net,google.com,kernel.org,vger.kernel.org,redhat.com,gmail.com];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:intel-xe@lists.freedesktop.org,m:nitin.r.gote@intel.com,m:stable@vger.kernel.org,m:thomas.hellstrom@linux.intel.com,m:christian.koenig@amd.com,m:matthew.auld@intel.com,s:lists@lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_SENDER(0.00)[nitin.r.gote@intel.com,stable@vger.kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[nitin.r.gote@intel.com,stable@vger.kernel.org];
+	FORGED_SENDER(0.00)[sysroot314@gmail.com,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[intel.com:+];
-	RCVD_COUNT_FIVE(0.00)[5];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS(0.00)[m:sashal@kernel.org,m:davem@davemloft.net,m:edumazet@google.com,m:kuba@kernel.org,m:kuniyu@google.com,m:netdev@vger.kernel.org,m:pabeni@redhat.com,m:stable@vger.kernel.org,m:sysroot314@gmail.com,s:lists@lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[sysroot314@gmail.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	TO_DN_NONE(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[amd.com:email,intel.com:dkim,intel.com:email,intel.com:mid,intel.com:from_mime,vger.kernel.org:from_smtp,gitlab.freedesktop.org:url]
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 185946E9EDB
+X-Rspamd-Queue-Id: 85CAB6EA47B
 
-When a dma-buf importer creates a ttm_bo_type_sg BO with bo->base.resv
-pointing at the exporter's dma_buf->resv and dma_buf_dynamic_attach()
-fails, no dma_buf reference is held. The exporter can be freed before
-the delayed_delete worker calls dma_resv_lock(bo->base.resv), causing a
-use-after-free:
+From: Kuniyuki Iwashima <kuniyu@google.com>
 
-  Oops: general protection fault, probably for non-canonical address
-        0x6b6b6b6b6b6b6b9c
-  Workqueue: ttm ttm_bo_delayed_delete [ttm]
-  RIP: 0010:mutex_can_spin_on_owner+0x3f/0xc0
+[ Upstream commit d82ba05263c69fa2437fe93e4e561cc40f4c03af ]
 
-ttm_bo_individualize_resv() skips the resv swap for all sg BOs to keep
-the shared resv available for delayed_delete to release the dma-buf
-mapping. A BO whose attach never succeeded has no mapping to release,
-yet it keeps bo->base.resv pointing at the exporter resv that
-delayed_delete later locks once the exporter is gone.
+Igor Ushakov reported that unix_gc() could run with gc_in_progress
+being false if the work is scheduled while running:
 
-Fix this by checking bo->base.import_attach, which is set only after a
-successful attach. The check is placed after dma_resv_copy_fences() so
-successful imports still copy fences to _resv before returning, keeping
-the shared resv for delayed_delete. Failed imports fall through to swap
-resv to _resv, so delayed_delete never locks the stale exporter resv.
+  Thread 1         Thread 2                     Thread 3
+  --------         --------                     --------
+                   unix_schedule_gc()           unix_schedule_gc()
+                   `- if (!gc_in_progress)      `- if (!gc_in_progress)
+                      |- gc_in_progress = true     |
+                      `- queue_work()              |
+  unix_gc() <----------------/                     |
+  |                                                |- gc_in_progress = true
+  ...                                              `- queue_work()
+  |                                                       |
+  `- gc_in_progress = false                               |
+                                                          |
+  unix_gc() <---------------------------------------------'
+  |
+  ... /* gc_in_progress == false */
+  |
+  `- gc_in_progress = false
 
-Closes: https://gitlab.freedesktop.org/drm/xe/kernel/-/work_items/8023
-Fixes: d99fbd9aab62 ("drm/ttm: Always take the bo delayed cleanup path for imported bos")
-Cc: stable@vger.kernel.org # v6.8+
-Cc: Thomas Hellstrom <thomas.hellstrom@linux.intel.com>
-Cc: Christian Konig <christian.koenig@amd.com>
-Cc: Matthew Auld <matthew.auld@intel.com>
-Assisted-by: GitHub_Copilot:claude-sonnet-4.6
-Signed-off-by: Nitin Gote <nitin.r.gote@intel.com>
+unix_peek_fpl() relies on gc_in_progress not to confuse GC
+by MSG_PEEK.
+
+Let's set gc_in_progress to true in unix_gc().
+
+Fixes: 8b90a9f819dc ("af_unix: Run GC on only one CPU.")
+Reported-by: Igor Ushakov <sysroot314@gmail.com>
+Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
+Link: https://patch.msgid.link/20260501073945.1884564-1-kuniyu@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+[ Add setting gc_in_progress in __unix_gc(). Keep the existing
+  set in unix_gc() for wait_for_unix_gc() over-limit throttling. ]
+Signed-off-by: Igor Ushakov <sysroot314@gmail.com>
 ---
-Hi Thomas/Christian,
-Thank you for the review. Addressed the v3 review comments in this 
-v4 version.
+ net/unix/garbage.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-v4:
-- Moved import_attach check to after dma_resv_copy_fences() so fences
-  are copied before returning for successful imports (Thomas).
-- Removed exporter-alive claim from commit message (Thomas).
-
-v3:
-- Dropped the xe-side reordering approach since importer_priv must be
-  valid when dma_buf_dynamic_attach() publishes the attachment.
-- Per Christian's suggestion on the v1 thread, keyed the check on
-  import_attach rather than removing the sg guard entirely.
-- Fixes both xe and amdgpu in a single TTM patch.
-
- drivers/gpu/drm/ttm/ttm_bo.c | 24 +++++++++++++++---------
- 1 file changed, 15 insertions(+), 9 deletions(-)
-
-diff --git a/drivers/gpu/drm/ttm/ttm_bo.c b/drivers/gpu/drm/ttm/ttm_bo.c
-index bcd76f6bb7f0..9b6341f69805 100644
---- a/drivers/gpu/drm/ttm/ttm_bo.c
-+++ b/drivers/gpu/drm/ttm/ttm_bo.c
-@@ -203,15 +203,21 @@ static int ttm_bo_individualize_resv(struct ttm_buffer_object *bo)
- 	if (r)
- 		return r;
+diff --git a/net/unix/garbage.c b/net/unix/garbage.c
+index 1cdb54c616..fa6983dc31 100644
+--- a/net/unix/garbage.c
++++ b/net/unix/garbage.c
+@@ -583,6 +583,8 @@ static void __unix_gc(struct work_struct *work)
+ 	struct sk_buff_head hitlist;
+ 	struct sk_buff *skb;
  
--	if (bo->type != ttm_bo_type_sg) {
--		/* This works because the BO is about to be destroyed and nobody
--		 * reference it any more. The only tricky case is the trylock on
--		 * the resv object while holding the lru_lock.
--		 */
--		spin_lock(&bo->bdev->lru_lock);
--		bo->base.resv = &bo->base._resv;
--		spin_unlock(&bo->bdev->lru_lock);
--	}
-+	/*
-+	 * Successfully imported sg BOs need the shared resv for dma-buf
-+	 * cleanup. Failed imports have no attachment or mapping and can
-+	 * use the private _resv.
-+	 */
-+	if (bo->type == ttm_bo_type_sg && bo->base.import_attach)
-+		return 0;
++	WRITE_ONCE(gc_in_progress, true);
 +
-+	/* This works because the BO is about to be destroyed and nobody
-+	 * references it any more. The only tricky case is the trylock on
-+	 * the resv object while holding the lru_lock.
-+	 */
-+	spin_lock(&bo->bdev->lru_lock);
-+	bo->base.resv = &bo->base._resv;
-+	spin_unlock(&bo->bdev->lru_lock);
+ 	spin_lock(&unix_gc_lock);
  
- 	return r;
- }
+ 	if (!unix_graph_maybe_cyclic) {
 -- 
-2.50.1
+2.47.3
 
 
