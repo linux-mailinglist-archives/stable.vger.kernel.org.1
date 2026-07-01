@@ -1,61 +1,87 @@
-Return-Path: <stable+bounces-270236-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-270238-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id fJuRNZZmRWqT/QoAu9opvQ
-	(envelope-from <stable+bounces-270236-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 01 Jul 2026 21:12:22 +0200
+	id m39kKe5oRWoE/goAu9opvQ
+	(envelope-from <stable+bounces-270238-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 01 Jul 2026 21:22:22 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4002C6F0C73
-	for <lists+stable@lfdr.de>; Wed, 01 Jul 2026 21:12:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E4DA96F0CF5
+	for <lists+stable@lfdr.de>; Wed, 01 Jul 2026 21:22:21 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=n6tXH1a4;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-270236-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-270236-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=HopDi3g6;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-270238-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-270238-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=none) header.from=gmail.com;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 9DC553029E78
-	for <lists+stable@lfdr.de>; Wed,  1 Jul 2026 19:12:17 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 815FC3048DEA
+	for <lists+stable@lfdr.de>; Wed,  1 Jul 2026 19:22:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC70A3AA1B6;
-	Wed,  1 Jul 2026 19:12:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8CE734BC034;
+	Wed,  1 Jul 2026 19:21:57 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f52.google.com (mail-wr1-f52.google.com [209.85.221.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2FEF38E8B7;
-	Wed,  1 Jul 2026 19:12:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 531753E3141
+	for <stable@vger.kernel.org>; Wed,  1 Jul 2026 19:21:52 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782933136; cv=none; b=QEmQuVV8BTtcQksgtehhelmmIFvzfzIymThvMMQ8wmyYd/gOMNM58soKg1TIYUkSz9krTw0O0VJxWARHrDv7vvtpz6Fys5ozCIgdZGlLNNT9EFGMkcCZo0nxZbxSq1SpgTJrP1+oSjXkL8Y3/OFncKMEZBm840jjhj2qKNcT/t4=
+	t=1782933716; cv=none; b=Mn3VJ0q5KcgpRsN7KvfM+hm2aQkukg1pLL5VFPq0oYro3QVAexuj82v8Ehb3xRs2GpQAt79ncijVmHHKOZAibSCOY9Xdte65m6Vx5avquwNmRi+bZ4yz80ZUr+K3J1RjsukkhF4RPKCo9z0eJuCA8iIjYFbPTjY4bmlr4Hhh9Nc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782933136; c=relaxed/simple;
-	bh=OH5EEkppZ9NjgziN3FSpK79YkP3ZYDPu14TAWEBCnlQ=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=CYFLrTpBIwSin6v1PxVcVS0Ktuso2dJWHhQ7ME9GCD6gKY2I/hCxZy7AFwqgarFNy5xF26LPcVzLPxZE5zqmAM8lkJ62REaaEAOHwtr8h1D13UpGN2DJQgVNPcdDfMgrPfewovI+FBMHnudcfLuRSPlP3y8s7VnSQjB1T6VqnrA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=n6tXH1a4; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 880FB1F000E9;
-	Wed,  1 Jul 2026 19:12:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782933135;
-	bh=FAVN0K3aWofL7Gfpend30Bgse66P/dAvdfdDljeXASA=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Date;
-	b=n6tXH1a4qFiXvds8LEgTYerkotQrPIZXgdSdGVfflQ+mVXeO4f6SJpvqy5uX+oIjY
-	 bFSO1cO4J3u2MhrWnTLEBPMUF5O1Gvv4FyaWP0vbo5k7ssgX1Jb4v9sx2ew8QeKNuZ
-	 4YIAaILSRWwXfl/oUebcbCvf5KQ2ScC2pcgNFYIGPQMPSOV94iK8Pei0TbnqtdtrwD
-	 iJLEGLH/JZ1Jfl8djXlrN8vgDzUJeyXw2DAf/YarEJ6JXN/R79T3Iov4HiydDTgk6i
-	 l8ThFhckGncW1As/ADf1EV4a3WUcskCKOOp94dhorRyb+OekRuHy1EHBzJnxS+UGjg
-	 D3iO7z/m0UBfw==
-From: Benjamin Tissoires <bentiss@kernel.org>
-To: jikos@kernel.org, Trung Nguyen <trungnh@cystack.net>
-Cc: linux-input@vger.kernel.org, linux-kernel@vger.kernel.org, 
- stable@vger.kernel.org
-In-Reply-To: <20260701171320.16367-1-trungnh@cystack.net>
-References: <20260701171320.16367-1-trungnh@cystack.net>
-Subject: Re: [PATCH 1/2] HID: multitouch: fix out-of-bounds bit access on
- mt_io_flags
-Message-Id: <178293313430.4023988.4170644137345282702.b4-ty@b4>
-Date: Wed, 01 Jul 2026 21:12:14 +0200
+	s=arc-20240116; t=1782933716; c=relaxed/simple;
+	bh=kYxAmL4+vDGixpRhm9WSeoPiYPjYqdH+eJ1grKcucW4=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=mBeKZh/t549NP3M/uif94C2LZ7wpSGswVAoUgG3C/iOTviaizE0+plBIHigsqX446MzTZag/95pv7Mt+1YyAZo9i5Lo+M9LzXuR14n+NltMpjU8ye9TkrKm93u/+EAMbFZ2S9GPX7CO/hAU1Yb8kLFdacfnPCZzof2K1SSAOKcI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=HopDi3g6; arc=none smtp.client-ip=209.85.221.52
+Received: by mail-wr1-f52.google.com with SMTP id ffacd0b85a97d-475881b9a4bso1048637f8f.3
+        for <stable@vger.kernel.org>; Wed, 01 Jul 2026 12:21:52 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1782933711; x=1783538511; darn=vger.kernel.org;
+        h=cc:to:content-transfer-encoding:content-type:mime-version
+         :message-id:date:subject:from:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=vjlz6Sou4oUC6PMziaJquaQPB+bVCyS4KogfPbQtE34=;
+        b=HopDi3g68BqktaKrumWYz3PfJNvbPMOoJLZREfhSV7jtSCrP5xJLIGIIb9DNQShK0Y
+         S2kWGPyI2ROTg5EXfwwycLEyjy/YSfWCt59hZIhijkLGv2CGfS1zyJoPLPSKbFhff3K7
+         tSzncI6Q32+WJNcrsi6yFKdFLf9QJSS7PNhO8uJ2fHsl/gS1+aPpjKeM+6z2L+5jAhnT
+         Ed5wn8/+4e7ErkFpDUcifERD8uGpEHB/DSp53X96FzO6k+Bp90j0M4LtRc30c8IAkaIh
+         RLLGhttNvuiJa0k3Ri6/dwGafwt0VcOR7+Coyz4mFrv82hTh1GFXvRjEInOLvibl9dPv
+         uaaA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1782933711; x=1783538511;
+        h=cc:to:content-transfer-encoding:content-type:mime-version
+         :message-id:date:subject:from:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=vjlz6Sou4oUC6PMziaJquaQPB+bVCyS4KogfPbQtE34=;
+        b=oZwo5mzJGyzUa23tUK2Gql0ppowuZLuP5LDW/X7jcrPBqH5b2Ml9Iw6r8SbE+Q1Y/k
+         7zB+1XKBI3GN91Uj91kk38MNUA1jiQ0X7FQ8Tw8qNFIgczfy2wxMzbNsPftwZvb8ZZJ4
+         ESe4BXl+a8Dl3RRkIvoHbHvmKHSVpU2M6DwXJh6KuGlvenx4+GqMjMGSiiMVZJG8etZw
+         8468kslqctnc+jKfFLXm2xEUKniy1Cpmx5B/NdHsi2fscvz6KisvfSvR14CHcMQWTwgO
+         4jht3hRUDBQ2fXigtzMYZPEl/CpwDwx7gR25jlXNk/M0JDa73blJpHIMzP4gFxekqNx/
+         jguA==
+X-Forwarded-Encrypted: i=1; AHgh+RrU0GTdvXklKLVhhXvgo8wsvWI1HcIWqV8TUZoMiSOBT+9Z2wua3Bj686k2/ztKg2t2MYLd/WM=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw8SJBz7kTG7Q11+RlRUM9emXrFnaXU6Z8st+r/g+T7kT/PEo6u
+	R5B3vYjYADZwTReobhS3JRVdru85mv5OI/9/pfKd8EYaYBoMs7791apD
+X-Gm-Gg: AfdE7cm/1s2/rDcV41R6YJdk3ZWOvNrsi3tHvC9yrWDnbiibq5mAGwOsAqZN1T6P4Za
+	VFTtQ1emWP26TUFcoMzF+bGGtaFYXNNrlQScIMg8RT1IlQXJ9BIaFoCiqozTgwdJrhTP9kKNLKj
+	5lvhg/Izp3PwrVP8yhuaavJ93zcJlq0pCVHlF4YElpKHn1Xc63ZL7xAwzgOn7/JsfNd/pGWpydz
+	fw1zk8Z3RwQE/qfz5D+3/G+7wGwiDTQjZSlaFipvTa77v6abXiUYsl5n+Y95960uL6XzpKN+pqL
+	iAo+a2UJa0SLRwNI2ImE8WPNTfxcP46+dkJqRPYzW5e4efr5hHtW4MDceMQtDtee59TqouwR67J
+	GOGWJgMj+ju3Wr6Hq9Fx50LLjeHMEsuS7WcSmToCBIms4Df+GYYYWvsgTkHWE02mzF44VRVWaN8
+	Jou6s68CzS6ZIFcvUUj3z9d/qLZbYWr5UODNaMpbqEIpR9oEsnU2eULqWcSanTn6kzPRzJkcdDU
+	xaO9VmennMGjUKvhxqVe3H/TY1fDEiKJpM0jSzJk/miauGecu54jDgRDQkOKmsPBef6L5lEDP7P
+	+9dOY+5/DP1ysqOpMU11hpf8EbnI7dvzmi8dkTTXFWdQBWEV68rTOfQ=
+X-Received: by 2002:a05:6000:46c7:b0:470:2fb1:3db5 with SMTP id ffacd0b85a97d-477b52962ebmr2062536f8f.30.1782933710433;
+        Wed, 01 Jul 2026 12:21:50 -0700 (PDT)
+Received: from [192.168.71.52] (cst2-160-240.cust.vodafone.cz. [31.30.160.240])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-477dbe617b1sm2081838f8f.16.2026.07.01.12.21.49
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 01 Jul 2026 12:21:50 -0700 (PDT)
+From: Joshua Crofts <joshua.crofts1@gmail.com>
+Subject: [PATCH 0/2] iio: adc: add missing 'select IIO_TRIGGERED_BUFFER' to
+ Kconfig entries
+Date: Wed, 01 Jul 2026 21:21:45 +0200
+Message-Id: <20260701-add-adc-kconfig-deps-v1-0-b9708d74f426@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -64,62 +90,94 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.15.2
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/x2MQQqAIBAAvxJ7bkElKvtKdLB1qyVQUYgg+nvSY
+ Q5zmHmgcBYuMDUPZL6kSAxVdNsAHS7sjOKrg1GmV4PS6LyvEJ4UwyY7ek4FV0PU2dWOnR6gpin
+ zJve/nZf3/QDp050TZgAAAA==
+X-Change-ID: 20260701-add-adc-kconfig-deps-b2cc49b98417
+To: Jonathan Cameron <jic23@kernel.org>, 
+ David Lechner <dlechner@baylibre.com>, 
+ =?utf-8?q?Nuno_S=C3=A1?= <nuno.sa@analog.com>, 
+ Andy Shevchenko <andy@kernel.org>, 
+ Jonathan Santos <Jonathan.Santos@analog.com>, 
+ Ramona Alexandra Nechita <ramona.nechita@analog.com>
+Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Joshua Crofts <joshua.crofts1@gmail.com>, 
+ Jonathan Cameron <jic23@kernel.org>, stable@vger.kernel.org
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1782933709; l=946;
+ i=joshua.crofts1@gmail.com; s=20260530; h=from:subject:message-id;
+ bh=kYxAmL4+vDGixpRhm9WSeoPiYPjYqdH+eJ1grKcucW4=;
+ b=7Hp7kdzo835EdJpfYEgRCDYqTK+drpskGXpaCMlOpriAVTX5iBgNRymcYDlzC0P33rhOS6+5v
+ 1ebYip9vb4PA0CquY3PcaRhqjTqjDEulzW3Cwi1lqqRhtM3TJQ3ZK+1
+X-Developer-Key: i=joshua.crofts1@gmail.com; a=ed25519;
+ pk=RTDOoVwgeL4oFdASj9U+cxJuIjXuXk73zkjnGOJKbEo=
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-4.66 / 15.00];
-	WHITELIST_SPF_DKIM(-3.00)[kernel.org:d:+,kernel.org:s:+];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	MID_RHS_NOT_FQDN(0.50)[];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:jikos@kernel.org,m:trungnh@cystack.net,m:linux-input@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,s:lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER(0.00)[bentiss@kernel.org,stable@vger.kernel.org];
-	FORWARDED(0.00)[lists@lfdr.de];
+	FREEMAIL_CC(0.00)[vger.kernel.org,gmail.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-270238-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:jic23@kernel.org,m:dlechner@baylibre.com,m:nuno.sa@analog.com,m:andy@kernel.org,m:Jonathan.Santos@analog.com,m:ramona.nechita@analog.com,m:linux-iio@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:joshua.crofts1@gmail.com,m:stable@vger.kernel.org,m:joshuacrofts1@gmail.com,s:lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
+	FORGED_SENDER(0.00)[joshuacrofts1@gmail.com,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	RCVD_TLS_LAST(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	RCPT_COUNT_FIVE(0.00)[5];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[bentiss@kernel.org,stable@vger.kernel.org];
-	TAGGED_FROM(0.00)[bounces-270236-lists,stable=lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
+	DKIM_TRACE(0.00)[gmail.com:+];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[joshuacrofts1@gmail.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCPT_COUNT_SEVEN(0.00)[11];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 4002C6F0C73
+X-Rspamd-Queue-Id: E4DA96F0CF5
 
-On Thu, 02 Jul 2026 00:13:19 +0700, Trung Nguyen wrote:
-> mt_io_flags is a single unsigned long, but mt_process_slot(),
-> mt_release_pending_palms() and mt_release_contacts() use it as a
-> per-slot bitmap indexed by the slot number. That slot number is only
-> bounded by td->maxcontacts, which is taken from the device's
-> ContactCountMaximum feature report and can be up to 255, not by
-> BITS_PER_LONG.
-> 
-> [...]
+The AD4130 and AD7779 entries are missing 'select IIO_TRIGGERED_BUFFER'
+entries, causing potential build failures.
 
-Applied to https://git.kernel.org/pub/scm/linux/kernel/git/hid/hid.git (for-7.2/upstream-fixes), thanks!
+Steps to reproduce:
+1. Run `make allnoconfig`
+2. Run `make menuconfig` and select any afformentioned driver and
+   modules it depends on.
+3. Run `make .` and the build will fail due to missing triggered
+   buffer definitions etc.
 
-[1/2] HID: multitouch: fix out-of-bounds bit access on mt_io_flags
-      https://git.kernel.org/hid/hid/c/8813b0612275
-[2/2] selftests/hid: multitouch: test a large ContactCountMaximum
-      https://git.kernel.org/hid/hid/c/b6eb022890c7
+I seem to have stumbled upon a lot of drivers which have incomplete
+Kconfigs, expect more patch series per sensor type.
 
-Cheers,
+Signed-off-by: Joshua Crofts <joshua.crofts1@gmail.com>
+---
+Joshua Crofts (2):
+      iio: adc: ad4130: add missing `select IIO_TRIGGERED_BUFFER` to Kconfig
+      iio: adc: ad7779: add missing 'select IIO_TRIGGERED_BUFFER' to Kconfig
+
+ drivers/iio/adc/Kconfig | 2 ++
+ 1 file changed, 2 insertions(+)
+---
+base-commit: 022cc99d5d1cdc76b09b424a769c3cfea3812378
+change-id: 20260701-add-adc-kconfig-deps-b2cc49b98417
+
+Best regards,
 -- 
-Benjamin Tissoires <bentiss@kernel.org>
+Kind regards
+
+CJD
 
 
