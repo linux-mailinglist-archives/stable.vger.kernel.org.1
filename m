@@ -1,331 +1,216 @@
-Return-Path: <stable+bounces-270170-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-270173-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 3pKFJAAfRWp/7QoAu9opvQ
-	(envelope-from <stable+bounces-270170-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 01 Jul 2026 16:06:56 +0200
+	id BGT1I3AZRWrl6woAu9opvQ
+	(envelope-from <stable+bounces-270173-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 01 Jul 2026 15:43:12 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id E08496EE81E
-	for <lists+stable@lfdr.de>; Wed, 01 Jul 2026 16:06:55 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id C93356EE42A
+	for <lists+stable@lfdr.de>; Wed, 01 Jul 2026 15:43:11 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=qualcomm.com header.s=qcppdkim1 header.b=D0TYYJLh;
-	dkim=pass header.d=oss.qualcomm.com header.s=google header.b="J/Hzkdi7";
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-270170-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-270170-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=reject) header.from=qualcomm.com;
-	arc=pass ("subspace.kernel.org:s=arc-20240116:i=2")
+	dkim=none;
+	dmarc=none;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-270173-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-270173-lists+stable=lfdr.de@vger.kernel.org";
+	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 0F34232423A8
-	for <lists+stable@lfdr.de>; Wed,  1 Jul 2026 13:36:34 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id D2ACE3094CA3
+	for <lists+stable@lfdr.de>; Wed,  1 Jul 2026 13:38:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C2CE48C8C5;
-	Wed,  1 Jul 2026 13:36:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3C3348C8C5;
+	Wed,  1 Jul 2026 13:36:53 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F2F048C3FD
-	for <stable@vger.kernel.org>; Wed,  1 Jul 2026 13:36:05 +0000 (UTC)
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782912969; cv=pass; b=aY35bPBCTxX4vJfg8lKGTJ5OQtl3nA8MjVSza+sFIgeKUXxsnN/LK/p+prYx+h+IDeZRThTZ2WsbR8uVtW5GX0cJ5mVZaZOsayHH6sJOvB6VZ9zLIj8HDzItd9GA+ScmWh6+ClX3tYCvCKxPRM9loP3RIlFPnMwDFvEiwux13HQ=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782912969; c=relaxed/simple;
-	bh=N+n/R/mlFs2wkRiMkBtopMW3wGbtfZ47UIAhPinzCC0=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=CiM5/3m+O+Ihq56wZ2K+1SfBI9VoBN12TtMK3EOXw3/ZTJgmcVJSmT+hEhFR2nYViIuCwEKHW4cl7aakJslmdqhxxaw1Xg2CQtqMWIj96Iu0ksnYj0/crmdUpcXsSAOUPj4jlvi+AY7VKRRfF93B+/oxztJqvET8EtFUGXN4Q8U=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=D0TYYJLh; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=J/Hzkdi7; arc=pass smtp.client-ip=205.220.168.131
-Received: from pps.filterd (m0279866.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 661A8jNV683286
-	for <stable@vger.kernel.org>; Wed, 1 Jul 2026 13:36:05 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	ViDlik4RCW62sl/RLk3cKzJ5UtFbYqrOCQjRpG10ly0=; b=D0TYYJLhf1Zwu2jk
-	spVTvuXD1DtrAeoeC2o9zHuxnGi5L2oNStqdVlMFzAka42qve3FCqsZ0imRiSjGS
-	wY7ttgiTuQozDBsloMvMWMZ7rH/qOR9G1lDsmLiF7+3AQRgTZm29mCqmNwGw2zKN
-	vUeqWlghwM2RkTREn3uRhASvg6bSZRMNTxyjChtRcJbcOyj43Bn47PrPRgooNtem
-	izYRe/87MwRcAlgJr+M4KcqpvbGLoJprSrbUKhtWlVLLmIPX48qaTHAE596YlbJv
-	Qs74Yv6HObEi99FocjmPI1rDGZPAdejjSZRzvLFUsQfNCiXq1CiD5iYcCYaKTrC8
-	PAdhXw==
-Received: from mail-qk1-f197.google.com (mail-qk1-f197.google.com [209.85.222.197])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4f4jtqmgt2-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <stable@vger.kernel.org>; Wed, 01 Jul 2026 13:36:05 +0000 (GMT)
-Received: by mail-qk1-f197.google.com with SMTP id af79cd13be357-92e56b2b350so129788785a.3
-        for <stable@vger.kernel.org>; Wed, 01 Jul 2026 06:36:04 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1782912964; cv=none;
-        d=google.com; s=arc-20260327;
-        b=ozfIwxjr9VsFVhUJrefMsd4FStjN+6jej0t2Io1v7YWmOV+lAf2D1z82w7vAXNe2a8
-         uhdqGLvF/obiNyHlw1zbZFDeCWn8Bc3ZaLdtSJLoA7mmLAgbf9pPvbAaiSTPUlScQcty
-         7C6XV7GmedyKXf4ETptOElZ3LlwROREPXOGYwUU5Ojs4LAoBOYHdIlfFsr+mE3DUmZcE
-         LWOe4tZ6kW/EeVgYQnpl+MwDqHb9Cx0PpRCMV5tB3fqeY8nhv5VroSKIZzZLSBGqRPyy
-         YHFMirZOPb1dUYUfPtclDntZtgXIhZ8GocwOJzG3eIaXFbsauFoGSItEpafj0FVfEgLk
-         GdXw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=ViDlik4RCW62sl/RLk3cKzJ5UtFbYqrOCQjRpG10ly0=;
-        fh=pdlXT3o5aNlSrlSG14Y7Ix1Gf94mnkBd8ietngVWZUo=;
-        b=N4ygTc5Nv2axATOnO2nQfMyOCv705hLAvadXTXuf7/ea8P1JykwabCfVhSaS4mVyTH
-         GuMAE9cUeM2ZYI499sL1NRAyFJUf8kPQv0uvzN6r9v7HK5ebkmLLJi/06vnWSb8kPmIX
-         Eqe6dWYBVe9DSZF5jy0Q3UCKVwM1QcmOb8V/0ynqfQWzbNtfM4Hks/ibVl+gfdC7Nz4q
-         cIIwfnv1RIsXWgRyjGCG89YXY2yNRAep9cAyT7tgLFJGgIPqUvERlkLcTLcCVYOmbF9s
-         oFdwtqjrLJy4tXwIstmFpVbNW4Qgxl0MOI411AKVBMom8aRxqWL/SWZ+sHaQ9DxGN8YG
-         YF/Q==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1782912964; x=1783517764; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ViDlik4RCW62sl/RLk3cKzJ5UtFbYqrOCQjRpG10ly0=;
-        b=J/Hzkdi7UAfkvQ3JS+pBNsS3Qmx4/AV7Wjuw2Oh8ju62IMD4QCIsi8DVpTbiouooBM
-         Rcm2GJbEmdUbxy+Tc3ChOTTQm7hJOvM938TBwM5bFgA4o2C2AO2+lMAO5TMybnLRSHmF
-         QLShWKLlcjvI5yKmQ6Mwu4jxcPhKVXtkg+uo2PRdBGokaoUPmnFlQQW49W+GI91P/mM8
-         737P8Heu+Qg3/8bZhhpaNqZxmFsxiIS3IqmrucpJR22QrEYxEOYX4bOgxfGLNUTycXxA
-         1HWSCdbIzTxZKs7dwvsBdnBCIeB2WMujN8Wii1CvgsQCQmMwEdU3daGY5Pwffj5LsOHs
-         hBgQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782912964; x=1783517764;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=ViDlik4RCW62sl/RLk3cKzJ5UtFbYqrOCQjRpG10ly0=;
-        b=MQyMNwAlC4/2qh/jCNr0lKurttjGtY6lmZIIiQwt0SpA0Z8wdXWALF8FJtnsHc18gk
-         SnM5OnFqBcJRvJ4D1FcPFJhC0eoQ6oR7P4ThZSX3WooQ1ZPyVc8ROzF1P96RSU41D1hN
-         UIXwwW7LtGro6/mCiEl67a73qD5RR0UefHq5kkc6wNUIaA9N3FxAVVmm+vL8wfFy9hMA
-         E4E/fKRH7/JW0eoHSBi9a/p082toT4aSuEV9MGQR5BcP24sps3WBE6UaiOWIcXCp2fKS
-         wBqmysB+6FrQ8xV+vMCWdHT/eB0yQOjHdoWnUcxanHTbicxxpyZXqkNfC2XyQO65LbPl
-         +RwQ==
-X-Forwarded-Encrypted: i=1; AFNElJ+y9B+nObMTZVTuFnKaGPazQMIqYuyheRSw+w5oujE+hLPB3Jqs2hgydFyflrIXOUWXtRfEvjo=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yyq312wTtix3d7JsDEiGRXSJvmPMWm0pO1j/AdzTUiB0aGPVzZl
-	qs7Dkx2sV8AxwMVkCjlA4HgMxUwZhkyLwRkBQ7ELSzVNNW3pOdUSp9u3ZjStVCIL8etw5s1phjo
-	yF+Nyvg6UbOH3TmefpJYOTHnEoeZ4ZsBX4irsQo1Ew0wla2vCkib0yCYQglCSU9QpXrc2nwjxmR
-	gXXC3qzcLYmSc/RLnYnpNi8uUFXsdOQZgzrw==
-X-Gm-Gg: AfdE7cm2hf3iYdbvOWdZyDHAmJuPEw9jkYLjmRFkIAgyhEQXLp9h6lbA6ZJiyTfwTIF
-	FmaHSSEDtHg9wnc4YTyu3rk4YMO1dxeyn0hbd7SlBAPx1nmwyQqpB6P6uJWsfQgJE4NC+EphyIv
-	UMTJnIMDIQjHW2xJHJRV+RSr7I63VQRrqp3JMyXvH4OCnIhhMs7JWTzapNhdODFrxlcPLGdnHKK
-	y0L5DKlE4vf7AQRmPvdDhTiYThGZGkzfgyShyfXv4kfmneif7f0ozGWy85o7CZe291rJqCqu6JN
-	RjzDPML6eg==
-X-Received: by 2002:a05:620a:28d3:b0:92b:6805:91be with SMTP id af79cd13be357-92e7853d109mr199457785a.70.1782912946766;
-        Wed, 01 Jul 2026 06:35:46 -0700 (PDT)
-X-Received: by 2002:a05:620a:28d3:b0:92b:6805:91be with SMTP id
- af79cd13be357-92e7853d109mr199161785a.70.1782912918609; Wed, 01 Jul 2026
- 06:35:18 -0700 (PDT)
+Received: from zg8tmja5ljk3lje4mi4ymjia.icoremail.net (zg8tmja5ljk3lje4mi4ymjia.icoremail.net [209.97.182.222])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 024943E1D16
+	for <stable@vger.kernel.org>; Wed,  1 Jul 2026 13:36:43 +0000 (UTC)
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1782913013; cv=none; b=j+kOHyWt7L/0SbrIK9U1hwtWW2tF3pMNJj0aH2Lx2XOy3PSlZvblsyMeNTxjP35xnVBMjh2eKwRTagt6NLkq2jgZ4aKjjdnD1fvivCXs885ntGpK44ykDnG1mUM6JcII2E8u0+ySGu8ZZvMmFTty0Ice39A6TVu56wN+UP1bwxU=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1782913013; c=relaxed/simple;
+	bh=vkWA+pR3OZfnWlFZW+uq1EZpX3DsehdrYFIuwaPN4dI=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=mdIMIQ4U1QWNGtnOkUh892tZHI0+5cR0oWLDBHLVXB+lVtZEYMPzom4WOhjh2+CFY0cjo/3sGk9JA/uvKSvMJF8UlMFj4NrFlwSqtNvvoDrNPJJkJ1g9b45pBUjfINIqUpBhIlwmMychLd6LInM5ckD4Vx7GiR79sFGXpZdJ0V8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=zju.edu.cn; spf=pass smtp.mailfrom=zju.edu.cn; arc=none smtp.client-ip=209.97.182.222
+Received: from zju.edu.cn (unknown [10.98.66.117])
+	by mtasvr (Coremail) with SMTP id _____wCXSEblF0VqQvNMAw--.20652S3;
+	Wed, 01 Jul 2026 21:36:38 +0800 (CST)
+Received: from localhost.localdomain (unknown [10.98.66.117])
+	by mail-app3 (Coremail) with SMTP id zS_KCgD3DXDkF0Vq9hS8Ag--.36084S2;
+	Wed, 01 Jul 2026 21:36:36 +0800 (CST)
+From: Fan Wu <fanwu01@zju.edu.cn>
+To: 
+Cc: Fan Wu <fanwu01@zju.edu.cn>,
+	stable@vger.kernel.org
+Subject: [PATCH] wifi: rtl8xxxu: fix use-after-free from rx_urb_wq on stop
+Date: Wed,  1 Jul 2026 13:35:41 +0000
+Message-Id: <20260701133541.7481-1-fanwu01@zju.edu.cn>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260629-block-as-nvmem-v6-0-f02513dcd46d@oss.qualcomm.com>
- <20260629-block-as-nvmem-v6-1-f02513dcd46d@oss.qualcomm.com>
- <20260630180219.GA4139943-robh@kernel.org> <CAFEp6-163adAq8-H_pCzGnq+Fo4jpyKGs6Jv25j3fSpZg3COjQ@mail.gmail.com>
- <CAL_JsqKFjk-mdaAAOzNB6rFiJbw5gd4eDpRBLQL-4q+uJKnp3g@mail.gmail.com>
-In-Reply-To: <CAL_JsqKFjk-mdaAAOzNB6rFiJbw5gd4eDpRBLQL-4q+uJKnp3g@mail.gmail.com>
-From: Loic Poulain <loic.poulain@oss.qualcomm.com>
-Date: Wed, 1 Jul 2026 15:35:07 +0200
-X-Gm-Features: AVVi8CfNT2AJJTgPBXfFVJQmZjW_-a9Isbc3rycVEtJcwbZkpqGBU1gJZohgDaU
-Message-ID: <CAFEp6-20FXTOKQ6EPuR8OUDkqE4JXcUbXaFy7kRFt4fzszPQCA@mail.gmail.com>
-Subject: Re: [PATCH v6 1/9] block: partitions: of: Skip child nodes without
- reg property
-To: Rob Herring <robh@kernel.org>
-Cc: Ulf Hansson <ulfh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
-        Conor Dooley <conor+dt@kernel.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Konrad Dybcio <konradybcio@kernel.org>, Jens Axboe <axboe@kernel.dk>,
-        Johannes Berg <johannes@sipsolutions.net>,
-        Jeff Johnson <jjohnson@kernel.org>,
-        Bartosz Golaszewski <brgl@kernel.org>,
-        Marcel Holtmann <marcel@holtmann.org>,
-        Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
-        Balakrishna Godavarthi <quic_bgodavar@quicinc.com>,
-        Rocky Liao <quic_rjliao@quicinc.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
-        Srinivas Kandagatla <srini@kernel.org>, Andrew Lunn <andrew@lunn.ch>,
-        Heiner Kallweit <hkallweit1@gmail.com>,
-        Russell King <linux@armlinux.org.uk>,
-        Saravana Kannan <saravanak@kernel.org>,
-        Christian Marangi <ansuelsmth@gmail.com>, linux-mmc@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-arm-msm@vger.kernel.org, linux-block@vger.kernel.org,
-        linux-wireless@vger.kernel.org, ath10k@lists.infradead.org,
-        linux-bluetooth@vger.kernel.org, netdev@vger.kernel.org,
-        daniel@makrotopia.org, stable@vger.kernel.org,
-        Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Proofpoint-ORIG-GUID: SzlRFmcZUkgeZbg8dpC1AaC1cjWQzHpI
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzAxMDE0MiBTYWx0ZWRfX3+DjBuVTjsPq
- 3Oqc/eH4JbmyCowgY5zd5PDtg7cUs2T0j21wq5hv8SyYEHzJexLtdKupgyzkUMuIZhsKzVhGJSc
- FbZVpmAU3p4COij5FU82TKOXoalredEmIuHHimlqOFsFMB/aMK9GP/muCdGCoPMrBjK/e97pfmC
- AXl1XKveRNn8X8F/4WKNqmTBlew4mu7zCKJtuiZ98ZgSum5Y9CwCaqHNlHVm9eaNkmOqYuD7Kdz
- +VIHLIDE5N5BC+eRzylBPnkfCnH/nYkOQLj8Ijx9cN5dbi3GxLDkMIjlT+uDh16+SPIrtlIQEWL
- FmjU9F0DHKI4poWlMN1ra1Q3N237UdMZB52UGsFxcv5HUKu0GO/K6y47c53JVMMSiTHQgD0Fumj
- atTirVWx+DqDe9va75NCxkJVVgZ1b/+UoRuqXHFNeC/BqD0CPPSZaaCYAPJPw0hcZj28tXoK1RD
- j1rLNSy5r0qoBxT2C/A==
-X-Proofpoint-GUID: SzlRFmcZUkgeZbg8dpC1AaC1cjWQzHpI
-X-Authority-Analysis: v=2.4 cv=LIZWhpW9 c=1 sm=1 tr=0 ts=6a4517c5 cx=c_pps
- a=50t2pK5VMbmlHzFWWp8p/g==:117 a=IkcTkHD0fZMA:10 a=RAioF0-LDSMA:10
- a=s4-Qcg_JpJYA:10 a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22
- a=YMgV9FUhrdKAYTUUvYB2:22 a=VwQbUJbxAAAA:8 a=EUspDBNiAAAA:8
- a=bM2Xkg4KEcMkddnjsM8A:9 a=QEXdDO2ut3YA:10 a=IoWCM6iH3mJn3m4BftBB:22
-X-Proofpoint-Spam-Info: AW1haW4tMjYwNzAxMDE0MiBTYWx0ZWRfXxvgdpNHUJ6gS
- m6pB8BHvQZ2iNm3LnaxoFJz/tMR59RxS+R8Uv344T9BlY5dyz/zkxsyqB2zAF2hzNKI4tjFhZvW
- mtpHe9lPM9IgNjm1yEafiUHzU5iYhxU=
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.125,FMLib:17.12.100.49
- definitions=2026-07-01_03,2026-06-26_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- suspectscore=0 priorityscore=1501 phishscore=0 lowpriorityscore=0
- clxscore=1015 malwarescore=0 bulkscore=0 adultscore=0 impostorscore=0
- spamscore=0 classifier=typeunknown authscore=0 authtc= authcc= route=outbound
- adjust=0 reason=mlx scancount=1 engine=8.22.0-2606150000
- definitions=main-2607010142
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:zS_KCgD3DXDkF0Vq9hS8Ag--.36084S2
+X-CM-SenderInfo: qrstjiaswqq6lmxovvfxof0/
+X-CM-DELIVERINFO: =?B?lKQt2AXKKxbFmtjJiESix3B1w3vZ3A9ovKVTomAyoQazvoRs/NHSP8GI2EvgeEEW7R
+	sfnZPoDCNGYdHSfuFmYJL54WPh//7mY0qv4xtIN3wdo0R49TDnJWHVEE4lEwAX94AoDNBF
+	CQeAx4DHCGCeRrlOYazN5RPxYw6l01w8CbPzC/8w
+X-Coremail-Antispam: 1Uk129KBj93XoWxuFy7WFy5Gw47XF4fAw1rXwc_yoWrtrykpF
+	Z0k3sIkr4DXr4rtrn8Jwn7AF1rGw1a9F13ZF4kW343AFnagF1fX3W8KryavrWkur97tayf
+	Zr18J39rGwn0krgCm3ZEXasCq-sJn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7ZEXa
+	sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
+	0xBIdaVrnRJUUUB2b4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
+	IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
+	e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_tr0E3s1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
+	0_Gr1j6F4UJwA2z4x0Y4vEx4A2jsIE14v26rxl6s0DM28EF7xvwVC2z280aVCY1x0267AK
+	xVW0oVCq3wAac4AC62xK8xCEY4vEwIxC4wAS0I0E0xvYzxvE52x082IY62kv0487Mc804V
+	CY07AIYIkI8VC2zVCFFI0UMc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AK
+	xVWUJVWUGwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48Icx
+	kI7VAKI48JM4x0Y48IcxkI7VAKI48G6xCjnVAKz4kxMxAIw28IcxkI7VAKI48JMxC20s02
+	6xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_Jr
+	I_JrWlx4CE17CEb7AF67AKxVWUXVWUAwC2zVAIFx02awCIc40Y0x0EwIxGrwCI42IY6xII
+	jxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267AKxVWUJVW8JwCI42IY6xAIw2
+	0EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aVCY1x02
+	67AKxVWUJVW8JbIYCTnIWIevJa73UjIFyTuYvjxUaKZXUUUUU
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
-	DMARC_POLICY_ALLOW(-0.50)[qualcomm.com,reject];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[qualcomm.com:s=qcppdkim1,oss.qualcomm.com:s=google];
+X-Spamd-Result: default: False [0.04 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_CONTAINS_FROM(1.00)[];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	RCPT_COUNT_TWELVE(0.00)[37];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-270170-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-270173-lists,stable=lfdr.de];
+	DMARC_NA(0.00)[zju.edu.cn];
+	FORGED_RECIPIENTS(0.00)[m:fanwu01@zju.edu.cn,m:stable@vger.kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[fanwu01@zju.edu.cn,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	RCPT_COUNT_TWO(0.00)[2];
 	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:robh@kernel.org,m:ulfh@kernel.org,m:krzk+dt@kernel.org,m:conor+dt@kernel.org,m:andersson@kernel.org,m:konradybcio@kernel.org,m:axboe@kernel.dk,m:johannes@sipsolutions.net,m:jjohnson@kernel.org,m:brgl@kernel.org,m:marcel@holtmann.org,m:luiz.dentz@gmail.com,m:quic_bgodavar@quicinc.com,m:quic_rjliao@quicinc.com,m:davem@davemloft.net,m:edumazet@google.com,m:kuba@kernel.org,m:pabeni@redhat.com,m:horms@kernel.org,m:srini@kernel.org,m:andrew@lunn.ch,m:hkallweit1@gmail.com,m:linux@armlinux.org.uk,m:saravanak@kernel.org,m:ansuelsmth@gmail.com,m:linux-mmc@vger.kernel.org,m:devicetree@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:linux-arm-msm@vger.kernel.org,m:linux-block@vger.kernel.org,m:linux-wireless@vger.kernel.org,m:ath10k@lists.infradead.org,m:linux-bluetooth@vger.kernel.org,m:netdev@vger.kernel.org,m:daniel@makrotopia.org,m:stable@vger.kernel.org,m:bartosz.golaszewski@oss.qualcomm.com,m:krzk@kernel.org,m:conor@kernel.org,m:luizdentz@gmail.com,s:lists@lfdr.
- de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_SENDER(0.00)[loic.poulain@oss.qualcomm.com,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[kernel.org,kernel.dk,sipsolutions.net,holtmann.org,gmail.com,quicinc.com,davemloft.net,google.com,redhat.com,lunn.ch,armlinux.org.uk,vger.kernel.org,lists.infradead.org,makrotopia.org,oss.qualcomm.com];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	TO_DN_SOME(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[loic.poulain@oss.qualcomm.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[qualcomm.com:+,oss.qualcomm.com:+];
-	ALIAS_RESOLVED(0.00)[];
-	TAGGED_RCPT(0.00)[stable,dt];
+	FROM_NEQ_ENVFROM(0.00)[fanwu01@zju.edu.cn,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,qualcomm.com:dkim,qualcomm.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,mail.gmail.com:mid]
+	FORGED_SENDER_FORWARDING(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	TAGGED_RCPT(0.00)[stable];
+	R_DKIM_NA(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: E08496EE81E
+X-Rspamd-Queue-Id: C93356EE42A
 
-On Tue, Jun 30, 2026 at 11:46=E2=80=AFPM Rob Herring <robh@kernel.org> wrot=
-e:
->
-> On Tue, Jun 30, 2026 at 2:59=E2=80=AFPM Loic Poulain
-> <loic.poulain@oss.qualcomm.com> wrote:
-> >
-> > Hi Rob,
-> >
-> > On Tue, Jun 30, 2026 at 8:02=E2=80=AFPM Rob Herring <robh@kernel.org> w=
-rote:
-> > >
-> > > On Mon, Jun 29, 2026 at 10:55:20AM +0200, Loic Poulain wrote:
-> > > > Child nodes of a fixed-partitions node are not necessarily partitio=
-n
-> > > > entries, for example an nvmem-layout node has no reg property. The
-> > > > current code passes a NULL reg pointer and uninitialized len to the
-> > > > length check, which can result in a kernel panic or silent failure =
-to
-> > > > register any partitions.
-> > >
-> > > That does not sound right to me. A fixed-partitions node should only =
-be
-> > > defining partitions with address ranges. I would expect a partition n=
-ode
-> > > could be nvmem-layout, but not the whole address range. If you wanted
-> > > the latter, then just do:
-> > >
-> > > partitions {
-> > >   ...
-> > > };
-> > >
-> > > nvmem-layout {
-> > >   ...
-> > > };
-> >
-> > In our case, the nvmem-layout needs to be associated with a specific
-> > eMMC hardware partition, nvmem cells can be a simple sub-range within
-> > the global eMMC, each hardware partition (boot0, boot1, user...)
-> > having its own address spaces.
-> >
-> > That said, your point about not abusing fixed-partitions is valid. I
-> > initially dropped the compatible =3D "fixed-partitions" from the
-> > partitions-boot1 node when it only carries an nvmem-layout and no
-> > actual partition entries, making it a plain named container node. But
-> > it's a bit fragile if we want to support both nvmem-layout and
-> > fixed-partitions.
-> >
-> > Regarding your expectation of a partition node being a nvmem-layout,
-> > do you mean that the nvmem-layout should live under a fixed-partitions
-> > node? Something along these lines:
-> >
-> > partitions-boot1 {
-> >       compatible =3D "fixed-partitions";
-> >       #address-cells =3D <1>;
-> >       #size-cells =3D <1>;
-> >
-> >       nvmem@4400 {
->
-> partition@4400
->
-> >           reg =3D <0x4400 0x1000>;
-> >
-> >           nvmem-layout {
-> >               compatible =3D "fixed-layout";
-> >               #address-cells =3D <1>;
-> >               #size-cells =3D <1>;
-> >
-> >               wifi_mac_addr: mac-addr@0 {
-> >                   compatible =3D "mac-base";
-> >                   reg =3D <0x0 0x6>;
-> >                   #nvmem-cell-cells =3D <1>;
-> >               };
-> >       [...]
->
-> Either this or replacing "fixed-partitions" with "fixed-layout" if you
-> want to make the whole boot1 partition nvmem-layout looks like the
-> right way to me.
+rtl8xxxu arms rx_urb_wq from the RX completion path:
+rtl8xxxu_rx_complete() hands the URB to rtl8xxxu_queue_rx_urb(), which
+queues it on rx_urb_pending_list and, once the list grows past
+RTL8XXXU_RX_URB_PENDING_WATER, schedules rx_urb_wq.  The worker
+rtl8xxxu_rx_urb_work() drains rx_urb_pending_list, recovers priv through
+container_of, and resubmits each URB through rtl8xxxu_submit_rx_urb(),
+which anchors it on rx_anchor and dereferences priv->udev.
 
-Well, now I think both approaches make sense. We should support a
-fixed-layout on the entire hw-part/block, while also allowing it
-within individual logical partitions.
-Support for the former would only require a small rework/addition in
-this series (to have the hw boot partition a fixed-layout) . The
-latter could come in a follow-up series, as it would require some
-additional fwnode logic.
+rtl8xxxu_stop() cancels the sibling work items (c2hcmd_work, ra_watchdog,
+update_beacon_work) but never cancels rx_urb_wq, so a worker armed during
+the last burst of RX traffic can run rtl8xxxu_rx_urb_work() after
+rtl8xxxu_disconnect() has called ieee80211_free_hw(), which frees priv,
+producing a use-after-free.  The window opens under active RX traffic
+(pending count above the watermark) followed by a disconnect.
 
->
-> > That makes some sense, this would require extra work for the
-> > emmc/block layer to also associate fwnodes with logical partitions,
-> > not just the whole disk/hw (hw part), Is that the direction you'd like
-> > us to go?
->
-> Yes.
->
-> > Also, Note that regardless of which approach we settle on, this
-> > specific fix/patch remains necessary to validate the partition node
-> > and prevent NULL-deref.
->
-> Fair enough, though the reasoning for it would be different and
-> perhaps should give a warning.
+There are two teardown races to close:
 
-Sure.
+  * rtl8xxxu_queue_rx_urb() decided whether to enqueue under rx_urb_lock
+    but called schedule_work() after dropping the lock.  A completion
+    that observed shutdown == false and released the lock could then call
+    schedule_work() after rtl8xxxu_stop() had set shutdown and
+    cancel_work_sync() had already returned, arming the worker to run
+    after the teardown.  Move schedule_work() under the same !shutdown
+    branch so the arming decision is atomic with the shutdown check.
 
-Thanks,
-Loic
+  * rtl8xxxu_rx_urb_work() anchors every URB it drained back onto
+    rx_anchor through rtl8xxxu_submit_rx_urb().  A worker still running
+    when usb_kill_anchored_urbs(&priv->rx_anchor) returned would submit a
+    URB that escaped the kill.  In rtl8xxxu_stop(), call
+    cancel_work_sync(&priv->rx_urb_wq) before the kill so the worker is
+    drained first.
+
+After priv->shutdown is set under rx_urb_lock, completions can no longer
+queue rx_urb_wq. cancel_work_sync() then drains the last queued or running
+worker, and the following usb_kill_anchored_urbs() kills the URBs it may
+have submitted.
+
+rtl8xxxu_disconnect() is covered because ieee80211_unregister_hw()
+guarantees .stop() runs for a live interface before ieee80211_free_hw()
+frees priv.  The probe error path needs no cancel: rx_urb_wq is
+INIT_WORK()'d there but cannot have been scheduled, since no URB is
+submitted before ieee80211_register_hw() succeeds.
+
+This bug was found by static analysis.
+
+Fixes: 26f1fad29ad9 ("New driver: rtl8xxxu (mac80211)")
+Cc: stable@vger.kernel.org
+Signed-off-by: Fan Wu <fanwu01@zju.edu.cn>
+---
+ drivers/net/wireless/realtek/rtl8xxxu/core.c | 19 ++++++++++++++-----
+ 1 file changed, 14 insertions(+), 5 deletions(-)
+
+diff --git a/drivers/net/wireless/realtek/rtl8xxxu/core.c b/drivers/net/wireless/realtek/rtl8xxxu/core.c
+index c06ad064f37c..b447ce78ff05 100644
+--- a/drivers/net/wireless/realtek/rtl8xxxu/core.c
++++ b/drivers/net/wireless/realtek/rtl8xxxu/core.c
+@@ -5792,14 +5792,19 @@ static void rtl8xxxu_queue_rx_urb(struct rtl8xxxu_priv *priv,
+ {
+ 	struct sk_buff *skb;
+ 	unsigned long flags;
+-	int pending = 0;
+ 
+ 	spin_lock_irqsave(&priv->rx_urb_lock, flags);
+ 
+ 	if (!priv->shutdown) {
+ 		list_add_tail(&rx_urb->list, &priv->rx_urb_pending_list);
+ 		priv->rx_urb_pending_count++;
+-		pending = priv->rx_urb_pending_count;
++		/*
++		 * Arm the worker under rx_urb_lock so this is atomic with the
++		 * shutdown check: moving it out of the lock would let a
++		 * completion arm the work after rtl8xxxu_stop() canceled it.
++		 */
++		if (priv->rx_urb_pending_count > RTL8XXXU_RX_URB_PENDING_WATER)
++			schedule_work(&priv->rx_urb_wq);
+ 	} else {
+ 		skb = (struct sk_buff *)rx_urb->urb.context;
+ 		dev_kfree_skb_irq(skb);
+@@ -5807,9 +5812,6 @@ static void rtl8xxxu_queue_rx_urb(struct rtl8xxxu_priv *priv,
+ 	}
+ 
+ 	spin_unlock_irqrestore(&priv->rx_urb_lock, flags);
+-
+-	if (pending > RTL8XXXU_RX_URB_PENDING_WATER)
+-		schedule_work(&priv->rx_urb_wq);
+ }
+ 
+ static void rtl8xxxu_rx_urb_work(struct work_struct *work)
+@@ -7461,6 +7463,13 @@ static void rtl8xxxu_stop(struct ieee80211_hw *hw, bool suspend)
+ 	priv->shutdown = true;
+ 	spin_unlock_irqrestore(&priv->rx_urb_lock, flags);
+ 
++	/*
++	 * Cancel before killing rx_anchor: the worker re-anchors every URB
++	 * it drained via rtl8xxxu_submit_rx_urb(), so a worker still running
++	 * after the kill could submit a URB that escapes it.
++	 */
++	cancel_work_sync(&priv->rx_urb_wq);
++
+ 	usb_kill_anchored_urbs(&priv->rx_anchor);
+ 	usb_kill_anchored_urbs(&priv->tx_anchor);
+ 	if (priv->usb_interrupts)
+-- 
+2.34.1
+
 
