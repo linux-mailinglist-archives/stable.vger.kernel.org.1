@@ -1,185 +1,129 @@
-Return-Path: <stable+bounces-270131-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-270132-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id veccMn/rRGqX3AoAu9opvQ
-	(envelope-from <stable+bounces-270131-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 01 Jul 2026 12:27:11 +0200
+	id QPRYNZfuRGra3QoAu9opvQ
+	(envelope-from <stable+bounces-270132-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 01 Jul 2026 12:40:23 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 27F956EC21A
-	for <lists+stable@lfdr.de>; Wed, 01 Jul 2026 12:27:11 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 694FE6EC47D
+	for <lists+stable@lfdr.de>; Wed, 01 Jul 2026 12:40:23 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=xQYCJa2D;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-270131-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-270131-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=none) header.from=linuxfoundation.org;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=PWAfQ9gf;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-270132-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-270132-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C4DF13056881
-	for <lists+stable@lfdr.de>; Wed,  1 Jul 2026 10:25:48 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 9B0EE301AC34
+	for <lists+stable@lfdr.de>; Wed,  1 Jul 2026 10:40:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D30C40E8E7;
-	Wed,  1 Jul 2026 10:25:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71ED241931D;
+	Wed,  1 Jul 2026 10:40:15 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 083CB3C1F4F;
-	Wed,  1 Jul 2026 10:25:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EABA39021A
+	for <stable@vger.kernel.org>; Wed,  1 Jul 2026 10:40:14 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782901546; cv=none; b=UAIzyZKYh7Tb3u0qpo2mCxQU1Wj/D6C4A2h/Tl2B48kBWHU28LR+804DjWTkgTdscm9d3tgI6OWaERUJIMvyGQ7hr6c/gpAkxE6gOWbnC0Xd73eB3RNREv3EhCKxMLt3aoxJFKVDFpmkvN8EjGBZvyJ04dCIHMY8z2JsJ1qFX/o=
+	t=1782902415; cv=none; b=MKQyK3qriz4BYg3msGQG7VeEY4Vf7NS7kdE4tnIzsnGySql0jCa7LLx7ShrpK8XK4Cqovnuo1EZsLmN3/vCEKQY9cIt5ATr8pIhmLXCN8pPoO9CFZBCf25cjGz3auoQM7Fn8Le1wMbVFGMdAYtxNppRhiPx9HxFQY3zWm1R2dqU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782901546; c=relaxed/simple;
-	bh=Zwc9OT/HbVqiv11orN2n3ee5JLDvtSqQAS3sCwyTy9Q=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=H1d0VzUncKzOdYci5HIsR1qiXH03FLihnyGz9cmL47voEzZpJ8K9OrGJbb+8KEzg6Kd+dzPT5uDIUu3Hq0h/kdcK71pWsMHRXwivP+IOmPg0P2PrQoTFUFR5sfpAqjg+B49SIPmCTehzFJO34R7W+2je2Thc4O2QSeckTyAg9vM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xQYCJa2D; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E19651F000E9;
-	Wed,  1 Jul 2026 10:25:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1782901543;
-	bh=C7zV9GY5gNgVzaxV40iTUoOhY2WdnX6qR6DXnDytM3M=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=xQYCJa2DhvX/A6yxHv39gzCJRtVZnl0a04+q597TLj/SC1dpHcW7ryGrUdMXaiGo2
-	 YXZj6qkgHJtzTDYJPZYRRyF/nYGz3G//EmtWYW6f9YVJIXR9lju6Klg4JlqjAUFait
-	 L7vm+/Qmhvey2YRW/sqxTJfT+QFHy28nPYOn7LtA=
-Date: Wed, 1 Jul 2026 12:25:40 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Sascha Grunert <sgrunert@redhat.com>
-Cc: linux-usb@vger.kernel.org, valentina.manea.m@gmail.com,
-	shuah@kernel.org, i@zenithal.me, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH 2/2] usbip: block SET_INTERFACE for isoc alt settings
-Message-ID: <2026070107-estrogen-semantic-31a4@gregkh>
-References: <20260701101826.894848-1-sgrunert@redhat.com>
- <20260701101826.894848-3-sgrunert@redhat.com>
+	s=arc-20240116; t=1782902415; c=relaxed/simple;
+	bh=8tljfG2MYEam8t8AtYWWq514QumbdCKZEA9GJU7iOJE=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=B7W8OS8rsLQIEjgDl2Ix8+znhF0Vk03EZjIjaogxHJsFmH8XiSzB+GK/HBBaYnIhUDDeNxKsp9HcemT7GRxmtqN4H/HzzmuWZtEbd7M4zUNIVODdxKR2AJgeDdRWgXTg3NVoCKlwvprjH3GOMg7AUARseKbUuS2NvXzZKwKu5Zg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PWAfQ9gf; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14FDD1F00ACA
+	for <stable@vger.kernel.org>; Wed,  1 Jul 2026 10:40:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1782902414;
+	bh=8tljfG2MYEam8t8AtYWWq514QumbdCKZEA9GJU7iOJE=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=PWAfQ9gfRc2tIqooSGsK+54jXObfq0TUgWaeCNe6oo2MTu5F4UT301EaBVa+LgIRB
+	 Yef6HdM70fr5hwqh7cK5YgPHXxVgoUv+yala1AP7S24GLfikZm+Eqxs69Vw88E9fQN
+	 a8ZZcM2PQfA2me6daLGBVQ4yeF++2E0D8gCyunDtlNag1XgXSpdM/nAJntVxDyZNDl
+	 rmNZG4XJrcVsWW4oD5dC5q1KHiAvyentz5B19PTcd4AUadfmJD3HqqmzFY4GeNqG1y
+	 v0xMiJW10bptq33PXzPFUUz/2Xqaml/9bmdEuZsMdfUjo75tE+yZHdWcCeHdrg2Fio
+	 QRIWM6T0H8PIA==
+Received: by mail-lj1-f174.google.com with SMTP id 38308e7fff4ca-39957d210f4so4841881fa.0
+        for <stable@vger.kernel.org>; Wed, 01 Jul 2026 03:40:14 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AHgh+Rqo9fFtQL+n8ZWS6WwD3jfckvwsctGptHxtJt6yOATw3TJ+REwI8oVC8xPi+rsRmF8cxGL2mno=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwttZhT9LjVb+O7PfbwZIqPyt+HzifNs/Z+sshLVaFjddWTD/g4
+	rP4l97bVrygUsQ3SzRUHx0ZB4PB6aprTCRTvcOKvL2Gznr1Im8vEeaw05F17YGwsxQxkuAn1P7Y
+	l2OPC1QyEmrDBYAAAYotFZ3n3oWP/TVU=
+X-Received: by 2002:ac2:51c7:0:b0:5ae:c62b:fc45 with SMTP id
+ 2adb3069b0e04-5aec678e657mr216415e87.9.1782902412908; Wed, 01 Jul 2026
+ 03:40:12 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260701101826.894848-3-sgrunert@redhat.com>
+References: <20260701-arm32-cfi-bug-v2-1-9bf922593e00@kernel.org>
+In-Reply-To: <20260701-arm32-cfi-bug-v2-1-9bf922593e00@kernel.org>
+From: Linus Walleij <linusw@kernel.org>
+Date: Wed, 1 Jul 2026 12:40:00 +0200
+X-Gmail-Original-Message-ID: <CAD++jL=G1-2A-h7oXxq3eUhKLLpNQq8D3Sgh9nYK_0Q107wf7w@mail.gmail.com>
+X-Gm-Features: AVVi8CfLaDi0Can4D2LJnFOq4Oq48vw-nrn8jVWNhab5RVBKiDNrfMZHd8GfN5E
+Message-ID: <CAD++jL=G1-2A-h7oXxq3eUhKLLpNQq8D3Sgh9nYK_0Q107wf7w@mail.gmail.com>
+Subject: Re: [PATCH v2] RFC: ARM: breakpoint: CFI breakpoints only on demand
+To: Russell King <linux@armlinux.org.uk>, Nathan Chancellor <nathan@kernel.org>, 
+	Sami Tolvanen <samitolvanen@google.com>, Kees Cook <kees@kernel.org>, 
+	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>
+Cc: linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
+	stable@vger.kernel.org, slipher <slipher@protonmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [3.84 / 15.00];
-	MID_END_EQ_FROM_USER_PART(4.00)[];
+X-Spamd-Result: default: False [-3.66 / 15.00];
+	WHITELIST_SPF_DKIM(-3.00)[kernel.org:d:+,kernel.org:s:+];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	MID_RHS_NOT_FQDN(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-270131-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:sgrunert@redhat.com,m:linux-usb@vger.kernel.org,m:valentina.manea.m@gmail.com,m:shuah@kernel.org,m:i@zenithal.me,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,m:valentinamaneam@gmail.com,s:lists@lfdr.de];
-	FREEMAIL_CC(0.00)[vger.kernel.org,gmail.com,kernel.org,zenithal.me];
-	MIME_TRACE(0.00)[0:+];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[lists.infradead.org,vger.kernel.org,protonmail.com];
+	TAGGED_FROM(0.00)[bounces-270132-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:linux@armlinux.org.uk,m:nathan@kernel.org,m:samitolvanen@google.com,m:kees@kernel.org,m:rmk+kernel@armlinux.org.uk,m:linux-arm-kernel@lists.infradead.org,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,m:slipher@protonmail.com,m:rmk@armlinux.org.uk,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[linusw@kernel.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_LAST(0.00)[];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	MISSING_XM_UA(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[linusw@kernel.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:from_mime,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp]
+	TAGGED_RCPT(0.00)[stable,kernel];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,mail.gmail.com:mid,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 27F956EC21A
+X-Rspamd-Queue-Id: 694FE6EC47D
 
-On Wed, Jul 01, 2026 at 12:18:26PM +0200, Sascha Grunert wrote:
-> USB/IP cannot forward isochronous transfers. When the client activates
-> an alt setting with isoc endpoints, the transfers fail with -EPROTO and
-> the resulting usb_clear_halt cascade disconnects the device.
-> 
-> Intercept SET_INTERFACE in tweak_set_interface_cmd() and fake success
-> when the target alt setting contains isoc endpoints, keeping the device
-> at alt 0.
-> 
-> Tested with a Turtle Beach Velocity One Flight yoke (10f5:7001)
-> forwarded to a VM via USB/IP, which previously disconnect-looped every
-> few seconds and now stays connected.
-> 
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Sascha Grunert <sgrunert@redhat.com>
+On Wed, Jul 1, 2026 at 9:11=E2=80=AFAM Linus Walleij <linusw@kernel.org> wr=
+ote:
 
-What commit id does this fix?
+> This removes the stub hw_breakpoint_cfi_handler() from ARM, making
+> it not steal breakpoint type 0x03 (ARM_ENTRY_CFI_BREAKPOINT) unless
+> CFI is actively used in the kernel.
 
-> ---
->  drivers/usb/usbip/stub_rx.c | 36 ++++++++++++++++++++++++++++++++++++
->  1 file changed, 36 insertions(+)
-> 
-> diff --git a/drivers/usb/usbip/stub_rx.c b/drivers/usb/usbip/stub_rx.c
-> index d0e3d3f..f323b48 100644
-> --- a/drivers/usb/usbip/stub_rx.c
-> +++ b/drivers/usb/usbip/stub_rx.c
-> @@ -100,6 +100,28 @@ static int tweak_clear_halt_cmd(struct urb *urb)
->  	return ret;
->  }
->  
-> +static bool altsetting_has_isoc(struct usb_device *udev, __u16 interface,
-> +				__u16 alternate)
-> +{
-> +	struct usb_interface *intf;
-> +	struct usb_host_interface *alt;
-> +	int i;
-> +
-> +	intf = usb_ifnum_to_if(udev, interface);
-> +	if (!intf)
-> +		return false;
-> +
-> +	alt = usb_altnum_to_altsetting(intf, alternate);
-> +	if (!alt)
-> +		return false;
-> +
-> +	for (i = 0; i < alt->desc.bNumEndpoints; i++) {
-> +		if (usb_endpoint_xfer_isoc(&alt->endpoint[i].desc))
-> +			return true;
-> +	}
-> +	return false;
-> +}
-> +
->  static int tweak_set_interface_cmd(struct urb *urb)
->  {
->  	struct usb_ctrlrequest *req;
-> @@ -111,6 +133,20 @@ static int tweak_set_interface_cmd(struct urb *urb)
->  	alternate = le16_to_cpu(req->wValue);
->  	interface = le16_to_cpu(req->wIndex);
->  
-> +	/*
-> +	 * USB/IP cannot forward isochronous transfers.  If the requested
-> +	 * alt setting activates isochronous endpoints, pretend the switch
-> +	 * succeeded without touching the device.  This prevents the
-> +	 * cascade of failed isoc URBs that leads to a device disconnect.
-> +	 */
-> +	if (alternate != 0 && altsetting_has_isoc(urb->dev, interface,
-> +						  alternate)) {
-> +		dev_info(&urb->dev->dev,
-> +			 "usb_set_interface blocked: inf %u alt %u (isoc)\n",
-> +			 interface, alternate);
+Was meaning to send a non-RFC of this band-aid patch, but missed to
+strip off "RFC", mea culpa.
 
-Why is this not an error?  And if a user sees this, what can they do
-about it?
-
-> +		return 0;
-
-Why isn't this an error?
-
-thanks,
-
-greg k-h
+Yours,
+Linus Walleij
 
