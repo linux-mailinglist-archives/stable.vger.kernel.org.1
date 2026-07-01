@@ -1,169 +1,151 @@
-Return-Path: <stable+bounces-270176-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-270177-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id a4xINlUgRWre7QoAu9opvQ
-	(envelope-from <stable+bounces-270176-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 01 Jul 2026 16:12:37 +0200
+	id +yWIECgbRWpi7AoAu9opvQ
+	(envelope-from <stable+bounces-270177-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 01 Jul 2026 15:50:32 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7434A6EE906
-	for <lists+stable@lfdr.de>; Wed, 01 Jul 2026 16:12:37 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id A67816EE599
+	for <lists+stable@lfdr.de>; Wed, 01 Jul 2026 15:50:31 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=Z3DuxW3R;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-270176-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-270176-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=none) header.from=linux.dev;
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="f/vNQLW8";
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-270177-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-270177-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id DEB4A3344149
-	for <lists+stable@lfdr.de>; Wed,  1 Jul 2026 13:40:06 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 3154C30360BE
+	for <lists+stable@lfdr.de>; Wed,  1 Jul 2026 13:48:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 321AB48C8B0;
-	Wed,  1 Jul 2026 13:39:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED89525B0BB;
+	Wed,  1 Jul 2026 13:48:28 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from out-182.mta0.migadu.com (out-182.mta0.migadu.com [91.218.175.182])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9DC1192D8A;
-	Wed,  1 Jul 2026 13:39:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6EC722AE65;
+	Wed,  1 Jul 2026 13:48:27 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782913181; cv=none; b=sgYuAbI4K9EwxWll1W8Yq6qpY6uijv7wtYBrHSbTlVg0hkkL+Sqmgj8W8pScYEQYDfRse9wf9bp9aFZ/dXQaz01f1QKK4J6ZNxT8O7z1GK628KsH9dUddqcIr7EgAIfIxdsHxrQknoQEnQ+9aVsjF16m+0ePQ0ClcAq6TIchlVw=
+	t=1782913708; cv=none; b=bnbEffxp0LA4RTdmRsHOqLrC439kVAf3q04vY9Yy5CsEnr+HE2gpNSt6hiv+29uGKIrZIOyGzRWBAzPVQGqgGxe0tVmb0ocpYGTIUmobVhRd5FxZdaa5lBm4/Ebdd8zsDa1dqbFzewgvwB+mSvB2G8sPFb4svn/P4fKbQgGaPQU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782913181; c=relaxed/simple;
-	bh=30WZdNdAZDgJNhuINEGyNlJTTmfcrpsaavdPxn8+9Zc=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EPuzb2brSR+r0iAPRdAlXYcodY3deN/7pt6XAu94VVkQsQBeEdwpMcaqiQtp/C8Mj/kZlO6+t0+NoixBLlmhMEO/NhhIAXwpvusdNGgF56WDtOZfgGFiQYWXPP2MO0WE+E0RMmt/mvON+lHtIO9BNRKHDPdnm7l/r0GXWNnAyVo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=Z3DuxW3R; arc=none smtp.client-ip=91.218.175.182
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1782913175;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=JOWwwSP9za3ySnqUIp4QGZCVBjvliudu4EI+ddMn/CU=;
-	b=Z3DuxW3RXG5bPxSjNZ6Xmvz0/d4zgq9/zKKmlJJuPrmwf893SfcECPBy70K0jrB4k9rUWT
-	JwY83ElJsPO9FvEf+2eZhq7ScxLSVVw6zXpnDCpM+GFxsIv6xY/kYvCtWlllCVEByMYofO
-	JN1qxyY/nBUzfmwX9TJ7UVs1RqpZmW4=
-From: Junjie Cao <junjie.cao@linux.dev>
-To: Lee Jones <lee@kernel.org>,
-	Daniel Thompson <danielt@kernel.org>,
-	Jingoo Han <jingoohan1@gmail.com>
-Cc: dri-devel@lists.freedesktop.org,
-	linux-leds@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org,
-	caojunjie650@gmail.com,
-	junjie.cao@linux.dev,
-	Pengyu Luo <mitltlatltl@gmail.com>
-Subject: [PATCH 2/2] backlight: aw99706: Validate all DT property values consistently
-Date: Wed,  1 Jul 2026 21:39:18 +0800
-Message-ID: <20260701133918.33487-2-junjie.cao@linux.dev>
-In-Reply-To: <20260701133918.33487-1-junjie.cao@linux.dev>
-References: <20260701133918.33487-1-junjie.cao@linux.dev>
+	s=arc-20240116; t=1782913708; c=relaxed/simple;
+	bh=0aF0k3dCXbDs8EWzDI+K1JXtdj6+IiLNyBGGmcZ1U/0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=iqn6cd48QF5nLEIovsdw1NhI6GZPgV37vB57a7ccB/LBir44TFFDGvBEgSnTGT3Pldt3kF9pzsdcCOZV734qA0IfBO6DVCuq5JaQ3lGIvDZXlCvHeQ+0DvK8kFu6UJOrIqs5k5vETCjzrvRYvAmuM+6FME8P4KspCq1cysRyyBk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f/vNQLW8; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA31F1F000E9;
+	Wed,  1 Jul 2026 13:48:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
+	s=korg; t=1782913707;
+	bh=77oBzAV2L9TMXx/bROM6lzOXrpNGNQibPHkuk2PAc5A=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=f/vNQLW8ImL4jHyjGc8nEK6bGmRZFup8Jt35n8uPPAo733kpsB+g//kU0VwI4IRJz
+	 H/aA6pzVHbubiCMYOiYOygF9QbBkcXvmsgwkdY8s/0KKUojafMTNChZAe6xb7g4mUi
+	 ARdTZH/zPBnd3w2LQYfHNaY9qPewv9ltfU6nkg50=
+Date: Wed, 1 Jul 2026 15:48:38 +0200
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Thorsten Leemhuis <regressions@leemhuis.info>
+Cc: "stable@vger.kernel.org" <stable@vger.kernel.org>,
+	Sasha Levin <sashal@kernel.org>, Felix Fietkau <nbd@nbd.name>,
+	Lorenzo Bianconi <lorenzo@kernel.org>,
+	Jiajia Liu <liujiajia@kylinos.cn>,
+	Ryder Lee <ryder.lee@mediatek.com>,
+	Shayne Chen <shayne.chen@mediatek.com>,
+	Sean Wang <sean.wang@mediatek.com>,
+	Matthias Brugger <matthias.bgg@gmail.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Ming Yen Hsieh <mingyen.hsieh@mediatek.com>,
+	Leon Yen <leon.yen@mediatek.com>, linux-wireless@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	linux-mediatek@lists.infradead.org,
+	Linux kernel regressions list <regressions@lists.linux.dev>
+Subject: Re: [PATCH v2] wifi: mt76: add wcid publish check in mt76_sta_add
+Message-ID: <2026070127-footnote-usher-160d@gregkh>
+References: <20260528033814.46418-1-liujiajia@kylinos.cn>
+ <b143b62e-ca11-4f00-ad60-f71ae55213b9@leemhuis.info>
+ <akSoHk-BozrpWPmZ@nature>
+ <dc7657b2-e3d5-4777-af52-1169fe743761@leemhuis.info>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <dc7657b2-e3d5-4777-af52-1169fe743761@leemhuis.info>
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [3.84 / 15.00];
+	MID_END_EQ_FROM_USER_PART(4.00)[];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[linux.dev,none];
-	R_DKIM_ALLOW(-0.20)[linux.dev:s=key1];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	MID_RHS_NOT_FQDN(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[lists.freedesktop.org,vger.kernel.org,gmail.com,linux.dev];
+	TAGGED_FROM(0.00)[bounces-270177-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-270176-lists,stable=lfdr.de];
-	FORGED_SENDER(0.00)[junjie.cao@linux.dev,stable@vger.kernel.org];
-	FORGED_RECIPIENTS(0.00)[m:lee@kernel.org,m:danielt@kernel.org,m:jingoohan1@gmail.com,m:dri-devel@lists.freedesktop.org,m:linux-leds@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,m:caojunjie650@gmail.com,m:junjie.cao@linux.dev,m:mitltlatltl@gmail.com,s:lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_TO(0.00)[kernel.org,gmail.com];
+	FORGED_RECIPIENTS(0.00)[m:regressions@leemhuis.info,m:stable@vger.kernel.org,m:sashal@kernel.org,m:nbd@nbd.name,m:lorenzo@kernel.org,m:liujiajia@kylinos.cn,m:ryder.lee@mediatek.com,m:shayne.chen@mediatek.com,m:sean.wang@mediatek.com,m:matthias.bgg@gmail.com,m:angelogioacchino.delregno@collabora.com,m:mingyen.hsieh@mediatek.com,m:leon.yen@mediatek.com,m:linux-wireless@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:linux-arm-kernel@lists.infradead.org,m:linux-mediatek@lists.infradead.org,m:regressions@lists.linux.dev,m:matthiasbgg@gmail.com,s:lists@lfdr.de];
+	TO_DN_EQ_ADDR_SOME(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[18];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORWARDED(0.00)[lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[3];
+	FREEMAIL_CC(0.00)[vger.kernel.org,kernel.org,nbd.name,kylinos.cn,mediatek.com,gmail.com,collabora.com,lists.infradead.org,lists.linux.dev];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[junjie.cao@linux.dev,stable@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linux.dev:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ALIAS_RESOLVED(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[10];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp,linux.dev:dkim,linux.dev:email,linux.dev:mid,linux.dev:from_mime]
+	MISSING_XM_UA(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:from_mime,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,vger.kernel.org:from_smtp,gregkh:mid]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 7434A6EE906
+X-Rspamd-Queue-Id: A67816EE599
 
-The lookup helpers for dim-mode and ramp-ctl take a shortcut when
-lookup_tbl is NULL: they accept any u32 value without range-checking
-and return success unconditionally. Out-of-range values get silently
-truncated by regmap_update_bits instead of triggering the dev_warn +
-default-fallback path that the other properties use.
+On Wed, Jul 01, 2026 at 08:16:07AM +0200, Thorsten Leemhuis wrote:
+> On 7/1/26 07:39, Jiajia Liu wrote:
+> > On Tue, Jun 30, 2026 at 01:29:51PM +0200, Thorsten Leemhuis wrote:
+> >> On 5/28/26 05:38, Jiajia Liu wrote:
+> >>> Since mt7925_mac_sta_add publishes wcid, add publish check in mt76_sta_add
+> >>> to avoid reinitializing the wcid->poll_list.
+> >>>
+> >>> Found dev->sta_poll_list corruption when using mt7925 and 7.1-rc4.
+> >>
+> >> Jiajia Liu, Felox:
+> 
+> BTW: @Felix, sorry for the typo!
+> 
+> >> given that the problem seems to be in 7.1, should we
+> >> ask the stable team to pick this regression fix up, as this change was
+> >> mainlined (as 20b126920a259d ("wifi: mt76: add wcid publish check in
+> >> mt76_sta_add") [v7.2-rc1]), but lacks both a Fixes and a Stable tag?
+> > 
+> > Yes. It seems to be related to cbf5e61da660 ("wifi: mt76: initialize
+> > more wcid fields mt76_wcid_init") [v6.14-rc1]. But I didn't reproduce
+> > when I checked it out and tested. So Fixes was not added.
+> 
+> In that case:
+> 
+> @Stable team, you you please pick up 20b126920a259d ("wifi: mt76: add
+> wcid publish check in mt76_sta_add") [v7.2-rc1] for 7.1? It lacks a
+> fixes tag and the problem might be older, but I saw two reports about
+> this with 7.1-rc -- so it seems some recent change made that problem
+> more likely to occur, so it might be good to fix it at least in 7.1.y.
 
-Add a field-width check for the NULL-table case so that values
-exceeding the register field maximum are rejected the same way a
-table-lookup miss is.
+Now queued up for 6.18.y and 7.1.y, thanks.
 
-While here, also switch the error returns to -EINVAL for consistency.
-
-Signed-off-by: Junjie Cao <junjie.cao@linux.dev>
----
- drivers/video/backlight/aw99706.c | 11 ++++++++---
- 1 file changed, 8 insertions(+), 3 deletions(-)
-
-diff --git a/drivers/video/backlight/aw99706.c b/drivers/video/backlight/aw99706.c
-index abacf5a6c8ae..a00a4144f160 100644
---- a/drivers/video/backlight/aw99706.c
-+++ b/drivers/video/backlight/aw99706.c
-@@ -94,6 +94,8 @@ static int aw99706_dt_property_lookup(const struct aw99706_dt_prop *prop,
- 	int i;
- 
- 	if (!prop->lookup_tbl) {
-+		if (dt_val > (prop->mask >> __ffs(prop->mask)))
-+			return -EINVAL;
- 		*val = dt_val;
- 		return 0;
- 	}
-@@ -104,7 +106,7 @@ static int aw99706_dt_property_lookup(const struct aw99706_dt_prop *prop,
- 
- 	*val = i;
- 
--	return i == prop->tbl_size ? -1 : 0;
-+	return i == prop->tbl_size ? -EINVAL : 0;
- }
- 
- #define MIN_ILED_MAX	5000
-@@ -116,11 +118,14 @@ aw99706_dt_property_iled_max_convert(const struct aw99706_dt_prop *prop,
- 				     u32 dt_val, u8 *val)
- {
- 	if (dt_val > MAX_ILED_MAX || dt_val < MIN_ILED_MAX)
--		return -1;
-+		return -EINVAL;
-+
-+	if ((dt_val - MIN_ILED_MAX) % STEP_ILED_MAX)
-+		return -EINVAL;
- 
- 	*val = (dt_val - MIN_ILED_MAX) / STEP_ILED_MAX;
- 
--	return (dt_val - MIN_ILED_MAX) % STEP_ILED_MAX;
-+	return 0;
- }
- 
- static const struct aw99706_dt_prop aw99706_dt_props[] = {
--- 
-2.43.0
-
+greg k-h
 
