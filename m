@@ -1,157 +1,230 @@
-Return-Path: <stable+bounces-270103-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-270104-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id obt7IuOvRGoXzAoAu9opvQ
-	(envelope-from <stable+bounces-270103-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 01 Jul 2026 08:12:51 +0200
+	id 7tDMIOCvRGoVzAoAu9opvQ
+	(envelope-from <stable+bounces-270104-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 01 Jul 2026 08:12:48 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 475356EA20C
-	for <lists+stable@lfdr.de>; Wed, 01 Jul 2026 08:12:51 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 151266EA204
+	for <lists+stable@lfdr.de>; Wed, 01 Jul 2026 08:12:48 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=163.com header.s=s110527 header.b=qR3vAHS+;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-270103-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-270103-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=none) header.from=163.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=d52AzAj0;
+	dkim=pass header.d=redhat.com header.s=google header.b=jDAyIqLz;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-270104-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-270104-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 4076330434C2
-	for <lists+stable@lfdr.de>; Wed,  1 Jul 2026 06:11:56 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 0BC64303F81A
+	for <lists+stable@lfdr.de>; Wed,  1 Jul 2026 06:12:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C3A53A1A3F;
-	Wed,  1 Jul 2026 06:11:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB84C3A0EA5;
+	Wed,  1 Jul 2026 06:12:19 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.3])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2471A3A0EA5;
-	Wed,  1 Jul 2026 06:11:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B6753A5448
+	for <stable@vger.kernel.org>; Wed,  1 Jul 2026 06:12:14 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782886310; cv=none; b=HlVPAM+P+LqWiAzOR0YQWp23OYWLGjVpOt1iyidrplAEMtf6vMsosjjwERnmKb/TsBUKNxD1fjfnL21TkLitRczcIi3XhgaIx/An449B4gOQUWwA0W6uMdsrFHySqxJGu1qzs/0dkHuaelqejtSIENkV2yCY8MvEkUxxPKu/fVk=
+	t=1782886339; cv=none; b=bsn89ZMLlZLMLf4JTjG+ks8GnMzMAMsyXC08WhpQNYHI7M8uc2mcLrN+yrs7z72bMhWfirUnengTU5S8hHic0LSH0oRJlpZW3xmnZjVD7RtOFJtghtXCWpEj1kdsU7CpTjEz39BEykyz2sokiAoKS2upz6sNdYHrjuKcA2pPD4A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782886310; c=relaxed/simple;
-	bh=AqLYykDuF6z6eZiwyiw9/ylCp2SxYugA6SqbDLz+8Co=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=HMoCKtdeMfyFTdOVN0bQp6zl4gqx6xiCn0CemBlBFMCHJxxXjUBTB4O97nd5J+yCacObsAT2Id1gntEOpXLEJWgFJ3xJkqaErnrP8BGfVbHDB0euyPqjyM4l7TnhoCiSVouAMDap/iEr1Iv2H32IFFHK8+PwAuqXoel5vkDCQN8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=qR3vAHS+; arc=none smtp.client-ip=117.135.210.3
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=id
-	v7SnmH117tBk1FPQnu3pilVQq3aJscQvIsNJZl7ok=; b=qR3vAHS+tan+e4+5Xg
-	K3Daowil8mtqWzQbFqoti34cPrLhQNF42HBzmCpIGfxPAcqT2uMkUzq3l8fYaBgo
-	q7SQdpSrIZGO6XLvf2U4AyiO8EADKhZyaHtHCAQEp71lhA+UFzC3LvYFa1X3LUaI
-	qhGbgig5sWvfeF/c8Cv8s+gvI=
-Received: from QD202103290168A.neusoft.internal (unknown [])
-	by gzsmtp2 (Coremail) with SMTP id PSgvCgDXBvVur0RqLNZ4Eg--.58121S2;
-	Wed, 01 Jul 2026 14:10:56 +0800 (CST)
-From: Jianing Li <m13940358460@163.com>
-To: Sebastian Reichel <sre@kernel.org>
-Cc: Greg KH <gregkh@linuxfoundation.org>,
-	Iskren Chernev <me@iskren.info>,
-	Krzysztof Kozlowski <krzk@kernel.org>,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
-	Matheus Castello <matheus@castello.eng.br>,
-	linux-pm@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Jianing Li <m13940358460@163.com>,
-	stable@vger.kernel.org
-Subject: [PATCH v2] power: supply: max17040: handle missing status supplier
-Date: Wed,  1 Jul 2026 14:10:42 +0800
-Message-Id: <20260701061042.1008-1-m13940358460@163.com>
-X-Mailer: git-send-email 2.23.0.windows.1
-In-Reply-To: <2026070115-equate-shimmy-5f19@gregkh>
-References: <2026070115-equate-shimmy-5f19@gregkh>
+	s=arc-20240116; t=1782886339; c=relaxed/simple;
+	bh=axtW8/E5odg42acXCN2N5ZM3efqfJKTm9KBxg/gxNJs=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
+	 In-Reply-To:Content-Type; b=XG5XuK6pgqmSrL/rPrSeRfjLeEw/w8MV6XoCErt//HIsQzyshThxcrDrmQhAa5Oq8d4MvsQdgtvPDmt6IkNfTsiVKm+j/dr51zdToXP1SSjTOSk5b/uZURzzFl8RZ2N8E3Fkh5uQBxU3iPfcp6WcYw01Rte66Nvx5XF0n9uuXDE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=d52AzAj0; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=jDAyIqLz; arc=none smtp.client-ip=170.10.133.124
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1782886334;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=rGM5F4C5doc2XH3pGdlOSav5YBUMCKxwGFp3MSQfb3E=;
+	b=d52AzAj06Acu9GElQR4Bbr5yLtcAYcMRjlmnC0E/mEjZfCEFhhrmn7GXZFXFzrY2Hizjzy
+	4H562mRCMlReKEJVL/Ku/cOkS1tAc4Bd0fKuCDCVuWuYZsd3bx7lC6v3mu5c+LUPxNaD8V
+	AyG7jeoIsnTgTxJ2tMO5z9CyyXNjvoI=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-676-16LfrKl1Omm6gXizpvXsEw-1; Wed, 01 Jul 2026 02:12:12 -0400
+X-MC-Unique: 16LfrKl1Omm6gXizpvXsEw-1
+X-Mimecast-MFC-AGG-ID: 16LfrKl1Omm6gXizpvXsEw_1782886332
+Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-473ac08a6a4so147842f8f.0
+        for <stable@vger.kernel.org>; Tue, 30 Jun 2026 23:12:12 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1782886331; x=1783491131; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:content-language:references
+         :cc:to:from:subject:user-agent:mime-version:date:message-id:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=rGM5F4C5doc2XH3pGdlOSav5YBUMCKxwGFp3MSQfb3E=;
+        b=jDAyIqLzkQWksdcANYNYgFwi7WZ5R9s8wHKu4YvCiYl9FlNPSsrTslhVIWeWBiUAWP
+         o7q61TBOdFMCNZHaMgHSYeKQbp7jEez+2BVXYXTSIPjvMFZJrOte8/OUKWdKPVQlVM/R
+         7JfYT/zTX5jB1Bfowxduk1EpYLkcaHu8HOhuYdfpGd/ED2Zhhb0AwjXD9EWZS/fbJkza
+         7eIf69kw5DPIqOtxJE9WI+CX2ES9FHCgPET/qlKOvE9+/f/NNXP1Q+vR2sRyRaVbOvvz
+         Q0wuaUvau903I8LcFojY1FZm+0Ul/F1nIdnffZpU6fw7dbX815bp6Rp8ke+Sy/XPjqtG
+         2e3Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1782886331; x=1783491131;
+        h=content-transfer-encoding:in-reply-to:content-language:references
+         :cc:to:from:subject:user-agent:mime-version:date:message-id:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=rGM5F4C5doc2XH3pGdlOSav5YBUMCKxwGFp3MSQfb3E=;
+        b=abVmdNDq66kQeP4P8b4+ECsqFQswczLvtgAciRLUZkACuGlaQe/0UVrqJ5MU1O4TP7
+         ZJiVatMLYE3KF1lpsew2tV9zVN4e+wcsKW8IbfumJk7CfuLxjt9yxdBv7ICysjj+jSpu
+         lTZ4gUJUVet0gwgJu5z7o9f+Js5o2Tjzwvx5RnjEr8ZOUr6mOyD8fDWbIDLteKchyea5
+         y/WGxdCb0JiFcLla8RyS1tmR+90v0V/1XrtKSCS51zdnsiZ/aAfnXrd/6galJCFjc1fT
+         1hb0UrCzo1PHwmly1RAGCLMZ9Z44NtGSrlBXhxWS/2h4BIklPMiZaMIOWL9a8AsBMgxB
+         dsHw==
+X-Forwarded-Encrypted: i=1; AHgh+Rq4lSVYWm48+79/ipFR24hN+tY6ySkA6MZc/+XLvXNWvH5QYfRtcewVqFgGBEm9L4Hm0aCJzwk=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzegOvneiwGsJkzFUXP3IFem7AwuPuy6rwuo+Y4e3bJrMC0mesc
+	4t5Dt/W8QGpKDO6K+1/mlPyA9T6VFjWS+zffquyUHwKv9eWwgMR45qkU+0ICQ9UF43FLYV41GAR
+	ID8YwmBcTeJqoLylc5hAZFAV15Z8PY9pmxpA3/ypn8BrKPvmzLJe0hjmS
+X-Gm-Gg: AfdE7cnigls4kDT0aQz5kWQOSVCqf7a45vcavRbFTElgKa77iBm0D6lDM9Axp9hKXxW
+	wowHeP7y0OC0xCWAAwJQ11cUpqmMxUSvmFw5qfvBevTJQ+kq7ItxIK/nc1ylUFwrfq1jR/I/ZRc
+	+ma6P040aG+U7iBtb/lKGbOdWtAKA8vp2wtDJIqPNLjCVtlnRUkJPWZq3yGgg657L1SQPHno001
+	qFUArW+H7qeAqEhexVb5Ibeb21O7H7IminO47w0lTRXeLtdHvtz3O7LPY7LxuiC3JsKJ1gQDnt/
+	JdpFjHnmW5EUjP9vw/DacUCRtf2UATBg0hSyUc4iXPNJ94tvJBKI+AvzacCSUtWfnlbofpyGyA=
+	=
+X-Received: by 2002:a05:6000:604:b0:460:70ae:f1af with SMTP id ffacd0b85a97d-47757e57d4emr348537f8f.27.1782886331548;
+        Tue, 30 Jun 2026 23:12:11 -0700 (PDT)
+X-Received: by 2002:a05:6000:604:b0:460:70ae:f1af with SMTP id ffacd0b85a97d-47757e57d4emr348514f8f.27.1782886331211;
+        Tue, 30 Jun 2026 23:12:11 -0700 (PDT)
+Received: from [10.43.17.14] ([213.175.46.86])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-475643cd85dsm13446118f8f.15.2026.06.30.23.12.08
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 30 Jun 2026 23:12:10 -0700 (PDT)
+Message-ID: <360bfd5c-b023-4952-9e24-53fcc26690d3@redhat.com>
+Date: Wed, 1 Jul 2026 08:12:06 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:PSgvCgDXBvVur0RqLNZ4Eg--.58121S2
-X-Coremail-Antispam: 1Uf129KBjvJXoW7KF48JFy8Gw45uw43XrWkWFg_yoW8AF1xpa
-	98Crn8Gw4UtFyUC34DJa1aka45Ga1jyrWUCrsrC39Iv3W3Xr4vkw1Utr1aqrykJryfZF4x
-	KrZaga1fGr43Gr7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0pEDUUUUUUUU=
-X-CM-SenderInfo: jprtmkaqtvmkiwq6il2tof0z/xtbC+xCz7WpEr3A3MwAA3A
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] perf trace: Refactor augmented_raw_syscalls using
+ bpf_loop
+From: Viktor Malik <vmalik@redhat.com>
+To: Namhyung Kim <namhyung@kernel.org>
+Cc: Alexei Starovoitov <alexei.starovoitov@gmail.com>,
+ linux-perf-users@vger.kernel.org, Peter Zijlstra <peterz@infradead.org>,
+ Ingo Molnar <mingo@redhat.com>, Arnaldo Carvalho de Melo <acme@kernel.org>,
+ Mark Rutland <mark.rutland@arm.com>,
+ Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+ Jiri Olsa <jolsa@kernel.org>, Ian Rogers <irogers@google.com>,
+ Adrian Hunter <adrian.hunter@intel.com>, James Clark
+ <james.clark@linaro.org>, Howard Chu <howardchu95@gmail.com>,
+ linux-kernel@vger.kernel.org, bpf@vger.kernel.org,
+ Michael Petlan <mpetlan@redhat.com>, stable@vger.kernel.org
+References: <20260623112533.1151502-1-vmalik@redhat.com>
+ <DJGJ9F6WQZV9.2W4WBIHYLJQ97@gmail.com> <ajq98dm4gAwEzkMb@google.com>
+ <c2f4e45e-d5c9-42e9-a46b-25fb0cacb267@redhat.com>
+ <ajwu7xR6V6MAQOFw@google.com>
+ <3c221e35-d642-4036-88fd-d25df7f8807e@redhat.com>
+ <akLXCFpnum0WgXGf@google.com>
+ <c1666061-c3e7-4eda-82ca-d03daf05f4f8@redhat.com>
+Content-Language: en-US
+In-Reply-To: <c1666061-c3e7-4eda-82ca-d03daf05f4f8@redhat.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[163.com,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[163.com:s=s110527];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[redhat.com,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_DKIM_ALLOW(-0.20)[redhat.com:s=mimecast20190719,redhat.com:s=google];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TO_DN_SOME(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,iskren.info,kernel.org,samsung.com,castello.eng.br,vger.kernel.org,163.com];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-270103-lists,stable=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:sre@kernel.org,m:gregkh@linuxfoundation.org,m:me@iskren.info,m:krzk@kernel.org,m:m.szyprowski@samsung.com,m:matheus@castello.eng.br,m:linux-pm@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:m13940358460@163.com,m:stable@vger.kernel.org,s:lists@lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_SENDER(0.00)[m13940358460@163.com,stable@vger.kernel.org];
+	RCPT_COUNT_TWELVE(0.00)[17];
+	TAGGED_FROM(0.00)[bounces-270104-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FREEMAIL_FROM(0.00)[163.com];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[m13940358460@163.com,stable@vger.kernel.org];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:namhyung@kernel.org,m:alexei.starovoitov@gmail.com,m:linux-perf-users@vger.kernel.org,m:peterz@infradead.org,m:mingo@redhat.com,m:acme@kernel.org,m:mark.rutland@arm.com,m:alexander.shishkin@linux.intel.com,m:jolsa@kernel.org,m:irogers@google.com,m:adrian.hunter@intel.com,m:james.clark@linaro.org,m:howardchu95@gmail.com,m:linux-kernel@vger.kernel.org,m:bpf@vger.kernel.org,m:mpetlan@redhat.com,m:stable@vger.kernel.org,m:alexeistarovoitov@gmail.com,s:lists@lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_SENDER(0.00)[vmalik@redhat.com,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[gmail.com,vger.kernel.org,infradead.org,redhat.com,kernel.org,arm.com,linux.intel.com,google.com,intel.com,linaro.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[163.com:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[vmalik@redhat.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[redhat.com:+];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[10];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	TO_DN_SOME(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,vger.kernel.org:from_smtp]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 475356EA20C
+X-Rspamd-Queue-Id: 151266EA204
 
-MAX17040 does not report charger state itself, so the driver forwards
-POWER_SUPPLY_PROP_STATUS to a supplier power supply. If no supplier is
-registered, power_supply_get_property_from_supplier() returns -ENODEV and
-leaves the output value untouched.
+On 6/30/26 07:42, Viktor Malik wrote:
+> On 6/29/26 22:35, Namhyung Kim wrote:
+>> On Thu, Jun 25, 2026 at 02:05:29PM +0200, Viktor Malik wrote:
+>>> On 6/24/26 21:24, Namhyung Kim wrote:
+>>>> On Wed, Jun 24, 2026 at 08:47:38AM +0200, Viktor Malik wrote:
+>>>>> On 6/23/26 19:10, Namhyung Kim wrote:
+>>>>>> Hello,
+>>>>>>
+>>>>>> On Tue, Jun 23, 2026 at 08:27:39AM -0700, Alexei Starovoitov wrote:
+>>>>>>> On Tue Jun 23, 2026 at 4:25 AM PDT, Viktor Malik wrote:
+>>>> [SNIP]
+>>>>>>>> +	struct args_loop_ctx loop_ctx = {
+>>>>>>>> +		.args = args,
+>>>>>>>> +		.beauty_map = beauty_map,
+>>>>>>>> +		.payload_offset = payload_offset,
+>>>>>>>> +		.value_size = value_size,
+>>>>>>>> +		.output = &output,
+>>>>>>>> +		.do_output = &do_output
+>>>>>>>> +	};
+>>>>>>>> +	iters = bpf_loop(6, process_arg_cb, &loop_ctx, 0);
+>>>>>>>
+>>>>>>> bpf_loop() is old and generally not recommended.
+>>>>>>> Please use bpf_for() then the diff will be one line change and
+>>>>>>> can scale to any number of args. Not just 6.
+>>>>>
+>>>>> Thanks Alexei, I didn't know about this preference.
+>>>>>
+>>>>>> One thing we should take care is to support old kernels.  The oldest
+>>>>>> LTS kernel in the kernel.org is 5.10 and bpf_loop() was introduced in
+>>>>>> 5.17 and bpf_for (bpf_iter_num) was 6.4.
+>>>>>
+>>>>> The problematic loop was introduced in 6.12 by a68fd6a6cdd3 ("perf
+>>>>> trace: Collect augmented data using BPF") so we should be good using
+>>>>> bpf_for. Or is perf from 7.2 supposed to work on 5.10 LTS kernels?
+>>>>
+>>>> Yep, we'd like to support old kernels.
+>>>
+>>> How much strict are you on this requirement? IMHO, the very least we
+>>> need to fix the verifier issue is bpf_loop, so that would still not work
+>>> on 5.10 and 5.15 LTS kernels.
+>>
+>> I don't think it's an absolute requirement, but I think we don't want to
+>> break any existing working setup (old kernel + old compiler).
+>>
+>>>
+>>> We could probably keep the open-coded loop in case bpf_loop is not
+>>> available but `perf trace` would still fail on kernels without bpf_loop
+>>> for new perf built with Clang>=22. Also, the code would be a bit ugly
+>>> and I'm not sure how well the feature check for helpers (bpf_loop) works
+>>> on old kernels.
+>>  
+>> Any chance process_arg_cb() can be called directly in the regular for
+>> loop on old kernels?
+> 
+> That's my thinking, too. Should be pretty straightforward, I'm going to
+> give it a try in v2.
 
-max17040_get_property() currently ignores that error and returns success,
-so userspace can read an uninitialized status value from the battery power
-supply. This happens on systems that use the fuel gauge without a charger
-supplier relationship in firmware.
-
-Return POWER_SUPPLY_STATUS_UNKNOWN when no supplier provides STATUS, and
-propagate other supplier lookup errors.
-
-Fixes: f4b782af61ae ("power: max17040: pass status property from supplier")
-Cc: stable@vger.kernel.org # 6.7+
-Signed-off-by: Jianing Li <m13940358460@163.com>
----
-Changes in v2:
-- Use real name in From and Signed-off-by.
-- No code changes.
-
- drivers/power/supply/max17040_battery.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/power/supply/max17040_battery.c b/drivers/power/supply/max17040_battery.c
-index 60c38e822b52..bba6d91c9b9b 100644
---- a/drivers/power/supply/max17040_battery.c
-+++ b/drivers/power/supply/max17040_battery.c
-@@ -405,7 +405,11 @@ static int max17040_get_property(struct power_supply *psy,
- 		val->intval = chip->low_soc_alert;
- 		break;
- 	case POWER_SUPPLY_PROP_STATUS:
--		power_supply_get_property_from_supplier(psy, psp, val);
-+		ret = power_supply_get_property_from_supplier(psy, psp, val);
-+		if (ret == -ENODEV)
-+			val->intval = POWER_SUPPLY_STATUS_UNKNOWN;
-+		else if (ret)
-+			return ret;
- 		break;
- 	case POWER_SUPPLY_PROP_TEMP:
- 		if (!chip->channel_temp)
--- 
-2.39.0
+Btw, I just noticed that util/bpf_skel/lock_contention.bpf.c already
+uses bpf_loop without any fallback so newer perf (at least `perf lock`)
+won't be usable on kernels without bpf_loop anyways.
 
 
