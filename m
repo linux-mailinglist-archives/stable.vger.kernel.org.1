@@ -1,88 +1,91 @@
-Return-Path: <stable+bounces-270135-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-270136-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id /UT1HrH2RGp/4AoAu9opvQ
-	(envelope-from <stable+bounces-270135-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 01 Jul 2026 13:14:57 +0200
+	id mqUkM9H3RGrp4AoAu9opvQ
+	(envelope-from <stable+bounces-270136-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 01 Jul 2026 13:19:45 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 202886ECA32
-	for <lists+stable@lfdr.de>; Wed, 01 Jul 2026 13:14:57 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id CB76B6ECB67
+	for <lists+stable@lfdr.de>; Wed, 01 Jul 2026 13:19:44 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=shutemov.name header.s=fm3 header.b=ItZrKVsz;
-	dkim=pass header.d=messagingengine.com header.s=fm1 header.b=Pwqfeo4V;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-270135-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-270135-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=shutemov.name header.s=fm3 header.b="G GZsauw";
+	dkim=pass header.d=messagingengine.com header.s=fm1 header.b=X+lE3lp2;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-270136-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-270136-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=none;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id C9A51309E339
-	for <lists+stable@lfdr.de>; Wed,  1 Jul 2026 11:07:39 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 00C58300A675
+	for <lists+stable@lfdr.de>; Wed,  1 Jul 2026 11:07:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 520F1436369;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA03543CEF4;
 	Wed,  1 Jul 2026 11:05:56 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from flow-a2-smtp.messagingengine.com (flow-a2-smtp.messagingengine.com [103.168.172.137])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C578B3EFD37;
-	Wed,  1 Jul 2026 11:05:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7042043C058;
+	Wed,  1 Jul 2026 11:05:54 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782903955; cv=none; b=IMOpiuSyRhr+lVNd0zGSNLRRY8cXY2L7HjP7/NQBatVp5mUEilMV9akBMoTSIM9bSSqlCmZuKtiGvJhZx7qmepkiAXBPmk251c11oiF7lP+cZfuhaYnAqOxLXwCfbviCd0NeF4gOqbosBFahrjgB9Dl4bg61gBGp6lOuqNlCHxY=
+	t=1782903956; cv=none; b=CS8EopEl1cMuOuWpkKTtDVclXeoAeJ44dzviv6nS6LWAm+Hpf7aYmdG7Xqu8tlq9LPoX3aWQkP+yqsA0a8SZ8GmuOTcKKyPUano3ZgUnUs1k6mOcJEXmLtWelELW5qiRgnkcGyAzpHMuhCRRJXuOAgBtXyBuCXDN9sqNFQhJesc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782903955; c=relaxed/simple;
-	bh=T+bIugystx1BDC45M21sJdMyM+in5SsT15xSJ8iZ27k=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=iWNeekdpsXn3RgjL248o4g6g5ZX/RCdjwIhiZMjh1ts/kfwuNWUX/ScxXr0u5sEYn824sP7BIroPXm37mfpdZ4WiGNXw/8HIzoXmY2HkQEBQ08y7btmhXnapMumR6V1yMpm5eYGfKSdq8bvryB4xFNsTqsCRk6M5MhOf6TvGmuc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=shutemov.name; spf=pass smtp.mailfrom=shutemov.name; dkim=pass (2048-bit key) header.d=shutemov.name header.i=@shutemov.name header.b=ItZrKVsz; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=Pwqfeo4V; arc=none smtp.client-ip=103.168.172.137
-Received: from phl-compute-02.internal (phl-compute-02.internal [10.202.2.42])
-	by mailflow.phl.internal (Postfix) with ESMTP id EDE1913803F1;
-	Wed,  1 Jul 2026 07:05:51 -0400 (EDT)
+	s=arc-20240116; t=1782903956; c=relaxed/simple;
+	bh=2DBiqKRYqbSrjzVq5ZSkTZf5cQARlCrAG2tlIQmkq/o=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=jrAoAWZHGIxbQOWG9r494WwJJjcxu5KtW9PJIuAIMyFjOETOdXrLamSJqoh9otpZaka0vqDlbZoNxVqfgtAp88fyuvtUkxg8XiuscOMq29AICa16H0n2bGjnMe0dHZEy61b0+qcsPsc5uZ+qIbQ7vruf83rakbE9ImGgtFa5l80=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=shutemov.name; spf=pass smtp.mailfrom=shutemov.name; dkim=pass (2048-bit key) header.d=shutemov.name header.i=@shutemov.name header.b=GGZsauwn; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=X+lE3lp2; arc=none smtp.client-ip=103.168.172.137
+Received: from phl-compute-03.internal (phl-compute-03.internal [10.202.2.43])
+	by mailflow.phl.internal (Postfix) with ESMTP id B583113803F2;
+	Wed,  1 Jul 2026 07:05:53 -0400 (EDT)
 Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-02.internal (MEProxy); Wed, 01 Jul 2026 07:05:51 -0400
+  by phl-compute-03.internal (MEProxy); Wed, 01 Jul 2026 07:05:53 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shutemov.name;
 	 h=cc:cc:content-transfer-encoding:content-type:date:date:from
-	:from:in-reply-to:message-id:mime-version:reply-to:subject
-	:subject:to:to; s=fm3; t=1782903951; x=1782911151; bh=S7TBJiUa54
-	KOKCAQ1GMPRZLT8SieeYtP5zVEkMW4AdE=; b=ItZrKVszptxCOJrUVXN3UDIbmQ
-	Eekt1rj6vxSa9TX5Vw7TKbqv/y1kyVEnQMkVrM7ZCSg3lviT01sHX62w9M9vdQ++
-	TfjGo1S5VVxlz3CEJZ0fXVHUvh7oKgGES+n+uIrla6fx3tzRD8ymljbLhhb5mQFH
-	uKKU0IMnnVNWYFSuRBwrZayPgAdg6YX9PjSy27yR6YXsnRcn30YD0QTrr4DZh+W1
-	+Fp/qucHvsz8e39s6OZbjStGb4Dm6FlCi7ZsQyUcAff7dtomIHyCHojCjjQySWBT
-	w30cX0Vr0pzxiRWFXuI8JZP0MCFzNZS/olEt1pzCZPGLY7d+nj/XxaYLo/Gg==
+	:from:in-reply-to:in-reply-to:message-id:mime-version:references
+	:reply-to:subject:subject:to:to; s=fm3; t=1782903953; x=
+	1782911153; bh=/jud+WB3AytPcrI/2OwbTXS5VtUrFeK0EaGOk27FRSs=; b=G
+	GZsauwnhhEikFicwm8swF6SEHAwl1mssbdphUxnycc8m5NLG5AJiM8wIMZ0MDGin
+	ybni/UUBnAzY+LoDHddGfge9HkcT1DLwMjJQwsLZg1NTVl09HRgTK8/7tHHd7SnE
+	l4cvuRdYLXS0nO+pn+bByJHS5KHGiFeEIEAApqhWwLDkp1QmjTjyY52jLC54qXQ8
+	nqqZ3McUM3zfMDM9jfOngkDwvXz0yNH0BQWgfrseGRc5nouxtZ1SqvH5vZklqHQ9
+	OD2mRxL6xfM4rZ8TJnZy8LbTLaFF8L78ZMxqbGSu2UU2sqzemD4bI5/7Qf0aj1+4
+	NVOifNop9e3t9c/z39gOg==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
 	messagingengine.com; h=cc:cc:content-transfer-encoding
 	:content-type:date:date:feedback-id:feedback-id:from:from
-	:in-reply-to:message-id:mime-version:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=
-	1782903951; x=1782911151; bh=S7TBJiUa54KOKCAQ1GMPRZLT8SieeYtP5zV
-	EkMW4AdE=; b=Pwqfeo4Vrye7XBkKmN6LL+/AlsRszFHycwVWecLxDsmULUtmS4x
-	RBnl/qAa8a0P7CEYXzBT/fVheErSW2k5WY2CxLhq5+tF8UiI4pR8RugyDfLYFJd6
-	hHC7GYimBnfRnIHYIy0NOPSNNcFhtnClBbFSLALTG6aK7sTL+xF7522i/VDimVeN
-	69aOroE+SgXRfz/m9Kfo+D1H1ycJbFQ5DiIZY0bKDlT7F343lRE1gB99VgkwDao/
-	ef4++iAKa0pMoSrSpaj68OS2kLykU2ouviMgnvVO2TpGSXhIeoTbgmrCemMY/1U9
-	Hef0in9VEEs9QQmJrH2QgbsnSqh0RKpYXLA==
-X-ME-Sender: <xms:j_REanYDyi8qhIFJjLBx6WNH0iNLYlJ2OYs6x1kq8tp1zBAaRbalVQ>
-    <xme:j_REajnUH3P0jj6x5LdtBn40l9TWOPB_zq-3ef1JkK24xb_EhZIHEHzwiQRzSl-cl
-    P7CEJKUK4hGshmHqAuReZRxxCwzRriIXcRvcweBjYHE-4AS9_bS5HE>
-X-ME-Received: <xmr:j_REaucKfKc291LEnycpjwkNz2bc19v4OvlCtLtT1ObyG-nBBdL_5wzA-EHDBA>
-X-ME-Proxy-Cause: dmFkZTE+8mg3IR1S/qQZa32DtIGlJoWSADNz2iPyzMqQ23r9HmFUb/Q3lf3xbgS4LHx8zv
-    wCiUQ5asqismvQiyd23z3Tk80Xrp/qa/SFf7ZsuwRbwFFeFRCQS+l/PBt5p+jB+5ryRNbZ
-    3H9kpmDIHXDuuU8CjEK+lnKEoUkEM6eDvvb6lo986uExS39Wm/lJtuFmNSAXAclt4KAxHl
-    dgWw/MEF05ri1JO6LPPgcoGPlgX6mXa5uOKFPdddV6g/Tl0oenJBDfmmP9MB+A0oKNJQfa
-    LwEIJJIQCZ1eAX/iGNGEBi5Z3ij9/V3fVP1D0fEJJu0NGqfVptRDFnYX60MGJiHz/u0TXi
-    y/oFCQYXOLwd0bSsUqxALdbC5X/HfXxEDCD3yEA37FH59dTRHNFsy+6Gdd0ovklfbRqLBH
-    QgHsI0hcw+zh1VQ6zSTQwp45bDkolx9jM8Ifu0YUAbX1MYWehXvNHXTgTkS98pxie3LdDS
-    8zH/M09uqCBr5tEAX9PAbEvd4coP/2CYVw0K/+4I+9ZA/YmJTCdetzAm9yOgVkG5gNoAIi
-    hshGIiGuAk6aosBKyE4ce2s0a6wrcnRBPbrlZ7zBsBcT2nl5MLBNUifcwL1gKjCU5dZNUb
-    LZUsycneobx/yjWbZRG57UNz96y2QmwOl04+jbUdeUU4Olb0DoLMtXbaO/SQ
-X-ME-Proxy: <xmx:j_REap01WTb0XFyFU9efRwmzja9qTcJY248nxPJrxnQSaTVxwrs7DA>
-    <xmx:j_REajnHpENh_b_KuHEBXSWdoNMgPBFo3ccHZc8Jp7CC-uso_8G-Pw>
-    <xmx:j_REaiaww7QPh1K8cWEj7jjwV6ZocXPsdC_R8IwxrWVPv4NRSWMfAQ>
-    <xmx:j_REaprAluwxl7VSv-wHJnHwjIe-Vw5mYGT0zXL768WxAr1psa8h0g>
-    <xmx:j_REaizUHYE6wj_x0y7xm8yl7jk3O8ag4a5fV9R7PX7EI5z_18ZmTiYT>
+	:in-reply-to:in-reply-to:message-id:mime-version:references
+	:reply-to:subject:subject:to:to:x-me-proxy:x-me-sender
+	:x-me-sender:x-sasl-enc; s=fm1; t=1782903953; x=1782911153; bh=/
+	jud+WB3AytPcrI/2OwbTXS5VtUrFeK0EaGOk27FRSs=; b=X+lE3lp2MVINHLl34
+	wYWCDaLc+L2fuF9YcGiTsUdQz982O7lfIyw6uefnbafgcv2gJLUomnWtT9MTplw7
+	x1RNKxM/FHoTTK8+Ah9ZeEqc6bllcnNQYEi14TtT/vAZydcLFEqYQJPI4PQgex1t
+	JSHGNtO2bOGWxxURhKQoU3MBEjoaJztAf809qRIGFjOp/w6dTSm9LeO+FMCPeKQ4
+	up/zGtZH6koUcV9BjBBu+zT/WmVJH1r9qzozO+Quyh86Uta8wMyORmzRgzNuNRRJ
+	oW4AnsgGX1Ecn+gS5oKYaRAqSPT3cNsprQbraGBIPLc1u1KHsz5UkXa+ind1mqNd
+	mM8sQ==
+X-ME-Sender: <xms:kfREajRS7LOoFqbnVW4pC1PjLfBgQUYnroeruSnXisAayXUPUboeXA>
+    <xme:kfREah8PouNmvfcMLZ7EOqByjB_IKHjJYBokNjrDMIWJBmmDmXTn5B6V2JpYhKi9I
+    y_QayXpSjNX9rTv7YAVXyYpMDqUqWw7JeFbeYmFjEDa5y2uFWmEaSk>
+X-ME-Received: <xmr:kfREatXC4U9We9e0TpBo1nd89UM7mL4G9QZ3ozQhvlFWwCA_wXyP3AR5dJedtg>
+X-ME-Proxy-Cause: dmFkZTEAGPw03jnBx0rhtgNj8xn6QixEvgJBmSUvcgHq3Uzrdg/NHT/su0kloMGoLd1HPm
+    e0TdjJu4hTKvHuWngzEuybG7HbJy2ntM4nU+JlERCbphEp/wQkp4uyrNlkuR5w77lyznZX
+    L/vx4/r/cZN1VoNDM8A3kb8VqUCU7uaQf12o/8GMf2lT/SYcdC2VegLtvNCD8zHjbcl5pN
+    MT1LZEDOA1GSC2l4IhPLKd7qHJtcgqt+zM1KP7cuIpRsetV9154E5bAhEVn0BPdmZ4+6yT
+    9GeGGxhn90mVbmTYMRwQzvsc7e/7iaK4jcKyFpJusA3BCM1pEd8HA+vlFar1p13gdvlbaQ
+    3UvzARF/+UhswVtq80tUmnsCOaAu7+u7btrHJRO3HxbGeeKIgqaGcO/A340Bluwfer9ZH2
+    GM12Er6UKHRIhmFtO6YOubWQjPiygXMWT4Trzq2iunWCWd+ayJuhp4XYqe5BdWZcIKDHu4
+    WRhz0pa612SS89VBTz2AMSpbiNaOnK9wqlGffPz1gW0VzLTK+Mll75fvFiktMUoA7kkEFv
+    y4G58Ea0YeUaijr2gueFTUppmiE958MGbwKBHcwVZm22cp/rdne8XqYCGgZS+IeD//NCUN
+    +43DdJBtY1MnkigLQR/UZnouyQHFPMzAJuK1KgXUAF0XttNmFaXqXR3z7F1g
+X-ME-Proxy: <xmx:kfREavNZUEDqKEbuWDlx3DiQxdytDPjuyfXs4W9jxF6dxgLzlO7E6g>
+    <xmx:kfREateDzJ9heicPzzSOuE672IBFeJzgt8GUBPi9XGVwShee8GQrbA>
+    <xmx:kfREamzzzIr-cBXj9nI29H1s0NbNyUixBs0wWciP1t8o8eYfSJUOag>
+    <xmx:kfREamhJgRkOglTMixa1LRFZ9wwUCkB4pQZJZlBYJ2OjJrLuVaH3bQ>
+    <xmx:kfREaopi0IdEOPcMPyXGZACow_bK6KR4t7CpkT1LDhuei_PM7Tu5wRsU>
 Feedback-ID: ie3994620:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
- 1 Jul 2026 07:05:51 -0400 (EDT)
+ 1 Jul 2026 07:05:53 -0400 (EDT)
 From: Kiryl Shutsemau <kirill@shutemov.name>
 To: Dave Hansen <dave.hansen@linux.intel.com>,
 	Thomas Gleixner <tglx@kernel.org>,
@@ -105,10 +108,12 @@ Cc: Sean Christopherson <seanjc@google.com>,
 	linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org,
 	"Kiryl Shutsemau (Meta)" <kas@kernel.org>
-Subject: [PATCH v5 0/3] x86/tdx: Fix port I/O handling bugs
-Date: Wed,  1 Jul 2026 12:05:44 +0100
-Message-ID: <20260701110547.764083-1-kirill@shutemov.name>
+Subject: [PATCH v5 1/3] x86/tdx: Fix off-by-one in port I/O handling
+Date: Wed,  1 Jul 2026 12:05:45 +0100
+Message-ID: <20260701110547.764083-2-kirill@shutemov.name>
 X-Mailer: git-send-email 2.54.0
+In-Reply-To: <20260701110547.764083-1-kirill@shutemov.name>
+References: <20260701110547.764083-1-kirill@shutemov.name>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -123,14 +128,14 @@ X-Spamd-Result: default: False [1.34 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[shutemov.name:s=fm3,messagingengine.com:s=fm1];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
 	RCPT_COUNT_TWELVE(0.00)[21];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-270135-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-270136-lists,stable=lfdr.de];
 	FORGED_SENDER(0.00)[kirill@shutemov.name,stable@vger.kernel.org];
 	FORGED_RECIPIENTS(0.00)[m:dave.hansen@linux.intel.com,m:tglx@kernel.org,m:mingo@redhat.com,m:bp@alien8.de,m:x86@kernel.org,m:seanjc@google.com,m:pbonzini@redhat.com,m:sathyanarayanan.kuppuswamy@linux.intel.com,m:kai.huang@intel.com,m:xiaoyao.li@intel.com,m:rick.p.edgecombe@intel.com,m:binbin.wu@linux.intel.com,m:david.laight.linux@gmail.com,m:ak@linux.intel.com,m:djbw@kernel.org,m:tsyrulnikov.borys@gmail.com,m:kvm@vger.kernel.org,m:linux-coco@lists.linux.dev,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,m:kas@kernel.org,m:davidlaightlinux@gmail.com,m:tsyrulnikovborys@gmail.com,s:lists@lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
@@ -146,57 +151,61 @@ X-Spamd-Result: default: False [1.34 / 15.00];
 	DKIM_TRACE(0.00)[shutemov.name:+,messagingengine.com:+];
 	RCVD_COUNT_FIVE(0.00)[6];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	ALIAS_RESOLVED(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,messagingengine.com:dkim,shutemov.name:dkim,shutemov.name:mid,shutemov.name:from_mime,vger.kernel.org:from_smtp]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[shutemov.name:dkim,shutemov.name:mid,shutemov.name:from_mime,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,intel.com:email,vger.kernel.org:from_smtp,messagingengine.com:dkim]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 202886ECA32
+X-Rspamd-Queue-Id: CB76B6ECB67
 
 From: "Kiryl Shutsemau (Meta)" <kas@kernel.org>
 
-Three fixes for emulated port I/O in the TDX guest #VE handler.
+handle_in() and handle_out() in arch/x86/coco/tdx/tdx.c use:
 
-Patch 1 fixes an off-by-one in the GENMASK() used by handle_in() and
-handle_out(): the mask was one bit too wide for every I/O size.
+    u64 mask = GENMASK(BITS_PER_BYTE * size, 0);
 
-Patch 3 fixes 32-bit port IN to zero-extend into RAX, per x86
-semantics, instead of preserving the upper 32 bits. To avoid
-open-coding the partial-register-write rules, patch 2 first lifts KVM's
-assign_register() helper into <asm/insn-eval.h> as insn_assign_reg() so
-both KVM and the #VE handler can share it.
+GENMASK(h, l) includes bit h. For size=1 (INB), this produces
+GENMASK(8, 0) = 0x1FF (9 bits) instead of GENMASK(7, 0) = 0xFF (8
+bits). The mask is one bit too wide for all I/O sizes.
 
-Patch 2 touches arch/x86/kvm/emulate.c (it removes assign_register() and
-routes the callers through the new helper), so an ack from the KVM
-maintainers would be appreciated before this goes through the x86 tree.
+Fix the mask calculation.
 
-Changes since v4:
-  - Rebase onto v7.2-rc1.
-  - insn_assign_reg(): drop the arithmetic read-modify-write body from
-    v4 and lift KVM's assign_register() verbatim (typed-pointer writes).
-    This fixes the unaligned access / adjacent-register clobber for
-    high-byte registers (AH/CH/DH/BH) that Sashiko flagged on v4, where
-    the emulator hands the helper a pointer offset by one byte. Update
-    the changelog to match.
-  - Cc: stable on the insn_assign_reg() patch, as it is a prerequisite
-    for the patch 3 fix.
-  - Collect Reviewed-by from Binbin Wu and Rick Edgecombe.
+Fixes: 03149948832a ("x86/tdx: Port I/O: Add runtime hypercalls")
+Reported-by: Borys Tsyrulnikov <tsyrulnikov.borys@gmail.com>
+Link: https://lore.kernel.org/all/CAKw_Dz96rfSQc6Rn+9QBcUFHhmkK+9zu+P=bxowfZwxrATCBRg@mail.gmail.com/
+Signed-off-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
+Reviewed-by: Kai Huang <kai.huang@intel.com>
+Reviewed-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
+Reviewed-by: Binbin Wu <binbin.wu@linux.intel.com>
+Reviewed-by: Rick Edgecombe <rick.p.edgecombe@intel.com>
+Cc: stable@vger.kernel.org
+---
+ arch/x86/coco/tdx/tdx.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-v4: https://lore.kernel.org/all/cover.1780584300.git.kas@kernel.org/
-
-Kiryl Shutsemau (Meta) (3):
-  x86/tdx: Fix off-by-one in port I/O handling
-  x86/insn-eval: Add insn_assign_reg() helper
-  x86/tdx: Fix zero-extension for 32-bit port I/O
-
- arch/x86/coco/tdx/tdx.c          | 10 ++++------
- arch/x86/include/asm/insn-eval.h | 30 ++++++++++++++++++++++++++++++
- arch/x86/kvm/emulate.c           | 26 ++++----------------------
- 3 files changed, 38 insertions(+), 28 deletions(-)
-
-
-base-commit: dc59e4fea9d83f03bad6bddf3fa2e52491777482
+diff --git a/arch/x86/coco/tdx/tdx.c b/arch/x86/coco/tdx/tdx.c
+index 29b6f1ed59ec..b8bbd715fb62 100644
+--- a/arch/x86/coco/tdx/tdx.c
++++ b/arch/x86/coco/tdx/tdx.c
+@@ -694,7 +694,7 @@ static bool handle_in(struct pt_regs *regs, int size, int port)
+ 		.r13 = PORT_READ,
+ 		.r14 = port,
+ 	};
+-	u64 mask = GENMASK(BITS_PER_BYTE * size, 0);
++	u64 mask = GENMASK(BITS_PER_BYTE * size - 1, 0);
+ 	bool success;
+ 
+ 	/*
+@@ -714,7 +714,7 @@ static bool handle_in(struct pt_regs *regs, int size, int port)
+ 
+ static bool handle_out(struct pt_regs *regs, int size, int port)
+ {
+-	u64 mask = GENMASK(BITS_PER_BYTE * size, 0);
++	u64 mask = GENMASK(BITS_PER_BYTE * size - 1, 0);
+ 
+ 	/*
+ 	 * Emulate the I/O write via hypercall. More info about ABI can be found
 -- 
 2.54.0
 
