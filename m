@@ -1,202 +1,218 @@
-Return-Path: <stable+bounces-270266-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-270267-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id E61JH4KjRWr1DAsAu9opvQ
-	(envelope-from <stable+bounces-270266-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 01:32:18 +0200
+	id tMNPEvKnRWomDgsAu9opvQ
+	(envelope-from <stable+bounces-270267-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 01:51:14 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 181886F2509
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 01:32:18 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 558A56F27B9
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 01:51:13 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=Ck1ZHVQ2;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-270266-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-270266-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=T68td7Dc;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-270267-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-270267-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("subspace.kernel.org:s=arc-20240116:i=2")
+	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 81A953023AF7
-	for <lists+stable@lfdr.de>; Wed,  1 Jul 2026 23:32:17 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id DED1D301831E
+	for <lists+stable@lfdr.de>; Wed,  1 Jul 2026 23:42:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB528281525;
-	Wed,  1 Jul 2026 23:32:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7614B3CC300;
+	Wed,  1 Jul 2026 23:42:58 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ej2-f2.google.com (mail-ej2-f2.google.com [74.125.228.130])
+Received: from mail-lf1-f46.google.com (mail-lf1-f46.google.com [209.85.167.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B143355055
-	for <stable@vger.kernel.org>; Wed,  1 Jul 2026 23:32:14 +0000 (UTC)
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782948735; cv=pass; b=SPwPFFfBP07GBYQYlfEczmp4VdTUvEsIkFd4OvNb16/9baPDNeobA3ETecTAhhDx2mEg/RRoN+9R4umbHEE1XBwntUXqIpif/cvzO43KDFUzllFEl35K8BeYJm+z71javQEzccW2L42q8XLFdWmFrL4ux6hV9gVafPSRvEfeap8=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782948735; c=relaxed/simple;
-	bh=B2/oSlFs5R6t2oDTm1eJJJBzuJEmWWzsRxIbdDpedRw=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Oq+3sXjFG6a9wNjJ2/ZT6eCT5mb6OAkldYpHV/rbWbfmhX0eF5OpE3Oj/KGyl4zTSVj7oJ6WdRqf/tvCgYJ6AFrizmh39toVSwN/SBH+sLHjphj9TN42x0OaTzxy5X5YMJNe1rwMXj6m6WCar29cTmIx25kI5BVpTm9gNgmH298=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Ck1ZHVQ2; arc=pass smtp.client-ip=74.125.228.130
-Received: by mail-ej2-f2.google.com with SMTP id a640c23a62f3a-c073a616ab0so55383466b.0
-        for <stable@vger.kernel.org>; Wed, 01 Jul 2026 16:32:14 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1782948733; cv=none;
-        d=google.com; s=arc-20260327;
-        b=EqHH6czIpI5wEtLonrt5Q2K46pm52ee+O7VxwDaW2RXvxpMSm6gb7hEmu+zBwZfpnJ
-         fPG/Vaj/sB1mcV8vy9l9ayhmPfb5/BeVlmPj5ACTLiMX83XyNLrEpAfxrdrxwNhu7Qf0
-         +TAU953GbqHOeIpUB/VmNCAFJ1opSPjMYhLbL1j3+/I14Ezhh8/hoERbntaKO+OEb3Xz
-         zMc7cRBSppaiKH1w71ce+Za1zDj53QHejouB/EFt1TeAaCP9Ux7qSOYph/LditV2hY5Z
-         KmJ3FHeTxpKNWb2VofB116xFuzum2qVrCFS0/a5D9aTngZcUWe6poO85Bk/jft/QPVnn
-         KYMw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=aEtvomiAJhh+AZYjRz54TpoQYzbI+CDCJW/Z4a3FJPw=;
-        fh=AiNCcs03TruhF9byD3ySiToacWo7+eIR6tVOSrYnIhg=;
-        b=SBpyL3tywGT867g6yMMmP7/4qrXUJH61h9E3NuO39dHse/YzQSQAiI6WBVc8kBOWop
-         J/WxsQGlHi/Hl+QPrRvXUGSDyNfBs4JNb+WleOFdf5vTXBFLwbTi27aEvvDbk1zCgEWZ
-         hPHykdhlhC+S2s5ySTsfszG8FZ+A7oe56ew57TbsNpfDicR8uG0z5h870crj1/O8rfNY
-         wdQLsUWLpDTmd3xSrIKJ6pQQfj1yP675iSgWQUrQEHSpz3Noxac3AzCJu9nrJD//cUlV
-         u5SIf3UovIDtiUzVuySxKKRAa24k9qppavex7hYlSEHMGfidbnEAKeS4w2AyFvjBu3+I
-         Ivbg==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD4C0239085
+	for <stable@vger.kernel.org>; Wed,  1 Jul 2026 23:42:56 +0000 (UTC)
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1782949378; cv=none; b=bK8kkvg6CmcbFCqnm6h/9g6WJbxdDspInwabEXJ4tpAMN5vEnoLip672K9a+F+a7nq3s72wrt7Z/BrlGy3Mo/LuTYWCIDxaaaR8fWP0aIT4qnVVVIRVh6swl1Uhv/qtSEkdad/TBJMGlqjpxkIC0ygedG4WdvUD2rOebocu55JU=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1782949378; c=relaxed/simple;
+	bh=NwvngB55nrQuY2zsw+u/UlQ+ziOq9i4AgvNGIC5B8qg=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=mN13L5i7nX7fXoHblKfaPx7GjiBeCWxte8rMALE2d1ubU2Xw2p1YZkuxhb3Zcj7YIT4HJnpVmm7Ri8pMXVJsA8B1Qmfc1zL0+yR3tMwazKO1fMM7t3o9+4vHNOWTOvbNwk4T+JNmfJiuKhddor/yRWy1RvTJrk/Ts3VP6JaV9/g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=T68td7Dc; arc=none smtp.client-ip=209.85.167.46
+Received: by mail-lf1-f46.google.com with SMTP id 2adb3069b0e04-5aeb17c2564so1358206e87.0
+        for <stable@vger.kernel.org>; Wed, 01 Jul 2026 16:42:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1782948733; x=1783553533; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=aEtvomiAJhh+AZYjRz54TpoQYzbI+CDCJW/Z4a3FJPw=;
-        b=Ck1ZHVQ2BQfIHHzlRuBsdzS7MywXDj3BtH0bMluzfCLMrZTlfx96MZUXVSHZUimref
-         SuEuVLOGU2KQ2ybepeXJpjbBQafhMQpaHQn4ySaL2Pw+npWzF0G9rCVgzJBHlBJqcVNn
-         h/pSJStketr06qaVjIR1e1eU00HZCErVcnYvsgj6tJ+rP+glkE3lcXL9ZzUZ1Qm7Ew0C
-         x1kKh6xPTyWWADUj+kCDrqPENS48Yt0HxutCpGUi3lMsamlahZ5YSF2/EjyI+JlmRBXE
-         Y5Hkg1qAemQr628SMJa+Mm+TSQjLZbu/XebkfnJTY5t9h1PNNzPAAADHaKPgqOM7aptS
-         Retg==
+        d=gmail.com; s=20251104; t=1782949375; x=1783554175; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=HjOEsE0qEDjFyTwl3K+CtParcmWNsl4rWJyxgaM5lGk=;
+        b=T68td7DcIeSQXbb7LNevtAYMB3InXe2EW5aCNI5m/JIAaf+B1nAdfL/rnNERZrIvXB
+         aIkQoS09lnSuCUOQB2U0Tv6vb3lOG1U+h7HhKLgZTidsXh38B+RmG7JXd+xxQMh5Qoaj
+         fOo69VyGYfm+VYi22t2tX/zg2ml/s3tGqq+TfKIOpq6GAXhyOkzufC6n9mKdZmT5Vowg
+         dJyvSPj6nLe70KZMtK4E6qBTzCH20KfupjDYYABe6eYnLdKNQTM7Ua8aGI7iYYs+5df/
+         Hys0oSTaVqZU6qs5ln+h9NLb4ANzmBa68vHA2yW5w5t1oAimTFHMK8KQzO9QzCYx4R9o
+         pxYA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782948733; x=1783553533;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=aEtvomiAJhh+AZYjRz54TpoQYzbI+CDCJW/Z4a3FJPw=;
-        b=TvJx6jsO8VrF9L86SHOITM2ScMupfmMfjSAsSQf+l0BGkJzXwq7G/UeRMGhgL3lcMY
-         aO/YWkZDyC8DSec+xLwrUGJS4ZiobYmwmhWfs0UxzcDPWuLUKgpedVz18fXacdL7wZXA
-         CvV+iwRyE62EF3BA377vTe+5FsGVEMN/x0P5watjBV6QBSBBv5eebuPYvlWSQ93d0vWx
-         9zZa6W70g1sAm/FcGQPYM28RwPLnflswtD203FHBamDtJwTKXhTfpe+n294aIEeLpRe/
-         fpkpkjTZmr36t7LX83G3HzPC4761tLOAt7cCX/ejeBzoTapFFwcOHr0rKxe6ZJPhqmC7
-         mEXA==
-X-Gm-Message-State: AOJu0YwoUlXvX6sFnZY5SHCbVE2jCoFFcwtoWjXgdcA2vhIU/EW6hgx8
-	SrL+Usb5eVdi1RDpdoSb1oaSwKeIfJ1ENDVA3TjfCB448NEA7TerFeXUkrlrwygsdVTBowhJWLr
-	QX/5N1AQjve9M562i5b12FYoM26SWy/k=
-X-Gm-Gg: AfdE7cmjwVu0I2IVe8Z0/Whb8JZhvDmJclBhnypMP0Z1ylr+wdQVL1ILB6swT5w0ykv
-	eflCr4MJvWrueLVyhH63XfrdRz3QkBXev9Rf5dMaaXX5LXR84qhsdgoNquCrwCtYZZsqwrCs8w1
-	EF9wBN6bJxv1Pr4hX3eax0KEVWSjqH3NQ681kkz61b1Uj6dX3+eTGkbqsl8tlnH7kJF/QP65G8u
-	aQ90wGcJ5xsoNQrXVgfiemX6mkCPMA4Wv6SbTSnWcnpOWhxSIYFtrzjw8FS1svmciuNU8vGFQ==
-X-Received: by 2002:a17:907:8b9b:b0:c05:b9db:68cc with SMTP id
- a640c23a62f3a-c12a9ba9198mr177161866b.0.1782948732444; Wed, 01 Jul 2026
- 16:32:12 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1782949375; x=1783554175;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=HjOEsE0qEDjFyTwl3K+CtParcmWNsl4rWJyxgaM5lGk=;
+        b=EWxwyDBe93exYX2tNm1cOyM0JMjeaycO0QUs4FN6Nq1IY0SZIuMwHz+51KB8YCc87I
+         5EpNWYt12fgPwCE2XgA3NpXGp3S2DttCPmuYScLtHuGAwHFlsGb7DqieQF+XeZBqVtEW
+         Si+gGLIPwe9pqd1lE9t8gGzeWNMcUCRdwMGjHoPIcWqzH5BD2dKkzyjjBSxXzuR+DpaA
+         X00IZBd8LMi43DZ0LlEG0rs4Y5gchLiJFhOzy4+R69/PTVLdGULlnRZGMyydoNPDniU6
+         03eKw+N4ncIERd/DAJN3EvAAHRgiflR+oyWAXR1Mx9yZEt3Ue9B84spy/aa0RPACe6dw
+         ArlQ==
+X-Forwarded-Encrypted: i=1; AHgh+Rqeqq09A5i+dmXReThGIGiDUXO36JvNMvK47QBcGQQN84RDe3N/mp8g/gdPfxiB8Kn3Fw09hFk=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yyt5x3PveSG9yvp7GjDkh87hyv9g0yb6lDyjNtRtnQgWdnr6xOi
+	CPM73cIhKmK4MlOmAL7hAAiGu7+O4gtfYU1GPeEIfZSA7pTwX4J0XwpR
+X-Gm-Gg: AfdE7ckpgLPjtFZhp/Qs+sIeociMuKDANdqejsOWtoNXfmOdeTK2+BIcvp2AZwS/LeD
+	G7hd/dpbYmr5cvfRFynaGTwPWpLI6hXmwo44Oyo0EqpnAE+6YVEEhnCc7aM4R+sUEvrpKsLvNvi
+	GS1LcS1ISqnOxXaqeGg+bDnON01Vi1HTXqFzTybQUQgeZZLQq2uPJN9VGAvAOgdk6f2nmvcsyab
+	RjOOoml8Ax/tpzKUNjWXuEmW6dwted5bKhiH3odsicUL7x13MZqpyO4EJQiqe20MK9aQxKxd5/1
+	qdT87bxrjojhYkt7mAI+7RxW9VUK6nkO3LZqLzYVFqrIHa2iNM9T7L27jhkSeioxKMy6iYghl6x
+	sNy7wQYs1cQi4EofOqdkKRiMqi+auiCM0iavtRsfsdjzNuARLGkuAF54hltWrxv4/uqmlegu9HO
+	8AZQBkngDjGIqGsFVRI589cpFD5YlxfeW2mqsFAyobnw==
+X-Received: by 2002:a05:6512:4481:b0:5ae:c201:c3d7 with SMTP id 2adb3069b0e04-5aec801063cmr603820e87.8.1782949374962;
+        Wed, 01 Jul 2026 16:42:54 -0700 (PDT)
+Received: from localhost.localdomain ([2a01:4f9:2a:1c13::2])
+        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-39b37fda160sm2836261fa.29.2026.07.01.16.42.52
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 01 Jul 2026 16:42:53 -0700 (PDT)
+From: Melbin K Mathew <mlbnkm1@gmail.com>
+To: deller@gmx.de
+Cc: linux-fbdev@vger.kernel.org,
+	dri-devel@lists.freedesktop.org,
+	linux-kernel@vger.kernel.org,
+	Melbin K Mathew <mlbnkm1@gmail.com>,
+	stable@vger.kernel.org
+Subject: [PATCH v3 1/3] fbdev: bound mode sysfs output to the sysfs buffer
+Date: Thu,  2 Jul 2026 01:42:46 +0200
+Message-Id: <20260701234248.236023-2-mlbnkm1@gmail.com>
+X-Mailer: git-send-email 2.39.5
+In-Reply-To: <20260701231706.234715-1-mlbnkm1@gmail.com>
+References: <20260701231706.234715-1-mlbnkm1@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <CAFTRC0=hdHvug9=JyiZ=XYowdpqp9TAgXbq0YpDOEnzmQUWxzQ@mail.gmail.com>
- <2026070140-segment-schematic-0a38@gregkh>
-In-Reply-To: <2026070140-segment-schematic-0a38@gregkh>
-From: sdj asj <sdjasjbuaa@gmail.com>
-Date: Thu, 2 Jul 2026 07:34:13 +0800
-X-Gm-Features: AVVi8Cch7N2hDd21kWVko2dWmYAYAPlToFThimgAcOq9SHnpL0FdK5_1bQ4P5z8
-Message-ID: <CAFTRC0npKw0pwHufN1ck8znkmJB90prND+r8_qAyWvkGt3iemg@mail.gmail.com>
-Subject: Re: [stable] Please backport ntfs3: reject direct userspace writes to
- reserved $LX* xattrs
-To: Greg KH <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, ntfs3@lists.linux.dev, 
-	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.16 / 15.00];
-	SUBJECT_HAS_CURRENCY(1.00)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-270266-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[vger.kernel.org,lists.freedesktop.org,gmail.com];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TO_DN_SOME(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:gregkh@linuxfoundation.org,m:stable@vger.kernel.org,m:ntfs3@lists.linux.dev,m:almaz.alexandrovich@paragon-software.com,s:lists@lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FORGED_SENDER(0.00)[sdjasjbuaa@gmail.com,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sdjasjbuaa@gmail.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	MID_RHS_MATCH_FROMTLD(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	FREEMAIL_FROM(0.00)[gmail.com];
+	TAGGED_FROM(0.00)[bounces-270267-lists,stable=lfdr.de];
+	URIBL_MULTI_FAIL(0.00)[vger.kernel.org:server fail,sin.lore.kernel.org:server fail];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:deller@gmx.de,m:linux-fbdev@vger.kernel.org,m:dri-devel@lists.freedesktop.org,m:linux-kernel@vger.kernel.org,m:mlbnkm1@gmail.com,m:stable@vger.kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER(0.00)[mlbnkm1@gmail.com,stable@vger.kernel.org];
+	TO_DN_SOME(0.00)[];
+	FREEMAIL_TO(0.00)[gmx.de];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[mlbnkm1@gmail.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	ALIAS_RESOLVED(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,vger.kernel.org:from_smtp,mail.gmail.com:mid,linuxfoundation.org:email]
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	RWL_MAILSPIKE_POSSIBLE(0.00)[104.64.211.4:from];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 181886F2509
+X-Rspamd-Queue-Id: 558A56F27B9
 
-Yes, 5.15.y and newer are the branches I meant.
+mode_string() uses snprintf() which can return a value larger than the
+remaining buffer space. show_modes() accumulates the return value into i
+without checking whether i has reached PAGE_SIZE, causing the offset to
+advance past the sysfs buffer if the modelist is long enough.
 
-ntfs3 was introduced in Linux 5.15, so 5.10.y should not contain the
-vulnerable ntfs3 code and does not need this patch.
+Add a size parameter to mode_string() and use scnprintf() to return
+only the bytes actually written. Add an early return when offset
+already exceeds the buffer. In show_modes(), stop accumulating once
+the buffer is full.
 
-Thanks for applying it.
+Cc: stable@vger.kernel.org
+Signed-off-by: Melbin K Mathew <mlbnkm1@gmail.com>
+---
+ drivers/video/fbdev/core/fbsysfs.c | 15 ++++++++++-----
+ 1 file changed, 10 insertions(+), 5 deletions(-)
 
-Best regards,
-Zhen
+diff --git a/drivers/video/fbdev/core/fbsysfs.c b/drivers/video/fbdev/core/fbsysfs.c
+index ea196603c7..af21dc5052 100644
+--- a/drivers/video/fbdev/core/fbsysfs.c
++++ b/drivers/video/fbdev/core/fbsysfs.c
+@@ -27,12 +27,15 @@ static int activate(struct fb_info *fb_info, struct fb_var_screeninfo *var)
+ 	return 0;
+ }
+ 
+-static int mode_string(char *buf, unsigned int offset,
++static int mode_string(char *buf, size_t size, unsigned int offset,
+ 		       const struct fb_videomode *mode)
+ {
+ 	char m = 'U';
+ 	char v = 'p';
+ 
++	if (offset >= size)
++		return 0;
++
+ 	if (mode->flag & FB_MODE_IS_DETAILED)
+ 		m = 'D';
+ 	if (mode->flag & FB_MODE_IS_VESA)
+@@ -45,7 +48,7 @@ static int mode_string(char *buf, unsigned int offset,
+ 	if (mode->vmode & FB_VMODE_DOUBLE)
+ 		v = 'd';
+ 
+-	return snprintf(&buf[offset], PAGE_SIZE - offset, "%c:%dx%d%c-%d\n",
++	return scnprintf(&buf[offset], size - offset, "%c:%dx%d%c-%d\n",
+ 	                m, mode->xres, mode->yres, v, mode->refresh);
+ }
+ 
+@@ -64,7 +67,7 @@ static ssize_t store_mode(struct device *device, struct device_attribute *attr,
+ 
+ 	list_for_each_entry(modelist, &fb_info->modelist, list) {
+ 		mode = &modelist->mode;
+-		i = mode_string(mstr, 0, mode);
++		i = mode_string(mstr, sizeof(mstr), 0, mode);
+ 		if (strncmp(mstr, buf, max(count, i)) == 0) {
+ 
+ 			var = fb_info->var;
+@@ -86,7 +89,7 @@ static ssize_t show_mode(struct device *device, struct device_attribute *attr,
+ 	if (!fb_info->mode)
+ 		return 0;
+ 
+-	return mode_string(buf, 0, fb_info->mode);
++	return mode_string(buf, PAGE_SIZE, 0, fb_info->mode);
+ }
+ 
+ static ssize_t store_modes(struct device *device,
+@@ -136,7 +139,9 @@ static ssize_t show_modes(struct device *device, struct device_attribute *attr,
+ 	i = 0;
+ 	list_for_each_entry(modelist, &fb_info->modelist, list) {
+ 		mode = &modelist->mode;
+-		i += mode_string(buf, i, mode);
++		i += mode_string(buf, PAGE_SIZE, i, mode);
++		if (i >= PAGE_SIZE - 1)
++			break;
+ 	}
+ 	return i;
+ }
+-- 
+2.39.5
 
-On Wed, Jul 1, 2026 at 9:36=E2=80=AFPM Greg KH <gregkh@linuxfoundation.org>=
- wrote:
->
-> On Wed, Jul 01, 2026 at 08:27:36PM +0800, sdj asj wrote:
-> > Hello stable team,
-> >
-> > Please consider picking up the following upstream commit for supported
-> > stable trees where it applies:
-> >
-> > 5b08dccecf825cbf905f348bc6ccb497507e28e2
-> > ntfs3: reject direct userspace writes to reserved $LX* xattrs
-> >
-> > Reason for stable:
-> >
-> > This fixes a user-visible security issue in ntfs3. Before this change,
-> > the empty-prefix xattr handler allowed an unprivileged file owner on a
-> > writable ntfs3 mount to set the reserved $LXUID, $LXGID and $LXMOD
-> > extended attributes directly. These attributes are later trusted by
-> > ntfs_get_wsl_perm() during inode reload and used to populate i_uid,
-> > i_gid and i_mode.
-> >
-> > As a result, an unprivileged user can create a file that becomes
-> > root-owned and SUID after inode reload. The issue is reproducible
-> > using normal syscalls only and does not require a malformed filesystem
-> > image.
-> >
-> > The upstream fix prevents non-privileged users from directly writing
-> > these reserved $LX* attributes, while keeping internal ntfs3 metadata
-> > updates working.
-> >
-> > The original issue no longer reproduces with the upstream fix applied.
-> >
-> > Please apply this to supported stable branches that contain the
-> > vulnerable ntfs3 code.
->
-> What branches are that?  I've applied this to 5.15.y and newer, but it
-> didn't apply to 5.10.y.
->
-> thanks,
->
-> greg k-h
 
