@@ -1,83 +1,81 @@
-Return-Path: <stable+bounces-270089-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-270091-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id rHMmMwF+RGoYvwoAu9opvQ
-	(envelope-from <stable+bounces-270089-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 01 Jul 2026 04:40:01 +0200
+	id MY+KKjl/RGpcvwoAu9opvQ
+	(envelope-from <stable+bounces-270091-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 01 Jul 2026 04:45:13 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F5076E946C
-	for <lists+stable@lfdr.de>; Wed, 01 Jul 2026 04:40:01 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0BD686E94B2
+	for <lists+stable@lfdr.de>; Wed, 01 Jul 2026 04:45:13 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=BywU73+j;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-270089-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-270089-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=djkGsmFP;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-270091-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-270091-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=gmail.com;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id BD8CC3036AF5
-	for <lists+stable@lfdr.de>; Wed,  1 Jul 2026 02:40:00 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 2ED5F302BE38
+	for <lists+stable@lfdr.de>; Wed,  1 Jul 2026 02:45:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D5B4A36167B;
-	Wed,  1 Jul 2026 02:39:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DCB7C3644C4;
+	Wed,  1 Jul 2026 02:45:07 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pg1-f174.google.com (mail-pg1-f174.google.com [209.85.215.174])
+Received: from mail-pf1-f177.google.com (mail-pf1-f177.google.com [209.85.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CCD521257F
-	for <stable@vger.kernel.org>; Wed,  1 Jul 2026 02:39:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 374DA363C50
+	for <stable@vger.kernel.org>; Wed,  1 Jul 2026 02:45:06 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782873597; cv=none; b=lDMklOdrH1fQ4VAAkk1/O+kPOV9Wj/gsKQOHFiSxpTBCXb9flAhUf2bWYqSwbCapaa5eILcKMHDfhejAlHCX7pK+969lxuPKQ9U3andrOw/xkSN0it6LMpYbLcgfjEJzyjF51AbCCm/tHhmRkA9WWqsG9F5LD3TlpZQEoNH1WrE=
+	t=1782873907; cv=none; b=LOrpRAVz6/NEwyNMFjU4IrMIMEUDRejMVa9VmeHxOOGsosRCzkAwOEZbh+AS9/eOIjPU78DyAJ9XH1lhO6tIAXPgdW8IgT6EN2zonoKMV75h4MDIx7VrOzfu/XU4ylGsCINlbBUwCKI2tGtC0uUXwLj1yz81oxhOaDCMpiUhfm8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782873597; c=relaxed/simple;
-	bh=kFfS/hYVH3xKgYiZ0ih52JyN+hH+Rh+N6BnADyg9gWo=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=GPLg5yeCaA9J56tfi4LRlxZj8wDUPPA2v2xyoNqAj9dghRUOBBobrjSY/v7QYLiZKAyBB8abZ0vaeAuF+++XVQd4oGtc2iSmPYA8MysMwJY6kSH+7HXNnINxJRHs6QzEASQOhehhBB2ZODs67uQ+F6HxYiGPYte6PTAW1f+Dv1A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=BywU73+j; arc=none smtp.client-ip=209.85.215.174
-Received: by mail-pg1-f174.google.com with SMTP id 41be03b00d2f7-c9c26a5fb98so45671a12.0
-        for <stable@vger.kernel.org>; Tue, 30 Jun 2026 19:39:56 -0700 (PDT)
+	s=arc-20240116; t=1782873907; c=relaxed/simple;
+	bh=7AUf/dQ60ZUC10Vl9hsxxT4uc9WrQwe3UEf1UqLr0wY=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=o18njS3knJtXukfh7scIkOpHh1mvjWPq/YSU7xUK23AP9DZBGpM76JuZobTUhYoSd7Vd5B4qfOgdH1nQTmIedc5VTShDvgWyAyuwbDNv096QBAi4EvZsebxzLgvTksPHyNDEB9CyigQyGLEE/DhR0t77wfpo5d9Ri9z9U41N1u0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=djkGsmFP; arc=none smtp.client-ip=209.85.210.177
+Received: by mail-pf1-f177.google.com with SMTP id d2e1a72fcca58-84536ecfc5bso140442b3a.2
+        for <stable@vger.kernel.org>; Tue, 30 Jun 2026 19:45:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1782873596; x=1783478396; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=DzkYV94Uqg4TuiFvMHYE6jMkVnd53YqhWYM0y0VZBIA=;
-        b=BywU73+jRaTSfLK0rdPZPF+0+uPx/ZJ2+O53cQEQMVwwQAv5xTj75N+tj7KuMYHrcl
-         qX17hQOZI0RKb3+yu7onB1n/1rjneRnCSu+vmuMadibYQBvr/vtxkiqiv3KHIBWxSWD0
-         m6dVI995CcbQ1LV86IOI5WQ3MUehsCtM52ubGX7Ub/lwL8Kow/v7JR5q5bndq9ou8n6a
-         Qv6Lc9dYUyycNOLm12SMhnjJt+722thyqGWDWuzg5GAMFa0QJTwHpSTONaencCfmP6BQ
-         w406+o+vmXAg2VgzqntKGSIIGfwicRB2y/RIVD/tbeDArTBqicetRdI/WU1P5g0lWAp2
-         Vgrw==
+        d=gmail.com; s=20251104; t=1782873905; x=1783478705; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=+OPd1GHODOckXDuq1kdFib8UHAUD5MfQDAIu/WdnbLI=;
+        b=djkGsmFP89aSY4BoXyf3nxtWGdVk3WtKIeQpNFWauRemCrvBbWhdGofi3fo0VBn+Vv
+         A5LXFACW6RQ9G5nzUmdA5Fcx5IKcRsF0f7y8rfAoFjIJXo5pyfE/n193pvxp9Wmc5Y2P
+         5Cp5uoLu5q2R0ilW77V5wQyEBH0s0iV+YT9Qwn57Qq3zbXl8DxtIHmHcw8FLSVeDHIKD
+         zKiBGeWkpu9IylrAjQv4AgHIxN+5AkuV6x9P14t5zjlGKext9dw7bTo0ZDm8361lMxSt
+         std/WHIAeK1pCYbXXBj+j1oAbXGuZgpcOIT9PxfznHnPkp/DsCZ2y9QPSBhphmnQiWHY
+         8ueA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782873596; x=1783478396;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=DzkYV94Uqg4TuiFvMHYE6jMkVnd53YqhWYM0y0VZBIA=;
-        b=kakqS389+M1n8CE5+okX0BvzR2YYBrWF95YCGiItpH0i4lCFE89U58zN4avDbAUD6i
-         kZRL/9LT2k1LvuT9va9ytYS1efDP9o1WxoyAgA3+tXLTzud/TWCpCsV9ReRgEwLz+fsf
-         i+1FtB+Pmr08VUBeiZ2Q5k8QCMU0j/q/0pFrX30ugw51kFhmdD0DTenCXGrA3kuxTO9O
-         61sRdvyGYhTiAJaoM4bgL+NAS5EeRk+/5JL/hsXSR3r+UZHRcaCOa7Gt/2o706ZwKjuv
-         astL7qaZai2962x7mRzTqZbNfAefXfhuf0kHdsGGptRiP37Vi1vivVs9yLzxa7bp64QQ
-         WE1A==
-X-Gm-Message-State: AOJu0Yw4FPRVeOS2kq2JeruZR8dbuRsVasUaflIAzwXhfiiGOuBQu52O
-	Sw6/f1iZ9aUyL+Ur6Rb5SdLgaD+Y+/el8dm7PxpRbyd+aLunfAfIzaXa
-X-Gm-Gg: AfdE7cnXw2wK2B+el6Q2Te9sj39kB2y9KMHhu7m9Q/G93boxDANLZbdCMXkoNuEOJTH
-	Bzv0tXrK+OncqM5Ub7ifs13Wqxo+ah6ZjBiMwYxie2/r+OCvLtsU4Y4fczOvqAFuHwhYk1FuA6y
-	/BGlUX+ddgWhz+zfdTGCb3BEUoM3yGFKwheiZvtPx3mOys1zPs/8by8QqJmKHQENwy0x5Bx879T
-	N0H/OfXg4tHtGuoi10aztl1VBYtejZmEuBf3sLpShevzH6puMpjAHgvGjW2jXdxLTf4GR9HzCsK
-	CzJJy4GL7dAYsbPSu6yUMeNVWD0sj0y/KtM6DJzofIILBPU+7T9d8oWAP7KfwE3nSNmFvZSpr4L
-	/FHuz6gzBHt64YoBZ2LgxFdr7BN/9uW+72mrgUPKxOQJvRr62/nxzeYQL27p514XCTWuEs+EUaP
-	RzuzWbsQfhXB+iBK6sYhInJH1aEqrqP3lZzaw=
-X-Received: by 2002:aa7:8891:0:b0:847:9301:48e9 with SMTP id d2e1a72fcca58-847a81f41f8mr3385986b3a.15.1782873595657;
-        Tue, 30 Jun 2026 19:39:55 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1782873905; x=1783478705;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=+OPd1GHODOckXDuq1kdFib8UHAUD5MfQDAIu/WdnbLI=;
+        b=Jp90QRqcyZV+xOGmm+WegnIU5IcQo6YFsi8JEdB3by6Szi6ItzL1k53GyGbblToNLv
+         zxRzHb5ZMa4qZQ3Z61DfVtyksMIWVWByCEWtdONx8dz/ShAvJslQAAFqW5+DmKctNhh4
+         +ZSqHCD9Df6WxZpxPuC2q6CEDOO3lRUUiAVoYz8ItrcoFDGbcqzScNMH/eYT3upy4SjR
+         oaLOpDcLwMI5hHM1hnmVoNc9eixa2j558nFlBtFck8EltEghQ3u/zhXTpkAPr2oPl2c6
+         tHop8d0tZuHcvLyLbP4GGFRUMYK0AVzdzcPoyr4aeE3cSzXVLQcthLLZURS70sPPT/P2
+         f0fA==
+X-Gm-Message-State: AOJu0YyFDpOmxFwJDScKxFzszjbuiNaNsxxLHcrkfc7PR40D5CodoIqn
+	UCGFzEt3y/Dwvj8dxSvEtXZ3vABt0oCNlwurWJ1vJHeBKOW0AJ+B2fVB
+X-Gm-Gg: AfdE7cmWHDCAroxIeeqqQ9ZUlUgIoh8mc3sjNt8HpGJSZoECHjiVyO41ysLEfozuLEx
+	S3DtutoHRU0dL9QcCHMKIvmyEQEE6Y7zyxO6NZLM8nhsJqEhRzPffmP7fEEt+RcYbl64a1dh9Nj
+	aOM8oX+8S+a3PL6l++KZkefKfw5NHKuggK/RvszJZhXfd5ZdUN/1w+mdzyhZ/lv6ugVtDZf8T2d
+	cJUhkGQUx0EszN9RFwAPMzCqxTTTt4NBPz1qF8uhMYj1VLuSXvNur+7bcDzqWMilJt8MJEnWEVj
+	7K+kb3am/G3KNajJuhTSbi9bBTUqbv8RiDlqzLNu+Nu6/XmRXe/TJrMqr3i/zCSC2ZZrBpeVr0Q
+	IX29Jpxnszu1k/movaHUWzt18XxjuPA2LviYZ92I1iFJG7edLg4zz8kNX0GbL5HTXRNxW0zUvu/
+	SZLZ7kSMhptZ1GkPBJGg12pjRNCgr9BUoDMN4=
+X-Received: by 2002:a05:6a00:4089:b0:845:dde9:ab62 with SMTP id d2e1a72fcca58-847addb1bd5mr2956528b3a.19.1782873905310;
+        Tue, 30 Jun 2026 19:45:05 -0700 (PDT)
 Received: from twhmp6px (mxsmtp211.mxic.com.tw. [211.75.127.162])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-847a02d41c0sm2988752b3a.33.2026.06.30.19.39.55
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-8479fff9744sm3145620b3a.14.2026.06.30.19.45.04
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 30 Jun 2026 19:39:55 -0700 (PDT)
+        Tue, 30 Jun 2026 19:45:04 -0700 (PDT)
 Received: from hqs-appsw-a2o.mp600.macronix.com (unknown [172.17.236.67])
-	by twhmp6px (Postfix) with ESMTPS id 7110E416A065;
-	Wed,  1 Jul 2026 10:39:53 +0800 (CST)
+	by twhmp6px (Postfix) with ESMTPS id 96B64416A065;
+	Wed,  1 Jul 2026 10:45:02 +0800 (CST)
 From: Cheng Ming Lin <linchengming884@gmail.com>
 To: stable@vger.kernel.org
 Cc: tudor.ambarus@linaro.org,
@@ -89,12 +87,10 @@ Cc: tudor.ambarus@linaro.org,
 	linux-mtd@lists.infradead.org,
 	alvinzhou@mxic.com.tw,
 	Cheng Ming Lin <chengminglin@mxic.com.tw>
-Subject: [PATCH 6.6.y] mtd: spi-nor: macronix: add support for mx66{l2, u1}g45g
-Date: Wed,  1 Jul 2026 10:36:19 +0800
-Message-Id: <20260701023619.2730136-2-linchengming884@gmail.com>
+Subject: [PATCH 6.12.y 1/2] mtd: spi-nor: macronix: Add post_sfdp fixups for Quad Input Page Program
+Date: Wed,  1 Jul 2026 10:42:03 +0800
+Message-Id: <20260701024204.2730472-1-linchengming884@gmail.com>
 X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20260701023619.2730136-1-linchengming884@gmail.com>
-References: <20260701023619.2730136-1-linchengming884@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -108,13 +104,13 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
 	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-270089-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-270091-lists,stable=lfdr.de];
 	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:tudor.ambarus@linaro.org,m:pratyush@kernel.org,m:mwalle@kernel.org,m:miquel.raynal@bootlin.com,m:richard@nod.at,m:vigneshr@ti.com,m:linux-mtd@lists.infradead.org,m:alvinzhou@mxic.com.tw,m:chengminglin@mxic.com.tw,s:lists@lfdr.de];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
@@ -133,47 +129,98 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FREEMAIL_FROM(0.00)[gmail.com];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,mxic.com.tw:email,vger.kernel.org:from_smtp]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linaro.org:email,mxic.com.tw:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 6F5076E946C
+X-Rspamd-Queue-Id: 0BD686E94B2
 
 From: Cheng Ming Lin <chengminglin@mxic.com.tw>
 
-commit 797bbaa7531f75985b199e484451fa3f954382b3 upstream.
+commit 798aafeffb369c5eb36e406b18970ef27baa820d upstream.
 
-Due to incorrect values in the 4-BAIT table for these two flash IDs,
-it is necessary to add these two flash IDs with fixups.
+Although certain Macronix NOR flash support the Quad Input Page Program
+feature, the corresponding information in the 4-byte Address Instruction
+Table of these flash is not properly filled. As a result, this feature
+cannot be enabled as expected.
+
+To address this issue, a post_sfdp fixups implementation is required to
+correct the missing information.
 
 Signed-off-by: Cheng Ming Lin <chengminglin@mxic.com.tw>
-Link: https://lore.kernel.org/r/20250211063028.382169-3-linchengming884@gmail.com
+Link: https://lore.kernel.org/r/20250211063028.382169-2-linchengming884@gmail.com
 Signed-off-by: Tudor Ambarus <tudor.ambarus@linaro.org>
 ---
- drivers/mtd/spi-nor/macronix.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/mtd/spi-nor/macronix.c | 23 +++++++++++++++++++++++
+ 1 file changed, 23 insertions(+)
 
 diff --git a/drivers/mtd/spi-nor/macronix.c b/drivers/mtd/spi-nor/macronix.c
-index b676a71822a3..b3ba7ad94711 100644
+index ea6be95e75a5..678ebaa220ca 100644
 --- a/drivers/mtd/spi-nor/macronix.c
 +++ b/drivers/mtd/spi-nor/macronix.c
-@@ -116,10 +116,16 @@ static const struct flash_info macronix_nor_parts[] = {
- 		NO_SFDP_FLAGS(SECT_4K | SPI_NOR_DUAL_READ | SPI_NOR_QUAD_READ)
- 		FIXUP_FLAGS(SPI_NOR_4B_OPCODES)
- 		.fixups = &macronix_qpp4b_fixups },
-+	/* MX66U1G45G */
-+	{ INFO(0xc2253b, 0, 0, 0)
-+		.fixups = &macronix_qpp4b_fixups },
- 	{ "mx66l1g45g",  INFO(0xc2201b, 0, 64 * 1024, 2048)
- 		NO_SFDP_FLAGS(SECT_4K | SPI_NOR_DUAL_READ |
- 			      SPI_NOR_QUAD_READ)
- 		.fixups = &macronix_qpp4b_fixups },
-+	/* MX66L2G45G */
-+	{ INFO(0xc2201c, 0, 0, 0)
-+		.fixups = &macronix_qpp4b_fixups },
- 	{ "mx66l1g55g",  INFO(0xc2261b, 0, 64 * 1024, 2048)
- 		NO_SFDP_FLAGS(SPI_NOR_QUAD_READ) },
- 	{ "mx66u2g45g",	 INFO(0xc2253c, 0, 64 * 1024, 4096)
+@@ -28,8 +28,26 @@ mx25l25635_post_bfpt_fixups(struct spi_nor *nor,
+ 	return 0;
+ }
+ 
++static int
++macronix_qpp4b_post_sfdp_fixups(struct spi_nor *nor)
++{
++	/* PP_1_1_4_4B is supported but missing in 4BAIT. */
++	struct spi_nor_flash_parameter *params = nor->params;
++
++	params->hwcaps.mask |= SNOR_HWCAPS_PP_1_1_4;
++	spi_nor_set_pp_settings(&params->page_programs[SNOR_CMD_PP_1_1_4],
++				SPINOR_OP_PP_1_1_4_4B, SNOR_PROTO_1_1_4);
++
++	return 0;
++}
++
+ static const struct spi_nor_fixups mx25l25635_fixups = {
+ 	.post_bfpt = mx25l25635_post_bfpt_fixups,
++	.post_sfdp = macronix_qpp4b_post_sfdp_fixups,
++};
++
++static const struct spi_nor_fixups macronix_qpp4b_fixups = {
++	.post_sfdp = macronix_qpp4b_post_sfdp_fixups,
+ };
+ 
+ static const struct flash_info macronix_nor_parts[] = {
+@@ -85,11 +103,13 @@ static const struct flash_info macronix_nor_parts[] = {
+ 		.size = SZ_64M,
+ 		.no_sfdp_flags = SPI_NOR_DUAL_READ | SPI_NOR_QUAD_READ,
+ 		.fixup_flags = SPI_NOR_4B_OPCODES,
++		.fixups = &macronix_qpp4b_fixups,
+ 	}, {
+ 		.id = SNOR_ID(0xc2, 0x20, 0x1b),
+ 		.name = "mx66l1g45g",
+ 		.size = SZ_128M,
+ 		.no_sfdp_flags = SECT_4K | SPI_NOR_DUAL_READ | SPI_NOR_QUAD_READ,
++		.fixups = &macronix_qpp4b_fixups,
+ 	}, {
+ 		.id = SNOR_ID(0xc2, 0x23, 0x14),
+ 		.name = "mx25v8035f",
+@@ -137,18 +157,21 @@ static const struct flash_info macronix_nor_parts[] = {
+ 		.size = SZ_64M,
+ 		.no_sfdp_flags = SECT_4K | SPI_NOR_DUAL_READ | SPI_NOR_QUAD_READ,
+ 		.fixup_flags = SPI_NOR_4B_OPCODES,
++		.fixups = &macronix_qpp4b_fixups,
+ 	}, {
+ 		.id = SNOR_ID(0xc2, 0x25, 0x3a),
+ 		.name = "mx66u51235f",
+ 		.size = SZ_64M,
+ 		.no_sfdp_flags = SECT_4K | SPI_NOR_DUAL_READ | SPI_NOR_QUAD_READ,
+ 		.fixup_flags = SPI_NOR_4B_OPCODES,
++		.fixups = &macronix_qpp4b_fixups,
+ 	}, {
+ 		.id = SNOR_ID(0xc2, 0x25, 0x3c),
+ 		.name = "mx66u2g45g",
+ 		.size = SZ_256M,
+ 		.no_sfdp_flags = SECT_4K | SPI_NOR_DUAL_READ | SPI_NOR_QUAD_READ,
+ 		.fixup_flags = SPI_NOR_4B_OPCODES,
++		.fixups = &macronix_qpp4b_fixups,
+ 	}, {
+ 		.id = SNOR_ID(0xc2, 0x26, 0x18),
+ 		.name = "mx25l12855e",
 -- 
 2.25.1
 
