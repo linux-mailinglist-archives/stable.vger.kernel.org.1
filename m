@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-271510-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-271511-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id BbiFNGabRmoEaAsAu9opvQ
-	(envelope-from <stable+bounces-271510-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:09:58 +0200
+	id qNa7OkKcRmpyaAsAu9opvQ
+	(envelope-from <stable+bounces-271511-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:13:38 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9D51B6FB11E
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:09:58 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4A5A76FB25B
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:13:38 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=UUXu9hWZ;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-271510-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-271510-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=EVV7odPp;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-271511-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-271511-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 400A6311A7A6
-	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 17:02:15 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A44BA347E0CC
+	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 17:02:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E5823101C8;
-	Thu,  2 Jul 2026 17:02:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1BBF83093DD;
+	Thu,  2 Jul 2026 17:02:14 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 404742DEA98;
-	Thu,  2 Jul 2026 17:02:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA6531FA859;
+	Thu,  2 Jul 2026 17:02:12 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783011731; cv=none; b=dh3E/h0vetrDzi3Lkqw9jz9QP3uIC0KPqVqpdgwQP1Rrnd+vqPn0DOy5GD+va5xku25L/WrhR0DaWe3QW8lpwTzVvrSlFSXUTXF1enXJpYdEciBy/MeSfntyfxPgSjlu5cAIDvQQu1OzHEU2Z79Iej9X+kJP5fHqeONVAO6a0do=
+	t=1783011733; cv=none; b=K8U9RjFq0Nl9ilPSzex5Shn5LZrJB6U886hCzLMuhFXCEaJQ2y42tSdSGUdo5kJipVGQNpe8nKPYVWHjRzRNp3nhK87C3bIQklZXRUvZ+/ZOSQ62wsqQlMN8+3ckThAIDxAU/HA9DZKAkG7HGp2mZPLMOSso5Ogsw+vn5f+5FDI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783011731; c=relaxed/simple;
-	bh=TpPV37oj7OLRQdZBcOQDNl6AhVxVmBr9jCFmjc5+DHs=;
+	s=arc-20240116; t=1783011733; c=relaxed/simple;
+	bh=RX+I87c/VZQG4gpyclMpplcXBEtmdapFmaBdy+n9q+E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dBqdGFjcefC9nciyzGzDk4yZPa7ZQn518B09hLdHZ8ibIFlPDIbroM6klB1Nip7UM4K2QRIRwEr7iMCbOt/+4pt3hnpojwCN118/a67iHUvFawo/MpQjRyBbZJY5LVXNp+/Bv1leEvtSQy2PqPQIvSZDF8UsK+fxtmk8ocx4GUc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UUXu9hWZ; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6E891F000E9;
-	Thu,  2 Jul 2026 17:02:09 +0000 (UTC)
+	 MIME-Version:Content-Type; b=puSs16E5qanZ5jQ0u0NZA2asLvzir8UsvRIXFvmjF9gEFnV2OinQOqgja5BDpw2qmbA/v4G4P9tqWCzsAvSJmXU9N35QLuJQRKx5m466u9YLgUiIOqeTRFNEgvSh0RpnsEbnufJyRhE/tRcLhVKtWkOOl69fsxq6Hu+yriaJIKU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EVV7odPp; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C48A1F000E9;
+	Thu,  2 Jul 2026 17:02:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1783011730;
-	bh=A8JXwC3QCHBdBrjI+Ph1dt8gxL3+SE1akLBL1olfAt8=;
+	s=korg; t=1783011732;
+	bh=nqmkuje8vhe/Vm7KIasnSe1aEAUOAgjZSMIyKphXNTY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=UUXu9hWZQ0GOaTUeSOGqDcZJXETUlHovJgVfb6uTYtK9qAejkBg37tu4s/j+joMqI
-	 4t8qO/SIIn6OhTXjW9zqLJMm3HYxaMggRzYWx+jr2drzPyqK7QQcALvWNtbwWQAoU5
-	 qokXIV96Q0Iz8eEFpxkVN05sup4ucb3tRVQ0LYBE=
+	b=EVV7odPpYQzylAKy4n8SZi+5Xq8WQH8WTItvxGVUcSp/KSM6WhkKWqtDyicOx39S2
+	 V7vKjiBVQvEL+4ktXeULT4L4yYlB6eXmf01lsbVTxkIPHBP4K5j29iG0wJSVqZGtcH
+	 wDLGZFall436HEo+zHOn3maXKm6/mlCUp/sMbDOM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -50,9 +50,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Chris Mason <clm@meta.com>,
 	Jeff Layton <jlayton@kernel.org>,
 	Chuck Lever <chuck.lever@oracle.com>
-Subject: [PATCH 7.1 112/120] nfsd: avoid leaking pre-allocated openowner on unconfirmed retry race
-Date: Thu,  2 Jul 2026 18:21:48 +0200
-Message-ID: <20260702155115.276991467@linuxfoundation.org>
+Subject: [PATCH 7.1 113/120] nfsd: reset write verifier on deferred writeback errors
+Date: Thu,  2 Jul 2026 18:21:49 +0200
+Message-ID: <20260702155115.297005760@linuxfoundation.org>
 X-Mailer: git-send-email 2.55.0
 In-Reply-To: <20260702155112.964534952@linuxfoundation.org>
 References: <20260702155112.964534952@linuxfoundation.org>
@@ -65,42 +65,42 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-271510-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:clm@meta.com,m:jlayton@kernel.org,m:chuck.lever@oracle.com,s:lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-271511-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	FORWARDED(0.00)[lists@lfdr.de];
 	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[oracle.com:email,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,meta.com:email]
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp,meta.com:email,oracle.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 9D51B6FB11E
+X-Rspamd-Queue-Id: 4A5A76FB25B
 
 7.1-stable review patch.  If anyone has any objections, please let me know.
 
@@ -108,45 +108,59 @@ X-Rspamd-Queue-Id: 9D51B6FB11E
 
 From: Jeff Layton <jlayton@kernel.org>
 
-commit 57aee7a35bb12753057c5b65d72d1f46c0e95b07 upstream.
+commit 2090b05803faab8a9fa62fbff871007862cac1b7 upstream.
 
-When find_or_alloc_open_stateowner() encounters an unconfirmed owner, it
-calls release_openowner() and sets oo = NULL. Control then falls through
-past the `if (oo)` guard -- which would have freed any pre-allocated
-`new` -- and unconditionally executes `new = alloc_stateowner(...)`. If
-`new` was already allocated on a prior iteration, the pointer is
-silently overwritten and the previous allocation (slab object + owner
-name buffer) is leaked.
+nfsd_vfs_write() and nfsd_commit() both call filemap_check_wb_err() to
+detect deferred writeback errors, but neither rotates the server's write
+verifier (nn->writeverf) when this check fails. Every other
+durable-storage-failure path in these functions calls
+commit_reset_write_verifier() before returning an error.
 
-This requires a race: two NFSv4.0 OPEN threads with the same owner
-string, where a concurrent thread inserts a new unconfirmed owner into
-the hash between retry iterations. The window is narrow but repeatable
-under adversarial conditions.
+The missing rotation means clients holding UNSTABLE write data under the
+current verifier will COMMIT, receive the unchanged verifier back, and
+conclude their data is durable — silently dropping data that failed
+writeback. This violates the UNSTABLE+COMMIT durability contract
+(RFC 1813 §3.3.7, RFC 8881 §18.32).
 
-Fix by adding `goto retry` after `oo = NULL` so the already-allocated
-`new` is reused on the next iteration rather than overwritten.
+Add commit_reset_write_verifier() calls at both filemap_check_wb_err()
+error sites, matching the pattern used by adjacent error paths in the
+same functions. The helper already filters -EAGAIN and -ESTALE
+internally, so the calls are unconditionally safe.
 
 Reported-by: Chris Mason <clm@meta.com>
-Fixes: 23df17788c62 ("nfsd: perform all find_openstateowner_str calls in the one place.")
+Fixes: 555dbf1a9aac ("nfsd: Replace use of rwsem with errseq_t")
 Cc: stable@vger.kernel.org
 Assisted-by: kres:claude-opus-4-6
 Signed-off-by: Jeff Layton <jlayton@kernel.org>
 Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nfsd/nfs4state.c |    1 +
- 1 file changed, 1 insertion(+)
+ fs/nfsd/vfs.c |    6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
---- a/fs/nfsd/nfs4state.c
-+++ b/fs/nfsd/nfs4state.c
-@@ -5169,6 +5169,7 @@ retry:
- 		/* Replace unconfirmed owners without checking for replay. */
- 		release_openowner(oo);
- 		oo = NULL;
-+		goto retry;
- 	}
- 	if (oo) {
- 		if (new)
+--- a/fs/nfsd/vfs.c
++++ b/fs/nfsd/vfs.c
+@@ -1508,8 +1508,10 @@ nfsd_vfs_write(struct svc_rqst *rqstp, s
+ 	nfsd_stats_io_write_add(nn, exp, *cnt);
+ 	fsnotify_modify(file);
+ 	host_err = filemap_check_wb_err(file->f_mapping, since);
+-	if (host_err < 0)
++	if (host_err < 0) {
++		commit_reset_write_verifier(nn, rqstp, host_err);
+ 		goto out_nfserr;
++	}
+ 
+ 	if (stable && fhp->fh_use_wgather) {
+ 		host_err = wait_for_concurrent_writes(file);
+@@ -1689,6 +1691,8 @@ nfsd_commit(struct svc_rqst *rqstp, stru
+ 			nfsd_copy_write_verifier(verf, nn);
+ 			err2 = filemap_check_wb_err(nf->nf_file->f_mapping,
+ 						    since);
++			if (err2 < 0)
++				commit_reset_write_verifier(nn, rqstp, err2);
+ 			err = nfserrno(err2);
+ 			break;
+ 		case -EINVAL:
 
 
 
