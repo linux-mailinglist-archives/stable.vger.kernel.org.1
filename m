@@ -1,62 +1,62 @@
-Return-Path: <stable+bounces-271250-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-270891-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id rvt7N1qZRmrcZgsAu9opvQ
-	(envelope-from <stable+bounces-271250-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:01:14 +0200
+	id XWuaJlqWRmojZQsAu9opvQ
+	(envelope-from <stable+bounces-270891-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:48:26 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id D756C6FADC9
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:01:13 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 065616FA92F
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:48:26 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=xAKgixfu;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-271250-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-271250-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="TDdinRE/";
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-270891-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-270891-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id C2270308E698
-	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:52:11 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 58269321B094
+	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:37:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3555D37A84C;
-	Thu,  2 Jul 2026 16:50:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F379134B1AD;
+	Thu,  2 Jul 2026 16:35:20 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0056C433E87;
-	Thu,  2 Jul 2026 16:50:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2C2F353A98;
+	Thu,  2 Jul 2026 16:35:19 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783011056; cv=none; b=dbje2YZat0MXOrhYdeswMHDV1V1yR2xCkUZZk9pBBGHMKD0+FF1XWRLiNUE1R/l5RujPtjjbhYhNBydOdLv6pJrm1OI+V9R4/0EmmDmy36SoAQNqtVodS+SpzwJr2WOZ9FOMBa4s3JI/hAMfhyQE0FdaAw0MSzudofIzivA627A=
+	t=1783010120; cv=none; b=BLxTYVigQc9/NuBv8zaHh4tbCyAtXeK6iJ8zCqRN2tKtA/XBDX2+gfsVEV1qebGv7mzYXix5IMEnbt6p7PQ3VeOako0RS22z22TMUf7U4RKwS+ReIs3mz/DPno/JncNUrh3knbnfLU32wmE+ia846OeHCGISYhbOxrTrA6EAO0w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783011056; c=relaxed/simple;
-	bh=cQtassdKM0UxLa5WooRp5yedShsqgPLkrLKPA3fmu98=;
+	s=arc-20240116; t=1783010120; c=relaxed/simple;
+	bh=bD8meI+1Iz2Vl0qyEZ3Fe54q1xmjauEbTi4rSGIo8VQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LOFnuXYdZo2SM5+DFvM1M22c8oq7DYKe01R9Z5Jh6wAtr6a+LXIP+0jdLV4x9f9cw+15tUX70qILnzj/NMWQ7eJLdlRhmCiNcbINH2Q56Uj3taN2A8iYq76/gZvwC3WuA9sTsj5gzEGvaT51eclLAAKV9ObQahrsm9XwrTD1oGw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xAKgixfu; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6473D1F000E9;
-	Thu,  2 Jul 2026 16:50:54 +0000 (UTC)
+	 MIME-Version; b=ErbH+VgsuURD+aJUzHohh621536xvvP4ngYopjNxqAeGlRyBMslf0ohgGkGetPdrxKEYUaLrUmln0Gl6CMk+QCuzv/m44eeAA55dLlCiFvajbcbVkNaSinR53NFBspSxpqr9eqF5teZtbdXoBynfm2O8bOHonTl7RTJSEkx98iE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TDdinRE/; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24F421F000E9;
+	Thu,  2 Jul 2026 16:35:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1783011054;
-	bh=QSZNuKtAQcaKAljN+mHINzfKgbjCypficA0VLBKezKI=;
+	s=korg; t=1783010119;
+	bh=789AijjWOGaMwz3G83xfZKIwr0FIzoLNcbtL7juXfVs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=xAKgixfulwvKK8A7pKIylDM45bF7zY2fFNoFSXikalRzyeFk0wDTbWXidyPYrCg7p
-	 Iu1wBS3Li/lTacQuEgagSmW2tHXGQOj4n1DYLVTFrkKRyCMkYyfa3bmdOwP6qZtxAd
-	 GtDjCZiRc7T3lutv/iVoWZ+t+cttOjdvtKkXhqFw=
+	b=TDdinRE/3fZczuZ0xi8+F3iG9yYCxKAB9oub5A9fmTQTsEKz2TujZqXRtj0xTLFyk
+	 MG8pr1kffjcY3p3EbsojYVJGvr7tmtBzJXrGNMwA/nNXgQO8a0ZHBmX31yQsUwiiGb
+	 zIgRNluzT03eWF+JPaMY8V/kMBcnuy56mclSBGbA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Wenjie Qi <qiwenjie@xiaomi.com>,
-	Chao Yu <chao@kernel.org>,
-	Jaegeuk Kim <jaegeuk@kernel.org>
-Subject: [PATCH 6.6 137/175] f2fs: validate compress cache inode only when enabled
+	syzbot+78147abe6c524f183ee9@syzkaller.appspotmail.com,
+	Davidlohr Bueso <dave@stgolabs.net>,
+	Thomas Gleixner <tglx@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 119/129] locking/rtmutex: Skip remove_waiter() when waiter is not enqueued
 Date: Thu,  2 Jul 2026 18:20:38 +0200
-Message-ID: <20260702155118.695982687@linuxfoundation.org>
+Message-ID: <20260702155114.607289109@linuxfoundation.org>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260702155115.766838875@linuxfoundation.org>
-References: <20260702155115.766838875@linuxfoundation.org>
+In-Reply-To: <20260702155112.163984240@linuxfoundation.org>
+References: <20260702155112.163984240@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,93 +68,107 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-271250-lists,stable=lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:stable@kernel.org,m:qiwenjie@xiaomi.com,m:chao@kernel.org,m:jaegeuk@kernel.org,s:lists@lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-270891-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:syzbot+78147abe6c524f183ee9@syzkaller.appspotmail.com,m:dave@stgolabs.net,m:tglx@kernel.org,m:sashal@kernel.org,m:syzbot@syzkaller.appspotmail.com,s:lists@lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	TO_DN_SOME(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	TO_DN_SOME(0.00)[];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[xiaomi.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
+	TAGGED_RCPT(0.00)[stable,78147abe6c524f183ee9];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,vger.kernel.org:from_smtp,appspotmail.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: D756C6FADC9
+X-Rspamd-Queue-Id: 065616FA92F
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wenjie Qi <qwjhust@gmail.com>
+From: Davidlohr Bueso <dave@stgolabs.net>
 
-commit 5073c66a96a9c23c0c2533ed4ed06e42f9021208 upstream.
+[ Upstream commit 40a25d59e85b3c8709ac2424d44f65610467871e ]
 
-F2FS_COMPRESS_INO() uses NM_I(sbi)->max_nid as the synthetic inode
-number for the compressed page cache inode. That inode only exists when
-the compress_cache mount option is enabled.
+syzbot triggered the following splat in remove_waiter() via
+FUTEX_CMP_REQUEUE_PI:
 
-When compress_cache is disabled, max_nid is outside the valid inode
-range. A corrupted directory entry that points to ino == max_nid should
-therefore be rejected by f2fs_check_nid_range(). However, is_meta_ino()
-currently treats F2FS_COMPRESS_INO() as a meta inode unconditionally,
-so f2fs_iget() bypasses do_read_inode() and its nid range check, and
-instantiates a fake internal inode instead.
+  KASAN: null-ptr-deref in range [0x0000000000000a88-0x0000000000000a8f]
+   class_raw_spinlock_constructor
+   remove_waiter+0x159/0x1200 kernel/locking/rtmutex.c:1561
+   rt_mutex_start_proxy_lock+0x103/0x120
+   futex_requeue+0x10e4/0x20d0
+   __x64_sys_futex+0x34f/0x4d0
 
-Gate the compressed cache inode case on COMPRESS_CACHE, matching
-f2fs_init_compress_inode(). With compress_cache disabled, ino ==
-max_nid now follows the normal inode path and is rejected as an
-out-of-range nid.
+task_blocks_on_rt_mutex() does not arm the waiter upon deadlock detection,
+leaving waiter->task nil, where 3bfdc63936dd ("rtmutex: Use waiter::task instead
+of current in remove_waiter()") made this fatal.
 
-Cc: stable@kernel.org
-Fixes: 6ce19aff0b8c ("f2fs: compress: add compress_inode to cache compressed blocks")
-Signed-off-by: Wenjie Qi <qiwenjie@xiaomi.com>
-Reviewed-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+Furthermore, rt_mutex_start_proxy_lock() should not be calling into remove_waiter()
+upon a successfully grabbing the rtmutex. 1a1fb985f2e2 ("futex: Handle early deadlock
+return correctly"), moved the remove_waiter() out of __rt_mutex_start_proxy_lock()
+(where 'ret' was only ever 0 or < 0) into the wrapper. Tighten this check to
+account for try_to_take_rt_mutex().
+
+Fixes: 3bfdc63936dd ("rtmutex: Use waiter::task instead of current in remove_waiter()")
+Reported-by: syzbot+78147abe6c524f183ee9@syzkaller.appspotmail.com
+Signed-off-by: Davidlohr Bueso <dave@stgolabs.net>
+Signed-off-by: Thomas Gleixner <tglx@kernel.org>
+Cc: stable@vger.kernel.org
+Closes: https://lore.kernel.org/all/69f114ac.050a0220.ac8b.0003.GAE@google.com/
+Link: https://patch.msgid.link/20260507112913.1019537-1-dave@stgolabs.net
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/f2fs/inode.c |    9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+ kernel/locking/rtmutex.c     |    3 +++
+ kernel/locking/rtmutex_api.c |    2 +-
+ 2 files changed, 4 insertions(+), 1 deletion(-)
 
---- a/fs/f2fs/inode.c
-+++ b/fs/f2fs/inode.c
-@@ -544,8 +544,13 @@ static int do_read_inode(struct inode *i
+--- a/kernel/locking/rtmutex.c
++++ b/kernel/locking/rtmutex.c
+@@ -1524,6 +1524,9 @@ static void __sched remove_waiter(struct
  
- static bool is_meta_ino(struct f2fs_sb_info *sbi, unsigned int ino)
- {
--	return ino == F2FS_NODE_INO(sbi) || ino == F2FS_META_INO(sbi) ||
--		ino == F2FS_COMPRESS_INO(sbi);
-+	if (ino == F2FS_NODE_INO(sbi) || ino == F2FS_META_INO(sbi))
-+		return true;
-+#ifdef CONFIG_F2FS_FS_COMPRESSION
-+	if (test_opt(sbi, COMPRESS_CACHE) && ino == F2FS_COMPRESS_INO(sbi))
-+		return true;
-+#endif
-+	return false;
- }
+ 	lockdep_assert_held(&lock->wait_lock);
  
- struct inode *f2fs_iget(struct super_block *sb, unsigned long ino)
++	if (!waiter_task) /* never enqueued */
++		return;
++
+ 	scoped_guard(raw_spinlock, &waiter_task->pi_lock) {
+ 		rt_mutex_dequeue(lock, waiter);
+ 		waiter_task->pi_blocked_on = NULL;
+--- a/kernel/locking/rtmutex_api.c
++++ b/kernel/locking/rtmutex_api.c
+@@ -344,7 +344,7 @@ int __sched rt_mutex_start_proxy_lock(st
+ 
+ 	raw_spin_lock_irq(&lock->wait_lock);
+ 	ret = __rt_mutex_start_proxy_lock(lock, waiter, task);
+-	if (unlikely(ret))
++	if (unlikely(ret < 0))
+ 		remove_waiter(lock, waiter);
+ 	raw_spin_unlock_irq(&lock->wait_lock);
+ 
 
 
 
