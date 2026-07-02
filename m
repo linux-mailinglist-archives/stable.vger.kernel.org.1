@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-271050-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-270735-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id uP7rL1+XRmrBZQsAu9opvQ
-	(envelope-from <stable+bounces-271050-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:52:47 +0200
+	id ARfUGRuWRmoCZQsAu9opvQ
+	(envelope-from <stable+bounces-270735-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:47:23 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D8CD6FAAEF
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:52:47 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 55FC56FA8BA
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:47:22 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=DpXcGnPC;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-271050-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-271050-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="pKM4/I5x";
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-270735-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-270735-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 8DC263030D73
-	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:45:37 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 3783C3105E7C
+	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:32:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 33B0133ADB0;
-	Thu,  2 Jul 2026 16:42:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B7874E3773;
+	Thu,  2 Jul 2026 16:28:36 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFAB223EAAD;
-	Thu,  2 Jul 2026 16:42:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 031B53AA50A;
+	Thu,  2 Jul 2026 16:28:32 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783010539; cv=none; b=RGIR2ysz3s6vtp3c91RLCevG3Ktu1T7vdeRAz3Eak/JYxIVFh3pqObziJ11d78rbBgioPYF7kVWIYG34nKFO+L7GMm5Jw1D99tTjbKvJOmfUPMq3/d9WGW/m1KSQtfrTTXj0JCSwDTe+1W13pcgrLcER+PvxZeL0G2Q953OrHR4=
+	t=1783009715; cv=none; b=aK/DqEf0R/AZUQWw/lnMKtHxpj+aYFyHFPBa2Fe81cak4pBWDc9p4dbTWWHtBSmZ/t0fpKmo/pIYTyJJSWpJ3kG92fDyqz0NDpoIhmF8zxZ6F7YE0ZGz/qJNPrWqROa6Nel132DezvjGZWknMj1YABz2H4DSWog/Zjd6kEMzUQo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783010539; c=relaxed/simple;
-	bh=NPB8l/B9B433USGcfq7Dhhao6Unt7kmANsOeo7Hlg7Y=;
+	s=arc-20240116; t=1783009715; c=relaxed/simple;
+	bh=3TJsHs8ifSF/snm6j3AkutlcLLopJ7af6dRqpKbJxzE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nqayoK7sJ55wX4Ve0f2iTvEPkmgqYw2+qSO4GmdyGSa/PrfVf3/S6PpnisjoNYoRNV1Vc8nzMzTp+xT7YPURJsUdWRHxg+ULPbOzOijtYeSxvrg8+CP9hcdC866tRmHknPs5ZmqV8Z1OMa07LSW2y2wb0kusBg8Y9Lamf+dPCP0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DpXcGnPC; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B2B41F000E9;
-	Thu,  2 Jul 2026 16:42:16 +0000 (UTC)
+	 MIME-Version; b=UpvuQ9hCbZRPr2uwOfczQGY+Z60VjWM+dVNOTo185fAoeeFJBkOBRYvtYSMUEC0pL8+rUKPE8hBVxRikiWPu8d9ZUUI2vaeDgzSPfgXmSnn50jD7c7z0x24cl+OMuHuIzni6HbqnCyp6OH0zwsMSYnUnqo8Tzy6I/RVtn8PeTlM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pKM4/I5x; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C02811F00A3A;
+	Thu,  2 Jul 2026 16:28:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1783010537;
-	bh=JR+mX6lsNu9a/F5SeNqpVzqAIDj7cBAj6jrmh5aj25I=;
+	s=korg; t=1783009712;
+	bh=rDuGTJhK79d0IpEF52szmPQ2M30WdGe1cofTfzU5ihI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=DpXcGnPCKTAr7hFm49+aSTfHNMzL6lb+c8zAgTf8Hv6II8e0VUIOj5rD9OYJaM20L
-	 c4bt4MaprIsA7+q0LR5X7bzJ8wlOQGWv5tnzoeT7yQYGvyQDdNNync9xfYYm++TiQF
-	 jex4UVZTbsq/7LmHHG/rykjWRMiLYrOA8mvsoku4=
+	b=pKM4/I5xwnj1wgPwFxsvOPqQw3kY/gB8NB0gvh1Yq8HINZYbhVFVwMpCghI1B4nGd
+	 lX8T3IU3YYzd0cgYrDt4Y2OVGqXqMEUT9DnfMQxIb67vZEvXzr/AUryL3Stncz/7CW
+	 ApzJl5kXOsWgXyc7RPsdk/cpK9LqRJl0ZRzbqfrA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shaomin Chen <eeesssooo020@gmail.com>,
-	Jarkko Sakkinen <jarkko@kernel.org>
-Subject: [PATCH 6.12 146/204] keys: Pin request_key_auth payload in instantiate paths
+	Zenm Chen <zenmchen@gmail.com>,
+	Lorenzo Bianconi <lorenzo@kernel.org>,
+	Felix Fietkau <nbd@nbd.name>
+Subject: [PATCH 5.15 60/95] wifi: mt76: mt76x2u: Add support for ELECOM WDC-867SU3S
 Date: Thu,  2 Jul 2026 18:20:03 +0200
-Message-ID: <20260702155121.717041602@linuxfoundation.org>
+Message-ID: <20260702155110.472756927@linuxfoundation.org>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260702155118.667618796@linuxfoundation.org>
-References: <20260702155118.667618796@linuxfoundation.org>
+In-Reply-To: <20260702155109.196223802@linuxfoundation.org>
+References: <20260702155109.196223802@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,21 +72,21 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-271050-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:eeesssooo020@gmail.com,m:jarkko@kernel.org,s:lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-270735-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:zenmchen@gmail.com,m:lorenzo@kernel.org,m:nbd@nbd.name,s:lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org,nbd.name];
 	FORWARDED(0.00)[lists@lfdr.de];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
@@ -94,228 +95,47 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
+	RCPT_COUNT_FIVE(0.00)[6];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,nbd.name:email,msgid.link:url]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 5D8CD6FAAEF
+X-Rspamd-Queue-Id: 55FC56FA8BA
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shaomin Chen <eeesssooo020@gmail.com>
+From: Zenm Chen <zenmchen@gmail.com>
 
-commit fd15b457a86939c38aa12116adabd8ff686c5e51 upstream.
+commit f4ce0664e9f0387873b181777891741c33e19465 upstream.
 
-A: request_key()       B: KEYCTL_INSTANTIATE_IOV
-================       =========================
+Add the ID 056e:400a to the table to support an additional MT7612U
+adapter: ELECOM WDC-867SU3S.
 
-create auth key
-store rka in auth key
-wait for helper
-                       get auth key
-                       load rka from auth key
-                       copy user payload
-                       sleep on #PF
+Compile tested only.
 
-helper completed
-detach and free rka
-destroy auth key
-                       wake up
-                       use rka->target_key
-                       **USE-AFTER-FREE**
-
-Give request_key_auth payloads a refcount.  Take a payload reference while
-authkey->sem stabilizes the payload and revocation state.  Hold that
-reference across the instantiate and reject paths.  Drop the auth key
-owning reference from revoke and destroy.
-
-[jarkko: Replaced the first two paragraphs of text with an actual
- concurrency scenario.]
-Cc: stable@vger.kernel.org # v5.10+
-Fixes: b5f545c880a2 ("[PATCH] keys: Permit running process to instantiate keys")
-Reported-by: Shaomin Chen <eeesssooo020@gmail.com>
-Closes: https://lore.kernel.org/r/20260519144403.436694-1-eeesssooo020@gmail.com
-Signed-off-by: Shaomin Chen <eeesssooo020@gmail.com>
-Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
+Cc: stable@vger.kernel.org # 5.10.x
+Signed-off-by: Zenm Chen <zenmchen@gmail.com>
+Acked-by: Lorenzo Bianconi <lorenzo@kernel.org>
+Link: https://patch.msgid.link/20260407154430.9184-1-zenmchen@gmail.com
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/keys/request_key_auth-type.h |    2 ++
- security/keys/internal.h             |    2 ++
- security/keys/keyctl.c               |   24 ++++++++++++++++++------
- security/keys/request_key_auth.c     |   33 +++++++++++++++++++++++++++++++--
- 4 files changed, 53 insertions(+), 8 deletions(-)
+ drivers/net/wireless/mediatek/mt76/mt76x2/usb.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/include/keys/request_key_auth-type.h
-+++ b/include/keys/request_key_auth-type.h
-@@ -9,12 +9,14 @@
- #define _KEYS_REQUEST_KEY_AUTH_TYPE_H
- 
- #include <linux/key.h>
-+#include <linux/refcount.h>
- 
- /*
-  * Authorisation record for request_key().
-  */
- struct request_key_auth {
- 	struct rcu_head		rcu;
-+	refcount_t		usage;
- 	struct key		*target_key;
- 	struct key		*dest_keyring;
- 	const struct cred	*cred;
---- a/security/keys/internal.h
-+++ b/security/keys/internal.h
-@@ -208,6 +208,8 @@ extern struct key *request_key_auth_new(
- 					const void *callout_info,
- 					size_t callout_len,
- 					struct key *dest_keyring);
-+struct request_key_auth *request_key_auth_get(struct key *authkey);
-+void request_key_auth_put(struct request_key_auth *rka);
- 
- extern struct key *key_get_instantiation_authkey(key_serial_t target_id);
- 
---- a/security/keys/keyctl.c
-+++ b/security/keys/keyctl.c
-@@ -1197,9 +1197,13 @@ static long keyctl_instantiate_key_commo
- 	if (!instkey)
- 		goto error;
- 
--	rka = instkey->payload.data[0];
--	if (rka->target_key->serial != id)
-+	rka = request_key_auth_get(instkey);
-+	if (!rka) {
-+		ret = -EKEYREVOKED;
- 		goto error;
-+	}
-+	if (rka->target_key->serial != id)
-+		goto error_put_rka;
- 
- 	/* pull the payload in if one was supplied */
- 	payload = NULL;
-@@ -1208,7 +1212,7 @@ static long keyctl_instantiate_key_commo
- 		ret = -ENOMEM;
- 		payload = kvmalloc(plen, GFP_KERNEL);
- 		if (!payload)
--			goto error;
-+			goto error_put_rka;
- 
- 		ret = -EFAULT;
- 		if (!copy_from_iter_full(payload, plen, from))
-@@ -1234,6 +1238,8 @@ static long keyctl_instantiate_key_commo
- 
- error2:
- 	kvfree_sensitive(payload, plen);
-+error_put_rka:
-+	request_key_auth_put(rka);
- error:
- 	return ret;
- }
-@@ -1358,15 +1364,19 @@ long keyctl_reject_key(key_serial_t id,
- 	if (!instkey)
- 		goto error;
- 
--	rka = instkey->payload.data[0];
--	if (rka->target_key->serial != id)
-+	rka = request_key_auth_get(instkey);
-+	if (!rka) {
-+		ret = -EKEYREVOKED;
- 		goto error;
-+	}
-+	if (rka->target_key->serial != id)
-+		goto error_put_rka;
- 
- 	/* find the destination keyring if present (which must also be
- 	 * writable) */
- 	ret = get_instantiation_keyring(ringid, rka, &dest_keyring);
- 	if (ret < 0)
--		goto error;
-+		goto error_put_rka;
- 
- 	/* instantiate the key and link it into a keyring */
- 	ret = key_reject_and_link(rka->target_key, timeout, error,
-@@ -1379,6 +1389,8 @@ long keyctl_reject_key(key_serial_t id,
- 	if (ret == 0)
- 		keyctl_change_reqkey_auth(NULL);
- 
-+error_put_rka:
-+	request_key_auth_put(rka);
- error:
- 	return ret;
- }
---- a/security/keys/request_key_auth.c
-+++ b/security/keys/request_key_auth.c
-@@ -23,6 +23,7 @@ static void request_key_auth_describe(co
- static void request_key_auth_revoke(struct key *);
- static void request_key_auth_destroy(struct key *);
- static long request_key_auth_read(const struct key *, char *, size_t);
-+static void request_key_auth_rcu_disposal(struct rcu_head *);
- 
- /*
-  * The request-key authorisation key type definition.
-@@ -116,6 +117,31 @@ static void free_request_key_auth(struct
- }
- 
- /*
-+ * Take a reference to the request-key authorisation payload so callers can
-+ * drop authkey->sem before doing operations that may sleep.
-+ */
-+struct request_key_auth *request_key_auth_get(struct key *authkey)
-+{
-+	struct request_key_auth *rka;
-+
-+	down_read(&authkey->sem);
-+	rka = dereference_key_locked(authkey);
-+	if (rka && !test_bit(KEY_FLAG_REVOKED, &authkey->flags))
-+		refcount_inc(&rka->usage);
-+	else
-+		rka = NULL;
-+	up_read(&authkey->sem);
-+
-+	return rka;
-+}
-+
-+void request_key_auth_put(struct request_key_auth *rka)
-+{
-+	if (rka && refcount_dec_and_test(&rka->usage))
-+		call_rcu(&rka->rcu, request_key_auth_rcu_disposal);
-+}
-+
-+/*
-  * Dispose of the request_key_auth record under RCU conditions
-  */
- static void request_key_auth_rcu_disposal(struct rcu_head *rcu)
-@@ -136,8 +162,10 @@ static void request_key_auth_revoke(stru
- 	struct request_key_auth *rka = dereference_key_locked(key);
- 
- 	kenter("{%d}", key->serial);
-+	if (!rka)
-+		return;
- 	rcu_assign_keypointer(key, NULL);
--	call_rcu(&rka->rcu, request_key_auth_rcu_disposal);
-+	request_key_auth_put(rka);
- }
- 
- /*
-@@ -150,7 +178,7 @@ static void request_key_auth_destroy(str
- 	kenter("{%d}", key->serial);
- 	if (rka) {
- 		rcu_assign_keypointer(key, NULL);
--		call_rcu(&rka->rcu, request_key_auth_rcu_disposal);
-+		request_key_auth_put(rka);
- 	}
- }
- 
-@@ -174,6 +202,7 @@ struct key *request_key_auth_new(struct
- 	rka = kzalloc(sizeof(*rka), GFP_KERNEL);
- 	if (!rka)
- 		goto error;
-+	refcount_set(&rka->usage, 1);
- 	rka->callout_info = kmemdup(callout_info, callout_len, GFP_KERNEL);
- 	if (!rka->callout_info)
- 		goto error_free_rka;
+--- a/drivers/net/wireless/mediatek/mt76/mt76x2/usb.c
++++ b/drivers/net/wireless/mediatek/mt76/mt76x2/usb.c
+@@ -16,6 +16,7 @@ static const struct usb_device_id mt76x2
+ 	{ USB_DEVICE(0x0e8d, 0x7612) },	/* Aukey USBAC1200 - Alfa AWUS036ACM */
+ 	{ USB_DEVICE(0x057c, 0x8503) },	/* Avm FRITZ!WLAN AC860 */
+ 	{ USB_DEVICE(0x7392, 0xb711) },	/* Edimax EW 7722 UAC */
++	{ USB_DEVICE(0x056e, 0x400a) },	/* ELECOM WDC-867SU3S */
+ 	{ USB_DEVICE(0x0e8d, 0x7632) },	/* HC-M7662BU1 */
+ 	{ USB_DEVICE(0x0471, 0x2126) }, /* LiteOn WN4516R module, nonstandard USB connector */
+ 	{ USB_DEVICE(0x0471, 0x7600) }, /* LiteOn WN4519R module, nonstandard USB connector */
 
 
 
