@@ -1,61 +1,74 @@
-Return-Path: <stable+bounces-270799-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-271155-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id BSjeBeagRmobagsAu9opvQ
-	(envelope-from <stable+bounces-270799-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:33:26 +0200
+	id q5xSCVeZRmrXZgsAu9opvQ
+	(envelope-from <stable+bounces-271155-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:01:11 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0AC816FB6FE
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:33:25 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id A04C86FADBC
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:01:10 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=UmrIMMk0;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-270799-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-270799-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=ZluXWdGR;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-271155-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-271155-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 8EC2B312E3B9
-	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:34:54 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 9E97E331CCD7
+	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:48:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9CC8C33B969;
-	Thu,  2 Jul 2026 16:31:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 49E3935E1CE;
+	Thu,  2 Jul 2026 16:46:55 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71BDA34B1AD;
-	Thu,  2 Jul 2026 16:31:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D37C134753C;
+	Thu,  2 Jul 2026 16:46:53 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783009879; cv=none; b=d0krrHAJjxdXFi6tn6UR8/eVXC5NjxOxY8SZvVb2uFPZQeKqrAoIlkcTld0LuaOlOIjasBKsHyZm4bwzbDFvieKw6tNQV40a9bBYrMmBFWHQdm1f50tYN0afZDxeIZKGFdE4rIxCB6mi2r/cZXznej0MC+/GZKC7x1VQPP+z1Gs=
+	t=1783010815; cv=none; b=CEj21cZwZ8OBlw5TQHR/IRQzn3SwS9yHXAYKdXVvhYwX3XRtcAoIOK6iLwQztiEaeOxDnRzs8jXFGSQjoApZxDt0ii+rTxh7IAg37Xtxpmx+K9KlO0cJkqjg3hE6Z2GYq7Q8RhJZfSbY++yi6DCWWbWXaVY2DMIJEiZXtotTxqw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783009879; c=relaxed/simple;
-	bh=pV9wAv8oajmNOR+G7cNYuKCmREsT9RmyJDBHcz2gCyU=;
+	s=arc-20240116; t=1783010815; c=relaxed/simple;
+	bh=7OBK6CDoaedL8PlPyU6gqwveF+bNO5pqMqTRFCnqq+U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YkkIpK4cQ5ssELn9Fz78YuN3H3QSfL2TgqiOAD2iza6oTjaVF8HowHl1nq0bSfpv9R7Ub0QOcnFRNwrIfhhL/h78km+TQWx9ictToS0I9Fv/Ror6zO+UQTaipyPCShSGOF/Wfzsl6R6NTQpxNjCgj7O3vHTZEYonPNmJDaFz+Do=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UmrIMMk0; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D73961F00A3A;
-	Thu,  2 Jul 2026 16:31:17 +0000 (UTC)
+	 MIME-Version; b=Bhqwg3d/upf7ympYL7o9pFeUsJmDnFQ+qNyYiz1VGC91IshGQ2qdeuIbKdXgvugYLjnV6tI06lunLvoQjS0QS4vchTVZWdvO+U8gQ+ki7MAfvCy0tSTZLMkPGwQYxtkhZwur6dpmBY0+nwb2c2zACjxR+68iGFinnxvT1R8K7Lo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZluXWdGR; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6F051F000E9;
+	Thu,  2 Jul 2026 16:46:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1783009878;
-	bh=Ncs3meU2k59K2+zyjrqQXYB0ePuXH2mD6Oas7jIYtwg=;
+	s=korg; t=1783010813;
+	bh=LLJG4jOUHf0kHWRhnCdFtxWzox0n70R1Na/qla+0z4M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=UmrIMMk0AqgZPHnECAmzmXYBo++bcnnXCfFDphyMpu3D61Gy5ILCkqnrB9RJA4QWW
-	 WWOX6BiDw+m4qEOK32QvwexI2Yyzv9esR2Z6srxcE88Jk9WPG0VflTwl2xPMOAJyi+
-	 f0joAbIOhYbz6T8v4Ns8RETRsR0E1j2D+dJj1RW4=
+	b=ZluXWdGRn8ajadIuLLo14eHQxy9sqO7042Z3agF9lkvv/YFt3VrncI5Q5jv4GfpTz
+	 upLLccnsBY4kWwWBZTsnTrZVfuHDoimVhm8cGVmseKEIDQOu0DMzZ9IDam2GjYBYcY
+	 TDZdnNcwyzdjFIdJzA5GAnBoEo1cFQKMyMNstnew=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 027/129] ARM: group is_permission_fault() with is_translation_fault()
+	bpf <bpf@vger.kernel.org>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	Masahiro Yamada <masahiroy@kernel.org>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Nicolas Schier <nicolas@fjasle.eu>,
+	Zheng Yejian <zhengyejian1@huawei.com>,
+	Martin Kelly <martin.kelly@crowdstrike.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Josh Poimboeuf <jpoimboe@redhat.com>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
+	Andrey Grodzovsky <andrey.grodzovsky@crowdstrike.com>
+Subject: [PATCH 6.6 045/175] scripts/sorttable: Remove unused write functions
 Date: Thu,  2 Jul 2026 18:19:06 +0200
-Message-ID: <20260702155112.721594529@linuxfoundation.org>
+Message-ID: <20260702155116.746965279@linuxfoundation.org>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260702155112.163984240@linuxfoundation.org>
-References: <20260702155112.163984240@linuxfoundation.org>
+In-Reply-To: <20260702155115.766838875@linuxfoundation.org>
+References: <20260702155115.766838875@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,109 +80,136 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-270799-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:rmk+kernel@armlinux.org.uk,m:bigeasy@linutronix.de,m:sashal@kernel.org,m:rmk@armlinux.org.uk,s:lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-271155-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[19];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:bpf@vger.kernel.org,m:mhiramat@kernel.org,m:mark.rutland@arm.com,m:mathieu.desnoyers@efficios.com,m:akpm@linux-foundation.org,m:peterz@infradead.org,m:torvalds@linux-foundation.org,m:masahiroy@kernel.org,m:nathan@kernel.org,m:nicolas@fjasle.eu,m:zhengyejian1@huawei.com,m:martin.kelly@crowdstrike.com,m:christophe.leroy@csgroup.eu,m:jpoimboe@redhat.com,m:rostedt@goodmis.org,m:andrey.grodzovsky@crowdstrike.com,s:lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,kernel];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linutronix.de:email,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 0AC816FB6FE
+X-Rspamd-Queue-Id: A04C86FADBC
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+From: Steven Rostedt <rostedt@goodmis.org>
 
-commit dea20281ac88226615761c570c8ff7adc18e6ac2 upstream.
+[ Upstream commit 4f48a28b37d594dab38092514a42ae9f4b781553 ]
 
-Group is_permission_fault() with is_translation_fault(), which is
-needed to use is_permission_fault() in __do_kernel_fault(). As
-this is static inline, there is no need for this to be under
-CONFIG_MMU.
+The code of sorttable.h was copied from the recordmcount.h  which defined
+various write functions for different sizes (2, 4, 8 byte lengths). But
+sorttable only uses the 4 byte writes. Remove the extra versions as they
+are not used.
 
-Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
-Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: bpf <bpf@vger.kernel.org>
+Cc: Masami Hiramatsu <mhiramat@kernel.org>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Masahiro Yamada <masahiroy@kernel.org>
+Cc: Nathan Chancellor <nathan@kernel.org>
+Cc: Nicolas Schier <nicolas@fjasle.eu>
+Cc: Zheng Yejian <zhengyejian1@huawei.com>
+Cc: Martin  Kelly <martin.kelly@crowdstrike.com>
+Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
+Cc: Josh Poimboeuf <jpoimboe@redhat.com>
+Link: https://lore.kernel.org/20250105162344.314385504@goodmis.org
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: Andrey Grodzovsky <andrey.grodzovsky@crowdstrike.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm/mm/fault.c | 26 +++++++++++++-------------
- 1 file changed, 13 insertions(+), 13 deletions(-)
+ scripts/sorttable.c |   26 --------------------------
+ 1 file changed, 26 deletions(-)
 
-diff --git a/arch/arm/mm/fault.c b/arch/arm/mm/fault.c
-index 16a7765511f8e4..2315d40760a787 100644
---- a/arch/arm/mm/fault.c
-+++ b/arch/arm/mm/fault.c
-@@ -125,6 +125,19 @@ static inline bool is_translation_fault(unsigned int fsr)
- 	return false;
+--- a/scripts/sorttable.c
++++ b/scripts/sorttable.c
+@@ -68,8 +68,6 @@ static uint32_t (*r)(const uint32_t *);
+ static uint16_t (*r2)(const uint16_t *);
+ static uint64_t (*r8)(const uint64_t *);
+ static void (*w)(uint32_t, uint32_t *);
+-static void (*w2)(uint16_t, uint16_t *);
+-static void (*w8)(uint64_t, uint64_t *);
+ typedef void (*table_sort_t)(char *, int);
+ 
+ /*
+@@ -146,31 +144,11 @@ static void wbe(uint32_t val, uint32_t *
+ 	put_unaligned_be32(val, x);
  }
  
-+static inline bool is_permission_fault(unsigned int fsr)
-+{
-+	int fs = fsr_fs(fsr);
-+#ifdef CONFIG_ARM_LPAE
-+	if ((fs & FS_MMU_NOLL_MASK) == FS_PERM_NOLL)
-+		return true;
-+#else
-+	if (fs == FS_L1_PERM || fs == FS_L2_PERM)
-+		return true;
-+#endif
-+	return false;
-+}
-+
- static void die_kernel_fault(const char *msg, struct mm_struct *mm,
- 			     unsigned long addr, unsigned int fsr,
- 			     struct pt_regs *regs)
-@@ -225,19 +238,6 @@ void do_bad_area(unsigned long addr, unsigned int fsr, struct pt_regs *regs)
- #define VM_FAULT_BADMAP		((__force vm_fault_t)0x010000)
- #define VM_FAULT_BADACCESS	((__force vm_fault_t)0x020000)
- 
--static inline bool is_permission_fault(unsigned int fsr)
+-static void w2be(uint16_t val, uint16_t *x)
 -{
--	int fs = fsr_fs(fsr);
--#ifdef CONFIG_ARM_LPAE
--	if ((fs & FS_MMU_NOLL_MASK) == FS_PERM_NOLL)
--		return true;
--#else
--	if (fs == FS_L1_PERM || fs == FS_L2_PERM)
--		return true;
--#endif
--	return false;
+-	put_unaligned_be16(val, x);
 -}
 -
- static int __kprobes
- do_page_fault(unsigned long addr, unsigned int fsr, struct pt_regs *regs)
+-static void w8be(uint64_t val, uint64_t *x)
+-{
+-	put_unaligned_be64(val, x);
+-}
+-
+ static void wle(uint32_t val, uint32_t *x)
  {
--- 
-2.53.0
-
+ 	put_unaligned_le32(val, x);
+ }
+ 
+-static void w2le(uint16_t val, uint16_t *x)
+-{
+-	put_unaligned_le16(val, x);
+-}
+-
+-static void w8le(uint64_t val, uint64_t *x)
+-{
+-	put_unaligned_le64(val, x);
+-}
+-
+ /*
+  * Move reserved section indices SHN_LORESERVE..SHN_HIRESERVE out of
+  * the way to -256..-1, to avoid conflicting with real section
+@@ -277,16 +255,12 @@ static int do_file(char const *const fna
+ 		r2	= r2le;
+ 		r8	= r8le;
+ 		w	= wle;
+-		w2	= w2le;
+-		w8	= w8le;
+ 		break;
+ 	case ELFDATA2MSB:
+ 		r	= rbe;
+ 		r2	= r2be;
+ 		r8	= r8be;
+ 		w	= wbe;
+-		w2	= w2be;
+-		w8	= w8be;
+ 		break;
+ 	default:
+ 		fprintf(stderr, "unrecognized ELF data encoding %d: %s\n",
 
 
 
