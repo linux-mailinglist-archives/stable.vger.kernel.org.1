@@ -1,49 +1,49 @@
-Return-Path: <stable+bounces-270332-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-270333-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id IdWyLRr0RWpRHAsAu9opvQ
-	(envelope-from <stable+bounces-270332-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 07:16:10 +0200
+	id kzHVFzX0RWpXHAsAu9opvQ
+	(envelope-from <stable+bounces-270333-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 07:16:37 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 13DB06F388C
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 07:16:10 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id AD8FB6F389A
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 07:16:36 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=arm.com header.s=foss header.b=F0NeD8GE;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-270332-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-270332-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=arm.com header.s=foss header.b=DDrlaq0+;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-270333-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-270333-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=arm.com;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 72AA23038AFE
-	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 05:14:45 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 0E30F303D728
+	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 05:14:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29173364E96;
-	Thu,  2 Jul 2026 05:14:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4659636402A;
+	Thu,  2 Jul 2026 05:14:54 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5BD88364926;
-	Thu,  2 Jul 2026 05:14:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 97EF6346795;
+	Thu,  2 Jul 2026 05:14:52 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782969284; cv=none; b=r0L7zjCIly80ivBcZ8aoblYcUBlNt1g+hmsiKITFNuaaKpwqwNBAHR+LyoVtS9sx7DrSdIQUc4jrbJEsq47rtnsKUxYCkIWtvEv1qlC2GozW61abhl1OKfhYuLIww8nGZfVd3T8DkLQYNZmZY2pT7xD1hkXcGCdFLi/Pm5xs/rw=
+	t=1782969294; cv=none; b=Gke5n+0YEC5enLuSnkPJ8Hxp1sBEVPcxYGmRGu6Zi8JHxM7BmQx+T+l4Rd7/VV/m6teU1QEc9Sr1BokeGdKIqppVvY+/E4Gf0gERCaUD47X71XqhNj/kJjy4ad43EkOqJUb5A+I2oOOGV7BWp2/tqyHLRJW3ncEbSmP9mFIaOto=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782969284; c=relaxed/simple;
-	bh=ienzyGRe9B9tWaT5v8xmSHn5lDIwPDVd/gVOyC2GvTU=;
+	s=arc-20240116; t=1782969294; c=relaxed/simple;
+	bh=tWPUJM3ApyzUL1CLJURNBUdDRGtvetjvWdOoXK1V7p0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hzhGjAEK5jVXYlfhH0vIPJ7cwBpf4b8xm0kCUIOw8S+ZkDUXD6oSrtYYNnXXUgimbcBiHz2u+5z9RZpyE4uVSOgIotKwqRBZhe/Pg00Vdqv8MfIUd4x4p1qeRP5CTPKxx8BrZSVmQT5PQArn5J/g2lUBtq0drzWtju25qCu0PdE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=F0NeD8GE; arc=none smtp.client-ip=217.140.110.172
+	 MIME-Version; b=MFaOybVT9iTqpXr1RdKuY1JgMCS/AYtLYHJL0Yrq2SvKB8M5ctZ2OhgThM11LtdWheq7pg2aSJkxM/fhwrg7dV2n9r/zNnGM923nO1TFUmsXfvj3n81m+inQJr6KiqQpQ0SngOwtsbZxLqRIg3LL/8c1iDO7X/Dy9NabisTTWpw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=DDrlaq0+; arc=none smtp.client-ip=217.140.110.172
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 7A3AE357C;
-	Wed,  1 Jul 2026 22:14:37 -0700 (PDT)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 94A043583;
+	Wed,  1 Jul 2026 22:14:47 -0700 (PDT)
 Received: from cesw-amp-gbt-1s-m12830-01.blr.arm.com (cesw-amp-gbt-1s-m12830-01.blr.arm.com [10.164.195.31])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 537A23F85F;
-	Wed,  1 Jul 2026 22:14:32 -0700 (PDT)
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 6B8DA3F85F;
+	Wed,  1 Jul 2026 22:14:42 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1782969281; bh=ienzyGRe9B9tWaT5v8xmSHn5lDIwPDVd/gVOyC2GvTU=;
+	t=1782969292; bh=tWPUJM3ApyzUL1CLJURNBUdDRGtvetjvWdOoXK1V7p0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=F0NeD8GEIbiGiBvjgRh6bIapiMQcvdM5rJEBK1vIEktyr6tBfzLDihurGU4RxsUVA
-	 I8OKgZC2FeEZcu/UdxUcxPHIFVOTE29K/MwoK0gdo4quBfKkJ3giy3PNvKj1BmmAWe
-	 eceYU5/wDyKPtl7yAaFgZLddDmTIh9NWemZP5vOw=
+	b=DDrlaq0+IWhU237/v+5Xe0K3EQV2aB3VOTY4IgfYNaGwE1udm/NmcgAzHAGuUJJqi
+	 BjQok5c+LK1adWHLW3RfQr7KfM0iR8CHgZALpIbYJYoRS1MuWLJK4D2PvUTOnzL+54
+	 HG17AfutxHvYMucTCwxfnz+MRst0pYFqhR0D9lUo=
 From: Dev Jain <dev.jain@arm.com>
 To: muchun.song@linux.dev,
 	osalvador@suse.de,
@@ -83,9 +83,9 @@ Cc: Dev Jain <dev.jain@arm.com>,
 	ryan.roberts@arm.com,
 	anshuman.khandual@arm.com,
 	stable@vger.kernel.org
-Subject: [PATCH v2 3/6] mm/rmap: use huge_ptep_get() in try_to_migrate_one()
-Date: Thu,  2 Jul 2026 05:13:37 +0000
-Message-ID: <20260702051341.126509-4-dev.jain@arm.com>
+Subject: [PATCH v2 4/6] mm/migrate: use huge_ptep_get() in remove_migration_pte()
+Date: Thu,  2 Jul 2026 05:13:38 +0000
+Message-ID: <20260702051341.126509-5-dev.jain@arm.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260702051341.126509-1-dev.jain@arm.com>
 References: <20260702051341.126509-1-dev.jain@arm.com>
@@ -104,14 +104,14 @@ X-Spamd-Result: default: False [0.84 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[arm.com,none];
 	R_DKIM_ALLOW(-0.20)[arm.com:s=foss];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
 	RCPT_COUNT_TWELVE(0.00)[38];
 	FREEMAIL_CC(0.00)[arm.com,surriel.com,kernel.org,google.com,linux.dev,kvack.org,vger.kernel.org,nvidia.com,intel.com,gmail.com,sk.com,gourry.net,linux.alibaba.com,ce.jp.nec.com,linux.intel.com,csn.ul.ie,suse.de,lists.infradead.org];
-	TAGGED_FROM(0.00)[bounces-270332-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-270333-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
@@ -126,72 +126,52 @@ X-Spamd-Result: default: False [0.84 / 15.00];
 	DKIM_TRACE(0.00)[arm.com:+];
 	RCVD_COUNT_FIVE(0.00)[5];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	ALIAS_RESOLVED(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[arm.com:dkim,arm.com:email,arm.com:mid,arm.com:from_mime,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp,linux.dev:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linux.dev:email,arm.com:dkim,arm.com:email,arm.com:mid,arm.com:from_mime]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 13DB06F388C
+X-Rspamd-Queue-Id: AD8FB6F389A
 
-try_to_migrate_one() is used by folio migration to replace a present
-mapping with a migration entry. For hugetlb folios, page_vma_mapped_walk()
-returns the pte pointer to the hugetlb folio in pvmw.pte, but the code
-reads the huge pte entry with ptep_get().
+remove_migration_pte() converts migration entries back to present PTEs
+after folio migration completes. For hugetlb folios,
+page_vma_mapped_walk() returns the pte pointer to the hugetlb folio in
+pvmw.pte, but the code reads it with ptep_get().
 
 On arches which provide their own huge_ptep_get() to dereference a huge
-pte pointer, accessing via ptep_get() would cause pte_pfn(), pte_present()
-etc to misbehave.
+pte pointer, accessing via ptep_get() would cause pte_pfn(),
+pte_present() etc to misbehave.
 
 It is not clear whether this has a trivially visible effect to userspace.
 
 Use huge_ptep_get() to dereference a huge pte pointer.
 
-Commit a98a2f0c8ce1 copied the bug from try_to_unmap_one into
-try_to_migrate_one.
-
-Fixes: a98a2f0c8ce1 ("mm/rmap: split migration into its own function")
+Fixes: 290408d4a250 ("hugetlb: hugepage migration core")
 Cc: stable@vger.kernel.org
 Acked-by: Muchun Song <muchun.song@linux.dev>
 Signed-off-by: Dev Jain <dev.jain@arm.com>
 ---
- mm/rmap.c | 16 ++++++++++------
- 1 file changed, 10 insertions(+), 6 deletions(-)
+ mm/migrate.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/mm/rmap.c b/mm/rmap.c
-index aa8a254efaecc..abc3a44baaa3d 100644
---- a/mm/rmap.c
-+++ b/mm/rmap.c
-@@ -2505,11 +2505,16 @@ static bool try_to_migrate_one(struct folio *folio, struct vm_area_struct *vma,
- 		/* Unexpected PMD-mapped THP? */
- 		VM_BUG_ON_FOLIO(!pvmw.pte, folio);
- 
--		/*
--		 * Handle PFN swap PTEs, such as device-exclusive ones, that
--		 * actually map pages.
--		 */
--		pteval = ptep_get(pvmw.pte);
-+		address = pvmw.address;
-+		if (folio_test_hugetlb(folio)) {
-+			pteval = huge_ptep_get(mm, address, pvmw.pte);
-+		} else {
-+			/*
-+			 * Handle PFN swap PTEs, such as device-exclusive ones,
-+			 * that actually map pages.
-+			 */
-+			pteval = ptep_get(pvmw.pte);
-+		}
- 		if (likely(pte_present(pteval))) {
- 			pfn = pte_pfn(pteval);
- 		} else {
-@@ -2520,7 +2525,6 @@ static bool try_to_migrate_one(struct folio *folio, struct vm_area_struct *vma,
+diff --git a/mm/migrate.c b/mm/migrate.c
+index d9b23909d716c..c65f0f43df7eb 100644
+--- a/mm/migrate.c
++++ b/mm/migrate.c
+@@ -371,7 +371,11 @@ static bool remove_migration_pte(struct folio *folio,
+ 			continue;
  		}
- 
- 		subpage = folio_page(folio, pfn - folio_pfn(folio));
--		address = pvmw.address;
- 		anon_exclusive = folio_test_anon(folio) &&
- 				 PageAnonExclusive(subpage);
- 
+ #endif
+-		old_pte = ptep_get(pvmw.pte);
++		if (folio_test_hugetlb(folio))
++			old_pte = huge_ptep_get(vma->vm_mm, pvmw.address,
++						pvmw.pte);
++		else
++			old_pte = ptep_get(pvmw.pte);
+ 		if (rmap_walk_arg->map_unused_to_zeropage &&
+ 		    try_to_map_unused_to_zeropage(&pvmw, folio, old_pte, idx))
+ 			continue;
 -- 
 2.43.0
 
