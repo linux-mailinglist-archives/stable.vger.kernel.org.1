@@ -1,226 +1,166 @@
-Return-Path: <stable+bounces-270374-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-270372-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id BIVPFa8kRmqsKgsAu9opvQ
-	(envelope-from <stable+bounces-270374-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 10:43:27 +0200
+	id YyJPF1EkRmqVKgsAu9opvQ
+	(envelope-from <stable+bounces-270372-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 10:41:53 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id AA8066F4EBB
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 10:43:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A2136F4E75
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 10:41:52 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=byybcBUz;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-270374-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-270374-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=none) header.from=linuxfoundation.org;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=SJ0Y0Aqy;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-270372-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-270372-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=none) header.from=linux.dev;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 8D5373064D53
-	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 08:34:36 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 3B22C302D5F7
+	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 08:33:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4CEF3A962D;
-	Thu,  2 Jul 2026 08:34:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1EE7C420E7C;
+	Thu,  2 Jul 2026 08:33:52 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from out-185.mta0.migadu.com (out-185.mta0.migadu.com [91.218.175.185])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70A07428487
-	for <stable@vger.kernel.org>; Thu,  2 Jul 2026 08:34:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1BAD42A790
+	for <stable@vger.kernel.org>; Thu,  2 Jul 2026 08:33:49 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782981269; cv=none; b=To/NwlZSgJASDpX0MgP5kAKyz9qOc5LhLSZEKE4d8DD6uvmApGRteDcZM6C4M/Kctb1adKPyqTIfmE/x7f/Hc0k5JKKUurT1+IKNin6X0dXgYVDQ5r1RJQT9rvrXWT3+j+m9Et8X+WIDmZZgrS2DQFCq1cViGu1V+yj3euatne4=
+	t=1782981231; cv=none; b=R1W3lTxTne6B3t41YNsUDnlCdSCf8ctwsnAVM5MZYKbH4AznZ+XECQA/PN2NopfP4k+3IcL6GmY3i+MKnLDetkov39oUee/K6DQk+8TgiBWSdU09CPOTofK5bESeVL/haQxKouq6GcYncHOIJ6pB04VZkQTCBrXCV5Hm0B34L3w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782981269; c=relaxed/simple;
-	bh=nDydZw/mM/JoWuPsKZ6cRdWbP33VWVYHri5XWrR7cl4=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=s9s5tBgf/BxTyIgK/MZRkgj8qB5/oyKSZxm7Y343ftjNp+CcLNb2ZfuoDmX87lSTydCXagJzd1UPnYmwHzNO8zojrKb2bb8N5A/1rbd1s5+9IYeV+YAqN8pZZNd3uYQVbs8xDAe1r56rX9EYh5ak7/vAj0Lxx/3eTnX5e///FDM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=byybcBUz; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09CB31F000E9;
-	Thu,  2 Jul 2026 08:34:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1782981267;
-	bh=r+770ipcwMoQmO73HuFDJZrkpTv8fEaRUaZ2U6pHMCw=;
-	h=Subject:To:Cc:From:Date;
-	b=byybcBUzWWhUg8TtQfgL9lWo3WSHE+K0pzJGXCK/yju6DKV4piVI8kZjPMSX9Dd4q
-	 EcSgbsYHCVE1KaVIp5z+UjYfBIjk5vYFdNWVus0fhB5OvC9b6ZKLSop3vu815f1BIY
-	 ssPyKRuH8+2xOgmF7CJkAntakxZSg1sVNLzsF77c=
-Subject: FAILED: patch "[PATCH] apparmor: fix use-after-free in rawdata dedup loop" failed to apply to 5.10-stable tree
-To: linuxoid@gmail.com,colin.i.king@gmail.com,john.johansen@canonical.com
-Cc: <stable@vger.kernel.org>
-From: <gregkh@linuxfoundation.org>
-Date: Thu, 02 Jul 2026 10:29:21 +0200
-Message-ID: <2026070221-sulphate-cauterize-488e@gregkh>
+	s=arc-20240116; t=1782981231; c=relaxed/simple;
+	bh=B8tJJylgSzwicd4/Ou8KHfoy0REk1bTZoXh89fMGD30=;
+	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
+	 Message-Id:References:To; b=XSU62+bpqKTfFhf574fyh45ZnNnBKuln4f84hVVmyQ4pWdDlLkq77OE+Rgm3rMEsLsUa5alTPLdECEsfYQjxK31T0k+ilSMODZcW7dIKK8YwK381FHnMC0nwgbecqLfZXeXjSyT6TiXm19CI3bwy7i+TginMHJC2jFOgWulXn1g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=SJ0Y0Aqy; arc=none smtp.client-ip=91.218.175.185
+Content-Type: text/plain;
+	charset=us-ascii
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1782981227;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=SyxPIQyiRY94UmnatdvvXHm0PH6iQcFy569ksBi+Ngk=;
+	b=SJ0Y0AqyMS9M2n2QZLRzV1CPGIMZPLVfRQEKWNUmoYjG8lKgVlBsK23Sq7KAs/mmzgEz+r
+	yA/YQ+R4wSRzWGwmuCE7yTqfBDSlerC0fAv8AtZef1qE5HYDgFwTX2JGVoxG7O1hdV5b/4
+	JZKbHPW3AKseFmIiWCmAGoK0KJTfGys=
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3864.600.51.1.1\))
+Subject: Re: [PATCH v2 5/6] mm/page_vma_mapped: use huge_ptep_get() for
+ hugetlb
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Muchun Song <muchun.song@linux.dev>
+In-Reply-To: <20260702051341.126509-6-dev.jain@arm.com>
+Date: Thu, 2 Jul 2026 16:33:06 +0800
+Cc: osalvador@suse.de,
+ akpm@linux-foundation.org,
+ ljs@kernel.org,
+ david@kernel.org,
+ liam@infradead.org,
+ riel@surriel.com,
+ vbabka@kernel.org,
+ harry@kernel.org,
+ jannh@google.com,
+ lance.yang@linux.dev,
+ kas@kernel.org,
+ linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org,
+ rcampbell@nvidia.com,
+ apopple@nvidia.com,
+ ziy@nvidia.com,
+ matthew.brost@intel.com,
+ joshua.hahnjy@gmail.com,
+ rakie.kim@sk.com,
+ byungchul@sk.com,
+ gourry@gourry.net,
+ ying.huang@linux.alibaba.com,
+ j-nomura@ce.jp.nec.com,
+ nao.horiguchi@gmail.com,
+ ak@linux.intel.com,
+ mel@csn.ul.ie,
+ pfalcato@suse.de,
+ jpoimboe@kernel.org,
+ dave.hansen@intel.com,
+ tglx@kernel.org,
+ catalin.marinas@arm.com,
+ will@kernel.org,
+ linux-arm-kernel@lists.infradead.org,
+ ryan.roberts@arm.com,
+ anshuman.khandual@arm.com,
+ stable@vger.kernel.org
+Content-Transfer-Encoding: 7bit
+Message-Id: <6518FA25-16CB-4BC3-B724-B075B0D1B425@linux.dev>
+References: <20260702051341.126509-1-dev.jain@arm.com>
+ <20260702051341.126509-6-dev.jain@arm.com>
+To: Dev Jain <dev.jain@arm.com>
+X-Migadu-Flow: FLOW_OUT
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [3.84 / 15.00];
-	MID_END_EQ_FROM_USER_PART(4.00)[];
+X-Spamd-Result: default: False [-0.16 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	MV_CASE(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[linux.dev,none];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[linux.dev:s=key1];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-270374-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:linuxoid@gmail.com,m:colin.i.king@gmail.com,m:john.johansen@canonical.com,m:stable@vger.kernel.org,m:coliniking@gmail.com,s:lists@lfdr.de];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_TO(0.00)[gmail.com,canonical.com];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MISSING_XM_UA(0.00)[];
-	RCPT_COUNT_THREE(0.00)[4];
-	TO_DN_NONE(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_FROM(0.00)[bounces-270372-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
+	FORGED_SENDER(0.00)[muchun.song@linux.dev,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[3];
+	RCPT_COUNT_TWELVE(0.00)[37];
+	FORGED_RECIPIENTS(0.00)[m:osalvador@suse.de,m:akpm@linux-foundation.org,m:ljs@kernel.org,m:david@kernel.org,m:liam@infradead.org,m:riel@surriel.com,m:vbabka@kernel.org,m:harry@kernel.org,m:jannh@google.com,m:lance.yang@linux.dev,m:kas@kernel.org,m:linux-mm@kvack.org,m:linux-kernel@vger.kernel.org,m:rcampbell@nvidia.com,m:apopple@nvidia.com,m:ziy@nvidia.com,m:matthew.brost@intel.com,m:joshua.hahnjy@gmail.com,m:rakie.kim@sk.com,m:byungchul@sk.com,m:gourry@gourry.net,m:ying.huang@linux.alibaba.com,m:j-nomura@ce.jp.nec.com,m:nao.horiguchi@gmail.com,m:ak@linux.intel.com,m:mel@csn.ul.ie,m:pfalcato@suse.de,m:jpoimboe@kernel.org,m:dave.hansen@intel.com,m:tglx@kernel.org,m:catalin.marinas@arm.com,m:will@kernel.org,m:linux-arm-kernel@lists.infradead.org,m:ryan.roberts@arm.com,m:anshuman.khandual@arm.com,m:stable@vger.kernel.org,m:dev.jain@arm.com,m:joshuahahnjy@gmail.com,m:naohoriguchi@gmail.com,s:lists@lfdr.de];
 	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FREEMAIL_CC(0.00)[suse.de,linux-foundation.org,kernel.org,infradead.org,surriel.com,google.com,linux.dev,kvack.org,vger.kernel.org,nvidia.com,intel.com,gmail.com,sk.com,gourry.net,linux.alibaba.com,ce.jp.nec.com,linux.intel.com,csn.ul.ie,arm.com,lists.infradead.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[muchun.song@linux.dev,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linux.dev:+];
+	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	FROM_NO_DN(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	MISSING_XM_UA(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,canonical.com:email,gregkh:mid]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linux.dev:dkim,linux.dev:email,linux.dev:mid,linux.dev:from_mime,arm.com:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: AA8066F4EBB
-
-
-The patch below does not apply to the 5.10-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
-
-To reproduce the conflict and resubmit, you may use the following commands:
-
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
-git checkout FETCH_HEAD
-git cherry-pick -x 6f060496d03e4dc560a40f73770bd08335cb7a27
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026070221-sulphate-cauterize-488e@gregkh' --subject-prefix 'PATCH 5.10.y' 'HEAD^..'
-
-Possible dependencies:
+X-Rspamd-Queue-Id: 7A2136F4E75
 
 
 
-thanks,
+> On Jul 2, 2026, at 13:13, Dev Jain <dev.jain@arm.com> wrote:
+> 
+> check_pte() is the final validation step in page_vma_mapped_walk().
+> It reads pvmw->pte with ptep_get() to decide whether the entry maps
+> the PFN range being walked. For hugetlb VMAs, that pointer refers
+> to a hugetlb entry.
+> 
+> On arches which provide their own huge_ptep_get() to dereference a huge
+> pte pointer, accessing via ptep_get() would cause pte_pfn(),
+> pte_present() etc to misbehave.
+> 
+> It is not clear whether this has a trivially visible effect to userspace.
+> 
+> Use huge_ptep_get() to dereference a huge pte pointer.
+> 
+> Fixes: ace71a19cec5 ("mm: introduce page_vma_mapped_walk()")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Dev Jain <dev.jain@arm.com>
 
-greg k-h
+Reviewed-by: Muchun Song <muchun.song@linux.dev>
 
------------------- original commit in Linus's tree ------------------
-
-From 6f060496d03e4dc560a40f73770bd08335cb7a27 Mon Sep 17 00:00:00 2001
-From: Ruslan Valiyev <linuxoid@gmail.com>
-Date: Tue, 26 May 2026 00:04:46 +0200
-Subject: [PATCH] apparmor: fix use-after-free in rawdata dedup loop
-
-aa_replace_profiles() walks ns->rawdata_list to dedup the incoming
-policy blob against entries already attached to existing profiles.
-Per the kernel-doc on struct aa_loaddata, list membership does not
-hold a reference: profiles hold pcount, and when the last pcount
-drops, do_ploaddata_rmfs() is queued on a workqueue that takes
-ns->lock and removes the entry. Between dropping the last pcount
-and the workqueue running, an entry remains on the list with
-pcount == 0.
-
-aa_get_profile_loaddata() is an unconditional kref_get() on
-pcount, so when the dedup loop hits such an entry, refcount
-hardening reports
-
-  refcount_t: addition on 0; use-after-free.
-
-inside aa_replace_profiles(), and the poisoned counter then
-trips "saturated" and "underflow" warnings on the subsequent
-uses of the same loaddata.
-
-Before commit a0b7091c4de4 ("apparmor: fix race on rawdata
-dereference") the dedup path used a get_unless_zero-style helper
-on a single counter, so the existing "if (tmp)" guard was
-meaningful. The split-refcount refactor introduced
-aa_get_profile_loaddata(), which has plain kref_get() semantics,
-and the guard quietly became a no-op.
-
-Introduce aa_get_profile_loaddata_not0(), matching the existing
-_not0 convention used by aa_get_profile_not0(), and use it for
-the rawdata_list dedup lookup so dying entries are skipped.
-
-Reproduced on x86_64 with v7.1-rc5 in QEMU+KVM running Ubuntu
-24.04 + stress-ng 0.17.06:
-
-  stress-ng --apparmor 1 --klog-check --timeout 60s
-
-Without this patch the three refcount_t warnings fire within a
-few seconds. With it the same 60 s run is clean. Coverage is a
-smoke-test only; a longer soak with CONFIG_KASAN, CONFIG_KCSAN
-and CONFIG_PROVE_LOCKING would be welcome from anyone with the
-cycles.
-
-Fixes: a0b7091c4de4 ("apparmor: fix race on rawdata dereference")
-Reported-by: Colin Ian King <colin.i.king@gmail.com>
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=221513
-Cc: stable@vger.kernel.org
-Signed-off-by: Ruslan Valiyev <linuxoid@gmail.com>
-Signed-off-by: John Johansen <john.johansen@canonical.com>
-
-diff --git a/security/apparmor/include/policy_unpack.h b/security/apparmor/include/policy_unpack.h
-index e5a95dc4da1f..b9de0fdf9ee5 100644
---- a/security/apparmor/include/policy_unpack.h
-+++ b/security/apparmor/include/policy_unpack.h
-@@ -163,6 +163,25 @@ aa_get_profile_loaddata(struct aa_loaddata *data)
- 	return data;
- }
- 
-+/**
-+ * aa_get_profile_loaddata_not0 - get a profile reference count if not zero
-+ * @data: reference to get a count on
-+ *
-+ * Like aa_get_profile_loaddata(), but safe to call on an entry that may
-+ * be on a list (e.g. ns->rawdata_list) where the last pcount has already
-+ * dropped and the deferred cleanup has not yet run.
-+ *
-+ * Returns: pointer to reference, or %NULL if @data is NULL or its
-+ *          profile refcount has already reached zero.
-+ */
-+static inline struct aa_loaddata *
-+aa_get_profile_loaddata_not0(struct aa_loaddata *data)
-+{
-+	if (data && kref_get_unless_zero(&data->pcount))
-+		return data;
-+	return NULL;
-+}
-+
- void __aa_loaddata_update(struct aa_loaddata *data, long revision);
- bool aa_rawdata_eq(struct aa_loaddata *l, struct aa_loaddata *r);
- void aa_loaddata_kref(struct kref *kref);
-diff --git a/security/apparmor/policy.c b/security/apparmor/policy.c
-index 847b0ff450c5..b59e827747da 100644
---- a/security/apparmor/policy.c
-+++ b/security/apparmor/policy.c
-@@ -1230,8 +1230,12 @@ ssize_t aa_replace_profiles(struct aa_ns *policy_ns, struct aa_label *label,
- 			if (aa_rawdata_eq(rawdata_ent, udata)) {
- 				struct aa_loaddata *tmp;
- 
--				tmp = aa_get_profile_loaddata(rawdata_ent);
--				/* check we didn't fail the race */
-+				/*
-+				 * Entries remain on rawdata_list with
-+				 * pcount == 0 until do_ploaddata_rmfs()
-+				 * runs; only take a live profile ref.
-+				 */
-+				tmp = aa_get_profile_loaddata_not0(rawdata_ent);
- 				if (tmp) {
- 					aa_put_profile_loaddata(udata);
- 					udata = tmp;
+Thanks.
 
 
