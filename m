@@ -1,79 +1,69 @@
-Return-Path: <stable+bounces-271169-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-270694-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id Lpf8NnGjRmoWawsAu9opvQ
-	(envelope-from <stable+bounces-271169-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:44:17 +0200
+	id caSFHd2eRmpXaQsAu9opvQ
+	(envelope-from <stable+bounces-270694-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:24:45 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 56D9A6FB957
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:44:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B00366FB4D1
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:24:44 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=Y2UmVP1z;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-271169-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-271169-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=dUSjIKLg;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-270694-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-270694-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A2E843339562
-	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:49:11 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 000D03261BC6
+	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:31:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF45F39DBF7;
-	Thu,  2 Jul 2026 16:47:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0FBB03D9532;
+	Thu,  2 Jul 2026 16:26:49 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4059E348C66;
-	Thu,  2 Jul 2026 16:47:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A467F3B52F8;
+	Thu,  2 Jul 2026 16:26:45 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783010849; cv=none; b=i+jEsAqlFwTmh+90i0xRqAX/++3QtukkZsHuX4OEMGuWY6HRkpH97AKy2bVU3IImcOkteDrYrueFiL6H4SHO0cGN0KkU+FUOmwwPCgilafmAdoctSpwWC9nBdAi8kVfVh/yepJXipvMvvZQJEzLFesRsP1vaF6+QrO1bqDyL8m0=
+	t=1783009608; cv=none; b=ZhRajL+b11kvnLyCLNxz8cxG71HISlpxW42J5KNywAKISLzpPRWYuHwKadd+YjfydQoae1t9s+pnybzWssbKlNzmXoLUifx1250fr7jN1XnExVMdiSSYitob3vKsf8pcvwvNA8wop72BjoDiiKPBo2H1ENibiMYnwgUCPlBtbXo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783010849; c=relaxed/simple;
-	bh=nyBAcBjaGgYCwd73v9UkocK+ayssa54jAklr9oVatbE=;
+	s=arc-20240116; t=1783009608; c=relaxed/simple;
+	bh=nRMGNUwwaPFWcW6A4JHy2/4dK25XuiobJ/muvq5IahY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bxgoXwYYAdVxrIcd/DZbQnMi4AZX4rwL8x65sQ+W8HqTvwwj+ZJr5nSg2bm+jl0zCM/VqPi3Sw/h7zYAyGr4/9BZgPubJwKJG8QRFsUlZnQAyqanVlSYCVV5Nx/mxy3FE/KP3dse9bOeyG/5+aKO0VrJP1o+kAZ//rMUd3Mk9PA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y2UmVP1z; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 842541F000E9;
-	Thu,  2 Jul 2026 16:47:27 +0000 (UTC)
+	 MIME-Version; b=omB7nDNAZsnNI4XUZHfP7we0WeluFPKfm073WH8d5hPR24g/NBVt7cneKnV7FUqrVIOc9QzpktBUWjVm5Pqgvy9d4PTeOS7ybbIyJITGwylnkwcV88Pems7IfJoccEwwNu+rt6arQaGzT2GYdKecOS5doywf1m5zvHb/0Y3I+Qk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dUSjIKLg; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A2391F000E9;
+	Thu,  2 Jul 2026 16:26:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1783010848;
-	bh=QIs8GWiSNc7iEo4P+5pxgc82+kwlmOEIoJSVfsh6ntU=;
+	s=korg; t=1783009605;
+	bh=JgggEdr8fEq92U8kOP4YC5xIYZ5tjgUPizHQzXLuicQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Y2UmVP1zX9Fdv3/6HAfuBgpU4WcSvOIfa1mhGQPRDrp/5WHOhc6mg1rwJdCluwKl0
-	 pwfWLaRl1GnE9QHRaKX09NoTtFyy1s220HVX3jVTTVh9T8ble521jpuxohklx6pTY8
-	 uv5ino+8X0W/5P01R354U2PglkxjiGyACGVRgq6M=
+	b=dUSjIKLgScxNFaDwMDtc+kD0iC89gxhlEONRbU5DJvIhlPPb9PzUDsBiQ0v9NKL+8
+	 XbC06NwKiaGuM2jiUqX7tbYDGK5sQIXC0mVHVxPAamoj9NorEhqVXWhi6+dOrvDHUd
+	 H82YGWLi8wfulnrPMSCQ5BR8VGdkbBUc/Al6kUNE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	bpf <bpf@vger.kernel.org>,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	Masahiro Yamada <masahiroy@kernel.org>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Nicolas Schier <nicolas@fjasle.eu>,
-	Zheng Yejian <zhengyejian1@huawei.com>,
-	Martin Kelly <martin.kelly@crowdstrike.com>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Josh Poimboeuf <jpoimboe@redhat.com>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>,
-	Vasily Gorbik <gor@linux.ibm.com>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
-	Andrey Grodzovsky <andrey.grodzovsky@crowdstrike.com>
-Subject: [PATCH 6.6 061/175] scripts/sorttable: Always use an array for the mcount_loc sorting
+	stable@kernel.org,
+	Yuan Tan <yuantan098@gmail.com>,
+	Yifan Wu <yifanwucs@gmail.com>,
+	Juefei Pu <tomapufckgml@gmail.com>,
+	Xin Liu <bird@lzu.edu.cn>,
+	Kuniyuki Iwashima <kuniyu@google.com>,
+	Jiexun Wang <wangjiexun2025@gmail.com>,
+	Ren Wei <n05ec@lzu.edu.cn>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Alexander Martyniuk <alexevgmart@gmail.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 19/95] af_unix: Reject SIOCATMARK on non-stream sockets
 Date: Thu,  2 Jul 2026 18:19:22 +0200
-Message-ID: <20260702155117.078981334@linuxfoundation.org>
+Message-ID: <20260702155109.611856908@linuxfoundation.org>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260702155115.766838875@linuxfoundation.org>
-References: <20260702155115.766838875@linuxfoundation.org>
+In-Reply-To: <20260702155109.196223802@linuxfoundation.org>
+References: <20260702155109.196223802@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -94,263 +84,86 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-271169-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[24];
-	FORWARDED(0.00)[lists@lfdr.de];
+	RCPT_COUNT_TWELVE(0.00)[14];
+	TAGGED_FROM(0.00)[bounces-270694-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:stable@kernel.org,m:yuantan098@gmail.com,m:yifanwucs@gmail.com,m:tomapufckgml@gmail.com,m:bird@lzu.edu.cn,m:kuniyu@google.com,m:wangjiexun2025@gmail.com,m:n05ec@lzu.edu.cn,m:kuba@kernel.org,m:alexevgmart@gmail.com,m:sashal@kernel.org,s:lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:bpf@vger.kernel.org,m:mhiramat@kernel.org,m:mark.rutland@arm.com,m:mathieu.desnoyers@efficios.com,m:akpm@linux-foundation.org,m:peterz@infradead.org,m:torvalds@linux-foundation.org,m:masahiroy@kernel.org,m:nathan@kernel.org,m:nicolas@fjasle.eu,m:zhengyejian1@huawei.com,m:martin.kelly@crowdstrike.com,m:christophe.leroy@csgroup.eu,m:jpoimboe@redhat.com,m:hca@linux.ibm.com,m:catalin.marinas@arm.com,m:will@kernel.org,m:gor@linux.ibm.com,m:agordeev@linux.ibm.com,m:rostedt@goodmis.org,m:andrey.grodzovsky@crowdstrike.com,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,gmail.com,lzu.edu.cn,google.com];
+	FORWARDED(0.00)[lists@lfdr.de];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	TO_DN_SOME(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	TO_DN_SOME(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,msgid.link:url,lzu.edu.cn:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 56D9A6FB957
+X-Rspamd-Queue-Id: B00366FB4D1
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Steven Rostedt <rostedt@goodmis.org>
+From: Jiexun Wang <wangjiexun2025@gmail.com>
 
-[ Upstream commit 5fb964f5ba53afda0e2b6dbc00b8205461ffe04a ]
+commit d119775f2bad827edc28071c061fdd4a91f889a5 upstream.
 
-The sorting of the mcount_loc section is done directly to the section for
-x86 and arm32 but it uses a separate array for arm64 as arm64 has the
-values for the mcount_loc stored in the rela sections of the vmlinux ELF
-file.
+SIOCATMARK reports whether the receive queue is at the urgent mark for
+MSG_OOB.
 
-In order to use the same code to remove weak functions, always use a
-separate array to do the sorting. This requires splitting up the filling
-of the array into one function and the placing the contents of the array
-back into the rela sections or into the mcount_loc section into a separate
-file.
+In AF_UNIX, MSG_OOB is supported only for SOCK_STREAM sockets.
+SOCK_DGRAM and SOCK_SEQPACKET reject MSG_OOB in sendmsg() and recvmsg(),
+so they should not support SIOCATMARK either.
 
-Cc: bpf <bpf@vger.kernel.org>
-Cc: Masami Hiramatsu <mhiramat@kernel.org>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: Masahiro Yamada <masahiroy@kernel.org>
-Cc: Nathan Chancellor <nathan@kernel.org>
-Cc: Nicolas Schier <nicolas@fjasle.eu>
-Cc: Zheng Yejian <zhengyejian1@huawei.com>
-Cc: Martin  Kelly <martin.kelly@crowdstrike.com>
-Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
-Cc: Josh Poimboeuf <jpoimboe@redhat.com>
-Cc: Heiko Carstens <hca@linux.ibm.com>
-Cc: Catalin Marinas <catalin.marinas@arm.com>
-Cc: Will Deacon <will@kernel.org>
-Cc: Vasily Gorbik <gor@linux.ibm.com>
-Cc: Alexander Gordeev <agordeev@linux.ibm.com>
-Link: https://lore.kernel.org/20250218200022.710676551@goodmis.org
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-Signed-off-by: Andrey Grodzovsky <andrey.grodzovsky@crowdstrike.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Return -EOPNOTSUPP for non-stream sockets before checking the receive
+queue.
+
+Fixes: 314001f0bf92 ("af_unix: Add OOB support")
+Cc: stable@kernel.org
+Reported-by: Yuan Tan <yuantan098@gmail.com>
+Reported-by: Yifan Wu <yifanwucs@gmail.com>
+Reported-by: Juefei Pu <tomapufckgml@gmail.com>
+Reported-by: Xin Liu <bird@lzu.edu.cn>
+Suggested-by: Kuniyuki Iwashima <kuniyu@google.com>
+Signed-off-by: Jiexun Wang <wangjiexun2025@gmail.com>
+Signed-off-by: Ren Wei <n05ec@lzu.edu.cn>
+Reviewed-by: Kuniyuki Iwashima <kuniyu@google.com>
+Link: https://patch.msgid.link/20260506140825.2987635-1-n05ec@lzu.edu.cn
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Alexander Martyniuk <alexevgmart@gmail.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- scripts/sorttable.c |  122 ++++++++++++++++++++++++++++++++++++++--------------
- 1 file changed, 90 insertions(+), 32 deletions(-)
+ net/unix/af_unix.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/scripts/sorttable.c
-+++ b/scripts/sorttable.c
-@@ -594,31 +594,19 @@ struct elf_mcount_loc {
- 	uint64_t stop_mcount_loc;
- };
+diff --git a/net/unix/af_unix.c b/net/unix/af_unix.c
+index 1676bffe7259dc..8e9a8499db5e66 100644
+--- a/net/unix/af_unix.c
++++ b/net/unix/af_unix.c
+@@ -3040,6 +3040,9 @@ static int unix_ioctl(struct socket *sock, unsigned int cmd, unsigned long arg)
+ 			struct sk_buff *skb;
+ 			int answ = 0;
  
--/* Sort the relocations not the address itself */
--static void *sort_relocs(Elf_Ehdr *ehdr, uint64_t start_loc, uint64_t size)
-+/* Fill the array with the content of the relocs */
-+static int fill_relocs(void *ptr, uint64_t size, Elf_Ehdr *ehdr, uint64_t start_loc)
- {
- 	Elf_Shdr *shdr_start;
- 	Elf_Rela *rel;
- 	unsigned int shnum;
--	unsigned int count;
-+	unsigned int count = 0;
- 	int shentsize;
--	void *vals;
--	void *ptr;
--
--	compare_values = long_size == 4 ? compare_values_32 : compare_values_64;
-+	void *array_end = ptr + size;
- 
- 	shdr_start = (Elf_Shdr *)((char *)ehdr + ehdr_shoff(ehdr));
- 	shentsize = ehdr_shentsize(ehdr);
- 
--	vals = malloc(long_size * size);
--	if (!vals) {
--		snprintf(m_err, ERRSTR_MAXSZ, "Failed to allocate sort array");
--		pthread_exit(m_err);
--		return NULL;
--	}
--
--	ptr = vals;
--
- 	shnum = ehdr_shnum(ehdr);
- 	if (shnum == SHN_UNDEF)
- 		shnum = shdr_size(shdr_start);
-@@ -637,22 +625,18 @@ static void *sort_relocs(Elf_Ehdr *ehdr,
- 			uint64_t offset = rela_offset(rel);
- 
- 			if (offset >= start_loc && offset < start_loc + size) {
--				if (ptr + long_size > vals + size) {
--					free(vals);
-+				if (ptr + long_size > array_end) {
- 					snprintf(m_err, ERRSTR_MAXSZ,
- 						 "Too many relocations");
--					pthread_exit(m_err);
--					return NULL;
-+					return -1;
- 				}
- 
- 				/* Make sure this has the correct type */
- 				if (rela_info(rel) != rela_type) {
--					free(vals);
- 					snprintf(m_err, ERRSTR_MAXSZ,
- 						"rela has type %lx but expected %lx\n",
- 						(long)rela_info(rel), rela_type);
--					pthread_exit(m_err);
--					return NULL;
-+					return -1;
- 				}
- 
- 				if (long_size == 4)
-@@ -660,13 +644,28 @@ static void *sort_relocs(Elf_Ehdr *ehdr,
- 				else
- 					*(uint64_t *)ptr = rela_addend(rel);
- 				ptr += long_size;
-+				count++;
- 			}
- 		}
- 	}
--	count = ptr - vals;
--	qsort(vals, count / long_size, long_size, compare_values);
-+	return count;
-+}
++			if (sk->sk_type != SOCK_STREAM)
++				return -EOPNOTSUPP;
 +
-+/* Put the sorted vals back into the relocation elements */
-+static void replace_relocs(void *ptr, uint64_t size, Elf_Ehdr *ehdr, uint64_t start_loc)
-+{
-+	Elf_Shdr *shdr_start;
-+	Elf_Rela *rel;
-+	unsigned int shnum;
-+	int shentsize;
-+
-+	shdr_start = (Elf_Shdr *)((char *)ehdr + ehdr_shoff(ehdr));
-+	shentsize = ehdr_shentsize(ehdr);
-+
-+	shnum = ehdr_shnum(ehdr);
-+	if (shnum == SHN_UNDEF)
-+		shnum = shdr_size(shdr_start);
- 
--	ptr = vals;
- 	for (int i = 0; i < shnum; i++) {
- 		Elf_Shdr *shdr = get_index(shdr_start, shentsize, i);
- 		void *end;
-@@ -689,8 +688,32 @@ static void *sort_relocs(Elf_Ehdr *ehdr,
- 			}
- 		}
- 	}
--	free(vals);
--	return NULL;
-+}
-+
-+static int fill_addrs(void *ptr, uint64_t size, void *addrs)
-+{
-+	void *end = ptr + size;
-+	int count = 0;
-+
-+	for (; ptr < end; ptr += long_size, addrs += long_size, count++) {
-+		if (long_size == 4)
-+			*(uint32_t *)ptr = r(addrs);
-+		else
-+			*(uint64_t *)ptr = r8(addrs);
-+	}
-+	return count;
-+}
-+
-+static void replace_addrs(void *ptr, uint64_t size, void *addrs)
-+{
-+	void *end = ptr + size;
-+
-+	for (; ptr < end; ptr += long_size, addrs += long_size) {
-+		if (long_size == 4)
-+			w(*(uint32_t *)ptr, addrs);
-+		else
-+			w8(*(uint64_t *)ptr, addrs);
-+	}
- }
- 
- /* Sort the addresses stored between __start_mcount_loc to __stop_mcount_loc in vmlinux */
-@@ -699,14 +722,49 @@ static void *sort_mcount_loc(void *arg)
- 	struct elf_mcount_loc *emloc = (struct elf_mcount_loc *)arg;
- 	uint64_t offset = emloc->start_mcount_loc - shdr_addr(emloc->init_data_sec)
- 					+ shdr_offset(emloc->init_data_sec);
--	uint64_t count = emloc->stop_mcount_loc - emloc->start_mcount_loc;
-+	uint64_t size = emloc->stop_mcount_loc - emloc->start_mcount_loc;
- 	unsigned char *start_loc = (void *)emloc->ehdr + offset;
-+	Elf_Ehdr *ehdr = emloc->ehdr;
-+	void *e_msg = NULL;
-+	void *vals;
-+	int count;
-+
-+	vals = malloc(long_size * size);
-+	if (!vals) {
-+		snprintf(m_err, ERRSTR_MAXSZ, "Failed to allocate sort array");
-+		pthread_exit(m_err);
-+	}
- 
- 	if (sort_reloc)
--		return sort_relocs(emloc->ehdr, emloc->start_mcount_loc, count);
-+		count = fill_relocs(vals, size, ehdr, emloc->start_mcount_loc);
-+	else
-+		count = fill_addrs(vals, size, start_loc);
-+
-+	if (count < 0) {
-+		e_msg = m_err;
-+		goto out;
-+	}
-+
-+	if (count != size / long_size) {
-+		snprintf(m_err, ERRSTR_MAXSZ, "Expected %u mcount elements but found %u\n",
-+			(int)(size / long_size), count);
-+		e_msg = m_err;
-+		goto out;
-+	}
-+
-+	compare_values = long_size == 4 ? compare_values_32 : compare_values_64;
-+
-+	qsort(vals, count, long_size, compare_values);
-+
-+	if (sort_reloc)
-+		replace_relocs(vals, size, ehdr, emloc->start_mcount_loc);
-+	else
-+		replace_addrs(vals, size, start_loc);
-+
-+out:
-+	free(vals);
- 
--	qsort(start_loc, count/long_size, long_size, compare_extable);
--	return NULL;
-+	pthread_exit(e_msg);
- }
- 
- /* Get the address of __start_mcount_loc and __stop_mcount_loc in System.map */
+ 			skb = skb_peek(&sk->sk_receive_queue);
+ 			if (skb && skb == READ_ONCE(unix_sk(sk)->oob_skb))
+ 				answ = 1;
+-- 
+2.53.0
+
 
 
 
