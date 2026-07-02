@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-270859-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-270652-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id XgtgOpuTRmqcYwsAu9opvQ
-	(envelope-from <stable+bounces-270859-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:36:43 +0200
+	id /TbGHpKeRmowaQsAu9opvQ
+	(envelope-from <stable+bounces-270652-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:23:30 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C11E6FA49C
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:36:43 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id EECCC6FB451
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:23:29 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=srZMjl9v;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-270859-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-270859-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=2U1xvVcB;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-270652-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-270652-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 16C5B302159E
-	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:36:42 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A753F323ED6A
+	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:30:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF0AA32ED4E;
-	Thu,  2 Jul 2026 16:33:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 199894DBD98;
+	Thu,  2 Jul 2026 16:25:05 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 860B0DDA9;
-	Thu,  2 Jul 2026 16:33:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5530C4BC025;
+	Thu,  2 Jul 2026 16:24:55 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783010036; cv=none; b=nnR3qPznT2YIZ3zP9Y7wpXCPNgR5QWiLNO1fhdLDRRHym2GP7JbVJsIJnI416glmw4WR2ejzYEvaitlvR36Ypk6yKsAjIW6178LphfIkdu3rpv4tUWSGzM7LfwuA3iISbOjkNy0rqEZBIFZNHCK/p17VGuaRfwTDceWJ87L7pOQ=
+	t=1783009502; cv=none; b=R1z2iwpnTeud3fzXXtU2ccwzmk5Rai1Du5cpEd1mVVvXM9CSBRLLpbb31QGyWNkunke4niRG27UTfXIpGhCvJJppn6KrGJqQ0yf/KVA/gYmVqM1PwCBYIQvELCzdx2+H+fH4hXSwZs3fVMSBMGLRUBWpwCz3zzOqMfD9cjQr5j4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783010036; c=relaxed/simple;
-	bh=cJ/e8ZkNbg0Iv/J6mxyxWWx+SlEGpO+Qn3S1vPDERHw=;
+	s=arc-20240116; t=1783009502; c=relaxed/simple;
+	bh=b1E2lnowTeg7MSuOM1mdJlGmaQaBy2UCZ0MRKsgjnP0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FA2/wKKbcPQu06K0cVJ5IePxXnd913UQiQjmztkKddmWXs3dGzj377wr/IaH2tf75KakK3WS0wqjptg3TKwO0L2rcBEwcDSqCETMc5fLHnXXMbhASLDH8LGZ+aetXsTiZvUiV59mfBM27l/YZSvkSgx/efoKEN6lWfIdNrp5Uv0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=srZMjl9v; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB1251F000E9;
-	Thu,  2 Jul 2026 16:33:54 +0000 (UTC)
+	 MIME-Version; b=t576oCD9/RgyM6grl8MNmDh0MYHJGtcpsU5e1wjtOiNQ12eWYRo1aICDoHGw+G6ehmmOpIkzbSiYsCNfwCDIJnNkpADJLpE21RVbrD5VDi0CHzQXnlJEuhS0XiNItYyNiivyGktZNXjaZ/tOTDGZmZs+KLD2vaTkpeEhHwWxs6A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2U1xvVcB; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B3C71F00A3D;
+	Thu,  2 Jul 2026 16:24:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1783010035;
-	bh=BIOMLGhVdOhHzB9ZqHC6r1ik47+pDXzqg/4bkQ9pd50=;
+	s=korg; t=1783009494;
+	bh=plZECvTBlH4NrW3echAaWjcKeWCrCAygwBuKpbpqOVI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=srZMjl9vpZp05l0PL+18I0Gya5VhbjlF8htLUKCC29DIgvgKX4m2wJzjqyggXNpCz
-	 o8zN8e2DMLeUh03G9SFotE4bkXyaBK1PM0oyg+dZHQVUfsoUKbB35F1MjgJ2zOLb8N
-	 aHXZF+Fve0B1Vhd605ffRBR0/x7MwBBl1KnVrrV8=
+	b=2U1xvVcBXRnlYGzyC8wF9i6O8WLwBdZI7/YNv/5vFJ1SUEEfewYh8BZVGjTiwTqFB
+	 AWeiSHxkNCJdgm8iUhKjf3F2xyqvCaVRrfZF4XG6lIW7tE+gWJIOq4BXVyhu0mTuja
+	 u4Sis0jlNDbO7QVXhAvrG/6mThuhYT3wL6V4jIzY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bitterblue Smith <rtl8821cerfe2@gmail.com>,
-	Ping-Ke Shih <pkshih@realtek.com>
-Subject: [PATCH 6.1 086/129] wifi: rtlwifi: rtl8821ae: Fix C2H bit location in RX descriptor
+	Qingshuang Fu <fuqingshuang@kylinos.cn>,
+	Thomas Gleixner <tglx@kernel.org>
+Subject: [PATCH 5.10 73/96] irqchip/imgpdc: Fix resource leak, add missing chained handler cleanup on remove
 Date: Thu,  2 Jul 2026 18:20:05 +0200
-Message-ID: <20260702155113.922622165@linuxfoundation.org>
+Message-ID: <20260702155110.517513316@linuxfoundation.org>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260702155112.163984240@linuxfoundation.org>
-References: <20260702155112.163984240@linuxfoundation.org>
+In-Reply-To: <20260702155108.949633242@linuxfoundation.org>
+References: <20260702155108.949633242@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,75 +71,99 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-270652-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-270859-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:rtl8821cerfe2@gmail.com,m:pkshih@realtek.com,s:lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,realtek.com];
 	FORWARDED(0.00)[lists@lfdr.de];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:fuqingshuang@kylinos.cn,m:tglx@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,msgid.link:url]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,msgid.link:url,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,kylinos.cn:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 2C11E6FA49C
+X-Rspamd-Queue-Id: EECCC6FB451
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+From: Qingshuang Fu <fuqingshuang@kylinos.cn>
 
-commit 83d38df6929118c3f996b9e3351c2d5014073d87 upstream.
+commit 37738fdf2ab1e504d1c63ce5bc0aeb6452d8f057 upstream.
 
-Bit 28 of double word 2 in the RX descriptor indicates if the packet is
-a normal 802.11 frame, or a message from the wifi firmware to the
-driver (Card 2 Host).
+The driver allocates domain generic chips using
+irq_alloc_domain_generic_chips() during probe and sets up chained
+handlers using irq_set_chained_handler_and_data(). However, on driver
+removal, the generic chips are not freed and the chained handlers are
+not removed.
 
-Commit f5678bfe1cdc ("rtlwifi: rtl8821ae: Replace local bit manipulation
-macros") mistakenly made the driver look for this bit in double word 1,
-causing packet loss and Bluetooth coexistence problems.
+The generic chips remain on the global gc_list and may later be accessed by
+generic interrupt chip suspend, resume, or shutdown callbacks after the
+driver has been removed, potentially resulting in a use-after-free and
+kernel crash.
 
-Fixes: f5678bfe1cdc ("rtlwifi: rtl8821ae: Replace local bit manipulation macros")
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
-Acked-by: Ping-Ke Shih <pkshih@realtek.com>
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
-Link: https://patch.msgid.link/04da7398-cedb-425a-a810-5772ab10139d@gmail.com
+The chained handlers that were installed in probe for peripheral and
+syswake interrupts are also left dangling, which can lead to spurious
+interrupts accessing freed memory.
+
+Fix these issues by:
+
+  - Setting IRQ_DOMAIN_FLAG_DESTROY_GC flag in domain->flags, so the
+    core code automatically removes generic chips when irq_domain_remove()
+    is called
+
+  - Clearing all chained handlers with NULL in pdc_intc_remove()
+
+Fixes: b6ef9161e43a ("irq-imgpdc: add ImgTec PDC irqchip driver")
+Signed-off-by: Qingshuang Fu <fuqingshuang@kylinos.cn>
+Signed-off-by: Thomas Gleixner <tglx@kernel.org>
+Cc: stable@vger.kernel.org
+Link: https://patch.msgid.link/20260618021352.661773-1-fffsqian@163.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/realtek/rtlwifi/rtl8821ae/trx.h |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/irqchip/irq-imgpdc.c |    6 ++++++
+ 1 file changed, 6 insertions(+)
 
---- a/drivers/net/wireless/realtek/rtlwifi/rtl8821ae/trx.h
-+++ b/drivers/net/wireless/realtek/rtlwifi/rtl8821ae/trx.h
-@@ -291,7 +291,7 @@ static inline int get_rx_desc_paggr(__le
+--- a/drivers/irqchip/irq-imgpdc.c
++++ b/drivers/irqchip/irq-imgpdc.c
+@@ -385,6 +385,7 @@ static int pdc_intc_probe(struct platfor
+ 		dev_err(&pdev->dev, "cannot add IRQ domain\n");
+ 		return -ENOMEM;
+ 	}
++	priv->domain->flags |= IRQ_DOMAIN_FLAG_DESTROY_GC;
  
- static inline int get_rx_status_desc_rpt_sel(__le32 *__pdesc)
+ 	/*
+ 	 * Set up 2 generic irq chips with 2 chip types.
+@@ -472,6 +473,11 @@ static int pdc_intc_remove(struct platfo
  {
--	return le32_get_bits(*(__pdesc + 1), BIT(28));
-+	return le32_get_bits(*(__pdesc + 2), BIT(28));
- }
+ 	struct pdc_intc_priv *priv = platform_get_drvdata(pdev);
  
- static inline int get_rx_desc_rxmcs(__le32 *__pdesc)
++	for (unsigned int i = 0; i < priv->nr_perips; ++i)
++		irq_set_chained_handler_and_data(priv->perip_irqs[i], NULL, NULL);
++
++	irq_set_chained_handler_and_data(priv->syswake_irq, NULL, NULL);
++
+ 	irq_domain_remove(priv->domain);
+ 	return 0;
+ }
 
 
 
