@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-271181-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-270621-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id r/kKE5yjRmonawsAu9opvQ
-	(envelope-from <stable+bounces-271181-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:45:00 +0200
+	id NhJABuWdRmryaAsAu9opvQ
+	(envelope-from <stable+bounces-270621-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:20:37 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 50F3D6FB97D
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:44:59 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6206B6FB3AB
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:20:36 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=D77xOyc2;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-271181-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-271181-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=Q9E1wy2g;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-270621-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-270621-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B4FCD322D4BD
-	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:49:42 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 9050F320C1B4
+	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:28:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 87BBD2D0602;
-	Thu,  2 Jul 2026 16:47:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64A7F417378;
+	Thu,  2 Jul 2026 16:23:41 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 510A033689F;
-	Thu,  2 Jul 2026 16:47:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B55A033B970;
+	Thu,  2 Jul 2026 16:23:34 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783010877; cv=none; b=vDhYELe56SgLffcuiVuUfSKvrbRe+eT36aAe01Hk1Uh9/3W/78kjHYNVDfoA62lXmHcJwzWMmdkOvgT1TNaFJZw3LxG0DmsRn+JB7dMZITN0lWlfI66rekh3+Eim2//I0+F0iFW17d+ENmF5oMD37+VhdVBC2+flxpNYtfwuv5w=
+	t=1783009418; cv=none; b=SXpyfOKJBOqZ8fKyLXtETUfpToJpigHEdonPsKYcNYwNoLr/U8CZt52C3Uff9z5BtACtz3EU5p0K+DSSosXBrryk2DgXjoOGg5hBfeeyiRtCI+WGYz3Ww9BG7UA6s3+OUwszzy5M244P1jkKeCLnqIVv6qTNu1UFdHlVc5JRAAQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783010877; c=relaxed/simple;
-	bh=nzHFW808mKiYCHhhUCoh3jdm0Xr8uA3plSIxGTnjVIM=;
+	s=arc-20240116; t=1783009418; c=relaxed/simple;
+	bh=TGwddRvcHvzmwxMi+W8tSS3IjQzdHdKjyUz6XFldvQ0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ti6LoUPsWolHRt8w8Vi2d0sJCogWVSlamaKK1QLsZMUpz4oJLYwdsO9HDoQniV11b90/+Cn3zOSwWg6EK81dKZG1DXsinxfd8AtLYtmHMSOocYOtCUV3keha1CbjV+4Cb/hvPAE6na1aY/6dv/+yu6lkWSXZ+DU4ezTx14eF1Fo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D77xOyc2; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7D111F000E9;
-	Thu,  2 Jul 2026 16:47:55 +0000 (UTC)
+	 MIME-Version; b=tkmlwG4lx3OhKIiJw14yNdfpkgazZFDrsCBfzlQtxTTOdVl+OM+uw/XDY2BCE1HHTplJndETrnOEC8DPdeztO+RqRprWWoAhAgbpe5kqJmDrZqyC4FfFvgFzYrapq2AMcy+eS3qcBUeyILIXquSgjezMU/Yq0Z65orszPacb5r0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Q9E1wy2g; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C91D1F00A3A;
+	Thu,  2 Jul 2026 16:23:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1783010876;
-	bh=kyaDQGsLVqREU2ThKA6vJIqswe+aWnjCPBkLdvM3DB4=;
+	s=korg; t=1783009413;
+	bh=yRdDQo03XxJ4pdIbwHEe+V3dPePHJXB9iaxjOOzDC0k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=D77xOyc2Ovvrytlm4TD/d2OppAX5Cwzsk2pTEObl8+QrAF7JZ+uVRl0d7ato13uFT
-	 5fBoGtOK6pDC9GldlXCtx+C/TQgc/V0MhFV4dWFKHKWTkG9BCFAvt9c/ny/7Vn4kL3
-	 e37evLWjIdna8IPRzJpJBliX4GzOYGBZRtV0WFFk=
+	b=Q9E1wy2gaU6etBDBhcSTDiwywv6QK3n+IfQAqv3GeigvheaNzis44iHZo31JRUaPn
+	 zXhIpvHjk3AFUzOZHXsI6mD4pYxmVf2aUyofCrajm4m4dGVlMnaZdGyDzCBdicy5WM
+	 Y+3kyHK7pw20y8hXkcnLmQwMzSDt8Qq7jhmkPVgQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yi Yang <yiyang13@huawei.com>,
-	Jiri Slaby <jirislaby@kernel.org>
-Subject: [PATCH 6.6 071/175] vc_screen: fix null-ptr-deref in vcs_notifier() during concurrent vcs_write
+	stable@kernel.org,
+	Sven Eckelmann <sven@narfation.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 40/96] batman-adv: tp_meter: handle seqno wrap-around for fast recovery detection
 Date: Thu,  2 Jul 2026 18:19:32 +0200
-Message-ID: <20260702155117.288498724@linuxfoundation.org>
+Message-ID: <20260702155109.827730456@linuxfoundation.org>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260702155115.766838875@linuxfoundation.org>
-References: <20260702155115.766838875@linuxfoundation.org>
+In-Reply-To: <20260702155108.949633242@linuxfoundation.org>
+References: <20260702155108.949633242@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,22 +72,22 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-271181-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-270621-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:stable@kernel.org,m:sven@narfation.org,m:sashal@kernel.org,s:lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:yiyang13@huawei.com,m:jirislaby@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
@@ -97,55 +98,48 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,huawei.com:email,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,narfation.org:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 50F3D6FB97D
+X-Rspamd-Queue-Id: 6206B6FB3AB
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yi Yang <yiyang13@huawei.com>
+From: Sven Eckelmann <sven@narfation.org>
 
-commit a287620312dc6dcb9a093417a0e589bf30fcf38a upstream.
+commit f54c85ed42a1b27a516cf2a4728f5a612b799e07 upstream.
 
-A KASAN null-ptr-deref was observed in vcs_notifier():
+The recover variable and the last_sent sequence number are initialized on
+purpose as a really high value which will wrap-around after the first 2000
+bytes. The fast recovery precondition must therefore not use simple integer
+comparisons but use helpers which are aware of the sequence number
+wrap-arounds.
 
-BUG: KASAN: null-ptr-deref in vcs_notifier+0x98/0x130
-Read of size 2 at addr qmp_cmd_name: qmp_capabilities, arguments: {}
-
-The issue is a race condition in vcs_write(). When the console_lock is
-temporarily dropped (to copy data from userspace), the vc_data pointer
-obtained from vcs_vc() may become stale. After re-acquiring the lock,
-vcs_vc() is called again to re-validate the pointer. If the vc has been
-deallocated in the meantime, vcs_vc() returns NULL, and the while loop
-breaks (with written > 0). However, after the loop, vcs_scr_updated(vc)
-is still called with the now-NULL vc pointer, leading to a null pointer
-dereference in the notifier chain (vcs_notifier dereferences param->vc).
-
-Fix this by adding a NULL check for vc before calling vcs_scr_updated().
-
-Fixes: 8fb9ea65c9d1 ("vc_screen: reload load of struct vc_data pointer in vcs_write() to avoid UAF")
-Cc: stable@vger.kernel.org
-Signed-off-by: Yi Yang <yiyang13@huawei.com>
-Reviewed-by: Jiri Slaby <jirislaby@kernel.org>
-Link: https://patch.msgid.link/20260604060734.2914976-1-yiyang13@huawei.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@kernel.org
+Fixes: 33a3bb4a3345 ("batman-adv: throughput meter implementation")
+Signed-off-by: Sven Eckelmann <sven@narfation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tty/vt/vc_screen.c |    2 +-
+ net/batman-adv/tp_meter.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/tty/vt/vc_screen.c
-+++ b/drivers/tty/vt/vc_screen.c
-@@ -699,7 +699,7 @@ vcs_write(struct file *file, const char
- 	}
- 	*ppos += written;
- 	ret = written;
--	if (written)
-+	if (written && vc)
- 		vcs_scr_updated(vc);
+diff --git a/net/batman-adv/tp_meter.c b/net/batman-adv/tp_meter.c
+index cd196842478686..a4df826e4ece71 100644
+--- a/net/batman-adv/tp_meter.c
++++ b/net/batman-adv/tp_meter.c
+@@ -738,7 +738,7 @@ static void batadv_tp_recv_ack(struct batadv_priv *bat_priv,
+ 		if (atomic_read(&tp_vars->dup_acks) != 3)
+ 			goto out;
  
- unlock_out:
+-		if (tp_vars->recover >= recv_ack)
++		if (!batadv_seq_before(tp_vars->recover, recv_ack))
+ 			goto out;
+ 
+ 		/* if this is the third duplicate ACK do Fast Retransmit */
+-- 
+2.53.0
+
 
 
 
