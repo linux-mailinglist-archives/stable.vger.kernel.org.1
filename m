@@ -1,155 +1,254 @@
-Return-Path: <stable+bounces-270572-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-270574-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 2VuGHUKIRmr3XwsAu9opvQ
-	(envelope-from <stable+bounces-270572-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 17:48:18 +0200
+	id AFwzMmiKRmrMYAsAu9opvQ
+	(envelope-from <stable+bounces-270574-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 17:57:28 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id D50506F9A35
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 17:48:17 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 36E746F9CAC
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 17:57:28 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=d4qIYwiH;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-270572-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-270572-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=none) header.from=linuxfoundation.org;
+	dkim=pass header.d=smile.fr header.s=google header.b=nQFzvMGU;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-270574-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-270574-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=reject) header.from=smile.fr;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 64D7430621FB
-	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 15:47:22 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id EEB80311A861
+	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 15:51:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 63538330656;
-	Thu,  2 Jul 2026 15:47:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 00F223346A8;
+	Thu,  2 Jul 2026 15:48:50 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f44.google.com (mail-wr1-f44.google.com [209.85.221.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0F333368AB
-	for <stable@vger.kernel.org>; Thu,  2 Jul 2026 15:47:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01FE72BEC2B
+	for <stable@vger.kernel.org>; Thu,  2 Jul 2026 15:48:47 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783007240; cv=none; b=XNTGv60gtLyhFF9uzVg5AAOnb6e4KDqIZqH80dhOnzJZdDlCYyYDRmr1BU4nBsbZQXK58VkCCK2r6lIaIV75JySTkrTEoL5Kp0G8zN+fvEk3JS8OkitrY0r4vUduj1q+ywKGs1chhJizdiZrk8T5Vpqc4AXnOlXZW7T6RznVjsk=
+	t=1783007329; cv=none; b=FJNXMakklq4ZG9SeJCzL6Qun1KbzDWhNE3Gak3Xx3VrG+CAO1iPFinMX6MWdtUs4y3zcHRnOu6+IxWXG5AwCUEfNV299Q5dDJxtaP98P+xwtO1Tjmk/O9C+cVElqX0VWrGBk9bw9TI6ZYcaLsWutATPNXsC764akvCLf9T/DbW8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783007240; c=relaxed/simple;
-	bh=0JXjyJc4nL2iz30A76Y4QSaMt0jLkEASfnbH3C2O6Cc=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=BA1nwsoP1P6qagNxaHZNq4wkttwLTWdZbqjcsdqhbDnClKVj+e9zoo2qjs38TYIKLzOexb0MIpbNAg+e73eH/JolYJXbSODWlc0YaarHnO8LMIYgH57c30Z5RoFO8qyPs8BQZPn0743DYz92M6kV5lV9ZkZPtuE68wuWqprKZRA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d4qIYwiH; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD98E1F000E9;
-	Thu,  2 Jul 2026 15:47:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1783007238;
-	bh=uqrxZRrH1KeNtgzxlO9DzD5yFJ2EMukwwAZRjwHNmEc=;
-	h=Subject:To:Cc:From:Date;
-	b=d4qIYwiH3DXAJTZD4tm7slHYD/xbaBsb/uQ/tJx3VPzTGJlqcdmx+Skd/cmB4x3s5
-	 GLpVBnArpMCAhImx6CXnxHOaFzRfgyZ0xI+6E/iZaQk0JomHh5H8282AL5n6R+sWME
-	 +wQVihplbTMzygxbVoYWEU23yKexkveIva5w1fZo=
-Subject: FAILED: patch "[PATCH] apparmor: advertise the tcp fast open fix is applied" failed to apply to 6.6-stable tree
-To: john.johansen@canonical.com
-Cc: <stable@vger.kernel.org>
-From: <gregkh@linuxfoundation.org>
-Date: Thu, 02 Jul 2026 17:47:18 +0200
-Message-ID: <2026070217-plentiful-create-ce90@gregkh>
+	s=arc-20240116; t=1783007329; c=relaxed/simple;
+	bh=GHe4f0gJmEY4HTStiVAVdP5FYbjDD0vlOpHVKNuxEy4=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=A3+1EPRieyGRwX/2ueCmyHHR1R0N/+kZyQAL1GInJFIfxIbHj+kNqm1y3F56lEXc+aEdk4VQTwYlA/qy2oRm4GitaYVROQueC/44PmXugkHoEDXaBUag5hsL7878TzHcH3R6qwum2AHR+ihCNwxMuLlLkjpmz8e2/Q71RpDKaTY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=smile.fr; spf=pass smtp.mailfrom=smile.fr; dkim=pass (1024-bit key) header.d=smile.fr header.i=@smile.fr header.b=nQFzvMGU; arc=none smtp.client-ip=209.85.221.44
+Received: by mail-wr1-f44.google.com with SMTP id ffacd0b85a97d-470174001a0so1462672f8f.0
+        for <stable@vger.kernel.org>; Thu, 02 Jul 2026 08:48:47 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=smile.fr; s=google; t=1783007326; x=1783612126; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=cKj12gt7daFFKUdXxcgEMCasVJqe5u0XDbVIMbqELsI=;
+        b=nQFzvMGUQvQI6EZOe0f5vgqCjTjZ5zGyoHAouupznJn54kFGa+XSQanNNML1Q+prB7
+         eh2OTzsy3DVO/c6MJrue4dsvXfZYMHlTYJHM1GNnxz5eCAdHR4PCC2XrUuWKLnnsFJdX
+         m23pyJAui+jBLsB+hXtXNc2p0rDEP1H7rRuZ8=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1783007326; x=1783612126;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=cKj12gt7daFFKUdXxcgEMCasVJqe5u0XDbVIMbqELsI=;
+        b=NOsQqPVLAB2uRJh07Yy49MxJZV1YKT0Iiw8l56qloPFW4tma/Bnfxq6dOqzEW9O4Sg
+         yYD5vPpBYwuFQI6CkbtEhKi922pbjxXYXeuKbe/Vy9QxMEmCQlodgMvkKssAEa/6I9aK
+         LFw65/WsNM0yhPNEuwcZxtgMHZJA6+h7vqm1zJKHKb6+Jdf6k/rpVTRUsZV1HFqu0IQA
+         y7Ied/NvRAZwESWY+FtK9puCREA5jj0wenJlOhVfCiK4Djjdnt2KX3tQsOjFlQ9Q5Hly
+         NF1xO/PcmJIJ5IB4zab+f3e8xyesjt7aF1ICgLREto4fNVDIb21qJUx9aV/N8nuZRHEq
+         DfaQ==
+X-Gm-Message-State: AOJu0YwZLQjWRpIU+zKb9HPe/V407ggQgbG0bD+7yNSTgZALwCWIml9I
+	OFHRHpD9FebVIx1gXG7km2vJd/iEws2yfNOEWB/hmYxsdCCsjO4LkjrTT0MPawYP86PjLYNVsnQ
+	exMtDgjDc+g==
+X-Gm-Gg: AfdE7clR3B6peHkm0fFafGsobIET94N8Q4B8LCzzfLAXF3Ot7C3yP0JBgfoLHp7CXRv
+	Ntgfcu5Xr/GI1KysIlDZNuXrSwmsV5hNzJoR/K7OY9lKOGLd91oAs+aGPf7ZbRa8fXT2cj0TF6m
+	x1tLIqaH6k39OnFv40CX/T1/m9nD+OEiTvC5IYPW6jDrRS2AXe0gwhrQCNm00FjBbnVqRDA/9DY
+	XH+REfl0riv8BQ0saFau9k9v5if0mGHpQgLeEnzc6EtDoIYJJZLcHtevQqT7m4KuV6/S2bcvyj5
+	DT+H6S12NHbWOPBC59cgl2jSpnw2SEqSvjquS527rY3IJGt7BSPTgBuCuWB1YeUX898MVe8N9dd
+	CGzyhP3KUqRRsI02bUG3934FZz+sQ/18DZZmfNu+jtOxUFZIC/HV8oQQEXreHXgEryYwmSUGMDM
+	0JrKxLAevviv4W6PtGSwO/JUCU5/RSp0jX3rrbUS2zubXUEx/AqDiYSTG+GK50FaXJs45K1GIDg
+	8LlIh0+jSiNOdopY+dJAA+t9M/1
+X-Received: by 2002:a05:6000:2507:b0:473:975c:4fd1 with SMTP id ffacd0b85a97d-477b3d5c5bfmr8449841f8f.25.1783007326422;
+        Thu, 02 Jul 2026 08:48:46 -0700 (PDT)
+Received: from FRSMI25-LASER.home (2a01cb001331aa00c56cc01f8c3c1c95.ipv6.abo.wanadoo.fr. [2a01:cb00:1331:aa00:c56c:c01f:8c3c:1c95])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-477de3dc77bsm10042468f8f.33.2026.07.02.08.48.45
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 02 Jul 2026 08:48:46 -0700 (PDT)
+From: Yoann Congal <yoann.congal@smile.fr>
+To: stable@vger.kernel.org
+Cc: linux-ext4@vger.kernel.org,
+	Andreas Dilger <adilger.kernel@dilger.ca>,
+	Theodore Ts'o <tytso@mit.edu>,
+	Yoann Congal <yoann.congal@smile.fr>,
+	Baokun Li <libaokun1@huawei.com>,
+	Jan Kara <jack@suse.cz>,
+	Ojaswin Mujoo <ojaswin@linux.ibm.com>
+Subject: [PATCH 6.6.y] ext4: get rid of ppath in get_ext_path()
+Date: Thu,  2 Jul 2026 17:48:10 +0200
+Message-ID: <20260702154810.3435236-1-yoann.congal@smile.fr>
+X-Mailer: git-send-email 2.47.3
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [2.34 / 15.00];
-	MID_END_EQ_FROM_USER_PART(4.00)[];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[smile.fr,reject];
+	R_MISSING_CHARSET(0.50)[];
+	R_DKIM_ALLOW(-0.20)[smile.fr:s=google];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-270572-lists,stable=lfdr.de];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCPT_COUNT_TWO(0.00)[2];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:john.johansen@canonical.com,m:stable@vger.kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FROM_NO_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	TO_DN_NONE(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-270574-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:linux-ext4@vger.kernel.org,m:adilger.kernel@dilger.ca,m:tytso@mit.edu,m:yoann.congal@smile.fr,m:libaokun1@huawei.com,m:jack@suse.cz,m:ojaswin@linux.ibm.com,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[yoann.congal@smile.fr,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FROM_NEQ_ENVFROM(0.00)[yoann.congal@smile.fr,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	ALIAS_RESOLVED(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	DKIM_TRACE(0.00)[smile.fr:+];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	MIME_TRACE(0.00)[0:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[gregkh:mid,vger.kernel.org:from_smtp,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,canonical.com:email]
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,msgid.link:url,suse.cz:email,vger.kernel.org:from_smtp,huawei.com:email,smile.fr:dkim,smile.fr:email,smile.fr:mid,smile.fr:from_mime]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: D50506F9A35
+X-Rspamd-Queue-Id: 36E746F9CAC
 
+From: Baokun Li <libaokun1@huawei.com>
 
-The patch below does not apply to the 6.6-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
+[ Upstream commit 6b854d552711aa33f59eda334e6d94a00d8825bb ]
 
-To reproduce the conflict and resubmit, you may use the following commands:
+The use of path and ppath is now very confusing, so to make the code more
+readable, pass path between functions uniformly, and get rid of ppath.
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
-git checkout FETCH_HEAD
-git cherry-pick -x 2f6701a5ce6257ae7a64ddc6d89d0a08d2a034f8
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026070217-plentiful-create-ce90@gregkh' --subject-prefix 'PATCH 6.6.y' 'HEAD^..'
+After getting rid of ppath in get_ext_path(), its caller may pass an error
+pointer to ext4_free_ext_path(), so it needs to teach ext4_free_ext_path()
+and ext4_ext_drop_refs() to skip the error pointer. No functional changes.
 
-Possible dependencies:
+Signed-off-by: Baokun Li <libaokun1@huawei.com>
+Reviewed-by: Jan Kara <jack@suse.cz>
+Reviewed-by: Ojaswin Mujoo <ojaswin@linux.ibm.com>
+Tested-by: Ojaswin Mujoo <ojaswin@linux.ibm.com>
+Link: https://patch.msgid.link/20240822023545.1994557-13-libaokun@huaweicloud.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
 
+Signed-off-by: Yoann Congal <yoann.congal@smile.fr>
+---
+ fs/ext4/extents.c     |  5 +++--
+ fs/ext4/move_extent.c | 34 +++++++++++++++++-----------------
+ 2 files changed, 20 insertions(+), 19 deletions(-)
 
-
-thanks,
-
-greg k-h
-
------------------- original commit in Linus's tree ------------------
-
-From 2f6701a5ce6257ae7a64ddc6d89d0a08d2a034f8 Mon Sep 17 00:00:00 2001
-From: John Johansen <john.johansen@canonical.com>
-Date: Mon, 22 Jun 2026 16:34:13 -0700
-Subject: [PATCH] apparmor: advertise the tcp fast open fix is applied
-
-The fix for tcp-fast-open ensures that the connect permission is being
-mediated correctly but it didn't add an artifact to the feature set to
-advertise the fix is available. Add an artifact so that the test suite
-can identify if the fix has not been properly applied or a new
-unexpected regression has occurred.
-
-Fixes: 4d587cd8a7215 ("apparmor: mediate the implicit connect of TCP fast open sendmsg")
-Signed-off-by: John Johansen <john.johansen@canonical.com>
-
-diff --git a/security/apparmor/net.c b/security/apparmor/net.c
-index df9cb7c00cac..cf590dd08540 100644
---- a/security/apparmor/net.c
-+++ b/security/apparmor/net.c
-@@ -22,12 +22,14 @@
+diff --git a/fs/ext4/extents.c b/fs/ext4/extents.c
+index a94798e23c1af..9c2d23958146b 100644
+--- a/fs/ext4/extents.c
++++ b/fs/ext4/extents.c
+@@ -114,7 +114,7 @@ static void ext4_ext_drop_refs(struct ext4_ext_path *path)
+ {
+ 	int depth, i;
  
- struct aa_sfs_entry aa_sfs_entry_network[] = {
- 	AA_SFS_FILE_STRING("af_mask",	AA_SFS_AF_MASK),
-+	AA_SFS_FILE_BOOLEAN("tcp-fast-open",		1),
- 	{ }
- };
+-	if (!path)
++	if (IS_ERR_OR_NULL(path))
+ 		return;
+ 	depth = path->p_depth;
+ 	for (i = 0; i <= depth; i++, path++) {
+@@ -125,6 +125,8 @@ static void ext4_ext_drop_refs(struct ext4_ext_path *path)
  
- struct aa_sfs_entry aa_sfs_entry_networkv9[] = {
- 	AA_SFS_FILE_STRING("af_mask",	AA_SFS_AF_MASK),
- 	AA_SFS_FILE_BOOLEAN("af_unix",	1),
-+	AA_SFS_FILE_BOOLEAN("tcp-fast-open",		1),
- 	{ }
- };
+ void ext4_free_ext_path(struct ext4_ext_path *path)
+ {
++	if (IS_ERR_OR_NULL(path))
++		return;
+ 	ext4_ext_drop_refs(path);
+ 	kfree(path);
+ }
+@@ -4242,7 +4244,6 @@ int ext4_ext_map_blocks(handle_t *handle, struct inode *inode,
+ 	path = ext4_find_extent(inode, map->m_lblk, NULL, 0);
+ 	if (IS_ERR(path)) {
+ 		err = PTR_ERR(path);
+-		path = NULL;
+ 		goto out;
+ 	}
  
-
+diff --git a/fs/ext4/move_extent.c b/fs/ext4/move_extent.c
+index d5636a2a718a8..96a84de321690 100644
+--- a/fs/ext4/move_extent.c
++++ b/fs/ext4/move_extent.c
+@@ -17,27 +17,23 @@
+  * get_ext_path() - Find an extent path for designated logical block number.
+  * @inode:	inode to be searched
+  * @lblock:	logical block number to find an extent path
+- * @ppath:	pointer to an extent path pointer (for output)
++ * @path:	pointer to an extent path
+  *
+- * ext4_find_extent wrapper. Return 0 on success, or a negative error value
+- * on failure.
++ * ext4_find_extent wrapper. Return an extent path pointer on success,
++ * or an error pointer on failure.
+  */
+-static inline int
++static inline struct ext4_ext_path *
+ get_ext_path(struct inode *inode, ext4_lblk_t lblock,
+-		struct ext4_ext_path **ppath)
++	     struct ext4_ext_path *path)
+ {
+-	struct ext4_ext_path *path = *ppath;
+-
+-	*ppath = NULL;
+ 	path = ext4_find_extent(inode, lblock, path, EXT4_EX_NOCACHE);
+ 	if (IS_ERR(path))
+-		return PTR_ERR(path);
++		return path;
+ 	if (path[ext_depth(inode)].p_ext == NULL) {
+ 		ext4_free_ext_path(path);
+-		return -ENODATA;
++		return ERR_PTR(-ENODATA);
+ 	}
+-	*ppath = path;
+-	return 0;
++	return path;
+ }
+ 
+ /**
+@@ -95,9 +91,11 @@ mext_check_coverage(struct inode *inode, ext4_lblk_t from, ext4_lblk_t count,
+ 	int ret = 0;
+ 	ext4_lblk_t last = from + count;
+ 	while (from < last) {
+-		*err = get_ext_path(inode, from, &path);
+-		if (*err)
+-			goto out;
++		path = get_ext_path(inode, from, path);
++		if (IS_ERR(path)) {
++			*err = PTR_ERR(path);
++			return ret;
++		}
+ 		ext = path[ext_depth(inode)].p_ext;
+ 		if (unwritten != ext4_ext_is_unwritten(ext))
+ 			goto out;
+@@ -634,9 +632,11 @@ ext4_move_extents(struct file *o_filp, struct file *d_filp, __u64 orig_blk,
+ 		int offset_in_page;
+ 		int unwritten, cur_len;
+ 
+-		ret = get_ext_path(orig_inode, o_start, &path);
+-		if (ret)
++		path = get_ext_path(orig_inode, o_start, path);
++		if (IS_ERR(path)) {
++			ret = PTR_ERR(path);
+ 			goto out;
++		}
+ 		ex = path[path->p_depth].p_ext;
+ 		cur_blk = le32_to_cpu(ex->ee_block);
+ 		cur_len = ext4_ext_get_actual_len(ex);
 
