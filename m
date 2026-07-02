@@ -1,70 +1,61 @@
-Return-Path: <stable+bounces-271177-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-270825-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 2Mx/MIekRmp5awsAu9opvQ
-	(envelope-from <stable+bounces-271177-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:48:55 +0200
+	id pmAaGXWURmoAZAsAu9opvQ
+	(envelope-from <stable+bounces-270825-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:40:21 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B6C486FBA58
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:48:54 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id E69CB6FA590
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:40:20 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=0qPuHQLQ;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-271177-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-271177-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=pyrJDKtc;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-270825-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-270825-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 6EFA93122658
-	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:49:39 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 60E873064EE1
+	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:35:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 121BA3AB29C;
-	Thu,  2 Jul 2026 16:47:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2929B395AED;
+	Thu,  2 Jul 2026 16:32:27 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB11B34C155;
-	Thu,  2 Jul 2026 16:47:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02ADD318EDC;
+	Thu,  2 Jul 2026 16:32:26 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783010869; cv=none; b=DS2tFoqqlXrF1qPBOZP9KUs24e/AyTY9fWSKI5ALcR12bBJWysTlKPytAFSsU5xDoOVWM932XkgX1KarnorcvgTrhuEoy4ZB1kp1DhD3JGVj9QvQNWnV0E9mAS7ZtLCRqycOwKeK0+YZS984253E5GOTrah7UiBuEOxyNpUcNaw=
+	t=1783009947; cv=none; b=q2NKIhBuGlGN/vBCtFWLfmrAe6UpX2ovEhbAIwI/QI2BjC91Ma53h6+tKUlSSpCawRGA3qvmksZ0FpTLhypnMkar7YLtly6AEiHQXD71SIXwQbW5m2HDgB5O5Is7uw9PrEPssv2Ei9QyL5Rf5YvsQxFDWrFlT1n4DTkPqqunf6g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783010869; c=relaxed/simple;
-	bh=9Lu25dw4DWT6jYkzprVkzMMddIQ5TaiaiHeuqe6uXnI=;
+	s=arc-20240116; t=1783009947; c=relaxed/simple;
+	bh=idKYqr24tPuRojJ47O79oXApPmEKwBIH+m1sGWxRO40=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=k88nzUWME8Ze45ubg2oIcuYvMiFJQeE5/vLxHq3aYF3V/Ve2SD14ubb/x47yDVci5a/jOMQAGScroYLVgYr7SwvZjakG7XwzX/weCq3HxYtbkX9BXKyIH+VRHna2yI6cfD2yfSuusoOIQTzoeibhClbSF8nh9yvXmxpXwYAmY60=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0qPuHQLQ; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 328221F000E9;
-	Thu,  2 Jul 2026 16:47:48 +0000 (UTC)
+	 MIME-Version; b=t3trgkHV75mTpexPtB/gbGA4G2Kmt/HLZhk0v6+EKCPmyWZO3P3KKotc++47HOLsm3NP8hR0Wt6OroUdWZLAI6R9TmWLAeYrFr0+TE54/9Qgr1EPejSQKE1aKmJIlwNUUv8RlsRkwx8Qeu+imS5CvXYvmy+HfEx3NnMfRrtuT9s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pyrJDKtc; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68B651F000E9;
+	Thu,  2 Jul 2026 16:32:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1783010868;
-	bh=SOlCjJeUFNHQRXmsyiuJTu9J3iA6MSDBIogCcOv6eVo=;
+	s=korg; t=1783009945;
+	bh=+Ry2KlJfKF11jn9tbEwyzvMV4nR19yrlQxQPUm3EJLE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=0qPuHQLQrkwSLSIqXX3C2a3gmNj5wZFjEpP/8cmcY4r6m+Spmv2PuZr18c4wd0vUI
-	 JqIVlfbIshBF+JWdDPUyMIukWRyoNavoWbL2rTZMK4CJgBQudpxj5Fax0GLQC6CNz7
-	 VI0w78kGXfaXD49b/7JfJwkSg9EESoBzMcL3hfcg=
+	b=pyrJDKtcRY5JtqPKCcHZ2hdpekZ+Aq2toEd/HsvPKtf2xPivGQb8zXGeFvAfq2GG3
+	 yPBo416fhWbwqBDuZm2jjX5D+Kg3Qt8kZHpqEu04EdpDP7ANp+g4oK4Mqeq4YemkLw
+	 HaGAv6WnGdWQPsKYunCGsl17GPXY8bnsw6HY5mPg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Masahiro Yamada <masahiroy@kernel.org>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>,
-	Mark Brown <broonie@kernel.org>,
-	"Arnd Bergmann" <arnd@arndb.de>,
-	Nathan Chancellor <nathan@kernel.org>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
-	Andrey Grodzovsky <andrey.grodzovsky@crowdstrike.com>
-Subject: [PATCH 6.6 068/175] scripts/sorttable: Use normal sort if theres no relocs in the mcount section
+	stable@kernel.org,
+	Sven Eckelmann <sven@narfation.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 050/129] batman-adv: tp_meter: keep unacked list in ascending ordered
 Date: Thu,  2 Jul 2026 18:19:29 +0200
-Message-ID: <20260702155117.225506612@linuxfoundation.org>
+Message-ID: <20260702155113.185382634@linuxfoundation.org>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260702155115.766838875@linuxfoundation.org>
-References: <20260702155115.766838875@linuxfoundation.org>
+In-Reply-To: <20260702155112.163984240@linuxfoundation.org>
+References: <20260702155112.163984240@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -81,22 +72,22 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-271177-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-270825-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[15];
+	TO_DN_SOME(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:mhiramat@kernel.org,m:mark.rutland@arm.com,m:mathieu.desnoyers@efficios.com,m:akpm@linux-foundation.org,m:masahiroy@kernel.org,m:catalin.marinas@arm.com,m:will@kernel.org,m:broonie@kernel.org,m:arnd@arndb.de,m:nathan@kernel.org,m:rostedt@goodmis.org,m:andrey.grodzovsky@crowdstrike.com,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:stable@kernel.org,m:sven@narfation.org,m:sashal@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	TO_DN_SOME(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
@@ -107,69 +98,53 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,efficios.com:email,goodmis.org:email,linux-foundation.org:email,arndb.de:email,crowdstrike.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,narfation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: B6C486FBA58
+X-Rspamd-Queue-Id: E69CB6FA590
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Steven Rostedt <rostedt@goodmis.org>
+From: Sven Eckelmann <sven@narfation.org>
 
-[ Upstream commit 46514b3c2c17c67cefe84b0c1a59e0aaf6093131 ]
+commit 5aa8651527ea0b610e7a09fb3b8204c1398b9525 upstream.
 
-When ARM 64 is compiled with gcc, the mcount_loc section will be filled
-with zeros and the addresses will be located in the Elf_Rela sections. To
-sort the mcount_loc section, the addresses from the Elf_Rela need to be
-placed into an array and that is sorted.
+When batadv_tp_handle_out_of_order inserts a new entry in the list of
+unacked (out of order) packets, it searches from the entry with the newest
+sequence number towards oldest sequence number. If an entry is found which
+is older than the newly entry, the new entry has to be added after the
+found one to keep the ascending order.
 
-But when ARM 64 is compiled with clang, it does it the same way as other
-architectures and leaves the addresses as is in the mcount_loc section.
+But for this operation list_add_tail() was used. But this function adds an
+entry _before_ another one. As result, the list would contain a lot of
+swapped sequence numbers. The consumer of this list
+(batadv_tp_ack_unordered()) would then fail to correctly ack packets.
 
-To handle both cases, ARM 64 will first try to sort the Elf_Rela section,
-and if it doesn't find any functions, it will then fall back to the
-sorting of the addresses in the mcount_loc section itself.
-
-Cc: Masami Hiramatsu <mhiramat@kernel.org>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Cc: Masahiro Yamada <masahiroy@kernel.org>
-Cc: Catalin Marinas <catalin.marinas@arm.com>
-Cc: Will Deacon <will@kernel.org>
-Cc: Mark Brown <broonie@kernel.org>
-Link: https://lore.kernel.org/20250225182054.648398403@goodmis.org
-Fixes: b3d09d06e052 ("arm64: scripts/sorttable: Implement sorting mcount_loc at boot for arm64")
-Reported-by: "Arnd Bergmann" <arnd@arndb.de>
-Tested-by: Nathan Chancellor <nathan@kernel.org>
-Closes: https://lore.kernel.org/all/893cd8f1-8585-4d25-bf0f-4197bf872465@app.fastmail.com/
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-Signed-off-by: Andrey Grodzovsky <andrey.grodzovsky@crowdstrike.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@kernel.org
+Fixes: 33a3bb4a3345 ("batman-adv: throughput meter implementation")
+Signed-off-by: Sven Eckelmann <sven@narfation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- scripts/sorttable.c |    9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+ net/batman-adv/tp_meter.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/scripts/sorttable.c
-+++ b/scripts/sorttable.c
-@@ -827,9 +827,14 @@ static void *sort_mcount_loc(void *arg)
- 		pthread_exit(m_err);
+diff --git a/net/batman-adv/tp_meter.c b/net/batman-adv/tp_meter.c
+index dfc3374549921f..f350a60e6c76b9 100644
+--- a/net/batman-adv/tp_meter.c
++++ b/net/batman-adv/tp_meter.c
+@@ -1325,7 +1325,7 @@ static bool batadv_tp_handle_out_of_order(struct batadv_tp_vars *tp_vars,
+ 		 * one is attached _after_ it. In this way the list is kept in
+ 		 * ascending order
+ 		 */
+-		list_add_tail(&new->list, &un->list);
++		list_add(&new->list, &un->list);
+ 		added = true;
+ 		break;
  	}
- 
--	if (sort_reloc)
-+	if (sort_reloc) {
- 		count = fill_relocs(vals, size, ehdr, emloc->start_mcount_loc);
--	else
-+		/* gcc may use relocs to save the addresses, but clang does not. */
-+		if (!count) {
-+			count = fill_addrs(vals, size, start_loc);
-+			sort_reloc = 0;
-+		}
-+	} else
- 		count = fill_addrs(vals, size, start_loc);
- 
- 	if (count < 0) {
+-- 
+2.53.0
+
 
 
 
