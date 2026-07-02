@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-270490-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-270492-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id lIDAJj5mRmroSgsAu9opvQ
-	(envelope-from <stable+bounces-270490-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 15:23:10 +0200
+	id tjykGPJmRmokSwsAu9opvQ
+	(envelope-from <stable+bounces-270492-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 15:26:10 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7EFF36F8484
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 15:23:08 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 421D96F8525
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 15:26:09 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="nVYfEZ/P";
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-270490-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-270490-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="DVzN/wFn";
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-270492-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-270492-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 80929304411B
-	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 13:12:33 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id D842A3035392
+	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 13:12:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 036A8426411;
-	Thu,  2 Jul 2026 13:12:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 763AE426411;
+	Thu,  2 Jul 2026 13:12:37 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 394C039B958
-	for <stable@vger.kernel.org>; Thu,  2 Jul 2026 13:12:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 358E0431E55
+	for <stable@vger.kernel.org>; Thu,  2 Jul 2026 13:12:35 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782997952; cv=none; b=d8anUrRp3HI07dDIBR/HnWfz5Ar8vW5YChXrbYYyBByyqHpQvK2QHYOYMLTv51qK18rI894Q19AvmgyFpt5oU5HRsVLKupEQZXB2Qlr6M/VzWSfCiwFQK+PelZqVxPUwqMH7ItDVLtLHyEqM1uBNvmVmXtMt+SC/L6PFrpC14wA=
+	t=1782997957; cv=none; b=pBoT1El7Vnb7NU99l/2istW27yTBGkVK9+YijvXFN76OvXx+tE1IlMg9hffAF4E0/7u8zfYl67haeOySbzLC+tEYhFkbrxto5zynNq2uvogQye1bs7mjymUNbpOze8Z3Y8BFt4haATB/fRnKmqfga5loH+ATccAYC6nXzHliziQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782997952; c=relaxed/simple;
-	bh=q2XEBSs/uADiFntEK2U0K2NL8q+1M5+f7SC/ZJX/FnU=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=D8CVYzG4EwnTzT+E/F1U84lbM7ITLooc/sr+rLePyD8k8STlkgq/376VkcRxlQhA5HAnXNJyaCQRfVrKjG3NHhriZnPCHZGmumNBXklgUGNZ5ALFHD3TQFwJriv9wrTZoMw0GTvUVLnxZMG3wXDovdv0XYqNUqtc+smr4S5wmK8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nVYfEZ/P; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 675CF1F000E9;
-	Thu,  2 Jul 2026 13:12:30 +0000 (UTC)
+	s=arc-20240116; t=1782997957; c=relaxed/simple;
+	bh=++NmTXlwNljw05ADJ1bxWtTKKecnVebSkwBaaGEZyiE=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=QRddCr61jg6a+a4KRIpogrxqNbbAcc2+bvM4DONpbGyXMSh9B8k4n4s5INYmZO+b76E99ULOEdCP44xOfw7L0++xudhrMLBr34PoVVJc/l4AzBEU/qoj+3GFrRwD1Ow3B9UAmqP0Z35cMBNSCbTY+6NFsFakDyasNd9IEb9i2As=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DVzN/wFn; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F5791F000E9;
+	Thu,  2 Jul 2026 13:12:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1782997950;
-	bh=VZSOo7DkDObX3PtB0Qtw9yUugo7kgMtNGRHadz2vpqg=;
+	s=korg; t=1782997955;
+	bh=x8otwZju5+tH+qmiCIjqLiWxGGx2RJogdw365WeG2f0=;
 	h=Subject:To:Cc:From:Date;
-	b=nVYfEZ/PNvcHKOycu7qSEOfZ4Fjq8yT8L/BZICcUbwGtinPlgwucxif/YI8Ad6LL7
-	 BRfl+3tMroXe2nd0wLJkFhiejeB9U/DMaeTQumFjb4b3sumTEcvEBySi7+cAoetXhk
-	 7oHJclyp4+ZXC9RpYGAk8ruy8t5feQiIUWkZU4rQ=
-Subject: FAILED: patch "[PATCH] block: Avoid mounting the bdev pseudo-filesystem in userspace" failed to apply to 6.1-stable tree
+	b=DVzN/wFnVf4wa5i0a3kkyvWAOY66OkWEQoEF39L1VhkIvp0GzDISehhv7SSD9SYul
+	 f0lvKFjPz8YhZuKtWwrUHxN7rxdd/AcXkOCFl8irZpswKEhYPHRnjT/GEz/zncqEd8
+	 TrxTtYtpblmc9o75JeCxuBNXcVhQe2EjrX+ZmJs4=
+Subject: FAILED: patch "[PATCH] block: Avoid mounting the bdev pseudo-filesystem in userspace" failed to apply to 5.10-stable tree
 To: arefev@swemel.ru,axboe@kernel.dk,hch@lst.de
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Thu, 02 Jul 2026 15:12:21 +0200
-Message-ID: <2026070221-hazing-urban-0aef@gregkh>
+Date: Thu, 02 Jul 2026 15:12:22 +0200
+Message-ID: <2026070222-tricking-disinfect-fc0b@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -63,12 +63,12 @@ X-Spamd-Result: default: False [2.34 / 15.00];
 	MID_RHS_NOT_FQDN(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-270490-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-270492-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
@@ -87,25 +87,25 @@ X-Spamd-Result: default: False [2.34 / 15.00];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	FORWARDED(0.00)[lists@lfdr.de];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	MIME_TRACE(0.00)[0:+]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 7EFF36F8484
+X-Rspamd-Queue-Id: 421D96F8525
 
 
-The patch below does not apply to the 6.1-stable tree.
+The patch below does not apply to the 5.10-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
 git checkout FETCH_HEAD
 git cherry-pick -x f73aa66dffcb8e61e78f01b56163ec16a15d06d2
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026070221-hazing-urban-0aef@gregkh' --subject-prefix 'PATCH 6.1.y' 'HEAD^..'
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026070222-tricking-disinfect-fc0b@gregkh' --subject-prefix 'PATCH 5.10.y' 'HEAD^..'
 
 Possible dependencies:
 
