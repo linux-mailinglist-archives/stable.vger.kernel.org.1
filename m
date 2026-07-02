@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-271216-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-271409-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id yoegKPyZRmo/ZwsAu9opvQ
-	(envelope-from <stable+bounces-271216-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:03:56 +0200
+	id JCa4JyibRmrhZwsAu9opvQ
+	(envelope-from <stable+bounces-271409-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:08:56 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1BD8C6FAED9
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:03:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4097E6FB0AD
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:08:56 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=lZZ0ACCZ;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-271216-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-271216-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=DTae8n+M;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-271409-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-271409-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 421463245F03
-	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:51:09 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 5A1C132BBAA6
+	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:57:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AEB513A0E88;
-	Thu,  2 Jul 2026 16:49:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 034643093DD;
+	Thu,  2 Jul 2026 16:57:49 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 654D83290C9;
-	Thu,  2 Jul 2026 16:49:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF96B25B09B;
+	Thu,  2 Jul 2026 16:57:47 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783010969; cv=none; b=t5hfOGnLjJQr2Duhrqpw+XG3B03F38NDMpRk2avHvJgVMsLGv9dKOKs8kzNgW1YCNlHW0nIRCVjU+wkWnDi/dGxthj32pI/2cAMvcHpxntuuaxSHo8o8WD5+FKaZpKk7a/MwiS+BQRTTwtJ/LUsTd7BmNMD98TMeWTVhowaJGbg=
+	t=1783011468; cv=none; b=EE4FKZ2z5cHFhqPbQXSCTAqBr6oB96vBTwczbvVwXH+QqBLD4gbT2M/fI2rgod56g1f9biIHb5vu8zJ/kIGKpPFJ2DzEbf9kGgZ9MMfRFTk6FW8epAe+j1dhWk7gQFxuSq0i28gDApDkAnMXjUyMtWG8i16FlTad7S4p8mPUsDY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783010969; c=relaxed/simple;
-	bh=Stn4mtpEavjEkq2JdP5kwJOB+iUWRs0NLznzAaVqSuI=;
+	s=arc-20240116; t=1783011468; c=relaxed/simple;
+	bh=/eCo8QTytcUlVcBX8sNinxLD4v/v+hOBLRpZ1+Xwhhs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lnFXrmaRFrdBInnDEaVyZ/m/szSJhDk6O9XBPqgRgTfmGIMhx7paKJBps3qvM6+ffysuRQ9kvXCD5KQbUdjs+T3RNCpJRht+Cuk/YPIJaQX3Eual5H3PkNFe2PN5RrWHnrWtbCi1RB9OgzJqcS3gAVVXl4zRmm1qjuasfLzw5kc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lZZ0ACCZ; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CBB6C1F000E9;
-	Thu,  2 Jul 2026 16:49:27 +0000 (UTC)
+	 MIME-Version; b=syJtg/x1yOXR5oyVkNWuZ7a6Oyv0lIPASLRR7p0dA+omuAX3INqVfKy2e59AvuiXgnFWdZGN1H3k7zou2U8BQJQvlyNp3bqroXz8RuVuUP3+W4vWF5yeqB5djMW1gQOpY22uf8XGgny6LNvhsvGXolPenUA7UKipB55GyF3ezHU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DTae8n+M; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DDA6C1F000E9;
+	Thu,  2 Jul 2026 16:57:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1783010968;
-	bh=eTA0X0DeCIPuhzZnHTqR5gVW/X9CCAm2EBCTyz5OCXw=;
+	s=korg; t=1783011467;
+	bh=M18VRvuOLQP5EFyNQp8efyzNHg2iAbF4NFQv/uwZvyk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=lZZ0ACCZQ2DeCNDTlWaW9YnQW0Y6f9RviSzMW2QwMyeaCwG6bXbFuz4CrB8g9REof
-	 bvp0fSj4gKZIC/+0Zxtpd1kGWCIHVUVvr+ilj6CdEpybJe8kt+MA6A1fG9hK3VeiM4
-	 MSGXWntR6+t4BZgH0HP8m6D9bcIxLs5/Z8Gz2VeU=
+	b=DTae8n+M1V/IPUKhdKoKM6XoJQPGB6x0OsFmDkGNDWJrChV9hyUrXD6aZOIArtlcd
+	 35SyAHancmd5nafgU4/sVxJtU/pB8byWs3qJzXZa/Js6sqWMDBsEGEKuyjVvvry8+4
+	 fz2TW7H8ynlViiIdsiQFtULfOx7u5fDA8aTR1GS0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -50,12 +50,12 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	stable@kernel.org,
 	Sven Eckelmann <sven@narfation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 107/175] batman-adv: tp_meter: restrict number of unacked list entries
+Subject: [PATCH 7.1 012/120] batman-adv: tp_meter: initialize last_recv_time during init
 Date: Thu,  2 Jul 2026 18:20:08 +0200
-Message-ID: <20260702155118.018114165@linuxfoundation.org>
+Message-ID: <20260702155113.217248060@linuxfoundation.org>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260702155115.766838875@linuxfoundation.org>
-References: <20260702155115.766838875@linuxfoundation.org>
+In-Reply-To: <20260702155112.964534952@linuxfoundation.org>
+References: <20260702155112.964534952@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -77,7 +77,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-271216-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-271409-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
@@ -98,130 +98,74 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,narfation.org:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,narfation.org:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 1BD8C6FAED9
+X-Rspamd-Queue-Id: 4097E6FB0AD
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+7.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
 From: Sven Eckelmann <sven@narfation.org>
 
-commit e7c775110e1858e5a7471a23a9c9658c0af9df89 upstream.
+commit 811cb00fa8cdc3f0a7f6eefc000a6888367c8c8f upstream.
 
-When the unacked_list is unbound, an attacker could send messages with
-small lengths and appropriated seqno + gaps to force the receiver to
-allocate more and more unacked_list entries. And the end either causing an
-out-of-memory situation or increase the management overhead for the (large)
-list that significant portions of CPU cycles are wasted in searching
-through the list.
+The last_recv_time is the most important indicator for a receiver session
+to figure out whether a session timed out or not. But this information was
+only initialized after the session was added to the tp_receiver_list and
+after the timer was started.
 
-When limiting the list to a specific number, it is important to still
-correctly add a new entry to the list. But if the list became larger than
-the limit, the last entry of the list (with the highest seqno) must be
-dropped to still allow the earlier seqnos to finish and therefore to
-continue the process. Otherwise, the process might get stuck with too high
-seqnos which are not handled by batadv_tp_ack_unordered().
+In the worst case, the timer (function) could have tried to access this
+information before the actual initialization was reached. Like rest of the
+variables of the tp_meter receiver session, this field has to be filled out
+before any other (parallel running) context has the chance to access it.
 
 Cc: stable@kernel.org
 Fixes: 33a3bb4a3345 ("batman-adv: throughput meter implementation")
-[ Switch to pre-splitted tp_vars structure names ]
+[ Context ]
 Signed-off-by: Sven Eckelmann <sven@narfation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/batman-adv/tp_meter.c | 23 ++++++++++++++++++++++-
- net/batman-adv/types.h    |  3 +++
- 2 files changed, 25 insertions(+), 1 deletion(-)
+ net/batman-adv/tp_meter.c | 10 +++++++---
+ 1 file changed, 7 insertions(+), 3 deletions(-)
 
 diff --git a/net/batman-adv/tp_meter.c b/net/batman-adv/tp_meter.c
-index 133eed2fa9507f..638dd438a6c052 100644
+index 7bfad65c862e9a..397b9456353568 100644
 --- a/net/batman-adv/tp_meter.c
 +++ b/net/batman-adv/tp_meter.c
-@@ -87,6 +87,11 @@
- #define BATADV_TP_PLEN (BATADV_TP_PACKET_LEN - ETH_HLEN - \
- 			sizeof(struct batadv_unicast_packet))
+@@ -1403,8 +1403,10 @@ batadv_tp_init_recv(struct batadv_priv *bat_priv,
  
-+/**
-+ * BATADV_TP_MAX_UNACKED - maximum number of packets a receiver didn't yet ack
-+ */
-+#define BATADV_TP_MAX_UNACKED 100
-+
- static u8 batadv_tp_prerandom[4096] __read_mostly;
- 
- /**
-@@ -1195,6 +1200,7 @@ static void batadv_tp_receiver_shutdown(struct timer_list *t)
- 	list_for_each_entry_safe(un, safe, &tp_vars->unacked_list, list) {
- 		list_del(&un->list);
- 		kfree(un);
-+		tp_vars->unacked_count--;
- 	}
- 	spin_unlock_bh(&tp_vars->unacked_lock);
- 
-@@ -1308,6 +1314,7 @@ static bool batadv_tp_handle_out_of_order(struct batadv_tp_vars *tp_vars,
- 	/* if the list is empty immediately attach this new object */
- 	if (list_empty(&tp_vars->unacked_list)) {
- 		list_add(&new->list, &tp_vars->unacked_list);
-+		tp_vars->unacked_count++;
- 		goto out;
- 	}
- 
-@@ -1338,12 +1345,24 @@ static bool batadv_tp_handle_out_of_order(struct batadv_tp_vars *tp_vars,
- 		 */
- 		list_add(&new->list, &un->list);
- 		added = true;
-+		tp_vars->unacked_count++;
- 		break;
- 	}
- 
- 	/* received packet with smallest seqno out of order; add it to front */
--	if (!added)
-+	if (!added) {
- 		list_add(&new->list, &tp_vars->unacked_list);
-+		tp_vars->unacked_count++;
-+	}
-+
-+	/* remove the last (biggest) unacked seqno when list is too large */
-+	if (tp_vars->unacked_count > BATADV_TP_MAX_UNACKED) {
-+		un = list_last_entry(&tp_vars->unacked_list,
-+				     struct batadv_tp_unacked, list);
-+		list_del(&un->list);
-+		kfree(un);
-+		tp_vars->unacked_count--;
+ 	tp_vars = batadv_tp_list_find_session(bat_priv, icmp->orig,
+ 					      icmp->session, BATADV_TP_RECEIVER);
+-	if (tp_vars)
++	if (tp_vars) {
++		tp_vars->last_recv_time = jiffies;
+ 		goto out_unlock;
 +	}
  
- out:
- 	spin_unlock_bh(&tp_vars->unacked_lock);
-@@ -1380,6 +1399,7 @@ static void batadv_tp_ack_unordered(struct batadv_tp_vars *tp_vars)
- 
- 		list_del(&un->list);
- 		kfree(un);
-+		tp_vars->unacked_count--;
- 	}
- 	spin_unlock_bh(&tp_vars->unacked_lock);
- }
-@@ -1430,6 +1450,7 @@ batadv_tp_init_recv(struct batadv_priv *bat_priv,
- 
- 	spin_lock_init(&tp_vars->unacked_lock);
- 	INIT_LIST_HEAD(&tp_vars->unacked_list);
-+	tp_vars->unacked_count = 0;
- 
+ 	if (!atomic_add_unless(&bat_priv->tp_num, 1, BATADV_TP_MAX_NUM)) {
+ 		batadv_dbg(BATADV_DBG_TP_METER, bat_priv,
+@@ -1432,6 +1434,8 @@ batadv_tp_init_recv(struct batadv_priv *bat_priv,
  	kref_get(&tp_vars->refcount);
  	timer_setup(&tp_vars->timer, batadv_tp_receiver_shutdown, 0);
-diff --git a/net/batman-adv/types.h b/net/batman-adv/types.h
-index d56886951177d9..7c32947414cd80 100644
---- a/net/batman-adv/types.h
-+++ b/net/batman-adv/types.h
-@@ -1494,6 +1494,9 @@ struct batadv_tp_vars {
- 	/** @unacked_lock: protect unacked_list */
- 	spinlock_t unacked_lock;
  
-+	/** @unacked_count: number of unacked entries */
-+	size_t unacked_count;
++	tp_vars->last_recv_time = jiffies;
 +
- 	/** @last_recv_time: time (jiffies) a msg was received */
- 	unsigned long last_recv_time;
+ 	kref_get(&tp_vars->refcount);
+ 	hlist_add_head_rcu(&tp_vars->list, &bat_priv->tp_list);
  
+@@ -1480,9 +1484,9 @@ static void batadv_tp_recv_msg(struct batadv_priv *bat_priv,
+ 				   icmp->orig);
+ 			goto out;
+ 		}
+-	}
+ 
+-	tp_vars->last_recv_time = jiffies;
++		tp_vars->last_recv_time = jiffies;
++	}
+ 
+ 	/* if the packet is a duplicate, it may be the case that an ACK has been
+ 	 * lost. Resend the ACK
 -- 
 2.53.0
 
