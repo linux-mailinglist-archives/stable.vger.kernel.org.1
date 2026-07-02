@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-270607-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-270692-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id t5uVL+WSRmpbYwsAu9opvQ
-	(envelope-from <stable+bounces-270607-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:33:41 +0200
+	id qqjaOsWURmoxZAsAu9opvQ
+	(envelope-from <stable+bounces-270692-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:41:41 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 17ABC6FA3FD
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:33:41 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E7FC6FA640
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:41:41 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=OErYZoUt;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-270607-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-270607-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=QTck3o+q;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-270692-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-270692-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 9D8453115CF2
-	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:25:30 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 798AA326022D
+	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:31:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4CC0D348C42;
-	Thu,  2 Jul 2026 16:23:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 12AF1390C81;
+	Thu,  2 Jul 2026 16:26:44 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29F20348C53;
-	Thu,  2 Jul 2026 16:22:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22BED3AC0DC;
+	Thu,  2 Jul 2026 16:26:40 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783009380; cv=none; b=TE9NZ1JrLlAd2CVyHAZeDpYcynhjpo0c869oBJdbNjGUQoStOQJEmC4N6KmpHQcgGD30bhMgs+1pCc/SPSGqypy3okM37iGuKvsWkr5PSDrDpAVFnC/O0zkGZR2bzr9rJuUZlgh2Txz9EUQcvTFSO31lVsqGpBCIAy7H1EIL5is=
+	t=1783009603; cv=none; b=eoMBGCD/MEpF8ESYbX0TkyAbFt2X3ATn940bZBNvZmGKb2nbyBIPSTss4avPgyRXTCn6RaiFRYwMpFaDI8QEV30t+NhvxrolzCgcLc1MWHYi4wuRQUc3R/BZBiRiITI34FHdzQe0ZQo3/pVKKvSY0xQ2Yu2eGCYfxw4l07YLdNg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783009380; c=relaxed/simple;
-	bh=iW6Ib2z7jW4uZbLgrST3MKrWD/2aoTIWUz8D2Javyy0=;
+	s=arc-20240116; t=1783009603; c=relaxed/simple;
+	bh=1n0hSwSRyn3M99NVePCQwcGLvloVBLjv004VSUKxzsE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EdKaB9NyPb87oja2EkdgvBMbP8SmVSk8UK8s8azRVFThJHVIGb/4cY02AEgNSIpQSgctEBpFSKXKR1Qww/+xJ+Tltf8MOQJRSWmlPHONT8sIQ71OOQblLUFqnRDCnOLbT1NnSje7+SFUldGx7StSLMp7VY9dE7VUiKhE60zzy3Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OErYZoUt; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2660C1F00A3A;
-	Thu,  2 Jul 2026 16:22:55 +0000 (UTC)
+	 MIME-Version; b=HCO0ubR9f4UMq6f2Ca/jb1irQn+qPX6qKSIxAVQabGlmLl8P9K7i7ndMX5W76tqhZV9cbFBcHyUNHzsZDstsdNjmsx+TLUwznL2VDpad5QQpg0/OB4c7lU1XGdQ7LNTOupG60Dlrk6hT8U5SglmcKronWOzdxkbiUQnbcFORPvY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QTck3o+q; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F8BC1F000E9;
+	Thu,  2 Jul 2026 16:26:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1783009376;
-	bh=mFG3K9yIORPIce55ssHQLPnrrQqWIJsD1KJL01/4Dvo=;
+	s=korg; t=1783009599;
+	bh=tqQUdsmdK+ynkMBCwbCAPa+cGo3qqPghDm8nQv2n5+s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=OErYZoUtcfQegG4lSih7hzAk70ape1KIxXf0vmXbYd5OdGV2DaRGkql23l+t7C4F1
-	 JbLcr3xSdJaq9OWB4dxdX7E6cyhnrDa85BhYoP/NHuu2GjGRW3AXe4eukK0MO8lw8R
-	 tqrjmEypERfuNQge7+2pZaHjP0YWvt2ru3qVqMpc=
+	b=QTck3o+qPvux+ZB8et+mrA86JdviAHo/5izNM3kH6vDgoDR38jZAyoKp+z7nSYNuf
+	 2L0sVTRUG3vTxV18cjb7aS2KSaleK2mcZjRXLKP5DyENIuB7QEIoV8t0Cfgx/OT6+8
+	 xMo2nB9trYj6RxrLLF2Id7p1pVRjJDLPedYM+kGk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+814c351d094f4f1a1b86@syzkaller.appspotmail.com,
-	Ruslan Valiyev <linuxoid@gmail.com>,
-	Hans Verkuil <hverkuil+cisco@kernel.org>
-Subject: [PATCH 5.10 28/96] media: vidtv: fix NULL pointer dereference in vidtv_mux_push_si
+	Mingyu Wang <25181214217@stu.xidian.edu.cn>,
+	Lukas Wunner <lukas@wunner.de>
+Subject: [PATCH 5.15 17/95] agp/amd64: Fix broken error propagation in agp_amd64_probe()
 Date: Thu,  2 Jul 2026 18:19:20 +0200
-Message-ID: <20260702155109.578062829@linuxfoundation.org>
+Message-ID: <20260702155109.568304786@linuxfoundation.org>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260702155108.949633242@linuxfoundation.org>
-References: <20260702155108.949633242@linuxfoundation.org>
+In-Reply-To: <20260702155109.196223802@linuxfoundation.org>
+References: <20260702155109.196223802@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,123 +66,92 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-270692-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-270607-lists,stable=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:syzbot+814c351d094f4f1a1b86@syzkaller.appspotmail.com,m:linuxoid@gmail.com,m:hverkuil+cisco@kernel.org,m:syzbot@syzkaller.appspotmail.com,m:hverkuil@kernel.org,s:lists@lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,syzkaller.appspotmail.com,gmail.com,kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:25181214217@stu.xidian.edu.cn,m:lukas@wunner.de,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,814c351d094f4f1a1b86,cisco];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[syzkaller.appspot.com:url,vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,appspotmail.com:email]
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp,xidian.edu.cn:email,msgid.link:url,wunner.de:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 17ABC6FA3FD
+X-Rspamd-Queue-Id: 4E7FC6FA640
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ruslan Valiyev <linuxoid@gmail.com>
+From: Mingyu Wang <25181214217@stu.xidian.edu.cn>
 
-commit 7d8bf3d8f91073f4db347ed3aa6302b56107499c upstream.
+commit b08472db93b1ccff84a7adec5779d47f0e9d3a30 upstream.
 
-syzbot reported a general protection fault in
-vidtv_psi_ts_psi_write_into [1].
+A NULL pointer dereference was observed in the AMD64 AGP driver when
+running in a virtualized environment (e.g. qemu/kvm) without a physical
+AMD northbridge. The crash occurs in amd64_fetch_size() when attempting
+to dereference the pointer returned by node_to_amd_nb(0).
 
-vidtv_mux_get_pid_ctx() can return NULL, but vidtv_mux_push_si() does
-not check for this before dereferencing the returned pointer to access
-the continuity counter. This leads to a general protection fault when
-accessing a near-NULL address.
+The root cause of this crash is broken error propagation in
+agp_amd64_probe(): When no AMD northbridges are found, cache_nbs()
+correctly returns -ENODEV. However, the probe function erroneously
+checks the return value against exactly -1, rather than < 0.
 
-The root cause is that vidtv_mux_pid_ctx_init() does not check the
-return value of vidtv_mux_create_pid_ctx_once() for PMT section PIDs.
-If the allocation fails, the PID context is never created, but init
-returns success. The subsequent vidtv_mux_push_si() call then gets
-NULL from vidtv_mux_get_pid_ctx() and crashes.
+As a result, the hardware absence error is masked, allowing the driver
+to improperly proceed with initialization. It eventually calls
+agp_add_bridge(), which invokes amd64_fetch_size(). Since the hardware
+does not exist, node_to_amd_nb(0) returns NULL, leading to a General
+Protection Fault (GPF) when accessing its ->misc member.
 
-Fix both the root cause (add error check in vidtv_mux_pid_ctx_init
-for PMT PIDs) and add defensive NULL checks in vidtv_mux_push_si for
-all vidtv_mux_get_pid_ctx() calls.
+Fix the issue by correcting the error check in agp_amd64_probe() to
+abort properly when cache_nbs() returns any negative error code. This
+prevents the driver from erroneously proceeding without hardware, thereby
+avoiding the subsequent NULL pointer dereference at its source.
 
-[1]
-Oops: general protection fault, probably for non-canonical address 0xdffffc0000000000: 0000 [#1] SMP KASAN PTI
-KASAN: null-ptr-deref in range [0x0000000000000000-0x0000000000000007]
-Workqueue: events vidtv_mux_tick
-RIP: 0010:vidtv_psi_ts_psi_write_into+0x54a/0xbc0 drivers/media/test-drivers/vidtv/vidtv_psi.c:197
-Call Trace:
- <TASK>
- vidtv_psi_table_header_write_into drivers/media/test-drivers/vidtv/vidtv_psi.c:799 [inline]
- vidtv_psi_pmt_write_into+0x3b2/0xa70 drivers/media/test-drivers/vidtv/vidtv_psi.c:1231
- vidtv_mux_push_si+0x932/0xe80 drivers/media/test-drivers/vidtv/vidtv_mux.c:196
- vidtv_mux_tick+0xe9b/0x1480 drivers/media/test-drivers/vidtv/vidtv_mux.c:408
-
-Fixes: f90cf6079bf67 ("media: vidtv: add a bridge driver")
-Cc: stable@vger.kernel.org
-Reported-by: syzbot+814c351d094f4f1a1b86@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=814c351d094f4f1a1b86
-Signed-off-by: Ruslan Valiyev <linuxoid@gmail.com>
-Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
+Fixes: a32073bffc65 ("[PATCH] x86_64: Clean and enhance up K8 northbridge access code")
+Signed-off-by: Mingyu Wang <25181214217@stu.xidian.edu.cn>
+Signed-off-by: Lukas Wunner <lukas@wunner.de>
+Reviewed-by: Lukas Wunner <lukas@wunner.de>
+Cc: stable@vger.kernel.org # v2.6.18+
+Link: https://patch.msgid.link/20260504074823.99377-1-w15303746062@163.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/test-drivers/vidtv/vidtv_mux.c |    8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ drivers/char/agp/amd64-agp.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/media/test-drivers/vidtv/vidtv_mux.c
-+++ b/drivers/media/test-drivers/vidtv/vidtv_mux.c
-@@ -101,7 +101,8 @@ static int vidtv_mux_pid_ctx_init(struct
- 	/* add a ctx for all PMT sections */
- 	while (p) {
- 		pid = vidtv_psi_get_pat_program_pid(p);
--		vidtv_mux_create_pid_ctx_once(m, pid);
-+		if (!vidtv_mux_create_pid_ctx_once(m, pid))
-+			goto free;
- 		p = p->next;
+--- a/drivers/char/agp/amd64-agp.c
++++ b/drivers/char/agp/amd64-agp.c
+@@ -546,7 +546,7 @@ static int agp_amd64_probe(struct pci_de
+ 	/* Fill in the mode register */
+ 	pci_read_config_dword(pdev, bridge->capndx+PCI_AGP_STATUS, &bridge->mode);
+ 
+-	if (cache_nbs(pdev, cap_ptr) == -1) {
++	if (cache_nbs(pdev, cap_ptr) < 0) {
+ 		agp_put_bridge(bridge);
+ 		return -ENODEV;
  	}
- 
-@@ -170,6 +171,9 @@ static u32 vidtv_mux_push_si(struct vidt
- 	nit_ctx = vidtv_mux_get_pid_ctx(m, VIDTV_NIT_PID);
- 	eit_ctx = vidtv_mux_get_pid_ctx(m, VIDTV_EIT_PID);
- 
-+	if (!pat_ctx || !sdt_ctx || !nit_ctx || !eit_ctx)
-+		return 0;
-+
- 	pat_args.offset             = m->mux_buf_offset;
- 	pat_args.continuity_counter = &pat_ctx->cc;
- 
-@@ -186,6 +190,8 @@ static u32 vidtv_mux_push_si(struct vidt
- 		}
- 
- 		pmt_ctx = vidtv_mux_get_pid_ctx(m, pmt_pid);
-+		if (!pmt_ctx)
-+			continue;
- 
- 		pmt_args.offset             = m->mux_buf_offset;
- 		pmt_args.pmt                = m->si.pmt_secs[i];
 
 
 
