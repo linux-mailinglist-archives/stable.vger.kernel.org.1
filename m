@@ -1,79 +1,62 @@
-Return-Path: <stable+bounces-270977-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-271141-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 1Hr2CB2XRmqcZQsAu9opvQ
-	(envelope-from <stable+bounces-270977-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:51:41 +0200
+	id jXyxIyOjRmoBawsAu9opvQ
+	(envelope-from <stable+bounces-271141-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:42:59 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 88EA76FAA90
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:51:40 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 078F36FB91F
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:42:59 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=iFBY1NCr;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-270977-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-270977-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=x87JSMfa;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-271141-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-271141-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id AD8F934B2D5E
-	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:40:26 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E2779330FCD6
+	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:48:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1BC493932DA;
-	Thu,  2 Jul 2026 16:39:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 61D7E347BBD;
+	Thu,  2 Jul 2026 16:46:18 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1AF07347FCD;
-	Thu,  2 Jul 2026 16:39:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2641430C37A;
+	Thu,  2 Jul 2026 16:46:16 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783010347; cv=none; b=SUpuXaZcieBUxC2gemPL78rt7bIDU1HY217jlAE0G7nTKo9QZpu/GdURSqa+uj5UFsFM7+mSpEbZg6kFb5gCLHBP5kVa+dQhYMbbS7b+r9bZ0YK4fz5AF5T7otMHQ2mx6olHdFzXmCNljGFhnManx7dpobwh2AfQgSLAr07gq0Y=
+	t=1783010778; cv=none; b=iA1Hqt2gDlhwLx96p3/oY+xVt6GL4GIJGjCgy1F3FjPD7s0ofaKA5a0+9PDY73hUZt/0+zrZWuy5yRDrUCw0vsrqoucHfWz/3Bb5DJxvcuHdsqpdQauUtc3rpXiEVsB4i4/fIPCgimp7j8a56rXoOI/wx8n2zUiYKSHYhi49/Hk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783010347; c=relaxed/simple;
-	bh=hGildGJFAext0I+xcP1UZi7p+H22h5hPoG0HWjMGXtw=;
+	s=arc-20240116; t=1783010778; c=relaxed/simple;
+	bh=5idctXAqY/hFRmehLMPZ/UcR90D5M9ZLeOesPbGH9/U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=c4VCY04Ih+TFMpvUF+5kK192Zg84kGPqkul0dsrn5q9BgjdSIKB4dPnSNjha8r5bbVo52fHMmIVvFCgSeokyT0hYaQ5QYnIgzTqrWYUR1zn4ukYq3zBPhGAHLhpyCW3hKNP48I3IansUK1JRTQpQGbC3URetc6UJa/H9/xNGs0I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iFBY1NCr; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 502F31F000E9;
-	Thu,  2 Jul 2026 16:39:05 +0000 (UTC)
+	 MIME-Version; b=A9de7P4UQTklNAzjhzA7oajlyG1vy6lMdqCZ9QUjI+3gTmwlNU2oGywSEOD7Y9J5mgcq/lJF56t3R9giuWoGL7C1ndL5IRabUre1I87zhibmI45uxyrN9iIYmoI/KxCV69Fm/nYeJr8zXrIJt/V2Mq4ccPnJ2stnzS3x6T38ITs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x87JSMfa; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 490921F000E9;
+	Thu,  2 Jul 2026 16:46:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1783010346;
-	bh=5YahCb+jj63HP8LkGLCZa6PpZ/nEs7d2qeINAtwiVMQ=;
+	s=korg; t=1783010776;
+	bh=Dj2uuDAYsPINSRRuv47bOwlRftIwAt/QthxcgYjNDLE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=iFBY1NCr1m+jYZLDF4j9VNneyrBu5sdXQBTLwHXCTSeIdWFTFBPUzlAtW8NyaRKOU
-	 1pLRB2hHNJeHlVbAijUeY7KxZA5R0673udsD3OwSKRGSrNAuPnrSXBm61xWwVw06si
-	 PVgshoMhib2ZiY0GhtqAAr7QGT15mRg4LSN0mKVg=
+	b=x87JSMfa169plIobGbyBDq0wYrYnNcNvn3NJtgWtATg2vHcX8nAXEGB6uqT7ENTtm
+	 lOs9KozLACnzJ883jUQfTVxYeNO8dNrRC/E6KpVV880g5rK3H08mweYQ/y7y+yczNr
+	 ap28+mJQi4aCt4MsE9SrhDRVbz/6R3udX1JvoE6o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	bpf <bpf@vger.kernel.org>,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	Masahiro Yamada <masahiroy@kernel.org>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Nicolas Schier <nicolas@fjasle.eu>,
-	Zheng Yejian <zhengyejian1@huawei.com>,
-	Martin Kelly <martin.kelly@crowdstrike.com>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Josh Poimboeuf <jpoimboe@redhat.com>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>,
-	Vasily Gorbik <gor@linux.ibm.com>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
-	Andrey Grodzovsky <andrey.grodzovsky@crowdstrike.com>
-Subject: [PATCH 6.12 075/204] scripts/sorttable: Zero out weak functions in mcount_loc table
-Date: Thu,  2 Jul 2026 18:18:52 +0200
-Message-ID: <20260702155120.241349840@linuxfoundation.org>
+	Tao Cui <cuitao@kylinos.cn>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 032/175] mptcp: pm: fix extra_subflows underflow on userspace PM subflow creation
+Date: Thu,  2 Jul 2026 18:18:53 +0200
+Message-ID: <20260702155116.473465280@linuxfoundation.org>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260702155118.667618796@linuxfoundation.org>
-References: <20260702155118.667618796@linuxfoundation.org>
+In-Reply-To: <20260702155115.766838875@linuxfoundation.org>
+References: <20260702155115.766838875@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -87,345 +70,100 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-270977-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[24];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:bpf@vger.kernel.org,m:mhiramat@kernel.org,m:mark.rutland@arm.com,m:mathieu.desnoyers@efficios.com,m:akpm@linux-foundation.org,m:peterz@infradead.org,m:torvalds@linux-foundation.org,m:masahiroy@kernel.org,m:nathan@kernel.org,m:nicolas@fjasle.eu,m:zhengyejian1@huawei.com,m:martin.kelly@crowdstrike.com,m:christophe.leroy@csgroup.eu,m:jpoimboe@redhat.com,m:hca@linux.ibm.com,m:catalin.marinas@arm.com,m:will@kernel.org,m:gor@linux.ibm.com,m:agordeev@linux.ibm.com,m:rostedt@goodmis.org,m:andrey.grodzovsky@crowdstrike.com,s:lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-271141-lists,stable=lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:cuitao@kylinos.cn,m:matttbe@kernel.org,m:kuba@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[kylinos.cn:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp,msgid.link:url]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 88EA76FAA90
+X-Rspamd-Queue-Id: 078F36FB91F
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Steven Rostedt <rostedt@goodmis.org>
+From: Tao Cui <cuitao@kylinos.cn>
 
-[ Upstream commit ef378c3b8233855497a414b9d67bf22592c928a4 ]
+[ Upstream commit 14e9fea30b68fc75b2b3d97396a7e6adb544bd2a ]
 
-When a function is annotated as "weak" and is overridden, the code is not
-removed. If it is traced, the fentry/mcount location in the weak function
-will be referenced by the "__mcount_loc" section. This will then be added
-to the available_filter_functions list. Since only the address of the
-functions are listed, to find the name to show, a search of kallsyms is
-used.
+The userspace PM increments extra_subflows after __mptcp_subflow_connect()
+succeeds, but __mptcp_subflow_connect() calls mptcp_pm_close_subflow()
+on failure to roll back the pre-increment done by the kernel PM's fill_*()
+helpers. Because the userspace PM hasn't incremented yet at that point,
+this decrement is spurious and causes extra_subflows to underflow.
 
-Since kallsyms will return the function by simply finding the function
-that the address is after but before the next function, an address of a
-weak function will show up as the function before it. This is because
-kallsyms does not save names of weak functions. This has caused issues in
-the past, as now the traced weak function will be listed in
-available_filter_functions with the name of the function before it.
+Fix it by aligning the userspace PM with the kernel PM: increment
+extra_subflows before calling __mptcp_subflow_connect(), so the existing
+error path in subflow.c correctly rolls it back on failure. Also simplify
+the error handling by taking pm.lock only when needed for cleanup.
 
-At best, this will cause the previous function's name to be listed twice.
-At worse, if the previous function was marked notrace, it will now show up
-as a function that can be traced. Note that it only shows up that it can
-be traced but will not be if enabled, which causes confusion.
-
- https://lore.kernel.org/all/20220412094923.0abe90955e5db486b7bca279@kernel.org/
-
-The commit b39181f7c6907 ("ftrace: Add FTRACE_MCOUNT_MAX_OFFSET to avoid
-adding weak function") was a workaround to this by checking the function
-address before printing its name. If the address was too far from the
-function given by the name then instead of printing the name it would
-print: __ftrace_invalid_address___<invalid-offset>
-
-The real issue is that these invalid addresses are listed in the ftrace
-table look up which available_filter_functions is derived from. A place
-holder must be listed in that file because set_ftrace_filter may take a
-series of indexes into that file instead of names to be able to do O(1)
-lookups to enable filtering (many tools use this method).
-
-Even if kallsyms saved the size of the function, it does not remove the
-need of having these place holders. The real solution is to not add a weak
-function into the ftrace table in the first place.
-
-To solve this, the sorttable.c code that sorts the mcount regions during
-the build is modified to take a "nm -S vmlinux" input, sort it, and any
-function listed in the mcount_loc section that is not within a boundary of
-the function list given by nm is considered a weak function and is zeroed
-out.
-
-Note, this does not mean they will remain zero when booting as KASLR
-will still shift those addresses. To handle this, the entries in the
-mcount_loc section will be ignored if they are zero or match the
-kaslr_offset() value.
-
-Before:
-
- ~# grep __ftrace_invalid_address___ /sys/kernel/tracing/available_filter_functions | wc -l
- 551
-
-After:
-
- ~# grep __ftrace_invalid_address___ /sys/kernel/tracing/available_filter_functions | wc -l
- 0
-
-Cc: bpf <bpf@vger.kernel.org>
-Cc: Masami Hiramatsu <mhiramat@kernel.org>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: Masahiro Yamada <masahiroy@kernel.org>
-Cc: Nathan Chancellor <nathan@kernel.org>
-Cc: Nicolas Schier <nicolas@fjasle.eu>
-Cc: Zheng Yejian <zhengyejian1@huawei.com>
-Cc: Martin  Kelly <martin.kelly@crowdstrike.com>
-Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
-Cc: Josh Poimboeuf <jpoimboe@redhat.com>
-Cc: Heiko Carstens <hca@linux.ibm.com>
-Cc: Catalin Marinas <catalin.marinas@arm.com>
-Cc: Will Deacon <will@kernel.org>
-Cc: Vasily Gorbik <gor@linux.ibm.com>
-Cc: Alexander Gordeev <agordeev@linux.ibm.com>
-Link: https://lore.kernel.org/20250218200022.883095980@goodmis.org
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-Signed-off-by: Andrey Grodzovsky <andrey.grodzovsky@crowdstrike.com>
+Fixes: 77e4b94a3de6 ("mptcp: update userspace pm infos")
+Cc: stable@vger.kernel.org
+Signed-off-by: Tao Cui <cuitao@kylinos.cn>
+Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Link: https://patch.msgid.link/20260602-net-mptcp-misc-fixes-7-1-rc7-v2-5-856831229976@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/trace/ftrace.c   |    6 +-
- scripts/link-vmlinux.sh |    4 +
- scripts/sorttable.c     |  128 +++++++++++++++++++++++++++++++++++++++++++++++-
- 3 files changed, 134 insertions(+), 4 deletions(-)
+ net/mptcp/pm_userspace.c |   13 ++++++++-----
+ 1 file changed, 8 insertions(+), 5 deletions(-)
 
---- a/kernel/trace/ftrace.c
-+++ b/kernel/trace/ftrace.c
-@@ -7048,6 +7048,7 @@ static int ftrace_process_locs(struct mo
- 	unsigned long count;
- 	unsigned long *p;
- 	unsigned long addr;
-+	unsigned long kaslr;
- 	unsigned long flags = 0; /* Shut up gcc */
- 	int ret = -ENOMEM;
- 
-@@ -7096,6 +7097,9 @@ static int ftrace_process_locs(struct mo
- 		ftrace_pages->next = start_pg;
+--- a/net/mptcp/pm_userspace.c
++++ b/net/mptcp/pm_userspace.c
+@@ -408,18 +408,21 @@ int mptcp_nl_cmd_sf_create(struct sk_buf
+ 		goto create_err;
  	}
  
-+	/* For zeroed locations that were shifted for core kernel */
-+	kaslr = !mod ? kaslr_offset() : 0;
++	spin_lock_bh(&msk->pm.lock);
++	msk->pm.subflows++;
++	spin_unlock_bh(&msk->pm.lock);
 +
- 	p = start;
- 	pg = start_pg;
- 	while (p < end) {
-@@ -7107,7 +7111,7 @@ static int ftrace_process_locs(struct mo
- 		 * object files to satisfy alignments.
- 		 * Skip any NULL pointers.
- 		 */
--		if (!addr) {
-+		if (!addr || addr == kaslr) {
- 			skipped++;
- 			continue;
- 		}
---- a/scripts/link-vmlinux.sh
-+++ b/scripts/link-vmlinux.sh
-@@ -173,12 +173,14 @@ mksysmap()
+ 	lock_sock(sk);
  
- sorttable()
- {
--	${objtree}/scripts/sorttable ${1}
-+	${NM} -S ${1} > .tmp_vmlinux.nm-sort
-+	${objtree}/scripts/sorttable -s .tmp_vmlinux.nm-sort ${1}
- }
+ 	err = __mptcp_subflow_connect(sk, &addr_l, &addr_r);
  
- cleanup()
- {
- 	rm -f .btf.*
-+	rm -f .tmp_vmlinux.nm-sort
- 	rm -f System.map
- 	rm -f vmlinux
- 	rm -f vmlinux.map
---- a/scripts/sorttable.c
-+++ b/scripts/sorttable.c
-@@ -580,6 +580,98 @@ static void rela_write_addend(Elf_Rela *
- 	e.rela_write_addend(rela, val);
- }
+ 	release_sock(sk);
  
-+struct func_info {
-+	uint64_t	addr;
-+	uint64_t	size;
-+};
-+
-+/* List of functions created by: nm -S vmlinux */
-+static struct func_info *function_list;
-+static int function_list_size;
-+
-+/* Allocate functions in 1k blocks */
-+#define FUNC_BLK_SIZE	1024
-+#define FUNC_BLK_MASK	(FUNC_BLK_SIZE - 1)
-+
-+static int add_field(uint64_t addr, uint64_t size)
-+{
-+	struct func_info *fi;
-+	int fsize = function_list_size;
-+
-+	if (!(fsize & FUNC_BLK_MASK)) {
-+		fsize += FUNC_BLK_SIZE;
-+		fi = realloc(function_list, fsize * sizeof(struct func_info));
-+		if (!fi)
-+			return -1;
-+		function_list = fi;
-+	}
-+	fi = &function_list[function_list_size++];
-+	fi->addr = addr;
-+	fi->size = size;
-+	return 0;
-+}
-+
-+/* Only return match if the address lies inside the function size */
-+static int cmp_func_addr(const void *K, const void *A)
-+{
-+	uint64_t key = *(const uint64_t *)K;
-+	const struct func_info *a = A;
-+
-+	if (key < a->addr)
-+		return -1;
-+	return key >= a->addr + a->size;
-+}
-+
-+/* Find the function in function list that is bounded by the function size */
-+static int find_func(uint64_t key)
-+{
-+	return bsearch(&key, function_list, function_list_size,
-+		       sizeof(struct func_info), cmp_func_addr) != NULL;
-+}
-+
-+static int cmp_funcs(const void *A, const void *B)
-+{
-+	const struct func_info *a = A;
-+	const struct func_info *b = B;
-+
-+	if (a->addr < b->addr)
-+		return -1;
-+	return a->addr > b->addr;
-+}
-+
-+static int parse_symbols(const char *fname)
-+{
-+	FILE *fp;
-+	char addr_str[20]; /* Only need 17, but round up to next int size */
-+	char size_str[20];
-+	char type;
-+
-+	fp = fopen(fname, "r");
-+	if (!fp) {
-+		perror(fname);
-+		return -1;
-+	}
-+
-+	while (fscanf(fp, "%16s %16s %c %*s\n", addr_str, size_str, &type) == 3) {
-+		uint64_t addr;
-+		uint64_t size;
-+
-+		/* Only care about functions */
-+		if (type != 't' && type != 'T' && type != 'W')
-+			continue;
-+
-+		addr = strtoull(addr_str, NULL, 16);
-+		size = strtoull(size_str, NULL, 16);
-+		if (add_field(addr, size) < 0)
-+			return -1;
-+	}
-+	fclose(fp);
-+
-+	qsort(function_list, function_list_size, sizeof(struct func_info), cmp_funcs);
-+
-+	return 0;
-+}
-+
- static pthread_t mcount_sort_thread;
- static bool sort_reloc;
- 
-@@ -752,6 +844,21 @@ static void *sort_mcount_loc(void *arg)
- 		goto out;
- 	}
- 
-+	/* zero out any locations not found by function list */
-+	if (function_list_size) {
-+		for (void *ptr = vals; ptr < vals + size; ptr += long_size) {
-+			uint64_t key;
-+
-+			key = long_size == 4 ? r((uint32_t *)ptr) : r8((uint64_t *)ptr);
-+			if (!find_func(key)) {
-+				if (long_size == 4)
-+					*(uint32_t *)ptr = 0;
-+				else
-+					*(uint64_t *)ptr = 0;
-+			}
-+		}
-+	}
-+
- 	compare_values = long_size == 4 ? compare_values_32 : compare_values_64;
- 
- 	qsort(vals, count, long_size, compare_values);
-@@ -801,6 +908,8 @@ static void get_mcount_loc(struct elf_mc
- 		return;
- 	}
- }
-+#else /* MCOUNT_SORT_ENABLED */
-+static inline int parse_symbols(const char *fname) { return 0; }
- #endif
- 
- static int do_sort(Elf_Ehdr *ehdr,
-@@ -1256,14 +1365,29 @@ int main(int argc, char *argv[])
- 	int i, n_error = 0;  /* gcc-4.3.0 false positive complaint */
- 	size_t size = 0;
- 	void *addr = NULL;
-+	int c;
-+
-+	while ((c = getopt(argc, argv, "s:")) >= 0) {
-+		switch (c) {
-+		case 's':
-+			if (parse_symbols(optarg) < 0) {
-+				fprintf(stderr, "Could not parse %s\n", optarg);
-+				return -1;
-+			}
-+			break;
-+		default:
-+			fprintf(stderr, "usage: sorttable [-s nm-file] vmlinux...\n");
-+			return 0;
-+		}
+-	spin_lock_bh(&msk->pm.lock);
+-	if (err)
++	if (err) {
++		spin_lock_bh(&msk->pm.lock);
+ 		mptcp_userspace_pm_delete_local_addr(msk, &local);
+-	else
+-		msk->pm.subflows++;
+-	spin_unlock_bh(&msk->pm.lock);
++		spin_unlock_bh(&msk->pm.lock);
 +	}
  
--	if (argc < 2) {
-+	if ((argc - optind) < 1) {
- 		fprintf(stderr, "usage: sorttable vmlinux...\n");
- 		return 0;
- 	}
- 
- 	/* Process each file in turn, allowing deep failure. */
--	for (i = 1; i < argc; i++) {
-+	for (i = optind; i < argc; i++) {
- 		addr = mmap_file(argv[i], &size);
- 		if (!addr) {
- 			++n_error;
+  create_err:
+ 	sock_put((struct sock *)msk);
 
 
 
