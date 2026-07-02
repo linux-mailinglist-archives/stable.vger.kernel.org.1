@@ -1,64 +1,70 @@
-Return-Path: <stable+bounces-270628-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-270983-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id b8D1AzGeRmoDaQsAu9opvQ
-	(envelope-from <stable+bounces-270628-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:21:53 +0200
+	id 6WsBB0WVRmp6ZAsAu9opvQ
+	(envelope-from <stable+bounces-270983-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:43:49 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 50AFE6FB3CA
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:21:52 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id C8E586FA742
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:43:48 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=UAWmJ+N+;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-270628-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-270628-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=2mdK3YvD;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-270983-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-270983-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 5FEA032207AD
-	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:29:23 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 993103098943
+	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:40:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 349B4414DDB;
-	Thu,  2 Jul 2026 16:23:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E76E341077;
+	Thu,  2 Jul 2026 16:39:22 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DDB033A033;
-	Thu,  2 Jul 2026 16:23:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4876A318EC1;
+	Thu,  2 Jul 2026 16:39:21 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783009437; cv=none; b=I1Fjrx89+hI3UcIQZylhGo4p1wPHMRpYGlswPq3lZp+hxAGokEZYXlmEzJQMBuZ6McRDZkSXw74ZNsUD86O7qwprEtibUEMg1HuqdEWde0zuP1LXKat9EjcXlDVPsWgBSKUTF+czWbN5yz6Uxxum9TS7iUgB7L9/bBoFzFXZ3mM=
+	t=1783010362; cv=none; b=EEWpaDsEQd9plStv8e/jw/y0jRTTq1HcBRNHcG29dfniCpo6ss4n9envqhNes4Lsw0cg1YDBvrKhbgf3xcSPwdFT3n0iiiG1sX2CwEZJyq8SsSjlst7CTUPbeZ92JII3IfxsGAoE/Oo+P29Twk4c5Hbb9kzxMQfW+LESRW+bQOI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783009437; c=relaxed/simple;
-	bh=rXbETS3T1I6j4oSrWe62MpCAqfUYvovr6ZuJsbHnJWY=;
+	s=arc-20240116; t=1783010362; c=relaxed/simple;
+	bh=4QxA8h4g5kGpM//ntVFMhPKR08Y5K2pSHNBtEjEJD2c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WkcxDN9P5sUipgpErraWgPZ1kzk73ummr+gUz4BZXpecOo+yf8vgBdEZT/FwT4BEb+MZZ6JbiRv1xleBsQ9zu7VdOGLcS0EMT36X8c+iqgqw9oKsTs7NJVDWQYYhQa0Ihx9jo8MBvml5qhZ/YXN3xQTKZ/y082abzdEwMG+aIbs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UAWmJ+N+; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 620351F00A3A;
-	Thu,  2 Jul 2026 16:23:51 +0000 (UTC)
+	 MIME-Version; b=j825QloywtTRpTiypOs2THye/n+51bxKYPrkICIiUm8V2uCjj7CF1mMcgKUt0ZPuvtU4ecZ2y0xJgRFLh7ASvPr5LHiokcpHGgPjXXGE6+RZivOZEZ88xhXducOTmT9dtA+hk5hlpqb3y0lQfEq2GgOGPUI0/+mu0IWpGltqT5A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2mdK3YvD; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B452B1F000E9;
+	Thu,  2 Jul 2026 16:39:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1783009431;
-	bh=7KU8i9NQhqb+PC9WTMO+klWsLigVV9uyv6z15IYWDio=;
+	s=korg; t=1783010361;
+	bh=wR2a4YrJED/wgfZEbAbSBBwJ+p7Or5MkrZBBDPQ8+DQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=UAWmJ+N+mzL6gYM0koDrzDBXKGzbyyKgARqhCvsqTq5TfY8/QlY5xEESf4LfZC0pV
-	 kWNaPLC4ISwqzmnuNrfBfNfB+zrye6yHqNVppzmnt/DQ5buQpRhw7Pp+DkKIaVxBUV
-	 wWfTwNouq8LY/YfcYg5Uy/gN9p5SP0TGGG30U+18=
+	b=2mdK3YvDcr823FroAeq24TLm0SZy6+AB8mzgNd5QZ1A3wiQ0tylKc/0ziawp3eC9X
+	 lAnAGgQXrPGouP+8znRA8+uH2xIJMFsT3E0PzYOzS1UruWPteVZpUMJX1mWv16F8gr
+	 2+32WBkhVYDIijZUwqAyizOrqB1oQ5Wkx/J3z1qI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jamal Hadi Salim <jhs@mojatatu.com>,
-	Simon Horman <simon.horman@corigine.com>,
-	Pedro Tammela <pctammela@mojatatu.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Wentao Guan <guanwentao@uniontech.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 06/96] net/sched: act_pedit: rate limit datapath messages
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Masahiro Yamada <masahiroy@kernel.org>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>,
+	Mark Brown <broonie@kernel.org>,
+	"Arnd Bergmann" <arnd@arndb.de>,
+	Nathan Chancellor <nathan@kernel.org>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
+	Andrey Grodzovsky <andrey.grodzovsky@crowdstrike.com>
+Subject: [PATCH 6.12 081/204] scripts/sorttable: Use normal sort if theres no relocs in the mcount section
 Date: Thu,  2 Jul 2026 18:18:58 +0200
-Message-ID: <20260702155109.101296679@linuxfoundation.org>
+Message-ID: <20260702155120.364029837@linuxfoundation.org>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260702155108.949633242@linuxfoundation.org>
-References: <20260702155108.949633242@linuxfoundation.org>
+In-Reply-To: <20260702155118.667618796@linuxfoundation.org>
+References: <20260702155118.667618796@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,107 +78,98 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-270628-lists,stable=lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-270983-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:jhs@mojatatu.com,m:simon.horman@corigine.com,m:pctammela@mojatatu.com,m:davem@davemloft.net,m:guanwentao@uniontech.com,m:sashal@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCPT_COUNT_TWELVE(0.00)[15];
+	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:mhiramat@kernel.org,m:mark.rutland@arm.com,m:mathieu.desnoyers@efficios.com,m:akpm@linux-foundation.org,m:masahiroy@kernel.org,m:catalin.marinas@arm.com,m:will@kernel.org,m:broonie@kernel.org,m:arnd@arndb.de,m:nathan@kernel.org,m:rostedt@goodmis.org,m:andrey.grodzovsky@crowdstrike.com,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[davemloft.net:email,mojatatu.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,uniontech.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[arm.com:email,vger.kernel.org:from_smtp,arndb.de:email,efficios.com:email,goodmis.org:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linux-foundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 50AFE6FB3CA
+X-Rspamd-Queue-Id: C8E586FA742
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pedro Tammela <pctammela@mojatatu.com>
+From: Steven Rostedt <rostedt@goodmis.org>
 
-[ Upstream commit e3c9673e2f6e1b3aa4bb87c570336e10f364c28a ]
+[ Upstream commit 46514b3c2c17c67cefe84b0c1a59e0aaf6093131 ]
 
-Unbounded info messages in the pedit datapath can flood the printk
-ring buffer quite easily depending on the action created.
-As these messages are informational, usually printing some, not all,
-is enough to bring attention to the real issue.
+When ARM 64 is compiled with gcc, the mcount_loc section will be filled
+with zeros and the addresses will be located in the Elf_Rela sections. To
+sort the mcount_loc section, the addresses from the Elf_Rela need to be
+placed into an array and that is sorted.
 
-Reviewed-by: Jamal Hadi Salim <jhs@mojatatu.com>
-Reviewed-by: Simon Horman <simon.horman@corigine.com>
-Signed-off-by: Pedro Tammela <pctammela@mojatatu.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Wentao Guan <guanwentao@uniontech.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+But when ARM 64 is compiled with clang, it does it the same way as other
+architectures and leaves the addresses as is in the mcount_loc section.
+
+To handle both cases, ARM 64 will first try to sort the Elf_Rela section,
+and if it doesn't find any functions, it will then fall back to the
+sorting of the addresses in the mcount_loc section itself.
+
+Cc: Masami Hiramatsu <mhiramat@kernel.org>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: Masahiro Yamada <masahiroy@kernel.org>
+Cc: Catalin Marinas <catalin.marinas@arm.com>
+Cc: Will Deacon <will@kernel.org>
+Cc: Mark Brown <broonie@kernel.org>
+Link: https://lore.kernel.org/20250225182054.648398403@goodmis.org
+Fixes: b3d09d06e052 ("arm64: scripts/sorttable: Implement sorting mcount_loc at boot for arm64")
+Reported-by: "Arnd Bergmann" <arnd@arndb.de>
+Tested-by: Nathan Chancellor <nathan@kernel.org>
+Closes: https://lore.kernel.org/all/893cd8f1-8585-4d25-bf0f-4197bf872465@app.fastmail.com/
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: Andrey Grodzovsky <andrey.grodzovsky@crowdstrike.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/sched/act_pedit.c | 12 +++++-------
- 1 file changed, 5 insertions(+), 7 deletions(-)
+ scripts/sorttable.c |    9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
-diff --git a/net/sched/act_pedit.c b/net/sched/act_pedit.c
-index 95ae885ecba168..ecad6fc39dc3d7 100644
---- a/net/sched/act_pedit.c
-+++ b/net/sched/act_pedit.c
-@@ -383,8 +383,8 @@ static int tcf_pedit_act(struct sk_buff *skb, const struct tc_action *a,
- 			u8 *d, _d;
+--- a/scripts/sorttable.c
++++ b/scripts/sorttable.c
+@@ -827,9 +827,14 @@ static void *sort_mcount_loc(void *arg)
+ 		pthread_exit(m_err);
+ 	}
  
- 			if (!offset_valid(skb, hoffset + tkey->at)) {
--				pr_info("tc action pedit 'at' offset %d out of bounds\n",
--					hoffset + tkey->at);
-+				pr_info_ratelimited("tc action pedit 'at' offset %d out of bounds\n",
-+						    hoffset + tkey->at);
- 				goto bad;
- 			}
- 			d = skb_header_pointer(skb, hoffset + tkey->at,
-@@ -394,14 +394,13 @@ static int tcf_pedit_act(struct sk_buff *skb, const struct tc_action *a,
+-	if (sort_reloc)
++	if (sort_reloc) {
+ 		count = fill_relocs(vals, size, ehdr, emloc->start_mcount_loc);
+-	else
++		/* gcc may use relocs to save the addresses, but clang does not. */
++		if (!count) {
++			count = fill_addrs(vals, size, start_loc);
++			sort_reloc = 0;
++		}
++	} else
+ 		count = fill_addrs(vals, size, start_loc);
  
- 			offset += (*d & tkey->offmask) >> tkey->shift;
- 			if (offset % 4) {
--				pr_info("tc action pedit offset must be on 32 bit boundaries\n");
-+				pr_info_ratelimited("tc action pedit offset must be on 32 bit boundaries\n");
- 				goto bad;
- 			}
- 		}
- 
- 		if (!offset_valid(skb, hoffset + offset)) {
--			pr_info("tc action pedit offset %d out of bounds\n",
--				hoffset + offset);
-+			pr_info_ratelimited("tc action pedit offset %d out of bounds\n", hoffset + offset);
- 			goto bad;
- 		}
- 
-@@ -418,8 +417,7 @@ static int tcf_pedit_act(struct sk_buff *skb, const struct tc_action *a,
- 			val = (*ptr + tkey->val) & ~tkey->mask;
- 			break;
- 		default:
--			pr_info("tc action pedit bad command (%d)\n",
--				cmd);
-+			pr_info_ratelimited("tc action pedit bad command (%d)\n", cmd);
- 			goto bad;
- 		}
- 
--- 
-2.53.0
-
+ 	if (count < 0) {
 
 
 
