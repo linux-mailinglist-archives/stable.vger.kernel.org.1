@@ -1,60 +1,57 @@
-Return-Path: <stable+bounces-270928-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-270929-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id WOosKJ+VRmqkZAsAu9opvQ
-	(envelope-from <stable+bounces-270928-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:45:19 +0200
+	id nqaZBbOWRmpfZQsAu9opvQ
+	(envelope-from <stable+bounces-270929-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:49:55 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3DB106FA7CA
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:45:19 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 536FD6FA9DF
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:49:54 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=GUiSM27+;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-270928-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-270928-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=HuK996iH;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-270929-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-270929-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 925543092BB9
-	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:38:36 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 6C3DD33577B1
+	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:38:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 90798399351;
-	Thu,  2 Jul 2026 16:36:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F6DE39B972;
+	Thu,  2 Jul 2026 16:37:01 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3857519049B;
-	Thu,  2 Jul 2026 16:36:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAAD1357D0F;
+	Thu,  2 Jul 2026 16:36:59 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783010218; cv=none; b=bMPHPZcesWFa4aDqzAEtfuuED0Yw5uSXYgitmmKjhqhyP4KEtf9eQNoJEXm80bQ7fUJ+bpQ2rIYXhgjZ3+/ycdih87Q2oRVpfge2Zg/8yIyCMSBvtxW+piTup76yoDOWNbuBccktQe1A0y7JWmYtQ/iV0x/ZbfGE5CpCPzKdFsw=
+	t=1783010221; cv=none; b=MS2wZSW73L+1uHqonSvUQ4j5Pvx+zUY7cCgN1ENatSnt8eTBODWaIrO7letFfeVQf8zZ1cDbpiCLr0IEk4hcd3vh8Yh+//hLL88kICrmVhTmXFvvY2FZ/s6Y2LlYzpvsTH3QBNKrBAtuANXdzfDB1uogoWCGOUD/LLBR2LP70Lg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783010218; c=relaxed/simple;
-	bh=QRXSm3B8ghOEerx9nm8zRERqj0N/dyQeJ9s/bltKl00=;
+	s=arc-20240116; t=1783010221; c=relaxed/simple;
+	bh=DkGMyF8KTnbL2FBn50ywfsLkbe1W+5rVneZVozdUrPw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KPBEB3T+r88MmMLo1vCHsYJtSUzU/2PWcungyE444n92nrstUtn1M9t1Tz6rd8ycJwN4sg972ts/2IgxvMtt2Ky8K+MvqiAt9VG8EP43n5IDla/7zqZWh1a/vFPXetrdRDS0WkJMe4N0u0la6Gnq+2rDSLElwVW/YjavIgmBq6M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GUiSM27+; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F31B1F00A3A;
-	Thu,  2 Jul 2026 16:36:56 +0000 (UTC)
+	 MIME-Version; b=rnjg82jxwnfv5kEznsIZbRMsYt+xH3oJ9HdraihlMBAKF7SPXNKQzqFI2Q1ztOVmA+g9kQWSu12fG3F3QyHAhk9J42KYE96VXRKBcZqLfONy3aE7dh76zKeqGzDzouztS7AtfEBqQoYwObsHjU0me46Ij7+gBVCZNB45yoQHXQY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HuK996iH; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32AB01F000E9;
+	Thu,  2 Jul 2026 16:36:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1783010217;
-	bh=/nplOrF+4pmyKeROpy9EuEiGEUK0xiaFontMItHROhs=;
+	s=korg; t=1783010219;
+	bh=fh9NExQBY7F1nJGaeuIQ0RtZWiE/wi+2vhCzfoBzsf8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=GUiSM27+b6R0Te0vmddj6hSjNjgHPu0VYmdy/M1s5yIZLRYj28HtfV64h4dCNDx0v
-	 4ebRlgbGExFlZ+18QTzFNlPpKubrc28eoT+tDWuajx3qHdAJYI4Lww/Y4tT+Y/wbKo
-	 CK8tspLKVj0J09yxN+Aelo2H+NEb0rRaC3+5/62g=
+	b=HuK996iHDnKm0ISKI1kN3glih/9EndCTyWZUtiSGU+i+ItXBl7vbNJi9REdvjbBWt
+	 BnAjsdVG1lIr46VdthSEbHjMSQDPpIyPbG6DGcCD7wPeoY6Fd6V+0ao7+KPaoKt3gp
+	 rfS5IqbXW8T0bVywx03SmUtE7a/98vrDfBgzj/mo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Waiman Long <longman@redhat.com>,
-	Thomas Gleixner <tglx@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 026/204] debugobjects: Dont call fill_pool() in early boot hardirq context
-Date: Thu,  2 Jul 2026 18:18:03 +0200
-Message-ID: <20260702155119.210636008@linuxfoundation.org>
+	Lord Ulf Henrik Holmberg <henrik.holmberg@defensify.se>,
+	Leon Romanovsky <leon@kernel.org>
+Subject: [PATCH 6.12 027/204] RDMA/bnxt_re: zero shared page before exposing to userspace
+Date: Thu,  2 Jul 2026 18:18:04 +0200
+Message-ID: <20260702155119.230212814@linuxfoundation.org>
 X-Mailer: git-send-email 2.55.0
 In-Reply-To: <20260702155118.667618796@linuxfoundation.org>
 References: <20260702155118.667618796@linuxfoundation.org>
@@ -71,139 +68,92 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-270928-lists,stable=lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-270929-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:bigeasy@linutronix.de,m:tglx@linutronix.de,m:longman@redhat.com,m:tglx@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	TO_DN_SOME(0.00)[];
+	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:henrik.holmberg@defensify.se,m:leon@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linutronix.de:email,vger.kernel.org:from_smtp,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[defensify.se:email,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 3DB106FA7CA
+X-Rspamd-Queue-Id: 536FD6FA9DF
 
 6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Waiman Long <longman@redhat.com>
+From: Lord Ulf Henrik Holmberg <henrik.holmberg@defensify.se>
 
-commit 0d046ae106255cba5eb83b23f78ee93f3620247d upstream.
+commit f6b079629becfa977f9c51fe53ad2e6dcc55ef44 upstream.
 
-When booting a debug PREEMPT_RT kernel on an ARM64 system, a "inconsistent
-{HARDIRQ-ON-W} -> {IN-HARDIRQ-W} usage" lockdep warning message was
-reported to the console.
+bnxt_re_alloc_ucontext() allocates uctx->shpg via
+__get_free_page(GFP_KERNEL). The buddy allocator does not zero pages
+without __GFP_ZERO, so the page contains stale kernel data from
+whatever object most recently freed it.
 
-During early boot, interrupts are enabled before the scheduler is
-enabled. In this window (before SYSTEM_SCHEDULING is set) interrupts can
-fire and in the hard interrupt context handler attempt to fill the pool
+The page is then mapped into userspace via vm_insert_page() under
+BNXT_RE_MMAP_SH_PAGE in bnxt_re_mmap(). The driver only ever writes
+4 bytes (a u32 AVID) at offset BNXT_RE_AVID_OFFT (0x10) inside
+bnxt_re_create_ah(); the remaining 4092 bytes of the page are exposed
+to userspace unsanitised, leaking kernel memory contents.
 
-This can lead to a deadlock when the interrupt occurred when the interrupt
-hits a region which holds a lock that is required to be taken in the
-allocation path.
+Any user with access to /dev/infiniband/uverbsX on a host with a
+bnxt_re device (typically rdma group membership) can read this data
+via a single mmap() at pgoff 0 after IB_USER_VERBS_CMD_GET_CONTEXT.
 
-Add a new can_fill_pool() helper and reorder the exception rule and forbid
-this scenario by excluding allocations from hard interrupt context.
+Other shared pages in the same file already use get_zeroed_page()
+correctly:
 
-Fixes: 06e0ae988f6e ("debugobjects: Allow to refill the pool before SYSTEM_SCHEDULING")
-Suggested-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Suggested-by: Thomas Gleixner <tglx@linutronix.de>
-Signed-off-by: Waiman Long <longman@redhat.com>
-Signed-off-by: Thomas Gleixner <tglx@kernel.org>
-Reviewed-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/20260605173038.495075-1-longman@redhat.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+  drivers/infiniband/hw/bnxt_re/ib_verbs.c
+      srq->uctx_srq_page = (void *)get_zeroed_page(GFP_KERNEL);
+      cq->uctx_cq_page  = (void *)get_zeroed_page(GFP_KERNEL);
+
+uctx->shpg is the only outlier. Bring it in line with the existing
+convention by switching to get_zeroed_page().
+
+Fixes: 1ac5a4047975 ("RDMA/bnxt_re: Add bnxt_re RoCE driver")
+Signed-off-by: Lord Ulf Henrik Holmberg <henrik.holmberg@defensify.se>
+Link: https://patch.msgid.link/20260509084011.11971-1-pomzm67@gmail.com
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- lib/debugobjects.c | 44 ++++++++++++++++++++++++++++++++++++--------
- 1 file changed, 36 insertions(+), 8 deletions(-)
+ drivers/infiniband/hw/bnxt_re/ib_verbs.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/lib/debugobjects.c b/lib/debugobjects.c
-index c1b8b754572caa..7abd909c8076af 100644
---- a/lib/debugobjects.c
-+++ b/lib/debugobjects.c
-@@ -605,20 +605,48 @@ static inline bool debug_objects_is_pi_blocked_on(void)
- #endif
- }
+--- a/drivers/infiniband/hw/bnxt_re/ib_verbs.c
++++ b/drivers/infiniband/hw/bnxt_re/ib_verbs.c
+@@ -4231,7 +4231,7 @@ int bnxt_re_alloc_ucontext(struct ib_uco
  
--static void debug_objects_fill_pool(void)
-+static inline bool can_fill_pool(void)
- {
- 	/*
--	 * On RT enabled kernels the pool refill must happen in preemptible
--	 * context and not enqueued on an rt_mutex -- for !RT kernels we rely
--	 * on the fact that spinlock_t and raw_spinlock_t are basically the
--	 * same type and this lock-type inversion works just fine.
-+	 * On !RT enabled kernels there are no restrictions and spinlock_t and
-+	 * raw_spinlock_t are the same types.
-+	 */
-+	if (!IS_ENABLED(CONFIG_PREEMPT_RT))
-+		return true;
-+
-+	/*
-+	 * On RT enabled kernels, the task must not be blocked on a lock as
-+	 * that could corrupt the PI state when blocking on a lock in the
-+	 * allocation path.
-+	 */
-+	if (debug_objects_is_pi_blocked_on())
-+		return false;
-+
-+	/*
-+	 * On RT enabled kernels the pool refill should happen in preemptible
-+	 * context.
- 	 */
--	if (!IS_ENABLED(CONFIG_PREEMPT_RT) || system_state < SYSTEM_SCHEDULING ||
--	    (preemptible() && !debug_objects_is_pi_blocked_on())) {
-+	if (preemptible())
-+		return true;
-+
-+	/*
-+	 * Though during system boot before scheduling is set up, preemption is
-+	 * disabled and the pool can get exhausted. Before scheduling is active
-+	 * a task cannot be blocked on a sleeping lock, but it might hold a lock
-+	 * and if interrupted then hard interrupt context might run into a lock
-+	 * inversion. So exclude hard interrupt context from allocations before
-+	 * scheduling is active.
-+	 */
-+	return system_state < SYSTEM_SCHEDULING && !in_hardirq();
-+}
-+
-+static void debug_objects_fill_pool(void)
-+{
-+	if (can_fill_pool()) {
- 		/*
- 		 * Annotate away the spinlock_t inside raw_spinlock_t warning
- 		 * by temporarily raising the wait-type to LD_WAIT_CONFIG, matching
--		 * the preemptible() condition above.
-+		 * the preemptible() condition in can_fill_pool().
- 		 */
- 		static DEFINE_WAIT_OVERRIDE_MAP(fill_pool_map, LD_WAIT_CONFIG);
- 		lock_map_acquire_try(&fill_pool_map);
--- 
-2.53.0
-
+ 	uctx->rdev = rdev;
+ 
+-	uctx->shpg = (void *)__get_free_page(GFP_KERNEL);
++	uctx->shpg = (void *)get_zeroed_page(GFP_KERNEL);
+ 	if (!uctx->shpg) {
+ 		rc = -ENOMEM;
+ 		goto fail;
 
 
 
