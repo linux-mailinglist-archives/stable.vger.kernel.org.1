@@ -1,60 +1,62 @@
-Return-Path: <stable+bounces-271075-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-270907-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id c3JPIoeXRmrdZQsAu9opvQ
-	(envelope-from <stable+bounces-271075-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:53:27 +0200
+	id ph+uDnCWRmo4ZQsAu9opvQ
+	(envelope-from <stable+bounces-270907-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:48:48 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 460206FAB37
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:53:27 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 95BDB6FA968
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:48:47 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=wPISoG6J;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-271075-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-271075-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=USbCk82c;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-270907-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-270907-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 1D10B30A49DA
-	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:46:32 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 43C4A30776FA
+	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:37:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B076D399351;
-	Thu,  2 Jul 2026 16:43:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50467360EF0;
+	Thu,  2 Jul 2026 16:36:03 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B0D6381EAD;
-	Thu,  2 Jul 2026 16:43:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA48A33F5B8;
+	Thu,  2 Jul 2026 16:36:01 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783010604; cv=none; b=aAwwI10VRzPBdo6lzW0aXhmLdPyd++n+nl3jR+r0G+DhS5l/u+6B9zPhZmUguYMPYKhLW9afvgeQmGAP3U5nWtWEjS4RZt41v3IQvydWFSjywUzXiuf5NxE2UllFerrnkJRZvvI7YEAz0avK+7bK96WO2sSRN9K00Sq/Q31IjHw=
+	t=1783010163; cv=none; b=u4yz8wpZ1hqChP7CVWfATre8RmmR3Gxo69QiBAF9/JDfq00DJQsK4QbdeosWFiTDObhDZAtYUKik5eo6gGXmbBUaaTWoFh4jB2h+aBZ7PNGiStbKHKvqJyf9Vt4qq/7pk12k6if5NzuEMvRPgniFmeI9q4D1ZO8zSfOh7efXAMY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783010604; c=relaxed/simple;
-	bh=KYkvyCISIZLPnOc4thVAVd1M30efDbcQScxxuTeDiLw=;
+	s=arc-20240116; t=1783010163; c=relaxed/simple;
+	bh=Q1+CXadbRm+eQd1HuS7imxNtfBRZ0ZjocNxkZgXSpqw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HAq+vj34Sxv8lrJF7ZwRWKviYrM5FR0nwo1zeSlxXTi3ApsinbCh2UuWHH6I7ivGQYUZ1M7IlXxpxgg8xiXul/OUKv6ayzSRRpZHPe+huWVFDPdhbmiphW+o6GUE8UMxzN9qRWfTisJqoDII6geSGD96UzZ+p8dgqQPhZNfKOEA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wPISoG6J; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BFFF51F000E9;
-	Thu,  2 Jul 2026 16:43:22 +0000 (UTC)
+	 MIME-Version; b=d1o/eVGFZYI7ImHxy3IXKcwCQQnR3yZBhrpYkl8T803r35F1sOvw4AgKLROxJavTQOD7odTaD3EII0A6kEKeHJfpsvD6INdmlylDxVVBbnYp8aCGwywPeYjPCgEZzdL4jNngVNsc1agLXZxFofMMlHiNtv8mLwQ86SJcIU6ezks=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=USbCk82c; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B5AE1F000E9;
+	Thu,  2 Jul 2026 16:36:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1783010603;
-	bh=dliwxMhftYp+gFyM2NBpyfocphpo5W9XO2BXKQUt6P4=;
+	s=korg; t=1783010161;
+	bh=RxRKQyKC+LwS4W3rVnNZtYxyW9RTbG/BAOFjCAtbkl8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=wPISoG6Jz0fttLm9j5xmyO5irS51wE4oE8TOBaBUO7CWsnjB0bJ1Gttc0eW3Y63hS
-	 tt2aOoruiWi2aYa55xNoY+uJqq+Ly+ssrLdo4ixwTPVYOCKyAQukFxVQ2K6cKRs9Wt
-	 IIroc4HHlXHE4ZNvrFxgAcVsu+T4OD8a0ZnBQggk=
+	b=USbCk82cihnnoywJvDkPC5XRL9sx5KZIzNKOfPVPWM+alGVTaufG7WHUmAde4bG3K
+	 OWT/BnESMJZgLIWhlWI8HuNGoLUFOKznO2kOm/4e+bfo7RUvmAUbNcFRfUM6uz6Z6P
+	 ofQY9v0wFiSkd4gR5ZeCLJD1bRyUJl5MG9s3RFtI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yuho Choi <dbgh9129@gmail.com>,
-	Mathieu Poirier <mathieu.poirier@linaro.org>
-Subject: [PATCH 6.12 173/204] rpmsg: char: Fix use-after-free on probe error path
-Date: Thu,  2 Jul 2026 18:20:30 +0200
-Message-ID: <20260702155122.280402390@linuxfoundation.org>
+	Tao Cui <cuitao@kylinos.cn>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 112/129] mptcp: pm: fix extra_subflows underflow on userspace PM subflow creation
+Date: Thu,  2 Jul 2026 18:20:31 +0200
+Message-ID: <20260702155114.460759364@linuxfoundation.org>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260702155118.667618796@linuxfoundation.org>
-References: <20260702155118.667618796@linuxfoundation.org>
+In-Reply-To: <20260702155112.163984240@linuxfoundation.org>
+References: <20260702155112.163984240@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,120 +70,100 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-271075-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:dbgh9129@gmail.com,m:mathieu.poirier@linaro.org,s:lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,linaro.org];
+	TAGGED_FROM(0.00)[bounces-270907-lists,stable=lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:cuitao@kylinos.cn,m:matttbe@kernel.org,m:kuba@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
+	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linaro.org:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 460206FAB37
+X-Rspamd-Queue-Id: 95BDB6FA968
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yuho Choi <dbgh9129@gmail.com>
+From: Tao Cui <cuitao@kylinos.cn>
 
-commit 1ff3f528e67d20e2b1483dcaba899dc7832b2e6b upstream.
+[ Upstream commit 14e9fea30b68fc75b2b3d97396a7e6adb544bd2a ]
 
-rpmsg_chrdev_probe() stores the newly allocated eptdev in the default
-endpoint's priv pointer before calling rpmsg_chrdev_eptdev_add(). If
-rpmsg_chrdev_eptdev_add() then fails, its error path frees eptdev while
-the default endpoint may still dispatch callbacks with the stale priv
-pointer.
+The userspace PM increments extra_subflows after __mptcp_subflow_connect()
+succeeds, but __mptcp_subflow_connect() calls mptcp_pm_close_subflow()
+on failure to roll back the pre-increment done by the kernel PM's fill_*()
+helpers. Because the userspace PM hasn't incremented yet at that point,
+this decrement is spurious and causes extra_subflows to underflow.
 
-Avoid publishing eptdev through the default endpoint until
-rpmsg_chrdev_eptdev_add() succeeds. Messages received before the priv
-pointer is published should be ignored by rpmsg_ept_cb(). Flow-control
-updates can hit rpmsg_ept_flow_cb() in the same window, so make both
-callbacks return success when priv is NULL.
+Fix it by aligning the userspace PM with the kernel PM: increment
+extra_subflows before calling __mptcp_subflow_connect(), so the existing
+error path in subflow.c correctly rolls it back on failure. Also simplify
+the error handling by taking pm.lock only when needed for cleanup.
 
-Fixes: bc69d1066569 ("rpmsg: char: Introduce the "rpmsg-raw" channel")
-Signed-off-by: Yuho Choi <dbgh9129@gmail.com>
+Fixes: 77e4b94a3de6 ("mptcp: update userspace pm infos")
 Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20260601183247.1962010-1-dbgh9129@gmail.com
-Signed-off-by: Mathieu Poirier <mathieu.poirier@linaro.org>
+Signed-off-by: Tao Cui <cuitao@kylinos.cn>
+Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Link: https://patch.msgid.link/20260602-net-mptcp-misc-fixes-7-1-rc7-v2-5-856831229976@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/rpmsg/rpmsg_char.c |   15 +++++++++++++--
- 1 file changed, 13 insertions(+), 2 deletions(-)
+ net/mptcp/pm_userspace.c |   13 ++++++++-----
+ 1 file changed, 8 insertions(+), 5 deletions(-)
 
---- a/drivers/rpmsg/rpmsg_char.c
-+++ b/drivers/rpmsg/rpmsg_char.c
-@@ -104,6 +104,9 @@ static int rpmsg_ept_cb(struct rpmsg_dev
- 	struct rpmsg_eptdev *eptdev = priv;
- 	struct sk_buff *skb;
+--- a/net/mptcp/pm_userspace.c
++++ b/net/mptcp/pm_userspace.c
+@@ -410,18 +410,21 @@ int mptcp_nl_cmd_sf_create(struct sk_buf
+ 		goto create_err;
+ 	}
  
-+	if (!eptdev)
-+		return 0;
++	spin_lock_bh(&msk->pm.lock);
++	msk->pm.subflows++;
++	spin_unlock_bh(&msk->pm.lock);
 +
- 	skb = alloc_skb(len, GFP_ATOMIC);
- 	if (!skb)
- 		return -ENOMEM;
-@@ -124,6 +127,9 @@ static int rpmsg_ept_flow_cb(struct rpms
- {
- 	struct rpmsg_eptdev *eptdev = priv;
+ 	lock_sock(sk);
  
-+	if (!eptdev)
-+		return 0;
-+
- 	eptdev->remote_flow_restricted = enable;
- 	eptdev->remote_flow_updated = true;
+ 	err = __mptcp_subflow_connect(sk, &addr_l, &addr_r);
  
-@@ -490,6 +496,7 @@ static int rpmsg_chrdev_probe(struct rpm
- 	struct rpmsg_channel_info chinfo;
- 	struct rpmsg_eptdev *eptdev;
- 	struct device *dev = &rpdev->dev;
-+	int ret;
+ 	release_sock(sk);
  
- 	memcpy(chinfo.name, rpdev->id.name, RPMSG_NAME_SIZE);
- 	chinfo.src = rpdev->src;
-@@ -502,13 +509,17 @@ static int rpmsg_chrdev_probe(struct rpm
- 	/* Set the default_ept to the rpmsg device endpoint */
- 	eptdev->default_ept = rpdev->ept;
+-	spin_lock_bh(&msk->pm.lock);
+-	if (err)
++	if (err) {
++		spin_lock_bh(&msk->pm.lock);
+ 		mptcp_userspace_pm_delete_local_addr(msk, &local);
+-	else
+-		msk->pm.subflows++;
+-	spin_unlock_bh(&msk->pm.lock);
++		spin_unlock_bh(&msk->pm.lock);
++	}
  
-+	ret = rpmsg_chrdev_eptdev_add(eptdev, chinfo);
-+
-+	if (ret)
-+		return ret;
- 	/*
- 	 * The rpmsg_ept_cb uses *priv parameter to get its rpmsg_eptdev context.
--	 * Storedit in default_ept *priv field.
-+	 * Stored it in default_ept *priv field.
- 	 */
- 	eptdev->default_ept->priv = eptdev;
- 
--	return rpmsg_chrdev_eptdev_add(eptdev, chinfo);
-+	return 0;
- }
- 
- static void rpmsg_chrdev_remove(struct rpmsg_device *rpdev)
+  create_err:
+ 	sock_put((struct sock *)msk);
 
 
 
