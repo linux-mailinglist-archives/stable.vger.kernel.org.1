@@ -1,61 +1,62 @@
-Return-Path: <stable+bounces-271080-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-271437-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id S8VYN8CYRmqJZgsAu9opvQ
-	(envelope-from <stable+bounces-271080-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:58:40 +0200
+	id IVMtMHObRmoOaAsAu9opvQ
+	(envelope-from <stable+bounces-271437-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:10:11 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 619F66FACFD
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:58:40 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1BA9C6FB135
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:10:11 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=GLEPA1SE;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-271080-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-271080-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=xfjHCZNu;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-271437-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-271437-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 8784D32CD5F0
-	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:46:36 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 281ED34418B6
+	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:59:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC0FF35F8C9;
-	Thu,  2 Jul 2026 16:43:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 922BD30C141;
+	Thu,  2 Jul 2026 16:59:02 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 867E819049B;
-	Thu,  2 Jul 2026 16:43:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53C8522D7B9;
+	Thu,  2 Jul 2026 16:59:01 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783010617; cv=none; b=ckbEtAsq8qob/+U5LgPg46+m/KBLYMn5wlmETYft4pdsRgATtSSjKhpAQrdAtyLu0Iot+JuduvJmnkkagXGomDAAE1RlCw8Kit9sxh41FC0HFDy0quI9UM5a/xz50U3abudvi+ykWB3jcCazztejwnIDTRbbPhlabaSr6qvISZk=
+	t=1783011542; cv=none; b=ayZwtF1xO5hDsDm8BMSakTdysjfWCMimgWri65deyEFvi8Yh8CVqVCH0Yg0c0FLGkzO/ZiBOeH1gKH1Zmpy0tmXF00Y+wPe+458QiQjNgvKmVUnGv5YzoRwVRbuJoXsY5Svmq3U2Zh8kIZoOOkhUaCNsXKcRALUP3NEjLceClDc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783010617; c=relaxed/simple;
-	bh=5CdnX3cHju8U3xCFSyYiw608EiEgXTXf2wNGj0MkJtI=;
+	s=arc-20240116; t=1783011542; c=relaxed/simple;
+	bh=eJD4KcoBiZ0yb12pANdanSHot2onqUQUIVfZ27mm6jA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BkIZ1Z5n/jtDbKzsuqkYvubRNP+h3ji/Uw3MgYxnKwPXMr4Ytx+Z1G41M7cY/E3DSbN3jFOoi6BFi/D81euCvjv6gFgR/kPcyH/CDE2h48OlSAzF1caPXMnDmzGPZ/x+JBv+8zY7GrTsuaREZhtKzOVpJpJCFfMnaidFAmTw7mI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GLEPA1SE; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D42C61F000E9;
-	Thu,  2 Jul 2026 16:43:35 +0000 (UTC)
+	 MIME-Version; b=T5VwwhYi5OPJi2V7FdwbqCErZUu05VjySGqcptLOP01fGmLDlzaWNhSsKoI1u6kJtM8xvMejXaT5bV3A7mYn004rjB0k36tjXQ9+NI2lLmop5zXDQblPqD1IJFYvFzU8FJ9J0pP0fWjCTUv5lC72of/kndURA+OhYxX8L2uaOPs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xfjHCZNu; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA2F81F00A3A;
+	Thu,  2 Jul 2026 16:59:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1783010616;
-	bh=003HUbq8Jn6GHHsEhWP5/amqARTXYc8xo76D9d6Brb4=;
+	s=korg; t=1783011541;
+	bh=5VHl8zBKSVtMtpMNZ4IlrYMGkCj20RaRYkQbgngr7GE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=GLEPA1SE1RtTMA2VoQrmLBMXFjOwfo/tO4deFmQ4wpjEvZCch3pWBsGTWDXb4OwmR
-	 pTSaBUW+rE3Unh0yQ1M6IufXq4SPsW+FUV6X8kFvH0AbHCxu1jRgQJts0ua/XHoxVg
-	 DxLOoe4MScYHW/marD9ioc0ef4FxO2DPte/DJNQk=
+	b=xfjHCZNuZ86V+gXRVD/vQ2Fa84Dknj6CC+qyuG0faOLYXt0UhdQTvHqjsRfSaWtI9
+	 OevODh0UdwUBXExFEWpW3DhB0V9jJ1RKrexkQYiukrZdra/Eyw5QWXS3FeL63DbhUK
+	 GmzssT7Q8z2XPxQnYrX+mR8UXjSfEq7MzQP5fq+U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hyunwoo Kim <imv4bel@gmail.com>,
-	Vitaly Kuznetsov <vkuznets@redhat.com>,
-	Sean Christopherson <seanjc@google.com>
-Subject: [PATCH 6.12 177/204] KVM: x86: hyper-v: Bound the bank index when querying sparse banks
+	Frank Li <Frank.Li@nxp.com>,
+	Koichiro Den <den@valinux.co.jp>,
+	Dave Jiang <dave.jiang@intel.com>,
+	Jon Mason <jdmason@kudzu.us>
+Subject: [PATCH 7.1 038/120] NTB: epf: Avoid pci_iounmap() with offset when PEER_SPAD and CONFIG share BAR
 Date: Thu,  2 Jul 2026 18:20:34 +0200
-Message-ID: <20260702155122.364471690@linuxfoundation.org>
+Message-ID: <20260702155113.748576021@linuxfoundation.org>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260702155118.667618796@linuxfoundation.org>
-References: <20260702155118.667618796@linuxfoundation.org>
+In-Reply-To: <20260702155112.964534952@linuxfoundation.org>
+References: <20260702155112.964534952@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,130 +70,94 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-271080-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:imv4bel@gmail.com,m:vkuznets@redhat.com,m:seanjc@google.com,s:lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,redhat.com,google.com];
+	TAGGED_FROM(0.00)[bounces-271437-lists,stable=lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:Frank.Li@nxp.com,m:den@valinux.co.jp,m:dave.jiang@intel.com,m:jdmason@kudzu.us,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
+	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,msgid.link:url]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[nxp.com:email,intel.com:email,vger.kernel.org:from_smtp,kudzu.us:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,valinux.co.jp:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 619F66FACFD
+X-Rspamd-Queue-Id: 1BA9C6FB135
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+7.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hyunwoo Kim <imv4bel@gmail.com>
+From: Koichiro Den <den@valinux.co.jp>
 
-commit 4721f8160f17554b003e8928bb61e6c9b2fe92a3 upstream.
+commit d876153680e3d721d385e554def919bce3d18c74 upstream.
 
-When checking if a VP ID is included in a sparse bank set, explicitly check
-that the ID can actually be contained in a sparse bank (the TLFS allows for
-a maximum of 64 banks of 64 vCPUs each).  When handling a paravirtual TLB
-flush for L2, the VP ID is copied verbatim from the enlightened VMCS,
-without any bounds check, i.e. isn't guaranteed to be under the limit of
-4096.
+When BAR_PEER_SPAD and BAR_CONFIG share one PCI BAR, the module teardown
+path ends up calling pci_iounmap() on the same iomem with some offset,
+which is unnecessary and triggers a kernel warning like the following:
 
-Failure to check the bounds of the VP ID leads to an out-of-bounds read
-when testing the sparse bank, and super strictly speaking could lead to KVM
-performing an unnecessary TLB flush for an L2 vCPU.
+  Trying to vunmap() nonexistent vm area (0000000069a5ffe8)
+  WARNING: mm/vmalloc.c:3470 at vunmap+0x58/0x68, CPU#5: modprobe/2937
+  [...]
+  Call trace:
+   vunmap+0x58/0x68 (P)
+   iounmap+0x34/0x48
+   pci_iounmap+0x2c/0x40
+   ntb_epf_pci_remove+0x44/0x80 [ntb_hw_epf]
+   pci_device_remove+0x48/0xf8
+   device_remove+0x50/0x88
+   device_release_driver_internal+0x1c8/0x228
+   driver_detach+0x50/0xb0
+   bus_remove_driver+0x74/0x100
+   driver_unregister+0x34/0x68
+   pci_unregister_driver+0x34/0xa0
+   ntb_epf_pci_driver_exit+0x14/0xfe0 [ntb_hw_epf]
+  [...]
 
-  ==================================================================
-  BUG: KASAN: use-after-free in hv_is_vp_in_sparse_set+0x85/0x100 [kvm]
-  Read of size 8 at addr ffff88811ba5f598 by task hyperv_evmcs/2802
-
-  CPU: 12 UID: 1000 PID: 2802 Comm: hyperv_evmcs Not tainted 7.1.0-rc2 #7 PREEMPT
-  Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 0.0.0 02/06/2015
-  Call Trace:
-   <TASK>
-   dump_stack_lvl+0x51/0x60
-   print_report+0xcb/0x5d0
-   kasan_report+0xb4/0xe0
-   kasan_check_range+0x35/0x1b0
-   hv_is_vp_in_sparse_set+0x85/0x100 [kvm]
-   kvm_hv_flush_tlb+0xe9e/0x16c0 [kvm]
-   kvm_hv_hypercall+0xe6b/0x1e60 [kvm]
-   vmx_handle_exit+0x485/0x1b60 [kvm_intel]
-   kvm_arch_vcpu_ioctl_run+0x22e3/0x5070 [kvm]
-   kvm_vcpu_ioctl+0x5d0/0x10c0 [kvm]
-   __x64_sys_ioctl+0x129/0x1a0
-   do_syscall_64+0xb9/0xcf0
-   entry_SYSCALL_64_after_hwframe+0x4b/0x53
-  RIP: 0033:0x7f0e62d1a9bf
-   </TASK>
-
-  The buggy address belongs to the physical page:
-  page: refcount:0 mapcount:0 mapping:0000000000000000 index:0xffffffffffffffff pfn:0x11ba5f
-  flags: 0x4000000000000000(zone=1)
-  raw: 4000000000000000 0000000000000000 00000000ffffffff 0000000000000000
-  raw: ffffffffffffffff 0000000000000000 00000000ffffffff 0000000000000000
-  page dumped because: kasan: bad access detected
-
-  Memory state around the buggy address:
-   ffff88811ba5f480: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
-   ffff88811ba5f500: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
-  >ffff88811ba5f580: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
-                              ^
-   ffff88811ba5f600: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
-   ffff88811ba5f680: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
-  ==================================================================
-  Disabling lock debugging due to kernel taint
-
-Opportunistically add a compile time assertion to ensure the maximum number
-of sparse banks exactly matches the number of possible bits in the passed
-in mask.
+Fix it by unmapping only when PEER_SPAD and CONFIG use difference bars.
 
 Cc: stable@vger.kernel.org
-Fixes: c58a318f6090 ("KVM: x86: hyper-v: L2 TLB flush")
-Signed-off-by: Hyunwoo Kim <imv4bel@gmail.com>
-Reviewed-by: Vitaly Kuznetsov <vkuznets@redhat.com>
-Link: https://patch.msgid.link/aiQyZIJtO-2Aj_xN@v4bel
-[sean: add KASAN splat, drop comment, add assert, massage changelog]
-Signed-off-by: Sean Christopherson <seanjc@google.com>
+Fixes: e75d5ae8ab88 ("NTB: epf: Allow more flexibility in the memory BAR map method")
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
+Signed-off-by: Koichiro Den <den@valinux.co.jp>
+Reviewed-by: Dave Jiang <dave.jiang@intel.com>
+Signed-off-by: Jon Mason <jdmason@kudzu.us>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kvm/hyperv.c |    5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/ntb/hw/epf/ntb_hw_epf.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/arch/x86/kvm/hyperv.c
-+++ b/arch/x86/kvm/hyperv.c
-@@ -1838,6 +1838,11 @@ static bool hv_is_vp_in_sparse_set(u32 v
- 	int valid_bit_nr = vp_id / HV_VCPUS_PER_SPARSE_BANK;
- 	unsigned long sbank;
+--- a/drivers/ntb/hw/epf/ntb_hw_epf.c
++++ b/drivers/ntb/hw/epf/ntb_hw_epf.c
+@@ -646,7 +646,8 @@ static void ntb_epf_deinit_pci(struct nt
+ 	struct pci_dev *pdev = ndev->ntb.pdev;
  
-+	BUILD_BUG_ON(BITS_PER_TYPE(valid_bank_mask) != HV_MAX_SPARSE_VCPU_BANKS);
-+
-+	if (valid_bit_nr >= HV_MAX_SPARSE_VCPU_BANKS)
-+		return false;
-+
- 	if (!test_bit(valid_bit_nr, (unsigned long *)&valid_bank_mask))
- 		return false;
+ 	pci_iounmap(pdev, ndev->ctrl_reg);
+-	pci_iounmap(pdev, ndev->peer_spad_reg);
++	if (ndev->barno_map[BAR_PEER_SPAD] != ndev->barno_map[BAR_CONFIG])
++		pci_iounmap(pdev, ndev->peer_spad_reg);
+ 	pci_iounmap(pdev, ndev->db_reg);
  
+ 	pci_release_regions(pdev);
 
 
 
