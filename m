@@ -1,74 +1,63 @@
-Return-Path: <stable+bounces-271206-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-271002-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id /25uHOqZRmo1ZwsAu9opvQ
-	(envelope-from <stable+bounces-271206-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:03:38 +0200
+	id DpLpAa2VRmqtZAsAu9opvQ
+	(envelope-from <stable+bounces-271002-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:45:33 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id C72D66FAEBC
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:03:37 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C8D06FA7E3
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:45:32 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="FC+Vi0o/";
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-271206-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-271206-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=hGslMXv3;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-271002-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-271002-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B4329323EE75
-	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:50:40 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id DAD5030BF225
+	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:41:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 90D01390613;
-	Thu,  2 Jul 2026 16:49:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6441732ED40;
+	Thu,  2 Jul 2026 16:40:12 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06FB6381EB3;
-	Thu,  2 Jul 2026 16:49:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33C1BDDA9;
+	Thu,  2 Jul 2026 16:40:11 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783010943; cv=none; b=bptmNgztcKuosv0FR+86VdSKPPnK5Q1jOV7d4gqXeMQd/ksV+bPx0KKIE/1GY8FKa1osa/j2O5Re+v0kFQfYBp6EdEU23eCF8YBIcxxiu6ACTUfnFfuujGBjiMUjQ0sKGmr0b8M+gJO+ZAvO8EfFJQqhAja6VruJA7XQuXb3ilw=
+	t=1783010412; cv=none; b=l3FnhwfMtxvlwfNHAZWBX224/FCBuM/1p6IelB1Dv++3ii+dXYOHNsnTO71ll6r4zU/+/d0VNRxnVc/xAJv+8DX4bEIivisFxhcgIBf6s9xKKSjDEargh/VXvQaVy3IoWNR16WBn1NKv8RjERhcNeoKiTbtJdMWpU70XjFMSfCk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783010943; c=relaxed/simple;
-	bh=6pTUSNrr8gIRDTOEXnYUrujFr9vn9hTsDWcAiSl0pao=;
+	s=arc-20240116; t=1783010412; c=relaxed/simple;
+	bh=nsyRwzOh2Coci871jFG0uNsZyXiEoR8WXQdPzX9+d5k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AKhkb3BHJd8Zkup6Re1Yv3wtUReK2klmeULKW6otKBkf1fFx7rgsfw3UvtE0cQzW7rrDKHHdivzgPSsXljQLFoohbqvBAhz/ksc2r4gqTAPkefbkAjF9oyogpWyccB07UC6GlzZ/T3lDRnizF2GlO+k2PGmlB2ohTMdCok62NOI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FC+Vi0o/; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43D631F000E9;
-	Thu,  2 Jul 2026 16:49:01 +0000 (UTC)
+	 MIME-Version; b=p/JMyBzQwR+vN83iJGoTYtahfiyJXMBIPWyCeLcuvGgbLsJ6A0Qcd3CCYKDCK0nLtfz+zD6H+zE9gZsJqmtKbzOjSDMMy6Cdvcwu7CI1J5B6g2vR3fjrxPY+Cm0xRO0FqFZG5737d8HcEEUXSRTQg9S4YSYMyOW0TP21lJ+FIqY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hGslMXv3; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 985EE1F000E9;
+	Thu,  2 Jul 2026 16:40:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1783010941;
-	bh=YcgKMcI6afUv0wEQ5vXIVeVa7ltoR2EdJ6ukQgj07bg=;
+	s=korg; t=1783010411;
+	bh=TVZzLsBKCDisreJPxC66lddcVWPqZP/hfx/Iu44QlCc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=FC+Vi0o/PTbsaSinXX/dh3idzFZpe0De3D8UGcTuO/NdiuCXlP7dtQb9QdvREQCb1
-	 AY3fuIyjB4QBfRqCaGTwqGKNARxxemQWiMZGxF09ZJKR9Nx0CTfVXQntD3cs7/c8F3
-	 bnkL0C/Ysfxte+qPCT75NGqPTqAZicaSFgvKWqTA=
+	b=hGslMXv345n2Shc65KEMWEzbA/iNxUr/eV8R7o8eyJkeWAFPQUHZj+MhxWeu0VLSD
+	 Flz5+DBtY+UCH1Sdv23G8pJ0g5mISTeRuR70HugZ16t4fDA6u5WN0+MCb3Z6Nn+Vj9
+	 DDZxwAtEoGjkKbp6jgqLooaLtII0C/Lf6VCDsb3A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	bpf <bpf@vger.kernel.org>,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	Masahiro Yamada <masahiroy@kernel.org>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Nicolas Schier <nicolas@fjasle.eu>,
-	Zheng Yejian <zhengyejian1@huawei.com>,
-	Martin Kelly <martin.kelly@crowdstrike.com>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Josh Poimboeuf <jpoimboe@redhat.com>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
-	Andrey Grodzovsky <andrey.grodzovsky@crowdstrike.com>
-Subject: [PATCH 6.6 053/175] scripts/sorttable: Add helper functions for Elf_Shdr
-Date: Thu,  2 Jul 2026 18:19:14 +0200
-Message-ID: <20260702155116.913203697@linuxfoundation.org>
+	Tom Lendacky <thomas.lendacky@amd.com>,
+	Sean Christopherson <seanjc@google.com>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Jack Wang <jinpu.wang@ionos.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 098/204] KVM: SEV: Ignore Port I/O requests of length 0
+Date: Thu,  2 Jul 2026 18:19:15 +0200
+Message-ID: <20260702155120.720202160@linuxfoundation.org>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260702155115.766838875@linuxfoundation.org>
-References: <20260702155115.766838875@linuxfoundation.org>
+In-Reply-To: <20260702155118.667618796@linuxfoundation.org>
+References: <20260702155118.667618796@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -82,284 +71,93 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-271206-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[19];
-	FORWARDED(0.00)[lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:bpf@vger.kernel.org,m:mhiramat@kernel.org,m:mark.rutland@arm.com,m:mathieu.desnoyers@efficios.com,m:akpm@linux-foundation.org,m:peterz@infradead.org,m:torvalds@linux-foundation.org,m:masahiroy@kernel.org,m:nathan@kernel.org,m:nicolas@fjasle.eu,m:zhengyejian1@huawei.com,m:martin.kelly@crowdstrike.com,m:christophe.leroy@csgroup.eu,m:jpoimboe@redhat.com,m:rostedt@goodmis.org,m:andrey.grodzovsky@crowdstrike.com,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-271002-lists,stable=lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:thomas.lendacky@amd.com,m:seanjc@google.com,m:pbonzini@redhat.com,m:jinpu.wang@ionos.com,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,amd.com:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: C72D66FAEBC
+X-Rspamd-Queue-Id: 6C8D06FA7E3
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Steven Rostedt <rostedt@goodmis.org>
+From: Sean Christopherson <seanjc@google.com>
 
-[ Upstream commit 67afb7f504400e5b4e5ff895459fbb3eb63d4450 ]
+commit 3988bd2723de407ae90fa7a6f6029b4e60238c58 upstream.
 
-In order to remove the double #include of sorttable.h for 64 and 32 bit
-to create duplicate functions, add helper functions for Elf_Shdr.  This
-will create a function pointer for each helper that will get assigned to
-the appropriate function to handle either the 64bit or 32bit version.
+Explicitly ignore Port I/O requests of length '0' (or count '0'), so that
+setting up the software scratch area (and other code) doesn't have to
+worry about underflowing the length, and to allow for WARNing on trying
+to configure the scratch area with len==0.
 
-This also moves the _r()/r() wrappers for the Elf_Shdr references that
-handle endian and size differences between the different architectures,
-into the helper function and out of the open code which is more error
-prone.
-
-Cc: bpf <bpf@vger.kernel.org>
-Cc: Masami Hiramatsu <mhiramat@kernel.org>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: Masahiro Yamada <masahiroy@kernel.org>
-Cc: Nathan Chancellor <nathan@kernel.org>
-Cc: Nicolas Schier <nicolas@fjasle.eu>
-Cc: Zheng Yejian <zhengyejian1@huawei.com>
-Cc: Martin  Kelly <martin.kelly@crowdstrike.com>
-Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
-Cc: Josh Poimboeuf <jpoimboe@redhat.com>
-Link: https://lore.kernel.org/20250105162345.940924221@goodmis.org
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-Signed-off-by: Andrey Grodzovsky <andrey.grodzovsky@crowdstrike.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 291bd20d5d88 ("KVM: SVM: Add initial support for a VMGEXIT VMEXIT")
+Cc: stable@vger.kernel.org
+Reviewed-by: Tom Lendacky <thomas.lendacky@amd.com>
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+Message-ID: <20260501202250.2115252-5-seanjc@google.com>
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+Signed-off-by: Jack Wang <jinpu.wang@ionos.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- scripts/sorttable.c |   42 +++++++++++++++++++++++++++++++++
- scripts/sorttable.h |   66 +++++++++++++++++++++++++++++++++-------------------
- 2 files changed, 85 insertions(+), 23 deletions(-)
+ arch/x86/kvm/svm/sev.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
---- a/scripts/sorttable.c
-+++ b/scripts/sorttable.c
-@@ -110,6 +110,48 @@ EHDR_HALF(shentsize)
- EHDR_HALF(shstrndx)
- EHDR_HALF(shnum)
- 
-+#define SHDR_WORD(fn_name)				\
-+static uint32_t shdr64_##fn_name(Elf_Shdr *shdr)	\
-+{							\
-+	return r(&shdr->e64.sh_##fn_name);		\
-+}							\
-+							\
-+static uint32_t shdr32_##fn_name(Elf_Shdr *shdr)	\
-+{							\
-+	return r(&shdr->e32.sh_##fn_name);		\
-+}
+diff --git a/arch/x86/kvm/svm/sev.c b/arch/x86/kvm/svm/sev.c
+index 497a6e70513570..73e49317735173 100644
+--- a/arch/x86/kvm/svm/sev.c
++++ b/arch/x86/kvm/svm/sev.c
+@@ -4459,6 +4459,11 @@ int sev_handle_vmgexit(struct kvm_vcpu *vcpu)
+ 			    control->exit_info_1, control->exit_info_2);
+ 		ret = -EINVAL;
+ 		break;
++	case SVM_EXIT_IOIO:
++		if (!((control->exit_info_1 & SVM_IOIO_SIZE_MASK) >> SVM_IOIO_SIZE_SHIFT))
++			return 1;
 +
-+#define SHDR_ADDR(fn_name)				\
-+static uint64_t shdr64_##fn_name(Elf_Shdr *shdr)	\
-+{							\
-+	return r8(&shdr->e64.sh_##fn_name);		\
-+}							\
-+							\
-+static uint64_t shdr32_##fn_name(Elf_Shdr *shdr)	\
-+{							\
-+	return r(&shdr->e32.sh_##fn_name);		\
-+}
-+
-+#define SHDR_WORD(fn_name)				\
-+static uint32_t shdr64_##fn_name(Elf_Shdr *shdr)	\
-+{							\
-+	return r(&shdr->e64.sh_##fn_name);		\
-+}							\
-+							\
-+static uint32_t shdr32_##fn_name(Elf_Shdr *shdr)	\
-+{							\
-+	return r(&shdr->e32.sh_##fn_name);		\
-+}
-+
-+SHDR_ADDR(addr)
-+SHDR_ADDR(offset)
-+SHDR_ADDR(size)
-+SHDR_ADDR(entsize)
-+
-+SHDR_WORD(link)
-+SHDR_WORD(name)
-+SHDR_WORD(type)
-+
- /*
-  * Get the whole file as a programming convenience in order to avoid
-  * malloc+lseek+read+free of many pieces.  If successful, then mmap
---- a/scripts/sorttable.h
-+++ b/scripts/sorttable.h
-@@ -31,6 +31,13 @@
- #undef ehdr_shentsize
- #undef ehdr_shstrndx
- #undef ehdr_shnum
-+#undef shdr_addr
-+#undef shdr_offset
-+#undef shdr_link
-+#undef shdr_size
-+#undef shdr_name
-+#undef shdr_type
-+#undef shdr_entsize
- 
- #ifdef SORTTABLE_64
- # define extable_ent_size	16
-@@ -47,6 +54,13 @@
- # define ehdr_shentsize		ehdr64_shentsize
- # define ehdr_shstrndx		ehdr64_shstrndx
- # define ehdr_shnum		ehdr64_shnum
-+# define shdr_addr		shdr64_addr
-+# define shdr_offset		shdr64_offset
-+# define shdr_link		shdr64_link
-+# define shdr_size		shdr64_size
-+# define shdr_name		shdr64_name
-+# define shdr_type		shdr64_type
-+# define shdr_entsize		shdr64_entsize
- #else
- # define extable_ent_size	8
- # define compare_extable	compare_extable_32
-@@ -62,6 +76,13 @@
- # define ehdr_shentsize		ehdr32_shentsize
- # define ehdr_shstrndx		ehdr32_shstrndx
- # define ehdr_shnum		ehdr32_shnum
-+# define shdr_addr		shdr32_addr
-+# define shdr_offset		shdr32_offset
-+# define shdr_link		shdr32_link
-+# define shdr_size		shdr32_size
-+# define shdr_name		shdr32_name
-+# define shdr_type		shdr32_type
-+# define shdr_entsize		shdr32_entsize
- #endif
- 
- #if defined(SORTTABLE_64) && defined(UNWINDER_ORC_ENABLED)
-@@ -177,8 +198,8 @@ struct elf_mcount_loc {
- static void *sort_mcount_loc(void *arg)
- {
- 	struct elf_mcount_loc *emloc = (struct elf_mcount_loc *)arg;
--	uint_t offset = emloc->start_mcount_loc - _r(&(emloc->init_data_sec)->etype.sh_addr)
--					+ _r(&(emloc->init_data_sec)->etype.sh_offset);
-+	uint_t offset = emloc->start_mcount_loc - shdr_addr(emloc->init_data_sec)
-+					+ shdr_offset(emloc->init_data_sec);
- 	uint_t count = emloc->stop_mcount_loc - emloc->start_mcount_loc;
- 	unsigned char *start_loc = (void *)emloc->ehdr + offset;
- 
-@@ -267,18 +288,18 @@ static int do_sort(Elf_Ehdr *ehdr,
- 
- 	shstrndx = ehdr_shstrndx(ehdr);
- 	if (shstrndx == SHN_XINDEX)
--		shstrndx = r(&shdr_start->etype.sh_link);
-+		shstrndx = shdr_link(shdr_start);
- 	string_sec = get_index(shdr_start, shentsize, shstrndx);
--	secstrings = (const char *)ehdr + _r(&string_sec->etype.sh_offset);
-+	secstrings = (const char *)ehdr + shdr_offset(string_sec);
- 
- 	shnum = ehdr_shnum(ehdr);
- 	if (shnum == SHN_UNDEF)
--		shnum = _r(&shdr_start->etype.sh_size);
-+		shnum = shdr_size(shdr_start);
- 
- 	for (i = 0; i < shnum; i++) {
- 		Elf_Shdr *shdr = get_index(shdr_start, shentsize, i);
- 
--		idx = r(&shdr->etype.sh_name);
-+		idx = shdr_name(shdr);
- 		if (!strcmp(secstrings + idx, "__ex_table"))
- 			extab_sec = shdr;
- 		if (!strcmp(secstrings + idx, ".symtab"))
-@@ -286,9 +307,9 @@ static int do_sort(Elf_Ehdr *ehdr,
- 		if (!strcmp(secstrings + idx, ".strtab"))
- 			strtab_sec = shdr;
- 
--		if (r(&shdr->etype.sh_type) == SHT_SYMTAB_SHNDX)
-+		if (shdr_type(shdr) == SHT_SYMTAB_SHNDX)
- 			symtab_shndx = (Elf32_Word *)((const char *)ehdr +
--						      _r(&shdr->etype.sh_offset));
-+						      shdr_offset(shdr));
- 
- #ifdef MCOUNT_SORT_ENABLED
- 		/* locate the .init.data section in vmlinux */
-@@ -304,14 +325,14 @@ static int do_sort(Elf_Ehdr *ehdr,
- #if defined(SORTTABLE_64) && defined(UNWINDER_ORC_ENABLED)
- 		/* locate the ORC unwind tables */
- 		if (!strcmp(secstrings + idx, ".orc_unwind_ip")) {
--			orc_ip_size = _r(&shdr->etype.sh_size);
-+			orc_ip_size = shdr_size(shdr);
- 			g_orc_ip_table = (int *)((void *)ehdr +
--						   _r(&shdr->etype.sh_offset));
-+						   shdr_offset(shdr));
- 		}
- 		if (!strcmp(secstrings + idx, ".orc_unwind")) {
--			orc_size = _r(&shdr->etype.sh_size);
-+			orc_size = shdr_size(shdr);
- 			g_orc_table = (struct orc_entry *)((void *)ehdr +
--							     _r(&shdr->etype.sh_offset));
-+							     shdr_offset(shdr));
- 		}
- #endif
- 	} /* for loop */
-@@ -374,23 +395,22 @@ static int do_sort(Elf_Ehdr *ehdr,
- 		goto out;
++		fallthrough;
+ 	default:
+ 		ret = svm_invoke_exit_handler(vcpu, exit_code);
  	}
+@@ -4479,6 +4484,9 @@ int sev_es_string_io(struct vcpu_svm *svm, int size, unsigned int port, int in)
+ 	if (unlikely(check_mul_overflow(count, size, &bytes)))
+ 		return -EINVAL;
  
--	extab_image = (void *)ehdr + _r(&extab_sec->etype.sh_offset);
--	strtab = (const char *)ehdr + _r(&strtab_sec->etype.sh_offset);
--	symtab = (const Elf_Sym *)((const char *)ehdr +
--						  _r(&symtab_sec->etype.sh_offset));
-+	extab_image = (void *)ehdr + shdr_offset(extab_sec);
-+	strtab = (const char *)ehdr + shdr_offset(strtab_sec);
-+	symtab = (const Elf_Sym *)((const char *)ehdr + shdr_offset(symtab_sec));
- 
- 	if (custom_sort) {
--		custom_sort(extab_image, _r(&extab_sec->etype.sh_size));
-+		custom_sort(extab_image, shdr_size(extab_sec));
- 	} else {
--		int num_entries = _r(&extab_sec->etype.sh_size) / extable_ent_size;
-+		int num_entries = shdr_size(extab_sec) / extable_ent_size;
- 		qsort(extab_image, num_entries,
- 		      extable_ent_size, compare_extable);
- 	}
- 
- 	/* find the flag main_extable_sort_needed */
--	sym_start = (void *)ehdr + _r(&symtab_sec->etype.sh_offset);
--	sym_end = sym_start + _r(&symtab_sec->etype.sh_size);
--	symentsize = _r(&symtab_sec->etype.sh_entsize);
-+	sym_start = (void *)ehdr + shdr_offset(symtab_sec);
-+	sym_end = sym_start + shdr_size(symtab_sec);
-+	symentsize = shdr_entsize(symtab_sec);
- 
- 	for (sym = sym_start; (void *)sym + symentsize < sym_end;
- 	     sym = (void *)sym + symentsize) {
-@@ -415,9 +435,9 @@ static int do_sort(Elf_Ehdr *ehdr,
- 				       symtab_shndx);
- 	sort_needed_sec = get_index(shdr_start, shentsize, sort_need_index);
- 	sort_needed_loc = (void *)ehdr +
--		_r(&sort_needed_sec->etype.sh_offset) +
-+		shdr_offset(sort_needed_sec) +
- 		_r(&sort_needed_sym->etype.st_value) -
--		_r(&sort_needed_sec->etype.sh_addr);
-+		shdr_addr(sort_needed_sec);
- 
- 	/* extable has been sorted, clear the flag */
- 	w(0, sort_needed_loc);
++	if (!bytes)
++		return 1;
++
+ 	r = setup_vmgexit_scratch(svm, in, bytes);
+ 	if (r)
+ 		return r;
+-- 
+2.53.0
+
 
 
 
