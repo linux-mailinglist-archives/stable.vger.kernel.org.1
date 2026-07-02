@@ -1,62 +1,62 @@
-Return-Path: <stable+bounces-271103-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-271346-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id WWh4DdWjRmo1awsAu9opvQ
-	(envelope-from <stable+bounces-271103-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:45:57 +0200
+	id Zb/KEqGaRmqYZwsAu9opvQ
+	(envelope-from <stable+bounces-271346-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:06:41 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 26B306FB9A9
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:45:56 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 92AF36FAFE8
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:06:40 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=G8cHud6P;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-271103-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-271103-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=oDiGph52;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-271346-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-271346-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id B3E553325C56
-	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:47:26 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 1682B32DA1D6
+	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:55:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C41C3ACF06;
-	Thu,  2 Jul 2026 16:44:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 319652D0602;
+	Thu,  2 Jul 2026 16:55:03 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F46E348C4C;
-	Thu,  2 Jul 2026 16:44:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0194782866;
+	Thu,  2 Jul 2026 16:55:02 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783010678; cv=none; b=VEDF8leQDZS6iUO/5w1Y5AFxl1NQCt8GcjgrPEbDFoy81FF4LsCCsmoSx/jKXPzXIrYYjk/O6jomyn10Knm0GrsQAscWVeOnPYP8qOGVfjby7m2uanFc+SNq3T8n3Wu7zzVOzObeB6VIO+qXlFhg3tvjwa4xJWESsloqRl3c/yE=
+	t=1783011303; cv=none; b=ZsPubjyWarYX+4tK/wfdycq7eRMnv1G/WZgVQWxPUFQhBSeMmfThMbNQPfIKuoLuCdDSbiwX1YlOJLq5pstGDvDG1rO9RotW4Vi0ZsQmE39I/G+MKqdTRnuFD1vubDAWa2YPzGJVzVT9LE9ZkG9GOyas38wruNj1S4AUdNWgR7k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783010678; c=relaxed/simple;
-	bh=rhkq13umY3BesztJZ5QPnhUnGIfBiwcFnSp/ddI6GvA=;
+	s=arc-20240116; t=1783011303; c=relaxed/simple;
+	bh=YcP7KgPGEMttQY/gxQUSWN1FdCiTw6D2M7gW7RxQ72g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Q8GAgGA0pQANuRU+HQPC2dcJWZXeUMJ3+v51UVyjNbQYs6U18fhQhI1/1zdq7+NUKc8HSA0LNkBRpbqf+3WzatEXBBew95dFSbVDiqi5R0A4n4IBC7fG2SJzVb6UifcG9i11FdXCz3ANjyfKBtOiQ348Op2hgVfVA5bSYb6/D5I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G8cHud6P; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 855FA1F000E9;
-	Thu,  2 Jul 2026 16:44:36 +0000 (UTC)
+	 MIME-Version; b=nVeMfkUKZTROaKul3ER7qXkL6bbdFHxtDi6h0GxD8bh7EgQvVOYJ4mugWmq3kch1KEY3pYFtSCYmM8Z2pnLvvCNW7sR5JeSwwQUkQ/X/PPBcX5XA9iabgsyBbPFuFYLPT4vSVjqxk8TfDjWQzeXJya0NH1UUYOE9+C3ef1olz7I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oDiGph52; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 667D31F000E9;
+	Thu,  2 Jul 2026 16:55:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1783010677;
-	bh=aBLbFP07hcMsVsTElmr1+gT9T8tv2P0erjYQ1YnN9Wg=;
+	s=korg; t=1783011301;
+	bh=r7/DTDhUdCdVCnFQELAtUHKMRye6XGymPukPhysWmOw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=G8cHud6PokIsu1ZTaIUXFGhiDGZOLL+VGmzSZACYCxTo7V1CyVLEcrR8egJ/B18Lq
-	 JP7WB8/U+RnHuJ7lvNzi/xCKlJ4z9Ip++EcNcysdjFKC6g5cObm5PUQnDP+Lyo5kgn
-	 34LICnKSfOMw8hUecr/abSYLqQ8nO6cfpQo4690s=
+	b=oDiGph52SLyWQbPAzaB6Lz9MxpaowkXvfsoLhvUwjkG88fW07OXABanSWjc4DumXN
+	 Px5DLnf05gwBm5vpop4ntHyIBbuO9dEZc969H5vb+CAQzMxhsdaJIXIX2gRTgRJfEK
+	 owOHCnI8VC9HdvleZm4xbrfIfdBR2mKEQpdHQzf8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	Thorsten Blum <thorsten.blum@linux.dev>,
-	Giovanni Cabiddu <giovanni.cabiddu@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 198/204] crypto: qat - Return pointer directly in adf_ctl_alloc_resources
+	Simon Horman <horms@kernel.org>,
+	Vadim Fedorenko <vadim.fedorenko@linux.dev>,
+	Junjie Cao <junjie.cao@intel.com>,
+	Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Subject: [PATCH 6.18 058/108] wifi: iwlwifi: mld: fix race condition in PTP removal
 Date: Thu,  2 Jul 2026 18:20:55 +0200
-Message-ID: <20260702155122.812366877@linuxfoundation.org>
+Message-ID: <20260702155113.310621551@linuxfoundation.org>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260702155118.667618796@linuxfoundation.org>
-References: <20260702155118.667618796@linuxfoundation.org>
+In-Reply-To: <20260702155112.110058792@linuxfoundation.org>
+References: <20260702155112.110058792@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,163 +66,88 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-271103-lists,stable=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-271346-lists,stable=lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:horms@kernel.org,m:vadim.fedorenko@linux.dev,m:junjie.cao@intel.com,m:miriam.rachel.korenblit@intel.com,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:herbert@gondor.apana.org.au,m:thorsten.blum@linux.dev,m:giovanni.cabiddu@intel.com,m:sashal@kernel.org,s:lists@lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	TO_DN_SOME(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	TAGGED_RCPT(0.00)[stable];
+	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RWL_MAILSPIKE_POSSIBLE(0.00)[104.64.211.4:from];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,apana.org.au:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,linux.dev:email,intel.com:email]
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,msgid.link:url,linux.dev:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 26B306FB9A9
+X-Rspamd-Queue-Id: 92AF36FAFE8
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Herbert Xu <herbert@gondor.apana.org.au>
+From: Junjie Cao <junjie.cao@intel.com>
 
-[ Upstream commit 5ce9891ea928208a915411ce8227f8c3e37e5ad9 ]
+commit e1fc08598aa34b28359831e768076f56632720c1 upstream.
 
-Returning values through arguments is confusing and that has
-upset the compiler with the recent change to memdup_user:
+iwl_mld_ptp_remove() calls cancel_delayed_work_sync() only after
+ptp_clock_unregister() and clearing ptp_data state (ptp_clock,
+last_gp2, wrap_counter).
 
-../drivers/crypto/intel/qat/qat_common/adf_ctl_drv.c: In function ‘adf_ctl_ioctl’:
-../drivers/crypto/intel/qat/qat_common/adf_ctl_drv.c:308:26: warning: ‘ctl_data’ may be used uninitialized [-Wmaybe-uninitialized]
-  308 |                  ctl_data->device_id);
-      |                          ^~
-../drivers/crypto/intel/qat/qat_common/adf_ctl_drv.c:294:39: note: ‘ctl_data’ was declared here
-  294 |         struct adf_user_cfg_ctl_data *ctl_data;
-      |                                       ^~~~~~~~
-In function ‘adf_ctl_ioctl_dev_stop’,
-    inlined from ‘adf_ctl_ioctl’ at ../drivers/crypto/intel/qat/qat_common/adf_ctl_drv.c:386:9:
-../drivers/crypto/intel/qat/qat_common/adf_ctl_drv.c:273:48: warning: ‘ctl_data’ may be used uninitialized [-Wmaybe-uninitialized]
-  273 |         ret = adf_ctl_is_device_in_use(ctl_data->device_id);
-      |                                        ~~~~~~~~^~~~~~~~~~~
-../drivers/crypto/intel/qat/qat_common/adf_ctl_drv.c: In function ‘adf_ctl_ioctl’:
-../drivers/crypto/intel/qat/qat_common/adf_ctl_drv.c:261:39: note: ‘ctl_data’ was declared here
-  261 |         struct adf_user_cfg_ctl_data *ctl_data;
-      |                                       ^~~~~~~~
-In function ‘adf_ctl_ioctl_dev_config’,
-    inlined from ‘adf_ctl_ioctl’ at ../drivers/crypto/intel/qat/qat_common/adf_ctl_drv.c:382:9:
-../drivers/crypto/intel/qat/qat_common/adf_ctl_drv.c:192:54: warning: ‘ctl_data’ may be used uninitialized [-Wmaybe-uninitialized]
-  192 |         accel_dev = adf_devmgr_get_dev_by_id(ctl_data->device_id);
-      |                                              ~~~~~~~~^~~~~~~~~~~
-../drivers/crypto/intel/qat/qat_common/adf_ctl_drv.c: In function ‘adf_ctl_ioctl’:
-../drivers/crypto/intel/qat/qat_common/adf_ctl_drv.c:185:39: note: ‘ctl_data’ was declared here
-  185 |         struct adf_user_cfg_ctl_data *ctl_data;
-      |                                       ^~~~~~~~
+This creates a race where the delayed work iwl_mld_ptp_work() can
+execute between ptp_clock_unregister() and cancel_delayed_work_sync(),
+observing partially cleared PTP state.
 
-Fix this by returning the pointer directly.
+Move cancel_delayed_work_sync() before ptp_clock_unregister() to
+ensure the delayed work is fully stopped before any PTP cleanup
+begins.
 
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
-Reviewed-by: Thorsten Blum <thorsten.blum@linux.dev>
-Acked-by: Giovanni Cabiddu <giovanni.cabiddu@intel.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
-Stable-dep-of: d237230728c5 ("crypto: qat - remove unused character device and IOCTLs")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Reviewed-by: Simon Horman <horms@kernel.org>
+Reviewed-by: Vadim Fedorenko <vadim.fedorenko@linux.dev>
+Signed-off-by: Junjie Cao <junjie.cao@intel.com>
+Link: https://patch.msgid.link/20260212125035.1345718-2-junjie.cao@intel.com
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/crypto/intel/qat/qat_common/adf_ctl_drv.c |   31 +++++++++-------------
- 1 file changed, 13 insertions(+), 18 deletions(-)
+ drivers/net/wireless/intel/iwlwifi/mld/ptp.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/crypto/intel/qat/qat_common/adf_ctl_drv.c
-+++ b/drivers/crypto/intel/qat/qat_common/adf_ctl_drv.c
-@@ -89,19 +89,14 @@ err_chrdev_unreg:
- 	return -EFAULT;
+--- a/drivers/net/wireless/intel/iwlwifi/mld/ptp.c
++++ b/drivers/net/wireless/intel/iwlwifi/mld/ptp.c
+@@ -319,10 +319,10 @@ void iwl_mld_ptp_remove(struct iwl_mld *
+ 			       mld->ptp_data.ptp_clock_info.name,
+ 			       ptp_clock_index(mld->ptp_data.ptp_clock));
+ 
++		cancel_delayed_work_sync(&mld->ptp_data.dwork);
+ 		ptp_clock_unregister(mld->ptp_data.ptp_clock);
+ 		mld->ptp_data.ptp_clock = NULL;
+ 		mld->ptp_data.last_gp2 = 0;
+ 		mld->ptp_data.wrap_counter = 0;
+-		cancel_delayed_work_sync(&mld->ptp_data.dwork);
+ 	}
  }
- 
--static int adf_ctl_alloc_resources(struct adf_user_cfg_ctl_data **ctl_data,
--				   unsigned long arg)
-+static struct adf_user_cfg_ctl_data *adf_ctl_alloc_resources(unsigned long arg)
- {
- 	struct adf_user_cfg_ctl_data *cfg_data;
- 
- 	cfg_data = memdup_user((void __user *)arg, sizeof(*cfg_data));
--	if (IS_ERR(cfg_data)) {
-+	if (IS_ERR(cfg_data))
- 		pr_err("QAT: failed to copy from user cfg_data.\n");
--		return PTR_ERR(cfg_data);
--	}
--
--	*ctl_data = cfg_data;
--	return 0;
-+	return cfg_data;
- }
- 
- static int adf_add_key_value_data(struct adf_accel_dev *accel_dev,
-@@ -181,13 +176,13 @@ out_err:
- static int adf_ctl_ioctl_dev_config(struct file *fp, unsigned int cmd,
- 				    unsigned long arg)
- {
--	int ret;
- 	struct adf_user_cfg_ctl_data *ctl_data;
- 	struct adf_accel_dev *accel_dev;
-+	int ret = 0;
- 
--	ret = adf_ctl_alloc_resources(&ctl_data, arg);
--	if (ret)
--		return ret;
-+	ctl_data = adf_ctl_alloc_resources(arg);
-+	if (IS_ERR(ctl_data))
-+		return PTR_ERR(ctl_data);
- 
- 	accel_dev = adf_devmgr_get_dev_by_id(ctl_data->device_id);
- 	if (!accel_dev) {
-@@ -260,9 +255,9 @@ static int adf_ctl_ioctl_dev_stop(struct
- 	int ret;
- 	struct adf_user_cfg_ctl_data *ctl_data;
- 
--	ret = adf_ctl_alloc_resources(&ctl_data, arg);
--	if (ret)
--		return ret;
-+	ctl_data = adf_ctl_alloc_resources(arg);
-+	if (IS_ERR(ctl_data))
-+		return PTR_ERR(ctl_data);
- 
- 	if (adf_devmgr_verify_id(ctl_data->device_id)) {
- 		pr_err("QAT: Device %d not found\n", ctl_data->device_id);
-@@ -294,9 +289,9 @@ static int adf_ctl_ioctl_dev_start(struc
- 	struct adf_user_cfg_ctl_data *ctl_data;
- 	struct adf_accel_dev *accel_dev;
- 
--	ret = adf_ctl_alloc_resources(&ctl_data, arg);
--	if (ret)
--		return ret;
-+	ctl_data = adf_ctl_alloc_resources(arg);
-+	if (IS_ERR(ctl_data))
-+		return PTR_ERR(ctl_data);
- 
- 	ret = -ENODEV;
- 	accel_dev = adf_devmgr_get_dev_by_id(ctl_data->device_id);
 
 
 
