@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-270837-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-270790-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id UCWgIpmURmoSZAsAu9opvQ
-	(envelope-from <stable+bounces-270837-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:40:57 +0200
+	id GaLDOK2WRmpeZQsAu9opvQ
+	(envelope-from <stable+bounces-270790-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:49:49 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E8206FA5CD
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:40:57 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id EB1246FA9DA
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:49:48 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=N4lAWlni;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-270837-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-270837-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=iwP9XXwz;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-270790-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-270790-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id CD64B30315FD
-	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:36:13 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 1AB29304D97B
+	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:34:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0BD543ACA51;
-	Thu,  2 Jul 2026 16:32:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 74AEE35CB6F;
+	Thu,  2 Jul 2026 16:30:59 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B18C03A9870;
-	Thu,  2 Jul 2026 16:32:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A327E35E1C0;
+	Thu,  2 Jul 2026 16:30:57 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783009978; cv=none; b=BfLFF3JJ8I06kKam01HIgJPbG8Ete0lK6Oy0YUb55DCrvFM+0rrc9s0cP6m7lNmry9cfJsugIZFKCbhGjWou4kUViMeWI+ysI93gfl4s+HmSVsbsTX+6Rx3Hr0QVzDxG3bYXIbIxJ91U2VJL+zaq0KpIzeyFQdMw2CqqM4qKttU=
+	t=1783009859; cv=none; b=IPdqOnlk9FB73O+jOGs/uSogI+I4S2sTsgVZ8Vi4d/zNZB9388Ytxr/wRJDQbm5j7JmFRpsSmQi7KL+eAl8bifyuFgz2s9ECnR81eLD269kVfO5I1Nf8e6Jt9fCWx3gZN6VBnGGlcFfgmpjipGBw0JFwuy9AeAffJVdUf3VG+oM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783009978; c=relaxed/simple;
-	bh=lU7+Xnfv+/WzEZXMQFGE6FhxJshwZh5bHNhM4zUZ/yk=;
+	s=arc-20240116; t=1783009859; c=relaxed/simple;
+	bh=tsN7aMpTnCrL5HAQTjz4XKEIYPQ8AL1agyilMhfSewo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Se4WhNxR9eupz5MYhfCfJCXUMGvAToSvNY9BFh9qUGFBsss323keh/r97WzraJVQXe/3o8BAZOhk6VvWPPlW1F4N2EFRFp/IEDbYRzMOnPhHoyIYHqI+Z5CPwXTqMX/TgZuiuE5X5A4wKZ0yJzB8vSemok6MLRsoq/9f5NMH9Ro=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=N4lAWlni; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F14801F000E9;
-	Thu,  2 Jul 2026 16:32:56 +0000 (UTC)
+	 MIME-Version; b=cdBxI7SZ5920U+4yIYH6pbeAw8Uiuw92hF+gkX0fJfTgkcULvvSIe0DO0JykxkkOehlGsNZB3ddul3oxA2iAtRkoLeRXA0NrUeCGCgTkBHwlQ8ZEv5Efy2vIT1cR9rdWuY2pdm22uC3fc4ljZCfHgVsBLkuI6upOhIJBVobODMY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iwP9XXwz; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C832C1F00A3A;
+	Thu,  2 Jul 2026 16:30:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1783009977;
-	bh=CjuWsy5z7xGv0KoSX5akNNrvFZQrXtURDYs/rmPyWFE=;
+	s=korg; t=1783009857;
+	bh=teI6Qu4Ffpr1whbTubfAl9CPqa+ezr4nclAxAE9V+c4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=N4lAWlni03YRFDf0i5u7MBWJmV3lrTnuxsP7xl9vyJlCfK3hsWiCH7Q8cN534CfJw
-	 eRmhvPymFrW4m4nuSShs/C/MUxnv8jdCZcm6GJVQ+QascdJ7+n4u9tjPRFFD+3xPp/
-	 RMKj0lSD6oEuRTFwDZveZVoTQX9blx7tK7+iSmSs=
+	b=iwP9XXwzdMMtFMz/nxLB0wrugXETwmtg7iqar/0ITQOCpIJRJ6vPqKXy22AwrQrMO
+	 A7He+OUAh9pYfCwseiHegsrYpC7vtQd4boQ9er0C1AjRYgw6BpG26mR/0ph6oXkixu
+	 nVjBzciSJHAef3MNHOIBAk67zZzylBAB4T6jKM20=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Florian Westphal <fw@strlen.de>,
-	Shivani Agarwal <shivani.agarwal@broadcom.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 010/129] netfilter: nf_tables: always increment set element count
-Date: Thu,  2 Jul 2026 18:18:49 +0200
-Message-ID: <20260702155112.376041111@linuxfoundation.org>
+	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Sasha Levin <sashal@kernel.org>,
+	Shivani Agarwal <shivani.agarwal@broadcom.com>
+Subject: [PATCH 6.1 011/129] netfilter: nf_tables: fix set size with rbtree backend
+Date: Thu,  2 Jul 2026 18:18:50 +0200
+Message-ID: <20260702155112.395847341@linuxfoundation.org>
 X-Mailer: git-send-email 2.55.0
 In-Reply-To: <20260702155112.163984240@linuxfoundation.org>
 References: <20260702155112.163984240@linuxfoundation.org>
@@ -72,21 +72,21 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-270837-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-270790-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:fw@strlen.de,m:shivani.agarwal@broadcom.com,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:pablo@netfilter.org,m:sashal@kernel.org,m:shivani.agarwal@broadcom.com,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
@@ -98,58 +98,226 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[strlen.de:email,vger.kernel.org:from_smtp,broadcom.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,vger.kernel.org:from_smtp,netfilter.org:email,broadcom.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 2E8206FA5CD
+X-Rspamd-Queue-Id: EB1246FA9DA
 
 6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Florian Westphal <fw@strlen.de>
+From: Pablo Neira Ayuso <pablo@netfilter.org>
 
-[ Upstream commit d4b7f29eb85c93893bc27388b37709efbc3c9a0e ]
+[ Upstream commit 8d738c1869f611955d91d8d0fd0012d9ef207201 ]
 
-At this time, set->nelems counter only increments when the set has
-a maximum size.
+The existing rbtree implementation uses singleton elements to represent
+ranges, however, userspace provides a set size according to the number
+of ranges in the set.
 
-All set elements decrement the counter unconditionally, this is
-confusing.
+Adjust provided userspace set size to the number of singleton elements
+in the kernel by multiplying the range by two.
 
-Increment the counter unconditionally to make this symmetrical.
-This would also allow changing the set maximum size after set creation
-in a later patch.
+Check if the no-match all-zero element is already in the set, in such
+case release one slot in the set size.
 
-Signed-off-by: Florian Westphal <fw@strlen.de>
+Fixes: 0ed6389c483d ("netfilter: nf_tables: rename set implementations")
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 [ Shivani: Modified to apply on 6.1.y ]
 Signed-off-by: Shivani Agarwal <shivani.agarwal@broadcom.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nf_tables_api.c | 11 +++++++----
- 1 file changed, 7 insertions(+), 4 deletions(-)
+ include/net/netfilter/nf_tables.h |  6 ++++
+ net/netfilter/nf_tables_api.c     | 49 +++++++++++++++++++++++++++++--
+ net/netfilter/nft_set_rbtree.c    | 43 +++++++++++++++++++++++++++
+ 3 files changed, 96 insertions(+), 2 deletions(-)
 
+diff --git a/include/net/netfilter/nf_tables.h b/include/net/netfilter/nf_tables.h
+index dafa0a32e6e1df..3329c2eaea9f07 100644
+--- a/include/net/netfilter/nf_tables.h
++++ b/include/net/netfilter/nf_tables.h
+@@ -422,6 +422,9 @@ struct nft_set_ext;
+  *	@remove: remove element from set
+  *	@walk: iterate over all set elements
+  *	@get: get set elements
++ *	@ksize: kernel set size
++ *	@usize: userspace set size
++ *	@adjust_maxsize: delta to adjust maximum set size
+  *	@privsize: function to return size of set private data
+  *	@init: initialize private data of new set instance
+  *	@destroy: destroy private data of set instance
+@@ -470,6 +473,9 @@ struct nft_set_ops {
+ 					       const struct nft_set *set,
+ 					       const struct nft_set_elem *elem,
+ 					       unsigned int flags);
++	u32				(*ksize)(u32 size);
++	u32				(*usize)(u32 size);
++	u32				(*adjust_maxsize)(const struct nft_set *set);
+ 	void				(*commit)(struct nft_set *set);
+ 	void				(*abort)(const struct nft_set *set);
+ 	u64				(*privsize)(const struct nlattr * const nla[],
 diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
-index 201e2cc0453992..b6b7b0b3539dc9 100644
+index b6b7b0b3539dc9..0d406dab5cac19 100644
 --- a/net/netfilter/nf_tables_api.c
 +++ b/net/netfilter/nf_tables_api.c
-@@ -6699,10 +6699,13 @@ static int nft_add_set_elem(struct nft_ctx *ctx, struct nft_set *set,
- 		goto err_element_clash;
- 	}
+@@ -4277,6 +4277,14 @@ static int nf_tables_fill_set_concat(struct sk_buff *skb,
+ 	return 0;
+ }
  
--	if (!(flags & NFT_SET_ELEM_CATCHALL) && set->size &&
--	    !atomic_add_unless(&set->nelems, 1, set->size + set->ndeact)) {
--		err = -ENFILE;
--		goto err_set_full;
-+	if (!(flags & NFT_SET_ELEM_CATCHALL)) {
-+		unsigned int max = set->size ? set->size + set->ndeact : UINT_MAX;
++static u32 nft_set_userspace_size(const struct nft_set_ops *ops, u32 size)
++{
++	if (ops->usize)
++		return ops->usize(size);
 +
-+		if (!atomic_add_unless(&set->nelems, 1, max)) {
-+			err = -ENFILE;
-+			goto err_set_full;
-+		}
++	return size;
++}
++
+ static int nf_tables_fill_set(struct sk_buff *skb, const struct nft_ctx *ctx,
+ 			      const struct nft_set *set, u16 event, u16 flags)
+ {
+@@ -4341,7 +4349,8 @@ static int nf_tables_fill_set(struct sk_buff *skb, const struct nft_ctx *ctx,
+ 	if (!nest)
+ 		goto nla_put_failure;
+ 	if (set->size &&
+-	    nla_put_be32(skb, NFTA_SET_DESC_SIZE, htonl(set->size)))
++	    nla_put_be32(skb, NFTA_SET_DESC_SIZE,
++			 htonl(nft_set_userspace_size(set->ops, set->size))))
+ 		goto nla_put_failure;
+ 
+ 	if (set->field_count > 1 &&
+@@ -4711,6 +4720,15 @@ static bool nft_set_is_same(const struct nft_set *set,
+ 	return true;
+ }
+ 
++static u32 nft_set_kernel_size(const struct nft_set_ops *ops,
++			       const struct nft_set_desc *desc)
++{
++	if (ops->ksize)
++		return ops->ksize(desc->size);
++
++	return desc->size;
++}
++
+ static int nf_tables_newset(struct sk_buff *skb, const struct nfnl_info *info,
+ 			    const struct nlattr * const nla[])
+ {
+@@ -4893,6 +4911,9 @@ static int nf_tables_newset(struct sk_buff *skb, const struct nfnl_info *info,
+ 		if (err < 0)
+ 			return err;
+ 
++		if (desc.size)
++			desc.size = nft_set_kernel_size(set->ops, &desc);
++
+ 		err = 0;
+ 		if (!nft_set_is_same(set, &desc, exprs, num_exprs, flags)) {
+ 			NL_SET_BAD_ATTR(extack, nla[NFTA_SET_NAME]);
+@@ -4915,6 +4936,9 @@ static int nf_tables_newset(struct sk_buff *skb, const struct nfnl_info *info,
+ 	if (IS_ERR(ops))
+ 		return PTR_ERR(ops);
+ 
++	if (desc.size)
++		desc.size = nft_set_kernel_size(ops, &desc);
++
+ 	udlen = 0;
+ 	if (nla[NFTA_SET_USERDATA])
+ 		udlen = nla_len(nla[NFTA_SET_USERDATA]);
+@@ -6356,6 +6380,27 @@ static bool nft_setelem_valid_key_end(const struct nft_set *set,
+ 	return true;
+ }
+ 
++static u32 nft_set_maxsize(const struct nft_set *set)
++{
++	u32 maxsize, delta;
++
++	if (!set->size)
++		return UINT_MAX;
++
++	if (set->ops->adjust_maxsize)
++		delta = set->ops->adjust_maxsize(set);
++	else
++		delta = 0;
++
++	if (check_add_overflow(set->size, set->ndeact, &maxsize))
++		return UINT_MAX;
++
++	if (check_add_overflow(maxsize, delta, &maxsize))
++		return UINT_MAX;
++
++	return maxsize;
++}
++
+ static int nft_add_set_elem(struct nft_ctx *ctx, struct nft_set *set,
+ 			    const struct nlattr *attr, u32 nlmsg_flags)
+ {
+@@ -6700,7 +6745,7 @@ static int nft_add_set_elem(struct nft_ctx *ctx, struct nft_set *set,
  	}
  
- 	nft_trans_elem(trans) = elem;
+ 	if (!(flags & NFT_SET_ELEM_CATCHALL)) {
+-		unsigned int max = set->size ? set->size + set->ndeact : UINT_MAX;
++		unsigned int max = nft_set_maxsize(set);
+ 
+ 		if (!atomic_add_unless(&set->nelems, 1, max)) {
+ 			err = -ENFILE;
+diff --git a/net/netfilter/nft_set_rbtree.c b/net/netfilter/nft_set_rbtree.c
+index 23e4e656f7f0cb..433094c4200f97 100644
+--- a/net/netfilter/nft_set_rbtree.c
++++ b/net/netfilter/nft_set_rbtree.c
+@@ -773,6 +773,46 @@ static bool nft_rbtree_estimate(const struct nft_set_desc *desc, u32 features,
+ 	return true;
+ }
+ 
++/* rbtree stores ranges as singleton elements, each range is composed of two
++ * elements ...
++ */
++static u32 nft_rbtree_ksize(u32 size)
++{
++	return size * 2;
++}
++
++/* ... hide this detail to userspace. */
++static u32 nft_rbtree_usize(u32 size)
++{
++	if (!size)
++		return 0;
++
++	return size / 2;
++}
++
++static u32 nft_rbtree_adjust_maxsize(const struct nft_set *set)
++{
++	struct nft_rbtree *priv = nft_set_priv(set);
++	struct nft_rbtree_elem *rbe;
++	struct rb_node *node;
++	const void *key;
++
++	node = rb_last(&priv->root);
++	if (!node)
++		return 0;
++
++	rbe = rb_entry(node, struct nft_rbtree_elem, node);
++	if (!nft_rbtree_interval_end(rbe))
++		return 0;
++
++	key = nft_set_ext_key(&rbe->ext);
++	if (memchr(key, 1, set->klen))
++		return 0;
++
++	/* this is the all-zero no-match element. */
++	return 1;
++}
++
+ const struct nft_set_type nft_set_rbtree_type = {
+ 	.features	= NFT_SET_INTERVAL | NFT_SET_MAP | NFT_SET_OBJECT | NFT_SET_TIMEOUT,
+ 	.ops		= {
+@@ -789,5 +829,8 @@ const struct nft_set_type nft_set_rbtree_type = {
+ 		.lookup		= nft_rbtree_lookup,
+ 		.walk		= nft_rbtree_walk,
+ 		.get		= nft_rbtree_get,
++		.ksize		= nft_rbtree_ksize,
++		.usize		= nft_rbtree_usize,
++		.adjust_maxsize = nft_rbtree_adjust_maxsize,
+ 	},
+ };
 -- 
 2.53.0
 
