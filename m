@@ -1,61 +1,62 @@
-Return-Path: <stable+bounces-270882-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-271193-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id WpltLFygRmrsaQsAu9opvQ
-	(envelope-from <stable+bounces-270882-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:31:08 +0200
+	id 8hQxCNWZRmokZwsAu9opvQ
+	(envelope-from <stable+bounces-271193-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:03:17 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0EC746FB672
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:31:08 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 688296FAE8F
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:03:16 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=w3wd7sdJ;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-270882-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-270882-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=otegDj47;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-271193-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-271193-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id BE73E307F1FA
-	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:37:19 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A07CE337EF5D
+	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:50:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78B2535E1CE;
-	Thu,  2 Jul 2026 16:34:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8627035F180;
+	Thu,  2 Jul 2026 16:48:29 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C03535E55D;
-	Thu,  2 Jul 2026 16:34:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F08833546C6;
+	Thu,  2 Jul 2026 16:48:27 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783010098; cv=none; b=m+xKllf6cYnynFlynE2nzwnyilMmHCsMqVUEhARpZ/gQYGyYm+v8M2/qdKDLvZL3NzRb1AXIcQEKMvGUE8Zu93xZ98d5KUv0nquXufi8amQfACwFVvWl6or+iF72Y0Cr+QcRtrrET0tI/IOT9xCOuFNodCmueTbblxj9hk+nWlA=
+	t=1783010909; cv=none; b=uCa1KQnaOp2uP382ZkWirQsEHmZb8p84JjzAZ38wcu49TXS4p73rDSzMcZm4QL0LfanCPLAKw0kHX5yol7uOKaUG82dWekUhQ8RTQk4IfKMHa+Hrvei/LQV93q5XV9rx1pXZxF3GwSFfbyOAUEZKQLNc5NGiIzuzD8QWjkLD+b8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783010098; c=relaxed/simple;
-	bh=WzdU1dBsa/MNpygvjUx0vPU84cZKUaBeNcsJkOf0Bak=;
+	s=arc-20240116; t=1783010909; c=relaxed/simple;
+	bh=xYpmzngicV4G8UwYzu+vshzlMArksGRslugNQn8j4nI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BiLfS4Utc4eMn50SOX5kkdKe81FIKd14w9tq+F67F+GTc2h8BgO5NC9Da2X9/CHJhl/vip9Ug2SRdNvRwU/VNzZZw+L15ssHXQgQlT3EZq8jnB+JhReeZKRzQAf0tRQeaUjFa2vBIxdVPfVu5rYtroeI0aj11wMJAMhprHdSmYc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w3wd7sdJ; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 878881F00A3A;
-	Thu,  2 Jul 2026 16:34:55 +0000 (UTC)
+	 MIME-Version; b=FEFgsNZ20Fh8ZN+NgQZjYlL/bz3QHSurfLVAiGGkSQCq3ZdRyd/k5Pjrb+t9nhni+EJmPuoG/hhQoWaoEW1PPEmRZtYBJy+tkhCzmlEPNCN5bHKAl+71h75E1AFmE17eKbG70NLNWKZV4YyNWInCa5D4cInVYkWhlqLEnbPe7nc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=otegDj47; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 622CD1F000E9;
+	Thu,  2 Jul 2026 16:48:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1783010096;
-	bh=HLzD68sDlZguNnc7FvvPReQ7MHm4HbYpRUAvJKRrYkQ=;
+	s=korg; t=1783010907;
+	bh=Pdc/FN4flrBSiZ6cwV6oTNm1V6v9Y5FaefuXEMcxmlw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=w3wd7sdJJjcziIBKLwnkDu0R36PquWxwX8uw6E/ixyjayVUK9jchidrqBf3gg/VtI
-	 Zx9a3XHJPjHrg+3L0Ppy3B2l/JKGurV+Gw4QCN9xWMaeQnnMYN4nIRmIUv02IeUEPB
-	 UfV50eJCE+LGqekwC0IUzTMf7E+ZBpzgdvua2yUY=
+	b=otegDj478cmQnHC2Kyy+BON1tOVJTJ3YGtsZRzWOXLOiuCACaEOGmG4++mFF1LDAJ
+	 WjjKjyym/3Cb3CAgFGOa+epOhRlPPNmCJhhJEEFh+7beehQBXvc7WbYgcHkalW3hby
+	 cN7vAiN2J1PWzeiJ2cQupBpQIMBGasAc2rMoGdTg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Sven Eckelmann <sven@narfation.org>,
+	Jaeyoung Chung <jjy600901@snu.ac.kr>,
+	"Christian Brauner (Amutable)" <brauner@kernel.org>,
+	Wentao Guan <guanwentao@uniontech.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 064/129] batman-adv: frag: avoid underflow of TTL
+Subject: [PATCH 6.6 082/175] eventpoll: fix ep_remove struct eventpoll / struct file UAF
 Date: Thu,  2 Jul 2026 18:19:43 +0200
-Message-ID: <20260702155113.469334346@linuxfoundation.org>
+Message-ID: <20260702155117.511815691@linuxfoundation.org>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260702155112.163984240@linuxfoundation.org>
-References: <20260702155112.163984240@linuxfoundation.org>
+In-Reply-To: <20260702155115.766838875@linuxfoundation.org>
+References: <20260702155115.766838875@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,80 +70,136 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-270882-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:stable@kernel.org,m:sven@narfation.org,m:sashal@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-271193-lists,stable=lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:jjy600901@snu.ac.kr,m:brauner@kernel.org,m:guanwentao@uniontech.com,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,narfation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,msgid.link:url,uniontech.com:email,snu.ac.kr:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 0EC746FB672
+X-Rspamd-Queue-Id: 688296FAE8F
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sven Eckelmann <sven@narfation.org>
+From: Christian Brauner <brauner@kernel.org>
 
-commit 493d9d2528e1a09b090e4b37f0f553def7bd5ce9 upstream.
+[ Upstream commit a6dc643c69311677c574a0f17a3f4d66a5f3744b ]
 
-Packets with a TTL are using it to limit the amount of time this packet can
-be forwarded. But for batadv_frag_packet, the TTL was always only reduced
-but it was never evaluated. It could even underflow without any effect.
+ep_remove() (via ep_remove_file()) cleared file->f_ep under
+file->f_lock but then kept using @file inside the critical section
+(is_file_epoll(), hlist_del_rcu() through the head, spin_unlock).
+A concurrent __fput() taking the eventpoll_release() fastpath in
+that window observed the transient NULL, skipped
+eventpoll_release_file() and ran to f_op->release / file_free().
 
-Check the TTL in batadv_frag_skb_fwd() before attempting to prepare it for
-forwarding. This keeps it in sync with the not fragmented unicast packet.
+For the epoll-watches-epoll case, f_op->release is
+ep_eventpoll_release() -> ep_clear_and_put() -> ep_free(), which
+kfree()s the watched struct eventpoll. Its embedded ->refs
+hlist_head is exactly where epi->fllink.pprev points, so the
+subsequent hlist_del_rcu()'s "*pprev = next" scribbles into freed
+kmalloc-192 memory.
 
-Cc: stable@kernel.org
-Fixes: 610bfc6bc99b ("batman-adv: Receive fragmented packets and merge")
-Signed-off-by: Sven Eckelmann <sven@narfation.org>
+In addition, struct file is SLAB_TYPESAFE_BY_RCU, so the slot
+backing @file could be recycled by alloc_empty_file() --
+reinitializing f_lock and f_ep -- while ep_remove() is still
+nominally inside that lock. The upshot is an attacker-controllable
+kmem_cache_free() against the wrong slab cache.
+
+Pin @file via epi_fget() at the top of ep_remove() and gate the
+critical section on the pin succeeding. With the pin held @file
+cannot reach refcount zero, which holds __fput() off and
+transitively keeps the watched struct eventpoll alive across the
+hlist_del_rcu() and the f_lock use, closing both UAFs.
+
+If the pin fails @file has already reached refcount zero and its
+__fput() is in flight. Because we bailed before clearing f_ep,
+that path takes the eventpoll_release() slow path into
+eventpoll_release_file() and blocks on ep->mtx until the waiter
+side's ep_clear_and_put() drops it. The bailed epi's share of
+ep->refcount stays intact, so the trailing ep_refcount_dec_and_test()
+in ep_clear_and_put() cannot free the eventpoll out from under
+eventpoll_release_file(); the orphaned epi is then cleaned up
+there.
+
+A successful pin also proves we are not racing
+eventpoll_release_file() on this epi, so drop the now-redundant
+re-check of epi->dying under f_lock. The cheap lockless
+READ_ONCE(epi->dying) fast-path bailout stays.
+
+Fixes: 58c9b016e128 ("epoll: use refcount to reduce ep_mutex contention")
+Reported-by: Jaeyoung Chung <jjy600901@snu.ac.kr>
+Link: https://patch.msgid.link/20260423-work-epoll-uaf-v1-6-2470f9eec0f5@kernel.org
+Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
+(cherry picked from commit a6dc643c69311677c574a0f17a3f4d66a5f3744b)
+Signed-off-by: Wentao Guan <guanwentao@uniontech.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/batman-adv/fragmentation.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ fs/eventpoll.c | 16 ++++++++++------
+ 1 file changed, 10 insertions(+), 6 deletions(-)
 
-diff --git a/net/batman-adv/fragmentation.c b/net/batman-adv/fragmentation.c
-index fbf030c57ac04d..0138b0953e10b5 100644
---- a/net/batman-adv/fragmentation.c
-+++ b/net/batman-adv/fragmentation.c
-@@ -420,6 +420,13 @@ bool batadv_frag_skb_fwd(struct sk_buff *skb,
- 	 */
- 	total_size = ntohs(packet->total_size);
- 	if (total_size > neigh_node->if_incoming->net_dev->mtu) {
-+		if (packet->ttl < 2) {
-+			kfree_skb(skb);
-+			*rx_result = NET_RX_DROP;
-+			ret = true;
-+			goto out;
-+		}
+diff --git a/fs/eventpoll.c b/fs/eventpoll.c
+index fc4668a403c9d3..0e09bddea16a5f 100644
+--- a/fs/eventpoll.c
++++ b/fs/eventpoll.c
+@@ -801,22 +801,26 @@ static bool ep_remove_epi(struct eventpoll *ep, struct epitem *epi)
+  */
+ static void ep_remove(struct eventpoll *ep, struct epitem *epi)
+ {
+-	struct file *file = epi->ffd.file;
++	struct file *file __free(fput) = NULL;
+ 
+ 	lockdep_assert_irqs_enabled();
+ 	lockdep_assert_held(&ep->mtx);
+ 
+ 	ep_unregister_pollwait(ep, epi);
+ 
+-	/* sync with eventpoll_release_file() */
++	/* cheap sync with eventpoll_release_file() */
+ 	if (unlikely(READ_ONCE(epi->dying)))
+ 		return;
+ 
+-	spin_lock(&file->f_lock);
+-	if (epi->dying) {
+-		spin_unlock(&file->f_lock);
++	/*
++	 * If we manage to grab a reference it means we're not in
++	 * eventpoll_release_file() and aren't going to be.
++	 */
++	file = epi_fget(epi);
++	if (!file)
+ 		return;
+-	}
 +
- 		if (skb_cow(skb, ETH_HLEN) < 0) {
- 			kfree_skb(skb);
- 			*rx_result = NET_RX_DROP;
++	spin_lock(&file->f_lock);
+ 	ep_remove_file(ep, epi, file);
+ 
+ 	if (ep_remove_epi(ep, epi))
 -- 
 2.53.0
 
