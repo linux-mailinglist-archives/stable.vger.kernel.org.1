@@ -1,61 +1,61 @@
-Return-Path: <stable+bounces-270633-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-271189-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 63bfHuuTRmq5YwsAu9opvQ
-	(envelope-from <stable+bounces-270633-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:38:03 +0200
+	id ropjBMWZRmocZwsAu9opvQ
+	(envelope-from <stable+bounces-271189-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:03:01 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id F1B4B6FA4E9
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:38:02 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 758596FAE7E
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:03:00 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=XWnbiiHA;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-270633-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-270633-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=B4Cmtg5N;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-271189-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-271189-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id ACF67303FAD4
-	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:29:41 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 99D573353FF0
+	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:50:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 713B04968E8;
-	Thu,  2 Jul 2026 16:24:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 095A233F36D;
+	Thu,  2 Jul 2026 16:48:19 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B878639F165;
-	Thu,  2 Jul 2026 16:24:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBA9C32ED40;
+	Thu,  2 Jul 2026 16:48:17 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783009450; cv=none; b=JzOc8b/DeSSlwoc1iZ7UAEeYoILYrMv+Ih+kQMz/JeKztUd9JaGGBsTJvFgsMGR57ymRS4k4BixSbtPNqT5PgGbLAbc8vgDLECNBANSiSDDRvk5vr5K8QPIHNaYLmTFXnXwK6PJAaJbOLWji94zn26MB5b4dZcNmXvIBVQKhGgs=
+	t=1783010898; cv=none; b=YBBaMiDEJjRxaE+s1f0RxHj+q/EqHVx73uTSc9DSN3DN0+2rpiQV1qkhdpk0vTtTo/jpvslLClPpYOS9jpyy4+nCQcPa0pkEc+0XMgeS/xj2AX1d5mlME45bee95Eeiz0mWoi0wO7kJFX68Qzxz1nOZHTHbAtdD40VN20dVEc5c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783009450; c=relaxed/simple;
-	bh=duZlGIutiexBvOogmYwOThoP5GezjgVRYPRsrLnhfSE=;
+	s=arc-20240116; t=1783010898; c=relaxed/simple;
+	bh=QCzvKhE5KIwTfKcp3aiEfEr+YJM/3QKHsCe5RjNCOUc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dO/CkQCM1eRDeW1mJevIq8YcD+zbRDY+eS08lasxkteFhuFWch8LQwhbWpZY5RK7MV5bGyO2mDJXzSqlrmsPLRbvw3M1bif6xHyDoQRJRE/ROUdlntpTCmueS9wZlIKPCFkSGqoQCLEU2v2n2GqkEuh0sAUolBQwaXubhbWkmlA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XWnbiiHA; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 521971F00A3A;
-	Thu,  2 Jul 2026 16:24:04 +0000 (UTC)
+	 MIME-Version; b=WgzsqUsNpTWVb8ac80qyfyRMQtBVI+7A82dx0r960zTjFTqIKYgvHl2U6uGqC65Ovs8JPUpP2kCJm/ecu5opuo9w+Qhhs0nHMFOl+7jh/4/aKwzKNwkc/1S1Sq0HqGWCVkBemacw5FT/L7Pf7cBJIb4dQv7kSMKYK6tDYMSjIto=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=B4Cmtg5N; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5C261F000E9;
+	Thu,  2 Jul 2026 16:48:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1783009444;
-	bh=NkuQO3410t3n9/V3FNaULdWecEA2DQ4SkMarQ1AC/9s=;
+	s=korg; t=1783010897;
+	bh=GUmr/xgOTwHGa3qhxITKZnaJHVjjnMNBF001kSVHBio=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=XWnbiiHA2/wczdk2tc2HKDp+O5NcGmbl8Q1qM9vN0MijHFhn4yT0IQyVSyytTrwFF
-	 /swlC0sbT9bsr7CovpAXaPNQHqM4uwdDSv1D7wnzDSjlqDRt+5qcxaOpre7q3biqRK
-	 UL3H8VFArmEbcUbQcCfm0klTirKy0bQ8xamvqkFs=
+	b=B4Cmtg5NDdlQoEV56TBGXfX2jGDkOdVDv/A+8go2W4Jq7tbvW0I1V2JucS5NSWV40
+	 aVjpRrT7IH6LbpwEbfQHz1PEDvRP9xy84d0Op/Oh+PDa9cxayPDyNL5C38OBDLBr0n
+	 M8KC9FfXxTquvxsSmJFyalqNHQGsGSPCVaXZ4BcY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Sven Eckelmann <sven@narfation.org>,
+	"Christian Brauner (Amutable)" <brauner@kernel.org>,
+	Quentin Schulz <quentin.schulz@cherry.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 47/96] batman-adv: v: prevent OGM aggregation on disabled hardif
+Subject: [PATCH 6.6 078/175] eventpoll: kill __ep_remove()
 Date: Thu,  2 Jul 2026 18:19:39 +0200
-Message-ID: <20260702155109.972958617@linuxfoundation.org>
+Message-ID: <20260702155117.429989798@linuxfoundation.org>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260702155108.949633242@linuxfoundation.org>
-References: <20260702155108.949633242@linuxfoundation.org>
+In-Reply-To: <20260702155115.766838875@linuxfoundation.org>
+References: <20260702155115.766838875@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,21 +72,21 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-270633-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-271189-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:stable@kernel.org,m:sven@narfation.org,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:brauner@kernel.org,m:quentin.schulz@cherry.de,m:sashal@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
@@ -98,112 +98,139 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,narfation.org:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,msgid.link:url]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: F1B4B6FA4E9
+X-Rspamd-Queue-Id: 758596FAE7E
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sven Eckelmann <sven@narfation.org>
+From: Christian Brauner <brauner@kernel.org>
 
-commit d11c00b95b2a3b3934007fc003dccc6fdcc061ad upstream.
+[ Upstream commit e9e5cd40d7c403e19f21d0f7b8b8ba3a76b58330 ]
 
-When an interface gets disabled, the worker is correctly disabled by
-batadv_hardif_disable_interface() -> ... -> batadv_v_ogm_iface_disable().
-In this process, the skb aggr_list is also freed.
+Remove the boolean conditional in __ep_remove() and restructure the code
+so the check for racing with eventpoll_release_file() are only done in
+the ep_remove_safe() path where they belong.
 
-But batadv_v_ogm_send_meshif() can still queue new skbs (via
-batadv_v_ogm_queue_on_if()) to the aggr_list. This will only stop after all
-cores can no longer find the RCU protected list of hard interfaces. These
-queued skbs will never be freed or consumed by batadv_v_ogm_aggr_work.
-
-The batadv_v_ogm_iface_disable() function must block
-batadv_v_ogm_queue_on_if() to avoid leak of skbs.
-
-Cc: stable@kernel.org
-Fixes: f89255a02f1d ("batman-adv: BATMAN_V: introduce per hard-iface OGMv2 queues")
-[ Context ]
-Signed-off-by: Sven Eckelmann <sven@narfation.org>
+Link: https://patch.msgid.link/20260423-work-epoll-uaf-v1-3-2470f9eec0f5@kernel.org
+Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
+Stable-dep-of: a6dc643c6931 ("eventpoll: fix ep_remove struct eventpoll / struct file UAF")
+Signed-off-by: Quentin Schulz <quentin.schulz@cherry.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/batman-adv/bat_v.c     |  1 +
- net/batman-adv/bat_v_ogm.c | 12 ++++++++++++
- net/batman-adv/types.h     |  6 ++++++
- 3 files changed, 19 insertions(+)
+ fs/eventpoll.c | 67 ++++++++++++++++++++++----------------------------
+ 1 file changed, 30 insertions(+), 37 deletions(-)
 
-diff --git a/net/batman-adv/bat_v.c b/net/batman-adv/bat_v.c
-index 6dc39fc0350e6a..7b9bc8a4bd48f5 100644
---- a/net/batman-adv/bat_v.c
-+++ b/net/batman-adv/bat_v.c
-@@ -1084,6 +1084,7 @@ void batadv_v_hardif_init(struct batadv_hard_iface *hard_iface)
- 
- 	hard_iface->bat_v.aggr_len = 0;
- 	skb_queue_head_init(&hard_iface->bat_v.aggr_list);
-+	hard_iface->bat_v.aggr_list_enabled = false;
- 	INIT_DELAYED_WORK(&hard_iface->bat_v.aggr_wq,
- 			  batadv_v_ogm_aggr_work);
- }
-diff --git a/net/batman-adv/bat_v_ogm.c b/net/batman-adv/bat_v_ogm.c
-index 939aa4b303ad98..12de9b44064dd4 100644
---- a/net/batman-adv/bat_v_ogm.c
-+++ b/net/batman-adv/bat_v_ogm.c
-@@ -255,11 +255,18 @@ static void batadv_v_ogm_queue_on_if(struct batadv_priv *bat_priv,
- 	}
- 
- 	spin_lock_bh(&hard_iface->bat_v.aggr_list.lock);
-+	if (!hard_iface->bat_v.aggr_list_enabled) {
-+		kfree_skb(skb);
-+		goto unlock;
-+	}
-+
- 	if (!batadv_v_ogm_queue_left(skb, hard_iface))
- 		batadv_v_ogm_aggr_send(bat_priv, hard_iface);
- 
- 	hard_iface->bat_v.aggr_len += batadv_v_ogm_len(skb);
- 	__skb_queue_tail(&hard_iface->bat_v.aggr_list, skb);
-+
-+unlock:
- 	spin_unlock_bh(&hard_iface->bat_v.aggr_list.lock);
+diff --git a/fs/eventpoll.c b/fs/eventpoll.c
+index ae9cb82764482c..766716c2fd92a0 100644
+--- a/fs/eventpoll.c
++++ b/fs/eventpoll.c
+@@ -715,49 +715,18 @@ static void ep_free(struct eventpoll *ep)
+ 	kfree_rcu(ep, rcu);
  }
  
-@@ -422,6 +429,10 @@ int batadv_v_ogm_iface_enable(struct batadv_hard_iface *hard_iface)
+-static void __ep_remove_file(struct eventpoll *ep, struct epitem *epi, struct file *file);
+-static bool __ep_remove_epi(struct eventpoll *ep, struct epitem *epi);
+-
+-/*
+- * Removes a "struct epitem" from the eventpoll RB tree and deallocates
+- * all the associated resources. Must be called with "mtx" held.
+- * If the dying flag is set, do the removal only if force is true.
+- * This prevents ep_clear_and_put() from dropping all the ep references
+- * while running concurrently with eventpoll_release_file().
+- * Returns true if the eventpoll can be disposed.
+- */
+-static bool __ep_remove(struct eventpoll *ep, struct epitem *epi, bool force)
+-{
+-	struct file *file = epi->ffd.file;
+-
+-	lockdep_assert_irqs_enabled();
+-
+-	/*
+-	 * Removes poll wait queue hooks.
+-	 */
+-	ep_unregister_pollwait(ep, epi);
+-
+-	/* Remove the current item from the list of epoll hooks */
+-	spin_lock(&file->f_lock);
+-	if (epi->dying && !force) {
+-		spin_unlock(&file->f_lock);
+-		return false;
+-	}
+-
+-	__ep_remove_file(ep, epi, file);
+-	return __ep_remove_epi(ep, epi);
+-}
+-
+ /*
+  * Called with &file->f_lock held,
+  * returns with it released
+  */
+-static void __ep_remove_file(struct eventpoll *ep, struct epitem *epi, struct file *file)
++static void __ep_remove_file(struct eventpoll *ep, struct epitem *epi,
++			     struct file *file)
  {
- 	struct batadv_priv *bat_priv = netdev_priv(hard_iface->soft_iface);
+ 	struct epitems_head *to_free = NULL;
+ 	struct hlist_head *head = file->f_ep;
  
-+	spin_lock_bh(&hard_iface->bat_v.aggr_list.lock);
-+	hard_iface->bat_v.aggr_list_enabled = true;
-+	spin_unlock_bh(&hard_iface->bat_v.aggr_list.lock);
+ 	lockdep_assert_held(&ep->mtx);
++	lockdep_assert_held(&file->f_lock);
+ 
+ 	if (hlist_is_singular_node(&epi->fllink, head)) {
+ 		/* See eventpoll_release() for details. */
+@@ -804,7 +773,25 @@ static bool __ep_remove_epi(struct eventpoll *ep, struct epitem *epi)
+  */
+ static void ep_remove_safe(struct eventpoll *ep, struct epitem *epi)
+ {
+-	if (__ep_remove(ep, epi, false))
++	struct file *file = epi->ffd.file;
 +
- 	batadv_v_ogm_start_queue_timer(hard_iface);
- 	batadv_v_ogm_start_timer(bat_priv);
- 
-@@ -437,6 +448,7 @@ void batadv_v_ogm_iface_disable(struct batadv_hard_iface *hard_iface)
- 	cancel_delayed_work_sync(&hard_iface->bat_v.aggr_wq);
- 
- 	spin_lock_bh(&hard_iface->bat_v.aggr_list.lock);
-+	hard_iface->bat_v.aggr_list_enabled = false;
- 	batadv_v_ogm_aggr_list_free(hard_iface);
- 	spin_unlock_bh(&hard_iface->bat_v.aggr_list.lock);
++	lockdep_assert_irqs_enabled();
++	lockdep_assert_held(&ep->mtx);
++
++	ep_unregister_pollwait(ep, epi);
++
++	/* sync with eventpoll_release_file() */
++	if (unlikely(READ_ONCE(epi->dying)))
++		return;
++
++	spin_lock(&file->f_lock);
++	if (epi->dying) {
++		spin_unlock(&file->f_lock);
++		return;
++	}
++	__ep_remove_file(ep, epi, file);
++
++	if (__ep_remove_epi(ep, epi))
+ 		WARN_ON_ONCE(ep_refcount_dec_and_test(ep));
  }
-diff --git a/net/batman-adv/types.h b/net/batman-adv/types.h
-index 238d9824c2d62f..28f239421f74a3 100644
---- a/net/batman-adv/types.h
-+++ b/net/batman-adv/types.h
-@@ -131,6 +131,12 @@ struct batadv_hard_iface_bat_v {
- 	/** @aggr_list: queue for to be aggregated OGM packets */
- 	struct sk_buff_head aggr_list;
  
-+	/**
-+	 * @aggr_list_enabled: aggr_list is active and new skbs can be
-+	 * enqueued. Protected by aggr_list.lock after initialization
-+	 */
-+	bool aggr_list_enabled:1;
+@@ -1013,7 +1000,7 @@ void eventpoll_release_file(struct file *file)
+ 	spin_lock(&file->f_lock);
+ 	if (file->f_ep && file->f_ep->first) {
+ 		epi = hlist_entry(file->f_ep->first, struct epitem, fllink);
+-		epi->dying = true;
++		WRITE_ONCE(epi->dying, true);
+ 		spin_unlock(&file->f_lock);
+ 
+ 		/*
+@@ -1022,7 +1009,13 @@ void eventpoll_release_file(struct file *file)
+ 		 */
+ 		ep = epi->ep;
+ 		mutex_lock(&ep->mtx);
+-		dispose = __ep_remove(ep, epi, true);
 +
- 	/** @aggr_len: size of the OGM aggregate (excluding ethernet header) */
- 	unsigned int aggr_len;
++		ep_unregister_pollwait(ep, epi);
++
++		spin_lock(&file->f_lock);
++		__ep_remove_file(ep, epi, file);
++		dispose = __ep_remove_epi(ep, epi);
++
+ 		mutex_unlock(&ep->mtx);
  
+ 		if (dispose && ep_refcount_dec_and_test(ep))
 -- 
 2.53.0
 
