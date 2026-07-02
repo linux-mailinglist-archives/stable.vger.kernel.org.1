@@ -1,74 +1,62 @@
-Return-Path: <stable+bounces-271174-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-270996-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id jrr6IweZRmqvZgsAu9opvQ
-	(envelope-from <stable+bounces-271174-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:59:51 +0200
+	id Bl1pCVGXRmq6ZQsAu9opvQ
+	(envelope-from <stable+bounces-270996-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:52:33 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 25CA66FAD5D
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:59:51 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6F1C36FAAD2
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:52:32 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=2FAV6Mqf;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-271174-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-271174-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=v0wZBQ5Q;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-270996-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-270996-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 1DD0130FC19A
-	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:49:32 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 06A4D325BFBF
+	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:41:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD96F3A9870;
-	Thu,  2 Jul 2026 16:47:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91BE0362154;
+	Thu,  2 Jul 2026 16:39:56 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57C6C3A59A3;
-	Thu,  2 Jul 2026 16:47:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 589B23546E1;
+	Thu,  2 Jul 2026 16:39:55 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783010862; cv=none; b=Qs11gOsiB+gSkESyP/gg3YVRo6W5PTe85qnNYDoSQiKtZR/Ez/5vQzDqHEAzIKjvSyk0BvETIZL4MLIRq5Hm7Rt5Qc1YQtB3IPYLN6Wk6e6aJ20eQpj6hw252mWEIZFs1PPx+pAxk6p+GrLOiSm6PJsE0+lp9kRMrIMUNVJ+cVI=
+	t=1783010396; cv=none; b=HKq46qZt+HbbuFLJIorKXMNUhlb9PW8JzB3oa0sE4I8mrbeyEHlXmxDT7uYSBO2N4AuwmqkDoDxKZ6NlTMtDTxqfnl+GHGJCqtOf8Lm6Y7r9jKCKO+fWBjecov0IyEnABiqJXKoCUzCa8CecGoYumob84pf2aLk8c9H5aBKkhyg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783010862; c=relaxed/simple;
-	bh=GvywutXAupahoYgPnGZ1pMmPoh3tjXyA9vgdRbcanPo=;
+	s=arc-20240116; t=1783010396; c=relaxed/simple;
+	bh=Gn/JjzACw2XOMZFvAEC8+9hb/GRqn7sDTXCvfY/B16s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Jp15W/R5MKJ9+Huxe9NWe0vDRQvX7HcIFPDl03sW2UHdzBjnxIClIbcCXnQtt9/bsvahWHcTjUfqL/u553PzatMLw/OrvkshWQu7ppG9J70UYk2uOAQVW0yLn71h3tJlOxuTlIYjfemdoOwJmFokYsBb0y5nJFZSaA/sgUy68PU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2FAV6Mqf; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95B701F000E9;
-	Thu,  2 Jul 2026 16:47:40 +0000 (UTC)
+	 MIME-Version:Content-Type; b=kipTVvEN4YGMBDESRHY1MdHjQ8BWoJKjNFUmU/7EgDRHgZeeoTct9+1s9DsppWr8I76dEfZweNorOZMC5uaWiYDmpY3qdALj2sLIe2U2uuPU9xV+A9AAL1OlQXIjVDkam0b2yXxz26uV92niAiSdSVSEjI8PLBKN6xUw13VSA5Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v0wZBQ5Q; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE0D41F000E9;
+	Thu,  2 Jul 2026 16:39:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1783010861;
-	bh=z+xmveiCxvPMr5kA1UNUK6DWf9DK+vvjoATufpk28kc=;
+	s=korg; t=1783010395;
+	bh=yOkqMAWLizIiQqlS7bdVKNy8Of92mZgLDHYw3eA9aAE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=2FAV6Mqfc40Nd+/MM50kWOeTN4XIV7MwQ3mbqCbDTTEjiQ4WDFEsfiKMyqk8UyjYY
-	 5ePl91IVI+evzEQATV7fNSgU/0nCKOjpP/35RKbFiuMWUIklZog85xmCW6mHOBIK1m
-	 DwD2lNqa1nS+io0QU8JUwzN4YO6hteYt4vcTQgYc=
+	b=v0wZBQ5QZi900WFR+Ude+FhB/u2ScygN48rPhn6ohs3Ue5bSlZsL7r2Zx3x+RLW4w
+	 lDsiwIwB0Cn9pmcHxiEWPK9ti2rO7Ajkj/lPEAJpp1bi9Pax5a2v5t4oEEJLku3H8Q
+	 t+EkKu5ZAGsOgf1DdnTUsNEHBPKM+sq4s185ZA/A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	bpf <bpf@vger.kernel.org>,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	Masahiro Yamada <masahiroy@kernel.org>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Nicolas Schier <nicolas@fjasle.eu>,
-	Zheng Yejian <zhengyejian1@huawei.com>,
-	Martin Kelly <martin.kelly@crowdstrike.com>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Josh Poimboeuf <jpoimboe@redhat.com>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
-	Andrey Grodzovsky <andrey.grodzovsky@crowdstrike.com>
-Subject: [PATCH 6.6 048/175] scripts/sorttable: Make compare_extable() into two functions
+	=?UTF-8?q?Aur=C3=A9lien=20Bombo?= <abombo@microsoft.com>,
+	Zhihao Cheng <chengzhihao1@huawei.com>,
+	Greg Kurz <gkurz@redhat.com>,
+	Miklos Szeredi <mszeredi@redhat.com>
+Subject: [PATCH 6.12 092/204] virtiofs: fix UAF on submount umount
 Date: Thu,  2 Jul 2026 18:19:09 +0200
-Message-ID: <20260702155116.809305994@linuxfoundation.org>
+Message-ID: <20260702155120.594488210@linuxfoundation.org>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260702155115.766838875@linuxfoundation.org>
-References: <20260702155115.766838875@linuxfoundation.org>
+In-Reply-To: <20260702155118.667618796@linuxfoundation.org>
+References: <20260702155118.667618796@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -78,167 +66,92 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-271174-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-270996-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[19];
-	FORWARDED(0.00)[lists@lfdr.de];
+	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:bpf@vger.kernel.org,m:mhiramat@kernel.org,m:mark.rutland@arm.com,m:mathieu.desnoyers@efficios.com,m:akpm@linux-foundation.org,m:peterz@infradead.org,m:torvalds@linux-foundation.org,m:masahiroy@kernel.org,m:nathan@kernel.org,m:nicolas@fjasle.eu,m:zhengyejian1@huawei.com,m:martin.kelly@crowdstrike.com,m:christophe.leroy@csgroup.eu,m:jpoimboe@redhat.com,m:rostedt@goodmis.org,m:andrey.grodzovsky@crowdstrike.com,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:abombo@microsoft.com,m:chengzhihao1@huawei.com,m:gkurz@redhat.com,m:mszeredi@redhat.com,s:lists@lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
+	MID_RHS_MATCH_FROM(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,huawei.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 25CA66FAD5D
+X-Rspamd-Queue-Id: 6F1C36FAAD2
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Steven Rostedt <rostedt@goodmis.org>
+From: Miklos Szeredi <mszeredi@redhat.com>
 
-[ Upstream commit 7ffc0d0819f438779ed592e2e2e3576f43ce14f0 ]
+commit 06b41351779e9289e8785694ade9042ae85e41ea upstream.
 
-Instead of having the compare_extable() part of the sorttable.h header
-where it get's defined twice, since it is a very simple function, just
-define it twice in sorttable.c, and then it can use the proper read
-functions for the word size and endianess and the Elf_Addr macro can be
-removed from sorttable.h.
+iput() called from fuse_release_end() can Oops if the super block has
+already been destroyed.  Normally this is prevented by waiting for
+num_waiting to go down to zero before commencing with super block shutdown.
 
-Also add a micro optimization. Instead of:
+This only works, however, for the last submount instance, as the wait
+counter is per connection, not per superblock.
 
-    if (a < b)
-        return -1;
-    if (a > b)
-        return 1;
-    return 0;
+Revert to using synchronous release requests for the auto_submounts case,
+which is virtiofs only at this time.
 
-That can be shorten to:
-
-   if (a < b)
-      return -1;
-   return a > b;
-
-Cc: bpf <bpf@vger.kernel.org>
-Cc: Masami Hiramatsu <mhiramat@kernel.org>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: Masahiro Yamada <masahiroy@kernel.org>
-Cc: Nathan Chancellor <nathan@kernel.org>
-Cc: Nicolas Schier <nicolas@fjasle.eu>
-Cc: Zheng Yejian <zhengyejian1@huawei.com>
-Cc: Martin  Kelly <martin.kelly@crowdstrike.com>
-Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
-Cc: Josh Poimboeuf <jpoimboe@redhat.com>
-Link: https://lore.kernel.org/20250105162344.945299671@goodmis.org
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-Signed-off-by: Andrey Grodzovsky <andrey.grodzovsky@crowdstrike.com>
+Reported-by: Aurélien Bombo <abombo@microsoft.com>
+Reported-by: Zhihao Cheng <chengzhihao1@huawei.com>
+Cc: Greg Kurz <gkurz@redhat.com>
+Closes: https://github.com/kata-containers/kata-containers/issues/12589
+Fixes: 26e5c67deb2e ("fuse: fix livelock in synchronous file put from fuseblk workers")
+Cc: stable@vger.kernel.org
+Reviewed-by: Greg Kurz <gkurz@redhat.com>
+Signed-off-by: Miklos Szeredi <mszeredi@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- scripts/sorttable.c |   20 ++++++++++++++++++++
- scripts/sorttable.h |   14 --------------
- 2 files changed, 20 insertions(+), 14 deletions(-)
+ fs/fuse/file.c |    8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
---- a/scripts/sorttable.c
-+++ b/scripts/sorttable.c
-@@ -173,6 +173,26 @@ static inline unsigned int get_secindex(
- 	return r(&symtab_shndx_start[sym_offs]);
+--- a/fs/fuse/file.c
++++ b/fs/fuse/file.c
+@@ -373,8 +373,14 @@ void fuse_file_release(struct inode *ino
+ 	 * aio and closes the fd before the aio completes.  Since aio takes its
+ 	 * own ref to the file, the IO completion has to drop the ref, which is
+ 	 * how the fuse server can end up closing its clients' files.
++	 *
++	 * Exception is virtio-fs, which is not affected by the above (server is
++	 * on host, cannot close open files in guest).  Virtio-fs needs sync
++	 * release, because the num_waiting mechanism to wait for all requests
++	 * before commencing with fs shutdown doesn't work if submounts are
++	 * used.
+ 	 */
+-	fuse_file_put(ff, false);
++	fuse_file_put(ff, ff->fm->fc->auto_submounts);
  }
  
-+static int compare_extable_32(const void *a, const void *b)
-+{
-+	Elf32_Addr av = r(a);
-+	Elf32_Addr bv = r(b);
-+
-+	if (av < bv)
-+		return -1;
-+	return av > bv;
-+}
-+
-+static int compare_extable_64(const void *a, const void *b)
-+{
-+	Elf64_Addr av = r8(a);
-+	Elf64_Addr bv = r8(b);
-+
-+	if (av < bv)
-+		return -1;
-+	return av > bv;
-+}
-+
- /* 32 bit and 64 bit are very similar */
- #include "sorttable.h"
- #define SORTTABLE_64
---- a/scripts/sorttable.h
-+++ b/scripts/sorttable.h
-@@ -23,7 +23,6 @@
- #undef sort_mcount_loc
- #undef elf_mcount_loc
- #undef do_sort
--#undef Elf_Addr
- #undef Elf_Ehdr
- #undef Elf_Shdr
- #undef Elf_Sym
-@@ -38,7 +37,6 @@
- # define sort_mcount_loc	sort_mcount_loc_64
- # define elf_mcount_loc		elf_mcount_loc_64
- # define do_sort		do_sort_64
--# define Elf_Addr		Elf64_Addr
- # define Elf_Ehdr		Elf64_Ehdr
- # define Elf_Shdr		Elf64_Shdr
- # define Elf_Sym		Elf64_Sym
-@@ -52,7 +50,6 @@
- # define sort_mcount_loc	sort_mcount_loc_32
- # define elf_mcount_loc		elf_mcount_loc_32
- # define do_sort		do_sort_32
--# define Elf_Addr		Elf32_Addr
- # define Elf_Ehdr		Elf32_Ehdr
- # define Elf_Shdr		Elf32_Shdr
- # define Elf_Sym		Elf32_Sym
-@@ -160,17 +157,6 @@ static void *sort_orctable(void *arg)
- }
- #endif
- 
--static int compare_extable(const void *a, const void *b)
--{
--	Elf_Addr av = _r(a);
--	Elf_Addr bv = _r(b);
--
--	if (av < bv)
--		return -1;
--	if (av > bv)
--		return 1;
--	return 0;
--}
- #ifdef MCOUNT_SORT_ENABLED
- pthread_t mcount_sort_thread;
- 
+ void fuse_release_common(struct file *file, bool isdir)
 
 
 
