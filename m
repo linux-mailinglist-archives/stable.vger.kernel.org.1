@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-270700-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-270822-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id AMFeJ9WURmo7ZAsAu9opvQ
-	(envelope-from <stable+bounces-270700-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:41:57 +0200
+	id hiY0NliURmr6YwsAu9opvQ
+	(envelope-from <stable+bounces-270822-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:39:52 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2745B6FA66C
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:41:57 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F4DD6FA577
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:39:52 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=J5hjDXsy;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-270700-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-270700-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=ju0KX9t8;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-270822-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-270822-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id CE56C31B5738
-	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:32:01 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 28C3B305ECDD
+	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:35:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0FAE03911B2;
-	Thu,  2 Jul 2026 16:27:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64422399351;
+	Thu,  2 Jul 2026 16:32:19 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2AAC534AB00;
-	Thu,  2 Jul 2026 16:27:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22A833438A6;
+	Thu,  2 Jul 2026 16:32:18 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783009624; cv=none; b=gB+nnnjc3oOksNcLmLLs5IeyglwOYMvDZJ2TXCEXL5RCiU3l1mgULCinGj7Vl5wrErhyfYZGxp1Ys4gvz4XRwlVzLbwKtpDWO9985htoqUeDEKofGhRq3UOJll3ew27+ETsYTM6frQ8iHYj8TSfDeWAbAFFE+bHtoCJXK3grk7g=
+	t=1783009939; cv=none; b=AKYUtcJE2ggeRugbFR7DjStyPjWa3kn7rsjtQtOQoJLrbg1Zm7s5mWe9Tl5Vok23AtkkHdOfAKC6zZ13wYnNY0cBrqVzDJgp2V/gbrnGCSFtHqndhp1w+OTf05JSJvExxP1ayYVfRUeiveTWPFIYLAOawGB24GDj69dj/dPiIZw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783009624; c=relaxed/simple;
-	bh=5Et4eiz7I3BrMV6ZMf8zbzmEduy9PQqj0KHj8roG2vw=;
+	s=arc-20240116; t=1783009939; c=relaxed/simple;
+	bh=GHU8D6Bo6IQTxekOhWLb12jKEVgl7/HBOG28p6CJAF4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ELnywm5EZ6OhuxXbwiLkWsZuB1xVID/cEer6cy4DiexIM6eL50E+t7x6u1WxdFZ2+I+4OTEouZzwWrpFuOL0UWHJv0B3/TRffsOYyWNvoLu4CyZDptNxJ+JbcZ3XCt89Xsg0PPV70DydoAcWIdQrDy0dzyNY/W5QKDK6H9QefIs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J5hjDXsy; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D1D71F000E9;
-	Thu,  2 Jul 2026 16:27:00 +0000 (UTC)
+	 MIME-Version; b=rq4j3Bx8MVwf7b40gbPP+gg2FBWMGJyIX1ZmcvpYoKhxj5/GHTzfLJZ4JXLlmlptcMMjnVC4ss+nQYihl/ZdGC6Xgu3hdRwErd24cn2HxJF1kADDjJURT3Mrjmc9Zy+fP5bOrG7s3hgjW7FV6PKBxKGiEZXIXvrH3bVgZ2BcYfg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ju0KX9t8; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 879821F000E9;
+	Thu,  2 Jul 2026 16:32:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1783009620;
-	bh=gyAmClFmt7YgsOeyqt9ZaKUrlfF94O32aiLBcyVsZSQ=;
+	s=korg; t=1783009938;
+	bh=Spzf1z46xIILyB+jGWH62CPSc5eC1wSKIN8w8BMFrj4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=J5hjDXsy6d5e98jrr6NnSSCZxws5nvdN+azML90siaILHpEW2LLrrc+Pp25ZSl6XH
-	 Y1mqDcTRzLVM2E5YAfN8v12QjfCswaV7vRqcnrzFbDTwS7u86tSs8Z0Im6h+EB8z8Z
-	 L48ttXVJ2znyzTIojRJChqJLZ0IpnN5MRWRS3/1k=
+	b=ju0KX9t8Fl5jnGHObGM8T1UiY3BzSuORnDJ6RDMtZOD1M13XzLhM8CFJ8eOnOJbtM
+	 pURyd3Be9jOCr516yUmodh8iFTPNN4EC+NPWLEGzcejNHCeSVMlEmEr3GqWkBQ+2+C
+	 4wP0HISWy6b/oRbte8mmq2dJI2Jf45QTmvYfBo/8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -50,12 +50,12 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Yong Wang <yongwang@nvidia.com>,
 	Petr Machata <petrm@nvidia.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 24/95] Revert "selftest/ptp: update ptp selftest to exercise the gettimex options"
+Subject: [PATCH 6.1 048/129] Revert "ptp: add testptp mask test"
 Date: Thu,  2 Jul 2026 18:19:27 +0200
-Message-ID: <20260702155109.717109635@linuxfoundation.org>
+Message-ID: <20260702155113.144450674@linuxfoundation.org>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260702155109.196223802@linuxfoundation.org>
-References: <20260702155109.196223802@linuxfoundation.org>
+In-Reply-To: <20260702155112.163984240@linuxfoundation.org>
+References: <20260702155112.163984240@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,12 +72,12 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-270700-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-270822-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
@@ -86,7 +86,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
@@ -98,152 +98,99 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp,nvidia.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,nvidia.com:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 2745B6FA66C
+X-Rspamd-Queue-Id: 7F4DD6FA577
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
 From: Petr Machata <petrm@nvidia.com>
 
-This reverts commit 6b32d042aa8255e964ebed860e24adccb204fcbc, which is
-commit 3d07b691ee707c00afaf365440975e81bb96cd9b upstream.
+This reverts commit c1c50689799d0343598ab6ccb7209819bcef248d, which is
+commit 26285e689c6cd2cf3849568c83b2ebe53f467143 upstream.
 
-The cited commit allows testptp to set a configurable clock_id. That is
-done via a PTP_SYS_OFFSET_EXTENDED ioctl call, whose argument is struct
-ptp_sys_offset_extended, where the clock_id is set. However, this Linux
-version does not support the ptp_sys_offset_extended.clockid field, and
-the test case cannot be built against this tree's own UAPI headers.
+The reverted commit extends the selftest to test timestamp event queue mask
+manipulation in testptp. It exercises masks PTP_MASK_CLEAR_ALL and
+PTP_MASK_EN_SINGLE, introduced in commit c5a445b1e934 ("ptp: support event
+queue reader channel masks"), which is not on this stable branch. The test
+case thus cannot be built against this tree's own UAPI headers.
 
 The reverted commit was introduced to resolve a missing dependency of
-commit bef3a83a9a67 ("testptp: Add option to open PHC in readonly mode"),
-which is 76868642e427 upstream. My suspicion is that the only conflict
-between the two is the getopt string, and there is otherwise no direct
-dependency between the two.
+commit c6dc458227a3 ("testptp: Add option to open PHC in readonly mode"),
+which is 76868642e427 upstream. The only conflict between the two is the
+getopt string, and there is otherwise no direct dependency between the two.
 
 This patch therefore reverts the cited commit, with hand-resolving the
 getopt string to include 'r' (as introduced by c6dc458227a3), but not
-'y' (introduced by 06954f715deb).
+'F' (introduced by c1c50689799d).
 
 Reported-by: Yong Wang <yongwang@nvidia.com>
 Signed-off-by: Petr Machata <petrm@nvidia.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/ptp/testptp.c | 62 +++------------------------
- 1 file changed, 5 insertions(+), 57 deletions(-)
+ tools/testing/selftests/ptp/testptp.c | 19 +------------------
+ 1 file changed, 1 insertion(+), 18 deletions(-)
 
 diff --git a/tools/testing/selftests/ptp/testptp.c b/tools/testing/selftests/ptp/testptp.c
-index 89b4f43a7ba459..d78d52f028ab52 100644
+index 7030bae8e5e07e..14b975594c88e7 100644
 --- a/tools/testing/selftests/ptp/testptp.c
 +++ b/tools/testing/selftests/ptp/testptp.c
-@@ -147,7 +147,6 @@ static void usage(char *progname)
- 		" -T val     set the ptp clock time to 'val' seconds\n"
- 		" -x val     get an extended ptp clock time with the desired number of samples (up to %d)\n"
- 		" -X         get a ptp clock cross timestamp\n"
--		" -y val     pre/post tstamp timebase to use {realtime|monotonic|monotonic-raw}\n"
- 		" -z         test combinations of rising/falling external time stamp flags\n",
- 		progname, PTP_MAX_SAMPLES);
- }
-@@ -192,7 +191,6 @@ int main(int argc, char *argv[])
+@@ -121,7 +121,6 @@ static void usage(char *progname)
+ 		" -d name    device to open\n"
+ 		" -e val     read 'val' external time stamp events\n"
+ 		" -f val     adjust the ptp clock frequency by 'val' ppb\n"
+-		" -F chan    Enable single channel mask and keep device open for debugfs verification.\n"
+ 		" -g         get the ptp clock time\n"
+ 		" -h         prints this message\n"
+ 		" -i val     index for event/trigger\n"
+@@ -190,7 +189,6 @@ int main(int argc, char *argv[])
+ 	int seconds = 0;
  	int readonly = 0;
  	int settime = 0;
- 	int channel = -1;
--	clockid_t ext_clockid = CLOCK_REALTIME;
+-	int channel = -1;
  
  	int64_t t1, t2, tp;
  	int64_t interval, offset;
-@@ -202,7 +200,7 @@ int main(int argc, char *argv[])
+@@ -200,7 +198,7 @@ int main(int argc, char *argv[])
  
  	progname = strrchr(argv[0], '/');
  	progname = progname ? 1+progname : argv[0];
--	while (EOF != (c = getopt(argc, argv, "cd:e:f:F:ghH:i:k:lL:n:o:p:P:rsSt:T:w:x:Xy:z"))) {
-+	while (EOF != (c = getopt(argc, argv, "cd:e:f:F:ghH:i:k:lL:n:o:p:P:rsSt:T:w:x:Xz"))) {
+-	while (EOF != (c = getopt(argc, argv, "cd:e:f:F:ghH:i:k:lL:n:o:p:P:rsSt:T:w:x:Xz"))) {
++	while (EOF != (c = getopt(argc, argv, "cd:e:f:ghH:i:k:lL:n:o:p:P:rsSt:T:w:x:Xz"))) {
  		switch (c) {
  		case 'c':
  			capabilities = 1;
-@@ -285,21 +283,6 @@ int main(int argc, char *argv[])
- 		case 'X':
- 			getcross = 1;
+@@ -214,9 +212,6 @@ int main(int argc, char *argv[])
+ 		case 'f':
+ 			adjfreq = atoi(optarg);
  			break;
--		case 'y':
--			if (!strcasecmp(optarg, "realtime"))
--				ext_clockid = CLOCK_REALTIME;
--			else if (!strcasecmp(optarg, "monotonic"))
--				ext_clockid = CLOCK_MONOTONIC;
--			else if (!strcasecmp(optarg, "monotonic-raw"))
--				ext_clockid = CLOCK_MONOTONIC_RAW;
--			else {
--				fprintf(stderr,
--					"type needs to be realtime, monotonic or monotonic-raw; was given %s\n",
--					optarg);
--				return -1;
--			}
+-		case 'F':
+-			channel = atoi(optarg);
 -			break;
--
- 		case 'z':
- 			flagtest = 1;
+ 		case 'g':
+ 			gettime = 1;
  			break;
-@@ -590,7 +573,6 @@ int main(int argc, char *argv[])
- 		}
+@@ -616,18 +611,6 @@ int main(int argc, char *argv[])
+ 		free(xts);
+ 	}
  
- 		soe->n_samples = getextended;
--		soe->clockid = ext_clockid;
- 
- 		if (ioctl(fd, PTP_SYS_OFFSET_EXTENDED, soe)) {
- 			perror("PTP_SYS_OFFSET_EXTENDED");
-@@ -599,46 +581,12 @@ int main(int argc, char *argv[])
- 			       getextended);
- 
- 			for (i = 0; i < getextended; i++) {
--				switch (ext_clockid) {
--				case CLOCK_REALTIME:
--					printf("sample #%2d: real time before: %lld.%09u\n",
--					       i, soe->ts[i][0].sec,
--					       soe->ts[i][0].nsec);
--					break;
--				case CLOCK_MONOTONIC:
--					printf("sample #%2d: monotonic time before: %lld.%09u\n",
--					       i, soe->ts[i][0].sec,
--					       soe->ts[i][0].nsec);
--					break;
--				case CLOCK_MONOTONIC_RAW:
--					printf("sample #%2d: monotonic-raw time before: %lld.%09u\n",
--					       i, soe->ts[i][0].sec,
--					       soe->ts[i][0].nsec);
--					break;
--				default:
--					break;
--				}
-+				printf("sample #%2d: system time before: %lld.%09u\n",
-+				       i, soe->ts[i][0].sec, soe->ts[i][0].nsec);
- 				printf("            phc time: %lld.%09u\n",
- 				       soe->ts[i][1].sec, soe->ts[i][1].nsec);
--				switch (ext_clockid) {
--				case CLOCK_REALTIME:
--					printf("            real time after: %lld.%09u\n",
--					       soe->ts[i][2].sec,
--					       soe->ts[i][2].nsec);
--					break;
--				case CLOCK_MONOTONIC:
--					printf("            monotonic time after: %lld.%09u\n",
--					       soe->ts[i][2].sec,
--					       soe->ts[i][2].nsec);
--					break;
--				case CLOCK_MONOTONIC_RAW:
--					printf("            monotonic-raw time after: %lld.%09u\n",
--					       soe->ts[i][2].sec,
--					       soe->ts[i][2].nsec);
--					break;
--				default:
--					break;
--				}
-+				printf("            system time after: %lld.%09u\n",
-+				       soe->ts[i][2].sec, soe->ts[i][2].nsec);
- 			}
- 		}
- 
+-	if (channel >= 0) {
+-		if (ioctl(fd, PTP_MASK_CLEAR_ALL)) {
+-			perror("PTP_MASK_CLEAR_ALL");
+-		} else if (ioctl(fd, PTP_MASK_EN_SINGLE, (unsigned int *)&channel)) {
+-			perror("PTP_MASK_EN_SINGLE");
+-		} else {
+-			printf("Channel %d exclusively enabled. Check on debugfs.\n", channel);
+-			printf("Press any key to continue\n.");
+-			getchar();
+-		}
+-	}
+-
+ 	close(fd);
+ 	return 0;
+ }
 -- 
 2.53.0
 
