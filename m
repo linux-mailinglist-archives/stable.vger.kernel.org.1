@@ -1,79 +1,61 @@
-Return-Path: <stable+bounces-271171-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-271012-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id GazdCnijRmoaawsAu9opvQ
-	(envelope-from <stable+bounces-271171-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:44:24 +0200
+	id Tg2QH2+XRmrUZQsAu9opvQ
+	(envelope-from <stable+bounces-271012-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:53:03 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7BD646FB960
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:44:23 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1DF8B6FAB1A
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:53:03 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=iupdgd72;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-271171-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-271171-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=OQFiM4tS;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-271012-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-271012-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 1F67432274B7
-	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:49:17 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 7C85F32777F1
+	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:41:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CFEA43A254B;
-	Thu,  2 Jul 2026 16:47:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C4A6318BB3;
+	Thu,  2 Jul 2026 16:40:39 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77A7633BBCD;
-	Thu,  2 Jul 2026 16:47:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D889349CF2;
+	Thu,  2 Jul 2026 16:40:37 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783010854; cv=none; b=lF4IdeOxnp8qrnYDYz+Q3rLoD5xTT5e7R6w6s2rtozDGCs/G75YOMnV10uWG76MJLmtXNjJTUFGOMPZS50/F8X6F55XLXMEg4CioNXjEkqjCd/fmjtM+4WBlonLewOyAfTMdO3LUuPf6vDwq0sMWvwNxyvQ1kQDS6hM+dBpYUJY=
+	t=1783010439; cv=none; b=oo5ISbwWcjhaa7GkRyWlUVDXnqAH03CUG2MLLgckdgA0iHasGZUYs9rb1RGP+mU389Y5coPJ3pkb95Yu3OZmMsvTCV3R/6vLtCqaZTHBS2RumYuZhQ39Zo8xP+vGEQ1m1FpWK2hzHuLyLgJGoCSg15eZz4ip8pLI3FPghtn7ST0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783010854; c=relaxed/simple;
-	bh=liVp4zpbSCev2RK6txmObTm8OGxTQw69sOI0sZDV66I=;
+	s=arc-20240116; t=1783010439; c=relaxed/simple;
+	bh=RuggjEVzwf1xwoemZKyFq4LBgjIgTJfJBut9i9eGO4o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AK0nNVbqn5qvhvgaS0y9zHBu/8h2McG41FdDTvlYPpfldrA59/5Nbv70fvMFzMwv2T4VovlfZCduwzbDe3XLo5fyGEEl2wSy/eJrWssaaQxm2vxThwF9HZbZyeCAs+Sz2CF5PEQ/dHVTbLOxGxWLdvaHQFSVUht4qXFVZj3clU0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iupdgd72; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BEAA61F000E9;
-	Thu,  2 Jul 2026 16:47:32 +0000 (UTC)
+	 MIME-Version; b=QSvNV4WvCFgyhf896p9wszKNFQWotIAF9fDyimBSEeIznBaZasBbBZaLkDfP7ulmdzd7P2sisrh9qsNiv1X9PPozJTsDCeTj9Zk1DANfz92dCItS7xnM1AJA1WkPPdNU5uxx+JuF0JXHcWwV9Uc3RlnNYktiSV6mddPnUuFgH0E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OQFiM4tS; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F39721F000E9;
+	Thu,  2 Jul 2026 16:40:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1783010853;
-	bh=6VQcI42tr2xojNXVv8Nz1ngrYcCFYswc/vGlfxnXRJ0=;
+	s=korg; t=1783010437;
+	bh=GiTUoYQcO8hwb6FpCZUHaHk0UqIio9pVHOJPJLvz/rg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=iupdgd72zUY4OGI+Vy+nD/YJhfs/z0iGKzCGT2siNCBXC9lbOEX0E3IYdYWHU57OZ
-	 HVOiMf1ul6H5r6Kpvoks91J86lOGxZgKnjDMLhyrJc3z23HZ8RZEXTBrWMnbabBfUX
-	 LFiDbyIqiJr+/918Py9COZ6hwcomkhsiVgEOdKto=
+	b=OQFiM4tSfdligWoi3TQRYTQPePNgTru2BnF8k4bk+FGE5uOroiTEdkovmBbmkd5Ve
+	 JrpiLE6lQiM9gN6RW6ncF/5jeYxtd9jqex0/10tTuFVdfCWsl3fkioBKTEq0k8exNe
+	 PNfQS/O2VtNLOWwTiaBZ/rv27pvuhXF5wKp5gRjU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	bpf <bpf@vger.kernel.org>,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	Masahiro Yamada <masahiroy@kernel.org>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Nicolas Schier <nicolas@fjasle.eu>,
-	Zheng Yejian <zhengyejian1@huawei.com>,
-	Martin Kelly <martin.kelly@crowdstrike.com>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Josh Poimboeuf <jpoimboe@redhat.com>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>,
-	Vasily Gorbik <gor@linux.ibm.com>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
-	Andrey Grodzovsky <andrey.grodzovsky@crowdstrike.com>
-Subject: [PATCH 6.6 063/175] ftrace: Update the mcount_loc check of skipped entries
+	stable@kernel.org,
+	Sven Eckelmann <sven@narfation.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 107/204] batman-adv: bla: annotate lasttime access with READ/WRITE_ONCE
 Date: Thu,  2 Jul 2026 18:19:24 +0200
-Message-ID: <20260702155117.121153956@linuxfoundation.org>
+Message-ID: <20260702155120.903581969@linuxfoundation.org>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260702155115.766838875@linuxfoundation.org>
-References: <20260702155115.766838875@linuxfoundation.org>
+In-Reply-To: <20260702155118.667618796@linuxfoundation.org>
+References: <20260702155118.667618796@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -90,22 +72,22 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-271171-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-271012-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[24];
+	TO_DN_SOME(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:bpf@vger.kernel.org,m:mhiramat@kernel.org,m:mark.rutland@arm.com,m:mathieu.desnoyers@efficios.com,m:akpm@linux-foundation.org,m:peterz@infradead.org,m:torvalds@linux-foundation.org,m:masahiroy@kernel.org,m:nathan@kernel.org,m:nicolas@fjasle.eu,m:zhengyejian1@huawei.com,m:martin.kelly@crowdstrike.com,m:christophe.leroy@csgroup.eu,m:jpoimboe@redhat.com,m:hca@linux.ibm.com,m:catalin.marinas@arm.com,m:will@kernel.org,m:gor@linux.ibm.com,m:agordeev@linux.ibm.com,m:rostedt@goodmis.org,m:andrey.grodzovsky@crowdstrike.com,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:stable@kernel.org,m:sven@narfation.org,m:sashal@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	TO_DN_SOME(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
@@ -116,81 +98,165 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,narfation.org:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 7BD646FB960
+X-Rspamd-Queue-Id: 1DF8B6FAB1A
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Steven Rostedt <rostedt@goodmis.org>
+From: Sven Eckelmann <sven@narfation.org>
 
-[ Upstream commit 4a3efc6baff931da9a85c6d2e42c87bd9a827399 ]
+commit 98b0fb191c878a64cbaebfe231d96d57576acf8c upstream.
 
-Now that weak functions turn into skipped entries, update the check to
-make sure the amount that was allocated would fit both the entries that
-were allocated as well as those that were skipped.
+The lasttime field for claim, backbone_gw, and loopdetect tracks the
+jiffies value of the most recent activity and is used to detect timeouts.
+These accesses are not consistently protected by a lock, so
+READ_ONCE/WRITE_ONCE must be used to prevent data races caused by compiler
+optimizations.
 
-Cc: bpf <bpf@vger.kernel.org>
-Cc: Masami Hiramatsu <mhiramat@kernel.org>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: Masahiro Yamada <masahiroy@kernel.org>
-Cc: Nathan Chancellor <nathan@kernel.org>
-Cc: Nicolas Schier <nicolas@fjasle.eu>
-Cc: Zheng Yejian <zhengyejian1@huawei.com>
-Cc: Martin  Kelly <martin.kelly@crowdstrike.com>
-Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
-Cc: Josh Poimboeuf <jpoimboe@redhat.com>
-Cc: Heiko Carstens <hca@linux.ibm.com>
-Cc: Catalin Marinas <catalin.marinas@arm.com>
-Cc: Will Deacon <will@kernel.org>
-Cc: Vasily Gorbik <gor@linux.ibm.com>
-Cc: Alexander Gordeev <agordeev@linux.ibm.com>
-Link: https://lore.kernel.org/20250218200023.055162048@goodmis.org
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-Signed-off-by: Andrey Grodzovsky <andrey.grodzovsky@crowdstrike.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@kernel.org
+Fixes: 23721387c409 ("batman-adv: add basic bridge loop avoidance code")
+Signed-off-by: Sven Eckelmann <sven@narfation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/trace/ftrace.c |   23 ++++++++++++++++++++++-
- 1 file changed, 22 insertions(+), 1 deletion(-)
+ net/batman-adv/bridge_loop_avoidance.c | 28 +++++++++++++-------------
+ 1 file changed, 14 insertions(+), 14 deletions(-)
 
---- a/kernel/trace/ftrace.c
-+++ b/kernel/trace/ftrace.c
-@@ -6632,7 +6632,28 @@ static int ftrace_process_locs(struct mo
+diff --git a/net/batman-adv/bridge_loop_avoidance.c b/net/batman-adv/bridge_loop_avoidance.c
+index 15aeb07285e61f..cc6c14cac06282 100644
+--- a/net/batman-adv/bridge_loop_avoidance.c
++++ b/net/batman-adv/bridge_loop_avoidance.c
+@@ -512,7 +512,7 @@ batadv_bla_get_backbone_gw(struct batadv_priv *bat_priv, const u8 *orig,
+ 		return NULL;
  
- 	/* We should have used all pages unless we skipped some */
- 	if (pg_unuse) {
--		WARN_ON(!skipped);
-+		unsigned long pg_remaining, remaining = 0;
-+		unsigned long skip;
-+
-+		/* Count the number of entries unused and compare it to skipped. */
-+		pg_remaining = (ENTRIES_PER_PAGE << pg->order) - pg->index;
-+
-+		if (!WARN(skipped < pg_remaining, "Extra allocated pages for ftrace")) {
-+
-+			skip = skipped - pg_remaining;
-+
-+			for (pg = pg_unuse; pg; pg = pg->next)
-+				remaining += 1 << pg->order;
-+
-+			skip = DIV_ROUND_UP(skip, ENTRIES_PER_PAGE);
-+
-+			/*
-+			 * Check to see if the number of pages remaining would
-+			 * just fit the number of entries skipped.
-+			 */
-+			WARN(skip != remaining, "Extra allocated pages for ftrace: %lu with %lu skipped",
-+			     remaining, skipped);
-+		}
- 		/* Need to synchronize with ftrace_location_range() */
- 		synchronize_rcu();
- 		ftrace_free_pages(pg_unuse);
+ 	entry->vid = vid;
+-	entry->lasttime = jiffies;
++	WRITE_ONCE(entry->lasttime, jiffies);
+ 	entry->crc = BATADV_BLA_CRC_INIT;
+ 	entry->bat_priv = bat_priv;
+ 	spin_lock_init(&entry->crc_lock);
+@@ -580,7 +580,7 @@ batadv_bla_update_own_backbone_gw(struct batadv_priv *bat_priv,
+ 	if (unlikely(!backbone_gw))
+ 		return;
+ 
+-	backbone_gw->lasttime = jiffies;
++	WRITE_ONCE(backbone_gw->lasttime, jiffies);
+ 	batadv_backbone_gw_put(backbone_gw);
+ }
+ 
+@@ -714,7 +714,7 @@ static void batadv_bla_add_claim(struct batadv_priv *bat_priv,
+ 		ether_addr_copy(claim->addr, mac);
+ 		spin_lock_init(&claim->backbone_lock);
+ 		claim->vid = vid;
+-		claim->lasttime = jiffies;
++		WRITE_ONCE(claim->lasttime, jiffies);
+ 		kref_get(&backbone_gw->refcount);
+ 		claim->backbone_gw = backbone_gw;
+ 		kref_init(&claim->refcount);
+@@ -736,7 +736,7 @@ static void batadv_bla_add_claim(struct batadv_priv *bat_priv,
+ 			return;
+ 		}
+ 	} else {
+-		claim->lasttime = jiffies;
++		WRITE_ONCE(claim->lasttime, jiffies);
+ 		if (claim->backbone_gw == backbone_gw)
+ 			/* no need to register a new backbone */
+ 			goto claim_free_ref;
+@@ -769,7 +769,7 @@ static void batadv_bla_add_claim(struct batadv_priv *bat_priv,
+ 	spin_lock_bh(&backbone_gw->crc_lock);
+ 	backbone_gw->crc ^= crc16(0, claim->addr, ETH_ALEN);
+ 	spin_unlock_bh(&backbone_gw->crc_lock);
+-	backbone_gw->lasttime = jiffies;
++	WRITE_ONCE(backbone_gw->lasttime, jiffies);
+ 
+ claim_free_ref:
+ 	batadv_claim_put(claim);
+@@ -858,7 +858,7 @@ static bool batadv_handle_announce(struct batadv_priv *bat_priv, u8 *an_addr,
+ 		return true;
+ 
+ 	/* handle as ANNOUNCE frame */
+-	backbone_gw->lasttime = jiffies;
++	WRITE_ONCE(backbone_gw->lasttime, jiffies);
+ 	crc = ntohs(*((__force __be16 *)(&an_addr[4])));
+ 
+ 	batadv_dbg(BATADV_DBG_BLA, bat_priv,
+@@ -1253,7 +1253,7 @@ static void batadv_bla_purge_backbone_gw(struct batadv_priv *bat_priv, int now)
+ 						  head, hash_entry) {
+ 				if (now)
+ 					goto purge_now;
+-				if (!batadv_has_timed_out(backbone_gw->lasttime,
++				if (!batadv_has_timed_out(READ_ONCE(backbone_gw->lasttime),
+ 							  BATADV_BLA_BACKBONE_TIMEOUT))
+ 					continue;
+ 
+@@ -1334,7 +1334,7 @@ static void batadv_bla_purge_claims(struct batadv_priv *bat_priv,
+ 						primary_if->net_dev->dev_addr))
+ 				goto skip;
+ 
+-			if (!batadv_has_timed_out(claim->lasttime,
++			if (!batadv_has_timed_out(READ_ONCE(claim->lasttime),
+ 						  BATADV_BLA_CLAIM_TIMEOUT))
+ 				goto skip;
+ 
+@@ -1494,7 +1494,7 @@ static void batadv_bla_periodic_work(struct work_struct *work)
+ 		eth_random_addr(bat_priv->bla.loopdetect_addr);
+ 		bat_priv->bla.loopdetect_addr[0] = 0xba;
+ 		bat_priv->bla.loopdetect_addr[1] = 0xbe;
+-		bat_priv->bla.loopdetect_lasttime = jiffies;
++		WRITE_ONCE(bat_priv->bla.loopdetect_lasttime, jiffies);
+ 		atomic_set(&bat_priv->bla.loopdetect_next,
+ 			   BATADV_BLA_LOOPDETECT_PERIODS);
+ 
+@@ -1515,7 +1515,7 @@ static void batadv_bla_periodic_work(struct work_struct *work)
+ 						primary_if->net_dev->dev_addr))
+ 				continue;
+ 
+-			backbone_gw->lasttime = jiffies;
++			WRITE_ONCE(backbone_gw->lasttime, jiffies);
+ 
+ 			batadv_bla_send_announce(bat_priv, backbone_gw);
+ 			if (send_loopdetect)
+@@ -1900,7 +1900,7 @@ batadv_bla_loopdetect_check(struct batadv_priv *bat_priv, struct sk_buff *skb,
+ 	/* If the packet came too late, don't forward it on the mesh
+ 	 * but don't consider that as loop. It might be a coincidence.
+ 	 */
+-	if (batadv_has_timed_out(bat_priv->bla.loopdetect_lasttime,
++	if (batadv_has_timed_out(READ_ONCE(bat_priv->bla.loopdetect_lasttime),
+ 				 BATADV_BLA_LOOPDETECT_TIMEOUT))
+ 		return true;
+ 
+@@ -2016,7 +2016,7 @@ bool batadv_bla_rx(struct batadv_priv *bat_priv, struct sk_buff *skb,
+ 
+ 	if (own_claim) {
+ 		/* ... allow it in any case */
+-		claim->lasttime = jiffies;
++		WRITE_ONCE(claim->lasttime, jiffies);
+ 		goto allow;
+ 	}
+ 
+@@ -2118,7 +2118,7 @@ bool batadv_bla_tx(struct batadv_priv *bat_priv, struct sk_buff *skb,
+ 		/* if yes, the client has roamed and we have
+ 		 * to unclaim it.
+ 		 */
+-		if (batadv_has_timed_out(claim->lasttime, 100)) {
++		if (batadv_has_timed_out(READ_ONCE(claim->lasttime), 100)) {
+ 			/* only unclaim if the last claim entry is
+ 			 * older than 100 ms to make sure we really
+ 			 * have a roaming client here.
+@@ -2372,7 +2372,7 @@ batadv_bla_backbone_dump_entry(struct sk_buff *msg, u32 portid,
+ 	backbone_crc = backbone_gw->crc;
+ 	spin_unlock_bh(&backbone_gw->crc_lock);
+ 
+-	msecs = jiffies_to_msecs(jiffies - backbone_gw->lasttime);
++	msecs = jiffies_to_msecs(jiffies - READ_ONCE(backbone_gw->lasttime));
+ 
+ 	if (is_own)
+ 		if (nla_put_flag(msg, BATADV_ATTR_BLA_OWN)) {
+-- 
+2.53.0
+
 
 
 
