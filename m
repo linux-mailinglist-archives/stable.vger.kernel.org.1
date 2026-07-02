@@ -1,64 +1,61 @@
-Return-Path: <stable+bounces-271357-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-271467-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 7K8YN4+aRmqQZwsAu9opvQ
-	(envelope-from <stable+bounces-271357-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:06:23 +0200
+	id JhTINBanRmoobAsAu9opvQ
+	(envelope-from <stable+bounces-271467-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:59:50 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7BB9C6FAFC8
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:06:23 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 505EE6FBC31
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:59:50 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=1I21Urrs;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-271357-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-271357-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=tRG53oZW;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-271467-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-271467-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 49BB43066DFB
-	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:55:39 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 78D96330205F
+	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 17:00:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 359DD25B09B;
-	Thu,  2 Jul 2026 16:55:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 70B4530499A;
+	Thu,  2 Jul 2026 17:00:21 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6AF9246BBA;
-	Thu,  2 Jul 2026 16:55:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1873F433E87;
+	Thu,  2 Jul 2026 17:00:20 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783011332; cv=none; b=Q9dPBY/uHPj9Hcnk2ELe3Xj1kBdHXyJuhMYMzZeSRuw/Uh8haQ/tjkuAohaj2wSmkB23K2HZS1ehqF7f4Ca4q7qAdVGkjj1cwYdOl1laHoE4e5brbLVCeejNHP86xzom8ih3KADmXEhDzt9WmObF4KXbn7XL97UslxdKHYwuEes=
+	t=1783011621; cv=none; b=FMt8i6PE6PDeBR0XnepILxAnSkxY/hJPQfHC5ktSg2qcVSwxVjPVyBWi6SYVDxtgZPKC0cigN0oGHtLbLLLgpBUJ26cG+JWlLeEAgBj/CHRKuQYEpNRMFrSKL03Sf2H2lCACzsNjEvMLFpEjQ04/BuVx92WW72jDlGEu/Pn1Ux0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783011332; c=relaxed/simple;
-	bh=eaxyEf4vWNbM0yCGjHjosDvOgYWxOORq9F+2jtSiHEk=;
+	s=arc-20240116; t=1783011621; c=relaxed/simple;
+	bh=uZBANYZ148gs3F0QNa6YAeHt7ycUu2E+3VgCAWRXY9A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JM43zSRfHZfr1KMGmloMf25rzdK3K5m7fS8abuPOR/zHf6renv66MT6gp2Bwzxb6sL1o57yrQlgroelhjvM11zO+OBJ5AQcnyBcuFJpEKQshav6PKFIF5Ila85LNQdveFWIZdYM3jP92k78ey9rB0z5EQ1sLyxPdp7hOZzG+HcI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1I21Urrs; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5FF6F1F000E9;
-	Thu,  2 Jul 2026 16:55:30 +0000 (UTC)
+	 MIME-Version; b=nlJmKDhdpbRqZySvjCp1jLDBzxfsh5eu1hef+u8FZJatYfI/e3cut/DSBrFpYTcGgx+pAsH880CHQ2IJGueX990erZWEQfE2lOpgoTa5eCCfAcg8oJFCcsfNNgAw5DnGGf2gc9tpgEMwB8dGl0jHkwG4YJJWKK83akEhjdK7Cww=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tRG53oZW; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75C891F000E9;
+	Thu,  2 Jul 2026 17:00:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1783011330;
-	bh=DGOwvXl3mbDS1zowLJldaCZXia14oIwXVyg92uSRP9U=;
+	s=korg; t=1783011620;
+	bh=ZLniOW/mqs4TV/V+vDT5iTC65xUE/NYwDK27nRvK2V4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=1I21UrrsEVWsXarTtR6HQPpc1WT8D3LXXsl6qwQp1rQHFfDKzAmm7xATYOJ+rUj5P
-	 xL8AON9oCFswMltNJQMviTm8oPNyNGnK/iF28q6LBsXvtjq/QcTE1QttzMMWF75Yax
-	 7IdZ2avUDvKeb+B0uwAnhWAO9o20z7C3ICOn4X00=
+	b=tRG53oZW/EFxGFwgXq0umtZ1/B3DlmGsLFYmog+93PtSyqVW3uwqQHW/3wid8IPsx
+	 thsrO57QG8rVYhGgMbWtibMr2p2RYacdRAN9JxFaSILcl5WL/EN4uTL1FPRjFsez4M
+	 xkaQcmbLRu8tIkThy3QOixJ0h0ZePPa+m9LsCsV0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Emil Tsalapatis <emil@etsalapatis.com>,
-	Jiayuan Chen <jiayuan.chen@linux.dev>,
-	Yonghong Song <yonghong.song@linux.dev>,
-	Zilin Guan <zilin@seu.edu.cn>,
-	Dawei Feng <dawei.feng@seu.edu.cn>,
-	Alexei Starovoitov <ast@kernel.org>
-Subject: [PATCH 6.18 068/108] bpf: use kvfree() for replaced sysctl write buffer
+	Zhaoyang Huang <zhaoyang.huang@unisoc.com>,
+	Chao Yu <chao@kernel.org>,
+	Jaegeuk Kim <jaegeuk@kernel.org>
+Subject: [PATCH 7.1 069/120] Revert "f2fs: remove non-uptodate folio from the page cache in move_data_block"
 Date: Thu,  2 Jul 2026 18:21:05 +0200
-Message-ID: <20260702155113.519715205@linuxfoundation.org>
+Message-ID: <20260702155114.386956019@linuxfoundation.org>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260702155112.110058792@linuxfoundation.org>
-References: <20260702155112.110058792@linuxfoundation.org>
+In-Reply-To: <20260702155112.964534952@linuxfoundation.org>
+References: <20260702155112.964534952@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,127 +69,190 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-271357-lists,stable=lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-271467-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:emil@etsalapatis.com,m:jiayuan.chen@linux.dev,m:yonghong.song@linux.dev,m:zilin@seu.edu.cn,m:dawei.feng@seu.edu.cn,m:ast@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	TO_DN_SOME(0.00)[];
+	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:zhaoyang.huang@unisoc.com,m:chao@kernel.org,m:jaegeuk@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,linux.dev:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,etsalapatis.com:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,seu.edu.cn:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,unisoc.com:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 7BB9C6FAFC8
+X-Rspamd-Queue-Id: 505EE6FBC31
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dawei Feng <dawei.feng@seu.edu.cn>
+From: Zhaoyang Huang <zhaoyang.huang@unisoc.com>
 
-commit 4c21b5927d4364bfe7365f2700da5fea0ed0d004 upstream.
+commit ccaba785821970f422c47770331c7e3271763f17 upstream.
 
-proc_sys_call_handler() allocates its temporary sysctl buffer with
-kvzalloc() and passes it to __cgroup_bpf_run_filter_sysctl(). Since
-kvzalloc() may fall back to vmalloc() for large allocations, freeing
-that buffer with kfree() is wrong and can corrupt memory.
+This reverts commit 9609dd704725a40cd63d915f2ab6c44248a44598.
 
-Use kvfree() to safely handle both kmalloc and kvzalloc()/vmalloc
-allocations.
+The kernel panics are keeping to be reported especially when the f2fs
+partition get almost full. By investigation, we find that the reason is
+one f2fs page got freed to buddy without being deleted from LRU and the
+root cause is the race happened in [2] which is enrolled by this commit.
 
-The bug was first flagged by an experimental analysis tool we are
-developing for kernel memory-management bugs while analyzing
-v6.13-rc1. The tool is still under development and is not yet publicly
-available. Manual inspection confirms that the bug is still
-present in v7.1-rc5.
+There are 3 race processes in this scenario, please find below for their
+main activities.
 
-Reproduced the bug based on v7.1-rc4 in a QEMU x86_64 guest booted with
-KASAN and CONFIG_FAILSLAB enabled. To exercise the replacement path, the
-test tree also included the accompanying fix for the stale ret == 1
-check in __cgroup_bpf_run_filter_sysctl(). The reproducer confines
-failslab injections to the proc_sys_call_handler() range, uses
-stacktrace-depth=32, and injects fail-nth=1 while writing 8191 bytes to
-/proc/sys/kernel/domainname from a task in the target cgroup. Under
-that setup, fail-nth=1 triggered the fault:
+The changed code in move_data_block() lets the GC path evict the tail-end
+folio from the page cache through folio_end_dropbehind().  Once
+folio_unmap_invalidate() removes the folio from mapping->i_pages, the
+page-cache references for all pages in the folio are dropped.  The folio
+is then kept alive only by temporary external references, which allows a
+later split to operate on a folio whose subpages are no longer protected
+by page-cache references.
 
-  BUG: unable to handle page fault for address: ffffeb0200024d48
-  #PF: supervisor read access in kernel mode
-  #PF: error_code(0x0000) - not-present page
-  PGD 0 P4D 0
-  Oops: Oops: 0000  SMP KASAN NOPTI
-  CPU: 2 UID: 0 PID: 209 Comm: repro_proc_sys_ Not tainted 7.1.0-rc4-00686-g97625979a5d4  PREEMPT(lazy)
-  Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.15.0-1 04/01/2014
-  RIP: 0010:kfree+0x6e/0x510
-  ...
-  Call Trace:
-   <TASK>
-   ? __cgroup_bpf_run_filter_sysctl+0x626/0xc30
-   __cgroup_bpf_run_filter_sysctl+0x74d/0xc30
-   ? __pfx___cgroup_bpf_run_filter_sysctl+0x10/0x10
-   ? srso_return_thunk+0x5/0x5f
-   ? __kvmalloc_node_noprof+0x345/0x870
-   ? proc_sys_call_handler+0x250/0x480
-   ? srso_return_thunk+0x5/0x5f
-   proc_sys_call_handler+0x3a2/0x480
-   ? __pfx_proc_sys_call_handler+0x10/0x10
-   ? srso_return_thunk+0x5/0x5f
-   ? selinux_file_permission+0x39f/0x500
-   ? srso_return_thunk+0x5/0x5f
-   ? lock_is_held_type+0x9e/0x120
-   vfs_write+0x98e/0x1000
-   ...
-   </TASK>
+After the page-cache references are gone, split_folio_to_order() can
+split the big folio into individual pages and put the resulting subpages
+back on the LRU.  For tail pages beyond EOF, split removes them from the
+page cache and drops their page-cache references.  A tail page can then
+remain on the LRU with PG_lru set while holding only the split caller's
+temporary reference.  When free_folio_and_swap_cache() drops that final
+reference, the page enters the final folio_put() release path.
 
-With this fix applied on top of the same test setup, rerunning the
-reproducer with fail-nth=1 yields no corresponding Oops reports.
+In parallel, folio_isolate_lru() can observe the same tail page with a
+non-zero refcount and PG_lru set.  It clears PG_lru before taking its own
+reference.  If this races with the final folio_put() from the split path,
+__folio_put() sees PG_lru already cleared and skips lruvec_del_folio().
+The page is then freed back to the allocator while its lru links are
+still present in the LRU list.  A later LRU operation on a neighboring
+page detects the stale link and reports list corruption.
 
-Fixes: 4508943794ef ("proc: use kvzalloc for our kernel buffer")
+[1]
+[   22.486082] list_del corruption. next->prev should be fffffffec10e0ac8, but was dead000000000122. (next=fffffffec10e0a88)
+[   22.486130] ------------[ cut here ]------------
+[   22.486134] kernel BUG at lib/list_debug.c:67!
+[   22.486141] Internal error: Oops - BUG: 00000000f2000800 [#1]  SMP
+[   22.488502] Tainted: [W]=WARN, [O]=OOT_MODULE
+[   22.488506] Hardware name: Spreadtrum UMS9230 1H10 SoC (DT)
+[   22.488511] pstate: 604000c5 (nZCv daIF +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+[   22.488517] pc : __list_del_entry_valid_or_report+0x14c/0x154
+[   22.488531] lr : __list_del_entry_valid_or_report+0x14c/0x154
+[   22.488539] sp : ffffffc08006b830
+[   22.488542] x29: ffffffc08006b868 x28: 0000000000003020 x27: 0000000000000000
+[   22.488553] x26: 0000000000000000 x25: 0000000000000004 x24: fffffffec10e0ac0
+[   22.488564] x23: 00000000000000e8 x22: 0000000000000024 x21: dead000000000122
+[   22.488574] x20: fffffffec10e0a88 x19: fffffffec10e0ac8 x18: ffffffc080061060
+[   22.488585] x17: 20747562202c3863 x16: 6130653031636566 x15: 0000000000000058
+[   22.488595] x14: 0000000000000004 x13: ffffff80f91e0000 x12: 0000000000000003
+[   22.488605] x11: 0000000000000003 x10: 0000000000000001 x9 : ffe85721f0e25f00
+[   22.488615] x8 : ffe85721f0e25f00 x7 : 0000000000000000 x6 : 6c65645f7473696c
+[   22.488625] x5 : ffffffed39b23026 x4 : 0000000000000000 x3 : 0000000000000010
+[   22.488636] x2 : 0000000000000000 x1 : 0000000000000000 x0 : 000000000000006d
+[   22.488647] Call trace:
+[   22.488651]  __list_del_entry_valid_or_report+0x14c/0x154 (P)
+[   22.488661]  __folio_put+0x2bc/0x434
+[   22.488670]  folio_put+0x28/0x58
+[   22.488678]  do_garbage_collect+0x1a34/0x2584
+[   22.488689]  f2fs_gc+0x230/0x9b4
+[   22.488697]  f2fs_fallocate+0xb90/0xdf4
+[   22.488706]  vfs_fallocate+0x1b4/0x2bc
+[   22.488716]  __arm64_sys_fallocate+0x44/0x78
+[   22.488725]  invoke_syscall+0x58/0xe4
+[   22.488732]  do_el0_svc+0x48/0xdc
+[   22.488739]  el0_svc+0x3c/0x98
+[   22.488747]  el0t_64_sync_handler+0x20/0x130
+[   22.488754]  el0t_64_sync+0x1c4/0x1c8
+
+[2]
+CPU0 (f2fs GC)              CPU1 (split_folio_to_order)          CPU2 (folio_isolate_lru)
+
+F: pagecache refs = n
+F: extra refs = GC + split
+F: PG_lru set
+move_data_block()
+folio = f2fs_grab_cache_folio(F)
+...
+__folio_set_dropbehind(F)
+folio_unlock(F)
+folio_end_dropbehind(F)
+  folio_unmap_invalidate(F)
+    __filemap_remove_folio(F)
+    folio_put_refs(F, n)
+folio_put(F)
+                            split_folio_to_order(F)
+                              folio_ref_freeze(F, 1)
+                              ...
+                              lru_add_split_folio(T)
+                                list_add_tail(&T->lru, &F->lru)
+                                folio_set_lru(T)
+                              __filemap_remove_folio(T)
+                              folio_put_refs(T, 1)
+                              /* T refcount == 1, PageLRU set */
+                                                                  folio_isolate_lru(T)
+                                                                    folio_test_clear_lru(T)
+                            free_folio_and_swap_cache(T)
+                              folio_put(T)
+                                /* refcount: 1 -> 0 */
+                                __folio_put(T)
+                                  __page_cache_release(T)
+                                    folio_test_lru(T) == false
+                                    /* skip lruvec_del_folio(T) */
+                                  free_frozen_pages(T)
+                                                                  folio_get(T)
+                                                                  lruvec_del_folio(T)
+later:
+  list_del(adjacent->lru)
+    next == &T->lru
+    next->prev == LIST_POISON / PCP freelist
+    BUG
+
 Cc: stable@vger.kernel.org
-
-Reviewed-by: Emil Tsalapatis <emil@etsalapatis.com>
-Reviewed-by: Jiayuan Chen <jiayuan.chen@linux.dev>
-Acked-by: Yonghong Song <yonghong.song@linux.dev>
-Signed-off-by: Zilin Guan <zilin@seu.edu.cn>
-Signed-off-by: Dawei Feng <dawei.feng@seu.edu.cn>
-Link: https://lore.kernel.org/r/20260603105317.944304-3-dawei.feng@seu.edu.cn
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Fixes: 9609dd704725 ("f2fs: remove non-uptodate folio from the page cache in move_data_block")
+Signed-off-by: Zhaoyang Huang <zhaoyang.huang@unisoc.com>
+Reviewed-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/bpf/cgroup.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/f2fs/gc.c | 6 +-----
+ 1 file changed, 1 insertion(+), 5 deletions(-)
 
---- a/kernel/bpf/cgroup.c
-+++ b/kernel/bpf/cgroup.c
-@@ -1940,7 +1940,7 @@ int __cgroup_bpf_run_filter_sysctl(struc
- 	kfree(ctx.cur_val);
- 
- 	if (ret == 1 && ctx.new_updated) {
--		kfree(*buf);
-+		kvfree(*buf);
- 		*buf = ctx.new_val;
- 		*pcount = ctx.new_len;
- 	} else {
+diff --git a/fs/f2fs/gc.c b/fs/f2fs/gc.c
+index 69e0a867219d..56a1c0547d76 100644
+--- a/fs/f2fs/gc.c
++++ b/fs/f2fs/gc.c
+@@ -1499,11 +1499,7 @@ static int move_data_block(struct inode *inode, block_t bidx,
+ put_out:
+ 	f2fs_put_dnode(&dn);
+ out:
+-	if (!folio_test_uptodate(folio))
+-		__folio_set_dropbehind(folio);
+-	folio_unlock(folio);
+-	folio_end_dropbehind(folio);
+-	folio_put(folio);
++	f2fs_folio_put(folio, true);
+ out_iput:
+ 	if (atomic_inode)
+ 		iput(atomic_inode);
+-- 
+2.55.0
+
 
 
 
