@@ -1,68 +1,61 @@
-Return-Path: <stable+bounces-271360-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-271470-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id /BGiK/WcRmqtaAsAu9opvQ
-	(envelope-from <stable+bounces-271360-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:16:37 +0200
+	id DMLKKCqnRmo/bAsAu9opvQ
+	(envelope-from <stable+bounces-271470-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 20:00:10 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id BB5626FB2EA
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:16:36 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id EED2A6FBC57
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 20:00:09 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=zfwNsSXV;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-271360-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-271360-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=F6aK6upy;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-271470-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-271470-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id D701C329A5C6
-	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:55:42 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 71A37330FCC9
+	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 17:00:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C7FC2D0602;
-	Thu,  2 Jul 2026 16:55:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E7293446A7;
+	Thu,  2 Jul 2026 17:00:29 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF77182866;
-	Thu,  2 Jul 2026 16:55:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE6AB30B53E;
+	Thu,  2 Jul 2026 17:00:27 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783011340; cv=none; b=jSwucSR9OqtP85tJSrS9RY/f9o/LYoZ66+2jjDXhQfAX4UU29nWFoU4C+u2kZOa84OsWPQNDVC6UGnALSnrERU1OhI9xJRYTTmPEvDnC0J/bbmM53uJEA3ywkmvSnVpnOH515GaBR8BLc8lMcyNDZwwg8iFVjrFR2/CW8oEno04=
+	t=1783011629; cv=none; b=mx50h8HHxYtrPm0q4ICQuOfIaWyfrCXtB3dpXss3Vlsn9sRcYlj0Nmn8i1fro61h7exYOrOVXVNEfCaWKpBbQ5HRYZel5CcgtZOdruIKQ0gAC9Lf5oBWPm05u0BFZJSzqVlNwOb/QBOVAxjC/P/IeXqGmR7S2Mzk0AAK0YvgrtI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783011340; c=relaxed/simple;
-	bh=8WTBc6AtuwQHgWoV9Qe7pmO/0viDey+BcY654qCOtqA=;
+	s=arc-20240116; t=1783011629; c=relaxed/simple;
+	bh=vfEHLTHIAQRQ+dg8NRg8vJENz1EIl1wMbg16lcHcLy0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Wrx4MDZT17GuIser+gHvnMMKFbAyP82ZvfNExZOjaGZAdKNIYKRKLSVqeDC9HR1Cqqeqec8E95M0Lx+4rx6eA9bR2XF60m688QCYE+QwVxiwfy0UFZD2fU/ohfw9MZtaTsebWpbbnBSpbolviDPmshAvDUtNxs1HKo3IQteDziI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zfwNsSXV; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 495EC1F000E9;
-	Thu,  2 Jul 2026 16:55:38 +0000 (UTC)
+	 MIME-Version; b=tVVOOtWauN0HkAvt5SZkZFSCy1eZ7zWOG7Xp+HZDX/flwkbGATO0c/yQgE5WxdI1iYuf1yRnYHz2ivtXZdlcyQgUkabtvU2JG9/yHTrZgFEP9GXl/PazcvtUVZJI8QdvFdCuyRLavshls9DJT/5xzMwTVUsT1wc4LJZ7zi9VoeM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F6aK6upy; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 613B51F000E9;
+	Thu,  2 Jul 2026 17:00:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1783011338;
-	bh=onRXuyDz6aLHdPPGuyPOkD7/L39k+KqdcpALdeOZsyc=;
+	s=korg; t=1783011627;
+	bh=pY/rd04mBQ+QenTpgNwXJ8AAFDsIG81+aoL6irFlSCk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=zfwNsSXV1mSqUCAp57hV/mrMlQBzAnAE1l/XLIFKOTz2E/ULNM4vGJZLMW0PtcyNa
-	 BMsm/OJbo1hS0CgEOdGyz37TXPH/oSerLR34tpT1PoTVTnXtwzrDic8RzfOOcCS3CQ
-	 8hf+oCiMFll1ACjT1ygcT/cmdhTxm1GK8Ih9i4xI=
+	b=F6aK6upyFIlSnCQ09tq2UwGLtjce5n1fy9rFvaKcOQpMjejN3sk+NJIEQgoZibOS6
+	 lNi5lOJjmECAi9/uaNXujz7JQq7/I2NppM9ni4WuIUsjvPZxlqWoLBZXSl0PkLQZNL
+	 RG5HP1kWelFYYHlym9HtfRCIeS5LaO9ZfrxLY9YA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Matlack <dmatlack@google.com>,
-	James Houghton <jthoughton@google.com>,
-	Alexander Bulekov <bkov@amazon.com>,
-	Fred Griffoul <fgriffo@amazon.co.uk>,
-	Alexander Graf <graf@amazon.de>,
-	David Woodhouse <dwmw@amazon.co.uk>,
-	Filippo Sironi <sironi@amazon.de>,
-	Ivan Orlov <iorlov@amazon.co.uk>,
-	Sean Christopherson <seanjc@google.com>,
-	Paolo Bonzini <pbonzini@redhat.com>
-Subject: [PATCH 6.18 071/108] KVM: x86/mmu: Ensure hugepage is in by slot before checking max mapping level
+	Mikhail Lobanov <m.lobanov@rosa.ru>,
+	Chao Yu <chao@kernel.org>,
+	Jaegeuk Kim <jaegeuk@kernel.org>
+Subject: [PATCH 7.1 072/120] f2fs: read COW data with the original inode during atomic write
 Date: Thu,  2 Jul 2026 18:21:08 +0200
-Message-ID: <20260702155113.582512145@linuxfoundation.org>
+Message-ID: <20260702155114.448634280@linuxfoundation.org>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260702155112.110058792@linuxfoundation.org>
-References: <20260702155112.110058792@linuxfoundation.org>
+In-Reply-To: <20260702155112.964534952@linuxfoundation.org>
+References: <20260702155112.964534952@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -76,167 +69,175 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:dmatlack@google.com,m:jthoughton@google.com,m:bkov@amazon.com,m:fgriffo@amazon.co.uk,m:graf@amazon.de,m:dwmw@amazon.co.uk,m:sironi@amazon.de,m:iorlov@amazon.co.uk,m:seanjc@google.com,m:pbonzini@redhat.com,s:lists@lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-271360-lists,stable=lfdr.de];
-	RCPT_COUNT_TWELVE(0.00)[13];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-271470-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:m.lobanov@rosa.ru,m:chao@kernel.org,m:jaegeuk@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RWL_MAILSPIKE_POSSIBLE(0.00)[104.64.211.4:from];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,amazon.co.uk:email,amazon.de:email]
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,rosa.ru:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: BB5626FB2EA
+X-Rspamd-Queue-Id: EED2A6FBC57
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sean Christopherson <seanjc@google.com>
+From: Mikhail Lobanov <m.lobanov@rosa.ru>
 
-commit ef057cbf825e03b63f6edf5980f96abf3c53089d upstream.
+commit a41075acde0124d2f8a5f563068a5d63e8ffd57b upstream.
 
-When recovering hugepages in the shadow MMU, verify that the base gfn of
-the shadow page is actually contained within the target memslot, *before*
-querying the max mapping level given the shadow page's gfn.  Failure to
-pre-check the validity of the gfn can lead to an out-of-bounds access to
-the slot's lpage_info (which typically manifests as a host #PF because the
-lpage_info is vmalloc'd) if the guest creates a hugepage mapping (in its
-PTEs) that extends "below" the bounds of a memslot.
+When updating an atomic-write file, f2fs_write_begin() may read the
+previously written data back from the COW inode:
+prepare_atomic_write_begin() locates the block in the COW inode and sets
+use_cow, and the read bio is then built with the COW inode:
 
-When faulting in memory for a guest, and the size of the guest mapping is
-greater than KVM's (current) max mapping, then KVM will create a "direct"
-shadow page (direct in that there are no gPTEs to shadow, and so the target
-gfn is a direct calculation given the base gfn of the shadow page).  The
-hugepage recovery flow looks for such direct shadow pages, as forcing 4KiB
-mappings when dirty logging generates the guest > host mapping size case.
-When the 4KiB restriction is lifted, then KVM can replace the shadow page
-with a hugepage.
+	f2fs_submit_page_read(use_cow ? F2FS_I(inode)->cow_inode : inode,
+			      ...);
 
-But if KVM originally used a smaller mapping than the guest because the
-range of memory covered by the guest hugepage exceeds the bounds of a
-memslot, then KVM will link a direct shadow page with a gfn that is outside
-the bounds of the memslot being used to fault in memory.  The rmap entry
-added for the leaf mapping is correct and within bounds, but the gfn of the
-leaf SPTE's parent shadow page will be out of bounds.
+and f2fs_grab_read_bio() decides whether to schedule fs-layer decryption
+(STEP_DECRYPT) for the bio based on that inode via
+fscrypt_inode_uses_fs_layer_crypto().
 
-  BUG: unable to handle page fault for address: ffffc90000806ffc
-  #PF: supervisor read access in kernel mode
-  #PF: error_code(0x0000) - not-present page
-  PGD 100000067 P4D 100000067 PUD 1002a7067 PMD 10612f067 PTE 0
-  Oops: Oops: 0000 [#1] SMP
-  CPU: 13 UID: 1000 PID: 757 Comm: mmu_stress_test Not tainted 7.1.0-rc1-48ce1e26eace-x86_pir_to_irr_comments-vm #341 PREEMPT
-  Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 0.0.0 02/06/2015
-  RIP: 0010:kvm_mmu_max_mapping_level+0x79/0x2b0 [kvm]
+However, the folio being filled belongs to the original inode
+(folio->mapping->host == inode), and the data stored in the COW block was
+encrypted (or left as plaintext) using the original inode's context, not
+the COW inode's -- see f2fs_encrypt_one_page(), which keys off
+fio->page->mapping->host.  fscrypt_decrypt_pagecache_blocks() likewise
+operates on folio->mapping->host.
+
+The COW inode is created as a tmpfile in the parent directory and inherits
+its encryption policy from there.  With test_dummy_encryption the newly
+created COW inode gets the dummy policy and becomes encrypted, while a
+pre-existing regular file -- created before the policy applied, e.g.
+already present in the on-disk image -- stays unencrypted.  The read
+path then sets STEP_DECRYPT based on the encrypted COW inode and calls
+fscrypt_decrypt_pagecache_blocks() on a folio whose host (the unencrypted
+original inode) has a NULL ->i_crypt_info, dereferencing it:
+
+  Oops: general protection fault, probably for non-canonical address ...
+  KASAN: null-ptr-deref in range [0x0000000000000008-0x000000000000000f]
+  RIP: 0010:fscrypt_decrypt_pagecache_blocks+0xa0/0x310
+  Workqueue: f2fs_post_read_wq f2fs_post_read_work
   Call Trace:
-   <TASK>
-   kvm_mmu_recover_huge_pages+0x21b/0x320 [kvm]
-   kvm_set_memslot+0x1ee/0x590 [kvm]
-   kvm_set_memory_region.part.0+0x3a1/0x4d0 [kvm]
-   kvm_vm_ioctl+0x9bf/0x15d0 [kvm]
-   __x64_sys_ioctl+0x8a/0xd0
-   do_syscall_64+0xb7/0xbb0
-   entry_SYSCALL_64_after_hwframe+0x4b/0x53
-  RIP: 0033:0x7f21c0f1a9bf
-   </TASK>
+   fscrypt_decrypt_bio+0x1eb/0x340
+   f2fs_post_read_work+0xba/0x140
+   process_one_work+0x91c/0x1a40
+   worker_thread+0x677/0xe90
+   kthread+0x2bc/0x3a0
 
-Don't bother pre-checking the bounds of the potential hugepage, i.e. don't
-check that e.g. sp->gfn + KVM_PAGES_PER_HPAGE(sp->role.level + 1) is also
-within the memslot, as the checks performed by kvm_mmu_max_mapping_level()
-are a superset of the basic bounds checks.  I.e. pre-checking the full
-range would be a dubious micro-optimization.
+The COW inode is only needed to locate the on-disk block, and that block
+address is already resolved into @blkaddr by prepare_atomic_write_begin()
+via __find_data_block(cow_inode, ...); f2fs_submit_page_read() then reads
+from that physical @blkaddr directly, so the inode argument only selects
+the post-read crypto context, not which block is fetched.  Reading with
+@inode therefore returns the same (latest, not-yet-committed) COW data,
+while making both the fs-layer decryption decision and the inline crypto
+path use the correct (original inode's) key.
 
-Fixes: 9eba50f8d7fc ("KVM: x86/mmu: Consult max mapping level when zapping collapsible SPTEs")
+With the COW inode no longer used at the read site, the use_cow flag has no
+remaining consumer; drop it from f2fs_write_begin() and
+prepare_atomic_write_begin().
+
+Fixes: 591fc34e1f98 ("f2fs: use cow inode data when updating atomic write")
 Cc: stable@vger.kernel.org
-Cc: David Matlack <dmatlack@google.com>
-Cc: James Houghton <jthoughton@google.com>
-Cc: Alexander Bulekov <bkov@amazon.com>
-Cc: Fred Griffoul <fgriffo@amazon.co.uk>
-Cc: Alexander Graf <graf@amazon.de>
-Cc: David Woodhouse <dwmw@amazon.co.uk>
-Cc: Filippo Sironi <sironi@amazon.de>
-Cc: Ivan Orlov <iorlov@amazon.co.uk>
-Signed-off-by: Sean Christopherson <seanjc@google.com>
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+Signed-off-by: Mikhail Lobanov <m.lobanov@rosa.ru>
+Reviewed-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kvm/mmu/mmu.c   |   18 ++++++++++++------
- include/linux/kvm_host.h |    7 ++++++-
- 2 files changed, 18 insertions(+), 7 deletions(-)
+ fs/f2fs/data.c |   26 ++++++++++++++++----------
+ 1 file changed, 16 insertions(+), 10 deletions(-)
 
---- a/arch/x86/kvm/mmu/mmu.c
-+++ b/arch/x86/kvm/mmu/mmu.c
-@@ -7181,13 +7181,19 @@ restart:
- 		sp = sptep_to_sp(sptep);
+--- a/fs/f2fs/data.c
++++ b/fs/f2fs/data.c
+@@ -3821,7 +3821,7 @@ unlock_out:
  
- 		/*
--		 * We cannot do huge page mapping for indirect shadow pages,
--		 * which are found on the last rmap (level = 1) when not using
--		 * tdp; such shadow pages are synced with the page table in
--		 * the guest, and the guest page table is using 4K page size
--		 * mapping if the indirect sp has level = 1.
-+		 * Direct shadow page can be replaced by a hugepage if the host
-+		 * mapping level allows it and the memslot maps all of the host
-+		 * hugepage.  Note!  If the memslot maps only part of the
-+		 * hugepage, sp->gfn may be below slot->base_gfn, and querying
-+		 * the max mapping level would cause an out-of-bounds lpage_info
-+		 * access.  So the gfn bounds check *must* be done first.
-+		 *
-+		 * Indirect shadow pages are created when the guest page tables
-+		 * are using 4K pages.  Since the host mapping is always
-+		 * constrained by the page size in the guest, indirect shadow
-+		 * pages are never collapsible.
- 		 */
--		if (sp->role.direct &&
-+		if (sp->role.direct && is_gfn_in_memslot(slot, sp->gfn) &&
- 		    sp->role.level < kvm_mmu_max_mapping_level(kvm, NULL, slot, sp->gfn)) {
- 			kvm_zap_one_rmap_spte(kvm, rmap_head, sptep);
+ static int prepare_atomic_write_begin(struct f2fs_sb_info *sbi,
+ 			struct folio *folio, loff_t pos, unsigned int len,
+-			block_t *blk_addr, bool *node_changed, bool *use_cow)
++			block_t *blk_addr, bool *node_changed)
+ {
+ 	struct inode *inode = folio->mapping->host;
+ 	struct inode *cow_inode = F2FS_I(inode)->cow_inode;
+@@ -3836,14 +3836,14 @@ static int prepare_atomic_write_begin(st
  
---- a/include/linux/kvm_host.h
-+++ b/include/linux/kvm_host.h
-@@ -1793,6 +1793,11 @@ void kvm_unregister_irq_ack_notifier(str
- 				   struct kvm_irq_ack_notifier *kian);
- bool kvm_arch_irqfd_allowed(struct kvm *kvm, struct kvm_irqfd *args);
- 
-+static inline bool is_gfn_in_memslot(const struct kvm_memory_slot *slot, gfn_t gfn)
-+{
-+	return gfn >= slot->base_gfn && gfn < slot->base_gfn + slot->npages;
-+}
+ 	/* Look for the block in COW inode first */
+ 	err = __find_data_block(cow_inode, index, blk_addr);
+-	if (err) {
++	if (err)
+ 		return err;
+-	} else if (__is_valid_data_blkaddr(*blk_addr)) {
+-		*use_cow = true;
 +
- /*
-  * Returns a pointer to the memslot if it contains gfn.
-  * Otherwise returns NULL.
-@@ -1803,7 +1808,7 @@ try_get_memslot(struct kvm_memory_slot *
- 	if (!slot)
- 		return NULL;
++	if (__is_valid_data_blkaddr(*blk_addr))
+ 		return 0;
+-	} else if (*blk_addr == NEW_ADDR) {
++
++	if (*blk_addr == NEW_ADDR)
+ 		cow_has_reserved_block = true;
+-	}
  
--	if (gfn >= slot->base_gfn && gfn < slot->base_gfn + slot->npages)
-+	if (is_gfn_in_memslot(slot, gfn))
- 		return slot;
+ 	if (is_inode_flag_set(inode, FI_ATOMIC_REPLACE))
+ 		goto reserve_block;
+@@ -3878,7 +3878,6 @@ static int f2fs_write_begin(const struct
+ 	struct folio *folio;
+ 	pgoff_t index = pos >> PAGE_SHIFT;
+ 	bool need_balance = false;
+-	bool use_cow = false;
+ 	block_t blkaddr = NULL_ADDR;
+ 	int err = 0;
+ 
+@@ -3941,7 +3940,7 @@ repeat:
+ 
+ 	if (f2fs_is_atomic_file(inode))
+ 		err = prepare_atomic_write_begin(sbi, folio, pos, len,
+-					&blkaddr, &need_balance, &use_cow);
++					&blkaddr, &need_balance);
  	else
- 		return NULL;
+ 		err = prepare_write_begin(sbi, folio, pos, len,
+ 					&blkaddr, &need_balance);
+@@ -3981,8 +3980,15 @@ repeat:
+ 			err = -EFSCORRUPTED;
+ 			goto put_folio;
+ 		}
+-		f2fs_submit_page_read(use_cow ? F2FS_I(inode)->cow_inode :
+-						inode,
++		/*
++		 * Although the block may be stored in the COW inode, the folio
++		 * belongs to @inode and its data was encrypted (or not) using
++		 * @inode's context (see f2fs_encrypt_one_page()).  Read with
++		 * @inode so the post-read decryption decision matches the
++		 * folio's owner; otherwise an unencrypted @inode whose COW inode
++		 * is encrypted hits a NULL ->i_crypt_info on decryption.
++		 */
++		f2fs_submit_page_read(inode,
+ 				      NULL, /* can't write to fsverity files */
+ 				      folio, blkaddr, 0, true);
+ 
 
 
 
