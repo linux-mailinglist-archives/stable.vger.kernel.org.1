@@ -1,166 +1,212 @@
-Return-Path: <stable+bounces-271178-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-271162-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id UtLlIJ6YRmp1ZgsAu9opvQ
-	(envelope-from <stable+bounces-271178-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:58:06 +0200
+	id ni9TLYmYRmpsZgsAu9opvQ
+	(envelope-from <stable+bounces-271162-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:57:45 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id F232D6FACD0
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:58:05 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4704C6FACC0
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:57:45 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=uniontech.com header.s=onoh2408 header.b=jS9syefe;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-271178-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-271178-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=none) header.from=uniontech.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Ng793fMZ;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-271162-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-271162-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 0BE2030F2CA1
-	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:49:40 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 640393141E17
+	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:48:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E0D9349CCC;
-	Thu,  2 Jul 2026 16:47:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B6CC362157;
+	Thu,  2 Jul 2026 16:47:13 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtpbgau2.qq.com (smtpbgau2.qq.com [54.206.34.216])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 433353A9628
-	for <stable@vger.kernel.org>; Thu,  2 Jul 2026 16:47:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C27483101C8;
+	Thu,  2 Jul 2026 16:47:11 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783010871; cv=none; b=TDpF186E+jQC4ro1myPXnwlXniKuuG/GX11WOFq5wuQ9+JGYZPoFpGUjYxKY85v3JiMs4Be2IkOxYlZVsnSktcTTkURayhAiF3d/GmaIu3ejFXpotaoydQ1uAASrto0QYsIMGpnI6UUlOT3YIi3xKWTgp3ZixDM8txHe9rJ8zNQ=
+	t=1783010832; cv=none; b=S+DE/RHc2JTlYo+Q8Ulx27UWBBc/l+BL8DBjWCla0z3FQfzR+06V8sMbBEkzrSn4Ot0sy8tBKiN/pb2MACGRVO/s5vnm0Uq53rX2KHOZ7ANH7dvAjnr0AoTta7FHY5Hvqah50skRIlI8HTrXlPG26bbJyePoexh7h2cdLEWUEME=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783010871; c=relaxed/simple;
-	bh=ONaKedoAz1ZMUYbT86fdH68xNyanLZ4A7ezeq6OWTYg=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=GwLVbrkp7n0wZU2T8UPRnN2ld486tocLO/HLWYmrBIfXrkmtVL/Io8ZFUI/VnGMTrKzQyTV9EzEe+DIs/21awP6VikKy/qRAucNWK1XQqBvftqqVRwkootKXS4EKc1V/637lwUyMuFsb2DXWrq5UgEmyAQPnXEflvN2mw1olXn4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniontech.com; spf=pass smtp.mailfrom=uniontech.com; dkim=pass (1024-bit key) header.d=uniontech.com header.i=@uniontech.com header.b=jS9syefe; arc=none smtp.client-ip=54.206.34.216
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=uniontech.com;
-	s=onoh2408; t=1783010780;
-	bh=ywEQIaPdwXqBm2L9NsDVfzNWZ0ixJP2Iy1x1nuGkgbU=;
-	h=From:To:Subject:Date:Message-Id:MIME-Version;
-	b=jS9syefeAbJDsV2qCQDo/bBGuVR7GEdOeqfeS6Gzmgjit9mFTzM/j7Nmg/y7ebt7b
-	 1G5/8/SQYr+IzFbiri2zfgWmT75d6QoRuUEhw6GAHa8jZNTDl1HESVCzVvg+jiKRlo
-	 0/h+mIY8l0cZGEduqLFhTDSJ6IeHwjUdODyENqj4=
-X-QQ-mid: zesmtpgz4t1783010761td432150e
-X-QQ-Originating-IP: XuVxTDBheIZR1nuAnJSqw8c46VDRO+tdQjzu73Sc2Sg=
-Received: from localhost.localdomain ( [113.57.152.160])
-	by bizesmtp.qq.com (ESMTP) with 
-	id ; Fri, 03 Jul 2026 00:45:59 +0800 (CST)
-X-QQ-SSF: 0000000000000000000000000000000
-X-QQ-GoodBg: 1
-X-BIZMAIL-ID: 4839875498590067258
-EX-QQ-RecipientCnt: 9
-From: Wentao Guan <guanwentao@uniontech.com>
-To: gregkh@linuxfoundation.org
-Cc: 00107082@163.com,
-	guanwentao@uniontech.com,
-	iklatzco@gmail.com,
-	patches@lists.linux.dev,
-	peterz@infradead.org,
-	sashal@kernel.org,
-	stable@vger.kernel.org,
-	yeoreum.yun@arm.com
-Subject: [PATCH 6.6.y] perf: Fix dangling cgroup pointer in cpuctx backport
-Date: Fri,  3 Jul 2026 00:45:54 +0800
-Message-Id: <20260702164553.498397-1-guanwentao@uniontech.com>
-X-Mailer: git-send-email 2.30.2
-In-Reply-To: <2026070200-uneaten-smock-4130@gregkh>
-References: <2026070200-uneaten-smock-4130@gregkh>
+	s=arc-20240116; t=1783010832; c=relaxed/simple;
+	bh=5XUkBQcAn9U6Y07aslj6I2AgcOM8TP0WDIngo4IAEtQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=idaGbN4gOEooYyxAywWl8L5yBS3gUIYIlraMnB8ZFC8wHrScrs0mbfMxNlLKlDTGIGPR0ljf7/9TSGYH7fN3wqfS68Oa1/hQY3/EE86Yk537dzzyFkeJOXvf8BN67SpwUbdpIn0oJtBCSSFt7uFj9hQsznxhRwBJnVZaemWX3Jw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ng793fMZ; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E3191F000E9;
+	Thu,  2 Jul 2026 16:47:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1783010831;
+	bh=taOAjbXieJFMNm4bP1CgHm93WARmoJbQ3VZALpeoKYs=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=Ng793fMZgoIdBJrF15JJRcVZc4Bd+e1Y5NlbggtZpjY40sADDO0g7AShASlnCbxTn
+	 DULmdgFBcsXTUAqkhid4+Ghqkgk76u9EKOUrjSby0N5E+UBRVtc8efeMDRD3IByK4f
+	 KiK0PBm5LkZpiwQCqgpdkpanN8QQnkdwH6Yy/jqyHYSR7oNcnunqWf+cxZsucx4rfd
+	 DNPxHWL14kPBV6UTC8s+SccwkwjybjXqiKcRUo11fZnfUEPoNKr9CarED87qEIw6Tp
+	 9dfE1AfX5ojzy6hll3aFSdibY+wokynzZwX2I4vZ7dzJ6lULKP3dZf6svsaZcsH7dF
+	 Vtch1kZDF/LtA==
+Date: Thu, 2 Jul 2026 17:47:01 +0100
+From: Lorenzo Stoakes <ljs@kernel.org>
+To: Rik van Riel <riel@surriel.com>
+Cc: linux-kernel@vger.kernel.org, kernel-team@meta.com, linux-mm@kvack.org, 
+	akpm@linux-foundation.org, david@kernel.org, ziy@nvidia.com, baolin.wang@linux.alibaba.com, 
+	liam@infradead.org, npache@redhat.com, ryan.roberts@arm.com, dev.jain@arm.com, 
+	baohua@kernel.org, lance.yang@linux.dev, yang@os.amperecomputing.com, 
+	stable@vger.kernel.org
+Subject: Re: [PATCH v2] mm/huge_memory: set PG_has_hwpoisoned only after new
+ folio head is established
+Message-ID: <akaV3b1eziZ2bq21@lucifer>
+References: <20260701174235.3173401-1-riel@surriel.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-QQ-SENDSIZE: 520
-Feedback-ID: zesmtpgz:uniontech.com:qybglogicsvrgz:qybglogicsvrgz3a-0
-X-QQ-XMAILINFO: Ocx62dM7vaMV8DFUrqhZS20s2ZxTKG0n8HN8mRFJ/vXMmmGrE9kJclM1
-	zmN7NyN93OZPN+Uoqv57p6IDxv+JcpVwqzxg8tQdLyEBKCwfoNfDFOywI9vE1YS0g4JJFsh
-	JM1/61LtqiZ4N/SSZzy+zYXGZdgItw24P0WQPtoncaNb18YeygBHmR90QmgiREENd8WKsuh
-	V+MbMfXiUWIHn/UNUOuleguhEZkdl7fOy1zxpXGA6tOSSXcfOf2CWeBowkquf4hxzLKudF4
-	uzrEtmj0yk3/LBxgWC66UocJya4xCjycEQquWjFZQ2l7jKxrwtFSK4jvR4lFf9yQICh+oro
-	/Xs5IX6Fr1LSo9S2SXPhtWfs40xqs6o7kDgl9EFHZCPD+JxWV+HzJFJOCABcSA6j0Gr1Ka/
-	vMX2SiA7i5VRcz0BkD06fYIlQEHrzNvP0fudYfV1sDaXTYDhJFjs575U9g8PzGuHGq1ojei
-	Mqv6EhuSfpJ4JuJTpCY6+uO66XYjLwEuVzOYSE/TPGhHtaJobYjdYQdl0ngjPUmFcibOxZI
-	S9f5tbMn3YQlKQvTJtYq26Rq3xBUvdWvskt4igpI2M9Z2lVJn9lOwv2GNGUdvXwS+tjkEsx
-	gih57+MmiIUlEC4mXTH4v8S5vkrakkInL27cZ6eGTyo+LuafTB0F1O3rl59RCXLhsFo33rD
-	3i6gRnL2QaTIFkjzDFJxPNif0VP+vf+KXOcOixlYn16H25BRmjtAg4907DBL5SE3bArfCbg
-	PjQuk9ZXZ07kgrgZqD3pr33VAOjD8XWBGS4+yGyHf9nPaVRN4xpqeeFesIuhNZhogReYIaP
-	7wb0fmfRXFyfx+8Yl4bH4w6M1Q69qpiJYs6LI8wIadiCbOQGnZEkyQjmqTOdHl0mACkmnbH
-	KlEV737SgZY4dnGYlVYZODp0d+VZVJh+EKi/kDTxTSJeEbLi7tR57ojGhGbevLK5r+JhRpw
-	65twi01ckl1kHm1zMe30waKOrlzehoUx1pHG4Gh0o79aK5N6j3bSJca/SPIaFPBFDK3MLKv
-	Uiyuj1AT9LgEAVgILTYnNoSAIa/KKbhDK3jwJCRUztXBKIaGKwJl192e4lQ/SVjn3zKC51m
-	fSrYvSMFfp895k8vZ3pvzQ=
-X-QQ-XMRINFO: OWPUhxQsoeAVwkVaQIEGSKwwgKCxK/fD5g==
-X-QQ-RECHKSPAM: 0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260701174235.3173401-1-riel@surriel.com>
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.66 / 15.00];
+X-Spamd-Result: default: False [-4.66 / 15.00];
+	WHITELIST_SPF_DKIM(-3.00)[kernel.org:d:+,kernel.org:s:+];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[uniontech.com,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
-	R_DKIM_ALLOW(-0.20)[uniontech.com:s=onoh2408];
+	MID_RHS_NOT_FQDN(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER(0.00)[guanwentao@uniontech.com,stable@vger.kernel.org];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[163.com,uniontech.com,gmail.com,lists.linux.dev,infradead.org,kernel.org,vger.kernel.org,arm.com];
-	TAGGED_FROM(0.00)[bounces-271178-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:riel@surriel.com,m:linux-kernel@vger.kernel.org,m:kernel-team@meta.com,m:linux-mm@kvack.org,m:akpm@linux-foundation.org,m:david@kernel.org,m:ziy@nvidia.com,m:baolin.wang@linux.alibaba.com,m:liam@infradead.org,m:npache@redhat.com,m:ryan.roberts@arm.com,m:dev.jain@arm.com,m:baohua@kernel.org,m:lance.yang@linux.dev,m:yang@os.amperecomputing.com,m:stable@vger.kernel.org,s:lists@lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:gregkh@linuxfoundation.org,m:00107082@163.com,m:guanwentao@uniontech.com,m:iklatzco@gmail.com,m:patches@lists.linux.dev,m:peterz@infradead.org,m:sashal@kernel.org,m:stable@vger.kernel.org,m:yeoreum.yun@arm.com,s:lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	DKIM_TRACE(0.00)[uniontech.com:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	MIME_TRACE(0.00)[0:+];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[guanwentao@uniontech.com,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[16];
+	FORGED_SENDER(0.00)[ljs@kernel.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	FORWARDED(0.00)[lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-271162-lists,stable=lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_NONE(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
+	TO_DN_SOME(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[ljs@kernel.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,uniontech.com:dkim,uniontech.com:email,uniontech.com:mid,uniontech.com:from_mime,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	MISSING_XM_UA(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,vger.kernel.org:from_smtp,lucifer:mid,nvidia.com:email,linux.dev:email,surriel.com:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: F232D6FACD0
+X-Rspamd-Queue-Id: 4704C6FACC0
 
-recently backport of ("perf: Fix dangling cgroup pointer in cpuctx")
-use a middle version, so aligned with the upstream commit:
-commit 3b7a34aebbdf ("perf: Fix dangling cgroup pointer in cpuctx")
+On Wed, Jul 01, 2026 at 01:42:34PM -0400, Rik van Riel wrote:
+> __split_folio_to_order() copies the hwpoison state onto each new
+> sub-folio while splitting a folio to a non-zero order.  It does so via
+>
+> 	if (handle_hwpoison && page_range_has_hwpoisoned(new_head, new_nr_pages))
+> 		folio_set_has_hwpoisoned(new_folio);
+>
+> *before* clear_compound_head(new_head)/prep_compound_page(new_head, ...)
+> turns @new_head from a tail page into a proper folio head.
+>
+> PG_has_hwpoisoned is a FOLIO_SECOND_PAGE flag, so folio_set_has_hwpoisoned()
+> resolves to folio_flags(folio, 1).  With the new compound_info-based
+> page-flags layout, folio_flags() asserts the page is not a tail:
+>
+> 	VM_BUG_ON_PGFLAGS(page->compound_info & 1, page);
+> 	VM_BUG_ON_PGFLAGS(n > 0 && !test_bit(PG_head, &page->flags.f), page);
+>
+> At the current call site @new_head still has the tail marker
+> (compound_info bit 0 set, PG_head clear), so on CONFIG_DEBUG_VM kernels
+> this hits:
+>
+>   kernel BUG at include/linux/page-flags.h:354
+>   folio_flags+0x82
+>   folio_set_has_hwpoisoned
+>   __split_folio_to_order
+>   __split_unmapped_folio
+>   __folio_split
+>   truncate_inode_partial_folio  (shmem hole-punch / MADV_REMOVE)
+>
+> Reproduced by syzkaller: hwpoison-inject a few subpages of a large shmem
+> folio, then MADV_REMOVE (fallocate punch hole) on the same range, which
+> splits the partial folio to a non-zero order.
+>
+> memory_failure() tries to split the poisoned folio to order 0 first, but
+> that split is best-effort; when it fails the folio is left large with
+> PG_has_hwpoisoned set, the case fa5a06170036 added this hwpoison copying
+> for.
+>
+> Move the folio_set_has_hwpoisoned() call to after
+> clear_compound_head()/prep_compound_page(), where @new_folio is a real
+> order-new_order head folio (handle_hwpoison implies new_order != 0, so a
+> second page always exists).  The flag still lands on the same struct page
+> (page[1] of the new folio); only the ordering relative to compound-head
+> setup changes, satisfying the FOLIO_SECOND_PAGE precondition.
+>
+> Fixes: fa5a06170036 ("mm/huge_memory: preserve PG_has_hwpoisoned if a folio is split to >0 order")
+> Signed-off-by: Rik van Riel <riel@surriel.com>
 
-This is a fix for stable v6.6.143 backport commit, so no upstream commit.
+The actual logic looks good, thanks for fixing this, and the comment is much
+nicer now :) So:
 
-Link: https://lore.kernel.org/all/2026070200-uneaten-smock-4130@gregkh/
-Fixes: ae1ada0af162 ("perf: Fix dangling cgroup pointer in cpuctx")
-Signed-off-by: Wentao Guan <guanwentao@uniontech.com>
----
- kernel/events/core.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+Reviewed-by: Lorenzo Stoakes <ljs@kernel.org>
 
-diff --git a/kernel/events/core.c b/kernel/events/core.c
-index a4187dea6402a..73a86db06cc9b 100644
---- a/kernel/events/core.c
-+++ b/kernel/events/core.c
-@@ -2384,10 +2384,9 @@ __perf_remove_from_context(struct perf_event *event,
- 	 */
- 	if (flags & DETACH_EXIT)
- 		state = PERF_EVENT_STATE_EXIT;
--	if (flags & DETACH_DEAD) {
--		event->pending_disable = 1;
-+	if (flags & DETACH_DEAD)
- 		state = PERF_EVENT_STATE_DEAD;
--	}
-+
- 	event_sched_out(event, ctx);
- 
- 	if (event->state > PERF_EVENT_STATE_OFF)
--- 
-2.30.2
+> Assisted-by: Claude:claude-opus-4-8
+> Reviewed-by: Zi Yan <ziy@nvidia.com>
+> Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+> Tested-by: Lance Yang <lance.yang@linux.dev>
+> Cc: stable@vger.kernel.org
+> ---
+> v2:
+>  - cleaned up comment (Lorenzo)
+>  - consistent changelog grammar, plus rationale on why this path exists (David)
+>  - Cc: stable (Zi)
+>
+>  mm/huge_memory.c | 12 ++++++++----
+>  1 file changed, 8 insertions(+), 4 deletions(-)
+>
+> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+> index 2bccb0a53a0a..b5d1e9d4463d 100644
+> --- a/mm/huge_memory.c
+> +++ b/mm/huge_memory.c
+> @@ -3587,10 +3587,6 @@ static void __split_folio_to_order(struct folio *folio, int old_order,
+>  				 (1L << PG_dropbehind) |
+>  				 LRU_GEN_MASK | LRU_REFS_MASK));
+>
+> -		if (handle_hwpoison &&
+> -		    page_range_has_hwpoisoned(new_head, new_nr_pages))
+> -			folio_set_has_hwpoisoned(new_folio);
+> -
+>  		new_folio->mapping = folio->mapping;
+>  		new_folio->index = folio->index + i;
+>
+> @@ -3612,6 +3608,14 @@ static void __split_folio_to_order(struct folio *folio, int old_order,
+>  			folio_set_large_rmappable(new_folio);
+>  		}
+>
+> +		/*
+> +		 * PG_has_hwpoisoned is on the 2nd page, so set it after
+> +		 * the compound head is prepped.
+> +		 */
 
+Great thanks!
+
+> +		if (handle_hwpoison &&
+> +		    page_range_has_hwpoisoned(new_head, new_nr_pages))
+> +			folio_set_has_hwpoisoned(new_folio);
+> +
+>  		if (folio_test_young(folio))
+>  			folio_set_young(new_folio);
+>  		if (folio_test_idle(folio))
+> --
+> 2.53.0-Meta
+>
+
+Cheers, Lorenzo
 
