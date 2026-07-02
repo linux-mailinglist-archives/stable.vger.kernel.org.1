@@ -1,179 +1,166 @@
-Return-Path: <stable+bounces-270796-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-271178-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id Lv97F6GVRmqlZAsAu9opvQ
-	(envelope-from <stable+bounces-270796-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:45:21 +0200
+	id UtLlIJ6YRmp1ZgsAu9opvQ
+	(envelope-from <stable+bounces-271178-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:58:06 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id BCB516FA7CF
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:45:20 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id F232D6FACD0
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:58:05 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=uniontech.com header.s=onoh2408 header.b=BIdxpUOK;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-270796-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-270796-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=uniontech.com header.s=onoh2408 header.b=jS9syefe;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-271178-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-271178-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=uniontech.com;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 0550032AB47E
-	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:34:50 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 0BE2030F2CA1
+	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:49:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C318361DCB;
-	Thu,  2 Jul 2026 16:31:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E0D9349CCC;
+	Thu,  2 Jul 2026 16:47:51 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtpbg151.qq.com (smtpbg151.qq.com [18.169.211.239])
+Received: from smtpbgau2.qq.com (smtpbgau2.qq.com [54.206.34.216])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EAFD3603E8
-	for <stable@vger.kernel.org>; Thu,  2 Jul 2026 16:31:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 433353A9628
+	for <stable@vger.kernel.org>; Thu,  2 Jul 2026 16:47:46 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783009872; cv=none; b=TZrKV4mWgyql47Z6cVaBO1I3hhIxFLgivKOXjDyNJiQyjZx1HDH1DDTtvl0A4wrAy8E2go172JbDtp4sAJEuwreFmzKBtNlmc5eCLws8scCB+g3Ec6KV/BHHacXe+Q6t4fr7pb9Y3l5bk/4qLS7cZI6ByLB+FFn5ivG/PpU2Btg=
+	t=1783010871; cv=none; b=TDpF186E+jQC4ro1myPXnwlXniKuuG/GX11WOFq5wuQ9+JGYZPoFpGUjYxKY85v3JiMs4Be2IkOxYlZVsnSktcTTkURayhAiF3d/GmaIu3ejFXpotaoydQ1uAASrto0QYsIMGpnI6UUlOT3YIi3xKWTgp3ZixDM8txHe9rJ8zNQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783009872; c=relaxed/simple;
-	bh=Yhl+3oW3kXt8ec0rUSaQ1g6FmMDZRDoLmEpqjnxw3S0=;
-	h=From:To:Cc:Subject:Mime-Version:Content-Type:Date:Message-ID:
-	 References:In-Reply-To; b=PFsv7KYhN9OhDyxZwG2u4UaAz2a740a/uAv1HNwt8fIewkt5QGwjtICwfzN0EwMG5TyPTdiZY7o2BlzRqVAl7E7rU696wCqQML2OOoDCjm8/8m3p0tLZ9nnH32zGW8CbI5HMqfjQyJ0rcVUwVA+xy5mikv7Fevo/SxeuWhxivQU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniontech.com; spf=pass smtp.mailfrom=uniontech.com; dkim=pass (1024-bit key) header.d=uniontech.com header.i=@uniontech.com header.b=BIdxpUOK; arc=none smtp.client-ip=18.169.211.239
+	s=arc-20240116; t=1783010871; c=relaxed/simple;
+	bh=ONaKedoAz1ZMUYbT86fdH68xNyanLZ4A7ezeq6OWTYg=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=GwLVbrkp7n0wZU2T8UPRnN2ld486tocLO/HLWYmrBIfXrkmtVL/Io8ZFUI/VnGMTrKzQyTV9EzEe+DIs/21awP6VikKy/qRAucNWK1XQqBvftqqVRwkootKXS4EKc1V/637lwUyMuFsb2DXWrq5UgEmyAQPnXEflvN2mw1olXn4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniontech.com; spf=pass smtp.mailfrom=uniontech.com; dkim=pass (1024-bit key) header.d=uniontech.com header.i=@uniontech.com header.b=jS9syefe; arc=none smtp.client-ip=54.206.34.216
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=uniontech.com;
-	s=onoh2408; t=1783009767;
-	bh=Yhl+3oW3kXt8ec0rUSaQ1g6FmMDZRDoLmEpqjnxw3S0=;
-	h=From:To:Subject:Mime-Version:Date:Message-ID;
-	b=BIdxpUOKbhKFP6PnEMF+lD4YeYuXVmTche01adarQG604WaPgTqAGmbfYQuRSkMdc
-	 XkY88cQoQbQDeXwzh9kqqbbkCvNo1VWEjMJH8VKiR2R+C2Qv8/EcDNkZ/0s40HqR2U
-	 WJf23+aO6xjZp5BKU2juUyCau1YXprO8M9sfiGsM=
-EX-QQ-RecipientCnt: 8
+	s=onoh2408; t=1783010780;
+	bh=ywEQIaPdwXqBm2L9NsDVfzNWZ0ixJP2Iy1x1nuGkgbU=;
+	h=From:To:Subject:Date:Message-Id:MIME-Version;
+	b=jS9syefeAbJDsV2qCQDo/bBGuVR7GEdOeqfeS6Gzmgjit9mFTzM/j7Nmg/y7ebt7b
+	 1G5/8/SQYr+IzFbiri2zfgWmT75d6QoRuUEhw6GAHa8jZNTDl1HESVCzVvg+jiKRlo
+	 0/h+mIY8l0cZGEduqLFhTDSJ6IeHwjUdODyENqj4=
+X-QQ-mid: zesmtpgz4t1783010761td432150e
+X-QQ-Originating-IP: XuVxTDBheIZR1nuAnJSqw8c46VDRO+tdQjzu73Sc2Sg=
+Received: from localhost.localdomain ( [113.57.152.160])
+	by bizesmtp.qq.com (ESMTP) with 
+	id ; Fri, 03 Jul 2026 00:45:59 +0800 (CST)
+X-QQ-SSF: 0000000000000000000000000000000
 X-QQ-GoodBg: 1
-X-QQ-SSF: 00400000000000F0
-X-QQ-FEAT: D4aqtcRDiqQ6f7IieUZ8DoKgL9zJG7IbL7boNmGOgcs=
-X-QQ-BUSINESS-ORIGIN: 2
-X-QQ-Originating-IP: D7Y1ShbmZDUc5HDRLR7HoQ+C7igt/Drzm96NVueKceQ55F55yi618lUUpL/fBwymM4ehIFhDnY0VMUlNgbAbaw==
-X-QQ-STYLE: 
-X-QQ-mid: lv3gz7b-6t1783009765te748538d
-From: "=?utf-8?B?V2VudGFvIEd1YW4=?=" <guanwentao@uniontech.com>
-To: "=?utf-8?B?R3JlZyBLSA==?=" <gregkh@linuxfoundation.org>
-Cc: "=?utf-8?B?MDAxMDcwODI=?=" <00107082@163.com>, "=?utf-8?B?aWtsYXR6Y28=?=" <iklatzco@gmail.com>, "=?utf-8?B?cGF0Y2hlcw==?=" <patches@lists.linux.dev>, "=?utf-8?B?cGV0ZXJ6?=" <peterz@infradead.org>, "=?utf-8?B?U2FzaGEgTGV2aW4=?=" <sashal@kernel.org>, "=?utf-8?B?c3RhYmxl?=" <stable@vger.kernel.org>, "=?utf-8?B?eWVvcmV1bS55dW4=?=" <yeoreum.yun@arm.com>
-Subject: Re: [PATCH] perf: Fix dangling cgroup pointer in cpuctx backport
+X-BIZMAIL-ID: 4839875498590067258
+EX-QQ-RecipientCnt: 9
+From: Wentao Guan <guanwentao@uniontech.com>
+To: gregkh@linuxfoundation.org
+Cc: 00107082@163.com,
+	guanwentao@uniontech.com,
+	iklatzco@gmail.com,
+	patches@lists.linux.dev,
+	peterz@infradead.org,
+	sashal@kernel.org,
+	stable@vger.kernel.org,
+	yeoreum.yun@arm.com
+Subject: [PATCH 6.6.y] perf: Fix dangling cgroup pointer in cpuctx backport
+Date: Fri,  3 Jul 2026 00:45:54 +0800
+Message-Id: <20260702164553.498397-1-guanwentao@uniontech.com>
+X-Mailer: git-send-email 2.30.2
+In-Reply-To: <2026070200-uneaten-smock-4130@gregkh>
+References: <2026070200-uneaten-smock-4130@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: text/plain;
-	charset="utf-8"
-Content-Transfer-Encoding: base64
-Date: Fri, 3 Jul 2026 00:29:25 +0800
-X-Priority: 3
-Message-ID: <tencent_6D500C6D6BAE135A01D2E2B8@qq.com>
-X-QQ-MIME: TCMime 1.0 by Tencent
-X-Mailer: QQMail 2.x
-X-QQ-Mailer: QQMail 2.x
-References: <2026062455-obtrusive-sandbox-d6d1@gregkh>
-	<20260624095920.2558406-1-guanwentao@uniontech.com>
-	<2026062404-unusual-nutmeg-87d5@gregkh>
-	<tencent_5FDA609363B90C6249A050FD@qq.com>
-	<2026070200-uneaten-smock-4130@gregkh>
-In-Reply-To: <2026070200-uneaten-smock-4130@gregkh>
-X-QQ-ReplyHash: 379268434
-X-BIZMAIL-ID: 2400357538771675532
-X-Address-Ticket:version=;type=;ticket_id=;id_list=;display_name=;session_id=;
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 X-QQ-SENDSIZE: 520
-Received: from qq.com (unknown [127.0.0.1])
-	by smtp.qq.com (ESMTP) with SMTP
-	id ; Fri, 03 Jul 2026 00:29:26 +0800 (CST)
-Feedback-ID: lv:uniontech.com:qybglogicsvrsz:qybglogicsvrsz4b-0
-X-QQ-XMAILINFO: NFbgtEGdVZezRXmxXKhLuzCkl18SvNau5sDqnW7xrDdBBmGJu2aGRl5e
-	EE4TzFzt0b7Lq3mmSAps3IsN57VXUhJTyhDbs2o9r7aCJYNPwG3xQPQJZPMM9wmM9KsVneE
-	JYqwIXAEmwwcyU9LPcw88RtysKpTF6GzOou0cMx/E6hZhQLpIKUP3DqNOqGPrvXtP4POJh1
-	2q5NbDiPAv5xlTMbjx2trMFnPF9+UccJ8C/ewbkPB/fo6FGG8pvN68kyJV5/+2/Bq/38qX1
-	eHpJ12jTDo7sb3XQI/s2LVuW79a8k/pOFf7tGj9Int1ywlFeCKtDI4YwPNu3rKcmet4n7p5
-	7dJ8Q+dyVL8s4rByXXtwiUbGn6lpYExW+nDbfMIIop+meBkqW4teNwdb8aYG5e0ibk8rcdX
-	DmTSfudDlb/dc2EtJ4mfQPmKc7GajeaLO6HjHYyWvCfFcin7Y3kSHof2WLBudkwRhVhZBMK
-	QiLZMN/Vl44I+fyRCU/oQGMVR1cpeV+wrNFqBRzpr1Lc8CrRhiJcevF5nXlhFIrk9H67Ae2
-	O1KBEfpH9lJhpWtGaNmyV12Z/XVtp3wY4gV0U8wKzO2QjMS8VeDncaLJ1SEk9GpTS4b01S9
-	PLishDL0BQ8+D9mYkh2kYcpeoV37LlgOprlklincZPMbFm44DltwCausTDdJfg+7hSDg3OV
-	dKgWnKVyYWa/+emQRKbu3WRjjTg5VL87dYrpDDHPE8eQyPz2SGlYPYzC8s3SfHQq3a2vXpr
-	LhmfGUENY6y/7+plViU4uBd4XYDZbvV32351tyZfyw5Nssr6VNHphv7HEvDbZPsEuHvctgI
-	Wf3NIswZMh43FywTnsslWjpVG0h6z28Ct/zrsaLAOpj16h92m3INX+52nGJ5Alm+cyxBlLr
-	PpyqmnQk6MWXA8TAhJzjFXASa+yENwntIyjF2xyFOsK2Ir7wuVLPVcAUmfAyQ27/zxVDqwD
-	XAFC7PbNTbo+VrqbOVKbmVQO0f/pEg9DjC5ajZaOa8EVEr3kgZoMvh4/hxeLY26afL3bwM+
-	p5oe/Q5vLJ2PsnPII13kyZIj9PgbLTznyXl2Xwb7IcJxZOXgiLoQr1Vfn/jUDI/WrA7TvoX
-	1Xllmm186e3lK/v7xoXUGmI6+PFjPkcow==
-X-QQ-XMRINFO: M/715EihBoGS47X28/vv4NpnfpeBLnr4Qg==
+Feedback-ID: zesmtpgz:uniontech.com:qybglogicsvrgz:qybglogicsvrgz3a-0
+X-QQ-XMAILINFO: Ocx62dM7vaMV8DFUrqhZS20s2ZxTKG0n8HN8mRFJ/vXMmmGrE9kJclM1
+	zmN7NyN93OZPN+Uoqv57p6IDxv+JcpVwqzxg8tQdLyEBKCwfoNfDFOywI9vE1YS0g4JJFsh
+	JM1/61LtqiZ4N/SSZzy+zYXGZdgItw24P0WQPtoncaNb18YeygBHmR90QmgiREENd8WKsuh
+	V+MbMfXiUWIHn/UNUOuleguhEZkdl7fOy1zxpXGA6tOSSXcfOf2CWeBowkquf4hxzLKudF4
+	uzrEtmj0yk3/LBxgWC66UocJya4xCjycEQquWjFZQ2l7jKxrwtFSK4jvR4lFf9yQICh+oro
+	/Xs5IX6Fr1LSo9S2SXPhtWfs40xqs6o7kDgl9EFHZCPD+JxWV+HzJFJOCABcSA6j0Gr1Ka/
+	vMX2SiA7i5VRcz0BkD06fYIlQEHrzNvP0fudYfV1sDaXTYDhJFjs575U9g8PzGuHGq1ojei
+	Mqv6EhuSfpJ4JuJTpCY6+uO66XYjLwEuVzOYSE/TPGhHtaJobYjdYQdl0ngjPUmFcibOxZI
+	S9f5tbMn3YQlKQvTJtYq26Rq3xBUvdWvskt4igpI2M9Z2lVJn9lOwv2GNGUdvXwS+tjkEsx
+	gih57+MmiIUlEC4mXTH4v8S5vkrakkInL27cZ6eGTyo+LuafTB0F1O3rl59RCXLhsFo33rD
+	3i6gRnL2QaTIFkjzDFJxPNif0VP+vf+KXOcOixlYn16H25BRmjtAg4907DBL5SE3bArfCbg
+	PjQuk9ZXZ07kgrgZqD3pr33VAOjD8XWBGS4+yGyHf9nPaVRN4xpqeeFesIuhNZhogReYIaP
+	7wb0fmfRXFyfx+8Yl4bH4w6M1Q69qpiJYs6LI8wIadiCbOQGnZEkyQjmqTOdHl0mACkmnbH
+	KlEV737SgZY4dnGYlVYZODp0d+VZVJh+EKi/kDTxTSJeEbLi7tR57ojGhGbevLK5r+JhRpw
+	65twi01ckl1kHm1zMe30waKOrlzehoUx1pHG4Gh0o79aK5N6j3bSJca/SPIaFPBFDK3MLKv
+	Uiyuj1AT9LgEAVgILTYnNoSAIa/KKbhDK3jwJCRUztXBKIaGKwJl192e4lQ/SVjn3zKC51m
+	fSrYvSMFfp895k8vZ3pvzQ=
+X-QQ-XMRINFO: OWPUhxQsoeAVwkVaQIEGSKwwgKCxK/fD5g==
 X-QQ-RECHKSPAM: 0
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [2.44 / 15.00];
-	TO_EXCESS_BASE64(1.50)[];
-	CC_EXCESS_BASE64(1.50)[];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MIME_BASE64_TEXT_BOGUS(1.00)[];
+	MID_CONTAINS_FROM(1.00)[];
+	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[uniontech.com,none];
-	MV_CASE(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[uniontech.com:s=onoh2408];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
-	MIME_BASE64_TEXT(0.10)[];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_ALL(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	TAGGED_FROM(0.00)[bounces-270796-lists,stable=lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:gregkh@linuxfoundation.org,m:00107082@163.com,m:iklatzco@gmail.com,m:patches@lists.linux.dev,m:peterz@infradead.org,m:sashal@kernel.org,m:stable@vger.kernel.org,m:yeoreum.yun@arm.com,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[guanwentao@uniontech.com,stable@vger.kernel.org];
-	HAS_X_PRIO_THREE(0.00)[3];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[163.com,uniontech.com,gmail.com,lists.linux.dev,infradead.org,kernel.org,vger.kernel.org,arm.com];
+	TAGGED_FROM(0.00)[bounces-271178-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:gregkh@linuxfoundation.org,m:00107082@163.com,m:guanwentao@uniontech.com,m:iklatzco@gmail.com,m:patches@lists.linux.dev,m:peterz@infradead.org,m:sashal@kernel.org,m:stable@vger.kernel.org,m:yeoreum.yun@arm.com,s:lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	DKIM_TRACE(0.00)[uniontech.com:+];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[guanwentao@uniontech.com,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[163.com,gmail.com,lists.linux.dev,infradead.org,kernel.org,vger.kernel.org,arm.com];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	MIME_TRACE(0.00)[0:+];
+	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[guanwentao@uniontech.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TO_DN_NONE(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	ALIAS_RESOLVED(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FROM_EXCESS_BASE64(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[qq.com:mid,uniontech.com:dkim,uniontech.com:email,uniontech.com:from_mime,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,uniontech.com:dkim,uniontech.com:email,uniontech.com:mid,uniontech.com:from_mime,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: BCB516FA7CF
+X-Rspamd-Queue-Id: F232D6FACD0
 
-SGksDQoNCj4gT24gV2VkLCBKdW4gMjQsIDIwMjYgYXQgMDY6MDc6NDFQTSArMDgwMCwgV2Vu
-dGFvIEd1YW4gd3JvdGU6DQo+ID4gPiBPbiBXZWQsIEp1biAyNCwgMjAyNiBhdCAwNTo1OToy
-MVBNICswODAwLCBXZW50YW8gR3VhbiB3cm90ZToNCj4gPiA+ID4gcmVjZW50bHkgYmFja3Bv
-cnQgb2YgKCJwZXJmOiBGaXggZGFuZ2xpbmcgY2dyb3VwIHBvaW50ZXIgaW4gY3B1Y3R4IikN
-Cj4gPiA+ID4gdXNlIGEgbWlkZGxlIHZlcnNpb24sIHNvIGFsaWduZWQgd2l0aCB0aGUgdXBz
-dHJlYW0gY29tbWl0Og0KPiA+ID4gPiAzYjdhMzRhZWJiZGYyYTRiNzI5NTIwNWJmMGM2NTQy
-OTQyODNlYzgyDQo+ID4gPiA+DQo+ID4gPiA+ID4gU2lnbmVkLW9mZi1ieTogV2VudGFvIEd1
-YW4gPGd1YW53ZW50YW9AdW5pb250ZWNoLmNvbT4NCj4gPiA+ID4gLS0tDQo+ID4gPiA+ICBr
-ZXJuZWwvZXZlbnRzL2NvcmUuYyB8IDUgKystLS0NCj4gPiA+ID4gIDEgZmlsZSBjaGFuZ2Vk
-LCAyIGluc2VydGlvbnMoKyksIDMgZGVsZXRpb25zKC0pDQo+ID4gPiA+DQo+ID4gPiA+IGRp
-ZmYgLS1naXQgYS9rZXJuZWwvZXZlbnRzL2NvcmUuYyBiL2tlcm5lbC9ldmVudHMvY29yZS5j
-DQo+ID4gPiA+IGluZGV4IGE0MTg3ZGVhNjQwMmEuLjczYTg2ZGIwNmNjOWIgMTAwNjQ0DQo+
-ID4gPiA+IC0tLSBhL2tlcm5lbC9ldmVudHMvY29yZS5jDQo+ID4gPiA+ICsrKyBiL2tlcm5l
-bC9ldmVudHMvY29yZS5jDQo+ID4gPiA+IEBAIC0yMzg0LDEwICsyMzg0LDkgQEAgX19wZXJm
-X3JlbW92ZV9mcm9tX2NvbnRleHQoc3RydWN0IHBlcmZfZXZlbnQgKmV2ZW50LA0KPiA+ID4g
-PiAgKi8NCj4gPiA+ID4gIGlmIChmbGFncyAmIERFVEFDSF9FWElUKQ0KPiA+ID4gPiAgc3Rh
-dGUgPSBQRVJGX0VWRU5UX1NUQVRFX0VYSVQ7DQo+ID4gPiA+IC0gaWYgKGZsYWdzICYgREVU
-QUNIX0RFQUQpIHsNCj4gPiA+ID4gLSBldmVudC0+cGVuZGluZ19kaXNhYmxlID0gMTsNCj4g
-PiA+ID4gKyBpZiAoZmxhZ3MgJiBERVRBQ0hfREVBRCkNCj4gPiA+ID4gIHN0YXRlID0gUEVS
-Rl9FVkVOVF9TVEFURV9ERUFEOw0KPiA+ID4gPiAtIH0NCj4gPiA+ID4gKw0KPiA+ID4gPiAg
-ZXZlbnRfc2NoZWRfb3V0KGV2ZW50LCBjdHgpOw0KPiA+ID4gPg0KPiA+ID4gPiAgaWYgKGV2
-ZW50LT5zdGF0ZSA+IFBFUkZfRVZFTlRfU1RBVEVfT0ZGKQ0KPiA+ID4gPiAtLQ0KPiA+ID4g
-PiAyLjMwLjINCj4gPiA+ID4NCj4gPiA+DQo+ID4gPiBXaGF0IGtlcm5lbCB0cmVlKHMpIGlz
-IHRoaXMgZm9yPyAgV2hhdCBnaXQgaWQgZG9lcyB0aGlzIGZpeD8NCj4gPiAxLiB2Ni42LjE0
-MyBhbmQgdjYuMTIuOTQNCj4gPiAyLg0KPiA+IGFlMWFkYTBhZjE2MjQ5YTNlZDE1ZTMzZmE2
-NzE5YTZhMmY5NmY1MzcgaW4gdjYuNi4xNDMNCj4gPiA0NmY1NjIzZjliMGVmNjYxMjdlMWRl
-MTZmYjg1Nzg1MGNkYjE0ZTY4IGluIHY2LjEyLjk0DQo+IA0KPiBQbGVhc2UgcHV0IGFsbCBv
-ZiB0aGlzIGluZm9ybWF0aW9uIGluIHRoZSBjaGFuZ2Vsb2cgYW5kIHByb3ZpZGUNCj4gdmVy
-c2lvbnMgZm9yIGFsbCBvZiB0aGUgYnJhbmNoZXMgeW91IHdhbnQgaXQgZm9yLg0KVGhhbmtz
-IGZvciB5b3VyIHJlcGx5LCBJIHdpbGwgc3VtYml0IGxhdGVyLg0KDQpPdXQgb2YgdGhyZWFk
-LCBwZW9wbGUgc2F5cyBodHRwczovL2Nkbi5rZXJuZWwub3JnL3B1Yi9saW51eC9rZXJuZWwv
-djcueC9saW51eC03LjEuMi50YXIueHoNCmZyb20ga2VybmVsLm9yZyBwdWJsaWMgYXJjaGl2
-ZSByZXR1cm4gNDA0LCB3aGF0IGhhcHBlbj8NCg0KQlJzDQpXZW50YW8gR3Vhbg==
+recently backport of ("perf: Fix dangling cgroup pointer in cpuctx")
+use a middle version, so aligned with the upstream commit:
+commit 3b7a34aebbdf ("perf: Fix dangling cgroup pointer in cpuctx")
+
+This is a fix for stable v6.6.143 backport commit, so no upstream commit.
+
+Link: https://lore.kernel.org/all/2026070200-uneaten-smock-4130@gregkh/
+Fixes: ae1ada0af162 ("perf: Fix dangling cgroup pointer in cpuctx")
+Signed-off-by: Wentao Guan <guanwentao@uniontech.com>
+---
+ kernel/events/core.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
+
+diff --git a/kernel/events/core.c b/kernel/events/core.c
+index a4187dea6402a..73a86db06cc9b 100644
+--- a/kernel/events/core.c
++++ b/kernel/events/core.c
+@@ -2384,10 +2384,9 @@ __perf_remove_from_context(struct perf_event *event,
+ 	 */
+ 	if (flags & DETACH_EXIT)
+ 		state = PERF_EVENT_STATE_EXIT;
+-	if (flags & DETACH_DEAD) {
+-		event->pending_disable = 1;
++	if (flags & DETACH_DEAD)
+ 		state = PERF_EVENT_STATE_DEAD;
+-	}
++
+ 	event_sched_out(event, ctx);
+ 
+ 	if (event->state > PERF_EVENT_STATE_OFF)
+-- 
+2.30.2
 
 
