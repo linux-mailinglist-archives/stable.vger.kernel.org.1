@@ -1,65 +1,75 @@
-Return-Path: <stable+bounces-270788-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-271017-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id sYFHOIGTRmqQYwsAu9opvQ
-	(envelope-from <stable+bounces-270788-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:36:17 +0200
+	id FFEoJpahRmpYagsAu9opvQ
+	(envelope-from <stable+bounces-271017-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:36:22 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 931736FA47E
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:36:17 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id E1AED6FB7A0
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:36:21 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=Ith1IYiu;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-270788-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-270788-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="Kq/NVWoM";
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-271017-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-271017-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id D3AED3046153
-	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:34:17 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 7F8D032BFBC0
+	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:42:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB66535E1CE;
-	Thu,  2 Jul 2026 16:30:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F1C73438A6;
+	Thu,  2 Jul 2026 16:40:53 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F19E35E1C8;
-	Thu,  2 Jul 2026 16:30:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F187734752D;
+	Thu,  2 Jul 2026 16:40:50 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783009853; cv=none; b=YYNTuV+Q2AA/A70aeH0B+1jrvaOauRy7r+06koq3RirMDUllw2g1FWyUXAlhSvEoF1VEZDuAQxQ+D7mSNi1f36uTmex37rh6NhSsr1B4u6msr94skail3jMotB6PFZbWhJ6Ycdr39AuVCYEWB2s1QZn4+7UhPvEjX22B9oWyQtw=
+	t=1783010453; cv=none; b=qGFvWQieqBSBIEB73UnC4ExXORy501Zo/fVz71zZlHRmsa6X7sBIA6IdsF/YOhKJmFKEyo+6fchN8+akj1bx0TDWeT67RcxZ/BhUm6k7fIQERNhMJf1EDcTjuNsIVDHI2gdarh8rikXd4Tkh/+83nu+akKX7Y3hqbqRv9aVyqao=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783009853; c=relaxed/simple;
-	bh=UmAtH9oO5DFJMzXbEnHdUsagx2AQw3IuG3r2BJsF1SI=;
+	s=arc-20240116; t=1783010453; c=relaxed/simple;
+	bh=3hxEgZMWQvGSBdm8b+1AhMK19GtAHCJsiVdJqi2h+FI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KTzey17z3ZtzqnOzVIxKsD/qLYUnrueCxLd7uMQ/OL54Z1El6/nlmUxxXCpW/y6r9fnNkadVnErbLi4aIToIimVjxL+PS6Yybxhq70F6r7Ijd6BHzZW9Ay9LJXlTcOIOA9qvfvENlH0J92GuZegCTiNjB8c2Z0RGu65zaUdKclk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ith1IYiu; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88B4D1F000E9;
-	Thu,  2 Jul 2026 16:30:51 +0000 (UTC)
+	 MIME-Version; b=YOFGRvZsbZc3wSPOSTEp+79SDBhAbetUsOks+XUtsXR+34EcSoIFfe3a8r5txBvXlCNVYovgK8iF0jDZw4OyHAiLDFcrx84Q3fRVQwb1xM0Nadn10NiswTeepKmpo+NnaIDxTkvqJczdoyixPUpDi62azziHTufZ8aIM9//9xiQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Kq/NVWoM; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 380C51F000E9;
+	Thu,  2 Jul 2026 16:40:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1783009852;
-	bh=gXDwPn4U+RmsYHdO0YpmyHPakXAQNOU26T7fgwQ9tXo=;
+	s=korg; t=1783010450;
+	bh=tSYSo3REkR74Q2PSca7EDzAg8fpCcysI9MkqiZnchz8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Ith1IYiuoMOcaiJJtAQjMQJMZN0pQH0qIVQA6LV6jdCRINSaZgY/r8PWVOiHut7Qz
-	 of+L2bx2UKgpDs4MmgKFPdecCz2lEGrsAL2XT1G2X3wk2BzHmq5hRL38VsxtRC0MST
-	 lUn4Y0Quo90MIZeo0aaJ9TYBvVy+otjSl7ZUg0AU=
+	b=Kq/NVWoMYsx6lofB3rTTHyiaOB5y9iBiCmRDUgVzMix94H/WwpR+DMpIlLacG5hTP
+	 b/4nCl1+WOLFMxlt22R0a8pGhpk+hl0GD3CuW5NMvC93zKVf1GsWrTyLwnbOGlnUIl
+	 nEzQWIr6FMhnTKEtNfZ+BJHzramITE3oVgUjF1kk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Noam Rathaus <noamr@ssd-disclosure.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Steffen Klassert <steffen.klassert@secunet.com>,
-	Nicolas Dichtel <nicolas.dichtel@6wind.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Salvatore Bonaccorso <carnil@debian.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 009/129] ip6_vti: set netns_immutable on the fallback device.
+	bpf <bpf@vger.kernel.org>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Masahiro Yamada <masahiroy@kernel.org>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Nicolas Schier <nicolas@fjasle.eu>,
+	Zheng Yejian <zhengyejian1@huawei.com>,
+	Martin Kelly <martin.kelly@crowdstrike.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Josh Poimboeuf <jpoimboe@redhat.com>,
+	Stephen Rothwell <sfr@canb.auug.org.au>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
+	Andrey Grodzovsky <andrey.grodzovsky@crowdstrike.com>
+Subject: [PATCH 6.12 071/204] scripts/sorttable: Use a structure of function pointers for elf helpers
 Date: Thu,  2 Jul 2026 18:18:48 +0200
-Message-ID: <20260702155112.355933028@linuxfoundation.org>
+Message-ID: <20260702155120.158124126@linuxfoundation.org>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260702155112.163984240@linuxfoundation.org>
-References: <20260702155112.163984240@linuxfoundation.org>
+In-Reply-To: <20260702155118.667618796@linuxfoundation.org>
+References: <20260702155118.667618796@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -73,87 +83,358 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-270788-lists,stable=lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-271017-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[20];
+	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:bpf@vger.kernel.org,m:mhiramat@kernel.org,m:mark.rutland@arm.com,m:mathieu.desnoyers@efficios.com,m:akpm@linux-foundation.org,m:peterz@infradead.org,m:masahiroy@kernel.org,m:nathan@kernel.org,m:nicolas@fjasle.eu,m:zhengyejian1@huawei.com,m:martin.kelly@crowdstrike.com,m:christophe.leroy@csgroup.eu,m:jpoimboe@redhat.com,m:sfr@canb.auug.org.au,m:torvalds@linux-foundation.org,m:rostedt@goodmis.org,m:andrey.grodzovsky@crowdstrike.com,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:noamr@ssd-disclosure.com,m:edumazet@google.com,m:steffen.klassert@secunet.com,m:nicolas.dichtel@6wind.com,m:kuba@kernel.org,m:carnil@debian.org,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[10];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,6wind.com:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,ssd-disclosure.com:email,secunet.com:email,msgid.link:url]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 931736FA47E
+X-Rspamd-Queue-Id: E1AED6FB7A0
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Steven Rostedt <rostedt@goodmis.org>
 
-[ Upstream commit d289d5307762d1838aaece22c6b6fcad9e8865f9 ]
+[ Upstream commit 1e5f6771c247b28135307058d2cfe3b0153733dc ]
 
-john1988 and Noam Rathaus reported that vti6_init_net() does not set the
-netns_immutable flag on the per-netns fallback tunnel device (ip6_vti0).
+Instead of having a series of function pointers that gets assigned to the
+Elf64 or Elf32 versions, put them all into a single structure and use
+that. Add the helper function that chooses the structure into the macros
+that build the different versions of the elf functions.
 
-Other similar tunnel drivers (like ip6_tunnel, sit, ip6_gre, and ip_tunnel)
-correctly set this flag during their fallback device initialization to
-prevent them from being moved to another network namespace.
+Link: https://lore.kernel.org/all/CAHk-=wiafEyX7UgOeZgvd6fvuByE5WXUPh9599kwOc_d-pdeug@mail.gmail.com/
 
-Fixes: 61220ab34948 ("vti6: Enable namespace changing")
-Reported-by: Noam Rathaus <noamr@ssd-disclosure.com>
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Cc: Steffen Klassert <steffen.klassert@secunet.com>
-Reviewed-by: Nicolas Dichtel <nicolas.dichtel@6wind.com>
-Link: https://patch.msgid.link/20260608155918.787644-1-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-[Salvatore Bonaccorso: Backport for version without 0c493da86374 ("net:
-rename netns_local to netns_immutable") in v6.15-rc1 and without
-05c1280a2bcf ("netdev_features: convert NETIF_F_NETNS_LOCAL to
-dev->netns_local") in v6.12-rc1 and use NETIF_F_NETNS_LOCAL device
-feature.]
-Signed-off-by: Salvatore Bonaccorso <carnil@debian.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: bpf <bpf@vger.kernel.org>
+Cc: Masami Hiramatsu <mhiramat@kernel.org>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Masahiro Yamada <masahiroy@kernel.org>
+Cc: Nathan Chancellor <nathan@kernel.org>
+Cc: Nicolas Schier <nicolas@fjasle.eu>
+Cc: Zheng Yejian <zhengyejian1@huawei.com>
+Cc: Martin Kelly <martin.kelly@crowdstrike.com>
+Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
+Cc: Josh Poimboeuf <jpoimboe@redhat.com>
+Cc: Stephen Rothwell <sfr@canb.auug.org.au>
+Link: https://lore.kernel.org/20250110075459.13d4b94c@gandalf.local.home
+Suggested-by: Linus Torvalds <torvalds@linux-foundation.org>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: Andrey Grodzovsky <andrey.grodzovsky@crowdstrike.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv6/ip6_vti.c | 1 +
- 1 file changed, 1 insertion(+)
+ scripts/sorttable.c |  175 +++++++++++++++++++++++++++++++++++-----------------
+ 1 file changed, 118 insertions(+), 57 deletions(-)
 
-diff --git a/net/ipv6/ip6_vti.c b/net/ipv6/ip6_vti.c
-index 8808067df5168c..aa37ce710cf49a 100644
---- a/net/ipv6/ip6_vti.c
-+++ b/net/ipv6/ip6_vti.c
-@@ -1168,6 +1168,7 @@ static int __net_init vti6_init_net(struct net *net)
- 		goto err_alloc_dev;
- 	dev_net_set(ip6n->fb_tnl_dev, net);
- 	ip6n->fb_tnl_dev->rtnl_link_ops = &vti6_link_ops;
-+	ip6n->fb_tnl_dev->features |= NETIF_F_NETNS_LOCAL;
+--- a/scripts/sorttable.c
++++ b/scripts/sorttable.c
+@@ -85,6 +85,25 @@ static uint64_t (*r8)(const uint64_t *);
+ static void (*w)(uint32_t, uint32_t *);
+ typedef void (*table_sort_t)(char *, int);
  
- 	err = vti6_fb_tnl_dev_init(ip6n->fb_tnl_dev);
- 	if (err < 0)
--- 
-2.53.0
-
++static struct elf_funcs {
++	int (*compare_extable)(const void *a, const void *b);
++	uint64_t (*ehdr_shoff)(Elf_Ehdr *ehdr);
++	uint16_t (*ehdr_shstrndx)(Elf_Ehdr *ehdr);
++	uint16_t (*ehdr_shentsize)(Elf_Ehdr *ehdr);
++	uint16_t (*ehdr_shnum)(Elf_Ehdr *ehdr);
++	uint64_t (*shdr_addr)(Elf_Shdr *shdr);
++	uint64_t (*shdr_offset)(Elf_Shdr *shdr);
++	uint64_t (*shdr_size)(Elf_Shdr *shdr);
++	uint64_t (*shdr_entsize)(Elf_Shdr *shdr);
++	uint32_t (*shdr_link)(Elf_Shdr *shdr);
++	uint32_t (*shdr_name)(Elf_Shdr *shdr);
++	uint32_t (*shdr_type)(Elf_Shdr *shdr);
++	uint8_t (*sym_type)(Elf_Sym *sym);
++	uint32_t (*sym_name)(Elf_Sym *sym);
++	uint64_t (*sym_value)(Elf_Sym *sym);
++	uint16_t (*sym_shndx)(Elf_Sym *sym);
++} e;
++
+ static uint64_t ehdr64_shoff(Elf_Ehdr *ehdr)
+ {
+ 	return r8(&ehdr->e64.e_shoff);
+@@ -95,6 +114,11 @@ static uint64_t ehdr32_shoff(Elf_Ehdr *e
+ 	return r(&ehdr->e32.e_shoff);
+ }
+ 
++static uint64_t ehdr_shoff(Elf_Ehdr *ehdr)
++{
++	return e.ehdr_shoff(ehdr);
++}
++
+ #define EHDR_HALF(fn_name)				\
+ static uint16_t ehdr64_##fn_name(Elf_Ehdr *ehdr)	\
+ {							\
+@@ -104,6 +128,11 @@ static uint16_t ehdr64_##fn_name(Elf_Ehd
+ static uint16_t ehdr32_##fn_name(Elf_Ehdr *ehdr)	\
+ {							\
+ 	return r2(&ehdr->e32.e_##fn_name);		\
++}							\
++							\
++static uint16_t ehdr_##fn_name(Elf_Ehdr *ehdr)		\
++{							\
++	return e.ehdr_##fn_name(ehdr);			\
+ }
+ 
+ EHDR_HALF(shentsize)
+@@ -119,6 +148,11 @@ static uint32_t shdr64_##fn_name(Elf_Shd
+ static uint32_t shdr32_##fn_name(Elf_Shdr *shdr)	\
+ {							\
+ 	return r(&shdr->e32.sh_##fn_name);		\
++}							\
++							\
++static uint32_t shdr_##fn_name(Elf_Shdr *shdr)		\
++{							\
++	return e.shdr_##fn_name(shdr);			\
+ }
+ 
+ #define SHDR_ADDR(fn_name)				\
+@@ -130,6 +164,11 @@ static uint64_t shdr64_##fn_name(Elf_Shd
+ static uint64_t shdr32_##fn_name(Elf_Shdr *shdr)	\
+ {							\
+ 	return r(&shdr->e32.sh_##fn_name);		\
++}							\
++							\
++static uint64_t shdr_##fn_name(Elf_Shdr *shdr)		\
++{							\
++	return e.shdr_##fn_name(shdr);			\
+ }
+ 
+ #define SHDR_WORD(fn_name)				\
+@@ -141,6 +180,10 @@ static uint32_t shdr64_##fn_name(Elf_Shd
+ static uint32_t shdr32_##fn_name(Elf_Shdr *shdr)	\
+ {							\
+ 	return r(&shdr->e32.sh_##fn_name);		\
++}							\
++static uint32_t shdr_##fn_name(Elf_Shdr *shdr)		\
++{							\
++	return e.shdr_##fn_name(shdr);			\
+ }
+ 
+ SHDR_ADDR(addr)
+@@ -161,6 +204,11 @@ static uint64_t sym64_##fn_name(Elf_Sym
+ static uint64_t sym32_##fn_name(Elf_Sym *sym)	\
+ {						\
+ 	return r(&sym->e32.st_##fn_name);	\
++}						\
++						\
++static uint64_t sym_##fn_name(Elf_Sym *sym)	\
++{						\
++	return e.sym_##fn_name(sym);		\
+ }
+ 
+ #define SYM_WORD(fn_name)			\
+@@ -172,6 +220,11 @@ static uint32_t sym64_##fn_name(Elf_Sym
+ static uint32_t sym32_##fn_name(Elf_Sym *sym)	\
+ {						\
+ 	return r(&sym->e32.st_##fn_name);	\
++}						\
++						\
++static uint32_t sym_##fn_name(Elf_Sym *sym)	\
++{						\
++	return e.sym_##fn_name(sym);		\
+ }
+ 
+ #define SYM_HALF(fn_name)			\
+@@ -183,6 +236,11 @@ static uint16_t sym64_##fn_name(Elf_Sym
+ static uint16_t sym32_##fn_name(Elf_Sym *sym)	\
+ {						\
+ 	return r2(&sym->e32.st_##fn_name);	\
++}						\
++						\
++static uint16_t sym_##fn_name(Elf_Sym *sym)	\
++{						\
++	return e.sym_##fn_name(sym);		\
+ }
+ 
+ static uint8_t sym64_type(Elf_Sym *sym)
+@@ -195,6 +253,11 @@ static uint8_t sym32_type(Elf_Sym *sym)
+ 	return ELF32_ST_TYPE(sym->e32.st_info);
+ }
+ 
++static uint8_t sym_type(Elf_Sym *sym)
++{
++	return e.sym_type(sym);
++}
++
+ SYM_ADDR(value)
+ SYM_WORD(name)
+ SYM_HALF(shndx)
+@@ -322,29 +385,16 @@ static int compare_extable_64(const void
+ 	return av > bv;
+ }
+ 
++static int compare_extable(const void *a, const void *b)
++{
++	return e.compare_extable(a, b);
++}
++
+ static inline void *get_index(void *start, int entsize, int index)
+ {
+ 	return start + (entsize * index);
+ }
+ 
+-
+-static int (*compare_extable)(const void *a, const void *b);
+-static uint64_t (*ehdr_shoff)(Elf_Ehdr *ehdr);
+-static uint16_t (*ehdr_shstrndx)(Elf_Ehdr *ehdr);
+-static uint16_t (*ehdr_shentsize)(Elf_Ehdr *ehdr);
+-static uint16_t (*ehdr_shnum)(Elf_Ehdr *ehdr);
+-static uint64_t (*shdr_addr)(Elf_Shdr *shdr);
+-static uint64_t (*shdr_offset)(Elf_Shdr *shdr);
+-static uint64_t (*shdr_size)(Elf_Shdr *shdr);
+-static uint64_t (*shdr_entsize)(Elf_Shdr *shdr);
+-static uint32_t (*shdr_link)(Elf_Shdr *shdr);
+-static uint32_t (*shdr_name)(Elf_Shdr *shdr);
+-static uint32_t (*shdr_type)(Elf_Shdr *shdr);
+-static uint8_t (*sym_type)(Elf_Sym *sym);
+-static uint32_t (*sym_name)(Elf_Sym *sym);
+-static uint64_t (*sym_value)(Elf_Sym *sym);
+-static uint16_t (*sym_shndx)(Elf_Sym *sym);
+-
+ static int extable_ent_size;
+ static int long_size;
+ 
+@@ -864,7 +914,30 @@ static int do_file(char const *const fna
+ 	}
+ 
+ 	switch (ehdr->e32.e_ident[EI_CLASS]) {
+-	case ELFCLASS32:
++	case ELFCLASS32: {
++		struct elf_funcs efuncs = {
++			.compare_extable	= compare_extable_32,
++			.ehdr_shoff		= ehdr32_shoff,
++			.ehdr_shentsize		= ehdr32_shentsize,
++			.ehdr_shstrndx		= ehdr32_shstrndx,
++			.ehdr_shnum		= ehdr32_shnum,
++			.shdr_addr		= shdr32_addr,
++			.shdr_offset		= shdr32_offset,
++			.shdr_link		= shdr32_link,
++			.shdr_size		= shdr32_size,
++			.shdr_name		= shdr32_name,
++			.shdr_type		= shdr32_type,
++			.shdr_entsize		= shdr32_entsize,
++			.sym_type		= sym32_type,
++			.sym_name		= sym32_name,
++			.sym_value		= sym32_value,
++			.sym_shndx		= sym32_shndx,
++		};
++
++		e = efuncs;
++		long_size		= 4;
++		extable_ent_size	= 8;
++
+ 		if (r2(&ehdr->e32.e_ehsize) != sizeof(Elf32_Ehdr) ||
+ 		    r2(&ehdr->e32.e_shentsize) != sizeof(Elf32_Shdr)) {
+ 			fprintf(stderr,
+@@ -872,26 +945,32 @@ static int do_file(char const *const fna
+ 			return -1;
+ 		}
+ 
+-		compare_extable		= compare_extable_32;
+-		ehdr_shoff		= ehdr32_shoff;
+-		ehdr_shentsize		= ehdr32_shentsize;
+-		ehdr_shstrndx		= ehdr32_shstrndx;
+-		ehdr_shnum		= ehdr32_shnum;
+-		shdr_addr		= shdr32_addr;
+-		shdr_offset		= shdr32_offset;
+-		shdr_link		= shdr32_link;
+-		shdr_size		= shdr32_size;
+-		shdr_name		= shdr32_name;
+-		shdr_type		= shdr32_type;
+-		shdr_entsize		= shdr32_entsize;
+-		sym_type		= sym32_type;
+-		sym_name		= sym32_name;
+-		sym_value		= sym32_value;
+-		sym_shndx		= sym32_shndx;
+-		long_size		= 4;
+-		extable_ent_size	= 8;
++		}
+ 		break;
+-	case ELFCLASS64:
++	case ELFCLASS64: {
++		struct elf_funcs efuncs = {
++			.compare_extable	= compare_extable_64,
++			.ehdr_shoff		= ehdr64_shoff,
++			.ehdr_shentsize		= ehdr64_shentsize,
++			.ehdr_shstrndx		= ehdr64_shstrndx,
++			.ehdr_shnum		= ehdr64_shnum,
++			.shdr_addr		= shdr64_addr,
++			.shdr_offset		= shdr64_offset,
++			.shdr_link		= shdr64_link,
++			.shdr_size		= shdr64_size,
++			.shdr_name		= shdr64_name,
++			.shdr_type		= shdr64_type,
++			.shdr_entsize		= shdr64_entsize,
++			.sym_type		= sym64_type,
++			.sym_name		= sym64_name,
++			.sym_value		= sym64_value,
++			.sym_shndx		= sym64_shndx,
++		};
++
++		e = efuncs;
++		long_size		= 8;
++		extable_ent_size	= 16;
++
+ 		if (r2(&ehdr->e64.e_ehsize) != sizeof(Elf64_Ehdr) ||
+ 		    r2(&ehdr->e64.e_shentsize) != sizeof(Elf64_Shdr)) {
+ 			fprintf(stderr,
+@@ -900,25 +979,7 @@ static int do_file(char const *const fna
+ 			return -1;
+ 		}
+ 
+-		compare_extable		= compare_extable_64;
+-		ehdr_shoff		= ehdr64_shoff;
+-		ehdr_shentsize		= ehdr64_shentsize;
+-		ehdr_shstrndx		= ehdr64_shstrndx;
+-		ehdr_shnum		= ehdr64_shnum;
+-		shdr_addr		= shdr64_addr;
+-		shdr_offset		= shdr64_offset;
+-		shdr_link		= shdr64_link;
+-		shdr_size		= shdr64_size;
+-		shdr_name		= shdr64_name;
+-		shdr_type		= shdr64_type;
+-		shdr_entsize		= shdr64_entsize;
+-		sym_type		= sym64_type;
+-		sym_name		= sym64_name;
+-		sym_value		= sym64_value;
+-		sym_shndx		= sym64_shndx;
+-		long_size		= 8;
+-		extable_ent_size	= 16;
+-
++		}
+ 		break;
+ 	default:
+ 		fprintf(stderr, "unrecognized ELF class %d %s\n",
 
 
 
