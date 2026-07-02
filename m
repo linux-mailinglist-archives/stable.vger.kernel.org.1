@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-271310-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-271110-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id jje4GwGlRmqUawsAu9opvQ
-	(envelope-from <stable+bounces-271310-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:50:57 +0200
+	id XcUMOweZRmqwZgsAu9opvQ
+	(envelope-from <stable+bounces-271110-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:59:51 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C9C8F6FBAAD
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:50:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 767C46FAD5E
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:59:51 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=qkxP3yv9;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-271310-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-271310-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=XmBulMRA;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-271110-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-271110-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 8A75132DE311
-	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:53:55 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 6AF7D34B31C3
+	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:47:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D27030C15A;
-	Thu,  2 Jul 2026 16:53:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C58D73939A3;
+	Thu,  2 Jul 2026 16:44:56 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEA182D0602;
-	Thu,  2 Jul 2026 16:53:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F882349AF5;
+	Thu,  2 Jul 2026 16:44:55 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783011213; cv=none; b=KlwLFwZOjfWA5aszBweJzj9iONSaE8F0HkQ9fWB4mTBDgwWEKW0jGCk9R6RVbx00AeJPRgRcWDEJcAm+O3Xzjf7U2V8Jdqt4/7pmvxqEKycFssgJ8H0nIttH8PB9JCaQoxSonyziaya5klvz8oVlQjK6+XAo9FjNj0YFJMbdzjo=
+	t=1783010696; cv=none; b=CabQXUIW2J0tpguDw48gf/r7uNRslIhdMqo9JBt2Zl9d2kkuwbuJ/N8/40+3YZ4Z0wu9bUkzmZuZ9mv5GKcryjZ09oTyU4LWKj52u5spgYhhWk6kQ9xjNl2LR2zrPOEgI/Z/s+LOObpga43qmRNmbyi0TRQO4SjZCMjB+V4nJiA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783011213; c=relaxed/simple;
-	bh=stWx/RBpBtE7LfW4b3mzgqjeb+LdTkd/FjJAWxpbqeE=;
+	s=arc-20240116; t=1783010696; c=relaxed/simple;
+	bh=TcxJ9b6J0s6acM7L5/1Ynzmoxjws56K/UIxDbW+AwbI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=boNtrEKyizrtl9NM+kaaeoADgtMCUVhJjwRTHY54ESkzG3vrSYM6vcaF77RRKuit0XFM8Sh3XGayJ/C2zGGzArxaPCP4e62AhCgaQYy05oemPMz0U1INl64R/WS5wCHu+14DImjFOa0WwFV1nSclTpqzEVKxuGkGUJwyeWH6EOw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qkxP3yv9; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40D3A1F00A3A;
-	Thu,  2 Jul 2026 16:53:32 +0000 (UTC)
+	 MIME-Version; b=jiLvz8Eg4AAxm7f+KilS1JOUmeb5YFdzljOGWzIu6kTFZvNFQZyH1kKU/YeNQoLefpExpQM/bi34BfzoInCJsEyWihi27g/NlRgnbKeJAjYS/Vb30TmE0oD2KucU4pzOdfby4Zn7jkTt2xfcxo9jUxFikMmXlHFIyefj4ZU6H0E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XmBulMRA; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D47881F000E9;
+	Thu,  2 Jul 2026 16:44:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1783011212;
-	bh=HY+QrUM+GnMF+Y5LO/QPlakJ8BB81Shfi0QKZnshwrQ=;
+	s=korg; t=1783010695;
+	bh=C9aF98kENkonTvU8HsJuO13bec1i3+7w0BBanMfOt18=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=qkxP3yv9D+TO6tc8SN5TGfb2VFtY0Yz1GEG+12I8Oac0XFZkAaDUdjPVo8k3/yf99
-	 w5fHePD80nwNDChLz8KxK7o46DUxwCTY1NXN/yQBtczk4ehdgaK+Wqwqd3y3/Xecmf
-	 wosuMtn8286+86bJEqDYlUW0CXnUQh4Ur3Q2cpaY=
+	b=XmBulMRA7ipm9rah6+ox+s9j7zTZBqlcAm34Q44BvAkKAj6yXFmmF+ZkuYEZy3wDv
+	 eQ0fMRmdIleJmo0EmrIlr0e+jKwuaBWTC6zsHfgsV7HNfMGDYto86/GKVw1JOzqppl
+	 MclO2IMtp0lI4ppYqyYqoE4kI/qHTA+9pg7+CrcM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Sven Eckelmann <sven@narfation.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 023/108] batman-adv: tp_meter: restrict number of unacked list entries
+	Sean Christopherson <seanjc@google.com>,
+	Paolo Bonzini <pbonzini@redhat.com>
+Subject: [PATCH 6.12 163/204] KVM: Replace guest-triggerable BUG_ON() in ioeventfd datamatch with get_unaligned()
 Date: Thu,  2 Jul 2026 18:20:20 +0200
-Message-ID: <20260702155112.590423501@linuxfoundation.org>
+Message-ID: <20260702155122.074240545@linuxfoundation.org>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260702155112.110058792@linuxfoundation.org>
-References: <20260702155112.110058792@linuxfoundation.org>
+In-Reply-To: <20260702155118.667618796@linuxfoundation.org>
+References: <20260702155118.667618796@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -77,17 +76,17 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-271310-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-271110-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:stable@kernel.org,m:sven@narfation.org,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:seanjc@google.com,m:pbonzini@redhat.com,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
@@ -98,133 +97,125 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,narfation.org:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: C9C8F6FBAAD
+X-Rspamd-Queue-Id: 767C46FAD5E
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sven Eckelmann <sven@narfation.org>
+From: Sean Christopherson <seanjc@google.com>
 
-commit e7c775110e1858e5a7471a23a9c9658c0af9df89 upstream.
+commit f1edbed787ba67988ed34e0132ca128b052b6ce8 upstream.
 
-When the unacked_list is unbound, an attacker could send messages with
-small lengths and appropriated seqno + gaps to force the receiver to
-allocate more and more unacked_list entries. And the end either causing an
-out-of-memory situation or increase the management overhead for the (large)
-list that significant portions of CPU cycles are wasted in searching
-through the list.
+Drop a BUG_ON() that has been reachable since it was first added, way back
+in 2009, and instead use get_unaligned() to perform potentially-unaligned
+accesses.
 
-When limiting the list to a specific number, it is important to still
-correctly add a new entry to the list. But if the list became larger than
-the limit, the last entry of the list (with the highest seqno) must be
-dropped to still allow the earlier seqnos to finish and therefore to
-continue the process. Otherwise, the process might get stuck with too high
-seqnos which are not handled by batadv_tp_ack_unordered().
+For a given store, KVM x86's emulator tracks the entire value in the
+destination operand, x86_emulate_ctxt.dst.  If the destination is memory,
+and the target splits multiple pages and/or is emulated MMIO, then KVM
+handles each fragment independently.  E.g. on a page split starting at page
+offset 0xffc, KVM writes 4 bytes to the first page, then the remaining
+bytes to the second page, using ctxt->dst as the source for both (with
+appropriate offsets).
 
-Cc: stable@kernel.org
-Fixes: 33a3bb4a3345 ("batman-adv: throughput meter implementation")
-[ Switch to pre-splitted tp_vars structure names ]
-Signed-off-by: Sven Eckelmann <sven@narfation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+If the destination splits a page *and* hits emulated MMIO on the second
+page, then KVM will complete the write to the first page, then emulate the
+MMIO access to the second page.  If there is a datamatch-enabled ioeventfd
+at offset 0 of the second page, then KVM will process the remainder of the
+store as a potential ioeventfd signal.
+
+Putting it all together, if the guest emits a store that splits a page
+starting at page offset N, and the second page has a datamatch-enabled
+ioeventfd at offset 0, then KVM will check for datamatch using
+&dst.valptr[N] as the source.  Due to dst (and thus dst.valptr) being
+32-byte aligned, if N is not aligned to @len, the BUG_ON() fires.
+
+E.g. with a 16-byte store at page offset 0xffc, to an ioeventfd of len 8,
+all initial checks in ioeventfd_in_range() will succeed, and the BUG_ON()
+fires due to @val being 4-byte aligned, but not 8-byte aligned.
+
+  ------------[ cut here ]------------
+  kernel BUG at arch/x86/kvm/../../../virt/kvm/eventfd.c:783!
+  Oops: invalid opcode: 0000 [#1] SMP
+  CPU: 0 UID: 1000 PID: 615 Comm: repro Not tainted 7.1.0-rc2-ff238429d1ea #365 PREEMPT
+  Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 0.0.0 02/06/2015
+  RIP: 0010:ioeventfd_write+0x6c/0x70 [kvm]
+  Call Trace:
+   <TASK>
+   __kvm_io_bus_write+0x85/0xb0 [kvm]
+   kvm_io_bus_write+0x53/0x80 [kvm]
+   vcpu_mmio_write+0x66/0xf0 [kvm]
+   emulator_read_write_onepage+0x12a/0x540 [kvm]
+   emulator_read_write+0x109/0x2b0 [kvm]
+   x86_emulate_insn+0x4f8/0xfb0 [kvm]
+   x86_emulate_instruction+0x181/0x790 [kvm]
+   kvm_mmu_page_fault+0x313/0x630 [kvm]
+   vmx_handle_exit+0x18a/0x590 [kvm_intel]
+   kvm_arch_vcpu_ioctl_run+0xc81/0x1c90 [kvm]
+   kvm_vcpu_ioctl+0x2d5/0x970 [kvm]
+   __x64_sys_ioctl+0x8a/0xd0
+   do_syscall_64+0xb7/0x890
+   entry_SYSCALL_64_after_hwframe+0x4b/0x53
+  RIP: 0033:0x7f19c931a9bf
+   </TASK>
+  Modules linked in: kvm_intel kvm irqbypass
+  ---[ end trace 0000000000000000 ]---
+
+In a perfect world, the fix would be to simply delete the BUG_ON(), as KVM
+x86 doesn't perform alignment checks on "normal" memory accesses at CPL0.
+Sadly, C99 ruins all the fun; while the x86 architecture plays nice,
+dereferencing an unaligned pointer directly is undefined behavior in C,
+e.g. triggers splats when running with CONFIG_UBSAN_ALIGNMENT=y.
+
+Fixes: d34e6b175e61 ("KVM: add ioeventfd support")
+Cc: stable@vger.kernel.org
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+Message-ID: <20260612225241.678509-1-seanjc@google.com>
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/batman-adv/tp_meter.c | 23 ++++++++++++++++++++++-
- net/batman-adv/types.h    |  3 +++
- 2 files changed, 25 insertions(+), 1 deletion(-)
+ virt/kvm/eventfd.c |   12 +++++-------
+ 1 file changed, 5 insertions(+), 7 deletions(-)
 
-diff --git a/net/batman-adv/tp_meter.c b/net/batman-adv/tp_meter.c
-index 10b8daca3a6154..e5387e8f33244a 100644
---- a/net/batman-adv/tp_meter.c
-+++ b/net/batman-adv/tp_meter.c
-@@ -87,6 +87,11 @@
- #define BATADV_TP_PLEN (BATADV_TP_PACKET_LEN - ETH_HLEN - \
- 			sizeof(struct batadv_unicast_packet))
+--- a/virt/kvm/eventfd.c
++++ b/virt/kvm/eventfd.c
+@@ -24,6 +24,7 @@
+ #include <linux/slab.h>
+ #include <linux/seqlock.h>
+ #include <linux/irqbypass.h>
++#include <linux/unaligned.h>
+ #include <trace/events/kvm.h>
  
-+/**
-+ * BATADV_TP_MAX_UNACKED - maximum number of packets a receiver didn't yet ack
-+ */
-+#define BATADV_TP_MAX_UNACKED 100
-+
- static u8 batadv_tp_prerandom[4096] __read_mostly;
+ #include <kvm/iodev.h>
+@@ -744,21 +745,18 @@ ioeventfd_in_range(struct _ioeventfd *p,
+ 		return true;
  
- /**
-@@ -1195,6 +1200,7 @@ static void batadv_tp_receiver_shutdown(struct timer_list *t)
- 	list_for_each_entry_safe(un, safe, &tp_vars->unacked_list, list) {
- 		list_del(&un->list);
- 		kfree(un);
-+		tp_vars->unacked_count--;
- 	}
- 	spin_unlock_bh(&tp_vars->unacked_lock);
- 
-@@ -1308,6 +1314,7 @@ static bool batadv_tp_handle_out_of_order(struct batadv_tp_vars *tp_vars,
- 	/* if the list is empty immediately attach this new object */
- 	if (list_empty(&tp_vars->unacked_list)) {
- 		list_add(&new->list, &tp_vars->unacked_list);
-+		tp_vars->unacked_count++;
- 		goto out;
- 	}
- 
-@@ -1338,12 +1345,24 @@ static bool batadv_tp_handle_out_of_order(struct batadv_tp_vars *tp_vars,
- 		 */
- 		list_add(&new->list, &un->list);
- 		added = true;
-+		tp_vars->unacked_count++;
+ 	/* otherwise, we have to actually compare the data */
+-
+-	BUG_ON(!IS_ALIGNED((unsigned long)val, len));
+-
+ 	switch (len) {
+ 	case 1:
+-		_val = *(u8 *)val;
++		_val = get_unaligned((u8 *)val);
  		break;
- 	}
- 
- 	/* received packet with smallest seqno out of order; add it to front */
--	if (!added)
-+	if (!added) {
- 		list_add(&new->list, &tp_vars->unacked_list);
-+		tp_vars->unacked_count++;
-+	}
-+
-+	/* remove the last (biggest) unacked seqno when list is too large */
-+	if (tp_vars->unacked_count > BATADV_TP_MAX_UNACKED) {
-+		un = list_last_entry(&tp_vars->unacked_list,
-+				     struct batadv_tp_unacked, list);
-+		list_del(&un->list);
-+		kfree(un);
-+		tp_vars->unacked_count--;
-+	}
- 
- out:
- 	spin_unlock_bh(&tp_vars->unacked_lock);
-@@ -1380,6 +1399,7 @@ static void batadv_tp_ack_unordered(struct batadv_tp_vars *tp_vars)
- 
- 		list_del(&un->list);
- 		kfree(un);
-+		tp_vars->unacked_count--;
- 	}
- 	spin_unlock_bh(&tp_vars->unacked_lock);
- }
-@@ -1430,6 +1450,7 @@ batadv_tp_init_recv(struct batadv_priv *bat_priv,
- 
- 	spin_lock_init(&tp_vars->unacked_lock);
- 	INIT_LIST_HEAD(&tp_vars->unacked_list);
-+	tp_vars->unacked_count = 0;
- 
- 	kref_get(&tp_vars->refcount);
- 	timer_setup(&tp_vars->timer, batadv_tp_receiver_shutdown, 0);
-diff --git a/net/batman-adv/types.h b/net/batman-adv/types.h
-index 417d653021c7af..8b180d8245b2a6 100644
---- a/net/batman-adv/types.h
-+++ b/net/batman-adv/types.h
-@@ -1426,6 +1426,9 @@ struct batadv_tp_vars {
- 	/** @unacked_lock: protect unacked_list */
- 	spinlock_t unacked_lock;
- 
-+	/** @unacked_count: number of unacked entries */
-+	size_t unacked_count;
-+
- 	/** @last_recv_time: time (jiffies) a msg was received */
- 	unsigned long last_recv_time;
- 
--- 
-2.53.0
-
+ 	case 2:
+-		_val = *(u16 *)val;
++		_val = get_unaligned((u16 *)val);
+ 		break;
+ 	case 4:
+-		_val = *(u32 *)val;
++		_val = get_unaligned((u32 *)val);
+ 		break;
+ 	case 8:
+-		_val = *(u64 *)val;
++		_val = get_unaligned((u64 *)val);
+ 		break;
+ 	default:
+ 		return false;
 
 
 
