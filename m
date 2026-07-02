@@ -1,61 +1,61 @@
-Return-Path: <stable+bounces-271041-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-270701-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id TGsBN1uiRmq2agsAu9opvQ
-	(envelope-from <stable+bounces-271041-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:39:39 +0200
+	id 9hYvI9mURmo/ZAsAu9opvQ
+	(envelope-from <stable+bounces-270701-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:42:01 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6530F6FB86A
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:39:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C845D6FA66F
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:41:57 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=HQZa5Zzn;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-271041-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-271041-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="KM8gu7K/";
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-270701-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-270701-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 75FA232C9DEA
-	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:45:23 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D7F1A3263F2D
+	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:32:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D64494DB55E;
-	Thu,  2 Jul 2026 16:41:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50ACE3AB29C;
+	Thu,  2 Jul 2026 16:27:07 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3569C49550B;
-	Thu,  2 Jul 2026 16:41:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6D063CE49E;
+	Thu,  2 Jul 2026 16:27:03 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783010515; cv=none; b=ZDZXRz5ULCO0dejoRFOnZcGXvHAm5SND/0VdJlFd9YcpUNjiLgPLfzZryrHtULLH9wmLJOJJFS2PLcp2qKcqvhcVLLtB6fHeXD06U6I+W2WPikF5QKaKU0EKjT4aRHpYrNFR83R4VpMUVCxc0Id9wUUZEkslnJjjS6jFrixPr4w=
+	t=1783009626; cv=none; b=cTAu2TG2g6m7l6g4r9+geu5fEJhwcgdj3fktxDYjUVPZnTKXD2cTmxPB9unub8pEoQEcNBy/ih18fyJz8+pz8u24FFIt0yFKR11D/EPwRQV1+yoy/sL6kR5GlYIHQUBynYl/EoVa6hSUnC5uFVvmLo/0PSjKT1iFDYEZqrJl1os=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783010515; c=relaxed/simple;
-	bh=pWh5smbEj9rthiSZFTbOX7UQ/GUTe6qpajAZgBYG6Us=;
+	s=arc-20240116; t=1783009626; c=relaxed/simple;
+	bh=/FhUa3NMJMXwkq2KGlLu7L2ptXaIvktFaugP5enCGKQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dn70lc3vRcJkxkiwxkmRxG67BVTiA1n8ijU5dBoFka3aWj/YFVdGEFgIRBf/SY1zJHGF7YBhCGEQopNJsC5qqVl0PIwG2Yo0S/1g2Q2Di0m27gRpiFLETZc+ExuPwzbVcG2b1S8UrFyiJR8RMnYy0JNDtDXKkW7eGcMvQMdDKnw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HQZa5Zzn; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C78E1F000E9;
-	Thu,  2 Jul 2026 16:41:53 +0000 (UTC)
+	 MIME-Version; b=seCmOtiiU/fSRKDCy6zu8k5Z9+vdYv9K4GtkCG2w3ReIw4XfDedhv0BdEgyc/305gx6gdSlVJp4fUF57DyBZBHjfdSdEp7SRQ2v86JylBXo9zGQ6DvAgLXOleA83DmqYNVF0z4BWT9biPveeyTq5/7LlKDKk3AehsVfR9Kl4Jc8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KM8gu7K/; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB5DF1F00A3A;
+	Thu,  2 Jul 2026 16:27:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1783010514;
-	bh=pA2MfYoeQ76EQgvHSe51QqtEl9KbV7VEOmOV9DwIXoo=;
+	s=korg; t=1783009623;
+	bh=DKRCLApvSaOqfVqI56xRI1ELwbVv6ErsHJpHlGE4Cag=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=HQZa5ZznEKXxGzBg0BX8nwwNlgkB/5J5+y7xMEjZ4Jf9GpSJegWfEikkcnAwrLeRl
-	 WqcD5wqRhWnhcuFoFdiRZdd0Z35p6QH7sjSbH2CrrfrMqnOOW4YTGEPISWwNmu8YU9
-	 vYXdi0U1f4HQOvQ97M+jfTZYRFiY7nLRWcEmiUG8=
+	b=KM8gu7K/H/gGWnuGB5qQn6z7VrIwMJLVBZO0W5SDF3zNEr8Yo9e6ptaH7/pyilhxU
+	 eF7DvVPhwXNRIWe0Y7N3DwvRy00z8T1p14URWZGr3gykQC712OFrojwqYyYriPwXf9
+	 xjNmewujIPQwiMj7B5U9ROEIPGA/jg08wLbc4p2o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Sven Eckelmann <sven@narfation.org>,
+	Yong Wang <yongwang@nvidia.com>,
+	Petr Machata <petrm@nvidia.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 111/204] batman-adv: fix (m|b)cast csum after decrementing TTL
+Subject: [PATCH 5.15 25/95] Revert "ptp: add testptp mask test"
 Date: Thu,  2 Jul 2026 18:19:28 +0200
-Message-ID: <20260702155120.986410587@linuxfoundation.org>
+Message-ID: <20260702155109.736724788@linuxfoundation.org>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260702155118.667618796@linuxfoundation.org>
-References: <20260702155118.667618796@linuxfoundation.org>
+In-Reply-To: <20260702155109.196223802@linuxfoundation.org>
+References: <20260702155109.196223802@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -77,12 +77,12 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-271041-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-270701-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:stable@kernel.org,m:sven@narfation.org,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:yongwang@nvidia.com,m:petrm@nvidia.com,m:sashal@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
@@ -98,134 +98,99 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,narfation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp,nvidia.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 6530F6FB86A
+X-Rspamd-Queue-Id: C845D6FA66F
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sven Eckelmann <sven@narfation.org>
+From: Petr Machata <petrm@nvidia.com>
 
-commit e728bbdf32660c8f32b8f5e8d09427a2c131ad60 upstream.
+This reverts commit 8510559c0fa1e228b18fcf77cfbcf5b970793a8a, which is
+commit 26285e689c6cd2cf3849568c83b2ebe53f467143 upstream.
 
-The broadcast and multicast packets can be received at the same time by the
-local system and forwarded to other nodes. Both are simply decrementing the
-TTL at the beginning of the receive path - independent of chosen paths
-(receive/forward). But such a modification of the data conflicts with the
-hw csum. This is not a problem when the packet is directly forwarded but
-can cause errors in the local receive path.
+The reverted commit extends the selftest to test timestamp event queue mask
+manipulation in testptp. It exercises masks PTP_MASK_CLEAR_ALL and
+PTP_MASK_EN_SINGLE, introduced in commit c5a445b1e934 ("ptp: support event
+queue reader channel masks"), which is not on this stable branch. The test
+case thus cannot be built against this tree's own UAPI headers.
 
-Such a problem can then trigger a "hw csum failure". The receiver path must
-therefore ensure that the csum is fixed for each modification of the
-payload before batadv_interface_rx() is reached.
+The reverted commit was introduced to resolve a missing dependency of
+commit bef3a83a9a67 ("testptp: Add option to open PHC in readonly mode"),
+which is 76868642e427 upstream. The only conflict between the two is the
+getopt string, and there is otherwise no direct dependency between the two.
 
-Since all batman-adv packet types with a ttl have it as u8 at offset 2, a
-helper can be used for all of them. But it is only used at the moment for
-batadv_bcast_packet and batadv_mcast_packet because they are the only ones
-which deliver the packet locally but unconditionally modify the TTL.
+This patch therefore reverts the cited commit, with hand-resolving the
+getopt string to include 'r' (as introduced by c6dc458227a3), but not
+'F' (introduced by c1c50689799d).
 
-Cc: stable@kernel.org
-Fixes: 3f69339068f9 ("batman-adv: bcast: queue per interface, if needed")
-Fixes: 07afe1ba288c ("batman-adv: mcast: implement multicast packet reception and forwarding")
-[ Context ]
-Signed-off-by: Sven Eckelmann <sven@narfation.org>
+Reported-by: Yong Wang <yongwang@nvidia.com>
+Signed-off-by: Petr Machata <petrm@nvidia.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/batman-adv/routing.c | 58 ++++++++++++++++++++++++++++++++++++++--
- 1 file changed, 56 insertions(+), 2 deletions(-)
+ tools/testing/selftests/ptp/testptp.c | 19 +------------------
+ 1 file changed, 1 insertion(+), 18 deletions(-)
 
-diff --git a/net/batman-adv/routing.c b/net/batman-adv/routing.c
-index 32a40c1c115c6a..85bc2d284a7798 100644
---- a/net/batman-adv/routing.c
-+++ b/net/batman-adv/routing.c
-@@ -8,6 +8,7 @@
- #include "main.h"
+diff --git a/tools/testing/selftests/ptp/testptp.c b/tools/testing/selftests/ptp/testptp.c
+index d78d52f028ab52..84e86898f4b409 100644
+--- a/tools/testing/selftests/ptp/testptp.c
++++ b/tools/testing/selftests/ptp/testptp.c
+@@ -121,7 +121,6 @@ static void usage(char *progname)
+ 		" -d name    device to open\n"
+ 		" -e val     read 'val' external time stamp events\n"
+ 		" -f val     adjust the ptp clock frequency by 'val' ppb\n"
+-		" -F chan    Enable single channel mask and keep device open for debugfs verification.\n"
+ 		" -g         get the ptp clock time\n"
+ 		" -h         prints this message\n"
+ 		" -i val     index for event/trigger\n"
+@@ -190,7 +189,6 @@ int main(int argc, char *argv[])
+ 	int seconds = 0;
+ 	int readonly = 0;
+ 	int settime = 0;
+-	int channel = -1;
  
- #include <linux/atomic.h>
-+#include <linux/build_bug.h>
- #include <linux/byteorder/generic.h>
- #include <linux/compiler.h>
- #include <linux/errno.h>
-@@ -205,6 +206,59 @@ bool batadv_check_management_packet(struct sk_buff *skb,
- 	return true;
+ 	int64_t t1, t2, tp;
+ 	int64_t interval, offset;
+@@ -200,7 +198,7 @@ int main(int argc, char *argv[])
+ 
+ 	progname = strrchr(argv[0], '/');
+ 	progname = progname ? 1+progname : argv[0];
+-	while (EOF != (c = getopt(argc, argv, "cd:e:f:F:ghH:i:k:lL:n:o:p:P:rsSt:T:w:x:Xz"))) {
++	while (EOF != (c = getopt(argc, argv, "cd:e:f:ghH:i:k:lL:n:o:p:P:rsSt:T:w:x:Xz"))) {
+ 		switch (c) {
+ 		case 'c':
+ 			capabilities = 1;
+@@ -214,9 +212,6 @@ int main(int argc, char *argv[])
+ 		case 'f':
+ 			adjfreq = atoi(optarg);
+ 			break;
+-		case 'F':
+-			channel = atoi(optarg);
+-			break;
+ 		case 'g':
+ 			gettime = 1;
+ 			break;
+@@ -616,18 +611,6 @@ int main(int argc, char *argv[])
+ 		free(xts);
+ 	}
+ 
+-	if (channel >= 0) {
+-		if (ioctl(fd, PTP_MASK_CLEAR_ALL)) {
+-			perror("PTP_MASK_CLEAR_ALL");
+-		} else if (ioctl(fd, PTP_MASK_EN_SINGLE, (unsigned int *)&channel)) {
+-			perror("PTP_MASK_EN_SINGLE");
+-		} else {
+-			printf("Channel %d exclusively enabled. Check on debugfs.\n", channel);
+-			printf("Press any key to continue\n.");
+-			getchar();
+-		}
+-	}
+-
+ 	close(fd);
+ 	return 0;
  }
- 
-+/**
-+ * batadv_skb_decrement_ttl() - decrement ttl in a batman-adv header, csum-safe
-+ * @skb: the received packet with @skb->data pointing to the batman-adv header
-+ *
-+ * Supports the following packet types, all of which carry the TTL at offset 2:
-+ *
-+ * - batadv_ogm_packet
-+ * - batadv_ogm2_packet
-+ * - batadv_icmp_header
-+ * - batadv_icmp_packet
-+ * - batadv_icmp_tp_packet
-+ * - batadv_icmp_packet_rr
-+ * - batadv_unicast_packet
-+ * - batadv_frag_packet
-+ * - batadv_bcast_packet
-+ * - batadv_mcast_packet
-+ * - batadv_coded_packet
-+ * - batadv_unicast_tvlv_packet
-+ *
-+ * Return: true if the packet may be forwarded (ttl decremented),
-+ *  false if it must be dropped (ttl would expire)
-+ */
-+static bool batadv_skb_decrement_ttl(struct sk_buff *skb)
-+{
-+	static const size_t ttl_offset = 2;
-+	u8 *ttl_pos;
-+
-+	BUILD_BUG_ON(offsetof(struct batadv_ogm_packet, ttl) != ttl_offset);
-+	BUILD_BUG_ON(offsetof(struct batadv_ogm2_packet, ttl) != ttl_offset);
-+	BUILD_BUG_ON(offsetof(struct batadv_icmp_header, ttl) != ttl_offset);
-+	BUILD_BUG_ON(offsetof(struct batadv_icmp_packet, ttl) != ttl_offset);
-+	BUILD_BUG_ON(offsetof(struct batadv_icmp_tp_packet, ttl) != ttl_offset);
-+	BUILD_BUG_ON(offsetof(struct batadv_icmp_packet_rr, ttl) != ttl_offset);
-+	BUILD_BUG_ON(offsetof(struct batadv_unicast_packet, ttl) != ttl_offset);
-+	BUILD_BUG_ON(offsetof(struct batadv_frag_packet, ttl) != ttl_offset);
-+	BUILD_BUG_ON(offsetof(struct batadv_bcast_packet, ttl) != ttl_offset);
-+	BUILD_BUG_ON(offsetof(struct batadv_mcast_packet, ttl) != ttl_offset);
-+	BUILD_BUG_ON(offsetof(struct batadv_coded_packet, ttl) != ttl_offset);
-+	BUILD_BUG_ON(offsetof(struct batadv_unicast_tvlv_packet, ttl) != ttl_offset);
-+
-+	ttl_pos = skb->data + ttl_offset;
-+
-+	/* would expire on this hop -> drop, leave header + csum untouched */
-+	if (*ttl_pos < 2)
-+		return false;
-+
-+	skb_postpull_rcsum(skb, ttl_pos, 1);
-+	(*ttl_pos)--;
-+	skb_postpush_rcsum(skb, ttl_pos, 1);
-+
-+	return true;
-+}
-+
- /**
-  * batadv_recv_my_icmp_packet() - receive an icmp packet locally
-  * @bat_priv: the bat priv with all the soft interface information
-@@ -1204,7 +1258,7 @@ int batadv_recv_bcast_packet(struct sk_buff *skb,
- 
- 	bcast_packet = (struct batadv_bcast_packet *)skb->data;
- 
--	if (bcast_packet->ttl-- < 2)
-+	if (!batadv_skb_decrement_ttl(skb))
- 		goto free_skb;
- 
- 	orig_node = batadv_orig_hash_find(bat_priv, bcast_packet->orig);
-@@ -1311,7 +1365,7 @@ int batadv_recv_mcast_packet(struct sk_buff *skb,
- 		goto free_skb;
- 
- 	mcast_packet = (struct batadv_mcast_packet *)skb->data;
--	if (mcast_packet->ttl-- < 2)
-+	if (!batadv_skb_decrement_ttl(skb))
- 		goto free_skb;
- 
- 	tvlv_buff = (unsigned char *)(skb->data + hdr_size);
 -- 
 2.53.0
 
