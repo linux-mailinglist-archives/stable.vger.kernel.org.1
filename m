@@ -1,61 +1,63 @@
-Return-Path: <stable+bounces-270758-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-271034-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id ZDNdOtmSRmpZYwsAu9opvQ
-	(envelope-from <stable+bounces-270758-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:33:29 +0200
+	id /djDG/aWRmqEZQsAu9opvQ
+	(envelope-from <stable+bounces-271034-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:51:02 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 66A2F6FA3F7
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:33:29 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id D22AB6FAA4A
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:51:01 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=M41FvhQH;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-270758-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-270758-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=0FzVLSzd;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-271034-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-271034-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 757E4301FD4A
-	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:33:28 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 285783113DCB
+	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:43:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0076E282F24;
-	Thu,  2 Jul 2026 16:29:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C2E63E5ED8;
+	Thu,  2 Jul 2026 16:41:43 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A4F43A0E88;
-	Thu,  2 Jul 2026 16:29:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 174E43B14C6;
+	Thu,  2 Jul 2026 16:41:36 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783009776; cv=none; b=ZQ1vD7dg19tOMTQsxWrcBHN9G0ecfU03sTbITzlUVtsKYM/XTebwI4UObJo9O1WBXv3LPx1eCPJ6vjnhQkEx/N/ZvGk61+5WhR7MnGcDHe3tIYLxX4jY5dXwAlT6wAP4t3SPS3h+/7TUYRQg3IsWCF7Y8caYpVCp6obq58FVQrM=
+	t=1783010502; cv=none; b=Xxd/ctP4MGgr9krpLOJwVAXznFSMOW9pMaDHkcN7676T9j4xbGVoDKqivh3Sv2quhoXrldxroYamBeerO9GTp6vr02anay0WUH8VdOcyeLTpc6i97JQO1L+TmTVDz6xM+RiUyeH6w1OdI3W2a3lUZ4gldlNyZjuEYVF4R0WM0Tg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783009776; c=relaxed/simple;
-	bh=4i+rj+KEzXJ5xQW5kmOzvMVX7bqWVQ2EkHvxpXokWU8=;
+	s=arc-20240116; t=1783010502; c=relaxed/simple;
+	bh=p+z8UWRItggaaYDbLAO5t+elcJGyS+l+aJEhgfqbm5E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Yi+JTMToT7MU3ET37bULxGVSBu7OPcEMOqdXulaUd0qpK4FGrscvvnOxchGAcaP7owUjkrppKE9QwSgFUfvomAS2p3XtCYiUhMFr4D8yLKbTqaNuinzOVTot/3L722Xxp49+vf+ldlr0nh2goV42lcAsCe/vOb1D6wHzEtrAP6E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M41FvhQH; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 475FD1F000E9;
-	Thu,  2 Jul 2026 16:29:32 +0000 (UTC)
+	 MIME-Version; b=iXEXheBey8oMLbSuHE2bNiAjqKJl2sVPdIO2TyQGA0rsqCNbf+g57CNd6rMBzeYt7jbf8Ru9QNrpuuhoju/QWkGmrJnNno0hWpIw663g+sNnmVRD3Xw9d8YzQRdBQiEkR2tlvuNJUDLtkM2TrAEj9Jp8vR4rbuJWky7DrQlCY5E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0FzVLSzd; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 334E81F0155B;
+	Thu,  2 Jul 2026 16:41:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1783009772;
-	bh=ElT2ou2j4BzsOfvU8sqVFsjZsMU9DfkR+OnOnPtnNek=;
+	s=korg; t=1783010495;
+	bh=EI9oxi30RzmiKsj2fF54Jq38FMsowXbLwb+qBdsXERM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=M41FvhQHvZ2cIq3ZpcGAhd7z8hs5JQNMe0yYAoMa/NMdPWFw1rsdh6kGPViISgoGI
-	 OTigMbMCA3TAQg9WNF3d/YuNIvTyHmx5jqcqcDVYJGEvkT2okIX0Prf2kde4PabRbn
-	 tQgQfBV3iWTH/C+6OcA0MRu8abd8wIinjW8uFNDk=
+	b=0FzVLSzd4lGTeYZB2U5NNepZ9wsga23kc0Br15cweBM8W/zT4StU7XcBBUStlRhut
+	 98q+9fqA1VAs3VllZiKQZLEpcGTEa8WPb89jOOVpBjo6ootPRphadlxJgJkz1DW4YV
+	 n2ZCkXPClM4Ii3LRImlOqM1my4tXKMDTVE3/PVFU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Sven Eckelmann <sven@narfation.org>,
+	Tom Lendacky <thomas.lendacky@amd.com>,
+	Michael Roth <michael.roth@amd.com>,
+	Sean Christopherson <seanjc@google.com>,
+	Paolo Bonzini <pbonzini@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 45/95] batman-adv: tp_meter: annotate last_recv_time access with READ/WRITE_ONCE
+Subject: [PATCH 6.12 131/204] KVM: SEV: Move sev_free_vcpu() down below sev_es_unmap_ghcb()
 Date: Thu,  2 Jul 2026 18:19:48 +0200
-Message-ID: <20260702155110.155330535@linuxfoundation.org>
+Message-ID: <20260702155121.405455012@linuxfoundation.org>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260702155109.196223802@linuxfoundation.org>
-References: <20260702155109.196223802@linuxfoundation.org>
+In-Reply-To: <20260702155118.667618796@linuxfoundation.org>
+References: <20260702155118.667618796@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,100 +71,151 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-270758-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:stable@kernel.org,m:sven@narfation.org,m:sashal@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-271034-lists,stable=lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:thomas.lendacky@amd.com,m:michael.roth@amd.com,m:seanjc@google.com,m:pbonzini@redhat.com,m:sashal@kernel.org,s:lists@lfdr.de];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,narfation.org:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,vger.kernel.org:from_smtp,amd.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 66A2F6FA3F7
+X-Rspamd-Queue-Id: D22AB6FAA4A
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sven Eckelmann <sven@narfation.org>
+From: Sean Christopherson <seanjc@google.com>
 
-commit d67c728f07fca2ee6ffdc6dd4421cf2e8691f4d1 upstream.
+[ Upstream commit 08385c5e1814edee829ffe475d559ed730354335 ]
 
-The last_recv_time field for batadv_tp_receiver tracks the jiffies value of
-the most recent activity and is used to detect timeouts. These accesses are
-not consistently protected by a lock, so READ_ONCE/WRITE_ONCE must be used
-to prevent data races caused by compiler optimizations.
+Relocate sev_free_vcpu() down in sev.c so that it's definition comes after
+sev_es_unmap_ghcb().  This will allow sharing unmap functionality between
+the two functions without needing a forward declaration (or weird placement
+of the common code).
 
-Cc: stable@kernel.org
-Fixes: 33a3bb4a3345 ("batman-adv: throughput meter implementation")
-Signed-off-by: Sven Eckelmann <sven@narfation.org>
+No functional change intended.
+
+Cc: stable@vger.kernel.org
+Reviewed-by: Tom Lendacky <thomas.lendacky@amd.com>
+Reviewed-by: Michael Roth <michael.roth@amd.com>
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+Message-ID: <20260501202250.2115252-16-seanjc@google.com>
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+Message-ID: <20260529183549.1104619-16-pbonzini@redhat.com>
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+[sean: Preserve use of sev_es_guest() as is_sev_es_guest() doesn't exist
+       in 6.12, resolve superficial conflict due to pre_sev_run()
+       prototype mismatch.]
+Signed-off-by: Sean Christopherson <seanjc@google.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/batman-adv/tp_meter.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ arch/x86/kvm/svm/sev.c | 62 +++++++++++++++++++++---------------------
+ 1 file changed, 31 insertions(+), 31 deletions(-)
 
-diff --git a/net/batman-adv/tp_meter.c b/net/batman-adv/tp_meter.c
-index 105cda5b0b2cda..503819e9839c62 100644
---- a/net/batman-adv/tp_meter.c
-+++ b/net/batman-adv/tp_meter.c
-@@ -1183,7 +1183,7 @@ static void batadv_tp_receiver_shutdown(struct timer_list *t)
- 	bat_priv = tp_vars->bat_priv;
+diff --git a/arch/x86/kvm/svm/sev.c b/arch/x86/kvm/svm/sev.c
+index 73e49317735173..7ddce0685293de 100644
+--- a/arch/x86/kvm/svm/sev.c
++++ b/arch/x86/kvm/svm/sev.c
+@@ -3168,37 +3168,6 @@ void sev_guest_memory_reclaimed(struct kvm *kvm)
+ 	wbinvd_on_all_cpus();
+ }
  
- 	/* if there is recent activity rearm the timer */
--	if (!batadv_has_timed_out(tp_vars->last_recv_time,
-+	if (!batadv_has_timed_out(READ_ONCE(tp_vars->last_recv_time),
- 				  BATADV_TP_RECV_TIMEOUT)) {
- 		/* reset the receiver shutdown timer */
- 		batadv_tp_reset_receiver_timer(tp_vars);
-@@ -1424,7 +1424,7 @@ batadv_tp_init_recv(struct batadv_priv *bat_priv,
- 	tp_vars = batadv_tp_list_find_session(bat_priv, icmp->orig,
- 					      icmp->session, BATADV_TP_RECEIVER);
- 	if (tp_vars) {
--		tp_vars->last_recv_time = jiffies;
-+		WRITE_ONCE(tp_vars->last_recv_time, jiffies);
- 		goto out_unlock;
- 	}
+-void sev_free_vcpu(struct kvm_vcpu *vcpu)
+-{
+-	struct vcpu_svm *svm;
+-
+-	if (!sev_es_guest(vcpu->kvm))
+-		return;
+-
+-	svm = to_svm(vcpu);
+-
+-	/*
+-	 * If it's an SNP guest, then the VMSA was marked in the RMP table as
+-	 * a guest-owned page. Transition the page to hypervisor state before
+-	 * releasing it back to the system.
+-	 */
+-	if (sev_snp_guest(vcpu->kvm)) {
+-		u64 pfn = __pa(svm->sev_es.vmsa) >> PAGE_SHIFT;
+-
+-		if (kvm_rmp_make_shared(vcpu->kvm, pfn, PG_LEVEL_4K))
+-			goto skip_vmsa_free;
+-	}
+-
+-	if (vcpu->arch.guest_state_protected)
+-		sev_flush_encrypted_page(vcpu, svm->sev_es.vmsa);
+-
+-	__free_page(virt_to_page(svm->sev_es.vmsa));
+-
+-skip_vmsa_free:
+-	if (svm->sev_es.ghcb_sa_free)
+-		kvfree(svm->sev_es.ghcb_sa);
+-}
+-
+ static void dump_ghcb(struct vcpu_svm *svm)
+ {
+ 	struct ghcb *ghcb = svm->sev_es.ghcb;
+@@ -3475,6 +3444,37 @@ void sev_es_unmap_ghcb(struct vcpu_svm *svm)
+ 	svm->sev_es.ghcb = NULL;
+ }
  
-@@ -1455,7 +1455,7 @@ batadv_tp_init_recv(struct batadv_priv *bat_priv,
- 	kref_get(&tp_vars->refcount);
- 	timer_setup(&tp_vars->timer, batadv_tp_receiver_shutdown, 0);
- 
--	tp_vars->last_recv_time = jiffies;
-+	WRITE_ONCE(tp_vars->last_recv_time, jiffies);
- 
- 	kref_get(&tp_vars->refcount);
- 	hlist_add_head_rcu(&tp_vars->list, &bat_priv->tp_list);
-@@ -1506,7 +1506,7 @@ static void batadv_tp_recv_msg(struct batadv_priv *bat_priv,
- 			goto out;
- 		}
- 
--		tp_vars->last_recv_time = jiffies;
-+		WRITE_ONCE(tp_vars->last_recv_time, jiffies);
- 	}
- 
- 	/* if the packet is a duplicate, it may be the case that an ACK has been
++void sev_free_vcpu(struct kvm_vcpu *vcpu)
++{
++	struct vcpu_svm *svm;
++
++	if (!sev_es_guest(vcpu->kvm))
++		return;
++
++	svm = to_svm(vcpu);
++
++	/*
++	 * If it's an SNP guest, then the VMSA was marked in the RMP table as
++	 * a guest-owned page. Transition the page to hypervisor state before
++	 * releasing it back to the system.
++	 */
++	if (sev_snp_guest(vcpu->kvm)) {
++		u64 pfn = __pa(svm->sev_es.vmsa) >> PAGE_SHIFT;
++
++		if (kvm_rmp_make_shared(vcpu->kvm, pfn, PG_LEVEL_4K))
++			goto skip_vmsa_free;
++	}
++
++	if (vcpu->arch.guest_state_protected)
++		sev_flush_encrypted_page(vcpu, svm->sev_es.vmsa);
++
++	__free_page(virt_to_page(svm->sev_es.vmsa));
++
++skip_vmsa_free:
++	if (svm->sev_es.ghcb_sa_free)
++		kvfree(svm->sev_es.ghcb_sa);
++}
++
+ void pre_sev_run(struct vcpu_svm *svm, int cpu)
+ {
+ 	struct svm_cpu_data *sd = per_cpu_ptr(&svm_data, cpu);
 -- 
 2.53.0
 
