@@ -1,61 +1,61 @@
-Return-Path: <stable+bounces-271395-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-271506-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id k5eqAEimRmrsawsAu9opvQ
-	(envelope-from <stable+bounces-271395-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:56:24 +0200
+	id 2OFvBvudRmr3aAsAu9opvQ
+	(envelope-from <stable+bounces-271506-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:20:59 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6B7726FBB86
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:56:22 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 129B26FB3BA
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:20:58 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="l/jpkZGH";
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-271395-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-271395-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=QUj2wc4T;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-271506-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-271506-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D23D631EB505
-	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:57:24 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id BEDF831FF23A
+	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 17:02:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C899433689F;
-	Thu,  2 Jul 2026 16:57:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EBBE1310779;
+	Thu,  2 Jul 2026 17:02:00 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 981E62D0602;
-	Thu,  2 Jul 2026 16:57:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA9E224E4C3;
+	Thu,  2 Jul 2026 17:01:59 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783011431; cv=none; b=tFAGvzkJ9rFv7iaXGzN/25tDfUvVuD49fw7Xt4MIJjGvr7Adrpgju/2bHyTn1xd3iZJuOTCkMSrFW+pLBykx4QuaWkTWRO0JYIGJvXn37U+jvxVdA+d49yobdd2pMRj1TLYvpS4VTbDoi77S66GN/6VHSTxBEz8pCg0sWZLX3lQ=
+	t=1783011720; cv=none; b=OSbYqbNxBDAG3L3TvIOhMbLmXhsPxps2OdE5HRd3NkjINf/L40nerrMh+msCuGgAIwuObfHl1lFrAUvU8dK6mMYG58XFXX5LzTh8wTABVz+mPMHK8XAfzU72Se1ch6Ogn0XDL5XJDByEoWsMddUXU7TBi5XLzPOtkwMuLQpdSQY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783011431; c=relaxed/simple;
-	bh=cpxSxlFD1Rpa5ZrYUof6RTpaLpApMx8U6m7nrqM5ZNU=;
+	s=arc-20240116; t=1783011720; c=relaxed/simple;
+	bh=B4NYvbcxJWZe9iNbSXdqHsiys+Ii0GzDsKBD9sRG+Jg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mZ0xLEKxpxrzPvazZuAGF7mdQjsgzD3axvcnWG/zcdB+iOtxUZltrQb1Kkntz7iBqZ0Kg6+ZIMDH02hJglaSomlSsei30oXwfyM+Hy+4WVaaWs/ykzVCJ4PtHc2MA3zevB8W3BX7DOMqdNcqx35ShwOmZVhAlaiEhBWSPD4A/wI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l/jpkZGH; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0960B1F00A3D;
-	Thu,  2 Jul 2026 16:57:09 +0000 (UTC)
+	 MIME-Version; b=sqz2wf5df/excQWFUnrmjS24RF/yT79cCbB2KrJUSN+JIxszzS7evyvCAsfFnGgSgXChGkxZNqyHKKaYZ2IvGTeZXPOl33onqGbK3vVLR+gAw+4dazi8OaGSCp/lkvpHWBSeSeF55pI9m2+PCnucZfyCPUJgpanEfyUdqj0c+VQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QUj2wc4T; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C2181F000E9;
+	Thu,  2 Jul 2026 17:01:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1783011430;
-	bh=ZSzgdRCn+DcmQ/PhHpZo6lBNcRC5JA/ITHbXSoNF/Ng=;
+	s=korg; t=1783011719;
+	bh=lZCXMBo7hrvVxfqSJkw0syRaw35reKS+uFLzLhCkcYY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=l/jpkZGH17jj5VqQK7pG/U67SnyaF74fX1p2CA2+UibPgGFjX+Bf06YfmhdiNwkLF
-	 GBX7L0fEi4ktgJKwAjEYjIgj1GS6zf+9WrGfzTssOKUa7LZZdbqYRIlSV/g+Pt/OxZ
-	 WRYEr7c2/LVTR3Y6Si8CXO5a39g9DAhzrJH/VYdA=
+	b=QUj2wc4Tn67IDVedQ3xbpLyYEO7lfCjiJGo+tRWo2dKXN0KGE1w5ZlPSxB3fRua/B
+	 TTOLb6zawiYWSl3zU8mSkpdLPzr1CYx2AfM4eI9IfwbhXf0XpFDE4ejNJmiNk4qiEy
+	 As+0/yp0pYMkDaOGtW/9xZiEssOzip0XN0hfAj7k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	HanQuan <eilaimemedsnaimel@gmail.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.18 107/108] net/tcp-ao: fix use-after-free of key in del_async path
+	Chris Mason <clm@meta.com>,
+	Jeff Layton <jlayton@kernel.org>,
+	Chuck Lever <chuck.lever@oracle.com>
+Subject: [PATCH 7.1 108/120] nfsd: fix inverted cp_ttl check in async copy reaper
 Date: Thu,  2 Jul 2026 18:21:44 +0200
-Message-ID: <20260702155114.330730971@linuxfoundation.org>
+Message-ID: <20260702155115.193586284@linuxfoundation.org>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260702155112.110058792@linuxfoundation.org>
-References: <20260702155112.110058792@linuxfoundation.org>
+In-Reply-To: <20260702155112.964534952@linuxfoundation.org>
+References: <20260702155112.964534952@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,83 +72,80 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-271506-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-271395-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:eilaimemedsnaimel@gmail.com,m:edumazet@google.com,m:kuba@kernel.org,s:lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,google.com,kernel.org];
 	FORWARDED(0.00)[lists@lfdr.de];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:clm@meta.com,m:jlayton@kernel.org,m:chuck.lever@oracle.com,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,msgid.link:url]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[meta.com:email,oracle.com:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 6B7726FBB86
+X-Rspamd-Queue-Id: 129B26FB3BA
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: HanQuan <eilaimemedsnaimel@gmail.com>
+From: Jeff Layton <jlayton@kernel.org>
 
-commit 5ba9950bc9078e19b69cca1e56d1553b125c6857 upstream.
+commit 0150459b05490b88b7e7378a31550a9e07b5517c upstream.
 
-In tcp_ao_delete_key(), the del_async path skips the current_key
-and rnext_key validity checks present in the synchronous path,
-assuming these pointers are always NULL on LISTEN sockets.  However,
-if a key was added with set_current=1/set_rnext=1 while the socket
-was in CLOSE state, current_key and rnext_key will be non-NULL
-after listen() transitions the socket to LISTEN.
+nfsd4_async_copy_reaper() is supposed to keep completed async copy
+state around for NFSD_COPY_INITIAL_TTL (10) laundromat ticks so
+that OFFLOAD_STATUS can report the result, then reap the state once
+the countdown expires.
 
-When such a key is deleted with del_async=1, hlist_del_rcu() and
-call_rcu() free the key without clearing the dangling pointers.
-After the RCU grace period, getsockopt(TCP_AO_INFO) dereferences
-current_key->sndid and rnext_key->rcvid from freed slab memory.
+The TTL predicate is inverted: `if (--copy->cp_ttl)` is true while
+ticks remain and false when the counter reaches zero.  This causes
+the copy to be reaped on the very first tick (cp_ttl goes from 10
+to 9, which is non-zero) instead of after all 10 ticks elapse.
+Once reaped, OFFLOAD_STATUS returns NFS4ERR_BAD_STATEID because
+the copy state has already been freed.
 
-Clear current_key and rnext_key in the del_async path when they
-reference the key being deleted.
+Fix by negating the test so that cleanup runs when the TTL expires.
 
-Fixes: d6732b95b6fb ("net/tcp: Allow asynchronous delete for TCP-AO keys (MKTs)")
-Signed-off-by: HanQuan <eilaimemedsnaimel@gmail.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Link: https://patch.msgid.link/20260623015208.1191687-1-eilaimemedsnaimel@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: aa0ebd21df9c ("NFSD: Add nfsd4_copy time-to-live")
+Cc: stable@vger.kernel.org
+Reported-by: Chris Mason <clm@meta.com>
+Assisted-by: kres:claude-opus-4-6
+Signed-off-by: Jeff Layton <jlayton@kernel.org>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv4/tcp_ao.c |    4 ++++
- 1 file changed, 4 insertions(+)
+ fs/nfsd/nfs4proc.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/net/ipv4/tcp_ao.c
-+++ b/net/ipv4/tcp_ao.c
-@@ -1776,6 +1776,10 @@ static int tcp_ao_delete_key(struct sock
- 	 * them and we can just free all resources in RCU fashion.
- 	 */
- 	if (del_async) {
-+		if (ao_info->current_key == key)
-+			WRITE_ONCE(ao_info->current_key, NULL);
-+		if (ao_info->rnext_key == key)
-+			WRITE_ONCE(ao_info->rnext_key, NULL);
- 		atomic_sub(tcp_ao_sizeof_key(key), &sk->sk_omem_alloc);
- 		call_rcu(&key->rcu, tcp_ao_key_free_rcu);
- 		return 0;
+--- a/fs/nfsd/nfs4proc.c
++++ b/fs/nfsd/nfs4proc.c
+@@ -1470,7 +1470,7 @@ void nfsd4_async_copy_reaper(struct nfsd
+ 		list_for_each_safe(pos, next, &clp->async_copies) {
+ 			copy = list_entry(pos, struct nfsd4_copy, copies);
+ 			if (test_bit(NFSD4_COPY_F_OFFLOAD_DONE, &copy->cp_flags)) {
+-				if (--copy->cp_ttl) {
++				if (!--copy->cp_ttl) {
+ 					list_del_init(&copy->copies);
+ 					list_add(&copy->copies, &reaplist);
+ 				}
 
 
 
