@@ -1,79 +1,62 @@
-Return-Path: <stable+bounces-271172-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-270699-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id ep6kH5aZRmoBZwsAu9opvQ
-	(envelope-from <stable+bounces-271172-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:02:14 +0200
+	id sQraL7aVRmq4ZAsAu9opvQ
+	(envelope-from <stable+bounces-270699-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:45:42 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 944896FAE39
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:02:13 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B14836FA7FD
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:45:41 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=Z5+oWD2u;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-271172-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-271172-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=HdcpIHSG;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-270699-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-270699-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 64311334355D
-	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:49:19 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 2BB1930F367D
+	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:32:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8323635674C;
-	Thu,  2 Jul 2026 16:47:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92CB23A8759;
+	Thu,  2 Jul 2026 16:27:01 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A8043A1E92;
-	Thu,  2 Jul 2026 16:47:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D561396B8C;
+	Thu,  2 Jul 2026 16:26:58 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783010857; cv=none; b=gV+qmfLEaPmcJp+BiUsF69i9cstUfb8+DJUN5z+PodREB6dw/0jDN1dn9jz0QI3a8Dl/qEcOYHsB9yQCr9bQy4NLWxI5YIs3L7pcGVnvd+Brb+ouIqEvshD+y5URpUPc54YH5DxyHakLSOAs38dEa4D8rsG90FFo5bSylOfY6+g=
+	t=1783009620; cv=none; b=Aycf+UbD46uFGNYPBFYxUGazwBPTMw3Cjs7z1oQ7XS2/y3YoPBppmf/cOjTavTpLIFaj9JaLIo3OYj3/jk/5YxO4PEmbm31QzeFIwh699ZxbdjwTQKq0gtY7brR6Ky4izf8Io2LcNteYXk3yNdh7o/HZFJh6Y4P0EmR8T1Ez8wg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783010857; c=relaxed/simple;
-	bh=ybo5kdtIQbzoMR+nPjRZuspSA4FLEX0OUpqlmyXR5i4=;
+	s=arc-20240116; t=1783009620; c=relaxed/simple;
+	bh=IIrLGJnrTo8Gp0MzfA42z5FNrk81J3ZDCNKAmruxcaM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rpXu3gLGRVTPtmgv4VA5F2il6266xltqCPZzvAPxg0yH3p7Z0PHe8REmWvyTOAymSm0tEJ4vCX+8t86uifrngyNWEyKJG4zsC4JYfgIx2jCHQNnfuvr3ABtttVZYavYaqdTc+ydreSUMF1U/lOu+c9WKLFfu920iCJoz2dUSusE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z5+oWD2u; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58C5D1F000E9;
-	Thu,  2 Jul 2026 16:47:35 +0000 (UTC)
+	 MIME-Version:Content-Type; b=rAyBcIxTizTMGKgWFF9h59sOFHbiypAKIslBJSqw5571oTYLa/KPXDD3HV29lVfJzSG/QsPkZGvQTje5G+PLE6/5nq0Yuee4xJj7Pq3P7UGitQXJ9pVTrey5KISR8U7ps780xZ9WroiGnZiSMCidm7xsX+CgqFxGCLy9Syq/P2A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HdcpIHSG; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9859D1F00A3A;
+	Thu,  2 Jul 2026 16:26:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1783010856;
-	bh=V6n5C7vOKkzekwiNi/nVdZaccRf0/knKkOshOolO/F0=;
+	s=korg; t=1783009618;
+	bh=+VMYUCrMe3H8lyvtsK1aADQ5sOsu8WGU4FLjWSDiy8s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Z5+oWD2u+RnS2SBjZVu6oJxZc/JfSLPt/VlX3G2+gHUvNEyYSGyr541M72Wr6TDGh
-	 4FmuzNuZ8YvWm5p68xqyABbTWgaCcgrSlQQyoJrMxyVG5LPly4V+Ar1oMeEvG6XQGz
-	 GdkbUNPSYKmguBqep2abrEKomIo4mX0Qr2qM2Kl8=
+	b=HdcpIHSGOxddBnYMPSu1fF08zt93Lv9QooWYnGJTbCTxr2QHslsSWxXYE2KIbfRuj
+	 ca7aT8VNLBTYCx7GnW1F5+xikSGYBN+npM8eICMYYdgYRHrscy64Ulj44p0o/PqlTE
+	 3O3LiQET5f8cvEQpuOLdqXDOLOjtXqkQo4GsA8+Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	bpf <bpf@vger.kernel.org>,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	Masahiro Yamada <masahiroy@kernel.org>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Nicolas Schier <nicolas@fjasle.eu>,
-	Zheng Yejian <zhengyejian1@huawei.com>,
-	Martin Kelly <martin.kelly@crowdstrike.com>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Josh Poimboeuf <jpoimboe@redhat.com>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>,
-	Vasily Gorbik <gor@linux.ibm.com>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
-	Andrey Grodzovsky <andrey.grodzovsky@crowdstrike.com>
-Subject: [PATCH 6.6 064/175] ftrace: Have ftrace pages output reflect freed pages
-Date: Thu,  2 Jul 2026 18:19:25 +0200
-Message-ID: <20260702155117.143529381@linuxfoundation.org>
+	=?UTF-8?q?Aur=C3=A9lien=20Bombo?= <abombo@microsoft.com>,
+	Zhihao Cheng <chengzhihao1@huawei.com>,
+	Greg Kurz <gkurz@redhat.com>,
+	Miklos Szeredi <mszeredi@redhat.com>
+Subject: [PATCH 5.15 23/95] virtiofs: fix UAF on submount umount
+Date: Thu,  2 Jul 2026 18:19:26 +0200
+Message-ID: <20260702155109.695242682@linuxfoundation.org>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260702155115.766838875@linuxfoundation.org>
-References: <20260702155115.766838875@linuxfoundation.org>
+In-Reply-To: <20260702155109.196223802@linuxfoundation.org>
+References: <20260702155109.196223802@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -83,151 +66,92 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-271172-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-270699-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[24];
-	FORWARDED(0.00)[lists@lfdr.de];
+	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:bpf@vger.kernel.org,m:mhiramat@kernel.org,m:mark.rutland@arm.com,m:mathieu.desnoyers@efficios.com,m:akpm@linux-foundation.org,m:peterz@infradead.org,m:torvalds@linux-foundation.org,m:masahiroy@kernel.org,m:nathan@kernel.org,m:nicolas@fjasle.eu,m:zhengyejian1@huawei.com,m:martin.kelly@crowdstrike.com,m:christophe.leroy@csgroup.eu,m:jpoimboe@redhat.com,m:hca@linux.ibm.com,m:catalin.marinas@arm.com,m:will@kernel.org,m:gor@linux.ibm.com,m:agordeev@linux.ibm.com,m:rostedt@goodmis.org,m:andrey.grodzovsky@crowdstrike.com,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:abombo@microsoft.com,m:chengzhihao1@huawei.com,m:gkurz@redhat.com,m:mszeredi@redhat.com,s:lists@lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+	MID_RHS_MATCH_FROM(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,huawei.com:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 944896FAE39
+X-Rspamd-Queue-Id: B14836FA7FD
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Steven Rostedt <rostedt@goodmis.org>
+From: Miklos Szeredi <mszeredi@redhat.com>
 
-[ Upstream commit 264143c4e54412095f4b615e65bf736fc3c60af0 ]
+commit 06b41351779e9289e8785694ade9042ae85e41ea upstream.
 
-The amount of memory that ftrace uses to save the descriptors to manage
-the functions it can trace is shown at output. But if there are a lot of
-functions that are skipped because they were weak or the architecture
-added holes into the tables, then the extra pages that were allocated are
-freed. But these freed pages are not reflected in the numbers shown, and
-they can even be inconsistent with what is reported:
+iput() called from fuse_release_end() can Oops if the super block has
+already been destroyed.  Normally this is prevented by waiting for
+num_waiting to go down to zero before commencing with super block shutdown.
 
- ftrace: allocating 57482 entries in 225 pages
- ftrace: allocated 224 pages with 3 groups
+This only works, however, for the last submount instance, as the wait
+counter is per connection, not per superblock.
 
-The above shows the number of original entries that are in the mcount_loc
-section and the pages needed to save them (225), but the second output
-reflects the number of pages that were actually used. The two should be
-consistent as:
+Revert to using synchronous release requests for the auto_submounts case,
+which is virtiofs only at this time.
 
- ftrace: allocating 56739 entries in 224 pages
- ftrace: allocated 224 pages with 3 groups
-
-The above also shows the accurate number of entires that were actually
-stored and does not include the entries that were removed.
-
-Cc: bpf <bpf@vger.kernel.org>
-Cc: Masami Hiramatsu <mhiramat@kernel.org>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: Masahiro Yamada <masahiroy@kernel.org>
-Cc: Nathan Chancellor <nathan@kernel.org>
-Cc: Nicolas Schier <nicolas@fjasle.eu>
-Cc: Zheng Yejian <zhengyejian1@huawei.com>
-Cc: Martin  Kelly <martin.kelly@crowdstrike.com>
-Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
-Cc: Josh Poimboeuf <jpoimboe@redhat.com>
-Cc: Heiko Carstens <hca@linux.ibm.com>
-Cc: Catalin Marinas <catalin.marinas@arm.com>
-Cc: Will Deacon <will@kernel.org>
-Cc: Vasily Gorbik <gor@linux.ibm.com>
-Cc: Alexander Gordeev <agordeev@linux.ibm.com>
-Link: https://lore.kernel.org/20250218200023.221100846@goodmis.org
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-Signed-off-by: Andrey Grodzovsky <andrey.grodzovsky@crowdstrike.com>
+Reported-by: Aurélien Bombo <abombo@microsoft.com>
+Reported-by: Zhihao Cheng <chengzhihao1@huawei.com>
+Cc: Greg Kurz <gkurz@redhat.com>
+Closes: https://github.com/kata-containers/kata-containers/issues/12589
+Fixes: 26e5c67deb2e ("fuse: fix livelock in synchronous file put from fuseblk workers")
+Cc: stable@vger.kernel.org
+Reviewed-by: Greg Kurz <gkurz@redhat.com>
+Signed-off-by: Miklos Szeredi <mszeredi@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/trace/ftrace.c |   15 ++++++++++++---
- 1 file changed, 12 insertions(+), 3 deletions(-)
+ fs/fuse/file.c |    8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
---- a/kernel/trace/ftrace.c
-+++ b/kernel/trace/ftrace.c
-@@ -6527,6 +6527,7 @@ static int ftrace_process_locs(struct mo
- 	unsigned long addr;
- 	unsigned long kaslr;
- 	unsigned long flags = 0; /* Shut up gcc */
-+	unsigned long pages;
- 	int ret = -ENOMEM;
- 
- 	count = end - start;
-@@ -6534,6 +6535,8 @@ static int ftrace_process_locs(struct mo
- 	if (!count)
- 		return 0;
- 
-+	pages = DIV_ROUND_UP(count, ENTRIES_PER_PAGE);
-+
- 	/*
- 	 * Sorting mcount in vmlinux at build time depend on
- 	 * CONFIG_BUILDTIME_MCOUNT_SORT, while mcount loc in
-@@ -6645,6 +6648,8 @@ static int ftrace_process_locs(struct mo
- 			for (pg = pg_unuse; pg; pg = pg->next)
- 				remaining += 1 << pg->order;
- 
-+			pages -= remaining;
-+
- 			skip = DIV_ROUND_UP(skip, ENTRIES_PER_PAGE);
- 
- 			/*
-@@ -6658,6 +6663,13 @@ static int ftrace_process_locs(struct mo
- 		synchronize_rcu();
- 		ftrace_free_pages(pg_unuse);
- 	}
-+
-+	if (!mod) {
-+		count -= skipped;
-+		pr_info("ftrace: allocating %ld entries in %ld pages\n",
-+			count, pages);
-+	}
-+
- 	return ret;
+--- a/fs/fuse/file.c
++++ b/fs/fuse/file.c
+@@ -358,8 +358,14 @@ void fuse_file_release(struct inode *ino
+ 	 * aio and closes the fd before the aio completes.  Since aio takes its
+ 	 * own ref to the file, the IO completion has to drop the ref, which is
+ 	 * how the fuse server can end up closing its clients' files.
++	 *
++	 * Exception is virtio-fs, which is not affected by the above (server is
++	 * on host, cannot close open files in guest).  Virtio-fs needs sync
++	 * release, because the num_waiting mechanism to wait for all requests
++	 * before commencing with fs shutdown doesn't work if submounts are
++	 * used.
+ 	 */
+-	fuse_file_put(ff, false);
++	fuse_file_put(ff, ff->fm->fc->auto_submounts);
  }
  
-@@ -7315,9 +7327,6 @@ void __init ftrace_init(void)
- 		goto failed;
- 	}
- 
--	pr_info("ftrace: allocating %ld entries in %ld pages\n",
--		count, DIV_ROUND_UP(count, ENTRIES_PER_PAGE));
--
- 	ret = ftrace_process_locs(NULL,
- 				  __start_mcount_loc,
- 				  __stop_mcount_loc);
+ void fuse_release_common(struct file *file, bool isdir)
 
 
 
