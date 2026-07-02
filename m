@@ -1,60 +1,62 @@
-Return-Path: <stable+bounces-271079-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-271325-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id IOGYEfSXRmokZgsAu9opvQ
-	(envelope-from <stable+bounces-271079-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:55:16 +0200
+	id EfATELalRmrNawsAu9opvQ
+	(envelope-from <stable+bounces-271325-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:53:58 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id BD0A36FABF4
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:55:15 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 324F16FBB26
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:53:57 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=TTSao49J;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-271079-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-271079-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=O3kALPOB;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-271325-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-271325-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 0637B3134449
-	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:46:36 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id CA2F1315F364
+	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:54:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19EAE33B951;
-	Thu,  2 Jul 2026 16:43:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E35825B09B;
+	Thu,  2 Jul 2026 16:54:11 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB1B91C695;
-	Thu,  2 Jul 2026 16:43:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05CA024E4C3;
+	Thu,  2 Jul 2026 16:54:09 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783010614; cv=none; b=sdeXdLCCu3dGPBxsqmdOPL/2sjLnk/FjeWw4bTrmEBvyWN1D1514sRNwccRE4PBX3F4lalc8sa5OUZBQyaG7qjB+6FiAvG/LfwqP8x24O+nbAIkaxdSZVUHldlqheZN02H4NbtiVP570+4kQdlsrQ49AHI0kYqrwusDwARdIeeA=
+	t=1783011251; cv=none; b=HiEF1bKI4l5RABljnkO1x1gKmHeBH32hHMk+9Vc6TXvzpyZQO3/Dgasmps3zBsJB90lBfi3RmGAw2khQ9m7MS9iM8HPRrd6cBWYyd8DYTsZASNlsWiOhe06HmtzW/kOqWE4cw86tdl/TZc/z6NR5f5iXe2cifM5G8XbEYT+Ntb8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783010614; c=relaxed/simple;
-	bh=jDX3BH9jPx/M3/spi+59eTMC6chIAqLsJw6ivTHcaqo=;
+	s=arc-20240116; t=1783011251; c=relaxed/simple;
+	bh=CzVQE0bo1gvPy9iEDmW+1Nag6emEmgKivl4CF80AiJY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=d4061MyKrGh5sb9T1cJghlwi+dU904FuOKi+EGKeh42KRKbnj+ZvwdHjKpsYr08ARqU/Rzp0yWuxpaKJiKxKjKg+8iEK7aVp5ra67SbY6wPLxGZt+hTcnQ02YW7FQs86yGeK5V8w0Qrw48vhtxfYOeUi8KvqmpyC1T5QyJQCnDA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TTSao49J; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E0E51F000E9;
-	Thu,  2 Jul 2026 16:43:33 +0000 (UTC)
+	 MIME-Version; b=YaSale7ICghnbCrwGXQfgZRbEhH5UJDRRhTPFsB1Vg6Ho9qNsfvBDsXo3dhN+4RuuYcZ1cx6wiNhxI3AOiyfvW8KELr0VpvJB2hjMQ+hvFZZu3kDGeXpcWDNIarzj/TMP3P1vHncrKfRRPG+YW7po9TVzsBgBsvpj6ISR/00huY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O3kALPOB; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 205A81F000E9;
+	Thu,  2 Jul 2026 16:54:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1783010613;
-	bh=WjSZGFl3Uf/X+NfN1NqDwIj18wIrJIXTmkmCVURjdwk=;
+	s=korg; t=1783011249;
+	bh=zDbBn/h/JpXuW/1aXUh3fpQcsCBhnb3r1cuqpp/RI/4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=TTSao49JDYTxMHIVaseuX+qdr1ezMRbxzev856Ih+tBPScJNXl+tGg851foJT6KOG
-	 bkd3VBi8q4poLlcfZsl0kTgSZ8zRSs7CCy2w2yYESzOmFT90AehuXZgSNgOV4aQKAS
-	 VNXpVtKQJUShg6bOsuk2ISEj3GHWiS8CmGB5J3w4=
+	b=O3kALPOBmwqyrKoeIzSRtA9hEI83rl7KJ3+Hh1rHbTqhNqLSivOZ+BlkQwDS/j0Ge
+	 kFBYagbMWuKORr2m6d3ydiRhe/0rvwT4Jt4CmhcW/a8dKs0faJOTId19tREHrBIO+q
+	 dytVyaulKcPecAP+yWOBfvbUO0hyIj94ZlJeQLlM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jonas Jelonek <jelonek.jonas@gmail.com>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-Subject: [PATCH 6.12 176/204] MIPS: smp: report dying CPU to RCU in stop_this_cpu()
+	Igor Ushakov <sysroot314@gmail.com>,
+	Kuniyuki Iwashima <kuniyu@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.18 036/108] af_unix: Set gc_in_progress to true in unix_gc().
 Date: Thu,  2 Jul 2026 18:20:33 +0200
-Message-ID: <20260702155122.344392901@linuxfoundation.org>
+Message-ID: <20260702155112.855621743@linuxfoundation.org>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260702155118.667618796@linuxfoundation.org>
-References: <20260702155118.667618796@linuxfoundation.org>
+In-Reply-To: <20260702155112.110058792@linuxfoundation.org>
+References: <20260702155112.110058792@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,113 +68,106 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-271325-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,google.com,kernel.org];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:sysroot314@gmail.com,m:kuniyu@google.com,m:kuba@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-271079-lists,stable=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:jelonek.jonas@gmail.com,m:tsbogend@alpha.franken.de,m:jelonekjonas@gmail.com,s:lists@lfdr.de];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORWARDED(0.00)[lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,alpha.franken.de];
-	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	RWL_MAILSPIKE_POSSIBLE(0.00)[104.64.211.4:from];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,vger.kernel.org:from_smtp]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: BD0A36FABF4
+X-Rspamd-Queue-Id: 324F16FBB26
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jonas Jelonek <jelonek.jonas@gmail.com>
+From: Kuniyuki Iwashima <kuniyu@google.com>
 
-commit 9f3f3bdc6d9dac1a5a8262ee7ad0f2ff1527a7e7 upstream.
+[ Upstream commit d82ba05263c69fa2437fe93e4e561cc40f4c03af ]
 
-smp_send_stop() parks all secondary CPUs in stop_this_cpu(). The function
-marks the CPU offline for the scheduler via set_cpu_online(false) but
-never informs RCU, so RCU keeps expecting a quiescent state from CPUs
-that are now spinning forever with interrupts disabled.
+Igor Ushakov reported that unix_gc() could run with gc_in_progress
+being false if the work is scheduled while running:
 
-As long as nothing waits for an RCU grace period after smp_send_stop()
-this is harmless, which is why it went unnoticed. Since commit
-91840be8f710 ("irq_work: Fix use-after-free in irq_work_single() on PREEMPT_RT")
-however, irq_work_sync() calls synchronize_rcu() on architectures without
-an irq_work self-IPI, i.e. where arch_irq_work_has_interrupt() returns
-false. That is the asm-generic default used by MIPS. Any irq_work_sync()
-issued in the reboot/shutdown path after smp_send_stop() then blocks on
-a grace period that can never complete, hanging the reboot:
+  Thread 1         Thread 2                     Thread 3
+  --------         --------                     --------
+                   unix_schedule_gc()           unix_schedule_gc()
+                   `- if (!gc_in_progress)      `- if (!gc_in_progress)
+                      |- gc_in_progress = true     |
+                      `- queue_work()              |
+  unix_gc() <----------------/                     |
+  |                                                |- gc_in_progress = true
+  ...                                              `- queue_work()
+  |                                                       |
+  `- gc_in_progress = false                               |
+                                                          |
+  unix_gc() <---------------------------------------------'
+  |
+  ... /* gc_in_progress == false */
+  |
+  `- gc_in_progress = false
 
-  WARNING: CPU: 0 PID: 15 at kernel/irq_work.c:144 irq_work_queue_on
-  ...
-  rcu: INFO: rcu_sched detected stalls on CPUs/tasks:
-  rcu: Offline CPU 1 blocking current GP.
-  rcu: Offline CPU 2 blocking current GP.
-  rcu: Offline CPU 3 blocking current GP.
+unix_peek_fpl() relies on gc_in_progress not to confuse GC
+by MSG_PEEK.
 
-This issue was noticed on several Realtek MIPS switch SoCs (MIPS
-interAptiv) and came up during kernel bump downstream in OpenWrt from
-6.18.33 to 6.18.34, after the backport of the patch to the 6.18 stable
-branch. The patch also has been backported all the way back to 6.1.
+Let's set gc_in_progress to true in unix_gc().
 
-Call rcutree_report_cpu_dead() once interrupts are disabled, mirroring the
-generic CPU-hotplug offline path, so RCU stops waiting on the parked CPUs
-and grace periods can still complete. MIPS shuts down all CPUs here
-without going through the CPU-hotplug mechanism, so this report is not
-otherwise issued. Reporting a dying CPU to RCU outside the regular hotplug
-offline path is not unprecedented: arm64 does the same in cpu_die_early().
-There it is an exception for a CPU that was coming online and is aborting
-bringup, rather than the default shutdown action as on MIPS.
-
-Fixes: 91840be8f710 ("irq_work: Fix use-after-free in irq_work_single() on PREEMPT_RT")
-CC: stable@vger.kernel.org
-Signed-off-by: Jonas Jelonek <jelonek.jonas@gmail.com>
-Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 8b90a9f819dc ("af_unix: Run GC on only one CPU.")
+Reported-by: Igor Ushakov <sysroot314@gmail.com>
+Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
+Link: https://patch.msgid.link/20260501073945.1884564-1-kuniyu@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+[ Add setting gc_in_progress in __unix_gc(). Keep the existing
+  set in unix_gc() for wait_for_unix_gc() over-limit throttling. ]
+Signed-off-by: Igor Ushakov <sysroot314@gmail.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/mips/kernel/smp.c |    2 ++
+ net/unix/garbage.c | 2 ++
  1 file changed, 2 insertions(+)
 
---- a/arch/mips/kernel/smp.c
-+++ b/arch/mips/kernel/smp.c
-@@ -20,6 +20,7 @@
- #include <linux/sched/mm.h>
- #include <linux/cpumask.h>
- #include <linux/cpu.h>
-+#include <linux/rcupdate.h>
- #include <linux/err.h>
- #include <linux/ftrace.h>
- #include <linux/irqdomain.h>
-@@ -411,6 +412,7 @@ static void stop_this_cpu(void *dummy)
- 	set_cpu_online(smp_processor_id(), false);
- 	calculate_cpu_foreign_map();
- 	local_irq_disable();
-+	rcutree_report_cpu_dead();
- 	while (1);
- }
+diff --git a/net/unix/garbage.c b/net/unix/garbage.c
+index 529b21d043d927..39867170902662 100644
+--- a/net/unix/garbage.c
++++ b/net/unix/garbage.c
+@@ -606,6 +606,8 @@ static void __unix_gc(struct work_struct *work)
+ 	struct sk_buff_head hitlist;
+ 	struct sk_buff *skb;
  
++	WRITE_ONCE(gc_in_progress, true);
++
+ 	spin_lock(&unix_gc_lock);
+ 
+ 	if (unix_graph_state == UNIX_GRAPH_NOT_CYCLIC) {
+-- 
+2.53.0
+
 
 
 
