@@ -1,62 +1,63 @@
-Return-Path: <stable+bounces-271434-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-270779-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id WsvAMeCbRmo8aAsAu9opvQ
-	(envelope-from <stable+bounces-271434-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:12:00 +0200
+	id iYMEI3CTRmqKYwsAu9opvQ
+	(envelope-from <stable+bounces-270779-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:36:00 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 64F4B6FB1C6
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:12:00 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3B2C86FA468
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:36:00 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=JNrhDMSV;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-271434-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-271434-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=j2z2r8FG;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-270779-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-270779-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 08DB330D1D72
-	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:59:07 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 814CD3013B8E
+	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:34:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DEFFC3246EC;
-	Thu,  2 Jul 2026 16:58:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E033D24E4C3;
+	Thu,  2 Jul 2026 16:30:31 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 748C7335066;
-	Thu,  2 Jul 2026 16:58:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B423F33EB0E;
+	Thu,  2 Jul 2026 16:30:28 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783011534; cv=none; b=H1z3rC1VklIsoIqmuJ2famOMKKzcS3uVay/D7FvjpJa8hV2IYpF5E4ZyxfEroiDjMRuNbLcThuvgD7BzgKnHDcmsNdkJMjZnl0RnSxPCiMeXdeifNiEbcDdp0r2HYrJd0T6K90XyH3BLapdhsLCw8McpaMvuhbZW4/ibjBQJztU=
+	t=1783009831; cv=none; b=pe3XjUu3+9XmFFGely8tMWbMxxLYmmEjMN1uury/zbzCo6Un9rpuJILjIkrU7qtH64yChd6X52Xiq/EKIs5zXrALP6qKF541TW5YdjmW3GLx+osT3Mc3pumtztAH3rC9s73pVzNGjJtHk6sHeiCFNopurfW0iqvCbiaKBUNYRBU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783011534; c=relaxed/simple;
-	bh=nKwxxXqUZM9mrsIRUAj0QHXstEGrGaZ+xKm91MTnN4s=;
+	s=arc-20240116; t=1783009831; c=relaxed/simple;
+	bh=rxScBloIw9j7IHBLMOBjk5iuR6WISStaW1Iyi3U/jDI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nTczYHrmsXlXFiuNSc882/3U7R1YQ2Isdo2VLVq8GzEB8O9yhj9KV4OT+v/DtTjRYRQrCvfhbg8yD3EA2aRchQAOclHQUcEOBL8QqgXV0DTAhMPlXOXjtxw9sPwdS5VJ47CSieek8c/9ZBOnlsq9O5cnV4tZzU3NsYw6MQYcLEQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JNrhDMSV; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D09E61F00A3D;
-	Thu,  2 Jul 2026 16:58:52 +0000 (UTC)
+	 MIME-Version:Content-Type; b=ojAEo34wB+kURX2x4LvCr17V7Iq7QgS5kpi4PAJh+hf/hB8PYX++z9vvP/WTBpCbuxALVUmZysNbvqDeJp6TmcTuv9SsBFwidaOT6At10a7LBGeANFLA9UBqrLheq1WETBfAOTcdnS+oR7c9bvFkDM6RnuwYnuvKfi/8GZksRP0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j2z2r8FG; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0FFA1F000E9;
+	Thu,  2 Jul 2026 16:30:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1783011533;
-	bh=h7i55j2QQwSY2TOX3bCJVgfvUbLG2u5fTJ7cmQYTVeA=;
+	s=korg; t=1783009828;
+	bh=FmZXYZVKV98HteICnRScARD8jcn2NGlcJ/SgDHreU+Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=JNrhDMSV/qj1Tibn++WjDQCbiXx8fc1tmZmgCkIGLqk6POckkJZ4ZF8S6GOrHMpvr
-	 eSyvzqtg87i3NvS3s1JiBEotwbq47gicztfJTgtqWgf7BG+TiZJgeH+VRmXBgvqZov
-	 jXF5lW+k1ZCtgO3BlYwROYP8v7xPibJ+/6rK1qCQ=
+	b=j2z2r8FG1YroPfXGLPqWOn+I/voBUWFlYWkd7w6f78Fq0eeJSCJmhDeZIQ050gX/R
+	 1idR3teHfYVrbWehNUM/QqAVLp+BtN0ixA6VjR5Y1VnCrqBL2Xj1KxXE1JwRHb0EIN
+	 RWEwZp+aDJvY5axgWk1hbfBVD8KAj9SoLoyY1Wfs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lukas Wunner <lukas@wunner.de>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Vinicius Costa Gomes <vinicius.gomes@intel.com>,
-	Giovanni Cabiddu <giovanni.cabiddu@intel.com>
-Subject: [PATCH 7.1 035/120] PCI/P2PDMA: Add Intel QAT, DSA, IAA devices to whitelist
+	Santosh Kalluri <santosh.kalluri129@gmail.com>,
+	=?UTF-8?q?R=C3=A9mi=20Denis-Courmont?= <remi@remlab.net>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 88/95] net: phonet: free phonet_device after RCU grace period
 Date: Thu,  2 Jul 2026 18:20:31 +0200
-Message-ID: <20260702155113.687094335@linuxfoundation.org>
+Message-ID: <20260702155111.060275285@linuxfoundation.org>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260702155112.964534952@linuxfoundation.org>
-References: <20260702155112.964534952@linuxfoundation.org>
+In-Reply-To: <20260702155109.196223802@linuxfoundation.org>
+References: <20260702155109.196223802@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,176 +67,84 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-271434-lists,stable=lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:lukas@wunner.de,m:bhelgaas@google.com,m:vinicius.gomes@intel.com,m:giovanni.cabiddu@intel.com,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-270779-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,remlab.net,kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:santosh.kalluri129@gmail.com,m:remi@remlab.net,m:horms@kernel.org,m:kuba@kernel.org,m:sashal@kernel.org,m:santoshkalluri129@gmail.com,s:lists@lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,intel.com:email,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,wunner.de:email]
+	TO_DN_SOME(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,remlab.net:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 64F4B6FB1C6
+X-Rspamd-Queue-Id: 3B2C86FA468
 
-7.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lukas Wunner <lukas@wunner.de>
+From: Santosh Kalluri <santosh.kalluri129@gmail.com>
 
-commit 0ba76b19fd4c7256787eab0283c759b18eb76876 upstream.
+[ Upstream commit 71de0177b28da751f407581a4515cf4d762f6296 ]
 
-The first device on a PCI root bus determines whether the host bridge is
-whitelisted for P2PDMA.  All Intel Xeon chips since Ice Lake (ICX, 2021)
-expose a device with ID 0x09a2 as first device.  It is loosely associated
-with the IOMMU.  All these Xeon chips support P2PDMA, so since the addition
-of the device with commit feaea1fe8b36 ("PCI/P2PDMA: Add Intel 3rd Gen
-Intel Xeon Scalable Processors to whitelist"), P2PDMA has been allowed on
-all new Xeons without the need to amend the whitelist:
+phonet_device_destroy() removes a phonet_device from the per-net device
+list with list_del_rcu(), but frees it immediately. RCU readers walking
+the same list can still hold a pointer to the object after it has been
+removed, leading to a slab-use-after-free.
 
-Xeons with Performance Cores:
-  Sapphire Rapids (SPR, 2023)
-  Emerald Rapids (EMR, 2023)
-  Granite Rapids (GNR, 2024)
-  Diamond Rapids (DMR, 2026)
+Use kfree_rcu(), matching the lifetime rule already used by
+phonet_address_del() for the same object type.
 
-Xeons with Efficiency Cores:
-  Sierra Forest (SRF, 2024)
-  Clearwater Forest (CWF, 2026)
-
-However these Xeons also expose accelerators as first device on a root bus
-of its own:
-
-  QuickAssist Technology (QAT, crypto & compression accelerator)
-  Data Streaming Accelerator (DSA, dma engine)
-  In-Memory Analytics Accelerator (IAA, compression accelerator)
-
-Whitelist them for P2PDMA as well.  Move their Device ID macros from the
-accelerator drivers to <linux/pci_ids.h> for reuse by P2PDMA code.
-
-Unfortunately the Device IDs vary across Xeon generations as additional
-features were added to the accelerators.  This currently necessitates an
-amendment for each new Xeon chip.
-
-For future chips, this need shall be avoided by an ongoing effort to extend
-ACPI HMAT with PCIe P2PDMA characteristics (latency, bandwidth, ordering
-constraints).  The PCI core will be able look up in this BIOS-provided ACPI
-table whether P2PDMA is supported, instead of relying on a whitelist that
-needs to be amended continuously.
-
-Signed-off-by: Lukas Wunner <lukas@wunner.de>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Acked-by: Vinicius Costa Gomes <vinicius.gomes@intel.com>
-Acked-by: Giovanni Cabiddu <giovanni.cabiddu@intel.com> # QAT
+Fixes: eeb74a9d45f7 ("Phonet: convert devices list to RCU")
 Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/6aac4922b5fe7070b11874427a9285e42ddd05a4.1780585518.git.lukas@wunner.de
+Signed-off-by: Santosh Kalluri <santosh.kalluri129@gmail.com>
+Acked-by: Rémi Denis-Courmont <remi@remlab.net>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/crypto/intel/qat/qat_common/adf_accel_devices.h |    5 -----
- drivers/dma/idxd/registers.h                            |    3 ---
- drivers/pci/p2pdma.c                                    |   10 ++++++++++
- include/linux/pci_ids.h                                 |    8 ++++++++
- 4 files changed, 18 insertions(+), 8 deletions(-)
+ net/phonet/pn_dev.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/crypto/intel/qat/qat_common/adf_accel_devices.h
-+++ b/drivers/crypto/intel/qat/qat_common/adf_accel_devices.h
-@@ -28,15 +28,10 @@
- #define ADF_4XXX_DEVICE_NAME "4xxx"
- #define ADF_420XX_DEVICE_NAME "420xx"
- #define ADF_6XXX_DEVICE_NAME "6xxx"
--#define PCI_DEVICE_ID_INTEL_QAT_4XXX 0x4940
- #define PCI_DEVICE_ID_INTEL_QAT_4XXXIOV 0x4941
--#define PCI_DEVICE_ID_INTEL_QAT_401XX 0x4942
- #define PCI_DEVICE_ID_INTEL_QAT_401XXIOV 0x4943
--#define PCI_DEVICE_ID_INTEL_QAT_402XX 0x4944
- #define PCI_DEVICE_ID_INTEL_QAT_402XXIOV 0x4945
--#define PCI_DEVICE_ID_INTEL_QAT_420XX 0x4946
- #define PCI_DEVICE_ID_INTEL_QAT_420XXIOV 0x4947
--#define PCI_DEVICE_ID_INTEL_QAT_6XXX 0x4948
- #define PCI_DEVICE_ID_INTEL_QAT_6XXX_IOV 0x4949
+--- a/net/phonet/pn_dev.c
++++ b/net/phonet/pn_dev.c
+@@ -105,7 +105,7 @@ static void phonet_device_destroy(struct
+ 		for_each_set_bit(addr, pnd->addrs, 64)
+ 			phonet_address_notify(net, RTM_DELADDR, ifindex, addr);
  
- #define ADF_DEVICE_FUSECTL_OFFSET 0x40
---- a/drivers/dma/idxd/registers.h
-+++ b/drivers/dma/idxd/registers.h
-@@ -10,9 +10,6 @@
- #endif
+-		kfree(pnd);
++		kfree_rcu(pnd, rcu);
+ 	}
+ }
  
- /* PCI Config */
--#define PCI_DEVICE_ID_INTEL_DSA_GNRD	0x11fb
--#define PCI_DEVICE_ID_INTEL_DSA_DMR	0x1212
--#define PCI_DEVICE_ID_INTEL_IAA_DMR	0x1216
- #define PCI_DEVICE_ID_INTEL_IAA_PTL	0xb02d
- #define PCI_DEVICE_ID_INTEL_IAA_WCL	0xfd2d
- 
---- a/drivers/pci/p2pdma.c
-+++ b/drivers/pci/p2pdma.c
-@@ -548,6 +548,16 @@ static const struct pci_p2pdma_whitelist
- 	{PCI_VENDOR_ID_INTEL,	0x2033, 0},
- 	{PCI_VENDOR_ID_INTEL,	0x2020, 0},
- 	{PCI_VENDOR_ID_INTEL,	0x09a2, 0},
-+	{PCI_VENDOR_ID_INTEL,	PCI_DEVICE_ID_INTEL_DSA_SPR0, 0},
-+	{PCI_VENDOR_ID_INTEL,	PCI_DEVICE_ID_INTEL_IAX_SPR0, 0},
-+	{PCI_VENDOR_ID_INTEL,	PCI_DEVICE_ID_INTEL_DSA_GNRD, 0},
-+	{PCI_VENDOR_ID_INTEL,	PCI_DEVICE_ID_INTEL_DSA_DMR, 0},
-+	{PCI_VENDOR_ID_INTEL,	PCI_DEVICE_ID_INTEL_IAA_DMR, 0},
-+	{PCI_VENDOR_ID_INTEL,	PCI_DEVICE_ID_INTEL_QAT_4XXX, 0},
-+	{PCI_VENDOR_ID_INTEL,	PCI_DEVICE_ID_INTEL_QAT_401XX, 0},
-+	{PCI_VENDOR_ID_INTEL,	PCI_DEVICE_ID_INTEL_QAT_402XX, 0},
-+	{PCI_VENDOR_ID_INTEL,	PCI_DEVICE_ID_INTEL_QAT_420XX, 0},
-+	{PCI_VENDOR_ID_INTEL,	PCI_DEVICE_ID_INTEL_QAT_6XXX, 0},
- 	/* Google SoCs. */
- 	{PCI_VENDOR_ID_GOOGLE,	PCI_ANY_ID, 0},
- 	{}
---- a/include/linux/pci_ids.h
-+++ b/include/linux/pci_ids.h
-@@ -2732,6 +2732,9 @@
- #define PCI_DEVICE_ID_INTEL_82815_MC	0x1130
- #define PCI_DEVICE_ID_INTEL_82815_CGC	0x1132
- #define PCI_DEVICE_ID_INTEL_SST_TNG	0x119a
-+#define PCI_DEVICE_ID_INTEL_DSA_GNRD	0x11fb
-+#define PCI_DEVICE_ID_INTEL_DSA_DMR	0x1212
-+#define PCI_DEVICE_ID_INTEL_IAA_DMR	0x1216
- #define PCI_DEVICE_ID_INTEL_82092AA_0	0x1221
- #define PCI_DEVICE_ID_INTEL_82437	0x122d
- #define PCI_DEVICE_ID_INTEL_82371FB_0	0x122e
-@@ -3052,6 +3055,11 @@
- #define PCI_DEVICE_ID_INTEL_5400_FBD1	0x4036
- #define PCI_DEVICE_ID_INTEL_HDA_TGL_H	0x43c8
- #define PCI_DEVICE_ID_INTEL_HDA_DG1	0x490d
-+#define PCI_DEVICE_ID_INTEL_QAT_4XXX	0x4940
-+#define PCI_DEVICE_ID_INTEL_QAT_401XX	0x4942
-+#define PCI_DEVICE_ID_INTEL_QAT_402XX	0x4944
-+#define PCI_DEVICE_ID_INTEL_QAT_420XX	0x4946
-+#define PCI_DEVICE_ID_INTEL_QAT_6XXX	0x4948
- #define PCI_DEVICE_ID_INTEL_HDA_EHL_0	0x4b55
- #define PCI_DEVICE_ID_INTEL_HDA_EHL_3	0x4b58
- #define PCI_DEVICE_ID_INTEL_HDA_WCL	0x4d28
 
 
 
