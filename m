@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-271468-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-271359-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 7g4CGhqnRmosbAsAu9opvQ
-	(envelope-from <stable+bounces-271468-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:59:54 +0200
+	id j3S+H62aRmqcZwsAu9opvQ
+	(envelope-from <stable+bounces-271359-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:06:53 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id CCC186FBC3B
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:59:53 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 47B0A6FAFF5
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:06:53 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=cdUqPri8;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-271468-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-271468-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=PTxGJ5Yt;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-271359-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-271359-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id AF7573346A69
-	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 17:00:24 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 8464E3067AD9
+	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:55:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E28382D0602;
-	Thu,  2 Jul 2026 17:00:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7583D2FFF9D;
+	Thu,  2 Jul 2026 16:55:37 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB25F309EE9;
-	Thu,  2 Jul 2026 17:00:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B42530C15A;
+	Thu,  2 Jul 2026 16:55:36 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783011623; cv=none; b=mkohknd3UfRv7WgtHAv+Pb7lm5BVXYQ4TUGPJcjjoMwgQBwNVR+tFuHcqP0CYOjVxfW+yJnSAgL49+9VyosffPiVNQ2tP88jU60awSW4zvbFQHAOKy5s7SBT29EU8trBWoWeVQf/0Wfr+irO2O2ymZL+B+6puYpxPjMdSCxDfm8=
+	t=1783011337; cv=none; b=kPGJqIgM93pZg8QBKtGUqUIzzs8w+u3yiSImITNl1FMjIY9eRPOTCHlQ0kSGLzHm4fkxOd/BVYwJHerS8LPU41voLrecoYeET6TBPPfTqx84r0Y8AzyW3Upr5HPM2OKp/LF9Ri+F42HB7yzQMleqIF19Uin59TVlCvIpDzaHiug=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783011623; c=relaxed/simple;
-	bh=4hMLFzxSe1Y4/4UVsAs7HsBkoZyH3aH8RPKMjJqaDZY=;
+	s=arc-20240116; t=1783011337; c=relaxed/simple;
+	bh=VsTJ0ESiS2k22e5700oqwvTQH4ysQbliYApVMeioHIw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lL4IqevKGtOhndLCTpPPWgal2gKkwFtm2s2tMZYlnifRZnD9djXQNWffa+ABougsoYAlx7WcMmPerXINk0b2QsROvXdAr54UKJCqNCviM4+fl4imRSJE1z7av2GcfsmhLvWFQiixWGraURh/sNsunFPvnDSysX+xfXATNGUTdf0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cdUqPri8; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1CFB71F000E9;
-	Thu,  2 Jul 2026 17:00:21 +0000 (UTC)
+	 MIME-Version; b=JjW28SvDi1K17D+YJ4DMqsqNRPGU38ENxq8B+ksWpcU1nHCUkHoVi3BPfkpIM32YZPrL5OGZGEsnXP4c5ZuBFr8Pty/zaMaFnAe1DUtzROJvIcDJVjjsv1VBIp2xEyTKKbO6aVyoD8Voi1UD0/FJeT9eIyXfWS5+yrmOHqEXpLY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PTxGJ5Yt; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0DAF1F000E9;
+	Thu,  2 Jul 2026 16:55:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1783011622;
-	bh=LPHBcQrNxfYP/doUSg6ooYNXrTPHaSBBc3IRj5wj/lE=;
+	s=korg; t=1783011336;
+	bh=4Ma/0smxp9v1cd2reguCYJ3agR7k2rp5U4058bQQXgo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=cdUqPri8pR16+Lej5mMm8QV/XyvMdFDwx2IwoGKreKKjJM814NCqhMrxOKsjRcZ0p
-	 0Orkm0i6c4gsmZRAv0A1tWOD+37PNwu07M32wKUhjZulRuHJpiQJOb4YUq8a+YbRVS
-	 iOq4ucXsTuX2WDc67aTVok1R/4zU+7ZfYoV1ibP8=
+	b=PTxGJ5Ytwn7tQbQDEf5H5wEiLxGo8mzeVy7my5NEMGr7l8/AbuPZauy+HGzwPM8ky
+	 Jf336tbsgEk85DisSbBVwp8GYnZ+WAPRGvRlxB2dKQ9UtNyNY07Ada3XwNNM5sk4uh
+	 f2K/ywf550t435DASiC6BxQ9Pr3bs3PSSDciXyag=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chao Yu <chao@kernel.org>,
-	Yongpeng Yang <yangyongpeng@xiaomi.com>,
-	Jaegeuk Kim <jaegeuk@kernel.org>
-Subject: [PATCH 7.1 070/120] f2fs: fix incorrect FI_NO_EXTENT handling in __destroy_extent_node()
-Date: Thu,  2 Jul 2026 18:21:06 +0200
-Message-ID: <20260702155114.407659626@linuxfoundation.org>
+	Michael Bommarito <michael.bommarito@gmail.com>,
+	Namjae Jeon <linkinjeon@kernel.org>
+Subject: [PATCH 6.18 070/108] exfat: fix potential use-after-free in exfat_find_dir_entry()
+Date: Thu,  2 Jul 2026 18:21:07 +0200
+Message-ID: <20260702155113.561849409@linuxfoundation.org>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260702155112.964534952@linuxfoundation.org>
-References: <20260702155112.964534952@linuxfoundation.org>
+In-Reply-To: <20260702155112.110058792@linuxfoundation.org>
+References: <20260702155112.110058792@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,125 +66,132 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-271468-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:chao@kernel.org,m:yangyongpeng@xiaomi.com,m:jaegeuk@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-271359-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:michael.bommarito@gmail.com,m:linkinjeon@kernel.org,m:michaelbommarito@gmail.com,s:lists@lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp,xiaomi.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: CCC186FBC3B
+X-Rspamd-Queue-Id: 47B0A6FAFF5
 
-7.1-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yongpeng Yang <yangyongpeng@xiaomi.com>
+From: Michael Bommarito <michael.bommarito@gmail.com>
 
-commit 1f70ddb28a3c71df124da5fa4040c808116d6bb9 upstream.
+commit 3f5f8ee9917cc2b9076ac533492d8a200edcabb8 upstream.
 
-When __destroy_extent_node() sets the inode flag FI_NO_EXTENT, it does
-not reset the length of the largest extent to 0 and update the inode
-folio. Since modifications to the extent tree are disallowed afterward,
-the cached largest extent may become stale. This can trigger the
-following error in xfstests generic/388:
+In exfat_find_dir_entry(), the buffer_head obtained from
+exfat_get_dentry() is released with brelse(bh) before the fall-through
+TYPE_EXTEND branch reads the directory entry through ep (which points
+into bh->b_data):
 
-F2FS-fs (dm-0): sanity_check_extent_cache: inode (ino=1761) extent info [220057, 57, 6] is incorrect, run fsck to fix
+	brelse(bh);
+	if (entry_type == TYPE_EXTEND) {
+		...
+		len = exfat_extract_uni_name(ep, entry_uniname);
+		...
+	}
 
-In the f2fs_drop_inode path, __destroy_extent_node() does not need to
-guarantee that et->node_cnt is 0, because concurrency with writeback
-is expected in this path, and writeback may update the extent cache.
+After brelse() drops our reference, nothing guarantees that the
+underlying page backing bh->b_data remains valid for the subsequent
+exfat_extract_uni_name() read. This is the same pattern fixed in
+commit fc961522ddbd ("exfat: Fix potential use after free in
+exfat_load_upcase_table()").
 
-This patch reverts commit ed78aeebef05 ("f2fs: fix node_cnt race between
-extent node destroy and writeback"), and remove the unnecessary zero
-check of et->node_cnt.
+Move brelse(bh) so it runs after ep is no longer dereferenced on
+each branch.
 
-Fixes: ed78aeebef05 ("f2fs: fix node_cnt race between extent node destroy and writeback")
+Confirmed on QEMU x86_64 with CONFIG_KASAN=y + CONFIG_DEBUG_PAGEALLOC=y
++ CONFIG_PAGE_POISONING=y on linux-next, using a crafted exFAT image
+(long filename with same-hash collisions forcing the TYPE_EXTEND path).
+With a debug-only invalidate_bdev() inserted between brelse(bh) and
+the ep read to make the stale-deref window deterministic, the
+unpatched kernel faults:
+
+  BUG: KASAN: use-after-free in exfat_find_dir_entry+0x133b/0x15a0
+  BUG: unable to handle page fault for address: ffff88801a5fa0c2
+  Oops: 0000 [#1] SMP DEBUG_PAGEALLOC KASAN NOPTI
+  RIP: 0010:exfat_find_dir_entry+0x1188/0x15a0
+
+With this patch applied, the same instrumented harness completes
+cleanly under the same sanitizer stack. I have not reproduced a
+crash on an uninstrumented kernel under ordinary reclaim; the
+instrumented A/B establishes the lifetime violation and that the
+patch closes it, not an unaided triggerability claim.
+
+Fixes: ca06197382bd ("exfat: add directory operations")
 Cc: stable@vger.kernel.org
-Reported-by: Chao Yu <chao@kernel.org>
-Suggested-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Yongpeng Yang <yangyongpeng@xiaomi.com>
-Reviewed-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+Assisted-by: Claude:claude-opus-4-7
+Signed-off-by: Michael Bommarito <michael.bommarito@gmail.com>
+Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/f2fs/extent_cache.c |   19 +++++++------------
- 1 file changed, 7 insertions(+), 12 deletions(-)
+ fs/exfat/dir.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/fs/f2fs/extent_cache.c
-+++ b/fs/f2fs/extent_cache.c
-@@ -119,10 +119,9 @@ static bool __may_extent_tree(struct ino
- 	if (!__init_may_extent_tree(inode, type))
- 		return false;
+--- a/fs/exfat/dir.c
++++ b/fs/exfat/dir.c
+@@ -1081,12 +1081,12 @@ rewind:
+ 				continue;
+ 			}
  
--	if (is_inode_flag_set(inode, FI_NO_EXTENT))
--		return false;
--
- 	if (type == EX_READ) {
-+		if (is_inode_flag_set(inode, FI_NO_EXTENT))
-+			return false;
- 		if (is_inode_flag_set(inode, FI_COMPRESSED_FILE) &&
- 				 !f2fs_sb_has_readonly(F2FS_I_SB(inode)))
- 			return false;
-@@ -645,14 +644,10 @@ static unsigned int __destroy_extent_nod
+-			brelse(bh);
+ 			if (entry_type == TYPE_EXTEND) {
+ 				unsigned short entry_uniname[16], unichar;
  
- 	while (atomic_read(&et->node_cnt)) {
- 		write_lock(&et->lock);
--		if (!is_inode_flag_set(inode, FI_NO_EXTENT))
--			set_inode_flag(inode, FI_NO_EXTENT);
- 		node_cnt += __free_extent_tree(sbi, et, nr_shrink);
- 		write_unlock(&et->lock);
- 	}
+ 				if (step != DIRENT_STEP_NAME ||
+ 				    name_len >= MAX_NAME_LENGTH) {
++					brelse(bh);
+ 					step = DIRENT_STEP_FILE;
+ 					continue;
+ 				}
+@@ -1097,6 +1097,7 @@ rewind:
+ 					uniname += EXFAT_FILE_NAME_LEN;
  
--	f2fs_bug_on(sbi, atomic_read(&et->node_cnt));
--
- 	return node_cnt;
- }
+ 				len = exfat_extract_uni_name(ep, entry_uniname);
++				brelse(bh);
+ 				name_len += len;
  
-@@ -691,12 +686,12 @@ static void __update_extent_tree_range(s
+ 				unichar = *(uniname+len);
+@@ -1115,6 +1116,7 @@ rewind:
+ 				continue;
+ 			}
  
- 	write_lock(&et->lock);
- 
--	if (is_inode_flag_set(inode, FI_NO_EXTENT)) {
--		write_unlock(&et->lock);
--		return;
--	}
--
- 	if (type == EX_READ) {
-+		if (is_inode_flag_set(inode, FI_NO_EXTENT)) {
-+			write_unlock(&et->lock);
-+			return;
-+		}
-+
- 		prev = et->largest;
- 		dei.len = 0;
- 
++			brelse(bh);
+ 			if (entry_type &
+ 					(TYPE_CRITICAL_SEC | TYPE_BENIGN_SEC)) {
+ 				if (step == DIRENT_STEP_SECD) {
 
 
 
