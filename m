@@ -1,61 +1,62 @@
-Return-Path: <stable+bounces-270853-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-270646-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id lfM+BxaWRmr/ZAsAu9opvQ
-	(envelope-from <stable+bounces-270853-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:47:18 +0200
+	id fhztCImeRmosaQsAu9opvQ
+	(envelope-from <stable+bounces-270646-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:23:21 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 880C46FA8B5
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:47:17 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id ACC636FB446
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:23:20 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=iFf8tARV;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-270853-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-270853-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=wTyAt0tN;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-270646-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-270646-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id EDFA43142DC3
-	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:36:35 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 2AD43323B2F7
+	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:30:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0FA1433D51A;
-	Thu,  2 Jul 2026 16:33:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27D1F346777;
+	Thu,  2 Jul 2026 16:24:44 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B791232ED4E;
-	Thu,  2 Jul 2026 16:33:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7939433D509;
+	Thu,  2 Jul 2026 16:24:39 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783010020; cv=none; b=WLZVBsiAZ8oN7Qta+uv6vlxAnsziJ+iOFWp+vTsq7M4sLaziQMsaNcf2FRF83SyE8CvHGkjRVPZp6ik8b0lnQxLYdNnksTx68+uSUPv7HftIWsYv0N2sYy2IIIfeONRMdaG2QBYjxyIaBMS2ZdzcsUywW5JU0SkS7gFjeKvVmSQ=
+	t=1783009483; cv=none; b=RZ5pWcKv8eJZtvL1ZEippS/yW09uJFKiPuCrM6jUB9hOcZ7PeNNuQls2UCD1WHVU1/3QwU/UPwRMnlkxOwfiO0nsaxiFK0m4dAnPiuCjtddZ4UsxBD5JpbyqMcJJJ62LlRpIF5vuIk6V+6AaMUemupfiT1P1e57V3wBSfppEL7w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783010020; c=relaxed/simple;
-	bh=hil7z2ZQXvnRzk8TqqhFWSHxL30L048UKhlMkzBSIeM=;
+	s=arc-20240116; t=1783009483; c=relaxed/simple;
+	bh=SK7evETtCTDKBKm0Ox+JpDGl+mxEsYdlFLDB+cvKVFQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tH+UbnhaiIHeZaTyvGSRP6Jc+u+gylGuZq7CNvStahmjvdgnxj2DydytAhq4VYbRcnRmtYpJovHazSW0ElSV+OJXMn0f+y90f5K3tCfuOD8Rfhb7tcAqiSfxA2aUJbyXLgiQA5RHLrfeM72Jv8OFOrZyAV5NoM5XWE6Zut9DnGo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iFf8tARV; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25FDB1F000E9;
-	Thu,  2 Jul 2026 16:33:38 +0000 (UTC)
+	 MIME-Version; b=gSQ/mnzxo/+aNcdtE6b8xCBcoUEsSRhD6ym4X8x1PYXjq/Vg+q6DBWH1miGIa7+AVSfd6ZopUTHyU6NnpYyEIE44OHCEdVQgwOzRTA97Vu/pkc80DlJmm0/h1SkLrImRHiWFx9NqWgmO7VWax+O872X00Fa/SGZlCtRlQ0xyCeU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wTyAt0tN; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6ACE91F00A3A;
+	Thu,  2 Jul 2026 16:24:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1783010019;
-	bh=iGs8+m2Bl+mGHeOndJcPE9UOOZqvFeFwxwtpkI6tw14=;
+	s=korg; t=1783009478;
+	bh=2mqTXc0N7LJ2C9EAvtSUUnbg7mIVvU9JZWf8Jd9D+00=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=iFf8tARVVCMwO6meHKrOoN/AhSdLinwPF0Br1XhdOMpcrj8HAgIkpO4gx4saruJsr
-	 O6O/hB+Is0BJcGYsGZLTGrnbWmfYEbq5sAtyh7OIh9RbEmfjUOgbDY+oOrXOcGp5pH
-	 BULYqmsbp2VX/9SlUD1TqnPfER9aWcspPNTKlz0E=
+	b=wTyAt0tNQejSlR3n6zNwgkOQxUFh79MaykjJ4N1s+rA8rHqJcAo9lXXaMCW8jJ17s
+	 R2csUmH4ovJ4QHcZL1uIwIyYTaQeLFugnF7mLtmnXfxFqDvXyDUfbvzZF1PpYSgPKI
+	 L0aTIOlqrb4G41rojn1U2ebw5I+drMxtYzmeVCKY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Colin Ian King <colin.i.king@gmail.com>,
-	Ruslan Valiyev <linuxoid@gmail.com>,
-	John Johansen <john.johansen@canonical.com>
-Subject: [PATCH 6.1 080/129] apparmor: fix use-after-free in rawdata dedup loop
+	stable@kernel.org,
+	Zhang Cen <rollkingzzc@gmail.com>,
+	Chao Yu <chao@kernel.org>,
+	Jaegeuk Kim <jaegeuk@kernel.org>
+Subject: [PATCH 5.10 67/96] f2fs: validate ACL entry sizes in f2fs_acl_from_disk()
 Date: Thu,  2 Jul 2026 18:19:59 +0200
-Message-ID: <20260702155113.793654413@linuxfoundation.org>
+Message-ID: <20260702155110.390393768@linuxfoundation.org>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260702155112.163984240@linuxfoundation.org>
-References: <20260702155112.163984240@linuxfoundation.org>
+In-Reply-To: <20260702155108.949633242@linuxfoundation.org>
+References: <20260702155108.949633242@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,149 +68,159 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-270853-lists,stable=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:colin.i.king@gmail.com,m:linuxoid@gmail.com,m:john.johansen@canonical.com,m:coliniking@gmail.com,s:lists@lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,canonical.com];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,gmail.com];
+	TAGGED_FROM(0.00)[bounces-270646-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:stable@kernel.org,m:rollkingzzc@gmail.com,m:chao@kernel.org,m:jaegeuk@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,canonical.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 880C46FA8B5
+X-Rspamd-Queue-Id: ACC636FB446
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ruslan Valiyev <linuxoid@gmail.com>
+From: Zhang Cen <rollkingzzc@gmail.com>
 
-commit 6f060496d03e4dc560a40f73770bd08335cb7a27 upstream.
+commit c4810ada31e80cbe4011467c4f3b1e93f94134f3 upstream.
 
-aa_replace_profiles() walks ns->rawdata_list to dedup the incoming
-policy blob against entries already attached to existing profiles.
-Per the kernel-doc on struct aa_loaddata, list membership does not
-hold a reference: profiles hold pcount, and when the last pcount
-drops, do_ploaddata_rmfs() is queued on a workqueue that takes
-ns->lock and removes the entry. Between dropping the last pcount
-and the workqueue running, an entry remains on the list with
-pcount == 0.
+f2fs_acl_count() only validates the aggregate ACL xattr length. A
+malformed ACL can still place ACL_USER or ACL_GROUP in a slot that only
+contains struct f2fs_acl_entry_short bytes, and f2fs_acl_from_disk()
+then reads entry->e_id before verifying that a full entry fits.
 
-aa_get_profile_loaddata() is an unconditional kref_get() on
-pcount, so when the dedup loop hits such an entry, refcount
-hardening reports
+Require a short entry before reading e_tag and e_perm, and require a
+full entry before reading e_id for ACL_USER and ACL_GROUP. Return
+-EFSCORRUPTED from these new truncated-entry checks, while keeping the
+pre-existing -EINVAL paths unchanged.
 
-  refcount_t: addition on 0; use-after-free.
+Validation reproduced this kernel report:
+KASAN slab-out-of-bounds in __f2fs_get_acl+0x6fb/0x7e0
+RIP: 0033:0x7f4b835ea7aa
+The buggy address belongs to the object at ffff888114589960 which belongs
+to the cache kmalloc-8 of size 8
+The buggy address is located 0 bytes to the right of allocated 8-byte
+region [ffff888114589960, ffff888114589968)
+Read of size 4
+Call trace:
+  dump_stack_lvl+0x66/0xa0 (?:?)
+  print_report+0xce/0x630 (?:?)
+  __f2fs_get_acl+0x6fb/0x7e0 (fs/f2fs/acl.c:169)
+  srso_alias_return_thunk+0x5/0xfbef5 (?:?)
+  __virt_addr_valid+0x224/0x430 (?:?)
+  kasan_report+0xe0/0x110 (?:?)
+  __f2fs_get_acl+0x5/0x7e0 (fs/f2fs/acl.c:169)
+  __get_acl+0x281/0x380 (?:?)
+  vfs_get_acl+0x10b/0x190 (?:?)
+  do_get_acl+0x2a/0x410 (?:?)
+  do_get_acl+0x9/0x410 (?:?)
+  do_getxattr+0xe8/0x260 (?:?)
+  filename_getxattr+0xd1/0x140 (?:?)
+  do_getname+0x2d/0x2d0 (?:?)
+  path_getxattrat+0x16c/0x200 (?:?)
+  lock_release+0xc8/0x290 (?:?)
+  cgroup_update_frozen+0x9d/0x320 (?:?)
+  lockdep_hardirqs_on_prepare+0xea/0x1a0 (?:?)
+  trace_hardirqs_on+0x1a/0x170 (?:?)
+  _raw_spin_unlock_irq+0x28/0x50 (?:?)
+  do_syscall_64+0x115/0x6a0 (arch/x86/entry/syscall_64.c:87)
+  entry_SYSCALL_64_after_hwframe+0x77/0x7f (?:?)
 
-inside aa_replace_profiles(), and the poisoned counter then
-trips "saturated" and "underflow" warnings on the subsequent
-uses of the same loaddata.
-
-Before commit a0b7091c4de4 ("apparmor: fix race on rawdata
-dereference") the dedup path used a get_unless_zero-style helper
-on a single counter, so the existing "if (tmp)" guard was
-meaningful. The split-refcount refactor introduced
-aa_get_profile_loaddata(), which has plain kref_get() semantics,
-and the guard quietly became a no-op.
-
-Introduce aa_get_profile_loaddata_not0(), matching the existing
-_not0 convention used by aa_get_profile_not0(), and use it for
-the rawdata_list dedup lookup so dying entries are skipped.
-
-Reproduced on x86_64 with v7.1-rc5 in QEMU+KVM running Ubuntu
-24.04 + stress-ng 0.17.06:
-
-  stress-ng --apparmor 1 --klog-check --timeout 60s
-
-Without this patch the three refcount_t warnings fire within a
-few seconds. With it the same 60 s run is clean. Coverage is a
-smoke-test only; a longer soak with CONFIG_KASAN, CONFIG_KCSAN
-and CONFIG_PROVE_LOCKING would be welcome from anyone with the
-cycles.
-
-Fixes: a0b7091c4de4 ("apparmor: fix race on rawdata dereference")
-Reported-by: Colin Ian King <colin.i.king@gmail.com>
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=221513
-Cc: stable@vger.kernel.org
-Signed-off-by: Ruslan Valiyev <linuxoid@gmail.com>
-Signed-off-by: John Johansen <john.johansen@canonical.com>
+Cc: stable@kernel.org
+Fixes: af48b85b8cd3 ("f2fs: add xattr and acl functionalities")
+Assisted-by: Codex:gpt-5.5
+Signed-off-by: Zhang Cen <rollkingzzc@gmail.com>
+Reviewed-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- security/apparmor/include/policy_unpack.h |   19 +++++++++++++++++++
- security/apparmor/policy.c                |    8 ++++++--
- 2 files changed, 25 insertions(+), 2 deletions(-)
+ fs/f2fs/acl.c |   18 ++++++++++++++++--
+ 1 file changed, 16 insertions(+), 2 deletions(-)
 
---- a/security/apparmor/include/policy_unpack.h
-+++ b/security/apparmor/include/policy_unpack.h
-@@ -161,6 +161,25 @@ aa_get_profile_loaddata(struct aa_loadda
- 	return data;
+--- a/fs/f2fs/acl.c
++++ b/fs/f2fs/acl.c
+@@ -45,6 +45,7 @@ static inline int f2fs_acl_count(size_t
+ static struct posix_acl *f2fs_acl_from_disk(const char *value, size_t size)
+ {
+ 	int i, count;
++	int err = -EINVAL;
+ 	struct posix_acl *acl;
+ 	struct f2fs_acl_header *hdr = (struct f2fs_acl_header *)value;
+ 	struct f2fs_acl_entry *entry = (struct f2fs_acl_entry *)(hdr + 1);
+@@ -68,8 +69,11 @@ static struct posix_acl *f2fs_acl_from_d
+ 
+ 	for (i = 0; i < count; i++) {
+ 
+-		if ((char *)entry > end)
++		if (unlikely((char *)entry +
++				sizeof(struct f2fs_acl_entry_short) > end)) {
++			err = -EFSCORRUPTED;
+ 			goto fail;
++		}
+ 
+ 		acl->a_entries[i].e_tag  = le16_to_cpu(entry->e_tag);
+ 		acl->a_entries[i].e_perm = le16_to_cpu(entry->e_perm);
+@@ -84,6 +88,11 @@ static struct posix_acl *f2fs_acl_from_d
+ 			break;
+ 
+ 		case ACL_USER:
++			if (unlikely((char *)entry +
++					sizeof(struct f2fs_acl_entry) > end)) {
++				err = -EFSCORRUPTED;
++				goto fail;
++			}
+ 			acl->a_entries[i].e_uid =
+ 				make_kuid(&init_user_ns,
+ 						le32_to_cpu(entry->e_id));
+@@ -91,6 +100,11 @@ static struct posix_acl *f2fs_acl_from_d
+ 					sizeof(struct f2fs_acl_entry));
+ 			break;
+ 		case ACL_GROUP:
++			if (unlikely((char *)entry +
++					sizeof(struct f2fs_acl_entry) > end)) {
++				err = -EFSCORRUPTED;
++				goto fail;
++			}
+ 			acl->a_entries[i].e_gid =
+ 				make_kgid(&init_user_ns,
+ 						le32_to_cpu(entry->e_id));
+@@ -106,7 +120,7 @@ static struct posix_acl *f2fs_acl_from_d
+ 	return acl;
+ fail:
+ 	posix_acl_release(acl);
+-	return ERR_PTR(-EINVAL);
++	return ERR_PTR(err);
  }
  
-+/**
-+ * aa_get_profile_loaddata_not0 - get a profile reference count if not zero
-+ * @data: reference to get a count on
-+ *
-+ * Like aa_get_profile_loaddata(), but safe to call on an entry that may
-+ * be on a list (e.g. ns->rawdata_list) where the last pcount has already
-+ * dropped and the deferred cleanup has not yet run.
-+ *
-+ * Returns: pointer to reference, or %NULL if @data is NULL or its
-+ *          profile refcount has already reached zero.
-+ */
-+static inline struct aa_loaddata *
-+aa_get_profile_loaddata_not0(struct aa_loaddata *data)
-+{
-+	if (data && kref_get_unless_zero(&data->pcount))
-+		return data;
-+	return NULL;
-+}
-+
- void __aa_loaddata_update(struct aa_loaddata *data, long revision);
- bool aa_rawdata_eq(struct aa_loaddata *l, struct aa_loaddata *r);
- void aa_loaddata_kref(struct kref *kref);
---- a/security/apparmor/policy.c
-+++ b/security/apparmor/policy.c
-@@ -1018,8 +1018,12 @@ ssize_t aa_replace_profiles(struct aa_ns
- 			if (aa_rawdata_eq(rawdata_ent, udata)) {
- 				struct aa_loaddata *tmp;
- 
--				tmp = aa_get_profile_loaddata(rawdata_ent);
--				/* check we didn't fail the race */
-+				/*
-+				 * Entries remain on rawdata_list with
-+				 * pcount == 0 until do_ploaddata_rmfs()
-+				 * runs; only take a live profile ref.
-+				 */
-+				tmp = aa_get_profile_loaddata_not0(rawdata_ent);
- 				if (tmp) {
- 					aa_put_profile_loaddata(udata);
- 					udata = tmp;
+ static void *f2fs_acl_to_disk(struct f2fs_sb_info *sbi,
 
 
 
