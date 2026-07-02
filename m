@@ -1,61 +1,63 @@
-Return-Path: <stable+bounces-271316-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-271070-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id r9oMK2SbRmoCaAsAu9opvQ
-	(envelope-from <stable+bounces-271316-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:09:56 +0200
+	id KI0BAJ+iRmrOagsAu9opvQ
+	(envelope-from <stable+bounces-271070-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:40:47 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C4CD6FB112
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:09:56 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4C7ED6FB89A
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:40:46 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=Hry4doW5;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-271316-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-271316-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="e/TwMQIQ";
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-271070-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-271070-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id E7A2130C3A32
-	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:54:02 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id ABFFF338062B
+	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:46:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A6D333F36D;
-	Thu,  2 Jul 2026 16:53:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D71233D4F0;
+	Thu,  2 Jul 2026 16:43:11 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3D1F22D7B9;
-	Thu,  2 Jul 2026 16:53:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32DB725B09B;
+	Thu,  2 Jul 2026 16:43:10 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783011227; cv=none; b=NMP1Yrx2LM1u0tcV/C22RI0ccXCJJR9/qHERuYnYMLxGNZmOal08nr8dnOzy/dCcZlqdKCQJI+zqro4KHkmI8gS6WKEZhN/7TlfI32X/xWVXUKLX2uvneFzbXI5Eqn5E57+rVOyi3ICKBDhpeD1WeVoMDhfYrRBoDIgZuFvTZQo=
+	t=1783010591; cv=none; b=dbLIgkCtk+YVMhfBqOt7qCvlQso8GcuQ5Ue/MVfRGvmOGHfmYZHa2xJ9C15mhJmJo3T2OffpA8cSd3oPCD1ieVnELrax0F0stW4s9S29TO5/BdqU8/eGm6lR1EA3N4kUwbkekj2DHff+I1u7YX9kvB/4Qs6pLjgluSw2HU394pQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783011227; c=relaxed/simple;
-	bh=s16Zh19kZzKvcWCxt30QUZVqxoSqjEuqiIRI4ysEDNA=;
+	s=arc-20240116; t=1783010591; c=relaxed/simple;
+	bh=ySUlQ4L6ZjMukn2WPhF81WR0Lu5vKKh6p/Xr/NnSdQE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AuLcno1rUnAFXiyayq6kaO4W09M0VFv3wtqlD2trKi4/KowuZfoodDv6oB/6viyyC8Or/lHWKxRZW7tOwqkgt/LA0bUJIjRfKN+Yl3a5K6AWBdPIUFDBFcgFZLP3vtqDGBaxQ+xqgIwgXudXj8zjEdDb46TFavAhLyBz5SdEgvE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Hry4doW5; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 656771F000E9;
-	Thu,  2 Jul 2026 16:53:45 +0000 (UTC)
+	 MIME-Version; b=b4pS1zD2PAVBJyZGT7BCk9CLRa5t9P1lvhLSSy8q59yMd0Gb0SiWYOd8N/YJ4bZYx90vy4ahlZDU5edzFOIUFOEz5ZDQ9nzFt/4/ZB55Yoj0Z8/3KZMS0OTx7RJ/u/ghBlyDDsKjIC2ZlsoB61/5l5oHCoSaLkOkGV5v/Dij5fE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e/TwMQIQ; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A3201F000E9;
+	Thu,  2 Jul 2026 16:43:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1783011225;
-	bh=z/oHAVPNlRwznK5RU5yg8mJlikPqhJL3FEHyFW4YZfk=;
+	s=korg; t=1783010590;
+	bh=jMt8L7g1pfsckEzhdK3Yon6Js1ulmSjfFv+9FXR2QOI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Hry4doW5cEXcwfQJjlcYXz7awdTVDGxsWOQlPo9AkkY5xKBY3OLIGAlA2immi5gbF
-	 uRBhdU6QbB+bIEkM4C/+OiPQG8+yroecP/XvJa3zW0II1jxyDyLq/QuECmVKFCs8Mm
-	 2NIwe0KeDjHDhqvL7qy2F1DNZXjFhFAMZjSuHsWU=
+	b=e/TwMQIQMmJXpiLsiKedX/4JaGiZSZQLnQjlHf6oVZRf7gYYVMQIDFMSPwcPQb4Kt
+	 gu3vPq3HoBgY4GAxMln7EdubQwZ8YKIhM4pEd58oc3lE8Y3jsTy/X0KQEVcPr+AIjr
+	 adq8lhYMt5E2iXlQkEhwVG7S9o5JtUN8afOxuUKg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Sven Eckelmann <sven@narfation.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 028/108] batman-adv: tt: track roam count per VID
+	Doruk Tan Ozturk <doruk@0sec.ai>,
+	Alexander Lobakin <aleksander.lobakin@intel.com>,
+	Tung Nguyen <tung.quang.nguyen@est.tech>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.12 168/204] tipc: fix slab-use-after-free Read in tipc_aead_decrypt_done
 Date: Thu,  2 Jul 2026 18:20:25 +0200
-Message-ID: <20260702155112.694135556@linuxfoundation.org>
+Message-ID: <20260702155122.177742174@linuxfoundation.org>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260702155112.110058792@linuxfoundation.org>
-References: <20260702155112.110058792@linuxfoundation.org>
+In-Reply-To: <20260702155118.667618796@linuxfoundation.org>
+References: <20260702155118.667618796@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,126 +71,162 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-271316-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:stable@kernel.org,m:sven@narfation.org,m:sashal@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-271070-lists,stable=lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:doruk@0sec.ai,m:aleksander.lobakin@intel.com,m:tung.quang.nguyen@est.tech,m:horms@kernel.org,m:kuba@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,narfation.org:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,0sec.ai:url,0sec.ai:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,est.tech:email,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 4C4CD6FB112
+X-Rspamd-Queue-Id: 4C7ED6FB89A
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sven Eckelmann <sven@narfation.org>
+From: Doruk Tan Ozturk <doruk@0sec.ai>
 
-commit 12407d5f61c2653a64f2ff4b22f3c267f8420ef1 upstream.
+commit bda3348872a2ef0d19f2df6aa8cb5025adce2f20 upstream.
 
-batadv_tt_check_roam_count() is supposed to track roaming of a TT entry.
-But TT entries are for a MAC + VID. The VID was completely missed and thus
-leads to incorrect detection of ROAM counts when a client MAC exists in
-multiple VLANs.
+tipc_aead_decrypt() goes straight from tipc_bearer_hold(b) to
+crypto_aead_decrypt(req) without taking a reference on the netns, unlike
+the encrypt path. When crypto_aead_decrypt() is offloaded asynchronously
+(e.g. the SIMD aead wrapper queuing to cryptd), the cryptd worker runs
+tipc_aead_decrypt_done() later. If the bearer's netns is torn down in the
+meantime, cleanup_net() -> tipc_exit_net() -> tipc_crypto_stop() frees the
+per-netns tipc_crypto, and the completion then reads it:
+tipc_aead_decrypt_done() dereferences aead->crypto->stats and
+aead->crypto->net, and tipc_crypto_rcv_complete() dereferences
+aead->crypto->aead[] and the node table -- reading freed memory.
 
-Cc: stable@kernel.org
-Fixes: c018ad3de61a ("batman-adv: add the VLAN ID attribute to the TT entry")
-Signed-off-by: Sven Eckelmann <sven@narfation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Decoded KASAN splat (v7.1-rc7, CONFIG_KASAN_INLINE + TIPC + TIPC_CRYPTO):
+
+  BUG: KASAN: slab-use-after-free in tipc_aead_decrypt_done (net/tipc/crypto.c:999)
+  Read of size 8 at addr ffff8881056258a8 by task kworker/u16:2/51
+  Workqueue: events_unbound
+  Call Trace:
+   tipc_aead_decrypt_done (net/tipc/crypto.c:999)
+   process_one_work (kernel/workqueue.c:3314)
+   worker_thread (kernel/workqueue.c:3397 kernel/workqueue.c:3478)
+   kthread (kernel/kthread.c:436)
+   ret_from_fork (arch/x86/kernel/process.c:158)
+   ret_from_fork_asm (arch/x86/entry/entry_64.S:245)
+
+  Allocated by task 169:
+   __kasan_kmalloc (mm/kasan/common.c:398 mm/kasan/common.c:415)
+   tipc_crypto_start (net/tipc/crypto.c:1502)
+   tipc_init_net (net/tipc/core.c:72)
+   ops_init (net/core/net_namespace.c:137)
+   setup_net (net/core/net_namespace.c:446)
+   copy_net_ns (net/core/net_namespace.c:579)
+   create_new_namespaces (kernel/nsproxy.c:132)
+   __x64_sys_unshare (kernel/fork.c:3316)
+   do_syscall_64 (arch/x86/entry/syscall_64.c:63)
+   entry_SYSCALL_64_after_hwframe (arch/x86/entry/entry_64.S:121)
+
+  Freed by task 8:
+   kfree (mm/slub.c:6566)
+   tipc_exit_net (net/tipc/core.c:119)
+   cleanup_net (net/core/net_namespace.c:704)
+   process_one_work (kernel/workqueue.c:3314)
+   kthread (kernel/kthread.c:436)
+
+This is the same class of bug that commit e279024617134 ("net/tipc: fix
+slab-use-after-free Read in tipc_aead_encrypt_done") fixed for the encrypt
+side. The encrypt path takes maybe_get_net(aead->crypto->net) before
+crypto_aead_encrypt() and drops it with put_net() on the synchronous
+return paths and in tipc_aead_encrypt_done(); the -EINPROGRESS/-EBUSY
+return keeps the reference for the async callback to release. The decrypt
+path was left without the equivalent guard.
+
+Mirror the encrypt-side fix on the decrypt path: take a net reference
+before crypto_aead_decrypt() (failing with -ENODEV and the matching
+bearer put if it cannot be acquired), keep it across the
+-EINPROGRESS/-EBUSY async return, and drop it with put_net() on the
+synchronous success/error return and at the end of
+tipc_aead_decrypt_done().
+
+Reproduced under KASAN on v7.1-rc7: a UDP bearer with a cluster key is
+flooded with crafted encrypted frames from an unknown peer (driving the
+cluster-key decrypt path) while the bearer's netns is repeatedly torn
+down. The completion must run asynchronously to outlive
+tipc_crypto_stop(); on x86 the stock aesni gcm(aes) now decrypts
+synchronously, so the async path was exercised via cryptd offload. The
+unguarded aead->crypto dereference in tipc_aead_decrypt_done() is the
+unpatched upstream path; tipc_aead_decrypt() still lacks
+maybe_get_net(aead->crypto->net), so the completion can outlive the free
+on any config where crypto_aead_decrypt() goes async.
+
+Found by 0sec automated security-research tooling (https://0sec.ai).
+
+Fixes: fc1b6d6de220 ("tipc: introduce TIPC encryption & authentication")
+Cc: stable@vger.kernel.org
+Signed-off-by: Doruk Tan Ozturk <doruk@0sec.ai>
+Reviewed-by: Alexander Lobakin <aleksander.lobakin@intel.com>
+Reviewed-by: Tung Nguyen <tung.quang.nguyen@est.tech>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20260617075818.37431-1-doruk@0sec.ai
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/batman-adv/translation-table.c | 9 +++++++--
- net/batman-adv/types.h             | 3 +++
- 2 files changed, 10 insertions(+), 2 deletions(-)
+ net/tipc/crypto.c |    9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-diff --git a/net/batman-adv/translation-table.c b/net/batman-adv/translation-table.c
-index acd8af4446671f..83dfd804a143ab 100644
---- a/net/batman-adv/translation-table.c
-+++ b/net/batman-adv/translation-table.c
-@@ -3442,6 +3442,7 @@ static void batadv_tt_roam_purge(struct batadv_priv *bat_priv)
-  * batadv_tt_check_roam_count() - check if a client has roamed too frequently
-  * @bat_priv: the bat priv with all the mesh interface information
-  * @client: mac address of the roaming client
-+ * @vid: VLAN identifier
-  *
-  * This function checks whether the client already reached the
-  * maximum number of possible roaming phases. In this case the ROAMING_ADV
-@@ -3449,7 +3450,7 @@ static void batadv_tt_roam_purge(struct batadv_priv *bat_priv)
-  *
-  * Return: true if the ROAMING_ADV can be sent, false otherwise
-  */
--static bool batadv_tt_check_roam_count(struct batadv_priv *bat_priv, u8 *client)
-+static bool batadv_tt_check_roam_count(struct batadv_priv *bat_priv, u8 *client, u16 vid)
- {
- 	struct batadv_tt_roam_node *tt_roam_node;
- 	bool ret = false;
-@@ -3462,6 +3463,9 @@ static bool batadv_tt_check_roam_count(struct batadv_priv *bat_priv, u8 *client)
- 		if (!batadv_compare_eth(tt_roam_node->addr, client))
- 			continue;
+--- a/net/tipc/crypto.c
++++ b/net/tipc/crypto.c
+@@ -950,12 +950,20 @@ static int tipc_aead_decrypt(struct net
+ 		goto exit;
+ 	}
  
-+		if (tt_roam_node->vid != vid)
-+			continue;
++	/* Get net to avoid freed tipc_crypto when delete namespace */
++	if (!maybe_get_net(net)) {
++		tipc_bearer_put(b);
++		rc = -ENODEV;
++		goto exit;
++	}
 +
- 		if (batadv_has_timed_out(tt_roam_node->first_time,
- 					 BATADV_ROAMING_MAX_TIME))
- 			continue;
-@@ -3483,6 +3487,7 @@ static bool batadv_tt_check_roam_count(struct batadv_priv *bat_priv, u8 *client)
- 		atomic_set(&tt_roam_node->counter,
- 			   BATADV_ROAMING_MAX_COUNT - 1);
- 		ether_addr_copy(tt_roam_node->addr, client);
-+		tt_roam_node->vid = vid;
+ 	/* Now, do decrypt */
+ 	rc = crypto_aead_decrypt(req);
+ 	if (rc == -EINPROGRESS || rc == -EBUSY)
+ 		return rc;
  
- 		list_add(&tt_roam_node->list, &bat_priv->tt.roam_list);
- 		ret = true;
-@@ -3519,7 +3524,7 @@ static void batadv_send_roam_adv(struct batadv_priv *bat_priv, u8 *client,
- 	/* before going on we have to check whether the client has
- 	 * already roamed to us too many times
- 	 */
--	if (!batadv_tt_check_roam_count(bat_priv, client))
-+	if (!batadv_tt_check_roam_count(bat_priv, client, vid))
- 		goto out;
+ 	tipc_bearer_put(b);
++	put_net(net);
  
- 	batadv_dbg(BATADV_DBG_TT, bat_priv,
-diff --git a/net/batman-adv/types.h b/net/batman-adv/types.h
-index 84de2570eac3ed..ef712ba4fff2cb 100644
---- a/net/batman-adv/types.h
-+++ b/net/batman-adv/types.h
-@@ -1912,6 +1912,9 @@ struct batadv_tt_roam_node {
- 	/** @addr: mac address of the client in the roaming phase */
- 	u8 addr[ETH_ALEN];
+ exit:
+ 	kfree(ctx);
+@@ -993,6 +1001,7 @@ static void tipc_aead_decrypt_done(void
+ 	}
  
-+	/** @vid: VLAN identifier */
-+	u16 vid;
-+
- 	/**
- 	 * @counter: number of allowed roaming events per client within a single
- 	 * OGM interval (changes are committed with each OGM)
--- 
-2.53.0
-
+ 	tipc_bearer_put(b);
++	put_net(net);
+ }
+ 
+ static inline int tipc_ehdr_size(struct tipc_ehdr *ehdr)
 
 
 
