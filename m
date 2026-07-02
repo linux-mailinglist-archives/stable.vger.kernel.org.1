@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-271380-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-271490-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id WEf5DeaaRmq3ZwsAu9opvQ
-	(envelope-from <stable+bounces-271380-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:07:50 +0200
+	id kw/2OFinRmpVbAsAu9opvQ
+	(envelope-from <stable+bounces-271490-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 20:00:56 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F0A16FB03B
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:07:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E96F56FBCA2
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 20:00:55 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=tnEsHeE9;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-271380-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-271380-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=f8asmDWq;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-271490-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-271490-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 077363327BAF
-	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:56:49 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 91721331E6DA
+	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 17:01:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7DF7282866;
-	Thu,  2 Jul 2026 16:56:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AFC2F30B53E;
+	Thu,  2 Jul 2026 17:01:21 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CDF8340408;
-	Thu,  2 Jul 2026 16:56:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 794991FA859;
+	Thu,  2 Jul 2026 17:01:20 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783011392; cv=none; b=kPxAu19tkrPURgPWvCsn+bDohxDYVTjZWbxnIlYFgtHrBYSZzU5m1I06ST8aXkTykZq449+0XKPfPjpwbkXAmAGr23fW79jSq/vt81+xgfVF4furqLuxXbiJ8sBHxHqvtYuKcdEjFzKLURf3FX2vCIm92BZSY1RMvT6mUAQgFaw=
+	t=1783011681; cv=none; b=qvp42Y/CUNGmIfLv9phWb+qGxPa1Ks6DkQq/fCin9GzTTlp4HCU6d0v/4Z6FKhdWuCmYpvL6J7O1ny60pI8j5jWnOzW4aRmFB7tgMM8msdmeyBi21Z32O5HERr3qiUW+QyqU4PETh0MjenaYry8wViVij08Dsm0OmPOvu2UuGHI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783011392; c=relaxed/simple;
-	bh=21EIzs5oy762PIWWFTWQzjpPln8qUtyhPXxuX5uEcaQ=;
+	s=arc-20240116; t=1783011681; c=relaxed/simple;
+	bh=ifwUEELtEdjf/DUE2IsyUgvUQvRyAYE/M2YIgZHddvk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=r9Mi+/+0r+116Zm3dHcnXEW9KvvSvPZke0fEXsFOUPPm/zhigjf4c3ujY0hExMzFzHk2cJmXb1Lw6FRM1D+48Z7vzjmO1/ehNfRZ8Zc8dIdxOQT5HdyXY6dHSo9VSN2V0JfLrZwfneW5c1/jgirH1RlyxSyB74ranQBX/+BtNWY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tnEsHeE9; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B35811F000E9;
-	Thu,  2 Jul 2026 16:56:30 +0000 (UTC)
+	 MIME-Version; b=OEhJ+8sQjLBRcPkmLRQ1xwOaFChY/tuJcaoSEYCbPqck3VX4QPHq3PbRgN7vkSMeLGC0pDcxX4AdytaCP1GTaJwElCKkLv5+CSFpdX+s8H7GUKRuzTdOhLwIX4zh/QQadc1DkKoxF5aHP5cnKtiHDQXfeVnAM5PYi5cC4xCFhdI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f8asmDWq; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF8B11F00A3A;
+	Thu,  2 Jul 2026 17:01:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1783011391;
-	bh=oEkdvKXRIi5ujle0Gc528vg6rnUWZ45hty/9Ipin4Go=;
+	s=korg; t=1783011680;
+	bh=DAJ0SATjVtrdIm1DJWVQy7jssgN2MxXAsCp21Bz61Xk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=tnEsHeE9oI8pXNZ8Xi1WRrUda+h8JlzR6gOey7p5h3q2RW48zB4mUkM5qEIO9bJcq
-	 eB8SQZZpQAhdEXFHlT5uuVJDJFFLvKJQjgd6ihWkNE8aPm7Ei1cW1yAucU/T80dz//
-	 L6ahB7xcHFRGoJ62K9PR2SN5r2U20bHAk3hQeJNA=
+	b=f8asmDWqOlufTy4Hi5rsbujndTfHjZtr1Fmj/RpI2Ph9YFp4WZ192ftN2QVoEpZYY
+	 NrAxsNEWXvVrUbKQHCurhHYpPnV0iNO5GAYAc0oVyZYiUCnIHlEG7Nvhl91cCOVBJK
+	 xohzMPEfv77IVdw9WZwmT4Xad848gfaFnulFB2XY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wentao Liang <vulab@iscas.ac.cn>,
-	Sebastian Reichel <sebastian.reichel@collabora.com>
-Subject: [PATCH 6.18 089/108] power: reset: linkstation-poweroff: fix use-after-free in the linkstation_poweroff_init()
+	Yuho Choi <dbgh9129@gmail.com>,
+	Mathieu Poirier <mathieu.poirier@linaro.org>
+Subject: [PATCH 7.1 090/120] rpmsg: char: Fix use-after-free on probe error path
 Date: Thu,  2 Jul 2026 18:21:26 +0200
-Message-ID: <20260702155113.956274402@linuxfoundation.org>
+Message-ID: <20260702155114.820542435@linuxfoundation.org>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260702155112.110058792@linuxfoundation.org>
-References: <20260702155112.110058792@linuxfoundation.org>
+In-Reply-To: <20260702155112.964534952@linuxfoundation.org>
+References: <20260702155112.964534952@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -75,67 +75,113 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-271380-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-271490-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:dbgh9129@gmail.com,m:mathieu.poirier@linaro.org,s:lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:vulab@iscas.ac.cn,m:sebastian.reichel@collabora.com,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,linaro.org];
+	FORWARDED(0.00)[lists@lfdr.de];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[collabora.com:email,iscas.ac.cn:email,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,msgid.link:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 6F0A16FB03B
+X-Rspamd-Queue-Id: E96F56FBCA2
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wentao Liang <vulab@iscas.ac.cn>
+From: Yuho Choi <dbgh9129@gmail.com>
 
-commit 8eec545cde69e46e9a1d2b7d915ce4f5df85b3bd upstream.
+commit 1ff3f528e67d20e2b1483dcaba899dc7832b2e6b upstream.
 
-Move of_node_put(dn) after the of_match_node() call, which still needs
-the node pointer. The node reference is correctly released after use.
+rpmsg_chrdev_probe() stores the newly allocated eptdev in the default
+endpoint's priv pointer before calling rpmsg_chrdev_eptdev_add(). If
+rpmsg_chrdev_eptdev_add() then fails, its error path frees eptdev while
+the default endpoint may still dispatch callbacks with the stale priv
+pointer.
 
-Fixes: e2f471efe1d6 ("power: reset: linkstation-poweroff: prepare for new devices")
+Avoid publishing eptdev through the default endpoint until
+rpmsg_chrdev_eptdev_add() succeeds. Messages received before the priv
+pointer is published should be ignored by rpmsg_ept_cb(). Flow-control
+updates can hit rpmsg_ept_flow_cb() in the same window, so make both
+callbacks return success when priv is NULL.
+
+Fixes: bc69d1066569 ("rpmsg: char: Introduce the "rpmsg-raw" channel")
+Signed-off-by: Yuho Choi <dbgh9129@gmail.com>
 Cc: stable@vger.kernel.org
-Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
-Link: https://patch.msgid.link/20260407073025.271865-1-vulab@iscas.ac.cn
-Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
+Link: https://lore.kernel.org/r/20260601183247.1962010-1-dbgh9129@gmail.com
+Signed-off-by: Mathieu Poirier <mathieu.poirier@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/power/reset/linkstation-poweroff.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/rpmsg/rpmsg_char.c |   15 +++++++++++++--
+ 1 file changed, 13 insertions(+), 2 deletions(-)
 
---- a/drivers/power/reset/linkstation-poweroff.c
-+++ b/drivers/power/reset/linkstation-poweroff.c
-@@ -163,10 +163,10 @@ static int __init linkstation_poweroff_i
- 	dn = of_find_matching_node(NULL, ls_poweroff_of_match);
- 	if (!dn)
- 		return -ENODEV;
--	of_node_put(dn);
+--- a/drivers/rpmsg/rpmsg_char.c
++++ b/drivers/rpmsg/rpmsg_char.c
+@@ -104,6 +104,9 @@ static int rpmsg_ept_cb(struct rpmsg_dev
+ 	struct rpmsg_eptdev *eptdev = priv;
+ 	struct sk_buff *skb;
  
- 	match = of_match_node(ls_poweroff_of_match, dn);
- 	cfg = match->data;
-+	of_node_put(dn);
++	if (!eptdev)
++		return 0;
++
+ 	skb = alloc_skb(len, GFP_ATOMIC);
+ 	if (!skb)
+ 		return -ENOMEM;
+@@ -124,6 +127,9 @@ static int rpmsg_ept_flow_cb(struct rpms
+ {
+ 	struct rpmsg_eptdev *eptdev = priv;
  
- 	dn = of_find_node_by_name(NULL, cfg->mdio_node_name);
- 	if (!dn)
++	if (!eptdev)
++		return 0;
++
+ 	eptdev->remote_flow_restricted = enable;
+ 	eptdev->remote_flow_updated = true;
+ 
+@@ -490,6 +496,7 @@ static int rpmsg_chrdev_probe(struct rpm
+ 	struct rpmsg_channel_info chinfo;
+ 	struct rpmsg_eptdev *eptdev;
+ 	struct device *dev = &rpdev->dev;
++	int ret;
+ 
+ 	memcpy(chinfo.name, rpdev->id.name, RPMSG_NAME_SIZE);
+ 	chinfo.src = rpdev->src;
+@@ -502,13 +509,17 @@ static int rpmsg_chrdev_probe(struct rpm
+ 	/* Set the default_ept to the rpmsg device endpoint */
+ 	eptdev->default_ept = rpdev->ept;
+ 
++	ret = rpmsg_chrdev_eptdev_add(eptdev, chinfo);
++
++	if (ret)
++		return ret;
+ 	/*
+ 	 * The rpmsg_ept_cb uses *priv parameter to get its rpmsg_eptdev context.
+-	 * Storedit in default_ept *priv field.
++	 * Stored it in default_ept *priv field.
+ 	 */
+ 	eptdev->default_ept->priv = eptdev;
+ 
+-	return rpmsg_chrdev_eptdev_add(eptdev, chinfo);
++	return 0;
+ }
+ 
+ static void rpmsg_chrdev_remove(struct rpmsg_device *rpdev)
 
 
 
