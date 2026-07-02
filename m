@@ -1,62 +1,61 @@
-Return-Path: <stable+bounces-270764-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-271074-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id wMV3JUifRmqDaQsAu9opvQ
-	(envelope-from <stable+bounces-270764-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:26:32 +0200
+	id 9t0WO4WXRmrbZQsAu9opvQ
+	(envelope-from <stable+bounces-271074-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:53:25 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 13AD46FB553
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:26:32 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 817906FAB2F
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:53:25 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=ZZG8Z2nG;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-270764-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-270764-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=MXWluDnt;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-271074-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-271074-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 5921E328E386
-	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:33:45 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id C432230A4787
+	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:46:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E4C7748AE20;
-	Thu,  2 Jul 2026 16:29:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4776539C65F;
+	Thu,  2 Jul 2026 16:43:22 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBE6D4DC520;
-	Thu,  2 Jul 2026 16:29:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F29AD396560;
+	Thu,  2 Jul 2026 16:43:20 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783009791; cv=none; b=TKEUU1wcdZFgHJtkClgTppEBg9ak4bIhGtjbrhYCFwECPi8RF0YP0HzTs+S0Cn8P3keRFjnttJDG+5pTwQ+IOYiwZ5Nm051wsohybHQtgx5KgmLS1STPlQnRN8f2lTSyrLm5PGTZrlUm8qeUv7BvNoDYRRDPm/HQCZYugXNADlQ=
+	t=1783010602; cv=none; b=QJ1vyCWWNNjXDqM9NDfjL9OZ1rI44Be+Ff6EM5G3yTS6R7gGh8f7aMo+7s1hx+ZZSbyNWw4yqgEfn8j38n3kWLymAvrWgG/s0a2OEF6kHk61BZ9m92NEuWsbOz7+9HUKQTUeFuT/uph4VKHDQ11VZYFY4oVa8vbx6ySOL2wZv5w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783009791; c=relaxed/simple;
-	bh=4lws3EXjvN3t1d/GwqiCEMa4XqQ0XBM6ZRNBjJCaDNM=;
+	s=arc-20240116; t=1783010602; c=relaxed/simple;
+	bh=7cZb4RygkvthaFclyiM3646SrPg1P0YaFXq6SUqBVh0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QKVFpnUv2o9MT4W3aNKynhcDqlp5PXyn0MirFlYx3HEaaODppt2uo5Lnil8pZZvDUYcJy1gsxgIFq3tic5f4jhnKanrY45tSEQYXPrCbnVz4FiEWQeveHuAqEMod9MXxXf9fygLxYC3Si7tSu3L73N6iEuKxcF/MJAI+b2dmrck=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZZG8Z2nG; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2694D1F00A3A;
-	Thu,  2 Jul 2026 16:29:47 +0000 (UTC)
+	 MIME-Version; b=tZVj5ixw1fQfzaQDFut3C6OF/1545w6kSYWbmfrehbojDrJlJBbo/n7yX5OYrCL0KdH4QcBrKFUYCWeIeB0A14ZsGq6aegb/MhYKu9M91YwAG58uYfo/4X7bWcHmYD7UKoRFEOMNviFTnN3oS797ndCDzOun7awGA9MuTdo3+nM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MXWluDnt; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 221D81F000E9;
+	Thu,  2 Jul 2026 16:43:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1783009788;
-	bh=UFha0y4RGQTAqKKbO3pS4SIGI4F32yDrGGHm7Y6MXKM=;
+	s=korg; t=1783010600;
+	bh=ES4O3ZjSdSHIGFrQkJIlbxyTpMmbggEDwpvKpHh8sag=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=ZZG8Z2nGtc8ONtSKLNW0RvsRxjGFGlW4qbwEgVOypub+O9olp9kwfMT6E5iXyBdRM
-	 4cWWWugTUFq6JAj0FEzA2cZT/mN5JeaLrPbnbrSmYLJEkt5i9Q44xdoFh6qQKH1ZEl
-	 607t4hIjxILM35YxD3VfsYISntWXJaA2fPfEs0II=
+	b=MXWluDntK6G71HUdE+K/O/2a5M5lsjVFmQrfM8fABSpyxfEgJmnpbPqmiUxNPcBz8
+	 02CvrG7fsxHa+P1X9h770Anq3hE61UY8FuQMVEr7sayMuBB6zTvntSU7M5PFL8fHJE
+	 OnDVnWcZ/qWT2CHyPQoBY7PpEhyWQbhctZh3p6YQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kuniyuki Iwashima <kuniyu@amazon.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 86/95] phonet: Pass ifindex to fill_addr().
+	Wentao Liang <vulab@iscas.ac.cn>,
+	Xu Yilun <yilun.xu@intel.com>,
+	Xu Yilun <yilun.xu@linux.intel.com>
+Subject: [PATCH 6.12 172/204] fpga: region: fix use-after-free in child_regions_with_firmware()
 Date: Thu,  2 Jul 2026 18:20:29 +0200
-Message-ID: <20260702155111.016759227@linuxfoundation.org>
+Message-ID: <20260702155122.259188898@linuxfoundation.org>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260702155109.196223802@linuxfoundation.org>
-References: <20260702155109.196223802@linuxfoundation.org>
+In-Reply-To: <20260702155118.667618796@linuxfoundation.org>
+References: <20260702155118.667618796@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,115 +69,77 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-270764-lists,stable=lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-271074-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:kuniyu@amazon.com,m:edumazet@google.com,m:pabeni@redhat.com,m:sashal@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	TO_DN_SOME(0.00)[];
+	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:vulab@iscas.ac.cn,m:yilun.xu@intel.com,m:yilun.xu@linux.intel.com,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[iscas.ac.cn:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,intel.com:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 13AD46FB553
+X-Rspamd-Queue-Id: 817906FAB2F
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuniyuki Iwashima <kuniyu@amazon.com>
+From: Wentao Liang <vulab@iscas.ac.cn>
 
-[ Upstream commit 08a9572be36819b5d9011604edfa5db6c5062a7a ]
+commit 54f3c5643ec523a04b6ec0e7c19eb10f5ebebdd3 upstream.
 
-We will convert addr_doit() and getaddr_dumpit() to RCU, both
-of which call fill_addr().
+Move of_node_put(child_region) after the error print to avoid accessing
+freed memory when pr_err() references child_region.
 
-The former will call phonet_address_notify() outside of RCU
-due to GFP_KERNEL, so dev will not be available in fill_addr().
-
-Let's pass ifindex directly to fill_addr().
-
-Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Stable-dep-of: 71de0177b28d ("net: phonet: free phonet_device after RCU grace period")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 0fa20cdfcc1f ("fpga: fpga-region: device tree control for FPGA")
+Cc: stable@vger.kernel.org
+Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
+[ Yilun: Fix the Fixes tag ]
+Reviewed-by: Xu Yilun <yilun.xu@intel.com>
+Link: https://lore.kernel.org/r/20260408154534.404327-1-vulab@iscas.ac.cn
+Signed-off-by: Xu Yilun <yilun.xu@linux.intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/phonet/pn_netlink.c |   13 +++++++------
- 1 file changed, 7 insertions(+), 6 deletions(-)
+ drivers/fpga/of-fpga-region.c |    3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
---- a/net/phonet/pn_netlink.c
-+++ b/net/phonet/pn_netlink.c
-@@ -19,7 +19,7 @@
+--- a/drivers/fpga/of-fpga-region.c
++++ b/drivers/fpga/of-fpga-region.c
+@@ -168,11 +168,10 @@ static int child_regions_with_firmware(s
+ 						     fpga_region_of_match);
+ 	}
  
- /* Device address handling */
+-	of_node_put(child_region);
+-
+ 	if (ret)
+ 		pr_err("firmware-name not allowed in child FPGA region: %pOF",
+ 		       child_region);
++	of_node_put(child_region);
  
--static int fill_addr(struct sk_buff *skb, struct net_device *dev, u8 addr,
-+static int fill_addr(struct sk_buff *skb, u32 ifindex, u8 addr,
- 		     u32 portid, u32 seq, int event);
- 
- void phonet_address_notify(int event, struct net_device *dev, u8 addr)
-@@ -31,7 +31,8 @@ void phonet_address_notify(int event, st
- 			nla_total_size(1), GFP_KERNEL);
- 	if (skb == NULL)
- 		goto errout;
--	err = fill_addr(skb, dev, addr, 0, 0, event);
-+
-+	err = fill_addr(skb, dev->ifindex, addr, 0, 0, event);
- 	if (err < 0) {
- 		WARN_ON(err == -EMSGSIZE);
- 		kfree_skb(skb);
-@@ -92,8 +93,8 @@ static int addr_doit(struct sk_buff *skb
- 	return err;
+ 	return ret;
  }
- 
--static int fill_addr(struct sk_buff *skb, struct net_device *dev, u8 addr,
--			u32 portid, u32 seq, int event)
-+static int fill_addr(struct sk_buff *skb, u32 ifindex, u8 addr,
-+		     u32 portid, u32 seq, int event)
- {
- 	struct ifaddrmsg *ifm;
- 	struct nlmsghdr *nlh;
-@@ -107,7 +108,7 @@ static int fill_addr(struct sk_buff *skb
- 	ifm->ifa_prefixlen = 0;
- 	ifm->ifa_flags = IFA_F_PERMANENT;
- 	ifm->ifa_scope = RT_SCOPE_LINK;
--	ifm->ifa_index = dev->ifindex;
-+	ifm->ifa_index = ifindex;
- 	if (nla_put_u8(skb, IFA_LOCAL, addr))
- 		goto nla_put_failure;
- 	nlmsg_end(skb, nlh);
-@@ -140,7 +141,7 @@ static int getaddr_dumpit(struct sk_buff
- 			if (addr_idx++ < addr_start_idx)
- 				continue;
- 
--			if (fill_addr(skb, pnd->netdev, addr << 2,
-+			if (fill_addr(skb, pnd->netdev->ifindex, addr << 2,
- 					 NETLINK_CB(cb->skb).portid,
- 					cb->nlh->nlmsg_seq, RTM_NEWADDR) < 0)
- 				goto out;
 
 
 
