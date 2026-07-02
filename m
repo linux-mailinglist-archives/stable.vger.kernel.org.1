@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-271501-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-271405-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id l+9mJSicRmpjaAsAu9opvQ
-	(envelope-from <stable+bounces-271501-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:13:12 +0200
+	id QxPhJxybRmrTZwsAu9opvQ
+	(envelope-from <stable+bounces-271405-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:08:44 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id E24E36FB224
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:13:11 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3D77B6FB09A
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:08:44 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=DlOh08GD;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-271501-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-271501-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=hCcdCk2m;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-271405-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-271405-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 156DB3333373
-	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 17:01:54 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 42FF4304C96B
+	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:57:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 289172FC893;
-	Thu,  2 Jul 2026 17:01:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6DC7B25B09B;
+	Thu,  2 Jul 2026 16:57:38 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D44AE30B53E;
-	Thu,  2 Jul 2026 17:01:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3916822D7B9;
+	Thu,  2 Jul 2026 16:57:36 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783011707; cv=none; b=Uc7OBdMRfViBVYHhiLkVgPsjl5PWAe9feK+IlATqWeGSuxEjDdE/PHF0PNtre3ArCcIaz3Uu/DQo+4WPiMfOB19jgiU3Hv2s6w6FOXXhotNp0T8FOCOeQre3tm7OKPyFZwalWI/j5w/ba4OjyiePiOY1cgfLDa+JdDWCxQoVDGg=
+	t=1783011458; cv=none; b=iDkW8urmmiF2QOK+FuCwYaqO2bUA7DqhPqPWO+mIxFzXmmzE8qMBvvbpGZOuh3P0rZXqbUXSrYZoKaBJ9ehftIonUM6ObwgoRLRCOdG9VLZTfMwBXiKd7Gmcib301iB+Q131diGGzhH1XF1iUy5o1aPfRL05qdkiANa2YW9/tYE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783011707; c=relaxed/simple;
-	bh=lglEfIUhK8jyGrFP/m8J8txtOE9drUI62NsOMLo8qBU=;
+	s=arc-20240116; t=1783011458; c=relaxed/simple;
+	bh=tHqFAihbKH+PSOXfM7iF+fijPfkjNLwxDWisWdA2sJI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=e21MLe8inxIO7wP9QTQrwwZd10gs4c4x1jYmwkX2pGyqd00txArPT96N+BINhNE1mjFVL0OEV+zH8yLuNnYgmv/nex6NF7awK9A9oVsy25q9He03RmZoqbpTyKX3DgcnHrhlgV1vcwGOAEGAkuSqQnFdkypx6d7adZ72JkM4K2g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DlOh08GD; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F399E1F000E9;
-	Thu,  2 Jul 2026 17:01:45 +0000 (UTC)
+	 MIME-Version; b=lTMVnWN+Y5NS9YeYrkqnDFIT/WpaTCkjoarUZq0XJkqMHPOQEHZaboQaSVxtbMJ4mkC3gFntIn79rcnEA2+kgbH10QCPPCKtcS4yalOZkko+EbAf6KKKOwxbHY9kxpiiTavMmfsjlPhUMQI5B4KgpfQiOfkfDpv1x4iGPrpCSOw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hCcdCk2m; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5EA331F000E9;
+	Thu,  2 Jul 2026 16:57:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1783011706;
-	bh=WeSw43ioA1kbg0aPwrXYLCg1k/PNqYhU4xyHB26JDQw=;
+	s=korg; t=1783011456;
+	bh=IKg9tE4wgv3FE7x8eVzdW50Hj7FgXWDvvIllx2tv0ps=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=DlOh08GDKr3f1CMppIN+86kVtElQe0sMrvUbXS8zfzc3qCBJD9hN9j7LTe23btLQ1
-	 2pvfIABfMO/YHIkqNPM7Ww4pmvtEBx8OTwnv82rOkmL66Twqf8oxGHfb7WjeR0Ytzt
-	 wnrOTbBLpQnOxgeAICp85Ilr8pAI4iZPZL022KbU=
+	b=hCcdCk2mfcewuDcjxHN2qYRin8Gnn4B7BOqcGmTzTc35A+EPZv0n175c9Co+8l7XZ
+	 bkUQySVTYfzXns1Ps0dm2DG5EEAG4qHl9K6go7qvoLx0dMDLEe+eukp43rsMOf0iWv
+	 aX7ce6DWeFoV+fHdDE5fZFvY519ZTXfTJBhAIgAY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ashutosh Desai <ashutoshdesai993@gmail.com>,
-	Sean Christopherson <seanjc@google.com>
-Subject: [PATCH 7.1 095/120] KVM: SVM: Fix page overflow in sev_dbg_crypt() for ENCRYPT path
+	Johan Hovold <johan@kernel.org>,
+	Wolfram Sang <wsa+renesas@sang-engineering.com>
+Subject: [PATCH 6.18 094/108] i2c: core: fix adapter registration race
 Date: Thu,  2 Jul 2026 18:21:31 +0200
-Message-ID: <20260702155114.924901340@linuxfoundation.org>
+Message-ID: <20260702155114.058354297@linuxfoundation.org>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260702155112.964534952@linuxfoundation.org>
-References: <20260702155112.964534952@linuxfoundation.org>
+In-Reply-To: <20260702155112.110058792@linuxfoundation.org>
+References: <20260702155112.110058792@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,26 +66,26 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-271501-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:ashutoshdesai993@gmail.com,m:seanjc@google.com,s:lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-271405-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:johan@kernel.org,m:wsa+renesas@sang-engineering.com,m:wsa@sang-engineering.com,s:lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,google.com];
 	FORWARDED(0.00)[lists@lfdr.de];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
@@ -97,103 +97,71 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	RCPT_COUNT_FIVE(0.00)[5];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+	TAGGED_RCPT(0.00)[stable,renesas];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: E24E36FB224
+X-Rspamd-Queue-Id: 3D77B6FB09A
 
-7.1-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ashutosh Desai <ashutoshdesai993@gmail.com>
+From: Johan Hovold <johan@kernel.org>
 
-commit 78ee2d50185a037b3d2452a97f3dad69c3f7f389 upstream.
+commit ba14d7cf2fe7284610a29854bdff22b2537d3ce6 upstream.
 
-In sev_dbg_crypt(), the per-iteration transfer length is bounded by
-the source page offset (PAGE_SIZE - s_off) but not by the destination
-page offset (PAGE_SIZE - d_off).  When d_off > s_off, the encrypt
-path (__sev_dbg_encrypt_user) performs a read-modify-write using a
-single-page intermediate buffer (dst_tpage):
+Adapters can be looked up based on their id using i2c_get_adapter()
+which takes a reference to the embedded struct device.
 
-  1. __sev_dbg_decrypt() expands the size to round_up(len + (d_off & 15), 16)
-     before issuing the PSP command.  If len + (d_off & 15) > PAGE_SIZE,
-     the PSP writes beyond the end of the 4096-byte dst_tpage allocation.
+Make sure that the adapter (including its struct device) has been
+initialised before adding it to the IDR to avoid accessing uninitialised
+data which could, for example, lead to NULL-pointer dereferences or
+use-after-free.
 
-  2. The subsequent memcpy()/copy_from_user() into
-     page_address(dst_tpage) + (d_off & 15) of 'len' bytes overflows
-     by up to 15 bytes under the same condition.
+Note that the i2c-dev chardev, which is registered from a bus notifier,
+currently uses i2c_get_adapter() so the adapter needs to be added to the
+IDR before registration.
 
-Trigger example: s_off = 0, d_off = 1, debug.len = PAGE_SIZE -
-the PSP is instructed to write round_up(4097, 16) = 4112 bytes to
-a 4096-byte buffer.
-
-Fix by also bounding len by (PAGE_SIZE - d_off), the same check that
-sev_send_update_data() already performs for its single-page guest
-region.
-
- ==================================================================
- BUG: KASAN: slab-use-after-free in sev_dbg_crypt+0x993/0xd10 [kvm_amd]
- Write of size 4095 at addr ff110062293bb009 by task sev_dbg_test/228214
-
- CPU: 96 UID: 0 PID: 228214 Comm: sev_dbg_test Tainted: G     U  W           7.0.0-smp--5ce9b0c48211-dbg #156 PREEMPTLAZY
- Tainted: [U]=USER, [W]=WARN
- Hardware name: Google Astoria/astoria, BIOS 0.20250817.1-0 08/25/2025
- Call Trace:
-  <TASK>
-  dump_stack_lvl+0x54/0x70
-  print_report+0xbc/0x260
-  kasan_report+0xa2/0xd0
-  kasan_check_range+0x25f/0x2c0
-  __asan_memcpy+0x40/0x70
-  sev_dbg_crypt+0x993/0xd10 [kvm_amd]
-  sev_mem_enc_ioctl+0x33c/0x450 [kvm_amd]
-  kvm_vm_ioctl+0x65d/0x6d0 [kvm]
-  __se_sys_ioctl+0xb2/0x100
-  do_syscall_64+0xe8/0x870
-  entry_SYSCALL_64_after_hwframe+0x4b/0x53
-  </TASK>
-
- The buggy address belongs to the physical page:
- page: refcount:1 mapcount:0 mapping:0000000000000000 index:0x7fe72b6a0 pfn:0x62293bb
- memcg:ff11000112827d82
- flags: 0x1400000000000000(node=1|zone=1)
- raw: 1400000000000000 0000000000000000 dead000000000122 0000000000000000
- raw: 00000007fe72b6a0 0000000000000000 00000001ffffffff ff11000112827d82
- page dumped because: kasan: bad access detected
-
- Memory state around the buggy address:
-  ff110062293bbf00: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-  ff110062293bbf80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
- >ff110062293bc000: fa fb fb fb fb fb fb fb fc fc fc fc fc fc fc fc
-                    ^
-  ff110062293bc080: fa fb fb fb fb fb fb fb fc fc fc fc fc fc fc fc
-  ff110062293bc100: fa fb fb fb fb fb fb fb fc fc fc fc fc fc fc fc
- ==================================================================
- Disabling lock debugging due to kernel taint
-
-Fixes: 24f41fb23a39 ("KVM: SVM: Add support for SEV DEBUG_DECRYPT command")
-Fixes: 7d1594f5d94b ("KVM: SVM: Add support for SEV DEBUG_ENCRYPT command")
-Cc: stable@vger.kernel.org
-Signed-off-by: Ashutosh Desai <ashutoshdesai993@gmail.com>
-[sean: add sample KASAN splat, Fixes, and stable@]
-Link: https://patch.msgid.link/20260501203537.2120074-2-seanjc@google.com
-Signed-off-by: Sean Christopherson <seanjc@google.com>
+Fixes: 6e13e6418418 ("i2c: Add i2c_add_numbered_adapter()")
+Cc: stable@vger.kernel.org	# 2.6.22
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kvm/svm/sev.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/i2c/i2c-core-base.c |    8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
---- a/arch/x86/kvm/svm/sev.c
-+++ b/arch/x86/kvm/svm/sev.c
-@@ -1396,6 +1396,7 @@ static int sev_dbg_crypt(struct kvm *kvm
- 		s_off = vaddr & ~PAGE_MASK;
- 		d_off = dst_vaddr & ~PAGE_MASK;
- 		len = min_t(size_t, (PAGE_SIZE - s_off), size);
-+		len = min_t(size_t, len, PAGE_SIZE - d_off);
+--- a/drivers/i2c/i2c-core-base.c
++++ b/drivers/i2c/i2c-core-base.c
+@@ -1570,6 +1570,10 @@ static int i2c_register_adapter(struct i
+ 	pm_suspend_ignore_children(&adap->dev, true);
+ 	pm_runtime_enable(&adap->dev);
  
- 		if (dec)
- 			ret = __sev_dbg_decrypt_user(kvm,
++	mutex_lock(&core_lock);
++	idr_replace(&i2c_adapter_idr, adap, adap->nr);
++	mutex_unlock(&core_lock);
++
+ 	res = device_add(&adap->dev);
+ 	if (res) {
+ 		pr_err("adapter '%s': can't register device (%d)\n", adap->name, res);
+@@ -1628,7 +1632,7 @@ static int __i2c_add_numbered_adapter(st
+ 	int id;
+ 
+ 	mutex_lock(&core_lock);
+-	id = idr_alloc(&i2c_adapter_idr, adap, adap->nr, adap->nr + 1, GFP_KERNEL);
++	id = idr_alloc(&i2c_adapter_idr, NULL, adap->nr, adap->nr + 1, GFP_KERNEL);
+ 	mutex_unlock(&core_lock);
+ 	if (WARN(id < 0, "couldn't get idr"))
+ 		return id == -ENOSPC ? -EBUSY : id;
+@@ -1662,7 +1666,7 @@ int i2c_add_adapter(struct i2c_adapter *
+ 	}
+ 
+ 	mutex_lock(&core_lock);
+-	id = idr_alloc(&i2c_adapter_idr, adapter,
++	id = idr_alloc(&i2c_adapter_idr, NULL,
+ 		       __i2c_first_dynamic_bus_num, 0, GFP_KERNEL);
+ 	mutex_unlock(&core_lock);
+ 	if (WARN(id < 0, "couldn't get idr"))
 
 
 
