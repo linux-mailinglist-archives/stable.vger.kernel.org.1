@@ -1,62 +1,61 @@
-Return-Path: <stable+bounces-271245-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-270887-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id hBXHFvSYRmqlZgsAu9opvQ
-	(envelope-from <stable+bounces-271245-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:59:32 +0200
+	id bxy0HCiVRmprZAsAu9opvQ
+	(envelope-from <stable+bounces-270887-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:43:20 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 057946FAD42
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:59:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 30A986FA709
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:43:20 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=d1++A8qh;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-271245-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-271245-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=bo8oq9uW;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-270887-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-270887-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 216EE308C88B
-	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:52:07 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id EE842307F6CC
+	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:37:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 099AB35FF6C;
-	Thu,  2 Jul 2026 16:50:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7EC393469E7;
+	Thu,  2 Jul 2026 16:35:10 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C55EE33A70E;
-	Thu,  2 Jul 2026 16:50:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CBE8208D0;
+	Thu,  2 Jul 2026 16:35:09 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783011042; cv=none; b=MPEff399pY9a9PgYAJbDw6ZoEeLclXKQ1adPtr94SmHpXpzZYXA+m43pdG/Mo+G+vTTJtiufk7KRIH/83bgXQ/HQh6Ku281xdfkVIxiC6kPxkobBDqS/Vnmp3LRj8M9B9FPqyrnqQv1O6KMFH5ipc4JpzQtpwZnKHHqfWgZWLJI=
+	t=1783010110; cv=none; b=QyerYVWU7zYrSiwfbK4v7/JJnWPqfLcYWrfbitXTYO3iIjS+P8j7vU9NLvXQ1giQL2qoocCUwy72GpHJvqcR4AFtSxwXTyjLpca6bXTkGIpUVSV/frGLKEXm9qKMAWwdMUShM3YKC0tOT1HtuV1BNWGBHXoxG8dgHoN6xYw3MKM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783011042; c=relaxed/simple;
-	bh=v5kaJEO49ZY2NMM+UfgabeaKG0Eu3ta8pWbDgckZGhg=;
+	s=arc-20240116; t=1783010110; c=relaxed/simple;
+	bh=KyMesS+zvVHn8Os56w6itG4DO2Uxg7C9lrKyRxyDLlE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XCfsOulqPQ1P/MQa+pv9c3dczcTSFx8k0rnEpkRrMYvFV584ipwyaOqhLK9lbMwCoZlk4UJ8MW+AdnBRxuIEcmMXWWXh9GTn+/QiBl8vuvYSOB5/R8k1ufhQG3V2VHUUd7w0Dsvfrm6l9Dzju+HK4NSvJxrYRuYTaRy8LChBS8M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d1++A8qh; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 379871F000E9;
-	Thu,  2 Jul 2026 16:50:41 +0000 (UTC)
+	 MIME-Version; b=pIxSP4NrLDaopfU77FmK6qBf/ySgvAFX/dXyUA+6YN+THBzoQh/jnh/cjtCjg3Mtjz/CpyFIfZf7GGnpSbidgdbwuGjVsr6bpStDdJ9bwYRcgSgFlR48ruyjkR8qpCFlDuUZT9jcHn8oLkbLBVs01AVgNf0sLI2+0bN6TaeibMc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bo8oq9uW; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A84B01F000E9;
+	Thu,  2 Jul 2026 16:35:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1783011041;
-	bh=CKFYn5q9dKzcgnM/HXav50n4lsQ4lDkokav/1Rh6jOk=;
+	s=korg; t=1783010109;
+	bh=qtGr0BXHqVaBZ2iPUq3ycdZvK7/fGp+cNRN/f90w3hU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=d1++A8qhenrSc5Vr3m4HV80U6nDDZNP7LkjI2kaXLQ4p6GDr5AlceHagMRlRyi2eU
-	 p1yyk7B/Job0hOId2qOh7aC4Ec4tmqnqr8NEdpbyFz/q17bAcoZMy+7jp1PuMeRegP
-	 /deF3DO3Fy5QIvGYBZar07j6WzyOaoTWbtukKotw=
+	b=bo8oq9uWjN7onYLU4WXcrzcnX0EnuqgDC7E3C7ejMVxI8dlGiAVEe4Xvu/JOxbkiT
+	 dAkMxQJgk9L9vUCHffOpBvsZi1M7Ht57Eo9JW2sx+z78cBpYHJicR2VpXNfYs1WqVd
+	 UEEfCATu7L+/J4odWpMp4zQuGQV+ioDSH1JzidqI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jose Ignacio Tornos Martinez <jtornosm@redhat.com>,
-	Baochen Qiang <baochen.qiang@oss.qualcomm.com>,
-	Rameshkumar Sundaram <rameshkumar.sundaram@oss.qualcomm.com>,
-	Jeff Johnson <jeff.johnson@oss.qualcomm.com>
-Subject: [PATCH 6.6 132/175] wifi: ath11k: fix warning when unbinding
-Date: Thu,  2 Jul 2026 18:20:33 +0200
-Message-ID: <20260702155118.593533808@linuxfoundation.org>
+	Abel Vesa <abel.vesa@linaro.org>,
+	Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 115/129] misc: fastrpc: Add dma_mask to fastrpc_channel_ctx
+Date: Thu,  2 Jul 2026 18:20:34 +0200
+Message-ID: <20260702155114.524870075@linuxfoundation.org>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260702155115.766838875@linuxfoundation.org>
-References: <20260702155115.766838875@linuxfoundation.org>
+In-Reply-To: <20260702155112.163984240@linuxfoundation.org>
+References: <20260702155112.163984240@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,87 +69,82 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-271245-lists,stable=lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-270887-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:jtornosm@redhat.com,m:baochen.qiang@oss.qualcomm.com,m:rameshkumar.sundaram@oss.qualcomm.com,m:jeff.johnson@oss.qualcomm.com,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	TO_DN_SOME(0.00)[];
+	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:abel.vesa@linaro.org,m:srinivas.kandagatla@linaro.org,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[qualcomm.com:email,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,linaro.org:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 057946FAD42
+X-Rspamd-Queue-Id: 30A986FA709
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
+From: Abel Vesa <abel.vesa@linaro.org>
 
-commit 8b7a26b6681922a38cd5a7829ace61f8e54df9b7 upstream.
+[ Upstream commit 9bde43a0e2f469961e18d0a3496a9a74379c22bf ]
 
-If there is an error during some initialization related to firmware,
-the buffers dp->tx_ring[i].tx_status are released.
-However this is released again when the device is unbinded (ath11k_pci),
-and we get:
-WARNING: CPU: 0 PID: 6231 at mm/slub.c:4368 free_large_kmalloc+0x57/0x90
-Call Trace:
-free_large_kmalloc
-ath11k_dp_free
-ath11k_core_deinit
-ath11k_pci_remove
-...
+dma_set_mask_and_coherent only updates the mask to which the device
+dma_mask pointer points to. Add a dma_mask to the channel ctx and set
+the device dma_mask to point to that, otherwise the dma_set_mask will
+return an error and the dma_set_coherent_mask will be skipped too.
 
-The issue is always reproducible from a VM because the MSI addressing
-initialization is failing.
-
-In order to fix the issue, just set the buffers to NULL after releasing in
-order to avoid the double free.
-
-Fixes: d5c65159f289 ("ath11k: driver for Qualcomm IEEE 802.11ax devices")
-Cc: stable@vger.kernel.org
-Signed-off-by: Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
-Reviewed-by: Baochen Qiang <baochen.qiang@oss.qualcomm.com>
-Reviewed-by: Rameshkumar Sundaram <rameshkumar.sundaram@oss.qualcomm.com>
-Link: https://patch.msgid.link/20260420110130.509670-1-jtornosm@redhat.com
-Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+Co-developed-by: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
+Signed-off-by: Abel Vesa <abel.vesa@linaro.org>
+Signed-off-by: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
+Link: https://lore.kernel.org/r/20221125071405.148786-11-srinivas.kandagatla@linaro.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Stable-dep-of: 5401fb4fe10f ("misc: fastrpc: Fix NULL pointer dereference in rpmsg callback")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/ath/ath11k/dp.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/misc/fastrpc.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/net/wireless/ath/ath11k/dp.c
-+++ b/drivers/net/wireless/ath/ath11k/dp.c
-@@ -1039,6 +1039,7 @@ void ath11k_dp_free(struct ath11k_base *
- 		idr_destroy(&dp->tx_ring[i].txbuf_idr);
- 		spin_unlock_bh(&dp->tx_ring[i].tx_idr_lock);
- 		kfree(dp->tx_ring[i].tx_status);
-+		dp->tx_ring[i].tx_status = NULL;
- 	}
+--- a/drivers/misc/fastrpc.c
++++ b/drivers/misc/fastrpc.c
+@@ -262,6 +262,7 @@ struct fastrpc_channel_ctx {
+ 	struct fastrpc_device *fdevice;
+ 	bool secure;
+ 	bool unsigned_support;
++	u64 dma_mask;
+ };
  
- 	/* Deinit any SOC level resource */
+ struct fastrpc_device {
+@@ -2175,6 +2176,7 @@ static int fastrpc_rpmsg_probe(struct rp
+ 	kref_init(&data->refcount);
+ 
+ 	dev_set_drvdata(&rpdev->dev, data);
++	rdev->dma_mask = &data->dma_mask;
+ 	dma_set_mask_and_coherent(rdev, DMA_BIT_MASK(32));
+ 	INIT_LIST_HEAD(&data->users);
+ 	spin_lock_init(&data->lock);
 
 
 
