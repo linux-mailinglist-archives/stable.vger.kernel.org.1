@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-270921-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-270922-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id tVtnGqqgRmoFagsAu9opvQ
-	(envelope-from <stable+bounces-270921-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:32:26 +0200
+	id ln5oCpiWRmpVZQsAu9opvQ
+	(envelope-from <stable+bounces-270922-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:49:28 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B357E6FB6C1
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:32:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E2E56FA9B8
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:49:27 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="deUa/cq4";
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-270921-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-270921-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=MGw6ekcE;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-270922-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-270922-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A8883304929A
-	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:38:17 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B2D7F3347CD0
+	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:38:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF46F393DF2;
-	Thu,  2 Jul 2026 16:36:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 842A8381EAC;
+	Thu,  2 Jul 2026 16:36:43 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8A48343896;
-	Thu,  2 Jul 2026 16:36:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7841F346E64;
+	Thu,  2 Jul 2026 16:36:41 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783010199; cv=none; b=fqJM/G5ELDOwXEoTr/oWAfsTFvXcMCwvqlku2csdiPYnHUanDm129ihLym2TsV1u9epEBrkEYBcGZISWEFsylT3Y+Odh02kWE8RTybr8RfJb4Ip2t/cMpMcNYQvlA1c15V6CtXgyesRAS1OP5HQ1crvn1ouFIQRS5RQ9gruLrT0=
+	t=1783010203; cv=none; b=CqiR8Tu14PMg99YAXtABWG84S+GO3XzaAFTMKYxl6jB3HAg6UfwYJlQPlDXo+2hFtiehWxnSl886t+GPq1+hQZzuLuEdzA/YF7ZgIFE1mQBPmF7mFqpIZLN9x4HQIeXq4I2aWzYOi9UrhV3D9XKvLx6RbOLB4pr263QL/YCS4I0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783010199; c=relaxed/simple;
-	bh=6JVNP/BYxpWXVYHpPZU3TMfpFzD2c4WWWKUyUaAZHCU=;
+	s=arc-20240116; t=1783010203; c=relaxed/simple;
+	bh=IM8HWXzW1kD+11s5/ix5FQ/6yKrdQulVs0rpExE9Hxg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WKG6QE0WJXQpCpe//uLJ/vbKqAkcbfD0F5vv0N2uG4kCS0eBkC5bmx3XEgkRvtrYCnmz0vSlOaOZLqqhOE1kP3D/B63yOmhXl4SSEEvpl08TRBB1iQd41BHkSabQ28RQkRu5y4TXVqzgAHfXUObeYGwPW62pQVXDsJ/UWhYRWe4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=deUa/cq4; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 196E21F00A3A;
-	Thu,  2 Jul 2026 16:36:37 +0000 (UTC)
+	 MIME-Version; b=jAtcGC00GWH6y0h5M/OinhZQP/Udb2fVfRZOHNsbvu6r11D7sbbYH+W5SM9xpvyxUXa4cBd+ozxXogbPYWfwQdSf/5L9jCVWcADfFdZurQ48D9hyrrX/8YkkEglGXThg5jkNi8ucqX5AqETo/hxjuEt4oQ6ARk7DCwqn3vyg3uM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MGw6ekcE; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2AAE1F000E9;
+	Thu,  2 Jul 2026 16:36:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1783010198;
-	bh=+sOtm7h/Uh5m0zaEvedKIEg2eITNCK63gkbsxARbYWc=;
+	s=korg; t=1783010201;
+	bh=UUvBF1xHUOaraOwCVBrFU05fhY74kbcNcLZKxByF/LE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=deUa/cq4UNVPK6ftWZ7yvaVrJTiV8CBym3HWGGO4U8F6uDj8YbKgpgUWHkhJ0N89n
-	 L2+qknyIM1NZCiLCUqUa4heKB+NMHkqU7rWK2P2kKgSfMLVWUy7bXYj1BrnCU0fub3
-	 /SwIbDVfZ7ZqoxVRSZIu6HMtQSki9jheXRNah3YU=
+	b=MGw6ekcErjjDagWvjabr+N2LuuF0RT1Y4b7tzlZLfbmXOcYevDdY+R3QsdB6YW0BK
+	 0nF5/Dd9usPd4AyFjx+GROXsOz9jcomseHkRV1Er/feMNfHX8aJUN689jk++ZiKEKy
+	 3GXDR9N97VR+9+Y6YXMI7CPyxKPXlWocKRPZAeHc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Bartosz Golaszewski <brgl@bgdev.pl>,
+	Linus Walleij <linusw@kernel.org>,
+	Tzung-Bi Shih <tzungbi@kernel.org>,
+	Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>,
 	Quentin Schulz <quentin.schulz@cherry.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 006/204] gpiolib: Remove redundant assignment of return variable
-Date: Thu,  2 Jul 2026 18:17:43 +0200
-Message-ID: <20260702155118.801382044@linuxfoundation.org>
+Subject: [PATCH 6.12 007/204] gpio: Fix resource leaks on errors in gpiochip_add_data_with_key()
+Date: Thu,  2 Jul 2026 18:17:44 +0200
+Message-ID: <20260702155118.823225230@linuxfoundation.org>
 X-Mailer: git-send-email 2.55.0
 In-Reply-To: <20260702155118.667618796@linuxfoundation.org>
 References: <20260702155118.667618796@linuxfoundation.org>
@@ -80,12 +80,12 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-270921-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-270922-lists,stable=lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:linus.walleij@linaro.org,m:andriy.shevchenko@linux.intel.com,m:brgl@bgdev.pl,m:quentin.schulz@cherry.de,m:sashal@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:linusw@kernel.org,m:tzungbi@kernel.org,m:bartosz.golaszewski@oss.qualcomm.com,m:quentin.schulz@cherry.de,m:sashal@kernel.org,s:lists@lfdr.de];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
@@ -100,80 +100,256 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,linaro.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,cherry.de:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[qualcomm.com:email,vger.kernel.org:from_smtp,cherry.de:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: B357E6FB6C1
+X-Rspamd-Queue-Id: 5E2E56FA9B8
 
 6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+From: Tzung-Bi Shih <tzungbi@kernel.org>
 
-[ Upstream commit 550300b9a295a591e0721a31f8c964a4bc08d51c ]
+[ Upstream commit 16fdabe143fce2cbf89139677728e17e21b46c28 ]
 
-In some functions the returned variable is assigned to 0 and then
-reassigned to the actual value. Remove redundant assignments.
+Since commit aab5c6f20023 ("gpio: set device type for GPIO chips"),
+`gdev->dev.release` is unset.  As a result, the reference count to
+`gdev->dev` isn't dropped on the error handling paths.
 
-In one case make it more clear that the assignment is not needed.
+Drop the reference on errors.
 
-Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Link: https://lore.kernel.org/r/20250416095645.2027695-9-andriy.shevchenko@linux.intel.com
-Signed-off-by: Bartosz Golaszewski <brgl@bgdev.pl>
-Stable-dep-of: 16fdabe143fc ("gpio: Fix resource leaks on errors in gpiochip_add_data_with_key()")
+Also reorder the instructions to make the error handling simpler.
+Now gpiochip_add_data_with_key() roughly looks like:
+
+   >>> Some memory allocation.  Go to ERR ZONE 1 on errors.
+   >>> device_initialize().
+
+   gpiodev_release() takes over the responsibility for freeing the
+   resources of `gdev->dev`.  The subsequent error handling paths
+   shouldn't go through ERR ZONE 1 again which leads to double free.
+
+   >>> Some initialization mainly on `gdev`.
+   >>> The rest of initialization.  Go to ERR ZONE 2 on errors.
+   >>> Chip registration success and exit.
+
+   >>> ERR ZONE 2.  gpio_device_put() and exit.
+   >>> ERR ZONE 1.
+
+Cc: stable@vger.kernel.org
+Fixes: aab5c6f20023 ("gpio: set device type for GPIO chips")
+Reviewed-by: Linus Walleij <linusw@kernel.org>
+Signed-off-by: Tzung-Bi Shih <tzungbi@kernel.org>
+Link: https://patch.msgid.link/20260205092840.2574840-1-tzungbi@kernel.org
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
+[missing commit fcc8b637c542 ("gpiolib: switch the line state notifier
+ to atomic"), commit dcb73cbaaeb3 ("gpio: cdev: use raw notifier for
+ line state events") and commit d4f335b410dd ("gpiolib: rename GPIO chip
+ printk macros") in 6.12.y.
+ s/gpiochip_err/chip_err/ as well as replaced
+ rwlock_init+RAW_INIT_NOTIFIER_HEAD with BLOCKING_INIT_NOTIFIER_HEAD
+ based on missing commits, following same logic as in 16fdabe143fc.]
 Signed-off-by: Quentin Schulz <quentin.schulz@cherry.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpio/gpiolib.c | 13 ++++++-------
- 1 file changed, 6 insertions(+), 7 deletions(-)
+ drivers/gpio/gpiolib.c | 101 ++++++++++++++++++++---------------------
+ 1 file changed, 48 insertions(+), 53 deletions(-)
 
 diff --git a/drivers/gpio/gpiolib.c b/drivers/gpio/gpiolib.c
-index d48a57b899f79c..97a32e6f901fce 100644
+index 97a32e6f901fce..878f9ab4a09829 100644
 --- a/drivers/gpio/gpiolib.c
 +++ b/drivers/gpio/gpiolib.c
-@@ -939,7 +939,7 @@ int gpiochip_add_data_with_key(struct gpio_chip *gc, void *data,
- 	struct gpio_device *gdev;
- 	unsigned int desc_index;
- 	int base = 0;
--	int ret = 0;
-+	int ret;
+@@ -785,13 +785,15 @@ static const struct device_type gpio_dev_type = {
+ #define gcdev_unregister(gdev)		device_del(&(gdev)->dev)
+ #endif
  
++/*
++ * An initial reference count has been held in gpiochip_add_data_with_key().
++ * The caller should drop the reference via gpio_device_put() on errors.
++ */
+ static int gpiochip_setup_dev(struct gpio_device *gdev)
+ {
+ 	struct fwnode_handle *fwnode = dev_fwnode(&gdev->dev);
+ 	int ret;
+ 
+-	device_initialize(&gdev->dev);
+-
  	/*
- 	 * First: allocate and populate the internal stat container, and
-@@ -959,11 +959,10 @@ int gpiochip_add_data_with_key(struct gpio_chip *gc, void *data,
+ 	 * If fwnode doesn't belong to another device, it's safe to clear its
+ 	 * initialized flag.
+@@ -859,9 +861,11 @@ static void gpiochip_setup_devs(void)
+ 	list_for_each_entry_srcu(gdev, &gpio_devices, list,
+ 				 srcu_read_lock_held(&gpio_devices_srcu)) {
+ 		ret = gpiochip_setup_dev(gdev);
+-		if (ret)
++		if (ret) {
++			gpio_device_put(gdev);
+ 			dev_err(&gdev->dev,
+ 				"Failed to initialize gpio device (%d)\n", ret);
++		}
+ 	}
+ }
  
- 	device_set_node(&gdev->dev, gpiochip_choose_fwnode(gc));
+@@ -941,70 +945,71 @@ int gpiochip_add_data_with_key(struct gpio_chip *gc, void *data,
+ 	int base = 0;
+ 	int ret;
  
--	gdev->id = ida_alloc(&gpio_ida, GFP_KERNEL);
--	if (gdev->id < 0) {
--		ret = gdev->id;
-+	ret = ida_alloc(&gpio_ida, GFP_KERNEL);
-+	if (ret < 0)
+-	/*
+-	 * First: allocate and populate the internal stat container, and
+-	 * set up the struct device.
+-	 */
+ 	gdev = kzalloc(sizeof(*gdev), GFP_KERNEL);
+ 	if (!gdev)
+ 		return -ENOMEM;
+-
+-	gdev->dev.type = &gpio_dev_type;
+-	gdev->dev.bus = &gpio_bus_type;
+-	gdev->dev.parent = gc->parent;
+-	rcu_assign_pointer(gdev->chip, gc);
+-
+ 	gc->gpiodev = gdev;
+ 	gpiochip_set_data(gc, data);
+ 
+-	device_set_node(&gdev->dev, gpiochip_choose_fwnode(gc));
+-
+ 	ret = ida_alloc(&gpio_ida, GFP_KERNEL);
+ 	if (ret < 0)
  		goto err_free_gdev;
--	}
-+	gdev->id = ret;
+ 	gdev->id = ret;
  
- 	ret = dev_set_name(&gdev->dev, GPIOCHIP_NAME "%d", gdev->id);
+-	ret = dev_set_name(&gdev->dev, GPIOCHIP_NAME "%d", gdev->id);
++	ret = init_srcu_struct(&gdev->srcu);
  	if (ret)
-@@ -2882,7 +2881,7 @@ EXPORT_SYMBOL_GPL(gpiod_direction_output);
-  */
- int gpiod_enable_hw_timestamp_ns(struct gpio_desc *desc, unsigned long flags)
- {
--	int ret = 0;
-+	int ret;
+ 		goto err_free_ida;
++	rcu_assign_pointer(gdev->chip, gc);
  
- 	VALIDATE_DESC(desc);
+-	if (gc->parent && gc->parent->driver)
+-		gdev->owner = gc->parent->driver->owner;
+-	else if (gc->owner)
+-		/* TODO: remove chip->owner */
+-		gdev->owner = gc->owner;
+-	else
+-		gdev->owner = THIS_MODULE;
++	ret = init_srcu_struct(&gdev->desc_srcu);
++	if (ret)
++		goto err_cleanup_gdev_srcu;
++
++	ret = dev_set_name(&gdev->dev, GPIOCHIP_NAME "%d", gdev->id);
++	if (ret)
++		goto err_cleanup_desc_srcu;
++
++	device_initialize(&gdev->dev);
++	/*
++	 * After this point any allocated resources to `gdev` will be
++	 * free():ed by gpiodev_release().  If you add new resources
++	 * then make sure they get free():ed there.
++	 */
++	gdev->dev.type = &gpio_dev_type;
++	gdev->dev.bus = &gpio_bus_type;
++	gdev->dev.parent = gc->parent;
++	device_set_node(&gdev->dev, gpiochip_choose_fwnode(gc));
  
-@@ -2915,7 +2914,7 @@ EXPORT_SYMBOL_GPL(gpiod_enable_hw_timestamp_ns);
-  */
- int gpiod_disable_hw_timestamp_ns(struct gpio_desc *desc, unsigned long flags)
- {
--	int ret = 0;
-+	int ret;
+ 	ret = gpiochip_get_ngpios(gc, &gdev->dev);
+ 	if (ret)
+-		goto err_free_dev_name;
++		goto err_put_device;
++	gdev->ngpio = gc->ngpio;
  
- 	VALIDATE_DESC(desc);
+ 	gdev->descs = kcalloc(gc->ngpio, sizeof(*gdev->descs), GFP_KERNEL);
+ 	if (!gdev->descs) {
+ 		ret = -ENOMEM;
+-		goto err_free_dev_name;
++		goto err_put_device;
+ 	}
  
+ 	gdev->label = kstrdup_const(gc->label ?: "unknown", GFP_KERNEL);
+ 	if (!gdev->label) {
+ 		ret = -ENOMEM;
+-		goto err_free_descs;
++		goto err_put_device;
+ 	}
+ 
+-	gdev->ngpio = gc->ngpio;
+ 	gdev->can_sleep = gc->can_sleep;
+-
+ 	BLOCKING_INIT_NOTIFIER_HEAD(&gdev->line_state_notifier);
+ 	BLOCKING_INIT_NOTIFIER_HEAD(&gdev->device_notifier);
+-
+-	ret = init_srcu_struct(&gdev->srcu);
+-	if (ret)
+-		goto err_free_label;
+-
+-	ret = init_srcu_struct(&gdev->desc_srcu);
+-	if (ret)
+-		goto err_cleanup_gdev_srcu;
++#ifdef CONFIG_PINCTRL
++	INIT_LIST_HEAD(&gdev->pin_ranges);
++#endif
++	if (gc->parent && gc->parent->driver)
++		gdev->owner = gc->parent->driver->owner;
++	else if (gc->owner)
++		/* TODO: remove chip->owner */
++		gdev->owner = gc->owner;
++	else
++		gdev->owner = THIS_MODULE;
+ 
+ 	scoped_guard(mutex, &gpio_devices_lock) {
+ 		/*
+@@ -1020,7 +1025,7 @@ int gpiochip_add_data_with_key(struct gpio_chip *gc, void *data,
+ 			if (base < 0) {
+ 				ret = base;
+ 				base = 0;
+-				goto err_cleanup_desc_srcu;
++				goto err_put_device;
+ 			}
+ 
+ 			/*
+@@ -1040,14 +1045,10 @@ int gpiochip_add_data_with_key(struct gpio_chip *gc, void *data,
+ 		ret = gpiodev_add_to_list_unlocked(gdev);
+ 		if (ret) {
+ 			chip_err(gc, "GPIO integer space overlap, cannot add chip\n");
+-			goto err_cleanup_desc_srcu;
++			goto err_put_device;
+ 		}
+ 	}
+ 
+-#ifdef CONFIG_PINCTRL
+-	INIT_LIST_HEAD(&gdev->pin_ranges);
+-#endif
+-
+ 	if (gc->names)
+ 		gpiochip_set_desc_names(gc);
+ 
+@@ -1128,25 +1129,19 @@ int gpiochip_add_data_with_key(struct gpio_chip *gc, void *data,
+ 	scoped_guard(mutex, &gpio_devices_lock)
+ 		list_del_rcu(&gdev->list);
+ 	synchronize_srcu(&gpio_devices_srcu);
+-	if (gdev->dev.release) {
+-		/* release() has been registered by gpiochip_setup_dev() */
+-		gpio_device_put(gdev);
+-		goto err_print_message;
+-	}
++err_put_device:
++	gpio_device_put(gdev);
++	goto err_print_message;
++
+ err_cleanup_desc_srcu:
+ 	cleanup_srcu_struct(&gdev->desc_srcu);
+ err_cleanup_gdev_srcu:
+ 	cleanup_srcu_struct(&gdev->srcu);
+-err_free_label:
+-	kfree_const(gdev->label);
+-err_free_descs:
+-	kfree(gdev->descs);
+-err_free_dev_name:
+-	kfree(dev_name(&gdev->dev));
+ err_free_ida:
+ 	ida_free(&gpio_ida, gdev->id);
+ err_free_gdev:
+ 	kfree(gdev);
++
+ err_print_message:
+ 	/* failures here can mean systems won't boot... */
+ 	if (ret != -EPROBE_DEFER) {
 -- 
 2.53.0
 
