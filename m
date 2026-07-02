@@ -1,141 +1,208 @@
-Return-Path: <stable+bounces-270540-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-270541-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id i1j7Fvd3RmrDWQsAu9opvQ
-	(envelope-from <stable+bounces-270540-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 16:38:47 +0200
+	id s6MbL1B4RmpYWgsAu9opvQ
+	(envelope-from <stable+bounces-270541-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 16:40:16 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8B46F6F8F3C
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 16:38:46 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1BD336F8F6D
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 16:40:15 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=kUUY9zX1;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-270540-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-270540-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=none) header.from=linuxfoundation.org;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ctpheO3R;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-270541-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-270541-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 288EC303CD2C
-	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 14:33:41 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 9175B3010F4B
+	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 14:34:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B33AE4DD6FE;
-	Thu,  2 Jul 2026 14:33:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 634D02EA48F;
+	Thu,  2 Jul 2026 14:34:12 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA20447279F;
-	Thu,  2 Jul 2026 14:33:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28C8D2DA75B
+	for <stable@vger.kernel.org>; Thu,  2 Jul 2026 14:34:11 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783002808; cv=none; b=Ct1ZywmAHEFiWYpkx4y2ll6Jry742lOxzCIAUjGO82dFT8MRaOHaV5QTbLkx3Asy98aVHIxmT8xyf7PxNc1VFYhnIkPbEFScFRcrR+jR4bhjpdoxc0nTkjodtDItRZrntFPkY9/IBQm02R1GOwGnTpYAdzACJ/SMXfhgr91qkBo=
+	t=1783002852; cv=none; b=Uy7XiD649CiP7gO6m+4bvQQZaxKXjYD1zCGKB5o+DFAeDxF+RWDGn6wzgQ8ytne75YzxQ/XNIN7bJ/e7nYeWLUorVmzU8s/s85QEvuIJc4O99MDMwnSr7xWW6rsIzG6vk3OlktuHjPq7dU8EyUDDYguXrt5b+jb8hm5d2anJQ8U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783002808; c=relaxed/simple;
-	bh=t5Vi6OsDk2eWxe7TGJ1s96KWVcA8DipRhR+B42GcteM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=nbB8o5W0uYWIBOTM3htkwX7a1L+Y45c7GcbXrC+egfqN76Ev+Z3HONYY+0i7vy1ba8uyvBoTcD0fOjl4TtXmDwyOnLjjjJiVpupfrtlBJqCYj+P6oTXUkKm4Yz5US6fzvvQ0owC94iR8osVIvIYy4KvBIUTIl3zH8WBwM/UTfI8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kUUY9zX1; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 969161F000E9;
-	Thu,  2 Jul 2026 14:33:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1783002804;
-	bh=ObPSPm/RAbPRAiqiaBm+TmK1R0zPbfnWG/8sRU3cr3M=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=kUUY9zX1jWEG2F7JuRo7tWuSOwrGZPRAJbOgbN5R1OKkqnVBt5P3tMFaxdqhtaMbo
-	 dYIJCFuRh8T6KwoK8BqilA6PiGXalD3x92ud3EZHUY2O49k8Aq3malWEDD6aBkSZtt
-	 zIn8CL/z9s/C1MiWGohGOQAENuS0BWs56QZ+Hd8c=
-Date: Thu, 2 Jul 2026 16:33:34 +0200
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Vladislav Nikolaev <vlad102nikolaev@gmail.com>
-Cc: stable@vger.kernel.org, Zhu Yanjun <zyjzyj2000@gmail.com>,
-	Doug Ledford <dledford@redhat.com>, Jason Gunthorpe <jgg@ziepe.ca>,
-	Haggai Eran <haggaie@mellanox.com>,
-	Kamal Heib <kamalh@mellanox.com>, Amir Vadai <amirv@mellanox.com>,
-	Moni Shoua <monis@mellanox.com>,
-	Yonatan Cohen <yonatanc@mellanox.com>,
-	Leon Romanovsky <leon@kernel.org>, linux-rdma@vger.kernel.org,
-	linux-kernel@vger.kernel.org, Zhu Yanjun <yanjunz@nvidia.com>,
-	lvc-project@linuxtesting.org
-Subject: Re: [PATCH v3 5.10/5.15 0/2] Backport RDMA/rxe task and timer
- cleanup fixes
-Message-ID: <2026070218-playhouse-quicksand-7f7d@gregkh>
-References: <20260605171449.1760-1-vlad102nikolaev@gmail.com>
+	s=arc-20240116; t=1783002852; c=relaxed/simple;
+	bh=fHPiWCU3Nga91srhexwrjDbFQbrVqk7QMHHmP3ZqJU8=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=ruHVAOnoK8O1xRo6OOFjr2EoZM++UT7v490cvrtklJpZMkkpAr344O8wZzQtHcDnemUaoAkB+SqiBjdhUP0HME1nMLv2ZbKuU9J2rsZkRW+f0dtKmSqo7+50Y24eMu0tLQMvAmRcfltvdCInlt5IMdozQYZ/jw3f/3OPmZxcVpc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ctpheO3R; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4359B1F00A3D;
+	Thu,  2 Jul 2026 14:34:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1783002851;
+	bh=Cx/JqrdyRnAVEk3Z9F4eHYZeRVIFuzXnRs5vPQkmchc=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=ctpheO3ROU2uawnI+LV09w/qDnhPzOdZZz6RkNnSF5tB6v7rI92WSrX6BKP7cgHM9
+	 9Bj9cqgzbPpAFOuohfGYoVJaT/BFfVYIPreuEgQ9nqNeiZFAEPN9Ej8Da/vYLej4ju
+	 y9g8JqQIPwkO3XKMke9kRb6uG8TsDCsuU616+5TDVbG1ZKWy4PV45R70EikNHve8gS
+	 YZMrxbjiEhf4g7ZElnTLHCRaL2WV3Elw9YWiKoH2qoXoAIW0XkzKhtF0SBsO0qBeB0
+	 Ynw0NKLemyuYm9UJz/j5uvSmnufRletEDw82Kyxun1WR6aqpLAaOFaNJwIayLfTa3U
+	 oBBb4tNqMFmWg==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: Maoyi Xie <maoyixie.tju@gmail.com>,
+	Xiao Liang <shaw.leon@gmail.com>,
+	Kuniyuki Iwashima <kuniyu@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6.y] net: ip_gre: require CAP_NET_ADMIN in the device netns for changelink
+Date: Thu,  2 Jul 2026 10:34:08 -0400
+Message-ID: <20260702143408.3487262-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <2026070221-liberty-skimpily-9ea5@gregkh>
+References: <2026070221-liberty-skimpily-9ea5@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260605171449.1760-1-vlad102nikolaev@gmail.com>
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [2.34 / 15.00];
-	MID_END_EQ_FROM_USER_PART(4.00)[];
+X-Spamd-Result: default: False [-2.16 / 15.00];
+	WHITELIST_SPF_DKIM(-3.00)[kernel.org:d:+,kernel.org:s:+];
+	SUSPICIOUS_RECIPS(1.50)[];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	MID_RHS_NOT_FQDN(0.50)[];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FROM_HAS_DN(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:vlad102nikolaev@gmail.com,m:stable@vger.kernel.org,m:zyjzyj2000@gmail.com,m:dledford@redhat.com,m:jgg@ziepe.ca,m:haggaie@mellanox.com,m:kamalh@mellanox.com,m:amirv@mellanox.com,m:monis@mellanox.com,m:yonatanc@mellanox.com,m:leon@kernel.org,m:linux-rdma@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:yanjunz@nvidia.com,m:lvc-project@linuxtesting.org,s:lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-270541-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:maoyixie.tju@gmail.com,m:shaw.leon@gmail.com,m:kuniyu@google.com,m:kuba@kernel.org,m:sashal@kernel.org,m:maoyixietju@gmail.com,m:shawleon@gmail.com,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	TO_DN_SOME(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[15];
-	FREEMAIL_TO(0.00)[gmail.com];
 	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
-	TAGGED_FROM(0.00)[bounces-270540-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[gmail.com,google.com,kernel.org];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[vger.kernel.org,gmail.com,redhat.com,ziepe.ca,mellanox.com,kernel.org,nvidia.com,linuxtesting.org];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
+	ALIAS_RESOLVED(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	MISSING_XM_UA(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp,gregkh:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime]
+	RWL_MAILSPIKE_POSSIBLE(0.00)[104.64.211.4:from];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,msgid.link:url,vger.kernel.org:from_smtp,ip6_tnl.net:url]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 8B46F6F8F3C
+X-Rspamd-Queue-Id: 1BD336F8F6D
 
-On Fri, Jun 05, 2026 at 08:14:41PM +0300, Vladislav Nikolaev wrote:
-> This series backports two upstream RDMA/rxe fixes to linux-5.10.y and
-> linux-5.15.y.
-> 
-> The first patch fixes cleanup of RXE tasks that may not have been
-> initialized on the rxe_create_qp() error path. The second patch fixes
-> the same class of lockdep issue for RC timers by checking that both
-> timers were initialized before deleting them.
-> 
-> In linux-5.10.y and linux-5.15.y the relevant task and timer cleanup
-> still lives in rxe_qp_destroy(), so the 1c7eec4d5f3b backport applies
-> the timer guard there and keeps del_timer_sync().
-> 
-> Zhu Yanjun (2):
->   RDMA/rxe: Fix the error "trying to register non-static key in
->     rxe_cleanup_task"
->   RDMA/rxe: Fix "trying to register non-static key in rxe_qp_do_cleanup"
->     bug
-> 
->  drivers/infiniband/sw/rxe/rxe_qp.c | 18 ++++++++++++++----
->  1 file changed, 14 insertions(+), 4 deletions(-)
-> 
-> -- 
-> 2.39.5
+From: Maoyi Xie <maoyixie.tju@gmail.com>
 
-Would need this for newer kernels first.  Please submit that series
-first, then resend these.
+[ Upstream commit 8165f7ff57d9667d2bb477ef6af83ede7fed4ad7 ]
 
-thanks,
+A tunnel changelink() operates on at most two netns, dev_net(dev) and
+the tunnel link netns t->net. They differ once the device is created in
+or moved to a netns other than the one the request runs in. The rtnl
+changelink path checks CAP_NET_ADMIN only against dev_net(dev), so a
+caller privileged there but not in t->net can rewrite a tunnel that
+lives in t->net.
 
-greg k-h
+Add rtnl_dev_link_net_capable() next to rtnl_get_net_ns_capable() in
+net/core/rtnetlink.c. It requires CAP_NET_ADMIN in the link netns and is
+skipped when the link netns is dev_net(dev), where the rtnl path already
+checked it. The other patches in this series use the same helper.
+
+Gate ipgre_changelink() and erspan_changelink() with it, at the top of
+the op before any attribute is parsed, because the parsers update live
+tunnel fields first. ipgre_netlink_parms() sets t->collect_md before
+ip_tunnel_changelink() runs.
+
+Commit 8b484efd5cb4 ("ip6: vti: Use ip6_tnl.net in
+vti6_siocdevprivate().") added the same check on the ioctl path. This
+adds it on RTM_NEWLINK.
+
+Reported-by: Xiao Liang <shaw.leon@gmail.com>
+Closes: https://lore.kernel.org/netdev/CABAhCOSzP1vaThGV35_VnsRCb=87_CPjPVsTHbq905k8A+BuUg@mail.gmail.com/
+Fixes: b57708add314 ("gre: add x-netns support")
+Cc: stable@vger.kernel.org
+Signed-off-by: Maoyi Xie <maoyixie.tju@gmail.com>
+Reviewed-by: Kuniyuki Iwashima <kuniyu@google.com>
+Link: https://patch.msgid.link/20260612085941.3158249-2-maoyixie.tju@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ include/net/rtnetlink.h | 2 ++
+ net/core/rtnetlink.c    | 8 ++++++++
+ net/ipv4/ip_gre.c       | 6 ++++++
+ 3 files changed, 16 insertions(+)
+
+diff --git a/include/net/rtnetlink.h b/include/net/rtnetlink.h
+index c1fa6fee0acfa7..17a91f7b69ea51 100644
+--- a/include/net/rtnetlink.h
++++ b/include/net/rtnetlink.h
+@@ -211,6 +211,8 @@ int rtnl_configure_link(struct net_device *dev, const struct ifinfomsg *ifm,
+ int rtnl_nla_parse_ifinfomsg(struct nlattr **tb, const struct nlattr *nla_peer,
+ 			     struct netlink_ext_ack *exterr);
+ struct net *rtnl_get_net_ns_capable(struct sock *sk, int netnsid);
++bool rtnl_dev_link_net_capable(const struct net_device *dev,
++			       const struct net *link_net);
+ 
+ #define MODULE_ALIAS_RTNL_LINK(kind) MODULE_ALIAS("rtnl-link-" kind)
+ 
+diff --git a/net/core/rtnetlink.c b/net/core/rtnetlink.c
+index 350705730f76a1..09a3ca7e64c54b 100644
+--- a/net/core/rtnetlink.c
++++ b/net/core/rtnetlink.c
+@@ -2157,6 +2157,14 @@ struct net *rtnl_get_net_ns_capable(struct sock *sk, int netnsid)
+ }
+ EXPORT_SYMBOL_GPL(rtnl_get_net_ns_capable);
+ 
++bool rtnl_dev_link_net_capable(const struct net_device *dev,
++			       const struct net *link_net)
++{
++	return net_eq(link_net, dev_net(dev)) ||
++	       ns_capable(link_net->user_ns, CAP_NET_ADMIN);
++}
++EXPORT_SYMBOL_GPL(rtnl_dev_link_net_capable);
++
+ static int rtnl_valid_dump_ifinfo_req(const struct nlmsghdr *nlh,
+ 				      bool strict_check, struct nlattr **tb,
+ 				      struct netlink_ext_ack *extack)
+diff --git a/net/ipv4/ip_gre.c b/net/ipv4/ip_gre.c
+index 75d388dd5ac62e..e58965ce8263d2 100644
+--- a/net/ipv4/ip_gre.c
++++ b/net/ipv4/ip_gre.c
+@@ -1412,6 +1412,9 @@ static int ipgre_changelink(struct net_device *dev, struct nlattr *tb[],
+ 	struct ip_tunnel_parm p;
+ 	int err;
+ 
++	if (!rtnl_dev_link_net_capable(dev, t->net))
++		return -EPERM;
++
+ 	err = ipgre_newlink_encap_setup(dev, data);
+ 	if (err)
+ 		return err;
+@@ -1441,6 +1444,9 @@ static int erspan_changelink(struct net_device *dev, struct nlattr *tb[],
+ 	struct ip_tunnel_parm p;
+ 	int err;
+ 
++	if (!rtnl_dev_link_net_capable(dev, t->net))
++		return -EPERM;
++
+ 	err = ipgre_newlink_encap_setup(dev, data);
+ 	if (err)
+ 		return err;
+-- 
+2.53.0
+
 
