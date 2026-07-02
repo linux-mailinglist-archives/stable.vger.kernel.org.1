@@ -1,60 +1,62 @@
-Return-Path: <stable+bounces-271067-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-271231-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id FYPvHKKYRmp4ZgsAu9opvQ
-	(envelope-from <stable+bounces-271067-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:58:10 +0200
+	id EWTAF52aRmqXZwsAu9opvQ
+	(envelope-from <stable+bounces-271231-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:06:37 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 66AC06FACD8
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:58:09 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id DF2446FAFE1
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:06:36 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=1L8obi8B;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-271067-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-271067-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=RsUrWCHO;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-271231-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-271231-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id DF303314139F
-	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:46:07 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id CB067311DDAA
+	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:51:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A7CD3624B7;
-	Thu,  2 Jul 2026 16:43:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F10E73438A6;
+	Thu,  2 Jul 2026 16:50:08 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 563D8246BBA;
-	Thu,  2 Jul 2026 16:43:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C116532ED40;
+	Thu,  2 Jul 2026 16:50:07 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783010583; cv=none; b=XCgVIYlGk+BnUTTZnU3tPq09pzBaTgsBzlaPZDv86ssnM04uI0gArJZTMd1uFASZcQ6z95aGsItZ+mCN+1fBYcTSsJdxg/RE0mo3dQrfN3kLxbCwrgTBNhwHTdzpjJqufRpmj1slEDbjCTpYHpeGzu3p064twe36HTAIHyXcZMU=
+	t=1783011008; cv=none; b=FLN9/zXnIpeuRVaqfPpgkYO4Eg1jJm+lfjTOPZp07ZelQkTLOIjDo7PIZj7kjk91rBCyeuNNp+hraIttM5uX74v3Hp9RGtFLDm7dkPQULULxNTD2lV+2qDxMIUsavFFNwMTjPQ2F0K2JgzEpIHhlMXHWJmSV3rHSn7G8jKre/YA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783010583; c=relaxed/simple;
-	bh=lnR2EBn1dzruYON8HMA7tSyUm7JuFXEXG/tSP7CCAuY=;
+	s=arc-20240116; t=1783011008; c=relaxed/simple;
+	bh=M1i2Err9otXt4cawRqlEof2mnPeRqUCv9bPE9jh+/j0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=X220hmM6tiHDxHqV0z21H8+siwxXj8rYT5Y6Dp3ieemkAV0R43I91YC2Kbyg1N80pxYA1/RVlhLEDHczLwpvOsy4V7CycCrthVvKS3p4qEmQDinlDWtdAXhcD/xPS18UVDQMeQeHcWglgdCZZA1mJgH1w/CGJi5KBlXbQnfPJ3I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1L8obi8B; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD51B1F000E9;
-	Thu,  2 Jul 2026 16:43:01 +0000 (UTC)
+	 MIME-Version; b=K+4m1aoyAJ3KjdtRln4a1bPebqYrQMfaPqKLWThwfxAwBVq6rNPKW39OK7cC8nFtsZJHggGDJH8kdUHQj64mgFyV+h3QRlXT64cFBD404aFf9CLOQUtCkFxZ7uo8FuTnmU/ggg5Tdat2+hYInnh/uYteZViuvWucJoG2MB5i01k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RsUrWCHO; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3383B1F000E9;
+	Thu,  2 Jul 2026 16:50:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1783010582;
-	bh=S9P1dbk+XY+hCTWCl+ObOYxtudPkjxeHgUNP1XNInig=;
+	s=korg; t=1783011007;
+	bh=KBPDtE1vh+2yY6HEwoZEy2pAkXNRRgSNTN7W8WqcOko=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=1L8obi8BZ+gTsVYwZAC0rrnzHo9GuOTkGVkuEoht/oYX68msiSdOh7jsoBM8x1jux
-	 az+nm+izIpvNZkHiBD7988ZP9LNip9b/UFyL0jfv88Lw7sNsG+Q5Id/pnFUTQKui/S
-	 DAy8DLVvyk6UmszzVN/Z0/ETbe+SS1LUij6I2tf0=
+	b=RsUrWCHO31RhHsxeUeabicBwzYsteXBMJWCL0Yfw9qmGMMNflXhSm4FJke09TH9He
+	 G3K3y/XkCUPHh53qg8p7ueDbcvXzvn7L74b6rMogm9ikDfWypslvIEgTSRR8pmuoo+
+	 Y4DxEa8WdWylemumn+MdXKof1NGPp68I68OrjoH4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wentao Liang <vulab@iscas.ac.cn>,
-	Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
-Subject: [PATCH 6.12 165/204] pwrseq: core: fix use-after-free in pwrseq_debugfs_seq_next()
+	Igor Ushakov <sysroot314@gmail.com>,
+	Kuniyuki Iwashima <kuniyu@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 121/175] af_unix: Set gc_in_progress to true in unix_gc().
 Date: Thu,  2 Jul 2026 18:20:22 +0200
-Message-ID: <20260702155122.115108489@linuxfoundation.org>
+Message-ID: <20260702155118.302440209@linuxfoundation.org>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260702155118.667618796@linuxfoundation.org>
-References: <20260702155118.667618796@linuxfoundation.org>
+In-Reply-To: <20260702155115.766838875@linuxfoundation.org>
+References: <20260702155115.766838875@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,120 +73,100 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-271067-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:vulab@iscas.ac.cn,m:bartosz.golaszewski@oss.qualcomm.com,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,google.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-271231-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:sysroot314@gmail.com,m:kuniyu@google.com,m:kuba@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,msgid.link:url,qualcomm.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,iscas.ac.cn:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 66AC06FACD8
+X-Rspamd-Queue-Id: DF2446FAFE1
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wentao Liang <vulab@iscas.ac.cn>
+From: Kuniyuki Iwashima <kuniyu@google.com>
 
-commit 257595adf9dac15ae1edd9d07753fbc576a7583d upstream.
+[ Upstream commit d82ba05263c69fa2437fe93e4e561cc40f4c03af ]
 
-pwrseq_debugfs_seq_next() declares 'next' with __free(put_device),
-which causes put_device() to be called on the returned pointer when
-the variable goes out of scope.  This results in a use-after-free
-since the seq_file framework receives a pointer whose reference has
-already been dropped.
+Igor Ushakov reported that unix_gc() could run with gc_in_progress
+being false if the work is scheduled while running:
 
-Simply removing __free(put_device) would fix the UAF but would leak
-the reference acquired by bus_find_next_device(), as stop() only
-calls up_read(&pwrseq_sem) and never releases the device reference.
+  Thread 1         Thread 2                     Thread 3
+  --------         --------                     --------
+                   unix_schedule_gc()           unix_schedule_gc()
+                   `- if (!gc_in_progress)      `- if (!gc_in_progress)
+                      |- gc_in_progress = true     |
+                      `- queue_work()              |
+  unix_gc() <----------------/                     |
+  |                                                |- gc_in_progress = true
+  ...                                              `- queue_work()
+  |                                                       |
+  `- gc_in_progress = false                               |
+                                                          |
+  unix_gc() <---------------------------------------------'
+  |
+  ... /* gc_in_progress == false */
+  |
+  `- gc_in_progress = false
 
-Fix this by making the reference counting consistent across all
-seq_file callbacks, matching the standard pattern used by PCI and
-SCSI:
+unix_peek_fpl() relies on gc_in_progress not to confuse GC
+by MSG_PEEK.
 
-- start(): use get_device() so it returns a referenced pointer.
-- next(): explicitly put_device(curr) to release the previous
-  device's reference (no NULL check needed - the seq_file framework
-  only calls next() while the previous return was non-NULL).
-- stop(): put_device(data) to release the last iterated device's
-  reference, with a NULL guard since stop() may be called with NULL
-  when start() returned NULL or next() reached end-of-sequence.
+Let's set gc_in_progress to true in unix_gc().
 
-Cc: stable@vger.kernel.org
-Fixes: 249ebf3f65f8 ("power: sequencing: implement the pwrseq core")
-Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
-Link: https://patch.msgid.link/20260616151049.1705503-1-vulab@iscas.ac.cn
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 8b90a9f819dc ("af_unix: Run GC on only one CPU.")
+Reported-by: Igor Ushakov <sysroot314@gmail.com>
+Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
+Link: https://patch.msgid.link/20260501073945.1884564-1-kuniyu@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+[ Add setting gc_in_progress in __unix_gc(). Keep the existing
+  set in unix_gc() for wait_for_unix_gc() over-limit throttling. ]
+Signed-off-by: Igor Ushakov <sysroot314@gmail.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/power/sequencing/core.c |   14 +++++++++-----
- 1 file changed, 9 insertions(+), 5 deletions(-)
+ net/unix/garbage.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/power/sequencing/core.c
-+++ b/drivers/power/sequencing/core.c
-@@ -990,8 +990,9 @@ static void *pwrseq_debugfs_seq_start(st
- 	ctx.index = *pos;
+diff --git a/net/unix/garbage.c b/net/unix/garbage.c
+index 1cdb54c61619f5..fa6983dc3181d9 100644
+--- a/net/unix/garbage.c
++++ b/net/unix/garbage.c
+@@ -583,6 +583,8 @@ static void __unix_gc(struct work_struct *work)
+ 	struct sk_buff_head hitlist;
+ 	struct sk_buff *skb;
  
- 	/*
--	 * We're holding the lock for the entire printout so no need to fiddle
--	 * with device reference count.
-+	 * Hold the lock for the entire printout to prevent device removal.
-+	 * Reference counts are managed by start()/next()/stop() as required
-+	 * by the seq_file contract.
- 	 */
- 	down_read(&pwrseq_sem);
- 
-@@ -999,7 +1000,7 @@ static void *pwrseq_debugfs_seq_start(st
- 	if (!ctx.index)
- 		return NULL;
- 
--	return ctx.dev;
-+	return get_device(ctx.dev);
- }
- 
- static void *pwrseq_debugfs_seq_next(struct seq_file *seq, void *data,
-@@ -1009,8 +1010,9 @@ static void *pwrseq_debugfs_seq_next(str
- 
- 	++*pos;
- 
--	struct device *next __free(put_device) =
--			bus_find_next_device(&pwrseq_bus, curr);
-+	struct device *next = bus_find_next_device(&pwrseq_bus, curr);
++	WRITE_ONCE(gc_in_progress, true);
 +
-+	put_device(curr);
- 	return next;
- }
+ 	spin_lock(&unix_gc_lock);
  
-@@ -1059,6 +1061,8 @@ static int pwrseq_debugfs_seq_show(struc
- 
- static void pwrseq_debugfs_seq_stop(struct seq_file *seq, void *data)
- {
-+	if (data)
-+		put_device(data);
- 	up_read(&pwrseq_sem);
- }
- 
+ 	if (!unix_graph_maybe_cyclic) {
+-- 
+2.53.0
+
 
 
 
