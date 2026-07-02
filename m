@@ -1,74 +1,60 @@
-Return-Path: <stable+bounces-270966-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-271124-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id F5OKJxqWRmoBZQsAu9opvQ
-	(envelope-from <stable+bounces-270966-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:47:22 +0200
+	id V3xVLPijRmpDawsAu9opvQ
+	(envelope-from <stable+bounces-271124-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:46:32 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5EF136FA8BB
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:47:22 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B449E6FB9CA
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:46:31 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=M1yPPQBN;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-270966-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-270966-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=xIE5ORwj;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-271124-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-271124-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 993C0302F705
-	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:39:58 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id C8878310D07C
+	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:47:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68AC9357CF4;
-	Thu,  2 Jul 2026 16:38:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 18394321F5F;
+	Thu,  2 Jul 2026 16:45:34 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D21C1A682A;
-	Thu,  2 Jul 2026 16:38:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD26C355F5C;
+	Thu,  2 Jul 2026 16:45:32 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783010318; cv=none; b=S0dm7a1a7CwCKT6LwR33uXISck/HKDg02s7z0ulNshhjPMr/SKCLrYJEQAY2ViPihkFpMw63vqTVJWCTtZpHCM5zUkElAW9Ax2ZmQn8uUG0GebExyjjhQIVAoajEQqSNMe7yWHIAdL2IRuj7T30txw7ChamGE+niv/WkmGG4c+Y=
+	t=1783010733; cv=none; b=pAaUS6jW+yVG3Dt5DETsL0kxf8OrD/SaAAtGRrYxIx+/mFtMPtF5U7qgwYTchliETVnQvyvjiR2ZvZ+YCxj3H24Cohnr+LVbQUPIUemVuW0cp7aE4Ty4gqK9Y+blM4bHU+iHOgziASNpvKg0VMkSgtJMOuYTkMzl4POfehgBtWc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783010318; c=relaxed/simple;
-	bh=bjgGAsjIuiYpP9OrMd2wZ+aoHB4Hzt6uH5estsnUJ2Y=;
+	s=arc-20240116; t=1783010733; c=relaxed/simple;
+	bh=zb2pzqKXHMD37ioD+YqtRfyQXn7P01W7g+Usj8i0jLw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PGtjFhJyrar54ZXZc9ivohJRnjT93vCMSG+EWiyikGKV40c4FYAQ1Npq+2QoswgidIVRX0A3iPyoD/H+YFalEe1vv+h44mBrYJuL/EEX72Ae+oH6muuxCeF3OetZaiL8U/vBpjpuaLcgei4IQKDvC/PY4J44iMu/XFO2ek4dQQs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M1yPPQBN; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47F2F1F000E9;
-	Thu,  2 Jul 2026 16:38:36 +0000 (UTC)
+	 MIME-Version; b=jxgzbfm8srenZ0HeEd9w0dX1j/wYGd7Ie51/zlwekCiBYhQ5gW64/5oTcw6Xx6c1RoVH3KsnJRD1VOEs1yV/Ew3aryaroCXObXmMApdnWNksNMXcBlNw4NbQSkV7KnpZCLVavO2Vdllg4vhjlxXT6ufIPtcSHdjjTFToa+zD2d8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xIE5ORwj; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8EFE1F000E9;
+	Thu,  2 Jul 2026 16:45:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1783010316;
-	bh=hDj8aR8LUtVPUSvZWloW7mOKVQX/J7y8/2Hth3sz0p4=;
+	s=korg; t=1783010732;
+	bh=8y034PSAzO/MVtqxAoq21PK2bJNIn65kt7XIorl6pMs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=M1yPPQBNxf0L8EL3NgQeF/6kfRBn00sz9vVg87vMX7PKXRORrgg3ePcAmoVdXD9wj
-	 MYPMzvhN7CGwzZ1AGOQPlvrAc1mpO0M8hAb4nlD/rZQn7bzQBfbj+BRJSVT/X/vk4Z
-	 P90p4kCrCLMmGV17+q1EZ+gdb/7bQGjDD+E9urWk=
+	b=xIE5ORwjY3Or/qRFdglDMzNy4ypVIjs4j/M7zf51GaRcmdngLX8uxCHKT0pkD63kC
+	 nChOkyurraQlfTd/DXLQTllkkeoX/15IOSXUXGdazhpsRqVwIFgZitdTjMGU/uMAls
+	 FyRE8A770xrrJW595IQNxVcDFfWUNKKk6+bWsii4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	bpf <bpf@vger.kernel.org>,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	Masahiro Yamada <masahiroy@kernel.org>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Nicolas Schier <nicolas@fjasle.eu>,
-	Zheng Yejian <zhengyejian1@huawei.com>,
-	Martin Kelly <martin.kelly@crowdstrike.com>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Josh Poimboeuf <jpoimboe@redhat.com>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
-	Andrey Grodzovsky <andrey.grodzovsky@crowdstrike.com>
-Subject: [PATCH 6.12 061/204] scripts/sorttable: Make compare_extable() into two functions
+	Lord Ulf Henrik Holmberg <henrik.holmberg@defensify.se>,
+	Leon Romanovsky <leon@kernel.org>
+Subject: [PATCH 6.6 017/175] RDMA/bnxt_re: zero shared page before exposing to userspace
 Date: Thu,  2 Jul 2026 18:18:38 +0200
-Message-ID: <20260702155119.941511339@linuxfoundation.org>
+Message-ID: <20260702155116.140268263@linuxfoundation.org>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260702155118.667618796@linuxfoundation.org>
-References: <20260702155118.667618796@linuxfoundation.org>
+In-Reply-To: <20260702155115.766838875@linuxfoundation.org>
+References: <20260702155115.766838875@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -85,22 +71,22 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-270966-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-271124-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[19];
+	TO_DN_SOME(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:bpf@vger.kernel.org,m:mhiramat@kernel.org,m:mark.rutland@arm.com,m:mathieu.desnoyers@efficios.com,m:akpm@linux-foundation.org,m:peterz@infradead.org,m:torvalds@linux-foundation.org,m:masahiroy@kernel.org,m:nathan@kernel.org,m:nicolas@fjasle.eu,m:zhengyejian1@huawei.com,m:martin.kelly@crowdstrike.com,m:christophe.leroy@csgroup.eu,m:jpoimboe@redhat.com,m:rostedt@goodmis.org,m:andrey.grodzovsky@crowdstrike.com,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:henrik.holmberg@defensify.se,m:leon@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	TO_DN_SOME(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
@@ -111,134 +97,63 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,msgid.link:url,defensify.se:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 5EF136FA8BB
+X-Rspamd-Queue-Id: B449E6FB9CA
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Steven Rostedt <rostedt@goodmis.org>
+From: Lord Ulf Henrik Holmberg <henrik.holmberg@defensify.se>
 
-[ Upstream commit 7ffc0d0819f438779ed592e2e2e3576f43ce14f0 ]
+commit f6b079629becfa977f9c51fe53ad2e6dcc55ef44 upstream.
 
-Instead of having the compare_extable() part of the sorttable.h header
-where it get's defined twice, since it is a very simple function, just
-define it twice in sorttable.c, and then it can use the proper read
-functions for the word size and endianess and the Elf_Addr macro can be
-removed from sorttable.h.
+bnxt_re_alloc_ucontext() allocates uctx->shpg via
+__get_free_page(GFP_KERNEL). The buddy allocator does not zero pages
+without __GFP_ZERO, so the page contains stale kernel data from
+whatever object most recently freed it.
 
-Also add a micro optimization. Instead of:
+The page is then mapped into userspace via vm_insert_page() under
+BNXT_RE_MMAP_SH_PAGE in bnxt_re_mmap(). The driver only ever writes
+4 bytes (a u32 AVID) at offset BNXT_RE_AVID_OFFT (0x10) inside
+bnxt_re_create_ah(); the remaining 4092 bytes of the page are exposed
+to userspace unsanitised, leaking kernel memory contents.
 
-    if (a < b)
-        return -1;
-    if (a > b)
-        return 1;
-    return 0;
+Any user with access to /dev/infiniband/uverbsX on a host with a
+bnxt_re device (typically rdma group membership) can read this data
+via a single mmap() at pgoff 0 after IB_USER_VERBS_CMD_GET_CONTEXT.
 
-That can be shorten to:
+Other shared pages in the same file already use get_zeroed_page()
+correctly:
 
-   if (a < b)
-      return -1;
-   return a > b;
+  drivers/infiniband/hw/bnxt_re/ib_verbs.c
+      srq->uctx_srq_page = (void *)get_zeroed_page(GFP_KERNEL);
+      cq->uctx_cq_page  = (void *)get_zeroed_page(GFP_KERNEL);
 
-Cc: bpf <bpf@vger.kernel.org>
-Cc: Masami Hiramatsu <mhiramat@kernel.org>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: Masahiro Yamada <masahiroy@kernel.org>
-Cc: Nathan Chancellor <nathan@kernel.org>
-Cc: Nicolas Schier <nicolas@fjasle.eu>
-Cc: Zheng Yejian <zhengyejian1@huawei.com>
-Cc: Martin  Kelly <martin.kelly@crowdstrike.com>
-Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
-Cc: Josh Poimboeuf <jpoimboe@redhat.com>
-Link: https://lore.kernel.org/20250105162344.945299671@goodmis.org
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-Signed-off-by: Andrey Grodzovsky <andrey.grodzovsky@crowdstrike.com>
+uctx->shpg is the only outlier. Bring it in line with the existing
+convention by switching to get_zeroed_page().
+
+Fixes: 1ac5a4047975 ("RDMA/bnxt_re: Add bnxt_re RoCE driver")
+Signed-off-by: Lord Ulf Henrik Holmberg <henrik.holmberg@defensify.se>
+Link: https://patch.msgid.link/20260509084011.11971-1-pomzm67@gmail.com
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- scripts/sorttable.c |   20 ++++++++++++++++++++
- scripts/sorttable.h |   14 --------------
- 2 files changed, 20 insertions(+), 14 deletions(-)
+ drivers/infiniband/hw/bnxt_re/ib_verbs.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/scripts/sorttable.c
-+++ b/scripts/sorttable.c
-@@ -173,6 +173,26 @@ static inline unsigned int get_secindex(
- 	return r(&symtab_shndx_start[sym_offs]);
- }
+--- a/drivers/infiniband/hw/bnxt_re/ib_verbs.c
++++ b/drivers/infiniband/hw/bnxt_re/ib_verbs.c
+@@ -4146,7 +4146,7 @@ int bnxt_re_alloc_ucontext(struct ib_uco
  
-+static int compare_extable_32(const void *a, const void *b)
-+{
-+	Elf32_Addr av = r(a);
-+	Elf32_Addr bv = r(b);
-+
-+	if (av < bv)
-+		return -1;
-+	return av > bv;
-+}
-+
-+static int compare_extable_64(const void *a, const void *b)
-+{
-+	Elf64_Addr av = r8(a);
-+	Elf64_Addr bv = r8(b);
-+
-+	if (av < bv)
-+		return -1;
-+	return av > bv;
-+}
-+
- /* 32 bit and 64 bit are very similar */
- #include "sorttable.h"
- #define SORTTABLE_64
---- a/scripts/sorttable.h
-+++ b/scripts/sorttable.h
-@@ -23,7 +23,6 @@
- #undef sort_mcount_loc
- #undef elf_mcount_loc
- #undef do_sort
--#undef Elf_Addr
- #undef Elf_Ehdr
- #undef Elf_Shdr
- #undef Elf_Sym
-@@ -38,7 +37,6 @@
- # define sort_mcount_loc	sort_mcount_loc_64
- # define elf_mcount_loc		elf_mcount_loc_64
- # define do_sort		do_sort_64
--# define Elf_Addr		Elf64_Addr
- # define Elf_Ehdr		Elf64_Ehdr
- # define Elf_Shdr		Elf64_Shdr
- # define Elf_Sym		Elf64_Sym
-@@ -52,7 +50,6 @@
- # define sort_mcount_loc	sort_mcount_loc_32
- # define elf_mcount_loc		elf_mcount_loc_32
- # define do_sort		do_sort_32
--# define Elf_Addr		Elf32_Addr
- # define Elf_Ehdr		Elf32_Ehdr
- # define Elf_Shdr		Elf32_Shdr
- # define Elf_Sym		Elf32_Sym
-@@ -160,17 +157,6 @@ static void *sort_orctable(void *arg)
- }
- #endif
+ 	uctx->rdev = rdev;
  
--static int compare_extable(const void *a, const void *b)
--{
--	Elf_Addr av = _r(a);
--	Elf_Addr bv = _r(b);
--
--	if (av < bv)
--		return -1;
--	if (av > bv)
--		return 1;
--	return 0;
--}
- #ifdef MCOUNT_SORT_ENABLED
- pthread_t mcount_sort_thread;
- 
+-	uctx->shpg = (void *)__get_free_page(GFP_KERNEL);
++	uctx->shpg = (void *)get_zeroed_page(GFP_KERNEL);
+ 	if (!uctx->shpg) {
+ 		rc = -ENOMEM;
+ 		goto fail;
 
 
 
