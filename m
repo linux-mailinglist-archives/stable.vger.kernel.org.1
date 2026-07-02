@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-271473-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-271363-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id SC+FLlCnRmpQbAsAu9opvQ
-	(envelope-from <stable+bounces-271473-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 20:00:48 +0200
+	id GuJRLRimRmrmawsAu9opvQ
+	(envelope-from <stable+bounces-271363-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:55:36 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id BB0876FBC9A
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 20:00:47 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 80B9D6FBB76
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:55:35 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=g6J5YiE5;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-271473-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-271473-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=hJEx2Jy+;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-271363-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-271363-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 6F16330C3E38
-	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 17:00:47 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 7ECFC3062753
+	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:55:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 362122DEA98;
-	Thu,  2 Jul 2026 17:00:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E50A23093DD;
+	Thu,  2 Jul 2026 16:55:47 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9FCD32720C;
-	Thu,  2 Jul 2026 17:00:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B39DA19049B;
+	Thu,  2 Jul 2026 16:55:46 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783011637; cv=none; b=iL8x9wLVN0KvGbYcSs0JID9jRzqja4uWWEDmz+98Wq4Tn49/awDDfeQmTlQIRYgLUerLigAT2nn3Ef+FIYWM6d048H/FN78RyRWkHsSbXjjJ0p6uMinl6NgtQS5WY1I93QwdBiDqxdxJsyFX/HZsAEd62Q9l5bzTBGoVtumJEq4=
+	t=1783011347; cv=none; b=ehRXDfar7yZL3ecACoMMoGi9lCdDRmPDMchOMIyf6JAOLGVqTCzuOcX8mWVlp+XeObwa1daIh/+q8n6Uk1Yxks6Hugoi4RL0YqiPpbkTTYFEJdriaH4bvm7MCWeK8cTk5HcwHjL2Ui2T6BcaKla4kvDqhamiA73WQ56g8D9oRpc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783011637; c=relaxed/simple;
-	bh=apAFDRZWn5kSvl2Z9ZS/Xd6fpp8xkwL/sPSm2kVWiTU=;
+	s=arc-20240116; t=1783011347; c=relaxed/simple;
+	bh=9PV5929nZWcyd+pGQX9kMbHghvcZGiuaSJ0ze1dISGY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=t8ScBfiPc3sG34+Kok9KDSOTpEY3Bx8TclcSzBR3nQxmIVpTz+bFJiZ7TJf0ykF2fwJMb+yO2qxbpeig+7/B35L1QubCzmtOpGdS8lSjuXhnWPI2E2tzc1Xdz7gZKS/0OpkuiokQqXRpphvfD5HEOtbS2aqlX7lNia0Ya6Az3h0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=g6J5YiE5; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4246D1F000E9;
-	Thu,  2 Jul 2026 17:00:35 +0000 (UTC)
+	 MIME-Version; b=HHgbm8wQyph8AOdlr2JEENb6lCvcvicr/1vb7JDlvceVRWVtddLY5rf71Cp/1UZfFB9gxxFcmZqJkRqYsVKpuYfknxjJQomOAV7bf4SwYdGqEF45TO2e54c838ATN43oTLU1yffbhgSkif9Q7s0KRLsQp4gdGiayaDrxOECQluM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hJEx2Jy+; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26FAB1F000E9;
+	Thu,  2 Jul 2026 16:55:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1783011635;
-	bh=pUYsChyv8Kdv8E6fCsolaUEv/riZPNfzX2ZDt0ibeFw=;
+	s=korg; t=1783011346;
+	bh=W4kKisSG0vTurVpJoyniCcurY6xhb7I1VF3+C3nmqeM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=g6J5YiE5t55a97cZEvenTj/YH/2DTA1rca07JXlkn8KJPlwTzKhfmWEkg1cfgNZ8H
-	 fncILgWKPtzXSJXmxQgfMp394g1PNvl4Sxms+aBMecu9aJzKF7CtqI+IQRcBZn9Pci
-	 xxBverMnYc/YQqpRlwkz9vXabk7qPZjrTJ5m5J0M=
+	b=hJEx2Jy+m8odEts3yFNo3e/TXOesn5GjYpMmYe+fL7QVhzUfMH9LiDksLsXxUMv1n
+	 irAdfCBxvi1nXiKMngKPxQ84sW/AfBExyVovf3TYkVM2KNce+CGpexzJMJi5V9nFn0
+	 aTNNa+VttHWLevhTDSf0tkGi9IE/3gpXzgw0aeu4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Maciej W. Rozycki" <macro@orcam.me.uk>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-Subject: [PATCH 7.1 075/120] MIPS: DEC: Prevent initial console buffer from landing in XKPHYS
+	syzbot+42a37bf8045847d8f9d2@syzkaller.appspotmail.com,
+	Tristan Madani <tristan@talencesecurity.com>,
+	Andreas Gruenbacher <agruenba@redhat.com>
+Subject: [PATCH 6.18 074/108] gfs2: fix use-after-free in gfs2_qd_dealloc
 Date: Thu,  2 Jul 2026 18:21:11 +0200
-Message-ID: <20260702155114.510836347@linuxfoundation.org>
+Message-ID: <20260702155113.647845741@linuxfoundation.org>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260702155112.964534952@linuxfoundation.org>
-References: <20260702155112.964534952@linuxfoundation.org>
+In-Reply-To: <20260702155112.110058792@linuxfoundation.org>
+References: <20260702155112.110058792@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,157 +67,89 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:macro@orcam.me.uk,m:tsbogend@alpha.franken.de,s:lists@lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-271473-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-271363-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:syzbot+42a37bf8045847d8f9d2@syzkaller.appspotmail.com,m:tristan@talencesecurity.com,m:agruenba@redhat.com,m:syzbot@syzkaller.appspotmail.com,s:lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORWARDED(0.00)[lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FROM_HAS_DN(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
+	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RWL_MAILSPIKE_POSSIBLE(0.00)[104.64.211.4:from];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,franken.de:email]
+	TAGGED_RCPT(0.00)[stable,42a37bf8045847d8f9d2];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,talencesecurity.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,syzkaller.appspot.com:url]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: BB0876FBC9A
+X-Rspamd-Queue-Id: 80B9D6FBB76
 
-7.1-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maciej W. Rozycki <macro@orcam.me.uk>
+From: Tristan Madani <tristan@talencesecurity.com>
 
-commit 7fb13fd35110ebe95eb053faf79d018f51144d85 upstream.
+commit f9c9ec2c319f843b70ecdf939d48b52d189bc081 upstream.
 
-In 64-bit configurations calling the initial console output handler from
-a kernel thread other than the initial one will result in a situation
-where the stack has been placed in the XKPHYS 64-bit memory segment and
-consequently so has been the buffer allocated there that is used as the
-argument corresponding to the `%s' output conversion specifier for the
-firmware's printf() entry point.
+gfs2_qd_dealloc(), called as an RCU callback from gfs2_qd_dispose(),
+accesses the superblock object sdp through qd->qd_sbd after freeing qd.
+It does so to decrement sd_quota_count and wake up sd_kill_wait.
 
-This 64-bit address will then be truncated by 32-bit firmware, resulting
-in an attempt to access the wrong memory location, which in turn will
-cause all kinds of unpredictable behaviour, such as a kernel crash:
+However, by the time the RCU callback runs, gfs2_put_super() may have
+already freed sdp via free_sbd().  This can happen when
+gfs2_quota_cleanup() is called during unmount: it disposes of quota
+objects via call_rcu() and then waits on sd_kill_wait with a 60-second
+timeout.  If the timeout expires, or if gfs2_gl_hash_clear() triggers
+additional qd_put() calls that schedule more RCU callbacks after the
+wait completes, gfs2_put_super() will proceed to free the superblock
+while RCU callbacks referencing it are still pending.
 
-  Console: colour dummy device 160x64
-  Calibrating delay loop... 49.36 BogoMIPS (lpj=192512)
-  pid_max: default: 32768 minimum: 301
-  CPU 0 Unable to handle kernel paging request at virtual address 000000000203bd00, epc == ffffffffbfc08364, ra == ffffffffbfc08800
-  Oops[#1]:
-  CPU: 0 PID: 0 Comm: swapper Not tainted 5.18.0-rc2-00254-gfb649bda6f56-dirty #121
-  $ 0   : 0000000000000000 0000000000000001 0000000000000023 ffffffff80684ba0
-  $ 4   : 000000000203bd00 ffffffffbfc0f3b4 ffffffffffffffff 0000000000000073
-  $ 8   : 0a303d7469000000 0000000000000000 0000000000000073 ffffffffbfc0f473
-  $12   : 0000000000000002 0000000000000000 ffffffff80684c1c 0000000000000000
-  $16   : 0000000000000000 ffffffff80596dc9 0000000000000000 ffffffffbfc09240
-  $20   : ffffffff80684c40 ffffffffbfc0f400 000000000000002d 000000000000002b
-  $24   : ffffffffffffffbf 000000000203bd00
-  $28   : ffffffff805f0000 ffffffff80684b58 0000000000000030 ffffffffbfc08800
-  Hi    : 0000000000000000
-  Lo    : 0000000000000aa8
-  epc   : ffffffffbfc08364 0xffffffffbfc08364
-  ra    : ffffffffbfc08800 0xffffffffbfc08800
-  Status: 140120e2        KX SX UX KERNEL EXL
-  Cause : 00000008 (ExcCode 02)
-  BadVA : 000000000203bd00
-  PrId  : 00000430 (R4000SC)
-  Modules linked in:
-  Process swapper (pid: 0, threadinfo=(____ptrval____), task=(____ptrval____), tls=0000000000000000)
-  Stack : 0000000000000000 0000000000000000 0000000000000000 0000004d0000004d
-          80684cc0806a2a40 80596dc80000004d 8061000000000000 bfc0850c80684c38
-          0000000000000000 000000000203bd00 0000000000000000 0000000000000000
-          0000000000000000 00000000bfc0f3b4 0000000000000000 0000000000000000
-          0000000000000000 0000000000000000 0000000000000000 0000000000000000
-          0000000000000000 0000000000000000 0000000000000000 0000000000000000
-          0000002500000000 0000000000000000 0000000000000000 802c1a7400000000
-          0203bd0080596dc8 0203bd4d69000000 6c61632000000018 5f746567646e6172
-          6c616320625f6d6f 5f736e5f6d6f7266 206361323778302b 303d74696e726320
-          806a0a38806b0000 806a0a38806b0000 00000000806b0000 80683c58806b0000
-          ...
-  Call Trace:
+Add an rcu_barrier() before free_sbd() in gfs2_put_super() to ensure
+all pending RCU callbacks (including gfs2_qd_dealloc) have completed
+before the superblock is freed.
 
-  Code: a082ffff  03e00008  00601021 <80820000> 00001821  10400005  24840001  80820000  24630001
-
-  ---[ end trace 0000000000000000 ]---
-  Kernel panic - not syncing: Fatal exception in interrupt
-
-  KN04 V2.1k    (PC: 0xa0026768, SP: 0x806848e8)
-  >>
-
-In this case the pointer in $4 was truncated from 0x980000000203bd00 to
-0x000000000203bd00.
-
-This may happen when no final console driver has been enabled in the
-configuration and consequently the initial console continues being used
-late into bootstrap or with an upcoming change that will switch the zs
-driver to use a platform device, which in turn will make the console
-handover happen only after other kernel threads have already been
-started.
-
-Fix the issue by making the buffer static and initdata, and therefore
-placed in the CKSEG0 32-bit compatibility segment, observing that the
-console output handler is called with the console lock held, implying
-no need for this code to be reentrant.  Add an assertion to verify the
-buffer actually has been placed in a compatibility segment.
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Signed-off-by: Maciej W. Rozycki <macro@orcam.me.uk>
-Cc: stable@vger.kernel.org # v2.6.12+
-Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Fixes: a475c5dd16e5 ("gfs2: Free quota data objects synchronously")
+Reported-by: syzbot+42a37bf8045847d8f9d2@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=42a37bf8045847d8f9d2
+Tested-by: syzbot+42a37bf8045847d8f9d2@syzkaller.appspotmail.com
+Cc: stable@vger.kernel.org
+Signed-off-by: Tristan Madani <tristan@talencesecurity.com>
+Signed-off-by: Andreas Gruenbacher <agruenba@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/mips/dec/prom/console.c |    7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ fs/gfs2/super.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/arch/mips/dec/prom/console.c
-+++ b/arch/mips/dec/prom/console.c
-@@ -2,8 +2,9 @@
- /*
-  *	DECstation PROM-based early console support.
-  *
-- *	Copyright (C) 2004, 2007  Maciej W. Rozycki
-+ *	Copyright (C) 2004, 2007, 2026  Maciej W. Rozycki
-  */
-+#include <linux/bug.h>
- #include <linux/console.h>
- #include <linux/init.h>
- #include <linux/kernel.h>
-@@ -14,9 +15,11 @@
- static void __init prom_console_write(struct console *con, const char *s,
- 				      unsigned int c)
- {
--	char buf[81];
-+	static char buf[81] __initdata = { 0 };
- 	unsigned int chunk = sizeof(buf) - 1;
+--- a/fs/gfs2/super.c
++++ b/fs/gfs2/super.c
+@@ -640,6 +640,7 @@ restart:
+ 	gfs2_delete_debugfs_file(sdp);
  
-+	BUG_ON((long)buf != (int)(long)buf);
-+
- 	while (c > 0) {
- 		if (chunk > c)
- 			chunk = c;
+ 	gfs2_sys_fs_del(sdp);
++	rcu_barrier();
+ 	free_sbd(sdp);
+ }
+ 
 
 
 
