@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-270897-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-271071-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 5Ke1JnGgRmr0aQsAu9opvQ
-	(envelope-from <stable+bounces-270897-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:31:29 +0200
+	id R3OnNLOXRmoAZgsAu9opvQ
+	(envelope-from <stable+bounces-271071-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:54:11 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 00EB36FB685
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:31:28 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 743AD6FAB95
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:54:11 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=QP6jGRhK;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-270897-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-270897-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="c9qZNU/d";
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-271071-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-271071-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C3B6E33219C6
-	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:37:33 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 25D9030C5754
+	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:46:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DAD273603EF;
-	Thu,  2 Jul 2026 16:35:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D8EF381E99;
+	Thu,  2 Jul 2026 16:43:14 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B325330B29;
-	Thu,  2 Jul 2026 16:35:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CACA2363C59;
+	Thu,  2 Jul 2026 16:43:12 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783010136; cv=none; b=YuBYQSCKZyTA3QY4VWvPf4fntOwria5SwmXEnZpsdctLKNfnC6yjJWJYOOoyrZxhdcnb4ysWXKskQJbGJrBl/CRHkvWGY5Y0bqOK/znV/nFXhb3CLVD1+K57G68QAITB3BWhU4tzQTU0ULPG1gMD+RmWcfEYaicdu9xp44sitOU=
+	t=1783010593; cv=none; b=cLA/ghGAowNmmpjgK40DFZqAkBvX3GRfRz14Me6PXd0rwWVL7/n/8bVKbZhzNaetxIswgeutkeMunpcjnVNk21HSYFEGzSJVmGLTcT1LSRTddB5Jcs0FlBkCM8/6VsKgVXg9DLUmtvbPo2/mOm0/+NJb1dAaDcMSafHEfmmt0Mc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783010136; c=relaxed/simple;
-	bh=C6q5jS3PvZREplQksMh7h6AEvyita6d9ANBUZdxXuZE=;
+	s=arc-20240116; t=1783010593; c=relaxed/simple;
+	bh=YNvS3Jy760oNIgkfJ4SoLbQ8LdmvcdcwPOa1rJxQdxU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Kb4/dPLBK+7gj4x+L8Om3MPhBKU6A6aAzbZHzZ1VlYSLQHz4oH/qr59mbMK32csGzprM/nJKsbHRRvd2UMgUk0n2QrhnSkxF8KsQ7DVRtrHMk/aKQtzHnLgMupO9uquPru+b1iPqno5QXWLep4csEa2wJXGDQ7350u1dgjyuwLc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QP6jGRhK; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E04C91F000E9;
-	Thu,  2 Jul 2026 16:35:34 +0000 (UTC)
+	 MIME-Version; b=tzeiHsszD2YrYMyIOvNJxoiMyM4Zr8UvTGP5RrzjQ211GvIHd3+GsLt5BNOD/kL6vKa+lKeU4zN1aG+v2xcDgJuB8nc2WFtDtaSCDw4GD4VAqQEhHHIdPnrd11paV0aXL3eeNEwCTUV0MFrKCyPusLK7Xa+XxrKDjtSSIibIbAU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c9qZNU/d; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D7BF1F000E9;
+	Thu,  2 Jul 2026 16:43:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1783010135;
-	bh=VGJMVnHBvKbD/w286EIIjKuPC8C//Ccde8N48fZN5zM=;
+	s=korg; t=1783010592;
+	bh=imgXFfN7MzEE4AB9bBiLhWKrmfI6L6hxmpxCxpY3D3w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=QP6jGRhKgI9Akdf+KyFuAqLnkhxQoQB4dCnqI2EsAHlOA2+zke5E9SaNjbo5l1VOb
-	 DcvN6Z2nLvLubxOodkG7XeaEaNNpY6GjSMQfjkpd/uI4HWV3ASkbzfRpshiT+LPW67
-	 3QH0bDyCoTxoH0hnN+yp6izTqC9NVBV5thY9ReP4=
+	b=c9qZNU/dTH6Fb13jZopvkMZfrCMEfIxNU8a119+QBMgvEQZraM/bqFERHM60xxeqg
+	 X2id/Qq1lLn6IutTrolxYe6eoyCaCq6UpMcbqUHmF0kmJw1EfdslFCp+eiGOnjYb3M
+	 42ElJ9xpfoIiZ7QEMOE7LaZxQd1+6CIIp0xusR54=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jeff Layton <jlayton@kernel.org>,
-	Chuck Lever <chuck.lever@oracle.com>
-Subject: [PATCH 6.1 107/129] nfsd: fix posix_acl leak on SETACL decode failure
+	Guo Ren <guoren@kernel.org>,
+	Huacai Chen <chenhuacai@loongson.cn>
+Subject: [PATCH 6.12 169/204] LoongArch: Report dying CPU to RCU in stop_this_cpu()
 Date: Thu,  2 Jul 2026 18:20:26 +0200
-Message-ID: <20260702155114.358613189@linuxfoundation.org>
+Message-ID: <20260702155122.198360733@linuxfoundation.org>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260702155112.163984240@linuxfoundation.org>
-References: <20260702155112.163984240@linuxfoundation.org>
+In-Reply-To: <20260702155118.667618796@linuxfoundation.org>
+References: <20260702155118.667618796@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,21 +71,21 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-270897-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-271071-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:jlayton@kernel.org,m:chuck.lever@oracle.com,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:guoren@kernel.org,m:chenhuacai@loongson.cn,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
@@ -97,140 +97,69 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,oracle.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,loongson.cn:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 00EB36FB685
+X-Rspamd-Queue-Id: 743AD6FAB95
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jeff Layton <jlayton@kernel.org>
+From: Huacai Chen <chenhuacai@loongson.cn>
 
-commit 0853ac544c590880d797b04daa33fcb72b6be0e1 upstream.
+commit f2539c56c74691e7a88af6372ba2b48c06ed2fe4 upstream.
 
-nfsaclsvc_decode_setaclargs() and nfs3svc_decode_setaclargs() each
-call nfs_stream_decode_acl() twice, first for NFS_ACL and then for
-NFS_DFACL.  Each successful call transfers ownership of a freshly
-allocated posix_acl into argp->acl_access or argp->acl_default.  If
-the first call succeeds but the second fails, the decoder returns
-false and argp->acl_access is left dangling.
+This is a port of MIPS commit 9f3f3bdc6d9dac1 ("MIPS: smp: report dying
+CPU to RCU in stop_this_cpu()"). smp_send_stop() parks all secondary
+CPUs in stop_this_cpu(). And the function marks the CPU offline for the
+scheduler via set_cpu_online(false) but never informs RCU, so RCU keeps
+expecting a quiescent state from CPUs that are now spinning forever with
+interrupts disabled.
 
-ACLPROC2_SETACL.pc_release was wired to nfssvc_release_attrstat and
-ACLPROC3_SETACL.pc_release was wired to nfs3svc_release_fhandle.
-Both only call fh_put() and have no knowledge of the ACL fields on
-argp.  The posix_acl_release() pairs sat at the out: labels inside
-nfsacld_proc_setacl() and nfsd3_proc_setacl(), but svc_process()
-skips pc_func when pc_decode returns false, so that cleanup is
-unreachable on decode failure:
+As long as nothing waits for an RCU grace period after smp_send_stop()
+this is harmless, which is why it went unnoticed. However, since commit
+91840be8f710370 ("irq_work: Fix use-after-free in irq_work_single() on
+PREEMPT_RT"), irq_work_sync() calls synchronize_rcu() on architectures
+without an irq_work self-IPI, i.e. where arch_irq_work_has_interrupt()
+returns false. Any irq_work_sync() issued in the reboot/shutdown/halt
+path after smp_send_stop() then blocks on a grace period that can never
+complete, hanging the reboot:
 
-    svc_process_common()
-      pc_decode()                  /* decode_setaclargs: false */
-      /* pc_func skipped */
-      pc_release()                 /* fh_put only -- ACLs leaked */
+  WARNING: CPU: 0 PID: 15 at kernel/irq_work.c:144 irq_work_queue_on
+  ...
+  rcu: INFO: rcu_sched detected stalls on CPUs/tasks:
+  rcu: Offline CPU 1 blocking current GP.
+  rcu: Offline CPU 2 blocking current GP.
+  rcu: Offline CPU 3 blocking current GP.
 
-The orphaned posix_acl is leaked for the lifetime of the server.
+This issue needs some hacks to reproduce, and it was not noticed on
+LoongArch because arch_irq_work_has_interrupt() usually returns true.
 
-Fix by adding nfsaclsvc_release_setacl() and nfs3svc_release_setacl(),
-which release both argp->acl_access and argp->acl_default in addition
-to fh_put(), and wiring them as pc_release for their respective SETACL
-procedures.  pc_release runs on every path svc_process() takes after
-decode, including decode failure, so the posix_acl_release() pairs are
-removed from the proc functions' out: labels to keep ownership in one
-place.  This matches the existing release_getacl() pattern used by
-the sibling GETACL procedures.
+Call rcutree_report_cpu_dead() once interrupts are disabled, mirroring
+the generic CPU-hotplug offline path, so RCU stops waiting on the parked
+CPUs and grace periods can still complete. LoongArch shuts down all CPUs
+here without going through the CPU-hotplug mechanism, so this report is
+not otherwise issued.
 
-Fixes: a257cdd0e217 ("[PATCH] NFSD: Add server support for NFSv3 ACLs.")
-Cc: stable@vger.kernel.org
-Assisted-by: kres:claude-opus-4-7
-Signed-off-by: Jeff Layton <jlayton@kernel.org>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Cc: <stable@vger.kernel.org>
+Fixes: 91840be8f710 ("irq_work: Fix use-after-free in irq_work_single() on PREEMPT_RT")
+Reviewed-by: Guo Ren <guoren@kernel.org>
+Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nfsd/nfs2acl.c |   17 ++++++++++++-----
- fs/nfsd/nfs3acl.c |   17 ++++++++++++-----
- 2 files changed, 24 insertions(+), 10 deletions(-)
+ arch/loongarch/kernel/smp.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/fs/nfsd/nfs2acl.c
-+++ b/fs/nfsd/nfs2acl.c
-@@ -131,10 +131,7 @@ static __be32 nfsacld_proc_setacl(struct
- 	resp->status = fh_getattr(fh, &resp->stat);
- 
- out:
--	/* argp->acl_{access,default} may have been allocated in
--	   nfssvc_decode_setaclargs. */
--	posix_acl_release(argp->acl_access);
--	posix_acl_release(argp->acl_default);
-+	/* argp->acl_{access,default} are released in nfsaclsvc_release_setacl. */
- 	return rpc_success;
- 
- out_drop_lock:
-@@ -312,6 +309,16 @@ static void nfsaclsvc_release_access(str
- 
- struct nfsd3_voidargs { int dummy; };
- 
-+static void nfsaclsvc_release_setacl(struct svc_rqst *rqstp)
-+{
-+	struct nfsd3_setaclargs *argp = rqstp->rq_argp;
-+	struct nfsd_attrstat *resp = rqstp->rq_resp;
-+
-+	fh_put(&resp->fh);
-+	posix_acl_release(argp->acl_access);
-+	posix_acl_release(argp->acl_default);
-+}
-+
- #define ST 1		/* status*/
- #define AT 21		/* attributes */
- #define pAT (1+AT)	/* post attributes - conditional */
-@@ -345,7 +352,7 @@ static const struct svc_procedure nfsd_a
- 		.pc_func = nfsacld_proc_setacl,
- 		.pc_decode = nfsaclsvc_decode_setaclargs,
- 		.pc_encode = nfssvc_encode_attrstatres,
--		.pc_release = nfssvc_release_attrstat,
-+		.pc_release = nfsaclsvc_release_setacl,
- 		.pc_argsize = sizeof(struct nfsd3_setaclargs),
- 		.pc_argzero = sizeof(struct nfsd3_setaclargs),
- 		.pc_ressize = sizeof(struct nfsd_attrstat),
---- a/fs/nfsd/nfs3acl.c
-+++ b/fs/nfsd/nfs3acl.c
-@@ -118,10 +118,7 @@ out_drop_lock:
- out_errno:
- 	resp->status = nfserrno(error);
- out:
--	/* argp->acl_{access,default} may have been allocated in
--	   nfs3svc_decode_setaclargs. */
--	posix_acl_release(argp->acl_access);
--	posix_acl_release(argp->acl_default);
-+	/* argp->acl_{access,default} are released in nfs3svc_release_setacl. */
- 	return rpc_success;
+--- a/arch/loongarch/kernel/smp.c
++++ b/arch/loongarch/kernel/smp.c
+@@ -650,6 +650,7 @@ static void stop_this_cpu(void *dummy)
+ 	set_cpu_online(smp_processor_id(), false);
+ 	calculate_cpu_foreign_map();
+ 	local_irq_disable();
++	rcutree_report_cpu_dead();
+ 	while (true);
  }
  
-@@ -225,6 +222,16 @@ static void nfs3svc_release_getacl(struc
- 
- struct nfsd3_voidargs { int dummy; };
- 
-+static void nfs3svc_release_setacl(struct svc_rqst *rqstp)
-+{
-+	struct nfsd3_setaclargs *argp = rqstp->rq_argp;
-+	struct nfsd3_attrstat *resp = rqstp->rq_resp;
-+
-+	fh_put(&resp->fh);
-+	posix_acl_release(argp->acl_access);
-+	posix_acl_release(argp->acl_default);
-+}
-+
- #define ST 1		/* status*/
- #define AT 21		/* attributes */
- #define pAT (1+AT)	/* post attributes - conditional */
-@@ -258,7 +265,7 @@ static const struct svc_procedure nfsd_a
- 		.pc_func = nfsd3_proc_setacl,
- 		.pc_decode = nfs3svc_decode_setaclargs,
- 		.pc_encode = nfs3svc_encode_setaclres,
--		.pc_release = nfs3svc_release_fhandle,
-+		.pc_release = nfs3svc_release_setacl,
- 		.pc_argsize = sizeof(struct nfsd3_setaclargs),
- 		.pc_argzero = sizeof(struct nfsd3_setaclargs),
- 		.pc_ressize = sizeof(struct nfsd3_attrstat),
 
 
 
