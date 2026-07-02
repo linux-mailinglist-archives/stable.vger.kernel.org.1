@@ -1,64 +1,74 @@
-Return-Path: <stable+bounces-270593-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-271163-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 0KzxJaK2RmpEcAsAu9opvQ
-	(envelope-from <stable+bounces-270593-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 21:06:10 +0200
+	id wzChClmbRmr+ZwsAu9opvQ
+	(envelope-from <stable+bounces-271163-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:09:45 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9C9716FC630
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 21:06:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 43F1D6FB106
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:09:44 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=caoR9WrC;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-270593-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-270593-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=NBCeGssE;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-271163-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-271163-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id D1143306AACA
-	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:24:16 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 96A113116374
+	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:48:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 32BDE33BBBD;
-	Thu,  2 Jul 2026 16:22:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9781D37A837;
+	Thu,  2 Jul 2026 16:47:13 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E33DF33BBAD;
-	Thu,  2 Jul 2026 16:22:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45A7D346A18;
+	Thu,  2 Jul 2026 16:47:12 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783009341; cv=none; b=dXFE3FTYAfBF+P7HK706zOPpxJEN/jmrhK8dma220AW4wadDQdPUCIMl1iNQX83W4BRJfydAkvOqIRFmOH/R0H8ImRgxauM4Cb4k1E6TBlmilvfM26NhLT5N/z9urrP2dkWwcCA//DwcXG1GN5sq4Muq2YGfJV7By5YGFCGUNr8=
+	t=1783010833; cv=none; b=uAI+gX/WUliDt7JexQ3lMTz5H7Wi6FPfojOBgvj64I2Ee/mGIUeajuUPQSr1m4Sen9rlBIzaEd4EadyzBbGR0ViiHbTI8X1CHu40th+jokIRMK1++VVf1ycNWmKvjkV7khfneP79kVEfx+w413YicAu9Ark4oHOqFu2Xli2kOZc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783009341; c=relaxed/simple;
-	bh=94REJ3BtEUPiLOyw9Akr9VdrzcTRSlyxVlS/JH1QjVA=;
+	s=arc-20240116; t=1783010833; c=relaxed/simple;
+	bh=Xkf6Hd+8/vjrBCt362ymLUa6m7d8Srl9zxE93HyLc5s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jvrfLjjMBo1SuEb/Bp8NPX5DUxZRvRsEbjG5Lz/kMjMq8AsT58BWzhd0mpzCva6GbxeuNS13bFltmz1AZYBNUKZ338LfOPQ6ljzItl2SZfpI6wADPSxz2i2e6Ry8DN1r8a5UePGNSjSmcRbhaTytERHuD0MvwZJAyad1w+B79YE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=caoR9WrC; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4FC6E1F000E9;
-	Thu,  2 Jul 2026 16:22:19 +0000 (UTC)
+	 MIME-Version; b=az4hm6XYhfbvezv5K0J4xWY5sTw4dRxMbKJZdjzD8lS82sexDsNWb+uJjvlNzISsd3fEM+igi/g5Z+K5+K2DY8CkInACbDlfTXLUT5Zh/HXBBBASPDgqT7CxzIbnDnIWni2qPoRLWGA4d5q7sVgxOAXabXFC6ccW7OSunZ6Pjz8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NBCeGssE; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 838451F00A3E;
+	Thu,  2 Jul 2026 16:47:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1783009339;
-	bh=YdPK4vAYH21LG/HiQaluBf+BwdqnCgbaNt7+MfmZYsQ=;
+	s=korg; t=1783010832;
+	bh=CGvDThpXhSQn5z+GiSfX/scnUjOYAk8cJ/SrpnkAaeI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=caoR9WrCiaDLcapxqpCJU9gVDocPZJSVirh895KtK3T/PW/y9zGPI9VeBG1W/8t49
-	 RHFdZOlQHtqtARxProKzGrL59ThKSEvJZEiDnCV1iV+o+HgvG+W++phokc/DdkWy6s
-	 Nzmh3RAxN7ByH0s4NyPwwrIt1JvdogT8ND6M1qvY=
+	b=NBCeGssEcq4NaZxTWLWSBV4RZgTGBfrekgby7eGIXHaeKQhI4H/nZdlNmpr/0Xnin
+	 7KvLvomfPf903nPeZ7UxhiQAERD+0N4vuxZTlEnyAOC84nLfO+ZSYLo+l5xlRXfPmU
+	 SUtz082oQs1Z37R6D3TpthmrIBx5iep2LzPRd3DY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	GangMin Kim <km.kim1503@gmail.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Bin Lan <lanbincn@139.com>,
-	Shivani Agarwal <shivani.agarwal@broadcom.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 15/96] net/sched: cls_u32: use skb_header_pointer_careful()
-Date: Thu,  2 Jul 2026 18:19:07 +0200
-Message-ID: <20260702155109.307114108@linuxfoundation.org>
+	bpf <bpf@vger.kernel.org>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	Masahiro Yamada <masahiroy@kernel.org>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Nicolas Schier <nicolas@fjasle.eu>,
+	Zheng Yejian <zhengyejian1@huawei.com>,
+	Martin Kelly <martin.kelly@crowdstrike.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Josh Poimboeuf <jpoimboe@redhat.com>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
+	Andrey Grodzovsky <andrey.grodzovsky@crowdstrike.com>
+Subject: [PATCH 6.6 047/175] scripts/sorttable: Have the ORC code use the _r() functions to read
+Date: Thu,  2 Jul 2026 18:19:08 +0200
+Message-ID: <20260702155116.789918873@linuxfoundation.org>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260702155108.949633242@linuxfoundation.org>
-References: <20260702155108.949633242@linuxfoundation.org>
+In-Reply-To: <20260702155115.766838875@linuxfoundation.org>
+References: <20260702155115.766838875@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,120 +80,99 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [5.34 / 15.00];
-	SEM_URIBL(3.50)[139.com:email];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
-	BAD_REP_POLICIES(0.10)[];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:bpf@vger.kernel.org,m:mhiramat@kernel.org,m:mark.rutland@arm.com,m:mathieu.desnoyers@efficios.com,m:akpm@linux-foundation.org,m:peterz@infradead.org,m:torvalds@linux-foundation.org,m:masahiroy@kernel.org,m:nathan@kernel.org,m:nicolas@fjasle.eu,m:zhengyejian1@huawei.com,m:martin.kelly@crowdstrike.com,m:christophe.leroy@csgroup.eu,m:jpoimboe@redhat.com,m:rostedt@goodmis.org,m:andrey.grodzovsky@crowdstrike.com,s:lists@lfdr.de];
+	PRECEDENCE_BULK(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	R_DKIM_ALLOW(0.00)[linuxfoundation.org:s=korg];
-	TAGGED_FROM(0.00)[bounces-270593-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:km.kim1503@gmail.com,m:edumazet@google.com,m:kuba@kernel.org,m:lanbincn@139.com,m:shivani.agarwal@broadcom.com,m:sashal@kernel.org,m:kmkim1503@gmail.com,s:lists@lfdr.de];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,google.com,kernel.org,139.com,broadcom.com];
-	FORWARDED(0.00)[lists@lfdr.de];
-	MIME_TRACE(0.00)[0:+];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	GREYLIST(0.00)[pass,body];
+	TAGGED_FROM(0.00)[bounces-271163-lists,stable=lfdr.de];
+	RCPT_COUNT_TWELVE(0.00)[19];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	DMARC_POLICY_ALLOW(0.00)[linuxfoundation.org,none];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	PRECEDENCE_BULK(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORWARDED(0.00)[lists@lfdr.de];
 	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	MID_RHS_MATCH_FROM(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	RWL_MAILSPIKE_POSSIBLE(0.00)[104.64.211.4:from];
 	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	TAGGED_RCPT(0.00)[stable];
-	ARC_ALLOW(0.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_SPF_ALLOW(0.00)[+ip4:104.64.211.4:c];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,msgid.link:url,vger.kernel.org:from_smtp]
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 9C9716FC630
+X-Rspamd-Queue-Id: 43F1D6FB106
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Steven Rostedt <rostedt@goodmis.org>
 
-[ Upstream commit cabd1a976375780dabab888784e356f574bbaed8 ]
+[ Upstream commit 66990c003306c240d570b3ba274ec4f68cf18c91 ]
 
-skb_header_pointer() does not fully validate negative @offset values.
+The ORC code reads the section information directly from the file. This
+currently works because the default read function is for 64bit little
+endian machines. But if for some reason that ever changes, this will
+break. Instead of having a surprise breakage, use the _r() functions that
+will read the values from the file properly.
 
-Use skb_header_pointer_careful() instead.
-
-GangMin Kim provided a report and a repro fooling u32_classify():
-
-BUG: KASAN: slab-out-of-bounds in u32_classify+0x1180/0x11b0
-net/sched/cls_u32.c:221
-
-Fixes: fbc2e7d9cf49 ("cls_u32: use skb_header_pointer() to dereference data safely")
-Reported-by: GangMin Kim <km.kim1503@gmail.com>
-Closes: https://lore.kernel.org/netdev/CANn89iJkyUZ=mAzLzC4GdcAgLuPnUoivdLaOs6B9rq5_erj76w@mail.gmail.com/T/
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Link: https://patch.msgid.link/20260128141539.3404400-3-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Bin Lan <lanbincn@139.com>
+Cc: bpf <bpf@vger.kernel.org>
+Cc: Masami Hiramatsu <mhiramat@kernel.org>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Masahiro Yamada <masahiroy@kernel.org>
+Cc: Nathan Chancellor <nathan@kernel.org>
+Cc: Nicolas Schier <nicolas@fjasle.eu>
+Cc: Zheng Yejian <zhengyejian1@huawei.com>
+Cc: Martin  Kelly <martin.kelly@crowdstrike.com>
+Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
+Cc: Josh Poimboeuf <jpoimboe@redhat.com>
+Link: https://lore.kernel.org/20250105162344.721480386@goodmis.org
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: Andrey Grodzovsky <andrey.grodzovsky@crowdstrike.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-[ Shivani: Modified to apply on 5.10.y ]
-Signed-off-by: Shivani Agarwal <shivani.agarwal@broadcom.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sched/cls_u32.c | 13 ++++++-------
- 1 file changed, 6 insertions(+), 7 deletions(-)
+ scripts/sorttable.h |    8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/net/sched/cls_u32.c b/net/sched/cls_u32.c
-index f2a0c10682fc81..e501390ccd7585 100644
---- a/net/sched/cls_u32.c
-+++ b/net/sched/cls_u32.c
-@@ -149,10 +149,8 @@ static int u32_classify(struct sk_buff *skb, const struct tcf_proto *tp,
- 			int toff = off + key->off + (off2 & key->offmask);
- 			__be32 *data, hdata;
- 
--			if (skb_headroom(skb) + toff > INT_MAX)
--				goto out;
--
--			data = skb_header_pointer(skb, toff, 4, &hdata);
-+			data = skb_header_pointer_careful(skb, toff, 4,
-+							  &hdata);
- 			if (!data)
- 				goto out;
- 			if ((*data ^ key->val) & key->mask) {
-@@ -202,8 +200,9 @@ static int u32_classify(struct sk_buff *skb, const struct tcf_proto *tp,
- 		if (ht->divisor) {
- 			__be32 *data, hdata;
- 
--			data = skb_header_pointer(skb, off + n->sel.hoff, 4,
--						  &hdata);
-+			data = skb_header_pointer_careful(skb,
-+							  off + n->sel.hoff,
-+							  4, &hdata);
- 			if (!data)
- 				goto out;
- 			sel = ht->divisor & u32_hash_fold(*data, &n->sel,
-@@ -217,7 +216,7 @@ static int u32_classify(struct sk_buff *skb, const struct tcf_proto *tp,
- 			if (n->sel.flags & TC_U32_VAROFFSET) {
- 				__be16 *data, hdata;
- 
--				data = skb_header_pointer(skb,
-+				data = skb_header_pointer_careful(skb,
- 							  off + n->sel.offoff,
- 							  2, &hdata);
- 				if (!data)
--- 
-2.53.0
-
+--- a/scripts/sorttable.h
++++ b/scripts/sorttable.h
+@@ -299,14 +299,14 @@ static int do_sort(Elf_Ehdr *ehdr,
+ #if defined(SORTTABLE_64) && defined(UNWINDER_ORC_ENABLED)
+ 		/* locate the ORC unwind tables */
+ 		if (!strcmp(secstrings + idx, ".orc_unwind_ip")) {
+-			orc_ip_size = s->sh_size;
++			orc_ip_size = _r(&s->sh_size);
+ 			g_orc_ip_table = (int *)((void *)ehdr +
+-						   s->sh_offset);
++						   _r(&s->sh_offset));
+ 		}
+ 		if (!strcmp(secstrings + idx, ".orc_unwind")) {
+-			orc_size = s->sh_size;
++			orc_size = _r(&s->sh_size);
+ 			g_orc_table = (struct orc_entry *)((void *)ehdr +
+-							     s->sh_offset);
++							     _r(&s->sh_offset));
+ 		}
+ #endif
+ 	} /* for loop */
 
 
 
