@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-270678-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-270839-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id iqZ9ArmeRmpGaQsAu9opvQ
-	(envelope-from <stable+bounces-270678-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:24:09 +0200
+	id yTYYC1yXRmq/ZQsAu9opvQ
+	(envelope-from <stable+bounces-270839-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:52:44 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 877FF6FB496
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:24:08 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3A8B36FAAE5
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:52:43 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=S0AbDori;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-270678-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-270678-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=lvVMknPw;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-270839-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-270839-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 727BE31AAD57
-	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:31:22 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 8BE113146DD0
+	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:36:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5124233E355;
-	Thu,  2 Jul 2026 16:26:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5617E395D8B;
+	Thu,  2 Jul 2026 16:33:04 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2103B31A07F;
-	Thu,  2 Jul 2026 16:26:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21D344086A;
+	Thu,  2 Jul 2026 16:33:02 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783009564; cv=none; b=Z+9jVZ3XoSggFbFCmr5cycslBVlg8jKkjVkgwKN7yicOx5VuBWGkCRnlDvVd89KtDR+tqrqSUV2dK/OGbOPbxGc4XASqV4xhBOrv0Nff4Gjkd8ojB13KiVQVQ8lGMoZjKAli4tg/YdTPp03H3GJrShVGUPpvlm18u0vCJJXvK6U=
+	t=1783009984; cv=none; b=U0SFIiyPjMTBR41C+6GX0vSUe+96mGamE3aZdYqCRrt1sJszGhhc8rXfKxRlKQhl7a+nYadWXA27YJ6n+gjvZBh6e7hJSzIa/7+l72WGg6L+to1xybRbGkC/s97CeLXXD9/cxK/HPeupAm96O9u9UZSwMZ2AYaHQr1IVomtbDX8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783009564; c=relaxed/simple;
-	bh=bD0GTAlNqYzUEAxXTHvI0RNauIQRdKwqqRKifcy0yKk=;
+	s=arc-20240116; t=1783009984; c=relaxed/simple;
+	bh=xUIvy/7aiA7xYIeq87tEnyueNLzkiVg8ieBb2D3L1Y8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=U8mt7YtbMeoESNsACCu3ahBa1+sqAiOviAutZ4TQzxWmOCpZieWJArDKr551HmtOrR3SLysgDpaBfEQVuK04kyux8Tv8t4mqve0wg0zimmwTtRFTPxT6q/5wMgJYFpIicCXTEBEsBKE6w0PndwJJvWAHyzGQ8NhND/kG1uRJypI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S0AbDori; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 879BE1F000E9;
-	Thu,  2 Jul 2026 16:26:02 +0000 (UTC)
+	 MIME-Version; b=YsozKuP+DeX2QGAP+SLmBsHWkuk5e0knBDViebXIILXLaXkaCU0mNbGhn9V+sw/liEQL6qWW08iEzSQgvZDR3c94Mlt+pHrZdq8x3GMC7xdwSL+PJK+UrXqDG6M5r1L/agOaNODkhQLpscJlg4J/mQyWo5FRA2Ya/VTjdoV2+0g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lvVMknPw; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3EC5B1F000E9;
+	Thu,  2 Jul 2026 16:33:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1783009563;
-	bh=phrsLmUomZblzIOBtk22BBcU3taJbAfniKooxLtPwB0=;
+	s=korg; t=1783009982;
+	bh=88SWi8Z57+UJm2HF0pFAFTw3hT1AD20B/BjfaXb+dQE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=S0AbDoriCSxpraIpey7/e3+/kWSR9WPKtXAQMgsAuTIB4VbIISsEbRdYdG3MMAlLp
-	 ddaIoBNDpskVIJyzdrV9r/oGCXVzPDzPkV9UJ4TaHuiOJ6iwlmDyQgXlaicNHpsYTj
-	 GdopaC0KQREUsnoAN1I47HUwBhZcmBT26r7OgJYY=
+	b=lvVMknPwKhqGqS9Yfwcu1UR+uNYSg1kLZ9buTw9pcrY2U2pVEcGKxqWoBv//rO6qW
+	 Gsqw+47/9JBs3e+pRlWOiFQb+E3Yp4r3na+KmxBj5Mm+04xESwHTcpdO+jdMmgAoFf
+	 68FRllPtxMVXcm/btHmetMgQku79osNWS8QuFgl8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -50,12 +50,12 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	stable@kernel.org,
 	Sven Eckelmann <sven@narfation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 54/96] batman-adv: dat: prevent false sharing between VLANs
+Subject: [PATCH 6.1 067/129] batman-adv: tp_meter: annotate last_recv_time access with READ/WRITE_ONCE
 Date: Thu,  2 Jul 2026 18:19:46 +0200
-Message-ID: <20260702155110.119199508@linuxfoundation.org>
+Message-ID: <20260702155113.531669193@linuxfoundation.org>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260702155108.949633242@linuxfoundation.org>
-References: <20260702155108.949633242@linuxfoundation.org>
+In-Reply-To: <20260702155112.163984240@linuxfoundation.org>
+References: <20260702155112.163984240@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,12 +72,12 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-270678-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-270839-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
@@ -86,7 +86,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
@@ -98,63 +98,71 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[narfation.org:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,narfation.org:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 877FF6FB496
+X-Rspamd-Queue-Id: 3A8B36FAAE5
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
 From: Sven Eckelmann <sven@narfation.org>
 
-commit 20d7658b74169f86d4ac01b9185b3eadddf71f28 upstream.
+commit d67c728f07fca2ee6ffdc6dd4421cf2e8691f4d1 upstream.
 
-The local hash of DAT entries is supposed to be VLAN (VID) aware. But
-the adding to the hash and the search in the hash were not checking the VID
-information of the hash entries. The entries would therefore only be
-correctly separated when batadv_hash_dat() didn't select the same buckets
-for different VIDs.
+The last_recv_time field for batadv_tp_receiver tracks the jiffies value of
+the most recent activity and is used to detect timeouts. These accesses are
+not consistently protected by a lock, so READ_ONCE/WRITE_ONCE must be used
+to prevent data races caused by compiler optimizations.
 
 Cc: stable@kernel.org
-Fixes: be1db4f6615b ("batman-adv: make the Distributed ARP Table vlan aware")
+Fixes: 33a3bb4a3345 ("batman-adv: throughput meter implementation")
 Signed-off-by: Sven Eckelmann <sven@narfation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/batman-adv/distributed-arp-table.c | 12 +++++++++---
- 1 file changed, 9 insertions(+), 3 deletions(-)
+ net/batman-adv/tp_meter.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/net/batman-adv/distributed-arp-table.c b/net/batman-adv/distributed-arp-table.c
-index 9d27d7d7b2b4b4..592b61a2e7911e 100644
---- a/net/batman-adv/distributed-arp-table.c
-+++ b/net/batman-adv/distributed-arp-table.c
-@@ -216,10 +216,13 @@ static void batadv_dat_purge(struct work_struct *work)
-  */
- static bool batadv_compare_dat(const struct hlist_node *node, const void *data2)
- {
--	const void *data1 = container_of(node, struct batadv_dat_entry,
--					 hash_entry);
-+	const struct batadv_dat_entry *entry1;
-+	const struct batadv_dat_entry *entry2;
+diff --git a/net/batman-adv/tp_meter.c b/net/batman-adv/tp_meter.c
+index 638dd438a6c052..b882919a868ca0 100644
+--- a/net/batman-adv/tp_meter.c
++++ b/net/batman-adv/tp_meter.c
+@@ -1183,7 +1183,7 @@ static void batadv_tp_receiver_shutdown(struct timer_list *t)
+ 	bat_priv = tp_vars->bat_priv;
  
--	return memcmp(data1, data2, sizeof(__be32)) == 0;
-+	entry1 = container_of(node, struct batadv_dat_entry, hash_entry);
-+	entry2 = data2;
-+
-+	return entry1->ip == entry2->ip && entry1->vid == entry2->vid;
- }
+ 	/* if there is recent activity rearm the timer */
+-	if (!batadv_has_timed_out(tp_vars->last_recv_time,
++	if (!batadv_has_timed_out(READ_ONCE(tp_vars->last_recv_time),
+ 				  BATADV_TP_RECV_TIMEOUT)) {
+ 		/* reset the receiver shutdown timer */
+ 		batadv_tp_reset_receiver_timer(tp_vars);
+@@ -1424,7 +1424,7 @@ batadv_tp_init_recv(struct batadv_priv *bat_priv,
+ 	tp_vars = batadv_tp_list_find_session(bat_priv, icmp->orig,
+ 					      icmp->session, BATADV_TP_RECEIVER);
+ 	if (tp_vars) {
+-		tp_vars->last_recv_time = jiffies;
++		WRITE_ONCE(tp_vars->last_recv_time, jiffies);
+ 		goto out_unlock;
+ 	}
  
- /**
-@@ -346,6 +349,9 @@ batadv_dat_entry_hash_find(struct batadv_priv *bat_priv, __be32 ip,
- 		if (dat_entry->ip != ip)
- 			continue;
+@@ -1455,7 +1455,7 @@ batadv_tp_init_recv(struct batadv_priv *bat_priv,
+ 	kref_get(&tp_vars->refcount);
+ 	timer_setup(&tp_vars->timer, batadv_tp_receiver_shutdown, 0);
  
-+		if (dat_entry->vid != vid)
-+			continue;
-+
- 		if (!kref_get_unless_zero(&dat_entry->refcount))
- 			continue;
+-	tp_vars->last_recv_time = jiffies;
++	WRITE_ONCE(tp_vars->last_recv_time, jiffies);
  
+ 	kref_get(&tp_vars->refcount);
+ 	hlist_add_head_rcu(&tp_vars->list, &bat_priv->tp_list);
+@@ -1506,7 +1506,7 @@ static void batadv_tp_recv_msg(struct batadv_priv *bat_priv,
+ 			goto out;
+ 		}
+ 
+-		tp_vars->last_recv_time = jiffies;
++		WRITE_ONCE(tp_vars->last_recv_time, jiffies);
+ 	}
+ 
+ 	/* if the packet is a duplicate, it may be the case that an ACK has been
 -- 
 2.53.0
 
