@@ -1,75 +1,64 @@
-Return-Path: <stable+bounces-271017-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-271136-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id FFEoJpahRmpYagsAu9opvQ
-	(envelope-from <stable+bounces-271017-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:36:22 +0200
+	id SMGEKuiXRmocZgsAu9opvQ
+	(envelope-from <stable+bounces-271136-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:55:04 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id E1AED6FB7A0
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:36:21 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 465796FABE1
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:55:04 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="Kq/NVWoM";
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-271017-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-271017-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=CT6ik4m0;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-271136-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-271136-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 7F8D032BFBC0
-	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:42:03 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 012F330E2923
+	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:48:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F1C73438A6;
-	Thu,  2 Jul 2026 16:40:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3281D344D91;
+	Thu,  2 Jul 2026 16:46:05 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F187734752D;
-	Thu,  2 Jul 2026 16:40:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B744E2DC78C;
+	Thu,  2 Jul 2026 16:46:03 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783010453; cv=none; b=qGFvWQieqBSBIEB73UnC4ExXORy501Zo/fVz71zZlHRmsa6X7sBIA6IdsF/YOhKJmFKEyo+6fchN8+akj1bx0TDWeT67RcxZ/BhUm6k7fIQERNhMJf1EDcTjuNsIVDHI2gdarh8rikXd4Tkh/+83nu+akKX7Y3hqbqRv9aVyqao=
+	t=1783010765; cv=none; b=pEvScBtiAm4UbU6nGDhHlVbH+vf88YPOEe7JFvm8ysC1dxCuvp78Nu+JkfJ2oKv2Z/Yavgm1HjbhP+GYywzz9c6LJUx8QLjrZ+azq5yf93zJpzUC7fCB+NW1W2Ihov1I50OCje54Pt1StP8FWUyOZyHSTIUyyJ2B/QR+sMWsFwg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783010453; c=relaxed/simple;
-	bh=3hxEgZMWQvGSBdm8b+1AhMK19GtAHCJsiVdJqi2h+FI=;
+	s=arc-20240116; t=1783010765; c=relaxed/simple;
+	bh=4Eo3sR/1l0oReIdeCLdi3wsOMpeUbHmu5v6TCzPwvgo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YOFGRvZsbZc3wSPOSTEp+79SDBhAbetUsOks+XUtsXR+34EcSoIFfe3a8r5txBvXlCNVYovgK8iF0jDZw4OyHAiLDFcrx84Q3fRVQwb1xM0Nadn10NiswTeepKmpo+NnaIDxTkvqJczdoyixPUpDi62azziHTufZ8aIM9//9xiQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Kq/NVWoM; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 380C51F000E9;
-	Thu,  2 Jul 2026 16:40:50 +0000 (UTC)
+	 MIME-Version; b=p7PLQFe7K881j0vEhBZEWTzBqCnnBNe3HXQhyfbGmAd1msA4+x4PtdjGClRTCd5Mhtk6SCo6WZaf9dXeXaQMJs7shVaa9KpykWonZPFvwd9XqTfNNqARo/HTX/bCIA4evrsgOYJg/AHgdnNJ44R8SLlacABqKa90OyMbJzNwDNA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CT6ik4m0; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F01C1F000E9;
+	Thu,  2 Jul 2026 16:46:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1783010450;
-	bh=tSYSo3REkR74Q2PSca7EDzAg8fpCcysI9MkqiZnchz8=;
+	s=korg; t=1783010763;
+	bh=ajf10nGMNCEUiA2lxw1Fx2hhuGgoVhCrs6wPhqf+Als=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Kq/NVWoMYsx6lofB3rTTHyiaOB5y9iBiCmRDUgVzMix94H/WwpR+DMpIlLacG5hTP
-	 b/4nCl1+WOLFMxlt22R0a8pGhpk+hl0GD3CuW5NMvC93zKVf1GsWrTyLwnbOGlnUIl
-	 nEzQWIr6FMhnTKEtNfZ+BJHzramITE3oVgUjF1kk=
+	b=CT6ik4m02JtgO4a63hn1oAGBBlT1KTNWOCjHF2MJIyEv2SO4b8wzi8G6w+LIIIehd
+	 +byXSjLxAHq7AZn/PGBF92U+SQ6HXpeH/avHgSDMGiPgBPwfJG6duVm2ES9fTZLxk0
+	 5YKAgooOshBCwRbX6bpf3IT6OyHOPeZkze66GeOU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	bpf <bpf@vger.kernel.org>,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>,
 	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Masahiro Yamada <masahiroy@kernel.org>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Nicolas Schier <nicolas@fjasle.eu>,
-	Zheng Yejian <zhengyejian1@huawei.com>,
-	Martin Kelly <martin.kelly@crowdstrike.com>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Josh Poimboeuf <jpoimboe@redhat.com>,
-	Stephen Rothwell <sfr@canb.auug.org.au>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
+	David Howells <dhowells@redhat.com>,
+	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
 	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
-	Andrey Grodzovsky <andrey.grodzovsky@crowdstrike.com>
-Subject: [PATCH 6.12 071/204] scripts/sorttable: Use a structure of function pointers for elf helpers
-Date: Thu,  2 Jul 2026 18:18:48 +0200
-Message-ID: <20260702155120.158124126@linuxfoundation.org>
+	Bjoern Doebel <doebel@amazon.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 028/175] ring-buffer: Remove ring_buffer_read_prepare_sync()
+Date: Thu,  2 Jul 2026 18:18:49 +0200
+Message-ID: <20260702155116.392298916@linuxfoundation.org>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260702155118.667618796@linuxfoundation.org>
-References: <20260702155118.667618796@linuxfoundation.org>
+In-Reply-To: <20260702155115.766838875@linuxfoundation.org>
+References: <20260702155115.766838875@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -83,358 +72,260 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-271017-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[20];
-	FORWARDED(0.00)[lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:bpf@vger.kernel.org,m:mhiramat@kernel.org,m:mark.rutland@arm.com,m:mathieu.desnoyers@efficios.com,m:akpm@linux-foundation.org,m:peterz@infradead.org,m:masahiroy@kernel.org,m:nathan@kernel.org,m:nicolas@fjasle.eu,m:zhengyejian1@huawei.com,m:martin.kelly@crowdstrike.com,m:christophe.leroy@csgroup.eu,m:jpoimboe@redhat.com,m:sfr@canb.auug.org.au,m:torvalds@linux-foundation.org,m:rostedt@goodmis.org,m:andrey.grodzovsky@crowdstrike.com,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-271136-lists,stable=lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:mathieu.desnoyers@efficios.com,m:dhowells@redhat.com,m:mhiramat@kernel.org,m:rostedt@goodmis.org,m:doebel@amazon.de,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,goodmis.org:email,efficios.com:email,vger.kernel.org:from_smtp,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,amazon.de:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: E1AED6FB7A0
+X-Rspamd-Queue-Id: 465796FABE1
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Steven Rostedt <rostedt@goodmis.org>
+From: Bjoern Doebel <doebel@amazon.de>
 
-[ Upstream commit 1e5f6771c247b28135307058d2cfe3b0153733dc ]
+[ Upstream commit 119a5d573622ae90ba730d18acfae9bb75d77b9a ]
 
-Instead of having a series of function pointers that gets assigned to the
-Elf64 or Elf32 versions, put them all into a single structure and use
-that. Add the helper function that chooses the structure into the macros
-that build the different versions of the elf functions.
+When the ring buffer was first introduced, reading the non-consuming
+"trace" file required disabling the writing of the ring buffer. To make
+sure the writing was fully disabled before iterating the buffer with a
+non-consuming read, it would set the disable flag of the buffer and then
+call an RCU synchronization to make sure all the buffers were
+synchronized.
 
-Link: https://lore.kernel.org/all/CAHk-=wiafEyX7UgOeZgvd6fvuByE5WXUPh9599kwOc_d-pdeug@mail.gmail.com/
+The function ring_buffer_read_start() originally  would initialize the
+iterator and call an RCU synchronization, but this was for each individual
+per CPU buffer where this would get called many times on a machine with
+many CPUs before the trace file could be read. The commit 72c9ddfd4c5bf
+("ring-buffer: Make non-consuming read less expensive with lots of cpus.")
+separated ring_buffer_read_start into ring_buffer_read_prepare(),
+ring_buffer_read_sync() and then ring_buffer_read_start() to allow each of
+the per CPU buffers to be prepared, call the read_buffer_read_sync() once,
+and then the ring_buffer_read_start() for each of the CPUs which made
+things much faster.
 
-Cc: bpf <bpf@vger.kernel.org>
-Cc: Masami Hiramatsu <mhiramat@kernel.org>
-Cc: Mark Rutland <mark.rutland@arm.com>
+The commit 1039221cc278 ("ring-buffer: Do not disable recording when there
+is an iterator") removed the requirement of disabling the recording of the
+ring buffer in order to iterate it, but it did not remove the
+synchronization that was happening that was required to wait for all the
+buffers to have no more writers. It's now OK for the buffers to have
+writers and no synchronization is needed.
+
+Remove the synchronization and put back the interface for the ring buffer
+iterator back before commit 72c9ddfd4c5bf was applied.
+
 Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Masahiro Yamada <masahiroy@kernel.org>
-Cc: Nathan Chancellor <nathan@kernel.org>
-Cc: Nicolas Schier <nicolas@fjasle.eu>
-Cc: Zheng Yejian <zhengyejian1@huawei.com>
-Cc: Martin Kelly <martin.kelly@crowdstrike.com>
-Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
-Cc: Josh Poimboeuf <jpoimboe@redhat.com>
-Cc: Stephen Rothwell <sfr@canb.auug.org.au>
-Link: https://lore.kernel.org/20250110075459.13d4b94c@gandalf.local.home
-Suggested-by: Linus Torvalds <torvalds@linux-foundation.org>
+Link: https://lore.kernel.org/20250630180440.3eabb514@batman.local.home
+Reported-by: David Howells <dhowells@redhat.com>
+Fixes: 1039221cc278 ("ring-buffer: Do not disable recording when there is an iterator")
+Tested-by: David Howells <dhowells@redhat.com>
+Reviewed-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
 Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-Signed-off-by: Andrey Grodzovsky <andrey.grodzovsky@crowdstrike.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Assisted-by: Kiro:claude-opus-4.8
+Signed-off-by: Bjoern Doebel <doebel@amazon.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- scripts/sorttable.c |  175 +++++++++++++++++++++++++++++++++++-----------------
- 1 file changed, 118 insertions(+), 57 deletions(-)
+ include/linux/ring_buffer.h |  4 +--
+ kernel/trace/ring_buffer.c  | 67 ++++++-------------------------------
+ kernel/trace/trace.c        | 14 +++-----
+ kernel/trace/trace_kdb.c    |  8 ++---
+ 4 files changed, 18 insertions(+), 75 deletions(-)
 
---- a/scripts/sorttable.c
-+++ b/scripts/sorttable.c
-@@ -85,6 +85,25 @@ static uint64_t (*r8)(const uint64_t *);
- static void (*w)(uint32_t, uint32_t *);
- typedef void (*table_sort_t)(char *, int);
+diff --git a/include/linux/ring_buffer.h b/include/linux/ring_buffer.h
+index ded528d23f855b..382fbaa701f930 100644
+--- a/include/linux/ring_buffer.h
++++ b/include/linux/ring_buffer.h
+@@ -129,9 +129,7 @@ ring_buffer_consume(struct trace_buffer *buffer, int cpu, u64 *ts,
+ 		    unsigned long *lost_events);
  
-+static struct elf_funcs {
-+	int (*compare_extable)(const void *a, const void *b);
-+	uint64_t (*ehdr_shoff)(Elf_Ehdr *ehdr);
-+	uint16_t (*ehdr_shstrndx)(Elf_Ehdr *ehdr);
-+	uint16_t (*ehdr_shentsize)(Elf_Ehdr *ehdr);
-+	uint16_t (*ehdr_shnum)(Elf_Ehdr *ehdr);
-+	uint64_t (*shdr_addr)(Elf_Shdr *shdr);
-+	uint64_t (*shdr_offset)(Elf_Shdr *shdr);
-+	uint64_t (*shdr_size)(Elf_Shdr *shdr);
-+	uint64_t (*shdr_entsize)(Elf_Shdr *shdr);
-+	uint32_t (*shdr_link)(Elf_Shdr *shdr);
-+	uint32_t (*shdr_name)(Elf_Shdr *shdr);
-+	uint32_t (*shdr_type)(Elf_Shdr *shdr);
-+	uint8_t (*sym_type)(Elf_Sym *sym);
-+	uint32_t (*sym_name)(Elf_Sym *sym);
-+	uint64_t (*sym_value)(Elf_Sym *sym);
-+	uint16_t (*sym_shndx)(Elf_Sym *sym);
-+} e;
-+
- static uint64_t ehdr64_shoff(Elf_Ehdr *ehdr)
+ struct ring_buffer_iter *
+-ring_buffer_read_prepare(struct trace_buffer *buffer, int cpu, gfp_t flags);
+-void ring_buffer_read_prepare_sync(void);
+-void ring_buffer_read_start(struct ring_buffer_iter *iter);
++ring_buffer_read_start(struct trace_buffer *buffer, int cpu, gfp_t flags);
+ void ring_buffer_read_finish(struct ring_buffer_iter *iter);
+ 
+ struct ring_buffer_event *
+diff --git a/kernel/trace/ring_buffer.c b/kernel/trace/ring_buffer.c
+index 508edf1f3f1e2e..52c7dbccafedde 100644
+--- a/kernel/trace/ring_buffer.c
++++ b/kernel/trace/ring_buffer.c
+@@ -5084,28 +5084,20 @@ ring_buffer_consume(struct trace_buffer *buffer, int cpu, u64 *ts,
+ EXPORT_SYMBOL_GPL(ring_buffer_consume);
+ 
+ /**
+- * ring_buffer_read_prepare - Prepare for a non consuming read of the buffer
++ * ring_buffer_read_start - start a non consuming read of the buffer
+  * @buffer: The ring buffer to read from
+  * @cpu: The cpu buffer to iterate over
+  * @flags: gfp flags to use for memory allocation
+  *
+- * This performs the initial preparations necessary to iterate
+- * through the buffer.  Memory is allocated, buffer recording
+- * is disabled, and the iterator pointer is returned to the caller.
+- *
+- * Disabling buffer recording prevents the reading from being
+- * corrupted. This is not a consuming read, so a producer is not
+- * expected.
+- *
+- * After a sequence of ring_buffer_read_prepare calls, the user is
+- * expected to make at least one call to ring_buffer_read_prepare_sync.
+- * Afterwards, ring_buffer_read_start is invoked to get things going
+- * for real.
++ * This creates an iterator to allow non-consuming iteration through
++ * the buffer. If the buffer is disabled for writing, it will produce
++ * the same information each time, but if the buffer is still writing
++ * then the first hit of a write will cause the iteration to stop.
+  *
+- * This overall must be paired with ring_buffer_read_finish.
++ * Must be paired with ring_buffer_read_finish.
+  */
+ struct ring_buffer_iter *
+-ring_buffer_read_prepare(struct trace_buffer *buffer, int cpu, gfp_t flags)
++ring_buffer_read_start(struct trace_buffer *buffer, int cpu, gfp_t flags)
  {
- 	return r8(&ehdr->e64.e_shoff);
-@@ -95,6 +114,11 @@ static uint64_t ehdr32_shoff(Elf_Ehdr *e
- 	return r(&ehdr->e32.e_shoff);
- }
+ 	struct ring_buffer_per_cpu *cpu_buffer;
+ 	struct ring_buffer_iter *iter;
+@@ -5130,51 +5122,12 @@ ring_buffer_read_prepare(struct trace_buffer *buffer, int cpu, gfp_t flags)
  
-+static uint64_t ehdr_shoff(Elf_Ehdr *ehdr)
-+{
-+	return e.ehdr_shoff(ehdr);
-+}
-+
- #define EHDR_HALF(fn_name)				\
- static uint16_t ehdr64_##fn_name(Elf_Ehdr *ehdr)	\
- {							\
-@@ -104,6 +128,11 @@ static uint16_t ehdr64_##fn_name(Elf_Ehd
- static uint16_t ehdr32_##fn_name(Elf_Ehdr *ehdr)	\
- {							\
- 	return r2(&ehdr->e32.e_##fn_name);		\
-+}							\
-+							\
-+static uint16_t ehdr_##fn_name(Elf_Ehdr *ehdr)		\
-+{							\
-+	return e.ehdr_##fn_name(ehdr);			\
- }
+ 	atomic_inc(&cpu_buffer->resize_disabled);
  
- EHDR_HALF(shentsize)
-@@ -119,6 +148,11 @@ static uint32_t shdr64_##fn_name(Elf_Shd
- static uint32_t shdr32_##fn_name(Elf_Shdr *shdr)	\
- {							\
- 	return r(&shdr->e32.sh_##fn_name);		\
-+}							\
-+							\
-+static uint32_t shdr_##fn_name(Elf_Shdr *shdr)		\
-+{							\
-+	return e.shdr_##fn_name(shdr);			\
- }
- 
- #define SHDR_ADDR(fn_name)				\
-@@ -130,6 +164,11 @@ static uint64_t shdr64_##fn_name(Elf_Shd
- static uint64_t shdr32_##fn_name(Elf_Shdr *shdr)	\
- {							\
- 	return r(&shdr->e32.sh_##fn_name);		\
-+}							\
-+							\
-+static uint64_t shdr_##fn_name(Elf_Shdr *shdr)		\
-+{							\
-+	return e.shdr_##fn_name(shdr);			\
- }
- 
- #define SHDR_WORD(fn_name)				\
-@@ -141,6 +180,10 @@ static uint32_t shdr64_##fn_name(Elf_Shd
- static uint32_t shdr32_##fn_name(Elf_Shdr *shdr)	\
- {							\
- 	return r(&shdr->e32.sh_##fn_name);		\
-+}							\
-+static uint32_t shdr_##fn_name(Elf_Shdr *shdr)		\
-+{							\
-+	return e.shdr_##fn_name(shdr);			\
- }
- 
- SHDR_ADDR(addr)
-@@ -161,6 +204,11 @@ static uint64_t sym64_##fn_name(Elf_Sym
- static uint64_t sym32_##fn_name(Elf_Sym *sym)	\
- {						\
- 	return r(&sym->e32.st_##fn_name);	\
-+}						\
-+						\
-+static uint64_t sym_##fn_name(Elf_Sym *sym)	\
-+{						\
-+	return e.sym_##fn_name(sym);		\
- }
- 
- #define SYM_WORD(fn_name)			\
-@@ -172,6 +220,11 @@ static uint32_t sym64_##fn_name(Elf_Sym
- static uint32_t sym32_##fn_name(Elf_Sym *sym)	\
- {						\
- 	return r(&sym->e32.st_##fn_name);	\
-+}						\
-+						\
-+static uint32_t sym_##fn_name(Elf_Sym *sym)	\
-+{						\
-+	return e.sym_##fn_name(sym);		\
- }
- 
- #define SYM_HALF(fn_name)			\
-@@ -183,6 +236,11 @@ static uint16_t sym64_##fn_name(Elf_Sym
- static uint16_t sym32_##fn_name(Elf_Sym *sym)	\
- {						\
- 	return r2(&sym->e32.st_##fn_name);	\
-+}						\
-+						\
-+static uint16_t sym_##fn_name(Elf_Sym *sym)	\
-+{						\
-+	return e.sym_##fn_name(sym);		\
- }
- 
- static uint8_t sym64_type(Elf_Sym *sym)
-@@ -195,6 +253,11 @@ static uint8_t sym32_type(Elf_Sym *sym)
- 	return ELF32_ST_TYPE(sym->e32.st_info);
- }
- 
-+static uint8_t sym_type(Elf_Sym *sym)
-+{
-+	return e.sym_type(sym);
-+}
-+
- SYM_ADDR(value)
- SYM_WORD(name)
- SYM_HALF(shndx)
-@@ -322,29 +385,16 @@ static int compare_extable_64(const void
- 	return av > bv;
- }
- 
-+static int compare_extable(const void *a, const void *b)
-+{
-+	return e.compare_extable(a, b);
-+}
-+
- static inline void *get_index(void *start, int entsize, int index)
- {
- 	return start + (entsize * index);
- }
- 
+-	return iter;
+-}
+-EXPORT_SYMBOL_GPL(ring_buffer_read_prepare);
 -
--static int (*compare_extable)(const void *a, const void *b);
--static uint64_t (*ehdr_shoff)(Elf_Ehdr *ehdr);
--static uint16_t (*ehdr_shstrndx)(Elf_Ehdr *ehdr);
--static uint16_t (*ehdr_shentsize)(Elf_Ehdr *ehdr);
--static uint16_t (*ehdr_shnum)(Elf_Ehdr *ehdr);
--static uint64_t (*shdr_addr)(Elf_Shdr *shdr);
--static uint64_t (*shdr_offset)(Elf_Shdr *shdr);
--static uint64_t (*shdr_size)(Elf_Shdr *shdr);
--static uint64_t (*shdr_entsize)(Elf_Shdr *shdr);
--static uint32_t (*shdr_link)(Elf_Shdr *shdr);
--static uint32_t (*shdr_name)(Elf_Shdr *shdr);
--static uint32_t (*shdr_type)(Elf_Shdr *shdr);
--static uint8_t (*sym_type)(Elf_Sym *sym);
--static uint32_t (*sym_name)(Elf_Sym *sym);
--static uint64_t (*sym_value)(Elf_Sym *sym);
--static uint16_t (*sym_shndx)(Elf_Sym *sym);
+-/**
+- * ring_buffer_read_prepare_sync - Synchronize a set of prepare calls
+- *
+- * All previously invoked ring_buffer_read_prepare calls to prepare
+- * iterators will be synchronized.  Afterwards, read_buffer_read_start
+- * calls on those iterators are allowed.
+- */
+-void
+-ring_buffer_read_prepare_sync(void)
+-{
+-	synchronize_rcu();
+-}
+-EXPORT_SYMBOL_GPL(ring_buffer_read_prepare_sync);
 -
- static int extable_ent_size;
- static int long_size;
+-/**
+- * ring_buffer_read_start - start a non consuming read of the buffer
+- * @iter: The iterator returned by ring_buffer_read_prepare
+- *
+- * This finalizes the startup of an iteration through the buffer.
+- * The iterator comes from a call to ring_buffer_read_prepare and
+- * an intervening ring_buffer_read_prepare_sync must have been
+- * performed.
+- *
+- * Must be paired with ring_buffer_read_finish.
+- */
+-void
+-ring_buffer_read_start(struct ring_buffer_iter *iter)
+-{
+-	struct ring_buffer_per_cpu *cpu_buffer;
+-	unsigned long flags;
+-
+-	if (!iter)
+-		return;
+-
+-	cpu_buffer = iter->cpu_buffer;
+-
+-	raw_spin_lock_irqsave(&cpu_buffer->reader_lock, flags);
++	guard(raw_spinlock_irqsave)(&cpu_buffer->reader_lock);
+ 	arch_spin_lock(&cpu_buffer->lock);
+ 	rb_iter_reset(iter);
+ 	arch_spin_unlock(&cpu_buffer->lock);
+-	raw_spin_unlock_irqrestore(&cpu_buffer->reader_lock, flags);
++
++	return iter;
+ }
+ EXPORT_SYMBOL_GPL(ring_buffer_read_start);
  
-@@ -864,7 +914,30 @@ static int do_file(char const *const fna
+diff --git a/kernel/trace/trace.c b/kernel/trace/trace.c
+index 6b35666a4e0be6..f57baf67726da8 100644
+--- a/kernel/trace/trace.c
++++ b/kernel/trace/trace.c
+@@ -4792,21 +4792,15 @@ __tracing_open(struct inode *inode, struct file *file, bool snapshot)
+ 	if (iter->cpu_file == RING_BUFFER_ALL_CPUS) {
+ 		for_each_tracing_cpu(cpu) {
+ 			iter->buffer_iter[cpu] =
+-				ring_buffer_read_prepare(iter->array_buffer->buffer,
+-							 cpu, GFP_KERNEL);
+-		}
+-		ring_buffer_read_prepare_sync();
+-		for_each_tracing_cpu(cpu) {
+-			ring_buffer_read_start(iter->buffer_iter[cpu]);
++				ring_buffer_read_start(iter->array_buffer->buffer,
++						       cpu, GFP_KERNEL);
+ 			tracing_iter_reset(iter, cpu);
+ 		}
+ 	} else {
+ 		cpu = iter->cpu_file;
+ 		iter->buffer_iter[cpu] =
+-			ring_buffer_read_prepare(iter->array_buffer->buffer,
+-						 cpu, GFP_KERNEL);
+-		ring_buffer_read_prepare_sync();
+-		ring_buffer_read_start(iter->buffer_iter[cpu]);
++			ring_buffer_read_start(iter->array_buffer->buffer,
++					       cpu, GFP_KERNEL);
+ 		tracing_iter_reset(iter, cpu);
  	}
  
- 	switch (ehdr->e32.e_ident[EI_CLASS]) {
--	case ELFCLASS32:
-+	case ELFCLASS32: {
-+		struct elf_funcs efuncs = {
-+			.compare_extable	= compare_extable_32,
-+			.ehdr_shoff		= ehdr32_shoff,
-+			.ehdr_shentsize		= ehdr32_shentsize,
-+			.ehdr_shstrndx		= ehdr32_shstrndx,
-+			.ehdr_shnum		= ehdr32_shnum,
-+			.shdr_addr		= shdr32_addr,
-+			.shdr_offset		= shdr32_offset,
-+			.shdr_link		= shdr32_link,
-+			.shdr_size		= shdr32_size,
-+			.shdr_name		= shdr32_name,
-+			.shdr_type		= shdr32_type,
-+			.shdr_entsize		= shdr32_entsize,
-+			.sym_type		= sym32_type,
-+			.sym_name		= sym32_name,
-+			.sym_value		= sym32_value,
-+			.sym_shndx		= sym32_shndx,
-+		};
-+
-+		e = efuncs;
-+		long_size		= 4;
-+		extable_ent_size	= 8;
-+
- 		if (r2(&ehdr->e32.e_ehsize) != sizeof(Elf32_Ehdr) ||
- 		    r2(&ehdr->e32.e_shentsize) != sizeof(Elf32_Shdr)) {
- 			fprintf(stderr,
-@@ -872,26 +945,32 @@ static int do_file(char const *const fna
- 			return -1;
+diff --git a/kernel/trace/trace_kdb.c b/kernel/trace/trace_kdb.c
+index 59857a1ee44cdf..628c25693cef2f 100644
+--- a/kernel/trace/trace_kdb.c
++++ b/kernel/trace/trace_kdb.c
+@@ -43,17 +43,15 @@ static void ftrace_dump_buf(int skip_entries, long cpu_file)
+ 	if (cpu_file == RING_BUFFER_ALL_CPUS) {
+ 		for_each_tracing_cpu(cpu) {
+ 			iter.buffer_iter[cpu] =
+-			ring_buffer_read_prepare(iter.array_buffer->buffer,
+-						 cpu, GFP_ATOMIC);
+-			ring_buffer_read_start(iter.buffer_iter[cpu]);
++			ring_buffer_read_start(iter.array_buffer->buffer,
++					       cpu, GFP_ATOMIC);
+ 			tracing_iter_reset(&iter, cpu);
  		}
+ 	} else {
+ 		iter.cpu_file = cpu_file;
+ 		iter.buffer_iter[cpu_file] =
+-			ring_buffer_read_prepare(iter.array_buffer->buffer,
++			ring_buffer_read_start(iter.array_buffer->buffer,
+ 						 cpu_file, GFP_ATOMIC);
+-		ring_buffer_read_start(iter.buffer_iter[cpu_file]);
+ 		tracing_iter_reset(&iter, cpu_file);
+ 	}
  
--		compare_extable		= compare_extable_32;
--		ehdr_shoff		= ehdr32_shoff;
--		ehdr_shentsize		= ehdr32_shentsize;
--		ehdr_shstrndx		= ehdr32_shstrndx;
--		ehdr_shnum		= ehdr32_shnum;
--		shdr_addr		= shdr32_addr;
--		shdr_offset		= shdr32_offset;
--		shdr_link		= shdr32_link;
--		shdr_size		= shdr32_size;
--		shdr_name		= shdr32_name;
--		shdr_type		= shdr32_type;
--		shdr_entsize		= shdr32_entsize;
--		sym_type		= sym32_type;
--		sym_name		= sym32_name;
--		sym_value		= sym32_value;
--		sym_shndx		= sym32_shndx;
--		long_size		= 4;
--		extable_ent_size	= 8;
-+		}
- 		break;
--	case ELFCLASS64:
-+	case ELFCLASS64: {
-+		struct elf_funcs efuncs = {
-+			.compare_extable	= compare_extable_64,
-+			.ehdr_shoff		= ehdr64_shoff,
-+			.ehdr_shentsize		= ehdr64_shentsize,
-+			.ehdr_shstrndx		= ehdr64_shstrndx,
-+			.ehdr_shnum		= ehdr64_shnum,
-+			.shdr_addr		= shdr64_addr,
-+			.shdr_offset		= shdr64_offset,
-+			.shdr_link		= shdr64_link,
-+			.shdr_size		= shdr64_size,
-+			.shdr_name		= shdr64_name,
-+			.shdr_type		= shdr64_type,
-+			.shdr_entsize		= shdr64_entsize,
-+			.sym_type		= sym64_type,
-+			.sym_name		= sym64_name,
-+			.sym_value		= sym64_value,
-+			.sym_shndx		= sym64_shndx,
-+		};
-+
-+		e = efuncs;
-+		long_size		= 8;
-+		extable_ent_size	= 16;
-+
- 		if (r2(&ehdr->e64.e_ehsize) != sizeof(Elf64_Ehdr) ||
- 		    r2(&ehdr->e64.e_shentsize) != sizeof(Elf64_Shdr)) {
- 			fprintf(stderr,
-@@ -900,25 +979,7 @@ static int do_file(char const *const fna
- 			return -1;
- 		}
- 
--		compare_extable		= compare_extable_64;
--		ehdr_shoff		= ehdr64_shoff;
--		ehdr_shentsize		= ehdr64_shentsize;
--		ehdr_shstrndx		= ehdr64_shstrndx;
--		ehdr_shnum		= ehdr64_shnum;
--		shdr_addr		= shdr64_addr;
--		shdr_offset		= shdr64_offset;
--		shdr_link		= shdr64_link;
--		shdr_size		= shdr64_size;
--		shdr_name		= shdr64_name;
--		shdr_type		= shdr64_type;
--		shdr_entsize		= shdr64_entsize;
--		sym_type		= sym64_type;
--		sym_name		= sym64_name;
--		sym_value		= sym64_value;
--		sym_shndx		= sym64_shndx;
--		long_size		= 8;
--		extable_ent_size	= 16;
--
-+		}
- 		break;
- 	default:
- 		fprintf(stderr, "unrecognized ELF class %d %s\n",
+-- 
+2.53.0
+
 
 
 
