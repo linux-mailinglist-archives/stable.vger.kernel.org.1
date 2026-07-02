@@ -1,64 +1,62 @@
-Return-Path: <stable+bounces-270687-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-270602-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id meprGKyURmoWZAsAu9opvQ
-	(envelope-from <stable+bounces-270687-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:41:16 +0200
+	id 31YlHGueRmogaQsAu9opvQ
+	(envelope-from <stable+bounces-270602-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:22:51 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A756C6FA5DD
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:41:15 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 689766FB412
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:22:50 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=GIvJprRS;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-270687-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-270687-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=BK80LED2;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-270602-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-270602-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A9BC231AE6A2
-	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:31:37 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 7196730AD721
+	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:24:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 58B6F348C76;
-	Thu,  2 Jul 2026 16:26:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 554E13446DA;
+	Thu,  2 Jul 2026 16:22:50 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26ECA33F583;
-	Thu,  2 Jul 2026 16:26:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09BB0344D91;
+	Thu,  2 Jul 2026 16:22:44 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783009588; cv=none; b=B29Dl3fHIcKl7qeHR4tcFWOOZo3ve9z2mwRdta7tKZ8iS4xpZbRiPQix4AS59t5sfqefmvTdY5RkKUyvoa2oflcHuIPfib18KbyCJD4eH70QuC93Ztz6ZNObQg+5/6uldgJjIZ8Fwg8tcO7W9/udpK3+LlvXaumEzDtxjbVdfVs=
+	t=1783009369; cv=none; b=g4M7Y1KmQHwZkDxw8Dw1ZBINY2UsF9M339NfY2l0KPROE82DM5kx4GSRfYrXh+0MZLJs2f+tB/fWe0nd7QpSaUxswutiuik1kR5woKydcVILR/jV2WoJRRfSHq9jaoofxgKtF/Iuo/ZTxktp7gAwJ1648REgYmUPQR6tX26wjlQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783009588; c=relaxed/simple;
-	bh=n6zQEogycyk/IxqIANvq14BSpnicqj0IMQexe7poRRE=;
+	s=arc-20240116; t=1783009369; c=relaxed/simple;
+	bh=Qpgv1N8Z/IleC2sxULrs4E/6PgGl1rH81NBnMRoAQMA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oZVRePfDpi00zbnO9BDAL3vkxCBAp9xtS9OYiXkc/f2B5Fn8zfBLKO5c3CehJ7aLaKZyFQ+1yxGQ8rpjKPY6HTt/Axv4R7+ruBm12joy5P4YKMdOqkNaDxhKYUA5iKFZMoBe/Rixz6kjo+gAsjdZHWUAlKjk9DgUkwvniUy9Lk0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GIvJprRS; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4FA911F000E9;
-	Thu,  2 Jul 2026 16:26:26 +0000 (UTC)
+	 MIME-Version; b=BBULulEmF1pOKsqsqC061BiV8MGqrWPoAbmhYawXGO3oAdmRNvjOXAtJvCQ2GPq+h8Raa+F6Rb6KBDYdJIZJSUIcaHKzBNHyC1PRE/CbBnHyLhcQkQlA2j46mZRomnFSHQdAc4cWYKNu6Hpwo1XoDDnHANZAYG9UK5Vek302NQY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BK80LED2; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E93CB1F000E9;
+	Thu,  2 Jul 2026 16:22:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1783009586;
-	bh=RWdoM3vgQY8qzs3k+5y1N9nw02/J+YhZxpfZT45RyVw=;
+	s=korg; t=1783009363;
+	bh=bJOBhJni8vPraBJ/AYsOrzxc4bsYhmZqFTVJdjMvOCo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=GIvJprRS85sZwOOc6o/7NylX0Ztu1kM5Ron6l2QDDcbQ/k52xeneVg4UkpK4nccAc
-	 nZEDEfdBCCn1A/OKD98DF42i4nVzDjmOROUajZolAQwIObKs2+w+xrLFrdfqD8rgEA
-	 LJYWiioC7u2ScGOaV0V2tkmCXaRy8jGBKwHjFhi8=
+	b=BK80LED2eotzfoZDdwcJijVYn9xrhNcY183EhP7EBzmzoLUiTp+Ff15njZyNpHpNA
+	 JYGhbWU144y694dUIXHLV+LKbP0v8qug37ikGwE4s8lDwtpeD+kphZGT2gdUQmRgkq
+	 rvi4A2hn6GSTYSuwAEvNyV3OufvoMfZEqLXxRupU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Antoniu Miclaus <antoniu.miclaus@analog.com>,
-	Linus Walleij <linusw@kernel.org>,
-	Stable@vger.kernel.org,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	Sasha Levin <sashal@kernel.org>,
-	Elizaveta Tereshkina <etereshkina@astralinux.ru>
-Subject: [PATCH 5.15 12/95] iio: light: bh1780: fix PM runtime leak on error path
+	Xiang Mei <xmei5@asu.edu>,
+	Weiming Shi <bestswngs@gmail.com>,
+	Jean Delvare <jdelvare@suse.de>,
+	Wolfram Sang <wsa+renesas@sang-engineering.com>
+Subject: [PATCH 5.10 23/96] i2c: stub: Reject I2C block transfers with invalid length
 Date: Thu,  2 Jul 2026 18:19:15 +0200
-Message-ID: <20260702155109.464736317@linuxfoundation.org>
+Message-ID: <20260702155109.472955580@linuxfoundation.org>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260702155109.196223802@linuxfoundation.org>
-References: <20260702155109.196223802@linuxfoundation.org>
+In-Reply-To: <20260702155108.949633242@linuxfoundation.org>
+References: <20260702155108.949633242@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,88 +68,114 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-270687-lists,stable=lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,asu.edu,gmail.com,suse.de,sang-engineering.com];
+	TAGGED_FROM(0.00)[bounces-270602-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:antoniu.miclaus@analog.com,m:linusw@kernel.org,m:Stable@vger.kernel.org,m:Jonathan.Cameron@huawei.com,m:sashal@kernel.org,m:etereshkina@astralinux.ru,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:xmei5@asu.edu,m:bestswngs@gmail.com,m:jdelvare@suse.de,m:wsa+renesas@sang-engineering.com,m:wsa@sang-engineering.com,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
 	RCVD_COUNT_THREE(0.00)[4];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	TAGGED_RCPT(0.00)[stable,renesas];
+	TO_DN_SOME(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp,huawei.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,analog.com:email,astralinux.ru:email]
+	RWL_MAILSPIKE_POSSIBLE(0.00)[104.64.211.4:from];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,suse.de:email,sang-engineering.com:email,asu.edu:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: A756C6FA5DD
+X-Rspamd-Queue-Id: 689766FB412
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Antoniu Miclaus <antoniu.miclaus@analog.com>
+From: Weiming Shi <bestswngs@gmail.com>
 
-commit dd72e6c3cdea05cad24e99710939086f7a113fb5 upstream.
+commit 6036b5067a8199ba7a2dc7b377d4b9dd276d5f9e upstream.
 
-Move pm_runtime_put_autosuspend() before the error check to ensure
-the PM runtime reference count is always decremented after
-pm_runtime_get_sync(), regardless of whether the read operation
-succeeds or fails.
+The I2C_SMBUS_I2C_BLOCK_DATA case in stub_xfer() uses data->block[0]
+as the transfer length. The existing check only clamps it to avoid
+overrunning the chip->words[256] register array, but does not validate
+it against I2C_SMBUS_BLOCK_MAX (32), which is the limit of the union
+i2c_smbus_data.block buffer (34 bytes total). The driver is a
+development/test tool (CONFIG_I2C_STUB=m, not built by default)
+that must be loaded with a chip_addr= parameter.
 
-Fixes: 1f0477f18306 ("iio: light: new driver for the ROHM BH1780")
-Signed-off-by: Antoniu Miclaus <antoniu.miclaus@analog.com>
-Reviewed-by: Linus Walleij <linusw@kernel.org>
-Cc: <Stable@vger.kernel.org>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-[ moved both pm_runtime_mark_last_busy() and pm_runtime_put_autosuspend() before the error check instead of just pm_runtime_put_autosuspend() ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+A local user with access to /dev/i2c-* can issue an I2C_SMBUS ioctl
+with I2C_SMBUS_I2C_BLOCK_DATA and data->block[0] > 32, causing
+stub_xfer() to read or write past the end of the union
+i2c_smbus_data.block buffer:
+
+ BUG: KASAN: stack-out-of-bounds in stub_xfer (drivers/i2c/i2c-stub.c:223)
+ Read of size 1 at addr ffff88800abcfd92 by task exploit/81
+ Call Trace:
+  <TASK>
+  stub_xfer (drivers/i2c/i2c-stub.c:223)
+  __i2c_smbus_xfer (drivers/i2c/i2c-core-smbus.c:593)
+  i2c_smbus_xfer (drivers/i2c/i2c-core-smbus.c:536)
+  i2cdev_ioctl_smbus (drivers/i2c/i2c-dev.c:391)
+  i2cdev_ioctl (drivers/i2c/i2c-dev.c:478)
+  __x64_sys_ioctl (fs/ioctl.c:583)
+  do_syscall_64 (arch/x86/entry/syscall_64.c:94)
+  entry_SYSCALL_64_after_hwframe (arch/x86/entry/entry_64.S:130)
+  </TASK>
+
+The bug exists because i2c-stub implements .smbus_xfer directly,
+bypassing the I2C_SMBUS_BLOCK_MAX validation in
+i2c_smbus_xfer_emulated(). The I2C_SMBUS_BLOCK_DATA case in the same
+function correctly validates against I2C_SMBUS_BLOCK_MAX, but the
+I2C_SMBUS_I2C_BLOCK_DATA case does not.
+
+Fix by rejecting transfers with data->block[0] == 0 or
+data->block[0] > I2C_SMBUS_BLOCK_MAX with -EINVAL, consistent with
+both the I2C_SMBUS_BLOCK_DATA case in the same function and the
+I2C_SMBUS_I2C_BLOCK_DATA validation in i2c_smbus_xfer_emulated().
+
+Fixes: 4710317891e4 ("i2c-stub: Implement I2C block support")
+Reported-by: Xiang Mei <xmei5@asu.edu>
+Signed-off-by: Weiming Shi <bestswngs@gmail.com>
+Reviewed-by: Jean Delvare <jdelvare@suse.de>
+Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Elizaveta Tereshkina <etereshkina@astralinux.ru>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iio/light/bh1780.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/i2c/i2c-stub.c |    5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/drivers/iio/light/bh1780.c b/drivers/iio/light/bh1780.c
-index abbf2e662e7dbc..e0a72ff2ebf8b1 100644
---- a/drivers/iio/light/bh1780.c
-+++ b/drivers/iio/light/bh1780.c
-@@ -109,10 +109,10 @@ static int bh1780_read_raw(struct iio_dev *indio_dev,
- 		case IIO_LIGHT:
- 			pm_runtime_get_sync(&bh1780->client->dev);
- 			value = bh1780_read_word(bh1780, BH1780_REG_DLOW);
--			if (value < 0)
--				return value;
- 			pm_runtime_mark_last_busy(&bh1780->client->dev);
- 			pm_runtime_put_autosuspend(&bh1780->client->dev);
-+			if (value < 0)
-+				return value;
- 			*val = value;
- 
- 			return IIO_VAL_INT;
--- 
-2.53.0
-
+--- a/drivers/i2c/i2c-stub.c
++++ b/drivers/i2c/i2c-stub.c
+@@ -215,6 +215,11 @@ static s32 stub_xfer(struct i2c_adapter
+ 		 * We ignore banks here, because banked chips don't use I2C
+ 		 * block transfers
+ 		 */
++		if (data->block[0] == 0 ||
++		    data->block[0] > I2C_SMBUS_BLOCK_MAX) {
++			ret = -EINVAL;
++			break;
++		}
+ 		if (data->block[0] > 256 - command)	/* Avoid overrun */
+ 			data->block[0] = 256 - command;
+ 		len = data->block[0];
 
 
 
