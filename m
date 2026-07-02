@@ -1,198 +1,128 @@
-Return-Path: <stable+bounces-271543-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-271544-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 2eA4I0e3RmqecAsAu9opvQ
-	(envelope-from <stable+bounces-271543-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 21:08:55 +0200
+	id AaTJOmW4Rmr7cAsAu9opvQ
+	(envelope-from <stable+bounces-271544-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 21:13:41 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 846CB6FC665
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 21:08:54 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F79A6FC71C
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 21:13:41 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=VH7xquYJ;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-271543-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-271543-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	dkim=pass header.d=sntech.de header.s=gloria202408 header.b=fJWXkvhs;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-271544-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-271544-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=quarantine) header.from=sntech.de;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id D624A301AB7D
-	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 18:55:51 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 0B26630C3C4B
+	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 19:06:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F805370D7C;
-	Thu,  2 Jul 2026 18:55:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F7B23845A2;
+	Thu,  2 Jul 2026 19:05:13 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from gloria.sntech.de (gloria.sntech.de [185.11.138.130])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54A2F353A69;
-	Thu,  2 Jul 2026 18:55:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 388F8384CF0;
+	Thu,  2 Jul 2026 19:05:09 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783018544; cv=none; b=jJVC2jnGVCiOKpeKBHUVIZ4etrr0+8ogIt2bS748iIs3rEMDFwlwipLKzJu5FujACkYvwuDYiURrR9URIUEzb/rBkItk/1bjwCs3KCkQ4uY7Wii3EYMeaMWSPPJf8FoKeSBw4+UkGnvCVaeIYr9x5CYj5MMzKh3XmwNpAh5cSGs=
+	t=1783019112; cv=none; b=AZCyZWGOsJRK00Y4IS2Y0lh6YttmzWeYu2KrLHC+zXCDdgOHcgOi8Gv4QHTI5AkSfm0eBBOdJjQNi9auY6qGvrcmrAptv4Fa601fAjrIMGHeMGbT7AWp/89VU6Ds0p6jtHaW04AII3qmV1qkYvxVmFBwHp0d4zzZJMOg0Zbj5Yc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783018544; c=relaxed/simple;
-	bh=i3WCYDcAGVXuOIHLVTtF5UUWazZBuq4GcRLYZdDJctQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=eJjCDIobQPOHTNzQ8wZf6hGkO2uoMn9skucD0UrFz6VMKsSRqBMnEh2OgaFKFhKocJbMM+HXlZbITnv+h7J9JpJSSEB/ODd8qmQ8SQz1j746DXVox+2Zx789UZYxgz5PFP1RDFI671xiIokc7KM27l5w5Tlfc0R1NZygAe/6XgU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VH7xquYJ; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E78931F000E9;
-	Thu,  2 Jul 2026 18:55:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783018543;
-	bh=2WdsnKJ1Aw9ta/hrRGydNoYuDjuIZ97UFU5ekCpcEfg=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=VH7xquYJ0AEP+gnuQck18J10dgEFRy6Mc37vMU/uD5POPW0Rqgj7KuEQ1r3s2xJNB
-	 40H/LgkeCI88yQbhrFXhBoRmXZ4AFzFA4PEmN35BkQFyMMqGeHSybSZwbnO9sYM/YZ
-	 YjznUWOqALJK39OYJiQSxrVUqOVKiJJRORg+hwgw+C0dncyaB3RXhFyQvpgUrb7bxa
-	 1HQiWSPSTgtyXVXJHMNh1CPJh80zYNvPolmcXiMxv41WumhpDOvYJEzCRA2c/NgRLb
-	 DsDTzcBPQ3rW8Re6IUUyZiNHLWyRYXy2ZdmWi2oiZ6gj+dsNHCfNEyD5atMazvU/1h
-	 F5ZKvxZQBO1+A==
-Date: Thu, 2 Jul 2026 19:55:37 +0100
-From: Jonathan Cameron <jic23@kernel.org>
-To: Haoxiang Li <haoxiang_li2024@163.com>
-Cc: jikos@kernel.org, srinivas.pandruvada@linux.intel.com,
- bentiss@kernel.org, linux-input@vger.kernel.org, linux-iio@vger.kernel.org,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH v2 2/2] HID: sensor: custom: Fix field sysfs group
- cleanup on failure
-Message-ID: <20260702195537.3a95355c@jic23-huawei>
-In-Reply-To: <20260702094856.1105555-3-haoxiang_li2024@163.com>
-References: <20260702094856.1105555-1-haoxiang_li2024@163.com>
-	<20260702094856.1105555-3-haoxiang_li2024@163.com>
-X-Mailer: Claws Mail 4.4.0 (GTK 3.24.52; x86_64-pc-linux-gnu)
+	s=arc-20240116; t=1783019112; c=relaxed/simple;
+	bh=PBvGKxSN3lubbQ6xO3qbDw3P1qiZKcB0tHw/YPSl8n0=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=J9d7EplyOed1nAhq+aQnqJi/e3LjuV+ebpgrmCTV+CLOsnm49/z+4980eW/RsavjQndH4acJzgLvJW3LmzUqevgfTdFFMMAybC6bRrSV5Qyf55koARD7eDZwGPp6+NdBtFE+Zmzxh0K3HAUH4PJq4mf+QM10Xw35d1Y737wAhBY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=sntech.de; spf=pass smtp.mailfrom=sntech.de; dkim=pass (2048-bit key) header.d=sntech.de header.i=@sntech.de header.b=fJWXkvhs; arc=none smtp.client-ip=185.11.138.130
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=sntech.de;
+	s=gloria202408; h=Content-Transfer-Encoding:Content-Type:MIME-Version:
+	References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Reply-To;
+	bh=qi+og8zzAWmwxBq5244UzdXz2emj9itakwbhrlFY2Rg=; b=fJWXkvhsrFUM/UOKyZLZFZfBVg
+	zCVaQzvT3DI3HJVrg6GGZloSryXaOGLJwnEwzR/J9CjtWNO2Lz2Iihjx+ZgsoI41Ifrd3aIXGHGTV
+	+3+1tqy4VF5cGHS9WJ6w1cLfggdYqUE+8kXJ9TrxixjEx4JU51AHayan0fTn4Jj3mz9pLvNZj4aja
+	i1VxQuT+y76p/zq7ncejlP4w8A7ARadsR1Xi5nRFugBOGXj8guRKVBxg1Qr5Karz3Ve/6+TtmsvFq
+	vQdBB+85KKLuOUubSvkIQC7ZOat9kgZR7azHzl0E+pzPMfdgOdEj5tF9dRs3sBSThqYrr8YNLOH+x
+	7fU+z35w==;
+From: Heiko Stuebner <heiko@sntech.de>
+To: Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Quentin Schulz <quentin.schulz@theobroma-systems.com>,
+	Quentin Schulz <foss+kernel@0leil.net>
+Cc: Heiko Stuebner <heiko@sntech.de>,
+	devicetree@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-rockchip@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	Quentin Schulz <quentin.schulz@cherry.de>,
+	stable@vger.kernel.org
+Subject: Re: [PATCH] arm64: dts: rockchip: fix eMMC reset polarity on PX30 Ringneck
+Date: Thu,  2 Jul 2026 21:04:52 +0200
+Message-ID: <178301901902.3838694.15610180855070263903.b4-ty@sntech.de>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260626-ringneck-emmc-polarity-v1-1-90cefe57b316@cherry.de>
+References: <20260626-ringneck-emmc-polarity-v1-1-90cefe57b316@cherry.de>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-4.66 / 15.00];
-	WHITELIST_SPF_DKIM(-3.00)[kernel.org:d:+,kernel.org:s:+];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[sntech.de,quarantine];
+	R_DKIM_ALLOW(-0.20)[sntech.de:s=gloria202408];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_RECIPIENTS(0.00)[m:haoxiang_li2024@163.com,m:jikos@kernel.org,m:srinivas.pandruvada@linux.intel.com,m:bentiss@kernel.org,m:linux-input@vger.kernel.org,m:linux-iio@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,s:lists@lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FREEMAIL_TO(0.00)[163.com];
-	FORGED_SENDER(0.00)[jic23@kernel.org,stable@vger.kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORWARDED(0.00)[lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-271544-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:robh@kernel.org,m:krzk+dt@kernel.org,m:conor+dt@kernel.org,m:quentin.schulz@theobroma-systems.com,m:foss+kernel@0leil.net,m:heiko@sntech.de,m:devicetree@vger.kernel.org,m:linux-arm-kernel@lists.infradead.org,m:linux-rockchip@lists.infradead.org,m:linux-kernel@vger.kernel.org,m:quentin.schulz@cherry.de,m:stable@vger.kernel.org,m:krzk@kernel.org,m:conor@kernel.org,m:foss@0leil.net,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[heiko@sntech.de,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-271543-lists,stable=lfdr.de];
+	RCPT_COUNT_TWELVE(0.00)[12];
+	RCVD_COUNT_THREE(0.00)[3];
+	MIME_TRACE(0.00)[0:+];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[jic23@kernel.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_NEQ_ENVFROM(0.00)[heiko@sntech.de,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[sntech.de:+];
+	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[jic23-huawei:mid,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,vger.kernel.org:from_smtp]
+	MID_RHS_MATCH_FROM(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	TAGGED_RCPT(0.00)[stable,dt,kernel];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sntech.de:dkim,sntech.de:email,sntech.de:mid,sntech.de:from_mime,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 846CB6FC665
+X-Rspamd-Queue-Id: 4F79A6FC71C
 
-On Thu,  2 Jul 2026 17:48:56 +0800
-Haoxiang Li <haoxiang_li2024@163.com> wrote:
 
-> hid_sensor_custom_add_attributes() creates one sysfs group for each
-> custom sensor field. If sysfs_create_group() fails after some groups
-> have already been created, the function returns the error without
-> removing the previously created groups. Add a local unwind path to
-> remove the groups that were already created.
+On Fri, 26 Jun 2026 16:40:38 +0200, Quentin Schulz wrote:
+> According to the Jedec 5.1 specification, the device is held in reset
+> when RST_n is low, therefore the polarity of the line must be that, as
+> specified in the Device Tree binding (mmc/mmc-pwrseq-emmc.yaml).
 > 
-> Create the field attributes before exposing enable_sensor, so the
-> failure path can free sensor_inst->fields without leaving enable_sensor
-> able to access power_state or report_state pointers into that array.
+> Due to the wrong polarity, eMMC devices with RST_n_FUNCTION[162]
+> bitfield [1:0] set to 0x1 (the default is 0x0) will be held in reset
+> forever.
 > 
-> Fixes: 4a7de0519df5 ("HID: sensor: Custom and Generic sensor support")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Haoxiang Li <haoxiang_li2024@163.com>
-Ah. This has the reorder necessary to resolve the issue I called out
-in previous patch (I think).  They can't be done independently.
-Can you move the registration reorder to the previous patch then
-only do the missing cleanup in this one?
+> [...]
 
-> ---
->  drivers/hid/hid-sensor-custom.c | 23 +++++++++++++++--------
->  1 file changed, 15 insertions(+), 8 deletions(-)
-> 
-> diff --git a/drivers/hid/hid-sensor-custom.c b/drivers/hid/hid-sensor-custom.c
-> index d7bdbae96b50..ea98088e5112 100644
-> --- a/drivers/hid/hid-sensor-custom.c
-> +++ b/drivers/hid/hid-sensor-custom.c
-> @@ -609,7 +609,7 @@ static int hid_sensor_custom_add_attributes(struct hid_sensor_custom
->  					 &sensor_inst->fields[i].
->  					 hid_custom_attribute_group);
->  		if (ret)
-> -			break;
-> +			goto err_remove_groups;
->  
->  		/* For power or report field store indexes */
->  		if (sensor_inst->fields[i].attribute.attrib_id ==
-> @@ -621,6 +621,13 @@ static int hid_sensor_custom_add_attributes(struct hid_sensor_custom
->  	}
->  
->  	return ret;
-> +
-> +err_remove_groups:
-> +	while (--i >= 0)
-> +		sysfs_remove_group(&sensor_inst->pdev->dev.kobj,
-> +				   &sensor_inst->fields[i].hid_custom_attribute_group);
-> +	kfree(sensor_inst->fields);
-> +	return ret;
->  }
->  
->  static void hid_sensor_custom_remove_attributes(struct hid_sensor_custom *
-> @@ -1005,26 +1012,26 @@ static int hid_sensor_custom_probe(struct platform_device *pdev)
->  		return ret;
->  	}
->  
-> -	ret = sysfs_create_group(&sensor_inst->pdev->dev.kobj,
-> -				 &enable_sensor_attr_group);
-> +	ret = hid_sensor_custom_add_attributes(sensor_inst);
+Applied, thanks!
 
-I think this brings things back into order wrt to remove.
-This probably needs to be in the previous patch.
+[1/1] arm64: dts: rockchip: fix eMMC reset polarity on PX30 Ringneck
+      commit: 549081d9af61cf046cac15281e9a6ceb9b2592e9
 
->  	if (ret)
->  		goto err_remove_callback;
->  
-> -	ret = hid_sensor_custom_add_attributes(sensor_inst);
-> +	ret = sysfs_create_group(&sensor_inst->pdev->dev.kobj,
-> +				 &enable_sensor_attr_group);
->  	if (ret)
-> -		goto err_remove_group;
-> +		goto err_remove_attributes;
->  
->  	ret = hid_sensor_custom_dev_if_add(sensor_inst);
->  	if (ret)
-> -		goto err_remove_attributes;
-> +		goto err_remove_group;
->  
->  	return 0;
->  
-> -err_remove_attributes:
-> -	hid_sensor_custom_remove_attributes(sensor_inst);
->  err_remove_group:
->  	sysfs_remove_group(&sensor_inst->pdev->dev.kobj,
->  			   &enable_sensor_attr_group);
-> +err_remove_attributes:
-> +	hid_sensor_custom_remove_attributes(sensor_inst);
->  err_remove_callback:
->  	sensor_hub_remove_callback(hsdev, hsdev->usage);
->  
-
+Best regards,
+-- 
+Heiko Stuebner <heiko@sntech.de>
 
