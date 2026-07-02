@@ -1,61 +1,63 @@
-Return-Path: <stable+bounces-271307-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-271227-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 2rhBAlqbRmr/ZwsAu9opvQ
-	(envelope-from <stable+bounces-271307-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:09:46 +0200
+	id HdlIIwelRmqWawsAu9opvQ
+	(envelope-from <stable+bounces-271227-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:51:03 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 908E56FB109
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:09:45 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 84D166FBAB7
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:51:02 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=ll0OXPqS;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-271307-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-271307-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=nRfARHpJ;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-271227-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-271227-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id D3FF03176738
-	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:53:52 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 2141E313AD25
+	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:51:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45CA131F9A8;
-	Thu,  2 Jul 2026 16:53:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 906B63A6B71;
+	Thu,  2 Jul 2026 16:49:58 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF471349AE0;
-	Thu,  2 Jul 2026 16:53:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 500C1318EC5;
+	Thu,  2 Jul 2026 16:49:57 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783011206; cv=none; b=jH2QEaI2NKTGLNPEnkODOtZfJVAeU31nGXF9OJIlsc7MjTlTeMAhwSTXsW3xVG2Ap0KnTvI9aSls3cL5Q2LeM2epkoqgUftpH2hOPJBpKUDkA76f5hqVWERDeU/k04qQmFJLqjb9UWIe1LuzyLzUPWQdfD+nAODx4uShQGqQzrU=
+	t=1783010998; cv=none; b=uLRBptsf87/4VdJR5by6VLFvnQ7Uq9XyZB/BcB4/RLidTr4m0Z9CJuop6TumDuclVvQ6rqXEfvAQ2pCVmtXxjhidyCf0JX5bh0evBrz9+FfyMkJVWybwnMMD+VYiXv8RolD+N3uNMk2ZO1Z3j3XSjoD2aMEqi65A6DhLDJ4FjaI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783011206; c=relaxed/simple;
-	bh=0LGjITDWofpE4KMHiUaNODSK2BOSono7ldjSjTvHhuE=;
+	s=arc-20240116; t=1783010998; c=relaxed/simple;
+	bh=NQtKL1xkCrAXl6afsY3aC1KJ5oODsUxIoVLbOAp/+N8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MqcwDsilKot63gY0uVAyuU16kzjnOfHc4pl/tRifzqIA3KoYuLn4HHeo16poyZxaG6NwgLEq7Jg1Kag7ZDmgetiK1POCbGO1pZVD3NUDSX1uUNX/BFgrn8xbsWGrReG6G7NjT6hC7z3B4tlTVgKY/h8dquzwqGjWxCYhrdeWTbc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ll0OXPqS; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6165F1F000E9;
-	Thu,  2 Jul 2026 16:53:24 +0000 (UTC)
+	 MIME-Version; b=iehFS7dKcXkvR1sgZGPT6yF7dDAmDPWtk41nkq8wKIZYamyQZ2BROq+dfNTz9F+jY/YIjwX9wpl6jxOraoSZJox0XryLdbHxTU5m+B+oOQZIomKYLu3XJwNZ6Os3L4kOyvSVhetUBTWsat5RXy/aV7SmUJUPa4OfwEAjq2vq4tQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nRfARHpJ; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B71671F000E9;
+	Thu,  2 Jul 2026 16:49:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1783011204;
-	bh=H4Q0132fLj/JvOi7YcW9huE/JmspasofxI2u4k/EpHY=;
+	s=korg; t=1783010997;
+	bh=Tg1Gnmux8MtZCR5FqVvWKGded2fORlvZ0Hl3GtBilnA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=ll0OXPqSroIOnXPL7rBWZ2TmhBsFAsG3cFkllfyooOzH1ndbhPgMTp+g3QKDVdMxK
-	 CXPEy/AiVn3m4yG4IDDL9XZZqEPOXmmeXqNr4+ERCH86ZTYa0gqelx8yFrn2L/Eewa
-	 cEV1hWtf0oi/uew1+KXq6kJNUJXBAmgdwuEq76hA=
+	b=nRfARHpJpP2p+iGUVm9a/qaKJXAsa08WqYAxu2pej4Qm/Olqrl4B3MQvR9k7EQ0zQ
+	 wk2IaWnNeaAhZXyQFQaxA2COAUGXtX5eNh/95beNEOLBYWK4f6oHujM7j8hMuldyue
+	 f27e7KhLcrbNGPXVDEHQhNdYVYnBZOMNU0wE7hDo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Sven Eckelmann <sven@narfation.org>,
+	Eric Dumazet <edumazet@google.com>,
+	Willem de Bruijn <willemb@google.com>,
+	Brian Vazquez <brianvv@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 020/108] batman-adv: frag: ensure fragment is writable before modifying TTL
-Date: Thu,  2 Jul 2026 18:20:17 +0200
-Message-ID: <20260702155112.527444348@linuxfoundation.org>
+Subject: [PATCH 6.6 117/175] inet: add indirect call wrapper for getfrag() calls
+Date: Thu,  2 Jul 2026 18:20:18 +0200
+Message-ID: <20260702155118.220367445@linuxfoundation.org>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260702155112.110058792@linuxfoundation.org>
-References: <20260702155112.110058792@linuxfoundation.org>
+In-Reply-To: <20260702155115.766838875@linuxfoundation.org>
+References: <20260702155115.766838875@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,141 +71,140 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-271307-lists,stable=lfdr.de];
+	PRECEDENCE_BULK(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:stable@kernel.org,m:sven@narfation.org,m:sashal@kernel.org,s:lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-271227-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:edumazet@google.com,m:willemb@google.com,m:brianvv@google.com,m:kuba@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORWARDED(0.00)[lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,narfation.org:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	RWL_MAILSPIKE_POSSIBLE(0.00)[104.64.211.4:from];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 908E56FB109
+X-Rspamd-Queue-Id: 84D166FBAB7
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sven Eckelmann <sven@narfation.org>
+From: Eric Dumazet <edumazet@google.com>
 
-commit b7293c6e8c15b2db77809b25cf8389e35331b27a upstream.
+[ Upstream commit 5204ccbfa22358f95afd031a3f337e6d9a74baea ]
 
-Before batman-adv is allowed to write to an skb, it either has to have its
-own copy of the skb or use skb_cow() to ensure that the data part is not
-shared. But batadv_frag_skb_fwd() modifies the TTL even when it is shared.
+UDP send path suffers from one indirect call to ip_generic_getfrag()
 
-Adding a skb_cow() right before this operation avoids this and can at the
-same time prepare it for the modifications required to forward the
-fragment.
+We can use INDIRECT_CALL_1() to avoid it.
 
-Cc: stable@kernel.org
-Fixes: 610bfc6bc99b ("batman-adv: Receive fragmented packets and merge")
-Signed-off-by: Sven Eckelmann <sven@narfation.org>
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: Willem de Bruijn <willemb@google.com>
+Reviewed-by: Brian Vazquez <brianvv@google.com>
+Link: https://patch.msgid.link/20241203173617.2595451-1-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Stable-dep-of: eca856950f7c ("ipv4: account for fraggap on the paged allocation path")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/batman-adv/fragmentation.c | 15 ++++++++++++++-
- net/batman-adv/fragmentation.h |  3 ++-
- net/batman-adv/routing.c       |  3 +--
- 3 files changed, 17 insertions(+), 4 deletions(-)
+ net/ipv4/ip_output.c  | 13 +++++++++----
+ net/ipv6/ip6_output.c | 13 ++++++++-----
+ 2 files changed, 17 insertions(+), 9 deletions(-)
 
-diff --git a/net/batman-adv/fragmentation.c b/net/batman-adv/fragmentation.c
-index 31395281692cb5..ffa5d4b0740959 100644
---- a/net/batman-adv/fragmentation.c
-+++ b/net/batman-adv/fragmentation.c
-@@ -384,6 +384,8 @@ bool batadv_frag_skb_buffer(struct sk_buff **skb,
-  * @skb: skb to forward
-  * @recv_if: interface that the skb is received on
-  * @orig_node_src: originator that the skb is received from
-+ * @rx_result: set to NET_RX_SUCCESS when the fragment was forwarded and
-+ *  NET_RX_DROP when it was dropped; only valid when true is returned
-  *
-  * Look up the next-hop of the fragments payload and check if the merged packet
-  * will exceed the MTU towards the next-hop. If so, the fragment is forwarded
-@@ -393,7 +395,8 @@ bool batadv_frag_skb_buffer(struct sk_buff **skb,
-  */
- bool batadv_frag_skb_fwd(struct sk_buff *skb,
- 			 struct batadv_hard_iface *recv_if,
--			 struct batadv_orig_node *orig_node_src)
-+			 struct batadv_orig_node *orig_node_src,
-+			 int *rx_result)
- {
- 	struct batadv_priv *bat_priv = netdev_priv(recv_if->mesh_iface);
- 	struct batadv_neigh_node *neigh_node = NULL;
-@@ -412,12 +415,22 @@ bool batadv_frag_skb_fwd(struct sk_buff *skb,
- 	 */
- 	total_size = ntohs(packet->total_size);
- 	if (total_size > neigh_node->if_incoming->net_dev->mtu) {
-+		if (skb_cow(skb, ETH_HLEN) < 0) {
-+			kfree_skb(skb);
-+			*rx_result = NET_RX_DROP;
-+			ret = true;
-+			goto out;
-+		}
-+
-+		packet = (struct batadv_frag_packet *)skb->data;
-+
- 		batadv_inc_counter(bat_priv, BATADV_CNT_FRAG_FWD);
- 		batadv_add_counter(bat_priv, BATADV_CNT_FRAG_FWD_BYTES,
- 				   skb->len + ETH_HLEN);
+diff --git a/net/ipv4/ip_output.c b/net/ipv4/ip_output.c
+index 305d0e2786a2a8..fb1d8be8c6757c 100644
+--- a/net/ipv4/ip_output.c
++++ b/net/ipv4/ip_output.c
+@@ -1168,7 +1168,10 @@ static int __ip_append_data(struct sock *sk,
+ 			/* [!] NOTE: copy will be negative if pagedlen>0
+ 			 * because then the equation reduces to -fraggap.
+ 			 */
+-			if (copy > 0 && getfrag(from, data + transhdrlen, offset, copy, fraggap, skb) < 0) {
++			if (copy > 0 &&
++			    INDIRECT_CALL_1(getfrag, ip_generic_getfrag,
++					    from, data + transhdrlen, offset,
++					    copy, fraggap, skb) < 0) {
+ 				err = -EFAULT;
+ 				kfree_skb(skb);
+ 				goto error;
+@@ -1212,8 +1215,9 @@ static int __ip_append_data(struct sock *sk,
+ 			unsigned int off;
  
- 		packet->ttl--;
- 		batadv_send_unicast_skb(skb, neigh_node);
-+		*rx_result = NET_RX_SUCCESS;
- 		ret = true;
- 	}
+ 			off = skb->len;
+-			if (getfrag(from, skb_put(skb, copy),
+-					offset, copy, off, skb) < 0) {
++			if (INDIRECT_CALL_1(getfrag, ip_generic_getfrag,
++					    from, skb_put(skb, copy),
++					    offset, copy, off, skb) < 0) {
+ 				__skb_trim(skb, off);
+ 				err = -EFAULT;
+ 				goto error;
+@@ -1253,7 +1257,8 @@ static int __ip_append_data(struct sock *sk,
+ 				get_page(pfrag->page);
+ 			}
+ 			copy = min_t(int, copy, pfrag->size - pfrag->offset);
+-			if (getfrag(from,
++			if (INDIRECT_CALL_1(getfrag, ip_generic_getfrag,
++				    from,
+ 				    page_address(pfrag->page) + pfrag->offset,
+ 				    offset, copy, skb->len, skb) < 0)
+ 				goto error_efault;
+diff --git a/net/ipv6/ip6_output.c b/net/ipv6/ip6_output.c
+index 9a08ee6f52da0f..2e2cd0e0d48a5d 100644
+--- a/net/ipv6/ip6_output.c
++++ b/net/ipv6/ip6_output.c
+@@ -1695,8 +1695,9 @@ static int __ip6_append_data(struct sock *sk,
+ 				pskb_trim_unique(skb_prev, maxfraglen);
+ 			}
+ 			if (copy > 0 &&
+-			    getfrag(from, data + transhdrlen, offset,
+-				    copy, fraggap, skb) < 0) {
++			    INDIRECT_CALL_1(getfrag, ip_generic_getfrag,
++					   from, data + transhdrlen, offset,
++					   copy, fraggap, skb) < 0) {
+ 				err = -EFAULT;
+ 				kfree_skb(skb);
+ 				goto error;
+@@ -1740,8 +1741,9 @@ static int __ip6_append_data(struct sock *sk,
+ 			unsigned int off;
  
-diff --git a/net/batman-adv/fragmentation.h b/net/batman-adv/fragmentation.h
-index dbf0871f870303..51e281027ab630 100644
---- a/net/batman-adv/fragmentation.h
-+++ b/net/batman-adv/fragmentation.h
-@@ -19,7 +19,8 @@ void batadv_frag_purge_orig(struct batadv_orig_node *orig,
- 			    bool (*check_cb)(struct batadv_frag_table_entry *));
- bool batadv_frag_skb_fwd(struct sk_buff *skb,
- 			 struct batadv_hard_iface *recv_if,
--			 struct batadv_orig_node *orig_node_src);
-+			 struct batadv_orig_node *orig_node_src,
-+			 int *rx_result);
- bool batadv_frag_skb_buffer(struct sk_buff **skb,
- 			    struct batadv_orig_node *orig_node);
- int batadv_frag_send_packet(struct sk_buff *skb,
-diff --git a/net/batman-adv/routing.c b/net/batman-adv/routing.c
-index cdcea90db61235..4483f8d9c75831 100644
---- a/net/batman-adv/routing.c
-+++ b/net/batman-adv/routing.c
-@@ -1168,10 +1168,9 @@ int batadv_recv_frag_packet(struct sk_buff *skb,
- 
- 	/* Route the fragment if it is not for us and too big to be merged. */
- 	if (!batadv_is_my_mac(bat_priv, frag_packet->dest) &&
--	    batadv_frag_skb_fwd(skb, recv_if, orig_node_src)) {
-+	    batadv_frag_skb_fwd(skb, recv_if, orig_node_src, &ret)) {
- 		/* skb was consumed */
- 		skb = NULL;
--		ret = NET_RX_SUCCESS;
- 		goto put_orig_node;
- 	}
- 
+ 			off = skb->len;
+-			if (getfrag(from, skb_put(skb, copy),
+-						offset, copy, off, skb) < 0) {
++			if (INDIRECT_CALL_1(getfrag, ip_generic_getfrag,
++					    from, skb_put(skb, copy),
++					    offset, copy, off, skb) < 0) {
+ 				__skb_trim(skb, off);
+ 				err = -EFAULT;
+ 				goto error;
+@@ -1781,7 +1783,8 @@ static int __ip6_append_data(struct sock *sk,
+ 				get_page(pfrag->page);
+ 			}
+ 			copy = min_t(int, copy, pfrag->size - pfrag->offset);
+-			if (getfrag(from,
++			if (INDIRECT_CALL_1(getfrag, ip_generic_getfrag,
++				    from,
+ 				    page_address(pfrag->page) + pfrag->offset,
+ 				    offset, copy, skb->len, skb) < 0)
+ 				goto error_efault;
 -- 
 2.53.0
 
