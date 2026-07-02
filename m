@@ -1,61 +1,62 @@
-Return-Path: <stable+bounces-271309-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-270668-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id m5O8KSqaRmpZZwsAu9opvQ
-	(envelope-from <stable+bounces-271309-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:04:42 +0200
+	id PZV/BlSSRmoZYwsAu9opvQ
+	(envelope-from <stable+bounces-270668-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:31:16 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A7CA6FAF23
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:04:42 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9A7CD6FA333
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:31:15 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=NY9btSUy;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-271309-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-271309-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=PMQ2R3az;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-270668-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-270668-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id A0FFC30A9E81
-	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:53:54 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 897233006136
+	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:31:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 77AFE26F46F;
-	Thu,  2 Jul 2026 16:53:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17CC33AD530;
+	Thu,  2 Jul 2026 16:25:45 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 361A5246BBA;
-	Thu,  2 Jul 2026 16:53:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9835039A80E;
+	Thu,  2 Jul 2026 16:25:37 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783011211; cv=none; b=rF3dFYybKc6n8eTPX7N+d3QNwgzND2q2mGafqXX/BMwzw77Kt+Dqr4/4oKe9b5Ev/ike/hkJET9hNnjVyZJ/iAMu5zIz9BpjHEOOy6y1ruIm69mXly9CV8DfAPsdGQUVECWpWSSfou8h5ljH+lFmKhl5B/lGry8prlzydZjzFJc=
+	t=1783009542; cv=none; b=nPxm5msjVd+rFPM/k8JfQ07C4gQAkBiRHKRf5VF3US5+h96XTEvDoOhd0lWak7zYJLe4okOqC+JEbJ/668e/gzCx/LACFZS2JknvZGt8fBMzvDpKhk5hOW08kel3fhCEsiuCLCRHIeokTjyAji6lfwHtUJNYKDJSHm5B2YCHX1g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783011211; c=relaxed/simple;
-	bh=JPW86W5xBAB9oAKtlLhoNbAlhKKI0nSKJqOLj/kWBns=;
+	s=arc-20240116; t=1783009542; c=relaxed/simple;
+	bh=/5XXhTou12xkB23G6Rs8U9uky8NaEtqIY77bH+e1208=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=p7CnHmELl73fC7nTUL9baDpzClGNfMf/IQr64eG9zklxVT+i2xgAQle2TkhtI2PRNi97cUQ8ZyypC4bLHcPq/FV7QnaVlqnLR+NlGa+7pPrznaTe/QNHgA5c022BD3/yqyFinaFGNlBeGq/kTXbZtBHXZzDgZv/Bu4krnPQPccQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NY9btSUy; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9ACA31F00A3F;
-	Thu,  2 Jul 2026 16:53:29 +0000 (UTC)
+	 MIME-Version; b=uEhlzq9n5+yqgucl2BR1vR265Fr9c+WLVYNxVI6JPDbFhngL++Bfcx+sPdQ6n4kzH0/vv4Obe8tRwJW5GCx4R7cNqsJC1bmzNXwlmfMQ5fhD0M3Pcmp0k4CGo1Bgnc1W6NaMN51hWJqXrfzE08xLkPlwd9KfHFZGP3ZQjHTMt5A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PMQ2R3az; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 411591F00A3D;
+	Thu,  2 Jul 2026 16:25:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1783011210;
-	bh=rFBwA0ZP9kfpXVbO1ldC8PPPZCts/c26k3ntmIM5iq4=;
+	s=korg; t=1783009536;
+	bh=xow4nQQ50N5VeZ9NOu4cRrs3fVYlYhph/VT3oRoScvo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=NY9btSUyS0NxqbrGJeOCOhKoarlkeJFXtF81ceAg+g9c9/4IoPWd8eQLAZrV7yGn0
-	 rgClxf/xFzIydkD90AkDOPoRpV9pz+1R0IkswcQgrjsxcX27a3NNBQxLZ9LFGv5DEr
-	 +0O0Njy2bd+HPp+E2z962yHuVl+NoZUyKB7JsXO8=
+	b=PMQ2R3azg36HMG8vmT3NajrIMayIa0J2j1wnycIR3JfJNqyaCxtlRHsIZ/Dc1yNEs
+	 hH84/u8uMputghPzQxOH/3vRIxRsX3dUZEaC+3yMf0RmrzxYsB6lYd6yZS6U0zPzDY
+	 Dh9nG3jxrmtO3x9J7D5hm7qQLicvjxaCMoziYncs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Sven Eckelmann <sven@narfation.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 022/108] batman-adv: v: prevent OGM aggregation on disabled hardif
+Subject: [PATCH 5.10 87/96] mptcp: fix missing wakeups in edge scenarios
 Date: Thu,  2 Jul 2026 18:20:19 +0200
-Message-ID: <20260702155112.570019564@linuxfoundation.org>
+Message-ID: <20260702155110.810150131@linuxfoundation.org>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260702155112.110058792@linuxfoundation.org>
-References: <20260702155112.110058792@linuxfoundation.org>
+In-Reply-To: <20260702155108.949633242@linuxfoundation.org>
+References: <20260702155108.949633242@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,144 +70,84 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-271309-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:stable@kernel.org,m:sven@narfation.org,m:sashal@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-270668-lists,stable=lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:pabeni@redhat.com,m:matttbe@kernel.org,m:kuba@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,narfation.org:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 8A7CA6FAF23
+X-Rspamd-Queue-Id: 9A7CD6FA333
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sven Eckelmann <sven@narfation.org>
+From: Paolo Abeni <pabeni@redhat.com>
 
-commit d11c00b95b2a3b3934007fc003dccc6fdcc061ad upstream.
+[ Upstream commit 9d8d28738f24b75616d6ca7a27cb4aed88520343 ]
 
-When an interface gets disabled, the worker is correctly disabled by
-batadv_hardif_disable_interface() -> ... -> batadv_v_ogm_iface_disable().
-In this process, the skb aggr_list is also freed.
+The mptcp_recvmsg() can fill MPTCP socket receive queue via
+mptcp_move_skbs(), but currently does not try to wakeup any listener,
+because the same process is going to check the receive queue soon.
 
-But batadv_v_ogm_send_meshif() can still queue new skbs (via
-batadv_v_ogm_queue_on_if()) to the aggr_list. This will only stop after all
-cores can no longer find the RCU protected list of hard interfaces. These
-queued skbs will never be freed or consumed by batadv_v_ogm_aggr_work.
+When multiple threads are reading from the same fd, the above can
+cause stall. Add the missing wakeup.
 
-The batadv_v_ogm_iface_disable() function must block
-batadv_v_ogm_queue_on_if() to avoid leak of skbs.
-
-Cc: stable@kernel.org
-Fixes: f89255a02f1d ("batman-adv: BATMAN_V: introduce per hard-iface OGMv2 queues")
-[ Context ]
-Signed-off-by: Sven Eckelmann <sven@narfation.org>
+Fixes: 6771bfd9ee24 ("mptcp: update mptcp ack sequence from work queue")
+Cc: stable@vger.kernel.org
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Link: https://patch.msgid.link/20260602-net-mptcp-misc-fixes-7-1-rc7-v2-1-856831229976@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/batman-adv/bat_v.c     |  1 +
- net/batman-adv/bat_v_ogm.c | 12 ++++++++++++
- net/batman-adv/types.h     |  6 ++++++
- 3 files changed, 19 insertions(+)
+ net/mptcp/protocol.c |    8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/net/batman-adv/bat_v.c b/net/batman-adv/bat_v.c
-index de94447142642e..17d2a1ccdce67a 100644
---- a/net/batman-adv/bat_v.c
-+++ b/net/batman-adv/bat_v.c
-@@ -817,6 +817,7 @@ void batadv_v_hardif_init(struct batadv_hard_iface *hard_iface)
+--- a/net/mptcp/protocol.c
++++ b/net/mptcp/protocol.c
+@@ -1571,6 +1571,14 @@ static bool __mptcp_move_skbs(struct mpt
  
- 	hard_iface->bat_v.aggr_len = 0;
- 	skb_queue_head_init(&hard_iface->bat_v.aggr_list);
-+	hard_iface->bat_v.aggr_list_enabled = false;
- 	INIT_DELAYED_WORK(&hard_iface->bat_v.aggr_wq,
- 			  batadv_v_ogm_aggr_work);
- }
-diff --git a/net/batman-adv/bat_v_ogm.c b/net/batman-adv/bat_v_ogm.c
-index d66ca77b1aaa3c..6852bf5da8c558 100644
---- a/net/batman-adv/bat_v_ogm.c
-+++ b/net/batman-adv/bat_v_ogm.c
-@@ -252,11 +252,18 @@ static void batadv_v_ogm_queue_on_if(struct batadv_priv *bat_priv,
+ 	if (mptcp_ofo_queue(msk) || moved > 0) {
+ 		mptcp_check_data_fin((struct sock *)msk);
++
++		/* When multiple threads read from the same socket, the caller
++		 * filling the receive queue does not try to wake up any other
++		 * listener, which can stall it. Flag the data as ready and
++		 * issue the missing wakeup here.
++		 */
++		set_bit(MPTCP_DATA_READY, &msk->flags);
++		((struct sock *)msk)->sk_data_ready((struct sock *)msk);
+ 		return true;
  	}
- 
- 	spin_lock_bh(&hard_iface->bat_v.aggr_list.lock);
-+	if (!hard_iface->bat_v.aggr_list_enabled) {
-+		kfree_skb(skb);
-+		goto unlock;
-+	}
-+
- 	if (!batadv_v_ogm_queue_left(skb, hard_iface))
- 		batadv_v_ogm_aggr_send(bat_priv, hard_iface);
- 
- 	hard_iface->bat_v.aggr_len += batadv_v_ogm_len(skb);
- 	__skb_queue_tail(&hard_iface->bat_v.aggr_list, skb);
-+
-+unlock:
- 	spin_unlock_bh(&hard_iface->bat_v.aggr_list.lock);
- }
- 
-@@ -417,6 +424,10 @@ int batadv_v_ogm_iface_enable(struct batadv_hard_iface *hard_iface)
- {
- 	struct batadv_priv *bat_priv = netdev_priv(hard_iface->mesh_iface);
- 
-+	spin_lock_bh(&hard_iface->bat_v.aggr_list.lock);
-+	hard_iface->bat_v.aggr_list_enabled = true;
-+	spin_unlock_bh(&hard_iface->bat_v.aggr_list.lock);
-+
- 	batadv_v_ogm_start_queue_timer(hard_iface);
- 	batadv_v_ogm_start_timer(bat_priv);
- 
-@@ -432,6 +443,7 @@ void batadv_v_ogm_iface_disable(struct batadv_hard_iface *hard_iface)
- 	cancel_delayed_work_sync(&hard_iface->bat_v.aggr_wq);
- 
- 	spin_lock_bh(&hard_iface->bat_v.aggr_list.lock);
-+	hard_iface->bat_v.aggr_list_enabled = false;
- 	batadv_v_ogm_aggr_list_free(hard_iface);
- 	spin_unlock_bh(&hard_iface->bat_v.aggr_list.lock);
- }
-diff --git a/net/batman-adv/types.h b/net/batman-adv/types.h
-index c9bd49d23547ef..417d653021c7af 100644
---- a/net/batman-adv/types.h
-+++ b/net/batman-adv/types.h
-@@ -130,6 +130,12 @@ struct batadv_hard_iface_bat_v {
- 	/** @aggr_list: queue for to be aggregated OGM packets */
- 	struct sk_buff_head aggr_list;
- 
-+	/**
-+	 * @aggr_list_enabled: aggr_list is active and new skbs can be
-+	 * enqueued. Protected by aggr_list.lock after initialization
-+	 */
-+	bool aggr_list_enabled:1;
-+
- 	/** @aggr_len: size of the OGM aggregate (excluding ethernet header) */
- 	unsigned int aggr_len;
- 
--- 
-2.53.0
-
+ 	return false;
 
 
 
