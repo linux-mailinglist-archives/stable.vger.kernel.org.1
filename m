@@ -1,62 +1,60 @@
-Return-Path: <stable+bounces-270907-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-271242-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id ph+uDnCWRmo4ZQsAu9opvQ
-	(envelope-from <stable+bounces-270907-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:48:48 +0200
+	id +lrgJU+kRmpdawsAu9opvQ
+	(envelope-from <stable+bounces-271242-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:47:59 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 95BDB6FA968
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:48:47 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id E8A066FBA14
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:47:58 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=USbCk82c;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-270907-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-270907-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="pjZ/miQk";
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-271242-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-271242-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 43C4A30776FA
-	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:37:43 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 4E1CB33BB4BC
+	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:52:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50467360EF0;
-	Thu,  2 Jul 2026 16:36:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C8DA362157;
+	Thu,  2 Jul 2026 16:50:35 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA48A33F5B8;
-	Thu,  2 Jul 2026 16:36:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D91F9359A89;
+	Thu,  2 Jul 2026 16:50:33 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783010163; cv=none; b=u4yz8wpZ1hqChP7CVWfATre8RmmR3Gxo69QiBAF9/JDfq00DJQsK4QbdeosWFiTDObhDZAtYUKik5eo6gGXmbBUaaTWoFh4jB2h+aBZ7PNGiStbKHKvqJyf9Vt4qq/7pk12k6if5NzuEMvRPgniFmeI9q4D1ZO8zSfOh7efXAMY=
+	t=1783011035; cv=none; b=NLyj0X9IhPol/OG9T/YQ+0jVXtjU3Mo0aEkdETD459mpTjAvTfym3rOUh+n++f7NCP6wAEL+gvp0ZGAFJ2icwe9N6RQqTT9DD2g6nG7/CRblG/1RblOSPiBASVuL+sdSsBueVjpb6ui5cFpJGCryLzMQZf/4l2/PWqaMYeTQzNE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783010163; c=relaxed/simple;
-	bh=Q1+CXadbRm+eQd1HuS7imxNtfBRZ0ZjocNxkZgXSpqw=;
+	s=arc-20240116; t=1783011035; c=relaxed/simple;
+	bh=8j1U2014dJ92PX4xGz1nCJtosnDO8UFDxPNAIXLVN28=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=d1o/eVGFZYI7ImHxy3IXKcwCQQnR3yZBhrpYkl8T803r35F1sOvw4AgKLROxJavTQOD7odTaD3EII0A6kEKeHJfpsvD6INdmlylDxVVBbnYp8aCGwywPeYjPCgEZzdL4jNngVNsc1agLXZxFofMMlHiNtv8mLwQ86SJcIU6ezks=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=USbCk82c; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B5AE1F000E9;
-	Thu,  2 Jul 2026 16:36:01 +0000 (UTC)
+	 MIME-Version; b=gNk626VC8krbYOnS3Gf63U01h4+qtOeGUaQmOcCICXzHPTqwFtwiEVrhKpPjf5Sj08rDSW6rOpE0h/2cFE/HKG+d4QDCeA+G29b/13cNahbI1mHM1k9R1dSZiKY1dsiAuGF/JHG3iSj8Mg671BoiJ7Lw58HZFTBFJ9VORv0XK/A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pjZ/miQk; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4BA981F000E9;
+	Thu,  2 Jul 2026 16:50:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1783010161;
-	bh=RxRKQyKC+LwS4W3rVnNZtYxyW9RTbG/BAOFjCAtbkl8=;
+	s=korg; t=1783011033;
+	bh=Ivo8BGtQLsILJsDYugtWlz8Uw1ksEKkfQyhRogBMfZY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=USbCk82cihnnoywJvDkPC5XRL9sx5KZIzNKOfPVPWM+alGVTaufG7WHUmAde4bG3K
-	 OWT/BnESMJZgLIWhlWI8HuNGoLUFOKznO2kOm/4e+bfo7RUvmAUbNcFRfUM6uz6Z6P
-	 ofQY9v0wFiSkd4gR5ZeCLJD1bRyUJl5MG9s3RFtI=
+	b=pjZ/miQkfum/q7bXfTJTF3UeedqqUAxMHQCtP4zqlHBLpGfPpIxCBD/13bMZpRTDe
+	 Tv7akJkiEnMmPVfs7WgCvk8VvjWw9BPyklCD5weWK40VzJIDEtlg/7KoFRYKgdgPh2
+	 yors5asBwtbzJH6d/2bjavzEabkzD2PQpYwHZFrs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tao Cui <cuitao@kylinos.cn>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 112/129] mptcp: pm: fix extra_subflows underflow on userspace PM subflow creation
+	Shaomin Chen <eeesssooo020@gmail.com>,
+	Jarkko Sakkinen <jarkko@kernel.org>
+Subject: [PATCH 6.6 130/175] keys: Pin request_key_auth payload in instantiate paths
 Date: Thu,  2 Jul 2026 18:20:31 +0200
-Message-ID: <20260702155114.460759364@linuxfoundation.org>
+Message-ID: <20260702155118.549766894@linuxfoundation.org>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260702155112.163984240@linuxfoundation.org>
-References: <20260702155112.163984240@linuxfoundation.org>
+In-Reply-To: <20260702155115.766838875@linuxfoundation.org>
+References: <20260702155115.766838875@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,100 +68,254 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	RCVD_TLS_LAST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-271242-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:eeesssooo020@gmail.com,m:jarkko@kernel.org,s:lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-270907-lists,stable=lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:cuitao@kylinos.cn,m:matttbe@kernel.org,m:kuba@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
+	FORWARDED(0.00)[lists@lfdr.de];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 95BDB6FA968
+X-Rspamd-Queue-Id: E8A066FBA14
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tao Cui <cuitao@kylinos.cn>
+From: Shaomin Chen <eeesssooo020@gmail.com>
 
-[ Upstream commit 14e9fea30b68fc75b2b3d97396a7e6adb544bd2a ]
+commit fd15b457a86939c38aa12116adabd8ff686c5e51 upstream.
 
-The userspace PM increments extra_subflows after __mptcp_subflow_connect()
-succeeds, but __mptcp_subflow_connect() calls mptcp_pm_close_subflow()
-on failure to roll back the pre-increment done by the kernel PM's fill_*()
-helpers. Because the userspace PM hasn't incremented yet at that point,
-this decrement is spurious and causes extra_subflows to underflow.
+A: request_key()       B: KEYCTL_INSTANTIATE_IOV
+================       =========================
 
-Fix it by aligning the userspace PM with the kernel PM: increment
-extra_subflows before calling __mptcp_subflow_connect(), so the existing
-error path in subflow.c correctly rolls it back on failure. Also simplify
-the error handling by taking pm.lock only when needed for cleanup.
+create auth key
+store rka in auth key
+wait for helper
+                       get auth key
+                       load rka from auth key
+                       copy user payload
+                       sleep on #PF
 
-Fixes: 77e4b94a3de6 ("mptcp: update userspace pm infos")
-Cc: stable@vger.kernel.org
-Signed-off-by: Tao Cui <cuitao@kylinos.cn>
-Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20260602-net-mptcp-misc-fixes-7-1-rc7-v2-5-856831229976@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+helper completed
+detach and free rka
+destroy auth key
+                       wake up
+                       use rka->target_key
+                       **USE-AFTER-FREE**
+
+Give request_key_auth payloads a refcount.  Take a payload reference while
+authkey->sem stabilizes the payload and revocation state.  Hold that
+reference across the instantiate and reject paths.  Drop the auth key
+owning reference from revoke and destroy.
+
+[jarkko: Replaced the first two paragraphs of text with an actual
+ concurrency scenario.]
+Cc: stable@vger.kernel.org # v5.10+
+Fixes: b5f545c880a2 ("[PATCH] keys: Permit running process to instantiate keys")
+Reported-by: Shaomin Chen <eeesssooo020@gmail.com>
+Closes: https://lore.kernel.org/r/20260519144403.436694-1-eeesssooo020@gmail.com
+Signed-off-by: Shaomin Chen <eeesssooo020@gmail.com>
+Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/mptcp/pm_userspace.c |   13 ++++++++-----
- 1 file changed, 8 insertions(+), 5 deletions(-)
+ include/keys/request_key_auth-type.h |    2 ++
+ security/keys/internal.h             |    2 ++
+ security/keys/keyctl.c               |   24 ++++++++++++++++++------
+ security/keys/request_key_auth.c     |   33 +++++++++++++++++++++++++++++++--
+ 4 files changed, 53 insertions(+), 8 deletions(-)
 
---- a/net/mptcp/pm_userspace.c
-+++ b/net/mptcp/pm_userspace.c
-@@ -410,18 +410,21 @@ int mptcp_nl_cmd_sf_create(struct sk_buf
- 		goto create_err;
- 	}
+--- a/include/keys/request_key_auth-type.h
++++ b/include/keys/request_key_auth-type.h
+@@ -9,12 +9,14 @@
+ #define _KEYS_REQUEST_KEY_AUTH_TYPE_H
  
-+	spin_lock_bh(&msk->pm.lock);
-+	msk->pm.subflows++;
-+	spin_unlock_bh(&msk->pm.lock);
-+
- 	lock_sock(sk);
+ #include <linux/key.h>
++#include <linux/refcount.h>
  
- 	err = __mptcp_subflow_connect(sk, &addr_l, &addr_r);
+ /*
+  * Authorisation record for request_key().
+  */
+ struct request_key_auth {
+ 	struct rcu_head		rcu;
++	refcount_t		usage;
+ 	struct key		*target_key;
+ 	struct key		*dest_keyring;
+ 	const struct cred	*cred;
+--- a/security/keys/internal.h
++++ b/security/keys/internal.h
+@@ -215,6 +215,8 @@ extern struct key *request_key_auth_new(
+ 					const void *callout_info,
+ 					size_t callout_len,
+ 					struct key *dest_keyring);
++struct request_key_auth *request_key_auth_get(struct key *authkey);
++void request_key_auth_put(struct request_key_auth *rka);
  
- 	release_sock(sk);
+ extern struct key *key_get_instantiation_authkey(key_serial_t target_id);
  
--	spin_lock_bh(&msk->pm.lock);
--	if (err)
-+	if (err) {
-+		spin_lock_bh(&msk->pm.lock);
- 		mptcp_userspace_pm_delete_local_addr(msk, &local);
--	else
--		msk->pm.subflows++;
--	spin_unlock_bh(&msk->pm.lock);
-+		spin_unlock_bh(&msk->pm.lock);
+--- a/security/keys/keyctl.c
++++ b/security/keys/keyctl.c
+@@ -1196,9 +1196,13 @@ static long keyctl_instantiate_key_commo
+ 	if (!instkey)
+ 		goto error;
+ 
+-	rka = instkey->payload.data[0];
+-	if (rka->target_key->serial != id)
++	rka = request_key_auth_get(instkey);
++	if (!rka) {
++		ret = -EKEYREVOKED;
+ 		goto error;
 +	}
++	if (rka->target_key->serial != id)
++		goto error_put_rka;
  
-  create_err:
- 	sock_put((struct sock *)msk);
+ 	/* pull the payload in if one was supplied */
+ 	payload = NULL;
+@@ -1207,7 +1211,7 @@ static long keyctl_instantiate_key_commo
+ 		ret = -ENOMEM;
+ 		payload = kvmalloc(plen, GFP_KERNEL);
+ 		if (!payload)
+-			goto error;
++			goto error_put_rka;
+ 
+ 		ret = -EFAULT;
+ 		if (!copy_from_iter_full(payload, plen, from))
+@@ -1233,6 +1237,8 @@ static long keyctl_instantiate_key_commo
+ 
+ error2:
+ 	kvfree_sensitive(payload, plen);
++error_put_rka:
++	request_key_auth_put(rka);
+ error:
+ 	return ret;
+ }
+@@ -1358,15 +1364,19 @@ long keyctl_reject_key(key_serial_t id,
+ 	if (!instkey)
+ 		goto error;
+ 
+-	rka = instkey->payload.data[0];
+-	if (rka->target_key->serial != id)
++	rka = request_key_auth_get(instkey);
++	if (!rka) {
++		ret = -EKEYREVOKED;
+ 		goto error;
++	}
++	if (rka->target_key->serial != id)
++		goto error_put_rka;
+ 
+ 	/* find the destination keyring if present (which must also be
+ 	 * writable) */
+ 	ret = get_instantiation_keyring(ringid, rka, &dest_keyring);
+ 	if (ret < 0)
+-		goto error;
++		goto error_put_rka;
+ 
+ 	/* instantiate the key and link it into a keyring */
+ 	ret = key_reject_and_link(rka->target_key, timeout, error,
+@@ -1379,6 +1389,8 @@ long keyctl_reject_key(key_serial_t id,
+ 	if (ret == 0)
+ 		keyctl_change_reqkey_auth(NULL);
+ 
++error_put_rka:
++	request_key_auth_put(rka);
+ error:
+ 	return ret;
+ }
+--- a/security/keys/request_key_auth.c
++++ b/security/keys/request_key_auth.c
+@@ -23,6 +23,7 @@ static void request_key_auth_describe(co
+ static void request_key_auth_revoke(struct key *);
+ static void request_key_auth_destroy(struct key *);
+ static long request_key_auth_read(const struct key *, char *, size_t);
++static void request_key_auth_rcu_disposal(struct rcu_head *);
+ 
+ /*
+  * The request-key authorisation key type definition.
+@@ -116,6 +117,31 @@ static void free_request_key_auth(struct
+ }
+ 
+ /*
++ * Take a reference to the request-key authorisation payload so callers can
++ * drop authkey->sem before doing operations that may sleep.
++ */
++struct request_key_auth *request_key_auth_get(struct key *authkey)
++{
++	struct request_key_auth *rka;
++
++	down_read(&authkey->sem);
++	rka = dereference_key_locked(authkey);
++	if (rka && !test_bit(KEY_FLAG_REVOKED, &authkey->flags))
++		refcount_inc(&rka->usage);
++	else
++		rka = NULL;
++	up_read(&authkey->sem);
++
++	return rka;
++}
++
++void request_key_auth_put(struct request_key_auth *rka)
++{
++	if (rka && refcount_dec_and_test(&rka->usage))
++		call_rcu(&rka->rcu, request_key_auth_rcu_disposal);
++}
++
++/*
+  * Dispose of the request_key_auth record under RCU conditions
+  */
+ static void request_key_auth_rcu_disposal(struct rcu_head *rcu)
+@@ -136,8 +162,10 @@ static void request_key_auth_revoke(stru
+ 	struct request_key_auth *rka = dereference_key_locked(key);
+ 
+ 	kenter("{%d}", key->serial);
++	if (!rka)
++		return;
+ 	rcu_assign_keypointer(key, NULL);
+-	call_rcu(&rka->rcu, request_key_auth_rcu_disposal);
++	request_key_auth_put(rka);
+ }
+ 
+ /*
+@@ -150,7 +178,7 @@ static void request_key_auth_destroy(str
+ 	kenter("{%d}", key->serial);
+ 	if (rka) {
+ 		rcu_assign_keypointer(key, NULL);
+-		call_rcu(&rka->rcu, request_key_auth_rcu_disposal);
++		request_key_auth_put(rka);
+ 	}
+ }
+ 
+@@ -174,6 +202,7 @@ struct key *request_key_auth_new(struct
+ 	rka = kzalloc(sizeof(*rka), GFP_KERNEL);
+ 	if (!rka)
+ 		goto error;
++	refcount_set(&rka->usage, 1);
+ 	rka->callout_info = kmemdup(callout_info, callout_len, GFP_KERNEL);
+ 	if (!rka->callout_info)
+ 		goto error_free_rka;
 
 
 
