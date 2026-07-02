@@ -1,62 +1,62 @@
-Return-Path: <stable+bounces-271238-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-270762-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id OXLLLjKkRmpWawsAu9opvQ
-	(envelope-from <stable+bounces-271238-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:47:30 +0200
+	id qjMPFj2TRmp4YwsAu9opvQ
+	(envelope-from <stable+bounces-270762-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:35:09 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id C3B586FB9FE
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:47:29 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id E4DFC6FA444
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:35:08 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=ajWTtRtW;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-271238-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-271238-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=ClHfuqPh;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-270762-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-270762-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 4353131A702E
-	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:51:42 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id BA0F6302C488
+	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:33:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D27C430C15A;
-	Thu,  2 Jul 2026 16:50:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9ECAE3AA1BF;
+	Thu,  2 Jul 2026 16:29:45 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8635E3446A7;
-	Thu,  2 Jul 2026 16:50:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 816DB4EA387;
+	Thu,  2 Jul 2026 16:29:43 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783011024; cv=none; b=GfH8MLF+sn/uQmdlWxIf2fphWyMECpk0009Dol5ijb7OzyhxvOX70eCY30N7Uni45SULfsj6YG3pQjYcb64Legp9s/rDnfANMHM5GyaTX/wF0IInez146Lxki7upr7T1PWpYFjinLvkrdEqOfxPtnyCE1xu3rpha/bj283b0u9M=
+	t=1783009785; cv=none; b=rwcUDlHlGwR+Jly0YWkzQkJdPCz2xK7vxp+zOB0/UgL9nBGNOZFceLYJc6aiy3Z0XvIl0YDXTn/3d52Xey8PhX/nfCZKZLYco7824li+eGdzyWR2vyjWSDDcjDhACDpa8CJzFUGSjcJi0qmFtBvaqbIYkURQ6jgthd6vGD0FQJY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783011024; c=relaxed/simple;
-	bh=qmbGLjFAJZXiToJaPZMMxEIsEGq6xDwyWms6H5GS9Ps=;
+	s=arc-20240116; t=1783009785; c=relaxed/simple;
+	bh=HKzXOuIUV8n+dESRGRAx2ayAdFL3aMr4lnd6MWnoyf4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=T3nJh33RxDvB+QUqg3u5eTvsEKEFiHavcTyJA9n5hrSlVKgrwQsG+1kVLFFZzi9Jf/asj7GFP1dgdhRHENGSM19uaddFK4SvmVT3LAMkzQip+ouQvB3IFC7LQsE7SkvqvcBUgyEMeFgaqWz+Eb0VYrJE1hY/BoCX4Ui+X8khfIE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ajWTtRtW; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB8641F00A3A;
-	Thu,  2 Jul 2026 16:50:22 +0000 (UTC)
+	 MIME-Version; b=JbuMxNTBER6Q1hJXuh7J4Gs7nInw5QrYrD+eqxeAjqt6mQv4h21cg12PZlpTJ19lLh2zaB5MMiBNP9uMsK9iKsh7YkH+BCcch0Ex4StsBcyqaTPAHoJpqW5feW5V2/uEM8W3H96aepThgx7fpuxJ3wba4mOB9fJ47wVe/4w+nt0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ClHfuqPh; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5C451F000E9;
+	Thu,  2 Jul 2026 16:29:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1783011023;
-	bh=2mkwdx4IIIR1QVfSuRJcvQAm2rfUa09a0SOLJYVxRnc=;
+	s=korg; t=1783009783;
+	bh=Bi+IFVtN9CvGUThHGlZCpSyHzbf9RcM0mw8K5Ce2jQ0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=ajWTtRtWrXi/sRMfLI9rFB4gA6pWC2Sr6e0L1JlkRhmwxYCT+xGxIK9B2Hqdb+r4F
-	 WyLt6Zo1kYmz6IMnFuDTKIlUHEt62UDS7yHehlQZt+TilFr9+uW35SyszdgoWbaBW2
-	 cku+FJmwxtAWyL+o6jqLYpf0cBqq/AbVcwdsoK4k=
+	b=ClHfuqPhpCbgLZ4L0Jp5Goa9VDLpOZKZIdxb+7IIHvckU4Ng26/fM9iPTRIyZaWCj
+	 SDKszb4/1DZ5iBDgfIGFicKhmdj0V0C2rhKat7x0H7/OGtMISW0+cRqO5J3/GtPT6s
+	 w2mI+A5QplxR2mXR7iv6HVP9vl3B095yHM5Fg4YE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Frank Li <Frank.Li@nxp.com>,
-	Koichiro Den <den@valinux.co.jp>,
-	Dave Jiang <dave.jiang@intel.com>,
-	Jon Mason <jdmason@kudzu.us>
-Subject: [PATCH 6.6 126/175] NTB: epf: Avoid pci_iounmap() with offset when PEER_SPAD and CONFIG share BAR
+	Mukesh Ojha <mukesh.ojha@oss.qualcomm.com>,
+	Bjorn Andersson <andersson@kernel.org>,
+	Srinivas Kandagatla <srini@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 84/95] misc: fastrpc: Fix NULL pointer dereference in rpmsg callback
 Date: Thu,  2 Jul 2026 18:20:27 +0200
-Message-ID: <20260702155118.407563391@linuxfoundation.org>
+Message-ID: <20260702155110.973561797@linuxfoundation.org>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260702155115.766838875@linuxfoundation.org>
-References: <20260702155115.766838875@linuxfoundation.org>
+In-Reply-To: <20260702155109.196223802@linuxfoundation.org>
+References: <20260702155109.196223802@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,22 +72,22 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-271238-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-270762-lists,stable=lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:Frank.Li@nxp.com,m:den@valinux.co.jp,m:dave.jiang@intel.com,m:jdmason@kudzu.us,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:mukesh.ojha@oss.qualcomm.com,m:andersson@kernel.org,m:srini@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
@@ -99,65 +99,89 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,nxp.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,intel.com:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,vger.kernel.org:from_smtp,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: C3B586FB9FE
+X-Rspamd-Queue-Id: E4DFC6FA444
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Koichiro Den <den@valinux.co.jp>
+From: Mukesh Ojha <mukesh.ojha@oss.qualcomm.com>
 
-commit d876153680e3d721d385e554def919bce3d18c74 upstream.
+[ Upstream commit 5401fb4fe10fac6134c308495df18ed74aebb9c4 ]
 
-When BAR_PEER_SPAD and BAR_CONFIG share one PCI BAR, the module teardown
-path ends up calling pci_iounmap() on the same iomem with some offset,
-which is unnecessary and triggers a kernel warning like the following:
+A NULL pointer dereference was observed on Hawi at boot when the DSP
+sends a glink message before fastrpc_rpmsg_probe() has completed
+initialization:
 
-  Trying to vunmap() nonexistent vm area (0000000069a5ffe8)
-  WARNING: mm/vmalloc.c:3470 at vunmap+0x58/0x68, CPU#5: modprobe/2937
-  [...]
+  Unable to handle kernel NULL pointer dereference at virtual address 0000000000000178
+  pc : _raw_spin_lock_irqsave+0x34/0x8c
+  lr : fastrpc_rpmsg_callback+0x3c/0xcc [fastrpc]
+  ...
   Call trace:
-   vunmap+0x58/0x68 (P)
-   iounmap+0x34/0x48
-   pci_iounmap+0x2c/0x40
-   ntb_epf_pci_remove+0x44/0x80 [ntb_hw_epf]
-   pci_device_remove+0x48/0xf8
-   device_remove+0x50/0x88
-   device_release_driver_internal+0x1c8/0x228
-   driver_detach+0x50/0xb0
-   bus_remove_driver+0x74/0x100
-   driver_unregister+0x34/0x68
-   pci_unregister_driver+0x34/0xa0
-   ntb_epf_pci_driver_exit+0x14/0xfe0 [ntb_hw_epf]
-  [...]
+   _raw_spin_lock_irqsave+0x34/0x8c (P)
+   fastrpc_rpmsg_callback+0x3c/0xcc [fastrpc]
+   qcom_glink_native_rx+0x538/0x6a4
+   qcom_glink_smem_intr+0x14/0x24 [qcom_glink_smem]
 
-Fix it by unmapping only when PEER_SPAD and CONFIG use difference bars.
+The faulting address 0x178 corresponds to the lock variable inside
+struct fastrpc_channel_ctx, confirming that cctx is NULL when
+fastrpc_rpmsg_callback() attempts to take the spinlock.
 
+There are two issues here. First, dev_set_drvdata() is called before
+spin_lock_init() and idr_init(), leaving a window where the callback
+can retrieve a valid cctx pointer but operate on an uninitialized
+spinlock. Second, the rpmsg channel becomes live as soon as the driver
+is bound, so fastrpc_rpmsg_callback() can fire before dev_set_drvdata()
+is called at all, resulting in dev_get_drvdata() returning NULL.
+
+Fix both issues by moving all cctx initialization ahead of
+dev_set_drvdata() so the structure is fully initialized before it
+becomes visible to the callback, and add a NULL check in
+fastrpc_rpmsg_callback() as a guard against any remaining window.
+
+Fixes: f6f9279f2bf0 ("misc: fastrpc: Add Qualcomm fastrpc basic driver model")
 Cc: stable@vger.kernel.org
-Fixes: e75d5ae8ab88 ("NTB: epf: Allow more flexibility in the memory BAR map method")
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
-Signed-off-by: Koichiro Den <den@valinux.co.jp>
-Reviewed-by: Dave Jiang <dave.jiang@intel.com>
-Signed-off-by: Jon Mason <jdmason@kudzu.us>
+Signed-off-by: Mukesh Ojha <mukesh.ojha@oss.qualcomm.com>
+Reviewed-by: Bjorn Andersson <andersson@kernel.org>
+Signed-off-by: Srinivas Kandagatla <srini@kernel.org>
+Link: https://patch.msgid.link/20260530204528.116920-4-srini@kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/ntb/hw/epf/ntb_hw_epf.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/misc/fastrpc.c |    5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
---- a/drivers/ntb/hw/epf/ntb_hw_epf.c
-+++ b/drivers/ntb/hw/epf/ntb_hw_epf.c
-@@ -646,7 +646,8 @@ static void ntb_epf_deinit_pci(struct nt
- 	struct pci_dev *pdev = ndev->ntb.pdev;
+--- a/drivers/misc/fastrpc.c
++++ b/drivers/misc/fastrpc.c
+@@ -1691,7 +1691,6 @@ static int fastrpc_rpmsg_probe(struct rp
  
- 	pci_iounmap(pdev, ndev->ctrl_reg);
--	pci_iounmap(pdev, ndev->peer_spad_reg);
-+	if (ndev->barno_map[BAR_PEER_SPAD] != ndev->barno_map[BAR_CONFIG])
-+		pci_iounmap(pdev, ndev->peer_spad_reg);
- 	pci_iounmap(pdev, ndev->db_reg);
+ 	kref_init(&data->refcount);
  
- 	pci_release_regions(pdev);
+-	dev_set_drvdata(&rpdev->dev, data);
+ 	rdev->dma_mask = &data->dma_mask;
+ 	dma_set_mask_and_coherent(rdev, DMA_BIT_MASK(32));
+ 	INIT_LIST_HEAD(&data->users);
+@@ -1699,6 +1698,7 @@ static int fastrpc_rpmsg_probe(struct rp
+ 	idr_init(&data->ctx_idr);
+ 	data->domain_id = domain_id;
+ 	data->rpdev = rpdev;
++	dev_set_drvdata(&rpdev->dev, data);
+ 
+ 	return of_platform_populate(rdev->of_node, NULL, NULL, rdev);
+ }
+@@ -1746,6 +1746,9 @@ static int fastrpc_rpmsg_callback(struct
+ 	if (len < sizeof(*rsp))
+ 		return -EINVAL;
+ 
++	if (!cctx)
++		return -ENODEV;
++
+ 	ctxid = ((rsp->ctx & FASTRPC_CTXID_MASK) >> 4);
+ 
+ 	spin_lock_irqsave(&cctx->lock, flags);
 
 
 
