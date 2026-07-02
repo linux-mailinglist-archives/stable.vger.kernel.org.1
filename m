@@ -1,62 +1,63 @@
-Return-Path: <stable+bounces-271066-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-270868-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id TkSJLYujRmojawsAu9opvQ
-	(envelope-from <stable+bounces-271066-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:44:43 +0200
+	id kO75LrGTRmqpYwsAu9opvQ
+	(envelope-from <stable+bounces-270868-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:37:05 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D0DF06FB973
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:44:42 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2B9836FA4B2
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:37:05 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=yMefon9G;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-271066-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-271066-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=0PBpksaA;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-270868-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-270868-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 1464F32D565F
-	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:46:07 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 361AC300CFFB
+	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:37:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4233A353A60;
-	Thu,  2 Jul 2026 16:43:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ACDE0346FA1;
+	Thu,  2 Jul 2026 16:34:20 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3FB93624DB;
-	Thu,  2 Jul 2026 16:42:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 453A034887B;
+	Thu,  2 Jul 2026 16:34:19 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783010581; cv=none; b=DtYrs2zTVfaW1IRF/J16u4hR9R4y/upopvgtgvM7ic2y87BIA47fJEvl3nrTCXpLNdPUNpEF19hIL5mT7joG08N1GaSa5lvSc1mJRKnvbCTxOAGFcFP1lacBDwo0cqU9pU6QhoyOogWJ9jVilBB6HaiZmmOccP8rwebmcMrUHao=
+	t=1783010060; cv=none; b=Amin5XntyRYD69XUfLuJRuAh8WZP6fZOWs2/UNN4Q2LeTgWBk5aoXMBcykWYvkDZvLk8O6qk69iAVoszWnsobs7R4NwlBJyXEdU8qqKGwBaxxBi28aFQ0VzzYiZboaFKxBC8RqVUSgUjK/zaLhlR2dHAdQ8MfHSR6sOdTlvI2aU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783010581; c=relaxed/simple;
-	bh=oUUMjOfgl7Xq9WeBVciwVXKHZDdnzLBPf8P+Ds9z6TY=;
+	s=arc-20240116; t=1783010060; c=relaxed/simple;
+	bh=4HLr0h4Z3xF1chPqV1hV9n0G1/ZaogedyCeb+3tX+ZA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pQ/RK3+okeuwma76YXjwdZaH8A72mj/0z42fL7Eb6pDy/Tb6RzVTyMfJ1vxqBAH9EdQwLfGpUeaZNz9zOV7xENbYRZDFFMsRXZjJ8o1s1Khshgk2/S7c3j88+pyE9S/Q8Dztdi0nSYMjulMwLpnlrkCYAwy77BjTe7So1C1f+v4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yMefon9G; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 254B21F000E9;
-	Thu,  2 Jul 2026 16:42:58 +0000 (UTC)
+	 MIME-Version; b=AB+91VeVfPHqyHbUaWaz3CCSaS/83y4CRE29GAmH90iT0V6kzcGgzaasvhUK51rkhOT3xxnrcHHWE5el4YdJbsz+BfSVeGstPMWXS+ZiC/D+se/Kn3cCPv6nOc1XfeIuUjMjC83hz2iLYRWxSjoxn8nlj4qMfWpUCCB4HH3/iIM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0PBpksaA; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA4071F00A3D;
+	Thu,  2 Jul 2026 16:34:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1783010579;
-	bh=/2vNVkk19UVRM9/2msHoDbj957AZoF1XCP7hKYFzRbE=;
+	s=korg; t=1783010059;
+	bh=Eu88PzwtgIcxD/ffs3BLnRTGaKl+yiG3vhYPgrfyaIg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=yMefon9GRPS+mVo0mUqzIgkNApsRxAV1uJ1A8JdPbTSw9bkCRIDPxakrH6nD4SPFr
-	 7719ob9AGuv26PwSluYZ3dIYoqOeIrYFQ71zo0l2I4rUuONEx4JO+xyJoomeDlFHwr
-	 lOBD5s4VuCjBSWpzECg5jRf+rX35nagarux5Iqd0=
+	b=0PBpksaAKOK2vN0n4oG5KjSHulxdzm9ciYNK92I2zTYEiGaKPYwLaUuu89PbUnTBf
+	 mGNeHzRL5z8Wgyh91cIJNzATPuRYtIa06pG+tcHGeGFma+GMPf2OPHkT/6PMH9unRI
+	 giep9QXEDCZZ0O9QnhUoz16GXdWvDEStnZZui9/k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Zhang Cen <rollkingzzc@gmail.com>,
-	Chao Yu <chao@kernel.org>,
-	Jaegeuk Kim <jaegeuk@kernel.org>
-Subject: [PATCH 6.12 156/204] f2fs: validate ACL entry sizes in f2fs_acl_from_disk()
+	Doruk Tan Ozturk <doruk@0sec.ai>,
+	Alexander Lobakin <aleksander.lobakin@intel.com>,
+	Tung Nguyen <tung.quang.nguyen@est.tech>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.1 094/129] tipc: fix slab-use-after-free Read in tipc_aead_decrypt_done
 Date: Thu,  2 Jul 2026 18:20:13 +0200
-Message-ID: <20260702155121.926997520@linuxfoundation.org>
+Message-ID: <20260702155114.088825581@linuxfoundation.org>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260702155118.667618796@linuxfoundation.org>
-References: <20260702155118.667618796@linuxfoundation.org>
+In-Reply-To: <20260702155112.163984240@linuxfoundation.org>
+References: <20260702155112.163984240@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,157 +71,162 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,gmail.com];
-	TAGGED_FROM(0.00)[bounces-271066-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:stable@kernel.org,m:rollkingzzc@gmail.com,m:chao@kernel.org,m:jaegeuk@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-270868-lists,stable=lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:doruk@0sec.ai,m:aleksander.lobakin@intel.com,m:tung.quang.nguyen@est.tech,m:horms@kernel.org,m:kuba@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,intel.com:email,msgid.link:url,0sec.ai:url,0sec.ai:email,est.tech:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: D0DF06FB973
+X-Rspamd-Queue-Id: 2B9836FA4B2
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhang Cen <rollkingzzc@gmail.com>
+From: Doruk Tan Ozturk <doruk@0sec.ai>
 
-commit c4810ada31e80cbe4011467c4f3b1e93f94134f3 upstream.
+commit bda3348872a2ef0d19f2df6aa8cb5025adce2f20 upstream.
 
-f2fs_acl_count() only validates the aggregate ACL xattr length. A
-malformed ACL can still place ACL_USER or ACL_GROUP in a slot that only
-contains struct f2fs_acl_entry_short bytes, and f2fs_acl_from_disk()
-then reads entry->e_id before verifying that a full entry fits.
+tipc_aead_decrypt() goes straight from tipc_bearer_hold(b) to
+crypto_aead_decrypt(req) without taking a reference on the netns, unlike
+the encrypt path. When crypto_aead_decrypt() is offloaded asynchronously
+(e.g. the SIMD aead wrapper queuing to cryptd), the cryptd worker runs
+tipc_aead_decrypt_done() later. If the bearer's netns is torn down in the
+meantime, cleanup_net() -> tipc_exit_net() -> tipc_crypto_stop() frees the
+per-netns tipc_crypto, and the completion then reads it:
+tipc_aead_decrypt_done() dereferences aead->crypto->stats and
+aead->crypto->net, and tipc_crypto_rcv_complete() dereferences
+aead->crypto->aead[] and the node table -- reading freed memory.
 
-Require a short entry before reading e_tag and e_perm, and require a
-full entry before reading e_id for ACL_USER and ACL_GROUP. Return
--EFSCORRUPTED from these new truncated-entry checks, while keeping the
-pre-existing -EINVAL paths unchanged.
+Decoded KASAN splat (v7.1-rc7, CONFIG_KASAN_INLINE + TIPC + TIPC_CRYPTO):
 
-Validation reproduced this kernel report:
-KASAN slab-out-of-bounds in __f2fs_get_acl+0x6fb/0x7e0
-RIP: 0033:0x7f4b835ea7aa
-The buggy address belongs to the object at ffff888114589960 which belongs
-to the cache kmalloc-8 of size 8
-The buggy address is located 0 bytes to the right of allocated 8-byte
-region [ffff888114589960, ffff888114589968)
-Read of size 4
-Call trace:
-  dump_stack_lvl+0x66/0xa0 (?:?)
-  print_report+0xce/0x630 (?:?)
-  __f2fs_get_acl+0x6fb/0x7e0 (fs/f2fs/acl.c:169)
-  srso_alias_return_thunk+0x5/0xfbef5 (?:?)
-  __virt_addr_valid+0x224/0x430 (?:?)
-  kasan_report+0xe0/0x110 (?:?)
-  __f2fs_get_acl+0x5/0x7e0 (fs/f2fs/acl.c:169)
-  __get_acl+0x281/0x380 (?:?)
-  vfs_get_acl+0x10b/0x190 (?:?)
-  do_get_acl+0x2a/0x410 (?:?)
-  do_get_acl+0x9/0x410 (?:?)
-  do_getxattr+0xe8/0x260 (?:?)
-  filename_getxattr+0xd1/0x140 (?:?)
-  do_getname+0x2d/0x2d0 (?:?)
-  path_getxattrat+0x16c/0x200 (?:?)
-  lock_release+0xc8/0x290 (?:?)
-  cgroup_update_frozen+0x9d/0x320 (?:?)
-  lockdep_hardirqs_on_prepare+0xea/0x1a0 (?:?)
-  trace_hardirqs_on+0x1a/0x170 (?:?)
-  _raw_spin_unlock_irq+0x28/0x50 (?:?)
-  do_syscall_64+0x115/0x6a0 (arch/x86/entry/syscall_64.c:87)
-  entry_SYSCALL_64_after_hwframe+0x77/0x7f (?:?)
+  BUG: KASAN: slab-use-after-free in tipc_aead_decrypt_done (net/tipc/crypto.c:999)
+  Read of size 8 at addr ffff8881056258a8 by task kworker/u16:2/51
+  Workqueue: events_unbound
+  Call Trace:
+   tipc_aead_decrypt_done (net/tipc/crypto.c:999)
+   process_one_work (kernel/workqueue.c:3314)
+   worker_thread (kernel/workqueue.c:3397 kernel/workqueue.c:3478)
+   kthread (kernel/kthread.c:436)
+   ret_from_fork (arch/x86/kernel/process.c:158)
+   ret_from_fork_asm (arch/x86/entry/entry_64.S:245)
 
-Cc: stable@kernel.org
-Fixes: af48b85b8cd3 ("f2fs: add xattr and acl functionalities")
-Assisted-by: Codex:gpt-5.5
-Signed-off-by: Zhang Cen <rollkingzzc@gmail.com>
-Reviewed-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+  Allocated by task 169:
+   __kasan_kmalloc (mm/kasan/common.c:398 mm/kasan/common.c:415)
+   tipc_crypto_start (net/tipc/crypto.c:1502)
+   tipc_init_net (net/tipc/core.c:72)
+   ops_init (net/core/net_namespace.c:137)
+   setup_net (net/core/net_namespace.c:446)
+   copy_net_ns (net/core/net_namespace.c:579)
+   create_new_namespaces (kernel/nsproxy.c:132)
+   __x64_sys_unshare (kernel/fork.c:3316)
+   do_syscall_64 (arch/x86/entry/syscall_64.c:63)
+   entry_SYSCALL_64_after_hwframe (arch/x86/entry/entry_64.S:121)
+
+  Freed by task 8:
+   kfree (mm/slub.c:6566)
+   tipc_exit_net (net/tipc/core.c:119)
+   cleanup_net (net/core/net_namespace.c:704)
+   process_one_work (kernel/workqueue.c:3314)
+   kthread (kernel/kthread.c:436)
+
+This is the same class of bug that commit e279024617134 ("net/tipc: fix
+slab-use-after-free Read in tipc_aead_encrypt_done") fixed for the encrypt
+side. The encrypt path takes maybe_get_net(aead->crypto->net) before
+crypto_aead_encrypt() and drops it with put_net() on the synchronous
+return paths and in tipc_aead_encrypt_done(); the -EINPROGRESS/-EBUSY
+return keeps the reference for the async callback to release. The decrypt
+path was left without the equivalent guard.
+
+Mirror the encrypt-side fix on the decrypt path: take a net reference
+before crypto_aead_decrypt() (failing with -ENODEV and the matching
+bearer put if it cannot be acquired), keep it across the
+-EINPROGRESS/-EBUSY async return, and drop it with put_net() on the
+synchronous success/error return and at the end of
+tipc_aead_decrypt_done().
+
+Reproduced under KASAN on v7.1-rc7: a UDP bearer with a cluster key is
+flooded with crafted encrypted frames from an unknown peer (driving the
+cluster-key decrypt path) while the bearer's netns is repeatedly torn
+down. The completion must run asynchronously to outlive
+tipc_crypto_stop(); on x86 the stock aesni gcm(aes) now decrypts
+synchronously, so the async path was exercised via cryptd offload. The
+unguarded aead->crypto dereference in tipc_aead_decrypt_done() is the
+unpatched upstream path; tipc_aead_decrypt() still lacks
+maybe_get_net(aead->crypto->net), so the completion can outlive the free
+on any config where crypto_aead_decrypt() goes async.
+
+Found by 0sec automated security-research tooling (https://0sec.ai).
+
+Fixes: fc1b6d6de220 ("tipc: introduce TIPC encryption & authentication")
+Cc: stable@vger.kernel.org
+Signed-off-by: Doruk Tan Ozturk <doruk@0sec.ai>
+Reviewed-by: Alexander Lobakin <aleksander.lobakin@intel.com>
+Reviewed-by: Tung Nguyen <tung.quang.nguyen@est.tech>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20260617075818.37431-1-doruk@0sec.ai
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/f2fs/acl.c |   18 ++++++++++++++++--
- 1 file changed, 16 insertions(+), 2 deletions(-)
+ net/tipc/crypto.c |    9 +++++++++
+ 1 file changed, 9 insertions(+)
 
---- a/fs/f2fs/acl.c
-+++ b/fs/f2fs/acl.c
-@@ -46,6 +46,7 @@ static inline int f2fs_acl_count(size_t
- static struct posix_acl *f2fs_acl_from_disk(const char *value, size_t size)
- {
- 	int i, count;
-+	int err = -EINVAL;
- 	struct posix_acl *acl;
- 	struct f2fs_acl_header *hdr = (struct f2fs_acl_header *)value;
- 	struct f2fs_acl_entry *entry = (struct f2fs_acl_entry *)(hdr + 1);
-@@ -69,8 +70,11 @@ static struct posix_acl *f2fs_acl_from_d
+--- a/net/tipc/crypto.c
++++ b/net/tipc/crypto.c
+@@ -950,12 +950,20 @@ static int tipc_aead_decrypt(struct net
+ 		goto exit;
+ 	}
  
- 	for (i = 0; i < count; i++) {
++	/* Get net to avoid freed tipc_crypto when delete namespace */
++	if (!maybe_get_net(net)) {
++		tipc_bearer_put(b);
++		rc = -ENODEV;
++		goto exit;
++	}
++
+ 	/* Now, do decrypt */
+ 	rc = crypto_aead_decrypt(req);
+ 	if (rc == -EINPROGRESS || rc == -EBUSY)
+ 		return rc;
  
--		if ((char *)entry > end)
-+		if (unlikely((char *)entry +
-+				sizeof(struct f2fs_acl_entry_short) > end)) {
-+			err = -EFSCORRUPTED;
- 			goto fail;
-+		}
+ 	tipc_bearer_put(b);
++	put_net(net);
  
- 		acl->a_entries[i].e_tag  = le16_to_cpu(entry->e_tag);
- 		acl->a_entries[i].e_perm = le16_to_cpu(entry->e_perm);
-@@ -85,6 +89,11 @@ static struct posix_acl *f2fs_acl_from_d
- 			break;
+ exit:
+ 	kfree(ctx);
+@@ -993,6 +1001,7 @@ static void tipc_aead_decrypt_done(struc
+ 	}
  
- 		case ACL_USER:
-+			if (unlikely((char *)entry +
-+					sizeof(struct f2fs_acl_entry) > end)) {
-+				err = -EFSCORRUPTED;
-+				goto fail;
-+			}
- 			acl->a_entries[i].e_uid =
- 				make_kuid(&init_user_ns,
- 						le32_to_cpu(entry->e_id));
-@@ -92,6 +101,11 @@ static struct posix_acl *f2fs_acl_from_d
- 					sizeof(struct f2fs_acl_entry));
- 			break;
- 		case ACL_GROUP:
-+			if (unlikely((char *)entry +
-+					sizeof(struct f2fs_acl_entry) > end)) {
-+				err = -EFSCORRUPTED;
-+				goto fail;
-+			}
- 			acl->a_entries[i].e_gid =
- 				make_kgid(&init_user_ns,
- 						le32_to_cpu(entry->e_id));
-@@ -107,7 +121,7 @@ static struct posix_acl *f2fs_acl_from_d
- 	return acl;
- fail:
- 	posix_acl_release(acl);
--	return ERR_PTR(-EINVAL);
-+	return ERR_PTR(err);
+ 	tipc_bearer_put(b);
++	put_net(net);
  }
  
- static void *f2fs_acl_to_disk(struct f2fs_sb_info *sbi,
+ static inline int tipc_ehdr_size(struct tipc_ehdr *ehdr)
 
 
 
