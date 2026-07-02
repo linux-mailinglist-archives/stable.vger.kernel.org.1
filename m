@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-271370-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-271480-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id jb7gLpaaRmqUZwsAu9opvQ
-	(envelope-from <stable+bounces-271370-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:06:30 +0200
+	id 9TnjIPumRmoabAsAu9opvQ
+	(envelope-from <stable+bounces-271480-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:59:23 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B3B26FAFD8
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:06:30 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 823DD6FBC15
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:59:22 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=U7tl+Hz+;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-271370-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-271370-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=u2RP0Efm;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-271480-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-271480-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 4CD7D30B5A2E
-	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:56:17 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id C9C9131D995F
+	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 17:00:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41C8130C37A;
-	Thu,  2 Jul 2026 16:56:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6BDE22DEA98;
+	Thu,  2 Jul 2026 17:00:55 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 162DA3346BE;
-	Thu,  2 Jul 2026 16:56:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 300AD433E87;
+	Thu,  2 Jul 2026 17:00:54 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783011366; cv=none; b=d44ecyhkenIKJBQjU7NoC7RsgTP3/vxRbrZPvtYr4kCIXxOjUBJI9K8heezGikciGPW93bwJlUVCQbS1AH8/2mgdBub9XFZHQIQhBU4Ym73FRRWlFT8QkxZ02j+Fx536KsVI33nyScESt1zVr1acbtTcjBeQgwGcAACuQk7oBTQ=
+	t=1783011655; cv=none; b=OTcXJTCnwLCPDLF31QFbdMWpMjWnfDKHgmSW1uH7Nv5zjLN7Yrr9UZEojBV8pzLFRw8pt7NnhH8U9LDy+s3UseSu/hqsjn8mC1PUeJeQ7XXysyf/5rwppFoF1H+EgMRIpSlF720pz8UNQ44lyteD4JKwVB/McIg+Bqtpxt8qwB4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783011366; c=relaxed/simple;
-	bh=bLedU2NAXn9LJ2igyqVk0xIdW1g/iosbkESIkogLMxc=;
+	s=arc-20240116; t=1783011655; c=relaxed/simple;
+	bh=Fr0d0ENjkK2Ns8rg/+5RZAhjC5nyv7NtLcYWDAzn1Is=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sP6xWYof7rAF7xKXy1rcYg4CmEmoO12Zgky3rPtXSpWAIBVJCc1ng9aN6vzgITXMMIpolRJh1leJHdbyG8tFCKoUl/ywhaSB1F+bindOc3JAZmY14UB8hMCMuQvM/mU0fSlPFeaEGb+TvBfpwL/YrgO5378zLc+g+a0UkyBmn+w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U7tl+Hz+; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C0931F000E9;
-	Thu,  2 Jul 2026 16:56:04 +0000 (UTC)
+	 MIME-Version; b=Qqho6KHaLwzx8lYwGJqSSf8z3YyKsuQGtxZdoJkA+xL2/YcWldvtt6xzwV2dLtF3EUlrK4WHNsXBBJY89/Gi+eduyzfzxZUClVPc1+nbAaFcC/LGC1SR8oNRWGgCWiUr4ELHK2Xv2fkE8dbYxmwvQa39DMN1gPb7NvfO9L9cWRo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u2RP0Efm; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 975E81F000E9;
+	Thu,  2 Jul 2026 17:00:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1783011365;
-	bh=CdcaVC97xKe4B0YBWGGn+RdoZR9T27Im3oQ4GkmgtHU=;
+	s=korg; t=1783011654;
+	bh=el26Wh8jlYnrBy5gfhzGsjfQCESOFzAA/spssm8WgQw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=U7tl+Hz+3AvDuUgNsxJRTO/RlIFN+RRCRk6DQZqQ8gRqVmCO4/4r/7z79ceK+PdM/
-	 OFCqQSWxhwqa12aCDU7bpKrH8Mun7HJgdnH7sSbKkpLcfyEhhThZMmbrLuaczdpqKt
-	 6EdcZ0JMYoNO3IwA+0X80xWQnFuvhP1gFNZJDcMY=
+	b=u2RP0Efm19NTnxeuxoWha7t4tihdN8rME8i73oNd8Tvp6/jJMpkn5eVEYOILv6egG
+	 Iqdr/8lwgxgh/av7mybnCe9aQEE91ZMBjoxiNtHt3PH1BwsFg/ZPR3rvNwYj4OiB5h
+	 8RcLEa8lcF/PUIxNIsk0eNcmX+E2cAhKUqRXtHjg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Wentao Liang <vulab@iscas.ac.cn>,
-	Anna Schumaker <anna.schumaker@hammerspace.com>
-Subject: [PATCH 6.18 080/108] pNFS: Fix use-after-free in pnfs_update_layout()
+	Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
+Subject: [PATCH 7.1 081/120] pwrseq: core: fix use-after-free in pwrseq_debugfs_seq_next()
 Date: Thu,  2 Jul 2026 18:21:17 +0200
-Message-ID: <20260702155113.770291146@linuxfoundation.org>
+Message-ID: <20260702155114.637061033@linuxfoundation.org>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260702155112.110058792@linuxfoundation.org>
-References: <20260702155112.110058792@linuxfoundation.org>
+In-Reply-To: <20260702155112.964534952@linuxfoundation.org>
+References: <20260702155112.964534952@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,21 +71,21 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-271370-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-271480-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:vulab@iscas.ac.cn,m:anna.schumaker@hammerspace.com,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:vulab@iscas.ac.cn,m:bartosz.golaszewski@oss.qualcomm.com,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
@@ -97,50 +97,94 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,hammerspace.com:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,iscas.ac.cn:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,qualcomm.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,iscas.ac.cn:email,msgid.link:url,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,ctx.dev:url]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 4B3B26FAFD8
+X-Rspamd-Queue-Id: 823DD6FBC15
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
 From: Wentao Liang <vulab@iscas.ac.cn>
 
-commit 13e198a90ca4050f4bee8a3f23680389a6563ccc upstream.
+commit 257595adf9dac15ae1edd9d07753fbc576a7583d upstream.
 
-When hitting the NFS_LAYOUT_RETURN branch in pnfs_update_layout(),
-the code calls pnfs_prepare_to_retry_layoutget(lo). If it succeeds,
-pnfs_put_layout_hdr(lo) is called before trace_pnfs_update_layout(),
-which still references 'lo'. This results in a use-after-free when the
-tracepoint accesses lo's fields.
+pwrseq_debugfs_seq_next() declares 'next' with __free(put_device),
+which causes put_device() to be called on the returned pointer when
+the variable goes out of scope.  This results in a use-after-free
+since the seq_file framework receives a pointer whose reference has
+already been dropped.
 
-Fix this by moving the tracepoint call before pnfs_put_layout_hdr(lo).
+Simply removing __free(put_device) would fix the UAF but would leak
+the reference acquired by bus_find_next_device(), as stop() only
+calls up_read(&pwrseq_sem) and never releases the device reference.
 
-Fixes: 2c8d5fc37fe2 ("pNFS: Stricter ordering of layoutget and layoutreturn")
+Fix this by making the reference counting consistent across all
+seq_file callbacks, matching the standard pattern used by PCI and
+SCSI:
+
+- start(): use get_device() so it returns a referenced pointer.
+- next(): explicitly put_device(curr) to release the previous
+  device's reference (no NULL check needed - the seq_file framework
+  only calls next() while the previous return was non-NULL).
+- stop(): put_device(data) to release the last iterated device's
+  reference, with a NULL guard since stop() may be called with NULL
+  when start() returned NULL or next() reached end-of-sequence.
+
 Cc: stable@vger.kernel.org
+Fixes: 249ebf3f65f8 ("power: sequencing: implement the pwrseq core")
 Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
-Signed-off-by: Anna Schumaker <anna.schumaker@hammerspace.com>
+Link: https://patch.msgid.link/20260616151049.1705503-1-vulab@iscas.ac.cn
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nfs/pnfs.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/power/sequencing/core.c |   14 +++++++++-----
+ 1 file changed, 9 insertions(+), 5 deletions(-)
 
---- a/fs/nfs/pnfs.c
-+++ b/fs/nfs/pnfs.c
-@@ -2217,11 +2217,11 @@ lookup_again:
- 		dprintk("%s wait for layoutreturn\n", __func__);
- 		lseg = ERR_PTR(pnfs_prepare_to_retry_layoutget(lo));
- 		if (!IS_ERR(lseg)) {
--			pnfs_put_layout_hdr(lo);
- 			dprintk("%s retrying\n", __func__);
- 			trace_pnfs_update_layout(ino, pos, count, iomode, lo,
- 						 lseg,
- 						 PNFS_UPDATE_LAYOUT_RETRY);
-+			pnfs_put_layout_hdr(lo);
- 			goto lookup_again;
- 		}
- 		trace_pnfs_update_layout(ino, pos, count, iomode, lo, lseg,
+--- a/drivers/power/sequencing/core.c
++++ b/drivers/power/sequencing/core.c
+@@ -989,8 +989,9 @@ static void *pwrseq_debugfs_seq_start(st
+ 	ctx.index = *pos;
+ 
+ 	/*
+-	 * We're holding the lock for the entire printout so no need to fiddle
+-	 * with device reference count.
++	 * Hold the lock for the entire printout to prevent device removal.
++	 * Reference counts are managed by start()/next()/stop() as required
++	 * by the seq_file contract.
+ 	 */
+ 	down_read(&pwrseq_sem);
+ 
+@@ -998,7 +999,7 @@ static void *pwrseq_debugfs_seq_start(st
+ 	if (!ctx.index)
+ 		return NULL;
+ 
+-	return ctx.dev;
++	return get_device(ctx.dev);
+ }
+ 
+ static void *pwrseq_debugfs_seq_next(struct seq_file *seq, void *data,
+@@ -1008,8 +1009,9 @@ static void *pwrseq_debugfs_seq_next(str
+ 
+ 	++*pos;
+ 
+-	struct device *next __free(put_device) =
+-			bus_find_next_device(&pwrseq_bus, curr);
++	struct device *next = bus_find_next_device(&pwrseq_bus, curr);
++
++	put_device(curr);
+ 	return next;
+ }
+ 
+@@ -1058,6 +1060,8 @@ static int pwrseq_debugfs_seq_show(struc
+ 
+ static void pwrseq_debugfs_seq_stop(struct seq_file *seq, void *data)
+ {
++	if (data)
++		put_device(data);
+ 	up_read(&pwrseq_sem);
+ }
+ 
 
 
 
