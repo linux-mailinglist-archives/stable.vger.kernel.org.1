@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-270752-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-271109-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id NfdDODyVRmp1ZAsAu9opvQ
-	(envelope-from <stable+bounces-270752-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:43:40 +0200
+	id vjg+EfiiRmrvagsAu9opvQ
+	(envelope-from <stable+bounces-271109-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:42:16 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6E6C26FA72D
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:43:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7BDD86FB8E4
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:42:15 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=OJM7eNDF;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-270752-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-270752-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=KsDrfEeh;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-271109-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-271109-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 8FE4A32856D1
-	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:33:22 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 532C4349E05F
+	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:47:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1AFAA342CB3;
-	Thu,  2 Jul 2026 16:29:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0EFCB3AE6E5;
+	Thu,  2 Jul 2026 16:44:54 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 852DF34107D;
-	Thu,  2 Jul 2026 16:29:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C64943491E1;
+	Thu,  2 Jul 2026 16:44:52 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783009759; cv=none; b=criMp+NokcSkFbhLtCvCzJQG1d0MYApD8tGmiAKILUZ0wm8EplTCiln46bEil8CazaQsPu/eH7d2tQrhrIM61Da9Cze6yk4j7puk/S7CgGkhD4EKX/hmMdKUvBxzQN9S5iR/qElXqoLAeW55AfPLelU9Z7p/tU3XzZuCNdZVa3I=
+	t=1783010693; cv=none; b=Ay9j9HVh45RF65xIHamsVbYID6u/K2UMvd3NLyuJDOLadyU0CP6j3J3NFXyBZrDBqzPDGawWlI9/BftqOAuOUsNF6AbRas24mUCr0M7Ztjo/sdPnvXTdEM0GPtC62vDSAyAiHoTjd6zMM/s+gUA96cXFDwa4zwlwSoHE4saHLPk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783009759; c=relaxed/simple;
-	bh=qS3aN51RvuUH0eyDsx5Y9cy7+Cl0Rh2UBOYFXojjYvs=;
+	s=arc-20240116; t=1783010693; c=relaxed/simple;
+	bh=ucYuhwXQRhd47J9u4Vy8TZ0DbL40dJDew02hw+bdx5Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IQRADnCgUTWhqM4wUi0NwPO2lNF2J08ukON9+BxTLcsUW+LGI9mQoOx8bdgYRr1tMbrCHGtEKpKZPHVUMdRyLJ1J9tecxfGNHSswqTAf5+SoGirMu947k+3p+ksW5hsv8GoN24jBF4YCnL2le1qMSj/pvKKrbOJEdPrY+jqmHL8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OJM7eNDF; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C1561F000E9;
-	Thu,  2 Jul 2026 16:29:16 +0000 (UTC)
+	 MIME-Version; b=jLJFN4NrkL3L8ogB9Na7qxuJ+fO4fGcG2OxAEgfkre+qwXtpRhHUCosdfQbLCZHnXisQ90t2ecWzZf0hploZeYSJqY1zF6EGyQwc2/93hn/VukwK6AF3UaCO7vzUf/mY9tNw//pJRP4HbemIQ/RglmV275uA2fYtR8zsX+ca4F8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KsDrfEeh; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3718E1F000E9;
+	Thu,  2 Jul 2026 16:44:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1783009757;
-	bh=zYWHydVmO+GSO180FcYaNa4TBJpRLeD086oEv0FnUPc=;
+	s=korg; t=1783010692;
+	bh=Yf0xIDmBvcPHKa6VeC9EiO1wtT9fJDnWdgAvz1Exrik=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=OJM7eNDFfE+UKFUu7Dr5uhAtUDSjej/IJs+SdMd4G65Lk4HPW6D9SpbxRM0qXfa1a
-	 kuKpDxi7aVRZtfnoqLhlQAsIzIbdJattjGLkIyGeovRKOjqs54mdFODCCmA8fgIqsn
-	 MIdslygg8DZ/y9qaepiFCVrwEX0xkyJEH9klrKGQ=
+	b=KsDrfEehMOgeLhBkUN7zexCenual8fMNot5iWKh2yeAbpGxdHBq2GIMwhWc94Rm4b
+	 DBCwFirH9pZzFSRWn5KlATT+0AnIh7xxV9JARaht7/rbkeydg5It1rHT3wS0jPDdiR
+	 sBFalz92pHWk1cSG6ysMT/FeFeNFg1AQXo6sCBPM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ian Bridges <icb@fastmail.org>,
-	Helge Deller <deller@gmx.de>
-Subject: [PATCH 5.15 75/95] fbdev: Fix fb_new_modelist to prevent null-ptr-deref in fb_videomode_to_var
-Date: Thu,  2 Jul 2026 18:20:18 +0200
-Message-ID: <20260702155110.791633836@linuxfoundation.org>
+	Michael Bommarito <michael.bommarito@gmail.com>,
+	Namjae Jeon <linkinjeon@kernel.org>
+Subject: [PATCH 6.12 162/204] exfat: fix potential use-after-free in exfat_find_dir_entry()
+Date: Thu,  2 Jul 2026 18:20:19 +0200
+Message-ID: <20260702155122.053442897@linuxfoundation.org>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260702155109.196223802@linuxfoundation.org>
-References: <20260702155109.196223802@linuxfoundation.org>
+In-Reply-To: <20260702155118.667618796@linuxfoundation.org>
+References: <20260702155118.667618796@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,7 +66,8 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
@@ -77,16 +78,16 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-270752-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:icb@fastmail.org,m:deller@gmx.de,s:lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,fastmail.org,gmx.de];
+	TAGGED_FROM(0.00)[bounces-271109-lists,stable=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:michael.bommarito@gmail.com,m:linkinjeon@kernel.org,m:michaelbommarito@gmail.com,s:lists@lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
@@ -94,72 +95,103 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,gmx.de:email,fastmail.org:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 6E6C26FA72D
+X-Rspamd-Queue-Id: 7BDD86FB8E4
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ian Bridges <icb@fastmail.org>
+From: Michael Bommarito <michael.bommarito@gmail.com>
 
-commit 7f08fc10fa3d3366dc3af723970bd03d7d6d10e3 upstream.
+commit 3f5f8ee9917cc2b9076ac533492d8a200edcabb8 upstream.
 
-info->var, a framebuffer's current mode, is expected to have a matching
-entry in info->modelist. var_to_display() relies on this and treats a
-failed fb_match_mode() as "This should not happen". fb_set_var() keeps it
-true by adding the mode to the list on every change, and
-do_register_framebuffer() does the same at registration.
+In exfat_find_dir_entry(), the buffer_head obtained from
+exfat_get_dentry() is released with brelse(bh) before the fall-through
+TYPE_EXTEND branch reads the directory entry through ep (which points
+into bh->b_data):
 
-store_modes() replaces the modelist from userspace. fb_new_modelist()
-validates the new modes but does not check that info->var still has a
-match. It relies on fbcon_new_modelist() to re-point consoles, but that
-only handles consoles mapped to the framebuffer. With fbcon unbound there
-are none, so info->var is left describing a mode that is no longer in the
-list.
+	brelse(bh);
+	if (entry_type == TYPE_EXTEND) {
+		...
+		len = exfat_extract_uni_name(ep, entry_uniname);
+		...
+	}
 
-A later console takeover runs var_to_display(), where fb_match_mode()
-returns NULL and leaves fb_display[i].mode NULL. fbcon_switch() passes it
-to display_to_var(), and fb_videomode_to_var() dereferences the NULL mode.
+After brelse() drops our reference, nothing guarantees that the
+underlying page backing bh->b_data remains valid for the subsequent
+exfat_extract_uni_name() read. This is the same pattern fixed in
+commit fc961522ddbd ("exfat: Fix potential use after free in
+exfat_load_upcase_table()").
 
-Keep the current mode in the list in fb_new_modelist(), the same way
-fb_set_var() does.
+Move brelse(bh) so it runs after ep is no longer dereferenced on
+each branch.
 
+Confirmed on QEMU x86_64 with CONFIG_KASAN=y + CONFIG_DEBUG_PAGEALLOC=y
++ CONFIG_PAGE_POISONING=y on linux-next, using a crafted exFAT image
+(long filename with same-hash collisions forcing the TYPE_EXTEND path).
+With a debug-only invalidate_bdev() inserted between brelse(bh) and
+the ep read to make the stale-deref window deterministic, the
+unpatched kernel faults:
+
+  BUG: KASAN: use-after-free in exfat_find_dir_entry+0x133b/0x15a0
+  BUG: unable to handle page fault for address: ffff88801a5fa0c2
+  Oops: 0000 [#1] SMP DEBUG_PAGEALLOC KASAN NOPTI
+  RIP: 0010:exfat_find_dir_entry+0x1188/0x15a0
+
+With this patch applied, the same instrumented harness completes
+cleanly under the same sanitizer stack. I have not reproduced a
+crash on an uninstrumented kernel under ordinary reclaim; the
+instrumented A/B establishes the lifetime violation and that the
+patch closes it, not an unaided triggerability claim.
+
+Fixes: ca06197382bd ("exfat: add directory operations")
 Cc: stable@vger.kernel.org
-Assisted-by: Claude:claude-opus-4-8
-Signed-off-by: Ian Bridges <icb@fastmail.org>
-Signed-off-by: Helge Deller <deller@gmx.de>
+Assisted-by: Claude:claude-opus-4-7
+Signed-off-by: Michael Bommarito <michael.bommarito@gmail.com>
+Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/video/fbdev/core/fbmem.c |   12 ++++++++++++
- 1 file changed, 12 insertions(+)
+ fs/exfat/dir.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/drivers/video/fbdev/core/fbmem.c
-+++ b/drivers/video/fbdev/core/fbmem.c
-@@ -2061,6 +2061,18 @@ int fb_new_modelist(struct fb_info *info
- 	if (list_empty(&info->modelist))
- 		return 1;
+--- a/fs/exfat/dir.c
++++ b/fs/exfat/dir.c
+@@ -1100,12 +1100,12 @@ rewind:
+ 				continue;
+ 			}
  
-+	/*
-+	 * The new modelist may not contain the current mode (info->var), and
-+	 * fbcon_new_modelist() below only re-points consoles mapped to this
-+	 * framebuffer. Add the current mode here so info->var keeps a match
-+	 * even when fbcon is unbound.
-+	 */
-+	if (!fb_match_mode(&info->var, &info->modelist)) {
-+		fb_var_to_videomode(&mode, &info->var);
-+		if (fb_add_videomode(&mode, &info->modelist))
-+			return 1;
-+	}
-+
- 	fbcon_new_modelist(info);
+-			brelse(bh);
+ 			if (entry_type == TYPE_EXTEND) {
+ 				unsigned short entry_uniname[16], unichar;
  
- 	return 0;
+ 				if (step != DIRENT_STEP_NAME ||
+ 				    name_len >= MAX_NAME_LENGTH) {
++					brelse(bh);
+ 					step = DIRENT_STEP_FILE;
+ 					continue;
+ 				}
+@@ -1116,6 +1116,7 @@ rewind:
+ 					uniname += EXFAT_FILE_NAME_LEN;
+ 
+ 				len = exfat_extract_uni_name(ep, entry_uniname);
++				brelse(bh);
+ 				name_len += len;
+ 
+ 				unichar = *(uniname+len);
+@@ -1134,6 +1135,7 @@ rewind:
+ 				continue;
+ 			}
+ 
++			brelse(bh);
+ 			if (entry_type &
+ 					(TYPE_CRITICAL_SEC | TYPE_BENIGN_SEC)) {
+ 				if (step == DIRENT_STEP_SECD) {
 
 
 
