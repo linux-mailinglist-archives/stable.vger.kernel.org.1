@@ -1,59 +1,61 @@
-Return-Path: <stable+bounces-271396-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-271507-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 00y3FIKmRmr0awsAu9opvQ
-	(envelope-from <stable+bounces-271396-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:57:22 +0200
+	id JvICLDycRmpuaAsAu9opvQ
+	(envelope-from <stable+bounces-271507-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:13:32 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 52B8B6FBBA2
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:57:21 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 37A076FB250
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:13:32 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=X3lVnTqu;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-271396-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-271396-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=kfle8sEM;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-271507-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-271507-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 36A5A3194C75
-	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:57:26 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 4D17C336FAF0
+	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 17:02:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B431C2FFF9D;
-	Thu,  2 Jul 2026 16:57:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B60724E4C3;
+	Thu,  2 Jul 2026 17:02:03 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E01F2D0602;
-	Thu,  2 Jul 2026 16:57:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E0CE3093DD;
+	Thu,  2 Jul 2026 17:02:02 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783011434; cv=none; b=rCwhAE0UDu/bhuHyeqJ4TIDSDBNZAskQ464oOYGfNSvoic/UwLkD4zzPVwYuHzOJ9lgEHR23uuCa2YFngCMrFg9jEZLUikh8SPHYEM25T0xHDt9Gd+AGGm/o8H7QycC/DxV7vdZF/lklpC6tOs0Q+5WlkPQGz0ETyLMQRLbo/OY=
+	t=1783011723; cv=none; b=bLXJ2X7os1hxYFXVBs4PobpmXlWu8TYBDxw5+lfIRj8UfZ1JirOjnQCMKURVF2Ra4rMu7gJD8uFMxE8KYx80u1rdqxJmR0sVe/YU5bOdHGvpyp5F892x7CPshTcd76F/U7WuCindcVMtSdXIDxRULh+GmDd7auVylh+qBrlhkVA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783011434; c=relaxed/simple;
-	bh=ucMAQJ1ltfeGCvKKDdO60Fq/51wgDsqBGPf30jIKkx4=;
+	s=arc-20240116; t=1783011723; c=relaxed/simple;
+	bh=bsO6mVGAdXWjUkXENMAU/w6BvjdMMG9PFPX2VBOOb7Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=R8VEVyekR8ljrpurL2CUO4b7PGnU0aS38gq9LkM8w28cpHy6WPtsNQ0nr0OrBtFeikN67R9NmXTS1RDi7+7PWkRdtUBRCYKR05rUiZlChf1/XB1ObzgeRSGGiNLBvwxSb7W7yMa696u+VIxhsdn0UEKjg/tVj1UKMgZtnyqfJ3U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X3lVnTqu; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A806D1F000E9;
-	Thu,  2 Jul 2026 16:57:12 +0000 (UTC)
+	 MIME-Version; b=q0s45fvTh973kWzzKXlbC3dUdYyqq5b2Y8fA6PWDxdMzwOvuzzmclYwGiW4zK1NG8fN1/2FcFYZfbZcOyFndcykznGFdDG+QnvEHI7pCSyJsLSTW2YswjHBaAjEfM0KRzNmt+V8D6apnlJlwwNlz/mAUx/6ELl9ly6wGC2qs1Bo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kfle8sEM; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4EED1F000E9;
+	Thu,  2 Jul 2026 17:02:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1783011433;
-	bh=zwS2TxabWUt5zPpXyY2102Tk7kFlD1ehAdfa2bWAuSI=;
+	s=korg; t=1783011722;
+	bh=B27vaD92WwIphFNkjsu3/pg54s3eEq3xLlKrF6A4fUQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=X3lVnTquUS7r8Ax8RGyzH5Ybv2+yOuBQtDhtyweKW0tL9HTtU9H/JxbIKI5jP6HzS
-	 zSMk9OfXB/SqenaLpcIY+1j5un4bVwSLSapHQ16hSNQlSr4AswNXwIhnI5CvM4zRf/
-	 ZyS0uNN4RMn7aGPtoSqJGIPGCaGFRXQXMxviyvqg=
+	b=kfle8sEMY1JcuU//8yx9sHlhUaKpER4yreZnN1e8pBYscEZEdCm1hPLKD+GTZ1IW9
+	 LoTcnyp2CsUL5YgDptqTP1BLbWqTTZcd5slOFWcdzON1o1/W4vffPO2203w4ylCtkc
+	 GcXbIUFWXd6uCMboegyfYOiIO7AiEFHvX0aVepeM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	John Johansen <john.johansen@canonical.com>
-Subject: [PATCH 6.18 108/108] apparmor: advertise the tcp fast open fix is applied
+	Chris Mason <clm@meta.com>,
+	Jeff Layton <jlayton@kernel.org>,
+	Chuck Lever <chuck.lever@oracle.com>
+Subject: [PATCH 7.1 109/120] nfsd: fix posix_acl leak and ignored error in nfsd4_create_file
 Date: Thu,  2 Jul 2026 18:21:45 +0200
-Message-ID: <20260702155114.351001718@linuxfoundation.org>
+Message-ID: <20260702155115.214081808@linuxfoundation.org>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260702155112.110058792@linuxfoundation.org>
-References: <20260702155112.110058792@linuxfoundation.org>
+In-Reply-To: <20260702155112.964534952@linuxfoundation.org>
+References: <20260702155112.964534952@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,78 +69,124 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	PRECEDENCE_BULK(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-271396-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:john.johansen@canonical.com,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_THREE(0.00)[4];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RWL_MAILSPIKE_POSSIBLE(0.00)[104.64.211.4:from];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	TAGGED_FROM(0.00)[bounces-271507-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,canonical.com:email]
+	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:clm@meta.com,m:jlayton@kernel.org,m:chuck.lever@oracle.com,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[oracle.com:email,meta.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 52B8B6FBBA2
+X-Rspamd-Queue-Id: 37A076FB250
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: John Johansen <john.johansen@canonical.com>
+From: Jeff Layton <jlayton@kernel.org>
 
-commit 2f6701a5ce6257ae7a64ddc6d89d0a08d2a034f8 upstream.
+commit 24c975bbdd564d7d0ad90294bfa69729830345de upstream.
 
-The fix for tcp-fast-open ensures that the connect permission is being
-mediated correctly but it didn't add an artifact to the feature set to
-advertise the fix is available. Add an artifact so that the test suite
-can identify if the fix has not been properly applied or a new
-unexpected regression has occurred.
+nfsd4_create_file() has two bugs in its ACL handling:
 
-Fixes: 4d587cd8a7215 ("apparmor: mediate the implicit connect of TCP fast open sendmsg")
-Signed-off-by: John Johansen <john.johansen@canonical.com>
+The return value of nfsd4_acl_to_attr() is silently discarded.  When
+the NFSv4-to-POSIX ACL conversion fails (e.g., -EINVAL for
+unsupported ACE types), the file is created without any ACL and the
+client receives NFS4_OK.  This violates RFC 7530/8881 which require
+the server to reject unsupported attributes on CREATE.
+
+When start_creating() fails after ACL attributes have been populated
+in attrs (either via nfsd4_acl_to_attr or via ownership transfer from
+open->op_dpacl/op_pacl), the function jumps to out_write which skips
+nfsd_attrs_free().  The posix_acl allocations are leaked.  A client
+can trigger this repeatedly with OPEN(CREATE), ACL attributes, and an
+invalid filename (e.g., longer than NAME_MAX).
+
+Fix both by capturing the nfsd4_acl_to_attr() return value and by
+changing the early error paths to jump to out instead of out_write.
+Initialize child to ERR_PTR(-EINVAL) so that end_creating() is safe
+to call even if start_creating() was never reached.
+
+Reported-by: Chris Mason <clm@meta.com>
+Fixes: 7ab96df840e6 ("VFS/nfsd/cachefiles/ovl: add start_creating() and end_creating()")
+Cc: stable@vger.kernel.org
+Assisted-by: kres:claude-opus-4-6
+Signed-off-by: Jeff Layton <jlayton@kernel.org>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- security/apparmor/net.c |    2 ++
- 1 file changed, 2 insertions(+)
+ fs/nfsd/nfs4proc.c |   15 +++++++++------
+ 1 file changed, 9 insertions(+), 6 deletions(-)
 
---- a/security/apparmor/net.c
-+++ b/security/apparmor/net.c
-@@ -22,12 +22,14 @@
+--- a/fs/nfsd/nfs4proc.c
++++ b/fs/nfsd/nfs4proc.c
+@@ -253,7 +253,7 @@ nfsd4_create_file(struct svc_rqst *rqstp
+ 		.na_iattr	= iap,
+ 		.na_seclabel	= &open->op_label,
+ 	};
+-	struct dentry *parent, *child;
++	struct dentry *parent, *child = ERR_PTR(-EINVAL);
+ 	__u32 v_mtime, v_atime;
+ 	struct inode *inode;
+ 	__be32 status;
+@@ -277,10 +277,14 @@ nfsd4_create_file(struct svc_rqst *rqstp
+ 	if (open->op_acl) {
+ 		if (open->op_dpacl || open->op_pacl) {
+ 			status = nfserr_inval;
+-			goto out_write;
++			goto out;
++		}
++		if (is_create_with_attrs(open)) {
++			status = nfsd4_acl_to_attr(NF4REG, open->op_acl,
++						   &attrs);
++			if (status)
++				goto out;
+ 		}
+-		if (is_create_with_attrs(open))
+-			nfsd4_acl_to_attr(NF4REG, open->op_acl, &attrs);
+ 	} else if (is_create_with_attrs(open)) {
+ 		/* The dpacl and pacl will get released by nfsd_attrs_free(). */
+ 		attrs.na_dpacl = open->op_dpacl;
+@@ -293,7 +297,7 @@ nfsd4_create_file(struct svc_rqst *rqstp
+ 			       &QSTR_LEN(open->op_fname, open->op_fnamelen));
+ 	if (IS_ERR(child)) {
+ 		status = nfserrno(PTR_ERR(child));
+-		goto out_write;
++		goto out;
+ 	}
  
- struct aa_sfs_entry aa_sfs_entry_network[] = {
- 	AA_SFS_FILE_STRING("af_mask",	AA_SFS_AF_MASK),
-+	AA_SFS_FILE_BOOLEAN("tcp-fast-open",		1),
- 	{ }
- };
- 
- struct aa_sfs_entry aa_sfs_entry_networkv9[] = {
- 	AA_SFS_FILE_STRING("af_mask",	AA_SFS_AF_MASK),
- 	AA_SFS_FILE_BOOLEAN("af_unix",	1),
-+	AA_SFS_FILE_BOOLEAN("tcp-fast-open",		1),
- 	{ }
- };
- 
+ 	if (d_really_is_negative(child)) {
+@@ -407,7 +411,6 @@ set_attr:
+ out:
+ 	end_creating(child);
+ 	nfsd_attrs_free(&attrs);
+-out_write:
+ 	fh_drop_write(fhp);
+ 	return status;
+ }
 
 
 
