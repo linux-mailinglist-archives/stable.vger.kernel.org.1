@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-271073-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-271431-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id zWKXMbKYRmp+ZgsAu9opvQ
-	(envelope-from <stable+bounces-271073-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:58:26 +0200
+	id ho2gEHObRmoNaAsAu9opvQ
+	(envelope-from <stable+bounces-271431-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:10:11 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 211B96FACE9
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:58:26 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id C66216FB134
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:10:10 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=K5vXbT+m;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-271073-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-271073-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=TMFakBzg;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-271431-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-271431-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id BDB8232C4606
-	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:46:24 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 8598830809B1
+	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:58:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED792381EBA;
-	Thu,  2 Jul 2026 16:43:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 282DE30EF95;
+	Thu,  2 Jul 2026 16:58:47 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 684C5388E4E;
-	Thu,  2 Jul 2026 16:43:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA18530C15A;
+	Thu,  2 Jul 2026 16:58:45 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783010599; cv=none; b=Yj/j6Lehn+Q/uwlUNFTUdfA7Twm2rcMZzzXyNvHq0ma5vOr7vO4RiL47XhwddaiF+DLSWo8TxquAAT78Vl5LtT7zatgNt6hmdROkqFjprbENQGaVDyozGTuVCl6+pU43czVASsL3J9lX+l1Y+dwmdXUvAkRApurAO3ViilZy/fs=
+	t=1783011526; cv=none; b=M+xHWlxeIKS1YYR9KksY3MgivoYmm/clwvk8Mv5+qErIM/v/jUoZl1gf3zjoVEYaKGQXMWQ8dowbHfYgyPI3ULyCeRzBUYJCSTTe3HQDqDuxBqkosObk7s+dBw6s9rr82dI8737Ff0hLzmHBnlsIXGBty0R1tNavy6ostEob1rg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783010599; c=relaxed/simple;
-	bh=taKTsP3d9DWDP8oarCVyFBzmMWJVD96H0lwuVW49SrE=;
+	s=arc-20240116; t=1783011526; c=relaxed/simple;
+	bh=7Lem4cl0THSUb4hH5/uTyx61W8JW9slL4t1Fo6rD2MY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cQg0nMpTKItDmNrxO7UDPiQnnbZOOXlSCm1A4NBqBVBOaTRYg8jUAWSkTOrHcnw4x79USvt6HYQzzepvI2OQgv74K1Cw75R4zNjIgsfhUcGd0kdDt8sApP89DMOchLHyBgP5QFd9sYCSWMN9XsbLT8ROtbkJ4mkJU0TRYWD/g8M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K5vXbT+m; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80D5E1F000E9;
-	Thu,  2 Jul 2026 16:43:17 +0000 (UTC)
+	 MIME-Version; b=PXI8YGYl5km2yuf8tbw14O8wfdutmL0uAnGwumq2FEPE6Wrs67ki5EejrIJyCTULOwp6eIDmOnri851aROToxC7BpW6e3mBu1quBpzGrNE+B+qNfmkpSYVPoqLDZf6hThlO8m1NurMUHlnUK7C1DCCR1k3dIChvW2GNkKIn4+eY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TMFakBzg; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2B591F00A3A;
+	Thu,  2 Jul 2026 16:58:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1783010598;
-	bh=N+VGbtLDOpihCtbUfSjEkk0j1Y+n+ZhFTpvoPjHyzxY=;
+	s=korg; t=1783011525;
+	bh=KNwYHHnsi6N/8Ja0QJmgQ+N5ezgQJC4ywmK+kVtKYqo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=K5vXbT+mye2jVOAmLNspvi/ScdDuU0BZvxqWG/goPK8JkUpcjtHrdwLVY8wrkxnkq
-	 z9E0gQQ9Rh/ze8LtXnCRaEndWWPsHc0bCMZdBJXXZcRzVZ9hY8roLi/SBpxH7DVFiH
-	 2lmGYdHKVBUKHN6HIarrzxvZ/XUwTonNW/mpeXRE=
+	b=TMFakBzgxKe4ua0RZNGXvO7sXJXRn+QPJJWpQPmkRSTuHgMsK5L2FNXYg0SN1mazX
+	 B/08xhQN9BY0qgaGRzfmZEzzJmZQAE3RqcFJx4pgI3WTb8Y4pATpmXa5Z8Mgz9dFEe
+	 hBbiCfCq6hYrxoET+xDvzzGhhfzK8hOTYxuNY7Cc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Qingshuang Fu <fuqingshuang@kylinos.cn>,
-	Thomas Gleixner <tglx@kernel.org>
-Subject: [PATCH 6.12 171/204] irqchip/imgpdc: Fix resource leak, add missing chained handler cleanup on remove
+	Doruk Tan Ozturk <doruk@0sec.ai>,
+	Alexander Lobakin <aleksander.lobakin@intel.com>,
+	Stefan Schmidt <stefan@datenfreihafen.org>
+Subject: [PATCH 7.1 032/120] mac802154: llsec: add skb_cow_data() before in-place crypto
 Date: Thu,  2 Jul 2026 18:20:28 +0200
-Message-ID: <20260702155122.238986754@linuxfoundation.org>
+Message-ID: <20260702155113.627033611@linuxfoundation.org>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260702155118.667618796@linuxfoundation.org>
-References: <20260702155118.667618796@linuxfoundation.org>
+In-Reply-To: <20260702155112.964534952@linuxfoundation.org>
+References: <20260702155112.964534952@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,22 +72,22 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-271073-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-271431-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:fuqingshuang@kylinos.cn,m:tglx@kernel.org,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:doruk@0sec.ai,m:aleksander.lobakin@intel.com,m:stefan@datenfreihafen.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
@@ -97,73 +98,107 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,msgid.link:url,vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,kylinos.cn:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,datenfreihafen.org:email,0sec.ai:url,0sec.ai:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 211B96FACE9
+X-Rspamd-Queue-Id: C66216FB134
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+7.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Qingshuang Fu <fuqingshuang@kylinos.cn>
+From: Doruk Tan Ozturk <doruk@0sec.ai>
 
-commit 37738fdf2ab1e504d1c63ce5bc0aeb6452d8f057 upstream.
+commit 84a04eb5b210643bd67aab81ff805d32f62aa865 upstream.
 
-The driver allocates domain generic chips using
-irq_alloc_domain_generic_chips() during probe and sets up chained
-handlers using irq_set_chained_handler_and_data(). However, on driver
-removal, the generic chips are not freed and the chained handlers are
-not removed.
+llsec_do_encrypt_unauth(), llsec_do_encrypt_auth(),
+llsec_do_decrypt_unauth(), and llsec_do_decrypt_auth() all perform
+in-place cryptographic transformations on skb data.  They build a
+scatterlist with sg_init_one() pointing into the skb's linear data area
+and then pass the same scatterlist as both src and dst to the crypto API
+(e.g. crypto_skcipher_encrypt/decrypt, crypto_aead_encrypt/decrypt).
 
-The generic chips remain on the global gc_list and may later be accessed by
-generic interrupt chip suspend, resume, or shutdown callbacks after the
-driver has been removed, potentially resulting in a use-after-free and
-kernel crash.
+On the RX path, __ieee802154_rx_handle_packet() clones the received skb
+before handing it to each subscriber via ieee802154_subif_frame().  The
+cloned skb shares the same underlying data buffer via reference
+counting.  When llsec_do_decrypt() subsequently modifies this shared
+buffer in place, it corrupts data that other clones -- potentially
+belonging to other sockets or subsystems -- still reference.
 
-The chained handlers that were installed in probe for peripheral and
-syswake interrupts are also left dangling, which can lead to spurious
-interrupts accessing freed memory.
+On the TX path, similar data sharing can occur when an skb's head has
+been cloned (skb_cloned() returns true).
 
-Fix these issues by:
+The fix is to call skb_cow_data() before performing any in-place crypto
+operation.  skb_cow_data() ensures that the skb's data area is not
+shared: if the skb head is cloned or the data spans multiple fragments,
+it copies the data into a private buffer that can be safely modified in
+place.  This is the same pattern used by:
 
-  - Setting IRQ_DOMAIN_FLAG_DESTROY_GC flag in domain->flags, so the
-    core code automatically removes generic chips when irq_domain_remove()
-    is called
+  - ESP (net/ipv4/esp4.c, net/ipv6/esp6.c)
+  - MACsec (drivers/net/macsec.c)
+  - WireGuard (drivers/net/wireguard/receive.c)
+  - TIPC (net/tipc/crypto.c)
 
-  - Clearing all chained handlers with NULL in pdc_intc_remove()
+Without this guard, in-place crypto on shared skb data leads to:
+  - Silent data corruption of other skb clones
+  - Use-after-free when the crypto API scatterwalk writes through a
+    page that has already been freed by another clone's kfree_skb()
+  - Kernel crashes under concurrent 802.15.4 traffic with security
+    enabled (KASAN/KMSAN reports slab-use-after-free)
 
-Fixes: b6ef9161e43a ("irq-imgpdc: add ImgTec PDC irqchip driver")
-Signed-off-by: Qingshuang Fu <fuqingshuang@kylinos.cn>
-Signed-off-by: Thomas Gleixner <tglx@kernel.org>
+Found by 0sec (https://0sec.ai) using automated source analysis.
+
+Fixes: 4c14a2fb5d14 ("mac802154: add llsec decryption method")
+Fixes: 03556e4d0dbb ("mac802154: add llsec encryption method")
 Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/20260618021352.661773-1-fffsqian@163.com
+Reported-by: Doruk Tan Ozturk <doruk@0sec.ai>
+Closes: https://lore.kernel.org/linux-wpan/20260525161806.96158-1-doruk@0sec.ai/
+Reviewed-by: Alexander Lobakin <aleksander.lobakin@intel.com>
+Signed-off-by: Doruk Tan Ozturk <doruk@0sec.ai>
+Closes: <link to your mail on lore>
+Link: https://lore.kernel.org/20260526183726.56100-1-doruk@0sec.ai
+Signed-off-by: Stefan Schmidt <stefan@datenfreihafen.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/irqchip/irq-imgpdc.c |    6 ++++++
- 1 file changed, 6 insertions(+)
+ net/mac802154/llsec.c |   14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
 
---- a/drivers/irqchip/irq-imgpdc.c
-+++ b/drivers/irqchip/irq-imgpdc.c
-@@ -378,6 +378,7 @@ static int pdc_intc_probe(struct platfor
- 		dev_err(&pdev->dev, "cannot add IRQ domain\n");
- 		return -ENOMEM;
- 	}
-+	priv->domain->flags |= IRQ_DOMAIN_FLAG_DESTROY_GC;
- 
- 	/*
- 	 * Set up 2 generic irq chips with 2 chip types.
-@@ -465,6 +466,11 @@ static void pdc_intc_remove(struct platf
+--- a/net/mac802154/llsec.c
++++ b/net/mac802154/llsec.c
+@@ -710,6 +710,7 @@ int mac802154_llsec_encrypt(struct mac80
  {
- 	struct pdc_intc_priv *priv = platform_get_drvdata(pdev);
+ 	struct ieee802154_hdr hdr;
+ 	int rc, authlen, hlen;
++	struct sk_buff *trailer;
+ 	struct mac802154_llsec_key *key;
+ 	u32 frame_ctr;
  
-+	for (unsigned int i = 0; i < priv->nr_perips; ++i)
-+		irq_set_chained_handler_and_data(priv->perip_irqs[i], NULL, NULL);
-+
-+	irq_set_chained_handler_and_data(priv->syswake_irq, NULL, NULL);
-+
- 	irq_domain_remove(priv->domain);
- }
+@@ -769,6 +770,12 @@ int mac802154_llsec_encrypt(struct mac80
+ 	skb->mac_len = ieee802154_hdr_push(skb, &hdr);
+ 	skb_reset_mac_header(skb);
  
++	rc = skb_cow_data(skb, 0, &trailer);
++	if (rc < 0) {
++		llsec_key_put(key);
++		return rc;
++	}
++
+ 	rc = llsec_do_encrypt(skb, sec, &hdr, key);
+ 	llsec_key_put(key);
+ 
+@@ -908,6 +915,13 @@ llsec_do_decrypt(struct sk_buff *skb, co
+ 		 const struct ieee802154_hdr *hdr,
+ 		 struct mac802154_llsec_key *key, __le64 dev_addr)
+ {
++	struct sk_buff *trailer;
++	int err;
++
++	err = skb_cow_data(skb, 0, &trailer);
++	if (err < 0)
++		return err;
++
+ 	if (hdr->sec.level == IEEE802154_SCF_SECLEVEL_ENC)
+ 		return llsec_do_decrypt_unauth(skb, sec, hdr, key, dev_addr);
+ 	else
 
 
 
