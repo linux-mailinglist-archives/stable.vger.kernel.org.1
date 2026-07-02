@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-270867-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-270660-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id AvIRGaGXRmr0ZQsAu9opvQ
-	(envelope-from <stable+bounces-270867-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:53:53 +0200
+	id aS6dGlqURmr7YwsAu9opvQ
+	(envelope-from <stable+bounces-270660-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:39:54 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B7EA6FAB71
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:53:52 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id EAB3F6FA57C
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:39:53 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=uCLD18o6;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-270867-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-270867-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=V521GtGW;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-270660-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-270660-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id AB3923069DC6
-	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:37:00 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 758F232452AD
+	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:30:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B39A355F42;
-	Thu,  2 Jul 2026 16:34:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0943B3AF668;
+	Thu,  2 Jul 2026 16:25:24 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BE80326942;
-	Thu,  2 Jul 2026 16:34:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFF4849252E;
+	Thu,  2 Jul 2026 16:25:15 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783010058; cv=none; b=WcE1N/7JkT26oD2PSnl9T2T0d9am/lLDkbYhBi11362tkY0C5KbrRVXoylO1D+RpFG7NuH85rn7gTDAkucs/lGocDa1JfFXpNXpsenFaUkTkvyit6+HfRRVII3qMnQomIEi++sWCTOeNGm5ErE9LiPDqQhPsIjnpK+qGM2y4AaE=
+	t=1783009522; cv=none; b=CuioupJidnN9nRk9mBMrlEmnLl6NDi25B+n1LPYltIkyc2ZmE6GyfTVlG7xGHUc2Y1TSWOg7sXaJURfQvVQhUuIwFQTC+25//p5u3SlnDLNz056NXxOiuP90xXsLn/9eYNh4sKAwU0snHFH/YJBc4IzW9LBFl/hBt7J5SXqJlto=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783010058; c=relaxed/simple;
-	bh=YcoF6PyCeio2r08tA7JKTQAPp5MFq2/HZG8fZOiNRJo=;
+	s=arc-20240116; t=1783009522; c=relaxed/simple;
+	bh=mjGUxXxPiuOjR0WmAas6YQbHnAcYMMl07dFuY2MTIX0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cQ4lDZQaYk9XJc9KlIJUKpDVZ/pZndhx4h+xZXgEaefjKxAD3hP4vJ9kH46AHpqw3jVwYt5/vxrJGw1sZGo3eC5Jwlwz4Ab2ngqfDdbv+Rw8x0LjbCsYAvYrsQ9pMdTG7i/GiFQnX4xBjF86dGv5Ioq862a/gfTDgwjd2YC5glk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uCLD18o6; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C82D1F00A3A;
-	Thu,  2 Jul 2026 16:34:15 +0000 (UTC)
+	 MIME-Version; b=gMPFPBrZ5ZMr3curoGMP4wQ8wn54lJtwiUgpVm5+Wc7vY8YuKZvAM40Q1a30ubaJ03gNzYv4xKeztcaa6j1SGdPUKzWfIBmLR4k5OtrNaNQ40OrtGVk7vBoLTmiNmsP0oYa/egRFnwLFujqt9ipJdgxr5qy/omzQeqtp26xS+Q4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V521GtGW; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 407E11F000E9;
+	Thu,  2 Jul 2026 16:25:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1783010056;
-	bh=f3Tqqs/hazmiwrMkW3880rRg4TYW0IZsCS88AWOmd44=;
+	s=korg; t=1783009515;
+	bh=MB0VKDR85Zw2+SnJZ+ARQRY4Y8883AAhwYPwExhOmME=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=uCLD18o65xldoY2vILgD0m0/oevhCe2CjlAbcDZQ5At4Cjvlkxb38M6v4TPc+us7W
-	 MLfdeJGfcd//n8XipzCulr+D0sVwt5g/rqfyfmuYY+b4avTbJhrsoIbX5MSEVGwZxa
-	 l5Y6x+0RyeG7vXINoPOTSz8hOvplBXAs4ZJKH+f0=
+	b=V521GtGWle6iAHzOruE2aH9Jr10nEcSwu/ZwaR7nP6rNqWa5DqetQM9sIO4tWz6cD
+	 n8yGJqV8KQpOqXELTFny9QmwuQiOJJ3IA6OhqeoBDMF4sBwHwYLLmWrX5luVY/ATcT
+	 8a+G7rRi6u++z0IoEOFzoiCSIGPLt8CnKDsKF4k4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Fan Wu <fanwu01@zju.edu.cn>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.1 093/129] hdlc_ppp: sync per-proto timers before freeing hdlc state
+	Jeff Layton <jlayton@kernel.org>,
+	Chuck Lever <chuck.lever@oracle.com>
+Subject: [PATCH 5.10 80/96] nfsd: fix posix_acl leak on SETACL decode failure
 Date: Thu,  2 Jul 2026 18:20:12 +0200
-Message-ID: <20260702155114.067486691@linuxfoundation.org>
+Message-ID: <20260702155110.663230582@linuxfoundation.org>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260702155112.163984240@linuxfoundation.org>
-References: <20260702155112.163984240@linuxfoundation.org>
+In-Reply-To: <20260702155108.949633242@linuxfoundation.org>
+References: <20260702155108.949633242@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,148 +68,169 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:fanwu01@zju.edu.cn,m:kuba@kernel.org,s:lists@lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-270867-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-270660-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:jlayton@kernel.org,m:chuck.lever@oracle.com,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RWL_MAILSPIKE_POSSIBLE(0.00)[104.64.211.4:from];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,zju.edu.cn:email,msgid.link:url]
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp,oracle.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 5B7EA6FAB71
+X-Rspamd-Queue-Id: EAB3F6FA57C
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fan Wu <fanwu01@zju.edu.cn>
+From: Jeff Layton <jlayton@kernel.org>
 
-commit c78a4e41ab5ead6193ad8a2dd92e8906bae659fa upstream.
+commit 0853ac544c590880d797b04daa33fcb72b6be0e1 upstream.
 
-Each PPP control protocol (LCP/IPCP/IPV6CP) embedded in struct ppp
-registers a timer via timer_setup(). That struct ppp is the
-hdlc->state allocation, which detach_hdlc_protocol() frees with kfree()
-in both teardown paths: unregister_hdlc_device() and the re-attach inside
-attach_hdlc_protocol().
+nfsaclsvc_decode_setaclargs() and nfs3svc_decode_setaclargs() each
+call nfs_stream_decode_acl() twice, first for NFS_ACL and then for
+NFS_DFACL.  Each successful call transfers ownership of a freshly
+allocated posix_acl into argp->acl_access or argp->acl_default.  If
+the first call succeeds but the second fails, the decoder returns
+false and argp->acl_access is left dangling.
 
-The ppp proto never registered a .detach callback, so
-detach_hdlc_protocol() performs no timer synchronization before the
-kfree(). The only cancel, timer_delete(&proto->timer) in ppp_cp_event(),
-is partial (it does not wait for a running callback) and only runs on the
-->CLOSED transition; ppp_stop()/ppp_close() do not sync either. A
-ppp_timer callback already executing (blocked on ppp->lock) survives the
-kfree and then dereferences proto->state / ppp->lock in freed memory,
-leading to a use-after-free.
+ACLPROC2_SETACL.pc_release was wired to nfssvc_release_attrstat and
+ACLPROC3_SETACL.pc_release was wired to nfs3svc_release_fhandle.
+Both only call fh_put() and have no knowledge of the ACL fields on
+argp.  The posix_acl_release() pairs sat at the out: labels inside
+nfsacld_proc_setacl() and nfsd3_proc_setacl(), but svc_process()
+skips pc_func when pc_decode returns false, so that cleanup is
+unreachable on decode failure:
 
-Fix this by adding a .detach helper that calls timer_shutdown_sync() on
-every per-proto timer. detach_hdlc_protocol() invokes proto->detach(dev)
-before kfree(hdlc->state), so timer_shutdown_sync()
-now runs on both free paths.
-timer_shutdown_sync() is used instead of timer_delete_sync() because the
-keepalive path re-arms the timer through add_timer()/mod_timer() and
-shutdown blocks any re-activation during teardown.
+    svc_process_common()
+      pc_decode()                  /* decode_setaclargs: false */
+      /* pc_func skipped */
+      pc_release()                 /* fh_put only -- ACLs leaked */
 
-Initialize the per-protocol timers in ppp_ioctl() when the protocol is
-attached, and remove the now-redundant timer_setup() from ppp_start(), so
-that the timers are initialized exactly once at attach time and
-ppp_timer_release() never operates on uninitialized timer_list
-structures. attach_hdlc_protocol() uses kmalloc() (not kzalloc), so
-struct ppp's protos[i].timer is uninitialized garbage until the first
-timer_setup(); without this init-at-attach, attaching the PPP protocol
-without ever bringing the device up would leave timer_shutdown_sync()
-operating on uninitialized memory in .detach. Moving the init out of
-ppp_start() (which only runs on NETDEV_UP) into the attach path makes the
-initialization unconditional and avoids initializing the same timer_list
-twice.
+The orphaned posix_acl is leaked for the lifetime of the server.
 
-This bug was found by static analysis.
+Fix by adding nfsaclsvc_release_setacl() and nfs3svc_release_setacl(),
+which release both argp->acl_access and argp->acl_default in addition
+to fh_put(), and wiring them as pc_release for their respective SETACL
+procedures.  pc_release runs on every path svc_process() takes after
+decode, including decode failure, so the posix_acl_release() pairs are
+removed from the proc functions' out: labels to keep ownership in one
+place.  This matches the existing release_getacl() pattern used by
+the sibling GETACL procedures.
 
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Fixes: a257cdd0e217 ("[PATCH] NFSD: Add server support for NFSv3 ACLs.")
 Cc: stable@vger.kernel.org
-Signed-off-by: Fan Wu <fanwu01@zju.edu.cn>
-Link: https://patch.msgid.link/20260617020518.116319-1-fanwu01@zju.edu.cn
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Assisted-by: kres:claude-opus-4-7
+Signed-off-by: Jeff Layton <jlayton@kernel.org>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wan/hdlc_ppp.c |   15 +++++++++++++--
- 1 file changed, 13 insertions(+), 2 deletions(-)
+ fs/nfsd/nfs2acl.c |   17 ++++++++++++-----
+ fs/nfsd/nfs3acl.c |   17 ++++++++++++-----
+ 2 files changed, 24 insertions(+), 10 deletions(-)
 
---- a/drivers/net/wan/hdlc_ppp.c
-+++ b/drivers/net/wan/hdlc_ppp.c
-@@ -621,7 +621,6 @@ static void ppp_start(struct net_device
- 		struct proto *proto = &ppp->protos[i];
+--- a/fs/nfsd/nfs2acl.c
++++ b/fs/nfsd/nfs2acl.c
+@@ -129,10 +129,7 @@ static __be32 nfsacld_proc_setacl(struct
+ 	resp->status = fh_getattr(fh, &resp->stat);
  
- 		proto->dev = dev;
--		timer_setup(&proto->timer, ppp_timer, 0);
- 		proto->state = CLOSED;
- 	}
- 	ppp->protos[IDX_LCP].pid = PID_LCP;
-@@ -641,6 +640,15 @@ static void ppp_close(struct net_device
- 	ppp_tx_flush();
- }
+ out:
+-	/* argp->acl_{access,default} may have been allocated in
+-	   nfssvc_decode_setaclargs. */
+-	posix_acl_release(argp->acl_access);
+-	posix_acl_release(argp->acl_default);
++	/* argp->acl_{access,default} are released in nfsaclsvc_release_setacl. */
+ 	return rpc_success;
  
-+static void ppp_timer_release(struct net_device *dev)
+ out_drop_lock:
+@@ -310,6 +307,16 @@ static void nfsaclsvc_release_access(str
+ 
+ struct nfsd3_voidargs { int dummy; };
+ 
++static void nfsaclsvc_release_setacl(struct svc_rqst *rqstp)
 +{
-+	struct ppp *ppp = get_ppp(dev);
-+	int i;
++	struct nfsd3_setaclargs *argp = rqstp->rq_argp;
++	struct nfsd_attrstat *resp = rqstp->rq_resp;
 +
-+	for (i = 0; i < IDX_COUNT; i++)
-+		timer_shutdown_sync(&ppp->protos[i].timer);
++	fh_put(&resp->fh);
++	posix_acl_release(argp->acl_access);
++	posix_acl_release(argp->acl_default);
 +}
 +
- static struct hdlc_proto proto = {
- 	.start		= ppp_start,
- 	.stop		= ppp_stop,
-@@ -649,6 +657,7 @@ static struct hdlc_proto proto = {
- 	.ioctl		= ppp_ioctl,
- 	.netif_rx	= ppp_rx,
- 	.module		= THIS_MODULE,
-+	.detach		= ppp_timer_release,
- };
+ #define ST 1		/* status*/
+ #define AT 21		/* attributes */
+ #define pAT (1+AT)	/* post attributes - conditional */
+@@ -343,7 +350,7 @@ static const struct svc_procedure nfsd_a
+ 		.pc_func = nfsacld_proc_setacl,
+ 		.pc_decode = nfsaclsvc_decode_setaclargs,
+ 		.pc_encode = nfssvc_encode_attrstatres,
+-		.pc_release = nfssvc_release_attrstat,
++		.pc_release = nfsaclsvc_release_setacl,
+ 		.pc_argsize = sizeof(struct nfsd3_setaclargs),
+ 		.pc_argzero = sizeof(struct nfsd3_setaclargs),
+ 		.pc_ressize = sizeof(struct nfsd_attrstat),
+--- a/fs/nfsd/nfs3acl.c
++++ b/fs/nfsd/nfs3acl.c
+@@ -116,10 +116,7 @@ out_drop_lock:
+ out_errno:
+ 	resp->status = nfserrno(error);
+ out:
+-	/* argp->acl_{access,default} may have been allocated in
+-	   nfs3svc_decode_setaclargs. */
+-	posix_acl_release(argp->acl_access);
+-	posix_acl_release(argp->acl_default);
++	/* argp->acl_{access,default} are released in nfs3svc_release_setacl. */
+ 	return rpc_success;
+ }
  
- static const struct header_ops ppp_header_ops = {
-@@ -659,7 +668,7 @@ static int ppp_ioctl(struct net_device *
- {
- 	hdlc_device *hdlc = dev_to_hdlc(dev);
- 	struct ppp *ppp;
--	int result;
-+	int i, result;
+@@ -223,6 +220,16 @@ static void nfs3svc_release_getacl(struc
  
- 	switch (ifs->type) {
- 	case IF_GET_PROTO:
-@@ -687,6 +696,8 @@ static int ppp_ioctl(struct net_device *
- 			return result;
+ struct nfsd3_voidargs { int dummy; };
  
- 		ppp = get_ppp(dev);
-+		for (i = 0; i < IDX_COUNT; i++)
-+			timer_setup(&ppp->protos[i].timer, ppp_timer, 0);
- 		spin_lock_init(&ppp->lock);
- 		ppp->req_timeout = 2;
- 		ppp->cr_retries = 10;
++static void nfs3svc_release_setacl(struct svc_rqst *rqstp)
++{
++	struct nfsd3_setaclargs *argp = rqstp->rq_argp;
++	struct nfsd3_attrstat *resp = rqstp->rq_resp;
++
++	fh_put(&resp->fh);
++	posix_acl_release(argp->acl_access);
++	posix_acl_release(argp->acl_default);
++}
++
+ #define ST 1		/* status*/
+ #define AT 21		/* attributes */
+ #define pAT (1+AT)	/* post attributes - conditional */
+@@ -256,7 +263,7 @@ static const struct svc_procedure nfsd_a
+ 		.pc_func = nfsd3_proc_setacl,
+ 		.pc_decode = nfs3svc_decode_setaclargs,
+ 		.pc_encode = nfs3svc_encode_setaclres,
+-		.pc_release = nfs3svc_release_fhandle,
++		.pc_release = nfs3svc_release_setacl,
+ 		.pc_argsize = sizeof(struct nfsd3_setaclargs),
+ 		.pc_argzero = sizeof(struct nfsd3_setaclargs),
+ 		.pc_ressize = sizeof(struct nfsd3_attrstat),
 
 
 
