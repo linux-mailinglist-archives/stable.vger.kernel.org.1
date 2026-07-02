@@ -1,62 +1,61 @@
-Return-Path: <stable+bounces-270908-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-271243-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id Fu1DMYKgRmr4aQsAu9opvQ
-	(envelope-from <stable+bounces-270908-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:31:46 +0200
+	id NoRdBEaZRmrJZgsAu9opvQ
+	(envelope-from <stable+bounces-271243-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:00:54 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 55C876FB695
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:31:46 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 94FF66FADA9
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:00:53 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=ljv+NLzx;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-270908-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-270908-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=mO2X7Kh8;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-271243-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-271243-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 26FC9318E909
-	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:37:44 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 59E9130D7C11
+	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:52:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CAF9536167B;
-	Thu,  2 Jul 2026 16:36:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA3E53624DB;
+	Thu,  2 Jul 2026 16:50:37 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CC9B318EDC;
-	Thu,  2 Jul 2026 16:36:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 835F9355F5C;
+	Thu,  2 Jul 2026 16:50:36 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783010165; cv=none; b=ZKeQAagDaqxDOSgEmpJIXGhQK61DfgQV774Ws/TdIeY8qpKJyJKplFW/zYH23oS58nKEZ2mb4FZEyWWwinsEVoCNfEWMqY1+ZmHNm7MzPToZVODsQSTEcZtCKFK3/bv1SxRt2MTBWdtTanY04/SXT4f2KDQIq+e6iA4ZXwWFQ0k=
+	t=1783011037; cv=none; b=ZPZ1YZJ8VRRPv3T2W81Da35Z4JX1U2vk3hxflvyPQ46BEfYlULxtVosjKEzHR8IYJAyQ9w5E15siQl2xobxf0/6Ksjwf/NxCdCEDk+h0UYlTElzY5/M1OgNob9eK9g8RKbSk5wo21M5D3fNRJQwr6DQ6x4cd15R2iKCJ7XcDuBc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783010165; c=relaxed/simple;
-	bh=k9qYn0Q5Se1uxOQPdcypimRJtDCSgyaczSIYMzgCYPM=;
+	s=arc-20240116; t=1783011037; c=relaxed/simple;
+	bh=K7aUwgNTBbW8XNA7bBrLWIez8n7Wyf/Ylq/7NaJRVWE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ok1vqf6RnjsSM5MNjNjSDFcccuBQaALqX6wsib65EFDkkX3GTzCphTRYNw1QA/BmKK38/HdL2VT+sk/pHp1I7Vcy/RhZxbk9dFYUbziCNY+EpuT+5y1OjEg+iDtXt9fxncCG1uxCHJUGZ6+McoKW4qyoAa2lVbajq/6UkdcR//I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ljv+NLzx; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0027C1F000E9;
-	Thu,  2 Jul 2026 16:36:03 +0000 (UTC)
+	 MIME-Version; b=Q2xVAYS5DxT+cA0bC4gdYs6ntcJHHahEubMfOwIKxwC6pwhiaSzP9IyzI0VDGN47OlVpmjokQoq8EvtgxcJaGZipjR0pk2Y/r+a9AGoXT+HqwPeRk7U5B4t6xXwAL5g0xPZc5SRf7KV6X/VxjNtkrdWc+MscAyAmCy7D3foQBCY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mO2X7Kh8; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E88E41F000E9;
+	Thu,  2 Jul 2026 16:50:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1783010164;
-	bh=qhBhIUjaiiVvEO2I5vIf1XS7bGtXJdQzP1j7otFGU3I=;
+	s=korg; t=1783011036;
+	bh=CPmXQMoccSqwj5nrJcAJRxywK2ia+RFRBC6I+8oi6mo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=ljv+NLzxB5X5TmAXOwWzRT/5GSOq2E5gDxePtkchiDKHmJfWVZlCVsjB2qhoqkDfx
-	 49F8HLm4UEOxhzSaBR568b5YgXoYgST4hq64DBTDVIW+AE62aAwVriYJCCLvJkOlhU
-	 NSEU73rodxAfkehzuOZFYZj7grhzmR7QyvNsHbQA=
+	b=mO2X7Kh8a2aUh3enaukhDBog9hc4iK2IjjhzyjCrft0N+wk2T0tRtQgWTgZJhxBn7
+	 MkY/8PDQrafeg7yIysgQwJCCAo+1HW3IR8yh7B1EfbQNceepFojUKW1cBoojRn0IXJ
+	 wvaMvg2/HidXpokp3mgZhurs74gTR0VaEvslp5iw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paolo Abeni <pabeni@redhat.com>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 113/129] mptcp: fix missing wakeups in edge scenarios
+	Zenm Chen <zenmchen@gmail.com>,
+	Lorenzo Bianconi <lorenzo@kernel.org>,
+	Felix Fietkau <nbd@nbd.name>
+Subject: [PATCH 6.6 131/175] wifi: mt76: mt76x2u: Add support for ELECOM WDC-867SU3S
 Date: Thu,  2 Jul 2026 18:20:32 +0200
-Message-ID: <20260702155114.482609742@linuxfoundation.org>
+Message-ID: <20260702155118.572611223@linuxfoundation.org>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260702155112.163984240@linuxfoundation.org>
-References: <20260702155112.163984240@linuxfoundation.org>
+In-Reply-To: <20260702155115.766838875@linuxfoundation.org>
+References: <20260702155115.766838875@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,81 +69,73 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	RCVD_TLS_LAST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-271243-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:zenmchen@gmail.com,m:lorenzo@kernel.org,m:nbd@nbd.name,s:lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-270908-lists,stable=lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:pabeni@redhat.com,m:matttbe@kernel.org,m:kuba@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org,nbd.name];
+	FORWARDED(0.00)[lists@lfdr.de];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,msgid.link:url]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[nbd.name:email,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 55C876FB695
+X-Rspamd-Queue-Id: 94FF66FADA9
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paolo Abeni <pabeni@redhat.com>
+From: Zenm Chen <zenmchen@gmail.com>
 
-[ Upstream commit 9d8d28738f24b75616d6ca7a27cb4aed88520343 ]
+commit f4ce0664e9f0387873b181777891741c33e19465 upstream.
 
-The mptcp_recvmsg() can fill MPTCP socket receive queue via
-mptcp_move_skbs(), but currently does not try to wakeup any listener,
-because the same process is going to check the receive queue soon.
+Add the ID 056e:400a to the table to support an additional MT7612U
+adapter: ELECOM WDC-867SU3S.
 
-When multiple threads are reading from the same fd, the above can
-cause stall. Add the missing wakeup.
+Compile tested only.
 
-Fixes: 6771bfd9ee24 ("mptcp: update mptcp ack sequence from work queue")
-Cc: stable@vger.kernel.org
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20260602-net-mptcp-misc-fixes-7-1-rc7-v2-1-856831229976@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org # 5.10.x
+Signed-off-by: Zenm Chen <zenmchen@gmail.com>
+Acked-by: Lorenzo Bianconi <lorenzo@kernel.org>
+Link: https://patch.msgid.link/20260407154430.9184-1-zenmchen@gmail.com
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/mptcp/protocol.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/net/wireless/mediatek/mt76/mt76x2/usb.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/net/mptcp/protocol.c
-+++ b/net/mptcp/protocol.c
-@@ -2197,8 +2197,10 @@ static bool __mptcp_move_skbs(struct mpt
- 		__mptcp_splice_receive_queue(sk);
- 		mptcp_data_unlock(sk);
- 	}
--	if (ret)
-+	if (ret) {
- 		mptcp_check_data_fin((struct sock *)msk);
-+		sk->sk_data_ready(sk);
-+	}
- 	return !skb_queue_empty(&msk->receive_queue);
- }
- 
+--- a/drivers/net/wireless/mediatek/mt76/mt76x2/usb.c
++++ b/drivers/net/wireless/mediatek/mt76/mt76x2/usb.c
+@@ -16,6 +16,7 @@ static const struct usb_device_id mt76x2
+ 	{ USB_DEVICE(0x0e8d, 0x7612) },	/* Aukey USBAC1200 - Alfa AWUS036ACM */
+ 	{ USB_DEVICE(0x057c, 0x8503) },	/* Avm FRITZ!WLAN AC860 */
+ 	{ USB_DEVICE(0x7392, 0xb711) },	/* Edimax EW 7722 UAC */
++	{ USB_DEVICE(0x056e, 0x400a) },	/* ELECOM WDC-867SU3S */
+ 	{ USB_DEVICE(0x0e8d, 0x7632) },	/* HC-M7662BU1 */
+ 	{ USB_DEVICE(0x0471, 0x2126) }, /* LiteOn WN4516R module, nonstandard USB connector */
+ 	{ USB_DEVICE(0x0471, 0x7600) }, /* LiteOn WN4519R module, nonstandard USB connector */
 
 
 
