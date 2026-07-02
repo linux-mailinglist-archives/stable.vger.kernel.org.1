@@ -1,147 +1,179 @@
-Return-Path: <stable+bounces-271746-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-270796-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id rItaI8ejR2r8cgAAu9opvQ
-	(envelope-from <stable+bounces-271746-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 03 Jul 2026 13:57:59 +0200
+	id Lv97F6GVRmqlZAsAu9opvQ
+	(envelope-from <stable+bounces-270796-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:45:21 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2BE9970218A
-	for <lists+stable@lfdr.de>; Fri, 03 Jul 2026 13:57:59 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id BCB516FA7CF
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:45:20 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=HZd1as71;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-271746-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-271746-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=uniontech.com header.s=onoh2408 header.b=BIdxpUOK;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-270796-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-270796-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=none) header.from=uniontech.com;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id ACD533029ACA
-	for <lists+stable@lfdr.de>; Fri,  3 Jul 2026 11:57:28 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 0550032AB47E
+	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:34:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C02723CCFB8;
-	Fri,  3 Jul 2026 11:57:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C318361DCB;
+	Thu,  2 Jul 2026 16:31:13 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from smtpbg151.qq.com (smtpbg151.qq.com [18.169.211.239])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FAA73CE0B8;
-	Fri,  3 Jul 2026 11:57:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EAFD3603E8
+	for <stable@vger.kernel.org>; Thu,  2 Jul 2026 16:31:08 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783079839; cv=none; b=smc4mq2VTFPq+r8wqS+FDXlqRg4uVnTprPMIzhg2Hnka8wzhhVgzK15suhlRXNVJ3iKH2ntHPAsgHk/XApj4Qm7q25M6VroGj4jAvV2xsrzv3audxm/8kj+L42n88luKYz3ePK+3dC9tmkpjxG4McdUDMiT1xtRtZF+GkZfrWpM=
+	t=1783009872; cv=none; b=TZrKV4mWgyql47Z6cVaBO1I3hhIxFLgivKOXjDyNJiQyjZx1HDH1DDTtvl0A4wrAy8E2go172JbDtp4sAJEuwreFmzKBtNlmc5eCLws8scCB+g3Ec6KV/BHHacXe+Q6t4fr7pb9Y3l5bk/4qLS7cZI6ByLB+FFn5ivG/PpU2Btg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783079839; c=relaxed/simple;
-	bh=ovPM9xZDUdWaupBWQHoOBb40dBYxxOM7oXiMWWVZVww=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=C2cWGTTD8q5KRYJFDpN4irJSaiSi74v5FPZb2lE0AaYI+laDPM2jurT7tJ7m/fnnzztHXHDZ4l9/IG8frucc9wRWbLRqChpZVkzLLPCq+LEzfTBfs7RNoT7Fm04CFwToBoiwzdTFolnDz1MFuVbjRFuGfdRrkCvX3ItmtqyqwS4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HZd1as71; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 900A71F000E9;
-	Fri,  3 Jul 2026 11:57:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783079838;
-	bh=r+aPFwarUHkhrm1jZbamCEDXoqqXazDsHMO77Y6Hkqw=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Date;
-	b=HZd1as7135L9ie4torTNvRcIlxRlY7pUneeGYreenG2FnfncoKpAcfQAeaAx+6LDM
-	 lbsepL4pfw1VHKVIDFHn98YoJHvSz8dRNPDvo5LU72wN56KT3+9Vrldp/1becRRLfC
-	 Zgx0bYlrf91tZpAzQtcMcpt7xmWMdlnLlcZqqoz9D8cU0DjxFAN/Ea/nRzQ35/vVnf
-	 aNFcXK0Rvv0CNx3CRBkb43O/gwDVLl5NC+cSHIP9wRExXRVkONX8TJKfaA2ibKnT1T
-	 1BJV4aw9eq4PHV0X6uepkhks9fuYqyFPh/39ljFX4ZW9LT305EoEbbuBYxjLDAoaab
-	 czldWgnZpqsQQ==
-From: Mark Brown <broonie@kernel.org>
-To: Liam Girdwood <lgirdwood@gmail.com>, linux-kernel@vger.kernel.org, 
- WenTao Liang <vulab@iscas.ac.cn>
-Cc: stable@vger.kernel.org
-In-Reply-To: <20260626160150.54291-1-vulab@iscas.ac.cn>
-References: <20260626160150.54291-1-vulab@iscas.ac.cn>
-Subject: Re: [PATCH] fix: regulator: as3722_get_regulator_dt_data: fix
- premature of_node_put leaving dangling of_node pointer
-Message-Id: <178300935014.83990.3579120327882545763.b4-ty@b4>
-Date: Thu, 02 Jul 2026 17:22:30 +0100
+	s=arc-20240116; t=1783009872; c=relaxed/simple;
+	bh=Yhl+3oW3kXt8ec0rUSaQ1g6FmMDZRDoLmEpqjnxw3S0=;
+	h=From:To:Cc:Subject:Mime-Version:Content-Type:Date:Message-ID:
+	 References:In-Reply-To; b=PFsv7KYhN9OhDyxZwG2u4UaAz2a740a/uAv1HNwt8fIewkt5QGwjtICwfzN0EwMG5TyPTdiZY7o2BlzRqVAl7E7rU696wCqQML2OOoDCjm8/8m3p0tLZ9nnH32zGW8CbI5HMqfjQyJ0rcVUwVA+xy5mikv7Fevo/SxeuWhxivQU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniontech.com; spf=pass smtp.mailfrom=uniontech.com; dkim=pass (1024-bit key) header.d=uniontech.com header.i=@uniontech.com header.b=BIdxpUOK; arc=none smtp.client-ip=18.169.211.239
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=uniontech.com;
+	s=onoh2408; t=1783009767;
+	bh=Yhl+3oW3kXt8ec0rUSaQ1g6FmMDZRDoLmEpqjnxw3S0=;
+	h=From:To:Subject:Mime-Version:Date:Message-ID;
+	b=BIdxpUOKbhKFP6PnEMF+lD4YeYuXVmTche01adarQG604WaPgTqAGmbfYQuRSkMdc
+	 XkY88cQoQbQDeXwzh9kqqbbkCvNo1VWEjMJH8VKiR2R+C2Qv8/EcDNkZ/0s40HqR2U
+	 WJf23+aO6xjZp5BKU2juUyCau1YXprO8M9sfiGsM=
+EX-QQ-RecipientCnt: 8
+X-QQ-GoodBg: 1
+X-QQ-SSF: 00400000000000F0
+X-QQ-FEAT: D4aqtcRDiqQ6f7IieUZ8DoKgL9zJG7IbL7boNmGOgcs=
+X-QQ-BUSINESS-ORIGIN: 2
+X-QQ-Originating-IP: D7Y1ShbmZDUc5HDRLR7HoQ+C7igt/Drzm96NVueKceQ55F55yi618lUUpL/fBwymM4ehIFhDnY0VMUlNgbAbaw==
+X-QQ-STYLE: 
+X-QQ-mid: lv3gz7b-6t1783009765te748538d
+From: "=?utf-8?B?V2VudGFvIEd1YW4=?=" <guanwentao@uniontech.com>
+To: "=?utf-8?B?R3JlZyBLSA==?=" <gregkh@linuxfoundation.org>
+Cc: "=?utf-8?B?MDAxMDcwODI=?=" <00107082@163.com>, "=?utf-8?B?aWtsYXR6Y28=?=" <iklatzco@gmail.com>, "=?utf-8?B?cGF0Y2hlcw==?=" <patches@lists.linux.dev>, "=?utf-8?B?cGV0ZXJ6?=" <peterz@infradead.org>, "=?utf-8?B?U2FzaGEgTGV2aW4=?=" <sashal@kernel.org>, "=?utf-8?B?c3RhYmxl?=" <stable@vger.kernel.org>, "=?utf-8?B?eWVvcmV1bS55dW4=?=" <yeoreum.yun@arm.com>
+Subject: Re: [PATCH] perf: Fix dangling cgroup pointer in cpuctx backport
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.16-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1234; i=broonie@kernel.org;
- h=from:subject:message-id; bh=ovPM9xZDUdWaupBWQHoOBb40dBYxxOM7oXiMWWVZVww=;
- b=owEBbQGS/pANAwAKASTWi3JdVIfQAcsmYgBqR6OcGOFaX2ASGZmlFq9sO7OsrWH20ngi4Dc0Q
- /Jer56A8pKJATMEAAEKAB0WIQSt5miqZ1cYtZ/in+ok1otyXVSH0AUCakejnAAKCRAk1otyXVSH
- 0A++B/wMcGmxlpL3woIzmXlhwmG6i1EzlHzMEU8ab+o4rc7Ies2QFWZPYOjokOQTdFKe6dWULUu
- WlP38v7m2ls2xA1USyBN/7IuRHZF1+wiv8EEkK0sMeaz1B68V21a7XWJGx38/Rb4UbQw1WbXQoc
- yQYU6EnjURoV3vSa/3nI+o7HBm2wulhy10SpnkREIg9LzyIxXMqjOfPmLhYiA2KkZv5AJganh7U
- NcY9eNJ7xW3afNOIsg5lcY43F+CxTA8LCOgAuwSopYyGFbAjjgfMtOTCC2E5J7OKgTudG7isXgg
- UO0FFQR7Ezi/p9RILVDwUg0CtyqORQhdfNJwFJ0/2DW4MRYK
-X-Developer-Key: i=broonie@kernel.org; a=openpgp;
- fpr=3F2568AAC26998F9E813A1C5C3F436CA30F5D8EB
+Mime-Version: 1.0
+Content-Type: text/plain;
+	charset="utf-8"
+Content-Transfer-Encoding: base64
+Date: Fri, 3 Jul 2026 00:29:25 +0800
+X-Priority: 3
+Message-ID: <tencent_6D500C6D6BAE135A01D2E2B8@qq.com>
+X-QQ-MIME: TCMime 1.0 by Tencent
+X-Mailer: QQMail 2.x
+X-QQ-Mailer: QQMail 2.x
+References: <2026062455-obtrusive-sandbox-d6d1@gregkh>
+	<20260624095920.2558406-1-guanwentao@uniontech.com>
+	<2026062404-unusual-nutmeg-87d5@gregkh>
+	<tencent_5FDA609363B90C6249A050FD@qq.com>
+	<2026070200-uneaten-smock-4130@gregkh>
+In-Reply-To: <2026070200-uneaten-smock-4130@gregkh>
+X-QQ-ReplyHash: 379268434
+X-BIZMAIL-ID: 2400357538771675532
+X-Address-Ticket:version=;type=;ticket_id=;id_list=;display_name=;session_id=;
+X-QQ-SENDSIZE: 520
+Received: from qq.com (unknown [127.0.0.1])
+	by smtp.qq.com (ESMTP) with SMTP
+	id ; Fri, 03 Jul 2026 00:29:26 +0800 (CST)
+Feedback-ID: lv:uniontech.com:qybglogicsvrsz:qybglogicsvrsz4b-0
+X-QQ-XMAILINFO: NFbgtEGdVZezRXmxXKhLuzCkl18SvNau5sDqnW7xrDdBBmGJu2aGRl5e
+	EE4TzFzt0b7Lq3mmSAps3IsN57VXUhJTyhDbs2o9r7aCJYNPwG3xQPQJZPMM9wmM9KsVneE
+	JYqwIXAEmwwcyU9LPcw88RtysKpTF6GzOou0cMx/E6hZhQLpIKUP3DqNOqGPrvXtP4POJh1
+	2q5NbDiPAv5xlTMbjx2trMFnPF9+UccJ8C/ewbkPB/fo6FGG8pvN68kyJV5/+2/Bq/38qX1
+	eHpJ12jTDo7sb3XQI/s2LVuW79a8k/pOFf7tGj9Int1ywlFeCKtDI4YwPNu3rKcmet4n7p5
+	7dJ8Q+dyVL8s4rByXXtwiUbGn6lpYExW+nDbfMIIop+meBkqW4teNwdb8aYG5e0ibk8rcdX
+	DmTSfudDlb/dc2EtJ4mfQPmKc7GajeaLO6HjHYyWvCfFcin7Y3kSHof2WLBudkwRhVhZBMK
+	QiLZMN/Vl44I+fyRCU/oQGMVR1cpeV+wrNFqBRzpr1Lc8CrRhiJcevF5nXlhFIrk9H67Ae2
+	O1KBEfpH9lJhpWtGaNmyV12Z/XVtp3wY4gV0U8wKzO2QjMS8VeDncaLJ1SEk9GpTS4b01S9
+	PLishDL0BQ8+D9mYkh2kYcpeoV37LlgOprlklincZPMbFm44DltwCausTDdJfg+7hSDg3OV
+	dKgWnKVyYWa/+emQRKbu3WRjjTg5VL87dYrpDDHPE8eQyPz2SGlYPYzC8s3SfHQq3a2vXpr
+	LhmfGUENY6y/7+plViU4uBd4XYDZbvV32351tyZfyw5Nssr6VNHphv7HEvDbZPsEuHvctgI
+	Wf3NIswZMh43FywTnsslWjpVG0h6z28Ct/zrsaLAOpj16h92m3INX+52nGJ5Alm+cyxBlLr
+	PpyqmnQk6MWXA8TAhJzjFXASa+yENwntIyjF2xyFOsK2Ir7wuVLPVcAUmfAyQ27/zxVDqwD
+	XAFC7PbNTbo+VrqbOVKbmVQO0f/pEg9DjC5ajZaOa8EVEr3kgZoMvh4/hxeLY26afL3bwM+
+	p5oe/Q5vLJ2PsnPII13kyZIj9PgbLTznyXl2Xwb7IcJxZOXgiLoQr1Vfn/jUDI/WrA7TvoX
+	1Xllmm186e3lK/v7xoXUGmI6+PFjPkcow==
+X-QQ-XMRINFO: M/715EihBoGS47X28/vv4NpnfpeBLnr4Qg==
+X-QQ-RECHKSPAM: 0
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-4.66 / 15.00];
-	WHITELIST_SPF_DKIM(-3.00)[kernel.org:d:+,kernel.org:s:+];
+X-Spamd-Result: default: False [2.44 / 15.00];
+	TO_EXCESS_BASE64(1.50)[];
+	CC_EXCESS_BASE64(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	MIME_BASE64_TEXT_BOGUS(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[uniontech.com,none];
+	MV_CASE(0.50)[];
+	R_DKIM_ALLOW(-0.20)[uniontech.com:s=onoh2408];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
+	MIME_BASE64_TEXT(0.10)[];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:lgirdwood@gmail.com,m:linux-kernel@vger.kernel.org,m:vulab@iscas.ac.cn,m:stable@vger.kernel.org,s:lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FREEMAIL_TO(0.00)[gmail.com,vger.kernel.org,iscas.ac.cn];
-	FORGED_SENDER(0.00)[broonie@kernel.org,stable@vger.kernel.org];
-	MIME_TRACE(0.00)[0:+];
 	RCVD_TLS_LAST(0.00)[];
+	TO_DN_ALL(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-270796-lists,stable=lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-271746-lists,stable=lfdr.de];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	TO_DN_SOME(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:gregkh@linuxfoundation.org,m:00107082@163.com,m:iklatzco@gmail.com,m:patches@lists.linux.dev,m:peterz@infradead.org,m:sashal@kernel.org,m:stable@vger.kernel.org,m:yeoreum.yun@arm.com,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[guanwentao@uniontech.com,stable@vger.kernel.org];
+	HAS_X_PRIO_THREE(0.00)[3];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[uniontech.com:+];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[broonie@kernel.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[guanwentao@uniontech.com,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[163.com,gmail.com,lists.linux.dev,infradead.org,kernel.org,vger.kernel.org,arm.com];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,vger.kernel.org:from_smtp]
+	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FROM_EXCESS_BASE64(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[qq.com:mid,uniontech.com:dkim,uniontech.com:email,uniontech.com:from_mime,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 2BE9970218A
+X-Rspamd-Queue-Id: BCB516FA7CF
 
-On Sat, 27 Jun 2026 00:01:50 +0800, WenTao Liang wrote:
-> fix: regulator: as3722_get_regulator_dt_data: fix premature of_node_put leaving dangling of_node pointer
-
-Applied to
-
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/regulator.git for-7.3
-
-Thanks!
-
-[1/1] fix: regulator: as3722_get_regulator_dt_data: fix premature of_node_put leaving dangling of_node pointer
-      https://git.kernel.org/broonie/regulator/c/f9324d670ae0
-
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.
-
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
+SGksDQoNCj4gT24gV2VkLCBKdW4gMjQsIDIwMjYgYXQgMDY6MDc6NDFQTSArMDgwMCwgV2Vu
+dGFvIEd1YW4gd3JvdGU6DQo+ID4gPiBPbiBXZWQsIEp1biAyNCwgMjAyNiBhdCAwNTo1OToy
+MVBNICswODAwLCBXZW50YW8gR3VhbiB3cm90ZToNCj4gPiA+ID4gcmVjZW50bHkgYmFja3Bv
+cnQgb2YgKCJwZXJmOiBGaXggZGFuZ2xpbmcgY2dyb3VwIHBvaW50ZXIgaW4gY3B1Y3R4IikN
+Cj4gPiA+ID4gdXNlIGEgbWlkZGxlIHZlcnNpb24sIHNvIGFsaWduZWQgd2l0aCB0aGUgdXBz
+dHJlYW0gY29tbWl0Og0KPiA+ID4gPiAzYjdhMzRhZWJiZGYyYTRiNzI5NTIwNWJmMGM2NTQy
+OTQyODNlYzgyDQo+ID4gPiA+DQo+ID4gPiA+ID4gU2lnbmVkLW9mZi1ieTogV2VudGFvIEd1
+YW4gPGd1YW53ZW50YW9AdW5pb250ZWNoLmNvbT4NCj4gPiA+ID4gLS0tDQo+ID4gPiA+ICBr
+ZXJuZWwvZXZlbnRzL2NvcmUuYyB8IDUgKystLS0NCj4gPiA+ID4gIDEgZmlsZSBjaGFuZ2Vk
+LCAyIGluc2VydGlvbnMoKyksIDMgZGVsZXRpb25zKC0pDQo+ID4gPiA+DQo+ID4gPiA+IGRp
+ZmYgLS1naXQgYS9rZXJuZWwvZXZlbnRzL2NvcmUuYyBiL2tlcm5lbC9ldmVudHMvY29yZS5j
+DQo+ID4gPiA+IGluZGV4IGE0MTg3ZGVhNjQwMmEuLjczYTg2ZGIwNmNjOWIgMTAwNjQ0DQo+
+ID4gPiA+IC0tLSBhL2tlcm5lbC9ldmVudHMvY29yZS5jDQo+ID4gPiA+ICsrKyBiL2tlcm5l
+bC9ldmVudHMvY29yZS5jDQo+ID4gPiA+IEBAIC0yMzg0LDEwICsyMzg0LDkgQEAgX19wZXJm
+X3JlbW92ZV9mcm9tX2NvbnRleHQoc3RydWN0IHBlcmZfZXZlbnQgKmV2ZW50LA0KPiA+ID4g
+PiAgKi8NCj4gPiA+ID4gIGlmIChmbGFncyAmIERFVEFDSF9FWElUKQ0KPiA+ID4gPiAgc3Rh
+dGUgPSBQRVJGX0VWRU5UX1NUQVRFX0VYSVQ7DQo+ID4gPiA+IC0gaWYgKGZsYWdzICYgREVU
+QUNIX0RFQUQpIHsNCj4gPiA+ID4gLSBldmVudC0+cGVuZGluZ19kaXNhYmxlID0gMTsNCj4g
+PiA+ID4gKyBpZiAoZmxhZ3MgJiBERVRBQ0hfREVBRCkNCj4gPiA+ID4gIHN0YXRlID0gUEVS
+Rl9FVkVOVF9TVEFURV9ERUFEOw0KPiA+ID4gPiAtIH0NCj4gPiA+ID4gKw0KPiA+ID4gPiAg
+ZXZlbnRfc2NoZWRfb3V0KGV2ZW50LCBjdHgpOw0KPiA+ID4gPg0KPiA+ID4gPiAgaWYgKGV2
+ZW50LT5zdGF0ZSA+IFBFUkZfRVZFTlRfU1RBVEVfT0ZGKQ0KPiA+ID4gPiAtLQ0KPiA+ID4g
+PiAyLjMwLjINCj4gPiA+ID4NCj4gPiA+DQo+ID4gPiBXaGF0IGtlcm5lbCB0cmVlKHMpIGlz
+IHRoaXMgZm9yPyAgV2hhdCBnaXQgaWQgZG9lcyB0aGlzIGZpeD8NCj4gPiAxLiB2Ni42LjE0
+MyBhbmQgdjYuMTIuOTQNCj4gPiAyLg0KPiA+IGFlMWFkYTBhZjE2MjQ5YTNlZDE1ZTMzZmE2
+NzE5YTZhMmY5NmY1MzcgaW4gdjYuNi4xNDMNCj4gPiA0NmY1NjIzZjliMGVmNjYxMjdlMWRl
+MTZmYjg1Nzg1MGNkYjE0ZTY4IGluIHY2LjEyLjk0DQo+IA0KPiBQbGVhc2UgcHV0IGFsbCBv
+ZiB0aGlzIGluZm9ybWF0aW9uIGluIHRoZSBjaGFuZ2Vsb2cgYW5kIHByb3ZpZGUNCj4gdmVy
+c2lvbnMgZm9yIGFsbCBvZiB0aGUgYnJhbmNoZXMgeW91IHdhbnQgaXQgZm9yLg0KVGhhbmtz
+IGZvciB5b3VyIHJlcGx5LCBJIHdpbGwgc3VtYml0IGxhdGVyLg0KDQpPdXQgb2YgdGhyZWFk
+LCBwZW9wbGUgc2F5cyBodHRwczovL2Nkbi5rZXJuZWwub3JnL3B1Yi9saW51eC9rZXJuZWwv
+djcueC9saW51eC03LjEuMi50YXIueHoNCmZyb20ga2VybmVsLm9yZyBwdWJsaWMgYXJjaGl2
+ZSByZXR1cm4gNDA0LCB3aGF0IGhhcHBlbj8NCg0KQlJzDQpXZW50YW8gR3Vhbg==
 
 
