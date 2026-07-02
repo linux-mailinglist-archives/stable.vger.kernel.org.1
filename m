@@ -1,62 +1,62 @@
-Return-Path: <stable+bounces-270996-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-270803-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id Bl1pCVGXRmq6ZQsAu9opvQ
-	(envelope-from <stable+bounces-270996-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:52:33 +0200
+	id j/MvF6iVRmqoZAsAu9opvQ
+	(envelope-from <stable+bounces-270803-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:45:28 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F1C36FAAD2
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:52:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F1CDA6FA7DB
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:45:27 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=v0wZBQ5Q;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-270996-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-270996-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=oITZlx+9;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-270803-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-270803-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 06A4D325BFBF
-	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:41:16 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 05E7332AEE91
+	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:34:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91BE0362154;
-	Thu,  2 Jul 2026 16:39:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 752643403E1;
+	Thu,  2 Jul 2026 16:31:30 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 589B23546E1;
-	Thu,  2 Jul 2026 16:39:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D37333F5BE;
+	Thu,  2 Jul 2026 16:31:28 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783010396; cv=none; b=HKq46qZt+HbbuFLJIorKXMNUhlb9PW8JzB3oa0sE4I8mrbeyEHlXmxDT7uYSBO2N4AuwmqkDoDxKZ6NlTMtDTxqfnl+GHGJCqtOf8Lm6Y7r9jKCKO+fWBjecov0IyEnABiqJXKoCUzCa8CecGoYumob84pf2aLk8c9H5aBKkhyg=
+	t=1783009890; cv=none; b=RjciLWcHyToa2ZosYX+GE8ZWOFWpaxNr70Pihn6GNuWq/iaOddPsHl77k9Xo47BFLiTe4uLoRA2wGcODl2wIVnJkZ3PY2e63Ysir2LNagiHTVhF1K8OnySXDOL/Dt93EuZAW+wEQ21ccI32KL5HbDi9YB7o+sO9By56bqvdut7k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783010396; c=relaxed/simple;
-	bh=Gn/JjzACw2XOMZFvAEC8+9hb/GRqn7sDTXCvfY/B16s=;
+	s=arc-20240116; t=1783009890; c=relaxed/simple;
+	bh=zQoE9vAQc2nc7/5Q0Db4hF3FB1hqmjzkA/scqmeJpTY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=kipTVvEN4YGMBDESRHY1MdHjQ8BWoJKjNFUmU/7EgDRHgZeeoTct9+1s9DsppWr8I76dEfZweNorOZMC5uaWiYDmpY3qdALj2sLIe2U2uuPU9xV+A9AAL1OlQXIjVDkam0b2yXxz26uV92niAiSdSVSEjI8PLBKN6xUw13VSA5Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v0wZBQ5Q; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE0D41F000E9;
-	Thu,  2 Jul 2026 16:39:54 +0000 (UTC)
+	 MIME-Version; b=qoahM8KaCS4aEOL2yyTKfnbFsmTys0ElWvMbLwBSgyn6lO8NwtSbbyNqUTjAmUyUe6n5agC/oPGXxfk/ymgAAxT9YKqYcFIQMxFYn5c0kwpkXfT1J9Hvkr/PhS8pnriBLhE3R/sjMANFXlDeaiyx9pDaHRpxjtkrxgOzUQelJo4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oITZlx+9; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B4081F000E9;
+	Thu,  2 Jul 2026 16:31:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1783010395;
-	bh=yOkqMAWLizIiQqlS7bdVKNy8Of92mZgLDHYw3eA9aAE=;
+	s=korg; t=1783009888;
+	bh=e6WWzszf7pW/WQgrs01jwBa08MnWIc86Pf4p3LjePAg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=v0wZBQ5QZi900WFR+Ude+FhB/u2ScygN48rPhn6ohs3Ue5bSlZsL7r2Zx3x+RLW4w
-	 lDsiwIwB0Cn9pmcHxiEWPK9ti2rO7Ajkj/lPEAJpp1bi9Pax5a2v5t4oEEJLku3H8Q
-	 t+EkKu5ZAGsOgf1DdnTUsNEHBPKM+sq4s185ZA/A=
+	b=oITZlx+9tRBOJbOoxJYzgXa7IQddNj9KvWpYAlcWSAdFbpb3CeryqmhfN0FUN1feF
+	 GpyncnkE7VBx+vQQy4qp/LXL36W21W7xuSN+sgvvkKwMAAeby31U1I5h1Y5PbKOWGA
+	 D7/I9J9q2TDaTZiFItImUyBFFnLHtk+U3/VkZZTU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Aur=C3=A9lien=20Bombo?= <abombo@microsoft.com>,
-	Zhihao Cheng <chengzhihao1@huawei.com>,
-	Greg Kurz <gkurz@redhat.com>,
-	Miklos Szeredi <mszeredi@redhat.com>
-Subject: [PATCH 6.12 092/204] virtiofs: fix UAF on submount umount
+	Xie Yuanbin <xieyuanbin1@huawei.com>,
+	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 030/129] ARM: fix branch predictor hardening
 Date: Thu,  2 Jul 2026 18:19:09 +0200
-Message-ID: <20260702155120.594488210@linuxfoundation.org>
+Message-ID: <20260702155112.781162924@linuxfoundation.org>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260702155118.667618796@linuxfoundation.org>
-References: <20260702155118.667618796@linuxfoundation.org>
+In-Reply-To: <20260702155112.163984240@linuxfoundation.org>
+References: <20260702155112.163984240@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,92 +66,197 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-270996-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:abombo@microsoft.com,m:chengzhihao1@huawei.com,m:gkurz@redhat.com,m:mszeredi@redhat.com,s:lists@lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-270803-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:xieyuanbin1@huawei.com,m:rmk+kernel@armlinux.org.uk,m:bigeasy@linutronix.de,m:sashal@kernel.org,m:rmk@armlinux.org.uk,s:lists@lfdr.de];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	TAGGED_RCPT(0.00)[stable];
+	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,huawei.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp]
+	TAGGED_RCPT(0.00)[stable,kernel];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,huawei.com:email,vger.kernel.org:from_smtp,linutronix.de:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 6F1C36FAAD2
+X-Rspamd-Queue-Id: F1CDA6FA7DB
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Miklos Szeredi <mszeredi@redhat.com>
+From: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
 
-commit 06b41351779e9289e8785694ade9042ae85e41ea upstream.
+commit fd2dee1c6e2256f726ba33fd3083a7be0efc80d3 upstream.
 
-iput() called from fuse_release_end() can Oops if the super block has
-already been destroyed.  Normally this is prevented by waiting for
-num_waiting to go down to zero before commencing with super block shutdown.
+__do_user_fault() may be called with indeterminent interrupt enable
+state, which means we may be preemptive at this point. This causes
+problems when calling harden_branch_predictor(). For example, when
+called from a data abort, do_alignment_fault()->do_bad_area().
 
-This only works, however, for the last submount instance, as the wait
-counter is per connection, not per superblock.
+Move harden_branch_predictor() out of __do_user_fault() and into the
+calling contexts.
 
-Revert to using synchronous release requests for the auto_submounts case,
-which is virtiofs only at this time.
+Moving it into do_kernel_address_page_fault(), we can be sure that
+interrupts will be disabled here.
 
-Reported-by: Aurélien Bombo <abombo@microsoft.com>
-Reported-by: Zhihao Cheng <chengzhihao1@huawei.com>
-Cc: Greg Kurz <gkurz@redhat.com>
-Closes: https://github.com/kata-containers/kata-containers/issues/12589
-Fixes: 26e5c67deb2e ("fuse: fix livelock in synchronous file put from fuseblk workers")
-Cc: stable@vger.kernel.org
-Reviewed-by: Greg Kurz <gkurz@redhat.com>
-Signed-off-by: Miklos Szeredi <mszeredi@redhat.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Converting do_translation_fault() to use do_kernel_address_page_fault()
+rather than do_bad_area() means that we keep branch predictor handling
+for translation faults. Interrupts will also be disabled at this call
+site.
+
+do_sect_fault() needs special handling, so detect user mode accesses
+to kernel-addresses, and add an explicit call to branch predictor
+hardening.
+
+Finally, add branch predictor hardening to do_alignment() for the
+faulting case (user mode accessing kernel addresses) before interrupts
+are enabled.
+
+This should cover all cases where harden_branch_predictor() is called,
+ensuring that it is always has interrupts disabled, also ensuring that
+it is called early in each call path.
+
+Reviewed-by: Xie Yuanbin <xieyuanbin1@huawei.com>
+Tested-by: Xie Yuanbin <xieyuanbin1@huawei.com>
+Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/fuse/file.c |    8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ arch/arm/mm/alignment.c |  4 ++++
+ arch/arm/mm/fault.c     | 39 ++++++++++++++++++++++++++-------------
+ 2 files changed, 30 insertions(+), 13 deletions(-)
 
---- a/fs/fuse/file.c
-+++ b/fs/fuse/file.c
-@@ -373,8 +373,14 @@ void fuse_file_release(struct inode *ino
- 	 * aio and closes the fd before the aio completes.  Since aio takes its
- 	 * own ref to the file, the IO completion has to drop the ref, which is
- 	 * how the fuse server can end up closing its clients' files.
-+	 *
-+	 * Exception is virtio-fs, which is not affected by the above (server is
-+	 * on host, cannot close open files in guest).  Virtio-fs needs sync
-+	 * release, because the num_waiting mechanism to wait for all requests
-+	 * before commencing with fs shutdown doesn't work if submounts are
-+	 * used.
- 	 */
--	fuse_file_put(ff, false);
-+	fuse_file_put(ff, ff->fm->fc->auto_submounts);
- }
+diff --git a/arch/arm/mm/alignment.c b/arch/arm/mm/alignment.c
+index f8dd0b3cc8e040..ee264737be6d26 100644
+--- a/arch/arm/mm/alignment.c
++++ b/arch/arm/mm/alignment.c
+@@ -22,6 +22,7 @@
  
- void fuse_release_common(struct file *file, bool isdir)
+ #include <asm/cp15.h>
+ #include <asm/system_info.h>
++#include <asm/system_misc.h>
+ #include <asm/unaligned.h>
+ #include <asm/opcodes.h>
+ 
+@@ -809,6 +810,9 @@ do_alignment(unsigned long addr, unsigned int fsr, struct pt_regs *regs)
+ 	int thumb2_32b = 0;
+ 	int fault;
+ 
++	if (addr >= TASK_SIZE && user_mode(regs))
++		harden_branch_predictor();
++
+ 	if (interrupts_enabled(regs))
+ 		local_irq_enable();
+ 
+diff --git a/arch/arm/mm/fault.c b/arch/arm/mm/fault.c
+index 907705992ab65f..d0681285dbda3e 100644
+--- a/arch/arm/mm/fault.c
++++ b/arch/arm/mm/fault.c
+@@ -195,9 +195,6 @@ __do_user_fault(unsigned long addr, unsigned int fsr, unsigned int sig,
+ {
+ 	struct task_struct *tsk = current;
+ 
+-	if (addr > TASK_SIZE)
+-		harden_branch_predictor();
+-
+ #ifdef CONFIG_DEBUG_USER
+ 	if (((user_debug & UDBG_SEGV) && (sig == SIGSEGV)) ||
+ 	    ((user_debug & UDBG_BUS)  && (sig == SIGBUS))) {
+@@ -248,8 +245,10 @@ do_kernel_address_page_fault(struct mm_struct *mm, unsigned long addr,
+ 		/*
+ 		 * Fault from user mode for a kernel space address. User mode
+ 		 * should not be faulting in kernel space, which includes the
+-		 * vector/khelper page. Send a SIGSEGV.
++		 * vector/khelper page. Handle the branch predictor hardening
++		 * while interrupts are still disabled, then send a SIGSEGV.
+ 		 */
++		harden_branch_predictor();
+ 		__do_user_fault(addr, fsr, SIGSEGV, SEGV_MAPERR, regs);
+ 	} else {
+ 		/*
+@@ -419,16 +418,20 @@ do_page_fault(unsigned long addr, unsigned int fsr, struct pt_regs *regs)
+  * We enter here because the first level page table doesn't contain
+  * a valid entry for the address.
+  *
+- * If the address is in kernel space (>= TASK_SIZE), then we are
+- * probably faulting in the vmalloc() area.
++ * If this is a user address (addr < TASK_SIZE), we handle this as a
++ * normal page fault. This leaves the remainder of the function to handle
++ * kernel address translation faults.
+  *
+- * If the init_task's first level page tables contains the relevant
+- * entry, we copy the it to this task.  If not, we send the process
+- * a signal, fixup the exception, or oops the kernel.
++ * Since user mode is not permitted to access kernel addresses, pass these
++ * directly to do_kernel_address_page_fault() to handle.
+  *
+- * NOTE! We MUST NOT take any locks for this case. We may be in an
+- * interrupt or a critical region, and should only copy the information
+- * from the master page table, nothing more.
++ * Otherwise, we're probably faulting in the vmalloc() area, so try to fix
++ * that up. Note that we must not take any locks or enable interrupts in
++ * this case.
++ *
++ * If vmalloc() fixup fails, that means the non-leaf page tables did not
++ * contain an entry for this address, so handle this via
++ * do_kernel_address_page_fault().
+  */
+ #ifdef CONFIG_MMU
+ static int __kprobes
+@@ -494,7 +497,8 @@ do_translation_fault(unsigned long addr, unsigned int fsr,
+ 	return 0;
+ 
+ bad_area:
+-	do_bad_area(addr, fsr, regs);
++	do_kernel_address_page_fault(current->mm, addr, fsr, regs);
++
+ 	return 0;
+ }
+ #else					/* CONFIG_MMU */
+@@ -514,7 +518,16 @@ do_translation_fault(unsigned long addr, unsigned int fsr,
+ static int
+ do_sect_fault(unsigned long addr, unsigned int fsr, struct pt_regs *regs)
+ {
++	/*
++	 * If this is a kernel address, but from user mode, then userspace
++	 * is trying bad stuff. Invoke the branch predictor handling.
++	 * Interrupts are disabled here.
++	 */
++	if (addr >= TASK_SIZE && user_mode(regs))
++		harden_branch_predictor();
++
+ 	do_bad_area(addr, fsr, regs);
++
+ 	return 0;
+ }
+ #endif /* CONFIG_ARM_LPAE */
+-- 
+2.53.0
+
 
 
 
