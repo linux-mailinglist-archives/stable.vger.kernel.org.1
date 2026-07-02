@@ -1,78 +1,78 @@
-Return-Path: <stable+bounces-270579-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-270581-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id FCGPGBiKRmqsYAsAu9opvQ
-	(envelope-from <stable+bounces-270579-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 17:56:08 +0200
+	id cz3SLh+KRmqwYAsAu9opvQ
+	(envelope-from <stable+bounces-270581-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 17:56:15 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id ECC2A6F9C47
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 17:56:07 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 590506F9C5B
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 17:56:15 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Sd9f1YOw;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-270579-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-270579-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=QZntcUq0;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-270581-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-270581-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 15030308E69F
-	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 15:51:19 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 08A863058B21
+	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 15:51:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C7F434F270;
-	Thu,  2 Jul 2026 15:49:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BDD5D33F5B4;
+	Thu,  2 Jul 2026 15:49:18 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5960730ACFF
-	for <stable@vger.kernel.org>; Thu,  2 Jul 2026 15:49:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9415031355D
+	for <stable@vger.kernel.org>; Thu,  2 Jul 2026 15:49:12 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783007354; cv=none; b=S9Qht5RSYfE3GYvClg/W+oh2v+C6RReDqIRTYmQnGmkJklPLUOGYUWAYA9QttoJapkOolVe7xUydUgzzEvyKv3VDz0fKX0YRPXH5XsFfBAE8UpMpchcLJcU/R4gMP/bOAZThEI5JLDcjWUuwm3l6RExwPMXZ5jhfgAkqI4nyQy4=
+	t=1783007357; cv=none; b=l8DHYr/+tksFiumTxyUDS7YRRD+zVKUi7kAsuAAiJEpCqL0qu3Nuxmsb3HbL5nuLrO6V8AZlDXz6d+uS0Z5zaB7LBOFWNtF7WNOT5SinMrtUBSH+GUm1bm1bumn7H+iWuSR19HlvEspXhix2EreARGFx3Dg7SwZ7u2Z/un1XrLc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783007354; c=relaxed/simple;
-	bh=RDZSJqRNICQ3tD7uC5O4G/7iRPUUCsbOrhVV2kU4tcQ=;
+	s=arc-20240116; t=1783007357; c=relaxed/simple;
+	bh=XoyVG3Gk3MAAbbvOhwUWr8j4hodi95DXtvh67jM78Lc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pKmXcEbtR4aimtax4GbHlCLfDfb5S9zPJRIMjHnRcbM+CY6bPzfUwgpt1719KMLyqyyxnQ9pInI67NOC9lN1RqW8hmwuwAMJ0yTiIbGimOc8gwugGdEB/zCLrtJ0RxC5T0YKb+ApgS72Rpuo9iaedh7vLCnOoHa1wjAAEI8WI7o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Sd9f1YOw; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6DB701F00A3F;
-	Thu,  2 Jul 2026 15:49:09 +0000 (UTC)
+	 MIME-Version; b=F4EAco+BoBoQx0/n5GPbSkdLc1Z5I/qWuw1YKi1Qr43pG6dpbZMfGt9OIbw5WmILpAwId9arzh8u27Glh+nDFhuxFzC6lFCOb4M7tWhlIqKjnGB9OLCsAhfLlMVq6UuNpS1Ynp6QKniKFi77AcycJY8QDn+XCgfSc/PIKKUzDHQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QZntcUq0; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E433E1F00ACA;
+	Thu,  2 Jul 2026 15:49:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783007349;
-	bh=DFhQOIHWTHoFlKX3iXpR7xXeEZj65AEZOPGhkZDpMp4=;
+	s=k20260515; t=1783007351;
+	bh=2PvkKmGz6/f+zLwaxJ5es9zCghKUZnxCl8dar40vQ10=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Sd9f1YOwk+6lQIH2k+VsF34zfTihVix4CeBr6PlrQK62jLfuKJGpRhfkP8bGiGEcQ
-	 VdEYEzHb3cdzZ5K+zTyg2gKHmSZdqf7jDlGriowMbwGaiv3y8BoZW6ApnmXqaRG1hp
-	 SMXGLtc9Ovkz/MDOHoMHaE16SwHacqgpqa/2tRjLnNqrjHFulDaGQOksWgRbeLbLCz
-	 kF5PaQ3T8T9PeEik4hAFlrIC5fMEL4krfMenwyBAx/+OOcictH3cXjsxaFKrJhI+Oe
-	 v2QrzMDcsMghzGzKr942iecKeRoAPi7TKFCOz/XZnNGx8XboOOqVZjnCUodfwjxpmc
-	 WDEZbDI+ky7ig==
-Received: from phl-compute-09.internal (phl-compute-09.internal [10.202.2.49])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 888F7F40069;
-	Thu,  2 Jul 2026 11:49:08 -0400 (EDT)
+	b=QZntcUq0A+itlpo8fILOswsnOEaCEscZRdPtgd4w1YYpAIkphlSD1GdVz9LrougRn
+	 oX+pk1Bk88waMksSHhPRapeRiJG7Y99vi8uZYRnCcvPcvERZw23toAc+wZGpX0htfx
+	 H4VlNoNPdpQ6NnMVWhJDYT8e9STSKG57svuyoKNR3XNhcmfX8++c3BL+sYR5g5WiQb
+	 abKLe4oUrPNGjwEyvaQhEXCSFKwH8HdrWCMNEq7vYShoY/jnd2/EIPID87BWpqZtdo
+	 lgBnEKvBFqWySZeQ4kjtlgWTP/b5S4CUUWglVkF2aSk9MYVT97iTJ1ZCjD81jsuK5g
+	 l/EpcIB6f93Mw==
+Received: from phl-compute-08.internal (phl-compute-08.internal [10.202.2.48])
+	by mailfauth.phl.internal (Postfix) with ESMTP id 08BD6F4006A;
+	Thu,  2 Jul 2026 11:49:10 -0400 (EDT)
 Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-09.internal (MEProxy); Thu, 02 Jul 2026 11:49:08 -0400
-X-ME-Sender: <xms:dIhGao92NEnBdAIzBwkaGMpsPUTAgDh9f-vOs63Y0p1vD1szsJAtOg>
-    <xme:dIhGao4FIV7KJ73zjalN1hob_waNDiDFwlKC5jt8MbZ28omHefSqjRdiWfUQBMJL-
-    nSmwK0ksbliU01h0IFXJjbzoe_VFPsXXoUHhMriP7qqp3CqxjRBuw>
-X-ME-Received: <xmr:dIhGapmzb4sriCWbA7-XLqZgMGY3qhbit9wgtKhizXlW8yLzfwlo2t4lOl01KA>
+  by phl-compute-08.internal (MEProxy); Thu, 02 Jul 2026 11:49:10 -0400
+X-ME-Sender: <xms:dYhGamUDnRwouj4JjmynbAFCcI3dqVPvJqxP09g020dpgys2VvkaHg>
+    <xme:dYhGaiTyfYAbS8H2-ygT0mHXYWp_hAZYn2QOSXIPKVHn3eoGS-TBrWSGSuFNwE_po
+    aqtyFVvjBhMkcyS5hhJBdjhK11_7UdqZ4kd5b1uVodJs1e5JL9atA>
+X-ME-Received: <xmr:dYhGamD31LAxzUhvNuSa1GkHpQaIrsx6CgcbSolakQKbZYO3pxs7uKGXOXApcw>
 X-ME-Proxy-Cause: dmFkZTG0Ih/t8cHbMCodKXQLkUxQJqy59wDK3mLTRA7dVIErvl2/d1Ah+epBvIXb5j+AYP
     IXeEFDcIBfVLytuYu4/vLDhgRVlW3a+843BEiRDknGKdd2YPYw+W7qSRgjHbAB7tPzyIg1
     K/iaGu6PpbNvdlBe1ylT3w+4CnduN7fXaIiVz2SFU4GsotfIh0Hdi2izsWXFRQyA1Pgmvd
     bz3VM1BdljYqC26bMo/Uu8GxRLOKa/FHGZ/ez2IuhQ+NgorPxPnwdGD70mq06prVA+bGMW
-    J3iimRYR/yORdPuHTUcQx20NCsiqIhAYZRtSAvfP/TF7cp/wxVykEXOIXpNkkJ9g0C+7Vf
-    3GiKJci/HMJlzBe+LyMqSocVAuRNGVFYGaIMLIXvAD3qRMCEegplxAyUwGQXKnjQkdQZ8R
-    NQc6u6oJG91xbTS/zuIwi+qmKthnm34oEPWvmwoPxP7kNJPUksPZ4vFuoHduhxgOG+TfCi
-    pRc07OLjoA5jntKMzYPBPl4LFGQFquUDN2geMKSjDmO99tIXaTYuJ3+Tk9ODASu4GSBW0b
-    RrPql85vYtDl70fuGDLM1uPwZgbw6Q9FrLSchGb0naquSfE2R0YY/W/kUAOQT0gqpg728p
-    YKvTUsJU5CLxxXu1/syz4SxiN0ngZmP0bbQz25Xa/+y3JzYbJlfTiXQ43vTQ
-X-ME-Proxy: <xmx:dIhGajF0b1tkjj0v85XndwWeee_n_3ykHzIUq-jek8_ssb3EwmJ8ZQ>
-    <xmx:dIhGao_CUqN7bbfYOxVPS9aGApDC2ZDSGF_0a7ee-7L9uzSpVVz6yg>
-    <xmx:dIhGaskjwjnHo8Zb4qXv_l048M6ReALNLCn7_Eph5hoQ0AyH4lh7_Q>
-    <xmx:dIhGarDt5h7Nuh0rdNZWKc4pflFLjPF3APiowYC6BlurFqGZBn4QAQ>
-    <xmx:dIhGatW-UB0GJL042u-RcsVA9AdCT1IN9i6lgNbKjMPsZeK-H_T3DzWD>
+    J3iimRYR/yORdPuHTUcQx20NCsiqIhAYZRtSAvfP/TF7cp/wxVykEXOIXpNkkJ9g0C+7Dk
+    /R7OjKClZbcQR974PAxUJOOshnhHnEvVlXkmwYBH7BYIlxELBdcNvL8GfZGacILR9pO6Ua
+    Tzv7RYnZXL8dwu9FdveZzUDNcSmvPyZpv3+x9lmsrs0q/QHR90khe9q8MKUfOBzx5aizb6
+    mUxJI7lQyJfTHXxVUJJ5oVrMHDtYu2luli/PCe6DE24ORhMSWzWyAB+IPFnGdA0PiFyw9b
+    eAsPVExBRcVkKu8hSUazF27fOD5Us5TODjP08ckySelLje5lYS3qCBr+OII41Kn9vZEdt/
+    TxeSpDBnCND3cKeLZPKzARVsIClAS/pWzjy/xhsLgurUtvVRgrhjqhFK5dtQ
+X-ME-Proxy: <xmx:dYhGapLXu-TlsMM--7zCuhw0jPT0b40DvwcB3Ip7gGPmJosFU86Uhg>
+    <xmx:dohGahDIJHXe_Ld3M8i16oXpCLlRJMwP053tkW2eIdfuZv15TRGyTA>
+    <xmx:dohGauup8grTgqh5lpOl-6Ehg9H1GY3ruazQZY8N2CrSHwoRu_XaAw>
+    <xmx:dohGavTl0NkoW1hGKIA9TJvdsJ-osuC4a6ccrOsK6SKprSSdi0wpow>
+    <xmx:dohGalJazMkOeZBOdZD34KoGUjEYScoFCx60PYUNxabQjgwCjYtm7oDW>
 Feedback-ID: i10464835:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
- 2 Jul 2026 11:49:07 -0400 (EDT)
+ 2 Jul 2026 11:49:09 -0400 (EDT)
 From: Kiryl Shutsemau <kas@kernel.org>
 To: stable@vger.kernel.org
 Cc: Sashiko AI review <sashiko-bot@kernel.org>,
@@ -85,12 +85,12 @@ Cc: Sashiko AI review <sashiko-bot@kernel.org>,
 	Vlastimil Babka <vbabka@kernel.org>,
 	Balbir Singh <balbirs@nvidia.com>,
 	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.18.y] userfaultfd: gate must_wait writability check on pte_present()
-Date: Thu,  2 Jul 2026 16:49:07 +0100
-Message-ID: <20260702154907.975486-1-kas@kernel.org>
+Subject: [PATCH 7.1.y] userfaultfd: gate must_wait writability check on pte_present()
+Date: Thu,  2 Jul 2026 16:49:08 +0100
+Message-ID: <20260702154908.975523-1-kas@kernel.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <2026070238-shadiness-ivory-4087@gregkh>
-References: <2026070238-shadiness-ivory-4087@gregkh>
+In-Reply-To: <2026070237-oversold-dairy-c1ed@gregkh>
+References: <2026070237-oversold-dairy-c1ed@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -105,7 +105,7 @@ X-Spamd-Result: default: False [-3.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -113,10 +113,10 @@ X-Spamd-Result: default: False [-3.66 / 15.00];
 	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:sashiko-bot@kernel.org,m:ljs@kernel.org,m:david@kernel.org,m:mhocko@suse.com,m:rppt@kernel.org,m:peterx@redhat.com,m:surenb@google.com,m:vbabka@kernel.org,m:balbirs@nvidia.com,m:akpm@linux-foundation.org,s:lists@lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:email,nvidia.com:email,vger.kernel.org:from_smtp,linux-foundation.org:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linux-foundation.org:email,nvidia.com:email,suse.com:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,vger.kernel.org:from_smtp];
 	FORGED_SENDER(0.00)[kas@kernel.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-270579-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-270581-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
 	FORWARDED(0.00)[lists@lfdr.de];
 	FROM_NEQ_ENVFROM(0.00)[kas@kernel.org,stable@vger.kernel.org];
@@ -130,10 +130,10 @@ X-Spamd-Result: default: False [-3.66 / 15.00];
 	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	RCVD_COUNT_SEVEN(0.00)[7]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: ECC2A6F9C47
+X-Rspamd-Queue-Id: 590506F9C5B
 
 userfaultfd_must_wait() and userfaultfd_huge_must_wait() read the PTE
 without taking the page table lock and then apply pte_write() /
@@ -171,46 +171,51 @@ Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 
 (cherry picked from commit 8e80af52db652fbc41320eee45a4f73bc029faf2)
-[ kas: apply to fs/userfaultfd.c and fold the pte_present()/
-  huge_pte_present() gate into the existing writability checks; this tree
-  predates the marker/return-style refactor of these functions ]
+[ kas: apply to fs/userfaultfd.c; these checks moved to mm/userfaultfd.c
+  only after 7.1, the change is otherwise identical to upstream ]
 Signed-off-by: Kiryl Shutsemau <kas@kernel.org>
 ---
- fs/userfaultfd.c | 14 ++++++++++++--
- 1 file changed, 12 insertions(+), 2 deletions(-)
+ fs/userfaultfd.c | 20 ++++++++++++++++++++
+ 1 file changed, 20 insertions(+)
 
 diff --git a/fs/userfaultfd.c b/fs/userfaultfd.c
-index df18fb453403..1377b76fe3c5 100644
+index 4b53dc4a3266..648249037731 100644
 --- a/fs/userfaultfd.c
 +++ b/fs/userfaultfd.c
-@@ -251,7 +251,12 @@ static inline bool userfaultfd_huge_must_wait(struct userfaultfd_ctx *ctx,
- 	 */
- 	if (huge_pte_none_mostly(pte))
- 		ret = true;
--	if (!huge_pte_write(pte) && (reason & VM_UFFD_WP))
+@@ -253,6 +253,15 @@ static inline bool userfaultfd_huge_must_wait(struct userfaultfd_ctx *ctx,
+ 	/* UFFD PTE markers require userspace to resolve the fault. */
+ 	if (pte_is_uffd_marker(pte))
+ 		return true;
 +	/*
-+	 * Gate the writability check on pte_present(): huge_pte_write() on a
-+	 * non-present migration entry decodes random offset bits. The
-+	 * migration completion path re-delivers the fault if still needed.
++	 * Concurrent migration may have replaced the present PTE with a
++	 * non-marker swap entry between fault delivery and this lockless
++	 * re-check. huge_pte_write() on a swap entry decodes random offset
++	 * bits, so gate it on pte_present(). The migration completion path
++	 * will re-deliver the fault if it still needs userspace.
 +	 */
-+	if (pte_present(pte) && !huge_pte_write(pte) && (reason & VM_UFFD_WP))
- 		ret = true;
- out:
- 	return ret;
-@@ -326,7 +331,12 @@ static inline bool userfaultfd_must_wait(struct userfaultfd_ctx *ctx,
- 	ptent = ptep_get(pte);
- 	if (pte_none_mostly(ptent))
- 		ret = true;
--	if (!pte_write(ptent) && (reason & VM_UFFD_WP))
++	if (!pte_present(pte))
++		return false;
+ 	/*
+ 	 * If VMA has UFFD WP faults enabled and WP fault, wait for userspace to
+ 	 * resolve the fault.
+@@ -339,6 +348,17 @@ static inline bool userfaultfd_must_wait(struct userfaultfd_ctx *ctx,
+ 	/* UFFD PTE markers require userspace to resolve the fault. */
+ 	if (pte_is_uffd_marker(ptent))
+ 		goto out;
 +	/*
-+	 * Gate the writability check on pte_present(): pte_write() on a
-+	 * non-present swap/migration entry decodes random offset bits. The
-+	 * page-in path re-delivers the fault if it still needs userspace.
++	 * Concurrent swap-out / migration may have replaced the present PTE
++	 * with a non-marker swap entry between fault delivery and this
++	 * lockless re-check. pte_write() on a swap entry decodes random
++	 * offset bits, so gate it on pte_present(). The page-in path will
++	 * re-deliver the fault if it still needs userspace.
 +	 */
-+	if (pte_present(ptent) && !pte_write(ptent) && (reason & VM_UFFD_WP))
- 		ret = true;
- 	pte_unmap(pte);
- 
++	if (!pte_present(ptent)) {
++		ret = false;
++		goto out;
++	}
+ 	/*
+ 	 * If VMA has UFFD WP faults enabled and WP fault, wait for userspace to
+ 	 * resolve the fault.
 -- 
 2.54.0
 
