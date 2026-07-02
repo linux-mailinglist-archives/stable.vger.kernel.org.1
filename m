@@ -1,61 +1,63 @@
-Return-Path: <stable+bounces-271219-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-270744-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id rS+CBACaRmpAZwsAu9opvQ
-	(envelope-from <stable+bounces-271219-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:04:00 +0200
+	id azgYJ8SSRmpQYwsAu9opvQ
+	(envelope-from <stable+bounces-270744-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:33:08 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 78A176FAEDC
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:03:59 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7522F6FA3E3
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:33:07 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=l5Kmkbqb;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-271219-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-271219-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=OtsQCC0G;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-270744-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-270744-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 264C231A4947
-	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:51:12 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 805B730022B7
+	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:33:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B7CE3A4F2F;
-	Thu,  2 Jul 2026 16:49:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F90E42B329;
+	Thu,  2 Jul 2026 16:29:00 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D49533BBCD;
-	Thu,  2 Jul 2026 16:49:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D4B534104E;
+	Thu,  2 Jul 2026 16:28:56 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783010977; cv=none; b=qz1+JTXtVFXal+0Cz2dssVO8hZNh8Ji/dRP0Q2ZFBZi9HSjy+9rUav1AEVo7P+VRgOUct1PmMdZsIcrhw4aV/63E+4K2C31TShOGMNuWDDVziSc0krY7r6zCXtoQ486quG0z+BAjlAXfGOy4bdAyn2Msr8GNPS8MZgyMDnpgnxk=
+	t=1783009739; cv=none; b=SMrA8SjgkO27gE2V2PnnQFaeVLcgv7q7VLFJc01xCalFVB8zjyLOOHyjqfDPXtgoJTl02xHe0HNi9z2e44bVb3ONuN52Iyvc1w12Zsq/AYdAXy3y39H1tkhw5oL29tDJbt4rsmnz2Dvz0ojH+lT4G4rMYlPfj5Rl7/kmXS8Lzr8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783010977; c=relaxed/simple;
-	bh=yQ9EQr29OKn9gxceGDqoIDbXPWv25iyBH/EmITG6K1c=;
+	s=arc-20240116; t=1783009739; c=relaxed/simple;
+	bh=iG6tkekfyAqnVpBHvC1cAhuZverM4rW3lLeL7SYABcM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DVaBz3XFSxGa2LmQipei1rVnqeB27OX+RFb6ApzQfChCWeCJATy0kmtQeqN2nygurwVhTJV2fXoz9EC/xmVrr5Xw0RfVhq/SDVMnPtOhCx9ADrd038+6H29Ibp5eeyokHOdpGwMWem+Cx2tk8yn6j7Oe3U4BW/xzo62ptssOmPQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l5Kmkbqb; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B24C51F000E9;
-	Thu,  2 Jul 2026 16:49:35 +0000 (UTC)
+	 MIME-Version; b=Q4lE4l6WPl+Hq0Hy7lcoFv67L+5/m+nWm2WBUpaEQqrGk0iB3JNqgV2BV489XzR+KZ0+FODMzNr1Xc9YFBycZSWb39FFU1RV5lr2U44esOrtCiX9K9/CIdNW++wDo28iImKQnjhby/xHaGPZO4kmQvacrzqAt3I3/E1QsErH6b8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OtsQCC0G; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A3201F000E9;
+	Thu,  2 Jul 2026 16:28:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1783010976;
-	bh=5OYGENSK9XC0FZ4k7H1BTNIIHmuF4qZuyEEII1JwOCE=;
+	s=korg; t=1783009736;
+	bh=OpM+K/+grWsrTFTjYuR6FfcnbkoybG4YIyaTnOT+v2g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=l5KmkbqbOovM407tv9/2BnBhOzH0U0GNy6lYbZKwfKA3Wq62lpf3fMahYtdWawFH0
-	 ve+K05AkXANpxhP/3BcESfxRDmrYaFp2h6XiQIFJMhh5n9buTb3wXk+nWzaHLlGfeC
-	 4z4jwFzD40Fd5szGK+bs1mjHPz0Siuh/xaEvI5ZI=
+	b=OtsQCC0Gs7D0t/TSX4PCjoosgyeE46vHQZLkmY/ljlRjLbVDUa8tpfiLxHFf3RjN+
+	 fQ/xrPwyjuq+J9OrZqh5RBiJH+u5MtmiRN+gMbySNlGqVjvmenGIz4KVSaNMvON1jm
+	 PpyriN/3BWinAzpQ6gPOeZ/FkmQJWUazpWtJ0fz8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Sven Eckelmann <sven@narfation.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 110/175] batman-adv: tp_meter: handle overlapping packets
+	Doruk Tan Ozturk <doruk@0sec.ai>,
+	Alexander Lobakin <aleksander.lobakin@intel.com>,
+	Tung Nguyen <tung.quang.nguyen@est.tech>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 5.15 68/95] tipc: fix slab-use-after-free Read in tipc_aead_decrypt_done
 Date: Thu,  2 Jul 2026 18:20:11 +0200
-Message-ID: <20260702155118.078705235@linuxfoundation.org>
+Message-ID: <20260702155110.646045595@linuxfoundation.org>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260702155115.766838875@linuxfoundation.org>
-References: <20260702155115.766838875@linuxfoundation.org>
+In-Reply-To: <20260702155109.196223802@linuxfoundation.org>
+References: <20260702155109.196223802@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,147 +71,162 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-271219-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:stable@kernel.org,m:sven@narfation.org,m:sashal@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-270744-lists,stable=lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:doruk@0sec.ai,m:aleksander.lobakin@intel.com,m:tung.quang.nguyen@est.tech,m:horms@kernel.org,m:kuba@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,narfation.org:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,msgid.link:url,vger.kernel.org:from_smtp,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 78A176FAEDC
+X-Rspamd-Queue-Id: 7522F6FA3E3
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sven Eckelmann <sven@narfation.org>
+From: Doruk Tan Ozturk <doruk@0sec.ai>
 
-commit cbde75c38b21f022891525078622587ad557b7c1 upstream.
+commit bda3348872a2ef0d19f2df6aa8cb5025adce2f20 upstream.
 
-If the size of the packets would change during the transmission, it could
-happen that some retries of packets are overlapping. In this case, precise
-comparisons of sequence numbers by the receiver would be wrong. It is then
-necessary to check if the start sequence number to the end sequence number
-("seqno + length") would contain a new range.
+tipc_aead_decrypt() goes straight from tipc_bearer_hold(b) to
+crypto_aead_decrypt(req) without taking a reference on the netns, unlike
+the encrypt path. When crypto_aead_decrypt() is offloaded asynchronously
+(e.g. the SIMD aead wrapper queuing to cryptd), the cryptd worker runs
+tipc_aead_decrypt_done() later. If the bearer's netns is torn down in the
+meantime, cleanup_net() -> tipc_exit_net() -> tipc_crypto_stop() frees the
+per-netns tipc_crypto, and the completion then reads it:
+tipc_aead_decrypt_done() dereferences aead->crypto->stats and
+aead->crypto->net, and tipc_crypto_rcv_complete() dereferences
+aead->crypto->aead[] and the node table -- reading freed memory.
 
-If this is the case then this is enough to accept this packet. In all other
-cases, the packet still has to be dropped (and not acked).
+Decoded KASAN splat (v7.1-rc7, CONFIG_KASAN_INLINE + TIPC + TIPC_CRYPTO):
 
-Cc: stable@kernel.org
-Fixes: 33a3bb4a3345 ("batman-adv: throughput meter implementation")
-[ Switch to pre-splitted tp_vars structure names ]
-Signed-off-by: Sven Eckelmann <sven@narfation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+  BUG: KASAN: slab-use-after-free in tipc_aead_decrypt_done (net/tipc/crypto.c:999)
+  Read of size 8 at addr ffff8881056258a8 by task kworker/u16:2/51
+  Workqueue: events_unbound
+  Call Trace:
+   tipc_aead_decrypt_done (net/tipc/crypto.c:999)
+   process_one_work (kernel/workqueue.c:3314)
+   worker_thread (kernel/workqueue.c:3397 kernel/workqueue.c:3478)
+   kthread (kernel/kthread.c:436)
+   ret_from_fork (arch/x86/kernel/process.c:158)
+   ret_from_fork_asm (arch/x86/entry/entry_64.S:245)
+
+  Allocated by task 169:
+   __kasan_kmalloc (mm/kasan/common.c:398 mm/kasan/common.c:415)
+   tipc_crypto_start (net/tipc/crypto.c:1502)
+   tipc_init_net (net/tipc/core.c:72)
+   ops_init (net/core/net_namespace.c:137)
+   setup_net (net/core/net_namespace.c:446)
+   copy_net_ns (net/core/net_namespace.c:579)
+   create_new_namespaces (kernel/nsproxy.c:132)
+   __x64_sys_unshare (kernel/fork.c:3316)
+   do_syscall_64 (arch/x86/entry/syscall_64.c:63)
+   entry_SYSCALL_64_after_hwframe (arch/x86/entry/entry_64.S:121)
+
+  Freed by task 8:
+   kfree (mm/slub.c:6566)
+   tipc_exit_net (net/tipc/core.c:119)
+   cleanup_net (net/core/net_namespace.c:704)
+   process_one_work (kernel/workqueue.c:3314)
+   kthread (kernel/kthread.c:436)
+
+This is the same class of bug that commit e279024617134 ("net/tipc: fix
+slab-use-after-free Read in tipc_aead_encrypt_done") fixed for the encrypt
+side. The encrypt path takes maybe_get_net(aead->crypto->net) before
+crypto_aead_encrypt() and drops it with put_net() on the synchronous
+return paths and in tipc_aead_encrypt_done(); the -EINPROGRESS/-EBUSY
+return keeps the reference for the async callback to release. The decrypt
+path was left without the equivalent guard.
+
+Mirror the encrypt-side fix on the decrypt path: take a net reference
+before crypto_aead_decrypt() (failing with -ENODEV and the matching
+bearer put if it cannot be acquired), keep it across the
+-EINPROGRESS/-EBUSY async return, and drop it with put_net() on the
+synchronous success/error return and at the end of
+tipc_aead_decrypt_done().
+
+Reproduced under KASAN on v7.1-rc7: a UDP bearer with a cluster key is
+flooded with crafted encrypted frames from an unknown peer (driving the
+cluster-key decrypt path) while the bearer's netns is repeatedly torn
+down. The completion must run asynchronously to outlive
+tipc_crypto_stop(); on x86 the stock aesni gcm(aes) now decrypts
+synchronously, so the async path was exercised via cryptd offload. The
+unguarded aead->crypto dereference in tipc_aead_decrypt_done() is the
+unpatched upstream path; tipc_aead_decrypt() still lacks
+maybe_get_net(aead->crypto->net), so the completion can outlive the free
+on any config where crypto_aead_decrypt() goes async.
+
+Found by 0sec automated security-research tooling (https://0sec.ai).
+
+Fixes: fc1b6d6de220 ("tipc: introduce TIPC encryption & authentication")
+Cc: stable@vger.kernel.org
+Signed-off-by: Doruk Tan Ozturk <doruk@0sec.ai>
+Reviewed-by: Alexander Lobakin <aleksander.lobakin@intel.com>
+Reviewed-by: Tung Nguyen <tung.quang.nguyen@est.tech>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20260617075818.37431-1-doruk@0sec.ai
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/batman-adv/tp_meter.c | 25 +++++++++++--------------
- 1 file changed, 11 insertions(+), 14 deletions(-)
+ net/tipc/crypto.c |    9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-diff --git a/net/batman-adv/tp_meter.c b/net/batman-adv/tp_meter.c
-index f745bc09a04963..50b83e0438a07b 100644
---- a/net/batman-adv/tp_meter.c
-+++ b/net/batman-adv/tp_meter.c
-@@ -1284,7 +1284,8 @@ static int batadv_tp_send_ack(struct batadv_priv *bat_priv, const u8 *dst,
- /**
-  * batadv_tp_handle_out_of_order() - store an out of order packet
-  * @tp_vars: the private data of the current TP meter session
-- * @skb: the buffer containing the received packet
-+ * @seqno: sequence number of new received packet
-+ * @payload_len: length of the received packet
-  *
-  * Store the out of order packet in the unacked list for late processing. This
-  * packets are kept in this list so that they can be ACKed at once as soon as
-@@ -1293,22 +1294,17 @@ static int batadv_tp_send_ack(struct batadv_priv *bat_priv, const u8 *dst,
-  * Return: true if the packed has been successfully processed, false otherwise
-  */
- static bool batadv_tp_handle_out_of_order(struct batadv_tp_vars *tp_vars,
--					  const struct sk_buff *skb)
-+					  u32 seqno, u32 payload_len)
- 	__must_hold(&tp_vars->unacked_lock)
- {
--	const struct batadv_icmp_tp_packet *icmp;
- 	struct batadv_tp_unacked *un, *new;
--	u32 payload_len;
- 	bool added = false;
- 
- 	new = kmalloc(sizeof(*new), GFP_ATOMIC);
- 	if (unlikely(!new))
- 		return false;
- 
--	icmp = (struct batadv_icmp_tp_packet *)skb->data;
--
--	new->seqno = ntohl(icmp->seqno);
--	payload_len = skb->len - sizeof(struct batadv_unicast_packet);
-+	new->seqno = seqno;
- 	new->len = payload_len;
- 
- 	/* if the list is empty immediately attach this new object */
-@@ -1476,7 +1472,7 @@ static void batadv_tp_recv_msg(struct batadv_priv *bat_priv,
- {
- 	const struct batadv_icmp_tp_packet *icmp;
- 	struct batadv_tp_vars *tp_vars;
--	size_t packet_size;
-+	u32 payload_len;
- 	u32 to_ack;
- 	u32 seqno;
- 
-@@ -1511,15 +1507,17 @@ static void batadv_tp_recv_msg(struct batadv_priv *bat_priv,
- 	/* if the packet is a duplicate, it may be the case that an ACK has been
- 	 * lost. Resend the ACK
- 	 */
--	if (batadv_seq_before(seqno, tp_vars->last_recv))
-+	payload_len = skb->len - sizeof(struct batadv_unicast_packet);
-+	to_ack = seqno + payload_len;
-+	if (batadv_seq_before(to_ack, tp_vars->last_recv))
- 		goto send_ack;
- 
- 	/* if the packet is out of order enqueue it */
--	if (ntohl(icmp->seqno) != tp_vars->last_recv) {
-+	if (batadv_seq_before(tp_vars->last_recv, seqno)) {
- 		/* exit immediately (and do not send any ACK) if the packet has
- 		 * not been enqueued correctly
- 		 */
--		if (!batadv_tp_handle_out_of_order(tp_vars, skb)) {
-+		if (!batadv_tp_handle_out_of_order(tp_vars, seqno, payload_len)) {
- 			spin_unlock_bh(&tp_vars->unacked_lock);
- 			goto out;
- 		}
-@@ -1529,8 +1527,7 @@ static void batadv_tp_recv_msg(struct batadv_priv *bat_priv,
+--- a/net/tipc/crypto.c
++++ b/net/tipc/crypto.c
+@@ -961,12 +961,20 @@ static int tipc_aead_decrypt(struct net
+ 		goto exit;
  	}
  
- 	/* if everything was fine count the ACKed bytes */
--	packet_size = skb->len - sizeof(struct batadv_unicast_packet);
--	tp_vars->last_recv += packet_size;
-+	tp_vars->last_recv = to_ack;
++	/* Get net to avoid freed tipc_crypto when delete namespace */
++	if (!maybe_get_net(net)) {
++		tipc_bearer_put(b);
++		rc = -ENODEV;
++		goto exit;
++	}
++
+ 	/* Now, do decrypt */
+ 	rc = crypto_aead_decrypt(req);
+ 	if (rc == -EINPROGRESS || rc == -EBUSY)
+ 		return rc;
  
- 	/* check if this ordered message filled a gap.... */
- 	batadv_tp_ack_unordered(tp_vars);
--- 
-2.53.0
-
+ 	tipc_bearer_put(b);
++	put_net(net);
+ 
+ exit:
+ 	kfree(ctx);
+@@ -1004,6 +1012,7 @@ static void tipc_aead_decrypt_done(struc
+ 	}
+ 
+ 	tipc_bearer_put(b);
++	put_net(net);
+ }
+ 
+ static inline int tipc_ehdr_size(struct tipc_ehdr *ehdr)
 
 
 
