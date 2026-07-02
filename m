@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-270848-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-271221-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id mw6iMQ6WRmr1ZAsAu9opvQ
-	(envelope-from <stable+bounces-270848-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:47:10 +0200
+	id 4qPPFZSZRmoAZwsAu9opvQ
+	(envelope-from <stable+bounces-271221-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:02:12 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C4BD6FA8A4
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:47:10 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id E46286FAE34
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:02:11 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=dOQUdqiu;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-270848-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-270848-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=n+PHC4ik;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-271221-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-271221-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 4839532E5E7B
-	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:36:31 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 7FA583117E50
+	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:51:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8BAD3AC0DC;
-	Thu,  2 Jul 2026 16:33:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0EE21349CCC;
+	Thu,  2 Jul 2026 16:49:43 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A477349CE8;
-	Thu,  2 Jul 2026 16:33:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D269433BBCD;
+	Thu,  2 Jul 2026 16:49:41 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783010007; cv=none; b=Lq0L3DjODP/RxMGbyV115FVOso395SyHIhxtS3DQ87qbfxXbxyfmbaWKwhf29YqByUjcihXL3gZ3JTiKQ1MrgUjGwkXOZsl0fnx+uuGcPVoKIgX69WQM5y0+gEyiL8Nls5s75a/GMOmlTsDZWmlZUsPR/aRUs3xL9me9NHBhBLY=
+	t=1783010982; cv=none; b=c6WgvjpDt8DjiPHy7iTC72pND/mk1c0qrE5QgrXWDV1kaBnXlLMsviV0WGnxFqbNbgCbg+tO6bND/UokF0ytfEdWRdGiyYZSyKkE9WKGbrEUCCaKj6B0hCV25pS2IZ35xftz74FPqc6aRqLd5Xuz3OVz5wFeSCoQP+InkLGHLHo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783010007; c=relaxed/simple;
-	bh=UVJ3i6vNnAfVtNZxxdxJ25bBR93tKNK2noXpzikIQNs=;
+	s=arc-20240116; t=1783010982; c=relaxed/simple;
+	bh=adQ8f506rioI+At2HcdsUz08KxEtIOD/nJqLYnZL3Ks=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YasV39E3ytRV9r3DCYU38M7Y4KXYyJ7IB5azUwapVBpgyfEiJG3CebAWDErJpsmzgcgBfYN5iz73R7N8uqx0mAlgsrfHld9bLjxUfplrR70IeOml61Fn+Ej0X+2PogtMNg2h+KqdXrEZSo6S0CeQO7c7Yg/8dz7SUkyj1czQHQI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dOQUdqiu; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F15201F000E9;
-	Thu,  2 Jul 2026 16:33:25 +0000 (UTC)
+	 MIME-Version; b=Phv6qyVLCnBkauyowRUB8rjNkKNqVJS3E8CAwWQWoQcROPTolbUxb5fwR/vjSagcOKsEmX327aO7YzAfDVfm1QGpzmJHM/SWkNse6gNg8Tut8/6mKdIT8R2SM38jE8qCC3GBX90Q8th10JKGiKAJjzrzGFHKR7d8eIjWnftZhLQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=n+PHC4ik; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EECC91F000E9;
+	Thu,  2 Jul 2026 16:49:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1783010006;
-	bh=alPHjo8j4cvASzJaU0kLgaw4CEQ8q/R81ul0pHYFujs=;
+	s=korg; t=1783010981;
+	bh=3FH4w3bPehkG1ICbQGVxDP70jeMtjdIj+0dd9Ur1XKI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=dOQUdqiu5YI2IiUzRzpjD9cpgaUXzDkSBjZCZIfFFEWNOYUomgMNPlX4zgaJIfm9Y
-	 GIY9j1tYI/dsZ4UidjSlvLrduCL2hlYK+/1XU7zQDnWFc51jRVmaqFZmb3OB8QNWPj
-	 zKRTwCwri6oMkBbf2RbZ+dKMLlYoGCdurkYLDRNg=
+	b=n+PHC4ikV10ekAzbdsQ+PGBQFBZdyiUhDjzGLehZU7G2wCrBXIciEifppZjAP7Ky9
+	 h0gmb4MUvLJ/0ogATpA9gQSTqoZtkI9Y5blOHeoCEA4s2iFgPhGb6XpGoG8A7qA5uD
+	 YfBi4xr/MAbB4dZU+ApKBdSboVk16/EdERM2Vkes=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yuto Ohnuki <ytohnuki@amazon.com>,
+	stable@kernel.org,
+	Sven Eckelmann <sven@narfation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 076/129] ext4: add bounds check for inline data length in ext4_read_inline_page
+Subject: [PATCH 6.6 094/175] batman-adv: tp_meter: avoid window underflow
 Date: Thu,  2 Jul 2026 18:19:55 +0200
-Message-ID: <20260702155113.714041170@linuxfoundation.org>
+Message-ID: <20260702155117.756657928@linuxfoundation.org>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260702155112.163984240@linuxfoundation.org>
-References: <20260702155112.163984240@linuxfoundation.org>
+In-Reply-To: <20260702155115.766838875@linuxfoundation.org>
+References: <20260702155115.766838875@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,22 +72,22 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-270848-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-271221-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:ytohnuki@amazon.com,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:stable@kernel.org,m:sven@narfation.org,m:sashal@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
@@ -97,57 +98,62 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,iloc.bh:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,narfation.org:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 2C4BD6FA8A4
+X-Rspamd-Queue-Id: E46286FAE34
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yuto Ohnuki <ytohnuki@amazon.com>
+From: Sven Eckelmann <sven@narfation.org>
 
-[ Upstream commit 356227096eb66e41b23caf7045e6304877322edf ]
+commit 765947b81fb54b6ebb0bc1cfe55c0fa399e002b8 upstream.
 
-ext4_read_inline_page() does not validate that the inline data length
-fits within a page before copying data. If the inline size exceeds
-PAGE_SIZE due to filesystem corruption, this could lead to a kernel
-memory write beyond the page boundary.
+In batadv_tp_avail(), win_left is calculated with 32-bit unsigned
+arithmetic: win_left = win_limit - tp_vars->last_sent;
 
-Add a bounds check after computing len, returning -EFSCORRUPTED if the
-value exceeds PAGE_SIZE.
+During Fast Recovery, cwnd is inflated and last_sent advances rapidly. When
+Fast Recovery ends, cwnd drops abruptly back to ss_threshold. If the newly
+shrunk win_limit is less than last_sent, the unsigned subtraction will
+underflow, wrapping to a massive positive value. Instead of returning that
+the window is full (unavailable), it returns that the sender can continue
+sending.
 
-The upstream commit replaced a BUG_ON(len > PAGE_SIZE) in
-ext4_read_inline_folio(). In 6.1 and earlier, the function is still named
-ext4_read_inline_page() and the BUG_ON was never present, so this patch
-adds the bounds check directly.
+To handle this situation, it must be checked whether the windows end
+sequence number (win_limit) has to be compared with the last sent sequence
+number. If it would be before the last sent sequence number, then more acks
+are needed before the transmission can be started again.
 
-Fixes: 46c7f254543d ("ext4: add read support for inline data")
-Signed-off-by: Yuto Ohnuki <ytohnuki@amazon.com>
+Cc: stable@kernel.org
+Fixes: 33a3bb4a3345 ("batman-adv: throughput meter implementation")
+Signed-off-by: Sven Eckelmann <sven@narfation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ext4/inline.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ net/batman-adv/tp_meter.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/fs/ext4/inline.c b/fs/ext4/inline.c
-index a1fb99d2b472bf..c0c1e865270785 100644
---- a/fs/ext4/inline.c
-+++ b/fs/ext4/inline.c
-@@ -518,6 +518,14 @@ static int ext4_read_inline_page(struct inode *inode, struct page *page)
- 		goto out;
+diff --git a/net/batman-adv/tp_meter.c b/net/batman-adv/tp_meter.c
+index f6ccb639744a2a..0fdcafca3aa02b 100644
+--- a/net/batman-adv/tp_meter.c
++++ b/net/batman-adv/tp_meter.c
+@@ -817,10 +817,15 @@ static void batadv_tp_recv_ack(struct batadv_priv *bat_priv,
+ static bool batadv_tp_avail(struct batadv_tp_vars *tp_vars,
+ 			    size_t payload_len)
+ {
++	u32 last_sent = READ_ONCE(tp_vars->last_sent);
+ 	u32 win_left, win_limit;
  
- 	len = min_t(size_t, ext4_get_inline_size(inode), i_size_read(inode));
-+	if (len > PAGE_SIZE) {
-+		ext4_error_inode(inode, __func__, __LINE__, 0,
-+				 "inline size %zu exceeds PAGE_SIZE", len);
-+		ret = -EFSCORRUPTED;
-+		brelse(iloc.bh);
-+		goto out;
-+	}
+ 	win_limit = atomic_read(&tp_vars->last_acked) + tp_vars->cwnd;
+-	win_left = win_limit - tp_vars->last_sent;
 +
- 	kaddr = kmap_atomic(page);
- 	ret = ext4_read_inline_data(inode, kaddr, len, &iloc);
- 	flush_dcache_page(page);
++	if (batadv_seq_before(last_sent, win_limit))
++		win_left = win_limit - last_sent;
++	else
++		win_left = 0;
+ 
+ 	return win_left >= payload_len;
+ }
 -- 
 2.53.0
 
