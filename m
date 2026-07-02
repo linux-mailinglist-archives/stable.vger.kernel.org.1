@@ -1,60 +1,62 @@
-Return-Path: <stable+bounces-271071-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-271238-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id R3OnNLOXRmoAZgsAu9opvQ
-	(envelope-from <stable+bounces-271071-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:54:11 +0200
+	id OXLLLjKkRmpWawsAu9opvQ
+	(envelope-from <stable+bounces-271238-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:47:30 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 743AD6FAB95
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:54:11 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id C3B586FB9FE
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:47:29 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="c9qZNU/d";
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-271071-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-271071-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=ajWTtRtW;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-271238-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-271238-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 25D9030C5754
-	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:46:16 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 4353131A702E
+	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:51:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D8EF381E99;
-	Thu,  2 Jul 2026 16:43:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D27C430C15A;
+	Thu,  2 Jul 2026 16:50:24 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CACA2363C59;
-	Thu,  2 Jul 2026 16:43:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8635E3446A7;
+	Thu,  2 Jul 2026 16:50:23 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783010593; cv=none; b=cLA/ghGAowNmmpjgK40DFZqAkBvX3GRfRz14Me6PXd0rwWVL7/n/8bVKbZhzNaetxIswgeutkeMunpcjnVNk21HSYFEGzSJVmGLTcT1LSRTddB5Jcs0FlBkCM8/6VsKgVXg9DLUmtvbPo2/mOm0/+NJb1dAaDcMSafHEfmmt0Mc=
+	t=1783011024; cv=none; b=GfH8MLF+sn/uQmdlWxIf2fphWyMECpk0009Dol5ijb7OzyhxvOX70eCY30N7Uni45SULfsj6YG3pQjYcb64Legp9s/rDnfANMHM5GyaTX/wF0IInez146Lxki7upr7T1PWpYFjinLvkrdEqOfxPtnyCE1xu3rpha/bj283b0u9M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783010593; c=relaxed/simple;
-	bh=YNvS3Jy760oNIgkfJ4SoLbQ8LdmvcdcwPOa1rJxQdxU=;
+	s=arc-20240116; t=1783011024; c=relaxed/simple;
+	bh=qmbGLjFAJZXiToJaPZMMxEIsEGq6xDwyWms6H5GS9Ps=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tzeiHsszD2YrYMyIOvNJxoiMyM4Zr8UvTGP5RrzjQ211GvIHd3+GsLt5BNOD/kL6vKa+lKeU4zN1aG+v2xcDgJuB8nc2WFtDtaSCDw4GD4VAqQEhHHIdPnrd11paV0aXL3eeNEwCTUV0MFrKCyPusLK7Xa+XxrKDjtSSIibIbAU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c9qZNU/d; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D7BF1F000E9;
-	Thu,  2 Jul 2026 16:43:12 +0000 (UTC)
+	 MIME-Version; b=T3nJh33RxDvB+QUqg3u5eTvsEKEFiHavcTyJA9n5hrSlVKgrwQsG+1kVLFFZzi9Jf/asj7GFP1dgdhRHENGSM19uaddFK4SvmVT3LAMkzQip+ouQvB3IFC7LQsE7SkvqvcBUgyEMeFgaqWz+Eb0VYrJE1hY/BoCX4Ui+X8khfIE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ajWTtRtW; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB8641F00A3A;
+	Thu,  2 Jul 2026 16:50:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1783010592;
-	bh=imgXFfN7MzEE4AB9bBiLhWKrmfI6L6hxmpxCxpY3D3w=;
+	s=korg; t=1783011023;
+	bh=2mkwdx4IIIR1QVfSuRJcvQAm2rfUa09a0SOLJYVxRnc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=c9qZNU/dTH6Fb13jZopvkMZfrCMEfIxNU8a119+QBMgvEQZraM/bqFERHM60xxeqg
-	 X2id/Qq1lLn6IutTrolxYe6eoyCaCq6UpMcbqUHmF0kmJw1EfdslFCp+eiGOnjYb3M
-	 42ElJ9xpfoIiZ7QEMOE7LaZxQd1+6CIIp0xusR54=
+	b=ajWTtRtWrXi/sRMfLI9rFB4gA6pWC2Sr6e0L1JlkRhmwxYCT+xGxIK9B2Hqdb+r4F
+	 WyLt6Zo1kYmz6IMnFuDTKIlUHEt62UDS7yHehlQZt+TilFr9+uW35SyszdgoWbaBW2
+	 cku+FJmwxtAWyL+o6jqLYpf0cBqq/AbVcwdsoK4k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Guo Ren <guoren@kernel.org>,
-	Huacai Chen <chenhuacai@loongson.cn>
-Subject: [PATCH 6.12 169/204] LoongArch: Report dying CPU to RCU in stop_this_cpu()
-Date: Thu,  2 Jul 2026 18:20:26 +0200
-Message-ID: <20260702155122.198360733@linuxfoundation.org>
+	Frank Li <Frank.Li@nxp.com>,
+	Koichiro Den <den@valinux.co.jp>,
+	Dave Jiang <dave.jiang@intel.com>,
+	Jon Mason <jdmason@kudzu.us>
+Subject: [PATCH 6.6 126/175] NTB: epf: Avoid pci_iounmap() with offset when PEER_SPAD and CONFIG share BAR
+Date: Thu,  2 Jul 2026 18:20:27 +0200
+Message-ID: <20260702155118.407563391@linuxfoundation.org>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260702155118.667618796@linuxfoundation.org>
-References: <20260702155118.667618796@linuxfoundation.org>
+In-Reply-To: <20260702155115.766838875@linuxfoundation.org>
+References: <20260702155115.766838875@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,98 +70,94 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-271071-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:guoren@kernel.org,m:chenhuacai@loongson.cn,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-271238-lists,stable=lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:Frank.Li@nxp.com,m:den@valinux.co.jp,m:dave.jiang@intel.com,m:jdmason@kudzu.us,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,loongson.cn:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,nxp.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,intel.com:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 743AD6FAB95
+X-Rspamd-Queue-Id: C3B586FB9FE
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Huacai Chen <chenhuacai@loongson.cn>
+From: Koichiro Den <den@valinux.co.jp>
 
-commit f2539c56c74691e7a88af6372ba2b48c06ed2fe4 upstream.
+commit d876153680e3d721d385e554def919bce3d18c74 upstream.
 
-This is a port of MIPS commit 9f3f3bdc6d9dac1 ("MIPS: smp: report dying
-CPU to RCU in stop_this_cpu()"). smp_send_stop() parks all secondary
-CPUs in stop_this_cpu(). And the function marks the CPU offline for the
-scheduler via set_cpu_online(false) but never informs RCU, so RCU keeps
-expecting a quiescent state from CPUs that are now spinning forever with
-interrupts disabled.
+When BAR_PEER_SPAD and BAR_CONFIG share one PCI BAR, the module teardown
+path ends up calling pci_iounmap() on the same iomem with some offset,
+which is unnecessary and triggers a kernel warning like the following:
 
-As long as nothing waits for an RCU grace period after smp_send_stop()
-this is harmless, which is why it went unnoticed. However, since commit
-91840be8f710370 ("irq_work: Fix use-after-free in irq_work_single() on
-PREEMPT_RT"), irq_work_sync() calls synchronize_rcu() on architectures
-without an irq_work self-IPI, i.e. where arch_irq_work_has_interrupt()
-returns false. Any irq_work_sync() issued in the reboot/shutdown/halt
-path after smp_send_stop() then blocks on a grace period that can never
-complete, hanging the reboot:
+  Trying to vunmap() nonexistent vm area (0000000069a5ffe8)
+  WARNING: mm/vmalloc.c:3470 at vunmap+0x58/0x68, CPU#5: modprobe/2937
+  [...]
+  Call trace:
+   vunmap+0x58/0x68 (P)
+   iounmap+0x34/0x48
+   pci_iounmap+0x2c/0x40
+   ntb_epf_pci_remove+0x44/0x80 [ntb_hw_epf]
+   pci_device_remove+0x48/0xf8
+   device_remove+0x50/0x88
+   device_release_driver_internal+0x1c8/0x228
+   driver_detach+0x50/0xb0
+   bus_remove_driver+0x74/0x100
+   driver_unregister+0x34/0x68
+   pci_unregister_driver+0x34/0xa0
+   ntb_epf_pci_driver_exit+0x14/0xfe0 [ntb_hw_epf]
+  [...]
 
-  WARNING: CPU: 0 PID: 15 at kernel/irq_work.c:144 irq_work_queue_on
-  ...
-  rcu: INFO: rcu_sched detected stalls on CPUs/tasks:
-  rcu: Offline CPU 1 blocking current GP.
-  rcu: Offline CPU 2 blocking current GP.
-  rcu: Offline CPU 3 blocking current GP.
+Fix it by unmapping only when PEER_SPAD and CONFIG use difference bars.
 
-This issue needs some hacks to reproduce, and it was not noticed on
-LoongArch because arch_irq_work_has_interrupt() usually returns true.
-
-Call rcutree_report_cpu_dead() once interrupts are disabled, mirroring
-the generic CPU-hotplug offline path, so RCU stops waiting on the parked
-CPUs and grace periods can still complete. LoongArch shuts down all CPUs
-here without going through the CPU-hotplug mechanism, so this report is
-not otherwise issued.
-
-Cc: <stable@vger.kernel.org>
-Fixes: 91840be8f710 ("irq_work: Fix use-after-free in irq_work_single() on PREEMPT_RT")
-Reviewed-by: Guo Ren <guoren@kernel.org>
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+Cc: stable@vger.kernel.org
+Fixes: e75d5ae8ab88 ("NTB: epf: Allow more flexibility in the memory BAR map method")
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
+Signed-off-by: Koichiro Den <den@valinux.co.jp>
+Reviewed-by: Dave Jiang <dave.jiang@intel.com>
+Signed-off-by: Jon Mason <jdmason@kudzu.us>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/loongarch/kernel/smp.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/ntb/hw/epf/ntb_hw_epf.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/arch/loongarch/kernel/smp.c
-+++ b/arch/loongarch/kernel/smp.c
-@@ -650,6 +650,7 @@ static void stop_this_cpu(void *dummy)
- 	set_cpu_online(smp_processor_id(), false);
- 	calculate_cpu_foreign_map();
- 	local_irq_disable();
-+	rcutree_report_cpu_dead();
- 	while (true);
- }
+--- a/drivers/ntb/hw/epf/ntb_hw_epf.c
++++ b/drivers/ntb/hw/epf/ntb_hw_epf.c
+@@ -646,7 +646,8 @@ static void ntb_epf_deinit_pci(struct nt
+ 	struct pci_dev *pdev = ndev->ntb.pdev;
  
+ 	pci_iounmap(pdev, ndev->ctrl_reg);
+-	pci_iounmap(pdev, ndev->peer_spad_reg);
++	if (ndev->barno_map[BAR_PEER_SPAD] != ndev->barno_map[BAR_CONFIG])
++		pci_iounmap(pdev, ndev->peer_spad_reg);
+ 	pci_iounmap(pdev, ndev->db_reg);
+ 
+ 	pci_release_regions(pdev);
 
 
 
