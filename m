@@ -1,61 +1,62 @@
-Return-Path: <stable+bounces-271308-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-270667-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id Tg33ISmaRmpYZwsAu9opvQ
-	(envelope-from <stable+bounces-271308-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:04:41 +0200
+	id oC4kFHeURmoCZAsAu9opvQ
+	(envelope-from <stable+bounces-270667-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:40:23 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1BC936FAF1D
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:04:41 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id A06976FA598
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:40:22 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=s9jH8vE0;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-271308-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-271308-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="XxG/5Z5J";
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-270667-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-270667-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id AD24730EAEBE
-	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:53:53 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id DD73A302975B
+	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:31:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6ED733ADB0;
-	Thu,  2 Jul 2026 16:53:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80255353A68;
+	Thu,  2 Jul 2026 16:25:42 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9234B26F46F;
-	Thu,  2 Jul 2026 16:53:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B954C348C5E;
+	Thu,  2 Jul 2026 16:25:35 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783011208; cv=none; b=BQVs76ivS07Vdzj1Tcc70GA1kQBTVxug0eGMsgNZekL0OeWXNSMDDLa+CPxcw05XOahl7P8sntfEdx+iOEHypo8p2HPkztgh0gyVX5h3xbKZcYm4EdwPXKRDoEbfYkvYzlhG/dxaXoRFuFJJ+XX6vZgdxd+Z7pqBASh3CrMRSJE=
+	t=1783009541; cv=none; b=pYyU1FyhYkKXLjdaKzJcgv4cxd38ccmIrtYc19Q5VeQirre8idAmk7HS0/v37ywqLDuD6ES6pBYgMDmvisDpAPYVxG4qGfMXCBDkDXIWNIO8NRAOePZCBod2ujd6nkdeS9mtxsve3SjqsBtN+whS5fX4HmxuabnF4BG3Ymr8t6A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783011208; c=relaxed/simple;
-	bh=tuc0o2bqUDuG1hVMWHoAn5I0r/L3cT3umShTTvraBYc=;
+	s=arc-20240116; t=1783009541; c=relaxed/simple;
+	bh=yHElywk4wdAttBUKvjtYeXGe4mFcU/2NytxF9jRHrK0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Q7pdgYq6Xj3gn/wHONjZDoIGQhdmWgrEK54krCFULeyu3uZgXhJosAOibYOE9Gl+gFqhuimq0rayLe95tnBASO6fZn37ytSlljwaph++JS96vs3ZDmmEa6uii5n9Utg1p411xKfirWmro7bTJIZjRZyJfXsVhsQqCqbUZ7rrCx0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s9jH8vE0; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04EE81F000E9;
-	Thu,  2 Jul 2026 16:53:26 +0000 (UTC)
+	 MIME-Version; b=MJiOVF+LyHDUKKXb4tIfHkbdvxgiTfk4bRmK/EVUQIn4X1X+mHYs4VjarMt/VNV5X4+zuAWkB+DyH/BtkBJNRb6AWsjWEYT/1Og8ZzPKlp4GNZyf0Gv8Zb8FuZ8DcX7xhDIS0A/BNFnwsugeVnrfNXQZrYcV+bfsXadCEf37Ga0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XxG/5Z5J; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9730B1F00A3A;
+	Thu,  2 Jul 2026 16:25:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1783011207;
-	bh=vI+6KJs8ZgzDsLzgrFVLvy9G8dOKgyvZLyKNxRx+G9I=;
+	s=korg; t=1783009534;
+	bh=uE45Nr+xF226DyFjVpRrrhvwaek3b74u4TDnAFTiuxk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=s9jH8vE0Z3An1CuJ0QhXKoU8Tqhqcskz1wnA7sEi4Bjjees6e8EQJTMhcYLpkRZQR
-	 +jQSW0dSZq+I1O1PiH4gPAswUBsHG0CF4RHnek9tAx18lhBMVuvuMbfWpzNgKisT+Z
-	 lUhlgGywOW7eme9lFNNlKX2fVmbR3r843KEPDYPg=
+	b=XxG/5Z5JuIqZqeI59oca8BaNZEQUKnZi+akHibw6xWvrLqJQ3iFhYBxZG6bJcOxZ5
+	 oJ3OSYR8lyc7eZwpPq9gX2fOvah3tbJOdCJFUAanPrwGNS7tsI1iD/Xx0dk+ib8rLn
+	 GNWtp6lDNzYAlwxN1S/1ji8K9vXN4UOFgJxQ0jEM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Sven Eckelmann <sven@narfation.org>,
+	Thorsten Blum <thorsten.blum@linux.dev>,
+	Long Li <longli@microsoft.com>,
+	Wei Liu <wei.liu@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 021/108] batman-adv: frag: avoid underflow of TTL
+Subject: [PATCH 5.10 86/96] hv: utils: handle and propagate errors in kvp_register
 Date: Thu,  2 Jul 2026 18:20:18 +0200
-Message-ID: <20260702155112.548911921@linuxfoundation.org>
+Message-ID: <20260702155110.788406854@linuxfoundation.org>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260702155112.110058792@linuxfoundation.org>
-References: <20260702155112.110058792@linuxfoundation.org>
+In-Reply-To: <20260702155108.949633242@linuxfoundation.org>
+References: <20260702155108.949633242@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,83 +70,124 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-271308-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:stable@kernel.org,m:sven@narfation.org,m:sashal@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-270667-lists,stable=lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:thorsten.blum@linux.dev,m:longli@microsoft.com,m:wei.liu@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,narfation.org:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp,linux.dev:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 1BC936FAF1D
+X-Rspamd-Queue-Id: A06976FA598
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sven Eckelmann <sven@narfation.org>
+From: Thorsten Blum <thorsten.blum@linux.dev>
 
-commit 493d9d2528e1a09b090e4b37f0f553def7bd5ce9 upstream.
+[ Upstream commit 3fcf923302a8f5c0dc3af3d2ca2657cb5fae4297 ]
 
-Packets with a TTL are using it to limit the amount of time this packet can
-be forwarded. But for batadv_frag_packet, the TTL was always only reduced
-but it was never evaluated. It could even underflow without any effect.
+Make kvp_register() return an error code instead of silently ignoring
+failures, and propagate the error from kvp_handle_handshake() instead of
+returning success.
 
-Check the TTL in batadv_frag_skb_fwd() before attempting to prepare it for
-forwarding. This keeps it in sync with the not fragmented unicast packet.
+This propagates both kzalloc_obj() and hvutil_transport_send() failures
+to kvp_handle_handshake() and thus to kvp_on_msg().
 
-Cc: stable@kernel.org
-Fixes: 610bfc6bc99b ("batman-adv: Receive fragmented packets and merge")
-Signed-off-by: Sven Eckelmann <sven@narfation.org>
+Fixes: 245ba56a52a3 ("Staging: hv: Implement key/value pair (KVP)")
+Cc: stable@vger.kernel.org
+Signed-off-by: Thorsten Blum <thorsten.blum@linux.dev>
+Reviewed-by: Long Li <longli@microsoft.com>
+Signed-off-by: Wei Liu <wei.liu@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/batman-adv/fragmentation.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ drivers/hv/hv_kvp.c |   27 ++++++++++++++-------------
+ 1 file changed, 14 insertions(+), 13 deletions(-)
 
-diff --git a/net/batman-adv/fragmentation.c b/net/batman-adv/fragmentation.c
-index ffa5d4b0740959..4779741e7273ea 100644
---- a/net/batman-adv/fragmentation.c
-+++ b/net/batman-adv/fragmentation.c
-@@ -415,6 +415,13 @@ bool batadv_frag_skb_fwd(struct sk_buff *skb,
- 	 */
- 	total_size = ntohs(packet->total_size);
- 	if (total_size > neigh_node->if_incoming->net_dev->mtu) {
-+		if (packet->ttl < 2) {
-+			kfree_skb(skb);
-+			*rx_result = NET_RX_DROP;
-+			ret = true;
-+			goto out;
-+		}
+--- a/drivers/hv/hv_kvp.c
++++ b/drivers/hv/hv_kvp.c
+@@ -93,7 +93,7 @@ static void kvp_send_key(struct work_str
+ static void kvp_respond_to_host(struct hv_kvp_msg *msg, int error);
+ static void kvp_timeout_func(struct work_struct *dummy);
+ static void kvp_host_handshake_func(struct work_struct *dummy);
+-static void kvp_register(int);
++static int kvp_register(int);
+ 
+ static DECLARE_DELAYED_WORK(kvp_timeout_work, kvp_timeout_func);
+ static DECLARE_DELAYED_WORK(kvp_host_handshake_work, kvp_host_handshake_func);
+@@ -127,24 +127,26 @@ static void kvp_register_done(void)
+ 	hv_poll_channel(kvp_transaction.recv_channel, kvp_poll_wrapper);
+ }
+ 
+-static void
++static int
+ kvp_register(int reg_value)
+ {
+ 
+ 	struct hv_kvp_msg *kvp_msg;
+ 	char *version;
++	int ret;
+ 
+ 	kvp_msg = kzalloc(sizeof(*kvp_msg), GFP_KERNEL);
++	if (!kvp_msg)
++		return -ENOMEM;
+ 
+-	if (kvp_msg) {
+-		version = kvp_msg->body.kvp_register.version;
+-		kvp_msg->kvp_hdr.operation = reg_value;
+-		strcpy(version, HV_DRV_VERSION);
+-
+-		hvutil_transport_send(hvt, kvp_msg, sizeof(*kvp_msg),
+-				      kvp_register_done);
+-		kfree(kvp_msg);
+-	}
++	version = kvp_msg->body.kvp_register.version;
++	kvp_msg->kvp_hdr.operation = reg_value;
++	strcpy(version, HV_DRV_VERSION);
 +
- 		if (skb_cow(skb, ETH_HLEN) < 0) {
- 			kfree_skb(skb);
- 			*rx_result = NET_RX_DROP;
--- 
-2.53.0
-
++	ret = hvutil_transport_send(hvt, kvp_msg, sizeof(*kvp_msg),
++				    kvp_register_done);
++	kfree(kvp_msg);
++	return ret;
+ }
+ 
+ static void kvp_timeout_func(struct work_struct *dummy)
+@@ -186,9 +188,8 @@ static int kvp_handle_handshake(struct h
+ 	 */
+ 	pr_debug("KVP: userspace daemon ver. %d connected\n",
+ 		 msg->kvp_hdr.operation);
+-	kvp_register(dm_reg_value);
+ 
+-	return 0;
++	return kvp_register(dm_reg_value);
+ }
+ 
+ 
 
 
 
