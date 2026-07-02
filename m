@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-270502-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-270504-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id t/rDGqZtRmoxUgsAu9opvQ
-	(envelope-from <stable+bounces-270502-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 15:54:46 +0200
+	id oirKMiBtRmq/UQsAu9opvQ
+	(envelope-from <stable+bounces-270504-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 15:52:32 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D1796F8970
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 15:54:45 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0510F6F88D7
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 15:52:32 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=VJJWawf0;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-270502-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-270502-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=rRrfzhu1;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-270504-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-270504-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 7BC37300721F
-	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 13:51:47 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 9467D3030F61
+	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 13:52:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F2044A3405;
-	Thu,  2 Jul 2026 13:51:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 991314A3405;
+	Thu,  2 Jul 2026 13:52:28 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B2F34A2E34
-	for <stable@vger.kernel.org>; Thu,  2 Jul 2026 13:51:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C3204A2E1D
+	for <stable@vger.kernel.org>; Thu,  2 Jul 2026 13:52:27 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783000303; cv=none; b=Hx50Cb20wBOvjgNK2rkjt8Rg4/wF1nKyMwLdqYKY8Vf36v95Ntn63gPCPXIkguQGuxmAO8AYh9senQqiDDHdglHscglMk2/zIxcs5GjD0/k9e3h5SvOZCZfBzhQRiInLRNkKqsTmEIWpaWHeoBL0x9bjI83CIj/MNuyl1XtT2iw=
+	t=1783000348; cv=none; b=VaNDdigeqhDOEi/8JRtDKYFzmR2zzuOtwe25JpomVpKGJSLwGztrjY7kFyGF3FQC60utuwLWdAH4BR4P2Q5UDhgSERNjXLud9AZyFUMfp6M5boypDH/TtjRtIgjLGJRzaGSfpmp76cPHIoh5HlQdlbnqsSrLu/sob6ORS+m1Ygw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783000303; c=relaxed/simple;
-	bh=YaF7ZICnb8hJAzY+mnZWaQj5hjNczNjCsUZqTHZ6QjM=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=pOZWQXoTboTxdJVuGxRkrTtKRuEjBjozYr312HT/5OBMtQJ4i9mCQU9rlLsCtUBOwJNHY8wqfhrDKSvrtNHZ7UKmdiRh0qQSK2dmWkt5pm8N6NFgu0b9piojs5WrMhrBbct2p6t/Rzih+vBGoNQv4SQxPM1YAYPlsrQjSq7IKN8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VJJWawf0; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9EE6D1F000E9;
-	Thu,  2 Jul 2026 13:51:41 +0000 (UTC)
+	s=arc-20240116; t=1783000348; c=relaxed/simple;
+	bh=JDsHkvYxrLzVXM7A2X78uyX83et/JFSjuVbdfRNPXng=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=CLIVkQr26zhOt9MNUhPQOq7tQ7qVR4JcsHQKi5XNEHfR9XQP01+TYK6rU59iUsaW7jhdYeaPEtooo3RHSOTakWM4Ysm2Qo7YMQj4tMqHjSx39ewS9I/17xjT+eOZNCj7yNynjjJjq2aH+juFh6f+iThMLHtUKWA20HVN3xht5Io=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rRrfzhu1; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 799821F000E9;
+	Thu,  2 Jul 2026 13:52:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1783000302;
-	bh=+XySq/Lhl69f/TAp/yd89SpUsdqY0zZKZ8PymumIVgE=;
+	s=korg; t=1783000346;
+	bh=PcTFAN3DeF7KQU4Ji6krndeOzAAynf4Y1tq18a1Qxok=;
 	h=Subject:To:Cc:From:Date;
-	b=VJJWawf0upK7eVgp1EEP9CH3X1Y+C+d66127n3CbkoF18zW995FZ5zWsU9qqVPz+8
-	 5RngsQuWC0XA9l6De89UCFoqjjpYcT386ScfkHNquVnPDMmPSRb633iBchhQPIH6s0
-	 L0pO3aEZ6S6uyP+2TlfdaVOLuWaIzF1ORwQ+loN8=
-Subject: FAILED: patch "[PATCH] riscv: kfence: Call mark_new_valid_map() for" failed to apply to 6.6-stable tree
-To: wangruikang@iscas.ac.cn,pjw@kernel.org,yaneti@declera.com
+	b=rRrfzhu1a0CB4Y2yUw2a3kIeMAAZ7/Dk2DqsZh39IpJZ5E0wZVJp88pQmMJ7jXsS6
+	 AaoMElfl6A7UWdnG6dcYCyEuFmMUAMDDvxN6CmZOkhTOBbJuERB9claKqBay+eu8ct
+	 62zc5bDWYMc4n+SpELH1uIRhj7kki68G1wlbMh8A=
+Subject: FAILED: patch "[PATCH] fbdev: fbcon: fix out-of-bounds read in err_out of" failed to apply to 6.12-stable tree
+To: 25181214217@stu.xidian.edu.cn,deller@gmx.de,tzimmermann@suse.de
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Thu, 02 Jul 2026 15:51:52 +0200
-Message-ID: <2026070252-appetizer-unclip-195c@gregkh>
+Date: Thu, 02 Jul 2026 15:52:29 +0200
+Message-ID: <2026070229-impound-unpicked-bec0@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -60,53 +60,54 @@ X-Rspamd-Action: no action
 X-Spamd-Result: default: False [2.34 / 15.00];
 	MID_END_EQ_FROM_USER_PART(4.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	MID_RHS_NOT_FQDN(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-270504-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:25181214217@stu.xidian.edu.cn,m:deller@gmx.de,m:tzimmermann@suse.de,m:stable@vger.kernel.org,s:lists@lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-270502-lists,stable=lfdr.de];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS(0.00)[m:wangruikang@iscas.ac.cn,m:pjw@kernel.org,m:yaneti@declera.com,m:stable@vger.kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
 	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FROM_NO_DN(0.00)[];
+	FREEMAIL_TO(0.00)[stu.xidian.edu.cn,gmx.de,suse.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MISSING_XM_UA(0.00)[];
+	RCPT_COUNT_THREE(0.00)[4];
 	TO_DN_NONE(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_THREE(0.00)[4];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
 	MIME_TRACE(0.00)[0:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,msgid.link:url,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,gregkh:mid,iscas.ac.cn:email]
+	TAGGED_RCPT(0.00)[stable];
+	FROM_NO_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,gregkh:mid,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,gmx.de:email,xidian.edu.cn:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 5D1796F8970
+X-Rspamd-Queue-Id: 0510F6F88D7
 
 
-The patch below does not apply to the 6.6-stable tree.
+The patch below does not apply to the 6.12-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.12.y
 git checkout FETCH_HEAD
-git cherry-pick -x 8d6c8c40e733b3fcaf92fed0a078bba2f6941a3b
+git cherry-pick -x 8fdc8c2057eea08d40ce2c8eed41ff9e451c65c2
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026070252-appetizer-unclip-195c@gregkh' --subject-prefix 'PATCH 6.6.y' 'HEAD^..'
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026070229-impound-unpicked-bec0@gregkh' --subject-prefix 'PATCH 6.12.y' 'HEAD^..'
 
 Possible dependencies:
 
@@ -118,78 +119,65 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 8d6c8c40e733b3fcaf92fed0a078bba2f6941a3b Mon Sep 17 00:00:00 2001
-From: Vivian Wang <wangruikang@iscas.ac.cn>
-Date: Tue, 3 Mar 2026 13:29:46 +0800
-Subject: [PATCH] riscv: kfence: Call mark_new_valid_map() for
- kfence_unprotect()
+From 8fdc8c2057eea08d40ce2c8eed41ff9e451c65c2 Mon Sep 17 00:00:00 2001
+From: Mingyu Wang <25181214217@stu.xidian.edu.cn>
+Date: Fri, 26 Jun 2026 00:03:06 +0800
+Subject: [PATCH] fbdev: fbcon: fix out-of-bounds read in err_out of
+ fbcon_do_set_font()
 
-In kfence_protect_page(), which kfence_unprotect() calls, we cannot send
-IPIs to other CPUs to ask them to flush TLB. This may lead to those CPUs
-spuriously faulting on a recently allocated kfence object despite it
-being valid, leading to false positive use-after-free reports.
+When fbcon_do_set_font() fails (e.g., due to a memory allocation failure
+inside vc_resize() under heavy memory pressure), it jumps to the `err_out`
+label to roll back the console state. However, the current rollback logic
+forgets to restore the `hi_font` state, leading to a severe state machine
+corruption.
 
-Fix this by calling mark_new_valid_map() so that the page fault handling
-code path notices the spurious fault and flushes TLB then retries the
-access.
+Earlier in the function, `set_vc_hi_font()` might be called to change
+`vc->vc_hi_font_mask` and mutate the screen buffer. If `vc_resize()`
+subsequently fails, the `err_out` path restores `vc_font.charcount`
+but entirely skips rolling back the `vc_hi_font_mask` and the screen
+buffer.
 
-Update the comment in handle_exception to indicate that
-new_valid_map_cpus_check also handles kfence_unprotect() spurious
-faults.
+This mismatch leaves the terminal in a desynchronized state. Because
+`vc_hi_font_mask` remains set, the VT subsystem will still accept
+character indices greater than 255 from userspace and write them to the
+screen buffer. Subsequent rendering calls (e.g., `fbcon_putcs()`) will
+then use these inflated indices to access the reverted, 256-character
+font array, leading to a deterministic out-of-bounds read and potential
+kernel memory disclosure.
 
-Note that kfence_protect() has the same stale TLB entries problem, but
-that leads to false negatives, which is fine with kfence.
+Fix this by adding the missing rollback logic for the `hi_font` mask
+and screen buffer in the error path.
 
+Fixes: a5a923038d70 ("fbdev: fbcon: Properly revert changes when vc_resize() failed")
 Cc: stable@vger.kernel.org
-Reported-by: Yanko Kaneti <yaneti@declera.com>
-Fixes: b3431a8bb336 ("riscv: Fix IPIs usage in kfence_protect_page()")
-Signed-off-by: Vivian Wang <wangruikang@iscas.ac.cn>
-Link: https://patch.msgid.link/20260303-handle-kfence-protect-spurious-fault-v2-2-f80d8354d79d@iscas.ac.cn
-Signed-off-by: Paul Walmsley <pjw@kernel.org>
+Signed-off-by: Mingyu Wang <25181214217@stu.xidian.edu.cn>
+Reviewed-by: Thomas Zimmermann <tzimmermann@suse.de>
+Signed-off-by: Helge Deller <deller@gmx.de>
 
-diff --git a/arch/riscv/include/asm/kfence.h b/arch/riscv/include/asm/kfence.h
-index d08bf7fb3aee..29cb3a6ee113 100644
---- a/arch/riscv/include/asm/kfence.h
-+++ b/arch/riscv/include/asm/kfence.h
-@@ -6,6 +6,7 @@
- #include <linux/kfence.h>
- #include <linux/pfn.h>
- #include <asm-generic/pgalloc.h>
-+#include <asm/cacheflush.h>
- #include <asm/pgtable.h>
+diff --git a/drivers/video/fbdev/core/fbcon.c b/drivers/video/fbdev/core/fbcon.c
+index 9077d3b99357..37beb93045af 100644
+--- a/drivers/video/fbdev/core/fbcon.c
++++ b/drivers/video/fbdev/core/fbcon.c
+@@ -2405,6 +2405,7 @@ static int fbcon_do_set_font(struct vc_data *vc, int w, int h, int charcount,
+ 	int resize, ret, old_width, old_height, old_charcount;
+ 	font_data_t *old_fontdata = p->fontdata;
+ 	const u8 *old_data = vc->vc_font.data;
++	unsigned short old_hi_font_mask = vc->vc_hi_font_mask;
  
- static inline bool arch_kfence_init_pool(void)
-@@ -17,10 +18,12 @@ static inline bool kfence_protect_page(unsigned long addr, bool protect)
- {
- 	pte_t *pte = virt_to_kpte(addr);
+ 	font_data_get(data);
  
--	if (protect)
-+	if (protect) {
- 		set_pte(pte, __pte(pte_val(ptep_get(pte)) & ~_PAGE_PRESENT));
--	else
-+	} else {
- 		set_pte(pte, __pte(pte_val(ptep_get(pte)) | _PAGE_PRESENT));
-+		mark_new_valid_map();
-+	}
+@@ -2451,6 +2452,12 @@ static int fbcon_do_set_font(struct vc_data *vc, int w, int h, int charcount,
+ 	vc->vc_font.height = old_height;
+ 	vc->vc_font.charcount = old_charcount;
  
- 	preempt_disable();
- 	local_flush_tlb_kernel_range(addr, addr + PAGE_SIZE);
-diff --git a/arch/riscv/kernel/entry.S b/arch/riscv/kernel/entry.S
-index d011fb51c59a..6c14ed7a5613 100644
---- a/arch/riscv/kernel/entry.S
-+++ b/arch/riscv/kernel/entry.S
-@@ -136,8 +136,10 @@ SYM_CODE_START(handle_exception)
++	/* Restore the hi_font state and screen buffer */
++	if (old_hi_font_mask && !vc->vc_hi_font_mask)
++		set_vc_hi_font(vc, true);
++	else if (!old_hi_font_mask && vc->vc_hi_font_mask)
++		set_vc_hi_font(vc, false);
++
+ 	font_data_put(data);
  
- #ifdef CONFIG_64BIT
- 	/*
--	 * The RISC-V kernel does not eagerly emit a sfence.vma after each
--	 * new vmalloc mapping, which may result in exceptions:
-+	 * The RISC-V kernel does not flush TLBs on all CPUS after each new
-+	 * vmalloc mapping or kfence_unprotect(), which may result in
-+	 * exceptions:
-+	 *
- 	 * - if the uarch caches invalid entries, the new mapping would not be
- 	 *   observed by the page table walker and an invalidation is needed.
- 	 * - if the uarch does not cache invalid entries, a reordered access
+ 	return ret;
 
 
