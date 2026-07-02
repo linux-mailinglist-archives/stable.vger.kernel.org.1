@@ -1,61 +1,61 @@
-Return-Path: <stable+bounces-270714-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-271190-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id TYbGCKSSRmpCYwsAu9opvQ
-	(envelope-from <stable+bounces-270714-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:32:36 +0200
+	id w+WgDyWZRmq/ZgsAu9opvQ
+	(envelope-from <stable+bounces-271190-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:00:21 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D7E9F6FA3B9
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:32:35 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D9C66FAD81
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:00:20 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=ESJ7A7+y;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-270714-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-270714-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=Rq2el2Kf;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-271190-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-271190-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 5E02A301F488
-	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:32:17 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 948C1314A536
+	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:50:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 187363264C1;
-	Thu,  2 Jul 2026 16:27:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B63432ED40;
+	Thu,  2 Jul 2026 16:48:21 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5B0D3A7F49;
-	Thu,  2 Jul 2026 16:27:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1AAA731F9A2;
+	Thu,  2 Jul 2026 16:48:20 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783009662; cv=none; b=tAFOtLXt9Y66YIZaNjrxe7SrJ97l7G+DuCJ2N4ZWHL87n7PhEPUR4w/eNiZpg53t0AKWG1a8DZPEunD5c/j4IXlrmq8p4zJY9Lre9nFy/8OdBPZmZpWtgyh+9vH10P48xp1Oi625HMqmwwC4kiH8agIQUERUu1cyTeSpq6NCHSQ=
+	t=1783010901; cv=none; b=FkYqypA9cfNxEXp608oa94I+5+RRlfrpA5wB/8FBOKqwGpT/an+INzUY9/YorlhEvc40gynRApaDoHZvz6nQPpvkYIUkwyKnKOhmZkuWiRi8evpZGvDulXJF5VBvj4dm2dRMmF+CBpZFu6ZA4BLw/vHOjGWcyhwx012DtJsg3vo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783009662; c=relaxed/simple;
-	bh=sssfKFNrRvOA6/NUY5usicKmFBnz49nZpSlIPSS5pqM=;
+	s=arc-20240116; t=1783010901; c=relaxed/simple;
+	bh=4Cm4zyBWbVuTNAD7/+KJ1ELlNccS9CXH9hGkZ51gv1w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SpsljfOvI15zyAcYfm0Twc1hP5hxVUIV7huSRzA+fLNGt9puezFS6xDQvzA0SDHAEHbvtLCoh+xiDz837/gnTS95OJtDEyjQmOK5QiHtW2VYxmDaqwzrUHV87GXsht6FbBMWkq7Oh5SPB8x+uKMbF3vDUj/IMtblGlYNlkZV+pM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ESJ7A7+y; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC10F1F00A3D;
-	Thu,  2 Jul 2026 16:27:36 +0000 (UTC)
+	 MIME-Version; b=sOI7KpJ+ysIAO0rO/YzLe/80dNJ2hDGKBcGZLDdJ36Ver1APL2Ffr7BswUCE50Dx1wBh9ojKyyrhOvo5ae43EecBtZJVXGYLstQb5JyF+lnKDGrjvzxnp9ye7YykqVRJumU3kqdbQvUjF7Xoahj64zFdFLWpdhQ2emKsgmbViRw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Rq2el2Kf; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B3AD1F000E9;
+	Thu,  2 Jul 2026 16:48:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1783009657;
-	bh=WMNtuLN4VwQFQi5OAY7UxTiH+QRj7Oo9hnI3m+yB7FQ=;
+	s=korg; t=1783010900;
+	bh=8iA+l0j7sy1pmzlacabtN0BwV6fWTCEoCrLSN9UaqDc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=ESJ7A7+y3EoN+cik2dN8PWbNtEHlEBM98fdQbsE74QoL1lhgz1m9tp29fhYxm6uNX
-	 xdsHeyVwmFTNzEov7j4hfZdOFMJvco/Wbkp+lKCoEe3XdUfU+E38C/oHr6iBU5O6id
-	 xm4jg6Qbnsf/4HYe8auGyx4gEqJAGcWYQ4i5ad0I=
+	b=Rq2el2KfZfmHe/d4fQIs2Uw0+8TTcDpXv5m8kagCPPUUP+FXFqED/W+KBQIgpB/34
+	 3TJHs1KspuxQpbfEZ3gDFZeYtNVXg9xQpEPOgtTyHNThUtda/srzMocT0e8DiPb9fn
+	 +pmSXycrra8xxH7EC8ocfBM/uNSnAgm0OtfQPX78=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Sven Eckelmann <sven@narfation.org>,
+	"Christian Brauner (Amutable)" <brauner@kernel.org>,
+	Quentin Schulz <quentin.schulz@cherry.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 37/95] batman-adv: prevent ELP transmission interval underflow
+Subject: [PATCH 6.6 079/175] eventpoll: drop vestigial __ prefix from ep_remove_{file,epi}()
 Date: Thu,  2 Jul 2026 18:19:40 +0200
-Message-ID: <20260702155109.988424955@linuxfoundation.org>
+Message-ID: <20260702155117.449992773@linuxfoundation.org>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260702155109.196223802@linuxfoundation.org>
-References: <20260702155109.196223802@linuxfoundation.org>
+In-Reply-To: <20260702155115.766838875@linuxfoundation.org>
+References: <20260702155115.766838875@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,21 +72,21 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-270714-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-271190-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:stable@kernel.org,m:sven@narfation.org,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:brauner@kernel.org,m:quentin.schulz@cherry.de,m:sashal@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
@@ -98,58 +98,76 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,narfation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[cherry.de:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: D7E9F6FA3B9
+X-Rspamd-Queue-Id: 5D9C66FAD81
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sven Eckelmann <sven@narfation.org>
+From: Christian Brauner <brauner@kernel.org>
 
-commit 5e50d4b8ae3ea622122d3c6a38d7f6fe68dfddca upstream.
+[ Upstream commit 0feaf644f7180c4a91b6b405a881afbfd958f1cf ]
 
-batadv_v_elp_start_timer() enqeues a delayed work. The time when it starts
-is randomly chosen between (elp_interval - BATADV_JITTER) and
-(elp_interval + BATADV_JITTER). The configured elp_interval must therefore
-be larger or equal to BATADV_JITTER to avoid that it causes an underflow of
-the unsigned integer. If this would happen, then a "fast" ELP interval
-would turn into a "day long" delay.
+With __ep_remove() gone, the double-underscore on __ep_remove_file()
+and __ep_remove_epi() no longer contrasts with a __-less parent and
+just reads as noise. Rename both to ep_remove_file() and
+ep_remove_epi(). No functional change.
 
-At the same time, it must not be larger than the maximum value the variable
-can store.
-
-Cc: stable@kernel.org
-Fixes: a10800829040 ("batman-adv: Add elp_interval hardif genl configuration")
-[ Context ]
-Signed-off-by: Sven Eckelmann <sven@narfation.org>
+Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
+Stable-dep-of: a6dc643c6931 ("eventpoll: fix ep_remove struct eventpoll / struct file UAF")
+Signed-off-by: Quentin Schulz <quentin.schulz@cherry.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/batman-adv/netlink.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ fs/eventpoll.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/net/batman-adv/netlink.c b/net/batman-adv/netlink.c
-index bbd6ecf1678c97..cb50b46cb8d30d 100644
---- a/net/batman-adv/netlink.c
-+++ b/net/batman-adv/netlink.c
-@@ -941,9 +941,15 @@ static int batadv_netlink_set_hardif(struct sk_buff *skb,
- #ifdef CONFIG_BATMAN_ADV_BATMAN_V
+diff --git a/fs/eventpoll.c b/fs/eventpoll.c
+index 766716c2fd92a0..0a54a42263575f 100644
+--- a/fs/eventpoll.c
++++ b/fs/eventpoll.c
+@@ -719,7 +719,7 @@ static void ep_free(struct eventpoll *ep)
+  * Called with &file->f_lock held,
+  * returns with it released
+  */
+-static void __ep_remove_file(struct eventpoll *ep, struct epitem *epi,
++static void ep_remove_file(struct eventpoll *ep, struct epitem *epi,
+ 			     struct file *file)
+ {
+ 	struct epitems_head *to_free = NULL;
+@@ -743,7 +743,7 @@ static void __ep_remove_file(struct eventpoll *ep, struct epitem *epi,
+ 	free_ephead(to_free);
+ }
  
- 	if (info->attrs[BATADV_ATTR_ELP_INTERVAL]) {
-+		u32 elp_interval;
-+
- 		attr = info->attrs[BATADV_ATTR_ELP_INTERVAL];
-+		elp_interval = nla_get_u32(attr);
-+
-+		elp_interval = min_t(u32, elp_interval, INT_MAX);
-+		elp_interval = max_t(u32, elp_interval, BATADV_JITTER);
+-static bool __ep_remove_epi(struct eventpoll *ep, struct epitem *epi)
++static bool ep_remove_epi(struct eventpoll *ep, struct epitem *epi)
+ {
+ 	lockdep_assert_held(&ep->mtx);
  
--		atomic_set(&hard_iface->bat_v.elp_interval, nla_get_u32(attr));
-+		atomic_set(&hard_iface->bat_v.elp_interval, elp_interval);
+@@ -789,9 +789,9 @@ static void ep_remove_safe(struct eventpoll *ep, struct epitem *epi)
+ 		spin_unlock(&file->f_lock);
+ 		return;
  	}
+-	__ep_remove_file(ep, epi, file);
++	ep_remove_file(ep, epi, file);
  
- 	if (info->attrs[BATADV_ATTR_THROUGHPUT_OVERRIDE]) {
+-	if (__ep_remove_epi(ep, epi))
++	if (ep_remove_epi(ep, epi))
+ 		WARN_ON_ONCE(ep_refcount_dec_and_test(ep));
+ }
+ 
+@@ -1013,8 +1013,8 @@ void eventpoll_release_file(struct file *file)
+ 		ep_unregister_pollwait(ep, epi);
+ 
+ 		spin_lock(&file->f_lock);
+-		__ep_remove_file(ep, epi, file);
+-		dispose = __ep_remove_epi(ep, epi);
++		ep_remove_file(ep, epi, file);
++		dispose = ep_remove_epi(ep, epi);
+ 
+ 		mutex_unlock(&ep->mtx);
+ 
 -- 
 2.53.0
 
