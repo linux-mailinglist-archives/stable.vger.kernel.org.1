@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-270508-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-270511-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id LKNDGi5tRmrQUQsAu9opvQ
-	(envelope-from <stable+bounces-270508-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 15:52:46 +0200
+	id 4MwtAp5uRmpwUwsAu9opvQ
+	(envelope-from <stable+bounces-270511-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 15:58:54 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id ECD1F6F88F0
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 15:52:45 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id A048E6F8A15
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 15:58:53 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="kwNH6nW/";
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-270508-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-270508-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=YrzSmsdc;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-270511-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-270511-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id C87DC302989C
-	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 13:52:41 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id BF150303E2F3
+	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 13:53:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B7D994A3405;
-	Thu,  2 Jul 2026 13:52:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E8DD43E4508;
+	Thu,  2 Jul 2026 13:53:33 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75D584A2E01
-	for <stable@vger.kernel.org>; Thu,  2 Jul 2026 13:52:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE7E24A3405
+	for <stable@vger.kernel.org>; Thu,  2 Jul 2026 13:53:32 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783000358; cv=none; b=iHgmS6dZk0h45EzcOPnkx5+1qePb0zHHVISy3aKmKxM4OmHhCJBL/p0JRc6owddGGUizTHHkjMeqP+WsDJ+yqDTseOlSZ29xhT6WpnzTcDg4hOVzCfu+p4L4vEpySznP8xhVKS0j/X9wXa5ZwQ94zg6CE1u/0H400NZ/HVBg5ik=
+	t=1783000413; cv=none; b=Z2VXPj7vWvK4sAPmmg+2UeL3iZEjk+5cywDTTHgdAHk9zn7JorpuNmUL8hueyK8+KdZsJafMWnfF8MhoiRO3Uxc5CIRBkQ5wFnzL1AvR73d0FOJ4rWJn3athZYsLgQ8ab/K1k7M4bB6BCgtQ+u8xL81gdFWGhcf47qJJ6sITie0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783000358; c=relaxed/simple;
-	bh=FMUwW5VjdwcBextb3Y9yjB9p/8Q6oCYfm1I2zcu/6R4=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=GYOUQsZUZ57gFaexNsn8zGZBNhg7LzMjq4BRHKzfpaKzdNkq8uCMTlwkez4/190v4XxlqLwZ2E15paF6VNgDxLiOrllze/B7FQTR6yk/0KYWZoOFoGIWX7GRFcK+FCU7HmrMdRkrlOZO1YXEZrZ/RtbDm+NVCKOkg9HU8kfQbUA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kwNH6nW/; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A45771F00A3F;
-	Thu,  2 Jul 2026 13:52:36 +0000 (UTC)
+	s=arc-20240116; t=1783000413; c=relaxed/simple;
+	bh=yYYyIUuffPgz5AD7C+1E84G1yoOHBxLKQ4C79uGrBYk=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=uTpM5gngiBKimI8GSSjJar+515kYQrBZqq1oV0mLMLZFUYyqlZfQMuBXIOZFbcmaxuQEBoo1POfXIxI4+SegLZiTzTik+tptQ/4HcLsZDjmN78ol1R1fs0r3PBjUbaNUWx6LNQs2IngFhmrv1Mil6bs5M6pNfq2gLmYnnTRqxXE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YrzSmsdc; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D3951F000E9;
+	Thu,  2 Jul 2026 13:53:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1783000357;
-	bh=ILGFZWpiySzyMX7CQq5o6NpRD6hdCfa+cfwUSfl3/qo=;
+	s=korg; t=1783000412;
+	bh=mhd5GJ621UtGOThzEB2CDo0LRhC6EZ1opTy5VWb6cbo=;
 	h=Subject:To:Cc:From:Date;
-	b=kwNH6nW/w3WTLkeV6UM4hu63Nh3othOE5MbCXyrKimkQNQkBEZPYOcgg3h1DLInHY
-	 LOKJLOTq69oo8Tq+MA3P5yBSOovEUYzwXGO7vt92cbDKZitp6cOZcqq9sFePkdguK4
-	 sNUiyCMlkh2ccLCQWCIlxZcZtIBkHFnVNOAxmMQc=
-Subject: FAILED: patch "[PATCH] fbdev: fbcon: fix out-of-bounds read in err_out of" failed to apply to 5.10-stable tree
-To: 25181214217@stu.xidian.edu.cn,deller@gmx.de,tzimmermann@suse.de
+	b=YrzSmsdc+9q30qJbWPtAy339SUCn5YvSoQ/+MOzmmAtK/ejF08jIGpaaPmILDt+zj
+	 vRxsO8MNnYFIAucOvMlRQwoaIFWzp+WMeet9AS/fAeOalmjGvC5D0/E9E/L+rMPPU1
+	 kZu/Nxp+6VGLVI5XHnvgP7U/Rn9f6BmH/qZkJDbA=
+Subject: FAILED: patch "[PATCH] i2c: core: fix adapter registration race" failed to apply to 5.15-stable tree
+To: johan@kernel.org,wsa+renesas@sang-engineering.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Thu, 02 Jul 2026 15:52:31 +0200
-Message-ID: <2026070231-lash-wick-98ec@gregkh>
+Date: Thu, 02 Jul 2026 15:53:32 +0200
+Message-ID: <2026070232-opal-musky-5819@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -60,54 +60,53 @@ X-Rspamd-Action: no action
 X-Spamd-Result: default: False [2.34 / 15.00];
 	MID_END_EQ_FROM_USER_PART(4.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	MID_RHS_NOT_FQDN(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-270508-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:25181214217@stu.xidian.edu.cn,m:deller@gmx.de,m:tzimmermann@suse.de,m:stable@vger.kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_TO(0.00)[stu.xidian.edu.cn,gmx.de,suse.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-270511-lists,stable=lfdr.de];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS(0.00)[m:johan@kernel.org,m:wsa+renesas@sang-engineering.com,m:stable@vger.kernel.org,m:wsa@sang-engineering.com,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FROM_NO_DN(0.00)[];
 	MISSING_XM_UA(0.00)[];
-	RCPT_COUNT_THREE(0.00)[4];
 	TO_DN_NONE(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	RCPT_COUNT_THREE(0.00)[3];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable,renesas];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_RCPT(0.00)[stable];
-	FROM_NO_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,xidian.edu.cn:email,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,gregkh:mid,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,gmx.de:email]
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,sang-engineering.com:email,gregkh:mid]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: ECD1F6F88F0
+X-Rspamd-Queue-Id: A048E6F8A15
 
 
-The patch below does not apply to the 5.10-stable tree.
+The patch below does not apply to the 5.15-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
 git checkout FETCH_HEAD
-git cherry-pick -x 8fdc8c2057eea08d40ce2c8eed41ff9e451c65c2
+git cherry-pick -x ba14d7cf2fe7284610a29854bdff22b2537d3ce6
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026070231-lash-wick-98ec@gregkh' --subject-prefix 'PATCH 5.10.y' 'HEAD^..'
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026070232-opal-musky-5819@gregkh' --subject-prefix 'PATCH 5.15.y' 'HEAD^..'
 
 Possible dependencies:
 
@@ -119,65 +118,60 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 8fdc8c2057eea08d40ce2c8eed41ff9e451c65c2 Mon Sep 17 00:00:00 2001
-From: Mingyu Wang <25181214217@stu.xidian.edu.cn>
-Date: Fri, 26 Jun 2026 00:03:06 +0800
-Subject: [PATCH] fbdev: fbcon: fix out-of-bounds read in err_out of
- fbcon_do_set_font()
+From ba14d7cf2fe7284610a29854bdff22b2537d3ce6 Mon Sep 17 00:00:00 2001
+From: Johan Hovold <johan@kernel.org>
+Date: Mon, 11 May 2026 16:37:12 +0200
+Subject: [PATCH] i2c: core: fix adapter registration race
 
-When fbcon_do_set_font() fails (e.g., due to a memory allocation failure
-inside vc_resize() under heavy memory pressure), it jumps to the `err_out`
-label to roll back the console state. However, the current rollback logic
-forgets to restore the `hi_font` state, leading to a severe state machine
-corruption.
+Adapters can be looked up based on their id using i2c_get_adapter()
+which takes a reference to the embedded struct device.
 
-Earlier in the function, `set_vc_hi_font()` might be called to change
-`vc->vc_hi_font_mask` and mutate the screen buffer. If `vc_resize()`
-subsequently fails, the `err_out` path restores `vc_font.charcount`
-but entirely skips rolling back the `vc_hi_font_mask` and the screen
-buffer.
+Make sure that the adapter (including its struct device) has been
+initialised before adding it to the IDR to avoid accessing uninitialised
+data which could, for example, lead to NULL-pointer dereferences or
+use-after-free.
 
-This mismatch leaves the terminal in a desynchronized state. Because
-`vc_hi_font_mask` remains set, the VT subsystem will still accept
-character indices greater than 255 from userspace and write them to the
-screen buffer. Subsequent rendering calls (e.g., `fbcon_putcs()`) will
-then use these inflated indices to access the reverted, 256-character
-font array, leading to a deterministic out-of-bounds read and potential
-kernel memory disclosure.
+Note that the i2c-dev chardev, which is registered from a bus notifier,
+currently uses i2c_get_adapter() so the adapter needs to be added to the
+IDR before registration.
 
-Fix this by adding the missing rollback logic for the `hi_font` mask
-and screen buffer in the error path.
+Fixes: 6e13e6418418 ("i2c: Add i2c_add_numbered_adapter()")
+Cc: stable@vger.kernel.org	# 2.6.22
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
 
-Fixes: a5a923038d70 ("fbdev: fbcon: Properly revert changes when vc_resize() failed")
-Cc: stable@vger.kernel.org
-Signed-off-by: Mingyu Wang <25181214217@stu.xidian.edu.cn>
-Reviewed-by: Thomas Zimmermann <tzimmermann@suse.de>
-Signed-off-by: Helge Deller <deller@gmx.de>
-
-diff --git a/drivers/video/fbdev/core/fbcon.c b/drivers/video/fbdev/core/fbcon.c
-index 9077d3b99357..37beb93045af 100644
---- a/drivers/video/fbdev/core/fbcon.c
-+++ b/drivers/video/fbdev/core/fbcon.c
-@@ -2405,6 +2405,7 @@ static int fbcon_do_set_font(struct vc_data *vc, int w, int h, int charcount,
- 	int resize, ret, old_width, old_height, old_charcount;
- 	font_data_t *old_fontdata = p->fontdata;
- 	const u8 *old_data = vc->vc_font.data;
-+	unsigned short old_hi_font_mask = vc->vc_hi_font_mask;
+diff --git a/drivers/i2c/i2c-core-base.c b/drivers/i2c/i2c-core-base.c
+index fdf7d7d50f79..01a984d3ca0e 100644
+--- a/drivers/i2c/i2c-core-base.c
++++ b/drivers/i2c/i2c-core-base.c
+@@ -1580,6 +1580,10 @@ static int i2c_register_adapter(struct i2c_adapter *adap)
  
- 	font_data_get(data);
+ 	adap->debugfs = debugfs_create_dir(dev_name(&adap->dev), i2c_debugfs_root);
  
-@@ -2451,6 +2452,12 @@ static int fbcon_do_set_font(struct vc_data *vc, int w, int h, int charcount,
- 	vc->vc_font.height = old_height;
- 	vc->vc_font.charcount = old_charcount;
- 
-+	/* Restore the hi_font state and screen buffer */
-+	if (old_hi_font_mask && !vc->vc_hi_font_mask)
-+		set_vc_hi_font(vc, true);
-+	else if (!old_hi_font_mask && vc->vc_hi_font_mask)
-+		set_vc_hi_font(vc, false);
++	mutex_lock(&core_lock);
++	idr_replace(&i2c_adapter_idr, adap, adap->nr);
++	mutex_unlock(&core_lock);
 +
- 	font_data_put(data);
+ 	res = device_add(&adap->dev);
+ 	if (res) {
+ 		pr_err("adapter '%s': can't register device (%d)\n", adap->name, res);
+@@ -1638,7 +1642,7 @@ static int __i2c_add_numbered_adapter(struct i2c_adapter *adap)
+ 	int id;
  
- 	return ret;
+ 	mutex_lock(&core_lock);
+-	id = idr_alloc(&i2c_adapter_idr, adap, adap->nr, adap->nr + 1, GFP_KERNEL);
++	id = idr_alloc(&i2c_adapter_idr, NULL, adap->nr, adap->nr + 1, GFP_KERNEL);
+ 	mutex_unlock(&core_lock);
+ 	if (WARN(id < 0, "couldn't get idr"))
+ 		return id == -ENOSPC ? -EBUSY : id;
+@@ -1672,7 +1676,7 @@ int i2c_add_adapter(struct i2c_adapter *adapter)
+ 	}
+ 
+ 	mutex_lock(&core_lock);
+-	id = idr_alloc(&i2c_adapter_idr, adapter,
++	id = idr_alloc(&i2c_adapter_idr, NULL,
+ 		       __i2c_first_dynamic_bus_num, 0, GFP_KERNEL);
+ 	mutex_unlock(&core_lock);
+ 	if (WARN(id < 0, "couldn't get idr"))
 
 
