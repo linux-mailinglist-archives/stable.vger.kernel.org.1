@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-271397-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-271521-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id vqoeOgybRmrHZwsAu9opvQ
-	(envelope-from <stable+bounces-271397-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:08:28 +0200
+	id VyHcGEucRmp0aAsAu9opvQ
+	(envelope-from <stable+bounces-271521-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:13:47 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 607196FB070
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:08:28 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id C7D666FB263
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:13:46 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=bCbl1dLW;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-271397-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-271397-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=12pjpGEL;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-271521-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-271521-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 00E08340673E
-	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:57:26 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D5344347FE67
+	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 17:02:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B9BE317146;
-	Thu,  2 Jul 2026 16:57:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8786A310779;
+	Thu,  2 Jul 2026 17:02:40 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4CEF30EF95;
-	Thu,  2 Jul 2026 16:57:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D5FA2FC893;
+	Thu,  2 Jul 2026 17:02:39 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783011437; cv=none; b=N04Zg44JzKQqA7cjLeaLUwz1dfkM9mLZ9JaSikhZiS/KBNEKHV4ANM56ILYW4wwWmwWQD9LTXMjQ7fdeO6NCeX2WvUVrzk+3LGn9h4UdHJPTsxC3BvotQytGm7UluZR3j6WgYGXdjANNcUgC+bjI9FLmuL8RlCF+6rzIY4NYIRo=
+	t=1783011760; cv=none; b=pjK/OYVnSzbA+lrBac9KIuyoXiw6HtblWv7qqxsF+mbRrmgrHlxWLcJmvULIWA4ORVwpeTpRXTbARQ+/7Zl+bc+LgHDEa5atWbOsHQ0zHAFCowgWXfzdf6EHl9BULKF/c1eFRDk7mCRm7G8CIUYr+onr+PepngiLscnHXCrlQTE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783011437; c=relaxed/simple;
-	bh=HovX4KDD7CRtkx6Y+7ycWAJCYXO56YFHLASDNfT2kSo=;
+	s=arc-20240116; t=1783011760; c=relaxed/simple;
+	bh=BTgny7b/a9GuaOXa0fVGdD5sgMOtom67Rh5A/khwkv8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eYwrVn3UPu8jLreWZRIv5q7BrZ9v3HYPPFhoALv5oyP4TQrx1aoIxEQS6Fd0eUZwrWxk+5jG4fNiqVF0d/tBCflUtxq/LBv9fnYtIpbOLwiog/+Sf1iE+ft0TDbS7URXryWaiMxTl60YpMr5L8y2ndrf6UmkC/WxzlOmjWrfsWU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bCbl1dLW; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55E4E1F000E9;
-	Thu,  2 Jul 2026 16:57:15 +0000 (UTC)
+	 MIME-Version; b=pd6wJDa8zwB5yUdqvvYXXZFoGRf8i9PA4gsqDyz4vOJcaUplGMZIEc34IeWtiCBR7ZMqZ381GoKSs1aZAH9Wlv0W4KzoCb5om/7pGj2kwRsQutIplqzDil2lYUF0gVPB1Jz1xifGWrTyT1rhm+y0TYdqCPk1Wel3WVf/7M77BdA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=12pjpGEL; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B27A71F000E9;
+	Thu,  2 Jul 2026 17:02:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1783011435;
-	bh=PhKl5/eMT/ysYGuH/FET2FNHzA5olBpKGnDLOVSrNW4=;
+	s=korg; t=1783011759;
+	bh=RrITQLsZOfakoKUf71LsPShQ+o8mGloiMtfkhvWlAfY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=bCbl1dLWDK2fuFG4YxyE90Z3GrOLsBJprI5t2tADgtm9YtW1XKU2NurcxhlqeDZPr
-	 px6KQ1rg3we0TECBnGJrHAHRxtPTexe98kT2cSSCatbpP6isy4EuNfYJqRSp07pRIO
-	 Hd1DYv/wqFDolTGdhWjwG4YNx529hCzfhmI6KHaM=
+	b=12pjpGELAiTeltOBYtsh9PNGzmffnm9ijB9ExhZS6w/uzgQJ9lZKS3N/GXaifFrcc
+	 lpeIqzW7JHkTWXSKO3pFYfAvNHXaCuVMMsBejNyYBLSbaZCxMInfmorqHhyd9jMqEO
+	 OGeMwRWUuFOjpylT11DkcPM0Az772LNh4p1C4Js4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jeff Layton <jlayton@kernel.org>,
-	Chuck Lever <chuck.lever@oracle.com>
-Subject: [PATCH 6.18 096/108] nfsd: fix posix_acl leak on SETACL decode failure
-Date: Thu,  2 Jul 2026 18:21:33 +0200
-Message-ID: <20260702155114.101215382@linuxfoundation.org>
+	Hyunchul Lee <hyc.lee@gmail.com>,
+	Namjae Jeon <linkinjeon@kernel.org>
+Subject: [PATCH 7.1 098/120] ntfs: serialize volume label accesses
+Date: Thu,  2 Jul 2026 18:21:34 +0200
+Message-ID: <20260702155114.986373191@linuxfoundation.org>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260702155112.110058792@linuxfoundation.org>
-References: <20260702155112.110058792@linuxfoundation.org>
+In-Reply-To: <20260702155112.964534952@linuxfoundation.org>
+References: <20260702155112.964534952@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,171 +66,152 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-271397-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:jlayton@kernel.org,m:chuck.lever@oracle.com,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-271521-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:hyc.lee@gmail.com,m:linkinjeon@kernel.org,m:hyclee@gmail.com,s:lists@lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,oracle.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 607196FB070
+X-Rspamd-Queue-Id: C7D666FB263
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jeff Layton <jlayton@kernel.org>
+From: Hyunchul Lee <hyc.lee@gmail.com>
 
-commit 0853ac544c590880d797b04daa33fcb72b6be0e1 upstream.
+commit e9e50ce4f13dc721014af622613409455c734942 upstream.
 
-nfsaclsvc_decode_setaclargs() and nfs3svc_decode_setaclargs() each
-call nfs_stream_decode_acl() twice, first for NFS_ACL and then for
-NFS_DFACL.  Each successful call transfers ownership of a freshly
-allocated posix_acl into argp->acl_access or argp->acl_default.  If
-the first call succeeds but the second fails, the decoder returns
-false and argp->acl_access is left dangling.
+Protect vol->volume_label with a mutex and snaphost the label before
+copy_to_user. This prevent a use-after-free when FS_IOC_SETFSLABEL
+replaces the vol->volume_label and FS_IOC_GETTSLABEL reads it
+concurrently.
 
-ACLPROC2_SETACL.pc_release was wired to nfssvc_release_attrstat and
-ACLPROC3_SETACL.pc_release was wired to nfs3svc_release_fhandle.
-Both only call fh_put() and have no knowledge of the ACL fields on
-argp.  The posix_acl_release() pairs sat at the out: labels inside
-nfsacld_proc_setacl() and nfsd3_proc_setacl(), but svc_process()
-skips pc_func when pc_decode returns false, so that cleanup is
-unreachable on decode failure:
-
-    svc_process_common()
-      pc_decode()                  /* decode_setaclargs: false */
-      /* pc_func skipped */
-      pc_release()                 /* fh_put only -- ACLs leaked */
-
-The orphaned posix_acl is leaked for the lifetime of the server.
-
-Fix by adding nfsaclsvc_release_setacl() and nfs3svc_release_setacl(),
-which release both argp->acl_access and argp->acl_default in addition
-to fh_put(), and wiring them as pc_release for their respective SETACL
-procedures.  pc_release runs on every path svc_process() takes after
-decode, including decode failure, so the posix_acl_release() pairs are
-removed from the proc functions' out: labels to keep ownership in one
-place.  This matches the existing release_getacl() pattern used by
-the sibling GETACL procedures.
-
-Fixes: a257cdd0e217 ("[PATCH] NFSD: Add server support for NFSv3 ACLs.")
-Cc: stable@vger.kernel.org
-Assisted-by: kres:claude-opus-4-7
-Signed-off-by: Jeff Layton <jlayton@kernel.org>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Cc: stable@vger.kernel.org # v7.1
+Signed-off-by: Hyunchul Lee <hyc.lee@gmail.com>
+Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nfsd/nfs2acl.c |   17 ++++++++++++-----
- fs/nfsd/nfs3acl.c |   17 ++++++++++++-----
- 2 files changed, 24 insertions(+), 10 deletions(-)
+ fs/ntfs/file.c   |   17 +++++++++++++----
+ fs/ntfs/super.c  |   19 +++++++++++++------
+ fs/ntfs/volume.h |    2 ++
+ 3 files changed, 28 insertions(+), 10 deletions(-)
 
---- a/fs/nfsd/nfs2acl.c
-+++ b/fs/nfsd/nfs2acl.c
-@@ -131,10 +131,7 @@ static __be32 nfsacld_proc_setacl(struct
- 	resp->status = fh_getattr(fh, &resp->stat);
+--- a/fs/ntfs/file.c
++++ b/fs/ntfs/file.c
+@@ -707,12 +707,21 @@ static int ntfs_ioctl_get_volume_label(s
+ {
+ 	struct ntfs_volume *vol = NTFS_SB(file_inode(filp)->i_sb);
+ 	char __user *buf = (char __user *)arg;
++	char label[FSLABEL_MAX];
++	ssize_t len;
  
++	mutex_lock(&vol->volume_label_lock);
+ 	if (!vol->volume_label) {
+-		if (copy_to_user(buf, "", 1))
+-			return -EFAULT;
+-	} else if (copy_to_user(buf, vol->volume_label,
+-				MIN(FSLABEL_MAX, strlen(vol->volume_label) + 1)))
++		label[0] = '\0';
++		len = 0;
++	} else {
++		len = strscpy(label, vol->volume_label, sizeof(label));
++		if (len == -E2BIG)
++			len = FSLABEL_MAX - 1;
++	}
++	mutex_unlock(&vol->volume_label_lock);
++
++	if (copy_to_user(buf, label, len + 1))
+ 		return -EFAULT;
+ 	return 0;
+ }
+--- a/fs/ntfs/super.c
++++ b/fs/ntfs/super.c
+@@ -460,17 +460,23 @@ int ntfs_write_volume_label(struct ntfs_
+ 	ret = ntfs_resident_attr_record_add(vol_ni, AT_VOLUME_NAME, AT_UNNAMED, 0,
+ 					    (u8 *)uname, uname_len * sizeof(__le16), 0);
  out:
--	/* argp->acl_{access,default} may have been allocated in
--	   nfssvc_decode_setaclargs. */
--	posix_acl_release(argp->acl_access);
--	posix_acl_release(argp->acl_default);
-+	/* argp->acl_{access,default} are released in nfsaclsvc_release_setacl. */
- 	return rpc_success;
- 
- out_drop_lock:
-@@ -310,6 +307,16 @@ static void nfsaclsvc_release_access(str
- 	fh_put(&resp->fh);
+-	mutex_unlock(&vol_ni->mrec_lock);
+-	kvfree(uname);
+-
+ 	if (ret >= 0) {
+-		kfree(vol->volume_label);
++		char *old_label;
++
++		mutex_lock(&vol->volume_label_lock);
++		old_label = vol->volume_label;
+ 		vol->volume_label = new_label;
++		mutex_unlock(&vol->volume_label_lock);
++
++		kfree(old_label);
+ 		mark_inode_dirty_sync(vol->vol_ino);
+ 		ret = 0;
+-	} else {
+-		kfree(new_label);
+ 	}
++	mutex_unlock(&vol_ni->mrec_lock);
++	kvfree(uname);
++
++	if (ret < 0)
++		kfree(new_label);
+ 	return ret;
  }
  
-+static void nfsaclsvc_release_setacl(struct svc_rqst *rqstp)
-+{
-+	struct nfsd3_setaclargs *argp = rqstp->rq_argp;
-+	struct nfsd_attrstat *resp = rqstp->rq_resp;
-+
-+	fh_put(&resp->fh);
-+	posix_acl_release(argp->acl_access);
-+	posix_acl_release(argp->acl_default);
-+}
-+
- #define ST 1		/* status*/
- #define AT 21		/* attributes */
- #define pAT (1+AT)	/* post attributes - conditional */
-@@ -343,7 +350,7 @@ static const struct svc_procedure nfsd_a
- 		.pc_func = nfsacld_proc_setacl,
- 		.pc_decode = nfsaclsvc_decode_setaclargs,
- 		.pc_encode = nfssvc_encode_attrstatres,
--		.pc_release = nfssvc_release_attrstat,
-+		.pc_release = nfsaclsvc_release_setacl,
- 		.pc_argsize = sizeof(struct nfsd3_setaclargs),
- 		.pc_argzero = sizeof(struct nfsd3_setaclargs),
- 		.pc_ressize = sizeof(struct nfsd_attrstat),
---- a/fs/nfsd/nfs3acl.c
-+++ b/fs/nfsd/nfs3acl.c
-@@ -118,10 +118,7 @@ out_drop_lock:
- out_errno:
- 	resp->status = nfserrno(error);
- out:
--	/* argp->acl_{access,default} may have been allocated in
--	   nfs3svc_decode_setaclargs. */
--	posix_acl_release(argp->acl_access);
--	posix_acl_release(argp->acl_default);
-+	/* argp->acl_{access,default} are released in nfs3svc_release_setacl. */
- 	return rpc_success;
- }
+@@ -2631,6 +2637,7 @@ static int ntfs_init_fs_context(struct f
+ 	NVolSetCaseSensitive(vol);
+ 	init_rwsem(&vol->mftbmp_lock);
+ 	init_rwsem(&vol->lcnbmp_lock);
++	mutex_init(&vol->volume_label_lock);
  
-@@ -223,6 +220,16 @@ static void nfs3svc_release_getacl(struc
- 	posix_acl_release(resp->acl_default);
- }
- 
-+static void nfs3svc_release_setacl(struct svc_rqst *rqstp)
-+{
-+	struct nfsd3_setaclargs *argp = rqstp->rq_argp;
-+	struct nfsd3_attrstat *resp = rqstp->rq_resp;
-+
-+	fh_put(&resp->fh);
-+	posix_acl_release(argp->acl_access);
-+	posix_acl_release(argp->acl_default);
-+}
-+
- #define ST 1		/* status*/
- #define AT 21		/* attributes */
- #define pAT (1+AT)	/* post attributes - conditional */
-@@ -256,7 +263,7 @@ static const struct svc_procedure nfsd_a
- 		.pc_func = nfsd3_proc_setacl,
- 		.pc_decode = nfs3svc_decode_setaclargs,
- 		.pc_encode = nfs3svc_encode_setaclres,
--		.pc_release = nfs3svc_release_fhandle,
-+		.pc_release = nfs3svc_release_setacl,
- 		.pc_argsize = sizeof(struct nfsd3_setaclargs),
- 		.pc_argzero = sizeof(struct nfsd3_setaclargs),
- 		.pc_ressize = sizeof(struct nfsd3_attrstat),
+ 	fc->s_fs_info = vol;
+ 	fc->ops = &ntfs_context_ops;
+--- a/fs/ntfs/volume.h
++++ b/fs/ntfs/volume.h
+@@ -72,6 +72,7 @@
+  * @vol_flags: Volume flags.
+  * @major_ver: Ntfs major version of volume.
+  * @minor_ver: Ntfs minor version of volume.
++ * @volume_label_lock: protects @volume_label.
+  * @volume_label: volume label.
+  * @root_ino: The VFS inode of the root directory.
+  * @secure_ino: The VFS inode of $Secure (NTFS3.0+ only, otherwise NULL).
+@@ -133,6 +134,7 @@ struct ntfs_volume {
+ 	struct inode *logfile_ino;
+ 	struct inode *lcnbmp_ino;
+ 	struct rw_semaphore lcnbmp_lock;
++	struct mutex volume_label_lock;
+ 	struct inode *vol_ino;
+ 	__le16 vol_flags;
+ 	u8 major_ver;
 
 
 
