@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-271464-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-271344-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id ybCYHMSmRmoIbAsAu9opvQ
-	(envelope-from <stable+bounces-271464-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:58:28 +0200
+	id jVBINZ+bRmooaAsAu9opvQ
+	(envelope-from <stable+bounces-271344-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:10:55 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 720F16FBBDE
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:58:27 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7BEDC6FB186
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:10:55 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=vcDnAhOB;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-271464-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-271464-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=jhgQkZkl;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-271344-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-271344-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 4E69031B5749
-	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 17:00:16 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 2D50D3138389
+	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:55:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 571FB33ADAD;
-	Thu,  2 Jul 2026 17:00:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E7B1330C37A;
+	Thu,  2 Jul 2026 16:54:57 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2209630EF95;
-	Thu,  2 Jul 2026 17:00:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4E5E23EAAD;
+	Thu,  2 Jul 2026 16:54:56 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783011613; cv=none; b=Kx5NzpjU6h24XfgpeBEEVqAnxwn9SJu3jpnTY5jJxtxMQdg4CpwY5yK7lZBsrti56LJXbnjxnV0d/a9QT1sRhFfIs5dwZQkEf3KRJ+IzJAMtkNjZbMovMzJlCAUisttJJmg+unqEMoVVTHBKONSI4zPykkFadsrKoGRJOpUCU84=
+	t=1783011297; cv=none; b=lLCHQpy2qQ8XUH3AraYI1freylAUWJFh2DRDbBdGIRNKxG50zfD4Q6Dp/JDdpavqqBJSMyqo5YvX+f6VMGXOp8oOGek3ZFvEsb4snaHi4cb6HQ5CJvlyDXi/L+ZuGdMUWXEpvj5vWq1nnICzsctgM6iRsC+HNl6hWY91AxUDnog=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783011613; c=relaxed/simple;
-	bh=dSbw9XB+yAtcA+R4dan7hG/bHIo+9OGF9Hb0RM3Otkk=;
+	s=arc-20240116; t=1783011297; c=relaxed/simple;
+	bh=GodmvTqaaWEKz5vUuNEqLd7aKI7H3hBVMwXk3UC6m5U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mQVeYZjuAu/9YewQHV1CIfa/nCjnaJDKac9WN1VPU4uwqJUHCPQnemJehUQjYtOuwNvrrMC4aGTtThIJDmD+AsL/RNRuJbLBFa3wfnC0Z8xDPgTGenywL6YtZCXl0UMUXYprHq37wV7SUmGZLS6KVyeHw1SHshF0nRMRiP4fvoQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vcDnAhOB; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 884CA1F00A3A;
-	Thu,  2 Jul 2026 17:00:11 +0000 (UTC)
+	 MIME-Version; b=LJhIxZqwW5KBWlAeeiG5c2pPLprrVrsrYzTxDYOUIcTsE8rbvyU0figd7B5na6DsBLuzbQzRr7yQTrcJ11bTGUXnT6RSjWgILEk55lgxW3GTFPLvqPbT0ljOt9ctez+nkTPWc1pion6qv8YA5T4mPlNg2o2BYC4o5W6XVwtrgAQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jhgQkZkl; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27DA61F000E9;
+	Thu,  2 Jul 2026 16:54:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1783011612;
-	bh=GQnBHMO7uwdJqBifkN6URAhcNB3RnEdINHwLu3cshW0=;
+	s=korg; t=1783011296;
+	bh=3NBjw7atJU6dsgOFdi+YNpi+5jVk8yKU62EhE4+ppms=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=vcDnAhOBdF0BgybW+7VaTswb6Sk9RUYgg0nT1dW8oZNdG93xTb4AVr62S0cU5Ck6x
-	 46Y7bODBDWS1tZLGPEKhpV9fLiMNjdCv35GfiTOzMT0JD99AgfCF6Tn5I8l54Bt4+r
-	 hZSh0nML6S9lfj3ca5gSBkIIsAZAz64WM+fUwJ0E=
+	b=jhgQkZkl5YEircjYmrJq0ZZ3zTjQiLeayMu82K5Ncv1dnsgySq61Zkl5ekrFACloL
+	 6jC3jDBESEqnybiEeAn4x7hvV/0YbtNnOfcI7D/ZNSY4ncgh7mafaHuVRu1vwiNqlK
+	 o/dbTzqZ+MpwplVuKfDoN0HfI/V6j3cuBPeVhH30=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zenm Chen <zenmchen@gmail.com>,
-	Lorenzo Bianconi <lorenzo@kernel.org>,
-	Felix Fietkau <nbd@nbd.name>
-Subject: [PATCH 7.1 049/120] wifi: mt76: mt76x2u: Add support for ELECOM WDC-867SU3S
+	Alessandro Groppo <ale.grpp@gmail.com>,
+	Jarkko Sakkinen <jarkko@kernel.org>
+Subject: [PATCH 6.18 048/108] KEYS: fix overflow in keyctl_pkey_params_get_2()
 Date: Thu,  2 Jul 2026 18:20:45 +0200
-Message-ID: <20260702155113.980025311@linuxfoundation.org>
+Message-ID: <20260702155113.103794798@linuxfoundation.org>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260702155112.964534952@linuxfoundation.org>
-References: <20260702155112.964534952@linuxfoundation.org>
+In-Reply-To: <20260702155112.110058792@linuxfoundation.org>
+References: <20260702155112.110058792@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,27 +66,28 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-271464-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:zenmchen@gmail.com,m:lorenzo@kernel.org,m:nbd@nbd.name,s:lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org,nbd.name];
+	TAGGED_FROM(0.00)[bounces-271344-lists,stable=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:ale.grpp@gmail.com,m:jarkko@kernel.org,m:alegrpp@gmail.com,s:lists@lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
@@ -95,47 +95,78 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,nbd.name:email,vger.kernel.org:from_smtp,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 720F16FBBDE
+X-Rspamd-Queue-Id: 7BEDC6FB186
 
-7.1-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zenm Chen <zenmchen@gmail.com>
+From: Jarkko Sakkinen <jarkko@kernel.org>
 
-commit f4ce0664e9f0387873b181777891741c33e19465 upstream.
+commit cb481e59ea6cae3b7796ac1d7a22b6b24c3f3c0b upstream.
 
-Add the ID 056e:400a to the table to support an additional MT7612U
-adapter: ELECOM WDC-867SU3S.
+The length for the internal output buffer is calculated incorrectly, which
+can result overflow when a too small buffer is provided.
 
-Compile tested only.
+Fix the bug by allocating internal output with the size of the maximum
+length of the cryptographic primitive instead of caller provided size.
 
-Cc: stable@vger.kernel.org # 5.10.x
-Signed-off-by: Zenm Chen <zenmchen@gmail.com>
-Acked-by: Lorenzo Bianconi <lorenzo@kernel.org>
-Link: https://patch.msgid.link/20260407154430.9184-1-zenmchen@gmail.com
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
+Link: https://lore.kernel.org/keyrings/20260531024914.3712130-1-jarkko@kernel.org/
+Cc: stable@vger.kernel.org # v4.20+
+Fixes: 00d60fd3b932 ("KEYS: Provide keyctls to drive the new key type ops for asymmetric keys [ver #2]")
+Reported-by: Alessandro Groppo <ale.grpp@gmail.com>
+Tested-by: Alessandro Groppo <ale.grpp@gmail.com>
+Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/mediatek/mt76/mt76x2/usb.c |    1 +
- 1 file changed, 1 insertion(+)
+ security/keys/keyctl_pkey.c |    9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
---- a/drivers/net/wireless/mediatek/mt76/mt76x2/usb.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt76x2/usb.c
-@@ -16,6 +16,7 @@ static const struct usb_device_id mt76x2
- 	{ USB_DEVICE(0x0e8d, 0x7612) },	/* Aukey USBAC1200 - Alfa AWUS036ACM */
- 	{ USB_DEVICE(0x057c, 0x8503) },	/* Avm FRITZ!WLAN AC860 */
- 	{ USB_DEVICE(0x7392, 0xb711) },	/* Edimax EW 7722 UAC */
-+	{ USB_DEVICE(0x056e, 0x400a) },	/* ELECOM WDC-867SU3S */
- 	{ USB_DEVICE(0x0e8d, 0x7632) },	/* HC-M7662BU1 */
- 	{ USB_DEVICE(0x0471, 0x2126) }, /* LiteOn WN4516R module, nonstandard USB connector */
- 	{ USB_DEVICE(0x0471, 0x7600) }, /* LiteOn WN4519R module, nonstandard USB connector */
+--- a/security/keys/keyctl_pkey.c
++++ b/security/keys/keyctl_pkey.c
+@@ -138,28 +138,35 @@ static int keyctl_pkey_params_get_2(cons
+ 		if (uparams.in_len  > info.max_dec_size ||
+ 		    uparams.out_len > info.max_enc_size)
+ 			return -EINVAL;
++
++		params->out_len = info.max_enc_size;
+ 		break;
+ 	case KEYCTL_PKEY_DECRYPT:
+ 		if (uparams.in_len  > info.max_enc_size ||
+ 		    uparams.out_len > info.max_dec_size)
+ 			return -EINVAL;
++
++		params->out_len = info.max_dec_size;
+ 		break;
+ 	case KEYCTL_PKEY_SIGN:
+ 		if (uparams.in_len  > info.max_data_size ||
+ 		    uparams.out_len > info.max_sig_size)
+ 			return -EINVAL;
++
++		params->out_len = info.max_sig_size;
+ 		break;
+ 	case KEYCTL_PKEY_VERIFY:
+ 		if (uparams.in_len  > info.max_data_size ||
+ 		    uparams.in2_len > info.max_sig_size)
+ 			return -EINVAL;
++
++		params->out_len = info.max_sig_size;
+ 		break;
+ 	default:
+ 		BUG();
+ 	}
+ 
+ 	params->in_len  = uparams.in_len;
+-	params->out_len = uparams.out_len; /* Note: same as in2_len */
+ 	return 0;
+ }
+ 
 
 
 
