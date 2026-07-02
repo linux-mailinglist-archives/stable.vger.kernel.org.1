@@ -1,79 +1,61 @@
-Return-Path: <stable+bounces-271170-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-270696-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id FwImDVWYRmpZZgsAu9opvQ
-	(envelope-from <stable+bounces-271170-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:56:53 +0200
+	id d54XI8+URmo5ZAsAu9opvQ
+	(envelope-from <stable+bounces-270696-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:41:51 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id DC6546FAC7E
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:56:52 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id F0A6D6FA664
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:41:50 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=NUgLa8bs;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-271170-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-271170-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="o2zXtU/4";
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-270696-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-270696-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 9B0B4306F250
-	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:49:14 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id F07F731B3AA8
+	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:31:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 806DF39F165;
-	Thu,  2 Jul 2026 16:47:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C1213AA195;
+	Thu,  2 Jul 2026 16:26:54 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB8A9348C63;
-	Thu,  2 Jul 2026 16:47:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2373397E81;
+	Thu,  2 Jul 2026 16:26:50 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783010852; cv=none; b=GINubNP/Rku69xcz9JG1UqmbwBmtuyzJT+7lQn2IcLFwNQ2ch0kGoBtXTumax2xTYBsfnf809qFGdYrOKeO4DgncnU6j5wKzj/8RheP0g/jHaCNVraU6GyB7ORRC1I9xdc8IhweGRVTH6hUYu3JLvfaLyqEdntf6rabVJJSWAkI=
+	t=1783009613; cv=none; b=QGxABEA/TEgslatSwsd8AyuIi2hvmN/hH+nXzo1vnn837iBI9rWPhel846JGzdkaFoycv5l3e0e7+vs/Eu3QyVfx7ptku/YxI0XXQoSYm5BwDK/N7URTlyz/GAROu3raZB6fBOkv0inUV+USgBMv+ht0sC1t6WOVi4dwUJyGYKs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783010852; c=relaxed/simple;
-	bh=t5+E/q3VEjwYWD3/hT42jl0Kdk3KHe4S6jX0hRTgPUA=;
+	s=arc-20240116; t=1783009613; c=relaxed/simple;
+	bh=31EB43Mg4AtjJ18yoLH7DtmEFfeBkSR9dky8+3Mqhlw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PGkcp6ss13fxo7WtSgNntVa0Z0MjdIFYqkOjuzi6tYlJ+JOeKKnvwrecr71WHOPIlCQQE1Vg8gk0vlX6alTvYvb3LsH+VFA88oU0OQLacd5Uh3juCJDFGtVMihFluR14KUq9YAMHSTi46YKq+MgrrSQbfZ1YLOiBzpXJEE9ombk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NUgLa8bs; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23B871F000E9;
-	Thu,  2 Jul 2026 16:47:30 +0000 (UTC)
+	 MIME-Version:Content-Type; b=pE2T24cG6oG8R42thUBNusDgygjWLprxpXb7L4ju2993nc0SQu4u9SqPtATe/vhW7O7qALehERVzLRcuTAwYgJMw6g3ba5sKhL/yEYO9kTFhcQbyN+rYDcOLh8g4xI7X2kqtd0AYlCFr8RjlsH+T8/rSFC128yiCRwL+P3huvjA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o2zXtU/4; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BDB5B1F000E9;
+	Thu,  2 Jul 2026 16:26:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1783010850;
-	bh=WS3RQ8YJTME7AmqCbFeG1u4EpHU0D3hRFl1ke0K89IA=;
+	s=korg; t=1783009610;
+	bh=FXzsC7BnuulAQ6IwMNMXHL/MGocZE+pTTy1TenlFmsM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=NUgLa8bsy9YcjFXG4JeEdkyed8pa7uthXMjPqVH/5jzZ1o+lqPqebbHVBJZ68qcrC
-	 MsioYEDbTKFJnX/D149kenz6PV/ma+GJzXExgWnILqApRup/14ctDs+htvNSDfXtGy
-	 aFMs8OVvJAAPR7GwnzE6R6Y5B1C8K69t1JH8f+bA=
+	b=o2zXtU/479RxqNGRw7naQfmOec6QEAj440uO7weMpVdjJEn7CNGT04B66ZRMhyr9b
+	 eOX3xE1ftxa25z3/z8jwQut96wITackFg4aPnWl+RcIIF/fYItG++UjfijiS56etFH
+	 Ym/VjqFgo4N2HRBDLJAMtr5WFu5SWKji3+uJeaTQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	bpf <bpf@vger.kernel.org>,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	Masahiro Yamada <masahiroy@kernel.org>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Nicolas Schier <nicolas@fjasle.eu>,
-	Zheng Yejian <zhengyejian1@huawei.com>,
-	Martin Kelly <martin.kelly@crowdstrike.com>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Josh Poimboeuf <jpoimboe@redhat.com>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>,
-	Vasily Gorbik <gor@linux.ibm.com>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
-	Andrey Grodzovsky <andrey.grodzovsky@crowdstrike.com>
-Subject: [PATCH 6.6 062/175] scripts/sorttable: Zero out weak functions in mcount_loc table
+	=?UTF-8?q?Andr=C3=A9=20Draszik?= <andre.draszik@linaro.org>,
+	Mark Brown <broonie@kernel.org>,
+	Nazar Kalashnikov <nazarkalashnikov0@gmail.com>
+Subject: [PATCH 5.15 20/95] regulator: core: fix locking in regulator_resolve_supply() error path
 Date: Thu,  2 Jul 2026 18:19:23 +0200
-Message-ID: <20260702155117.100124350@linuxfoundation.org>
+Message-ID: <20260702155109.633765944@linuxfoundation.org>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260702155115.766838875@linuxfoundation.org>
-References: <20260702155115.766838875@linuxfoundation.org>
+In-Reply-To: <20260702155109.196223802@linuxfoundation.org>
+References: <20260702155109.196223802@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -83,350 +65,106 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-271170-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-270696-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[24];
-	FORWARDED(0.00)[lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:bpf@vger.kernel.org,m:mhiramat@kernel.org,m:mark.rutland@arm.com,m:mathieu.desnoyers@efficios.com,m:akpm@linux-foundation.org,m:peterz@infradead.org,m:torvalds@linux-foundation.org,m:masahiroy@kernel.org,m:nathan@kernel.org,m:nicolas@fjasle.eu,m:zhengyejian1@huawei.com,m:martin.kelly@crowdstrike.com,m:christophe.leroy@csgroup.eu,m:jpoimboe@redhat.com,m:hca@linux.ibm.com,m:catalin.marinas@arm.com,m:will@kernel.org,m:gor@linux.ibm.com,m:agordeev@linux.ibm.com,m:rostedt@goodmis.org,m:andrey.grodzovsky@crowdstrike.com,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:andre.draszik@linaro.org,m:broonie@kernel.org,m:nazarkalashnikov0@gmail.com,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,linaro.org,kernel.org,gmail.com];
 	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORWARDED(0.00)[lists@lfdr.de];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_SENDER_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: DC6546FAC7E
+X-Rspamd-Queue-Id: F0A6D6FA664
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Steven Rostedt <rostedt@goodmis.org>
+From: André Draszik <andre.draszik@linaro.org>
 
-[ Upstream commit ef378c3b8233855497a414b9d67bf22592c928a4 ]
+commit 497330b203d2c59c5ff3fa4c34d14494d7203bc3 upstream.
 
-When a function is annotated as "weak" and is overridden, the code is not
-removed. If it is traced, the fentry/mcount location in the weak function
-will be referenced by the "__mcount_loc" section. This will then be added
-to the available_filter_functions list. Since only the address of the
-functions are listed, to find the name to show, a search of kallsyms is
-used.
+If late enabling of a supply regulator fails in
+regulator_resolve_supply(), the code currently triggers a lockdep
+warning:
 
-Since kallsyms will return the function by simply finding the function
-that the address is after but before the next function, an address of a
-weak function will show up as the function before it. This is because
-kallsyms does not save names of weak functions. This has caused issues in
-the past, as now the traced weak function will be listed in
-available_filter_functions with the name of the function before it.
+    WARNING: drivers/regulator/core.c:2649 at _regulator_put+0x80/0xa0, CPU#6: kworker/u32:4/596
+    ...
+    Call trace:
+     _regulator_put+0x80/0xa0 (P)
+     regulator_resolve_supply+0x7cc/0xbe0
+     regulator_register_resolve_supply+0x28/0xb8
 
-At best, this will cause the previous function's name to be listed twice.
-At worse, if the previous function was marked notrace, it will now show up
-as a function that can be traced. Note that it only shows up that it can
-be traced but will not be if enabled, which causes confusion.
+as the regulator_list_mutex must be held when calling _regulator_put().
 
- https://lore.kernel.org/all/20220412094923.0abe90955e5db486b7bca279@kernel.org/
+To solve this, simply switch to using regulator_put().
 
-The commit b39181f7c6907 ("ftrace: Add FTRACE_MCOUNT_MAX_OFFSET to avoid
-adding weak function") was a workaround to this by checking the function
-address before printing its name. If the address was too far from the
-function given by the name then instead of printing the name it would
-print: __ftrace_invalid_address___<invalid-offset>
+While at it, we should also make sure that no concurrent access happens
+to our rdev while we clear out the supply pointer. Add appropriate
+locking to ensure that.
 
-The real issue is that these invalid addresses are listed in the ftrace
-table look up which available_filter_functions is derived from. A place
-holder must be listed in that file because set_ftrace_filter may take a
-series of indexes into that file instead of names to be able to do O(1)
-lookups to enable filtering (many tools use this method).
+While the code in question will be removed altogether in a follow-up
+commit, I believe it is still beneficial to have this corrected before
+removal for future reference.
 
-Even if kallsyms saved the size of the function, it does not remove the
-need of having these place holders. The real solution is to not add a weak
-function into the ftrace table in the first place.
-
-To solve this, the sorttable.c code that sorts the mcount regions during
-the build is modified to take a "nm -S vmlinux" input, sort it, and any
-function listed in the mcount_loc section that is not within a boundary of
-the function list given by nm is considered a weak function and is zeroed
-out.
-
-Note, this does not mean they will remain zero when booting as KASLR
-will still shift those addresses. To handle this, the entries in the
-mcount_loc section will be ignored if they are zero or match the
-kaslr_offset() value.
-
-Before:
-
- ~# grep __ftrace_invalid_address___ /sys/kernel/tracing/available_filter_functions | wc -l
- 551
-
-After:
-
- ~# grep __ftrace_invalid_address___ /sys/kernel/tracing/available_filter_functions | wc -l
- 0
-
-Cc: bpf <bpf@vger.kernel.org>
-Cc: Masami Hiramatsu <mhiramat@kernel.org>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: Masahiro Yamada <masahiroy@kernel.org>
-Cc: Nathan Chancellor <nathan@kernel.org>
-Cc: Nicolas Schier <nicolas@fjasle.eu>
-Cc: Zheng Yejian <zhengyejian1@huawei.com>
-Cc: Martin  Kelly <martin.kelly@crowdstrike.com>
-Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
-Cc: Josh Poimboeuf <jpoimboe@redhat.com>
-Cc: Heiko Carstens <hca@linux.ibm.com>
-Cc: Catalin Marinas <catalin.marinas@arm.com>
-Cc: Will Deacon <will@kernel.org>
-Cc: Vasily Gorbik <gor@linux.ibm.com>
-Cc: Alexander Gordeev <agordeev@linux.ibm.com>
-Link: https://lore.kernel.org/20250218200022.883095980@goodmis.org
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-Signed-off-by: Andrey Grodzovsky <andrey.grodzovsky@crowdstrike.com>
+Fixes: 36a1f1b6ddc6 ("regulator: core: Fix memory leak in regulator_resolve_supply()")
+Fixes: 8e5356a73604 ("regulator: core: Clear the supply pointer if enabling fails")
+Signed-off-by: André Draszik <andre.draszik@linaro.org>
+Link: https://patch.msgid.link/20260109-regulators-defer-v2-2-1a25dc968e60@linaro.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Nazar Kalashnikov <nazarkalashnikov0@gmail.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/trace/ftrace.c   |    6 +-
- scripts/link-vmlinux.sh |    4 +
- scripts/sorttable.c     |  128 +++++++++++++++++++++++++++++++++++++++++++++++-
- 3 files changed, 134 insertions(+), 4 deletions(-)
+ drivers/regulator/core.c |   10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
 
---- a/kernel/trace/ftrace.c
-+++ b/kernel/trace/ftrace.c
-@@ -6525,6 +6525,7 @@ static int ftrace_process_locs(struct mo
- 	unsigned long count;
- 	unsigned long *p;
- 	unsigned long addr;
-+	unsigned long kaslr;
- 	unsigned long flags = 0; /* Shut up gcc */
- 	int ret = -ENOMEM;
- 
-@@ -6573,6 +6574,9 @@ static int ftrace_process_locs(struct mo
- 		ftrace_pages->next = start_pg;
- 	}
- 
-+	/* For zeroed locations that were shifted for core kernel */
-+	kaslr = !mod ? kaslr_offset() : 0;
+--- a/drivers/regulator/core.c
++++ b/drivers/regulator/core.c
+@@ -2139,8 +2139,16 @@ static int regulator_resolve_supply(stru
+ 	if (rdev->use_count) {
+ 		ret = regulator_enable(rdev->supply);
+ 		if (ret < 0) {
+-			_regulator_put(rdev->supply);
++			struct regulator *supply;
 +
- 	p = start;
- 	pg = start_pg;
- 	while (p < end) {
-@@ -6584,7 +6588,7 @@ static int ftrace_process_locs(struct mo
- 		 * object files to satisfy alignments.
- 		 * Skip any NULL pointers.
- 		 */
--		if (!addr) {
-+		if (!addr || addr == kaslr) {
- 			skipped++;
- 			continue;
++			regulator_lock_two(rdev, rdev->supply->rdev, &ww_ctx);
++
++			supply = rdev->supply;
+ 			rdev->supply = NULL;
++
++			regulator_unlock_two(rdev, supply->rdev, &ww_ctx);
++
++			regulator_put(supply);
+ 			goto out;
  		}
---- a/scripts/link-vmlinux.sh
-+++ b/scripts/link-vmlinux.sh
-@@ -198,13 +198,15 @@ mksysmap()
- 
- sorttable()
- {
--	${objtree}/scripts/sorttable ${1}
-+	${NM} -S ${1} > .tmp_vmlinux.nm-sort
-+	${objtree}/scripts/sorttable -s .tmp_vmlinux.nm-sort ${1}
- }
- 
- # Delete output files in case of error
- cleanup()
- {
- 	rm -f .btf.*
-+	rm -f .tmp_vmlinux.nm-sort
- 	rm -f System.map
- 	rm -f vmlinux
- 	rm -f vmlinux.map
---- a/scripts/sorttable.c
-+++ b/scripts/sorttable.c
-@@ -580,6 +580,98 @@ static void rela_write_addend(Elf_Rela *
- 	e.rela_write_addend(rela, val);
- }
- 
-+struct func_info {
-+	uint64_t	addr;
-+	uint64_t	size;
-+};
-+
-+/* List of functions created by: nm -S vmlinux */
-+static struct func_info *function_list;
-+static int function_list_size;
-+
-+/* Allocate functions in 1k blocks */
-+#define FUNC_BLK_SIZE	1024
-+#define FUNC_BLK_MASK	(FUNC_BLK_SIZE - 1)
-+
-+static int add_field(uint64_t addr, uint64_t size)
-+{
-+	struct func_info *fi;
-+	int fsize = function_list_size;
-+
-+	if (!(fsize & FUNC_BLK_MASK)) {
-+		fsize += FUNC_BLK_SIZE;
-+		fi = realloc(function_list, fsize * sizeof(struct func_info));
-+		if (!fi)
-+			return -1;
-+		function_list = fi;
-+	}
-+	fi = &function_list[function_list_size++];
-+	fi->addr = addr;
-+	fi->size = size;
-+	return 0;
-+}
-+
-+/* Only return match if the address lies inside the function size */
-+static int cmp_func_addr(const void *K, const void *A)
-+{
-+	uint64_t key = *(const uint64_t *)K;
-+	const struct func_info *a = A;
-+
-+	if (key < a->addr)
-+		return -1;
-+	return key >= a->addr + a->size;
-+}
-+
-+/* Find the function in function list that is bounded by the function size */
-+static int find_func(uint64_t key)
-+{
-+	return bsearch(&key, function_list, function_list_size,
-+		       sizeof(struct func_info), cmp_func_addr) != NULL;
-+}
-+
-+static int cmp_funcs(const void *A, const void *B)
-+{
-+	const struct func_info *a = A;
-+	const struct func_info *b = B;
-+
-+	if (a->addr < b->addr)
-+		return -1;
-+	return a->addr > b->addr;
-+}
-+
-+static int parse_symbols(const char *fname)
-+{
-+	FILE *fp;
-+	char addr_str[20]; /* Only need 17, but round up to next int size */
-+	char size_str[20];
-+	char type;
-+
-+	fp = fopen(fname, "r");
-+	if (!fp) {
-+		perror(fname);
-+		return -1;
-+	}
-+
-+	while (fscanf(fp, "%16s %16s %c %*s\n", addr_str, size_str, &type) == 3) {
-+		uint64_t addr;
-+		uint64_t size;
-+
-+		/* Only care about functions */
-+		if (type != 't' && type != 'T' && type != 'W')
-+			continue;
-+
-+		addr = strtoull(addr_str, NULL, 16);
-+		size = strtoull(size_str, NULL, 16);
-+		if (add_field(addr, size) < 0)
-+			return -1;
-+	}
-+	fclose(fp);
-+
-+	qsort(function_list, function_list_size, sizeof(struct func_info), cmp_funcs);
-+
-+	return 0;
-+}
-+
- static pthread_t mcount_sort_thread;
- static bool sort_reloc;
- 
-@@ -752,6 +844,21 @@ static void *sort_mcount_loc(void *arg)
- 		goto out;
  	}
- 
-+	/* zero out any locations not found by function list */
-+	if (function_list_size) {
-+		for (void *ptr = vals; ptr < vals + size; ptr += long_size) {
-+			uint64_t key;
-+
-+			key = long_size == 4 ? r((uint32_t *)ptr) : r8((uint64_t *)ptr);
-+			if (!find_func(key)) {
-+				if (long_size == 4)
-+					*(uint32_t *)ptr = 0;
-+				else
-+					*(uint64_t *)ptr = 0;
-+			}
-+		}
-+	}
-+
- 	compare_values = long_size == 4 ? compare_values_32 : compare_values_64;
- 
- 	qsort(vals, count, long_size, compare_values);
-@@ -801,6 +908,8 @@ static void get_mcount_loc(struct elf_mc
- 		return;
- 	}
- }
-+#else /* MCOUNT_SORT_ENABLED */
-+static inline int parse_symbols(const char *fname) { return 0; }
- #endif
- 
- static int do_sort(Elf_Ehdr *ehdr,
-@@ -1256,14 +1365,29 @@ int main(int argc, char *argv[])
- 	int i, n_error = 0;  /* gcc-4.3.0 false positive complaint */
- 	size_t size = 0;
- 	void *addr = NULL;
-+	int c;
-+
-+	while ((c = getopt(argc, argv, "s:")) >= 0) {
-+		switch (c) {
-+		case 's':
-+			if (parse_symbols(optarg) < 0) {
-+				fprintf(stderr, "Could not parse %s\n", optarg);
-+				return -1;
-+			}
-+			break;
-+		default:
-+			fprintf(stderr, "usage: sorttable [-s nm-file] vmlinux...\n");
-+			return 0;
-+		}
-+	}
- 
--	if (argc < 2) {
-+	if ((argc - optind) < 1) {
- 		fprintf(stderr, "usage: sorttable vmlinux...\n");
- 		return 0;
- 	}
- 
- 	/* Process each file in turn, allowing deep failure. */
--	for (i = 1; i < argc; i++) {
-+	for (i = optind; i < argc; i++) {
- 		addr = mmap_file(argv[i], &size);
- 		if (!addr) {
- 			++n_error;
 
 
 
