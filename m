@@ -1,234 +1,174 @@
-Return-Path: <stable+bounces-270329-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-270330-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id R8oGHbvvRWqfGwsAu9opvQ
-	(envelope-from <stable+bounces-270329-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 06:57:31 +0200
+	id +QfFEbPzRWo/HAsAu9opvQ
+	(envelope-from <stable+bounces-270330-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 07:14:27 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C41C76F37D9
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 06:57:30 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D74726F3871
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 07:14:26 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=google.com header.s=20251104 header.b=IcGYTzxT;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-270329-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-270329-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("subspace.kernel.org:s=arc-20240116:i=2")
+	dkim=pass header.d=arm.com header.s=foss header.b=QOBxtron;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-270330-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-270330-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=none) header.from=arm.com;
+	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 9AC383029E65
-	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 04:56:57 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 517FE300B445
+	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 05:14:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 283353659EB;
-	Thu,  2 Jul 2026 04:56:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 784CC36492D;
+	Thu,  2 Jul 2026 05:14:24 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lf1-f53.google.com (mail-lf1-f53.google.com [209.85.167.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFCC73603F8
-	for <stable@vger.kernel.org>; Thu,  2 Jul 2026 04:56:54 +0000 (UTC)
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782968216; cv=pass; b=oIGNMjhnIQbvF5jFI9xTcwaXKFgY+opSbb87HoQ1uqBl0Bxh0I9nQQpqNW+LMpmLKuwUgNmho3dRrrx5pxP5W9hiy9xMsF8Vqr3Ksv3DdKqBeU/tvPDyGcMQ9jQZBQUsjF/PzKF5jwBfXDri5Al3HiCpw+9DzXnnkT1Y/KoS2Tk=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782968216; c=relaxed/simple;
-	bh=s65isEOLkWD56800G/UwzuLsNE2vVm3cYxQLdhlGrm8=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=JIKEqQbTxpwu/IZRaKUU+ufzlFJCXNBsQunPBbGG9OozNU9tkSYyqCRjRojm8CsaS7LiJsKf3bjiNzFsjVCcVM2zuaBsP6S27Z2SxMQdlJ33Y/0f31N+Cb/9+zea0Ww1OrE8OreFj0APwQyYggqvDvEZbweNm+YsZWmEFzcLS1Q=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=IcGYTzxT; arc=pass smtp.client-ip=209.85.167.53
-Received: by mail-lf1-f53.google.com with SMTP id 2adb3069b0e04-5aeb688ae83so19473e87.1
-        for <stable@vger.kernel.org>; Wed, 01 Jul 2026 21:56:54 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1782968213; cv=none;
-        d=google.com; s=arc-20260327;
-        b=VFvn7nezWf4F1RvKygKBybWby6XDlwTv+mF/6UoJ+etLZMzX+8Ca0jR9poQImzza9o
-         rSQM5kkehWKOAAbaWsPEF6m1MU5MkA4qiLYxVEESDaOBBbiKDPSslOohMPMEbWfJuK59
-         iRpFrjWQ9kNgFcMz+797sucd03c49JwdE1WNjGUWYsk2Sbn0MZmhDfTEJoJ2FaRGD5u3
-         Rww5akjCE2BxSd4dzS40Ln3yL/Qe7FizO+z+jiujAq4avPUQRIYZdgzjaS3Zf8rNbq5I
-         WZbgB/JI9d8g+4oJpMSbre3WoY9eLEp7U1UfXjCdM71s34F2MoEg5z9N6x/mxJlFtwLz
-         vNMQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=R/pb0b0doa3XFteGoKySEQfP8Mo6hx3U4+0voSqDAH0=;
-        fh=Y1rE1uiaDvATlhuqCQyZ1bOrwREHZ9yFcLwtplCpA+k=;
-        b=GeXUWgadK+cvs+JYrw56lNjOPSrSZYrsFIIHsIHcsqeIy3O8jfFUZH0NYwaqrbEqsV
-         6nLzEWulCa1t50ZI4nzcSYJwE1uVbCpSJbBOZldnfoKtCYyyv2TlnOev3P32n1g9J4Nb
-         H/v4UNItCdKB/XUsB/L/pJ0c37fPyF3nlpGcG1epQJxV/ut6wcybRFawp6fMKXVrWNWb
-         zqaH3tBAJtntEumOOIkOIzAGE1AB29AwSZ+hdXYUJ5WdXU86OdOO7A6NQtQeeKLS1ByU
-         135Dnik6xOMJt5xHCv17ymi0pts3QlTxADGX9M9dyKD3AtLbg2nhO3N5LcSnuhYx1mhy
-         waSQ==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1782968213; x=1783573013; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=R/pb0b0doa3XFteGoKySEQfP8Mo6hx3U4+0voSqDAH0=;
-        b=IcGYTzxTrVa88w07rOjCJrKkEt6dwztGc2tb3XaZBZn7XKf7BTNtm393I6p09Z3yIB
-         k8WidCtzBqdakvnidlb31NxcFCPjW3/9b23xwJV+BtA/ePwzWYRUK2tk8KdYBktyVxfC
-         BAmmpHijvWmEtZG9W7I/es50e7bHE9fIPSl2niaGVjajYGQWd8W7OhfiEuPRZBdmgSxG
-         nIHIISqNlfw769Y88cCaa33+6WvHhouiMfGbkA5BM518pIcfLqNd1QoHPoKj7rkDPkVA
-         Afg19gLsmRU1kqgMeDzJvggUbrxwp1d/8zZHbVIZxlfNYeLwbfwdqhBQ/jowUef6MJtE
-         eJTA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782968213; x=1783573013;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=R/pb0b0doa3XFteGoKySEQfP8Mo6hx3U4+0voSqDAH0=;
-        b=a1ovEzIWwF4NsWTx1dysKPXr48kklEBN6ufMD+GqUvdqmxe07Fn3I5TgSytNQOwGa2
-         0ZUkOhvIiBPnM/cBoIpvjb0ds4RhHPiqECIj1Aucod/UT+kiGjebd6itqKcMVvPEcUqO
-         MUwA5pqgewp5YY6P1lIe1/mzExxoMObQrTjcJLytynXshlmYyecXje8zegYVR7yGKt+X
-         qpcrmdrIvEhpOz4Z7yI9kZcLuwLsjUKU04eIyzoV0XrujaY+VgGHP8ZrKskS+i20clM8
-         p7g2eNzfD0ksIQgAipAWZ5iUG3E95EKRqLYWCr3z2JXCYNF7/NGf/YXtUhXaSYmE0rKv
-         V2Kg==
-X-Forwarded-Encrypted: i=1; AHgh+RpLwPDH3s242TN6Yu0Fjy4PA2zsuSJ/h+HinZBAdvnKgk2B3pNzvNXnNLnw1hqb56admze7IeY=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyQMDAD6HrhIHqax+hHM8a7hQRLXWB1sm3kHlZzoXhP6MZJ9kk2
-	mvbYJ7gCmJZAYk8rB70SPh3YX7VG5k5LYn/yIXYjVNXzectxcLNoHGBXR8kZBdctl+omyhP2uB/
-	+yZcrBe6mHxWcoEHTstpcv962HvIUFxEp1wDkojo=
-X-Gm-Gg: AfdE7cmCm1NAYwx/50u32vZdbNG3L1QQ3kCj43ncQO4IyrGuMwD+IA3iJEe9jtaZN3I
-	J5HWHt4/dNQGwicUjcMdwFnZeoi4N1O7od6zcpc//GfivJII93vu+/k6HgQlpRQKPd99HCiZh1w
-	YDr9K3d++AGoNg0JYPRSWBxLzU66BhboS7NI6wUU2joBmeN6Ck4uWS9CB3GAzOIrmbLmVlLSMad
-	QctZclUvkSgr/ED8xwlBX+kQONyMF3w0+bhGeyIXnTZX4AGIr1P2GBZPVF1X/c6gcSsmeozW/+P
-	cQIq7cG6lI8h43s3DenviWMb4W9/JQ==
-X-Received: by 2002:a05:6512:2243:b0:5ae:b843:9470 with SMTP id
- 2adb3069b0e04-5aecc237a55mr33635e87.5.1782968212825; Wed, 01 Jul 2026
- 21:56:52 -0700 (PDT)
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 570CB363C6C;
+	Thu,  2 Jul 2026 05:14:22 +0000 (UTC)
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1782969264; cv=none; b=YuEVKHLEUGXZDHiyEkVoREuSdK0pE3S+bsw+fN+nobzkbZ52RCSECHdalSDNvrPrnfNCBCairgw6AZNhXedhJ6vBQSjC414SEVDYg9r0Jey2B675Qlifwoc+MUdfKJCN2nwN4JRicLlsO+e1/1rdhtwOc4p4KlRyt3Sl7P26x9A=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1782969264; c=relaxed/simple;
+	bh=T62Rm8CforrQHCgI1jL51VN6OPOgVlXbC7gVEXEkr9w=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=Lv5idwzRr1FLgYyhHo0PV993wIRNU5bF+AvdIwHv7zP3Y64MGJPOM94ec410NKfDpjHEkUOhrMsD/XPgLPzz7AVflFCSL9TF4Ggvu78BkmZD75M+vf0cK7YhFr5B+PgfS7T2WXM8Dr2siCrwaVHtSwQ2a1ExSP5BSOEFrvBshVQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=QOBxtron; arc=none smtp.client-ip=217.140.110.172
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 4D6CB3582;
+	Wed,  1 Jul 2026 22:14:17 -0700 (PDT)
+Received: from cesw-amp-gbt-1s-m12830-01.blr.arm.com (cesw-amp-gbt-1s-m12830-01.blr.arm.com [10.164.195.31])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 218A43F85F;
+	Wed,  1 Jul 2026 22:14:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1782969261; bh=T62Rm8CforrQHCgI1jL51VN6OPOgVlXbC7gVEXEkr9w=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=QOBxtronwSwnHmv9SwXu4hDfj37PApl4TlCG0do4RCYGpXUWt4nD5YqM9fmYpV7+8
+	 Z0BzPJY/0ZDSSsWbBljm+FgtEHXp0U26TjOlmBTEeL/gukZ7RANUd01Z6J9oyC0xTc
+	 4ACwViY/VzUpniG0iOXDyzwZGa6p6YDnhaVNJ4CQ=
+From: Dev Jain <dev.jain@arm.com>
+To: muchun.song@linux.dev,
+	osalvador@suse.de,
+	akpm@linux-foundation.org,
+	ljs@kernel.org,
+	david@kernel.org,
+	liam@infradead.org
+Cc: Dev Jain <dev.jain@arm.com>,
+	riel@surriel.com,
+	vbabka@kernel.org,
+	harry@kernel.org,
+	jannh@google.com,
+	lance.yang@linux.dev,
+	kas@kernel.org,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	rcampbell@nvidia.com,
+	apopple@nvidia.com,
+	ziy@nvidia.com,
+	matthew.brost@intel.com,
+	joshua.hahnjy@gmail.com,
+	rakie.kim@sk.com,
+	byungchul@sk.com,
+	gourry@gourry.net,
+	ying.huang@linux.alibaba.com,
+	j-nomura@ce.jp.nec.com,
+	nao.horiguchi@gmail.com,
+	ak@linux.intel.com,
+	mel@csn.ul.ie,
+	pfalcato@suse.de,
+	jpoimboe@kernel.org,
+	dave.hansen@intel.com,
+	tglx@kernel.org,
+	catalin.marinas@arm.com,
+	will@kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	ryan.roberts@arm.com,
+	anshuman.khandual@arm.com,
+	stable@vger.kernel.org
+Subject: [PATCH v2 1/6] arm64: make huge_ptep_get handled unaligned addresses
+Date: Thu,  2 Jul 2026 05:13:35 +0000
+Message-ID: <20260702051341.126509-2-dev.jain@arm.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20260702051341.126509-1-dev.jain@arm.com>
+References: <20260702051341.126509-1-dev.jain@arm.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260621222130.1667453-1-xuehaohu@google.com> <20260623015459.1153884-1-xuehaohu@google.com>
- <20260623094446.4a8fc2ed@pumpkin> <ajryxMaT5evDUxaq@google.com>
- <20260623235350.6540eaa2@pumpkin> <20260630124252.GD7525@ziepe.ca>
-In-Reply-To: <20260630124252.GD7525@ziepe.ca>
-From: David Hu <xuehaohu@google.com>
-Date: Thu, 2 Jul 2026 00:56:40 -0400
-X-Gm-Features: AVVi8CdtQ5k1Gu0I7l3KP5nC_hRlM4qrUkGZrb3FkW53eA2H-q-z2clu4KZkrHc
-Message-ID: <CAPd9Lg9uY1RZvYUtcbKUg=VdWM61M2f3aqmS5veUg_8M_Ce80g@mail.gmail.com>
-Subject: Re: [PATCH v2] dma-buf: Split sgl into page-aligned 2G chunks
-To: Jason Gunthorpe <jgg@ziepe.ca>
-Cc: David Laight <david.laight.linux@gmail.com>, Pranjal Shrivastava <praan@google.com>, 
-	Sumit Semwal <sumit.semwal@linaro.org>, =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>, 
-	Nicolin Chen <nicolinc@nvidia.com>, Leon Romanovsky <leon@kernel.org>, Kevin Tian <kevin.tian@intel.com>, 
-	Ankit Agrawal <ankita@nvidia.com>, Alex Williamson <alex@shazbot.org>, linux-media@vger.kernel.org, 
-	dri-devel@lists.freedesktop.org, linaro-mm-sig@lists.linaro.org, 
-	linux-kernel@vger.kernel.org, iommu@lists.linux.dev, jmoroni@google.com, 
-	kpberry@google.com, chriscli@google.com, sashiko-bot@kernel.org, 
-	stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.66 / 15.00];
+X-Spamd-Result: default: False [0.84 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
-	DMARC_POLICY_ALLOW(-0.50)[google.com,reject];
-	R_DKIM_ALLOW(-0.20)[google.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_CONTAINS_FROM(1.00)[];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[arm.com,none];
+	R_DKIM_ALLOW(-0.20)[arm.com:s=foss];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_RECIPIENTS(0.00)[m:jgg@ziepe.ca,m:david.laight.linux@gmail.com,m:praan@google.com,m:sumit.semwal@linaro.org,m:christian.koenig@amd.com,m:nicolinc@nvidia.com,m:leon@kernel.org,m:kevin.tian@intel.com,m:ankita@nvidia.com,m:alex@shazbot.org,m:linux-media@vger.kernel.org,m:dri-devel@lists.freedesktop.org,m:linaro-mm-sig@lists.linaro.org,m:linux-kernel@vger.kernel.org,m:iommu@lists.linux.dev,m:jmoroni@google.com,m:kpberry@google.com,m:chriscli@google.com,m:sashiko-bot@kernel.org,m:stable@vger.kernel.org,m:davidlaightlinux@gmail.com,s:lists@lfdr.de];
-	TAGGED_FROM(0.00)[bounces-270329-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER(0.00)[xuehaohu@google.com,stable@vger.kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[20];
-	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
+	RCPT_COUNT_TWELVE(0.00)[38];
+	FREEMAIL_CC(0.00)[arm.com,surriel.com,kernel.org,google.com,linux.dev,kvack.org,vger.kernel.org,nvidia.com,intel.com,gmail.com,sk.com,gourry.net,linux.alibaba.com,ce.jp.nec.com,linux.intel.com,csn.ul.ie,suse.de,lists.infradead.org];
+	TAGGED_FROM(0.00)[bounces-270330-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[google.com:+];
-	TO_DN_SOME(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[xuehaohu@google.com,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[gmail.com,google.com,linaro.org,amd.com,nvidia.com,kernel.org,intel.com,shazbot.org,vger.kernel.org,lists.freedesktop.org,lists.linaro.org,lists.linux.dev];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	TAGGED_RCPT(0.00)[stable];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:muchun.song@linux.dev,m:osalvador@suse.de,m:akpm@linux-foundation.org,m:ljs@kernel.org,m:david@kernel.org,m:liam@infradead.org,m:dev.jain@arm.com,m:riel@surriel.com,m:vbabka@kernel.org,m:harry@kernel.org,m:jannh@google.com,m:lance.yang@linux.dev,m:kas@kernel.org,m:linux-mm@kvack.org,m:linux-kernel@vger.kernel.org,m:rcampbell@nvidia.com,m:apopple@nvidia.com,m:ziy@nvidia.com,m:matthew.brost@intel.com,m:joshua.hahnjy@gmail.com,m:rakie.kim@sk.com,m:byungchul@sk.com,m:gourry@gourry.net,m:ying.huang@linux.alibaba.com,m:j-nomura@ce.jp.nec.com,m:nao.horiguchi@gmail.com,m:ak@linux.intel.com,m:mel@csn.ul.ie,m:pfalcato@suse.de,m:jpoimboe@kernel.org,m:dave.hansen@intel.com,m:tglx@kernel.org,m:catalin.marinas@arm.com,m:will@kernel.org,m:linux-arm-kernel@lists.infradead.org,m:ryan.roberts@arm.com,m:anshuman.khandual@arm.com,m:stable@vger.kernel.org,m:joshuahahnjy@gmail.com,m:naohoriguchi@gmail.com,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[dev.jain@arm.com,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[ziepe.ca:email,mail.gmail.com:mid,vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[dev.jain@arm.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[arm.com:+];
+	RCVD_COUNT_FIVE(0.00)[5];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	ALIAS_RESOLVED(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[arm.com:dkim,arm.com:email,arm.com:mid,arm.com:from_mime,vger.kernel.org:from_smtp,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: C41C76F37D9
+X-Rspamd-Queue-Id: D74726F3871
 
-On Tue, Jun 30, 2026 at 8:42=E2=80=AFAM Jason Gunthorpe <jgg@ziepe.ca> wrot=
-e:
->
-> On Tue, Jun 23, 2026 at 11:53:50PM +0100, David Laight wrote:
->
-> > > If we restrict incoming dmabuf transfers to fit within VFS-centric
-> > > limits (2GB), we impose unnecessary overhead on the RDMA stack, forci=
-ng
-> > > it to manage a significantly higher number of memory registrations. B=
-y
-> > > cleanly splitting these massive contiguous device buffers into
-> > > page-aligned SGL entries, we directly improve the efficiency of P2P
-> > > transfers and memory registration.
-> >
-> > But a divide by '4G - PAGE_SIZE' is also non-trivial and (I think affec=
-ts
-> > a lot of io) when the quotient is always 1.
-> > Splitting into 2G chunks is a lot cheaper.
->
-> Doesn't matter this isn't fast path stuff. It is better to use fewer
-> SGL entries, IHMO.
->
-> > > Since this change doesn't seem to have a negative impact on standard =
-file
-> > > I/O or break existing VFS constraints, I'm curious why we shouldn't
-> > > support splitting these >4GB P2P transfers? Am I missing something?
-> >
-> > I was only wondering whether it was needed...
-> > It does bring up the question of why the >4GB transfers even need split=
-ting.
-> > But that is another question.
->
-> SGL can only store an unsigned int size, so any large physical range
-> has to be split down.
->
-> rdma now a days has code to process the sgl and restore back the > 4G
-> sizes since mode RDMA HW can accept that.
->
-> commit 486055f5e09df959ad4e3aa4ee75b5c91ddeec2e
-> Author: Michael Margolin <mrgolin@amazon.com>
-> Date:   Mon Feb 17 14:16:23 2025 +0000
->
->     RDMA/core: Fix best page size finding when it can cross SG entries
->
-> So whatever this produces needs to be compatible with that to undo it.
+huge_ptep_get() can be handed a virtual address pointing to the middle of
+a contpmd/contpte mapped hugetlb folio (examples of callers are
+pagemap_hugetlb_range, page_mapped_in_vma).
 
-Thank you everyone. It looks like most open issues are sorted out.
-I'll wait for maintainers to weigh in before sending out v3 (which
-will remove the type cast for min() per David L.'s feedback, and
-revert to ALIGN_DOWN(UINT_MAX, PAGE_SIZE) per Jason's feedback).
+The arm64 helper rewalks the pgtables in find_num_contig to answer whether
+the huge pte we have maps a contpmd or a contpte hugetlb folio, and
+returns CONT_PMDS or CONT_PTES, so that it can collect a/d bits over the
+contiguous ptes. We can falsely return CONT_PTES instead of CONT_PMDS
+if the addr is not aligned.
 
-Hi Jason,
+Fix this by aligning the pmdp pointer down to a contpmd base before
+checking equality with the passed huge pte pointer, to correctly answer
+whether the huge pte is the base of a contpmd block.
 
-Thank you for your feedback. I took a closer look at the commit to
-ensure compatibility. This patch is perfectly complementary, and
-actually prevents a failure in an edge case for the latest
-`ib_umem_find_best_pgsz` [1].
+Fixes: 29cb80519689 ("arm64: hugetlb: Cleanup huge_pte size discovery mechanisms")
+Cc: stable@vger.kernel.org
+Signed-off-by: Dev Jain <dev.jain@arm.com>
+---
+ arch/arm64/mm/hugetlbpage.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Regards,
-David
+diff --git a/arch/arm64/mm/hugetlbpage.c b/arch/arm64/mm/hugetlbpage.c
+index 30772a909aea3..8e799c1fe0aa6 100644
+--- a/arch/arm64/mm/hugetlbpage.c
++++ b/arch/arm64/mm/hugetlbpage.c
+@@ -87,7 +87,7 @@ static int find_num_contig(struct mm_struct *mm, unsigned long addr,
+ 	p4dp = p4d_offset(pgdp, addr);
+ 	pudp = pud_offset(p4dp, addr);
+ 	pmdp = pmd_offset(pudp, addr);
+-	if ((pte_t *)pmdp == ptep) {
++	if ((pte_t *)PTR_ALIGN_DOWN(pmdp, sizeof(*pmdp) * CONT_PMDS) == ptep) {
+ 		*pgsize = PMD_SIZE;
+ 		return CONT_PMDS;
+ 	}
+-- 
+2.43.0
 
-[1] For dma-buf split with `0xFFFFFFFF`, in case of a discontinguity
-in later buffers, we will hit this code path in
-`ib_umem_find_best_pgsz`
-
-```
-if (i !=3D 0)
-    mask |=3D va;
-```
-(*After `va` had been incremented by `0xFFFFFFFF`, due to `va +=3D
-sg_dma_len(sg) - pgoff`)
-(*Which will set the lowest bit of `mask` to 1)
-
-Because `count_trailing_zeros(mask) returns 0`,
-`ib_umem_find_best_pgsz()` will always return 0 in such cases.
 
