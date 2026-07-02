@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-270855-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-270648-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id cxCSBSSgRmrXaQsAu9opvQ
-	(envelope-from <stable+bounces-270855-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:30:12 +0200
+	id FQ3mE0SSRmoRYwsAu9opvQ
+	(envelope-from <stable+bounces-270648-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:31:00 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 84F416FB638
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:30:11 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id DE2466FA32B
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:30:59 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=y7SaHTOx;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-270855-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-270855-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=EPjJaIOc;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-270648-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-270648-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D637132EBF22
-	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:36:37 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id D1C8A3010BC7
+	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:30:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2CA5E346E64;
-	Thu,  2 Jul 2026 16:33:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D995283FDD;
+	Thu,  2 Jul 2026 16:24:50 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0057632ED4E;
-	Thu,  2 Jul 2026 16:33:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DE1D33B969;
+	Thu,  2 Jul 2026 16:24:44 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783010026; cv=none; b=kwa39p0TeOXlYji+w6ygzQYGpoeZwcctI1tOpvgs6+THbsQmmbqpe+YbmJeW5F7zjrf1WJfbJj/ZiIwV+ia+sNsVGY6MjZZP5tWHgqU17HvUQ7Bd3DnHO1r/stPTbQVMPlDg4tZZe/jBs9kyOny0uncH+GM87KxK9JsZuow6U/4=
+	t=1783009488; cv=none; b=k9pryFlZmN6IL2ABM1BiQNLYtL4BQMPYN+zrvTBH3Pr0YFwFbAtpC59uCdu4ppfjTlYak2PjOaIy3gp1t7ZM4OfO0UE12V6VIyu9FBDCfg3ssP0Li7TDk96qU8BC81+a7XtSTDx/lpBx7D7lptaj/CXJw3xqwSuLEoOHPFAl7pE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783010026; c=relaxed/simple;
-	bh=hX8a4QPwNJM1yH/t6OxWueCORkwhBiQzUPs6fy5hJyA=;
+	s=arc-20240116; t=1783009488; c=relaxed/simple;
+	bh=qp1w+S06zZ/SYh5A942p/eWVUbx3pS/t73+iqNiV03E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ASFiUeu7Q5gM9xkC3zLFUOm4060gyWb5gtjE5m/6VeKBTaynTG5+UHedRsiiuQZ0NXtctTHzxUnQf59ltyEeYrwDR2HcwdGfcdDUuFGjxSDc9OED+2W+05XUZiexzHe1edbvfmtmvKouMnZEorPZj0DdHDSRrMauqCAQUv4ESJA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y7SaHTOx; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66EE11F000E9;
-	Thu,  2 Jul 2026 16:33:44 +0000 (UTC)
+	 MIME-Version; b=Cka/tdUnsuqxwfnfJ86iHqi4AKJNBei56WPrbySmLo39r274YZTg86n+wABsVLSrjGgQDGDKTD1LH7Ee7kWTAKUc6NLKBGzuRPMvVcDx/u56vV/anZ7vQAq2Aitu8XvKVPIwgT7H80Xmoe1EnQP9+jStNmVPbAqn417pMe9bgLM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EPjJaIOc; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A945D1F00A3A;
+	Thu,  2 Jul 2026 16:24:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1783010024;
-	bh=sEmAlTRrRVRxAc6KwmgG7MCjT2iiI+qxTSfFzIJr1t8=;
+	s=korg; t=1783009484;
+	bh=KA4koBeG8OsC0tadx2z5g7lCb/5oSOeZVrehiSYTJz0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=y7SaHTOx8e5O8ApPBU0t8OSlZ1AyPnzix6uu/B6R507L4G+yPpS+1RPKqt46nZxU7
-	 fWjCPVPsBnpvcNdOR9RYtMgLDY1rDAV9AnPKqZMxfC+2jkPk+2lh9c877lZ00oQ6pu
-	 MnnJRUR79UimlW+vbqnyg17S5E00fP2wUbnPT1iw=
+	b=EPjJaIOcygVLDUGI3HYHnKt5YaMr2fNqWChsyM5iJEuTdIHZDPt6NmkCTVyq/z9qn
+	 3sYGCsJ6Ha2k5HWiNhbqMlUM9UZfIu6raPMab2rmePWjfgESbNkd1MnEsos3aoGCKi
+	 l/+R3GP3XkwCIXLY4oc3Wgy/kgNzXeS7CH5XygOY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alessandro Groppo <ale.grpp@gmail.com>,
-	Jarkko Sakkinen <jarkko@kernel.org>
-Subject: [PATCH 6.1 082/129] KEYS: fix overflow in keyctl_pkey_params_get_2()
+	"Maciej W. Rozycki" <macro@orcam.me.uk>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Subject: [PATCH 5.10 69/96] MIPS: DEC: Prevent initial console buffer from landing in XKPHYS
 Date: Thu,  2 Jul 2026 18:20:01 +0200
-Message-ID: <20260702155113.837551763@linuxfoundation.org>
+Message-ID: <20260702155110.431234191@linuxfoundation.org>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260702155112.163984240@linuxfoundation.org>
-References: <20260702155112.163984240@linuxfoundation.org>
+In-Reply-To: <20260702155108.949633242@linuxfoundation.org>
+References: <20260702155108.949633242@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,107 +66,156 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-270648-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-270855-lists,stable=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:ale.grpp@gmail.com,m:jarkko@kernel.org,m:alegrpp@gmail.com,s:lists@lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:macro@orcam.me.uk,m:tsbogend@alpha.franken.de,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,orcam.me.uk:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 84F416FB638
+X-Rspamd-Queue-Id: DE2466FA32B
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jarkko Sakkinen <jarkko@kernel.org>
+From: Maciej W. Rozycki <macro@orcam.me.uk>
 
-commit cb481e59ea6cae3b7796ac1d7a22b6b24c3f3c0b upstream.
+commit 7fb13fd35110ebe95eb053faf79d018f51144d85 upstream.
 
-The length for the internal output buffer is calculated incorrectly, which
-can result overflow when a too small buffer is provided.
+In 64-bit configurations calling the initial console output handler from
+a kernel thread other than the initial one will result in a situation
+where the stack has been placed in the XKPHYS 64-bit memory segment and
+consequently so has been the buffer allocated there that is used as the
+argument corresponding to the `%s' output conversion specifier for the
+firmware's printf() entry point.
 
-Fix the bug by allocating internal output with the size of the maximum
-length of the cryptographic primitive instead of caller provided size.
+This 64-bit address will then be truncated by 32-bit firmware, resulting
+in an attempt to access the wrong memory location, which in turn will
+cause all kinds of unpredictable behaviour, such as a kernel crash:
 
-Link: https://lore.kernel.org/keyrings/20260531024914.3712130-1-jarkko@kernel.org/
-Cc: stable@vger.kernel.org # v4.20+
-Fixes: 00d60fd3b932 ("KEYS: Provide keyctls to drive the new key type ops for asymmetric keys [ver #2]")
-Reported-by: Alessandro Groppo <ale.grpp@gmail.com>
-Tested-by: Alessandro Groppo <ale.grpp@gmail.com>
-Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
+  Console: colour dummy device 160x64
+  Calibrating delay loop... 49.36 BogoMIPS (lpj=192512)
+  pid_max: default: 32768 minimum: 301
+  CPU 0 Unable to handle kernel paging request at virtual address 000000000203bd00, epc == ffffffffbfc08364, ra == ffffffffbfc08800
+  Oops[#1]:
+  CPU: 0 PID: 0 Comm: swapper Not tainted 5.18.0-rc2-00254-gfb649bda6f56-dirty #121
+  $ 0   : 0000000000000000 0000000000000001 0000000000000023 ffffffff80684ba0
+  $ 4   : 000000000203bd00 ffffffffbfc0f3b4 ffffffffffffffff 0000000000000073
+  $ 8   : 0a303d7469000000 0000000000000000 0000000000000073 ffffffffbfc0f473
+  $12   : 0000000000000002 0000000000000000 ffffffff80684c1c 0000000000000000
+  $16   : 0000000000000000 ffffffff80596dc9 0000000000000000 ffffffffbfc09240
+  $20   : ffffffff80684c40 ffffffffbfc0f400 000000000000002d 000000000000002b
+  $24   : ffffffffffffffbf 000000000203bd00
+  $28   : ffffffff805f0000 ffffffff80684b58 0000000000000030 ffffffffbfc08800
+  Hi    : 0000000000000000
+  Lo    : 0000000000000aa8
+  epc   : ffffffffbfc08364 0xffffffffbfc08364
+  ra    : ffffffffbfc08800 0xffffffffbfc08800
+  Status: 140120e2        KX SX UX KERNEL EXL
+  Cause : 00000008 (ExcCode 02)
+  BadVA : 000000000203bd00
+  PrId  : 00000430 (R4000SC)
+  Modules linked in:
+  Process swapper (pid: 0, threadinfo=(____ptrval____), task=(____ptrval____), tls=0000000000000000)
+  Stack : 0000000000000000 0000000000000000 0000000000000000 0000004d0000004d
+          80684cc0806a2a40 80596dc80000004d 8061000000000000 bfc0850c80684c38
+          0000000000000000 000000000203bd00 0000000000000000 0000000000000000
+          0000000000000000 00000000bfc0f3b4 0000000000000000 0000000000000000
+          0000000000000000 0000000000000000 0000000000000000 0000000000000000
+          0000000000000000 0000000000000000 0000000000000000 0000000000000000
+          0000002500000000 0000000000000000 0000000000000000 802c1a7400000000
+          0203bd0080596dc8 0203bd4d69000000 6c61632000000018 5f746567646e6172
+          6c616320625f6d6f 5f736e5f6d6f7266 206361323778302b 303d74696e726320
+          806a0a38806b0000 806a0a38806b0000 00000000806b0000 80683c58806b0000
+          ...
+  Call Trace:
+
+  Code: a082ffff  03e00008  00601021 <80820000> 00001821  10400005  24840001  80820000  24630001
+
+  ---[ end trace 0000000000000000 ]---
+  Kernel panic - not syncing: Fatal exception in interrupt
+
+  KN04 V2.1k    (PC: 0xa0026768, SP: 0x806848e8)
+  >>
+
+In this case the pointer in $4 was truncated from 0x980000000203bd00 to
+0x000000000203bd00.
+
+This may happen when no final console driver has been enabled in the
+configuration and consequently the initial console continues being used
+late into bootstrap or with an upcoming change that will switch the zs
+driver to use a platform device, which in turn will make the console
+handover happen only after other kernel threads have already been
+started.
+
+Fix the issue by making the buffer static and initdata, and therefore
+placed in the CKSEG0 32-bit compatibility segment, observing that the
+console output handler is called with the console lock held, implying
+no need for this code to be reentrant.  Add an assertion to verify the
+buffer actually has been placed in a compatibility segment.
+
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Signed-off-by: Maciej W. Rozycki <macro@orcam.me.uk>
+Cc: stable@vger.kernel.org # v2.6.12+
+Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- security/keys/keyctl_pkey.c |    9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+ arch/mips/dec/prom/console.c |    7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
---- a/security/keys/keyctl_pkey.c
-+++ b/security/keys/keyctl_pkey.c
-@@ -138,28 +138,35 @@ static int keyctl_pkey_params_get_2(cons
- 		if (uparams.in_len  > info.max_dec_size ||
- 		    uparams.out_len > info.max_enc_size)
- 			return -EINVAL;
-+
-+		params->out_len = info.max_enc_size;
- 		break;
- 	case KEYCTL_PKEY_DECRYPT:
- 		if (uparams.in_len  > info.max_enc_size ||
- 		    uparams.out_len > info.max_dec_size)
- 			return -EINVAL;
-+
-+		params->out_len = info.max_dec_size;
- 		break;
- 	case KEYCTL_PKEY_SIGN:
- 		if (uparams.in_len  > info.max_data_size ||
- 		    uparams.out_len > info.max_sig_size)
- 			return -EINVAL;
-+
-+		params->out_len = info.max_sig_size;
- 		break;
- 	case KEYCTL_PKEY_VERIFY:
- 		if (uparams.in_len  > info.max_data_size ||
- 		    uparams.in2_len > info.max_sig_size)
- 			return -EINVAL;
-+
-+		params->out_len = info.max_sig_size;
- 		break;
- 	default:
- 		BUG();
- 	}
+--- a/arch/mips/dec/prom/console.c
++++ b/arch/mips/dec/prom/console.c
+@@ -2,8 +2,9 @@
+ /*
+  *	DECstation PROM-based early console support.
+  *
+- *	Copyright (C) 2004, 2007  Maciej W. Rozycki
++ *	Copyright (C) 2004, 2007, 2026  Maciej W. Rozycki
+  */
++#include <linux/bug.h>
+ #include <linux/console.h>
+ #include <linux/init.h>
+ #include <linux/kernel.h>
+@@ -14,9 +15,11 @@
+ static void __init prom_console_write(struct console *con, const char *s,
+ 				      unsigned int c)
+ {
+-	char buf[81];
++	static char buf[81] __initdata = { 0 };
+ 	unsigned int chunk = sizeof(buf) - 1;
  
- 	params->in_len  = uparams.in_len;
--	params->out_len = uparams.out_len; /* Note: same as in2_len */
- 	return 0;
- }
- 
++	BUG_ON((long)buf != (int)(long)buf);
++
+ 	while (c > 0) {
+ 		if (chunk > c)
+ 			chunk = c;
 
 
 
