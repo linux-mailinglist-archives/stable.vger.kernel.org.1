@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-270924-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-270912-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id B0S2Df6TRmrAYwsAu9opvQ
-	(envelope-from <stable+bounces-270924-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:38:22 +0200
+	id B/n6EJGgRmr6aQsAu9opvQ
+	(envelope-from <stable+bounces-270912-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:32:01 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 707286FA507
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:38:21 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9B9796FB69D
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:32:00 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="l/GAOHyK";
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-270924-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-270924-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=aGAbnttr;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-270912-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-270912-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 768D73022DD8
-	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:38:20 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 5A5A03224A4D
+	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:37:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AABB533A9DB;
-	Thu,  2 Jul 2026 16:36:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A67FE346FA7;
+	Thu,  2 Jul 2026 16:36:16 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A3B12D8DC4;
-	Thu,  2 Jul 2026 16:36:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 199063438BA;
+	Thu,  2 Jul 2026 16:36:15 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783010207; cv=none; b=FFjHO/h+4Fcve43pKiYdt9Fh0yz3yRBQZ1zoTE9FQ0jqy+4CGpKCCp/+gCJaE5n2RYE8AknAXr2a81Q1l3fSCpdW5qz9Q/ybKo7zC+JvrrYQr80W+uI9ymRmXc85D/BeCkWxl81GzoGwyDjrYJFg++zW9kjWagPuhhj36hjb0aE=
+	t=1783010176; cv=none; b=bWGyVpy49MXh1hsX36cJp2XZkSK+3BTXPnbK64ZYi5r6Yx2/dONwJ4ikasnStvDDVyaRGzUdH4uVO+Qi3N9mXkGsdwFi36lrKM0w/HfUOxLwi2vUc92u360hsH7WWDc+c7/q8c/P36T+8MHBu+q37S+a887muW7F6FLq8LsMnsU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783010207; c=relaxed/simple;
-	bh=doVSSwEjTxwaNB08KcFVBTqe7iaQ8GiJiIJRYduLMGw=;
+	s=arc-20240116; t=1783010176; c=relaxed/simple;
+	bh=UNS/VlxXbxEBiOqKdcQmNXs3CoWGTLpa6l15AOhz6Q8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iAxxXik9P5JW6nUiXgE8w4WTjjhlYtfxehKJcTshX9C7UEVJ791AQc+gXPFzGj79yDKRJiCXGEGL2lDyzNvAt7o2lFLWVIsHdekHwA2yZjdIVCSM3F+ZS7SvorB50RU52mnkiwuYqEGmljtonYfZmG57+ldkNBqqW0zPDDYQb0Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l/GAOHyK; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D05AA1F000E9;
-	Thu,  2 Jul 2026 16:36:45 +0000 (UTC)
+	 MIME-Version:Content-Type; b=SpAKJVKVpwQS5n0MhTFaP2jmyaS5oT+2YEftR9EWnzyUG9xa1kptgMwh34OU9CzemUbZFD+UQd23k4ovZQCGknLd2V+bZ3oC888ZEs84D39auCWlNdQ+zF7SimIBtUB/PQWZnln6X94YevaYXkDBy+KefJzhlQVDvRVdEAtEJzM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aGAbnttr; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F39E1F000E9;
+	Thu,  2 Jul 2026 16:36:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1783010206;
-	bh=q0CWFkEJJ1W0JS6tFcRsCZ7zq1COv3p/utzFsNpvmpI=;
+	s=korg; t=1783010175;
+	bh=f9N7NhPkm4pYU9cUn5iOerRbkMcuSThUx80gumM0M2A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=l/GAOHyKFouPMKZXIVls715MZDXhf5YdCcrQfJWBsXH/imEnlf2HKRilc4OMIbI/R
-	 5LXRg8EqunMV6Uxwn1AqCy2R9SSP//ko7x7qJVOGTUTqCxviZF+ycQ7vMfJ2+3XT2y
-	 AxVhOI3A1TbTLa2nCVPKALCxC/tL/4i9RztM/44s=
+	b=aGAbnttravk4HdJVF7rJlgeeR1q4oKs/aRMc5MRyXs13GSbI/FfOia5vgz7MGe/8S
+	 B9b5gYmRa5TJZGqrJCJKPdEyPAIqTHiYwz+WFeqI3z3M6refwIJkLnHt2Wlhpw1xzi
+	 h+rXplYWr5EPDaDiP778xZ5hHD+1oI7v84KCYazw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Suraj Kandpal <suraj.kandpal@intel.com>,
-	Jani Nikula <jani.nikula@intel.com>,
-	Matthew Brost <matthew.brost@intel.com>,
+	Iago Toral Quiroga <itoral@igalia.com>,
+	Melissa Wen <mwen@igalia.com>,
+	=?UTF-8?q?Ma=C3=ADra=20Canal?= <mcanal@igalia.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 009/204] drm/xe/display: fix oops in suspend/shutdown without display
-Date: Thu,  2 Jul 2026 18:17:46 +0200
-Message-ID: <20260702155118.865170211@linuxfoundation.org>
+Subject: [PATCH 6.12 010/204] drm/v3d: Store the active job inside the queues state
+Date: Thu,  2 Jul 2026 18:17:47 +0200
+Message-ID: <20260702155118.886136542@linuxfoundation.org>
 X-Mailer: git-send-email 2.55.0
 In-Reply-To: <20260702155118.667618796@linuxfoundation.org>
 References: <20260702155118.667618796@linuxfoundation.org>
@@ -66,124 +66,301 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-270924-lists,stable=lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-270912-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:suraj.kandpal@intel.com,m:jani.nikula@intel.com,m:matthew.brost@intel.com,m:sashal@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:itoral@igalia.com,m:mwen@igalia.com,m:mcanal@igalia.com,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,vger.kernel.org:from_smtp,msgid.link:url,gitlab.freedesktop.org:url,intel.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
+	MID_RHS_MATCH_FROM(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,igalia.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 707286FA507
+X-Rspamd-Queue-Id: 9B9796FB69D
 
 6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jani Nikula <jani.nikula@intel.com>
+From: Maíra Canal <mcanal@igalia.com>
 
-[ Upstream commit 68938cc08e23a94fd881e845837ff918de005ce7 ]
+[ Upstream commit 0d3768826d38c0ac740f8b45cd13346630535f2b ]
 
-The xe driver keeps track of whether to probe display, and whether
-display hardware is there, using xe->info.probe_display. It gets set to
-false if there's no display after intel_display_device_probe(). However,
-the display may also be disabled via fuses, detected at a later time in
-intel_display_device_info_runtime_init().
+Instead of storing the queue's active job in four different variables,
+store the active job inside the queue's state. This way, it's possible
+to access all active jobs using an index based in `enum v3d_queue`.
 
-In this case, the xe driver does for_each_intel_crtc() on uninitialized
-mode config in xe_display_flush_cleanup_work(), leading to a NULL
-pointer dereference, and generally calls display code with display info
-cleared.
-
-Check for intel_display_device_present() after
-intel_display_device_info_runtime_init(), and reset
-xe->info.probe_display as necessary. Also do unset_display_features()
-for completeness, although display runtime init has already done
-that. This will need to be unified across all cases later.
-
-Move intel_display_device_info_runtime_init() call slightly earlier,
-similar to i915, to avoid a bunch of unnecessary setup for no display
-cases.
-
-Note #1: The xe driver has no business doing low level display plumbing
-like for_each_intel_crtc() to begin with. It all needs to happen in
-display code.
-
-Note #2: The actual bug is present already in commit 44e694958b95
-("drm/xe/display: Implement display support"), but the oops was likely
-introduced later at commit ddf6492e0e50 ("drm/xe/display: Make display
-suspend/resume work on discrete").
-
-Fixes: 44e694958b95 ("drm/xe/display: Implement display support")
-Closes: https://gitlab.freedesktop.org/drm/xe/kernel/-/work_items/7904
-Closes: https://gitlab.freedesktop.org/drm/xe/kernel/-/work_items/6150
-Cc: stable@vger.kernel.org # v6.8+
-Reviewed-by: Suraj Kandpal <suraj.kandpal@intel.com>
-Link: https://patch.msgid.link/20260515160920.1082842-1-jani.nikula@intel.com
-Signed-off-by: Jani Nikula <jani.nikula@intel.com>
-(cherry picked from commit 7c3eb9f47533220888a67266448185fd0775d4da)
-Signed-off-by: Matthew Brost <matthew.brost@intel.com>
+Reviewed-by: Iago Toral Quiroga <itoral@igalia.com>
+Reviewed-by: Melissa Wen <mwen@igalia.com>
+Link: https://lore.kernel.org/r/20250826-v3d-queue-lock-v3-2-979efc43e490@igalia.com
+Signed-off-by: Maíra Canal <mcanal@igalia.com>
+Stable-dep-of: 7f93fad5ea0a ("drm/v3d: Skip CSD when it has zeroed workgroups")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/xe/display/xe_display.c | 11 +++++++++--
- 1 file changed, 9 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/v3d/v3d_drv.h   |  7 ++--
+ drivers/gpu/drm/v3d/v3d_gem.c   |  7 ++--
+ drivers/gpu/drm/v3d/v3d_irq.c   | 62 +++++++++++++--------------------
+ drivers/gpu/drm/v3d/v3d_sched.c | 26 +++++++++-----
+ 4 files changed, 48 insertions(+), 54 deletions(-)
 
-diff --git a/drivers/gpu/drm/xe/display/xe_display.c b/drivers/gpu/drm/xe/display/xe_display.c
-index e164e2d71e1157..de1fd4dff0e869 100644
---- a/drivers/gpu/drm/xe/display/xe_display.c
-+++ b/drivers/gpu/drm/xe/display/xe_display.c
-@@ -148,6 +148,15 @@ int xe_display_init_noirq(struct xe_device *xe)
+diff --git a/drivers/gpu/drm/v3d/v3d_drv.h b/drivers/gpu/drm/v3d/v3d_drv.h
+index d4b0549205c29e..b6e11968fba47b 100644
+--- a/drivers/gpu/drm/v3d/v3d_drv.h
++++ b/drivers/gpu/drm/v3d/v3d_drv.h
+@@ -59,6 +59,9 @@ struct v3d_queue_state {
  
- 	intel_display_driver_early_probe(xe);
- 
-+	intel_display_device_info_runtime_init(xe);
+ 	/* Stores the GPU stats for this queue in the global context. */
+ 	struct v3d_stats stats;
 +
-+	/* Display may have been disabled at runtime init */
-+	if (!has_display(xe)) {
-+		xe->info.probe_display = false;
-+		unset_display_features(xe);
-+		return 0;
-+	}
++	/* Currently active job for this queue */
++	struct v3d_job *active_job;
+ };
+ 
+ /* Performance monitor object. The perform lifetime is controlled by userspace
+@@ -147,10 +150,6 @@ struct v3d_dev {
+ 
+ 	struct work_struct overflow_mem_work;
+ 
+-	struct v3d_bin_job *bin_job;
+-	struct v3d_render_job *render_job;
+-	struct v3d_tfu_job *tfu_job;
+-	struct v3d_csd_job *csd_job;
+ 	struct v3d_cpu_job *cpu_job;
+ 
+ 	struct v3d_queue_state queue[V3D_MAX_QUEUES];
+diff --git a/drivers/gpu/drm/v3d/v3d_gem.c b/drivers/gpu/drm/v3d/v3d_gem.c
+index 6b6ba7a68fcb40..cf3b93101429c2 100644
+--- a/drivers/gpu/drm/v3d/v3d_gem.c
++++ b/drivers/gpu/drm/v3d/v3d_gem.c
+@@ -304,16 +304,15 @@ void
+ v3d_gem_destroy(struct drm_device *dev)
+ {
+ 	struct v3d_dev *v3d = to_v3d_dev(dev);
++	enum v3d_queue q;
+ 
+ 	v3d_sched_fini(v3d);
+ 
+ 	/* Waiting for jobs to finish would need to be done before
+ 	 * unregistering V3D.
+ 	 */
+-	WARN_ON(v3d->bin_job);
+-	WARN_ON(v3d->render_job);
+-	WARN_ON(v3d->tfu_job);
+-	WARN_ON(v3d->csd_job);
++	for (q = 0; q < V3D_MAX_QUEUES; q++)
++		WARN_ON(v3d->queue[q].active_job);
+ 
+ 	drm_mm_takedown(&v3d->mm);
+ 
+diff --git a/drivers/gpu/drm/v3d/v3d_irq.c b/drivers/gpu/drm/v3d/v3d_irq.c
+index b98e1a4b33c71c..2464ea4d935d04 100644
+--- a/drivers/gpu/drm/v3d/v3d_irq.c
++++ b/drivers/gpu/drm/v3d/v3d_irq.c
+@@ -42,6 +42,8 @@ v3d_overflow_mem_work(struct work_struct *work)
+ 		container_of(work, struct v3d_dev, overflow_mem_work);
+ 	struct drm_device *dev = &v3d->drm;
+ 	struct v3d_bo *bo = v3d_bo_create(dev, NULL /* XXX: GMP */, 256 * 1024);
++	struct v3d_queue_state *queue = &v3d->queue[V3D_BIN];
++	struct v3d_bin_job *bin_job;
+ 	struct drm_gem_object *obj;
+ 	unsigned long irqflags;
+ 
+@@ -61,13 +63,15 @@ v3d_overflow_mem_work(struct work_struct *work)
+ 	 * some binner pool anyway.
+ 	 */
+ 	spin_lock_irqsave(&v3d->job_lock, irqflags);
+-	if (!v3d->bin_job) {
++	bin_job = (struct v3d_bin_job *)queue->active_job;
 +
- 	/* Early display init.. */
- 	intel_opregion_setup(display);
++	if (!bin_job) {
+ 		spin_unlock_irqrestore(&v3d->job_lock, irqflags);
+ 		goto out;
+ 	}
  
-@@ -159,8 +168,6 @@ int xe_display_init_noirq(struct xe_device *xe)
+ 	drm_gem_object_get(obj);
+-	list_add_tail(&bo->unref_head, &v3d->bin_job->render->unref_list);
++	list_add_tail(&bo->unref_head, &bin_job->render->unref_list);
+ 	spin_unlock_irqrestore(&v3d->job_lock, irqflags);
  
- 	intel_bw_init_hw(xe);
+ 	v3d_mmu_flush_all(v3d);
+@@ -79,6 +83,20 @@ v3d_overflow_mem_work(struct work_struct *work)
+ 	drm_gem_object_put(obj);
+ }
  
--	intel_display_device_info_runtime_init(xe);
++static void
++v3d_irq_signal_fence(struct v3d_dev *v3d, enum v3d_queue q,
++		     void (*trace_irq)(struct drm_device *, uint64_t))
++{
++	struct v3d_queue_state *queue = &v3d->queue[q];
++	struct v3d_fence *fence = to_v3d_fence(queue->active_job->irq_fence);
++
++	v3d_job_update_stats(queue->active_job, q);
++	trace_irq(&v3d->drm, fence->seqno);
++
++	queue->active_job = NULL;
++	dma_fence_signal(&fence->base);
++}
++
+ static irqreturn_t
+ v3d_irq(int irq, void *arg)
+ {
+@@ -102,41 +120,17 @@ v3d_irq(int irq, void *arg)
+ 	}
+ 
+ 	if (intsts & V3D_INT_FLDONE) {
+-		struct v3d_fence *fence =
+-			to_v3d_fence(v3d->bin_job->base.irq_fence);
 -
- 	err = intel_display_driver_probe_noirq(xe);
- 	if (err) {
- 		intel_opregion_cleanup(display);
+-		v3d_job_update_stats(&v3d->bin_job->base, V3D_BIN);
+-		trace_v3d_bcl_irq(&v3d->drm, fence->seqno);
+-
+-		v3d->bin_job = NULL;
+-		dma_fence_signal(&fence->base);
+-
++		v3d_irq_signal_fence(v3d, V3D_BIN, trace_v3d_bcl_irq);
+ 		status = IRQ_HANDLED;
+ 	}
+ 
+ 	if (intsts & V3D_INT_FRDONE) {
+-		struct v3d_fence *fence =
+-			to_v3d_fence(v3d->render_job->base.irq_fence);
+-
+-		v3d_job_update_stats(&v3d->render_job->base, V3D_RENDER);
+-		trace_v3d_rcl_irq(&v3d->drm, fence->seqno);
+-
+-		v3d->render_job = NULL;
+-		dma_fence_signal(&fence->base);
+-
++		v3d_irq_signal_fence(v3d, V3D_RENDER, trace_v3d_rcl_irq);
+ 		status = IRQ_HANDLED;
+ 	}
+ 
+ 	if (intsts & V3D_INT_CSDDONE(v3d->ver)) {
+-		struct v3d_fence *fence =
+-			to_v3d_fence(v3d->csd_job->base.irq_fence);
+-
+-		v3d_job_update_stats(&v3d->csd_job->base, V3D_CSD);
+-		trace_v3d_csd_irq(&v3d->drm, fence->seqno);
+-
+-		v3d->csd_job = NULL;
+-		dma_fence_signal(&fence->base);
+-
++		v3d_irq_signal_fence(v3d, V3D_CSD, trace_v3d_csd_irq);
+ 		status = IRQ_HANDLED;
+ 	}
+ 
+@@ -168,15 +162,7 @@ v3d_hub_irq(int irq, void *arg)
+ 	V3D_WRITE(V3D_HUB_INT_CLR, intsts);
+ 
+ 	if (intsts & V3D_HUB_INT_TFUC) {
+-		struct v3d_fence *fence =
+-			to_v3d_fence(v3d->tfu_job->base.irq_fence);
+-
+-		v3d_job_update_stats(&v3d->tfu_job->base, V3D_TFU);
+-		trace_v3d_tfu_irq(&v3d->drm, fence->seqno);
+-
+-		v3d->tfu_job = NULL;
+-		dma_fence_signal(&fence->base);
+-
++		v3d_irq_signal_fence(v3d, V3D_TFU, trace_v3d_tfu_irq);
+ 		status = IRQ_HANDLED;
+ 	}
+ 
+diff --git a/drivers/gpu/drm/v3d/v3d_sched.c b/drivers/gpu/drm/v3d/v3d_sched.c
+index 8e3c8ffc2a428f..f2a2c17a58c687 100644
+--- a/drivers/gpu/drm/v3d/v3d_sched.c
++++ b/drivers/gpu/drm/v3d/v3d_sched.c
+@@ -208,14 +208,18 @@ static struct dma_fence *v3d_bin_job_run(struct drm_sched_job *sched_job)
+ 	struct dma_fence *fence;
+ 	unsigned long irqflags;
+ 
+-	if (unlikely(job->base.base.s_fence->finished.error))
++	if (unlikely(job->base.base.s_fence->finished.error)) {
++		spin_lock_irqsave(&v3d->job_lock, irqflags);
++		v3d->queue[V3D_BIN].active_job = NULL;
++		spin_unlock_irqrestore(&v3d->job_lock, irqflags);
+ 		return NULL;
++	}
+ 
+ 	/* Lock required around bin_job update vs
+ 	 * v3d_overflow_mem_work().
+ 	 */
+ 	spin_lock_irqsave(&v3d->job_lock, irqflags);
+-	v3d->bin_job = job;
++	v3d->queue[V3D_BIN].active_job = &job->base;
+ 	/* Clear out the overflow allocation, so we don't
+ 	 * reuse the overflow attached to a previous job.
+ 	 */
+@@ -263,10 +267,12 @@ static struct dma_fence *v3d_render_job_run(struct drm_sched_job *sched_job)
+ 	struct drm_device *dev = &v3d->drm;
+ 	struct dma_fence *fence;
+ 
+-	if (unlikely(job->base.base.s_fence->finished.error))
++	if (unlikely(job->base.base.s_fence->finished.error)) {
++		v3d->queue[V3D_RENDER].active_job = NULL;
+ 		return NULL;
++	}
+ 
+-	v3d->render_job = job;
++	v3d->queue[V3D_RENDER].active_job = &job->base;
+ 
+ 	/* Can we avoid this flush?  We need to be careful of
+ 	 * scheduling, though -- imagine job0 rendering to texture and
+@@ -309,10 +315,12 @@ v3d_tfu_job_run(struct drm_sched_job *sched_job)
+ 	struct drm_device *dev = &v3d->drm;
+ 	struct dma_fence *fence;
+ 
+-	if (unlikely(job->base.base.s_fence->finished.error))
++	if (unlikely(job->base.base.s_fence->finished.error)) {
++		v3d->queue[V3D_TFU].active_job = NULL;
+ 		return NULL;
++	}
+ 
+-	v3d->tfu_job = job;
++	v3d->queue[V3D_TFU].active_job = &job->base;
+ 
+ 	fence = v3d_fence_create(v3d, V3D_TFU);
+ 	if (IS_ERR(fence))
+@@ -355,10 +363,12 @@ v3d_csd_job_run(struct drm_sched_job *sched_job)
+ 	struct dma_fence *fence;
+ 	int i, csd_cfg0_reg;
+ 
+-	if (unlikely(job->base.base.s_fence->finished.error))
++	if (unlikely(job->base.base.s_fence->finished.error)) {
++		v3d->queue[V3D_CSD].active_job = NULL;
+ 		return NULL;
++	}
+ 
+-	v3d->csd_job = job;
++	v3d->queue[V3D_CSD].active_job = &job->base;
+ 
+ 	v3d_invalidate_caches(v3d);
+ 
 -- 
 2.53.0
 
