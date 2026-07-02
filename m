@@ -1,61 +1,68 @@
-Return-Path: <stable+bounces-271278-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-271360-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id OKW5JoKZRmrxZgsAu9opvQ
-	(envelope-from <stable+bounces-271278-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:01:54 +0200
+	id /BGiK/WcRmqtaAsAu9opvQ
+	(envelope-from <stable+bounces-271360-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:16:37 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 06C986FAE00
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:01:54 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id BB5626FB2EA
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:16:36 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=ATirxqNu;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-271278-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-271278-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=zfwNsSXV;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-271360-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-271360-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id A5B4430A1C08
-	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:53:14 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id D701C329A5C6
+	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:55:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD484355F5C;
-	Thu,  2 Jul 2026 16:52:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C7FC2D0602;
+	Thu,  2 Jul 2026 16:55:40 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B422E349CF2;
-	Thu,  2 Jul 2026 16:52:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF77182866;
+	Thu,  2 Jul 2026 16:55:38 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783011129; cv=none; b=fLSxebzDftqtTn5oac7VOpDHqDyJM2ofLCzjb0dAyM6ruV7S09snNWOxX7fVlcrl2ysNxjZEnnlX6LCW2yfjiZh8O8Hhpq6vr4O4VzJAppyWY8vmPxWu2oe0Dvc7umX2C0Q1pvk+lS9inqVPgkvdeO7Z4boGPrWn+oGEcvUrmvA=
+	t=1783011340; cv=none; b=jSwucSR9OqtP85tJSrS9RY/f9o/LYoZ66+2jjDXhQfAX4UU29nWFoU4C+u2kZOa84OsWPQNDVC6UGnALSnrERU1OhI9xJRYTTmPEvDnC0J/bbmM53uJEA3ywkmvSnVpnOH515GaBR8BLc8lMcyNDZwwg8iFVjrFR2/CW8oEno04=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783011129; c=relaxed/simple;
-	bh=RmCvbz9U4WCN2WnQ33Ej6RYcTDpCxqgyTNq81YyCAVo=;
+	s=arc-20240116; t=1783011340; c=relaxed/simple;
+	bh=8WTBc6AtuwQHgWoV9Qe7pmO/0viDey+BcY654qCOtqA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=svXltM54pqeyiB5JKXYYl1jVRB9u19+ZXHA95BePdpoxTPJn+A8qF9oHZkkr+sp64PQ0VlP+JHLg1+qnM5rks/W+LTrLGh5/FqGw9lNZt7WPXHOxZUtPbHHj3LCEkGMqH2uUfBkTaBZGAt4TbQzXHeU40/ER7jC7y8PoxHwNI3I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ATirxqNu; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D4221F000E9;
-	Thu,  2 Jul 2026 16:52:07 +0000 (UTC)
+	 MIME-Version; b=Wrx4MDZT17GuIser+gHvnMMKFbAyP82ZvfNExZOjaGZAdKNIYKRKLSVqeDC9HR1Cqqeqec8E95M0Lx+4rx6eA9bR2XF60m688QCYE+QwVxiwfy0UFZD2fU/ohfw9MZtaTsebWpbbnBSpbolviDPmshAvDUtNxs1HKo3IQteDziI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zfwNsSXV; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 495EC1F000E9;
+	Thu,  2 Jul 2026 16:55:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1783011128;
-	bh=x7m7szZ2RU7ua+I3Lvu8WNY2mjDPCpxj8Zxi4yV8Emc=;
+	s=korg; t=1783011338;
+	bh=onRXuyDz6aLHdPPGuyPOkD7/L39k+KqdcpALdeOZsyc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=ATirxqNuMW2qxtsqF8ZKa20h63Qft0n4v0CqmMLicEnvaLIU+XLTNJ+6xGZu1BC5g
-	 O0dTN31jXwBsmdpaAm25DVCEEQ0Ko1GryyJrZhs5RpZY+np9t4ferTqJ6Hr+69+xcs
-	 7WL/2Kz+wNMm4A8kI+zAfBXbbsH2jZ1QH5wco/7E=
+	b=zfwNsSXV1mSqUCAp57hV/mrMlQBzAnAE1l/XLIFKOTz2E/ULNM4vGJZLMW0PtcyNa
+	 BMsm/OJbo1hS0CgEOdGyz37TXPH/oSerLR34tpT1PoTVTnXtwzrDic8RzfOOcCS3CQ
+	 8hf+oCiMFll1ACjT1ygcT/cmdhTxm1GK8Ih9i4xI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christophe Jaillet <christophe.jaillet@wanadoo.fr>,
-	Markus Elfring <elfring@users.sourceforge.net>,
-	Anna Schumaker <anna.schumaker@hammerspace.com>
-Subject: [PATCH 6.6 167/175] NFS: Prevent resource leak in nfs_alloc_server()
+	David Matlack <dmatlack@google.com>,
+	James Houghton <jthoughton@google.com>,
+	Alexander Bulekov <bkov@amazon.com>,
+	Fred Griffoul <fgriffo@amazon.co.uk>,
+	Alexander Graf <graf@amazon.de>,
+	David Woodhouse <dwmw@amazon.co.uk>,
+	Filippo Sironi <sironi@amazon.de>,
+	Ivan Orlov <iorlov@amazon.co.uk>,
+	Sean Christopherson <seanjc@google.com>,
+	Paolo Bonzini <pbonzini@redhat.com>
+Subject: [PATCH 6.18 071/108] KVM: x86/mmu: Ensure hugepage is in by slot before checking max mapping level
 Date: Thu,  2 Jul 2026 18:21:08 +0200
-Message-ID: <20260702155119.305514207@linuxfoundation.org>
+Message-ID: <20260702155113.582512145@linuxfoundation.org>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260702155115.766838875@linuxfoundation.org>
-References: <20260702155115.766838875@linuxfoundation.org>
+In-Reply-To: <20260702155112.110058792@linuxfoundation.org>
+References: <20260702155112.110058792@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,72 +76,167 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:dmatlack@google.com,m:jthoughton@google.com,m:bkov@amazon.com,m:fgriffo@amazon.co.uk,m:graf@amazon.de,m:dwmw@amazon.co.uk,m:sironi@amazon.de,m:iorlov@amazon.co.uk,m:seanjc@google.com,m:pbonzini@redhat.com,s:lists@lfdr.de];
+	PRECEDENCE_BULK(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-271278-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:christophe.jaillet@wanadoo.fr,m:elfring@users.sourceforge.net,m:anna.schumaker@hammerspace.com,s:lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-271360-lists,stable=lfdr.de];
+	RCPT_COUNT_TWELVE(0.00)[13];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,wanadoo.fr,users.sourceforge.net,hammerspace.com];
+	MIME_TRACE(0.00)[0:+];
 	FORWARDED(0.00)[lists@lfdr.de];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ALIAS_RESOLVED(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,hammerspace.com:email]
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	RWL_MAILSPIKE_POSSIBLE(0.00)[104.64.211.4:from];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,amazon.co.uk:email,amazon.de:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 06C986FAE00
+X-Rspamd-Queue-Id: BB5626FB2EA
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Markus Elfring <elfring@users.sourceforge.net>
+From: Sean Christopherson <seanjc@google.com>
 
-commit d189f224308c8ac3feeea8e442c99922bd18f1b2 upstream.
+commit ef057cbf825e03b63f6edf5980f96abf3c53089d upstream.
 
-It was overlooked to call ida_free() after a failed nfs_alloc_iostats() call.
-Thus add the missed function call in an if branch.
+When recovering hugepages in the shadow MMU, verify that the base gfn of
+the shadow page is actually contained within the target memslot, *before*
+querying the max mapping level given the shadow page's gfn.  Failure to
+pre-check the validity of the gfn can lead to an out-of-bounds access to
+the slot's lpage_info (which typically manifests as a host #PF because the
+lpage_info is vmalloc'd) if the guest creates a hugepage mapping (in its
+PTEs) that extends "below" the bounds of a memslot.
 
-Fixes: 1c7251187dc067a6d460cf33ca67da9c1dd87807 ("NFS: add superblock sysfs entries")
+When faulting in memory for a guest, and the size of the guest mapping is
+greater than KVM's (current) max mapping, then KVM will create a "direct"
+shadow page (direct in that there are no gPTEs to shadow, and so the target
+gfn is a direct calculation given the base gfn of the shadow page).  The
+hugepage recovery flow looks for such direct shadow pages, as forcing 4KiB
+mappings when dirty logging generates the guest > host mapping size case.
+When the 4KiB restriction is lifted, then KVM can replace the shadow page
+with a hugepage.
+
+But if KVM originally used a smaller mapping than the guest because the
+range of memory covered by the guest hugepage exceeds the bounds of a
+memslot, then KVM will link a direct shadow page with a gfn that is outside
+the bounds of the memslot being used to fault in memory.  The rmap entry
+added for the leaf mapping is correct and within bounds, but the gfn of the
+leaf SPTE's parent shadow page will be out of bounds.
+
+  BUG: unable to handle page fault for address: ffffc90000806ffc
+  #PF: supervisor read access in kernel mode
+  #PF: error_code(0x0000) - not-present page
+  PGD 100000067 P4D 100000067 PUD 1002a7067 PMD 10612f067 PTE 0
+  Oops: Oops: 0000 [#1] SMP
+  CPU: 13 UID: 1000 PID: 757 Comm: mmu_stress_test Not tainted 7.1.0-rc1-48ce1e26eace-x86_pir_to_irr_comments-vm #341 PREEMPT
+  Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 0.0.0 02/06/2015
+  RIP: 0010:kvm_mmu_max_mapping_level+0x79/0x2b0 [kvm]
+  Call Trace:
+   <TASK>
+   kvm_mmu_recover_huge_pages+0x21b/0x320 [kvm]
+   kvm_set_memslot+0x1ee/0x590 [kvm]
+   kvm_set_memory_region.part.0+0x3a1/0x4d0 [kvm]
+   kvm_vm_ioctl+0x9bf/0x15d0 [kvm]
+   __x64_sys_ioctl+0x8a/0xd0
+   do_syscall_64+0xb7/0xbb0
+   entry_SYSCALL_64_after_hwframe+0x4b/0x53
+  RIP: 0033:0x7f21c0f1a9bf
+   </TASK>
+
+Don't bother pre-checking the bounds of the potential hugepage, i.e. don't
+check that e.g. sp->gfn + KVM_PAGES_PER_HPAGE(sp->role.level + 1) is also
+within the memslot, as the checks performed by kvm_mmu_max_mapping_level()
+are a superset of the basic bounds checks.  I.e. pre-checking the full
+range would be a dubious micro-optimization.
+
+Fixes: 9eba50f8d7fc ("KVM: x86/mmu: Consult max mapping level when zapping collapsible SPTEs")
 Cc: stable@vger.kernel.org
-Reported-by: Christophe Jaillet <christophe.jaillet@wanadoo.fr>
-Closes: https://lore.kernel.org/linux-nfs/1c8e10c9-def7-4f0d-8aa1-23c8035a38c8@wanadoo.fr/
-Signed-off-by: Markus Elfring <elfring@users.sourceforge.net>
-Signed-off-by: Anna Schumaker <anna.schumaker@hammerspace.com>
+Cc: David Matlack <dmatlack@google.com>
+Cc: James Houghton <jthoughton@google.com>
+Cc: Alexander Bulekov <bkov@amazon.com>
+Cc: Fred Griffoul <fgriffo@amazon.co.uk>
+Cc: Alexander Graf <graf@amazon.de>
+Cc: David Woodhouse <dwmw@amazon.co.uk>
+Cc: Filippo Sironi <sironi@amazon.de>
+Cc: Ivan Orlov <iorlov@amazon.co.uk>
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nfs/client.c |    1 +
- 1 file changed, 1 insertion(+)
+ arch/x86/kvm/mmu/mmu.c   |   18 ++++++++++++------
+ include/linux/kvm_host.h |    7 ++++++-
+ 2 files changed, 18 insertions(+), 7 deletions(-)
 
---- a/fs/nfs/client.c
-+++ b/fs/nfs/client.c
-@@ -1046,6 +1046,7 @@ struct nfs_server *nfs_alloc_server(void
+--- a/arch/x86/kvm/mmu/mmu.c
++++ b/arch/x86/kvm/mmu/mmu.c
+@@ -7181,13 +7181,19 @@ restart:
+ 		sp = sptep_to_sp(sptep);
  
- 	server->io_stats = nfs_alloc_iostats();
- 	if (!server->io_stats) {
-+		ida_free(&s_sysfs_ids, server->s_sysfs_id);
- 		kfree(server);
+ 		/*
+-		 * We cannot do huge page mapping for indirect shadow pages,
+-		 * which are found on the last rmap (level = 1) when not using
+-		 * tdp; such shadow pages are synced with the page table in
+-		 * the guest, and the guest page table is using 4K page size
+-		 * mapping if the indirect sp has level = 1.
++		 * Direct shadow page can be replaced by a hugepage if the host
++		 * mapping level allows it and the memslot maps all of the host
++		 * hugepage.  Note!  If the memslot maps only part of the
++		 * hugepage, sp->gfn may be below slot->base_gfn, and querying
++		 * the max mapping level would cause an out-of-bounds lpage_info
++		 * access.  So the gfn bounds check *must* be done first.
++		 *
++		 * Indirect shadow pages are created when the guest page tables
++		 * are using 4K pages.  Since the host mapping is always
++		 * constrained by the page size in the guest, indirect shadow
++		 * pages are never collapsible.
+ 		 */
+-		if (sp->role.direct &&
++		if (sp->role.direct && is_gfn_in_memslot(slot, sp->gfn) &&
+ 		    sp->role.level < kvm_mmu_max_mapping_level(kvm, NULL, slot, sp->gfn)) {
+ 			kvm_zap_one_rmap_spte(kvm, rmap_head, sptep);
+ 
+--- a/include/linux/kvm_host.h
++++ b/include/linux/kvm_host.h
+@@ -1793,6 +1793,11 @@ void kvm_unregister_irq_ack_notifier(str
+ 				   struct kvm_irq_ack_notifier *kian);
+ bool kvm_arch_irqfd_allowed(struct kvm *kvm, struct kvm_irqfd *args);
+ 
++static inline bool is_gfn_in_memslot(const struct kvm_memory_slot *slot, gfn_t gfn)
++{
++	return gfn >= slot->base_gfn && gfn < slot->base_gfn + slot->npages;
++}
++
+ /*
+  * Returns a pointer to the memslot if it contains gfn.
+  * Otherwise returns NULL.
+@@ -1803,7 +1808,7 @@ try_get_memslot(struct kvm_memory_slot *
+ 	if (!slot)
  		return NULL;
- 	}
+ 
+-	if (gfn >= slot->base_gfn && gfn < slot->base_gfn + slot->npages)
++	if (is_gfn_in_memslot(slot, gfn))
+ 		return slot;
+ 	else
+ 		return NULL;
 
 
 
