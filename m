@@ -1,62 +1,69 @@
-Return-Path: <stable+bounces-270805-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-270998-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id OFR+BNiTRmqvYwsAu9opvQ
-	(envelope-from <stable+bounces-270805-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:37:44 +0200
+	id eZXqNYqiRmrJagsAu9opvQ
+	(envelope-from <stable+bounces-270998-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:40:26 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A152E6FA4CD
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:37:43 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id DE30F6FB897
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:40:25 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=X2mT3XuE;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-270805-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-270805-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=Y+PYpTML;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-270998-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-270998-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 346523052564
-	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:35:01 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 1C16430B040D
+	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:41:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6898E33F5BE;
-	Thu,  2 Jul 2026 16:31:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B7E83546E7;
+	Thu,  2 Jul 2026 16:40:02 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2545431DD97;
-	Thu,  2 Jul 2026 16:31:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3A9A30EF95;
+	Thu,  2 Jul 2026 16:40:00 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783009895; cv=none; b=Px0af0z4C2whiMLjaOA+N5+w7SBXmqPi5F6AaDU3GHtPLNKzyD92ZYA3qRgCsnIB1Z7woyWAzHIl3efBlACcNgiHotJW+F5wnLyQW6J43dRTknWqxnDm2VU+J5BUNvl39EKWodyEIX4M0gUXZODRxOELAWvdghp2tyr5sd/scdE=
+	t=1783010402; cv=none; b=bbPOFEbLC2mTlitxTM/+IFC+DQHIbfqxGT3l4UQLebcbJ/RghL9WjllpcDPaPejt5wc1SMgOwBlrgqtVhx5VfLt/NaRAXLEdSAtdo5zJ9aFfSKPV79Rbhmk+2kcXzSkwZvGlJS8D8Wr65Ms9jM6GMF+BCSckkQfuzmYgRnOVBhY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783009895; c=relaxed/simple;
-	bh=aAQPvprG6l+NDo27+Y++KQar2Q3zF75Cj24DBiHwbK0=;
+	s=arc-20240116; t=1783010402; c=relaxed/simple;
+	bh=6B1APKwoEe4rKvSSUY8IIyxfZ5NLsSnHTqG+SuyXhh8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aOuwUokBoLyV14m6ZbHsFK1y/CUMeFTkM3ZkQo3yW/nEvNNPWbcKwYNfqcB2qPHcN4beQgicJIkfBspFYkK74GSgo9h+BduKH4MgV2Q8F6TU5DkgFPY9Oy6YFqhm2atDxTfSIZwCEZtwaXMCXxwjDBLVw6JUGUA7sG1R3E4LiF8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X2mT3XuE; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A5BE1F000E9;
-	Thu,  2 Jul 2026 16:31:33 +0000 (UTC)
+	 MIME-Version; b=j1cwWZ/xwD7cx0I7z3pqW0Bi5UCFElXdo7R3ffoTIBxHp57y5U3+gRFbncQJG2wxlvHOyQE7eWwWVyUDiDV26BV8l5JzzLJvh1wuNKgR/9Ci8aBEG1AYtfYtWrxk97ju5mWNfeXYRTf1UvL4dlchGeT2Ouf1B3GqpsdjAks07wU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y+PYpTML; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7EEA1F000E9;
+	Thu,  2 Jul 2026 16:39:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1783009894;
-	bh=gy5kzV8RT05FKF3uBL+Vn6RMc4sRN8T/iRNUy3P5CHA=;
+	s=korg; t=1783010400;
+	bh=5aQ1CFzGqKnjy91QSN8uZWrH9yWZoB+pN3A4HauPtWM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=X2mT3XuEaYoBk4tVS/mLqwzkHBtyI8gsw8YqtUt9+MePjiKdAZ1gGdB7vU2Nahgwr
-	 oeHw5wIsDykR5zVNs1Ylfs3upEaD7hFldU/y7oVYk5gqQ0rI7KNqcfFaifpuasxbgd
-	 C9ur0hGIgqxvcwIt4nZXSSGb65Z8bLXEZnlewOnc=
+	b=Y+PYpTMLh1apPre7ztsMR/McjttR3bMxnxQQaii6EZn+1OG2rHBQaYAUdV8VuH5u0
+	 5TNiaWR0iUgenTSvk78mPG1VyJ8rQp9wronEXuao3fWGGVerij7PhBSHp+ZjX1Ckhk
+	 F87jvXqgzm20gECNHXNpuWP73dUZl1rbFpsNuXrY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xiang Mei <xmei5@asu.edu>,
-	Weiming Shi <bestswngs@gmail.com>,
-	Jean Delvare <jdelvare@suse.de>,
-	Wolfram Sang <wsa+renesas@sang-engineering.com>
-Subject: [PATCH 6.1 032/129] i2c: stub: Reject I2C block transfers with invalid length
+	David Matlack <dmatlack@google.com>,
+	James Houghton <jthoughton@google.com>,
+	Alexander Bulekov <bkov@amazon.com>,
+	Fred Griffoul <fgriffo@amazon.co.uk>,
+	Alexander Graf <graf@amazon.de>,
+	David Woodhouse <dwmw@amazon.co.uk>,
+	Filippo Sironi <sironi@amazon.de>,
+	Ivan Orlov <iorlov@amazon.co.uk>,
+	Sean Christopherson <seanjc@google.com>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 094/204] KVM: x86/mmu: Ensure hugepage is in by slot before checking max mapping level
 Date: Thu,  2 Jul 2026 18:19:11 +0200
-Message-ID: <20260702155112.820448945@linuxfoundation.org>
+Message-ID: <20260702155120.637166311@linuxfoundation.org>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260702155112.163984240@linuxfoundation.org>
-References: <20260702155112.163984240@linuxfoundation.org>
+In-Reply-To: <20260702155118.667618796@linuxfoundation.org>
+References: <20260702155118.667618796@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,27 +75,26 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,asu.edu,gmail.com,suse.de,sang-engineering.com];
-	TAGGED_FROM(0.00)[bounces-270805-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:xmei5@asu.edu,m:bestswngs@gmail.com,m:jdelvare@suse.de,m:wsa+renesas@sang-engineering.com,m:wsa@sang-engineering.com,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-270998-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[14];
 	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:dmatlack@google.com,m:jthoughton@google.com,m:bkov@amazon.com,m:fgriffo@amazon.co.uk,m:graf@amazon.de,m:dwmw@amazon.co.uk,m:sironi@amazon.de,m:iorlov@amazon.co.uk,m:seanjc@google.com,m:pbonzini@redhat.com,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
@@ -96,85 +102,148 @@ X-Spamd-Result: default: False [-0.16 / 15.00];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,renesas];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,vger.kernel.org:from_smtp,asu.edu:email,sang-engineering.com:email]
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,amazon.de:email,amazon.co.uk:email,vger.kernel.org:from_smtp,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: A152E6FA4CD
+X-Rspamd-Queue-Id: DE30F6FB897
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Weiming Shi <bestswngs@gmail.com>
+From: Sean Christopherson <seanjc@google.com>
 
-commit 6036b5067a8199ba7a2dc7b377d4b9dd276d5f9e upstream.
+commit ef057cbf825e03b63f6edf5980f96abf3c53089d upstream.
 
-The I2C_SMBUS_I2C_BLOCK_DATA case in stub_xfer() uses data->block[0]
-as the transfer length. The existing check only clamps it to avoid
-overrunning the chip->words[256] register array, but does not validate
-it against I2C_SMBUS_BLOCK_MAX (32), which is the limit of the union
-i2c_smbus_data.block buffer (34 bytes total). The driver is a
-development/test tool (CONFIG_I2C_STUB=m, not built by default)
-that must be loaded with a chip_addr= parameter.
+When recovering hugepages in the shadow MMU, verify that the base gfn of
+the shadow page is actually contained within the target memslot, *before*
+querying the max mapping level given the shadow page's gfn.  Failure to
+pre-check the validity of the gfn can lead to an out-of-bounds access to
+the slot's lpage_info (which typically manifests as a host #PF because the
+lpage_info is vmalloc'd) if the guest creates a hugepage mapping (in its
+PTEs) that extends "below" the bounds of a memslot.
 
-A local user with access to /dev/i2c-* can issue an I2C_SMBUS ioctl
-with I2C_SMBUS_I2C_BLOCK_DATA and data->block[0] > 32, causing
-stub_xfer() to read or write past the end of the union
-i2c_smbus_data.block buffer:
+When faulting in memory for a guest, and the size of the guest mapping is
+greater than KVM's (current) max mapping, then KVM will create a "direct"
+shadow page (direct in that there are no gPTEs to shadow, and so the target
+gfn is a direct calculation given the base gfn of the shadow page).  The
+hugepage recovery flow looks for such direct shadow pages, as forcing 4KiB
+mappings when dirty logging generates the guest > host mapping size case.
+When the 4KiB restriction is lifted, then KVM can replace the shadow page
+with a hugepage.
 
- BUG: KASAN: stack-out-of-bounds in stub_xfer (drivers/i2c/i2c-stub.c:223)
- Read of size 1 at addr ffff88800abcfd92 by task exploit/81
- Call Trace:
-  <TASK>
-  stub_xfer (drivers/i2c/i2c-stub.c:223)
-  __i2c_smbus_xfer (drivers/i2c/i2c-core-smbus.c:593)
-  i2c_smbus_xfer (drivers/i2c/i2c-core-smbus.c:536)
-  i2cdev_ioctl_smbus (drivers/i2c/i2c-dev.c:391)
-  i2cdev_ioctl (drivers/i2c/i2c-dev.c:478)
-  __x64_sys_ioctl (fs/ioctl.c:583)
-  do_syscall_64 (arch/x86/entry/syscall_64.c:94)
-  entry_SYSCALL_64_after_hwframe (arch/x86/entry/entry_64.S:130)
-  </TASK>
+But if KVM originally used a smaller mapping than the guest because the
+range of memory covered by the guest hugepage exceeds the bounds of a
+memslot, then KVM will link a direct shadow page with a gfn that is outside
+the bounds of the memslot being used to fault in memory.  The rmap entry
+added for the leaf mapping is correct and within bounds, but the gfn of the
+leaf SPTE's parent shadow page will be out of bounds.
 
-The bug exists because i2c-stub implements .smbus_xfer directly,
-bypassing the I2C_SMBUS_BLOCK_MAX validation in
-i2c_smbus_xfer_emulated(). The I2C_SMBUS_BLOCK_DATA case in the same
-function correctly validates against I2C_SMBUS_BLOCK_MAX, but the
-I2C_SMBUS_I2C_BLOCK_DATA case does not.
+  BUG: unable to handle page fault for address: ffffc90000806ffc
+  #PF: supervisor read access in kernel mode
+  #PF: error_code(0x0000) - not-present page
+  PGD 100000067 P4D 100000067 PUD 1002a7067 PMD 10612f067 PTE 0
+  Oops: Oops: 0000 [#1] SMP
+  CPU: 13 UID: 1000 PID: 757 Comm: mmu_stress_test Not tainted 7.1.0-rc1-48ce1e26eace-x86_pir_to_irr_comments-vm #341 PREEMPT
+  Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 0.0.0 02/06/2015
+  RIP: 0010:kvm_mmu_max_mapping_level+0x79/0x2b0 [kvm]
+  Call Trace:
+   <TASK>
+   kvm_mmu_recover_huge_pages+0x21b/0x320 [kvm]
+   kvm_set_memslot+0x1ee/0x590 [kvm]
+   kvm_set_memory_region.part.0+0x3a1/0x4d0 [kvm]
+   kvm_vm_ioctl+0x9bf/0x15d0 [kvm]
+   __x64_sys_ioctl+0x8a/0xd0
+   do_syscall_64+0xb7/0xbb0
+   entry_SYSCALL_64_after_hwframe+0x4b/0x53
+  RIP: 0033:0x7f21c0f1a9bf
+   </TASK>
 
-Fix by rejecting transfers with data->block[0] == 0 or
-data->block[0] > I2C_SMBUS_BLOCK_MAX with -EINVAL, consistent with
-both the I2C_SMBUS_BLOCK_DATA case in the same function and the
-I2C_SMBUS_I2C_BLOCK_DATA validation in i2c_smbus_xfer_emulated().
+Don't bother pre-checking the bounds of the potential hugepage, i.e. don't
+check that e.g. sp->gfn + KVM_PAGES_PER_HPAGE(sp->role.level + 1) is also
+within the memslot, as the checks performed by kvm_mmu_max_mapping_level()
+are a superset of the basic bounds checks.  I.e. pre-checking the full
+range would be a dubious micro-optimization.
 
-Fixes: 4710317891e4 ("i2c-stub: Implement I2C block support")
-Reported-by: Xiang Mei <xmei5@asu.edu>
-Signed-off-by: Weiming Shi <bestswngs@gmail.com>
-Reviewed-by: Jean Delvare <jdelvare@suse.de>
-Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 9eba50f8d7fc ("KVM: x86/mmu: Consult max mapping level when zapping collapsible SPTEs")
+Cc: stable@vger.kernel.org
+Cc: David Matlack <dmatlack@google.com>
+Cc: James Houghton <jthoughton@google.com>
+Cc: Alexander Bulekov <bkov@amazon.com>
+Cc: Fred Griffoul <fgriffo@amazon.co.uk>
+Cc: Alexander Graf <graf@amazon.de>
+Cc: David Woodhouse <dwmw@amazon.co.uk>
+Cc: Filippo Sironi <sironi@amazon.de>
+Cc: Ivan Orlov <iorlov@amazon.co.uk>
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/i2c/i2c-stub.c |    5 +++++
- 1 file changed, 5 insertions(+)
+ arch/x86/kvm/mmu/mmu.c   | 18 ++++++++++++------
+ include/linux/kvm_host.h |  7 ++++++-
+ 2 files changed, 18 insertions(+), 7 deletions(-)
 
---- a/drivers/i2c/i2c-stub.c
-+++ b/drivers/i2c/i2c-stub.c
-@@ -214,6 +214,11 @@ static s32 stub_xfer(struct i2c_adapter
- 		 * We ignore banks here, because banked chips don't use I2C
- 		 * block transfers
+diff --git a/arch/x86/kvm/mmu/mmu.c b/arch/x86/kvm/mmu/mmu.c
+index a67d013fff4d91..aab26f90c28551 100644
+--- a/arch/x86/kvm/mmu/mmu.c
++++ b/arch/x86/kvm/mmu/mmu.c
+@@ -6952,13 +6952,19 @@ static bool kvm_mmu_zap_collapsible_spte(struct kvm *kvm,
+ 		sp = sptep_to_sp(sptep);
+ 
+ 		/*
+-		 * We cannot do huge page mapping for indirect shadow pages,
+-		 * which are found on the last rmap (level = 1) when not using
+-		 * tdp; such shadow pages are synced with the page table in
+-		 * the guest, and the guest page table is using 4K page size
+-		 * mapping if the indirect sp has level = 1.
++		 * Direct shadow page can be replaced by a hugepage if the host
++		 * mapping level allows it and the memslot maps all of the host
++		 * hugepage.  Note!  If the memslot maps only part of the
++		 * hugepage, sp->gfn may be below slot->base_gfn, and querying
++		 * the max mapping level would cause an out-of-bounds lpage_info
++		 * access.  So the gfn bounds check *must* be done first.
++		 *
++		 * Indirect shadow pages are created when the guest page tables
++		 * are using 4K pages.  Since the host mapping is always
++		 * constrained by the page size in the guest, indirect shadow
++		 * pages are never collapsible.
  		 */
-+		if (data->block[0] == 0 ||
-+		    data->block[0] > I2C_SMBUS_BLOCK_MAX) {
-+			ret = -EINVAL;
-+			break;
-+		}
- 		if (data->block[0] > 256 - command)	/* Avoid overrun */
- 			data->block[0] = 256 - command;
- 		len = data->block[0];
+-		if (sp->role.direct &&
++		if (sp->role.direct && is_gfn_in_memslot(slot, sp->gfn) &&
+ 		    sp->role.level < kvm_mmu_max_mapping_level(kvm, slot, sp->gfn,
+ 							       PG_LEVEL_NUM)) {
+ 			kvm_zap_one_rmap_spte(kvm, rmap_head, sptep);
+diff --git a/include/linux/kvm_host.h b/include/linux/kvm_host.h
+index 04b81e2166d5dc..b4235e99f0a9d0 100644
+--- a/include/linux/kvm_host.h
++++ b/include/linux/kvm_host.h
+@@ -1745,6 +1745,11 @@ int kvm_request_irq_source_id(struct kvm *kvm);
+ void kvm_free_irq_source_id(struct kvm *kvm, int irq_source_id);
+ bool kvm_arch_irqfd_allowed(struct kvm *kvm, struct kvm_irqfd *args);
+ 
++static inline bool is_gfn_in_memslot(const struct kvm_memory_slot *slot, gfn_t gfn)
++{
++	return gfn >= slot->base_gfn && gfn < slot->base_gfn + slot->npages;
++}
++
+ /*
+  * Returns a pointer to the memslot if it contains gfn.
+  * Otherwise returns NULL.
+@@ -1755,7 +1760,7 @@ try_get_memslot(struct kvm_memory_slot *slot, gfn_t gfn)
+ 	if (!slot)
+ 		return NULL;
+ 
+-	if (gfn >= slot->base_gfn && gfn < slot->base_gfn + slot->npages)
++	if (is_gfn_in_memslot(slot, gfn))
+ 		return slot;
+ 	else
+ 		return NULL;
+-- 
+2.53.0
+
 
 
 
