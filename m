@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-271363-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-271474-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id GuJRLRimRmrmawsAu9opvQ
-	(envelope-from <stable+bounces-271363-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:55:36 +0200
+	id lVEcFVKnRmpRbAsAu9opvQ
+	(envelope-from <stable+bounces-271474-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 20:00:50 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 80B9D6FBB76
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:55:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 93DFC6FBC9D
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 20:00:49 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=hJEx2Jy+;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-271363-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-271363-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=u1me2kgd;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-271474-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-271474-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 7ECFC3062753
-	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:55:48 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id E522531CD97E
+	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 17:00:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E50A23093DD;
-	Thu,  2 Jul 2026 16:55:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B88BB331EB7;
+	Thu,  2 Jul 2026 17:00:39 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B39DA19049B;
-	Thu,  2 Jul 2026 16:55:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78C1D433E87;
+	Thu,  2 Jul 2026 17:00:38 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783011347; cv=none; b=ehRXDfar7yZL3ecACoMMoGi9lCdDRmPDMchOMIyf6JAOLGVqTCzuOcX8mWVlp+XeObwa1daIh/+q8n6Uk1Yxks6Hugoi4RL0YqiPpbkTTYFEJdriaH4bvm7MCWeK8cTk5HcwHjL2Ui2T6BcaKla4kvDqhamiA73WQ56g8D9oRpc=
+	t=1783011639; cv=none; b=b7LbuUXRtopOfK+hms4yxZyqfVZVR3ZwATCxfkq9hWZAZaRTt+ZNurDCKn+jXePPDA2Zo96Vwv8cm/FJcwwHRlZ6F0Oud6FnXLfD2zWzQal9PrLpdTUf5XlxoM5vArLA1P2/4lN0onof2+7Hbd+iyESVJxQpHDbDockLXoGlpkk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783011347; c=relaxed/simple;
-	bh=9PV5929nZWcyd+pGQX9kMbHghvcZGiuaSJ0ze1dISGY=;
+	s=arc-20240116; t=1783011639; c=relaxed/simple;
+	bh=dI08UtuG/ferQ2auerY2ynX9cX6X9szfAHQWrcSC8eo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HHgbm8wQyph8AOdlr2JEENb6lCvcvicr/1vb7JDlvceVRWVtddLY5rf71Cp/1UZfFB9gxxFcmZqJkRqYsVKpuYfknxjJQomOAV7bf4SwYdGqEF45TO2e54c838ATN43oTLU1yffbhgSkif9Q7s0KRLsQp4gdGiayaDrxOECQluM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hJEx2Jy+; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26FAB1F000E9;
-	Thu,  2 Jul 2026 16:55:45 +0000 (UTC)
+	 MIME-Version; b=qnkK+tnHA7jmdJKBZPSk331RFOSAgdSWYHSOMS8qwVtpn41lG096rt8yHY9gCE+GiNhV6UQ+Bx9oWxrxQBvPWMmEoLSDqQhIeydjmcL6V1PyP5lsPF1JtuBpiKcuTeMcVZ/vACMMwxRLgnqnZJjPk/yHN8Dw9kqBqrYbk7P43Hg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u1me2kgd; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE8FE1F00A3A;
+	Thu,  2 Jul 2026 17:00:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1783011346;
-	bh=W4kKisSG0vTurVpJoyniCcurY6xhb7I1VF3+C3nmqeM=;
+	s=korg; t=1783011638;
+	bh=MQMIeuJ8Odf+YG0uayYBxMM2gXu3GnIoKsxBXX5qK5Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=hJEx2Jy+m8odEts3yFNo3e/TXOesn5GjYpMmYe+fL7QVhzUfMH9LiDksLsXxUMv1n
-	 irAdfCBxvi1nXiKMngKPxQ84sW/AfBExyVovf3TYkVM2KNce+CGpexzJMJi5V9nFn0
-	 aTNNa+VttHWLevhTDSf0tkGi9IE/3gpXzgw0aeu4=
+	b=u1me2kgd8Lguxdevee3LP3JwTdAO0kGUg1wukoLj7Uh/QnIbRSJXtD9TCXLuQcpeo
+	 94dyzJFtwsT7rGHSJooS7gxyNlOv11wzmo50PL7QbG24SgUUWAqmUzh8fd84rflSTf
+	 UJu/ggIMX/w0nhKeiIfgJ9yTp7y1LBcKBAnNspTY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+42a37bf8045847d8f9d2@syzkaller.appspotmail.com,
-	Tristan Madani <tristan@talencesecurity.com>,
-	Andreas Gruenbacher <agruenba@redhat.com>
-Subject: [PATCH 6.18 074/108] gfs2: fix use-after-free in gfs2_qd_dealloc
-Date: Thu,  2 Jul 2026 18:21:11 +0200
-Message-ID: <20260702155113.647845741@linuxfoundation.org>
+	Michael Bommarito <michael.bommarito@gmail.com>,
+	Namjae Jeon <linkinjeon@kernel.org>
+Subject: [PATCH 7.1 076/120] exfat: fix potential use-after-free in exfat_find_dir_entry()
+Date: Thu,  2 Jul 2026 18:21:12 +0200
+Message-ID: <20260702155114.531196378@linuxfoundation.org>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260702155112.110058792@linuxfoundation.org>
-References: <20260702155112.110058792@linuxfoundation.org>
+In-Reply-To: <20260702155112.964534952@linuxfoundation.org>
+References: <20260702155112.964534952@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -79,15 +78,16 @@ X-Spamd-Result: default: False [-0.16 / 15.00];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-271363-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:syzbot+42a37bf8045847d8f9d2@syzkaller.appspotmail.com,m:tristan@talencesecurity.com,m:agruenba@redhat.com,m:syzbot@syzkaller.appspotmail.com,s:lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-271474-lists,stable=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:michael.bommarito@gmail.com,m:linkinjeon@kernel.org,m:michaelbommarito@gmail.com,s:lists@lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
@@ -95,61 +95,103 @@ X-Spamd-Result: default: False [-0.16 / 15.00];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,42a37bf8045847d8f9d2];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,talencesecurity.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,syzkaller.appspot.com:url]
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 80B9D6FBB76
+X-Rspamd-Queue-Id: 93DFC6FBC9D
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tristan Madani <tristan@talencesecurity.com>
+From: Michael Bommarito <michael.bommarito@gmail.com>
 
-commit f9c9ec2c319f843b70ecdf939d48b52d189bc081 upstream.
+commit 3f5f8ee9917cc2b9076ac533492d8a200edcabb8 upstream.
 
-gfs2_qd_dealloc(), called as an RCU callback from gfs2_qd_dispose(),
-accesses the superblock object sdp through qd->qd_sbd after freeing qd.
-It does so to decrement sd_quota_count and wake up sd_kill_wait.
+In exfat_find_dir_entry(), the buffer_head obtained from
+exfat_get_dentry() is released with brelse(bh) before the fall-through
+TYPE_EXTEND branch reads the directory entry through ep (which points
+into bh->b_data):
 
-However, by the time the RCU callback runs, gfs2_put_super() may have
-already freed sdp via free_sbd().  This can happen when
-gfs2_quota_cleanup() is called during unmount: it disposes of quota
-objects via call_rcu() and then waits on sd_kill_wait with a 60-second
-timeout.  If the timeout expires, or if gfs2_gl_hash_clear() triggers
-additional qd_put() calls that schedule more RCU callbacks after the
-wait completes, gfs2_put_super() will proceed to free the superblock
-while RCU callbacks referencing it are still pending.
+	brelse(bh);
+	if (entry_type == TYPE_EXTEND) {
+		...
+		len = exfat_extract_uni_name(ep, entry_uniname);
+		...
+	}
 
-Add an rcu_barrier() before free_sbd() in gfs2_put_super() to ensure
-all pending RCU callbacks (including gfs2_qd_dealloc) have completed
-before the superblock is freed.
+After brelse() drops our reference, nothing guarantees that the
+underlying page backing bh->b_data remains valid for the subsequent
+exfat_extract_uni_name() read. This is the same pattern fixed in
+commit fc961522ddbd ("exfat: Fix potential use after free in
+exfat_load_upcase_table()").
 
-Fixes: a475c5dd16e5 ("gfs2: Free quota data objects synchronously")
-Reported-by: syzbot+42a37bf8045847d8f9d2@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=42a37bf8045847d8f9d2
-Tested-by: syzbot+42a37bf8045847d8f9d2@syzkaller.appspotmail.com
+Move brelse(bh) so it runs after ep is no longer dereferenced on
+each branch.
+
+Confirmed on QEMU x86_64 with CONFIG_KASAN=y + CONFIG_DEBUG_PAGEALLOC=y
++ CONFIG_PAGE_POISONING=y on linux-next, using a crafted exFAT image
+(long filename with same-hash collisions forcing the TYPE_EXTEND path).
+With a debug-only invalidate_bdev() inserted between brelse(bh) and
+the ep read to make the stale-deref window deterministic, the
+unpatched kernel faults:
+
+  BUG: KASAN: use-after-free in exfat_find_dir_entry+0x133b/0x15a0
+  BUG: unable to handle page fault for address: ffff88801a5fa0c2
+  Oops: 0000 [#1] SMP DEBUG_PAGEALLOC KASAN NOPTI
+  RIP: 0010:exfat_find_dir_entry+0x1188/0x15a0
+
+With this patch applied, the same instrumented harness completes
+cleanly under the same sanitizer stack. I have not reproduced a
+crash on an uninstrumented kernel under ordinary reclaim; the
+instrumented A/B establishes the lifetime violation and that the
+patch closes it, not an unaided triggerability claim.
+
+Fixes: ca06197382bd ("exfat: add directory operations")
 Cc: stable@vger.kernel.org
-Signed-off-by: Tristan Madani <tristan@talencesecurity.com>
-Signed-off-by: Andreas Gruenbacher <agruenba@redhat.com>
+Assisted-by: Claude:claude-opus-4-7
+Signed-off-by: Michael Bommarito <michael.bommarito@gmail.com>
+Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/gfs2/super.c |    1 +
- 1 file changed, 1 insertion(+)
+ fs/exfat/dir.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/fs/gfs2/super.c
-+++ b/fs/gfs2/super.c
-@@ -640,6 +640,7 @@ restart:
- 	gfs2_delete_debugfs_file(sdp);
+--- a/fs/exfat/dir.c
++++ b/fs/exfat/dir.c
+@@ -1027,12 +1027,12 @@ rewind:
+ 				continue;
+ 			}
  
- 	gfs2_sys_fs_del(sdp);
-+	rcu_barrier();
- 	free_sbd(sdp);
- }
+-			brelse(bh);
+ 			if (entry_type == TYPE_EXTEND) {
+ 				unsigned short entry_uniname[16], unichar;
  
+ 				if (step != DIRENT_STEP_NAME ||
+ 				    name_len >= MAX_NAME_LENGTH) {
++					brelse(bh);
+ 					step = DIRENT_STEP_FILE;
+ 					continue;
+ 				}
+@@ -1043,6 +1043,7 @@ rewind:
+ 					uniname += EXFAT_FILE_NAME_LEN;
+ 
+ 				len = exfat_extract_uni_name(ep, entry_uniname);
++				brelse(bh);
+ 				name_len += len;
+ 
+ 				unichar = *(uniname+len);
+@@ -1061,6 +1062,7 @@ rewind:
+ 				continue;
+ 			}
+ 
++			brelse(bh);
+ 			if (entry_type &
+ 					(TYPE_CRITICAL_SEC | TYPE_BENIGN_SEC)) {
+ 				if (step == DIRENT_STEP_SECD) {
 
 
 
