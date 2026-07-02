@@ -1,62 +1,69 @@
-Return-Path: <stable+bounces-271333-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-271443-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id ZmeKN4maRmqMZwsAu9opvQ
-	(envelope-from <stable+bounces-271333-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:06:17 +0200
+	id IQTcFcimRmoKbAsAu9opvQ
+	(envelope-from <stable+bounces-271443-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:58:32 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3D9536FAFB3
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:06:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7965B6FBBE9
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:58:31 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=0BeFrsNu;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-271333-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-271333-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=gShFPmUY;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-271443-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-271443-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 3D5E532798AD
-	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:54:37 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D47E13443E1F
+	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:59:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 522B9318EC1;
-	Thu,  2 Jul 2026 16:54:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41C4E2D0602;
+	Thu,  2 Jul 2026 16:59:18 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13E562D8DC4;
-	Thu,  2 Jul 2026 16:54:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F075526F46F;
+	Thu,  2 Jul 2026 16:59:16 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783011269; cv=none; b=eCDb6bJdQMsAtFhxegXji+38HEphWe/h6DQiPuNjkrWn1XupI9Bc8LBDnIim9DjYRZ1UMZofYpCsdC1wAkWK1FRkQpyZSgONsjGofT7GvoUyWnDgrjxNshiVCE2uQ0jsoveFDKO3BXJJ9TRoISKEHyqcYRRiKT+j1eayfI5oBU8=
+	t=1783011558; cv=none; b=PXib5mqH9LAYmcm68lmEMYiV2jJuP4Tyj70VkW19BacTsy1bTU7snDEPg/pCkmIJtg92AwHEjzEsoifuRlGen1sAFLJt1/sfcTxNxLJFUSCuNhmkKU/1UlYdmhUSXrBLhBsIH2RJt52kyAy+ef8LNx5PcceiBH63B5j/5OqrpGY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783011269; c=relaxed/simple;
-	bh=hL0M/ftwnaeYDHHA9xxZgDRpSTbMFp2Xdi1yHIWjJR4=;
+	s=arc-20240116; t=1783011558; c=relaxed/simple;
+	bh=WtSLI9Lx9E1QXstZ7nfy6gjsDd/GUt+1s5SoLJpkgsw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=I3HbaV6sUt2wiLFvuSvjGIJneYBPoqSlRHm+3/fyehkXjLsKxGFnDXAq4sca5U0c6/gabneISGDrzFn5aXAIMZq8tZ7VMle04Uj8KZ2feB0lD4a1ISbJrtn5uzL+ewfE0dRmSpTxNhOK2ekNPJEH24bQqyPRutbB0b9ebpRytBU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0BeFrsNu; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A6841F000E9;
-	Thu,  2 Jul 2026 16:54:27 +0000 (UTC)
+	 MIME-Version; b=r6X8oPWYiUdu1fTyRnU012wzR9A+3wQXPQ69hDmdy0R19b+RXxLqiuLKnNVRZYbrYsROcJhao2RuknO5mlHniiVrrgPzwnECHyLlcP7QZ/bi7vPXibaFOfPjPEuoSh5L9XponXVnl6db+R7ubbI8rVejXxRy9Q4Os0pmZI1gCeI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gShFPmUY; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6962C1F00A3A;
+	Thu,  2 Jul 2026 16:59:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1783011268;
-	bh=TXQV0SHlEPGfmthBPkyPycvnziEfCdHexBTyQPEHCwA=;
+	s=korg; t=1783011556;
+	bh=Qn1BQayygGiiwxpK5tu4/3YayJ0zXtds+B6f/iGDgEQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=0BeFrsNu/8BWJo1kSXJ+JPY1m1bRkPtGphcaoi8tXW63OCQgPn/KxX85stTuq4eNJ
-	 Pi1nkqkcRL4iqlLviBli7S5o3GMbE2hj46hwaKKCM3JSXECyjDvvE9chnA7WTlIvdC
-	 N7zqtj2XczMuhWxGSZ/bBZ1l+D0y/kB2iV5f+pps=
+	b=gShFPmUYOnHacC9gw4wt8l5NDh4KtDtD5u/yDb4M68HDW57ZFZ3FWTtuovChZJr4L
+	 sbvQW95Mq9Iv6bVJzn9CJo+gBiR6EqdlAiAO6SfqM349/QuawBhR9Fj9Uq3tXj+kdb
+	 6HsIOPeoQR26z0Xrf+ned7Meq49SZksmnlFFd9Tw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Frank Li <Frank.Li@nxp.com>,
-	Koichiro Den <den@valinux.co.jp>,
-	Dave Jiang <dave.jiang@intel.com>,
-	Jon Mason <jdmason@kudzu.us>
-Subject: [PATCH 6.18 042/108] NTB: epf: Avoid pci_iounmap() with offset when PEER_SPAD and CONFIG share BAR
+	Arnd Bergmann <arnd@arndb.de>,
+	Alexander Lobakin <aleksander.lobakin@intel.com>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Tamir Duberstein <tamird@kernel.org>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Andriy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Ansuel Smith <ansuelsmth@gmail.com>,
+	Bjorn Andersson <andersson@kernel.org>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Vasily Gorbik <gor@linux.ibm.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 7.1 043/120] err.h: use __always_inline on all error pointer helpers
 Date: Thu,  2 Jul 2026 18:20:39 +0200
-Message-ID: <20260702155112.980307660@linuxfoundation.org>
+Message-ID: <20260702155113.852401466@linuxfoundation.org>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260702155112.110058792@linuxfoundation.org>
-References: <20260702155112.110058792@linuxfoundation.org>
+In-Reply-To: <20260702155112.964534952@linuxfoundation.org>
+References: <20260702155112.964534952@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,94 +77,135 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	RCVD_TLS_LAST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[14];
+	TAGGED_FROM(0.00)[bounces-271443-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:arnd@arndb.de,m:aleksander.lobakin@intel.com,m:nathan@kernel.org,m:tamird@kernel.org,m:agordeev@linux.ibm.com,m:andriy.shevchenko@linux.intel.com,m:ansuelsmth@gmail.com,m:andersson@kernel.org,m:hca@linux.ibm.com,m:gor@linux.ibm.com,m:akpm@linux-foundation.org,s:lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-271333-lists,stable=lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:Frank.Li@nxp.com,m:den@valinux.co.jp,m:dave.jiang@intel.com,m:jdmason@kudzu.us,s:lists@lfdr.de];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,arndb.de,intel.com,kernel.org,linux.ibm.com,linux.intel.com,gmail.com,linux-foundation.org];
+	FORWARDED(0.00)[lists@lfdr.de];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	TO_DN_SOME(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	TO_DN_SOME(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,intel.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,nxp.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,kudzu.us:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,intel.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,linux-foundation.org:email,arndb.de:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 3D9536FAFB3
+X-Rspamd-Queue-Id: 7965B6FBBE9
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Koichiro Den <den@valinux.co.jp>
+From: Arnd Bergmann <arnd@arndb.de>
 
-commit d876153680e3d721d385e554def919bce3d18c74 upstream.
+commit 94bfc7f3b0c7c33331ba4ff6cc64ff309dfcbce8 upstream.
 
-When BAR_PEER_SPAD and BAR_CONFIG share one PCI BAR, the module teardown
-path ends up calling pci_iounmap() on the same iomem with some offset,
-which is unnecessary and triggers a kernel warning like the following:
+While testing randconfig builds on s390, I came across a link failure with
+CONFIG_DMA_SHARED_BUFFER disabled:
 
-  Trying to vunmap() nonexistent vm area (0000000069a5ffe8)
-  WARNING: mm/vmalloc.c:3470 at vunmap+0x58/0x68, CPU#5: modprobe/2937
-  [...]
-  Call trace:
-   vunmap+0x58/0x68 (P)
-   iounmap+0x34/0x48
-   pci_iounmap+0x2c/0x40
-   ntb_epf_pci_remove+0x44/0x80 [ntb_hw_epf]
-   pci_device_remove+0x48/0xf8
-   device_remove+0x50/0x88
-   device_release_driver_internal+0x1c8/0x228
-   driver_detach+0x50/0xb0
-   bus_remove_driver+0x74/0x100
-   driver_unregister+0x34/0x68
-   pci_unregister_driver+0x34/0xa0
-   ntb_epf_pci_driver_exit+0x14/0xfe0 [ntb_hw_epf]
-  [...]
+ERROR: modpost: "dma_buf_put" [drivers/iommu/iommufd/iommufd.ko] undefined!
 
-Fix it by unmapping only when PEER_SPAD and CONFIG use difference bars.
+The problem here is that IS_ERR() is not inlined and dead code elimination
+fails as a consequence.
 
-Cc: stable@vger.kernel.org
-Fixes: e75d5ae8ab88 ("NTB: epf: Allow more flexibility in the memory BAR map method")
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
-Signed-off-by: Koichiro Den <den@valinux.co.jp>
-Reviewed-by: Dave Jiang <dave.jiang@intel.com>
-Signed-off-by: Jon Mason <jdmason@kudzu.us>
+The err.h helpers all turn into a trivial assignment of a bit mask and
+should never result in a function call, so force them to always be inline.
+This should generally result in better object code aside from avoiding
+the link failure above.
+
+Link: https://lore.kernel.org/20260526101851.2495110-1-arnd@kernel.org
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Reviewed-by: Alexander Lobakin <aleksander.lobakin@intel.com>
+Reviewed-by: Nathan Chancellor <nathan@kernel.org>
+Tested-by: Tamir Duberstein <tamird@kernel.org>
+Cc: Alexander Gordeev <agordeev@linux.ibm.com>
+Cc: Andriy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc: Ansuel Smith <ansuelsmth@gmail.com>
+Cc: Bjorn Andersson <andersson@kernel.org>
+Cc: Heiko Carstens <hca@linux.ibm.com>
+Cc: Vasily Gorbik <gor@linux.ibm.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/ntb/hw/epf/ntb_hw_epf.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ include/linux/err.h |   12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
---- a/drivers/ntb/hw/epf/ntb_hw_epf.c
-+++ b/drivers/ntb/hw/epf/ntb_hw_epf.c
-@@ -646,7 +646,8 @@ static void ntb_epf_deinit_pci(struct nt
- 	struct pci_dev *pdev = ndev->ntb.pdev;
- 
- 	pci_iounmap(pdev, ndev->ctrl_reg);
--	pci_iounmap(pdev, ndev->peer_spad_reg);
-+	if (ndev->barno_map[BAR_PEER_SPAD] != ndev->barno_map[BAR_CONFIG])
-+		pci_iounmap(pdev, ndev->peer_spad_reg);
- 	pci_iounmap(pdev, ndev->db_reg);
- 
- 	pci_release_regions(pdev);
+--- a/include/linux/err.h
++++ b/include/linux/err.h
+@@ -36,7 +36,7 @@
+  *
+  * Return: A pointer with @error encoded within its value.
+  */
+-static inline void * __must_check ERR_PTR(long error)
++static __always_inline void * __must_check ERR_PTR(long error)
+ {
+ 	return (void *) error;
+ }
+@@ -60,7 +60,7 @@ static inline void * __must_check ERR_PT
+  * @ptr: An error pointer.
+  * Return: The error code within @ptr.
+  */
+-static inline long __must_check PTR_ERR(__force const void *ptr)
++static __always_inline long __must_check PTR_ERR(__force const void *ptr)
+ {
+ 	return (long) ptr;
+ }
+@@ -73,7 +73,7 @@ static inline long __must_check PTR_ERR(
+  * @ptr: The pointer to check.
+  * Return: true if @ptr is an error pointer, false otherwise.
+  */
+-static inline bool __must_check IS_ERR(__force const void *ptr)
++static __always_inline bool __must_check IS_ERR(__force const void *ptr)
+ {
+ 	return IS_ERR_VALUE((unsigned long)ptr);
+ }
+@@ -87,7 +87,7 @@ static inline bool __must_check IS_ERR(_
+  *
+  * Like IS_ERR(), but also returns true for a null pointer.
+  */
+-static inline bool __must_check IS_ERR_OR_NULL(__force const void *ptr)
++static __always_inline bool __must_check IS_ERR_OR_NULL(__force const void *ptr)
+ {
+ 	return unlikely(!ptr) || IS_ERR_VALUE((unsigned long)ptr);
+ }
+@@ -99,7 +99,7 @@ static inline bool __must_check IS_ERR_O
+  * Explicitly cast an error-valued pointer to another pointer type in such a
+  * way as to make it clear that's what's going on.
+  */
+-static inline void * __must_check ERR_CAST(__force const void *ptr)
++static __always_inline void * __must_check ERR_CAST(__force const void *ptr)
+ {
+ 	/* cast away the const */
+ 	return (void *) ptr;
+@@ -122,7 +122,7 @@ static inline void * __must_check ERR_CA
+  *
+  * Return: The error code within @ptr if it is an error pointer; 0 otherwise.
+  */
+-static inline int __must_check PTR_ERR_OR_ZERO(__force const void *ptr)
++static __always_inline int __must_check PTR_ERR_OR_ZERO(__force const void *ptr)
+ {
+ 	if (IS_ERR(ptr))
+ 		return PTR_ERR(ptr);
 
 
 
