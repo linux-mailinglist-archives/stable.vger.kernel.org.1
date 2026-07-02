@@ -1,79 +1,64 @@
-Return-Path: <stable+bounces-270979-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-270598-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id c/8qLSSXRmqhZQsAu9opvQ
-	(envelope-from <stable+bounces-270979-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:51:48 +0200
+	id wPpcNJSSRmo6YwsAu9opvQ
+	(envelope-from <stable+bounces-270598-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:32:20 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4CB7C6FAAA1
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:51:48 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4B1DD6FA39E
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:32:20 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=2tImRB9f;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-270979-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-270979-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=QMnrd4ej;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-270598-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-270598-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 047D834B7039
-	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:40:34 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D94E231BA520
+	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:24:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F348F394E93;
-	Thu,  2 Jul 2026 16:39:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2DF0733D509;
+	Thu,  2 Jul 2026 16:22:40 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90ACD347FCD;
-	Thu,  2 Jul 2026 16:39:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 550F9331A66;
+	Thu,  2 Jul 2026 16:22:33 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783010352; cv=none; b=UTES2N4mm6HI0IWQcduUP1hYDPnW1+4dRj9ZPHR/cdVmHrUJ52t8uvY7i3+JHkvmVrQf62WMeakTOIoFldRM5DXH8VMi64tvvDc4rbjhNWY/AfgW2xP+k+abWWFdUmkbSVRYb1oGR+tXX7Mx+Mz5JM8zwrhb5qtEh38y8V5zoS0=
+	t=1783009358; cv=none; b=G6ZfSP9uPKd7Ib8iO637uBVTzXQfsXjRvyxhsLqq78J7hsn4V4kGBfRECEhJUBy+pb3KFU9Y2iT46YnBEOr6vnG2HCFKM5qRLr9NE6ffsYI4f3QmPiIGh5m3Kgo2AttuqAQX1Sk4kW6rqwk9e5mwCmcafpfpgoTKVpBJI2KTTpg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783010352; c=relaxed/simple;
-	bh=bARL1UfQ2+/TVIKdaHQ6opMS9ybB3oAQx961l0o5yN4=;
+	s=arc-20240116; t=1783009358; c=relaxed/simple;
+	bh=EVrnoGVYmmm+AL0iR7geofhEyb70r1sRmDlPme0E8mc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=i1k+ylpb19ECdCHB2dDjItlPsOm06SpzzruMKGAaaqeR1nI5DY9ZpOVgrJtGRoDi3YUD0x9FO+mxMJz52YOcUtqVD09m0clgywRL9Gn51aAF7ZSxSkmPAWomaGFqDwiwCSBfmObv7O7p0yQMv9mpW1rv43N4XpLvvMlrTLiluAc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2tImRB9f; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 948361F000E9;
-	Thu,  2 Jul 2026 16:39:10 +0000 (UTC)
+	 MIME-Version; b=q/7MCEfr2vWnvwM6zDKqHGWE6aIPZcxoIjok+DBRJ9rFpUs57iagL545QmmOx1ixsuoqpC0L4kbPgNW9xj3oeF7K4MYaNNujY5dFI5ECsvccOMkcZM7QVh4GzMiXSli7MiC8GfnpYcwnQE9EWvAZZbV7iAScleOn7N37AJJwu1w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QMnrd4ej; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 642161F00A3A;
+	Thu,  2 Jul 2026 16:22:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1783010351;
-	bh=hTkMjPba82vZaMvl5WNIP5krQISY8NwgVjgfri0lkOk=;
+	s=korg; t=1783009352;
+	bh=6443BdPv6yvAc0SY8o16XAHAAgmzcy9Sg0A1sD0CFY4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=2tImRB9fJrbyIme1z1SFh0lyjxyAOX0FcZ+3zi/8bL7d4bx4pa4TUCNOhOurvGdEW
-	 UkB/ijisQRUPEutFfOJB4Fuo8g9b9ZEFW65XE8z38ZbG/FdP1o8PPbloO+LM1kO9ex
-	 WQy4iE3KghP7nLU8KzDBmyr2o3TQDovTgiqEGMWM=
+	b=QMnrd4ejKVYp8b5GDrub6l4C4q7d3g4sNiSp8M+hk+P/avxXNGsNBJ1N6leS6Io1o
+	 cBTA3IOBjceYiJd0xwee0IsYywte+XI95nf77M+kM/Vl5pUahmNHTeIYLxrq84jcMQ
+	 slWD5fALE0ANUVg2YlXMKcntD0MAZ8IjBCnl4Fmc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	bpf <bpf@vger.kernel.org>,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	Masahiro Yamada <masahiroy@kernel.org>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Nicolas Schier <nicolas@fjasle.eu>,
-	Zheng Yejian <zhengyejian1@huawei.com>,
-	Martin Kelly <martin.kelly@crowdstrike.com>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Josh Poimboeuf <jpoimboe@redhat.com>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>,
-	Vasily Gorbik <gor@linux.ibm.com>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
-	Andrey Grodzovsky <andrey.grodzovsky@crowdstrike.com>
-Subject: [PATCH 6.12 077/204] ftrace: Have ftrace pages output reflect freed pages
+	Jamal Hadi Salim <jhs@mojatatu.com>,
+	Pedro Tammela <pctammela@mojatatu.com>,
+	Simon Horman <simon.horman@corigine.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Wentao Guan <guanwentao@uniontech.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 02/96] net/sched: transition act_pedit to rcu and percpu stats
 Date: Thu,  2 Jul 2026 18:18:54 +0200
-Message-ID: <20260702155120.282872367@linuxfoundation.org>
+Message-ID: <20260702155109.008586163@linuxfoundation.org>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260702155118.667618796@linuxfoundation.org>
-References: <20260702155118.667618796@linuxfoundation.org>
+In-Reply-To: <20260702155108.949633242@linuxfoundation.org>
+References: <20260702155108.949633242@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -87,147 +72,477 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-270979-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[24];
+	TAGGED_FROM(0.00)[bounces-270598-lists,stable=lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:bpf@vger.kernel.org,m:mhiramat@kernel.org,m:mark.rutland@arm.com,m:mathieu.desnoyers@efficios.com,m:akpm@linux-foundation.org,m:peterz@infradead.org,m:torvalds@linux-foundation.org,m:masahiroy@kernel.org,m:nathan@kernel.org,m:nicolas@fjasle.eu,m:zhengyejian1@huawei.com,m:martin.kelly@crowdstrike.com,m:christophe.leroy@csgroup.eu,m:jpoimboe@redhat.com,m:hca@linux.ibm.com,m:catalin.marinas@arm.com,m:will@kernel.org,m:gor@linux.ibm.com,m:agordeev@linux.ibm.com,m:rostedt@goodmis.org,m:andrey.grodzovsky@crowdstrike.com,s:lists@lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:jhs@mojatatu.com,m:pctammela@mojatatu.com,m:simon.horman@corigine.com,m:pabeni@redhat.com,m:guanwentao@uniontech.com,m:sashal@kernel.org,s:lists@lfdr.de];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[mojatatu.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp,corigine.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,uniontech.com:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 4CB7C6FAAA1
+X-Rspamd-Queue-Id: 4B1DD6FA39E
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Steven Rostedt <rostedt@goodmis.org>
+From: Pedro Tammela <pctammela@mojatatu.com>
 
-[ Upstream commit 264143c4e54412095f4b615e65bf736fc3c60af0 ]
+[ Upstream commit 52cf89f78c01bf39973f3e70d366921d70faff7a ]
 
-The amount of memory that ftrace uses to save the descriptors to manage
-the functions it can trace is shown at output. But if there are a lot of
-functions that are skipped because they were weak or the architecture
-added holes into the tables, then the extra pages that were allocated are
-freed. But these freed pages are not reflected in the numbers shown, and
-they can even be inconsistent with what is reported:
+The software pedit action didn't get the same love as some of the
+other actions and it's still using spinlocks and shared stats in the
+datapath.
+Transition the action to rcu and percpu stats as this improves the
+action's performance dramatically on multiple cpu deployments.
 
- ftrace: allocating 57482 entries in 225 pages
- ftrace: allocated 224 pages with 3 groups
-
-The above shows the number of original entries that are in the mcount_loc
-section and the pages needed to save them (225), but the second output
-reflects the number of pages that were actually used. The two should be
-consistent as:
-
- ftrace: allocating 56739 entries in 224 pages
- ftrace: allocated 224 pages with 3 groups
-
-The above also shows the accurate number of entires that were actually
-stored and does not include the entries that were removed.
-
-Cc: bpf <bpf@vger.kernel.org>
-Cc: Masami Hiramatsu <mhiramat@kernel.org>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: Masahiro Yamada <masahiroy@kernel.org>
-Cc: Nathan Chancellor <nathan@kernel.org>
-Cc: Nicolas Schier <nicolas@fjasle.eu>
-Cc: Zheng Yejian <zhengyejian1@huawei.com>
-Cc: Martin  Kelly <martin.kelly@crowdstrike.com>
-Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
-Cc: Josh Poimboeuf <jpoimboe@redhat.com>
-Cc: Heiko Carstens <hca@linux.ibm.com>
-Cc: Catalin Marinas <catalin.marinas@arm.com>
-Cc: Will Deacon <will@kernel.org>
-Cc: Vasily Gorbik <gor@linux.ibm.com>
-Cc: Alexander Gordeev <agordeev@linux.ibm.com>
-Link: https://lore.kernel.org/20250218200023.221100846@goodmis.org
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-Signed-off-by: Andrey Grodzovsky <andrey.grodzovsky@crowdstrike.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reviewed-by: Jamal Hadi Salim <jhs@mojatatu.com>
+Signed-off-by: Pedro Tammela <pctammela@mojatatu.com>
+Reviewed-by: Simon Horman <simon.horman@corigine.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Conflicts:
+	net/sched/act_pedit.c
+Signed-off-by: Wentao Guan <guanwentao@uniontech.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/trace/ftrace.c |   15 ++++++++++++---
- 1 file changed, 12 insertions(+), 3 deletions(-)
+ include/net/tc_act/tc_pedit.h |  81 +++++++++++++++----
+ net/sched/act_pedit.c         | 148 ++++++++++++++++++++--------------
+ 2 files changed, 153 insertions(+), 76 deletions(-)
 
---- a/kernel/trace/ftrace.c
-+++ b/kernel/trace/ftrace.c
-@@ -7050,6 +7050,7 @@ static int ftrace_process_locs(struct mo
- 	unsigned long addr;
- 	unsigned long kaslr;
- 	unsigned long flags = 0; /* Shut up gcc */
-+	unsigned long pages;
- 	int ret = -ENOMEM;
+diff --git a/include/net/tc_act/tc_pedit.h b/include/net/tc_act/tc_pedit.h
+index 3e02709a1df656..83fe3993178180 100644
+--- a/include/net/tc_act/tc_pedit.h
++++ b/include/net/tc_act/tc_pedit.h
+@@ -4,22 +4,29 @@
  
- 	count = end - start;
-@@ -7057,6 +7058,8 @@ static int ftrace_process_locs(struct mo
- 	if (!count)
- 		return 0;
+ #include <net/act_api.h>
+ #include <linux/tc_act/tc_pedit.h>
++#include <linux/types.h>
  
-+	pages = DIV_ROUND_UP(count, ENTRIES_PER_PAGE);
-+
- 	/*
- 	 * Sorting mcount in vmlinux at build time depend on
- 	 * CONFIG_BUILDTIME_MCOUNT_SORT, while mcount loc in
-@@ -7168,6 +7171,8 @@ static int ftrace_process_locs(struct mo
- 			for (pg = pg_unuse; pg; pg = pg->next)
- 				remaining += 1 << pg->order;
+ struct tcf_pedit_key_ex {
+ 	enum pedit_header_type htype;
+ 	enum pedit_cmd cmd;
+ };
  
-+			pages -= remaining;
+-struct tcf_pedit {
+-	struct tc_action	common;
+-	unsigned char		tcfp_nkeys;
+-	unsigned char		tcfp_flags;
+-	u32			tcfp_off_max_hint;
++struct tcf_pedit_parms {
+ 	struct tc_pedit_key	*tcfp_keys;
+ 	struct tcf_pedit_key_ex	*tcfp_keys_ex;
++	u32 tcfp_off_max_hint;
++	unsigned char tcfp_nkeys;
++	unsigned char tcfp_flags;
++	struct rcu_head rcu;
++};
 +
- 			skip = DIV_ROUND_UP(skip, ENTRIES_PER_PAGE);
++struct tcf_pedit {
++	struct tc_action common;
++	struct tcf_pedit_parms __rcu *parms;
+ };
  
- 			/*
-@@ -7181,6 +7186,13 @@ static int ftrace_process_locs(struct mo
- 		synchronize_rcu();
- 		ftrace_free_pages(pg_unuse);
- 	}
+ #define to_pedit(a) ((struct tcf_pedit *)a)
++#define to_pedit_parms(a) (rcu_dereference(to_pedit(a)->parms))
+ 
+ static inline bool is_tcf_pedit(const struct tc_action *a)
+ {
+@@ -32,37 +39,81 @@ static inline bool is_tcf_pedit(const struct tc_action *a)
+ 
+ static inline int tcf_pedit_nkeys(const struct tc_action *a)
+ {
+-	return to_pedit(a)->tcfp_nkeys;
++	struct tcf_pedit_parms *parms;
++	int nkeys;
 +
-+	if (!mod) {
-+		count -= skipped;
-+		pr_info("ftrace: allocating %ld entries in %ld pages\n",
-+			count, pages);
-+	}
++	rcu_read_lock();
++	parms = to_pedit_parms(a);
++	nkeys = parms->tcfp_nkeys;
++	rcu_read_unlock();
 +
- 	return ret;
++	return nkeys;
  }
  
-@@ -7835,9 +7847,6 @@ void __init ftrace_init(void)
- 		goto failed;
+ static inline u32 tcf_pedit_htype(const struct tc_action *a, int index)
+ {
+-	if (to_pedit(a)->tcfp_keys_ex)
+-		return to_pedit(a)->tcfp_keys_ex[index].htype;
++	u32 htype = TCA_PEDIT_KEY_EX_HDR_TYPE_NETWORK;
++	struct tcf_pedit_parms *parms;
++
++	rcu_read_lock();
++	parms = to_pedit_parms(a);
++	if (parms->tcfp_keys_ex)
++		htype = parms->tcfp_keys_ex[index].htype;
++	rcu_read_unlock();
+ 
+-	return TCA_PEDIT_KEY_EX_HDR_TYPE_NETWORK;
++	return htype;
+ }
+ 
+ static inline u32 tcf_pedit_cmd(const struct tc_action *a, int index)
+ {
+-	if (to_pedit(a)->tcfp_keys_ex)
+-		return to_pedit(a)->tcfp_keys_ex[index].cmd;
++	struct tcf_pedit_parms *parms;
++	u32 cmd = __PEDIT_CMD_MAX;
+ 
+-	return __PEDIT_CMD_MAX;
++	rcu_read_lock();
++	parms = to_pedit_parms(a);
++	if (parms->tcfp_keys_ex)
++		cmd = parms->tcfp_keys_ex[index].cmd;
++	rcu_read_unlock();
++
++	return cmd;
+ }
+ 
+ static inline u32 tcf_pedit_mask(const struct tc_action *a, int index)
+ {
+-	return to_pedit(a)->tcfp_keys[index].mask;
++	struct tcf_pedit_parms *parms;
++	u32 mask;
++
++	rcu_read_lock();
++	parms = to_pedit_parms(a);
++	mask = parms->tcfp_keys[index].mask;
++	rcu_read_unlock();
++
++	return mask;
+ }
+ 
+ static inline u32 tcf_pedit_val(const struct tc_action *a, int index)
+ {
+-	return to_pedit(a)->tcfp_keys[index].val;
++	struct tcf_pedit_parms *parms;
++	u32 val;
++
++	rcu_read_lock();
++	parms = to_pedit_parms(a);
++	val = parms->tcfp_keys[index].val;
++	rcu_read_unlock();
++
++	return val;
+ }
+ 
+ static inline u32 tcf_pedit_offset(const struct tc_action *a, int index)
+ {
+-	return to_pedit(a)->tcfp_keys[index].off;
++	struct tcf_pedit_parms *parms;
++	u32 off;
++
++	rcu_read_lock();
++	parms = to_pedit_parms(a);
++	off = parms->tcfp_keys[index].off;
++	rcu_read_unlock();
++
++	return off;
+ }
+ #endif /* __NET_TC_PED_H */
+diff --git a/net/sched/act_pedit.c b/net/sched/act_pedit.c
+index 510a3b5b8c0c1d..0fbffebfbdc9d8 100644
+--- a/net/sched/act_pedit.c
++++ b/net/sched/act_pedit.c
+@@ -130,6 +130,17 @@ static int tcf_pedit_key_ex_dump(struct sk_buff *skb,
+ 	return -EINVAL;
+ }
+ 
++static void tcf_pedit_cleanup_rcu(struct rcu_head *head)
++{
++	struct tcf_pedit_parms *parms =
++		container_of(head, struct tcf_pedit_parms, rcu);
++
++	kfree(parms->tcfp_keys_ex);
++	kfree(parms->tcfp_keys);
++
++	kfree(parms);
++}
++
+ static int tcf_pedit_init(struct net *net, struct nlattr *nla,
+ 			  struct nlattr *est, struct tc_action **a,
+ 			  int ovr, int bind, bool rtnl_held,
+@@ -137,10 +148,9 @@ static int tcf_pedit_init(struct net *net, struct nlattr *nla,
+ 			  struct netlink_ext_ack *extack)
+ {
+ 	struct tc_action_net *tn = net_generic(net, pedit_net_id);
+-	struct nlattr *tb[TCA_PEDIT_MAX + 1];
+ 	struct tcf_chain *goto_ch = NULL;
+-	struct tc_pedit_key *keys = NULL;
+-	struct tcf_pedit_key_ex *keys_ex;
++	struct tcf_pedit_parms *oparms, *nparms;
++	struct nlattr *tb[TCA_PEDIT_MAX + 1];
+ 	struct tc_pedit *parm;
+ 	struct nlattr *pattr;
+ 	struct tcf_pedit *p;
+@@ -177,18 +187,25 @@ static int tcf_pedit_init(struct net *net, struct nlattr *nla,
+ 		return -EINVAL;
  	}
  
--	pr_info("ftrace: allocating %ld entries in %ld pages\n",
--		count, DIV_ROUND_UP(count, ENTRIES_PER_PAGE));
+-	keys_ex = tcf_pedit_keys_ex_parse(tb[TCA_PEDIT_KEYS_EX], parm->nkeys);
+-	if (IS_ERR(keys_ex))
+-		return PTR_ERR(keys_ex);
++	nparms = kzalloc(sizeof(*nparms), GFP_KERNEL);
++	if (!nparms)
++		return -ENOMEM;
++
++	nparms->tcfp_keys_ex =
++		tcf_pedit_keys_ex_parse(tb[TCA_PEDIT_KEYS_EX], parm->nkeys);
++	if (IS_ERR(nparms->tcfp_keys_ex)) {
++		ret = PTR_ERR(nparms->tcfp_keys_ex);
++		goto out_free;
++	}
+ 
+ 	index = parm->index;
+ 	err = tcf_idr_check_alloc(tn, &index, a, bind);
+ 	if (!err) {
+-		ret = tcf_idr_create(tn, index, est, a,
+-				     &act_pedit_ops, bind, false, flags);
++		ret = tcf_idr_create_from_flags(tn, index, est, a,
++						&act_pedit_ops, bind, flags);
+ 		if (ret) {
+ 			tcf_idr_cleanup(tn, index);
+-			goto out_free;
++			goto out_free_ex;
+ 		}
+ 		ret = ACT_P_CREATED;
+ 	} else if (err > 0) {
+@@ -200,7 +217,7 @@ static int tcf_pedit_init(struct net *net, struct nlattr *nla,
+ 		}
+ 	} else {
+ 		ret = err;
+-		goto out_free;
++		goto out_free_ex;
+ 	}
+ 
+ 	err = tcf_action_check_ctrlact(parm->action, tp, &goto_ch, extack);
+@@ -208,48 +225,50 @@ static int tcf_pedit_init(struct net *net, struct nlattr *nla,
+ 		ret = err;
+ 		goto out_release;
+ 	}
+-	p = to_pedit(*a);
+-	spin_lock_bh(&p->tcf_lock);
+ 
+-	if (ret == ACT_P_CREATED ||
+-	    (p->tcfp_nkeys && p->tcfp_nkeys != parm->nkeys)) {
+-		keys = kmalloc(ksize, GFP_ATOMIC);
+-		if (!keys) {
+-			spin_unlock_bh(&p->tcf_lock);
+-			ret = -ENOMEM;
+-			goto put_chain;
+-		}
+-		kfree(p->tcfp_keys);
+-		p->tcfp_keys = keys;
+-		p->tcfp_nkeys = parm->nkeys;
++	nparms->tcfp_off_max_hint = 0;
++	nparms->tcfp_flags = parm->flags;
++	nparms->tcfp_nkeys = parm->nkeys;
++
++	nparms->tcfp_keys = kmalloc(ksize, GFP_KERNEL);
++	if (!nparms->tcfp_keys) {
++		ret = -ENOMEM;
++		goto put_chain;
+ 	}
+-	memcpy(p->tcfp_keys, parm->keys, ksize);
+-	p->tcfp_off_max_hint = 0;
+-	for (i = 0; i < p->tcfp_nkeys; ++i) {
+-		u32 cur = p->tcfp_keys[i].off;
++
++	memcpy(nparms->tcfp_keys, parm->keys, ksize);
++
++	for (i = 0; i < nparms->tcfp_nkeys; ++i) {
++		u32 cur = nparms->tcfp_keys[i].off;
+ 
+ 		/* sanitize the shift value for any later use */
+-		p->tcfp_keys[i].shift = min_t(size_t, BITS_PER_TYPE(int) - 1,
+-					      p->tcfp_keys[i].shift);
++		nparms->tcfp_keys[i].shift = min_t(size_t,
++						   BITS_PER_TYPE(int) - 1,
++						   nparms->tcfp_keys[i].shift);
+ 
+ 		/* The AT option can read a single byte, we can bound the actual
+ 		 * value with uchar max.
+ 		 */
+-		cur += (0xff & p->tcfp_keys[i].offmask) >> p->tcfp_keys[i].shift;
++		cur += (0xff & nparms->tcfp_keys[i].offmask) >> nparms->tcfp_keys[i].shift;
+ 
+ 		/* Each key touches 4 bytes starting from the computed offset */
+-		p->tcfp_off_max_hint = max(p->tcfp_off_max_hint, cur + 4);
++		nparms->tcfp_off_max_hint =
++			max(nparms->tcfp_off_max_hint, cur + 4);
+ 	}
+ 
+-	p->tcfp_flags = parm->flags;
++	p = to_pedit(*a);
++
++	spin_lock_bh(&p->tcf_lock);
+ 	goto_ch = tcf_action_set_ctrlact(*a, parm->action, goto_ch);
++	oparms = rcu_replace_pointer(p->parms, nparms, 1);
++	spin_unlock_bh(&p->tcf_lock);
+ 
+-	kfree(p->tcfp_keys_ex);
+-	p->tcfp_keys_ex = keys_ex;
++	if (oparms)
++		call_rcu(&oparms->rcu, tcf_pedit_cleanup_rcu);
+ 
+-	spin_unlock_bh(&p->tcf_lock);
+ 	if (goto_ch)
+ 		tcf_chain_put_by_act(goto_ch);
++
+ 	return ret;
+ 
+ put_chain:
+@@ -257,19 +276,22 @@ static int tcf_pedit_init(struct net *net, struct nlattr *nla,
+ 		tcf_chain_put_by_act(goto_ch);
+ out_release:
+ 	tcf_idr_release(*a, bind);
++out_free_ex:
++	kfree(nparms->tcfp_keys_ex);
+ out_free:
+-	kfree(keys_ex);
++	kfree(nparms);
+ 	return ret;
 -
- 	ret = ftrace_process_locs(NULL,
- 				  __start_mcount_loc,
- 				  __stop_mcount_loc);
+ }
+ 
+ static void tcf_pedit_cleanup(struct tc_action *a)
+ {
+ 	struct tcf_pedit *p = to_pedit(a);
+-	struct tc_pedit_key *keys = p->tcfp_keys;
++	struct tcf_pedit_parms *parms;
+ 
+-	kfree(keys);
+-	kfree(p->tcfp_keys_ex);
++	parms = rcu_dereference_protected(p->parms, 1);
++
++	if (parms)
++		call_rcu(&parms->rcu, tcf_pedit_cleanup_rcu);
+ }
+ 
+ static bool offset_valid(struct sk_buff *skb, int offset)
+@@ -320,28 +342,30 @@ static int tcf_pedit_act(struct sk_buff *skb, const struct tc_action *a,
+ 			 struct tcf_result *res)
+ {
+ 	struct tcf_pedit *p = to_pedit(a);
++	struct tcf_pedit_parms *parms;
+ 	u32 max_offset;
+ 	int i;
+ 
+-	spin_lock(&p->tcf_lock);
++	parms = rcu_dereference_bh(p->parms);
+ 
+ 	max_offset = (skb_transport_header_was_set(skb) ?
+ 		      skb_transport_offset(skb) :
+ 		      skb_network_offset(skb)) +
+-		     p->tcfp_off_max_hint;
++		     parms->tcfp_off_max_hint;
+ 	if (skb_ensure_writable(skb, min(skb->len, max_offset)))
+-		goto unlock;
++		goto done;
+ 
+ 	tcf_lastuse_update(&p->tcf_tm);
++	tcf_action_update_bstats(&p->common, skb);
+ 
+-	if (p->tcfp_nkeys > 0) {
+-		struct tc_pedit_key *tkey = p->tcfp_keys;
+-		struct tcf_pedit_key_ex *tkey_ex = p->tcfp_keys_ex;
++	if (parms->tcfp_nkeys > 0) {
++		struct tc_pedit_key *tkey = parms->tcfp_keys;
++		struct tcf_pedit_key_ex *tkey_ex = parms->tcfp_keys_ex;
+ 		enum pedit_header_type htype =
+ 			TCA_PEDIT_KEY_EX_HDR_TYPE_NETWORK;
+ 		enum pedit_cmd cmd = TCA_PEDIT_KEY_EX_CMD_SET;
+ 
+-		for (i = p->tcfp_nkeys; i > 0; i--, tkey++) {
++		for (i = parms->tcfp_nkeys; i > 0; i--, tkey++) {
+ 			u32 *ptr, hdata;
+ 			int offset = tkey->off;
+ 			int hoffset;
+@@ -417,11 +441,10 @@ static int tcf_pedit_act(struct sk_buff *skb, const struct tc_action *a,
+ 	}
+ 
+ bad:
++	spin_lock(&p->tcf_lock);
+ 	p->tcf_qstats.overlimits++;
+-done:
+-	bstats_update(&p->tcf_bstats, skb);
+-unlock:
+ 	spin_unlock(&p->tcf_lock);
++done:
+ 	return p->tcf_action;
+ }
+ 
+@@ -440,30 +463,33 @@ static int tcf_pedit_dump(struct sk_buff *skb, struct tc_action *a,
+ {
+ 	unsigned char *b = skb_tail_pointer(skb);
+ 	struct tcf_pedit *p = to_pedit(a);
++	struct tcf_pedit_parms *parms;
+ 	struct tc_pedit *opt;
+ 	struct tcf_t t;
+ 	int s;
+ 
+-	s = struct_size(opt, keys, p->tcfp_nkeys);
++	spin_lock_bh(&p->tcf_lock);
++	parms = rcu_dereference_protected(p->parms, 1);
++	s = struct_size(opt, keys, parms->tcfp_nkeys);
+ 
+-	/* netlink spinlocks held above us - must use ATOMIC */
+ 	opt = kzalloc(s, GFP_ATOMIC);
+-	if (unlikely(!opt))
++	if (unlikely(!opt)) {
++		spin_unlock_bh(&p->tcf_lock);
+ 		return -ENOBUFS;
++	}
+ 
+-	spin_lock_bh(&p->tcf_lock);
+-	memcpy(opt->keys, p->tcfp_keys, flex_array_size(opt, keys, p->tcfp_nkeys));
++	memcpy(opt->keys, parms->tcfp_keys,
++	       flex_array_size(opt, keys, parms->tcfp_nkeys));
+ 	opt->index = p->tcf_index;
+-	opt->nkeys = p->tcfp_nkeys;
+-	opt->flags = p->tcfp_flags;
++	opt->nkeys = parms->tcfp_nkeys;
++	opt->flags = parms->tcfp_flags;
+ 	opt->action = p->tcf_action;
+ 	opt->refcnt = refcount_read(&p->tcf_refcnt) - ref;
+ 	opt->bindcnt = atomic_read(&p->tcf_bindcnt) - bind;
+ 
+-	if (p->tcfp_keys_ex) {
+-		if (tcf_pedit_key_ex_dump(skb,
+-					  p->tcfp_keys_ex,
+-					  p->tcfp_nkeys))
++	if (parms->tcfp_keys_ex) {
++		if (tcf_pedit_key_ex_dump(skb, parms->tcfp_keys_ex,
++					  parms->tcfp_nkeys))
+ 			goto nla_put_failure;
+ 
+ 		if (nla_put(skb, TCA_PEDIT_PARMS_EX, s, opt))
+-- 
+2.53.0
+
 
 
 
