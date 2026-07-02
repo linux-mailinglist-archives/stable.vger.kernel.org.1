@@ -1,63 +1,61 @@
-Return-Path: <stable+bounces-270693-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-270816-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id ZrusEcyURmo4ZAsAu9opvQ
-	(envelope-from <stable+bounces-270693-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:41:48 +0200
+	id 3cC/N8yVRmrKZAsAu9opvQ
+	(envelope-from <stable+bounces-270816-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:46:04 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5EB906FA65A
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:41:47 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 40C7D6FA821
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:46:04 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="Z/X7w/t5";
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-270693-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-270693-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=zObbS9bd;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-270816-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-270816-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id AA3513261485
-	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:31:53 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 43AA430F7D12
+	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:35:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4FFB63B7B91;
-	Thu,  2 Jul 2026 16:26:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 70B5C399CEE;
+	Thu,  2 Jul 2026 16:32:04 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E4A2397E81;
-	Thu,  2 Jul 2026 16:26:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30FFF33A70E;
+	Thu,  2 Jul 2026 16:32:02 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783009605; cv=none; b=bzOn0zCPV3xggDUbkksaLHJ7zGYoBJAo4yej1hAia+KZlmB9y6qtv8hfc1D59wuelL4SbOVFVsIX+Xqg/fSKwK2gbRgZENTNCVGJ3tsiFAKXKJ7OObxSZfsOm+lQe5kgTIJKS1CAYhW9ROvi2EWoY4GU/N5oPDEgDfssFdMaLoo=
+	t=1783009924; cv=none; b=rpgcuKc0ct5hNVhaU8eqkFzoQm+NW1vXsywTG7OAV7YQh3rPlyjJUl8tCzxUSrjhTxg0uZY/13Ahd3N4ORJGrU/Aw1akT/CYsFGerSjYgfPvI2RLrSj6XvDGd8xpIHoffzjQzAh+w6mubhFcGwB90bEshfAaMJ/oDc45vZSOgn8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783009605; c=relaxed/simple;
-	bh=yTSTeNk3K1sCqQlHLX0A0aiEgm/byLi6VO5dLGNFG5c=;
+	s=arc-20240116; t=1783009924; c=relaxed/simple;
+	bh=xPYgksFv2eX/ok4t1kNS5AvC4330s06hm7XTnecVPqA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lh9ba/pAgDSo/OTHTmm/BsI8d45UPOggegGP0Y/vbHKTQ9QqCWokqVKSCCXASJ8T2y8T6sKjIgw27oMn6eRKpl1tuoQ2hYHCNhWqSUhMg6D+zTMHpstdUabR+RVC5yuKxUD+dx2pChKwM5US/+xTOfbEnuUjw8AKN2WNxWOqnV8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z/X7w/t5; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18E081F00A3A;
-	Thu,  2 Jul 2026 16:26:41 +0000 (UTC)
+	 MIME-Version; b=OC4YfIhHhtLDxfyHXns5V+djz2TwAciC0Q3GvMmJzuRcwFEvj8JeMjyvaWnsdWl6jdiB0zVHwKszLRhyNgmYVXHDhP3WhEy0YWmpLeb2js3F3XlPJPUsJBcqJF+0DP0eZzF3KVVQEQSDTw6OMi1cDiSzz6Vu80X0fXI7//xxh10=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zObbS9bd; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4CC7D1F000E9;
+	Thu,  2 Jul 2026 16:32:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1783009602;
-	bh=JEHJAVBVMkDrmbsAvMsHd6M6+BKqT5dlBwaCdX0W+hI=;
+	s=korg; t=1783009922;
+	bh=UZBpEtbjN2GFmddzn/LlHG+WrLR97PKInv3kiUsaaq0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Z/X7w/t5QVReSBu4zlDSaOsnVmGB6ZnH09jBYLnOBx6EbIu2G/4korWG8OlnD71fk
-	 YUn6cQUgu7jd0bjx6Mtj61RIRNlKJE7uWPnVxXxYcfen2lN0pgAho9syHiD5H8abHz
-	 nj9JSaf7w3eLDoM8TlOz/LXj8sWmNh9vKGp6Z2+I=
+	b=zObbS9bdaFRw0IvIyWdSvd5JRQPwWmNUVq7iO4Snvih+fGFyVW881mdvdElexmu/J
+	 kv4pk6LD0uwFZA1sgNxqyIxRdAG4JUg6hnC3yIYt8bF9Xz5l482OI2sn6+rcN7+97n
+	 ifoHm7Xc2nkA7gWsFOsuji8Sx7oyshj872PDidUA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Wang <00107082@163.com>,
-	Michal Pecio <michal.pecio@gmail.com>,
-	Mathias Nyman <mathias.nyman@linux.intel.com>,
-	Justin Chen <justin.chen@broadcom.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 18/95] xhci: fix memory leak regression when freeing xhci vdev devices depth first
+	syzbot+814c351d094f4f1a1b86@syzkaller.appspotmail.com,
+	Ruslan Valiyev <linuxoid@gmail.com>,
+	Hans Verkuil <hverkuil+cisco@kernel.org>
+Subject: [PATCH 6.1 042/129] media: vidtv: fix NULL pointer dereference in vidtv_mux_push_si
 Date: Thu,  2 Jul 2026 18:19:21 +0200
-Message-ID: <20260702155109.589842234@linuxfoundation.org>
+Message-ID: <20260702155113.021715965@linuxfoundation.org>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260702155109.196223802@linuxfoundation.org>
-References: <20260702155109.196223802@linuxfoundation.org>
+In-Reply-To: <20260702155112.163984240@linuxfoundation.org>
+References: <20260702155112.163984240@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -74,90 +72,118 @@ X-Spamd-Result: default: False [-0.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,163.com,gmail.com,linux.intel.com,broadcom.com,kernel.org];
-	TAGGED_FROM(0.00)[bounces-270693-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:00107082@163.com,m:michal.pecio@gmail.com,m:mathias.nyman@linux.intel.com,m:justin.chen@broadcom.com,m:sashal@kernel.org,m:michalpecio@gmail.com,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-270816-lists,stable=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:syzbot+814c351d094f4f1a1b86@syzkaller.appspotmail.com,m:linuxoid@gmail.com,m:hverkuil+cisco@kernel.org,m:syzbot@syzkaller.appspotmail.com,m:hverkuil@kernel.org,s:lists@lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,syzkaller.appspotmail.com,gmail.com,kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,broadcom.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,intel.com:email,vger.kernel.org:from_smtp]
+	TAGGED_RCPT(0.00)[stable,814c351d094f4f1a1b86,cisco];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,syzkaller.appspot.com:url,appspotmail.com:email,vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 5EB906FA65A
+X-Rspamd-Queue-Id: 40C7D6FA821
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mathias Nyman <mathias.nyman@linux.intel.com>
+From: Ruslan Valiyev <linuxoid@gmail.com>
 
-commit edcbe06453ddfde21f6aa763f7cab655f26133cc upstream
+commit 7d8bf3d8f91073f4db347ed3aa6302b56107499c upstream.
 
-Suspend-resume cycle test revealed a memory leak in 6.17-rc3
+syzbot reported a general protection fault in
+vidtv_psi_ts_psi_write_into [1].
 
-Turns out the slot_id race fix changes accidentally ends up calling
-xhci_free_virt_device() with an incorrect vdev parameter.
-The vdev variable was reused for temporary purposes right before calling
-xhci_free_virt_device().
+vidtv_mux_get_pid_ctx() can return NULL, but vidtv_mux_push_si() does
+not check for this before dereferencing the returned pointer to access
+the continuity counter. This leads to a general protection fault when
+accessing a near-NULL address.
 
-Fix this by passing the correct vdev parameter.
+The root cause is that vidtv_mux_pid_ctx_init() does not check the
+return value of vidtv_mux_create_pid_ctx_once() for PMT section PIDs.
+If the allocation fails, the PID context is never created, but init
+returns success. The subsequent vidtv_mux_push_si() call then gets
+NULL from vidtv_mux_get_pid_ctx() and crashes.
 
-The slot_id race fix that caused this regression was targeted for stable,
-so this needs to be applied there as well.
+Fix both the root cause (add error check in vidtv_mux_pid_ctx_init
+for PMT PIDs) and add defensive NULL checks in vidtv_mux_push_si for
+all vidtv_mux_get_pid_ctx() calls.
 
-Fixes: 2eb03376151b ("usb: xhci: Fix slot_id resource race conflict")
-Reported-by: David Wang <00107082@163.com>
-Closes: https://lore.kernel.org/linux-usb/20250829181354.4450-1-00107082@163.com
-Suggested-by: Michal Pecio <michal.pecio@gmail.com>
-Suggested-by: David Wang <00107082@163.com>
+[1]
+Oops: general protection fault, probably for non-canonical address 0xdffffc0000000000: 0000 [#1] SMP KASAN PTI
+KASAN: null-ptr-deref in range [0x0000000000000000-0x0000000000000007]
+Workqueue: events vidtv_mux_tick
+RIP: 0010:vidtv_psi_ts_psi_write_into+0x54a/0xbc0 drivers/media/test-drivers/vidtv/vidtv_psi.c:197
+Call Trace:
+ <TASK>
+ vidtv_psi_table_header_write_into drivers/media/test-drivers/vidtv/vidtv_psi.c:799 [inline]
+ vidtv_psi_pmt_write_into+0x3b2/0xa70 drivers/media/test-drivers/vidtv/vidtv_psi.c:1231
+ vidtv_mux_push_si+0x932/0xe80 drivers/media/test-drivers/vidtv/vidtv_mux.c:196
+ vidtv_mux_tick+0xe9b/0x1480 drivers/media/test-drivers/vidtv/vidtv_mux.c:408
+
+Fixes: f90cf6079bf67 ("media: vidtv: add a bridge driver")
 Cc: stable@vger.kernel.org
-Tested-by: David Wang <00107082@163.com>
-Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
-Link: https://lore.kernel.org/r/20250902105306.877476-4-mathias.nyman@linux.intel.com
+Reported-by: syzbot+814c351d094f4f1a1b86@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=814c351d094f4f1a1b86
+Signed-off-by: Ruslan Valiyev <linuxoid@gmail.com>
+Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Justin Chen <justin.chen@broadcom.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/host/xhci-mem.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/media/test-drivers/vidtv/vidtv_mux.c |    8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/usb/host/xhci-mem.c b/drivers/usb/host/xhci-mem.c
-index fb81e61a599d75..7f75298a09d6fc 100644
---- a/drivers/usb/host/xhci-mem.c
-+++ b/drivers/usb/host/xhci-mem.c
-@@ -961,7 +961,7 @@ static void xhci_free_virt_devices_depth_first(struct xhci_hcd *xhci, int slot_i
- out:
- 	/* we are now at a leaf device */
- 	xhci_debugfs_remove_slot(xhci, slot_id);
--	xhci_free_virt_device(xhci, vdev, slot_id);
-+	xhci_free_virt_device(xhci, xhci->devs[slot_id], slot_id);
- }
+--- a/drivers/media/test-drivers/vidtv/vidtv_mux.c
++++ b/drivers/media/test-drivers/vidtv/vidtv_mux.c
+@@ -101,7 +101,8 @@ static int vidtv_mux_pid_ctx_init(struct
+ 	/* add a ctx for all PMT sections */
+ 	while (p) {
+ 		pid = vidtv_psi_get_pat_program_pid(p);
+-		vidtv_mux_create_pid_ctx_once(m, pid);
++		if (!vidtv_mux_create_pid_ctx_once(m, pid))
++			goto free;
+ 		p = p->next;
+ 	}
  
- int xhci_alloc_virt_device(struct xhci_hcd *xhci, int slot_id,
--- 
-2.53.0
-
+@@ -170,6 +171,9 @@ static u32 vidtv_mux_push_si(struct vidt
+ 	nit_ctx = vidtv_mux_get_pid_ctx(m, VIDTV_NIT_PID);
+ 	eit_ctx = vidtv_mux_get_pid_ctx(m, VIDTV_EIT_PID);
+ 
++	if (!pat_ctx || !sdt_ctx || !nit_ctx || !eit_ctx)
++		return 0;
++
+ 	pat_args.offset             = m->mux_buf_offset;
+ 	pat_args.continuity_counter = &pat_ctx->cc;
+ 
+@@ -186,6 +190,8 @@ static u32 vidtv_mux_push_si(struct vidt
+ 		}
+ 
+ 		pmt_ctx = vidtv_mux_get_pid_ctx(m, pmt_pid);
++		if (!pmt_ctx)
++			continue;
+ 
+ 		pmt_args.offset             = m->mux_buf_offset;
+ 		pmt_args.pmt                = m->si.pmt_secs[i];
 
 
 
