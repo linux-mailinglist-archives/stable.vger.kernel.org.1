@@ -1,62 +1,74 @@
-Return-Path: <stable+bounces-270721-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-271197-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id TgE/BvieRmpiaQsAu9opvQ
-	(envelope-from <stable+bounces-270721-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:25:12 +0200
+	id iDiTK1GZRmrTZgsAu9opvQ
+	(envelope-from <stable+bounces-271197-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:01:05 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 42F486FB4F5
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:25:11 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3E0066FADB9
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:01:05 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=foRKDmqV;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-270721-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-270721-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=zuvMzMtm;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-271197-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-271197-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id AEC3C326BD70
-	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:32:24 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 909713105789
+	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:50:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B708414DF5;
-	Thu,  2 Jul 2026 16:28:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E968F35F8D2;
+	Thu,  2 Jul 2026 16:48:39 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 285D4414DDD;
-	Thu,  2 Jul 2026 16:27:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5434031DD97;
+	Thu,  2 Jul 2026 16:48:38 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783009681; cv=none; b=crVOu0IBVy2AEFEm0BRqC6e31ohJIqzL4Erk6xR5KAuNrBnv1x4PK6jHSfZQNMynyKuxt4+5Cd+lpR1YBP8FKZsJTfhrLdkw1RtKE4tXGRvjStHnzvG0tUHu7rvo34BJEdiorEIlJu7m2uy2K9qTwuJz4qmpbV43McBwhWbcdIw=
+	t=1783010919; cv=none; b=P0JUtUvRJN9SGY8qBBHP2xAifNlN69jVVyipzEpnLNadPywNOyCzOXAUSEtML3hbgB1OKw/wFjvKGIf/siPQQG7n4aZm74RJV13iPBjzLOC2A9VTvDvh8HYDq7848xFwr52npX0p0GrBvvmuYf9zBjdqi0jQg1QYbLo0d70tkns=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783009681; c=relaxed/simple;
-	bh=+LcDJZ9oZdoluPlj7SWAkbgL0+fjed1SZcAq0X6BJFU=;
+	s=arc-20240116; t=1783010919; c=relaxed/simple;
+	bh=4//LVlSf7X0EN5E4+w5wRZ51P4xdD6nt7vHFvGBEZMM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=lfms8fYS1phfvI80AdFlc9IoBOfEb/+ocJhHJQSPOMaPAG0MvZ3jNJ7gIxQky/K6tN/w++O85wRrwaaCL+HFebAlfOlmuvJyXNwlR0X5byga5ZHiLt0anETi8tV5nBNprs85P6QHW4TUz0kfEkyYBU5x9bUhc6k0Z69fvDsb+Ms=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=foRKDmqV; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 743DC1F000E9;
-	Thu,  2 Jul 2026 16:27:57 +0000 (UTC)
+	 MIME-Version; b=Bho43lxAmr5oI/NtSVNnWA2fWDC60Z1jt/1t497U8x0H/b5toXaIGT64ofI3QhS4wyC62rVhj5NYFefPnIg42ABTJJ6b0+XdDC4HWk9Pjk4dnfM+qY4v57P9OohkmvZWE4wjymISlYdQvFJ9SlSte052g0nE7caWnAlm4lHY5uE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zuvMzMtm; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8FC491F000E9;
+	Thu,  2 Jul 2026 16:48:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1783009678;
-	bh=DTISAGXlRRfjYQDh1hlQweEEFZAa4aLKPp5Cwlou8Ng=;
+	s=korg; t=1783010918;
+	bh=Lz62lHVlB3AxhV1u1sO/H7oD+6HBowXRnYNzS6Neg7I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=foRKDmqVbuCUiE/uLBdPCpa2cjAOY9/r+onpi+0STokX1aZWYSSVLlr9eOvkUU96H
-	 ZUm7tvmmb7zD17it4va1+QoNaTdOQ4xXfc7XSzhIkLPZBtJ0ASbMLNTAUzQoYqFBUp
-	 hHGjBcvoNyEfgMNCMPj0FEJqOgmJAvcrEzFSMuWg=
+	b=zuvMzMtmLqLTpbgwfCt+QfGxvFKgB4M02HznmYoL/KIBno6DvO6TkvmVJS0c/NX2q
+	 2pj0xFdgKS0r1/Au0jA2DMYR2VkXm/QXU8bPA8yCdKmTbKBKbhkaJM84hG5VALtw+r
+	 Nnux/7duq3D+XpNIz1blKhMEw+oQrjzKV6GXQc4Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Iago Toral Quiroga <itoral@igalia.com>,
-	Melissa Wen <mwen@igalia.com>,
-	=?UTF-8?q?Ma=C3=ADra=20Canal?= <mcanal@igalia.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 08/95] drm/v3d: Store the active job inside the queues state
+	bpf <bpf@vger.kernel.org>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	Masahiro Yamada <masahiroy@kernel.org>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Nicolas Schier <nicolas@fjasle.eu>,
+	Zheng Yejian <zhengyejian1@huawei.com>,
+	Martin Kelly <martin.kelly@crowdstrike.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Josh Poimboeuf <jpoimboe@redhat.com>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
+	Andrey Grodzovsky <andrey.grodzovsky@crowdstrike.com>
+Subject: [PATCH 6.6 050/175] scripts/sorttable: Replace Elf_Shdr Macro with a union
 Date: Thu,  2 Jul 2026 18:19:11 +0200
-Message-ID: <20260702155109.385288151@linuxfoundation.org>
+Message-ID: <20260702155116.851170914@linuxfoundation.org>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260702155109.196223802@linuxfoundation.org>
-References: <20260702155109.196223802@linuxfoundation.org>
+In-Reply-To: <20260702155115.766838875@linuxfoundation.org>
+References: <20260702155115.766838875@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,276 +78,292 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-270721-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:itoral@igalia.com,m:mwen@igalia.com,m:mcanal@igalia.com,m:sashal@kernel.org,s:lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-271197-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[19];
 	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:bpf@vger.kernel.org,m:mhiramat@kernel.org,m:mark.rutland@arm.com,m:mathieu.desnoyers@efficios.com,m:akpm@linux-foundation.org,m:peterz@infradead.org,m:torvalds@linux-foundation.org,m:masahiroy@kernel.org,m:nathan@kernel.org,m:nicolas@fjasle.eu,m:zhengyejian1@huawei.com,m:martin.kelly@crowdstrike.com,m:christophe.leroy@csgroup.eu,m:jpoimboe@redhat.com,m:rostedt@goodmis.org,m:andrey.grodzovsky@crowdstrike.com,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	TAGGED_RCPT(0.00)[stable];
-	MID_RHS_MATCH_FROM(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,igalia.com:email]
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 42F486FB4F5
+X-Rspamd-Queue-Id: 3E0066FADB9
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maíra Canal <mcanal@igalia.com>
+From: Steven Rostedt <rostedt@goodmis.org>
 
-[ Upstream commit 0d3768826d38c0ac740f8b45cd13346630535f2b ]
+[ Upstream commit 545f6cf8f4c9a268e0bab2637f1d279679befdbf ]
 
-Instead of storing the queue's active job in four different variables,
-store the active job inside the queue's state. This way, it's possible
-to access all active jobs using an index based in `enum v3d_queue`.
+In order to remove the double #include of sorttable.h for 64 and 32 bit
+to create duplicate functions for both, replace the Elf_Shdr macro with a
+union that defines both Elf64_Shdr and Elf32_Shdr, with field e64 for the
+64bit version, and e32 for the 32bit version.
 
-Reviewed-by: Iago Toral Quiroga <itoral@igalia.com>
-Reviewed-by: Melissa Wen <mwen@igalia.com>
-Link: https://lore.kernel.org/r/20250826-v3d-queue-lock-v3-2-979efc43e490@igalia.com
-Signed-off-by: Maíra Canal <mcanal@igalia.com>
-Stable-dep-of: 7f93fad5ea0a ("drm/v3d: Skip CSD when it has zeroed workgroups")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+It can then use the macro etype to get the proper value.
+
+This will eventually be replaced with just single functions that can
+handle both 32bit and 64bit ELF parsing.
+
+Cc: bpf <bpf@vger.kernel.org>
+Cc: Masami Hiramatsu <mhiramat@kernel.org>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Masahiro Yamada <masahiroy@kernel.org>
+Cc: Nathan Chancellor <nathan@kernel.org>
+Cc: Nicolas Schier <nicolas@fjasle.eu>
+Cc: Zheng Yejian <zhengyejian1@huawei.com>
+Cc: Martin  Kelly <martin.kelly@crowdstrike.com>
+Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
+Cc: Josh Poimboeuf <jpoimboe@redhat.com>
+Link: https://lore.kernel.org/20250105162345.339462681@goodmis.org
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: Andrey Grodzovsky <andrey.grodzovsky@crowdstrike.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/v3d/v3d_drv.h   |  8 +++-----
- drivers/gpu/drm/v3d/v3d_gem.c   |  5 +++--
- drivers/gpu/drm/v3d/v3d_irq.c   | 24 ++++++++++++++----------
- drivers/gpu/drm/v3d/v3d_sched.c | 26 ++++++++++++++++++--------
- 4 files changed, 38 insertions(+), 25 deletions(-)
+ scripts/sorttable.c |   10 +++++++
+ scripts/sorttable.h |   74 ++++++++++++++++++++++++++++------------------------
+ 2 files changed, 51 insertions(+), 33 deletions(-)
 
-diff --git a/drivers/gpu/drm/v3d/v3d_drv.h b/drivers/gpu/drm/v3d/v3d_drv.h
-index 0d551b1d9b05d4..14002d2b4add36 100644
---- a/drivers/gpu/drm/v3d/v3d_drv.h
-+++ b/drivers/gpu/drm/v3d/v3d_drv.h
-@@ -35,6 +35,9 @@ struct v3d_queue_state {
+--- a/scripts/sorttable.c
++++ b/scripts/sorttable.c
+@@ -69,6 +69,11 @@ typedef union {
+ 	Elf64_Ehdr	e64;
+ } Elf_Ehdr;
  
- 	u64 fence_context;
- 	u64 emit_seqno;
++typedef union {
++	Elf32_Shdr	e32;
++	Elf64_Shdr	e64;
++} Elf_Shdr;
 +
-+	/* Currently active job for this queue */
-+	struct v3d_job *active_job;
- };
+ static uint32_t (*r)(const uint32_t *);
+ static uint16_t (*r2)(const uint16_t *);
+ static uint64_t (*r8)(const uint64_t *);
+@@ -198,6 +203,11 @@ static int compare_extable_64(const void
+ 	return av > bv;
+ }
  
- /* Performance monitor object. The perform lifetime is controlled by userspace
-@@ -119,11 +122,6 @@ struct v3d_dev {
- 
- 	struct work_struct overflow_mem_work;
- 
--	struct v3d_bin_job *bin_job;
--	struct v3d_render_job *render_job;
--	struct v3d_tfu_job *tfu_job;
--	struct v3d_csd_job *csd_job;
--
- 	struct v3d_queue_state queue[V3D_MAX_QUEUES];
- 
- 	/* Spinlock used to synchronize the overflow memory
-diff --git a/drivers/gpu/drm/v3d/v3d_gem.c b/drivers/gpu/drm/v3d/v3d_gem.c
-index ecd03ad9699a08..3911550f72c22f 100644
---- a/drivers/gpu/drm/v3d/v3d_gem.c
-+++ b/drivers/gpu/drm/v3d/v3d_gem.c
-@@ -950,14 +950,15 @@ void
- v3d_gem_destroy(struct drm_device *dev)
++static inline void *get_index(void *start, int entsize, int index)
++{
++	return start + (entsize * index);
++}
++
+ /* 32 bit and 64 bit are very similar */
+ #include "sorttable.h"
+ #define SORTTABLE_64
+--- a/scripts/sorttable.h
++++ b/scripts/sorttable.h
+@@ -23,7 +23,6 @@
+ #undef sort_mcount_loc
+ #undef elf_mcount_loc
+ #undef do_sort
+-#undef Elf_Shdr
+ #undef Elf_Sym
+ #undef ELF_ST_TYPE
+ #undef uint_t
+@@ -37,7 +36,6 @@
+ # define sort_mcount_loc	sort_mcount_loc_64
+ # define elf_mcount_loc		elf_mcount_loc_64
+ # define do_sort		do_sort_64
+-# define Elf_Shdr		Elf64_Shdr
+ # define Elf_Sym		Elf64_Sym
+ # define ELF_ST_TYPE		ELF64_ST_TYPE
+ # define uint_t			uint64_t
+@@ -50,7 +48,6 @@
+ # define sort_mcount_loc	sort_mcount_loc_32
+ # define elf_mcount_loc		elf_mcount_loc_32
+ # define do_sort		do_sort_32
+-# define Elf_Shdr		Elf32_Shdr
+ # define Elf_Sym		Elf32_Sym
+ # define ELF_ST_TYPE		ELF32_ST_TYPE
+ # define uint_t			uint32_t
+@@ -171,8 +168,8 @@ struct elf_mcount_loc {
+ static void *sort_mcount_loc(void *arg)
  {
- 	struct v3d_dev *v3d = to_v3d_dev(dev);
-+	enum v3d_queue q;
+ 	struct elf_mcount_loc *emloc = (struct elf_mcount_loc *)arg;
+-	uint_t offset = emloc->start_mcount_loc - _r(&(emloc->init_data_sec)->sh_addr)
+-					+ _r(&(emloc->init_data_sec)->sh_offset);
++	uint_t offset = emloc->start_mcount_loc - _r(&(emloc->init_data_sec)->etype.sh_addr)
++					+ _r(&(emloc->init_data_sec)->etype.sh_offset);
+ 	uint_t count = emloc->stop_mcount_loc - emloc->start_mcount_loc;
+ 	unsigned char *start_loc = (void *)emloc->ehdr + offset;
  
- 	v3d_sched_fini(v3d);
+@@ -222,10 +219,11 @@ static int do_sort(Elf_Ehdr *ehdr,
+ 		   table_sort_t custom_sort)
+ {
+ 	int rc = -1;
+-	Elf_Shdr *s, *shdr = (Elf_Shdr *)((char *)ehdr + _r(&ehdr->etype.e_shoff));
++	Elf_Shdr *shdr_start;
+ 	Elf_Shdr *strtab_sec = NULL;
+ 	Elf_Shdr *symtab_sec = NULL;
+ 	Elf_Shdr *extab_sec = NULL;
++	Elf_Shdr *string_sec;
+ 	Elf_Sym *sym;
+ 	const Elf_Sym *symtab;
+ 	Elf32_Word *symtab_shndx = NULL;
+@@ -235,7 +233,10 @@ static int do_sort(Elf_Ehdr *ehdr,
+ 	const char *secstrings;
+ 	const char *strtab;
+ 	char *extab_image;
++	int sort_need_index;
++	int shentsize;
+ 	int idx;
++	int i;
+ 	unsigned int shnum;
+ 	unsigned int shstrndx;
+ #ifdef MCOUNT_SORT_ENABLED
+@@ -249,34 +250,40 @@ static int do_sort(Elf_Ehdr *ehdr,
+ 	unsigned int orc_num_entries = 0;
+ #endif
  
- 	/* Waiting for jobs to finish would need to be done before
- 	 * unregistering V3D.
- 	 */
--	WARN_ON(v3d->bin_job);
--	WARN_ON(v3d->render_job);
-+	for (q = 0; q < V3D_MAX_QUEUES; q++)
-+		WARN_ON(v3d->queue[q].active_job);
- 
- 	drm_mm_takedown(&v3d->mm);
- 
-diff --git a/drivers/gpu/drm/v3d/v3d_irq.c b/drivers/gpu/drm/v3d/v3d_irq.c
-index 9aba78e6d7a5a6..3d5505159ff5e8 100644
---- a/drivers/gpu/drm/v3d/v3d_irq.c
-+++ b/drivers/gpu/drm/v3d/v3d_irq.c
-@@ -40,6 +40,8 @@ v3d_overflow_mem_work(struct work_struct *work)
- 		container_of(work, struct v3d_dev, overflow_mem_work);
- 	struct drm_device *dev = &v3d->drm;
- 	struct v3d_bo *bo = v3d_bo_create(dev, NULL /* XXX: GMP */, 256 * 1024);
-+	struct v3d_queue_state *queue = &v3d->queue[V3D_BIN];
-+	struct v3d_bin_job *bin_job;
- 	struct drm_gem_object *obj;
- 	unsigned long irqflags;
- 
-@@ -59,13 +61,15 @@ v3d_overflow_mem_work(struct work_struct *work)
- 	 * some binner pool anyway.
- 	 */
- 	spin_lock_irqsave(&v3d->job_lock, irqflags);
--	if (!v3d->bin_job) {
-+	bin_job = (struct v3d_bin_job *)queue->active_job;
++	shdr_start = (Elf_Shdr *)((char *)ehdr + _r(&ehdr->etype.e_shoff));
++	shentsize = r2(&ehdr->etype.e_shentsize);
 +
-+	if (!bin_job) {
- 		spin_unlock_irqrestore(&v3d->job_lock, irqflags);
+ 	shstrndx = r2(&ehdr->etype.e_shstrndx);
+ 	if (shstrndx == SHN_XINDEX)
+-		shstrndx = r(&shdr[0].sh_link);
+-	secstrings = (const char *)ehdr + _r(&shdr[shstrndx].sh_offset);
++		shstrndx = r(&shdr_start->etype.sh_link);
++	string_sec = get_index(shdr_start, shentsize, shstrndx);
++	secstrings = (const char *)ehdr + _r(&string_sec->etype.sh_offset);
+ 
+ 	shnum = r2(&ehdr->etype.e_shnum);
+ 	if (shnum == SHN_UNDEF)
+-		shnum = _r(&shdr[0].sh_size);
++		shnum = _r(&shdr_start->etype.sh_size);
++
++	for (i = 0; i < shnum; i++) {
++		Elf_Shdr *shdr = get_index(shdr_start, shentsize, i);
+ 
+-	for (s = shdr; s < shdr + shnum; s++) {
+-		idx = r(&s->sh_name);
++		idx = r(&shdr->etype.sh_name);
+ 		if (!strcmp(secstrings + idx, "__ex_table"))
+-			extab_sec = s;
++			extab_sec = shdr;
+ 		if (!strcmp(secstrings + idx, ".symtab"))
+-			symtab_sec = s;
++			symtab_sec = shdr;
+ 		if (!strcmp(secstrings + idx, ".strtab"))
+-			strtab_sec = s;
++			strtab_sec = shdr;
+ 
+-		if (r(&s->sh_type) == SHT_SYMTAB_SHNDX)
++		if (r(&shdr->etype.sh_type) == SHT_SYMTAB_SHNDX)
+ 			symtab_shndx = (Elf32_Word *)((const char *)ehdr +
+-						      _r(&s->sh_offset));
++						      _r(&shdr->etype.sh_offset));
+ 
+ #ifdef MCOUNT_SORT_ENABLED
+ 		/* locate the .init.data section in vmlinux */
+ 		if (!strcmp(secstrings + idx, ".init.data")) {
+ 			get_mcount_loc(&_start_mcount_loc, &_stop_mcount_loc);
+ 			mstruct.ehdr = ehdr;
+-			mstruct.init_data_sec = s;
++			mstruct.init_data_sec = shdr;
+ 			mstruct.start_mcount_loc = _start_mcount_loc;
+ 			mstruct.stop_mcount_loc = _stop_mcount_loc;
+ 		}
+@@ -285,14 +292,14 @@ static int do_sort(Elf_Ehdr *ehdr,
+ #if defined(SORTTABLE_64) && defined(UNWINDER_ORC_ENABLED)
+ 		/* locate the ORC unwind tables */
+ 		if (!strcmp(secstrings + idx, ".orc_unwind_ip")) {
+-			orc_ip_size = _r(&s->sh_size);
++			orc_ip_size = _r(&shdr->etype.sh_size);
+ 			g_orc_ip_table = (int *)((void *)ehdr +
+-						   _r(&s->sh_offset));
++						   _r(&shdr->etype.sh_offset));
+ 		}
+ 		if (!strcmp(secstrings + idx, ".orc_unwind")) {
+-			orc_size = _r(&s->sh_size);
++			orc_size = _r(&shdr->etype.sh_size);
+ 			g_orc_table = (struct orc_entry *)((void *)ehdr +
+-							     _r(&s->sh_offset));
++							     _r(&shdr->etype.sh_offset));
+ 		}
+ #endif
+ 	} /* for loop */
+@@ -355,22 +362,22 @@ static int do_sort(Elf_Ehdr *ehdr,
  		goto out;
  	}
  
- 	drm_gem_object_get(obj);
--	list_add_tail(&bo->unref_head, &v3d->bin_job->render->unref_list);
-+	list_add_tail(&bo->unref_head, &bin_job->render->unref_list);
- 	spin_unlock_irqrestore(&v3d->job_lock, irqflags);
+-	extab_image = (void *)ehdr + _r(&extab_sec->sh_offset);
+-	strtab = (const char *)ehdr + _r(&strtab_sec->sh_offset);
++	extab_image = (void *)ehdr + _r(&extab_sec->etype.sh_offset);
++	strtab = (const char *)ehdr + _r(&strtab_sec->etype.sh_offset);
+ 	symtab = (const Elf_Sym *)((const char *)ehdr +
+-						  _r(&symtab_sec->sh_offset));
++						  _r(&symtab_sec->etype.sh_offset));
  
- 	V3D_CORE_WRITE(0, V3D_PTB_BPOA, bo->node.start << PAGE_SHIFT);
-@@ -99,11 +103,11 @@ v3d_irq(int irq, void *arg)
+ 	if (custom_sort) {
+-		custom_sort(extab_image, _r(&extab_sec->sh_size));
++		custom_sort(extab_image, _r(&extab_sec->etype.sh_size));
+ 	} else {
+-		int num_entries = _r(&extab_sec->sh_size) / extable_ent_size;
++		int num_entries = _r(&extab_sec->etype.sh_size) / extable_ent_size;
+ 		qsort(extab_image, num_entries,
+ 		      extable_ent_size, compare_extable);
+ 	}
  
- 	if (intsts & V3D_INT_FLDONE) {
- 		struct v3d_fence *fence =
--			to_v3d_fence(v3d->bin_job->base.irq_fence);
-+			to_v3d_fence(v3d->queue[V3D_BIN].active_job->irq_fence);
+ 	/* find the flag main_extable_sort_needed */
+-	for (sym = (void *)ehdr + _r(&symtab_sec->sh_offset);
+-	     sym < sym + _r(&symtab_sec->sh_size) / sizeof(Elf_Sym);
++	for (sym = (void *)ehdr + _r(&symtab_sec->etype.sh_offset);
++	     sym < sym + _r(&symtab_sec->etype.sh_size) / sizeof(Elf_Sym);
+ 	     sym++) {
+ 		if (ELF_ST_TYPE(sym->st_info) != STT_OBJECT)
+ 			continue;
+@@ -388,13 +395,14 @@ static int do_sort(Elf_Ehdr *ehdr,
+ 		goto out;
+ 	}
  
- 		trace_v3d_bcl_irq(&v3d->drm, fence->seqno);
+-	sort_needed_sec = &shdr[get_secindex(r2(&sym->st_shndx),
+-					     sort_needed_sym - symtab,
+-					     symtab_shndx)];
++	sort_need_index = get_secindex(r2(&sym->st_shndx),
++				       sort_needed_sym - symtab,
++				       symtab_shndx);
++	sort_needed_sec = get_index(shdr_start, shentsize, sort_need_index);
+ 	sort_needed_loc = (void *)ehdr +
+-		_r(&sort_needed_sec->sh_offset) +
++		_r(&sort_needed_sec->etype.sh_offset) +
+ 		_r(&sort_needed_sym->st_value) -
+-		_r(&sort_needed_sec->sh_addr);
++		_r(&sort_needed_sec->etype.sh_addr);
  
--		v3d->bin_job = NULL;
-+		v3d->queue[V3D_BIN].active_job = NULL;
- 		dma_fence_signal(&fence->base);
- 
- 		status = IRQ_HANDLED;
-@@ -111,11 +115,11 @@ v3d_irq(int irq, void *arg)
- 
- 	if (intsts & V3D_INT_FRDONE) {
- 		struct v3d_fence *fence =
--			to_v3d_fence(v3d->render_job->base.irq_fence);
-+			to_v3d_fence(v3d->queue[V3D_RENDER].active_job->irq_fence);
- 
- 		trace_v3d_rcl_irq(&v3d->drm, fence->seqno);
- 
--		v3d->render_job = NULL;
-+		v3d->queue[V3D_RENDER].active_job = NULL;
- 		dma_fence_signal(&fence->base);
- 
- 		status = IRQ_HANDLED;
-@@ -123,11 +127,11 @@ v3d_irq(int irq, void *arg)
- 
- 	if (intsts & V3D_INT_CSDDONE) {
- 		struct v3d_fence *fence =
--			to_v3d_fence(v3d->csd_job->base.irq_fence);
-+			to_v3d_fence(v3d->queue[V3D_CSD].active_job->irq_fence);
- 
- 		trace_v3d_csd_irq(&v3d->drm, fence->seqno);
- 
--		v3d->csd_job = NULL;
-+		v3d->queue[V3D_CSD].active_job = NULL;
- 		dma_fence_signal(&fence->base);
- 
- 		status = IRQ_HANDLED;
-@@ -162,11 +166,11 @@ v3d_hub_irq(int irq, void *arg)
- 
- 	if (intsts & V3D_HUB_INT_TFUC) {
- 		struct v3d_fence *fence =
--			to_v3d_fence(v3d->tfu_job->base.irq_fence);
-+			to_v3d_fence(v3d->queue[V3D_TFU].active_job->irq_fence);
- 
- 		trace_v3d_tfu_irq(&v3d->drm, fence->seqno);
- 
--		v3d->tfu_job = NULL;
-+		v3d->queue[V3D_TFU].active_job = NULL;
- 		dma_fence_signal(&fence->base);
- 
- 		status = IRQ_HANDLED;
-diff --git a/drivers/gpu/drm/v3d/v3d_sched.c b/drivers/gpu/drm/v3d/v3d_sched.c
-index c357229256b73a..db98855741ee85 100644
---- a/drivers/gpu/drm/v3d/v3d_sched.c
-+++ b/drivers/gpu/drm/v3d/v3d_sched.c
-@@ -103,14 +103,18 @@ static struct dma_fence *v3d_bin_job_run(struct drm_sched_job *sched_job)
- 	struct dma_fence *fence;
- 	unsigned long irqflags;
- 
--	if (unlikely(job->base.base.s_fence->finished.error))
-+	if (unlikely(job->base.base.s_fence->finished.error)) {
-+		spin_lock_irqsave(&v3d->job_lock, irqflags);
-+		v3d->queue[V3D_BIN].active_job = NULL;
-+		spin_unlock_irqrestore(&v3d->job_lock, irqflags);
- 		return NULL;
-+	}
- 
- 	/* Lock required around bin_job update vs
- 	 * v3d_overflow_mem_work().
- 	 */
- 	spin_lock_irqsave(&v3d->job_lock, irqflags);
--	v3d->bin_job = job;
-+	v3d->queue[V3D_BIN].active_job = &job->base;
- 	/* Clear out the overflow allocation, so we don't
- 	 * reuse the overflow attached to a previous job.
- 	 */
-@@ -157,10 +161,12 @@ static struct dma_fence *v3d_render_job_run(struct drm_sched_job *sched_job)
- 	struct drm_device *dev = &v3d->drm;
- 	struct dma_fence *fence;
- 
--	if (unlikely(job->base.base.s_fence->finished.error))
-+	if (unlikely(job->base.base.s_fence->finished.error)) {
-+		v3d->queue[V3D_RENDER].active_job = NULL;
- 		return NULL;
-+	}
- 
--	v3d->render_job = job;
-+	v3d->queue[V3D_RENDER].active_job = &job->base;
- 
- 	/* Can we avoid this flush?  We need to be careful of
- 	 * scheduling, though -- imagine job0 rendering to texture and
-@@ -202,10 +208,12 @@ v3d_tfu_job_run(struct drm_sched_job *sched_job)
- 	struct drm_device *dev = &v3d->drm;
- 	struct dma_fence *fence;
- 
--	if (unlikely(job->base.base.s_fence->finished.error))
-+	if (unlikely(job->base.base.s_fence->finished.error)) {
-+		v3d->queue[V3D_TFU].active_job = NULL;
- 		return NULL;
-+	}
- 
--	v3d->tfu_job = job;
-+	v3d->queue[V3D_TFU].active_job = &job->base;
- 
- 	fence = v3d_fence_create(v3d, V3D_TFU);
- 	if (IS_ERR(fence))
-@@ -244,10 +252,12 @@ v3d_csd_job_run(struct drm_sched_job *sched_job)
- 	struct dma_fence *fence;
- 	int i;
- 
--	if (unlikely(job->base.base.s_fence->finished.error))
-+	if (unlikely(job->base.base.s_fence->finished.error)) {
-+		v3d->queue[V3D_CSD].active_job = NULL;
- 		return NULL;
-+	}
- 
--	v3d->csd_job = job;
-+	v3d->queue[V3D_CSD].active_job = &job->base;
- 
- 	v3d_invalidate_caches(v3d);
- 
--- 
-2.53.0
-
+ 	/* extable has been sorted, clear the flag */
+ 	w(0, sort_needed_loc);
 
 
 
