@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-270963-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-270964-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id oxJBAoGURmoJZAsAu9opvQ
-	(envelope-from <stable+bounces-270963-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:40:33 +0200
+	id gHHXGBWWRmr+ZAsAu9opvQ
+	(envelope-from <stable+bounces-270964-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:47:17 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 88AC16FA5B5
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:40:32 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 102206FA8B0
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:47:17 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=uvvAkM3d;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-270963-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-270963-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=TqzEqc6F;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-270964-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-270964-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 1A36430498C8
-	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:39:49 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 85E8C305ECDA
+	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:39:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7312E352C52;
-	Thu,  2 Jul 2026 16:38:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 775043546C6;
+	Thu,  2 Jul 2026 16:38:33 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 162D21A682A;
-	Thu,  2 Jul 2026 16:38:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B764E1A682A;
+	Thu,  2 Jul 2026 16:38:31 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783010310; cv=none; b=IZdgi6Xh7x7+FGTAMYm7cpctE1GlVdXh0C5SYfodhtfZ0oScrQldjYfXR6nlu1PYDN8YjoBknz8w1La4N31Fn50LauDxAVDir7I0QCmu1YHw1lB2mZYwAbKE2sZicKguh89Nor4tnUMK0FpKEBI6NNkEDro6I8NfMpBVRNOWCKg=
+	t=1783010313; cv=none; b=fpNRjU6O3S4eHBU0dhjS9KKk0w3zOqyI0GIwZpHZxJDnBs/LJAsLlCFufSTcGmmbm9aAQl0RO5JZSxEq4rGuswjal7Pw4rQJ6NAdwcTZc0cUi/L/ne8SMsyLF9/4DMZHTtlWrG1bWvABCvK2kGfUZBjlA7jTcPHd7eaqBotUvms=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783010310; c=relaxed/simple;
-	bh=5/kg7qob13FsibrFqp8telYBw0QBW7fNoll0qAfNqgw=;
+	s=arc-20240116; t=1783010313; c=relaxed/simple;
+	bh=+nMBBF3+qEdwF80EZohmSZfLtmLu14sFa2XQJuSJG1A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dLc+oQ948HVwzV76nqLTqlVZPbKBI4Kvs5h93k3nJfDIu0JnWEuO1cBk32Q2APAnMAYLJxa3aiX8Ub0bpjUi4VCD1ajXWNGsEKmHb4K58g+V6Q53MeZnS75jikBe97uowRW2z4+9ak0sOgKrgpOPy8+hNlIxb3Ok8iw6PiqDW7M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uvvAkM3d; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 530541F000E9;
-	Thu,  2 Jul 2026 16:38:28 +0000 (UTC)
+	 MIME-Version; b=gV/cgLPU2tlCxE6HzOVEzTZcQU/CB5+RJWKkZ4Aqm1v9RgWMlYJwZYSFqCsrNiBklPRfOtgBXKe92UCC3DbAmhab3fvzR0AXJ0tUXCY5SG5fEAbyX4iOQw5vNRVC+IVz5VNO4AgpxT1/Rk3xzfxNsTiHoWjthwjLWjFtGfofQt8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TqzEqc6F; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2B8F1F000E9;
+	Thu,  2 Jul 2026 16:38:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1783010309;
-	bh=Qgoyzwtl0E/fsyp04VCNWdmXETdHiV7750MUoPddlQA=;
+	s=korg; t=1783010311;
+	bh=78H5iUnNE9ff1mf9ryBaRmb7wepuCECrnEq6bdnbgLc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=uvvAkM3dC6jr+dX2No/r1hqzhk0Iw+G/6uYs94DJnHqzKPXySPmBe0ZbfIRQDyteC
-	 2+CSwlenhJXSiA+buAojBeMxGPCoh1vulQLTohFjKAAK8lqoT1ZPOVA9mUQTKyo8cj
-	 xl7E7+RJkd6AlF56RPezLb2wU9LN+Y+rk7m4ZHsI=
+	b=TqzEqc6FdAnu687RW44P208XCG5VEREa0RdPcLUveLfh7sa6rMzHP20PkYrawYzBe
+	 PZmC8oFU5N3zOAEHVcXhJTX8/Z6aBUyZYDuIznuTpvsNoeGor8+D+91Z4MyWHieCM4
+	 aPUFUBHGAGdXjefcdTrF+QIRhyF5heeKtMKvgLEU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -63,9 +63,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Josh Poimboeuf <jpoimboe@redhat.com>,
 	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
 	Andrey Grodzovsky <andrey.grodzovsky@crowdstrike.com>
-Subject: [PATCH 6.12 058/204] scripts/sorttable: Remove unused write functions
-Date: Thu,  2 Jul 2026 18:18:35 +0200
-Message-ID: <20260702155119.878644434@linuxfoundation.org>
+Subject: [PATCH 6.12 059/204] scripts/sorttable: Remove unneeded Elf_Rel
+Date: Thu,  2 Jul 2026 18:18:36 +0200
+Message-ID: <20260702155119.900155393@linuxfoundation.org>
 X-Mailer: git-send-email 2.55.0
 In-Reply-To: <20260702155118.667618796@linuxfoundation.org>
 References: <20260702155118.667618796@linuxfoundation.org>
@@ -85,21 +85,21 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-270963-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-270964-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	RCPT_COUNT_TWELVE(0.00)[19];
 	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:bpf@vger.kernel.org,m:mhiramat@kernel.org,m:mark.rutland@arm.com,m:mathieu.desnoyers@efficios.com,m:akpm@linux-foundation.org,m:peterz@infradead.org,m:torvalds@linux-foundation.org,m:masahiroy@kernel.org,m:nathan@kernel.org,m:nicolas@fjasle.eu,m:zhengyejian1@huawei.com,m:martin.kelly@crowdstrike.com,m:christophe.leroy@csgroup.eu,m:jpoimboe@redhat.com,m:rostedt@goodmis.org,m:andrey.grodzovsky@crowdstrike.com,s:lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:bpf@vger.kernel.org,m:mhiramat@kernel.org,m:mark.rutland@arm.com,m:mathieu.desnoyers@efficios.com,m:akpm@linux-foundation.org,m:peterz@infradead.org,m:torvalds@linux-foundation.org,m:masahiroy@kernel.org,m:nathan@kernel.org,m:nicolas@fjasle.eu,m:zhengyejian1@huawei.com,m:martin.kelly@crowdstrike.com,m:christophe.leroy@csgroup.eu,m:jpoimboe@redhat.com,m:rostedt@goodmis.org,m:andrey.grodzovsky@crowdstrike.com,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
@@ -111,9 +111,9 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 88AC16FA5B5
+X-Rspamd-Queue-Id: 102206FA8B0
 
 6.12-stable review patch.  If anyone has any objections, please let me know.
 
@@ -121,12 +121,10 @@ X-Rspamd-Queue-Id: 88AC16FA5B5
 
 From: Steven Rostedt <rostedt@goodmis.org>
 
-[ Upstream commit 4f48a28b37d594dab38092514a42ae9f4b781553 ]
+[ Upstream commit 6f2c2f93a190467cebd6ebd03feb49514fead5ca ]
 
-The code of sorttable.h was copied from the recordmcount.h  which defined
-various write functions for different sizes (2, 4, 8 byte lengths). But
-sorttable only uses the 4 byte writes. Remove the extra versions as they
-are not used.
+The code had references to initialize the Elf_Rel relocation tables, but
+it was never used. Remove it.
 
 Cc: bpf <bpf@vger.kernel.org>
 Cc: Masami Hiramatsu <mhiramat@kernel.org>
@@ -142,74 +140,92 @@ Cc: Zheng Yejian <zhengyejian1@huawei.com>
 Cc: Martin  Kelly <martin.kelly@crowdstrike.com>
 Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
 Cc: Josh Poimboeuf <jpoimboe@redhat.com>
-Link: https://lore.kernel.org/20250105162344.314385504@goodmis.org
+Link: https://lore.kernel.org/20250105162344.515342233@goodmis.org
 Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 Signed-off-by: Andrey Grodzovsky <andrey.grodzovsky@crowdstrike.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- scripts/sorttable.c |   26 --------------------------
- 1 file changed, 26 deletions(-)
+ scripts/sorttable.h |   23 ++---------------------
+ 1 file changed, 2 insertions(+), 21 deletions(-)
 
---- a/scripts/sorttable.c
-+++ b/scripts/sorttable.c
-@@ -68,8 +68,6 @@ static uint32_t (*r)(const uint32_t *);
- static uint16_t (*r2)(const uint16_t *);
- static uint64_t (*r8)(const uint64_t *);
- static void (*w)(uint32_t, uint32_t *);
--static void (*w2)(uint16_t, uint16_t *);
--static void (*w8)(uint64_t, uint64_t *);
- typedef void (*table_sort_t)(char *, int);
+--- a/scripts/sorttable.h
++++ b/scripts/sorttable.h
+@@ -26,7 +26,6 @@
+ #undef Elf_Addr
+ #undef Elf_Ehdr
+ #undef Elf_Shdr
+-#undef Elf_Rel
+ #undef Elf_Sym
+ #undef ELF_ST_TYPE
+ #undef uint_t
+@@ -42,7 +41,6 @@
+ # define Elf_Addr		Elf64_Addr
+ # define Elf_Ehdr		Elf64_Ehdr
+ # define Elf_Shdr		Elf64_Shdr
+-# define Elf_Rel		Elf64_Rel
+ # define Elf_Sym		Elf64_Sym
+ # define ELF_ST_TYPE		ELF64_ST_TYPE
+ # define uint_t			uint64_t
+@@ -57,7 +55,6 @@
+ # define Elf_Addr		Elf32_Addr
+ # define Elf_Ehdr		Elf32_Ehdr
+ # define Elf_Shdr		Elf32_Shdr
+-# define Elf_Rel		Elf32_Rel
+ # define Elf_Sym		Elf32_Sym
+ # define ELF_ST_TYPE		ELF32_ST_TYPE
+ # define uint_t			uint32_t
+@@ -248,14 +245,10 @@ static int do_sort(Elf_Ehdr *ehdr,
+ 	Elf32_Word *symtab_shndx = NULL;
+ 	Elf_Sym *sort_needed_sym = NULL;
+ 	Elf_Shdr *sort_needed_sec;
+-	Elf_Rel *relocs = NULL;
+-	int relocs_size = 0;
+ 	uint32_t *sort_needed_loc;
+ 	const char *secstrings;
+ 	const char *strtab;
+ 	char *extab_image;
+-	int extab_index = 0;
+-	int i;
+ 	int idx;
+ 	unsigned int shnum;
+ 	unsigned int shstrndx;
+@@ -279,23 +272,15 @@ static int do_sort(Elf_Ehdr *ehdr,
+ 	if (shnum == SHN_UNDEF)
+ 		shnum = _r(&shdr[0].sh_size);
  
- /*
-@@ -146,31 +144,11 @@ static void wbe(uint32_t val, uint32_t *
- 	put_unaligned_be32(val, x);
- }
+-	for (i = 0, s = shdr; s < shdr + shnum; i++, s++) {
++	for (s = shdr; s < shdr + shnum; s++) {
+ 		idx = r(&s->sh_name);
+-		if (!strcmp(secstrings + idx, "__ex_table")) {
++		if (!strcmp(secstrings + idx, "__ex_table"))
+ 			extab_sec = s;
+-			extab_index = i;
+-		}
+ 		if (!strcmp(secstrings + idx, ".symtab"))
+ 			symtab_sec = s;
+ 		if (!strcmp(secstrings + idx, ".strtab"))
+ 			strtab_sec = s;
  
--static void w2be(uint16_t val, uint16_t *x)
--{
--	put_unaligned_be16(val, x);
--}
--
--static void w8be(uint64_t val, uint64_t *x)
--{
--	put_unaligned_be64(val, x);
--}
--
- static void wle(uint32_t val, uint32_t *x)
- {
- 	put_unaligned_le32(val, x);
- }
+-		if ((r(&s->sh_type) == SHT_REL ||
+-		     r(&s->sh_type) == SHT_RELA) &&
+-		    r(&s->sh_info) == extab_index) {
+-			relocs = (void *)ehdr + _r(&s->sh_offset);
+-			relocs_size = _r(&s->sh_size);
+-		}
+ 		if (r(&s->sh_type) == SHT_SYMTAB_SHNDX)
+ 			symtab_shndx = (Elf32_Word *)((const char *)ehdr +
+ 						      _r(&s->sh_offset));
+@@ -397,10 +382,6 @@ static int do_sort(Elf_Ehdr *ehdr,
+ 		      extable_ent_size, compare_extable);
+ 	}
  
--static void w2le(uint16_t val, uint16_t *x)
--{
--	put_unaligned_le16(val, x);
--}
+-	/* If there were relocations, we no longer need them. */
+-	if (relocs)
+-		memset(relocs, 0, relocs_size);
 -
--static void w8le(uint64_t val, uint64_t *x)
--{
--	put_unaligned_le64(val, x);
--}
--
- /*
-  * Move reserved section indices SHN_LORESERVE..SHN_HIRESERVE out of
-  * the way to -256..-1, to avoid conflicting with real section
-@@ -277,16 +255,12 @@ static int do_file(char const *const fna
- 		r2	= r2le;
- 		r8	= r8le;
- 		w	= wle;
--		w2	= w2le;
--		w8	= w8le;
- 		break;
- 	case ELFDATA2MSB:
- 		r	= rbe;
- 		r2	= r2be;
- 		r8	= r8be;
- 		w	= wbe;
--		w2	= w2be;
--		w8	= w8be;
- 		break;
- 	default:
- 		fprintf(stderr, "unrecognized ELF data encoding %d: %s\n",
+ 	/* find the flag main_extable_sort_needed */
+ 	for (sym = (void *)ehdr + _r(&symtab_sec->sh_offset);
+ 	     sym < sym + _r(&symtab_sec->sh_size) / sizeof(Elf_Sym);
 
 
 
