@@ -1,152 +1,141 @@
-Return-Path: <stable+bounces-270539-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-270540-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id ZSh+M/B1RmqbVwsAu9opvQ
-	(envelope-from <stable+bounces-270539-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 16:30:08 +0200
+	id i1j7Fvd3RmrDWQsAu9opvQ
+	(envelope-from <stable+bounces-270540-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 16:38:47 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 337CE6F8E22
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 16:30:08 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8B46F6F8F3C
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 16:38:46 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=G7BZS4IL;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-270539-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-270539-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=kUUY9zX1;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-270540-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-270540-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id D065B301D4C1
-	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 14:30:01 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 288EC303CD2C
+	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 14:33:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1ECA14C6F04;
-	Thu,  2 Jul 2026 14:30:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B33AE4DD6FE;
+	Thu,  2 Jul 2026 14:33:28 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E50B74A13BE
-	for <stable@vger.kernel.org>; Thu,  2 Jul 2026 14:29:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA20447279F;
+	Thu,  2 Jul 2026 14:33:24 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783002600; cv=none; b=nZ7Jmf0BVoy+EPBlTtETLE9NobMciLIjyGEY1LcO6+bNYHW8hRQaZaHrzov6BGg5IiZt0s9JvtmxF3DGIDB6QEEhSkCz1x+Q68lfU/WRl0tTKucGZJDXOIKY4qOuo2tEwksmD8jMB7fr7vM0wShikIjToblZvx+UVfWh1EeHKys=
+	t=1783002808; cv=none; b=Ct1ZywmAHEFiWYpkx4y2ll6Jry742lOxzCIAUjGO82dFT8MRaOHaV5QTbLkx3Asy98aVHIxmT8xyf7PxNc1VFYhnIkPbEFScFRcrR+jR4bhjpdoxc0nTkjodtDItRZrntFPkY9/IBQm02R1GOwGnTpYAdzACJ/SMXfhgr91qkBo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783002600; c=relaxed/simple;
-	bh=53sPHnwpkreTFShy5p/gTur9r20dojxSjM1K78gPIjI=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=u3UG0jeSVqcKMB3ao/rGy8XXKpAuWh3iYB42aTDWkRHeDk4JEnqj6Q7hUpUIgo/z59j3vhB0pn0QVn2qyhAiz/sZ6blhBMpBqe66aabe4XuxCM1dC/nMrzfSUWAVbKh+1dm8phYE3flAQpuB6zWMT3E8NhyNJhRGfQwZfIx1tGo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=G7BZS4IL; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BEC1C1F000E9;
-	Thu,  2 Jul 2026 14:29:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783002599;
-	bh=s/FdiL7BjjunV1IUfIICk/PLhjAywNQpi+jdfUhPwXg=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=G7BZS4ILyfHrH+nguikFuK+40WQkQN5xWN+INLfvNSeEDaFKFUn/aCuUHtDg+tROz
-	 dgLUwNl5kpzv1/mT+y7qC4+yit3JR3da7Hd/APBeD0iURJKe2RQyjSIx05Gp1pVjF8
-	 S8m6LWSpv+sDTnzfiWfnjxH8EFbYvJlPcAAu1mgn+wkegvKWN2adBTR/B4S/J69c4g
-	 oBJ8Hsne+O50tbYhzVcCOQ04NmifHTgHReej4o7IyRaODiQ90cOcYwydRPycXbbYY7
-	 D8/3gp9A0i0DjMmQesxfSV38JBATORPX/uIld+sWbF/hV12PsOaCiQ7k2raa9zcOUQ
-	 ofQRiRKoqERtw==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	"Rafael J. Wysocki (Intel)" <rafael@kernel.org>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.1.y] device property: initialize the remaining fields of fwnode_handle in fwnode_init()
-Date: Thu,  2 Jul 2026 10:29:56 -0400
-Message-ID: <20260702142956.3485868-1-sashal@kernel.org>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <2026070219-kangaroo-washed-a6e0@gregkh>
-References: <2026070219-kangaroo-washed-a6e0@gregkh>
+	s=arc-20240116; t=1783002808; c=relaxed/simple;
+	bh=t5Vi6OsDk2eWxe7TGJ1s96KWVcA8DipRhR+B42GcteM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=nbB8o5W0uYWIBOTM3htkwX7a1L+Y45c7GcbXrC+egfqN76Ev+Z3HONYY+0i7vy1ba8uyvBoTcD0fOjl4TtXmDwyOnLjjjJiVpupfrtlBJqCYj+P6oTXUkKm4Yz5US6fzvvQ0owC94iR8osVIvIYy4KvBIUTIl3zH8WBwM/UTfI8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kUUY9zX1; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 969161F000E9;
+	Thu,  2 Jul 2026 14:33:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
+	s=korg; t=1783002804;
+	bh=ObPSPm/RAbPRAiqiaBm+TmK1R0zPbfnWG/8sRU3cr3M=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=kUUY9zX1jWEG2F7JuRo7tWuSOwrGZPRAJbOgbN5R1OKkqnVBt5P3tMFaxdqhtaMbo
+	 dYIJCFuRh8T6KwoK8BqilA6PiGXalD3x92ud3EZHUY2O49k8Aq3malWEDD6aBkSZtt
+	 zIn8CL/z9s/C1MiWGohGOQAENuS0BWs56QZ+Hd8c=
+Date: Thu, 2 Jul 2026 16:33:34 +0200
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Vladislav Nikolaev <vlad102nikolaev@gmail.com>
+Cc: stable@vger.kernel.org, Zhu Yanjun <zyjzyj2000@gmail.com>,
+	Doug Ledford <dledford@redhat.com>, Jason Gunthorpe <jgg@ziepe.ca>,
+	Haggai Eran <haggaie@mellanox.com>,
+	Kamal Heib <kamalh@mellanox.com>, Amir Vadai <amirv@mellanox.com>,
+	Moni Shoua <monis@mellanox.com>,
+	Yonatan Cohen <yonatanc@mellanox.com>,
+	Leon Romanovsky <leon@kernel.org>, linux-rdma@vger.kernel.org,
+	linux-kernel@vger.kernel.org, Zhu Yanjun <yanjunz@nvidia.com>,
+	lvc-project@linuxtesting.org
+Subject: Re: [PATCH v3 5.10/5.15 0/2] Backport RDMA/rxe task and timer
+ cleanup fixes
+Message-ID: <2026070218-playhouse-quicksand-7f7d@gregkh>
+References: <20260605171449.1760-1-vlad102nikolaev@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260605171449.1760-1-vlad102nikolaev@gmail.com>
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-3.66 / 15.00];
-	WHITELIST_SPF_DKIM(-3.00)[kernel.org:d:+,kernel.org:s:+];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [2.34 / 15.00];
+	MID_END_EQ_FROM_USER_PART(4.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	MID_RHS_NOT_FQDN(0.50)[];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:bartosz.golaszewski@oss.qualcomm.com,m:sakari.ailus@linux.intel.com,m:rafael@kernel.org,m:andriy.shevchenko@linux.intel.com,m:dakr@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-270539-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER(0.00)[sashal@kernel.org,stable@vger.kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:vlad102nikolaev@gmail.com,m:stable@vger.kernel.org,m:zyjzyj2000@gmail.com,m:dledford@redhat.com,m:jgg@ziepe.ca,m:haggaie@mellanox.com,m:kamalh@mellanox.com,m:amirv@mellanox.com,m:monis@mellanox.com,m:yonatanc@mellanox.com,m:leon@kernel.org,m:linux-rdma@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:yanjunz@nvidia.com,m:lvc-project@linuxtesting.org,s:lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[15];
+	FREEMAIL_TO(0.00)[gmail.com];
+	MIME_TRACE(0.00)[0:+];
+	FORWARDED(0.00)[lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-270540-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[vger.kernel.org,gmail.com,redhat.com,ziepe.ca,mellanox.com,kernel.org,nvidia.com,linuxtesting.org];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,qualcomm.com:email,msgid.link:url,vger.kernel.org:from_smtp]
+	MISSING_XM_UA(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp,gregkh:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 337CE6F8E22
+X-Rspamd-Queue-Id: 8B46F6F8F3C
 
-From: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
+On Fri, Jun 05, 2026 at 08:14:41PM +0300, Vladislav Nikolaev wrote:
+> This series backports two upstream RDMA/rxe fixes to linux-5.10.y and
+> linux-5.15.y.
+> 
+> The first patch fixes cleanup of RXE tasks that may not have been
+> initialized on the rxe_create_qp() error path. The second patch fixes
+> the same class of lockdep issue for RC timers by checking that both
+> timers were initialized before deleting them.
+> 
+> In linux-5.10.y and linux-5.15.y the relevant task and timer cleanup
+> still lives in rxe_qp_destroy(), so the 1c7eec4d5f3b backport applies
+> the timer guard there and keeps del_timer_sync().
+> 
+> Zhu Yanjun (2):
+>   RDMA/rxe: Fix the error "trying to register non-static key in
+>     rxe_cleanup_task"
+>   RDMA/rxe: Fix "trying to register non-static key in rxe_qp_do_cleanup"
+>     bug
+> 
+>  drivers/infiniband/sw/rxe/rxe_qp.c | 18 ++++++++++++++----
+>  1 file changed, 14 insertions(+), 4 deletions(-)
+> 
+> -- 
+> 2.39.5
 
-[ Upstream commit 7eba000621fff223dd7bab484d48918c7c77a307 ]
+Would need this for newer kernels first.  Please submit that series
+first, then resend these.
 
-If a firmware node is allocated on the stack (for instance: temporary
-software node whose life-time we control) or on the heap - but using a
-non-zeroing allocation function - and initialized using fwnode_init(),
-its secondary pointer will contain uninitialized memory which likely
-will be neither NULL nor IS_ERR() and so may end up being dereferenced
-(for example: in dev_to_swnode()). Set fwnode->secondary to NULL on
-initialization. While at it: initialize the remaining fields of struct
-fwnode_handle too just to be sure.
+thanks,
 
-Cc: stable@vger.kernel.org
-Fixes: 01bb86b380a3 ("driver core: Add fwnode_init()")
-Reviewed-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Reviewed-by: Rafael J. Wysocki (Intel) <rafael@kernel.org>
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
-Link: https://patch.msgid.link/20260511074927.9473-1-bartosz.golaszewski@oss.qualcomm.com
-[ Fix typo in commit message. - Danilo ]
-Signed-off-by: Danilo Krummrich <dakr@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- include/linux/fwnode.h | 2 ++
- 1 file changed, 2 insertions(+)
-
-diff --git a/include/linux/fwnode.h b/include/linux/fwnode.h
-index 31df7608737e70..c30a9baafc0d99 100644
---- a/include/linux/fwnode.h
-+++ b/include/linux/fwnode.h
-@@ -210,8 +210,10 @@ static inline void fwnode_init(struct fwnode_handle *fwnode,
- {
- 	fwnode->secondary = NULL;
- 	fwnode->ops = ops;
-+	fwnode->dev = NULL;
- 	INIT_LIST_HEAD(&fwnode->consumers);
- 	INIT_LIST_HEAD(&fwnode->suppliers);
-+	fwnode->flags = 0;
- }
- 
- static inline void fwnode_set_flag(struct fwnode_handle *fwnode,
--- 
-2.53.0
-
+greg k-h
 
