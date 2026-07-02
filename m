@@ -1,63 +1,71 @@
-Return-Path: <stable+bounces-270793-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-271150-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id Vrl6L9GgRmoYagsAu9opvQ
-	(envelope-from <stable+bounces-270793-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:33:05 +0200
+	id 9SGXDDSjRmoIawsAu9opvQ
+	(envelope-from <stable+bounces-271150-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:43:16 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B80B96FB6F0
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:33:04 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7AE606FB935
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:43:15 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=USCLfyZK;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-270793-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-270793-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=u+NF5mtb;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-271150-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-271150-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 13BF130518EA
-	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:34:35 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 995B03315E22
+	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:48:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3BDE35F182;
-	Thu,  2 Jul 2026 16:31:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C0922353A94;
+	Thu,  2 Jul 2026 16:46:41 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44815346E60;
-	Thu,  2 Jul 2026 16:31:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70C3633D4F0;
+	Thu,  2 Jul 2026 16:46:40 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783009866; cv=none; b=REfrI+hFYBA/4mNQKY5ickA/Cb6S8v0vBri57MZgjFBlBNhevbUgIqS1kgNVkiJBFXa3R8vIPdvK5UlQilKmXaEcGPzmuKVK/476o2buyVO21jxEDUb2ZmBjkP3+vGD/1BtEAPYSpzNvi65fC4DBqupgadYqDCsJSHYKlSVv/Dc=
+	t=1783010801; cv=none; b=SW+23JxI7ZneslKmtlF88Hhlp/NjKuzV+bVymx+0beSrJolQDQlUX+7W2qH2flMmq91SQi8Y/uXm9T7g4wkGW8u00SRdYpdyOxwMLbznCBZkhN/KrpuqppJXC4ivcc9j96OioSVNUmgeZNnjbpltzY3VpigSMeEOWlaSXrnD468=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783009866; c=relaxed/simple;
-	bh=UrySkUWTpkyyW3rIlRTkluA4XIhr+98mJu1ELEQw4yI=;
+	s=arc-20240116; t=1783010801; c=relaxed/simple;
+	bh=iuTg+r2aJb+oRyO/DoJzogbNTbF2ttFca0LZWep7glg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=E94tj/o0qQyizrYjIIdkt7yYCGfAksvATfGv/jlFzdIoznqauEKb2S0tnKnggbF43YoXmBaxQhNURFxfWdzUOrEMNrm/Zn8ETq2+0e8HWi4zoOjH5jK6IfBcpYfVOMvqpsH/7k0mlzSoYx7KKtXU460ZNSwOs5I15nSz5Qj9wBw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=USCLfyZK; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AAE8B1F000E9;
-	Thu,  2 Jul 2026 16:31:04 +0000 (UTC)
+	 MIME-Version; b=M+dHySEwnYHM0LPL8ZqBueXdCLeKZY0xLbr5/t1j097DQNOGpkEl7xPKs8rJ8v0UkiGNEfUvfVpXPupEI3HzEyB2HBNm8ElljOky+/JEDHdBJd180c6fV/vdXZZYMU5Pv0m4dI3o0CWfyQuCFz5ytsZZ0dZM5/k8GjDpMCLeYps=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u+NF5mtb; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D25291F000E9;
+	Thu,  2 Jul 2026 16:46:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1783009865;
-	bh=pmNbKRQgso2kiSsj1Lv74S49BgRNbrRmyvjAhzTl3to=;
+	s=korg; t=1783010800;
+	bh=UM0pK7gwBmjJaw0CK9vEfDTNkC2XC4JEI2BTkGaTyfw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=USCLfyZKZ3HzsmGTkQp5vn2eRMTo3Q53XelR14rtglo4WJvjQGl8BbOk6u3K+bJRc
-	 ibu44iUZb/ecZ4QEezejMmbOa/x++RrhOdcufna4LxX9ZLzMmHIJNMRWnyyrhwsPiS
-	 QNU20QMnOHwIqj83iiWqWlMI4t3seFtJvLMgGfvQ=
+	b=u+NF5mtbKT1zcDglTmqIXncfUjP4HdQ2dbt5QyGFTfgLX/4fXPeTwlFfs3WWAFREL
+	 p80ZJfP86Cpq6/8W0Cp13pToS/zFvG2lBvHI1gaJVI3n3LiPWsjK+84iXfZ0SxckOP
+	 0mhSCtKnsNK4OYgLuapM4suIKrP+jaeZx5nXcZ0w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Qi Zheng <zhengqi.arch@bytedance.com>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
-	Thomas Gleixner <tglx@kernel.org>,
+	Michael Bommarito <michael.bommarito@gmail.com>,
+	David Howells <dhowells@redhat.com>,
+	Marc Dionne <marc.dionne@auristor.com>,
+	Jeffrey Altman <jaltman@auristor.com>,
+	Eric Dumazet <edumazet@google.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	linux-afs@lists.infradead.org,
+	netdev@vger.kernel.org,
+	stable@kernel.org,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 022/129] debugobjects,locking: Annotate debug_object_fill_pool() wait type violation
+Subject: [PATCH 6.6 040/175] rxrpc: Fix the ACK parser to extract the SACK table for parsing
 Date: Thu,  2 Jul 2026 18:19:01 +0200
-Message-ID: <20260702155112.622381826@linuxfoundation.org>
+Message-ID: <20260702155116.642120945@linuxfoundation.org>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260702155112.163984240@linuxfoundation.org>
-References: <20260702155112.163984240@linuxfoundation.org>
+In-Reply-To: <20260702155115.766838875@linuxfoundation.org>
+References: <20260702155115.766838875@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,219 +77,112 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-270793-lists,stable=lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
+	RCPT_COUNT_TWELVE(0.00)[16];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-271150-lists,stable=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:michael.bommarito@gmail.com,m:dhowells@redhat.com,m:marc.dionne@auristor.com,m:jaltman@auristor.com,m:edumazet@google.com,m:davem@davemloft.net,m:kuba@kernel.org,m:pabeni@redhat.com,m:horms@kernel.org,m:linux-afs@lists.infradead.org,m:netdev@vger.kernel.org,m:stable@kernel.org,m:sashal@kernel.org,m:michaelbommarito@gmail.com,s:lists@lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:vbabka@suse.cz,m:zhengqi.arch@bytedance.com,m:peterz@infradead.org,m:tglx@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,redhat.com,auristor.com,google.com,davemloft.net,kernel.org,lists.infradead.org,vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,infradead.org:email,bytedance.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,suse.cz:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,infradead.org:email,auristor.com:email,davemloft.net:email,vger.kernel.org:from_smtp,msgid.link:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: B80B96FB6F0
+X-Rspamd-Queue-Id: 7AE606FB935
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peter Zijlstra <peterz@infradead.org>
+From: David Howells <dhowells@redhat.com>
 
-commit 0cce06ba859a515bd06224085d3addb870608b6d upstream.
+[ Upstream commit 333b6d5bb9f87827ac2639c737bf9613dbae7253 ]
 
-There is an explicit wait-type violation in debug_object_fill_pool()
-for PREEMPT_RT=n kernels which allows them to more easily fill the
-object pool and reduce the chance of allocation failures.
+Fix modification of the received skbuff in rxrpc_input_soft_acks() and a
+potential incorrect access of the buffer in a fragmented UDP packet (the
+packet would probably have to be deliberately pre-generated as fragmented)
+when AF_RXRPC tries to extract the contents of the SACK table by copying
+out the contents of the SACK table into a buffer before attempting to parse
 
-Lockdep's wait-type checks are designed to check the PREEMPT_RT
-locking rules even for PREEMPT_RT=n kernels and object to this, so
-create a lockdep annotation to allow this to stand.
+AF_RXRPC assumes that it can just call skb_condense() and then validly
+access the SACK table from skb->data and that it will be a flat buffer -
+but skb_condense() can silently fail to do anything under some
+circumstances.
 
-Specifically, create a 'lock' type that overrides the inner wait-type
-while it is held -- allowing one to temporarily raise it, such that
-the violation is hidden.
+Note that whilst rxrpc_input_soft_acks() should be able to parse extended
+ACKs, the rest of AF_RXRPC doesn't currently support that.
 
-Reported-by: Vlastimil Babka <vbabka@suse.cz>
-Reported-by: Qi Zheng <zhengqi.arch@bytedance.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Tested-by: Qi Zheng <zhengqi.arch@bytedance.com>
-Link: https://lkml.kernel.org/r/20230429100614.GA1489784@hirez.programming.kicks-ass.net
-Signed-off-by: Thomas Gleixner <tglx@kernel.org>
+Further, there's then no need to call skb_condense() in rxrpc_input_ack(),
+so don't.
+
+Fixes: d57a3a151660 ("rxrpc: Save last ACK's SACK table rather than marking txbufs")
+Reported-by: Michael Bommarito <michael.bommarito@gmail.com>
+Link: https://lore.kernel.org/r/20260513180907.2061972-1-michael.bommarito@gmail.com
+Signed-off-by: David Howells <dhowells@redhat.com>
+cc: Marc Dionne <marc.dionne@auristor.com>
+cc: Jeffrey Altman <jaltman@auristor.com>
+cc: Eric Dumazet <edumazet@google.com>
+cc: "David S. Miller" <davem@davemloft.net>
+cc: Jakub Kicinski <kuba@kernel.org>
+cc: Paolo Abeni <pabeni@redhat.com>
+cc: Simon Horman <horms@kernel.org>
+cc: linux-afs@lists.infradead.org
+cc: netdev@vger.kernel.org
+cc: stable@kernel.org
+Link: https://patch.msgid.link/105362.1780573560@warthog.procyon.org.uk
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/lockdep.h       | 14 ++++++++++++++
- include/linux/lockdep_types.h |  1 +
- kernel/locking/lockdep.c      | 28 +++++++++++++++++++++-------
- lib/debugobjects.c            | 15 +++++++++++++--
- 4 files changed, 49 insertions(+), 9 deletions(-)
+ net/rxrpc/input.c |   13 ++++++++++++-
+ 1 file changed, 12 insertions(+), 1 deletion(-)
 
-diff --git a/include/linux/lockdep.h b/include/linux/lockdep.h
-index 43d8734ac0eb0b..90aa802a30669c 100644
---- a/include/linux/lockdep.h
-+++ b/include/linux/lockdep.h
-@@ -339,6 +339,16 @@ extern void lock_unpin_lock(struct lockdep_map *lock, struct pin_cookie);
- #define lockdep_repin_lock(l,c)	lock_repin_lock(&(l)->dep_map, (c))
- #define lockdep_unpin_lock(l,c)	lock_unpin_lock(&(l)->dep_map, (c))
- 
-+/*
-+ * Must use lock_map_aquire_try() with override maps to avoid
-+ * lockdep thinking they participate in the block chain.
-+ */
-+#define DEFINE_WAIT_OVERRIDE_MAP(_name, _wait_type)	\
-+	struct lockdep_map _name = {			\
-+		.name = #_name "-wait-type-override",	\
-+		.wait_type_inner = _wait_type,		\
-+		.lock_type = LD_LOCK_WAIT_OVERRIDE, }
+--- a/net/rxrpc/input.c
++++ b/net/rxrpc/input.c
+@@ -781,7 +781,18 @@ static void rxrpc_input_soft_acks(struct
+ 	struct rxrpc_skb_priv *sp = rxrpc_skb(skb);
+ 	unsigned int i, old_nacks = 0;
+ 	rxrpc_seq_t lowest_nak = seq + sp->nr_acks;
+-	u8 *acks = skb->data + sizeof(struct rxrpc_wire_header) + sizeof(struct rxrpc_ackpacket);
++	u8 sack[256] __aligned(sizeof(unsigned long));
++	u8 *acks = sack;
 +
- #else /* !CONFIG_LOCKDEP */
- 
- static inline void lockdep_init_task(struct task_struct *task)
-@@ -427,6 +437,9 @@ extern int lockdep_is_held(const void *);
- #define lockdep_repin_lock(l, c)		do { (void)(l); (void)(c); } while (0)
- #define lockdep_unpin_lock(l, c)		do { (void)(l); (void)(c); } while (0)
- 
-+#define DEFINE_WAIT_OVERRIDE_MAP(_name, _wait_type)	\
-+	struct lockdep_map __maybe_unused _name = {}
-+
- #endif /* !LOCKDEP */
- 
- enum xhlock_context_t {
-@@ -552,6 +565,7 @@ do {									\
- #define rwsem_release(l, i)			lock_release(l, i)
- 
- #define lock_map_acquire(l)			lock_acquire_exclusive(l, 0, 0, NULL, _THIS_IP_)
-+#define lock_map_acquire_try(l)			lock_acquire_exclusive(l, 0, 1, NULL, _THIS_IP_)
- #define lock_map_acquire_read(l)		lock_acquire_shared_recursive(l, 0, 0, NULL, _THIS_IP_)
- #define lock_map_acquire_tryread(l)		lock_acquire_shared_recursive(l, 0, 1, NULL, _THIS_IP_)
- #define lock_map_release(l)			lock_release(l, _THIS_IP_)
-diff --git a/include/linux/lockdep_types.h b/include/linux/lockdep_types.h
-index d22430840b53f9..59f4fb1626ea60 100644
---- a/include/linux/lockdep_types.h
-+++ b/include/linux/lockdep_types.h
-@@ -33,6 +33,7 @@ enum lockdep_wait_type {
- enum lockdep_lock_type {
- 	LD_LOCK_NORMAL = 0,	/* normal, catch all */
- 	LD_LOCK_PERCPU,		/* percpu */
-+	LD_LOCK_WAIT_OVERRIDE,	/* annotation */
- 	LD_LOCK_MAX,
- };
- 
-diff --git a/kernel/locking/lockdep.c b/kernel/locking/lockdep.c
-index 5f8ce961cd9a3f..463834778b4b04 100644
---- a/kernel/locking/lockdep.c
-+++ b/kernel/locking/lockdep.c
-@@ -2245,6 +2245,9 @@ static inline bool usage_match(struct lock_list *entry, void *mask)
- 
- static inline bool usage_skip(struct lock_list *entry, void *mask)
- {
-+	if (entry->class->lock_type == LD_LOCK_NORMAL)
-+		return false;
-+
- 	/*
- 	 * Skip local_lock() for irq inversion detection.
- 	 *
-@@ -2271,14 +2274,16 @@ static inline bool usage_skip(struct lock_list *entry, void *mask)
- 	 * As a result, we will skip local_lock(), when we search for irq
- 	 * inversion bugs.
- 	 */
--	if (entry->class->lock_type == LD_LOCK_PERCPU) {
--		if (DEBUG_LOCKS_WARN_ON(entry->class->wait_type_inner < LD_WAIT_CONFIG))
--			return false;
-+	if (entry->class->lock_type == LD_LOCK_PERCPU &&
-+	    DEBUG_LOCKS_WARN_ON(entry->class->wait_type_inner < LD_WAIT_CONFIG))
-+		return false;
- 
--		return true;
--	}
-+	/*
-+	 * Skip WAIT_OVERRIDE for irq inversion detection -- it's not actually
-+	 * a lock and only used to override the wait_type.
++	/* Extract the SACK table into a flat buffer rather than accessing it
++	 * directly through skb->data, which is not guaranteed to be linear for
++	 * a fragmented packet (skb_condense() can silently fail to linearise
++	 * it).
 +	 */
++	if (skb_copy_bits(skb,
++			  sizeof(struct rxrpc_wire_header) + sizeof(struct rxrpc_ackpacket),
++			  sack, umin(sp->nr_acks, sizeof(sack))) < 0)
++		return;
  
--	return false;
-+	return true;
- }
- 
- /*
-@@ -4745,7 +4750,8 @@ static int check_wait_context(struct task_struct *curr, struct held_lock *next)
- 
- 	for (; depth < curr->lockdep_depth; depth++) {
- 		struct held_lock *prev = curr->held_locks + depth;
--		u8 prev_inner = hlock_class(prev)->wait_type_inner;
-+		struct lock_class *class = hlock_class(prev);
-+		u8 prev_inner = class->wait_type_inner;
- 
- 		if (prev_inner) {
- 			/*
-@@ -4755,6 +4761,14 @@ static int check_wait_context(struct task_struct *curr, struct held_lock *next)
- 			 * Also due to trylocks.
- 			 */
- 			curr_inner = min(curr_inner, prev_inner);
-+
-+			/*
-+			 * Allow override for annotations -- this is typically
-+			 * only valid/needed for code that only exists when
-+			 * CONFIG_PREEMPT_RT=n.
-+			 */
-+			if (unlikely(class->lock_type == LD_LOCK_WAIT_OVERRIDE))
-+				curr_inner = prev_inner;
- 		}
- 	}
- 
-diff --git a/lib/debugobjects.c b/lib/debugobjects.c
-index 1e193a5f6b4a72..46eabbae69ccfc 100644
---- a/lib/debugobjects.c
-+++ b/lib/debugobjects.c
-@@ -601,10 +601,21 @@ static void debug_objects_fill_pool(void)
- {
- 	/*
- 	 * On RT enabled kernels the pool refill must happen in preemptible
--	 * context:
-+	 * context -- for !RT kernels we rely on the fact that spinlock_t and
-+	 * raw_spinlock_t are basically the same type and this lock-type
-+	 * inversion works just fine.
- 	 */
--	if (!IS_ENABLED(CONFIG_PREEMPT_RT) || preemptible())
-+	if (!IS_ENABLED(CONFIG_PREEMPT_RT) || preemptible()) {
-+		/*
-+		 * Annotate away the spinlock_t inside raw_spinlock_t warning
-+		 * by temporarily raising the wait-type to WAIT_SLEEP, matching
-+		 * the preemptible() condition above.
-+		 */
-+		static DEFINE_WAIT_OVERRIDE_MAP(fill_pool_map, LD_WAIT_SLEEP);
-+		lock_map_acquire_try(&fill_pool_map);
- 		fill_pool();
-+		lock_map_release(&fill_pool_map);
-+	}
- }
- 
- static void
--- 
-2.53.0
-
+ 	for (i = 0; i < sp->nr_acks; i++) {
+ 		if (acks[i] == RXRPC_ACK_TYPE_ACK) {
 
 
 
