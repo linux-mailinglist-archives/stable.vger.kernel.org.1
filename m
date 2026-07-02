@@ -1,63 +1,60 @@
-Return-Path: <stable+bounces-270744-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-270659-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id azgYJ8SSRmpQYwsAu9opvQ
-	(envelope-from <stable+bounces-270744-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:33:08 +0200
+	id aMdcNXOVRmqWZAsAu9opvQ
+	(envelope-from <stable+bounces-270659-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:44:35 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7522F6FA3E3
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:33:07 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id CDCEA6FA78D
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:44:34 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=OtsQCC0G;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-270744-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-270744-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=uUo2HPtQ;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-270659-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-270659-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 805B730022B7
-	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:33:06 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 6411730E64EC
+	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:30:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F90E42B329;
-	Thu,  2 Jul 2026 16:29:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 136263ACF00;
+	Thu,  2 Jul 2026 16:25:23 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D4B534104E;
-	Thu,  2 Jul 2026 16:28:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A94033F5B3;
+	Thu,  2 Jul 2026 16:25:13 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783009739; cv=none; b=SMrA8SjgkO27gE2V2PnnQFaeVLcgv7q7VLFJc01xCalFVB8zjyLOOHyjqfDPXtgoJTl02xHe0HNi9z2e44bVb3ONuN52Iyvc1w12Zsq/AYdAXy3y39H1tkhw5oL29tDJbt4rsmnz2Dvz0ojH+lT4G4rMYlPfj5Rl7/kmXS8Lzr8=
+	t=1783009522; cv=none; b=GW+LUFUmP+zOtPwEfkYwO3QajpWDoQ76g+Yk/bnKV7gzH5wftTWwAux3RIDL4axQPxV5QopfFmLEcjiMHmS5H0/ILUURR875gRYO65psCgZ10PPlsWU1gFIcunNo08MnPe5nBOYkKjorRQ0EspDHMOIWhFj1HyYkvQPCSB6nRns=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783009739; c=relaxed/simple;
-	bh=iG6tkekfyAqnVpBHvC1cAhuZverM4rW3lLeL7SYABcM=;
+	s=arc-20240116; t=1783009522; c=relaxed/simple;
+	bh=YS3NqftLsJnGQ1DA/hhfOi9sQ7gdu+mNVr1zNfucUSM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Q4lE4l6WPl+Hq0Hy7lcoFv67L+5/m+nWm2WBUpaEQqrGk0iB3JNqgV2BV489XzR+KZ0+FODMzNr1Xc9YFBycZSWb39FFU1RV5lr2U44esOrtCiX9K9/CIdNW++wDo28iImKQnjhby/xHaGPZO4kmQvacrzqAt3I3/E1QsErH6b8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OtsQCC0G; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A3201F000E9;
-	Thu,  2 Jul 2026 16:28:55 +0000 (UTC)
+	 MIME-Version; b=e82Ri3rnqYAa+oo77rogM8nscszEowWRHdaWzu04siBZQ9MOGzEmZfjZzozhcTZHKX4xWgheGJy0lnSsq0mz/P8CxLsD6AyFUZ5TfKhGNJ6Cjp14GH/sidomTv6heCixXcriGsxZV0s9RxWDmJ4H0ITKmTq06Xu1G4cnfSoLDlM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uUo2HPtQ; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 987D91F00A3E;
+	Thu,  2 Jul 2026 16:25:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1783009736;
-	bh=OpM+K/+grWsrTFTjYuR6FfcnbkoybG4YIyaTnOT+v2g=;
+	s=korg; t=1783009513;
+	bh=9v58OWHiFab2U0rQbewrVWrJE0CwEAiJkOaN/tS4K6k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=OtsQCC0Gs7D0t/TSX4PCjoosgyeE46vHQZLkmY/ljlRjLbVDUa8tpfiLxHFf3RjN+
-	 fQ/xrPwyjuq+J9OrZqh5RBiJH+u5MtmiRN+gMbySNlGqVjvmenGIz4KVSaNMvON1jm
-	 PpyriN/3BWinAzpQ6gPOeZ/FkmQJWUazpWtJ0fz8=
+	b=uUo2HPtQBT2ux5otVhe1ZDcGWoHHnWnlzpzCIfmIQzD75iSLwNJAZRv6SQtiPAmSD
+	 Q99yxKSbSAn/41yp4HFy6FYMl03MQkTIbBdNTCoOkO2CJjT5C8p+L8wT39q2cFh/MU
+	 xR7iR/E1dMPGUamFxpJ7dgMLb3hTRM8JU/88UK54=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Doruk Tan Ozturk <doruk@0sec.ai>,
-	Alexander Lobakin <aleksander.lobakin@intel.com>,
-	Tung Nguyen <tung.quang.nguyen@est.tech>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 5.15 68/95] tipc: fix slab-use-after-free Read in tipc_aead_decrypt_done
+	Guannan Wang <wgnbuaa@gmail.com>,
+	Chuck Lever <chuck.lever@oracle.com>
+Subject: [PATCH 5.10 79/96] NFSD: Fix SECINFO_NO_NAME decode error cleanup
 Date: Thu,  2 Jul 2026 18:20:11 +0200
-Message-ID: <20260702155110.646045595@linuxfoundation.org>
+Message-ID: <20260702155110.642116359@linuxfoundation.org>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260702155109.196223802@linuxfoundation.org>
-References: <20260702155109.196223802@linuxfoundation.org>
+In-Reply-To: <20260702155108.949633242@linuxfoundation.org>
+References: <20260702155108.949633242@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,162 +68,87 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	RCVD_TLS_LAST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-270659-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:wgnbuaa@gmail.com,m:chuck.lever@oracle.com,s:lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-270744-lists,stable=lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:doruk@0sec.ai,m:aleksander.lobakin@intel.com,m:tung.quang.nguyen@est.tech,m:horms@kernel.org,m:kuba@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,oracle.com];
+	FORWARDED(0.00)[lists@lfdr.de];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,msgid.link:url,vger.kernel.org:from_smtp,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[oracle.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 7522F6FA3E3
+X-Rspamd-Queue-Id: CDCEA6FA78D
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Doruk Tan Ozturk <doruk@0sec.ai>
+From: Guannan Wang <wgnbuaa@gmail.com>
 
-commit bda3348872a2ef0d19f2df6aa8cb5025adce2f20 upstream.
+commit 9e18e83b8846a5c3fe13fc8a464b4865d33996c6 upstream.
 
-tipc_aead_decrypt() goes straight from tipc_bearer_hold(b) to
-crypto_aead_decrypt(req) without taking a reference on the netns, unlike
-the encrypt path. When crypto_aead_decrypt() is offloaded asynchronously
-(e.g. the SIMD aead wrapper queuing to cryptd), the cryptd worker runs
-tipc_aead_decrypt_done() later. If the bearer's netns is torn down in the
-meantime, cleanup_net() -> tipc_exit_net() -> tipc_crypto_stop() frees the
-per-netns tipc_crypto, and the completion then reads it:
-tipc_aead_decrypt_done() dereferences aead->crypto->stats and
-aead->crypto->net, and tipc_crypto_rcv_complete() dereferences
-aead->crypto->aead[] and the node table -- reading freed memory.
+nfsd4_decode_secinfo_no_name() currently initializes sin_exp after
+decoding sin_style. If the XDR stream is truncated, the decoder returns
+nfserr_bad_xdr before sin_exp is initialized.
 
-Decoded KASAN splat (v7.1-rc7, CONFIG_KASAN_INLINE + TIPC + TIPC_CRYPTO):
+Since commit 3fdc54646234 ("NFSD: Reduce amount of struct
+nfsd4_compoundargs that needs clearing"), the inline iops array is not
+cleared between RPC calls. A failed SECINFO_NO_NAME decode can therefore
+leave sin_exp holding stale union contents from a previous operation.
 
-  BUG: KASAN: slab-use-after-free in tipc_aead_decrypt_done (net/tipc/crypto.c:999)
-  Read of size 8 at addr ffff8881056258a8 by task kworker/u16:2/51
-  Workqueue: events_unbound
-  Call Trace:
-   tipc_aead_decrypt_done (net/tipc/crypto.c:999)
-   process_one_work (kernel/workqueue.c:3314)
-   worker_thread (kernel/workqueue.c:3397 kernel/workqueue.c:3478)
-   kthread (kernel/kthread.c:436)
-   ret_from_fork (arch/x86/kernel/process.c:158)
-   ret_from_fork_asm (arch/x86/entry/entry_64.S:245)
+The error response path still invokes nfsd4_secinfo_no_name_release(),
+which calls exp_put() on a non-NULL sin_exp.
 
-  Allocated by task 169:
-   __kasan_kmalloc (mm/kasan/common.c:398 mm/kasan/common.c:415)
-   tipc_crypto_start (net/tipc/crypto.c:1502)
-   tipc_init_net (net/tipc/core.c:72)
-   ops_init (net/core/net_namespace.c:137)
-   setup_net (net/core/net_namespace.c:446)
-   copy_net_ns (net/core/net_namespace.c:579)
-   create_new_namespaces (kernel/nsproxy.c:132)
-   __x64_sys_unshare (kernel/fork.c:3316)
-   do_syscall_64 (arch/x86/entry/syscall_64.c:63)
-   entry_SYSCALL_64_after_hwframe (arch/x86/entry/entry_64.S:121)
+Initialize sin_exp before the first failable decode step, matching
+nfsd4_decode_secinfo().
 
-  Freed by task 8:
-   kfree (mm/slub.c:6566)
-   tipc_exit_net (net/tipc/core.c:119)
-   cleanup_net (net/core/net_namespace.c:704)
-   process_one_work (kernel/workqueue.c:3314)
-   kthread (kernel/kthread.c:436)
-
-This is the same class of bug that commit e279024617134 ("net/tipc: fix
-slab-use-after-free Read in tipc_aead_encrypt_done") fixed for the encrypt
-side. The encrypt path takes maybe_get_net(aead->crypto->net) before
-crypto_aead_encrypt() and drops it with put_net() on the synchronous
-return paths and in tipc_aead_encrypt_done(); the -EINPROGRESS/-EBUSY
-return keeps the reference for the async callback to release. The decrypt
-path was left without the equivalent guard.
-
-Mirror the encrypt-side fix on the decrypt path: take a net reference
-before crypto_aead_decrypt() (failing with -ENODEV and the matching
-bearer put if it cannot be acquired), keep it across the
--EINPROGRESS/-EBUSY async return, and drop it with put_net() on the
-synchronous success/error return and at the end of
-tipc_aead_decrypt_done().
-
-Reproduced under KASAN on v7.1-rc7: a UDP bearer with a cluster key is
-flooded with crafted encrypted frames from an unknown peer (driving the
-cluster-key decrypt path) while the bearer's netns is repeatedly torn
-down. The completion must run asynchronously to outlive
-tipc_crypto_stop(); on x86 the stock aesni gcm(aes) now decrypts
-synchronously, so the async path was exercised via cryptd offload. The
-unguarded aead->crypto dereference in tipc_aead_decrypt_done() is the
-unpatched upstream path; tipc_aead_decrypt() still lacks
-maybe_get_net(aead->crypto->net), so the completion can outlive the free
-on any config where crypto_aead_decrypt() goes async.
-
-Found by 0sec automated security-research tooling (https://0sec.ai).
-
-Fixes: fc1b6d6de220 ("tipc: introduce TIPC encryption & authentication")
+Fixes: 3fdc54646234 ("NFSD: Reduce amount of struct nfsd4_compoundargs that needs clearing")
 Cc: stable@vger.kernel.org
-Signed-off-by: Doruk Tan Ozturk <doruk@0sec.ai>
-Reviewed-by: Alexander Lobakin <aleksander.lobakin@intel.com>
-Reviewed-by: Tung Nguyen <tung.quang.nguyen@est.tech>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20260617075818.37431-1-doruk@0sec.ai
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Guannan Wang <wgnbuaa@gmail.com>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/tipc/crypto.c |    9 +++++++++
- 1 file changed, 9 insertions(+)
+ fs/nfsd/nfs4xdr.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/net/tipc/crypto.c
-+++ b/net/tipc/crypto.c
-@@ -961,12 +961,20 @@ static int tipc_aead_decrypt(struct net
- 		goto exit;
- 	}
- 
-+	/* Get net to avoid freed tipc_crypto when delete namespace */
-+	if (!maybe_get_net(net)) {
-+		tipc_bearer_put(b);
-+		rc = -ENODEV;
-+		goto exit;
-+	}
+--- a/fs/nfsd/nfs4xdr.c
++++ b/fs/nfsd/nfs4xdr.c
+@@ -1821,10 +1821,11 @@ static __be32 nfsd4_decode_secinfo_no_na
+ 					   union nfsd4_op_u *u)
+ {
+ 	struct nfsd4_secinfo_no_name *sin = &u->secinfo_no_name;
 +
- 	/* Now, do decrypt */
- 	rc = crypto_aead_decrypt(req);
- 	if (rc == -EINPROGRESS || rc == -EBUSY)
- 		return rc;
++	sin->sin_exp = NULL;
+ 	if (xdr_stream_decode_u32(argp->xdr, &sin->sin_style) < 0)
+ 		return nfserr_bad_xdr;
  
- 	tipc_bearer_put(b);
-+	put_net(net);
- 
- exit:
- 	kfree(ctx);
-@@ -1004,6 +1012,7 @@ static void tipc_aead_decrypt_done(struc
- 	}
- 
- 	tipc_bearer_put(b);
-+	put_net(net);
+-	sin->sin_exp = NULL;
+ 	return nfs_ok;
  }
  
- static inline int tipc_ehdr_size(struct tipc_ehdr *ehdr)
 
 
 
