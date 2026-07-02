@@ -1,64 +1,61 @@
-Return-Path: <stable+bounces-270639-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-271203-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id RnbjFlieRmoXaQsAu9opvQ
-	(envelope-from <stable+bounces-270639-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:22:32 +0200
+	id ODV+MsikRmqEawsAu9opvQ
+	(envelope-from <stable+bounces-271203-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:50:00 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id C42C36FB3FB
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:22:31 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B5D356FBA8C
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:49:59 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=ls1iKWJk;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-270639-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-270639-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=HG3kYuEJ;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-271203-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-271203-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 5F54C322F107
-	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:30:01 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 5C1003107CF0
+	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:50:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F156396560;
-	Thu,  2 Jul 2026 16:24:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9EC6737A83F;
+	Thu,  2 Jul 2026 16:48:55 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF3D833B6ED;
-	Thu,  2 Jul 2026 16:24:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CE5B3101C8;
+	Thu,  2 Jul 2026 16:48:54 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783009465; cv=none; b=d8dwdvgqRu2ntUrSC7g/frSmps011Ao2uqeq8CdV4fCndkZYsFJuIjQSFc8scgQR3U7gBwWeRYz/utuhhLbDFLprMFdAFzAcIzLpaM0ZQCXj4meVLyTAW2YtYBcyFWehqPmIM2w5uak0kFHIoMFxTnqIxRvSrpZ7lhdKUCPD2RM=
+	t=1783010935; cv=none; b=ooi5aRvFlnaInsTV80WUxIJyBWe4+IzOfVuOy6k9JXSiYAmooOxSHy8Z/zrU1ijLmoZbnJFZBPeVvy3UPBvviU273Za3x0jVSs3G7vvtOBt+WrGTD9TcvRxLtfZ9oCXVgnAJB46sMPoXU3JLNHP38M09Wpv48KhRK72Pr6ZR0ag=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783009465; c=relaxed/simple;
-	bh=+SwSPc5rJPVmcAq9vFlrTNe+G3M9grUpApVU1FqVvFA=;
+	s=arc-20240116; t=1783010935; c=relaxed/simple;
+	bh=rgJYt4MGyzEkUdzerKsGVE4poEn5lPLDqg+8bOQknlc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QGctp4fnemWfmKyvGnIhWRhin3GyzEw9DeNvMHTW4UFq2jkxzVL5mHYQakMrE3obNLBvaTAK3uwlCK2AHMxAsKSIKhEEARNi4YLtYQ12covuiON2GPBCKJ9w9nZIhjAX/mZCFr5qH1HVRZ81Wt07XHk5SO9sQmO6N4R1fClExLA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ls1iKWJk; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 618C51F000E9;
-	Thu,  2 Jul 2026 16:24:17 +0000 (UTC)
+	 MIME-Version; b=HkzOhWvWcHe41tF7iBVC8E5gDIHkKkRkWZLv9YNEO8qdgdTtWj163lEM/Iin1VFH/IhTWTAo0czFzKdfOf0BF+N0z1Py+UCmUprVregvIh5Lmv+E3a2/v+YpVkfdYxYBARlLpkvBwxJVvrVZ7msBLcQufXo+NTR4TWdsqmP51nM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HG3kYuEJ; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B0BA1F00A3F;
+	Thu,  2 Jul 2026 16:48:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1783009457;
-	bh=HL484zMkn0DcABkuw01C2Y6e+OvEnJjEdCK4DHIohCU=;
+	s=korg; t=1783010934;
+	bh=/w47M9Iw9lFpW49tvV7teDtjDjwbxwWqxegYcCIoyJs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=ls1iKWJkf2QAGumIxQGrxMPk74VOrnJHge9Jw+pK4SFxinBf5SxD74/ehj7JS/0jK
-	 c9rnqhhAT0WxhZbW344v0rwWldd6MfhGkacZrBFYaZ9RIAPoMoE6hjo2lU/1b0KMZG
-	 C+LfQZO7DDrOjrmwFDEHr9AHCCbTlUBbY98Lcldk=
+	b=HG3kYuEJegJQceqSNF44j32Gz148ixivC7tPUmxTDGt1dW809X89hxGyrmobVSRfA
+	 F1bQ342gn+gMlEzb/C8kOHDL5W5hkInK05HZMpidRI/6BWNr77XuVD7VWqbIatIxIx
+	 xS0Wic/JA0MxuJyIRnqC9M72mxnhzTqH4eAYn/kw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kevin Hao <haokexin@gmail.com>,
-	Alexander Sverdlin <alexander.sverdlin@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Wenshan Lan <jetlan9@163.com>,
-	Sasha Levin <sashal@kernel.org>,
-	Elizaveta Tereshkina <etereshkina@astralinux.ru>
-Subject: [PATCH 5.10 60/96] net: cpsw_new: Fix potential unregister of netdev that has not been registered yet
+	stable@kernel.org,
+	Sven Eckelmann <sven@narfation.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 091/175] batman-adv: tp_meter: keep unacked list in ascending ordered
 Date: Thu,  2 Jul 2026 18:19:52 +0200
-Message-ID: <20260702155110.243734389@linuxfoundation.org>
+Message-ID: <20260702155117.695986348@linuxfoundation.org>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260702155108.949633242@linuxfoundation.org>
-References: <20260702155108.949633242@linuxfoundation.org>
+In-Reply-To: <20260702155115.766838875@linuxfoundation.org>
+References: <20260702155115.766838875@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,94 +67,80 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org,163.com,astralinux.ru];
-	TAGGED_FROM(0.00)[bounces-270639-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:haokexin@gmail.com,m:alexander.sverdlin@gmail.com,m:kuba@kernel.org,m:jetlan9@163.com,m:sashal@kernel.org,m:etereshkina@astralinux.ru,m:alexandersverdlin@gmail.com,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-271203-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:stable@kernel.org,m:sven@narfation.org,m:sashal@kernel.org,s:lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	TO_DN_SOME(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCPT_COUNT_SEVEN(0.00)[9];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,msgid.link:url,vger.kernel.org:from_smtp,astralinux.ru:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[narfation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: C42C36FB3FB
+X-Rspamd-Queue-Id: B5D356FBA8C
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kevin Hao <haokexin@gmail.com>
+From: Sven Eckelmann <sven@narfation.org>
 
-commit 9d724b34fbe13b71865ad0906a4be97571f19cf5 upstream.
+commit 5aa8651527ea0b610e7a09fb3b8204c1398b9525 upstream.
 
-If an error occurs during register_netdev() for the first MAC in
-cpsw_register_ports(), even though cpsw->slaves[0].ndev is set to NULL,
-cpsw->slaves[1].ndev would remain unchanged. This could later cause
-cpsw_unregister_ports() to attempt unregistering the second MAC.
-To address this, add a check for ndev->reg_state before calling
-unregister_netdev(). With this change, setting cpsw->slaves[i].ndev
-to NULL becomes unnecessary and can be removed accordingly.
+When batadv_tp_handle_out_of_order inserts a new entry in the list of
+unacked (out of order) packets, it searches from the entry with the newest
+sequence number towards oldest sequence number. If an entry is found which
+is older than the newly entry, the new entry has to be added after the
+found one to keep the ascending order.
 
-Fixes: ed3525eda4c4 ("net: ethernet: ti: introduce cpsw switchdev based driver part 1 - dual-emac")
-Signed-off-by: Kevin Hao <haokexin@gmail.com>
-Cc: stable@vger.kernel.org
-Reviewed-by: Alexander Sverdlin <alexander.sverdlin@gmail.com>
-Link: https://patch.msgid.link/20260205-cpsw-error-path-v1-2-6e58bae6b299@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Wenshan Lan <jetlan9@163.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Elizaveta Tereshkina <etereshkina@astralinux.ru>
+But for this operation list_add_tail() was used. But this function adds an
+entry _before_ another one. As result, the list would contain a lot of
+swapped sequence numbers. The consumer of this list
+(batadv_tp_ack_unordered()) would then fail to correctly ack packets.
+
+Cc: stable@kernel.org
+Fixes: 33a3bb4a3345 ("batman-adv: throughput meter implementation")
+Signed-off-by: Sven Eckelmann <sven@narfation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/ti/cpsw_new.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ net/batman-adv/tp_meter.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/ti/cpsw_new.c b/drivers/net/ethernet/ti/cpsw_new.c
-index 66b1620b6f5b0e..cc276241f39161 100644
---- a/drivers/net/ethernet/ti/cpsw_new.c
-+++ b/drivers/net/ethernet/ti/cpsw_new.c
-@@ -1456,7 +1456,8 @@ static void cpsw_unregister_ports(struct cpsw_common *cpsw)
- 	int i = 0;
- 
- 	for (i = 0; i < cpsw->data.slaves; i++) {
--		if (!cpsw->slaves[i].ndev)
-+		if (!cpsw->slaves[i].ndev ||
-+		    cpsw->slaves[i].ndev->reg_state != NETREG_REGISTERED)
- 			continue;
- 
- 		unregister_netdev(cpsw->slaves[i].ndev);
-@@ -1476,7 +1477,6 @@ static int cpsw_register_ports(struct cpsw_common *cpsw)
- 		if (ret) {
- 			dev_err(cpsw->dev,
- 				"cpsw: err registering net device%d\n", i);
--			cpsw->slaves[i].ndev = NULL;
- 			break;
- 		}
+diff --git a/net/batman-adv/tp_meter.c b/net/batman-adv/tp_meter.c
+index dfc3374549921f..f350a60e6c76b9 100644
+--- a/net/batman-adv/tp_meter.c
++++ b/net/batman-adv/tp_meter.c
+@@ -1325,7 +1325,7 @@ static bool batadv_tp_handle_out_of_order(struct batadv_tp_vars *tp_vars,
+ 		 * one is attached _after_ it. In this way the list is kept in
+ 		 * ascending order
+ 		 */
+-		list_add_tail(&new->list, &un->list);
++		list_add(&new->list, &un->list);
+ 		added = true;
+ 		break;
  	}
 -- 
 2.53.0
