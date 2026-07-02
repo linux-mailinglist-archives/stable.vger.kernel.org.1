@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-271365-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-271477-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id BLXUJLmaRmqmZwsAu9opvQ
-	(envelope-from <stable+bounces-271365-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:07:05 +0200
+	id ZRHAMjSnRmpDbAsAu9opvQ
+	(envelope-from <stable+bounces-271477-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 20:00:20 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2B7876FB00A
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:07:05 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id D8D2D6FBC67
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 20:00:19 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=g2X8OI1Y;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-271365-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-271365-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=dvvGBqTi;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-271477-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-271477-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 461D530690D4
-	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:55:55 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 38BC6346E903
+	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 17:00:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA6EB26F46F;
-	Thu,  2 Jul 2026 16:55:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9BB2D318EC5;
+	Thu,  2 Jul 2026 17:00:47 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F246A24E4C3;
-	Thu,  2 Jul 2026 16:55:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 528E62FC893;
+	Thu,  2 Jul 2026 17:00:46 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783011353; cv=none; b=RvLUpF7V8EwSIrN6KfH6gXb95SkQzQK2bvqP8S3X0KjmhFnfZQTa6puavwIqzeZ1uefjNyuqH94XrqD6SLEf/9l7Qt8pZLlcH7GeNUikhl07VQLGbe3kfz0dglucMmIIqrUcBwiOZ1OhY69FgzLwz8dJUzXDB8NNNuliuM9+n68=
+	t=1783011647; cv=none; b=jjWfwP6jtTch3b5WGnGRWQ32tjYiOhQpxj2s1Ys8jKlEsvvU9603bZgsjGeV3nfCTS4YKBk+T09714/va+/814eFH9wNJD+cgdeTag3Me95oobkXvWFp1y3XynfskegaoOosW+5S8LgHFBddDYzCDdw6wJJZfQk+kwTdIEkiQuk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783011353; c=relaxed/simple;
-	bh=lI+jdOmwH6GbtMGup+0t+IBSJ5wHI5mtV9F6xkx2SGU=;
+	s=arc-20240116; t=1783011647; c=relaxed/simple;
+	bh=pevtjS+ciha9PYITGDZIvrApZYDYH/929gEqLPIZnXw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=REiQ8y2Em0Wc/e1a3DHNiOOa3YSuudkGoiTuLfiJSj7A0x7stSuDbNWTgm4fy3UsafZDdPdbYt02yxCNu1GhHZ4VpQBI2xwqxGetQg8TQ1PjW8jntgQLGj8ryeD6BnvIOM//idMqdjMLYndp+nh1md0nALBSJqwoHtWoaUXxIYI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=g2X8OI1Y; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 654431F000E9;
-	Thu,  2 Jul 2026 16:55:51 +0000 (UTC)
+	 MIME-Version; b=quXjFWap/Z45XjNu+u6zlqf3+3iIDTkweqmXO0M49f++NenZkIooisBvJF5sipLb48aiuada/pge+gAnMT5uVHbNrBEvw/0mz4AoE0Hycyiu8KDnWd0oNQ0gh9YF/8QJ9wo1qWdkmgdr/5PqqMrojWCcyQAgQ154gUHExZWIDjE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dvvGBqTi; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B92851F000E9;
+	Thu,  2 Jul 2026 17:00:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1783011351;
-	bh=GG8KO5Wql8yIcT733jCxPBc/qbacvENa+42VzcNy/bA=;
+	s=korg; t=1783011646;
+	bh=TgDKhjjoGBr0jbrFyCrXvwGZUOQYukIGqoiRoigXzXQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=g2X8OI1YLArMycYpOrtxWXPBgIx0Yi5OLfc76+Adx4X2y32Gp2wvg91upNaQF1I6j
-	 /WJN5YNchkUCXspqpS7ih1VrWLkXlXjOAf1QB7V8dF7fI+kv28eWnCln5ComLnJy5D
-	 6fz9b3JdXq61UEGfYFJsDt8+8R/6XoTDIvQpoC30=
+	b=dvvGBqTiQDEIHACdrP15tHkTdkkP62lZuXj4Nw0eF5qZFbF3GbxDTlDFeI43NlhKG
+	 qob4xYKfkJcYQeF2PvrFHrp6s2fBw0zJH08JnfxnCUNiYSIBpW+Q9pWh6KRKqYBIM+
+	 VMsZ1v6IZcMqPxbhG8i53ts/Dkt10iZkHDRl4j9g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Fan Wu <fanwu01@zju.edu.cn>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.18 076/108] hdlc_ppp: sync per-proto timers before freeing hdlc state
-Date: Thu,  2 Jul 2026 18:21:13 +0200
-Message-ID: <20260702155113.687997420@linuxfoundation.org>
+	Sean Christopherson <seanjc@google.com>,
+	Paolo Bonzini <pbonzini@redhat.com>
+Subject: [PATCH 7.1 078/120] KVM: Replace guest-triggerable BUG_ON() in ioeventfd datamatch with get_unaligned()
+Date: Thu,  2 Jul 2026 18:21:14 +0200
+Message-ID: <20260702155114.574344674@linuxfoundation.org>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260702155112.110058792@linuxfoundation.org>
-References: <20260702155112.110058792@linuxfoundation.org>
+In-Reply-To: <20260702155112.964534952@linuxfoundation.org>
+References: <20260702155112.964534952@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,21 +71,21 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-271365-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-271477-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:fanwu01@zju.edu.cn,m:kuba@kernel.org,s:lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:seanjc@google.com,m:pbonzini@redhat.com,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
@@ -97,118 +97,125 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,msgid.link:url,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,zju.edu.cn:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 2B7876FB00A
+X-Rspamd-Queue-Id: D8D2D6FBC67
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fan Wu <fanwu01@zju.edu.cn>
+From: Sean Christopherson <seanjc@google.com>
 
-commit c78a4e41ab5ead6193ad8a2dd92e8906bae659fa upstream.
+commit f1edbed787ba67988ed34e0132ca128b052b6ce8 upstream.
 
-Each PPP control protocol (LCP/IPCP/IPV6CP) embedded in struct ppp
-registers a timer via timer_setup(). That struct ppp is the
-hdlc->state allocation, which detach_hdlc_protocol() frees with kfree()
-in both teardown paths: unregister_hdlc_device() and the re-attach inside
-attach_hdlc_protocol().
+Drop a BUG_ON() that has been reachable since it was first added, way back
+in 2009, and instead use get_unaligned() to perform potentially-unaligned
+accesses.
 
-The ppp proto never registered a .detach callback, so
-detach_hdlc_protocol() performs no timer synchronization before the
-kfree(). The only cancel, timer_delete(&proto->timer) in ppp_cp_event(),
-is partial (it does not wait for a running callback) and only runs on the
-->CLOSED transition; ppp_stop()/ppp_close() do not sync either. A
-ppp_timer callback already executing (blocked on ppp->lock) survives the
-kfree and then dereferences proto->state / ppp->lock in freed memory,
-leading to a use-after-free.
+For a given store, KVM x86's emulator tracks the entire value in the
+destination operand, x86_emulate_ctxt.dst.  If the destination is memory,
+and the target splits multiple pages and/or is emulated MMIO, then KVM
+handles each fragment independently.  E.g. on a page split starting at page
+offset 0xffc, KVM writes 4 bytes to the first page, then the remaining
+bytes to the second page, using ctxt->dst as the source for both (with
+appropriate offsets).
 
-Fix this by adding a .detach helper that calls timer_shutdown_sync() on
-every per-proto timer. detach_hdlc_protocol() invokes proto->detach(dev)
-before kfree(hdlc->state), so timer_shutdown_sync()
-now runs on both free paths.
-timer_shutdown_sync() is used instead of timer_delete_sync() because the
-keepalive path re-arms the timer through add_timer()/mod_timer() and
-shutdown blocks any re-activation during teardown.
+If the destination splits a page *and* hits emulated MMIO on the second
+page, then KVM will complete the write to the first page, then emulate the
+MMIO access to the second page.  If there is a datamatch-enabled ioeventfd
+at offset 0 of the second page, then KVM will process the remainder of the
+store as a potential ioeventfd signal.
 
-Initialize the per-protocol timers in ppp_ioctl() when the protocol is
-attached, and remove the now-redundant timer_setup() from ppp_start(), so
-that the timers are initialized exactly once at attach time and
-ppp_timer_release() never operates on uninitialized timer_list
-structures. attach_hdlc_protocol() uses kmalloc() (not kzalloc), so
-struct ppp's protos[i].timer is uninitialized garbage until the first
-timer_setup(); without this init-at-attach, attaching the PPP protocol
-without ever bringing the device up would leave timer_shutdown_sync()
-operating on uninitialized memory in .detach. Moving the init out of
-ppp_start() (which only runs on NETDEV_UP) into the attach path makes the
-initialization unconditional and avoids initializing the same timer_list
-twice.
+Putting it all together, if the guest emits a store that splits a page
+starting at page offset N, and the second page has a datamatch-enabled
+ioeventfd at offset 0, then KVM will check for datamatch using
+&dst.valptr[N] as the source.  Due to dst (and thus dst.valptr) being
+32-byte aligned, if N is not aligned to @len, the BUG_ON() fires.
 
-This bug was found by static analysis.
+E.g. with a 16-byte store at page offset 0xffc, to an ioeventfd of len 8,
+all initial checks in ioeventfd_in_range() will succeed, and the BUG_ON()
+fires due to @val being 4-byte aligned, but not 8-byte aligned.
 
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+  ------------[ cut here ]------------
+  kernel BUG at arch/x86/kvm/../../../virt/kvm/eventfd.c:783!
+  Oops: invalid opcode: 0000 [#1] SMP
+  CPU: 0 UID: 1000 PID: 615 Comm: repro Not tainted 7.1.0-rc2-ff238429d1ea #365 PREEMPT
+  Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 0.0.0 02/06/2015
+  RIP: 0010:ioeventfd_write+0x6c/0x70 [kvm]
+  Call Trace:
+   <TASK>
+   __kvm_io_bus_write+0x85/0xb0 [kvm]
+   kvm_io_bus_write+0x53/0x80 [kvm]
+   vcpu_mmio_write+0x66/0xf0 [kvm]
+   emulator_read_write_onepage+0x12a/0x540 [kvm]
+   emulator_read_write+0x109/0x2b0 [kvm]
+   x86_emulate_insn+0x4f8/0xfb0 [kvm]
+   x86_emulate_instruction+0x181/0x790 [kvm]
+   kvm_mmu_page_fault+0x313/0x630 [kvm]
+   vmx_handle_exit+0x18a/0x590 [kvm_intel]
+   kvm_arch_vcpu_ioctl_run+0xc81/0x1c90 [kvm]
+   kvm_vcpu_ioctl+0x2d5/0x970 [kvm]
+   __x64_sys_ioctl+0x8a/0xd0
+   do_syscall_64+0xb7/0x890
+   entry_SYSCALL_64_after_hwframe+0x4b/0x53
+  RIP: 0033:0x7f19c931a9bf
+   </TASK>
+  Modules linked in: kvm_intel kvm irqbypass
+  ---[ end trace 0000000000000000 ]---
+
+In a perfect world, the fix would be to simply delete the BUG_ON(), as KVM
+x86 doesn't perform alignment checks on "normal" memory accesses at CPL0.
+Sadly, C99 ruins all the fun; while the x86 architecture plays nice,
+dereferencing an unaligned pointer directly is undefined behavior in C,
+e.g. triggers splats when running with CONFIG_UBSAN_ALIGNMENT=y.
+
+Fixes: d34e6b175e61 ("KVM: add ioeventfd support")
 Cc: stable@vger.kernel.org
-Signed-off-by: Fan Wu <fanwu01@zju.edu.cn>
-Link: https://patch.msgid.link/20260617020518.116319-1-fanwu01@zju.edu.cn
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+Message-ID: <20260612225241.678509-1-seanjc@google.com>
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wan/hdlc_ppp.c |   15 +++++++++++++--
- 1 file changed, 13 insertions(+), 2 deletions(-)
+ virt/kvm/eventfd.c |   12 +++++-------
+ 1 file changed, 5 insertions(+), 7 deletions(-)
 
---- a/drivers/net/wan/hdlc_ppp.c
-+++ b/drivers/net/wan/hdlc_ppp.c
-@@ -621,7 +621,6 @@ static void ppp_start(struct net_device
- 		struct proto *proto = &ppp->protos[i];
+--- a/virt/kvm/eventfd.c
++++ b/virt/kvm/eventfd.c
+@@ -24,6 +24,7 @@
+ #include <linux/slab.h>
+ #include <linux/seqlock.h>
+ #include <linux/irqbypass.h>
++#include <linux/unaligned.h>
+ #include <trace/events/kvm.h>
  
- 		proto->dev = dev;
--		timer_setup(&proto->timer, ppp_timer, 0);
- 		proto->state = CLOSED;
- 	}
- 	ppp->protos[IDX_LCP].pid = PID_LCP;
-@@ -641,6 +640,15 @@ static void ppp_close(struct net_device
- 	ppp_tx_flush();
- }
+ #include <kvm/iodev.h>
+@@ -779,21 +780,18 @@ ioeventfd_in_range(struct _ioeventfd *p,
+ 		return true;
  
-+static void ppp_timer_release(struct net_device *dev)
-+{
-+	struct ppp *ppp = get_ppp(dev);
-+	int i;
-+
-+	for (i = 0; i < IDX_COUNT; i++)
-+		timer_shutdown_sync(&ppp->protos[i].timer);
-+}
-+
- static struct hdlc_proto proto = {
- 	.start		= ppp_start,
- 	.stop		= ppp_stop,
-@@ -649,6 +657,7 @@ static struct hdlc_proto proto = {
- 	.ioctl		= ppp_ioctl,
- 	.netif_rx	= ppp_rx,
- 	.module		= THIS_MODULE,
-+	.detach		= ppp_timer_release,
- };
- 
- static const struct header_ops ppp_header_ops = {
-@@ -659,7 +668,7 @@ static int ppp_ioctl(struct net_device *
- {
- 	hdlc_device *hdlc = dev_to_hdlc(dev);
- 	struct ppp *ppp;
--	int result;
-+	int i, result;
- 
- 	switch (ifs->type) {
- 	case IF_GET_PROTO:
-@@ -687,6 +696,8 @@ static int ppp_ioctl(struct net_device *
- 			return result;
- 
- 		ppp = get_ppp(dev);
-+		for (i = 0; i < IDX_COUNT; i++)
-+			timer_setup(&ppp->protos[i].timer, ppp_timer, 0);
- 		spin_lock_init(&ppp->lock);
- 		ppp->req_timeout = 2;
- 		ppp->cr_retries = 10;
+ 	/* otherwise, we have to actually compare the data */
+-
+-	BUG_ON(!IS_ALIGNED((unsigned long)val, len));
+-
+ 	switch (len) {
+ 	case 1:
+-		_val = *(u8 *)val;
++		_val = get_unaligned((u8 *)val);
+ 		break;
+ 	case 2:
+-		_val = *(u16 *)val;
++		_val = get_unaligned((u16 *)val);
+ 		break;
+ 	case 4:
+-		_val = *(u32 *)val;
++		_val = get_unaligned((u32 *)val);
+ 		break;
+ 	case 8:
+-		_val = *(u64 *)val;
++		_val = get_unaligned((u64 *)val);
+ 		break;
+ 	default:
+ 		return false;
 
 
 
