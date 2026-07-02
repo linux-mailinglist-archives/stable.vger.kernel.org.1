@@ -1,63 +1,64 @@
-Return-Path: <stable+bounces-270987-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-270631-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id J58vI0ihRmo8agsAu9opvQ
-	(envelope-from <stable+bounces-270987-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:35:04 +0200
+	id A3VFEYifRmqeaQsAu9opvQ
+	(envelope-from <stable+bounces-270631-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:27:36 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD0FA6FB74E
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:35:03 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 880BF6FB5A7
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:27:35 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=ePVtANPB;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-270987-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-270987-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=YlPUrNzu;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-270631-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-270631-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id DA74933B6DB9
-	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:40:55 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id F2EF030BDA6D
+	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:29:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D026340408;
-	Thu,  2 Jul 2026 16:39:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82F63492517;
+	Thu,  2 Jul 2026 16:24:03 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1DD4348465;
-	Thu,  2 Jul 2026 16:39:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99BDD34389B;
+	Thu,  2 Jul 2026 16:23:59 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783010373; cv=none; b=jvIvVh0WnM+sAS0qh36d7P/65KMSYvYmEZ6Zzk/Jcf1Piqrq3wuvG4y+iL/fbBrLG3sdMtorVvN9B/E+Tg3LDNy8RoYGw4P2aK+q0alvMaqWU1N3kNAv++P6m/U69ioBRzUTM48iQ69CWiwpdllESKQNCFsdF0HsZWS6Tm+W90U=
+	t=1783009442; cv=none; b=dFb5cRvUvBKQq+ZjdH9Qhr/bkKbO05d9PnT1nmzoRzTOyi/R8/7AHlkhD6xFcOdLBKZulcPvu7DZLnMb3AnemjQr6OMGEqIaMMve38KhvdlKy37QJzaobHhvC34vIGj9S/G42zB1LTKWiZ1jhoGnsXMTMMrzbmTIigpy1YbESwY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783010373; c=relaxed/simple;
-	bh=B9otvjrTB/VQf/oHHisirRahsqnA9n6uF6ieckPflGw=;
+	s=arc-20240116; t=1783009442; c=relaxed/simple;
+	bh=0vqcWoyUrlGBq3IIu7dvsBqwrTwXMwn3grm2eOZs0j8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KVJnmo7kguvIswZF/IQ7zkWhbReGA5/Bp2fJVyR85sesshRqDr/847Z0Y6H5YzLrmPyA8bgrvvw+hknjKV+zFV6hAYoyZRflsPQ/UA1ScA42vgRAHUDzBwKHX/fG8vjwDan8sB3bBRiuzroBVdB+LKcwhhG9sLZNCAeRyM9t6tA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ePVtANPB; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F0281F000E9;
-	Thu,  2 Jul 2026 16:39:30 +0000 (UTC)
+	 MIME-Version; b=LnC1scJ7RAm48YbLKUOMSH8IdAH9azdWwfXyqm2mwBB/9gg00hLrTwKzk6KBmMl+9clTRjGz60V8yaskl/akCKEe6tzZtWx1f7gC6ifHhqrasZNXTbn6XGzYTCsEAVGolBP7fAgMyxK8BTWavwGNrQU515N5vFm5ghPijIOGG9I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YlPUrNzu; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F9651F00A3A;
+	Thu,  2 Jul 2026 16:23:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1783010371;
-	bh=iK0J4n05rgOUtZbakFyhf12lnAjuEAtMGIU6Oq+jUQI=;
+	s=korg; t=1783009439;
+	bh=vPKafJ6CXKUTvJtsfLqr7OzlS+QHRAhbkONf3+WoBpI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=ePVtANPB1P+h9MYvZXsOj+ZYOonBx8v24Eso9Jw4mrLGbSuoItYN4fDHotKyN07UQ
-	 N2H+m4OencScXkzP5h4l27KAbFg2M9fJp4bPMBjVuS5CRpxmL5BLn3EgUVaVrnzVPE
-	 xhzPJGFARQ/wLxlIr4jTsslQ+tDtneGQLjnClWwM=
+	b=YlPUrNzuzgRVuT1ccuFLfn6iVTiKNh1o4W7+erQksG2kCT238G1PzbDqLxxmbTvV5
+	 3Q0rIwL6QWr+Vf/3CtS2kyMiGj4UTvb7x3JdlZzStQ0ZfGyfxTRZRhOvnOZIrZELFI
+	 Z/k1CZKcENVjLwPHvw+jg5h0mlSyp0ZqtWJPTP/g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Petr Machata <petrm@nvidia.com>,
+	Ido Schimmel <idosch@idosch.org>,
+	Pedro Tammela <pctammela@mojatatu.com>,
 	Ido Schimmel <idosch@nvidia.com>,
-	Nikolay Aleksandrov <razor@blackwall.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Alexander Martyniuk <alexevgmart@gmail.com>
-Subject: [PATCH 6.12 084/204] net: ipv6: Make udp_tunnel6_xmit_skb() void
+	Paolo Abeni <pabeni@redhat.com>,
+	Wentao Guan <guanwentao@uniontech.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 09/96] net/sched: act_pedit: free pedit keys on bail from offset check
 Date: Thu,  2 Jul 2026 18:19:01 +0200
-Message-ID: <20260702155120.424530431@linuxfoundation.org>
+Message-ID: <20260702155109.170596958@linuxfoundation.org>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260702155118.667618796@linuxfoundation.org>
-References: <20260702155118.667618796@linuxfoundation.org>
+In-Reply-To: <20260702155108.949633242@linuxfoundation.org>
+References: <20260702155108.949633242@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,174 +72,124 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,nvidia.com,blackwall.org,kernel.org,gmail.com];
-	TAGGED_FROM(0.00)[bounces-270987-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:petrm@nvidia.com,m:idosch@nvidia.com,m:razor@blackwall.org,m:kuba@kernel.org,m:alexevgmart@gmail.com,s:lists@lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-270631-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:idosch@idosch.org,m:pctammela@mojatatu.com,m:idosch@nvidia.com,m:pabeni@redhat.com,m:guanwentao@uniontech.com,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[nvidia.com:email,msgid.link:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	RWL_MAILSPIKE_POSSIBLE(0.00)[104.64.211.4:from];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,mojatatu.com:email,nvidia.com:email,uniontech.com:email,idosch.org:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: DD0FA6FB74E
+X-Rspamd-Queue-Id: 880BF6FB5A7
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Petr Machata <petrm@nvidia.com>
+From: Pedro Tammela <pctammela@mojatatu.com>
 
-commit 6a7d88ca15f73c5c570c372238f71d63da1fda55 upstream.
+[ Upstream commit 1b483d9f5805c7e3d628d4995e97f4311fcb82eb ]
 
-The function always returns zero, thus the return value does not carry any
-signal. Just make it void.
+Ido Schimmel reports a memleak on a syzkaller instance:
+   BUG: memory leak
+   unreferenced object 0xffff88803d45e400 (size 1024):
+     comm "syz-executor292", pid 563, jiffies 4295025223 (age 51.781s)
+     hex dump (first 32 bytes):
+       28 bd 70 00 fb db df 25 02 00 14 1f ff 02 00 02  (.p....%........
+       00 32 00 00 1f 00 00 00 ac 14 14 3e 08 00 07 00  .2.........>....
+     backtrace:
+       [<ffffffff81bd0f2c>] kmemleak_alloc_recursive include/linux/kmemleak.h:42 [inline]
+       [<ffffffff81bd0f2c>] slab_post_alloc_hook mm/slab.h:772 [inline]
+       [<ffffffff81bd0f2c>] slab_alloc_node mm/slub.c:3452 [inline]
+       [<ffffffff81bd0f2c>] __kmem_cache_alloc_node+0x25c/0x320 mm/slub.c:3491
+       [<ffffffff81a865d9>] __do_kmalloc_node mm/slab_common.c:966 [inline]
+       [<ffffffff81a865d9>] __kmalloc+0x59/0x1a0 mm/slab_common.c:980
+       [<ffffffff83aa85c3>] kmalloc include/linux/slab.h:584 [inline]
+       [<ffffffff83aa85c3>] tcf_pedit_init+0x793/0x1ae0 net/sched/act_pedit.c:245
+       [<ffffffff83a90623>] tcf_action_init_1+0x453/0x6e0 net/sched/act_api.c:1394
+       [<ffffffff83a90e58>] tcf_action_init+0x5a8/0x950 net/sched/act_api.c:1459
+       [<ffffffff83a96258>] tcf_action_add+0x118/0x4e0 net/sched/act_api.c:1985
+       [<ffffffff83a96997>] tc_ctl_action+0x377/0x490 net/sched/act_api.c:2044
+       [<ffffffff83920a8d>] rtnetlink_rcv_msg+0x46d/0xd70 net/core/rtnetlink.c:6395
+       [<ffffffff83b24305>] netlink_rcv_skb+0x185/0x490 net/netlink/af_netlink.c:2575
+       [<ffffffff83901806>] rtnetlink_rcv+0x26/0x30 net/core/rtnetlink.c:6413
+       [<ffffffff83b21cae>] netlink_unicast_kernel net/netlink/af_netlink.c:1339 [inline]
+       [<ffffffff83b21cae>] netlink_unicast+0x5be/0x8a0 net/netlink/af_netlink.c:1365
+       [<ffffffff83b2293f>] netlink_sendmsg+0x9af/0xed0 net/netlink/af_netlink.c:1942
+       [<ffffffff8380c39f>] sock_sendmsg_nosec net/socket.c:724 [inline]
+       [<ffffffff8380c39f>] sock_sendmsg net/socket.c:747 [inline]
+       [<ffffffff8380c39f>] ____sys_sendmsg+0x3ef/0xaa0 net/socket.c:2503
+       [<ffffffff838156d2>] ___sys_sendmsg+0x122/0x1c0 net/socket.c:2557
+       [<ffffffff8381594f>] __sys_sendmsg+0x11f/0x200 net/socket.c:2586
+       [<ffffffff83815ab0>] __do_sys_sendmsg net/socket.c:2595 [inline]
+       [<ffffffff83815ab0>] __se_sys_sendmsg net/socket.c:2593 [inline]
+       [<ffffffff83815ab0>] __x64_sys_sendmsg+0x80/0xc0 net/socket.c:2593
 
-Most callers already ignore the return value. However:
+The recently added static offset check missed a free to the key buffer when
+bailing out on error.
 
-- Refold arguments of the call from sctp_v6_xmit() so that they fit into
-  the 80-column limit.
-
-- tipc_udp_xmit() initializes err from the return value, but that should
-  already be always zero at that point. So there's no practical change, but
-  elision of the assignment prompts a couple more tweaks to clean up the
-  function.
-
-Signed-off-by: Petr Machata <petrm@nvidia.com>
+Fixes: e1201bc781c2 ("net/sched: act_pedit: check static offsets a priori")
+Reported-by: Ido Schimmel <idosch@idosch.org>
+Signed-off-by: Pedro Tammela <pctammela@mojatatu.com>
 Reviewed-by: Ido Schimmel <idosch@nvidia.com>
-Reviewed-by: Nikolay Aleksandrov <razor@blackwall.org>
-Link: https://patch.msgid.link/7facacf9d8ca3ca9391a4aee88160913671b868d.1750113335.git.petrm@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Alexander Martyniuk <alexevgmart@gmail.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Tested-by: Ido Schimmel <idosch@nvidia.com>
+Link: https://lore.kernel.org/r/20230425144725.669262-1-pctammela@mojatatu.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Wentao Guan <guanwentao@uniontech.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/udp_tunnel.h  |   14 +++++++-------
- net/ipv6/ip6_udp_tunnel.c |   15 +++++++--------
- net/sctp/ipv6.c           |    7 ++++---
- net/tipc/udp_media.c      |   10 +++++-----
- 4 files changed, 23 insertions(+), 23 deletions(-)
+ net/sched/act_pedit.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/include/net/udp_tunnel.h
-+++ b/include/net/udp_tunnel.h
-@@ -152,13 +152,13 @@ void udp_tunnel_xmit_skb(struct rtable *
- 			 __be16 df, __be16 src_port, __be16 dst_port,
- 			 bool xnet, bool nocheck);
- 
--int udp_tunnel6_xmit_skb(struct dst_entry *dst, struct sock *sk,
--			 struct sk_buff *skb,
--			 struct net_device *dev,
--			 const struct in6_addr *saddr,
--			 const struct in6_addr *daddr,
--			 __u8 prio, __u8 ttl, __be32 label,
--			 __be16 src_port, __be16 dst_port, bool nocheck);
-+void udp_tunnel6_xmit_skb(struct dst_entry *dst, struct sock *sk,
-+			  struct sk_buff *skb,
-+			  struct net_device *dev,
-+			  const struct in6_addr *saddr,
-+			  const struct in6_addr *daddr,
-+			  __u8 prio, __u8 ttl, __be32 label,
-+			  __be16 src_port, __be16 dst_port, bool nocheck);
- 
- void udp_tunnel_sock_release(struct socket *sock);
- 
---- a/net/ipv6/ip6_udp_tunnel.c
-+++ b/net/ipv6/ip6_udp_tunnel.c
-@@ -74,13 +74,13 @@ error:
- }
- EXPORT_SYMBOL_GPL(udp_sock_create6);
- 
--int udp_tunnel6_xmit_skb(struct dst_entry *dst, struct sock *sk,
--			 struct sk_buff *skb,
--			 struct net_device *dev,
--			 const struct in6_addr *saddr,
--			 const struct in6_addr *daddr,
--			 __u8 prio, __u8 ttl, __be32 label,
--			 __be16 src_port, __be16 dst_port, bool nocheck)
-+void udp_tunnel6_xmit_skb(struct dst_entry *dst, struct sock *sk,
-+			  struct sk_buff *skb,
-+			  struct net_device *dev,
-+			  const struct in6_addr *saddr,
-+			  const struct in6_addr *daddr,
-+			  __u8 prio, __u8 ttl, __be32 label,
-+			  __be16 src_port, __be16 dst_port, bool nocheck)
- {
- 	struct udphdr *uh;
- 	struct ipv6hdr *ip6h;
-@@ -109,7 +109,6 @@ int udp_tunnel6_xmit_skb(struct dst_entr
- 	ip6h->saddr	  = *saddr;
- 
- 	ip6tunnel_xmit(sk, skb, dev);
--	return 0;
- }
- EXPORT_SYMBOL_GPL(udp_tunnel6_xmit_skb);
- 
---- a/net/sctp/ipv6.c
-+++ b/net/sctp/ipv6.c
-@@ -261,9 +261,10 @@ static int sctp_v6_xmit(struct sk_buff *
- 	skb_set_inner_ipproto(skb, IPPROTO_SCTP);
- 	label = ip6_make_flowlabel(sock_net(sk), skb, fl6->flowlabel, true, fl6);
- 
--	return udp_tunnel6_xmit_skb(dst, sk, skb, NULL, &fl6->saddr,
--				    &fl6->daddr, tclass, ip6_dst_hoplimit(dst),
--				    label, sctp_sk(sk)->udp_port, t->encap_port, false);
-+	udp_tunnel6_xmit_skb(dst, sk, skb, NULL, &fl6->saddr, &fl6->daddr,
-+			     tclass, ip6_dst_hoplimit(dst), label,
-+			     sctp_sk(sk)->udp_port, t->encap_port, false);
-+	return 0;
- }
- 
- /* Returns the dst cache entry for the given source and destination ip
---- a/net/tipc/udp_media.c
-+++ b/net/tipc/udp_media.c
-@@ -172,7 +172,7 @@ static int tipc_udp_xmit(struct net *net
- 			 struct udp_media_addr *dst, struct dst_cache *cache)
- {
- 	struct dst_entry *ndst;
--	int ttl, err = 0;
-+	int ttl, err;
- 
- 	local_bh_disable();
- 	ndst = dst_cache_get(cache);
-@@ -217,13 +217,13 @@ static int tipc_udp_xmit(struct net *net
- 			dst_cache_set_ip6(cache, ndst, &fl6.saddr);
+diff --git a/net/sched/act_pedit.c b/net/sched/act_pedit.c
+index 35fa94ba0edf8f..0601deea04d725 100644
+--- a/net/sched/act_pedit.c
++++ b/net/sched/act_pedit.c
+@@ -250,7 +250,7 @@ static int tcf_pedit_init(struct net *net, struct nlattr *nla,
+ 		if (!offmask && cur % 4) {
+ 			NL_SET_ERR_MSG_MOD(extack, "Offsets must be on 32bit boundaries");
+ 			ret = -EINVAL;
+-			goto put_chain;
++			goto out_free_keys;
  		}
- 		ttl = ip6_dst_hoplimit(ndst);
--		err = udp_tunnel6_xmit_skb(ndst, ub->ubsock->sk, skb, NULL,
--					   &src->ipv6, &dst->ipv6, 0, ttl, 0,
--					   src->port, dst->port, false);
-+		udp_tunnel6_xmit_skb(ndst, ub->ubsock->sk, skb, NULL,
-+				     &src->ipv6, &dst->ipv6, 0, ttl, 0,
-+				     src->port, dst->port, false);
- #endif
- 	}
- 	local_bh_enable();
--	return err;
-+	return 0;
  
- tx_error:
- 	local_bh_enable();
+ 		/* sanitize the shift value for any later use */
+@@ -275,6 +275,8 @@ static int tcf_pedit_init(struct net *net, struct nlattr *nla,
+ 
+ 	return ret;
+ 
++out_free_keys:
++	kfree(nparms->tcfp_keys);
+ put_chain:
+ 	if (goto_ch)
+ 		tcf_chain_put_by_act(goto_ch);
+-- 
+2.53.0
+
 
 
 
