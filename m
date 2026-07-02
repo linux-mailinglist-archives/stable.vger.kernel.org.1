@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-270657-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-271298-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id cUdmH5qeRmozaQsAu9opvQ
-	(envelope-from <stable+bounces-270657-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:23:38 +0200
+	id JIRrBVyaRmpwZwsAu9opvQ
+	(envelope-from <stable+bounces-271298-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:05:32 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A60976FB45B
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:23:37 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9CE886FAF6E
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:05:31 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=u+2qkqgq;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-270657-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-270657-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="YZ6IGtR/";
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-271298-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-271298-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 21B803242387
-	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:30:51 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 5B94F3263412
+	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:53:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE8A73B6C0C;
-	Thu,  2 Jul 2026 16:25:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7FC8533E348;
+	Thu,  2 Jul 2026 16:53:02 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6589399375;
-	Thu,  2 Jul 2026 16:25:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58E2B22D7B9;
+	Thu,  2 Jul 2026 16:53:01 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783009515; cv=none; b=mFE8p14rFANgGFlI23JXoTJ1wzj/zTSCNTzUtTzAoObbFz6l7W0Zi9hkL7VP0XEycuee0uOaNKlZnQyU04ipAyv9LdBe7Aj9nGAzJZ19plN0B/hnpJqHMVJQCNFQqdsUFB76H9GfPCRbUm9vYq2b1al3G2Ej3zqgikRDfdm53BE=
+	t=1783011182; cv=none; b=lyTzbi7nZTGBkIox88n1m2+t7BEzJ/ztQCTmDQn89te9qF+up5dCX08TJnjlbxueen0/FZ0kwRS6lSAYHx2o3T+1xv6rEF0RCZsGTdnsKPQ16qhNCtINGdfIwMNiS9LmJ1Jh0s+W086sqH6kktoInw0NAPbtbv0pVRxw+ovbxQk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783009515; c=relaxed/simple;
-	bh=aVZldMx04Ne8WEBk1bYtt779d2/hjVXwCAmTdix/kXY=;
+	s=arc-20240116; t=1783011182; c=relaxed/simple;
+	bh=zgGTI7UZ3wSq9V40yD7nN0ctMLO7HBqcQhqonrlARh8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lUCG0hhtcKlOMwzVRQ2rLNhn0IJRfdiMbPGUPOA04NlKZExTkXe+9Fqa82W/zP9bMTx90m8pepPG+au0shnFoY/UT97rnUbEgyDake0j7KkkuK4JaucgWEA6q8JDwQqDm/v8CODnqK/wSuSdcFCgJEOuhd9WEMEd/T3JyIKZc+M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u+2qkqgq; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58C501F00A3D;
-	Thu,  2 Jul 2026 16:25:07 +0000 (UTC)
+	 MIME-Version; b=BCbEQKkcbGdt12hhTHKwayT+mfKqk5O1C81qnZOek7N0wA9OCwmui1NbsniDYVrUNUF61eSytPoEjBAWRHFXlXNDwJWNqlOIBIYGMDX41OCyl5rn1a4Gjskv4sFnMHVRFhQvCYvqJgwwoHAWjjj2ejobILJmSRRRiQKfEfXunEk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YZ6IGtR/; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF1181F00A3A;
+	Thu,  2 Jul 2026 16:53:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1783009507;
-	bh=0OOAl+H0bjAkaa1+tTvdYdVvAJkK6YwYBTwAuh9qeyU=;
+	s=korg; t=1783011181;
+	bh=XlZyYZ2NcRjlxRyAj0242JjbqEwPSYfAC851YLPmvfY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=u+2qkqgqRucD9sZJYGJOMFebHRmwW1NCzcLIbdee/tu3vhwBskIRgReP4HlJJiP8p
-	 djM+P+A10H54A2Ww6iJHBjH/adZOB7l6NQeD2KP//v8NBbZiq25VC+eOAsgRsa/vuP
-	 0Pk4Zib8e4CZkqR9cu9vOQ7IcJcwbt/aVBq75hI0=
+	b=YZ6IGtR/aZWsAKROYQwTPLgWTOVl5CA+ClHanCj18ZpmLicXOpKIH8bmjkC3s2Y/k
+	 8PjNzTc0mA+OCsrgcRdALfPNyBVwcfUfJMk0+NUgxCAsWgD1himdsenmPxFagMT0xg
+	 yzzsuarJAW4xYinZJj8gGCfxHHddUS4Q2F1lAUWo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ian Bridges <icb@fastmail.org>,
-	Helge Deller <deller@gmx.de>
-Subject: [PATCH 5.10 77/96] fbdev: Fix fb_new_modelist to prevent null-ptr-deref in fb_videomode_to_var
+	stable@kernel.org,
+	Sven Eckelmann <sven@narfation.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.18 012/108] batman-adv: tp_meter: handle seqno wrap-around for fast recovery detection
 Date: Thu,  2 Jul 2026 18:20:09 +0200
-Message-ID: <20260702155110.601919662@linuxfoundation.org>
+Message-ID: <20260702155112.366659864@linuxfoundation.org>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260702155108.949633242@linuxfoundation.org>
-References: <20260702155108.949633242@linuxfoundation.org>
+In-Reply-To: <20260702155112.110058792@linuxfoundation.org>
+References: <20260702155112.110058792@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,95 +72,74 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-271298-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-270657-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:icb@fastmail.org,m:deller@gmx.de,s:lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,fastmail.org,gmx.de];
 	FORWARDED(0.00)[lists@lfdr.de];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:stable@kernel.org,m:sven@narfation.org,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,gmx.de:email,fastmail.org:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[narfation.org:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: A60976FB45B
+X-Rspamd-Queue-Id: 9CE886FAF6E
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ian Bridges <icb@fastmail.org>
+From: Sven Eckelmann <sven@narfation.org>
 
-commit 7f08fc10fa3d3366dc3af723970bd03d7d6d10e3 upstream.
+commit f54c85ed42a1b27a516cf2a4728f5a612b799e07 upstream.
 
-info->var, a framebuffer's current mode, is expected to have a matching
-entry in info->modelist. var_to_display() relies on this and treats a
-failed fb_match_mode() as "This should not happen". fb_set_var() keeps it
-true by adding the mode to the list on every change, and
-do_register_framebuffer() does the same at registration.
+The recover variable and the last_sent sequence number are initialized on
+purpose as a really high value which will wrap-around after the first 2000
+bytes. The fast recovery precondition must therefore not use simple integer
+comparisons but use helpers which are aware of the sequence number
+wrap-arounds.
 
-store_modes() replaces the modelist from userspace. fb_new_modelist()
-validates the new modes but does not check that info->var still has a
-match. It relies on fbcon_new_modelist() to re-point consoles, but that
-only handles consoles mapped to the framebuffer. With fbcon unbound there
-are none, so info->var is left describing a mode that is no longer in the
-list.
-
-A later console takeover runs var_to_display(), where fb_match_mode()
-returns NULL and leaves fb_display[i].mode NULL. fbcon_switch() passes it
-to display_to_var(), and fb_videomode_to_var() dereferences the NULL mode.
-
-Keep the current mode in the list in fb_new_modelist(), the same way
-fb_set_var() does.
-
-Cc: stable@vger.kernel.org
-Assisted-by: Claude:claude-opus-4-8
-Signed-off-by: Ian Bridges <icb@fastmail.org>
-Signed-off-by: Helge Deller <deller@gmx.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@kernel.org
+Fixes: 33a3bb4a3345 ("batman-adv: throughput meter implementation")
+Signed-off-by: Sven Eckelmann <sven@narfation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/video/fbdev/core/fbmem.c |   12 ++++++++++++
- 1 file changed, 12 insertions(+)
+ net/batman-adv/tp_meter.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/video/fbdev/core/fbmem.c
-+++ b/drivers/video/fbdev/core/fbmem.c
-@@ -1989,6 +1989,18 @@ int fb_new_modelist(struct fb_info *info
- 	if (list_empty(&info->modelist))
- 		return 1;
+diff --git a/net/batman-adv/tp_meter.c b/net/batman-adv/tp_meter.c
+index a85622267ba655..0ebfc4462b8f17 100644
+--- a/net/batman-adv/tp_meter.c
++++ b/net/batman-adv/tp_meter.c
+@@ -733,7 +733,7 @@ static void batadv_tp_recv_ack(struct batadv_priv *bat_priv,
+ 		if (atomic_read(&tp_vars->dup_acks) != 3)
+ 			goto out;
  
-+	/*
-+	 * The new modelist may not contain the current mode (info->var), and
-+	 * fbcon_new_modelist() below only re-points consoles mapped to this
-+	 * framebuffer. Add the current mode here so info->var keeps a match
-+	 * even when fbcon is unbound.
-+	 */
-+	if (!fb_match_mode(&info->var, &info->modelist)) {
-+		fb_var_to_videomode(&mode, &info->var);
-+		if (fb_add_videomode(&mode, &info->modelist))
-+			return 1;
-+	}
-+
- 	fbcon_new_modelist(info);
+-		if (tp_vars->recover >= recv_ack)
++		if (!batadv_seq_before(tp_vars->recover, recv_ack))
+ 			goto out;
  
- 	return 0;
+ 		/* if this is the third duplicate ACK do Fast Retransmit */
+-- 
+2.53.0
+
 
 
 
