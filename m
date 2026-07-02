@@ -1,61 +1,62 @@
-Return-Path: <stable+bounces-270662-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-271303-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id nvJlM3mVRmqaZAsAu9opvQ
-	(envelope-from <stable+bounces-270662-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:44:41 +0200
+	id eFDHORiaRmpRZwsAu9opvQ
+	(envelope-from <stable+bounces-271303-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:04:24 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id EDC866FA7A2
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:44:40 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 583406FAF02
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:04:24 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=E8zvZ1s+;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-270662-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-270662-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=RJknhfjw;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-271303-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-271303-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 1CDA3300B08A
-	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:31:02 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 7843C3174FD4
+	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:53:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F6BC3491E1;
-	Thu,  2 Jul 2026 16:25:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA1133446A7;
+	Thu,  2 Jul 2026 16:53:15 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 070773AC0FD;
-	Thu,  2 Jul 2026 16:25:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D282318B9D;
+	Thu,  2 Jul 2026 16:53:14 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783009527; cv=none; b=cl9SHfXaex8LeqHGsU2ca6+nnOwNdp15ZwlqU5GhGIPSeogGsyAx+1jJEatG17H5YTwmvrLkhtPLGa2KaPz/kCXwlkX4ZtSFPg+qgI0gi3A6o4xCgGHe2D5N2PQbaQ6UEqZqhXsrU9m00r3Etefy+ODmK3DzszpeM/5o/8N6C2w=
+	t=1783011195; cv=none; b=n2FRFUx/TSjHqCIlGdtE4oY9f8Y3qnaV+NpjZ73vHGgoeEo/uSZOnBPJQBmYLh8zm3qq2Rudf5VXjgmZdsWf+WLEB9stwuQBHJFYMiXsM6gMWYwyaC+IW6Ix/V4c4PTUIu1OdsE8g6cfL4Guj0EEAsO5n9odnFCFpoLbHnqHI40=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783009527; c=relaxed/simple;
-	bh=qN2Ids3nnvJrpPl5ERT3cmn2B4XEUAOt34B1mRDCx5I=;
+	s=arc-20240116; t=1783011195; c=relaxed/simple;
+	bh=h0pY7yrrJHxe2sLoF7xDiHhpRWFFgoPuBDqRsfI6Rwg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rHU6l9LjftWCjKTWMt0LPk1j9BtLVwmmm18K+w2rkIRBoaObl5/MyMEXJWqls1eVfIbCasDwGP6WX/7oZtqoN/tXhsM6AbYZ+tsT9c905MQTZI8vHer+B3Exda0aYaSgqhmO6P0aLeL0q8dJ2yK32iF7PwnzYHfGyL8uDYBrUlA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E8zvZ1s+; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C7F01F00A3A;
-	Thu,  2 Jul 2026 16:25:20 +0000 (UTC)
+	 MIME-Version; b=HhjB6IUyhrU90ujeVqokdwVX2dGqs4jACVU04ya1EweU+jsQFSykLjG96l1mcmo+0RCLy346Ov5LzCfX7I0KVYkHdhhY776FDgErQRnWP0Jns6igEATXifJXYXvf/3Zu+kl9mJ+ZjRYDX3UKTEkd/BmgLplapSrWOHwkkmiIIOQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RJknhfjw; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2C591F000E9;
+	Thu,  2 Jul 2026 16:53:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1783009521;
-	bh=ojBGWcIe7/mJyYRSrSkCQXkkS71vUGmjDmWX5f0PnXU=;
+	s=korg; t=1783011194;
+	bh=CvscdMwCTgF363hdLIv22rsUpG3/XaV/b7m0C3wWUfE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=E8zvZ1s+syBc5O05G9LmkcFaxpG/fUh0rw5ww/b7SV3jlab9DaEO5szeX1fUOpOn6
-	 hsOW3/HBjBakDc7qbKuxmkrNIRNJTAgKCi7t2q8g53LqFsNGNglYST5x4hfGm/AmI4
-	 5nM4Maqe1B4uQFIvZfSg6lt0uoc1k9ta7q+Qr8Qc=
+	b=RJknhfjw+OOdbWAYLFpKLwscD3fL9yrkNzJVFKzxWi5M/VqtmUH6X8KydjTOpd07G
+	 SV3cZltIzsvlvG2q8WPKkQFYdj5dmQXhwALAdqIteld1Y8+nFV8pvZ6LWFx9PtksBk
+	 A+gylziV8ECBk6YHZyXoi/x//49kuh3SdqDpaRag=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thadeu Lima de Souza Cascardo <cascardo@igalia.com>,
-	David Teigland <teigland@redhat.com>,
-	Nazar Kalashnikov <nazarkalashnikov0@gmail.com>
-Subject: [PATCH 5.10 82/96] dlm: prevent NPD when writing a positive value to event_done
+	stable@kernel.org,
+	Nora Schiffer <neocturne@universe-factory.net>,
+	Sven Eckelmann <sven@narfation.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.18 017/108] batman-adv: gw: dont deselect gateway with active hardif
 Date: Thu,  2 Jul 2026 18:20:14 +0200
-Message-ID: <20260702155110.703379727@linuxfoundation.org>
+Message-ID: <20260702155112.466830154@linuxfoundation.org>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260702155108.949633242@linuxfoundation.org>
-References: <20260702155108.949633242@linuxfoundation.org>
+In-Reply-To: <20260702155112.110058792@linuxfoundation.org>
+References: <20260702155112.110058792@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,82 +70,122 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-270662-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,igalia.com,redhat.com,gmail.com];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	TO_DN_SOME(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:cascardo@igalia.com,m:teigland@redhat.com,m:nazarkalashnikov0@gmail.com,s:lists@lfdr.de];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-271303-lists,stable=lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:stable@kernel.org,m:neocturne@universe-factory.net,m:sven@narfation.org,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RWL_MAILSPIKE_POSSIBLE(0.00)[104.64.211.4:from];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,igalia.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,narfation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,universe-factory.net:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: EDC866FA7A2
+X-Rspamd-Queue-Id: 583406FAF02
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
+From: Sven Eckelmann <sven@narfation.org>
 
-commit 8e2bad543eca5c25cd02cbc63d72557934d45f13 upstream.
+commit df97a7107b16375a10a36d7a63e9b4291a8ac680 upstream.
 
-do_uevent returns the value written to event_done. In case it is a
-positive value, new_lockspace would undo all the work, and lockspace
-would not be set. __dlm_new_lockspace, however, would treat that
-positive value as a success due to commit 8511a2728ab8 ("dlm: fix use
-count with multiple joins").
+The batadv_hardif_cnt() was previously checking if there is an
+batadv_hard_iface->mesh_iface which is has the same mesh_iface. And since
+batadv_hardif_disable_interface() was resetting the
+batadv_hard_iface->mesh_iface after this check, it had to verify whether
+*1* interface was still part of the mesh_iface before it started the
+gateway deselection.
 
-Down the line, device_create_lockspace would pass that NULL lockspace to
-dlm_find_lockspace_local, leading to a NULL pointer dereference.
+But after batadv_hardif_cnt() is now checking the lower interfaces of
+mesh_iface and batadv_hardif_disable_interface() already removed the
+interface via netdev_upper_dev_unlink() earlier in this function, the check
+must now make sure that *0* interfaces can be found by batadv_hardif_cnt()
+before selected gateway must be deselected. Otherwise the deselection would
+already happen one batadv_hard_iface too early.
 
-Treating such positive values as successes prevents the problem. Given
-this has been broken for so long, this is unlikely to break userspace
-expectations.
+Because a 0 hardif count from batadv_hardif_cnt() is equal to an empty
+list, it is possible to replace the counting with a simple list_empty().
 
-Fixes: 8511a2728ab8 ("dlm: fix use count with multiple joins")
-Signed-off-by: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
-Signed-off-by: David Teigland <teigland@redhat.com>
-Signed-off-by: Nazar Kalashnikov <nazarkalashnikov0@gmail.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@kernel.org
+Fixes: 7dc284702bcd ("batman-adv: store hard_iface as iflink private data")
+Reviewed-by: Nora Schiffer <neocturne@universe-factory.net>
+Signed-off-by: Sven Eckelmann <sven@narfation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/dlm/lockspace.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/batman-adv/hard-interface.c | 28 ++--------------------------
+ 1 file changed, 2 insertions(+), 26 deletions(-)
 
---- a/fs/dlm/lockspace.c
-+++ b/fs/dlm/lockspace.c
-@@ -639,7 +639,7 @@ static int new_lockspace(const char *nam
- 	   lockspace to start running (via sysfs) in dlm_ls_start(). */
+diff --git a/net/batman-adv/hard-interface.c b/net/batman-adv/hard-interface.c
+index 1c488049d55463..39b1ed813497d2 100644
+--- a/net/batman-adv/hard-interface.c
++++ b/net/batman-adv/hard-interface.c
+@@ -786,30 +786,6 @@ int batadv_hardif_enable_interface(struct batadv_hard_iface *hard_iface,
+ 	return ret;
+ }
  
- 	error = do_uevent(ls, 1);
--	if (error)
-+	if (error < 0)
- 		goto out_recoverd;
+-/**
+- * batadv_hardif_cnt() - get number of interfaces enslaved to mesh interface
+- * @mesh_iface: mesh interface to check
+- *
+- * This function is only using RCU for locking - the result can therefore be
+- * off when another function is modifying the list at the same time. The
+- * caller can use the rtnl_lock to make sure that the count is accurate.
+- *
+- * Return: number of connected/enslaved hard interfaces
+- */
+-static size_t batadv_hardif_cnt(struct net_device *mesh_iface)
+-{
+-	struct batadv_hard_iface *hard_iface;
+-	struct list_head *iter;
+-	size_t count = 0;
+-
+-	rcu_read_lock();
+-	netdev_for_each_lower_private_rcu(mesh_iface, hard_iface, iter)
+-		count++;
+-	rcu_read_unlock();
+-
+-	return count;
+-}
+-
+ /**
+  * batadv_hardif_disable_interface() - Remove hard interface from mesh interface
+  * @hard_iface: hard interface to be removed
+@@ -850,8 +826,8 @@ void batadv_hardif_disable_interface(struct batadv_hard_iface *hard_iface)
+ 	netdev_upper_dev_unlink(hard_iface->net_dev, hard_iface->mesh_iface);
+ 	batadv_hardif_recalc_extra_skbroom(hard_iface->mesh_iface);
  
- 	wait_for_completion(&ls->ls_members_done);
+-	/* nobody uses this interface anymore */
+-	if (batadv_hardif_cnt(hard_iface->mesh_iface) <= 1)
++	/* nobody uses this mesh interface anymore */
++	if (list_empty(&hard_iface->mesh_iface->adj_list.lower))
+ 		batadv_gw_check_client_stop(bat_priv);
+ 
+ 	hard_iface->mesh_iface = NULL;
+-- 
+2.53.0
+
 
 
 
