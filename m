@@ -1,61 +1,64 @@
-Return-Path: <stable+bounces-270768-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-270639-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id yu+vI0iTRmp6YwsAu9opvQ
-	(envelope-from <stable+bounces-270768-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:35:20 +0200
+	id RnbjFlieRmoXaQsAu9opvQ
+	(envelope-from <stable+bounces-270639-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:22:32 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D1FF6FA448
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:35:20 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id C42C36FB3FB
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:22:31 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=KX9n1qFw;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-270768-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-270768-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=ls1iKWJk;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-270639-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-270639-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 9021C302D050
-	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:33:49 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 5F54C322F107
+	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:30:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E537480DE2;
-	Thu,  2 Jul 2026 16:30:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F156396560;
+	Thu,  2 Jul 2026 16:24:26 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 851B733D6C0;
-	Thu,  2 Jul 2026 16:29:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF3D833B6ED;
+	Thu,  2 Jul 2026 16:24:17 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783009802; cv=none; b=opZlGfEFYVPVjzlpPLyXDCy0UVTG0tX14tSMNo0mVkP2pnV3uau2otCW/VOWrrc0w+pmQAYHp0FMaYtHFFrHy76/kRgVyXSvJi9Tc53FB9ReMwsA1ZWtOsZ4HcseLoJvKHTuvIdt/TmajtyItkDWYbF/7o6vZAHTUJ2xeh5ae8M=
+	t=1783009465; cv=none; b=d8dwdvgqRu2ntUrSC7g/frSmps011Ao2uqeq8CdV4fCndkZYsFJuIjQSFc8scgQR3U7gBwWeRYz/utuhhLbDFLprMFdAFzAcIzLpaM0ZQCXj4meVLyTAW2YtYBcyFWehqPmIM2w5uak0kFHIoMFxTnqIxRvSrpZ7lhdKUCPD2RM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783009802; c=relaxed/simple;
-	bh=zEfdXiCh5b0TuABJukv7geoTso+GvOdK+LBZuJQZ0J4=;
+	s=arc-20240116; t=1783009465; c=relaxed/simple;
+	bh=+SwSPc5rJPVmcAq9vFlrTNe+G3M9grUpApVU1FqVvFA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Nvj6E7GFhEk9Ta8cpj0TqzaRP/r8WotXveyKmQgM5X7IJlcgd4v12WFat6GFSL9hAe1Tj/IdF+EzL+tiA1Gst8C8RGFVonU4Uueg1H35UvaX4ZqAq/ttxYbjPS9D4sKfeLbD72npo3Nsy8C/vqPb5gSh69PYoLw8rYqeMSJ5jXU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KX9n1qFw; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC4A51F00A3E;
-	Thu,  2 Jul 2026 16:29:58 +0000 (UTC)
+	 MIME-Version; b=QGctp4fnemWfmKyvGnIhWRhin3GyzEw9DeNvMHTW4UFq2jkxzVL5mHYQakMrE3obNLBvaTAK3uwlCK2AHMxAsKSIKhEEARNi4YLtYQ12covuiON2GPBCKJ9w9nZIhjAX/mZCFr5qH1HVRZ81Wt07XHk5SO9sQmO6N4R1fClExLA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ls1iKWJk; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 618C51F000E9;
+	Thu,  2 Jul 2026 16:24:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1783009799;
-	bh=IRWxuhIVdLumVAiFYXFEPLnkK8Xnjqi2Facie4olKcg=;
+	s=korg; t=1783009457;
+	bh=HL484zMkn0DcABkuw01C2Y6e+OvEnJjEdCK4DHIohCU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=KX9n1qFweVYiiJ6NmparT9hoph1qMkB4HflGxsArJd26ix/iKJXkLxvwJXoHvGOSH
-	 g4hlLC354cMucE2q2N9UJYFlWPpIhJVfJ0ntXU32ahDxfiIVuUGm/LpJIdwhoY8Heu
-	 6muY+r1Wq6dBRq3FWLCaBcpcx16nI9k1HjCeh6sI=
+	b=ls1iKWJkf2QAGumIxQGrxMPk74VOrnJHge9Jw+pK4SFxinBf5SxD74/ehj7JS/0jK
+	 c9rnqhhAT0WxhZbW344v0rwWldd6MfhGkacZrBFYaZ9RIAPoMoE6hjo2lU/1b0KMZG
+	 C+LfQZO7DDrOjrmwFDEHr9AHCCbTlUBbY98Lcldk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Sven Eckelmann <sven@narfation.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 48/95] batman-adv: tt: dont merge change entries with different VIDs
-Date: Thu,  2 Jul 2026 18:19:51 +0200
-Message-ID: <20260702155110.219256549@linuxfoundation.org>
+	Kevin Hao <haokexin@gmail.com>,
+	Alexander Sverdlin <alexander.sverdlin@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Wenshan Lan <jetlan9@163.com>,
+	Sasha Levin <sashal@kernel.org>,
+	Elizaveta Tereshkina <etereshkina@astralinux.ru>
+Subject: [PATCH 5.10 60/96] net: cpsw_new: Fix potential unregister of netdev that has not been registered yet
+Date: Thu,  2 Jul 2026 18:19:52 +0200
+Message-ID: <20260702155110.243734389@linuxfoundation.org>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260702155109.196223802@linuxfoundation.org>
-References: <20260702155109.196223802@linuxfoundation.org>
+In-Reply-To: <20260702155108.949633242@linuxfoundation.org>
+References: <20260702155108.949633242@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,83 +70,95 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-270768-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org,163.com,astralinux.ru];
+	TAGGED_FROM(0.00)[bounces-270639-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:stable@kernel.org,m:sven@narfation.org,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:haokexin@gmail.com,m:alexander.sverdlin@gmail.com,m:kuba@kernel.org,m:jetlan9@163.com,m:sashal@kernel.org,m:etereshkina@astralinux.ru,m:alexandersverdlin@gmail.com,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORWARDED(0.00)[lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,narfation.org:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,msgid.link:url,vger.kernel.org:from_smtp,astralinux.ru:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 1D1FF6FA448
+X-Rspamd-Queue-Id: C42C36FB3FB
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sven Eckelmann <sven@narfation.org>
+From: Kevin Hao <haokexin@gmail.com>
 
-commit f08e06c2d5c3e2434e7c773f2213f4a7dce6bc1e upstream.
+commit 9d724b34fbe13b71865ad0906a4be97571f19cf5 upstream.
 
-batadv_tt_local_event() merges/cancels events for the same client which
-would conflict or be duplicates. The matching of the queued events only
-compares the MAC address - the VLAN ID stored in each event is ignored.
+If an error occurs during register_netdev() for the first MAC in
+cpsw_register_ports(), even though cpsw->slaves[0].ndev is set to NULL,
+cpsw->slaves[1].ndev would remain unchanged. This could later cause
+cpsw_unregister_ports() to attempt unregistering the second MAC.
+To address this, add a check for ndev->reg_state before calling
+unregister_netdev(). With this change, setting cpsw->slaves[i].ndev
+to NULL becomes unnecessary and can be removed accordingly.
 
-If a MAC would now appear on multiple VID, the two ADD change events (for
-VID 1 and VID 2) would be merged to a single vid event. The remote can
-therefore not calculate the correct TT table and desync. A full translation
-table exchange is required to recover from this state.
-
-A check of VID is therefore necessary to avoid such wrong merges/cancels.
-
-Cc: stable@kernel.org
-Fixes: c018ad3de61a ("batman-adv: add the VLAN ID attribute to the TT entry")
-[ Context ]
-Signed-off-by: Sven Eckelmann <sven@narfation.org>
+Fixes: ed3525eda4c4 ("net: ethernet: ti: introduce cpsw switchdev based driver part 1 - dual-emac")
+Signed-off-by: Kevin Hao <haokexin@gmail.com>
+Cc: stable@vger.kernel.org
+Reviewed-by: Alexander Sverdlin <alexander.sverdlin@gmail.com>
+Link: https://patch.msgid.link/20260205-cpsw-error-path-v1-2-6e58bae6b299@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Wenshan Lan <jetlan9@163.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Elizaveta Tereshkina <etereshkina@astralinux.ru>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/batman-adv/translation-table.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/net/ethernet/ti/cpsw_new.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/net/batman-adv/translation-table.c b/net/batman-adv/translation-table.c
-index 8ab1257bade048..4bc73aceeb89f6 100644
---- a/net/batman-adv/translation-table.c
-+++ b/net/batman-adv/translation-table.c
-@@ -485,6 +485,9 @@ static void batadv_tt_local_event(struct batadv_priv *bat_priv,
- 		if (!batadv_compare_eth(entry->change.addr, common->addr))
+diff --git a/drivers/net/ethernet/ti/cpsw_new.c b/drivers/net/ethernet/ti/cpsw_new.c
+index 66b1620b6f5b0e..cc276241f39161 100644
+--- a/drivers/net/ethernet/ti/cpsw_new.c
++++ b/drivers/net/ethernet/ti/cpsw_new.c
+@@ -1456,7 +1456,8 @@ static void cpsw_unregister_ports(struct cpsw_common *cpsw)
+ 	int i = 0;
+ 
+ 	for (i = 0; i < cpsw->data.slaves; i++) {
+-		if (!cpsw->slaves[i].ndev)
++		if (!cpsw->slaves[i].ndev ||
++		    cpsw->slaves[i].ndev->reg_state != NETREG_REGISTERED)
  			continue;
  
-+		if (entry->change.vid != tt_change_node->change.vid)
-+			continue;
-+
- 		/* DEL+ADD in the same orig interval have no effect and can be
- 		 * removed to avoid silly behaviour on the receiver side. The
- 		 * other way around (ADD+DEL) can happen in case of roaming of
+ 		unregister_netdev(cpsw->slaves[i].ndev);
+@@ -1476,7 +1477,6 @@ static int cpsw_register_ports(struct cpsw_common *cpsw)
+ 		if (ret) {
+ 			dev_err(cpsw->dev,
+ 				"cpsw: err registering net device%d\n", i);
+-			cpsw->slaves[i].ndev = NULL;
+ 			break;
+ 		}
+ 	}
 -- 
 2.53.0
 
