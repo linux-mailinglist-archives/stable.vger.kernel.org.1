@@ -1,62 +1,62 @@
-Return-Path: <stable+bounces-271346-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-271456-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id Zb/KEqGaRmqYZwsAu9opvQ
-	(envelope-from <stable+bounces-271346-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:06:41 +0200
+	id 1fztN+WmRmoYbAsAu9opvQ
+	(envelope-from <stable+bounces-271456-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:59:01 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 92AF36FAFE8
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:06:40 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id E7C476FBC0D
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:59:00 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=oDiGph52;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-271346-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-271346-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=a5PIINNC;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-271456-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-271456-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 1682B32DA1D6
-	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:55:07 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 2179730AF3DB
+	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:59:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 319652D0602;
-	Thu,  2 Jul 2026 16:55:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 295D526F46F;
+	Thu,  2 Jul 2026 16:59:52 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0194782866;
-	Thu,  2 Jul 2026 16:55:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECC47433E87;
+	Thu,  2 Jul 2026 16:59:50 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783011303; cv=none; b=ZsPubjyWarYX+4tK/wfdycq7eRMnv1G/WZgVQWxPUFQhBSeMmfThMbNQPfIKuoLuCdDSbiwX1YlOJLq5pstGDvDG1rO9RotW4Vi0ZsQmE39I/G+MKqdTRnuFD1vubDAWa2YPzGJVzVT9LE9ZkG9GOyas38wruNj1S4AUdNWgR7k=
+	t=1783011591; cv=none; b=lLySKEUJt2/VIbK0qelYjmywMIp9VOa/LIyq/15IBBc1OTZcUbI/BdqrIVDr3Ifhl3NjYJQVzpyCwKSxeKO1CIEaJfqkrXR1bOF9CSmK7VkhzwsbG0T6okhKpxx0SEEoSilYNGivpMdmMmzUXSDRjup8AJJ3vzPkalI6034Dkb8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783011303; c=relaxed/simple;
-	bh=YcP7KgPGEMttQY/gxQUSWN1FdCiTw6D2M7gW7RxQ72g=;
+	s=arc-20240116; t=1783011591; c=relaxed/simple;
+	bh=RoFvOg+DiInAI9DD3wtSv/ma3Bx86e82kAxXLiNe9sw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nVeMfkUKZTROaKul3ER7qXkL6bbdFHxtDi6h0GxD8bh7EgQvVOYJ4mugWmq3kch1KEY3pYFtSCYmM8Z2pnLvvCNW7sR5JeSwwQUkQ/X/PPBcX5XA9iabgsyBbPFuFYLPT4vSVjqxk8TfDjWQzeXJya0NH1UUYOE9+C3ef1olz7I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oDiGph52; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 667D31F000E9;
-	Thu,  2 Jul 2026 16:55:01 +0000 (UTC)
+	 MIME-Version; b=USE0M//6Jqvn7oCfcOOnlaOOuqOuoDp0g+OWH1ifzPC1kKk715iyzDNsGOi5w2YzhiOmAY5zm7a71utI2LgnSaTz8J2K0Xj3XxZU2wOoqjar4Chpbykcqx2K+WJk8wGPzIgOu08Y9HQEsbYhm8xH/6oaWysDShjQIWvfmQXLt08=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a5PIINNC; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E12B1F00A3A;
+	Thu,  2 Jul 2026 16:59:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1783011301;
-	bh=r7/DTDhUdCdVCnFQELAtUHKMRye6XGymPukPhysWmOw=;
+	s=korg; t=1783011590;
+	bh=yqx9mBlJC4mh0t3DaeRfhSuw590oPHC81b//5TU6hWo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=oDiGph52SLyWQbPAzaB6Lz9MxpaowkXvfsoLhvUwjkG88fW07OXABanSWjc4DumXN
-	 Px5DLnf05gwBm5vpop4ntHyIBbuO9dEZc969H5vb+CAQzMxhsdaJIXIX2gRTgRJfEK
-	 owOHCnI8VC9HdvleZm4xbrfIfdBR2mKEQpdHQzf8=
+	b=a5PIINNCjz26Me+ivM/DaOc36eT8DIXXyYeFC5Xn059awJ19+QeTEZQmIlKxMstBM
+	 wrKinksUXCRIakExj0IYFDE91wg8nwhWsn8/fwJZ8caovaJRKWkJtXD9K05ZeHu7p5
+	 osNwWI3wlpblY3Rga7nfKTvw+SUd2SnDlthZaA2E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Simon Horman <horms@kernel.org>,
-	Vadim Fedorenko <vadim.fedorenko@linux.dev>,
-	Junjie Cao <junjie.cao@intel.com>,
-	Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Subject: [PATCH 6.18 058/108] wifi: iwlwifi: mld: fix race condition in PTP removal
+	stable@kernel.org,
+	Wenjie Qi <qiwenjie@xiaomi.com>,
+	Chao Yu <chao@kernel.org>,
+	Jaegeuk Kim <jaegeuk@kernel.org>
+Subject: [PATCH 7.1 059/120] f2fs: fix missing read bio submission on large folio error
 Date: Thu,  2 Jul 2026 18:20:55 +0200
-Message-ID: <20260702155113.310621551@linuxfoundation.org>
+Message-ID: <20260702155114.183965302@linuxfoundation.org>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260702155112.110058792@linuxfoundation.org>
-References: <20260702155112.110058792@linuxfoundation.org>
+In-Reply-To: <20260702155112.964534952@linuxfoundation.org>
+References: <20260702155112.964534952@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,82 +72,104 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-271346-lists,stable=lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:horms@kernel.org,m:vadim.fedorenko@linux.dev,m:junjie.cao@intel.com,m:miriam.rachel.korenblit@intel.com,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-271456-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:stable@kernel.org,m:qiwenjie@xiaomi.com,m:chao@kernel.org,m:jaegeuk@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,msgid.link:url,linux.dev:email]
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	RWL_MAILSPIKE_POSSIBLE(0.00)[104.64.211.4:from];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,xiaomi.com:email,vger.kernel.org:from_smtp,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 92AF36FAFE8
+X-Rspamd-Queue-Id: E7C476FBC0D
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Junjie Cao <junjie.cao@intel.com>
+From: Wenjie Qi <qiwenjie@xiaomi.com>
 
-commit e1fc08598aa34b28359831e768076f56632720c1 upstream.
+commit 74c8d2ec95c59a5651ecd975c466998af1961fd4 upstream.
 
-iwl_mld_ptp_remove() calls cancel_delayed_work_sync() only after
-ptp_clock_unregister() and clearing ptp_data state (ptp_clock,
-last_gp2, wrap_counter).
+f2fs_read_data_large_folio() can keep a read bio across multiple
+readahead folios.  If a later folio hits an error before any of its
+blocks are added to the bio, folio_in_bio is false and the current error
+path returns immediately after ending that folio.
 
-This creates a race where the delayed work iwl_mld_ptp_work() can
-execute between ptp_clock_unregister() and cancel_delayed_work_sync(),
-observing partially cleared PTP state.
+This can leave the bio accumulated for earlier folios unsubmitted.  Those
+folios then never receive read completion, and readers can wait
+indefinitely on the locked folios.
 
-Move cancel_delayed_work_sync() before ptp_clock_unregister() to
-ensure the delayed work is fully stopped before any PTP cleanup
-begins.
+Route errors through the common out path so any pending bio is submitted
+before returning.  Stop consuming more readahead folios once an error is
+seen, and only wait on and clear the current folio when it was actually
+added to the bio.
 
-Cc: stable@vger.kernel.org
-Reviewed-by: Simon Horman <horms@kernel.org>
-Reviewed-by: Vadim Fedorenko <vadim.fedorenko@linux.dev>
-Signed-off-by: Junjie Cao <junjie.cao@intel.com>
-Link: https://patch.msgid.link/20260212125035.1345718-2-junjie.cao@intel.com
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Cc: stable@kernel.org
+Fixes: a5d8b9d94e18 ("f2fs: fix to unlock folio in f2fs_read_data_large_folio()")
+Signed-off-by: Wenjie Qi <qiwenjie@xiaomi.com>
+Reviewed-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/intel/iwlwifi/mld/ptp.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/f2fs/data.c |   11 +++++------
+ 1 file changed, 5 insertions(+), 6 deletions(-)
 
---- a/drivers/net/wireless/intel/iwlwifi/mld/ptp.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mld/ptp.c
-@@ -319,10 +319,10 @@ void iwl_mld_ptp_remove(struct iwl_mld *
- 			       mld->ptp_data.ptp_clock_info.name,
- 			       ptp_clock_index(mld->ptp_data.ptp_clock));
+--- a/fs/f2fs/data.c
++++ b/fs/f2fs/data.c
+@@ -2495,7 +2495,7 @@ static int f2fs_read_data_large_folio(st
+ 	unsigned nrpages;
+ 	struct f2fs_folio_state *ffs;
+ 	int ret = 0;
+-	bool folio_in_bio;
++	bool folio_in_bio = false;
  
-+		cancel_delayed_work_sync(&mld->ptp_data.dwork);
- 		ptp_clock_unregister(mld->ptp_data.ptp_clock);
- 		mld->ptp_data.ptp_clock = NULL;
- 		mld->ptp_data.last_gp2 = 0;
- 		mld->ptp_data.wrap_counter = 0;
--		cancel_delayed_work_sync(&mld->ptp_data.dwork);
+ 	if (!IS_IMMUTABLE(inode) || f2fs_compressed_file(inode)) {
+ 		if (folio)
+@@ -2611,18 +2611,17 @@ submit_and_realloc:
  	}
- }
+ 	trace_f2fs_read_folio(folio, DATA);
+ err_out:
+-	if (!folio_in_bio) {
++	if (!folio_in_bio)
+ 		folio_end_read(folio, !ret);
+-		if (ret)
+-			return ret;
+-	}
++	if (ret)
++		goto out;
+ 	if (rac) {
+ 		folio = readahead_folio(rac);
+ 		goto next_folio;
+ 	}
+ out:
+ 	f2fs_submit_read_bio(F2FS_I_SB(inode), bio, DATA);
+-	if (ret) {
++	if (ret && folio_in_bio) {
+ 		/* Wait bios and clear uptodate. */
+ 		folio_lock(folio);
+ 		folio_clear_uptodate(folio);
 
 
 
