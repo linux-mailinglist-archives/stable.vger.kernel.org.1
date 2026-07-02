@@ -1,60 +1,62 @@
-Return-Path: <stable+bounces-270656-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-270863-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id JknxH0+URmr2YwsAu9opvQ
-	(envelope-from <stable+bounces-270656-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:39:43 +0200
+	id UwFzK5+TRmqeYwsAu9opvQ
+	(envelope-from <stable+bounces-270863-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:36:47 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 03A896FA568
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:39:43 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 24CDB6FA4A0
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:36:47 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="bNHLI8E/";
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-270656-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-270656-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=U+kFDKqH;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-270863-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-270863-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 0F5273240FE5
-	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:30:50 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 302663020FE6
+	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:36:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C667C39DBF7;
-	Thu,  2 Jul 2026 16:25:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5847A319851;
+	Thu,  2 Jul 2026 16:34:07 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89346346A0C;
-	Thu,  2 Jul 2026 16:25:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D725345CA3;
+	Thu,  2 Jul 2026 16:34:06 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783009514; cv=none; b=B39kNjfFiMBMvC81+wq8JmXE+fy/zGzV0FqtdtQjwszhO3hS/axCSL2w9FIXOvFxmwT1DicSIMbdXskd3SEBXLimA6XSzu+dTCMd9pFi3du656j9TrfOEWd8k7aEy9JGOfewovo1KI2pda8/rp4beoMoWWx1LCPm6OKbl/Bdkzk=
+	t=1783010047; cv=none; b=tn/Fz3Ny+AaqfEESEMTI1DZmDvDym+Je4Ftbhy0whgS64JOHxlbACOGraKhd2SDyzVezwHWy3GIi2FVBjag4q/bZ/zoq6TDLKQJziPnyhcQifS8mKl2OwQF3tcUP5/jMtfxLTe2SWVm/bIdmmLg8Gcu7/EkZ/oblMjCmDRTJlqo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783009514; c=relaxed/simple;
-	bh=0QMpFnFTRpQWFpRQgYDCfNqCJMh4NrF/V9R2UCIemhc=;
+	s=arc-20240116; t=1783010047; c=relaxed/simple;
+	bh=Khg5+LRV2re3PTYsnnZLi19a0/SFpJBNysINzSNFJr0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kcqlHRAr2RpCa+k5HvH5EZYbM8DSzOxiD4zF7C2Z226RhIK5wyk7TYnqBHjKz67RToVBikxljk/sWPIQww553NnxlTY37YsJtLddttk8s5PplYfFj5hCppvNhryfh5uI0YWFSV6oTBHNbE37P0TfC4U/35+IzImp6ztzEAaA77g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bNHLI8E/; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1CE21F000E9;
-	Thu,  2 Jul 2026 16:25:04 +0000 (UTC)
+	 MIME-Version; b=T4m2Opafiv8/dhuHD7kAGzyP0p4dhwcqSbhC2yEVF0i3yE/hXOBBHZc4EQqthQnMNiTYXhShupiKUjjkhnAFlHj+dgAh/qr7d7qAnjAsoD1yuwKbXXYkkc21MPq45uW/4qM1xaM2McbEO/jIwznkfswPQy9xJsUVKGYeWcuscgo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U+kFDKqH; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 741021F000E9;
+	Thu,  2 Jul 2026 16:34:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1783009505;
-	bh=5gSHLAn2Vr95mhSM/OoAtJmCgsIsfuLxpODE9qBxYh8=;
+	s=korg; t=1783010045;
+	bh=bXbs4DlIgBlZNNCVitamIFdCmqw4rQmZZRHupBlPVoc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=bNHLI8E/Pl+HMwv8u4RNVL516cRTRBAIx//5p8HIFmA5aMJsjwlcg6CRXOaTJie0q
-	 ziQmPx4M80Y7DDsrZX7qZwc4hHfNmStkN2Ly98dq42T/2FqCJV/Bl7mfmIq0RFcLiz
-	 eQZo1DamRgiKTfvVwV1/3uS+wdaNTZGYPohfJsx4=
+	b=U+kFDKqH1+OhBUFuS+OjoGJlyP8GiPmQKhkQBUNKPAcybqN8adfnB6fJVTwdkTTBA
+	 MEaGU1UiGyTUgiTj0cwNIRZm4vqLQrLhfO7aVq3ZMjil61K/+/vYQ3NK118l8NAPE7
+	 U/msYooWOtDq37mzT+zr9yckm2MjSf1nxvlTE8KU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ashutosh Desai <ashutoshdesai993@gmail.com>,
-	Sean Christopherson <seanjc@google.com>
-Subject: [PATCH 5.10 76/96] KVM: SVM: Fix page overflow in sev_dbg_crypt() for ENCRYPT path
+	stable@kernel.org,
+	Zhang Cen <rollkingzzc@gmail.com>,
+	Chao Yu <chao@kernel.org>,
+	Jaegeuk Kim <jaegeuk@kernel.org>
+Subject: [PATCH 6.1 089/129] f2fs: validate ACL entry sizes in f2fs_acl_from_disk()
 Date: Thu,  2 Jul 2026 18:20:08 +0200
-Message-ID: <20260702155110.580478488@linuxfoundation.org>
+Message-ID: <20260702155113.985415539@linuxfoundation.org>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260702155108.949633242@linuxfoundation.org>
-References: <20260702155108.949633242@linuxfoundation.org>
+In-Reply-To: <20260702155112.163984240@linuxfoundation.org>
+References: <20260702155112.163984240@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,129 +73,154 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-270656-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:ashutoshdesai993@gmail.com,m:seanjc@google.com,s:lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,google.com];
 	FORWARDED(0.00)[lists@lfdr.de];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,gmail.com];
+	TAGGED_FROM(0.00)[bounces-270863-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:stable@kernel.org,m:rollkingzzc@gmail.com,m:chao@kernel.org,m:jaegeuk@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
 	MID_RHS_MATCH_FROM(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 03A896FA568
+X-Rspamd-Queue-Id: 24CDB6FA4A0
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ashutosh Desai <ashutoshdesai993@gmail.com>
+From: Zhang Cen <rollkingzzc@gmail.com>
 
-commit 78ee2d50185a037b3d2452a97f3dad69c3f7f389 upstream.
+commit c4810ada31e80cbe4011467c4f3b1e93f94134f3 upstream.
 
-In sev_dbg_crypt(), the per-iteration transfer length is bounded by
-the source page offset (PAGE_SIZE - s_off) but not by the destination
-page offset (PAGE_SIZE - d_off).  When d_off > s_off, the encrypt
-path (__sev_dbg_encrypt_user) performs a read-modify-write using a
-single-page intermediate buffer (dst_tpage):
+f2fs_acl_count() only validates the aggregate ACL xattr length. A
+malformed ACL can still place ACL_USER or ACL_GROUP in a slot that only
+contains struct f2fs_acl_entry_short bytes, and f2fs_acl_from_disk()
+then reads entry->e_id before verifying that a full entry fits.
 
-  1. __sev_dbg_decrypt() expands the size to round_up(len + (d_off & 15), 16)
-     before issuing the PSP command.  If len + (d_off & 15) > PAGE_SIZE,
-     the PSP writes beyond the end of the 4096-byte dst_tpage allocation.
+Require a short entry before reading e_tag and e_perm, and require a
+full entry before reading e_id for ACL_USER and ACL_GROUP. Return
+-EFSCORRUPTED from these new truncated-entry checks, while keeping the
+pre-existing -EINVAL paths unchanged.
 
-  2. The subsequent memcpy()/copy_from_user() into
-     page_address(dst_tpage) + (d_off & 15) of 'len' bytes overflows
-     by up to 15 bytes under the same condition.
+Validation reproduced this kernel report:
+KASAN slab-out-of-bounds in __f2fs_get_acl+0x6fb/0x7e0
+RIP: 0033:0x7f4b835ea7aa
+The buggy address belongs to the object at ffff888114589960 which belongs
+to the cache kmalloc-8 of size 8
+The buggy address is located 0 bytes to the right of allocated 8-byte
+region [ffff888114589960, ffff888114589968)
+Read of size 4
+Call trace:
+  dump_stack_lvl+0x66/0xa0 (?:?)
+  print_report+0xce/0x630 (?:?)
+  __f2fs_get_acl+0x6fb/0x7e0 (fs/f2fs/acl.c:169)
+  srso_alias_return_thunk+0x5/0xfbef5 (?:?)
+  __virt_addr_valid+0x224/0x430 (?:?)
+  kasan_report+0xe0/0x110 (?:?)
+  __f2fs_get_acl+0x5/0x7e0 (fs/f2fs/acl.c:169)
+  __get_acl+0x281/0x380 (?:?)
+  vfs_get_acl+0x10b/0x190 (?:?)
+  do_get_acl+0x2a/0x410 (?:?)
+  do_get_acl+0x9/0x410 (?:?)
+  do_getxattr+0xe8/0x260 (?:?)
+  filename_getxattr+0xd1/0x140 (?:?)
+  do_getname+0x2d/0x2d0 (?:?)
+  path_getxattrat+0x16c/0x200 (?:?)
+  lock_release+0xc8/0x290 (?:?)
+  cgroup_update_frozen+0x9d/0x320 (?:?)
+  lockdep_hardirqs_on_prepare+0xea/0x1a0 (?:?)
+  trace_hardirqs_on+0x1a/0x170 (?:?)
+  _raw_spin_unlock_irq+0x28/0x50 (?:?)
+  do_syscall_64+0x115/0x6a0 (arch/x86/entry/syscall_64.c:87)
+  entry_SYSCALL_64_after_hwframe+0x77/0x7f (?:?)
 
-Trigger example: s_off = 0, d_off = 1, debug.len = PAGE_SIZE -
-the PSP is instructed to write round_up(4097, 16) = 4112 bytes to
-a 4096-byte buffer.
-
-Fix by also bounding len by (PAGE_SIZE - d_off), the same check that
-sev_send_update_data() already performs for its single-page guest
-region.
-
- ==================================================================
- BUG: KASAN: slab-use-after-free in sev_dbg_crypt+0x993/0xd10 [kvm_amd]
- Write of size 4095 at addr ff110062293bb009 by task sev_dbg_test/228214
-
- CPU: 96 UID: 0 PID: 228214 Comm: sev_dbg_test Tainted: G     U  W           7.0.0-smp--5ce9b0c48211-dbg #156 PREEMPTLAZY
- Tainted: [U]=USER, [W]=WARN
- Hardware name: Google Astoria/astoria, BIOS 0.20250817.1-0 08/25/2025
- Call Trace:
-  <TASK>
-  dump_stack_lvl+0x54/0x70
-  print_report+0xbc/0x260
-  kasan_report+0xa2/0xd0
-  kasan_check_range+0x25f/0x2c0
-  __asan_memcpy+0x40/0x70
-  sev_dbg_crypt+0x993/0xd10 [kvm_amd]
-  sev_mem_enc_ioctl+0x33c/0x450 [kvm_amd]
-  kvm_vm_ioctl+0x65d/0x6d0 [kvm]
-  __se_sys_ioctl+0xb2/0x100
-  do_syscall_64+0xe8/0x870
-  entry_SYSCALL_64_after_hwframe+0x4b/0x53
-  </TASK>
-
- The buggy address belongs to the physical page:
- page: refcount:1 mapcount:0 mapping:0000000000000000 index:0x7fe72b6a0 pfn:0x62293bb
- memcg:ff11000112827d82
- flags: 0x1400000000000000(node=1|zone=1)
- raw: 1400000000000000 0000000000000000 dead000000000122 0000000000000000
- raw: 00000007fe72b6a0 0000000000000000 00000001ffffffff ff11000112827d82
- page dumped because: kasan: bad access detected
-
- Memory state around the buggy address:
-  ff110062293bbf00: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-  ff110062293bbf80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
- >ff110062293bc000: fa fb fb fb fb fb fb fb fc fc fc fc fc fc fc fc
-                    ^
-  ff110062293bc080: fa fb fb fb fb fb fb fb fc fc fc fc fc fc fc fc
-  ff110062293bc100: fa fb fb fb fb fb fb fb fc fc fc fc fc fc fc fc
- ==================================================================
- Disabling lock debugging due to kernel taint
-
-Fixes: 24f41fb23a39 ("KVM: SVM: Add support for SEV DEBUG_DECRYPT command")
-Fixes: 7d1594f5d94b ("KVM: SVM: Add support for SEV DEBUG_ENCRYPT command")
-Cc: stable@vger.kernel.org
-Signed-off-by: Ashutosh Desai <ashutoshdesai993@gmail.com>
-[sean: add sample KASAN splat, Fixes, and stable@]
-Link: https://patch.msgid.link/20260501203537.2120074-2-seanjc@google.com
-Signed-off-by: Sean Christopherson <seanjc@google.com>
+Cc: stable@kernel.org
+Fixes: af48b85b8cd3 ("f2fs: add xattr and acl functionalities")
+Assisted-by: Codex:gpt-5.5
+Signed-off-by: Zhang Cen <rollkingzzc@gmail.com>
+Reviewed-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kvm/svm/sev.c |    1 +
- 1 file changed, 1 insertion(+)
+ fs/f2fs/acl.c |   18 ++++++++++++++++--
+ 1 file changed, 16 insertions(+), 2 deletions(-)
 
---- a/arch/x86/kvm/svm/sev.c
-+++ b/arch/x86/kvm/svm/sev.c
-@@ -836,6 +836,7 @@ static int sev_dbg_crypt(struct kvm *kvm
- 		s_off = vaddr & ~PAGE_MASK;
- 		d_off = dst_vaddr & ~PAGE_MASK;
- 		len = min_t(size_t, (PAGE_SIZE - s_off), size);
-+		len = min_t(size_t, len, PAGE_SIZE - d_off);
+--- a/fs/f2fs/acl.c
++++ b/fs/f2fs/acl.c
+@@ -46,6 +46,7 @@ static inline int f2fs_acl_count(size_t
+ static struct posix_acl *f2fs_acl_from_disk(const char *value, size_t size)
+ {
+ 	int i, count;
++	int err = -EINVAL;
+ 	struct posix_acl *acl;
+ 	struct f2fs_acl_header *hdr = (struct f2fs_acl_header *)value;
+ 	struct f2fs_acl_entry *entry = (struct f2fs_acl_entry *)(hdr + 1);
+@@ -69,8 +70,11 @@ static struct posix_acl *f2fs_acl_from_d
  
- 		if (dec)
- 			ret = __sev_dbg_decrypt_user(kvm,
+ 	for (i = 0; i < count; i++) {
+ 
+-		if ((char *)entry > end)
++		if (unlikely((char *)entry +
++				sizeof(struct f2fs_acl_entry_short) > end)) {
++			err = -EFSCORRUPTED;
+ 			goto fail;
++		}
+ 
+ 		acl->a_entries[i].e_tag  = le16_to_cpu(entry->e_tag);
+ 		acl->a_entries[i].e_perm = le16_to_cpu(entry->e_perm);
+@@ -85,6 +89,11 @@ static struct posix_acl *f2fs_acl_from_d
+ 			break;
+ 
+ 		case ACL_USER:
++			if (unlikely((char *)entry +
++					sizeof(struct f2fs_acl_entry) > end)) {
++				err = -EFSCORRUPTED;
++				goto fail;
++			}
+ 			acl->a_entries[i].e_uid =
+ 				make_kuid(&init_user_ns,
+ 						le32_to_cpu(entry->e_id));
+@@ -92,6 +101,11 @@ static struct posix_acl *f2fs_acl_from_d
+ 					sizeof(struct f2fs_acl_entry));
+ 			break;
+ 		case ACL_GROUP:
++			if (unlikely((char *)entry +
++					sizeof(struct f2fs_acl_entry) > end)) {
++				err = -EFSCORRUPTED;
++				goto fail;
++			}
+ 			acl->a_entries[i].e_gid =
+ 				make_kgid(&init_user_ns,
+ 						le32_to_cpu(entry->e_id));
+@@ -107,7 +121,7 @@ static struct posix_acl *f2fs_acl_from_d
+ 	return acl;
+ fail:
+ 	posix_acl_release(acl);
+-	return ERR_PTR(-EINVAL);
++	return ERR_PTR(err);
+ }
+ 
+ static void *f2fs_acl_to_disk(struct f2fs_sb_info *sbi,
 
 
 
