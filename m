@@ -1,74 +1,65 @@
-Return-Path: <stable+bounces-270984-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-271129-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 8aObKDiXRmqpZQsAu9opvQ
-	(envelope-from <stable+bounces-270984-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:52:08 +0200
+	id HJieLlOYRmpYZgsAu9opvQ
+	(envelope-from <stable+bounces-271129-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:56:51 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0642E6FAAAF
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:52:08 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 46A6B6FAC7B
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:56:51 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=KFAmchz6;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-270984-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-270984-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=eTNlC7Y2;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-271129-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-271129-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 14AA23252B2F
-	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:40:52 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id C22B6313D194
+	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:47:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 577AA343D86;
-	Thu,  2 Jul 2026 16:39:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B273223EAAD;
+	Thu,  2 Jul 2026 16:45:46 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E285F342CBA;
-	Thu,  2 Jul 2026 16:39:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B4AE331EB6;
+	Thu,  2 Jul 2026 16:45:45 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783010365; cv=none; b=Rhfm0ynYJpZHqsD7n3bXhYpyF2Mpef9ZTSxbv4CzQB53XbwGRSYiz6lngjCxNzmPzQ2ZPOZRVt5fhnhhd6cCQq6bVFUtkUrhZUR5O/9iwzEPL7XmJ9QMLype4Efw3eaCLiQSmP1cvGb6EtInoXGVwGjJ8aKmlT8ebYOcKxBsyqk=
+	t=1783010746; cv=none; b=r91+kNIKRWwnt5ML1xjNegMuYBJ0GSo68ILLw8REvg9UIoAXK0uheoTQTlbo1fiFFfOxATYyiuT8Yt5te1up5CqE4IGM3sP3hR4mF/LfJc/UKrPyxxgftzqz3xxFpPSihKamVvKzFVT++OJZGXSZpolSIhC4iKGHh8xZgeMAQ0c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783010365; c=relaxed/simple;
-	bh=lW2rMU5N6ycDow28miiDQ68xDAHr7PYaMSFA6+j5e2s=;
+	s=arc-20240116; t=1783010746; c=relaxed/simple;
+	bh=rxr6G4iqn4YfnsvQ2MhCHHmbO8lUEYTLKRhlUMD5Rvc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QWg7FJW4XurTHh7cQSbPip4mgbmzBRKMu4D6d2lu2Gwzx7Opg4Z7hRW9XMjIxVeiKhDWEzuhQpR9F972bCCd5ei0laxp4420j4JF0iNlmifis7Oj7AFxTdfTrAOQXgoyeD2gARQJiS/Wf8oP2VRGSuhyBcBAUJwtf0xwwa+J+SI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KFAmchz6; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B4291F000E9;
-	Thu,  2 Jul 2026 16:39:23 +0000 (UTC)
+	 MIME-Version; b=Fsa1YJ9p5yS+pYfEi6BFLN0cOdMrNSscB6FGDmjJv68B+l+wLrN9HFmpCy4Vgfm+HnWD981UUnSZZS/zJLjPLuvEBRS8uFlppApJrxcAnnB0xghGuKPFCXklbPenNqFMJwD/rMe6xGOnmis3+841vjqK9U4X3gADurpoBN8P3Uc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eTNlC7Y2; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6C691F00A3A;
+	Thu,  2 Jul 2026 16:45:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1783010363;
-	bh=If3hx+pWVH5aZnt8i0f2xxv2bqhzjkF6t9HJbX5wAWA=;
+	s=korg; t=1783010745;
+	bh=00hV5jUuBWj9WN5ZHGDc6Dg7KQoKyMtOFDFUDxMCe/g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=KFAmchz6CnhUHURcxaVvfCis0JQWNg8KynlaVraGfho46oGgY8HJuRBOSl/iaiewj
-	 Ub6RTktR6Bxjyu6W4Nn8mp12WNAQJ+XyCSesuvOkxNehA0vUvpbxvtq/4rijDYVCSI
-	 l8Pf9cKHf/x4sYeZ+oQeXJLjHkJNT5p0OZyYN5ng=
+	b=eTNlC7Y2aD+FxLt+gIZ+3q2BJoTVs2k6bRJoC/DOP73zjw6pEvlco7cKQA/bH1DwA
+	 Jw9S2JTuLUm8Q2girRqxdr4GceD+4nQL+YFcEmvck4VXfD77oiTERMSatcHv9mdji0
+	 Yv4TzzmhiHypV2oV7GwNUIURJa3T/TgLIKG/9mzg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	bpf <bpf@vger.kernel.org>,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	Masahiro Yamada <masahiroy@kernel.org>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Nicolas Schier <nicolas@fjasle.eu>,
-	Zheng Yejian <zhengyejian1@huawei.com>,
-	Martin Kelly <martin.kelly@crowdstrike.com>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Josh Poimboeuf <jpoimboe@redhat.com>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
-	Andrey Grodzovsky <andrey.grodzovsky@crowdstrike.com>
-Subject: [PATCH 6.12 064/204] scripts/sorttable: Convert Elf_Sym MACRO over to a union
-Date: Thu,  2 Jul 2026 18:18:41 +0200
-Message-ID: <20260702155120.004421499@linuxfoundation.org>
+	Varun R Mallya <varunrmallya@gmail.com>,
+	Kumar Kartikeya Dwivedi <memxor@gmail.com>,
+	Leon Hwang <leon.hwang@linux.dev>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Shung-Hsi Yu <shung-hsi.yu@suse.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 021/175] bpf: Reject sleepable kprobe_multi programs at attach time
+Date: Thu,  2 Jul 2026 18:18:42 +0200
+Message-ID: <20260702155116.234259801@linuxfoundation.org>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260702155118.667618796@linuxfoundation.org>
-References: <20260702155118.667618796@linuxfoundation.org>
+In-Reply-To: <20260702155115.766838875@linuxfoundation.org>
+References: <20260702155115.766838875@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -85,169 +76,94 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-270984-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[19];
 	FORWARDED(0.00)[lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:bpf@vger.kernel.org,m:mhiramat@kernel.org,m:mark.rutland@arm.com,m:mathieu.desnoyers@efficios.com,m:akpm@linux-foundation.org,m:peterz@infradead.org,m:torvalds@linux-foundation.org,m:masahiroy@kernel.org,m:nathan@kernel.org,m:nicolas@fjasle.eu,m:zhengyejian1@huawei.com,m:martin.kelly@crowdstrike.com,m:christophe.leroy@csgroup.eu,m:jpoimboe@redhat.com,m:rostedt@goodmis.org,m:andrey.grodzovsky@crowdstrike.com,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,linux.dev,kernel.org,suse.com];
+	TAGGED_FROM(0.00)[bounces-271129-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:varunrmallya@gmail.com,m:memxor@gmail.com,m:leon.hwang@linux.dev,m:jolsa@kernel.org,m:ast@kernel.org,m:shung-hsi.yu@suse.com,m:sashal@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	TO_DN_SOME(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[10];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.dev:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,suse.com:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 0642E6FAAAF
+X-Rspamd-Queue-Id: 46A6B6FAC7B
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Steven Rostedt <rostedt@goodmis.org>
+From: Varun R Mallya <varunrmallya@gmail.com>
 
-[ Upstream commit 200d015e73b4da69bcd8212a7c58695452b12bad ]
+commit eb7024bfcc5f68ed11ed9dd4891a3073c15f04a8 upstream.
 
-In order to remove the double #include of sorttable.h for 64 and 32 bit
-to create duplicate functions for both, replace the Elf_Sym macro with a
-union that defines both Elf64_Sym and Elf32_Sym, with field e64 for the
-64bit version, and e32 for the 32bit version.
+kprobe.multi programs run in atomic/RCU context and cannot sleep.
+However, bpf_kprobe_multi_link_attach() did not validate whether the
+program being attached had the sleepable flag set, allowing sleepable
+helpers such as bpf_copy_from_user() to be invoked from a non-sleepable
+context.
 
-It can then use the macro etype to get the proper value.
+This causes a "sleeping function called from invalid context" splat:
 
-This will eventually be replaced with just single functions that can
-handle both 32bit and 64bit ELF parsing.
+  BUG: sleeping function called from invalid context at ./include/linux/uaccess.h:169
+  in_atomic(): 1, irqs_disabled(): 0, non_block: 0, pid: 1787, name: sudo
+  preempt_count: 1, expected: 0
+  RCU nest depth: 2, expected: 0
 
-Cc: bpf <bpf@vger.kernel.org>
-Cc: Masami Hiramatsu <mhiramat@kernel.org>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: Masahiro Yamada <masahiroy@kernel.org>
-Cc: Nathan Chancellor <nathan@kernel.org>
-Cc: Nicolas Schier <nicolas@fjasle.eu>
-Cc: Zheng Yejian <zhengyejian1@huawei.com>
-Cc: Martin  Kelly <martin.kelly@crowdstrike.com>
-Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
-Cc: Josh Poimboeuf <jpoimboe@redhat.com>
-Link: https://lore.kernel.org/20250105162345.528626969@goodmis.org
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-Signed-off-by: Andrey Grodzovsky <andrey.grodzovsky@crowdstrike.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fix this by rejecting sleepable programs early in
+bpf_kprobe_multi_link_attach(), before any further processing.
+
+Fixes: 0dcac2725406 ("bpf: Add multi kprobe link")
+Signed-off-by: Varun R Mallya <varunrmallya@gmail.com>
+Acked-by: Kumar Kartikeya Dwivedi <memxor@gmail.com>
+Acked-by: Leon Hwang <leon.hwang@linux.dev>
+Acked-by: Jiri Olsa <jolsa@kernel.org>
+Link: https://lore.kernel.org/r/20260401191126.440683-1-varunrmallya@gmail.com
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+[shung-hsi.yu: sleepable flag was in 'struct bpf_prog_aux' before commit
+66c8473135c6 "bpf: move sleepable flag from bpf_prog_aux to bpf_prog"]
+Signed-off-by: Shung-Hsi Yu <shung-hsi.yu@suse.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- scripts/sorttable.c |    5 +++++
- scripts/sorttable.h |   25 ++++++++++++++-----------
- 2 files changed, 19 insertions(+), 11 deletions(-)
+ kernel/trace/bpf_trace.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/scripts/sorttable.c
-+++ b/scripts/sorttable.c
-@@ -74,6 +74,11 @@ typedef union {
- 	Elf64_Shdr	e64;
- } Elf_Shdr;
+diff --git a/kernel/trace/bpf_trace.c b/kernel/trace/bpf_trace.c
+index a896b80252ae11..87e7cc2dc5ccd8 100644
+--- a/kernel/trace/bpf_trace.c
++++ b/kernel/trace/bpf_trace.c
+@@ -2905,6 +2905,10 @@ int bpf_kprobe_multi_link_attach(const union bpf_attr *attr, struct bpf_prog *pr
+ 	if (prog->expected_attach_type != BPF_TRACE_KPROBE_MULTI)
+ 		return -EINVAL;
  
-+typedef union {
-+	Elf32_Sym	e32;
-+	Elf64_Sym	e64;
-+} Elf_Sym;
++	/* kprobe_multi is not allowed to be sleepable. */
++	if (prog->aux->sleepable)
++		return -EINVAL;
 +
- static uint32_t (*r)(const uint32_t *);
- static uint16_t (*r2)(const uint16_t *);
- static uint64_t (*r8)(const uint64_t *);
---- a/scripts/sorttable.h
-+++ b/scripts/sorttable.h
-@@ -23,7 +23,6 @@
- #undef sort_mcount_loc
- #undef elf_mcount_loc
- #undef do_sort
--#undef Elf_Sym
- #undef ELF_ST_TYPE
- #undef uint_t
- #undef _r
-@@ -36,7 +35,6 @@
- # define sort_mcount_loc	sort_mcount_loc_64
- # define elf_mcount_loc		elf_mcount_loc_64
- # define do_sort		do_sort_64
--# define Elf_Sym		Elf64_Sym
- # define ELF_ST_TYPE		ELF64_ST_TYPE
- # define uint_t			uint64_t
- # define _r			r8
-@@ -48,7 +46,6 @@
- # define sort_mcount_loc	sort_mcount_loc_32
- # define elf_mcount_loc		elf_mcount_loc_32
- # define do_sort		do_sort_32
--# define Elf_Sym		Elf32_Sym
- # define ELF_ST_TYPE		ELF32_ST_TYPE
- # define uint_t			uint32_t
- # define _r			r
-@@ -230,10 +227,13 @@ static int do_sort(Elf_Ehdr *ehdr,
- 	Elf_Sym *sort_needed_sym = NULL;
- 	Elf_Shdr *sort_needed_sec;
- 	uint32_t *sort_needed_loc;
-+	void *sym_start;
-+	void *sym_end;
- 	const char *secstrings;
- 	const char *strtab;
- 	char *extab_image;
- 	int sort_need_index;
-+	int symentsize;
- 	int shentsize;
- 	int idx;
- 	int i;
-@@ -376,12 +376,15 @@ static int do_sort(Elf_Ehdr *ehdr,
- 	}
- 
- 	/* find the flag main_extable_sort_needed */
--	for (sym = (void *)ehdr + _r(&symtab_sec->etype.sh_offset);
--	     sym < sym + _r(&symtab_sec->etype.sh_size) / sizeof(Elf_Sym);
--	     sym++) {
--		if (ELF_ST_TYPE(sym->st_info) != STT_OBJECT)
-+	sym_start = (void *)ehdr + _r(&symtab_sec->etype.sh_offset);
-+	sym_end = sym_start + _r(&symtab_sec->etype.sh_size);
-+	symentsize = _r(&symtab_sec->etype.sh_entsize);
-+
-+	for (sym = sym_start; (void *)sym + symentsize < sym_end;
-+	     sym = (void *)sym + symentsize) {
-+		if (ELF_ST_TYPE(sym->etype.st_info) != STT_OBJECT)
- 			continue;
--		if (!strcmp(strtab + r(&sym->st_name),
-+		if (!strcmp(strtab + r(&sym->etype.st_name),
- 			    "main_extable_sort_needed")) {
- 			sort_needed_sym = sym;
- 			break;
-@@ -395,13 +398,13 @@ static int do_sort(Elf_Ehdr *ehdr,
- 		goto out;
- 	}
- 
--	sort_need_index = get_secindex(r2(&sym->st_shndx),
--				       sort_needed_sym - symtab,
-+	sort_need_index = get_secindex(r2(&sym->etype.st_shndx),
-+				       ((void *)sort_needed_sym - (void *)symtab) / symentsize,
- 				       symtab_shndx);
- 	sort_needed_sec = get_index(shdr_start, shentsize, sort_need_index);
- 	sort_needed_loc = (void *)ehdr +
- 		_r(&sort_needed_sec->etype.sh_offset) +
--		_r(&sort_needed_sym->st_value) -
-+		_r(&sort_needed_sym->etype.st_value) -
- 		_r(&sort_needed_sec->etype.sh_addr);
- 
- 	/* extable has been sorted, clear the flag */
+ 	flags = attr->link_create.kprobe_multi.flags;
+ 	if (flags & ~BPF_F_KPROBE_MULTI_RETURN)
+ 		return -EINVAL;
+-- 
+2.53.0
+
 
 
 
