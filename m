@@ -1,62 +1,79 @@
-Return-Path: <stable+bounces-270832-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-270979-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id UoMmCpCURmoOZAsAu9opvQ
-	(envelope-from <stable+bounces-270832-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:40:48 +0200
+	id c/8qLSSXRmqhZQsAu9opvQ
+	(envelope-from <stable+bounces-270979-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:51:48 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id DDD3E6FA5CA
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:40:47 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4CB7C6FAAA1
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:51:48 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=vBrMT6Go;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-270832-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-270832-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=2tImRB9f;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-270979-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-270979-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 33DF63068437
-	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:36:09 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 047D834B7039
+	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:40:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0BFCD3ABD82;
-	Thu,  2 Jul 2026 16:32:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F348F394E93;
+	Thu,  2 Jul 2026 16:39:12 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98CDA394498;
-	Thu,  2 Jul 2026 16:32:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90ACD347FCD;
+	Thu,  2 Jul 2026 16:39:11 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783009965; cv=none; b=bTgIzLje3G4T923wfRqzn2EwWM0uGINDx/9valEWqk0NClXwOmt+oA2tvIsm7ucU2yxKfxeJeDEDosDcT685CHa1ExzaBgdtmklFZG4S3rYGcG2KqW5t0dE0MmyzJXNPX9Mqae9EUIHU6eJTlrsbbGAxSedhn3suxmGe9x1IOXY=
+	t=1783010352; cv=none; b=UTES2N4mm6HI0IWQcduUP1hYDPnW1+4dRj9ZPHR/cdVmHrUJ52t8uvY7i3+JHkvmVrQf62WMeakTOIoFldRM5DXH8VMi64tvvDc4rbjhNWY/AfgW2xP+k+abWWFdUmkbSVRYb1oGR+tXX7Mx+Mz5JM8zwrhb5qtEh38y8V5zoS0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783009965; c=relaxed/simple;
-	bh=u9tcwmqm8oPQFFx2UyP+aKweQawdstUjPsLJACizH0Y=;
+	s=arc-20240116; t=1783010352; c=relaxed/simple;
+	bh=bARL1UfQ2+/TVIKdaHQ6opMS9ybB3oAQx961l0o5yN4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=CFBuA/FrbrIDFkHqDUg4HLb1ok743B2h5cTYi8TW2Dm8XjkJUn1vbyODdyIZ0oS3ytdvECxaI0HSfKS7E4PgRaICUEEh/g4M7gKDLFLdDE0OM/WCHXHOYwAGWrb555aoN8ZOiPrdSbxwT2HNvrDyEFONN2o1onxE0rniY+LOyGE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vBrMT6Go; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C99EE1F000E9;
-	Thu,  2 Jul 2026 16:32:43 +0000 (UTC)
+	 MIME-Version; b=i1k+ylpb19ECdCHB2dDjItlPsOm06SpzzruMKGAaaqeR1nI5DY9ZpOVgrJtGRoDi3YUD0x9FO+mxMJz52YOcUtqVD09m0clgywRL9Gn51aAF7ZSxSkmPAWomaGFqDwiwCSBfmObv7O7p0yQMv9mpW1rv43N4XpLvvMlrTLiluAc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2tImRB9f; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 948361F000E9;
+	Thu,  2 Jul 2026 16:39:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1783009964;
-	bh=xJTfJLqh2SQCDf8DsTPUZRRpMDJT8sc74WNESJAgTaI=;
+	s=korg; t=1783010351;
+	bh=hTkMjPba82vZaMvl5WNIP5krQISY8NwgVjgfri0lkOk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=vBrMT6GoaoYloyfOoiv74sQrnVTveI6EvaKnOYymNGeGA8wUVB9HGKqDh+Iz9FZ2R
-	 uiwzsLhWHLsyCZtnaYj3bjItk6BC63iT0limO354YlPaqcv6liKo2kfradPc8fmL8y
-	 1Ye1qh2qRfPEMLRRaYkzpdUGCbL2Fql+qUiFNrpA=
+	b=2tImRB9fJrbyIme1z1SFh0lyjxyAOX0FcZ+3zi/8bL7d4bx4pa4TUCNOhOurvGdEW
+	 UkB/ijisQRUPEutFfOJB4Fuo8g9b9ZEFW65XE8z38ZbG/FdP1o8PPbloO+LM1kO9ex
+	 WQy4iE3KghP7nLU8KzDBmyr2o3TQDovTgiqEGMWM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Iago Toral Quiroga <itoral@igalia.com>,
-	Melissa Wen <mwen@igalia.com>,
-	=?UTF-8?q?Ma=C3=ADra=20Canal?= <mcanal@igalia.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 015/129] drm/v3d: Store the active job inside the queues state
+	bpf <bpf@vger.kernel.org>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	Masahiro Yamada <masahiroy@kernel.org>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Nicolas Schier <nicolas@fjasle.eu>,
+	Zheng Yejian <zhengyejian1@huawei.com>,
+	Martin Kelly <martin.kelly@crowdstrike.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Josh Poimboeuf <jpoimboe@redhat.com>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>,
+	Vasily Gorbik <gor@linux.ibm.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
+	Andrey Grodzovsky <andrey.grodzovsky@crowdstrike.com>
+Subject: [PATCH 6.12 077/204] ftrace: Have ftrace pages output reflect freed pages
 Date: Thu,  2 Jul 2026 18:18:54 +0200
-Message-ID: <20260702155112.477319874@linuxfoundation.org>
+Message-ID: <20260702155120.282872367@linuxfoundation.org>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260702155112.163984240@linuxfoundation.org>
-References: <20260702155112.163984240@linuxfoundation.org>
+In-Reply-To: <20260702155118.667618796@linuxfoundation.org>
+References: <20260702155118.667618796@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,276 +83,151 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-270832-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-270979-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[24];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:bpf@vger.kernel.org,m:mhiramat@kernel.org,m:mark.rutland@arm.com,m:mathieu.desnoyers@efficios.com,m:akpm@linux-foundation.org,m:peterz@infradead.org,m:torvalds@linux-foundation.org,m:masahiroy@kernel.org,m:nathan@kernel.org,m:nicolas@fjasle.eu,m:zhengyejian1@huawei.com,m:martin.kelly@crowdstrike.com,m:christophe.leroy@csgroup.eu,m:jpoimboe@redhat.com,m:hca@linux.ibm.com,m:catalin.marinas@arm.com,m:will@kernel.org,m:gor@linux.ibm.com,m:agordeev@linux.ibm.com,m:rostedt@goodmis.org,m:andrey.grodzovsky@crowdstrike.com,s:lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:itoral@igalia.com,m:mwen@igalia.com,m:mcanal@igalia.com,m:sashal@kernel.org,s:lists@lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	TAGGED_RCPT(0.00)[stable];
-	MID_RHS_MATCH_FROM(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,igalia.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: DDD3E6FA5CA
+X-Rspamd-Queue-Id: 4CB7C6FAAA1
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maíra Canal <mcanal@igalia.com>
+From: Steven Rostedt <rostedt@goodmis.org>
 
-[ Upstream commit 0d3768826d38c0ac740f8b45cd13346630535f2b ]
+[ Upstream commit 264143c4e54412095f4b615e65bf736fc3c60af0 ]
 
-Instead of storing the queue's active job in four different variables,
-store the active job inside the queue's state. This way, it's possible
-to access all active jobs using an index based in `enum v3d_queue`.
+The amount of memory that ftrace uses to save the descriptors to manage
+the functions it can trace is shown at output. But if there are a lot of
+functions that are skipped because they were weak or the architecture
+added holes into the tables, then the extra pages that were allocated are
+freed. But these freed pages are not reflected in the numbers shown, and
+they can even be inconsistent with what is reported:
 
-Reviewed-by: Iago Toral Quiroga <itoral@igalia.com>
-Reviewed-by: Melissa Wen <mwen@igalia.com>
-Link: https://lore.kernel.org/r/20250826-v3d-queue-lock-v3-2-979efc43e490@igalia.com
-Signed-off-by: Maíra Canal <mcanal@igalia.com>
-Stable-dep-of: 7f93fad5ea0a ("drm/v3d: Skip CSD when it has zeroed workgroups")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+ ftrace: allocating 57482 entries in 225 pages
+ ftrace: allocated 224 pages with 3 groups
+
+The above shows the number of original entries that are in the mcount_loc
+section and the pages needed to save them (225), but the second output
+reflects the number of pages that were actually used. The two should be
+consistent as:
+
+ ftrace: allocating 56739 entries in 224 pages
+ ftrace: allocated 224 pages with 3 groups
+
+The above also shows the accurate number of entires that were actually
+stored and does not include the entries that were removed.
+
+Cc: bpf <bpf@vger.kernel.org>
+Cc: Masami Hiramatsu <mhiramat@kernel.org>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Masahiro Yamada <masahiroy@kernel.org>
+Cc: Nathan Chancellor <nathan@kernel.org>
+Cc: Nicolas Schier <nicolas@fjasle.eu>
+Cc: Zheng Yejian <zhengyejian1@huawei.com>
+Cc: Martin  Kelly <martin.kelly@crowdstrike.com>
+Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
+Cc: Josh Poimboeuf <jpoimboe@redhat.com>
+Cc: Heiko Carstens <hca@linux.ibm.com>
+Cc: Catalin Marinas <catalin.marinas@arm.com>
+Cc: Will Deacon <will@kernel.org>
+Cc: Vasily Gorbik <gor@linux.ibm.com>
+Cc: Alexander Gordeev <agordeev@linux.ibm.com>
+Link: https://lore.kernel.org/20250218200023.221100846@goodmis.org
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: Andrey Grodzovsky <andrey.grodzovsky@crowdstrike.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/v3d/v3d_drv.h   |  8 +++-----
- drivers/gpu/drm/v3d/v3d_gem.c   |  5 +++--
- drivers/gpu/drm/v3d/v3d_irq.c   | 24 ++++++++++++++----------
- drivers/gpu/drm/v3d/v3d_sched.c | 26 ++++++++++++++++++--------
- 4 files changed, 38 insertions(+), 25 deletions(-)
+ kernel/trace/ftrace.c |   15 ++++++++++++---
+ 1 file changed, 12 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/gpu/drm/v3d/v3d_drv.h b/drivers/gpu/drm/v3d/v3d_drv.h
-index a366ea208787df..c1e389635de816 100644
---- a/drivers/gpu/drm/v3d/v3d_drv.h
-+++ b/drivers/gpu/drm/v3d/v3d_drv.h
-@@ -26,6 +26,9 @@ struct v3d_queue_state {
+--- a/kernel/trace/ftrace.c
++++ b/kernel/trace/ftrace.c
+@@ -7050,6 +7050,7 @@ static int ftrace_process_locs(struct mo
+ 	unsigned long addr;
+ 	unsigned long kaslr;
+ 	unsigned long flags = 0; /* Shut up gcc */
++	unsigned long pages;
+ 	int ret = -ENOMEM;
  
- 	u64 fence_context;
- 	u64 emit_seqno;
+ 	count = end - start;
+@@ -7057,6 +7058,8 @@ static int ftrace_process_locs(struct mo
+ 	if (!count)
+ 		return 0;
+ 
++	pages = DIV_ROUND_UP(count, ENTRIES_PER_PAGE);
 +
-+	/* Currently active job for this queue */
-+	struct v3d_job *active_job;
- };
+ 	/*
+ 	 * Sorting mcount in vmlinux at build time depend on
+ 	 * CONFIG_BUILDTIME_MCOUNT_SORT, while mcount loc in
+@@ -7168,6 +7171,8 @@ static int ftrace_process_locs(struct mo
+ 			for (pg = pg_unuse; pg; pg = pg->next)
+ 				remaining += 1 << pg->order;
  
- /* Performance monitor object. The perform lifetime is controlled by userspace
-@@ -110,11 +113,6 @@ struct v3d_dev {
- 
- 	struct work_struct overflow_mem_work;
- 
--	struct v3d_bin_job *bin_job;
--	struct v3d_render_job *render_job;
--	struct v3d_tfu_job *tfu_job;
--	struct v3d_csd_job *csd_job;
--
- 	struct v3d_queue_state queue[V3D_MAX_QUEUES];
- 
- 	/* Spinlock used to synchronize the overflow memory
-diff --git a/drivers/gpu/drm/v3d/v3d_gem.c b/drivers/gpu/drm/v3d/v3d_gem.c
-index 97755a6b556335..71019a57958ba3 100644
---- a/drivers/gpu/drm/v3d/v3d_gem.c
-+++ b/drivers/gpu/drm/v3d/v3d_gem.c
-@@ -1120,14 +1120,15 @@ void
- v3d_gem_destroy(struct drm_device *dev)
- {
- 	struct v3d_dev *v3d = to_v3d_dev(dev);
-+	enum v3d_queue q;
- 
- 	v3d_sched_fini(v3d);
- 
- 	/* Waiting for jobs to finish would need to be done before
- 	 * unregistering V3D.
- 	 */
--	WARN_ON(v3d->bin_job);
--	WARN_ON(v3d->render_job);
-+	for (q = 0; q < V3D_MAX_QUEUES; q++)
-+		WARN_ON(v3d->queue[q].active_job);
- 
- 	drm_mm_takedown(&v3d->mm);
- 
-diff --git a/drivers/gpu/drm/v3d/v3d_irq.c b/drivers/gpu/drm/v3d/v3d_irq.c
-index 641315dbee8b29..1717504742a665 100644
---- a/drivers/gpu/drm/v3d/v3d_irq.c
-+++ b/drivers/gpu/drm/v3d/v3d_irq.c
-@@ -40,6 +40,8 @@ v3d_overflow_mem_work(struct work_struct *work)
- 		container_of(work, struct v3d_dev, overflow_mem_work);
- 	struct drm_device *dev = &v3d->drm;
- 	struct v3d_bo *bo = v3d_bo_create(dev, NULL /* XXX: GMP */, 256 * 1024);
-+	struct v3d_queue_state *queue = &v3d->queue[V3D_BIN];
-+	struct v3d_bin_job *bin_job;
- 	struct drm_gem_object *obj;
- 	unsigned long irqflags;
- 
-@@ -59,13 +61,15 @@ v3d_overflow_mem_work(struct work_struct *work)
- 	 * some binner pool anyway.
- 	 */
- 	spin_lock_irqsave(&v3d->job_lock, irqflags);
--	if (!v3d->bin_job) {
-+	bin_job = (struct v3d_bin_job *)queue->active_job;
++			pages -= remaining;
 +
-+	if (!bin_job) {
- 		spin_unlock_irqrestore(&v3d->job_lock, irqflags);
- 		goto out;
+ 			skip = DIV_ROUND_UP(skip, ENTRIES_PER_PAGE);
+ 
+ 			/*
+@@ -7181,6 +7186,13 @@ static int ftrace_process_locs(struct mo
+ 		synchronize_rcu();
+ 		ftrace_free_pages(pg_unuse);
+ 	}
++
++	if (!mod) {
++		count -= skipped;
++		pr_info("ftrace: allocating %ld entries in %ld pages\n",
++			count, pages);
++	}
++
+ 	return ret;
+ }
+ 
+@@ -7835,9 +7847,6 @@ void __init ftrace_init(void)
+ 		goto failed;
  	}
  
- 	drm_gem_object_get(obj);
--	list_add_tail(&bo->unref_head, &v3d->bin_job->render->unref_list);
-+	list_add_tail(&bo->unref_head, &bin_job->render->unref_list);
- 	spin_unlock_irqrestore(&v3d->job_lock, irqflags);
- 
- 	V3D_CORE_WRITE(0, V3D_PTB_BPOA, bo->node.start << PAGE_SHIFT);
-@@ -99,11 +103,11 @@ v3d_irq(int irq, void *arg)
- 
- 	if (intsts & V3D_INT_FLDONE) {
- 		struct v3d_fence *fence =
--			to_v3d_fence(v3d->bin_job->base.irq_fence);
-+			to_v3d_fence(v3d->queue[V3D_BIN].active_job->irq_fence);
- 
- 		trace_v3d_bcl_irq(&v3d->drm, fence->seqno);
- 
--		v3d->bin_job = NULL;
-+		v3d->queue[V3D_BIN].active_job = NULL;
- 		dma_fence_signal(&fence->base);
- 
- 		status = IRQ_HANDLED;
-@@ -111,11 +115,11 @@ v3d_irq(int irq, void *arg)
- 
- 	if (intsts & V3D_INT_FRDONE) {
- 		struct v3d_fence *fence =
--			to_v3d_fence(v3d->render_job->base.irq_fence);
-+			to_v3d_fence(v3d->queue[V3D_RENDER].active_job->irq_fence);
- 
- 		trace_v3d_rcl_irq(&v3d->drm, fence->seqno);
- 
--		v3d->render_job = NULL;
-+		v3d->queue[V3D_RENDER].active_job = NULL;
- 		dma_fence_signal(&fence->base);
- 
- 		status = IRQ_HANDLED;
-@@ -123,11 +127,11 @@ v3d_irq(int irq, void *arg)
- 
- 	if (intsts & V3D_INT_CSDDONE) {
- 		struct v3d_fence *fence =
--			to_v3d_fence(v3d->csd_job->base.irq_fence);
-+			to_v3d_fence(v3d->queue[V3D_CSD].active_job->irq_fence);
- 
- 		trace_v3d_csd_irq(&v3d->drm, fence->seqno);
- 
--		v3d->csd_job = NULL;
-+		v3d->queue[V3D_CSD].active_job = NULL;
- 		dma_fence_signal(&fence->base);
- 
- 		status = IRQ_HANDLED;
-@@ -162,11 +166,11 @@ v3d_hub_irq(int irq, void *arg)
- 
- 	if (intsts & V3D_HUB_INT_TFUC) {
- 		struct v3d_fence *fence =
--			to_v3d_fence(v3d->tfu_job->base.irq_fence);
-+			to_v3d_fence(v3d->queue[V3D_TFU].active_job->irq_fence);
- 
- 		trace_v3d_tfu_irq(&v3d->drm, fence->seqno);
- 
--		v3d->tfu_job = NULL;
-+		v3d->queue[V3D_TFU].active_job = NULL;
- 		dma_fence_signal(&fence->base);
- 
- 		status = IRQ_HANDLED;
-diff --git a/drivers/gpu/drm/v3d/v3d_sched.c b/drivers/gpu/drm/v3d/v3d_sched.c
-index 41493cf3d03b81..ff91cdb75bb912 100644
---- a/drivers/gpu/drm/v3d/v3d_sched.c
-+++ b/drivers/gpu/drm/v3d/v3d_sched.c
-@@ -80,14 +80,18 @@ static struct dma_fence *v3d_bin_job_run(struct drm_sched_job *sched_job)
- 	struct dma_fence *fence;
- 	unsigned long irqflags;
- 
--	if (unlikely(job->base.base.s_fence->finished.error))
-+	if (unlikely(job->base.base.s_fence->finished.error)) {
-+		spin_lock_irqsave(&v3d->job_lock, irqflags);
-+		v3d->queue[V3D_BIN].active_job = NULL;
-+		spin_unlock_irqrestore(&v3d->job_lock, irqflags);
- 		return NULL;
-+	}
- 
- 	/* Lock required around bin_job update vs
- 	 * v3d_overflow_mem_work().
- 	 */
- 	spin_lock_irqsave(&v3d->job_lock, irqflags);
--	v3d->bin_job = job;
-+	v3d->queue[V3D_BIN].active_job = &job->base;
- 	/* Clear out the overflow allocation, so we don't
- 	 * reuse the overflow attached to a previous job.
- 	 */
-@@ -134,10 +138,12 @@ static struct dma_fence *v3d_render_job_run(struct drm_sched_job *sched_job)
- 	struct drm_device *dev = &v3d->drm;
- 	struct dma_fence *fence;
- 
--	if (unlikely(job->base.base.s_fence->finished.error))
-+	if (unlikely(job->base.base.s_fence->finished.error)) {
-+		v3d->queue[V3D_RENDER].active_job = NULL;
- 		return NULL;
-+	}
- 
--	v3d->render_job = job;
-+	v3d->queue[V3D_RENDER].active_job = &job->base;
- 
- 	/* Can we avoid this flush?  We need to be careful of
- 	 * scheduling, though -- imagine job0 rendering to texture and
-@@ -179,10 +185,12 @@ v3d_tfu_job_run(struct drm_sched_job *sched_job)
- 	struct drm_device *dev = &v3d->drm;
- 	struct dma_fence *fence;
- 
--	if (unlikely(job->base.base.s_fence->finished.error))
-+	if (unlikely(job->base.base.s_fence->finished.error)) {
-+		v3d->queue[V3D_TFU].active_job = NULL;
- 		return NULL;
-+	}
- 
--	v3d->tfu_job = job;
-+	v3d->queue[V3D_TFU].active_job = &job->base;
- 
- 	fence = v3d_fence_create(v3d, V3D_TFU);
- 	if (IS_ERR(fence))
-@@ -221,10 +229,12 @@ v3d_csd_job_run(struct drm_sched_job *sched_job)
- 	struct dma_fence *fence;
- 	int i;
- 
--	if (unlikely(job->base.base.s_fence->finished.error))
-+	if (unlikely(job->base.base.s_fence->finished.error)) {
-+		v3d->queue[V3D_CSD].active_job = NULL;
- 		return NULL;
-+	}
- 
--	v3d->csd_job = job;
-+	v3d->queue[V3D_CSD].active_job = &job->base;
- 
- 	v3d_invalidate_caches(v3d);
- 
--- 
-2.53.0
-
+-	pr_info("ftrace: allocating %ld entries in %ld pages\n",
+-		count, DIV_ROUND_UP(count, ENTRIES_PER_PAGE));
+-
+ 	ret = ftrace_process_locs(NULL,
+ 				  __start_mcount_loc,
+ 				  __stop_mcount_loc);
 
 
 
