@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-271087-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-271445-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id RP74LKOXRmr5ZQsAu9opvQ
-	(envelope-from <stable+bounces-271087-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:53:55 +0200
+	id VqqFCgCcRmpOaAsAu9opvQ
+	(envelope-from <stable+bounces-271445-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:12:32 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7BEAD6FAB81
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:53:55 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id C2C466FB1F4
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:12:31 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=Lpjfy9gh;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-271087-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-271087-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=Fvx6nnoX;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-271445-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-271445-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 66D9F30A9E98
-	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:46:54 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id A19B43068232
+	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:59:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1959F3469E7;
-	Thu,  2 Jul 2026 16:43:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4161730C146;
+	Thu,  2 Jul 2026 16:59:23 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC30737A84C;
-	Thu,  2 Jul 2026 16:43:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13E573093DD;
+	Thu,  2 Jul 2026 16:59:22 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783010635; cv=none; b=lEdkISWi2o1lK0lwGoCm/z7BNvMTMhsVeW9GKGCCyk723b4RArFEbshBJ2o0NFOlfu+U8y5T/l825c9Aui10a6HrE1pPWXEordteTYvjdz4WoD9/wHUhMKRHxIp/0hIhjShcpWXmxRkdbtYsFej2EA5gGIs4ktp2H1yhF8Ao+3w=
+	t=1783011563; cv=none; b=LoRpJmJ1x0O+jqhn6TM9OAkKU6HgcQOweEPutoK0zbph/5jiRC7QPSDxQour+mnvrZboDFSHEL/fnSH2GMTXfkg94thuiZvTgjM7vCssMf0fAFozhvxBClKKGv6E0iSJ63R3zLxRfDvcjBJB3dpPME6l7mEj+FQjG1b6BH50GL4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783010635; c=relaxed/simple;
-	bh=Hm8HMLFN4f9ex38RnXueiBD/kMc4arW7QUc9Vlk3NMw=;
+	s=arc-20240116; t=1783011563; c=relaxed/simple;
+	bh=UX51suN2BTVh5vpqdYuWDfggTQW3X2lbeNnr1EYJHj0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hcoX5204glCR7Ar5h1WRhHJnvTNBl5Xhme1Wq/S4uyY/075b9d5oI5di+0Gy42XhD16wbJDV1ESQDkPATFbXnU7Eg79DIz1HP/wy8xL12+yPeWKDExEA/iQuypNpMyQTF0barQIKjvIExesu6LOYMKbiE87V+nETQBeg5ZcHBXg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Lpjfy9gh; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E8871F000E9;
-	Thu,  2 Jul 2026 16:43:54 +0000 (UTC)
+	 MIME-Version; b=NMT/CngmOPjCgWQAsaaDtF5SVVRe0s/81QvauoRoVmibav58gK7w89zuI+ITZO4LHyptLZ0iW/FcPP893SIFc5IvYeOmqzAgQx2muy2DU7v7ZftY1lFR9iONfS+PcPv9/+OnRcNLFnh/3RQfe4bk4VP9MR5Gu+XuR5uFoiVNS1Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Fvx6nnoX; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79A8B1F00A3A;
+	Thu,  2 Jul 2026 16:59:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1783010634;
-	bh=bEdwa8++Nr2givTB3LT2pYPFXj7GoJNuNWVKMsCpHwk=;
+	s=korg; t=1783011562;
+	bh=6eoRaKvwq/6154w6zN/hDK8KQm1xlX+2hlSkdAY7bZk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Lpjfy9ghWR2j+7pK/Gp/qnLA++EnJyyCPu2muzeyJW7p70AVCogB7PiJ4cAJ2iqhO
-	 WO9h71xM/oyBG+tod+/Yt6F4gbBM6sE3Pd4f1U7k63IgsowcW0n4XV5fcbCAzrIKLX
-	 HrEwaA9wXycLDLnd2wa7E9JXdtBAg+r1JPnP4gB0=
+	b=Fvx6nnoXWhcTRwl6G7qPz2mVF2y23FwPVhixhYPnO9fP/hSCbYToxkObW6b5XIPAu
+	 1P0IGTS5c5fRWAsDb7+PsCbJDtxl7mht1AgZtbFfq+NN7VdyGnuaEd5OpSbNjUKPsG
+	 9xw2huxN0ohDmuhBWJ+ovv1XNQFOGLkPXFGPyodw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johan Hovold <johan@kernel.org>,
-	Wolfram Sang <wsa+renesas@sang-engineering.com>
-Subject: [PATCH 6.12 184/204] i2c: core: fix adapter registration race
+	Alessandro Groppo <ale.grpp@gmail.com>,
+	Jarkko Sakkinen <jarkko@kernel.org>
+Subject: [PATCH 7.1 045/120] KEYS: fix overflow in keyctl_pkey_params_get_2()
 Date: Thu,  2 Jul 2026 18:20:41 +0200
-Message-ID: <20260702155122.514271101@linuxfoundation.org>
+Message-ID: <20260702155113.894670673@linuxfoundation.org>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260702155118.667618796@linuxfoundation.org>
-References: <20260702155118.667618796@linuxfoundation.org>
+In-Reply-To: <20260702155112.964534952@linuxfoundation.org>
+References: <20260702155112.964534952@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,21 +72,22 @@ X-Spamd-Result: default: False [-0.16 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-271087-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:johan@kernel.org,m:wsa+renesas@sang-engineering.com,m:wsa@sang-engineering.com,s:lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-271445-lists,stable=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:ale.grpp@gmail.com,m:jarkko@kernel.org,m:alegrpp@gmail.com,s:lists@lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
@@ -94,74 +95,78 @@ X-Spamd-Result: default: False [-0.16 / 15.00];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,renesas];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,sang-engineering.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp]
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 7BEAD6FAB81
+X-Rspamd-Queue-Id: C2C466FB1F4
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+7.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan@kernel.org>
+From: Jarkko Sakkinen <jarkko@kernel.org>
 
-commit ba14d7cf2fe7284610a29854bdff22b2537d3ce6 upstream.
+commit cb481e59ea6cae3b7796ac1d7a22b6b24c3f3c0b upstream.
 
-Adapters can be looked up based on their id using i2c_get_adapter()
-which takes a reference to the embedded struct device.
+The length for the internal output buffer is calculated incorrectly, which
+can result overflow when a too small buffer is provided.
 
-Make sure that the adapter (including its struct device) has been
-initialised before adding it to the IDR to avoid accessing uninitialised
-data which could, for example, lead to NULL-pointer dereferences or
-use-after-free.
+Fix the bug by allocating internal output with the size of the maximum
+length of the cryptographic primitive instead of caller provided size.
 
-Note that the i2c-dev chardev, which is registered from a bus notifier,
-currently uses i2c_get_adapter() so the adapter needs to be added to the
-IDR before registration.
-
-Fixes: 6e13e6418418 ("i2c: Add i2c_add_numbered_adapter()")
-Cc: stable@vger.kernel.org	# 2.6.22
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
+Link: https://lore.kernel.org/keyrings/20260531024914.3712130-1-jarkko@kernel.org/
+Cc: stable@vger.kernel.org # v4.20+
+Fixes: 00d60fd3b932 ("KEYS: Provide keyctls to drive the new key type ops for asymmetric keys [ver #2]")
+Reported-by: Alessandro Groppo <ale.grpp@gmail.com>
+Tested-by: Alessandro Groppo <ale.grpp@gmail.com>
+Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/i2c/i2c-core-base.c |    8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ security/keys/keyctl_pkey.c |    9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
---- a/drivers/i2c/i2c-core-base.c
-+++ b/drivers/i2c/i2c-core-base.c
-@@ -1559,6 +1559,10 @@ static int i2c_register_adapter(struct i
- 	pm_suspend_ignore_children(&adap->dev, true);
- 	pm_runtime_enable(&adap->dev);
- 
-+	mutex_lock(&core_lock);
-+	idr_replace(&i2c_adapter_idr, adap, adap->nr);
-+	mutex_unlock(&core_lock);
+--- a/security/keys/keyctl_pkey.c
++++ b/security/keys/keyctl_pkey.c
+@@ -138,28 +138,35 @@ static int keyctl_pkey_params_get_2(cons
+ 		if (uparams.in_len  > info.max_dec_size ||
+ 		    uparams.out_len > info.max_enc_size)
+ 			return -EINVAL;
 +
- 	res = device_add(&adap->dev);
- 	if (res) {
- 		pr_err("adapter '%s': can't register device (%d)\n", adap->name, res);
-@@ -1617,7 +1621,7 @@ static int __i2c_add_numbered_adapter(st
- 	int id;
- 
- 	mutex_lock(&core_lock);
--	id = idr_alloc(&i2c_adapter_idr, adap, adap->nr, adap->nr + 1, GFP_KERNEL);
-+	id = idr_alloc(&i2c_adapter_idr, NULL, adap->nr, adap->nr + 1, GFP_KERNEL);
- 	mutex_unlock(&core_lock);
- 	if (WARN(id < 0, "couldn't get idr"))
- 		return id == -ENOSPC ? -EBUSY : id;
-@@ -1653,7 +1657,7 @@ int i2c_add_adapter(struct i2c_adapter *
++		params->out_len = info.max_enc_size;
+ 		break;
+ 	case KEYCTL_PKEY_DECRYPT:
+ 		if (uparams.in_len  > info.max_enc_size ||
+ 		    uparams.out_len > info.max_dec_size)
+ 			return -EINVAL;
++
++		params->out_len = info.max_dec_size;
+ 		break;
+ 	case KEYCTL_PKEY_SIGN:
+ 		if (uparams.in_len  > info.max_data_size ||
+ 		    uparams.out_len > info.max_sig_size)
+ 			return -EINVAL;
++
++		params->out_len = info.max_sig_size;
+ 		break;
+ 	case KEYCTL_PKEY_VERIFY:
+ 		if (uparams.in_len  > info.max_data_size ||
+ 		    uparams.in2_len > info.max_sig_size)
+ 			return -EINVAL;
++
++		params->out_len = info.max_sig_size;
+ 		break;
+ 	default:
+ 		BUG();
  	}
  
- 	mutex_lock(&core_lock);
--	id = idr_alloc(&i2c_adapter_idr, adapter,
-+	id = idr_alloc(&i2c_adapter_idr, NULL,
- 		       __i2c_first_dynamic_bus_num, 0, GFP_KERNEL);
- 	mutex_unlock(&core_lock);
- 	if (WARN(id < 0, "couldn't get idr"))
+ 	params->in_len  = uparams.in_len;
+-	params->out_len = uparams.out_len; /* Note: same as in2_len */
+ 	return 0;
+ }
+ 
 
 
 
