@@ -1,62 +1,61 @@
-Return-Path: <stable+bounces-271459-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-271267-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 86q3HianRmo2bAsAu9opvQ
-	(envelope-from <stable+bounces-271459-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 20:00:06 +0200
+	id x5iWN2ClRmqqawsAu9opvQ
+	(envelope-from <stable+bounces-271267-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:52:32 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 80C1C6FBC52
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 20:00:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D787D6FBADB
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:52:31 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="PrurD/VX";
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-271459-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-271459-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="TVmmwY/v";
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-271267-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-271267-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 8B2F130A7BCC
-	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 17:00:09 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id B33AF314991D
+	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:52:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 33CAD33A6F2;
-	Thu,  2 Jul 2026 17:00:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 039BB33B951;
+	Thu,  2 Jul 2026 16:51:41 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8759331EB6;
-	Thu,  2 Jul 2026 16:59:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A684B30C146;
+	Thu,  2 Jul 2026 16:51:39 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783011600; cv=none; b=QrqR1J6FRmyYBZ9oqNkZfYRrYvFfdWBLNONpwj/n7qH7u70Ep8ipRXUwoBayvl8PPnKJPfdoAUxZdyHV8f3sKjqp/WUVx5qb9hTAss6VkNtPIHiHmmnnlW8hOD25rDgcEnV39W39Mqwm/Fr4UryYhVwhBJEmnZwg5mTEJr964Bc=
+	t=1783011100; cv=none; b=WXtkm8HaAMk18i9RqEDc9tKGaNbTCRIghB8+duhQ1Qgu0z5Hd4wb5xuU3PCxUK6hc1nhkAk6Jwh7Eh5gudja4Mz9rWEY5eiyIoC+cPzZVo6LnrYRVGNXlemKcG4ZGEgTz7ilJHtG1q1vUCtajQca/OCCHaDnj0mCQyac6IBNwYI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783011600; c=relaxed/simple;
-	bh=Je7QclP/s82F4lr2djPqNVqhfEwmlfdex9qDUgFfs9I=;
+	s=arc-20240116; t=1783011100; c=relaxed/simple;
+	bh=EN0nhWWIt6KYMJsdk1d9yU+wjI8VWrIPC8Bh/W1+egI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nC/TjIiqR+V/uyPO4nmv1rF+dd9l1o0P92uThkVSmxhbbOuXe09h0rq3L8XlX++d0IfNjqp+JULDTNZYdhXi0ejnyi8B8A2USrnW8tlVM+5RVUbQZREKWsm4uamvHlWRCJtT3uGRJUx/Tpkl1p+hLhJLX5tpHh7ZDvXAHB6wzcU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PrurD/VX; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A5EC1F00A3A;
-	Thu,  2 Jul 2026 16:59:58 +0000 (UTC)
+	 MIME-Version; b=G2laE+uoVzkSMEvnbcoWjiEZY5Cm7HMS3UxpeeOQ+0h4fB+CgDz6883oz5x9u/N1yBAyyFmd6HRd4Q6uQWCPu1XdcrdGSzOzyWMnIGg1N6NEkzan7LGf2YpcVzUR86jsvOwcPa/v11a3L+GPhHwt4/T4HRx0qASjLXENqctzZLE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TVmmwY/v; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1931D1F000E9;
+	Thu,  2 Jul 2026 16:51:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1783011598;
-	bh=PPgykJtNdWzhIaryr4nSp3OasW0kX1TOsoQtFUMsw9U=;
+	s=korg; t=1783011099;
+	bh=SNfaOLSct+g1LaUTZW2FzHru2u/oeN97RyuNxOXIO3w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=PrurD/VXhaaWHbFdkCoMtr02+AjLkOqqztdC90ziy1peS7ZKWGfwfm2r2Jh4UgzZR
-	 ouQFDw0u7Sg6OeSJV9SneR8xHLg+LwhRKn17r5sg5s3RX+p4NLvDtxIxgbwQllwfSC
-	 AEL9mZ/NYSLEWmIkLv5/R1gAiA/oKiR8vHZXRw2w=
+	b=TVmmwY/vOx7UVkzBCINK+5vOB1Bi4+2FHJqCN3qkZrG738uFGNrVqksY78goeKZev
+	 W6hU9sWDrpJB8AR1jk78vBBA0/VX1y8hU7Mb5h07DyOTTA2oSIBwZhg7nR9SMXvewB
+	 LKwS43DVNDYhyuYi1vNo11Dc5J0Vdy9Pzim5LJAo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	syzbot+2488d8d751b27f7ce268@syzkaller.appspotmail.com,
-	Chao Yu <chao@kernel.org>,
-	Jaegeuk Kim <jaegeuk@kernel.org>
-Subject: [PATCH 7.1 062/120] f2fs: fix to do sanity check on f2fs_get_node_folio_ra()
+	Hyunwoo Kim <imv4bel@gmail.com>,
+	Vitaly Kuznetsov <vkuznets@redhat.com>,
+	Sean Christopherson <seanjc@google.com>
+Subject: [PATCH 6.6 157/175] KVM: x86: hyper-v: Bound the bank index when querying sparse banks
 Date: Thu,  2 Jul 2026 18:20:58 +0200
-Message-ID: <20260702155114.244501800@linuxfoundation.org>
+Message-ID: <20260702155119.102559855@linuxfoundation.org>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260702155112.964534952@linuxfoundation.org>
-References: <20260702155112.964534952@linuxfoundation.org>
+In-Reply-To: <20260702155115.766838875@linuxfoundation.org>
+References: <20260702155115.766838875@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,8 +67,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
@@ -78,143 +76,124 @@ X-Spamd-Result: default: False [-0.16 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-271459-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:stable@kernel.org,m:syzbot+2488d8d751b27f7ce268@syzkaller.appspotmail.com,m:chao@kernel.org,m:jaegeuk@kernel.org,m:syzbot@syzkaller.appspotmail.com,s:lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-271267-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,redhat.com,google.com];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORWARDED(0.00)[lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	TO_DN_SOME(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:imv4bel@gmail.com,m:vkuznets@redhat.com,m:seanjc@google.com,s:lists@lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORWARDED(0.00)[lists@lfdr.de];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RWL_MAILSPIKE_POSSIBLE(0.00)[104.64.211.4:from];
-	TAGGED_RCPT(0.00)[stable,2488d8d751b27f7ce268];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,appspotmail.com:email]
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,msgid.link:url]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 80C1C6FBC52
+X-Rspamd-Queue-Id: D787D6FBADB
 
-7.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chao Yu <chao@kernel.org>
+From: Hyunwoo Kim <imv4bel@gmail.com>
 
-commit 8712353ed80f87271d732297567dcdbe4b84e8c7 upstream.
+commit 4721f8160f17554b003e8928bb61e6c9b2fe92a3 upstream.
 
-kernel BUG at fs/f2fs/file.c:845!
-Oops: invalid opcode: 0000 [#1] SMP KASAN NOPTI
-CPU: 0 UID: 0 PID: 5336 Comm: syz.0.0 Not tainted syzkaller #0 PREEMPT(full)
-Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
-RIP: 0010:f2fs_do_truncate_blocks+0x1115/0x1140 fs/f2fs/file.c:845
-Code: fc fc 90 0f 0b e8 8b 9d 9a fd 90 0f 0b e8 83 9d 9a fd 48 89 df 48 c7 c6 60 d1 1a 8c e8 54 f1 fc fc 90 0f 0b e8 6c 9d 9a fd 90 <0f> 0b e8 64 9d 9a fd 90 0f 0b 90 e9 93 fd ff ff e8 56 9d 9a fd 90
-RSP: 0018:ffffc9000e4474c0 EFLAGS: 00010283
-RAX: ffffffff842b1d34 RBX: 0000000000000003 RCX: 0000000000100000
-RDX: ffffc9000f03a000 RSI: 0000000000035503 RDI: 0000000000035504
-RBP: ffffc9000e447608 R08: ffff8880123b0000 R09: 0000000000000002
-R10: 00000000fffffffe R11: 0000000000000002 R12: 0000000000000001
-R13: 0000000000000000 R14: 1ffff92001c88ea0 R15: 00000000ffff039c
-FS:  00007f7e02ee36c0(0000) GS:ffff88808c887000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00007ff0305c4000 CR3: 0000000012d4c000 CR4: 0000000000352ef0
-Call Trace:
- <TASK>
- f2fs_truncate_blocks+0x10a/0x300 fs/f2fs/file.c:882
- f2fs_truncate+0x471/0x7c0 fs/f2fs/file.c:940
- f2fs_evict_inode+0xa3f/0x1ac0 fs/f2fs/inode.c:907
- evict+0x61e/0xb10 fs/inode.c:841
- f2fs_fill_super+0x5f43/0x78f0 fs/f2fs/super.c:5224
- get_tree_bdev_flags+0x431/0x4f0 fs/super.c:1694
- vfs_get_tree+0x92/0x2a0 fs/super.c:1754
- fc_mount fs/namespace.c:1193 [inline]
- do_new_mount_fc fs/namespace.c:3758 [inline]
- do_new_mount+0x341/0xd30 fs/namespace.c:3834
- do_mount fs/namespace.c:4167 [inline]
- __do_sys_mount fs/namespace.c:4383 [inline]
- __se_sys_mount+0x31d/0x420 fs/namespace.c:4360
- do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
- do_syscall_64+0x15f/0xf80 arch/x86/entry/syscall_64.c:94
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
+When checking if a VP ID is included in a sparse bank set, explicitly check
+that the ID can actually be contained in a sparse bank (the TLFS allows for
+a maximum of 64 banks of 64 vCPUs each).  When handling a paravirtual TLB
+flush for L2, the VP ID is copied verbatim from the enlightened VMCS,
+without any bounds check, i.e. isn't guaranteed to be under the limit of
+4096.
 
-	count = ADDRS_PER_PAGE(dn.node_folio, inode);
+Failure to check the bounds of the VP ID leads to an out-of-bounds read
+when testing the sparse bank, and super strictly speaking could lead to KVM
+performing an unnecessary TLB flush for an L2 vCPU.
 
-	count -= dn.ofs_in_node;
-	f2fs_bug_on(sbi, count < 0);
+  ==================================================================
+  BUG: KASAN: use-after-free in hv_is_vp_in_sparse_set+0x85/0x100 [kvm]
+  Read of size 8 at addr ffff88811ba5f598 by task hyperv_evmcs/2802
 
-The fuzz test will trigger above bug_on in f2fs.
+  CPU: 12 UID: 1000 PID: 2802 Comm: hyperv_evmcs Not tainted 7.1.0-rc2 #7 PREEMPT
+  Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 0.0.0 02/06/2015
+  Call Trace:
+   <TASK>
+   dump_stack_lvl+0x51/0x60
+   print_report+0xcb/0x5d0
+   kasan_report+0xb4/0xe0
+   kasan_check_range+0x35/0x1b0
+   hv_is_vp_in_sparse_set+0x85/0x100 [kvm]
+   kvm_hv_flush_tlb+0xe9e/0x16c0 [kvm]
+   kvm_hv_hypercall+0xe6b/0x1e60 [kvm]
+   vmx_handle_exit+0x485/0x1b60 [kvm_intel]
+   kvm_arch_vcpu_ioctl_run+0x22e3/0x5070 [kvm]
+   kvm_vcpu_ioctl+0x5d0/0x10c0 [kvm]
+   __x64_sys_ioctl+0x129/0x1a0
+   do_syscall_64+0xb9/0xcf0
+   entry_SYSCALL_64_after_hwframe+0x4b/0x53
+  RIP: 0033:0x7f0e62d1a9bf
+   </TASK>
 
-The root cause should be: in the corrupted inode, there is a direct node
-which has the same ino and nid in its footer, so in f2fs_do_truncate_blocks(),
-after f2fs_get_dnode_of_data() finds such dnode:
-1) ADDRS_PER_PAGE(dn.node_folio, inode) will return 923
-2) once dn.ofs_in_node points to addr[923, 1017]
-Then it will trigger the system panic.
+  The buggy address belongs to the physical page:
+  page: refcount:0 mapcount:0 mapping:0000000000000000 index:0xffffffffffffffff pfn:0x11ba5f
+  flags: 0x4000000000000000(zone=1)
+  raw: 4000000000000000 0000000000000000 00000000ffffffff 0000000000000000
+  raw: ffffffffffffffff 0000000000000000 00000000ffffffff 0000000000000000
+  page dumped because: kasan: bad access detected
 
-Let's introduce NODE_TYPE_NON_IXNODE to indicate current node should
-not be an inode or xattr node, and then use it in below path to detect
-inconsistent node chain in inode mapping table:
+  Memory state around the buggy address:
+   ffff88811ba5f480: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
+   ffff88811ba5f500: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
+  >ffff88811ba5f580: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
+                              ^
+   ffff88811ba5f600: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
+   ffff88811ba5f680: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
+  ==================================================================
+  Disabling lock debugging due to kernel taint
 
-- f2fs_do_truncate_blocks
- - f2fs_get_dnode_of_data
-  - f2fs_get_node_folio_ra
-   -  __get_node_folio
-    - f2fs_sanity_check_node_footer
-     - case NODE_TYPE_NON_IXNODE -> check whether it is inode|xnode
+Opportunistically add a compile time assertion to ensure the maximum number
+of sparse banks exactly matches the number of possible bits in the passed
+in mask.
 
-Cc: stable@kernel.org
-Reported-by: syzbot+2488d8d751b27f7ce268@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/all/69fa3697.170a0220.59368.0018.GAE@google.com
-Signed-off-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: c58a318f6090 ("KVM: x86: hyper-v: L2 TLB flush")
+Signed-off-by: Hyunwoo Kim <imv4bel@gmail.com>
+Reviewed-by: Vitaly Kuznetsov <vkuznets@redhat.com>
+Link: https://patch.msgid.link/aiQyZIJtO-2Aj_xN@v4bel
+[sean: add KASAN splat, drop comment, add assert, massage changelog]
+Signed-off-by: Sean Christopherson <seanjc@google.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/f2fs/f2fs.h |    1 +
- fs/f2fs/node.c |    6 +++++-
- 2 files changed, 6 insertions(+), 1 deletion(-)
+ arch/x86/kvm/hyperv.c |    5 +++++
+ 1 file changed, 5 insertions(+)
 
---- a/fs/f2fs/f2fs.h
-+++ b/fs/f2fs/f2fs.h
-@@ -1583,6 +1583,7 @@ enum node_type {
- 	NODE_TYPE_INODE,
- 	NODE_TYPE_XATTR,
- 	NODE_TYPE_NON_INODE,
-+	NODE_TYPE_NON_IXNODE,	/* non inode and xnode */
- };
+--- a/arch/x86/kvm/hyperv.c
++++ b/arch/x86/kvm/hyperv.c
+@@ -1787,6 +1787,11 @@ static bool hv_is_vp_in_sparse_set(u32 v
+ 	int valid_bit_nr = vp_id / HV_VCPUS_PER_SPARSE_BANK;
+ 	unsigned long sbank;
  
- /* a threshold of maximum elapsed time in critical region to print tracepoint */
---- a/fs/f2fs/node.c
-+++ b/fs/f2fs/node.c
-@@ -1541,6 +1541,10 @@ int f2fs_sanity_check_node_footer(struct
- 		if (is_inode)
- 			goto out_err;
- 		break;
-+	case NODE_TYPE_NON_IXNODE:
-+		if (is_inode || is_xnode)
-+			goto out_err;
-+		break;
- 	default:
- 		break;
- 	}
-@@ -1634,7 +1638,7 @@ static struct folio *f2fs_get_node_folio
- 	struct f2fs_sb_info *sbi = F2FS_F_SB(parent);
- 	nid_t nid = get_nid(parent, start, false);
++	BUILD_BUG_ON(BITS_PER_TYPE(valid_bank_mask) != HV_MAX_SPARSE_VCPU_BANKS);
++
++	if (valid_bit_nr >= HV_MAX_SPARSE_VCPU_BANKS)
++		return false;
++
+ 	if (!test_bit(valid_bit_nr, (unsigned long *)&valid_bank_mask))
+ 		return false;
  
--	return __get_node_folio(sbi, nid, parent, start, NODE_TYPE_REGULAR);
-+	return __get_node_folio(sbi, nid, parent, start, NODE_TYPE_NON_IXNODE);
- }
- 
- static void flush_inline_data(struct f2fs_sb_info *sbi, nid_t ino)
 
 
 
