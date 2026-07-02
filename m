@@ -1,530 +1,161 @@
-Return-Path: <stable+bounces-270632-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-271140-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id Tu5qHueTRmq3YwsAu9opvQ
-	(envelope-from <stable+bounces-270632-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:37:59 +0200
+	id R2F+JjWZRmrFZgsAu9opvQ
+	(envelope-from <stable+bounces-271140-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:00:37 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id DCDA16FA4E1
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:37:58 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id E0FAB6FAD97
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:00:36 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=Wof8hUEp;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-270632-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-270632-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=0JyeMBO3;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-271140-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-271140-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 24D7F3092298
-	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:29:38 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D72033307F22
+	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:48:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A13732ED4E;
-	Thu,  2 Jul 2026 16:24:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 77A20346FA7;
+	Thu,  2 Jul 2026 16:46:15 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47875492185;
-	Thu,  2 Jul 2026 16:24:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40A052DC78C;
+	Thu,  2 Jul 2026 16:46:14 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783009447; cv=none; b=egh6N2T5H57ZGGAKV/US94FmQlgAdgx08cpK13Nqf6kRES7mbtlFQ/o28ozVuhViW7JyD3VFiYvNlGvElpEDglkaMPevTu496j2p0mnpHbRUbw90l2IaW2Rq56WrxETFIxhWqZIS092IzGW3mORY5LVQeM3oAmr7IWgHDC/WdRM=
+	t=1783010775; cv=none; b=kxZ+GwtEOrA/Cka2Nzv2sMZguDUctN6zMaySWmHsgjULv5N3x8sS2mp8ShnCTXBppy9+MfEopmKY5FwH5ZipxGgUYEZKFImcY4mbLg6QhndXJhhrzsSPPRIliUtoJs+7uDHT5bIq9weZHhDbYj+YDi3BVj2GIBp8w1OZi/MmENU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783009447; c=relaxed/simple;
-	bh=ObqgvITbHYCcDvxtRx7xLyVYKYs1MOUj5D16Z6p3FRU=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=FJOuqY+u08EYsagUSqaj2ONfwAKXVSA3KKwDMdp+xLI7RBA6wZVdeffkJLKt+fbRdSQ/A9qdSgd4b3RZ7pcqco6McStdaZKraRqINh7KLgxa0ngPrshUXshT3S/9XTH3kIFd/xFzZhPAyp0cFnmnM04UJSEJmX6yNMh3RVjOGIQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Wof8hUEp; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E5011F000E9;
-	Thu,  2 Jul 2026 16:24:01 +0000 (UTC)
+	s=arc-20240116; t=1783010775; c=relaxed/simple;
+	bh=peQZA4U1ooryZq8S3/zMlg7n2TqQtgPKUv+fuUss7J4=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=HIiigTuQQF20d0lFGSrCqnDTY3Xz1RNtwPm+9lbG01ZaeRAK90BfUD7rvYxeyjk1OOrTVvy84AHYaBQlc7gNcEgAdek3RJN0g0tIPlmkEGMZRrAkiVqqFAza5Enj4gSXgRuKuOpTjekkkbxGhKzKAU0AnGQ1KHxWCy2RzVNwF0c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0JyeMBO3; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1EE91F000E9;
+	Thu,  2 Jul 2026 16:46:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1783009442;
-	bh=9WpeyFB18GR7YxO/MLFXLqvZmPgaReQm/W6ewZEk+Hc=;
-	h=From:To:Cc:Subject:Date;
-	b=Wof8hUEpbBCAuOXQGxFGXy5y53nygIivgXfUcp1Zsgblq1ZcQ3v6Ea0ZNoEK4waKA
-	 9gGdKGpDBwTiIRZjOBGX+q/3aMeaOeZP/+ShxJXxShrymeoE7mfrNNRfrBsURpcUUl
-	 xBc0r3TJhBpiJqPsC8hdrB4ppKqCGs02iCvgG3Kc=
+	s=korg; t=1783010774;
+	bh=d8BA7OBHDrLxYWiluFl9V9GTKj/znSRvm5GCwB7TwSA=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=0JyeMBO3sHzEv+wMdYr+0d3aA6htgxYZTvPTPc+1b8etnLUFi2ptYEGmeksJIc/iB
+	 j9LRHCEOSum0jvjpNv0PFmye2gd+YobtZGlos44DUUpOL9P0f0TO8oYWlyOZVz7z/w
+	 ChQ9R9bV5r9HcB2ABaYR+J1vgjIhDjCZuL81LHKs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	torvalds@linux-foundation.org,
-	akpm@linux-foundation.org,
-	linux@roeck-us.net,
-	shuah@kernel.org,
-	patches@kernelci.org,
-	lkft-triage@lists.linaro.org,
-	pavel@nabladev.com,
-	jonathanh@nvidia.com,
-	f.fainelli@gmail.com,
-	sudipm.mukherjee@gmail.com,
-	rwarsow@gmx.de,
-	conor@kernel.org,
-	hargar@microsoft.com,
-	broonie@kernel.org,
-	achill@achill.org,
-	sr@sladewatkins.com
-Subject: [PATCH 5.10 00/96] 5.10.260-rc1 review
+	Yiming Qian <yimingqian591@gmail.com>,
+	Florian Westphal <fw@strlen.de>,
+	Shivani Agarwal <shivani.agarwal@broadcom.com>
+Subject: [PATCH 6.6 031/175] netfilter: nf_tables: always walk all pending catchall elements
 Date: Thu,  2 Jul 2026 18:18:52 +0200
-Message-ID: <20260702155108.949633242@linuxfoundation.org>
+Message-ID: <20260702155116.453188734@linuxfoundation.org>
 X-Mailer: git-send-email 2.55.0
+In-Reply-To: <20260702155115.766838875@linuxfoundation.org>
+References: <20260702155115.766838875@linuxfoundation.org>
+User-Agent: quilt/0.69
+X-stable: review
+X-Patchwork-Hint: ignore
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: quilt/0.69
-X-stable: review
-X-Patchwork-Hint: ignore
-X-KernelTest-Patch: http://kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.10.260-rc1.gz
-X-KernelTest-Tree: git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git
-X-KernelTest-Branch: linux-5.10.y
-X-KernelTest-Patches: git://git.kernel.org/pub/scm/linux/kernel/git/stable/stable-queue.git
-X-KernelTest-Version: 5.10.260-rc1
-X-KernelTest-Deadline: 2026-07-04T15:51+00:00
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-270632-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCPT_COUNT_TWELVE(0.00)[20];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:linux-kernel@vger.kernel.org,m:torvalds@linux-foundation.org,m:akpm@linux-foundation.org,m:linux@roeck-us.net,m:shuah@kernel.org,m:patches@kernelci.org,m:lkft-triage@lists.linaro.org,m:pavel@nabladev.com,m:jonathanh@nvidia.com,m:f.fainelli@gmail.com,m:sudipm.mukherjee@gmail.com,m:rwarsow@gmx.de,m:conor@kernel.org,m:hargar@microsoft.com,m:broonie@kernel.org,m:achill@achill.org,m:sr@sladewatkins.com,m:ffainelli@gmail.com,m:sudipmmukherjee@gmail.com,s:lists@lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,vger.kernel.org,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,nabladev.com,nvidia.com,gmail.com,gmx.de,microsoft.com,achill.org,sladewatkins.com];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
+	TAGGED_FROM(0.00)[bounces-271140-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:yimingqian591@gmail.com,m:fw@strlen.de,m:shivani.agarwal@broadcom.com,s:lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,strlen.de,broadcom.com];
+	FORWARDED(0.00)[lists@lfdr.de];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp,broadcom.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,strlen.de:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: DCDA16FA4E1
-
-This is the start of the stable review cycle for the 5.10.260 release.
-There are 96 patches in this series, all will be posted as a response
-to this one.  If anyone has any issues with these being applied, please
-let me know.
-
-Responses should be made by Sat, 04 Jul 2026 15:50:58 +0000.
-Anything received after that time might be too late.
-
-The whole patch series can be found in one patch at:
-	https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.10.260-rc1.gz
-or in the git tree and branch at:
-	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.10.y
-and the diffstat can be found below.
-
-thanks,
-
-greg k-h
-
--------------
-Pseudo-Shortlog of commits:
-
-Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-    Linux 5.10.260-rc1
-
-Miklos Szeredi <mszeredi@redhat.com>
-    virtiofs: fix UAF on submount umount
-
-Junrui Luo <moonafterrain@outlook.com>
-    misc: fastrpc: fix DMA address corruption due to find_vma misuse
-
-Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
-    mmc: renesas_sdhi: Add OF entry for RZ/G2H SoC
-
-Santosh Kalluri <santosh.kalluri129@gmail.com>
-    net: phonet: free phonet_device after RCU grace period
-
-Kuniyuki Iwashima <kuniyu@amazon.com>
-    phonet: Pass net and ifindex to phonet_address_notify().
-
-Kuniyuki Iwashima <kuniyu@amazon.com>
-    phonet: Pass ifindex to fill_addr().
-
-Dexuan Cui <decui@microsoft.com>
-    Drivers: hv: vmbus: Improve the logic of reserving fb_mmio on Gen2 VMs
-
-Mukesh Ojha <mukesh.ojha@oss.qualcomm.com>
-    misc: fastrpc: Fix NULL pointer dereference in rpmsg callback
-
-Abel Vesa <abel.vesa@linaro.org>
-    misc: fastrpc: Add dma_mask to fastrpc_channel_ctx
-
-Paolo Abeni <pabeni@redhat.com>
-    mptcp: fix missing wakeups in edge scenarios
-
-Thorsten Blum <thorsten.blum@linux.dev>
-    hv: utils: handle and propagate errors in kvp_register
-
-Kyle Meyer <kyle.meyer@hpe.com>
-    bnxt_en: Fix NULL pointer dereference
-
-Michael Chan <michael.chan@broadcom.com>
-    bnxt_en: Modify bnxt_disable_int_sync() to be called more than once.
-
-Yongchao Wu <yongchao.wu@autochips.com>
-    usb: cdns3: gadget: fix NULL pointer dereference in ep_queue
-
-Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
-    dlm: prevent NPD when writing a positive value to event_done
-
-Dominik Woźniak <stalion@gmail.com>
-    nfsd: check get_user() return when reading princhashlen
-
-Jeff Layton <jlayton@kernel.org>
-    nfsd: fix posix_acl leak on SETACL decode failure
-
-Guannan Wang <wgnbuaa@gmail.com>
-    NFSD: Fix SECINFO_NO_NAME decode error cleanup
-
-Steffen Persvold <spersvold@gmail.com>
-    fbdev: modedb: Fix misaligned fields in the 1920x1080-60 mode
-
-Ian Bridges <icb@fastmail.org>
-    fbdev: Fix fb_new_modelist to prevent null-ptr-deref in fb_videomode_to_var
-
-Ashutosh Desai <ashutoshdesai993@gmail.com>
-    KVM: SVM: Fix page overflow in sev_dbg_crypt() for ENCRYPT path
-
-Zhang Cen <rollkingzzc@gmail.com>
-    ocfs2: reject oversized group bitmap descriptors
-
-Wentao Liang <vulab@iscas.ac.cn>
-    fpga: region: fix use-after-free in child_regions_with_firmware()
-
-Qingshuang Fu <fuqingshuang@kylinos.cn>
-    irqchip/imgpdc: Fix resource leak, add missing chained handler cleanup on remove
-
-Wentao Liang <vulab@iscas.ac.cn>
-    pNFS: Fix use-after-free in pnfs_update_layout()
-
-Doruk Tan Ozturk <doruk@0sec.ai>
-    tipc: fix slab-use-after-free Read in tipc_aead_decrypt_done
-
-Michael Bommarito <michael.bommarito@gmail.com>
-    exfat: fix potential use-after-free in exfat_find_dir_entry()
-
-Maciej W. Rozycki <macro@orcam.me.uk>
-    MIPS: DEC: Prevent initial console buffer from landing in XKPHYS
-
-Dawei Feng <dawei.feng@seu.edu.cn>
-    bpf: use kvfree() for replaced sysctl write buffer
-
-Zhang Cen <rollkingzzc@gmail.com>
-    f2fs: validate ACL entry sizes in f2fs_acl_from_disk()
-
-Bitterblue Smith <rtl8821cerfe2@gmail.com>
-    wifi: rtlwifi: rtl8821ae: Fix C2H bit location in RX descriptor
-
-Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
-    wifi: ath11k: fix warning when unbinding
-
-Zenm Chen <zenmchen@gmail.com>
-    wifi: mt76: mt76x2u: Add support for ELECOM WDC-867SU3S
-
-Shaomin Chen <eeesssooo020@gmail.com>
-    keys: Pin request_key_auth payload in instantiate paths
-
-Jarkko Sakkinen <jarkko@kernel.org>
-    KEYS: fix overflow in keyctl_pkey_params_get_2()
-
-Doruk Tan Ozturk <doruk@0sec.ai>
-    mac802154: llsec: add skb_cow_data() before in-place crypto
-
-Kevin Hao <haokexin@gmail.com>
-    net: cpsw_new: Fix potential unregister of netdev that has not been registered yet
-
-Herbert Xu <herbert@gondor.apana.org.au>
-    crypto: af_alg - Set merge to zero early in af_alg_sendmsg
-
-Yuto Ohnuki <ytohnuki@amazon.com>
-    ext4: add bounds check for inline data length in ext4_read_inline_page
-
-Bjoern Doebel <doebel@amazon.de>
-    ring-buffer: Remove ring_buffer_read_prepare_sync()
-
-Sven Eckelmann <sven@narfation.org>
-    batman-adv: tvlv: avoid race of cifsnotfound handler state
-
-Sven Eckelmann <sven@narfation.org>
-    batman-adv: tvlv: enforce 2-byte alignment
-
-Sven Eckelmann <sven@narfation.org>
-    batman-adv: dat: prevent false sharing between VLANs
-
-Sven Eckelmann <sven@narfation.org>
-    batman-adv: tt: track roam count per VID
-
-Sven Eckelmann <sven@narfation.org>
-    batman-adv: tt: don't merge change entries with different VIDs
-
-Sven Eckelmann <sven@narfation.org>
-    batman-adv: tp_meter: handle overlapping packets
-
-Sven Eckelmann <sven@narfation.org>
-    batman-adv: tp_meter: prevent parallel modifications of last_recv
-
-Sven Eckelmann <sven@narfation.org>
-    batman-adv: tp_meter: annotate last_recv_time access with READ/WRITE_ONCE
-
-Sven Eckelmann <sven@narfation.org>
-    batman-adv: tp_meter: restrict number of unacked list entries
-
-Sven Eckelmann <sven@narfation.org>
-    batman-adv: v: prevent OGM aggregation on disabled hardif
-
-Sven Eckelmann <sven@narfation.org>
-    batman-adv: frag: avoid underflow of TTL
-
-Sven Eckelmann <sven@narfation.org>
-    batman-adv: frag: ensure fragment is writable before modifying TTL
-
-Sven Eckelmann <sven@narfation.org>
-    batman-adv: tp_meter: initialize last_recv_time during init
-
-Sven Eckelmann <sven@narfation.org>
-    batman-adv: prevent ELP transmission interval underflow
-
-Sven Eckelmann <sven@narfation.org>
-    batman-adv: bla: annotate lasttime access with READ/WRITE_ONCE
-
-Sven Eckelmann <sven@narfation.org>
-    batman-adv: tp_meter: add only finished tp_vars to lists
-
-Sven Eckelmann <sven@narfation.org>
-    batman-adv: tp_meter: handle seqno wrap-around for fast recovery detection
-
-Sven Eckelmann <sven@narfation.org>
-    batman-adv: tp_meter: fix fast recovery precondition
-
-Sven Eckelmann <sven@narfation.org>
-    batman-adv: tp_meter: avoid divide-by-zero for dec_cwnd
-
-Sven Eckelmann <sven@narfation.org>
-    batman-adv: tp_meter: avoid window underflow
-
-Sven Eckelmann <sven@narfation.org>
-    batman-adv: tp_meter: initialize dec_cwnd explicitly
-
-Sven Eckelmann <sven@narfation.org>
-    batman-adv: tp_meter: initialize dup_acks explicitly
-
-Sven Eckelmann <sven@narfation.org>
-    batman-adv: tp_meter: keep unacked list in ascending ordered
-
-Pedro Tammela <pctammela@mojatatu.com>
-    net/sched: act_pedit: fix action bind logic
-
-Giovanni Cabiddu <giovanni.cabiddu@intel.com>
-    crypto: qat - remove unused character device and IOCTLs
-
-Herbert Xu <herbert@gondor.apana.org.au>
-    crypto: qat - Return pointer directly in adf_ctl_alloc_resources
-
-Thorsten Blum <thorsten.blum@linux.dev>
-    crypto: qat - Replace kzalloc() + copy_from_user() with memdup_user()
-
-Bagas Sanjaya <bagasdotme@gmail.com>
-    Documentation: ioctl-number: Extend "Include File" column width
-
-Ruslan Valiyev <linuxoid@gmail.com>
-    media: vidtv: fix NULL pointer dereference in vidtv_mux_push_si
-
-Yi Yang <yiyang13@huawei.com>
-    vc_screen: fix null-ptr-deref in vcs_notifier() during concurrent vcs_write
-
-André Draszik <andre.draszik@linaro.org>
-    regulator: core: fix locking in regulator_resolve_supply() error path
-
-Mingyu Wang <25181214217@stu.xidian.edu.cn>
-    agp/amd64: Fix broken error propagation in agp_amd64_probe()
-
-Weiming Shi <bestswngs@gmail.com>
-    net: qualcomm: rmnet: fix endpoint use-after-free in rmnet_dellink()
-
-Weiming Shi <bestswngs@gmail.com>
-    i2c: stub: Reject I2C block transfers with invalid length
-
-Lord Ulf Henrik Holmberg <henrik.holmberg@defensify.se>
-    RDMA/bnxt_re: zero shared page before exposing to userspace
-
-Jiacheng Shi <billsjc@sjtu.edu.cn>
-    vfio/iommu_type1: replace kfree with kvfree
-
-Sven Eckelmann <sven@narfation.org>
-    batman-adv: tt: prevent TVLV entry number overflow
-
-Sven Eckelmann <sven@narfation.org>
-    batman-adv: tt: reject oversized local TVLV buffers
-
-Wang Yufen <wangyufen@huawei.com>
-    netdevsim: Fix memory leak of nsim_dev->fa_cookie
-
-Hangyu Hua <hbh25y@gmail.com>
-    net: 9p: fix refcount leak in p9_read_work() error handling
-
-Harry Wentland <harry.wentland@amd.com>
-    drm/amd/display: Use krealloc_array() in dal_vector_reserve()
-
-Eric Dumazet <edumazet@google.com>
-    net/sched: cls_u32: use skb_header_pointer_careful()
-
-Eric Dumazet <edumazet@google.com>
-    net: add skb_header_pointer_careful() helper
-
-Eric Dumazet <edumazet@google.com>
-    ip6_vti: set netns_immutable on the fallback device.
-
-Harry Wentland <harry.wentland@amd.com>
-    drm/amd/display: Bound VBIOS record-chain walk loops
-
-Bjorn Andersson <bjorn.andersson@oss.qualcomm.com>
-    slimbus: qcom-ngd-ctrl: Register callbacks after creating the ngd
-
-Jann Horn <jannh@google.com>
-    fuse: limit FUSE_NOTIFY_RETRIEVE to uptodate folios
-
-Pedro Tammela <pctammela@mojatatu.com>
-    net/sched: act_pedit: free pedit keys on bail from offset check
-
-Rajat Gupta <rajat.gupta@oss.qualcomm.com>
-    net/sched: fix pedit partial COW leading to page cache corruption
-
-Max Tottenham <mtottenh@akamai.com>
-    net/sched: act_pedit: Parse L3 Header for L4 offset
-
-Pedro Tammela <pctammela@mojatatu.com>
-    net/sched: act_pedit: rate limit datapath messages
-
-Pedro Tammela <pctammela@mojatatu.com>
-    net/sched: act_pedit: check static offsets a priori
-
-Pedro Tammela <pctammela@mojatatu.com>
-    net/sched: act_pedit: remove extra check for key type
-
-Pedro Tammela <pctammela@mojatatu.com>
-    net/sched: simplify tcf_pedit_act
-
-Pedro Tammela <pctammela@mojatatu.com>
-    net/sched: transition act_pedit to rcu and percpu stats
-
-Pedro Tammela <pctammela@mojatatu.com>
-    net/sched: act_pedit: use NLA_POLICY for parsing 'ex' keys
-
-
--------------
-
-Diffstat:
-
- Documentation/userspace-api/ioctl/ioctl-number.rst | 427 ++++++++++-----------
- Makefile                                           |   4 +-
- arch/mips/dec/prom/console.c                       |   7 +-
- arch/x86/kvm/svm/sev.c                             |   1 +
- crypto/af_alg.c                                    |   2 +
- drivers/char/agp/amd64-agp.c                       |   2 +-
- drivers/crypto/qat/qat_common/adf_cfg_common.h     |  32 --
- drivers/crypto/qat/qat_common/adf_cfg_user.h       |  38 --
- drivers/crypto/qat/qat_common/adf_common_drv.h     |   3 -
- drivers/crypto/qat/qat_common/adf_ctl_drv.c        | 421 +-------------------
- drivers/crypto/qat/qat_common/adf_dev_mgr.c        |  70 ----
- drivers/fpga/of-fpga-region.c                      |   3 +-
- drivers/gpu/drm/amd/display/dc/basics/vector.c     |   2 +-
- drivers/gpu/drm/amd/display/dc/bios/bios_parser.c  |  15 +-
- drivers/gpu/drm/amd/display/dc/bios/bios_parser2.c |  12 +-
- .../drm/amd/display/dc/bios/bios_parser_helper.h   |   5 +
- drivers/hv/hv_kvp.c                                |  25 +-
- drivers/hv/vmbus_drv.c                             |  56 ++-
- drivers/i2c/i2c-stub.c                             |   5 +
- drivers/infiniband/hw/bnxt_re/ib_verbs.c           |   2 +-
- drivers/irqchip/irq-imgpdc.c                       |   6 +
- drivers/media/test-drivers/vidtv/vidtv_mux.c       |   8 +-
- drivers/misc/fastrpc.c                             |   9 +-
- drivers/mmc/host/renesas_sdhi_internal_dmac.c      |   1 +
- drivers/net/ethernet/broadcom/bnxt/bnxt.c          |   3 +
- drivers/net/ethernet/qualcomm/rmnet/rmnet_config.c |   8 +-
- drivers/net/ethernet/qualcomm/rmnet/rmnet_config.h |   1 +
- drivers/net/ethernet/ti/cpsw_new.c                 |   4 +-
- drivers/net/netdevsim/dev.c                        |   1 +
- drivers/net/wireless/ath/ath11k/dp.c               |   1 +
- drivers/net/wireless/mediatek/mt76/mt76x2/usb.c    |   1 +
- .../net/wireless/realtek/rtlwifi/rtl8821ae/trx.h   |   2 +-
- drivers/regulator/core.c                           |  10 +-
- drivers/slimbus/qcom-ngd-ctrl.c                    |  11 +-
- drivers/tty/vt/vc_screen.c                         |   2 +-
- drivers/usb/cdns3/gadget.c                         |   3 +
- drivers/vfio/vfio_iommu_type1.c                    |   2 +-
- drivers/video/fbdev/core/fbmem.c                   |  12 +
- drivers/video/fbdev/core/modedb.c                  |   2 +-
- fs/dlm/lockspace.c                                 |   2 +-
- fs/exfat/dir.c                                     |   4 +-
- fs/ext4/inline.c                                   |   8 +
- fs/f2fs/acl.c                                      |  18 +-
- fs/fuse/dev.c                                      |   4 +
- fs/fuse/file.c                                     |   8 +-
- fs/nfs/pnfs.c                                      |   2 +-
- fs/nfsd/nfs2acl.c                                  |  17 +-
- fs/nfsd/nfs3acl.c                                  |  17 +-
- fs/nfsd/nfs4recover.c                              |   3 +-
- fs/nfsd/nfs4xdr.c                                  |   3 +-
- fs/ocfs2/suballoc.c                                |  22 ++
- include/keys/request_key_auth-type.h               |   2 +
- include/linux/ring_buffer.h                        |   4 +-
- include/linux/skbuff.h                             |  12 +
- include/net/phonet/pn_dev.h                        |   2 +-
- include/net/tc_act/tc_pedit.h                      |  80 +++-
- kernel/bpf/cgroup.c                                |   2 +-
- kernel/trace/ring_buffer.c                         |  74 +---
- kernel/trace/trace.c                               |  14 +-
- kernel/trace/trace_kdb.c                           |   8 +-
- net/9p/trans_fd.c                                  |   1 +
- net/batman-adv/bat_iv_ogm.c                        |  11 +-
- net/batman-adv/bat_v.c                             |   1 +
- net/batman-adv/bat_v_ogm.c                         |  23 +-
- net/batman-adv/bridge_loop_avoidance.c             |  28 +-
- net/batman-adv/distributed-arp-table.c             |  12 +-
- net/batman-adv/fragmentation.c                     |  22 +-
- net/batman-adv/fragmentation.h                     |   3 +-
- net/batman-adv/netlink.c                           |  10 +-
- net/batman-adv/routing.c                           |   3 +-
- net/batman-adv/tp_meter.c                          | 115 ++++--
- net/batman-adv/translation-table.c                 |  40 +-
- net/batman-adv/tvlv.c                              |  69 +++-
- net/batman-adv/types.h                             |  21 +-
- net/ipv6/ip6_vti.c                                 |   1 +
- net/mac802154/llsec.c                              |  14 +
- net/mptcp/protocol.c                               |   8 +
- net/phonet/pn_dev.c                                |  12 +-
- net/phonet/pn_netlink.c                            |  23 +-
- net/sched/act_pedit.c                              | 420 +++++++++++---------
- net/sched/cls_u32.c                                |  13 +-
- net/tipc/crypto.c                                  |   9 +
- security/keys/internal.h                           |   2 +
- security/keys/keyctl.c                             |  24 +-
- security/keys/keyctl_pkey.c                        |   9 +-
- security/keys/request_key_auth.c                   |  33 +-
- 86 files changed, 1206 insertions(+), 1246 deletions(-)
+X-Rspamd-Queue-Id: E0FAB6FAD97
+
+6.6-stable review patch.  If anyone has any objections, please let me know.
+
+------------------
+
+From: Florian Westphal <fw@strlen.de>
+
+commit 7cb9a23d7ae40a702577d3d8bacb7026f04ac2a9 upstream.
+
+During transaction processing we might have more than one catchall element:
+1 live catchall element and 1 pending element that is coming as part of the
+new batch.
+
+If the map holding the catchall elements is also going away, its
+required to toggle all catchall elements and not just the first viable
+candidate.
+
+Otherwise, we get:
+ WARNING: ./include/net/netfilter/nf_tables.h:1281 at nft_data_release+0xb7/0xe0 [nf_tables], CPU#2: nft/1404
+ RIP: 0010:nft_data_release+0xb7/0xe0 [nf_tables]
+ [..]
+ __nft_set_elem_destroy+0x106/0x380 [nf_tables]
+ nf_tables_abort_release+0x348/0x8d0 [nf_tables]
+ nf_tables_abort+0xcf2/0x3ac0 [nf_tables]
+ nfnetlink_rcv_batch+0x9c9/0x20e0 [..]
+
+Fixes: 628bd3e49cba ("netfilter: nf_tables: drop map element references from preparation phase")
+Reported-by: Yiming Qian <yimingqian591@gmail.com>
+Signed-off-by: Florian Westphal <fw@strlen.de>
+[ Shivani: Modified to apply on v6.6.y-v6.1.y ]
+Signed-off-by: Shivani Agarwal <shivani.agarwal@broadcom.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+---
+ net/netfilter/nf_tables_api.c |    2 --
+ 1 file changed, 2 deletions(-)
+
+--- a/net/netfilter/nf_tables_api.c
++++ b/net/netfilter/nf_tables_api.c
+@@ -652,7 +652,6 @@ static void nft_map_catchall_deactivate(
+ 		elem.priv = catchall->elem;
+ 		nft_set_elem_change_active(ctx->net, set, ext);
+ 		nft_setelem_data_deactivate(ctx->net, set, &elem);
+-		break;
+ 	}
+ }
+ 
+@@ -5615,7 +5614,6 @@ static void nft_map_catchall_activate(co
+ 		nft_clear(ctx->net, ext);
+ 		elem.priv = catchall->elem;
+ 		nft_setelem_data_activate(ctx->net, set, &elem);
+-		break;
+ 	}
+ }
+ 
 
 
 
