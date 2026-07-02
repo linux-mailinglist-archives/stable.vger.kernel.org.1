@@ -1,208 +1,147 @@
-Return-Path: <stable+bounces-271535-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-271747-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id ryJvMiykRmpTawsAu9opvQ
-	(envelope-from <stable+bounces-271535-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:47:24 +0200
+	id vqWXEdWjR2r9cgAAu9opvQ
+	(envelope-from <stable+bounces-271747-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 03 Jul 2026 13:58:13 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4071C6FB9F5
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:47:24 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id CBE6F702190
+	for <lists+stable@lfdr.de>; Fri, 03 Jul 2026 13:58:12 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=gmx.de header.s=s31663417 header.b="Xj/kZIaV";
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-271535-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-271535-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=quarantine) header.from=gmx.de;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=fSQ+5A0L;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-271747-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-271747-lists+stable=lfdr.de@vger.kernel.org";
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 52861301B4F2
-	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 17:47:16 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 0D6C43031C3B
+	for <lists+stable@lfdr.de>; Fri,  3 Jul 2026 11:57:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3392235F179;
-	Thu,  2 Jul 2026 17:47:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C0873CE4B2;
+	Fri,  3 Jul 2026 11:57:24 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mout.gmx.net (mout.gmx.net [212.227.15.15])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 449F632B106;
-	Thu,  2 Jul 2026 17:47:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C82263CE083;
+	Fri,  3 Jul 2026 11:57:22 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783014435; cv=none; b=HflUTGnZkWaDOMg7ZggyoCSPWNdj7QdZRN2Ai7T9e/PlbDTx0d09GL4srPN/3Ektn9aYLCaCO5Cy47TX6F43QOe99GNyOnvLohM7ooV6dC2R9qSMLXtmWvUTxLMHYRgPdqcxuiPBIegnLUqX9JLPPeYYZfR6jGWSWiI7wns9lYQ=
+	t=1783079843; cv=none; b=pZJCKzOLsDqc9du6ePCSmFmTeW9wYI6a6T4gV1+ovqEmDUyEU5DpFiPKCjDJlfgCmnztISILxmjvsc5ki0AKr/923uXC7LIuBOl9dqlN2GQT0FzPYmGC8ILxzabMuD2xKQzBsPjljl8b09wrs5/TPlihL9JftyK9OaiiHHc1TK8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783014435; c=relaxed/simple;
-	bh=1PO3YHl+btPykbwTM16jfcwADiOLFguz3RVcskKvjrA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=kAaVhOAcoAPHSoakt8jdygY/l0OCgvq/x64bTE9khq2jbU0TwpjAtJA6GY0thnhJRVhc8BlaOG7QGzhtB8MwZqkfFixnXMJXBtylK6mhYc58Sy6NainnUyFQshxsFrDHvc+RPfiqQ5rNbz1SswOvcfn32iWX4ZwX3ho0Bi12TvM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=rwarsow@gmx.de header.b=Xj/kZIaV; arc=none smtp.client-ip=212.227.15.15
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.de;
-	s=s31663417; t=1783014398; x=1783619198; i=rwarsow@gmx.de;
-	bh=1PO3YHl+btPykbwTM16jfcwADiOLFguz3RVcskKvjrA=;
-	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:Subject:To:Cc:
-	 References:From:In-Reply-To:Content-Type:
-	 Content-Transfer-Encoding:cc:content-transfer-encoding:
-	 content-type:date:from:message-id:mime-version:reply-to:subject:
-	 to;
-	b=Xj/kZIaVHCk8nSIzOzBwPRaVXl5yyHMNsSxE6JbFqztab2D6spGweqyH2vAmmn5z
-	 X4Gmfu3KeNXjbVVrCZTmHdebkJhe3j/otcucMngdfEeUozkiWg7JbX5WGdDuzCNk3
-	 qsIs0B7oSWXyZ8+Y/PyVsT9tM5/Jv3dhflhdwhQOhXChmiEeCmu9L5oNwLuUOaGP2
-	 2dCAp/G5tr15LpCXpbPcOCsc5I0AHUsS+LcTySua5Yy8nbq2ZXkZ3JN63e28zxSVJ
-	 L1WS90hu4dj787qMbkTCsqOphxQ+ER6L6yJiN64cDjf7aeiSYtPJRqPVKKaZvyNi6
-	 8a3BDby9XuaFWEP7+Q==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from client.hidden.invalid by mail.gmx.net (mrgmx005
- [212.227.17.190]) with ESMTPSA (Nemesis) id 1MWih0-1wdCnm1WOm-00N9vT; Thu, 02
- Jul 2026 19:46:38 +0200
-Message-ID: <d7829ebb-2a5d-4ea9-82c9-35bf2f923466@gmx.de>
-Date: Thu, 2 Jul 2026 19:46:36 +0200
+	s=arc-20240116; t=1783079843; c=relaxed/simple;
+	bh=F+W61zXwimrgpt1ggBsjN8++vVQ+3o9n7/WG+f9NJQs=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=brQsxYnUTPnrLkqLnY/ehTNcMuBfkDhgpHvu1g4vryvOb8vwMqHuHmrpkTNYT0+efChindv/xpA9g2z7Rb8t5Hb+nWrabD6CifUM9EXsCacMK4wUrXkhybYZYabfkcKeeW5Y1rvMcUSACggLPdQYMr8ySFGwkD3OI5mKMxvBzpk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fSQ+5A0L; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42DBD1F000E9;
+	Fri,  3 Jul 2026 11:57:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1783079842;
+	bh=OfZW02S7ngO+zI+imZuNcxJRB9BLEi7GDFBYgWvp/q0=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date;
+	b=fSQ+5A0LIB3esWOraovQL9y5LFd3ybKFSFejXmmSNByUQVOcXPaJRzM9qKxXmyCN2
+	 cx54OarEWrSjbP3Tx8MX1mG8bhHJfXJooB9G4CQMLx6EqeVVjvYjf5Y6Gp6fcrkc/v
+	 qi1KBEEHkGG/789LnnvR1cm3TYAqJzB3Wm2mFzuHbFWDPJ+25jtr4JadgJ3mC3OV/J
+	 CUaav6Nlsv4KiXOVAU1oNue4oDm8rmzapDsMd08BjWYKdv5FPs0BaonoxpRCkVpN6T
+	 aNBnrUblyqm3KZHCi9iyyaHrn+u0FQZEr1hKiRzB+btxs0Je1zpx1XXZqE9Ab1JUDM
+	 SGgRz59WkpWbg==
+From: Mark Brown <broonie@kernel.org>
+To: Liam Girdwood <lgirdwood@gmail.com>, linux-kernel@vger.kernel.org, 
+ WenTao Liang <vulab@iscas.ac.cn>
+Cc: stable@vger.kernel.org
+In-Reply-To: <20260626160326.54457-1-vulab@iscas.ac.cn>
+References: <20260626160326.54457-1-vulab@iscas.ac.cn>
+Subject: Re: [PATCH] fix: regulator: max8998_pmic_dt_parse_pdata:
+ of_node_put on reg_np after ownership transferred to rdata
+Message-Id: <178301457345.83990.6164984695166238490.b4-ty@b4>
+Date: Thu, 02 Jul 2026 18:49:33 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 7.1 000/120] 7.1.3-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
- torvalds@linux-foundation.org, akpm@linux-foundation.org,
- linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
- lkft-triage@lists.linaro.org, pavel@nabladev.com, jonathanh@nvidia.com,
- f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, conor@kernel.org,
- hargar@microsoft.com, broonie@kernel.org, achill@achill.org,
- sr@sladewatkins.com
-References: <20260702155112.964534952@linuxfoundation.org>
-From: Ronald Warsow <rwarsow@gmx.de>
-Content-Language: de-DE, en-US
-In-Reply-To: <20260702155112.964534952@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-Provags-ID: V03:K1:1DSixhzeI2nprKZH/+B2wgxxP/eDTnuxwOju52FKgG2hAq4yKnc
- vHZeFx5nsVQHxtcwOaiye/gyMfFi18sAU4u2r274EbSPM/+lgIanTKgcx0Dty6iIMQl34ko
- huUKFy3xnTysaut6x2o6j07RTkpje/6XnTlEPK9c9LNooKdcDbP31aYUHXsH56zhYVR+me4
- hrM9/ZSTCTUjVwm872aMA==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:J5/5aJns2Lo=;GkpZvDp1wbiOTRKVIKw1EcZg1/a
- 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
+X-Mailer: b4 0.16-dev
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1232; i=broonie@kernel.org;
+ h=from:subject:message-id; bh=F+W61zXwimrgpt1ggBsjN8++vVQ+3o9n7/WG+f9NJQs=;
+ b=owEBbQGS/pANAwAKASTWi3JdVIfQAcsmYgBqR6Ogmo4VtfqBVtOemlXaDEddXE308Y3f9H40C
+ uWdxq3WuO+JATMEAAEKAB0WIQSt5miqZ1cYtZ/in+ok1otyXVSH0AUCakejoAAKCRAk1otyXVSH
+ 0M92B/9LrWF5Pst7Fi2zF8a887LUDps7ZVPoNTw5XpvLS+jOANq7pAVw0NbdgvQVusraps+ZvM2
+ DgYLs9TzxjvGzHRpoUl5K2MVXh/LdE8U2eUOJOk0EjAR1rDZEE57T1SuuHaCRWuC1DrHEpz0f9J
+ ASLnM3sq7nziDa/ALFu3swGfLweff+MGHEoh5AxCX1Aq3nxaboGLUfH9wCqRTsm3qA58oa1EgW5
+ ii2ehZHl4Ba7N17XFneeYM5QxYfrKsnvFx2T6bVnDSHz8+1pk3bJc+4Rcf8/7445zWqdmsAMaaa
+ om5W3jqN9058R9j6xfxdhCjYs/agblODIup0ezO+mxtLrcgX
+X-Developer-Key: i=broonie@kernel.org; a=openpgp;
+ fpr=3F2568AAC26998F9E813A1C5C3F436CA30F5D8EB
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-4.66 / 15.00];
+	WHITELIST_SPF_DKIM(-3.00)[kernel.org:d:+,kernel.org:s:+];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[gmx.de,quarantine];
-	R_DKIM_ALLOW(-0.20)[gmx.de:s=s31663417];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	MID_RHS_NOT_FQDN(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-271535-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:gregkh@linuxfoundation.org,m:stable@vger.kernel.org,m:patches@lists.linux.dev,m:linux-kernel@vger.kernel.org,m:torvalds@linux-foundation.org,m:akpm@linux-foundation.org,m:linux@roeck-us.net,m:shuah@kernel.org,m:patches@kernelci.org,m:lkft-triage@lists.linaro.org,m:pavel@nabladev.com,m:jonathanh@nvidia.com,m:f.fainelli@gmail.com,m:sudipm.mukherjee@gmail.com,m:conor@kernel.org,m:hargar@microsoft.com,m:broonie@kernel.org,m:achill@achill.org,m:sr@sladewatkins.com,m:ffainelli@gmail.com,m:sudipmmukherjee@gmail.com,s:lists@lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER(0.00)[rwarsow@gmx.de,stable@vger.kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_FROM(0.00)[gmx.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCPT_COUNT_TWELVE(0.00)[19];
-	FORWARDED(0.00)[lists@lfdr.de];
-	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[gmx.de:+];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:lgirdwood@gmail.com,m:linux-kernel@vger.kernel.org,m:vulab@iscas.ac.cn,m:stable@vger.kernel.org,s:lists@lfdr.de];
+	FREEMAIL_TO(0.00)[gmail.com,vger.kernel.org,iscas.ac.cn];
+	FORGED_SENDER(0.00)[broonie@kernel.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_LAST(0.00)[];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-271747-lists,stable=lfdr.de];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	TO_DN_SOME(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[rwarsow@gmx.de,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[lists.linux.dev,vger.kernel.org,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,nabladev.com,nvidia.com,gmail.com,microsoft.com,achill.org,sladewatkins.com];
-	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_NEQ_ENVFROM(0.00)[broonie@kernel.org,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,vger.kernel.org:from_smtp,gmx.de:dkim,gmx.de:email,gmx.de:mid,gmx.de:from_mime]
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 4071C6FB9F5
+X-Rspamd-Queue-Id: CBE6F702190
 
-Hi
+On Sat, 27 Jun 2026 00:03:26 +0800, WenTao Liang wrote:
+> fix: regulator: max8998_pmic_dt_parse_pdata: of_node_put on reg_np after ownership transferred to rdata
 
-kernel build / boot test on x86_64.
+Applied to
 
-No regressions here.
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/regulator.git for-7.3
 
-Thanks
+Thanks!
 
-Tested-by: Ronald Warsow <rwarsow@gmx.de>
+[1/1] fix: regulator: max8998_pmic_dt_parse_pdata: of_node_put on reg_np after ownership transferred to rdata
+      https://git.kernel.org/broonie/regulator/c/7c8cc25d8d86
+
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
+
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
+
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark
+
 
