@@ -1,62 +1,61 @@
-Return-Path: <stable+bounces-271199-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-270841-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id Svu0LfqbRmpNaAsAu9opvQ
-	(envelope-from <stable+bounces-271199-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:12:26 +0200
+	id fpdaNqCURmoUZAsAu9opvQ
+	(envelope-from <stable+bounces-270841-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:41:04 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id D16686FB1F0
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:12:25 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 95D5D6FA5D5
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:41:04 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="fA/a0C2C";
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-271199-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-271199-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=WrMJdQ1i;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-270841-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-270841-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id E5081312CB21
-	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:50:25 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 4A6513045948
+	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:36:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC4F8360EFC;
-	Thu,  2 Jul 2026 16:48:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 675913A9870;
+	Thu,  2 Jul 2026 16:33:09 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C24C360EE5;
-	Thu,  2 Jul 2026 16:48:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C5674086A;
+	Thu,  2 Jul 2026 16:33:08 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783010924; cv=none; b=m1CpPke9YFF58s6Dk6nXGzVuW7Oqik6urrNX9kTNLOD8wpPGP9mpTX8mYCual/c3l+4gREldWuQoXSjTLAztjcF847oJkD0WWQeb4H8Y5B4TpUfXo4ClRuOVLzaiLIP71qG5GcztZoLwOLWvi1lLWHJ5hDdPiQQBfSiPAf1cwL4=
+	t=1783009989; cv=none; b=FamFpssSEYFa+05/9wOdPqSMp+CANXSch8g4SQC1zxq+wy3/y9ziKbymt36JOKtCfPBkCGtmjYHhBhbXEo9BmhfM/NVdvjBW8DrmMEHYPDtkI9bLet6jJQD0C8XGiLA2IxZI4RTkkhO/0Vai+KK9h5gcMvkvRR8K5kufUQso4Ow=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783010924; c=relaxed/simple;
-	bh=OgvXSaGPVXZgMP69y2ZLIL7dXT1eG9pEj8jlYPmPva0=;
+	s=arc-20240116; t=1783009989; c=relaxed/simple;
+	bh=lPpfixaB7qlEv53DIrsPowbGu4I8iktHJH85jlfv6pU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HjnX5zln9RdUbW3rLbRT/qlhnfsM0tGrGwvKq9ihV/V8VAY6DpYBKjErOPci77gE9BSrU/zA+mj1uJTiN8i+Heb7+PFnwDLOn3cgyHozEpULres796Uf95D5Srg2lLZ77kAMzWcYKnaSrV8AU3bhfKwQ1cOLOYSLnuB3PHRQLA0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fA/a0C2C; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0DCE81F000E9;
-	Thu,  2 Jul 2026 16:48:42 +0000 (UTC)
+	 MIME-Version; b=m4t5ZqnXMe0IFk7CmNYOkidvqS1pfMxbA3hiWNcgbncOoYa84sJcwHaezAbsHFCghSx0u/YgODxUUTT13wwjRoIJLckvU073tchtMNFBG1PXBGsQi1dd7GhQOVWEQTS2TmWhbuDJ9NnrWsVoO+m/T4fFbq+9StBk+GrCeYlgsEc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WrMJdQ1i; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 824851F000E9;
+	Thu,  2 Jul 2026 16:33:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1783010923;
-	bh=A65I5KOUKKFa5xl6WCKyY1MPl2+5nD9p5n0g25MgxdI=;
+	s=korg; t=1783009988;
+	bh=iZGDIV2TT/F+zC2oy3KwMfzqjfeL0Fp/cH/Nxab3yXI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=fA/a0C2CCZTWyApvI+VU5x4UI5+TN8+zN6wpE2Jz4aor5mh3j+otaj0ASMlSX++MM
-	 kBw9QUxpMOFBOrQIx09KUFgU9XNZWzF6UkISD7KywG/RtBNJ1I4w1s5egY+0ZXiPWC
-	 WyxQJeAi2uvp3m5M8do+H6COkhqX0v02Uk0p2P5E=
+	b=WrMJdQ1i6xuEG2CPz3kdtf0PmxgUvB6C0L5pzTGOaaeHeqL3MhPDaIQBtbVu/OczV
+	 M5lvFAPC4wg8IldJNbao1rNFAgEIOWvo8qjBTbKxbt8e/Zk+5CW1ChR8vP+RDxC+bc
+	 PKIp3zsh4rMvMjQRxw8yNqS/PYQf/2PdWwjqS6LI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pauli Virtanen <pav@iki.fi>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
-	Sasha Levin <sashal@kernel.org>,
-	Mikhail Gavrilov <mikhail.v.gavrilov@gmail.com>
-Subject: [PATCH 6.6 087/175] Bluetooth: btmtk: accept too short WMT FUNC_CTRL events
+	stable@kernel.org,
+	Sven Eckelmann <sven@narfation.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 069/129] batman-adv: tp_meter: handle overlapping packets
 Date: Thu,  2 Jul 2026 18:19:48 +0200
-Message-ID: <20260702155117.613263939@linuxfoundation.org>
+Message-ID: <20260702155113.573620232@linuxfoundation.org>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260702155115.766838875@linuxfoundation.org>
-References: <20260702155115.766838875@linuxfoundation.org>
+In-Reply-To: <20260702155112.163984240@linuxfoundation.org>
+References: <20260702155112.163984240@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,90 +67,146 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,iki.fi,intel.com,kernel.org,gmail.com];
-	TAGGED_FROM(0.00)[bounces-271199-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:pav@iki.fi,m:luiz.von.dentz@intel.com,m:sashal@kernel.org,m:mikhail.v.gavrilov@gmail.com,m:mikhailvgavrilov@gmail.com,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-270841-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:stable@kernel.org,m:sven@narfation.org,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RWL_MAILSPIKE_POSSIBLE(0.00)[104.64.211.4:from];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[iki.fi:email,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,intel.com:email]
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,narfation.org:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: D16686FB1F0
+X-Rspamd-Queue-Id: 95D5D6FA5D5
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pauli Virtanen <pav@iki.fi>
+From: Sven Eckelmann <sven@narfation.org>
 
-[ Upstream commit e3ac0d9f1a205f33a43fba3b79ef74d2f604c78b ]
+commit cbde75c38b21f022891525078622587ad557b7c1 upstream.
 
-MT7925 (USB ID 0e8d:e025) on fw version 20260106153314 sends WMT
-FUNC_CTRL events that are missing the status field.
+If the size of the packets would change during the transmission, it could
+happen that some retries of packets are overlapping. In this case, precise
+comparisons of sequence numbers by the receiver would be wrong. It is then
+necessary to check if the start sequence number to the end sequence number
+("seqno + length") would contain a new range.
 
-Prior to commit 006b9943b982 ("Bluetooth: btmtk: validate WMT event SKB
-length before struct access") the status was read from out-of-bounds of
-SKB data, which usually would result to success with
-BTMTK_WMT_ON_UNDONE, although I don't know the intent here.  The bounds
-check added in that commit returns with error instead, producing
-"Bluetooth: hci0: Failed to send wmt func ctrl (-22)" and makes the
-device unusable.
+If this is the case then this is enough to accept this packet. In all other
+cases, the packet still has to be dropped (and not acked).
 
-Fix the regression by interpreting too short packet as status
-BTMTK_WMT_ON_UNDONE, which makes the device work normally again.
-
-Fixes: 634a4408c061 ("Bluetooth: btmtk: validate WMT event SKB length before struct access")
-Signed-off-by: Pauli Virtanen <pav@iki.fi>
-Tested-by: Mikhail Gavrilov <mikhail.v.gavrilov@gmail.com> # MT7922 (0489:e0e2)
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Cc: stable@kernel.org
+Fixes: 33a3bb4a3345 ("batman-adv: throughput meter implementation")
+[ Switch to pre-splitted tp_vars structure names ]
+Signed-off-by: Sven Eckelmann <sven@narfation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/bluetooth/btmtk.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ net/batman-adv/tp_meter.c | 25 +++++++++++--------------
+ 1 file changed, 11 insertions(+), 14 deletions(-)
 
-diff --git a/drivers/bluetooth/btmtk.c b/drivers/bluetooth/btmtk.c
-index 5c6f4d4b2e7f0c..582915f9a8d700 100644
---- a/drivers/bluetooth/btmtk.c
-+++ b/drivers/bluetooth/btmtk.c
-@@ -679,8 +679,8 @@ int btmtk_usb_hci_wmt_sync(struct hci_dev *hdev,
- 	case BTMTK_WMT_FUNC_CTRL:
- 		if (!skb_pull_data(data->evt_skb,
- 				   sizeof(wmt_evt_funcc->status))) {
--			err = -EINVAL;
--			goto err_free_skb;
-+			status = BTMTK_WMT_ON_UNDONE;
-+			break;
- 		}
+diff --git a/net/batman-adv/tp_meter.c b/net/batman-adv/tp_meter.c
+index f745bc09a04963..50b83e0438a07b 100644
+--- a/net/batman-adv/tp_meter.c
++++ b/net/batman-adv/tp_meter.c
+@@ -1284,7 +1284,8 @@ static int batadv_tp_send_ack(struct batadv_priv *bat_priv, const u8 *dst,
+ /**
+  * batadv_tp_handle_out_of_order() - store an out of order packet
+  * @tp_vars: the private data of the current TP meter session
+- * @skb: the buffer containing the received packet
++ * @seqno: sequence number of new received packet
++ * @payload_len: length of the received packet
+  *
+  * Store the out of order packet in the unacked list for late processing. This
+  * packets are kept in this list so that they can be ACKed at once as soon as
+@@ -1293,22 +1294,17 @@ static int batadv_tp_send_ack(struct batadv_priv *bat_priv, const u8 *dst,
+  * Return: true if the packed has been successfully processed, false otherwise
+  */
+ static bool batadv_tp_handle_out_of_order(struct batadv_tp_vars *tp_vars,
+-					  const struct sk_buff *skb)
++					  u32 seqno, u32 payload_len)
+ 	__must_hold(&tp_vars->unacked_lock)
+ {
+-	const struct batadv_icmp_tp_packet *icmp;
+ 	struct batadv_tp_unacked *un, *new;
+-	u32 payload_len;
+ 	bool added = false;
  
- 		wmt_evt_funcc = (struct btmtk_hci_wmt_evt_funcc *)wmt_evt;
+ 	new = kmalloc(sizeof(*new), GFP_ATOMIC);
+ 	if (unlikely(!new))
+ 		return false;
+ 
+-	icmp = (struct batadv_icmp_tp_packet *)skb->data;
+-
+-	new->seqno = ntohl(icmp->seqno);
+-	payload_len = skb->len - sizeof(struct batadv_unicast_packet);
++	new->seqno = seqno;
+ 	new->len = payload_len;
+ 
+ 	/* if the list is empty immediately attach this new object */
+@@ -1476,7 +1472,7 @@ static void batadv_tp_recv_msg(struct batadv_priv *bat_priv,
+ {
+ 	const struct batadv_icmp_tp_packet *icmp;
+ 	struct batadv_tp_vars *tp_vars;
+-	size_t packet_size;
++	u32 payload_len;
+ 	u32 to_ack;
+ 	u32 seqno;
+ 
+@@ -1511,15 +1507,17 @@ static void batadv_tp_recv_msg(struct batadv_priv *bat_priv,
+ 	/* if the packet is a duplicate, it may be the case that an ACK has been
+ 	 * lost. Resend the ACK
+ 	 */
+-	if (batadv_seq_before(seqno, tp_vars->last_recv))
++	payload_len = skb->len - sizeof(struct batadv_unicast_packet);
++	to_ack = seqno + payload_len;
++	if (batadv_seq_before(to_ack, tp_vars->last_recv))
+ 		goto send_ack;
+ 
+ 	/* if the packet is out of order enqueue it */
+-	if (ntohl(icmp->seqno) != tp_vars->last_recv) {
++	if (batadv_seq_before(tp_vars->last_recv, seqno)) {
+ 		/* exit immediately (and do not send any ACK) if the packet has
+ 		 * not been enqueued correctly
+ 		 */
+-		if (!batadv_tp_handle_out_of_order(tp_vars, skb)) {
++		if (!batadv_tp_handle_out_of_order(tp_vars, seqno, payload_len)) {
+ 			spin_unlock_bh(&tp_vars->unacked_lock);
+ 			goto out;
+ 		}
+@@ -1529,8 +1527,7 @@ static void batadv_tp_recv_msg(struct batadv_priv *bat_priv,
+ 	}
+ 
+ 	/* if everything was fine count the ACKed bytes */
+-	packet_size = skb->len - sizeof(struct batadv_unicast_packet);
+-	tp_vars->last_recv += packet_size;
++	tp_vars->last_recv = to_ack;
+ 
+ 	/* check if this ordered message filled a gap.... */
+ 	batadv_tp_ack_unordered(tp_vars);
 -- 
 2.53.0
 
