@@ -1,78 +1,78 @@
-Return-Path: <stable+bounces-270578-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-270580-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id OrOoIROKRmqrYAsAu9opvQ
-	(envelope-from <stable+bounces-270578-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 17:56:03 +0200
+	id slawKFuKRmrKYAsAu9opvQ
+	(envelope-from <stable+bounces-270580-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 17:57:15 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E3D46F9C44
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 17:56:03 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 534436F9CA5
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 17:57:15 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=nGYcpaxA;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-270578-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-270578-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=GGznK+g7;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-270580-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-270580-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 8CF983033EC1
-	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 15:51:17 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 953A7301D949
+	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 15:51:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7501933E36A;
-	Thu,  2 Jul 2026 15:49:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 72F0733F5BC;
+	Thu,  2 Jul 2026 15:49:15 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D848D33E35C
-	for <stable@vger.kernel.org>; Thu,  2 Jul 2026 15:49:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCFE431AF2D
+	for <stable@vger.kernel.org>; Thu,  2 Jul 2026 15:49:08 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783007349; cv=none; b=ouq9XeyPJywM9NZLrDnMDjFSj5Tyz0fvthP8Erwjb9QWRkBpsjOv6s4K0xAMYjLa99jB9k6XQdX+CS9crytJbIDnC6IaABVHYgOX0hwt1Xg+tQb6sUU0NYYT32ZkshLMjpkgmObHyuahCOwp7w1rcjkiJBN87TD9onZzRoqcQt4=
+	t=1783007354; cv=none; b=YCC0Af0Lzqkb7UCTJ1QBavQjEFGAALvGRMSoaK8fOUDpf7VfluOyVBP6v5VWe7hGUBUxRXNBKYBGlmj/ckLapfvRFUWn6S7u4XiF6x47Rw+YaL1/t7n70JPEWUVLbu+iRdo711RtWwp6pGthsK2JLCMxKMU2IQhnoAQ0mqezUt8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783007349; c=relaxed/simple;
-	bh=OS5un17BQ48G/FDo4X9DwVmtBnb9t/17LP3y8+/kNco=;
+	s=arc-20240116; t=1783007354; c=relaxed/simple;
+	bh=V2wsPHM9whO+8UEZU+kmBIh7oNKCMyXeX+sPcDuYAvY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IAYNyKy1CL4zs24eB7RrHfZpZ4dCzmbtUA4+HFA0YWedkvJz3QKsIqBHzaGDKlTkNLBMx3hn72Hr/sacq8JG3ShRFxCu5t6Wb5Iw4hgKtTJoVwLHhTtkdjQQQu/e6k78OHwPUms7Pu5NaLYnI6aoOQAXOP8479ytKdxcQ48Ez+I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nGYcpaxA; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D21E1F000E9;
-	Thu,  2 Jul 2026 15:49:06 +0000 (UTC)
+	 MIME-Version; b=pGhnyksQFADdO1nVTx3IGCTVjF037jUo+NYSEJC/TClqUioqxAs4d4BE9MWiVjHeZBigekzwip+B095K2JAE4JwPZ25gL2OPqocJXB/6ef1G7/GtZE8rsAlT85uZVMp8xHy/0gXx6W1qI3ToqYupbF/CPp/QANt/hD4lF966lDU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GGznK+g7; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D59D61F00A3E;
+	Thu,  2 Jul 2026 15:49:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783007346;
-	bh=/4tQxja0CIhrk3u6hPMQ17QSrBUXUcSigd33nvZsyWY=;
+	s=k20260515; t=1783007348;
+	bh=//1yCu2rPJQpbwPWAuzOrita8zkbHkDXNH2MigqNwQA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=nGYcpaxACq1uYgtWtC9qQJnZZ6LrYfhzi7FfSnT6RzwfSTUZBO8oASPh2vSA72296
-	 NUUozpNC4yyZk3Pgx6ToSXLv76PBKjMUOmbAj3VAWX3E1/kTynLYJTfeK29Ck4mI7/
-	 gRE4T99c6gFM5ISqGyOSSti25zqIa3oR4x2Uj4DGOp+Yhb1k0p6b61fjvlCJh88rfs
-	 s57zrV3zOFqmK/Y15CcHNb+GEuGCT45Zw+xn+ZfAik+vg7pkMVdPi9TPYcpicB38/g
-	 sdUDg75GyuB27+pekyWhXp+uhNF6vl/uxVHahFmRScvRz6qa3WdNyLlDfXiYvpF2sl
-	 iWv4o6rEkmdSQ==
-Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 664FFF40068;
-	Thu,  2 Jul 2026 11:49:05 -0400 (EDT)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-05.internal (MEProxy); Thu, 02 Jul 2026 11:49:05 -0400
-X-ME-Sender: <xms:cYhGajOIwp025y0Q-ApgnHWNenvri7JXe8Cm7SmtniwNgfF_oZUmtA>
-    <xme:cYhGamLgp322C-Usu9eNlCh3zHeH1dAROoW_JMsHSHHMW4c-8hysKr3gKvJHcr6af
-    45tpAjgxRTAArYlkkBm1oM-jFBP-TQ3JnCgeEflwASinOE2jjm0DQA>
-X-ME-Received: <xmr:cYhGat1X5bMoVLpRV3HBKGXxVZCOVVlX69fEihA9NZb3Vum0UUDjVXCgLAkJPQ>
+	b=GGznK+g7LLLfgMKHLRUTAr46ouKHCWNg3IHBO9zkRrKDUiAprGC9t6MnaAxIfB9WM
+	 /vPBL9vYL0PP4vbKGAtfeHZeVYAycZyL6yUyIDq/D2njhOqEylyTXGwIwS5Nuijf9p
+	 Vt+TV/0vsN54B9NgbjXjeIx/QabOaJCkUan/Zo0+g4uQQo+Oznk3q+EjaMFbB6MVY+
+	 BqrALQplrRZ6Y49wBO4A7TGkM9kb2C2xzG5VrbglkmYb68D+x64qp71EF80kRZ4Ref
+	 +kEVr+vWWF8HmsrnblLxVdlffjJoXT+V5+civoza3hYT8sS0wvPF41O8NkSKMDso+i
+	 wg0vGkdZwQfRA==
+Received: from phl-compute-01.internal (phl-compute-01.internal [10.202.2.41])
+	by mailfauth.phl.internal (Postfix) with ESMTP id F010CF40068;
+	Thu,  2 Jul 2026 11:49:06 -0400 (EDT)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-01.internal (MEProxy); Thu, 02 Jul 2026 11:49:06 -0400
+X-ME-Sender: <xms:cohGahqVf665o7eGmXLy0T8G9RAZpuryuAEmOm8THAqj5_EJptx5cQ>
+    <xme:cohGar3osa6MuugX8lJ3wARH7c06XiA2S0W_gLmSGqjYyuU8aw3AUMvAueJNjGiuD
+    lzleTurmFTr3sgsgPEFiV6SKHVHnT5rID7HgNZPCZoXiTW74hkz_bI>
+X-ME-Received: <xmr:cohGapyokDYscd4gPBOwMMTdMDdjpkdEYBo67AUsgrQdUMP4acdzBFjL-tqa8w>
 X-ME-Proxy-Cause: dmFkZTG0Ih/t8cHbMCodKXQLkUxQJqy59wDK3mLTRA7dVIErvl2/d1Ah+epBvIXb5j+AYP
     IXeEFDcIBfVLytuYu4/vLDhgRVlW3a+843BEiRDknGKdd2YPYw+W7qSRgjHbAB7tPzyIg1
     K/iaGu6PpbNvdlBe1ylT3w+4CnduN7fXaIiVz2SFU4GsotfIh0Hdi2izsWXFRQyA1Pgmvd
     bz3VM1BdljYqC26bMo/Uu8GxRLOKa/FHGZ/ez2IuhQ+NgorPxPnwdGD70mq06prVA+bGMW
-    J3iimRYR/yORdPuHTUcQx20NCsiqIhAYZRtSAvfP/TF7cp/wxVykEXOIXpNkkJ9g0C+7To
-    c+k8wlPZ0neSzblgF14q7L7Y3i4OzfaoTWavNVj1IfCGWF+lMv5VW+XbSZGm2K0cri7ZqN
-    tonVhpqQhlFvL5ewDfY2ebsfoRUDRuROmwdvZkirDbRcAVJZPKzWfSsRfkzybjTXdA0Zhl
-    WSmLr0VzJPoqQ1K/H+Mcx1268kCMwcEXzS5IVQILOuoBpvQYISXpcVbMunKP2WSM6X3W9v
-    T5uHkff0i/BgaQbjT8nVOrDpcfKfj4+rX3QwhwRBcr4bX/4FJf2Q7mRM0ijhqctOBmzMxE
-    2CY/THT6DXDo68Z6PDylkE/DRmEneJVfENm1nadGLsC8RHNpPzXkCTCWraVw
-X-ME-Proxy: <xmx:cYhGaiV9y63nFM1Ncpk5LgVUcEIflQLpaZdcM8eqTdW-MsnEzXfRcA>
-    <xmx:cYhGanPKfT01Ghvmxa-iLnsjA6dbM2ic6J0MluySzMLjVRzIzZ3yGQ>
-    <xmx:cYhGat1XW4XzLwp-kZNV1ylFKGOf_oLe1qHk8y8LEatGb-nrGTtzaA>
-    <xmx:cYhGajQSXE7GC60zYySvJTDxqvJSRYTe4W69-Nywvap9kSiHD_JAfg>
-    <xmx:cYhGagnjr7JY-JghzHVOyXDEri5dvoRv_ueeHowHk0WsiXPLUaj7ufoE>
+    J3iimRYR/yORdPuHTUcQx20NCsiqIhAYZRtSAvfP/TF7cp/wxVykEXOIXpNkkJ9g0C+7Ky
+    k0Ou2ccpkl9SwrCYazFezoP1UVC7u15Dh+c0bnSKpDHF6Sa/dnWVOyFi1R2HiHU84o36ua
+    YdE/kPxUkO2S7rrMvVVS6l7cQBfP4YWCNNJAATEgH1xyYVOxSLuLmQZx4BdGoRiAckhTVo
+    S61Ayb4Wf5ncRlPUzWaXPPLhPHlMhxRhxAVCP16mgVpEaUavAtKGN86Rn7zktZ2wVUN/SK
+    Xhg2Ff9xTv1DRo8mIkzjMkpUiz7PByu5/JHbkA2ELN6V+lbCREJqE1Oh+dhM4guw/hkmsV
+    siRoc2eFHURGn43lMPC8URpPgSsRTV1n2a/TdmRSRs2wMMtrbCqOv9oturMw
+X-ME-Proxy: <xmx:cohGanh4XE3jU4eJPihTgl_X71bXP-nMrlMaBYSmWvR_Pht2D4jIBQ>
+    <xmx:cohGaspeiRrMQv_Q8hh7AsPQBoH6mYb9AQJKz8QPpJy6A5ppC9mt0g>
+    <xmx:cohGauiqwzwvjD272dPuko5FQKCE4UD-oKKVdg_6aIpxN_rETJz0fg>
+    <xmx:cohGauNPhzgfdAJWYAcvGyj7_MCkyu6IiqYiIjIkiXufbZFt-KrjpQ>
+    <xmx:cohGaoxg2N-SRupt1Xkshgo7n30SMoTQkToKJbheuuWrTWE5ZV9WzKJ1>
 Feedback-ID: i10464835:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
- 2 Jul 2026 11:49:04 -0400 (EDT)
+ 2 Jul 2026 11:49:06 -0400 (EDT)
 From: Kiryl Shutsemau <kas@kernel.org>
 To: stable@vger.kernel.org
 Cc: Sashiko AI review <sashiko-bot@kernel.org>,
@@ -85,12 +85,12 @@ Cc: Sashiko AI review <sashiko-bot@kernel.org>,
 	Vlastimil Babka <vbabka@kernel.org>,
 	Balbir Singh <balbirs@nvidia.com>,
 	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.6.y] userfaultfd: gate must_wait writability check on pte_present()
-Date: Thu,  2 Jul 2026 16:49:04 +0100
-Message-ID: <20260702154904.975468-1-kas@kernel.org>
+Subject: [PATCH 6.12.y] userfaultfd: gate must_wait writability check on pte_present()
+Date: Thu,  2 Jul 2026 16:49:05 +0100
+Message-ID: <20260702154905.975477-1-kas@kernel.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <2026070239-armless-humpback-0396@gregkh>
-References: <2026070239-armless-humpback-0396@gregkh>
+In-Reply-To: <2026070238-eraser-blanching-bbcb@gregkh>
+References: <2026070238-eraser-blanching-bbcb@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -105,7 +105,7 @@ X-Spamd-Result: default: False [-3.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -113,10 +113,10 @@ X-Spamd-Result: default: False [-3.66 / 15.00];
 	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:sashiko-bot@kernel.org,m:ljs@kernel.org,m:david@kernel.org,m:mhocko@suse.com,m:rppt@kernel.org,m:peterx@redhat.com,m:surenb@google.com,m:vbabka@kernel.org,m:balbirs@nvidia.com,m:akpm@linux-foundation.org,s:lists@lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:email,nvidia.com:email,vger.kernel.org:from_smtp,linux-foundation.org:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,suse.com:email,vger.kernel.org:from_smtp,nvidia.com:email,linux-foundation.org:email];
 	FORGED_SENDER(0.00)[kas@kernel.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-270578-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-270580-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
 	FORWARDED(0.00)[lists@lfdr.de];
 	FROM_NEQ_ENVFROM(0.00)[kas@kernel.org,stable@vger.kernel.org];
@@ -130,10 +130,10 @@ X-Spamd-Result: default: False [-3.66 / 15.00];
 	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	RCVD_COUNT_SEVEN(0.00)[7]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 2E3D46F9C44
+X-Rspamd-Queue-Id: 534436F9CA5
 
 userfaultfd_must_wait() and userfaultfd_huge_must_wait() read the PTE
 without taking the page table lock and then apply pte_write() /
@@ -180,10 +180,10 @@ Signed-off-by: Kiryl Shutsemau <kas@kernel.org>
  1 file changed, 12 insertions(+), 2 deletions(-)
 
 diff --git a/fs/userfaultfd.c b/fs/userfaultfd.c
-index 74c468cc432e..49f074262598 100644
+index 29c9941e5ea7..cbd9d610c54b 100644
 --- a/fs/userfaultfd.c
 +++ b/fs/userfaultfd.c
-@@ -300,7 +300,12 @@ static inline bool userfaultfd_huge_must_wait(struct userfaultfd_ctx *ctx,
+@@ -251,7 +251,12 @@ static inline bool userfaultfd_huge_must_wait(struct userfaultfd_ctx *ctx,
  	 */
  	if (huge_pte_none_mostly(pte))
  		ret = true;
@@ -197,7 +197,7 @@ index 74c468cc432e..49f074262598 100644
  		ret = true;
  out:
  	return ret;
-@@ -375,7 +380,12 @@ static inline bool userfaultfd_must_wait(struct userfaultfd_ctx *ctx,
+@@ -326,7 +331,12 @@ static inline bool userfaultfd_must_wait(struct userfaultfd_ctx *ctx,
  	ptent = ptep_get(pte);
  	if (pte_none_mostly(ptent))
  		ret = true;
