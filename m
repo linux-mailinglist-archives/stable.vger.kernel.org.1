@@ -1,63 +1,79 @@
-Return-Path: <stable+bounces-270587-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-270978-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id iY0ULMucRmqVaAsAu9opvQ
-	(envelope-from <stable+bounces-270587-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:15:55 +0200
+	id iR9EJCCXRmqdZQsAu9opvQ
+	(envelope-from <stable+bounces-270978-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:51:44 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0424B6FB2B6
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:15:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 06B8D6FAA95
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:51:44 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="dgfNkz/n";
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-270587-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-270587-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=TPQfL39a;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-270978-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-270978-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B685531A8A47
-	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:23:42 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 71D8F31A957D
+	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:40:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A31A733A711;
-	Thu,  2 Jul 2026 16:22:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6986E34B1AD;
+	Thu,  2 Jul 2026 16:39:10 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4758834167B;
-	Thu,  2 Jul 2026 16:22:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0B62347FCD;
+	Thu,  2 Jul 2026 16:39:08 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783009325; cv=none; b=eIaExZcifKl7YfQVKlqj+cUpq25s2DpfWBWrmZEUzAfaMHDfGjT4/LfCxllIloIp60fQG9nwsqa/BokAIUR9EaoMs2YGdZSRmVCdZ966SFQwRrGy5zg+ZRyrJ7qviO5y7VVZrI2CYoAHlYf4j+lHLKii3tEo73lIeXwTvDyMTCo=
+	t=1783010350; cv=none; b=Es28+dReOI21ZRff2iF62AiugB6xiBvGSNvrLTC0e6QtFG1bbMPPmVnJLMTNqcpV4/tMmq5D5Q4dWp3AkYS1Pt0lkJth8OTSP7oTIuFlt5JSyD90LTB4JYQ8gyew98jzeA9WCqqYJLk5QgTBtn5mVYttFhxIq/uTdqy54s41lv4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783009325; c=relaxed/simple;
-	bh=2OlMMKbvJIC02Q2iqgyGglRo5WExhSdBMz43cb01gEk=;
+	s=arc-20240116; t=1783010350; c=relaxed/simple;
+	bh=GHnFepdZXIQxV0rzYT81M5DAwaLcHY3O6pCZdjWWUeg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VsWwvwvZKnfOUw/x7vHUbrwwMT23IimqYtE3Rx0vGpcaVNsCJRvGIqgrUcPB1zkYPfERtdqaZCM2pnDbguK6OzhPjKLslqwwNCvV2KAyWV5i4dfoydif5uFgfcf29RR2sprB/xIzgxDO43oALIqtI1MUpGjbdQMHXei7kpY2Tcg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dgfNkz/n; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 924081F000E9;
-	Thu,  2 Jul 2026 16:22:03 +0000 (UTC)
+	 MIME-Version; b=ii8mOW+UxwqspJBL9RwpeGfyNQoXLxz4jXZB3B1N12Je08RJu4ITTtVoNyH9i98oV8AmOHEYRj7jCQkdukdpCeyJL8IVvDK6AD5sqCn6dCEEOe5XGhtcn3iMUfwArBNS7o5BYKI+QCT9zJFEH8nnw36h1R4yugCL+HE4Bm3Rc/U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TPQfL39a; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB6921F00A3A;
+	Thu,  2 Jul 2026 16:39:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1783009324;
-	bh=C9E52hM8Gg9hyowPFD4qmWPafTjdgokBLdvc1ln7vEU=;
+	s=korg; t=1783010348;
+	bh=uvpSEFZRv3AShJspKNduuhkhgSIPOIYZompZDzN++ts=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=dgfNkz/nFBYyEym0g+HoJvr6H8H7qukhcKeSb7GQGMxo463lH4XcAJOfRLgEHVDfG
-	 jWdZWi1thuXM1IhKRbPKwUfhvVdgbGXnEqUeMAzVzEahuqETLEgC4LwAqQzWINU4XE
-	 8h3x+GqKO8QAyqcLGXCmfamrjqsSlWCs4QFXjRmU=
+	b=TPQfL39arJbuDQYT+t7DmFRzuxmc3FPgF0c2jBKbKB+Jy36Oo5RUXUedMSmGRsTSA
+	 unL3cr4CYSuD+n1aLvZK+TF2Rv7ymQTGagIpT6N3fdaB/VLPQG1AG95d6ssKL7HyHF
+	 SV9ERydFLri0aYJxA+2GuG3gVJOocwYyRE16OBnQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pedro Tammela <pctammela@mojatatu.com>,
-	Simon Horman <simon.horman@corigine.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Wentao Guan <guanwentao@uniontech.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 01/96] net/sched: act_pedit: use NLA_POLICY for parsing ex keys
+	bpf <bpf@vger.kernel.org>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	Masahiro Yamada <masahiroy@kernel.org>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Nicolas Schier <nicolas@fjasle.eu>,
+	Zheng Yejian <zhengyejian1@huawei.com>,
+	Martin Kelly <martin.kelly@crowdstrike.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Josh Poimboeuf <jpoimboe@redhat.com>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>,
+	Vasily Gorbik <gor@linux.ibm.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
+	Andrey Grodzovsky <andrey.grodzovsky@crowdstrike.com>
+Subject: [PATCH 6.12 076/204] ftrace: Update the mcount_loc check of skipped entries
 Date: Thu,  2 Jul 2026 18:18:53 +0200
-Message-ID: <20260702155108.985307603@linuxfoundation.org>
+Message-ID: <20260702155120.262197363@linuxfoundation.org>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260702155108.949633242@linuxfoundation.org>
-References: <20260702155108.949633242@linuxfoundation.org>
+In-Reply-To: <20260702155118.667618796@linuxfoundation.org>
+References: <20260702155118.667618796@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,91 +87,110 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-270587-lists,stable=lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-270978-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:pctammela@mojatatu.com,m:simon.horman@corigine.com,m:davem@davemloft.net,m:guanwentao@uniontech.com,m:sashal@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCPT_COUNT_TWELVE(0.00)[24];
+	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:bpf@vger.kernel.org,m:mhiramat@kernel.org,m:mark.rutland@arm.com,m:mathieu.desnoyers@efficios.com,m:akpm@linux-foundation.org,m:peterz@infradead.org,m:torvalds@linux-foundation.org,m:masahiroy@kernel.org,m:nathan@kernel.org,m:nicolas@fjasle.eu,m:zhengyejian1@huawei.com,m:martin.kelly@crowdstrike.com,m:christophe.leroy@csgroup.eu,m:jpoimboe@redhat.com,m:hca@linux.ibm.com,m:catalin.marinas@arm.com,m:will@kernel.org,m:gor@linux.ibm.com,m:agordeev@linux.ibm.com,m:rostedt@goodmis.org,m:andrey.grodzovsky@crowdstrike.com,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,uniontech.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,davemloft.net:email,mojatatu.com:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 0424B6FB2B6
+X-Rspamd-Queue-Id: 06B8D6FAA95
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pedro Tammela <pctammela@mojatatu.com>
+From: Steven Rostedt <rostedt@goodmis.org>
 
-[ Upstream commit 5036034572b79daa6d6600338e8e8229e2a44b09 ]
+[ Upstream commit 4a3efc6baff931da9a85c6d2e42c87bd9a827399 ]
 
-Transform two checks in the 'ex' key parsing into netlink policies
-removing extra if checks.
+Now that weak functions turn into skipped entries, update the check to
+make sure the amount that was allocated would fit both the entries that
+were allocated as well as those that were skipped.
 
-Signed-off-by: Pedro Tammela <pctammela@mojatatu.com>
-Reviewed-by: Simon Horman <simon.horman@corigine.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Wentao Guan <guanwentao@uniontech.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: bpf <bpf@vger.kernel.org>
+Cc: Masami Hiramatsu <mhiramat@kernel.org>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Masahiro Yamada <masahiroy@kernel.org>
+Cc: Nathan Chancellor <nathan@kernel.org>
+Cc: Nicolas Schier <nicolas@fjasle.eu>
+Cc: Zheng Yejian <zhengyejian1@huawei.com>
+Cc: Martin  Kelly <martin.kelly@crowdstrike.com>
+Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
+Cc: Josh Poimboeuf <jpoimboe@redhat.com>
+Cc: Heiko Carstens <hca@linux.ibm.com>
+Cc: Catalin Marinas <catalin.marinas@arm.com>
+Cc: Will Deacon <will@kernel.org>
+Cc: Vasily Gorbik <gor@linux.ibm.com>
+Cc: Alexander Gordeev <agordeev@linux.ibm.com>
+Link: https://lore.kernel.org/20250218200023.055162048@goodmis.org
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: Andrey Grodzovsky <andrey.grodzovsky@crowdstrike.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/sched/act_pedit.c | 11 +++--------
- 1 file changed, 3 insertions(+), 8 deletions(-)
+ kernel/trace/ftrace.c |   23 ++++++++++++++++++++++-
+ 1 file changed, 22 insertions(+), 1 deletion(-)
 
-diff --git a/net/sched/act_pedit.c b/net/sched/act_pedit.c
-index a44101b2f44191..510a3b5b8c0c1d 100644
---- a/net/sched/act_pedit.c
-+++ b/net/sched/act_pedit.c
-@@ -31,8 +31,9 @@ static const struct nla_policy pedit_policy[TCA_PEDIT_MAX + 1] = {
- };
+--- a/kernel/trace/ftrace.c
++++ b/kernel/trace/ftrace.c
+@@ -7155,7 +7155,28 @@ static int ftrace_process_locs(struct mo
  
- static const struct nla_policy pedit_key_ex_policy[TCA_PEDIT_KEY_EX_MAX + 1] = {
--	[TCA_PEDIT_KEY_EX_HTYPE]  = { .type = NLA_U16 },
--	[TCA_PEDIT_KEY_EX_CMD]	  = { .type = NLA_U16 },
-+	[TCA_PEDIT_KEY_EX_HTYPE] =
-+		NLA_POLICY_MAX(NLA_U16, TCA_PEDIT_HDR_TYPE_MAX),
-+	[TCA_PEDIT_KEY_EX_CMD] = NLA_POLICY_MAX(NLA_U16, TCA_PEDIT_CMD_MAX),
- };
- 
- static struct tcf_pedit_key_ex *tcf_pedit_keys_ex_parse(struct nlattr *nla,
-@@ -82,12 +83,6 @@ static struct tcf_pedit_key_ex *tcf_pedit_keys_ex_parse(struct nlattr *nla,
- 		k->htype = nla_get_u16(tb[TCA_PEDIT_KEY_EX_HTYPE]);
- 		k->cmd = nla_get_u16(tb[TCA_PEDIT_KEY_EX_CMD]);
- 
--		if (k->htype > TCA_PEDIT_HDR_TYPE_MAX ||
--		    k->cmd > TCA_PEDIT_CMD_MAX) {
--			err = -EINVAL;
--			goto err_out;
--		}
--
- 		k++;
- 	}
- 
--- 
-2.53.0
-
+ 	/* We should have used all pages unless we skipped some */
+ 	if (pg_unuse) {
+-		WARN_ON(!skipped);
++		unsigned long pg_remaining, remaining = 0;
++		unsigned long skip;
++
++		/* Count the number of entries unused and compare it to skipped. */
++		pg_remaining = (ENTRIES_PER_PAGE << pg->order) - pg->index;
++
++		if (!WARN(skipped < pg_remaining, "Extra allocated pages for ftrace")) {
++
++			skip = skipped - pg_remaining;
++
++			for (pg = pg_unuse; pg; pg = pg->next)
++				remaining += 1 << pg->order;
++
++			skip = DIV_ROUND_UP(skip, ENTRIES_PER_PAGE);
++
++			/*
++			 * Check to see if the number of pages remaining would
++			 * just fit the number of entries skipped.
++			 */
++			WARN(skip != remaining, "Extra allocated pages for ftrace: %lu with %lu skipped",
++			     remaining, skipped);
++		}
+ 		/* Need to synchronize with ftrace_location_range() */
+ 		synchronize_rcu();
+ 		ftrace_free_pages(pg_unuse);
 
 
 
