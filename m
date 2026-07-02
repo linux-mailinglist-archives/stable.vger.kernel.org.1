@@ -1,62 +1,61 @@
-Return-Path: <stable+bounces-270739-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-271408-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 0CV1AvKSRmpeYwsAu9opvQ
-	(envelope-from <stable+bounces-270739-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:33:54 +0200
+	id jwB9HySbRmreZwsAu9opvQ
+	(envelope-from <stable+bounces-271408-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:08:52 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF2586FA408
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:33:53 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id E074C6FB0A4
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:08:51 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=FDbZIb26;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-270739-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-270739-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=RRTweHWh;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-271408-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-271408-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 0214C30058C3
-	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:33:02 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 4F1AD340ECBF
+	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:57:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42C224E3783;
-	Thu,  2 Jul 2026 16:28:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09FE13346BE;
+	Thu,  2 Jul 2026 16:57:46 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12FFE3A8724;
-	Thu,  2 Jul 2026 16:28:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1CF125B09B;
+	Thu,  2 Jul 2026 16:57:44 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783009725; cv=none; b=aF1f+8BSIa7OByy2rtDCgwFQSgurFOIclB98FHd1y7g+eR+rxjU+VBryRZ4BnPvQ//emMxJgCJavlkdUXpyVj1KyBgkHwh56cZpBK6VmgkD5DrfVsNrqMHl4M8lI2h1l7RubmHBqv0tAUiEUnEAeDU/xgegX15DgoSBmwBcCad8=
+	t=1783011465; cv=none; b=YNzREvtGUDC0lvirJgnFya4weX6CDBut3RTq+LDSS4MHvsdoSpLC1ZaTVqyx9Xyo1dxfrTfcdY+DKyW6PcPl5l1MqVIn7kUT+Xn+iKaHRMgklwE/94Dp93ULtDRD1A/3e1hoZs157xDosEygKieCun5MgskreD6YDNjq7vPHyKg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783009725; c=relaxed/simple;
-	bh=Sm3bJJp4ynCYbo4Aj8incrzcWZDAKXBBr6GqZB5RQzM=;
+	s=arc-20240116; t=1783011465; c=relaxed/simple;
+	bh=G3Ql91aFGWLQD0gXpBd/K/w3zkr+qNcVlmD5Pp/lGKk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=edM3MWq2NQird2UfyFarnqGmK7178UZCgD9RgF54GXUSHCAS1VAUKwfxw19h7wDOb8frjkaCmd8LdVh8gJwUE5KDt2OKye+ufqEogz381/zhpBKF2rQvTuUfCqbAqeG5dAsxRT7LzGO8k9AnX4zEV4OaKPsuObYqnyL7vHn4WPw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FDbZIb26; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4FB8D1F00A3A;
-	Thu,  2 Jul 2026 16:28:42 +0000 (UTC)
+	 MIME-Version; b=g7cAfA6kSXfEE08A2OIXA0/5zeaOv951KnUwG6buUIZTycIRVJTQPYRVQkPF06rB9rwuZtobeX9n1q6dD86i49wxhMV2FRt5uXeZbAodT3xXNgPhhO0Vtukd57Yzyh4VlpY74suw6rtbmT1TljRo8HebefDwXRnAHd1KsXcJFqw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RRTweHWh; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43B601F000E9;
+	Thu,  2 Jul 2026 16:57:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1783009722;
-	bh=nhneldcc9YWqLoFq4WwZ/WH1q5itqSjO5MuuVOsNe/E=;
+	s=korg; t=1783011464;
+	bh=K/WmHHKYuTT/9HklduH9BqBKedDjIrR2IjxK1OKg9oc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=FDbZIb26SHa4lt1BZRibFZ848bmpd1lKXl7tbt3Y7ffP3U87eMhZ2wMeFX5Az4zyM
-	 DT+oBryujluY3uDWLAyBtgJxHZRvOLumBwQ+QFeHH9Iw4GTMGpMaTyfbPKaXdU6M5O
-	 JKZVI3D2Wdhzr40b5kNfEpa8rMJnVzAWrLADAaFo=
+	b=RRTweHWhYCrJty6bVkKkWU8Cjjv22we5xjkZLiRoHyzCCqwRAAv452Wv67YjjMiDr
+	 yo42AkWGApUzZ/TmAug4qudsNUC5EIFylo5YjaWhYw8Gdvil17Dmjcal7E4LT+uppC
+	 2PMo9JrosxP9GlJwgfxhQGDqskFQJx0BFbzHIZSE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	stable@kernel.org,
-	Zhang Cen <rollkingzzc@gmail.com>,
-	Chao Yu <chao@kernel.org>,
-	Jaegeuk Kim <jaegeuk@kernel.org>
-Subject: [PATCH 5.15 63/95] f2fs: validate ACL entry sizes in f2fs_acl_from_disk()
-Date: Thu,  2 Jul 2026 18:20:06 +0200
-Message-ID: <20260702155110.537692786@linuxfoundation.org>
+	Sven Eckelmann <sven@narfation.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 7.1 011/120] batman-adv: prevent ELP transmission interval underflow
+Date: Thu,  2 Jul 2026 18:20:07 +0200
+Message-ID: <20260702155113.196428639@linuxfoundation.org>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260702155109.196223802@linuxfoundation.org>
-References: <20260702155109.196223802@linuxfoundation.org>
+In-Reply-To: <20260702155112.964534952@linuxfoundation.org>
+References: <20260702155112.964534952@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -73,154 +72,87 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,gmail.com];
-	TAGGED_FROM(0.00)[bounces-270739-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-271408-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:stable@kernel.org,m:rollkingzzc@gmail.com,m:chao@kernel.org,m:jaegeuk@kernel.org,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:stable@kernel.org,m:sven@narfation.org,m:sashal@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,vger.kernel.org:from_smtp]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,narfation.org:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: BF2586FA408
+X-Rspamd-Queue-Id: E074C6FB0A4
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+7.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhang Cen <rollkingzzc@gmail.com>
+From: Sven Eckelmann <sven@narfation.org>
 
-commit c4810ada31e80cbe4011467c4f3b1e93f94134f3 upstream.
+commit 5e50d4b8ae3ea622122d3c6a38d7f6fe68dfddca upstream.
 
-f2fs_acl_count() only validates the aggregate ACL xattr length. A
-malformed ACL can still place ACL_USER or ACL_GROUP in a slot that only
-contains struct f2fs_acl_entry_short bytes, and f2fs_acl_from_disk()
-then reads entry->e_id before verifying that a full entry fits.
+batadv_v_elp_start_timer() enqeues a delayed work. The time when it starts
+is randomly chosen between (elp_interval - BATADV_JITTER) and
+(elp_interval + BATADV_JITTER). The configured elp_interval must therefore
+be larger or equal to BATADV_JITTER to avoid that it causes an underflow of
+the unsigned integer. If this would happen, then a "fast" ELP interval
+would turn into a "day long" delay.
 
-Require a short entry before reading e_tag and e_perm, and require a
-full entry before reading e_id for ACL_USER and ACL_GROUP. Return
--EFSCORRUPTED from these new truncated-entry checks, while keeping the
-pre-existing -EINVAL paths unchanged.
-
-Validation reproduced this kernel report:
-KASAN slab-out-of-bounds in __f2fs_get_acl+0x6fb/0x7e0
-RIP: 0033:0x7f4b835ea7aa
-The buggy address belongs to the object at ffff888114589960 which belongs
-to the cache kmalloc-8 of size 8
-The buggy address is located 0 bytes to the right of allocated 8-byte
-region [ffff888114589960, ffff888114589968)
-Read of size 4
-Call trace:
-  dump_stack_lvl+0x66/0xa0 (?:?)
-  print_report+0xce/0x630 (?:?)
-  __f2fs_get_acl+0x6fb/0x7e0 (fs/f2fs/acl.c:169)
-  srso_alias_return_thunk+0x5/0xfbef5 (?:?)
-  __virt_addr_valid+0x224/0x430 (?:?)
-  kasan_report+0xe0/0x110 (?:?)
-  __f2fs_get_acl+0x5/0x7e0 (fs/f2fs/acl.c:169)
-  __get_acl+0x281/0x380 (?:?)
-  vfs_get_acl+0x10b/0x190 (?:?)
-  do_get_acl+0x2a/0x410 (?:?)
-  do_get_acl+0x9/0x410 (?:?)
-  do_getxattr+0xe8/0x260 (?:?)
-  filename_getxattr+0xd1/0x140 (?:?)
-  do_getname+0x2d/0x2d0 (?:?)
-  path_getxattrat+0x16c/0x200 (?:?)
-  lock_release+0xc8/0x290 (?:?)
-  cgroup_update_frozen+0x9d/0x320 (?:?)
-  lockdep_hardirqs_on_prepare+0xea/0x1a0 (?:?)
-  trace_hardirqs_on+0x1a/0x170 (?:?)
-  _raw_spin_unlock_irq+0x28/0x50 (?:?)
-  do_syscall_64+0x115/0x6a0 (arch/x86/entry/syscall_64.c:87)
-  entry_SYSCALL_64_after_hwframe+0x77/0x7f (?:?)
+At the same time, it must not be larger than the maximum value the variable
+can store.
 
 Cc: stable@kernel.org
-Fixes: af48b85b8cd3 ("f2fs: add xattr and acl functionalities")
-Assisted-by: Codex:gpt-5.5
-Signed-off-by: Zhang Cen <rollkingzzc@gmail.com>
-Reviewed-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: a10800829040 ("batman-adv: Add elp_interval hardif genl configuration")
+[ Context ]
+Signed-off-by: Sven Eckelmann <sven@narfation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/f2fs/acl.c |   18 ++++++++++++++++--
- 1 file changed, 16 insertions(+), 2 deletions(-)
+ net/batman-adv/netlink.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
---- a/fs/f2fs/acl.c
-+++ b/fs/f2fs/acl.c
-@@ -46,6 +46,7 @@ static inline int f2fs_acl_count(size_t
- static struct posix_acl *f2fs_acl_from_disk(const char *value, size_t size)
- {
- 	int i, count;
-+	int err = -EINVAL;
- 	struct posix_acl *acl;
- 	struct f2fs_acl_header *hdr = (struct f2fs_acl_header *)value;
- 	struct f2fs_acl_entry *entry = (struct f2fs_acl_entry *)(hdr + 1);
-@@ -69,8 +70,11 @@ static struct posix_acl *f2fs_acl_from_d
+diff --git a/net/batman-adv/netlink.c b/net/batman-adv/netlink.c
+index 78c651f634cd39..1d144d8cc0928e 100644
+--- a/net/batman-adv/netlink.c
++++ b/net/batman-adv/netlink.c
+@@ -917,9 +917,15 @@ static int batadv_netlink_set_hardif(struct sk_buff *skb,
+ #ifdef CONFIG_BATMAN_ADV_BATMAN_V
  
- 	for (i = 0; i < count; i++) {
+ 	if (info->attrs[BATADV_ATTR_ELP_INTERVAL]) {
++		u32 elp_interval;
++
+ 		attr = info->attrs[BATADV_ATTR_ELP_INTERVAL];
++		elp_interval = nla_get_u32(attr);
++
++		elp_interval = min_t(u32, elp_interval, INT_MAX);
++		elp_interval = max_t(u32, elp_interval, BATADV_JITTER);
  
--		if ((char *)entry > end)
-+		if (unlikely((char *)entry +
-+				sizeof(struct f2fs_acl_entry_short) > end)) {
-+			err = -EFSCORRUPTED;
- 			goto fail;
-+		}
+-		atomic_set(&hard_iface->bat_v.elp_interval, nla_get_u32(attr));
++		atomic_set(&hard_iface->bat_v.elp_interval, elp_interval);
+ 	}
  
- 		acl->a_entries[i].e_tag  = le16_to_cpu(entry->e_tag);
- 		acl->a_entries[i].e_perm = le16_to_cpu(entry->e_perm);
-@@ -85,6 +89,11 @@ static struct posix_acl *f2fs_acl_from_d
- 			break;
- 
- 		case ACL_USER:
-+			if (unlikely((char *)entry +
-+					sizeof(struct f2fs_acl_entry) > end)) {
-+				err = -EFSCORRUPTED;
-+				goto fail;
-+			}
- 			acl->a_entries[i].e_uid =
- 				make_kuid(&init_user_ns,
- 						le32_to_cpu(entry->e_id));
-@@ -92,6 +101,11 @@ static struct posix_acl *f2fs_acl_from_d
- 					sizeof(struct f2fs_acl_entry));
- 			break;
- 		case ACL_GROUP:
-+			if (unlikely((char *)entry +
-+					sizeof(struct f2fs_acl_entry) > end)) {
-+				err = -EFSCORRUPTED;
-+				goto fail;
-+			}
- 			acl->a_entries[i].e_gid =
- 				make_kgid(&init_user_ns,
- 						le32_to_cpu(entry->e_id));
-@@ -107,7 +121,7 @@ static struct posix_acl *f2fs_acl_from_d
- 	return acl;
- fail:
- 	posix_acl_release(acl);
--	return ERR_PTR(-EINVAL);
-+	return ERR_PTR(err);
- }
- 
- static void *f2fs_acl_to_disk(struct f2fs_sb_info *sbi,
+ 	if (info->attrs[BATADV_ATTR_THROUGHPUT_OVERRIDE]) {
+-- 
+2.53.0
+
 
 
 
