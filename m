@@ -1,138 +1,171 @@
-Return-Path: <stable+bounces-271529-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-271530-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id VbJSEY6cRmqDaAsAu9opvQ
-	(envelope-from <stable+bounces-271529-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:14:54 +0200
+	id 3XHzM7ypRmoAbQsAu9opvQ
+	(envelope-from <stable+bounces-271530-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 20:11:08 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id CAE086FB286
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:14:53 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D1C4D6FBDF3
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 20:11:07 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=NlbbMCA0;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-271529-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-271529-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=YhTkq2iH;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-271530-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-271530-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=none) header.from=linux.alibaba.com;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 9CD3A3061D6D
-	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 17:06:01 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 1CBBB3126A7E
+	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 17:12:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A1443446A7;
-	Thu,  2 Jul 2026 17:05:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A063344D8C;
+	Thu,  2 Jul 2026 17:12:37 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from out30-131.freemail.mail.aliyun.com (out30-131.freemail.mail.aliyun.com [115.124.30.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DCA231F9A2;
-	Thu,  2 Jul 2026 17:05:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 232FD3093DD;
+	Thu,  2 Jul 2026 17:12:32 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783011953; cv=none; b=kBB1kRK6AeYu/SoyfeA5MuI2Ikefx/DVQD9+5zVHcB8PQ7Uf7IKLy06gxi6it5SnPsgW5KsAwpHP0yVIvFvsOMfEMxXg1VvZQUFY0URSWHLlpgGXRFubl/YGeS1ESiS4Oh2Xm2H6C32sKwV7zhxdJignW1sryL2H9SoKZSWQ+aI=
+	t=1783012357; cv=none; b=owAoE5bTKOpg5zXw6Ni3dOS7XNQrgiTo6GGLAyLb8QC5k6Voy4cvJyrqU/iVPD6hjqsGF47i2ZFfv2nVXaY0FubcondEIAsaw10pL/Q/z3lfrY4hIxr8TeKiVL7IMeFRBHhzX4aJJjDU1UD6y5C8WxaSwbmXabth0s1EV+YB8II=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783011953; c=relaxed/simple;
-	bh=vgEYiPDUAR8MFY8T/V7VkePhk2r4/Zam4XfDFzJai0E=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=uVtbilOPrXzHL8Ku4SSWgnn+Vu+/w/LgFLnA1dBwBaWj80kT5KOmeI8FrIgLyzBgvAlRhXd+sBH7zejBfC23hxfUu9VJFZp3hfQa+CapjXmGZBkehHjLJd1HVnSvOwwyt2flZ2K5c0Tujn7wfKjN7tOwNKHEGb4cVNUOzGJxYnw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NlbbMCA0; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84E6A1F000E9;
-	Thu,  2 Jul 2026 17:05:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783011951;
-	bh=3F7AKCX0pjnj4U4BTcSrfEj0YWHfY9FVXVpF3mkxY2M=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=NlbbMCA0hgGr/QPVK0aEl9MoqqkEfyj4VKKUKiP7WvzgO27SAGvnsxF4Z3/1JHtvR
-	 +CTfn1ExbRB/7OyMk985NiAJlwaIS+T4NLA338mROmP1EsWMZ5wa/juxbHvN3dO/1R
-	 CP6RpvmbazHNGCWUKvTwK0uTQ6Gmd7k5XJ6L4/DtfjmY83A4Xi1GAF9Wgn0iugNlGe
-	 O/L5LlM2NWHypp+Lr1g+wZ/PKdJLKgM1dC3XhQdC6zRR7j9j7p1/iu2rW2+sf9q3qD
-	 VbkEd1w4KhXl8RYuD0MxQJXHe24L2DG4Pk0YEe/D0C2K89W6bi72q8xutVZryOH830
-	 gb4HqZgSm8Fug==
-Date: Thu, 2 Jul 2026 18:05:45 +0100
-From: Jonathan Cameron <jic23@kernel.org>
-To: Andy Shevchenko <andriy.shevchenko@intel.com>
-Cc: Joshua Crofts <joshua.crofts1@gmail.com>, David Lechner
- <dlechner@baylibre.com>, Nuno =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>, Andy
- Shevchenko <andy@kernel.org>, Jonathan Santos <Jonathan.Santos@analog.com>,
- Ramona Alexandra Nechita <ramona.nechita@analog.com>,
- linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org
-Subject: Re: [PATCH 0/2] iio: adc: add missing 'select IIO_TRIGGERED_BUFFER'
- to Kconfig entries
-Message-ID: <20260702180545.680c5265@jic23-huawei>
-In-Reply-To: <akZFTC6qVzLG5ton@ashevche-desk.local>
-References: <20260701-add-adc-kconfig-deps-v1-0-b9708d74f426@gmail.com>
-	<akZFTC6qVzLG5ton@ashevche-desk.local>
-X-Mailer: Claws Mail 4.4.0 (GTK 3.24.52; x86_64-pc-linux-gnu)
+	s=arc-20240116; t=1783012357; c=relaxed/simple;
+	bh=ui7Wvq31+bmhfdGiaQu1nVRQtVBuT+2jB1IXxK1XaZE=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ITOdGhBajQvzsgT/bOcQ7jSpVNcxv9TmKhyYDvaEpZNI8h84oA0ywA77mMtki0vXP9Jtpck2WJ1y2H4mjJxkblcybIApcU7wX11Dt1YOMdCLxQIF7Qhy4BEyvBvfHsj+lj4xrAobylzln0FXKS/yZSOXlqkVW6fsndVM4n97gHY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=YhTkq2iH; arc=none smtp.client-ip=115.124.30.131
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1783012350; h=From:To:Subject:Date:Message-ID:MIME-Version;
+	bh=vQZAChbuoVsas+C9SU6lXSqc6Mn3Gbl8B75Pqg5FD4w=;
+	b=YhTkq2iHhHmU++xvPZsVB2ZQGz8P4XtjWJZ3mpuGaK6L9pfXRxx/2+lzSdlk7FgN9a1bXR3431akmVBklKT3+tetK4/Xr5psX9GuYLNBa4aHW8qD1P3rTHeUVCXHhS6cg/mzXvQw+EK//40U4hj9y9x08JD1i4DnX9pv600uJBI=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R121e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033037009110;MF=dust.li@linux.alibaba.com;NM=1;PH=DS;RN=19;SR=0;TI=SMTPD_---0X6FdVAf_1783012348;
+Received: from localhost(mailfrom:dust.li@linux.alibaba.com fp:SMTPD_---0X6FdVAf_1783012348 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Fri, 03 Jul 2026 01:12:29 +0800
+From: Dust Li <dust.li@linux.alibaba.com>
+To: "D. Wythe" <alibuda@linux.alibaba.com>,
+	Dust Li <dust.li@linux.alibaba.com>,
+	Sidraya Jayagond <sidraya@linux.ibm.com>,
+	Wenjia Zhang <wenjia@linux.ibm.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>
+Cc: Mahanta Jambigi <mjambigi@linux.ibm.com>,
+	Tony Lu <tonylu@linux.alibaba.com>,
+	Wen Gu <guwen@linux.alibaba.com>,
+	Simon Horman <horms@kernel.org>,
+	Ursula Braun <ubraun@linux.vnet.ibm.com>,
+	Hans Wippel <hwippel@linux.ibm.com>,
+	linux-rdma@vger.kernel.org,
+	linux-s390@vger.kernel.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: [PATCH net] net/smc: ignore peer-supplied rmbe_idx and dmbe_idx
+Date: Fri,  3 Jul 2026 01:11:38 +0800
+Message-ID: <20260702171137.1099051-2-dust.li@linux.alibaba.com>
+X-Mailer: git-send-email 2.43.7
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-3.16 / 15.00];
-	WHITELIST_SPF_DKIM(-3.00)[kernel.org:d:+,kernel.org:s:+];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-10.66 / 15.00];
+	WHITELIST_DMARC(-7.00)[alibaba.com:D:+];
+	WHITELIST_SPF_DKIM(-3.00)[alibaba.com:d:+,kernel.org:s:+];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	MID_RHS_NOT_FQDN(0.50)[];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[linux.alibaba.com,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_DKIM_ALLOW(-0.20)[linux.alibaba.com:s=default];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-271529-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER(0.00)[jic23@kernel.org,stable@vger.kernel.org];
+	RCPT_COUNT_TWELVE(0.00)[19];
+	FORGED_SENDER(0.00)[dust.li@linux.alibaba.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS(0.00)[m:alibuda@linux.alibaba.com,m:dust.li@linux.alibaba.com,m:sidraya@linux.ibm.com,m:wenjia@linux.ibm.com,m:davem@davemloft.net,m:edumazet@google.com,m:kuba@kernel.org,m:pabeni@redhat.com,m:mjambigi@linux.ibm.com,m:tonylu@linux.alibaba.com,m:guwen@linux.alibaba.com,m:horms@kernel.org,m:ubraun@linux.vnet.ibm.com,m:hwippel@linux.ibm.com,m:linux-rdma@vger.kernel.org,m:linux-s390@vger.kernel.org,m:netdev@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,s:lists@lfdr.de];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS(0.00)[m:andriy.shevchenko@intel.com,m:joshua.crofts1@gmail.com,m:dlechner@baylibre.com,m:nuno.sa@analog.com,m:andy@kernel.org,m:Jonathan.Santos@analog.com,m:ramona.nechita@analog.com,m:linux-iio@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,m:joshuacrofts1@gmail.com,s:lists@lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	TO_DN_SOME(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[jic23@kernel.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[gmail.com,baylibre.com,analog.com,kernel.org,vger.kernel.org];
-	RCPT_COUNT_SEVEN(0.00)[10];
-	TAGGED_RCPT(0.00)[stable];
+	FORWARDED(0.00)[lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-271530-lists,stable=lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[dust.li@linux.alibaba.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[linux.alibaba.com:+];
+	FORGED_SENDER_FORWARDING(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,jic23-huawei:mid,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,vger.kernel.org:from_smtp]
+	ALIAS_RESOLVED(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,alibaba.com:email,linux.alibaba.com:dkim,linux.alibaba.com:mid,linux.alibaba.com:from_mime,xbow.com:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: CAE086FB286
+X-Rspamd-Queue-Id: D1C4D6FBDF3
 
-On Thu, 2 Jul 2026 14:02:36 +0300
-Andy Shevchenko <andriy.shevchenko@intel.com> wrote:
+Linux always uses exactly one RMBE per RMB (index 1 for SMC-R) and
+one DMBE per DMB (index 0 for SMC-D), so conn->tx_off is always zero.
+Hardcode these fixed values instead of deriving tx_off from the
+peer-supplied rmbe_idx / dmbe_idx in the CLC Accept/Confirm message.
 
-> On Wed, Jul 01, 2026 at 09:21:45PM +0200, Joshua Crofts wrote:
-> > The AD4130 and AD7779 entries are missing 'select IIO_TRIGGERED_BUFFER'
-> > entries, causing potential build failures.
-> > 
-> > Steps to reproduce:
-> > 1. Run `make allnoconfig`
-> > 2. Run `make menuconfig` and select any afformentioned driver and
-> >    modules it depends on.
-> > 3. Run `make .` and the build will fail due to missing triggered
-> >    buffer definitions etc.  
-> 
-> Reviewed-by: Andy Shevchenko <andriy.shevchenko@intel.com>
-> 
-> > I seem to have stumbled upon a lot of drivers which have incomplete
-> > Kconfigs, expect more patch series per sensor type.  
-> 
-> 
-> 
-Applied to the fixes-togreg branch of iio.git.
+Fixes: e6727f39004b ("smc: send data (through RDMA)")
+Fixes: 413498440e30 ("net/smc: add SMC-D support in af_smc")
+Cc: stable@vger.kernel.org
+Reported-by: Federico Kirschbaum <federico.kirschbaum@xbow.com>
+Signed-off-by: Dust Li <dust.li@linux.alibaba.com>
+---
+ net/smc/af_smc.c | 16 ++++++++++++----
+ 1 file changed, 12 insertions(+), 4 deletions(-)
 
-Thanks,
-
-Jonathan
+diff --git a/net/smc/af_smc.c b/net/smc/af_smc.c
+index b5db69073e20..3706e8ac49e0 100644
+--- a/net/smc/af_smc.c
++++ b/net/smc/af_smc.c
+@@ -729,11 +729,15 @@ static void smcr_conn_save_peer_info(struct smc_sock *smc,
+ {
+ 	int bufsize = smc_uncompress_bufsize(clc->r0.rmbe_size);
+ 
+-	smc->conn.peer_rmbe_idx = clc->r0.rmbe_idx;
++	/* Linux uses exactly one RMBE per RMB (always index 1); ignore the
++	 * peer-supplied rmbe_idx to prevent a malicious peer from setting an
++	 * out-of-bounds tx_off.
++	 */
++	smc->conn.peer_rmbe_idx = 1;
+ 	smc->conn.local_tx_ctrl.token = ntohl(clc->r0.rmbe_alert_token);
+ 	smc->conn.peer_rmbe_size = bufsize;
+ 	atomic_set(&smc->conn.peer_rmbe_space, smc->conn.peer_rmbe_size);
+-	smc->conn.tx_off = bufsize * (smc->conn.peer_rmbe_idx - 1);
++	smc->conn.tx_off = 0;
+ }
+ 
+ static void smcd_conn_save_peer_info(struct smc_sock *smc,
+@@ -741,12 +745,16 @@ static void smcd_conn_save_peer_info(struct smc_sock *smc,
+ {
+ 	int bufsize = smc_uncompress_bufsize(clc->d0.dmbe_size);
+ 
+-	smc->conn.peer_rmbe_idx = clc->d0.dmbe_idx;
++	/* Linux uses exactly one DMBE per DMB (always index 0); ignore the
++	 * peer-supplied dmbe_idx to prevent a malicious peer from deriving an
++	 * out-of-bounds tx_off that causes an OOB write.
++	 */
++	smc->conn.peer_rmbe_idx = 0;
+ 	smc->conn.peer_token = ntohll(clc->d0.token);
+ 	/* msg header takes up space in the buffer */
+ 	smc->conn.peer_rmbe_size = bufsize - sizeof(struct smcd_cdc_msg);
+ 	atomic_set(&smc->conn.peer_rmbe_space, smc->conn.peer_rmbe_size);
+-	smc->conn.tx_off = bufsize * smc->conn.peer_rmbe_idx;
++	smc->conn.tx_off = 0;
+ }
+ 
+ static void smc_conn_save_peer_info(struct smc_sock *smc,
+-- 
+2.43.7
 
 
