@@ -1,62 +1,62 @@
-Return-Path: <stable+bounces-271141-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-270824-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id jXyxIyOjRmoBawsAu9opvQ
-	(envelope-from <stable+bounces-271141-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:42:59 +0200
+	id gqO3BHSURmr+YwsAu9opvQ
+	(envelope-from <stable+bounces-270824-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:40:20 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 078F36FB91F
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:42:59 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9D09D6FA58B
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:40:19 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=x87JSMfa;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-271141-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-271141-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="BTVO/4Ao";
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-270824-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-270824-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E2779330FCD6
-	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:48:05 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 941FA3064370
+	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:35:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 61D7E347BBD;
-	Thu,  2 Jul 2026 16:46:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1D752D0602;
+	Thu,  2 Jul 2026 16:32:24 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2641430C37A;
-	Thu,  2 Jul 2026 16:46:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C49A3A59B1;
+	Thu,  2 Jul 2026 16:32:23 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783010778; cv=none; b=iA1Hqt2gDlhwLx96p3/oY+xVt6GL4GIJGjCgy1F3FjPD7s0ofaKA5a0+9PDY73hUZt/0+zrZWuy5yRDrUCw0vsrqoucHfWz/3Bb5DJxvcuHdsqpdQauUtc3rpXiEVsB4i4/fIPCgimp7j8a56rXoOI/wx8n2zUiYKSHYhi49/Hk=
+	t=1783009944; cv=none; b=JGjfvcDAsCsYFgZuPKOKk0Q5zeIg1fuSSpu4UZRCpyRxOMI2tTXbYPrf6cW19nHzU2djsG87YZc0VyTbi3MdJQKzgqxwjTI29xcXyu2zdzCJwqdavzzQKz6qGXZK0gMgpANfGu2N4EpNoUDFfwX1ckKe1tuohUtUIu5OSwNBlCg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783010778; c=relaxed/simple;
-	bh=5idctXAqY/hFRmehLMPZ/UcR90D5M9ZLeOesPbGH9/U=;
+	s=arc-20240116; t=1783009944; c=relaxed/simple;
+	bh=Ys5ml/amAN+ei7ahcDEXsBAM+pBuZ4Y8LNuqHNi8UMo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=A9de7P4UQTklNAzjhzA7oajlyG1vy6lMdqCZ9QUjI+3gTmwlNU2oGywSEOD7Y9J5mgcq/lJF56t3R9giuWoGL7C1ndL5IRabUre1I87zhibmI45uxyrN9iIYmoI/KxCV69Fm/nYeJr8zXrIJt/V2Mq4ccPnJ2stnzS3x6T38ITs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x87JSMfa; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 490921F000E9;
-	Thu,  2 Jul 2026 16:46:16 +0000 (UTC)
+	 MIME-Version; b=X8niD7oB/vu6DAo5aQpeUH7oK4TSb+HmznYpdHKllNgZBx6YnUzcKM30oCnwk3acenQdpq4rh9DF0fd5WzsVtlBkuBYdsYHprrHUo2ODs+HNCJ4RfXnvgBbxjJnnlI/w0Eo3wrznJ1ENDwu/F5YhyCWw50xLF8B10bcQE41o/fU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BTVO/4Ao; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C313F1F000E9;
+	Thu,  2 Jul 2026 16:32:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1783010776;
-	bh=Dj2uuDAYsPINSRRuv47bOwlRftIwAt/QthxcgYjNDLE=;
+	s=korg; t=1783009943;
+	bh=efVP94pUhQTerykyAlEAeeIFOAdlxs/USh4hPo4juJc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=x87JSMfa169plIobGbyBDq0wYrYnNcNvn3NJtgWtATg2vHcX8nAXEGB6uqT7ENTtm
-	 lOs9KozLACnzJ883jUQfTVxYeNO8dNrRC/E6KpVV880g5rK3H08mweYQ/y7y+yczNr
-	 ap28+mJQi4aCt4MsE9SrhDRVbz/6R3udX1JvoE6o=
+	b=BTVO/4AocwLF4ZPSh50M9aDEwoSEZ0wyeNugxjz8/iZRawdJ2UDBYVEp2T0KXeMCK
+	 HA7Xp4WCweC1T65saZV4JdaYIgQ5Ew5zgOR62DuDAmzuxHook7YSA6Xpv+pNt/gooG
+	 zwaqHgTiFwdlz3UIKDCMxzSDo3MgDLdaUmUxrGcQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tao Cui <cuitao@kylinos.cn>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Ihor Solodrai <ihor.solodrai@pm.me>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	Shung-Hsi Yu <shung-hsi.yu@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 032/175] mptcp: pm: fix extra_subflows underflow on userspace PM subflow creation
+Subject: [PATCH 6.1 014/129] selftests/bpf: Check for timeout in perf_link test
 Date: Thu,  2 Jul 2026 18:18:53 +0200
-Message-ID: <20260702155116.473465280@linuxfoundation.org>
+Message-ID: <20260702155112.456094995@linuxfoundation.org>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260702155115.766838875@linuxfoundation.org>
-References: <20260702155115.766838875@linuxfoundation.org>
+In-Reply-To: <20260702155112.163984240@linuxfoundation.org>
+References: <20260702155112.163984240@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,22 +72,22 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-271141-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-270824-lists,stable=lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:cuitao@kylinos.cn,m:matttbe@kernel.org,m:kuba@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:ihor.solodrai@pm.me,m:andrii@kernel.org,m:shung-hsi.yu@suse.com,m:sashal@kernel.org,s:lists@lfdr.de];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
@@ -99,71 +99,86 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[kylinos.cn:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp,msgid.link:url]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:email,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 078F36FB91F
+X-Rspamd-Queue-Id: 9D09D6FA58B
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tao Cui <cuitao@kylinos.cn>
+From: Ihor Solodrai <ihor.solodrai@pm.me>
 
-[ Upstream commit 14e9fea30b68fc75b2b3d97396a7e6adb544bd2a ]
+commit e6c209da7e0e9aaf955a7b59e91ed78c2b6c96fb upstream.
 
-The userspace PM increments extra_subflows after __mptcp_subflow_connect()
-succeeds, but __mptcp_subflow_connect() calls mptcp_pm_close_subflow()
-on failure to roll back the pre-increment done by the kernel PM's fill_*()
-helpers. Because the userspace PM hasn't incremented yet at that point,
-this decrement is spurious and causes extra_subflows to underflow.
+Recently perf_link test started unreliably failing on libbpf CI:
+  * https://github.com/libbpf/libbpf/actions/runs/11260672407/job/31312405473
+  * https://github.com/libbpf/libbpf/actions/runs/11260992334/job/31315514626
+  * https://github.com/libbpf/libbpf/actions/runs/11263162459/job/31320458251
 
-Fix it by aligning the userspace PM with the kernel PM: increment
-extra_subflows before calling __mptcp_subflow_connect(), so the existing
-error path in subflow.c correctly rolls it back on failure. Also simplify
-the error handling by taking pm.lock only when needed for cleanup.
+Part of the test is running a dummy loop for a while and then checking
+for a counter incremented by the test program.
 
-Fixes: 77e4b94a3de6 ("mptcp: update userspace pm infos")
-Cc: stable@vger.kernel.org
-Signed-off-by: Tao Cui <cuitao@kylinos.cn>
-Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20260602-net-mptcp-misc-fixes-7-1-rc7-v2-5-856831229976@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Instead of waiting for an arbitrary number of loop iterations once,
+check for the test counter in a loop and use get_time_ns() helper to
+enforce a 100ms timeout.
+
+v1: https://lore.kernel.org/bpf/zuRd072x9tumn2iN4wDNs5av0nu5nekMNV4PkR-YwCT10eFFTrUtZBRkLWFbrcCe7guvLStGQlhibo8qWojCO7i2-NGajes5GYIyynexD-w=@pm.me/
+
+Signed-off-by: Ihor Solodrai <ihor.solodrai@pm.me>
+Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+Link: https://lore.kernel.org/bpf/20241011153104.249800-1-ihor.solodrai@pm.me
+Signed-off-by: Shung-Hsi Yu <shung-hsi.yu@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/mptcp/pm_userspace.c |   13 ++++++++-----
- 1 file changed, 8 insertions(+), 5 deletions(-)
+ .../testing/selftests/bpf/prog_tests/perf_link.c  | 15 +++++++++++++--
+ 1 file changed, 13 insertions(+), 2 deletions(-)
 
---- a/net/mptcp/pm_userspace.c
-+++ b/net/mptcp/pm_userspace.c
-@@ -408,18 +408,21 @@ int mptcp_nl_cmd_sf_create(struct sk_buf
- 		goto create_err;
- 	}
+diff --git a/tools/testing/selftests/bpf/prog_tests/perf_link.c b/tools/testing/selftests/bpf/prog_tests/perf_link.c
+index 224eba6fef2ee1..d734526d6a16b1 100644
+--- a/tools/testing/selftests/bpf/prog_tests/perf_link.c
++++ b/tools/testing/selftests/bpf/prog_tests/perf_link.c
+@@ -4,8 +4,12 @@
+ #include <pthread.h>
+ #include <sched.h>
+ #include <test_progs.h>
++#include "testing_helpers.h"
+ #include "test_perf_link.skel.h"
  
-+	spin_lock_bh(&msk->pm.lock);
-+	msk->pm.subflows++;
-+	spin_unlock_bh(&msk->pm.lock);
++#define BURN_TIMEOUT_MS 100
++#define BURN_TIMEOUT_NS BURN_TIMEOUT_MS * 1000000
 +
- 	lock_sock(sk);
+ static void burn_cpu(void)
+ {
+ 	volatile int j = 0;
+@@ -32,6 +36,7 @@ void serial_test_perf_link(void)
+ 	int run_cnt_before, run_cnt_after;
+ 	struct bpf_link_info info;
+ 	__u32 info_len = sizeof(info);
++	__u64 timeout_time_ns;
  
- 	err = __mptcp_subflow_connect(sk, &addr_l, &addr_r);
+ 	/* create perf event */
+ 	memset(&attr, 0, sizeof(attr));
+@@ -63,8 +68,14 @@ void serial_test_perf_link(void)
+ 	ASSERT_GT(info.prog_id, 0, "link_prog_id");
  
- 	release_sock(sk);
- 
--	spin_lock_bh(&msk->pm.lock);
--	if (err)
-+	if (err) {
-+		spin_lock_bh(&msk->pm.lock);
- 		mptcp_userspace_pm_delete_local_addr(msk, &local);
--	else
--		msk->pm.subflows++;
--	spin_unlock_bh(&msk->pm.lock);
-+		spin_unlock_bh(&msk->pm.lock);
+ 	/* ensure we get at least one perf_event prog execution */
+-	burn_cpu();
+-	ASSERT_GT(skel->bss->run_cnt, 0, "run_cnt");
++	timeout_time_ns = get_time_ns() + BURN_TIMEOUT_NS;
++	while (true) {
++		burn_cpu();
++		if (skel->bss->run_cnt > 0)
++			break;
++	        if (!ASSERT_LT(get_time_ns(), timeout_time_ns, "run_cnt_timeout"))
++			break;
 +	}
  
-  create_err:
- 	sock_put((struct sock *)msk);
+ 	/* perf_event is still active, but we close link and BPF program
+ 	 * shouldn't be executed anymore
+-- 
+2.53.0
+
 
 
 
