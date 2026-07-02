@@ -1,65 +1,61 @@
-Return-Path: <stable+bounces-271482-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-271372-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 6gtJKDenRmpGbAsAu9opvQ
-	(envelope-from <stable+bounces-271482-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 20:00:23 +0200
+	id Pg2QK9KaRmqxZwsAu9opvQ
+	(envelope-from <stable+bounces-271372-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:07:30 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED55B6FBC75
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 20:00:22 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3B2206FB02B
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:07:30 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=r2QSBrFe;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-271482-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-271482-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=IVz9f8sB;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-271372-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-271372-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 28DF0335E8C0
-	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 17:01:01 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 6AF6D3044B3E
+	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:56:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F1DCB2DEA98;
-	Thu,  2 Jul 2026 17:01:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 76AC630EF95;
+	Thu,  2 Jul 2026 16:56:11 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE2B430499A;
-	Thu,  2 Jul 2026 17:00:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D7432D0602;
+	Thu,  2 Jul 2026 16:56:10 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783011660; cv=none; b=r/fHKJPEDjnQ4s3dZDW5yiF4sMXMez30xFkoGhZQnvDAgBphue7eV+QKN4/URMMha/qWWZrgUWSftY+KHA5SqXPPfNBGhst9YA68D4dINFS1W9s2/Gq5SqSa3zF5YcIg1ksaNgR4qtUk6yVvBdWeXfdTLtKzWBxwSKPbIf+38HE=
+	t=1783011371; cv=none; b=szKU0j3Y31/u9WzcLOOBhz8AcWQDCQaJIjNZTcm6WzO5q7+22lOK+LpjOH5LZYxY2Nj1WQ4UzQ8vD14LfkwrsjdpIybFEUyQ0fU6oEZwIv82/4WleJHUHxc5L5dshRsKW9UIJt0ep8PV5agJRXurOwGdnFFec4OaAhbnKF56q3w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783011660; c=relaxed/simple;
-	bh=qvf1wIiCdhHZAZAzwbhBVqFxu8wHl9jYiaJp2QZSm8w=;
+	s=arc-20240116; t=1783011371; c=relaxed/simple;
+	bh=W1m94D8hd/eiKxtzyAN8xJY74imCfjDuEvqnJSj7lt4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=VcCPqkhGoxCfvrQpYt/KoRVQ2+hYEemOEeznIs38uXQ7tvUxCVk7iLQlWHKlFeNvSA5yyUaml5lI4RS7b7oTpj/wLMs+ewa2kA6F8uh2RtZZZTHUWNuDFhH3dq32ODb67o174BtKAQOhwYlOapYU5p8N4xMBtbW946OlZD+hPI0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r2QSBrFe; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D92761F000E9;
-	Thu,  2 Jul 2026 17:00:58 +0000 (UTC)
+	 MIME-Version; b=nHC3OU8kTENaqxB58/At0uoBGT6QAi1AXhEyeTqiIeLzhu/fJwxodGwu/mUjVaEb3WP8BFSeLlHuYCr8GLzFke7Gk9KQbHVyIvdJztO4oB1zHsvY3xeNQTgFA6/X0MNSIxnVRd9h0twsDpe9zXbjuhEZBupopNAxM6c9zs/i75Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IVz9f8sB; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4ABD1F000E9;
+	Thu,  2 Jul 2026 16:56:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1783011659;
-	bh=T9fgoC0wk7o7vkSRGkNlhOKNpRy/vQM8o4Ge6oSQyQU=;
+	s=korg; t=1783011370;
+	bh=R5nNsxjG5e2diSQzgaK6KBvtUxVHlptepifNy4fkZFU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=r2QSBrFeVP+D3Ar/OuLSJ8AYlSuPiVlq/IMPw/XEox09+NgKazrZZjgAMrR8v8ZPT
-	 spNfQCN8s11BAuxJ0Uw9u3V6Nsa7TcE8JUISdNXFSNctf2BWz7hww1nViPDvLMi8WE
-	 BGDdayHWSaaoW+nZ/hfRtk5GutX/kob03xL50NJc=
+	b=IVz9f8sBOKhq4mOvAslFQhNMKzR49QuOK0pFY1o9SOGlCNBMhsxi4cUitM6LsV56f
+	 tHx7kbIGW7vT2p4p1CNLEC4QFFNk6kNQYwS2dTEiPVxcCVRI5XPtGXULfGCxpIJYHU
+	 uXIf4MhRiqpAYfZWgfrvtiL/QSdt2EUSLWOQ9ob0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jay Shin <jaeshin@redhat.com>,
-	Tejun Heo <tj@kernel.org>,
-	Waiman Long <longman@redhat.com>,
-	coregee2000@gmail.com,
-	Ming Lei <ming.lei@redhat.com>,
-	"Jose Fernandez (Anthropic)" <jose.fernandez@linux.dev>,
-	Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 7.1 083/120] blk-cgroup: fix UAF in __blkcg_rstat_flush()
+	Wentao Liang <vulab@iscas.ac.cn>,
+	Xu Yilun <yilun.xu@intel.com>,
+	Xu Yilun <yilun.xu@linux.intel.com>
+Subject: [PATCH 6.18 082/108] fpga: region: fix use-after-free in child_regions_with_firmware()
 Date: Thu,  2 Jul 2026 18:21:19 +0200
-Message-ID: <20260702155114.678798512@linuxfoundation.org>
+Message-ID: <20260702155113.811737287@linuxfoundation.org>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260702155112.964534952@linuxfoundation.org>
-References: <20260702155112.964534952@linuxfoundation.org>
+In-Reply-To: <20260702155112.110058792@linuxfoundation.org>
+References: <20260702155112.110058792@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,118 +65,80 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,redhat.com,kernel.org,gmail.com,linux.dev,kernel.dk];
-	TAGGED_FROM(0.00)[bounces-271482-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:jaeshin@redhat.com,m:tj@kernel.org,m:longman@redhat.com,m:coregee2000@gmail.com,m:ming.lei@redhat.com,m:jose.fernandez@linux.dev,m:axboe@kernel.dk,s:lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-271372-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:vulab@iscas.ac.cn,m:yilun.xu@intel.com,m:yilun.xu@linux.intel.com,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[10];
-	TAGGED_RCPT(0.00)[stable];
+	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,suse.com:email,linux.dev:email,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,kernel.dk:email]
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,iscas.ac.cn:email,intel.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: ED55B6FBC75
+X-Rspamd-Queue-Id: 3B2206FB02B
 
-7.1-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michal Koutný <mkoutny@suse.com>
+From: Wentao Liang <vulab@iscas.ac.cn>
 
-commit 0ab5ee5a1badb58cbb2242617cb01a4972b1f2a2 upstream.
+commit 54f3c5643ec523a04b6ec0e7c19eb10f5ebebdd3 upstream.
 
-When multiple blkgs in the same blkcg are released concurrently,
-a use-after-free can occur. The race happens when one blkg's
-__blkcg_rstat_flush() removes another blkg's iostat entries via
-llist_del_all(). The second blkg sees an empty list and proceeds
-to free itself while the first is still iterating over its entries.
+Move of_node_put(child_region) after the error print to avoid accessing
+freed memory when pr_err() references child_region.
 
-Move the flush from __blkg_release() (RCU callback) to blkg_release()
-(before call_rcu). This ensures the RCU grace period waits for any
-concurrent flush's rcu_read_lock() section to complete before freeing.
-
+Fixes: 0fa20cdfcc1f ("fpga: fpga-region: device tree control for FPGA")
 Cc: stable@vger.kernel.org
-Cc: Jay Shin <jaeshin@redhat.com>
-Cc: Tejun Heo <tj@kernel.org>
-Cc: Waiman Long <longman@redhat.com>
-Fixes: 20cb1c2fb756 ("blk-cgroup: Flush stats before releasing blkcg_gq")
-Reported-by: coregee2000@gmail.com
-Closes: https://lore.kernel.org/linux-block/CAHPqNmwT9oRpem3J3erS_W0uSQND47LGGSBsNxP8E6uSUish1w@mail.gmail.com/
-Signed-off-by: Ming Lei <ming.lei@redhat.com>
-Tested-by: Jose Fernandez (Anthropic) <jose.fernandez@linux.dev>
-Link: https://patch.msgid.link/20260205155425.342084-1-ming.lei@redhat.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
+[ Yilun: Fix the Fixes tag ]
+Reviewed-by: Xu Yilun <yilun.xu@intel.com>
+Link: https://lore.kernel.org/r/20260408154534.404327-1-vulab@iscas.ac.cn
+Signed-off-by: Xu Yilun <yilun.xu@linux.intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- block/blk-cgroup.c |   21 +++++++++++----------
- 1 file changed, 11 insertions(+), 10 deletions(-)
+ drivers/fpga/of-fpga-region.c |    3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
---- a/block/blk-cgroup.c
-+++ b/block/blk-cgroup.c
-@@ -164,20 +164,10 @@ static void blkg_free(struct blkcg_gq *b
- static void __blkg_release(struct rcu_head *rcu)
- {
- 	struct blkcg_gq *blkg = container_of(rcu, struct blkcg_gq, rcu_head);
--	struct blkcg *blkcg = blkg->blkcg;
--	int cpu;
+--- a/drivers/fpga/of-fpga-region.c
++++ b/drivers/fpga/of-fpga-region.c
+@@ -168,11 +168,10 @@ static int child_regions_with_firmware(s
+ 						     fpga_region_of_match);
+ 	}
  
- #ifdef CONFIG_BLK_CGROUP_PUNT_BIO
- 	WARN_ON(!bio_list_empty(&blkg->async_bios));
- #endif
--	/*
--	 * Flush all the non-empty percpu lockless lists before releasing
--	 * us, given these stat belongs to us.
--	 *
--	 * blkg_stat_lock is for serializing blkg stat update
--	 */
--	for_each_possible_cpu(cpu)
--		__blkcg_rstat_flush(blkcg, cpu);
+-	of_node_put(child_region);
+-
+ 	if (ret)
+ 		pr_err("firmware-name not allowed in child FPGA region: %pOF",
+ 		       child_region);
++	of_node_put(child_region);
  
- 	/* release the blkcg and parent blkg refs this blkg has been holding */
- 	css_put(&blkg->blkcg->css);
-@@ -195,6 +185,17 @@ static void __blkg_release(struct rcu_he
- static void blkg_release(struct percpu_ref *ref)
- {
- 	struct blkcg_gq *blkg = container_of(ref, struct blkcg_gq, refcnt);
-+	struct blkcg *blkcg = blkg->blkcg;
-+	int cpu;
-+
-+	/*
-+	 * Flush all the non-empty percpu lockless lists before releasing
-+	 * us, given these stat belongs to us.
-+	 *
-+	 * blkg_stat_lock is for serializing blkg stat update
-+	 */
-+	for_each_possible_cpu(cpu)
-+		__blkcg_rstat_flush(blkcg, cpu);
- 
- 	call_rcu(&blkg->rcu_head, __blkg_release);
+ 	return ret;
  }
 
 
