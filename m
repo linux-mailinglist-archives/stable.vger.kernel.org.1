@@ -1,64 +1,96 @@
-Return-Path: <stable+bounces-271254-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-270585-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id W0ovO5KcRmqEaAsAu9opvQ
-	(envelope-from <stable+bounces-271254-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:14:58 +0200
+	id ZdjPLqWTRmqlYwsAu9opvQ
+	(envelope-from <stable+bounces-270585-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:36:53 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id DC3946FB28B
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:14:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BF3D56FA4AC
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:36:52 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="toC3WmC/";
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-271254-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-271254-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=none) header.from=linuxfoundation.org;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b="Yxy/q4/c";
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-270585-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-270585-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=none) header.from=gmail.com;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 6BFB13142AA8
-	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:52:15 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 05E6D3061411
+	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:20:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD19F33E355;
-	Thu,  2 Jul 2026 16:51:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20C1A31E853;
+	Thu,  2 Jul 2026 16:20:16 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8015126F46F;
-	Thu,  2 Jul 2026 16:51:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F90932ED40
+	for <stable@vger.kernel.org>; Thu,  2 Jul 2026 16:20:14 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783011066; cv=none; b=kkw0/2m8+Bq8DVmb6+ek3vuHKtuyIcFWpriDA7WR/eTiopUsUcFjvN+d288w6RTJB802Lwl3VlX83RE+12NTxbGlUkKgndemLDo1D/YdoNUbEh3GCuT+ZD63mCkMndwURGm3pN+w39RyTCqNduQBJEvufJtMHpNofGvXEh+Ghb8=
+	t=1783009215; cv=none; b=dc6v3yDmLaGHU7HWqROjFo4wrcsOhjfmiMIeTnAzVyx2ySmOYuiU9/Nh9lpoU6y2O+BDTPgSXvk/cEpTm1bkwRmRsRJOOvZuyJddNqhwYS/NSS9KMASzg2u9JOahlBF5aGePjxTOwj3VjJn27Iz0c341d/zWSHVpihqSDClpzE8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783011066; c=relaxed/simple;
-	bh=zIY6XVUDJeys747uI2xkS3WYkofOnofJyfi5ePfobWI=;
+	s=arc-20240116; t=1783009215; c=relaxed/simple;
+	bh=uZdyal3TudfnXzXkBrQ6v2e5yAG18HQf5hN6L3CsHfo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mgLU3J/rfmutf3sfbr0yI8FqxauYJoiZb7LF6QNNP9CUZAAANN3Tk60kIS5nCvf0/SiMMXer1LteJ5AVJo2KPlGP4+OFrQHzlBNh7VgtXo/5XNF32DtQvcUBIjzLW8FMVq13t8qDluGxNCe5E649biDboepm9s+0BrhqHuC1NOs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=toC3WmC/; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5D511F000E9;
-	Thu,  2 Jul 2026 16:51:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1783011065;
-	bh=AWnXchYFLkn8fLCp4Ptasq7BF3SDsrGLR+JNg+Xu3uM=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=toC3WmC/peQqSJAziHfgWwdahfIYeVJhnQjqA3pjE2Ft6zoFQ+ZYuSGjnHQ0N4e5e
-	 0JlQXYfG3/ESdinDY4oXI/h7ELtlNg3bVT7TlI0ppxbmh4Pxp7YdbhOnq3p/t06w2o
-	 c+VVhv8A0rKsUK5ahq3NlJXjczyKD0da2IaGczF8=
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: stable@vger.kernel.org
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	patches@lists.linux.dev,
-	stable@kernel.org,
-	Sven Eckelmann <sven@narfation.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 099/175] batman-adv: bla: annotate lasttime access with READ/WRITE_ONCE
-Date: Thu,  2 Jul 2026 18:20:00 +0200
-Message-ID: <20260702155117.857371614@linuxfoundation.org>
-X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260702155115.766838875@linuxfoundation.org>
-References: <20260702155115.766838875@linuxfoundation.org>
-User-Agent: quilt/0.69
-X-stable: review
-X-Patchwork-Hint: ignore
+	 MIME-Version; b=bOMDrDacvrtVoWPnBWudGXtE5OCoucouL6fMv6V8jhq41vJqli/PNgxuUmKnMdIN93ntZzTkr65JgmowlziC46Ny4LbZJg4jTwkaUVLojduXFbXtf1NBYHENbYOEHl6eg85tKwmi0thmZ49kjs5ujYNII85SHqcd8sW40q2inaQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Yxy/q4/c; arc=none smtp.client-ip=209.85.214.182
+Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-2c9d87b1f9eso20130565ad.3
+        for <stable@vger.kernel.org>; Thu, 02 Jul 2026 09:20:14 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1783009214; x=1783614014; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=rnMPSSlYPbFeKjZ6REZ70kPjg0z6TdA8YrdT5/DPlfA=;
+        b=Yxy/q4/cg8O1qzxwt0+VHPudaf+CzUx8dTrx8m2cviij0IQN8nOs6FgtLLEHxSD9+G
+         BuXx9HStXPGjax46W18Oolna9sTCa7SxPWqmBOddGTMiB8mFjgedGYyxKqIyn/fD++P6
+         zwnXamJtece2oI4ttxCW2wpGgFwZIBRyOlbTfhmtuouOi5+j7qvMFJSA9V0iEPnxUccf
+         KDfdm59ulHSJ57LUXbxl/sy0xDbq2rsn5dpF3qL9n/MP3r5LiUCt6McTXDKFsKRfbrNm
+         OKjYt3TbY1AtGE6EEI0A60EMQX+nUDmvJ5pM3VHi2ISjuOC8iOmJzdZ+K4OR+daG1apF
+         pLMA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1783009214; x=1783614014;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=rnMPSSlYPbFeKjZ6REZ70kPjg0z6TdA8YrdT5/DPlfA=;
+        b=q5CT5VbLbKbgr2qCgBsORHmS9t3pX0JwOh34GYLEjXg1SBVrT8OLkWXMGoxBodnMoZ
+         Kisz3tWSNLPJ3+BhfKQqxZ7KX7GWwigvHj06bGmjvoL++RI7myDY39yVGK/tgrm8viY3
+         7XV6xJdfVQSi5ij5qtQyAomTiFm2WJPzl4li8KUfVUAJxLhrlM5HwizVbA5QHELfHBAQ
+         vnDdqjWyH9/Xsfvo+Ao9C5EctHJmsdUU8eJHtvEVT1l+eYi+rKVeZ60LA6Eudc1cedDo
+         wk50fXBO9TAsh4N9EMJ5vEqSVjDZsOQl+p+dkwwB8OX6SbBqYe8mRlUxNYDZOI6clEPI
+         NJog==
+X-Forwarded-Encrypted: i=1; AHgh+Rrr3B4n9YrcnKO6441ofzjlSKLzujj1m+0EyOrTH6D3YVwCdOBpmT9/R7kx4QUq5XEqkfo2zlI=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxZIFg3WZ/1fNqkb6i9JxivSK29Vbbi1QXSzFl8E1CXloGdzsD2
+	D7lOdyxZbe9lOQa6vf6AviCV9Hq7UROLaGL1RVx/JZDfrdXNIp/LrD1P
+X-Gm-Gg: AfdE7cnSogMVBWoRNlw8yJ9YDIOHtYYdrNsgHeyFLnSTHao2cBqydRghooamDT8OmIb
+	o+TKG8NXHYa+74/m4sjcx164zBcvsOTubZQAIpJxq7XSa/BOHYa0uNgUi/yuoyLXFKBBZdrEdTv
+	VrS/HhodKGfw63lNaA1U1Wbf8buZhAAc2Ir16KcCdQt/uX3SzxDHUk4Oijf+kmUQ1bA0OyVWKLf
+	F4ZgvMaYXxOJiuK6AkFnK1mx3aknH6Er+5IDeThIQZm6UP/4XCBHi51WALTWqvOKKfOiwfAWAUv
+	W9nrAQGA2o7wur0GuYtogTUUHr8WAfNcP45zre+HyfmpjwLrzXWFL77e97PfK6norjgSmXOMTPi
+	+THxxQUnVA0LU0y6UV7Pg6DC9rUc5VvVcHIpRP2uM+W/dqXLNFh1R4uGDViUuLjkj5fcB7VDZV/
+	Z9uWj9AOaZT2SzKo5sUp9al0mtupTEcOr6CuUPoIcYL5eif7HSflO2Mr+tCQ==
+X-Received: by 2002:a17:903:3c05:b0:2c8:4c29:afeb with SMTP id d9443c01a7336-2ca7e6519c1mr75850665ad.8.1783009213852;
+        Thu, 02 Jul 2026 09:20:13 -0700 (PDT)
+Received: from fx.tailc0aff1.ts.net ([206.206.192.132])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-13b3c85b345sm16493826c88.10.2026.07.02.09.20.12
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 02 Jul 2026 09:20:12 -0700 (PDT)
+From: Weiming Shi <bestswngs@gmail.com>
+To: linux-xfs@vger.kernel.org
+Cc: Carlos Maiolino <cem@kernel.org>,
+	"Darrick J . Wong" <djwong@kernel.org>,
+	Brian Foster <bfoster@redhat.com>,
+	Christoph Hellwig <hch@infradead.org>,
+	Xiang Mei <xmei5@asu.edu>,
+	Weiming Shi <bestswngs@gmail.com>,
+	stable@vger.kernel.org
+Subject: [PATCH v3] xfs: fail recovery on a committed log item with no regions
+Date: Thu,  2 Jul 2026 09:20:00 -0700
+Message-ID: <20260702162000.3548359-4-bestswngs@gmail.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20260702162000.3548359-1-bestswngs@gmail.com>
+References: <20260702162000.3548359-1-bestswngs@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -67,196 +99,102 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_CONTAINS_FROM(1.00)[];
 	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-271254-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:stable@kernel.org,m:sven@narfation.org,m:sashal@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	TO_DN_SOME(0.00)[];
+	FREEMAIL_CC(0.00)[kernel.org,redhat.com,infradead.org,asu.edu,gmail.com,vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-270585-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:linux-xfs@vger.kernel.org,m:cem@kernel.org,m:djwong@kernel.org,m:bfoster@redhat.com,m:hch@infradead.org,m:xmei5@asu.edu,m:bestswngs@gmail.com,m:stable@vger.kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[bestswngs@gmail.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[gmail.com:+];
 	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FREEMAIL_FROM(0.00)[gmail.com];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[bestswngs@gmail.com,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[narfation.org:email,vger.kernel.org:from_smtp,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[asu.edu:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: DC3946FB28B
+X-Rspamd-Queue-Id: BF3D56FA4AC
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+If the first op of a transaction is a bare transaction header
+(len == sizeof(struct xfs_trans_header)), xlog_recover_add_to_trans()
+adds an item but no region, leaving it on r_itemq with ri_cnt == 0 and
+ri_buf == NULL.
 
-------------------
+The header can be split across op records, so later ops may still add
+regions; the item is only invalid if the transaction commits with none.
+The runtime commit path never emits such a transaction, so this only
+happens on a crafted log.  It came from an AI-assisted code audit of the
+recovery parser.
 
-From: Sven Eckelmann <sven@narfation.org>
+xlog_recover_reorder_trans() calls ITEM_TYPE() on the item, which reads
+*(unsigned short *)item->ri_buf[0].iov_base and faults on the NULL
+ri_buf.  Reject it there, before the commit handlers that also read
+ri_buf[0].
 
-commit 98b0fb191c878a64cbaebfe231d96d57576acf8c upstream.
+ KASAN: null-ptr-deref in range [0x0000000000000000-0x0000000000000007]
+ RIP: 0010:xlog_recover_reorder_trans (fs/xfs/xfs_log_recover.c:1836)
+  xlog_recover_commit_trans (fs/xfs/xfs_log_recover.c:2043)
+  xlog_recover_process_data (fs/xfs/xfs_log_recover.c:2501)
+  xlog_do_recovery_pass (fs/xfs/xfs_log_recover.c:3244)
+  xlog_recover (fs/xfs/xfs_log_recover.c:3493)
+  xfs_log_mount (fs/xfs/xfs_log.c:618)
+  xfs_mountfs (fs/xfs/xfs_mount.c:1034)
+  xfs_fs_fill_super (fs/xfs/xfs_super.c:1938)
+  vfs_get_tree (fs/super.c:1695)
+  path_mount (fs/namespace.c:4161)
+  __x64_sys_mount (fs/namespace.c:4367)
 
-The lasttime field for claim, backbone_gw, and loopdetect tracks the
-jiffies value of the most recent activity and is used to detect timeouts.
-These accesses are not consistently protected by a lock, so
-READ_ONCE/WRITE_ONCE must be used to prevent data races caused by compiler
-optimizations.
-
-Cc: stable@kernel.org
-Fixes: 23721387c409 ("batman-adv: add basic bridge loop avoidance code")
-Signed-off-by: Sven Eckelmann <sven@narfation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 89cebc847729 ("xfs: validate transaction header length on log recovery")
+Cc: <stable@vger.kernel.org> # v4.3
+Reported-by: Xiang Mei <xmei5@asu.edu>
+Assisted-by: Claude:claude-opus-4-8
+Signed-off-by: Weiming Shi <bestswngs@gmail.com>
 ---
- net/batman-adv/bridge_loop_avoidance.c | 28 +++++++++++++-------------
- 1 file changed, 14 insertions(+), 14 deletions(-)
+ fs/xfs/xfs_log_recover.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-diff --git a/net/batman-adv/bridge_loop_avoidance.c b/net/batman-adv/bridge_loop_avoidance.c
-index cfb1eb25c6ac4d..ac12c06f11b89e 100644
---- a/net/batman-adv/bridge_loop_avoidance.c
-+++ b/net/batman-adv/bridge_loop_avoidance.c
-@@ -512,7 +512,7 @@ batadv_bla_get_backbone_gw(struct batadv_priv *bat_priv, const u8 *orig,
- 		return NULL;
+diff --git a/fs/xfs/xfs_log_recover.c b/fs/xfs/xfs_log_recover.c
+index 103b2a79667b..fdb011e6ef60 100644
+--- a/fs/xfs/xfs_log_recover.c
++++ b/fs/xfs/xfs_log_recover.c
+@@ -1907,6 +1907,15 @@ xlog_recover_reorder_trans(
+ 	list_for_each_entry_safe(item, n, &sort_list, ri_list) {
+ 		enum xlog_recover_reorder	fate = XLOG_REORDER_ITEM_LIST;
  
- 	entry->vid = vid;
--	entry->lasttime = jiffies;
-+	WRITE_ONCE(entry->lasttime, jiffies);
- 	entry->crc = BATADV_BLA_CRC_INIT;
- 	entry->bat_priv = bat_priv;
- 	spin_lock_init(&entry->crc_lock);
-@@ -580,7 +580,7 @@ batadv_bla_update_own_backbone_gw(struct batadv_priv *bat_priv,
- 	if (unlikely(!backbone_gw))
- 		return;
- 
--	backbone_gw->lasttime = jiffies;
-+	WRITE_ONCE(backbone_gw->lasttime, jiffies);
- 	batadv_backbone_gw_put(backbone_gw);
- }
- 
-@@ -714,7 +714,7 @@ static void batadv_bla_add_claim(struct batadv_priv *bat_priv,
- 		ether_addr_copy(claim->addr, mac);
- 		spin_lock_init(&claim->backbone_lock);
- 		claim->vid = vid;
--		claim->lasttime = jiffies;
-+		WRITE_ONCE(claim->lasttime, jiffies);
- 		kref_get(&backbone_gw->refcount);
- 		claim->backbone_gw = backbone_gw;
- 		kref_init(&claim->refcount);
-@@ -736,7 +736,7 @@ static void batadv_bla_add_claim(struct batadv_priv *bat_priv,
- 			return;
- 		}
- 	} else {
--		claim->lasttime = jiffies;
-+		WRITE_ONCE(claim->lasttime, jiffies);
- 		if (claim->backbone_gw == backbone_gw)
- 			/* no need to register a new backbone */
- 			goto claim_free_ref;
-@@ -769,7 +769,7 @@ static void batadv_bla_add_claim(struct batadv_priv *bat_priv,
- 	spin_lock_bh(&backbone_gw->crc_lock);
- 	backbone_gw->crc ^= crc16(0, claim->addr, ETH_ALEN);
- 	spin_unlock_bh(&backbone_gw->crc_lock);
--	backbone_gw->lasttime = jiffies;
-+	WRITE_ONCE(backbone_gw->lasttime, jiffies);
- 
- claim_free_ref:
- 	batadv_claim_put(claim);
-@@ -858,7 +858,7 @@ static bool batadv_handle_announce(struct batadv_priv *bat_priv, u8 *an_addr,
- 		return true;
- 
- 	/* handle as ANNOUNCE frame */
--	backbone_gw->lasttime = jiffies;
-+	WRITE_ONCE(backbone_gw->lasttime, jiffies);
- 	crc = ntohs(*((__force __be16 *)(&an_addr[4])));
- 
- 	batadv_dbg(BATADV_DBG_BLA, bat_priv,
-@@ -1253,7 +1253,7 @@ static void batadv_bla_purge_backbone_gw(struct batadv_priv *bat_priv, int now)
- 						  head, hash_entry) {
- 				if (now)
- 					goto purge_now;
--				if (!batadv_has_timed_out(backbone_gw->lasttime,
-+				if (!batadv_has_timed_out(READ_ONCE(backbone_gw->lasttime),
- 							  BATADV_BLA_BACKBONE_TIMEOUT))
- 					continue;
- 
-@@ -1334,7 +1334,7 @@ static void batadv_bla_purge_claims(struct batadv_priv *bat_priv,
- 						primary_if->net_dev->dev_addr))
- 				goto skip;
- 
--			if (!batadv_has_timed_out(claim->lasttime,
-+			if (!batadv_has_timed_out(READ_ONCE(claim->lasttime),
- 						  BATADV_BLA_CLAIM_TIMEOUT))
- 				goto skip;
- 
-@@ -1494,7 +1494,7 @@ static void batadv_bla_periodic_work(struct work_struct *work)
- 		eth_random_addr(bat_priv->bla.loopdetect_addr);
- 		bat_priv->bla.loopdetect_addr[0] = 0xba;
- 		bat_priv->bla.loopdetect_addr[1] = 0xbe;
--		bat_priv->bla.loopdetect_lasttime = jiffies;
-+		WRITE_ONCE(bat_priv->bla.loopdetect_lasttime, jiffies);
- 		atomic_set(&bat_priv->bla.loopdetect_next,
- 			   BATADV_BLA_LOOPDETECT_PERIODS);
- 
-@@ -1515,7 +1515,7 @@ static void batadv_bla_periodic_work(struct work_struct *work)
- 						primary_if->net_dev->dev_addr))
- 				continue;
- 
--			backbone_gw->lasttime = jiffies;
-+			WRITE_ONCE(backbone_gw->lasttime, jiffies);
- 
- 			batadv_bla_send_announce(bat_priv, backbone_gw);
- 			if (send_loopdetect)
-@@ -1900,7 +1900,7 @@ batadv_bla_loopdetect_check(struct batadv_priv *bat_priv, struct sk_buff *skb,
- 	/* If the packet came too late, don't forward it on the mesh
- 	 * but don't consider that as loop. It might be a coincidence.
- 	 */
--	if (batadv_has_timed_out(bat_priv->bla.loopdetect_lasttime,
-+	if (batadv_has_timed_out(READ_ONCE(bat_priv->bla.loopdetect_lasttime),
- 				 BATADV_BLA_LOOPDETECT_TIMEOUT))
- 		return true;
- 
-@@ -2016,7 +2016,7 @@ bool batadv_bla_rx(struct batadv_priv *bat_priv, struct sk_buff *skb,
- 
- 	if (own_claim) {
- 		/* ... allow it in any case */
--		claim->lasttime = jiffies;
-+		WRITE_ONCE(claim->lasttime, jiffies);
- 		goto allow;
- 	}
- 
-@@ -2118,7 +2118,7 @@ bool batadv_bla_tx(struct batadv_priv *bat_priv, struct sk_buff *skb,
- 		/* if yes, the client has roamed and we have
- 		 * to unclaim it.
- 		 */
--		if (batadv_has_timed_out(claim->lasttime, 100)) {
-+		if (batadv_has_timed_out(READ_ONCE(claim->lasttime), 100)) {
- 			/* only unclaim if the last claim entry is
- 			 * older than 100 ms to make sure we really
- 			 * have a roaming client here.
-@@ -2372,7 +2372,7 @@ batadv_bla_backbone_dump_entry(struct sk_buff *msg, u32 portid,
- 	backbone_crc = backbone_gw->crc;
- 	spin_unlock_bh(&backbone_gw->crc_lock);
- 
--	msecs = jiffies_to_msecs(jiffies - backbone_gw->lasttime);
-+	msecs = jiffies_to_msecs(jiffies - READ_ONCE(backbone_gw->lasttime));
- 
- 	if (is_own)
- 		if (nla_put_flag(msg, BATADV_ATTR_BLA_OWN)) {
++		/* a committed item with no regions has a NULL ri_buf[0] */
++		if (!item->ri_cnt || !item->ri_buf) {
++			xfs_warn(log->l_mp,
++				"%s: committed log item has no regions",
++				__func__);
++			error = -EFSCORRUPTED;
++			break;
++		}
++
+ 		item->ri_ops = xlog_find_item_ops(item);
+ 		if (!item->ri_ops) {
+ 			xfs_warn(log->l_mp,
 -- 
-2.53.0
-
-
+2.43.0
 
 
