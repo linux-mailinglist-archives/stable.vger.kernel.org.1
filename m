@@ -1,60 +1,62 @@
-Return-Path: <stable+bounces-270870-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-271088-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 60YZNgGVRmpaZAsAu9opvQ
-	(envelope-from <stable+bounces-270870-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:42:41 +0200
+	id QM/JJKKXRmr4ZQsAu9opvQ
+	(envelope-from <stable+bounces-271088-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:53:54 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 68EBC6FA6C5
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:42:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D8976FAB7E
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:53:54 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=fEsYaWeJ;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-270870-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-270870-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=Xm9DHW3G;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-271088-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-271088-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 353E13029ACC
-	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:37:06 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 975C2305B266
+	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:46:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5E3330C15A;
-	Thu,  2 Jul 2026 16:34:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D79C337A84C;
+	Thu,  2 Jul 2026 16:43:58 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8154333E348;
-	Thu,  2 Jul 2026 16:34:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 843F53A6B85;
+	Thu,  2 Jul 2026 16:43:57 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783010065; cv=none; b=PM1xqfklSUp47j4ZROKlYKaG6SKBocp+xKuPcyvEUHLdkDe+P9HlL8Z8JejEHwcwymU/g2n8O2otD7/EBW/Pes/ozBLTKu8/tHWUfzqeybPpSL3qklXs0hoXeS63I1/eVXIQ7kHiXl/sRfNE905/YL16c+ZCoyOhF5EiyjixvBI=
+	t=1783010638; cv=none; b=sBJPa/J+B0OYwZRLK3vCa73DLvVcuyDEAQei6pGbxgsfDNGLB5yu7Pt31YDaCPJy7XzxzbCCtg52kNhkrAwLI0HMOvfQQt7fljhrk4l4UHMMYi84eUHDGnds21G0n/0XDOSqGyh/y1dckX0UuaMTuhK9wMxrQR6Jt9OJJOvtU44=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783010065; c=relaxed/simple;
-	bh=AC6WsFRmG0KCbaHiHHCpsxsRHSJ76uWOy5i3Ir3U/B0=;
+	s=arc-20240116; t=1783010638; c=relaxed/simple;
+	bh=Os/HpYZEuSef0pt+IGVEke9DwFVWxaAHLFPzX/rwvAQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CLGZ+y/UEmKX2W0t4HK3vab0/I0SaMiMxJyLXTVigikWk+sjbbMi6rts4Mhnx7qFwLBpEYyILzpnuXcc1/q3I/gEVYFujTgwNvGC9Ypnz2QuZP/G/awRPKrIOb7ufEhufwhe8rW3LsC+URRfbbJ5t2zhkg1ee1134ypGLGWcIsY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fEsYaWeJ; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E720C1F00A3A;
-	Thu,  2 Jul 2026 16:34:23 +0000 (UTC)
+	 MIME-Version; b=XS1v0D32h2AS7LrxMXyvJMqs0lMzp9FWFDPusarAwPNcsLHIAx4AzpW1KEy97iYfYIvRUKG5Oq9eEUNiJJgWoIwJbrLvAYnIjUdKVT4+5Nh2jaTjoOgqqR9QttCUjiYiNmRo+vQPXTWypUVkF/BFApLnm6zi3J4QBzCZ8bY2R5A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Xm9DHW3G; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA36A1F000E9;
+	Thu,  2 Jul 2026 16:43:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1783010064;
-	bh=P5M3i3mc1e97uh1A7FEgoQ0aVNaMMt5+l+/pu9B7MnM=;
+	s=korg; t=1783010637;
+	bh=c9I70Y6EER+R4AZL8TV+0AyvhPgohrpDhfZntq00JBI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=fEsYaWeJMSRDkqDi3o9ORnbpgZSxcwijFUeShcZlzsUV2cbuxL0QkEzElA/B0zU4s
-	 7psWu4NwOiR8EV0D4+0TwqT22tlBZ884U25+ArBJyPckAt1tWwLzPBYLBRF2L91uGn
-	 /wD7zaMRlWmXJKwuiQsTK7M+of2+z7JGvNPTfRJM=
+	b=Xm9DHW3GjDZJkPhDGtonHAOq1Xgk2HN8+VGjBfIvqUeR5BgfjYJ4xR6bL3U3t4WhI
+	 0QQvEAmnTU0Jd6MutH2s1SWfRxEZNO6+sYGIDQYcVXLdzHJSmHbEtHrLbkDX4McHLh
+	 N0XWBwxpLGanvhgFtx+88ykImnooKhsxsiUazy/k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wentao Liang <vulab@iscas.ac.cn>,
-	Anna Schumaker <anna.schumaker@hammerspace.com>
-Subject: [PATCH 6.1 096/129] pNFS: Fix use-after-free in pnfs_update_layout()
+	stable@kernel.org,
+	Wenjie Qi <qiwenjie@xiaomi.com>,
+	Chao Yu <chao@kernel.org>,
+	Jaegeuk Kim <jaegeuk@kernel.org>
+Subject: [PATCH 6.12 158/204] f2fs: keep atomic write retry from zeroing original data
 Date: Thu,  2 Jul 2026 18:20:15 +0200
-Message-ID: <20260702155114.128996129@linuxfoundation.org>
+Message-ID: <20260702155121.968562981@linuxfoundation.org>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260702155112.163984240@linuxfoundation.org>
-References: <20260702155112.163984240@linuxfoundation.org>
+In-Reply-To: <20260702155118.667618796@linuxfoundation.org>
+References: <20260702155118.667618796@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,79 +70,114 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_MISSING_CHARSET(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-270870-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:vulab@iscas.ac.cn,m:anna.schumaker@hammerspace.com,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-271088-lists,stable=lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:stable@kernel.org,m:qiwenjie@xiaomi.com,m:chao@kernel.org,m:jaegeuk@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,iscas.ac.cn:email,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,xiaomi.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 68EBC6FA6C5
+X-Rspamd-Queue-Id: 5D8976FAB7E
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wentao Liang <vulab@iscas.ac.cn>
+From: Wenjie Qi <qwjhust@gmail.com>
 
-commit 13e198a90ca4050f4bee8a3f23680389a6563ccc upstream.
+commit 6d874b65aadce56ac78f76129dbcfc2599b638f8 upstream.
 
-When hitting the NFS_LAYOUT_RETURN branch in pnfs_update_layout(),
-the code calls pnfs_prepare_to_retry_layoutget(lo). If it succeeds,
-pnfs_put_layout_hdr(lo) is called before trace_pnfs_update_layout(),
-which still references 'lo'. This results in a use-after-free when the
-tracepoint accesses lo's fields.
+A partial atomic write reserves a block in the COW inode before reading the
+original data page for the untouched bytes in that page.
 
-Fix this by moving the tracepoint call before pnfs_put_layout_hdr(lo).
+If that read fails, write_begin returns an error but leaves the COW inode
+entry as NEW_ADDR. A retry of the same partial write then finds the COW
+entry, treats it as existing COW data, and f2fs_write_begin() zeroes the
+whole folio because blkaddr is NEW_ADDR.
 
-Fixes: 2c8d5fc37fe2 ("pNFS: Stricter ordering of layoutget and layoutreturn")
-Cc: stable@vger.kernel.org
-Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
-Signed-off-by: Anna Schumaker <anna.schumaker@hammerspace.com>
+If the retry is committed, the bytes outside the retried write range are
+committed as zeroes instead of preserving the original file contents.
+
+Only use the COW inode as the read source when it already has a real data
+block. If the COW entry is still NEW_ADDR, treat it as a reservation to
+reuse: keep reading the old data from the original inode and avoid
+reserving or accounting the same atomic block again.
+
+Cc: stable@kernel.org
+Fixes: 3db1de0e582c ("f2fs: change the current atomic write way")
+Signed-off-by: Wenjie Qi <qiwenjie@xiaomi.com>
+Reviewed-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nfs/pnfs.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/f2fs/data.c |   16 +++++++++++-----
+ 1 file changed, 11 insertions(+), 5 deletions(-)
 
---- a/fs/nfs/pnfs.c
-+++ b/fs/nfs/pnfs.c
-@@ -2070,11 +2070,11 @@ lookup_again:
- 		dprintk("%s wait for layoutreturn\n", __func__);
- 		lseg = ERR_PTR(pnfs_prepare_to_retry_layoutget(lo));
- 		if (!IS_ERR(lseg)) {
--			pnfs_put_layout_hdr(lo);
- 			dprintk("%s retrying\n", __func__);
- 			trace_pnfs_update_layout(ino, pos, count, iomode, lo,
- 						 lseg,
- 						 PNFS_UPDATE_LAYOUT_RETRY);
-+			pnfs_put_layout_hdr(lo);
- 			goto lookup_again;
- 		}
- 		trace_pnfs_update_layout(ino, pos, count, iomode, lo, lseg,
+--- a/fs/f2fs/data.c
++++ b/fs/f2fs/data.c
+@@ -3566,6 +3566,7 @@ static int prepare_atomic_write_begin(st
+ 	pgoff_t index = folio->index;
+ 	int err = 0;
+ 	block_t ori_blk_addr = NULL_ADDR;
++	bool cow_has_reserved_block = false;
+ 
+ 	/* If pos is beyond the end of file, reserve a new block in COW inode */
+ 	if ((pos & PAGE_MASK) >= i_size_read(inode))
+@@ -3575,9 +3576,11 @@ static int prepare_atomic_write_begin(st
+ 	err = __find_data_block(cow_inode, index, blk_addr);
+ 	if (err) {
+ 		return err;
+-	} else if (*blk_addr != NULL_ADDR) {
++	} else if (__is_valid_data_blkaddr(*blk_addr)) {
+ 		*use_cow = true;
+ 		return 0;
++	} else if (*blk_addr == NEW_ADDR) {
++		cow_has_reserved_block = true;
+ 	}
+ 
+ 	if (is_inode_flag_set(inode, FI_ATOMIC_REPLACE))
+@@ -3590,10 +3593,13 @@ static int prepare_atomic_write_begin(st
+ 
+ reserve_block:
+ 	/* Finally, we should reserve a new block in COW inode for the update */
+-	err = __reserve_data_block(cow_inode, index, blk_addr, node_changed);
+-	if (err)
+-		return err;
+-	inc_atomic_write_cnt(inode);
++	if (!cow_has_reserved_block) {
++		err = __reserve_data_block(cow_inode, index, blk_addr,
++					   node_changed);
++		if (err)
++			return err;
++		inc_atomic_write_cnt(inode);
++	}
+ 
+ 	if (ori_blk_addr != NULL_ADDR)
+ 		*blk_addr = ori_blk_addr;
 
 
 
