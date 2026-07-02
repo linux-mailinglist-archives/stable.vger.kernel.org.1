@@ -1,62 +1,61 @@
-Return-Path: <stable+bounces-270737-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-271051-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id +mfkAB+WRmoIZQsAu9opvQ
-	(envelope-from <stable+bounces-270737-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:47:27 +0200
+	id L90uOpmXRmrrZQsAu9opvQ
+	(envelope-from <stable+bounces-271051-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:53:45 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 00FDB6FA8CC
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:47:25 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D5716FAB5E
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:53:45 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=SqCYM9hg;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-270737-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-270737-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=ZKVJe5DF;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-271051-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-271051-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 1CDC73048891
-	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:33:00 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id A5F0630C182C
+	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:45:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C805E346FA7;
-	Thu,  2 Jul 2026 16:28:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE5CA346FA7;
+	Thu,  2 Jul 2026 16:42:21 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C053282F30;
-	Thu,  2 Jul 2026 16:28:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DC89317146;
+	Thu,  2 Jul 2026 16:42:20 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783009721; cv=none; b=qh6uIuvUp71B1Y6WPClbJuISsELBsnfrzqqfUV8vKIjX/WabQTPQl8mi/2pUPO45HWZ6sOTwPPg6XgtIl2woxBZNNCNTz/OuBMBSfuc2uMyOSfBw4jQVnW4tHBO+QdONFIhmUR6VMOhfTR6gecDuO/JSpRlEvDe448suaIheYsg=
+	t=1783010541; cv=none; b=FCHxZlsZBZmsGCpCSHk7f6vEyc/4u1CuVRQ/hhekOGH7wEpmL8tQs1yS6S2duh1+7YwsV7IzNk9oJDQQwfR13QdbVwkik8E0C920lwCTewe5a8BusbWmqpHDl6mdxxMD0qHeLpM1rYWOI561313Na138c13TUVPMn0bBdd1RlWE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783009721; c=relaxed/simple;
-	bh=lCaYPJC18GBu8iI0ts2AXey7c+02vCD08Zon6Cf7BEU=;
+	s=arc-20240116; t=1783010541; c=relaxed/simple;
+	bh=H7eIQdPJNoNm+vV6SpW8yGi7lc4QEupKWEBNpQNzoMA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=C99c5wIaZXl7jW72rYwx00tMjlQECUYvPKCc7kmNznh9iUh2jla5QXP7wDn2pjQqWCGAorObzk5Z+Vx5a3NuEwNd6w7JjjbyfW6yysCuhvbPc46i2t/kC9kGKLZBxqnzPLq7cxEVaFcy20y77Dv/8s3HZugzGF3gSo1WyyZCjq8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SqCYM9hg; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 115A31F00A3A;
-	Thu,  2 Jul 2026 16:28:36 +0000 (UTC)
+	 MIME-Version; b=WnlmzhXrpvgbuxo/gMM7jWa4QrVF0La402MH1O1uto5VYLUqxI+7pG7C3joguTX9b0LoHhstR7f1T7+qNgP688lRqbKkrFubUsvrmaxYBVFquBQbGk+V7W8lSJkjsgx4yr+HO4F+kO9zeoKttWkcPGaGyVZy7RjgUkwcE3iDFDw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZKVJe5DF; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3AE71F000E9;
+	Thu,  2 Jul 2026 16:42:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1783009717;
-	bh=6qwVzb4wOA1FV1XCVwPekkJP3DKjo67ptiuT79YCIDg=;
+	s=korg; t=1783010540;
+	bh=4zkZQfcfYhj7AXzqegD84grcRDtCY5km/vnMlQdaZvs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=SqCYM9hg6wIznj7bXtFiO8Z7sB4/avQ11vbnEkdm+FMzcAgem+RdCiXCToRY/tZDq
-	 52c1dxmMHoch5ebvkuL42cUdT0I/+FeMPUGSTt2zSjaFz6GyOdc+ohFGwi5Dt2szsr
-	 AU10iiz9mcifHTETiyoNU1SeuIEiNXN2pjoshMc4=
+	b=ZKVJe5DF63AGYpbQuMOsy57871UzNf+AwOE3A20MJcLsXN4UUcEf3LJ1oataYgPWV
+	 j6Oo7bfeXzxxhxdGpBtoDPNKSM2UuwY650JB+cV726WQ+LQwsddOnlsxaFdsMP/mER
+	 soX1j2pc3JnfoD8U7TaNLR3k2zs3AX6Sed5jbS84=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jose Ignacio Tornos Martinez <jtornosm@redhat.com>,
-	Baochen Qiang <baochen.qiang@oss.qualcomm.com>,
-	Rameshkumar Sundaram <rameshkumar.sundaram@oss.qualcomm.com>,
-	Jeff Johnson <jeff.johnson@oss.qualcomm.com>
-Subject: [PATCH 5.15 61/95] wifi: ath11k: fix warning when unbinding
+	Zenm Chen <zenmchen@gmail.com>,
+	Lorenzo Bianconi <lorenzo@kernel.org>,
+	Felix Fietkau <nbd@nbd.name>
+Subject: [PATCH 6.12 147/204] wifi: mt76: mt76x2u: Add support for ELECOM WDC-867SU3S
 Date: Thu,  2 Jul 2026 18:20:04 +0200
-Message-ID: <20260702155110.493538040@linuxfoundation.org>
+Message-ID: <20260702155121.739785661@linuxfoundation.org>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260702155109.196223802@linuxfoundation.org>
-References: <20260702155109.196223802@linuxfoundation.org>
+In-Reply-To: <20260702155118.667618796@linuxfoundation.org>
+References: <20260702155118.667618796@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,88 +69,73 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	PRECEDENCE_BULK(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-270737-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:jtornosm@redhat.com,m:baochen.qiang@oss.qualcomm.com,m:rameshkumar.sundaram@oss.qualcomm.com,m:jeff.johnson@oss.qualcomm.com,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	MID_RHS_MATCH_FROM(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RWL_MAILSPIKE_POSSIBLE(0.00)[104.64.211.4:from];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,qualcomm.com:email,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,msgid.link:url]
+	TAGGED_FROM(0.00)[bounces-271051-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:zenmchen@gmail.com,m:lorenzo@kernel.org,m:nbd@nbd.name,s:lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org,nbd.name];
+	FORWARDED(0.00)[lists@lfdr.de];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,msgid.link:url,nbd.name:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 00FDB6FA8CC
+X-Rspamd-Queue-Id: 5D5716FAB5E
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
+From: Zenm Chen <zenmchen@gmail.com>
 
-commit 8b7a26b6681922a38cd5a7829ace61f8e54df9b7 upstream.
+commit f4ce0664e9f0387873b181777891741c33e19465 upstream.
 
-If there is an error during some initialization related to firmware,
-the buffers dp->tx_ring[i].tx_status are released.
-However this is released again when the device is unbinded (ath11k_pci),
-and we get:
-WARNING: CPU: 0 PID: 6231 at mm/slub.c:4368 free_large_kmalloc+0x57/0x90
-Call Trace:
-free_large_kmalloc
-ath11k_dp_free
-ath11k_core_deinit
-ath11k_pci_remove
-...
+Add the ID 056e:400a to the table to support an additional MT7612U
+adapter: ELECOM WDC-867SU3S.
 
-The issue is always reproducible from a VM because the MSI addressing
-initialization is failing.
+Compile tested only.
 
-In order to fix the issue, just set the buffers to NULL after releasing in
-order to avoid the double free.
-
-Fixes: d5c65159f289 ("ath11k: driver for Qualcomm IEEE 802.11ax devices")
-Cc: stable@vger.kernel.org
-Signed-off-by: Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
-Reviewed-by: Baochen Qiang <baochen.qiang@oss.qualcomm.com>
-Reviewed-by: Rameshkumar Sundaram <rameshkumar.sundaram@oss.qualcomm.com>
-Link: https://patch.msgid.link/20260420110130.509670-1-jtornosm@redhat.com
-Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+Cc: stable@vger.kernel.org # 5.10.x
+Signed-off-by: Zenm Chen <zenmchen@gmail.com>
+Acked-by: Lorenzo Bianconi <lorenzo@kernel.org>
+Link: https://patch.msgid.link/20260407154430.9184-1-zenmchen@gmail.com
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/ath/ath11k/dp.c |    1 +
+ drivers/net/wireless/mediatek/mt76/mt76x2/usb.c |    1 +
  1 file changed, 1 insertion(+)
 
---- a/drivers/net/wireless/ath/ath11k/dp.c
-+++ b/drivers/net/wireless/ath/ath11k/dp.c
-@@ -1003,6 +1003,7 @@ void ath11k_dp_free(struct ath11k_base *
- 		idr_destroy(&dp->tx_ring[i].txbuf_idr);
- 		spin_unlock_bh(&dp->tx_ring[i].tx_idr_lock);
- 		kfree(dp->tx_ring[i].tx_status);
-+		dp->tx_ring[i].tx_status = NULL;
- 	}
- 
- 	/* Deinit any SOC level resource */
+--- a/drivers/net/wireless/mediatek/mt76/mt76x2/usb.c
++++ b/drivers/net/wireless/mediatek/mt76/mt76x2/usb.c
+@@ -16,6 +16,7 @@ static const struct usb_device_id mt76x2
+ 	{ USB_DEVICE(0x0e8d, 0x7612) },	/* Aukey USBAC1200 - Alfa AWUS036ACM */
+ 	{ USB_DEVICE(0x057c, 0x8503) },	/* Avm FRITZ!WLAN AC860 */
+ 	{ USB_DEVICE(0x7392, 0xb711) },	/* Edimax EW 7722 UAC */
++	{ USB_DEVICE(0x056e, 0x400a) },	/* ELECOM WDC-867SU3S */
+ 	{ USB_DEVICE(0x0e8d, 0x7632) },	/* HC-M7662BU1 */
+ 	{ USB_DEVICE(0x0471, 0x2126) }, /* LiteOn WN4516R module, nonstandard USB connector */
+ 	{ USB_DEVICE(0x0471, 0x7600) }, /* LiteOn WN4519R module, nonstandard USB connector */
 
 
 
