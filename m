@@ -1,60 +1,65 @@
-Return-Path: <stable+bounces-271089-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-271500-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id w/oiD7ujRmowawsAu9opvQ
-	(envelope-from <stable+bounces-271089-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:45:31 +0200
+	id DzQEL3+nRmpdbAsAu9opvQ
+	(envelope-from <stable+bounces-271500-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 20:01:35 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2F03C6FB992
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:45:30 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1C2756FBCBA
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 20:01:35 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=YbRaQo55;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-271089-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-271089-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=N+4QZmMT;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-271500-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-271500-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 363CA3302A54
-	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:46:56 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 065F73333551
+	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 17:01:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B01683A6EE6;
-	Thu,  2 Jul 2026 16:44:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 659D4317146;
+	Thu,  2 Jul 2026 17:01:45 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F26C3A6B85;
-	Thu,  2 Jul 2026 16:44:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32FF02DEA98;
+	Thu,  2 Jul 2026 17:01:43 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783010641; cv=none; b=fAydH23XEKC2PGW/mIvGBjkMkSP8rK88tEGchnQ8raTlIvRyp3hXeBRhr7tWvMCLQKLkwSvJBVNla79GUeyMiKSOZmHJS9LvTdKpx5mcIaWcfplKqIslxZX+Lqp75FnqY+rTT1E+74Wa8qsO2qfHDKnreBKxmEXm7qznF8sf5to=
+	t=1783011705; cv=none; b=aqFmIjhwf7lwSNuq9UwRNz2aCkpGOep1+eL+WUN+GwK2jOqEmEdMuBCh/z1HwA8GBI9x99epeR+dQs/fjkqAzaQVAQU7AJxPvmLxCAR2+RL+ZjtqebWc4dVWrVu7DCTVltLkV+RbgVRhnZS5CRtBY2s+1Rv370IvYdStXeR1JaU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783010641; c=relaxed/simple;
-	bh=wiA2/s+EX6eCsXqOA3kQZrjxY7BNIaBRne7dV/6iweI=;
+	s=arc-20240116; t=1783011705; c=relaxed/simple;
+	bh=ZobOUlb0BM9Xw6A7pVrQb78NWLl/fQn4WtOh3t1a4CE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iuipy+ypcym37X3AUkfQ8gpbZhoRMGAz4YHTc0P6M9iYhPmOZMbvFUqAfP0ucazbldR2hPlvW7CIJcYAm8sN50CLUII1en5ijISmG7aXOk8MCNxnPBadACZhCBdVtnMyFRTlgniTGKjajJ27DHYZREO3QOtP0ryQvjaooWJKYWY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YbRaQo55; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92DAF1F000E9;
-	Thu,  2 Jul 2026 16:43:59 +0000 (UTC)
+	 MIME-Version; b=ALFghhNo1k7ZoqbzfKO0/EpUZAFeB8zLOCpIttrvjzCZ0a+GG7MStpg3F2DS6Pr1bpMt1/Zw+1Shf2scAAESavH/cG+Lb/VfR0SkMSinIoFxFAOPQz+TuW14+2hE7PH8/IXLrN3Ia8jA8wUvN2+EzbAziVslfnuFgbLuKa4dgpY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=N+4QZmMT; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D8271F000E9;
+	Thu,  2 Jul 2026 17:01:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1783010640;
-	bh=sNuu58st/2SvFKLaKLf00fEKfGkgtQkXRRcTnnUFRFY=;
+	s=korg; t=1783011703;
+	bh=3e/k0Ygxu4hjXAzOrTdV8P0d+xAzSOk21EtKOCyRaDs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=YbRaQo55KZVaxHpp9RGnJb9G6iWdpYtqbfadbodnZ1mgB/87N7769h7bLJeKyKgkQ
-	 hsV0CLP4+ZjbtApUhmsxbt6jdmYBHyw1J9E8UI41L8EhdxJ/dwU/Ia4WKCyJBot+Re
-	 mTO3Cn5uQOiJekKvoOwySqHjpb0xoxDB7KV3eoJ8=
+	b=N+4QZmMT1z7fSyh+gem5H5/9shbfqyJggSlbmLahZKvGUJ8THqduLhvqDF8MHkw0d
+	 HwTKno3RsSi61LgtSlHRXppnrjBVLC1YOUReaGORj2UceNGRlufQ7GO/8mMQtz0x9b
+	 b23BerhODl8bitMl6e7kLo6yBHGVNTI4mldymR2Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Guannan Wang <wgnbuaa@gmail.com>,
-	Chuck Lever <chuck.lever@oracle.com>
-Subject: [PATCH 6.12 185/204] NFSD: Fix SECINFO_NO_NAME decode error cleanup
-Date: Thu,  2 Jul 2026 18:20:42 +0200
-Message-ID: <20260702155122.537698314@linuxfoundation.org>
+	"Mike Rapoport (Microsoft)" <rppt@kernel.org>,
+	"David Hildenbrand (Arm)" <david@kernel.org>,
+	Al Viro <viro@zeniv.linux.org.uk>,
+	Christian Brauner <brauner@kernel.org>,
+	Jan Kara <jack@suse.cz>,
+	Peter Xu <peterx@redhat.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 7.1 047/120] userfaultfd: ensure mremap_userfaultfd_fail() releases mmap_changing
+Date: Thu,  2 Jul 2026 18:20:43 +0200
+Message-ID: <20260702155113.937799780@linuxfoundation.org>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260702155118.667618796@linuxfoundation.org>
-References: <20260702155118.667618796@linuxfoundation.org>
+In-Reply-To: <20260702155112.964534952@linuxfoundation.org>
+References: <20260702155112.964534952@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,85 +73,84 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-271089-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:wgnbuaa@gmail.com,m:chuck.lever@oracle.com,s:lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,oracle.com];
+	TAGGED_FROM(0.00)[bounces-271500-lists,stable=lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:rppt@kernel.org,m:david@kernel.org,m:viro@zeniv.linux.org.uk,m:brauner@kernel.org,m:jack@suse.cz,m:peterx@redhat.com,m:akpm@linux-foundation.org,s:lists@lfdr.de];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
+	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[10];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,suse.cz:email,linux-foundation.org:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 2F03C6FB992
+X-Rspamd-Queue-Id: 1C2756FBCBA
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+7.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Guannan Wang <wgnbuaa@gmail.com>
+From: Mike Rapoport (Microsoft) <rppt@kernel.org>
 
-commit 9e18e83b8846a5c3fe13fc8a464b4865d33996c6 upstream.
+commit 0496a59745b0723ea74274db16fd5c8b1379b9a9 upstream.
 
-nfsd4_decode_secinfo_no_name() currently initializes sin_exp after
-decoding sin_style. If the XDR stream is truncated, the decoder returns
-nfserr_bad_xdr before sin_exp is initialized.
+Sashiko says:
 
-Since commit 3fdc54646234 ("NFSD: Reduce amount of struct
-nfsd4_compoundargs that needs clearing"), the inline iops array is not
-cleared between RPC calls. A failed SECINFO_NO_NAME decode can therefore
-leave sin_exp holding stale union contents from a previous operation.
+  mremap_userfaultfd_prep() increments ctx->mmap_changing to stall
+  concurrent operations, but mremap_userfaultfd_fail() does not
+  decrement it before dropping the context reference.
 
-The error response path still invokes nfsd4_secinfo_no_name_release(),
-which calls exp_put() on a non-NULL sin_exp.
+If an mremap operation fails, ctx->mmap_changing remains elevated. This
+will causes subsequent userfaultfd operations like a UFFDIO_COPY to fail
+with -EAGAIN.
 
-Initialize sin_exp before the first failable decode step, matching
-nfsd4_decode_secinfo().
+Decrement ctx->mmap_changing in mremap_userfaultfd_fail().
 
-Fixes: 3fdc54646234 ("NFSD: Reduce amount of struct nfsd4_compoundargs that needs clearing")
-Cc: stable@vger.kernel.org
-Signed-off-by: Guannan Wang <wgnbuaa@gmail.com>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Link: https://sashiko.dev/#/patchset/20260430113512.115938-1-rppt@kernel.org
+Link: https://lore.kernel.org/20260513081416.495963-1-rppt@kernel.org
+Fixes: df2cc96e7701 ("userfaultfd: prevent non-cooperative events vs mcopy_atomic races")
+Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+Reviewed-by: David Hildenbrand (Arm) <david@kernel.org>
+Cc: Al Viro <viro@zeniv.linux.org.uk>
+Cc: Christian Brauner <brauner@kernel.org>
+Cc: Jan Kara <jack@suse.cz>
+Cc: Peter Xu <peterx@redhat.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nfsd/nfs4xdr.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ fs/userfaultfd.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/fs/nfsd/nfs4xdr.c
-+++ b/fs/nfsd/nfs4xdr.c
-@@ -1849,10 +1849,11 @@ static __be32 nfsd4_decode_secinfo_no_na
- 					   union nfsd4_op_u *u)
- {
- 	struct nfsd4_secinfo_no_name *sin = &u->secinfo_no_name;
-+
-+	sin->sin_exp = NULL;
- 	if (xdr_stream_decode_u32(argp->xdr, &sin->sin_style) < 0)
- 		return nfserr_bad_xdr;
+--- a/fs/userfaultfd.c
++++ b/fs/userfaultfd.c
+@@ -786,6 +786,8 @@ void mremap_userfaultfd_fail(struct vm_u
+ 	if (!ctx)
+ 		return;
  
--	sin->sin_exp = NULL;
- 	return nfs_ok;
++	atomic_dec(&ctx->mmap_changing);
++	VM_WARN_ON_ONCE(atomic_read(&ctx->mmap_changing) < 0);
+ 	userfaultfd_ctx_put(ctx);
  }
  
 
