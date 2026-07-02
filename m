@@ -1,61 +1,63 @@
-Return-Path: <stable+bounces-271037-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-270637-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id tUEHDBWXRmqZZQsAu9opvQ
-	(envelope-from <stable+bounces-271037-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:51:33 +0200
+	id rdbyAwaURmrFYwsAu9opvQ
+	(envelope-from <stable+bounces-270637-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:38:30 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC05F6FAA85
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:51:32 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 299E76FA512
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:38:29 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=r93CQ1Jp;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-271037-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-271037-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=xSZj7Rua;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-270637-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-270637-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 68E0930878FA
-	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:44:38 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 6ECFD3056A87
+	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:29:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C7ADD44B69C;
-	Thu,  2 Jul 2026 16:41:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2A964968E4;
+	Thu,  2 Jul 2026 16:24:20 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFBC9414DCD;
-	Thu,  2 Jul 2026 16:41:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 879AF3A960A;
+	Thu,  2 Jul 2026 16:24:15 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783010510; cv=none; b=SCagTZuIUpraPvgx0JyNS38WDPpZj0Id2s0HCI+1p33GsHnyGuJLgmK/x9kIYn+Y3uLQJhVPRthJuJLq98sYKLlndnsepXtUI1+Z+qkpxdLNlT0S2eXERgtlwu2anZdxOADq2reGSNeXAm7o0Um39jWEXt27Pk4p8cc9VaDENSg=
+	t=1783009460; cv=none; b=aSIr59tL7Vvs06gGqY58LPu0Hc+mGDW/m7dsuSIVOcLgdWMl8a/dJ5QY0UYec/BK0DmTSmxkH97AMLvR9wBxc5GpR+U32KQYneAsW8ZBaVCxxs4b638n1ZSl5fwgVxmYlvTVF4tHJ3IKO2uf7u5F0tl8kcMsnDyPv/54P07KO9g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783010510; c=relaxed/simple;
-	bh=8ke6Wn/YRpUSBvecP1cZC5Ff0ZALElpIFAz+XHRrQMI=;
+	s=arc-20240116; t=1783009460; c=relaxed/simple;
+	bh=+AkLVqHSNdVcENkwAvbbsus0lkzMeDVjwD7LKlreCcg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=j6UExFYnbOpYpU4iYaSswmWupmQ6B7nslfaP26i08ttqVTjhTPFDaZVyqqeH7xUUbdGxbqnGyxcYYoEihvYHHcq51ovhzma9FjxWaEaHjueVb0nCG6kWYXHHswrZ5zHDUhecJ6+EIRHG8NATVbh145GdLR3D1jzopWN7VIt+Wy8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r93CQ1Jp; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B7AB1F00ACF;
-	Thu,  2 Jul 2026 16:41:42 +0000 (UTC)
+	 MIME-Version; b=HdXxl/IYds8RUzTnjz54DImVfu3mchhxaWA8KMDQEZqndX4w4K9aShu/WE6vbD9aVxArZghMogN0PoO17dYP0DQCLQiO0X7U/dDduJDJXx0L/yvUJ+0g7ej+bbPSXjkm3YYYXV24l1V9PSrm5ykiN0GvBkpY9I06DH2vBpt0tOE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xSZj7Rua; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD9A91F00A3D;
+	Thu,  2 Jul 2026 16:24:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1783010503;
-	bh=BRkii1rDpslUbsVtINCqCOk2XUJYGWEo8fv70synRps=;
+	s=korg; t=1783009455;
+	bh=z2ASbxDPPzRcXeWQAoKfLg6hON5WsOnM/1B4UMhmf9M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=r93CQ1Jpp9ydGESgeKwColRHFgvQKr4+Y3+7NuWX06pZp3mIr61V7GYok7cQLO/zt
-	 REFhDTn9whJtnGiOIHKGjJXFmxTFaeqArnZvHn2+pySuOjdgdlM3+8PEUbPqQ1GjBf
-	 kQh/sKiW5ZQ5llrphgC8OhVQF9nLzclDQL9QiH8A=
+	b=xSZj7RuaDsZfEiXzpiXd/X1ud77mmSXEigwISY5AX1XGLx7sfnVcsTV7nqZLNYBtd
+	 pGx7Z2BT9dqjuj3toePWQ/8nBsAg/gDadMTACA+firD6u8Lh0y+McIK/kvYSDF+PhO
+	 PeUY9hd7kL9cH1soaJO6sMNmqQR8kYLgoDG7YiH8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Cheng Ming Lin <chengminglin@mxic.com.tw>,
-	Tudor Ambarus <tudor.ambarus@linaro.org>,
+	Muhammad Alifa Ramdhan <ramdhan@starlabs.sg>,
+	Bing-Jhong Billy Jheng <billy@starlabs.sg>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	Mikhail Dmitrichenko <mdmitrichenko@astralinux.ru>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 134/204] mtd: spi-nor: macronix: Add post_sfdp fixups for Quad Input Page Program
+Subject: [PATCH 5.10 59/96] crypto: af_alg - Set merge to zero early in af_alg_sendmsg
 Date: Thu,  2 Jul 2026 18:19:51 +0200
-Message-ID: <20260702155121.468361496@linuxfoundation.org>
+Message-ID: <20260702155110.223108068@linuxfoundation.org>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260702155118.667618796@linuxfoundation.org>
-References: <20260702155118.667618796@linuxfoundation.org>
+In-Reply-To: <20260702155108.949633242@linuxfoundation.org>
+References: <20260702155108.949633242@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,130 +71,77 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-271037-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:chengminglin@mxic.com.tw,m:tudor.ambarus@linaro.org,m:sashal@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-270637-lists,stable=lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:ramdhan@starlabs.sg,m:billy@starlabs.sg,m:herbert@gondor.apana.org.au,m:mdmitrichenko@astralinux.ru,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linaro.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[apana.org.au:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,starlabs.sg:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: BC05F6FAA85
+X-Rspamd-Queue-Id: 299E76FA512
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cheng Ming Lin <chengminglin@mxic.com.tw>
+From: Herbert Xu <herbert@gondor.apana.org.au>
 
-commit 798aafeffb369c5eb36e406b18970ef27baa820d upstream.
+commit 9574b2330dbd2b5459b74d3b5e9619d39299fc6f upstream.
 
-Although certain Macronix NOR flash support the Quad Input Page Program
-feature, the corresponding information in the 4-byte Address Instruction
-Table of these flash is not properly filled. As a result, this feature
-cannot be enabled as expected.
+If an error causes af_alg_sendmsg to abort, ctx->merge may contain
+a garbage value from the previous loop.  This may then trigger a
+crash on the next entry into af_alg_sendmsg when it attempts to do
+a merge that can't be done.
 
-To address this issue, a post_sfdp fixups implementation is required to
-correct the missing information.
+Fix this by setting ctx->merge to zero near the start of the loop.
 
-Signed-off-by: Cheng Ming Lin <chengminglin@mxic.com.tw>
-Link: https://lore.kernel.org/r/20250211063028.382169-2-linchengming884@gmail.com
-Signed-off-by: Tudor Ambarus <tudor.ambarus@linaro.org>
+Fixes: 8ff590903d5 ("crypto: algif_skcipher - User-space interface for skcipher operations")
+Reported-by: Muhammad Alifa Ramdhan <ramdhan@starlabs.sg>
+Reported-by: Bing-Jhong Billy Jheng <billy@starlabs.sg>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Signed-off-by: Mikhail Dmitrichenko <mdmitrichenko@astralinux.ru>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mtd/spi-nor/macronix.c | 23 +++++++++++++++++++++++
- 1 file changed, 23 insertions(+)
+ crypto/af_alg.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/mtd/spi-nor/macronix.c b/drivers/mtd/spi-nor/macronix.c
-index ea6be95e75a526..678ebaa220ca98 100644
---- a/drivers/mtd/spi-nor/macronix.c
-+++ b/drivers/mtd/spi-nor/macronix.c
-@@ -28,8 +28,26 @@ mx25l25635_post_bfpt_fixups(struct spi_nor *nor,
- 	return 0;
- }
+diff --git a/crypto/af_alg.c b/crypto/af_alg.c
+index 4983dd68578e24..6acee8e0041a42 100644
+--- a/crypto/af_alg.c
++++ b/crypto/af_alg.c
+@@ -892,6 +892,8 @@ int af_alg_sendmsg(struct socket *sock, struct msghdr *msg, size_t size,
+ 			continue;
+ 		}
  
-+static int
-+macronix_qpp4b_post_sfdp_fixups(struct spi_nor *nor)
-+{
-+	/* PP_1_1_4_4B is supported but missing in 4BAIT. */
-+	struct spi_nor_flash_parameter *params = nor->params;
++		ctx->merge = 0;
 +
-+	params->hwcaps.mask |= SNOR_HWCAPS_PP_1_1_4;
-+	spi_nor_set_pp_settings(&params->page_programs[SNOR_CMD_PP_1_1_4],
-+				SPINOR_OP_PP_1_1_4_4B, SNOR_PROTO_1_1_4);
-+
-+	return 0;
-+}
-+
- static const struct spi_nor_fixups mx25l25635_fixups = {
- 	.post_bfpt = mx25l25635_post_bfpt_fixups,
-+	.post_sfdp = macronix_qpp4b_post_sfdp_fixups,
-+};
-+
-+static const struct spi_nor_fixups macronix_qpp4b_fixups = {
-+	.post_sfdp = macronix_qpp4b_post_sfdp_fixups,
- };
- 
- static const struct flash_info macronix_nor_parts[] = {
-@@ -85,11 +103,13 @@ static const struct flash_info macronix_nor_parts[] = {
- 		.size = SZ_64M,
- 		.no_sfdp_flags = SPI_NOR_DUAL_READ | SPI_NOR_QUAD_READ,
- 		.fixup_flags = SPI_NOR_4B_OPCODES,
-+		.fixups = &macronix_qpp4b_fixups,
- 	}, {
- 		.id = SNOR_ID(0xc2, 0x20, 0x1b),
- 		.name = "mx66l1g45g",
- 		.size = SZ_128M,
- 		.no_sfdp_flags = SECT_4K | SPI_NOR_DUAL_READ | SPI_NOR_QUAD_READ,
-+		.fixups = &macronix_qpp4b_fixups,
- 	}, {
- 		.id = SNOR_ID(0xc2, 0x23, 0x14),
- 		.name = "mx25v8035f",
-@@ -137,18 +157,21 @@ static const struct flash_info macronix_nor_parts[] = {
- 		.size = SZ_64M,
- 		.no_sfdp_flags = SECT_4K | SPI_NOR_DUAL_READ | SPI_NOR_QUAD_READ,
- 		.fixup_flags = SPI_NOR_4B_OPCODES,
-+		.fixups = &macronix_qpp4b_fixups,
- 	}, {
- 		.id = SNOR_ID(0xc2, 0x25, 0x3a),
- 		.name = "mx66u51235f",
- 		.size = SZ_64M,
- 		.no_sfdp_flags = SECT_4K | SPI_NOR_DUAL_READ | SPI_NOR_QUAD_READ,
- 		.fixup_flags = SPI_NOR_4B_OPCODES,
-+		.fixups = &macronix_qpp4b_fixups,
- 	}, {
- 		.id = SNOR_ID(0xc2, 0x25, 0x3c),
- 		.name = "mx66u2g45g",
- 		.size = SZ_256M,
- 		.no_sfdp_flags = SECT_4K | SPI_NOR_DUAL_READ | SPI_NOR_QUAD_READ,
- 		.fixup_flags = SPI_NOR_4B_OPCODES,
-+		.fixups = &macronix_qpp4b_fixups,
- 	}, {
- 		.id = SNOR_ID(0xc2, 0x26, 0x18),
- 		.name = "mx25l12855e",
+ 		if (!af_alg_writable(sk)) {
+ 			err = af_alg_wait_for_wmem(sk, msg->msg_flags);
+ 			if (err)
 -- 
 2.53.0
 
