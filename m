@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-271498-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-271260-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id x1/GLW2nRmpXbAsAu9opvQ
-	(envelope-from <stable+bounces-271498-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 20:01:17 +0200
+	id 4jCqKZekRmp+awsAu9opvQ
+	(envelope-from <stable+bounces-271260-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:49:11 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 381156FBCAA
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 20:01:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EFAA46FBA71
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:49:10 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="t/j8FyLs";
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-271498-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-271498-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=iMbQ+lrg;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-271260-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-271260-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 553F4332DDB3
-	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 17:01:42 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 97A0931B0A13
+	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:52:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0ED65317146;
-	Thu,  2 Jul 2026 17:01:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AED7633ADB0;
+	Thu,  2 Jul 2026 16:51:22 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B26631FA859;
-	Thu,  2 Jul 2026 17:01:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D8DE395AF6;
+	Thu,  2 Jul 2026 16:51:21 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783011699; cv=none; b=AjMvfnBVGV7+I1S54MjYOF0Q4QtB6dqKhsMraeJSELExaJLJVaDtb7fIgWKsDvAK1Ltr3Me6aMR9FmKNfsY5aCxa4wawJ7tOVp4HalffvSIVZlkEGebf5Lw41+DlZMPiX7DabZgK7AVjBXlVcH7JNGzRtt5LwOOmGbLccPtLVsk=
+	t=1783011082; cv=none; b=ZZ6ql/S5HXkh22TdMENqXKu5kPF+dYAtdZp+HLfr8f31w/uOqERUHgQ74/NlWXZRxSlKG+AH0mottsdDmVjx0uAC/KMauCpABHLYksor0mUX6LcgYqGdBUElZa9egr/KVmuAWvxInOUxB36h6dxOCwx+CHzB8e/GP2k1YCJ79No=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783011699; c=relaxed/simple;
-	bh=Pu1W8SNlgj3ap6NCzg0bcnJkxuBybmSdbi+FQct7gIs=;
+	s=arc-20240116; t=1783011082; c=relaxed/simple;
+	bh=0y5ZQGunK913KSaZwTw33LRPfwod+CHv+YV8n4YaYX4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uqIgYGdKKrIPG3cwXT5xz3kRmGktqEchgSDkLBBF39UyBfFEuOWXA68w2Q0xbNzHW/t4vHMHYnCaAtbFY7et4aSZk8yQYgchIms2LL3agyUSlsPska6Gs5YLl2XFuwL/f9M5GumZn++v5SMrUa0Q3mqa7V+ImEKlNRdMkoMeCNY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t/j8FyLs; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1EE881F00A3A;
-	Thu,  2 Jul 2026 17:01:37 +0000 (UTC)
+	 MIME-Version; b=nsWaxao+WQN1aLXQV0UGuPNNjdSfaTk10t7TD20p8ExAp2Y56A1O4nCZN/mcS8hxIjIbm5Ce6L3h0zfggq2V44+6460Q0sjRZOOBU6cWaR/EbFmE0OwMJcDiQW0REIdFd00ZpczMHwO6sPTLhLBsbZvcblULRW2HKgCYtE0cQPg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iMbQ+lrg; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B49911F000E9;
+	Thu,  2 Jul 2026 16:51:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1783011698;
-	bh=T8F8D4TNonnPNdrf6PGAFfRNU/kP+oN9CS6rsPESsSY=;
+	s=korg; t=1783011081;
+	bh=uU0TA50DKpwEWF9ylOlnJnUBWwJTv7NpxCfCTU1w3Sw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=t/j8FyLsk3hWZbRCPBHtEY+azCnCJ9to9klQvs5fr0lGbS/ALAhu8Yfj2/PcgznZm
-	 8SCuK2S7Syo1OjxrCMvV4XXxbH0XkQmS6C105zAcrDUhdjJk9cj3z+pOzLCqhe5S6w
-	 dSwallI1iIcs5jDNVhMgFwjrBf54wiS7CrmL0KE0=
+	b=iMbQ+lrgacc1rf1+d6iEdX/JihXjU72MRwWLdmUCj+X8Jgsr3LIB6LNfAQNCd0qcH
+	 DsD6sJp9vqfpOjyWmz/uOqWTh+1RAEchwv19mXXxnazIYVnNkTru0E6IQHMgGARgdw
+	 HJi1g3oOEvd9PS8qp0TaZffRdaiFTFln2LJl7dhY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ping-Ke Shih <pkshih@realtek.com>,
-	Luka Gejak <luka.gejak@linux.dev>
-Subject: [PATCH 7.1 055/120] wifi: rtw88: usb: fix memory leaks on USB write failures
+	Wentao Liang <vulab@iscas.ac.cn>,
+	Anna Schumaker <anna.schumaker@hammerspace.com>
+Subject: [PATCH 6.6 150/175] pNFS: Fix use-after-free in pnfs_update_layout()
 Date: Thu,  2 Jul 2026 18:20:51 +0200
-Message-ID: <20260702155114.102458207@linuxfoundation.org>
+Message-ID: <20260702155118.962412147@linuxfoundation.org>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260702155112.964534952@linuxfoundation.org>
-References: <20260702155112.964534952@linuxfoundation.org>
+In-Reply-To: <20260702155115.766838875@linuxfoundation.org>
+References: <20260702155115.766838875@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -76,12 +76,12 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-271498-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-271260-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:pkshih@realtek.com,m:luka.gejak@linux.dev,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:vulab@iscas.ac.cn,m:anna.schumaker@hammerspace.com,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
@@ -97,88 +97,50 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.dev:email,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,realtek.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,msgid.link:url]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,hammerspace.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,iscas.ac.cn:email,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 381156FBCAA
+X-Rspamd-Queue-Id: EFAA46FBA71
 
-7.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Luka Gejak <luka.gejak@linux.dev>
+From: Wentao Liang <vulab@iscas.ac.cn>
 
-commit 6b964941bbfe6e0f18b1a5e008486dbb62df440a upstream.
+commit 13e198a90ca4050f4bee8a3f23680389a6563ccc upstream.
 
-When rtw_usb_write_port() fails to submit a USB Request Block (URB)
-(e.g., due to device disconnect or ENOMEM), the completion callback is
-never executed.
+When hitting the NFS_LAYOUT_RETURN branch in pnfs_update_layout(),
+the code calls pnfs_prepare_to_retry_layoutget(lo). If it succeeds,
+pnfs_put_layout_hdr(lo) is called before trace_pnfs_update_layout(),
+which still references 'lo'. This results in a use-after-free when the
+tracepoint accesses lo's fields.
 
-Currently, the driver ignores the return value of rtw_usb_write_port()
-in rtw_usb_write_data() and rtw_usb_tx_agg_skb(). Because these
-functions rely on the completion callback to free the socket buffers
-(skbs) and the transaction control block (txcb), a submission failure
-results in:
-1. A memory leak of the allocated skb in rtw_usb_write_data().
-2. A memory leak of the txcb structure and all aggregated skbs in
-   rtw_usb_tx_agg_skb().
+Fix this by moving the tracepoint call before pnfs_put_layout_hdr(lo).
 
-Fix this by checking the return value of rtw_usb_write_port(). If it
-fails, explicitly free the skb in rtw_usb_write_data(), and properly
-purge the tx_ack_queue and free the txcb in rtw_usb_tx_agg_skb().
-
-The issue was discovered in practice during device disconnect/reconnect
-scenarios and memory pressure conditions. Tested by verifying normal TX
-operation continues after the fix without regressions.
-
-Fixes: a82dfd33d123 ("wifi: rtw88: Add common USB chip support")
+Fixes: 2c8d5fc37fe2 ("pNFS: Stricter ordering of layoutget and layoutreturn")
 Cc: stable@vger.kernel.org
-Acked-by: Ping-Ke Shih <pkshih@realtek.com>
-Tested-by: Luka Gejak <luka.gejak@linux.dev>
-Signed-off-by: Luka Gejak <luka.gejak@linux.dev>
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
-Link: https://patch.msgid.link/20260518142311.10328-2-luka.gejak@linux.dev
+Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
+Signed-off-by: Anna Schumaker <anna.schumaker@hammerspace.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/realtek/rtw88/usb.c |   13 +++++++++++--
- 1 file changed, 11 insertions(+), 2 deletions(-)
+ fs/nfs/pnfs.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/net/wireless/realtek/rtw88/usb.c
-+++ b/drivers/net/wireless/realtek/rtw88/usb.c
-@@ -399,6 +399,7 @@ static bool rtw_usb_tx_agg_skb(struct rt
- 	int agg_num = 0;
- 	unsigned int align_next = 0;
- 	u8 qsel;
-+	int ret;
- 
- 	if (skb_queue_empty(list))
- 		return false;
-@@ -456,7 +457,13 @@ queue:
- 	tx_desc = (struct rtw_tx_desc *)skb_head->data;
- 	qsel = le32_get_bits(tx_desc->w1, RTW_TX_DESC_W1_QSEL);
- 
--	rtw_usb_write_port(rtwdev, qsel, skb_head, rtw_usb_write_port_tx_complete, txcb);
-+	ret = rtw_usb_write_port(rtwdev, qsel, skb_head,
-+				 rtw_usb_write_port_tx_complete, txcb);
-+	if (ret) {
-+		ieee80211_purge_tx_queue(rtwdev->hw, &txcb->tx_ack_queue);
-+		kfree(txcb);
-+		return false;
-+	}
- 
- 	return true;
- }
-@@ -518,8 +525,10 @@ static int rtw_usb_write_data(struct rtw
- 
- 	ret = rtw_usb_write_port(rtwdev, qsel, skb,
- 				 rtw_usb_write_port_complete, skb);
--	if (unlikely(ret))
-+	if (unlikely(ret)) {
- 		rtw_err(rtwdev, "failed to do USB write, ret=%d\n", ret);
-+		dev_kfree_skb_any(skb);
-+	}
- 
- 	return ret;
- }
+--- a/fs/nfs/pnfs.c
++++ b/fs/nfs/pnfs.c
+@@ -2094,11 +2094,11 @@ lookup_again:
+ 		dprintk("%s wait for layoutreturn\n", __func__);
+ 		lseg = ERR_PTR(pnfs_prepare_to_retry_layoutget(lo));
+ 		if (!IS_ERR(lseg)) {
+-			pnfs_put_layout_hdr(lo);
+ 			dprintk("%s retrying\n", __func__);
+ 			trace_pnfs_update_layout(ino, pos, count, iomode, lo,
+ 						 lseg,
+ 						 PNFS_UPDATE_LAYOUT_RETRY);
++			pnfs_put_layout_hdr(lo);
+ 			goto lookup_again;
+ 		}
+ 		trace_pnfs_update_layout(ino, pos, count, iomode, lo, lseg,
 
 
 
