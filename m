@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-270648-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-271447-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id FQ3mE0SSRmoRYwsAu9opvQ
-	(envelope-from <stable+bounces-270648-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:31:00 +0200
+	id jRP4KNOmRmoObAsAu9opvQ
+	(envelope-from <stable+bounces-271447-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:58:43 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id DE2466FA32B
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:30:59 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 30E8D6FBBF6
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:58:43 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=EPjJaIOc;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-270648-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-270648-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=zYY4bR0i;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-271447-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-271447-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id D1C8A3010BC7
-	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:30:40 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 1F447344624C
+	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:59:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D995283FDD;
-	Thu,  2 Jul 2026 16:24:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8360F2FFF9D;
+	Thu,  2 Jul 2026 16:59:28 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DE1D33B969;
-	Thu,  2 Jul 2026 16:24:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 599742F8EBF;
+	Thu,  2 Jul 2026 16:59:27 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783009488; cv=none; b=k9pryFlZmN6IL2ABM1BiQNLYtL4BQMPYN+zrvTBH3Pr0YFwFbAtpC59uCdu4ppfjTlYak2PjOaIy3gp1t7ZM4OfO0UE12V6VIyu9FBDCfg3ssP0Li7TDk96qU8BC81+a7XtSTDx/lpBx7D7lptaj/CXJw3xqwSuLEoOHPFAl7pE=
+	t=1783011568; cv=none; b=Xsp1mgeiT+W3fsc/VFTNrU5ln+KvErfssVN9eo60v2ARQkJxcQoFNy7Zqm6deKqfsPtFpE/WFDPhqb1M6nVCKHx5vpBInZSavs/WzJSc+AOzFT9lf8pWPQjooor1gy8kNKq+4WqdtL3cgE3Z3vWDBEkpyv7J+V8gxYQ2fVSTnbE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783009488; c=relaxed/simple;
-	bh=qp1w+S06zZ/SYh5A942p/eWVUbx3pS/t73+iqNiV03E=;
+	s=arc-20240116; t=1783011568; c=relaxed/simple;
+	bh=Kc20u3WOqgPXZzDKGdgsyVQ2/VmKHwONYknQ62hUvJU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Cka/tdUnsuqxwfnfJ86iHqi4AKJNBei56WPrbySmLo39r274YZTg86n+wABsVLSrjGgQDGDKTD1LH7Ee7kWTAKUc6NLKBGzuRPMvVcDx/u56vV/anZ7vQAq2Aitu8XvKVPIwgT7H80Xmoe1EnQP9+jStNmVPbAqn417pMe9bgLM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EPjJaIOc; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A945D1F00A3A;
-	Thu,  2 Jul 2026 16:24:43 +0000 (UTC)
+	 MIME-Version; b=ncjPVAxucrRsnYdx59/pbRfVsHmC69us9NGiQU4aMCNLLqNLDuL2+YA7poIPX90hxsmd6uqRY0GPFeBSBQ9RTVbGVUP+2X5lOpjRRxqdlUAb7hN0YA15ANTyszViaXof5mk2HpSJqDbbERFMcPwAp0c2KrDqTbWNkZ84z7/eO9c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zYY4bR0i; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF52F1F00A3A;
+	Thu,  2 Jul 2026 16:59:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1783009484;
-	bh=KA4koBeG8OsC0tadx2z5g7lCb/5oSOeZVrehiSYTJz0=;
+	s=korg; t=1783011567;
+	bh=GSNnGhgAcx0IBrAFYedQYW/TvLq8KxPnEP3z2jSJ7mc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=EPjJaIOcygVLDUGI3HYHnKt5YaMr2fNqWChsyM5iJEuTdIHZDPt6NmkCTVyq/z9qn
-	 3sYGCsJ6Ha2k5HWiNhbqMlUM9UZfIu6raPMab2rmePWjfgESbNkd1MnEsos3aoGCKi
-	 l/+R3GP3XkwCIXLY4oc3Wgy/kgNzXeS7CH5XygOY=
+	b=zYY4bR0i9Sa8hzpKNCUDgkqdhI4ujRUy/WvXx0wTkNYnECHxAhtJYcxmehkAy8ntr
+	 OTyC0hhsiGOCA4O2dSHee+uj8g/G7PFoFSeQM2IGIlAL4Acdn1E21EF8/3XzKp7bom
+	 YGylPZ7d7fyc2GosdaC7WOWM9TMPPKF4GHAKH52I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Maciej W. Rozycki" <macro@orcam.me.uk>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-Subject: [PATCH 5.10 69/96] MIPS: DEC: Prevent initial console buffer from landing in XKPHYS
+	stable@kernel.org,
+	Sven Eckelmann <sven@narfation.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 7.1 005/120] batman-adv: tp_meter: avoid window underflow
 Date: Thu,  2 Jul 2026 18:20:01 +0200
-Message-ID: <20260702155110.431234191@linuxfoundation.org>
+Message-ID: <20260702155113.076972700@linuxfoundation.org>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260702155108.949633242@linuxfoundation.org>
-References: <20260702155108.949633242@linuxfoundation.org>
+In-Reply-To: <20260702155112.964534952@linuxfoundation.org>
+References: <20260702155112.964534952@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,22 +72,22 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-270648-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-271447-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:macro@orcam.me.uk,m:tsbogend@alpha.franken.de,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:stable@kernel.org,m:sven@narfation.org,m:sashal@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
@@ -97,125 +98,65 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,orcam.me.uk:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp,narfation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: DE2466FA32B
+X-Rspamd-Queue-Id: 30E8D6FBBF6
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+7.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maciej W. Rozycki <macro@orcam.me.uk>
+From: Sven Eckelmann <sven@narfation.org>
 
-commit 7fb13fd35110ebe95eb053faf79d018f51144d85 upstream.
+commit 765947b81fb54b6ebb0bc1cfe55c0fa399e002b8 upstream.
 
-In 64-bit configurations calling the initial console output handler from
-a kernel thread other than the initial one will result in a situation
-where the stack has been placed in the XKPHYS 64-bit memory segment and
-consequently so has been the buffer allocated there that is used as the
-argument corresponding to the `%s' output conversion specifier for the
-firmware's printf() entry point.
+In batadv_tp_avail(), win_left is calculated with 32-bit unsigned
+arithmetic: win_left = win_limit - tp_vars->last_sent;
 
-This 64-bit address will then be truncated by 32-bit firmware, resulting
-in an attempt to access the wrong memory location, which in turn will
-cause all kinds of unpredictable behaviour, such as a kernel crash:
+During Fast Recovery, cwnd is inflated and last_sent advances rapidly. When
+Fast Recovery ends, cwnd drops abruptly back to ss_threshold. If the newly
+shrunk win_limit is less than last_sent, the unsigned subtraction will
+underflow, wrapping to a massive positive value. Instead of returning that
+the window is full (unavailable), it returns that the sender can continue
+sending.
 
-  Console: colour dummy device 160x64
-  Calibrating delay loop... 49.36 BogoMIPS (lpj=192512)
-  pid_max: default: 32768 minimum: 301
-  CPU 0 Unable to handle kernel paging request at virtual address 000000000203bd00, epc == ffffffffbfc08364, ra == ffffffffbfc08800
-  Oops[#1]:
-  CPU: 0 PID: 0 Comm: swapper Not tainted 5.18.0-rc2-00254-gfb649bda6f56-dirty #121
-  $ 0   : 0000000000000000 0000000000000001 0000000000000023 ffffffff80684ba0
-  $ 4   : 000000000203bd00 ffffffffbfc0f3b4 ffffffffffffffff 0000000000000073
-  $ 8   : 0a303d7469000000 0000000000000000 0000000000000073 ffffffffbfc0f473
-  $12   : 0000000000000002 0000000000000000 ffffffff80684c1c 0000000000000000
-  $16   : 0000000000000000 ffffffff80596dc9 0000000000000000 ffffffffbfc09240
-  $20   : ffffffff80684c40 ffffffffbfc0f400 000000000000002d 000000000000002b
-  $24   : ffffffffffffffbf 000000000203bd00
-  $28   : ffffffff805f0000 ffffffff80684b58 0000000000000030 ffffffffbfc08800
-  Hi    : 0000000000000000
-  Lo    : 0000000000000aa8
-  epc   : ffffffffbfc08364 0xffffffffbfc08364
-  ra    : ffffffffbfc08800 0xffffffffbfc08800
-  Status: 140120e2        KX SX UX KERNEL EXL
-  Cause : 00000008 (ExcCode 02)
-  BadVA : 000000000203bd00
-  PrId  : 00000430 (R4000SC)
-  Modules linked in:
-  Process swapper (pid: 0, threadinfo=(____ptrval____), task=(____ptrval____), tls=0000000000000000)
-  Stack : 0000000000000000 0000000000000000 0000000000000000 0000004d0000004d
-          80684cc0806a2a40 80596dc80000004d 8061000000000000 bfc0850c80684c38
-          0000000000000000 000000000203bd00 0000000000000000 0000000000000000
-          0000000000000000 00000000bfc0f3b4 0000000000000000 0000000000000000
-          0000000000000000 0000000000000000 0000000000000000 0000000000000000
-          0000000000000000 0000000000000000 0000000000000000 0000000000000000
-          0000002500000000 0000000000000000 0000000000000000 802c1a7400000000
-          0203bd0080596dc8 0203bd4d69000000 6c61632000000018 5f746567646e6172
-          6c616320625f6d6f 5f736e5f6d6f7266 206361323778302b 303d74696e726320
-          806a0a38806b0000 806a0a38806b0000 00000000806b0000 80683c58806b0000
-          ...
-  Call Trace:
+To handle this situation, it must be checked whether the windows end
+sequence number (win_limit) has to be compared with the last sent sequence
+number. If it would be before the last sent sequence number, then more acks
+are needed before the transmission can be started again.
 
-  Code: a082ffff  03e00008  00601021 <80820000> 00001821  10400005  24840001  80820000  24630001
-
-  ---[ end trace 0000000000000000 ]---
-  Kernel panic - not syncing: Fatal exception in interrupt
-
-  KN04 V2.1k    (PC: 0xa0026768, SP: 0x806848e8)
-  >>
-
-In this case the pointer in $4 was truncated from 0x980000000203bd00 to
-0x000000000203bd00.
-
-This may happen when no final console driver has been enabled in the
-configuration and consequently the initial console continues being used
-late into bootstrap or with an upcoming change that will switch the zs
-driver to use a platform device, which in turn will make the console
-handover happen only after other kernel threads have already been
-started.
-
-Fix the issue by making the buffer static and initdata, and therefore
-placed in the CKSEG0 32-bit compatibility segment, observing that the
-console output handler is called with the console lock held, implying
-no need for this code to be reentrant.  Add an assertion to verify the
-buffer actually has been placed in a compatibility segment.
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Signed-off-by: Maciej W. Rozycki <macro@orcam.me.uk>
-Cc: stable@vger.kernel.org # v2.6.12+
-Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@kernel.org
+Fixes: 33a3bb4a3345 ("batman-adv: throughput meter implementation")
+Signed-off-by: Sven Eckelmann <sven@narfation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/mips/dec/prom/console.c |    7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ net/batman-adv/tp_meter.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
---- a/arch/mips/dec/prom/console.c
-+++ b/arch/mips/dec/prom/console.c
-@@ -2,8 +2,9 @@
- /*
-  *	DECstation PROM-based early console support.
-  *
-- *	Copyright (C) 2004, 2007  Maciej W. Rozycki
-+ *	Copyright (C) 2004, 2007, 2026  Maciej W. Rozycki
-  */
-+#include <linux/bug.h>
- #include <linux/console.h>
- #include <linux/init.h>
- #include <linux/kernel.h>
-@@ -14,9 +15,11 @@
- static void __init prom_console_write(struct console *con, const char *s,
- 				      unsigned int c)
+diff --git a/net/batman-adv/tp_meter.c b/net/batman-adv/tp_meter.c
+index 2ff7aa5ed19fb3..d3b8f02ca08b14 100644
+--- a/net/batman-adv/tp_meter.c
++++ b/net/batman-adv/tp_meter.c
+@@ -817,10 +817,15 @@ static void batadv_tp_recv_ack(struct batadv_priv *bat_priv,
+ static bool batadv_tp_avail(struct batadv_tp_vars *tp_vars,
+ 			    size_t payload_len)
  {
--	char buf[81];
-+	static char buf[81] __initdata = { 0 };
- 	unsigned int chunk = sizeof(buf) - 1;
++	u32 last_sent = READ_ONCE(tp_vars->last_sent);
+ 	u32 win_left, win_limit;
  
-+	BUG_ON((long)buf != (int)(long)buf);
+ 	win_limit = atomic_read(&tp_vars->last_acked) + tp_vars->cwnd;
+-	win_left = win_limit - tp_vars->last_sent;
 +
- 	while (c > 0) {
- 		if (chunk > c)
- 			chunk = c;
++	if (batadv_seq_before(last_sent, win_limit))
++		win_left = win_limit - last_sent;
++	else
++		win_left = 0;
+ 
+ 	return win_left >= payload_len;
+ }
+-- 
+2.53.0
+
 
 
 
