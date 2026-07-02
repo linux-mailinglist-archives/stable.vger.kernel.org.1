@@ -1,70 +1,78 @@
-Return-Path: <stable+bounces-270291-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-270292-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id NPMAKym0RWqtEAsAu9opvQ
-	(envelope-from <stable+bounces-270291-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 02:43:21 +0200
+	id hrYkIS60RWqvEAsAu9opvQ
+	(envelope-from <stable+bounces-270292-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 02:43:26 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 30AB06F2AB4
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 02:43:21 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id CAF716F2AB7
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 02:43:25 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Hg8zbCOv;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-270291-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-270291-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=mlZcp5LD;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-270292-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-270292-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 4214E313DE35
+	by sea.lore.kernel.org (Postfix) with ESMTP id A5840313FFB1
 	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 00:38:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1CFA5250BEC;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7002524BBEE;
 	Thu,  2 Jul 2026 00:38:58 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DAC0B2620DE
-	for <stable@vger.kernel.org>; Thu,  2 Jul 2026 00:38:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A36323EA84;
+	Thu,  2 Jul 2026 00:38:55 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782952737; cv=none; b=TrNmoFzvzspVYjoM31aDbRHPWdmPPNJGgsFttZ2CfGL0kNlrYHK4DZOYfchdC/uIsQ5x+tGT237rcXYSxqQSZPvDIrCa8h0gVZD5UJq/de46/MDwcDVAM0O8hb2Db0t+3x1fk5s7Hr/uh2aWFvo5y5HVt5TvhGegJx+10hU/I44=
+	t=1782952738; cv=none; b=ffHJfhjFCSqzcxtqaCjq0vXS/t1Qr5DK8syPO75/UvI39lTfC/oEGIVL8/uRIpkLpK0IkkGvONOr4II3ZXafzZ82pueFKFpHJqYpFyB3Nr+DZM9CnUdvtlZplX+L3saHcXIwFuz8R9RPJbYVat/cUJ1+AmUw6R8EpLeSwmKf3P0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782952737; c=relaxed/simple;
-	bh=Emb67yFPdbJ85cd6kCZ46V/AaC7MiN9Pn4yrc/SwH/I=;
+	s=arc-20240116; t=1782952738; c=relaxed/simple;
+	bh=XpVtySHffmliPkbplhdQWuR3F1r9v/PsDoCVuVnx8Qg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=k/Iwz8yHzLnPvEaTgcKQksX7kdkhoRPS1xGm9YR4lwPlynIulUKrt5r1YhYMpQ3jF33p5aURUDnpSMhvkQyDQuZlJeMLfmzWf7q8BsqApmTPLqKCK/FmYbKJlZbyGMOBGGb1uQWlT/gHyVWLeQqD1uSWipx6TPELvkHiFLHB5zo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Hg8zbCOv; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2FD801F00A3A;
-	Thu,  2 Jul 2026 00:38:51 +0000 (UTC)
+	 MIME-Version; b=KGnXI2dDeHbnGufLtxtCNr7rC/ALZsinAiLSZr/Dl7akICqhWB5smhF2XOkv+Ri9lS/h7qWnYbNXl9K3Q6D58YruOZpVQBx6LY1vBGWg5mtHPOplL3m9MppmL7O6+g+9Yret2sslcwDbxQeWLrcbg8GTBWsfH8Yxeux4cHahQEM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mlZcp5LD; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BFEEC1F000E9;
+	Thu,  2 Jul 2026 00:38:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782952732;
-	bh=LpCJQlPE5Ak0zE6/hYgX3ekV8KmQRxvp3FBqk+6eoys=;
+	s=k20260515; t=1782952735;
+	bh=Ik70JGL/KUEmdnFaSVDz6rNF8Zghre5it8AqKqb1vHQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Hg8zbCOvSiJwasIpSLYdLlrGV01erTu+gpjTn9O0lplXVuzUv1wwuB+bv/sYElrs/
-	 64pSMOm6Kqzmvf2rGa48Qt1updcvPfdzfKoZYD4mKFn2/gRv6zXea+Ds9g/3IWOhQc
-	 plbWzs5+fK82Q6ThiZrlbjVh7wp/ASt/XFQ0eyhsIuTs1iBizM0A4wmtor7xEy68NS
-	 /bCZYHkyV044QTEqBLiASqNjVaJP2ckeSE8kGia5S268SxGP9BSO+DwlpkRY5J7nkC
-	 xhn46Ai8k0tcTpaqCbwmnVvPUcCLT+9HVmrav+2ht7qu2SjGtUOYsHI4bxjduxCJst
-	 f4crNqeUvY6Fw==
+	b=mlZcp5LDIRve2h0cfG3rsftjVutaViINODAu22z/KAUbNW6PKGKksgLnxWCxaKjZf
+	 9rfZWVPTSjLzM5KbQZ+kDOpdZkrzafVzPm/bxjRqeLHMsmlCEFVCX0NHMNPW18mCX2
+	 ba8mCERN7errdz/vIuOi3wz9Q4henh1+s3flR9Z2nsZ2txX+bGkT2sdcCNilUxKJuo
+	 0k1kT6zOTmSzwHHUpQfTKcQJu7MfbZAh4IrFIArEV4eQBV2fEWlk3byjuUji25UFY+
+	 2Vh/W53KhfyKaB6Om7uhDHRIHkEojicpbhC6qpZeLLAiXWl5ME1sLRxrSEeRHAfNNh
+	 0v+vnUUfKnv3w==
 From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
+To: dominique.martinet@atmark-techno.com,
+	stable@vger.kernel.org
 Cc: Sasha Levin <sashal@kernel.org>,
-	tudor.ambarus@linaro.org,
-	pratyush@kernel.org,
-	mwalle@kernel.org,
-	miquel.raynal@bootlin.com,
-	richard@nod.at,
-	vigneshr@ti.com,
-	linux-mtd@lists.infradead.org,
-	alvinzhou@mxic.com.tw,
-	Cheng Ming Lin <chengminglin@mxic.com.tw>,
-	Cheng Ming Lin <linchengming884@gmail.com>
-Subject: Re: [PATCH 6.6.y] mtd: spi-nor: macronix: Add post_sfdp fixups for Quad Input Page Program
-Date: Wed,  1 Jul 2026 20:38:33 -0400
-Message-ID: <stable-reply-mtd-macronix-66-20260701193800@kernel.org>
+	Jamal Hadi Salim <jhs@mojatatu.com>,
+	Cong Wang <xiyou.wangcong@gmail.com>,
+	Jiri Pirko <jiri@resnulli.us>,
+	"David S. Miller" <davem@davemloft.net>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Mat Martineau <mathew.j.martineau@linux.intel.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Rajat Gupta <rajat.gupta@oss.qualcomm.com>,
+	Yiming Qian <yimingqian591@gmail.com>,
+	Keenan Dong <keenanat2000@gmail.com>,
+	Han Guidong <2045gemini@gmail.com>,
+	Zhang Cen <rollkingzzc@gmail.com>,
+	Davide Caratti <dcaratti@redhat.com>,
+	=?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>,
+	Victor Nogueira <victor@mojatatu.com>
+Subject: Re: [PATCH 5.10.y] net/sched: fix pedit partial COW leading to page cache corruption
+Date: Wed,  1 Jul 2026 20:38:34 -0400
+Message-ID: <stable-reply-pedit-cow-510-20260701193800@kernel.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260701023619.2730136-1-linchengming884@gmail.com>
-References: <20260701023619.2730136-1-linchengming884@gmail.com>
+In-Reply-To: <20260630-cve-2026-46331-v1-2-c1986f356f26@atmark-techno.com>
+References: <20260630-cve-2026-46331-v1-2-c1986f356f26@atmark-techno.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -73,26 +81,27 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-4.66 / 15.00];
+X-Spamd-Result: default: False [-3.16 / 15.00];
 	WHITELIST_SPF_DKIM(-3.00)[kernel.org:d:+,kernel.org:s:+];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-270291-lists,stable=lfdr.de];
-	RCPT_COUNT_TWELVE(0.00)[12];
+	FORGED_RECIPIENTS(0.00)[m:dominique.martinet@atmark-techno.com,m:stable@vger.kernel.org,m:sashal@kernel.org,m:jhs@mojatatu.com,m:xiyou.wangcong@gmail.com,m:jiri@resnulli.us,m:davem@davemloft.net,m:kuba@kernel.org,m:mathew.j.martineau@linux.intel.com,m:pabeni@redhat.com,m:netdev@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:rajat.gupta@oss.qualcomm.com,m:yimingqian591@gmail.com,m:keenanat2000@gmail.com,m:2045gemini@gmail.com,m:rollkingzzc@gmail.com,m:dcaratti@redhat.com,m:toke@redhat.com,m:victor@mojatatu.com,m:xiyouwangcong@gmail.com,s:lists@lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-270292-lists,stable=lfdr.de];
+	RCPT_COUNT_TWELVE(0.00)[20];
+	FORWARDED(0.00)[lists@lfdr.de];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:sashal@kernel.org,m:tudor.ambarus@linaro.org,m:pratyush@kernel.org,m:mwalle@kernel.org,m:miquel.raynal@bootlin.com,m:richard@nod.at,m:vigneshr@ti.com,m:linux-mtd@lists.infradead.org,m:alvinzhou@mxic.com.tw,m:chengminglin@mxic.com.tw,m:linchengming884@gmail.com,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[sashal@kernel.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[kernel.org,linaro.org,bootlin.com,nod.at,ti.com,lists.infradead.org,mxic.com.tw,gmail.com];
-	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FREEMAIL_CC(0.00)[kernel.org,mojatatu.com,gmail.com,resnulli.us,davemloft.net,linux.intel.com,redhat.com,vger.kernel.org,oss.qualcomm.com];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
@@ -102,23 +111,21 @@ X-Spamd-Result: default: False [-4.66 / 15.00];
 	DKIM_TRACE(0.00)[kernel.org:+];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 30AB06F2AB4
+X-Rspamd-Queue-Id: CAF716F2AB7
 
-I can't take this series for 6.6.y: patch 2 adds flash_info entries
-with a NULL .name, and 6.6's spi_nor_match_name() has no NULL guard
-(only added upstream in ac5bfa968b60), so the legacy probe-by-name
-path can oops at boot.
+> [Dominique: plenty of context conflict but the code itself could still
+> mostly be used]
 
-Please send a v2 that either names the new entries or backports
-ac5bfa968b60 first.
-
-The 6.12.y series is queued, thanks.
+Thanks! However, the same upstream fix (899ee91156e5) is already queued for
+5.10.y via Wentao Guan's backport, which brings in the act_pedit
+RCU/percpu-stats prerequisites first and then applies the fix nearly
+verbatim.
 
 -- 
 Thanks,
