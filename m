@@ -1,62 +1,61 @@
-Return-Path: <stable+bounces-270776-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-270889-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id UzAnNFmfRmqMaQsAu9opvQ
-	(envelope-from <stable+bounces-270776-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:26:49 +0200
+	id yylpA8uXRmoIZgsAu9opvQ
+	(envelope-from <stable+bounces-270889-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:54:35 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2DC646FB573
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:26:49 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 23A656FABAE
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:54:34 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=GcOLhZYA;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-270776-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-270776-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=koKmvtlK;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-270889-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-270889-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id BF4553128C4E
-	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:33:56 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 7F3A63166EDE
+	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:37:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 04C38352C52;
-	Thu,  2 Jul 2026 16:30:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B7C6D347FC8;
+	Thu,  2 Jul 2026 16:35:15 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA59033A9C4;
-	Thu,  2 Jul 2026 16:30:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DA0533D4EC;
+	Thu,  2 Jul 2026 16:35:14 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783009823; cv=none; b=ljy1CebudoL1eQNN5HOUBJ3ImeXTzVN6R8mfBuOp1cdgTnYoTjVSBLVPseZawS9NBm00V6h5gBPofaawuv/dUG5YFXrLzAi8GYOieah/bEGmumF1+2OTWc+C+mJ4Jce3HANs3XICjzm1/ts+hDYjJGlywF24WZ7Jki57iB0wYVo=
+	t=1783010115; cv=none; b=ZCgR7gKZmIfG2LA7qCiY8e/YsgCdYAPhuwV5jFPSJtI6pzDf4GmAixihl2lch1l8qiOPg9LqmWJKc+6i6d3S33jjIIVLyHkudIbYDtG2g56WgDB+P6r4zaxUohnKqoZo6AVlpDWWAr9NnGux2umxw6g6BQIpQ3GJV0WkjbVXSBI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783009823; c=relaxed/simple;
-	bh=eK4HnVILiQjWuL2i5w0IWopR1nM4E84zbmcFPa7B/nc=;
+	s=arc-20240116; t=1783010115; c=relaxed/simple;
+	bh=9zJeoHUy22A+T+/5GYa55Cvn10eqfXJNH4Pz8ukFsf0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=IDbIb7SO45Cg54a9lMpc2T46LUlBeQT4RHXYw0/6xHn1dsn5uDKqR1bxJjudqMwM0GzyUWy7xhBpGDcehXKHCfOJgzk03/DHyAV3KIGnScrfW/68+YXv0IKImOWxrsBYpd0J81TKK+weHPB+Qa6EVxKKjEbpI+HLEH68sQpdBOw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GcOLhZYA; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14A5E1F00A3D;
-	Thu,  2 Jul 2026 16:30:19 +0000 (UTC)
+	 MIME-Version; b=cxjIb6vXQgQXpb3tkR9XhS2wqJJhcdNgE1DiwQ16YoaGsDcmtKnoKpB0j9Ln+S1NyMdc+AtLqs5M+mzs+JUjLpbfuVFXONVvtyWqK+kL7Keb6nwSI/RfJpSHfN0Xc4wobeW1tfromS/sHcM4TVT4QwFHKOfr6OL50DMrXeMsyng=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=koKmvtlK; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4C3E1F000E9;
+	Thu,  2 Jul 2026 16:35:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1783009820;
-	bh=zLVat3jzMIZRp0xuX3+HFWfwG2ekvtWbcU49873dioE=;
+	s=korg; t=1783010114;
+	bh=nle0EN/1KKeG2E1ukbgjaZMZyUf1jnUwUDeYehw8xYE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=GcOLhZYAY2TKqpcM+Ta8KdTIvRn5KeOMZZaWqSKNia9SeSS+XVHuOSnvOu8ptgfEs
-	 3tYD4r/MAYI/j37ceg9d1t9AmEhcPo2pQ98KrAf7GO9l3oPLYkjYnxAx6ux+p5b3bM
-	 WBInJiURyhZOC+WZpuHC0dg3wEhr8nWygf0D9POA=
+	b=koKmvtlKJ7kzxNpqt6ryWKyZwHvQxFWGs9h6XWGAGoV6Owjqll2U2mfaCpiXwfSwS
+	 xOTBzJ/tGZw0m0o9D0Ooos0aeFvq7xIgw7L81Mfghab2oNcIdTG5pmE0imvPg30otb
+	 4ZGQS2BaXp9V3sq4deQQ1pup/x2GDEa+vczPZqgg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	Thorsten Blum <thorsten.blum@linux.dev>,
-	Giovanni Cabiddu <giovanni.cabiddu@intel.com>,
+	Jian Zhou <eilaimemedsnaimel@gmail.com>,
+	Thomas Gleixner <tglx@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 93/95] crypto: qat - Return pointer directly in adf_ctl_alloc_resources
+Subject: [PATCH 6.1 117/129] futex/requeue: Prevent NULL pointer dereference in remove_waiter() on self-deadlock
 Date: Thu,  2 Jul 2026 18:20:36 +0200
-Message-ID: <20260702155111.166143835@linuxfoundation.org>
+Message-ID: <20260702155114.565787504@linuxfoundation.org>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260702155109.196223802@linuxfoundation.org>
-References: <20260702155109.196223802@linuxfoundation.org>
+In-Reply-To: <20260702155112.163984240@linuxfoundation.org>
+References: <20260702155112.163984240@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,162 +65,88 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-270776-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:herbert@gondor.apana.org.au,m:thorsten.blum@linux.dev,m:giovanni.cabiddu@intel.com,m:sashal@kernel.org,s:lists@lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	TAGGED_RCPT(0.00)[stable];
-	MID_RHS_MATCH_FROM(0.00)[];
 	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-270889-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:eilaimemedsnaimel@gmail.com,m:tglx@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
+	FORWARDED(0.00)[lists@lfdr.de];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,intel.com:email,vger.kernel.org:from_smtp,linux.dev:email]
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 2DC646FB573
+X-Rspamd-Queue-Id: 23A656FABAE
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Herbert Xu <herbert@gondor.apana.org.au>
+From: Ji'an Zhou <eilaimemedsnaimel@gmail.com>
 
-[ Upstream commit 5ce9891ea928208a915411ce8227f8c3e37e5ad9 ]
+[ Upstream commit 74e144274af39935b0f410c0ee4d2b91c3730414 ]
 
-Returning values through arguments is confusing and that has
-upset the compiler with the recent change to memdup_user:
+When FUTEX_CMP_REQUEUE_PI requeues a non-top waiter that already owns the
+target PI futex, task_blocks_on_rt_mutex() returns -EDEADLK before setting
+waiter->task.
 
-../drivers/crypto/intel/qat/qat_common/adf_ctl_drv.c: In function ‘adf_ctl_ioctl’:
-../drivers/crypto/intel/qat/qat_common/adf_ctl_drv.c:308:26: warning: ‘ctl_data’ may be used uninitialized [-Wmaybe-uninitialized]
-  308 |                  ctl_data->device_id);
-      |                          ^~
-../drivers/crypto/intel/qat/qat_common/adf_ctl_drv.c:294:39: note: ‘ctl_data’ was declared here
-  294 |         struct adf_user_cfg_ctl_data *ctl_data;
-      |                                       ^~~~~~~~
-In function ‘adf_ctl_ioctl_dev_stop’,
-    inlined from ‘adf_ctl_ioctl’ at ../drivers/crypto/intel/qat/qat_common/adf_ctl_drv.c:386:9:
-../drivers/crypto/intel/qat/qat_common/adf_ctl_drv.c:273:48: warning: ‘ctl_data’ may be used uninitialized [-Wmaybe-uninitialized]
-  273 |         ret = adf_ctl_is_device_in_use(ctl_data->device_id);
-      |                                        ~~~~~~~~^~~~~~~~~~~
-../drivers/crypto/intel/qat/qat_common/adf_ctl_drv.c: In function ‘adf_ctl_ioctl’:
-../drivers/crypto/intel/qat/qat_common/adf_ctl_drv.c:261:39: note: ‘ctl_data’ was declared here
-  261 |         struct adf_user_cfg_ctl_data *ctl_data;
-      |                                       ^~~~~~~~
-In function ‘adf_ctl_ioctl_dev_config’,
-    inlined from ‘adf_ctl_ioctl’ at ../drivers/crypto/intel/qat/qat_common/adf_ctl_drv.c:382:9:
-../drivers/crypto/intel/qat/qat_common/adf_ctl_drv.c:192:54: warning: ‘ctl_data’ may be used uninitialized [-Wmaybe-uninitialized]
-  192 |         accel_dev = adf_devmgr_get_dev_by_id(ctl_data->device_id);
-      |                                              ~~~~~~~~^~~~~~~~~~~
-../drivers/crypto/intel/qat/qat_common/adf_ctl_drv.c: In function ‘adf_ctl_ioctl’:
-../drivers/crypto/intel/qat/qat_common/adf_ctl_drv.c:185:39: note: ‘ctl_data’ was declared here
-  185 |         struct adf_user_cfg_ctl_data *ctl_data;
-      |                                       ^~~~~~~~
+The subsequent remove_waiter() in rt_mutex_start_proxy_lock() dereferences
+the NULL waiter->task, causing a kernel crash.
 
-Fix this by returning the pointer directly.
+Add a self-deadlock check for non-top waiters before calling
+rt_mutex_start_proxy_lock(), analogous to the top-waiter check in
+futex_lock_pi_atomic().
 
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
-Reviewed-by: Thorsten Blum <thorsten.blum@linux.dev>
-Acked-by: Giovanni Cabiddu <giovanni.cabiddu@intel.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
-Stable-dep-of: d237230728c5 ("crypto: qat - remove unused character device and IOCTLs")
+Fixes: 3bfdc63936dd4773109b7b8c280c0f3b5ae7d349 ("rtmutex: Use waiter::task instead of current in remove_waiter()")
+Signed-off-by: Ji'an Zhou <eilaimemedsnaimel@gmail.com>
+Signed-off-by: Thomas Gleixner <tglx@kernel.org>
+Cc: stable@vger.kernel.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/crypto/qat/qat_common/adf_ctl_drv.c |   31 +++++++++++-----------------
- 1 file changed, 13 insertions(+), 18 deletions(-)
+ kernel/futex/requeue.c |    6 ++++++
+ 1 file changed, 6 insertions(+)
 
---- a/drivers/crypto/qat/qat_common/adf_ctl_drv.c
-+++ b/drivers/crypto/qat/qat_common/adf_ctl_drv.c
-@@ -82,19 +82,14 @@ err_chrdev_unreg:
- 	return -EFAULT;
- }
+--- a/kernel/futex/requeue.c
++++ b/kernel/futex/requeue.c
+@@ -629,6 +629,12 @@ retry_private:
+ 			continue;
+ 		}
  
--static int adf_ctl_alloc_resources(struct adf_user_cfg_ctl_data **ctl_data,
--				   unsigned long arg)
-+static struct adf_user_cfg_ctl_data *adf_ctl_alloc_resources(unsigned long arg)
- {
- 	struct adf_user_cfg_ctl_data *cfg_data;
- 
- 	cfg_data = memdup_user((void __user *)arg, sizeof(*cfg_data));
--	if (IS_ERR(cfg_data)) {
-+	if (IS_ERR(cfg_data))
- 		pr_err("QAT: failed to copy from user cfg_data.\n");
--		return PTR_ERR(cfg_data);
--	}
--
--	*ctl_data = cfg_data;
--	return 0;
-+	return cfg_data;
- }
- 
- static int adf_add_key_value_data(struct adf_accel_dev *accel_dev,
-@@ -173,13 +168,13 @@ out_err:
- static int adf_ctl_ioctl_dev_config(struct file *fp, unsigned int cmd,
- 				    unsigned long arg)
- {
--	int ret;
- 	struct adf_user_cfg_ctl_data *ctl_data;
- 	struct adf_accel_dev *accel_dev;
-+	int ret = 0;
- 
--	ret = adf_ctl_alloc_resources(&ctl_data, arg);
--	if (ret)
--		return ret;
-+	ctl_data = adf_ctl_alloc_resources(arg);
-+	if (IS_ERR(ctl_data))
-+		return PTR_ERR(ctl_data);
- 
- 	accel_dev = adf_devmgr_get_dev_by_id(ctl_data->device_id);
- 	if (!accel_dev) {
-@@ -254,9 +249,9 @@ static int adf_ctl_ioctl_dev_stop(struct
- 	int ret;
- 	struct adf_user_cfg_ctl_data *ctl_data;
- 
--	ret = adf_ctl_alloc_resources(&ctl_data, arg);
--	if (ret)
--		return ret;
-+	ctl_data = adf_ctl_alloc_resources(arg);
-+	if (IS_ERR(ctl_data))
-+		return PTR_ERR(ctl_data);
- 
- 	if (adf_devmgr_verify_id(ctl_data->device_id)) {
- 		pr_err("QAT: Device %d not found\n", ctl_data->device_id);
-@@ -288,9 +283,9 @@ static int adf_ctl_ioctl_dev_start(struc
- 	struct adf_user_cfg_ctl_data *ctl_data;
- 	struct adf_accel_dev *accel_dev;
- 
--	ret = adf_ctl_alloc_resources(&ctl_data, arg);
--	if (ret)
--		return ret;
-+	ctl_data = adf_ctl_alloc_resources(arg);
-+	if (IS_ERR(ctl_data))
-+		return PTR_ERR(ctl_data);
- 
- 	ret = -ENODEV;
- 	accel_dev = adf_devmgr_get_dev_by_id(ctl_data->device_id);
++		/* Self-deadlock: non-top waiter already owns the PI futex. */
++		if (rt_mutex_owner(&pi_state->pi_mutex) == this->task) {
++			ret = -EDEADLK;
++			break;
++		}
++
+ 		ret = rt_mutex_start_proxy_lock(&pi_state->pi_mutex,
+ 						this->rt_waiter,
+ 						this->task);
 
 
 
