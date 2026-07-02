@@ -1,62 +1,60 @@
-Return-Path: <stable+bounces-271249-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-271331-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 5CXLL1+kRmpkawsAu9opvQ
-	(envelope-from <stable+bounces-271249-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:48:15 +0200
+	id sEJbLOecRmqkaAsAu9opvQ
+	(envelope-from <stable+bounces-271331-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:16:23 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 16A276FBA26
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:48:15 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id AE75A6FB2CD
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:16:22 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="A/qKCxrY";
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-271249-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-271249-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=UPnoORmc;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-271331-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-271331-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E7DE633BDB20
-	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:52:10 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 9C6823079F62
+	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:54:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92CE637A83F;
-	Thu,  2 Jul 2026 16:50:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 592C630C146;
+	Thu,  2 Jul 2026 16:54:24 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53908359A89;
-	Thu,  2 Jul 2026 16:50:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 221522FFF9D;
+	Thu,  2 Jul 2026 16:54:22 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783011053; cv=none; b=b11/w1DPPUP8GENRff5D8+KPjtCoGHGBt9SE9XJDtSdG9RqswSOAVVLF6GDucvv9sCGpzKxZZ+4h6buFFnZw+/Iz8zcwCZC7QB0+qIJiPF5e0R3DpL2pVtzvn2rTuWiX1xk8G5/CGvwkS23bXHctdTFp/JffbD9eLcKH2hI+KUw=
+	t=1783011264; cv=none; b=UJsoz9i2R8BUrphokXF+b9R9KWCkA+IMX+oMsTljEWZ9OW1FKO5NLT389NONsuN5nZFP8lZ2oMGJ1EwF1CKADWw0C0tQzxhh8d3P2E3HyiPjb+EJqLcM0KjJ4Z6qNdkK791fXcTd3smWHxXWAzLEXPvj1fDieGBCt01ZcBdcXI4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783011053; c=relaxed/simple;
-	bh=ECR3z7zkkzE8OZMlRyE8hJiygObcNwjU5W3ZYe47gBA=;
+	s=arc-20240116; t=1783011264; c=relaxed/simple;
+	bh=/XjBPcF/0WrB5EgQijIR/3GPkzsoEIpdns7tPRdwMO8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aIQBssBPdZxm3ob9vDyAsk2R5qc1Mrw9CRoAitcu0fp9/Sq2FF0Mze7NdYQHmUrD+hylMeDRPycNAYnpgkMtk1lE5AqpwxHuVKBaWwVzhd68/4Q0GO5yMCC7p+tLhitMns/Jqq+x3FvrbyaVvaTLqqyHuYyQZGc74lLfybynEyY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A/qKCxrY; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BABDB1F000E9;
-	Thu,  2 Jul 2026 16:50:51 +0000 (UTC)
+	 MIME-Version; b=Jm2UhDe/IGi7FJUM5CLrbU3yNj+lipk6DnHeBkRMcRrfEAyGeDUDHY/quC1qQkOlr9UIkd5cjobGlplRlqGNqfvag3Shoak213SwLUDl4GOx8RFNXEUZXzLRPR4zOTY/2S+O4bX6jU1CBxCRzo0e06qrV3W5WwQHuP5PYAM1OeI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UPnoORmc; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3FE671F000E9;
+	Thu,  2 Jul 2026 16:54:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1783011052;
-	bh=0vEhIA8xOY4jU7MOyNffcnpZdAxE995MDrQOLC3tx70=;
+	s=korg; t=1783011262;
+	bh=/yKtsEALPRTnWQyce0cHuoxVSyvb9J90GevQ5Ss29yI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=A/qKCxrYjNsxD8jLeetMjfPQfYcwgUMEfk5D1pRJlsVH+6hqGzMuOnfYyTqMhTHR9
-	 77+xUVUXe8BLIOfT+EwOnLuVO/8e28xgSAA9KkR+wvz00GarVp9YnQoYmq+0fBsItE
-	 2sXDAY2m94UgleFwW6qQWTsMyaLTRUOjRgpRtdK0=
+	b=UPnoORmc7fCEliGbKjAa1mD0mRfa1Yei47OHC6kmb3ne6ZwxJRvrYArS+ObEkpLFC
+	 d2ALB488NF99VWcpFWIhkoPVMSXY4gD0sqh/ey2MJlHC34yqsfVkqhHFmOWWsuiObZ
+	 KxXn+a1kv3xvLGSzISo0rVgfr4ciZcID+YrxpKj0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Simon Horman <horms@kernel.org>,
-	Vadim Fedorenko <vadim.fedorenko@linux.dev>,
-	Junjie Cao <junjie.cao@intel.com>,
-	Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Subject: [PATCH 6.6 136/175] wifi: iwlwifi: mvm: fix race condition in PTP removal
+	Bryam Vargas <hexlabsecurity@proton.me>,
+	John Johansen <john.johansen@canonical.com>
+Subject: [PATCH 6.18 040/108] apparmor: mediate the implicit connect of TCP fast open sendmsg
 Date: Thu,  2 Jul 2026 18:20:37 +0200
-Message-ID: <20260702155118.674881244@linuxfoundation.org>
+Message-ID: <20260702155112.940099045@linuxfoundation.org>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260702155115.766838875@linuxfoundation.org>
-References: <20260702155115.766838875@linuxfoundation.org>
+In-Reply-To: <20260702155112.110058792@linuxfoundation.org>
+References: <20260702155112.110058792@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,85 +68,93 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-271249-lists,stable=lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-271331-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:horms@kernel.org,m:vadim.fedorenko@linux.dev,m:junjie.cao@intel.com,m:miriam.rachel.korenblit@intel.com,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	TO_DN_SOME(0.00)[];
+	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:hexlabsecurity@proton.me,m:john.johansen@canonical.com,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,intel.com:email,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linux.dev:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[canonical.com:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,vger.kernel.org:from_smtp,proton.me:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 16A276FBA26
+X-Rspamd-Queue-Id: AE75A6FB2CD
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Junjie Cao <junjie.cao@intel.com>
+From: Bryam Vargas <hexlabsecurity@proton.me>
 
-commit 65150c9cc3e06ab54bc4e8134a47f6f5d095a4e3 upstream.
+commit 4d587cd8a72155089a627130bbd4716ec0856e21 upstream.
 
-iwl_mvm_ptp_remove() calls cancel_delayed_work_sync() only after
-ptp_clock_unregister() and clearing ptp_data state (ptp_clock,
-ptp_clock_info, last_gp2).
+sendmsg()/sendto() with MSG_FASTOPEN is a combination of connect(2) and
+write(2): it opens the connection in the SYN. apparmor_socket_sendmsg()
+only checks AA_MAY_SEND, so a profile that grants send but denies connect
+lets a confined task open an outbound TCP/MPTCP connection that connect(2)
+would have refused, bypassing connect mediation.
 
-This creates a race where the delayed work iwl_mvm_ptp_work() can
-execute between ptp_clock_unregister() and cancel_delayed_work_sync(),
-observing partially cleared PTP state.
+Mediate the implicit connect when MSG_FASTOPEN is set and a destination
+is supplied. Add it to apparmor_socket_sendmsg() (not the shared
+aa_sock_msg_perm() helper, which recvmsg also uses) and call aa_sk_perm()
+directly, mirroring the selinux and tomoyo fixes. sk_is_tcp() does not
+cover MPTCP fast open, so the SOCK_STREAM/IPPROTO_MPTCP arm is explicit.
 
-Move cancel_delayed_work_sync() before ptp_clock_unregister() to
-ensure the delayed work is fully stopped before any PTP cleanup
-begins.
-
+Fixes: cf60af03ca4e ("net-tcp: Fast Open client - sendmsg(MSG_FASTOPEN)")
 Cc: stable@vger.kernel.org
-Reviewed-by: Simon Horman <horms@kernel.org>
-Reviewed-by: Vadim Fedorenko <vadim.fedorenko@linux.dev>
-Signed-off-by: Junjie Cao <junjie.cao@intel.com>
-Link: https://patch.msgid.link/20260212125035.1345718-1-junjie.cao@intel.com
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Signed-off-by: Bryam Vargas <hexlabsecurity@proton.me>
+Signed-off-by: John Johansen <john.johansen@canonical.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/intel/iwlwifi/mvm/ptp.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ security/apparmor/lsm.c |   16 +++++++++++++++-
+ 1 file changed, 15 insertions(+), 1 deletion(-)
 
---- a/drivers/net/wireless/intel/iwlwifi/mvm/ptp.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/ptp.c
-@@ -316,11 +316,11 @@ void iwl_mvm_ptp_remove(struct iwl_mvm *
- 			 mvm->ptp_data.ptp_clock_info.name,
- 			 ptp_clock_index(mvm->ptp_data.ptp_clock));
- 
-+		cancel_delayed_work_sync(&mvm->ptp_data.dwork);
- 		ptp_clock_unregister(mvm->ptp_data.ptp_clock);
- 		mvm->ptp_data.ptp_clock = NULL;
- 		memset(&mvm->ptp_data.ptp_clock_info, 0,
- 		       sizeof(mvm->ptp_data.ptp_clock_info));
- 		mvm->ptp_data.last_gp2 = 0;
--		cancel_delayed_work_sync(&mvm->ptp_data.dwork);
- 	}
+--- a/security/apparmor/lsm.c
++++ b/security/apparmor/lsm.c
+@@ -1423,7 +1423,21 @@ static int aa_sock_msg_perm(const char *
+ static int apparmor_socket_sendmsg(struct socket *sock,
+ 				   struct msghdr *msg, int size)
+ {
+-	return aa_sock_msg_perm(OP_SENDMSG, AA_MAY_SEND, sock, msg, size);
++	int error = aa_sock_msg_perm(OP_SENDMSG, AA_MAY_SEND, sock, msg, size);
++
++	if (error)
++		return error;
++
++	/* TCP fast open carries connect() semantics in sendmsg(); mediate
++	 * the implicit connect so it cannot bypass the connect permission.
++	 */
++	if ((msg->msg_flags & MSG_FASTOPEN) && msg->msg_name &&
++	    (sk_is_tcp(sock->sk) ||
++	     (sk_is_inet(sock->sk) && sock->sk->sk_type == SOCK_STREAM &&
++	      sock->sk->sk_protocol == IPPROTO_MPTCP)))
++		error = aa_sk_perm(OP_CONNECT, AA_MAY_CONNECT, sock->sk);
++
++	return error;
  }
+ 
+ static int apparmor_socket_recvmsg(struct socket *sock,
 
 
 
