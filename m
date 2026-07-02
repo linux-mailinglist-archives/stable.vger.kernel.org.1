@@ -1,192 +1,165 @@
-Return-Path: <stable+bounces-270273-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-270274-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 4xqnNDeqRWpxDgsAu9opvQ
-	(envelope-from <stable+bounces-270273-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 02:00:55 +0200
+	id YkynJW6qRWp7DgsAu9opvQ
+	(envelope-from <stable+bounces-270274-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 02:01:50 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3F3966F2847
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 02:00:55 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0CB836F286E
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 02:01:50 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=RAGaEWdv;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-270273-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-270273-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=GCSLWpmD;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-270274-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-270274-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 799983023A4B
-	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 00:00:37 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 67EB2302FA22
+	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 00:01:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3DE8E370D6E;
-	Thu,  2 Jul 2026 00:00:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD427225417;
+	Thu,  2 Jul 2026 00:01:34 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 074B954774;
-	Thu,  2 Jul 2026 00:00:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A74B319992C;
+	Thu,  2 Jul 2026 00:01:33 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782950436; cv=none; b=I9vy3ixNnN9pagDUK58ll2EmA6ooHLZUe8PzQ6DYuwfoaC+w3QtuNd9fLgiSbmT3gjmuaDVpf5bVNRQCOqwC2M0fFO+415CJpCL1f1gvh2C8Y1+/4xCwTamvsIitVnD+gK2zouoh6VQitGnsnZbWb86tl3PoG2c6mS9PVH9OvLw=
+	t=1782950494; cv=none; b=VbSRPP5zSIPaEQ4w6ilJFPCT5bIUHY6KcPanvXtlF/zKk8eT7HNigslKC+eyQGn+E4oVvxVu3SoerBST0JWOWgxyop+2uWqvtArx6GOWs5MwjPp5QSFRGIZ3oIqdOPxdKJxTwCMj0dml/bDFdfA8GT4HxZnePjTt4k3D0tYhlBg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782950436; c=relaxed/simple;
-	bh=49oNaBsWC1ibQFOVK2VcpZiHrR3tpRL6dBrdVrGD1bs=;
+	s=arc-20240116; t=1782950494; c=relaxed/simple;
+	bh=pvjJyBojKaaCQDyhnwjMexT9cSQ+Wis9JHDp+sMrsB4=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=TrCaClcx4CQQ0HIlsdxo81TeoaqZSshWFhzrZxKsuXPDMjjMFXq0zpZ73hP6VJDPkwPz4LfhMzto2z704j6JlLcz3NgPKIu4R6LN5wudMlMrTEcvxr4k2mMo3Q8M/TcQkYGf999o+d5qO3ayEcY2fqonakmEWqg1pGHi77KMDew=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RAGaEWdv; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74A291F000E9;
-	Thu,  2 Jul 2026 00:00:34 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=porYfvb1/2QrwHKubX/jH/l+pWl+6fo7Qmy7ca7Lyo6SyF2RygwMy9e/wEidf0uXlD/LRLQXHZacooBjdmgLlMMoVoaIf+VM9lEvSQ1WXZ3zvuoJCObuxAEVLkJYdU1xZ5FxHafLFEZc2ZXpkU+BifustJcLWYlHzvktMRsQlk8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GCSLWpmD; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C21B1F000E9;
+	Thu,  2 Jul 2026 00:01:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782950434;
-	bh=4DxY+NveVlYpMYk9+8EzvprbIuiW7b27j/Q3O7UOpGA=;
+	s=k20260515; t=1782950493;
+	bh=MKy0RFu7xgDEI2dGgMG+Dk1HrsGATT053SdOOOQC+b8=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=RAGaEWdvlnS9Lk1iGe3zDhYAk6CUI8rBdM1J/vFEMw1SLmdPLWnnT+uC42wd/nSmY
-	 0YhlR50K/drAQqj7QRUqMrkVzEkLYFAbSXGbdgnphLlmWnUk/KmPi0/7wRs48jlxUF
-	 gmmY3i5/gvTlNCpgHz9Buvpr6TZYOuU1wJyx3CXTVGLDeQKka/4OFN08+D+XCclhQo
-	 HafrnBWIukbhH+vk85drrar6sNt+oCdG96JicMekQQFhj9zhteAMvXe3rBLy3MwIwC
-	 dormm8qIrhHbCXV90PWTc0lPEdd07za8UzAP8qmMvD0offBS4IY1VXPH23bvU9ZOqM
-	 qGhR+rDHKZSYw==
-Date: Wed, 1 Jul 2026 17:00:33 -0700
-From: Namhyung Kim <namhyung@kernel.org>
-To: Viktor Malik <vmalik@redhat.com>
-Cc: Alexei Starovoitov <alexei.starovoitov@gmail.com>,
-	linux-perf-users@vger.kernel.org,
-	Peter Zijlstra <peterz@infradead.org>,
-	Ingo Molnar <mingo@redhat.com>,
-	Arnaldo Carvalho de Melo <acme@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-	Jiri Olsa <jolsa@kernel.org>, Ian Rogers <irogers@google.com>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	James Clark <james.clark@linaro.org>,
-	Howard Chu <howardchu95@gmail.com>, linux-kernel@vger.kernel.org,
-	bpf@vger.kernel.org, Michael Petlan <mpetlan@redhat.com>,
-	stable@vger.kernel.org
-Subject: Re: [PATCH] perf trace: Refactor augmented_raw_syscalls using
- bpf_loop
-Message-ID: <akWqIfWPMCdaGgGg@google.com>
-References: <20260623112533.1151502-1-vmalik@redhat.com>
- <DJGJ9F6WQZV9.2W4WBIHYLJQ97@gmail.com>
- <ajq98dm4gAwEzkMb@google.com>
- <c2f4e45e-d5c9-42e9-a46b-25fb0cacb267@redhat.com>
- <ajwu7xR6V6MAQOFw@google.com>
- <3c221e35-d642-4036-88fd-d25df7f8807e@redhat.com>
- <akLXCFpnum0WgXGf@google.com>
- <c1666061-c3e7-4eda-82ca-d03daf05f4f8@redhat.com>
- <360bfd5c-b023-4952-9e24-53fcc26690d3@redhat.com>
+	b=GCSLWpmDDEHjrlT+KseVQxpcJoSLCpI5ureoFaRX4IN4pf2ZgYy3CJqjibEizrE32
+	 firSuVyH/BMLdcDdau8xWogD+IbYcegGky7KTpXk87Hn0jidAODsZ8sJZ8MSnxGyj3
+	 m1QsTW6pUMkFDv+iRUxIqSGHUXmwKziEl3FQZGRm/SWvCEP2eNtnKHTZVrsvb8Z3OP
+	 w2BVPcDPvygS8saTkLyd1vvvqKEcW5Sfb1pZasSYrSjIU68xhp5WWKs5irdDTAEEOd
+	 mDmhjE4e0JjyGcoEWpSSLr2n1hQqOYrI6T4wK0lrOcmgjI2WDTAZxf5nSNV8OwPt/X
+	 KZ6gil7BYJPvQ==
+Date: Wed, 1 Jul 2026 17:01:32 -0700
+From: Oliver Upton <oupton@kernel.org>
+To: Colton Lewis <coltonlewis@google.com>
+Cc: stable@vger.kernel.org, Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>, Marc Zyngier <maz@kernel.org>,
+	Oliver Upton <oliver.upton@linux.dev>,
+	James Morse <james.morse@arm.com>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Zenghui Yu <yuzenghui@huawei.com>,
+	Mingwei Zhang <mizhang@google.com>,
+	linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 0/5] Backport ARM64 VHE boot fixes to 6.6.y
+Message-ID: <akWqXBJrJ1n34BQ5@kernel.org>
+References: <20260701204342.2654385-1-coltonlewis@google.com>
+ <akWhad3U5VNjWzxu@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <360bfd5c-b023-4952-9e24-53fcc26690d3@redhat.com>
+In-Reply-To: <akWhad3U5VNjWzxu@kernel.org>
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-3.66 / 15.00];
+X-Spamd-Result: default: False [-5.16 / 15.00];
 	WHITELIST_SPF_DKIM(-3.00)[kernel.org:d:+,kernel.org:s:+];
-	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-270273-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	RCPT_COUNT_TWELVE(0.00)[17];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:vmalik@redhat.com,m:alexei.starovoitov@gmail.com,m:linux-perf-users@vger.kernel.org,m:peterz@infradead.org,m:mingo@redhat.com,m:acme@kernel.org,m:mark.rutland@arm.com,m:alexander.shishkin@linux.intel.com,m:jolsa@kernel.org,m:irogers@google.com,m:adrian.hunter@intel.com,m:james.clark@linaro.org,m:howardchu95@gmail.com,m:linux-kernel@vger.kernel.org,m:bpf@vger.kernel.org,m:mpetlan@redhat.com,m:stable@vger.kernel.org,m:alexeistarovoitov@gmail.com,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:coltonlewis@google.com,m:stable@vger.kernel.org,m:catalin.marinas@arm.com,m:will@kernel.org,m:maz@kernel.org,m:oliver.upton@linux.dev,m:james.morse@arm.com,m:suzuki.poulose@arm.com,m:yuzenghui@huawei.com,m:mizhang@google.com,m:linux-arm-kernel@lists.infradead.org,m:kvmarm@lists.linux.dev,m:linux-kernel@vger.kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[oupton@kernel.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_SENDER(0.00)[namhyung@kernel.org,stable@vger.kernel.org];
+	RCPT_COUNT_TWELVE(0.00)[13];
+	TAGGED_FROM(0.00)[bounces-270274-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	FORWARDED(0.00)[lists@lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	TO_DN_SOME(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[namhyung@kernel.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[gmail.com,vger.kernel.org,infradead.org,redhat.com,kernel.org,arm.com,linux.intel.com,google.com,intel.com,linaro.org];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[oupton@kernel.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	MISSING_XM_UA(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,vger.kernel.org:from_smtp]
+	TO_DN_SOME(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 3F3966F2847
+X-Rspamd-Queue-Id: 0CB836F286E
 
-On Wed, Jul 01, 2026 at 08:12:06AM +0200, Viktor Malik wrote:
-> On 6/30/26 07:42, Viktor Malik wrote:
-> > On 6/29/26 22:35, Namhyung Kim wrote:
-> >> On Thu, Jun 25, 2026 at 02:05:29PM +0200, Viktor Malik wrote:
-> >>> On 6/24/26 21:24, Namhyung Kim wrote:
-> >>>> On Wed, Jun 24, 2026 at 08:47:38AM +0200, Viktor Malik wrote:
-> >>>>> On 6/23/26 19:10, Namhyung Kim wrote:
-> >>>>>> Hello,
-> >>>>>>
-> >>>>>> On Tue, Jun 23, 2026 at 08:27:39AM -0700, Alexei Starovoitov wrote:
-> >>>>>>> On Tue Jun 23, 2026 at 4:25 AM PDT, Viktor Malik wrote:
-> >>>> [SNIP]
-> >>>>>>>> +	struct args_loop_ctx loop_ctx = {
-> >>>>>>>> +		.args = args,
-> >>>>>>>> +		.beauty_map = beauty_map,
-> >>>>>>>> +		.payload_offset = payload_offset,
-> >>>>>>>> +		.value_size = value_size,
-> >>>>>>>> +		.output = &output,
-> >>>>>>>> +		.do_output = &do_output
-> >>>>>>>> +	};
-> >>>>>>>> +	iters = bpf_loop(6, process_arg_cb, &loop_ctx, 0);
-> >>>>>>>
-> >>>>>>> bpf_loop() is old and generally not recommended.
-> >>>>>>> Please use bpf_for() then the diff will be one line change and
-> >>>>>>> can scale to any number of args. Not just 6.
-> >>>>>
-> >>>>> Thanks Alexei, I didn't know about this preference.
-> >>>>>
-> >>>>>> One thing we should take care is to support old kernels.  The oldest
-> >>>>>> LTS kernel in the kernel.org is 5.10 and bpf_loop() was introduced in
-> >>>>>> 5.17 and bpf_for (bpf_iter_num) was 6.4.
-> >>>>>
-> >>>>> The problematic loop was introduced in 6.12 by a68fd6a6cdd3 ("perf
-> >>>>> trace: Collect augmented data using BPF") so we should be good using
-> >>>>> bpf_for. Or is perf from 7.2 supposed to work on 5.10 LTS kernels?
-> >>>>
-> >>>> Yep, we'd like to support old kernels.
-> >>>
-> >>> How much strict are you on this requirement? IMHO, the very least we
-> >>> need to fix the verifier issue is bpf_loop, so that would still not work
-> >>> on 5.10 and 5.15 LTS kernels.
-> >>
-> >> I don't think it's an absolute requirement, but I think we don't want to
-> >> break any existing working setup (old kernel + old compiler).
-> >>
-> >>>
-> >>> We could probably keep the open-coded loop in case bpf_loop is not
-> >>> available but `perf trace` would still fail on kernels without bpf_loop
-> >>> for new perf built with Clang>=22. Also, the code would be a bit ugly
-> >>> and I'm not sure how well the feature check for helpers (bpf_loop) works
-> >>> on old kernels.
-> >>  
-> >> Any chance process_arg_cb() can be called directly in the regular for
-> >> loop on old kernels?
-> > 
-> > That's my thinking, too. Should be pretty straightforward, I'm going to
-> > give it a try in v2.
+Circling back around...
+
+On Wed, Jul 01, 2026 at 04:23:21PM -0700, Oliver Upton wrote:
+> The subject prefix should be "[PATCH 6.6 0/5]" so people know right up
+> front where this is going.
 > 
-> Btw, I just noticed that util/bpf_skel/lock_contention.bpf.c already
-> uses bpf_loop without any fallback so newer perf (at least `perf lock`)
-> won't be usable on kernels without bpf_loop anyways.
- 
-IIUC the lock contention tracepoints were added to v5.19 so it won't
-work on old kernels anyway. :)
+> On Wed, Jul 01, 2026 at 08:43:37PM +0000, Colton Lewis wrote:
+> > This series backports VHE CPU boot fixes to the 6.6.y stable branch.
+> > 
+> > These fixes are already present in the 6.12.y stable branch (and
+> > newer), but are missing in 6.6.y. They are required to enable booting
+> > L1 guests with nested virtualization enabled (kvm-arm.mode=nested).
+> 
+> It's a bit worse than this. The architecture retroactively made
+> FEAT_E2H0 an optional feature, there are now implementations in the wild
+> that do not support the feature.
+> 
+> > Without these patches, a 6.6.y guest boots with HCR_EL2.E2H
+> > incorrectly configured (because it misses VHE-only detection or early
+> > initialization), causing early boot hangs/trap loops.
+> > 
+> > Conflict resolutions:
+> > - Patch 4 (KVM: arm64: Initialize HCR_EL2.E2H early) had conflicts in
+> >   arch/arm64/kvm/hyp/nvhe/hyp-init.S due to differences in state
+> >   initialization. Resolved by extracting EL2 state initialization into
+> >   __kvm_init_el2_state.
+> > - Patch 5 (arm64: Revamp HCR_EL2.E2H RES1 detection) had conflicts in
+> >   arch/arm64/include/asm/el2_setup.h. Resolved by using raw msr hcr_el2
+> >   instead of the missing msr_hcr_el2 macro.
+> > 
+> > 
+> > Marc Zyngier (4):
+> >   arm64: sysreg: Add layout for ID_AA64MMFR4_EL1
+> >   arm64: Treat HCR_EL2.E2H as RES1 when ID_AA64MMFR4_EL1.E2H0 is
+> >     negative
+> >   arm64: Fix early handling of FEAT_E2H0 not being implemented
+> >   arm64: Revamp HCR_EL2.E2H RES1 detection
+> > 
+> > Mark Rutland (1):
+> >   KVM: arm64: Initialize HCR_EL2.E2H early
+
+Please go through and correct all of the SHA1s for the cherry-picks,
+smells like some LLM just hallucinated some bits given how close they
+are to the real deal.
+
+I also want to see that all KVM modes have been tested (nVHE, hVHE, VHE,
+protected) before this gets picked up. Overall though taking this to
+stable seems like the right thing to do.
+
+Any reason why you've only done 6.6? The kernel was first aware of
+E2H=RES1 as far back as 5.13.
 
 Thanks,
-Namhyung
-
+Oliver
 
