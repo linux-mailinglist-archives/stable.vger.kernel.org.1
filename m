@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-270562-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-270563-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id D06eN4KHRmq2XwsAu9opvQ
-	(envelope-from <stable+bounces-270562-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 17:45:06 +0200
+	id 3+NeFYWGRmp6XwsAu9opvQ
+	(envelope-from <stable+bounces-270563-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 17:40:53 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D7A1C6F995E
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 17:45:05 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id BA88C6F98C2
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 17:40:52 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=X90zH9Jy;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-270562-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-270562-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=RrfHMTc6;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-270563-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-270563-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id E46B7306745D
-	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 15:30:54 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 674C230276B8
+	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 15:32:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50AF130E85D;
-	Thu,  2 Jul 2026 15:30:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0167348C44;
+	Thu,  2 Jul 2026 15:32:36 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C79D353A63;
-	Thu,  2 Jul 2026 15:30:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F8BC305673;
+	Thu,  2 Jul 2026 15:32:35 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783006251; cv=none; b=Wd5hcIr7QGwJq4WDHGngh1dVsAzrYLGtpKJ3fCigHToNaSn6TAW5F9VAGtFXnvB9gXkxM/r/4Mcva7KT7lt1MOzUlgLQhGUzLXDeUqi/KgUDfOwCdSdLxeXepJdh2e1doqk3DMMydWlVYGMDo6fw7/+GYQ994OmjkIWh8xDI9iY=
+	t=1783006356; cv=none; b=qJkx3L78TI+GHoscwuGX3T4hKJXJtuL6oDFx2eP8hztfVR2grLims1ak2WdKOP7yyYYqD0zfhfOflflfq64Zc9l7femCoiEaFKYbg811uYB5sCbvFKTDqjrd6ZamyMDdmk0ZCSXh/mn2j7x2+njEjWOzWTG7RHW+sRu2x0wwnyE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783006251; c=relaxed/simple;
-	bh=HtYJ4Wm+pBbFvQpLtzp9uKPkHZZUOflZsmenags6pmE=;
+	s=arc-20240116; t=1783006356; c=relaxed/simple;
+	bh=/7WF9BtcaYkfSSoY50IfeTlm3wvEay304OfbcPXH9QI=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=WH1m7BwFfSpnl5dJa7HeAK7Iw7xfQ/F+ZpFPVuHStbycdoX9sw80Sh5bvXh4Jgkl/xd/qwCPFrLKyMCQ4SFFTGUlix/K/6qUztfiGlEHd0bMdIcQ1d9cm5UrwbhUNoy6di/PGVpCLqT3EsTOp/eiIOiiVFvJg8qhsDvocTpi2dI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=X90zH9Jy; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 480371F000E9;
-	Thu,  2 Jul 2026 15:30:41 +0000 (UTC)
+	 In-Reply-To:Content-Type; b=HOxGiRnUAm9hZXbds3Fe5CID3v7it4T3pDxp3l6UDgY628EnfEnz/shcuCyOhHxhHKWt79DGrDOl5ujTReqBuHCg2HOwM7ZyJqfc7P/lTDzuL0Dcrk7RpyRrxD7xIGG5QLqwQvGvnKa2FN4/WrQUIOVIbowsMhS5muMEmC9VJcc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RrfHMTc6; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9271B1F000E9;
+	Thu,  2 Jul 2026 15:32:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783006250;
-	bh=lQIOVySReL8vS2U2jav9YDGBDGuteWIuFYGGUlN0FC8=;
+	s=k20260515; t=1783006355;
+	bh=K6BXeY1SuXwf6XNLIwmaGIUYMIBQYDCncKaEEO6QK5o=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=X90zH9Jy/e9p4kfi2DS6OMkiROYz/68mN0iPhH41GUXVyq+OeD6UtNB3YsTKjikeT
-	 /UkPx2ZBpaK74k8G3UzvLNYI8a9lifGYdqUxQms7WdCu0FE9JFo/8mA6q8pYfxpQOI
-	 IJnIeaY04WvUzrLKT7czbbjYuVZOGgQN1L2eEZhr7f8aWRZucinTJPp6ICT6Y3Soih
-	 2d7p8lEpmqH9tROhhJw1rCzzQbj5FabizMehNbDndcfZ0XNNhDpNkTP3Oa0sozcNKJ
-	 uX3yNDOR/D/lKK6Kz+vBoj8anHJk7Hhh+Z5WVaTLkdwnkdDnB8h2okvAy9k1HLCr5z
-	 hBdqJB8YLm1LQ==
-Message-ID: <f22ed786-88a6-41d4-9304-ca617a0e7d06@kernel.org>
-Date: Thu, 2 Jul 2026 17:30:39 +0200
+	b=RrfHMTc6WpFqBIjgT3gKXJn9UOPoDGOmQjbssocbfy19iPWhzvzZOmDc2uft1nTM/
+	 G4mcZQYbMHXOrHseVJCkoj98KH/X/o931BKZVuGiz0o8Sx08jvdPQC00UZ01xGkDe0
+	 ANjXIGZ1epVEZa/j/Wi5/7tIdg3oTErIEWdOWc+QRX0pwGPIq40tRn1qFM7FYFQXAY
+	 zHmSlxTopOz0AVxljNc3xjqdmrClnJqiS3j5wBtfJ8Wu0IrfTdc0iUeT+sEnWbwR2S
+	 iMJSwCbMr6porAjAWR31wA7EQRiBrXaHFYTaVgyinEnl24OpPzs/7aTh/Q2g3PTBmX
+	 HzG8A1gFURwlg==
+Message-ID: <00d6e0fb-dcba-45d5-98c0-f5ed81604ca0@kernel.org>
+Date: Thu, 2 Jul 2026 17:32:26 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -56,23 +56,21 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH v2 2/6] mm/rmap: use huge_ptep_get() in try_to_unmap_one()
-To: Muchun Song <muchun.song@linux.dev>, Dev Jain <dev.jain@arm.com>
+To: Dev Jain <dev.jain@arm.com>, muchun.song@linux.dev, osalvador@suse.de,
+ akpm@linux-foundation.org, ljs@kernel.org, liam@infradead.org
 Cc: riel@surriel.com, vbabka@kernel.org, harry@kernel.org, jannh@google.com,
  lance.yang@linux.dev, kas@kernel.org, linux-mm@kvack.org,
  linux-kernel@vger.kernel.org, rcampbell@nvidia.com, apopple@nvidia.com,
  ziy@nvidia.com, matthew.brost@intel.com, joshua.hahnjy@gmail.com,
  rakie.kim@sk.com, byungchul@sk.com, gourry@gourry.net,
- ying.huang@linux.alibaba.com, nao.horiguchi@gmail.com, ak@linux.intel.com,
- mel@csn.ul.ie, pfalcato@suse.de, jpoimboe@kernel.org, dave.hansen@intel.com,
+ ying.huang@linux.alibaba.com, j-nomura@ce.jp.nec.com,
+ nao.horiguchi@gmail.com, ak@linux.intel.com, mel@csn.ul.ie,
+ pfalcato@suse.de, jpoimboe@kernel.org, dave.hansen@intel.com,
  tglx@kernel.org, catalin.marinas@arm.com, will@kernel.org,
  linux-arm-kernel@lists.infradead.org, ryan.roberts@arm.com,
- anshuman.khandual@arm.com, stable@vger.kernel.org, osalvador@suse.de,
- akpm@linux-foundation.org, ljs@kernel.org, liam@infradead.org
+ anshuman.khandual@arm.com, stable@vger.kernel.org
 References: <20260702051341.126509-1-dev.jain@arm.com>
  <20260702051341.126509-3-dev.jain@arm.com>
- <97a43d82-28c2-4f98-ad74-fe05ed9f0297@linux.dev>
- <a6a00b38-612f-439d-9b75-337170e3af30@arm.com>
- <CE6E9F6C-8891-40E3-A5B7-BA475070EACD@linux.dev>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -119,9 +117,9 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <CE6E9F6C-8891-40E3-A5B7-BA475070EACD@linux.dev>
+In-Reply-To: <20260702051341.126509-3-dev.jain@arm.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-3.66 / 15.00];
 	WHITELIST_SPF_DKIM(-3.00)[kernel.org:d:+,kernel.org:s:+];
@@ -129,17 +127,17 @@ X-Spamd-Result: default: False [-3.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-270562-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-270563-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:dev.jain@arm.com,m:muchun.song@linux.dev,m:osalvador@suse.de,m:akpm@linux-foundation.org,m:ljs@kernel.org,m:liam@infradead.org,m:riel@surriel.com,m:vbabka@kernel.org,m:harry@kernel.org,m:jannh@google.com,m:lance.yang@linux.dev,m:kas@kernel.org,m:linux-mm@kvack.org,m:linux-kernel@vger.kernel.org,m:rcampbell@nvidia.com,m:apopple@nvidia.com,m:ziy@nvidia.com,m:matthew.brost@intel.com,m:joshua.hahnjy@gmail.com,m:rakie.kim@sk.com,m:byungchul@sk.com,m:gourry@gourry.net,m:ying.huang@linux.alibaba.com,m:j-nomura@ce.jp.nec.com,m:nao.horiguchi@gmail.com,m:ak@linux.intel.com,m:mel@csn.ul.ie,m:pfalcato@suse.de,m:jpoimboe@kernel.org,m:dave.hansen@intel.com,m:tglx@kernel.org,m:catalin.marinas@arm.com,m:will@kernel.org,m:linux-arm-kernel@lists.infradead.org,m:ryan.roberts@arm.com,m:anshuman.khandual@arm.com,m:stable@vger.kernel.org,m:joshuahahnjy@gmail.com,m:naohoriguchi@gmail.com,s:lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:muchun.song@linux.dev,m:dev.jain@arm.com,m:riel@surriel.com,m:vbabka@kernel.org,m:harry@kernel.org,m:jannh@google.com,m:lance.yang@linux.dev,m:kas@kernel.org,m:linux-mm@kvack.org,m:linux-kernel@vger.kernel.org,m:rcampbell@nvidia.com,m:apopple@nvidia.com,m:ziy@nvidia.com,m:matthew.brost@intel.com,m:joshua.hahnjy@gmail.com,m:rakie.kim@sk.com,m:byungchul@sk.com,m:gourry@gourry.net,m:ying.huang@linux.alibaba.com,m:nao.horiguchi@gmail.com,m:ak@linux.intel.com,m:mel@csn.ul.ie,m:pfalcato@suse.de,m:jpoimboe@kernel.org,m:dave.hansen@intel.com,m:tglx@kernel.org,m:catalin.marinas@arm.com,m:will@kernel.org,m:linux-arm-kernel@lists.infradead.org,m:ryan.roberts@arm.com,m:anshuman.khandual@arm.com,m:stable@vger.kernel.org,m:osalvador@suse.de,m:akpm@linux-foundation.org,m:ljs@kernel.org,m:liam@infradead.org,m:joshuahahnjy@gmail.com,m:naohoriguchi@gmail.com,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[david@kernel.org,stable@vger.kernel.org];
-	RCPT_COUNT_TWELVE(0.00)[36];
+	RCPT_COUNT_TWELVE(0.00)[37];
 	FORWARDED(0.00)[lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
@@ -149,50 +147,75 @@ X-Spamd-Result: default: False [-3.66 / 15.00];
 	ALIAS_RESOLVED(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[david@kernel.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[surriel.com,kernel.org,google.com,linux.dev,kvack.org,vger.kernel.org,nvidia.com,intel.com,gmail.com,sk.com,gourry.net,linux.alibaba.com,linux.intel.com,csn.ul.ie,suse.de,arm.com,lists.infradead.org,linux-foundation.org,infradead.org];
+	FREEMAIL_CC(0.00)[surriel.com,kernel.org,google.com,linux.dev,kvack.org,vger.kernel.org,nvidia.com,intel.com,gmail.com,sk.com,gourry.net,linux.alibaba.com,ce.jp.nec.com,linux.intel.com,csn.ul.ie,suse.de,arm.com,lists.infradead.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: D7A1C6F995E
+X-Rspamd-Queue-Id: BA88C6F98C2
 
-On 7/2/26 11:35, Muchun Song wrote:
+On 7/2/26 07:13, Dev Jain wrote:
+> try_to_unmap_one() handles hugetlb folios when memory failure needs
+> to replace a poisoned hugetlb mapping with a hwpoison entry. In that
+> case page_vma_mapped_walk() returns the pte pointer to the hugetlb folio
+> in pvmw.pte, but the code reads it with ptep_get().
 > 
+> On arches which provide their own huge_ptep_get() to dereference a huge
+> pte pointer, accessing via ptep_get() would cause pte_pfn(), pte_present()
+> etc to misbehave.
 > 
->> On Jul 2, 2026, at 17:08, Dev Jain <dev.jain@arm.com> wrote:
->>
->>
->>
->> On 02/07/26 2:17 pm, Muchun Song wrote:
->>>
->>>
->>>
->>> Maybe I didn't express my thoughts clearly in the first version, let me
->>> explain in more detail.
->>>
->>> We should define this stub as a no-op for !CONFIG_HUGETLB_PAGE (like
->>> set_huge_pte_at, that is why I mentioned 5d4af6195c87c6 for your reference
->>> in your previous version). Currently, you've added a declaration, but the
->>> function itself doesn't actually exist, which seems quite strange to me.
->>
->> https://lore.kernel.org/all/a4fe8ba6-2ecd-4bb9-95a9-27f9f1e87d2e@kernel.org/
->>
->> David suggested this. Honestly I quite like David's suggestion, what do you
->> think?
+> It is not clear whether this has a trivially visible effect to userspace.
 > 
-> Thanks for pointing that out, I missed it earlier. That said, looking at
-> hugetlb.h, it already contains quite a few no-op stubs. To keep things
-> consistent, I'd personally prefer a stub here. Since David suggested this,
-> I’d love to hear his thoughts on this as well.
+> Just use huge_ptep_get() for dereferencing a huge pte pointer.
+> 
+> Fixes: c7ab0d2fdc84 ("mm: convert try_to_unmap_one() to use page_vma_mapped_walk()")
+> Cc: stable@vger.kernel.org
+> Reported-by: David Hildenbrand <david@kernel.org>
+> Signed-off-by: Dev Jain <dev.jain@arm.com>
+> ---
+>  include/linux/hugetlb.h |  3 +++
+>  mm/rmap.c               | 16 ++++++++++------
+>  2 files changed, 13 insertions(+), 6 deletions(-)
+> 
+> diff --git a/include/linux/hugetlb.h b/include/linux/hugetlb.h
+> index 2abaf99321e90..fdb7bdf7645c5 100644
+> --- a/include/linux/hugetlb.h
+> +++ b/include/linux/hugetlb.h
+> @@ -1261,6 +1261,9 @@ static inline void hugetlb_count_sub(long l, struct mm_struct *mm)
+>  {
+>  }
+>  
+> +pte_t huge_ptep_get(struct mm_struct *mm, unsigned long addr,
+> +		    pte_t *ptep);
 
-It's the shortest possible way to enforce (through the linker!) that you
-function is not called from wrong context.
+Two tabs, or just in a single line.
 
-The only alternative is using a stub with a BUILD_BUG() in it. Which will 4 5 LOC :)
+If others prefer a stub, I don't care. This here is shortest to let the linker
+bail out.
+
+> +
+>  static inline pte_t huge_ptep_clear_flush(struct vm_area_struct *vma,
+>  					  unsigned long addr, pte_t *ptep)
+>  {
+> diff --git a/mm/rmap.c b/mm/rmap.c
+> index 1c77d5dc06e9f..aa8a254efaecc 100644
+> --- a/mm/rmap.c
+> +++ b/mm/rmap.c
+> @@ -2095,11 +2095,16 @@ static bool try_to_unmap_one(struct folio *folio, struct vm_area_struct *vma,
+>  		/* Unexpected PMD-mapped THP? */
+>  		VM_BUG_ON_FOLIO(!pvmw.pte, folio);
+>  
+> -		/*
+> -		 * Handle PFN swap PTEs, such as device-exclusive ones, that
+> -		 * actually map pages.
+> -		 */
+
+That comment now actually belongs above the pte_present() check below.
+
 
 -- 
 Cheers,
