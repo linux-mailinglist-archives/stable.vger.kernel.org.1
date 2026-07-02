@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-271393-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-271505-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id T36NNgSbRmrEZwsAu9opvQ
-	(envelope-from <stable+bounces-271393-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:08:20 +0200
+	id WalhBjqcRmpraAsAu9opvQ
+	(envelope-from <stable+bounces-271505-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:13:30 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2D7D66FB063
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:08:20 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id AF9606FB247
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:13:29 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=o4Q6+KOY;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-271393-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-271393-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=tSQxCJsk;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-271505-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-271505-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B191B34062C2
-	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:57:22 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 2AC4634413A4
+	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 17:02:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C49FC33B951;
-	Thu,  2 Jul 2026 16:57:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA1DC3101C8;
+	Thu,  2 Jul 2026 17:01:58 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BD8030C15A;
-	Thu,  2 Jul 2026 16:57:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62CED310779;
+	Thu,  2 Jul 2026 17:01:57 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783011426; cv=none; b=Nd72ItcVVH7NsIH/S7SacsymUoJuODZYqFZ6OkJRmN4NeKMyVWrZQFqFxiFDNIUG1KV44CQH0cNREU+IRsoC8sHCosOI3SrJHHS6Mi6fJT9pn2q4kDIHqvRcKdTjBm74jT+wom45ZFEGmrvFi6ALOjo8GNWO7a6KnKKoADOy+nA=
+	t=1783011718; cv=none; b=GzFRM7DV865baohaWkPGSUezS4SBlYEuloYphaFo8JNToNcCQxc9kAqy6ABNEdVDOkZgW07ZVYWabMn+0QlL3VGH5EAj/9P4ztgM1gQefsKLVhx/i9bez6HtjwNjKsYMC7umWdp30Fj1qmOltQ1Ifh0pqGVFYJflMW9laBP8u/M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783011426; c=relaxed/simple;
-	bh=cpDfpQvOXXi5JkIXAXpcEuhMRJu8PrtNR3SitnMngDg=;
+	s=arc-20240116; t=1783011718; c=relaxed/simple;
+	bh=GlWrGtbgCc+kmsCzdhB/O1l8/eK7F1mn5jagzxtm+Mo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TVHKzqjLMAUU6PYlqqp7FQAIjRCeAF9aE+hI/sYCi0pnBvCEL5ZAcBAUHlSbbh7W0fEM8gGKEe+RKfYX9238KzQOIEdR3dfighi0M1jwtfOCyFl3Ktxzkvcs0OeE0x53oXL99yLtK0hLzXzUBINt0m2+iCtl/N2CzCVjHnA6ze8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o4Q6+KOY; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC6BC1F000E9;
-	Thu,  2 Jul 2026 16:57:04 +0000 (UTC)
+	 MIME-Version; b=rwCyVg2AqBrP9Uk2S6vJjEfknY/KY/2ugmeNcWX5hfM+fcLNntpPNkIAmbCetr8ZgkunG4TMcVUFYHhsK5rXvh2wDAw3uy3pBH8J0vGB16d6w72bVZg0iNi43HW6O6ZocPpmrz/8cG2JDiLwnMtKCVT+aD8mx+2koLytnckiIk4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tSQxCJsk; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85D261F000E9;
+	Thu,  2 Jul 2026 17:01:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1783011425;
-	bh=i4sz7qdozYsL0iity4mKznHnBftqFuZsyT5H04qKnps=;
+	s=korg; t=1783011717;
+	bh=Pa19F3nl0aOA5hEppbahccEfTPWdk5ZY6nNHgMzJlN4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=o4Q6+KOY8Vf73egSOdII7nyzT8x/6uxZdy3CsGdZF6HeI3XpQenIYGxpDJlhluePN
-	 5KE3PxJcRjRnRsf3Dgev757ZbQ8bNz14bqsQ2tmQ0ldeM+fhxlMRsJVifsA9rvsSuc
-	 2iTCoChopy9bsJB9d3ICojZFER5XachUWqSjUZ6Q=
+	b=tSQxCJsk6y34XJSxnxwTgUIWdMgCcaNlJLhCreRSMmVaZW74L18QHeRpsaOy0QFjr
+	 T4//zzfJl+efyt6SWov272W1TMVhFvAS5upqHOa7FjxphoW/ekZYhwjaTJftMB1Mz8
+	 3FqP3WJeSiPyuoaJQsr7ohmPrVi1E60WbRqQK2nI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hem Parekh <hemparekh1596@gmail.com>,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.18 105/108] ksmbd: fix out-of-bounds read in smb_check_perm_dacl()
-Date: Thu,  2 Jul 2026 18:21:42 +0200
-Message-ID: <20260702155114.289636817@linuxfoundation.org>
+	Jeff Layton <jlayton@kernel.org>,
+	Chuck Lever <chuck.lever@oracle.com>
+Subject: [PATCH 7.1 107/120] nfsd: fix posix_acl leak on SETACL decode failure
+Date: Thu,  2 Jul 2026 18:21:43 +0200
+Message-ID: <20260702155115.173968977@linuxfoundation.org>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260702155112.110058792@linuxfoundation.org>
-References: <20260702155112.110058792@linuxfoundation.org>
+In-Reply-To: <20260702155112.964534952@linuxfoundation.org>
+References: <20260702155112.964534952@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,98 +71,166 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-271505-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-271393-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:hemparekh1596@gmail.com,m:linkinjeon@kernel.org,m:stfrench@microsoft.com,s:lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org,microsoft.com];
 	FORWARDED(0.00)[lists@lfdr.de];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:jlayton@kernel.org,m:chuck.lever@oracle.com,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[oracle.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 2D7D66FB063
+X-Rspamd-Queue-Id: AF9606FB247
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hem Parekh <hemparekh1596@gmail.com>
+From: Jeff Layton <jlayton@kernel.org>
 
-commit 1ef06004ed4bd6d3ed8c840d9d1a376b66d4935b upstream.
+commit 0853ac544c590880d797b04daa33fcb72b6be0e1 upstream.
 
-The permission-check ACE walk in smb_check_perm_dacl() validates the ACE
-header size and caps sid.num_subauth at SID_MAX_SUB_AUTHORITIES, but it
-never checks that ace->size is actually large enough to contain
-num_subauth sub-authorities before compare_sids() dereferences them.
+nfsaclsvc_decode_setaclargs() and nfs3svc_decode_setaclargs() each
+call nfs_stream_decode_acl() twice, first for NFS_ACL and then for
+NFS_DFACL.  Each successful call transfers ownership of a freshly
+allocated posix_acl into argp->acl_access or argp->acl_default.  If
+the first call succeeds but the second fails, the decoder returns
+false and argp->acl_access is left dangling.
 
-CIFS_SID_BASE_SIZE covers the SID header up to but excluding the
-sub_auth[] array, and offsetof(struct smb_ace, sid) is the ACE header,
-so the existing guards only guarantee the 8-byte SID base, i.e. zero
-sub-authorities. compare_sids() then reads ace->sid.sub_auth[i] for
-i < min(local_sid->num_subauth, ace->sid.num_subauth). The local
-comparison SIDs (sid_everyone, sid_unix_NFS_mode, and the id_to_sid()
-result) always have at least one sub-authority, and an attacker controls
-the ACE revision and authority bytes (which lie within the in-bounds SID
-base), so they can match one of those SIDs and force the sub_auth read.
+ACLPROC2_SETACL.pc_release was wired to nfssvc_release_attrstat and
+ACLPROC3_SETACL.pc_release was wired to nfs3svc_release_fhandle.
+Both only call fh_put() and have no knowledge of the ACL fields on
+argp.  The posix_acl_release() pairs sat at the out: labels inside
+nfsacld_proc_setacl() and nfsd3_proc_setacl(), but svc_process()
+skips pc_func when pc_decode returns false, so that cleanup is
+unreachable on decode failure:
 
-A crafted ACE with size == 16 and num_subauth >= 1 placed at the tail of
-the security descriptor therefore causes a heap out-of-bounds read of up
-to SID_MAX_SUB_AUTHORITIES * sizeof(__le32) bytes past the pntsd
-allocation. The security descriptor is loaded by ksmbd_vfs_get_sd_xattr()
-into a buffer sized exactly to the on-disk data (kzalloc(sd_size) in
-ndr_decode_v4_ntacl()), so the read lands past the allocation. The
-malformed descriptor can be stored verbatim via SMB2_SET_INFO (the DACL
-is not normalised before being written to the security.NTACL xattr) and
-the read fires on a subsequent SMB2_CREATE access check, making this
-reachable by an authenticated client on a share that uses ACL xattrs.
+    svc_process_common()
+      pc_decode()                  /* decode_setaclargs: false */
+      /* pc_func skipped */
+      pc_release()                 /* fh_put only -- ACLs leaked */
 
-Add the missing num_subauth-versus-ace_size check, mirroring the
-identical guards already present in the sibling parsers parse_dacl() and
-smb_inherit_dacl().
+The orphaned posix_acl is leaked for the lifetime of the server.
 
-Fixes: d07b26f39246 ("ksmbd: require minimum ACE size in smb_check_perm_dacl()")
+Fix by adding nfsaclsvc_release_setacl() and nfs3svc_release_setacl(),
+which release both argp->acl_access and argp->acl_default in addition
+to fh_put(), and wiring them as pc_release for their respective SETACL
+procedures.  pc_release runs on every path svc_process() takes after
+decode, including decode failure, so the posix_acl_release() pairs are
+removed from the proc functions' out: labels to keep ownership in one
+place.  This matches the existing release_getacl() pattern used by
+the sibling GETACL procedures.
+
+Fixes: a257cdd0e217 ("[PATCH] NFSD: Add server support for NFSv3 ACLs.")
 Cc: stable@vger.kernel.org
-Signed-off-by: Hem Parekh <hemparekh1596@gmail.com>
-Acked-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Assisted-by: kres:claude-opus-4-7
+Signed-off-by: Jeff Layton <jlayton@kernel.org>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/server/smbacl.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ fs/nfsd/nfs2acl.c |   17 ++++++++++++-----
+ fs/nfsd/nfs3acl.c |   17 ++++++++++++-----
+ 2 files changed, 24 insertions(+), 10 deletions(-)
 
---- a/fs/smb/server/smbacl.c
-+++ b/fs/smb/server/smbacl.c
-@@ -1480,7 +1480,9 @@ int smb_check_perm_dacl(struct ksmbd_con
- 			break;
- 		aces_size -= ace_size;
+--- a/fs/nfsd/nfs2acl.c
++++ b/fs/nfsd/nfs2acl.c
+@@ -131,10 +131,7 @@ static __be32 nfsacld_proc_setacl(struct
+ 	resp->status = fh_getattr(fh, &resp->stat);
  
--		if (ace->sid.num_subauth > SID_MAX_SUB_AUTHORITIES)
-+		if (ace->sid.num_subauth > SID_MAX_SUB_AUTHORITIES ||
-+		    ace_size < offsetof(struct smb_ace, sid) + CIFS_SID_BASE_SIZE +
-+			      sizeof(__le32) * ace->sid.num_subauth)
- 			break;
+ out:
+-	/* argp->acl_{access,default} may have been allocated in
+-	   nfssvc_decode_setaclargs. */
+-	posix_acl_release(argp->acl_access);
+-	posix_acl_release(argp->acl_default);
++	/* argp->acl_{access,default} are released in nfsaclsvc_release_setacl. */
+ 	return rpc_success;
  
- 		if (!compare_sids(&sid, &ace->sid) ||
+ out_drop_lock:
+@@ -310,6 +307,16 @@ static void nfsaclsvc_release_access(str
+ 	fh_put(&resp->fh);
+ }
+ 
++static void nfsaclsvc_release_setacl(struct svc_rqst *rqstp)
++{
++	struct nfsd3_setaclargs *argp = rqstp->rq_argp;
++	struct nfsd_attrstat *resp = rqstp->rq_resp;
++
++	fh_put(&resp->fh);
++	posix_acl_release(argp->acl_access);
++	posix_acl_release(argp->acl_default);
++}
++
+ #define ST 1		/* status*/
+ #define AT 21		/* attributes */
+ #define pAT (1+AT)	/* post attributes - conditional */
+@@ -343,7 +350,7 @@ static const struct svc_procedure nfsd_a
+ 		.pc_func = nfsacld_proc_setacl,
+ 		.pc_decode = nfsaclsvc_decode_setaclargs,
+ 		.pc_encode = nfssvc_encode_attrstatres,
+-		.pc_release = nfssvc_release_attrstat,
++		.pc_release = nfsaclsvc_release_setacl,
+ 		.pc_argsize = sizeof(struct nfsd3_setaclargs),
+ 		.pc_argzero = sizeof(struct nfsd3_setaclargs),
+ 		.pc_ressize = sizeof(struct nfsd_attrstat),
+--- a/fs/nfsd/nfs3acl.c
++++ b/fs/nfsd/nfs3acl.c
+@@ -118,10 +118,7 @@ out_drop_lock:
+ out_errno:
+ 	resp->status = nfserrno(error);
+ out:
+-	/* argp->acl_{access,default} may have been allocated in
+-	   nfs3svc_decode_setaclargs. */
+-	posix_acl_release(argp->acl_access);
+-	posix_acl_release(argp->acl_default);
++	/* argp->acl_{access,default} are released in nfs3svc_release_setacl. */
+ 	return rpc_success;
+ }
+ 
+@@ -223,6 +220,16 @@ static void nfs3svc_release_getacl(struc
+ 	posix_acl_release(resp->acl_default);
+ }
+ 
++static void nfs3svc_release_setacl(struct svc_rqst *rqstp)
++{
++	struct nfsd3_setaclargs *argp = rqstp->rq_argp;
++	struct nfsd3_attrstat *resp = rqstp->rq_resp;
++
++	fh_put(&resp->fh);
++	posix_acl_release(argp->acl_access);
++	posix_acl_release(argp->acl_default);
++}
++
+ #define ST 1		/* status*/
+ #define AT 21		/* attributes */
+ #define pAT (1+AT)	/* post attributes - conditional */
+@@ -256,7 +263,7 @@ static const struct svc_procedure nfsd_a
+ 		.pc_func = nfsd3_proc_setacl,
+ 		.pc_decode = nfs3svc_decode_setaclargs,
+ 		.pc_encode = nfs3svc_encode_setaclres,
+-		.pc_release = nfs3svc_release_fhandle,
++		.pc_release = nfs3svc_release_setacl,
+ 		.pc_argsize = sizeof(struct nfsd3_setaclargs),
+ 		.pc_argzero = sizeof(struct nfsd3_setaclargs),
+ 		.pc_ressize = sizeof(struct nfsd3_attrstat),
 
 
 
