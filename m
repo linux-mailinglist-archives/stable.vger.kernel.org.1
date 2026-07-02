@@ -1,62 +1,61 @@
-Return-Path: <stable+bounces-270955-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-271158-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id +vd1EmaURmr9YwsAu9opvQ
-	(envelope-from <stable+bounces-270955-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:40:06 +0200
+	id q5l2Oh+YRmpAZgsAu9opvQ
+	(envelope-from <stable+bounces-271158-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:55:59 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id B2F686FA580
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:40:05 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9BF966FAC40
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:55:59 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=DZnGMJe7;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-270955-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-270955-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=S0vdtD5H;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-271158-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-271158-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 93409305506B
-	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:39:35 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 9620A306B1D9
+	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:48:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7BD043659F9;
-	Thu,  2 Jul 2026 16:38:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9A8534753C;
+	Thu,  2 Jul 2026 16:47:02 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C3A8363083;
-	Thu,  2 Jul 2026 16:38:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 874173101C8;
+	Thu,  2 Jul 2026 16:47:01 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783010289; cv=none; b=jsIgQ/ZTIkxzdaj+q3LWpcZPQP3XrmnQ651z29bD3jTKBkfHbocU7ZC67PXxo/gwz6JXq823c2LQ5+PpPVqFrWjaLY5b5Kg8oadpLJQMjftlSOOfkhPzEpjZMxJMKycNyf9YNhdncMor/ii4RVLNnw0MpQ3AYQX5Le34c0VjIYI=
+	t=1783010822; cv=none; b=McrSx3bcaMKFpFP+C8K41MNAXZorVKDf3rWRbdWllk8QPtTd3uMeKzatoHSSHUwUGwYXA6/zWrS6KUPKtd2Fu69Du/0xf+JsoewSaaYoGwBhsveNJsnSmiQmJfbaxSg5r9y576LjK4q79mVYwNmYwp8tK2HHZg/wvJSiRS4T/Jg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783010289; c=relaxed/simple;
-	bh=PLQjmZ9TSGPkLJZDA0DEx3YYO+PGJepCUezXLttg/DI=;
+	s=arc-20240116; t=1783010822; c=relaxed/simple;
+	bh=k9ak+qXb94mhOUVUuMmPUtBIQzKD/OimHuWDPCXpRZA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Jq4QCMDjKddD/CzzeZnhF9WXeM+yvGmxJu7waROzCckWy4W/o4N/WH07MhejbTEzxw2IuLwl++rDoui6yMpuppp8ST4mLyII51z3uaBkCj75Rs9lsxR3mv5AMY/BlqKCsgTfIlgR4HoABKoYGG8+oW4eFD8I2qpQmsxKE8q/peU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DZnGMJe7; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A368C1F000E9;
-	Thu,  2 Jul 2026 16:38:07 +0000 (UTC)
+	 MIME-Version; b=cOr41eufCUF/VJ63d4x5nx1NhV3d4hJT5mJU6QqO7tzX2ESKyRb6NKYGo3+KUV1pAIIYO84kpOm3BTVVOPMDJkJt/wp3qGnSNSxoQZ0NPSm5l/LIf6qcB7bfV/uByKKLPf87+UsoeRDd+ThNziiy5qnJJDAKE3oeryGfRyJrSgU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S0vdtD5H; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED5811F000E9;
+	Thu,  2 Jul 2026 16:47:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1783010288;
-	bh=IFY/qZKpS2LNWTFRM319/tAsNXS7WOXfU0VB8gY3SWU=;
+	s=korg; t=1783010821;
+	bh=/2CCeXJ4zuUJbUPwIe8+hfQGdhooRCJnalIb3SebZNY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=DZnGMJe7PAhaQ6U464durai19ao54u6P/uC8VPZBJu7kWJbkGW/gujb85RyghIFUK
-	 ixryDYTotbcq2vQvaAPs8oKhwqQUzFLrF9qvF4NCHwjXfclRDuTOeBXLOoySWNyCVT
-	 ik6Cp8X9Tw/f712ApXkqQoyJizp23b3eJiD13YD8=
+	b=S0vdtD5HOaQEpjByQkErgFDXnDFSxJCWAyuVcT3yVAnbyiDOQvrfDt7Sa6XJr2X6r
+	 5C5ETIYJDvfr7s43vO/c9FuvyrovEAePbjPoF76MYikKcRQWWW3SNWo6j5LW4+Nj2U
+	 dFDfyfuAAu47ghekj5l016V/NNlX4GE7VgUUuVc0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+78147abe6c524f183ee9@syzkaller.appspotmail.com,
-	Davidlohr Bueso <dave@stgolabs.net>,
-	Thomas Gleixner <tglx@kernel.org>,
+	stable@kernel.org,
+	Sven Eckelmann <sven@narfation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 051/204] locking/rtmutex: Skip remove_waiter() when waiter is not enqueued
+Subject: [PATCH 6.6 007/175] batman-adv: tt: prevent TVLV entry number overflow
 Date: Thu,  2 Jul 2026 18:18:28 +0200
-Message-ID: <20260702155119.728866486@linuxfoundation.org>
+Message-ID: <20260702155115.924688265@linuxfoundation.org>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260702155118.667618796@linuxfoundation.org>
-References: <20260702155118.667618796@linuxfoundation.org>
+In-Reply-To: <20260702155115.766838875@linuxfoundation.org>
+References: <20260702155115.766838875@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,107 +67,120 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORWARDED(0.00)[lists@lfdr.de];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-270955-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-271158-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:syzbot+78147abe6c524f183ee9@syzkaller.appspotmail.com,m:dave@stgolabs.net,m:tglx@kernel.org,m:sashal@kernel.org,m:syzbot@syzkaller.appspotmail.com,s:lists@lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:stable@kernel.org,m:sven@narfation.org,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,78147abe6c524f183ee9];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,vger.kernel.org:from_smtp,msgid.link:url,appspotmail.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[narfation.org:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: B2F686FA580
+X-Rspamd-Queue-Id: 9BF966FAC40
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Davidlohr Bueso <dave@stgolabs.net>
+From: Sven Eckelmann <sven@narfation.org>
 
-[ Upstream commit 40a25d59e85b3c8709ac2424d44f65610467871e ]
+commit 99d9958fa10fb684b2a8e2c48a8d704122721420 upstream.
 
-syzbot triggered the following splat in remove_waiter() via
-FUTEX_CMP_REQUEUE_PI:
+The helpers to prepare the buffers for the local and global TT based
+replies are trying to sum up all TT entries which can be found for each
+VLAN. In theory, this sum can be too big for an u16 and therefore overflow.
+A too small buffer would then be allocated for the TVLV.
 
-  KASAN: null-ptr-deref in range [0x0000000000000a88-0x0000000000000a8f]
-   class_raw_spinlock_constructor
-   remove_waiter+0x159/0x1200 kernel/locking/rtmutex.c:1561
-   rt_mutex_start_proxy_lock+0x103/0x120
-   futex_requeue+0x10e4/0x20d0
-   __x64_sys_futex+0x34f/0x4d0
+The too small buffer will be handled gracefully by
+batadv_tt_tvlv_generate() and is not causing a buffer overflow - just a
+truncated reply. But this overflow shouldn't have happened in the first and
+the too small buffer should never have been allocated when an overflow was
+detected.
 
-task_blocks_on_rt_mutex() does not arm the waiter upon deadlock detection,
-leaving waiter->task nil, where 3bfdc63936dd ("rtmutex: Use waiter::task instead
-of current in remove_waiter()") made this fatal.
-
-Furthermore, rt_mutex_start_proxy_lock() should not be calling into remove_waiter()
-upon a successfully grabbing the rtmutex. 1a1fb985f2e2 ("futex: Handle early deadlock
-return correctly"), moved the remove_waiter() out of __rt_mutex_start_proxy_lock()
-(where 'ret' was only ever 0 or < 0) into the wrapper. Tighten this check to
-account for try_to_take_rt_mutex().
-
-Fixes: 3bfdc63936dd ("rtmutex: Use waiter::task instead of current in remove_waiter()")
-Reported-by: syzbot+78147abe6c524f183ee9@syzkaller.appspotmail.com
-Signed-off-by: Davidlohr Bueso <dave@stgolabs.net>
-Signed-off-by: Thomas Gleixner <tglx@kernel.org>
-Cc: stable@vger.kernel.org
-Closes: https://lore.kernel.org/all/69f114ac.050a0220.ac8b.0003.GAE@google.com/
-Link: https://patch.msgid.link/20260507112913.1019537-1-dave@stgolabs.net
+Cc: stable@kernel.org
+Fixes: 7ea7b4a14275 ("batman-adv: make the TT CRC logic VLAN specific")
+Signed-off-by: Sven Eckelmann <sven@narfation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/locking/rtmutex.c     |    3 +++
- kernel/locking/rtmutex_api.c |    2 +-
- 2 files changed, 4 insertions(+), 1 deletion(-)
+ net/batman-adv/translation-table.c | 20 +++++++++++++++++---
+ 1 file changed, 17 insertions(+), 3 deletions(-)
 
---- a/kernel/locking/rtmutex.c
-+++ b/kernel/locking/rtmutex.c
-@@ -1550,6 +1550,9 @@ static void __sched remove_waiter(struct
+diff --git a/net/batman-adv/translation-table.c b/net/batman-adv/translation-table.c
+index 4045ddefc29b47..7041cd69e20070 100644
+--- a/net/batman-adv/translation-table.c
++++ b/net/batman-adv/translation-table.c
+@@ -850,11 +850,18 @@ batadv_tt_prepare_tvlv_global_data(struct batadv_orig_node *orig_node,
+ 	u16 total_entries = 0;
+ 	u8 *tt_change_ptr;
+ 	int vlan_entries;
++	u16 sum_entries;
  
- 	lockdep_assert_held(&lock->wait_lock);
- 
-+	if (!waiter_task) /* never enqueued */
-+		return;
+ 	spin_lock_bh(&orig_node->vlan_list_lock);
+ 	hlist_for_each_entry(vlan, &orig_node->vlan_list, list) {
+ 		vlan_entries = atomic_read(&vlan->tt.num_entries);
+-		total_entries += vlan_entries;
 +
- 	scoped_guard(raw_spinlock, &waiter_task->pi_lock) {
- 		rt_mutex_dequeue(lock, waiter);
- 		waiter_task->pi_blocked_on = NULL;
---- a/kernel/locking/rtmutex_api.c
-+++ b/kernel/locking/rtmutex_api.c
-@@ -347,7 +347,7 @@ int __sched rt_mutex_start_proxy_lock(st
++		if (check_add_overflow(vlan_entries, total_entries, &sum_entries)) {
++			*tt_len = 0;
++			goto out;
++		}
++
++		total_entries = sum_entries;
+ 		num_vlan++;
+ 	}
  
- 	raw_spin_lock_irq(&lock->wait_lock);
- 	ret = __rt_mutex_start_proxy_lock(lock, waiter, task, &wake_q);
--	if (unlikely(ret))
-+	if (unlikely(ret < 0))
- 		remove_waiter(lock, waiter);
- 	preempt_disable();
- 	raw_spin_unlock_irq(&lock->wait_lock);
+@@ -941,15 +948,22 @@ batadv_tt_prepare_tvlv_local_data(struct batadv_priv *bat_priv,
+ 	struct batadv_softif_vlan *vlan;
+ 	size_t change_offset;
+ 	u16 num_vlan = 0;
+-	u16 vlan_entries = 0;
+ 	u16 total_entries = 0;
+ 	u16 tvlv_len;
+ 	u8 *tt_change_ptr;
++	int vlan_entries;
++	u16 sum_entries;
+ 
+ 	spin_lock_bh(&bat_priv->softif_vlan_list_lock);
+ 	hlist_for_each_entry(vlan, &bat_priv->softif_vlan_list, list) {
+ 		vlan_entries = atomic_read(&vlan->tt.num_entries);
+-		total_entries += vlan_entries;
++
++		if (check_add_overflow(vlan_entries, total_entries, &sum_entries)) {
++			tvlv_len = 0;
++			goto out;
++		}
++
++		total_entries = sum_entries;
+ 		num_vlan++;
+ 	}
+ 
+-- 
+2.53.0
+
 
 
 
