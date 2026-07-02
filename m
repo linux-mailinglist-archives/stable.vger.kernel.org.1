@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-271425-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-271068-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 8f/UDdmbRmo2aAsAu9opvQ
-	(envelope-from <stable+bounces-271425-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:11:53 +0200
+	id hY+rNa6XRmr/ZQsAu9opvQ
+	(envelope-from <stable+bounces-271068-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:54:06 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A03216FB1B3
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:11:52 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E9876FAB91
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:54:06 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=WwDEek1s;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-271425-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-271425-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=xK1xhcLD;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-271068-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-271068-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 2DB1430434D1
-	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:58:32 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id F022730C49E2
+	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:46:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ECBBD2D8DC4;
-	Thu,  2 Jul 2026 16:58:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9E7B360EFC;
+	Thu,  2 Jul 2026 16:43:06 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A208222D7B9;
-	Thu,  2 Jul 2026 16:58:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A7DD246BBA;
+	Thu,  2 Jul 2026 16:43:04 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783011510; cv=none; b=En9AMXXbv1mGG0ciPBKSF9A/uKALaXcDa5ppdS5SvI+P6ooaxKeNWnSqosq3Dkre+aI7IWlQKZBrjFG0Eaz9KSF4jKcU/dBPLJoLZx4pSSw6wvZsx1xRMzSV1KF+ngt7d1mSVdrgMUmpnAHUhOTooV74mk1gnEZcTxJk1vbAWuk=
+	t=1783010586; cv=none; b=I4mRemt/Q8nSMDbHwpayLatF9ZpLU43DJYtA1JlaQijyjYn+EyZa0mctGlqlzQr6AOSF2zbqkReOba+aoPp4QH8GV17chdQhzTyFbOKSwyiFybaQzbYW5CgqnuEbxln30Y4Q0rUpxAPSC4wL8Rw7reAnqVsE8FSPR1or9qhUkQg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783011510; c=relaxed/simple;
-	bh=4EezD1Dm8EjmU/68B1bYVWkoU7Yev+WBZsrb8cCEziY=;
+	s=arc-20240116; t=1783010586; c=relaxed/simple;
+	bh=TeI4KTsOl/GylfOPYVQzK1tX6Juy794viQKhiG/Ij8o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=STK1YN7/zL7Nk5y7fswJ8gQndHNf1SgGjhIQrKWuAPbk8Mw/vJSvFJCcTF/xEORnmKQL+Pk7iP3OTNWC4gak8uW1xXfoUUb6w7jiLuNQsjqRSz9q4lcuo3EbsulO+x/9S1Uqdifm49cRrvSd6qy3NTBarCUYPJgvL8RBs1Mgzi0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WwDEek1s; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14AE01F00A3A;
-	Thu,  2 Jul 2026 16:58:28 +0000 (UTC)
+	 MIME-Version; b=ri+28f9Rfm5le/GbkY0LfQEfJQRwJxuPAxqoQGD2CVaNQnsmz3NlK2bcurlhlUhXRcb7VGRE9peNWSG+NM3AHoDrRHVIBsbCBmmtBVTW7ynfzN00u7XzMB2DS6p4loesrpJ2xp8vS4quzf7wPt1FNU+/89zihg1dXWkYM+wDlow=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xK1xhcLD; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 646E11F000E9;
+	Thu,  2 Jul 2026 16:43:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1783011509;
-	bh=woc1O6HlR+R2MQDQWENT1G7cIvpidsgNOhCK7ZvhgL4=;
+	s=korg; t=1783010584;
+	bh=EyKiDTRMvKV9Xe9FMRSu4nw88QYNdSXGOr7rYZozR1c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=WwDEek1s3MrUpcxeTFm24xKly1AnHFDfor8yBY+Dm14N0aXapy3jWhHD+FsRSrYGM
-	 2svhHp35BUnGmwxL48J5eU/OyErvSoXUzySAQTqwzlA1GUSgFouycjjVVejk9yh4PG
-	 3veiWQvL0o+9pS0+4A4aNwVFelV610OL9yS+Xviw=
+	b=xK1xhcLD1yNJ3HBgo079FWC5bDBXhGybjFYu0JpJ+z/SWlUTWOH7xVWp0tp7lt3XF
+	 8Aof4jRpi2IyiHzfdui8ft5LsBnIeNreERLuqgz3GH6BcOxde3ZxCjiFQZ61eAgz+U
+	 hPh+5Ge6J7ijjrDDS2V9P/UixSGAwC6ouoXN/BZE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Sven Eckelmann <sven@narfation.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.1 027/120] batman-adv: tvlv: avoid race of cifsnotfound handler state
+	Fan Wu <fanwu01@zju.edu.cn>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.12 166/204] hdlc_ppp: sync per-proto timers before freeing hdlc state
 Date: Thu,  2 Jul 2026 18:20:23 +0200
-Message-ID: <20260702155113.523792433@linuxfoundation.org>
+Message-ID: <20260702155122.137797555@linuxfoundation.org>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260702155112.964534952@linuxfoundation.org>
-References: <20260702155112.964534952@linuxfoundation.org>
+In-Reply-To: <20260702155118.667618796@linuxfoundation.org>
+References: <20260702155118.667618796@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,22 +71,22 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-271425-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-271068-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:stable@kernel.org,m:sven@narfation.org,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:fanwu01@zju.edu.cn,m:kuba@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
@@ -98,163 +97,118 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,narfation.org:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,zju.edu.cn:email,msgid.link:url]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: A03216FB1B3
+X-Rspamd-Queue-Id: 4E9876FAB91
 
-7.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sven Eckelmann <sven@narfation.org>
+From: Fan Wu <fanwu01@zju.edu.cn>
 
-commit edb557b2ba38fea2c5eb710cf366c797e187218c upstream.
+commit c78a4e41ab5ead6193ad8a2dd92e8906bae659fa upstream.
 
-TVLV handlers can have the flag BATADV_TVLV_HANDLER_OGM_CIFNOTFND set to
-signal that the OGM handler should be called (with NULL for data) when the
-specific TVLV container was not found in the OGM. This is used by:
+Each PPP control protocol (LCP/IPCP/IPV6CP) embedded in struct ppp
+registers a timer via timer_setup(). That struct ppp is the
+hdlc->state allocation, which detach_hdlc_protocol() frees with kfree()
+in both teardown paths: unregister_hdlc_device() and the re-attach inside
+attach_hdlc_protocol().
 
-* DAT
-* GW
-* Multicast (OGM + Tracker)
+The ppp proto never registered a .detach callback, so
+detach_hdlc_protocol() performs no timer synchronization before the
+kfree(). The only cancel, timer_delete(&proto->timer) in ppp_cp_event(),
+is partial (it does not wait for a running callback) and only runs on the
+->CLOSED transition; ppp_stop()/ppp_close() do not sync either. A
+ppp_timer callback already executing (blocked on ppp->lock) survives the
+kfree and then dereferences proto->state / ppp->lock in freed memory,
+leading to a use-after-free.
 
-The state whether the handler was executed was stored in the struct
-batadv_tvlv_handler. But the TVLV processing is started without any lock.
-Multiple parallel contexts processing TVLVs would therefore overwrite each
-others BATADV_TVLV_HANDLER_OGM_CALLED flag in the shared
-batadv_tvlv_handler.
+Fix this by adding a .detach helper that calls timer_shutdown_sync() on
+every per-proto timer. detach_hdlc_protocol() invokes proto->detach(dev)
+before kfree(hdlc->state), so timer_shutdown_sync()
+now runs on both free paths.
+timer_shutdown_sync() is used instead of timer_delete_sync() because the
+keepalive path re-arms the timer through add_timer()/mod_timer() and
+shutdown blocks any re-activation during teardown.
 
-Drop the shared BATADV_TVLV_HANDLER_OGM_CALLED flag and instead determine,
-per TVLV buffer, whether a matching container was present by scanning the
-packet's buffer.
+Initialize the per-protocol timers in ppp_ioctl() when the protocol is
+attached, and remove the now-redundant timer_setup() from ppp_start(), so
+that the timers are initialized exactly once at attach time and
+ppp_timer_release() never operates on uninitialized timer_list
+structures. attach_hdlc_protocol() uses kmalloc() (not kzalloc), so
+struct ppp's protos[i].timer is uninitialized garbage until the first
+timer_setup(); without this init-at-attach, attaching the PPP protocol
+without ever bringing the device up would leave timer_shutdown_sync()
+operating on uninitialized memory in .detach. Moving the init out of
+ppp_start() (which only runs on NETDEV_UP) into the attach path makes the
+initialization unconditional and avoids initializing the same timer_list
+twice.
 
-Cc: stable@kernel.org
-Fixes: ef26157747d4 ("batman-adv: tvlv - basic infrastructure")
-Signed-off-by: Sven Eckelmann <sven@narfation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This bug was found by static analysis.
+
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Cc: stable@vger.kernel.org
+Signed-off-by: Fan Wu <fanwu01@zju.edu.cn>
+Link: https://patch.msgid.link/20260617020518.116319-1-fanwu01@zju.edu.cn
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/batman-adv/tvlv.c  | 63 ++++++++++++++++++++++++++++++++++++++----
- net/batman-adv/types.h |  7 -----
- 2 files changed, 57 insertions(+), 13 deletions(-)
+ drivers/net/wan/hdlc_ppp.c |   15 +++++++++++++--
+ 1 file changed, 13 insertions(+), 2 deletions(-)
 
-diff --git a/net/batman-adv/tvlv.c b/net/batman-adv/tvlv.c
-index baadf97f98e5f0..afb61a46d7a67c 100644
---- a/net/batman-adv/tvlv.c
-+++ b/net/batman-adv/tvlv.c
-@@ -398,7 +398,6 @@ static int batadv_tvlv_call_handler(struct batadv_priv *bat_priv,
- 		tvlv_handler->ogm_handler(bat_priv, orig_node,
- 					  BATADV_NO_FLAGS,
- 					  tvlv_value, tvlv_value_len);
--		tvlv_handler->flags |= BATADV_TVLV_HANDLER_OGM_CALLED;
- 		break;
- 	case BATADV_UNICAST_TVLV:
- 		if (!skb)
-@@ -430,6 +429,48 @@ static int batadv_tvlv_call_handler(struct batadv_priv *bat_priv,
- 	return NET_RX_SUCCESS;
+--- a/drivers/net/wan/hdlc_ppp.c
++++ b/drivers/net/wan/hdlc_ppp.c
+@@ -621,7 +621,6 @@ static void ppp_start(struct net_device
+ 		struct proto *proto = &ppp->protos[i];
+ 
+ 		proto->dev = dev;
+-		timer_setup(&proto->timer, ppp_timer, 0);
+ 		proto->state = CLOSED;
+ 	}
+ 	ppp->protos[IDX_LCP].pid = PID_LCP;
+@@ -641,6 +640,15 @@ static void ppp_close(struct net_device
+ 	ppp_tx_flush();
  }
  
-+/**
-+ * batadv_tvlv_containers_contain() - check if a tvlv buffer holds a container
-+ * @tvlv_value: tvlv content
-+ * @tvlv_value_len: tvlv content length
-+ * @type: tvlv container type to look for
-+ * @version: tvlv container version to look for
-+ *
-+ * Return: true if a container of the given type and version is present in the
-+ * tvlv buffer, false otherwise.
-+ */
-+static bool batadv_tvlv_containers_contain(void *tvlv_value,
-+					   u16 tvlv_value_len, u8 type,
-+					   u8 version)
++static void ppp_timer_release(struct net_device *dev)
 +{
-+	struct batadv_tvlv_hdr *tvlv_hdr;
-+	u16 tvlv_value_cont_len;
++	struct ppp *ppp = get_ppp(dev);
++	int i;
 +
-+	while (tvlv_value_len >= sizeof(*tvlv_hdr)) {
-+		tvlv_hdr = tvlv_value;
-+		tvlv_value_cont_len = ntohs(tvlv_hdr->len);
-+		tvlv_value = tvlv_hdr + 1;
-+		tvlv_value_len -= sizeof(*tvlv_hdr);
-+
-+		if (tvlv_value_cont_len > tvlv_value_len)
-+			break;
-+
-+		/* the next tvlv header is accessed assuming (at least) 2-byte
-+		 * alignment, so it must start at an even offset.
-+		 */
-+		if (tvlv_value_cont_len & 1)
-+			break;
-+
-+		if (tvlv_hdr->type == type && tvlv_hdr->version == version)
-+			return true;
-+
-+		tvlv_value = (u8 *)tvlv_value + tvlv_value_cont_len;
-+		tvlv_value_len -= tvlv_value_cont_len;
-+	}
-+
-+	return false;
++	for (i = 0; i < IDX_COUNT; i++)
++		timer_shutdown_sync(&ppp->protos[i].timer);
 +}
 +
- /**
-  * batadv_tvlv_containers_process() - parse the given tvlv buffer to call the
-  *  appropriate handlers
-@@ -449,7 +490,9 @@ int batadv_tvlv_containers_process(struct batadv_priv *bat_priv,
- 				   struct sk_buff *skb, void *tvlv_value,
- 				   u16 tvlv_value_len)
- {
-+	u16 tvlv_value_start_len = tvlv_value_len;
- 	struct batadv_tvlv_handler *tvlv_handler;
-+	void *tvlv_value_start = tvlv_value;
- 	struct batadv_tvlv_hdr *tvlv_hdr;
- 	u16 tvlv_value_cont_len;
- 	u8 cifnotfound = BATADV_TVLV_HANDLER_OGM_CIFNOTFND;
-@@ -493,12 +536,20 @@ int batadv_tvlv_containers_process(struct batadv_priv *bat_priv,
- 		if (!tvlv_handler->ogm_handler)
- 			continue;
- 
--		if ((tvlv_handler->flags & BATADV_TVLV_HANDLER_OGM_CIFNOTFND) &&
--		    !(tvlv_handler->flags & BATADV_TVLV_HANDLER_OGM_CALLED))
--			tvlv_handler->ogm_handler(bat_priv, orig_node,
--						  cifnotfound, NULL, 0);
-+		if (!(tvlv_handler->flags & BATADV_TVLV_HANDLER_OGM_CIFNOTFND))
-+			continue;
- 
--		tvlv_handler->flags &= ~BATADV_TVLV_HANDLER_OGM_CALLED;
-+		/* if the corresponding container was present then the handler
-+		 * was already called from the loop above
-+		 */
-+		if (batadv_tvlv_containers_contain(tvlv_value_start,
-+						   tvlv_value_start_len,
-+						   tvlv_handler->type,
-+						   tvlv_handler->version))
-+			continue;
-+
-+		tvlv_handler->ogm_handler(bat_priv, orig_node,
-+					  cifnotfound, NULL, 0);
- 	}
- 	rcu_read_unlock();
- 
-diff --git a/net/batman-adv/types.h b/net/batman-adv/types.h
-index 4dce996f01ccea..30c870cacf4374 100644
---- a/net/batman-adv/types.h
-+++ b/net/batman-adv/types.h
-@@ -2245,13 +2245,6 @@ enum batadv_tvlv_handler_flags {
- 	 *  will call this handler even if its type was not found (with no data)
- 	 */
- 	BATADV_TVLV_HANDLER_OGM_CIFNOTFND = BIT(1),
--
--	/**
--	 * @BATADV_TVLV_HANDLER_OGM_CALLED: interval tvlv handling flag - the
--	 *  API marks a handler as being called, so it won't be called if the
--	 *  BATADV_TVLV_HANDLER_OGM_CIFNOTFND flag was set
--	 */
--	BATADV_TVLV_HANDLER_OGM_CALLED = BIT(2),
+ static struct hdlc_proto proto = {
+ 	.start		= ppp_start,
+ 	.stop		= ppp_stop,
+@@ -649,6 +657,7 @@ static struct hdlc_proto proto = {
+ 	.ioctl		= ppp_ioctl,
+ 	.netif_rx	= ppp_rx,
+ 	.module		= THIS_MODULE,
++	.detach		= ppp_timer_release,
  };
  
- #endif /* _NET_BATMAN_ADV_TYPES_H_ */
--- 
-2.53.0
-
+ static const struct header_ops ppp_header_ops = {
+@@ -659,7 +668,7 @@ static int ppp_ioctl(struct net_device *
+ {
+ 	hdlc_device *hdlc = dev_to_hdlc(dev);
+ 	struct ppp *ppp;
+-	int result;
++	int i, result;
+ 
+ 	switch (ifs->type) {
+ 	case IF_GET_PROTO:
+@@ -687,6 +696,8 @@ static int ppp_ioctl(struct net_device *
+ 			return result;
+ 
+ 		ppp = get_ppp(dev);
++		for (i = 0; i < IDX_COUNT; i++)
++			timer_setup(&ppp->protos[i].timer, ppp_timer, 0);
+ 		spin_lock_init(&ppp->lock);
+ 		ppp->req_timeout = 2;
+ 		ppp->cr_retries = 10;
 
 
 
