@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-270568-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-270569-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id JxoqCtOJRmqRYAsAu9opvQ
-	(envelope-from <stable+bounces-270568-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 17:54:59 +0200
+	id P10fGqmHRmrAXwsAu9opvQ
+	(envelope-from <stable+bounces-270569-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 17:45:45 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 213D46F9C0A
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 17:54:58 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id E6C456F9977
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 17:45:44 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ksutEY6W;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-270568-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-270568-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=jfxx93mI;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-270569-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-270569-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 771013015163
-	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 15:44:37 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 132BA301EB5A
+	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 15:45:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92385381E95;
-	Thu,  2 Jul 2026 15:44:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D234B2D8364;
+	Thu,  2 Jul 2026 15:45:08 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5669E381E91;
-	Thu,  2 Jul 2026 15:44:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1163F381EA3;
+	Thu,  2 Jul 2026 15:45:03 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783007073; cv=none; b=cXJL1Bvc6MxqqKZeP4n2QSx/GoEQV8cdy5dpO47yTShvcEJ0TIr8Yoglwemwq5+Daj1wK7YsCA9gqK0pgYxrv87DPSIms43Pk+LbQg0Cq9vDqUzUsE2FqC3T18+E3To7Ks7H8dt2Zr1VnykNiehi8AA3C9BLTUU6RM920O9PKbY=
+	t=1783007107; cv=none; b=cQBTvPlUzX4ITpXw4WVCoUKrZs0ihFkPObTtLARM2JVHKiPFGm/Q5fWvyfC4pzvAWKTMpQpRY5hD+VlPQO1j0DfiyhHBbS1TvZpbBjMOB9pmJe40Q0/zptCpn+cKt6fXUqMBdQHo5SnKBTm19cFTmxKrij3Mh0+5nH8RRrEtIbM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783007073; c=relaxed/simple;
-	bh=9p3GsIQ4iVIgrNDjr5e6yzPvK5e9h84ME4QQG99DnLk=;
+	s=arc-20240116; t=1783007107; c=relaxed/simple;
+	bh=CQfSbyAO9gbeH1uAo6aytJLBSWRK1S6ZG6r1Ep232bA=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=STYIL1oQFAwoZeiFVixpgHF1db9rPTCBBLvlVWBisTO68SI9VCa8b6DLFDNaVC35bzd8kvlXKxyhpHF3ERPur5ZMcjwxKYbysIAFKeRaE4kvFMvVAFqD3HeizdAHP65Ob1t5CrYHrP66lARcvOCzdAn4DppI5YZasEfoai0VdAk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ksutEY6W; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B58EA1F000E9;
-	Thu,  2 Jul 2026 15:44:21 +0000 (UTC)
+	 In-Reply-To:Content-Type; b=JzCQ0vRllWq/cWvWp2lY0RSxW7SU0CX+Xc+U2g0piZb639se1BKgVzRDa7Lfob/qfraEHfnV2atDGbm0V1o6oI4NQcVo1LJYU8QAZAiy1jjK8iGoCoS8LZMHuoPil0iqirr1NQMhkzyBz86JR7sZ/gYyLXAdn2KMnFbgfsv7Lpk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jfxx93mI; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96E0E1F000E9;
+	Thu,  2 Jul 2026 15:44:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783007069;
-	bh=+NLPZaAxLlfVoo9TQds5zdC84AWDauDAYil69mJ6gMU=;
+	s=k20260515; t=1783007103;
+	bh=59qEucnyS37/pT7/a7uWPu4mSZu2iXHdYUdedzUuCWw=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=ksutEY6Wh40A6FNGBunfbtg1fjIF0LNXDbJ3mO8CXEDU9pmcOBdL1e/5v05soePHr
-	 fj7g57nyLn/6TbxNbZCc7sDoxqwpTg/n39fFiWAzCxJ38dr3zBxoHH2U0/RHHT1+wo
-	 VDVnIr90DU16mwTfqURsSknrMnLfVhKw4Qlpegd1Qm8BOb+YGybrKatKQ5QUk8ynMB
-	 opam7cm2C4mTc1EGvul7UFk5PgcjCCMbscuOBRN9dp4VYGpYjM1HpEciKR+vYdhCOe
-	 X1tnccg9j6y+B8TiwvHOyngDBNQjFo03tK5XPFDCOdzCwRDo5hW6hdXBiQsZm6OYk7
-	 HOCsesTwJTz/A==
-Message-ID: <e552da60-3d44-4812-9522-19df8470c495@kernel.org>
-Date: Thu, 2 Jul 2026 17:44:20 +0200
+	b=jfxx93mI0WsTjXM2lMZUbF2ST+JdPutWFbARMvB51yaDLU9YGWXmV9QMfDby1IEQy
+	 IzZj6IdNYraKUtE9BsLegmT+cQOSrhTMUINWE8Om4Qp48PzK+YM3NsWg1kB6ibut1H
+	 MicgLWR8xf4GpI/6j30u/A+EqC38wAWC59qzH0ufvDz/NUVqaxZ8jXkJzBTpT64FYd
+	 OQ6h6FSB29/P+QTA5/gxQ5RTVIRuIsBQ5Ap4QoA0vlOkVSnDX+sgH5lEsgEuzfvTuB
+	 iLsG+LQWrclkBwcgnIMQuXEhRhqvbpSs4rsDRyYrGY07IixObcgXBv1Kga1H/3uUtL
+	 aZUTo5wGNSyWg==
+Message-ID: <210eb5d7-2b74-441e-87c6-f51f484cbde3@kernel.org>
+Date: Thu, 2 Jul 2026 17:44:52 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -55,8 +55,8 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 4/6] mm/migrate: use huge_ptep_get() in
- remove_migration_pte()
+Subject: Re: [PATCH v2 5/6] mm/page_vma_mapped: use huge_ptep_get() for
+ hugetlb
 To: Dev Jain <dev.jain@arm.com>, muchun.song@linux.dev, osalvador@suse.de,
  akpm@linux-foundation.org, ljs@kernel.org, liam@infradead.org
 Cc: riel@surriel.com, vbabka@kernel.org, harry@kernel.org, jannh@google.com,
@@ -71,7 +71,7 @@ Cc: riel@surriel.com, vbabka@kernel.org, harry@kernel.org, jannh@google.com,
  linux-arm-kernel@lists.infradead.org, ryan.roberts@arm.com,
  anshuman.khandual@arm.com, stable@vger.kernel.org
 References: <20260702051341.126509-1-dev.jain@arm.com>
- <20260702051341.126509-5-dev.jain@arm.com>
+ <20260702051341.126509-6-dev.jain@arm.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -118,7 +118,7 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260702051341.126509-5-dev.jain@arm.com>
+In-Reply-To: <20260702051341.126509-6-dev.jain@arm.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-Rspamd-Action: no action
@@ -128,12 +128,12 @@ X-Spamd-Result: default: False [-3.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-270568-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-270569-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS(0.00)[m:dev.jain@arm.com,m:muchun.song@linux.dev,m:osalvador@suse.de,m:akpm@linux-foundation.org,m:ljs@kernel.org,m:liam@infradead.org,m:riel@surriel.com,m:vbabka@kernel.org,m:harry@kernel.org,m:jannh@google.com,m:lance.yang@linux.dev,m:kas@kernel.org,m:linux-mm@kvack.org,m:linux-kernel@vger.kernel.org,m:rcampbell@nvidia.com,m:apopple@nvidia.com,m:ziy@nvidia.com,m:matthew.brost@intel.com,m:joshua.hahnjy@gmail.com,m:rakie.kim@sk.com,m:byungchul@sk.com,m:gourry@gourry.net,m:ying.huang@linux.alibaba.com,m:j-nomura@ce.jp.nec.com,m:nao.horiguchi@gmail.com,m:ak@linux.intel.com,m:mel@csn.ul.ie,m:pfalcato@suse.de,m:jpoimboe@kernel.org,m:dave.hansen@intel.com,m:tglx@kernel.org,m:catalin.marinas@arm.com,m:will@kernel.org,m:linux-arm-kernel@lists.infradead.org,m:ryan.roberts@arm.com,m:anshuman.khandual@arm.com,m:stable@vger.kernel.org,m:joshuahahnjy@gmail.com,m:naohoriguchi@gmail.com,s:lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
@@ -153,26 +153,30 @@ X-Spamd-Result: default: False [-3.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 213D46F9C0A
+X-Rspamd-Queue-Id: E6C456F9977
 
 On 7/2/26 07:13, Dev Jain wrote:
-> remove_migration_pte() converts migration entries back to present PTEs
-> after folio migration completes. For hugetlb folios,
-> page_vma_mapped_walk() returns the pte pointer to the hugetlb folio in
-> pvmw.pte, but the code reads it with ptep_get().
+> check_pte() is the final validation step in page_vma_mapped_walk().
+> It reads pvmw->pte with ptep_get() to decide whether the entry maps
+> the PFN range being walked. For hugetlb VMAs, that pointer refers
+> to a hugetlb entry.
 > 
 > On arches which provide their own huge_ptep_get() to dereference a huge
 > pte pointer, accessing via ptep_get() would cause pte_pfn(),
 > pte_present() etc to misbehave.
 > 
 > It is not clear whether this has a trivially visible effect to userspace.
-
-Right, for non-present entries it's even weirder. Fortunately your patch #1 also
-handles that.
+> 
+> Use huge_ptep_get() to dereference a huge pte pointer.
+> 
+> Fixes: ace71a19cec5 ("mm: introduce page_vma_mapped_walk()")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Dev Jain <dev.jain@arm.com>
+> ---
 
 Acked-by: David Hildenbrand (Arm) <david@kernel.org>
 
