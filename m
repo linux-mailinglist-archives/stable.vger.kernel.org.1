@@ -1,62 +1,70 @@
-Return-Path: <stable+bounces-271147-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-270630-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id AKmVCyyjRmoDawsAu9opvQ
-	(envelope-from <stable+bounces-271147-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:43:08 +0200
+	id XIsONz2eRmoGaQsAu9opvQ
+	(envelope-from <stable+bounces-270630-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:22:05 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 767D06FB928
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:43:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C6FA6FB3D7
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:22:05 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=CvB61YGI;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-271147-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-271147-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="ZRz4I0k/";
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-270630-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-270630-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 54C013320DDB
-	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:48:11 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A554E3224464
+	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:29:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 00E7E30C15A;
-	Thu,  2 Jul 2026 16:46:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2EF54949FF;
+	Thu,  2 Jul 2026 16:24:01 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2A1130EF95;
-	Thu,  2 Jul 2026 16:46:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9324B480350;
+	Thu,  2 Jul 2026 16:23:57 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783010793; cv=none; b=rZifeZeFUWmqO3VGiy6G0HDBwJ4u/RbAEl82ndaBABsw2+PuVdoU67CWfxf0+9Lg7BMNe/jHlho3sz6fg8BlVXlG4WSEmDq5UMnPsnNHTZVs/0uQlPfOEbpSwcnH6oDS0vDFkLkTwd90xn+IVAbr/Y17Uq93FQ7c+TUCV79HgC0=
+	t=1783009441; cv=none; b=jx1XQ1tyVs8ruwQDrD3Qcn14sr9a6dYq32lx3BIllAE6f9fTkIogQw9esOwbhpRXLggXMZNag5U3RCRN28+1oRHksWgjRJdN8puK8uRYlu2cW+2tsKJhtdvn3OH0hM+MKUf76WdF6XJc5vB5GBieMfc9Dq24pe5snk541vN6X9U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783010793; c=relaxed/simple;
-	bh=DwU47u6+syl/qTpOx5TFuDahQUQwcDG7W+/gOJqWM1E=;
+	s=arc-20240116; t=1783009441; c=relaxed/simple;
+	bh=KDIeP+ncdwc7kfujTjPv+hstwp9k+U4iY6sWJgN+YXk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DW6fa6dZonxvIv1jBsG2mrztosG/gasgsh3d7e2Cg6MSuAVKDQRoHxCPfv93qQfoDxSZCK5UlpfAVqNxeXoQZa752tCmVAuyY+BIFuV69mHVNdMjQBRZBwkOeL5KvfdCNpX8QkNkSxhMC9IIUC1wBCex2wSeBCE7ZTrqZcERxoM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CvB61YGI; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 251361F000E9;
-	Thu,  2 Jul 2026 16:46:31 +0000 (UTC)
+	 MIME-Version:Content-Type; b=r/1UrFZ0HszugV+seWK+tSvatqsAT6L9kCvN2xbxSKl4/3HWt5NHaBY0NViMdlkWCsPR+1uO2BzVDNuULh4oeiKzU2hqNzYds+odDQJtWcRUDQsMbrftYNpGalJPNaIA+w6C8v563wHW4c7/W3zhB/KuTs0YNCiZGLjJxhah+lY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZRz4I0k/; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F5051F00A3E;
+	Thu,  2 Jul 2026 16:23:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1783010792;
-	bh=Sd3/2wsaq/YQeSweVNPooQf198Tr/P4+GRLhtvnicJY=;
+	s=korg; t=1783009436;
+	bh=/9bl2cbX1HW8z1ppLh9AZBUMfpj7g4oA6MgdRA1aJUY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=CvB61YGIoApZbAQapkWObmeFe7dJ79VeEfWIP+OCKiBY/E8vyRkqH30i8J4ozMcy1
-	 jPBAq9AkBRWkmwCYoySj45i+8FJI2ERZa3XqWJO3YswKvZBPQluM1EPjdzVIiX8mQm
-	 yhRYtAz9oS7lKaNniuStAj/KSQjre3IBgL4yeGqw=
+	b=ZRz4I0k/6KakAVhUJoc5b0jHSRq79gOic/ktgiSPQ3hDfrW9jlUKZLamo/pWb50R4
+	 E4gttym72ohyP/5e6nM/mjVqTmiVsskH+0KtvTxbA8r0Vsam+5rwW1skbx0H/CjTx/
+	 EN2Rzi/hyYIy4dsO2Lk2zFH+o76asQP+KkTGQXlM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kuniyuki Iwashima <kuniyu@amazon.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Yiming Qian <yimingqian591@gmail.com>,
+	Keenan Dong <keenanat2000@gmail.com>,
+	Han Guidong <2045gemini@gmail.com>,
+	Zhang Cen <rollkingzzc@gmail.com>,
+	Davide Caratti <dcaratti@redhat.com>,
+	=?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>,
+	Victor Nogueira <victor@mojatatu.com>,
+	Jamal Hadi Salim <jhs@mojatatu.com>,
+	Rajat Gupta <rajat.gupta@oss.qualcomm.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Wentao Guan <guanwentao@uniontech.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 038/175] phonet: Pass net and ifindex to phonet_address_notify().
-Date: Thu,  2 Jul 2026 18:18:59 +0200
-Message-ID: <20260702155116.600128183@linuxfoundation.org>
+Subject: [PATCH 5.10 08/96] net/sched: fix pedit partial COW leading to page cache corruption
+Date: Thu,  2 Jul 2026 18:19:00 +0200
+Message-ID: <20260702155109.147355092@linuxfoundation.org>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260702155115.766838875@linuxfoundation.org>
-References: <20260702155115.766838875@linuxfoundation.org>
+In-Reply-To: <20260702155108.949633242@linuxfoundation.org>
+References: <20260702155108.949633242@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,153 +74,273 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-271147-lists,stable=lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-270630-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:kuniyu@amazon.com,m:edumazet@google.com,m:pabeni@redhat.com,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:yimingqian591@gmail.com,m:keenanat2000@gmail.com,m:2045gemini@gmail.com,m:rollkingzzc@gmail.com,m:dcaratti@redhat.com,m:toke@redhat.com,m:victor@mojatatu.com,m:jhs@mojatatu.com,m:rajat.gupta@oss.qualcomm.com,m:kuba@kernel.org,m:guanwentao@uniontech.com,m:sashal@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,redhat.com,mojatatu.com,oss.qualcomm.com,kernel.org,uniontech.com];
+	RCPT_COUNT_TWELVE(0.00)[15];
 	RCVD_COUNT_THREE(0.00)[4];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORWARDED(0.00)[lists@lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,mojatatu.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,qualcomm.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,msgid.link:url,uniontech.com:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 767D06FB928
+X-Rspamd-Queue-Id: 0C6FA6FB3D7
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuniyuki Iwashima <kuniyu@amazon.com>
+From: Rajat Gupta <rajat.gupta@oss.qualcomm.com>
 
-[ Upstream commit 68ed5c38b512b734caf3da1f87db4a99fcfe3002 ]
+[ Upstream commit 899ee91156e57784090c5565e4f31bd7dbffbc5a ]
 
-Currently, phonet_address_notify() fetches netns and ifindex from dev.
+tcf_pedit_act() computes the COW range for skb_ensure_writable()
+once before the key loop using tcfp_off_max_hint, but the hint does
+not account for the runtime header offset added by typed keys. This
+can leave part of the write region un-COW'd.
 
-Once addr_doit() is converted to RCU, phonet_address_notify() will be
-called outside of RCU due to GFP_KERNEL, and dev will be unavailable
-there.
+Fix by moving skb_ensure_writable() inside the per-key loop where
+the actual write offset is known, and add overflow checking on the
+offset arithmetic. For negative offsets (e.g. Ethernet header edits
+at ingress), use skb_cow() to COW the headroom instead. Guard
+offset_valid() against INT_MIN, where negation is undefined.
 
-Let's pass net and ifindex to phonet_address_notify().
-
-Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Stable-dep-of: 71de0177b28d ("net: phonet: free phonet_device after RCU grace period")
+Fixes: 8b796475fd78 ("net/sched: act_pedit: really ensure the skb is writable")
+Reported-by: Yiming Qian <yimingqian591@gmail.com>
+Reported-by: Keenan Dong <keenanat2000@gmail.com>
+Reported-by: Han Guidong <2045gemini@gmail.com>
+Reported-by: Zhang Cen <rollkingzzc@gmail.com>
+Reviewed-by: Han Guidong <2045gemini@gmail.com>
+Tested-by: Han Guidong <2045gemini@gmail.com>
+Reviewed-by: Davide Caratti <dcaratti@redhat.com>
+Tested-by: Davide Caratti <dcaratti@redhat.com>
+Reviewed-by: Toke Høiland-Jørgensen <toke@redhat.com>
+Tested-by: Toke Høiland-Jørgensen <toke@redhat.com>
+Reviewed-by: Victor Nogueira <victor@mojatatu.com>
+Tested-by: Victor Nogueira <victor@mojatatu.com>
+Acked-by: Jamal Hadi Salim <jhs@mojatatu.com>
+Signed-off-by: Rajat Gupta <rajat.gupta@oss.qualcomm.com>
+Link: https://patch.msgid.link/20260531123221.48732-1-jhs@mojatatu.com
+[rename include file from linux/unaligned.h to asm/unaligned.h]
+Conflicts:
+	include/net/tc_act/tc_pedit.h
+	net/sched/act_pedit.c
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Wentao Guan <guanwentao@uniontech.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/net/phonet/pn_dev.h |    2 +-
- net/phonet/pn_dev.c         |   10 +++++++---
- net/phonet/pn_netlink.c     |   12 ++++++------
- 3 files changed, 14 insertions(+), 10 deletions(-)
+ include/net/tc_act/tc_pedit.h |  1 -
+ net/sched/act_pedit.c         | 77 +++++++++++++++++++----------------
+ 2 files changed, 41 insertions(+), 37 deletions(-)
 
---- a/include/net/phonet/pn_dev.h
-+++ b/include/net/phonet/pn_dev.h
-@@ -38,7 +38,7 @@ int phonet_address_add(struct net_device
- int phonet_address_del(struct net_device *dev, u8 addr);
- u8 phonet_address_get(struct net_device *dev, u8 addr);
- int phonet_address_lookup(struct net *net, u8 addr);
--void phonet_address_notify(int event, struct net_device *dev, u8 addr);
-+void phonet_address_notify(struct net *net, int event, u32 ifindex, u8 addr);
- 
- int phonet_route_add(struct net_device *dev, u8 daddr);
- int phonet_route_del(struct net_device *dev, u8 daddr);
---- a/net/phonet/pn_dev.c
-+++ b/net/phonet/pn_dev.c
-@@ -98,10 +98,13 @@ static void phonet_device_destroy(struct
- 	mutex_unlock(&pndevs->lock);
- 
- 	if (pnd) {
-+		struct net *net = dev_net(dev);
-+		u32 ifindex = dev->ifindex;
- 		u8 addr;
- 
- 		for_each_set_bit(addr, pnd->addrs, 64)
--			phonet_address_notify(RTM_DELADDR, dev, addr);
-+			phonet_address_notify(net, RTM_DELADDR, ifindex, addr);
-+
- 		kfree(pnd);
+diff --git a/include/net/tc_act/tc_pedit.h b/include/net/tc_act/tc_pedit.h
+index 83fe3993178180..a26d4cd3b8d6f3 100644
+--- a/include/net/tc_act/tc_pedit.h
++++ b/include/net/tc_act/tc_pedit.h
+@@ -14,7 +14,6 @@ struct tcf_pedit_key_ex {
+ struct tcf_pedit_parms {
+ 	struct tc_pedit_key	*tcfp_keys;
+ 	struct tcf_pedit_key_ex	*tcfp_keys_ex;
+-	u32 tcfp_off_max_hint;
+ 	unsigned char tcfp_nkeys;
+ 	unsigned char tcfp_flags;
+ 	struct rcu_head rcu;
+diff --git a/net/sched/act_pedit.c b/net/sched/act_pedit.c
+index df31b2b7b42253..35fa94ba0edf8f 100644
+--- a/net/sched/act_pedit.c
++++ b/net/sched/act_pedit.c
+@@ -17,6 +17,8 @@
+ #include <linux/ipv6.h>
+ #include <linux/slab.h>
+ #include <net/ipv6.h>
++#include <linux/overflow.h>
++#include <asm/unaligned.h>
+ #include <net/netlink.h>
+ #include <net/pkt_sched.h>
+ #include <linux/tc_act/tc_pedit.h>
+@@ -229,7 +231,6 @@ static int tcf_pedit_init(struct net *net, struct nlattr *nla,
+ 		goto out_release;
  	}
- }
-@@ -244,8 +247,9 @@ static int phonet_device_autoconf(struct
- 	ret = phonet_address_add(dev, req.ifr_phonet_autoconf.device);
- 	if (ret)
- 		return ret;
--	phonet_address_notify(RTM_NEWADDR, dev,
--				req.ifr_phonet_autoconf.device);
-+
-+	phonet_address_notify(dev_net(dev), RTM_NEWADDR, dev->ifindex,
-+			      req.ifr_phonet_autoconf.device);
- 	return 0;
+ 
+-	nparms->tcfp_off_max_hint = 0;
+ 	nparms->tcfp_flags = parm->flags;
+ 	nparms->tcfp_nkeys = parm->nkeys;
+ 
+@@ -257,14 +258,6 @@ static int tcf_pedit_init(struct net *net, struct nlattr *nla,
+ 						   BITS_PER_TYPE(int) - 1,
+ 						   nparms->tcfp_keys[i].shift);
+ 
+-		/* The AT option can read a single byte, we can bound the actual
+-		 * value with uchar max.
+-		 */
+-		cur += (0xff & offmask) >> nparms->tcfp_keys[i].shift;
+-
+-		/* Each key touches 4 bytes starting from the computed offset */
+-		nparms->tcfp_off_max_hint =
+-			max(nparms->tcfp_off_max_hint, cur + 4);
+ 	}
+ 
+ 	p = to_pedit(*a);
+@@ -305,15 +298,12 @@ static void tcf_pedit_cleanup(struct tc_action *a)
+ 		call_rcu(&parms->rcu, tcf_pedit_cleanup_rcu);
  }
  
---- a/net/phonet/pn_netlink.c
-+++ b/net/phonet/pn_netlink.c
-@@ -22,7 +22,7 @@
- static int fill_addr(struct sk_buff *skb, u32 ifindex, u8 addr,
- 		     u32 portid, u32 seq, int event);
- 
--void phonet_address_notify(int event, struct net_device *dev, u8 addr)
-+void phonet_address_notify(struct net *net, int event, u32 ifindex, u8 addr)
+-static bool offset_valid(struct sk_buff *skb, int offset)
++static bool offset_valid(struct sk_buff *skb, int offset, int len)
  {
- 	struct sk_buff *skb;
- 	int err = -ENOBUFS;
-@@ -32,17 +32,17 @@ void phonet_address_notify(int event, st
- 	if (skb == NULL)
- 		goto errout;
+-	if (offset > 0 && offset > skb->len)
+-		return false;
+-
+-	if  (offset < 0 && -offset > skb_headroom(skb))
++	if (offset < -(int)skb_headroom(skb))
+ 		return false;
  
--	err = fill_addr(skb, dev->ifindex, addr, 0, 0, event);
-+	err = fill_addr(skb, ifindex, addr, 0, 0, event);
- 	if (err < 0) {
- 		WARN_ON(err == -EMSGSIZE);
- 		kfree_skb(skb);
- 		goto errout;
- 	}
--	rtnl_notify(skb, dev_net(dev), 0,
--		    RTNLGRP_PHONET_IFADDR, NULL, GFP_KERNEL);
+-	return true;
++	return offset <= (int)skb->len - len;
+ }
+ 
+ static int pedit_l4_skb_offset(struct sk_buff *skb, int *hoffset, const int header_type)
+@@ -379,18 +369,10 @@ static int tcf_pedit_act(struct sk_buff *skb, const struct tc_action *a,
+ 	struct tcf_pedit_key_ex *tkey_ex;
+ 	struct tcf_pedit_parms *parms;
+ 	struct tc_pedit_key *tkey;
+-	u32 max_offset;
+ 	int i;
+ 
+ 	parms = rcu_dereference_bh(p->parms);
+ 
+-	max_offset = (skb_transport_header_was_set(skb) ?
+-		      skb_transport_offset(skb) :
+-		      skb_network_offset(skb)) +
+-		     parms->tcfp_off_max_hint;
+-	if (skb_ensure_writable(skb, min(skb->len, max_offset)))
+-		goto done;
+-
+ 	tcf_lastuse_update(&p->tcf_tm);
+ 	tcf_action_update_bstats(&p->common, skb);
+ 
+@@ -398,10 +380,11 @@ static int tcf_pedit_act(struct sk_buff *skb, const struct tc_action *a,
+ 	tkey_ex = parms->tcfp_keys_ex;
+ 
+ 	for (i = parms->tcfp_nkeys; i > 0; i--, tkey++) {
++		int write_offset, write_len;
+ 		int offset = tkey->off;
+ 		int hoffset = 0;
+-		u32 *ptr, hdata;
+-		u32 val;
++		u32 cur_val, val;
++		u32 *ptr;
+ 		int rc;
+ 
+ 		if (tkey_ex) {
+@@ -419,13 +402,15 @@ static int tcf_pedit_act(struct sk_buff *skb, const struct tc_action *a,
+ 
+ 		if (tkey->offmask) {
+ 			u8 *d, _d;
++			int at_offset;
+ 
+-			if (!offset_valid(skb, hoffset + tkey->at)) {
++			if (check_add_overflow(hoffset, (int)tkey->at, &at_offset) ||
++			    !offset_valid(skb, at_offset, sizeof(_d))) {
+ 				pr_info_ratelimited("tc action pedit 'at' offset %d out of bounds\n",
+ 						    hoffset + tkey->at);
+ 				goto bad;
+ 			}
+-			d = skb_header_pointer(skb, hoffset + tkey->at,
++			d = skb_header_pointer(skb, at_offset,
+ 					       sizeof(_d), &_d);
+ 			if (!d)
+ 				goto bad;
+@@ -437,31 +422,51 @@ static int tcf_pedit_act(struct sk_buff *skb, const struct tc_action *a,
+ 			}
+ 		}
+ 
+-		if (!offset_valid(skb, hoffset + offset)) {
+-			pr_info_ratelimited("tc action pedit offset %d out of bounds\n", hoffset + offset);
++		if (check_add_overflow(hoffset, offset, &write_offset)) {
++			pr_info_ratelimited("tc action pedit offset overflow\n");
+ 			goto bad;
+ 		}
+ 
+-		ptr = skb_header_pointer(skb, hoffset + offset,
+-					 sizeof(hdata), &hdata);
+-		if (!ptr)
++		if (!offset_valid(skb, write_offset, sizeof(*ptr))) {
++			pr_info_ratelimited("tc action pedit offset %d out of bounds\n",
++					    write_offset);
+ 			goto bad;
++		}
 +
-+	rtnl_notify(skb, net, 0, RTNLGRP_PHONET_IFADDR, NULL, GFP_KERNEL);
- 	return;
- errout:
--	rtnl_set_sk_err(dev_net(dev), RTNLGRP_PHONET_IFADDR, err);
-+	rtnl_set_sk_err(net, RTNLGRP_PHONET_IFADDR, err);
- }
++		if (write_offset < 0) {
++			if (skb_cow(skb, -write_offset))
++				goto bad;
++			if (write_offset + (int)sizeof(*ptr) > 0) {
++				if (skb_ensure_writable(skb,
++							min_t(int, skb->len,
++							      write_offset + (int)sizeof(*ptr))))
++					goto bad;
++			}
++		} else {
++			if (check_add_overflow(write_offset, (int)sizeof(*ptr),
++					       &write_len))
++				goto bad;
++			if (skb_ensure_writable(skb, min_t(int, skb->len,
++							   write_len)))
++				goto bad;
++		}
++
++		ptr = (u32 *)(skb->data + write_offset);
++		cur_val = get_unaligned(ptr);
+ 		/* just do it, baby */
+ 		switch (cmd) {
+ 		case TCA_PEDIT_KEY_EX_CMD_SET:
+ 			val = tkey->val;
+ 			break;
+ 		case TCA_PEDIT_KEY_EX_CMD_ADD:
+-			val = (*ptr + tkey->val) & ~tkey->mask;
++			val = (cur_val + tkey->val) & ~tkey->mask;
+ 			break;
+ 		default:
+ 			pr_info_ratelimited("tc action pedit bad command (%d)\n", cmd);
+ 			goto bad;
+ 		}
  
- static const struct nla_policy ifa_phonet_policy[IFA_MAX+1] = {
-@@ -89,7 +89,7 @@ static int addr_doit(struct sk_buff *skb
- 	else
- 		err = phonet_address_del(dev, pnaddr);
- 	if (!err)
--		phonet_address_notify(nlh->nlmsg_type, dev, pnaddr);
-+		phonet_address_notify(net, nlh->nlmsg_type, ifm->ifa_index, pnaddr);
- 	return err;
- }
+-		*ptr = ((*ptr & tkey->mask) ^ val);
+-		if (ptr == &hdata)
+-			skb_store_bits(skb, hoffset + offset, ptr, 4);
++		put_unaligned((cur_val & tkey->mask) ^ val, ptr);
+ 	}
  
+ 	goto done;
+-- 
+2.53.0
+
 
 
 
