@@ -1,65 +1,62 @@
-Return-Path: <stable+bounces-271078-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-270772-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id zGhcKrmiRmrUagsAu9opvQ
-	(envelope-from <stable+bounces-271078-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:41:13 +0200
+	id iiC1FPKSRmpfYwsAu9opvQ
+	(envelope-from <stable+bounces-270772-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:33:54 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id C68CB6FB8A7
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:41:12 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 09B8D6FA409
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:33:54 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="uKQ1j3/L";
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-271078-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-271078-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=sss6B2dt;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-270772-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-270772-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id CE6CA307F4A9
-	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:46:34 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 156DE30205D5
+	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:33:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F1E7E361656;
-	Thu,  2 Jul 2026 16:43:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C72AA350D7D;
+	Thu,  2 Jul 2026 16:30:13 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8408922D7B9;
-	Thu,  2 Jul 2026 16:43:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 396B133A9C4;
+	Thu,  2 Jul 2026 16:30:10 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783010612; cv=none; b=mKbvfX+zb+ZtMFtGXsW5PMd+jCB2IQT5hMIWFmIAwjsSi895BT1nJidMAQg61Qa/KkZoUAtPRBkG7AYOjqBTjC7QIfVMAI6LHMTXWGlngROGCA832xyGmOo/x+KnOA5BhMzfdBNSyyiRRsboG1/JXds1j5DCk/KEgxYyLoecd50=
+	t=1783009812; cv=none; b=KLcM5+cwb7uo/sB11N8uxRp7dWsl1/0bUU8G2O02Rf+1ZGObDKCYY55R+w1NzJJWjZc+zXSzf+ispVEf4/Dg05aKnu9xf7d4g+Avp2jjc3/yojWmVI+jdngWenrq8czOeorLEqhdSvs26DxbMlLYqwCwyRJvaHU3uQ+0jZmg6HM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783010612; c=relaxed/simple;
-	bh=pV3ejcsup1iSe6VlPV+lWBSZRWooe1aiQJZtMgZHc6M=;
+	s=arc-20240116; t=1783009812; c=relaxed/simple;
+	bh=WwyeiGQpj3kJhKkpKCK/JlCQbYpQUtY7vg4H38b1hk4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sCm7nQsi6CmnkcfXS5ZHtE4fTdAkwI4ITsFX9JxKpcVtMkNZjidPQMy+RBETMfixzyJ0+znZ1Q9SkIJQMkNQ/rOLiLNFy5mKzsFe4UZZtPK65gkfB6TuctpaCoWdnbnQx/fUjAqFTD4KxLppFTEHdqSDqCAd3TZDjfLxY0Nc+/k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uKQ1j3/L; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A19611F000E9;
-	Thu,  2 Jul 2026 16:43:30 +0000 (UTC)
+	 MIME-Version; b=OowQy2h46gV7aojMFuHIAJJQ2BsoIa67c92uqYHNcoxiNdd2GWTuQFpMrIxNnam3XlxXIU5jL5fOny6W4qLjy8OmKxFBMIp6YCqp4mCPVlWT9DRcFDxNiHxKBNHWIIDYGlAvsktZ5s4SXGHiNwkLMB4bCySAfEyTCkoKZb+plcE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sss6B2dt; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 566E51F000E9;
+	Thu,  2 Jul 2026 16:30:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1783010611;
-	bh=tDV8QcoccFjddg/O0k1ytg6wsORhtXIDMVC+0grLbSQ=;
+	s=korg; t=1783009809;
+	bh=Huy1tm3PimOyma3u1AHcFWePkV2TVNLN4ZYfuIPqA3Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=uKQ1j3/LRSy318xLW7SmEaU3yVtGgey+1DxwTJmGXC55aSIN6CR72LYiUCzcJ3kva
-	 QaoPQqmSqPRn7BG4FZ9NRBytS2jEbvDTtFmQOFNwH1pBnTzFQhUo3F6D7/ZiKLYo5g
-	 2OCseEpRw6TQRSjzvYhyCOWclTrV8uZ2iuwltWds=
+	b=sss6B2dtmwbnTVgUVc5aEAjtr6XuZrgvjsYtmp8/eIoX3A9qhBI9uhlvmlF5whzwp
+	 vo5CcHiBC83zCqhC/AjYhrCwJVlUeDRdnwE+WdNIugcdLvWvTpAwozLzh4/5+uncLT
+	 1krVY8DgjvRhxYVjO7Llpdms93XHukNW+JQ/Ddb0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yuxiang Yang <yangyx22@mails.tsinghua.edu.cn>,
-	Ao Wang <wangao@seu.edu.cn>,
-	Xuewei Feng <fengxw06@126.com>,
-	Qi Li <qli01@tsinghua.edu.cn>,
-	Ke Xu <xuke@tsinghua.edu.cn>,
-	Yizhou Zhao <zhaoyz24@mails.tsinghua.edu.cn>,
-	Dominique Martinet <asmadeus@codewreck.org>
-Subject: [PATCH 6.12 175/204] 9p: avoid putting oldfid in p9_client_walk() error path
+	Lei Lu <llfamsec@gmail.com>,
+	Joanne Koong <joannelkoong@gmail.com>,
+	Miklos Szeredi <mszeredi@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 89/95] fuse: re-lock request before replacing page cache folio
 Date: Thu,  2 Jul 2026 18:20:32 +0200
-Message-ID: <20260702155122.322574411@linuxfoundation.org>
+Message-ID: <20260702155111.081753153@linuxfoundation.org>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260702155118.667618796@linuxfoundation.org>
-References: <20260702155118.667618796@linuxfoundation.org>
+In-Reply-To: <20260702155109.196223802@linuxfoundation.org>
+References: <20260702155109.196223802@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -76,21 +73,21 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORWARDED(0.00)[lists@lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,mails.tsinghua.edu.cn,seu.edu.cn,126.com,tsinghua.edu.cn,codewreck.org];
-	TAGGED_FROM(0.00)[bounces-271078-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,redhat.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-270772-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
 	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:yangyx22@mails.tsinghua.edu.cn,m:wangao@seu.edu.cn,m:fengxw06@126.com,m:qli01@tsinghua.edu.cn,m:xuke@tsinghua.edu.cn,m:zhaoyz24@mails.tsinghua.edu.cn,m:asmadeus@codewreck.org,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:llfamsec@gmail.com,m:joannelkoong@gmail.com,m:mszeredi@redhat.com,m:sashal@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
@@ -100,66 +97,80 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TO_DN_SOME(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[10];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,tsinghua.edu.cn:email,seu.edu.cn:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: C68CB6FB8A7
+X-Rspamd-Queue-Id: 09B8D6FA409
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yizhou Zhao <zhaoyz24@mails.tsinghua.edu.cn>
+From: Joanne Koong <joannelkoong@gmail.com>
 
-commit 1a3860d46e3eb47dbd60339783cdad7904486b9f upstream.
+[ Upstream commit a078484921052d0badd827fcc2770b5cfc1d4120 ]
 
-When p9_client_walk() is called with clone set to false, fid aliases
-oldfid. If the walk subsequently fails after the request has been sent,
-the error path jumps to clunk_fid, which currently calls p9_fid_put(fid)
-unconditionally.
+fuse_try_move_folio() unlocks the request on entry but does not
+re-lock it on the success path. This means fuse_chan_abort() can end the
+request and free the fuse_io_args (eg fuse_readpages_end()) while the
+subsequent copy chain logic after fuse_try_move_folio() accesses the
+fuse_io_args, leading to use-after-free issues.
 
-This drops a reference to oldfid even though ownership of oldfid remains
-with the caller. If this is the last reference, oldfid can be clunked and
-destroyed while the caller still expects it to be valid. A later use or
-put of oldfid can then trigger a use-after-free or refcount underflow.
+Fix this by calling lock_request() before replace_page_cache_folio().
+This ensures the request is locked on the success path which will
+prevent the fuse_io_args from being freed while the later copying logic
+runs, and also ensures that the ap->folios[i]->mapping is never null
+since ap->folios[i] will always point to the newfolio after
+replace_page_cache_folio().
 
-Fix this by only putting fid in the clunk_fid error path when it does not
-alias oldfid, matching the existing guard in the error path below.
-
-This can be triggered when a multi-component walk is split into multiple
-p9_client_walk() calls and a later non-cloning walk fails. A reproducer
-and refcount warning logs are available on request.
-
-Fixes: b48dbb998d70 ("9p fid refcount: add p9_fid_get/put wrappers")
+Fixes: ce534fb05292 ("fuse: allow splice to move pages")
 Cc: stable@vger.kernel.org
-Reported-by: Yuxiang Yang <yangyx22@mails.tsinghua.edu.cn>
-Reported-by: Ao Wang <wangao@seu.edu.cn>
-Reported-by: Xuewei Feng <fengxw06@126.com>
-Reported-by: Qi Li <qli01@tsinghua.edu.cn>
-Reported-by: Ke Xu <xuke@tsinghua.edu.cn>
-Assisted-by: GLM 5.1
-Signed-off-by: Yizhou Zhao <zhaoyz24@mails.tsinghua.edu.cn>
-Message-ID: <20260528053918.53550-1-zhaoyz24@mails.tsinghua.edu.cn>
-Signed-off-by: Dominique Martinet <asmadeus@codewreck.org>
+Reported-by: Lei Lu <llfamsec@gmail.com>
+Signed-off-by: Joanne Koong <joannelkoong@gmail.com>
+Signed-off-by: Miklos Szeredi <mszeredi@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/9p/client.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ fs/fuse/dev.c |   19 +++++--------------
+ 1 file changed, 5 insertions(+), 14 deletions(-)
 
---- a/net/9p/client.c
-+++ b/net/9p/client.c
-@@ -1215,7 +1215,8 @@ struct p9_fid *p9_client_walk(struct p9_
+--- a/fs/fuse/dev.c
++++ b/fs/fuse/dev.c
+@@ -845,6 +845,10 @@ static int fuse_try_move_page(struct fus
+ 	if (WARN_ON(PageMlocked(oldpage)))
+ 		goto out_fallback_unlock;
  
- clunk_fid:
- 	kfree(wqids);
--	p9_fid_put(fid);
-+	if (fid != oldfid)
-+		p9_fid_put(fid);
- 	fid = NULL;
++	err = lock_request(cs->req);
++	if (err)
++		goto out_fallback_unlock;
++
+ 	replace_page_cache_page(oldpage, newpage);
  
- error:
+ 	get_page(newpage);
+@@ -858,20 +862,7 @@ static int fuse_try_move_page(struct fus
+ 	 */
+ 	pipe_buf_release(cs->pipe, buf);
+ 
+-	err = 0;
+-	spin_lock(&cs->req->waitq.lock);
+-	if (test_bit(FR_ABORTED, &cs->req->flags))
+-		err = -ENOENT;
+-	else
+-		*pagep = newpage;
+-	spin_unlock(&cs->req->waitq.lock);
+-
+-	if (err) {
+-		unlock_page(newpage);
+-		put_page(newpage);
+-		goto out_put_old;
+-	}
+-
++	*pagep = newpage;
+ 	unlock_page(oldpage);
+ 	/* Drop ref for ap->pages[] array */
+ 	put_page(oldpage);
 
 
 
