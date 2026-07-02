@@ -1,61 +1,64 @@
-Return-Path: <stable+bounces-271312-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-270671-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id hG4pO6KZRmoLZwsAu9opvQ
-	(envelope-from <stable+bounces-271312-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:02:26 +0200
+	id H5FrB4CURmoIZAsAu9opvQ
+	(envelope-from <stable+bounces-270671-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:40:32 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C6476FAE5C
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:02:26 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 987996FA5B2
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:40:31 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=kLE8ZNMs;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-271312-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-271312-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=D33HbYXT;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-270671-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-270671-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id CE21730EDBC1
-	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:53:57 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D38DA324E0EC
+	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:31:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E68C31DD97;
-	Thu,  2 Jul 2026 16:53:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 32AAC349CF6;
+	Thu,  2 Jul 2026 16:25:49 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BC921C695;
-	Thu,  2 Jul 2026 16:53:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05A263A7F49;
+	Thu,  2 Jul 2026 16:25:45 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783011219; cv=none; b=oOSgUhNAEX5xCUdp+FizZrBVWBlUPSpRm+FBLLeuY3Y47wQmwQW1dDSjKwHevk/cRv0PGsNCABxJpuPOS7x8Hu8i5tmklmZmU0yQ128cgUglpYL9uIEko6S6QgwB4/w/lyYkNoI9w7DmX8yRLZkxYmuNuk9rAZt4VMlYjoqyAAg=
+	t=1783009548; cv=none; b=Ol/l4hHuvYR37atRwRdHJetHt78oRkGK80U8/8wKD5+n+tb6aatF/0bzdpmYfpYECXcMW9okAcQbMANTveX9eRAIIKoz0CD0MjQ7CxRvYxrwwzRD6QhMyuxiFT9Z9uM5l5eLhMGVzHv/QavJxqh1r63hcEwanO0Z1eJdBhSzcHs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783011219; c=relaxed/simple;
-	bh=PMuRUw2qzdFwTxL08RVC3dvty1D2vt4LRLW4HPt73l0=;
+	s=arc-20240116; t=1783009548; c=relaxed/simple;
+	bh=sNG3BRnEWusdO1iWPqC5alXg4UJW5CcNG4QRGbKtwAI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lbeS9iNb1dewZa6vx+UYP36Kdmw4xiWYg6+c3b8BSVl+NekH1Lktd1K5BAWkqirLE3L23nV+d1VTrRmInkvpltgZIp7wW7YO9TtcDfPT8Vve8X4nLKoi9gi7M0sXfJcTUzBbeOYPaNUgmSHAjQogxKPrfTjritZo6t13Q07K3no=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kLE8ZNMs; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 811021F000E9;
-	Thu,  2 Jul 2026 16:53:37 +0000 (UTC)
+	 MIME-Version; b=IX+x+2cvsaKE0RnYcQ4FnqrbThbhld6FZWPWh9paly2zNRVjJxLF1yu2U3SkGU8M3wFppCZPOvsW2o/WvsrjpsgyKNKk2oI7Jjmn4vh3VSW8AYBtZZfXXG8TLXzFvEMzP/P0c4+ty/AzebMZo0K+2HYsPN7n2iZmESaPP26PtVE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D33HbYXT; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 302C41F00A3A;
+	Thu,  2 Jul 2026 16:25:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1783011218;
-	bh=LZ81kUGinIACK8JbAGFQRs+5GikDXDyzjgcpdOXlNMg=;
+	s=korg; t=1783009544;
+	bh=gRgIqwfFt53tcNNX+R0gATNnwpkzdVSQazIsCN4pQ4Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=kLE8ZNMsHysjfvJNIv5Is8cW06vQZEJ+nrxmjKvKgxjleRJKs27CMvNd78MWK/nL8
-	 ekWOMawABHetl9JqNX3eMyEj5O1vLWoRRp5O+xtpph/a8rZkJUQjDq/LW5aBJpBgGO
-	 GBOXkPyCUfuUKIzHf+zGYrpbC5yMMabcN58WTPNc=
+	b=D33HbYXT4GZ0yXKyLrdIHPA9ZIKwK+rvSBaU1j+2/gVHZOn4/62eG/BAluFuJ08PH
+	 t02TpTsU5jCubFjrDenLOlIzUxAY8aYsuxqBMqPTHX71O/6Dy40NCm23W4gSF+2kRu
+	 UU6u947abvfrAo+nBXCSLdNMEvqn5B5x7rID1yA8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Sven Eckelmann <sven@narfation.org>,
+	Michael Kelley <mhklinux@outlook.com>,
+	Krister Johansen <kjlx@templeofstupid.com>,
+	Matthew Ruffell <matthew.ruffell@canonical.com>,
+	Dexuan Cui <decui@microsoft.com>,
+	Wei Liu <wei.liu@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 025/108] batman-adv: tp_meter: prevent parallel modifications of last_recv
+Subject: [PATCH 5.10 90/96] Drivers: hv: vmbus: Improve the logic of reserving fb_mmio on Gen2 VMs
 Date: Thu,  2 Jul 2026 18:20:22 +0200
-Message-ID: <20260702155112.631174760@linuxfoundation.org>
+Message-ID: <20260702155110.873015864@linuxfoundation.org>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260702155112.110058792@linuxfoundation.org>
-References: <20260702155112.110058792@linuxfoundation.org>
+In-Reply-To: <20260702155108.949633242@linuxfoundation.org>
+References: <20260702155108.949633242@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,192 +75,198 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-271312-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,outlook.com,templeofstupid.com,canonical.com,microsoft.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-270671-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:stable@kernel.org,m:sven@narfation.org,m:sashal@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:mhklinux@outlook.com,m:kjlx@templeofstupid.com,m:matthew.ruffell@canonical.com,m:decui@microsoft.com,m:wei.liu@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,narfation.org:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,outlook.com:email,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,templeofstupid.com:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 8C6476FAE5C
+X-Rspamd-Queue-Id: 987996FA5B2
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sven Eckelmann <sven@narfation.org>
+From: Dexuan Cui <decui@microsoft.com>
 
-commit 6dde0cfcb36e4d5b3de35b75696937478441eed4 upstream.
+[ Upstream commit 016a25e4b0df4d77e7c258edee4aaf982e4ee809 ]
 
-When last_recv is updated to store the last receive sequence number, it is
-assuming that nothing is modifying in parallel while:
+If vmbus_reserve_fb() in the kdump/kexec kernel fails to properly reserve
+the framebuffer MMIO range (which is below 4GB) due to a Gen2 VM's
+screen.lfb_base being zero [1], there is an MMIO conflict between the
+drivers hyperv-drm and pci-hyperv: when the driver pci-hyperv's
+hv_allocate_config_window() calls vmbus_allocate_mmio() to get an
+MMIO range, typically it gets a 32-bit MMIO range that overlaps with the
+framebuffer MMIO range, and later hv_pci_enter_d0() fails with an
+error message "PCI Pass-through VSP failed D0 Entry with status" since
+the host thinks that PCI devices must not use MMIO space that the
+host has assigned to the framebuffer.
 
-* check for outdated packets is done
-* out of order check is performed (and packets are stored in out-of-order
-  queue)
-* the out-of-order queue was searched for closed gaps
-* sequence number for next ack is calculated
+This is especially an issue if pci-hyperv is built-in and hyperv-drm is
+built as a module. Consequently, the kdump/kexec kernel fails to detect
+PCI devices via pci-hyperv, and may fail to mount the root file system,
+which may reside in a NVMe disk. The issue described here has existed
+for SR-IOV VF NICs since day one of the pci-hyperv driver, and has been
+worked around on x64 when possible. With the recent introduction of
+ARM64 VMs that boot from NVMe, there is no workaround, so we need a
+formal fix.
 
-Nothing of that was actually protected. It could therefore happen that the
-last_recv was updated multiple times in parallel and the final sequence
-number was calculated with deltas which had no connection to the sequence
-number they were added to.
+On Gen2 VMs, if the screen.lfb_base is 0 in the kdump/kexec kernel [1],
+fall back to the low MMIO base, which should be equal to the framebuffer
+MMIO base [2] (the statement is true according to my testing on x64
+Windows Server 2016, and on x64 and ARM64 Windows Server 2025 and on
+Azure. I checked with the Hyper-V team and they said the statement should
+continue to be true for Gen2 VMs). In the first kernel, screen.lfb_base
+is not 0; if the user specifies a very high resolution, it's not enough
+to only reserve 8MB: let's always reserve half of the space below 4GB,
+but cap the reservation to 128MB, which is the required framebuffer size
+of the highest resolution 7680*4320 supported by Hyper-V.
 
-Lock this whole region with the same lock which was already used to protect
-the unacked (out-of-order) list.
+While at it, fix the comparison "end > VTPM_BASE_ADDRESS" by changing
+the > to >=. Here the 'end' is an inclusive end (typically, it's
+0xFFFF_FFFF for the low MMIO range).
 
-Cc: stable@kernel.org
-Fixes: 33a3bb4a3345 ("batman-adv: throughput meter implementation")
-[ Switch to pre-splitted tp_vars structure names ]
-Signed-off-by: Sven Eckelmann <sven@narfation.org>
+Note: vmbus_reserve_fb() now also reserves an MMIO range at the beginning
+of the low MMIO range on CVMs, which have no framebuffers (the
+'screen.lfb_base' in vmbus_reserve_fb() is 0 for CVMs), just in case the
+host might treat the beginning of the low MMIO range specially [3]. BTW,
+the OpenHCL kernel is not affected by the change, because that kernel
+boots with DeviceTree rather than ACPI (so vmbus_reserve_fb() won't run
+there), and there is no framebuffer device for that kernel.
+
+Note: normally Gen1 VMs don't have the MMIO conflict issue because the
+framebuffer MMIO range (which is hardcoded to base=4GB-128MB and
+size=64MB for Gen1 VMs by the host) is always reported via the legacy PCI
+graphics device's BAR, so the kdump/kexec kernel can reserve the 64MB
+MMIO range; however, if the VM is configured to use a very high resolution
+and the required framebuffer size exceeds 64MB (AFAIK, in practice, this
+isn't a typical configuration by users), the hyperv-drm driver may need to
+allocate an MMIO range above 4GB and change the framebuffer MMIO location
+to the allocated MMIO range -- in this case, there can still be issues [4]
+which can't be easily fixed: any possible affected Gen1 users would have
+to use a resolution whose framebuffer size is <= 64MB, or switch to Gen2
+VMs.
+
+[1] https://lore.kernel.org/all/SA1PR21MB692176C1BC53BFC9EAE5CF8EBF51A@SA1PR21MB6921.namprd21.prod.outlook.com/
+[2] https://lore.kernel.org/all/SA1PR21MB69218F955B62DFF62E3E88D2BF222@SA1PR21MB6921.namprd21.prod.outlook.com/
+[3] https://lore.kernel.org/all/SN6PR02MB415726B17D5A6027CD1717E8D4342@SN6PR02MB4157.namprd02.prod.outlook.com/
+[4] https://lore.kernel.org/all/SA1PR21MB69213486F821CA5A2C793C81BF342@SA1PR21MB6921.namprd21.prod.outlook.com/
+
+Fixes: 4daace0d8ce8 ("PCI: hv: Add paravirtual PCI front-end for Microsoft Hyper-V VMs")
+CC: stable@vger.kernel.org
+Reviewed-by: Michael Kelley <mhklinux@outlook.com>
+Tested-by: Krister Johansen <kjlx@templeofstupid.com>
+Tested-by: Matthew Ruffell <matthew.ruffell@canonical.com>
+Signed-off-by: Dexuan Cui <decui@microsoft.com>
+Signed-off-by: Wei Liu <wei.liu@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/batman-adv/tp_meter.c | 22 +++++++++++++---------
- net/batman-adv/types.h    |  2 +-
- 2 files changed, 14 insertions(+), 10 deletions(-)
+ drivers/hv/vmbus_drv.c |   56 +++++++++++++++++++++++++++++++++++--------------
+ 1 file changed, 41 insertions(+), 15 deletions(-)
 
-diff --git a/net/batman-adv/tp_meter.c b/net/batman-adv/tp_meter.c
-index e69bf10e66ac33..629831ea9a58e5 100644
---- a/net/batman-adv/tp_meter.c
-+++ b/net/batman-adv/tp_meter.c
-@@ -1294,6 +1294,7 @@ static int batadv_tp_send_ack(struct batadv_priv *bat_priv, const u8 *dst,
-  */
- static bool batadv_tp_handle_out_of_order(struct batadv_tp_vars *tp_vars,
- 					  const struct sk_buff *skb)
-+	__must_hold(&tp_vars->unacked_lock)
+--- a/drivers/hv/vmbus_drv.c
++++ b/drivers/hv/vmbus_drv.c
+@@ -2134,8 +2134,8 @@ static acpi_status vmbus_walk_resources(
+ 		return AE_NO_MEMORY;
+ 
+ 	/* If this range overlaps the virtual TPM, truncate it. */
+-	if (end > VTPM_BASE_ADDRESS && start < VTPM_BASE_ADDRESS)
+-		end = VTPM_BASE_ADDRESS;
++	if (end >= VTPM_BASE_ADDRESS && start < VTPM_BASE_ADDRESS)
++		end = VTPM_BASE_ADDRESS - 1;
+ 
+ 	new_res->name = "hyperv mmio";
+ 	new_res->flags = IORESOURCE_MEM;
+@@ -2202,26 +2202,52 @@ static int vmbus_acpi_remove(struct acpi
+ 
+ static void vmbus_reserve_fb(void)
  {
- 	const struct batadv_icmp_tp_packet *icmp;
- 	struct batadv_tp_unacked *un, *new;
-@@ -1310,12 +1311,11 @@ static bool batadv_tp_handle_out_of_order(struct batadv_tp_vars *tp_vars,
- 	payload_len = skb->len - sizeof(struct batadv_unicast_packet);
- 	new->len = payload_len;
- 
--	spin_lock_bh(&tp_vars->unacked_lock);
- 	/* if the list is empty immediately attach this new object */
- 	if (list_empty(&tp_vars->unacked_list)) {
- 		list_add(&new->list, &tp_vars->unacked_list);
- 		tp_vars->unacked_count++;
--		goto out;
-+		return true;
- 	}
- 
- 	/* otherwise loop over the list and either drop the packet because this
-@@ -1364,9 +1364,6 @@ static bool batadv_tp_handle_out_of_order(struct batadv_tp_vars *tp_vars,
- 		tp_vars->unacked_count--;
- 	}
- 
--out:
--	spin_unlock_bh(&tp_vars->unacked_lock);
--
- 	return true;
- }
- 
-@@ -1376,6 +1373,7 @@ static bool batadv_tp_handle_out_of_order(struct batadv_tp_vars *tp_vars,
-  * @tp_vars: the private data of the current TP meter session
-  */
- static void batadv_tp_ack_unordered(struct batadv_tp_vars *tp_vars)
-+	__must_hold(&tp_vars->unacked_lock)
- {
- 	struct batadv_tp_unacked *un, *safe;
- 	u32 to_ack;
-@@ -1383,7 +1381,6 @@ static void batadv_tp_ack_unordered(struct batadv_tp_vars *tp_vars)
- 	/* go through the unacked packet list and possibly ACK them as
- 	 * well
+-	int size;
++	resource_size_t start = 0, size;
++	resource_size_t low_mmio_base;
++
++	if (efi_enabled(EFI_BOOT)) {
++		/* Gen2 VM: get FB base from EFI framebuffer */
++		start = screen_info.lfb_base;
++		size = max_t(__u32, screen_info.lfb_size, 0x800000);
++
++		low_mmio_base = hyperv_mmio->start;
++		if (!low_mmio_base || upper_32_bits(low_mmio_base) ||
++		    (start && start < low_mmio_base)) {
++			pr_warn("Unexpected low mmio base %pa\n", &low_mmio_base);
++		} else {
++			/*
++			 * If the kdump/kexec or CVM kernel's lfb_base
++			 * is 0, fall back to the low mmio base.
++			 */
++			if (!start)
++				start = low_mmio_base;
++			/*
++			 * Reserve half of the space below 4GB for high
++			 * resolutions, but cap the reservation to 128MB.
++			 */
++			size = min((SZ_4G - start) / 2, SZ_128M);
++		}
++	} else {
++		/* Gen1 VM: get FB base from screen_info */
++		start = screen_info.lfb_base;
++		size = max_t(__u32, screen_info.lfb_size, 0x4000000);
++	}
++
++	if (!start) {
++		pr_warn("Unexpected framebuffer mmio base of zero\n");
++		return;
++	}
++
+ 	/*
+ 	 * Make a claim for the frame buffer in the resource tree under the
+ 	 * first node, which will be the one below 4GB.  The length seems to
+ 	 * be underreported, particularly in a Generation 1 VM.  So start out
+ 	 * reserving a larger area and make it smaller until it succeeds.
  	 */
--	spin_lock_bh(&tp_vars->unacked_lock);
- 	list_for_each_entry_safe(un, safe, &tp_vars->unacked_list, list) {
- 		/* the list is ordered, therefore it is possible to stop as soon
- 		 * there is a gap between the last acked seqno and the seqno of
-@@ -1401,7 +1398,6 @@ static void batadv_tp_ack_unordered(struct batadv_tp_vars *tp_vars)
- 		kfree(un);
- 		tp_vars->unacked_count--;
- 	}
--	spin_unlock_bh(&tp_vars->unacked_lock);
++	for (; !fb_mmio && (size >= 0x100000); size >>= 1)
++		fb_mmio = __request_region(hyperv_mmio, start, size, fb_mmio_name, 0);
+ 
+-	if (screen_info.lfb_base) {
+-		if (efi_enabled(EFI_BOOT))
+-			size = max_t(__u32, screen_info.lfb_size, 0x800000);
+-		else
+-			size = max_t(__u32, screen_info.lfb_size, 0x4000000);
+-
+-		for (; !fb_mmio && (size >= 0x100000); size >>= 1) {
+-			fb_mmio = __request_region(hyperv_mmio,
+-						   screen_info.lfb_base, size,
+-						   fb_mmio_name, 0);
+-		}
+-	}
++	pr_info("hv_mmio=%pR,%pR fb=%pR\n", hyperv_mmio, hyperv_mmio->sibling, fb_mmio);
  }
  
  /**
-@@ -1481,6 +1477,7 @@ static void batadv_tp_recv_msg(struct batadv_priv *bat_priv,
- 	const struct batadv_icmp_tp_packet *icmp;
- 	struct batadv_tp_vars *tp_vars;
- 	size_t packet_size;
-+	u32 to_ack;
- 	u32 seqno;
- 
- 	icmp = (struct batadv_icmp_tp_packet *)skb->data;
-@@ -1509,6 +1506,8 @@ static void batadv_tp_recv_msg(struct batadv_priv *bat_priv,
- 		WRITE_ONCE(tp_vars->last_recv_time, jiffies);
- 	}
- 
-+	spin_lock_bh(&tp_vars->unacked_lock);
-+
- 	/* if the packet is a duplicate, it may be the case that an ACK has been
- 	 * lost. Resend the ACK
- 	 */
-@@ -1520,8 +1519,10 @@ static void batadv_tp_recv_msg(struct batadv_priv *bat_priv,
- 		/* exit immediately (and do not send any ACK) if the packet has
- 		 * not been enqueued correctly
- 		 */
--		if (!batadv_tp_handle_out_of_order(tp_vars, skb))
-+		if (!batadv_tp_handle_out_of_order(tp_vars, skb)) {
-+			spin_unlock_bh(&tp_vars->unacked_lock);
- 			goto out;
-+		}
- 
- 		/* send a duplicate ACK */
- 		goto send_ack;
-@@ -1535,11 +1536,14 @@ static void batadv_tp_recv_msg(struct batadv_priv *bat_priv,
- 	batadv_tp_ack_unordered(tp_vars);
- 
- send_ack:
-+	to_ack = tp_vars->last_recv;
-+	spin_unlock_bh(&tp_vars->unacked_lock);
-+
- 	/* send the ACK. If the received packet was out of order, the ACK that
- 	 * is going to be sent is a duplicate (the sender will count them and
- 	 * possibly enter Fast Retransmit as soon as it has reached 3)
- 	 */
--	batadv_tp_send_ack(bat_priv, icmp->orig, tp_vars->last_recv,
-+	batadv_tp_send_ack(bat_priv, icmp->orig, to_ack,
- 			   icmp->timestamp, icmp->session, icmp->uid);
- out:
- 	batadv_tp_vars_put(tp_vars);
-diff --git a/net/batman-adv/types.h b/net/batman-adv/types.h
-index 8b180d8245b2a6..84de2570eac3ed 100644
---- a/net/batman-adv/types.h
-+++ b/net/batman-adv/types.h
-@@ -1423,7 +1423,7 @@ struct batadv_tp_vars {
- 	/** @unacked_list: list of unacked packets (meta-info only) */
- 	struct list_head unacked_list;
- 
--	/** @unacked_lock: protect unacked_list */
-+	/** @unacked_lock: protect unacked_list + &batadv_tp_receiver.last_recv */
- 	spinlock_t unacked_lock;
- 
- 	/** @unacked_count: number of unacked entries */
--- 
-2.53.0
-
 
 
 
