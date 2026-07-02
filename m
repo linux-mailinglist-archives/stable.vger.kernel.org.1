@@ -1,68 +1,60 @@
-Return-Path: <stable+bounces-271098-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-271387-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id tNghI9OjRmo0awsAu9opvQ
-	(envelope-from <stable+bounces-271098-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:45:55 +0200
+	id 94NsMg+mRmrkawsAu9opvQ
+	(envelope-from <stable+bounces-271387-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:55:27 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A6F26FB99D
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:45:54 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A73C6FBB6E
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:55:27 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=iaCUpUyl;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-271098-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-271098-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=iF+VUnfq;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-271387-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-271387-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 5731330481BB
-	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:47:21 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 9D28532E9F93
+	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:56:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 754F73AB47C;
-	Thu,  2 Jul 2026 16:44:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE5552D8DC4;
+	Thu,  2 Jul 2026 16:56:50 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3104A82866;
-	Thu,  2 Jul 2026 16:44:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6F6F1C695;
+	Thu,  2 Jul 2026 16:56:49 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783010665; cv=none; b=CMIFiJ9G4TiBpLd3EUIt5tg8TPLzwYbGeA9jcyE9blgp4NY65+8ESU6IA+B3qTgvbQ+KKfpj8diq5AaOaQHNnufrRGfd6l+CM2mZa4sOe84xXXHRExTHGiVn7DyNiJwuLbp002Wntr4HKh2CXwHAbl8yAv7EAUu7Rf5+LrPm+BM=
+	t=1783011410; cv=none; b=Wu+wg+lbp5sQWaWxkDrtPPDsy5uCQU0xST4tdn64ty4LKfRYygP94FIp5EqJjSbXfFKD9QnTc7ZSGqZkgo13fEdvQ9bmBT0gxVjfFBHENECydfvMd5JK3gtGd6uSYos/MP3irjz74gP4qkQS3QaDMPyc6tKwOmJENUkpmfTRXpw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783010665; c=relaxed/simple;
-	bh=hEPjnRB2vbnraqwb8VIWkC+9MNjFgDPLftCjvztkDbQ=;
+	s=arc-20240116; t=1783011410; c=relaxed/simple;
+	bh=S3ejPvyMRYkKhPozP5M7PJUUXSJGFkRqUOwSkLJThCk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ue+y92Um5mkwgiN8S0o4ycS8ZrvRzAUfKQZXawCPHAFQ5nVu/jRDMWBJ0wngqV/Mva5GtUBY9xRCw2gYtQkOWAAqIUKkV4zfgp420gKDEJ39/O7MmPx2lQ0wAPuXlOCuytx2uD5Cb0cANppuXulSR+5xGZ/fGvlfvBVyS8xByY8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iaCUpUyl; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A1831F00A3A;
-	Thu,  2 Jul 2026 16:44:23 +0000 (UTC)
+	 MIME-Version; b=FfUAKKxHbTaQfmMhZMXY9ixTKWu0quPeAF6ClyYJzUjSI3qgyq7nZKpJfoeUX2grld1pEeA1s7Ojpa2UWf01uEawQMKwPvhJZqXMYkqYSzsV7mbPUMod85dj8kP18ZQh3NK1XiMnLBVk7gqY7qlS++XEbHRabWcZMmHx2jQFqfc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iF+VUnfq; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 286161F000E9;
+	Thu,  2 Jul 2026 16:56:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1783010663;
-	bh=OSB+bhFD1js71tRayNH9Fko0i6Vy9ma5UZvuQsYKkCg=;
+	s=korg; t=1783011409;
+	bh=r6OlKDUpUhZK+/7TW5DtYdDKLNkEhDHNbKBl6uvvv6g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=iaCUpUylKTJ/+gMBZiZRRZymH8Gl1/UcQbxHJfk5+9+WSL1Ah1+O+VojA9BvaX4he
-	 FxCFU4LoSBNJq5TBPvvSi/Lhi8+tse9W7tqBmcqrjznOSfd8sS11af2gQp+cY+hyD/
-	 WJvIc45phuanWFquqFqeOvkFGFL/8JKn47qn77ZE=
+	b=iF+VUnfqPCg77D1WyuwJykQuG82aVDF42OoAm0UWSuij6tuQBBYlYyDW2uJTYBStQ
+	 U76R/7uFXOeZCcvoObMZoNCRyZvgwECJvf7AhinEL1mYaZV/0zqRBh+o1ZMKBmK3Oo
+	 XBNB4qQCp3vFsVszXA1MLnDUI2G8LKMR2Ypw1nss=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Georgi Djakov <georgi.djakov@oss.qualcomm.com>,
-	"Oscar Salvador (SUSE)" <osalvador@kernel.org>,
-	Vishal Verma <vishal.l.verma@intel.com>,
-	Mike Rapoport <rppt@kernel.org>,
-	Richard Cheng <icheng@nvidia.com>,
-	David Hildenbrand <david@kernel.org>,
-	Georgi Djakov <djakov@kernel.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 194/204] drivers/base/memory: set mem->altmap after successful device registration
+	Bitterblue Smith <rtl8821cerfe2@gmail.com>,
+	Ping-Ke Shih <pkshih@realtek.com>
+Subject: [PATCH 6.18 054/108] wifi: rtlwifi: rtl8821ae: Fix C2H bit location in RX descriptor
 Date: Thu,  2 Jul 2026 18:20:51 +0200
-Message-ID: <20260702155122.724830154@linuxfoundation.org>
+Message-ID: <20260702155113.229123860@linuxfoundation.org>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260702155118.667618796@linuxfoundation.org>
-References: <20260702155118.667618796@linuxfoundation.org>
+In-Reply-To: <20260702155112.110058792@linuxfoundation.org>
+References: <20260702155112.110058792@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -76,94 +68,78 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:georgi.djakov@oss.qualcomm.com,m:osalvador@kernel.org,m:vishal.l.verma@intel.com,m:rppt@kernel.org,m:icheng@nvidia.com,m:david@kernel.org,m:djakov@kernel.org,m:rafael@kernel.org,m:akpm@linux-foundation.org,m:sashal@kernel.org,s:lists@lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-271387-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:rtl8821cerfe2@gmail.com,m:pkshih@realtek.com,s:lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-271098-lists,stable=lfdr.de];
-	RCPT_COUNT_TWELVE(0.00)[13];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,realtek.com];
 	FORWARDED(0.00)[lists@lfdr.de];
-	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
+	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RWL_MAILSPIKE_POSSIBLE(0.00)[104.64.211.4:from];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linux-foundation.org:email,qualcomm.com:email,nvidia.com:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,intel.com:email]
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,msgid.link:url,realtek.com:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 5A6F26FB99D
+X-Rspamd-Queue-Id: 0A73C6FBB6E
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Georgi Djakov <georgi.djakov@oss.qualcomm.com>
+From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
 
-[ Upstream commit a2b8d7827f48ee54a686cb80e4a1d0ff954ec42a ]
+commit 83d38df6929118c3f996b9e3351c2d5014073d87 upstream.
 
-If __add_memory_block() fails at xa_store() (under memory pressure for
-example), device_unregister() is called, which eventually triggers
-memory_block_release() with mem->altmap still set, causing a
-WARN_ON(mem->altmap).  This was triggered by modifying virtio-mem driver.
+Bit 28 of double word 2 in the RX descriptor indicates if the packet is
+a normal 802.11 frame, or a message from the wifi firmware to the
+driver (Card 2 Host).
 
-Fix this by delaying the assignment of mem->altmap until after
-__add_memory_block() has succeeded.
+Commit f5678bfe1cdc ("rtlwifi: rtl8821ae: Replace local bit manipulation
+macros") mistakenly made the driver look for this bit in double word 1,
+causing packet loss and Bluetooth coexistence problems.
 
-Link: https://lore.kernel.org/20260514092657.3057141-1-georgi.djakov@oss.qualcomm.com
-Fixes: 1a8c64e11043 ("mm/memory_hotplug: embed vmem_altmap details in memory block")
-Signed-off-by: Georgi Djakov <georgi.djakov@oss.qualcomm.com>
-Acked-by: Oscar Salvador (SUSE) <osalvador@kernel.org>
-Cc: Vishal Verma <vishal.l.verma@intel.com>
-Cc: Mike Rapoport <rppt@kernel.org>
-Cc: Richard Cheng <icheng@nvidia.com>
-Cc: David Hildenbrand <david@kernel.org>
-Cc: Georgi Djakov <djakov@kernel.org>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>
+Fixes: f5678bfe1cdc ("rtlwifi: rtl8821ae: Replace local bit manipulation macros")
 Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+Acked-by: Ping-Ke Shih <pkshih@realtek.com>
+Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+Link: https://patch.msgid.link/04da7398-cedb-425a-a810-5772ab10139d@gmail.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/base/memory.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/net/wireless/realtek/rtlwifi/rtl8821ae/trx.h |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/base/memory.c
-+++ b/drivers/base/memory.c
-@@ -794,7 +794,6 @@ static int add_memory_block(unsigned lon
- 	mem->start_section_nr = block_id * sections_per_block;
- 	mem->state = state;
- 	mem->nid = NUMA_NO_NODE;
--	mem->altmap = altmap;
- 	INIT_LIST_HEAD(&mem->group_next);
+--- a/drivers/net/wireless/realtek/rtlwifi/rtl8821ae/trx.h
++++ b/drivers/net/wireless/realtek/rtlwifi/rtl8821ae/trx.h
+@@ -291,7 +291,7 @@ static inline int get_rx_desc_paggr(__le
  
- #ifndef CONFIG_NUMA
-@@ -812,6 +811,8 @@ static int add_memory_block(unsigned lon
- 	if (ret)
- 		return ret;
+ static inline int get_rx_status_desc_rpt_sel(__le32 *__pdesc)
+ {
+-	return le32_get_bits(*(__pdesc + 1), BIT(28));
++	return le32_get_bits(*(__pdesc + 2), BIT(28));
+ }
  
-+	mem->altmap = altmap;
-+
- 	if (group) {
- 		mem->group = group;
- 		list_add(&mem->group_next, &group->memory_blocks);
+ static inline int get_rx_desc_rxmcs(__le32 *__pdesc)
 
 
 
