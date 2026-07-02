@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-271234-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-270910-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id u2EYJCiZRmrAZgsAu9opvQ
-	(envelope-from <stable+bounces-271234-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:00:24 +0200
+	id 6W1VKPqXRmonZgsAu9opvQ
+	(envelope-from <stable+bounces-270910-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:55:22 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 459B96FAD88
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:00:24 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9D2886FAC01
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:55:21 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=m+qUuDC7;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-271234-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-271234-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=ql2JiRHz;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-270910-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-270910-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 682CF3020E2D
-	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:51:38 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id C77BE3173183
+	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:37:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 391D11C695;
-	Thu,  2 Jul 2026 16:50:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A13F6347FFE;
+	Thu,  2 Jul 2026 16:36:12 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A67F13438B1;
-	Thu,  2 Jul 2026 16:50:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7AB4361DC3;
+	Thu,  2 Jul 2026 16:36:09 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783011017; cv=none; b=NPLYZHCSqX3X9P+/OHh01MEjl60fUf1JpLUm6k8htDp5pbEi/Rf7cmMCzTrhW7OepKEGGLBJb3JVBCjtNLwAMlPbzaK6LwDVjIAgw4KHDmcx5cCI+scLS1eE4BHgtu0dMEko8HeOgYSO2VgML195Q0vONST4kj8X4IKRrcSwkog=
+	t=1783010172; cv=none; b=eYls2C1VrZk8MqD+7BoPzFc0ND7oRfBpdhWa4xpc2kbyb3fi/f4XSFFv2Fdm83+31E7PMP5kBfTF2FvH7Q9De58Umzm4573CXxCd1Llalu/WMii5vKgIyy1sMVEoThJnlB7qHuW52awqEIc0+KqHjPYe/drjxxIKnrdisycfais=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783011017; c=relaxed/simple;
-	bh=/8t3fN3AtC4Joe95Q6G5LHSq99PsyzznzYDcN5sc2u0=;
+	s=arc-20240116; t=1783010172; c=relaxed/simple;
+	bh=+cgAxrqV18XWi4j+FvhVPHgP5BKnDaaK3tbHmPzgZPs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WJblUgstKQc4nEiYg7GegyW46kVUaIRMhnLYw+5+I53r8LlN1x/mekY5wf3DaOU1yy7hg/ixbBndQ2RrquteJgi0uWC/W3O0Eag84IZ30lUb9RTHEZXAAyWQ8eBnAAOem0uLw7N5n6icR5Ygs3aoC7SgZuiEP8kEFhAqn7ZGyY8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m+qUuDC7; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 185C61F000E9;
-	Thu,  2 Jul 2026 16:50:14 +0000 (UTC)
+	 MIME-Version; b=WhVYeAg0l4+S61SwRnY6j8XbSxZl9I2NWdOc66OXqtVdZkL7AzSvvZgmCcprRJ8GjBP5jZE3vl6/R4Vj500w0bOY4vxNSQRVQ2w/4HDJMgsMXrhp6nurfM9sji0YUfTNKqLfR7msiNkuW/wqckE23PjV12x9ExxUDeZUVB0N+sY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ql2JiRHz; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41AA21F000E9;
+	Thu,  2 Jul 2026 16:36:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1783011015;
-	bh=ZoKaTHdz9ecoxOQ6NkjmsakEh1s3FVxsbuImBBN8yag=;
+	s=korg; t=1783010169;
+	bh=AOJ9UP9TaMaI3WPb9fq7sZY1joxyspeHuQ9+ikkqkhI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=m+qUuDC7LxOuxG2OLfeSLppohaw6o+0sC7rspCpeBJx4zd8ke5DYq/exX5HmPgXR5
-	 IzUgI9LcXv9IAlzzZaTq4s8QjZ1MJYB4anggk4670ey7zuU38YOMP/j26sky35Z+jz
-	 RNwcCHmY0IgG8UJ44Grh170VWnTvKm7MhSxRKULA=
+	b=ql2JiRHz65f9YEbhY0qBj5u22MLOwyUsVaNlG56LOBw6SYmiaOmsXqwUcIttXM0ht
+	 OauSQDzVjL8lGtfcZ/ICkscrN6pcEDzQ1Z3+C+i0jFWLHCuvQw/Bs3qYyKmlXtbucf
+	 VrLgHstggDEnyKe4GNyW/x77bQylfjOX1NPltW+M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yiming Qian <yimingqian591@gmail.com>,
-	Keenan Dong <keenanat2000@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.6 123/175] net: skmsg: preserve sg.copy across SG transforms
+	Steffen Persvold <spersvold@gmail.com>,
+	Helge Deller <deller@gmx.de>
+Subject: [PATCH 6.1 105/129] fbdev: modedb: Fix misaligned fields in the 1920x1080-60 mode
 Date: Thu,  2 Jul 2026 18:20:24 +0200
-Message-ID: <20260702155118.343233331@linuxfoundation.org>
+Message-ID: <20260702155114.315951413@linuxfoundation.org>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260702155115.766838875@linuxfoundation.org>
-References: <20260702155115.766838875@linuxfoundation.org>
+In-Reply-To: <20260702155112.163984240@linuxfoundation.org>
+References: <20260702155112.163984240@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,21 +71,21 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-271234-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:yimingqian591@gmail.com,m:keenanat2000@gmail.com,m:kuba@kernel.org,s:lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-270910-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:spersvold@gmail.com,m:deller@gmx.de,s:lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,gmx.de];
 	FORWARDED(0.00)[lists@lfdr.de];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
@@ -95,301 +94,59 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
+	RCPT_COUNT_FIVE(0.00)[5];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,msgid.link:url]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[gmx.de:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 459B96FAD88
+X-Rspamd-Queue-Id: 9D2886FAC01
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yiming Qian <yimingqian591@gmail.com>
+From: Steffen Persvold <spersvold@gmail.com>
 
-commit 406e8a651a7b854c41fecd5117bb282b3a6c2c6b upstream.
+commit d894c48a57d78206e4df9c90d4acfaf39394806a upstream.
 
-The sk_msg sg.copy bitmap is part of the scatterlist entry ownership
-state. A set bit tells sk_msg_compute_data_pointers() not to expose the
-entry through writable BPF ctx->data. This protects entries backed by
-pages that are not private to the sk_msg, such as splice-backed file
-page-cache pages.
+The 1920x1080@60 modedb entry has one too many initializers before
+its sync field: a stray "0" occupies the sync slot, which shifts the
+remaining values by one field. The entry therefore decodes as
+sync = 0, vmode = FB_SYNC_HOR_HIGH_ACT | FB_SYNC_VERT_HIGH_ACT (0x3,
+i.e. FB_VMODE_INTERLACED | FB_VMODE_DOUBLE), and flag =
+FB_VMODE_NONINTERLACED, instead of the intended sync = positive H/V,
+vmode = non-interlaced.
 
-Several sk_msg transform paths move, copy, split, or compact
-msg->sg.data[] entries without moving the matching sg.copy bit. This can
-make an externally backed entry arrive at a new slot with a clear copy
-bit. A later SK_MSG verdict can then expose sg_virt(sge) as writable
-ctx->data and BPF stores can modify the original page cache.
+fb_find_mode() then returns a 1920x1080 mode flagged as interlaced +
+doublescan with active-low syncs. Drivers that honour var->vmode and
+var->sync when programming display timing enable doublescan and the
+wrong sync polarity, corrupting the output.
 
-Keep sg.copy synchronized with sg.data[] whenever entries are
-transferred, shifted, split, or copied into a new sk_msg. Clear the bit
-when an entry is replaced by a newly allocated private page or freed.
-This covers the BPF pull/push/pop helpers, sk_msg_shift_left/right(),
-sk_msg_xfer(), and tls_split_open_record(), including the partial tail
-entry created during TLS open-record splitting.
+Drop the stray initializer so sync and vmode hold their intended
+values (positive H/V sync, non-interlaced), matching the adjacent
+1920x1200 entry.
 
-Fixes: d3b18ad31f93 ("tls: add bpf support to sk_msg handling")
+Fixes: c8902258b2b8 ("fbdev: modedb: Add 1920x1080 at 60 Hz video mode")
 Cc: stable@vger.kernel.org
-Reported-by: Yiming Qian <yimingqian591@gmail.com>
-Reported-by: Keenan Dong <keenanat2000@gmail.com>
-Signed-off-by: Yiming Qian <yimingqian591@gmail.com>
-Link: https://patch.msgid.link/20260610062137.49075-1-yimingqian591@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Steffen Persvold <spersvold@gmail.com>
+Signed-off-by: Helge Deller <deller@gmx.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/skmsg.h |   15 +++++++++++----
- net/core/filter.c     |   27 +++++++++++++++++++++++++++
- net/core/skmsg.c      |    2 ++
- net/tls/tls_sw.c      |    4 ++++
- 4 files changed, 44 insertions(+), 4 deletions(-)
+ drivers/video/fbdev/core/modedb.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/include/linux/skmsg.h
-+++ b/include/linux/skmsg.h
-@@ -4,6 +4,7 @@
- #ifndef _LINUX_SKMSG_H
- #define _LINUX_SKMSG_H
+--- a/drivers/video/fbdev/core/modedb.c
++++ b/drivers/video/fbdev/core/modedb.c
+@@ -258,7 +258,7 @@ static const struct fb_videomode modedb[
+ 		FB_VMODE_DOUBLE },
  
-+#include <linux/bitops.h>
- #include <linux/bpf.h>
- #include <linux/filter.h>
- #include <linux/scatterlist.h>
-@@ -190,11 +191,14 @@ static inline void sk_msg_xfer(struct sk
- 			       int which, u32 size)
- {
- 	dst->sg.data[which] = src->sg.data[which];
-+	__assign_bit(which, dst->sg.copy, test_bit(which, src->sg.copy));
- 	dst->sg.data[which].length  = size;
- 	dst->sg.size		   += size;
- 	src->sg.size		   -= size;
- 	src->sg.data[which].length -= size;
- 	src->sg.data[which].offset += size;
-+	if (!src->sg.data[which].length)
-+		__clear_bit(which, src->sg.copy);
- }
+ 	/* 1920x1080 @ 60 Hz, 67.3 kHz hsync */
+-	{ NULL, 60, 1920, 1080, 6734, 148, 88, 36, 4, 44, 5, 0,
++	{ NULL, 60, 1920, 1080, 6734, 148, 88, 36, 4, 44, 5,
+ 		FB_SYNC_HOR_HIGH_ACT | FB_SYNC_VERT_HIGH_ACT,
+ 		FB_VMODE_NONINTERLACED },
  
- static inline void sk_msg_xfer_full(struct sk_msg *dst, struct sk_msg *src)
-@@ -264,16 +268,19 @@ static inline void sk_msg_page_add(struc
- static inline void sk_msg_sg_copy(struct sk_msg *msg, u32 i, bool copy_state)
- {
- 	do {
--		if (copy_state)
--			__set_bit(i, msg->sg.copy);
--		else
--			__clear_bit(i, msg->sg.copy);
-+		__assign_bit(i, msg->sg.copy, copy_state);
- 		sk_msg_iter_var_next(i);
- 		if (i == msg->sg.end)
- 			break;
- 	} while (1);
- }
- 
-+static inline void sk_msg_sg_copy_assign(struct sk_msg *dst, u32 dst_i,
-+					 const struct sk_msg *src, u32 src_i)
-+{
-+	__assign_bit(dst_i, dst->sg.copy, test_bit(src_i, src->sg.copy));
-+}
-+
- static inline void sk_msg_sg_copy_set(struct sk_msg *msg, u32 start)
- {
- 	sk_msg_sg_copy(msg, start, true);
---- a/net/core/filter.c
-+++ b/net/core/filter.c
-@@ -2721,11 +2721,13 @@ BPF_CALL_4(bpf_msg_pull_data, struct sk_
- 		poffset += len;
- 		sge->length = 0;
- 		put_page(sg_page(sge));
-+		__clear_bit(i, msg->sg.copy);
- 
- 		sk_msg_iter_var_next(i);
- 	} while (i != last_sge);
- 
- 	sg_set_page(&msg->sg.data[first_sge], page, copy, 0);
-+	__clear_bit(first_sge, msg->sg.copy);
- 
- 	/* To repair sg ring we need to shift entries. If we only
- 	 * had a single entry though we can just replace it and
-@@ -2751,9 +2753,11 @@ BPF_CALL_4(bpf_msg_pull_data, struct sk_
- 			break;
- 
- 		msg->sg.data[i] = msg->sg.data[move_from];
-+		sk_msg_sg_copy_assign(msg, i, msg, move_from);
- 		msg->sg.data[move_from].length = 0;
- 		msg->sg.data[move_from].page_link = 0;
- 		msg->sg.data[move_from].offset = 0;
-+		__clear_bit(move_from, msg->sg.copy);
- 		sk_msg_iter_var_next(i);
- 	} while (1);
- 
-@@ -2782,6 +2786,7 @@ BPF_CALL_4(bpf_msg_push_data, struct sk_
- {
- 	struct scatterlist sge, nsge, nnsge, rsge = {0}, *psge;
- 	u32 new, i = 0, l = 0, space, copy = 0, offset = 0;
-+	bool sge_copy, nsge_copy, nnsge_copy, rsge_copy = false;
- 	u8 *raw, *to, *from;
- 	struct page *page;
- 
-@@ -2854,6 +2859,7 @@ BPF_CALL_4(bpf_msg_push_data, struct sk_
- 			sk_msg_iter_var_prev(i);
- 		psge = sk_msg_elem(msg, i);
- 		rsge = sk_msg_elem_cpy(msg, i);
-+		rsge_copy = test_bit(i, msg->sg.copy);
- 
- 		psge->length = start - offset;
- 		rsge.length -= psge->length;
-@@ -2878,24 +2884,32 @@ BPF_CALL_4(bpf_msg_push_data, struct sk_
- 
- 	/* Shift one or two slots as needed */
- 	sge = sk_msg_elem_cpy(msg, new);
-+	sge_copy = test_bit(new, msg->sg.copy);
- 	sg_unmark_end(&sge);
- 
- 	nsge = sk_msg_elem_cpy(msg, i);
-+	nsge_copy = test_bit(i, msg->sg.copy);
- 	if (rsge.length) {
- 		sk_msg_iter_var_next(i);
- 		nnsge = sk_msg_elem_cpy(msg, i);
-+		nnsge_copy = test_bit(i, msg->sg.copy);
- 		sk_msg_iter_next(msg, end);
- 	}
- 
- 	while (i != msg->sg.end) {
- 		msg->sg.data[i] = sge;
-+		__assign_bit(i, msg->sg.copy, sge_copy);
- 		sge = nsge;
-+		sge_copy = nsge_copy;
- 		sk_msg_iter_var_next(i);
- 		if (rsge.length) {
- 			nsge = nnsge;
-+			nsge_copy = nnsge_copy;
- 			nnsge = sk_msg_elem_cpy(msg, i);
-+			nnsge_copy = test_bit(i, msg->sg.copy);
- 		} else {
- 			nsge = sk_msg_elem_cpy(msg, i);
-+			nsge_copy = test_bit(i, msg->sg.copy);
- 		}
- 	}
- 
-@@ -2909,6 +2923,7 @@ place_new:
- 		get_page(sg_page(&rsge));
- 		sk_msg_iter_var_next(new);
- 		msg->sg.data[new] = rsge;
-+		__assign_bit(new, msg->sg.copy, rsge_copy);
- 	}
- 
- 	sk_msg_reset_curr(msg);
-@@ -2936,25 +2951,33 @@ static void sk_msg_shift_left(struct sk_
- 		prev = i;
- 		sk_msg_iter_var_next(i);
- 		msg->sg.data[prev] = msg->sg.data[i];
-+		sk_msg_sg_copy_assign(msg, prev, msg, i);
- 	} while (i != msg->sg.end);
- 
- 	sk_msg_iter_prev(msg, end);
-+	__clear_bit(msg->sg.end, msg->sg.copy);
- }
- 
- static void sk_msg_shift_right(struct sk_msg *msg, int i)
- {
- 	struct scatterlist tmp, sge;
-+	bool tmp_copy, sge_copy;
- 
- 	sk_msg_iter_next(msg, end);
- 	sge = sk_msg_elem_cpy(msg, i);
-+	sge_copy = test_bit(i, msg->sg.copy);
- 	sk_msg_iter_var_next(i);
- 	tmp = sk_msg_elem_cpy(msg, i);
-+	tmp_copy = test_bit(i, msg->sg.copy);
- 
- 	while (i != msg->sg.end) {
- 		msg->sg.data[i] = sge;
-+		__assign_bit(i, msg->sg.copy, sge_copy);
- 		sk_msg_iter_var_next(i);
- 		sge = tmp;
-+		sge_copy = tmp_copy;
- 		tmp = sk_msg_elem_cpy(msg, i);
-+		tmp_copy = test_bit(i, msg->sg.copy);
- 	}
- }
- 
-@@ -3014,6 +3037,8 @@ BPF_CALL_4(bpf_msg_pop_data, struct sk_m
- 		struct scatterlist *nsge, *sge = sk_msg_elem(msg, i);
- 		int a = start - offset;
- 		int b = sge->length - pop - a;
-+		u32 sge_i = i;
-+		bool sge_copy = test_bit(i, msg->sg.copy);
- 
- 		sk_msg_iter_var_next(i);
- 
-@@ -3026,6 +3051,7 @@ BPF_CALL_4(bpf_msg_pop_data, struct sk_m
- 				sg_set_page(nsge,
- 					    sg_page(sge),
- 					    b, sge->offset + pop + a);
-+				__assign_bit(i, msg->sg.copy, sge_copy);
- 			} else {
- 				struct page *page, *orig;
- 				u8 *to, *from;
-@@ -3042,6 +3068,7 @@ BPF_CALL_4(bpf_msg_pop_data, struct sk_m
- 				memcpy(to, from, a);
- 				memcpy(to + a, from + a + pop, b);
- 				sg_set_page(sge, page, a + b, 0);
-+				__clear_bit(sge_i, msg->sg.copy);
- 				put_page(orig);
- 			}
- 			pop = 0;
---- a/net/core/skmsg.c
-+++ b/net/core/skmsg.c
-@@ -66,6 +66,7 @@ int sk_msg_alloc(struct sock *sk, struct
- 			sge = &msg->sg.data[msg->sg.end];
- 			sg_unmark_end(sge);
- 			sg_set_page(sge, pfrag->page, use, orig_offset);
-+			__clear_bit(msg->sg.end, msg->sg.copy);
- 			get_page(pfrag->page);
- 			sk_msg_iter_next(msg, end);
- 		}
-@@ -186,6 +187,7 @@ static int sk_msg_free_elem(struct sock
- 			sk_mem_uncharge(sk, len);
- 		put_page(sg_page(sge));
- 	}
-+	__clear_bit(i, msg->sg.copy);
- 	memset(sge, 0, sizeof(*sge));
- 	return len;
- }
---- a/net/tls/tls_sw.c
-+++ b/net/tls/tls_sw.c
-@@ -623,6 +623,7 @@ static int tls_split_open_record(struct
- 	struct scatterlist *sge, *osge, *nsge;
- 	u32 orig_size = msg_opl->sg.size;
- 	struct scatterlist tmp = { };
-+	u32 tmp_i = 0;
- 	struct sk_msg *msg_npl;
- 	struct tls_rec *new;
- 	int ret;
-@@ -644,6 +645,7 @@ static int tls_split_open_record(struct
- 		if (sge->length > apply) {
- 			u32 len = sge->length - apply;
- 
-+			tmp_i = i;
- 			get_page(sg_page(sge));
- 			sg_set_page(&tmp, sg_page(sge), len,
- 				    sge->offset + apply);
-@@ -675,6 +677,7 @@ static int tls_split_open_record(struct
- 	nsge = sk_msg_elem(msg_npl, j);
- 	if (tmp.length) {
- 		memcpy(nsge, &tmp, sizeof(*nsge));
-+		sk_msg_sg_copy_assign(msg_npl, j, msg_opl, tmp_i);
- 		sk_msg_iter_var_next(j);
- 		nsge = sk_msg_elem(msg_npl, j);
- 	}
-@@ -682,6 +685,7 @@ static int tls_split_open_record(struct
- 	osge = sk_msg_elem(msg_opl, i);
- 	while (osge->length) {
- 		memcpy(nsge, osge, sizeof(*nsge));
-+		sk_msg_sg_copy_assign(msg_npl, j, msg_opl, i);
- 		sg_unmark_end(nsge);
- 		sk_msg_iter_var_next(i);
- 		sk_msg_iter_var_next(j);
 
 
 
