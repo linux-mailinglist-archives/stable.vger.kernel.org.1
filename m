@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-271033-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-270679-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id tHVQDdiWRmp0ZQsAu9opvQ
-	(envelope-from <stable+bounces-271033-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:50:32 +0200
+	id MSG2ObqeRmpHaQsAu9opvQ
+	(envelope-from <stable+bounces-270679-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:24:10 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id DCCC26FAA1F
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:50:31 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8A7E36FB49B
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:24:10 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=s1ddt3AN;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-271033-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-271033-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=Gm1r74Fc;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-270679-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-270679-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id E0EED305011C
-	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:43:28 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 894E23252B1E
+	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:31:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A8BEB3CAA55;
-	Thu,  2 Jul 2026 16:41:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6484A34A3D9;
+	Thu,  2 Jul 2026 16:26:07 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C63E3A7843;
-	Thu,  2 Jul 2026 16:41:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B3753403E1;
+	Thu,  2 Jul 2026 16:26:05 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783010499; cv=none; b=aTilFUas48VowuFKw9cb/q1+eWTlp21GnsPzoj5UQIC5E78rQoweofX4LhJ7WDu5KeEQphMoOECZplArNTBfFyHu6qMCiKDieETKJ/2II8aG1puJjsWAyqWTIeepWWZZ7wpqEBHnsh8uHYKDTE7H6PXdOW7mwlkQqmilYPIoiYQ=
+	t=1783009567; cv=none; b=tfYzAgwQT2SR+OhbRXxU0JnV/WzyExzHCLmFZVvRNGTDVXQ1Ci0pnZl87H5uILEOMWfyaZEHBFWP+mLr67/R5ITVpzelTr0JWolBbBYKxT+wa7+6rwAeaZHLqHPT41CwdMwoFqLowV+mn+mqHBpqWiEBAk8gPvqMMgpkr/jBCYg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783010499; c=relaxed/simple;
-	bh=lCHzAI9Fd23eih7Riv/GecJ0DBmYTOOqrqwcwnJqrAw=;
+	s=arc-20240116; t=1783009567; c=relaxed/simple;
+	bh=xZYcwjRbjf5Fo+E2qMNtILqbjfqCPDLEEkivXqeJF5U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TEreIqgLnUTNdaxhMR8vp1eR6WHsYXz3NoFQbWUexdSdACrHbVUeeYiOPi5fbyB2s7QlsNBTxyYLVn+N2oUF8PuidxS8J7CWEmlGxrGpqXDbc5AOSgIi1fHRO6xLoAGGki91qOUPm4OP2Ov3r8sfHl+DuTXRzyj5tyQtJCkelgM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s1ddt3AN; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8FA5C1F00ACF;
-	Thu,  2 Jul 2026 16:41:32 +0000 (UTC)
+	 MIME-Version; b=f3bcWfqu9I5Za81+AEr8GyWoP41R9h0+Z11SZao9y4LBc99i0v7GoxfkpClYBYWADNR9porekxANjdhRToKK7h5L6XwwvaXqviA5jr31GneIa9uQT2a5CqOr31oHH1U8PPzcgXmY8ETV4kjh1qL/BXPIx1jH2bodfjxBTWzGxEM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Gm1r74Fc; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E03D1F000E9;
+	Thu,  2 Jul 2026 16:26:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1783010493;
-	bh=pXPC5r52j92yqvf3G+j6Z5y0wA177TLPbaHVCImSX5c=;
+	s=korg; t=1783009565;
+	bh=eqFcOAhMcxiTIVG1ND1lCuhoLImPFX8Etq4crafe6pk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=s1ddt3ANUBzaQFq9cgTqW1Bjg5Ie9aWryZtO3FXH/F2FCx/zAySWaBjCms6FHLXS3
-	 9pCBvxLqHru32ZKjjMaccMCxnn2mC7kLbXHeWyaEnSP90D0kwmzY5ujxgplRGYFDaj
-	 DQwWhw8ctfY60lbBmcyuEu7Fg7o2ctS2xmlk9Yos=
+	b=Gm1r74FcyyUb7iBeSPGW+MmB7NJyOFbVpRsRit+2uJ1smnHjjCoifxC731q47alit
+	 yU7MLh+UZk3MZp56qScUFRMBF5cGu3VuxKTVXaUoNDXRzmI7yRFSu0pNYsF7fMBYdo
+	 /CXcWpENYUogWgXi8FJbQ0DmFz9XYsx7mfi4G07E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhen Yan <sdjasjbuaa@gmail.com>,
-	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
-Subject: [PATCH 6.12 130/204] ntfs3: reject direct userspace writes to reserved $LX* xattrs
+	stable@kernel.org,
+	Sven Eckelmann <sven@narfation.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 55/96] batman-adv: tvlv: enforce 2-byte alignment
 Date: Thu,  2 Jul 2026 18:19:47 +0200
-Message-ID: <20260702155121.385022222@linuxfoundation.org>
+Message-ID: <20260702155110.139537446@linuxfoundation.org>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260702155118.667618796@linuxfoundation.org>
-References: <20260702155118.667618796@linuxfoundation.org>
+In-Reply-To: <20260702155108.949633242@linuxfoundation.org>
+References: <20260702155108.949633242@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,100 +67,146 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUBJECT_HAS_CURRENCY(1.00)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:sdjasjbuaa@gmail.com,m:almaz.alexandrovich@paragon-software.com,s:lists@lfdr.de];
-	FORGED_SENDER_FORWARDING(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-270679-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:stable@kernel.org,m:sven@narfation.org,m:sashal@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	TAGGED_FROM(0.00)[bounces-271033-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,paragon-software.com];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	MID_RHS_MATCH_FROM(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,paragon-software.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
+	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp,narfation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: DCCC26FAA1F
+X-Rspamd-Queue-Id: 8A7E36FB49B
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
+From: Sven Eckelmann <sven@narfation.org>
 
-commit 5b08dccecf825cbf905f348bc6ccb497507e28e2 upstream.
+commit 32a6799255525d6ea4da0f7e9e0e521ad9560a46 upstream.
 
-NTFS3 uses $LXUID, $LXGID, $LXMOD and $LXDEV as internal WSL
-permission metadata and reloads them into i_uid, i_gid and i_mode
-from ntfs_get_wsl_perm().
+The fields of an aggregated OGM(v2) are accessed assuming (at least) 2-byte
+alignment, so a following OGM must start at an even offset. As the header
+length is even, an odd tvlv_len would misalign it and trigger unaligned
+accesses on strict-alignment architectures.
 
-Because the empty-prefix xattr handler also lets file owners call
-setxattr() on these names directly, an unprivileged writer on a
-writable ntfs3 mount can plant root ownership and S_ISUID on their own
-file and gain euid 0 after inode reload.
+Such a misaligned TVLV/OGM/OGMv2 is not created by a normal participant in
+the mesh. Therefore, reject such malformed packets.
 
-Reject direct userspace writes to the reserved $LX* names. Internal
-ntfs3 metadata updates are unchanged because ntfs_save_wsl_perm()
-writes them via ntfs_set_ea() directly.
-
-Signed-off-by: Zhen Yan <sdjasjbuaa@gmail.com>
-[almaz.alexandrovich@paragon-software.com: added an additional check for non privileged users]
-Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@kernel.org
+Fixes: ef26157747d4 ("batman-adv: tvlv - basic infrastructure")
+[ Drop change for non-existing mcast handling ]
+Signed-off-by: Sven Eckelmann <sven@narfation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ntfs3/xattr.c |   12 ++++++++++++
- 1 file changed, 12 insertions(+)
+ net/batman-adv/bat_iv_ogm.c | 11 ++++++++++-
+ net/batman-adv/bat_v_ogm.c  | 11 ++++++++++-
+ net/batman-adv/tvlv.c       |  6 ++++++
+ 3 files changed, 26 insertions(+), 2 deletions(-)
 
---- a/fs/ntfs3/xattr.c
-+++ b/fs/ntfs3/xattr.c
-@@ -829,6 +829,12 @@ out:
- 	return err;
+diff --git a/net/batman-adv/bat_iv_ogm.c b/net/batman-adv/bat_iv_ogm.c
+index 93c2c5f6facc0d..cc4fbfd0b75530 100644
+--- a/net/batman-adv/bat_iv_ogm.c
++++ b/net/batman-adv/bat_iv_ogm.c
+@@ -312,14 +312,23 @@ batadv_iv_ogm_aggr_packet(int buff_pos, int packet_len,
+ 			  const struct batadv_ogm_packet *ogm_packet)
+ {
+ 	int next_buff_pos = 0;
++	u16 tvlv_len;
+ 
+ 	/* check if there is enough space for the header */
+ 	next_buff_pos += buff_pos + sizeof(*ogm_packet);
+ 	if (next_buff_pos > packet_len)
+ 		return false;
+ 
++	tvlv_len = ntohs(ogm_packet->tvlv_len);
++
++	/* the fields of an aggregated OGM are accessed assuming (at least)
++	 * 2-byte alignment, so a following OGM must start at an even offset.
++	 */
++	if (tvlv_len & 1)
++		return false;
++
+ 	/* check if there is enough space for the optional TVLV */
+-	next_buff_pos += ntohs(ogm_packet->tvlv_len);
++	next_buff_pos += tvlv_len;
+ 
+ 	return next_buff_pos <= packet_len;
  }
+diff --git a/net/batman-adv/bat_v_ogm.c b/net/batman-adv/bat_v_ogm.c
+index 12de9b44064dd4..2a62ab13bf87bb 100644
+--- a/net/batman-adv/bat_v_ogm.c
++++ b/net/batman-adv/bat_v_ogm.c
+@@ -864,14 +864,23 @@ batadv_v_ogm_aggr_packet(int buff_pos, int packet_len,
+ 			 const struct batadv_ogm2_packet *ogm2_packet)
+ {
+ 	int next_buff_pos = 0;
++	u16 tvlv_len;
  
-+static bool ntfs_is_reserved_lxattr(const char *name)
-+{
-+	return !strcmp(name, "$LXUID") || !strcmp(name, "$LXGID") ||
-+	       !strcmp(name, "$LXMOD") || !strcmp(name, "$LXDEV");
-+}
-+
- /*
-  * ntfs_setxattr - inode_operations::setxattr
-  */
-@@ -933,6 +939,12 @@ set_new_fa:
- 		goto out;
- 	}
+ 	/* check if there is enough space for the header */
+ 	next_buff_pos += buff_pos + sizeof(*ogm2_packet);
+ 	if (next_buff_pos > packet_len)
+ 		return false;
  
-+	/* Do not allow non privileged users to change $LXUID/$LXGID... */
-+	if (ntfs_is_reserved_lxattr(name) && !capable(CAP_SYS_ADMIN)) {
-+		err = -EPERM;
-+		goto out;
-+	}
++	tvlv_len = ntohs(ogm2_packet->tvlv_len);
 +
- 	/* Deal with NTFS extended attribute. */
- 	err = ntfs_set_ea(inode, name, strlen(name), value, size, flags, 0,
- 			  NULL);
++	/* the fields of an aggregated OGMv2 are accessed assuming (at least)
++	 * 2-byte alignment, so a following OGMv2 must start at an even offset.
++	 */
++	if (tvlv_len & 1)
++		return false;
++
+ 	/* check if there is enough space for the optional TVLV */
+-	next_buff_pos += ntohs(ogm2_packet->tvlv_len);
++	next_buff_pos += tvlv_len;
+ 
+ 	return next_buff_pos <= packet_len;
+ }
+diff --git a/net/batman-adv/tvlv.c b/net/batman-adv/tvlv.c
+index 8da8184a2ebdfc..84f0fb175b3313 100644
+--- a/net/batman-adv/tvlv.c
++++ b/net/batman-adv/tvlv.c
+@@ -448,6 +448,12 @@ int batadv_tvlv_containers_process(struct batadv_priv *bat_priv,
+ 		if (tvlv_value_cont_len > tvlv_value_len)
+ 			break;
+ 
++		/* the next tvlv header is accessed assuming (at least) 2-byte
++		 * alignment, so it must start at an even offset.
++		 */
++		if (tvlv_value_cont_len & 1)
++			break;
++
+ 		tvlv_handler = batadv_tvlv_handler_get(bat_priv,
+ 						       tvlv_hdr->type,
+ 						       tvlv_hdr->version);
+-- 
+2.53.0
+
 
 
 
