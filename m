@@ -1,218 +1,214 @@
-Return-Path: <stable+bounces-270409-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-270412-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id StP1GDxURmqrQwsAu9opvQ
-	(envelope-from <stable+bounces-270409-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 14:06:20 +0200
+	id s5oiIJdRRmrNQgsAu9opvQ
+	(envelope-from <stable+bounces-270412-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 13:55:03 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id CCC846F74D9
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 14:06:19 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id BA9696F71A3
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 13:55:02 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=garyguo.net header.s=selector1 header.b=Un6V487N;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-270409-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-270409-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=none) header.from=garyguo.net;
-	arc=reject ("cv is fail on i=2")
+	dkim=pass header.d=bootlin.com header.s=dkim header.b=gRKPHQdn;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-270412-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-270412-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=reject) header.from=bootlin.com;
+	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 4C93F308C8A8
-	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 11:10:29 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 62C0730276B5
+	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 11:24:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E1133D904C;
-	Thu,  2 Jul 2026 11:10:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 718E03FD14D;
+	Thu,  2 Jul 2026 11:24:13 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from LO3P265CU004.outbound.protection.outlook.com (mail-uksouthazon11020095.outbound.protection.outlook.com [52.101.196.95])
+Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A91BE3CF68C;
-	Thu,  2 Jul 2026 11:10:26 +0000 (UTC)
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782990628; cv=fail; b=Tl2wz861XydKoEiCotZh/jVtrbkFMXmB6ikmuOrIMP+KLIgeo1djsPTFT65+mgUXftD8uPAIJh489/6XxMUDmqJ7/8/eEZ++Z22dAZ0eoXYKfd58jS4AhmgmO1GLTeABFubL3AK+rWHnMLZDEFuLS2D60kM8dDbq5IJBLiWUa1o=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782990628; c=relaxed/simple;
-	bh=+JuotDIyjtmqyI1DbJOW21E74Qr+nym/XWj0cxsdU04=;
-	h=Content-Type:Date:Message-Id:Cc:Subject:From:To:References:
-	 In-Reply-To:MIME-Version; b=htU8axjowz01NVWtyHvijk2RIPpDN+9FY1Csq4SBd0RT6MyTJd4AqBZ9Z+XMbPWjN+Jn9eiq2NLM9Fw7sFpDbfblNKAK0Gg5yXbMMnmf9SH5CBQL6vde7kBSuX+bM2ZfROXQq/l3atiVQMX+2ktv3arKbnFf89hNzv98J6DHmII=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=Un6V487N; arc=fail smtp.client-ip=52.101.196.95
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=tFAZ5skoHXsDQTeQfvukowH0qDhgq6Hc9ph23HOR5GLMGiAfAyV43YFHdqztJRG9SvUa7WEL9yU5Xmw167MEDd5DtU4ZtloirheeE3BF5rNQ2mDEPTada59oebPdyCo4JYwRW5jgaYCCWVEZZQANMP0YKxi+cfU6t9Nvyiyz2snlsOzLJ3gVZZx+L/uqRRbwy9CrgunlXMrj9enwL0x4/SE2f3kJlIqc7epmzfpMp99BzhVaMDomKmxGNOVHpsrqXjoyhYlpxEfJ8aQe7g0Np7EF8DqvuK7Bji+e7ocNLW9j4tM6dzUUfxrErOYOfw6ZQtmucFjtBL4LQ0w3qYHrlA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=FLLWEB7zOJa2ShqTd0du3YrzKmxh+4cOT+mMQNRMBRs=;
- b=OVMR4BUDbK8kgPaBLvFNzXz93TejV+8YIaLNzhs4CmkEMfl5BwWrMBLKmHygAo+SPfh4pyftSyy7B0VRX8EZApTnyGarSVOJAJ7hkKlnudFRGpYJjeau4Mj7FpIVz55HDnKYMC/M3WFTmXhVp7GcS1L+gqSgfO5yGTxtpOWyYHK9XR7VhZigxtWme+SghwuG6VULNIzOAOfmE6UCJUSrY/mwt44f0sLewrr3IWjqt0X7L4ofiRH1Uki71Q0cVD6WKJtDR4Y1fO4ALYRef4dxGlDjP8OmJFELrvATpKZJZeCaaiS5aHBmI/TuGVAT0nt8nzEV2eppNEdk0OHxzwGEYw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
- dkim=pass header.d=garyguo.net; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=FLLWEB7zOJa2ShqTd0du3YrzKmxh+4cOT+mMQNRMBRs=;
- b=Un6V487Nr/sMCY231A7/9bUM8xyoqHW8tfipw/dCNu8avUKftliCosBjRm3QrQEtM9w722DyALR9nOPxT6XWDHsq1luvpLVo1i2W2Zegwei9UdZW6stimrDwzYuqMNrS2E60lpXKl+6Anodz/jrdFYC50bUQ0hyrzbKDM2oiP7A=
-Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:488::16)
- by CWLP265MB6288.GBRP265.PROD.OUTLOOK.COM (2603:10a6:400:186::13) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.181.10; Thu, 2 Jul
- 2026 11:10:20 +0000
-Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
- ([fe80::1c3:ceba:21b4:9986]) by LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
- ([fe80::1c3:ceba:21b4:9986%4]) with mapi id 15.21.0159.018; Thu, 2 Jul 2026
- 11:10:20 +0000
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Thu, 02 Jul 2026 12:10:19 +0100
-Message-Id: <DJO1FAZG7ORU.2LBITFAHV0WGG@garyguo.net>
-Cc: <driver-core@lists.linux.dev>, <linux-kernel@vger.kernel.org>,
- <rust-for-linux@vger.kernel.org>, <stable@vger.kernel.org>, "Sashiko"
- <sashiko-bot@kernel.org>
-Subject: Re: [PATCH] rust: devres: fix race between concurrent revokers
-From: "Gary Guo" <gary@garyguo.net>
-To: "Danilo Krummrich" <dakr@kernel.org>, <gregkh@linuxfoundation.org>,
- <rafael@kernel.org>, <ojeda@kernel.org>, <boqun@kernel.org>,
- <gary@garyguo.net>, <bjorn3_gh@protonmail.com>, <a.hindborg@kernel.org>,
- <aliceryhl@google.com>, <tmgross@umich.edu>,
- <daniel.almeida@collabora.com>, <tamird@kernel.org>, <acourbot@nvidia.com>,
- <work@onurozkan.dev>, <lyude@redhat.com>
-X-Mailer: aerc 0.21.0
-References: <20260628174451.2275679-1-dakr@kernel.org>
-In-Reply-To: <20260628174451.2275679-1-dakr@kernel.org>
-X-ClientProxiedBy: LO4P302CA0001.GBRP302.PROD.OUTLOOK.COM
- (2603:10a6:600:2c2::6) To LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:600:488::16)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 889393CB2EF;
+	Thu,  2 Jul 2026 11:24:11 +0000 (UTC)
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1782991453; cv=none; b=DU1oFSOTsf3FuII3vuit6Ps6kMkc0wdbvln9AXtXYsb2W1YgwGBPS191qfd0ve6BTt8OJaEe6EHJdWtDYtwJJQGcC5qJwrIiSL1J6yHduEL2ibus/hCwwDWU8m2vDboKwDpfWdeZc+FZHTh6WzpXIA/flCdMZYDvJzbtNKNLDRo=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1782991453; c=relaxed/simple;
+	bh=qkoV9s2y6x4yNdhq0hTzUvepfbsJFBQynC64lFxnuaw=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=RM6ybe1GF3NeZkBE7sV/SYhnZCPE/gSdoTuKsoVCZTPi6wn/CpSkhJaGyMjO37/98DB0V5fCZMrUnFySS1fC4LR2GxcVveFZMFC+avIPJDi+M0ZW4KcfQHmfWH+SP/etmpDFWwy3X3gnKUXAWRkv1QaEWd3suX0faxIvKaJmDCE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=gRKPHQdn; arc=none smtp.client-ip=185.246.84.56
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-02.galae.net (Postfix) with ESMTPS id 0F44C1A0DDF;
+	Thu,  2 Jul 2026 11:24:04 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id C2EE85FF03;
+	Thu,  2 Jul 2026 11:24:03 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id EEBBF104C9625;
+	Thu,  2 Jul 2026 13:23:49 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1782991441; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=UhZPL9qBPAYg4jDprXnZJkURUAU98LtK2IDx/RRjPVY=;
+	b=gRKPHQdndkfSqFS49JzsIHQw2aOVyEHrPo49N6M5vahEK4abVvfiNdgAcQZ85BqTYrDYa7
+	bgLIWbFxIEkSIFB0swC6iE9XJv8Ex/UNCwCUK2VH602vIVMKlgsgkVCB0kMkLUyVlXGAwh
+	WrlKxRi9YwfmHOoRW6XGCBIo2DbY76dKZcM2qU5WCc/tgL8G73urX+4WNs4mRzBaqFyTms
+	wzbg1YIUbmzkq/tLQjIDWEDm3GV8tSD7knUa16eYfGis9bnzsGsQnl51p65DzPCBQGMT2K
+	5finRL11wVel1S/u3qrLN6S4dAT3WZZiydzHKCLvRx/mUD38ag2hi2cYxOCn9w==
+Date: Thu, 2 Jul 2026 13:23:48 +0200
+From: Herve Codina <herve.codina@bootlin.com>
+To: Richard Cheng <icheng@nvidia.com>
+Cc: Andrew Lunn <andrew@lunn.ch>, Rob Herring <robh@kernel.org>, Saravana
+ Kannan <saravanak@kernel.org>, Greg Kroah-Hartman
+ <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>,
+ Danilo Krummrich <dakr@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>,
+ David Rhodes <david.rhodes@cirrus.com>, Richard Fitzgerald
+ <rf@opensource.cirrus.com>, Charles Keepax <ckeepax@opensource.cirrus.com>,
+ Linus Walleij <linusw@kernel.org>, Len Brown <lenb@kernel.org>, Andy
+ Shevchenko <andriy.shevchenko@linux.intel.com>, Daniel Scally
+ <djrscally@gmail.com>, Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+ Sakari Ailus <sakari.ailus@linux.intel.com>, Davidlohr Bueso
+ <dave@stgolabs.net>, Jonathan Cameron <jic23@kernel.org>, Dave Jiang
+ <dave.jiang@intel.com>, Alison Schofield <alison.schofield@intel.com>,
+ Vishal Verma <vishal.l.verma@intel.com>, Dan Williams <djbw@kernel.org>,
+ Ira Weiny <iweiny@kernel.org>, Li Ming <ming.li@zohomail.com>, Lizhi Hou
+ <lizhi.hou@amd.com>, driver-core@lists.linux.dev,
+ linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org,
+ linux-sound@vger.kernel.org, patches@opensource.cirrus.com,
+ linux-gpio@vger.kernel.org, linux-acpi@vger.kernel.org,
+ linux-cxl@vger.kernel.org, Allan Nielsen <allan.nielsen@microchip.com>,
+ Horatiu Vultur <horatiu.vultur@microchip.com>, Daniel Machon
+ <daniel.machon@microchip.com>, Steen Hegelund
+ <steen.hegelund@microchip.com>, Luca Ceresoli <luca.ceresoli@bootlin.com>,
+ Thomas Petazzoni <thomas.petazzoni@bootlin.com>, stable@vger.kernel.org
+Subject: Re: [PATCH v8 7/8] PCI: of: Set fwnode device of newly created PCI
+ device nodes
+Message-ID: <20260702132348.034264b6@bootlin.com>
+In-Reply-To: <akXg4G4ksietvkwE@MWDK4CY14F>
+References: <20260630102804.413563-1-herve.codina@bootlin.com>
+	<20260630102804.413563-8-herve.codina@bootlin.com>
+	<akXg4G4ksietvkwE@MWDK4CY14F>
+Organization: Bootlin
+X-Mailer: Claws Mail 4.4.0 (GTK 3.24.52; x86_64-redhat-linux-gnu)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: LOVP265MB8871:EE_|CWLP265MB6288:EE_
-X-MS-Office365-Filtering-Correlation-Id: a35e7c5c-5d41-4893-05d9-08ded82a813d
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|7416014|1800799024|23010399003|10070799003|376014|22082099003|18002099003|56012099006|921020;
-X-Microsoft-Antispam-Message-Info:
-	6XXXhaqI3Rx8uyqqZS56j2ykrrR74FxYvZhrIkYJc9ADxvG/QU86TwObiIbVqM/1b2anFMd/bMkInTFrT1uzTdfAwd8h4NL98b6iWrkA2QMIvrFYeDQDYUrT0sqhI0ZsmSObxHRT0H8mFpBJYQEPOmhAl7eOUDVqjwK2PS3d3Cve8kOfHlZhhRiZLGDUmFgNWpdAK4f31kveD37iUQeqtGuTweNn+g1NEltpSIl/bcu3QI0P9CdmilQ6wtZ7FhDitT6M9pD3E/Qonca58/biwwixUWQkaiuSA1U/316YlQjJEECHwxmVcN93QB11wFBTYX73ooIjnvTgFVB0bBd2Y4gMvbxLrxbjTVL0L+RjZucEsy4lM++aWRHkxBVH1/qnAJ63V3ylBpTzq59O6SqZ5uOAibAgV8qHIIztBsujZoBITGKfK+fuH6/XG6vRv0x5mRFRJLqvlY/hgxwc2jLpuRTClk6tZ2g9MqEObAyfwQqA5HCpQUFP4TYOSxP7+3ir+HFewpXeZdiCl73j+qTY9eZPHQdXCicFi4EEAMMBaY6p4M2iBK7AM/Np+UnLhJl1EAQWHnk/Lk0lebxGVVRBjlQX5iRlepG4FEFgCxa8VXXC96FGTLAM92/lqJsJnQJvyUnzOygzDCShIkCQiabkBy23tpWbh+bGWqqwX4rmcovdj6BghlnWvwPdRh2Cd+Cuxg+Xfbhi9HFAF/CFa56c2w==
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(366016)(7416014)(1800799024)(23010399003)(10070799003)(376014)(22082099003)(18002099003)(56012099006)(921020);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?R0ZtMTV1c24zMmJUK2MwN0h6K0NTNFptNFl2dnNRbGI2cGV6cnJ4M3ZRNGcw?=
- =?utf-8?B?VmwvMHJnczE3am1FTlBNVU1GcENsYnNWdWtQclFRNkFoTzlGUEFUc1pEM3JR?=
- =?utf-8?B?NDh3T2lkV1lIOTNadFpodlR6b2hKTm43MlNTWTdDQWxBRkZIR2VWWWlIY0ZD?=
- =?utf-8?B?T2VPdTN5TkxKTHFlMkZQNVBBVDFUZ3g0cEM0MnIxdkI2UkpCcUx4djYzVUFw?=
- =?utf-8?B?R0YydmwzZmdXeTdhU0xKZkc0N3ArNU1xQnV0ZEVCWFpjVXd2cnpHc3JDOVBO?=
- =?utf-8?B?cFBrOW1FVXg4Ujl5NXBWcE9YUGhBZk1oK01iYkxtWnNCU2JxUktlN1Vjd29s?=
- =?utf-8?B?N3FSK01JcHJBMkkzZ2VaS1lMUU1nWGpIbzBhMEhRL1prbGk1bmg0LzEyUUNW?=
- =?utf-8?B?TVVsSEJSUTIwYXBlMThSb0UzZmVmeVZibzRCWmsyZkVkaHE4RjV4UGpBRjVJ?=
- =?utf-8?B?bGRjWi84bi9yMUNweWRYdy8yNXJNaFdEMHNGUUhRMTJRWWRyY3h4WUZxN3RX?=
- =?utf-8?B?NG16TUpRemtLdU4wUTVOUXdRd2tKU3BZeHA4WXZPTHRMZ043Y2ZFYWtvWXlJ?=
- =?utf-8?B?VzVzRy9uYXloNDBFclFuS3llRWM4YTJJVnJ2K0h2ckNOWlBXdUU4M3Exb1RG?=
- =?utf-8?B?a0VZZU43Tjd5d2hDSmE1VlNzQTMwb0tsUU5Zb2hGKzQxcVFsck53TGdFU2dm?=
- =?utf-8?B?Z3RzVHRFK2ZqVGdTMzlWTlJNejdLbGdGOXc5QXczYkRSTEY5ZE42Zm8yODBV?=
- =?utf-8?B?VitDRzFwZ0Mwb2JKaUFQSmF1Y05xbEpwWUIzOSs0MmxCQ2RlbEQvM092dk5G?=
- =?utf-8?B?N3E4OFBncU14SkxrekpHYXZudlVlY3cyOHdzalRROHV1ZnNyRW9zZGQ2cHpV?=
- =?utf-8?B?MSt4YzNGUURJeGF5K3RHNmwwczMvV2tuV2FsWVVxMlpEZWU1ZkQ2OEdsVWQw?=
- =?utf-8?B?cWp3ODNHM1RDeWtxWUI1bG5DNVllSjB2bU1rcHhtRG5yblg2QnJVSmZoay9B?=
- =?utf-8?B?RDdFTUVmSENmZ2Y2M1FnL003V2JBZGpVbFBFS0V4c1FuUnNGRWR0bnlZZEpn?=
- =?utf-8?B?WlRXc2V2UEVWdGZncUh2NHIrYTVST2RxWVJuQm9WRzZkZkY5RGNyL1ZPUW11?=
- =?utf-8?B?d0Y3YTFibGlUSmtEYmxmSFlJQm0wL0ZxRDI3V3BMbDdPZ1hqVG9qMVlFdGcx?=
- =?utf-8?B?dW9rd1F6b2VNaWpIUWxJVDJmbS9oOTRvN1J0TGxTZGc3dUdCSks4UGJEejNY?=
- =?utf-8?B?K1dUK04xV05vM0tJdkVhL1JBdlFXTUFuL2s3TWNmMGVQcFloTGxHdzhPc0xl?=
- =?utf-8?B?ejBhSzFVTXhHNUZJTUVYMFZIRVZUOTNHS083WHQ1REI5T2g0Um5VNHF5THBs?=
- =?utf-8?B?aXVjVlZYdDRNRFZuTkxGUUtHdzYxWS9GTjZ0aWVzVVZCc0t1VnJrYWJpUC9Y?=
- =?utf-8?B?SERGeFF6N1ZlOTVENk1nRUI3RlAwVVBPblVXaGhnUSt0ZTFqeTNhY1ByVVdx?=
- =?utf-8?B?aHBORXFBNXVDeUtyOUl3aUpvK2pTV0I0aU1CY0JZaHBXMW5kcUtXZm0vZnli?=
- =?utf-8?B?SWdsbG41dEEwMm9KNWRweUlFN3BGMHVMUWFVeXZBTXpyckZaTUZLdjRncU1L?=
- =?utf-8?B?Tmp4bHZ5Q3plTmptemVwaGkvY09WR0tkdnAzMzdNWmRJdFpXWjlBUVZPeWRW?=
- =?utf-8?B?UmpQc01wS3FFbWtYNFZVTHdNREtTb1h1b2pxUXpmeVZsVmorYmw5V0Q3UDUz?=
- =?utf-8?B?bVdrTHREOWVLeSt1WVdhUzBFNS9VNnYrajVLM2F6WS9sN1ErNi9zNGlVWUVp?=
- =?utf-8?B?dzIyVWJ3UXQ5MjEzckhNcHpuZGxYSGh3Q3BBUDJ1c096Skk0T2J1M1NUMGtZ?=
- =?utf-8?B?T2V2Y3phaWo5VXpLQktWM095ZVpJRjk2dC9SMDE0THZwb2o4TkVod2J2L1RB?=
- =?utf-8?B?Vkd5UjRsSHlFS0NIVWZNSjZVUzlHc2RnY0FrUXRPaGpGQkNSVzhrMGtIRW15?=
- =?utf-8?B?MSs5bEk0R2MrRHA5dXpjNGpVNzRMc3FlSUdZVG9nODFVYlR3TStZRXRyWjdJ?=
- =?utf-8?B?V1dVUEY1S0xzYzl3V29wdVppYkJyZ0dXQ2lPVTJlbVFoajJud2NVRmk5bDQv?=
- =?utf-8?B?TDg4NlREV1Y0SjBOMENUbTREZGtZSVN6ZEZ6bzZqa0hIclN2NlFUTEVNZ0Z0?=
- =?utf-8?B?UHVZaTJNK2ttSkhid3RGeHZadmRGYjhMQjdxRXVyZTUzVVhsNjZXWWFiYm5O?=
- =?utf-8?B?SnlPeU9mNWFGcWNDMmw5a2hwNmxBZGk3Wk5pd0dHMUdlTHdpMEJyZDFIVlJC?=
- =?utf-8?B?ektoYWRmR3RWTURDV3JPK0J1RFltTG5iVi9MYU45U3VKbzgvR3JIdz09?=
-X-OriginatorOrg: garyguo.net
-X-MS-Exchange-CrossTenant-Network-Message-Id: a35e7c5c-5d41-4893-05d9-08ded82a813d
-X-MS-Exchange-CrossTenant-AuthSource: LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Jul 2026 11:10:20.2485
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: r5cc1JOxeON2cgBqBqOw4qd1RTTmUy4YYbw0BCg9so8U2583mm2klB4abctPQmmW3w9lfqYBu76UsyJk3PhYcg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CWLP265MB6288
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Last-TLS-Session-Version: TLSv1.3
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	ARC_REJECT(1.00)[cv is fail on i=2];
-	DMARC_POLICY_ALLOW(-0.50)[garyguo.net,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
-	R_DKIM_ALLOW(-0.20)[garyguo.net:s=selector1];
+X-Spamd-Result: default: False [-2.16 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	DMARC_POLICY_ALLOW(-0.50)[bootlin.com,reject];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[bootlin.com:s=dkim];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-270409-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:driver-core@lists.linux.dev,m:linux-kernel@vger.kernel.org,m:rust-for-linux@vger.kernel.org,m:stable@vger.kernel.org,m:sashiko-bot@kernel.org,m:dakr@kernel.org,m:gregkh@linuxfoundation.org,m:rafael@kernel.org,m:ojeda@kernel.org,m:boqun@kernel.org,m:gary@garyguo.net,m:bjorn3_gh@protonmail.com,m:a.hindborg@kernel.org,m:aliceryhl@google.com,m:tmgross@umich.edu,m:daniel.almeida@collabora.com,m:tamird@kernel.org,m:acourbot@nvidia.com,m:work@onurozkan.dev,m:lyude@redhat.com,s:lists@lfdr.de];
-	FREEMAIL_TO(0.00)[kernel.org,linuxfoundation.org,garyguo.net,protonmail.com,google.com,umich.edu,collabora.com,nvidia.com,onurozkan.dev,redhat.com];
+	FREEMAIL_CC(0.00)[lunn.ch,kernel.org,linuxfoundation.org,google.com,cirrus.com,opensource.cirrus.com,linux.intel.com,gmail.com,stgolabs.net,intel.com,zohomail.com,amd.com,lists.linux.dev,vger.kernel.org,microchip.com,bootlin.com];
+	TAGGED_FROM(0.00)[bounces-270412-lists,stable=lfdr.de];
+	RECEIVED_HELO_LOCALHOST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_SENDER(0.00)[gary@garyguo.net,stable@vger.kernel.org];
+	FORGED_SENDER(0.00)[herve.codina@bootlin.com,stable@vger.kernel.org];
+	RCPT_COUNT_TWELVE(0.00)[41];
+	FORGED_RECIPIENTS(0.00)[m:icheng@nvidia.com,m:andrew@lunn.ch,m:robh@kernel.org,m:saravanak@kernel.org,m:gregkh@linuxfoundation.org,m:rafael@kernel.org,m:dakr@kernel.org,m:bhelgaas@google.com,m:david.rhodes@cirrus.com,m:rf@opensource.cirrus.com,m:ckeepax@opensource.cirrus.com,m:linusw@kernel.org,m:lenb@kernel.org,m:andriy.shevchenko@linux.intel.com,m:djrscally@gmail.com,m:heikki.krogerus@linux.intel.com,m:sakari.ailus@linux.intel.com,m:dave@stgolabs.net,m:jic23@kernel.org,m:dave.jiang@intel.com,m:alison.schofield@intel.com,m:vishal.l.verma@intel.com,m:djbw@kernel.org,m:iweiny@kernel.org,m:ming.li@zohomail.com,m:lizhi.hou@amd.com,m:driver-core@lists.linux.dev,m:linux-kernel@vger.kernel.org,m:linux-pci@vger.kernel.org,m:linux-sound@vger.kernel.org,m:patches@opensource.cirrus.com,m:linux-gpio@vger.kernel.org,m:linux-acpi@vger.kernel.org,m:linux-cxl@vger.kernel.org,m:allan.nielsen@microchip.com,m:horatiu.vultur@microchip.com,m:daniel.machon@microchip.com,m:steen.hegelund@microchip.com,m:
+ luca.ceresoli@bootlin.com,m:thomas.petazzoni@bootlin.com,m:stable@vger.kernel.org,s:lists@lfdr.de];
 	MIME_TRACE(0.00)[0:+];
+	HAS_ORG_HEADER(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
+	DKIM_TRACE(0.00)[bootlin.com:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[herve.codina@bootlin.com,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[20];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gary@garyguo.net,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[garyguo.net:+];
-	ALIAS_RESOLVED(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[6];
 	MID_RHS_MATCH_FROM(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[]
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,nvidia.com:email,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: CCC846F74D9
+X-Rspamd-Queue-Id: BA9696F71A3
 
-On Sun Jun 28, 2026 at 6:44 PM BST, Danilo Krummrich wrote:
-> There is a potential race condition when two paths try to revoke a
-> Devres concurrently.
->=20
-> The driver core's devres_release_all() calls Revocable::revoke() via the
-> release callback, while Devres::drop() calls revoke_nosync() on another
-> CPU.
->=20
-> The revoker that does not claim the is_available swap returns
-> immediately, but the revoker that did may still be executing
-> drop_in_place() on the inner data. This can cause a use-after-free when
-> the other revoker's caller proceeds to drop adjacent resources that
-> drop_in_place() still references (e.g., Devres<DmaMappedSgt> racing with
-> SGTable freeing the backing sg_table and pages).
->=20
-> Fix this by adding a Completion. The release callback signals the
-> Completion after revoke() finishes, and Devres::drop() waits for it when
-> it loses the is_available swap. This ensures the wrapped object is fully
-> torn down before Devres::drop() returns.
->=20
-> Cc: stable@vger.kernel.org
-> Reported-by: Sashiko <sashiko-bot@kernel.org>
-> Closes: https://lore.kernel.org/dri-devel/20260612202841.2577C1F000E9@smt=
-p.kernel.org/
-> Fixes: 05aa6fb1c21d ("rust: scatterlist: Add abstraction for sg_table")
-> Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+Hi Richard,
 
-Reviewed-by: Gary Guo <gary@garyguo.net>
+On Thu, 2 Jul 2026 12:02:35 +0800
+Richard Cheng <icheng@nvidia.com> wrote:
 
-> ---
->  rust/kernel/devres.rs | 18 ++++++++++++++++--
->  1 file changed, 16 insertions(+), 2 deletions(-)
+> > @@ -709,6 +709,13 @@ void of_pci_make_dev_node(struct pci_dev *pdev)
+> >  	if (ret)
+> >  		goto out_free_node;
+> >  
+> > +	/*
+> > +	 * Set the fwnode device in order to have fw_devlink creating links
+> > +	 * pointing to this PCI device instead of walking up to the PCI host
+> > +	 * bridge.
+> > +	 */
+> > +	fw_devlink_set_device(&np->fwnode, &pdev->dev);
+> > +
+> >  	ret = of_changeset_apply(cset);
+> >  	if (ret)
+> >  		goto out_free_node;
+> > -- 
+> > 2.54.0
+> > 
+> >  
+> 
+> Hi Herve,
+> 
+> I wonder if this part has some issue, it sets np->fwnode.dev = &pdev->dev,
+> but I don't see am matching clear on removal path, I doubt the back-pointer
+> can outlive the pci_dev.
+> 
+> device_del() do the check
+> """
+> if (dev->fwnode && dev->fwnode->dev == dev)
+>     fw_devlink_set_device(dev->fwnode, NULL);
+> """
+> 
+> On removal, pci_stop_dev() calls of_pci_remove_node() before pci_destroy_dev()
+> calls device_del(), and of_pci_remove_node() -> device_remove_of_node() has already NULLed pdev->dev.fwnode by then, so the "dev->fwnode" guard is false, and
+> of_pci_remove_node() itself never clears np->fwnode.dev
+> 
+> If something holds an extra ref on np past removal, e.g. a DT overlay applied via configfs that pins np through its gragment targets,
+> np survives, the pci_dev is freed, and np->fwnode.dev dnalges into freed memory.
+> Then fw_devlink walker that resolve it via get_dev_from_fwnode() -> get_device() would hit a use-after-free .
+> 
+> I think of_pci_remove_node() should cleaer the back-pointer it set,
+> before dropping the node's ref, e.g.
+> 
+> """
+> np = pci_device_to_OF_node(pdev);
+> if (!np || !of_node_check_flag(np, OF_DYNAMIC))
+>     return;
+> 
+> fw_devlink_set_device(&np->fwnode, NULL);
+> device_remove_of_node(&pdev->dev);
+> of_changeset_revert(np->data);
+> """
+> 
+> Does that make sense to you ?
+> 
 
+Thanks for pointed out this issue.
+
+I am not sure that the scenario you proposed using configfs which can lead
+to the use-after-free is relevant but anyway this use-after-free is possible.
+
+The fwnode->dev is set by of_pci_make_dev_node() and so it is consistent 
+to unset it (set to NULL) in of_pci_remove_node().
+
+I will update this patch to add the fw_devlink_set_device(&np->fwnode, NULL);
+call in the next iteration.
+
+Also I will had a new patch in the next iteration to perform same operation
+for PCI root bridge. Same kind of code path, and so same issue but with
+of_pci_make_host_bridge_node() and of_pci_remove_host_bridge_node().
+
+Best regards,
+Hervé
 
