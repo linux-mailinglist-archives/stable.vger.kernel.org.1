@@ -1,61 +1,61 @@
-Return-Path: <stable+bounces-271276-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-271468-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id gJ0DNnOlRmq4awsAu9opvQ
-	(envelope-from <stable+bounces-271276-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:52:51 +0200
+	id 7g4CGhqnRmosbAsAu9opvQ
+	(envelope-from <stable+bounces-271468-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:59:54 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D37206FBAEB
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:52:50 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id CCC186FBC3B
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:59:53 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="eM/PYik1";
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-271276-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-271276-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=cdUqPri8;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-271468-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-271468-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id D773632D757C
-	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:53:12 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id AF7573346A69
+	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 17:00:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9CBBC353A8D;
-	Thu,  2 Jul 2026 16:52:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E28382D0602;
+	Thu,  2 Jul 2026 17:00:23 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69C6E3446A7;
-	Thu,  2 Jul 2026 16:52:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB25F309EE9;
+	Thu,  2 Jul 2026 17:00:22 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783011124; cv=none; b=Tf533QFSPZ37/6Sx9h8EFNXpYkIktw1Nker3hMihLmOH8BBalc3j3ptlBSokXtxTyeD4VzyJTTCWzClDZ+ItXnA3tXVScK5DCeNAk0M5UPyERriyWNkmiv8phpGk8SzzwbM8lKnIMxSunH4YRZGNKSIdkCbbd1TqEDqUawPj5qA=
+	t=1783011623; cv=none; b=mkohknd3UfRv7WgtHAv+Pb7lm5BVXYQ4TUGPJcjjoMwgQBwNVR+tFuHcqP0CYOjVxfW+yJnSAgL49+9VyosffPiVNQ2tP88jU60awSW4zvbFQHAOKy5s7SBT29EU8trBWoWeVQf/0Wfr+irO2O2ymZL+B+6puYpxPjMdSCxDfm8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783011124; c=relaxed/simple;
-	bh=zZu2GNK+e8k/iSPwRIeE5wUOhWULAJ9s7Kmit8bKplM=;
+	s=arc-20240116; t=1783011623; c=relaxed/simple;
+	bh=4hMLFzxSe1Y4/4UVsAs7HsBkoZyH3aH8RPKMjJqaDZY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Zgo6IxqTLHQ69lXMTKCu7HRpmoAeiAoEFyQ9+zgtodZfIicRT+lRS7yDk1rGDIRGuXrYRbVNJRr5vE3AaBBlH8kmp+E9A7Oe7vVGxLbWWFQyDzSgD+11GdW/9cnAnPwvWfdeyUFzp5G32bxgCZsbXhW1iNFD+pA0sSrtDT691rI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eM/PYik1; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF0951F000E9;
-	Thu,  2 Jul 2026 16:52:02 +0000 (UTC)
+	 MIME-Version; b=lL4IqevKGtOhndLCTpPPWgal2gKkwFtm2s2tMZYlnifRZnD9djXQNWffa+ABougsoYAlx7WcMmPerXINk0b2QsROvXdAr54UKJCqNCviM4+fl4imRSJE1z7av2GcfsmhLvWFQiixWGraURh/sNsunFPvnDSysX+xfXATNGUTdf0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cdUqPri8; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1CFB71F000E9;
+	Thu,  2 Jul 2026 17:00:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1783011123;
-	bh=/MaRaMAndue6PuVL6ykvt84XF/AFb8WV1pQ5MIT7umw=;
+	s=korg; t=1783011622;
+	bh=LPHBcQrNxfYP/doUSg6ooYNXrTPHaSBBc3IRj5wj/lE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=eM/PYik1GnRjmnDxbdS+lZWn+aXp5RQFxTquTlkn5qYo3xn8Kir98ziB3GeND5G2A
-	 elvu7r73vJmCQ3PM19Yp8trMNRI6G+TJbwFz3UqwsoZilZhKthVxaUv8EBvSMrBNZz
-	 69SQKIU7lj4mdO+7xrEb4lwiVG3JzCMl1RsxruFw=
+	b=cdUqPri8pR16+Lej5mMm8QV/XyvMdFDwx2IwoGKreKKjJM814NCqhMrxOKsjRcZ0p
+	 0Orkm0i6c4gsmZRAv0A1tWOD+37PNwu07M32wKUhjZulRuHJpiQJOb4YUq8a+YbRVS
+	 iOq4ucXsTuX2WDc67aTVok1R/4zU+7ZfYoV1ibP8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Dominik=20Wo=C5=BAniak?= <stalion@gmail.com>,
-	Jeff Layton <jlayton@kernel.org>,
-	Chuck Lever <chuck.lever@oracle.com>
-Subject: [PATCH 6.6 165/175] nfsd: check get_user() return when reading princhashlen
+	Chao Yu <chao@kernel.org>,
+	Yongpeng Yang <yangyongpeng@xiaomi.com>,
+	Jaegeuk Kim <jaegeuk@kernel.org>
+Subject: [PATCH 7.1 070/120] f2fs: fix incorrect FI_NO_EXTENT handling in __destroy_extent_node()
 Date: Thu,  2 Jul 2026 18:21:06 +0200
-Message-ID: <20260702155119.265392683@linuxfoundation.org>
+Message-ID: <20260702155114.407659626@linuxfoundation.org>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260702155115.766838875@linuxfoundation.org>
-References: <20260702155115.766838875@linuxfoundation.org>
+In-Reply-To: <20260702155112.964534952@linuxfoundation.org>
+References: <20260702155112.964534952@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,87 +65,127 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-271276-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:stalion@gmail.com,m:jlayton@kernel.org,m:chuck.lever@oracle.com,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org,oracle.com];
-	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-271468-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:chao@kernel.org,m:yangyongpeng@xiaomi.com,m:jaegeuk@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
-	FORGED_SENDER_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,vger.kernel.org:from_smtp,princhash.data:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,oracle.com:email,name.data:url]
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp,xiaomi.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: D37206FBAEB
+X-Rspamd-Queue-Id: CCC186FBC3B
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+7.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dominik Woźniak <stalion@gmail.com>
+From: Yongpeng Yang <yangyongpeng@xiaomi.com>
 
-commit e186fa1c057f5eccb22afb1e83e34c0627085868 upstream.
+commit 1f70ddb28a3c71df124da5fa4040c808116d6bb9 upstream.
 
-In __cld_pipe_inprogress_downcall(), the get_user() that reads
-princhashlen from the userspace cld_msg_v2 buffer does not check its
-return value. A failing copy leaves princhashlen with uninitialised
-stack contents, which are then used to drive memdup_user() and stored
-as princhash.len on the resulting reclaim record. The other get_user()
-calls in this function all check the return; only this one is missed,
-which is most likely a copy-paste oversight from when v2 upcalls were
-introduced.
+When __destroy_extent_node() sets the inode flag FI_NO_EXTENT, it does
+not reset the length of the largest extent to 0 and update the inode
+folio. Since modifications to the extent tree are disallowed afterward,
+the cached largest extent may become stale. This can trigger the
+following error in xfstests generic/388:
 
-Mirror the existing pattern used a few lines above for namelen.
-namecopy is declared with __free(kfree) so the early return cleans up
-the already-allocated buffer automatically.
+F2FS-fs (dm-0): sanity_check_extent_cache: inode (ino=1761) extent info [220057, 57, 6] is incorrect, run fsck to fix
 
-Fixes: 6ee95d1c8991 ("nfsd: add support for upcall version 2")
+In the f2fs_drop_inode path, __destroy_extent_node() does not need to
+guarantee that et->node_cnt is 0, because concurrency with writeback
+is expected in this path, and writeback may update the extent cache.
+
+This patch reverts commit ed78aeebef05 ("f2fs: fix node_cnt race between
+extent node destroy and writeback"), and remove the unnecessary zero
+check of et->node_cnt.
+
+Fixes: ed78aeebef05 ("f2fs: fix node_cnt race between extent node destroy and writeback")
 Cc: stable@vger.kernel.org
-Signed-off-by: Dominik Woźniak <stalion@gmail.com>
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Reported-by: Chao Yu <chao@kernel.org>
+Suggested-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Yongpeng Yang <yangyongpeng@xiaomi.com>
+Reviewed-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nfsd/nfs4recover.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ fs/f2fs/extent_cache.c |   19 +++++++------------
+ 1 file changed, 7 insertions(+), 12 deletions(-)
 
---- a/fs/nfsd/nfs4recover.c
-+++ b/fs/nfsd/nfs4recover.c
-@@ -815,7 +815,8 @@ __cld_pipe_inprogress_downcall(const str
- 			if (IS_ERR(name.data))
- 				return PTR_ERR(name.data);
- 			name.len = namelen;
--			get_user(princhashlen, &ci->cc_princhash.cp_len);
-+			if (get_user(princhashlen, &ci->cc_princhash.cp_len))
-+				return -EFAULT;
- 			if (princhashlen > 0) {
- 				princhash.data = memdup_user(
- 						&ci->cc_princhash.cp_data,
+--- a/fs/f2fs/extent_cache.c
++++ b/fs/f2fs/extent_cache.c
+@@ -119,10 +119,9 @@ static bool __may_extent_tree(struct ino
+ 	if (!__init_may_extent_tree(inode, type))
+ 		return false;
+ 
+-	if (is_inode_flag_set(inode, FI_NO_EXTENT))
+-		return false;
+-
+ 	if (type == EX_READ) {
++		if (is_inode_flag_set(inode, FI_NO_EXTENT))
++			return false;
+ 		if (is_inode_flag_set(inode, FI_COMPRESSED_FILE) &&
+ 				 !f2fs_sb_has_readonly(F2FS_I_SB(inode)))
+ 			return false;
+@@ -645,14 +644,10 @@ static unsigned int __destroy_extent_nod
+ 
+ 	while (atomic_read(&et->node_cnt)) {
+ 		write_lock(&et->lock);
+-		if (!is_inode_flag_set(inode, FI_NO_EXTENT))
+-			set_inode_flag(inode, FI_NO_EXTENT);
+ 		node_cnt += __free_extent_tree(sbi, et, nr_shrink);
+ 		write_unlock(&et->lock);
+ 	}
+ 
+-	f2fs_bug_on(sbi, atomic_read(&et->node_cnt));
+-
+ 	return node_cnt;
+ }
+ 
+@@ -691,12 +686,12 @@ static void __update_extent_tree_range(s
+ 
+ 	write_lock(&et->lock);
+ 
+-	if (is_inode_flag_set(inode, FI_NO_EXTENT)) {
+-		write_unlock(&et->lock);
+-		return;
+-	}
+-
+ 	if (type == EX_READ) {
++		if (is_inode_flag_set(inode, FI_NO_EXTENT)) {
++			write_unlock(&et->lock);
++			return;
++		}
++
+ 		prev = et->largest;
+ 		dei.len = 0;
+ 
 
 
 
