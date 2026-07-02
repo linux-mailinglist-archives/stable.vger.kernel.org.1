@@ -1,396 +1,606 @@
-Return-Path: <stable+bounces-270851-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-271343-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id LmxRAV2hRmpEagsAu9opvQ
-	(envelope-from <stable+bounces-270851-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:35:25 +0200
+	id LU9iMKmbRmoraAsAu9opvQ
+	(envelope-from <stable+bounces-271343-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:11:05 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 23B116FB763
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:35:24 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 739C46FB193
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:11:05 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="CtQ/hUmL";
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-270851-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-270851-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=FiniB1Jv;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-271343-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-271343-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 6DC9F305FAC3
-	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:36:34 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id AF8C63056A85
+	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:54:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E99334EF0E;
-	Thu,  2 Jul 2026 16:33:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E63E2D0602;
+	Thu,  2 Jul 2026 16:54:56 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73F733B3BE6;
-	Thu,  2 Jul 2026 16:33:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FD5482866;
+	Thu,  2 Jul 2026 16:54:54 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783010015; cv=none; b=cKvkfDmo7tM21X5ppfv+TFfORH6wPywjQclWR0oAstK02V6ixkofpMVykBLsqa7cV7NX0N9PxhQn12ovKOQp94+PtHPUhBuNItco593kwQZfV7lplILcSg0z5OQFYexjFbCsMurLkRmDd33ufmwlrX+fpKrEMFDrw6397c7Pzrk=
+	t=1783011295; cv=none; b=cq9L8a+0WXogZbiyfAgWVMKnHrxsLXEU2axUFGInPbm+IiNenW6VkfusBblJhrjaEwhXSyKf5NgFe2w8Hk11md701G8vvyW5TKC9L0Mxo1hELRG8PJjQBtDh/R2fff9XaWnw/02ZQYHBxrE7xXsNqodWNCkHtj5krSTehe/nwzY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783010015; c=relaxed/simple;
-	bh=nERo5ajNVqIDFcuHkTbznwVKoc4JoX2/z8nQxVVomts=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mcSFlE2vrKwYmMOvkuty/V0ttPOeOIPCR4LuNND3S5lGCjsrbHlxvNoRlpnCvZxc60rLY1yPNcXKIQpBw8PmisR0NEM1IsPrlBf0ybLsHC7ARVjXgeUFF2nfHS0wSLPcPVBQV1PhtpJtmPiBGzGXxNV5CxrVTO+CL+xu9enryQM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CtQ/hUmL; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA0921F000E9;
-	Thu,  2 Jul 2026 16:33:33 +0000 (UTC)
+	s=arc-20240116; t=1783011295; c=relaxed/simple;
+	bh=47K3CZBd/8IdIFnJvu2P0mFm/gu5af1qN8P8hXSfjz0=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=uEFNPSyyS/umOX9ET1meoXcq7QpbW9yn1AyAHP9JWV4G603w3BIJHpDIAyEtpKmKsvEm7Hx2P8ihTg1MHnAAP1iKKFRJFdG1mPAGokwNSamfERERq91mQ77IwNtjK3UmIqIhhWhEwxIoeAybl2bht2d0qYfl6savqOFscgwqByM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FiniB1Jv; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67A371F000E9;
+	Thu,  2 Jul 2026 16:54:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1783010014;
-	bh=m9XoQBTpSqzB2OWBSdgDI/etxJWeyrypBxoX9HDmhiY=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=CtQ/hUmLwij/qpB26kogjSmlkIv2a21lE604DcJfiLs+KfLQWOQ6qYe3SqXjg6OlJ
-	 pfsfarMwDgoGuAyc0GjJpbbivj4VF2jM9wKxu+/gFRU7Q79ooCAWjGQnolksIjyKjn
-	 3TxLl8H4ILitlNIv3KM19QgG2b8TKYNX6BlCose8=
+	s=korg; t=1783011294;
+	bh=LBQYn9LKGkx0O9ssc7xeTNSm0F3Rvc1bznVsdpde+tg=;
+	h=From:To:Cc:Subject:Date;
+	b=FiniB1JvmfXNmFj0F7KRNv3kcJCo+uuoSHTAeVQibeF6s8eAMBD5kimA8TAJgLwo+
+	 dY2AJDHIbAL+GvwQgX90vMKKk0mKMPyH5ygDr+N8nqn8TYnOiRNYiVbYocKSfCCGF7
+	 LdW2g3czoomBNX6X0hn+LEW/e+oesllGYEJlQ9fM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yiming Qian <yimingqian591@gmail.com>,
-	Keenan Dong <keenanat2000@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.1 078/129] net: skmsg: preserve sg.copy across SG transforms
+	linux-kernel@vger.kernel.org,
+	torvalds@linux-foundation.org,
+	akpm@linux-foundation.org,
+	linux@roeck-us.net,
+	shuah@kernel.org,
+	patches@kernelci.org,
+	lkft-triage@lists.linaro.org,
+	pavel@nabladev.com,
+	jonathanh@nvidia.com,
+	f.fainelli@gmail.com,
+	sudipm.mukherjee@gmail.com,
+	rwarsow@gmx.de,
+	conor@kernel.org,
+	hargar@microsoft.com,
+	broonie@kernel.org,
+	achill@achill.org,
+	sr@sladewatkins.com
+Subject: [PATCH 6.18 000/108] 6.18.38-rc1 review
 Date: Thu,  2 Jul 2026 18:19:57 +0200
-Message-ID: <20260702155113.754043555@linuxfoundation.org>
+Message-ID: <20260702155112.110058792@linuxfoundation.org>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260702155112.163984240@linuxfoundation.org>
-References: <20260702155112.163984240@linuxfoundation.org>
-User-Agent: quilt/0.69
-X-stable: review
-X-Patchwork-Hint: ignore
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: quilt/0.69
+X-stable: review
+X-Patchwork-Hint: ignore
+X-KernelTest-Patch: http://kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.18.38-rc1.gz
+X-KernelTest-Tree: git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git
+X-KernelTest-Branch: linux-6.18.y
+X-KernelTest-Patches: git://git.kernel.org/pub/scm/linux/kernel/git/stable/stable-queue.git
+X-KernelTest-Version: 6.18.38-rc1
+X-KernelTest-Deadline: 2026-07-04T15:51+00:00
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-270851-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-271343-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	TO_DN_SOME(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:yimingqian591@gmail.com,m:keenanat2000@gmail.com,m:kuba@kernel.org,s:lists@lfdr.de];
+	RCPT_COUNT_TWELVE(0.00)[20];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:linux-kernel@vger.kernel.org,m:torvalds@linux-foundation.org,m:akpm@linux-foundation.org,m:linux@roeck-us.net,m:shuah@kernel.org,m:patches@kernelci.org,m:lkft-triage@lists.linaro.org,m:pavel@nabladev.com,m:jonathanh@nvidia.com,m:f.fainelli@gmail.com,m:sudipm.mukherjee@gmail.com,m:rwarsow@gmx.de,m:conor@kernel.org,m:hargar@microsoft.com,m:broonie@kernel.org,m:achill@achill.org,m:sr@sladewatkins.com,m:ffainelli@gmail.com,m:sudipmmukherjee@gmail.com,s:lists@lfdr.de];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,vger.kernel.org,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,nabladev.com,nvidia.com,gmail.com,gmx.de,microsoft.com,achill.org,sladewatkins.com];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RWL_MAILSPIKE_POSSIBLE(0.00)[104.64.211.4:from];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,msgid.link:url]
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 23B116FB763
+X-Rspamd-Queue-Id: 739C46FB193
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+This is the start of the stable review cycle for the 6.18.38 release.
+There are 108 patches in this series, all will be posted as a response
+to this one.  If anyone has any issues with these being applied, please
+let me know.
 
-------------------
+Responses should be made by Sat, 04 Jul 2026 15:50:58 +0000.
+Anything received after that time might be too late.
 
-From: Yiming Qian <yimingqian591@gmail.com>
+The whole patch series can be found in one patch at:
+	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.18.38-rc1.gz
+or in the git tree and branch at:
+	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.18.y
+and the diffstat can be found below.
 
-commit 406e8a651a7b854c41fecd5117bb282b3a6c2c6b upstream.
+thanks,
 
-The sk_msg sg.copy bitmap is part of the scatterlist entry ownership
-state. A set bit tells sk_msg_compute_data_pointers() not to expose the
-entry through writable BPF ctx->data. This protects entries backed by
-pages that are not private to the sk_msg, such as splice-backed file
-page-cache pages.
+greg k-h
 
-Several sk_msg transform paths move, copy, split, or compact
-msg->sg.data[] entries without moving the matching sg.copy bit. This can
-make an externally backed entry arrive at a new slot with a clear copy
-bit. A later SK_MSG verdict can then expose sg_virt(sge) as writable
-ctx->data and BPF stores can modify the original page cache.
+-------------
+Pseudo-Shortlog of commits:
 
-Keep sg.copy synchronized with sg.data[] whenever entries are
-transferred, shifted, split, or copied into a new sk_msg. Clear the bit
-when an entry is replaced by a newly allocated private page or freed.
-This covers the BPF pull/push/pop helpers, sk_msg_shift_left/right(),
-sk_msg_xfer(), and tls_split_open_record(), including the partial tail
-entry created during TLS open-record splitting.
+Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+    Linux 6.18.38-rc1
 
-Fixes: d3b18ad31f93 ("tls: add bpf support to sk_msg handling")
-Cc: stable@vger.kernel.org
-Reported-by: Yiming Qian <yimingqian591@gmail.com>
-Reported-by: Keenan Dong <keenanat2000@gmail.com>
-Signed-off-by: Yiming Qian <yimingqian591@gmail.com>
-Link: https://patch.msgid.link/20260610062137.49075-1-yimingqian591@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
----
- include/linux/skmsg.h |   15 +++++++++++----
- net/core/filter.c     |   27 +++++++++++++++++++++++++++
- net/core/skmsg.c      |    2 ++
- net/tls/tls_sw.c      |    4 ++++
- 4 files changed, 44 insertions(+), 4 deletions(-)
+John Johansen <john.johansen@canonical.com>
+    apparmor: advertise the tcp fast open fix is applied
 
---- a/include/linux/skmsg.h
-+++ b/include/linux/skmsg.h
-@@ -4,6 +4,7 @@
- #ifndef _LINUX_SKMSG_H
- #define _LINUX_SKMSG_H
- 
-+#include <linux/bitops.h>
- #include <linux/bpf.h>
- #include <linux/filter.h>
- #include <linux/scatterlist.h>
-@@ -188,11 +189,14 @@ static inline void sk_msg_xfer(struct sk
- 			       int which, u32 size)
- {
- 	dst->sg.data[which] = src->sg.data[which];
-+	__assign_bit(which, dst->sg.copy, test_bit(which, src->sg.copy));
- 	dst->sg.data[which].length  = size;
- 	dst->sg.size		   += size;
- 	src->sg.size		   -= size;
- 	src->sg.data[which].length -= size;
- 	src->sg.data[which].offset += size;
-+	if (!src->sg.data[which].length)
-+		__clear_bit(which, src->sg.copy);
- }
- 
- static inline void sk_msg_xfer_full(struct sk_msg *dst, struct sk_msg *src)
-@@ -262,16 +266,19 @@ static inline void sk_msg_page_add(struc
- static inline void sk_msg_sg_copy(struct sk_msg *msg, u32 i, bool copy_state)
- {
- 	do {
--		if (copy_state)
--			__set_bit(i, msg->sg.copy);
--		else
--			__clear_bit(i, msg->sg.copy);
-+		__assign_bit(i, msg->sg.copy, copy_state);
- 		sk_msg_iter_var_next(i);
- 		if (i == msg->sg.end)
- 			break;
- 	} while (1);
- }
- 
-+static inline void sk_msg_sg_copy_assign(struct sk_msg *dst, u32 dst_i,
-+					 const struct sk_msg *src, u32 src_i)
-+{
-+	__assign_bit(dst_i, dst->sg.copy, test_bit(src_i, src->sg.copy));
-+}
-+
- static inline void sk_msg_sg_copy_set(struct sk_msg *msg, u32 start)
- {
- 	sk_msg_sg_copy(msg, start, true);
---- a/net/core/filter.c
-+++ b/net/core/filter.c
-@@ -2714,11 +2714,13 @@ BPF_CALL_4(bpf_msg_pull_data, struct sk_
- 		poffset += len;
- 		sge->length = 0;
- 		put_page(sg_page(sge));
-+		__clear_bit(i, msg->sg.copy);
- 
- 		sk_msg_iter_var_next(i);
- 	} while (i != last_sge);
- 
- 	sg_set_page(&msg->sg.data[first_sge], page, copy, 0);
-+	__clear_bit(first_sge, msg->sg.copy);
- 
- 	/* To repair sg ring we need to shift entries. If we only
- 	 * had a single entry though we can just replace it and
-@@ -2744,9 +2746,11 @@ BPF_CALL_4(bpf_msg_pull_data, struct sk_
- 			break;
- 
- 		msg->sg.data[i] = msg->sg.data[move_from];
-+		sk_msg_sg_copy_assign(msg, i, msg, move_from);
- 		msg->sg.data[move_from].length = 0;
- 		msg->sg.data[move_from].page_link = 0;
- 		msg->sg.data[move_from].offset = 0;
-+		__clear_bit(move_from, msg->sg.copy);
- 		sk_msg_iter_var_next(i);
- 	} while (1);
- 
-@@ -2775,6 +2779,7 @@ BPF_CALL_4(bpf_msg_push_data, struct sk_
- {
- 	struct scatterlist sge, nsge, nnsge, rsge = {0}, *psge;
- 	u32 new, i = 0, l = 0, space, copy = 0, offset = 0;
-+	bool sge_copy, nsge_copy, nnsge_copy, rsge_copy = false;
- 	u8 *raw, *to, *from;
- 	struct page *page;
- 
-@@ -2847,6 +2852,7 @@ BPF_CALL_4(bpf_msg_push_data, struct sk_
- 			sk_msg_iter_var_prev(i);
- 		psge = sk_msg_elem(msg, i);
- 		rsge = sk_msg_elem_cpy(msg, i);
-+		rsge_copy = test_bit(i, msg->sg.copy);
- 
- 		psge->length = start - offset;
- 		rsge.length -= psge->length;
-@@ -2871,24 +2877,32 @@ BPF_CALL_4(bpf_msg_push_data, struct sk_
- 
- 	/* Shift one or two slots as needed */
- 	sge = sk_msg_elem_cpy(msg, new);
-+	sge_copy = test_bit(new, msg->sg.copy);
- 	sg_unmark_end(&sge);
- 
- 	nsge = sk_msg_elem_cpy(msg, i);
-+	nsge_copy = test_bit(i, msg->sg.copy);
- 	if (rsge.length) {
- 		sk_msg_iter_var_next(i);
- 		nnsge = sk_msg_elem_cpy(msg, i);
-+		nnsge_copy = test_bit(i, msg->sg.copy);
- 		sk_msg_iter_next(msg, end);
- 	}
- 
- 	while (i != msg->sg.end) {
- 		msg->sg.data[i] = sge;
-+		__assign_bit(i, msg->sg.copy, sge_copy);
- 		sge = nsge;
-+		sge_copy = nsge_copy;
- 		sk_msg_iter_var_next(i);
- 		if (rsge.length) {
- 			nsge = nnsge;
-+			nsge_copy = nnsge_copy;
- 			nnsge = sk_msg_elem_cpy(msg, i);
-+			nnsge_copy = test_bit(i, msg->sg.copy);
- 		} else {
- 			nsge = sk_msg_elem_cpy(msg, i);
-+			nsge_copy = test_bit(i, msg->sg.copy);
- 		}
- 	}
- 
-@@ -2902,6 +2916,7 @@ place_new:
- 		get_page(sg_page(&rsge));
- 		sk_msg_iter_var_next(new);
- 		msg->sg.data[new] = rsge;
-+		__assign_bit(new, msg->sg.copy, rsge_copy);
- 	}
- 
- 	sk_msg_reset_curr(msg);
-@@ -2929,25 +2944,33 @@ static void sk_msg_shift_left(struct sk_
- 		prev = i;
- 		sk_msg_iter_var_next(i);
- 		msg->sg.data[prev] = msg->sg.data[i];
-+		sk_msg_sg_copy_assign(msg, prev, msg, i);
- 	} while (i != msg->sg.end);
- 
- 	sk_msg_iter_prev(msg, end);
-+	__clear_bit(msg->sg.end, msg->sg.copy);
- }
- 
- static void sk_msg_shift_right(struct sk_msg *msg, int i)
- {
- 	struct scatterlist tmp, sge;
-+	bool tmp_copy, sge_copy;
- 
- 	sk_msg_iter_next(msg, end);
- 	sge = sk_msg_elem_cpy(msg, i);
-+	sge_copy = test_bit(i, msg->sg.copy);
- 	sk_msg_iter_var_next(i);
- 	tmp = sk_msg_elem_cpy(msg, i);
-+	tmp_copy = test_bit(i, msg->sg.copy);
- 
- 	while (i != msg->sg.end) {
- 		msg->sg.data[i] = sge;
-+		__assign_bit(i, msg->sg.copy, sge_copy);
- 		sk_msg_iter_var_next(i);
- 		sge = tmp;
-+		sge_copy = tmp_copy;
- 		tmp = sk_msg_elem_cpy(msg, i);
-+		tmp_copy = test_bit(i, msg->sg.copy);
- 	}
- }
- 
-@@ -3007,6 +3030,8 @@ BPF_CALL_4(bpf_msg_pop_data, struct sk_m
- 		struct scatterlist *nsge, *sge = sk_msg_elem(msg, i);
- 		int a = start - offset;
- 		int b = sge->length - pop - a;
-+		u32 sge_i = i;
-+		bool sge_copy = test_bit(i, msg->sg.copy);
- 
- 		sk_msg_iter_var_next(i);
- 
-@@ -3019,6 +3044,7 @@ BPF_CALL_4(bpf_msg_pop_data, struct sk_m
- 				sg_set_page(nsge,
- 					    sg_page(sge),
- 					    b, sge->offset + pop + a);
-+				__assign_bit(i, msg->sg.copy, sge_copy);
- 			} else {
- 				struct page *page, *orig;
- 				u8 *to, *from;
-@@ -3035,6 +3061,7 @@ BPF_CALL_4(bpf_msg_pop_data, struct sk_m
- 				memcpy(to, from, a);
- 				memcpy(to + a, from + a + pop, b);
- 				sg_set_page(sge, page, a + b, 0);
-+				__clear_bit(sge_i, msg->sg.copy);
- 				put_page(orig);
- 			}
- 			pop = 0;
---- a/net/core/skmsg.c
-+++ b/net/core/skmsg.c
-@@ -65,6 +65,7 @@ int sk_msg_alloc(struct sock *sk, struct
- 			sge = &msg->sg.data[msg->sg.end];
- 			sg_unmark_end(sge);
- 			sg_set_page(sge, pfrag->page, use, orig_offset);
-+			__clear_bit(msg->sg.end, msg->sg.copy);
- 			get_page(pfrag->page);
- 			sk_msg_iter_next(msg, end);
- 		}
-@@ -185,6 +186,7 @@ static int sk_msg_free_elem(struct sock
- 			sk_mem_uncharge(sk, len);
- 		put_page(sg_page(sge));
- 	}
-+	__clear_bit(i, msg->sg.copy);
- 	memset(sge, 0, sizeof(*sge));
- 	return len;
- }
---- a/net/tls/tls_sw.c
-+++ b/net/tls/tls_sw.c
-@@ -624,6 +624,7 @@ static int tls_split_open_record(struct
- 	struct scatterlist *sge, *osge, *nsge;
- 	u32 orig_size = msg_opl->sg.size;
- 	struct scatterlist tmp = { };
-+	u32 tmp_i = 0;
- 	struct sk_msg *msg_npl;
- 	struct tls_rec *new;
- 	int ret;
-@@ -645,6 +646,7 @@ static int tls_split_open_record(struct
- 		if (sge->length > apply) {
- 			u32 len = sge->length - apply;
- 
-+			tmp_i = i;
- 			get_page(sg_page(sge));
- 			sg_set_page(&tmp, sg_page(sge), len,
- 				    sge->offset + apply);
-@@ -676,6 +678,7 @@ static int tls_split_open_record(struct
- 	nsge = sk_msg_elem(msg_npl, j);
- 	if (tmp.length) {
- 		memcpy(nsge, &tmp, sizeof(*nsge));
-+		sk_msg_sg_copy_assign(msg_npl, j, msg_opl, tmp_i);
- 		sk_msg_iter_var_next(j);
- 		nsge = sk_msg_elem(msg_npl, j);
- 	}
-@@ -683,6 +686,7 @@ static int tls_split_open_record(struct
- 	osge = sk_msg_elem(msg_opl, i);
- 	while (osge->length) {
- 		memcpy(nsge, osge, sizeof(*nsge));
-+		sk_msg_sg_copy_assign(msg_npl, j, msg_opl, i);
- 		sg_unmark_end(nsge);
- 		sk_msg_iter_var_next(i);
- 		sk_msg_iter_var_next(j);
+HanQuan <eilaimemedsnaimel@gmail.com>
+    net/tcp-ao: fix use-after-free of key in del_async path
+
+Stepan Ionichev <sozdayvek@gmail.com>
+    serial: 8250_dw: unregister 8250 port if clk_notifier_register() fails
+
+Hem Parekh <hemparekh1596@gmail.com>
+    ksmbd: fix out-of-bounds read in smb_check_perm_dacl()
+
+Markus Elfring <elfring@users.sourceforge.net>
+    NFS: Prevent resource leak in nfs_alloc_server()
+
+Igor Raits <igor.raits@gmail.com>
+    NFSv4: clear exception state on successful mkdir retry
+
+Michael Bommarito <michael.bommarito@gmail.com>
+    NFSv4/pNFS: reject zero-length r_addr in nfs4_decode_mp_ds_addr
+
+Michael Bommarito <michael.bommarito@gmail.com>
+    NFSv4/flexfiles: reject zero filehandle version count
+
+Jeff Layton <jlayton@kernel.org>
+    nfsd: reset write verifier on deferred writeback errors
+
+Jeff Layton <jlayton@kernel.org>
+    nfsd: avoid leaking pre-allocated openowner on unconfirmed retry race
+
+Dominik Woźniak <stalion@gmail.com>
+    nfsd: check get_user() return when reading princhashlen
+
+Jeff Layton <jlayton@kernel.org>
+    nfsd: fix inverted cp_ttl check in async copy reaper
+
+Jeff Layton <jlayton@kernel.org>
+    nfsd: fix posix_acl leak on SETACL decode failure
+
+Guannan Wang <wgnbuaa@gmail.com>
+    NFSD: Fix SECINFO_NO_NAME decode error cleanup
+
+Johan Hovold <johan@kernel.org>
+    i2c: core: fix adapter registration race
+
+Steffen Persvold <spersvold@gmail.com>
+    fbdev: modedb: Fix misaligned fields in the 1920x1080-60 mode
+
+Tuo Li <islituo@gmail.com>
+    fbdev: modedb: fix a possible UAF in fb_find_mode()
+
+Ian Bridges <icb@fastmail.org>
+    fbdev: Fix fb_new_modelist to prevent null-ptr-deref in fb_videomode_to_var
+
+Vivian Wang <wangruikang@iscas.ac.cn>
+    riscv: kfence: Call mark_new_valid_map() for kfence_unprotect()
+
+Wentao Liang <vulab@iscas.ac.cn>
+    power: reset: linkstation-poweroff: fix use-after-free in the linkstation_poweroff_init()
+
+Ashutosh Desai <ashutoshdesai993@gmail.com>
+    KVM: SVM: Fix page overflow in sev_dbg_crypt() for ENCRYPT path
+
+Hyunwoo Kim <imv4bel@gmail.com>
+    KVM: x86: hyper-v: Bound the bank index when querying sparse banks
+
+Jonas Jelonek <jelonek.jonas@gmail.com>
+    MIPS: smp: report dying CPU to RCU in stop_this_cpu()
+
+Yizhou Zhao <zhaoyz24@mails.tsinghua.edu.cn>
+    9p: avoid putting oldfid in p9_client_walk() error path
+
+Zhang Cen <rollkingzzc@gmail.com>
+    ocfs2: reject oversized group bitmap descriptors
+
+Yuho Choi <dbgh9129@gmail.com>
+    rpmsg: char: Fix use-after-free on probe error path
+
+Wentao Liang <vulab@iscas.ac.cn>
+    fpga: region: fix use-after-free in child_regions_with_firmware()
+
+Qingshuang Fu <fuqingshuang@kylinos.cn>
+    irqchip/imgpdc: Fix resource leak, add missing chained handler cleanup on remove
+
+Wentao Liang <vulab@iscas.ac.cn>
+    pNFS: Fix use-after-free in pnfs_update_layout()
+
+Huacai Chen <chenhuacai@kernel.org>
+    LoongArch: Report dying CPU to RCU in stop_this_cpu()
+
+Doruk Tan Ozturk <doruk@0sec.ai>
+    tipc: fix slab-use-after-free Read in tipc_aead_decrypt_done
+
+Michal Koutný <mkoutny@suse.com>
+    blk-cgroup: fix UAF in __blkcg_rstat_flush()
+
+Fan Wu <fanwu01@zju.edu.cn>
+    hdlc_ppp: sync per-proto timers before freeing hdlc state
+
+Wentao Liang <vulab@iscas.ac.cn>
+    pwrseq: core: fix use-after-free in pwrseq_debugfs_seq_next()
+
+Tristan Madani <tristan@talencesecurity.com>
+    gfs2: fix use-after-free in gfs2_qd_dealloc
+
+Sam James <sam@gentoo.org>
+    crypto: nx - fix nx_crypto_ctx_exit argument
+
+Sean Christopherson <seanjc@google.com>
+    KVM: Replace guest-triggerable BUG_ON() in ioeventfd datamatch with get_unaligned()
+
+Sean Christopherson <seanjc@google.com>
+    KVM: x86/mmu: Ensure hugepage is in by slot before checking max mapping level
+
+Michael Bommarito <michael.bommarito@gmail.com>
+    exfat: fix potential use-after-free in exfat_find_dir_entry()
+
+Maciej W. Rozycki <macro@orcam.me.uk>
+    MIPS: DEC: Prevent initial console buffer from landing in XKPHYS
+
+Dawei Feng <dawei.feng@seu.edu.cn>
+    bpf: use kvfree() for replaced sysctl write buffer
+
+Denis Arefev <arefev@swemel.ru>
+    block: Avoid mounting the bdev pseudo-filesystem in userspace
+
+Wenjie Qi <qwjhust@gmail.com>
+    f2fs: keep atomic write retry from zeroing original data
+
+Yongpeng Yang <yangyongpeng@xiaomi.com>
+    f2fs: fix incorrect FI_NO_EXTENT handling in __destroy_extent_node()
+
+Zhang Cen <rollkingzzc@gmail.com>
+    f2fs: validate ACL entry sizes in f2fs_acl_from_disk()
+
+Sunmin Jeong <s_min.jeong@samsung.com>
+    f2fs: fix to round down start offset of fallocate for pin file
+
+Wenjie Qi <qwjhust@gmail.com>
+    f2fs: validate compress cache inode only when enabled
+
+Wenjie Qi <qwjhust@gmail.com>
+    f2fs: validate orphan inode entry count
+
+Wenjie Qi <qwjhust@gmail.com>
+    f2fs: pass correct iostat type for single node writes
+
+Junrui Luo <moonafterrain@outlook.com>
+    wifi: iwlwifi: mld: validate sta_mask before ffs() in BA session handlers
+
+Junjie Cao <junjie.cao@intel.com>
+    wifi: iwlwifi: mld: fix race condition in PTP removal
+
+Junjie Cao <junjie.cao@intel.com>
+    wifi: iwlwifi: mvm: fix race condition in PTP removal
+
+Luka Gejak <luka.gejak@linux.dev>
+    wifi: rtw88: usb: fix memory leaks on USB write failures
+
+Luka Gejak <luka.gejak@linux.dev>
+    wifi: rtw88: increase TX report timeout to fix race condition
+
+Bitterblue Smith <rtl8821cerfe2@gmail.com>
+    wifi: rtlwifi: rtl8821ae: Fix C2H bit location in RX descriptor
+
+Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
+    wifi: ath11k: fix warning when unbinding
+
+ElXreno <elxreno@gmail.com>
+    wifi: mt76: mt7925: don't disable AP BSS when removing TDLS peer
+
+Zenm Chen <zenmchen@gmail.com>
+    wifi: mt76: mt76x2u: Add support for ELECOM WDC-867SU3S
+
+Mike Rapoport (Microsoft) <rppt@kernel.org>
+    userfaultfd: ensure mremap_userfaultfd_fail() releases mmap_changing
+
+Shaomin Chen <eeesssooo020@gmail.com>
+    keys: Pin request_key_auth payload in instantiate paths
+
+Jarkko Sakkinen <jarkko@kernel.org>
+    KEYS: fix overflow in keyctl_pkey_params_get_2()
+
+Konstantin Khorenko <khorenko@virtuozzo.com>
+    gcov: use atomic counter updates to fix concurrent access crashes
+
+Arnd Bergmann <arnd@arndb.de>
+    err.h: use __always_inline on all error pointer helpers
+
+Ard Biesheuvel <ardb@kernel.org>
+    KVM: arm64: Omit tag sync on stage-2 mappings of the zero page
+
+Usama Arif <usama.arif@linux.dev>
+    block: invalidate cached plug timestamp after task switch
+
+Ian Bridges <icb@fastmail.org>
+    fbdev: fix use-after-free in store_modes()
+
+Koichiro Den <den@valinux.co.jp>
+    NTB: epf: Avoid pci_iounmap() with offset when PEER_SPAD and CONFIG share BAR
+
+Ruslan Valiyev <linuxoid@gmail.com>
+    apparmor: fix use-after-free in rawdata dedup loop
+
+Bryam Vargas <hexlabsecurity@proton.me>
+    apparmor: mediate the implicit connect of TCP fast open sendmsg
+
+Maoyi Xie <maoyixie.tju@gmail.com>
+    net: ip_gre: require CAP_NET_ADMIN in the device netns for changelink
+
+Yiming Qian <yimingqian591@gmail.com>
+    net: skmsg: preserve sg.copy across SG transforms
+
+Doruk Tan Ozturk <doruk@0sec.ai>
+    mac802154: llsec: add skb_cow_data() before in-place crypto
+
+Kuniyuki Iwashima <kuniyu@google.com>
+    af_unix: Set gc_in_progress to true in unix_gc().
+
+Jiajia Liu <liujiajia@kylinos.cn>
+    wifi: mt76: add wcid publish check in mt76_sta_add
+
+Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
+    ntfs3: reject direct userspace writes to reserved $LX* xattrs
+
+Wongi Lee <qw3rtyp0@gmail.com>
+    ipv4: account for fraggap on the paged allocation path
+
+Wongi Lee <qw3rtyp0@gmail.com>
+    ipv6: account for fraggap on the paged allocation path
+
+Sven Eckelmann <sven@narfation.org>
+    batman-adv: tvlv: avoid race of cifsnotfound handler state
+
+Sven Eckelmann <sven@narfation.org>
+    batman-adv: tvlv: enforce 2-byte alignment
+
+Sven Eckelmann <sven@narfation.org>
+    batman-adv: dat: prevent false sharing between VLANs
+
+Sven Eckelmann <sven@narfation.org>
+    batman-adv: tt: track roam count per VID
+
+Sven Eckelmann <sven@narfation.org>
+    batman-adv: tt: don't merge change entries with different VIDs
+
+Sven Eckelmann <sven@narfation.org>
+    batman-adv: tp_meter: handle overlapping packets
+
+Sven Eckelmann <sven@narfation.org>
+    batman-adv: tp_meter: prevent parallel modifications of last_recv
+
+Sven Eckelmann <sven@narfation.org>
+    batman-adv: tp_meter: annotate last_recv_time access with READ/WRITE_ONCE
+
+Sven Eckelmann <sven@narfation.org>
+    batman-adv: tp_meter: restrict number of unacked list entries
+
+Sven Eckelmann <sven@narfation.org>
+    batman-adv: v: prevent OGM aggregation on disabled hardif
+
+Sven Eckelmann <sven@narfation.org>
+    batman-adv: frag: avoid underflow of TTL
+
+Sven Eckelmann <sven@narfation.org>
+    batman-adv: frag: ensure fragment is writable before modifying TTL
+
+Sven Eckelmann <sven@narfation.org>
+    batman-adv: fix (m|b)cast csum after decrementing TTL
+
+Sven Eckelmann <sven@narfation.org>
+    batman-adv: ensure bcast is writable before modifying TTL
+
+Sven Eckelmann <sven@narfation.org>
+    batman-adv: gw: don't deselect gateway with active hardif
+
+Sven Eckelmann <sven@narfation.org>
+    batman-adv: tp_meter: initialize last_recv_time during init
+
+Sven Eckelmann <sven@narfation.org>
+    batman-adv: prevent ELP transmission interval underflow
+
+Sven Eckelmann <sven@narfation.org>
+    batman-adv: bla: annotate lasttime access with READ/WRITE_ONCE
+
+Sven Eckelmann <sven@narfation.org>
+    batman-adv: tp_meter: add only finished tp_vars to lists
+
+Sven Eckelmann <sven@narfation.org>
+    batman-adv: tp_meter: handle seqno wrap-around for fast recovery detection
+
+Sven Eckelmann <sven@narfation.org>
+    batman-adv: tp_meter: fix fast recovery precondition
+
+Sven Eckelmann <sven@narfation.org>
+    batman-adv: tp_meter: avoid divide-by-zero for dec_cwnd
+
+Sven Eckelmann <sven@narfation.org>
+    batman-adv: tp_meter: avoid window underflow
+
+Sven Eckelmann <sven@narfation.org>
+    batman-adv: tp_meter: initialize dec_cwnd explicitly
+
+Sven Eckelmann <sven@narfation.org>
+    batman-adv: tp_meter: initialize dup_acks explicitly
+
+Sven Eckelmann <sven@narfation.org>
+    batman-adv: tp_meter: keep unacked list in ascending ordered
+
+NeilBrown <neil@brown.name>
+    lockd: fix TEST handling when not all permissions are available.
+
+Sasha Levin <sashal@kernel.org>
+    Revert "PCI: qcom: Advertise Hotplug Slot Capability with no Command Completion support"
+
+Paul Moore <paul@paul-moore.com>
+    selinux: fix overlayfs mmap() and mprotect() access checks
+
+Paul Moore <paul@paul-moore.com>
+    lsm: add backing_file LSM hooks
+
+Paolo Bonzini <pbonzini@redhat.com>
+    KVM: x86: Fix shadow paging use-after-free due to unexpected role
+
+
+-------------
+
+Diffstat:
+
+ Makefile                                           |  31 ++-
+ arch/arm64/kvm/mmu.c                               |   5 +
+ arch/loongarch/kernel/smp.c                        |   1 +
+ arch/mips/dec/prom/console.c                       |   7 +-
+ arch/mips/kernel/smp.c                             |   2 +
+ arch/riscv/include/asm/kfence.h                    |   7 +-
+ arch/riscv/kernel/entry.S                          |   6 +-
+ arch/x86/kvm/hyperv.c                              |   5 +
+ arch/x86/kvm/mmu/mmu.c                             |  28 ++-
+ arch/x86/kvm/svm/sev.c                             |   1 +
+ block/bdev.c                                       |   5 -
+ block/blk-cgroup.c                                 |  21 +-
+ drivers/crypto/nx/nx.c                             |   6 +-
+ drivers/crypto/nx/nx.h                             |   2 +-
+ drivers/fpga/of-fpga-region.c                      |   3 +-
+ drivers/i2c/i2c-core-base.c                        |   8 +-
+ drivers/irqchip/irq-imgpdc.c                       |   6 +
+ drivers/net/wan/hdlc_ppp.c                         |  15 +-
+ drivers/net/wireless/ath/ath11k/dp.c               |   1 +
+ drivers/net/wireless/intel/iwlwifi/mld/agg.c       |   9 +
+ drivers/net/wireless/intel/iwlwifi/mld/ptp.c       |   2 +-
+ drivers/net/wireless/intel/iwlwifi/mvm/ptp.c       |   2 +-
+ drivers/net/wireless/mediatek/mt76/mac80211.c      |  15 +-
+ drivers/net/wireless/mediatek/mt76/mt76x2/usb.c    |   1 +
+ drivers/net/wireless/mediatek/mt76/mt7925/main.c   |   3 +
+ .../net/wireless/realtek/rtlwifi/rtl8821ae/trx.h   |   2 +-
+ drivers/net/wireless/realtek/rtw88/tx.c            |   7 +-
+ drivers/net/wireless/realtek/rtw88/usb.c           |  13 +-
+ drivers/ntb/hw/epf/ntb_hw_epf.c                    |   3 +-
+ drivers/pci/controller/dwc/pcie-qcom.c             |  17 +-
+ drivers/power/reset/linkstation-poweroff.c         |   2 +-
+ drivers/power/sequencing/core.c                    |  14 +-
+ drivers/rpmsg/rpmsg_char.c                         |  15 +-
+ drivers/tty/serial/8250/8250_dw.c                  |   4 +-
+ drivers/video/fbdev/core/fbmem.c                   |  12 +
+ drivers/video/fbdev/core/fbsysfs.c                 |  10 +-
+ drivers/video/fbdev/core/modedb.c                  |   5 +-
+ fs/backing-file.c                                  |  17 +-
+ fs/exfat/dir.c                                     |   4 +-
+ fs/f2fs/acl.c                                      |  18 +-
+ fs/f2fs/checkpoint.c                               |  14 +-
+ fs/f2fs/data.c                                     |  16 +-
+ fs/f2fs/extent_cache.c                             |  19 +-
+ fs/f2fs/file.c                                     |   9 +-
+ fs/f2fs/inode.c                                    |   9 +-
+ fs/f2fs/node.c                                     |   2 +-
+ fs/file_table.c                                    |  27 ++-
+ fs/fuse/passthrough.c                              |   2 +-
+ fs/gfs2/super.c                                    |   1 +
+ fs/internal.h                                      |   3 +-
+ fs/lockd/svc4proc.c                                |  13 +-
+ fs/lockd/svclock.c                                 |   4 +-
+ fs/lockd/svcproc.c                                 |  15 +-
+ fs/lockd/svcsubs.c                                 |  35 ++-
+ fs/nfs/client.c                                    |   1 +
+ fs/nfs/flexfilelayout/flexfilelayout.c             |   4 +
+ fs/nfs/nfs4proc.c                                  |   5 +-
+ fs/nfs/pnfs.c                                      |   2 +-
+ fs/nfs/pnfs_nfs.c                                  |   4 +-
+ fs/nfsd/nfs2acl.c                                  |  17 +-
+ fs/nfsd/nfs3acl.c                                  |  17 +-
+ fs/nfsd/nfs4proc.c                                 |   2 +-
+ fs/nfsd/nfs4recover.c                              |   3 +-
+ fs/nfsd/nfs4state.c                                |   1 +
+ fs/nfsd/nfs4xdr.c                                  |   3 +-
+ fs/nfsd/vfs.c                                      |   6 +-
+ fs/ntfs3/xattr.c                                   |  12 +
+ fs/ocfs2/suballoc.c                                |  22 ++
+ fs/overlayfs/dir.c                                 |   2 +-
+ fs/overlayfs/file.c                                |   2 +-
+ fs/smb/server/smbacl.c                             |   4 +-
+ fs/userfaultfd.c                                   |   2 +
+ include/keys/request_key_auth-type.h               |   2 +
+ include/linux/backing-file.h                       |   4 +-
+ include/linux/blkdev.h                             |  16 +-
+ include/linux/err.h                                |  12 +-
+ include/linux/f2fs_fs.h                            |   1 +
+ include/linux/fs.h                                 |  13 ++
+ include/linux/kvm_host.h                           |   7 +-
+ include/linux/lockd/lockd.h                        |   2 +-
+ include/linux/lsm_audit.h                          |   2 +-
+ include/linux/lsm_hook_defs.h                      |   5 +
+ include/linux/lsm_hooks.h                          |   1 +
+ include/linux/security.h                           |  22 ++
+ include/linux/skmsg.h                              |  15 +-
+ include/net/rtnetlink.h                            |   2 +
+ kernel/bpf/cgroup.c                                |   2 +-
+ kernel/sched/core.c                                |  12 +-
+ net/9p/client.c                                    |   3 +-
+ net/batman-adv/bat_iv_ogm.c                        |  11 +-
+ net/batman-adv/bat_v.c                             |   1 +
+ net/batman-adv/bat_v_ogm.c                         |  23 +-
+ net/batman-adv/bridge_loop_avoidance.c             |  28 +--
+ net/batman-adv/distributed-arp-table.c             |  12 +-
+ net/batman-adv/fragmentation.c                     |  22 +-
+ net/batman-adv/fragmentation.h                     |   3 +-
+ net/batman-adv/hard-interface.c                    |  28 +--
+ net/batman-adv/netlink.c                           |  10 +-
+ net/batman-adv/routing.c                           |  73 +++++-
+ net/batman-adv/tp_meter.c                          | 115 +++++----
+ net/batman-adv/translation-table.c                 |  12 +-
+ net/batman-adv/tvlv.c                              |  69 +++++-
+ net/batman-adv/types.h                             |  21 +-
+ net/core/filter.c                                  |  27 +++
+ net/core/rtnetlink.c                               |   8 +
+ net/core/skmsg.c                                   |   2 +
+ net/ipv4/ip_gre.c                                  |   6 +
+ net/ipv4/ip_output.c                               |   7 +-
+ net/ipv4/tcp_ao.c                                  |   4 +
+ net/ipv6/ip6_output.c                              |   9 +-
+ net/mac802154/llsec.c                              |  14 ++
+ net/tipc/crypto.c                                  |   9 +
+ net/tls/tls_sw.c                                   |   4 +
+ net/unix/garbage.c                                 |   2 +
+ security/apparmor/include/policy_unpack.h          |  19 ++
+ security/apparmor/lsm.c                            |  16 +-
+ security/apparmor/net.c                            |   2 +
+ security/apparmor/policy.c                         |   8 +-
+ security/keys/internal.h                           |   2 +
+ security/keys/keyctl.c                             |  24 +-
+ security/keys/keyctl_pkey.c                        |   9 +-
+ security/keys/request_key_auth.c                   |  33 ++-
+ security/security.c                                | 109 +++++++++
+ security/selinux/hooks.c                           | 256 +++++++++++++++------
+ security/selinux/include/objsec.h                  |  11 +
+ virt/kvm/eventfd.c                                 |  12 +-
+ 126 files changed, 1354 insertions(+), 401 deletions(-)
 
 
 
