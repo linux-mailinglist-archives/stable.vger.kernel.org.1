@@ -1,70 +1,63 @@
-Return-Path: <stable+bounces-270783-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-271130-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id dT3jI3SVRmqZZAsAu9opvQ
-	(envelope-from <stable+bounces-270783-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:44:36 +0200
+	id 8MNNMxOjRmr7agsAu9opvQ
+	(envelope-from <stable+bounces-271130-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:42:43 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 144686FA797
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:44:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1545A6FB907
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:42:43 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=jlJsBZXL;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-270783-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-270783-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=U+E7Oc4I;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-271130-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-271130-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 405F3329857A
-	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:34:13 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 875E7321317C
+	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:47:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 652E335674C;
-	Thu,  2 Jul 2026 16:30:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DDD7E340412;
+	Thu,  2 Jul 2026 16:45:49 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8CB5352037;
-	Thu,  2 Jul 2026 16:30:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94C12336897;
+	Thu,  2 Jul 2026 16:45:48 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783009840; cv=none; b=lJyfuEtiSduSesy2XCHiPGzD1d71xM9Kg8YozHul9zqFqR/ljS9etiSXTKkIb4yi+ZwduzC1E2oP8lmnosmDQuyZ72HIXJL1frpP8jMetjPgOQYSfpbfMIKBh0xSJHSWL/jIsu/lemzr5nXjQ0X3MtoK/rGpPGJIZJlMPdyMKFs=
+	t=1783010749; cv=none; b=IQTpRPoeoHsYP6gz3FU3CG6bhoem2NhmxujBU9eiXn0WIc3ujlTqFt4MnPD1psAwqdJOnebtkhY5hOCuGsc0yQ65VZDGAWyhIxI7uoJgRtbMRSvw9Qz4NZozQHGh1QBTdKrFT5sS8SL2DXcDWDTCzYQiY0ArVGA06kibchFkSJY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783009840; c=relaxed/simple;
-	bh=6VebBG4zlnO+X83qkPiXgkRclYFz7kS77rQvM+mjQXM=;
+	s=arc-20240116; t=1783010749; c=relaxed/simple;
+	bh=qX3s4VM/7CMWHJ/Xtnp+CjIQVi0QuAdur7kbtJufcVg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=f0CjWDnMDCx7MOfR2Fd2Kyn8FeaFbvct2pEdkdg9JfbP6kuxJ1xAKXyh7Oe+EpjLKaGqSKObYsxe7LIOjjpW3JBqkngioi935lpEUnpJ3qbqUCyHt4j6A4z3s1kMzkjf2giZpxJDEylaW8Vwwf7w/o5TDenxMvh7Qz+zNBxxqCM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jlJsBZXL; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F33D1F000E9;
-	Thu,  2 Jul 2026 16:30:38 +0000 (UTC)
+	 MIME-Version; b=PgDIg0UZ4tJwLS/4IyljVy68lJU7CedC0k6U/HCOZLt+7AEgArFYoCSKryfkyFeyEFgBTLUIlqbpqRLIlw7EfS8chfJ1guwqJQFsSSNa+JSbhPokKA+zZB8YuGkUF87tMiPO35YefgSnOvf5kT7VHpx9UlDfyTnWeCfGrfOboGs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U+E7Oc4I; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8737F1F00A3A;
+	Thu,  2 Jul 2026 16:45:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1783009838;
-	bh=98kJcmzyDTE1SH+U76eAoAvTTx8gWobLSRZPlioafyw=;
+	s=korg; t=1783010748;
+	bh=5UnREXNPO1Co2HKzEi64MahpSV0unsFrYEOHaC2p3y8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=jlJsBZXL01WdXOHnHybrcULgOFSjbczWqBhqddSbNHZw0qNWU30Jie2vFFx+y0duI
-	 MLPteTIvfWGVmgRGGSUELxNxwD3KCwSJ195ldhgga4KsMH+X3y2C0lREycn+rEPwT9
-	 Q4aWs/9Vlm51x4xoAlMZ7ubxUAS6O+vOeNIXVpMw=
+	b=U+E7Oc4I/tVKB8YQNwAQ73u89ddNri54oW0elfpjhdiHOhCWzGbFwsq1/Y7ur7FKv
+	 jpbZ6q7IGHpWDWi/9CIdfimSxKTnGlIoEMVUB1KF0H8yKo7GmWvornliqEDNDtYwXA
+	 gik49drqMgXc2aVc6N9YIuYijfth63W8Ecacxhzg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yiming Qian <yimingqian591@gmail.com>,
-	Keenan Dong <keenanat2000@gmail.com>,
-	Han Guidong <2045gemini@gmail.com>,
-	Zhang Cen <rollkingzzc@gmail.com>,
-	Davide Caratti <dcaratti@redhat.com>,
-	=?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>,
-	Victor Nogueira <victor@mojatatu.com>,
-	Jamal Hadi Salim <jhs@mojatatu.com>,
-	Rajat Gupta <rajat.gupta@oss.qualcomm.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Wentao Guan <guanwentao@uniontech.com>,
+	Leon Hwang <leon.hwang@linux.dev>,
+	Varun R Mallya <varunrmallya@gmail.com>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Shung-Hsi Yu <shung-hsi.yu@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 004/129] net/sched: fix pedit partial COW leading to page cache corruption
+Subject: [PATCH 6.6 022/175] selftests/bpf: Add test to ensure kprobe_multi is not sleepable
 Date: Thu,  2 Jul 2026 18:18:43 +0200
-Message-ID: <20260702155112.255009277@linuxfoundation.org>
+Message-ID: <20260702155116.254578541@linuxfoundation.org>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260702155112.163984240@linuxfoundation.org>
-References: <20260702155112.163984240@linuxfoundation.org>
+In-Reply-To: <20260702155115.766838875@linuxfoundation.org>
+References: <20260702155115.766838875@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -74,269 +67,171 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-270783-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:yimingqian591@gmail.com,m:keenanat2000@gmail.com,m:2045gemini@gmail.com,m:rollkingzzc@gmail.com,m:dcaratti@redhat.com,m:toke@redhat.com,m:victor@mojatatu.com,m:jhs@mojatatu.com,m:rajat.gupta@oss.qualcomm.com,m:kuba@kernel.org,m:guanwentao@uniontech.com,m:sashal@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,redhat.com,mojatatu.com,oss.qualcomm.com,kernel.org,uniontech.com];
-	RCPT_COUNT_TWELVE(0.00)[15];
-	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,linux.dev,gmail.com,kernel.org,suse.com];
+	TAGGED_FROM(0.00)[bounces-271130-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:leon.hwang@linux.dev,m:varunrmallya@gmail.com,m:ast@kernel.org,m:shung-hsi.yu@suse.com,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,uniontech.com:email,vger.kernel.org:from_smtp,mojatatu.com:email,msgid.link:url,qualcomm.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,suse.com:email,linux.dev:email,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 144686FA797
+X-Rspamd-Queue-Id: 1545A6FB907
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rajat Gupta <rajat.gupta@oss.qualcomm.com>
+From: Varun R Mallya <varunrmallya@gmail.com>
 
-[ Upstream commit 899ee91156e57784090c5565e4f31bd7dbffbc5a ]
+commit c7cab53f9d5273f0cf2a26bdf178c4e074bdfb50 upstream.
 
-tcf_pedit_act() computes the COW range for skb_ensure_writable()
-once before the key loop using tcfp_off_max_hint, but the hint does
-not account for the runtime header offset added by typed keys. This
-can leave part of the write region un-COW'd.
+Add a selftest to ensure that kprobe_multi programs cannot be attached
+using the BPF_F_SLEEPABLE flag. This test succeeds when the kernel
+rejects attachment of kprobe_multi when the BPF_F_SLEEPABLE flag is set.
 
-Fix by moving skb_ensure_writable() inside the per-key loop where
-the actual write offset is known, and add overflow checking on the
-offset arithmetic. For negative offsets (e.g. Ethernet header edits
-at ingress), use skb_cow() to COW the headroom instead. Guard
-offset_valid() against INT_MIN, where negation is undefined.
-
-Fixes: 8b796475fd78 ("net/sched: act_pedit: really ensure the skb is writable")
-Reported-by: Yiming Qian <yimingqian591@gmail.com>
-Reported-by: Keenan Dong <keenanat2000@gmail.com>
-Reported-by: Han Guidong <2045gemini@gmail.com>
-Reported-by: Zhang Cen <rollkingzzc@gmail.com>
-Reviewed-by: Han Guidong <2045gemini@gmail.com>
-Tested-by: Han Guidong <2045gemini@gmail.com>
-Reviewed-by: Davide Caratti <dcaratti@redhat.com>
-Tested-by: Davide Caratti <dcaratti@redhat.com>
-Reviewed-by: Toke Høiland-Jørgensen <toke@redhat.com>
-Tested-by: Toke Høiland-Jørgensen <toke@redhat.com>
-Reviewed-by: Victor Nogueira <victor@mojatatu.com>
-Tested-by: Victor Nogueira <victor@mojatatu.com>
-Acked-by: Jamal Hadi Salim <jhs@mojatatu.com>
-Signed-off-by: Rajat Gupta <rajat.gupta@oss.qualcomm.com>
-Link: https://patch.msgid.link/20260531123221.48732-1-jhs@mojatatu.com
-[rename include file from linux/unaligned.h to asm/unaligned.h]
-Conflicts:
-	include/net/tc_act/tc_pedit.h
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Wentao Guan <guanwentao@uniontech.com>
+Suggested-by: Leon Hwang <leon.hwang@linux.dev>
+Signed-off-by: Varun R Mallya <varunrmallya@gmail.com>
+Link: https://lore.kernel.org/r/20260408190137.101418-3-varunrmallya@gmail.com
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+[shung-hsi.yu: borrowed 'saved_error' variable from commit 00cdcd2900bd
+("selftests/bpf: Don't use libbpf_get_error() in kprobe_multi_test"). ]
+Signed-off-by: Shung-Hsi Yu <shung-hsi.yu@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/tc_act/tc_pedit.h |  1 -
- net/sched/act_pedit.c         | 77 +++++++++++++++++++----------------
- 2 files changed, 41 insertions(+), 37 deletions(-)
+ .../bpf/prog_tests/kprobe_multi_test.c        | 34 +++++++++++++++++++
+ .../bpf/progs/kprobe_multi_sleepable.c        | 25 ++++++++++++++
+ 2 files changed, 59 insertions(+)
+ create mode 100644 tools/testing/selftests/bpf/progs/kprobe_multi_sleepable.c
 
-diff --git a/include/net/tc_act/tc_pedit.h b/include/net/tc_act/tc_pedit.h
-index 83fe3993178180..a26d4cd3b8d6f3 100644
---- a/include/net/tc_act/tc_pedit.h
-+++ b/include/net/tc_act/tc_pedit.h
-@@ -14,7 +14,6 @@ struct tcf_pedit_key_ex {
- struct tcf_pedit_parms {
- 	struct tc_pedit_key	*tcfp_keys;
- 	struct tcf_pedit_key_ex	*tcfp_keys_ex;
--	u32 tcfp_off_max_hint;
- 	unsigned char tcfp_nkeys;
- 	unsigned char tcfp_flags;
- 	struct rcu_head rcu;
-diff --git a/net/sched/act_pedit.c b/net/sched/act_pedit.c
-index 7ba460fda1f4e9..1b076c4f2d1af5 100644
---- a/net/sched/act_pedit.c
-+++ b/net/sched/act_pedit.c
-@@ -16,6 +16,8 @@
- #include <linux/ip.h>
- #include <linux/ipv6.h>
- #include <linux/slab.h>
-+#include <linux/overflow.h>
-+#include <asm/unaligned.h>
- #include <net/ipv6.h>
- #include <net/netlink.h>
- #include <net/pkt_sched.h>
-@@ -237,7 +239,6 @@ static int tcf_pedit_init(struct net *net, struct nlattr *nla,
- 		goto out_free_ex;
- 	}
+diff --git a/tools/testing/selftests/bpf/prog_tests/kprobe_multi_test.c b/tools/testing/selftests/bpf/prog_tests/kprobe_multi_test.c
+index 4041cfa670eb4c..d41e140c315083 100644
+--- a/tools/testing/selftests/bpf/prog_tests/kprobe_multi_test.c
++++ b/tools/testing/selftests/bpf/prog_tests/kprobe_multi_test.c
+@@ -4,6 +4,7 @@
+ #include "trace_helpers.h"
+ #include "kprobe_multi_empty.skel.h"
+ #include "kprobe_multi_override.skel.h"
++#include "kprobe_multi_sleepable.skel.h"
+ #include "bpf/libbpf_internal.h"
+ #include "bpf/hashmap.h"
  
--	nparms->tcfp_off_max_hint = 0;
- 	nparms->tcfp_flags = parm->flags;
- 	nparms->tcfp_nkeys = parm->nkeys;
- 
-@@ -265,14 +266,6 @@ static int tcf_pedit_init(struct net *net, struct nlattr *nla,
- 						   BITS_PER_TYPE(int) - 1,
- 						   nparms->tcfp_keys[i].shift);
- 
--		/* The AT option can read a single byte, we can bound the actual
--		 * value with uchar max.
--		 */
--		cur += (0xff & offmask) >> nparms->tcfp_keys[i].shift;
--
--		/* Each key touches 4 bytes starting from the computed offset */
--		nparms->tcfp_off_max_hint =
--			max(nparms->tcfp_off_max_hint, cur + 4);
- 	}
- 
- 	p = to_pedit(*a);
-@@ -313,15 +306,12 @@ static void tcf_pedit_cleanup(struct tc_action *a)
- 		call_rcu(&parms->rcu, tcf_pedit_cleanup_rcu);
- }
- 
--static bool offset_valid(struct sk_buff *skb, int offset)
-+static bool offset_valid(struct sk_buff *skb, int offset, int len)
+@@ -214,7 +215,9 @@ static void test_attach_api_syms(void)
+ static void test_attach_api_fails(void)
  {
--	if (offset > 0 && offset > skb->len)
--		return false;
--
--	if  (offset < 0 && -offset > skb_headroom(skb))
-+	if (offset < -(int)skb_headroom(skb))
- 		return false;
+ 	LIBBPF_OPTS(bpf_kprobe_multi_opts, opts);
++	LIBBPF_OPTS(bpf_test_run_opts, topts);
+ 	struct kprobe_multi *skel = NULL;
++	struct kprobe_multi_sleepable *sl_skel = NULL;
+ 	struct bpf_link *link = NULL;
+ 	unsigned long long addrs[2];
+ 	const char *syms[2] = {
+@@ -222,6 +225,7 @@ static void test_attach_api_fails(void)
+ 		"bpf_fentry_test2",
+ 	};
+ 	__u64 cookies[2];
++	int saved_error, err;
  
--	return true;
-+	return offset <= (int)skb->len - len;
+ 	addrs[0] = ksym_get_addr("bpf_fentry_test1");
+ 	addrs[1] = ksym_get_addr("bpf_fentry_test2");
+@@ -300,9 +304,39 @@ static void test_attach_api_fails(void)
+ 	if (!ASSERT_EQ(libbpf_get_error(link), -EINVAL, "fail_5_error"))
+ 		goto cleanup;
+ 
++	/* fail_9 - sleepable kprobe multi should not attach */
++	sl_skel = kprobe_multi_sleepable__open();
++	if (!ASSERT_OK_PTR(sl_skel, "sleep_skel_open"))
++		goto cleanup;
++
++	sl_skel->bss->user_ptr = sl_skel;
++
++	err = bpf_program__set_flags(sl_skel->progs.handle_kprobe_multi_sleepable,
++				     BPF_F_SLEEPABLE);
++	if (!ASSERT_OK(err, "sleep_skel_set_flags"))
++		goto cleanup;
++
++	err = kprobe_multi_sleepable__load(sl_skel);
++	if (!ASSERT_OK(err, "sleep_skel_load"))
++		goto cleanup;
++
++	link = bpf_program__attach_kprobe_multi_opts(sl_skel->progs.handle_kprobe_multi_sleepable,
++						     "bpf_fentry_test1", NULL);
++	saved_error = -errno;
++
++	if (!ASSERT_ERR_PTR(link, "fail_9"))
++		goto cleanup;
++
++	if (!ASSERT_EQ(saved_error, -EINVAL, "fail_9_error"))
++		goto cleanup;
++
++	err = bpf_prog_test_run_opts(bpf_program__fd(sl_skel->progs.fentry), &topts);
++	ASSERT_OK(err, "bpf_prog_test_run_opts");
++
+ cleanup:
+ 	bpf_link__destroy(link);
+ 	kprobe_multi__destroy(skel);
++	kprobe_multi_sleepable__destroy(sl_skel);
  }
  
- static int pedit_l4_skb_offset(struct sk_buff *skb, int *hoffset, const int header_type)
-@@ -387,18 +377,10 @@ static int tcf_pedit_act(struct sk_buff *skb, const struct tc_action *a,
- 	struct tcf_pedit_key_ex *tkey_ex;
- 	struct tcf_pedit_parms *parms;
- 	struct tc_pedit_key *tkey;
--	u32 max_offset;
- 	int i;
- 
- 	parms = rcu_dereference_bh(p->parms);
- 
--	max_offset = (skb_transport_header_was_set(skb) ?
--		      skb_transport_offset(skb) :
--		      skb_network_offset(skb)) +
--		     parms->tcfp_off_max_hint;
--	if (skb_ensure_writable(skb, min(skb->len, max_offset)))
--		goto done;
--
- 	tcf_lastuse_update(&p->tcf_tm);
- 	tcf_action_update_bstats(&p->common, skb);
- 
-@@ -406,10 +388,11 @@ static int tcf_pedit_act(struct sk_buff *skb, const struct tc_action *a,
- 	tkey_ex = parms->tcfp_keys_ex;
- 
- 	for (i = parms->tcfp_nkeys; i > 0; i--, tkey++) {
-+		int write_offset, write_len;
- 		int offset = tkey->off;
- 		int hoffset = 0;
--		u32 *ptr, hdata;
--		u32 val;
-+		u32 cur_val, val;
-+		u32 *ptr;
- 		int rc;
- 
- 		if (tkey_ex) {
-@@ -427,13 +410,15 @@ static int tcf_pedit_act(struct sk_buff *skb, const struct tc_action *a,
- 
- 		if (tkey->offmask) {
- 			u8 *d, _d;
-+			int at_offset;
- 
--			if (!offset_valid(skb, hoffset + tkey->at)) {
-+			if (check_add_overflow(hoffset, (int)tkey->at, &at_offset) ||
-+			    !offset_valid(skb, at_offset, sizeof(_d))) {
- 				pr_info_ratelimited("tc action pedit 'at' offset %d out of bounds\n",
- 						    hoffset + tkey->at);
- 				goto bad;
- 			}
--			d = skb_header_pointer(skb, hoffset + tkey->at,
-+			d = skb_header_pointer(skb, at_offset,
- 					       sizeof(_d), &_d);
- 			if (!d)
- 				goto bad;
-@@ -445,31 +430,51 @@ static int tcf_pedit_act(struct sk_buff *skb, const struct tc_action *a,
- 			}
- 		}
- 
--		if (!offset_valid(skb, hoffset + offset)) {
--			pr_info_ratelimited("tc action pedit offset %d out of bounds\n", hoffset + offset);
-+		if (check_add_overflow(hoffset, offset, &write_offset)) {
-+			pr_info_ratelimited("tc action pedit offset overflow\n");
- 			goto bad;
- 		}
- 
--		ptr = skb_header_pointer(skb, hoffset + offset,
--					 sizeof(hdata), &hdata);
--		if (!ptr)
-+		if (!offset_valid(skb, write_offset, sizeof(*ptr))) {
-+			pr_info_ratelimited("tc action pedit offset %d out of bounds\n",
-+					    write_offset);
- 			goto bad;
-+		}
+ static size_t symbol_hash(long key, void *ctx __maybe_unused)
+diff --git a/tools/testing/selftests/bpf/progs/kprobe_multi_sleepable.c b/tools/testing/selftests/bpf/progs/kprobe_multi_sleepable.c
+new file mode 100644
+index 00000000000000..932e1d9c72e2d0
+--- /dev/null
++++ b/tools/testing/selftests/bpf/progs/kprobe_multi_sleepable.c
+@@ -0,0 +1,25 @@
++// SPDX-License-Identifier: GPL-2.0
 +
-+		if (write_offset < 0) {
-+			if (skb_cow(skb, -write_offset))
-+				goto bad;
-+			if (write_offset + (int)sizeof(*ptr) > 0) {
-+				if (skb_ensure_writable(skb,
-+							min_t(int, skb->len,
-+							      write_offset + (int)sizeof(*ptr))))
-+					goto bad;
-+			}
-+		} else {
-+			if (check_add_overflow(write_offset, (int)sizeof(*ptr),
-+					       &write_len))
-+				goto bad;
-+			if (skb_ensure_writable(skb, min_t(int, skb->len,
-+							   write_len)))
-+				goto bad;
-+		}
++#include "vmlinux.h"
++#include <bpf/bpf_helpers.h>
++#include <bpf/bpf_tracing.h>
 +
-+		ptr = (u32 *)(skb->data + write_offset);
-+		cur_val = get_unaligned(ptr);
- 		/* just do it, baby */
- 		switch (cmd) {
- 		case TCA_PEDIT_KEY_EX_CMD_SET:
- 			val = tkey->val;
- 			break;
- 		case TCA_PEDIT_KEY_EX_CMD_ADD:
--			val = (*ptr + tkey->val) & ~tkey->mask;
-+			val = (cur_val + tkey->val) & ~tkey->mask;
- 			break;
- 		default:
- 			pr_info_ratelimited("tc action pedit bad command (%d)\n", cmd);
- 			goto bad;
- 		}
- 
--		*ptr = ((*ptr & tkey->mask) ^ val);
--		if (ptr == &hdata)
--			skb_store_bits(skb, hoffset + offset, ptr, 4);
-+		put_unaligned((cur_val & tkey->mask) ^ val, ptr);
- 	}
- 
- 	goto done;
++void *user_ptr = 0;
++
++SEC("kprobe.multi")
++int handle_kprobe_multi_sleepable(struct pt_regs *ctx)
++{
++	int a, err;
++
++	err = bpf_copy_from_user(&a, sizeof(a), user_ptr);
++	barrier_var(a);
++	return err;
++}
++
++SEC("fentry/bpf_fentry_test1")
++int BPF_PROG(fentry)
++{
++	return 0;
++}
++
++char _license[] SEC("license") = "GPL";
 -- 
 2.53.0
 
