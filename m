@@ -1,60 +1,68 @@
-Return-Path: <stable+bounces-271090-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-271390-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id BGpoONuYRmqYZgsAu9opvQ
-	(envelope-from <stable+bounces-271090-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:59:07 +0200
+	id vLgHBAWbRmrFZwsAu9opvQ
+	(envelope-from <stable+bounces-271390-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:08:21 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3CF876FAD25
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:59:07 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id A816B6FB064
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:08:20 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=aIaNQ9Zz;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-271090-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-271090-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=opxgfHM0;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-271390-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-271390-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 0924A32D5092
-	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:46:57 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 013A83028E8C
+	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:57:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6BCA931DD97;
-	Thu,  2 Jul 2026 16:44:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 320A4331EB6;
+	Thu,  2 Jul 2026 16:56:59 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13E61390613;
-	Thu,  2 Jul 2026 16:44:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE6D3318EC1;
+	Thu,  2 Jul 2026 16:56:57 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783010644; cv=none; b=ttPHxyQNQ/L0WrBxXQvoGQg758q/E7FGSnDRaBlGWNPg7/G8QcxN6juIMD4ZFsHuf3z6t3byEPBhYdby5VwVuCtz2VbXvS+s0fNlyzPW60a0spOjzbgDGFKRZ073sNeU08rOMPkwGrQIU53zMDlfG/PxdcEgSgkvEBM9xFWWChE=
+	t=1783011419; cv=none; b=pDM9F3bdDXo+tG1nArZmNmpARYrzLpzx199xfZsgZIVGs4o5ZkVaGh+9U6INI5crSbVpGGc8O9OdGBaVgX1ArVH11aUsvmySyXebA58377/F8SN0CfLTCoORpMVclY5tX96SVhEfFVU9r+E9On0is8zCEUBB6+YjEYH4qmtDAKU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783010644; c=relaxed/simple;
-	bh=KxjtduipL8sFss095fs9SA3nTVCSVemw8NJ2iT/s3Xk=;
+	s=arc-20240116; t=1783011419; c=relaxed/simple;
+	bh=dJBI+yulwnWf58WRTzPHSb3/WOlhUPB3GK01aL3hR5s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZAFwEMywwb8MQeRzaIFJfd4UcbuTRbWwy41krzpbjzshbqzKJqSCosCnfaIUK47bpoZbeR18gHiZMcOa9XO3YG0fs/vOTqGPHYZK7jrX3l2FFibIMA7JElGg11zYggCls7vz11k1Q+I9pcdgmDoYs+NNL7pMrQFJWNevQ+Rtb9Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aIaNQ9Zz; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 432F81F000E9;
-	Thu,  2 Jul 2026 16:44:02 +0000 (UTC)
+	 MIME-Version:Content-Type; b=MQ0oTLJDRi9hQK4qmtUBXLyNobs7XgA2kUOhFkTsquK6RzqJkiFzZe0bG5G/S50nK3omDotBt7RLyc0jhYnFkwhHzFUN8SsWadZFW24ZzBBIAq/l1MVjg7dsEdhH6O6IXlMkOQa8TGSS39WGlSvmw+L85oIkcVhI4cX+c7oUnEE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=opxgfHM0; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF7C01F00A3A;
+	Thu,  2 Jul 2026 16:56:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1783010642;
-	bh=hQQu4uIvse87wzIti8cRsAr6OWyKUvtixoSNSnSUqPU=;
+	s=korg; t=1783011417;
+	bh=bbssPvm1qspJE9I3snqFyAuuJj46Qg5EL8tcgOtdf4M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=aIaNQ9ZzvdkgjPvIdBMwLgzn0D4YN1azDGoUEglbssh9tVymFZ3BaxgwSNmGPHt1b
-	 lz7PTbSLg6Ac4YhZLi/znOpjRQl/xE5ukThztCwudwToPwq79KMZHWZQj5qdrM7AJB
-	 2S3i5iBmTVx52C9SFpnVJMyxHkJqGqkE7qb4Z6Kg=
+	b=opxgfHM05WUGISwxLxcuRI8pJpKL5qvaVrQFBQ8Qv+GJd1AXVUfXv5e+pMegI8oEE
+	 OdGUJYFuFtgmVJpVxViUe5m37f5gr5e54IzhL99p6lfDzgCyU7WeIgSUYrDMnqi35t
+	 daHmvknP3gPNxTWWo1rAVFFRLcwpCxTvWZ+1FzaI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jeff Layton <jlayton@kernel.org>,
-	Chuck Lever <chuck.lever@oracle.com>
-Subject: [PATCH 6.12 186/204] nfsd: fix posix_acl leak on SETACL decode failure
-Date: Thu,  2 Jul 2026 18:20:43 +0200
-Message-ID: <20260702155122.558468621@linuxfoundation.org>
+	Konstantin Khorenko <khorenko@virtuozzo.com>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Peter Oberparleiter <oberpar@linux.ibm.com>,
+	Masahiro Yamada <masahiroy@kernel.org>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Mikhail Zaslonko <zaslonko@linux.ibm.com>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Pavel Tikhomirov <ptikhomirov@virtuozzo.com>,
+	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <linux@weissschuh.net>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.18 047/108] gcov: use atomic counter updates to fix concurrent access crashes
+Date: Thu,  2 Jul 2026 18:20:44 +0200
+Message-ID: <20260702155113.083195748@linuxfoundation.org>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260702155118.667618796@linuxfoundation.org>
-References: <20260702155118.667618796@linuxfoundation.org>
+In-Reply-To: <20260702155112.110058792@linuxfoundation.org>
+References: <20260702155112.110058792@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,173 +72,164 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-271090-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:jlayton@kernel.org,m:chuck.lever@oracle.com,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:khorenko@virtuozzo.com,m:arnd@arndb.de,m:oberpar@linux.ibm.com,m:masahiroy@kernel.org,m:ojeda@kernel.org,m:zaslonko@linux.ibm.com,m:nathan@kernel.org,m:ptikhomirov@virtuozzo.com,m:linux@weissschuh.net,m:akpm@linux-foundation.org,s:lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCPT_COUNT_TWELVE(0.00)[13];
+	TAGGED_FROM(0.00)[bounces-271390-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	FORWARDED(0.00)[lists@lfdr.de];
 	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,oracle.com:email]
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,linux-foundation.org:email,arndb.de:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 3CF876FAD25
+X-Rspamd-Queue-Id: A816B6FB064
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jeff Layton <jlayton@kernel.org>
+From: Konstantin Khorenko <khorenko@virtuozzo.com>
 
-commit 0853ac544c590880d797b04daa33fcb72b6be0e1 upstream.
+commit 56cb9b7d96b28a1173a510ab25354b6599ad3a33 upstream.
 
-nfsaclsvc_decode_setaclargs() and nfs3svc_decode_setaclargs() each
-call nfs_stream_decode_acl() twice, first for NFS_ACL and then for
-NFS_DFACL.  Each successful call transfers ownership of a freshly
-allocated posix_acl into argp->acl_access or argp->acl_default.  If
-the first call succeeds but the second fails, the decoder returns
-false and argp->acl_access is left dangling.
+GCC's GCOV instrumentation can merge global branch counters with loop
+induction variables as an optimization.  In inflate_fast(), the inner copy
+loops get transformed so that the GCOV counter value is loaded multiple
+times to compute the loop base address, start index, and end bound.  Since
+GCOV counters are global (not per-CPU), concurrent execution on different
+CPUs causes the counter to change between loads, producing inconsistent
+values and out-of-bounds memory writes.
 
-ACLPROC2_SETACL.pc_release was wired to nfssvc_release_attrstat and
-ACLPROC3_SETACL.pc_release was wired to nfs3svc_release_fhandle.
-Both only call fh_put() and have no knowledge of the ACL fields on
-argp.  The posix_acl_release() pairs sat at the out: labels inside
-nfsacld_proc_setacl() and nfsd3_proc_setacl(), but svc_process()
-skips pc_func when pc_decode returns false, so that cleanup is
-unreachable on decode failure:
+The crash manifests during IPComp (IP Payload Compression) processing when
+inflate_fast() runs concurrently on multiple CPUs:
 
-    svc_process_common()
-      pc_decode()                  /* decode_setaclargs: false */
-      /* pc_func skipped */
-      pc_release()                 /* fh_put only -- ACLs leaked */
+  BUG: unable to handle page fault for address: ffffd0a3c0902ffa
+  RIP: inflate_fast+1431
+  Call Trace:
+   zlib_inflate
+   __deflate_decompress
+   crypto_comp_decompress
+   ipcomp_decompress [xfrm_ipcomp]
+   ipcomp_input [xfrm_ipcomp]
+   xfrm_input
 
-The orphaned posix_acl is leaked for the lifetime of the server.
+At the crash point, the compiler generated three loads from the same
+global GCOV counter (__gcov0.inflate_fast+216) to compute base, start, and
+end for an indexed loop.  Another CPU modified the counter between loads,
+making the values inconsistent - the write went 3.4 MB past a 65 KB
+buffer.
 
-Fix by adding nfsaclsvc_release_setacl() and nfs3svc_release_setacl(),
-which release both argp->acl_access and argp->acl_default in addition
-to fh_put(), and wiring them as pc_release for their respective SETACL
-procedures.  pc_release runs on every path svc_process() takes after
-decode, including decode failure, so the posix_acl_release() pairs are
-removed from the proc functions' out: labels to keep ownership in one
-place.  This matches the existing release_getacl() pattern used by
-the sibling GETACL procedures.
+Add -fprofile-update=prefer-atomic to CFLAGS_GCOV at the global level in
+the top-level Makefile, guarded by a try-run compile test.  The test
+compiles a minimal program with and without -fprofile-update=prefer-atomic
+using the full KBUILD_CFLAGS, then compares undefined symbols in the
+resulting object files.  If prefer-atomic introduces new undefined
+references (such as __atomic_fetch_add_8 on i386 or __aarch64_ldadd8_relax
+on arm64 with outline-atomics), the flag is not added -- the kernel does
+not link against libatomic.
 
-Fixes: a257cdd0e217 ("[PATCH] NFSD: Add server support for NFSv3 ACLs.")
-Cc: stable@vger.kernel.org
-Assisted-by: kres:claude-opus-4-7
-Signed-off-by: Jeff Layton <jlayton@kernel.org>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+On architectures where GCC inlines 64-bit atomic counter updates (x86_64,
+s390, ...) the test passes and the flag is enabled, preventing the
+compiler from merging counters with loop induction variables and fixing
+the observed concurrent-access crash.
+
+On architectures where the flag would introduce libatomic dependencies, it
+is silently omitted and behaviour is no worse than before this patch.
+
+Move the CFLAGS_GCOV block from its original position (before the arch
+Makefile include) to after the core KBUILD_CFLAGS assignments but before
+the scripts/Makefile.gcc-plugins include.  This placement ensures the
+try-run test sees arch-specific flags (-m32, -march=,
+-mno-outline-atomics) while avoiding GCC plugin flags (-fplugin=) that
+would break the test on clean builds when plugin shared objects do not yet
+exist.
+
+Link: https://lore.kernel.org/20260511105052.417187-2-khorenko@virtuozzo.com
+Signed-off-by: Konstantin Khorenko <khorenko@virtuozzo.com>
+Tested-by: Arnd Bergmann <arnd@arndb.de>
+Tested-by: Peter Oberparleiter <oberpar@linux.ibm.com>
+Reviewed-by: Peter Oberparleiter <oberpar@linux.ibm.com>
+Cc: Masahiro Yamada <masahiroy@kernel.org>
+Cc: Miguel Ojeda <ojeda@kernel.org>
+Cc: Mikhail Zaslonko <zaslonko@linux.ibm.com>
+Cc: Nathan Chancellor <nathan@kernel.org>
+Cc: Pavel Tikhomirov <ptikhomirov@virtuozzo.com>
+Cc: Thomas Weißschuh <linux@weissschuh.net>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nfsd/nfs2acl.c |   17 ++++++++++++-----
- fs/nfsd/nfs3acl.c |   17 ++++++++++++-----
- 2 files changed, 24 insertions(+), 10 deletions(-)
+ Makefile |   27 +++++++++++++++++++++------
+ 1 file changed, 21 insertions(+), 6 deletions(-)
 
---- a/fs/nfsd/nfs2acl.c
-+++ b/fs/nfsd/nfs2acl.c
-@@ -131,10 +131,7 @@ static __be32 nfsacld_proc_setacl(struct
- 	resp->status = fh_getattr(fh, &resp->stat);
+--- a/Makefile
++++ b/Makefile
+@@ -806,12 +806,6 @@ endif # KBUILD_EXTMOD
+ # Defaults to vmlinux, but the arch makefile usually adds further targets
+ all: vmlinux
  
- out:
--	/* argp->acl_{access,default} may have been allocated in
--	   nfssvc_decode_setaclargs. */
--	posix_acl_release(argp->acl_access);
--	posix_acl_release(argp->acl_default);
-+	/* argp->acl_{access,default} are released in nfsaclsvc_release_setacl. */
- 	return rpc_success;
+-CFLAGS_GCOV	:= -fprofile-arcs -ftest-coverage
+-ifdef CONFIG_CC_IS_GCC
+-CFLAGS_GCOV	+= -fno-tree-loop-im
+-endif
+-export CFLAGS_GCOV
+-
+ # The arch Makefiles can override CC_FLAGS_FTRACE. We may also append it later.
+ ifdef CONFIG_FUNCTION_TRACER
+   CC_FLAGS_FTRACE := -pg
+@@ -1082,6 +1076,27 @@ endif
+ # Ensure compilers do not transform certain loops into calls to wcslen()
+ KBUILD_CFLAGS += -fno-builtin-wcslen
  
- out_drop_lock:
-@@ -310,6 +307,16 @@ static void nfsaclsvc_release_access(str
- 	fh_put(&resp->fh);
- }
- 
-+static void nfsaclsvc_release_setacl(struct svc_rqst *rqstp)
-+{
-+	struct nfsd3_setaclargs *argp = rqstp->rq_argp;
-+	struct nfsd_attrstat *resp = rqstp->rq_resp;
++CFLAGS_GCOV	:= -fprofile-arcs -ftest-coverage
++ifdef CONFIG_CC_IS_GCC
++CFLAGS_GCOV	+= -fno-tree-loop-im
++# Use atomic counter updates to avoid concurrent-access crashes in GCOV.
++# Only enable if -fprofile-update=prefer-atomic does not introduce new
++# undefined symbols (e.g. libatomic calls that the kernel cannot link).
++CFLAGS_GCOV	+= $(call try-run,\
++	echo 'long long x; void f(void){x++;}' | \
++	$(CC) $(KBUILD_CPPFLAGS) $(KBUILD_CFLAGS) -w -fprofile-arcs \
++	-ftest-coverage -x c - -c -o "$$TMP.base" && \
++	echo 'long long x; void f(void){x++;}' | \
++	$(CC) $(KBUILD_CPPFLAGS) $(KBUILD_CFLAGS) -w -fprofile-arcs \
++	-ftest-coverage -fprofile-update=prefer-atomic \
++	-x c - -c -o "$$TMP" && \
++	$(NM) "$$TMP.base" | grep ' U ' > "$$TMP.ubase" || true ; \
++	$(NM) "$$TMP" | grep ' U ' > "$$TMP.utest" || true ; \
++	cmp -s "$$TMP.ubase" "$$TMP.utest",\
++	-fprofile-update=prefer-atomic)
++endif
++export CFLAGS_GCOV
 +
-+	fh_put(&resp->fh);
-+	posix_acl_release(argp->acl_access);
-+	posix_acl_release(argp->acl_default);
-+}
-+
- #define ST 1		/* status*/
- #define AT 21		/* attributes */
- #define pAT (1+AT)	/* post attributes - conditional */
-@@ -343,7 +350,7 @@ static const struct svc_procedure nfsd_a
- 		.pc_func = nfsacld_proc_setacl,
- 		.pc_decode = nfsaclsvc_decode_setaclargs,
- 		.pc_encode = nfssvc_encode_attrstatres,
--		.pc_release = nfssvc_release_attrstat,
-+		.pc_release = nfsaclsvc_release_setacl,
- 		.pc_argsize = sizeof(struct nfsd3_setaclargs),
- 		.pc_argzero = sizeof(struct nfsd3_setaclargs),
- 		.pc_ressize = sizeof(struct nfsd_attrstat),
---- a/fs/nfsd/nfs3acl.c
-+++ b/fs/nfsd/nfs3acl.c
-@@ -118,10 +118,7 @@ out_drop_lock:
- out_errno:
- 	resp->status = nfserrno(error);
- out:
--	/* argp->acl_{access,default} may have been allocated in
--	   nfs3svc_decode_setaclargs. */
--	posix_acl_release(argp->acl_access);
--	posix_acl_release(argp->acl_default);
-+	/* argp->acl_{access,default} are released in nfs3svc_release_setacl. */
- 	return rpc_success;
- }
- 
-@@ -223,6 +220,16 @@ static void nfs3svc_release_getacl(struc
- 	posix_acl_release(resp->acl_default);
- }
- 
-+static void nfs3svc_release_setacl(struct svc_rqst *rqstp)
-+{
-+	struct nfsd3_setaclargs *argp = rqstp->rq_argp;
-+	struct nfsd3_attrstat *resp = rqstp->rq_resp;
-+
-+	fh_put(&resp->fh);
-+	posix_acl_release(argp->acl_access);
-+	posix_acl_release(argp->acl_default);
-+}
-+
- #define ST 1		/* status*/
- #define AT 21		/* attributes */
- #define pAT (1+AT)	/* post attributes - conditional */
-@@ -256,7 +263,7 @@ static const struct svc_procedure nfsd_a
- 		.pc_func = nfsd3_proc_setacl,
- 		.pc_decode = nfs3svc_decode_setaclargs,
- 		.pc_encode = nfs3svc_encode_setaclres,
--		.pc_release = nfs3svc_release_fhandle,
-+		.pc_release = nfs3svc_release_setacl,
- 		.pc_argsize = sizeof(struct nfsd3_setaclargs),
- 		.pc_argzero = sizeof(struct nfsd3_setaclargs),
- 		.pc_ressize = sizeof(struct nfsd3_attrstat),
+ # change __FILE__ to the relative path to the source directory
+ ifdef building_out_of_srctree
+ KBUILD_CPPFLAGS += $(call cc-option,-fmacro-prefix-map=$(srcroot)/=)
 
 
 
