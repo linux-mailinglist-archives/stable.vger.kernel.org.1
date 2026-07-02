@@ -1,63 +1,60 @@
-Return-Path: <stable+bounces-271338-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-270734-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id qskxFbeZRmoZZwsAu9opvQ
-	(envelope-from <stable+bounces-271338-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:02:47 +0200
+	id wfTsLQ2fRmppaQsAu9opvQ
+	(envelope-from <stable+bounces-270734-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:25:33 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA7476FAE77
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:02:46 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F1EF6FB506
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:25:33 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=ECBN2gfq;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-271338-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-271338-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=itZk4WoE;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-270734-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-270734-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id DF75030B1EC3
-	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:54:42 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 766BD3276E6C
+	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:32:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 88E4E25B09B;
-	Thu,  2 Jul 2026 16:54:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 770813ACA51;
+	Thu,  2 Jul 2026 16:28:33 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E80B433E87;
-	Thu,  2 Jul 2026 16:54:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 355C34E3776;
+	Thu,  2 Jul 2026 16:28:29 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783011282; cv=none; b=UtcUvEr2cBusj2bMg9Hg0lqzgXX/I+UyTyCY8UfWaqRgEDjZ8Cb/kd0GECS3NZO1hvTaQ+sCYmO8jIpW+bXPXta7aAxphN2XJJoj5HiRylKYnhAS/fY8V5ziXvU6JkL3vfvIw6/MijvPb/61+hpdL0I+3QtPuvdU28PdDXFR130=
+	t=1783009712; cv=none; b=J/Pm63aiDwYWyGb7IOXWcYj2IE2xzBVEZ6ovAr3V6w36uUeSoZ4nCyaHvMdT6f6v5tjs2g8O4TjGzUX9LtlPFz0BNQLW51CNuTGpsUH0JH2protReCJaHeps5UjG/MXr74xk1O4+S4Mc8Kw/DWmo5TBBv/O7CBXi4q2JhS++90I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783011282; c=relaxed/simple;
-	bh=+7suiI/uf+bQNtLPWyzPUbH9u1rBjElzuBNeT2chkNU=;
+	s=arc-20240116; t=1783009712; c=relaxed/simple;
+	bh=KR5+st5gv7Ml+t7P2uZsBEFTdUcKXKjMRCwO9y4pBt8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FjPhMVeGo3tpr6qWq6dmIUcbR5Gyfs5hMWSs+ND9wBPykaejmreXmvS/7yO7qZ2b3YvC6n/ZqlKaP+Os/4rD+DwHBpimjV1MEN9WGyA7g+dKIjuq5Fi/Nz2LIbXQK3Z6e9z+NKk61meKS4deCwqrjwD4Jtni76XOYz7Mu3Xbwk0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ECBN2gfq; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75AEA1F000E9;
-	Thu,  2 Jul 2026 16:54:40 +0000 (UTC)
+	 MIME-Version; b=KVvFQZ5JFwJK87K+V4Ednrk9ndgyQCA9WtBUse1V+Ix7IuLmPXFvD1vJzRPPt9X6koAGBgRVicUWk/TifcYZCI+uPkEDSQMt+IQthNjfXNSQ/ygXkeslYQYlcZ6bLqknwyAjJO6I688pVSjfm1a5pZ73gwsUWQjTC8drIzgDQbw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=itZk4WoE; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23D1C1F000E9;
+	Thu,  2 Jul 2026 16:28:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1783011281;
-	bh=If+C75Zss9AmZTpiyJPNS6jPBar6/CgjUixjlqA6+Mw=;
+	s=korg; t=1783009709;
+	bh=XAir8E6G67Oh8E///kN4h7JGT7fcYaTnCjJmUIiLXww=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=ECBN2gfq11uPsEK39o+jxupI3aazUWjLDTG5Koy562BIzzYy0nLroCSrPAuwsSLR+
-	 0QOsEWXTmB4BGwUzXid/qZeHMeNbAmwjQWe+Wvj4m4i/Kt5+aFiTEbp3nAMNLuZZny
-	 5mFtl+ggZNaHP4CF4PdJDaC8dPVSYkxdoHauNxuc=
+	b=itZk4WoE9P2IeMoJbPzgcwW7U4V54/Y/vWfeRPTsxVdO2spLvX3rGiM7RYAa/Qqts
+	 tecraatFZA4Zcp/k8h78XuVl0rwJLUT0TvzlVXoiyIG1Zw9f9kmtkZvKXGBNSn56PF
+	 sFOBk7bWbVE8PxFG2S1kac1tHCD2PPnpxT4Juu44=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tj <tj.iam.tj@proton.me>,
-	Jeff Layton <jlayton@kernel.org>,
-	NeilBrown <neil@brown.name>,
-	Chuck Lever <chuck.lever@oracle.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 005/108] lockd: fix TEST handling when not all permissions are available.
+	Shaomin Chen <eeesssooo020@gmail.com>,
+	Jarkko Sakkinen <jarkko@kernel.org>
+Subject: [PATCH 5.15 59/95] keys: Pin request_key_auth payload in instantiate paths
 Date: Thu,  2 Jul 2026 18:20:02 +0200
-Message-ID: <20260702155112.225182531@linuxfoundation.org>
+Message-ID: <20260702155110.451512449@linuxfoundation.org>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260702155112.110058792@linuxfoundation.org>
-References: <20260702155112.110058792@linuxfoundation.org>
+In-Reply-To: <20260702155109.196223802@linuxfoundation.org>
+References: <20260702155109.196223802@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,292 +68,254 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	RCVD_TLS_LAST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-270734-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:eeesssooo020@gmail.com,m:jarkko@kernel.org,s:lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-271338-lists,stable=lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:tj.iam.tj@proton.me,m:jlayton@kernel.org,m:neil@brown.name,m:chuck.lever@oracle.com,m:sashal@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
+	FORWARDED(0.00)[lists@lfdr.de];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,proton.me:email,oracle.com:email,brown.name:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: DA7476FAE77
+X-Rspamd-Queue-Id: 4F1EF6FB506
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: NeilBrown <neil@brown.name>
+From: Shaomin Chen <eeesssooo020@gmail.com>
 
-[ Upstream commit 0b474240327cebeff08ad429e8ed3cfc6c8ee816 ]
+commit fd15b457a86939c38aa12116adabd8ff686c5e51 upstream.
 
-The F_GETLK fcntl can work with either read access or write access or
-both.  It can query F_RDLCK and F_WRLCK locks in either case.
+A: request_key()       B: KEYCTL_INSTANTIATE_IOV
+================       =========================
 
-However lockd currently treats F_GETLK similar to F_SETLK in that read
-access is required to query an F_RDLCK lock and write access is required
-to query a F_WRLCK lock.
+create auth key
+store rka in auth key
+wait for helper
+                       get auth key
+                       load rka from auth key
+                       copy user payload
+                       sleep on #PF
 
-This is wrong and can cause problems - e.g.  when qemu accesses a
-read-only (e.g. iso) filesystem image over NFS (though why it queries
-if it can get a write lock - I don't know.  But it does, and this works
-with local filesystems).
+helper completed
+detach and free rka
+destroy auth key
+                       wake up
+                       use rka->target_key
+                       **USE-AFTER-FREE**
 
-So we need TEST requests to be handled differently.  To do this:
+Give request_key_auth payloads a refcount.  Take a payload reference while
+authkey->sem stabilizes the payload and revocation state.  Hold that
+reference across the instantiate and reject paths.  Drop the auth key
+owning reference from revoke and destroy.
 
-- change nlm_do_fopen() to accept O_RDWR as a mode and in that case
-  succeed if either a O_RDONLY or O_WRONLY file can be opened.
-- change nlm_lookup_file() to accept a mode argument from caller,
-  instead of deducing base on lock time, and pass that on to nlm_do_fopen()
-- change nlm4svc_retrieve_args() and nlmsvc_retrieve_args() to detect
-  TEST requests and pass O_RDWR as a mode to nlm_lookup_file, passing
-  the same mode as before for other requests.  Also set
-   lock->fl.c.flc_file to whichever file is available for TEST requests.
-- change nlmsvc_testlock() to also not calculate the mode, but to use
-  whatever was stored in lock->fl.c.flc_file.
-
-This behaviour of lockd - requesting O_WRONLY access to TEST for
-exclusive locks - has been present at least since git history began.
-However it was hidden until recently because knfsd ignored the access
-requested by lockd and required only READ access for all locking
-requests (unless the underlying filesystem provided an f_op->open
-function which checked access permissions).
-
-The commit mentioned in Fixes: below changed nfsd_permission() to NOT
-override the access request for LOCK requests and this exposed the bug
-that we are now fixing.
-
-Note that there is another issue that this patch does not address.
-The flock(.., LOCK_EX) call is permitted on a read-only file descriptor.
-Linux NFS maps this to NLM locking as whole-file byte-range locks.
-nfsd will see this as though it were fcntl( F_SETLK (F_WRLCK)) and will
-now require write access, which it might not be able to get.
-It is not clear if this is a problem in practice, or what the best
-solution might be.  So no attempt is made to address it.
-
-Reported-by: Tj <tj.iam.tj@proton.me>
-Link: https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=1128861
-Fixes: 4cc9b9f2bf4d ("nfsd: refine and rename NFSD_MAY_LOCK")
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
-Signed-off-by: NeilBrown <neil@brown.name>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+[jarkko: Replaced the first two paragraphs of text with an actual
+ concurrency scenario.]
+Cc: stable@vger.kernel.org # v5.10+
+Fixes: b5f545c880a2 ("[PATCH] keys: Permit running process to instantiate keys")
+Reported-by: Shaomin Chen <eeesssooo020@gmail.com>
+Closes: https://lore.kernel.org/r/20260519144403.436694-1-eeesssooo020@gmail.com
+Signed-off-by: Shaomin Chen <eeesssooo020@gmail.com>
+Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/lockd/svc4proc.c         | 13 ++++++++++---
- fs/lockd/svclock.c          |  4 +---
- fs/lockd/svcproc.c          | 15 ++++++++++++---
- fs/lockd/svcsubs.c          | 35 +++++++++++++++++++++++++----------
- include/linux/lockd/lockd.h |  2 +-
- 5 files changed, 49 insertions(+), 20 deletions(-)
+ include/keys/request_key_auth-type.h |    2 ++
+ security/keys/internal.h             |    2 ++
+ security/keys/keyctl.c               |   24 ++++++++++++++++++------
+ security/keys/request_key_auth.c     |   33 +++++++++++++++++++++++++++++++--
+ 4 files changed, 53 insertions(+), 8 deletions(-)
 
-diff --git a/fs/lockd/svc4proc.c b/fs/lockd/svc4proc.c
-index 4b6f18d977343d..75e020a8bfd072 100644
---- a/fs/lockd/svc4proc.c
-+++ b/fs/lockd/svc4proc.c
-@@ -26,6 +26,8 @@ nlm4svc_retrieve_args(struct svc_rqst *rqstp, struct nlm_args *argp,
- 	struct nlm_host		*host = NULL;
- 	struct nlm_file		*file = NULL;
- 	struct nlm_lock		*lock = &argp->lock;
-+	bool			is_test = (rqstp->rq_proc == NLMPROC_TEST ||
-+					   rqstp->rq_proc == NLMPROC_TEST_MSG);
- 	__be32			error = 0;
+--- a/include/keys/request_key_auth-type.h
++++ b/include/keys/request_key_auth-type.h
+@@ -9,12 +9,14 @@
+ #define _KEYS_REQUEST_KEY_AUTH_TYPE_H
  
- 	/* nfsd callbacks must have been installed for this procedure */
-@@ -46,15 +48,20 @@ nlm4svc_retrieve_args(struct svc_rqst *rqstp, struct nlm_args *argp,
- 	if (filp != NULL) {
- 		int mode = lock_to_openmode(&lock->fl);
+ #include <linux/key.h>
++#include <linux/refcount.h>
  
-+		if (is_test)
-+			mode = O_RDWR;
-+
- 		lock->fl.c.flc_flags = FL_POSIX;
- 
--		error = nlm_lookup_file(rqstp, &file, lock);
-+		error = nlm_lookup_file(rqstp, &file, lock, mode);
- 		if (error)
- 			goto no_locks;
- 		*filp = file;
--
- 		/* Set up the missing parts of the file_lock structure */
--		lock->fl.c.flc_file = file->f_file[mode];
-+		if (is_test)
-+			lock->fl.c.flc_file = nlmsvc_file_file(file);
-+		else
-+			lock->fl.c.flc_file = file->f_file[mode];
- 		lock->fl.c.flc_pid = current->tgid;
- 		lock->fl.fl_start = (loff_t)lock->lock_start;
- 		lock->fl.fl_end = lock->lock_len ?
-diff --git a/fs/lockd/svclock.c b/fs/lockd/svclock.c
-index d66e8285159996..c35ffa1b4b89d4 100644
---- a/fs/lockd/svclock.c
-+++ b/fs/lockd/svclock.c
-@@ -611,7 +611,6 @@ nlmsvc_testlock(struct svc_rqst *rqstp, struct nlm_file *file,
- 		struct nlm_lock *conflock)
- {
- 	int			error;
--	int			mode;
- 	__be32			ret;
- 
- 	dprintk("lockd: nlmsvc_testlock(%s/%ld, ty=%d, %Ld-%Ld)\n",
-@@ -626,14 +625,13 @@ nlmsvc_testlock(struct svc_rqst *rqstp, struct nlm_file *file,
- 		goto out;
- 	}
- 
--	mode = lock_to_openmode(&lock->fl);
- 	locks_init_lock(&conflock->fl);
- 	/* vfs_test_lock only uses start, end, and owner, but tests flc_file */
- 	conflock->fl.c.flc_file = lock->fl.c.flc_file;
- 	conflock->fl.fl_start = lock->fl.fl_start;
- 	conflock->fl.fl_end = lock->fl.fl_end;
- 	conflock->fl.c.flc_owner = lock->fl.c.flc_owner;
--	error = vfs_test_lock(file->f_file[mode], &conflock->fl);
-+	error = vfs_test_lock(lock->fl.c.flc_file, &conflock->fl);
- 	if (error) {
- 		/* We can't currently deal with deferred test requests */
- 		if (error == FILE_LOCK_DEFERRED)
-diff --git a/fs/lockd/svcproc.c b/fs/lockd/svcproc.c
-index 5817ef272332d9..d98e8d684376b7 100644
---- a/fs/lockd/svcproc.c
-+++ b/fs/lockd/svcproc.c
-@@ -55,6 +55,8 @@ nlmsvc_retrieve_args(struct svc_rqst *rqstp, struct nlm_args *argp,
- 	struct nlm_host		*host = NULL;
- 	struct nlm_file		*file = NULL;
- 	struct nlm_lock		*lock = &argp->lock;
-+	bool			is_test = (rqstp->rq_proc == NLMPROC_TEST ||
-+					   rqstp->rq_proc == NLMPROC_TEST_MSG);
- 	int			mode;
- 	__be32			error = 0;
- 
-@@ -70,15 +72,22 @@ nlmsvc_retrieve_args(struct svc_rqst *rqstp, struct nlm_args *argp,
- 
- 	/* Obtain file pointer. Not used by FREE_ALL call. */
- 	if (filp != NULL) {
--		error = cast_status(nlm_lookup_file(rqstp, &file, lock));
-+		mode = lock_to_openmode(&lock->fl);
-+
-+		if (is_test)
-+			mode = O_RDWR;
-+
-+		error = cast_status(nlm_lookup_file(rqstp, &file, lock, mode));
- 		if (error != 0)
- 			goto no_locks;
- 		*filp = file;
- 
- 		/* Set up the missing parts of the file_lock structure */
--		mode = lock_to_openmode(&lock->fl);
- 		lock->fl.c.flc_flags = FL_POSIX;
--		lock->fl.c.flc_file  = file->f_file[mode];
-+		if (is_test)
-+			lock->fl.c.flc_file = nlmsvc_file_file(file);
-+		else
-+			lock->fl.c.flc_file = file->f_file[mode];
- 		lock->fl.c.flc_pid = current->tgid;
- 		lock->fl.fl_lmops = &nlmsvc_lock_operations;
- 		nlmsvc_locks_init_private(&lock->fl, host, (pid_t)lock->svid);
-diff --git a/fs/lockd/svcsubs.c b/fs/lockd/svcsubs.c
-index 9103896164f688..7ea204eadfcace 100644
---- a/fs/lockd/svcsubs.c
-+++ b/fs/lockd/svcsubs.c
-@@ -82,18 +82,35 @@ int lock_to_openmode(struct file_lock *lock)
-  *
-  * We have to make sure we have the right credential to open
-  * the file.
-+ *
-+ * mode can be O_RDONLY(0), O_WRONLY(1) or O_RDWR(2). The latter
-+ * means success can be achieved with EITHER O_RDONLY or O_WRONLY.
-+ * It does NOT mean both read and write are required.
+ /*
+  * Authorisation record for request_key().
   */
- static __be32 nlm_do_fopen(struct svc_rqst *rqstp,
- 			   struct nlm_file *file, int mode)
- {
--	struct file **fp = &file->f_file[mode];
--	__be32	nfserr;
-+	__be32 nfserr = nlm_lck_denied_nolocks;
-+	__be32 deferred = 0;
-+	struct file **fp;
-+	int m;
+ struct request_key_auth {
+ 	struct rcu_head		rcu;
++	refcount_t		usage;
+ 	struct key		*target_key;
+ 	struct key		*dest_keyring;
+ 	const struct cred	*cred;
+--- a/security/keys/internal.h
++++ b/security/keys/internal.h
+@@ -217,6 +217,8 @@ extern struct key *request_key_auth_new(
+ 					const void *callout_info,
+ 					size_t callout_len,
+ 					struct key *dest_keyring);
++struct request_key_auth *request_key_auth_get(struct key *authkey);
++void request_key_auth_put(struct request_key_auth *rka);
  
--	if (*fp)
--		return 0;
--	nfserr = nlmsvc_ops->fopen(rqstp, &file->f_handle, fp, mode);
--	if (nfserr)
--		dprintk("lockd: open failed (error %d)\n", nfserr);
-+	for (m = O_RDONLY ; m <= O_WRONLY ; m++) {
-+		if (mode != O_RDWR && mode != m)
-+			continue;
-+
-+		fp = &file->f_file[m];
-+		if (*fp)
-+			return 0;
-+		nfserr = nlmsvc_ops->fopen(rqstp, &file->f_handle, fp, m);
-+		if (!nfserr)
-+			return 0;
-+		if (nfserr == nlm_drop_reply)
-+			deferred = nfserr;
+ extern struct key *key_get_instantiation_authkey(key_serial_t target_id);
+ 
+--- a/security/keys/keyctl.c
++++ b/security/keys/keyctl.c
+@@ -1196,9 +1196,13 @@ static long keyctl_instantiate_key_commo
+ 	if (!instkey)
+ 		goto error;
+ 
+-	rka = instkey->payload.data[0];
+-	if (rka->target_key->serial != id)
++	rka = request_key_auth_get(instkey);
++	if (!rka) {
++		ret = -EKEYREVOKED;
+ 		goto error;
 +	}
-+	if (deferred)
-+		return deferred;
-+	dprintk("lockd: open failed (error %d)\n", ntohl(nfserr));
- 	return nfserr;
++	if (rka->target_key->serial != id)
++		goto error_put_rka;
+ 
+ 	/* pull the payload in if one was supplied */
+ 	payload = NULL;
+@@ -1207,7 +1211,7 @@ static long keyctl_instantiate_key_commo
+ 		ret = -ENOMEM;
+ 		payload = kvmalloc(plen, GFP_KERNEL);
+ 		if (!payload)
+-			goto error;
++			goto error_put_rka;
+ 
+ 		ret = -EFAULT;
+ 		if (!copy_from_iter_full(payload, plen, from))
+@@ -1233,6 +1237,8 @@ static long keyctl_instantiate_key_commo
+ 
+ error2:
+ 	kvfree_sensitive(payload, plen);
++error_put_rka:
++	request_key_auth_put(rka);
+ error:
+ 	return ret;
+ }
+@@ -1358,15 +1364,19 @@ long keyctl_reject_key(key_serial_t id,
+ 	if (!instkey)
+ 		goto error;
+ 
+-	rka = instkey->payload.data[0];
+-	if (rka->target_key->serial != id)
++	rka = request_key_auth_get(instkey);
++	if (!rka) {
++		ret = -EKEYREVOKED;
+ 		goto error;
++	}
++	if (rka->target_key->serial != id)
++		goto error_put_rka;
+ 
+ 	/* find the destination keyring if present (which must also be
+ 	 * writable) */
+ 	ret = get_instantiation_keyring(ringid, rka, &dest_keyring);
+ 	if (ret < 0)
+-		goto error;
++		goto error_put_rka;
+ 
+ 	/* instantiate the key and link it into a keyring */
+ 	ret = key_reject_and_link(rka->target_key, timeout, error,
+@@ -1379,6 +1389,8 @@ long keyctl_reject_key(key_serial_t id,
+ 	if (ret == 0)
+ 		keyctl_change_reqkey_auth(NULL);
+ 
++error_put_rka:
++	request_key_auth_put(rka);
+ error:
+ 	return ret;
+ }
+--- a/security/keys/request_key_auth.c
++++ b/security/keys/request_key_auth.c
+@@ -23,6 +23,7 @@ static void request_key_auth_describe(co
+ static void request_key_auth_revoke(struct key *);
+ static void request_key_auth_destroy(struct key *);
+ static long request_key_auth_read(const struct key *, char *, size_t);
++static void request_key_auth_rcu_disposal(struct rcu_head *);
+ 
+ /*
+  * The request-key authorisation key type definition.
+@@ -116,6 +117,31 @@ static void free_request_key_auth(struct
  }
  
-@@ -103,17 +120,15 @@ static __be32 nlm_do_fopen(struct svc_rqst *rqstp,
+ /*
++ * Take a reference to the request-key authorisation payload so callers can
++ * drop authkey->sem before doing operations that may sleep.
++ */
++struct request_key_auth *request_key_auth_get(struct key *authkey)
++{
++	struct request_key_auth *rka;
++
++	down_read(&authkey->sem);
++	rka = dereference_key_locked(authkey);
++	if (rka && !test_bit(KEY_FLAG_REVOKED, &authkey->flags))
++		refcount_inc(&rka->usage);
++	else
++		rka = NULL;
++	up_read(&authkey->sem);
++
++	return rka;
++}
++
++void request_key_auth_put(struct request_key_auth *rka)
++{
++	if (rka && refcount_dec_and_test(&rka->usage))
++		call_rcu(&rka->rcu, request_key_auth_rcu_disposal);
++}
++
++/*
+  * Dispose of the request_key_auth record under RCU conditions
   */
- __be32
- nlm_lookup_file(struct svc_rqst *rqstp, struct nlm_file **result,
--					struct nlm_lock *lock)
-+		struct nlm_lock *lock, int mode)
- {
- 	struct nlm_file	*file;
- 	unsigned int	hash;
- 	__be32		nfserr;
--	int		mode;
+ static void request_key_auth_rcu_disposal(struct rcu_head *rcu)
+@@ -136,8 +162,10 @@ static void request_key_auth_revoke(stru
+ 	struct request_key_auth *rka = dereference_key_locked(key);
  
- 	nlm_debug_print_fh("nlm_lookup_file", &lock->fh);
+ 	kenter("{%d}", key->serial);
++	if (!rka)
++		return;
+ 	rcu_assign_keypointer(key, NULL);
+-	call_rcu(&rka->rcu, request_key_auth_rcu_disposal);
++	request_key_auth_put(rka);
+ }
  
- 	hash = file_hash(&lock->fh);
--	mode = lock_to_openmode(&lock->fl);
+ /*
+@@ -150,7 +178,7 @@ static void request_key_auth_destroy(str
+ 	kenter("{%d}", key->serial);
+ 	if (rka) {
+ 		rcu_assign_keypointer(key, NULL);
+-		call_rcu(&rka->rcu, request_key_auth_rcu_disposal);
++		request_key_auth_put(rka);
+ 	}
+ }
  
- 	/* Lock file table */
- 	mutex_lock(&nlm_file_mutex);
-diff --git a/include/linux/lockd/lockd.h b/include/linux/lockd/lockd.h
-index c8f0f9458f2cc0..d9930fc43ca540 100644
---- a/include/linux/lockd/lockd.h
-+++ b/include/linux/lockd/lockd.h
-@@ -293,7 +293,7 @@ void		  nlmsvc_locks_init_private(struct file_lock *, struct nlm_host *, pid_t);
-  * File handling for the server personality
-  */
- __be32		  nlm_lookup_file(struct svc_rqst *, struct nlm_file **,
--					struct nlm_lock *);
-+				  struct nlm_lock *, int);
- void		  nlm_release_file(struct nlm_file *);
- void		  nlmsvc_put_lockowner(struct nlm_lockowner *);
- void		  nlmsvc_release_lockowner(struct nlm_lock *);
--- 
-2.53.0
-
+@@ -174,6 +202,7 @@ struct key *request_key_auth_new(struct
+ 	rka = kzalloc(sizeof(*rka), GFP_KERNEL);
+ 	if (!rka)
+ 		goto error;
++	refcount_set(&rka->usage, 1);
+ 	rka->callout_info = kmemdup(callout_info, callout_len, GFP_KERNEL);
+ 	if (!rka->callout_info)
+ 		goto error_free_rka;
 
 
 
