@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-271341-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-270859-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id mPUhCmmaRmp9ZwsAu9opvQ
-	(envelope-from <stable+bounces-271341-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:05:45 +0200
+	id XgtgOpuTRmqcYwsAu9opvQ
+	(envelope-from <stable+bounces-270859-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:36:43 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id C11BC6FAF82
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:05:44 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2C11E6FA49C
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:36:43 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=DuXeXWo2;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-271341-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-271341-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=srZMjl9v;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-270859-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-270859-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 2CFAF30B1C68
-	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:54:51 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 16C5B302159E
+	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:36:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1296524E4C3;
-	Thu,  2 Jul 2026 16:54:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF0AA32ED4E;
+	Thu,  2 Jul 2026 16:33:56 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E29C11C695;
-	Thu,  2 Jul 2026 16:54:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 860B0DDA9;
+	Thu,  2 Jul 2026 16:33:55 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783011289; cv=none; b=CQYQH1F7FTQ/rSDgBryCVPKm3W4RYmz49NviaXpnFnhjmU9vVFQUJPz9gxoNcJWD7Q9d9aoskht9UOQCABlGQ3vFveknPkfNMQr7t6HSYn2JOpvoXMIwGUO7QPF1p+5gZoqrQ0o9Th773f8IpZzb0qbD9IdDDMkZoRH28qns3B8=
+	t=1783010036; cv=none; b=nnR3qPznT2YIZ3zP9Y7wpXCPNgR5QWiLNO1fhdLDRRHym2GP7JbVJsIJnI416glmw4WR2ejzYEvaitlvR36Ypk6yKsAjIW6178LphfIkdu3rpv4tUWSGzM7LfwuA3iISbOjkNy0rqEZBIFZNHCK/p17VGuaRfwTDceWJ87L7pOQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783011289; c=relaxed/simple;
-	bh=xkCYcodTQhvhhXGgwB02/DH9oh5ouwb0wg4xdhaEK+Q=;
+	s=arc-20240116; t=1783010036; c=relaxed/simple;
+	bh=cJ/e8ZkNbg0Iv/J6mxyxWWx+SlEGpO+Qn3S1vPDERHw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YMuQ4RaBh8l/Xd7OsUEd/tTk4XDr+onzROM+VM31RqPi2bBiWwTPOeyVDEriyzGJzqyI+iaXUtNemGYywJ0MeP1RAJBfKBsHmeHAOnqCWCCOM279cGYcBqPCt4Iw2ICdS7fclTD36vteaV1d61DP7f8OUhM34c6Gt+z/xxDCooY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DuXeXWo2; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 557B01F00A3A;
-	Thu,  2 Jul 2026 16:54:48 +0000 (UTC)
+	 MIME-Version; b=FA2/wKKbcPQu06K0cVJ5IePxXnd913UQiQjmztkKddmWXs3dGzj377wr/IaH2tf75KakK3WS0wqjptg3TKwO0L2rcBEwcDSqCETMc5fLHnXXMbhASLDH8LGZ+aetXsTiZvUiV59mfBM27l/YZSvkSgx/efoKEN6lWfIdNrp5Uv0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=srZMjl9v; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB1251F000E9;
+	Thu,  2 Jul 2026 16:33:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1783011288;
-	bh=IuOUzgzScvvdwfXd7daJMkiVWTQHVeGB5d6oMF2SZzg=;
+	s=korg; t=1783010035;
+	bh=BIOMLGhVdOhHzB9ZqHC6r1ik47+pDXzqg/4bkQ9pd50=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=DuXeXWo27MjvdJ1giZn0+TQPvMBgONLNZaKxsiC3+qu0Dp8TlWzZxyNgTPPpDSxGW
-	 q3aEZj19s+UVQ43WIyXBMfcT6GsLq7sFlsyXGfv13LdmKwcqZEUAadW7mXW6+mydnl
-	 PP1B8puzdwCCH1PLGwBtcU4Dt4IKYAl4fh5VWz5A=
+	b=srZMjl9vpZp05l0PL+18I0Gya5VhbjlF8htLUKCC29DIgvgKX4m2wJzjqyggXNpCz
+	 o8zN8e2DMLeUh03G9SFotE4bkXyaBK1PM0oyg+dZHQVUfsoUKbB35F1MjgJ2zOLb8N
+	 aHXZF+Fve0B1Vhd605ffRBR0/x7MwBBl1KnVrrV8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Sven Eckelmann <sven@narfation.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 008/108] batman-adv: tp_meter: initialize dec_cwnd explicitly
+	Bitterblue Smith <rtl8821cerfe2@gmail.com>,
+	Ping-Ke Shih <pkshih@realtek.com>
+Subject: [PATCH 6.1 086/129] wifi: rtlwifi: rtl8821ae: Fix C2H bit location in RX descriptor
 Date: Thu,  2 Jul 2026 18:20:05 +0200
-Message-ID: <20260702155112.285480420@linuxfoundation.org>
+Message-ID: <20260702155113.922622165@linuxfoundation.org>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260702155112.110058792@linuxfoundation.org>
-References: <20260702155112.110058792@linuxfoundation.org>
+In-Reply-To: <20260702155112.163984240@linuxfoundation.org>
+References: <20260702155112.163984240@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,75 +71,75 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-271341-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-270859-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:rtl8821cerfe2@gmail.com,m:pkshih@realtek.com,s:lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:stable@kernel.org,m:sven@narfation.org,m:sashal@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,realtek.com];
+	FORWARDED(0.00)[lists@lfdr.de];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,narfation.org:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,msgid.link:url]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: C11BC6FAF82
+X-Rspamd-Queue-Id: 2C11E6FA49C
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sven Eckelmann <sven@narfation.org>
+From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
 
-commit febfb1b86224489535312296ecfa3d4bf467f339 upstream.
+commit 83d38df6929118c3f996b9e3351c2d5014073d87 upstream.
 
-When batadv_tp_update_cwnd() is called, dec_cwnd is increased. But dec_cwnd
-is only initialixed (to 0) when a duplicate Ack was received or when cwnd
-is below the ss_threshold.
+Bit 28 of double word 2 in the RX descriptor indicates if the packet is
+a normal 802.11 frame, or a message from the wifi firmware to the
+driver (Card 2 Host).
 
-Just initialize the cwnd during the initialization to avoid any potential
-access of uninitialized data.
+Commit f5678bfe1cdc ("rtlwifi: rtl8821ae: Replace local bit manipulation
+macros") mistakenly made the driver look for this bit in double word 1,
+causing packet loss and Bluetooth coexistence problems.
 
-Cc: stable@kernel.org
-Fixes: 33a3bb4a3345 ("batman-adv: throughput meter implementation")
-Signed-off-by: Sven Eckelmann <sven@narfation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: f5678bfe1cdc ("rtlwifi: rtl8821ae: Replace local bit manipulation macros")
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+Acked-by: Ping-Ke Shih <pkshih@realtek.com>
+Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+Link: https://patch.msgid.link/04da7398-cedb-425a-a810-5772ab10139d@gmail.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/batman-adv/tp_meter.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/net/wireless/realtek/rtlwifi/rtl8821ae/trx.h |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/batman-adv/tp_meter.c b/net/batman-adv/tp_meter.c
-index fe9a447643074a..473641d32dc683 100644
---- a/net/batman-adv/tp_meter.c
-+++ b/net/batman-adv/tp_meter.c
-@@ -1055,6 +1055,8 @@ void batadv_tp_start(struct batadv_priv *bat_priv, const u8 *dst,
- 	 * mesh_interface, hence its MTU
- 	 */
- 	tp_vars->cwnd = BATADV_TP_PLEN * 3;
-+	tp_vars->dec_cwnd = 0;
-+
- 	/* at the beginning initialise the SS threshold to the biggest possible
- 	 * window size, hence the AWND size
- 	 */
--- 
-2.53.0
-
+--- a/drivers/net/wireless/realtek/rtlwifi/rtl8821ae/trx.h
++++ b/drivers/net/wireless/realtek/rtlwifi/rtl8821ae/trx.h
+@@ -291,7 +291,7 @@ static inline int get_rx_desc_paggr(__le
+ 
+ static inline int get_rx_status_desc_rpt_sel(__le32 *__pdesc)
+ {
+-	return le32_get_bits(*(__pdesc + 1), BIT(28));
++	return le32_get_bits(*(__pdesc + 2), BIT(28));
+ }
+ 
+ static inline int get_rx_desc_rxmcs(__le32 *__pdesc)
 
 
 
