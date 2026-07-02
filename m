@@ -1,61 +1,61 @@
-Return-Path: <stable+bounces-271431-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-271239-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id ho2gEHObRmoNaAsAu9opvQ
-	(envelope-from <stable+bounces-271431-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:10:11 +0200
+	id onttAqiaRmqZZwsAu9opvQ
+	(envelope-from <stable+bounces-271239-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:06:48 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id C66216FB134
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:10:10 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7C8326FAFEC
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:06:47 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=TMFakBzg;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-271431-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-271431-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=SKl1mRSz;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-271239-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-271239-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 8598830809B1
-	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:58:58 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 03657309E33C
+	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:51:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 282DE30EF95;
-	Thu,  2 Jul 2026 16:58:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B95F34A3BF;
+	Thu,  2 Jul 2026 16:50:27 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA18530C15A;
-	Thu,  2 Jul 2026 16:58:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27A21348C71;
+	Thu,  2 Jul 2026 16:50:26 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783011526; cv=none; b=M+xHWlxeIKS1YYR9KksY3MgivoYmm/clwvk8Mv5+qErIM/v/jUoZl1gf3zjoVEYaKGQXMWQ8dowbHfYgyPI3ULyCeRzBUYJCSTTe3HQDqDuxBqkosObk7s+dBw6s9rr82dI8737Ff0hLzmHBnlsIXGBty0R1tNavy6ostEob1rg=
+	t=1783011027; cv=none; b=iFtbm5QvvtxVsghBAneLPD7hc2lTG0Afitx0+WLtVV7kiQJlfeiot+dC7VqDRPBJkFzoGSg7DqeE6tBrT2nA+jbkv7BvY2/TbEd4xxp5FnpIMr8B2gzhLPbImDfk7R9un8tFR1Ack59S1UHSf7PgMyMWbYl7oLhhZB+t6foecMY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783011526; c=relaxed/simple;
-	bh=7Lem4cl0THSUb4hH5/uTyx61W8JW9slL4t1Fo6rD2MY=;
+	s=arc-20240116; t=1783011027; c=relaxed/simple;
+	bh=g5RnPdUq0QPUtPrerCuTajMlMDLivbu6IA3dzZ3hFfA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PXI8YGYl5km2yuf8tbw14O8wfdutmL0uAnGwumq2FEPE6Wrs67ki5EejrIJyCTULOwp6eIDmOnri851aROToxC7BpW6e3mBu1quBpzGrNE+B+qNfmkpSYVPoqLDZf6hThlO8m1NurMUHlnUK7C1DCCR1k3dIChvW2GNkKIn4+eY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TMFakBzg; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2B591F00A3A;
-	Thu,  2 Jul 2026 16:58:44 +0000 (UTC)
+	 MIME-Version; b=c7+BbX6iWPzRhcESO7OmqrDpPk86wxZDdY2SY5EmHcbqk3MMe3BXPp13SXy5v3l4lrZR6x9yxJ9lxB78GmVlWHf4aOZwJA/ODt4e6m0H1ewc9QPRDP3e30BBwutBr8wXVaRo9HDyY7WjLLBAHL7+c87PC4hiGb9nobrRE0DhZ50=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SKl1mRSz; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E97B1F00A3A;
+	Thu,  2 Jul 2026 16:50:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1783011525;
-	bh=KNwYHHnsi6N/8Ja0QJmgQ+N5ezgQJC4ywmK+kVtKYqo=;
+	s=korg; t=1783011026;
+	bh=eDZOAh6UrCfEeWR1DQXSNw898SfNNzHhfE98/9nh6z8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=TMFakBzgxKe4ua0RZNGXvO7sXJXRn+QPJJWpQPmkRSTuHgMsK5L2FNXYg0SN1mazX
-	 B/08xhQN9BY0qgaGRzfmZEzzJmZQAE3RqcFJx4pgI3WTb8Y4pATpmXa5Z8Mgz9dFEe
-	 hBbiCfCq6hYrxoET+xDvzzGhhfzK8hOTYxuNY7Cc=
+	b=SKl1mRSz4NAoQPrupWT72hApOINmZc/9gz/iT228JCxc2I0ITMJ9Uc0aeL3Pwcof0
+	 kTsszG+YT4Tm8XEHQ6rbJPSmp2SzPqfmgXyxR/mlepc/HKsclt/+4XGcs5Tqv8k/sL
+	 ajbN0UFNPt1pXeDAyhirr8hJ4ZPsWw2bI1vPLUJs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Doruk Tan Ozturk <doruk@0sec.ai>,
-	Alexander Lobakin <aleksander.lobakin@intel.com>,
-	Stefan Schmidt <stefan@datenfreihafen.org>
-Subject: [PATCH 7.1 032/120] mac802154: llsec: add skb_cow_data() before in-place crypto
+	syzbot+81c7c6b52649fd07299d@syzkaller.appspotmail.com,
+	Ian Bridges <icb@fastmail.org>,
+	Helge Deller <deller@gmx.de>
+Subject: [PATCH 6.6 127/175] fbdev: fix use-after-free in store_modes()
 Date: Thu,  2 Jul 2026 18:20:28 +0200
-Message-ID: <20260702155113.627033611@linuxfoundation.org>
+Message-ID: <20260702155118.486333329@linuxfoundation.org>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260702155112.964534952@linuxfoundation.org>
-References: <20260702155112.964534952@linuxfoundation.org>
+In-Reply-To: <20260702155115.766838875@linuxfoundation.org>
+References: <20260702155115.766838875@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,138 +67,115 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-271431-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:doruk@0sec.ai,m:aleksander.lobakin@intel.com,m:stefan@datenfreihafen.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-271239-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:syzbot+81c7c6b52649fd07299d@syzkaller.appspotmail.com,m:icb@fastmail.org,m:deller@gmx.de,m:syzbot@syzkaller.appspotmail.com,s:lists@lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,syzkaller.appspotmail.com,fastmail.org,gmx.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,datenfreihafen.org:email,0sec.ai:url,0sec.ai:email]
+	TAGGED_RCPT(0.00)[stable,81c7c6b52649fd07299d];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[syzkaller.appspot.com:url,vger.kernel.org:from_smtp,fastmail.org:email,appspotmail.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,gmx.de:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: C66216FB134
+X-Rspamd-Queue-Id: 7C8326FAFEC
 
-7.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Doruk Tan Ozturk <doruk@0sec.ai>
+From: Ian Bridges <icb@fastmail.org>
 
-commit 84a04eb5b210643bd67aab81ff805d32f62aa865 upstream.
+commit 2c1c805c65fb7dc7524e20376d6987721e73a0b1 upstream.
 
-llsec_do_encrypt_unauth(), llsec_do_encrypt_auth(),
-llsec_do_decrypt_unauth(), and llsec_do_decrypt_auth() all perform
-in-place cryptographic transformations on skb data.  They build a
-scatterlist with sg_init_one() pointing into the skb's linear data area
-and then pass the same scatterlist as both src and dst to the crypto API
-(e.g. crypto_skcipher_encrypt/decrypt, crypto_aead_encrypt/decrypt).
+store_modes() replaces a framebuffer's modelist with modes from userspace.
+On success it frees the old modelist with fb_destroy_modelist(). Two
+fields still point into that freed list.
 
-On the RX path, __ieee802154_rx_handle_packet() clones the received skb
-before handing it to each subscriber via ieee802154_subif_frame().  The
-cloned skb shares the same underlying data buffer via reference
-counting.  When llsec_do_decrypt() subsequently modifies this shared
-buffer in place, it corrupts data that other clones -- potentially
-belonging to other sockets or subsystems -- still reference.
+One pointer is fb_display[i].mode, the mode a console is using.
+fbcon_new_modelist() moves these pointers to the new list. It only does so
+for consoles still mapped to the framebuffer. An unmapped console is
+skipped and keeps its stale pointer. Unbinding fbcon, for example, sets
+con2fb_map[i] to -1 but leaves fb_display[i].mode set. An
+FBIOPUT_VSCREENINFO ioctl with FB_ACTIVATE_INV_MODE later reaches
+fbcon_mode_deleted(). That function reads the stale fb_display[i].mode
+through fb_mode_is_equal(). The read is a use-after-free.
 
-On the TX path, similar data sharing can occur when an skb's head has
-been cloned (skb_cloned() returns true).
+The other pointer is fb_info->mode, the current mode. It is set through
+the mode sysfs attribute. store_modes() does not update fb_info->mode, so
+it is left pointing into the freed list. show_mode(), the attribute's read
+handler, dereferences the stale fb_info->mode through mode_string(). The
+read is a use-after-free.
 
-The fix is to call skb_cow_data() before performing any in-place crypto
-operation.  skb_cow_data() ensures that the skb's data area is not
-shared: if the skb head is cloned or the data spans multiple fragments,
-it copies the data into a private buffer that can be safely modified in
-place.  This is the same pattern used by:
+Clear both pointers before freeing the list. Commit a1f305893074 ("fbcon:
+Set fb_display[i]->mode to NULL when the mode is released") added the
+helper fbcon_delete_modelist(). It clears every fb_display[i].mode that
+points into a given list. So far it is called only from the unregister
+path. Call it from store_modes() too, and set fb_info->mode to NULL.
 
-  - ESP (net/ipv4/esp4.c, net/ipv6/esp6.c)
-  - MACsec (drivers/net/macsec.c)
-  - WireGuard (drivers/net/wireguard/receive.c)
-  - TIPC (net/tipc/crypto.c)
-
-Without this guard, in-place crypto on shared skb data leads to:
-  - Silent data corruption of other skb clones
-  - Use-after-free when the crypto API scatterwalk writes through a
-    page that has already been freed by another clone's kfree_skb()
-  - Kernel crashes under concurrent 802.15.4 traffic with security
-    enabled (KASAN/KMSAN reports slab-use-after-free)
-
-Found by 0sec (https://0sec.ai) using automated source analysis.
-
-Fixes: 4c14a2fb5d14 ("mac802154: add llsec decryption method")
-Fixes: 03556e4d0dbb ("mac802154: add llsec encryption method")
+Reported-by: syzbot+81c7c6b52649fd07299d@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=81c7c6b52649fd07299d
 Cc: stable@vger.kernel.org
-Reported-by: Doruk Tan Ozturk <doruk@0sec.ai>
-Closes: https://lore.kernel.org/linux-wpan/20260525161806.96158-1-doruk@0sec.ai/
-Reviewed-by: Alexander Lobakin <aleksander.lobakin@intel.com>
-Signed-off-by: Doruk Tan Ozturk <doruk@0sec.ai>
-Closes: <link to your mail on lore>
-Link: https://lore.kernel.org/20260526183726.56100-1-doruk@0sec.ai
-Signed-off-by: Stefan Schmidt <stefan@datenfreihafen.org>
+Link: https://lore.kernel.org/all/ajjoDhAi2y4ArSlz@dev/
+Assisted-by: Claude:claude-opus-4-8
+Signed-off-by: Ian Bridges <icb@fastmail.org>
+Signed-off-by: Helge Deller <deller@gmx.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/mac802154/llsec.c |   14 ++++++++++++++
- 1 file changed, 14 insertions(+)
+ drivers/video/fbdev/core/fbsysfs.c |   10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
 
---- a/net/mac802154/llsec.c
-+++ b/net/mac802154/llsec.c
-@@ -710,6 +710,7 @@ int mac802154_llsec_encrypt(struct mac80
- {
- 	struct ieee802154_hdr hdr;
- 	int rc, authlen, hlen;
-+	struct sk_buff *trailer;
- 	struct mac802154_llsec_key *key;
- 	u32 frame_ctr;
+--- a/drivers/video/fbdev/core/fbsysfs.c
++++ b/drivers/video/fbdev/core/fbsysfs.c
+@@ -11,6 +11,7 @@
+ #include <linux/major.h>
  
-@@ -769,6 +770,12 @@ int mac802154_llsec_encrypt(struct mac80
- 	skb->mac_len = ieee802154_hdr_push(skb, &hdr);
- 	skb_reset_mac_header(skb);
+ #include "fb_internal.h"
++#include "fbcon.h"
  
-+	rc = skb_cow_data(skb, 0, &trailer);
-+	if (rc < 0) {
-+		llsec_key_put(key);
-+		return rc;
+ #define FB_SYSFS_FLAG_ATTR 1
+ 
+@@ -113,8 +114,15 @@ static ssize_t store_modes(struct device
+ 	if (fb_new_modelist(fb_info)) {
+ 		fb_destroy_modelist(&fb_info->modelist);
+ 		list_splice(&old_list, &fb_info->modelist);
+-	} else
++	} else {
++		/*
++		 * fb_display[i].mode and fb_info->mode both point into the old
++		 * list. Clear them before it is freed.
++		 */
++		fbcon_delete_modelist(&old_list);
++		fb_info->mode = NULL;
+ 		fb_destroy_modelist(&old_list);
 +	}
-+
- 	rc = llsec_do_encrypt(skb, sec, &hdr, key);
- 	llsec_key_put(key);
  
-@@ -908,6 +915,13 @@ llsec_do_decrypt(struct sk_buff *skb, co
- 		 const struct ieee802154_hdr *hdr,
- 		 struct mac802154_llsec_key *key, __le64 dev_addr)
- {
-+	struct sk_buff *trailer;
-+	int err;
-+
-+	err = skb_cow_data(skb, 0, &trailer);
-+	if (err < 0)
-+		return err;
-+
- 	if (hdr->sec.level == IEEE802154_SCF_SECLEVEL_ENC)
- 		return llsec_do_decrypt_unauth(skb, sec, hdr, key, dev_addr);
- 	else
+ 	unlock_fb_info(fb_info);
+ 	console_unlock();
 
 
 
