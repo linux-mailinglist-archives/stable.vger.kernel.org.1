@@ -1,61 +1,62 @@
-Return-Path: <stable+bounces-270835-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-271145-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id f3DoLwCgRmrIaQsAu9opvQ
-	(envelope-from <stable+bounces-270835-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:29:36 +0200
+	id ExlCMv6XRmorZgsAu9opvQ
+	(envelope-from <stable+bounces-271145-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:55:26 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4A90D6FB610
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:29:36 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 917CE6FAC10
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:55:26 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=Xpv0fPJX;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-270835-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-270835-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=W4fHo0QE;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-271145-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-271145-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A06E33203B55
-	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:36:11 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id AFEED30B4B2F
+	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:48:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9821B3A7829;
-	Thu,  2 Jul 2026 16:32:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B882534C9A6;
+	Thu,  2 Jul 2026 16:46:28 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58D5A342523;
-	Thu,  2 Jul 2026 16:32:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70A23348465;
+	Thu,  2 Jul 2026 16:46:27 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783009973; cv=none; b=mJgaBGqYbmJpCKq8pQL5rlpKzhfcGftZT2O0rldLqaqBSTIuyfNWhgpkM3Gq1X3l+7wphZcaBfBSON4kCjhb5/juTYSLO2/HZPEcundEyiByt/jhdVVmNav6MsJaXWFFJaZ+YAGPmpAUEFNF5eG7OhgD6Nr+nRMeyFvOoO8CcFY=
+	t=1783010788; cv=none; b=bjRfGkFWsNLW09C6bGwrKPz54bFNARZl5bRlwzlEZH6GENY20YBk9zIoHHdBbDwOMZCi49+ye3f9NagGs/0hgW10Shth6ND3saL3QPLCGBMrMlIrVfDw2lwoN8WtRtABGDZw/oDvudaO+e0MqgUTJNlMdw3kWEoQcrnH6lcle2w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783009973; c=relaxed/simple;
-	bh=tEZuOmFc4PYo6NJp6MItgctjIgr3W73mEVvlZ1F1LhQ=;
+	s=arc-20240116; t=1783010788; c=relaxed/simple;
+	bh=sz4r7Q4w1NEKFz3NzyqBr+BW7ePCwVgVKjNCO+EPeic=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ENYrBQYZdI7cEeR7dyGr5BGrF/i/5HIbGHxXo5plxf0Zle/POI5U4GUFMKCtkq7WCNtNHQ0BqwHD81N1gdvWNNkIBAy0NrBGf0QsTvTr1sexERCa75Mhpq/iOMBtZ6ZbwCy9TXAsOpGLo3SeBA4KaCV3JXiHy14Ow6TQQEC2swY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Xpv0fPJX; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B71421F000E9;
-	Thu,  2 Jul 2026 16:32:51 +0000 (UTC)
+	 MIME-Version; b=QmAoK1sEwLjR7mrdzrzJs7ajKYqKZNKVUF1DunL8mIFRn9UIvwZDUH08ZtNuN7wRBY90RtocEqNij7Loyp8jXuZQrVSmAxA90EoBjllYfGLs6c6861ljj8FyTr8zFWwUKJjqN+hzQkbaJ0tkZV26sifqMBZYoe7VyEzZgNzBMzY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W4fHo0QE; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D57331F00A3A;
+	Thu,  2 Jul 2026 16:46:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1783009972;
-	bh=sccGH+bM2jgJjbatt6ptB71ayzEeib2JYY6H7Bvk8KY=;
+	s=korg; t=1783010787;
+	bh=o6glv/I+jpLI1B3aWe4yuNuksIBqa1pj7f45G5DMw00=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Xpv0fPJXyytTJ67wvi4gr1GCb2PEhXBNJQwwWPTYeoCoqYHZTfYwX71mttUH8vZEV
-	 XAr1XZAqBdaEyQNBme1+lsfiLiJBE6VsGl2jOCmKU1jYpeRoUp7uRZPJlPWV71sGO0
-	 XMBRqG1TYqGmLvnq4y5hkfwqKJu3UdmsbxIBkZw8=
+	b=W4fHo0QERGqIG6HJ2YPBKwJX1TiDWbSTZRL5QbKhwPaK0L/AZmf5UiHej7N5lnGVU
+	 h41Xd1ve45xfZSE4iYFjpVIYc0cqCQz0ET1XuZO5PcCzen5i94USIEUYqRz7KVc7fb
+	 8rrci6wQcgIH/AlUll23s0KoD0XUti1QuWAd3BpY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sean Christopherson <seanjc@google.com>,
-	Nicholas Dudar <main.kalliope@gmail.com>,
+	syzbot+78147abe6c524f183ee9@syzkaller.appspotmail.com,
+	Davidlohr Bueso <dave@stgolabs.net>,
+	Thomas Gleixner <tglx@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 018/129] KVM: nVMX: Add a helper to get highest pending from Posted Interrupt vector
+Subject: [PATCH 6.6 036/175] locking/rtmutex: Skip remove_waiter() when waiter is not enqueued
 Date: Thu,  2 Jul 2026 18:18:57 +0200
-Message-ID: <20260702155112.539597314@linuxfoundation.org>
+Message-ID: <20260702155116.559022693@linuxfoundation.org>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260702155112.163984240@linuxfoundation.org>
-References: <20260702155112.163984240@linuxfoundation.org>
+In-Reply-To: <20260702155115.766838875@linuxfoundation.org>
+References: <20260702155115.766838875@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -73,120 +74,101 @@ X-Spamd-Result: default: False [-0.16 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-270835-lists,stable=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:seanjc@google.com,m:main.kalliope@gmail.com,m:sashal@kernel.org,m:mainkalliope@gmail.com,s:lists@lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,google.com,gmail.com,kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-271145-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:syzbot+78147abe6c524f183ee9@syzkaller.appspotmail.com,m:dave@stgolabs.net,m:tglx@kernel.org,m:sashal@kernel.org,m:syzbot@syzkaller.appspotmail.com,s:lists@lfdr.de];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
+	TAGGED_RCPT(0.00)[stable,78147abe6c524f183ee9];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[appspotmail.com:email,msgid.link:url,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,stgolabs.net:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 4A90D6FB610
+X-Rspamd-Queue-Id: 917CE6FAC10
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sean Christopherson <seanjc@google.com>
+From: Davidlohr Bueso <dave@stgolabs.net>
 
-commit d83c36d822be44db4bad0c43bea99c8908f54117 upstream.
+[ Upstream commit 40a25d59e85b3c8709ac2424d44f65610467871e ]
 
-Add a helper to retrieve the highest pending vector given a Posted
-Interrupt descriptor.  While the actual operation is straightforward, it's
-surprisingly easy to mess up, e.g. if one tries to reuse lapic.c's
-find_highest_vector(), which doesn't work with PID.PIR due to the APIC's
-IRR and ISR component registers being physically discontiguous (they're
-4-byte registers aligned at 16-byte intervals).
+syzbot triggered the following splat in remove_waiter() via
+FUTEX_CMP_REQUEUE_PI:
 
-To make PIR handling more consistent with respect to IRR and ISR handling,
-return -1 to indicate "no interrupt pending".
+  KASAN: null-ptr-deref in range [0x0000000000000a88-0x0000000000000a8f]
+   class_raw_spinlock_constructor
+   remove_waiter+0x159/0x1200 kernel/locking/rtmutex.c:1561
+   rt_mutex_start_proxy_lock+0x103/0x120
+   futex_requeue+0x10e4/0x20d0
+   __x64_sys_futex+0x34f/0x4d0
 
+task_blocks_on_rt_mutex() does not arm the waiter upon deadlock detection,
+leaving waiter->task nil, where 3bfdc63936dd ("rtmutex: Use waiter::task instead
+of current in remove_waiter()") made this fatal.
+
+Furthermore, rt_mutex_start_proxy_lock() should not be calling into remove_waiter()
+upon a successfully grabbing the rtmutex. 1a1fb985f2e2 ("futex: Handle early deadlock
+return correctly"), moved the remove_waiter() out of __rt_mutex_start_proxy_lock()
+(where 'ret' was only ever 0 or < 0) into the wrapper. Tighten this check to
+account for try_to_take_rt_mutex().
+
+Fixes: 3bfdc63936dd ("rtmutex: Use waiter::task instead of current in remove_waiter()")
+Reported-by: syzbot+78147abe6c524f183ee9@syzkaller.appspotmail.com
+Signed-off-by: Davidlohr Bueso <dave@stgolabs.net>
+Signed-off-by: Thomas Gleixner <tglx@kernel.org>
 Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20240607172609.3205077-2-seanjc@google.com
-Signed-off-by: Sean Christopherson <seanjc@google.com>
-[ Nicholas Dudar: backport to 6.1.y. 6.1.y defines struct pi_desc in
-  posted_intr.h and predates the move to <asm/posted_intr.h>, so the helper
-  and the <linux/find.h> include go in posted_intr.h. ]
-Signed-off-by: Nicholas Dudar <main.kalliope@gmail.com>
+Closes: https://lore.kernel.org/all/69f114ac.050a0220.ac8b.0003.GAE@google.com/
+Link: https://patch.msgid.link/20260507112913.1019537-1-dave@stgolabs.net
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kvm/vmx/nested.c      |  5 +++--
- arch/x86/kvm/vmx/posted_intr.h | 10 ++++++++++
- 2 files changed, 13 insertions(+), 2 deletions(-)
+ kernel/locking/rtmutex.c     |    3 +++
+ kernel/locking/rtmutex_api.c |    2 +-
+ 2 files changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/arch/x86/kvm/vmx/nested.c b/arch/x86/kvm/vmx/nested.c
-index bdc462944cb082..7d8e18dbe8531b 100644
---- a/arch/x86/kvm/vmx/nested.c
-+++ b/arch/x86/kvm/vmx/nested.c
-@@ -12,6 +12,7 @@
- #include "mmu.h"
- #include "nested.h"
- #include "pmu.h"
-+#include "posted_intr.h"
- #include "sgx.h"
- #include "trace.h"
- #include "vmx.h"
-@@ -3818,8 +3819,8 @@ static int vmx_complete_nested_posted_interrupt(struct kvm_vcpu *vcpu)
- 	if (!pi_test_and_clear_on(vmx->nested.pi_desc))
- 		return 0;
+--- a/kernel/locking/rtmutex.c
++++ b/kernel/locking/rtmutex.c
+@@ -1524,6 +1524,9 @@ static void __sched remove_waiter(struct
  
--	max_irr = find_last_bit((unsigned long *)vmx->nested.pi_desc->pir, 256);
--	if (max_irr != 256) {
-+	max_irr = pi_find_highest_vector(vmx->nested.pi_desc);
-+	if (max_irr > 0) {
- 		vapic_page = vmx->nested.virtual_apic_map.hva;
- 		if (!vapic_page)
- 			goto mmio_needed;
-diff --git a/arch/x86/kvm/vmx/posted_intr.h b/arch/x86/kvm/vmx/posted_intr.h
-index 26992076552ef1..88cea0dac7204b 100644
---- a/arch/x86/kvm/vmx/posted_intr.h
-+++ b/arch/x86/kvm/vmx/posted_intr.h
-@@ -2,6 +2,8 @@
- #ifndef __KVM_X86_VMX_POSTED_INTR_H
- #define __KVM_X86_VMX_POSTED_INTR_H
+ 	lockdep_assert_held(&lock->wait_lock);
  
-+#include <linux/find.h>
++	if (!waiter_task) /* never enqueued */
++		return;
 +
- #define POSTED_INTR_ON  0
- #define POSTED_INTR_SN  1
+ 	scoped_guard(raw_spinlock, &waiter_task->pi_lock) {
+ 		rt_mutex_dequeue(lock, waiter);
+ 		waiter_task->pi_blocked_on = NULL;
+--- a/kernel/locking/rtmutex_api.c
++++ b/kernel/locking/rtmutex_api.c
+@@ -344,7 +344,7 @@ int __sched rt_mutex_start_proxy_lock(st
  
-@@ -103,4 +105,12 @@ int vmx_pi_update_irte(struct kvm *kvm, unsigned int host_irq,
- 		       uint32_t guest_irq, bool set);
- void vmx_pi_start_assignment(struct kvm *kvm);
+ 	raw_spin_lock_irq(&lock->wait_lock);
+ 	ret = __rt_mutex_start_proxy_lock(lock, waiter, task);
+-	if (unlikely(ret))
++	if (unlikely(ret < 0))
+ 		remove_waiter(lock, waiter);
+ 	raw_spin_unlock_irq(&lock->wait_lock);
  
-+static inline int pi_find_highest_vector(struct pi_desc *pi_desc)
-+{
-+	int vec;
-+
-+	vec = find_last_bit((unsigned long *)pi_desc->pir, 256);
-+	return vec < 256 ? vec : -1;
-+}
-+
- #endif /* __KVM_X86_VMX_POSTED_INTR_H */
--- 
-2.53.0
-
 
 
 
