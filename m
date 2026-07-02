@@ -1,64 +1,74 @@
-Return-Path: <stable+bounces-270781-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-270984-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 9L45D2yfRmqVaQsAu9opvQ
-	(envelope-from <stable+bounces-270781-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:27:08 +0200
+	id 8aObKDiXRmqpZQsAu9opvQ
+	(envelope-from <stable+bounces-270984-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:52:08 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 93AE46FB58D
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:27:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0642E6FAAAF
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:52:08 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="oGmsO/Lc";
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-270781-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-270781-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=KFAmchz6;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-270984-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-270984-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 259DB314D31B
-	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:34:11 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 14AA23252B2F
+	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:40:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2347A326942;
-	Thu,  2 Jul 2026 16:30:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 577AA343D86;
+	Thu,  2 Jul 2026 16:39:25 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD51D33EB0E;
-	Thu,  2 Jul 2026 16:30:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E285F342CBA;
+	Thu,  2 Jul 2026 16:39:23 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783009834; cv=none; b=qozV5tX6TNb58MhQUr6inW0ThiEsllVJqOn2F5jZT9NZDlrBqBZg33lEglV0vXPSLLsrBTn54GQJvS4NrRVLNoqqmlqhqGnRJi+zx5IE5d7PXFTmq2X7UrSawnacePzrgbob5WzB18M8iT3ksCDMc7Y7AQyYXELwQZmHdJovlAc=
+	t=1783010365; cv=none; b=Rhfm0ynYJpZHqsD7n3bXhYpyF2Mpef9ZTSxbv4CzQB53XbwGRSYiz6lngjCxNzmPzQ2ZPOZRVt5fhnhhd6cCQq6bVFUtkUrhZUR5O/9iwzEPL7XmJ9QMLype4Efw3eaCLiQSmP1cvGb6EtInoXGVwGjJ8aKmlT8ebYOcKxBsyqk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783009834; c=relaxed/simple;
-	bh=7krVGSIF1fnJFkypoI5/N4d47efxIucJqgbCoxyXqN0=;
+	s=arc-20240116; t=1783010365; c=relaxed/simple;
+	bh=lW2rMU5N6ycDow28miiDQ68xDAHr7PYaMSFA6+j5e2s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ftQ0VbPbJch85FGy0VKxQggZuzQ1rvxH40jUbUWM6t2zvLchUU+iV5zXo6toQXKxyd0/JM0PRdnPMpSTnUR/MKLa6QOkpE1qHvxYWhRmgVEif+2a5jpsOdPq3fLtiik+/vlJvHG7XrNwpNs79RUAjymN2bFiqXmHFK6wMrT7P0Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oGmsO/Lc; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36DE11F000E9;
-	Thu,  2 Jul 2026 16:30:33 +0000 (UTC)
+	 MIME-Version; b=QWg7FJW4XurTHh7cQSbPip4mgbmzBRKMu4D6d2lu2Gwzx7Opg4Z7hRW9XMjIxVeiKhDWEzuhQpR9F972bCCd5ei0laxp4420j4JF0iNlmifis7Oj7AFxTdfTrAOQXgoyeD2gARQJiS/Wf8oP2VRGSuhyBcBAUJwtf0xwwa+J+SI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KFAmchz6; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B4291F000E9;
+	Thu,  2 Jul 2026 16:39:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1783009833;
-	bh=CSiY0ZFgCpxo9FPeqTE5Vgv7mYVDmhW7ZkUeE9StOP8=;
+	s=korg; t=1783010363;
+	bh=If3hx+pWVH5aZnt8i0f2xxv2bqhzjkF6t9HJbX5wAWA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=oGmsO/Lci3XiY0QK5YmBzYTgtbILrG7sAGN7xO31B/2NBv/LZ8WKCZXG8ZlVg6rlJ
-	 bAfAKE6Ty0HSAdTwUzUv8iWAigEkj/mwEOlvOaSoMDLteDJSsNXvRKuAf4jMxT+q1r
-	 +DPosjIRPFYTC84c13NQlFHUcGIjn7NNbQ8Kz+fs=
+	b=KFAmchz6CnhUHURcxaVvfCis0JQWNg8KynlaVraGfho46oGgY8HJuRBOSl/iaiewj
+	 Ub6RTktR6Bxjyu6W4Nn8mp12WNAQJ+XyCSesuvOkxNehA0vUvpbxvtq/4rijDYVCSI
+	 l8Pf9cKHf/x4sYeZ+oQeXJLjHkJNT5p0OZyYN5ng=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jamal Hadi Salim <jhs@mojatatu.com>,
-	Simon Horman <simon.horman@corigine.com>,
-	Pedro Tammela <pctammela@mojatatu.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Wentao Guan <guanwentao@uniontech.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 002/129] net/sched: act_pedit: check static offsets a priori
+	bpf <bpf@vger.kernel.org>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	Masahiro Yamada <masahiroy@kernel.org>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Nicolas Schier <nicolas@fjasle.eu>,
+	Zheng Yejian <zhengyejian1@huawei.com>,
+	Martin Kelly <martin.kelly@crowdstrike.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Josh Poimboeuf <jpoimboe@redhat.com>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
+	Andrey Grodzovsky <andrey.grodzovsky@crowdstrike.com>
+Subject: [PATCH 6.12 064/204] scripts/sorttable: Convert Elf_Sym MACRO over to a union
 Date: Thu,  2 Jul 2026 18:18:41 +0200
-Message-ID: <20260702155112.216006091@linuxfoundation.org>
+Message-ID: <20260702155120.004421499@linuxfoundation.org>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260702155112.163984240@linuxfoundation.org>
-References: <20260702155112.163984240@linuxfoundation.org>
+In-Reply-To: <20260702155118.667618796@linuxfoundation.org>
+References: <20260702155118.667618796@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,118 +82,172 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-270781-lists,stable=lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-270984-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:jhs@mojatatu.com,m:simon.horman@corigine.com,m:pctammela@mojatatu.com,m:davem@davemloft.net,m:guanwentao@uniontech.com,m:sashal@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCPT_COUNT_TWELVE(0.00)[19];
+	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:bpf@vger.kernel.org,m:mhiramat@kernel.org,m:mark.rutland@arm.com,m:mathieu.desnoyers@efficios.com,m:akpm@linux-foundation.org,m:peterz@infradead.org,m:torvalds@linux-foundation.org,m:masahiroy@kernel.org,m:nathan@kernel.org,m:nicolas@fjasle.eu,m:zhengyejian1@huawei.com,m:martin.kelly@crowdstrike.com,m:christophe.leroy@csgroup.eu,m:jpoimboe@redhat.com,m:rostedt@goodmis.org,m:andrey.grodzovsky@crowdstrike.com,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,uniontech.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,davemloft.net:email,vger.kernel.org:from_smtp,mojatatu.com:email,corigine.com:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 93AE46FB58D
+X-Rspamd-Queue-Id: 0642E6FAAAF
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pedro Tammela <pctammela@mojatatu.com>
+From: Steven Rostedt <rostedt@goodmis.org>
 
-[ Upstream commit e1201bc781c28766720e78a5e099ffa568be4d74 ]
+[ Upstream commit 200d015e73b4da69bcd8212a7c58695452b12bad ]
 
-Static key offsets should always be on 32 bit boundaries. Validate them on
-create/update time for static offsets and move the datapath validation
-for runtime offsets only.
+In order to remove the double #include of sorttable.h for 64 and 32 bit
+to create duplicate functions for both, replace the Elf_Sym macro with a
+union that defines both Elf64_Sym and Elf32_Sym, with field e64 for the
+64bit version, and e32 for the 32bit version.
 
-iproute2 already errors out if a given offset and data size cannot be
-packed to a 32 bit boundary. This change will make sure users which
-create/update pedit instances directly via netlink also error out,
-instead of finding out when packets are traversing.
+It can then use the macro etype to get the proper value.
 
-Reviewed-by: Jamal Hadi Salim <jhs@mojatatu.com>
-Reviewed-by: Simon Horman <simon.horman@corigine.com>
-Signed-off-by: Pedro Tammela <pctammela@mojatatu.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-(cherry picked from commit e1201bc781c28766720e78a5e099ffa568be4d74)
-Signed-off-by: Wentao Guan <guanwentao@uniontech.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This will eventually be replaced with just single functions that can
+handle both 32bit and 64bit ELF parsing.
+
+Cc: bpf <bpf@vger.kernel.org>
+Cc: Masami Hiramatsu <mhiramat@kernel.org>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Masahiro Yamada <masahiroy@kernel.org>
+Cc: Nathan Chancellor <nathan@kernel.org>
+Cc: Nicolas Schier <nicolas@fjasle.eu>
+Cc: Zheng Yejian <zhengyejian1@huawei.com>
+Cc: Martin  Kelly <martin.kelly@crowdstrike.com>
+Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
+Cc: Josh Poimboeuf <jpoimboe@redhat.com>
+Link: https://lore.kernel.org/20250105162345.528626969@goodmis.org
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: Andrey Grodzovsky <andrey.grodzovsky@crowdstrike.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/sched/act_pedit.c | 20 ++++++++++++++------
- 1 file changed, 14 insertions(+), 6 deletions(-)
+ scripts/sorttable.c |    5 +++++
+ scripts/sorttable.h |   25 ++++++++++++++-----------
+ 2 files changed, 19 insertions(+), 11 deletions(-)
 
-diff --git a/net/sched/act_pedit.c b/net/sched/act_pedit.c
-index aee2e13f1db624..2bdc44efee779a 100644
---- a/net/sched/act_pedit.c
-+++ b/net/sched/act_pedit.c
-@@ -250,8 +250,16 @@ static int tcf_pedit_init(struct net *net, struct nlattr *nla,
- 	memcpy(nparms->tcfp_keys, parm->keys, ksize);
+--- a/scripts/sorttable.c
++++ b/scripts/sorttable.c
+@@ -74,6 +74,11 @@ typedef union {
+ 	Elf64_Shdr	e64;
+ } Elf_Shdr;
  
- 	for (i = 0; i < nparms->tcfp_nkeys; ++i) {
-+		u32 offmask = nparms->tcfp_keys[i].offmask;
- 		u32 cur = nparms->tcfp_keys[i].off;
- 
-+		/* The AT option can be added to static offsets in the datapath */
-+		if (!offmask && cur % 4) {
-+			NL_SET_ERR_MSG_MOD(extack, "Offsets must be on 32bit boundaries");
-+			ret = -EINVAL;
-+			goto put_chain;
-+		}
++typedef union {
++	Elf32_Sym	e32;
++	Elf64_Sym	e64;
++} Elf_Sym;
 +
- 		/* sanitize the shift value for any later use */
- 		nparms->tcfp_keys[i].shift = min_t(size_t,
- 						   BITS_PER_TYPE(int) - 1,
-@@ -260,7 +268,7 @@ static int tcf_pedit_init(struct net *net, struct nlattr *nla,
- 		/* The AT option can read a single byte, we can bound the actual
- 		 * value with uchar max.
- 		 */
--		cur += (0xff & nparms->tcfp_keys[i].offmask) >> nparms->tcfp_keys[i].shift;
-+		cur += (0xff & offmask) >> nparms->tcfp_keys[i].shift;
+ static uint32_t (*r)(const uint32_t *);
+ static uint16_t (*r2)(const uint16_t *);
+ static uint64_t (*r8)(const uint64_t *);
+--- a/scripts/sorttable.h
++++ b/scripts/sorttable.h
+@@ -23,7 +23,6 @@
+ #undef sort_mcount_loc
+ #undef elf_mcount_loc
+ #undef do_sort
+-#undef Elf_Sym
+ #undef ELF_ST_TYPE
+ #undef uint_t
+ #undef _r
+@@ -36,7 +35,6 @@
+ # define sort_mcount_loc	sort_mcount_loc_64
+ # define elf_mcount_loc		elf_mcount_loc_64
+ # define do_sort		do_sort_64
+-# define Elf_Sym		Elf64_Sym
+ # define ELF_ST_TYPE		ELF64_ST_TYPE
+ # define uint_t			uint64_t
+ # define _r			r8
+@@ -48,7 +46,6 @@
+ # define sort_mcount_loc	sort_mcount_loc_32
+ # define elf_mcount_loc		elf_mcount_loc_32
+ # define do_sort		do_sort_32
+-# define Elf_Sym		Elf32_Sym
+ # define ELF_ST_TYPE		ELF32_ST_TYPE
+ # define uint_t			uint32_t
+ # define _r			r
+@@ -230,10 +227,13 @@ static int do_sort(Elf_Ehdr *ehdr,
+ 	Elf_Sym *sort_needed_sym = NULL;
+ 	Elf_Shdr *sort_needed_sec;
+ 	uint32_t *sort_needed_loc;
++	void *sym_start;
++	void *sym_end;
+ 	const char *secstrings;
+ 	const char *strtab;
+ 	char *extab_image;
+ 	int sort_need_index;
++	int symentsize;
+ 	int shentsize;
+ 	int idx;
+ 	int i;
+@@ -376,12 +376,15 @@ static int do_sort(Elf_Ehdr *ehdr,
+ 	}
  
- 		/* Each key touches 4 bytes starting from the computed offset */
- 		nparms->tcfp_off_max_hint =
-@@ -429,12 +437,12 @@ static int tcf_pedit_act(struct sk_buff *skb, const struct tc_action *a,
- 					       sizeof(_d), &_d);
- 			if (!d)
- 				goto bad;
--			offset += (*d & tkey->offmask) >> tkey->shift;
--		}
+ 	/* find the flag main_extable_sort_needed */
+-	for (sym = (void *)ehdr + _r(&symtab_sec->etype.sh_offset);
+-	     sym < sym + _r(&symtab_sec->etype.sh_size) / sizeof(Elf_Sym);
+-	     sym++) {
+-		if (ELF_ST_TYPE(sym->st_info) != STT_OBJECT)
++	sym_start = (void *)ehdr + _r(&symtab_sec->etype.sh_offset);
++	sym_end = sym_start + _r(&symtab_sec->etype.sh_size);
++	symentsize = _r(&symtab_sec->etype.sh_entsize);
++
++	for (sym = sym_start; (void *)sym + symentsize < sym_end;
++	     sym = (void *)sym + symentsize) {
++		if (ELF_ST_TYPE(sym->etype.st_info) != STT_OBJECT)
+ 			continue;
+-		if (!strcmp(strtab + r(&sym->st_name),
++		if (!strcmp(strtab + r(&sym->etype.st_name),
+ 			    "main_extable_sort_needed")) {
+ 			sort_needed_sym = sym;
+ 			break;
+@@ -395,13 +398,13 @@ static int do_sort(Elf_Ehdr *ehdr,
+ 		goto out;
+ 	}
  
--		if (offset % 4) {
--			pr_info("tc action pedit offset must be on 32 bit boundaries\n");
--			goto bad;
-+			offset += (*d & tkey->offmask) >> tkey->shift;
-+			if (offset % 4) {
-+				pr_info("tc action pedit offset must be on 32 bit boundaries\n");
-+				goto bad;
-+			}
- 		}
+-	sort_need_index = get_secindex(r2(&sym->st_shndx),
+-				       sort_needed_sym - symtab,
++	sort_need_index = get_secindex(r2(&sym->etype.st_shndx),
++				       ((void *)sort_needed_sym - (void *)symtab) / symentsize,
+ 				       symtab_shndx);
+ 	sort_needed_sec = get_index(shdr_start, shentsize, sort_need_index);
+ 	sort_needed_loc = (void *)ehdr +
+ 		_r(&sort_needed_sec->etype.sh_offset) +
+-		_r(&sort_needed_sym->st_value) -
++		_r(&sort_needed_sym->etype.st_value) -
+ 		_r(&sort_needed_sec->etype.sh_addr);
  
- 		if (!offset_valid(skb, hoffset + offset)) {
--- 
-2.53.0
-
+ 	/* extable has been sorted, clear the flag */
 
 
 
