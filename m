@@ -1,69 +1,61 @@
-Return-Path: <stable+bounces-271240-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-270905-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id JZEQIz2kRmpYawsAu9opvQ
-	(envelope-from <stable+bounces-271240-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:47:41 +0200
+	id 4BnGDkiVRmp9ZAsAu9opvQ
+	(envelope-from <stable+bounces-270905-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:43:52 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id C4E4E6FBA0A
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:47:40 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id F30E76FA74E
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:43:51 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="vUabT+/G";
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-271240-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-271240-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=zBNCh+bZ;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-270905-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-270905-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 5360134BA970
-	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:51:51 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 7ECA83036FF0
+	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:37:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E7FCC34C9A6;
-	Thu,  2 Jul 2026 16:50:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E5723360ED5;
+	Thu,  2 Jul 2026 16:35:57 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96291351C3D;
-	Thu,  2 Jul 2026 16:50:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7A1F340410;
+	Thu,  2 Jul 2026 16:35:56 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783011029; cv=none; b=gGaK4NluvpJ/Ff5aHrc87mhlMTxpdnZ2wRC2Uye65EmUPRUn3nexDpT2gp8UpyJhqRe22PlDljuvnyS5FpEVgs9Mmv+FlC/ZpfhcpfoMFdSsVEjQC284jIOLtCFMSyC/QOXj0drzFdj4Y09tbc2ASChqAnR63IINVOAvXxJOD8o=
+	t=1783010157; cv=none; b=ZxFo6rZeIkn2VfDHgIekITHv4gUyJs8atH1v8/6Fom4E7heQ+uIhxbotLW04FJz3k0ekDXgf8fG2a+wViD3obIS5baBnB4va/hbYOrgoOxK7cpd489Sfz5g95FKCPcDYfj4vVuP8cq75zdqWyIcZdtzaTHpfXtZAoD+WHBPPo1s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783011029; c=relaxed/simple;
-	bh=YNnOhv4xBTM5olSxrJzCqc4jqCnNpXFNUsaI3Y2te/k=;
+	s=arc-20240116; t=1783010157; c=relaxed/simple;
+	bh=R/I0EGk3whBbtTKO9AnUuW2V+qHqcPQQOGhy0SdD6oc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Rb0Lcilk7U4RTjUcqbN64xX4yuR2lJ48n0jVe/ntWvKera1DQVB81rCrePSnNq9gxc3IuKi9oGiBkMz1OSyThjlONpTLYJqNgH7bKHyaxBwY93dtn+4MqSmtuaGAXoQq719uMG3PPn7Bnxq2B3OAsNPLwZmD0Mnlvft0tdrE640=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vUabT+/G; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B25F1F00A3A;
-	Thu,  2 Jul 2026 16:50:28 +0000 (UTC)
+	 MIME-Version; b=eJQQtLEFPDcFp59xjw8Ui2y/pN9Xmg5dWBnTkB29GMSKuIiH/nQQ/UObzKS9QXxH7hitPL2w91G1JvlE3WcZblhR2lzZMTwSHvetDkk/4CUf9kewML9V+LbJ2XNQTpXHjE+kfumvOa4Gfm9p3xL0nW8X+hEyrfd13OEGPK9nvV8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zBNCh+bZ; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17E601F00A3F;
+	Thu,  2 Jul 2026 16:35:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1783011028;
-	bh=WpodCadzldF4rG+mUVfDIvE38OZJLUDTEKX6NIVgi3s=;
+	s=korg; t=1783010156;
+	bh=ubFIL9w61P33JGPEUpJAbtUgTKYSaVlaXbFz96BpOcY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=vUabT+/GKsOr/6APiTRMpXG3h5xqLWkXPs6Uyo1598aRwY+zSOKwNRYZUfbJGVwgh
-	 fxm3tpz2BZv5V1dLyPEwrrLpROwC86Mmf+gFELNl3cGuwLKWCeJItjwLoSSu22Bo4J
-	 MKW10+VoF/YxiBeMg0ChfmBVopeeThgOo9J6p5I4=
+	b=zBNCh+bZi68IctNl8UXgiv7/9xcV70EKD0idhuXxue/79f/mUiuLYXjpZxTWikpTm
+	 erwvSyECAhrMfrQt/IWkCFg/3yp3IZ+pcMkFhB22nza/efFbTPKWJZvTq1u1AUCo91
+	 DawKW0WuY7ioz7RWdu2vmZZe/pcapCDuitajGa/Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arnd Bergmann <arnd@arndb.de>,
-	Alexander Lobakin <aleksander.lobakin@intel.com>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Tamir Duberstein <tamird@kernel.org>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	Andriy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Ansuel Smith <ansuelsmth@gmail.com>,
-	Bjorn Andersson <andersson@kernel.org>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Vasily Gorbik <gor@linux.ibm.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.6 128/175] err.h: use __always_inline on all error pointer helpers
+	Hem Parekh <hemparekh1596@gmail.com>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.1 110/129] ksmbd: fix out-of-bounds read in smb_check_perm_dacl()
 Date: Thu,  2 Jul 2026 18:20:29 +0200
-Message-ID: <20260702155118.507782064@linuxfoundation.org>
+Message-ID: <20260702155114.420681936@linuxfoundation.org>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260702155115.766838875@linuxfoundation.org>
-References: <20260702155115.766838875@linuxfoundation.org>
+In-Reply-To: <20260702155112.163984240@linuxfoundation.org>
+References: <20260702155112.163984240@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -80,21 +72,21 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[14];
-	TAGGED_FROM(0.00)[bounces-271240-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:arnd@arndb.de,m:aleksander.lobakin@intel.com,m:nathan@kernel.org,m:tamird@kernel.org,m:agordeev@linux.ibm.com,m:andriy.shevchenko@linux.intel.com,m:ansuelsmth@gmail.com,m:andersson@kernel.org,m:hca@linux.ibm.com,m:gor@linux.ibm.com,m:akpm@linux-foundation.org,s:lists@lfdr.de];
+	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-270905-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:hemparekh1596@gmail.com,m:linkinjeon@kernel.org,m:stfrench@microsoft.com,s:lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,arndb.de,intel.com,kernel.org,linux.ibm.com,linux.intel.com,gmail.com,linux-foundation.org];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org,microsoft.com];
 	FORWARDED(0.00)[lists@lfdr.de];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
@@ -103,109 +95,75 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,linux-foundation.org:email,intel.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,arndb.de:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: C4E4E6FBA0A
+X-Rspamd-Queue-Id: F30E76FA74E
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Hem Parekh <hemparekh1596@gmail.com>
 
-commit 94bfc7f3b0c7c33331ba4ff6cc64ff309dfcbce8 upstream.
+commit 1ef06004ed4bd6d3ed8c840d9d1a376b66d4935b upstream.
 
-While testing randconfig builds on s390, I came across a link failure with
-CONFIG_DMA_SHARED_BUFFER disabled:
+The permission-check ACE walk in smb_check_perm_dacl() validates the ACE
+header size and caps sid.num_subauth at SID_MAX_SUB_AUTHORITIES, but it
+never checks that ace->size is actually large enough to contain
+num_subauth sub-authorities before compare_sids() dereferences them.
 
-ERROR: modpost: "dma_buf_put" [drivers/iommu/iommufd/iommufd.ko] undefined!
+CIFS_SID_BASE_SIZE covers the SID header up to but excluding the
+sub_auth[] array, and offsetof(struct smb_ace, sid) is the ACE header,
+so the existing guards only guarantee the 8-byte SID base, i.e. zero
+sub-authorities. compare_sids() then reads ace->sid.sub_auth[i] for
+i < min(local_sid->num_subauth, ace->sid.num_subauth). The local
+comparison SIDs (sid_everyone, sid_unix_NFS_mode, and the id_to_sid()
+result) always have at least one sub-authority, and an attacker controls
+the ACE revision and authority bytes (which lie within the in-bounds SID
+base), so they can match one of those SIDs and force the sub_auth read.
 
-The problem here is that IS_ERR() is not inlined and dead code elimination
-fails as a consequence.
+A crafted ACE with size == 16 and num_subauth >= 1 placed at the tail of
+the security descriptor therefore causes a heap out-of-bounds read of up
+to SID_MAX_SUB_AUTHORITIES * sizeof(__le32) bytes past the pntsd
+allocation. The security descriptor is loaded by ksmbd_vfs_get_sd_xattr()
+into a buffer sized exactly to the on-disk data (kzalloc(sd_size) in
+ndr_decode_v4_ntacl()), so the read lands past the allocation. The
+malformed descriptor can be stored verbatim via SMB2_SET_INFO (the DACL
+is not normalised before being written to the security.NTACL xattr) and
+the read fires on a subsequent SMB2_CREATE access check, making this
+reachable by an authenticated client on a share that uses ACL xattrs.
 
-The err.h helpers all turn into a trivial assignment of a bit mask and
-should never result in a function call, so force them to always be inline.
-This should generally result in better object code aside from avoiding
-the link failure above.
+Add the missing num_subauth-versus-ace_size check, mirroring the
+identical guards already present in the sibling parsers parse_dacl() and
+smb_inherit_dacl().
 
-Link: https://lore.kernel.org/20260526101851.2495110-1-arnd@kernel.org
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Reviewed-by: Alexander Lobakin <aleksander.lobakin@intel.com>
-Reviewed-by: Nathan Chancellor <nathan@kernel.org>
-Tested-by: Tamir Duberstein <tamird@kernel.org>
-Cc: Alexander Gordeev <agordeev@linux.ibm.com>
-Cc: Andriy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc: Ansuel Smith <ansuelsmth@gmail.com>
-Cc: Bjorn Andersson <andersson@kernel.org>
-Cc: Heiko Carstens <hca@linux.ibm.com>
-Cc: Vasily Gorbik <gor@linux.ibm.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Fixes: d07b26f39246 ("ksmbd: require minimum ACE size in smb_check_perm_dacl()")
+Cc: stable@vger.kernel.org
+Signed-off-by: Hem Parekh <hemparekh1596@gmail.com>
+Acked-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/err.h |   12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ fs/smb/server/smbacl.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/include/linux/err.h
-+++ b/include/linux/err.h
-@@ -36,7 +36,7 @@
-  *
-  * Return: A pointer with @error encoded within its value.
-  */
--static inline void * __must_check ERR_PTR(long error)
-+static __always_inline void * __must_check ERR_PTR(long error)
- {
- 	return (void *) error;
- }
-@@ -46,7 +46,7 @@ static inline void * __must_check ERR_PT
-  * @ptr: An error pointer.
-  * Return: The error code within @ptr.
-  */
--static inline long __must_check PTR_ERR(__force const void *ptr)
-+static __always_inline long __must_check PTR_ERR(__force const void *ptr)
- {
- 	return (long) ptr;
- }
-@@ -56,7 +56,7 @@ static inline long __must_check PTR_ERR(
-  * @ptr: The pointer to check.
-  * Return: true if @ptr is an error pointer, false otherwise.
-  */
--static inline bool __must_check IS_ERR(__force const void *ptr)
-+static __always_inline bool __must_check IS_ERR(__force const void *ptr)
- {
- 	return IS_ERR_VALUE((unsigned long)ptr);
- }
-@@ -67,7 +67,7 @@ static inline bool __must_check IS_ERR(_
-  *
-  * Like IS_ERR(), but also returns true for a null pointer.
-  */
--static inline bool __must_check IS_ERR_OR_NULL(__force const void *ptr)
-+static __always_inline bool __must_check IS_ERR_OR_NULL(__force const void *ptr)
- {
- 	return unlikely(!ptr) || IS_ERR_VALUE((unsigned long)ptr);
- }
-@@ -79,7 +79,7 @@ static inline bool __must_check IS_ERR_O
-  * Explicitly cast an error-valued pointer to another pointer type in such a
-  * way as to make it clear that's what's going on.
-  */
--static inline void * __must_check ERR_CAST(__force const void *ptr)
-+static __always_inline void * __must_check ERR_CAST(__force const void *ptr)
- {
- 	/* cast away the const */
- 	return (void *) ptr;
-@@ -102,7 +102,7 @@ static inline void * __must_check ERR_CA
-  *
-  * Return: The error code within @ptr if it is an error pointer; 0 otherwise.
-  */
--static inline int __must_check PTR_ERR_OR_ZERO(__force const void *ptr)
-+static __always_inline int __must_check PTR_ERR_OR_ZERO(__force const void *ptr)
- {
- 	if (IS_ERR(ptr))
- 		return PTR_ERR(ptr);
+--- a/fs/smb/server/smbacl.c
++++ b/fs/smb/server/smbacl.c
+@@ -1331,7 +1331,9 @@ int smb_check_perm_dacl(struct ksmbd_con
+ 			break;
+ 		aces_size -= ace_size;
+ 
+-		if (ace->sid.num_subauth > SID_MAX_SUB_AUTHORITIES)
++		if (ace->sid.num_subauth > SID_MAX_SUB_AUTHORITIES ||
++		    ace_size < offsetof(struct smb_ace, sid) + CIFS_SID_BASE_SIZE +
++			      sizeof(__le32) * ace->sid.num_subauth)
+ 			break;
+ 
+ 		if (!compare_sids(&sid, &ace->sid) ||
 
 
 
