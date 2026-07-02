@@ -1,74 +1,62 @@
-Return-Path: <stable+bounces-270964-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-271122-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id gHHXGBWWRmr+ZAsAu9opvQ
-	(envelope-from <stable+bounces-270964-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:47:17 +0200
+	id MrWlGgajRmrxagsAu9opvQ
+	(envelope-from <stable+bounces-271122-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:42:30 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 102206FA8B0
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:47:17 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id B49926FB8EB
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:42:29 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=TqzEqc6F;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-270964-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-270964-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=TCdEN5rM;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-271122-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-271122-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 85E8C305ECDA
-	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:39:52 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 9585033A4A43
+	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:47:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 775043546C6;
-	Thu,  2 Jul 2026 16:38:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B236E3C7DF1;
+	Thu,  2 Jul 2026 16:45:28 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B764E1A682A;
-	Thu,  2 Jul 2026 16:38:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E082353A68;
+	Thu,  2 Jul 2026 16:45:27 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783010313; cv=none; b=fpNRjU6O3S4eHBU0dhjS9KKk0w3zOqyI0GIwZpHZxJDnBs/LJAsLlCFufSTcGmmbm9aAQl0RO5JZSxEq4rGuswjal7Pw4rQJ6NAdwcTZc0cUi/L/ne8SMsyLF9/4DMZHTtlWrG1bWvABCvK2kGfUZBjlA7jTcPHd7eaqBotUvms=
+	t=1783010728; cv=none; b=WUBka32gUkBMtDKXF+QX7dAFXVoHTzpHSdJtY2ejEJnCjd+iuQzuue57vyLw6+cAjCneUZ//aVk8FvCJqPJUkdd5Wn1AZywR92M3Qkxw+shH/Q01oBHSoeSBXhk+9nhsu/krzTGek0F0xQnhb4FAZn8u8cG5xGUW0DJrSsMR3dA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783010313; c=relaxed/simple;
-	bh=+nMBBF3+qEdwF80EZohmSZfLtmLu14sFa2XQJuSJG1A=;
+	s=arc-20240116; t=1783010728; c=relaxed/simple;
+	bh=sflJeWuR27vk/9V537wtU4iSx22pJz1h8sGsQOIg5U4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gV/cgLPU2tlCxE6HzOVEzTZcQU/CB5+RJWKkZ4Aqm1v9RgWMlYJwZYSFqCsrNiBklPRfOtgBXKe92UCC3DbAmhab3fvzR0AXJ0tUXCY5SG5fEAbyX4iOQw5vNRVC+IVz5VNO4AgpxT1/Rk3xzfxNsTiHoWjthwjLWjFtGfofQt8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TqzEqc6F; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2B8F1F000E9;
-	Thu,  2 Jul 2026 16:38:30 +0000 (UTC)
+	 MIME-Version; b=JZCsQGPe0Y5Gg1o1o1hzFeke60F7+iHCNlJwd9xnu/t5FwkdNYpJZ/7apZaMiIIZyI5KjQDPuH+G9gX5RwWzuJikmtywGgw08K8ovQn7gyKBw+EyNx6R04ozn8+bmPOWF34V9cg54O7m017xpCEJ2W6DPg6JzyNtDejuWBukWqM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TCdEN5rM; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A50F21F000E9;
+	Thu,  2 Jul 2026 16:45:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1783010311;
-	bh=78H5iUnNE9ff1mf9ryBaRmb7wepuCECrnEq6bdnbgLc=;
+	s=korg; t=1783010727;
+	bh=H8pAIU99Ugc0wj9gZuVuPMdoXK9exP+8GU+syghucSY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=TqzEqc6FdAnu687RW44P208XCG5VEREa0RdPcLUveLfh7sa6rMzHP20PkYrawYzBe
-	 PZmC8oFU5N3zOAEHVcXhJTX8/Z6aBUyZYDuIznuTpvsNoeGor8+D+91Z4MyWHieCM4
-	 aPUFUBHGAGdXjefcdTrF+QIRhyF5heeKtMKvgLEU=
+	b=TCdEN5rMdA/4owU8cVBjR9QmG3xVN/hZS2fBmRgAIgrXN/QO8lR2kdv2ju6ShAwaL
+	 2pAY9erfUZXPhAt1PeRsufH+W3K+KMwOPPorIl6oWLMGavgUTjmKv5VhLfuBEm9XMd
+	 ADEE3OVDoi4Wk0S2X9+wXhpmt/grXIAB1uFYIM0o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	bpf <bpf@vger.kernel.org>,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	Masahiro Yamada <masahiroy@kernel.org>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Nicolas Schier <nicolas@fjasle.eu>,
-	Zheng Yejian <zhengyejian1@huawei.com>,
-	Martin Kelly <martin.kelly@crowdstrike.com>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Josh Poimboeuf <jpoimboe@redhat.com>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
-	Andrey Grodzovsky <andrey.grodzovsky@crowdstrike.com>
-Subject: [PATCH 6.12 059/204] scripts/sorttable: Remove unneeded Elf_Rel
+	Xie Yuanbin <xieyuanbin1@huawei.com>,
+	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 015/175] ARM: fix branch predictor hardening
 Date: Thu,  2 Jul 2026 18:18:36 +0200
-Message-ID: <20260702155119.900155393@linuxfoundation.org>
+Message-ID: <20260702155116.096904554@linuxfoundation.org>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260702155118.667618796@linuxfoundation.org>
-References: <20260702155118.667618796@linuxfoundation.org>
+In-Reply-To: <20260702155115.766838875@linuxfoundation.org>
+References: <20260702155115.766838875@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -80,152 +68,195 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-270964-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[19];
 	FORWARDED(0.00)[lists@lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-271122-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:bpf@vger.kernel.org,m:mhiramat@kernel.org,m:mark.rutland@arm.com,m:mathieu.desnoyers@efficios.com,m:akpm@linux-foundation.org,m:peterz@infradead.org,m:torvalds@linux-foundation.org,m:masahiroy@kernel.org,m:nathan@kernel.org,m:nicolas@fjasle.eu,m:zhengyejian1@huawei.com,m:martin.kelly@crowdstrike.com,m:christophe.leroy@csgroup.eu,m:jpoimboe@redhat.com,m:rostedt@goodmis.org,m:andrey.grodzovsky@crowdstrike.com,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:xieyuanbin1@huawei.com,m:rmk+kernel@armlinux.org.uk,m:bigeasy@linutronix.de,m:sashal@kernel.org,m:rmk@armlinux.org.uk,s:lists@lfdr.de];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	TO_DN_SOME(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
+	TAGGED_RCPT(0.00)[stable,kernel];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linutronix.de:email,vger.kernel.org:from_smtp,huawei.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,armlinux.org.uk:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 102206FA8B0
+X-Rspamd-Queue-Id: B49926FB8EB
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Steven Rostedt <rostedt@goodmis.org>
+From: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
 
-[ Upstream commit 6f2c2f93a190467cebd6ebd03feb49514fead5ca ]
+commit fd2dee1c6e2256f726ba33fd3083a7be0efc80d3 upstream.
 
-The code had references to initialize the Elf_Rel relocation tables, but
-it was never used. Remove it.
+__do_user_fault() may be called with indeterminent interrupt enable
+state, which means we may be preemptive at this point. This causes
+problems when calling harden_branch_predictor(). For example, when
+called from a data abort, do_alignment_fault()->do_bad_area().
 
-Cc: bpf <bpf@vger.kernel.org>
-Cc: Masami Hiramatsu <mhiramat@kernel.org>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: Masahiro Yamada <masahiroy@kernel.org>
-Cc: Nathan Chancellor <nathan@kernel.org>
-Cc: Nicolas Schier <nicolas@fjasle.eu>
-Cc: Zheng Yejian <zhengyejian1@huawei.com>
-Cc: Martin  Kelly <martin.kelly@crowdstrike.com>
-Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
-Cc: Josh Poimboeuf <jpoimboe@redhat.com>
-Link: https://lore.kernel.org/20250105162344.515342233@goodmis.org
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-Signed-off-by: Andrey Grodzovsky <andrey.grodzovsky@crowdstrike.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Move harden_branch_predictor() out of __do_user_fault() and into the
+calling contexts.
+
+Moving it into do_kernel_address_page_fault(), we can be sure that
+interrupts will be disabled here.
+
+Converting do_translation_fault() to use do_kernel_address_page_fault()
+rather than do_bad_area() means that we keep branch predictor handling
+for translation faults. Interrupts will also be disabled at this call
+site.
+
+do_sect_fault() needs special handling, so detect user mode accesses
+to kernel-addresses, and add an explicit call to branch predictor
+hardening.
+
+Finally, add branch predictor hardening to do_alignment() for the
+faulting case (user mode accessing kernel addresses) before interrupts
+are enabled.
+
+This should cover all cases where harden_branch_predictor() is called,
+ensuring that it is always has interrupts disabled, also ensuring that
+it is called early in each call path.
+
+Reviewed-by: Xie Yuanbin <xieyuanbin1@huawei.com>
+Tested-by: Xie Yuanbin <xieyuanbin1@huawei.com>
+Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- scripts/sorttable.h |   23 ++---------------------
- 1 file changed, 2 insertions(+), 21 deletions(-)
+ arch/arm/mm/alignment.c |  4 ++++
+ arch/arm/mm/fault.c     | 39 ++++++++++++++++++++++++++-------------
+ 2 files changed, 30 insertions(+), 13 deletions(-)
 
---- a/scripts/sorttable.h
-+++ b/scripts/sorttable.h
-@@ -26,7 +26,6 @@
- #undef Elf_Addr
- #undef Elf_Ehdr
- #undef Elf_Shdr
--#undef Elf_Rel
- #undef Elf_Sym
- #undef ELF_ST_TYPE
- #undef uint_t
-@@ -42,7 +41,6 @@
- # define Elf_Addr		Elf64_Addr
- # define Elf_Ehdr		Elf64_Ehdr
- # define Elf_Shdr		Elf64_Shdr
--# define Elf_Rel		Elf64_Rel
- # define Elf_Sym		Elf64_Sym
- # define ELF_ST_TYPE		ELF64_ST_TYPE
- # define uint_t			uint64_t
-@@ -57,7 +55,6 @@
- # define Elf_Addr		Elf32_Addr
- # define Elf_Ehdr		Elf32_Ehdr
- # define Elf_Shdr		Elf32_Shdr
--# define Elf_Rel		Elf32_Rel
- # define Elf_Sym		Elf32_Sym
- # define ELF_ST_TYPE		ELF32_ST_TYPE
- # define uint_t			uint32_t
-@@ -248,14 +245,10 @@ static int do_sort(Elf_Ehdr *ehdr,
- 	Elf32_Word *symtab_shndx = NULL;
- 	Elf_Sym *sort_needed_sym = NULL;
- 	Elf_Shdr *sort_needed_sec;
--	Elf_Rel *relocs = NULL;
--	int relocs_size = 0;
- 	uint32_t *sort_needed_loc;
- 	const char *secstrings;
- 	const char *strtab;
- 	char *extab_image;
--	int extab_index = 0;
--	int i;
- 	int idx;
- 	unsigned int shnum;
- 	unsigned int shstrndx;
-@@ -279,23 +272,15 @@ static int do_sort(Elf_Ehdr *ehdr,
- 	if (shnum == SHN_UNDEF)
- 		shnum = _r(&shdr[0].sh_size);
+diff --git a/arch/arm/mm/alignment.c b/arch/arm/mm/alignment.c
+index f8dd0b3cc8e040..ee264737be6d26 100644
+--- a/arch/arm/mm/alignment.c
++++ b/arch/arm/mm/alignment.c
+@@ -22,6 +22,7 @@
  
--	for (i = 0, s = shdr; s < shdr + shnum; i++, s++) {
-+	for (s = shdr; s < shdr + shnum; s++) {
- 		idx = r(&s->sh_name);
--		if (!strcmp(secstrings + idx, "__ex_table")) {
-+		if (!strcmp(secstrings + idx, "__ex_table"))
- 			extab_sec = s;
--			extab_index = i;
--		}
- 		if (!strcmp(secstrings + idx, ".symtab"))
- 			symtab_sec = s;
- 		if (!strcmp(secstrings + idx, ".strtab"))
- 			strtab_sec = s;
+ #include <asm/cp15.h>
+ #include <asm/system_info.h>
++#include <asm/system_misc.h>
+ #include <asm/unaligned.h>
+ #include <asm/opcodes.h>
  
--		if ((r(&s->sh_type) == SHT_REL ||
--		     r(&s->sh_type) == SHT_RELA) &&
--		    r(&s->sh_info) == extab_index) {
--			relocs = (void *)ehdr + _r(&s->sh_offset);
--			relocs_size = _r(&s->sh_size);
--		}
- 		if (r(&s->sh_type) == SHT_SYMTAB_SHNDX)
- 			symtab_shndx = (Elf32_Word *)((const char *)ehdr +
- 						      _r(&s->sh_offset));
-@@ -397,10 +382,6 @@ static int do_sort(Elf_Ehdr *ehdr,
- 		      extable_ent_size, compare_extable);
- 	}
+@@ -809,6 +810,9 @@ do_alignment(unsigned long addr, unsigned int fsr, struct pt_regs *regs)
+ 	int thumb2_32b = 0;
+ 	int fault;
  
--	/* If there were relocations, we no longer need them. */
--	if (relocs)
--		memset(relocs, 0, relocs_size);
++	if (addr >= TASK_SIZE && user_mode(regs))
++		harden_branch_predictor();
++
+ 	if (interrupts_enabled(regs))
+ 		local_irq_enable();
+ 
+diff --git a/arch/arm/mm/fault.c b/arch/arm/mm/fault.c
+index 47eecdf29a8312..87ed5da30e44f1 100644
+--- a/arch/arm/mm/fault.c
++++ b/arch/arm/mm/fault.c
+@@ -199,9 +199,6 @@ __do_user_fault(unsigned long addr, unsigned int fsr, unsigned int sig,
+ {
+ 	struct task_struct *tsk = current;
+ 
+-	if (addr > TASK_SIZE)
+-		harden_branch_predictor();
 -
- 	/* find the flag main_extable_sort_needed */
- 	for (sym = (void *)ehdr + _r(&symtab_sec->sh_offset);
- 	     sym < sym + _r(&symtab_sec->sh_size) / sizeof(Elf_Sym);
+ #ifdef CONFIG_DEBUG_USER
+ 	if (((user_debug & UDBG_SEGV) && (sig == SIGSEGV)) ||
+ 	    ((user_debug & UDBG_BUS)  && (sig == SIGBUS))) {
+@@ -252,8 +249,10 @@ do_kernel_address_page_fault(struct mm_struct *mm, unsigned long addr,
+ 		/*
+ 		 * Fault from user mode for a kernel space address. User mode
+ 		 * should not be faulting in kernel space, which includes the
+-		 * vector/khelper page. Send a SIGSEGV.
++		 * vector/khelper page. Handle the branch predictor hardening
++		 * while interrupts are still disabled, then send a SIGSEGV.
+ 		 */
++		harden_branch_predictor();
+ 		__do_user_fault(addr, fsr, SIGSEGV, SEGV_MAPERR, regs);
+ 	} else {
+ 		/*
+@@ -423,16 +422,20 @@ do_page_fault(unsigned long addr, unsigned int fsr, struct pt_regs *regs)
+  * We enter here because the first level page table doesn't contain
+  * a valid entry for the address.
+  *
+- * If the address is in kernel space (>= TASK_SIZE), then we are
+- * probably faulting in the vmalloc() area.
++ * If this is a user address (addr < TASK_SIZE), we handle this as a
++ * normal page fault. This leaves the remainder of the function to handle
++ * kernel address translation faults.
+  *
+- * If the init_task's first level page tables contains the relevant
+- * entry, we copy the it to this task.  If not, we send the process
+- * a signal, fixup the exception, or oops the kernel.
++ * Since user mode is not permitted to access kernel addresses, pass these
++ * directly to do_kernel_address_page_fault() to handle.
+  *
+- * NOTE! We MUST NOT take any locks for this case. We may be in an
+- * interrupt or a critical region, and should only copy the information
+- * from the master page table, nothing more.
++ * Otherwise, we're probably faulting in the vmalloc() area, so try to fix
++ * that up. Note that we must not take any locks or enable interrupts in
++ * this case.
++ *
++ * If vmalloc() fixup fails, that means the non-leaf page tables did not
++ * contain an entry for this address, so handle this via
++ * do_kernel_address_page_fault().
+  */
+ #ifdef CONFIG_MMU
+ static int __kprobes
+@@ -498,7 +501,8 @@ do_translation_fault(unsigned long addr, unsigned int fsr,
+ 	return 0;
+ 
+ bad_area:
+-	do_bad_area(addr, fsr, regs);
++	do_kernel_address_page_fault(current->mm, addr, fsr, regs);
++
+ 	return 0;
+ }
+ #else					/* CONFIG_MMU */
+@@ -518,7 +522,16 @@ do_translation_fault(unsigned long addr, unsigned int fsr,
+ static int
+ do_sect_fault(unsigned long addr, unsigned int fsr, struct pt_regs *regs)
+ {
++	/*
++	 * If this is a kernel address, but from user mode, then userspace
++	 * is trying bad stuff. Invoke the branch predictor handling.
++	 * Interrupts are disabled here.
++	 */
++	if (addr >= TASK_SIZE && user_mode(regs))
++		harden_branch_predictor();
++
+ 	do_bad_area(addr, fsr, regs);
++
+ 	return 0;
+ }
+ #endif /* CONFIG_ARM_LPAE */
+-- 
+2.53.0
+
 
 
 
