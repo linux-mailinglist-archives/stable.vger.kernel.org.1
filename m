@@ -1,61 +1,74 @@
-Return-Path: <stable+bounces-270997-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-271186-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id K+61EWWWRmotZQsAu9opvQ
-	(envelope-from <stable+bounces-270997-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:48:37 +0200
+	id eOp0MSqZRmrCZgsAu9opvQ
+	(envelope-from <stable+bounces-271186-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:00:26 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id D1AD56FA945
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:48:36 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id CED6F6FAD8F
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:00:25 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=AKqStXoI;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-270997-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-270997-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=tPllT6bu;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-271186-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-271186-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 0C61330B85FD
-	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:41:17 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 3531C3084500
+	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:49:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 718FB23EAAD;
-	Thu,  2 Jul 2026 16:39:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 111F8349CDB;
+	Thu,  2 Jul 2026 16:48:11 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F554323417;
-	Thu,  2 Jul 2026 16:39:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B24F3438A6;
+	Thu,  2 Jul 2026 16:48:09 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783010399; cv=none; b=iWl2w9FMUZEZ3BMSJ5Fs4yrVgs0MSBDpw8wwadtOmdi4IHdw9iMRaev74S3qp09pmmewmYqgJ1Vq3ImEDhFSKvfSoxJNh+gcZDaBdAAWUddjuFJGFOUenPnpF0zsQxuIfjMxiGiAfEFAY81zKq6waQibMtY0NtEWgMJqPE3XdMo=
+	t=1783010890; cv=none; b=CpTvAabP2moMrfuKAU6K0DRzXtbmhuyhF9t6EKm7IBZdf21tA1YKum9wE3ErJ3Xz07okk0e3O0VxNGAaFvj4/pINUay3bXKlctexkcbXSkgjC90dTPUeUCDKDaPkPYd9xJNEpVn4VJ7JHm+QrfiJGpsZODCW6s0pexjXOTD3ib4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783010399; c=relaxed/simple;
-	bh=DMOiPr12pOJ/3SE//zHjfT8YpoDyq77Vk7LBdBt3jSA=;
+	s=arc-20240116; t=1783010890; c=relaxed/simple;
+	bh=9doA/ZCYYDZxaOmqc40cYOKsrk1+NskfN7XJar+HnIk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ou8jkUJ+X/aW5X6FQ+00FVxLd/MzIkz9RZum9AX5kLwjMTUTHcfcbwXgYSFMI0lP0Qi0RyVAPaMskLumd5vR200tEFESLdTHxhelaM2d6QwqinLqT6B1Ol8JmGDaKIK/iqgSD3+oDOmtwgA6oSj1Hhj9e0eGPI7y1NI8uBaPcvQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AKqStXoI; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63FB81F00A3D;
-	Thu,  2 Jul 2026 16:39:57 +0000 (UTC)
+	 MIME-Version; b=s4wXWXcvhm/9G0b8jM7pJgx60q9h0MdrY+m45+TWjqDxwCk/7upZkCT41siJmh+AKKFddio/Ue2uo3wJ4raD/JmmexPvVghg5/7896wXikvhbOf5h2kB3RyL3gGZ8m/BSuEzA8UR7wgd9Nvyvx80aw0/rh+yregGVwJ9mubs+Gs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tPllT6bu; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8AF11F000E9;
+	Thu,  2 Jul 2026 16:48:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1783010397;
-	bh=v96KIqQ+iBxp4JcGXb6CIc4INXR3Z3KixZFOM62cuV8=;
+	s=korg; t=1783010889;
+	bh=k1+5xjOEqPFwi7OAMxPWj1S3+mGnRi4n7vBFmlzEijc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=AKqStXoIwWoGDDLeoF3Zu86MoUz9vqsOoRxNA6irBeftk0Ep9xFXEPkZ4EQZo/2xl
-	 zeWracuKkt6En3Ae4cIatkgENDWDV+xhUUqw/QwEgyQFgJ5hV+ImVavUwR796wyjzr
-	 /w7ZjJDb4gubrbYwxpyYfWo4GsqKHuZHQXpUNbMA=
+	b=tPllT6bugjQI4Ns3wHv9jes+XwHlCyIuxZb1hlgQ6JvOAvlb+EtbNspjWDufGZ9eH
+	 8ang56tFYQ88LG8p0ILn8c0UAUqvyE1Ol+EsLwqm0nH5l9c69gGx/xIv9UAdZqaQyh
+	 O6eOScP7fv7HELSU5O1JObiTbovkbeeuiCRxZLkc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hyunwoo Kim <imv4bel@gmail.com>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 093/204] KVM: x86: Fix shadow paging use-after-free due to unexpected role
+	bpf <bpf@vger.kernel.org>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	Masahiro Yamada <masahiroy@kernel.org>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Nicolas Schier <nicolas@fjasle.eu>,
+	Zheng Yejian <zhengyejian1@huawei.com>,
+	Martin Kelly <martin.kelly@crowdstrike.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Josh Poimboeuf <jpoimboe@redhat.com>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
+	Andrey Grodzovsky <andrey.grodzovsky@crowdstrike.com>
+Subject: [PATCH 6.6 049/175] scripts/sorttable: Convert Elf_Ehdr to union
 Date: Thu,  2 Jul 2026 18:19:10 +0200
-Message-ID: <20260702155120.616098558@linuxfoundation.org>
+Message-ID: <20260702155116.830787158@linuxfoundation.org>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260702155118.667618796@linuxfoundation.org>
-References: <20260702155118.667618796@linuxfoundation.org>
+In-Reply-To: <20260702155115.766838875@linuxfoundation.org>
+References: <20260702155115.766838875@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,108 +84,240 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	RCPT_COUNT_TWELVE(0.00)[19];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-270997-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:imv4bel@gmail.com,m:pbonzini@redhat.com,m:sashal@kernel.org,s:lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,redhat.com,kernel.org];
 	FORWARDED(0.00)[lists@lfdr.de];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:bpf@vger.kernel.org,m:mhiramat@kernel.org,m:mark.rutland@arm.com,m:mathieu.desnoyers@efficios.com,m:akpm@linux-foundation.org,m:peterz@infradead.org,m:torvalds@linux-foundation.org,m:masahiroy@kernel.org,m:nathan@kernel.org,m:nicolas@fjasle.eu,m:zhengyejian1@huawei.com,m:martin.kelly@crowdstrike.com,m:christophe.leroy@csgroup.eu,m:jpoimboe@redhat.com,m:rostedt@goodmis.org,m:andrey.grodzovsky@crowdstrike.com,s:lists@lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-271186-lists,stable=lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ALIAS_RESOLVED(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FROM_HAS_DN(0.00)[]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: D1AD56FA945
+X-Rspamd-Queue-Id: CED6F6FAD8F
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paolo Bonzini <pbonzini@redhat.com>
+From: Steven Rostedt <rostedt@goodmis.org>
 
-commit 81ccda30b4e83d8f5cc4fd50503c44e3a33abfeb upstream.
+[ Upstream commit 157fb5b3cfd2cb5950314f926a76e567fc1921c5 ]
 
-Commit 0cb2af2ea66ad ("KVM: x86: Fix shadow paging use-after-free due
-to unexpected GFN") fixed a shadow paging mismatch between stored and
-computed GFNs; the bug could be triggered by changing a PDE mapping from
-outside the guest, and then deleting a memslot.  The rmap_remove()
-call would miss entries created after the PDE change because the GFN
-of the leaf SPTE does not match the GFN of the struct kvm_mmu_page.
+In order to remove the double #include of sorttable.h for 64 and 32 bit
+to create duplicate functions for both, replace the Elf_Ehdr macro with a
+union that defines both Elf64_Ehdr and Elf32_Ehdr, with field e64 for the
+64bit version, and e32 for the 32bit version.
 
-A similar hole however remains if the modified PDE points to a non-leaf
-page.  In this case the gfn can be made to match, but the role does not
-match: the original large 2MB page creates a kvm_mmu_page with direct=1,
-while the new 4KB needs a kvm_mmu_page with direct=0.  However,
-kvm_mmu_get_child_sp() does not compare the role, and therefore reuses
-the page.
+Then a macro etype can be used instead to get to the proper value.
 
-The next step is installing a leaf (4KB) SPTE on the new path which
-records an rmap entry under the gfn resolved by the walk.  But when
-that child is zapped its parent kvm_mmu_page has direct=1 and
-kvm_mmu_page_get_gfn() computes the gfn for the 4KB page as
-sp->gfn + index instead of using sp->shadowed_translation[] (or sp->gfns[]
-in older kernels).  It therefore fails to remove the recorded entry.
+This will eventually be replaced with just single functions that can
+handle both 32bit and 64bit ELF parsing.
 
-When the memslot is dropped the shadow page is freed but the rmap
-entry survives, as in the scenario that was already fixed.  Code that
-later walks that gfn (dirty logging, MMU notifier invalidation, and
-so on) dereferences an sptep that lies in the freed page, causing the
-use-after-free.
-
-Fixes: 2032a93d66fa ("KVM: MMU: Don't allocate gfns page for direct mmu pages")
-Reported-by: Hyunwoo Kim <imv4bel@gmail.com>
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: bpf <bpf@vger.kernel.org>
+Cc: Masami Hiramatsu <mhiramat@kernel.org>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Masahiro Yamada <masahiroy@kernel.org>
+Cc: Nathan Chancellor <nathan@kernel.org>
+Cc: Nicolas Schier <nicolas@fjasle.eu>
+Cc: Zheng Yejian <zhengyejian1@huawei.com>
+Cc: Martin  Kelly <martin.kelly@crowdstrike.com>
+Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
+Cc: Josh Poimboeuf <jpoimboe@redhat.com>
+Link: https://lore.kernel.org/20250105162345.148224465@goodmis.org
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: Andrey Grodzovsky <andrey.grodzovsky@crowdstrike.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kvm/mmu/mmu.c | 10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
+ scripts/sorttable.c |   36 ++++++++++++++++++++----------------
+ scripts/sorttable.h |   12 ++++++------
+ 2 files changed, 26 insertions(+), 22 deletions(-)
 
-diff --git a/arch/x86/kvm/mmu/mmu.c b/arch/x86/kvm/mmu/mmu.c
-index d288c60ae200ba..a67d013fff4d91 100644
---- a/arch/x86/kvm/mmu/mmu.c
-+++ b/arch/x86/kvm/mmu/mmu.c
-@@ -2329,13 +2329,15 @@ static struct kvm_mmu_page *kvm_mmu_get_child_sp(struct kvm_vcpu *vcpu,
- 						 u64 *sptep, gfn_t gfn,
- 						 bool direct, unsigned int access)
+--- a/scripts/sorttable.c
++++ b/scripts/sorttable.c
+@@ -64,6 +64,11 @@
+ #define EM_LOONGARCH	258
+ #endif
+ 
++typedef union {
++	Elf32_Ehdr	e32;
++	Elf64_Ehdr	e64;
++} Elf_Ehdr;
++
+ static uint32_t (*r)(const uint32_t *);
+ static uint16_t (*r2)(const uint16_t *);
+ static uint64_t (*r8)(const uint64_t *);
+@@ -266,10 +271,10 @@ static void sort_relative_table_with_dat
+ static int do_file(char const *const fname, void *addr)
  {
--	union kvm_mmu_page_role role;
-+	union kvm_mmu_page_role role = kvm_mmu_child_role(sptep, direct, access);
+ 	int rc = -1;
+-	Elf32_Ehdr *ehdr = addr;
++	Elf_Ehdr *ehdr = addr;
+ 	table_sort_t custom_sort = NULL;
  
--	if (is_shadow_present_pte(*sptep) && !is_large_pte(*sptep) &&
--	    spte_to_child_sp(*sptep) && spte_to_child_sp(*sptep)->gfn == gfn)
-+	if (is_shadow_present_pte(*sptep) &&
-+	    !is_large_pte(*sptep) &&
-+	    spte_to_child_sp(*sptep) &&
-+	    spte_to_child_sp(*sptep)->gfn == gfn &&
-+	    spte_to_child_sp(*sptep)->role.word == role.word)
- 		return ERR_PTR(-EEXIST);
+-	switch (ehdr->e_ident[EI_DATA]) {
++	switch (ehdr->e32.e_ident[EI_DATA]) {
+ 	case ELFDATA2LSB:
+ 		r	= rle;
+ 		r2	= r2le;
+@@ -284,18 +289,18 @@ static int do_file(char const *const fna
+ 		break;
+ 	default:
+ 		fprintf(stderr, "unrecognized ELF data encoding %d: %s\n",
+-			ehdr->e_ident[EI_DATA], fname);
++			ehdr->e32.e_ident[EI_DATA], fname);
+ 		return -1;
+ 	}
  
--	role = kvm_mmu_child_role(sptep, direct, access);
- 	return kvm_mmu_get_shadow_page(vcpu, gfn, role);
- }
+-	if (memcmp(ELFMAG, ehdr->e_ident, SELFMAG) != 0 ||
+-	    (r2(&ehdr->e_type) != ET_EXEC && r2(&ehdr->e_type) != ET_DYN) ||
+-	    ehdr->e_ident[EI_VERSION] != EV_CURRENT) {
++	if (memcmp(ELFMAG, ehdr->e32.e_ident, SELFMAG) != 0 ||
++	    (r2(&ehdr->e32.e_type) != ET_EXEC && r2(&ehdr->e32.e_type) != ET_DYN) ||
++	    ehdr->e32.e_ident[EI_VERSION] != EV_CURRENT) {
+ 		fprintf(stderr, "unrecognized ET_EXEC/ET_DYN file %s\n", fname);
+ 		return -1;
+ 	}
  
--- 
-2.53.0
-
+-	switch (r2(&ehdr->e_machine)) {
++	switch (r2(&ehdr->e32.e_machine)) {
+ 	case EM_386:
+ 	case EM_AARCH64:
+ 	case EM_LOONGARCH:
+@@ -318,14 +323,14 @@ static int do_file(char const *const fna
+ 		break;
+ 	default:
+ 		fprintf(stderr, "unrecognized e_machine %d %s\n",
+-			r2(&ehdr->e_machine), fname);
++			r2(&ehdr->e32.e_machine), fname);
+ 		return -1;
+ 	}
+ 
+-	switch (ehdr->e_ident[EI_CLASS]) {
++	switch (ehdr->e32.e_ident[EI_CLASS]) {
+ 	case ELFCLASS32:
+-		if (r2(&ehdr->e_ehsize) != sizeof(Elf32_Ehdr) ||
+-		    r2(&ehdr->e_shentsize) != sizeof(Elf32_Shdr)) {
++		if (r2(&ehdr->e32.e_ehsize) != sizeof(Elf32_Ehdr) ||
++		    r2(&ehdr->e32.e_shentsize) != sizeof(Elf32_Shdr)) {
+ 			fprintf(stderr,
+ 				"unrecognized ET_EXEC/ET_DYN file: %s\n", fname);
+ 			break;
+@@ -334,20 +339,19 @@ static int do_file(char const *const fna
+ 		break;
+ 	case ELFCLASS64:
+ 		{
+-		Elf64_Ehdr *const ghdr = (Elf64_Ehdr *)ehdr;
+-		if (r2(&ghdr->e_ehsize) != sizeof(Elf64_Ehdr) ||
+-		    r2(&ghdr->e_shentsize) != sizeof(Elf64_Shdr)) {
++		if (r2(&ehdr->e64.e_ehsize) != sizeof(Elf64_Ehdr) ||
++		    r2(&ehdr->e64.e_shentsize) != sizeof(Elf64_Shdr)) {
+ 			fprintf(stderr,
+ 				"unrecognized ET_EXEC/ET_DYN file: %s\n",
+ 				fname);
+ 			break;
+ 		}
+-		rc = do_sort_64(ghdr, fname, custom_sort);
++		rc = do_sort_64(ehdr, fname, custom_sort);
+ 		}
+ 		break;
+ 	default:
+ 		fprintf(stderr, "unrecognized ELF class %d %s\n",
+-			ehdr->e_ident[EI_CLASS], fname);
++			ehdr->e32.e_ident[EI_CLASS], fname);
+ 		break;
+ 	}
+ 
+--- a/scripts/sorttable.h
++++ b/scripts/sorttable.h
+@@ -23,12 +23,12 @@
+ #undef sort_mcount_loc
+ #undef elf_mcount_loc
+ #undef do_sort
+-#undef Elf_Ehdr
+ #undef Elf_Shdr
+ #undef Elf_Sym
+ #undef ELF_ST_TYPE
+ #undef uint_t
+ #undef _r
++#undef etype
+ 
+ #ifdef SORTTABLE_64
+ # define extable_ent_size	16
+@@ -37,12 +37,12 @@
+ # define sort_mcount_loc	sort_mcount_loc_64
+ # define elf_mcount_loc		elf_mcount_loc_64
+ # define do_sort		do_sort_64
+-# define Elf_Ehdr		Elf64_Ehdr
+ # define Elf_Shdr		Elf64_Shdr
+ # define Elf_Sym		Elf64_Sym
+ # define ELF_ST_TYPE		ELF64_ST_TYPE
+ # define uint_t			uint64_t
+ # define _r			r8
++# define etype			e64
+ #else
+ # define extable_ent_size	8
+ # define compare_extable	compare_extable_32
+@@ -50,12 +50,12 @@
+ # define sort_mcount_loc	sort_mcount_loc_32
+ # define elf_mcount_loc		elf_mcount_loc_32
+ # define do_sort		do_sort_32
+-# define Elf_Ehdr		Elf32_Ehdr
+ # define Elf_Shdr		Elf32_Shdr
+ # define Elf_Sym		Elf32_Sym
+ # define ELF_ST_TYPE		ELF32_ST_TYPE
+ # define uint_t			uint32_t
+ # define _r			r
++# define etype			e32
+ #endif
+ 
+ #if defined(SORTTABLE_64) && defined(UNWINDER_ORC_ENABLED)
+@@ -222,7 +222,7 @@ static int do_sort(Elf_Ehdr *ehdr,
+ 		   table_sort_t custom_sort)
+ {
+ 	int rc = -1;
+-	Elf_Shdr *s, *shdr = (Elf_Shdr *)((char *)ehdr + _r(&ehdr->e_shoff));
++	Elf_Shdr *s, *shdr = (Elf_Shdr *)((char *)ehdr + _r(&ehdr->etype.e_shoff));
+ 	Elf_Shdr *strtab_sec = NULL;
+ 	Elf_Shdr *symtab_sec = NULL;
+ 	Elf_Shdr *extab_sec = NULL;
+@@ -249,12 +249,12 @@ static int do_sort(Elf_Ehdr *ehdr,
+ 	unsigned int orc_num_entries = 0;
+ #endif
+ 
+-	shstrndx = r2(&ehdr->e_shstrndx);
++	shstrndx = r2(&ehdr->etype.e_shstrndx);
+ 	if (shstrndx == SHN_XINDEX)
+ 		shstrndx = r(&shdr[0].sh_link);
+ 	secstrings = (const char *)ehdr + _r(&shdr[shstrndx].sh_offset);
+ 
+-	shnum = r2(&ehdr->e_shnum);
++	shnum = r2(&ehdr->etype.e_shnum);
+ 	if (shnum == SHN_UNDEF)
+ 		shnum = _r(&shdr[0].sh_size);
+ 
 
 
 
