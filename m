@@ -1,65 +1,62 @@
-Return-Path: <stable+bounces-270954-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-271157-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id jqnGJ/2gRmolagsAu9opvQ
-	(envelope-from <stable+bounces-270954-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:33:49 +0200
+	id valTOh+YRmpBZgsAu9opvQ
+	(envelope-from <stable+bounces-271157-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:55:59 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id EE29C6FB71F
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:33:48 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8F56D6FAC3F
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:55:59 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=tlbPV0K5;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-270954-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-270954-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=rD7lBp6m;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-271157-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-271157-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id EBE46305196D
-	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:39:30 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 94FF8303176B
+	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:48:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 771463624B8;
-	Thu,  2 Jul 2026 16:38:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A233360ECE;
+	Thu,  2 Jul 2026 16:47:00 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A4A435FF6C;
-	Thu,  2 Jul 2026 16:38:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF23D360ED5;
+	Thu,  2 Jul 2026 16:46:58 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783010287; cv=none; b=sxGVn1Jw36MZobCHyct6mZJPXg9tefZp6+mbx2dkKKo5N1k2mKnC1mcW5dCylN6qb3Qmh5elaT9PPI4txZE2w2H6sfIngZ3eeSoe77CWCH6KKzzC8J8FXm7+R7IGY2YKX6XuzF/E6vOQzTZsnGR/d0E714Zpql8JQHNoQ27ZvWA=
+	t=1783010819; cv=none; b=g9g2DwifDK2kCq/tJWatXlC05af1kvIOu6b4U8xdOlzYcYCdPwCOSyPDXnacXNrzHEt4MQDZ9LbhSHgWkEWfWRMONluihv78d3dPochnT4YDrXra/9WFizu0ZsIhhXuZJt1vwWpn7WA/l64Iiy0L/aTCSQsLWSlDapFI5NwD4GA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783010287; c=relaxed/simple;
-	bh=GM/DCVwFHNXTklCOzvyl3Zm5rFgbaCgErSblVd6xOCk=;
+	s=arc-20240116; t=1783010819; c=relaxed/simple;
+	bh=aaaoDtLJVpweGr/QRjYIzRXZhIaZvDlM5XtDIIZF23A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oJp8orUWupbur3jdHcvm7sfKTcZR5LT85XpXcV3ff6X2Qk9dpbK/YXMDUAkseUR1aRANp2f7Q/vJgIkAsY5S23yFHxkT7g01WrPzLU+JGPXXnMHBRpnPdhKqugjHlQBcBwcEbXKRj3KyhIXo5afWDfYp1j+ohp4JOsSSPQBGXmA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tlbPV0K5; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 139471F00A3A;
-	Thu,  2 Jul 2026 16:38:04 +0000 (UTC)
+	 MIME-Version:Content-Type; b=AwMUklj1+T7Q5t3w94tvDm21yLhvuwpfZ1pkh14/UogZjhelDB/TXsJYS/yFH7FyMWH8KQeG/4LlhAuWl+nOGQu7uc8MMqsaLqBZvByO020i0RKpWAc9reTuwvyJPCeZbK7ByraGI0stgfDGlsF1bWTCEy0AnRodCwsZcR2BJs0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rD7lBp6m; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4FB761F000E9;
+	Thu,  2 Jul 2026 16:46:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1783010285;
-	bh=/adt3fUVn9f9T9zwM/rtSfb2Xt8OHiAMTi1hAhf+LzU=;
+	s=korg; t=1783010818;
+	bh=uisxN6VQlOPjP640POqTibgkkJFdXDtatlJsydo3EMo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=tlbPV0K59RtUasZjzxR4vQpNLe3RRPn38hyyP/EOQjve8I40MwSqWE1NzAuQ2DHzy
-	 tyR5eYXXPs03Lt8B/8zzNqnGtS7gmX/O2hVPT8BuqsQkXbVNeKT2WUsXRiguYTY3qO
-	 AdxD4azkFSxu5C6w/poOK54hM/6+foafDfj9dUn0=
+	b=rD7lBp6mLY+jhpJgUY2OjHIOCVFSRjlqfl06iHmmDZfnO+ehUr3R83DNeRFaJImZY
+	 KoQzQqyADsgm1UG0pKA58CXcnAr40fDCFV6SoIUAZ0rL+UOeMsrJdsPA/GKG7LPydG
+	 pnkg0oQ2om8nUp3kYNm2DVJioCD9IDScjItKrly0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
-	Juri Lelli <juri.lelli@redhat.com>,
-	John Stultz <jstultz@google.com>,
-	Metin Kaya <metin.kaya@arm.com>,
-	Davidlohr Bueso <dave@stgolabs.net>,
-	K Prateek Nayak <kprateek.nayak@amd.com>,
+	Jose Maria Casanova Crespo <jmcasanova@igalia.com>,
+	Iago Toral Quiroga <itoral@igalia.com>,
+	=?UTF-8?q?Ma=C3=ADra=20Canal?= <mcanal@igalia.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 050/204] locking/mutex: Remove wakeups from under mutex::wait_lock
+Subject: [PATCH 6.6 006/175] drm/v3d: Skip CSD when it has zeroed workgroups
 Date: Thu,  2 Jul 2026 18:18:27 +0200
-Message-ID: <20260702155119.707359584@linuxfoundation.org>
+Message-ID: <20260702155115.903199561@linuxfoundation.org>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260702155118.667618796@linuxfoundation.org>
-References: <20260702155118.667618796@linuxfoundation.org>
+In-Reply-To: <20260702155115.766838875@linuxfoundation.org>
+References: <20260702155115.766838875@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,589 +66,102 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-270954-lists,stable=lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-271157-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:peterz@infradead.org,m:juri.lelli@redhat.com,m:jstultz@google.com,m:metin.kaya@arm.com,m:dave@stgolabs.net,m:kprateek.nayak@amd.com,m:sashal@kernel.org,s:lists@lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:jmcasanova@igalia.com,m:itoral@igalia.com,m:mcanal@igalia.com,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[10];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[amd.com:email,arm.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,infradead.org:email,stgolabs.net:email]
+	MID_RHS_MATCH_FROM(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,msgid.link:url,igalia.com:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: EE29C6FB71F
+X-Rspamd-Queue-Id: 8F56D6FAC3F
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peter Zijlstra <peterz@infradead.org>
+From: Maíra Canal <mcanal@igalia.com>
 
-[ Upstream commit 894d1b3db41cf7e6ae0304429a1747b3c3f390bc ]
+[ Upstream commit 7f93fad5ea0affc9e1505dd0f7596c0fdb496213 ]
 
-In preparation to nest mutex::wait_lock under rq::lock we need
-to remove wakeups from under it.
+A compute shader dispatch encodes its workgroup counts in the CFG0..CFG2
+registers. Kicking off a dispatch with a zero count in any of the three
+dimensions is invalid. First, the hardware will process 0 as 65536,
+while the user-space driver exposes a maximum of 65535. Over that, a
+submission with a zeroed workgroup dimension should be a no-op.
 
-Do this by utilizing wake_qs to defer the wakeup until after the
-lock is dropped.
+These zeroed counts can reach the dispatch path through an indirect CSD
+job, whose workgroup counts are only known once the indirect buffer is
+read and may legitimately be zero, but such scenario should only result in
+a no-op.
 
-[Heavily changed after 55f036ca7e74 ("locking: WW mutex cleanup") and
-08295b3b5bee ("locking: Implement an algorithm choice for Wound-Wait
-mutexes")]
-[jstultz: rebased to mainline, added extra wake_up_q & init
- to avoid hangs, similar to Connor's rework of this patch]
+Overwrite the indirect CSD job workgroup counts with the indirect BO
+ones, even if they are zeroed, and don't submit the job to the hardware
+when any of the workgroup counts is zero, so the job completes immediately
+instead of running the shader.
 
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Signed-off-by: Juri Lelli <juri.lelli@redhat.com>
-Signed-off-by: John Stultz <jstultz@google.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Reviewed-by: Metin Kaya <metin.kaya@arm.com>
-Acked-by: Davidlohr Bueso <dave@stgolabs.net>
-Tested-by: K Prateek Nayak <kprateek.nayak@amd.com>
-Tested-by: Metin Kaya <metin.kaya@arm.com>
-Link: https://lore.kernel.org/r/20241009235352.1614323-2-jstultz@google.com
-Stable-dep-of: 40a25d59e85b ("locking/rtmutex: Skip remove_waiter() when waiter is not enqueued")
+Cc: stable@vger.kernel.org
+Fixes: d223f98f0209 ("drm/v3d: Add support for compute shader dispatch.")
+Suggested-by: Jose Maria Casanova Crespo <jmcasanova@igalia.com>
+Reviewed-by: Iago Toral Quiroga <itoral@igalia.com>
+Link: https://patch.msgid.link/20260602-v3d-fix-indirect-csd-v4-2-654309e32bc0@igalia.com
+Signed-off-by: Maíra Canal <mcanal@igalia.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/futex/pi.c               |    6 +++-
- kernel/locking/mutex.c          |   16 +++++++++---
- kernel/locking/rtmutex.c        |   51 +++++++++++++++++++++++++++++-----------
- kernel/locking/rtmutex_api.c    |   12 +++++++--
- kernel/locking/rtmutex_common.h |    3 +-
- kernel/locking/rwbase_rt.c      |    8 +++++-
- kernel/locking/rwsem.c          |    4 +--
- kernel/locking/spinlock_rt.c    |    5 ++-
- kernel/locking/ww_mutex.h       |   30 ++++++++++++++---------
- 9 files changed, 96 insertions(+), 39 deletions(-)
+ drivers/gpu/drm/v3d/v3d_sched.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
---- a/kernel/futex/pi.c
-+++ b/kernel/futex/pi.c
-@@ -922,6 +922,7 @@ int futex_lock_pi(u32 __user *uaddr, uns
- 	struct rt_mutex_waiter rt_waiter;
- 	struct futex_hash_bucket *hb;
- 	struct futex_q q = futex_q_init;
-+	DEFINE_WAKE_Q(wake_q);
- 	int res, ret;
- 
- 	if (!IS_ENABLED(CONFIG_FUTEX_PI))
-@@ -1019,8 +1020,11 @@ retry_private:
- 	 * such that futex_unlock_pi() is guaranteed to observe the waiter when
- 	 * it sees the futex_q::pi_state.
- 	 */
--	ret = __rt_mutex_start_proxy_lock(&q.pi_state->pi_mutex, &rt_waiter, current);
-+	ret = __rt_mutex_start_proxy_lock(&q.pi_state->pi_mutex, &rt_waiter, current, &wake_q);
-+	preempt_disable();
- 	raw_spin_unlock_irq(&q.pi_state->pi_mutex.wait_lock);
-+	wake_up_q(&wake_q);
-+	preempt_enable();
- 
- 	if (ret) {
- 		if (ret == 1)
---- a/kernel/locking/mutex.c
-+++ b/kernel/locking/mutex.c
-@@ -575,6 +575,7 @@ __mutex_lock_common(struct mutex *lock,
- 		    struct lockdep_map *nest_lock, unsigned long ip,
- 		    struct ww_acquire_ctx *ww_ctx, const bool use_ww_ctx)
- {
-+	DEFINE_WAKE_Q(wake_q);
- 	struct mutex_waiter waiter;
- 	struct ww_mutex *ww;
- 	int ret;
-@@ -625,7 +626,7 @@ __mutex_lock_common(struct mutex *lock,
- 	 */
- 	if (__mutex_trylock(lock)) {
- 		if (ww_ctx)
--			__ww_mutex_check_waiters(lock, ww_ctx);
-+			__ww_mutex_check_waiters(lock, ww_ctx, &wake_q);
- 
- 		goto skip_wait;
+diff --git a/drivers/gpu/drm/v3d/v3d_sched.c b/drivers/gpu/drm/v3d/v3d_sched.c
+index ff91cdb75bb912..ab872bc818004a 100644
+--- a/drivers/gpu/drm/v3d/v3d_sched.c
++++ b/drivers/gpu/drm/v3d/v3d_sched.c
+@@ -234,6 +234,16 @@ v3d_csd_job_run(struct drm_sched_job *sched_job)
+ 		return NULL;
  	}
-@@ -645,7 +646,7 @@ __mutex_lock_common(struct mutex *lock,
- 		 * Add in stamp order, waking up waiters that must kill
- 		 * themselves.
- 		 */
--		ret = __ww_mutex_add_waiter(&waiter, lock, ww_ctx);
-+		ret = __ww_mutex_add_waiter(&waiter, lock, ww_ctx, &wake_q);
- 		if (ret)
- 			goto err_early_kill;
- 	}
-@@ -681,6 +682,10 @@ __mutex_lock_common(struct mutex *lock,
- 		}
  
- 		raw_spin_unlock(&lock->wait_lock);
-+		/* Make sure we do wakeups before calling schedule */
-+		wake_up_q(&wake_q);
-+		wake_q_init(&wake_q);
++	/* The HW interprets a workgroup size of 0 as 65536; however, the
++	 * user-space driver exposes a maximum of 65535. Therefore, a 0 in
++	 * any dimension means that we have no workgroups and the compute
++	 * shader should not be dispatched.
++	 */
++	if (!V3D_GET_FIELD(job->args.cfg[0], V3D_CSD_QUEUED_CFG0_NUM_WGS_X) ||
++	    !V3D_GET_FIELD(job->args.cfg[1], V3D_CSD_QUEUED_CFG1_NUM_WGS_Y) ||
++	    !V3D_GET_FIELD(job->args.cfg[2], V3D_CSD_QUEUED_CFG2_NUM_WGS_Z))
++		return NULL;
 +
- 		schedule_preempt_disabled();
+ 	v3d->queue[V3D_CSD].active_job = &job->base;
  
- 		first = __mutex_waiter_is_first(lock, &waiter);
-@@ -714,7 +719,7 @@ acquired:
- 		 */
- 		if (!ww_ctx->is_wait_die &&
- 		    !__mutex_waiter_is_first(lock, &waiter))
--			__ww_mutex_check_waiters(lock, ww_ctx);
-+			__ww_mutex_check_waiters(lock, ww_ctx, &wake_q);
- 	}
- 
- 	__mutex_remove_waiter(lock, &waiter);
-@@ -730,6 +735,7 @@ skip_wait:
- 		ww_mutex_lock_acquired(ww, ww_ctx);
- 
- 	raw_spin_unlock(&lock->wait_lock);
-+	wake_up_q(&wake_q);
- 	preempt_enable();
- 	return 0;
- 
-@@ -741,6 +747,7 @@ err_early_kill:
- 	raw_spin_unlock(&lock->wait_lock);
- 	debug_mutex_free_waiter(&waiter);
- 	mutex_release(&lock->dep_map, ip);
-+	wake_up_q(&wake_q);
- 	preempt_enable();
- 	return ret;
- }
-@@ -951,9 +958,10 @@ static noinline void __sched __mutex_unl
- 	if (owner & MUTEX_FLAG_HANDOFF)
- 		__mutex_handoff(lock, next);
- 
-+	preempt_disable();
- 	raw_spin_unlock(&lock->wait_lock);
--
- 	wake_up_q(&wake_q);
-+	preempt_enable();
- }
- 
- #ifndef CONFIG_DEBUG_LOCK_ALLOC
---- a/kernel/locking/rtmutex.c
-+++ b/kernel/locking/rtmutex.c
-@@ -34,13 +34,15 @@
- 
- static inline int __ww_mutex_add_waiter(struct rt_mutex_waiter *waiter,
- 					struct rt_mutex *lock,
--					struct ww_acquire_ctx *ww_ctx)
-+					struct ww_acquire_ctx *ww_ctx,
-+					struct wake_q_head *wake_q)
- {
- 	return 0;
- }
- 
- static inline void __ww_mutex_check_waiters(struct rt_mutex *lock,
--					    struct ww_acquire_ctx *ww_ctx)
-+					    struct ww_acquire_ctx *ww_ctx,
-+					    struct wake_q_head *wake_q)
- {
- }
- 
-@@ -1201,7 +1203,8 @@ static int __sched task_blocks_on_rt_mut
- 					   struct rt_mutex_waiter *waiter,
- 					   struct task_struct *task,
- 					   struct ww_acquire_ctx *ww_ctx,
--					   enum rtmutex_chainwalk chwalk)
-+					   enum rtmutex_chainwalk chwalk,
-+					   struct wake_q_head *wake_q)
- {
- 	struct task_struct *owner = rt_mutex_owner(lock);
- 	struct rt_mutex_waiter *top_waiter = waiter;
-@@ -1245,7 +1248,10 @@ static int __sched task_blocks_on_rt_mut
- 
- 		/* Check whether the waiter should back out immediately */
- 		rtm = container_of(lock, struct rt_mutex, rtmutex);
--		res = __ww_mutex_add_waiter(waiter, rtm, ww_ctx);
-+		preempt_disable();
-+		res = __ww_mutex_add_waiter(waiter, rtm, ww_ctx, wake_q);
-+		wake_up_q(wake_q);
-+		preempt_enable();
- 		if (res) {
- 			raw_spin_lock(&task->pi_lock);
- 			rt_mutex_dequeue(lock, waiter);
-@@ -1677,12 +1683,14 @@ static void __sched rt_mutex_handle_dead
-  * @state:	The task state for sleeping
-  * @chwalk:	Indicator whether full or partial chainwalk is requested
-  * @waiter:	Initializer waiter for blocking
-+ * @wake_q:	The wake_q to wake tasks after we release the wait_lock
-  */
- static int __sched __rt_mutex_slowlock(struct rt_mutex_base *lock,
- 				       struct ww_acquire_ctx *ww_ctx,
- 				       unsigned int state,
- 				       enum rtmutex_chainwalk chwalk,
--				       struct rt_mutex_waiter *waiter)
-+				       struct rt_mutex_waiter *waiter,
-+				       struct wake_q_head *wake_q)
- {
- 	struct rt_mutex *rtm = container_of(lock, struct rt_mutex, rtmutex);
- 	struct ww_mutex *ww = ww_container_of(rtm);
-@@ -1693,7 +1701,7 @@ static int __sched __rt_mutex_slowlock(s
- 	/* Try to acquire the lock again: */
- 	if (try_to_take_rt_mutex(lock, current, NULL)) {
- 		if (build_ww_mutex() && ww_ctx) {
--			__ww_mutex_check_waiters(rtm, ww_ctx);
-+			__ww_mutex_check_waiters(rtm, ww_ctx, wake_q);
- 			ww_mutex_lock_acquired(ww, ww_ctx);
- 		}
- 		return 0;
-@@ -1703,7 +1711,7 @@ static int __sched __rt_mutex_slowlock(s
- 
- 	trace_contention_begin(lock, LCB_F_RT);
- 
--	ret = task_blocks_on_rt_mutex(lock, waiter, current, ww_ctx, chwalk);
-+	ret = task_blocks_on_rt_mutex(lock, waiter, current, ww_ctx, chwalk, wake_q);
- 	if (likely(!ret))
- 		ret = rt_mutex_slowlock_block(lock, ww_ctx, state, NULL, waiter);
- 
-@@ -1711,7 +1719,7 @@ static int __sched __rt_mutex_slowlock(s
- 		/* acquired the lock */
- 		if (build_ww_mutex() && ww_ctx) {
- 			if (!ww_ctx->is_wait_die)
--				__ww_mutex_check_waiters(rtm, ww_ctx);
-+				__ww_mutex_check_waiters(rtm, ww_ctx, wake_q);
- 			ww_mutex_lock_acquired(ww, ww_ctx);
- 		}
- 	} else {
-@@ -1733,7 +1741,8 @@ static int __sched __rt_mutex_slowlock(s
- 
- static inline int __rt_mutex_slowlock_locked(struct rt_mutex_base *lock,
- 					     struct ww_acquire_ctx *ww_ctx,
--					     unsigned int state)
-+					     unsigned int state,
-+					     struct wake_q_head *wake_q)
- {
- 	struct rt_mutex_waiter waiter;
- 	int ret;
-@@ -1742,7 +1751,7 @@ static inline int __rt_mutex_slowlock_lo
- 	waiter.ww_ctx = ww_ctx;
- 
- 	ret = __rt_mutex_slowlock(lock, ww_ctx, state, RT_MUTEX_MIN_CHAINWALK,
--				  &waiter);
-+				  &waiter, wake_q);
- 
- 	debug_rt_mutex_free_waiter(&waiter);
- 	return ret;
-@@ -1758,6 +1767,7 @@ static int __sched rt_mutex_slowlock(str
- 				     struct ww_acquire_ctx *ww_ctx,
- 				     unsigned int state)
- {
-+	DEFINE_WAKE_Q(wake_q);
- 	unsigned long flags;
- 	int ret;
- 
-@@ -1779,8 +1789,11 @@ static int __sched rt_mutex_slowlock(str
- 	 * irqsave/restore variants.
- 	 */
- 	raw_spin_lock_irqsave(&lock->wait_lock, flags);
--	ret = __rt_mutex_slowlock_locked(lock, ww_ctx, state);
-+	ret = __rt_mutex_slowlock_locked(lock, ww_ctx, state, &wake_q);
-+	preempt_disable();
- 	raw_spin_unlock_irqrestore(&lock->wait_lock, flags);
-+	wake_up_q(&wake_q);
-+	preempt_enable();
- 	rt_mutex_post_schedule();
- 
- 	return ret;
-@@ -1806,8 +1819,10 @@ static __always_inline int __rt_mutex_lo
- /**
-  * rtlock_slowlock_locked - Slow path lock acquisition for RT locks
-  * @lock:	The underlying RT mutex
-+ * @wake_q:	The wake_q to wake tasks after we release the wait_lock
-  */
--static void __sched rtlock_slowlock_locked(struct rt_mutex_base *lock)
-+static void __sched rtlock_slowlock_locked(struct rt_mutex_base *lock,
-+					   struct wake_q_head *wake_q)
- {
- 	struct rt_mutex_waiter waiter;
- 	struct task_struct *owner;
-@@ -1824,7 +1839,7 @@ static void __sched rtlock_slowlock_lock
- 
- 	trace_contention_begin(lock, LCB_F_RT);
- 
--	task_blocks_on_rt_mutex(lock, &waiter, current, NULL, RT_MUTEX_MIN_CHAINWALK);
-+	task_blocks_on_rt_mutex(lock, &waiter, current, NULL, RT_MUTEX_MIN_CHAINWALK, wake_q);
- 
- 	for (;;) {
- 		/* Try to acquire the lock again */
-@@ -1835,7 +1850,11 @@ static void __sched rtlock_slowlock_lock
- 			owner = rt_mutex_owner(lock);
- 		else
- 			owner = NULL;
-+		preempt_disable();
- 		raw_spin_unlock_irq(&lock->wait_lock);
-+		wake_up_q(wake_q);
-+		wake_q_init(wake_q);
-+		preempt_enable();
- 
- 		if (!owner || !rtmutex_spin_on_owner(lock, &waiter, owner))
- 			schedule_rtlock();
-@@ -1860,10 +1879,14 @@ static void __sched rtlock_slowlock_lock
- static __always_inline void __sched rtlock_slowlock(struct rt_mutex_base *lock)
- {
- 	unsigned long flags;
-+	DEFINE_WAKE_Q(wake_q);
- 
- 	raw_spin_lock_irqsave(&lock->wait_lock, flags);
--	rtlock_slowlock_locked(lock);
-+	rtlock_slowlock_locked(lock, &wake_q);
-+	preempt_disable();
- 	raw_spin_unlock_irqrestore(&lock->wait_lock, flags);
-+	wake_up_q(&wake_q);
-+	preempt_enable();
- }
- 
- #endif /* RT_MUTEX_BUILD_SPINLOCKS */
---- a/kernel/locking/rtmutex_api.c
-+++ b/kernel/locking/rtmutex_api.c
-@@ -275,6 +275,7 @@ void __sched rt_mutex_proxy_unlock(struc
-  * @lock:		the rt_mutex to take
-  * @waiter:		the pre-initialized rt_mutex_waiter
-  * @task:		the task to prepare
-+ * @wake_q:		the wake_q to wake tasks after we release the wait_lock
-  *
-  * Starts the rt_mutex acquire; it enqueues the @waiter and does deadlock
-  * detection. It does not wait, see rt_mutex_wait_proxy_lock() for that.
-@@ -291,7 +292,8 @@ void __sched rt_mutex_proxy_unlock(struc
-  */
- int __sched __rt_mutex_start_proxy_lock(struct rt_mutex_base *lock,
- 					struct rt_mutex_waiter *waiter,
--					struct task_struct *task)
-+					struct task_struct *task,
-+					struct wake_q_head *wake_q)
- {
- 	int ret;
- 
-@@ -302,7 +304,7 @@ int __sched __rt_mutex_start_proxy_lock(
- 
- 	/* We enforce deadlock detection for futexes */
- 	ret = task_blocks_on_rt_mutex(lock, waiter, task, NULL,
--				      RT_MUTEX_FULL_CHAINWALK);
-+				      RT_MUTEX_FULL_CHAINWALK, wake_q);
- 
- 	if (ret && !rt_mutex_owner(lock)) {
- 		/*
-@@ -341,12 +343,16 @@ int __sched rt_mutex_start_proxy_lock(st
- 				      struct task_struct *task)
- {
- 	int ret;
-+	DEFINE_WAKE_Q(wake_q);
- 
- 	raw_spin_lock_irq(&lock->wait_lock);
--	ret = __rt_mutex_start_proxy_lock(lock, waiter, task);
-+	ret = __rt_mutex_start_proxy_lock(lock, waiter, task, &wake_q);
- 	if (unlikely(ret))
- 		remove_waiter(lock, waiter);
-+	preempt_disable();
- 	raw_spin_unlock_irq(&lock->wait_lock);
-+	wake_up_q(&wake_q);
-+	preempt_enable();
- 
- 	return ret;
- }
---- a/kernel/locking/rtmutex_common.h
-+++ b/kernel/locking/rtmutex_common.h
-@@ -83,7 +83,8 @@ extern void rt_mutex_init_proxy_locked(s
- extern void rt_mutex_proxy_unlock(struct rt_mutex_base *lock);
- extern int __rt_mutex_start_proxy_lock(struct rt_mutex_base *lock,
- 				     struct rt_mutex_waiter *waiter,
--				     struct task_struct *task);
-+				     struct task_struct *task,
-+				     struct wake_q_head *);
- extern int rt_mutex_start_proxy_lock(struct rt_mutex_base *lock,
- 				     struct rt_mutex_waiter *waiter,
- 				     struct task_struct *task);
---- a/kernel/locking/rwbase_rt.c
-+++ b/kernel/locking/rwbase_rt.c
-@@ -69,6 +69,7 @@ static int __sched __rwbase_read_lock(st
- 				      unsigned int state)
- {
- 	struct rt_mutex_base *rtm = &rwb->rtmutex;
-+	DEFINE_WAKE_Q(wake_q);
- 	int ret;
- 
- 	rwbase_pre_schedule();
-@@ -110,7 +111,7 @@ static int __sched __rwbase_read_lock(st
- 	 * For rwlocks this returns 0 unconditionally, so the below
- 	 * !ret conditionals are optimized out.
- 	 */
--	ret = rwbase_rtmutex_slowlock_locked(rtm, state);
-+	ret = rwbase_rtmutex_slowlock_locked(rtm, state, &wake_q);
- 
- 	/*
- 	 * On success the rtmutex is held, so there can't be a writer
-@@ -121,7 +122,12 @@ static int __sched __rwbase_read_lock(st
- 	 */
- 	if (!ret)
- 		atomic_inc(&rwb->readers);
-+
-+	preempt_disable();
- 	raw_spin_unlock_irq(&rtm->wait_lock);
-+	wake_up_q(&wake_q);
-+	preempt_enable();
-+
- 	if (!ret)
- 		rwbase_rtmutex_unlock(rtm);
- 
---- a/kernel/locking/rwsem.c
-+++ b/kernel/locking/rwsem.c
-@@ -1413,8 +1413,8 @@ static inline void __downgrade_write(str
- #define rwbase_rtmutex_lock_state(rtm, state)		\
- 	__rt_mutex_lock(rtm, state)
- 
--#define rwbase_rtmutex_slowlock_locked(rtm, state)	\
--	__rt_mutex_slowlock_locked(rtm, NULL, state)
-+#define rwbase_rtmutex_slowlock_locked(rtm, state, wq)	\
-+	__rt_mutex_slowlock_locked(rtm, NULL, state, wq)
- 
- #define rwbase_rtmutex_unlock(rtm)			\
- 	__rt_mutex_unlock(rtm)
---- a/kernel/locking/spinlock_rt.c
-+++ b/kernel/locking/spinlock_rt.c
-@@ -162,9 +162,10 @@ rwbase_rtmutex_lock_state(struct rt_mute
- }
- 
- static __always_inline int
--rwbase_rtmutex_slowlock_locked(struct rt_mutex_base *rtm, unsigned int state)
-+rwbase_rtmutex_slowlock_locked(struct rt_mutex_base *rtm, unsigned int state,
-+			       struct wake_q_head *wake_q)
- {
--	rtlock_slowlock_locked(rtm);
-+	rtlock_slowlock_locked(rtm, wake_q);
- 	return 0;
- }
- 
---- a/kernel/locking/ww_mutex.h
-+++ b/kernel/locking/ww_mutex.h
-@@ -275,7 +275,7 @@ __ww_ctx_less(struct ww_acquire_ctx *a,
-  */
- static bool
- __ww_mutex_die(struct MUTEX *lock, struct MUTEX_WAITER *waiter,
--	       struct ww_acquire_ctx *ww_ctx)
-+	       struct ww_acquire_ctx *ww_ctx, struct wake_q_head *wake_q)
- {
- 	if (!ww_ctx->is_wait_die)
- 		return false;
-@@ -284,7 +284,7 @@ __ww_mutex_die(struct MUTEX *lock, struc
- #ifndef WW_RT
- 		debug_mutex_wake_waiter(lock, waiter);
- #endif
--		wake_up_process(waiter->task);
-+		wake_q_add(wake_q, waiter->task);
- 	}
- 
- 	return true;
-@@ -299,7 +299,8 @@ __ww_mutex_die(struct MUTEX *lock, struc
-  */
- static bool __ww_mutex_wound(struct MUTEX *lock,
- 			     struct ww_acquire_ctx *ww_ctx,
--			     struct ww_acquire_ctx *hold_ctx)
-+			     struct ww_acquire_ctx *hold_ctx,
-+			     struct wake_q_head *wake_q)
- {
- 	struct task_struct *owner = __ww_mutex_owner(lock);
- 
-@@ -331,7 +332,7 @@ static bool __ww_mutex_wound(struct MUTE
- 		 * wakeup pending to re-read the wounded state.
- 		 */
- 		if (owner != current)
--			wake_up_process(owner);
-+			wake_q_add(wake_q, owner);
- 
- 		return true;
- 	}
-@@ -352,7 +353,8 @@ static bool __ww_mutex_wound(struct MUTE
-  * The current task must not be on the wait list.
-  */
- static void
--__ww_mutex_check_waiters(struct MUTEX *lock, struct ww_acquire_ctx *ww_ctx)
-+__ww_mutex_check_waiters(struct MUTEX *lock, struct ww_acquire_ctx *ww_ctx,
-+			 struct wake_q_head *wake_q)
- {
- 	struct MUTEX_WAITER *cur;
- 
-@@ -364,8 +366,8 @@ __ww_mutex_check_waiters(struct MUTEX *l
- 		if (!cur->ww_ctx)
- 			continue;
- 
--		if (__ww_mutex_die(lock, cur, ww_ctx) ||
--		    __ww_mutex_wound(lock, cur->ww_ctx, ww_ctx))
-+		if (__ww_mutex_die(lock, cur, ww_ctx, wake_q) ||
-+		    __ww_mutex_wound(lock, cur->ww_ctx, ww_ctx, wake_q))
- 			break;
- 	}
- }
-@@ -377,6 +379,8 @@ __ww_mutex_check_waiters(struct MUTEX *l
- static __always_inline void
- ww_mutex_set_context_fastpath(struct ww_mutex *lock, struct ww_acquire_ctx *ctx)
- {
-+	DEFINE_WAKE_Q(wake_q);
-+
- 	ww_mutex_lock_acquired(lock, ctx);
- 
- 	/*
-@@ -405,8 +409,11 @@ ww_mutex_set_context_fastpath(struct ww_
- 	 * die or wound us.
- 	 */
- 	lock_wait_lock(&lock->base);
--	__ww_mutex_check_waiters(&lock->base, ctx);
-+	__ww_mutex_check_waiters(&lock->base, ctx, &wake_q);
-+	preempt_disable();
- 	unlock_wait_lock(&lock->base);
-+	wake_up_q(&wake_q);
-+	preempt_enable();
- }
- 
- static __always_inline int
-@@ -488,7 +495,8 @@ __ww_mutex_check_kill(struct MUTEX *lock
- static inline int
- __ww_mutex_add_waiter(struct MUTEX_WAITER *waiter,
- 		      struct MUTEX *lock,
--		      struct ww_acquire_ctx *ww_ctx)
-+		      struct ww_acquire_ctx *ww_ctx,
-+		      struct wake_q_head *wake_q)
- {
- 	struct MUTEX_WAITER *cur, *pos = NULL;
- 	bool is_wait_die;
-@@ -532,7 +540,7 @@ __ww_mutex_add_waiter(struct MUTEX_WAITE
- 		pos = cur;
- 
- 		/* Wait-Die: ensure younger waiters die. */
--		__ww_mutex_die(lock, cur, ww_ctx);
-+		__ww_mutex_die(lock, cur, ww_ctx, wake_q);
- 	}
- 
- 	__ww_waiter_add(lock, waiter, pos);
-@@ -550,7 +558,7 @@ __ww_mutex_add_waiter(struct MUTEX_WAITE
- 		 * such that either we or the fastpath will wound @ww->ctx.
- 		 */
- 		smp_mb();
--		__ww_mutex_wound(lock, ww_ctx, ww->ctx);
-+		__ww_mutex_wound(lock, ww_ctx, ww->ctx, wake_q);
- 	}
- 
- 	return 0;
+ 	v3d_invalidate_caches(v3d);
+-- 
+2.53.0
+
 
 
 
