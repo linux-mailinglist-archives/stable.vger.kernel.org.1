@@ -1,62 +1,61 @@
-Return-Path: <stable+bounces-271026-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-270880-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id tj49JY+XRmrlZQsAu9opvQ
-	(envelope-from <stable+bounces-271026-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:53:35 +0200
+	id IoGGABSVRmphZAsAu9opvQ
+	(envelope-from <stable+bounces-270880-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:43:00 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 076FA6FAB46
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:53:35 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id CB7B96FA6E2
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:42:59 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=eU4r0BZT;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-271026-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-271026-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=aaqLkKgp;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-270880-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-270880-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 13B78337FB82
-	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:42:13 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id BD5343035EDA
+	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:37:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0454D34751D;
-	Thu,  2 Jul 2026 16:41:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46B4430B53F;
+	Thu,  2 Jul 2026 16:34:52 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACBDC315D33;
-	Thu,  2 Jul 2026 16:41:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D302734751E;
+	Thu,  2 Jul 2026 16:34:50 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783010475; cv=none; b=qpf7FWJeyAgk8PG4WAfhRwJC4/2yTD2N7xoHP1Rwg2IWthgN6zx4qMBl5RgYgVivk4t8BX0zVWR2tL84JwHFPozWICvE/YO+hCt562+hAK5INUketKdE20nPFWgKPB0RTGNFIQc4w5Y6YyDc+3QdEiyxzZjJby6Udn7J4jhZ480=
+	t=1783010092; cv=none; b=LVFV/yt7TSwhqzk2LbmHC9UJxGZCTyYKRidlZMC+BjuJP0peuFLAIvgcaijOXrMsd5vK6N6tbZHg4l2Rk20E4E6pfkuS6OztcM+4GcUJHa0iNcG9OQC7TC37QWJpIrLsadDy6ESizFamYPK1L/6bl7J0TokylINX055pwbY/Plo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783010475; c=relaxed/simple;
-	bh=AbQJEcEwbN0Bf3/0+hZLeZv+pGsX2P8oe9+HCO09iUo=;
+	s=arc-20240116; t=1783010092; c=relaxed/simple;
+	bh=y/DJyDnFhef6nLfjgve0KZaSN5HvtTqd+rtRP9mjASE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FSMcrRyaXRbw68tyKwbh27yzDgSBk8b2fOGN8u4+t1T/3TDP87FGSFDU/3jPEi+H1Zma493HulRfsBlyQsPtgLr1yxe2rWBB9Z0azZtLSy+s6gGUQ0mXAtkzX8K5WHpa1AZeoCIbuM2kC5kDJnnUloKdF8xKeCDcKismmMDIPzU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eU4r0BZT; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1DFBC1F000E9;
-	Thu,  2 Jul 2026 16:41:13 +0000 (UTC)
+	 MIME-Version; b=V8iHtCUXGS/4fdHaL4Sveh+OJkr1cNbxzX1Pq3aGMrUWK10IVbgLURYdyMUJzIVNoKdzst0YMk8OMxsOkwxKJXfzmp74dBjsgU1HYq0CbiwRBLZfsYonMlctShs3eqzFX4fafwVTNUFbtQXEFNej5OlkIKDr4x/zxGk18aYDd+E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aaqLkKgp; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45B111F000E9;
+	Thu,  2 Jul 2026 16:34:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1783010474;
-	bh=s4uu0yOYEF2ChVeSiadU+PIy/gGQKqgtSXsbtYL8O9s=;
+	s=korg; t=1783010090;
+	bh=1r03aBfXld5TqdlW9hdZCMzmfq4YPKZaXutV4HvIt3U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=eU4r0BZTV2TQEUBw0oLQzVYpYYucwnoytxhEdptkAiuWMYZt67oKc/Lifz+HNPWbK
-	 mtqbYL4g5sJFWmfXkt3wRre52XSRx6/+Z6Nw7lUXj4IxoHhnzOErEm7fNoGwcm1PWw
-	 uiFP5oV7TnBT3VEPIc0t/jRX5Q23IyJtDkzGC4eE=
+	b=aaqLkKgp2dlmDzVfJPpm+uUWtrWRFqwk5gmj3siXinJDQQEE2y2JrL6beogpXFOm1
+	 x9TpLSUtvK2/RPXyPA9XDIFOWGpz5HpReg2rvXNYAOwwk2La2c5mb1lDm2SYRAKWsp
+	 n0Jry2h6ajbFup32O5FUaOaVTgFnXhn2yI30ZWg8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jungwoo Lee <jwlee2217@gmail.com>,
-	Wongi Lee <qw3rtyp0@gmail.com>,
-	Ido Schimmel <idosch@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.12 124/204] ipv6: account for fraggap on the paged allocation path
+	stable@kernel.org,
+	Sven Eckelmann <sven@narfation.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 062/129] batman-adv: fix (m|b)cast csum after decrementing TTL
 Date: Thu,  2 Jul 2026 18:19:41 +0200
-Message-ID: <20260702155121.256927670@linuxfoundation.org>
+Message-ID: <20260702155113.428759993@linuxfoundation.org>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260702155118.667618796@linuxfoundation.org>
-References: <20260702155118.667618796@linuxfoundation.org>
+In-Reply-To: <20260702155112.163984240@linuxfoundation.org>
+References: <20260702155112.163984240@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -73,115 +72,153 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,nvidia.com,kernel.org];
-	TAGGED_FROM(0.00)[bounces-271026-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-270880-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:jwlee2217@gmail.com,m:qw3rtyp0@gmail.com,m:idosch@nvidia.com,m:kuba@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:stable@kernel.org,m:sven@narfation.org,m:sashal@kernel.org,s:lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,msgid.link:url,nvidia.com:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,narfation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 076FA6FAB46
+X-Rspamd-Queue-Id: CB7B96FA6E2
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wongi Lee <qw3rtyp0@gmail.com>
+From: Sven Eckelmann <sven@narfation.org>
 
-commit 736b380e28d0480c7bc3e022f1950f31fe53a7c5 upstream.
+commit e728bbdf32660c8f32b8f5e8d09427a2c131ad60 upstream.
 
-In __ip6_append_data(), when the paged-allocation branch is taken
-(MSG_MORE / NETIF_F_SG / large fraglen), alloclen and pagedlen are
-computed as
+The broadcast and multicast packets can be received at the same time by the
+local system and forwarded to other nodes. Both are simply decrementing the
+TTL at the beginning of the receive path - independent of chosen paths
+(receive/forward). But such a modification of the data conflicts with the
+hw csum. This is not a problem when the packet is directly forwarded but
+can cause errors in the local receive path.
 
-	alloclen = fragheaderlen + transhdrlen;
-	pagedlen = datalen - transhdrlen;
+Such a problem can then trigger a "hw csum failure". The receiver path must
+therefore ensure that the csum is fixed for each modification of the
+payload before batadv_interface_rx() is reached.
 
-datalen already includes fraggap (datalen = length + fraggap). When
-fraggap is non-zero, this is not the first skb and transhdrlen is zero.
-The fraggap bytes carried over from the previous skb are copied just past
-the fragment headers in the new skb's linear area. The linear area is
-therefore undersized by fraggap bytes while pagedlen is overstated by the
-same amount, and the copy writes past skb->end into the trailing
-skb_shared_info.
+Since all batman-adv packet types with a ttl have it as u8 at offset 2, a
+helper can be used for all of them. But it is only used at the moment for
+batadv_bcast_packet and batadv_mcast_packet because they are the only ones
+which deliver the packet locally but unconditionally modify the TTL.
 
-An unprivileged user can trigger this via a UDPv6 socket using
-MSG_MORE together with MSG_SPLICE_PAGES.
-
-The bad accounting was introduced by commit 773ba4fe9104 ("ipv6:
-avoid partial copy for zc"). Before commit ce650a166335 ("udp6: Fix
-__ip6_append_data()'s handling of MSG_SPLICE_PAGES"), the negative
-copy value caused -EINVAL to be returned. That later commit allowed
-MSG_SPLICE_PAGES to proceed in this case, making the corruption
-triggerable.
-
-The non-paged branch sets alloclen to fraglen, which already accounts
-for fraggap because datalen does. Bring the paged branch in line by
-adding fraggap to alloclen and subtracting it from pagedlen.
-
-After this adjustment, copy no longer collapses to -fraggap on the
-paged path, so remove the stale comment describing that old arithmetic.
-Since a negative copy is no longer expected for a valid MSG_SPLICE_PAGES
-case, remove the MSG_SPLICE_PAGES exception from the negative copy check.
-
-Fixes: 773ba4fe9104 ("ipv6: avoid partial copy for zc")
-Signed-off-by: Jungwoo Lee <jwlee2217@gmail.com>
-Signed-off-by: Wongi Lee <qw3rtyp0@gmail.com>
-Reviewed-by: Ido Schimmel <idosch@nvidia.com>
-Link: https://patch.msgid.link/ajFTqRljatR17fFy@DESKTOP-19IMU7U.localdomain
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@kernel.org
+Fixes: 3f69339068f9 ("batman-adv: bcast: queue per interface, if needed")
+Fixes: 07afe1ba288c ("batman-adv: mcast: implement multicast packet reception and forwarding")
+[ Context, Drop change for non-existing mcast handling ]
+Signed-off-by: Sven Eckelmann <sven@narfation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv6/ip6_output.c |    9 +++------
- 1 file changed, 3 insertions(+), 6 deletions(-)
+ net/batman-adv/routing.c | 55 +++++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 54 insertions(+), 1 deletion(-)
 
---- a/net/ipv6/ip6_output.c
-+++ b/net/ipv6/ip6_output.c
-@@ -1633,8 +1633,8 @@ alloc_new_skb:
- 				  !(rt->dst.dev->features & NETIF_F_SG)))
- 				alloclen = fraglen;
- 			else {
--				alloclen = fragheaderlen + transhdrlen;
--				pagedlen = datalen - transhdrlen;
-+				alloclen = fragheaderlen + transhdrlen + fraggap;
-+				pagedlen = datalen - transhdrlen - fraggap;
- 			}
- 			alloclen += alloc_extra;
+diff --git a/net/batman-adv/routing.c b/net/batman-adv/routing.c
+index 0709f42c54b496..e9347b25d2087a 100644
+--- a/net/batman-adv/routing.c
++++ b/net/batman-adv/routing.c
+@@ -8,6 +8,7 @@
+ #include "main.h"
  
-@@ -1649,10 +1649,7 @@ alloc_new_skb:
- 			fraglen = datalen + fragheaderlen;
+ #include <linux/atomic.h>
++#include <linux/build_bug.h>
+ #include <linux/byteorder/generic.h>
+ #include <linux/compiler.h>
+ #include <linux/errno.h>
+@@ -205,6 +206,58 @@ bool batadv_check_management_packet(struct sk_buff *skb,
+ 	return true;
+ }
  
- 			copy = datalen - transhdrlen - fraggap - pagedlen;
--			/* [!] NOTE: copy may be negative if pagedlen>0
--			 * because then the equation may reduces to -fraggap.
--			 */
--			if (copy < 0 && !(flags & MSG_SPLICE_PAGES)) {
-+			if (copy < 0) {
- 				err = -EINVAL;
- 				goto error;
- 			}
++/**
++ * batadv_skb_decrement_ttl() - decrement ttl in a batman-adv header, csum-safe
++ * @skb: the received packet with @skb->data pointing to the batman-adv header
++ *
++ * Supports the following packet types, all of which carry the TTL at offset 2:
++ *
++ * - batadv_ogm_packet
++ * - batadv_ogm2_packet
++ * - batadv_icmp_header
++ * - batadv_icmp_packet
++ * - batadv_icmp_tp_packet
++ * - batadv_icmp_packet_rr
++ * - batadv_unicast_packet
++ * - batadv_frag_packet
++ * - batadv_bcast_packet
++ * - batadv_mcast_packet
++ * - batadv_coded_packet
++ * - batadv_unicast_tvlv_packet
++ *
++ * Return: true if the packet may be forwarded (ttl decremented),
++ *  false if it must be dropped (ttl would expire)
++ */
++static bool batadv_skb_decrement_ttl(struct sk_buff *skb)
++{
++	static const size_t ttl_offset = 2;
++	u8 *ttl_pos;
++
++	BUILD_BUG_ON(offsetof(struct batadv_ogm_packet, ttl) != ttl_offset);
++	BUILD_BUG_ON(offsetof(struct batadv_ogm2_packet, ttl) != ttl_offset);
++	BUILD_BUG_ON(offsetof(struct batadv_icmp_header, ttl) != ttl_offset);
++	BUILD_BUG_ON(offsetof(struct batadv_icmp_packet, ttl) != ttl_offset);
++	BUILD_BUG_ON(offsetof(struct batadv_icmp_tp_packet, ttl) != ttl_offset);
++	BUILD_BUG_ON(offsetof(struct batadv_icmp_packet_rr, ttl) != ttl_offset);
++	BUILD_BUG_ON(offsetof(struct batadv_unicast_packet, ttl) != ttl_offset);
++	BUILD_BUG_ON(offsetof(struct batadv_frag_packet, ttl) != ttl_offset);
++	BUILD_BUG_ON(offsetof(struct batadv_bcast_packet, ttl) != ttl_offset);
++	BUILD_BUG_ON(offsetof(struct batadv_coded_packet, ttl) != ttl_offset);
++	BUILD_BUG_ON(offsetof(struct batadv_unicast_tvlv_packet, ttl) != ttl_offset);
++
++	ttl_pos = skb->data + ttl_offset;
++
++	/* would expire on this hop -> drop, leave header + csum untouched */
++	if (*ttl_pos < 2)
++		return false;
++
++	skb_postpull_rcsum(skb, ttl_pos, 1);
++	(*ttl_pos)--;
++	skb_postpush_rcsum(skb, ttl_pos, 1);
++
++	return true;
++}
++
+ /**
+  * batadv_recv_my_icmp_packet() - receive an icmp packet locally
+  * @bat_priv: the bat priv with all the soft interface information
+@@ -1205,7 +1258,7 @@ int batadv_recv_bcast_packet(struct sk_buff *skb,
+ 
+ 	bcast_packet = (struct batadv_bcast_packet *)skb->data;
+ 
+-	if (bcast_packet->ttl-- < 2)
++	if (!batadv_skb_decrement_ttl(skb))
+ 		goto free_skb;
+ 
+ 	orig_node = batadv_orig_hash_find(bat_priv, bcast_packet->orig);
+-- 
+2.53.0
+
 
 
 
