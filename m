@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-270517-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-270519-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id rLrNJpxtRmoiUgsAu9opvQ
-	(envelope-from <stable+bounces-270517-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 15:54:36 +0200
+	id bGzxE+JuRmqlUwsAu9opvQ
+	(envelope-from <stable+bounces-270519-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 16:00:02 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 67E686F8966
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 15:54:35 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 73A226F8A26
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 16:00:01 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=djp0vOgm;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-270517-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-270517-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=0jQQGvid;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-270519-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-270519-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 1E8F4303E12D
-	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 13:54:28 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 4AB723010C12
+	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 13:55:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 74D894A2E13;
-	Thu,  2 Jul 2026 13:54:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 792814A2E01;
+	Thu,  2 Jul 2026 13:55:35 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39B21496919
-	for <stable@vger.kernel.org>; Thu,  2 Jul 2026 13:54:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B023C4ADD89
+	for <stable@vger.kernel.org>; Thu,  2 Jul 2026 13:55:32 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783000466; cv=none; b=g6b6nggrnvCpC2oePs4xn4aYq3GrSL1e0UPq/W3PUkKtt1p0BPXRkfAzhpOBTkwdMv5uoqEan0suXu7c4deX1V7H0SHfNHthevruL+pNKEmbizGLMJbcL3LO+bwLT23XYUyq6Shs7clXCyGk10gcOjPT8c7RQdip895iCO309jk=
+	t=1783000535; cv=none; b=CIVsZDeP3StYtrSZ91L+Wwn3hchZW1Ww1A0NhG4dn+pQbVQq2PoXd0bb5a+DMy1zpUi4LNgpx3cKH+AE9spEPCTnazS0jcpzyUXIwv08idEI5UkcEE1W8SkmeI52V+xFaVvb6udVMXv/pQVbB7yZyySGGPJrESEbtWK93taAYOc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783000466; c=relaxed/simple;
-	bh=WwHv25BLgPGAnZVf8WltlnBnyLqauDDRakXUiffHpIE=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=FQFVKNWUJbZyuJYg042Jfnl34nSfpMNxRIuYK3NM8ciXV5W/lIkc3prHKtmOU5EYHtysc6Sf8Djr7hqGnHdaGoZXZGruwFKnWgMFIy7iKY0onxx3F3TpFFse/UrQkSmztu5UB/fXNGMjdFuQwmszlbhHkE6siDYfF2d3Wv8L0a0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=djp0vOgm; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6C871F000E9;
-	Thu,  2 Jul 2026 13:54:24 +0000 (UTC)
+	s=arc-20240116; t=1783000535; c=relaxed/simple;
+	bh=wb+0IWYVKOBEqndYtJherTqo8ZbAV3hfudyaqnJCFJ8=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=ORsWiGeW3rif0QRBgxBv7TDCGkQCJxJYDnQxMEAjl9QeiN0JZobtNbO4GRfMK8UYuKh10zEGElr7VgkoqfNbYByAwm27rmWMJMD33UGF1lSClqVGRQi3csO7cs7Nolk3RPHzC+wsP+BTX7NoBlk9r4b1y6+uFINrRtbeLwDKs+U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0jQQGvid; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E88D1F000E9;
+	Thu,  2 Jul 2026 13:55:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1783000465;
-	bh=aZYEMAVoPgVKr0Hq9Z/fCghQFfMjX9a1LN6+/7PfxDk=;
+	s=korg; t=1783000532;
+	bh=RnNKRjdTXXV2MhU9KXzviIT5MqqT713P1tL5WL/kXzw=;
 	h=Subject:To:Cc:From:Date;
-	b=djp0vOgmR3+h5QXMw9MKLZxsb8TX+KcdBgqHi+60VIVyzscOJp3pQxHaFvgQstIBT
-	 zyIHhVWBVyxn6IPmJGCjBp3IPBgSxQX65HUATmiamvqXu6BR85Ja4G6DtIlocL8Vk0
-	 mfihwt8vKWj+XNURGaKi+MdJ7C032dIeOlO+IObI=
-Subject: FAILED: patch "[PATCH] nfsd: release layout stid on setlease failure" failed to apply to 5.15-stable tree
-To: clm@meta.com,chuck.lever@oracle.com,jlayton@kernel.org
+	b=0jQQGvidYvqMuUDPYEd6ZXDtRMELYKkO4T3lW/3mKz4aRk4zhMCJUxrltLsN4N1Pk
+	 3JcJv8BP95rAOd/+SWUcWBoejvqbrtENBZx4QBhDCl3pb0+kZ3DIlfKDuoGMerGfTm
+	 rjA0V/IS6Po6qeL41+FEWEKw+8rZofWu6c5YHDhQ=
+Subject: FAILED: patch "[PATCH] NFSv4/flexfiles: reject zero filehandle version count" failed to apply to 6.12-stable tree
+To: michael.bommarito@gmail.com,anna.schumaker@hammerspace.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Thu, 02 Jul 2026 15:54:28 +0200
-Message-ID: <2026070228-deny-tattered-d0df@gregkh>
+Date: Thu, 02 Jul 2026 15:55:42 +0200
+Message-ID: <2026070242-poker-barricade-3a69@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -60,53 +60,54 @@ X-Rspamd-Action: no action
 X-Spamd-Result: default: False [2.34 / 15.00];
 	MID_END_EQ_FROM_USER_PART(4.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	MID_RHS_NOT_FQDN(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-270519-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-270517-lists,stable=lfdr.de];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS(0.00)[m:clm@meta.com,m:chuck.lever@oracle.com,m:jlayton@kernel.org,m:stable@vger.kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:michael.bommarito@gmail.com,m:anna.schumaker@hammerspace.com,m:stable@vger.kernel.org,m:michaelbommarito@gmail.com,s:lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FROM_NO_DN(0.00)[];
+	FREEMAIL_TO(0.00)[gmail.com,hammerspace.com];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MISSING_XM_UA(0.00)[];
+	RCPT_COUNT_THREE(0.00)[3];
 	TO_DN_NONE(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_THREE(0.00)[4];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
 	MIME_TRACE(0.00)[0:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[gregkh:mid,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp]
+	TAGGED_RCPT(0.00)[stable];
+	FROM_NO_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,hammerspace.com:email,vger.kernel.org:from_smtp,gregkh:mid]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 67E686F8966
+X-Rspamd-Queue-Id: 73A226F8A26
 
 
-The patch below does not apply to the 5.15-stable tree.
+The patch below does not apply to the 6.12-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.12.y
 git checkout FETCH_HEAD
-git cherry-pick -x 30d55c8aabb261bc3f427d6b9aae7ef6206063f9
+git cherry-pick -x 2c6bb3c40bc24f6aa8dfbe6fe98c3ad6389203f2
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026070228-deny-tattered-d0df@gregkh' --subject-prefix 'PATCH 5.15.y' 'HEAD^..'
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026070242-poker-barricade-3a69@gregkh' --subject-prefix 'PATCH 6.12.y' 'HEAD^..'
 
 Possible dependencies:
 
@@ -118,83 +119,53 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 30d55c8aabb261bc3f427d6b9aae7ef6206063f9 Mon Sep 17 00:00:00 2001
-From: Chris Mason <clm@meta.com>
-Date: Mon, 18 May 2026 13:16:36 -0700
-Subject: [PATCH] nfsd: release layout stid on setlease failure
+From 2c6bb3c40bc24f6aa8dfbe6fe98c3ad6389203f2 Mon Sep 17 00:00:00 2001
+From: Michael Bommarito <michael.bommarito@gmail.com>
+Date: Wed, 13 May 2026 12:26:56 -0400
+Subject: [PATCH] NFSv4/flexfiles: reject zero filehandle version count
 
-nfs4_alloc_stid() publishes the new stid into cl->cl_stateids via
-idr_alloc_cyclic() under cl_lock before returning to
-nfsd4_alloc_layout_stateid(). When nfsd4_layout_setlease() then
-fails, the error path frees the layout stateid directly with
-kmem_cache_free() without ever calling idr_remove(), leaving the
-IDR slot pointing at freed slab memory. Any subsequent IDR walker
-(states_show, client teardown) dereferences the dangling pointer.
+ff_layout_alloc_lseg() decodes the filehandle-version array count
+from the flexfiles layout body. The value is used as the count for
+kzalloc_objs(), and the current code only rejects NULL.
 
-The correct teardown for an IDR-published stid is nfs4_put_stid(),
-which removes the IDR slot under cl_lock, dispatches sc_free
-(nfsd4_free_layout_stateid) to release ls->ls_file via
-nfsd4_close_layout(), and drops the nfs4_file reference in its
-tail.
+A zero count yields ZERO_SIZE_PTR, which can be stored in
+dss_info->fh_versions even though later flexfiles paths assume that at
+least one filehandle version exists.
 
-A second issue blocks that switch: nfsd4_free_layout_stateid()
-unconditionally inspects ls->ls_fence_work via
-delayed_work_pending() under ls_lock, but
-INIT_DELAYED_WORK(&ls->ls_fence_work, ...) currently runs only
-after the setlease call. On the setlease-failure path the
-destructor would touch an uninitialized delayed_work.
+Reject fh_count == 0 before the allocation, matching the existing zero
+version_count validation in the flexfiles GETDEVICEINFO parser.
 
-    nfsd4_alloc_layout_stateid()
-      nfs4_alloc_stid()           /* idr_alloc_cyclic under cl_lock */
-      nfsd4_layout_setlease()     /* fails */
-        nfs4_put_stid()
-          nfsd4_free_layout_stateid()
-            delayed_work_pending(&ls->ls_fence_work)  /* needs INIT */
-            nfsd4_close_layout()  /* nfsd_file_put(ls->ls_file) */
-          put_nfs4_file()
+A QEMU/KASAN run with a malformed flexfiles layout hit:
 
-Fix by hoisting the ls_fenced / ls_fence_delay / INIT_DELAYED_WORK
-initialization above the nfsd4_layout_setlease() call, and replace
-the manual nfsd_file_put + put_nfs4_file + kmem_cache_free cleanup
-with a single nfs4_put_stid(stp).
+  KASAN: null-ptr-deref in range [0x0000000000000010-0x0000000000000017]
+  RIP: 0010:ff_layout_encode_ff_layoutupdate.isra.0+0x15f/0x750
+  ff_layout_encode_layoutreturn+0x683/0x970
+  nfs4_xdr_enc_layoutreturn+0x278/0x3a0
+  Kernel panic - not syncing: Fatal exception
 
-Fixes: c5c707f96fc9 ("nfsd: implement pNFS layout recalls")
+The patched kernel rejects the malformed layout without KASAN/oops/panic,
+and a valid fh_count=1 regression still opens, reads, and unmounts cleanly.
+
 Cc: stable@vger.kernel.org
-Assisted-by: kres (claude-opus-4-7)
-Signed-off-by: Chris Mason <clm@meta.com>
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Fixes: d67ae825a59d ("pnfs/flexfiles: Add the FlexFile Layout Driver")
+Assisted-by: Claude:claude-opus-4-7
+Signed-off-by: Michael Bommarito <michael.bommarito@gmail.com>
+Signed-off-by: Anna Schumaker <anna.schumaker@hammerspace.com>
 
-diff --git a/fs/nfsd/nfs4layouts.c b/fs/nfsd/nfs4layouts.c
-index c550b83f4432..f34320e4c2f4 100644
---- a/fs/nfsd/nfs4layouts.c
-+++ b/fs/nfsd/nfs4layouts.c
-@@ -253,10 +253,12 @@ nfsd4_alloc_layout_stateid(struct nfsd4_compound_state *cstate,
- 		ls->ls_file = find_any_file(fp);
- 	BUG_ON(!ls->ls_file);
+diff --git a/fs/nfs/flexfilelayout/flexfilelayout.c b/fs/nfs/flexfilelayout/flexfilelayout.c
+index 6a84d85e0651..99caa8d28c25 100644
+--- a/fs/nfs/flexfilelayout/flexfilelayout.c
++++ b/fs/nfs/flexfilelayout/flexfilelayout.c
+@@ -551,6 +551,10 @@ ff_layout_alloc_lseg(struct pnfs_layout_hdr *lh,
+ 			if (!p)
+ 				goto out_err_free;
+ 			fh_count = be32_to_cpup(p);
++			if (fh_count == 0) {
++				rc = -EINVAL;
++				goto out_err_free;
++			}
  
-+	ls->ls_fenced = false;
-+	ls->ls_fence_delay = 0;
-+	INIT_DELAYED_WORK(&ls->ls_fence_work, nfsd4_layout_fence_worker);
-+
- 	if (nfsd4_layout_setlease(ls)) {
--		nfsd_file_put(ls->ls_file);
--		put_nfs4_file(fp);
--		kmem_cache_free(nfs4_layout_stateid_cache, ls);
-+		nfs4_put_stid(stp);
- 		return NULL;
- 	}
- 
-@@ -269,10 +271,6 @@ nfsd4_alloc_layout_stateid(struct nfsd4_compound_state *cstate,
- 	list_add(&ls->ls_perfile, &fp->fi_lo_states);
- 	spin_unlock(&fp->fi_lock);
- 
--	ls->ls_fenced = false;
--	ls->ls_fence_delay = 0;
--	INIT_DELAYED_WORK(&ls->ls_fence_work, nfsd4_layout_fence_worker);
--
- 	trace_nfsd_layoutstate_alloc(&ls->ls_stid.sc_stateid);
- 	return ls;
- }
+ 			dss_info->fh_versions =
+ 			    kzalloc_objs(struct nfs_fh, fh_count, gfp_flags);
 
 
