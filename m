@@ -1,61 +1,61 @@
-Return-Path: <stable+bounces-271019-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-270700-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id ibXhHQSWRmrtZAsAu9opvQ
-	(envelope-from <stable+bounces-271019-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:47:00 +0200
+	id AMFeJ9WURmo7ZAsAu9opvQ
+	(envelope-from <stable+bounces-270700-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:41:57 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0BDDC6FA893
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:47:00 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2745B6FA66C
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:41:57 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=YT0FwN4u;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-271019-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-271019-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=J5hjDXsy;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-270700-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-270700-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id B28E230D188D
-	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:42:07 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id CE56C31B5738
+	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:32:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07E2935CB6F;
-	Thu,  2 Jul 2026 16:40:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0FAE03911B2;
+	Thu,  2 Jul 2026 16:27:05 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A05D35E1AD;
-	Thu,  2 Jul 2026 16:40:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2AAC534AB00;
+	Thu,  2 Jul 2026 16:27:01 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783010457; cv=none; b=V8qysgbaA30VGQvcMasVJSP7C0BGHwmpqGJnB9tPinKxdVFi/hsQJgU9LpUFP2bTkG8VsXd8RIo+W7gcdqV8XQ9xE4GS5W0AQ5o3Af0q6j7In+ivt1JlLNlT2NSwsmVuS1SGvxuWQzSLixKVingp+i71GfrCZ9PuLz42qidcM2Q=
+	t=1783009624; cv=none; b=gB+nnnjc3oOksNcLmLLs5IeyglwOYMvDZJ2TXCEXL5RCiU3l1mgULCinGj7Vl5wrErhyfYZGxp1Ys4gvz4XRwlVzLbwKtpDWO9985htoqUeDEKofGhRq3UOJll3ew27+ETsYTM6frQ8iHYj8TSfDeWAbAFFE+bHtoCJXK3grk7g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783010457; c=relaxed/simple;
-	bh=oGuNO0JZhtsP4Q+OH4ZpcMe4CBXgG9KE4JH8KW1RnhE=;
+	s=arc-20240116; t=1783009624; c=relaxed/simple;
+	bh=5Et4eiz7I3BrMV6ZMf8zbzmEduy9PQqj0KHj8roG2vw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mnwEjSTeFxXLY+qjhLiVvd8904iYHdnG4HUSdWH0wsDFSaRBCWdfaCwkHLASMa8hepZ8r0Krb4vGTfkz6xzFJB0FwYze/DMEPQmCLxdgaEgGZA3BqCI2zv3fadnHchpSLKFJvFTlDrLybnzcLamO+ngcabm4lENkDqN/5mO9LKk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YT0FwN4u; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5DBD1F000E9;
-	Thu,  2 Jul 2026 16:40:55 +0000 (UTC)
+	 MIME-Version; b=ELnywm5EZ6OhuxXbwiLkWsZuB1xVID/cEer6cy4DiexIM6eL50E+t7x6u1WxdFZ2+I+4OTEouZzwWrpFuOL0UWHJv0B3/TRffsOYyWNvoLu4CyZDptNxJ+JbcZ3XCt89Xsg0PPV70DydoAcWIdQrDy0dzyNY/W5QKDK6H9QefIs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J5hjDXsy; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D1D71F000E9;
+	Thu,  2 Jul 2026 16:27:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1783010456;
-	bh=tOTvaTxN/uQ8MMBLqgV7nD3yhysS6IaiZev0YXuu3J8=;
+	s=korg; t=1783009620;
+	bh=gyAmClFmt7YgsOeyqt9ZaKUrlfF94O32aiLBcyVsZSQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=YT0FwN4uZZ6Oi5H80oTxo3Jq3/KyBi5N47NzOPKOJa1rTqrsJyx3zB6xmMPUBDuPi
-	 IhdYIG5USgiK/111XOGbDcLh4TYKK+7TJI+rVD2Xq14XMxliYEtbZzQM2ZsmaZobWZ
-	 Cs17I3X7ipvfuPiHKB1WtKZGV2vSdarEYDk7VfZI=
+	b=J5hjDXsy6d5e98jrr6NnSSCZxws5nvdN+azML90siaILHpEW2LLrrc+Pp25ZSl6XH
+	 Y1mqDcTRzLVM2E5YAfN8v12QjfCswaV7vRqcnrzFbDTwS7u86tSs8Z0Im6h+EB8z8Z
+	 L48ttXVJ2znyzTIojRJChqJLZ0IpnN5MRWRS3/1k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Sven Eckelmann <sven@narfation.org>,
+	Yong Wang <yongwang@nvidia.com>,
+	Petr Machata <petrm@nvidia.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 109/204] batman-adv: tp_meter: initialize last_recv_time during init
-Date: Thu,  2 Jul 2026 18:19:26 +0200
-Message-ID: <20260702155120.944573309@linuxfoundation.org>
+Subject: [PATCH 5.15 24/95] Revert "selftest/ptp: update ptp selftest to exercise the gettimex options"
+Date: Thu,  2 Jul 2026 18:19:27 +0200
+Message-ID: <20260702155109.717109635@linuxfoundation.org>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260702155118.667618796@linuxfoundation.org>
-References: <20260702155118.667618796@linuxfoundation.org>
+In-Reply-To: <20260702155109.196223802@linuxfoundation.org>
+References: <20260702155109.196223802@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,21 +72,21 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-271019-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-270700-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:stable@kernel.org,m:sven@narfation.org,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:yongwang@nvidia.com,m:petrm@nvidia.com,m:sashal@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
@@ -98,74 +98,152 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,vger.kernel.org:from_smtp,narfation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp,nvidia.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 0BDDC6FA893
+X-Rspamd-Queue-Id: 2745B6FA66C
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sven Eckelmann <sven@narfation.org>
+From: Petr Machata <petrm@nvidia.com>
 
-commit 811cb00fa8cdc3f0a7f6eefc000a6888367c8c8f upstream.
+This reverts commit 6b32d042aa8255e964ebed860e24adccb204fcbc, which is
+commit 3d07b691ee707c00afaf365440975e81bb96cd9b upstream.
 
-The last_recv_time is the most important indicator for a receiver session
-to figure out whether a session timed out or not. But this information was
-only initialized after the session was added to the tp_receiver_list and
-after the timer was started.
+The cited commit allows testptp to set a configurable clock_id. That is
+done via a PTP_SYS_OFFSET_EXTENDED ioctl call, whose argument is struct
+ptp_sys_offset_extended, where the clock_id is set. However, this Linux
+version does not support the ptp_sys_offset_extended.clockid field, and
+the test case cannot be built against this tree's own UAPI headers.
 
-In the worst case, the timer (function) could have tried to access this
-information before the actual initialization was reached. Like rest of the
-variables of the tp_meter receiver session, this field has to be filled out
-before any other (parallel running) context has the chance to access it.
+The reverted commit was introduced to resolve a missing dependency of
+commit bef3a83a9a67 ("testptp: Add option to open PHC in readonly mode"),
+which is 76868642e427 upstream. My suspicion is that the only conflict
+between the two is the getopt string, and there is otherwise no direct
+dependency between the two.
 
-Cc: stable@kernel.org
-Fixes: 33a3bb4a3345 ("batman-adv: throughput meter implementation")
-[ Context ]
-Signed-off-by: Sven Eckelmann <sven@narfation.org>
+This patch therefore reverts the cited commit, with hand-resolving the
+getopt string to include 'r' (as introduced by c6dc458227a3), but not
+'y' (introduced by 06954f715deb).
+
+Reported-by: Yong Wang <yongwang@nvidia.com>
+Signed-off-by: Petr Machata <petrm@nvidia.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/batman-adv/tp_meter.c | 10 +++++++---
- 1 file changed, 7 insertions(+), 3 deletions(-)
+ tools/testing/selftests/ptp/testptp.c | 62 +++------------------------
+ 1 file changed, 5 insertions(+), 57 deletions(-)
 
-diff --git a/net/batman-adv/tp_meter.c b/net/batman-adv/tp_meter.c
-index 2bba53fc6da5c0..133eed2fa9507f 100644
---- a/net/batman-adv/tp_meter.c
-+++ b/net/batman-adv/tp_meter.c
-@@ -1403,8 +1403,10 @@ batadv_tp_init_recv(struct batadv_priv *bat_priv,
+diff --git a/tools/testing/selftests/ptp/testptp.c b/tools/testing/selftests/ptp/testptp.c
+index 89b4f43a7ba459..d78d52f028ab52 100644
+--- a/tools/testing/selftests/ptp/testptp.c
++++ b/tools/testing/selftests/ptp/testptp.c
+@@ -147,7 +147,6 @@ static void usage(char *progname)
+ 		" -T val     set the ptp clock time to 'val' seconds\n"
+ 		" -x val     get an extended ptp clock time with the desired number of samples (up to %d)\n"
+ 		" -X         get a ptp clock cross timestamp\n"
+-		" -y val     pre/post tstamp timebase to use {realtime|monotonic|monotonic-raw}\n"
+ 		" -z         test combinations of rising/falling external time stamp flags\n",
+ 		progname, PTP_MAX_SAMPLES);
+ }
+@@ -192,7 +191,6 @@ int main(int argc, char *argv[])
+ 	int readonly = 0;
+ 	int settime = 0;
+ 	int channel = -1;
+-	clockid_t ext_clockid = CLOCK_REALTIME;
  
- 	tp_vars = batadv_tp_list_find_session(bat_priv, icmp->orig,
- 					      icmp->session, BATADV_TP_RECEIVER);
--	if (tp_vars)
-+	if (tp_vars) {
-+		tp_vars->last_recv_time = jiffies;
- 		goto out_unlock;
-+	}
+ 	int64_t t1, t2, tp;
+ 	int64_t interval, offset;
+@@ -202,7 +200,7 @@ int main(int argc, char *argv[])
  
- 	if (!atomic_add_unless(&bat_priv->tp_num, 1, BATADV_TP_MAX_NUM)) {
- 		batadv_dbg(BATADV_DBG_TP_METER, bat_priv,
-@@ -1432,6 +1434,8 @@ batadv_tp_init_recv(struct batadv_priv *bat_priv,
- 	kref_get(&tp_vars->refcount);
- 	timer_setup(&tp_vars->timer, batadv_tp_receiver_shutdown, 0);
- 
-+	tp_vars->last_recv_time = jiffies;
-+
- 	kref_get(&tp_vars->refcount);
- 	hlist_add_head_rcu(&tp_vars->list, &bat_priv->tp_list);
- 
-@@ -1480,9 +1484,9 @@ static void batadv_tp_recv_msg(struct batadv_priv *bat_priv,
- 				   icmp->orig);
- 			goto out;
+ 	progname = strrchr(argv[0], '/');
+ 	progname = progname ? 1+progname : argv[0];
+-	while (EOF != (c = getopt(argc, argv, "cd:e:f:F:ghH:i:k:lL:n:o:p:P:rsSt:T:w:x:Xy:z"))) {
++	while (EOF != (c = getopt(argc, argv, "cd:e:f:F:ghH:i:k:lL:n:o:p:P:rsSt:T:w:x:Xz"))) {
+ 		switch (c) {
+ 		case 'c':
+ 			capabilities = 1;
+@@ -285,21 +283,6 @@ int main(int argc, char *argv[])
+ 		case 'X':
+ 			getcross = 1;
+ 			break;
+-		case 'y':
+-			if (!strcasecmp(optarg, "realtime"))
+-				ext_clockid = CLOCK_REALTIME;
+-			else if (!strcasecmp(optarg, "monotonic"))
+-				ext_clockid = CLOCK_MONOTONIC;
+-			else if (!strcasecmp(optarg, "monotonic-raw"))
+-				ext_clockid = CLOCK_MONOTONIC_RAW;
+-			else {
+-				fprintf(stderr,
+-					"type needs to be realtime, monotonic or monotonic-raw; was given %s\n",
+-					optarg);
+-				return -1;
+-			}
+-			break;
+-
+ 		case 'z':
+ 			flagtest = 1;
+ 			break;
+@@ -590,7 +573,6 @@ int main(int argc, char *argv[])
  		}
--	}
  
--	tp_vars->last_recv_time = jiffies;
-+		tp_vars->last_recv_time = jiffies;
-+	}
+ 		soe->n_samples = getextended;
+-		soe->clockid = ext_clockid;
  
- 	/* if the packet is a duplicate, it may be the case that an ACK has been
- 	 * lost. Resend the ACK
+ 		if (ioctl(fd, PTP_SYS_OFFSET_EXTENDED, soe)) {
+ 			perror("PTP_SYS_OFFSET_EXTENDED");
+@@ -599,46 +581,12 @@ int main(int argc, char *argv[])
+ 			       getextended);
+ 
+ 			for (i = 0; i < getextended; i++) {
+-				switch (ext_clockid) {
+-				case CLOCK_REALTIME:
+-					printf("sample #%2d: real time before: %lld.%09u\n",
+-					       i, soe->ts[i][0].sec,
+-					       soe->ts[i][0].nsec);
+-					break;
+-				case CLOCK_MONOTONIC:
+-					printf("sample #%2d: monotonic time before: %lld.%09u\n",
+-					       i, soe->ts[i][0].sec,
+-					       soe->ts[i][0].nsec);
+-					break;
+-				case CLOCK_MONOTONIC_RAW:
+-					printf("sample #%2d: monotonic-raw time before: %lld.%09u\n",
+-					       i, soe->ts[i][0].sec,
+-					       soe->ts[i][0].nsec);
+-					break;
+-				default:
+-					break;
+-				}
++				printf("sample #%2d: system time before: %lld.%09u\n",
++				       i, soe->ts[i][0].sec, soe->ts[i][0].nsec);
+ 				printf("            phc time: %lld.%09u\n",
+ 				       soe->ts[i][1].sec, soe->ts[i][1].nsec);
+-				switch (ext_clockid) {
+-				case CLOCK_REALTIME:
+-					printf("            real time after: %lld.%09u\n",
+-					       soe->ts[i][2].sec,
+-					       soe->ts[i][2].nsec);
+-					break;
+-				case CLOCK_MONOTONIC:
+-					printf("            monotonic time after: %lld.%09u\n",
+-					       soe->ts[i][2].sec,
+-					       soe->ts[i][2].nsec);
+-					break;
+-				case CLOCK_MONOTONIC_RAW:
+-					printf("            monotonic-raw time after: %lld.%09u\n",
+-					       soe->ts[i][2].sec,
+-					       soe->ts[i][2].nsec);
+-					break;
+-				default:
+-					break;
+-				}
++				printf("            system time after: %lld.%09u\n",
++				       soe->ts[i][2].sec, soe->ts[i][2].nsec);
+ 			}
+ 		}
+ 
 -- 
 2.53.0
 
