@@ -1,62 +1,74 @@
-Return-Path: <stable+bounces-270786-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-271016-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id pqmKFLOgRmoRagsAu9opvQ
-	(envelope-from <stable+bounces-270786-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:32:35 +0200
+	id ymQKFO2VRmrjZAsAu9opvQ
+	(envelope-from <stable+bounces-271016-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:46:37 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7A8E76FB6D2
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:32:34 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id EF7CD6FA86D
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:46:36 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=X8Ll9aeU;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-270786-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-270786-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=uXvrwPNV;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-271016-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-271016-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 047003122DD3
-	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:34:16 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id DCD86304CF4F
+	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:42:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 211D835CB76;
-	Thu,  2 Jul 2026 16:30:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4C1C35A39F;
+	Thu,  2 Jul 2026 16:40:50 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D73C135A925;
-	Thu,  2 Jul 2026 16:30:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 683B2349B02;
+	Thu,  2 Jul 2026 16:40:48 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783009847; cv=none; b=cnaeBK8HAulwd3Vcp3Ke6HF2RRc/ECHCVaAyTOQ/CJQmwluH+z/Hpgndveqxh0/pLERfuB+L7z6yHdR5tkAMueQhpgZIHIN1uI23SOq2Y1W3HRSVQsdsgGmy0Fhs4o8/uLigNSn1SnptZldHHJktLmLqhzCfXd3eQjj9yWIIP84=
+	t=1783010450; cv=none; b=agS99N22m9KHdyh/mtB95LCJKI9JHJ7v7HAzn5QSqU81cgv4QXxt3yeDz5ROb6AWqsBl1hzH9aA62h12gzk+ka9uZ7eNSt/uJDJJ5hnZ8INTcKBIh9+fJLy74c1mZLhixf5wPHkPOonONPQBOQi1NpWyPVYhvk7NHxwKv7ZUyo0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783009847; c=relaxed/simple;
-	bh=7hFIWCON977PkHTLbyVDacWEjcqIdCRUm8KnRRz9+Mc=;
+	s=arc-20240116; t=1783010450; c=relaxed/simple;
+	bh=0X5ggzlf9ULRPa5SWe8O/c5Y4ABtPozGuHuvap/Aano=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=J1r66RW6whgfPdKqW3HbtpP1lLvBE8lzKov09Fe2u5H3h65HbBXt/h1pNF/PK25wURZ/uglDvfK2KYqlnSrQyDJBTvSqQiJ5FtQL7KANa8eiMF8aK8Cv3d0kukX0ZTbA62ZZRdEiqSADQU5Uv/z9q5O+6k4UX3LOjl8J+VSOqcM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X8Ll9aeU; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 489BB1F00A3A;
-	Thu,  2 Jul 2026 16:30:46 +0000 (UTC)
+	 MIME-Version; b=JnV2UW/AcwWJYONrWOuJHCHkZxUUw72Id6EKR35sQooN8O4OJXcCe+6vokebPLrOy4FTDCob4EyvqzFMbs/RrZEyVe1dCRZwkTBTmvbeuX0EyDnvBMK8/+PzhwF+IYvwPkKx4kUIGOnHVaOZIyy504fCW8ZS2E2LVnmlUv7evGo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uXvrwPNV; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C5631F00A3A;
+	Thu,  2 Jul 2026 16:40:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1783009846;
-	bh=RZfoTYmweGuMzi3mZIK3MIYuhRGu72bBxB2Fr0NRRf4=;
+	s=korg; t=1783010448;
+	bh=jaCZZrzvBor40dv2WTYCIZ54WDHfmW9lS4Xck1g43xc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=X8Ll9aeUbm5pTK8aj/V4FQFobE8eeGwDW1Puujqp6azBcA4ITRkd5q5rfV63SKMNL
-	 FdJ+6OSeJ0CpeEbaRWHdwG8NTgqFA0/3EYTjhgAjTQW9wrYpCh6htYlY1fI5+2o7LC
-	 EfFHm+BOdEKe+nDDP95a73ztH6C51g7q/7hq1gfI=
+	b=uXvrwPNVB/vZrlLDklfu4Bitrqoyux1y1jd1aNASdmaIyn2RThrhYNB3dqg3bQ7s5
+	 +yvxocdR5Hywytp36/EhMUvM8io3MuTdJwdxX9nPBEjKQD79ALuZEmFDDB2VlcRsYz
+	 71WpFC2zKDnkqnBQ3R3EF5UTOkcGj4qvG+V9wEUQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Uros Bizjak <ubizjak@gmail.com>,
-	Sean Christopherson <seanjc@google.com>,
-	=?UTF-8?q?Hanne-Lotta=20M=C3=A4enp=C3=A4=C3=A4?= <hannelotta@gmail.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 007/129] KVM: VMX: Make vmread_error_trampoline() uncallable from C code
-Date: Thu,  2 Jul 2026 18:18:46 +0200
-Message-ID: <20260702155112.315509671@linuxfoundation.org>
+	bpf <bpf@vger.kernel.org>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	Masahiro Yamada <masahiroy@kernel.org>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Nicolas Schier <nicolas@fjasle.eu>,
+	Zheng Yejian <zhengyejian1@huawei.com>,
+	Martin Kelly <martin.kelly@crowdstrike.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Josh Poimboeuf <jpoimboe@redhat.com>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
+	Andrey Grodzovsky <andrey.grodzovsky@crowdstrike.com>
+Subject: [PATCH 6.12 070/204] scripts/sorttable: Get start/stop_mcount_loc from ELF file directly
+Date: Thu,  2 Jul 2026 18:18:47 +0200
+Message-ID: <20260702155120.136857184@linuxfoundation.org>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260702155112.163984240@linuxfoundation.org>
-References: <20260702155112.163984240@linuxfoundation.org>
+In-Reply-To: <20260702155118.667618796@linuxfoundation.org>
+References: <20260702155118.667618796@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,136 +78,231 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,google.com,kernel.org];
-	TAGGED_FROM(0.00)[bounces-270786-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:ubizjak@gmail.com,m:seanjc@google.com,m:hannelotta@gmail.com,m:sashal@kernel.org,s:lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-271016-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[19];
 	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:bpf@vger.kernel.org,m:mhiramat@kernel.org,m:mark.rutland@arm.com,m:mathieu.desnoyers@efficios.com,m:akpm@linux-foundation.org,m:peterz@infradead.org,m:torvalds@linux-foundation.org,m:masahiroy@kernel.org,m:nathan@kernel.org,m:nicolas@fjasle.eu,m:zhengyejian1@huawei.com,m:martin.kelly@crowdstrike.com,m:christophe.leroy@csgroup.eu,m:jpoimboe@redhat.com,m:rostedt@goodmis.org,m:andrey.grodzovsky@crowdstrike.com,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RWL_MAILSPIKE_POSSIBLE(0.00)[104.64.211.4:from];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,vger.kernel.org:from_smtp]
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 7A8E76FB6D2
+X-Rspamd-Queue-Id: EF7CD6FA86D
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sean Christopherson <seanjc@google.com>
+From: Steven Rostedt <rostedt@goodmis.org>
 
-[ Upstream commit 0b5e7a16a0a79a3742f0df9e45bca46f01b40e6a ]
+[ Upstream commit 4acda8edefa1ce66d3de845f1c12745721cd14c3 ]
 
-Declare vmread_error_trampoline() as an opaque symbol so that it cannot
-be called from C code, at least not without some serious fudging.  The
-trampoline always passes parameters on the stack so that the inline
-VMREAD sequence doesn't need to clobber registers.  regparm(0) was
-originally added to document the stack behavior, but it ended up being
-confusing because regparm(0) is a nop for 64-bit targets.
+The get_mcount_loc() does a cheesy trick to find the start_mcount_loc and
+stop_mcount_loc values. That trick is:
 
-Opportunustically wrap the trampoline and its declaration in #ifdeffery
-to make it even harder to invoke incorrectly, to document why it exists,
-and so that it's not left behind if/when CONFIG_CC_HAS_ASM_GOTO_OUTPUT
-is true for all supported toolchains.
+ file_start = popen(" grep start_mcount System.map | awk '{print $1}' ", "r");
 
-No functional change intended.
+and
 
-Cc: Uros Bizjak <ubizjak@gmail.com>
-Signed-off-by: Sean Christopherson <seanjc@google.com>
-Link: https://lore.kernel.org/r/20220928232015.745948-1-seanjc@google.com
-(cherry picked from commit 0b5e7a16a0a79a3742f0df9e45bca46f01b40e6a)
-Signed-off-by: Hanne-Lotta Mäenpää <hannelotta@gmail.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+ file_stop = popen(" grep stop_mcount System.map | awk '{print $1}' ", "r");
+
+Those values are stored in the Elf symbol table. Use that to capture those
+values. Using the symbol table is more efficient and more robust. The
+above could fail if another variable had "start_mcount" or "stop_mcount"
+as part of its name.
+
+Cc: bpf <bpf@vger.kernel.org>
+Cc: Masami Hiramatsu <mhiramat@kernel.org>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Masahiro Yamada <masahiroy@kernel.org>
+Cc: Nathan Chancellor <nathan@kernel.org>
+Cc: Nicolas Schier <nicolas@fjasle.eu>
+Cc: Zheng Yejian <zhengyejian1@huawei.com>
+Cc: Martin  Kelly <martin.kelly@crowdstrike.com>
+Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
+Cc: Josh Poimboeuf <jpoimboe@redhat.com>
+Link: https://lore.kernel.org/20250105162346.817157047@goodmis.org
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: Andrey Grodzovsky <andrey.grodzovsky@crowdstrike.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kvm/vmx/vmenter.S |  2 ++
- arch/x86/kvm/vmx/vmx_ops.h | 18 ++++++++++++++++--
- 2 files changed, 18 insertions(+), 2 deletions(-)
+ scripts/sorttable.c |   95 ++++++++++++++++++++++++----------------------------
+ 1 file changed, 45 insertions(+), 50 deletions(-)
 
-diff --git a/arch/x86/kvm/vmx/vmenter.S b/arch/x86/kvm/vmx/vmenter.S
-index b4f8937226c211..ea7be3a74b6d02 100644
---- a/arch/x86/kvm/vmx/vmenter.S
-+++ b/arch/x86/kvm/vmx/vmenter.S
-@@ -274,6 +274,7 @@ SYM_FUNC_END(__vmx_vcpu_run)
+--- a/scripts/sorttable.c
++++ b/scripts/sorttable.c
+@@ -472,42 +472,41 @@ static void *sort_mcount_loc(void *arg)
+ }
  
- .section .text, "ax"
+ /* Get the address of __start_mcount_loc and __stop_mcount_loc in System.map */
+-static void get_mcount_loc(uint64_t *_start, uint64_t *_stop)
++static void get_mcount_loc(struct elf_mcount_loc *emloc, Elf_Shdr *symtab_sec,
++			   const char *strtab)
+ {
+-	FILE *file_start, *file_stop;
+-	char start_buff[20];
+-	char stop_buff[20];
+-	int len = 0;
++	Elf_Sym *sym, *end_sym;
++	int symentsize = shdr_entsize(symtab_sec);
++	int found = 0;
++
++	sym = (void *)emloc->ehdr + shdr_offset(symtab_sec);
++	end_sym = (void *)sym + shdr_size(symtab_sec);
++
++	while (sym < end_sym) {
++		if (!strcmp(strtab + sym_name(sym), "__start_mcount_loc")) {
++			emloc->start_mcount_loc = sym_value(sym);
++			if (++found == 2)
++				break;
++		} else if (!strcmp(strtab + sym_name(sym), "__stop_mcount_loc")) {
++			emloc->stop_mcount_loc = sym_value(sym);
++			if (++found == 2)
++				break;
++		}
++		sym = (void *)sym + symentsize;
++	}
  
-+#ifndef CONFIG_CC_HAS_ASM_GOTO_OUTPUT
- /**
-  * vmread_error_trampoline - Trampoline from inline asm to vmread_error()
-  * @field:	VMCS field encoding that failed
-@@ -322,6 +323,7 @@ SYM_FUNC_START(vmread_error_trampoline)
+-	file_start = popen(" grep start_mcount System.map | awk '{print $1}' ", "r");
+-	if (!file_start) {
++	if (!emloc->start_mcount_loc) {
+ 		fprintf(stderr, "get start_mcount_loc error!");
+ 		return;
+ 	}
  
- 	RET
- SYM_FUNC_END(vmread_error_trampoline)
-+#endif
+-	file_stop = popen(" grep stop_mcount System.map | awk '{print $1}' ", "r");
+-	if (!file_stop) {
++	if (!emloc->stop_mcount_loc) {
+ 		fprintf(stderr, "get stop_mcount_loc error!");
+-		pclose(file_start);
+ 		return;
+ 	}
+-
+-	while (fgets(start_buff, sizeof(start_buff), file_start) != NULL) {
+-		len = strlen(start_buff);
+-		start_buff[len - 1] = '\0';
+-	}
+-	*_start = strtoul(start_buff, NULL, 16);
+-
+-	while (fgets(stop_buff, sizeof(stop_buff), file_stop) != NULL) {
+-		len = strlen(stop_buff);
+-		stop_buff[len - 1] = '\0';
+-	}
+-	*_stop = strtoul(stop_buff, NULL, 16);
+-
+-	pclose(file_start);
+-	pclose(file_stop);
+ }
+ #endif
++
+ static int do_sort(Elf_Ehdr *ehdr,
+ 		   char const *const fname,
+ 		   table_sort_t custom_sort)
+@@ -538,8 +537,6 @@ static int do_sort(Elf_Ehdr *ehdr,
+ 	unsigned int shstrndx;
+ #ifdef MCOUNT_SORT_ENABLED
+ 	struct elf_mcount_loc mstruct = {0};
+-	uint64_t _start_mcount_loc = 0;
+-	uint64_t _stop_mcount_loc = 0;
+ #endif
+ #ifdef UNWINDER_ORC_ENABLED
+ 	unsigned int orc_ip_size = 0;
+@@ -577,13 +574,8 @@ static int do_sort(Elf_Ehdr *ehdr,
  
- SYM_FUNC_START(vmx_do_interrupt_nmi_irqoff)
- 	/*
-diff --git a/arch/x86/kvm/vmx/vmx_ops.h b/arch/x86/kvm/vmx/vmx_ops.h
-index 5edab28dfb2efe..d23705df6a5250 100644
---- a/arch/x86/kvm/vmx/vmx_ops.h
-+++ b/arch/x86/kvm/vmx/vmx_ops.h
-@@ -11,14 +11,28 @@
- #include "../x86.h"
+ #ifdef MCOUNT_SORT_ENABLED
+ 		/* locate the .init.data section in vmlinux */
+-		if (!strcmp(secstrings + idx, ".init.data")) {
+-			get_mcount_loc(&_start_mcount_loc, &_stop_mcount_loc);
+-			mstruct.ehdr = ehdr;
++		if (!strcmp(secstrings + idx, ".init.data"))
+ 			mstruct.init_data_sec = shdr;
+-			mstruct.start_mcount_loc = _start_mcount_loc;
+-			mstruct.stop_mcount_loc = _stop_mcount_loc;
+-		}
+ #endif
  
- void vmread_error(unsigned long field, bool fault);
--__attribute__((regparm(0))) void vmread_error_trampoline(unsigned long field,
--							 bool fault);
- void vmwrite_error(unsigned long field, unsigned long value);
- void vmclear_error(struct vmcs *vmcs, u64 phys_addr);
- void vmptrld_error(struct vmcs *vmcs, u64 phys_addr);
- void invvpid_error(unsigned long ext, u16 vpid, gva_t gva);
- void invept_error(unsigned long ext, u64 eptp, gpa_t gpa);
+ #ifdef UNWINDER_ORC_ENABLED
+@@ -627,23 +619,6 @@ static int do_sort(Elf_Ehdr *ehdr,
+ 		goto out;
+ 	}
+ #endif
+-
+-#ifdef MCOUNT_SORT_ENABLED
+-	if (!mstruct.init_data_sec || !_start_mcount_loc || !_stop_mcount_loc) {
+-		fprintf(stderr,
+-			"incomplete mcount's sort in file: %s\n",
+-			fname);
+-		goto out;
+-	}
+-
+-	/* create thread to sort mcount_loc concurrently */
+-	if (pthread_create(&mcount_sort_thread, NULL, &sort_mcount_loc, &mstruct)) {
+-		fprintf(stderr,
+-			"pthread_create mcount_sort_thread failed '%s': %s\n",
+-			strerror(errno), fname);
+-		goto out;
+-	}
+-#endif
+ 	if (!extab_sec) {
+ 		fprintf(stderr,	"no __ex_table in file: %s\n", fname);
+ 		goto out;
+@@ -663,6 +638,26 @@ static int do_sort(Elf_Ehdr *ehdr,
+ 	strtab = (const char *)ehdr + shdr_offset(strtab_sec);
+ 	symtab = (const Elf_Sym *)((const char *)ehdr + shdr_offset(symtab_sec));
  
-+#ifndef CONFIG_CC_HAS_ASM_GOTO_OUTPUT
-+/*
-+ * The VMREAD error trampoline _always_ uses the stack to pass parameters, even
-+ * for 64-bit targets.  Preserving all registers allows the VMREAD inline asm
-+ * blob to avoid clobbering GPRs, which in turn allows the compiler to better
-+ * optimize sequences of VMREADs.
-+ *
-+ * Declare the trampoline as an opaque label as it's not safe to call from C
-+ * code; there is no way to tell the compiler to pass params on the stack for
-+ * 64-bit targets.
-+ *
-+ * void vmread_error_trampoline(unsigned long field, bool fault);
-+ */
-+extern unsigned long vmread_error_trampoline;
++#ifdef MCOUNT_SORT_ENABLED
++	mstruct.ehdr = ehdr;
++	get_mcount_loc(&mstruct, symtab_sec, strtab);
++
++	if (!mstruct.init_data_sec || !mstruct.start_mcount_loc || !mstruct.stop_mcount_loc) {
++		fprintf(stderr,
++			"incomplete mcount's sort in file: %s\n",
++			fname);
++		goto out;
++	}
++
++	/* create thread to sort mcount_loc concurrently */
++	if (pthread_create(&mcount_sort_thread, NULL, &sort_mcount_loc, &mstruct)) {
++		fprintf(stderr,
++			"pthread_create mcount_sort_thread failed '%s': %s\n",
++			strerror(errno), fname);
++		goto out;
++	}
 +#endif
 +
- static __always_inline void vmcs_check16(unsigned long field)
- {
- 	BUILD_BUG_ON_MSG(__builtin_constant_p(field) && ((field) & 0x6001) == 0x2000,
--- 
-2.53.0
-
+ 	if (custom_sort) {
+ 		custom_sort(extab_image, shdr_size(extab_sec));
+ 	} else {
 
 
 
