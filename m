@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-270742-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-271217-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id izWGE8KSRmpPYwsAu9opvQ
-	(envelope-from <stable+bounces-270742-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:33:06 +0200
+	id tJdpNXeaRmqEZwsAu9opvQ
+	(envelope-from <stable+bounces-271217-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:05:59 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id C25CB6FA3E0
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:33:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 74B0A6FAF9F
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:05:59 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=Z40Ursw9;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-270742-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-270742-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=w8LX9mE2;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-271217-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-271217-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id C6E7B3016012
-	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:33:04 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 775B33115022
+	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:51:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF81E33A9FC;
-	Thu,  2 Jul 2026 16:28:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 415763A1685;
+	Thu,  2 Jul 2026 16:49:32 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28BAD466B6C;
-	Thu,  2 Jul 2026 16:28:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 079253A254B;
+	Thu,  2 Jul 2026 16:49:31 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783009734; cv=none; b=KR+AH7U7fh5uTR5eaewpfzF6uTbesb73ZecAS+SkV777A4bOPKDFxZpX603ITqZWsdvyHNRDPzH2Pu7QEgZ9DvA92JF+BfS0cs+Mhv/+yRdvFotBHosz2ePsGHT7G+AbZMZcWr0tUUtwRkm56GL3t27HDx53N9ndFC8GbLcAd7g=
+	t=1783010972; cv=none; b=nifaSreBWAiGX8XTXxPPXA1qPlh7gEHHrMgvrc2jTS9RBP1xoKq9CqDaVHDBUswn0czj6FTpNoMg+TBA2zvi/Ek6n9UQH9wq/w/yIdV2mHw8SLD3UWahXy1LdURXGDxZ13NpV7KO0Mux1AMzTTodomXduPHSbgnyV4asN1cXv5Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783009734; c=relaxed/simple;
-	bh=hYkobSC18nOKnVd2ameVsniWwiTbvfEiPCFUIq+wWyQ=;
+	s=arc-20240116; t=1783010972; c=relaxed/simple;
+	bh=J0KEvB8YN/Zj7g9FbfMn81B1Hpudyh7vDSBSKW0JuzE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WF9tzwFH/aA0mcAIyZ7BBK0ETomerVK5YGKBqQG4PeFkbMPwPF4K+c+/yaVHjnpDfYQW3CcsqIXhaTudjiYy+MLAqkdaS66vqLiJs5RUwvuhiAsizzkHEi9vEpGvt7XhvEJWObbxxOwBbi6nV59zZsk1LR+eB/FKEpoW94ppHTM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z40Ursw9; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33F9D1F000E9;
-	Thu,  2 Jul 2026 16:28:50 +0000 (UTC)
+	 MIME-Version; b=IBy8JkwpalX5WRpDbgFiOYxamyJ9goewZdol0d2Gzn6TjMRQv282+PxRWcRiZv4wJ4kCnClzaJGmJGtBtwv3nc2e7K48GvTM+hakZ3ZJwBgxFSXRvqCa63ebfNCYlTHdYypoZAHLZl0LQqWMobkbqGZUOWXYOvnZyt/1DhSquHI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w8LX9mE2; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E5561F000E9;
+	Thu,  2 Jul 2026 16:49:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1783009730;
-	bh=G689+uSGIpXYiPM3W6qcPRDUKcOj6tUC+ElgBiLurng=;
+	s=korg; t=1783010970;
+	bh=T70t37BlW6Miv7LyHF0xk9Z+JbmkfJbRTE3l1KpCeRA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Z40Ursw978X5kTBmAwUvsO1pJoRPkDSCazIs5WnJfeCvWWpwHfQhGtxj7cPurtTto
-	 4LiEH8hZJsClr09/LmAhVQQwh7ffuMznGkn2cgnMzfcdF+yN2S5hm0y/o09hxqE3Um
-	 tYQrGlrCIGJ7pT/CWDVu/roQlQfcKUY2FQaqLIXw=
+	b=w8LX9mE252AZ+cR8DdLRXCZ/poWWJXdxsa49xIG1O8fd07wJ2J25bCtNyYlrN/034
+	 lwnuvhXExF6V4iI5H0r/ve3CH61rtTGcMuMTvWkaDYiVuw6lusouABakbhoX2q5NC6
+	 1Q45A1v7f3ACzE8DXmy2FstfBRSlTYllewkfidbc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michael Bommarito <michael.bommarito@gmail.com>,
-	Namjae Jeon <linkinjeon@kernel.org>
-Subject: [PATCH 5.15 66/95] exfat: fix potential use-after-free in exfat_find_dir_entry()
+	stable@kernel.org,
+	Sven Eckelmann <sven@narfation.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 108/175] batman-adv: tp_meter: annotate last_recv_time access with READ/WRITE_ONCE
 Date: Thu,  2 Jul 2026 18:20:09 +0200
-Message-ID: <20260702155110.601238970@linuxfoundation.org>
+Message-ID: <20260702155118.038317721@linuxfoundation.org>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260702155109.196223802@linuxfoundation.org>
-References: <20260702155109.196223802@linuxfoundation.org>
+In-Reply-To: <20260702155115.766838875@linuxfoundation.org>
+References: <20260702155115.766838875@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,8 +67,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
@@ -76,122 +76,96 @@ X-Spamd-Result: default: False [-0.16 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-271217-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-270742-lists,stable=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:michael.bommarito@gmail.com,m:linkinjeon@kernel.org,m:michaelbommarito@gmail.com,s:lists@lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:stable@kernel.org,m:sven@narfation.org,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,narfation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: C25CB6FA3E0
+X-Rspamd-Queue-Id: 74B0A6FAF9F
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Bommarito <michael.bommarito@gmail.com>
+From: Sven Eckelmann <sven@narfation.org>
 
-commit 3f5f8ee9917cc2b9076ac533492d8a200edcabb8 upstream.
+commit d67c728f07fca2ee6ffdc6dd4421cf2e8691f4d1 upstream.
 
-In exfat_find_dir_entry(), the buffer_head obtained from
-exfat_get_dentry() is released with brelse(bh) before the fall-through
-TYPE_EXTEND branch reads the directory entry through ep (which points
-into bh->b_data):
+The last_recv_time field for batadv_tp_receiver tracks the jiffies value of
+the most recent activity and is used to detect timeouts. These accesses are
+not consistently protected by a lock, so READ_ONCE/WRITE_ONCE must be used
+to prevent data races caused by compiler optimizations.
 
-	brelse(bh);
-	if (entry_type == TYPE_EXTEND) {
-		...
-		len = exfat_extract_uni_name(ep, entry_uniname);
-		...
-	}
-
-After brelse() drops our reference, nothing guarantees that the
-underlying page backing bh->b_data remains valid for the subsequent
-exfat_extract_uni_name() read. This is the same pattern fixed in
-commit fc961522ddbd ("exfat: Fix potential use after free in
-exfat_load_upcase_table()").
-
-Move brelse(bh) so it runs after ep is no longer dereferenced on
-each branch.
-
-Confirmed on QEMU x86_64 with CONFIG_KASAN=y + CONFIG_DEBUG_PAGEALLOC=y
-+ CONFIG_PAGE_POISONING=y on linux-next, using a crafted exFAT image
-(long filename with same-hash collisions forcing the TYPE_EXTEND path).
-With a debug-only invalidate_bdev() inserted between brelse(bh) and
-the ep read to make the stale-deref window deterministic, the
-unpatched kernel faults:
-
-  BUG: KASAN: use-after-free in exfat_find_dir_entry+0x133b/0x15a0
-  BUG: unable to handle page fault for address: ffff88801a5fa0c2
-  Oops: 0000 [#1] SMP DEBUG_PAGEALLOC KASAN NOPTI
-  RIP: 0010:exfat_find_dir_entry+0x1188/0x15a0
-
-With this patch applied, the same instrumented harness completes
-cleanly under the same sanitizer stack. I have not reproduced a
-crash on an uninstrumented kernel under ordinary reclaim; the
-instrumented A/B establishes the lifetime violation and that the
-patch closes it, not an unaided triggerability claim.
-
-Fixes: ca06197382bd ("exfat: add directory operations")
-Cc: stable@vger.kernel.org
-Assisted-by: Claude:claude-opus-4-7
-Signed-off-by: Michael Bommarito <michael.bommarito@gmail.com>
-Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@kernel.org
+Fixes: 33a3bb4a3345 ("batman-adv: throughput meter implementation")
+Signed-off-by: Sven Eckelmann <sven@narfation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/exfat/dir.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ net/batman-adv/tp_meter.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
---- a/fs/exfat/dir.c
-+++ b/fs/exfat/dir.c
-@@ -1048,12 +1048,12 @@ rewind:
- 				continue;
- 			}
+diff --git a/net/batman-adv/tp_meter.c b/net/batman-adv/tp_meter.c
+index 638dd438a6c052..b882919a868ca0 100644
+--- a/net/batman-adv/tp_meter.c
++++ b/net/batman-adv/tp_meter.c
+@@ -1183,7 +1183,7 @@ static void batadv_tp_receiver_shutdown(struct timer_list *t)
+ 	bat_priv = tp_vars->bat_priv;
  
--			brelse(bh);
- 			if (entry_type == TYPE_EXTEND) {
- 				unsigned short entry_uniname[16], unichar;
+ 	/* if there is recent activity rearm the timer */
+-	if (!batadv_has_timed_out(tp_vars->last_recv_time,
++	if (!batadv_has_timed_out(READ_ONCE(tp_vars->last_recv_time),
+ 				  BATADV_TP_RECV_TIMEOUT)) {
+ 		/* reset the receiver shutdown timer */
+ 		batadv_tp_reset_receiver_timer(tp_vars);
+@@ -1424,7 +1424,7 @@ batadv_tp_init_recv(struct batadv_priv *bat_priv,
+ 	tp_vars = batadv_tp_list_find_session(bat_priv, icmp->orig,
+ 					      icmp->session, BATADV_TP_RECEIVER);
+ 	if (tp_vars) {
+-		tp_vars->last_recv_time = jiffies;
++		WRITE_ONCE(tp_vars->last_recv_time, jiffies);
+ 		goto out_unlock;
+ 	}
  
- 				if (step != DIRENT_STEP_NAME ||
- 				    name_len >= MAX_NAME_LENGTH) {
-+					brelse(bh);
- 					step = DIRENT_STEP_FILE;
- 					continue;
- 				}
-@@ -1064,6 +1064,7 @@ rewind:
- 					uniname += EXFAT_FILE_NAME_LEN;
+@@ -1455,7 +1455,7 @@ batadv_tp_init_recv(struct batadv_priv *bat_priv,
+ 	kref_get(&tp_vars->refcount);
+ 	timer_setup(&tp_vars->timer, batadv_tp_receiver_shutdown, 0);
  
- 				len = exfat_extract_uni_name(ep, entry_uniname);
-+				brelse(bh);
- 				name_len += len;
+-	tp_vars->last_recv_time = jiffies;
++	WRITE_ONCE(tp_vars->last_recv_time, jiffies);
  
- 				unichar = *(uniname+len);
-@@ -1082,6 +1083,7 @@ rewind:
- 				continue;
- 			}
+ 	kref_get(&tp_vars->refcount);
+ 	hlist_add_head_rcu(&tp_vars->list, &bat_priv->tp_list);
+@@ -1506,7 +1506,7 @@ static void batadv_tp_recv_msg(struct batadv_priv *bat_priv,
+ 			goto out;
+ 		}
  
-+			brelse(bh);
- 			if (entry_type &
- 					(TYPE_CRITICAL_SEC | TYPE_BENIGN_SEC)) {
- 				if (step == DIRENT_STEP_SECD) {
+-		tp_vars->last_recv_time = jiffies;
++		WRITE_ONCE(tp_vars->last_recv_time, jiffies);
+ 	}
+ 
+ 	/* if the packet is a duplicate, it may be the case that an ACK has been
+-- 
+2.53.0
+
 
 
 
