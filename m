@@ -1,62 +1,60 @@
-Return-Path: <stable+bounces-271437-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-271246-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id IVMtMHObRmoOaAsAu9opvQ
-	(envelope-from <stable+bounces-271437-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:10:11 +0200
+	id YQMcFiKaRmpWZwsAu9opvQ
+	(envelope-from <stable+bounces-271246-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:04:34 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1BA9C6FB135
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:10:11 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F2B66FAF15
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:04:33 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=xfjHCZNu;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-271437-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-271437-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=YmiCFqrO;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-271246-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-271246-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 281ED34418B6
-	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:59:10 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A6CAE33BD771
+	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:52:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 922BD30C141;
-	Thu,  2 Jul 2026 16:59:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9AA623624DE;
+	Thu,  2 Jul 2026 16:50:45 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53C8522D7B9;
-	Thu,  2 Jul 2026 16:59:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EEC3359A89;
+	Thu,  2 Jul 2026 16:50:44 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783011542; cv=none; b=ayZwtF1xO5hDsDm8BMSakTdysjfWCMimgWri65deyEFvi8Yh8CVqVCH0Yg0c0FLGkzO/ZiBOeH1gKH1Zmpy0tmXF00Y+wPe+458QiQjNgvKmVUnGv5YzoRwVRbuJoXsY5Svmq3U2Zh8kIZoOOkhUaCNsXKcRALUP3NEjLceClDc=
+	t=1783011045; cv=none; b=WuC5UIi2FTWcFERWIlICYVODRFvJlopEGhSIWgJhtRopM1lk1FLLien6SLYgFMTO2nUJxwmz+qZod9WiYBDMDp5gwP6qqcPEd9RXP/hYqsllN6vAzBwWzKwVdxK+BMvv0TmyvqliLOOzvVxLOj227BwB6Pew1hT74QzWEHlGpkw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783011542; c=relaxed/simple;
-	bh=eJD4KcoBiZ0yb12pANdanSHot2onqUQUIVfZ27mm6jA=;
+	s=arc-20240116; t=1783011045; c=relaxed/simple;
+	bh=7TjE9MWNtaYR40U2Q+nyjOs1FdGHIDiNgK8+/tcUm6Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=T5VwwhYi5OPJi2V7FdwbqCErZUu05VjySGqcptLOP01fGmLDlzaWNhSsKoI1u6kJtM8xvMejXaT5bV3A7mYn004rjB0k36tjXQ9+NI2lLmop5zXDQblPqD1IJFYvFzU8FJ9J0pP0fWjCTUv5lC72of/kndURA+OhYxX8L2uaOPs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xfjHCZNu; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA2F81F00A3A;
-	Thu,  2 Jul 2026 16:59:00 +0000 (UTC)
+	 MIME-Version; b=CsOMcXZnAzD+PLVj8Es6PlUSzaDV5Pgw/Oh0aNTRlkmBbvzXDPC2hALT/s1hIJk6Rh+TV+WN/eiyR8TeAnDpKbm6zSlth70zQdZt/1SA25D0B7bV9/F543hHv6ZdH23/9Nsjeeh/5gJDHexM5ULR23aT8c/l7Axe6d/zvZaXf/A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YmiCFqrO; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3F131F000E9;
+	Thu,  2 Jul 2026 16:50:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1783011541;
-	bh=5VHl8zBKSVtMtpMNZ4IlrYMGkCj20RaRYkQbgngr7GE=;
+	s=korg; t=1783011044;
+	bh=8dydFRVpprfQvFmOj7rPLnPmvK2CdRUPzQ1LLyTziZM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=xfjHCZNuZ86V+gXRVD/vQ2Fa84Dknj6CC+qyuG0faOLYXt0UhdQTvHqjsRfSaWtI9
-	 OevODh0UdwUBXExFEWpW3DhB0V9jJ1RKrexkQYiukrZdra/Eyw5QWXS3FeL63DbhUK
-	 GmzssT7Q8z2XPxQnYrX+mR8UXjSfEq7MzQP5fq+U=
+	b=YmiCFqrOlaLrGA07psd072JQkOBOYw4ULd24J8REymxDyPn0XeiFUeMPj1R0dS/L7
+	 uzktkSXUAjoKrQcNMS6Nqk7cHC3liqCneTK3wyk7ZK9/TuXBu7Cm2c6MswJgNAaoCz
+	 wayppfVKBWWjFKf7teV+AAhoizF5PqTBvQOPePWI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Frank Li <Frank.Li@nxp.com>,
-	Koichiro Den <den@valinux.co.jp>,
-	Dave Jiang <dave.jiang@intel.com>,
-	Jon Mason <jdmason@kudzu.us>
-Subject: [PATCH 7.1 038/120] NTB: epf: Avoid pci_iounmap() with offset when PEER_SPAD and CONFIG share BAR
+	Bitterblue Smith <rtl8821cerfe2@gmail.com>,
+	Ping-Ke Shih <pkshih@realtek.com>
+Subject: [PATCH 6.6 133/175] wifi: rtlwifi: rtl8821ae: Fix C2H bit location in RX descriptor
 Date: Thu,  2 Jul 2026 18:20:34 +0200
-Message-ID: <20260702155113.748576021@linuxfoundation.org>
+Message-ID: <20260702155118.613735161@linuxfoundation.org>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260702155112.964534952@linuxfoundation.org>
-References: <20260702155112.964534952@linuxfoundation.org>
+In-Reply-To: <20260702155115.766838875@linuxfoundation.org>
+References: <20260702155115.766838875@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,94 +68,78 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	RCVD_TLS_LAST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-271246-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:rtl8821cerfe2@gmail.com,m:pkshih@realtek.com,s:lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-271437-lists,stable=lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:Frank.Li@nxp.com,m:den@valinux.co.jp,m:dave.jiang@intel.com,m:jdmason@kudzu.us,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,realtek.com];
+	FORWARDED(0.00)[lists@lfdr.de];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[nxp.com:email,intel.com:email,vger.kernel.org:from_smtp,kudzu.us:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,valinux.co.jp:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,msgid.link:url,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 1BA9C6FB135
+X-Rspamd-Queue-Id: 9F2B66FAF15
 
-7.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Koichiro Den <den@valinux.co.jp>
+From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
 
-commit d876153680e3d721d385e554def919bce3d18c74 upstream.
+commit 83d38df6929118c3f996b9e3351c2d5014073d87 upstream.
 
-When BAR_PEER_SPAD and BAR_CONFIG share one PCI BAR, the module teardown
-path ends up calling pci_iounmap() on the same iomem with some offset,
-which is unnecessary and triggers a kernel warning like the following:
+Bit 28 of double word 2 in the RX descriptor indicates if the packet is
+a normal 802.11 frame, or a message from the wifi firmware to the
+driver (Card 2 Host).
 
-  Trying to vunmap() nonexistent vm area (0000000069a5ffe8)
-  WARNING: mm/vmalloc.c:3470 at vunmap+0x58/0x68, CPU#5: modprobe/2937
-  [...]
-  Call trace:
-   vunmap+0x58/0x68 (P)
-   iounmap+0x34/0x48
-   pci_iounmap+0x2c/0x40
-   ntb_epf_pci_remove+0x44/0x80 [ntb_hw_epf]
-   pci_device_remove+0x48/0xf8
-   device_remove+0x50/0x88
-   device_release_driver_internal+0x1c8/0x228
-   driver_detach+0x50/0xb0
-   bus_remove_driver+0x74/0x100
-   driver_unregister+0x34/0x68
-   pci_unregister_driver+0x34/0xa0
-   ntb_epf_pci_driver_exit+0x14/0xfe0 [ntb_hw_epf]
-  [...]
+Commit f5678bfe1cdc ("rtlwifi: rtl8821ae: Replace local bit manipulation
+macros") mistakenly made the driver look for this bit in double word 1,
+causing packet loss and Bluetooth coexistence problems.
 
-Fix it by unmapping only when PEER_SPAD and CONFIG use difference bars.
-
-Cc: stable@vger.kernel.org
-Fixes: e75d5ae8ab88 ("NTB: epf: Allow more flexibility in the memory BAR map method")
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
-Signed-off-by: Koichiro Den <den@valinux.co.jp>
-Reviewed-by: Dave Jiang <dave.jiang@intel.com>
-Signed-off-by: Jon Mason <jdmason@kudzu.us>
+Fixes: f5678bfe1cdc ("rtlwifi: rtl8821ae: Replace local bit manipulation macros")
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+Acked-by: Ping-Ke Shih <pkshih@realtek.com>
+Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+Link: https://patch.msgid.link/04da7398-cedb-425a-a810-5772ab10139d@gmail.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/ntb/hw/epf/ntb_hw_epf.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/net/wireless/realtek/rtlwifi/rtl8821ae/trx.h |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/ntb/hw/epf/ntb_hw_epf.c
-+++ b/drivers/ntb/hw/epf/ntb_hw_epf.c
-@@ -646,7 +646,8 @@ static void ntb_epf_deinit_pci(struct nt
- 	struct pci_dev *pdev = ndev->ntb.pdev;
+--- a/drivers/net/wireless/realtek/rtlwifi/rtl8821ae/trx.h
++++ b/drivers/net/wireless/realtek/rtlwifi/rtl8821ae/trx.h
+@@ -291,7 +291,7 @@ static inline int get_rx_desc_paggr(__le
  
- 	pci_iounmap(pdev, ndev->ctrl_reg);
--	pci_iounmap(pdev, ndev->peer_spad_reg);
-+	if (ndev->barno_map[BAR_PEER_SPAD] != ndev->barno_map[BAR_CONFIG])
-+		pci_iounmap(pdev, ndev->peer_spad_reg);
- 	pci_iounmap(pdev, ndev->db_reg);
+ static inline int get_rx_status_desc_rpt_sel(__le32 *__pdesc)
+ {
+-	return le32_get_bits(*(__pdesc + 1), BIT(28));
++	return le32_get_bits(*(__pdesc + 2), BIT(28));
+ }
  
- 	pci_release_regions(pdev);
+ static inline int get_rx_desc_rxmcs(__le32 *__pdesc)
 
 
 
