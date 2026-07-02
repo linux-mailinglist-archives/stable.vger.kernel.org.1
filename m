@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-271053-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-271213-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id FjEwDnyiRmrCagsAu9opvQ
-	(envelope-from <stable+bounces-271053-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:40:12 +0200
+	id Ez5HFo6ZRmr5ZgsAu9opvQ
+	(envelope-from <stable+bounces-271213-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:02:06 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 83B5D6FB883
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:40:11 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 81BEB6FAE1F
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:02:05 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="ftC5+/Oo";
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-271053-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-271053-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="1aww/2L+";
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-271213-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-271213-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 5946B32B7DD7
-	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:45:51 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 85221314E519
+	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:51:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01C41353A8D;
-	Thu,  2 Jul 2026 16:42:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C40E13939A3;
+	Thu,  2 Jul 2026 16:49:21 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B507A346A10;
-	Thu,  2 Jul 2026 16:42:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8120233D4EC;
+	Thu,  2 Jul 2026 16:49:20 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783010546; cv=none; b=L/LeokkZAZiABmXQBm13JLNEQvL3LE34zYj38kBB0kpyd+4e30PyfzHapQmtMr4d3GY022GaLRvtdx8s6/WfKnU+8ecdrvuO39/ImG9TiXeTyI6BY/BtBB1cOd9vEVYUZ2eec28LP1saAqUGi1JP9uoEdQ+nVpLxxatHSRkJa+4=
+	t=1783010961; cv=none; b=j6l4bjy9nb0SkZ4I1oR8z1eE1P64wkKXyUnimMRIsRtTPEjmC1JdsA8miuGJJGHR0CjineGfdh/puDiS4FF/TUyQyqMZ0RZcBoGxk2iuHS+aclr3tjoOxbshJTi43ZN/poRTNSbdbkRxyUNQTZSEAtwlxiwJQtqd5Y/x4IqFbuc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783010546; c=relaxed/simple;
-	bh=zvfUTT2jEEpmahln9sQJjdWAg4wfAM6+sGr94oC88go=;
+	s=arc-20240116; t=1783010961; c=relaxed/simple;
+	bh=jiIfXP0jsySGOgEwxpcJp0IASzBf8koR9t0ha8whkL0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kcD7IUiCJGc8z2HX1OtjtZeDcP1er+motvx5dlbbGVLpN4GigbWEFloVfBH8SuzzzjwlgM2dAEQ4b0X8dFeETLFeVskYfJui4y0YMR0DCFa1ASyzLGGCQm3yfz9/GqZoSEiDUiEjAcmSFwJIWCYT4SPKbwJZPbHMegN11FuD3yI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ftC5+/Oo; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E25B01F000E9;
-	Thu,  2 Jul 2026 16:42:24 +0000 (UTC)
+	 MIME-Version; b=N6c09/VHHiMwpGVhjz476FHWG2+eMbO9QPI3/RDokP+8Y8adssjJskcdw6NDHLvLSGIxT7dpy+NWSwsYhAtgYhhwCNGCMML3JO9wcGhX4OpzMoOeje+v2MHdMhUN+lMV8U+ik5PadwWR3jDTfmyDMjMWOvFJ1b4Uit4EGjR/34c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1aww/2L+; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E63BA1F000E9;
+	Thu,  2 Jul 2026 16:49:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1783010545;
-	bh=CW3W7crF83XcMbH8WPAVYazbKiUDMJX/ZqhBe9Rw1uE=;
+	s=korg; t=1783010960;
+	bh=6+Ft8/UPYoUkvWE6NelumHoPLpG6fuOA+6LWWuvcxdM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=ftC5+/Oo4nMDr6LJxiV5kVn/FBKby18MP3ZbeMr/qlQzhoYk+bq9gORxQOwZ9VtTJ
-	 vqW+Eucom66pfoTyiwXNyL58psPT/MBLr/c0SXkQp4l4OEJX8hVQURlu/kOE4GVIyU
-	 1xzFwmQTgv6xH6FJnSIitpBOpXVT8sR5VgavA1Gg=
+	b=1aww/2L+z/TPq+pTs0f41ndPv6S53ErA/tnq9Kv/5/MS5r0o+hq2dZRe/BjQWgKKA
+	 Hj5AP+XIOqE3V90VsL+Z8c4Kv8c7sfduzRUqUTZ3Q2L7xLD90aF3YY/B3DTDpL+M/S
+	 htAUI1CU2YTnOOs/O8tIiUtmtPwHkF9PqcI7EO9s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	ElXreno <elxreno@gmail.com>,
-	Felix Fietkau <nbd@nbd.name>
-Subject: [PATCH 6.12 148/204] wifi: mt76: mt7925: dont disable AP BSS when removing TDLS peer
+	stable@kernel.org,
+	Sven Eckelmann <sven@narfation.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 104/175] batman-adv: frag: ensure fragment is writable before modifying TTL
 Date: Thu,  2 Jul 2026 18:20:05 +0200
-Message-ID: <20260702155121.761380665@linuxfoundation.org>
+Message-ID: <20260702155117.957578168@linuxfoundation.org>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260702155118.667618796@linuxfoundation.org>
-References: <20260702155118.667618796@linuxfoundation.org>
+In-Reply-To: <20260702155115.766838875@linuxfoundation.org>
+References: <20260702155115.766838875@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,105 +72,142 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-271213-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-271053-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:elxreno@gmail.com,m:nbd@nbd.name,s:lists@lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,nbd.name];
 	FORWARDED(0.00)[lists@lfdr.de];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:stable@kernel.org,m:sven@narfation.org,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,narfation.org:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 83B5D6FB883
+X-Rspamd-Queue-Id: 81BEB6FAE1F
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: ElXreno <elxreno@gmail.com>
+From: Sven Eckelmann <sven@narfation.org>
 
-commit 37d65384aa6f9cbe45f4052b13b378af1aab3e95 upstream.
+commit b7293c6e8c15b2db77809b25cf8389e35331b27a upstream.
 
-On a STATION vif, removing a TDLS peer takes the mt7925_mac_sta_remove
--> mt7925_mac_sta_remove_links path. The first loop in that function
-calls mt7925_mcu_add_bss_info(..., enable=false) for every link of the
-station being removed. For a non-MLO STATION vif there is exactly one
-link, link 0, whose bss_conf is the AP's. TDLS peers do not have their
-own bss_conf - they share the AP's BSS.
+Before batman-adv is allowed to write to an skb, it either has to have its
+own copy of the skb or use skb_cow() to ensure that the data part is not
+shared. But batadv_frag_skb_fwd() modifies the TTL even when it is shared.
 
-The result is that every TDLS peer teardown sends a BSS_INFO_UPDATE
-with enable=0 for the AP's BSS to the firmware, which wipes the AP-side
-rate-control context. The connection stays associated and TX from the
-host still works at the negotiated rate, but the AP's downlink to us
-collapses to the lowest mandatory OFDM rate (HE-MCS 0 / 6 Mbit/s OFDM)
-and only slowly recovers as rate adaptation re-learns under sustained
-traffic. With brief or bursty traffic the link can stay at 6-72 Mbit/s
-indefinitely, requiring a manual reconnect.
+Adding a skb_cow() right before this operation avoids this and can at the
+same time prepare it for the modifications required to forward the
+fragment.
 
-mt7925_mac_link_sta_remove() already guards its own
-mt7925_mcu_add_bss_info(..., false) call with
-"vif->type == NL80211_IFTYPE_STATION && !link_sta->sta->tdls".
-Add the equivalent guard at the top of the cleanup loop in
-mt7925_mac_sta_remove_links(), above the link_sta / link_conf /
-mlink / mconf lookups, so TDLS peer teardown skips the loop body
-entirely without doing the per-link work that would just be thrown
-away.
-
-Verified on mt7925e by triggering Samsung-S938B auto-TDLS via iperf3
-and watching iw rx bitrate after teardown:
-
-  Before: rx bitrate collapses to 6.0-72.0 Mbit/s, oscillates 17/72/
-          137/288/432 Mbit/s for 30+ seconds, no full recovery without
-          a manual reassoc.
-  After:  rx bitrate stays at 1200.9 Mbit/s HE-MCS 11 NSS 2 80 MHz
-          across the entire TDLS lifecycle.
-
-bpftrace confirms a single mt7925_mcu_add_bss_info(enable=0) call per
-teardown before the fix; zero such calls after.
-
-Fixes: 3878b4333602 ("wifi: mt76: mt7925: update mt7925_mac_link_sta_[add, assoc, remove] for MLO")
-Cc: stable@vger.kernel.org
-Signed-off-by: ElXreno <elxreno@gmail.com>
-Assisted-by: Claude:claude-opus-4-7 bpftrace
-Link: https://patch.msgid.link/20260506-mt7925-tdls-fixes-v2-2-46aa826ba8bb@gmail.com
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@kernel.org
+Fixes: 610bfc6bc99b ("batman-adv: Receive fragmented packets and merge")
+[ Context ]
+Signed-off-by: Sven Eckelmann <sven@narfation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/mediatek/mt76/mt7925/main.c |    3 +++
- 1 file changed, 3 insertions(+)
+ net/batman-adv/fragmentation.c | 15 ++++++++++++++-
+ net/batman-adv/fragmentation.h |  3 ++-
+ net/batman-adv/routing.c       |  3 +--
+ 3 files changed, 17 insertions(+), 4 deletions(-)
 
---- a/drivers/net/wireless/mediatek/mt76/mt7925/main.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7925/main.c
-@@ -1190,6 +1190,9 @@ mt7925_mac_sta_remove_links(struct mt792
- 		if (vif->type == NL80211_IFTYPE_AP)
- 			break;
- 
-+		if (vif->type == NL80211_IFTYPE_STATION && sta->tdls)
-+			continue;
+diff --git a/net/batman-adv/fragmentation.c b/net/batman-adv/fragmentation.c
+index 4c193194034155..fbf030c57ac04d 100644
+--- a/net/batman-adv/fragmentation.c
++++ b/net/batman-adv/fragmentation.c
+@@ -385,6 +385,8 @@ bool batadv_frag_skb_buffer(struct sk_buff **skb,
+  * @skb: skb to forward
+  * @recv_if: interface that the skb is received on
+  * @orig_node_src: originator that the skb is received from
++ * @rx_result: set to NET_RX_SUCCESS when the fragment was forwarded and
++ *  NET_RX_DROP when it was dropped; only valid when true is returned
+  *
+  * Look up the next-hop of the fragments payload and check if the merged packet
+  * will exceed the MTU towards the next-hop. If so, the fragment is forwarded
+@@ -394,7 +396,8 @@ bool batadv_frag_skb_buffer(struct sk_buff **skb,
+  */
+ bool batadv_frag_skb_fwd(struct sk_buff *skb,
+ 			 struct batadv_hard_iface *recv_if,
+-			 struct batadv_orig_node *orig_node_src)
++			 struct batadv_orig_node *orig_node_src,
++			 int *rx_result)
+ {
+ 	struct batadv_priv *bat_priv = netdev_priv(recv_if->soft_iface);
+ 	struct batadv_orig_node *orig_node_dst;
+@@ -417,12 +420,22 @@ bool batadv_frag_skb_fwd(struct sk_buff *skb,
+ 	 */
+ 	total_size = ntohs(packet->total_size);
+ 	if (total_size > neigh_node->if_incoming->net_dev->mtu) {
++		if (skb_cow(skb, ETH_HLEN) < 0) {
++			kfree_skb(skb);
++			*rx_result = NET_RX_DROP;
++			ret = true;
++			goto out;
++		}
 +
- 		link_sta = mt792x_sta_to_link_sta(vif, sta, link_id);
- 		if (!link_sta)
- 			continue;
++		packet = (struct batadv_frag_packet *)skb->data;
++
+ 		batadv_inc_counter(bat_priv, BATADV_CNT_FRAG_FWD);
+ 		batadv_add_counter(bat_priv, BATADV_CNT_FRAG_FWD_BYTES,
+ 				   skb->len + ETH_HLEN);
+ 
+ 		packet->ttl--;
+ 		batadv_send_unicast_skb(skb, neigh_node);
++		*rx_result = NET_RX_SUCCESS;
+ 		ret = true;
+ 	}
+ 
+diff --git a/net/batman-adv/fragmentation.h b/net/batman-adv/fragmentation.h
+index dbf0871f870303..51e281027ab630 100644
+--- a/net/batman-adv/fragmentation.h
++++ b/net/batman-adv/fragmentation.h
+@@ -19,7 +19,8 @@ void batadv_frag_purge_orig(struct batadv_orig_node *orig,
+ 			    bool (*check_cb)(struct batadv_frag_table_entry *));
+ bool batadv_frag_skb_fwd(struct sk_buff *skb,
+ 			 struct batadv_hard_iface *recv_if,
+-			 struct batadv_orig_node *orig_node_src);
++			 struct batadv_orig_node *orig_node_src,
++			 int *rx_result);
+ bool batadv_frag_skb_buffer(struct sk_buff **skb,
+ 			    struct batadv_orig_node *orig_node);
+ int batadv_frag_send_packet(struct sk_buff *skb,
+diff --git a/net/batman-adv/routing.c b/net/batman-adv/routing.c
+index 36e9df0cca0b2f..ec278f73805e95 100644
+--- a/net/batman-adv/routing.c
++++ b/net/batman-adv/routing.c
+@@ -1174,10 +1174,9 @@ int batadv_recv_frag_packet(struct sk_buff *skb,
+ 
+ 	/* Route the fragment if it is not for us and too big to be merged. */
+ 	if (!batadv_is_my_mac(bat_priv, frag_packet->dest) &&
+-	    batadv_frag_skb_fwd(skb, recv_if, orig_node_src)) {
++	    batadv_frag_skb_fwd(skb, recv_if, orig_node_src, &ret)) {
+ 		/* skb was consumed */
+ 		skb = NULL;
+-		ret = NET_RX_SUCCESS;
+ 		goto put_orig_node;
+ 	}
+ 
+-- 
+2.53.0
+
 
 
 
