@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-271111-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-270755-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id VEazA9WXRmoOZgsAu9opvQ
-	(envelope-from <stable+bounces-271111-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:54:45 +0200
+	id 7m/kGBqTRmptYwsAu9opvQ
+	(envelope-from <stable+bounces-270755-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:34:34 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A1E196FABCB
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:54:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 237096FA429
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:34:34 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=dbLujieT;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-271111-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-271111-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=L6oqrmek;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-270755-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-270755-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 7F75C30B13BA
-	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:47:34 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id F125C3034238
+	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:33:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 532633AEF4C;
-	Thu,  2 Jul 2026 16:44:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D6A9943E4AC;
+	Thu,  2 Jul 2026 16:29:29 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13DA93491E1;
-	Thu,  2 Jul 2026 16:44:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50CDD3ACEE8;
+	Thu,  2 Jul 2026 16:29:25 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783010699; cv=none; b=j52KWPo5fsaJqQfOuH+H/lnFY0m1Z0ciwqSbPGkaltabIE6zFSzKDyCR1VbmbC4O6QtBJxaXkomvIip+2Vj4g8T4NWJDK6C2bBdClPkWSBexQXv0dllnTwTQhhtGaSo2wHaTR4FOS/2sKyF1qNacrJ5XO3ejIwkd0ddpMxVxTWU=
+	t=1783009768; cv=none; b=ZfuaLArUXpdwj51ebdU3+FWtrSGL2rxy/C7gMNNmUd0UoxlQrJauEPBoZz0FwdHofPLilneBd1PeO89mfAR7Rw6JI9e8M0au0EinOI5kveeOQe7oatVMZeYAXTjLIKPEVHvFwi3FGCbXNPMbRUYaD4fLsO2rQIuGE2a5QRHSlK0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783010699; c=relaxed/simple;
-	bh=OvNnpN0TLjjbaa14E+nFOjCtKVymb7xbKXvLEqWU8i0=;
+	s=arc-20240116; t=1783009768; c=relaxed/simple;
+	bh=orCiLb257CSs+6CMObrhX9KOcj0is2f1eHd5Xd9s8Os=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=K91wRfZE3NgjTKSGKJTsyd8iT8aTxl5hipZtXqovOuhAo5Pcrw6ZZTH48Wbq/QuPAUIsAi90uyZoz1Zc6pC2bcv2FPekqmfFgS0VDvsxBOJxSfrI0fJBOOH2BdYticXHMiLphbb7ZkIrU3M70CfktjFp0k24+4L1fVJAjfcz5Cg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dbLujieT; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A7C11F000E9;
-	Thu,  2 Jul 2026 16:44:57 +0000 (UTC)
+	 MIME-Version; b=WSGchRd3I5XZjCsWFkPCH+HE4mJ128tTa2QMoCs/MIy5LYC4RtvzHmhFTNPQxcKmXo3tOsl7OJY488jHvTXvGX1odJuJyaoiTuibU31LzwBdtrUzfqOVQcUGiv4VddTw+09LUzohsVfs/Hc3Cwq2lyqtIL2pNE8Cp4aLYK5zBks=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L6oqrmek; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62F401F00A3A;
+	Thu,  2 Jul 2026 16:29:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1783010698;
-	bh=W0M6cEUIUYR5ndRhqsNoUJkeqopeKsbb/IJH4yVWgM4=;
+	s=korg; t=1783009764;
+	bh=TzYXk9VKbuDGcczslKxcR19OZXUBR7URp03+dYOT5fo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=dbLujieT+Xp30P53csTGpNorHuLNi2T0v7Q/WDQ8tPq5kF8Smxy+M5x2g8BpdjpAn
-	 kvmiaw3sPXriH50nFZWHp/2GoqgcD0Tv0e3u9r9/XvmBNp0iE20TkmUgYx5SXKtZHQ
-	 7nM1PZC6GMKlmURa6m9j6oGFdzdoxFK2XtfOhmik=
+	b=L6oqrmek81iL1mZbtDcYvDbftpgqATI13x8vcjV4rL8jkYZwDDCA1r4R6mj2csVHX
+	 EFaD7DoLfedp7XLkB9dKDNH+nXxrY89dFtjobwf5D7WVJQdEuvE4RN28yveAGcuykN
+	 j9FOv3kWCC7YYQ+oflTw5HnVQYp5/az0zawX0zbM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+42a37bf8045847d8f9d2@syzkaller.appspotmail.com,
-	Tristan Madani <tristan@talencesecurity.com>,
-	Andreas Gruenbacher <agruenba@redhat.com>
-Subject: [PATCH 6.12 164/204] gfs2: fix use-after-free in gfs2_qd_dealloc
+	Jeff Layton <jlayton@kernel.org>,
+	Chuck Lever <chuck.lever@oracle.com>
+Subject: [PATCH 5.15 78/95] nfsd: fix posix_acl leak on SETACL decode failure
 Date: Thu,  2 Jul 2026 18:20:21 +0200
-Message-ID: <20260702155122.094731853@linuxfoundation.org>
+Message-ID: <20260702155110.851728551@linuxfoundation.org>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260702155118.667618796@linuxfoundation.org>
-References: <20260702155118.667618796@linuxfoundation.org>
+In-Reply-To: <20260702155109.196223802@linuxfoundation.org>
+References: <20260702155109.196223802@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,8 +66,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
@@ -77,79 +75,162 @@ X-Spamd-Result: default: False [-0.16 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-270755-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-271111-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:syzbot+42a37bf8045847d8f9d2@syzkaller.appspotmail.com,m:tristan@talencesecurity.com,m:agruenba@redhat.com,m:syzbot@syzkaller.appspotmail.com,s:lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
 	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:jlayton@kernel.org,m:chuck.lever@oracle.com,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,42a37bf8045847d8f9d2];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[appspotmail.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,syzkaller.appspot.com:url,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,talencesecurity.com:email]
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,oracle.com:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: A1E196FABCB
+X-Rspamd-Queue-Id: 237096FA429
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tristan Madani <tristan@talencesecurity.com>
+From: Jeff Layton <jlayton@kernel.org>
 
-commit f9c9ec2c319f843b70ecdf939d48b52d189bc081 upstream.
+commit 0853ac544c590880d797b04daa33fcb72b6be0e1 upstream.
 
-gfs2_qd_dealloc(), called as an RCU callback from gfs2_qd_dispose(),
-accesses the superblock object sdp through qd->qd_sbd after freeing qd.
-It does so to decrement sd_quota_count and wake up sd_kill_wait.
+nfsaclsvc_decode_setaclargs() and nfs3svc_decode_setaclargs() each
+call nfs_stream_decode_acl() twice, first for NFS_ACL and then for
+NFS_DFACL.  Each successful call transfers ownership of a freshly
+allocated posix_acl into argp->acl_access or argp->acl_default.  If
+the first call succeeds but the second fails, the decoder returns
+false and argp->acl_access is left dangling.
 
-However, by the time the RCU callback runs, gfs2_put_super() may have
-already freed sdp via free_sbd().  This can happen when
-gfs2_quota_cleanup() is called during unmount: it disposes of quota
-objects via call_rcu() and then waits on sd_kill_wait with a 60-second
-timeout.  If the timeout expires, or if gfs2_gl_hash_clear() triggers
-additional qd_put() calls that schedule more RCU callbacks after the
-wait completes, gfs2_put_super() will proceed to free the superblock
-while RCU callbacks referencing it are still pending.
+ACLPROC2_SETACL.pc_release was wired to nfssvc_release_attrstat and
+ACLPROC3_SETACL.pc_release was wired to nfs3svc_release_fhandle.
+Both only call fh_put() and have no knowledge of the ACL fields on
+argp.  The posix_acl_release() pairs sat at the out: labels inside
+nfsacld_proc_setacl() and nfsd3_proc_setacl(), but svc_process()
+skips pc_func when pc_decode returns false, so that cleanup is
+unreachable on decode failure:
 
-Add an rcu_barrier() before free_sbd() in gfs2_put_super() to ensure
-all pending RCU callbacks (including gfs2_qd_dealloc) have completed
-before the superblock is freed.
+    svc_process_common()
+      pc_decode()                  /* decode_setaclargs: false */
+      /* pc_func skipped */
+      pc_release()                 /* fh_put only -- ACLs leaked */
 
-Fixes: a475c5dd16e5 ("gfs2: Free quota data objects synchronously")
-Reported-by: syzbot+42a37bf8045847d8f9d2@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=42a37bf8045847d8f9d2
-Tested-by: syzbot+42a37bf8045847d8f9d2@syzkaller.appspotmail.com
+The orphaned posix_acl is leaked for the lifetime of the server.
+
+Fix by adding nfsaclsvc_release_setacl() and nfs3svc_release_setacl(),
+which release both argp->acl_access and argp->acl_default in addition
+to fh_put(), and wiring them as pc_release for their respective SETACL
+procedures.  pc_release runs on every path svc_process() takes after
+decode, including decode failure, so the posix_acl_release() pairs are
+removed from the proc functions' out: labels to keep ownership in one
+place.  This matches the existing release_getacl() pattern used by
+the sibling GETACL procedures.
+
+Fixes: a257cdd0e217 ("[PATCH] NFSD: Add server support for NFSv3 ACLs.")
 Cc: stable@vger.kernel.org
-Signed-off-by: Tristan Madani <tristan@talencesecurity.com>
-Signed-off-by: Andreas Gruenbacher <agruenba@redhat.com>
+Assisted-by: kres:claude-opus-4-7
+Signed-off-by: Jeff Layton <jlayton@kernel.org>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/gfs2/super.c |    1 +
- 1 file changed, 1 insertion(+)
+ fs/nfsd/nfs2acl.c |   17 ++++++++++++-----
+ fs/nfsd/nfs3acl.c |   17 ++++++++++++-----
+ 2 files changed, 24 insertions(+), 10 deletions(-)
 
---- a/fs/gfs2/super.c
-+++ b/fs/gfs2/super.c
-@@ -652,6 +652,7 @@ restart:
- 	gfs2_delete_debugfs_file(sdp);
+--- a/fs/nfsd/nfs2acl.c
++++ b/fs/nfsd/nfs2acl.c
+@@ -131,10 +131,7 @@ static __be32 nfsacld_proc_setacl(struct
+ 	resp->status = fh_getattr(fh, &resp->stat);
  
- 	gfs2_sys_fs_del(sdp);
-+	rcu_barrier();
- 	free_sbd(sdp);
+ out:
+-	/* argp->acl_{access,default} may have been allocated in
+-	   nfssvc_decode_setaclargs. */
+-	posix_acl_release(argp->acl_access);
+-	posix_acl_release(argp->acl_default);
++	/* argp->acl_{access,default} are released in nfsaclsvc_release_setacl. */
+ 	return rpc_success;
+ 
+ out_drop_lock:
+@@ -312,6 +309,16 @@ static void nfsaclsvc_release_access(str
+ 
+ struct nfsd3_voidargs { int dummy; };
+ 
++static void nfsaclsvc_release_setacl(struct svc_rqst *rqstp)
++{
++	struct nfsd3_setaclargs *argp = rqstp->rq_argp;
++	struct nfsd_attrstat *resp = rqstp->rq_resp;
++
++	fh_put(&resp->fh);
++	posix_acl_release(argp->acl_access);
++	posix_acl_release(argp->acl_default);
++}
++
+ #define ST 1		/* status*/
+ #define AT 21		/* attributes */
+ #define pAT (1+AT)	/* post attributes - conditional */
+@@ -345,7 +352,7 @@ static const struct svc_procedure nfsd_a
+ 		.pc_func = nfsacld_proc_setacl,
+ 		.pc_decode = nfsaclsvc_decode_setaclargs,
+ 		.pc_encode = nfssvc_encode_attrstatres,
+-		.pc_release = nfssvc_release_attrstat,
++		.pc_release = nfsaclsvc_release_setacl,
+ 		.pc_argsize = sizeof(struct nfsd3_setaclargs),
+ 		.pc_argzero = sizeof(struct nfsd3_setaclargs),
+ 		.pc_ressize = sizeof(struct nfsd_attrstat),
+--- a/fs/nfsd/nfs3acl.c
++++ b/fs/nfsd/nfs3acl.c
+@@ -118,10 +118,7 @@ out_drop_lock:
+ out_errno:
+ 	resp->status = nfserrno(error);
+ out:
+-	/* argp->acl_{access,default} may have been allocated in
+-	   nfs3svc_decode_setaclargs. */
+-	posix_acl_release(argp->acl_access);
+-	posix_acl_release(argp->acl_default);
++	/* argp->acl_{access,default} are released in nfs3svc_release_setacl. */
+ 	return rpc_success;
  }
  
+@@ -225,6 +222,16 @@ static void nfs3svc_release_getacl(struc
+ 
+ struct nfsd3_voidargs { int dummy; };
+ 
++static void nfs3svc_release_setacl(struct svc_rqst *rqstp)
++{
++	struct nfsd3_setaclargs *argp = rqstp->rq_argp;
++	struct nfsd3_attrstat *resp = rqstp->rq_resp;
++
++	fh_put(&resp->fh);
++	posix_acl_release(argp->acl_access);
++	posix_acl_release(argp->acl_default);
++}
++
+ #define ST 1		/* status*/
+ #define AT 21		/* attributes */
+ #define pAT (1+AT)	/* post attributes - conditional */
+@@ -258,7 +265,7 @@ static const struct svc_procedure nfsd_a
+ 		.pc_func = nfsd3_proc_setacl,
+ 		.pc_decode = nfs3svc_decode_setaclargs,
+ 		.pc_encode = nfs3svc_encode_setaclres,
+-		.pc_release = nfs3svc_release_fhandle,
++		.pc_release = nfs3svc_release_setacl,
+ 		.pc_argsize = sizeof(struct nfsd3_setaclargs),
+ 		.pc_argzero = sizeof(struct nfsd3_setaclargs),
+ 		.pc_ressize = sizeof(struct nfsd3_attrstat),
 
 
 
