@@ -1,688 +1,194 @@
-Return-Path: <stable+bounces-270789-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-271126-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id d+BcDIWTRmqRYwsAu9opvQ
-	(envelope-from <stable+bounces-270789-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:36:21 +0200
+	id Rrh9OfejRmpCawsAu9opvQ
+	(envelope-from <stable+bounces-271126-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:46:31 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id EFF4D6FA486
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:36:20 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id DFF526FB9C9
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:46:30 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=hmzmcUgC;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-270789-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-270789-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=OmD9D+Bn;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-271126-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-271126-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 1C1133026FDF
-	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:34:19 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 2823130B86AE
+	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:47:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A4BA346FA1;
-	Thu,  2 Jul 2026 16:30:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 54D7B318EC5;
+	Thu,  2 Jul 2026 16:45:39 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2F4B35DD1C;
-	Thu,  2 Jul 2026 16:30:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 094D3339B3D;
+	Thu,  2 Jul 2026 16:45:37 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783009857; cv=none; b=VXpWgNocB3/7jG3nbc6/z5SuH0MM1N9/5jjuGg/ug/zs0NTOYq0HbsZQR6eUVD0rgdvngXJKZ6cmZEf4QPylDeUYHMAWC+zKpvDaC01IZf+0oxV4QYq+HDLfdgAwQcdD8B0GyuqiAmw3oH38NweqE2oLsNh+rihe3w/DhF4FXJ8=
+	t=1783010739; cv=none; b=rWaD77WDAXNrcXDUPXgQkc9LBQQdrFYYHm0FvOqRiCN3ipdfyDc4JaXkS6YGmSqHxjCEIGE95PC84bjMsnTjlcPJw0VMSg7TL5DFVAfDjmFZHApgkJno6xLFswzUhwT6/WCp9Q69ikMDwwHkg8EbQUq/bO612lC4lZtJlUfHNpQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783009857; c=relaxed/simple;
-	bh=EFjh4beU9w9bgoe/RBehg2AZmYZWi28jxvMyGJ+ojpM=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=o5UoUI9+qQ61s4bnDAmQwS9WBx8zeHduJTyXygwi7CbAMxwoxv2v7NTNEknjLsriU/jLbja40EhOyPdxqq+nhIcFs+REu4pOn6mVtRh/BIn+QQmOj/D+7wGqjjSiYEdH9fHUQ454BhSFH44lunF0HNyh+qzTbOqp2gxJE36LgA0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hmzmcUgC; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 029171F000E9;
-	Thu,  2 Jul 2026 16:30:54 +0000 (UTC)
+	s=arc-20240116; t=1783010739; c=relaxed/simple;
+	bh=L5RDCOn25KfiwGQJJQc5ARAxpSnup/MpshTyNRfWmBY=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=dggzHCf4Yxuf2tjSPpCEcIG/Yi1RIMQbOgrSxHT/8MZeh/Kk9GOCVkiD7H5TGKlBOFgw2q/uJHHACPuuEH3SY/PcfJVJi9hYPgtT0P0rQ19IIqRtPa1yQVHCxjCkGTJV4KGt26pQ9YImwBjcM0iuVbrWWQJJtgh7codGmIm0izg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OmD9D+Bn; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B3891F000E9;
+	Thu,  2 Jul 2026 16:45:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1783009854;
-	bh=fDtXBw9/Yygou/JxcrTSd28CTfil5ZJeJWqsIEWmXxo=;
-	h=From:To:Cc:Subject:Date;
-	b=hmzmcUgCPmeg8nKm9IL001flGE7cIETS2oMj/RyJNQzKdi0tkfZrfw3gnhIGZBNR1
-	 YBz6NEReXWfiQpV+1FX+FzJy+cbvU5HUL7mA1H2TK3Lm12kelASx7NfXvGIdyPgHb6
-	 l5bOEW5ZVpZHibw7f9OMX9PuAFjjOL1YKrlhWy8o=
+	s=korg; t=1783010737;
+	bh=tNsS8eIwmhiM9SPAwwS4/vi5Ob14xGRs3tn8vBhpvcA=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=OmD9D+BnQH2LN217E/ZJa2jWnMPn84mceb5ECV+utHwhpO0PfSUgAjZnrIsOKIaGr
+	 5nOZFQ0lti73djQCZC9LigWF2Db+bUmaZLxs4tSuIdTlaJyW2hGbHeAuMZwOupCh2Q
+	 Wt5n3RzJrFqBqWa+la7W6pYqtB0AVszOUJ/AOKN8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	torvalds@linux-foundation.org,
-	akpm@linux-foundation.org,
-	linux@roeck-us.net,
-	shuah@kernel.org,
-	patches@kernelci.org,
-	lkft-triage@lists.linaro.org,
-	pavel@nabladev.com,
-	jonathanh@nvidia.com,
-	f.fainelli@gmail.com,
-	sudipm.mukherjee@gmail.com,
-	rwarsow@gmx.de,
-	conor@kernel.org,
-	hargar@microsoft.com,
-	broonie@kernel.org,
-	achill@achill.org,
-	sr@sladewatkins.com
-Subject: [PATCH 6.1 000/129] 6.1.177-rc1 review
-Date: Thu,  2 Jul 2026 18:18:39 +0200
-Message-ID: <20260702155112.163984240@linuxfoundation.org>
+	Xiang Mei <xmei5@asu.edu>,
+	Weiming Shi <bestswngs@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.6 019/175] net: qualcomm: rmnet: fix endpoint use-after-free in rmnet_dellink()
+Date: Thu,  2 Jul 2026 18:18:40 +0200
+Message-ID: <20260702155116.187175409@linuxfoundation.org>
 X-Mailer: git-send-email 2.55.0
+In-Reply-To: <20260702155115.766838875@linuxfoundation.org>
+References: <20260702155115.766838875@linuxfoundation.org>
+User-Agent: quilt/0.69
+X-stable: review
+X-Patchwork-Hint: ignore
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: quilt/0.69
-X-stable: review
-X-Patchwork-Hint: ignore
-X-KernelTest-Patch: http://kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.1.177-rc1.gz
-X-KernelTest-Tree: git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git
-X-KernelTest-Branch: linux-6.1.y
-X-KernelTest-Patches: git://git.kernel.org/pub/scm/linux/kernel/git/stable/stable-queue.git
-X-KernelTest-Version: 6.1.177-rc1
-X-KernelTest-Deadline: 2026-07-04T15:51+00:00
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-270789-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCPT_COUNT_TWELVE(0.00)[20];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:linux-kernel@vger.kernel.org,m:torvalds@linux-foundation.org,m:akpm@linux-foundation.org,m:linux@roeck-us.net,m:shuah@kernel.org,m:patches@kernelci.org,m:lkft-triage@lists.linaro.org,m:pavel@nabladev.com,m:jonathanh@nvidia.com,m:f.fainelli@gmail.com,m:sudipm.mukherjee@gmail.com,m:rwarsow@gmx.de,m:conor@kernel.org,m:hargar@microsoft.com,m:broonie@kernel.org,m:achill@achill.org,m:sr@sladewatkins.com,m:ffainelli@gmail.com,m:sudipmmukherjee@gmail.com,s:lists@lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,vger.kernel.org,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,nabladev.com,nvidia.com,gmail.com,gmx.de,microsoft.com,achill.org,sladewatkins.com];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
+	TAGGED_FROM(0.00)[bounces-271126-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:xmei5@asu.edu,m:bestswngs@gmail.com,m:kuba@kernel.org,s:lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,asu.edu,gmail.com,kernel.org];
+	FORWARDED(0.00)[lists@lfdr.de];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,asu.edu:email,msgid.link:url]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: EFF4D6FA486
-
-This is the start of the stable review cycle for the 6.1.177 release.
-There are 129 patches in this series, all will be posted as a response
-to this one.  If anyone has any issues with these being applied, please
-let me know.
-
-Responses should be made by Sat, 04 Jul 2026 15:50:58 +0000.
-Anything received after that time might be too late.
-
-The whole patch series can be found in one patch at:
-	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.1.177-rc1.gz
-or in the git tree and branch at:
-	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.1.y
-and the diffstat can be found below.
-
-thanks,
-
-greg k-h
-
--------------
-Pseudo-Shortlog of commits:
-
-Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-    Linux 6.1.177-rc1
-
-Wongi Lee <qw3rtyp0@gmail.com>
-    ipv6: account for fraggap on the paged allocation path
-
-Giovanni Cabiddu <giovanni.cabiddu@intel.com>
-    crypto: qat - remove unused character device and IOCTLs
-
-Herbert Xu <herbert@gondor.apana.org.au>
-    crypto: qat - Return pointer directly in adf_ctl_alloc_resources
-
-Thorsten Blum <thorsten.blum@linux.dev>
-    crypto: qat - Replace kzalloc() + copy_from_user() with memdup_user()
-
-Bagas Sanjaya <bagasdotme@gmail.com>
-    Documentation: ioctl-number: Extend "Include File" column width
-
-Stepan Ionichev <sozdayvek@gmail.com>
-    serial: 8250_dw: unregister 8250 port if clk_notifier_register() fails
-
-Joanne Koong <joannelkoong@gmail.com>
-    fuse: re-lock request before replacing page cache folio
-
-Santosh Kalluri <santosh.kalluri129@gmail.com>
-    net: phonet: free phonet_device after RCU grace period
-
-Kuniyuki Iwashima <kuniyu@amazon.com>
-    phonet: Pass net and ifindex to phonet_address_notify().
-
-Kuniyuki Iwashima <kuniyu@amazon.com>
-    phonet: Pass ifindex to fill_addr().
-
-Davidlohr Bueso <dave@stgolabs.net>
-    locking/rtmutex: Skip remove_waiter() when waiter is not enqueued
-
-Dexuan Cui <decui@microsoft.com>
-    Drivers: hv: vmbus: Improve the logic of reserving fb_mmio on Gen2 VMs
-
-Ji'an Zhou <eilaimemedsnaimel@gmail.com>
-    futex/requeue: Prevent NULL pointer dereference in remove_waiter() on self-deadlock
-
-Mukesh Ojha <mukesh.ojha@oss.qualcomm.com>
-    misc: fastrpc: Fix NULL pointer dereference in rpmsg callback
-
-Abel Vesa <abel.vesa@linaro.org>
-    misc: fastrpc: Add dma_mask to fastrpc_channel_ctx
-
-Thorsten Blum <thorsten.blum@linux.dev>
-    hv: utils: handle and propagate errors in kvp_register
-
-Paolo Abeni <pabeni@redhat.com>
-    mptcp: fix missing wakeups in edge scenarios
-
-Tao Cui <cuitao@kylinos.cn>
-    mptcp: pm: fix extra_subflows underflow on userspace PM subflow creation
-
-Deepak Kumar Singh <quic_deesin@quicinc.com>
-    rpmsg: char: Add lock to avoid race when rpmsg device is released
-
-Hem Parekh <hemparekh1596@gmail.com>
-    ksmbd: fix out-of-bounds read in smb_check_perm_dacl()
-
-Michael Bommarito <michael.bommarito@gmail.com>
-    NFSv4/pNFS: reject zero-length r_addr in nfs4_decode_mp_ds_addr
-
-Dominik Woźniak <stalion@gmail.com>
-    nfsd: check get_user() return when reading princhashlen
-
-Jeff Layton <jlayton@kernel.org>
-    nfsd: fix posix_acl leak on SETACL decode failure
-
-Guannan Wang <wgnbuaa@gmail.com>
-    NFSD: Fix SECINFO_NO_NAME decode error cleanup
-
-Steffen Persvold <spersvold@gmail.com>
-    fbdev: modedb: Fix misaligned fields in the 1920x1080-60 mode
-
-Ian Bridges <icb@fastmail.org>
-    fbdev: Fix fb_new_modelist to prevent null-ptr-deref in fb_videomode_to_var
-
-Wentao Liang <vulab@iscas.ac.cn>
-    power: reset: linkstation-poweroff: fix use-after-free in the linkstation_poweroff_init()
-
-Ashutosh Desai <ashutoshdesai993@gmail.com>
-    KVM: SVM: Fix page overflow in sev_dbg_crypt() for ENCRYPT path
-
-Jonas Jelonek <jelonek.jonas@gmail.com>
-    MIPS: smp: report dying CPU to RCU in stop_this_cpu()
-
-Yizhou Zhao <zhaoyz24@mails.tsinghua.edu.cn>
-    9p: avoid putting oldfid in p9_client_walk() error path
-
-Zhang Cen <rollkingzzc@gmail.com>
-    ocfs2: reject oversized group bitmap descriptors
-
-Wentao Liang <vulab@iscas.ac.cn>
-    fpga: region: fix use-after-free in child_regions_with_firmware()
-
-Qingshuang Fu <fuqingshuang@kylinos.cn>
-    irqchip/imgpdc: Fix resource leak, add missing chained handler cleanup on remove
-
-Wentao Liang <vulab@iscas.ac.cn>
-    pNFS: Fix use-after-free in pnfs_update_layout()
-
-Huacai Chen <chenhuacai@kernel.org>
-    LoongArch: Report dying CPU to RCU in stop_this_cpu()
-
-Doruk Tan Ozturk <doruk@0sec.ai>
-    tipc: fix slab-use-after-free Read in tipc_aead_decrypt_done
-
-Fan Wu <fanwu01@zju.edu.cn>
-    hdlc_ppp: sync per-proto timers before freeing hdlc state
-
-Michael Bommarito <michael.bommarito@gmail.com>
-    exfat: fix potential use-after-free in exfat_find_dir_entry()
-
-Maciej W. Rozycki <macro@orcam.me.uk>
-    MIPS: DEC: Prevent initial console buffer from landing in XKPHYS
-
-Dawei Feng <dawei.feng@seu.edu.cn>
-    bpf: use kvfree() for replaced sysctl write buffer
-
-Zhang Cen <rollkingzzc@gmail.com>
-    f2fs: validate ACL entry sizes in f2fs_acl_from_disk()
-
-Sunmin Jeong <s_min.jeong@samsung.com>
-    f2fs: fix to round down start offset of fallocate for pin file
-
-Wenjie Qi <qwjhust@gmail.com>
-    f2fs: validate compress cache inode only when enabled
-
-Bitterblue Smith <rtl8821cerfe2@gmail.com>
-    wifi: rtlwifi: rtl8821ae: Fix C2H bit location in RX descriptor
-
-Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
-    wifi: ath11k: fix warning when unbinding
-
-Zenm Chen <zenmchen@gmail.com>
-    wifi: mt76: mt76x2u: Add support for ELECOM WDC-867SU3S
-
-Shaomin Chen <eeesssooo020@gmail.com>
-    keys: Pin request_key_auth payload in instantiate paths
-
-Jarkko Sakkinen <jarkko@kernel.org>
-    KEYS: fix overflow in keyctl_pkey_params_get_2()
-
-Koichiro Den <den@valinux.co.jp>
-    NTB: epf: Avoid pci_iounmap() with offset when PEER_SPAD and CONFIG share BAR
-
-Ruslan Valiyev <linuxoid@gmail.com>
-    apparmor: fix use-after-free in rawdata dedup loop
-
-Bryam Vargas <hexlabsecurity@proton.me>
-    apparmor: mediate the implicit connect of TCP fast open sendmsg
-
-Yiming Qian <yimingqian591@gmail.com>
-    net: skmsg: preserve sg.copy across SG transforms
-
-Doruk Tan Ozturk <doruk@0sec.ai>
-    mac802154: llsec: add skb_cow_data() before in-place crypto
-
-Yuto Ohnuki <ytohnuki@amazon.com>
-    ext4: add bounds check for inline data length in ext4_read_inline_page
-
-Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
-    ntfs3: reject direct userspace writes to reserved $LX* xattrs
-
-Sven Eckelmann <sven@narfation.org>
-    batman-adv: tvlv: avoid race of cifsnotfound handler state
-
-Sven Eckelmann <sven@narfation.org>
-    batman-adv: tvlv: enforce 2-byte alignment
-
-Sven Eckelmann <sven@narfation.org>
-    batman-adv: dat: prevent false sharing between VLANs
-
-Sven Eckelmann <sven@narfation.org>
-    batman-adv: tt: track roam count per VID
-
-Sven Eckelmann <sven@narfation.org>
-    batman-adv: tt: don't merge change entries with different VIDs
-
-Sven Eckelmann <sven@narfation.org>
-    batman-adv: tp_meter: handle overlapping packets
-
-Sven Eckelmann <sven@narfation.org>
-    batman-adv: tp_meter: prevent parallel modifications of last_recv
-
-Sven Eckelmann <sven@narfation.org>
-    batman-adv: tp_meter: annotate last_recv_time access with READ/WRITE_ONCE
-
-Sven Eckelmann <sven@narfation.org>
-    batman-adv: tp_meter: restrict number of unacked list entries
-
-Sven Eckelmann <sven@narfation.org>
-    batman-adv: v: prevent OGM aggregation on disabled hardif
-
-Sven Eckelmann <sven@narfation.org>
-    batman-adv: frag: avoid underflow of TTL
-
-Sven Eckelmann <sven@narfation.org>
-    batman-adv: frag: ensure fragment is writable before modifying TTL
-
-Sven Eckelmann <sven@narfation.org>
-    batman-adv: fix (m|b)cast csum after decrementing TTL
-
-Sven Eckelmann <sven@narfation.org>
-    batman-adv: ensure bcast is writable before modifying TTL
-
-Sven Eckelmann <sven@narfation.org>
-    batman-adv: tp_meter: initialize last_recv_time during init
-
-Sven Eckelmann <sven@narfation.org>
-    batman-adv: prevent ELP transmission interval underflow
-
-Sven Eckelmann <sven@narfation.org>
-    batman-adv: bla: annotate lasttime access with READ/WRITE_ONCE
-
-Sven Eckelmann <sven@narfation.org>
-    batman-adv: tp_meter: add only finished tp_vars to lists
-
-Sven Eckelmann <sven@narfation.org>
-    batman-adv: tp_meter: handle seqno wrap-around for fast recovery detection
-
-Sven Eckelmann <sven@narfation.org>
-    batman-adv: tp_meter: fix fast recovery precondition
-
-Sven Eckelmann <sven@narfation.org>
-    batman-adv: tp_meter: avoid divide-by-zero for dec_cwnd
-
-Sven Eckelmann <sven@narfation.org>
-    batman-adv: tp_meter: avoid window underflow
-
-Sven Eckelmann <sven@narfation.org>
-    batman-adv: tp_meter: initialize dec_cwnd explicitly
-
-Sven Eckelmann <sven@narfation.org>
-    batman-adv: tp_meter: initialize dup_acks explicitly
-
-Sven Eckelmann <sven@narfation.org>
-    batman-adv: tp_meter: keep unacked list in ascending ordered
-
-Yu Zhao <yuzhao@google.com>
-    mm/mglru: skip special VMAs in lru_gen_look_around()
-
-Petr Machata <petrm@nvidia.com>
-    Revert "ptp: add testptp mask test"
-
-Sean Christopherson <seanjc@google.com>
-    KVM: x86/mmu: Ensure hugepage is in by slot before checking max mapping level
-
-Paolo Bonzini <pbonzini@redhat.com>
-    KVM: x86: Fix shadow paging use-after-free due to unexpected role
-
-Ian Rogers <irogers@google.com>
-    perf block-range: Move debug code behind ifndef NDEBUG
-
-Ian Rogers <irogers@google.com>
-    perf bench: Avoid NDEBUG warning
-
-Miklos Szeredi <mszeredi@redhat.com>
-    virtiofs: fix UAF on submount umount
-
-Ruslan Valiyev <linuxoid@gmail.com>
-    media: vidtv: fix NULL pointer dereference in vidtv_mux_push_si
-
-Gil Portnoy <dddhkts1@gmail.com>
-    ksmbd: reject non-VALID session in compound request branch
-
-Yi Yang <yiyang13@huawei.com>
-    vc_screen: fix null-ptr-deref in vcs_notifier() during concurrent vcs_write
-
-Florian Westphal <fw@strlen.de>
-    netfilter: nf_tables: always walk all pending catchall elements
-
-Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
-    dlm: prevent NPD when writing a positive value to event_done
-
-André Draszik <andre.draszik@linaro.org>
-    regulator: core: fix locking in regulator_resolve_supply() error path
-
-Bjoern Doebel <doebel@amazon.de>
-    ring-buffer: Remove ring_buffer_read_prepare_sync()
-
-Jiexun Wang <wangjiexun2025@gmail.com>
-    af_unix: Reject SIOCATMARK on non-stream sockets
-
-Mingyu Wang <25181214217@stu.xidian.edu.cn>
-    agp/amd64: Fix broken error propagation in agp_amd64_probe()
-
-Weiming Shi <bestswngs@gmail.com>
-    net: qualcomm: rmnet: fix endpoint use-after-free in rmnet_dellink()
-
-Weiming Shi <bestswngs@gmail.com>
-    i2c: stub: Reject I2C block transfers with invalid length
-
-Lord Ulf Henrik Holmberg <henrik.holmberg@defensify.se>
-    RDMA/bnxt_re: zero shared page before exposing to userspace
-
-Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
-    ARM: fix branch predictor hardening
-
-Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
-    ARM: fix hash_name() fault
-
-Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
-    ARM: allow __do_kernel_fault() to report execution of memory faults
-
-Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
-    ARM: group is_permission_fault() with is_translation_fault()
-
-Waiman Long <longman@redhat.com>
-    debugobjects: Dont call fill_pool() in early boot hardirq context
-
-Helen Koike <koike@igalia.com>
-    debugobjects: Do not fill_pool() if pi_blocked_on
-
-Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-    debugobjects: Use LD_WAIT_CONFIG instead of LD_WAIT_SLEEP
-
-Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-    debugobjects: Allow to refill the pool before SYSTEM_SCHEDULING
-
-Peter Zijlstra <peterz@infradead.org>
-    debugobjects,locking: Annotate debug_object_fill_pool() wait type violation
-
-Eric Dumazet <edumazet@google.com>
-    net: annotate data-races around sk->sk_{data_ready,write_space}
-
-Sean Christopherson <seanjc@google.com>
-    KVM: nVMX: Fold requested virtual interrupt check into has_nested_events()
-
-Sean Christopherson <seanjc@google.com>
-    KVM: nVMX: Check for pending posted interrupts when looking for nested events
-
-Sean Christopherson <seanjc@google.com>
-    KVM: nVMX: Add a helper to get highest pending from Posted Interrupt vector
-
-Sven Eckelmann <sven@narfation.org>
-    batman-adv: tt: prevent TVLV entry number overflow
-
-Maíra Canal <mcanal@igalia.com>
-    drm/v3d: Skip CSD when it has zeroed workgroups
-
-Maíra Canal <mcanal@igalia.com>
-    drm/v3d: Store the active job inside the queue's state
-
-Ihor Solodrai <ihor.solodrai@pm.me>
-    selftests/bpf: Check for timeout in perf_link test
-
-Jiri Olsa <jolsa@kernel.org>
-    selftests/bpf: Move get_time_ns to testing_helpers.h
-
-Pablo Neira Ayuso <pablo@netfilter.org>
-    netfilter: nf_tables: unconditionally bump set->nelems before insertion
-
-Pablo Neira Ayuso <pablo@netfilter.org>
-    netfilter: nf_tables: fix set size with rbtree backend
-
-Florian Westphal <fw@strlen.de>
-    netfilter: nf_tables: always increment set element count
-
-Eric Dumazet <edumazet@google.com>
-    ip6_vti: set netns_immutable on the fallback device.
-
-Harry Wentland <harry.wentland@amd.com>
-    drm/amd/display: Bound VBIOS record-chain walk loops
-
-Sean Christopherson <seanjc@google.com>
-    KVM: VMX: Make vmread_error_trampoline() uncallable from C code
-
-Hangbin Liu <liuhangbin@gmail.com>
-    selftests/bpf: move SYS() macro into the test_progs.h
-
-Pedro Tammela <pctammela@mojatatu.com>
-    net/sched: act_pedit: free pedit keys on bail from offset check
-
-Rajat Gupta <rajat.gupta@oss.qualcomm.com>
-    net/sched: fix pedit partial COW leading to page cache corruption
-
-Pedro Tammela <pctammela@mojatatu.com>
-    net/sched: act_pedit: rate limit datapath messages
-
-Pedro Tammela <pctammela@mojatatu.com>
-    net/sched: act_pedit: check static offsets a priori
-
-Jann Horn <jannh@google.com>
-    fuse: limit FUSE_NOTIFY_RETRIEVE to uptodate folios
-
-
--------------
-
-Diffstat:
-
- Documentation/userspace-api/ioctl/ioctl-number.rst | 463 ++++++++++-----------
- Makefile                                           |   4 +-
- arch/arm/mm/alignment.c                            |   4 +
- arch/arm/mm/fault.c                                |  94 ++++-
- arch/loongarch/kernel/smp.c                        |   1 +
- arch/mips/dec/prom/console.c                       |   7 +-
- arch/mips/kernel/smp.c                             |   2 +
- arch/x86/include/asm/kvm-x86-ops.h                 |   1 -
- arch/x86/include/asm/kvm_host.h                    |   1 -
- arch/x86/kvm/mmu/mmu.c                             |  28 +-
- arch/x86/kvm/svm/sev.c                             |   1 +
- arch/x86/kvm/vmx/nested.c                          |  45 +-
- arch/x86/kvm/vmx/posted_intr.h                     |  10 +
- arch/x86/kvm/vmx/vmenter.S                         |   2 +
- arch/x86/kvm/vmx/vmx.c                             |  21 -
- arch/x86/kvm/vmx/vmx_ops.h                         |  18 +-
- arch/x86/kvm/x86.c                                 |  10 +-
- drivers/char/agp/amd64-agp.c                       |   2 +-
- drivers/crypto/qat/qat_common/adf_cfg_common.h     |  32 --
- drivers/crypto/qat/qat_common/adf_cfg_user.h       |  38 --
- drivers/crypto/qat/qat_common/adf_common_drv.h     |   3 -
- drivers/crypto/qat/qat_common/adf_ctl_drv.c        | 425 +------------------
- drivers/crypto/qat/qat_common/adf_dev_mgr.c        |  70 ----
- drivers/fpga/of-fpga-region.c                      |   3 +-
- drivers/gpu/drm/amd/display/dc/bios/bios_parser.c  |  15 +-
- drivers/gpu/drm/amd/display/dc/bios/bios_parser2.c |  27 +-
- .../drm/amd/display/dc/bios/bios_parser_helper.h   |   5 +
- drivers/gpu/drm/v3d/v3d_drv.h                      |   8 +-
- drivers/gpu/drm/v3d/v3d_gem.c                      |   5 +-
- drivers/gpu/drm/v3d/v3d_irq.c                      |  24 +-
- drivers/gpu/drm/v3d/v3d_sched.c                    |  36 +-
- drivers/hv/hv_kvp.c                                |  25 +-
- drivers/hv/vmbus_drv.c                             |  29 +-
- drivers/i2c/i2c-stub.c                             |   5 +
- drivers/infiniband/hw/bnxt_re/ib_verbs.c           |   2 +-
- drivers/irqchip/irq-imgpdc.c                       |   6 +
- drivers/media/test-drivers/vidtv/vidtv_mux.c       |   8 +-
- drivers/misc/fastrpc.c                             |   7 +-
- drivers/net/ethernet/qualcomm/rmnet/rmnet_config.c |   8 +-
- drivers/net/ethernet/qualcomm/rmnet/rmnet_config.h |   1 +
- drivers/net/wan/hdlc_ppp.c                         |  15 +-
- drivers/net/wireless/ath/ath11k/dp.c               |   1 +
- drivers/net/wireless/mediatek/mt76/mt76x2/usb.c    |   1 +
- .../net/wireless/realtek/rtlwifi/rtl8821ae/trx.h   |   2 +-
- drivers/ntb/hw/epf/ntb_hw_epf.c                    |   3 +-
- drivers/power/reset/linkstation-poweroff.c         |   2 +-
- drivers/regulator/core.c                           |  10 +-
- drivers/rpmsg/rpmsg_char.c                         |   8 +
- drivers/tty/serial/8250/8250_dw.c                  |   4 +-
- drivers/tty/vt/vc_screen.c                         |   2 +-
- drivers/video/fbdev/core/fbmem.c                   |  12 +
- drivers/video/fbdev/core/modedb.c                  |   2 +-
- fs/dlm/lockspace.c                                 |   2 +-
- fs/exfat/dir.c                                     |   4 +-
- fs/ext4/inline.c                                   |   8 +
- fs/f2fs/acl.c                                      |  18 +-
- fs/f2fs/file.c                                     |   9 +-
- fs/f2fs/inode.c                                    |   9 +-
- fs/fuse/dev.c                                      |  23 +-
- fs/fuse/file.c                                     |   8 +-
- fs/nfs/pnfs.c                                      |   2 +-
- fs/nfs/pnfs_nfs.c                                  |   4 +-
- fs/nfsd/nfs2acl.c                                  |  17 +-
- fs/nfsd/nfs3acl.c                                  |  17 +-
- fs/nfsd/nfs4recover.c                              |   3 +-
- fs/nfsd/nfs4xdr.c                                  |   3 +-
- fs/ntfs3/xattr.c                                   |  12 +
- fs/ocfs2/suballoc.c                                |  22 +
- fs/smb/server/smb2pdu.c                            |   5 +
- fs/smb/server/smbacl.c                             |   4 +-
- include/keys/request_key_auth-type.h               |   2 +
- include/linux/kvm_host.h                           |   7 +-
- include/linux/lockdep.h                            |  14 +
- include/linux/lockdep_types.h                      |   1 +
- include/linux/ring_buffer.h                        |   4 +-
- include/linux/skmsg.h                              |  15 +-
- include/net/netfilter/nf_tables.h                  |   6 +
- include/net/phonet/pn_dev.h                        |   2 +-
- include/net/tc_act/tc_pedit.h                      |   1 -
- kernel/bpf/cgroup.c                                |   2 +-
- kernel/futex/requeue.c                             |   6 +
- kernel/locking/lockdep.c                           |  28 +-
- kernel/locking/rtmutex.c                           |   3 +
- kernel/locking/rtmutex_api.c                       |   2 +-
- kernel/trace/ring_buffer.c                         |  67 +--
- kernel/trace/trace.c                               |  14 +-
- kernel/trace/trace_kdb.c                           |   8 +-
- lib/debugobjects.c                                 |  57 ++-
- mm/vmscan.c                                        |  13 +-
- net/9p/client.c                                    |   3 +-
- net/batman-adv/bat_iv_ogm.c                        |  11 +-
- net/batman-adv/bat_v.c                             |   1 +
- net/batman-adv/bat_v_ogm.c                         |  23 +-
- net/batman-adv/bridge_loop_avoidance.c             |  28 +-
- net/batman-adv/distributed-arp-table.c             |  12 +-
- net/batman-adv/fragmentation.c                     |  22 +-
- net/batman-adv/fragmentation.h                     |   3 +-
- net/batman-adv/netlink.c                           |  10 +-
- net/batman-adv/routing.c                           |  64 ++-
- net/batman-adv/tp_meter.c                          | 115 +++--
- net/batman-adv/translation-table.c                 |  32 +-
- net/batman-adv/tvlv.c                              |  69 ++-
- net/batman-adv/types.h                             |  21 +-
- net/core/filter.c                                  |  27 ++
- net/core/skmsg.c                                   |  16 +-
- net/ipv4/tcp.c                                     |   4 +-
- net/ipv4/tcp_bpf.c                                 |   2 +-
- net/ipv4/tcp_input.c                               |  14 +-
- net/ipv4/tcp_minisocks.c                           |   2 +-
- net/ipv4/udp.c                                     |   2 +-
- net/ipv4/udp_bpf.c                                 |   2 +-
- net/ipv6/ip6_output.c                              |   4 +-
- net/ipv6/ip6_vti.c                                 |   1 +
- net/mac802154/llsec.c                              |  14 +
- net/mptcp/pm_userspace.c                           |  13 +-
- net/mptcp/protocol.c                               |   4 +-
- net/netfilter/nf_tables_api.c                      |  74 +++-
- net/netfilter/nft_set_rbtree.c                     |  43 ++
- net/phonet/pn_dev.c                                |  12 +-
- net/phonet/pn_netlink.c                            |  23 +-
- net/sched/act_pedit.c                              | 101 +++--
- net/tipc/crypto.c                                  |   9 +
- net/tls/tls_sw.c                                   |   4 +
- net/unix/af_unix.c                                 |  11 +-
- security/apparmor/include/policy_unpack.h          |  19 +
- security/apparmor/lsm.c                            |  16 +-
- security/apparmor/policy.c                         |   8 +-
- security/keys/internal.h                           |   2 +
- security/keys/keyctl.c                             |  24 +-
- security/keys/keyctl_pkey.c                        |   9 +-
- security/keys/request_key_auth.c                   |  33 +-
- tools/perf/bench/find-bit-bench.c                  |   8 +-
- tools/perf/util/block-range.c                      |   6 +-
- tools/testing/selftests/bpf/bench.h                |   9 -
- tools/testing/selftests/bpf/prog_tests/empty_skb.c |  25 +-
- .../selftests/bpf/prog_tests/kprobe_multi_test.c   |   8 -
- tools/testing/selftests/bpf/prog_tests/perf_link.c |  15 +-
- .../testing/selftests/bpf/prog_tests/tc_redirect.c | 154 ++++---
- .../testing/selftests/bpf/prog_tests/test_tunnel.c |  71 ++--
- .../testing/selftests/bpf/prog_tests/xdp_bonding.c |  38 +-
- .../selftests/bpf/prog_tests/xdp_do_redirect.c     |  30 +-
- .../selftests/bpf/prog_tests/xdp_synproxy.c        |  41 +-
- tools/testing/selftests/bpf/test_progs.h           |  15 +
- tools/testing/selftests/bpf/testing_helpers.h      |  10 +
- tools/testing/selftests/ptp/testptp.c              |  19 +-
- 145 files changed, 1807 insertions(+), 1529 deletions(-)
+X-Rspamd-Queue-Id: DFF526FB9C9
+
+6.6-stable review patch.  If anyone has any objections, please let me know.
+
+------------------
+
+From: Weiming Shi <bestswngs@gmail.com>
+
+commit d00c953a8f69921f484b629801766da68f27f658 upstream.
+
+rmnet_dellink() removes the endpoint from the hash table with
+hlist_del_init_rcu() and then immediately frees it with kfree(). However,
+RCU readers on the receive path (rmnet_rx_handler ->
+__rmnet_map_ingress_handler) may still hold a reference to the endpoint and
+dereference ep->egress_dev after the memory has been freed. The endpoint is
+a kmalloc-32 object, and the stale read at offset 8 corresponds to the
+egress_dev pointer.
+
+  BUG: unable to handle page fault for address: ffffffffde942eef
+  Oops: 0002 [#1] SMP NOPTI
+  CPU: 1 UID: 0 PID: 137 Comm: poc_write Not tainted 7.0.0+ #4 PREEMPTLAZY
+  RIP: 0010:rmnet_vnd_rx_fixup (rmnet_vnd.c:27)
+  Call Trace:
+   <TASK>
+   __rmnet_map_ingress_handler (rmnet_handlers.c:48 rmnet_handlers.c:101)
+   rmnet_rx_handler (rmnet_handlers.c:129 rmnet_handlers.c:235)
+   __netif_receive_skb_core.constprop.0 (net/core/dev.c:6096)
+   __netif_receive_skb_one_core (net/core/dev.c:6208)
+   netif_receive_skb (net/core/dev.c:6467)
+   tun_get_user (drivers/net/tun.c:1955)
+   tun_chr_write_iter (drivers/net/tun.c:2003)
+   vfs_write (fs/read_write.c:688)
+   ksys_write (fs/read_write.c:740)
+   </TASK>
+
+Add an rcu_head field to struct rmnet_endpoint and replace kfree() with
+kfree_rcu() so the endpoint memory remains valid through the RCU grace
+period. Also remove the rmnet_vnd_dellink() call and inline only the
+nr_rmnet_devs decrement, since rmnet_vnd_dellink() would set
+ep->egress_dev to NULL during the grace period, creating a data race
+with lockless readers.
+
+Fixes: ceed73a2cf4a ("drivers: net: ethernet: qualcomm: rmnet: Initial implementation")
+Reported-by: Xiang Mei <xmei5@asu.edu>
+Signed-off-by: Weiming Shi <bestswngs@gmail.com>
+Link: https://patch.msgid.link/20260514122511.3083479-2-bestswngs@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+---
+ drivers/net/ethernet/qualcomm/rmnet/rmnet_config.c |    8 ++++----
+ drivers/net/ethernet/qualcomm/rmnet/rmnet_config.h |    1 +
+ 2 files changed, 5 insertions(+), 4 deletions(-)
+
+--- a/drivers/net/ethernet/qualcomm/rmnet/rmnet_config.c
++++ b/drivers/net/ethernet/qualcomm/rmnet/rmnet_config.c
+@@ -210,8 +210,8 @@ static void rmnet_dellink(struct net_dev
+ 	ep = rmnet_get_endpoint(real_port, mux_id);
+ 	if (ep) {
+ 		hlist_del_init_rcu(&ep->hlnode);
+-		rmnet_vnd_dellink(mux_id, real_port, ep);
+-		kfree(ep);
++		real_port->nr_rmnet_devs--;
++		kfree_rcu(ep, rcu);
+ 	}
+ 
+ 	netdev_upper_dev_unlink(real_dev, dev);
+@@ -235,9 +235,9 @@ static void rmnet_force_unassociate_devi
+ 		hash_for_each_safe(port->muxed_ep, bkt_ep, tmp_ep, ep, hlnode) {
+ 			unregister_netdevice_queue(ep->egress_dev, &list);
+ 			netdev_upper_dev_unlink(real_dev, ep->egress_dev);
+-			rmnet_vnd_dellink(ep->mux_id, port, ep);
+ 			hlist_del_init_rcu(&ep->hlnode);
+-			kfree(ep);
++			port->nr_rmnet_devs--;
++			kfree_rcu(ep, rcu);
+ 		}
+ 		rmnet_unregister_real_device(real_dev);
+ 		unregister_netdevice_many(&list);
+--- a/drivers/net/ethernet/qualcomm/rmnet/rmnet_config.h
++++ b/drivers/net/ethernet/qualcomm/rmnet/rmnet_config.h
+@@ -18,6 +18,7 @@ struct rmnet_endpoint {
+ 	u8 mux_id;
+ 	struct net_device *egress_dev;
+ 	struct hlist_node hlnode;
++	struct rcu_head rcu;
+ };
+ 
+ struct rmnet_egress_agg_params {
 
 
 
