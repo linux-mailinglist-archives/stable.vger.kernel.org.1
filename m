@@ -1,59 +1,74 @@
-Return-Path: <stable+bounces-270999-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-271204-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 9/TMHmaWRmowZQsAu9opvQ
-	(envelope-from <stable+bounces-270999-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:48:38 +0200
+	id QalSNWuZRmrmZgsAu9opvQ
+	(envelope-from <stable+bounces-271204-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:01:31 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 604B86FA950
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:48:38 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5123A6FADDF
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:01:31 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=qy8Ea668;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-270999-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-270999-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=pUDyu+Do;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-271204-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-271204-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 2D7C9304591E
-	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:41:19 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 8C571310C632
+	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:50:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73B4033B6E8;
-	Thu,  2 Jul 2026 16:40:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 93EB2381E89;
+	Thu,  2 Jul 2026 16:48:58 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4347230EF95;
-	Thu,  2 Jul 2026 16:40:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE75A348465;
+	Thu,  2 Jul 2026 16:48:56 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783010404; cv=none; b=CrqHj2dnEeFIJI7FEa3PyX/e462zuRmAmCC+KsPix3pu7bySyKgMgdVABGCpfMJSwDC2/QHHa+6Rdd5tbbyLgvYWH7hESK011bvRKblL7Ic/yVK1yjytXTXuLV2V25dbux6UNCi9Ue1r4QUaV8k+DFKjgYnBsmQbsc6EDYNieks=
+	t=1783010938; cv=none; b=hM4e9fJoWw6OAClzxiJAizaxjR7HLnAWxgiOTFz3OIKX6S+7Mk8dzqsMinn5GEoyobWMzEQf1Vm+jxlJsuCYzbZlilgn8oBmYyKUUL65BF9bRoxmSf7G/CD/v7wCm/VmVMPiizGou6w5rTthEItkQ4Vie9epj1q60a/iSpxOKZs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783010404; c=relaxed/simple;
-	bh=TYBoyq86w7UpTkm9FWcS/eWSCnHYqfJhhInYOYjolrQ=;
+	s=arc-20240116; t=1783010938; c=relaxed/simple;
+	bh=O0RFh2tPMo9s4/W6qpDviOM3hrljghVPF8anIQVl+m4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Gg5no0huKK69JL8wd5IjnbTLWAEuTKW6jkCVMVOI4gxI7Zt1owLW63btmMm75BU5p+HMq+tcWgTNadtcMwYsPhsoTWk8vHWD77Er8vdLpiSbZXMvbohxPLMyl2IgxiVTx6in7mlcmyH3eXb9Ks7/f/cjqPIrzzDxywOSK6dTH7g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qy8Ea668; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A99381F000E9;
-	Thu,  2 Jul 2026 16:40:02 +0000 (UTC)
+	 MIME-Version; b=gL+ZL7KlcbtN9T6LaLTHtdkA/cOjtHd8Yk9AU5Ru6rh5I4vWXu2FbFOQMf5pzJz4HuUWO50t4Qs/vj2+UlZu5cT4wV3RaMDHHrh2ab6W82vBkZLmLIcjUXB/7lXjIqdJqGF0r2G0xdhl3gM9VJed9HnUKJRaAKj2uZyUPo38vlo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pUDyu+Do; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D4301F000E9;
+	Thu,  2 Jul 2026 16:48:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1783010403;
-	bh=h06zTveyNsHTYAAPWg6HzSjSt5qTXtZ5z3ixUzkEwG8=;
+	s=korg; t=1783010936;
+	bh=KQOowqlxz3Eb5U/sKYDErMumtXu0IvDWhc8IoeOf2g8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=qy8Ea668uOrqW/Hs95r9Dp3sx7OejKhYenKkEotYqWSoyi9VfaOIJkZaDjYZ5GZvc
-	 LKxNn0XKmXm1gVo9kivUwevHoxe4GZGZWMrYGfZmf83qyuLqIRJTXn8nSbkmDNDrfl
-	 FiW3+7bBDASCqmxfkGARCCL/aXMomh5TIjHwwxYc=
+	b=pUDyu+DoSCvlQ6D2X4f39QhHNSR4wwsyItcnDc3wlldFXuI9bCksavtcFpQpDJ25B
+	 +Ag7tQpkc7X2ibzB75QQ97nnOgXj75e77y8+mBZT6SxPbK7NdjMszNzxwxjmLq8zQr
+	 PhITQ37oHYk92PpQYS9UW1F8EKWGWk/pa43/jTRs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 095/204] Revert "PCI: qcom: Advertise Hotplug Slot Capability with no Command Completion support"
+	bpf <bpf@vger.kernel.org>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	Masahiro Yamada <masahiroy@kernel.org>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Nicolas Schier <nicolas@fjasle.eu>,
+	Zheng Yejian <zhengyejian1@huawei.com>,
+	Martin Kelly <martin.kelly@crowdstrike.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Josh Poimboeuf <jpoimboe@redhat.com>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
+	Andrey Grodzovsky <andrey.grodzovsky@crowdstrike.com>
+Subject: [PATCH 6.6 051/175] scripts/sorttable: Convert Elf_Sym MACRO over to a union
 Date: Thu,  2 Jul 2026 18:19:12 +0200
-Message-ID: <20260702155120.657837749@linuxfoundation.org>
+Message-ID: <20260702155116.871282843@linuxfoundation.org>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260702155118.667618796@linuxfoundation.org>
-References: <20260702155118.667618796@linuxfoundation.org>
+In-Reply-To: <20260702155115.766838875@linuxfoundation.org>
+References: <20260702155115.766838875@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,113 +85,169 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-270999-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-271204-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:sashal@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[19];
+	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:bpf@vger.kernel.org,m:mhiramat@kernel.org,m:mark.rutland@arm.com,m:mathieu.desnoyers@efficios.com,m:akpm@linux-foundation.org,m:peterz@infradead.org,m:torvalds@linux-foundation.org,m:masahiroy@kernel.org,m:nathan@kernel.org,m:nicolas@fjasle.eu,m:zhengyejian1@huawei.com,m:martin.kelly@crowdstrike.com,m:christophe.leroy@csgroup.eu,m:jpoimboe@redhat.com,m:rostedt@goodmis.org,m:andrey.grodzovsky@crowdstrike.com,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 604B86FA950
+X-Rspamd-Queue-Id: 5123A6FADDF
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-This reverts commit 480c94d3affbc11b9e98ca223a9fa19d90b84fbb.
+From: Steven Rostedt <rostedt@goodmis.org>
 
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+[ Upstream commit 200d015e73b4da69bcd8212a7c58695452b12bad ]
+
+In order to remove the double #include of sorttable.h for 64 and 32 bit
+to create duplicate functions for both, replace the Elf_Sym macro with a
+union that defines both Elf64_Sym and Elf32_Sym, with field e64 for the
+64bit version, and e32 for the 32bit version.
+
+It can then use the macro etype to get the proper value.
+
+This will eventually be replaced with just single functions that can
+handle both 32bit and 64bit ELF parsing.
+
+Cc: bpf <bpf@vger.kernel.org>
+Cc: Masami Hiramatsu <mhiramat@kernel.org>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Masahiro Yamada <masahiroy@kernel.org>
+Cc: Nathan Chancellor <nathan@kernel.org>
+Cc: Nicolas Schier <nicolas@fjasle.eu>
+Cc: Zheng Yejian <zhengyejian1@huawei.com>
+Cc: Martin  Kelly <martin.kelly@crowdstrike.com>
+Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
+Cc: Josh Poimboeuf <jpoimboe@redhat.com>
+Link: https://lore.kernel.org/20250105162345.528626969@goodmis.org
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: Andrey Grodzovsky <andrey.grodzovsky@crowdstrike.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pci/controller/dwc/pcie-qcom.c | 17 ++++++-----------
- 1 file changed, 6 insertions(+), 11 deletions(-)
+ scripts/sorttable.c |    5 +++++
+ scripts/sorttable.h |   25 ++++++++++++++-----------
+ 2 files changed, 19 insertions(+), 11 deletions(-)
 
-diff --git a/drivers/pci/controller/dwc/pcie-qcom.c b/drivers/pci/controller/dwc/pcie-qcom.c
-index ae0f36e270baa1..5d27cd149f5120 100644
---- a/drivers/pci/controller/dwc/pcie-qcom.c
-+++ b/drivers/pci/controller/dwc/pcie-qcom.c
-@@ -329,20 +329,15 @@ static void qcom_pcie_clear_aspm_l0s(struct dw_pcie *pci)
- 	dw_pcie_dbi_ro_wr_dis(pci);
- }
+--- a/scripts/sorttable.c
++++ b/scripts/sorttable.c
+@@ -74,6 +74,11 @@ typedef union {
+ 	Elf64_Shdr	e64;
+ } Elf_Shdr;
  
--static void qcom_pcie_set_slot_nccs(struct dw_pcie *pci)
-+static void qcom_pcie_clear_hpc(struct dw_pcie *pci)
- {
- 	u16 offset = dw_pcie_find_capability(pci, PCI_CAP_ID_EXP);
- 	u32 val;
- 
- 	dw_pcie_dbi_ro_wr_en(pci);
- 
--	/*
--	 * Qcom PCIe Root Ports do not support generating command completion
--	 * notifications for the Hot-Plug commands. So set the NCCS field to
--	 * avoid waiting for the completions.
--	 */
- 	val = readl(pci->dbi_base + offset + PCI_EXP_SLTCAP);
--	val |= PCI_EXP_SLTCAP_NCCS;
-+	val &= ~PCI_EXP_SLTCAP_HPC;
- 	writel(val, pci->dbi_base + offset + PCI_EXP_SLTCAP);
- 
- 	dw_pcie_dbi_ro_wr_dis(pci);
-@@ -537,7 +532,7 @@ static int qcom_pcie_post_init_2_1_0(struct qcom_pcie *pcie)
- 	writel(CFG_BRIDGE_SB_INIT,
- 	       pci->dbi_base + AXI_MSTR_RESP_COMP_CTRL1);
- 
--	qcom_pcie_set_slot_nccs(pcie->pci);
-+	qcom_pcie_clear_hpc(pcie->pci);
- 
- 	return 0;
- }
-@@ -617,7 +612,7 @@ static int qcom_pcie_post_init_1_0_0(struct qcom_pcie *pcie)
- 		writel(val, pcie->parf + PARF_AXI_MSTR_WR_ADDR_HALT);
++typedef union {
++	Elf32_Sym	e32;
++	Elf64_Sym	e64;
++} Elf_Sym;
++
+ static uint32_t (*r)(const uint32_t *);
+ static uint16_t (*r2)(const uint16_t *);
+ static uint64_t (*r8)(const uint64_t *);
+--- a/scripts/sorttable.h
++++ b/scripts/sorttable.h
+@@ -23,7 +23,6 @@
+ #undef sort_mcount_loc
+ #undef elf_mcount_loc
+ #undef do_sort
+-#undef Elf_Sym
+ #undef ELF_ST_TYPE
+ #undef uint_t
+ #undef _r
+@@ -36,7 +35,6 @@
+ # define sort_mcount_loc	sort_mcount_loc_64
+ # define elf_mcount_loc		elf_mcount_loc_64
+ # define do_sort		do_sort_64
+-# define Elf_Sym		Elf64_Sym
+ # define ELF_ST_TYPE		ELF64_ST_TYPE
+ # define uint_t			uint64_t
+ # define _r			r8
+@@ -48,7 +46,6 @@
+ # define sort_mcount_loc	sort_mcount_loc_32
+ # define elf_mcount_loc		elf_mcount_loc_32
+ # define do_sort		do_sort_32
+-# define Elf_Sym		Elf32_Sym
+ # define ELF_ST_TYPE		ELF32_ST_TYPE
+ # define uint_t			uint32_t
+ # define _r			r
+@@ -230,10 +227,13 @@ static int do_sort(Elf_Ehdr *ehdr,
+ 	Elf_Sym *sort_needed_sym = NULL;
+ 	Elf_Shdr *sort_needed_sec;
+ 	uint32_t *sort_needed_loc;
++	void *sym_start;
++	void *sym_end;
+ 	const char *secstrings;
+ 	const char *strtab;
+ 	char *extab_image;
+ 	int sort_need_index;
++	int symentsize;
+ 	int shentsize;
+ 	int idx;
+ 	int i;
+@@ -376,12 +376,15 @@ static int do_sort(Elf_Ehdr *ehdr,
  	}
  
--	qcom_pcie_set_slot_nccs(pcie->pci);
-+	qcom_pcie_clear_hpc(pcie->pci);
+ 	/* find the flag main_extable_sort_needed */
+-	for (sym = (void *)ehdr + _r(&symtab_sec->etype.sh_offset);
+-	     sym < sym + _r(&symtab_sec->etype.sh_size) / sizeof(Elf_Sym);
+-	     sym++) {
+-		if (ELF_ST_TYPE(sym->st_info) != STT_OBJECT)
++	sym_start = (void *)ehdr + _r(&symtab_sec->etype.sh_offset);
++	sym_end = sym_start + _r(&symtab_sec->etype.sh_size);
++	symentsize = _r(&symtab_sec->etype.sh_entsize);
++
++	for (sym = sym_start; (void *)sym + symentsize < sym_end;
++	     sym = (void *)sym + symentsize) {
++		if (ELF_ST_TYPE(sym->etype.st_info) != STT_OBJECT)
+ 			continue;
+-		if (!strcmp(strtab + r(&sym->st_name),
++		if (!strcmp(strtab + r(&sym->etype.st_name),
+ 			    "main_extable_sort_needed")) {
+ 			sort_needed_sym = sym;
+ 			break;
+@@ -395,13 +398,13 @@ static int do_sort(Elf_Ehdr *ehdr,
+ 		goto out;
+ 	}
  
- 	return 0;
- }
-@@ -710,7 +705,7 @@ static int qcom_pcie_post_init_2_3_2(struct qcom_pcie *pcie)
- 	val |= EN;
- 	writel(val, pcie->parf + PARF_AXI_MSTR_WR_ADDR_HALT_V2);
+-	sort_need_index = get_secindex(r2(&sym->st_shndx),
+-				       sort_needed_sym - symtab,
++	sort_need_index = get_secindex(r2(&sym->etype.st_shndx),
++				       ((void *)sort_needed_sym - (void *)symtab) / symentsize,
+ 				       symtab_shndx);
+ 	sort_needed_sec = get_index(shdr_start, shentsize, sort_need_index);
+ 	sort_needed_loc = (void *)ehdr +
+ 		_r(&sort_needed_sec->etype.sh_offset) +
+-		_r(&sort_needed_sym->st_value) -
++		_r(&sort_needed_sym->etype.st_value) -
+ 		_r(&sort_needed_sec->etype.sh_addr);
  
--	qcom_pcie_set_slot_nccs(pcie->pci);
-+	qcom_pcie_clear_hpc(pcie->pci);
- 
- 	return 0;
- }
-@@ -1014,7 +1009,7 @@ static int qcom_pcie_post_init_2_7_0(struct qcom_pcie *pcie)
- 		writel(WR_NO_SNOOP_OVERIDE_EN | RD_NO_SNOOP_OVERIDE_EN,
- 				pcie->parf + PARF_NO_SNOOP_OVERIDE);
- 
--	qcom_pcie_set_slot_nccs(pcie->pci);
-+	qcom_pcie_clear_hpc(pcie->pci);
- 
- 	return 0;
- }
--- 
-2.53.0
-
+ 	/* extable has been sorted, clear the flag */
 
 
 
