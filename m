@@ -1,60 +1,62 @@
-Return-Path: <stable+bounces-270910-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-270673-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 6W1VKPqXRmonZgsAu9opvQ
-	(envelope-from <stable+bounces-270910-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:55:22 +0200
+	id jxlVG4mVRmqeZAsAu9opvQ
+	(envelope-from <stable+bounces-270673-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:44:57 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9D2886FAC01
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:55:21 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 79DE06FA7B0
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:44:56 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=ql2JiRHz;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-270910-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-270910-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=0vixny4k;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-270673-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-270673-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id C77BE3173183
-	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:37:53 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 442DF301BB3D
+	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:31:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A13F6347FFE;
-	Thu,  2 Jul 2026 16:36:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 900A83491D0;
+	Thu,  2 Jul 2026 16:25:51 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7AB4361DC3;
-	Thu,  2 Jul 2026 16:36:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49A4933F583;
+	Thu,  2 Jul 2026 16:25:50 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783010172; cv=none; b=eYls2C1VrZk8MqD+7BoPzFc0ND7oRfBpdhWa4xpc2kbyb3fi/f4XSFFv2Fdm83+31E7PMP5kBfTF2FvH7Q9De58Umzm4573CXxCd1Llalu/WMii5vKgIyy1sMVEoThJnlB7qHuW52awqEIc0+KqHjPYe/drjxxIKnrdisycfais=
+	t=1783009551; cv=none; b=BFy3208xHFkivloU0+JVr0RPrZaAA1D9Q5aRBVG7M8SHnfUsvlUkG1gxdIR10ScyqR8mGEvCZIsuynF/DY3ZlFNKAb5xvTceYxg2UXkeve8Zq1Sfc6sLdvbJQ4biu/OP5UyMxVXvPG93T49k4g/f8VPIs+2OZkqlxPXQETWAI3M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783010172; c=relaxed/simple;
-	bh=+cgAxrqV18XWi4j+FvhVPHgP5BKnDaaK3tbHmPzgZPs=;
+	s=arc-20240116; t=1783009551; c=relaxed/simple;
+	bh=o8e2Yh/23Rxh3k2ix5o0jQTNsT7zH/3ou9wZTOXR1rI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WhVYeAg0l4+S61SwRnY6j8XbSxZl9I2NWdOc66OXqtVdZkL7AzSvvZgmCcprRJ8GjBP5jZE3vl6/R4Vj500w0bOY4vxNSQRVQ2w/4HDJMgsMXrhp6nurfM9sji0YUfTNKqLfR7msiNkuW/wqckE23PjV12x9ExxUDeZUVB0N+sY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ql2JiRHz; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41AA21F000E9;
-	Thu,  2 Jul 2026 16:36:09 +0000 (UTC)
+	 MIME-Version; b=OXNoGaFVsis00XaHPI21LygZ9xp9zp63XynA0JYoTE2gQH0Gauhln0z0YLUyU3edjbseaGZl+TeC0hsphRqKtEB975WzcxtAhEGMcIh+McF8kVpsdWZZtY6oMj9GQeTeJVhKiwogZ/SMJHPBpXrFury/E+qERWrN4dHC9XdCaiE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0vixny4k; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F4641F00A3A;
+	Thu,  2 Jul 2026 16:25:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1783010169;
-	bh=AOJ9UP9TaMaI3WPb9fq7sZY1joxyspeHuQ9+ikkqkhI=;
+	s=korg; t=1783009549;
+	bh=9vkMTOSUgfarFA4yRgJBjsbQDGyx6/00WtR2fYRwRyA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=ql2JiRHz65f9YEbhY0qBj5u22MLOwyUsVaNlG56LOBw6SYmiaOmsXqwUcIttXM0ht
-	 OauSQDzVjL8lGtfcZ/ICkscrN6pcEDzQ1Z3+C+i0jFWLHCuvQw/Bs3qYyKmlXtbucf
-	 VrLgHstggDEnyKe4GNyW/x77bQylfjOX1NPltW+M=
+	b=0vixny4kI5at8Iq7+762viE+SE4O+TOL6BDb1WliCN7CBmWp6kA98QtuTKdio6yyz
+	 yTURew7bIffH60+nm3fhDPqkl8dIXR88I/ICc3KQZOMiSn+o8tmYHm2u6i6H/bIoBW
+	 SrtM7j/lO9pWCUF0PDcm53kqELvTKVHgMRYyYZx8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Steffen Persvold <spersvold@gmail.com>,
-	Helge Deller <deller@gmx.de>
-Subject: [PATCH 6.1 105/129] fbdev: modedb: Fix misaligned fields in the 1920x1080-60 mode
+	Kuniyuki Iwashima <kuniyu@amazon.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 92/96] phonet: Pass net and ifindex to phonet_address_notify().
 Date: Thu,  2 Jul 2026 18:20:24 +0200
-Message-ID: <20260702155114.315951413@linuxfoundation.org>
+Message-ID: <20260702155110.915386944@linuxfoundation.org>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260702155112.163984240@linuxfoundation.org>
-References: <20260702155112.163984240@linuxfoundation.org>
+In-Reply-To: <20260702155108.949633242@linuxfoundation.org>
+References: <20260702155108.949633242@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,84 +70,149 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-270910-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:spersvold@gmail.com,m:deller@gmx.de,s:lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,gmx.de];
-	FORWARDED(0.00)[lists@lfdr.de];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-270673-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:kuniyu@amazon.com,m:edumazet@google.com,m:pabeni@redhat.com,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[gmx.de:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp]
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	RWL_MAILSPIKE_POSSIBLE(0.00)[104.64.211.4:from];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 9D2886FAC01
+X-Rspamd-Queue-Id: 79DE06FA7B0
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Steffen Persvold <spersvold@gmail.com>
+From: Kuniyuki Iwashima <kuniyu@amazon.com>
 
-commit d894c48a57d78206e4df9c90d4acfaf39394806a upstream.
+[ Upstream commit 68ed5c38b512b734caf3da1f87db4a99fcfe3002 ]
 
-The 1920x1080@60 modedb entry has one too many initializers before
-its sync field: a stray "0" occupies the sync slot, which shifts the
-remaining values by one field. The entry therefore decodes as
-sync = 0, vmode = FB_SYNC_HOR_HIGH_ACT | FB_SYNC_VERT_HIGH_ACT (0x3,
-i.e. FB_VMODE_INTERLACED | FB_VMODE_DOUBLE), and flag =
-FB_VMODE_NONINTERLACED, instead of the intended sync = positive H/V,
-vmode = non-interlaced.
+Currently, phonet_address_notify() fetches netns and ifindex from dev.
 
-fb_find_mode() then returns a 1920x1080 mode flagged as interlaced +
-doublescan with active-low syncs. Drivers that honour var->vmode and
-var->sync when programming display timing enable doublescan and the
-wrong sync polarity, corrupting the output.
+Once addr_doit() is converted to RCU, phonet_address_notify() will be
+called outside of RCU due to GFP_KERNEL, and dev will be unavailable
+there.
 
-Drop the stray initializer so sync and vmode hold their intended
-values (positive H/V sync, non-interlaced), matching the adjacent
-1920x1200 entry.
+Let's pass net and ifindex to phonet_address_notify().
 
-Fixes: c8902258b2b8 ("fbdev: modedb: Add 1920x1080 at 60 Hz video mode")
-Cc: stable@vger.kernel.org
-Signed-off-by: Steffen Persvold <spersvold@gmail.com>
-Signed-off-by: Helge Deller <deller@gmx.de>
+Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Stable-dep-of: 71de0177b28d ("net: phonet: free phonet_device after RCU grace period")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/video/fbdev/core/modedb.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ include/net/phonet/pn_dev.h |    2 +-
+ net/phonet/pn_dev.c         |   10 +++++++---
+ net/phonet/pn_netlink.c     |   12 ++++++------
+ 3 files changed, 14 insertions(+), 10 deletions(-)
 
---- a/drivers/video/fbdev/core/modedb.c
-+++ b/drivers/video/fbdev/core/modedb.c
-@@ -258,7 +258,7 @@ static const struct fb_videomode modedb[
- 		FB_VMODE_DOUBLE },
+--- a/include/net/phonet/pn_dev.h
++++ b/include/net/phonet/pn_dev.h
+@@ -33,7 +33,7 @@ int phonet_address_add(struct net_device
+ int phonet_address_del(struct net_device *dev, u8 addr);
+ u8 phonet_address_get(struct net_device *dev, u8 addr);
+ int phonet_address_lookup(struct net *net, u8 addr);
+-void phonet_address_notify(int event, struct net_device *dev, u8 addr);
++void phonet_address_notify(struct net *net, int event, u32 ifindex, u8 addr);
  
- 	/* 1920x1080 @ 60 Hz, 67.3 kHz hsync */
--	{ NULL, 60, 1920, 1080, 6734, 148, 88, 36, 4, 44, 5, 0,
-+	{ NULL, 60, 1920, 1080, 6734, 148, 88, 36, 4, 44, 5,
- 		FB_SYNC_HOR_HIGH_ACT | FB_SYNC_VERT_HIGH_ACT,
- 		FB_VMODE_NONINTERLACED },
+ int phonet_route_add(struct net_device *dev, u8 daddr);
+ int phonet_route_del(struct net_device *dev, u8 daddr);
+--- a/net/phonet/pn_dev.c
++++ b/net/phonet/pn_dev.c
+@@ -98,10 +98,13 @@ static void phonet_device_destroy(struct
+ 	mutex_unlock(&pndevs->lock);
+ 
+ 	if (pnd) {
++		struct net *net = dev_net(dev);
++		u32 ifindex = dev->ifindex;
+ 		u8 addr;
+ 
+ 		for_each_set_bit(addr, pnd->addrs, 64)
+-			phonet_address_notify(RTM_DELADDR, dev, addr);
++			phonet_address_notify(net, RTM_DELADDR, ifindex, addr);
++
+ 		kfree(pnd);
+ 	}
+ }
+@@ -244,8 +247,9 @@ static int phonet_device_autoconf(struct
+ 	ret = phonet_address_add(dev, req.ifr_phonet_autoconf.device);
+ 	if (ret)
+ 		return ret;
+-	phonet_address_notify(RTM_NEWADDR, dev,
+-				req.ifr_phonet_autoconf.device);
++
++	phonet_address_notify(dev_net(dev), RTM_NEWADDR, dev->ifindex,
++			      req.ifr_phonet_autoconf.device);
+ 	return 0;
+ }
+ 
+--- a/net/phonet/pn_netlink.c
++++ b/net/phonet/pn_netlink.c
+@@ -22,7 +22,7 @@
+ static int fill_addr(struct sk_buff *skb, u32 ifindex, u8 addr,
+ 		     u32 portid, u32 seq, int event);
+ 
+-void phonet_address_notify(int event, struct net_device *dev, u8 addr)
++void phonet_address_notify(struct net *net, int event, u32 ifindex, u8 addr)
+ {
+ 	struct sk_buff *skb;
+ 	int err = -ENOBUFS;
+@@ -32,17 +32,17 @@ void phonet_address_notify(int event, st
+ 	if (skb == NULL)
+ 		goto errout;
+ 
+-	err = fill_addr(skb, dev->ifindex, addr, 0, 0, event);
++	err = fill_addr(skb, ifindex, addr, 0, 0, event);
+ 	if (err < 0) {
+ 		WARN_ON(err == -EMSGSIZE);
+ 		kfree_skb(skb);
+ 		goto errout;
+ 	}
+-	rtnl_notify(skb, dev_net(dev), 0,
+-		    RTNLGRP_PHONET_IFADDR, NULL, GFP_KERNEL);
++
++	rtnl_notify(skb, net, 0, RTNLGRP_PHONET_IFADDR, NULL, GFP_KERNEL);
+ 	return;
+ errout:
+-	rtnl_set_sk_err(dev_net(dev), RTNLGRP_PHONET_IFADDR, err);
++	rtnl_set_sk_err(net, RTNLGRP_PHONET_IFADDR, err);
+ }
+ 
+ static const struct nla_policy ifa_phonet_policy[IFA_MAX+1] = {
+@@ -89,7 +89,7 @@ static int addr_doit(struct sk_buff *skb
+ 	else
+ 		err = phonet_address_del(dev, pnaddr);
+ 	if (!err)
+-		phonet_address_notify(nlh->nlmsg_type, dev, pnaddr);
++		phonet_address_notify(net, nlh->nlmsg_type, ifm->ifa_index, pnaddr);
+ 	return err;
+ }
  
 
 
