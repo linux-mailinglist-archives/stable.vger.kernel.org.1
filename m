@@ -1,61 +1,69 @@
-Return-Path: <stable+bounces-271447-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-271048-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id jRP4KNOmRmoObAsAu9opvQ
-	(envelope-from <stable+bounces-271447-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:58:43 +0200
+	id xgkmBmyaRmp+ZwsAu9opvQ
+	(envelope-from <stable+bounces-271048-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:05:48 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 30E8D6FBBF6
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:58:43 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0FB666FAF87
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:05:47 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=zYY4bR0i;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-271447-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-271447-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=I5RLzaHc;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-271048-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-271048-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 1F447344624C
-	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:59:29 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 8FAA730F2EF5
+	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:45:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8360F2FFF9D;
-	Thu,  2 Jul 2026 16:59:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08225329E79;
+	Thu,  2 Jul 2026 16:42:14 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 599742F8EBF;
-	Thu,  2 Jul 2026 16:59:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEDBA317146;
+	Thu,  2 Jul 2026 16:42:12 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783011568; cv=none; b=Xsp1mgeiT+W3fsc/VFTNrU5ln+KvErfssVN9eo60v2ARQkJxcQoFNy7Zqm6deKqfsPtFpE/WFDPhqb1M6nVCKHx5vpBInZSavs/WzJSc+AOzFT9lf8pWPQjooor1gy8kNKq+4WqdtL3cgE3Z3vWDBEkpyv7J+V8gxYQ2fVSTnbE=
+	t=1783010533; cv=none; b=j+chrh/9eER76ytX1/euAiG+tWhC/FhdHMUfkTcpXu9feFoeXcf0xTn1ZUVy91y1ToU855I28VivJ8rdZFwaL/c/jaGpw35eOPDqJqnkdx3xR5nzcWTmewPjsQWHA9WeI8BoN78Qv7Z/dJX+rlcZPu9VyIMLyVuEF9swGDLG7Sc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783011568; c=relaxed/simple;
-	bh=Kc20u3WOqgPXZzDKGdgsyVQ2/VmKHwONYknQ62hUvJU=;
+	s=arc-20240116; t=1783010533; c=relaxed/simple;
+	bh=n8UEPaffKFycbEP54eg89Mfex9yLDEfKt7Ny5kibDpA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ncjPVAxucrRsnYdx59/pbRfVsHmC69us9NGiQU4aMCNLLqNLDuL2+YA7poIPX90hxsmd6uqRY0GPFeBSBQ9RTVbGVUP+2X5lOpjRRxqdlUAb7hN0YA15ANTyszViaXof5mk2HpSJqDbbERFMcPwAp0c2KrDqTbWNkZ84z7/eO9c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zYY4bR0i; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF52F1F00A3A;
-	Thu,  2 Jul 2026 16:59:26 +0000 (UTC)
+	 MIME-Version; b=ismLAU13z0cqtn2NldA/Xph6Jpb7cXLJZX/+YJ51ewpY77TaIHwCZeffu4xq45QN55uGAcTzPvRcTIt3m38KHJdmS0yZ68ZSwM8YtFGPsNHRqzI1MEyW9zJb1zt7GjtUPyxgEjDvMjh29Yiy23rUzcB30VrnFh1rBtlAZozbxCQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=I5RLzaHc; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C84981F000E9;
+	Thu,  2 Jul 2026 16:42:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1783011567;
-	bh=GSNnGhgAcx0IBrAFYedQYW/TvLq8KxPnEP3z2jSJ7mc=;
+	s=korg; t=1783010532;
+	bh=w9ax0GAcSxR/97JQX6x+MCRLz+Zdofhs3eTBCTB3g3o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=zYY4bR0i9Sa8hzpKNCUDgkqdhI4ujRUy/WvXx0wTkNYnECHxAhtJYcxmehkAy8ntr
-	 OTyC0hhsiGOCA4O2dSHee+uj8g/G7PFoFSeQM2IGIlAL4Acdn1E21EF8/3XzKp7bom
-	 YGylPZ7d7fyc2GosdaC7WOWM9TMPPKF4GHAKH52I=
+	b=I5RLzaHc4ZzZqsp4mwBQc8VGvT//mGzd7VYSV2k9b5UO4viJOro/MtJv/gBWqLFrb
+	 g/E+2mQag8OsVHGMknDhna2P8OutqW6JoN//Bg3gdtdh6g7ryWQTxhcJZwqYJ0oOLj
+	 /ZwcmfeMozsU40u4I7up6oX4XnZqzKnPYzS5bS24=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Sven Eckelmann <sven@narfation.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.1 005/120] batman-adv: tp_meter: avoid window underflow
+	Arnd Bergmann <arnd@arndb.de>,
+	Alexander Lobakin <aleksander.lobakin@intel.com>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Tamir Duberstein <tamird@kernel.org>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Andriy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Ansuel Smith <ansuelsmth@gmail.com>,
+	Bjorn Andersson <andersson@kernel.org>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Vasily Gorbik <gor@linux.ibm.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.12 144/204] err.h: use __always_inline on all error pointer helpers
 Date: Thu,  2 Jul 2026 18:20:01 +0200
-Message-ID: <20260702155113.076972700@linuxfoundation.org>
+Message-ID: <20260702155121.676088851@linuxfoundation.org>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260702155112.964534952@linuxfoundation.org>
-References: <20260702155112.964534952@linuxfoundation.org>
+In-Reply-To: <20260702155118.667618796@linuxfoundation.org>
+References: <20260702155118.667618796@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,23 +79,24 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-271447-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-271048-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,arndb.de,intel.com,kernel.org,linux.ibm.com,linux.intel.com,gmail.com,linux-foundation.org];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:stable@kernel.org,m:sven@narfation.org,m:sashal@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCPT_COUNT_TWELVE(0.00)[14];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:arnd@arndb.de,m:aleksander.lobakin@intel.com,m:nathan@kernel.org,m:tamird@kernel.org,m:agordeev@linux.ibm.com,m:andriy.shevchenko@linux.intel.com,m:ansuelsmth@gmail.com,m:andersson@kernel.org,m:hca@linux.ibm.com,m:gor@linux.ibm.com,m:akpm@linux-foundation.org,s:lists@lfdr.de];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	FORWARDED(0.00)[lists@lfdr.de];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
@@ -95,68 +104,109 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RWL_MAILSPIKE_POSSIBLE(0.00)[104.64.211.4:from];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp,narfation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,linux-foundation.org:email,arndb.de:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 30E8D6FBBF6
+X-Rspamd-Queue-Id: 0FB666FAF87
 
-7.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sven Eckelmann <sven@narfation.org>
+From: Arnd Bergmann <arnd@arndb.de>
 
-commit 765947b81fb54b6ebb0bc1cfe55c0fa399e002b8 upstream.
+commit 94bfc7f3b0c7c33331ba4ff6cc64ff309dfcbce8 upstream.
 
-In batadv_tp_avail(), win_left is calculated with 32-bit unsigned
-arithmetic: win_left = win_limit - tp_vars->last_sent;
+While testing randconfig builds on s390, I came across a link failure with
+CONFIG_DMA_SHARED_BUFFER disabled:
 
-During Fast Recovery, cwnd is inflated and last_sent advances rapidly. When
-Fast Recovery ends, cwnd drops abruptly back to ss_threshold. If the newly
-shrunk win_limit is less than last_sent, the unsigned subtraction will
-underflow, wrapping to a massive positive value. Instead of returning that
-the window is full (unavailable), it returns that the sender can continue
-sending.
+ERROR: modpost: "dma_buf_put" [drivers/iommu/iommufd/iommufd.ko] undefined!
 
-To handle this situation, it must be checked whether the windows end
-sequence number (win_limit) has to be compared with the last sent sequence
-number. If it would be before the last sent sequence number, then more acks
-are needed before the transmission can be started again.
+The problem here is that IS_ERR() is not inlined and dead code elimination
+fails as a consequence.
 
-Cc: stable@kernel.org
-Fixes: 33a3bb4a3345 ("batman-adv: throughput meter implementation")
-Signed-off-by: Sven Eckelmann <sven@narfation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+The err.h helpers all turn into a trivial assignment of a bit mask and
+should never result in a function call, so force them to always be inline.
+This should generally result in better object code aside from avoiding
+the link failure above.
+
+Link: https://lore.kernel.org/20260526101851.2495110-1-arnd@kernel.org
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Reviewed-by: Alexander Lobakin <aleksander.lobakin@intel.com>
+Reviewed-by: Nathan Chancellor <nathan@kernel.org>
+Tested-by: Tamir Duberstein <tamird@kernel.org>
+Cc: Alexander Gordeev <agordeev@linux.ibm.com>
+Cc: Andriy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc: Ansuel Smith <ansuelsmth@gmail.com>
+Cc: Bjorn Andersson <andersson@kernel.org>
+Cc: Heiko Carstens <hca@linux.ibm.com>
+Cc: Vasily Gorbik <gor@linux.ibm.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/batman-adv/tp_meter.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ include/linux/err.h |   12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/net/batman-adv/tp_meter.c b/net/batman-adv/tp_meter.c
-index 2ff7aa5ed19fb3..d3b8f02ca08b14 100644
---- a/net/batman-adv/tp_meter.c
-+++ b/net/batman-adv/tp_meter.c
-@@ -817,10 +817,15 @@ static void batadv_tp_recv_ack(struct batadv_priv *bat_priv,
- static bool batadv_tp_avail(struct batadv_tp_vars *tp_vars,
- 			    size_t payload_len)
+--- a/include/linux/err.h
++++ b/include/linux/err.h
+@@ -36,7 +36,7 @@
+  *
+  * Return: A pointer with @error encoded within its value.
+  */
+-static inline void * __must_check ERR_PTR(long error)
++static __always_inline void * __must_check ERR_PTR(long error)
  {
-+	u32 last_sent = READ_ONCE(tp_vars->last_sent);
- 	u32 win_left, win_limit;
- 
- 	win_limit = atomic_read(&tp_vars->last_acked) + tp_vars->cwnd;
--	win_left = win_limit - tp_vars->last_sent;
-+
-+	if (batadv_seq_before(last_sent, win_limit))
-+		win_left = win_limit - last_sent;
-+	else
-+		win_left = 0;
- 
- 	return win_left >= payload_len;
+ 	return (void *) error;
  }
--- 
-2.53.0
-
+@@ -52,7 +52,7 @@ static inline void * __must_check ERR_PT
+  * @ptr: An error pointer.
+  * Return: The error code within @ptr.
+  */
+-static inline long __must_check PTR_ERR(__force const void *ptr)
++static __always_inline long __must_check PTR_ERR(__force const void *ptr)
+ {
+ 	return (long) ptr;
+ }
+@@ -65,7 +65,7 @@ static inline long __must_check PTR_ERR(
+  * @ptr: The pointer to check.
+  * Return: true if @ptr is an error pointer, false otherwise.
+  */
+-static inline bool __must_check IS_ERR(__force const void *ptr)
++static __always_inline bool __must_check IS_ERR(__force const void *ptr)
+ {
+ 	return IS_ERR_VALUE((unsigned long)ptr);
+ }
+@@ -79,7 +79,7 @@ static inline bool __must_check IS_ERR(_
+  *
+  * Like IS_ERR(), but also returns true for a null pointer.
+  */
+-static inline bool __must_check IS_ERR_OR_NULL(__force const void *ptr)
++static __always_inline bool __must_check IS_ERR_OR_NULL(__force const void *ptr)
+ {
+ 	return unlikely(!ptr) || IS_ERR_VALUE((unsigned long)ptr);
+ }
+@@ -91,7 +91,7 @@ static inline bool __must_check IS_ERR_O
+  * Explicitly cast an error-valued pointer to another pointer type in such a
+  * way as to make it clear that's what's going on.
+  */
+-static inline void * __must_check ERR_CAST(__force const void *ptr)
++static __always_inline void * __must_check ERR_CAST(__force const void *ptr)
+ {
+ 	/* cast away the const */
+ 	return (void *) ptr;
+@@ -114,7 +114,7 @@ static inline void * __must_check ERR_CA
+  *
+  * Return: The error code within @ptr if it is an error pointer; 0 otherwise.
+  */
+-static inline int __must_check PTR_ERR_OR_ZERO(__force const void *ptr)
++static __always_inline int __must_check PTR_ERR_OR_ZERO(__force const void *ptr)
+ {
+ 	if (IS_ERR(ptr))
+ 		return PTR_ERR(ptr);
 
 
 
