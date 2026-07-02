@@ -1,71 +1,63 @@
-Return-Path: <stable+bounces-270960-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-271118-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id J21ODOmWRmp/ZQsAu9opvQ
-	(envelope-from <stable+bounces-270960-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:50:49 +0200
+	id Oa5iFt6XRmoUZgsAu9opvQ
+	(envelope-from <stable+bounces-271118-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:54:54 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9B6156FAA37
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:50:48 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 09A986FABD9
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:54:54 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=EM3nv1+f;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-270960-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-270960-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="hOFWFzC/";
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-271118-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-271118-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 8040533A39C5
-	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:39:40 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id E0FD8303C572
+	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:47:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7CC5030C37A;
-	Thu,  2 Jul 2026 16:38:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01F983D952D;
+	Thu,  2 Jul 2026 16:45:18 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F2AD33B6D1;
-	Thu,  2 Jul 2026 16:38:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC1933C9EEE;
+	Thu,  2 Jul 2026 16:45:16 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783010302; cv=none; b=P4/Naewz8msp8/ZcHSoooE8ovpmAZWMBGMYzq/ygtSmdqdoH/6hdFXrb3qStDWHUp/9P5Er/XdsREXx6ll4dM+S5Xm1NJfYcxcHvkw5HdGxl4NSBwZpsMN3J1DsJms6sbK0W0VFMuZA5ESJ38OlQHtqMCPOa3NmkqBW7wPGK1Vo=
+	t=1783010717; cv=none; b=J9oYsO077H8dD6kG+ARaz6DIzCyP4N6bdCUP9KvSc2cvPGrz0xHNVUb79FuW0x3wCCQVQC0oj+h7eDd9GhSFvXL7ObPzL8RLmlrywoyiuiW6exrWRZ2qt68QtrST0l2fAKCL5li4tXtNsSR1Y7fUtEXluTaUivDiFF+KU7kLLR4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783010302; c=relaxed/simple;
-	bh=YbkMwQXx1OlomRdJyOYIG0eztRSycrAl4dbTUXUEekQ=;
+	s=arc-20240116; t=1783010717; c=relaxed/simple;
+	bh=wR9S9x3CVLPr4/NdYpHg9Sn/jEWxDJ9J9M/1EhCawE0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZHZWw1uNogj2JFedD6KGcPTd3Qu/euVk8x8jE66vWySkHZasDs0QZTHg4QlZiuUAG6k6XfjP4K5hGmDAPal6ocTeI+2sCADv7cd7OC7VHf9dOhzcHM7wCWVI872WwQbafRfDTFSoewwWA6lUok94DQOZLgSTS4tojPhU0TsAE9M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EM3nv1+f; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9BAA31F000E9;
-	Thu,  2 Jul 2026 16:38:20 +0000 (UTC)
+	 MIME-Version; b=juQonwa/jeh7j6A7l9ojgSz3PSJwPMh6x+TSEKvF3VwsKZbw/w8tfqAjuNSaeNLH5Ab7d1SHcbcxucVt9pxGVbneeEGhCqf3sJRiyRy0Jzd+Scw4+l+8DIzGg2eUWwoBGoku/tlXfDjRcuRh8v4KcqLQaXTKL4JXPBgiPpmgCeI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hOFWFzC/; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1DDBB1F000E9;
+	Thu,  2 Jul 2026 16:45:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1783010301;
-	bh=PtyvGxEYI8TFaymocx5DWgYaitw+9gSKjwsASF8ZahI=;
+	s=korg; t=1783010716;
+	bh=WO++asFjHivOlvNF0CT3+k6GJppv/UwJR+cwGOZwj9M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=EM3nv1+fJUISf+D7qqcqkrUIp1dyuUh76etWuiTIWqvs+SCoQhp+SX2iMMYYYqbkj
-	 Yclaxk/SaNG0uBdgdAP9Ar+BXUm18X18/yYznCzlniJewqGV1akmZkMVjN+DbKVCHg
-	 80dpTeUnZiCH5BzGnp+zoCsH0J2CG0IeGFW78VDU=
+	b=hOFWFzC/Ej8MoqWS0AV9l3s3cJYc+0UfcyUkoPXr0seTeTcDBbpSQDpghRI9OpaSl
+	 12uuWWyOzB3ttWhW8Dl/YAN/BuccT+ayxoMx9w1WwszgbxZbDzOVa+IBV+mrZhHgyw
+	 UKq0cZGXtzz4Z0kI0UnHw4TJ9zZhNrnNZzf8icwc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michael Bommarito <michael.bommarito@gmail.com>,
-	David Howells <dhowells@redhat.com>,
-	Marc Dionne <marc.dionne@auristor.com>,
-	Jeffrey Altman <jaltman@auristor.com>,
-	Eric Dumazet <edumazet@google.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	linux-afs@lists.infradead.org,
-	netdev@vger.kernel.org,
-	stable@kernel.org,
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Waiman Long <longman@redhat.com>,
+	Thomas Gleixner <tglx@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 055/204] rxrpc: Fix the ACK parser to extract the SACK table for parsing
+Subject: [PATCH 6.6 011/175] debugobjects: Dont call fill_pool() in early boot hardirq context
 Date: Thu,  2 Jul 2026 18:18:32 +0200
-Message-ID: <20260702155119.813722666@linuxfoundation.org>
+Message-ID: <20260702155116.007693929@linuxfoundation.org>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260702155118.667618796@linuxfoundation.org>
-References: <20260702155118.667618796@linuxfoundation.org>
+In-Reply-To: <20260702155115.766838875@linuxfoundation.org>
+References: <20260702155115.766838875@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -77,128 +69,141 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[16];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-270960-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:michael.bommarito@gmail.com,m:dhowells@redhat.com,m:marc.dionne@auristor.com,m:jaltman@auristor.com,m:edumazet@google.com,m:davem@davemloft.net,m:kuba@kernel.org,m:pabeni@redhat.com,m:horms@kernel.org,m:linux-afs@lists.infradead.org,m:netdev@vger.kernel.org,m:stable@kernel.org,m:sashal@kernel.org,m:michaelbommarito@gmail.com,s:lists@lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-271118-lists,stable=lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,redhat.com,auristor.com,google.com,davemloft.net,kernel.org,lists.infradead.org,vger.kernel.org];
+	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:bigeasy@linutronix.de,m:tglx@linutronix.de,m:longman@redhat.com,m:tglx@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,infradead.org:email,msgid.link:url,davemloft.net:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,msgid.link:url,linutronix.de:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 9B6156FAA37
+X-Rspamd-Queue-Id: 09A986FABD9
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Howells <dhowells@redhat.com>
+From: Waiman Long <longman@redhat.com>
 
-[ Upstream commit 333b6d5bb9f87827ac2639c737bf9613dbae7253 ]
+commit 0d046ae106255cba5eb83b23f78ee93f3620247d upstream.
 
-Fix modification of the received skbuff in rxrpc_input_soft_acks() and a
-potential incorrect access of the buffer in a fragmented UDP packet (the
-packet would probably have to be deliberately pre-generated as fragmented)
-when AF_RXRPC tries to extract the contents of the SACK table by copying
-out the contents of the SACK table into a buffer before attempting to parse
+When booting a debug PREEMPT_RT kernel on an ARM64 system, a "inconsistent
+{HARDIRQ-ON-W} -> {IN-HARDIRQ-W} usage" lockdep warning message was
+reported to the console.
 
-AF_RXRPC assumes that it can just call skb_condense() and then validly
-access the SACK table from skb->data and that it will be a flat buffer -
-but skb_condense() can silently fail to do anything under some
-circumstances.
+During early boot, interrupts are enabled before the scheduler is
+enabled. In this window (before SYSTEM_SCHEDULING is set) interrupts can
+fire and in the hard interrupt context handler attempt to fill the pool
 
-Note that whilst rxrpc_input_soft_acks() should be able to parse extended
-ACKs, the rest of AF_RXRPC doesn't currently support that.
+This can lead to a deadlock when the interrupt occurred when the interrupt
+hits a region which holds a lock that is required to be taken in the
+allocation path.
 
-Further, there's then no need to call skb_condense() in rxrpc_input_ack(),
-so don't.
+Add a new can_fill_pool() helper and reorder the exception rule and forbid
+this scenario by excluding allocations from hard interrupt context.
 
-Fixes: d57a3a151660 ("rxrpc: Save last ACK's SACK table rather than marking txbufs")
-Reported-by: Michael Bommarito <michael.bommarito@gmail.com>
-Link: https://lore.kernel.org/r/20260513180907.2061972-1-michael.bommarito@gmail.com
-Signed-off-by: David Howells <dhowells@redhat.com>
-cc: Marc Dionne <marc.dionne@auristor.com>
-cc: Jeffrey Altman <jaltman@auristor.com>
-cc: Eric Dumazet <edumazet@google.com>
-cc: "David S. Miller" <davem@davemloft.net>
-cc: Jakub Kicinski <kuba@kernel.org>
-cc: Paolo Abeni <pabeni@redhat.com>
-cc: Simon Horman <horms@kernel.org>
-cc: linux-afs@lists.infradead.org
-cc: netdev@vger.kernel.org
-cc: stable@kernel.org
-Link: https://patch.msgid.link/105362.1780573560@warthog.procyon.org.uk
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: 06e0ae988f6e ("debugobjects: Allow to refill the pool before SYSTEM_SCHEDULING")
+Suggested-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Suggested-by: Thomas Gleixner <tglx@linutronix.de>
+Signed-off-by: Waiman Long <longman@redhat.com>
+Signed-off-by: Thomas Gleixner <tglx@kernel.org>
+Reviewed-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Cc: stable@vger.kernel.org
+Link: https://patch.msgid.link/20260605173038.495075-1-longman@redhat.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/rxrpc/input.c |   21 ++++++++++++++++-----
- 1 file changed, 16 insertions(+), 5 deletions(-)
+ lib/debugobjects.c | 44 ++++++++++++++++++++++++++++++++++++--------
+ 1 file changed, 36 insertions(+), 8 deletions(-)
 
---- a/net/rxrpc/input.c
-+++ b/net/rxrpc/input.c
-@@ -775,9 +775,23 @@ static void rxrpc_input_soft_acks(struct
- 				  rxrpc_seq_t since)
+diff --git a/lib/debugobjects.c b/lib/debugobjects.c
+index b1c3e873a71d40..e4ef9d032d1749 100644
+--- a/lib/debugobjects.c
++++ b/lib/debugobjects.c
+@@ -606,20 +606,48 @@ static inline bool debug_objects_is_pi_blocked_on(void)
+ #endif
+ }
+ 
+-static void debug_objects_fill_pool(void)
++static inline bool can_fill_pool(void)
  {
- 	struct rxrpc_skb_priv *sp = rxrpc_skb(skb);
--	unsigned int i, old_nacks = 0;
-+	unsigned int i, old_nacks = 0, nsack;
- 	rxrpc_seq_t lowest_nak = seq + sp->ack.nr_acks;
--	u8 *acks = skb->data + sizeof(struct rxrpc_wire_header) + sizeof(struct rxrpc_ackpacket);
-+	u8 sack[256] __aligned(sizeof(unsigned long));
-+	u8 *acks = sack;
-+
-+	/* AF_RXRPC assumes that it can access the SACK table directly from
-+	 * skb->data as a flat buffer, but the skb may be non-linear (e.g. a
-+	 * fragmented UDP packet) and skb_condense() can silently fail to
-+	 * linearise it.  Copy the SACK table out into a local buffer before
-+	 * parsing it.
+ 	/*
+-	 * On RT enabled kernels the pool refill must happen in preemptible
+-	 * context and not enqueued on an rt_mutex -- for !RT kernels we rely
+-	 * on the fact that spinlock_t and raw_spinlock_t are basically the
+-	 * same type and this lock-type inversion works just fine.
++	 * On !RT enabled kernels there are no restrictions and spinlock_t and
++	 * raw_spinlock_t are the same types.
 +	 */
-+	memset(sack, 0, sizeof(sack));
-+	nsack = umin(sp->ack.nr_acks, 256);
-+	if (skb_copy_bits(skb,
-+			  sizeof(struct rxrpc_wire_header) + sizeof(struct rxrpc_ackpacket),
-+			  sack, nsack) < 0)
-+		return;
- 
- 	for (i = 0; i < sp->ack.nr_acks; i++) {
- 		if (acks[i] == RXRPC_ACK_TYPE_ACK) {
-@@ -934,9 +948,6 @@ static void rxrpc_input_ack(struct rxrpc
- 	    skb_copy_bits(skb, ioffset, &trailer, sizeof(trailer)) < 0)
- 		return rxrpc_proto_abort(call, 0, rxrpc_badmsg_short_ack_trailer);
- 
--	if (nr_acks > 0)
--		skb_condense(skb);
--
- 	if (call->cong_last_nack) {
- 		since = rxrpc_input_check_prev_ack(call, &summary, first_soft_ack);
- 		rxrpc_free_skb(call->cong_last_nack, rxrpc_skb_put_last_nack);
++	if (!IS_ENABLED(CONFIG_PREEMPT_RT))
++		return true;
++
++	/*
++	 * On RT enabled kernels, the task must not be blocked on a lock as
++	 * that could corrupt the PI state when blocking on a lock in the
++	 * allocation path.
++	 */
++	if (debug_objects_is_pi_blocked_on())
++		return false;
++
++	/*
++	 * On RT enabled kernels the pool refill should happen in preemptible
++	 * context.
+ 	 */
+-	if (!IS_ENABLED(CONFIG_PREEMPT_RT) || system_state < SYSTEM_SCHEDULING ||
+-	    (preemptible() && !debug_objects_is_pi_blocked_on())) {
++	if (preemptible())
++		return true;
++
++	/*
++	 * Though during system boot before scheduling is set up, preemption is
++	 * disabled and the pool can get exhausted. Before scheduling is active
++	 * a task cannot be blocked on a sleeping lock, but it might hold a lock
++	 * and if interrupted then hard interrupt context might run into a lock
++	 * inversion. So exclude hard interrupt context from allocations before
++	 * scheduling is active.
++	 */
++	return system_state < SYSTEM_SCHEDULING && !in_hardirq();
++}
++
++static void debug_objects_fill_pool(void)
++{
++	if (can_fill_pool()) {
+ 		/*
+ 		 * Annotate away the spinlock_t inside raw_spinlock_t warning
+ 		 * by temporarily raising the wait-type to LD_WAIT_CONFIG, matching
+-		 * the preemptible() condition above.
++		 * the preemptible() condition in can_fill_pool().
+ 		 */
+ 		static DEFINE_WAIT_OVERRIDE_MAP(fill_pool_map, LD_WAIT_CONFIG);
+ 		lock_map_acquire_try(&fill_pool_map);
+-- 
+2.53.0
+
 
 
 
