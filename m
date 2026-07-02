@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-271379-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-271380-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id Jbt0Bf6lRmrdawsAu9opvQ
-	(envelope-from <stable+bounces-271379-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:55:10 +0200
+	id WEf5DeaaRmq3ZwsAu9opvQ
+	(envelope-from <stable+bounces-271380-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:07:50 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 803FF6FBB5D
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:55:09 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6F0A16FB03B
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:07:49 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=0u4t3fi7;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-271379-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-271379-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=tnEsHeE9;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-271380-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-271380-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 9A97E3496F51
-	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:56:43 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 077363327BAF
+	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:56:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB71933E348;
-	Thu,  2 Jul 2026 16:56:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7DF7282866;
+	Thu,  2 Jul 2026 16:56:32 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A894623EAAD;
-	Thu,  2 Jul 2026 16:56:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CDF8340408;
+	Thu,  2 Jul 2026 16:56:31 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783011389; cv=none; b=KnccvIK8pPrDOU+wYFyJOb89Z2FvzbtZ7GAZI1HqQ8aIzqky7hxWH+ERXupD1BPT70o/aiG6VN45xEqeFLon1fu3yM4T7ULlVmCbX15hKcqJ6KV8EJI+tzTgMS+gf+t7U666O5XiCd5Q4TkUQIeuoDF00BzhGTyUVC0OVx9l1RE=
+	t=1783011392; cv=none; b=kPxAu19tkrPURgPWvCsn+bDohxDYVTjZWbxnIlYFgtHrBYSZzU5m1I06ST8aXkTykZq449+0XKPfPjpwbkXAmAGr23fW79jSq/vt81+xgfVF4furqLuxXbiJ8sBHxHqvtYuKcdEjFzKLURf3FX2vCIm92BZSY1RMvT6mUAQgFaw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783011389; c=relaxed/simple;
-	bh=/749971AkzzBDTnPOjknewmjQZHhLs7fKcodrwxxq34=;
+	s=arc-20240116; t=1783011392; c=relaxed/simple;
+	bh=21EIzs5oy762PIWWFTWQzjpPln8qUtyhPXxuX5uEcaQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Mv0m2AQzA4h+fOt6s+CDWh13jluuFBeJA9JoZ/RAZ6Ninig2LOlKFMxa3xEYWcuUVq6SuZiZLnUzGGO5jnNPoAna3wk+HMvnDhNpmHkY3fPULLGKYWqxI0jR9r/yILkQgCZbLJcHAAN4u5w4KuOzqlRNfQJtjpQLVpOb6Vs030E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0u4t3fi7; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19B441F00A3A;
-	Thu,  2 Jul 2026 16:56:27 +0000 (UTC)
+	 MIME-Version; b=r9Mi+/+0r+116Zm3dHcnXEW9KvvSvPZke0fEXsFOUPPm/zhigjf4c3ujY0hExMzFzHk2cJmXb1Lw6FRM1D+48Z7vzjmO1/ehNfRZ8Zc8dIdxOQT5HdyXY6dHSo9VSN2V0JfLrZwfneW5c1/jgirH1RlyxSyB74ranQBX/+BtNWY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tnEsHeE9; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B35811F000E9;
+	Thu,  2 Jul 2026 16:56:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1783011388;
-	bh=l6fJB8um8liq6oEpWQgkZlOJkT1UeH1oJRs8m92i8Wg=;
+	s=korg; t=1783011391;
+	bh=oEkdvKXRIi5ujle0Gc528vg6rnUWZ45hty/9Ipin4Go=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=0u4t3fi7gHwWVymF3tAamy8BG/GhpEG8aPQ8az0E8D6V2XrN4mXvd46m2FMaXl+gM
-	 WJrcGGSlVfEMqcpgjDeD9oQYh1gZtctDmbQL09MLIW/nAj2MOdTBELKfOmkHSDpjlZ
-	 SwVfGuA1wCzd6xrOIiZX7r9mdWh/JUUKOhlwvAxw=
+	b=tnEsHeE9oI8pXNZ8Xi1WRrUda+h8JlzR6gOey7p5h3q2RW48zB4mUkM5qEIO9bJcq
+	 eB8SQZZpQAhdEXFHlT5uuVJDJFFLvKJQjgd6ihWkNE8aPm7Ei1cW1yAucU/T80dz//
+	 L6ahB7xcHFRGoJ62K9PR2SN5r2U20bHAk3hQeJNA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ashutosh Desai <ashutoshdesai993@gmail.com>,
-	Sean Christopherson <seanjc@google.com>
-Subject: [PATCH 6.18 088/108] KVM: SVM: Fix page overflow in sev_dbg_crypt() for ENCRYPT path
-Date: Thu,  2 Jul 2026 18:21:25 +0200
-Message-ID: <20260702155113.935019177@linuxfoundation.org>
+	Wentao Liang <vulab@iscas.ac.cn>,
+	Sebastian Reichel <sebastian.reichel@collabora.com>
+Subject: [PATCH 6.18 089/108] power: reset: linkstation-poweroff: fix use-after-free in the linkstation_poweroff_init()
+Date: Thu,  2 Jul 2026 18:21:26 +0200
+Message-ID: <20260702155113.956274402@linuxfoundation.org>
 X-Mailer: git-send-email 2.55.0
 In-Reply-To: <20260702155112.110058792@linuxfoundation.org>
 References: <20260702155112.110058792@linuxfoundation.org>
@@ -71,129 +71,71 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-271380-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-271379-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:ashutoshdesai993@gmail.com,m:seanjc@google.com,s:lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,google.com];
 	FORWARDED(0.00)[lists@lfdr.de];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:vulab@iscas.ac.cn,m:sebastian.reichel@collabora.com,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,msgid.link:url]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[collabora.com:email,iscas.ac.cn:email,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,msgid.link:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 803FF6FBB5D
+X-Rspamd-Queue-Id: 6F0A16FB03B
 
 6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ashutosh Desai <ashutoshdesai993@gmail.com>
+From: Wentao Liang <vulab@iscas.ac.cn>
 
-commit 78ee2d50185a037b3d2452a97f3dad69c3f7f389 upstream.
+commit 8eec545cde69e46e9a1d2b7d915ce4f5df85b3bd upstream.
 
-In sev_dbg_crypt(), the per-iteration transfer length is bounded by
-the source page offset (PAGE_SIZE - s_off) but not by the destination
-page offset (PAGE_SIZE - d_off).  When d_off > s_off, the encrypt
-path (__sev_dbg_encrypt_user) performs a read-modify-write using a
-single-page intermediate buffer (dst_tpage):
+Move of_node_put(dn) after the of_match_node() call, which still needs
+the node pointer. The node reference is correctly released after use.
 
-  1. __sev_dbg_decrypt() expands the size to round_up(len + (d_off & 15), 16)
-     before issuing the PSP command.  If len + (d_off & 15) > PAGE_SIZE,
-     the PSP writes beyond the end of the 4096-byte dst_tpage allocation.
-
-  2. The subsequent memcpy()/copy_from_user() into
-     page_address(dst_tpage) + (d_off & 15) of 'len' bytes overflows
-     by up to 15 bytes under the same condition.
-
-Trigger example: s_off = 0, d_off = 1, debug.len = PAGE_SIZE -
-the PSP is instructed to write round_up(4097, 16) = 4112 bytes to
-a 4096-byte buffer.
-
-Fix by also bounding len by (PAGE_SIZE - d_off), the same check that
-sev_send_update_data() already performs for its single-page guest
-region.
-
- ==================================================================
- BUG: KASAN: slab-use-after-free in sev_dbg_crypt+0x993/0xd10 [kvm_amd]
- Write of size 4095 at addr ff110062293bb009 by task sev_dbg_test/228214
-
- CPU: 96 UID: 0 PID: 228214 Comm: sev_dbg_test Tainted: G     U  W           7.0.0-smp--5ce9b0c48211-dbg #156 PREEMPTLAZY
- Tainted: [U]=USER, [W]=WARN
- Hardware name: Google Astoria/astoria, BIOS 0.20250817.1-0 08/25/2025
- Call Trace:
-  <TASK>
-  dump_stack_lvl+0x54/0x70
-  print_report+0xbc/0x260
-  kasan_report+0xa2/0xd0
-  kasan_check_range+0x25f/0x2c0
-  __asan_memcpy+0x40/0x70
-  sev_dbg_crypt+0x993/0xd10 [kvm_amd]
-  sev_mem_enc_ioctl+0x33c/0x450 [kvm_amd]
-  kvm_vm_ioctl+0x65d/0x6d0 [kvm]
-  __se_sys_ioctl+0xb2/0x100
-  do_syscall_64+0xe8/0x870
-  entry_SYSCALL_64_after_hwframe+0x4b/0x53
-  </TASK>
-
- The buggy address belongs to the physical page:
- page: refcount:1 mapcount:0 mapping:0000000000000000 index:0x7fe72b6a0 pfn:0x62293bb
- memcg:ff11000112827d82
- flags: 0x1400000000000000(node=1|zone=1)
- raw: 1400000000000000 0000000000000000 dead000000000122 0000000000000000
- raw: 00000007fe72b6a0 0000000000000000 00000001ffffffff ff11000112827d82
- page dumped because: kasan: bad access detected
-
- Memory state around the buggy address:
-  ff110062293bbf00: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-  ff110062293bbf80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
- >ff110062293bc000: fa fb fb fb fb fb fb fb fc fc fc fc fc fc fc fc
-                    ^
-  ff110062293bc080: fa fb fb fb fb fb fb fb fc fc fc fc fc fc fc fc
-  ff110062293bc100: fa fb fb fb fb fb fb fb fc fc fc fc fc fc fc fc
- ==================================================================
- Disabling lock debugging due to kernel taint
-
-Fixes: 24f41fb23a39 ("KVM: SVM: Add support for SEV DEBUG_DECRYPT command")
-Fixes: 7d1594f5d94b ("KVM: SVM: Add support for SEV DEBUG_ENCRYPT command")
+Fixes: e2f471efe1d6 ("power: reset: linkstation-poweroff: prepare for new devices")
 Cc: stable@vger.kernel.org
-Signed-off-by: Ashutosh Desai <ashutoshdesai993@gmail.com>
-[sean: add sample KASAN splat, Fixes, and stable@]
-Link: https://patch.msgid.link/20260501203537.2120074-2-seanjc@google.com
-Signed-off-by: Sean Christopherson <seanjc@google.com>
+Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
+Link: https://patch.msgid.link/20260407073025.271865-1-vulab@iscas.ac.cn
+Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kvm/svm/sev.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/power/reset/linkstation-poweroff.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/arch/x86/kvm/svm/sev.c
-+++ b/arch/x86/kvm/svm/sev.c
-@@ -1340,6 +1340,7 @@ static int sev_dbg_crypt(struct kvm *kvm
- 		s_off = vaddr & ~PAGE_MASK;
- 		d_off = dst_vaddr & ~PAGE_MASK;
- 		len = min_t(size_t, (PAGE_SIZE - s_off), size);
-+		len = min_t(size_t, len, PAGE_SIZE - d_off);
+--- a/drivers/power/reset/linkstation-poweroff.c
++++ b/drivers/power/reset/linkstation-poweroff.c
+@@ -163,10 +163,10 @@ static int __init linkstation_poweroff_i
+ 	dn = of_find_matching_node(NULL, ls_poweroff_of_match);
+ 	if (!dn)
+ 		return -ENODEV;
+-	of_node_put(dn);
  
- 		if (dec)
- 			ret = __sev_dbg_decrypt_user(kvm,
+ 	match = of_match_node(ls_poweroff_of_match, dn);
+ 	cfg = match->data;
++	of_node_put(dn);
+ 
+ 	dn = of_find_node_by_name(NULL, cfg->mdio_node_name);
+ 	if (!dn)
 
 
 
