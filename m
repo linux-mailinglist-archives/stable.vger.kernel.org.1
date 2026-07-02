@@ -1,61 +1,61 @@
-Return-Path: <stable+bounces-271099-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-271225-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id bvfqGSmYRmpEZgsAu9opvQ
-	(envelope-from <stable+bounces-271099-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:56:09 +0200
+	id lyQsGQ+kRmpLawsAu9opvQ
+	(envelope-from <stable+bounces-271225-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:46:55 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D4EF26FAC4C
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:56:08 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D5E8C6FB9E1
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:46:54 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=aiRCnvfL;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-271099-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-271099-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=b2Xs8hhz;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-271225-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-271225-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 1D7263053D05
-	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:47:22 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 71EAE33C7C27
+	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:51:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CEE653A9619;
-	Thu,  2 Jul 2026 16:44:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7482631F9A8;
+	Thu,  2 Jul 2026 16:49:53 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B6D43AD530;
-	Thu,  2 Jul 2026 16:44:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1931923EAAD;
+	Thu,  2 Jul 2026 16:49:52 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783010667; cv=none; b=WD9wIKqm7K6HtcOecW59vHzCb6Oh+YtK525Ut4+CzHvjgao+AdOoPzFK3fvu5VO/NDp+OesmMQcqDP115iFCkZT+IeqGaACUN3/oZkeVOfPHkVDvQeSmcu/64yeZdoMYLiNmbQed+Hqwoczf9FCV0U+9rsjinZtufcY1FsWTFjY=
+	t=1783010993; cv=none; b=dWwOO8RO/QZO+nb2UjvyKrkwNtT0E4ac/orK15Y+ned9ZDFu4C/qzcOVcva7g3QSmuKNB6WkgI5upnJT9rJLfiKDrqJTIvXxEN8/tw1DQsiJdVpAcEYs6PqlbJksoIUHMne7SkoQ+dd+CbcQlluVuKTCZRsp4/gsF5oqKZuwH7g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783010667; c=relaxed/simple;
-	bh=u15qi7IDurJjC63LXdsXXWiiOfH7apCEUKfCA3Zhqhw=;
+	s=arc-20240116; t=1783010993; c=relaxed/simple;
+	bh=NgvWPoz8APRa9Dp560LMB+n5Vhr7yzQm2WXJqgLYQQs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Yo450hGQuF37QP8ReLswuDFXTOD7sr6lLAG5TXOVu8lFRRRo54wxhcdBU+gK/hx6AWBgzottec/DrDIQnoeSdVihI+IQZ/exL5dl49Ak0oim+wQ6vhahNvG0/ESmVce6jAxYc6J5SslF4bQXx4P9H/hloVwr7E443HG+2yNV8/I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aiRCnvfL; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C09FF1F000E9;
-	Thu,  2 Jul 2026 16:44:25 +0000 (UTC)
+	 MIME-Version; b=tz0tWUpzDalng5hbdJsujFw/3Pn0jvagkV9ILNmx5vgo0dk73IfTphTDUZ7NRvZtiYOJlm28xf+SzMyRIaHViqU9JiYJ/bDZImGTzKsb594Cr4/0o6divJ8RReI8V5PM6201HqHHJXaDD7Qq5KVxludNuSYDfNGrCV9RnZBOdn0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b2Xs8hhz; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C9741F000E9;
+	Thu,  2 Jul 2026 16:49:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1783010666;
-	bh=dj8RXv3nU9Eh0vCPfnEzTCs5vqbE2xm1VFgXpggvmXk=;
+	s=korg; t=1783010992;
+	bh=egPQDrVtegR8LJnJ/W6m5Za7GcG20/qSInNEYE9FpBc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=aiRCnvfLgW1Ic6YEMYZqK2ZuH2/QdqCdzLxFaSBhBXn3AcOWe3NmdcUb0YjrIwhi0
-	 tr6mXy/2oBuwiVXeXkt8xYvIopSD1BPmHXS4oBT8540HjOnSO7KT6qB/Bo16L78gn3
-	 opmm/O1i33aHVypz3Nf7aye2nsi9B5ELUjHxks+Q=
+	b=b2Xs8hhz8UbbZPhhsfYvX2weQoNVBh7Q2dqAyLwgqb1IN7KIq3eNDTkf3FhEjNpMg
+	 XDL/2xuHqv9EjyrdZYcU021lthPz6ygmvC9MJ1W9jwqScMYVmUpAbAL19lCjlIy8eP
+	 1P3CEPYMO9QtIgeF1AiSOUmmgjPut+0nd9mpwH2Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Denis Arefev <arefev@swemel.ru>,
-	Christoph Hellwig <hch@lst.de>,
-	Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 6.12 159/204] block: Avoid mounting the bdev pseudo-filesystem in userspace
+	stable@kernel.org,
+	Sven Eckelmann <sven@narfation.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 115/175] batman-adv: tvlv: avoid race of cifsnotfound handler state
 Date: Thu,  2 Jul 2026 18:20:16 +0200
-Message-ID: <20260702155121.989951145@linuxfoundation.org>
+Message-ID: <20260702155118.180240052@linuxfoundation.org>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260702155118.667618796@linuxfoundation.org>
-References: <20260702155118.667618796@linuxfoundation.org>
+In-Reply-To: <20260702155115.766838875@linuxfoundation.org>
+References: <20260702155115.766838875@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,21 +72,21 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-271099-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-271225-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:arefev@swemel.ru,m:hch@lst.de,m:axboe@kernel.dk,s:lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:stable@kernel.org,m:sven@narfation.org,m:sashal@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
@@ -98,85 +98,163 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[lst.de:email,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,kernel.dk:email,linuxtesting.org:url,swemel.ru:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,narfation.org:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: D4EF26FAC4C
+X-Rspamd-Queue-Id: D5E8C6FB9E1
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Denis Arefev <arefev@swemel.ru>
+From: Sven Eckelmann <sven@narfation.org>
 
-commit f73aa66dffcb8e61e78f01b56163ec16a15d06d2 upstream.
+commit edb557b2ba38fea2c5eb710cf366c797e187218c upstream.
 
-The bdev pseudo-filesystem is an internal kernel filesystem with which
-userspace should not interfere. Unregister it so that userspace cannot
-even attempt to mount it.
+TVLV handlers can have the flag BATADV_TVLV_HANDLER_OGM_CIFNOTFND set to
+signal that the OGM handler should be called (with NULL for data) when the
+specific TVLV container was not found in the OGM. This is used by:
 
-This fixes a bug [1] that occurs when attempting to access files,
-because the system call move_mount() uses pointers declared in the
-inode_operations structure, which for the bdev pseudo-filesystem
-are always equal to 0. `inode->i_op = &empty_iops;`
+* DAT
+* GW
+* Multicast (OGM + Tracker)
 
-[1]
+The state whether the handler was executed was stored in the struct
+batadv_tvlv_handler. But the TVLV processing is started without any lock.
+Multiple parallel contexts processing TVLVs would therefore overwrite each
+others BATADV_TVLV_HANDLER_OGM_CALLED flag in the shared
+batadv_tvlv_handler.
 
- BUG: kernel NULL pointer dereference, address: 0000000000000000
- #PF: supervisor instruction fetch in kernel mode
- #PF: error_code(0x0010) - not-present page
- PGD 23380067 P4D 23380067 PUD 23381067 PMD 0
- Oops: 0010 [#1] PREEMPT SMP KASAN NOPTI
- CPU: 2 PID: 17125 Comm: syz-executor.0 Not tainted 6.1.155-syzkaller-00350-g84221fde2681 #0
- Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.12.0-1 04/01/2014
- RIP: 0010:0x0
+Drop the shared BATADV_TVLV_HANDLER_OGM_CALLED flag and instead determine,
+per TVLV buffer, whether a matching container was present by scanning the
+packet's buffer.
 
- Call Trace:
- <TASK>
- lookup_open.isra.0+0x700/0x1180 fs/namei.c:3460
- open_last_lookups fs/namei.c:3550 [inline]
- path_openat+0x953/0x2700 fs/namei.c:3780
- do_filp_open+0x1c5/0x410 fs/namei.c:3810
- do_sys_openat2+0x171/0x4d0 fs/open.c:1318
- do_sys_open fs/open.c:1334 [inline]
- __do_sys_openat fs/open.c:1350 [inline]
- __se_sys_openat fs/open.c:1345 [inline]
- __x64_sys_openat+0x13c/0x1f0 fs/open.c:1345
- do_syscall_x64 arch/x86/entry/common.c:51 [inline]
- do_syscall_64+0x35/0x80 arch/x86/entry/common.c:81
- entry_SYSCALL_64_after_hwframe+0x6e/0xd8
-
-Found by Linux Verification Center (linuxtesting.org) with Syzkaller.
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Link: https://lore.kernel.org/all/20131010004732.GJ13318@ZenIV.linux.org.uk/T/#
-Cc: stable@vger.kernel.org
-Signed-off-by: Denis Arefev <arefev@swemel.ru>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Link: https://patch.msgid.link/20260521072857.5078-1-arefev@swemel.ru
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@kernel.org
+Fixes: ef26157747d4 ("batman-adv: tvlv - basic infrastructure")
+Signed-off-by: Sven Eckelmann <sven@narfation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- block/bdev.c |    5 -----
- 1 file changed, 5 deletions(-)
+ net/batman-adv/tvlv.c  | 63 ++++++++++++++++++++++++++++++++++++++----
+ net/batman-adv/types.h |  7 -----
+ 2 files changed, 57 insertions(+), 13 deletions(-)
 
---- a/block/bdev.c
-+++ b/block/bdev.c
-@@ -414,15 +414,10 @@ EXPORT_SYMBOL_GPL(blockdev_superblock);
+diff --git a/net/batman-adv/tvlv.c b/net/batman-adv/tvlv.c
+index e1cd27b99bd119..cc66e231ccb8a0 100644
+--- a/net/batman-adv/tvlv.c
++++ b/net/batman-adv/tvlv.c
+@@ -398,7 +398,6 @@ static int batadv_tvlv_call_handler(struct batadv_priv *bat_priv,
+ 		tvlv_handler->ogm_handler(bat_priv, orig_node,
+ 					  BATADV_NO_FLAGS,
+ 					  tvlv_value, tvlv_value_len);
+-		tvlv_handler->flags |= BATADV_TVLV_HANDLER_OGM_CALLED;
+ 		break;
+ 	case BATADV_UNICAST_TVLV:
+ 		if (!skb)
+@@ -430,6 +429,48 @@ static int batadv_tvlv_call_handler(struct batadv_priv *bat_priv,
+ 	return NET_RX_SUCCESS;
+ }
  
- void __init bdev_cache_init(void)
++/**
++ * batadv_tvlv_containers_contain() - check if a tvlv buffer holds a container
++ * @tvlv_value: tvlv content
++ * @tvlv_value_len: tvlv content length
++ * @type: tvlv container type to look for
++ * @version: tvlv container version to look for
++ *
++ * Return: true if a container of the given type and version is present in the
++ * tvlv buffer, false otherwise.
++ */
++static bool batadv_tvlv_containers_contain(void *tvlv_value,
++					   u16 tvlv_value_len, u8 type,
++					   u8 version)
++{
++	struct batadv_tvlv_hdr *tvlv_hdr;
++	u16 tvlv_value_cont_len;
++
++	while (tvlv_value_len >= sizeof(*tvlv_hdr)) {
++		tvlv_hdr = tvlv_value;
++		tvlv_value_cont_len = ntohs(tvlv_hdr->len);
++		tvlv_value = tvlv_hdr + 1;
++		tvlv_value_len -= sizeof(*tvlv_hdr);
++
++		if (tvlv_value_cont_len > tvlv_value_len)
++			break;
++
++		/* the next tvlv header is accessed assuming (at least) 2-byte
++		 * alignment, so it must start at an even offset.
++		 */
++		if (tvlv_value_cont_len & 1)
++			break;
++
++		if (tvlv_hdr->type == type && tvlv_hdr->version == version)
++			return true;
++
++		tvlv_value = (u8 *)tvlv_value + tvlv_value_cont_len;
++		tvlv_value_len -= tvlv_value_cont_len;
++	}
++
++	return false;
++}
++
+ /**
+  * batadv_tvlv_containers_process() - parse the given tvlv buffer to call the
+  *  appropriate handlers
+@@ -449,7 +490,9 @@ int batadv_tvlv_containers_process(struct batadv_priv *bat_priv,
+ 				   struct sk_buff *skb, void *tvlv_value,
+ 				   u16 tvlv_value_len)
  {
--	int err;
++	u16 tvlv_value_start_len = tvlv_value_len;
+ 	struct batadv_tvlv_handler *tvlv_handler;
++	void *tvlv_value_start = tvlv_value;
+ 	struct batadv_tvlv_hdr *tvlv_hdr;
+ 	u16 tvlv_value_cont_len;
+ 	u8 cifnotfound = BATADV_TVLV_HANDLER_OGM_CIFNOTFND;
+@@ -493,12 +536,20 @@ int batadv_tvlv_containers_process(struct batadv_priv *bat_priv,
+ 		if (!tvlv_handler->ogm_handler)
+ 			continue;
+ 
+-		if ((tvlv_handler->flags & BATADV_TVLV_HANDLER_OGM_CIFNOTFND) &&
+-		    !(tvlv_handler->flags & BATADV_TVLV_HANDLER_OGM_CALLED))
+-			tvlv_handler->ogm_handler(bat_priv, orig_node,
+-						  cifnotfound, NULL, 0);
++		if (!(tvlv_handler->flags & BATADV_TVLV_HANDLER_OGM_CIFNOTFND))
++			continue;
+ 
+-		tvlv_handler->flags &= ~BATADV_TVLV_HANDLER_OGM_CALLED;
++		/* if the corresponding container was present then the handler
++		 * was already called from the loop above
++		 */
++		if (batadv_tvlv_containers_contain(tvlv_value_start,
++						   tvlv_value_start_len,
++						   tvlv_handler->type,
++						   tvlv_handler->version))
++			continue;
++
++		tvlv_handler->ogm_handler(bat_priv, orig_node,
++					  cifnotfound, NULL, 0);
+ 	}
+ 	rcu_read_unlock();
+ 
+diff --git a/net/batman-adv/types.h b/net/batman-adv/types.h
+index 0368cb93865f39..4856cc98fc3c51 100644
+--- a/net/batman-adv/types.h
++++ b/net/batman-adv/types.h
+@@ -2413,13 +2413,6 @@ enum batadv_tvlv_handler_flags {
+ 	 *  will call this handler even if its type was not found (with no data)
+ 	 */
+ 	BATADV_TVLV_HANDLER_OGM_CIFNOTFND = BIT(1),
 -
- 	bdev_cachep = kmem_cache_create("bdev_cache", sizeof(struct bdev_inode),
- 			0, (SLAB_HWCACHE_ALIGN|SLAB_RECLAIM_ACCOUNT|
- 				SLAB_ACCOUNT|SLAB_PANIC),
- 			init_once);
--	err = register_filesystem(&bd_type);
--	if (err)
--		panic("Cannot register bdev pseudo-fs");
- 	blockdev_mnt = kern_mount(&bd_type);
- 	if (IS_ERR(blockdev_mnt))
- 		panic("Cannot create bdev pseudo-fs");
+-	/**
+-	 * @BATADV_TVLV_HANDLER_OGM_CALLED: interval tvlv handling flag - the
+-	 *  API marks a handler as being called, so it won't be called if the
+-	 *  BATADV_TVLV_HANDLER_OGM_CIFNOTFND flag was set
+-	 */
+-	BATADV_TVLV_HANDLER_OGM_CALLED = BIT(2),
+ };
+ 
+ #endif /* _NET_BATMAN_ADV_TYPES_H_ */
+-- 
+2.53.0
+
 
 
 
