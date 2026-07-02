@@ -1,60 +1,62 @@
-Return-Path: <stable+bounces-271497-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-271386-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id sAaTAYGnRmpebAsAu9opvQ
-	(envelope-from <stable+bounces-271497-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 20:01:37 +0200
+	id ja8lInaaRmqCZwsAu9opvQ
+	(envelope-from <stable+bounces-271386-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:05:58 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0E3676FBCBF
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 20:01:36 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D08D6FAF97
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:05:58 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=Dnrfk0S1;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-271497-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-271497-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=D7hgww5S;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-271386-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-271386-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id C4FE431EBDC2
-	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 17:01:39 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id C2E65306F633
+	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:56:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53CBD2FC893;
-	Thu,  2 Jul 2026 17:01:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4604E318ED2;
+	Thu,  2 Jul 2026 16:56:48 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D49C433E87;
-	Thu,  2 Jul 2026 17:01:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A9221C695;
+	Thu,  2 Jul 2026 16:56:47 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783011697; cv=none; b=HjJxFiBRTWvXYUD3kRhVaBMJzkGnW1ODFyiR27cyWYB4uRb6u7769+KuMECUHFqtyUVa1ErCr0v6pOKQGCljhzV7cJMRnfA12CQKQua7fzP2TAypuGtc9zBe/3vflHx0cohSOI+P0vDN5ZqmTzn0vNERdOqm17AR8Xl+o/LuV9g=
+	t=1783011408; cv=none; b=caqWh77J2SxmL4r37xL0igLXenqn/UQbEQrkYv+CjzKZedMf6zUNucSIqiLPyPw+MzovsAB8HTAvZwusqxsWZkuJqrxYMrA0c14fLEeAWdXD3fhPPgU/efF0+I/AoiHRaEaEntqh2ycs0bQ/NMCxOVUVAQK4RuU9f8237mbBr4k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783011697; c=relaxed/simple;
-	bh=tReUqqKX7QfDy6Z1Z5JghejAN41gXfCge88b+ufiO4A=;
+	s=arc-20240116; t=1783011408; c=relaxed/simple;
+	bh=GJ2H9wkHqs6b5/O2b74Qvjgz7cL3/8dRR7R1r7YjxNc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=d2JpGjElgVy0fZLmdSWMevKD2L4rFaqIA52r5+GKfhxWBF0DmhSNG96D0PkJ858cWCMp0CiNDft/DjL3ap94tSkcY3T2gkb02TnZLrW9316tlzUBkXv0ObfxgfGEyIvKK4h654KQIr4kxmVg8YxJc3jWSPkyTUoyU62+jgbv2Fw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Dnrfk0S1; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A1411F000E9;
-	Thu,  2 Jul 2026 17:01:35 +0000 (UTC)
+	 MIME-Version; b=lvyW+ADuVfqgI+y/S+lNuh9sgAQq4lFKXsh/kK//4vi1DwXkPsYztUj95F96cPvzfPTtU145ZqdRMhklM/KJwtE97EXcwsvJUGp2PjT3rwUGEP8r/BHYtqBmJRJM3FG9qNmO9cr6JVcxSoEXtRX1vW6uuhSQz24XEjBOgzrJYv0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D7hgww5S; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81DFA1F000E9;
+	Thu,  2 Jul 2026 16:56:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1783011696;
-	bh=gzw0s5iDEzH7SRFnNoox+gFyk70gJ6xbKgUv0sZsxoE=;
+	s=korg; t=1783011407;
+	bh=d846CjjQeMifoovuX6wp+7Pow9w5GJ9fAvU3F4jKEF0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Dnrfk0S1e6Mw2aeP7tJggnlrCL848wLn0/HqdtrX9RTRk6of/UPumRQvjyw6a0M4o
-	 qX+4uOix3hFpTb2sNgwla+zUg4e43QUD1XxqLjjWwCb9slGeMzBkf/geCnCEGHYFhG
-	 YliXR0AYD82xbxhz9ju8lQp38P9DnBK2NQ6+YDJw=
+	b=D7hgww5SiBljwLVyJwauY5JNtkTe5dLanW/9UQ89wWBAGghZWBJZaZJNBKoE+OtWu
+	 k/OSJ1BS5OUVyaYzAezQalcIhsYRhGwleRl20tNmP8t/8XM0AaCWTfz4YwWFVa7NxS
+	 FwDjFX/gvC/2jFqvOe+RVCOlbgZMRurwcQSOVwgk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ping-Ke Shih <pkshih@realtek.com>,
-	Luka Gejak <luka.gejak@linux.dev>
-Subject: [PATCH 7.1 054/120] wifi: rtw88: increase TX report timeout to fix race condition
+	Jose Ignacio Tornos Martinez <jtornosm@redhat.com>,
+	Baochen Qiang <baochen.qiang@oss.qualcomm.com>,
+	Rameshkumar Sundaram <rameshkumar.sundaram@oss.qualcomm.com>,
+	Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+Subject: [PATCH 6.18 053/108] wifi: ath11k: fix warning when unbinding
 Date: Thu,  2 Jul 2026 18:20:50 +0200
-Message-ID: <20260702155114.083123565@linuxfoundation.org>
+Message-ID: <20260702155113.208784269@linuxfoundation.org>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260702155112.964534952@linuxfoundation.org>
-References: <20260702155112.964534952@linuxfoundation.org>
+In-Reply-To: <20260702155112.110058792@linuxfoundation.org>
+References: <20260702155112.110058792@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,99 +72,85 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:pkshih@realtek.com,m:luka.gejak@linux.dev,s:lists@lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-271497-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-271386-lists,stable=lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
-	FROM_HAS_DN(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:jtornosm@redhat.com,m:baochen.qiang@oss.qualcomm.com,m:rameshkumar.sundaram@oss.qualcomm.com,m:jeff.johnson@oss.qualcomm.com,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RWL_MAILSPIKE_POSSIBLE(0.00)[104.64.211.4:from];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.dev:email,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,realtek.com:email,msgid.link:url,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[qualcomm.com:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,msgid.link:url]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 0E3676FBCBF
+X-Rspamd-Queue-Id: 0D08D6FAF97
 
-7.1-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Luka Gejak <luka.gejak@linux.dev>
+From: Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
 
-commit c80788f7c5aed8d420366b821f867a8a353d83a5 upstream.
+commit 8b7a26b6681922a38cd5a7829ace61f8e54df9b7 upstream.
 
-The driver expects the firmware to report TX status within 500ms.
-However, a timeout can be triggered when the hardware performs
-background scans while under TX load. During these scans, the firmware
-stays off-channel for periods exceeding 500ms, delaying the delivery of
-TX reports back to the driver.
+If there is an error during some initialization related to firmware,
+the buffers dp->tx_ring[i].tx_status are released.
+However this is released again when the device is unbinded (ath11k_pci),
+and we get:
+WARNING: CPU: 0 PID: 6231 at mm/slub.c:4368 free_large_kmalloc+0x57/0x90
+Call Trace:
+free_large_kmalloc
+ath11k_dp_free
+ath11k_core_deinit
+ath11k_pci_remove
+...
 
-When this occurs, the purge timer fires prematurely and drops the
-tracking skbs from the queue. This results in the host stack
-interpreting the missing status as packet loss, leading to TCP window
-collapse. In testing with iperf3, this causes throughput to drop from
-~90 Mbps to near-zero for approximately 2 seconds until the connection
-recovers.
+The issue is always reproducible from a VM because the MSI addressing
+initialization is failing.
 
-Increase RTW_TX_PROBE_TIMEOUT to 2500ms for RTL8723DU. This duration is
-sufficient to accommodate off-channel dwell time during full background
-scans, ensuring the purge timer only trips during genuine firmware
-lockups and preventing unnecessary TCP retransmission cycles.
+In order to fix the issue, just set the buffers to NULL after releasing in
+order to avoid the double free.
 
-Fixes: a82dfd33d123 ("wifi: rtw88: Add common USB chip support")
+Fixes: d5c65159f289 ("ath11k: driver for Qualcomm IEEE 802.11ax devices")
 Cc: stable@vger.kernel.org
-Acked-by: Ping-Ke Shih <pkshih@realtek.com>
-Tested-by: Luka Gejak <luka.gejak@linux.dev>
-Signed-off-by: Luka Gejak <luka.gejak@linux.dev>
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
-Link: https://patch.msgid.link/20260518142311.10328-1-luka.gejak@linux.dev
+Signed-off-by: Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
+Reviewed-by: Baochen Qiang <baochen.qiang@oss.qualcomm.com>
+Reviewed-by: Rameshkumar Sundaram <rameshkumar.sundaram@oss.qualcomm.com>
+Link: https://patch.msgid.link/20260420110130.509670-1-jtornosm@redhat.com
+Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/realtek/rtw88/tx.c |    7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ drivers/net/wireless/ath/ath11k/dp.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/net/wireless/realtek/rtw88/tx.c
-+++ b/drivers/net/wireless/realtek/rtw88/tx.c
-@@ -196,6 +196,7 @@ void rtw_tx_report_purge_timer(struct ti
- void rtw_tx_report_enqueue(struct rtw_dev *rtwdev, struct sk_buff *skb, u8 sn)
- {
- 	struct rtw_tx_report *tx_report = &rtwdev->tx_report;
-+	unsigned long timeout = RTW_TX_PROBE_TIMEOUT;
- 	unsigned long flags;
- 	u8 *drv_data;
+--- a/drivers/net/wireless/ath/ath11k/dp.c
++++ b/drivers/net/wireless/ath/ath11k/dp.c
+@@ -1042,6 +1042,7 @@ void ath11k_dp_free(struct ath11k_base *
+ 		idr_destroy(&dp->tx_ring[i].txbuf_idr);
+ 		spin_unlock_bh(&dp->tx_ring[i].tx_idr_lock);
+ 		kfree(dp->tx_ring[i].tx_status);
++		dp->tx_ring[i].tx_status = NULL;
+ 	}
  
-@@ -207,7 +208,11 @@ void rtw_tx_report_enqueue(struct rtw_de
- 	__skb_queue_tail(&tx_report->queue, skb);
- 	spin_unlock_irqrestore(&tx_report->q_lock, flags);
- 
--	mod_timer(&tx_report->purge_timer, jiffies + RTW_TX_PROBE_TIMEOUT);
-+	if (rtwdev->chip->id == RTW_CHIP_TYPE_8723D &&
-+	    rtwdev->hci.type == RTW_HCI_TYPE_USB)
-+		timeout = msecs_to_jiffies(2500);
-+
-+	mod_timer(&tx_report->purge_timer, jiffies + timeout);
- }
- EXPORT_SYMBOL(rtw_tx_report_enqueue);
- 
+ 	/* Deinit any SOC level resource */
 
 
 
