@@ -1,64 +1,60 @@
-Return-Path: <stable+bounces-270864-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-270742-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id phRbEZKXRmrmZQsAu9opvQ
-	(envelope-from <stable+bounces-270864-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:53:38 +0200
+	id izWGE8KSRmpPYwsAu9opvQ
+	(envelope-from <stable+bounces-270742-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:33:06 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 50AEA6FAB49
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:53:37 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id C25CB6FA3E0
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:33:05 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=H7x8hkuy;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-270864-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-270864-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=Z40Ursw9;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-270742-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-270742-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 27D4A3155391
-	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:36:47 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id C6E7B3016012
+	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:33:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE4FE221D89;
-	Thu,  2 Jul 2026 16:34:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF81E33A9FC;
+	Thu,  2 Jul 2026 16:28:54 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A39D0222582;
-	Thu,  2 Jul 2026 16:34:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28BAD466B6C;
+	Thu,  2 Jul 2026 16:28:51 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783010049; cv=none; b=HNJnO+wCPTJzXWpamnNtAx7r1aY4vTEbMFSxSvK13MEq64amwtn2gf+Tzh9rCuXnzueEW3hYcaplTGCj3jCwXOGaXRygfcwDGkUslKgJ5JFQnKhUnbVD4m7SHZZabt+sESHtLvrqxONy05fyQJvxnJ4Zyf6eKukp7IbvpyzdBWw=
+	t=1783009734; cv=none; b=KR+AH7U7fh5uTR5eaewpfzF6uTbesb73ZecAS+SkV777A4bOPKDFxZpX603ITqZWsdvyHNRDPzH2Pu7QEgZ9DvA92JF+BfS0cs+Mhv/+yRdvFotBHosz2ePsGHT7G+AbZMZcWr0tUUtwRkm56GL3t27HDx53N9ndFC8GbLcAd7g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783010049; c=relaxed/simple;
-	bh=ScNa6JM3ZBz9n61+EJrBvpM5PUkmOX0qoxKQpn98gbw=;
+	s=arc-20240116; t=1783009734; c=relaxed/simple;
+	bh=hYkobSC18nOKnVd2ameVsniWwiTbvfEiPCFUIq+wWyQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cLxYrlFWPYDJAxnIaF8yY4gT1OM+kkyQU3aCwgnFoJSP5+wCo/oyOuBWrMt+UH6f48cFIAOJCVfX8mj/FwIRbXSzPLvWW6f8yS3qlnVYQINkV/rZidByX/jU4r+yag1b3hrRaiXyavP0O8G+1vE2JxybUDGcp4xFaEwS4Ur/MgY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H7x8hkuy; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C1A61F000E9;
-	Thu,  2 Jul 2026 16:34:07 +0000 (UTC)
+	 MIME-Version; b=WF9tzwFH/aA0mcAIyZ7BBK0ETomerVK5YGKBqQG4PeFkbMPwPF4K+c+/yaVHjnpDfYQW3CcsqIXhaTudjiYy+MLAqkdaS66vqLiJs5RUwvuhiAsizzkHEi9vEpGvt7XhvEJWObbxxOwBbi6nV59zZsk1LR+eB/FKEpoW94ppHTM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z40Ursw9; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33F9D1F000E9;
+	Thu,  2 Jul 2026 16:28:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1783010048;
-	bh=j/0SBem+AwEelevrtoaUb1gRYaaYBQTLRZrf/W7wdGo=;
+	s=korg; t=1783009730;
+	bh=G689+uSGIpXYiPM3W6qcPRDUKcOj6tUC+ElgBiLurng=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=H7x8hkuyF0SdDQEsfv+hKm0ehOvm3UrP2pdQ6JXktVH/kmLpxF/ao+WXTXIHkaQif
-	 oYQPpJU9bhkBCYMKePdZfg52uUWCO0tPsbhnyI7DdyvkMEwhCFoj4ikttmLAUxCLSi
-	 KfNpVUEXRWmSLytGcbbLdOK7OAeIldnZ7OsgHR9U=
+	b=Z40Ursw978X5kTBmAwUvsO1pJoRPkDSCazIs5WnJfeCvWWpwHfQhGtxj7cPurtTto
+	 4LiEH8hZJsClr09/LmAhVQQwh7ffuMznGkn2cgnMzfcdF+yN2S5hm0y/o09hxqE3Um
+	 tYQrGlrCIGJ7pT/CWDVu/roQlQfcKUY2FQaqLIXw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Emil Tsalapatis <emil@etsalapatis.com>,
-	Jiayuan Chen <jiayuan.chen@linux.dev>,
-	Yonghong Song <yonghong.song@linux.dev>,
-	Zilin Guan <zilin@seu.edu.cn>,
-	Dawei Feng <dawei.feng@seu.edu.cn>,
-	Alexei Starovoitov <ast@kernel.org>
-Subject: [PATCH 6.1 090/129] bpf: use kvfree() for replaced sysctl write buffer
+	Michael Bommarito <michael.bommarito@gmail.com>,
+	Namjae Jeon <linkinjeon@kernel.org>
+Subject: [PATCH 5.15 66/95] exfat: fix potential use-after-free in exfat_find_dir_entry()
 Date: Thu,  2 Jul 2026 18:20:09 +0200
-Message-ID: <20260702155114.005442311@linuxfoundation.org>
+Message-ID: <20260702155110.601238970@linuxfoundation.org>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260702155112.163984240@linuxfoundation.org>
-References: <20260702155112.163984240@linuxfoundation.org>
+In-Reply-To: <20260702155109.196223802@linuxfoundation.org>
+References: <20260702155109.196223802@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,130 +66,132 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	PRECEDENCE_BULK(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-270864-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:emil@etsalapatis.com,m:jiayuan.chen@linux.dev,m:yonghong.song@linux.dev,m:zilin@seu.edu.cn,m:dawei.feng@seu.edu.cn,m:ast@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	MID_RHS_MATCH_FROM(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RWL_MAILSPIKE_POSSIBLE(0.00)[104.64.211.4:from];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,seu.edu.cn:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,etsalapatis.com:email,vger.kernel.org:from_smtp,linux.dev:email]
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-270742-lists,stable=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:michael.bommarito@gmail.com,m:linkinjeon@kernel.org,m:michaelbommarito@gmail.com,s:lists@lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 50AEA6FAB49
+X-Rspamd-Queue-Id: C25CB6FA3E0
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dawei Feng <dawei.feng@seu.edu.cn>
+From: Michael Bommarito <michael.bommarito@gmail.com>
 
-commit 4c21b5927d4364bfe7365f2700da5fea0ed0d004 upstream.
+commit 3f5f8ee9917cc2b9076ac533492d8a200edcabb8 upstream.
 
-proc_sys_call_handler() allocates its temporary sysctl buffer with
-kvzalloc() and passes it to __cgroup_bpf_run_filter_sysctl(). Since
-kvzalloc() may fall back to vmalloc() for large allocations, freeing
-that buffer with kfree() is wrong and can corrupt memory.
+In exfat_find_dir_entry(), the buffer_head obtained from
+exfat_get_dentry() is released with brelse(bh) before the fall-through
+TYPE_EXTEND branch reads the directory entry through ep (which points
+into bh->b_data):
 
-Use kvfree() to safely handle both kmalloc and kvzalloc()/vmalloc
-allocations.
+	brelse(bh);
+	if (entry_type == TYPE_EXTEND) {
+		...
+		len = exfat_extract_uni_name(ep, entry_uniname);
+		...
+	}
 
-The bug was first flagged by an experimental analysis tool we are
-developing for kernel memory-management bugs while analyzing
-v6.13-rc1. The tool is still under development and is not yet publicly
-available. Manual inspection confirms that the bug is still
-present in v7.1-rc5.
+After brelse() drops our reference, nothing guarantees that the
+underlying page backing bh->b_data remains valid for the subsequent
+exfat_extract_uni_name() read. This is the same pattern fixed in
+commit fc961522ddbd ("exfat: Fix potential use after free in
+exfat_load_upcase_table()").
 
-Reproduced the bug based on v7.1-rc4 in a QEMU x86_64 guest booted with
-KASAN and CONFIG_FAILSLAB enabled. To exercise the replacement path, the
-test tree also included the accompanying fix for the stale ret == 1
-check in __cgroup_bpf_run_filter_sysctl(). The reproducer confines
-failslab injections to the proc_sys_call_handler() range, uses
-stacktrace-depth=32, and injects fail-nth=1 while writing 8191 bytes to
-/proc/sys/kernel/domainname from a task in the target cgroup. Under
-that setup, fail-nth=1 triggered the fault:
+Move brelse(bh) so it runs after ep is no longer dereferenced on
+each branch.
 
-  BUG: unable to handle page fault for address: ffffeb0200024d48
-  #PF: supervisor read access in kernel mode
-  #PF: error_code(0x0000) - not-present page
-  PGD 0 P4D 0
-  Oops: Oops: 0000  SMP KASAN NOPTI
-  CPU: 2 UID: 0 PID: 209 Comm: repro_proc_sys_ Not tainted 7.1.0-rc4-00686-g97625979a5d4  PREEMPT(lazy)
-  Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.15.0-1 04/01/2014
-  RIP: 0010:kfree+0x6e/0x510
-  ...
-  Call Trace:
-   <TASK>
-   ? __cgroup_bpf_run_filter_sysctl+0x626/0xc30
-   __cgroup_bpf_run_filter_sysctl+0x74d/0xc30
-   ? __pfx___cgroup_bpf_run_filter_sysctl+0x10/0x10
-   ? srso_return_thunk+0x5/0x5f
-   ? __kvmalloc_node_noprof+0x345/0x870
-   ? proc_sys_call_handler+0x250/0x480
-   ? srso_return_thunk+0x5/0x5f
-   proc_sys_call_handler+0x3a2/0x480
-   ? __pfx_proc_sys_call_handler+0x10/0x10
-   ? srso_return_thunk+0x5/0x5f
-   ? selinux_file_permission+0x39f/0x500
-   ? srso_return_thunk+0x5/0x5f
-   ? lock_is_held_type+0x9e/0x120
-   vfs_write+0x98e/0x1000
-   ...
-   </TASK>
+Confirmed on QEMU x86_64 with CONFIG_KASAN=y + CONFIG_DEBUG_PAGEALLOC=y
++ CONFIG_PAGE_POISONING=y on linux-next, using a crafted exFAT image
+(long filename with same-hash collisions forcing the TYPE_EXTEND path).
+With a debug-only invalidate_bdev() inserted between brelse(bh) and
+the ep read to make the stale-deref window deterministic, the
+unpatched kernel faults:
 
-With this fix applied on top of the same test setup, rerunning the
-reproducer with fail-nth=1 yields no corresponding Oops reports.
+  BUG: KASAN: use-after-free in exfat_find_dir_entry+0x133b/0x15a0
+  BUG: unable to handle page fault for address: ffff88801a5fa0c2
+  Oops: 0000 [#1] SMP DEBUG_PAGEALLOC KASAN NOPTI
+  RIP: 0010:exfat_find_dir_entry+0x1188/0x15a0
 
-Fixes: 4508943794ef ("proc: use kvzalloc for our kernel buffer")
+With this patch applied, the same instrumented harness completes
+cleanly under the same sanitizer stack. I have not reproduced a
+crash on an uninstrumented kernel under ordinary reclaim; the
+instrumented A/B establishes the lifetime violation and that the
+patch closes it, not an unaided triggerability claim.
+
+Fixes: ca06197382bd ("exfat: add directory operations")
 Cc: stable@vger.kernel.org
-
-Reviewed-by: Emil Tsalapatis <emil@etsalapatis.com>
-Reviewed-by: Jiayuan Chen <jiayuan.chen@linux.dev>
-Acked-by: Yonghong Song <yonghong.song@linux.dev>
-Signed-off-by: Zilin Guan <zilin@seu.edu.cn>
-Signed-off-by: Dawei Feng <dawei.feng@seu.edu.cn>
-Link: https://lore.kernel.org/r/20260603105317.944304-3-dawei.feng@seu.edu.cn
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Assisted-by: Claude:claude-opus-4-7
+Signed-off-by: Michael Bommarito <michael.bommarito@gmail.com>
+Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/bpf/cgroup.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/exfat/dir.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/kernel/bpf/cgroup.c
-+++ b/kernel/bpf/cgroup.c
-@@ -1745,7 +1745,7 @@ int __cgroup_bpf_run_filter_sysctl(struc
- 	kfree(ctx.cur_val);
+--- a/fs/exfat/dir.c
++++ b/fs/exfat/dir.c
+@@ -1048,12 +1048,12 @@ rewind:
+ 				continue;
+ 			}
  
- 	if (ret == 1 && ctx.new_updated) {
--		kfree(*buf);
-+		kvfree(*buf);
- 		*buf = ctx.new_val;
- 		*pcount = ctx.new_len;
- 	} else {
+-			brelse(bh);
+ 			if (entry_type == TYPE_EXTEND) {
+ 				unsigned short entry_uniname[16], unichar;
+ 
+ 				if (step != DIRENT_STEP_NAME ||
+ 				    name_len >= MAX_NAME_LENGTH) {
++					brelse(bh);
+ 					step = DIRENT_STEP_FILE;
+ 					continue;
+ 				}
+@@ -1064,6 +1064,7 @@ rewind:
+ 					uniname += EXFAT_FILE_NAME_LEN;
+ 
+ 				len = exfat_extract_uni_name(ep, entry_uniname);
++				brelse(bh);
+ 				name_len += len;
+ 
+ 				unichar = *(uniname+len);
+@@ -1082,6 +1083,7 @@ rewind:
+ 				continue;
+ 			}
+ 
++			brelse(bh);
+ 			if (entry_type &
+ 					(TYPE_CRITICAL_SEC | TYPE_BENIGN_SEC)) {
+ 				if (step == DIRENT_STEP_SECD) {
 
 
 
