@@ -1,69 +1,61 @@
-Return-Path: <stable+bounces-271337-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-270896-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id a+8YHJGbRmodaAsAu9opvQ
-	(envelope-from <stable+bounces-271337-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:10:41 +0200
+	id sWDXJZ2hRmpmagsAu9opvQ
+	(envelope-from <stable+bounces-270896-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:36:29 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 07DE36FB169
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:10:41 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 97F7C6FB7BC
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:36:28 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="g1l8/qKv";
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-271337-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-271337-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=idG8XPD2;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-270896-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-270896-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 68EFF3136BA3
-	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:54:41 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 21D443169512
+	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:37:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4BE13093DD;
-	Thu,  2 Jul 2026 16:54:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 169F535F5F7;
+	Thu,  2 Jul 2026 16:35:34 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C48F23EAAD;
-	Thu,  2 Jul 2026 16:54:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D078A3385B6;
+	Thu,  2 Jul 2026 16:35:32 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783011279; cv=none; b=NxsSXiwYlEGVOdKvvVw1acWQdEokZG3ZD1N0pqL2fEmrWvxJNlFYoiUKRLkebTrAAIRh6n58FKR6PAskDM4Hsma24MFR5DYQlIfT6EEu6rFIZuQoqo0UJxdGOHOWHcppCQ1/CyzdK4GuaK8WipO+Zzh8XEcBSNDc7tHc5ok+caw=
+	t=1783010133; cv=none; b=JidpGEGB8XCH5f9kQ2zSgzLK53tL/2tO2c9PQIbeYrFS9hgmJJsSw2T1AYpeG00n7exRbncV3XpVWRrriT+NYRAeTDQ+2dXbFjQYLKD9xPyXMxIvQuBr+bAiU8wh7ReBVHPSMjknCzyI/LfVc/j1iUUFTnOatjoMeUyh5zzWg0U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783011279; c=relaxed/simple;
-	bh=Tc8f6hgQHlk5YL4uN0e4yZyrXs1FCV2wVv5b/churSM=;
+	s=arc-20240116; t=1783010133; c=relaxed/simple;
+	bh=/DFQAGSjQ3Jx+ER6YA8x1zUbHlOdanpMkyrE6yzowOg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FfEbP9V/fy+P7XKL2e9HezG2FXGqNM/EWUjf8V7Xztgk1ucW7ckmVatM2tHjEN/39TIwQ+lfYopmUZNO/Z0y6Y0L78EZXprKumPaXwz7aClPxHBsbsZm1xl5kFI95CipIFEvuyyxQve5mmff/r6HiejlEZgyAHrBnGD1MMgeuW0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=g1l8/qKv; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D922F1F00A3A;
-	Thu,  2 Jul 2026 16:54:37 +0000 (UTC)
+	 MIME-Version; b=gWtppT6tyj90PyKZQmQ+yfFAOckY8Ji8r42ra8ZxTWa8dwBR7GMDsggQaUmiOapHEB59V4pfLJRFaHJ4PtrcPcY6kACFiABVCNPdcLsN6NMspqEOK/HBJaEpcEkJ0GaveKwiIGwFLDy72wwY5Y6Nr6H8uPt22RJCJyOCh9HcZNw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=idG8XPD2; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 430501F000E9;
+	Thu,  2 Jul 2026 16:35:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1783011278;
-	bh=u4VSHIBmDfkJTaVPbNR4rz6gmZ/Sqp06gWHX3rW3XHI=;
+	s=korg; t=1783010132;
+	bh=utwG56zBhRQy7TdtbV3fr13SSWh/QlLh7LVpzP41k8Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=g1l8/qKvSs5XqnaSk5LAX7yE6sozfJBX32KA7zaEoL7h/AQflS5wUXP5FcFahJE2C
-	 eJlDugopsHikYRylDeHUEtsFotz8atubP+pxeCBI2Da31O5tZ3yrceYWSg4o9ZfbTe
-	 b7+c73nT4ANrWbqEkd9GFmK7QLaE5z8NXi0YDUNg=
+	b=idG8XPD2nGiJtRhzhfOIzOBmRee6bymrQ4e1auDapw/Z0AVrc0/l5FmWdBL1mXp+b
+	 Tns+M5kN9EkGiu4c4WNq9TkQGGet39xdhPNBlH4oPa3b2xGrEFbunwZZ/T6IbO+eJP
+	 sB3Vc6l7nOGMQQ1qimzow4N522QqWwycJ8NzouGY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arnd Bergmann <arnd@arndb.de>,
-	Alexander Lobakin <aleksander.lobakin@intel.com>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Tamir Duberstein <tamird@kernel.org>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	Andriy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Ansuel Smith <ansuelsmth@gmail.com>,
-	Bjorn Andersson <andersson@kernel.org>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Vasily Gorbik <gor@linux.ibm.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.18 046/108] err.h: use __always_inline on all error pointer helpers
+	Stepan Ionichev <sozdayvek@gmail.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 124/129] serial: 8250_dw: unregister 8250 port if clk_notifier_register() fails
 Date: Thu,  2 Jul 2026 18:20:43 +0200
-Message-ID: <20260702155113.062679402@linuxfoundation.org>
+Message-ID: <20260702155114.716097971@linuxfoundation.org>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260702155112.110058792@linuxfoundation.org>
-References: <20260702155112.110058792@linuxfoundation.org>
+In-Reply-To: <20260702155112.163984240@linuxfoundation.org>
+References: <20260702155112.163984240@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -80,21 +72,21 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[14];
-	TAGGED_FROM(0.00)[bounces-271337-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:arnd@arndb.de,m:aleksander.lobakin@intel.com,m:nathan@kernel.org,m:tamird@kernel.org,m:agordeev@linux.ibm.com,m:andriy.shevchenko@linux.intel.com,m:ansuelsmth@gmail.com,m:andersson@kernel.org,m:hca@linux.ibm.com,m:gor@linux.ibm.com,m:akpm@linux-foundation.org,s:lists@lfdr.de];
+	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-270896-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:sozdayvek@gmail.com,m:andriy.shevchenko@linux.intel.com,m:sashal@kernel.org,s:lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,arndb.de,intel.com,kernel.org,linux.ibm.com,linux.intel.com,gmail.com,linux-foundation.org];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,linux.intel.com,kernel.org];
 	FORWARDED(0.00)[lists@lfdr.de];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
@@ -103,109 +95,61 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,intel.com:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,arndb.de:email,linux-foundation.org:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,intel.com:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 07DE36FB169
+X-Rspamd-Queue-Id: 97F7C6FB7BC
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Stepan Ionichev <sozdayvek@gmail.com>
 
-commit 94bfc7f3b0c7c33331ba4ff6cc64ff309dfcbce8 upstream.
+[ Upstream commit 10fc708b4de7f86002d2d735a2dbf3b5b7f65692 ]
 
-While testing randconfig builds on s390, I came across a link failure with
-CONFIG_DMA_SHARED_BUFFER disabled:
+dw8250_probe() registers the 8250 port via serial8250_register_8250_port()
+and then, if the device has a clock, registers a clock notifier. If
+clk_notifier_register() fails, probe returns the error but leaves the
+8250 port registered. The matching serial8250_unregister_port() lives
+in dw8250_remove(), which is not called when probe fails, so the port
+slot stays occupied until the device is rebound or the system is
+rebooted. The devm-allocated driver data is freed while the port still
+references it (via the saved private_data and serial_in/serial_out
+callbacks), so any access to that port slot before a rebind is a
+use-after-free hazard.
 
-ERROR: modpost: "dma_buf_put" [drivers/iommu/iommufd/iommufd.ko] undefined!
+Unregister the port on the clk_notifier_register() error path.
 
-The problem here is that IS_ERR() is not inlined and dead code elimination
-fails as a consequence.
-
-The err.h helpers all turn into a trivial assignment of a bit mask and
-should never result in a function call, so force them to always be inline.
-This should generally result in better object code aside from avoiding
-the link failure above.
-
-Link: https://lore.kernel.org/20260526101851.2495110-1-arnd@kernel.org
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Reviewed-by: Alexander Lobakin <aleksander.lobakin@intel.com>
-Reviewed-by: Nathan Chancellor <nathan@kernel.org>
-Tested-by: Tamir Duberstein <tamird@kernel.org>
-Cc: Alexander Gordeev <agordeev@linux.ibm.com>
-Cc: Andriy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc: Ansuel Smith <ansuelsmth@gmail.com>
-Cc: Bjorn Andersson <andersson@kernel.org>
-Cc: Heiko Carstens <hca@linux.ibm.com>
-Cc: Vasily Gorbik <gor@linux.ibm.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Fixes: cc816969d7b5 ("serial: 8250_dw: Fix common clocks usage race condition")
+Cc: stable@vger.kernel.org
+Signed-off-by: Stepan Ionichev <sozdayvek@gmail.com>
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Link: https://patch.msgid.link/20260514143746.23671-2-sozdayvek@gmail.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/err.h |   12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ drivers/tty/serial/8250/8250_dw.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/include/linux/err.h
-+++ b/include/linux/err.h
-@@ -36,7 +36,7 @@
-  *
-  * Return: A pointer with @error encoded within its value.
-  */
--static inline void * __must_check ERR_PTR(long error)
-+static __always_inline void * __must_check ERR_PTR(long error)
- {
- 	return (void *) error;
- }
-@@ -52,7 +52,7 @@ static inline void * __must_check ERR_PT
-  * @ptr: An error pointer.
-  * Return: The error code within @ptr.
-  */
--static inline long __must_check PTR_ERR(__force const void *ptr)
-+static __always_inline long __must_check PTR_ERR(__force const void *ptr)
- {
- 	return (long) ptr;
- }
-@@ -65,7 +65,7 @@ static inline long __must_check PTR_ERR(
-  * @ptr: The pointer to check.
-  * Return: true if @ptr is an error pointer, false otherwise.
-  */
--static inline bool __must_check IS_ERR(__force const void *ptr)
-+static __always_inline bool __must_check IS_ERR(__force const void *ptr)
- {
- 	return IS_ERR_VALUE((unsigned long)ptr);
- }
-@@ -79,7 +79,7 @@ static inline bool __must_check IS_ERR(_
-  *
-  * Like IS_ERR(), but also returns true for a null pointer.
-  */
--static inline bool __must_check IS_ERR_OR_NULL(__force const void *ptr)
-+static __always_inline bool __must_check IS_ERR_OR_NULL(__force const void *ptr)
- {
- 	return unlikely(!ptr) || IS_ERR_VALUE((unsigned long)ptr);
- }
-@@ -91,7 +91,7 @@ static inline bool __must_check IS_ERR_O
-  * Explicitly cast an error-valued pointer to another pointer type in such a
-  * way as to make it clear that's what's going on.
-  */
--static inline void * __must_check ERR_CAST(__force const void *ptr)
-+static __always_inline void * __must_check ERR_CAST(__force const void *ptr)
- {
- 	/* cast away the const */
- 	return (void *) ptr;
-@@ -114,7 +114,7 @@ static inline void * __must_check ERR_CA
-  *
-  * Return: The error code within @ptr if it is an error pointer; 0 otherwise.
-  */
--static inline int __must_check PTR_ERR_OR_ZERO(__force const void *ptr)
-+static __always_inline int __must_check PTR_ERR_OR_ZERO(__force const void *ptr)
- {
- 	if (IS_ERR(ptr))
- 		return PTR_ERR(ptr);
+--- a/drivers/tty/serial/8250/8250_dw.c
++++ b/drivers/tty/serial/8250/8250_dw.c
+@@ -673,8 +673,10 @@ static int dw8250_probe(struct platform_
+ 	 */
+ 	if (data->clk) {
+ 		err = clk_notifier_register(data->clk, &data->clk_notifier);
+-		if (err)
++		if (err) {
++			serial8250_unregister_port(data->data.line);
+ 			return dev_err_probe(dev, err, "Failed to set the clock notifier\n");
++		}
+ 		queue_work(system_unbound_wq, &data->clk_work);
+ 	}
+ 
 
 
 
