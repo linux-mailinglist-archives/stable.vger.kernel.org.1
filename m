@@ -1,167 +1,211 @@
-Return-Path: <stable+bounces-270400-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-270404-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 59+8EWxMRmpoOwsAu9opvQ
-	(envelope-from <stable+bounces-270400-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 13:33:00 +0200
+	id kAcJAtJMRmpvPgsAu9opvQ
+	(envelope-from <stable+bounces-270404-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 13:34:42 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 942B66F6C1B
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 13:32:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 077F26F6C72
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 13:34:41 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=imgtec.com header.s=dk201812 header.b=GIGFSadI;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-270400-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-270400-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=none) header.from=imgtec.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=dcaqOliq;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-270404-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-270404-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=none) header.from=gmail.com;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id EE6B7301C5C8
-	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 10:43:41 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id DE04630095C2
+	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 10:48:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F31839D6F2;
-	Thu,  2 Jul 2026 10:43:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EAE043A63F2;
+	Thu,  2 Jul 2026 10:48:36 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mx07-00376f01.pphosted.com (mx07-00376f01.pphosted.com [185.132.180.163])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f171.google.com (mail-pg1-f171.google.com [209.85.215.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A83142E736F;
-	Thu,  2 Jul 2026 10:43:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97AF42E8B82
+	for <stable@vger.kernel.org>; Thu,  2 Jul 2026 10:48:35 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782989018; cv=none; b=V7sX25lC8Kjh0zIVLpaMMdYjTtgQYKd7bgNdmTwYNl1HvlmeML1FYh5sTGV9NVkrPP7qYVMypw6FHP6wJPI6zH7itQ4YP0F28p/8wAnLxTv7xgOuaPHErZuh7q3+SNCYhhOrFwyO+XsvnxIi01TjLBBexxNtPfUx3tEHiDqltAw=
+	t=1782989316; cv=none; b=Pu/ShBVr+ocmWA1bSf6TTMb1NH+o4xCIdNyt89rbxYonOk35k9toWuZNbKQky3VqWNvl9vwnBiNIz4MuAlxXpwYoWv8W4iSO4dlwZN1u0CK1j5EScQ6e2ZIfphjmuj7hmhI82oRZsQxDbIJfmWShMpR3yqdXv/gsGYiDLyqCsWQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782989018; c=relaxed/simple;
-	bh=TsE6O2PRFx80s71WoZ9mvn81NvifNnlHoVK92RIY/cs=;
-	h=From:To:CC:In-Reply-To:References:Subject:Message-ID:Date:
-	 MIME-Version:Content-Type; b=cmClCVqcW75aFw6EQPmiKLzdSwtYdjQZWgsWb9URuZqnxCdsAwZJ6ys15f+fW6+FVFzSRQAVqJgpeU1oIKltZ03wh+4vN6oI4lLiOjuJrma7K/Hu05+62dR+DYPC5dHC3S7R0QJQU6qRM86dl68DlkyWzeT3H1eX0dpjksMZzn8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=imgtec.com; spf=pass smtp.mailfrom=imgtec.com; dkim=pass (2048-bit key) header.d=imgtec.com header.i=@imgtec.com header.b=GIGFSadI; arc=none smtp.client-ip=185.132.180.163
-Received: from pps.filterd (m0168889.ppops.net [127.0.0.1])
-	by mx07-00376f01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6626MvDr1931364;
-	Thu, 2 Jul 2026 11:43:20 +0100
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=imgtec.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=dk201812; bh=E
-	T8EzdBqy9srmOkq0lSzLi+wjQ+SbWBFKHkUtNhwEWI=; b=GIGFSadISBwdmm//3
-	gm0gq/mZSEctTDB3lvwiTz6wGhOyzdB9gVcUJWtwI3DUqbp8XRh30/DKrFwljV77
-	n7MDkChnIE0pocHHrY/D7vieyOegMW/NFHb/hgVlSKOgoLY4kMv88W7kIBtwRuqU
-	TLmlch+UyOJHItiutVhdtEf0fuxJJ0AYzlrOWXCiwRZNnTa5ULtTluvHUASFQWXS
-	egVjstwM48UI1mYQQNW2g4tpgMxw9NvGk8LZdqODTH355JRoIiEbqTILGbKm8TXq
-	88OsSIaIYp7YPJTfq8nCKbXfRRdpgF2zw/jLnnzP4TCWeLx236t6ojaksOr+23JE
-	yHzGg==
-Received: from hhmail01.hh.imgtec.org (83-244-153-141.cust-83.exponential-e.net [83.244.153.141])
-	by mx07-00376f01.pphosted.com (PPS) with ESMTPS id 4f26kunakn-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 02 Jul 2026 11:43:20 +0100 (BST)
-Received: from NP-A-BELLE.kl.imgtec.org (172.25.4.9) by HHMAIL01.hh.imgtec.org
- (10.100.10.19) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.43; Thu, 2 Jul
- 2026 11:43:18 +0100
-From: Alessio Belle <alessio.belle@imgtec.com>
-To: Frank Binns <frank.binns@imgtec.com>,
-        Matt Coster
-	<matt.coster@imgtec.com>,
-        Alessio Belle <Alessio.Belle@imgtec.com>,
-        "Alexandru Dadu" <alexandru.dadu@imgtec.com>,
-        Maarten Lankhorst
-	<maarten.lankhorst@linux.intel.com>,
-        Maxime Ripard <mripard@kernel.org>,
-        Thomas Zimmermann <tzimmermann@suse.de>,
-        David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
-        Boris Brezillon
-	<boris.brezillon@collabora.com>,
-        Brajesh Gupta <brajesh.gupta@imgtec.com>
-CC: <dri-devel@lists.freedesktop.org>, <linux-kernel@vger.kernel.org>,
-        <stable@vger.kernel.org>
-In-Reply-To: <20260630-b4-sched_fix-v7-1-71aa39c62627@imgtec.com>
-References: <20260630-b4-sched_fix-v7-1-71aa39c62627@imgtec.com>
-Subject: Re: [PATCH v7] drm/imagination: Fix double call to
- drm_sched_entity_fini()
-Message-ID: <178298899887.102946.11369640491479366582.b4-ty@imgtec.com>
-Date: Thu, 2 Jul 2026 11:43:18 +0100
+	s=arc-20240116; t=1782989316; c=relaxed/simple;
+	bh=CP90g/Sd8SpBamQMkPP7wI+cAPxvLKgKoJOnW93/UXA=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=PEXHgoVKSb44RWaBgst7CyMxrYO3FDgSTBzA4XH1+M25enel+R3U6BbnzOF89+ga0R7Psk/E+QRGYr0pWl+eiAWCEjM0+8G83i55nveqS6htplqTiAlbWcbMLidiop8LVmBBS2rb82+lIbBAiR2KX8FfvA8FoXriug/eu2y91qU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=dcaqOliq; arc=none smtp.client-ip=209.85.215.171
+Received: by mail-pg1-f171.google.com with SMTP id 41be03b00d2f7-c9d1fff21edso946490a12.1
+        for <stable@vger.kernel.org>; Thu, 02 Jul 2026 03:48:35 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1782989315; x=1783594115; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=8HePeeifvB/opdYPmqi87Awn5dRCasskHjfVg9hPOIo=;
+        b=dcaqOliqF6MY8EexIiXb648nQZwaNGFs3qvOJw4YX++pmySRFPvLwFEPUK/Vfitou8
+         rsGc2q//f1THizj95QuNICYojijxjy8+74c6FZDw4nWX0uUoRnTrOup8LqIwSNRuvIgt
+         Wt1DTGnaUV1hfzx1gu9kVvxEusUS4Vaf7nnz8ffpwZsDhNNlCtXCL+oA33n6zuv7BnGp
+         4JqP+DY7D2CwpguZ8J7Kx6FLPQD5M1ypuTHFOL2YTS8WzU5+f6/X+U3BE1Z5b8NrmVsn
+         8OE+7OZNHQBcgqJMa8FQMDgYWTm5Vq0NKDUebD+xc3kWAIZ1MOTxVbXf3HO7/nGNAzPw
+         R41A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1782989315; x=1783594115;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=8HePeeifvB/opdYPmqi87Awn5dRCasskHjfVg9hPOIo=;
+        b=odgMAtPJnF209vkMmughwXK5QKG2bIq4B93oWsod+cNIMUOvqdObiAPq1YGVGYuEpj
+         BX6cX3iBoXBO2MLxx55Uz2SKKeuyqfW6ZgCDQpbBzoaKMc/oaQouqkFkYhBlWdQFEmDm
+         RVTHYxYToq2/bK4TVMXHJdyvj6CwvoBe8gRvTYSTvMgYJHaB8G7jupm10rhpqtM4c+JM
+         6cKo1YtAXOCE6cW+FZBKCWYePooRqr9lv+t/Ssfgoq3FQO4B7XrHpqxFO5Hhn7eWimoB
+         yzYoNRZXMHMgXYE7tPgJlhHBmZ6SlsxGVtK5W3rWuWHkLZjIgXNPjUUiS5bYSYkccDs5
+         4dkw==
+X-Forwarded-Encrypted: i=1; AFNElJ8SH8nDgxlQvPTDOWOmmRjm+IudNQRddqbg0P2ufS47C9A+5o4rHbPv0ZvcWy2HrRl5vtMKoZw=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyAbTEOMHO/AsObPBnMTcytLZt+PSqxY+5tMWK4VaWS7jFOwVYJ
+	42q8amOaUmEtLEO2yrT9uZetIekNpSSphOR4uf2qRi5k3W6PTTFr7s6N
+X-Gm-Gg: AfdE7clLqV/a8+/UJ4sWHjWKWrGRE663nLS6kbTKJw10kjOapFgfXNKGs4uR/q6tBxi
+	ooD8mT4j0xiSoBCRZrBEWygQKxzgDQW8QL0BGyEJnFOI+V48C/8VUC5T0qwZODSsIdukX8bQ21c
+	Gn/qZyfMsMrlYt5MguR50vtmS+22w8k0BH/VDX0Rha78us7t3gfk9KsiNIAUqGtMpotlj6J4Cn7
+	TY2lWQEXALy/HCRwiQgGy0kgiYaXQHs0+POLThQ+Eeg7fRoJ8nDTX2P9uMkQJeG/e7TiwzJIwIj
+	2vvSBov92s2ubcO6Qsagn8IrKi6VNKai1wsXFgniQlflo8JFItBqPbKHjPJT0VGzU5HUEIBMpnD
+	Tvfa6wMH6Fs9CZRk1W1C53PDmoVqQfQ0YDTl4Sm6i1sjE7XBos/y2s4QHqeGNS7T4L7oo1+Wp/7
+	0tGMSkAA3Plu5pCCmI4e8BTrCrGxNNvoIWnc5TqtbqMip3whGGuVRK73+nif4EbK9rLreBiFtMW
+	bzgEiiZV85Eqe+sd2kFaZN5q59vzCl4nhW3AU+ZBQk=
+X-Received: by 2002:a05:6a20:e20f:b0:3b4:669c:ee32 with SMTP id adf61e73a8af0-3bfed3b26edmr7042853637.37.1782989314653;
+        Thu, 02 Jul 2026 03:48:34 -0700 (PDT)
+Received: from leonardoc-nb (201-68-197-145.dsl.telesp.net.br. [201.68.197.145])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-30f116065c5sm5936815eec.11.2026.07.02.03.48.29
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 02 Jul 2026 03:48:34 -0700 (PDT)
+From: Leonardo Costa <leoreis.costa@gmail.com>
+To: louis.chauvet@bootlin.com
+Cc: airlied@gmail.com,
+	bparrot@ti.com,
+	conor+dt@kernel.org,
+	devicetree@vger.kernel.org,
+	dri-devel@lists.freedesktop.org,
+	jsarha@ti.com,
+	jyri.sarha@iki.fi,
+	kristo@kernel.org,
+	krzk+dt@kernel.org,
+	lee@kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	maarten.lankhorst@linux.intel.com,
+	mripard@kernel.org,
+	nm@ti.com,
+	robh@kernel.org,
+	sam@ravnborg.org,
+	simona@ffwll.ch,
+	stable@vger.kernel.org,
+	thomas.petazzoni@bootlin.com,
+	tomi.valkeinen@ideasonboard.com,
+	tomi.valkeinen@ti.com,
+	tzimmermann@suse.de,
+	vigneshr@ti.com
+Subject: Re: [PATCH 4/4] drm/tidss: Fix sampling edge configuration
+Date: Thu,  2 Jul 2026 07:48:01 -0300
+Message-ID: <20260702104817.1219078-1-leoreis.costa@gmail.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20250730-fix-edge-handling-v1-4-1bdfb3fe7922@bootlin.com>
+References: <20250730-fix-edge-handling-v1-4-1bdfb3fe7922@bootlin.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-X-Mailer: b4 0.14.3
-X-Authority-Analysis: v=2.4 cv=epXvCIpX c=1 sm=1 tr=0 ts=6a4640c8 cx=c_pps
- a=AKOq//PuzOIrVTIF9yBwbA==:117 a=AKOq//PuzOIrVTIF9yBwbA==:17
- a=rvaOABGgyOwA:10 a=IkcTkHD0fZMA:10 a=RAioF0-LDSMA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=kQ-hrUj2-E3RCbRHssb7:22 a=7RYWX5rxfSByPNLylY2M:22
- a=r_1tXGB3AAAA:8 a=ZX3hCQfB1uyMSPSD_xEA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
- a=t8nPyN_e6usw4ciXM-Pk:22
-X-Proofpoint-ORIG-GUID: tfFj7ORyzaS3sce9NutG9QM9J_bHkCN2
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzAyMDExMSBTYWx0ZWRfX58l+kKVjVcDZ
- QpWz4rrbOcgXz5FoRRZAdrVtwM0APCYIqqTIQ0my+VYlaxeNB8KnIIn8nN21lf41162oMKhE1c/
- H/x/Mvzk5o1fuGvJWeyMsRxWq8xOLtFn1I913tnu9Uaw7aPrQhsV+FKUdbSayrN57thHX09AP0C
- FCoKF7TQ8iiGMIJ6Luk0DFyoQyd93Tu6rD4YsaAsm+6RC18ZQwo6mhD2kD72IDyY125SquUohMk
- J5V2dKpdz91vfLu7Yq1d9F90g5+G7LdJAffQZcdEPeCEIiHluD6Dou/1KXek77zLISoUyL4aoIy
- uIWzHCqpSBeHWKCy9s9zVDCg9flov2R6zgyMf0b+3DegWbTUhDsJn75b/gVp/gtEa+N3kEIeGdJ
- RC22BQnHgZaUhq7vU13xVMt6EZYr1nqpcLh/I8x6pbhTTR24ECYGlIu74EKdCczneO+gp6hTQYV
- lJB4djxcQMLAy0DAQvw==
-X-Proofpoint-Spam-Info: AW1haW4tMjYwNzAyMDExMSBTYWx0ZWRfXy1V+AZBmHUlB
- NJepOofJFboyJi2uV8l+gv65XVSoUE8Dain0y3tIRguJV6Gg7LKqPVUF+TIYi5xK++UW4SOhwwi
- oZdecGdBmnwOr14rRVjP4b4BWCoBOJg=
-X-Proofpoint-GUID: tfFj7ORyzaS3sce9NutG9QM9J_bHkCN2
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[imgtec.com,none];
-	R_DKIM_ALLOW(-0.20)[imgtec.com:s=dk201812];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-270400-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:frank.binns@imgtec.com,m:matt.coster@imgtec.com,m:Alessio.Belle@imgtec.com,m:alexandru.dadu@imgtec.com,m:maarten.lankhorst@linux.intel.com,m:mripard@kernel.org,m:tzimmermann@suse.de,m:airlied@gmail.com,m:simona@ffwll.ch,m:boris.brezillon@collabora.com,m:brajesh.gupta@imgtec.com,m:dri-devel@lists.freedesktop.org,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,s:lists@lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER(0.00)[alessio.belle@imgtec.com,stable@vger.kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_TO(0.00)[imgtec.com,linux.intel.com,kernel.org,suse.de,gmail.com,ffwll.ch,collabora.com];
 	FORWARDED(0.00)[lists@lfdr.de];
+	FREEMAIL_CC(0.00)[gmail.com,ti.com,kernel.org,vger.kernel.org,lists.freedesktop.org,iki.fi,lists.infradead.org,linux.intel.com,ravnborg.org,ffwll.ch,bootlin.com,ideasonboard.com,suse.de];
+	MIME_TRACE(0.00)[0:+];
+	RCPT_COUNT_TWELVE(0.00)[25];
+	TAGGED_FROM(0.00)[bounces-270404-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[imgtec.com:+];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:louis.chauvet@bootlin.com,m:airlied@gmail.com,m:bparrot@ti.com,m:conor+dt@kernel.org,m:devicetree@vger.kernel.org,m:dri-devel@lists.freedesktop.org,m:jsarha@ti.com,m:jyri.sarha@iki.fi,m:kristo@kernel.org,m:krzk+dt@kernel.org,m:lee@kernel.org,m:linux-arm-kernel@lists.infradead.org,m:linux-kernel@vger.kernel.org,m:maarten.lankhorst@linux.intel.com,m:mripard@kernel.org,m:nm@ti.com,m:robh@kernel.org,m:sam@ravnborg.org,m:simona@ffwll.ch,m:stable@vger.kernel.org,m:thomas.petazzoni@bootlin.com,m:tomi.valkeinen@ideasonboard.com,m:tomi.valkeinen@ti.com,m:tzimmermann@suse.de,m:vigneshr@ti.com,m:conor@kernel.org,m:krzk@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[leoreiscosta@gmail.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[gmail.com:+];
 	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	RCPT_COUNT_TWELVE(0.00)[14];
+	FREEMAIL_FROM(0.00)[gmail.com];
 	FORGED_SENDER_FORWARDING(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[alessio.belle@imgtec.com,stable@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[leoreiscosta@gmail.com,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[6];
+	TO_DN_NONE(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	TAGGED_RCPT(0.00)[stable,dt];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	TO_DN_SOME(0.00)[]
+	FROM_HAS_DN(0.00)[]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 942B66F6C1B
+X-Rspamd-Queue-Id: 077F26F6C72
+
+Hello,
+
+We tested this patch and it introduces a regression on our panel.
+
+On our board, a Toshiba TC358768 DPI-to-DSI bridge is connected to the parallel
+RGB output. The bridge requires data to be driven on the negative edge, and
+this is also reflected by the `ipc` variable in `dispc_vp_enable()`, which is
+set to `1`.
+
+With this patch applied, however, data is driven on the positive edge instead.
+
+According to SPRUIV7C, both `MAIN_CTRL_MMR_CFG0_DPI0_CLK_CTRL[8]` and
+`DSS_VP1_POL_FREQ[14] IPC` should be programmed consistently. However, if we
+follow the actual bit descriptions, and ignore the sentence saying that the two
+programmed values should be the same, the data is driven on the requested edge.
+
+From SPRUIV7C (https://www.ti.com/lit/ug/spruiv7b/spruiv7c.pdf):
+
+MAIN_CTRL_MMR_CFG0_DPI0_CLK_CTRL[8] (DPI0_CLK_CTRL_DATA_CLK_INVDIS):
+
+        Clock edge select for DPI0 data outputs
+
+        Note that this value should be the same as the programmed value of
+        DSS_POL_FREQ[14] IPC.
+
+        Reset Source: mod_por_rst_n
+
+        0 DATA and DE are driven on the falling edge of clk
+        1 DATA and DE are driven on the rising edge of clk
 
 
-On Tue, 30 Jun 2026 21:10:07 +0530, Brajesh Gupta wrote:
-> Call sequence of double call:
-> pvr_context_destroy
->   pvr_context_kill_queues
->     pvr_queue_kill
->       drm_sched_entity_destroy
->         drm_sched_entity_fini // here
->   pvr_context_put
->     kref_put(..., pvr_context_release)
->       pvr_context_destroy_queues
->         pvr_queue_destroy
->           drm_sched_entity_fini // here
-> 
-> [...]
+    DSS_VP1_POL_FREQ[14] (IPC)
 
-Applied, thanks!
+        Invert pixel clock
 
-[1/1] drm/imagination: Fix double call to drm_sched_entity_fini()
-      commit: 4af24c27a39ba147a613a09e10b9e0f7294524c0
+        To set data to pixel clock relationship, CTRL_MMR_DPI0_CLK_CTRL[8]
+        DPI0_CLK_CTRL_DATA_CLK_INVDIS setting should be the same as the [14]
+        IPC setting.
 
-Best regards,
--- 
-Alessio Belle <alessio.belle@imgtec.com>
+        0 Data is driven on the LCD data lines on the rising-edge of the pixel clock
+        1 Data is driven on the LCD data lines on the falling-edge of the pixel clock
 
+So, the proposed fix to this patch is:
+
+```diff
+- regmap_update_bits(dispc->clk_ctrl, 0, 0x100, ipc ? 0x100 : 0x000);
++ regmap_update_bits(dispc->clk_ctrl, 0, 0x100, ipc ? 0x000 : 0x100);
+```
+
+Reverting the patch also makes the Toshiba bridge work correctly again.
+However, we can confirm that the patch is needed, otherwise only the
+positive-edge case (our case) works correctly.
+
+In other words, the two registers need to match semantically, not numerically.
 
