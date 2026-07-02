@@ -1,67 +1,61 @@
-Return-Path: <stable+bounces-270874-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-271420-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id DuBTJVCgRmrjaQsAu9opvQ
-	(envelope-from <stable+bounces-270874-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:30:56 +0200
+	id mooxBoemRmr1awsAu9opvQ
+	(envelope-from <stable+bounces-271420-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:57:27 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id E422F6FB663
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:30:55 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B12F56FBBAA
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:57:26 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=aJiIg6qx;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-270874-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-270874-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=CBPXTWON;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-271420-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-271420-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 16648318962D
-	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:37:10 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 089CB32C04D8
+	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:58:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8453D3491E1;
-	Thu,  2 Jul 2026 16:34:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8C682FFF9D;
+	Thu,  2 Jul 2026 16:58:17 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1390B346FAD;
-	Thu,  2 Jul 2026 16:34:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7752D2D0602;
+	Thu,  2 Jul 2026 16:58:16 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783010076; cv=none; b=PI2A/D0rQm3lDkUe63HFWU62NCSSO2kdb1sufHXqqmfTh9my0ZnrgG+NhArDesJiXx3qIfAYXCAHjA3EJ4VjgpExlqILYg8xLLJuxjbgb6FmVHTuu17aVwIAtkGm+j8Nob4OQrL4DU5ZFIhq8ftV5WIfw1ndmybSOIUxrBZSQp8=
+	t=1783011497; cv=none; b=a7Lo4LdaxD+o0VX8hNJQLmEpB05MKH/geJCuxLVgA6jYf4fX72VV2bOhZdyWrEcAkNBbW0rX40o3AYKiABNK5CM2oAV7cjduuO30PdSp7KJJD+wrSfKDlukNqWx2svXshw1iy5LmRmDx1zg6aCC7D0hTNCCEzFW7c5aEvDaj8+I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783010076; c=relaxed/simple;
-	bh=EOE63XOqKDZNq3XjX4RDz23Jv+U0A980d1Lpf2/K2/o=;
+	s=arc-20240116; t=1783011497; c=relaxed/simple;
+	bh=HUnTkYGRiM0YOBxTRU+cz7+vLvs8mhHYkq7iH3LPd9A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nnGZgOputGrV9eJT2zsI4Jm6/MLKe0vfWSAs6sxf13UhufhFHFAXbClwIkUm7qoN6+rbYcXIlPyaEiW6ZBwSRLT3okPTJv89oX2GqQ8HMTSeIK4dzQ8auWLJ735MLCcqOT9Sbvt+JcSisWOh+D1utK/HPVxUUOXx19OwHE04gSI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aJiIg6qx; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 824141F000E9;
-	Thu,  2 Jul 2026 16:34:34 +0000 (UTC)
+	 MIME-Version; b=hBtqRaN9aHIStTP2vNzi+7geE6H1FUL3vo2jwuyy+u0G4j1ODmpeo6WafnN+JC1jgWTGkWr/Nup2lE/i2bQhxgBt/AbBp2L2SjZnq1RTOJX92efMMQUezN2pPuNU13sHS8zrE1PkVvDyEeaLpJm1YVxOOi9x9uhiwOKDkA1UPHY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CBPXTWON; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD0401F00A3A;
+	Thu,  2 Jul 2026 16:58:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1783010075;
-	bh=aRVrZBn3ZuMjmkDjdozKKOP7UtHvZNSaYONjZx0sQ+8=;
+	s=korg; t=1783011496;
+	bh=haJQyldlNUac4XTWl6iuyi1YPI7VEtHKvZR6Jym67eY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=aJiIg6qxFKN1IvjeCA4gpPDq1vOxf8ZhsTo8ZtBw5TGi49+tO3CLV8sKLXDLUocNC
-	 jRsIwwnGLEE8UFvEyBwyJoxoJKS+7aX3BdtloU64jrw+dTyu9MhGWYi2d/rdudLZvk
-	 u3jKKn1RZVzGBZi7EUTlMhkN/7XhfvcJDOCYvv50=
+	b=CBPXTWONEm0r6e/fTEHAV8Z24OyX+p52QPnhELzrDQGecobk4K6smhzg3vBZVxlI/
+	 WebWDWpk5u+NZuzoCMSsIsZXzsfDG6bCRTz1eIyhD4TC2K/ZhpZ2vL+pBc0ExeNRkm
+	 lcO77aXFMB+gqqVk1uNm0ViYHvKWWPuaLOc4PRQk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhang Cen <rollkingzzc@gmail.com>,
-	Joseph Qi <joseph.qi@linux.alibaba.com>,
-	Mark Fasheh <mark@fasheh.com>,
-	Joel Becker <jlbec@evilplan.org>,
-	Junxiao Bi <junxiao.bi@oracle.com>,
-	Changwei Ge <gechangwei@live.cn>,
-	Jun Piao <piaojun@huawei.com>,
-	Heming Zhao <heming.zhao@suse.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.1 099/129] ocfs2: reject oversized group bitmap descriptors
+	stable@kernel.org,
+	Sven Eckelmann <sven@narfation.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 7.1 022/120] batman-adv: tp_meter: handle overlapping packets
 Date: Thu,  2 Jul 2026 18:20:18 +0200
-Message-ID: <20260702155114.192455302@linuxfoundation.org>
+Message-ID: <20260702155113.420197905@linuxfoundation.org>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260702155112.163984240@linuxfoundation.org>
-References: <20260702155112.163984240@linuxfoundation.org>
+In-Reply-To: <20260702155112.964534952@linuxfoundation.org>
+References: <20260702155112.964534952@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -78,164 +72,144 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[12];
-	TAGGED_FROM(0.00)[bounces-270874-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:rollkingzzc@gmail.com,m:joseph.qi@linux.alibaba.com,m:mark@fasheh.com,m:jlbec@evilplan.org,m:junxiao.bi@oracle.com,m:gechangwei@live.cn,m:piaojun@huawei.com,m:heming.zhao@suse.com,m:akpm@linux-foundation.org,s:lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,linux.alibaba.com,fasheh.com,evilplan.org,oracle.com,live.cn,huawei.com,suse.com,linux-foundation.org];
+	TAGGED_FROM(0.00)[bounces-271420-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:stable@kernel.org,m:sven@narfation.org,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	TO_DN_SOME(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,alibaba.com:email,oracle.com:email,vger.kernel.org:from_smtp,fasheh.com:email,suse.com:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,narfation.org:email,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: E422F6FB663
+X-Rspamd-Queue-Id: B12F56FBBAA
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+7.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhang Cen <rollkingzzc@gmail.com>
+From: Sven Eckelmann <sven@narfation.org>
 
-commit 9bd541e09dffff27e5bec0f9f45b0228173a5375 upstream.
+commit cbde75c38b21f022891525078622587ad557b7c1 upstream.
 
-ocfs2_validate_gd_parent() only bounds bg_bits against the parent
-allocator's chain geometry.  A malicious descriptor can still claim a
-bg_size/bg_bits pair that exceeds the bitmap bytes that physically fit in
-the group descriptor block, so later bitmap scans and bit updates can run
-past bg_bitmap.
+If the size of the packets would change during the transmission, it could
+happen that some retries of packets are overlapping. In this case, precise
+comparisons of sequence numbers by the receiver would be wrong. It is then
+necessary to check if the start sequence number to the end sequence number
+("seqno + length") would contain a new range.
 
-Add a physical-cap check based on ocfs2_group_bitmap_size() for the parent
-allocator type and reject descriptors whose bg_size or bg_bits exceed that
-capacity.  Keep the existing chain geometry check so both the on-disk
-bitmap layout and the allocator metadata must agree before the descriptor
-is used.
+If this is the case then this is enough to accept this packet. In all other
+cases, the packet still has to be dropped (and not acked).
 
-Validation reproduced this kernel report:
-KASAN use-after-free in _find_next_bit+0x7f/0xc0
-Read of size 8
-Call trace:
-  dump_stack_lvl+0x66/0xa0 (?:?)
-  print_report+0xd0/0x630 (?:?)
-  _find_next_bit+0x7f/0xc0 (?:?)
-  srso_alias_return_thunk+0x5/0xfbef5 (?:?)
-  __virt_addr_valid+0x188/0x2f0 (?:?)
-  kasan_report+0xe4/0x120 (?:?)
-  ocfs2_find_max_contig_free_bits+0x35/0x70 (fs/ocfs2/suballoc.c:1375)
-  ocfs2_block_group_set_bits+0x472/0x4b0 (fs/ocfs2/suballoc.c:1457)
-  ocfs2_cluster_group_search+0x16b/0x440 (fs/ocfs2/suballoc.c:86)
-  ocfs2_bg_discontig_fix_result+0x1ef/0x230 (fs/ocfs2/suballoc.c:1786)
-  ocfs2_search_chain+0x8f8/0x10a0 (fs/ocfs2/suballoc.c:1886)
-  get_page_from_freelist+0x70e/0x2370 (?:?)
-  lock_release+0xc6/0x290 (?:?)
-  do_raw_spin_unlock+0x9a/0x100 (?:?)
-  kasan_unpoison+0x27/0x60 (?:?)
-  __bfs+0x147/0x240 (?:?)
-  get_page_from_freelist+0x83d/0x2370 (?:?)
-  ocfs2_claim_suballoc_bits+0x38c/0xe70 (fs/ocfs2/suballoc.c:96)
-  sched_domains_numa_masks_clear+0x70/0xd0 (?:?)
-  check_irq_usage+0xe8/0xb70 (?:?)
-  __ocfs2_claim_clusters+0x18d/0x4c0 (fs/ocfs2/suballoc.c:2497)
-  check_path+0x24/0x50 (?:?)
-  rcu_is_watching+0x20/0x50 (?:?)
-  check_prev_add+0xfd/0xd00 (?:?)
-  ocfs2_add_clusters_in_btree+0x17d/0x810 (fs/ocfs2/suballoc.c:?)
-  __folio_batch_add_and_move+0x1f5/0x3d0 (?:?)
-  ocfs2_add_inode_data+0xd9/0x120 (fs/ocfs2/suballoc.c:?)
-  filemap_add_folio+0x105/0x1f0 (?:?)
-  ocfs2_write_begin_nolock+0x29f7/0x2f80 (fs/ocfs2/suballoc.c:3043)
-  ocfs2_read_inode_block+0xb5/0x110 (fs/ocfs2/suballoc.c:?)
-  down_write+0xf5/0x180 (?:?)
-  ocfs2_write_begin+0x180/0x240 (fs/ocfs2/suballoc.c:?)
-  __mark_inode_dirty+0x758/0x9a0 (?:?)
-  inode_to_bdi+0x41/0x90 (?:?)
-  balance_dirty_pages_ratelimited_flags+0xf8/0x1d0 (?:?)
-  generic_perform_write+0x252/0x440 (?:?)
-  mnt_put_write_access_file+0x16/0x70 (?:?)
-  file_update_time_flags+0xe4/0x200 (?:?)
-  ocfs2_file_write_iter+0x80a/0x1320 (fs/ocfs2/suballoc.c:?)
-  lock_acquire+0x184/0x2f0 (?:?)
-  ksys_write+0xd2/0x170 (?:?)
-  apparmor_file_permission+0xf5/0x310 (?:?)
-  read_zero+0x8d/0x140 (?:?)
-  lock_is_held_type+0x8f/0x100 (?:?)
-
-Link: https://lore.kernel.org/20260524111248.1429884-1-rollkingzzc@gmail.com
-Fixes: ccd979bdbce9 ("[PATCH] OCFS2: The Second Oracle Cluster Filesystem")
-Assisted-by: Codex:gpt-5.5
-Signed-off-by: Zhang Cen <rollkingzzc@gmail.com>
-Reviewed-by: Joseph Qi <joseph.qi@linux.alibaba.com>
-Cc: Mark Fasheh <mark@fasheh.com>
-Cc: Joel Becker <jlbec@evilplan.org>
-Cc: Junxiao Bi <junxiao.bi@oracle.com>
-Cc: Changwei Ge <gechangwei@live.cn>
-Cc: Jun Piao <piaojun@huawei.com>
-Cc: Heming Zhao <heming.zhao@suse.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@kernel.org
+Fixes: 33a3bb4a3345 ("batman-adv: throughput meter implementation")
+[ Switch to pre-splitted tp_vars structure names ]
+Signed-off-by: Sven Eckelmann <sven@narfation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ocfs2/suballoc.c |   22 ++++++++++++++++++++++
- 1 file changed, 22 insertions(+)
+ net/batman-adv/tp_meter.c | 25 +++++++++++--------------
+ 1 file changed, 11 insertions(+), 14 deletions(-)
 
---- a/fs/ocfs2/suballoc.c
-+++ b/fs/ocfs2/suballoc.c
-@@ -201,8 +201,16 @@ static int ocfs2_validate_gd_parent(stru
- 				    int resize)
+diff --git a/net/batman-adv/tp_meter.c b/net/batman-adv/tp_meter.c
+index 6a23050f03d89e..dbaae33db0f1f8 100644
+--- a/net/batman-adv/tp_meter.c
++++ b/net/batman-adv/tp_meter.c
+@@ -1284,7 +1284,8 @@ static int batadv_tp_send_ack(struct batadv_priv *bat_priv, const u8 *dst,
+ /**
+  * batadv_tp_handle_out_of_order() - store an out of order packet
+  * @tp_vars: the private data of the current TP meter session
+- * @skb: the buffer containing the received packet
++ * @seqno: sequence number of new received packet
++ * @payload_len: length of the received packet
+  *
+  * Store the out of order packet in the unacked list for late processing. This
+  * packets are kept in this list so that they can be ACKed at once as soon as
+@@ -1293,22 +1294,17 @@ static int batadv_tp_send_ack(struct batadv_priv *bat_priv, const u8 *dst,
+  * Return: true if the packed has been successfully processed, false otherwise
+  */
+ static bool batadv_tp_handle_out_of_order(struct batadv_tp_vars *tp_vars,
+-					  const struct sk_buff *skb)
++					  u32 seqno, u32 payload_len)
+ 	__must_hold(&tp_vars->unacked_lock)
  {
- 	unsigned int max_bits;
-+	unsigned int max_bitmap_bits;
-+	unsigned int max_bitmap_size;
-+	int suballocator;
- 	struct ocfs2_group_desc *gd = (struct ocfs2_group_desc *)bh->b_data;
+-	const struct batadv_icmp_tp_packet *icmp;
+ 	struct batadv_tp_unacked *un, *new;
+-	u32 payload_len;
+ 	bool added = false;
  
-+	suballocator = le64_to_cpu(di->i_blkno) != OCFS2_SB(sb)->bitmap_blkno;
-+	max_bitmap_size = ocfs2_group_bitmap_size(sb, suballocator,
-+						  OCFS2_SB(sb)->s_feature_incompat);
-+	max_bitmap_bits = max_bitmap_size * 8;
-+
- 	if (di->i_blkno != gd->bg_parent_dinode) {
- 		do_error("Group descriptor #%llu has bad parent pointer (%llu, expected %llu)\n",
- 			 (unsigned long long)bh->b_blocknr,
-@@ -210,6 +218,20 @@ static int ocfs2_validate_gd_parent(stru
- 			 (unsigned long long)le64_to_cpu(di->i_blkno));
+ 	new = kmalloc_obj(*new, GFP_ATOMIC);
+ 	if (unlikely(!new))
+ 		return false;
+ 
+-	icmp = (struct batadv_icmp_tp_packet *)skb->data;
+-
+-	new->seqno = ntohl(icmp->seqno);
+-	payload_len = skb->len - sizeof(struct batadv_unicast_packet);
++	new->seqno = seqno;
+ 	new->len = payload_len;
+ 
+ 	/* if the list is empty immediately attach this new object */
+@@ -1476,7 +1472,7 @@ static void batadv_tp_recv_msg(struct batadv_priv *bat_priv,
+ {
+ 	const struct batadv_icmp_tp_packet *icmp;
+ 	struct batadv_tp_vars *tp_vars;
+-	size_t packet_size;
++	u32 payload_len;
+ 	u32 to_ack;
+ 	u32 seqno;
+ 
+@@ -1511,15 +1507,17 @@ static void batadv_tp_recv_msg(struct batadv_priv *bat_priv,
+ 	/* if the packet is a duplicate, it may be the case that an ACK has been
+ 	 * lost. Resend the ACK
+ 	 */
+-	if (batadv_seq_before(seqno, tp_vars->last_recv))
++	payload_len = skb->len - sizeof(struct batadv_unicast_packet);
++	to_ack = seqno + payload_len;
++	if (batadv_seq_before(to_ack, tp_vars->last_recv))
+ 		goto send_ack;
+ 
+ 	/* if the packet is out of order enqueue it */
+-	if (ntohl(icmp->seqno) != tp_vars->last_recv) {
++	if (batadv_seq_before(tp_vars->last_recv, seqno)) {
+ 		/* exit immediately (and do not send any ACK) if the packet has
+ 		 * not been enqueued correctly
+ 		 */
+-		if (!batadv_tp_handle_out_of_order(tp_vars, skb)) {
++		if (!batadv_tp_handle_out_of_order(tp_vars, seqno, payload_len)) {
+ 			spin_unlock_bh(&tp_vars->unacked_lock);
+ 			goto out;
+ 		}
+@@ -1529,8 +1527,7 @@ static void batadv_tp_recv_msg(struct batadv_priv *bat_priv,
  	}
  
-+	if (le16_to_cpu(gd->bg_size) > max_bitmap_size) {
-+		do_error("Group descriptor #%llu has bitmap size %u but physical max of %u\n",
-+			 (unsigned long long)bh->b_blocknr,
-+			 le16_to_cpu(gd->bg_size),
-+			 max_bitmap_size);
-+	}
-+
-+	if (le16_to_cpu(gd->bg_bits) > max_bitmap_bits) {
-+		do_error("Group descriptor #%llu has bit count %u but physical max of %u\n",
-+			 (unsigned long long)bh->b_blocknr,
-+			 le16_to_cpu(gd->bg_bits),
-+			 max_bitmap_bits);
-+	}
-+
- 	max_bits = le16_to_cpu(di->id2.i_chain.cl_cpg) * le16_to_cpu(di->id2.i_chain.cl_bpc);
- 	if (le16_to_cpu(gd->bg_bits) > max_bits) {
- 		do_error("Group descriptor #%llu has bit count of %u\n",
+ 	/* if everything was fine count the ACKed bytes */
+-	packet_size = skb->len - sizeof(struct batadv_unicast_packet);
+-	tp_vars->last_recv += packet_size;
++	tp_vars->last_recv = to_ack;
+ 
+ 	/* check if this ordered message filled a gap.... */
+ 	batadv_tp_ack_unordered(tp_vars);
+-- 
+2.53.0
+
 
 
 
