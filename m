@@ -1,63 +1,70 @@
-Return-Path: <stable+bounces-270823-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-271176-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id bruqBNyfRmq9aQsAu9opvQ
-	(envelope-from <stable+bounces-270823-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:29:00 +0200
+	id 4DVpGoekRmp4awsAu9opvQ
+	(envelope-from <stable+bounces-271176-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:48:55 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 672D26FB5EF
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:28:59 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C8906FBA57
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:48:54 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="Zl03/L7R";
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-270823-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-270823-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=YUJHhNPY;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-271176-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-271176-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 45D8331FABF3
-	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:35:44 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 6C0FE3122656
+	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:49:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B63E39EF0F;
-	Thu,  2 Jul 2026 16:32:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 955FE3ABD82;
+	Thu,  2 Jul 2026 16:47:47 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9DF33385A7;
-	Thu,  2 Jul 2026 16:32:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C3EA3A1E92;
+	Thu,  2 Jul 2026 16:47:46 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783009941; cv=none; b=VbEMOYYYrp8X6ojnD/zZULyDTjhRz1eMUEWtMCFDZcqtxdgyt8mFZYGriSQVLmePtAVVsLxs0Uacj6+Og3aEgRzuYmHmvdHiTgVcg0RAwZICFMH+YjBRFURJyXpb1Pr3CkY1QICuSSS5k/9kC3QJxh2gmCbvgYTTg79xmY67vMc=
+	t=1783010867; cv=none; b=si83Lu9jfTohUeAynW36e8Y6i8ND5LH4w16CE74DK2UnoR4Cx1XWzJ4iI8jwn6Muu1/3GxMxvGrUd8s6yU9PtSsRvQnG3jdR8Kz1QSjWaxfH6wXVc0Iy0kMrBdArTGJXs5YoSo8CEjmljvcOlBaFffc3VSvUI4OjIGcYe2U/wXs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783009941; c=relaxed/simple;
-	bh=bqQ/TLV7qDXbqJELw1eAIbjlyjla+ML5r/9NUO+uKjA=;
+	s=arc-20240116; t=1783010867; c=relaxed/simple;
+	bh=HXk1E4qezyr/7+mwitNpBkD13jG/hvy84a372DPU+hY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cXuT2EQJk2wmHWN8nAQuVdKLzBT7BlHSYG80iKpVZGiM+wQUJxZE/AFR1SC92CFEZvkv+AktaESwTuFRbGrqBWqUGsyqC8t/j3E8Q7tNu8XqAvsZFjz4OWC+8ehli0/wKj7XTICzFYT2lxaPILIHa+zhp8IHzheCrd6bYxlDPlM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Zl03/L7R; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2CD451F00A3A;
-	Thu,  2 Jul 2026 16:32:20 +0000 (UTC)
+	 MIME-Version; b=M/2GrVxPSRsWU/T1jw7AT+tGIE4AjTCunqeksaNrqAKHDwHxtaHW00Qyvt4Oe/Ja7m1pXxNuyXFCW9dIvH/vjeFlx2WIZxczPeS/QXAFI+EDRssiP+ZDXTAmlx+2Fg9PU1zr9sLNuJoXlxLCT7eoXkDG1luTxY0ybyXETi11EPs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YUJHhNPY; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AEC521F000E9;
+	Thu,  2 Jul 2026 16:47:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1783009940;
-	bh=DJpjH9SoXbhdA906vf975aRz4iZAVBiJs0zVvsspfAE=;
+	s=korg; t=1783010866;
+	bh=6ZigGjI92MuvJT4or0sUy7Rf5a6+BuACiYUyaGRimoM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Zl03/L7R8ltdiF8R9YHRpP5xASY4L86PSpIaULO2zmypvDO8MncwdYjiyVbJ937pU
-	 /Vh4puLR0bsV6UmgtUIKNEenslPoESD2uDTS2ufBd/6P+rCd7BOgJ9Z/AYScAV30et
-	 QN+kh209XBPGhWhv6eP05K0XelCJHUqlUjGOaC4o=
+	b=YUJHhNPYFnyqrqGytTt09kBHD8Osf4dZ2zktYYOA3PN+9ISkwJuXoYIIV5SMsQsbH
+	 GZAgmD/+y/vQ7TORUdUx0W3Q3C2mJDrFU+Vo40fH/7EGiAguNx4AJ5RmuXYd6da43W
+	 w3+/Z1IbtHPof4rEhqAxVeLMe8NSpP1cx1MlF2aM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yu Zhao <yuzhao@google.com>,
-	syzbot+03fd9b3f71641f0ebf2d@syzkaller.appspotmail.com,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
 	Andrew Morton <akpm@linux-foundation.org>,
-	Jakov Novak <jakovnovak30@gmail.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 049/129] mm/mglru: skip special VMAs in lru_gen_look_around()
+	Masahiro Yamada <masahiroy@kernel.org>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>,
+	"Arnd Bergmann" <arnd@arndb.de>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Mark Brown <broonie@kernel.org>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
+	Andrey Grodzovsky <andrey.grodzovsky@crowdstrike.com>
+Subject: [PATCH 6.6 067/175] ftrace: Check against is_kernel_text() instead of kaslr_offset()
 Date: Thu,  2 Jul 2026 18:19:28 +0200
-Message-ID: <20260702155113.165543024@linuxfoundation.org>
+Message-ID: <20260702155117.205597497@linuxfoundation.org>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260702155112.163984240@linuxfoundation.org>
-References: <20260702155112.163984240@linuxfoundation.org>
+In-Reply-To: <20260702155115.766838875@linuxfoundation.org>
+References: <20260702155115.766838875@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,122 +76,119 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,google.com,syzkaller.appspotmail.com,linux-foundation.org,gmail.com,kernel.org];
-	TAGGED_FROM(0.00)[bounces-270823-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:mhiramat@kernel.org,m:mark.rutland@arm.com,m:mathieu.desnoyers@efficios.com,m:akpm@linux-foundation.org,m:masahiroy@kernel.org,m:catalin.marinas@arm.com,m:will@kernel.org,m:arnd@arndb.de,m:nathan@kernel.org,m:broonie@kernel.org,m:rostedt@goodmis.org,m:andrey.grodzovsky@crowdstrike.com,s:lists@lfdr.de];
+	PRECEDENCE_BULK(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:yuzhao@google.com,m:syzbot+03fd9b3f71641f0ebf2d@syzkaller.appspotmail.com,m:akpm@linux-foundation.org,m:jakovnovak30@gmail.com,m:sashal@kernel.org,m:syzbot@syzkaller.appspotmail.com,s:lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-271176-lists,stable=lfdr.de];
+	RCPT_COUNT_TWELVE(0.00)[15];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	RCVD_COUNT_THREE(0.00)[4];
 	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,03fd9b3f71641f0ebf2d];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,appspotmail.com:email]
+	RWL_MAILSPIKE_POSSIBLE(0.00)[104.64.211.4:from];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,goodmis.org:email,linux-foundation.org:email,efficios.com:email,arndb.de:email,crowdstrike.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 672D26FB5EF
+X-Rspamd-Queue-Id: 8C8906FBA57
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yu Zhao <yuzhao@google.com>
+From: Steven Rostedt <rostedt@goodmis.org>
 
-[ Upstream commit c28ac3c7eb945fee6e20f47d576af68fdff1392a ]
+[ Upstream commit da0f622b344be769ed61e7c1caf95cd0cdb47964 ]
 
-Special VMAs like VM_PFNMAP can contain anon pages from COW.  There isn't
-much profit in doing lookaround on them.  Besides, they can trigger the
-pte_special() warning in get_pte_pfn().
+As kaslr_offset() is architecture dependent and also may not be defined by
+all architectures, when zeroing out unused weak functions, do not check
+against kaslr_offset(), but instead check if the address is within the
+kernel text sections. If KASLR added a shift to the zeroed out function,
+it would still not be located in the kernel text. This is a more robust
+way to test if the text is valid or not.
 
-Skip them in lru_gen_look_around().
-
-Link: https://lkml.kernel.org/r/20231223045647.1566043-1-yuzhao@google.com
-Fixes: 018ee47f1489 ("mm: multi-gen LRU: exploit locality in rmap")
-Signed-off-by: Yu Zhao <yuzhao@google.com>
-Reported-by: syzbot+03fd9b3f71641f0ebf2d@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/000000000000f9ff00060d14c256@google.com/
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-[fix conflicts with variable declarations and vma pointer usage]
-Signed-off-by: Jakov Novak <jakovnovak30@gmail.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: Masami Hiramatsu <mhiramat@kernel.org>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: Masahiro Yamada <masahiroy@kernel.org>
+Cc: Catalin Marinas <catalin.marinas@arm.com>
+Cc: Will Deacon <will@kernel.org>
+Cc: "Arnd Bergmann" <arnd@arndb.de>
+Link: https://lore.kernel.org/20250225182054.471759017@goodmis.org
+Fixes: ef378c3b8233 ("scripts/sorttable: Zero out weak functions in mcount_loc table")
+Reported-by: Nathan Chancellor <nathan@kernel.org>
+Reported-by: Mark Brown <broonie@kernel.org>
+Tested-by: Nathan Chancellor <nathan@kernel.org>
+Closes: https://lore.kernel.org/all/20250224180805.GA1536711@ax162/
+Closes: https://lore.kernel.org/all/5225b07b-a9b2-4558-9d5f-aa60b19f6317@sirena.org.uk/
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: Andrey Grodzovsky <andrey.grodzovsky@crowdstrike.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/vmscan.c | 13 +++++++++----
- 1 file changed, 9 insertions(+), 4 deletions(-)
+ kernel/trace/ftrace.c |   17 ++++++++++++-----
+ 1 file changed, 12 insertions(+), 5 deletions(-)
 
-diff --git a/mm/vmscan.c b/mm/vmscan.c
-index 1f7a90ecc7007d..f6f8c18dc45f57 100644
---- a/mm/vmscan.c
-+++ b/mm/vmscan.c
-@@ -4622,6 +4622,7 @@ void lru_gen_look_around(struct page_vma_mapped_walk *pvmw)
- 	struct lru_gen_mm_walk *walk;
- 	int young = 0;
- 	unsigned long bitmap[BITS_TO_LONGS(MIN_LRU_BATCH)] = {};
-+	struct vm_area_struct *vma = pvmw->vma;
- 	struct folio *folio = pfn_folio(pvmw->pfn);
- 	struct mem_cgroup *memcg = folio_memcg(folio);
- 	struct pglist_data *pgdat = folio_pgdat(folio);
-@@ -4635,11 +4636,15 @@ void lru_gen_look_around(struct page_vma_mapped_walk *pvmw)
- 	if (spin_is_contended(pvmw->ptl))
- 		return;
+--- a/kernel/trace/ftrace.c
++++ b/kernel/trace/ftrace.c
+@@ -6528,7 +6528,6 @@ static int ftrace_process_locs(struct mo
+ 	unsigned long count;
+ 	unsigned long *p;
+ 	unsigned long addr;
+-	unsigned long kaslr;
+ 	unsigned long flags = 0; /* Shut up gcc */
+ 	unsigned long pages;
+ 	int ret = -ENOMEM;
+@@ -6578,9 +6577,6 @@ static int ftrace_process_locs(struct mo
+ 		ftrace_pages->next = start_pg;
+ 	}
  
-+	/* exclude special VMAs containing anon pages from COW */
-+	if (vma->vm_flags & VM_SPECIAL)
-+		return;
+-	/* For zeroed locations that were shifted for core kernel */
+-	kaslr = !mod ? kaslr_offset() : 0;
+-
+ 	p = start;
+ 	pg = start_pg;
+ 	while (p < end) {
+@@ -6594,7 +6590,18 @@ static int ftrace_process_locs(struct mo
+ 		 * object files to satisfy alignments.
+ 		 * Skip any NULL pointers.
+ 		 */
+-		if (!addr || addr == kaslr) {
++		if (!addr) {
++			skipped++;
++			continue;
++		}
 +
- 	/* avoid taking the LRU lock under the PTL when possible */
- 	walk = current->reclaim_state ? current->reclaim_state->mm_walk : NULL;
- 
--	start = max(pvmw->address & PMD_MASK, pvmw->vma->vm_start);
--	end = min(pvmw->address | ~PMD_MASK, pvmw->vma->vm_end - 1) + 1;
-+	start = max(pvmw->address & PMD_MASK, vma->vm_start);
-+	end = min(pvmw->address | ~PMD_MASK, vma->vm_end - 1) + 1;
- 
- 	if (end - start > MIN_LRU_BATCH * PAGE_SIZE) {
- 		if (pvmw->address - start < MIN_LRU_BATCH * PAGE_SIZE / 2)
-@@ -4660,7 +4665,7 @@ void lru_gen_look_around(struct page_vma_mapped_walk *pvmw)
- 	for (i = 0, addr = start; addr != end; i++, addr += PAGE_SIZE) {
- 		unsigned long pfn;
- 
--		pfn = get_pte_pfn(pte[i], pvmw->vma, addr);
-+		pfn = get_pte_pfn(pte[i], vma, addr);
- 		if (pfn == -1)
++		/*
++		 * If this is core kernel, make sure the address is in core
++		 * or inittext, as weak functions get zeroed and KASLR can
++		 * move them to something other than zero. It just will not
++		 * move it to an area where kernel text is.
++		 */
++		if (!mod && !(is_kernel_text(addr) || is_kernel_inittext(addr))) {
+ 			skipped++;
  			continue;
- 
-@@ -4671,7 +4676,7 @@ void lru_gen_look_around(struct page_vma_mapped_walk *pvmw)
- 		if (!folio)
- 			continue;
- 
--		if (!ptep_test_and_clear_young(pvmw->vma, addr, pte + i))
-+		if (!ptep_test_and_clear_young(vma, addr, pte + i))
- 			VM_WARN_ON_ONCE(true);
- 
- 		young++;
--- 
-2.53.0
-
+ 		}
 
 
 
