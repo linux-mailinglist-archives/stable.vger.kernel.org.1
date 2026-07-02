@@ -1,212 +1,125 @@
-Return-Path: <stable+bounces-270341-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-270344-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 1Kg7LBD/RWqHHgsAu9opvQ
-	(envelope-from <stable+bounces-270341-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 08:02:56 +0200
+	id Gj7JBXgCRmpGHwsAu9opvQ
+	(envelope-from <stable+bounces-270344-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 08:17:28 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 04BDE6F3AA2
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 08:02:56 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8D0E26F3BCF
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 08:17:27 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=intel.com header.s=Intel header.b=jgFGpdJ5;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-270341-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-270341-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=none) header.from=intel.com;
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=JGq1OIOP;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-270344-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-270344-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 8AC92304546A
-	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 06:01:20 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 2EEED30074BF
+	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 06:17:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9376636897C;
-	Thu,  2 Jul 2026 06:01:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08924385530;
+	Thu,  2 Jul 2026 06:17:25 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 659CC293C4E;
-	Thu,  2 Jul 2026 06:01:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28ED3384CEC;
+	Thu,  2 Jul 2026 06:17:21 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782972078; cv=none; b=uc5fTms61sOW+us3Evlt0HEdDMwV6yY8mly6vrOwzqxEg6fBr4fa+0dK+iUMLWox/cED80CtXnxuT1snMAaQHQMUUvSPCSbkXSoShx0epf5jeFpxNlCVyA+Ax3d8izGcWj//4gWKLl5M5XsPKjCS7kVdKS/CPXxA+HZaWe5K+qw=
+	t=1782973044; cv=none; b=Q8W0ZSDdPbgEdh/Yn4QSyORwNK0qxaOzqshQNbfhs7P8ZCVDWj4qDMUIYXcdyPm1fF9B9a2/ioxFpwDMktuKS2Fj00aT7jTwrIaeayF5DRdSuKFCkIqRxAeDaPgo6tw0cXr3C4CmYk+ESHHFwIJl08AnHPUtLWxmh4SJiN9iZZY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782972078; c=relaxed/simple;
-	bh=ITuJxkDofYGJJAVybAwgFTvm9+F2gZ1xcqbGZmAqvv8=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=APYL46vPuxbW1H8SozkaCrixj/IvgEi5aF0qulEoHBRY/IN+xxL8/i6ntFxzfPx+puLrp0RiZTOXbnEy+ULH9RwVyLmQZR9MvcNZxO9BAJ4dSQ3xpMtFJtEdz3BBsMUfyl0Ygy3FT2P1+1l/zoV1z0ePst5Ns1fNWAYohbk49Js=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=jgFGpdJ5; arc=none smtp.client-ip=192.198.163.8
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1782972076; x=1814508076;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=ITuJxkDofYGJJAVybAwgFTvm9+F2gZ1xcqbGZmAqvv8=;
-  b=jgFGpdJ56m7XPTAVfZJjcZ5hLjWpKjm4Xy3FlCd9Uepr4rlTaSBAsZST
-   sEJxEYjCUMV/2lGWA0O89MlRmr/jtdPgFm1fmw+eU6rvPBavEhXPdNRdp
-   z5cO8Cl8SwwodhSkKkuiXDbT5yo/jcJWpkredjLTTH9ztlTAAyQ9f8glO
-   CfEAVnTu4sX4ye0lD0rUQsoFxI+eiUelYN6sCZH9Adq9Js6rZZN+WB1m8
-   bQSJ2QKZM4en6E7oehUWOAlVyYz1UBF5y/y31fjshxJL7mYBOl1BrfoGb
-   5jKwP3KkNcQkfVnz+NzN0gDrvKPPKOOTi/EDQDOri8fVDcHZ1POfOhK3Y
-   w==;
-X-CSE-ConnectionGUID: XHUZeis2QU+4TRvRgm4w/w==
-X-CSE-MsgGUID: zOUfwcZzTZKbmCppXu+K7Q==
-X-IronPort-AV: E=McAfee;i="6800,10657,11834"; a="101256461"
-X-IronPort-AV: E=Sophos;i="6.25,143,1779174000"; 
-   d="scan'208";a="101256461"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
-  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Jul 2026 23:01:16 -0700
-X-CSE-ConnectionGUID: Zp0wHyjeQFeHlIdFmhMl2g==
-X-CSE-MsgGUID: oRy5feFkTTiTFVy6krzSOg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,143,1779174000"; 
-   d="scan'208";a="253425787"
-Received: from ktian1-pkvm.sh.intel.com ([10.239.48.205])
-  by orviesa009.jf.intel.com with ESMTP; 01 Jul 2026 23:01:09 -0700
-From: Kevin Tian <kevin.tian@intel.com>
-To: Lu Baolu <baolu.lu@linux.intel.com>,
-	Joerg Roedel <joro@8bytes.org>,
-	Will Deacon <will@kernel.org>,
-	Robin Murphy <robin.murphy@arm.com>
-Cc: Kevin Tian <kevin.tian@intel.com>,
-	Mika Westerberg <mika.westerberg@linux.intel.com>,
-	Ashok Raj <ashok.raj@intel.com>,
-	Chris Wright <chrisw@sous-sol.org>,
-	Jesse Barnes <jbarnes@virtuousgeek.org>,
-	Asit Mallick <asit.k.mallick@intel.com>,
-	iommu@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: [PATCH v2 2/9] iommu/vt-d: Force requesting ACS when tboot is enabled
-Date: Thu,  2 Jul 2026 06:12:09 +0000
-Message-ID: <20260702061216.388743-3-kevin.tian@intel.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260702061216.388743-1-kevin.tian@intel.com>
-References: <20260702061216.388743-1-kevin.tian@intel.com>
+	s=arc-20240116; t=1782973044; c=relaxed/simple;
+	bh=Q/SQDMycS9q9/9zbE4ZuGp3Naa6I5bigT4tbBnjlnhY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=eLHE6hgdMojiIRpKf/tOu3elpfPhQKeMgTyWTdxsuHCIXqOSthW8Y9JMnU1tClyE7aTOremE4IzYjhSd9l69lBof/02Lt0b/zR0hYUm5glcqsme1X5uBrlt8aem2g0ew3M0r3qXilHEOtTrxaAF2wke8tOppHbbfgjvYlpRLwz8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JGq1OIOP; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2E021F000E9;
+	Thu,  2 Jul 2026 06:17:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
+	s=korg; t=1782973041;
+	bh=1opG8KVKCkJTM4GDzfVHg07XwVYvSaDsnS3cERZdy7E=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=JGq1OIOPdp5JvKbv9Ct4JH5C2W5v3DSnOAMEt8X8r/QJlSz9G05k39jJkjDG3BiF/
+	 llHrDHXFGXRax0Er6yiKTZWCgyI3p6KZONQHurhZ4P8urH07VCMjlueXpFsOw9oOWi
+	 hF7B2B6f+S488eyrgg0G9xd0djStAZePEGLEL8bI=
+Date: Thu, 2 Jul 2026 08:16:05 +0200
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Colton Lewis <coltonlewis@google.com>
+Cc: stable@vger.kernel.org, Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>, Marc Zyngier <maz@kernel.org>,
+	Oliver Upton <oliver.upton@linux.dev>,
+	James Morse <james.morse@arm.com>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Zenghui Yu <yuzenghui@huawei.com>,
+	Mingwei Zhang <mizhang@google.com>,
+	linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 0/5] Backport ARM64 VHE boot fixes to 6.6.y
+Message-ID: <2026070224-small-apprehend-b71b@gregkh>
+References: <20260701204342.2654385-1-coltonlewis@google.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260701204342.2654385-1-coltonlewis@google.com>
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-3.66 / 15.00];
-	WHITELIST_SPF_DKIM(-3.00)[intel.com:d:+,kernel.org:s:+];
+X-Spamd-Result: default: False [2.34 / 15.00];
+	MID_END_EQ_FROM_USER_PART(4.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
-	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	MID_RHS_NOT_FQDN(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-270341-lists,stable=lfdr.de];
-	RCPT_COUNT_TWELVE(0.00)[13];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:baolu.lu@linux.intel.com,m:joro@8bytes.org,m:will@kernel.org,m:robin.murphy@arm.com,m:kevin.tian@intel.com,m:mika.westerberg@linux.intel.com,m:ashok.raj@intel.com,m:chrisw@sous-sol.org,m:jbarnes@virtuousgeek.org,m:asit.k.mallick@intel.com,m:iommu@lists.linux.dev,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:coltonlewis@google.com,m:stable@vger.kernel.org,m:catalin.marinas@arm.com,m:will@kernel.org,m:maz@kernel.org,m:oliver.upton@linux.dev,m:james.morse@arm.com,m:suzuki.poulose@arm.com,m:yuzenghui@huawei.com,m:mizhang@google.com,m:linux-arm-kernel@lists.infradead.org,m:kvmarm@lists.linux.dev,m:linux-kernel@vger.kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-270344-lists,stable=lfdr.de];
+	RCPT_COUNT_TWELVE(0.00)[13];
+	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_SENDER(0.00)[kevin.tian@intel.com,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[kevin.tian@intel.com,stable@vger.kernel.org];
+	FORWARDED(0.00)[lists@lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[intel.com:+];
-	RCVD_COUNT_FIVE(0.00)[5];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:dkim,intel.com:email,intel.com:mid,intel.com:from_mime,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp]
+	TO_DN_SOME(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:from_mime,gregkh:mid,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 04BDE6F3AA2
+X-Rspamd-Queue-Id: 8D0E26F3BCF
 
-Currently the conditions of requesting ACS in detect_intel_iommu()
-don't include tboot, leading to a possible misconfiguration with ACS
-disabled (e.g. due to user opts) while iommu is later forced on by
-tboot_force_iommu().
+On Wed, Jul 01, 2026 at 08:43:37PM +0000, Colton Lewis wrote:
+> This series backports VHE CPU boot fixes to the 6.6.y stable branch.
+> 
+> These fixes are already present in the 6.12.y stable branch (and
+> newer), but are missing in 6.6.y. They are required to enable booting
+> L1 guests with nested virtualization enabled (kvm-arm.mode=nested).
+> 
+> Without these patches, a 6.6.y guest boots with HCR_EL2.E2H
+> incorrectly configured (because it misses VHE-only detection or early
+> initialization), causing early boot hangs/trap loops.
 
-Fix it by checking tboot in detect_intel_iommu().
+Why is this needed for 6.6.y?  Why not just use 6.12.y and newer for
+systems that require this new feature?  What is preventing that from
+happening?
 
-Fixes: 5d990b627537 ("PCI: add pci_request_acs")
-Cc: stable@vger.kernel.org
-Signed-off-by: Kevin Tian <kevin.tian@intel.com>
----
- drivers/iommu/intel/dmar.c  | 15 +++++++++++++--
- drivers/iommu/intel/iommu.c |  2 +-
- drivers/iommu/intel/iommu.h |  2 ++
- 3 files changed, 16 insertions(+), 3 deletions(-)
+thanks,
 
-diff --git a/drivers/iommu/intel/dmar.c b/drivers/iommu/intel/dmar.c
-index 767ec092accd..e32685402f74 100644
---- a/drivers/iommu/intel/dmar.c
-+++ b/drivers/iommu/intel/dmar.c
-@@ -915,6 +915,18 @@ dmar_validate_one_drhd(struct acpi_dmar_header *entry, void *arg)
- 	return 0;
- }
- 
-+static bool dmar_required(void)
-+{
-+	/* tboot supersedes any user/platform opt */
-+	if (!intel_iommu_tboot_noforce && tboot_enabled())
-+		return true;
-+
-+	if (!no_iommu && (!dmar_disabled || dmar_platform_optin()))
-+		return true;
-+
-+	return false;
-+}
-+
- void __init detect_intel_iommu(void)
- {
- 	int ret;
-@@ -928,8 +940,7 @@ void __init detect_intel_iommu(void)
- 	if (!ret)
- 		ret = dmar_walk_dmar_table((struct acpi_table_dmar *)dmar_tbl,
- 					   &validate_drhd_cb);
--	if (!ret && !no_iommu && !iommu_detected &&
--	    (!dmar_disabled || dmar_platform_optin())) {
-+	if (!ret && !iommu_detected && dmar_required()) {
- 		iommu_detected = 1;
- 		/* Make sure ACS will be enabled */
- 		pci_request_acs();
-diff --git a/drivers/iommu/intel/iommu.c b/drivers/iommu/intel/iommu.c
-index 8668565e5781..4e7ba60f3a0a 100644
---- a/drivers/iommu/intel/iommu.c
-+++ b/drivers/iommu/intel/iommu.c
-@@ -57,7 +57,7 @@ static int rwbf_quirk;
-  * (used when kernel is launched w/ TXT)
-  */
- static int force_on = 0;
--static int intel_iommu_tboot_noforce;
-+int intel_iommu_tboot_noforce;
- static int no_platform_optin;
- 
- #define ROOT_ENTRY_NR (VTD_PAGE_SIZE/sizeof(struct root_entry))
-diff --git a/drivers/iommu/intel/iommu.h b/drivers/iommu/intel/iommu.h
-index 775f1c4ae346..2cee36138d6e 100644
---- a/drivers/iommu/intel/iommu.h
-+++ b/drivers/iommu/intel/iommu.h
-@@ -1354,6 +1354,7 @@ static inline bool ecmd_has_pmu_essential(struct intel_iommu *iommu)
- 
- extern int dmar_disabled;
- extern int intel_iommu_enabled;
-+extern int intel_iommu_tboot_noforce;
- #else
- static inline int iommu_calculate_agaw(struct intel_iommu *iommu)
- {
-@@ -1366,6 +1367,7 @@ static inline int iommu_calculate_max_sagaw(struct intel_iommu *iommu)
- #define dmar_disabled	(1)
- #define intel_iommu_enabled (0)
- #define intel_iommu_sm (0)
-+#define intel_iommu_tboot_noforce (0)
- #endif
- 
- static inline const char *decode_prq_descriptor(char *str, size_t size,
--- 
-2.43.0
-
+greg k-h
 
