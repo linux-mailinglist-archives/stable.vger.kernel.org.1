@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-270645-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-270853-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id yFycHIieRmoraQsAu9opvQ
-	(envelope-from <stable+bounces-270645-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:23:20 +0200
+	id lfM+BxaWRmr/ZAsAu9opvQ
+	(envelope-from <stable+bounces-270853-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:47:18 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id BA63F6FB443
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:23:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 880C46FA8B5
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:47:17 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=bJ6ipFmH;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-270645-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-270645-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=iFf8tARV;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-270853-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-270853-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 13B8C319B831
-	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:30:37 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id EDFA43142DC3
+	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:36:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 065C24DB567;
-	Thu,  2 Jul 2026 16:24:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0FA1433D51A;
+	Thu,  2 Jul 2026 16:33:41 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1C724DB566;
-	Thu,  2 Jul 2026 16:24:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B791232ED4E;
+	Thu,  2 Jul 2026 16:33:39 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783009479; cv=none; b=cwGJ0wvLURzE7Z/exCh/Dl0qlnSIETi38hGeuacw51nQainuwZVkUjYeAQomTVv3Ue31OCanzcZ9j2/FUiNGgj8hi4VcK+gGbA6AOSfEQ5rv7onqNORDA5v0thomt66u+FqLCh1fxa1QP/phj+On035lwIHGzvk4LS5wyajKOUI=
+	t=1783010020; cv=none; b=WLZVBsiAZ8oN7Qta+uv6vlxAnsziJ+iOFWp+vTsq7M4sLaziQMsaNcf2FRF83SyE8CvHGkjRVPZp6ik8b0lnQxLYdNnksTx68+uSUPv7HftIWsYv0N2sYy2IIIfeONRMdaG2QBYjxyIaBMS2ZdzcsUywW5JU0SkS7gFjeKvVmSQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783009479; c=relaxed/simple;
-	bh=1FdQRXqiIVjchgBos710PuL5TmvZW5nUBiyqjHjXnvE=;
+	s=arc-20240116; t=1783010020; c=relaxed/simple;
+	bh=hil7z2ZQXvnRzk8TqqhFWSHxL30L048UKhlMkzBSIeM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZaE/JvxDo+mZzjSaizdaZMl7VFzgpEKgr/iJEGz6UQbRigMt009U4rgWxiaLMdHKjg/c8dh6fTcmnMzb8RfqPzILYxB+ZpgxHnNjXcEXzCe1K2C6KY4titqMSFlbfm/iH4odNHpJw+erfhuS2SUa3trTST63ZyG1LtgkVHoppKQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bJ6ipFmH; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BBCB41F000E9;
-	Thu,  2 Jul 2026 16:24:35 +0000 (UTC)
+	 MIME-Version; b=tH+UbnhaiIHeZaTyvGSRP6Jc+u+gylGuZq7CNvStahmjvdgnxj2DydytAhq4VYbRcnRmtYpJovHazSW0ElSV+OJXMn0f+y90f5K3tCfuOD8Rfhb7tcAqiSfxA2aUJbyXLgiQA5RHLrfeM72Jv8OFOrZyAV5NoM5XWE6Zut9DnGo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iFf8tARV; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25FDB1F000E9;
+	Thu,  2 Jul 2026 16:33:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1783009476;
-	bh=bxsD1/U8jYBzJ+j3LowIGYmOR9CGSSgrCNl/Op4Ab8w=;
+	s=korg; t=1783010019;
+	bh=iGs8+m2Bl+mGHeOndJcPE9UOOZqvFeFwxwtpkI6tw14=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=bJ6ipFmHqGfD+j1OIL0WdAvT8y3pMAQXFq+cxbeqmbkRqYp4eeRHV/s9drQIeyL5D
-	 9o+tIvl7hGjR6rfoMXeQLL/kMFnRxLzr9UVleHcyYAddP+4T/smMTHM6rCvM6XHSuI
-	 F91ktKlT3OcYRNNkwWPZDT4dcGGtHlmLhmu+HLW0=
+	b=iFf8tARVVCMwO6meHKrOoN/AhSdLinwPF0Br1XhdOMpcrj8HAgIkpO4gx4saruJsr
+	 O6O/hB+Is0BJcGYsGZLTGrnbWmfYEbq5sAtyh7OIh9RbEmfjUOgbDY+oOrXOcGp5pH
+	 BULYqmsbp2VX/9SlUD1TqnPfER9aWcspPNTKlz0E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bitterblue Smith <rtl8821cerfe2@gmail.com>,
-	Ping-Ke Shih <pkshih@realtek.com>
-Subject: [PATCH 5.10 66/96] wifi: rtlwifi: rtl8821ae: Fix C2H bit location in RX descriptor
-Date: Thu,  2 Jul 2026 18:19:58 +0200
-Message-ID: <20260702155110.370342340@linuxfoundation.org>
+	Colin Ian King <colin.i.king@gmail.com>,
+	Ruslan Valiyev <linuxoid@gmail.com>,
+	John Johansen <john.johansen@canonical.com>
+Subject: [PATCH 6.1 080/129] apparmor: fix use-after-free in rawdata dedup loop
+Date: Thu,  2 Jul 2026 18:19:59 +0200
+Message-ID: <20260702155113.793654413@linuxfoundation.org>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260702155108.949633242@linuxfoundation.org>
-References: <20260702155108.949633242@linuxfoundation.org>
+In-Reply-To: <20260702155112.163984240@linuxfoundation.org>
+References: <20260702155112.163984240@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,7 +67,8 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
@@ -77,16 +79,16 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-270645-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:rtl8821cerfe2@gmail.com,m:pkshih@realtek.com,s:lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,realtek.com];
+	TAGGED_FROM(0.00)[bounces-270853-lists,stable=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:colin.i.king@gmail.com,m:linuxoid@gmail.com,m:john.johansen@canonical.com,m:coliniking@gmail.com,s:lists@lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,canonical.com];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
@@ -94,52 +96,120 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,realtek.com:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,canonical.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: BA63F6FB443
+X-Rspamd-Queue-Id: 880C46FA8B5
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+From: Ruslan Valiyev <linuxoid@gmail.com>
 
-commit 83d38df6929118c3f996b9e3351c2d5014073d87 upstream.
+commit 6f060496d03e4dc560a40f73770bd08335cb7a27 upstream.
 
-Bit 28 of double word 2 in the RX descriptor indicates if the packet is
-a normal 802.11 frame, or a message from the wifi firmware to the
-driver (Card 2 Host).
+aa_replace_profiles() walks ns->rawdata_list to dedup the incoming
+policy blob against entries already attached to existing profiles.
+Per the kernel-doc on struct aa_loaddata, list membership does not
+hold a reference: profiles hold pcount, and when the last pcount
+drops, do_ploaddata_rmfs() is queued on a workqueue that takes
+ns->lock and removes the entry. Between dropping the last pcount
+and the workqueue running, an entry remains on the list with
+pcount == 0.
 
-Commit f5678bfe1cdc ("rtlwifi: rtl8821ae: Replace local bit manipulation
-macros") mistakenly made the driver look for this bit in double word 1,
-causing packet loss and Bluetooth coexistence problems.
+aa_get_profile_loaddata() is an unconditional kref_get() on
+pcount, so when the dedup loop hits such an entry, refcount
+hardening reports
 
-Fixes: f5678bfe1cdc ("rtlwifi: rtl8821ae: Replace local bit manipulation macros")
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
-Acked-by: Ping-Ke Shih <pkshih@realtek.com>
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
-Link: https://patch.msgid.link/04da7398-cedb-425a-a810-5772ab10139d@gmail.com
+  refcount_t: addition on 0; use-after-free.
+
+inside aa_replace_profiles(), and the poisoned counter then
+trips "saturated" and "underflow" warnings on the subsequent
+uses of the same loaddata.
+
+Before commit a0b7091c4de4 ("apparmor: fix race on rawdata
+dereference") the dedup path used a get_unless_zero-style helper
+on a single counter, so the existing "if (tmp)" guard was
+meaningful. The split-refcount refactor introduced
+aa_get_profile_loaddata(), which has plain kref_get() semantics,
+and the guard quietly became a no-op.
+
+Introduce aa_get_profile_loaddata_not0(), matching the existing
+_not0 convention used by aa_get_profile_not0(), and use it for
+the rawdata_list dedup lookup so dying entries are skipped.
+
+Reproduced on x86_64 with v7.1-rc5 in QEMU+KVM running Ubuntu
+24.04 + stress-ng 0.17.06:
+
+  stress-ng --apparmor 1 --klog-check --timeout 60s
+
+Without this patch the three refcount_t warnings fire within a
+few seconds. With it the same 60 s run is clean. Coverage is a
+smoke-test only; a longer soak with CONFIG_KASAN, CONFIG_KCSAN
+and CONFIG_PROVE_LOCKING would be welcome from anyone with the
+cycles.
+
+Fixes: a0b7091c4de4 ("apparmor: fix race on rawdata dereference")
+Reported-by: Colin Ian King <colin.i.king@gmail.com>
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=221513
+Cc: stable@vger.kernel.org
+Signed-off-by: Ruslan Valiyev <linuxoid@gmail.com>
+Signed-off-by: John Johansen <john.johansen@canonical.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/realtek/rtlwifi/rtl8821ae/trx.h |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ security/apparmor/include/policy_unpack.h |   19 +++++++++++++++++++
+ security/apparmor/policy.c                |    8 ++++++--
+ 2 files changed, 25 insertions(+), 2 deletions(-)
 
---- a/drivers/net/wireless/realtek/rtlwifi/rtl8821ae/trx.h
-+++ b/drivers/net/wireless/realtek/rtlwifi/rtl8821ae/trx.h
-@@ -291,7 +291,7 @@ static inline int get_rx_desc_paggr(__le
- 
- static inline int get_rx_status_desc_rpt_sel(__le32 *__pdesc)
- {
--	return le32_get_bits(*(__pdesc + 1), BIT(28));
-+	return le32_get_bits(*(__pdesc + 2), BIT(28));
+--- a/security/apparmor/include/policy_unpack.h
++++ b/security/apparmor/include/policy_unpack.h
+@@ -161,6 +161,25 @@ aa_get_profile_loaddata(struct aa_loadda
+ 	return data;
  }
  
- static inline int get_rx_desc_rxmcs(__le32 *__pdesc)
++/**
++ * aa_get_profile_loaddata_not0 - get a profile reference count if not zero
++ * @data: reference to get a count on
++ *
++ * Like aa_get_profile_loaddata(), but safe to call on an entry that may
++ * be on a list (e.g. ns->rawdata_list) where the last pcount has already
++ * dropped and the deferred cleanup has not yet run.
++ *
++ * Returns: pointer to reference, or %NULL if @data is NULL or its
++ *          profile refcount has already reached zero.
++ */
++static inline struct aa_loaddata *
++aa_get_profile_loaddata_not0(struct aa_loaddata *data)
++{
++	if (data && kref_get_unless_zero(&data->pcount))
++		return data;
++	return NULL;
++}
++
+ void __aa_loaddata_update(struct aa_loaddata *data, long revision);
+ bool aa_rawdata_eq(struct aa_loaddata *l, struct aa_loaddata *r);
+ void aa_loaddata_kref(struct kref *kref);
+--- a/security/apparmor/policy.c
++++ b/security/apparmor/policy.c
+@@ -1018,8 +1018,12 @@ ssize_t aa_replace_profiles(struct aa_ns
+ 			if (aa_rawdata_eq(rawdata_ent, udata)) {
+ 				struct aa_loaddata *tmp;
+ 
+-				tmp = aa_get_profile_loaddata(rawdata_ent);
+-				/* check we didn't fail the race */
++				/*
++				 * Entries remain on rawdata_list with
++				 * pcount == 0 until do_ploaddata_rmfs()
++				 * runs; only take a live profile ref.
++				 */
++				tmp = aa_get_profile_loaddata_not0(rawdata_ent);
+ 				if (tmp) {
+ 					aa_put_profile_loaddata(udata);
+ 					udata = tmp;
 
 
 
