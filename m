@@ -1,64 +1,61 @@
-Return-Path: <stable+bounces-270647-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-270732-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id cZMGGjiURmrmYwsAu9opvQ
-	(envelope-from <stable+bounces-270647-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:39:20 +0200
+	id lImIJhWVRmpiZAsAu9opvQ
+	(envelope-from <stable+bounces-270732-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:43:01 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id B14BA6FA53A
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:39:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E2A336FA6E5
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:43:00 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=j8cBLL8a;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-270647-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-270647-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=KO3XX9Dl;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-270732-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-270732-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 559B8319B80D
-	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:30:39 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 5D55031C09E3
+	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:32:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A701C33F585;
-	Thu,  2 Jul 2026 16:24:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B62A3B95E3;
+	Thu,  2 Jul 2026 16:28:29 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13F50394E93;
-	Thu,  2 Jul 2026 16:24:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7EFA3CE49E;
+	Thu,  2 Jul 2026 16:28:24 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783009485; cv=none; b=EAUJD+IfH1b0vZ+Zy+KqwfBzFhrkAGnfhIqf20I7KNzuN5cgmvmjnpaytQQd+pHMkv1zBdnBv82cl4pp2079a04vyhcfg8rYgzXJmlW44oZsCQrv1+R7A+SXSbFR1sftAV9SSQIoGCFsmbAMNj9HRwG9QyHKJbJRmaPl2ar6no8=
+	t=1783009708; cv=none; b=AFqGyIB6ay/vw45d/e4i6DqJhy04pun8sT2y9NajuIhEzFxJk20BgC5riZT8t411S7OXv5rTA9l3F+nODvk7H4sEqu700Dtuifj/AI9RPbKXwYUI7PmYoRUTJAbeQOEfZNufZSiFe3zDOHKavIYxLB7rjEGpIBJD4E8pm72kNm0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783009485; c=relaxed/simple;
-	bh=pJs1IqoWFSwalTAEl2Eqb7iUSYZD7pnUZ/BX8OgjK0Y=;
+	s=arc-20240116; t=1783009708; c=relaxed/simple;
+	bh=w3+AfvueUmIXilfa7jeMcFCNSr8JVQTnwRoSM8BwpsI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QM0iZwGCmRghJLTt7z1u9WfF8uSseZ9+h3jN97HR5YunAr6RUJDYWRF01ZvxZnzslbkLNtQFjoLzcKG8BEKl8smHjTF3GWfoPUdHO8ig38bGmJwjzb+LPbr9OpFPBiL9u81m1/1u/4w8Pyw41P0GTbLdjGKcX7lXv4erbF4eDQc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j8cBLL8a; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13A361F000E9;
-	Thu,  2 Jul 2026 16:24:40 +0000 (UTC)
+	 MIME-Version; b=K7//M95Vj3lm5POTwqdA/lddo/wM7zhDuPBeEhWrZy1gbJCId5gOSc+VEka+K6AqGOu2+exepYcbZIg/dMMW8D7fpC0OUMlnde1YlhNvikyvw97bwzlims4wdzNo5SKj89ijP1Ibd2EkgKGiuKwdS1/pct8vDRFWFv4CFvl5vxI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KO3XX9Dl; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9F3C1F00A3D;
+	Thu,  2 Jul 2026 16:28:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1783009481;
-	bh=6o6YHsggCmnr9nTSFJSmEQrRXrTnNBpM47xSHmXFAAs=;
+	s=korg; t=1783009704;
+	bh=NGgB7HC3m81wC3Fpbvki6kAEiCRwSERLWpN9vYt/6Hk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=j8cBLL8abPDP7bDRM53HyxRFPY3YHBgqOvNDxSSmcWLBHn+K3kuNi/hCZcqHRFIkt
-	 1a7dIFe5RhcIf+w5+ViqkW2+r/pqvfbccKReJlmAIL2MsyW8n6NgL9qZCYHCeV7jQ3
-	 Qa5sZAR6xHxPpeQHLmvZ6M7cfHsBXxDp6wOs19JE=
+	b=KO3XX9DlPGJ6CWt4kxGzUpD5Z7HelEHwwj3A+Ljxr1QV5Y4P5v5VCSSPIlnL8MMWi
+	 zePsmfhLBB8Wy/OyJBthFGXNinjE7+FnlNPfl7ZEcmOJ8M9tVp9Fhccl5oOOLFlnvZ
+	 BwuHQHEF5yAjNlYdKb7FpjghJuUDO3lYeJN1lw2s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Emil Tsalapatis <emil@etsalapatis.com>,
-	Jiayuan Chen <jiayuan.chen@linux.dev>,
-	Yonghong Song <yonghong.song@linux.dev>,
-	Zilin Guan <zilin@seu.edu.cn>,
-	Dawei Feng <dawei.feng@seu.edu.cn>,
-	Alexei Starovoitov <ast@kernel.org>
-Subject: [PATCH 5.10 68/96] bpf: use kvfree() for replaced sysctl write buffer
+	Doruk Tan Ozturk <doruk@0sec.ai>,
+	Alexander Lobakin <aleksander.lobakin@intel.com>,
+	Stefan Schmidt <stefan@datenfreihafen.org>
+Subject: [PATCH 5.15 57/95] mac802154: llsec: add skb_cow_data() before in-place crypto
 Date: Thu,  2 Jul 2026 18:20:00 +0200
-Message-ID: <20260702155110.410632196@linuxfoundation.org>
+Message-ID: <20260702155110.408232085@linuxfoundation.org>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260702155108.949633242@linuxfoundation.org>
-References: <20260702155108.949633242@linuxfoundation.org>
+In-Reply-To: <20260702155109.196223802@linuxfoundation.org>
+References: <20260702155109.196223802@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,127 +69,136 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-270647-lists,stable=lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-270732-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:emil@etsalapatis.com,m:jiayuan.chen@linux.dev,m:yonghong.song@linux.dev,m:zilin@seu.edu.cn,m:dawei.feng@seu.edu.cn,m:ast@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	TO_DN_SOME(0.00)[];
+	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:doruk@0sec.ai,m:aleksander.lobakin@intel.com,m:stefan@datenfreihafen.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp,linux.dev:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,seu.edu.cn:email,etsalapatis.com:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,datenfreihafen.org:email,0sec.ai:url,0sec.ai:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: B14BA6FA53A
+X-Rspamd-Queue-Id: E2A336FA6E5
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dawei Feng <dawei.feng@seu.edu.cn>
+From: Doruk Tan Ozturk <doruk@0sec.ai>
 
-commit 4c21b5927d4364bfe7365f2700da5fea0ed0d004 upstream.
+commit 84a04eb5b210643bd67aab81ff805d32f62aa865 upstream.
 
-proc_sys_call_handler() allocates its temporary sysctl buffer with
-kvzalloc() and passes it to __cgroup_bpf_run_filter_sysctl(). Since
-kvzalloc() may fall back to vmalloc() for large allocations, freeing
-that buffer with kfree() is wrong and can corrupt memory.
+llsec_do_encrypt_unauth(), llsec_do_encrypt_auth(),
+llsec_do_decrypt_unauth(), and llsec_do_decrypt_auth() all perform
+in-place cryptographic transformations on skb data.  They build a
+scatterlist with sg_init_one() pointing into the skb's linear data area
+and then pass the same scatterlist as both src and dst to the crypto API
+(e.g. crypto_skcipher_encrypt/decrypt, crypto_aead_encrypt/decrypt).
 
-Use kvfree() to safely handle both kmalloc and kvzalloc()/vmalloc
-allocations.
+On the RX path, __ieee802154_rx_handle_packet() clones the received skb
+before handing it to each subscriber via ieee802154_subif_frame().  The
+cloned skb shares the same underlying data buffer via reference
+counting.  When llsec_do_decrypt() subsequently modifies this shared
+buffer in place, it corrupts data that other clones -- potentially
+belonging to other sockets or subsystems -- still reference.
 
-The bug was first flagged by an experimental analysis tool we are
-developing for kernel memory-management bugs while analyzing
-v6.13-rc1. The tool is still under development and is not yet publicly
-available. Manual inspection confirms that the bug is still
-present in v7.1-rc5.
+On the TX path, similar data sharing can occur when an skb's head has
+been cloned (skb_cloned() returns true).
 
-Reproduced the bug based on v7.1-rc4 in a QEMU x86_64 guest booted with
-KASAN and CONFIG_FAILSLAB enabled. To exercise the replacement path, the
-test tree also included the accompanying fix for the stale ret == 1
-check in __cgroup_bpf_run_filter_sysctl(). The reproducer confines
-failslab injections to the proc_sys_call_handler() range, uses
-stacktrace-depth=32, and injects fail-nth=1 while writing 8191 bytes to
-/proc/sys/kernel/domainname from a task in the target cgroup. Under
-that setup, fail-nth=1 triggered the fault:
+The fix is to call skb_cow_data() before performing any in-place crypto
+operation.  skb_cow_data() ensures that the skb's data area is not
+shared: if the skb head is cloned or the data spans multiple fragments,
+it copies the data into a private buffer that can be safely modified in
+place.  This is the same pattern used by:
 
-  BUG: unable to handle page fault for address: ffffeb0200024d48
-  #PF: supervisor read access in kernel mode
-  #PF: error_code(0x0000) - not-present page
-  PGD 0 P4D 0
-  Oops: Oops: 0000  SMP KASAN NOPTI
-  CPU: 2 UID: 0 PID: 209 Comm: repro_proc_sys_ Not tainted 7.1.0-rc4-00686-g97625979a5d4  PREEMPT(lazy)
-  Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.15.0-1 04/01/2014
-  RIP: 0010:kfree+0x6e/0x510
-  ...
-  Call Trace:
-   <TASK>
-   ? __cgroup_bpf_run_filter_sysctl+0x626/0xc30
-   __cgroup_bpf_run_filter_sysctl+0x74d/0xc30
-   ? __pfx___cgroup_bpf_run_filter_sysctl+0x10/0x10
-   ? srso_return_thunk+0x5/0x5f
-   ? __kvmalloc_node_noprof+0x345/0x870
-   ? proc_sys_call_handler+0x250/0x480
-   ? srso_return_thunk+0x5/0x5f
-   proc_sys_call_handler+0x3a2/0x480
-   ? __pfx_proc_sys_call_handler+0x10/0x10
-   ? srso_return_thunk+0x5/0x5f
-   ? selinux_file_permission+0x39f/0x500
-   ? srso_return_thunk+0x5/0x5f
-   ? lock_is_held_type+0x9e/0x120
-   vfs_write+0x98e/0x1000
-   ...
-   </TASK>
+  - ESP (net/ipv4/esp4.c, net/ipv6/esp6.c)
+  - MACsec (drivers/net/macsec.c)
+  - WireGuard (drivers/net/wireguard/receive.c)
+  - TIPC (net/tipc/crypto.c)
 
-With this fix applied on top of the same test setup, rerunning the
-reproducer with fail-nth=1 yields no corresponding Oops reports.
+Without this guard, in-place crypto on shared skb data leads to:
+  - Silent data corruption of other skb clones
+  - Use-after-free when the crypto API scatterwalk writes through a
+    page that has already been freed by another clone's kfree_skb()
+  - Kernel crashes under concurrent 802.15.4 traffic with security
+    enabled (KASAN/KMSAN reports slab-use-after-free)
 
-Fixes: 4508943794ef ("proc: use kvzalloc for our kernel buffer")
+Found by 0sec (https://0sec.ai) using automated source analysis.
+
+Fixes: 4c14a2fb5d14 ("mac802154: add llsec decryption method")
+Fixes: 03556e4d0dbb ("mac802154: add llsec encryption method")
 Cc: stable@vger.kernel.org
-
-Reviewed-by: Emil Tsalapatis <emil@etsalapatis.com>
-Reviewed-by: Jiayuan Chen <jiayuan.chen@linux.dev>
-Acked-by: Yonghong Song <yonghong.song@linux.dev>
-Signed-off-by: Zilin Guan <zilin@seu.edu.cn>
-Signed-off-by: Dawei Feng <dawei.feng@seu.edu.cn>
-Link: https://lore.kernel.org/r/20260603105317.944304-3-dawei.feng@seu.edu.cn
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Reported-by: Doruk Tan Ozturk <doruk@0sec.ai>
+Closes: https://lore.kernel.org/linux-wpan/20260525161806.96158-1-doruk@0sec.ai/
+Reviewed-by: Alexander Lobakin <aleksander.lobakin@intel.com>
+Signed-off-by: Doruk Tan Ozturk <doruk@0sec.ai>
+Closes: <link to your mail on lore>
+Link: https://lore.kernel.org/20260526183726.56100-1-doruk@0sec.ai
+Signed-off-by: Stefan Schmidt <stefan@datenfreihafen.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/bpf/cgroup.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/mac802154/llsec.c |   14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
 
---- a/kernel/bpf/cgroup.c
-+++ b/kernel/bpf/cgroup.c
-@@ -1325,7 +1325,7 @@ int __cgroup_bpf_run_filter_sysctl(struc
- 	kfree(ctx.cur_val);
+--- a/net/mac802154/llsec.c
++++ b/net/mac802154/llsec.c
+@@ -710,6 +710,7 @@ int mac802154_llsec_encrypt(struct mac80
+ {
+ 	struct ieee802154_hdr hdr;
+ 	int rc, authlen, hlen;
++	struct sk_buff *trailer;
+ 	struct mac802154_llsec_key *key;
+ 	u32 frame_ctr;
  
- 	if (ret == 1 && ctx.new_updated) {
--		kfree(*buf);
-+		kvfree(*buf);
- 		*buf = ctx.new_val;
- 		*pcount = ctx.new_len;
- 	} else {
+@@ -766,6 +767,12 @@ int mac802154_llsec_encrypt(struct mac80
+ 	skb->mac_len = ieee802154_hdr_push(skb, &hdr);
+ 	skb_reset_mac_header(skb);
+ 
++	rc = skb_cow_data(skb, 0, &trailer);
++	if (rc < 0) {
++		llsec_key_put(key);
++		return rc;
++	}
++
+ 	rc = llsec_do_encrypt(skb, sec, &hdr, key);
+ 	llsec_key_put(key);
+ 
+@@ -905,6 +912,13 @@ llsec_do_decrypt(struct sk_buff *skb, co
+ 		 const struct ieee802154_hdr *hdr,
+ 		 struct mac802154_llsec_key *key, __le64 dev_addr)
+ {
++	struct sk_buff *trailer;
++	int err;
++
++	err = skb_cow_data(skb, 0, &trailer);
++	if (err < 0)
++		return err;
++
+ 	if (hdr->sec.level == IEEE802154_SCF_SECLEVEL_ENC)
+ 		return llsec_do_decrypt_unauth(skb, sec, hdr, key, dev_addr);
+ 	else
 
 
 
