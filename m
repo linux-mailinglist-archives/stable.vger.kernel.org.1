@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-270370-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-270373-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id IyueLgckRmp6KgsAu9opvQ
-	(envelope-from <stable+bounces-270370-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 10:40:39 +0200
+	id 1FETNA4lRmq9KgsAu9opvQ
+	(envelope-from <stable+bounces-270373-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 10:45:02 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 240876F4E28
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 10:40:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 426E86F4EFA
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 10:45:02 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=j7LJYfPj;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-270370-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-270370-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=h4KZcTME;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-270373-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-270373-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id E2B903113DF3
-	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 08:29:14 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 7267C304495E
+	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 08:34:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B4223672B8;
-	Thu,  2 Jul 2026 08:28:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 63C03367282;
+	Thu,  2 Jul 2026 08:34:14 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CED4838AC6A
-	for <stable@vger.kernel.org>; Thu,  2 Jul 2026 08:28:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7294242B317
+	for <stable@vger.kernel.org>; Thu,  2 Jul 2026 08:34:12 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782980921; cv=none; b=GaYDuuTNt71OeAs3ZoS+D07T+8QYRY9nt9I9fh29Aj/jJhuPfDT44bJ7c5CxEpwcC4nPZF7tOjDVuZbgpvUAwFqtY0bJ8Zz+/d8yUGEUfQP76IVaR0bWN/m5eerux3s19AGRbCMb3MnxQV3oX1pCgzNgOegvq/xYnCFZiAWDdzo=
+	t=1782981254; cv=none; b=ObRIMrBOXv0n3zCnTSIBLLiUJrLxgdF5+CHQEzG9vuM9IalQ0b0PM5Dbp5BbLZSEff20giyqzhXvCRaQ0oPyXv3syejaENL2O2tIt/8KZpXZjWfO9cOLPDM/gNyY0QUG12jHdrpsPpzj8cPlIBJFIAAVMb5S6Yhr7fr8exjGLDg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782980921; c=relaxed/simple;
-	bh=L1JNBUaVUBAoBPJ1uZvgUyZugu7idjfCVt8/Wba8sbo=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=FHy5N6kT9qsQ2cFh/WCBvQL5pefLASPZIydBYYEXRyaIUF6Ud4qB/dGlb8XZNnlnMOAwGGlYxTYlqvrIV6G9x2XeNKyLvRHkORFfHbw7U93qfDl6iaDk68vTEAwfPU4fog3Jme3obGOIsjB6giidS35EFTQQwFKvGHReQAs8biI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j7LJYfPj; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 284171F000E9;
-	Thu,  2 Jul 2026 08:28:34 +0000 (UTC)
+	s=arc-20240116; t=1782981254; c=relaxed/simple;
+	bh=mYmmkuxBZ5QV9ShO/0+/hFRMIAfc93noWSRLe3YM/C0=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=RFL6ETzHLx+oYQsOlESN1jeElfZwdkD32YTZn9PMx1GOpuxcZ/MzGDykm9SG8n1Sc8q825nCdlxRsC3Y8mu+0LAkCcPCGqCeqkqmI03TclrH4PXM8sK0G769OkQtvv7n/Wz+3EsZUOdDz1wNQo3Q/uHpJBMCVo++nN+2/BVhKEw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=h4KZcTME; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3EBC51F000E9;
+	Thu,  2 Jul 2026 08:29:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1782980919;
-	bh=YiEPUufA7zrJEfg1PaMTKZz2yT4elYnWZbgPIEIJ7SE=;
+	s=korg; t=1782981252;
+	bh=S8GTPmmr03tsRZY5sQdF7Egz01B5e02T5y1C0rJ8lQY=;
 	h=Subject:To:Cc:From:Date;
-	b=j7LJYfPjYXT7WIDI+tTC0IwGq/o3ZJEVQ4F4dvT4wPXF5vDWBhw/y9Jw1Mv4MIahn
-	 7zqFzdswDnwpBT5v2UxDMNvWcBEEX6Nbj+nJgK0sFiaRgLGWn7gmpurRV/L9UGVCPq
-	 jd9umaOdwjqftcwghWHs2osvspM3XG5zK2JBixHQ=
-Subject: FAILED: patch "[PATCH] net: ip_gre: require CAP_NET_ADMIN in the device netns for" failed to apply to 5.10-stable tree
-To: maoyixie.tju@gmail.com,kuba@kernel.org,kuniyu@google.com,shaw.leon@gmail.com
+	b=h4KZcTMEgc3C6JcAmfIO/wXqVDrwhkRahYihclRRNBK5e7j0IhuwjSKk1YaBJ3lZS
+	 7PGyHCaIwPS1YSAx2qkfi8NIMGBd7ARDw8AmP97OCSLaY3cEe9gbifdl+1517W+sOS
+	 +RrFIBMjSSoCWnFAT7IMr+0HlufRmeYO9DK2X9us=
+Subject: FAILED: patch "[PATCH] apparmor: fix use-after-free in rawdata dedup loop" failed to apply to 5.15-stable tree
+To: linuxoid@gmail.com,colin.i.king@gmail.com,john.johansen@canonical.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Thu, 02 Jul 2026 10:28:22 +0200
-Message-ID: <2026070222-gently-rally-f7d9@gregkh>
+Date: Thu, 02 Jul 2026 10:29:20 +0200
+Message-ID: <2026070220-ditto-skinny-d644@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -61,25 +61,25 @@ X-Spamd-Result: default: False [3.84 / 15.00];
 	MID_END_EQ_FROM_USER_PART(4.00)[];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	MID_RHS_NOT_FQDN(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-270373-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-270370-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FREEMAIL_TO(0.00)[gmail.com,kernel.org,google.com];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS(0.00)[m:maoyixie.tju@gmail.com,m:kuba@kernel.org,m:kuniyu@google.com,m:shaw.leon@gmail.com,m:stable@vger.kernel.org,m:maoyixietju@gmail.com,m:shawleon@gmail.com,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:linuxoid@gmail.com,m:colin.i.king@gmail.com,m:john.johansen@canonical.com,m:stable@vger.kernel.org,m:coliniking@gmail.com,s:lists@lfdr.de];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_TO(0.00)[gmail.com,canonical.com];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MISSING_XM_UA(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_THREE(0.00)[4];
 	TO_DN_NONE(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
@@ -87,28 +87,28 @@ X-Spamd-Result: default: False [3.84 / 15.00];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
+	MIME_TRACE(0.00)[0:+];
 	TAGGED_RCPT(0.00)[stable];
 	FROM_NO_DN(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,msgid.link:url,vger.kernel.org:from_smtp,gregkh:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,ip6_tnl.net:url]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,gregkh:mid,canonical.com:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 240876F4E28
+X-Rspamd-Queue-Id: 426E86F4EFA
 
 
-The patch below does not apply to the 5.10-stable tree.
+The patch below does not apply to the 5.15-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
 git checkout FETCH_HEAD
-git cherry-pick -x 8165f7ff57d9667d2bb477ef6af83ede7fed4ad7
+git cherry-pick -x 6f060496d03e4dc560a40f73770bd08335cb7a27
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026070222-gently-rally-f7d9@gregkh' --subject-prefix 'PATCH 5.10.y' 'HEAD^..'
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026070220-ditto-skinny-d644@gregkh' --subject-prefix 'PATCH 5.15.y' 'HEAD^..'
 
 Possible dependencies:
 
@@ -120,97 +120,107 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 8165f7ff57d9667d2bb477ef6af83ede7fed4ad7 Mon Sep 17 00:00:00 2001
-From: Maoyi Xie <maoyixie.tju@gmail.com>
-Date: Fri, 12 Jun 2026 16:59:35 +0800
-Subject: [PATCH] net: ip_gre: require CAP_NET_ADMIN in the device netns for
- changelink
+From 6f060496d03e4dc560a40f73770bd08335cb7a27 Mon Sep 17 00:00:00 2001
+From: Ruslan Valiyev <linuxoid@gmail.com>
+Date: Tue, 26 May 2026 00:04:46 +0200
+Subject: [PATCH] apparmor: fix use-after-free in rawdata dedup loop
 
-A tunnel changelink() operates on at most two netns, dev_net(dev) and
-the tunnel link netns t->net. They differ once the device is created in
-or moved to a netns other than the one the request runs in. The rtnl
-changelink path checks CAP_NET_ADMIN only against dev_net(dev), so a
-caller privileged there but not in t->net can rewrite a tunnel that
-lives in t->net.
+aa_replace_profiles() walks ns->rawdata_list to dedup the incoming
+policy blob against entries already attached to existing profiles.
+Per the kernel-doc on struct aa_loaddata, list membership does not
+hold a reference: profiles hold pcount, and when the last pcount
+drops, do_ploaddata_rmfs() is queued on a workqueue that takes
+ns->lock and removes the entry. Between dropping the last pcount
+and the workqueue running, an entry remains on the list with
+pcount == 0.
 
-Add rtnl_dev_link_net_capable() next to rtnl_get_net_ns_capable() in
-net/core/rtnetlink.c. It requires CAP_NET_ADMIN in the link netns and is
-skipped when the link netns is dev_net(dev), where the rtnl path already
-checked it. The other patches in this series use the same helper.
+aa_get_profile_loaddata() is an unconditional kref_get() on
+pcount, so when the dedup loop hits such an entry, refcount
+hardening reports
 
-Gate ipgre_changelink() and erspan_changelink() with it, at the top of
-the op before any attribute is parsed, because the parsers update live
-tunnel fields first. ipgre_netlink_parms() sets t->collect_md before
-ip_tunnel_changelink() runs.
+  refcount_t: addition on 0; use-after-free.
 
-Commit 8b484efd5cb4 ("ip6: vti: Use ip6_tnl.net in
-vti6_siocdevprivate().") added the same check on the ioctl path. This
-adds it on RTM_NEWLINK.
+inside aa_replace_profiles(), and the poisoned counter then
+trips "saturated" and "underflow" warnings on the subsequent
+uses of the same loaddata.
 
-Reported-by: Xiao Liang <shaw.leon@gmail.com>
-Closes: https://lore.kernel.org/netdev/CABAhCOSzP1vaThGV35_VnsRCb=87_CPjPVsTHbq905k8A+BuUg@mail.gmail.com/
-Fixes: b57708add314 ("gre: add x-netns support")
+Before commit a0b7091c4de4 ("apparmor: fix race on rawdata
+dereference") the dedup path used a get_unless_zero-style helper
+on a single counter, so the existing "if (tmp)" guard was
+meaningful. The split-refcount refactor introduced
+aa_get_profile_loaddata(), which has plain kref_get() semantics,
+and the guard quietly became a no-op.
+
+Introduce aa_get_profile_loaddata_not0(), matching the existing
+_not0 convention used by aa_get_profile_not0(), and use it for
+the rawdata_list dedup lookup so dying entries are skipped.
+
+Reproduced on x86_64 with v7.1-rc5 in QEMU+KVM running Ubuntu
+24.04 + stress-ng 0.17.06:
+
+  stress-ng --apparmor 1 --klog-check --timeout 60s
+
+Without this patch the three refcount_t warnings fire within a
+few seconds. With it the same 60 s run is clean. Coverage is a
+smoke-test only; a longer soak with CONFIG_KASAN, CONFIG_KCSAN
+and CONFIG_PROVE_LOCKING would be welcome from anyone with the
+cycles.
+
+Fixes: a0b7091c4de4 ("apparmor: fix race on rawdata dereference")
+Reported-by: Colin Ian King <colin.i.king@gmail.com>
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=221513
 Cc: stable@vger.kernel.org
-Signed-off-by: Maoyi Xie <maoyixie.tju@gmail.com>
-Reviewed-by: Kuniyuki Iwashima <kuniyu@google.com>
-Link: https://patch.msgid.link/20260612085941.3158249-2-maoyixie.tju@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Ruslan Valiyev <linuxoid@gmail.com>
+Signed-off-by: John Johansen <john.johansen@canonical.com>
 
-diff --git a/include/net/rtnetlink.h b/include/net/rtnetlink.h
-index ec65a8cebb99..2bff41aacc98 100644
---- a/include/net/rtnetlink.h
-+++ b/include/net/rtnetlink.h
-@@ -256,6 +256,8 @@ int rtnl_configure_link(struct net_device *dev, const struct ifinfomsg *ifm,
- int rtnl_nla_parse_ifinfomsg(struct nlattr **tb, const struct nlattr *nla_peer,
- 			     struct netlink_ext_ack *exterr);
- struct net *rtnl_get_net_ns_capable(struct sock *sk, int netnsid);
-+bool rtnl_dev_link_net_capable(const struct net_device *dev,
-+			       const struct net *link_net);
- 
- #define MODULE_ALIAS_RTNL_LINK(kind) MODULE_ALIAS("rtnl-link-" kind)
- 
-diff --git a/net/core/rtnetlink.c b/net/core/rtnetlink.c
-index 61d095ce1b3b..12aa3aa1688b 100644
---- a/net/core/rtnetlink.c
-+++ b/net/core/rtnetlink.c
-@@ -2438,6 +2438,14 @@ struct net *rtnl_get_net_ns_capable(struct sock *sk, int netnsid)
+diff --git a/security/apparmor/include/policy_unpack.h b/security/apparmor/include/policy_unpack.h
+index e5a95dc4da1f..b9de0fdf9ee5 100644
+--- a/security/apparmor/include/policy_unpack.h
++++ b/security/apparmor/include/policy_unpack.h
+@@ -163,6 +163,25 @@ aa_get_profile_loaddata(struct aa_loaddata *data)
+ 	return data;
  }
- EXPORT_SYMBOL_GPL(rtnl_get_net_ns_capable);
  
-+bool rtnl_dev_link_net_capable(const struct net_device *dev,
-+			       const struct net *link_net)
++/**
++ * aa_get_profile_loaddata_not0 - get a profile reference count if not zero
++ * @data: reference to get a count on
++ *
++ * Like aa_get_profile_loaddata(), but safe to call on an entry that may
++ * be on a list (e.g. ns->rawdata_list) where the last pcount has already
++ * dropped and the deferred cleanup has not yet run.
++ *
++ * Returns: pointer to reference, or %NULL if @data is NULL or its
++ *          profile refcount has already reached zero.
++ */
++static inline struct aa_loaddata *
++aa_get_profile_loaddata_not0(struct aa_loaddata *data)
 +{
-+	return net_eq(link_net, dev_net(dev)) ||
-+	       ns_capable(link_net->user_ns, CAP_NET_ADMIN);
++	if (data && kref_get_unless_zero(&data->pcount))
++		return data;
++	return NULL;
 +}
-+EXPORT_SYMBOL_GPL(rtnl_dev_link_net_capable);
 +
- static int rtnl_valid_dump_ifinfo_req(const struct nlmsghdr *nlh,
- 				      bool strict_check, struct nlattr **tb,
- 				      struct netlink_ext_ack *extack)
-diff --git a/net/ipv4/ip_gre.c b/net/ipv4/ip_gre.c
-index 208dd48012d9..3efdfb4ffa21 100644
---- a/net/ipv4/ip_gre.c
-+++ b/net/ipv4/ip_gre.c
-@@ -1457,6 +1457,9 @@ static int ipgre_changelink(struct net_device *dev, struct nlattr *tb[],
- 	__u32 fwmark = t->fwmark;
- 	int err;
+ void __aa_loaddata_update(struct aa_loaddata *data, long revision);
+ bool aa_rawdata_eq(struct aa_loaddata *l, struct aa_loaddata *r);
+ void aa_loaddata_kref(struct kref *kref);
+diff --git a/security/apparmor/policy.c b/security/apparmor/policy.c
+index 847b0ff450c5..b59e827747da 100644
+--- a/security/apparmor/policy.c
++++ b/security/apparmor/policy.c
+@@ -1230,8 +1230,12 @@ ssize_t aa_replace_profiles(struct aa_ns *policy_ns, struct aa_label *label,
+ 			if (aa_rawdata_eq(rawdata_ent, udata)) {
+ 				struct aa_loaddata *tmp;
  
-+	if (!rtnl_dev_link_net_capable(dev, t->net))
-+		return -EPERM;
-+
- 	err = ipgre_newlink_encap_setup(dev, data);
- 	if (err)
- 		return err;
-@@ -1486,6 +1489,9 @@ static int erspan_changelink(struct net_device *dev, struct nlattr *tb[],
- 	__u32 fwmark = t->fwmark;
- 	int err;
- 
-+	if (!rtnl_dev_link_net_capable(dev, t->net))
-+		return -EPERM;
-+
- 	err = ipgre_newlink_encap_setup(dev, data);
- 	if (err)
- 		return err;
+-				tmp = aa_get_profile_loaddata(rawdata_ent);
+-				/* check we didn't fail the race */
++				/*
++				 * Entries remain on rawdata_list with
++				 * pcount == 0 until do_ploaddata_rmfs()
++				 * runs; only take a live profile ref.
++				 */
++				tmp = aa_get_profile_loaddata_not0(rawdata_ent);
+ 				if (tmp) {
+ 					aa_put_profile_loaddata(udata);
+ 					udata = tmp;
 
 
