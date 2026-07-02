@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-271290-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-271094-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id Kyx6N9mkRmqLawsAu9opvQ
-	(envelope-from <stable+bounces-271290-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:50:17 +0200
+	id COoBDL6jRmoxawsAu9opvQ
+	(envelope-from <stable+bounces-271094-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:45:34 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 481B96FBA95
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:50:17 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2725D6FB995
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:45:33 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=yIlDNznW;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-271290-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-271290-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=ud4+U9ZC;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-271094-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-271094-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B08C432BF4B2
-	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:53:25 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 96EC53304B2F
+	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:47:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 83CC133F5A0;
-	Thu,  2 Jul 2026 16:52:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D59A3A75A4;
+	Thu,  2 Jul 2026 16:44:14 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49FE033D4EC;
-	Thu,  2 Jul 2026 16:52:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F2053A7590;
+	Thu,  2 Jul 2026 16:44:13 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783011161; cv=none; b=aXfi1tUCeFvBlidVWZ9i8zltJsj/B3I1trkmrwtcJ5MUsUVShuzCZavRdXKNe3ImSuZU57H9lwiETC07fGwdf7+2x1mV4gLuST44y3uRPV+kYBUlZHi/k5VToBrOQFIM9lfZHaLCtcPQsuMuQAwCbd00jIHI7hUrly8k54rfmsg=
+	t=1783010654; cv=none; b=Ps0PCFEYu1fCZUUBCYtHNwpoK6ap37xIIy/tN/AHWHRvBmxfpHqcZ4wkeufZEZqnKT1ApevzPI4r7uEjz7QxGPSVG1L5+g/toWKhEOY5fjxIJNGgOaGm/oT8ixehI9+27VoDq4s3e1zB/P5nEhBLfxSNkskje++a+iK/JBlJaJ4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783011161; c=relaxed/simple;
-	bh=Raa9zq6akG38rvlmh2i5kSqoWEm3o5hiMyGnAUlMRGY=;
+	s=arc-20240116; t=1783010654; c=relaxed/simple;
+	bh=iJWyvWV41vF4SaNznwVQj3480ysRnERYciifDFWtw94=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kQO/d08PLkBrcezCXWM6Ym1wSIqhEJuguoOgMP/kjaJWQxIcsAv95Lkq+xPs1CQa+7dOLf/8zogD3eYfj7FBkI9/5pMnXDRBlsiH0uBldX6a0XsH2kiHZFLiKzv7NyaUV0zanTzSEF62opbYVZkymKoXxbx5bakLfZj6/0AJFqw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yIlDNznW; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0A221F000E9;
-	Thu,  2 Jul 2026 16:52:39 +0000 (UTC)
+	 MIME-Version; b=X2FWfX+JBStWCmZUPfhkZBaB3ORA0MhrQxiambI9e0kqelpUu4X1FzI+5d5ZKu4LQsdNN/g6kb+LD0Pq5T7F27j/8/ubilUuh9K4I0klyzzrFFEpGGlqgzfv7RECAwHG8W5MRdcgP4nNdF2/AAonObMZvDiDJWkOUQaKmBLj6MU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ud4+U9ZC; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4A011F000E9;
+	Thu,  2 Jul 2026 16:44:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1783011160;
-	bh=DtgOtEXjChAAINDMB9XvSD6KXrog11Dfy2fnjRzMpag=;
+	s=korg; t=1783010653;
+	bh=lGNPScO9MuxoBHhmOnR2M5qHotaFOxT4zRrkHsna63E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=yIlDNznWbjEvcKvL6/LB0ld5fJIa4JpDmWg3tfOCGjIk5zlaD/YOlCNW9MahYEKrp
-	 VnnWRfjPIFn0BuFqHUSCPUlUFDVRsBl1KYioMGqK4ErXhjsB1CPc+4DspDtYYcnPOc
-	 uVIq4yNj1KSNzcHoED5/Lv6RIyOEufLcYyjouE7I=
+	b=ud4+U9ZCstWj63KycZcXgu/e4L+L/MjXMjLSeOsi030yAiUeeyiQCcNWh3nPVTYUU
+	 KmXS9gSZ83IwmrTJ7EhSVKce5Pv6MpsTQOJoEwMzPosdb0x7dJxuZnQuXDbYkPvyo1
+	 PHe0xXPl0vY2+hgUKRDZXKyAVmWCiPR3B4hcjf9U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+42a37bf8045847d8f9d2@syzkaller.appspotmail.com,
-	Tristan Madani <tristan@talencesecurity.com>,
-	Andreas Gruenbacher <agruenba@redhat.com>
-Subject: [PATCH 6.6 145/175] gfs2: fix use-after-free in gfs2_qd_dealloc
-Date: Thu,  2 Jul 2026 18:20:46 +0200
-Message-ID: <20260702155118.860729577@linuxfoundation.org>
+	Michael Bommarito <michael.bommarito@gmail.com>,
+	Anna Schumaker <anna.schumaker@hammerspace.com>
+Subject: [PATCH 6.12 190/204] NFSv4/pNFS: reject zero-length r_addr in nfs4_decode_mp_ds_addr
+Date: Thu,  2 Jul 2026 18:20:47 +0200
+Message-ID: <20260702155122.642663479@linuxfoundation.org>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260702155115.766838875@linuxfoundation.org>
-References: <20260702155115.766838875@linuxfoundation.org>
+In-Reply-To: <20260702155118.667618796@linuxfoundation.org>
+References: <20260702155118.667618796@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -73,21 +72,22 @@ X-Spamd-Result: default: False [-0.16 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-271290-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:syzbot+42a37bf8045847d8f9d2@syzkaller.appspotmail.com,m:tristan@talencesecurity.com,m:agruenba@redhat.com,m:syzbot@syzkaller.appspotmail.com,s:lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-271094-lists,stable=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:michael.bommarito@gmail.com,m:anna.schumaker@hammerspace.com,m:michaelbommarito@gmail.com,s:lists@lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,hammerspace.com];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
@@ -95,61 +95,69 @@ X-Spamd-Result: default: False [-0.16 / 15.00];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,42a37bf8045847d8f9d2];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[syzkaller.appspot.com:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,talencesecurity.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,appspotmail.com:email]
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,hammerspace.com:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 481B96FBA95
+X-Rspamd-Queue-Id: 2725D6FB995
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tristan Madani <tristan@talencesecurity.com>
+From: Michael Bommarito <michael.bommarito@gmail.com>
 
-commit f9c9ec2c319f843b70ecdf939d48b52d189bc081 upstream.
+commit 41fe0f7b84f0cb822ae10ab08592996a592b2a25 upstream.
 
-gfs2_qd_dealloc(), called as an RCU callback from gfs2_qd_dispose(),
-accesses the superblock object sdp through qd->qd_sbd after freeing qd.
-It does so to decrement sd_quota_count and wake up sd_kill_wait.
+nfs4_decode_mp_ds_addr() decodes the r_netid and r_addr opaques of a
+netaddr4 from a GETDEVICEINFO multipath-DS body, then immediately
+calls strrchr(buf, '.') to locate the port separator. Both decodes
+use xdr_stream_decode_string_dup(), and the current code checks only
+"nlen < 0" / "rlen < 0" before dereferencing the returned string.
 
-However, by the time the RCU callback runs, gfs2_put_super() may have
-already freed sdp via free_sbd().  This can happen when
-gfs2_quota_cleanup() is called during unmount: it disposes of quota
-objects via call_rcu() and then waits on sd_kill_wait with a 60-second
-timeout.  If the timeout expires, or if gfs2_gl_hash_clear() triggers
-additional qd_put() calls that schedule more RCU callbacks after the
-wait completes, gfs2_put_super() will proceed to free the superblock
-while RCU callbacks referencing it are still pending.
+When the on-wire opaque has length zero, xdr_stream_decode_opaque_inline()
+returns 0 and xdr_stream_decode_string_dup() falls through to its
+"*str = NULL; return ret" tail, leaving buf NULL with a return value
+of 0. The "< 0" check does not catch this, and the next line is
+strrchr(NULL, '.'), a kernel NULL pointer dereference reachable from
+any pNFS-flexfile client mounted against a malicious or compromised
+metadata server.
 
-Add an rcu_barrier() before free_sbd() in gfs2_put_super() to ensure
-all pending RCU callbacks (including gfs2_qd_dealloc) have completed
-before the superblock is freed.
+Reject the zero-length cases explicitly so the decoder fails with
+-EBADMSG (treated as a malformed GETDEVICEINFO body) instead of
+panicking the client.
 
-Fixes: a475c5dd16e5 ("gfs2: Free quota data objects synchronously")
-Reported-by: syzbot+42a37bf8045847d8f9d2@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=42a37bf8045847d8f9d2
-Tested-by: syzbot+42a37bf8045847d8f9d2@syzkaller.appspotmail.com
 Cc: stable@vger.kernel.org
-Signed-off-by: Tristan Madani <tristan@talencesecurity.com>
-Signed-off-by: Andreas Gruenbacher <agruenba@redhat.com>
+Fixes: 6b7f3cf96364 ("nfs41: pull decode_ds_addr from file layout to generic pnfs")
+Assisted-by: Claude:claude-opus-4-7
+Signed-off-by: Michael Bommarito <michael.bommarito@gmail.com>
+Signed-off-by: Anna Schumaker <anna.schumaker@hammerspace.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/gfs2/super.c |    1 +
- 1 file changed, 1 insertion(+)
+ fs/nfs/pnfs_nfs.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/fs/gfs2/super.c
-+++ b/fs/gfs2/super.c
-@@ -652,6 +652,7 @@ restart:
- 	gfs2_delete_debugfs_file(sdp);
+--- a/fs/nfs/pnfs_nfs.c
++++ b/fs/nfs/pnfs_nfs.c
+@@ -1055,14 +1055,14 @@ nfs4_decode_mp_ds_addr(struct net *net,
+ 	/* r_netid */
+ 	nlen = xdr_stream_decode_string_dup(xdr, &netid, XDR_MAX_NETOBJ,
+ 					    gfp_flags);
+-	if (unlikely(nlen < 0))
++	if (unlikely(nlen <= 0))
+ 		goto out_err;
  
- 	gfs2_sys_fs_del(sdp);
-+	rcu_barrier();
- 	free_sbd(sdp);
- }
+ 	/* r_addr: ip/ip6addr with port in dec octets - see RFC 5665 */
+ 	/* port is ".ABC.DEF", 8 chars max */
+ 	rlen = xdr_stream_decode_string_dup(xdr, &buf, INET6_ADDRSTRLEN +
+ 					    IPV6_SCOPE_ID_LEN + 8, gfp_flags);
+-	if (unlikely(rlen < 0))
++	if (unlikely(rlen <= 0))
+ 		goto out_free_netid;
  
+ 	/* replace port '.' with '-' */
 
 
 
