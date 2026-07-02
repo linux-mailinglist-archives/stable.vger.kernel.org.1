@@ -1,61 +1,61 @@
-Return-Path: <stable+bounces-271243-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-271436-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id NoRdBEaZRmrJZgsAu9opvQ
-	(envelope-from <stable+bounces-271243-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:00:54 +0200
+	id PdYoLcKmRmoGbAsAu9opvQ
+	(envelope-from <stable+bounces-271436-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:58:26 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 94FF66FADA9
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:00:53 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id E3D7C6FBBD9
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:58:25 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=mO2X7Kh8;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-271243-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-271243-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=0liRjYB3;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-271436-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-271436-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 59E9130D7C11
-	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:52:05 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 0331032E3422
+	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:59:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA3E53624DB;
-	Thu,  2 Jul 2026 16:50:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E6313346BE;
+	Thu,  2 Jul 2026 16:59:00 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 835F9355F5C;
-	Thu,  2 Jul 2026 16:50:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF63122D7B9;
+	Thu,  2 Jul 2026 16:58:58 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783011037; cv=none; b=ZPZ1YZJ8VRRPv3T2W81Da35Z4JX1U2vk3hxflvyPQ46BEfYlULxtVosjKEzHR8IYJAyQ9w5E15siQl2xobxf0/6Ksjwf/NxCdCEDk+h0UYlTElzY5/M1OgNob9eK9g8RKbSk5wo21M5D3fNRJQwr6DQ6x4cd15R2iKCJ7XcDuBc=
+	t=1783011539; cv=none; b=GyPlNvX33ypn/tE3oVOJJMePu9rVsmypH5ozq8qxhpQAILF1LCAPcHsbkSgN7PB2j9Wvb4BShaysAZhDaSfoSAsavdutpSwxHmJ0lV2H1eX1jAaip44QevPnvoYWqkUREzmnMljiNWsMARNuHASuGZVK+ZK69YQHsNw/LTdxsmU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783011037; c=relaxed/simple;
-	bh=K7aUwgNTBbW8XNA7bBrLWIez8n7Wyf/Ylq/7NaJRVWE=;
+	s=arc-20240116; t=1783011539; c=relaxed/simple;
+	bh=6CaXlmKE74km/qM0udzTouNrTqhCO1lPvwGkl98P+0Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Q2xVAYS5DxT+cA0bC4gdYs6ntcJHHahEubMfOwIKxwC6pwhiaSzP9IyzI0VDGN47OlVpmjokQoq8EvtgxcJaGZipjR0pk2Y/r+a9AGoXT+HqwPeRk7U5B4t6xXwAL5g0xPZc5SRf7KV6X/VxjNtkrdWc+MscAyAmCy7D3foQBCY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mO2X7Kh8; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E88E41F000E9;
-	Thu,  2 Jul 2026 16:50:35 +0000 (UTC)
+	 MIME-Version; b=C7A9ep27ta3hwU/WVEd2yDVlqs3DUXzsOvh/JJ1HNxUJmiXZtBt5N0p55XdW8UrK7x79Ef/Q8PUFf30k8+DyQhFPUo9npKyJ7BZZ8M4EtQzykeYwFEolqUbGEOfw4LldIRyEfSDt+LO7cwtus3QHdCupHtvo37qj7bNMe+MphwM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0liRjYB3; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 215801F00A3A;
+	Thu,  2 Jul 2026 16:58:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1783011036;
-	bh=CPmXQMoccSqwj5nrJcAJRxywK2ia+RFRBC6I+8oi6mo=;
+	s=korg; t=1783011538;
+	bh=0eQT/9X5YsXagTvtrTKTnYwiVP+6siWMK2kswWqts6I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=mO2X7Kh8a2aUh3enaukhDBog9hc4iK2IjjhzyjCrft0N+wk2T0tRtQgWTgZJhxBn7
-	 MkY/8PDQrafeg7yIysgQwJCCAo+1HW3IR8yh7B1EfbQNceepFojUKW1cBoojRn0IXJ
-	 wvaMvg2/HidXpokp3mgZhurs74gTR0VaEvslp5iw=
+	b=0liRjYB3T8V93c88lo9XhjOGKHzDT+/R1e5RYu73aksHkbuAhQlHDb0HozM8X+wxg
+	 pfRgzDFqdJCttXotEtTF7sLlWAKq6fNfiTjHUgM/x/Z49MmLHkD5fPLlIyUopP9WO3
+	 YmizVHYQo2ydJdTG8WrQzYzudaoIPfGrMD9NQH7Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zenm Chen <zenmchen@gmail.com>,
-	Lorenzo Bianconi <lorenzo@kernel.org>,
-	Felix Fietkau <nbd@nbd.name>
-Subject: [PATCH 6.6 131/175] wifi: mt76: mt76x2u: Add support for ELECOM WDC-867SU3S
-Date: Thu,  2 Jul 2026 18:20:32 +0200
-Message-ID: <20260702155118.572611223@linuxfoundation.org>
+	Colin Ian King <colin.i.king@gmail.com>,
+	Ruslan Valiyev <linuxoid@gmail.com>,
+	John Johansen <john.johansen@canonical.com>
+Subject: [PATCH 7.1 037/120] apparmor: fix use-after-free in rawdata dedup loop
+Date: Thu,  2 Jul 2026 18:20:33 +0200
+Message-ID: <20260702155113.728260717@linuxfoundation.org>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260702155115.766838875@linuxfoundation.org>
-References: <20260702155115.766838875@linuxfoundation.org>
+In-Reply-To: <20260702155112.964534952@linuxfoundation.org>
+References: <20260702155112.964534952@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,27 +67,28 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-271243-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:zenmchen@gmail.com,m:lorenzo@kernel.org,m:nbd@nbd.name,s:lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org,nbd.name];
+	TAGGED_FROM(0.00)[bounces-271436-lists,stable=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:colin.i.king@gmail.com,m:linuxoid@gmail.com,m:john.johansen@canonical.com,m:coliniking@gmail.com,s:lists@lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,canonical.com];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
@@ -95,47 +96,120 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[nbd.name:email,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,vger.kernel.org:from_smtp]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,canonical.com:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 94FF66FADA9
+X-Rspamd-Queue-Id: E3D7C6FBBD9
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+7.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zenm Chen <zenmchen@gmail.com>
+From: Ruslan Valiyev <linuxoid@gmail.com>
 
-commit f4ce0664e9f0387873b181777891741c33e19465 upstream.
+commit 6f060496d03e4dc560a40f73770bd08335cb7a27 upstream.
 
-Add the ID 056e:400a to the table to support an additional MT7612U
-adapter: ELECOM WDC-867SU3S.
+aa_replace_profiles() walks ns->rawdata_list to dedup the incoming
+policy blob against entries already attached to existing profiles.
+Per the kernel-doc on struct aa_loaddata, list membership does not
+hold a reference: profiles hold pcount, and when the last pcount
+drops, do_ploaddata_rmfs() is queued on a workqueue that takes
+ns->lock and removes the entry. Between dropping the last pcount
+and the workqueue running, an entry remains on the list with
+pcount == 0.
 
-Compile tested only.
+aa_get_profile_loaddata() is an unconditional kref_get() on
+pcount, so when the dedup loop hits such an entry, refcount
+hardening reports
 
-Cc: stable@vger.kernel.org # 5.10.x
-Signed-off-by: Zenm Chen <zenmchen@gmail.com>
-Acked-by: Lorenzo Bianconi <lorenzo@kernel.org>
-Link: https://patch.msgid.link/20260407154430.9184-1-zenmchen@gmail.com
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
+  refcount_t: addition on 0; use-after-free.
+
+inside aa_replace_profiles(), and the poisoned counter then
+trips "saturated" and "underflow" warnings on the subsequent
+uses of the same loaddata.
+
+Before commit a0b7091c4de4 ("apparmor: fix race on rawdata
+dereference") the dedup path used a get_unless_zero-style helper
+on a single counter, so the existing "if (tmp)" guard was
+meaningful. The split-refcount refactor introduced
+aa_get_profile_loaddata(), which has plain kref_get() semantics,
+and the guard quietly became a no-op.
+
+Introduce aa_get_profile_loaddata_not0(), matching the existing
+_not0 convention used by aa_get_profile_not0(), and use it for
+the rawdata_list dedup lookup so dying entries are skipped.
+
+Reproduced on x86_64 with v7.1-rc5 in QEMU+KVM running Ubuntu
+24.04 + stress-ng 0.17.06:
+
+  stress-ng --apparmor 1 --klog-check --timeout 60s
+
+Without this patch the three refcount_t warnings fire within a
+few seconds. With it the same 60 s run is clean. Coverage is a
+smoke-test only; a longer soak with CONFIG_KASAN, CONFIG_KCSAN
+and CONFIG_PROVE_LOCKING would be welcome from anyone with the
+cycles.
+
+Fixes: a0b7091c4de4 ("apparmor: fix race on rawdata dereference")
+Reported-by: Colin Ian King <colin.i.king@gmail.com>
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=221513
+Cc: stable@vger.kernel.org
+Signed-off-by: Ruslan Valiyev <linuxoid@gmail.com>
+Signed-off-by: John Johansen <john.johansen@canonical.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/mediatek/mt76/mt76x2/usb.c |    1 +
- 1 file changed, 1 insertion(+)
+ security/apparmor/include/policy_unpack.h |   19 +++++++++++++++++++
+ security/apparmor/policy.c                |    8 ++++++--
+ 2 files changed, 25 insertions(+), 2 deletions(-)
 
---- a/drivers/net/wireless/mediatek/mt76/mt76x2/usb.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt76x2/usb.c
-@@ -16,6 +16,7 @@ static const struct usb_device_id mt76x2
- 	{ USB_DEVICE(0x0e8d, 0x7612) },	/* Aukey USBAC1200 - Alfa AWUS036ACM */
- 	{ USB_DEVICE(0x057c, 0x8503) },	/* Avm FRITZ!WLAN AC860 */
- 	{ USB_DEVICE(0x7392, 0xb711) },	/* Edimax EW 7722 UAC */
-+	{ USB_DEVICE(0x056e, 0x400a) },	/* ELECOM WDC-867SU3S */
- 	{ USB_DEVICE(0x0e8d, 0x7632) },	/* HC-M7662BU1 */
- 	{ USB_DEVICE(0x0471, 0x2126) }, /* LiteOn WN4516R module, nonstandard USB connector */
- 	{ USB_DEVICE(0x0471, 0x7600) }, /* LiteOn WN4519R module, nonstandard USB connector */
+--- a/security/apparmor/include/policy_unpack.h
++++ b/security/apparmor/include/policy_unpack.h
+@@ -163,6 +163,25 @@ aa_get_profile_loaddata(struct aa_loadda
+ 	return data;
+ }
+ 
++/**
++ * aa_get_profile_loaddata_not0 - get a profile reference count if not zero
++ * @data: reference to get a count on
++ *
++ * Like aa_get_profile_loaddata(), but safe to call on an entry that may
++ * be on a list (e.g. ns->rawdata_list) where the last pcount has already
++ * dropped and the deferred cleanup has not yet run.
++ *
++ * Returns: pointer to reference, or %NULL if @data is NULL or its
++ *          profile refcount has already reached zero.
++ */
++static inline struct aa_loaddata *
++aa_get_profile_loaddata_not0(struct aa_loaddata *data)
++{
++	if (data && kref_get_unless_zero(&data->pcount))
++		return data;
++	return NULL;
++}
++
+ void __aa_loaddata_update(struct aa_loaddata *data, long revision);
+ bool aa_rawdata_eq(struct aa_loaddata *l, struct aa_loaddata *r);
+ void aa_loaddata_kref(struct kref *kref);
+--- a/security/apparmor/policy.c
++++ b/security/apparmor/policy.c
+@@ -1223,8 +1223,12 @@ ssize_t aa_replace_profiles(struct aa_ns
+ 			if (aa_rawdata_eq(rawdata_ent, udata)) {
+ 				struct aa_loaddata *tmp;
+ 
+-				tmp = aa_get_profile_loaddata(rawdata_ent);
+-				/* check we didn't fail the race */
++				/*
++				 * Entries remain on rawdata_list with
++				 * pcount == 0 until do_ploaddata_rmfs()
++				 * runs; only take a live profile ref.
++				 */
++				tmp = aa_get_profile_loaddata_not0(rawdata_ent);
+ 				if (tmp) {
+ 					aa_put_profile_loaddata(udata);
+ 					udata = tmp;
 
 
 
