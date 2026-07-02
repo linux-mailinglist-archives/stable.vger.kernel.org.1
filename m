@@ -1,60 +1,64 @@
-Return-Path: <stable+bounces-271272-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-271463-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id KNKdBveZRmo5ZwsAu9opvQ
-	(envelope-from <stable+bounces-271272-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:03:51 +0200
+	id LNtbFA+nRmokbAsAu9opvQ
+	(envelope-from <stable+bounces-271463-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:59:43 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B742A6FAECC
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:03:50 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B61B16FBC21
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:59:42 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=wjBGneWo;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-271272-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-271272-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=ZCQq4xFC;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-271463-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-271463-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 75EA630E2272
-	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:53:08 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 1A09532FE087
+	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 17:00:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0EA6535677B;
-	Thu,  2 Jul 2026 16:51:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B47773346BE;
+	Thu,  2 Jul 2026 17:00:10 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4C37318EC5;
-	Thu,  2 Jul 2026 16:51:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CB633246EC;
+	Thu,  2 Jul 2026 17:00:09 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783011113; cv=none; b=U5jfvn8n+3iw8YoU/sCHnrpQtmQY9/id031/Ou85QVQ2kPsaTQx4S27GC9HTI+Qt6LnGzj4qlHvrj5p0Eku81XLRFmGFf9jZsrXLBR8OY9zbtR45seNDHQMW6aF6MHtR4eJsAbnS2GkCnka9vYU+NJvQLjdAojyTj/gEsMZz29s=
+	t=1783011610; cv=none; b=BmwhgJ/1pmRmMMqX1qdGcg1N0X0jTkibpOhArf+ElhOVfCwZSGA1tisx9cPAYrXHJMdvP+5anbOuRs3yBrC1ZyoVmZi0roMml5fRQWNz/pE3XcUH1Q9/g0PAu7/kK9/hvsxQvbOPkdJ2n75Z5y2E9fAJRINJhKwxail8zT11Ihs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783011113; c=relaxed/simple;
-	bh=WhfAPe4Gjn6p5vPlxxNPCIiWUnP7tr45VtTy38kt9YM=;
+	s=arc-20240116; t=1783011610; c=relaxed/simple;
+	bh=fW8Rm7MnWZ1Eamd9zxKPPVaoYvLmLbdXX3zYDj+CShA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TfNSOZU6/wCNDa4Ko+1aZ728god1E/0gK01FkTnBGx2AzAm2CB5HRNwaKKHnCnKyvZuI3fRL6sFa72qSFBdZZnW14Ww3m8eA4cR8w73DhQBKYOgrEJ8Jm770cI2eO5NTeXdQ2kZ3uS6G91c07NBgBnn7Ay3Kr2FDZ2GHKxzpnwo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wjBGneWo; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45F711F000E9;
-	Thu,  2 Jul 2026 16:51:52 +0000 (UTC)
+	 MIME-Version; b=sBD9fayxdN/qHbbEr4czJD6mJmdA4fZUSXSyjwnhz/Q/A68SZWMiXPpMzg3PTbFvqimn7FqBm6ly85eGMiA7aVkcVyhuyghgJKoLrirDLe3WrKspCAkz+yAwJHHBFpItHUS5gZUiOGjX8OlXYqMNcEcEt3ebQxikcpA68w7lrOk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZCQq4xFC; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E84271F00A3E;
+	Thu,  2 Jul 2026 17:00:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1783011112;
-	bh=oLe66LqDDRM5XlN7cuCS/H0oW/vuYAWBaTFRpTnSU2A=;
+	s=korg; t=1783011609;
+	bh=oq5tiJmGmTmt79Jk1/MDjihg8+p/66t2VPK1B+e9yjg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=wjBGneWoePYRrSNtty6/iOOwUSCPHBHtD7sLo+kGEjDGmETm2XkhBymPn75aOeW1o
-	 q5MHJMb7qXvNdIadMaFvZSrQJbDdsK8sTv0sucoz1MwCsrKm2+OtObD+BHpfYbAci4
-	 t4qNE0EJkIGD8XOeDKV4P5cSTTbU0F37EfnIqddc=
+	b=ZCQq4xFCbEux+i+9ol6Qzu6d0mfARutawhqcIW0vztnuUBvlmrdJHZ8LAXE684djY
+	 JVplUQBdJGt7GI23bPTaDxPGt0c4m+ptTbcREcJydqAsGOPCxNRqm+1GB5OEsoyDi2
+	 fJQrTRqXXYPYaDEZ/P1pt7D93fRJTO2J17BvBylg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tuo Li <islituo@gmail.com>,
-	Helge Deller <deller@gmx.de>
-Subject: [PATCH 6.6 161/175] fbdev: modedb: fix a possible UAF in fb_find_mode()
+	Yunji Kang <yunji0.kang@samsung.com>,
+	Yeongjin Gil <youngjin.gil@samsung.com>,
+	Sungjong Seo <sj1557.seo@samsung.com>,
+	Sunmin Jeong <s_min.jeong@samsung.com>,
+	Chao Yu <chao@kernel.org>,
+	Jaegeuk Kim <jaegeuk@kernel.org>
+Subject: [PATCH 7.1 066/120] f2fs: fix to round down start offset of fallocate for pin file
 Date: Thu,  2 Jul 2026 18:21:02 +0200
-Message-ID: <20260702155119.183632948@linuxfoundation.org>
+Message-ID: <20260702155114.324688093@linuxfoundation.org>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260702155115.766838875@linuxfoundation.org>
-References: <20260702155115.766838875@linuxfoundation.org>
+In-Reply-To: <20260702155112.964534952@linuxfoundation.org>
+References: <20260702155112.964534952@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,100 +72,109 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-271272-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:islituo@gmail.com,m:deller@gmx.de,s:lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,gmx.de];
+	TAGGED_FROM(0.00)[bounces-271463-lists,stable=lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:yunji0.kang@samsung.com,m:youngjin.gil@samsung.com,m:sj1557.seo@samsung.com,m:s_min.jeong@samsung.com,m:chao@kernel.org,m:jaegeuk@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
+	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,gmx.de:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,samsung.com:email,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: B742A6FAECC
+X-Rspamd-Queue-Id: B61B16FBC21
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+7.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tuo Li <islituo@gmail.com>
+From: Sunmin Jeong <s_min.jeong@samsung.com>
 
-commit 85b6256469cebdac395e7447147e06b2e151014f upstream.
+commit 4275b59673eb60b02eec3997816c83f1f4b909c4 upstream.
 
-If mode_option is NULL, it is assigned from mode_option_buf:
+Currently, the length of fallocate for pin file is section-aligned to
+keep allocated sections from being selected as victims of GC. However,
+for the case that the start offset of fallocate is not aligned in
+section, the allocated sections can't be fully utilized. It's because a
+new section is allocated by f2fs_allocate_pinning_section() after using
+blks_per_sec blocks regardless of the start offset. As a result, several
+unexpected dirty segments may be created, including blocks assigned to
+the pinned file.
 
-  if (!mode_option) {
-    fb_get_options(NULL, &mode_option_buf);
-    mode_option = mode_option_buf;
-  }
+To address this issue, let's round down the start offset of fallocate
+to the length of section.
 
-Later, name is assigned from mode_option:
+The reproducing scenario is as below
 
-  const char *name = mode_option;
+chunk=$(((2<<20)+4096)) # 2MB + 4KB
+touch test
+f2fs_io pinfile set test
+f2fs_io fallocate 0 0 $chunk test
+f2fs_io fallocate 0 $chunk $chunk test
+f2fs_io fallocate 0 $((chunk*2)) $chunk test
+f2fs_io fiemap 0 $((chunk*3)) test
 
-However, mode_option_buf is freed before name is no longer used:
+Fiemap: offset = 0 len = 12288
+    logical addr.    physical addr.   length           flags
+0   0000000000000000 000000068c600000 0000000000400000 00001088
+1   0000000000400000 000000003d400000 0000000000001000 00001088
+2   0000000000401000 00000003eb200000 0000000000200000 00001088
+3   0000000000601000 00000005e4200000 0000000000001000 00001088
+4   0000000000602000 0000000605400000 0000000000200000 00001089
 
-  kfree(mode_option_buf);
-
-while name is still accessed by:
-
-  if ((name_matches(db[i], name, namelen) ||
-
-Since name aliases mode_option_buf, this may result in a
-use-after-free.
-
-Fix this by extending the lifetime of mode_option_buf until the end of the
-function by using scope-based resource management for cleanup.
-
-Signed-off-by: Tuo Li <islituo@gmail.com>
-Cc: stable@vger.kernel.org # v6.5+
-Signed-off-by: Helge Deller <deller@gmx.de>
+Cc: stable@vger.kernel.org
+Fixes: f5a53edcf01e ("f2fs: support aligned pinned file")
+Reviewed-by: Yunji Kang <yunji0.kang@samsung.com>
+Reviewed-by: Yeongjin Gil <youngjin.gil@samsung.com>
+Reviewed-by: Sungjong Seo <sj1557.seo@samsung.com>
+Signed-off-by: Sunmin Jeong <s_min.jeong@samsung.com>
+Reviewed-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/video/fbdev/core/modedb.c |    3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ fs/f2fs/file.c |    9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
---- a/drivers/video/fbdev/core/modedb.c
-+++ b/drivers/video/fbdev/core/modedb.c
-@@ -625,7 +625,7 @@ int fb_find_mode(struct fb_var_screeninf
- 		 const struct fb_videomode *default_mode,
- 		 unsigned int default_bpp)
- {
--	char *mode_option_buf = NULL;
-+	char *mode_option_buf __free(kfree) = NULL;
- 	int i;
+--- a/fs/f2fs/file.c
++++ b/fs/f2fs/file.c
+@@ -1916,8 +1916,15 @@ static int f2fs_expand_inode_data(struct
  
- 	/* Set up defaults */
-@@ -723,7 +723,6 @@ int fb_find_mode(struct fb_var_screeninf
- 			res_specified = 1;
- 		}
- done:
--		kfree(mode_option_buf);
- 		if (cvt) {
- 			struct fb_videomode cvt_mode;
- 			int ret;
+ 	if (f2fs_is_pinned_file(inode)) {
+ 		block_t sec_blks = CAP_BLKS_PER_SEC(sbi);
+-		block_t sec_len = roundup(map.m_len, sec_blks);
++		block_t sec_len;
+ 
++		if (map.m_lblk % sec_blks) {
++			map.m_lblk = rounddown(map.m_lblk, sec_blks);
++			map.m_len = pg_end - map.m_lblk;
++			if (off_end)
++				map.m_len++;
++		}
++		sec_len = roundup(map.m_len, sec_blks);
+ 		map.m_len = sec_blks;
+ next_alloc:
+ 		f2fs_down_write(&sbi->pin_sem);
 
 
 
