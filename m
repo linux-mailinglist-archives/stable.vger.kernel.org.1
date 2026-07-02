@@ -1,60 +1,62 @@
-Return-Path: <stable+bounces-270650-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-270737-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id AZevNtCfRmq5aQsAu9opvQ
-	(envelope-from <stable+bounces-270650-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:28:48 +0200
+	id +mfkAB+WRmoIZQsAu9opvQ
+	(envelope-from <stable+bounces-270737-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:47:27 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id DFA296FB5E1
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:28:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 00FDB6FA8CC
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:47:25 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=Z1b0OvVE;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-270650-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-270650-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=SqCYM9hg;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-270737-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-270737-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 8CF1830E4476
-	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:30:43 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 1CDC73048891
+	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:33:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09D7B4DD6E2;
-	Thu,  2 Jul 2026 16:24:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C805E346FA7;
+	Thu,  2 Jul 2026 16:28:41 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 349C64DB566;
-	Thu,  2 Jul 2026 16:24:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C053282F30;
+	Thu,  2 Jul 2026 16:28:38 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783009496; cv=none; b=Kj41BqGlKBN4RsyG1s2C2WBsQB8BwcECnM5Fro6eRzU1VXUOhXw+9rOo98okDcqn5grM6Qp/faZ/fF9IV92g3w04+DQbf9MMOPHlbvKStKO2oS7aVdpvSbcY51rEv8DwjeoEHp4SOw0bZSW6jAyLTLODcn8JHkroKzmUauFHMqY=
+	t=1783009721; cv=none; b=qh6uIuvUp71B1Y6WPClbJuISsELBsnfrzqqfUV8vKIjX/WabQTPQl8mi/2pUPO45HWZ6sOTwPPg6XgtIl2woxBZNNCNTz/OuBMBSfuc2uMyOSfBw4jQVnW4tHBO+QdONFIhmUR6VMOhfTR6gecDuO/JSpRlEvDe448suaIheYsg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783009496; c=relaxed/simple;
-	bh=hIVeEKEZyXdDpX93Hikz+9p6/q4yldUmBWqQvwwAnxk=;
+	s=arc-20240116; t=1783009721; c=relaxed/simple;
+	bh=lCaYPJC18GBu8iI0ts2AXey7c+02vCD08Zon6Cf7BEU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cv5zGKwJCvO5EOdYkmOZDzJya0cWpeE8CmZfBkNMV0bsmIiCoEMSLkXScnQCKK0ZSveikUByl/xfeQhDQZ7LmJ9FJV9dM3pR/yWOV5zN7Ufku26GrU9ecC8iux+9SPT9WaebRMzYzrG0vbh4ml6GBd9iwkZ6xH7EpAaG9kEiYfs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z1b0OvVE; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98EDA1F000E9;
-	Thu,  2 Jul 2026 16:24:51 +0000 (UTC)
+	 MIME-Version; b=C99c5wIaZXl7jW72rYwx00tMjlQECUYvPKCc7kmNznh9iUh2jla5QXP7wDn2pjQqWCGAorObzk5Z+Vx5a3NuEwNd6w7JjjbyfW6yysCuhvbPc46i2t/kC9kGKLZBxqnzPLq7cxEVaFcy20y77Dv/8s3HZugzGF3gSo1WyyZCjq8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SqCYM9hg; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 115A31F00A3A;
+	Thu,  2 Jul 2026 16:28:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1783009492;
-	bh=wH8gv9PMgCjGqMgd3W6qVEzeEsijTHG3KOFLw/wNeEM=;
+	s=korg; t=1783009717;
+	bh=6qwVzb4wOA1FV1XCVwPekkJP3DKjo67ptiuT79YCIDg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Z1b0OvVEgnkIGNwlHzMSR/58JM8YxmaFuoCQAVUP60mvqiAq9SxcGKMCx6Vz6ubRq
-	 9e1NCD0zx2bN7mjySSaumX/5W0owpu8IQ6vLlWtwtTae5BKsJdwGrk3RqY322mFCx9
-	 dJVUDyrxbEnbKBqmp11WgWrM3Gmjj+vBrzbBPGI8=
+	b=SqCYM9hg6wIznj7bXtFiO8Z7sB4/avQ11vbnEkdm+FMzcAgem+RdCiXCToRY/tZDq
+	 52c1dxmMHoch5ebvkuL42cUdT0I/+FeMPUGSTt2zSjaFz6GyOdc+ohFGwi5Dt2szsr
+	 AU10iiz9mcifHTETiyoNU1SeuIEiNXN2pjoshMc4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wentao Liang <vulab@iscas.ac.cn>,
-	Anna Schumaker <anna.schumaker@hammerspace.com>
-Subject: [PATCH 5.10 72/96] pNFS: Fix use-after-free in pnfs_update_layout()
+	Jose Ignacio Tornos Martinez <jtornosm@redhat.com>,
+	Baochen Qiang <baochen.qiang@oss.qualcomm.com>,
+	Rameshkumar Sundaram <rameshkumar.sundaram@oss.qualcomm.com>,
+	Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+Subject: [PATCH 5.15 61/95] wifi: ath11k: fix warning when unbinding
 Date: Thu,  2 Jul 2026 18:20:04 +0200
-Message-ID: <20260702155110.496559174@linuxfoundation.org>
+Message-ID: <20260702155110.493538040@linuxfoundation.org>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260702155108.949633242@linuxfoundation.org>
-References: <20260702155108.949633242@linuxfoundation.org>
+In-Reply-To: <20260702155109.196223802@linuxfoundation.org>
+References: <20260702155109.196223802@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -75,73 +77,81 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:vulab@iscas.ac.cn,m:anna.schumaker@hammerspace.com,s:lists@lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-270650-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-270737-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:jtornosm@redhat.com,m:baochen.qiang@oss.qualcomm.com,m:rameshkumar.sundaram@oss.qualcomm.com,m:jeff.johnson@oss.qualcomm.com,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	FORWARDED(0.00)[lists@lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	RWL_MAILSPIKE_POSSIBLE(0.00)[104.64.211.4:from];
 	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[iscas.ac.cn:email,vger.kernel.org:from_smtp,hammerspace.com:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,qualcomm.com:email,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,msgid.link:url]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: DFA296FB5E1
+X-Rspamd-Queue-Id: 00FDB6FA8CC
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wentao Liang <vulab@iscas.ac.cn>
+From: Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
 
-commit 13e198a90ca4050f4bee8a3f23680389a6563ccc upstream.
+commit 8b7a26b6681922a38cd5a7829ace61f8e54df9b7 upstream.
 
-When hitting the NFS_LAYOUT_RETURN branch in pnfs_update_layout(),
-the code calls pnfs_prepare_to_retry_layoutget(lo). If it succeeds,
-pnfs_put_layout_hdr(lo) is called before trace_pnfs_update_layout(),
-which still references 'lo'. This results in a use-after-free when the
-tracepoint accesses lo's fields.
+If there is an error during some initialization related to firmware,
+the buffers dp->tx_ring[i].tx_status are released.
+However this is released again when the device is unbinded (ath11k_pci),
+and we get:
+WARNING: CPU: 0 PID: 6231 at mm/slub.c:4368 free_large_kmalloc+0x57/0x90
+Call Trace:
+free_large_kmalloc
+ath11k_dp_free
+ath11k_core_deinit
+ath11k_pci_remove
+...
 
-Fix this by moving the tracepoint call before pnfs_put_layout_hdr(lo).
+The issue is always reproducible from a VM because the MSI addressing
+initialization is failing.
 
-Fixes: 2c8d5fc37fe2 ("pNFS: Stricter ordering of layoutget and layoutreturn")
+In order to fix the issue, just set the buffers to NULL after releasing in
+order to avoid the double free.
+
+Fixes: d5c65159f289 ("ath11k: driver for Qualcomm IEEE 802.11ax devices")
 Cc: stable@vger.kernel.org
-Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
-Signed-off-by: Anna Schumaker <anna.schumaker@hammerspace.com>
+Signed-off-by: Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
+Reviewed-by: Baochen Qiang <baochen.qiang@oss.qualcomm.com>
+Reviewed-by: Rameshkumar Sundaram <rameshkumar.sundaram@oss.qualcomm.com>
+Link: https://patch.msgid.link/20260420110130.509670-1-jtornosm@redhat.com
+Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nfs/pnfs.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/wireless/ath/ath11k/dp.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/fs/nfs/pnfs.c
-+++ b/fs/nfs/pnfs.c
-@@ -2074,11 +2074,11 @@ lookup_again:
- 		dprintk("%s wait for layoutreturn\n", __func__);
- 		lseg = ERR_PTR(pnfs_prepare_to_retry_layoutget(lo));
- 		if (!IS_ERR(lseg)) {
--			pnfs_put_layout_hdr(lo);
- 			dprintk("%s retrying\n", __func__);
- 			trace_pnfs_update_layout(ino, pos, count, iomode, lo,
- 						 lseg,
- 						 PNFS_UPDATE_LAYOUT_RETRY);
-+			pnfs_put_layout_hdr(lo);
- 			goto lookup_again;
- 		}
- 		trace_pnfs_update_layout(ino, pos, count, iomode, lo, lseg,
+--- a/drivers/net/wireless/ath/ath11k/dp.c
++++ b/drivers/net/wireless/ath/ath11k/dp.c
+@@ -1003,6 +1003,7 @@ void ath11k_dp_free(struct ath11k_base *
+ 		idr_destroy(&dp->tx_ring[i].txbuf_idr);
+ 		spin_unlock_bh(&dp->tx_ring[i].tx_idr_lock);
+ 		kfree(dp->tx_ring[i].tx_status);
++		dp->tx_ring[i].tx_status = NULL;
+ 	}
+ 
+ 	/* Deinit any SOC level resource */
 
 
 
