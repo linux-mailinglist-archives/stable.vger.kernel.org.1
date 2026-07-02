@@ -1,60 +1,62 @@
-Return-Path: <stable+bounces-271268-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-271350-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id geFEAOSZRmoxZwsAu9opvQ
-	(envelope-from <stable+bounces-271268-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:03:32 +0200
+	id NnxBLXilRmq5awsAu9opvQ
+	(envelope-from <stable+bounces-271350-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:52:56 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 877AC6FAEAD
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:03:31 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 11D136FBAEE
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:52:56 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=ZXb268Tc;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-271268-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-271268-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=Npe+RGPx;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-271350-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-271350-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 9646030DFD23
-	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:52:52 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 07C283284E3A
+	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:55:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9FC5E34107D;
-	Thu,  2 Jul 2026 16:51:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B926625B09B;
+	Thu,  2 Jul 2026 16:55:13 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 522F3318EC5;
-	Thu,  2 Jul 2026 16:51:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89101433E87;
+	Thu,  2 Jul 2026 16:55:12 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783011103; cv=none; b=C0ldz5RUTacvqco+XmlazqGVSBA8BF0h47SsYAGFPj1Zb8vpD2ex7dsig591N/S0oXzgriIFrVVRntBV7oal8G5r7YHBjbmhg7PhDvD8VOdUc7BDUwMgkAOstE6+6UZI0EaFjpzMSCEICCkCLzTXq3eoOo41H55rr4dIEaEJ3Wc=
+	t=1783011313; cv=none; b=L3qkh83xulpcMTAHVH1/1/XbO0AsLQ4fvL5f9NtpfFrVwyuxX1yyJwvMlvNq2D2kE/QXkpI+/S6f7TykSasQG5B/+4wgOyPgf0leclaxFDqQOtmHLriJ0E9qahiptEVPK6cQf+ydkMFkWPXlnScZjeFJulGQIa3p3j+NyAjWR/U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783011103; c=relaxed/simple;
-	bh=3doaFOD/cJrSSlIcOADVTWHzDnaf7z0YxzRpH9kdljo=;
+	s=arc-20240116; t=1783011313; c=relaxed/simple;
+	bh=/09BGaU4shWvUXAX8XCiN8FyXNZXoQDk2p87z2rezdM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sBF/njtLfURKmI4doUyo30b2F9jZg+Y/CuMp87na1wihwoZZfqA9zetZ/8eMNOzlvRqUxxmp1gu1bSufAI/mMFgT8P9/UEbjw9gIbMxXWgrT3A22R0iUviZltXFb/uJZWmEtBfinZzsLwRZ5SlyOOx8+KxTrpcpHrw4YDT9EXyo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZXb268Tc; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B71391F000E9;
-	Thu,  2 Jul 2026 16:51:41 +0000 (UTC)
+	 MIME-Version; b=AZA1mIKuG7ZULcyx9lGl0bF6Gfg/cGYXTroW8fNALUyTXJP5c299V1UkpA2dJJzpZejB2MOMsbsH5mpnZOr9Yu9ih2JplLKmgFp04mDKh20wQTndZZcWnHQukBMHmQPz7SVhvRS++Y1+q0KE2wX0fjja2s9Xx1ETMnZUCL0D0Fk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Npe+RGPx; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF64D1F000E9;
+	Thu,  2 Jul 2026 16:55:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1783011102;
-	bh=NP3dKYdlHDuI3iStsw7c7OHPEmnSJEMMEoFUF5w1EZ8=;
+	s=korg; t=1783011312;
+	bh=mDcCD3fwQrg09r/CHOEu/8U2cWWl3vqQ7jOc2o+jxFk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=ZXb268Tcd9t1PaSc60ZgtaavfKf1FEOVAy6P8AG/fo5N+tD/n1ry2XSEUEhotr45c
-	 7N6dwJfZfvSTy5RIC1c7zV1MHWrMxP3RTxGMAE0G7lYUwlR5hQFwerrUMGfxF2Q4Lk
-	 k1M6kwtojRXHtyIqGwVTVKDJhnMhta0zRcczovCQ=
+	b=Npe+RGPxyuzOZuGRmY+MVh4Vv2EkJx1OiGtBV6C2OANnY35QkI5dTSNSnmDry8nCg
+	 +QsYL1OWfuTPtNM2tTb0C3Sjd9aImmPUg4sJ6C6kt26SYvLAR4hDIHzuHb1c8Und5T
+	 pDnfeDJOcYzWAoE1qwVaCmnZxGdHVOFNl9ZZE+mY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ashutosh Desai <ashutoshdesai993@gmail.com>,
-	Sean Christopherson <seanjc@google.com>
-Subject: [PATCH 6.6 158/175] KVM: SVM: Fix page overflow in sev_dbg_crypt() for ENCRYPT path
+	stable@kernel.org,
+	Wenjie Qi <qiwenjie@xiaomi.com>,
+	Chao Yu <chao@kernel.org>,
+	Jaegeuk Kim <jaegeuk@kernel.org>
+Subject: [PATCH 6.18 062/108] f2fs: validate compress cache inode only when enabled
 Date: Thu,  2 Jul 2026 18:20:59 +0200
-Message-ID: <20260702155119.122939846@linuxfoundation.org>
+Message-ID: <20260702155113.393672102@linuxfoundation.org>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260702155115.766838875@linuxfoundation.org>
-References: <20260702155115.766838875@linuxfoundation.org>
+In-Reply-To: <20260702155112.110058792@linuxfoundation.org>
+References: <20260702155112.110058792@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,132 +70,91 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-271268-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:ashutoshdesai993@gmail.com,m:seanjc@google.com,s:lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,google.com];
+	TAGGED_FROM(0.00)[bounces-271350-lists,stable=lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:stable@kernel.org,m:qiwenjie@xiaomi.com,m:chao@kernel.org,m:jaegeuk@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
+	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,vger.kernel.org:from_smtp]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[xiaomi.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 877AC6FAEAD
+X-Rspamd-Queue-Id: 11D136FBAEE
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ashutosh Desai <ashutoshdesai993@gmail.com>
+From: Wenjie Qi <qwjhust@gmail.com>
 
-commit 78ee2d50185a037b3d2452a97f3dad69c3f7f389 upstream.
+commit 5073c66a96a9c23c0c2533ed4ed06e42f9021208 upstream.
 
-In sev_dbg_crypt(), the per-iteration transfer length is bounded by
-the source page offset (PAGE_SIZE - s_off) but not by the destination
-page offset (PAGE_SIZE - d_off).  When d_off > s_off, the encrypt
-path (__sev_dbg_encrypt_user) performs a read-modify-write using a
-single-page intermediate buffer (dst_tpage):
+F2FS_COMPRESS_INO() uses NM_I(sbi)->max_nid as the synthetic inode
+number for the compressed page cache inode. That inode only exists when
+the compress_cache mount option is enabled.
 
-  1. __sev_dbg_decrypt() expands the size to round_up(len + (d_off & 15), 16)
-     before issuing the PSP command.  If len + (d_off & 15) > PAGE_SIZE,
-     the PSP writes beyond the end of the 4096-byte dst_tpage allocation.
+When compress_cache is disabled, max_nid is outside the valid inode
+range. A corrupted directory entry that points to ino == max_nid should
+therefore be rejected by f2fs_check_nid_range(). However, is_meta_ino()
+currently treats F2FS_COMPRESS_INO() as a meta inode unconditionally,
+so f2fs_iget() bypasses do_read_inode() and its nid range check, and
+instantiates a fake internal inode instead.
 
-  2. The subsequent memcpy()/copy_from_user() into
-     page_address(dst_tpage) + (d_off & 15) of 'len' bytes overflows
-     by up to 15 bytes under the same condition.
+Gate the compressed cache inode case on COMPRESS_CACHE, matching
+f2fs_init_compress_inode(). With compress_cache disabled, ino ==
+max_nid now follows the normal inode path and is rejected as an
+out-of-range nid.
 
-Trigger example: s_off = 0, d_off = 1, debug.len = PAGE_SIZE -
-the PSP is instructed to write round_up(4097, 16) = 4112 bytes to
-a 4096-byte buffer.
-
-Fix by also bounding len by (PAGE_SIZE - d_off), the same check that
-sev_send_update_data() already performs for its single-page guest
-region.
-
- ==================================================================
- BUG: KASAN: slab-use-after-free in sev_dbg_crypt+0x993/0xd10 [kvm_amd]
- Write of size 4095 at addr ff110062293bb009 by task sev_dbg_test/228214
-
- CPU: 96 UID: 0 PID: 228214 Comm: sev_dbg_test Tainted: G     U  W           7.0.0-smp--5ce9b0c48211-dbg #156 PREEMPTLAZY
- Tainted: [U]=USER, [W]=WARN
- Hardware name: Google Astoria/astoria, BIOS 0.20250817.1-0 08/25/2025
- Call Trace:
-  <TASK>
-  dump_stack_lvl+0x54/0x70
-  print_report+0xbc/0x260
-  kasan_report+0xa2/0xd0
-  kasan_check_range+0x25f/0x2c0
-  __asan_memcpy+0x40/0x70
-  sev_dbg_crypt+0x993/0xd10 [kvm_amd]
-  sev_mem_enc_ioctl+0x33c/0x450 [kvm_amd]
-  kvm_vm_ioctl+0x65d/0x6d0 [kvm]
-  __se_sys_ioctl+0xb2/0x100
-  do_syscall_64+0xe8/0x870
-  entry_SYSCALL_64_after_hwframe+0x4b/0x53
-  </TASK>
-
- The buggy address belongs to the physical page:
- page: refcount:1 mapcount:0 mapping:0000000000000000 index:0x7fe72b6a0 pfn:0x62293bb
- memcg:ff11000112827d82
- flags: 0x1400000000000000(node=1|zone=1)
- raw: 1400000000000000 0000000000000000 dead000000000122 0000000000000000
- raw: 00000007fe72b6a0 0000000000000000 00000001ffffffff ff11000112827d82
- page dumped because: kasan: bad access detected
-
- Memory state around the buggy address:
-  ff110062293bbf00: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-  ff110062293bbf80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
- >ff110062293bc000: fa fb fb fb fb fb fb fb fc fc fc fc fc fc fc fc
-                    ^
-  ff110062293bc080: fa fb fb fb fb fb fb fb fc fc fc fc fc fc fc fc
-  ff110062293bc100: fa fb fb fb fb fb fb fb fc fc fc fc fc fc fc fc
- ==================================================================
- Disabling lock debugging due to kernel taint
-
-Fixes: 24f41fb23a39 ("KVM: SVM: Add support for SEV DEBUG_DECRYPT command")
-Fixes: 7d1594f5d94b ("KVM: SVM: Add support for SEV DEBUG_ENCRYPT command")
-Cc: stable@vger.kernel.org
-Signed-off-by: Ashutosh Desai <ashutoshdesai993@gmail.com>
-[sean: add sample KASAN splat, Fixes, and stable@]
-Link: https://patch.msgid.link/20260501203537.2120074-2-seanjc@google.com
-Signed-off-by: Sean Christopherson <seanjc@google.com>
+Cc: stable@kernel.org
+Fixes: 6ce19aff0b8c ("f2fs: compress: add compress_inode to cache compressed blocks")
+Signed-off-by: Wenjie Qi <qiwenjie@xiaomi.com>
+Reviewed-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kvm/svm/sev.c |    1 +
- 1 file changed, 1 insertion(+)
+ fs/f2fs/inode.c |    9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
---- a/arch/x86/kvm/svm/sev.c
-+++ b/arch/x86/kvm/svm/sev.c
-@@ -1004,6 +1004,7 @@ static int sev_dbg_crypt(struct kvm *kvm
- 		s_off = vaddr & ~PAGE_MASK;
- 		d_off = dst_vaddr & ~PAGE_MASK;
- 		len = min_t(size_t, (PAGE_SIZE - s_off), size);
-+		len = min_t(size_t, len, PAGE_SIZE - d_off);
+--- a/fs/f2fs/inode.c
++++ b/fs/f2fs/inode.c
+@@ -555,8 +555,13 @@ static int do_read_inode(struct inode *i
  
- 		if (dec)
- 			ret = __sev_dbg_decrypt_user(kvm,
+ static bool is_meta_ino(struct f2fs_sb_info *sbi, unsigned int ino)
+ {
+-	return ino == F2FS_NODE_INO(sbi) || ino == F2FS_META_INO(sbi) ||
+-		ino == F2FS_COMPRESS_INO(sbi);
++	if (ino == F2FS_NODE_INO(sbi) || ino == F2FS_META_INO(sbi))
++		return true;
++#ifdef CONFIG_F2FS_FS_COMPRESSION
++	if (test_opt(sbi, COMPRESS_CACHE) && ino == F2FS_COMPRESS_INO(sbi))
++		return true;
++#endif
++	return false;
+ }
+ 
+ struct inode *f2fs_iget(struct super_block *sb, unsigned long ino)
 
 
 
