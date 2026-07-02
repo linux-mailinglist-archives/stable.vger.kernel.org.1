@@ -1,61 +1,74 @@
-Return-Path: <stable+bounces-270688-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-271208-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id L1riImySRmoiYwsAu9opvQ
-	(envelope-from <stable+bounces-270688-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:31:40 +0200
+	id WickKIOZRmryZgsAu9opvQ
+	(envelope-from <stable+bounces-271208-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:01:55 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id EBB4B6FA34E
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:31:39 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C3DE6FAE05
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:01:55 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=D1jMZTu9;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-270688-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-270688-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=oksv6a18;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-271208-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-271208-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id F055B301E77C
-	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:31:38 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 40332310FEC6
+	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:50:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2CD56346A18;
-	Thu,  2 Jul 2026 16:26:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1E00396B6F;
+	Thu,  2 Jul 2026 16:49:08 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3DEE37A84C;
-	Thu,  2 Jul 2026 16:26:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 512AD26F46F;
+	Thu,  2 Jul 2026 16:49:07 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783009591; cv=none; b=DbFURfgw7/K93ICYx5rX8WGArYJaQN8DQhUQJwy/oudsAFje35XyVjcRyWpVo6ChgS8R1GSwxl98/2aZseYZs5IERCkuK4+20oFwzz9yozTOGs/L7OHS/4LJI45ASWUiVjYbxjG26XUEHb2FmeE2oYITfG3CXU0CfG4Xi9mLBzk=
+	t=1783010948; cv=none; b=EZaNCB7aYX3FyPWeLs2jEJLa3DgQjSuOTxUOSN9CK2zFy1o/gN0IyIZUjbpkWx8UxstCNhM4sr9HVnFOE7PSdE8BYzpMC7hO9wQLmRYSU+c1qucqYBm3kyatMtVatzNnQRbfI149tVHZ9GxWNCidypmhDLzDxxvx49ZuSnLKLIs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783009591; c=relaxed/simple;
-	bh=lduNFFY9V800NeNLy56p0rwwiXG9hRxL0sMwQzu+CeI=;
+	s=arc-20240116; t=1783010948; c=relaxed/simple;
+	bh=Rx1MTjuWg9OmGTaLnaFx4VKCDmpNcy1vPjq4GlpVvsk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ruu1M/b+ZwV6pKKfeQJcKXHRQCeur8VpoEMkhacZmXJj/+Hkk1x3fHW9QOs3FEsxzz+m+WA2gPVTtiaREcfb6OphxTevZ35QKEzv6ZkiGFHGtan/5SHzRpvd3fFLOClvTW6ZLmWrJkaaWH2YBeKGN1xDEDarKGYGiidDfA5rkPM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D1jMZTu9; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E69461F00A3A;
-	Thu,  2 Jul 2026 16:26:28 +0000 (UTC)
+	 MIME-Version; b=JVhjNr6w+IBld+lcd2PeckakEcCh+Yc0MdYQYY/9AmJ15mDGXNM3wqkbOl478Y+5joLILJoTgJSxIbQPjbGfn/Bz/d32jmBRsG/c8hNBE9r0noPw0Uz5wyXgaGAFeWYseAm6z7UjtPD+zfe1CVoN+tOMIk8q9gtWEz9L8AcqtBo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oksv6a18; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D2741F000E9;
+	Thu,  2 Jul 2026 16:49:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1783009589;
-	bh=GsJp4QIweRXqok4ZwMfIrMp04CtLbS+86Ewkqi0QUDY=;
+	s=korg; t=1783010947;
+	bh=7UwDVsrUq+tC8XLS1Ci5nwu8+qxWaw6VxjgK3g2GPCY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=D1jMZTu9toJwXL06K2DVFjHgNa7inY3YbzmpqJGriKjotYX9e/zgWsPa6+u7Lj89w
-	 Ne5DE6aICMXi0w7Ug9RrzePRCL4+XsYqU4mg1rk/Xm+AXy4pULeHyMWZJYcXrTyHVd
-	 40pxCDxEw8AUjiaXDiTL61OMDv5ph90PCY56JEpw=
+	b=oksv6a1831kXVWgpOLXwsL/nN2oGQhjAUv2o968HhRJAIeMMsFk20ElZyYEzf8dDu
+	 mwDSk1cshqZSxvEQuPb4PKt3l7n+ZriNg6Dzn5gYDRJTYf37uPclhVQTtDtk4F/+IZ
+	 FCCph3RJUFI8waMmHdfQ9PvDfIDBK6mFqCwIQKEE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jiacheng Shi <billsjc@sjtu.edu.cn>,
-	Alex Williamson <alex.williamson@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 13/95] vfio/iommu_type1: replace kfree with kvfree
+	bpf <bpf@vger.kernel.org>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	Masahiro Yamada <masahiroy@kernel.org>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Nicolas Schier <nicolas@fjasle.eu>,
+	Zheng Yejian <zhengyejian1@huawei.com>,
+	Martin Kelly <martin.kelly@crowdstrike.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Josh Poimboeuf <jpoimboe@redhat.com>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
+	Andrey Grodzovsky <andrey.grodzovsky@crowdstrike.com>
+Subject: [PATCH 6.6 055/175] scripts/sorttable: Use uint64_t for mcount sorting
 Date: Thu,  2 Jul 2026 18:19:16 +0200
-Message-ID: <20260702155109.485592152@linuxfoundation.org>
+Message-ID: <20260702155116.953297169@linuxfoundation.org>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260702155109.196223802@linuxfoundation.org>
-References: <20260702155109.196223802@linuxfoundation.org>
+In-Reply-To: <20260702155115.766838875@linuxfoundation.org>
+References: <20260702155115.766838875@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,22 +85,22 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-270688-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-271208-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[19];
 	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:billsjc@sjtu.edu.cn,m:alex.williamson@redhat.com,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:bpf@vger.kernel.org,m:mhiramat@kernel.org,m:mark.rutland@arm.com,m:mathieu.desnoyers@efficios.com,m:akpm@linux-foundation.org,m:peterz@infradead.org,m:torvalds@linux-foundation.org,m:masahiroy@kernel.org,m:nathan@kernel.org,m:nicolas@fjasle.eu,m:zhengyejian1@huawei.com,m:martin.kelly@crowdstrike.com,m:christophe.leroy@csgroup.eu,m:jpoimboe@redhat.com,m:rostedt@goodmis.org,m:andrey.grodzovsky@crowdstrike.com,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
@@ -98,47 +111,143 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: EBB4B6FA34E
+X-Rspamd-Queue-Id: 5C3DE6FAE05
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiacheng Shi <billsjc@sjtu.edu.cn>
+From: Steven Rostedt <rostedt@goodmis.org>
 
-[ Upstream commit 2bed2ced40c97b8540ff38df0149e8ecb2bf4c65 ]
+[ Upstream commit 1b649e6ab8dc9188d82c64069493afe66ca0edad ]
 
-Variables allocated by kvzalloc should not be freed by kfree.
-Because they may be allocated by vmalloc.
-So we replace kfree with kvfree here.
+The mcount sorting defines uint_t to uint64_t on 64bit architectures and
+uint32_t on 32bit architectures. It can work with just using uint64_t as
+that will hold the values of both, and they are not used to point into the
+ELF file.
 
-Fixes: d6a4c185660c ("vfio iommu: Implementation of ioctl for dirty pages tracking")
-Signed-off-by: Jiacheng Shi <billsjc@sjtu.edu.cn>
-Link: https://lore.kernel.org/r/20211212091600.2560-1-billsjc@sjtu.edu.cn
-Signed-off-by: Alex Williamson <alex.williamson@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+sizeof(uint_t) is used for defining the size of the mcount_loc section.
+Instead of using a type, define long_size and use that instead. This will
+allow the header code to be moved into the C file as generic functions and
+not need to include sorttable.h twice, once for 64bit and once for 32bit.
+
+Cc: bpf <bpf@vger.kernel.org>
+Cc: Masami Hiramatsu <mhiramat@kernel.org>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Masahiro Yamada <masahiroy@kernel.org>
+Cc: Nathan Chancellor <nathan@kernel.org>
+Cc: Nicolas Schier <nicolas@fjasle.eu>
+Cc: Zheng Yejian <zhengyejian1@huawei.com>
+Cc: Martin  Kelly <martin.kelly@crowdstrike.com>
+Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
+Cc: Josh Poimboeuf <jpoimboe@redhat.com>
+Link: https://lore.kernel.org/20250105162346.373528925@goodmis.org
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: Andrey Grodzovsky <andrey.grodzovsky@crowdstrike.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/vfio/vfio_iommu_type1.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ scripts/sorttable.h |   22 +++++++++++-----------
+ 1 file changed, 11 insertions(+), 11 deletions(-)
 
-diff --git a/drivers/vfio/vfio_iommu_type1.c b/drivers/vfio/vfio_iommu_type1.c
-index 6a89bbec738f62..2bc79eee63d524 100644
---- a/drivers/vfio/vfio_iommu_type1.c
-+++ b/drivers/vfio/vfio_iommu_type1.c
-@@ -262,7 +262,7 @@ static int vfio_dma_bitmap_alloc(struct vfio_dma *dma, size_t pgsize)
+--- a/scripts/sorttable.h
++++ b/scripts/sorttable.h
+@@ -23,7 +23,6 @@
+ #undef sort_mcount_loc
+ #undef elf_mcount_loc
+ #undef do_sort
+-#undef uint_t
+ #undef ehdr_shoff
+ #undef ehdr_shentsize
+ #undef ehdr_shstrndx
+@@ -39,6 +38,7 @@
+ #undef sym_name
+ #undef sym_value
+ #undef sym_shndx
++#undef long_size
  
- static void vfio_dma_bitmap_free(struct vfio_dma *dma)
+ #ifdef SORTTABLE_64
+ # define extable_ent_size	16
+@@ -47,7 +47,6 @@
+ # define sort_mcount_loc	sort_mcount_loc_64
+ # define elf_mcount_loc		elf_mcount_loc_64
+ # define do_sort		do_sort_64
+-# define uint_t			uint64_t
+ # define ehdr_shoff		ehdr64_shoff
+ # define ehdr_shentsize		ehdr64_shentsize
+ # define ehdr_shstrndx		ehdr64_shstrndx
+@@ -63,6 +62,7 @@
+ # define sym_name		sym64_name
+ # define sym_value		sym64_value
+ # define sym_shndx		sym64_shndx
++# define long_size		8
+ #else
+ # define extable_ent_size	8
+ # define compare_extable	compare_extable_32
+@@ -70,7 +70,6 @@
+ # define sort_mcount_loc	sort_mcount_loc_32
+ # define elf_mcount_loc		elf_mcount_loc_32
+ # define do_sort		do_sort_32
+-# define uint_t			uint32_t
+ # define ehdr_shoff		ehdr32_shoff
+ # define ehdr_shentsize		ehdr32_shentsize
+ # define ehdr_shstrndx		ehdr32_shstrndx
+@@ -86,6 +85,7 @@
+ # define sym_name		sym32_name
+ # define sym_value		sym32_value
+ # define sym_shndx		sym32_shndx
++# define long_size		4
+ #endif
+ 
+ #if defined(SORTTABLE_64) && defined(UNWINDER_ORC_ENABLED)
+@@ -193,25 +193,25 @@ pthread_t mcount_sort_thread;
+ struct elf_mcount_loc {
+ 	Elf_Ehdr *ehdr;
+ 	Elf_Shdr *init_data_sec;
+-	uint_t start_mcount_loc;
+-	uint_t stop_mcount_loc;
++	uint64_t start_mcount_loc;
++	uint64_t stop_mcount_loc;
+ };
+ 
+ /* Sort the addresses stored between __start_mcount_loc to __stop_mcount_loc in vmlinux */
+ static void *sort_mcount_loc(void *arg)
  {
--	kfree(dma->bitmap);
-+	kvfree(dma->bitmap);
- 	dma->bitmap = NULL;
+ 	struct elf_mcount_loc *emloc = (struct elf_mcount_loc *)arg;
+-	uint_t offset = emloc->start_mcount_loc - shdr_addr(emloc->init_data_sec)
++	uint64_t offset = emloc->start_mcount_loc - shdr_addr(emloc->init_data_sec)
+ 					+ shdr_offset(emloc->init_data_sec);
+-	uint_t count = emloc->stop_mcount_loc - emloc->start_mcount_loc;
++	uint64_t count = emloc->stop_mcount_loc - emloc->start_mcount_loc;
+ 	unsigned char *start_loc = (void *)emloc->ehdr + offset;
+ 
+-	qsort(start_loc, count/sizeof(uint_t), sizeof(uint_t), compare_extable);
++	qsort(start_loc, count/long_size, long_size, compare_extable);
+ 	return NULL;
  }
  
--- 
-2.53.0
-
+ /* Get the address of __start_mcount_loc and __stop_mcount_loc in System.map */
+-static void get_mcount_loc(uint_t *_start, uint_t *_stop)
++static void get_mcount_loc(uint64_t *_start, uint64_t *_stop)
+ {
+ 	FILE *file_start, *file_stop;
+ 	char start_buff[20];
+@@ -277,8 +277,8 @@ static int do_sort(Elf_Ehdr *ehdr,
+ 	unsigned int shstrndx;
+ #ifdef MCOUNT_SORT_ENABLED
+ 	struct elf_mcount_loc mstruct = {0};
+-	uint_t _start_mcount_loc = 0;
+-	uint_t _stop_mcount_loc = 0;
++	uint64_t _start_mcount_loc = 0;
++	uint64_t _stop_mcount_loc = 0;
+ #endif
+ #if defined(SORTTABLE_64) && defined(UNWINDER_ORC_ENABLED)
+ 	unsigned int orc_ip_size = 0;
 
 
 
