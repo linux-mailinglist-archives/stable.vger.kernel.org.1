@@ -1,70 +1,62 @@
-Return-Path: <stable+bounces-270985-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-271147-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 1f5kJVmWRmoiZQsAu9opvQ
-	(envelope-from <stable+bounces-270985-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:48:25 +0200
+	id AKmVCyyjRmoDawsAu9opvQ
+	(envelope-from <stable+bounces-271147-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:43:08 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 52DF16FA92C
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:48:25 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 767D06FB928
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:43:07 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=vorodAwY;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-270985-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-270985-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=CvB61YGI;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-271147-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-271147-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 05C5D306A990
-	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:40:54 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 54C013320DDB
+	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:48:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0DA5A35E1AD;
-	Thu,  2 Jul 2026 16:39:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 00E7E30C15A;
+	Thu,  2 Jul 2026 16:46:34 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4A2F31AAAF;
-	Thu,  2 Jul 2026 16:39:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2A1130EF95;
+	Thu,  2 Jul 2026 16:46:32 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783010367; cv=none; b=eqUHWoYrHjhbHa/QvkNOPiKmPA6ocyCtAK0nemHh/Nr39wtkGBxhYy4iyt3ZoEdI6cAW/VluigTfD9vVGinNynC+9Oy8vTrerzy9PaDx6vmv+eXoSLaphwUPUEhUG+tIQ9Y23uk/jxJdoibDP8hnxjd/ZMhnExXNDq56mUSco3Y=
+	t=1783010793; cv=none; b=rZifeZeFUWmqO3VGiy6G0HDBwJ4u/RbAEl82ndaBABsw2+PuVdoU67CWfxf0+9Lg7BMNe/jHlho3sz6fg8BlVXlG4WSEmDq5UMnPsnNHTZVs/0uQlPfOEbpSwcnH6oDS0vDFkLkTwd90xn+IVAbr/Y17Uq93FQ7c+TUCV79HgC0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783010367; c=relaxed/simple;
-	bh=6dxqgFOl1ggQ/9TqfeNW9ikyWnrtLpZqKGk+3qOTI6o=;
+	s=arc-20240116; t=1783010793; c=relaxed/simple;
+	bh=DwU47u6+syl/qTpOx5TFuDahQUQwcDG7W+/gOJqWM1E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Bd+1FwBZx18ZSzMeV3SMOZWQ4YMpt007Rkw6gj2/PDL08XX4Hzv3e9aYONqCY7fk4Hv16QeNTIL2VBLyqNAqU2XK9WgEUnUE5xK62c/LjPOc1PPAn5L0h5rYCA1MUd21as9U8MtDfPsfG30sTjfWXBVrdiFmAus1mmUNd7UXs98=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vorodAwY; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C34FC1F000E9;
-	Thu,  2 Jul 2026 16:39:25 +0000 (UTC)
+	 MIME-Version; b=DW6fa6dZonxvIv1jBsG2mrztosG/gasgsh3d7e2Cg6MSuAVKDQRoHxCPfv93qQfoDxSZCK5UlpfAVqNxeXoQZa752tCmVAuyY+BIFuV69mHVNdMjQBRZBwkOeL5KvfdCNpX8QkNkSxhMC9IIUC1wBCex2wSeBCE7ZTrqZcERxoM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CvB61YGI; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 251361F000E9;
+	Thu,  2 Jul 2026 16:46:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1783010366;
-	bh=E2yfSHVae7aiiHoL9+M0NBv4//pSTtTtP6XsyKtskR0=;
+	s=korg; t=1783010792;
+	bh=Sd3/2wsaq/YQeSweVNPooQf198Tr/P4+GRLhtvnicJY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=vorodAwYQctjPgmWN9dl3kF86GpiCMt2HsKivOvz0CmRQACYgDSlxVIaeiJOQ9Dge
-	 5WkdEgYjrVevZB42KjsI/V5r+GnTER+izu2r434sFry8yjwz3YoaxJ4azSvQwZfAMG
-	 apeyeO1e0POPG37zRoLUniC6Hho6RH8NIdfG4eMo=
+	b=CvB61YGIoApZbAQapkWObmeFe7dJ79VeEfWIP+OCKiBY/E8vyRkqH30i8J4ozMcy1
+	 jPBAq9AkBRWkmwCYoySj45i+8FJI2ERZa3XqWJO3YswKvZBPQluM1EPjdzVIiX8mQm
+	 yhRYtAz9oS7lKaNniuStAj/KSQjre3IBgL4yeGqw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Masahiro Yamada <masahiroy@kernel.org>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>,
-	"Arnd Bergmann" <arnd@arndb.de>,
-	Mark Brown <broonie@kernel.org>,
-	Nathan Chancellor <nathan@kernel.org>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
-	Andrey Grodzovsky <andrey.grodzovsky@crowdstrike.com>
-Subject: [PATCH 6.12 082/204] scripts/sorttable: Allow matches to functions before function entry
+	Kuniyuki Iwashima <kuniyu@amazon.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 038/175] phonet: Pass net and ifindex to phonet_address_notify().
 Date: Thu,  2 Jul 2026 18:18:59 +0200
-Message-ID: <20260702155120.384456088@linuxfoundation.org>
+Message-ID: <20260702155116.600128183@linuxfoundation.org>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260702155118.667618796@linuxfoundation.org>
-References: <20260702155118.667618796@linuxfoundation.org>
+In-Reply-To: <20260702155115.766838875@linuxfoundation.org>
+References: <20260702155115.766838875@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -78,104 +70,149 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-270985-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[15];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:mhiramat@kernel.org,m:mark.rutland@arm.com,m:mathieu.desnoyers@efficios.com,m:akpm@linux-foundation.org,m:masahiroy@kernel.org,m:catalin.marinas@arm.com,m:will@kernel.org,m:arnd@arndb.de,m:broonie@kernel.org,m:nathan@kernel.org,m:rostedt@goodmis.org,m:andrey.grodzovsky@crowdstrike.com,s:lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-271147-lists,stable=lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:kuniyu@amazon.com,m:edumazet@google.com,m:pabeni@redhat.com,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,arndb.de:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,crowdstrike.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,efficios.com:email,goodmis.org:email,arm.com:email,linux-foundation.org:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 52DF16FA92C
+X-Rspamd-Queue-Id: 767D06FB928
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Steven Rostedt <rostedt@goodmis.org>
+From: Kuniyuki Iwashima <kuniyu@amazon.com>
 
-[ Upstream commit dc208c69c033d3caba0509da1ae065d2b5ff165f ]
+[ Upstream commit 68ed5c38b512b734caf3da1f87db4a99fcfe3002 ]
 
-ARM 64 uses -fpatchable-function-entry=4,2 which adds padding before the
-function and the addresses in the mcount_loc point there instead of the
-function entry that is returned by nm. In order to find a function from nm
-to make sure it's not an unused weak function, the entries in the
-mcount_loc section needs to match the entries from nm. Since it can be an
-instruction before the entry, add a before_func variable that ARM 64 can
-set to 8, and if the mcount_loc entry is within 8 bytes of the nm function
-entry, then it will be considered a match.
+Currently, phonet_address_notify() fetches netns and ifindex from dev.
 
-Cc: Masami Hiramatsu <mhiramat@kernel.org>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Cc: Masahiro Yamada <masahiroy@kernel.org>
-Cc: Catalin Marinas <catalin.marinas@arm.com>
-Cc: Will Deacon <will@kernel.org>
-Cc: "Arnd Bergmann" <arnd@arndb.de>
-Cc: Mark Brown <broonie@kernel.org>
-Link: https://lore.kernel.org/20250225182054.815536219@goodmis.org
-Fixes: ef378c3b82338 ("scripts/sorttable: Zero out weak functions in mcount_loc table")
-Tested-by: Nathan Chancellor <nathan@kernel.org>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-Signed-off-by: Andrey Grodzovsky <andrey.grodzovsky@crowdstrike.com>
+Once addr_doit() is converted to RCU, phonet_address_notify() will be
+called outside of RCU due to GFP_KERNEL, and dev will be unavailable
+there.
+
+Let's pass net and ifindex to phonet_address_notify().
+
+Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Stable-dep-of: 71de0177b28d ("net: phonet: free phonet_device after RCU grace period")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- scripts/sorttable.c |    7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ include/net/phonet/pn_dev.h |    2 +-
+ net/phonet/pn_dev.c         |   10 +++++++---
+ net/phonet/pn_netlink.c     |   12 ++++++------
+ 3 files changed, 14 insertions(+), 10 deletions(-)
 
---- a/scripts/sorttable.c
-+++ b/scripts/sorttable.c
-@@ -611,13 +611,16 @@ static int add_field(uint64_t addr, uint
+--- a/include/net/phonet/pn_dev.h
++++ b/include/net/phonet/pn_dev.h
+@@ -38,7 +38,7 @@ int phonet_address_add(struct net_device
+ int phonet_address_del(struct net_device *dev, u8 addr);
+ u8 phonet_address_get(struct net_device *dev, u8 addr);
+ int phonet_address_lookup(struct net *net, u8 addr);
+-void phonet_address_notify(int event, struct net_device *dev, u8 addr);
++void phonet_address_notify(struct net *net, int event, u32 ifindex, u8 addr);
+ 
+ int phonet_route_add(struct net_device *dev, u8 daddr);
+ int phonet_route_del(struct net_device *dev, u8 daddr);
+--- a/net/phonet/pn_dev.c
++++ b/net/phonet/pn_dev.c
+@@ -98,10 +98,13 @@ static void phonet_device_destroy(struct
+ 	mutex_unlock(&pndevs->lock);
+ 
+ 	if (pnd) {
++		struct net *net = dev_net(dev);
++		u32 ifindex = dev->ifindex;
+ 		u8 addr;
+ 
+ 		for_each_set_bit(addr, pnd->addrs, 64)
+-			phonet_address_notify(RTM_DELADDR, dev, addr);
++			phonet_address_notify(net, RTM_DELADDR, ifindex, addr);
++
+ 		kfree(pnd);
+ 	}
+ }
+@@ -244,8 +247,9 @@ static int phonet_device_autoconf(struct
+ 	ret = phonet_address_add(dev, req.ifr_phonet_autoconf.device);
+ 	if (ret)
+ 		return ret;
+-	phonet_address_notify(RTM_NEWADDR, dev,
+-				req.ifr_phonet_autoconf.device);
++
++	phonet_address_notify(dev_net(dev), RTM_NEWADDR, dev->ifindex,
++			      req.ifr_phonet_autoconf.device);
  	return 0;
  }
  
-+/* Used for when mcount/fentry is before the function entry */
-+static int before_func;
-+
- /* Only return match if the address lies inside the function size */
- static int cmp_func_addr(const void *K, const void *A)
- {
- 	uint64_t key = *(const uint64_t *)K;
- 	const struct func_info *a = A;
+--- a/net/phonet/pn_netlink.c
++++ b/net/phonet/pn_netlink.c
+@@ -22,7 +22,7 @@
+ static int fill_addr(struct sk_buff *skb, u32 ifindex, u8 addr,
+ 		     u32 portid, u32 seq, int event);
  
--	if (key < a->addr)
-+	if (key + before_func < a->addr)
- 		return -1;
- 	return key >= a->addr + a->size;
+-void phonet_address_notify(int event, struct net_device *dev, u8 addr)
++void phonet_address_notify(struct net *net, int event, u32 ifindex, u8 addr)
+ {
+ 	struct sk_buff *skb;
+ 	int err = -ENOBUFS;
+@@ -32,17 +32,17 @@ void phonet_address_notify(int event, st
+ 	if (skb == NULL)
+ 		goto errout;
+ 
+-	err = fill_addr(skb, dev->ifindex, addr, 0, 0, event);
++	err = fill_addr(skb, ifindex, addr, 0, 0, event);
+ 	if (err < 0) {
+ 		WARN_ON(err == -EMSGSIZE);
+ 		kfree_skb(skb);
+ 		goto errout;
+ 	}
+-	rtnl_notify(skb, dev_net(dev), 0,
+-		    RTNLGRP_PHONET_IFADDR, NULL, GFP_KERNEL);
++
++	rtnl_notify(skb, net, 0, RTNLGRP_PHONET_IFADDR, NULL, GFP_KERNEL);
+ 	return;
+ errout:
+-	rtnl_set_sk_err(dev_net(dev), RTNLGRP_PHONET_IFADDR, err);
++	rtnl_set_sk_err(net, RTNLGRP_PHONET_IFADDR, err);
  }
-@@ -1253,6 +1256,8 @@ static int do_file(char const *const fna
- #ifdef MCOUNT_SORT_ENABLED
- 		sort_reloc = true;
- 		rela_type = 0x403;
-+		/* arm64 uses patchable function entry placing before function */
-+		before_func = 8;
- #endif
- 		/* fallthrough */
- 	case EM_386:
+ 
+ static const struct nla_policy ifa_phonet_policy[IFA_MAX+1] = {
+@@ -89,7 +89,7 @@ static int addr_doit(struct sk_buff *skb
+ 	else
+ 		err = phonet_address_del(dev, pnaddr);
+ 	if (!err)
+-		phonet_address_notify(nlh->nlmsg_type, dev, pnaddr);
++		phonet_address_notify(net, nlh->nlmsg_type, ifm->ifa_index, pnaddr);
+ 	return err;
+ }
+ 
 
 
 
