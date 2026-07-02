@@ -1,75 +1,62 @@
-Return-Path: <stable+bounces-271015-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-271133-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id QHbcDuWVRmrdZAsAu9opvQ
-	(envelope-from <stable+bounces-271015-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:46:29 +0200
+	id 8PZcOhijRmr9agsAu9opvQ
+	(envelope-from <stable+bounces-271133-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:42:48 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9BBC66FA85B
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:46:28 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 664736FB90F
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:42:48 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="ecozJLG/";
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-271015-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-271015-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="DNyKYe/j";
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-271133-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-271133-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id DD06C304C92D
-	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:41:58 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 54C16318618C
+	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:47:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2972F35E1A5;
-	Thu,  2 Jul 2026 16:40:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD37E33ADAD;
+	Thu,  2 Jul 2026 16:45:57 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6F083491D0;
-	Thu,  2 Jul 2026 16:40:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D481C2DC78C;
+	Thu,  2 Jul 2026 16:45:55 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783010448; cv=none; b=Op+W6H10Hd9LXUQxZBKhCjiB6j2ntzHqQKyzqYYDLTnkzBc+2p2NUr4dliwp6SCaVivn8WNw8yWUpd+3vpGhyqnNDFFt5/zs0Cs9841L/Vr4OYlKRLmzZ9Pq2bzXAXNqa9WO+UwbKqCZ59pS0Ek3GmMRd3bkQx/7k3bGQUhxylU=
+	t=1783010757; cv=none; b=OMGS3/Q16Rks6qv2+IqSv+laG7biuTp4e8kfe7AQPvAVYQh9G6Q9yQl1rgfd4PsOM3flLGeR809BGYEpVrugBoliioInQ74nLA44Vg4RlFISJQVrpHwGl8bgz1AkQc4nIbA65xeOP3/G8k8znlVy66yGjA3oygFYTJegFdHWchk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783010448; c=relaxed/simple;
-	bh=If7TqujQN/FMNMO+LnN1yw7F76EmiG04Uy5mIyFXwDc=;
+	s=arc-20240116; t=1783010757; c=relaxed/simple;
+	bh=J66hw/wniODnySAWnAjrQ5ZFxIOOShWQriq2djhbHc8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Xr7VHj9oGxy3lF8bp5cCGmGkTwMmO/2kIcvMeBAL4/YDHX77wd28DbSEQQGFXO/pxQvbiYNvahxSIpmSWboB8Bg0SYdrbHNJlZRCSBGTnlOABAC7t0gERMmTI1pI4MFcpuZGQEv50sURARdNkW3F/DJXzm7i3MQtg+FxTm7wYV4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ecozJLG/; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB7301F000E9;
-	Thu,  2 Jul 2026 16:40:44 +0000 (UTC)
+	 MIME-Version; b=K3G0jw3tiUXcj5usWQD0ft92MouRHns+vqvGzxDNHR5YB2v63mTEEM3iMLhzSjVw/9yjh6K2qFcHp4pNkE4BHV7NBsWiIR/gORQm8Pvb+WV4QvcZZTF57JihJ45pzx8kY/wxyxt87JMzMo2kLOfc7Tw+TmAJZg/3TmWEJyV02Ts=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DNyKYe/j; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46D9A1F000E9;
+	Thu,  2 Jul 2026 16:45:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1783010445;
-	bh=kHfHSMHKeinNegu6fZg+bLvSXqtukXHRb8HHHlV70XE=;
+	s=korg; t=1783010755;
+	bh=X3KobY/P4FMn5DkUauV98RBLLMVd4NDLn17shy8qxbE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=ecozJLG/l99xzftcYmcwm+HdrtW3sAO70dtYEDGfad9TSFpTFlw2u4oqSKwsvqW4Y
-	 yg9qYNRWJw9V22oFlSRPPr/GG6yUL85Xf3pxFSEgDuYesKKJ34aEo9JzCHk9dpoxr4
-	 wky6KCHrtXAOzCto0A9KLDQm6A4r1ICAGSg4Fr/k=
+	b=DNyKYe/jdXG0qwbd3GR8qBHqli5lCCclRkL7vf+LwvTLCnF4y8O0SdaOFr0YL2QDD
+	 E15qXGIUZAOWMJaT8qGazEeymV6ft1GA/eGDW8RmVO/mBoU19Xsb1kV9eIMFpWo9A+
+	 fgecL653YHGqs5xN1u5Tpn5FiadBl4sVjcNZT/kI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	bpf <bpf@vger.kernel.org>,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	Masahiro Yamada <masahiroy@kernel.org>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Nicolas Schier <nicolas@fjasle.eu>,
-	Zheng Yejian <zhengyejian1@huawei.com>,
-	Martin Kelly <martin.kelly@crowdstrike.com>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Josh Poimboeuf <jpoimboe@redhat.com>,
-	Stephen Rothwell <sfr@canb.auug.org.au>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
-	Andrey Grodzovsky <andrey.grodzovsky@crowdstrike.com>
-Subject: [PATCH 6.12 069/204] scripts/sorttable: Move code from sorttable.h into sorttable.c
+	Eduard Zingerman <eddyz87@gmail.com>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	Zhenzhong Wu <jt26wzz@gmail.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 025/175] bpf: Remove mark_precise_scalar_ids()
 Date: Thu,  2 Jul 2026 18:18:46 +0200
-Message-ID: <20260702155120.110573875@linuxfoundation.org>
+Message-ID: <20260702155116.320454951@linuxfoundation.org>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260702155118.667618796@linuxfoundation.org>
-References: <20260702155118.667618796@linuxfoundation.org>
+In-Reply-To: <20260702155115.766838875@linuxfoundation.org>
+References: <20260702155115.766838875@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -86,1083 +73,509 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-271015-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[20];
 	FORWARDED(0.00)[lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:bpf@vger.kernel.org,m:mhiramat@kernel.org,m:mark.rutland@arm.com,m:mathieu.desnoyers@efficios.com,m:akpm@linux-foundation.org,m:peterz@infradead.org,m:torvalds@linux-foundation.org,m:masahiroy@kernel.org,m:nathan@kernel.org,m:nicolas@fjasle.eu,m:zhengyejian1@huawei.com,m:martin.kelly@crowdstrike.com,m:christophe.leroy@csgroup.eu,m:jpoimboe@redhat.com,m:sfr@canb.auug.org.au,m:rostedt@goodmis.org,m:andrey.grodzovsky@crowdstrike.com,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-271133-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:eddyz87@gmail.com,m:andrii@kernel.org,m:jt26wzz@gmail.com,m:sashal@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	TO_DN_SOME(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp,r2.id:url,r0.id:url,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 9BBC66FA85B
+X-Rspamd-Queue-Id: 664736FB90F
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Steven Rostedt <rostedt@goodmis.org>
+From: Eduard Zingerman <eddyz87@gmail.com>
 
-[ Upstream commit 58d87678a0f46c6120904b4326aaf5ebf4454c69 ]
+[ Upstream commit 842edb5507a1038e009d27e69d13b94b6f085763 ]
 
-Instead of having the main code live in a header file and included twice
-with MACROs that define the Elf structures for 64 bit or 32 bit, move the
-code in the C file now that the Elf structures are defined in a union that
-has both. All accesses to the Elf structure fields are done through helper
-function pointers. If the file being parsed if for a 64 bit architecture,
-all the helper functions point to the 64 bit versions to retrieve the Elf
-fields. The same is true if the architecture is 32 bit, where the function
-pointers will point to the 32 bit helper functions.
+Function mark_precise_scalar_ids() is superseded by
+bt_sync_linked_regs() and equal scalars tracking in jump history.
+mark_precise_scalar_ids() propagates precision over registers sharing
+same ID on parent/child state boundaries, while jump history records
+allow bt_sync_linked_regs() to propagate same information with
+instruction level granularity, which is strictly more precise.
 
-Note, when the value of a field can be either 32 bit or 64 bit, a 64 bit
-is always returned, as it works for the 32 bit code as well.
+This commit removes mark_precise_scalar_ids() and updates test cases
+in progs/verifier_scalar_ids to reflect new verifier behavior.
 
-This makes the code easier to read and maintain, and it now all exists in
-sorttable.c and sorttable.h may be removed.
+The tests are updated in the following manner:
+- mark_precise_scalar_ids() propagated precision regardless of
+  presence of conditional jumps, while new jump history based logic
+  only kicks in when conditional jumps are present.
+  Hence test cases are augmented with conditional jumps to still
+  trigger precision propagation.
+- As equal scalars tracking no longer relies on parent/child state
+  boundaries some test cases are no longer interesting,
+  such test cases are removed, namely:
+  - precision_same_state and precision_cross_state are superseded by
+    linked_regs_bpf_k;
+  - precision_same_state_broken_link and equal_scalars_broken_link
+    are superseded by linked_regs_broken_link.
 
-Cc: bpf <bpf@vger.kernel.org>
-Cc: Masami Hiramatsu <mhiramat@kernel.org>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: Masahiro Yamada <masahiroy@kernel.org>
-Cc: Nathan Chancellor <nathan@kernel.org>
-Cc: Nicolas Schier <nicolas@fjasle.eu>
-Cc: Zheng Yejian <zhengyejian1@huawei.com>
-Cc: Martin Kelly <martin.kelly@crowdstrike.com>
-Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
-Cc: Josh Poimboeuf <jpoimboe@redhat.com>
-Cc: Stephen Rothwell <sfr@canb.auug.org.au>
-Link: https://lore.kernel.org/20250107223217.6f7f96a5@gandalf.local.home
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-Signed-off-by: Andrey Grodzovsky <andrey.grodzovsky@crowdstrike.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Eduard Zingerman <eddyz87@gmail.com>
+Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+Link: https://lore.kernel.org/bpf/20240718202357.1746514-3-eddyz87@gmail.com
+[ zhenzhong: backport to 6.6.y after adapting the first linked-regs
+  history commit to the older scalar-id verifier layout. ]
+Signed-off-by: Zhenzhong Wu <jt26wzz@gmail.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- scripts/sorttable.c |  473 +++++++++++++++++++++++++++++++++++++++++++++++++-
- scripts/sorttable.h |  485 ----------------------------------------------------
- 2 files changed, 460 insertions(+), 498 deletions(-)
- delete mode 100644 scripts/sorttable.h
+ kernel/bpf/verifier.c                         | 115 ------------
+ .../selftests/bpf/progs/verifier_scalar_ids.c | 171 ++++++------------
+ .../testing/selftests/bpf/verifier/precise.c  |   2 +-
+ 3 files changed, 56 insertions(+), 232 deletions(-)
 
---- a/scripts/sorttable.c
-+++ b/scripts/sorttable.c
-@@ -327,10 +327,423 @@ static inline void *get_index(void *star
- 	return start + (entsize * index);
- }
- 
--/* 32 bit and 64 bit are very similar */
--#include "sorttable.h"
--#define SORTTABLE_64
--#include "sorttable.h"
-+
-+static int (*compare_extable)(const void *a, const void *b);
-+static uint64_t (*ehdr_shoff)(Elf_Ehdr *ehdr);
-+static uint16_t (*ehdr_shstrndx)(Elf_Ehdr *ehdr);
-+static uint16_t (*ehdr_shentsize)(Elf_Ehdr *ehdr);
-+static uint16_t (*ehdr_shnum)(Elf_Ehdr *ehdr);
-+static uint64_t (*shdr_addr)(Elf_Shdr *shdr);
-+static uint64_t (*shdr_offset)(Elf_Shdr *shdr);
-+static uint64_t (*shdr_size)(Elf_Shdr *shdr);
-+static uint64_t (*shdr_entsize)(Elf_Shdr *shdr);
-+static uint32_t (*shdr_link)(Elf_Shdr *shdr);
-+static uint32_t (*shdr_name)(Elf_Shdr *shdr);
-+static uint32_t (*shdr_type)(Elf_Shdr *shdr);
-+static uint8_t (*sym_type)(Elf_Sym *sym);
-+static uint32_t (*sym_name)(Elf_Sym *sym);
-+static uint64_t (*sym_value)(Elf_Sym *sym);
-+static uint16_t (*sym_shndx)(Elf_Sym *sym);
-+
-+static int extable_ent_size;
-+static int long_size;
-+
-+
-+#ifdef UNWINDER_ORC_ENABLED
-+/* ORC unwinder only support X86_64 */
-+#include <asm/orc_types.h>
-+
-+#define ERRSTR_MAXSZ	256
-+
-+static char g_err[ERRSTR_MAXSZ];
-+static int *g_orc_ip_table;
-+static struct orc_entry *g_orc_table;
-+
-+static pthread_t orc_sort_thread;
-+
-+static inline unsigned long orc_ip(const int *ip)
-+{
-+	return (unsigned long)ip + *ip;
-+}
-+
-+static int orc_sort_cmp(const void *_a, const void *_b)
-+{
-+	struct orc_entry *orc_a, *orc_b;
-+	const int *a = g_orc_ip_table + *(int *)_a;
-+	const int *b = g_orc_ip_table + *(int *)_b;
-+	unsigned long a_val = orc_ip(a);
-+	unsigned long b_val = orc_ip(b);
-+
-+	if (a_val > b_val)
-+		return 1;
-+	if (a_val < b_val)
-+		return -1;
-+
-+	/*
-+	 * The "weak" section terminator entries need to always be on the left
-+	 * to ensure the lookup code skips them in favor of real entries.
-+	 * These terminator entries exist to handle any gaps created by
-+	 * whitelisted .o files which didn't get objtool generation.
-+	 */
-+	orc_a = g_orc_table + (a - g_orc_ip_table);
-+	orc_b = g_orc_table + (b - g_orc_ip_table);
-+	if (orc_a->type == ORC_TYPE_UNDEFINED && orc_b->type == ORC_TYPE_UNDEFINED)
-+		return 0;
-+	return orc_a->type == ORC_TYPE_UNDEFINED ? -1 : 1;
-+}
-+
-+static void *sort_orctable(void *arg)
-+{
-+	int i;
-+	int *idxs = NULL;
-+	int *tmp_orc_ip_table = NULL;
-+	struct orc_entry *tmp_orc_table = NULL;
-+	unsigned int *orc_ip_size = (unsigned int *)arg;
-+	unsigned int num_entries = *orc_ip_size / sizeof(int);
-+	unsigned int orc_size = num_entries * sizeof(struct orc_entry);
-+
-+	idxs = (int *)malloc(*orc_ip_size);
-+	if (!idxs) {
-+		snprintf(g_err, ERRSTR_MAXSZ, "malloc idxs: %s",
-+			 strerror(errno));
-+		pthread_exit(g_err);
-+	}
-+
-+	tmp_orc_ip_table = (int *)malloc(*orc_ip_size);
-+	if (!tmp_orc_ip_table) {
-+		snprintf(g_err, ERRSTR_MAXSZ, "malloc tmp_orc_ip_table: %s",
-+			 strerror(errno));
-+		pthread_exit(g_err);
-+	}
-+
-+	tmp_orc_table = (struct orc_entry *)malloc(orc_size);
-+	if (!tmp_orc_table) {
-+		snprintf(g_err, ERRSTR_MAXSZ, "malloc tmp_orc_table: %s",
-+			 strerror(errno));
-+		pthread_exit(g_err);
-+	}
-+
-+	/* initialize indices array, convert ip_table to absolute address */
-+	for (i = 0; i < num_entries; i++) {
-+		idxs[i] = i;
-+		tmp_orc_ip_table[i] = g_orc_ip_table[i] + i * sizeof(int);
-+	}
-+	memcpy(tmp_orc_table, g_orc_table, orc_size);
-+
-+	qsort(idxs, num_entries, sizeof(int), orc_sort_cmp);
-+
-+	for (i = 0; i < num_entries; i++) {
-+		if (idxs[i] == i)
-+			continue;
-+
-+		/* convert back to relative address */
-+		g_orc_ip_table[i] = tmp_orc_ip_table[idxs[i]] - i * sizeof(int);
-+		g_orc_table[i] = tmp_orc_table[idxs[i]];
-+	}
-+
-+	free(idxs);
-+	free(tmp_orc_ip_table);
-+	free(tmp_orc_table);
-+	pthread_exit(NULL);
-+}
-+#endif
-+
-+#ifdef MCOUNT_SORT_ENABLED
-+static pthread_t mcount_sort_thread;
-+
-+struct elf_mcount_loc {
-+	Elf_Ehdr *ehdr;
-+	Elf_Shdr *init_data_sec;
-+	uint64_t start_mcount_loc;
-+	uint64_t stop_mcount_loc;
-+};
-+
-+/* Sort the addresses stored between __start_mcount_loc to __stop_mcount_loc in vmlinux */
-+static void *sort_mcount_loc(void *arg)
-+{
-+	struct elf_mcount_loc *emloc = (struct elf_mcount_loc *)arg;
-+	uint64_t offset = emloc->start_mcount_loc - shdr_addr(emloc->init_data_sec)
-+					+ shdr_offset(emloc->init_data_sec);
-+	uint64_t count = emloc->stop_mcount_loc - emloc->start_mcount_loc;
-+	unsigned char *start_loc = (void *)emloc->ehdr + offset;
-+
-+	qsort(start_loc, count/long_size, long_size, compare_extable);
-+	return NULL;
-+}
-+
-+/* Get the address of __start_mcount_loc and __stop_mcount_loc in System.map */
-+static void get_mcount_loc(uint64_t *_start, uint64_t *_stop)
-+{
-+	FILE *file_start, *file_stop;
-+	char start_buff[20];
-+	char stop_buff[20];
-+	int len = 0;
-+
-+	file_start = popen(" grep start_mcount System.map | awk '{print $1}' ", "r");
-+	if (!file_start) {
-+		fprintf(stderr, "get start_mcount_loc error!");
-+		return;
-+	}
-+
-+	file_stop = popen(" grep stop_mcount System.map | awk '{print $1}' ", "r");
-+	if (!file_stop) {
-+		fprintf(stderr, "get stop_mcount_loc error!");
-+		pclose(file_start);
-+		return;
-+	}
-+
-+	while (fgets(start_buff, sizeof(start_buff), file_start) != NULL) {
-+		len = strlen(start_buff);
-+		start_buff[len - 1] = '\0';
-+	}
-+	*_start = strtoul(start_buff, NULL, 16);
-+
-+	while (fgets(stop_buff, sizeof(stop_buff), file_stop) != NULL) {
-+		len = strlen(stop_buff);
-+		stop_buff[len - 1] = '\0';
-+	}
-+	*_stop = strtoul(stop_buff, NULL, 16);
-+
-+	pclose(file_start);
-+	pclose(file_stop);
-+}
-+#endif
-+static int do_sort(Elf_Ehdr *ehdr,
-+		   char const *const fname,
-+		   table_sort_t custom_sort)
-+{
-+	int rc = -1;
-+	Elf_Shdr *shdr_start;
-+	Elf_Shdr *strtab_sec = NULL;
-+	Elf_Shdr *symtab_sec = NULL;
-+	Elf_Shdr *extab_sec = NULL;
-+	Elf_Shdr *string_sec;
-+	Elf_Sym *sym;
-+	const Elf_Sym *symtab;
-+	Elf32_Word *symtab_shndx = NULL;
-+	Elf_Sym *sort_needed_sym = NULL;
-+	Elf_Shdr *sort_needed_sec;
-+	uint32_t *sort_needed_loc;
-+	void *sym_start;
-+	void *sym_end;
-+	const char *secstrings;
-+	const char *strtab;
-+	char *extab_image;
-+	int sort_need_index;
-+	int symentsize;
-+	int shentsize;
-+	int idx;
-+	int i;
-+	unsigned int shnum;
-+	unsigned int shstrndx;
-+#ifdef MCOUNT_SORT_ENABLED
-+	struct elf_mcount_loc mstruct = {0};
-+	uint64_t _start_mcount_loc = 0;
-+	uint64_t _stop_mcount_loc = 0;
-+#endif
-+#ifdef UNWINDER_ORC_ENABLED
-+	unsigned int orc_ip_size = 0;
-+	unsigned int orc_size = 0;
-+	unsigned int orc_num_entries = 0;
-+#endif
-+
-+	shdr_start = (Elf_Shdr *)((char *)ehdr + ehdr_shoff(ehdr));
-+	shentsize = ehdr_shentsize(ehdr);
-+
-+	shstrndx = ehdr_shstrndx(ehdr);
-+	if (shstrndx == SHN_XINDEX)
-+		shstrndx = shdr_link(shdr_start);
-+	string_sec = get_index(shdr_start, shentsize, shstrndx);
-+	secstrings = (const char *)ehdr + shdr_offset(string_sec);
-+
-+	shnum = ehdr_shnum(ehdr);
-+	if (shnum == SHN_UNDEF)
-+		shnum = shdr_size(shdr_start);
-+
-+	for (i = 0; i < shnum; i++) {
-+		Elf_Shdr *shdr = get_index(shdr_start, shentsize, i);
-+
-+		idx = shdr_name(shdr);
-+		if (!strcmp(secstrings + idx, "__ex_table"))
-+			extab_sec = shdr;
-+		if (!strcmp(secstrings + idx, ".symtab"))
-+			symtab_sec = shdr;
-+		if (!strcmp(secstrings + idx, ".strtab"))
-+			strtab_sec = shdr;
-+
-+		if (shdr_type(shdr) == SHT_SYMTAB_SHNDX)
-+			symtab_shndx = (Elf32_Word *)((const char *)ehdr +
-+						      shdr_offset(shdr));
-+
-+#ifdef MCOUNT_SORT_ENABLED
-+		/* locate the .init.data section in vmlinux */
-+		if (!strcmp(secstrings + idx, ".init.data")) {
-+			get_mcount_loc(&_start_mcount_loc, &_stop_mcount_loc);
-+			mstruct.ehdr = ehdr;
-+			mstruct.init_data_sec = shdr;
-+			mstruct.start_mcount_loc = _start_mcount_loc;
-+			mstruct.stop_mcount_loc = _stop_mcount_loc;
-+		}
-+#endif
-+
-+#ifdef UNWINDER_ORC_ENABLED
-+		/* locate the ORC unwind tables */
-+		if (!strcmp(secstrings + idx, ".orc_unwind_ip")) {
-+			orc_ip_size = shdr_size(shdr);
-+			g_orc_ip_table = (int *)((void *)ehdr +
-+						   shdr_offset(shdr));
-+		}
-+		if (!strcmp(secstrings + idx, ".orc_unwind")) {
-+			orc_size = shdr_size(shdr);
-+			g_orc_table = (struct orc_entry *)((void *)ehdr +
-+							     shdr_offset(shdr));
-+		}
-+#endif
-+	} /* for loop */
-+
-+#ifdef UNWINDER_ORC_ENABLED
-+	if (!g_orc_ip_table || !g_orc_table) {
-+		fprintf(stderr,
-+			"incomplete ORC unwind tables in file: %s\n", fname);
-+		goto out;
-+	}
-+
-+	orc_num_entries = orc_ip_size / sizeof(int);
-+	if (orc_ip_size % sizeof(int) != 0 ||
-+	    orc_size % sizeof(struct orc_entry) != 0 ||
-+	    orc_num_entries != orc_size / sizeof(struct orc_entry)) {
-+		fprintf(stderr,
-+			"inconsistent ORC unwind table entries in file: %s\n",
-+			fname);
-+		goto out;
-+	}
-+
-+	/* create thread to sort ORC unwind tables concurrently */
-+	if (pthread_create(&orc_sort_thread, NULL,
-+			   sort_orctable, &orc_ip_size)) {
-+		fprintf(stderr,
-+			"pthread_create orc_sort_thread failed '%s': %s\n",
-+			strerror(errno), fname);
-+		goto out;
-+	}
-+#endif
-+
-+#ifdef MCOUNT_SORT_ENABLED
-+	if (!mstruct.init_data_sec || !_start_mcount_loc || !_stop_mcount_loc) {
-+		fprintf(stderr,
-+			"incomplete mcount's sort in file: %s\n",
-+			fname);
-+		goto out;
-+	}
-+
-+	/* create thread to sort mcount_loc concurrently */
-+	if (pthread_create(&mcount_sort_thread, NULL, &sort_mcount_loc, &mstruct)) {
-+		fprintf(stderr,
-+			"pthread_create mcount_sort_thread failed '%s': %s\n",
-+			strerror(errno), fname);
-+		goto out;
-+	}
-+#endif
-+	if (!extab_sec) {
-+		fprintf(stderr,	"no __ex_table in file: %s\n", fname);
-+		goto out;
-+	}
-+
-+	if (!symtab_sec) {
-+		fprintf(stderr,	"no .symtab in file: %s\n", fname);
-+		goto out;
-+	}
-+
-+	if (!strtab_sec) {
-+		fprintf(stderr,	"no .strtab in file: %s\n", fname);
-+		goto out;
-+	}
-+
-+	extab_image = (void *)ehdr + shdr_offset(extab_sec);
-+	strtab = (const char *)ehdr + shdr_offset(strtab_sec);
-+	symtab = (const Elf_Sym *)((const char *)ehdr + shdr_offset(symtab_sec));
-+
-+	if (custom_sort) {
-+		custom_sort(extab_image, shdr_size(extab_sec));
-+	} else {
-+		int num_entries = shdr_size(extab_sec) / extable_ent_size;
-+		qsort(extab_image, num_entries,
-+		      extable_ent_size, compare_extable);
-+	}
-+
-+	/* find the flag main_extable_sort_needed */
-+	sym_start = (void *)ehdr + shdr_offset(symtab_sec);
-+	sym_end = sym_start + shdr_size(symtab_sec);
-+	symentsize = shdr_entsize(symtab_sec);
-+
-+	for (sym = sym_start; (void *)sym + symentsize < sym_end;
-+	     sym = (void *)sym + symentsize) {
-+		if (sym_type(sym) != STT_OBJECT)
-+			continue;
-+		if (!strcmp(strtab + sym_name(sym),
-+			    "main_extable_sort_needed")) {
-+			sort_needed_sym = sym;
-+			break;
-+		}
-+	}
-+
-+	if (!sort_needed_sym) {
-+		fprintf(stderr,
-+			"no main_extable_sort_needed symbol in file: %s\n",
-+			fname);
-+		goto out;
-+	}
-+
-+	sort_need_index = get_secindex(sym_shndx(sym),
-+				       ((void *)sort_needed_sym - (void *)symtab) / symentsize,
-+				       symtab_shndx);
-+	sort_needed_sec = get_index(shdr_start, shentsize, sort_need_index);
-+	sort_needed_loc = (void *)ehdr +
-+		shdr_offset(sort_needed_sec) +
-+		sym_value(sort_needed_sym) - shdr_addr(sort_needed_sec);
-+
-+	/* extable has been sorted, clear the flag */
-+	w(0, sort_needed_loc);
-+	rc = 0;
-+
-+out:
-+#ifdef UNWINDER_ORC_ENABLED
-+	if (orc_sort_thread) {
-+		void *retval = NULL;
-+		/* wait for ORC tables sort done */
-+		rc = pthread_join(orc_sort_thread, &retval);
-+		if (rc) {
-+			fprintf(stderr,
-+				"pthread_join failed '%s': %s\n",
-+				strerror(errno), fname);
-+		} else if (retval) {
-+			rc = -1;
-+			fprintf(stderr,
-+				"failed to sort ORC tables '%s': %s\n",
-+				(char *)retval, fname);
-+		}
-+	}
-+#endif
-+
-+#ifdef MCOUNT_SORT_ENABLED
-+	if (mcount_sort_thread) {
-+		void *retval = NULL;
-+		/* wait for mcount sort done */
-+		rc = pthread_join(mcount_sort_thread, &retval);
-+		if (rc) {
-+			fprintf(stderr,
-+				"pthread_join failed '%s': %s\n",
-+				strerror(errno), fname);
-+		} else if (retval) {
-+			rc = -1;
-+			fprintf(stderr,
-+				"failed to sort mcount '%s': %s\n",
-+				(char *)retval, fname);
-+		}
-+	}
-+#endif
-+	return rc;
-+}
- 
- static int compare_relative_table(const void *a, const void *b)
- {
-@@ -399,7 +812,6 @@ static void sort_relative_table_with_dat
- 
- static int do_file(char const *const fname, void *addr)
- {
--	int rc = -1;
- 	Elf_Ehdr *ehdr = addr;
- 	table_sort_t custom_sort = NULL;
- 
-@@ -462,29 +874,64 @@ static int do_file(char const *const fna
- 		    r2(&ehdr->e32.e_shentsize) != sizeof(Elf32_Shdr)) {
- 			fprintf(stderr,
- 				"unrecognized ET_EXEC/ET_DYN file: %s\n", fname);
--			break;
-+			return -1;
- 		}
--		rc = do_sort_32(ehdr, fname, custom_sort);
-+
-+		compare_extable		= compare_extable_32;
-+		ehdr_shoff		= ehdr32_shoff;
-+		ehdr_shentsize		= ehdr32_shentsize;
-+		ehdr_shstrndx		= ehdr32_shstrndx;
-+		ehdr_shnum		= ehdr32_shnum;
-+		shdr_addr		= shdr32_addr;
-+		shdr_offset		= shdr32_offset;
-+		shdr_link		= shdr32_link;
-+		shdr_size		= shdr32_size;
-+		shdr_name		= shdr32_name;
-+		shdr_type		= shdr32_type;
-+		shdr_entsize		= shdr32_entsize;
-+		sym_type		= sym32_type;
-+		sym_name		= sym32_name;
-+		sym_value		= sym32_value;
-+		sym_shndx		= sym32_shndx;
-+		long_size		= 4;
-+		extable_ent_size	= 8;
- 		break;
- 	case ELFCLASS64:
--		{
- 		if (r2(&ehdr->e64.e_ehsize) != sizeof(Elf64_Ehdr) ||
- 		    r2(&ehdr->e64.e_shentsize) != sizeof(Elf64_Shdr)) {
- 			fprintf(stderr,
- 				"unrecognized ET_EXEC/ET_DYN file: %s\n",
- 				fname);
--			break;
--		}
--		rc = do_sort_64(ehdr, fname, custom_sort);
-+			return -1;
- 		}
-+
-+		compare_extable		= compare_extable_64;
-+		ehdr_shoff		= ehdr64_shoff;
-+		ehdr_shentsize		= ehdr64_shentsize;
-+		ehdr_shstrndx		= ehdr64_shstrndx;
-+		ehdr_shnum		= ehdr64_shnum;
-+		shdr_addr		= shdr64_addr;
-+		shdr_offset		= shdr64_offset;
-+		shdr_link		= shdr64_link;
-+		shdr_size		= shdr64_size;
-+		shdr_name		= shdr64_name;
-+		shdr_type		= shdr64_type;
-+		shdr_entsize		= shdr64_entsize;
-+		sym_type		= sym64_type;
-+		sym_name		= sym64_name;
-+		sym_value		= sym64_value;
-+		sym_shndx		= sym64_shndx;
-+		long_size		= 8;
-+		extable_ent_size	= 16;
-+
- 		break;
- 	default:
- 		fprintf(stderr, "unrecognized ELF class %d %s\n",
- 			ehdr->e32.e_ident[EI_CLASS], fname);
--		break;
-+		return -1;
+diff --git a/kernel/bpf/verifier.c b/kernel/bpf/verifier.c
+index 2268f095203e21..f638b2d3a42fbc 100644
+--- a/kernel/bpf/verifier.c
++++ b/kernel/bpf/verifier.c
+@@ -4265,96 +4265,6 @@ static void mark_all_scalars_imprecise(struct bpf_verifier_env *env, struct bpf_
  	}
- 
--	return rc;
-+	return do_sort(ehdr, fname, custom_sort);
  }
  
- int main(int argc, char *argv[])
---- a/scripts/sorttable.h
-+++ /dev/null
-@@ -1,485 +0,0 @@
--/* SPDX-License-Identifier: GPL-2.0-only */
--/*
-- * sorttable.h
-- *
-- * Added ORC unwind tables sort support and other updates:
-- * Copyright (C) 1999-2019 Alibaba Group Holding Limited. by:
-- * Shile Zhang <shile.zhang@linux.alibaba.com>
-- *
-- * Copyright 2011 - 2012 Cavium, Inc.
-- *
-- * Some of code was taken out of arch/x86/kernel/unwind_orc.c, written by:
-- * Copyright (C) 2017 Josh Poimboeuf <jpoimboe@redhat.com>
-- *
-- * Some of this code was taken out of recordmcount.h written by:
-- *
-- * Copyright 2009 John F. Reiser <jreiser@BitWagon.com>. All rights reserved.
-- * Copyright 2010 Steven Rostedt <srostedt@redhat.com>, Red Hat Inc.
+-static bool idset_contains(struct bpf_idset *s, u32 id)
+-{
+-	u32 i;
+-
+-	for (i = 0; i < s->count; ++i)
+-		if (s->ids[i] == id)
+-			return true;
+-
+-	return false;
+-}
+-
+-static int idset_push(struct bpf_idset *s, u32 id)
+-{
+-	if (WARN_ON_ONCE(s->count >= ARRAY_SIZE(s->ids)))
+-		return -EFAULT;
+-	s->ids[s->count++] = id;
+-	return 0;
+-}
+-
+-static void idset_reset(struct bpf_idset *s)
+-{
+-	s->count = 0;
+-}
+-
+-/* Collect a set of IDs for all registers currently marked as precise in env->bt.
+- * Mark all registers with these IDs as precise.
 - */
--
--#undef extable_ent_size
--#undef compare_extable
--#undef get_mcount_loc
--#undef sort_mcount_loc
--#undef elf_mcount_loc
--#undef do_sort
--#undef ehdr_shoff
--#undef ehdr_shentsize
--#undef ehdr_shstrndx
--#undef ehdr_shnum
--#undef shdr_addr
--#undef shdr_offset
--#undef shdr_link
--#undef shdr_size
--#undef shdr_name
--#undef shdr_type
--#undef shdr_entsize
--#undef sym_type
--#undef sym_name
--#undef sym_value
--#undef sym_shndx
--#undef long_size
--
--#ifdef SORTTABLE_64
--# define extable_ent_size	16
--# define compare_extable	compare_extable_64
--# define get_mcount_loc		get_mcount_loc_64
--# define sort_mcount_loc	sort_mcount_loc_64
--# define elf_mcount_loc		elf_mcount_loc_64
--# define do_sort		do_sort_64
--# define ehdr_shoff		ehdr64_shoff
--# define ehdr_shentsize		ehdr64_shentsize
--# define ehdr_shstrndx		ehdr64_shstrndx
--# define ehdr_shnum		ehdr64_shnum
--# define shdr_addr		shdr64_addr
--# define shdr_offset		shdr64_offset
--# define shdr_link		shdr64_link
--# define shdr_size		shdr64_size
--# define shdr_name		shdr64_name
--# define shdr_type		shdr64_type
--# define shdr_entsize		shdr64_entsize
--# define sym_type		sym64_type
--# define sym_name		sym64_name
--# define sym_value		sym64_value
--# define sym_shndx		sym64_shndx
--# define long_size		8
--#else
--# define extable_ent_size	8
--# define compare_extable	compare_extable_32
--# define get_mcount_loc		get_mcount_loc_32
--# define sort_mcount_loc	sort_mcount_loc_32
--# define elf_mcount_loc		elf_mcount_loc_32
--# define do_sort		do_sort_32
--# define ehdr_shoff		ehdr32_shoff
--# define ehdr_shentsize		ehdr32_shentsize
--# define ehdr_shstrndx		ehdr32_shstrndx
--# define ehdr_shnum		ehdr32_shnum
--# define shdr_addr		shdr32_addr
--# define shdr_offset		shdr32_offset
--# define shdr_link		shdr32_link
--# define shdr_size		shdr32_size
--# define shdr_name		shdr32_name
--# define shdr_type		shdr32_type
--# define shdr_entsize		shdr32_entsize
--# define sym_type		sym32_type
--# define sym_name		sym32_name
--# define sym_value		sym32_value
--# define sym_shndx		sym32_shndx
--# define long_size		4
--#endif
--
--#if defined(SORTTABLE_64) && defined(UNWINDER_ORC_ENABLED)
--/* ORC unwinder only support X86_64 */
--#include <asm/orc_types.h>
--
--#define ERRSTR_MAXSZ	256
--
--char g_err[ERRSTR_MAXSZ];
--int *g_orc_ip_table;
--struct orc_entry *g_orc_table;
--
--pthread_t orc_sort_thread;
--
--static inline unsigned long orc_ip(const int *ip)
+-static int mark_precise_scalar_ids(struct bpf_verifier_env *env, struct bpf_verifier_state *st)
 -{
--	return (unsigned long)ip + *ip;
+-	struct bpf_idset *precise_ids = &env->idset_scratch;
+-	struct backtrack_state *bt = &env->bt;
+-	struct bpf_func_state *func;
+-	struct bpf_reg_state *reg;
+-	DECLARE_BITMAP(mask, 64);
+-	int i, fr;
+-
+-	idset_reset(precise_ids);
+-
+-	for (fr = bt->frame; fr >= 0; fr--) {
+-		func = st->frame[fr];
+-
+-		bitmap_from_u64(mask, bt_frame_reg_mask(bt, fr));
+-		for_each_set_bit(i, mask, 32) {
+-			reg = &func->regs[i];
+-			if (!reg->id || reg->type != SCALAR_VALUE)
+-				continue;
+-			if (idset_push(precise_ids, reg->id))
+-				return -EFAULT;
+-		}
+-
+-		bitmap_from_u64(mask, bt_frame_stack_mask(bt, fr));
+-		for_each_set_bit(i, mask, 64) {
+-			if (i >= func->allocated_stack / BPF_REG_SIZE)
+-				break;
+-			if (!is_spilled_scalar_reg(&func->stack[i]))
+-				continue;
+-			reg = &func->stack[i].spilled_ptr;
+-			if (!reg->id)
+-				continue;
+-			if (idset_push(precise_ids, reg->id))
+-				return -EFAULT;
+-		}
+-	}
+-
+-	for (fr = 0; fr <= st->curframe; ++fr) {
+-		func = st->frame[fr];
+-
+-		for (i = BPF_REG_0; i < BPF_REG_10; ++i) {
+-			reg = &func->regs[i];
+-			if (!reg->id)
+-				continue;
+-			if (!idset_contains(precise_ids, reg->id))
+-				continue;
+-			bt_set_frame_reg(bt, fr, i);
+-		}
+-		for (i = 0; i < func->allocated_stack / BPF_REG_SIZE; ++i) {
+-			if (!is_spilled_scalar_reg(&func->stack[i]))
+-				continue;
+-			reg = &func->stack[i].spilled_ptr;
+-			if (!reg->id)
+-				continue;
+-			if (!idset_contains(precise_ids, reg->id))
+-				continue;
+-			bt_set_frame_slot(bt, fr, i);
+-		}
+-	}
+-
+-	return 0;
 -}
 -
--static int orc_sort_cmp(const void *_a, const void *_b)
+ /*
+  * __mark_chain_precision() backtracks BPF program instruction sequence and
+  * chain of verifier states making sure that register *regno* (if regno >= 0)
+@@ -4487,31 +4397,6 @@ static int __mark_chain_precision(struct bpf_verifier_env *env, int regno)
+ 				bt->frame, last_idx, first_idx, subseq_idx);
+ 		}
+ 
+-		/* If some register with scalar ID is marked as precise,
+-		 * make sure that all registers sharing this ID are also precise.
+-		 * This is needed to estimate effect of sync_linked_regs().
+-		 * Do this at the last instruction of each state,
+-		 * bpf_reg_state::id fields are valid for these instructions.
+-		 *
+-		 * Allows to track precision in situation like below:
+-		 *
+-		 *     r2 = unknown value
+-		 *     ...
+-		 *   --- state #0 ---
+-		 *     ...
+-		 *     r1 = r2                 // r1 and r2 now share the same ID
+-		 *     ...
+-		 *   --- state #1 {r1.id = A, r2.id = A} ---
+-		 *     ...
+-		 *     if (r2 > 10) goto exit; // sync_linked_regs() assigns range to r1
+-		 *     ...
+-		 *   --- state #2 {r1.id = A, r2.id = A} ---
+-		 *     r3 = r10
+-		 *     r3 += r1                // need to mark both r1 and r2
+-		 */
+-		if (mark_precise_scalar_ids(env, st))
+-			return -EFAULT;
+-
+ 		if (last_idx < 0) {
+ 			/* we are at the entry into subprog, which
+ 			 * is expected for global funcs, but only if
+diff --git a/tools/testing/selftests/bpf/progs/verifier_scalar_ids.c b/tools/testing/selftests/bpf/progs/verifier_scalar_ids.c
+index 22a6cf6e8255df..f70392bf696c62 100644
+--- a/tools/testing/selftests/bpf/progs/verifier_scalar_ids.c
++++ b/tools/testing/selftests/bpf/progs/verifier_scalar_ids.c
+@@ -5,54 +5,27 @@
+ #include "bpf_misc.h"
+ 
+ /* Check that precision marks propagate through scalar IDs.
+- * Registers r{0,1,2} have the same scalar ID at the moment when r0 is
+- * marked to be precise, this mark is immediately propagated to r{1,2}.
++ * Registers r{0,1,2} have the same scalar ID.
++ * Range information is propagated for scalars sharing same ID.
++ * Check that precision mark for r0 causes precision marks for r{1,2}
++ * when range information is propagated for 'if <reg> <op> <const>' insn.
+  */
+ SEC("socket")
+ __success __log_level(2)
+-__msg("frame0: regs=r0,r1,r2 stack= before 4: (bf) r3 = r10")
+-__msg("frame0: regs=r0,r1,r2 stack= before 3: (bf) r2 = r0")
+-__msg("frame0: regs=r0,r1 stack= before 2: (bf) r1 = r0")
+-__msg("frame0: regs=r0 stack= before 1: (57) r0 &= 255")
+-__msg("frame0: regs=r0 stack= before 0: (85) call bpf_ktime_get_ns")
+-__flag(BPF_F_TEST_STATE_FREQ)
+-__naked void precision_same_state(void)
 -{
--	struct orc_entry *orc_a, *orc_b;
--	const int *a = g_orc_ip_table + *(int *)_a;
--	const int *b = g_orc_ip_table + *(int *)_b;
--	unsigned long a_val = orc_ip(a);
--	unsigned long b_val = orc_ip(b);
--
--	if (a_val > b_val)
--		return 1;
--	if (a_val < b_val)
--		return -1;
--
--	/*
--	 * The "weak" section terminator entries need to always be on the left
--	 * to ensure the lookup code skips them in favor of real entries.
--	 * These terminator entries exist to handle any gaps created by
--	 * whitelisted .o files which didn't get objtool generation.
+-	asm volatile (
+-	/* r0 = random number up to 0xff */
+-	"call %[bpf_ktime_get_ns];"
+-	"r0 &= 0xff;"
+-	/* tie r0.id == r1.id == r2.id */
+-	"r1 = r0;"
+-	"r2 = r0;"
+-	/* force r0 to be precise, this immediately marks r1 and r2 as
+-	 * precise as well because of shared IDs
 -	 */
--	orc_a = g_orc_table + (a - g_orc_ip_table);
--	orc_b = g_orc_table + (b - g_orc_ip_table);
--	if (orc_a->type == ORC_TYPE_UNDEFINED && orc_b->type == ORC_TYPE_UNDEFINED)
--		return 0;
--	return orc_a->type == ORC_TYPE_UNDEFINED ? -1 : 1;
+-	"r3 = r10;"
+-	"r3 += r0;"
+-	"r0 = 0;"
+-	"exit;"
+-	:
+-	: __imm(bpf_ktime_get_ns)
+-	: __clobber_all);
 -}
 -
--static void *sort_orctable(void *arg)
+-/* Same as precision_same_state, but mark propagates through state /
+- * parent state boundary.
+- */
+-SEC("socket")
+-__success __log_level(2)
+-__msg("frame0: last_idx 6 first_idx 5 subseq_idx -1")
+-__msg("frame0: regs=r0,r1,r2 stack= before 5: (bf) r3 = r10")
++/* first 'if' branch */
++__msg("6: (0f) r3 += r0")
++__msg("frame0: regs=r0 stack= before 4: (25) if r1 > 0x7 goto pc+0")
+ __msg("frame0: parent state regs=r0,r1,r2 stack=:")
+-__msg("frame0: regs=r0,r1,r2 stack= before 4: (05) goto pc+0")
+ __msg("frame0: regs=r0,r1,r2 stack= before 3: (bf) r2 = r0")
+-__msg("frame0: regs=r0,r1 stack= before 2: (bf) r1 = r0")
+-__msg("frame0: regs=r0 stack= before 1: (57) r0 &= 255")
+-__msg("frame0: parent state regs=r0 stack=:")
+-__msg("frame0: regs=r0 stack= before 0: (85) call bpf_ktime_get_ns")
++/* second 'if' branch */
++__msg("from 4 to 5: ")
++__msg("6: (0f) r3 += r0")
++__msg("frame0: regs=r0 stack= before 5: (bf) r3 = r10")
++__msg("frame0: regs=r0 stack= before 4: (25) if r1 > 0x7 goto pc+0")
++/* parent state already has r{0,1,2} as precise */
++__msg("frame0: parent state regs= stack=:")
+ __flag(BPF_F_TEST_STATE_FREQ)
+-__naked void precision_cross_state(void)
++__naked void linked_regs_bpf_k(void)
+ {
+ 	asm volatile (
+ 	/* r0 = random number up to 0xff */
+@@ -61,9 +34,8 @@ __naked void precision_cross_state(void)
+ 	/* tie r0.id == r1.id == r2.id */
+ 	"r1 = r0;"
+ 	"r2 = r0;"
+-	/* force checkpoint */
+-	"goto +0;"
+-	/* force r0 to be precise, this immediately marks r1 and r2 as
++	"if r1 > 7 goto +0;"
++	/* force r0 to be precise, this eventually marks r1 and r2 as
+ 	 * precise as well because of shared IDs
+ 	 */
+ 	"r3 = r10;"
+@@ -75,59 +47,18 @@ __naked void precision_cross_state(void)
+ 	: __clobber_all);
+ }
+ 
+-/* Same as precision_same_state, but break one of the
++/* Same as linked_regs_bpf_k, but break one of the
+  * links, note that r1 is absent from regs=... in __msg below.
+  */
+ SEC("socket")
+ __success __log_level(2)
+-__msg("frame0: regs=r0,r2 stack= before 5: (bf) r3 = r10")
+-__msg("frame0: regs=r0,r2 stack= before 4: (b7) r1 = 0")
+-__msg("frame0: regs=r0,r2 stack= before 3: (bf) r2 = r0")
+-__msg("frame0: regs=r0 stack= before 2: (bf) r1 = r0")
+-__msg("frame0: regs=r0 stack= before 1: (57) r0 &= 255")
+-__msg("frame0: regs=r0 stack= before 0: (85) call bpf_ktime_get_ns")
+-__flag(BPF_F_TEST_STATE_FREQ)
+-__naked void precision_same_state_broken_link(void)
 -{
--	int i;
--	int *idxs = NULL;
--	int *tmp_orc_ip_table = NULL;
--	struct orc_entry *tmp_orc_table = NULL;
--	unsigned int *orc_ip_size = (unsigned int *)arg;
--	unsigned int num_entries = *orc_ip_size / sizeof(int);
--	unsigned int orc_size = num_entries * sizeof(struct orc_entry);
--
--	idxs = (int *)malloc(*orc_ip_size);
--	if (!idxs) {
--		snprintf(g_err, ERRSTR_MAXSZ, "malloc idxs: %s",
--			 strerror(errno));
--		pthread_exit(g_err);
--	}
--
--	tmp_orc_ip_table = (int *)malloc(*orc_ip_size);
--	if (!tmp_orc_ip_table) {
--		snprintf(g_err, ERRSTR_MAXSZ, "malloc tmp_orc_ip_table: %s",
--			 strerror(errno));
--		pthread_exit(g_err);
--	}
--
--	tmp_orc_table = (struct orc_entry *)malloc(orc_size);
--	if (!tmp_orc_table) {
--		snprintf(g_err, ERRSTR_MAXSZ, "malloc tmp_orc_table: %s",
--			 strerror(errno));
--		pthread_exit(g_err);
--	}
--
--	/* initialize indices array, convert ip_table to absolute address */
--	for (i = 0; i < num_entries; i++) {
--		idxs[i] = i;
--		tmp_orc_ip_table[i] = g_orc_ip_table[i] + i * sizeof(int);
--	}
--	memcpy(tmp_orc_table, g_orc_table, orc_size);
--
--	qsort(idxs, num_entries, sizeof(int), orc_sort_cmp);
--
--	for (i = 0; i < num_entries; i++) {
--		if (idxs[i] == i)
--			continue;
--
--		/* convert back to relative address */
--		g_orc_ip_table[i] = tmp_orc_ip_table[idxs[i]] - i * sizeof(int);
--		g_orc_table[i] = tmp_orc_table[idxs[i]];
--	}
--
--	free(idxs);
--	free(tmp_orc_ip_table);
--	free(tmp_orc_table);
--	pthread_exit(NULL);
--}
--#endif
--
--#ifdef MCOUNT_SORT_ENABLED
--pthread_t mcount_sort_thread;
--
--struct elf_mcount_loc {
--	Elf_Ehdr *ehdr;
--	Elf_Shdr *init_data_sec;
--	uint64_t start_mcount_loc;
--	uint64_t stop_mcount_loc;
--};
--
--/* Sort the addresses stored between __start_mcount_loc to __stop_mcount_loc in vmlinux */
--static void *sort_mcount_loc(void *arg)
--{
--	struct elf_mcount_loc *emloc = (struct elf_mcount_loc *)arg;
--	uint64_t offset = emloc->start_mcount_loc - shdr_addr(emloc->init_data_sec)
--					+ shdr_offset(emloc->init_data_sec);
--	uint64_t count = emloc->stop_mcount_loc - emloc->start_mcount_loc;
--	unsigned char *start_loc = (void *)emloc->ehdr + offset;
--
--	qsort(start_loc, count/long_size, long_size, compare_extable);
--	return NULL;
+-	asm volatile (
+-	/* r0 = random number up to 0xff */
+-	"call %[bpf_ktime_get_ns];"
+-	"r0 &= 0xff;"
+-	/* tie r0.id == r1.id == r2.id */
+-	"r1 = r0;"
+-	"r2 = r0;"
+-	/* break link for r1, this is the only line that differs
+-	 * compared to the previous test
+-	 */
+-	"r1 = 0;"
+-	/* force r0 to be precise, this immediately marks r1 and r2 as
+-	 * precise as well because of shared IDs
+-	 */
+-	"r3 = r10;"
+-	"r3 += r0;"
+-	"r0 = 0;"
+-	"exit;"
+-	:
+-	: __imm(bpf_ktime_get_ns)
+-	: __clobber_all);
 -}
 -
--/* Get the address of __start_mcount_loc and __stop_mcount_loc in System.map */
--static void get_mcount_loc(uint64_t *_start, uint64_t *_stop)
--{
--	FILE *file_start, *file_stop;
--	char start_buff[20];
--	char stop_buff[20];
--	int len = 0;
--
--	file_start = popen(" grep start_mcount System.map | awk '{print $1}' ", "r");
--	if (!file_start) {
--		fprintf(stderr, "get start_mcount_loc error!");
--		return;
--	}
--
--	file_stop = popen(" grep stop_mcount System.map | awk '{print $1}' ", "r");
--	if (!file_stop) {
--		fprintf(stderr, "get stop_mcount_loc error!");
--		pclose(file_start);
--		return;
--	}
--
--	while (fgets(start_buff, sizeof(start_buff), file_start) != NULL) {
--		len = strlen(start_buff);
--		start_buff[len - 1] = '\0';
--	}
--	*_start = strtoul(start_buff, NULL, 16);
--
--	while (fgets(stop_buff, sizeof(stop_buff), file_stop) != NULL) {
--		len = strlen(stop_buff);
--		stop_buff[len - 1] = '\0';
--	}
--	*_stop = strtoul(stop_buff, NULL, 16);
--
--	pclose(file_start);
--	pclose(file_stop);
--}
--#endif
--static int do_sort(Elf_Ehdr *ehdr,
--		   char const *const fname,
--		   table_sort_t custom_sort)
--{
--	int rc = -1;
--	Elf_Shdr *shdr_start;
--	Elf_Shdr *strtab_sec = NULL;
--	Elf_Shdr *symtab_sec = NULL;
--	Elf_Shdr *extab_sec = NULL;
--	Elf_Shdr *string_sec;
--	Elf_Sym *sym;
--	const Elf_Sym *symtab;
--	Elf32_Word *symtab_shndx = NULL;
--	Elf_Sym *sort_needed_sym = NULL;
--	Elf_Shdr *sort_needed_sec;
--	uint32_t *sort_needed_loc;
--	void *sym_start;
--	void *sym_end;
--	const char *secstrings;
--	const char *strtab;
--	char *extab_image;
--	int sort_need_index;
--	int symentsize;
--	int shentsize;
--	int idx;
--	int i;
--	unsigned int shnum;
--	unsigned int shstrndx;
--#ifdef MCOUNT_SORT_ENABLED
--	struct elf_mcount_loc mstruct = {0};
--	uint64_t _start_mcount_loc = 0;
--	uint64_t _stop_mcount_loc = 0;
--#endif
--#if defined(SORTTABLE_64) && defined(UNWINDER_ORC_ENABLED)
--	unsigned int orc_ip_size = 0;
--	unsigned int orc_size = 0;
--	unsigned int orc_num_entries = 0;
--#endif
--
--	shdr_start = (Elf_Shdr *)((char *)ehdr + ehdr_shoff(ehdr));
--	shentsize = ehdr_shentsize(ehdr);
--
--	shstrndx = ehdr_shstrndx(ehdr);
--	if (shstrndx == SHN_XINDEX)
--		shstrndx = shdr_link(shdr_start);
--	string_sec = get_index(shdr_start, shentsize, shstrndx);
--	secstrings = (const char *)ehdr + shdr_offset(string_sec);
--
--	shnum = ehdr_shnum(ehdr);
--	if (shnum == SHN_UNDEF)
--		shnum = shdr_size(shdr_start);
--
--	for (i = 0; i < shnum; i++) {
--		Elf_Shdr *shdr = get_index(shdr_start, shentsize, i);
--
--		idx = shdr_name(shdr);
--		if (!strcmp(secstrings + idx, "__ex_table"))
--			extab_sec = shdr;
--		if (!strcmp(secstrings + idx, ".symtab"))
--			symtab_sec = shdr;
--		if (!strcmp(secstrings + idx, ".strtab"))
--			strtab_sec = shdr;
--
--		if (shdr_type(shdr) == SHT_SYMTAB_SHNDX)
--			symtab_shndx = (Elf32_Word *)((const char *)ehdr +
--						      shdr_offset(shdr));
--
--#ifdef MCOUNT_SORT_ENABLED
--		/* locate the .init.data section in vmlinux */
--		if (!strcmp(secstrings + idx, ".init.data")) {
--			get_mcount_loc(&_start_mcount_loc, &_stop_mcount_loc);
--			mstruct.ehdr = ehdr;
--			mstruct.init_data_sec = shdr;
--			mstruct.start_mcount_loc = _start_mcount_loc;
--			mstruct.stop_mcount_loc = _stop_mcount_loc;
--		}
--#endif
--
--#if defined(SORTTABLE_64) && defined(UNWINDER_ORC_ENABLED)
--		/* locate the ORC unwind tables */
--		if (!strcmp(secstrings + idx, ".orc_unwind_ip")) {
--			orc_ip_size = shdr_size(shdr);
--			g_orc_ip_table = (int *)((void *)ehdr +
--						   shdr_offset(shdr));
--		}
--		if (!strcmp(secstrings + idx, ".orc_unwind")) {
--			orc_size = shdr_size(shdr);
--			g_orc_table = (struct orc_entry *)((void *)ehdr +
--							     shdr_offset(shdr));
--		}
--#endif
--	} /* for loop */
--
--#if defined(SORTTABLE_64) && defined(UNWINDER_ORC_ENABLED)
--	if (!g_orc_ip_table || !g_orc_table) {
--		fprintf(stderr,
--			"incomplete ORC unwind tables in file: %s\n", fname);
--		goto out;
--	}
--
--	orc_num_entries = orc_ip_size / sizeof(int);
--	if (orc_ip_size % sizeof(int) != 0 ||
--	    orc_size % sizeof(struct orc_entry) != 0 ||
--	    orc_num_entries != orc_size / sizeof(struct orc_entry)) {
--		fprintf(stderr,
--			"inconsistent ORC unwind table entries in file: %s\n",
--			fname);
--		goto out;
--	}
--
--	/* create thread to sort ORC unwind tables concurrently */
--	if (pthread_create(&orc_sort_thread, NULL,
--			   sort_orctable, &orc_ip_size)) {
--		fprintf(stderr,
--			"pthread_create orc_sort_thread failed '%s': %s\n",
--			strerror(errno), fname);
--		goto out;
--	}
--#endif
--
--#ifdef MCOUNT_SORT_ENABLED
--	if (!mstruct.init_data_sec || !_start_mcount_loc || !_stop_mcount_loc) {
--		fprintf(stderr,
--			"incomplete mcount's sort in file: %s\n",
--			fname);
--		goto out;
--	}
--
--	/* create thread to sort mcount_loc concurrently */
--	if (pthread_create(&mcount_sort_thread, NULL, &sort_mcount_loc, &mstruct)) {
--		fprintf(stderr,
--			"pthread_create mcount_sort_thread failed '%s': %s\n",
--			strerror(errno), fname);
--		goto out;
--	}
--#endif
--	if (!extab_sec) {
--		fprintf(stderr,	"no __ex_table in file: %s\n", fname);
--		goto out;
--	}
--
--	if (!symtab_sec) {
--		fprintf(stderr,	"no .symtab in file: %s\n", fname);
--		goto out;
--	}
--
--	if (!strtab_sec) {
--		fprintf(stderr,	"no .strtab in file: %s\n", fname);
--		goto out;
--	}
--
--	extab_image = (void *)ehdr + shdr_offset(extab_sec);
--	strtab = (const char *)ehdr + shdr_offset(strtab_sec);
--	symtab = (const Elf_Sym *)((const char *)ehdr + shdr_offset(symtab_sec));
--
--	if (custom_sort) {
--		custom_sort(extab_image, shdr_size(extab_sec));
--	} else {
--		int num_entries = shdr_size(extab_sec) / extable_ent_size;
--		qsort(extab_image, num_entries,
--		      extable_ent_size, compare_extable);
--	}
--
--	/* find the flag main_extable_sort_needed */
--	sym_start = (void *)ehdr + shdr_offset(symtab_sec);
--	sym_end = sym_start + shdr_size(symtab_sec);
--	symentsize = shdr_entsize(symtab_sec);
--
--	for (sym = sym_start; (void *)sym + symentsize < sym_end;
--	     sym = (void *)sym + symentsize) {
--		if (sym_type(sym) != STT_OBJECT)
--			continue;
--		if (!strcmp(strtab + sym_name(sym),
--			    "main_extable_sort_needed")) {
--			sort_needed_sym = sym;
--			break;
--		}
--	}
--
--	if (!sort_needed_sym) {
--		fprintf(stderr,
--			"no main_extable_sort_needed symbol in file: %s\n",
--			fname);
--		goto out;
--	}
--
--	sort_need_index = get_secindex(sym_shndx(sym),
--				       ((void *)sort_needed_sym - (void *)symtab) / symentsize,
--				       symtab_shndx);
--	sort_needed_sec = get_index(shdr_start, shentsize, sort_need_index);
--	sort_needed_loc = (void *)ehdr +
--		shdr_offset(sort_needed_sec) +
--		sym_value(sort_needed_sym) - shdr_addr(sort_needed_sec);
--
--	/* extable has been sorted, clear the flag */
--	w(0, sort_needed_loc);
--	rc = 0;
--
--out:
--#if defined(SORTTABLE_64) && defined(UNWINDER_ORC_ENABLED)
--	if (orc_sort_thread) {
--		void *retval = NULL;
--		/* wait for ORC tables sort done */
--		rc = pthread_join(orc_sort_thread, &retval);
--		if (rc) {
--			fprintf(stderr,
--				"pthread_join failed '%s': %s\n",
--				strerror(errno), fname);
--		} else if (retval) {
--			rc = -1;
--			fprintf(stderr,
--				"failed to sort ORC tables '%s': %s\n",
--				(char *)retval, fname);
--		}
--	}
--#endif
--
--#ifdef MCOUNT_SORT_ENABLED
--	if (mcount_sort_thread) {
--		void *retval = NULL;
--		/* wait for mcount sort done */
--		rc = pthread_join(mcount_sort_thread, &retval);
--		if (rc) {
--			fprintf(stderr,
--				"pthread_join failed '%s': %s\n",
--				strerror(errno), fname);
--		} else if (retval) {
--			rc = -1;
--			fprintf(stderr,
--				"failed to sort mcount '%s': %s\n",
--				(char *)retval, fname);
--		}
--	}
--#endif
--	return rc;
--}
+-/* Same as precision_same_state_broken_link, but with state /
+- * parent state boundary.
+- */
+-SEC("socket")
+-__success __log_level(2)
+-__msg("frame0: regs=r0,r2 stack= before 6: (bf) r3 = r10")
+-__msg("frame0: regs=r0,r2 stack= before 5: (b7) r1 = 0")
+-__msg("frame0: parent state regs=r0,r2 stack=:")
+-__msg("frame0: regs=r0,r1,r2 stack= before 4: (05) goto pc+0")
+-__msg("frame0: regs=r0,r1,r2 stack= before 3: (bf) r2 = r0")
+-__msg("frame0: regs=r0,r1 stack= before 2: (bf) r1 = r0")
+-__msg("frame0: regs=r0 stack= before 1: (57) r0 &= 255")
++__msg("7: (0f) r3 += r0")
++__msg("frame0: regs=r0 stack= before 6: (bf) r3 = r10")
+ __msg("frame0: parent state regs=r0 stack=:")
+-__msg("frame0: regs=r0 stack= before 0: (85) call bpf_ktime_get_ns")
++__msg("frame0: regs=r0 stack= before 5: (25) if r0 > 0x7 goto pc+0")
++__msg("frame0: parent state regs=r0,r2 stack=:")
+ __flag(BPF_F_TEST_STATE_FREQ)
+-__naked void precision_cross_state_broken_link(void)
++__naked void linked_regs_broken_link(void)
+ {
+ 	asm volatile (
+ 	/* r0 = random number up to 0xff */
+@@ -136,18 +67,13 @@ __naked void precision_cross_state_broken_link(void)
+ 	/* tie r0.id == r1.id == r2.id */
+ 	"r1 = r0;"
+ 	"r2 = r0;"
+-	/* force checkpoint, although link between r1 and r{0,2} is
+-	 * broken by the next statement current precision tracking
+-	 * algorithm can't react to it and propagates mark for r1 to
+-	 * the parent state.
+-	 */
+-	"goto +0;"
+ 	/* break link for r1, this is the only line that differs
+-	 * compared to precision_cross_state()
++	 * compared to the previous test
+ 	 */
+ 	"r1 = 0;"
+-	/* force r0 to be precise, this immediately marks r1 and r2 as
+-	 * precise as well because of shared IDs
++	"if r0 > 7 goto +0;"
++	/* force r0 to be precise,
++	 * this eventually marks r2 as precise because of shared IDs
+ 	 */
+ 	"r3 = r10;"
+ 	"r3 += r0;"
+@@ -164,10 +90,16 @@ __naked void precision_cross_state_broken_link(void)
+  */
+ SEC("socket")
+ __success __log_level(2)
+-__msg("11: (0f) r2 += r1")
++__msg("12: (0f) r2 += r1")
+ /* Current state */
+-__msg("frame2: last_idx 11 first_idx 10 subseq_idx -1")
+-__msg("frame2: regs=r1 stack= before 10: (bf) r2 = r10")
++__msg("frame2: last_idx 12 first_idx 11 subseq_idx -1 ")
++__msg("frame2: regs=r1 stack= before 11: (bf) r2 = r10")
++__msg("frame2: parent state regs=r1 stack=")
++__msg("frame1: parent state regs= stack=")
++__msg("frame0: parent state regs= stack=")
++/* Parent state */
++__msg("frame2: last_idx 10 first_idx 10 subseq_idx 11 ")
++__msg("frame2: regs=r1 stack= before 10: (25) if r1 > 0x7 goto pc+0")
+ __msg("frame2: parent state regs=r1 stack=")
+ /* frame1.r{6,7} are marked because mark_precise_scalar_ids()
+  * looks for all registers with frame2.r1.id in the current state
+@@ -192,7 +124,7 @@ __msg("frame1: regs=r1 stack= before 4: (85) call pc+1")
+ __msg("frame0: parent state regs=r1,r6 stack=")
+ /* Parent state */
+ __msg("frame0: last_idx 3 first_idx 1 subseq_idx 4")
+-__msg("frame0: regs=r0,r1,r6 stack= before 3: (bf) r6 = r0")
++__msg("frame0: regs=r1,r6 stack= before 3: (bf) r6 = r0")
+ __msg("frame0: regs=r0,r1 stack= before 2: (bf) r1 = r0")
+ __msg("frame0: regs=r0 stack= before 1: (57) r0 &= 255")
+ __flag(BPF_F_TEST_STATE_FREQ)
+@@ -230,7 +162,8 @@ static __naked __noinline __used
+ void precision_many_frames__bar(void)
+ {
+ 	asm volatile (
+-	/* force r1 to be precise, this immediately marks:
++	"if r1 > 7 goto +0;"
++	/* force r1 to be precise, this eventually marks:
+ 	 * - bar frame r1
+ 	 * - foo frame r{1,6,7}
+ 	 * - main frame r{1,6}
+@@ -247,14 +180,16 @@ void precision_many_frames__bar(void)
+  */
+ SEC("socket")
+ __success __log_level(2)
++__msg("11: (0f) r2 += r1")
+ /* foo frame */
+-__msg("frame1: regs=r1 stack=-8,-16 before 9: (bf) r2 = r10")
++__msg("frame1: regs=r1 stack= before 10: (bf) r2 = r10")
++__msg("frame1: regs=r1 stack= before 9: (25) if r1 > 0x7 goto pc+0")
+ __msg("frame1: regs=r1 stack=-8,-16 before 8: (7b) *(u64 *)(r10 -16) = r1")
+ __msg("frame1: regs=r1 stack=-8 before 7: (7b) *(u64 *)(r10 -8) = r1")
+ __msg("frame1: regs=r1 stack= before 4: (85) call pc+2")
+ /* main frame */
+-__msg("frame0: regs=r0,r1 stack=-8 before 3: (7b) *(u64 *)(r10 -8) = r1")
+-__msg("frame0: regs=r0,r1 stack= before 2: (bf) r1 = r0")
++__msg("frame0: regs=r1 stack=-8 before 3: (7b) *(u64 *)(r10 -8) = r1")
++__msg("frame0: regs=r1 stack= before 2: (bf) r1 = r0")
+ __msg("frame0: regs=r0 stack= before 1: (57) r0 &= 255")
+ __flag(BPF_F_TEST_STATE_FREQ)
+ __naked void precision_stack(void)
+@@ -283,7 +218,8 @@ void precision_stack__foo(void)
+ 	 */
+ 	"*(u64*)(r10 - 8) = r1;"
+ 	"*(u64*)(r10 - 16) = r1;"
+-	/* force r1 to be precise, this immediately marks:
++	"if r1 > 7 goto +0;"
++	/* force r1 to be precise, this eventually marks:
+ 	 * - foo frame r1,fp{-8,-16}
+ 	 * - main frame r1,fp{-8}
+ 	 */
+@@ -299,15 +235,17 @@ void precision_stack__foo(void)
+ SEC("socket")
+ __success __log_level(2)
+ /* r{6,7} */
+-__msg("11: (0f) r3 += r7")
+-__msg("frame0: regs=r6,r7 stack= before 10: (bf) r3 = r10")
++__msg("12: (0f) r3 += r7")
++__msg("frame0: regs=r7 stack= before 11: (bf) r3 = r10")
++__msg("frame0: regs=r7 stack= before 9: (25) if r7 > 0x7 goto pc+0")
+ /* ... skip some insns ... */
+ __msg("frame0: regs=r6,r7 stack= before 3: (bf) r7 = r0")
+ __msg("frame0: regs=r0,r6 stack= before 2: (bf) r6 = r0")
+ /* r{8,9} */
+-__msg("12: (0f) r3 += r9")
+-__msg("frame0: regs=r8,r9 stack= before 11: (0f) r3 += r7")
++__msg("13: (0f) r3 += r9")
++__msg("frame0: regs=r9 stack= before 12: (0f) r3 += r7")
+ /* ... skip some insns ... */
++__msg("frame0: regs=r9 stack= before 10: (25) if r9 > 0x7 goto pc+0")
+ __msg("frame0: regs=r8,r9 stack= before 7: (bf) r9 = r0")
+ __msg("frame0: regs=r0,r8 stack= before 6: (bf) r8 = r0")
+ __flag(BPF_F_TEST_STATE_FREQ)
+@@ -328,8 +266,9 @@ __naked void precision_two_ids(void)
+ 	"r9 = r0;"
+ 	/* clear r0 id */
+ 	"r0 = 0;"
+-	/* force checkpoint */
+-	"goto +0;"
++	/* propagate equal scalars precision */
++	"if r7 > 7 goto +0;"
++	"if r9 > 7 goto +0;"
+ 	"r3 = r10;"
+ 	/* force r7 to be precise, this also marks r6 */
+ 	"r3 += r7;"
+diff --git a/tools/testing/selftests/bpf/verifier/precise.c b/tools/testing/selftests/bpf/verifier/precise.c
+index b0b1bcc668adb1..59a020c3564742 100644
+--- a/tools/testing/selftests/bpf/verifier/precise.c
++++ b/tools/testing/selftests/bpf/verifier/precise.c
+@@ -106,7 +106,7 @@
+ 	mark_precise: frame0: regs=r2 stack= before 22\
+ 	mark_precise: frame0: parent state regs=r2 stack=:\
+ 	mark_precise: frame0: last_idx 20 first_idx 20\
+-	mark_precise: frame0: regs=r2,r9 stack= before 20\
++	mark_precise: frame0: regs=r2 stack= before 20\
+ 	mark_precise: frame0: parent state regs=r2,r9 stack=:\
+ 	mark_precise: frame0: last_idx 19 first_idx 17\
+ 	mark_precise: frame0: regs=r2,r9 stack= before 19\
+-- 
+2.53.0
+
 
 
 
