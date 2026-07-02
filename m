@@ -1,64 +1,60 @@
-Return-Path: <stable+bounces-270862-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-271055-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id cRGMJtqURmpFZAsAu9opvQ
-	(envelope-from <stable+bounces-270862-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:42:02 +0200
+	id 8gU+DImYRmprZgsAu9opvQ
+	(envelope-from <stable+bounces-271055-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:57:45 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 38C1E6FA67C
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:42:02 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8DAE36FACBB
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:57:44 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="ge/gVVc7";
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-270862-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-270862-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=KuP9QH9u;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-271055-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-271055-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id EF90830492C5
-	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:36:44 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 721233329E7E
+	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:45:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B526B2D8DC4;
-	Thu,  2 Jul 2026 16:34:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 364593546D2;
+	Thu,  2 Jul 2026 16:42:32 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A0B5349CE8;
-	Thu,  2 Jul 2026 16:34:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BD4E346A10;
+	Thu,  2 Jul 2026 16:42:30 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783010044; cv=none; b=qIibmfprI4U9L05C2UmTb8wgKqNknnTIRzpMU4CiM12ZBNO/z6JU/y9MqGxlDF+t6zRGXmsLsVARND1h4a+9Jp3H1u49olMQKuRgV3sCpFuxpH98SFzO9DWepBn2RmtPetA4/wckueNujn0aXcxaiW01rMidh3+XYPV0SQ7DItg=
+	t=1783010552; cv=none; b=AV3FexcZdUtlogpKvGN9B8m4fUbyWKe1pU3Wu7zcAuhtp17mvyl2tD4elkdlEAModBhsi66huJIB8YLloX/WlZLnTyD+7S/Bm+VXRKHwNzyUJ4JOO8DqnhdzpulbtrzgC1zPW2beYsfXPMoyKf0QYldI2PdZlNHDK7fRC4QS4zI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783010044; c=relaxed/simple;
-	bh=v49fUwbwWvlm4+NA2L2+k3fKscD1nzHPAnfDR6HCPpQ=;
+	s=arc-20240116; t=1783010552; c=relaxed/simple;
+	bh=WRA717yVKYf4OM1BDkKTPWN2WTLxgzw+qauitHi9MFc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=B4LHcATcBotMB7KszuM+okqPyuX8l/WTamTn5kk0UhrltnZPwcMtR8QyJugVZMAtstthcGF6MhMWCOnh0SyvW0sJDlleoKIXlvjEU0exXZVBQ2vxNwwYOw63YQ8e8y8M2Jj8Uz3weUhT57wWNSGYFvgsPqRSGhm6UtQB8DIB8nE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ge/gVVc7; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D50291F000E9;
-	Thu,  2 Jul 2026 16:34:02 +0000 (UTC)
+	 MIME-Version; b=Jhi/jqrfIMlEz1CZwca31RkiOS9CK6Zm5GXtX2BBtbGfY/oC5pJo8SOB5evODRG4FBTqXR2XclOfz4HZQviCNozPtqlBEtNombDnug45qPa4HZLsj6XA4gOI2rr8BErWPNt+aO8PsKXrGkaW9sYneghIabuyXUIQsX5mnpbkqTw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KuP9QH9u; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 314BA1F000E9;
+	Thu,  2 Jul 2026 16:42:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1783010043;
-	bh=ur1PTtavLryYO/4+x+JV+fzAyV8NNxesYaf20BnN1jQ=;
+	s=korg; t=1783010550;
+	bh=WCuChUTme0t2IXZF8TjKrDsVuME3RDN8wy8/lZV4aiM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=ge/gVVc7dIp0Leh1PX3SF4SQ0F7Q+y2EaKwFdJrEzPvOrrF/wQQDXr8DHbildpgwq
-	 c73+rTmgMxQ9ooCOOEoSLv5ussRyzJQ/Wz0kBgxBaR1JfFSsH1aYlDCSK9TjzMEYtT
-	 KlMeqSMiMxFDBLq6hzmEzbjQEIQguwHbu9pB5/Ws=
+	b=KuP9QH9uRMjViZP5ZF+6sMM0pNi/eFNaHFvOgesvXMz0DxXK1uhxeuOgFy/DE03TM
+	 nXi8sYGWRKcm2RhbvrLIgLEHuEZP9xDSZ4Y329CM6KtDfb1LbPxn2Nxr9EfLxcQU8u
+	 eljR+Xc3GBvuyb5YYIoUwy8B+NsvVkbfghKosgQQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yunji Kang <yunji0.kang@samsung.com>,
-	Yeongjin Gil <youngjin.gil@samsung.com>,
-	Sungjong Seo <sj1557.seo@samsung.com>,
-	Sunmin Jeong <s_min.jeong@samsung.com>,
-	Chao Yu <chao@kernel.org>,
-	Jaegeuk Kim <jaegeuk@kernel.org>
-Subject: [PATCH 6.1 088/129] f2fs: fix to round down start offset of fallocate for pin file
+	Bitterblue Smith <rtl8821cerfe2@gmail.com>,
+	Ping-Ke Shih <pkshih@realtek.com>
+Subject: [PATCH 6.12 150/204] wifi: rtlwifi: rtl8821ae: Fix C2H bit location in RX descriptor
 Date: Thu,  2 Jul 2026 18:20:07 +0200
-Message-ID: <20260702155113.964731102@linuxfoundation.org>
+Message-ID: <20260702155121.801830752@linuxfoundation.org>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260702155112.163984240@linuxfoundation.org>
-References: <20260702155112.163984240@linuxfoundation.org>
+In-Reply-To: <20260702155118.667618796@linuxfoundation.org>
+References: <20260702155118.667618796@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,109 +68,78 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	RCVD_TLS_LAST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-271055-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:rtl8821cerfe2@gmail.com,m:pkshih@realtek.com,s:lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-270862-lists,stable=lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:yunji0.kang@samsung.com,m:youngjin.gil@samsung.com,m:sj1557.seo@samsung.com,m:s_min.jeong@samsung.com,m:chao@kernel.org,m:jaegeuk@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,realtek.com];
+	FORWARDED(0.00)[lists@lfdr.de];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[samsung.com:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,msgid.link:url,vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,realtek.com:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 38C1E6FA67C
+X-Rspamd-Queue-Id: 8DAE36FACBB
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sunmin Jeong <s_min.jeong@samsung.com>
+From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
 
-commit 4275b59673eb60b02eec3997816c83f1f4b909c4 upstream.
+commit 83d38df6929118c3f996b9e3351c2d5014073d87 upstream.
 
-Currently, the length of fallocate for pin file is section-aligned to
-keep allocated sections from being selected as victims of GC. However,
-for the case that the start offset of fallocate is not aligned in
-section, the allocated sections can't be fully utilized. It's because a
-new section is allocated by f2fs_allocate_pinning_section() after using
-blks_per_sec blocks regardless of the start offset. As a result, several
-unexpected dirty segments may be created, including blocks assigned to
-the pinned file.
+Bit 28 of double word 2 in the RX descriptor indicates if the packet is
+a normal 802.11 frame, or a message from the wifi firmware to the
+driver (Card 2 Host).
 
-To address this issue, let's round down the start offset of fallocate
-to the length of section.
+Commit f5678bfe1cdc ("rtlwifi: rtl8821ae: Replace local bit manipulation
+macros") mistakenly made the driver look for this bit in double word 1,
+causing packet loss and Bluetooth coexistence problems.
 
-The reproducing scenario is as below
-
-chunk=$(((2<<20)+4096)) # 2MB + 4KB
-touch test
-f2fs_io pinfile set test
-f2fs_io fallocate 0 0 $chunk test
-f2fs_io fallocate 0 $chunk $chunk test
-f2fs_io fallocate 0 $((chunk*2)) $chunk test
-f2fs_io fiemap 0 $((chunk*3)) test
-
-Fiemap: offset = 0 len = 12288
-    logical addr.    physical addr.   length           flags
-0   0000000000000000 000000068c600000 0000000000400000 00001088
-1   0000000000400000 000000003d400000 0000000000001000 00001088
-2   0000000000401000 00000003eb200000 0000000000200000 00001088
-3   0000000000601000 00000005e4200000 0000000000001000 00001088
-4   0000000000602000 0000000605400000 0000000000200000 00001089
-
-Cc: stable@vger.kernel.org
-Fixes: f5a53edcf01e ("f2fs: support aligned pinned file")
-Reviewed-by: Yunji Kang <yunji0.kang@samsung.com>
-Reviewed-by: Yeongjin Gil <youngjin.gil@samsung.com>
-Reviewed-by: Sungjong Seo <sj1557.seo@samsung.com>
-Signed-off-by: Sunmin Jeong <s_min.jeong@samsung.com>
-Reviewed-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+Fixes: f5678bfe1cdc ("rtlwifi: rtl8821ae: Replace local bit manipulation macros")
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+Acked-by: Ping-Ke Shih <pkshih@realtek.com>
+Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+Link: https://patch.msgid.link/04da7398-cedb-425a-a810-5772ab10139d@gmail.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/f2fs/file.c |    9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+ drivers/net/wireless/realtek/rtlwifi/rtl8821ae/trx.h |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/fs/f2fs/file.c
-+++ b/fs/f2fs/file.c
-@@ -1786,8 +1786,15 @@ static int expand_inode_data(struct inod
+--- a/drivers/net/wireless/realtek/rtlwifi/rtl8821ae/trx.h
++++ b/drivers/net/wireless/realtek/rtlwifi/rtl8821ae/trx.h
+@@ -291,7 +291,7 @@ static inline int get_rx_desc_paggr(__le
  
- 	if (f2fs_is_pinned_file(inode)) {
- 		block_t sec_blks = CAP_BLKS_PER_SEC(sbi);
--		block_t sec_len = roundup(map.m_len, sec_blks);
-+		block_t sec_len;
+ static inline int get_rx_status_desc_rpt_sel(__le32 *__pdesc)
+ {
+-	return le32_get_bits(*(__pdesc + 1), BIT(28));
++	return le32_get_bits(*(__pdesc + 2), BIT(28));
+ }
  
-+		if (map.m_lblk % sec_blks) {
-+			map.m_lblk = rounddown(map.m_lblk, sec_blks);
-+			map.m_len = pg_end - map.m_lblk;
-+			if (off_end)
-+				map.m_len++;
-+		}
-+		sec_len = roundup(map.m_len, sec_blks);
- 		map.m_len = sec_blks;
- next_alloc:
- 		if (has_not_enough_free_secs(sbi, 0,
+ static inline int get_rx_desc_rxmcs(__le32 *__pdesc)
 
 
 
