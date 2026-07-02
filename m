@@ -1,60 +1,65 @@
-Return-Path: <stable+bounces-271382-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-271493-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id YeerMOeaRmq4ZwsAu9opvQ
-	(envelope-from <stable+bounces-271382-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:07:51 +0200
+	id +3yrFhKcRmpUaAsAu9opvQ
+	(envelope-from <stable+bounces-271493-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:12:50 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 395786FB040
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:07:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C00906FB204
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:12:49 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=ECT4+mxW;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-271382-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-271382-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=wOF22Yj8;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-271493-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-271493-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 3333633064BB
-	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:56:51 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C460D3321911
+	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 17:01:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA1EB25B09B;
-	Thu,  2 Jul 2026 16:56:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82CDF2DEA98;
+	Thu,  2 Jul 2026 17:01:27 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94AC922D7B9;
-	Thu,  2 Jul 2026 16:56:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA824433E87;
+	Thu,  2 Jul 2026 17:01:25 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783011397; cv=none; b=CWhCE4iM6YOmw64nVRgKpr6xBufAnpYCz7gyk7AoayDEClcOYRdTcJdsyOYEmSZa4t98b4Wje5CcZjZo7me4h0MdBJ7rtvGP6Rc84CNV3TJdHIAXk1pKfaLsNF9+lX3eIQyp0lTUUrAqfSckBphJpW0+60mFg2hrjFhAKoziHvg=
+	t=1783011687; cv=none; b=Bb+V7e5JtCyHXQsW2AGd+k62ltxfPnyj33U93OLDmGgU30eYwjpvgqHwMJqEccO6tMIACJtF3TmUzqFu5FP63oU66c+da3N/5SZqLHK01eci+0ZFC3HtjhjFt199Oi3Bx86F44yM3rW7TUtkUt7K3uI9MmdIGSt1K30iyYcqCpE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783011397; c=relaxed/simple;
-	bh=t8YuCrrjWwHeFKcXaxvukZ4Cpw+jMIkjwRcdhl/Jqo8=;
+	s=arc-20240116; t=1783011687; c=relaxed/simple;
+	bh=BViPmgTJVR5k3wJEO5R570BV9eHOxJJ/46ls9FfhQgc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fkQHD/YSjibhKXb5x+Omfim1UGeTEAQNr1ZqXvIxPDs5nTgj3642Ucu/2lvFdtUJspKQhvxtfaO8Z4yticvzacBRX4yxkVqWeA3Hpw7Q02CBqAW8BOT530CbQRKYo5FDn7AGWDkCakAE2hcD/N16gF8Oo5O3w6/ojgXi/tEY8L0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ECT4+mxW; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 065121F00A3A;
-	Thu,  2 Jul 2026 16:56:35 +0000 (UTC)
+	 MIME-Version; b=r+OwbbzosN8RqOo8tP4NNOhDeXuZa/1VydXGyGDL6XcE3UzVUpvgKaaMW5TwY9K2j4GhKdNGnHuEonrV5f5goCjy2KOgPgKim//IbBx60ttF5BUdrkHHVMt9u8vLIr1l91urV2ODRyLeVmqyuUEszLoDFJiOPu57zaxY8ee9kYs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wOF22Yj8; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C1341F000E9;
+	Thu,  2 Jul 2026 17:01:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1783011396;
-	bh=/tW9+sEKanAjw/g0q/6tTR62seF8tUTzAwZLVmu16Q0=;
+	s=korg; t=1783011685;
+	bh=6cQRNguDvv6fh9L2dtnFwpFK59OlUOtNQTet3EX71Mo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=ECT4+mxW3SO8z3UGn/kpLhEoaQ5+XKVXZ9bLWeVy49ozvVDrDXonLVQoJ+4R9wy9f
-	 4JAYjtYy3Xl//uXVKMpOv4+LdUaxNHoWua7gYqUZdOIrjNJZYvMDZNXM9ClNWCYBFe
-	 AxgcBE58/JtYUsVQ1g/0ro+HNA6FBrZtFfteQArQ=
+	b=wOF22Yj8F7qYekzphKRhsscZ1LGOhdVQIC6JpXzouo+vAAQ1agPVNyzsTJtW+wOfk
+	 K+xrM98Zd2ToAw6Ox6V1VKgIvBQqEtMaVkiLbUw88i2jXD/qfE5S/4hKYo0hkzZhAK
+	 ukvsYC+EpFGWfu0LOYjddLLSRqy9Uz3dVrNgmwA4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ian Bridges <icb@fastmail.org>,
-	Helge Deller <deller@gmx.de>
-Subject: [PATCH 6.18 091/108] fbdev: Fix fb_new_modelist to prevent null-ptr-deref in fb_videomode_to_var
+	Yuxiang Yang <yangyx22@mails.tsinghua.edu.cn>,
+	Ao Wang <wangao@seu.edu.cn>,
+	Xuewei Feng <fengxw06@126.com>,
+	Qi Li <qli01@tsinghua.edu.cn>,
+	Ke Xu <xuke@tsinghua.edu.cn>,
+	Yizhou Zhao <zhaoyz24@mails.tsinghua.edu.cn>,
+	Dominique Martinet <asmadeus@codewreck.org>
+Subject: [PATCH 7.1 092/120] 9p: avoid putting oldfid in p9_client_walk() error path
 Date: Thu,  2 Jul 2026 18:21:28 +0200
-Message-ID: <20260702155113.995541143@linuxfoundation.org>
+Message-ID: <20260702155114.861929859@linuxfoundation.org>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260702155112.110058792@linuxfoundation.org>
-References: <20260702155112.110058792@linuxfoundation.org>
+In-Reply-To: <20260702155112.964534952@linuxfoundation.org>
+References: <20260702155112.964534952@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -75,91 +80,86 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-271382-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:icb@fastmail.org,m:deller@gmx.de,s:lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,fastmail.org,gmx.de];
 	FORWARDED(0.00)[lists@lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,mails.tsinghua.edu.cn,seu.edu.cn,126.com,tsinghua.edu.cn,codewreck.org];
+	TAGGED_FROM(0.00)[bounces-271493-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:yangyx22@mails.tsinghua.edu.cn,m:wangao@seu.edu.cn,m:fengxw06@126.com,m:qli01@tsinghua.edu.cn,m:xuke@tsinghua.edu.cn,m:zhaoyz24@mails.tsinghua.edu.cn,m:asmadeus@codewreck.org,s:lists@lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
 	MID_RHS_MATCH_FROM(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[10];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[fastmail.org:email,gmx.de:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,seu.edu.cn:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,tsinghua.edu.cn:email,codewreck.org:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 395786FB040
+X-Rspamd-Queue-Id: C00906FB204
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ian Bridges <icb@fastmail.org>
+From: Yizhou Zhao <zhaoyz24@mails.tsinghua.edu.cn>
 
-commit 7f08fc10fa3d3366dc3af723970bd03d7d6d10e3 upstream.
+commit 1a3860d46e3eb47dbd60339783cdad7904486b9f upstream.
 
-info->var, a framebuffer's current mode, is expected to have a matching
-entry in info->modelist. var_to_display() relies on this and treats a
-failed fb_match_mode() as "This should not happen". fb_set_var() keeps it
-true by adding the mode to the list on every change, and
-do_register_framebuffer() does the same at registration.
+When p9_client_walk() is called with clone set to false, fid aliases
+oldfid. If the walk subsequently fails after the request has been sent,
+the error path jumps to clunk_fid, which currently calls p9_fid_put(fid)
+unconditionally.
 
-store_modes() replaces the modelist from userspace. fb_new_modelist()
-validates the new modes but does not check that info->var still has a
-match. It relies on fbcon_new_modelist() to re-point consoles, but that
-only handles consoles mapped to the framebuffer. With fbcon unbound there
-are none, so info->var is left describing a mode that is no longer in the
-list.
+This drops a reference to oldfid even though ownership of oldfid remains
+with the caller. If this is the last reference, oldfid can be clunked and
+destroyed while the caller still expects it to be valid. A later use or
+put of oldfid can then trigger a use-after-free or refcount underflow.
 
-A later console takeover runs var_to_display(), where fb_match_mode()
-returns NULL and leaves fb_display[i].mode NULL. fbcon_switch() passes it
-to display_to_var(), and fb_videomode_to_var() dereferences the NULL mode.
+Fix this by only putting fid in the clunk_fid error path when it does not
+alias oldfid, matching the existing guard in the error path below.
 
-Keep the current mode in the list in fb_new_modelist(), the same way
-fb_set_var() does.
+This can be triggered when a multi-component walk is split into multiple
+p9_client_walk() calls and a later non-cloning walk fails. A reproducer
+and refcount warning logs are available on request.
 
+Fixes: b48dbb998d70 ("9p fid refcount: add p9_fid_get/put wrappers")
 Cc: stable@vger.kernel.org
-Assisted-by: Claude:claude-opus-4-8
-Signed-off-by: Ian Bridges <icb@fastmail.org>
-Signed-off-by: Helge Deller <deller@gmx.de>
+Reported-by: Yuxiang Yang <yangyx22@mails.tsinghua.edu.cn>
+Reported-by: Ao Wang <wangao@seu.edu.cn>
+Reported-by: Xuewei Feng <fengxw06@126.com>
+Reported-by: Qi Li <qli01@tsinghua.edu.cn>
+Reported-by: Ke Xu <xuke@tsinghua.edu.cn>
+Assisted-by: GLM 5.1
+Signed-off-by: Yizhou Zhao <zhaoyz24@mails.tsinghua.edu.cn>
+Message-ID: <20260528053918.53550-1-zhaoyz24@mails.tsinghua.edu.cn>
+Signed-off-by: Dominique Martinet <asmadeus@codewreck.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/video/fbdev/core/fbmem.c |   12 ++++++++++++
- 1 file changed, 12 insertions(+)
+ net/9p/client.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/video/fbdev/core/fbmem.c
-+++ b/drivers/video/fbdev/core/fbmem.c
-@@ -734,6 +734,18 @@ int fb_new_modelist(struct fb_info *info
- 	if (list_empty(&info->modelist))
- 		return 1;
+--- a/net/9p/client.c
++++ b/net/9p/client.c
+@@ -1092,7 +1092,8 @@ struct p9_fid *p9_client_walk(struct p9_
  
-+	/*
-+	 * The new modelist may not contain the current mode (info->var), and
-+	 * fbcon_new_modelist() below only re-points consoles mapped to this
-+	 * framebuffer. Add the current mode here so info->var keeps a match
-+	 * even when fbcon is unbound.
-+	 */
-+	if (!fb_match_mode(&info->var, &info->modelist)) {
-+		fb_var_to_videomode(&mode, &info->var);
-+		if (fb_add_videomode(&mode, &info->modelist))
-+			return 1;
-+	}
-+
- 	fbcon_new_modelist(info);
+ clunk_fid:
+ 	kfree(wqids);
+-	p9_fid_put(fid);
++	if (fid != oldfid)
++		p9_fid_put(fid);
+ 	fid = NULL;
  
- 	return 0;
+ error:
 
 
 
