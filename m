@@ -1,62 +1,61 @@
-Return-Path: <stable+bounces-271146-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-270791-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 21WIM22YRmpgZgsAu9opvQ
-	(envelope-from <stable+bounces-271146-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:57:17 +0200
+	id WsU6L5KTRmqYYwsAu9opvQ
+	(envelope-from <stable+bounces-270791-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:36:34 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 46A586FAC8B
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:57:14 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7D3EA6FA497
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:36:34 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=h9ZCtzLN;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-271146-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-271146-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=PklNh+mk;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-270791-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-270791-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 62A30305DA95
-	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:48:10 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 2D47C30277A2
+	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:34:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5129F353A60;
-	Thu,  2 Jul 2026 16:46:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 806BA33D4F0;
+	Thu,  2 Jul 2026 16:31:01 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1AD9030C15A;
-	Thu,  2 Jul 2026 16:46:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B53635F189;
+	Thu,  2 Jul 2026 16:31:00 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783010791; cv=none; b=pffvyHdSUiBS96uHoY0gN9bX2zBlsXhGmugWtWppB4bi6xQokEEWvcMA0+rAeDLQpN49e1cOtXYsAc2k55fcywJnECKZWXboEtPFJ2lA10Av9VfOgXT19YgfyLkDh1psc+x6C9gYuC1A5tlNeDuWWOmUMqrmeTI3Pt8ysEIDVLk=
+	t=1783009861; cv=none; b=TiHpvoMFrz8y/crpMTY6ZCXYTH8oIT8HJcrbflBxd6jN0BwTrYMYc2wRpLslt8JMu7C01kj/AdeBcUgDwgvzaAzYprnvW4VPwdQ8i944DfHflOaoNJGk5lLMZMRSGZsgWxh3+5PhKVXbw5OOuVM7Ywkf8XO/S19odpazEfGI8G0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783010791; c=relaxed/simple;
-	bh=mJreA93oD+c8nqRqwE8tAGGq588QQkkjEkzM90mgl8Q=;
+	s=arc-20240116; t=1783009861; c=relaxed/simple;
+	bh=oYu0iybjqAvGOCs8OaMfIsqZgiE9TC44vv4kDrrUfy8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=e5DnbdMhdchLVMT8QL3+CifiEhVmLWoKV0dscZ1Ui+zidVM/w7tsPOTZtv8R5/VNCbH6H87hK9HoQU/S/gk+1Nl9Shc/iOFQ4g9BMPo+GvGuXSbYNftO7fFp4MK1UFS1s29HZwFec/ut2EJt/EdxSxIEZh8VdvF4Kc9mbQ3M45U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=h9ZCtzLN; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80DAF1F000E9;
-	Thu,  2 Jul 2026 16:46:29 +0000 (UTC)
+	 MIME-Version; b=Kl5cvKaJ0oUArhK6nPtxQh8+irbC3VllC5rGTMNQGfurdhWt4+myZ6e/fVBR3MVVW7VigXIXRclNw6uLY9h5sePlV4UabietJHj5EDgtgnDC8gEyFgDPs/L84nsqRBV6RnSzw+07/66ksOHShBdl+IUbUoPw6Gi3Mw+yeh3zj/E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PklNh+mk; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F9271F000E9;
+	Thu,  2 Jul 2026 16:30:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1783010790;
-	bh=q8fLjxaIuNTjuzTSpBgrPmkPUSh97mdUjPWLlMEN4a0=;
+	s=korg; t=1783009859;
+	bh=dz1GnMq/APVY3/gToFKTuW3E6DCE2o8tRjl+5rbPusM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=h9ZCtzLNNR4Nbaf73WByRo/E2Tqvvxqm0+sB/BHlJ3MmSNNLDR3FQg5OVWccZ+oXP
-	 x+kQZJ1k8254ApzbWBwlKmpBAbG7bdx7HZiC9hfH/9/XJJic5xh4UATBCmQybfIvpS
-	 kusczuJUq/mTRBt+dsIJsZ83l9Fr8s2Vz4itaj5E=
+	b=PklNh+mk4cnBc2WPZoV66KtYqzN1LwqJ/SGwhWfDxzHWUt06g372L3XI5iaNZiCVM
+	 W9AoZE+TZfzg+z8RoBQv+twjjg50kvMVaIADMfKKDxwxAlUZkR4u/6kp1mLo2c7qp9
+	 erwd4ETrJHbCqNNSBbKW5HUmp6K/lp/hhBj5i5N8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kuniyuki Iwashima <kuniyu@amazon.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Sean Christopherson <seanjc@google.com>,
+	Nicholas Dudar <main.kalliope@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 037/175] phonet: Pass ifindex to fill_addr().
-Date: Thu,  2 Jul 2026 18:18:58 +0200
-Message-ID: <20260702155116.579387331@linuxfoundation.org>
+Subject: [PATCH 6.1 020/129] KVM: nVMX: Fold requested virtual interrupt check into has_nested_events()
+Date: Thu,  2 Jul 2026 18:18:59 +0200
+Message-ID: <20260702155112.579869454@linuxfoundation.org>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260702155115.766838875@linuxfoundation.org>
-References: <20260702155115.766838875@linuxfoundation.org>
+In-Reply-To: <20260702155112.163984240@linuxfoundation.org>
+References: <20260702155112.163984240@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,117 +67,189 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-271146-lists,stable=lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:kuniyu@amazon.com,m:edumazet@google.com,m:pabeni@redhat.com,m:sashal@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-270791-lists,stable=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:seanjc@google.com,m:main.kalliope@gmail.com,m:sashal@kernel.org,m:mainkalliope@gmail.com,s:lists@lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,google.com,gmail.com,kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 46A586FAC8B
+X-Rspamd-Queue-Id: 7D3EA6FA497
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuniyuki Iwashima <kuniyu@amazon.com>
+From: Sean Christopherson <seanjc@google.com>
 
-[ Upstream commit 08a9572be36819b5d9011604edfa5db6c5062a7a ]
+commit 321ef62b0c5f6f57bb8500a2ca5986052675abbf upstream.
 
-We will convert addr_doit() and getaddr_dumpit() to RCU, both
-of which call fill_addr().
+Check for a Requested Virtual Interrupt, i.e. a virtual interrupt that is
+pending delivery, in vmx_has_nested_events() and drop the one-off
+kvm_x86_ops.guest_apic_has_interrupt() hook.
 
-The former will call phonet_address_notify() outside of RCU
-due to GFP_KERNEL, so dev will not be available in fill_addr().
+In addition to dropping a superfluous hook, this fixes a bug where KVM
+would incorrectly treat virtual interrupts _for L2_ as always enabled due
+to kvm_arch_interrupt_allowed(), by way of vmx_interrupt_blocked(),
+treating IRQs as enabled if L2 is active and vmcs12 is configured to exit
+on IRQs, i.e. KVM would treat a virtual interrupt for L2 as a valid wake
+event based on L1's IRQ blocking status.
 
-Let's pass ifindex directly to fill_addr().
-
-Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Stable-dep-of: 71de0177b28d ("net: phonet: free phonet_device after RCU grace period")
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20240607172609.3205077-6-seanjc@google.com
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+[ Nicholas Dudar: backport to 6.1.y. 6.1.y predates the vmx main.c /
+  x86_ops.h split, so drop .guest_apic_has_interrupt from vmx_x86_ops in
+  vmx.c rather than vt_x86_ops in main.c. The function is static in vmx.c, so
+  upstream's x86_ops.h prototype removal does not apply. 6.1.y keeps the
+  current hwapic_isr_update signature. ]
+Signed-off-by: Nicholas Dudar <main.kalliope@gmail.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/phonet/pn_netlink.c |   13 +++++++------
- 1 file changed, 7 insertions(+), 6 deletions(-)
+ arch/x86/include/asm/kvm-x86-ops.h |  1 -
+ arch/x86/include/asm/kvm_host.h    |  1 -
+ arch/x86/kvm/vmx/nested.c          |  4 ++++
+ arch/x86/kvm/vmx/vmx.c             | 21 ---------------------
+ arch/x86/kvm/x86.c                 | 10 +---------
+ 5 files changed, 5 insertions(+), 32 deletions(-)
 
---- a/net/phonet/pn_netlink.c
-+++ b/net/phonet/pn_netlink.c
-@@ -19,7 +19,7 @@
+diff --git a/arch/x86/include/asm/kvm-x86-ops.h b/arch/x86/include/asm/kvm-x86-ops.h
+index c068565fe95474..1cfe83263b213b 100644
+--- a/arch/x86/include/asm/kvm-x86-ops.h
++++ b/arch/x86/include/asm/kvm-x86-ops.h
+@@ -81,7 +81,6 @@ KVM_X86_OP(check_apicv_inhibit_reasons)
+ KVM_X86_OP(refresh_apicv_exec_ctrl)
+ KVM_X86_OP_OPTIONAL(hwapic_irr_update)
+ KVM_X86_OP_OPTIONAL(hwapic_isr_update)
+-KVM_X86_OP_OPTIONAL_RET0(guest_apic_has_interrupt)
+ KVM_X86_OP_OPTIONAL(load_eoi_exitmap)
+ KVM_X86_OP_OPTIONAL(set_virtual_apic_mode)
+ KVM_X86_OP_OPTIONAL(set_apic_access_page_addr)
+diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_host.h
+index fe5c0f86ae389d..31395c43416dd7 100644
+--- a/arch/x86/include/asm/kvm_host.h
++++ b/arch/x86/include/asm/kvm_host.h
+@@ -1549,7 +1549,6 @@ struct kvm_x86_ops {
+ 	void (*refresh_apicv_exec_ctrl)(struct kvm_vcpu *vcpu);
+ 	void (*hwapic_irr_update)(struct kvm_vcpu *vcpu, int max_irr);
+ 	void (*hwapic_isr_update)(struct kvm_vcpu *vcpu, int isr);
+-	bool (*guest_apic_has_interrupt)(struct kvm_vcpu *vcpu);
+ 	void (*load_eoi_exitmap)(struct kvm_vcpu *vcpu, u64 *eoi_exit_bitmap);
+ 	void (*set_virtual_apic_mode)(struct kvm_vcpu *vcpu);
+ 	void (*set_apic_access_page_addr)(struct kvm_vcpu *vcpu);
+diff --git a/arch/x86/kvm/vmx/nested.c b/arch/x86/kvm/vmx/nested.c
+index ad07e83d2c1d5b..f7a790a28b9eee 100644
+--- a/arch/x86/kvm/vmx/nested.c
++++ b/arch/x86/kvm/vmx/nested.c
+@@ -3979,6 +3979,10 @@ static bool vmx_has_nested_events(struct kvm_vcpu *vcpu, bool for_injection)
  
- /* Device address handling */
+ 	vppr = *((u32 *)(vapic + APIC_PROCPRI));
  
--static int fill_addr(struct sk_buff *skb, struct net_device *dev, u8 addr,
-+static int fill_addr(struct sk_buff *skb, u32 ifindex, u8 addr,
- 		     u32 portid, u32 seq, int event);
- 
- void phonet_address_notify(int event, struct net_device *dev, u8 addr)
-@@ -31,7 +31,8 @@ void phonet_address_notify(int event, st
- 			nla_total_size(1), GFP_KERNEL);
- 	if (skb == NULL)
- 		goto errout;
--	err = fill_addr(skb, dev, addr, 0, 0, event);
++	max_irr = vmx_get_rvi();
++	if ((max_irr & 0xf0) > (vppr & 0xf0))
++		return true;
 +
-+	err = fill_addr(skb, dev->ifindex, addr, 0, 0, event);
- 	if (err < 0) {
- 		WARN_ON(err == -EMSGSIZE);
- 		kfree_skb(skb);
-@@ -92,8 +93,8 @@ static int addr_doit(struct sk_buff *skb
- 	return err;
+ 	if (vmx->nested.pi_pending && vmx->nested.pi_desc &&
+ 	    pi_test_on(vmx->nested.pi_desc)) {
+ 		max_irr = pi_find_highest_vector(vmx->nested.pi_desc);
+diff --git a/arch/x86/kvm/vmx/vmx.c b/arch/x86/kvm/vmx/vmx.c
+index e5d162e97f5031..2e6454e4cca4b4 100644
+--- a/arch/x86/kvm/vmx/vmx.c
++++ b/arch/x86/kvm/vmx/vmx.c
+@@ -4063,26 +4063,6 @@ void pt_update_intercept_for_msr(struct kvm_vcpu *vcpu)
+ 	}
  }
  
--static int fill_addr(struct sk_buff *skb, struct net_device *dev, u8 addr,
--			u32 portid, u32 seq, int event)
-+static int fill_addr(struct sk_buff *skb, u32 ifindex, u8 addr,
-+		     u32 portid, u32 seq, int event)
+-static bool vmx_guest_apic_has_interrupt(struct kvm_vcpu *vcpu)
+-{
+-	struct vcpu_vmx *vmx = to_vmx(vcpu);
+-	void *vapic_page;
+-	u32 vppr;
+-	int rvi;
+-
+-	if (WARN_ON_ONCE(!is_guest_mode(vcpu)) ||
+-		!nested_cpu_has_vid(get_vmcs12(vcpu)) ||
+-		WARN_ON_ONCE(!vmx->nested.virtual_apic_map.gfn))
+-		return false;
+-
+-	rvi = vmx_get_rvi();
+-
+-	vapic_page = vmx->nested.virtual_apic_map.hva;
+-	vppr = *((u32 *)(vapic_page + APIC_PROCPRI));
+-
+-	return ((rvi & 0xf0) > (vppr & 0xf0));
+-}
+-
+ static void vmx_msr_filter_changed(struct kvm_vcpu *vcpu)
  {
- 	struct ifaddrmsg *ifm;
- 	struct nlmsghdr *nlh;
-@@ -107,7 +108,7 @@ static int fill_addr(struct sk_buff *skb
- 	ifm->ifa_prefixlen = 0;
- 	ifm->ifa_flags = IFA_F_PERMANENT;
- 	ifm->ifa_scope = RT_SCOPE_LINK;
--	ifm->ifa_index = dev->ifindex;
-+	ifm->ifa_index = ifindex;
- 	if (nla_put_u8(skb, IFA_LOCAL, addr))
- 		goto nla_put_failure;
- 	nlmsg_end(skb, nlh);
-@@ -140,7 +141,7 @@ static int getaddr_dumpit(struct sk_buff
- 			if (addr_idx++ < addr_start_idx)
- 				continue;
+ 	struct vcpu_vmx *vmx = to_vmx(vcpu);
+@@ -8266,7 +8246,6 @@ static struct kvm_x86_ops vmx_x86_ops __initdata = {
+ 	.check_apicv_inhibit_reasons = vmx_check_apicv_inhibit_reasons,
+ 	.hwapic_irr_update = vmx_hwapic_irr_update,
+ 	.hwapic_isr_update = vmx_hwapic_isr_update,
+-	.guest_apic_has_interrupt = vmx_guest_apic_has_interrupt,
+ 	.sync_pir_to_irr = vmx_sync_pir_to_irr,
+ 	.deliver_interrupt = vmx_deliver_interrupt,
+ 	.dy_apicv_has_pending_interrupt = pi_has_pending_interrupt,
+diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
+index 10ef8a4353b32e..208a713d7ecd75 100644
+--- a/arch/x86/kvm/x86.c
++++ b/arch/x86/kvm/x86.c
+@@ -13046,12 +13046,6 @@ void kvm_arch_flush_shadow_memslot(struct kvm *kvm,
+ 	kvm_page_track_flush_slot(kvm, slot);
+ }
  
--			if (fill_addr(skb, pnd->netdev, addr << 2,
-+			if (fill_addr(skb, pnd->netdev->ifindex, addr << 2,
- 					 NETLINK_CB(cb->skb).portid,
- 					cb->nlh->nlmsg_seq, RTM_NEWADDR) < 0)
- 				goto out;
+-static inline bool kvm_guest_apic_has_interrupt(struct kvm_vcpu *vcpu)
+-{
+-	return (is_guest_mode(vcpu) &&
+-		static_call(kvm_x86_guest_apic_has_interrupt)(vcpu));
+-}
+-
+ static inline bool kvm_vcpu_has_events(struct kvm_vcpu *vcpu)
+ {
+ 	if (!list_empty_careful(&vcpu->async_pf.done))
+@@ -13077,9 +13071,7 @@ static inline bool kvm_vcpu_has_events(struct kvm_vcpu *vcpu)
+ 	     static_call(kvm_x86_smi_allowed)(vcpu, false)))
+ 		return true;
+ 
+-	if (kvm_arch_interrupt_allowed(vcpu) &&
+-	    (kvm_cpu_has_interrupt(vcpu) ||
+-	    kvm_guest_apic_has_interrupt(vcpu)))
++	if (kvm_arch_interrupt_allowed(vcpu) && kvm_cpu_has_interrupt(vcpu))
+ 		return true;
+ 
+ 	if (kvm_hv_has_stimer_pending(vcpu))
+-- 
+2.53.0
+
 
 
 
