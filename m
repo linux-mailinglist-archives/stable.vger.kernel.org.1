@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-271305-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-270872-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id qNWkExmaRmpSZwsAu9opvQ
-	(envelope-from <stable+bounces-271305-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:04:25 +0200
+	id T9PLC0ygRmrhaQsAu9opvQ
+	(envelope-from <stable+bounces-270872-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:30:52 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0B9F46FAF07
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:04:25 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id AB3906FB65C
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:30:51 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=G5XLiB9Y;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-271305-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-271305-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=tJr5e0dX;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-270872-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-270872-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 329BD312CC21
-	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:53:48 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id EBA403214274
+	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:37:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 12E2631F9A2;
-	Thu,  2 Jul 2026 16:53:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1352233E348;
+	Thu,  2 Jul 2026 16:34:31 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA15A348C63;
-	Thu,  2 Jul 2026 16:53:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC16130C146;
+	Thu,  2 Jul 2026 16:34:29 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783011200; cv=none; b=LCOIlP3gZ5VvVzgiGbIu9PgDQbXGypLZCpHkWANpePp0Eqg4rq4Hz32nwXzzuVD454gykEZxRJCYAaqqFslYW1sH6CPxHo9ahzNOxT8UAylGEF2VSKf5tL5kG+AhIP0B2nxpkzE747cU/qzLBCLbdFHby1oSJHTlFlkH2fTZcvI=
+	t=1783010070; cv=none; b=UafG7bbNVXVvWvN29huGWFrVp9pdOcPXKvsqiTNgjAFGBlDhf2bH2ISutD+DsG9fDoN3Xa0Dv9pSJzpED/awlm4Qgtm1/EZZp5mbgdOBS4NVfO/aEmtqrDgeHwSAAvx4m8uSSZllYHQAP/BCeDT51YxEmxAok0eqjCT0t1gRczU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783011200; c=relaxed/simple;
-	bh=WYem+MJN6uCg55Lho+6mKMcNWMv+8QDnecI3G4IQEcQ=;
+	s=arc-20240116; t=1783010070; c=relaxed/simple;
+	bh=gtpJKb+5Tt9S26PPrKuPBa//Ck3hhOc9mQUkd5n+3jM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=q+7HxkLhxskGSvdvmfCZsK7OJto9hyzqXIFLRwg2UHbOI2N7m+/a165NFYUrK8OSN9+JEChEW1BVm3M26QMZ2p/PN+k4Tyw2aLBPyFtBZMZ90KJaS+c1Ka9SZYf2Lf35uE0BiE6pqdtSyg6HsvyrJsrlVB20oJjgr4Z6n43JhEs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G5XLiB9Y; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C6F21F000E9;
-	Thu,  2 Jul 2026 16:53:19 +0000 (UTC)
+	 MIME-Version; b=rJjLctEGGirjj5FrzUsnrbHWYJtGtMlYrsANgTmhT89jXEFc9gbOJBAL/IEN/ZZOkktO8o6UrlsH3XP9wb/s0GzQUVdm67x3yzr4Uic0cBHbhdVtqGdA2IjqHtxTQHJbvwSNLnhFm44hI9ujDxYYWxcLnS6bwlVeAmfVF9lkc+4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tJr5e0dX; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 377231F000E9;
+	Thu,  2 Jul 2026 16:34:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1783011199;
-	bh=fs4/Sbe59ZchmDGeknNQ+0P3KfpCEApSHzvNJwiX6lg=;
+	s=korg; t=1783010069;
+	bh=LPoXDF9d9HC6RMGG2VM3aA1GEmOcz4spkhQ/N59rXuk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=G5XLiB9YFK+pRfDCaSToXFeoUNJ9uDo+HtvImzhSDGV+pvBICDRiAET0p0tYVjvLG
-	 UqvNEMaAEjg0l9p7R7LteCGTt7NVPqGpvk9E4+aZAqPbR7t5wN4Hd3CXHPsLMtGmM0
-	 F1ts/9icf6p29N618kMnJTDQ49GofbAA8lHPXd4w=
+	b=tJr5e0dXWLBSTGoWIeid2z/KQmniGC4TEvMCQvz4UUsBY7+Nht2hXSjW266+gXgh8
+	 QRbQYuPofx3KpCOsw5NMiMt2xW3qGBMbXvKY/ab0rxtZPyREJc1+Vi3r6DzPLGD7j0
+	 QRym+1DI5EaMOR66xeqnfAOHi/9Zr7nv/x9HnEbs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Sven Eckelmann <sven@narfation.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 019/108] batman-adv: fix (m|b)cast csum after decrementing TTL
+	Qingshuang Fu <fuqingshuang@kylinos.cn>,
+	Thomas Gleixner <tglx@kernel.org>
+Subject: [PATCH 6.1 097/129] irqchip/imgpdc: Fix resource leak, add missing chained handler cleanup on remove
 Date: Thu,  2 Jul 2026 18:20:16 +0200
-Message-ID: <20260702155112.507336535@linuxfoundation.org>
+Message-ID: <20260702155114.149694808@linuxfoundation.org>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260702155112.110058792@linuxfoundation.org>
-References: <20260702155112.110058792@linuxfoundation.org>
+In-Reply-To: <20260702155112.163984240@linuxfoundation.org>
+References: <20260702155112.163984240@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,22 +71,22 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-271305-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-270872-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:stable@kernel.org,m:sven@narfation.org,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:fuqingshuang@kylinos.cn,m:tglx@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
@@ -98,136 +97,73 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,narfation.org:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 0B9F46FAF07
+X-Rspamd-Queue-Id: AB3906FB65C
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sven Eckelmann <sven@narfation.org>
+From: Qingshuang Fu <fuqingshuang@kylinos.cn>
 
-commit e728bbdf32660c8f32b8f5e8d09427a2c131ad60 upstream.
+commit 37738fdf2ab1e504d1c63ce5bc0aeb6452d8f057 upstream.
 
-The broadcast and multicast packets can be received at the same time by the
-local system and forwarded to other nodes. Both are simply decrementing the
-TTL at the beginning of the receive path - independent of chosen paths
-(receive/forward). But such a modification of the data conflicts with the
-hw csum. This is not a problem when the packet is directly forwarded but
-can cause errors in the local receive path.
+The driver allocates domain generic chips using
+irq_alloc_domain_generic_chips() during probe and sets up chained
+handlers using irq_set_chained_handler_and_data(). However, on driver
+removal, the generic chips are not freed and the chained handlers are
+not removed.
 
-Such a problem can then trigger a "hw csum failure". The receiver path must
-therefore ensure that the csum is fixed for each modification of the
-payload before batadv_interface_rx() is reached.
+The generic chips remain on the global gc_list and may later be accessed by
+generic interrupt chip suspend, resume, or shutdown callbacks after the
+driver has been removed, potentially resulting in a use-after-free and
+kernel crash.
 
-Since all batman-adv packet types with a ttl have it as u8 at offset 2, a
-helper can be used for all of them. But it is only used at the moment for
-batadv_bcast_packet and batadv_mcast_packet because they are the only ones
-which deliver the packet locally but unconditionally modify the TTL.
+The chained handlers that were installed in probe for peripheral and
+syswake interrupts are also left dangling, which can lead to spurious
+interrupts accessing freed memory.
 
-Cc: stable@kernel.org
-Fixes: 3f69339068f9 ("batman-adv: bcast: queue per interface, if needed")
-Fixes: 07afe1ba288c ("batman-adv: mcast: implement multicast packet reception and forwarding")
-Signed-off-by: Sven Eckelmann <sven@narfation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fix these issues by:
+
+  - Setting IRQ_DOMAIN_FLAG_DESTROY_GC flag in domain->flags, so the
+    core code automatically removes generic chips when irq_domain_remove()
+    is called
+
+  - Clearing all chained handlers with NULL in pdc_intc_remove()
+
+Fixes: b6ef9161e43a ("irq-imgpdc: add ImgTec PDC irqchip driver")
+Signed-off-by: Qingshuang Fu <fuqingshuang@kylinos.cn>
+Signed-off-by: Thomas Gleixner <tglx@kernel.org>
+Cc: stable@vger.kernel.org
+Link: https://patch.msgid.link/20260618021352.661773-1-fffsqian@163.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/batman-adv/routing.c | 58 ++++++++++++++++++++++++++++++++++++++--
- 1 file changed, 56 insertions(+), 2 deletions(-)
+ drivers/irqchip/irq-imgpdc.c |    6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/net/batman-adv/routing.c b/net/batman-adv/routing.c
-index 0672dc30bed3b1..cdcea90db61235 100644
---- a/net/batman-adv/routing.c
-+++ b/net/batman-adv/routing.c
-@@ -8,6 +8,7 @@
- #include "main.h"
+--- a/drivers/irqchip/irq-imgpdc.c
++++ b/drivers/irqchip/irq-imgpdc.c
+@@ -378,6 +378,7 @@ static int pdc_intc_probe(struct platfor
+ 		dev_err(&pdev->dev, "cannot add IRQ domain\n");
+ 		return -ENOMEM;
+ 	}
++	priv->domain->flags |= IRQ_DOMAIN_FLAG_DESTROY_GC;
  
- #include <linux/atomic.h>
-+#include <linux/build_bug.h>
- #include <linux/byteorder/generic.h>
- #include <linux/compiler.h>
- #include <linux/errno.h>
-@@ -204,6 +205,59 @@ bool batadv_check_management_packet(struct sk_buff *skb,
- 	return true;
+ 	/*
+ 	 * Set up 2 generic irq chips with 2 chip types.
+@@ -465,6 +466,11 @@ static int pdc_intc_remove(struct platfo
+ {
+ 	struct pdc_intc_priv *priv = platform_get_drvdata(pdev);
+ 
++	for (unsigned int i = 0; i < priv->nr_perips; ++i)
++		irq_set_chained_handler_and_data(priv->perip_irqs[i], NULL, NULL);
++
++	irq_set_chained_handler_and_data(priv->syswake_irq, NULL, NULL);
++
+ 	irq_domain_remove(priv->domain);
+ 	return 0;
  }
- 
-+/**
-+ * batadv_skb_decrement_ttl() - decrement ttl in a batman-adv header, csum-safe
-+ * @skb: the received packet with @skb->data pointing to the batman-adv header
-+ *
-+ * Supports the following packet types, all of which carry the TTL at offset 2:
-+ *
-+ * - batadv_ogm_packet
-+ * - batadv_ogm2_packet
-+ * - batadv_icmp_header
-+ * - batadv_icmp_packet
-+ * - batadv_icmp_tp_packet
-+ * - batadv_icmp_packet_rr
-+ * - batadv_unicast_packet
-+ * - batadv_frag_packet
-+ * - batadv_bcast_packet
-+ * - batadv_mcast_packet
-+ * - batadv_coded_packet
-+ * - batadv_unicast_tvlv_packet
-+ *
-+ * Return: true if the packet may be forwarded (ttl decremented),
-+ *  false if it must be dropped (ttl would expire)
-+ */
-+static bool batadv_skb_decrement_ttl(struct sk_buff *skb)
-+{
-+	static const size_t ttl_offset = 2;
-+	u8 *ttl_pos;
-+
-+	BUILD_BUG_ON(offsetof(struct batadv_ogm_packet, ttl) != ttl_offset);
-+	BUILD_BUG_ON(offsetof(struct batadv_ogm2_packet, ttl) != ttl_offset);
-+	BUILD_BUG_ON(offsetof(struct batadv_icmp_header, ttl) != ttl_offset);
-+	BUILD_BUG_ON(offsetof(struct batadv_icmp_packet, ttl) != ttl_offset);
-+	BUILD_BUG_ON(offsetof(struct batadv_icmp_tp_packet, ttl) != ttl_offset);
-+	BUILD_BUG_ON(offsetof(struct batadv_icmp_packet_rr, ttl) != ttl_offset);
-+	BUILD_BUG_ON(offsetof(struct batadv_unicast_packet, ttl) != ttl_offset);
-+	BUILD_BUG_ON(offsetof(struct batadv_frag_packet, ttl) != ttl_offset);
-+	BUILD_BUG_ON(offsetof(struct batadv_bcast_packet, ttl) != ttl_offset);
-+	BUILD_BUG_ON(offsetof(struct batadv_mcast_packet, ttl) != ttl_offset);
-+	BUILD_BUG_ON(offsetof(struct batadv_coded_packet, ttl) != ttl_offset);
-+	BUILD_BUG_ON(offsetof(struct batadv_unicast_tvlv_packet, ttl) != ttl_offset);
-+
-+	ttl_pos = skb->data + ttl_offset;
-+
-+	/* would expire on this hop -> drop, leave header + csum untouched */
-+	if (*ttl_pos < 2)
-+		return false;
-+
-+	skb_postpull_rcsum(skb, ttl_pos, 1);
-+	(*ttl_pos)--;
-+	skb_postpush_rcsum(skb, ttl_pos, 1);
-+
-+	return true;
-+}
-+
- /**
-  * batadv_recv_my_icmp_packet() - receive an icmp packet locally
-  * @bat_priv: the bat priv with all the mesh interface information
-@@ -1197,7 +1251,7 @@ int batadv_recv_bcast_packet(struct sk_buff *skb,
- 
- 	bcast_packet = (struct batadv_bcast_packet *)skb->data;
- 
--	if (bcast_packet->ttl-- < 2)
-+	if (!batadv_skb_decrement_ttl(skb))
- 		goto free_skb;
- 
- 	orig_node = batadv_orig_hash_find(bat_priv, bcast_packet->orig);
-@@ -1304,7 +1358,7 @@ int batadv_recv_mcast_packet(struct sk_buff *skb,
- 		goto free_skb;
- 
- 	mcast_packet = (struct batadv_mcast_packet *)skb->data;
--	if (mcast_packet->ttl-- < 2)
-+	if (!batadv_skb_decrement_ttl(skb))
- 		goto free_skb;
- 
- 	tvlv_buff = (unsigned char *)(skb->data + hdr_size);
--- 
-2.53.0
-
 
 
 
