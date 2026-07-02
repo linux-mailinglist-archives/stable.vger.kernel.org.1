@@ -1,179 +1,117 @@
-Return-Path: <stable+bounces-270528-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-270530-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id cB4SLQJwRmpYVAsAu9opvQ
-	(envelope-from <stable+bounces-270528-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 16:04:50 +0200
+	id zQdUL3JwRmpnVAsAu9opvQ
+	(envelope-from <stable+bounces-270530-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 16:06:42 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 156D36F8AC4
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 16:04:50 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 594A76F8AFC
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 16:06:42 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=i53A+bkl;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-270528-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-270528-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=aRebAApF;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-270530-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-270530-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 971353029E56
-	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 14:01:56 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id E9F4D300AC8A
+	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 14:06:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 687B54BCAA0;
-	Thu,  2 Jul 2026 14:01:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6FC354C0427;
+	Thu,  2 Jul 2026 14:06:39 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BFE64BC023
-	for <stable@vger.kernel.org>; Thu,  2 Jul 2026 14:01:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C78D4ADD9D
+	for <stable@vger.kernel.org>; Thu,  2 Jul 2026 14:06:38 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783000916; cv=none; b=marH4ONFY361xaFOAlByR7c/mtm+Um6GALsL2ntyEovAQkiv7zqV7cH3ABHv8rcbty34aSRljzeSNC0qPOyGqPqoyTPbhjvGnY6riczivh3rk+G7gLBl2kNwI1SSv/DCKxlNpTXMp9CBI4i+NS0G2kAUIOw8I07LAWVAYim6uhw=
+	t=1783001199; cv=none; b=e69FXrp7JLBlS8PwkYzbkeF7oJaEDCPzmBSc10lfsurw7SI2bA9ZfRL6asqsauJNImsoxyb1+aQap+s4JteQRmYLymL1R0JhBe1Qg6w9HtnmFoWqcBNnPlkzZcPMRRRVr3L4v2yuEv94e/qy5MYLw393j7A1ddZEPdLARmF/aTg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783000916; c=relaxed/simple;
-	bh=Q7t0Ay93GiOBF6eZbYtm1bOiPsRelPK0tVmEmjkrloA=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=BlJBIBRH7lB07g4Eawz7Nhm72330fbjUB7dkHxD1PjiRm9qFSTm0Mc8cKgyTO0FYKQMHctYqjMqFVPehiKluN3N5I2arsLvfuE6x2dWq2eIQVGYn8tw5732wLzvZn/CUSo777weHaKv7UW19BCK+6Cfg20aWs1GDRb58PHIWz/g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i53A+bkl; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97D391F000E9;
-	Thu,  2 Jul 2026 14:01:54 +0000 (UTC)
+	s=arc-20240116; t=1783001199; c=relaxed/simple;
+	bh=QBvbOqincIxXhJ4V+ybUttC3yJEWzPT9MEGVDUtBfj0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=RJDf9/zl/wd6Pdn3MLI4r9kdAsKy0bk83mbfMQpgt6kFks4pOp2fr43MEXIV53I2YkHhv2Xy4WDyLyFfbZM0TL41sFugrQt1e2pMuNg/GxLO911SWAvYy3XZnrqurJQ1yAHSNossQsvutVuNfarAA0g+DDnWeQg3/ti2td2uyt4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aRebAApF; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69CFC1F000E9;
+	Thu,  2 Jul 2026 14:06:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1783000915;
-	bh=DiAkerpWAEORT6kLFVS9npBiXhw+r4nEVnq06ii+CEU=;
-	h=Subject:To:Cc:From:Date;
-	b=i53A+bkl314HR/mGiYisH1W9KTo758ySRRU3thmI2XpDQKMnwFkYaTSIx7UaanfhA
-	 gRRl3WlKs3CxYw20MlKcoy/7nKQNTucGjBfbZjUoOhwCPxr7d88kg8k8kEddH38Zad
-	 HljkVyCoN+jwxKEV+iiJC29f51Nyr7MRUYMoUxqs=
-Subject: FAILED: patch "[PATCH] nfsd: reset write verifier on deferred writeback errors" failed to apply to 5.10-stable tree
-To: jlayton@kernel.org,chuck.lever@oracle.com,clm@meta.com
-Cc: <stable@vger.kernel.org>
-From: <gregkh@linuxfoundation.org>
-Date: Thu, 02 Jul 2026 15:59:04 +0200
-Message-ID: <2026070204-festivity-sternness-523f@gregkh>
+	s=korg; t=1783001197;
+	bh=9+PRrGX0q7rIZhmQvZ2SqH5QvL4xftI6TYnwQruRhDI=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=aRebAApFUlly9YzQTPtaRrC1dJfKMHZNG1sPngDX/kRaDiriY3Zu0ybMSnWC6JNQV
+	 vxHLUQI+87HZHLRpm0WzhjlA0drxrVGgArknipnfenULFak7658yaa7Vr6JacC/CM0
+	 FeLoJls4ScUshFWPESidd4cf+u92SNRVcCpVIzgc=
+Date: Thu, 2 Jul 2026 16:06:48 +0200
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Cc: stable@vger.kernel.org, Jan Kiszka <jan.kiszka@siemens.com>,
+	Jon Humphreys <j-humphreys@ti.com>,
+	Russell King <rmk+kernel@armlinux.org.uk>
+Subject: Re: [PATCH v6.18 0/3] ARM: PREEMPT_RT backports
+Message-ID: <2026070229-rendering-plus-be9d@gregkh>
+References: <20260629144131.788576-1-bigeasy@linutronix.de>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260629144131.788576-1-bigeasy@linutronix.de>
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [2.34 / 15.00];
+X-Spamd-Result: default: False [3.84 / 15.00];
 	MID_END_EQ_FROM_USER_PART(4.00)[];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	MID_RHS_NOT_FQDN(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-270528-lists,stable=lfdr.de];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS(0.00)[m:jlayton@kernel.org,m:chuck.lever@oracle.com,m:clm@meta.com,m:stable@vger.kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-270530-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FROM_NO_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	TO_DN_NONE(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
+	TO_DN_SOME(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:bigeasy@linutronix.de,m:stable@vger.kernel.org,m:jan.kiszka@siemens.com,m:j-humphreys@ti.com,m:rmk+kernel@armlinux.org.uk,m:rmk@armlinux.org.uk,s:lists@lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
 	FORGED_SENDER_FORWARDING(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_THREE(0.00)[4];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	MIME_TRACE(0.00)[0:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[meta.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,gregkh:mid,vger.kernel.org:from_smtp,oracle.com:email]
+	TAGGED_RCPT(0.00)[stable,kernel];
+	MISSING_XM_UA(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,gregkh:mid]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 156D36F8AC4
+X-Rspamd-Queue-Id: 594A76F8AFC
 
+On Mon, Jun 29, 2026 at 04:41:28PM +0200, Sebastian Andrzej Siewior wrote:
+> Hi,
+> 
+> ARM missed the PREEMPT_RT window for v6.18. The following three patches
+> have been merged as of v7.1-rc1 and are the missing pieces.
+> 
+> I've been asked by people if it would be possible to include them in the
+> stable tree as it would make their life easier.
 
-The patch below does not apply to the 5.10-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
-
-To reproduce the conflict and resubmit, you may use the following commands:
-
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
-git checkout FETCH_HEAD
-git cherry-pick -x 2090b05803faab8a9fa62fbff871007862cac1b7
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026070204-festivity-sternness-523f@gregkh' --subject-prefix 'PATCH 5.10.y' 'HEAD^..'
-
-Possible dependencies:
-
-
+Why can't the -rt patchset just include these?  Why put the burden on
+us?
 
 thanks,
 
 greg k-h
-
------------------- original commit in Linus's tree ------------------
-
-From 2090b05803faab8a9fa62fbff871007862cac1b7 Mon Sep 17 00:00:00 2001
-From: Jeff Layton <jlayton@kernel.org>
-Date: Fri, 22 May 2026 12:44:19 -0400
-Subject: [PATCH] nfsd: reset write verifier on deferred writeback errors
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-
-nfsd_vfs_write() and nfsd_commit() both call filemap_check_wb_err() to
-detect deferred writeback errors, but neither rotates the server's write
-verifier (nn->writeverf) when this check fails. Every other
-durable-storage-failure path in these functions calls
-commit_reset_write_verifier() before returning an error.
-
-The missing rotation means clients holding UNSTABLE write data under the
-current verifier will COMMIT, receive the unchanged verifier back, and
-conclude their data is durable — silently dropping data that failed
-writeback. This violates the UNSTABLE+COMMIT durability contract
-(RFC 1813 §3.3.7, RFC 8881 §18.32).
-
-Add commit_reset_write_verifier() calls at both filemap_check_wb_err()
-error sites, matching the pattern used by adjacent error paths in the
-same functions. The helper already filters -EAGAIN and -ESTALE
-internally, so the calls are unconditionally safe.
-
-Reported-by: Chris Mason <clm@meta.com>
-Fixes: 555dbf1a9aac ("nfsd: Replace use of rwsem with errseq_t")
-Cc: stable@vger.kernel.org
-Assisted-by: kres:claude-opus-4-6
-Signed-off-by: Jeff Layton <jlayton@kernel.org>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
-
-diff --git a/fs/nfsd/vfs.c b/fs/nfsd/vfs.c
-index cba473969429..7e6468bdc723 100644
---- a/fs/nfsd/vfs.c
-+++ b/fs/nfsd/vfs.c
-@@ -1513,8 +1513,10 @@ nfsd_vfs_write(struct svc_rqst *rqstp, struct svc_fh *fhp,
- 	nfsd_stats_io_write_add(nn, exp, *cnt);
- 	fsnotify_modify(file);
- 	host_err = filemap_check_wb_err(file->f_mapping, since);
--	if (host_err < 0)
-+	if (host_err < 0) {
-+		commit_reset_write_verifier(nn, rqstp, host_err);
- 		goto out_nfserr;
-+	}
- 
- 	if (stable && fhp->fh_use_wgather) {
- 		host_err = wait_for_concurrent_writes(file);
-@@ -1694,6 +1696,8 @@ nfsd_commit(struct svc_rqst *rqstp, struct svc_fh *fhp, struct nfsd_file *nf,
- 			nfsd_copy_write_verifier(verf, nn);
- 			err2 = filemap_check_wb_err(nf->nf_file->f_mapping,
- 						    since);
-+			if (err2 < 0)
-+				commit_reset_write_verifier(nn, rqstp, err2);
- 			err = nfserrno(err2);
- 			break;
- 		case -EINVAL:
-
 
