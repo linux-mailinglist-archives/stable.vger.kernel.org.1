@@ -1,62 +1,60 @@
-Return-Path: <stable+bounces-271303-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-270869-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id eFDHORiaRmpRZwsAu9opvQ
-	(envelope-from <stable+bounces-271303-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:04:24 +0200
+	id hG20EX6hRmpOagsAu9opvQ
+	(envelope-from <stable+bounces-270869-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:35:58 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 583406FAF02
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:04:24 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 429336FB788
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:35:57 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=RJknhfjw;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-271303-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-271303-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=v7wsk6Lt;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-270869-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-270869-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 7843C3174FD4
-	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:53:46 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 34C5C315D686
+	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:37:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA1133446A7;
-	Thu,  2 Jul 2026 16:53:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2DA3C35F61A;
+	Thu,  2 Jul 2026 16:34:23 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D282318B9D;
-	Thu,  2 Jul 2026 16:53:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA97235E1CE;
+	Thu,  2 Jul 2026 16:34:21 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783011195; cv=none; b=n2FRFUx/TSjHqCIlGdtE4oY9f8Y3qnaV+NpjZ73vHGgoeEo/uSZOnBPJQBmYLh8zm3qq2Rudf5VXjgmZdsWf+WLEB9stwuQBHJFYMiXsM6gMWYwyaC+IW6Ix/V4c4PTUIu1OdsE8g6cfL4Guj0EEAsO5n9odnFCFpoLbHnqHI40=
+	t=1783010062; cv=none; b=YA+Y9bMQz2tqajqocUzlNzhHlN/WmLdlLSu0ViAlXbAQpP7gyGqhRsQYbgDc+E0StGl0X7K2cw8E0G+9u+lyVjkFvl4CEcQuEKzMNRYSA6dk7iQVfSriMfCHCCDOM0R2L2lPXtbYnx73aOP9r7R8Zv1e2r29RkXtBoS9OL8DKeg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783011195; c=relaxed/simple;
-	bh=h0pY7yrrJHxe2sLoF7xDiHhpRWFFgoPuBDqRsfI6Rwg=;
+	s=arc-20240116; t=1783010062; c=relaxed/simple;
+	bh=VNLarYh63fABAKKoJd1jlu5QDy2WT70ZV5vqx1AUoUY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HhjB6IUyhrU90ujeVqokdwVX2dGqs4jACVU04ya1EweU+jsQFSykLjG96l1mcmo+0RCLy346Ov5LzCfX7I0KVYkHdhhY776FDgErQRnWP0Jns6igEATXifJXYXvf/3Zu+kl9mJ+ZjRYDX3UKTEkd/BmgLplapSrWOHwkkmiIIOQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RJknhfjw; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2C591F000E9;
-	Thu,  2 Jul 2026 16:53:13 +0000 (UTC)
+	 MIME-Version; b=QndThImscJ0gLfl0JUMn/kjDwY+pgPw8kG+22usaQKifdZWzIAniIPJ2B+rKUQsSEGtuWQOwdA1QvVdrebbsWtGOyVt/aqnqyWwFYCSYsA1b1mfAocz7ppEZQHmCTtD1KiyE5awpBRNyISSeaTPhrfbAqexqpkBsDWpsjG8W+zM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v7wsk6Lt; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D94E1F000E9;
+	Thu,  2 Jul 2026 16:34:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1783011194;
-	bh=CvscdMwCTgF363hdLIv22rsUpG3/XaV/b7m0C3wWUfE=;
+	s=korg; t=1783010061;
+	bh=Z72m2jjlrNy+27WcCmalgBDYk/jMxwWkg7IWAfxIyAU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=RJknhfjw+OOdbWAYLFpKLwscD3fL9yrkNzJVFKzxWi5M/VqtmUH6X8KydjTOpd07G
-	 SV3cZltIzsvlvG2q8WPKkQFYdj5dmQXhwALAdqIteld1Y8+nFV8pvZ6LWFx9PtksBk
-	 A+gylziV8ECBk6YHZyXoi/x//49kuh3SdqDpaRag=
+	b=v7wsk6Ltw26gDjNWZb5MHo2ytUbBwBSd/tnpW7sbz48MpHmUSmwKQT7fUoxtE1VVV
+	 hNrLmsNYr2x3rBdOFwb5jszZHpObNuc7ruzXmJjZyHOkpBRxpff+c8VbyDlmwOj0uh
+	 +pcDWukypBdAxey+ZHd9g4qGK0x9o1mWEVKA69QE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Nora Schiffer <neocturne@universe-factory.net>,
-	Sven Eckelmann <sven@narfation.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 017/108] batman-adv: gw: dont deselect gateway with active hardif
+	Guo Ren <guoren@kernel.org>,
+	Huacai Chen <chenhuacai@loongson.cn>
+Subject: [PATCH 6.1 095/129] LoongArch: Report dying CPU to RCU in stop_this_cpu()
 Date: Thu,  2 Jul 2026 18:20:14 +0200
-Message-ID: <20260702155112.466830154@linuxfoundation.org>
+Message-ID: <20260702155114.109325852@linuxfoundation.org>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260702155112.110058792@linuxfoundation.org>
-References: <20260702155112.110058792@linuxfoundation.org>
+In-Reply-To: <20260702155112.163984240@linuxfoundation.org>
+References: <20260702155112.163984240@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,122 +68,98 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-271303-lists,stable=lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-270869-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:stable@kernel.org,m:neocturne@universe-factory.net,m:sven@narfation.org,m:sashal@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	TO_DN_SOME(0.00)[];
+	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:guoren@kernel.org,m:chenhuacai@loongson.cn,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,narfation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,universe-factory.net:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,loongson.cn:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 583406FAF02
+X-Rspamd-Queue-Id: 429336FB788
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sven Eckelmann <sven@narfation.org>
+From: Huacai Chen <chenhuacai@loongson.cn>
 
-commit df97a7107b16375a10a36d7a63e9b4291a8ac680 upstream.
+commit f2539c56c74691e7a88af6372ba2b48c06ed2fe4 upstream.
 
-The batadv_hardif_cnt() was previously checking if there is an
-batadv_hard_iface->mesh_iface which is has the same mesh_iface. And since
-batadv_hardif_disable_interface() was resetting the
-batadv_hard_iface->mesh_iface after this check, it had to verify whether
-*1* interface was still part of the mesh_iface before it started the
-gateway deselection.
+This is a port of MIPS commit 9f3f3bdc6d9dac1 ("MIPS: smp: report dying
+CPU to RCU in stop_this_cpu()"). smp_send_stop() parks all secondary
+CPUs in stop_this_cpu(). And the function marks the CPU offline for the
+scheduler via set_cpu_online(false) but never informs RCU, so RCU keeps
+expecting a quiescent state from CPUs that are now spinning forever with
+interrupts disabled.
 
-But after batadv_hardif_cnt() is now checking the lower interfaces of
-mesh_iface and batadv_hardif_disable_interface() already removed the
-interface via netdev_upper_dev_unlink() earlier in this function, the check
-must now make sure that *0* interfaces can be found by batadv_hardif_cnt()
-before selected gateway must be deselected. Otherwise the deselection would
-already happen one batadv_hard_iface too early.
+As long as nothing waits for an RCU grace period after smp_send_stop()
+this is harmless, which is why it went unnoticed. However, since commit
+91840be8f710370 ("irq_work: Fix use-after-free in irq_work_single() on
+PREEMPT_RT"), irq_work_sync() calls synchronize_rcu() on architectures
+without an irq_work self-IPI, i.e. where arch_irq_work_has_interrupt()
+returns false. Any irq_work_sync() issued in the reboot/shutdown/halt
+path after smp_send_stop() then blocks on a grace period that can never
+complete, hanging the reboot:
 
-Because a 0 hardif count from batadv_hardif_cnt() is equal to an empty
-list, it is possible to replace the counting with a simple list_empty().
+  WARNING: CPU: 0 PID: 15 at kernel/irq_work.c:144 irq_work_queue_on
+  ...
+  rcu: INFO: rcu_sched detected stalls on CPUs/tasks:
+  rcu: Offline CPU 1 blocking current GP.
+  rcu: Offline CPU 2 blocking current GP.
+  rcu: Offline CPU 3 blocking current GP.
 
-Cc: stable@kernel.org
-Fixes: 7dc284702bcd ("batman-adv: store hard_iface as iflink private data")
-Reviewed-by: Nora Schiffer <neocturne@universe-factory.net>
-Signed-off-by: Sven Eckelmann <sven@narfation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This issue needs some hacks to reproduce, and it was not noticed on
+LoongArch because arch_irq_work_has_interrupt() usually returns true.
+
+Call rcutree_report_cpu_dead() once interrupts are disabled, mirroring
+the generic CPU-hotplug offline path, so RCU stops waiting on the parked
+CPUs and grace periods can still complete. LoongArch shuts down all CPUs
+here without going through the CPU-hotplug mechanism, so this report is
+not otherwise issued.
+
+Cc: <stable@vger.kernel.org>
+Fixes: 91840be8f710 ("irq_work: Fix use-after-free in irq_work_single() on PREEMPT_RT")
+Reviewed-by: Guo Ren <guoren@kernel.org>
+Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/batman-adv/hard-interface.c | 28 ++--------------------------
- 1 file changed, 2 insertions(+), 26 deletions(-)
+ arch/loongarch/kernel/smp.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/net/batman-adv/hard-interface.c b/net/batman-adv/hard-interface.c
-index 1c488049d55463..39b1ed813497d2 100644
---- a/net/batman-adv/hard-interface.c
-+++ b/net/batman-adv/hard-interface.c
-@@ -786,30 +786,6 @@ int batadv_hardif_enable_interface(struct batadv_hard_iface *hard_iface,
- 	return ret;
+--- a/arch/loongarch/kernel/smp.c
++++ b/arch/loongarch/kernel/smp.c
+@@ -517,6 +517,7 @@ static void stop_this_cpu(void *dummy)
+ 	set_cpu_online(smp_processor_id(), false);
+ 	calculate_cpu_foreign_map();
+ 	local_irq_disable();
++	rcutree_report_cpu_dead();
+ 	while (true);
  }
  
--/**
-- * batadv_hardif_cnt() - get number of interfaces enslaved to mesh interface
-- * @mesh_iface: mesh interface to check
-- *
-- * This function is only using RCU for locking - the result can therefore be
-- * off when another function is modifying the list at the same time. The
-- * caller can use the rtnl_lock to make sure that the count is accurate.
-- *
-- * Return: number of connected/enslaved hard interfaces
-- */
--static size_t batadv_hardif_cnt(struct net_device *mesh_iface)
--{
--	struct batadv_hard_iface *hard_iface;
--	struct list_head *iter;
--	size_t count = 0;
--
--	rcu_read_lock();
--	netdev_for_each_lower_private_rcu(mesh_iface, hard_iface, iter)
--		count++;
--	rcu_read_unlock();
--
--	return count;
--}
--
- /**
-  * batadv_hardif_disable_interface() - Remove hard interface from mesh interface
-  * @hard_iface: hard interface to be removed
-@@ -850,8 +826,8 @@ void batadv_hardif_disable_interface(struct batadv_hard_iface *hard_iface)
- 	netdev_upper_dev_unlink(hard_iface->net_dev, hard_iface->mesh_iface);
- 	batadv_hardif_recalc_extra_skbroom(hard_iface->mesh_iface);
- 
--	/* nobody uses this interface anymore */
--	if (batadv_hardif_cnt(hard_iface->mesh_iface) <= 1)
-+	/* nobody uses this mesh interface anymore */
-+	if (list_empty(&hard_iface->mesh_iface->adj_list.lower))
- 		batadv_gw_check_client_stop(bat_priv);
- 
- 	hard_iface->mesh_iface = NULL;
--- 
-2.53.0
-
 
 
 
