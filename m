@@ -1,61 +1,64 @@
-Return-Path: <stable+bounces-271279-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-271362-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id rm8aIymbRmriZwsAu9opvQ
-	(envelope-from <stable+bounces-271279-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:08:57 +0200
+	id 15FZJrGaRmqeZwsAu9opvQ
+	(envelope-from <stable+bounces-271362-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:06:57 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id F0D726FB0B2
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:08:56 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 426886FB002
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:06:57 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=qus0cxVD;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-271279-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-271279-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="NT/8HOOk";
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-271362-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-271362-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 5EF2F316A7C3
-	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:53:15 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 192723068A1B
+	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:55:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F57F358381;
-	Thu,  2 Jul 2026 16:52:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B12DD24E4C3;
+	Thu,  2 Jul 2026 16:55:45 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5144C347BA7;
-	Thu,  2 Jul 2026 16:52:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67AEC1C695;
+	Thu,  2 Jul 2026 16:55:44 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783011132; cv=none; b=Dfya+FNm85k1nx0OAY+WMKw00N4Ds+2JCDjWIQxT4Kzf6qIJHpY4PR2GoWSSUZ6+ATFqqlm6SWX9YatQfPOPRRqfiog+6P+G/wwRVbT7n985lbLjo0zC9HPT37z7hJ+Z9P0+EW30lSBHJzYB43v8bgqILhfBksdAmiN13sj8n8Y=
+	t=1783011345; cv=none; b=dZVx5HnEyT342fFN9imo8w5pfl86WrImPi2YaO/ni5PMRV/zbMSeC3DSXAtkr/ed/gieUcYcRIskSlg+DzbxCJvU72wx48zDvErOzx+q5UcFXIsrqoXfebZAjYNPTDvIYOMvCDVmxEyiJbw8vhlR8OHtf60cG8uM1180vR9PTKM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783011132; c=relaxed/simple;
-	bh=ShcWgsvmI/aKhpvvdYTsEP19Ny+MSEYr+GE2OXHP+5w=;
+	s=arc-20240116; t=1783011345; c=relaxed/simple;
+	bh=R09lQMWz1o3IQZMddEn8sdFTt+n7rtkZTDqQPaBHI94=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mG6+ItL7Adhj3GYGP1L12oCkOu1wpc5G/Zqp53ij998G5GVOy0pY8UlkZeMcUK4JtBuw/NdoFi0krGRqr8xfNdnsDGi3qSpVWdAjdfQY0f7igycPTPyNI7DDK7BUCejAkT29hVNCAop6G8OPYGM4v8feJBffp4jDNAZRO6CGFb8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qus0cxVD; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B77841F000E9;
-	Thu,  2 Jul 2026 16:52:10 +0000 (UTC)
+	 MIME-Version; b=u+0+iZio0rROtIncE+RE8BQ9+tMCKyqtcexmepd4xrsEJtynxgUBVlJKQSiPZcGXyhhaw0/1t/WjX3o+jVm6XVc2Nt2VfNTYKhMu87reJmltZRBv3H6Hl/YHySr2pXptFakuBsIs7yd2OdSQpVdka3vTH2fBi4PdXDVzqh6847I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NT/8HOOk; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8AAFC1F000E9;
+	Thu,  2 Jul 2026 16:55:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1783011131;
-	bh=9FoCySOriQQjD30+6pVTn/mnEQp2s2tssetqh1IN1K8=;
+	s=korg; t=1783011344;
+	bh=WZdo2KjgzWCIK22XgJ4ZGeBb1tslf7Qa9ws+9wFGXwM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=qus0cxVDQcMi99RrNxq5uWpAxHiFDf9RxCANIB3MYZG4NGQICqW1z5P5+NT0+rPBl
-	 pl9XIy220c3QiX/JuxmKb9G/ua3o4ADJNRC7cMoiU/3rU/6JN3AdEmCz90aMt6ToIE
-	 VeeTH+7HkOdEUyo34DkR4O4EEjRV8MIywTbp7094=
+	b=NT/8HOOkby4WoeGttcPXmgIAJMbjKv8+3nq0H+9TsXmsN2JHhYBDhpusKTQ8Q8FDG
+	 im8088uZMoaZ4sSt5lrCOKfcF1NfLNPAXtpbKYrPYNvnFwqcIqXn41oAPAlJ19E/e5
+	 ZMsZjlHvCD3BPY9/8ehzHAG0bEEn8y6sstXirgsY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hem Parekh <hemparekh1596@gmail.com>,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.6 168/175] ksmbd: fix out-of-bounds read in smb_check_perm_dacl()
-Date: Thu,  2 Jul 2026 18:21:09 +0200
-Message-ID: <20260702155119.326195380@linuxfoundation.org>
+	Eric Biggers <ebiggers@kernel.org>,
+	Breno Leitao <leitao@debian.org>,
+	Calvin Buckley <calvin@cmpct.info>,
+	Brad Spengler <brad.spengler@opensrcsec.com>,
+	Sam James <sam@gentoo.org>,
+	Herbert Xu <herbert@gondor.apana.org.au>
+Subject: [PATCH 6.18 073/108] crypto: nx - fix nx_crypto_ctx_exit argument
+Date: Thu,  2 Jul 2026 18:21:10 +0200
+Message-ID: <20260702155113.623281511@linuxfoundation.org>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260702155115.766838875@linuxfoundation.org>
-References: <20260702155115.766838875@linuxfoundation.org>
+In-Reply-To: <20260702155112.110058792@linuxfoundation.org>
+References: <20260702155112.110058792@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,101 +72,128 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-271279-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:hemparekh1596@gmail.com,m:linkinjeon@kernel.org,m:stfrench@microsoft.com,s:lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org,microsoft.com];
+	TAGGED_FROM(0.00)[bounces-271362-lists,stable=lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:ebiggers@kernel.org,m:leitao@debian.org,m:calvin@cmpct.info,m:brad.spengler@opensrcsec.com,m:sam@gentoo.org,m:herbert@gondor.apana.org.au,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
+	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,opensrcsec.com:email,apana.org.au:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: F0D726FB0B2
+X-Rspamd-Queue-Id: 426886FB002
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hem Parekh <hemparekh1596@gmail.com>
+From: Sam James <sam@gentoo.org>
 
-commit 1ef06004ed4bd6d3ed8c840d9d1a376b66d4935b upstream.
+commit 4e67f504ee9ded15e256b64f4fde150e917381d7 upstream.
 
-The permission-check ACE walk in smb_check_perm_dacl() validates the ACE
-header size and caps sid.num_subauth at SID_MAX_SUB_AUTHORITIES, but it
-never checks that ace->size is actually large enough to contain
-num_subauth sub-authorities before compare_sids() dereferences them.
+nx_crypto_ctx_shash_exit calls nx_crypto_ctx_exit with crypto_shash_ctx(...)
+but crypto_shash_ctx gives a nx_crypto_ctx *, not a crypto_tfm *.
 
-CIFS_SID_BASE_SIZE covers the SID header up to but excluding the
-sub_auth[] array, and offsetof(struct smb_ace, sid) is the ACE header,
-so the existing guards only guarantee the 8-byte SID base, i.e. zero
-sub-authorities. compare_sids() then reads ace->sid.sub_auth[i] for
-i < min(local_sid->num_subauth, ace->sid.num_subauth). The local
-comparison SIDs (sid_everyone, sid_unix_NFS_mode, and the id_to_sid()
-result) always have at least one sub-authority, and an attacker controls
-the ACE revision and authority bytes (which lie within the in-bounds SID
-base), so they can match one of those SIDs and force the sub_auth read.
+Fix the type in nx_crypto_ctx_exit and drop the bogus crypto_tfm_ctx
+call.
 
-A crafted ACE with size == 16 and num_subauth >= 1 placed at the tail of
-the security descriptor therefore causes a heap out-of-bounds read of up
-to SID_MAX_SUB_AUTHORITIES * sizeof(__le32) bytes past the pntsd
-allocation. The security descriptor is loaded by ksmbd_vfs_get_sd_xattr()
-into a buffer sized exactly to the on-disk data (kzalloc(sd_size) in
-ndr_decode_v4_ntacl()), so the read lands past the allocation. The
-malformed descriptor can be stored verbatim via SMB2_SET_INFO (the DACL
-is not normalised before being written to the security.NTACL xattr) and
-the read fires on a subsequent SMB2_CREATE access check, making this
-reachable by an authenticated client on a share that uses ACL xattrs.
+This fixes the following oops:
 
-Add the missing num_subauth-versus-ace_size check, mirroring the
-identical guards already present in the sibling parsers parse_dacl() and
-smb_inherit_dacl().
+  BUG: Unable to handle kernel data access at 0xc0403effffffffc8
+  Faulting instruction address: 0xc000000000396cb4
+  Oops: Kernel access of bad area, sig: 11 [#15]
+  Call Trace:
+   nx_crypto_ctx_shash_exit+0x24/0x60
+   crypto_shash_exit_tfm+0x28/0x40
+   crypto_destroy_tfm+0x98/0x140
+   crypto_exit_ahash_using_shash+0x20/0x40
+   crypto_destroy_tfm+0x98/0x140
+   hash_release+0x1c/0x30
+   alg_sock_destruct+0x38/0x60
+   __sk_destruct+0x48/0x2b0
+   af_alg_release+0x58/0xb0
+   __sock_release+0x68/0x150
+   sock_close+0x20/0x40
+   __fput+0x110/0x3a0
+   sys_close+0x48/0xa0
+   system_call_exception+0x140/0x2d0
+   system_call_common+0xf4/0x258
 
-Fixes: d07b26f39246 ("ksmbd: require minimum ACE size in smb_check_perm_dacl()")
+.. which came from hardlink(1) opportunistically using AF_ALG.
+
+The same problem exists with nx_crypto_ctx_skcipher_exit getting a context
+it wasn't expecting, but apparently nobody hit that for years.
+
+Cc: Eric Biggers <ebiggers@kernel.org>
 Cc: stable@vger.kernel.org
-Signed-off-by: Hem Parekh <hemparekh1596@gmail.com>
-Acked-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Fixes: bfd9efddf990 ("crypto: nx - convert AES-ECB to skcipher API")
+Fixes: 9420e628e7d8 ("crypto: nx - Use API partial block handling")
+Acked-by: Breno Leitao <leitao@debian.org>
+Reviewed-by: Eric Biggers <ebiggers@kernel.org>
+Reported-by: Calvin Buckley <calvin@cmpct.info>
+Tested-by: Calvin Buckley <calvin@cmpct.info>
+Suggested-by: Brad Spengler <brad.spengler@opensrcsec.com>
+Signed-off-by: Sam James <sam@gentoo.org>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/server/smbacl.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/crypto/nx/nx.c |    6 ++----
+ drivers/crypto/nx/nx.h |    2 +-
+ 2 files changed, 3 insertions(+), 5 deletions(-)
 
---- a/fs/smb/server/smbacl.c
-+++ b/fs/smb/server/smbacl.c
-@@ -1419,7 +1419,9 @@ int smb_check_perm_dacl(struct ksmbd_con
- 			break;
- 		aces_size -= ace_size;
- 
--		if (ace->sid.num_subauth > SID_MAX_SUB_AUTHORITIES)
-+		if (ace->sid.num_subauth > SID_MAX_SUB_AUTHORITIES ||
-+		    ace_size < offsetof(struct smb_ace, sid) + CIFS_SID_BASE_SIZE +
-+			      sizeof(__le32) * ace->sid.num_subauth)
- 			break;
- 
- 		if (!compare_sids(&sid, &ace->sid) ||
+--- a/drivers/crypto/nx/nx.c
++++ b/drivers/crypto/nx/nx.c
+@@ -714,15 +714,13 @@ int nx_crypto_ctx_aes_xcbc_init(struct c
+ /**
+  * nx_crypto_ctx_exit - destroy a crypto api context
+  *
+- * @tfm: the crypto transform pointer for the context
++ * @nx_ctx: the crypto api context
+  *
+  * As crypto API contexts are destroyed, this exit hook is called to free the
+  * memory associated with it.
+  */
+-void nx_crypto_ctx_exit(struct crypto_tfm *tfm)
++void nx_crypto_ctx_exit(struct nx_crypto_ctx *nx_ctx)
+ {
+-	struct nx_crypto_ctx *nx_ctx = crypto_tfm_ctx(tfm);
+-
+ 	kfree_sensitive(nx_ctx->kmem);
+ 	nx_ctx->csbcpb = NULL;
+ 	nx_ctx->csbcpb_aead = NULL;
+--- a/drivers/crypto/nx/nx.h
++++ b/drivers/crypto/nx/nx.h
+@@ -153,7 +153,7 @@ int nx_crypto_ctx_aes_ctr_init(struct cr
+ int nx_crypto_ctx_aes_cbc_init(struct crypto_skcipher *tfm);
+ int nx_crypto_ctx_aes_ecb_init(struct crypto_skcipher *tfm);
+ int nx_crypto_ctx_sha_init(struct crypto_shash *tfm);
+-void nx_crypto_ctx_exit(struct crypto_tfm *tfm);
++void nx_crypto_ctx_exit(struct nx_crypto_ctx *nx_ctx);
+ void nx_crypto_ctx_skcipher_exit(struct crypto_skcipher *tfm);
+ void nx_crypto_ctx_aead_exit(struct crypto_aead *tfm);
+ void nx_crypto_ctx_shash_exit(struct crypto_shash *tfm);
 
 
 
