@@ -1,61 +1,79 @@
-Return-Path: <stable+bounces-270790-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-270975-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id GaLDOK2WRmpeZQsAu9opvQ
-	(envelope-from <stable+bounces-270790-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:49:49 +0200
+	id TDFLCw2XRmqSZQsAu9opvQ
+	(envelope-from <stable+bounces-270975-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:51:25 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id EB1246FA9DA
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:49:48 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7D95D6FAA68
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:51:24 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=iwP9XXwz;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-270790-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-270790-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=vzt+By9Q;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-270975-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-270975-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 1AB29304D97B
-	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:34:22 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A9C6D33D646B
+	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:40:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 74AEE35CB6F;
-	Thu,  2 Jul 2026 16:30:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9501A3446A7;
+	Thu,  2 Jul 2026 16:39:02 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A327E35E1C0;
-	Thu,  2 Jul 2026 16:30:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5A662D8DC4;
+	Thu,  2 Jul 2026 16:39:00 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783009859; cv=none; b=IPdqOnlk9FB73O+jOGs/uSogI+I4S2sTsgVZ8Vi4d/zNZB9388Ytxr/wRJDQbm5j7JmFRpsSmQi7KL+eAl8bifyuFgz2s9ECnR81eLD269kVfO5I1Nf8e6Jt9fCWx3gZN6VBnGGlcFfgmpjipGBw0JFwuy9AeAffJVdUf3VG+oM=
+	t=1783010342; cv=none; b=ggMN30D9peSiyY1Bh94929eE/6ZIfP4K3bSuWx7Icu61Y8QZgKxAohQMro3UAOtg7PMiB5HnwWtBAGtulHRewCda3TP/bvVvACHpTW4YjI2BUL9O/yw5RC4slGDw8MqVpi076vZchqNpNwpFarp0z3lGywPI6oE92Ll/t7uf9lg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783009859; c=relaxed/simple;
-	bh=tsN7aMpTnCrL5HAQTjz4XKEIYPQ8AL1agyilMhfSewo=;
+	s=arc-20240116; t=1783010342; c=relaxed/simple;
+	bh=q+IBaCaQ5BhrIaxvX8g2mEzHtQE6mPR3ym213QWK6mY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cdBxI7SZ5920U+4yIYH6pbeAw8Uiuw92hF+gkX0fJfTgkcULvvSIe0DO0JykxkkOehlGsNZB3ddul3oxA2iAtRkoLeRXA0NrUeCGCgTkBHwlQ8ZEv5Efy2vIT1cR9rdWuY2pdm22uC3fc4ljZCfHgVsBLkuI6upOhIJBVobODMY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iwP9XXwz; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C832C1F00A3A;
-	Thu,  2 Jul 2026 16:30:56 +0000 (UTC)
+	 MIME-Version; b=fOMlCfBSwVDidDaFDYawuvu4I/pw5LZI+TQgt/tRYCgbe3mY7gdmfaYXTWD/4KrefDXya0C8h7gUIBCrKb0v56DgjHVzGFgggBg7Zae/EjxuvWDEVBxH+1VDCQnCUbJHB/ZF1SGqW16Kn3chwM9RzRKnPJcoG6Wg2TjPZzavik4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vzt+By9Q; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF8551F000E9;
+	Thu,  2 Jul 2026 16:38:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1783009857;
-	bh=teI6Qu4Ffpr1whbTubfAl9CPqa+ezr4nclAxAE9V+c4=;
+	s=korg; t=1783010340;
+	bh=zchnOQnBU8dVH8BfMHjtMt5gWG5n6Deyzqn8Jb+X1iM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=iwP9XXwzdMMtFMz/nxLB0wrugXETwmtg7iqar/0ITQOCpIJRJ6vPqKXy22AwrQrMO
-	 A7He+OUAh9pYfCwseiHegsrYpC7vtQd4boQ9er0C1AjRYgw6BpG26mR/0ph6oXkixu
-	 nVjBzciSJHAef3MNHOIBAk67zZzylBAB4T6jKM20=
+	b=vzt+By9QUw8ZfpaU5Yoznn/UlipFyvkTjdLgc57zmiI0ljR6y3h8wfiGVsheBPaAf
+	 U0zJ/zVy6M2S1UsplmBQxHgv0X/d+sLvyHpTka5p10+Y4H67RMAKIIlx4xs20m/pSN
+	 FSAJDBM3BOltfjbUaNZlP5RK4rjMTU0lAW9CaOKw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
-	Sasha Levin <sashal@kernel.org>,
-	Shivani Agarwal <shivani.agarwal@broadcom.com>
-Subject: [PATCH 6.1 011/129] netfilter: nf_tables: fix set size with rbtree backend
+	bpf <bpf@vger.kernel.org>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	Masahiro Yamada <masahiroy@kernel.org>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Nicolas Schier <nicolas@fjasle.eu>,
+	Zheng Yejian <zhengyejian1@huawei.com>,
+	Martin Kelly <martin.kelly@crowdstrike.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Josh Poimboeuf <jpoimboe@redhat.com>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>,
+	Vasily Gorbik <gor@linux.ibm.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
+	Andrey Grodzovsky <andrey.grodzovsky@crowdstrike.com>
+Subject: [PATCH 6.12 073/204] scripts/sorttable: Have mcount rela sort use direct values
 Date: Thu,  2 Jul 2026 18:18:50 +0200
-Message-ID: <20260702155112.395847341@linuxfoundation.org>
+Message-ID: <20260702155120.200282086@linuxfoundation.org>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260702155112.163984240@linuxfoundation.org>
-References: <20260702155112.163984240@linuxfoundation.org>
+In-Reply-To: <20260702155118.667618796@linuxfoundation.org>
+References: <20260702155118.667618796@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,22 +90,22 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-270790-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-270975-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[24];
 	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:pablo@netfilter.org,m:sashal@kernel.org,m:shivani.agarwal@broadcom.com,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:bpf@vger.kernel.org,m:mhiramat@kernel.org,m:mark.rutland@arm.com,m:mathieu.desnoyers@efficios.com,m:akpm@linux-foundation.org,m:peterz@infradead.org,m:torvalds@linux-foundation.org,m:masahiroy@kernel.org,m:nathan@kernel.org,m:nicolas@fjasle.eu,m:zhengyejian1@huawei.com,m:martin.kelly@crowdstrike.com,m:christophe.leroy@csgroup.eu,m:jpoimboe@redhat.com,m:hca@linux.ibm.com,m:catalin.marinas@arm.com,m:will@kernel.org,m:gor@linux.ibm.com,m:agordeev@linux.ibm.com,m:rostedt@goodmis.org,m:andrey.grodzovsky@crowdstrike.com,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
@@ -98,229 +116,106 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,vger.kernel.org:from_smtp,netfilter.org:email,broadcom.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: EB1246FA9DA
+X-Rspamd-Queue-Id: 7D95D6FAA68
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pablo Neira Ayuso <pablo@netfilter.org>
+From: Steven Rostedt <rostedt@goodmis.org>
 
-[ Upstream commit 8d738c1869f611955d91d8d0fd0012d9ef207201 ]
+[ Upstream commit a0265659322540d656727b9e132edfb6f06b6c1a ]
 
-The existing rbtree implementation uses singleton elements to represent
-ranges, however, userspace provides a set size according to the number
-of ranges in the set.
+The mcount_loc sorting for when the values are stored in the Elf_Rela
+entries uses the compare_extable() function to do the compares in the
+qsort(). That function does handle byte swapping if the machine being
+compiled for is a different endian than the host machine. But the
+sort_relocs() function sorts an array that pulled in the values from the
+Elf_Rela section and has already done the swapping.
 
-Adjust provided userspace set size to the number of singleton elements
-in the kernel by multiplying the range by two.
+Create two new compare functions that will sort the direct values. One
+will sort 32 bit values and the other will sort the 64 bit value. One of
+these will be assigned to a compare_values function pointer and that will
+be used for sorting the Elf_Rela mcount values.
 
-Check if the no-match all-zero element is already in the set, in such
-case release one slot in the set size.
-
-Fixes: 0ed6389c483d ("netfilter: nf_tables: rename set implementations")
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
-[ Shivani: Modified to apply on 6.1.y ]
-Signed-off-by: Shivani Agarwal <shivani.agarwal@broadcom.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: bpf <bpf@vger.kernel.org>
+Cc: Masami Hiramatsu <mhiramat@kernel.org>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Masahiro Yamada <masahiroy@kernel.org>
+Cc: Nathan Chancellor <nathan@kernel.org>
+Cc: Nicolas Schier <nicolas@fjasle.eu>
+Cc: Zheng Yejian <zhengyejian1@huawei.com>
+Cc: Martin  Kelly <martin.kelly@crowdstrike.com>
+Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
+Cc: Josh Poimboeuf <jpoimboe@redhat.com>
+Cc: Heiko Carstens <hca@linux.ibm.com>
+Cc: Catalin Marinas <catalin.marinas@arm.com>
+Cc: Will Deacon <will@kernel.org>
+Cc: Vasily Gorbik <gor@linux.ibm.com>
+Cc: Alexander Gordeev <agordeev@linux.ibm.com>
+Link: https://lore.kernel.org/20250218200022.538888594@goodmis.org
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: Andrey Grodzovsky <andrey.grodzovsky@crowdstrike.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/net/netfilter/nf_tables.h |  6 ++++
- net/netfilter/nf_tables_api.c     | 49 +++++++++++++++++++++++++++++--
- net/netfilter/nft_set_rbtree.c    | 43 +++++++++++++++++++++++++++
- 3 files changed, 96 insertions(+), 2 deletions(-)
+ scripts/sorttable.c |   26 +++++++++++++++++++++++++-
+ 1 file changed, 25 insertions(+), 1 deletion(-)
 
-diff --git a/include/net/netfilter/nf_tables.h b/include/net/netfilter/nf_tables.h
-index dafa0a32e6e1df..3329c2eaea9f07 100644
---- a/include/net/netfilter/nf_tables.h
-+++ b/include/net/netfilter/nf_tables.h
-@@ -422,6 +422,9 @@ struct nft_set_ext;
-  *	@remove: remove element from set
-  *	@walk: iterate over all set elements
-  *	@get: get set elements
-+ *	@ksize: kernel set size
-+ *	@usize: userspace set size
-+ *	@adjust_maxsize: delta to adjust maximum set size
-  *	@privsize: function to return size of set private data
-  *	@init: initialize private data of new set instance
-  *	@destroy: destroy private data of set instance
-@@ -470,6 +473,9 @@ struct nft_set_ops {
- 					       const struct nft_set *set,
- 					       const struct nft_set_elem *elem,
- 					       unsigned int flags);
-+	u32				(*ksize)(u32 size);
-+	u32				(*usize)(u32 size);
-+	u32				(*adjust_maxsize)(const struct nft_set *set);
- 	void				(*commit)(struct nft_set *set);
- 	void				(*abort)(const struct nft_set *set);
- 	u64				(*privsize)(const struct nlattr * const nla[],
-diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
-index b6b7b0b3539dc9..0d406dab5cac19 100644
---- a/net/netfilter/nf_tables_api.c
-+++ b/net/netfilter/nf_tables_api.c
-@@ -4277,6 +4277,14 @@ static int nf_tables_fill_set_concat(struct sk_buff *skb,
- 	return 0;
- }
+--- a/scripts/sorttable.c
++++ b/scripts/sorttable.c
+@@ -552,6 +552,28 @@ static void *sort_orctable(void *arg)
  
-+static u32 nft_set_userspace_size(const struct nft_set_ops *ops, u32 size)
+ #ifdef MCOUNT_SORT_ENABLED
+ 
++static int compare_values_64(const void *a, const void *b)
 +{
-+	if (ops->usize)
-+		return ops->usize(size);
++	uint64_t av = *(uint64_t *)a;
++	uint64_t bv = *(uint64_t *)b;
 +
-+	return size;
++	if (av < bv)
++		return -1;
++	return av > bv;
 +}
 +
- static int nf_tables_fill_set(struct sk_buff *skb, const struct nft_ctx *ctx,
- 			      const struct nft_set *set, u16 event, u16 flags)
- {
-@@ -4341,7 +4349,8 @@ static int nf_tables_fill_set(struct sk_buff *skb, const struct nft_ctx *ctx,
- 	if (!nest)
- 		goto nla_put_failure;
- 	if (set->size &&
--	    nla_put_be32(skb, NFTA_SET_DESC_SIZE, htonl(set->size)))
-+	    nla_put_be32(skb, NFTA_SET_DESC_SIZE,
-+			 htonl(nft_set_userspace_size(set->ops, set->size))))
- 		goto nla_put_failure;
- 
- 	if (set->field_count > 1 &&
-@@ -4711,6 +4720,15 @@ static bool nft_set_is_same(const struct nft_set *set,
- 	return true;
- }
- 
-+static u32 nft_set_kernel_size(const struct nft_set_ops *ops,
-+			       const struct nft_set_desc *desc)
++static int compare_values_32(const void *a, const void *b)
 +{
-+	if (ops->ksize)
-+		return ops->ksize(desc->size);
++	uint32_t av = *(uint32_t *)a;
++	uint32_t bv = *(uint32_t *)b;
 +
-+	return desc->size;
++	if (av < bv)
++		return -1;
++	return av > bv;
 +}
 +
- static int nf_tables_newset(struct sk_buff *skb, const struct nfnl_info *info,
- 			    const struct nlattr * const nla[])
++static int (*compare_values)(const void *a, const void *b);
++
+ /* Only used for sorting mcount table */
+ static void rela_write_addend(Elf_Rela *rela, uint64_t val)
  {
-@@ -4893,6 +4911,9 @@ static int nf_tables_newset(struct sk_buff *skb, const struct nfnl_info *info,
- 		if (err < 0)
- 			return err;
+@@ -583,6 +605,8 @@ static void *sort_relocs(Elf_Ehdr *ehdr,
+ 	void *vals;
+ 	void *ptr;
  
-+		if (desc.size)
-+			desc.size = nft_set_kernel_size(set->ops, &desc);
++	compare_values = long_size == 4 ? compare_values_32 : compare_values_64;
 +
- 		err = 0;
- 		if (!nft_set_is_same(set, &desc, exprs, num_exprs, flags)) {
- 			NL_SET_BAD_ATTR(extack, nla[NFTA_SET_NAME]);
-@@ -4915,6 +4936,9 @@ static int nf_tables_newset(struct sk_buff *skb, const struct nfnl_info *info,
- 	if (IS_ERR(ops))
- 		return PTR_ERR(ops);
+ 	shdr_start = (Elf_Shdr *)((char *)ehdr + ehdr_shoff(ehdr));
+ 	shentsize = ehdr_shentsize(ehdr);
  
-+	if (desc.size)
-+		desc.size = nft_set_kernel_size(ops, &desc);
-+
- 	udlen = 0;
- 	if (nla[NFTA_SET_USERDATA])
- 		udlen = nla_len(nla[NFTA_SET_USERDATA]);
-@@ -6356,6 +6380,27 @@ static bool nft_setelem_valid_key_end(const struct nft_set *set,
- 	return true;
- }
- 
-+static u32 nft_set_maxsize(const struct nft_set *set)
-+{
-+	u32 maxsize, delta;
-+
-+	if (!set->size)
-+		return UINT_MAX;
-+
-+	if (set->ops->adjust_maxsize)
-+		delta = set->ops->adjust_maxsize(set);
-+	else
-+		delta = 0;
-+
-+	if (check_add_overflow(set->size, set->ndeact, &maxsize))
-+		return UINT_MAX;
-+
-+	if (check_add_overflow(maxsize, delta, &maxsize))
-+		return UINT_MAX;
-+
-+	return maxsize;
-+}
-+
- static int nft_add_set_elem(struct nft_ctx *ctx, struct nft_set *set,
- 			    const struct nlattr *attr, u32 nlmsg_flags)
- {
-@@ -6700,7 +6745,7 @@ static int nft_add_set_elem(struct nft_ctx *ctx, struct nft_set *set,
+@@ -640,7 +664,7 @@ static void *sort_relocs(Elf_Ehdr *ehdr,
+ 		}
  	}
+ 	count = ptr - vals;
+-	qsort(vals, count / long_size, long_size, compare_extable);
++	qsort(vals, count / long_size, long_size, compare_values);
  
- 	if (!(flags & NFT_SET_ELEM_CATCHALL)) {
--		unsigned int max = set->size ? set->size + set->ndeact : UINT_MAX;
-+		unsigned int max = nft_set_maxsize(set);
- 
- 		if (!atomic_add_unless(&set->nelems, 1, max)) {
- 			err = -ENFILE;
-diff --git a/net/netfilter/nft_set_rbtree.c b/net/netfilter/nft_set_rbtree.c
-index 23e4e656f7f0cb..433094c4200f97 100644
---- a/net/netfilter/nft_set_rbtree.c
-+++ b/net/netfilter/nft_set_rbtree.c
-@@ -773,6 +773,46 @@ static bool nft_rbtree_estimate(const struct nft_set_desc *desc, u32 features,
- 	return true;
- }
- 
-+/* rbtree stores ranges as singleton elements, each range is composed of two
-+ * elements ...
-+ */
-+static u32 nft_rbtree_ksize(u32 size)
-+{
-+	return size * 2;
-+}
-+
-+/* ... hide this detail to userspace. */
-+static u32 nft_rbtree_usize(u32 size)
-+{
-+	if (!size)
-+		return 0;
-+
-+	return size / 2;
-+}
-+
-+static u32 nft_rbtree_adjust_maxsize(const struct nft_set *set)
-+{
-+	struct nft_rbtree *priv = nft_set_priv(set);
-+	struct nft_rbtree_elem *rbe;
-+	struct rb_node *node;
-+	const void *key;
-+
-+	node = rb_last(&priv->root);
-+	if (!node)
-+		return 0;
-+
-+	rbe = rb_entry(node, struct nft_rbtree_elem, node);
-+	if (!nft_rbtree_interval_end(rbe))
-+		return 0;
-+
-+	key = nft_set_ext_key(&rbe->ext);
-+	if (memchr(key, 1, set->klen))
-+		return 0;
-+
-+	/* this is the all-zero no-match element. */
-+	return 1;
-+}
-+
- const struct nft_set_type nft_set_rbtree_type = {
- 	.features	= NFT_SET_INTERVAL | NFT_SET_MAP | NFT_SET_OBJECT | NFT_SET_TIMEOUT,
- 	.ops		= {
-@@ -789,5 +829,8 @@ const struct nft_set_type nft_set_rbtree_type = {
- 		.lookup		= nft_rbtree_lookup,
- 		.walk		= nft_rbtree_walk,
- 		.get		= nft_rbtree_get,
-+		.ksize		= nft_rbtree_ksize,
-+		.usize		= nft_rbtree_usize,
-+		.adjust_maxsize = nft_rbtree_adjust_maxsize,
- 	},
- };
--- 
-2.53.0
-
+ 	ptr = vals;
+ 	for (int i = 0; i < shnum; i++) {
 
 
 
