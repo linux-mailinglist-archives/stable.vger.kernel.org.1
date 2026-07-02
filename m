@@ -1,74 +1,61 @@
-Return-Path: <stable+bounces-271205-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-270685-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id imCtH16ZRmreZgsAu9opvQ
-	(envelope-from <stable+bounces-271205-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:01:18 +0200
+	id vn7bD6mURmoVZAsAu9opvQ
+	(envelope-from <stable+bounces-270685-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:41:13 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 155EB6FADD1
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:01:18 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 83D2A6FA5DA
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:41:12 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=w4Bn0SUf;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-271205-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-271205-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=iR60cgLd;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-270685-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-270685-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 7EDB3314CACC
-	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:50:38 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 6866E325B4AC
+	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:31:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE0CB381EA6;
-	Thu,  2 Jul 2026 16:49:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C8329381E9E;
+	Thu,  2 Jul 2026 16:26:22 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 615803101C8;
-	Thu,  2 Jul 2026 16:48:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 993A637A827;
+	Thu,  2 Jul 2026 16:26:21 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783010940; cv=none; b=eRymW5OfosfnNNcA4vw5e3d1A5cPmr98c8VVH9TQ6AZA+/5gHmeOFz983jxq4sB+JiYg9Ul85SnKK0TETwncLYRC+KBUVG0z1qWaKMSbC/5v/Foqb1SScTtZswRpJbmVwyO2HvPms+rv2uxL38TlzCm9XlXCmiMLdzrXW2y+ETg=
+	t=1783009582; cv=none; b=I0vvlQqniTv6lfvcENO2242zwNkLiVcYKX4bDsFB1e1PQGOQuKJ9hWmyEC85fyqQLLuCk3clMIkkdWu2zmmOEa1XRxYVbcXMXpIxHWW6t6O7uM0VB3J0ldVMYUElsuDERP2GBYtwENggxMHmVeAZjjbnmXrqOHeQuhnniAZNGqc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783010940; c=relaxed/simple;
-	bh=AcNPKXYT5t2ewPe6CY1tZ6pcmhTDbVTv+oPof7AeZsY=;
+	s=arc-20240116; t=1783009582; c=relaxed/simple;
+	bh=OlM03fmrbfX74ttrO3KL0fUOm5cC6dQ45qXTYZRgjBY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VQ7IldtVInsddrYFEZbaxiQbgwV8HYsB42U5nRPqHxTiB/gRyx+XlfFaPp7xnIp4qgZsOsUtNcxv3w+JOKwrI3/OUDd/3KOkmsbaJzMJRj4g728BibFSpwIjGebl/fARfJaMa2UkvqAPhZ3l/vxIxnil2PQJwqwh2e7mle37cYQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w4Bn0SUf; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F1281F000E9;
-	Thu,  2 Jul 2026 16:48:58 +0000 (UTC)
+	 MIME-Version; b=Y2PYOid/up/LoS4a94CFTZ+5GqtKH9Cn55LDrUG2RxftN0w55hbYUS+f3a9EzQnncIN+CS1pbyyuss8Bwlpua/ofqtxjwPbytMRJPL+/TNaXJ+7RcPanZhn03GHE0/ZBN7a5HMPgXfrrVlvpNOT/Vfhxn60Cof+p73qS+JV47uM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iR60cgLd; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A0931F000E9;
+	Thu,  2 Jul 2026 16:26:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1783010939;
-	bh=Kiivt/iY/tEubGj2SyT+v0BozhqLh34hpCLp7OFGzfI=;
+	s=korg; t=1783009581;
+	bh=YfSMoV48600WEW5Xhdk3tZ4DOuODvFzcA2wNS2Pkc/g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=w4Bn0SUfdG6FWTS6vhPfSC8qj5fK0BiYrvmx+ZElfX64/E+CeUd0sO3ZgiV/X80yB
-	 r1uJFVISgOktmEAxrbmC8Sx+kXAd25xLCgWGbs7mgF9/yxw5TyydK5cKBidW86lOCq
-	 nEUsyV/TPjFRWzE4ovlSA7b6P3PHMoYYhUD2drXQ=
+	b=iR60cgLd9V5cWJsdsEhhad67nrGcYb1VA9lGBn1EoxI5rzpF7unSOl2V3TizBD6Vi
+	 sq5vBA8tx6tn6HJBLPk9o2KNpFgLnkmFH0F+HlhefW8/X5yRvMZxWmGGJtivDn0FJR
+	 gaKaAu8/Tk4RxcBkqB8ntJPTB120GHQ6fnJxLKis=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	bpf <bpf@vger.kernel.org>,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	Masahiro Yamada <masahiroy@kernel.org>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Nicolas Schier <nicolas@fjasle.eu>,
-	Zheng Yejian <zhengyejian1@huawei.com>,
-	Martin Kelly <martin.kelly@crowdstrike.com>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Josh Poimboeuf <jpoimboe@redhat.com>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
-	Andrey Grodzovsky <andrey.grodzovsky@crowdstrike.com>
-Subject: [PATCH 6.6 052/175] scripts/sorttable: Add helper functions for Elf_Ehdr
+	stable@kernel.org,
+	Sven Eckelmann <sven@narfation.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 10/95] batman-adv: tt: reject oversized local TVLV buffers
 Date: Thu,  2 Jul 2026 18:19:13 +0200
-Message-ID: <20260702155116.891783646@linuxfoundation.org>
+Message-ID: <20260702155109.425421053@linuxfoundation.org>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260702155115.766838875@linuxfoundation.org>
-References: <20260702155115.766838875@linuxfoundation.org>
+In-Reply-To: <20260702155109.196223802@linuxfoundation.org>
+References: <20260702155109.196223802@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -85,22 +72,22 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-271205-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-270685-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[19];
+	TO_DN_SOME(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:bpf@vger.kernel.org,m:mhiramat@kernel.org,m:mark.rutland@arm.com,m:mathieu.desnoyers@efficios.com,m:akpm@linux-foundation.org,m:peterz@infradead.org,m:torvalds@linux-foundation.org,m:masahiroy@kernel.org,m:nathan@kernel.org,m:nicolas@fjasle.eu,m:zhengyejian1@huawei.com,m:martin.kelly@crowdstrike.com,m:christophe.leroy@csgroup.eu,m:jpoimboe@redhat.com,m:rostedt@goodmis.org,m:andrey.grodzovsky@crowdstrike.com,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:stable@kernel.org,m:sven@narfation.org,m:sashal@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	TO_DN_SOME(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
@@ -111,141 +98,71 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp,narfation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 155EB6FADD1
+X-Rspamd-Queue-Id: 83D2A6FA5DA
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Steven Rostedt <rostedt@goodmis.org>
+From: Sven Eckelmann <sven@narfation.org>
 
-[ Upstream commit 1dfb59a228dde59ad7d99b2fa2104e90004995c7 ]
+commit 1e9fab756f8395096d5bba7be0c373c4c8f5d165 upstream.
 
-In order to remove the double #include of sorttable.h for 64 and 32 bit
-to create duplicate functions, add helper functions for Elf_Ehdr.  This
-will create a function pointer for each helper that will get assigned to
-the appropriate function to handle either the 64bit or 32bit version.
+The commit 3a359bf5c61d ("batman-adv: reject oversized global TT response
+buffers") added a check to ensure that a global return buffer size can be
+stored in an u16. The same buffer handling also exists for the local data
+buffer but was not touched.
 
-This also moves the _r()/r() wrappers for the Elf_Ehdr references that
-handle endian and size differences between the different architectures,
-into the helper function and out of the open code which is more error
-prone.
+A similar check should be also be in place for the local TVLV buffer. It
+doesn't have the similar attack surface because it is only generated from
+locally discovered MAC addresses but the dynamic nature could still cause
+temporarily to large buffers.
 
-Cc: bpf <bpf@vger.kernel.org>
-Cc: Masami Hiramatsu <mhiramat@kernel.org>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: Masahiro Yamada <masahiroy@kernel.org>
-Cc: Nathan Chancellor <nathan@kernel.org>
-Cc: Nicolas Schier <nicolas@fjasle.eu>
-Cc: Zheng Yejian <zhengyejian1@huawei.com>
-Cc: Martin  Kelly <martin.kelly@crowdstrike.com>
-Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
-Cc: Josh Poimboeuf <jpoimboe@redhat.com>
-Link: https://lore.kernel.org/20250105162345.736369526@goodmis.org
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-Signed-off-by: Andrey Grodzovsky <andrey.grodzovsky@crowdstrike.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@kernel.org
+Fixes: 7ea7b4a14275 ("batman-adv: make the TT CRC logic VLAN specific")
+[ Context ]
+Signed-off-by: Sven Eckelmann <sven@narfation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- scripts/sorttable.c |   25 +++++++++++++++++++++++++
- scripts/sorttable.h |   20 ++++++++++++++++----
- 2 files changed, 41 insertions(+), 4 deletions(-)
+ net/batman-adv/translation-table.c | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
---- a/scripts/sorttable.c
-+++ b/scripts/sorttable.c
-@@ -85,6 +85,31 @@ static uint64_t (*r8)(const uint64_t *);
- static void (*w)(uint32_t, uint32_t *);
- typedef void (*table_sort_t)(char *, int);
+diff --git a/net/batman-adv/translation-table.c b/net/batman-adv/translation-table.c
+index e4d55b27f2551b..3849c348ff0344 100644
+--- a/net/batman-adv/translation-table.c
++++ b/net/batman-adv/translation-table.c
+@@ -939,12 +939,12 @@ batadv_tt_prepare_tvlv_local_data(struct batadv_priv *bat_priv,
+ {
+ 	struct batadv_tvlv_tt_vlan_data *tt_vlan;
+ 	struct batadv_softif_vlan *vlan;
++	size_t change_offset;
+ 	u16 num_vlan = 0;
+ 	u16 vlan_entries = 0;
+ 	u16 total_entries = 0;
+ 	u16 tvlv_len;
+ 	u8 *tt_change_ptr;
+-	int change_offset;
  
-+static uint64_t ehdr64_shoff(Elf_Ehdr *ehdr)
-+{
-+	return r8(&ehdr->e64.e_shoff);
-+}
-+
-+static uint64_t ehdr32_shoff(Elf_Ehdr *ehdr)
-+{
-+	return r(&ehdr->e32.e_shoff);
-+}
-+
-+#define EHDR_HALF(fn_name)				\
-+static uint16_t ehdr64_##fn_name(Elf_Ehdr *ehdr)	\
-+{							\
-+	return r2(&ehdr->e64.e_##fn_name);		\
-+}							\
-+							\
-+static uint16_t ehdr32_##fn_name(Elf_Ehdr *ehdr)	\
-+{							\
-+	return r2(&ehdr->e32.e_##fn_name);		\
-+}
-+
-+EHDR_HALF(shentsize)
-+EHDR_HALF(shstrndx)
-+EHDR_HALF(shnum)
-+
- /*
-  * Get the whole file as a programming convenience in order to avoid
-  * malloc+lseek+read+free of many pieces.  If successful, then mmap
---- a/scripts/sorttable.h
-+++ b/scripts/sorttable.h
-@@ -27,6 +27,10 @@
- #undef uint_t
- #undef _r
- #undef etype
-+#undef ehdr_shoff
-+#undef ehdr_shentsize
-+#undef ehdr_shstrndx
-+#undef ehdr_shnum
+ 	spin_lock_bh(&bat_priv->softif_vlan_list_lock);
+ 	hlist_for_each_entry(vlan, &bat_priv->softif_vlan_list, list) {
+@@ -960,8 +960,10 @@ batadv_tt_prepare_tvlv_local_data(struct batadv_priv *bat_priv,
+ 	if (*tt_len < 0)
+ 		*tt_len = batadv_tt_len(total_entries);
  
- #ifdef SORTTABLE_64
- # define extable_ent_size	16
-@@ -39,6 +43,10 @@
- # define uint_t			uint64_t
- # define _r			r8
- # define etype			e64
-+# define ehdr_shoff		ehdr64_shoff
-+# define ehdr_shentsize		ehdr64_shentsize
-+# define ehdr_shstrndx		ehdr64_shstrndx
-+# define ehdr_shnum		ehdr64_shnum
- #else
- # define extable_ent_size	8
- # define compare_extable	compare_extable_32
-@@ -50,6 +58,10 @@
- # define uint_t			uint32_t
- # define _r			r
- # define etype			e32
-+# define ehdr_shoff		ehdr32_shoff
-+# define ehdr_shentsize		ehdr32_shentsize
-+# define ehdr_shstrndx		ehdr32_shstrndx
-+# define ehdr_shnum		ehdr32_shnum
- #endif
+-	tvlv_len = *tt_len;
+-	tvlv_len += change_offset;
++	if (check_add_overflow(*tt_len, change_offset, &tvlv_len)) {
++		tvlv_len = 0;
++		goto out;
++	}
  
- #if defined(SORTTABLE_64) && defined(UNWINDER_ORC_ENABLED)
-@@ -250,16 +262,16 @@ static int do_sort(Elf_Ehdr *ehdr,
- 	unsigned int orc_num_entries = 0;
- #endif
- 
--	shdr_start = (Elf_Shdr *)((char *)ehdr + _r(&ehdr->etype.e_shoff));
--	shentsize = r2(&ehdr->etype.e_shentsize);
-+	shdr_start = (Elf_Shdr *)((char *)ehdr + ehdr_shoff(ehdr));
-+	shentsize = ehdr_shentsize(ehdr);
- 
--	shstrndx = r2(&ehdr->etype.e_shstrndx);
-+	shstrndx = ehdr_shstrndx(ehdr);
- 	if (shstrndx == SHN_XINDEX)
- 		shstrndx = r(&shdr_start->etype.sh_link);
- 	string_sec = get_index(shdr_start, shentsize, shstrndx);
- 	secstrings = (const char *)ehdr + _r(&string_sec->etype.sh_offset);
- 
--	shnum = r2(&ehdr->etype.e_shnum);
-+	shnum = ehdr_shnum(ehdr);
- 	if (shnum == SHN_UNDEF)
- 		shnum = _r(&shdr_start->etype.sh_size);
- 
+ 	*tt_data = kmalloc(tvlv_len, GFP_ATOMIC);
+ 	if (!*tt_data) {
+-- 
+2.53.0
+
 
 
 
