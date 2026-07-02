@@ -1,64 +1,79 @@
-Return-Path: <stable+bounces-270613-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-271172-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id OILpJISdRmrWaAsAu9opvQ
-	(envelope-from <stable+bounces-270613-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:19:00 +0200
+	id ep6kH5aZRmoBZwsAu9opvQ
+	(envelope-from <stable+bounces-271172-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:02:14 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id E68C46FB35B
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:18:59 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 944896FAE39
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:02:13 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=hXqYAFmr;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-270613-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-270613-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=Z5+oWD2u;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-271172-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-271172-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 6077B3183B6A
-	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:26:43 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 64311334355D
+	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:49:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 447EA3D9527;
-	Thu,  2 Jul 2026 16:23:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8323635674C;
+	Thu,  2 Jul 2026 16:47:37 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2B99347515;
-	Thu,  2 Jul 2026 16:23:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A8043A1E92;
+	Thu,  2 Jul 2026 16:47:36 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783009398; cv=none; b=nyZ5oeNkjhcWDv+fiGVRMPbUW0v84v33AcQ+2SnxsaoILV6PRpsFieR0WOCq25tPr3189Sze/Bql0euKoBgUw4wl/dGw3awA5Jy4X5iOH7zz6eXbi3lTB79lniTPwevljMsGTWnLgWOdK8F4KKxMvbHtbvwII4AmEMVm7gooG/4=
+	t=1783010857; cv=none; b=gV+qmfLEaPmcJp+BiUsF69i9cstUfb8+DJUN5z+PodREB6dw/0jDN1dn9jz0QI3a8Dl/qEcOYHsB9yQCr9bQy4NLWxI5YIs3L7pcGVnvd+Brb+ouIqEvshD+y5URpUPc54YH5DxyHakLSOAs38dEa4D8rsG90FFo5bSylOfY6+g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783009398; c=relaxed/simple;
-	bh=9W6SvW/zZv8hq3za3MOVa0ca98kifN290VO204vnIS8=;
+	s=arc-20240116; t=1783010857; c=relaxed/simple;
+	bh=ybo5kdtIQbzoMR+nPjRZuspSA4FLEX0OUpqlmyXR5i4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=g7Lki8Topq9uReK5PUv16KXxkvN/X7ftJqtFZ7sZk2pI2KyZj8SNfKqpGxYrUvfKXM+t4xIKG/5WCZRm951DBlJCE7PIYusr7JprdNp3mwEtqeXa+54qnNfXZu7azMrI7dAH3Cb9pW2TVEo25DHwoGFd1GcbmXQZT4q+4tm+Mdo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hXqYAFmr; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15A281F00A3D;
-	Thu,  2 Jul 2026 16:23:11 +0000 (UTC)
+	 MIME-Version; b=rpXu3gLGRVTPtmgv4VA5F2il6266xltqCPZzvAPxg0yH3p7Z0PHe8REmWvyTOAymSm0tEJ4vCX+8t86uifrngyNWEyKJG4zsC4JYfgIx2jCHQNnfuvr3ABtttVZYavYaqdTc+ydreSUMF1U/lOu+c9WKLFfu920iCJoz2dUSusE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z5+oWD2u; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58C5D1F000E9;
+	Thu,  2 Jul 2026 16:47:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1783009392;
-	bh=6psnI4QveiNVg12Gf/rfeNjFyr0ICpGjgmL7Xsf4uA4=;
+	s=korg; t=1783010856;
+	bh=V6n5C7vOKkzekwiNi/nVdZaccRf0/knKkOshOolO/F0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=hXqYAFmrKYlBItvk4xc8Y5F+/82Sww9DOmEIqOrvY64gMl5oioEpeWOhXEBRRclIZ
-	 H7tV4UmkQYhxeEJfL/BDXeUZLYuKc3wiHRYj26lnMLjbPCY9+QCdaTkbOZ+4dO4Wyv
-	 Yf/1JmVbY7MKCLbvoL8xIYp1NfXaMB6ZlHn77Z48=
+	b=Z5+oWD2u+RnS2SBjZVu6oJxZc/JfSLPt/VlX3G2+gHUvNEyYSGyr541M72Wr6TDGh
+	 4FmuzNuZ8YvWm5p68xqyABbTWgaCcgrSlQQyoJrMxyVG5LPly4V+Ar1oMeEvG6XQGz
+	 GdkbUNPSYKmguBqep2abrEKomIo4mX0Qr2qM2Kl8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jamal Hadi Salim <jhs@mojatatu.com>,
-	Pedro Tammela <pctammela@mojatatu.com>,
-	Simon Horman <simon.horman@corigine.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Wentao Guan <guanwentao@uniontech.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 33/96] net/sched: act_pedit: fix action bind logic
+	bpf <bpf@vger.kernel.org>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	Masahiro Yamada <masahiroy@kernel.org>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Nicolas Schier <nicolas@fjasle.eu>,
+	Zheng Yejian <zhengyejian1@huawei.com>,
+	Martin Kelly <martin.kelly@crowdstrike.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Josh Poimboeuf <jpoimboe@redhat.com>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>,
+	Vasily Gorbik <gor@linux.ibm.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
+	Andrey Grodzovsky <andrey.grodzovsky@crowdstrike.com>
+Subject: [PATCH 6.6 064/175] ftrace: Have ftrace pages output reflect freed pages
 Date: Thu,  2 Jul 2026 18:19:25 +0200
-Message-ID: <20260702155109.681792810@linuxfoundation.org>
+Message-ID: <20260702155117.143529381@linuxfoundation.org>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260702155108.949633242@linuxfoundation.org>
-References: <20260702155108.949633242@linuxfoundation.org>
+In-Reply-To: <20260702155115.766838875@linuxfoundation.org>
+References: <20260702155115.766838875@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,244 +87,147 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-270613-lists,stable=lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-271172-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:jhs@mojatatu.com,m:pctammela@mojatatu.com,m:simon.horman@corigine.com,m:davem@davemloft.net,m:guanwentao@uniontech.com,m:sashal@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCPT_COUNT_TWELVE(0.00)[24];
+	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:bpf@vger.kernel.org,m:mhiramat@kernel.org,m:mark.rutland@arm.com,m:mathieu.desnoyers@efficios.com,m:akpm@linux-foundation.org,m:peterz@infradead.org,m:torvalds@linux-foundation.org,m:masahiroy@kernel.org,m:nathan@kernel.org,m:nicolas@fjasle.eu,m:zhengyejian1@huawei.com,m:martin.kelly@crowdstrike.com,m:christophe.leroy@csgroup.eu,m:jpoimboe@redhat.com,m:hca@linux.ibm.com,m:catalin.marinas@arm.com,m:will@kernel.org,m:gor@linux.ibm.com,m:agordeev@linux.ibm.com,m:rostedt@goodmis.org,m:andrey.grodzovsky@crowdstrike.com,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,uniontech.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,mojatatu.com:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: E68C46FB35B
+X-Rspamd-Queue-Id: 944896FAE39
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pedro Tammela <pctammela@mojatatu.com>
+From: Steven Rostedt <rostedt@goodmis.org>
 
-[ Upstream commit e9e42292ea76a8358b0c02ffd530d78e133a1b73 ]
+[ Upstream commit 264143c4e54412095f4b615e65bf736fc3c60af0 ]
 
-The TC architecture allows filters and actions to be created independently.
-In filters the user can reference action objects using:
-tc action add action pedit ... index 1
-tc filter add ... action pedit index 1
+The amount of memory that ftrace uses to save the descriptors to manage
+the functions it can trace is shown at output. But if there are a lot of
+functions that are skipped because they were weak or the architecture
+added holes into the tables, then the extra pages that were allocated are
+freed. But these freed pages are not reflected in the numbers shown, and
+they can even be inconsistent with what is reported:
 
-In the current code for act_pedit this is broken as it checks netlink
-attributes for create/update before actually checking if we are binding to an
-existing action.
+ ftrace: allocating 57482 entries in 225 pages
+ ftrace: allocated 224 pages with 3 groups
 
-tdc results:
-1..69
-ok 1 319a - Add pedit action that mangles IP TTL
-ok 2 7e67 - Replace pedit action with invalid goto chain
-ok 3 377e - Add pedit action with RAW_OP offset u32
-ok 4 a0ca - Add pedit action with RAW_OP offset u32 (INVALID)
-ok 5 dd8a - Add pedit action with RAW_OP offset u16 u16
-ok 6 53db - Add pedit action with RAW_OP offset u16 (INVALID)
-ok 7 5c7e - Add pedit action with RAW_OP offset u8 add value
-ok 8 2893 - Add pedit action with RAW_OP offset u8 quad
-ok 9 3a07 - Add pedit action with RAW_OP offset u8-u16-u8
-ok 10 ab0f - Add pedit action with RAW_OP offset u16-u8-u8
-ok 11 9d12 - Add pedit action with RAW_OP offset u32 set u16 clear u8 invert
-ok 12 ebfa - Add pedit action with RAW_OP offset overflow u32 (INVALID)
-ok 13 f512 - Add pedit action with RAW_OP offset u16 at offmask shift set
-ok 14 c2cb - Add pedit action with RAW_OP offset u32 retain value
-ok 15 1762 - Add pedit action with RAW_OP offset u8 clear value
-ok 16 bcee - Add pedit action with RAW_OP offset u8 retain value
-ok 17 e89f - Add pedit action with RAW_OP offset u16 retain value
-ok 18 c282 - Add pedit action with RAW_OP offset u32 clear value
-ok 19 c422 - Add pedit action with RAW_OP offset u16 invert value
-ok 20 d3d3 - Add pedit action with RAW_OP offset u32 invert value
-ok 21 57e5 - Add pedit action with RAW_OP offset u8 preserve value
-ok 22 99e0 - Add pedit action with RAW_OP offset u16 preserve value
-ok 23 1892 - Add pedit action with RAW_OP offset u32 preserve value
-ok 24 4b60 - Add pedit action with RAW_OP negative offset u16/u32 set value
-ok 25 a5a7 - Add pedit action with LAYERED_OP eth set src
-ok 26 86d4 - Add pedit action with LAYERED_OP eth set src & dst
-ok 27 f8a9 - Add pedit action with LAYERED_OP eth set dst
-ok 28 c715 - Add pedit action with LAYERED_OP eth set src (INVALID)
-ok 29 8131 - Add pedit action with LAYERED_OP eth set dst (INVALID)
-ok 30 ba22 - Add pedit action with LAYERED_OP eth type set/clear sequence
-ok 31 dec4 - Add pedit action with LAYERED_OP eth set type (INVALID)
-ok 32 ab06 - Add pedit action with LAYERED_OP eth add type
-ok 33 918d - Add pedit action with LAYERED_OP eth invert src
-ok 34 a8d4 - Add pedit action with LAYERED_OP eth invert dst
-ok 35 ee13 - Add pedit action with LAYERED_OP eth invert type
-ok 36 7588 - Add pedit action with LAYERED_OP ip set src
-ok 37 0fa7 - Add pedit action with LAYERED_OP ip set dst
-ok 38 5810 - Add pedit action with LAYERED_OP ip set src & dst
-ok 39 1092 - Add pedit action with LAYERED_OP ip set ihl & dsfield
-ok 40 02d8 - Add pedit action with LAYERED_OP ip set ttl & protocol
-ok 41 3e2d - Add pedit action with LAYERED_OP ip set ttl (INVALID)
-ok 42 31ae - Add pedit action with LAYERED_OP ip ttl clear/set
-ok 43 486f - Add pedit action with LAYERED_OP ip set duplicate fields
-ok 44 e790 - Add pedit action with LAYERED_OP ip set ce, df, mf, firstfrag, nofrag fields
-ok 45 cc8a - Add pedit action with LAYERED_OP ip set tos
-ok 46 7a17 - Add pedit action with LAYERED_OP ip set precedence
-ok 47 c3b6 - Add pedit action with LAYERED_OP ip add tos
-ok 48 43d3 - Add pedit action with LAYERED_OP ip add precedence
-ok 49 438e - Add pedit action with LAYERED_OP ip clear tos
-ok 50 6b1b - Add pedit action with LAYERED_OP ip clear precedence
-ok 51 824a - Add pedit action with LAYERED_OP ip invert tos
-ok 52 106f - Add pedit action with LAYERED_OP ip invert precedence
-ok 53 6829 - Add pedit action with LAYERED_OP beyond ip set dport & sport
-ok 54 afd8 - Add pedit action with LAYERED_OP beyond ip set icmp_type & icmp_code
-ok 55 3143 - Add pedit action with LAYERED_OP beyond ip set dport (INVALID)
-ok 56 815c - Add pedit action with LAYERED_OP ip6 set src
-ok 57 4dae - Add pedit action with LAYERED_OP ip6 set dst
-ok 58 fc1f - Add pedit action with LAYERED_OP ip6 set src & dst
-ok 59 6d34 - Add pedit action with LAYERED_OP ip6 dst retain value (INVALID)
-ok 60 94bb - Add pedit action with LAYERED_OP ip6 traffic_class
-ok 61 6f5e - Add pedit action with LAYERED_OP ip6 flow_lbl
-ok 62 6795 - Add pedit action with LAYERED_OP ip6 set payload_len, nexthdr, hoplimit
-ok 63 1442 - Add pedit action with LAYERED_OP tcp set dport & sport
-ok 64 b7ac - Add pedit action with LAYERED_OP tcp sport set (INVALID)
-ok 65 cfcc - Add pedit action with LAYERED_OP tcp flags set
-ok 66 3bc4 - Add pedit action with LAYERED_OP tcp set dport, sport & flags fields
-ok 67 f1c8 - Add pedit action with LAYERED_OP udp set dport & sport
-ok 68 d784 - Add pedit action with mixed RAW/LAYERED_OP #1
-ok 69 70ca - Add pedit action with mixed RAW/LAYERED_OP #2
+The above shows the number of original entries that are in the mcount_loc
+section and the pages needed to save them (225), but the second output
+reflects the number of pages that were actually used. The two should be
+consistent as:
 
-Fixes: 71d0ed7079df ("net/act_pedit: Support using offset relative to the conventional network headers")
-Fixes: f67169fef8db ("net/sched: act_pedit: fix WARN() in the traffic path")
-Reviewed-by: Jamal Hadi Salim <jhs@mojatatu.com>
-Signed-off-by: Pedro Tammela <pctammela@mojatatu.com>
-Reviewed-by: Simon Horman <simon.horman@corigine.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Wentao Guan <guanwentao@uniontech.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+ ftrace: allocating 56739 entries in 224 pages
+ ftrace: allocated 224 pages with 3 groups
+
+The above also shows the accurate number of entires that were actually
+stored and does not include the entries that were removed.
+
+Cc: bpf <bpf@vger.kernel.org>
+Cc: Masami Hiramatsu <mhiramat@kernel.org>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Masahiro Yamada <masahiroy@kernel.org>
+Cc: Nathan Chancellor <nathan@kernel.org>
+Cc: Nicolas Schier <nicolas@fjasle.eu>
+Cc: Zheng Yejian <zhengyejian1@huawei.com>
+Cc: Martin  Kelly <martin.kelly@crowdstrike.com>
+Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
+Cc: Josh Poimboeuf <jpoimboe@redhat.com>
+Cc: Heiko Carstens <hca@linux.ibm.com>
+Cc: Catalin Marinas <catalin.marinas@arm.com>
+Cc: Will Deacon <will@kernel.org>
+Cc: Vasily Gorbik <gor@linux.ibm.com>
+Cc: Alexander Gordeev <agordeev@linux.ibm.com>
+Link: https://lore.kernel.org/20250218200023.221100846@goodmis.org
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: Andrey Grodzovsky <andrey.grodzovsky@crowdstrike.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/sched/act_pedit.c | 58 +++++++++++++++++++++++--------------------
- 1 file changed, 31 insertions(+), 27 deletions(-)
+ kernel/trace/ftrace.c |   15 ++++++++++++---
+ 1 file changed, 12 insertions(+), 3 deletions(-)
 
-diff --git a/net/sched/act_pedit.c b/net/sched/act_pedit.c
-index 0601deea04d725..fe9e826184c168 100644
---- a/net/sched/act_pedit.c
-+++ b/net/sched/act_pedit.c
-@@ -182,26 +182,6 @@ static int tcf_pedit_init(struct net *net, struct nlattr *nla,
+--- a/kernel/trace/ftrace.c
++++ b/kernel/trace/ftrace.c
+@@ -6527,6 +6527,7 @@ static int ftrace_process_locs(struct mo
+ 	unsigned long addr;
+ 	unsigned long kaslr;
+ 	unsigned long flags = 0; /* Shut up gcc */
++	unsigned long pages;
+ 	int ret = -ENOMEM;
+ 
+ 	count = end - start;
+@@ -6534,6 +6535,8 @@ static int ftrace_process_locs(struct mo
+ 	if (!count)
+ 		return 0;
+ 
++	pages = DIV_ROUND_UP(count, ENTRIES_PER_PAGE);
++
+ 	/*
+ 	 * Sorting mcount in vmlinux at build time depend on
+ 	 * CONFIG_BUILDTIME_MCOUNT_SORT, while mcount loc in
+@@ -6645,6 +6648,8 @@ static int ftrace_process_locs(struct mo
+ 			for (pg = pg_unuse; pg; pg = pg->next)
+ 				remaining += 1 << pg->order;
+ 
++			pages -= remaining;
++
+ 			skip = DIV_ROUND_UP(skip, ENTRIES_PER_PAGE);
+ 
+ 			/*
+@@ -6658,6 +6663,13 @@ static int ftrace_process_locs(struct mo
+ 		synchronize_rcu();
+ 		ftrace_free_pages(pg_unuse);
  	}
- 
- 	parm = nla_data(pattr);
--	if (!parm->nkeys) {
--		NL_SET_ERR_MSG_MOD(extack, "Pedit requires keys to be passed");
--		return -EINVAL;
--	}
--	ksize = parm->nkeys * sizeof(struct tc_pedit_key);
--	if (nla_len(pattr) < sizeof(*parm) + ksize) {
--		NL_SET_ERR_MSG_ATTR(extack, pattr, "Length of TCA_PEDIT_PARMS or TCA_PEDIT_PARMS_EX pedit attribute is invalid");
--		return -EINVAL;
--	}
--
--	nparms = kzalloc(sizeof(*nparms), GFP_KERNEL);
--	if (!nparms)
--		return -ENOMEM;
--
--	nparms->tcfp_keys_ex =
--		tcf_pedit_keys_ex_parse(tb[TCA_PEDIT_KEYS_EX], parm->nkeys);
--	if (IS_ERR(nparms->tcfp_keys_ex)) {
--		ret = PTR_ERR(nparms->tcfp_keys_ex);
--		goto out_free;
--	}
- 
- 	index = parm->index;
- 	err = tcf_idr_check_alloc(tn, &index, a, bind);
-@@ -210,25 +190,49 @@ static int tcf_pedit_init(struct net *net, struct nlattr *nla,
- 						&act_pedit_ops, bind, flags);
- 		if (ret) {
- 			tcf_idr_cleanup(tn, index);
--			goto out_free_ex;
-+			return ret;
- 		}
- 		ret = ACT_P_CREATED;
- 	} else if (err > 0) {
- 		if (bind)
--			goto out_free;
-+			return 0;
- 		if (!ovr) {
- 			ret = -EEXIST;
- 			goto out_release;
- 		}
- 	} else {
--		ret = err;
--		goto out_free_ex;
-+		return err;
++
++	if (!mod) {
++		count -= skipped;
++		pr_info("ftrace: allocating %ld entries in %ld pages\n",
++			count, pages);
 +	}
 +
-+	if (!parm->nkeys) {
-+		NL_SET_ERR_MSG_MOD(extack, "Pedit requires keys to be passed");
-+		ret = -EINVAL;
-+		goto out_release;
-+	}
-+	ksize = parm->nkeys * sizeof(struct tc_pedit_key);
-+	if (nla_len(pattr) < sizeof(*parm) + ksize) {
-+		NL_SET_ERR_MSG_ATTR(extack, pattr, "Length of TCA_PEDIT_PARMS or TCA_PEDIT_PARMS_EX pedit attribute is invalid");
-+		ret = -EINVAL;
-+		goto out_release;
-+	}
-+
-+	nparms = kzalloc(sizeof(*nparms), GFP_KERNEL);
-+	if (!nparms) {
-+		ret = -ENOMEM;
-+		goto out_release;
-+	}
-+
-+	nparms->tcfp_keys_ex =
-+		tcf_pedit_keys_ex_parse(tb[TCA_PEDIT_KEYS_EX], parm->nkeys);
-+	if (IS_ERR(nparms->tcfp_keys_ex)) {
-+		ret = PTR_ERR(nparms->tcfp_keys_ex);
-+		goto out_free;
- 	}
- 
- 	err = tcf_action_check_ctrlact(parm->action, tp, &goto_ch, extack);
- 	if (err < 0) {
- 		ret = err;
--		goto out_release;
-+		goto out_free_ex;
- 	}
- 
- 	nparms->tcfp_flags = parm->flags;
-@@ -280,12 +284,12 @@ static int tcf_pedit_init(struct net *net, struct nlattr *nla,
- put_chain:
- 	if (goto_ch)
- 		tcf_chain_put_by_act(goto_ch);
--out_release:
--	tcf_idr_release(*a, bind);
- out_free_ex:
- 	kfree(nparms->tcfp_keys_ex);
- out_free:
- 	kfree(nparms);
-+out_release:
-+	tcf_idr_release(*a, bind);
  	return ret;
  }
  
--- 
-2.53.0
-
+@@ -7315,9 +7327,6 @@ void __init ftrace_init(void)
+ 		goto failed;
+ 	}
+ 
+-	pr_info("ftrace: allocating %ld entries in %ld pages\n",
+-		count, DIV_ROUND_UP(count, ENTRIES_PER_PAGE));
+-
+ 	ret = ftrace_process_locs(NULL,
+ 				  __start_mcount_loc,
+ 				  __stop_mcount_loc);
 
 
 
