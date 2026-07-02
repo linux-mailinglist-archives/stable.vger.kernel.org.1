@@ -1,61 +1,62 @@
-Return-Path: <stable+bounces-270980-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-270833-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id zr0YBkGhRmo6agsAu9opvQ
-	(envelope-from <stable+bounces-270980-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:34:57 +0200
+	id gSDxOFKXRmq7ZQsAu9opvQ
+	(envelope-from <stable+bounces-270833-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:52:34 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 67D196FB74B
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:34:56 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2463D6FAAD7
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:52:34 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=eKodFgOP;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-270980-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-270980-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=PRDQQ0aW;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-270833-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-270833-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 078B432F4227
-	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:40:46 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 093F63144C65
+	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:36:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C13C739DBF7;
-	Thu,  2 Jul 2026 16:39:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45785390C94;
+	Thu,  2 Jul 2026 16:32:48 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38348399CEE;
-	Thu,  2 Jul 2026 16:39:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D8EF339844;
+	Thu,  2 Jul 2026 16:32:47 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783010355; cv=none; b=Iu02ZNPt/yJaK7y3bWkmq3KxPqa4IUAS5KldUaMO9vwjQsOMKt/gN6OvUo4+5A9rLCUudDqU7K4SLWy6Nx0oVCAF5xap74qb2TrELAjWZf8RfEuwTo7rxHO5TKjTX/nzYJ3L+9OwV9cIuk543gIKrDUh3DJP9SuyotbPhN6ErlM=
+	t=1783009968; cv=none; b=rw1cCzjx+8ORtDM8LZfWSo4HyA2lj1nEQL+KyVBoMSnAOewi8LGgiFNkcI7LHaE63OSSZPKxX67Y4nn78+rXjR/T+PlL3HYrY79W2VdtGJrAensf4je7FFzJbLvDVeRmzKYahyRlbAyGYonWTPLSgWzoNGP/5H58ySEKyMEclI0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783010355; c=relaxed/simple;
-	bh=TXlwlWXbhYWLzhzFaFaHv/5Fw4fKKXCXEmFkxeolxvU=;
+	s=arc-20240116; t=1783009968; c=relaxed/simple;
+	bh=gqXzLE9gvQGFunmaIMaNE1dGalCBDhOeI7zZPdo5dfo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PCK+r+gX7sLjjeHT8cqYFJmEt2qXI/BgjY1qxRbw48aHitfzqDzfcQQ8qBHXU3riJGruskmC0FkVAhZz6D/tqPLgODWZIRW5bOdLmoW6TdkJyKCBNvfL5xD3VrsTlyuOb3T6j4br5BVmf4BB0amLOVeetcoXso07/gDyGbG1fQw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eKodFgOP; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 622871F000E9;
-	Thu,  2 Jul 2026 16:39:13 +0000 (UTC)
+	 MIME-Version:Content-Type; b=RjARb2EtTqMd5au8lk01CAc1gd2tSLfTqOZfRtyML/iQi/gO2BtqltgfrT3RIWM6UfbpaTg/B1qnM99Bl4J3TX3C+M8eYhU39Uo1VUKD3QQIRgmJNaZ+cbMPFQvtpob/Y8LBrnJa+Hl3Ak72U+Q3Fz+ASnS/3vZvakWvoIMcHqc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PRDQQ0aW; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72C6F1F000E9;
+	Thu,  2 Jul 2026 16:32:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1783010353;
-	bh=lbsEqmqGmBZ0TDwFIhL7jWOgeV5eqkp+uOmgPebegPE=;
+	s=korg; t=1783009966;
+	bh=lVBrBH8GX4gILKYQzQoFGp/huucpX/71lbhsLsbIedA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=eKodFgOP8T+osnBDuofwCqGHgS2ktFyCpCd049hB/xhMZgg2db7E8MdgrT+gD0K9V
-	 LxCwWNDAk+hN/Et4V7wR5fyG9li3cTU83qh0GeckfcB3Dih4TrfRu+mL3ggnkfqAq1
-	 yPHUpzTiK1og6wGK0gf1CUXPj3iZ3G37ObI/54z8=
+	b=PRDQQ0aWXvdzeS1ckO8OZFpGLKEtyA8Muv7WU+QUeMMaFuiAwsv2PL58uI1KHm+hf
+	 RgxXN8F+VpdJAfPiUwKVEysLBy1OIZ1zWGNehyL1iV1oEUasG668DTfEDAnAH2HvT5
+	 PAoJA7vo5EXrJhuDaZy3VTOBhB4l9Dlt84oeJRow=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Guenter Roeck <linux@roeck-us.net>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
-	Andrey Grodzovsky <andrey.grodzovsky@crowdstrike.com>
-Subject: [PATCH 6.12 078/204] ftrace: Do not over-allocate ftrace memory
+	Jose Maria Casanova Crespo <jmcasanova@igalia.com>,
+	Iago Toral Quiroga <itoral@igalia.com>,
+	=?UTF-8?q?Ma=C3=ADra=20Canal?= <mcanal@igalia.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 016/129] drm/v3d: Skip CSD when it has zeroed workgroups
 Date: Thu,  2 Jul 2026 18:18:55 +0200
-Message-ID: <20260702155120.303532668@linuxfoundation.org>
+Message-ID: <20260702155112.498482460@linuxfoundation.org>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260702155118.667618796@linuxfoundation.org>
-References: <20260702155118.667618796@linuxfoundation.org>
+In-Reply-To: <20260702155112.163984240@linuxfoundation.org>
+References: <20260702155112.163984240@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,202 +66,103 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-270980-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-270833-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
+	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:linux@roeck-us.net,m:rostedt@goodmis.org,m:andrey.grodzovsky@crowdstrike.com,s:lists@lfdr.de];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:jmcasanova@igalia.com,m:itoral@igalia.com,m:mcanal@igalia.com,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	TO_DN_SOME(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,goodmis.org:email,msgid.link:url,vger.kernel.org:from_smtp,crowdstrike.com:email]
+	RWL_MAILSPIKE_POSSIBLE(0.00)[104.64.211.4:from];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,msgid.link:url,igalia.com:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 67D196FB74B
+X-Rspamd-Queue-Id: 2463D6FAAD7
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Guenter Roeck <linux@roeck-us.net>
+From: Maíra Canal <mcanal@igalia.com>
 
-[ Upstream commit be55257fab181b93af38f8c4b1b3cb453a78d742 ]
+[ Upstream commit 7f93fad5ea0affc9e1505dd0f7596c0fdb496213 ]
 
-The pg_remaining calculation in ftrace_process_locs() assumes that
-ENTRIES_PER_PAGE multiplied by 2^order equals the actual capacity of the
-allocated page group. However, ENTRIES_PER_PAGE is PAGE_SIZE / ENTRY_SIZE
-(integer division). When PAGE_SIZE is not a multiple of ENTRY_SIZE (e.g.
-4096 / 24 = 170 with remainder 16), high-order allocations (like 256 pages)
-have significantly more capacity than 256 * 170. This leads to pg_remaining
-being underestimated, which in turn makes skip (derived from skipped -
-pg_remaining) larger than expected, causing the WARN(skip != remaining)
-to trigger.
+A compute shader dispatch encodes its workgroup counts in the CFG0..CFG2
+registers. Kicking off a dispatch with a zero count in any of the three
+dimensions is invalid. First, the hardware will process 0 as 65536,
+while the user-space driver exposes a maximum of 65535. Over that, a
+submission with a zeroed workgroup dimension should be a no-op.
 
-Extra allocated pages for ftrace: 2 with 654 skipped
-WARNING: CPU: 0 PID: 0 at kernel/trace/ftrace.c:7295 ftrace_process_locs+0x5bf/0x5e0
+These zeroed counts can reach the dispatch path through an indirect CSD
+job, whose workgroup counts are only known once the indirect buffer is
+read and may legitimately be zero, but such scenario should only result in
+a no-op.
 
-A similar problem in ftrace_allocate_records() can result in allocating
-too many pages. This can trigger the second warning in
-ftrace_process_locs().
-
-Extra allocated pages for ftrace
-WARNING: CPU: 0 PID: 0 at kernel/trace/ftrace.c:7276 ftrace_process_locs+0x548/0x580
-
-Use the actual capacity of a page group to determine the number of pages
-to allocate. Have ftrace_allocate_pages() return the number of allocated
-pages to avoid having to calculate it. Use the actual page group capacity
-when validating the number of unused pages due to skipped entries.
-Drop the definition of ENTRIES_PER_PAGE since it is no longer used.
+Overwrite the indirect CSD job workgroup counts with the indirect BO
+ones, even if they are zeroed, and don't submit the job to the hardware
+when any of the workgroup counts is zero, so the job completes immediately
+instead of running the shader.
 
 Cc: stable@vger.kernel.org
-Fixes: 4a3efc6baff93 ("ftrace: Update the mcount_loc check of skipped entries")
-Link: https://patch.msgid.link/20260113152243.3557219-1-linux@roeck-us.net
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-Signed-off-by: Andrey Grodzovsky <andrey.grodzovsky@crowdstrike.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: d223f98f0209 ("drm/v3d: Add support for compute shader dispatch.")
+Suggested-by: Jose Maria Casanova Crespo <jmcasanova@igalia.com>
+Reviewed-by: Iago Toral Quiroga <itoral@igalia.com>
+Link: https://patch.msgid.link/20260602-v3d-fix-indirect-csd-v4-2-654309e32bc0@igalia.com
+Signed-off-by: Maíra Canal <mcanal@igalia.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/trace/ftrace.c |   29 +++++++++++++++--------------
- 1 file changed, 15 insertions(+), 14 deletions(-)
+ drivers/gpu/drm/v3d/v3d_sched.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
---- a/kernel/trace/ftrace.c
-+++ b/kernel/trace/ftrace.c
-@@ -1122,7 +1122,6 @@ struct ftrace_page {
- };
- 
- #define ENTRY_SIZE sizeof(struct dyn_ftrace)
--#define ENTRIES_PER_PAGE (PAGE_SIZE / ENTRY_SIZE)
- 
- static struct ftrace_page	*ftrace_pages_start;
- static struct ftrace_page	*ftrace_pages;
-@@ -3754,7 +3753,8 @@ static int ftrace_update_code(struct mod
- 	return 0;
- }
- 
--static int ftrace_allocate_records(struct ftrace_page *pg, int count)
-+static int ftrace_allocate_records(struct ftrace_page *pg, int count,
-+				   unsigned long *num_pages)
- {
- 	int order;
- 	int pages;
-@@ -3764,7 +3764,7 @@ static int ftrace_allocate_records(struc
- 		return -EINVAL;
- 
- 	/* We want to fill as much as possible, with no empty pages */
--	pages = DIV_ROUND_UP(count, ENTRIES_PER_PAGE);
-+	pages = DIV_ROUND_UP(count * ENTRY_SIZE, PAGE_SIZE);
- 	order = fls(pages) - 1;
- 
-  again:
-@@ -3779,6 +3779,7 @@ static int ftrace_allocate_records(struc
- 	}
- 
- 	ftrace_number_of_pages += 1 << order;
-+	*num_pages += 1 << order;
- 	ftrace_number_of_groups++;
- 
- 	cnt = (PAGE_SIZE << order) / ENTRY_SIZE;
-@@ -3807,12 +3808,14 @@ static void ftrace_free_pages(struct ftr
- }
- 
- static struct ftrace_page *
--ftrace_allocate_pages(unsigned long num_to_init)
-+ftrace_allocate_pages(unsigned long num_to_init, unsigned long *num_pages)
- {
- 	struct ftrace_page *start_pg;
- 	struct ftrace_page *pg;
- 	int cnt;
- 
-+	*num_pages = 0;
-+
- 	if (!num_to_init)
+diff --git a/drivers/gpu/drm/v3d/v3d_sched.c b/drivers/gpu/drm/v3d/v3d_sched.c
+index ff91cdb75bb912..ab872bc818004a 100644
+--- a/drivers/gpu/drm/v3d/v3d_sched.c
++++ b/drivers/gpu/drm/v3d/v3d_sched.c
+@@ -234,6 +234,16 @@ v3d_csd_job_run(struct drm_sched_job *sched_job)
  		return NULL;
- 
-@@ -3826,7 +3829,7 @@ ftrace_allocate_pages(unsigned long num_
- 	 * waste as little space as possible.
- 	 */
- 	for (;;) {
--		cnt = ftrace_allocate_records(pg, num_to_init);
-+		cnt = ftrace_allocate_records(pg, num_to_init, num_pages);
- 		if (cnt < 0)
- 			goto free_pages;
- 
-@@ -7058,8 +7061,6 @@ static int ftrace_process_locs(struct mo
- 	if (!count)
- 		return 0;
- 
--	pages = DIV_ROUND_UP(count, ENTRIES_PER_PAGE);
--
- 	/*
- 	 * Sorting mcount in vmlinux at build time depend on
- 	 * CONFIG_BUILDTIME_MCOUNT_SORT, while mcount loc in
-@@ -7072,7 +7073,7 @@ static int ftrace_process_locs(struct mo
- 		test_is_sorted(start, count);
  	}
  
--	start_pg = ftrace_allocate_pages(count);
-+	start_pg = ftrace_allocate_pages(count, &pages);
- 	if (!start_pg)
- 		return -ENOMEM;
++	/* The HW interprets a workgroup size of 0 as 65536; however, the
++	 * user-space driver exposes a maximum of 65535. Therefore, a 0 in
++	 * any dimension means that we have no workgroups and the compute
++	 * shader should not be dispatched.
++	 */
++	if (!V3D_GET_FIELD(job->args.cfg[0], V3D_CSD_QUEUED_CFG0_NUM_WGS_X) ||
++	    !V3D_GET_FIELD(job->args.cfg[1], V3D_CSD_QUEUED_CFG1_NUM_WGS_Y) ||
++	    !V3D_GET_FIELD(job->args.cfg[2], V3D_CSD_QUEUED_CFG2_NUM_WGS_Z))
++		return NULL;
++
+ 	v3d->queue[V3D_CSD].active_job = &job->base;
  
-@@ -7159,27 +7160,27 @@ static int ftrace_process_locs(struct mo
- 	/* We should have used all pages unless we skipped some */
- 	if (pg_unuse) {
- 		unsigned long pg_remaining, remaining = 0;
--		unsigned long skip;
-+		long skip;
- 
- 		/* Count the number of entries unused and compare it to skipped. */
--		pg_remaining = (ENTRIES_PER_PAGE << pg->order) - pg->index;
-+		pg_remaining = (PAGE_SIZE << pg->order) / ENTRY_SIZE - pg->index;
- 
- 		if (!WARN(skipped < pg_remaining, "Extra allocated pages for ftrace")) {
- 
- 			skip = skipped - pg_remaining;
- 
--			for (pg = pg_unuse; pg; pg = pg->next)
-+			for (pg = pg_unuse; pg && skip > 0; pg = pg->next) {
- 				remaining += 1 << pg->order;
-+				skip -= (PAGE_SIZE << pg->order) / ENTRY_SIZE;
-+			}
- 
- 			pages -= remaining;
- 
--			skip = DIV_ROUND_UP(skip, ENTRIES_PER_PAGE);
--
- 			/*
- 			 * Check to see if the number of pages remaining would
- 			 * just fit the number of entries skipped.
- 			 */
--			WARN(skip != remaining, "Extra allocated pages for ftrace: %lu with %lu skipped",
-+			WARN(pg || skip > 0, "Extra allocated pages for ftrace: %lu with %lu skipped",
- 			     remaining, skipped);
- 		}
- 		/* Need to synchronize with ftrace_location_range() */
+ 	v3d_invalidate_caches(v3d);
+-- 
+2.53.0
+
 
 
 
