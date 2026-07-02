@@ -1,62 +1,64 @@
-Return-Path: <stable+bounces-271145-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-270628-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id ExlCMv6XRmorZgsAu9opvQ
-	(envelope-from <stable+bounces-271145-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:55:26 +0200
+	id b8D1AzGeRmoDaQsAu9opvQ
+	(envelope-from <stable+bounces-270628-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:21:53 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 917CE6FAC10
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:55:26 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 50AFE6FB3CA
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:21:52 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=W4fHo0QE;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-271145-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-271145-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=UAWmJ+N+;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-270628-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-270628-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id AFEED30B4B2F
-	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:48:09 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 5FEA032207AD
+	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:29:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B882534C9A6;
-	Thu,  2 Jul 2026 16:46:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 349B4414DDB;
+	Thu,  2 Jul 2026 16:23:58 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70A23348465;
-	Thu,  2 Jul 2026 16:46:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DDB033A033;
+	Thu,  2 Jul 2026 16:23:52 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783010788; cv=none; b=bjRfGkFWsNLW09C6bGwrKPz54bFNARZl5bRlwzlEZH6GENY20YBk9zIoHHdBbDwOMZCi49+ye3f9NagGs/0hgW10Shth6ND3saL3QPLCGBMrMlIrVfDw2lwoN8WtRtABGDZw/oDvudaO+e0MqgUTJNlMdw3kWEoQcrnH6lcle2w=
+	t=1783009437; cv=none; b=I1Fjrx89+hI3UcIQZylhGo4p1wPHMRpYGlswPq3lZp+hxAGokEZYXlmEzJQMBuZ6McRDZkSXw74ZNsUD86O7qwprEtibUEMg1HuqdEWde0zuP1LXKat9EjcXlDVPsWgBSKUTF+czWbN5yz6Uxxum9TS7iUgB7L9/bBoFzFXZ3mM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783010788; c=relaxed/simple;
-	bh=sz4r7Q4w1NEKFz3NzyqBr+BW7ePCwVgVKjNCO+EPeic=;
+	s=arc-20240116; t=1783009437; c=relaxed/simple;
+	bh=rXbETS3T1I6j4oSrWe62MpCAqfUYvovr6ZuJsbHnJWY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QmAoK1sEwLjR7mrdzrzJs7ajKYqKZNKVUF1DunL8mIFRn9UIvwZDUH08ZtNuN7wRBY90RtocEqNij7Loyp8jXuZQrVSmAxA90EoBjllYfGLs6c6861ljj8FyTr8zFWwUKJjqN+hzQkbaJ0tkZV26sifqMBZYoe7VyEzZgNzBMzY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W4fHo0QE; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D57331F00A3A;
-	Thu,  2 Jul 2026 16:46:26 +0000 (UTC)
+	 MIME-Version; b=WkcxDN9P5sUipgpErraWgPZ1kzk73ummr+gUz4BZXpecOo+yf8vgBdEZT/FwT4BEb+MZZ6JbiRv1xleBsQ9zu7VdOGLcS0EMT36X8c+iqgqw9oKsTs7NJVDWQYYhQa0Ihx9jo8MBvml5qhZ/YXN3xQTKZ/y082abzdEwMG+aIbs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UAWmJ+N+; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 620351F00A3A;
+	Thu,  2 Jul 2026 16:23:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1783010787;
-	bh=o6glv/I+jpLI1B3aWe4yuNuksIBqa1pj7f45G5DMw00=;
+	s=korg; t=1783009431;
+	bh=7KU8i9NQhqb+PC9WTMO+klWsLigVV9uyv6z15IYWDio=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=W4fHo0QERGqIG6HJ2YPBKwJX1TiDWbSTZRL5QbKhwPaK0L/AZmf5UiHej7N5lnGVU
-	 h41Xd1ve45xfZSE4iYFjpVIYc0cqCQz0ET1XuZO5PcCzen5i94USIEUYqRz7KVc7fb
-	 8rrci6wQcgIH/AlUll23s0KoD0XUti1QuWAd3BpY=
+	b=UAWmJ+N+mzL6gYM0koDrzDBXKGzbyyKgARqhCvsqTq5TfY8/QlY5xEESf4LfZC0pV
+	 kWNaPLC4ISwqzmnuNrfBfNfB+zrye6yHqNVppzmnt/DQ5buQpRhw7Pp+DkKIaVxBUV
+	 wWfTwNouq8LY/YfcYg5Uy/gN9p5SP0TGGG30U+18=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+78147abe6c524f183ee9@syzkaller.appspotmail.com,
-	Davidlohr Bueso <dave@stgolabs.net>,
-	Thomas Gleixner <tglx@kernel.org>,
+	Jamal Hadi Salim <jhs@mojatatu.com>,
+	Simon Horman <simon.horman@corigine.com>,
+	Pedro Tammela <pctammela@mojatatu.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Wentao Guan <guanwentao@uniontech.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 036/175] locking/rtmutex: Skip remove_waiter() when waiter is not enqueued
-Date: Thu,  2 Jul 2026 18:18:57 +0200
-Message-ID: <20260702155116.559022693@linuxfoundation.org>
+Subject: [PATCH 5.10 06/96] net/sched: act_pedit: rate limit datapath messages
+Date: Thu,  2 Jul 2026 18:18:58 +0200
+Message-ID: <20260702155109.101296679@linuxfoundation.org>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260702155115.766838875@linuxfoundation.org>
-References: <20260702155115.766838875@linuxfoundation.org>
+In-Reply-To: <20260702155108.949633242@linuxfoundation.org>
+References: <20260702155108.949633242@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,107 +70,109 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-271145-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-270628-lists,stable=lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:syzbot+78147abe6c524f183ee9@syzkaller.appspotmail.com,m:dave@stgolabs.net,m:tglx@kernel.org,m:sashal@kernel.org,m:syzbot@syzkaller.appspotmail.com,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:jhs@mojatatu.com,m:simon.horman@corigine.com,m:pctammela@mojatatu.com,m:davem@davemloft.net,m:guanwentao@uniontech.com,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,78147abe6c524f183ee9];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[appspotmail.com:email,msgid.link:url,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,stgolabs.net:email]
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[davemloft.net:email,mojatatu.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,uniontech.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 917CE6FAC10
+X-Rspamd-Queue-Id: 50AFE6FB3CA
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Davidlohr Bueso <dave@stgolabs.net>
+From: Pedro Tammela <pctammela@mojatatu.com>
 
-[ Upstream commit 40a25d59e85b3c8709ac2424d44f65610467871e ]
+[ Upstream commit e3c9673e2f6e1b3aa4bb87c570336e10f364c28a ]
 
-syzbot triggered the following splat in remove_waiter() via
-FUTEX_CMP_REQUEUE_PI:
+Unbounded info messages in the pedit datapath can flood the printk
+ring buffer quite easily depending on the action created.
+As these messages are informational, usually printing some, not all,
+is enough to bring attention to the real issue.
 
-  KASAN: null-ptr-deref in range [0x0000000000000a88-0x0000000000000a8f]
-   class_raw_spinlock_constructor
-   remove_waiter+0x159/0x1200 kernel/locking/rtmutex.c:1561
-   rt_mutex_start_proxy_lock+0x103/0x120
-   futex_requeue+0x10e4/0x20d0
-   __x64_sys_futex+0x34f/0x4d0
-
-task_blocks_on_rt_mutex() does not arm the waiter upon deadlock detection,
-leaving waiter->task nil, where 3bfdc63936dd ("rtmutex: Use waiter::task instead
-of current in remove_waiter()") made this fatal.
-
-Furthermore, rt_mutex_start_proxy_lock() should not be calling into remove_waiter()
-upon a successfully grabbing the rtmutex. 1a1fb985f2e2 ("futex: Handle early deadlock
-return correctly"), moved the remove_waiter() out of __rt_mutex_start_proxy_lock()
-(where 'ret' was only ever 0 or < 0) into the wrapper. Tighten this check to
-account for try_to_take_rt_mutex().
-
-Fixes: 3bfdc63936dd ("rtmutex: Use waiter::task instead of current in remove_waiter()")
-Reported-by: syzbot+78147abe6c524f183ee9@syzkaller.appspotmail.com
-Signed-off-by: Davidlohr Bueso <dave@stgolabs.net>
-Signed-off-by: Thomas Gleixner <tglx@kernel.org>
-Cc: stable@vger.kernel.org
-Closes: https://lore.kernel.org/all/69f114ac.050a0220.ac8b.0003.GAE@google.com/
-Link: https://patch.msgid.link/20260507112913.1019537-1-dave@stgolabs.net
+Reviewed-by: Jamal Hadi Salim <jhs@mojatatu.com>
+Reviewed-by: Simon Horman <simon.horman@corigine.com>
+Signed-off-by: Pedro Tammela <pctammela@mojatatu.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Wentao Guan <guanwentao@uniontech.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/locking/rtmutex.c     |    3 +++
- kernel/locking/rtmutex_api.c |    2 +-
- 2 files changed, 4 insertions(+), 1 deletion(-)
+ net/sched/act_pedit.c | 12 +++++-------
+ 1 file changed, 5 insertions(+), 7 deletions(-)
 
---- a/kernel/locking/rtmutex.c
-+++ b/kernel/locking/rtmutex.c
-@@ -1524,6 +1524,9 @@ static void __sched remove_waiter(struct
+diff --git a/net/sched/act_pedit.c b/net/sched/act_pedit.c
+index 95ae885ecba168..ecad6fc39dc3d7 100644
+--- a/net/sched/act_pedit.c
++++ b/net/sched/act_pedit.c
+@@ -383,8 +383,8 @@ static int tcf_pedit_act(struct sk_buff *skb, const struct tc_action *a,
+ 			u8 *d, _d;
  
- 	lockdep_assert_held(&lock->wait_lock);
+ 			if (!offset_valid(skb, hoffset + tkey->at)) {
+-				pr_info("tc action pedit 'at' offset %d out of bounds\n",
+-					hoffset + tkey->at);
++				pr_info_ratelimited("tc action pedit 'at' offset %d out of bounds\n",
++						    hoffset + tkey->at);
+ 				goto bad;
+ 			}
+ 			d = skb_header_pointer(skb, hoffset + tkey->at,
+@@ -394,14 +394,13 @@ static int tcf_pedit_act(struct sk_buff *skb, const struct tc_action *a,
  
-+	if (!waiter_task) /* never enqueued */
-+		return;
-+
- 	scoped_guard(raw_spinlock, &waiter_task->pi_lock) {
- 		rt_mutex_dequeue(lock, waiter);
- 		waiter_task->pi_blocked_on = NULL;
---- a/kernel/locking/rtmutex_api.c
-+++ b/kernel/locking/rtmutex_api.c
-@@ -344,7 +344,7 @@ int __sched rt_mutex_start_proxy_lock(st
+ 			offset += (*d & tkey->offmask) >> tkey->shift;
+ 			if (offset % 4) {
+-				pr_info("tc action pedit offset must be on 32 bit boundaries\n");
++				pr_info_ratelimited("tc action pedit offset must be on 32 bit boundaries\n");
+ 				goto bad;
+ 			}
+ 		}
  
- 	raw_spin_lock_irq(&lock->wait_lock);
- 	ret = __rt_mutex_start_proxy_lock(lock, waiter, task);
--	if (unlikely(ret))
-+	if (unlikely(ret < 0))
- 		remove_waiter(lock, waiter);
- 	raw_spin_unlock_irq(&lock->wait_lock);
+ 		if (!offset_valid(skb, hoffset + offset)) {
+-			pr_info("tc action pedit offset %d out of bounds\n",
+-				hoffset + offset);
++			pr_info_ratelimited("tc action pedit offset %d out of bounds\n", hoffset + offset);
+ 			goto bad;
+ 		}
  
+@@ -418,8 +417,7 @@ static int tcf_pedit_act(struct sk_buff *skb, const struct tc_action *a,
+ 			val = (*ptr + tkey->val) & ~tkey->mask;
+ 			break;
+ 		default:
+-			pr_info("tc action pedit bad command (%d)\n",
+-				cmd);
++			pr_info_ratelimited("tc action pedit bad command (%d)\n", cmd);
+ 			goto bad;
+ 		}
+ 
+-- 
+2.53.0
+
 
 
 
