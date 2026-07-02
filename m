@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-271451-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-271341-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 1akxFIabRmoXaAsAu9opvQ
-	(envelope-from <stable+bounces-271451-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:10:30 +0200
+	id mPUhCmmaRmp9ZwsAu9opvQ
+	(envelope-from <stable+bounces-271341-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:05:45 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id D6FE46FB156
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:10:29 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id C11BC6FAF82
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:05:44 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=fR5ctWda;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-271451-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-271451-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=DuXeXWo2;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-271341-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-271341-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C72C4334015B
-	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:59:39 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 2CFAF30B1C68
+	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:54:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A2DF433E87;
-	Thu,  2 Jul 2026 16:59:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1296524E4C3;
+	Thu,  2 Jul 2026 16:54:50 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE3D42D0602;
-	Thu,  2 Jul 2026 16:59:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E29C11C695;
+	Thu,  2 Jul 2026 16:54:48 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783011579; cv=none; b=GjPw0/cYhDzoM8EU9WCI/wFKJCuo0nrJVN/9YgGbWhdvExUot245xNGGRVciMKFbss9w2QbU4T2hQMZzP0grfKtRU6M6edelL5WKmO+r3BhGoqeCNCLos6w+GWOP5F/Z24LsnKeSUtKhkxL+JlnUW2VAWMVcK8frilcgSfyUZSg=
+	t=1783011289; cv=none; b=CQYQH1F7FTQ/rSDgBryCVPKm3W4RYmz49NviaXpnFnhjmU9vVFQUJPz9gxoNcJWD7Q9d9aoskht9UOQCABlGQ3vFveknPkfNMQr7t6HSYn2JOpvoXMIwGUO7QPF1p+5gZoqrQ0o9Th773f8IpZzb0qbD9IdDDMkZoRH28qns3B8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783011579; c=relaxed/simple;
-	bh=o92BC+o/lzJzj+Hdc9iuvL212Ha3eMsUMOnsU56J3AI=;
+	s=arc-20240116; t=1783011289; c=relaxed/simple;
+	bh=xkCYcodTQhvhhXGgwB02/DH9oh5ouwb0wg4xdhaEK+Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HdvTRiqCLb9Ud6sqUiiB9Uxat/lBU65Nv30U+EWiqEx8PFZh7D0kiSsaK+/wgY8kSg8hqNXF+m1Hrm8AqkLklX0lSmdr8w4LfNwyNOJOr1FgP+Dcxtkq/T6w+ykw8kUgo2qzkXR0ALzzhZR/lptf6I4kSfayhbm3mxVXwqpfprU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fR5ctWda; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56EAB1F00A3A;
-	Thu,  2 Jul 2026 16:59:37 +0000 (UTC)
+	 MIME-Version; b=YMuQ4RaBh8l/Xd7OsUEd/tTk4XDr+onzROM+VM31RqPi2bBiWwTPOeyVDEriyzGJzqyI+iaXUtNemGYywJ0MeP1RAJBfKBsHmeHAOnqCWCCOM279cGYcBqPCt4Iw2ICdS7fclTD36vteaV1d61DP7f8OUhM34c6Gt+z/xxDCooY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DuXeXWo2; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 557B01F00A3A;
+	Thu,  2 Jul 2026 16:54:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1783011577;
-	bh=LEUKXTq2LxM2YZF9c0NF89fnrAzmMqlwuI3noUHTg2g=;
+	s=korg; t=1783011288;
+	bh=IuOUzgzScvvdwfXd7daJMkiVWTQHVeGB5d6oMF2SZzg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=fR5ctWda8eb5nmKhA0gr0D6wQLvHU6XTSL4wqSC4nW2OEchr0KZILsjMPK+z/P6JO
-	 w4yf7ihG3PyolLZs7bf3iKfwbSf0E4QtnUygBW6DJ3Lk7C2ARnk9tlc8EfMClPbmQO
-	 JBcoFdorKC1yRF+exEH+cw0C+SjJ1rb48othfQog=
+	b=DuXeXWo27MjvdJ1giZn0+TQPvMBgONLNZaKxsiC3+qu0Dp8TlWzZxyNgTPPpDSxGW
+	 q3aEZj19s+UVQ43WIyXBMfcT6GsLq7sFlsyXGfv13LdmKwcqZEUAadW7mXW6+mydnl
+	 PP1B8puzdwCCH1PLGwBtcU4Dt4IKYAl4fh5VWz5A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -50,12 +50,12 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	stable@kernel.org,
 	Sven Eckelmann <sven@narfation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.1 009/120] batman-adv: tp_meter: add only finished tp_vars to lists
+Subject: [PATCH 6.18 008/108] batman-adv: tp_meter: initialize dec_cwnd explicitly
 Date: Thu,  2 Jul 2026 18:20:05 +0200
-Message-ID: <20260702155113.156350510@linuxfoundation.org>
+Message-ID: <20260702155112.285480420@linuxfoundation.org>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260702155112.964534952@linuxfoundation.org>
-References: <20260702155112.964534952@linuxfoundation.org>
+In-Reply-To: <20260702155112.110058792@linuxfoundation.org>
+References: <20260702155112.110058792@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,12 +72,12 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-271451-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-271341-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
@@ -86,7 +86,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
@@ -98,80 +98,46 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,narfation.org:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,narfation.org:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: D6FE46FB156
+X-Rspamd-Queue-Id: C11BC6FAF82
 
-7.1-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
 From: Sven Eckelmann <sven@narfation.org>
 
-commit 15ccbf685222274f5add1387af58c2a41a95f81e upstream.
+commit febfb1b86224489535312296ecfa3d4bf467f339 upstream.
 
-When the receiver variables (aka "session") are initialized, then they are
-added to the list of sessions before the timer is set up. A RCU protected
-reader could therefore find the entry and run mod_setup before
-batadv_tp_init_recv() finished the timer initialization.
+When batadv_tp_update_cwnd() is called, dec_cwnd is increased. But dec_cwnd
+is only initialixed (to 0) when a duplicate Ack was received or when cwnd
+is below the ss_threshold.
 
-The same is true for batadv_tp_start(), which must first initialize the
-finish_work and the test_length to avoid a similar problem.
+Just initialize the cwnd during the initialization to avoid any potential
+access of uninitialized data.
 
 Cc: stable@kernel.org
 Fixes: 33a3bb4a3345 ("batman-adv: throughput meter implementation")
 Signed-off-by: Sven Eckelmann <sven@narfation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/batman-adv/tp_meter.c | 18 +++++++++---------
- 1 file changed, 9 insertions(+), 9 deletions(-)
+ net/batman-adv/tp_meter.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
 diff --git a/net/batman-adv/tp_meter.c b/net/batman-adv/tp_meter.c
-index 0801dcf93540ac..7bfad65c862e9a 100644
+index fe9a447643074a..473641d32dc683 100644
 --- a/net/batman-adv/tp_meter.c
 +++ b/net/batman-adv/tp_meter.c
-@@ -1096,21 +1096,21 @@ void batadv_tp_start(struct batadv_priv *bat_priv, const u8 *dst,
- 	tp_vars->prerandom_offset = 0;
- 	spin_lock_init(&tp_vars->prerandom_lock);
- 
--	kref_get(&tp_vars->refcount);
--	hlist_add_head_rcu(&tp_vars->list, &bat_priv->tp_list);
--	spin_unlock_bh(&bat_priv->tp_list_lock);
--
- 	tp_vars->test_length = test_length;
- 	if (!tp_vars->test_length)
- 		tp_vars->test_length = BATADV_TP_DEF_TEST_LENGTH;
- 
-+	/* init work item for finished tp tests */
-+	INIT_DELAYED_WORK(&tp_vars->finish_work, batadv_tp_sender_finish);
-+
-+	kref_get(&tp_vars->refcount);
-+	hlist_add_head_rcu(&tp_vars->list, &bat_priv->tp_list);
-+	spin_unlock_bh(&bat_priv->tp_list_lock);
-+
- 	batadv_dbg(BATADV_DBG_TP_METER, bat_priv,
- 		   "Meter: starting throughput meter towards %pM (length=%ums)\n",
- 		   dst, test_length);
- 
--	/* init work item for finished tp tests */
--	INIT_DELAYED_WORK(&tp_vars->finish_work, batadv_tp_sender_finish);
--
- 	/* start tp kthread. This way the write() call issued from userspace can
- 	 * happily return and avoid to block
+@@ -1055,6 +1055,8 @@ void batadv_tp_start(struct batadv_priv *bat_priv, const u8 *dst,
+ 	 * mesh_interface, hence its MTU
  	 */
-@@ -1430,10 +1430,10 @@ batadv_tp_init_recv(struct batadv_priv *bat_priv,
- 	INIT_LIST_HEAD(&tp_vars->unacked_list);
- 
- 	kref_get(&tp_vars->refcount);
--	hlist_add_head_rcu(&tp_vars->list, &bat_priv->tp_list);
-+	timer_setup(&tp_vars->timer, batadv_tp_receiver_shutdown, 0);
- 
- 	kref_get(&tp_vars->refcount);
--	timer_setup(&tp_vars->timer, batadv_tp_receiver_shutdown, 0);
-+	hlist_add_head_rcu(&tp_vars->list, &bat_priv->tp_list);
- 
- 	batadv_tp_reset_receiver_timer(tp_vars);
- 
+ 	tp_vars->cwnd = BATADV_TP_PLEN * 3;
++	tp_vars->dec_cwnd = 0;
++
+ 	/* at the beginning initialise the SS threshold to the biggest possible
+ 	 * window size, hence the AWND size
+ 	 */
 -- 
 2.53.0
 
