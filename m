@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-271475-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-271355-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 6VN5OuWbRmo9aAsAu9opvQ
-	(envelope-from <stable+bounces-271475-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:12:05 +0200
+	id BvtaNo+lRmq+awsAu9opvQ
+	(envelope-from <stable+bounces-271355-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:53:19 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 42E616FB1CE
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:12:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 173C66FBB03
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:53:19 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=CwZqlgwn;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-271475-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-271475-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=JfsLB69q;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-271355-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-271355-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 093D1346D8DD
-	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 17:00:50 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 6AFC932D96CC
+	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:55:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B4F53101C8;
-	Thu,  2 Jul 2026 17:00:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0998382866;
+	Thu,  2 Jul 2026 16:55:27 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DACA2FC893;
-	Thu,  2 Jul 2026 17:00:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABC9B23EAAD;
+	Thu,  2 Jul 2026 16:55:25 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783011642; cv=none; b=UbBdyEdAck367PBd/tJXPWi+ndz11W4L3H/hz6ul9qiLjozJCIvG46EyGfBMJLOUOjKy/h6Io23rnXDz5oKJtTG757EvYf7nhBnrCUNoge49EmAGNV397xcP9t05RhYUV886jndzJVZHudYTdVAAHB+Yfg7WVxYgsB29xqnAHkk=
+	t=1783011326; cv=none; b=Dq0spaKnAXrbjY1Wn/7UxOGk+4n0ylbIKuhbaLgRRI1vciEvdFWcwt1UYYQ0nq6jxztZyb3+eh5a3nYVckI7haXyeHJL5yaWudpvZwvMKO3PFiNy9A/AqQ2sqrUljVV8l86j7bLSvbsh8N060IFSv9s/IQm3KICbf/hAGmJOYE8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783011642; c=relaxed/simple;
-	bh=Pi6ALpI6NXBLVXcHk5vUtlaYbRjOwDMzrOsp/mmP9P8=;
+	s=arc-20240116; t=1783011326; c=relaxed/simple;
+	bh=D78jI4CHID5Dzsm8b2N8DoiOzK7zndsw2zeLQ9FW/YU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TwoLkziL84Nw6td186l6/le0XaPUKhAuPrPvg4EhDkhnLsSP1dYNvuSW2iqPl+aiZhlhH6JKnTiWtosUS36TK7QXyAZWgOIDC43pT79ScQpBzDMnxBJilSQgfUr31DKAWSqsSeh6R3HhRPY2WgNtwA9VgV15BEqaUsxTK8TZIs4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CwZqlgwn; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83FC51F000E9;
-	Thu,  2 Jul 2026 17:00:40 +0000 (UTC)
+	 MIME-Version; b=J6i1O3scPr6eRG9htZqu8miZnzq1j/7FD8zZdagaVjSqRaoJMkQqkdCeZBAyNqUngXwbWqcLaQjBVqWEzvEA2Ko8/mPECczBNyi1HOGpTzkRqku9xsEjz0F9Unn+76TZSP7PNEnzGSwQ69awecRFYizc7B02gVBYoshZBZczJM8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JfsLB69q; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C9FA1F000E9;
+	Thu,  2 Jul 2026 16:55:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1783011641;
-	bh=9bsUGmurc/6gwkoMaP0fUWSS+pNHtuf5Jf+LMF6FwSw=;
+	s=korg; t=1783011325;
+	bh=klHa2S/6kYyH+GQTSIaaJumwBarHAfVkgBur6r8KeH0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=CwZqlgwnuM4kZeeOzIETsfR3RMo2FKUkaDL874MmRYL65+5wrMUWWrXGg7ou+v60h
-	 zScqRYpwoT81sP5Gs17l/yKH3YkPGMTo7n/Luyh+7viqJTxX1Cr/4Q4ToOw4iKjRcm
-	 3CyD62Ls3V+9L4c0LRJRwYWaSO0QGGxcWyaG+bRw=
+	b=JfsLB69qb8XuFLayN5NgWbDkt5KH+lxesmUFgLk7laczIKZ8eNNBmI/L+31393FTD
+	 +0CTzfSQohuq6XWZJ4uJtTTRWU7xf/7Q3dp7yAZlYf9GBweWBmzy3DWtrgfQ/CtRWE
+	 vFgWEnb8t/nrmBRu922jxCO+zq6nJDFb+/tlzQWc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	ElXreno <elxreno@gmail.com>,
-	Felix Fietkau <nbd@nbd.name>
-Subject: [PATCH 7.1 050/120] wifi: mt76: mt7925: dont disable AP BSS when removing TDLS peer
+	Shaomin Chen <eeesssooo020@gmail.com>,
+	Jarkko Sakkinen <jarkko@kernel.org>
+Subject: [PATCH 6.18 049/108] keys: Pin request_key_auth payload in instantiate paths
 Date: Thu,  2 Jul 2026 18:20:46 +0200
-Message-ID: <20260702155114.001457882@linuxfoundation.org>
+Message-ID: <20260702155113.124995881@linuxfoundation.org>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260702155112.964534952@linuxfoundation.org>
-References: <20260702155112.964534952@linuxfoundation.org>
+In-Reply-To: <20260702155112.110058792@linuxfoundation.org>
+References: <20260702155112.110058792@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -77,13 +77,13 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-271475-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:elxreno@gmail.com,m:nbd@nbd.name,s:lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-271355-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:eeesssooo020@gmail.com,m:jarkko@kernel.org,s:lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,nbd.name];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
 	FORWARDED(0.00)[lists@lfdr.de];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -98,78 +98,224 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,nbd.name:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 42E616FB1CE
+X-Rspamd-Queue-Id: 173C66FBB03
 
-7.1-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: ElXreno <elxreno@gmail.com>
+From: Shaomin Chen <eeesssooo020@gmail.com>
 
-commit 37d65384aa6f9cbe45f4052b13b378af1aab3e95 upstream.
+commit fd15b457a86939c38aa12116adabd8ff686c5e51 upstream.
 
-On a STATION vif, removing a TDLS peer takes the mt7925_mac_sta_remove
--> mt7925_mac_sta_remove_links path. The first loop in that function
-calls mt7925_mcu_add_bss_info(..., enable=false) for every link of the
-station being removed. For a non-MLO STATION vif there is exactly one
-link, link 0, whose bss_conf is the AP's. TDLS peers do not have their
-own bss_conf - they share the AP's BSS.
+A: request_key()       B: KEYCTL_INSTANTIATE_IOV
+================       =========================
 
-The result is that every TDLS peer teardown sends a BSS_INFO_UPDATE
-with enable=0 for the AP's BSS to the firmware, which wipes the AP-side
-rate-control context. The connection stays associated and TX from the
-host still works at the negotiated rate, but the AP's downlink to us
-collapses to the lowest mandatory OFDM rate (HE-MCS 0 / 6 Mbit/s OFDM)
-and only slowly recovers as rate adaptation re-learns under sustained
-traffic. With brief or bursty traffic the link can stay at 6-72 Mbit/s
-indefinitely, requiring a manual reconnect.
+create auth key
+store rka in auth key
+wait for helper
+                       get auth key
+                       load rka from auth key
+                       copy user payload
+                       sleep on #PF
 
-mt7925_mac_link_sta_remove() already guards its own
-mt7925_mcu_add_bss_info(..., false) call with
-"vif->type == NL80211_IFTYPE_STATION && !link_sta->sta->tdls".
-Add the equivalent guard at the top of the cleanup loop in
-mt7925_mac_sta_remove_links(), above the link_sta / link_conf /
-mlink / mconf lookups, so TDLS peer teardown skips the loop body
-entirely without doing the per-link work that would just be thrown
-away.
+helper completed
+detach and free rka
+destroy auth key
+                       wake up
+                       use rka->target_key
+                       **USE-AFTER-FREE**
 
-Verified on mt7925e by triggering Samsung-S938B auto-TDLS via iperf3
-and watching iw rx bitrate after teardown:
+Give request_key_auth payloads a refcount.  Take a payload reference while
+authkey->sem stabilizes the payload and revocation state.  Hold that
+reference across the instantiate and reject paths.  Drop the auth key
+owning reference from revoke and destroy.
 
-  Before: rx bitrate collapses to 6.0-72.0 Mbit/s, oscillates 17/72/
-          137/288/432 Mbit/s for 30+ seconds, no full recovery without
-          a manual reassoc.
-  After:  rx bitrate stays at 1200.9 Mbit/s HE-MCS 11 NSS 2 80 MHz
-          across the entire TDLS lifecycle.
-
-bpftrace confirms a single mt7925_mcu_add_bss_info(enable=0) call per
-teardown before the fix; zero such calls after.
-
-Fixes: 3878b4333602 ("wifi: mt76: mt7925: update mt7925_mac_link_sta_[add, assoc, remove] for MLO")
-Cc: stable@vger.kernel.org
-Signed-off-by: ElXreno <elxreno@gmail.com>
-Assisted-by: Claude:claude-opus-4-7 bpftrace
-Link: https://patch.msgid.link/20260506-mt7925-tdls-fixes-v2-2-46aa826ba8bb@gmail.com
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
+[jarkko: Replaced the first two paragraphs of text with an actual
+ concurrency scenario.]
+Cc: stable@vger.kernel.org # v5.10+
+Fixes: b5f545c880a2 ("[PATCH] keys: Permit running process to instantiate keys")
+Reported-by: Shaomin Chen <eeesssooo020@gmail.com>
+Closes: https://lore.kernel.org/r/20260519144403.436694-1-eeesssooo020@gmail.com
+Signed-off-by: Shaomin Chen <eeesssooo020@gmail.com>
+Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/mediatek/mt76/mt7925/main.c |    3 +++
- 1 file changed, 3 insertions(+)
+ include/keys/request_key_auth-type.h |    2 ++
+ security/keys/internal.h             |    2 ++
+ security/keys/keyctl.c               |   24 ++++++++++++++++++------
+ security/keys/request_key_auth.c     |   33 +++++++++++++++++++++++++++++++--
+ 4 files changed, 53 insertions(+), 8 deletions(-)
 
---- a/drivers/net/wireless/mediatek/mt76/mt7925/main.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7925/main.c
-@@ -1265,6 +1265,9 @@ mt7925_mac_sta_remove_links(struct mt792
- 		if (vif->type == NL80211_IFTYPE_AP)
- 			break;
+--- a/include/keys/request_key_auth-type.h
++++ b/include/keys/request_key_auth-type.h
+@@ -9,12 +9,14 @@
+ #define _KEYS_REQUEST_KEY_AUTH_TYPE_H
  
-+		if (vif->type == NL80211_IFTYPE_STATION && sta->tdls)
-+			continue;
+ #include <linux/key.h>
++#include <linux/refcount.h>
+ 
+ /*
+  * Authorisation record for request_key().
+  */
+ struct request_key_auth {
+ 	struct rcu_head		rcu;
++	refcount_t		usage;
+ 	struct key		*target_key;
+ 	struct key		*dest_keyring;
+ 	const struct cred	*cred;
+--- a/security/keys/internal.h
++++ b/security/keys/internal.h
+@@ -208,6 +208,8 @@ extern struct key *request_key_auth_new(
+ 					const void *callout_info,
+ 					size_t callout_len,
+ 					struct key *dest_keyring);
++struct request_key_auth *request_key_auth_get(struct key *authkey);
++void request_key_auth_put(struct request_key_auth *rka);
+ 
+ extern struct key *key_get_instantiation_authkey(key_serial_t target_id);
+ 
+--- a/security/keys/keyctl.c
++++ b/security/keys/keyctl.c
+@@ -1197,9 +1197,13 @@ static long keyctl_instantiate_key_commo
+ 	if (!instkey)
+ 		goto error;
+ 
+-	rka = instkey->payload.data[0];
+-	if (rka->target_key->serial != id)
++	rka = request_key_auth_get(instkey);
++	if (!rka) {
++		ret = -EKEYREVOKED;
+ 		goto error;
++	}
++	if (rka->target_key->serial != id)
++		goto error_put_rka;
+ 
+ 	/* pull the payload in if one was supplied */
+ 	payload = NULL;
+@@ -1208,7 +1212,7 @@ static long keyctl_instantiate_key_commo
+ 		ret = -ENOMEM;
+ 		payload = kvmalloc(plen, GFP_KERNEL);
+ 		if (!payload)
+-			goto error;
++			goto error_put_rka;
+ 
+ 		ret = -EFAULT;
+ 		if (!copy_from_iter_full(payload, plen, from))
+@@ -1234,6 +1238,8 @@ static long keyctl_instantiate_key_commo
+ 
+ error2:
+ 	kvfree_sensitive(payload, plen);
++error_put_rka:
++	request_key_auth_put(rka);
+ error:
+ 	return ret;
+ }
+@@ -1358,15 +1364,19 @@ long keyctl_reject_key(key_serial_t id,
+ 	if (!instkey)
+ 		goto error;
+ 
+-	rka = instkey->payload.data[0];
+-	if (rka->target_key->serial != id)
++	rka = request_key_auth_get(instkey);
++	if (!rka) {
++		ret = -EKEYREVOKED;
+ 		goto error;
++	}
++	if (rka->target_key->serial != id)
++		goto error_put_rka;
+ 
+ 	/* find the destination keyring if present (which must also be
+ 	 * writable) */
+ 	ret = get_instantiation_keyring(ringid, rka, &dest_keyring);
+ 	if (ret < 0)
+-		goto error;
++		goto error_put_rka;
+ 
+ 	/* instantiate the key and link it into a keyring */
+ 	ret = key_reject_and_link(rka->target_key, timeout, error,
+@@ -1379,6 +1389,8 @@ long keyctl_reject_key(key_serial_t id,
+ 	if (ret == 0)
+ 		keyctl_change_reqkey_auth(NULL);
+ 
++error_put_rka:
++	request_key_auth_put(rka);
+ error:
+ 	return ret;
+ }
+--- a/security/keys/request_key_auth.c
++++ b/security/keys/request_key_auth.c
+@@ -23,6 +23,7 @@ static void request_key_auth_describe(co
+ static void request_key_auth_revoke(struct key *);
+ static void request_key_auth_destroy(struct key *);
+ static long request_key_auth_read(const struct key *, char *, size_t);
++static void request_key_auth_rcu_disposal(struct rcu_head *);
+ 
+ /*
+  * The request-key authorisation key type definition.
+@@ -116,6 +117,31 @@ static void free_request_key_auth(struct
+ }
+ 
+ /*
++ * Take a reference to the request-key authorisation payload so callers can
++ * drop authkey->sem before doing operations that may sleep.
++ */
++struct request_key_auth *request_key_auth_get(struct key *authkey)
++{
++	struct request_key_auth *rka;
 +
- 		link_sta = mt792x_sta_to_link_sta(vif, sta, link_id);
- 		if (!link_sta)
- 			continue;
++	down_read(&authkey->sem);
++	rka = dereference_key_locked(authkey);
++	if (rka && !test_bit(KEY_FLAG_REVOKED, &authkey->flags))
++		refcount_inc(&rka->usage);
++	else
++		rka = NULL;
++	up_read(&authkey->sem);
++
++	return rka;
++}
++
++void request_key_auth_put(struct request_key_auth *rka)
++{
++	if (rka && refcount_dec_and_test(&rka->usage))
++		call_rcu(&rka->rcu, request_key_auth_rcu_disposal);
++}
++
++/*
+  * Dispose of the request_key_auth record under RCU conditions
+  */
+ static void request_key_auth_rcu_disposal(struct rcu_head *rcu)
+@@ -136,8 +162,10 @@ static void request_key_auth_revoke(stru
+ 	struct request_key_auth *rka = dereference_key_locked(key);
+ 
+ 	kenter("{%d}", key->serial);
++	if (!rka)
++		return;
+ 	rcu_assign_keypointer(key, NULL);
+-	call_rcu(&rka->rcu, request_key_auth_rcu_disposal);
++	request_key_auth_put(rka);
+ }
+ 
+ /*
+@@ -150,7 +178,7 @@ static void request_key_auth_destroy(str
+ 	kenter("{%d}", key->serial);
+ 	if (rka) {
+ 		rcu_assign_keypointer(key, NULL);
+-		call_rcu(&rka->rcu, request_key_auth_rcu_disposal);
++		request_key_auth_put(rka);
+ 	}
+ }
+ 
+@@ -174,6 +202,7 @@ struct key *request_key_auth_new(struct
+ 	rka = kzalloc(sizeof(*rka), GFP_KERNEL);
+ 	if (!rka)
+ 		goto error;
++	refcount_set(&rka->usage, 1);
+ 	rka->callout_info = kmemdup(callout_info, callout_len, GFP_KERNEL);
+ 	if (!rka->callout_info)
+ 		goto error_free_rka;
 
 
 
