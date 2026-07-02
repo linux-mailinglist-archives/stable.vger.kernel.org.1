@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-270689-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-271004-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id UQo7Ji+gRmrbaQsAu9opvQ
-	(envelope-from <stable+bounces-270689-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:30:23 +0200
+	id BfTpCmSXRmrDZQsAu9opvQ
+	(envelope-from <stable+bounces-271004-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:52:52 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 83A1A6FB641
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:30:22 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7E3EF6FAAF4
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:52:51 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=rB61b9lv;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-270689-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-270689-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=1+SFw07F;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-271004-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-271004-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id C89DD30093A3
-	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:31:40 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 9FEF83262AD5
+	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:41:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78BA137A84C;
-	Thu,  2 Jul 2026 16:26:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3AB733A70E;
+	Thu,  2 Jul 2026 16:40:17 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D5983403FC;
-	Thu,  2 Jul 2026 16:26:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75E95175A68;
+	Thu,  2 Jul 2026 16:40:16 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783009593; cv=none; b=WgOI0hoA78wL8DHmEcjdrZEeakUELI1X8AnqkPbfb1MvzDYofXM3ETJHDbPFSOTURFp0ml5EBcT0kprQbFb6YORDYDgtaP1Wi57IJTrB8NkUdoMydmR8IEIfRWbIUNOkwAaxRwyJf34CtIFDP7fcg/h/ItD87DH4WJRYwZDikG0=
+	t=1783010417; cv=none; b=p6y1rdrhJRXkSjUGm0XnmmmjsFL0+8lHGGS4mZyGMGiv6g3TXZXnHiPnmCLZEtI5uLLDISoCfweZk3cvODeLf5YPEyvt6VMSezLlOpjvaSKfM74cfxwHqLVSgV+S1zYNPIX/hLsHYK5LqS6I2aVdDweqUJiI8rfPhML3vv2lURs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783009593; c=relaxed/simple;
-	bh=Bac/BAqy/ENIIHmSGttCixWk/3zhoWQflFA7nH4ITrI=;
+	s=arc-20240116; t=1783010417; c=relaxed/simple;
+	bh=iPqEySn3yyzZaXFfnbjWBnkLgM3303g16w0p02Vnnho=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qoENXdI2pWoC3oB6EST09K88vTn06SrcROZinb6SFt7OSV31+s6E1rjtjKacrVOwJ/tZuMINDt/QrT74nTPj+xtrrVxgOTlgdA+r4ktibN5/yykjm5QnV+9qjS17iK+7tRQOnd6CFLRDyaLDMMGoeFW5+INdzZ+ACtzj/UZkeVk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rB61b9lv; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8BC131F000E9;
-	Thu,  2 Jul 2026 16:26:31 +0000 (UTC)
+	 MIME-Version; b=oNjwWsWBto8R/gYhdfvdKJgbSumWgLn1ySapBc4R/Cs5yEnArK5j2rG5Cz7wOgDqaI4xw7J9cGdk1+MPTLO3h4bJ/cpRiWxrDN0lpokcIAHqwSYlumVKsJvkhe47ZvIxt3GSlDZuq5WOQWEHyzBvXYVgmluBhnpfovh01tJL/bA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1+SFw07F; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DCAEB1F00A3A;
+	Thu,  2 Jul 2026 16:40:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1783009592;
-	bh=yv6tyF2PJFEdRuvWno2wOF6IAqJ485YArgOw2NTkERE=;
+	s=korg; t=1783010416;
+	bh=hr1nD7a6e2Net5gawIJr9abGcvtQ8dmFKCy6Wo73Rlc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=rB61b9lvg1UkpeR4My796VsH40GCbBQ6idibuDXEu4ISJIjfUXdedy6BFSGC9u1f5
-	 gya1qFbTJVjL4Uae7empTwH+k4ijqXpz0Bsz2ek2sHTns4BdqD8MmUJwqbJ9HJ7iND
-	 M/ixHh1nM/aXYi2WhdqFyrj6uiuPKF+fm8wlY+Sw=
+	b=1+SFw07FCJ+h+7dXp6PqWyUVJMRkqAoYs0c5DeOUIhU5j3alozedmD/pFxHY9wieA
+	 FJZwbCiGHLDyA/OzfnLBNrRj1qFUElUS9gOfxBjVmlRuJLKLQXv3tpPH/cbPqIbbwO
+	 nKzuSzFWLgQs4s9PICX4Nma/uihLGZ9yPNW0Qs0w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lord Ulf Henrik Holmberg <henrik.holmberg@defensify.se>,
-	Leon Romanovsky <leon@kernel.org>
-Subject: [PATCH 5.15 14/95] RDMA/bnxt_re: zero shared page before exposing to userspace
+	stable@kernel.org,
+	Sven Eckelmann <sven@narfation.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 100/204] batman-adv: tp_meter: initialize dup_acks explicitly
 Date: Thu,  2 Jul 2026 18:19:17 +0200
-Message-ID: <20260702155109.506137802@linuxfoundation.org>
+Message-ID: <20260702155120.760615632@linuxfoundation.org>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260702155109.196223802@linuxfoundation.org>
-References: <20260702155109.196223802@linuxfoundation.org>
+In-Reply-To: <20260702155118.667618796@linuxfoundation.org>
+References: <20260702155118.667618796@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,93 +69,80 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:henrik.holmberg@defensify.se,m:leon@kernel.org,s:lists@lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-270689-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-271004-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:stable@kernel.org,m:sven@narfation.org,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RWL_MAILSPIKE_POSSIBLE(0.00)[104.64.211.4:from];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,narfation.org:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 83A1A6FB641
+X-Rspamd-Queue-Id: 7E3EF6FAAF4
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lord Ulf Henrik Holmberg <henrik.holmberg@defensify.se>
+From: Sven Eckelmann <sven@narfation.org>
 
-commit f6b079629becfa977f9c51fe53ad2e6dcc55ef44 upstream.
+commit b2b68b32a715e0328662801576974aa37b942b00 upstream.
 
-bnxt_re_alloc_ucontext() allocates uctx->shpg via
-__get_free_page(GFP_KERNEL). The buddy allocator does not zero pages
-without __GFP_ZERO, so the page contains stale kernel data from
-whatever object most recently freed it.
+When an ack with a sequence number equal to the last_acked is received, the
+dup_acks counter is increased to decide whether fast retransmit should be
+performed. Only when the sequence numbers are not equal, the dup_acks is
+set to the initial value (0).
 
-The page is then mapped into userspace via vm_insert_page() under
-BNXT_RE_MMAP_SH_PAGE in bnxt_re_mmap(). The driver only ever writes
-4 bytes (a u32 AVID) at offset BNXT_RE_AVID_OFFT (0x10) inside
-bnxt_re_create_ah(); the remaining 4092 bytes of the page are exposed
-to userspace unsanitised, leaking kernel memory contents.
+But if the initial packet would have the sequence number
+BATADV_TP_FIRST_SEQ, dup_acks would not be initialized and atomic_inc would
+operate on an undefined starting value. It is therefore required to have it
+explicitly initialized during the start of the sender session.
 
-Any user with access to /dev/infiniband/uverbsX on a host with a
-bnxt_re device (typically rdma group membership) can read this data
-via a single mmap() at pgoff 0 after IB_USER_VERBS_CMD_GET_CONTEXT.
-
-Other shared pages in the same file already use get_zeroed_page()
-correctly:
-
-  drivers/infiniband/hw/bnxt_re/ib_verbs.c
-      srq->uctx_srq_page = (void *)get_zeroed_page(GFP_KERNEL);
-      cq->uctx_cq_page  = (void *)get_zeroed_page(GFP_KERNEL);
-
-uctx->shpg is the only outlier. Bring it in line with the existing
-convention by switching to get_zeroed_page().
-
-Fixes: 1ac5a4047975 ("RDMA/bnxt_re: Add bnxt_re RoCE driver")
-Signed-off-by: Lord Ulf Henrik Holmberg <henrik.holmberg@defensify.se>
-Link: https://patch.msgid.link/20260509084011.11971-1-pomzm67@gmail.com
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@kernel.org
+Fixes: 33a3bb4a3345 ("batman-adv: throughput meter implementation")
+Signed-off-by: Sven Eckelmann <sven@narfation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/hw/bnxt_re/ib_verbs.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/batman-adv/tp_meter.c | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/infiniband/hw/bnxt_re/ib_verbs.c
-+++ b/drivers/infiniband/hw/bnxt_re/ib_verbs.c
-@@ -3864,7 +3864,7 @@ int bnxt_re_alloc_ucontext(struct ib_uco
+diff --git a/net/batman-adv/tp_meter.c b/net/batman-adv/tp_meter.c
+index f350a60e6c76b9..750e5e9d3dc9d6 100644
+--- a/net/batman-adv/tp_meter.c
++++ b/net/batman-adv/tp_meter.c
+@@ -1045,6 +1045,7 @@ void batadv_tp_start(struct batadv_priv *bat_priv, const u8 *dst,
+ 	tp_vars->icmp_uid = icmp_uid;
  
- 	uctx->rdev = rdev;
- 
--	uctx->shpg = (void *)__get_free_page(GFP_KERNEL);
-+	uctx->shpg = (void *)get_zeroed_page(GFP_KERNEL);
- 	if (!uctx->shpg) {
- 		rc = -ENOMEM;
- 		goto fail;
+ 	tp_vars->last_sent = BATADV_TP_FIRST_SEQ;
++	atomic_set(&tp_vars->dup_acks, 0);
+ 	atomic_set(&tp_vars->last_acked, BATADV_TP_FIRST_SEQ);
+ 	tp_vars->fast_recovery = false;
+ 	tp_vars->recover = BATADV_TP_FIRST_SEQ;
+-- 
+2.53.0
+
 
 
 
