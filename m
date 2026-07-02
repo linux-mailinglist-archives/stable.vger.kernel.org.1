@@ -1,63 +1,61 @@
-Return-Path: <stable+bounces-271001-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-270686-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id f5COH3mhRmpMagsAu9opvQ
-	(envelope-from <stable+bounces-271001-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:35:53 +0200
+	id jNiqOAOgRmrJaQsAu9opvQ
+	(envelope-from <stable+bounces-270686-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:29:39 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC6E96FB780
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:35:52 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 163A26FB614
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:29:39 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=OpEXGStB;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-271001-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-271001-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=FtcVSZri;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-270686-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-270686-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B9E88325FE21
-	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:41:35 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id D46E730EDC5D
+	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:31:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C02F730EF95;
-	Thu,  2 Jul 2026 16:40:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA374381EB6;
+	Thu,  2 Jul 2026 16:26:25 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88A9119049B;
-	Thu,  2 Jul 2026 16:40:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77207381E92;
+	Thu,  2 Jul 2026 16:26:24 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783010409; cv=none; b=YW6QDrR4pYeGVLgc3wiTJY1aoU+X9bfjvNY6xb6/80AQAFtqbtz5cYbgwZqoWLmEeQKgOfH8EEa4DEYGdRzqUTA4dYIxijoZFZ4q8nMs0mQKlgFgxD3JB3DbHZ7KqOHdI+2QLtjJ2BdXVFGOrVkeyb0/NWI8g+AZVDgyx0MM3g4=
+	t=1783009585; cv=none; b=gSlbVXQF+BIjCmDhA7WqMr8IIlk1mF1dHLEbTp+xtVc5n52Ckcz1/aQ2N0Jg/NLB23nx+2kbmc3ABuZBeWcRGt8dkwQokwsej+j8m38rbdJhyMfkRsy5aEXCVCP1j6tsRycrTkFuZW4mxu3aQP1iMrz7rJfFMJTuylJecbd2qLo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783010409; c=relaxed/simple;
-	bh=k6FQ4wNb7H6rjT0n7OY6luA0xVlzPNOlml/0xGg2/XQ=;
+	s=arc-20240116; t=1783009585; c=relaxed/simple;
+	bh=vt69m/DfCUxavfQbAt/PN5O7Q9u/abxqY5bgmFf6xYo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=F0y3c+Zbij0p6x4HLEd72qJFqLE/WrFfKjaaoZgku1yFL/6YDKYbZiEV+rsmu1d30tjtgve8UybeRjzMrRW4E3bXROpGh6+C/Zgxx+xrikgOppEIejHv//dUD8g7z1UDmHaz1tj0G3h3aVEnmkbYvM8+rx+usup6/1QuHH82SoA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OpEXGStB; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE5E41F000E9;
-	Thu,  2 Jul 2026 16:40:07 +0000 (UTC)
+	 MIME-Version; b=OIKPCrf/In7g8mzs8ynkQ8xyFJpEC7hei1V5Cwwh86SCYgg8qmEIxPMUuCJhVJdQUZt3pKOWF2OSZUQ8/Nnc3BETC3MEHzmz4Skm4+O3BJz24LJaxc+PA2INBG4qv4/Fk1nR/vmfb0FTzakZHKjslBbC2Lm+ZUdkGgw0gVrgvts=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FtcVSZri; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A87941F000E9;
+	Thu,  2 Jul 2026 16:26:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1783010408;
-	bh=m8BCa82YwIMiQ7TKPg+Bn5y7drTCvYRV49B3/t6RkUk=;
+	s=korg; t=1783009584;
+	bh=OFvXVtW4pTw8rI5iCXvnbcqBiRJpecRDXquu/4Njhz4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=OpEXGStBrMudFUT85bdIC/IpvU2v6ksN+1At/4JwEQnckulPkdCyp5GIkPIecx00B
-	 eb+TfF2LAzoGWgx1kY+1oCUzflmL7pvukAxioIT46iH3XpF1NUCQdgYlWLQnudsWMF
-	 qaSzIx3pvwamMDjul8GnP6osIkXoaKr+6y8ZcWnI=
+	b=FtcVSZriehJeG35wkPZGn6xXEhg9a1cscSG3xEV8H9Lz6/NRRE1kk85XsSk5Kyfm+
+	 SryiN8htNaFO/G4GI2c1paasG03D1Ajg3Jcwtnkv63vediKJ1aYFmDZpJwB8QZs7BZ
+	 4kJNt/89DPx0F6u3eHzonRupfHCLvKpcJRODsOoA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tom Lendacky <thomas.lendacky@amd.com>,
-	Sean Christopherson <seanjc@google.com>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Jack Wang <jinpu.wang@ionos.com>,
+	stable@kernel.org,
+	Sven Eckelmann <sven@narfation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 097/204] KVM: SEV: Reject MMIO requests larger than 8 bytes with GHCB v2+
+Subject: [PATCH 5.15 11/95] batman-adv: tt: prevent TVLV entry number overflow
 Date: Thu,  2 Jul 2026 18:19:14 +0200
-Message-ID: <20260702155120.698485132@linuxfoundation.org>
+Message-ID: <20260702155109.444734473@linuxfoundation.org>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260702155118.667618796@linuxfoundation.org>
-References: <20260702155118.667618796@linuxfoundation.org>
+In-Reply-To: <20260702155109.196223802@linuxfoundation.org>
+References: <20260702155109.196223802@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -73,95 +71,114 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-271001-lists,stable=lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:stable@kernel.org,m:sven@narfation.org,m:sashal@kernel.org,s:lists@lfdr.de];
+	PRECEDENCE_BULK(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:thomas.lendacky@amd.com,m:seanjc@google.com,m:pbonzini@redhat.com,m:jinpu.wang@ionos.com,m:sashal@kernel.org,s:lists@lfdr.de];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-270686-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	FORWARDED(0.00)[lists@lfdr.de];
 	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MID_RHS_MATCH_FROM(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[amd.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp,ionos.com:email]
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	RWL_MAILSPIKE_POSSIBLE(0.00)[104.64.211.4:from];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,narfation.org:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: BC6E96FB780
+X-Rspamd-Queue-Id: 163A26FB614
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sean Christopherson <seanjc@google.com>
+From: Sven Eckelmann <sven@narfation.org>
 
-commit dcf1b2d4b0564a27e4ca7c654871aab4f9620046 upstream.
+commit 99d9958fa10fb684b2a8e2c48a8d704122721420 upstream.
 
-When using GHCB v2+, reject MMIO requests that are larger than 8 bytes.
-Per the GHCB spec:
+The helpers to prepare the buffers for the local and global TT based
+replies are trying to sum up all TT entries which can be found for each
+VLAN. In theory, this sum can be too big for an u16 and therefore overflow.
+A too small buffer would then be allocated for the TVLV.
 
-  SW_EXITINFO2 must be less than or equal to 0x7fffffff for version 1 and
-  less than or equal to 0x8 for all other versions.
+The too small buffer will be handled gracefully by
+batadv_tt_tvlv_generate() and is not causing a buffer overflow - just a
+truncated reply. But this overflow shouldn't have happened in the first and
+the too small buffer should never have been allocated when an overflow was
+detected.
 
-Fixes: 4af663c2f64a ("KVM: SEV: Allow per-guest configuration of GHCB protocol version")
-Cc: stable@vger.kernel.org
-Reviewed-by: Tom Lendacky <thomas.lendacky@amd.com>
-Signed-off-by: Sean Christopherson <seanjc@google.com>
-Message-ID: <20260501202250.2115252-4-seanjc@google.com>
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-Signed-off-by: Jack Wang <jinpu.wang@ionos.com>
+Cc: stable@kernel.org
+Fixes: 7ea7b4a14275 ("batman-adv: make the TT CRC logic VLAN specific")
+Signed-off-by: Sven Eckelmann <sven@narfation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kvm/svm/sev.c | 14 ++++++++++++++
- 1 file changed, 14 insertions(+)
+ net/batman-adv/translation-table.c | 20 +++++++++++++++++---
+ 1 file changed, 17 insertions(+), 3 deletions(-)
 
-diff --git a/arch/x86/kvm/svm/sev.c b/arch/x86/kvm/svm/sev.c
-index 0a01971e33f0b7..497a6e70513570 100644
---- a/arch/x86/kvm/svm/sev.c
-+++ b/arch/x86/kvm/svm/sev.c
-@@ -4350,6 +4350,13 @@ int sev_handle_vmgexit(struct kvm_vcpu *vcpu)
- 		if (!control->exit_info_2)
- 			return 1;
+diff --git a/net/batman-adv/translation-table.c b/net/batman-adv/translation-table.c
+index 3849c348ff0344..8ab1257bade048 100644
+--- a/net/batman-adv/translation-table.c
++++ b/net/batman-adv/translation-table.c
+@@ -850,11 +850,18 @@ batadv_tt_prepare_tvlv_global_data(struct batadv_orig_node *orig_node,
+ 	u16 total_entries = 0;
+ 	u8 *tt_change_ptr;
+ 	int vlan_entries;
++	u16 sum_entries;
  
-+		if (to_kvm_sev_info(vcpu->kvm)->ghcb_version >= 2 &&
-+		    control->exit_info_2 > 8) {
-+			ghcb_set_sw_exit_info_1(svm->sev_es.ghcb, 2);
-+			ghcb_set_sw_exit_info_2(svm->sev_es.ghcb, GHCB_ERR_INVALID_INPUT);
-+			return 1;
+ 	spin_lock_bh(&orig_node->vlan_list_lock);
+ 	hlist_for_each_entry(vlan, &orig_node->vlan_list, list) {
+ 		vlan_entries = atomic_read(&vlan->tt.num_entries);
+-		total_entries += vlan_entries;
++
++		if (check_add_overflow(vlan_entries, total_entries, &sum_entries)) {
++			*tt_len = 0;
++			goto out;
 +		}
 +
- 		ret = setup_vmgexit_scratch(svm, true, control->exit_info_2);
- 		if (ret)
- 			break;
-@@ -4363,6 +4370,13 @@ int sev_handle_vmgexit(struct kvm_vcpu *vcpu)
- 		if (!control->exit_info_2)
- 			return 1;
++		total_entries = sum_entries;
+ 		num_vlan++;
+ 	}
  
-+		if (to_kvm_sev_info(vcpu->kvm)->ghcb_version >= 2 &&
-+		    control->exit_info_2 > 8) {
-+			ghcb_set_sw_exit_info_1(svm->sev_es.ghcb, 2);
-+			ghcb_set_sw_exit_info_2(svm->sev_es.ghcb, GHCB_ERR_INVALID_INPUT);
-+			return 1;
+@@ -941,15 +948,22 @@ batadv_tt_prepare_tvlv_local_data(struct batadv_priv *bat_priv,
+ 	struct batadv_softif_vlan *vlan;
+ 	size_t change_offset;
+ 	u16 num_vlan = 0;
+-	u16 vlan_entries = 0;
+ 	u16 total_entries = 0;
+ 	u16 tvlv_len;
+ 	u8 *tt_change_ptr;
++	int vlan_entries;
++	u16 sum_entries;
+ 
+ 	spin_lock_bh(&bat_priv->softif_vlan_list_lock);
+ 	hlist_for_each_entry(vlan, &bat_priv->softif_vlan_list, list) {
+ 		vlan_entries = atomic_read(&vlan->tt.num_entries);
+-		total_entries += vlan_entries;
++
++		if (check_add_overflow(vlan_entries, total_entries, &sum_entries)) {
++			tvlv_len = 0;
++			goto out;
 +		}
 +
- 		ret = setup_vmgexit_scratch(svm, false, control->exit_info_2);
- 		if (ret)
- 			break;
++		total_entries = sum_entries;
+ 		num_vlan++;
+ 	}
+ 
 -- 
 2.53.0
 
