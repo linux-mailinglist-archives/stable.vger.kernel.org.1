@@ -1,64 +1,63 @@
-Return-Path: <stable+bounces-270631-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-270793-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id A3VFEYifRmqeaQsAu9opvQ
-	(envelope-from <stable+bounces-270631-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:27:36 +0200
+	id Vrl6L9GgRmoYagsAu9opvQ
+	(envelope-from <stable+bounces-270793-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:33:05 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 880BF6FB5A7
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:27:35 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B80B96FB6F0
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:33:04 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=YlPUrNzu;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-270631-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-270631-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=USCLfyZK;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-270793-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-270793-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id F2EF030BDA6D
-	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:29:35 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 13BF130518EA
+	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:34:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82F63492517;
-	Thu,  2 Jul 2026 16:24:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3BDE35F182;
+	Thu,  2 Jul 2026 16:31:06 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99BDD34389B;
-	Thu,  2 Jul 2026 16:23:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44815346E60;
+	Thu,  2 Jul 2026 16:31:05 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783009442; cv=none; b=dFb5cRvUvBKQq+ZjdH9Qhr/bkKbO05d9PnT1nmzoRzTOyi/R8/7AHlkhD6xFcOdLBKZulcPvu7DZLnMb3AnemjQr6OMGEqIaMMve38KhvdlKy37QJzaobHhvC34vIGj9S/G42zB1LTKWiZ1jhoGnsXMTMMrzbmTIigpy1YbESwY=
+	t=1783009866; cv=none; b=REfrI+hFYBA/4mNQKY5ickA/Cb6S8v0vBri57MZgjFBlBNhevbUgIqS1kgNVkiJBFXa3R8vIPdvK5UlQilKmXaEcGPzmuKVK/476o2buyVO21jxEDUb2ZmBjkP3+vGD/1BtEAPYSpzNvi65fC4DBqupgadYqDCsJSHYKlSVv/Dc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783009442; c=relaxed/simple;
-	bh=0vqcWoyUrlGBq3IIu7dvsBqwrTwXMwn3grm2eOZs0j8=;
+	s=arc-20240116; t=1783009866; c=relaxed/simple;
+	bh=UrySkUWTpkyyW3rIlRTkluA4XIhr+98mJu1ELEQw4yI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LnC1scJ7RAm48YbLKUOMSH8IdAH9azdWwfXyqm2mwBB/9gg00hLrTwKzk6KBmMl+9clTRjGz60V8yaskl/akCKEe6tzZtWx1f7gC6ifHhqrasZNXTbn6XGzYTCsEAVGolBP7fAgMyxK8BTWavwGNrQU515N5vFm5ghPijIOGG9I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YlPUrNzu; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F9651F00A3A;
-	Thu,  2 Jul 2026 16:23:58 +0000 (UTC)
+	 MIME-Version; b=E94tj/o0qQyizrYjIIdkt7yYCGfAksvATfGv/jlFzdIoznqauEKb2S0tnKnggbF43YoXmBaxQhNURFxfWdzUOrEMNrm/Zn8ETq2+0e8HWi4zoOjH5jK6IfBcpYfVOMvqpsH/7k0mlzSoYx7KKtXU460ZNSwOs5I15nSz5Qj9wBw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=USCLfyZK; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AAE8B1F000E9;
+	Thu,  2 Jul 2026 16:31:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1783009439;
-	bh=vPKafJ6CXKUTvJtsfLqr7OzlS+QHRAhbkONf3+WoBpI=;
+	s=korg; t=1783009865;
+	bh=pmNbKRQgso2kiSsj1Lv74S49BgRNbrRmyvjAhzTl3to=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=YlPUrNzuzgRVuT1ccuFLfn6iVTiKNh1o4W7+erQksG2kCT238G1PzbDqLxxmbTvV5
-	 3Q0rIwL6QWr+Vf/3CtS2kyMiGj4UTvb7x3JdlZzStQ0ZfGyfxTRZRhOvnOZIrZELFI
-	 Z/k1CZKcENVjLwPHvw+jg5h0mlSyp0ZqtWJPTP/g=
+	b=USCLfyZKZ3HzsmGTkQp5vn2eRMTo3Q53XelR14rtglo4WJvjQGl8BbOk6u3K+bJRc
+	 ibu44iUZb/ecZ4QEezejMmbOa/x++RrhOdcufna4LxX9ZLzMmHIJNMRWnyyrhwsPiS
+	 QNU20QMnOHwIqj83iiWqWlMI4t3seFtJvLMgGfvQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ido Schimmel <idosch@idosch.org>,
-	Pedro Tammela <pctammela@mojatatu.com>,
-	Ido Schimmel <idosch@nvidia.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Wentao Guan <guanwentao@uniontech.com>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Qi Zheng <zhengqi.arch@bytedance.com>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	Thomas Gleixner <tglx@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 09/96] net/sched: act_pedit: free pedit keys on bail from offset check
+Subject: [PATCH 6.1 022/129] debugobjects,locking: Annotate debug_object_fill_pool() wait type violation
 Date: Thu,  2 Jul 2026 18:19:01 +0200
-Message-ID: <20260702155109.170596958@linuxfoundation.org>
+Message-ID: <20260702155112.622381826@linuxfoundation.org>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260702155108.949633242@linuxfoundation.org>
-References: <20260702155108.949633242@linuxfoundation.org>
+In-Reply-To: <20260702155112.163984240@linuxfoundation.org>
+References: <20260702155112.163984240@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -74,119 +73,212 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	PRECEDENCE_BULK(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-270631-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:idosch@idosch.org,m:pctammela@mojatatu.com,m:idosch@nvidia.com,m:pabeni@redhat.com,m:guanwentao@uniontech.com,m:sashal@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORWARDED(0.00)[lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-270793-lists,stable=lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:vbabka@suse.cz,m:zhengqi.arch@bytedance.com,m:peterz@infradead.org,m:tglx@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	MID_RHS_MATCH_FROM(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RWL_MAILSPIKE_POSSIBLE(0.00)[104.64.211.4:from];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,mojatatu.com:email,nvidia.com:email,uniontech.com:email,idosch.org:email]
+	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,infradead.org:email,bytedance.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,suse.cz:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 880BF6FB5A7
+X-Rspamd-Queue-Id: B80B96FB6F0
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pedro Tammela <pctammela@mojatatu.com>
+From: Peter Zijlstra <peterz@infradead.org>
 
-[ Upstream commit 1b483d9f5805c7e3d628d4995e97f4311fcb82eb ]
+commit 0cce06ba859a515bd06224085d3addb870608b6d upstream.
 
-Ido Schimmel reports a memleak on a syzkaller instance:
-   BUG: memory leak
-   unreferenced object 0xffff88803d45e400 (size 1024):
-     comm "syz-executor292", pid 563, jiffies 4295025223 (age 51.781s)
-     hex dump (first 32 bytes):
-       28 bd 70 00 fb db df 25 02 00 14 1f ff 02 00 02  (.p....%........
-       00 32 00 00 1f 00 00 00 ac 14 14 3e 08 00 07 00  .2.........>....
-     backtrace:
-       [<ffffffff81bd0f2c>] kmemleak_alloc_recursive include/linux/kmemleak.h:42 [inline]
-       [<ffffffff81bd0f2c>] slab_post_alloc_hook mm/slab.h:772 [inline]
-       [<ffffffff81bd0f2c>] slab_alloc_node mm/slub.c:3452 [inline]
-       [<ffffffff81bd0f2c>] __kmem_cache_alloc_node+0x25c/0x320 mm/slub.c:3491
-       [<ffffffff81a865d9>] __do_kmalloc_node mm/slab_common.c:966 [inline]
-       [<ffffffff81a865d9>] __kmalloc+0x59/0x1a0 mm/slab_common.c:980
-       [<ffffffff83aa85c3>] kmalloc include/linux/slab.h:584 [inline]
-       [<ffffffff83aa85c3>] tcf_pedit_init+0x793/0x1ae0 net/sched/act_pedit.c:245
-       [<ffffffff83a90623>] tcf_action_init_1+0x453/0x6e0 net/sched/act_api.c:1394
-       [<ffffffff83a90e58>] tcf_action_init+0x5a8/0x950 net/sched/act_api.c:1459
-       [<ffffffff83a96258>] tcf_action_add+0x118/0x4e0 net/sched/act_api.c:1985
-       [<ffffffff83a96997>] tc_ctl_action+0x377/0x490 net/sched/act_api.c:2044
-       [<ffffffff83920a8d>] rtnetlink_rcv_msg+0x46d/0xd70 net/core/rtnetlink.c:6395
-       [<ffffffff83b24305>] netlink_rcv_skb+0x185/0x490 net/netlink/af_netlink.c:2575
-       [<ffffffff83901806>] rtnetlink_rcv+0x26/0x30 net/core/rtnetlink.c:6413
-       [<ffffffff83b21cae>] netlink_unicast_kernel net/netlink/af_netlink.c:1339 [inline]
-       [<ffffffff83b21cae>] netlink_unicast+0x5be/0x8a0 net/netlink/af_netlink.c:1365
-       [<ffffffff83b2293f>] netlink_sendmsg+0x9af/0xed0 net/netlink/af_netlink.c:1942
-       [<ffffffff8380c39f>] sock_sendmsg_nosec net/socket.c:724 [inline]
-       [<ffffffff8380c39f>] sock_sendmsg net/socket.c:747 [inline]
-       [<ffffffff8380c39f>] ____sys_sendmsg+0x3ef/0xaa0 net/socket.c:2503
-       [<ffffffff838156d2>] ___sys_sendmsg+0x122/0x1c0 net/socket.c:2557
-       [<ffffffff8381594f>] __sys_sendmsg+0x11f/0x200 net/socket.c:2586
-       [<ffffffff83815ab0>] __do_sys_sendmsg net/socket.c:2595 [inline]
-       [<ffffffff83815ab0>] __se_sys_sendmsg net/socket.c:2593 [inline]
-       [<ffffffff83815ab0>] __x64_sys_sendmsg+0x80/0xc0 net/socket.c:2593
+There is an explicit wait-type violation in debug_object_fill_pool()
+for PREEMPT_RT=n kernels which allows them to more easily fill the
+object pool and reduce the chance of allocation failures.
 
-The recently added static offset check missed a free to the key buffer when
-bailing out on error.
+Lockdep's wait-type checks are designed to check the PREEMPT_RT
+locking rules even for PREEMPT_RT=n kernels and object to this, so
+create a lockdep annotation to allow this to stand.
 
-Fixes: e1201bc781c2 ("net/sched: act_pedit: check static offsets a priori")
-Reported-by: Ido Schimmel <idosch@idosch.org>
-Signed-off-by: Pedro Tammela <pctammela@mojatatu.com>
-Reviewed-by: Ido Schimmel <idosch@nvidia.com>
-Tested-by: Ido Schimmel <idosch@nvidia.com>
-Link: https://lore.kernel.org/r/20230425144725.669262-1-pctammela@mojatatu.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Wentao Guan <guanwentao@uniontech.com>
+Specifically, create a 'lock' type that overrides the inner wait-type
+while it is held -- allowing one to temporarily raise it, such that
+the violation is hidden.
+
+Reported-by: Vlastimil Babka <vbabka@suse.cz>
+Reported-by: Qi Zheng <zhengqi.arch@bytedance.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Tested-by: Qi Zheng <zhengqi.arch@bytedance.com>
+Link: https://lkml.kernel.org/r/20230429100614.GA1489784@hirez.programming.kicks-ass.net
+Signed-off-by: Thomas Gleixner <tglx@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sched/act_pedit.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ include/linux/lockdep.h       | 14 ++++++++++++++
+ include/linux/lockdep_types.h |  1 +
+ kernel/locking/lockdep.c      | 28 +++++++++++++++++++++-------
+ lib/debugobjects.c            | 15 +++++++++++++--
+ 4 files changed, 49 insertions(+), 9 deletions(-)
 
-diff --git a/net/sched/act_pedit.c b/net/sched/act_pedit.c
-index 35fa94ba0edf8f..0601deea04d725 100644
---- a/net/sched/act_pedit.c
-+++ b/net/sched/act_pedit.c
-@@ -250,7 +250,7 @@ static int tcf_pedit_init(struct net *net, struct nlattr *nla,
- 		if (!offmask && cur % 4) {
- 			NL_SET_ERR_MSG_MOD(extack, "Offsets must be on 32bit boundaries");
- 			ret = -EINVAL;
--			goto put_chain;
-+			goto out_free_keys;
+diff --git a/include/linux/lockdep.h b/include/linux/lockdep.h
+index 43d8734ac0eb0b..90aa802a30669c 100644
+--- a/include/linux/lockdep.h
++++ b/include/linux/lockdep.h
+@@ -339,6 +339,16 @@ extern void lock_unpin_lock(struct lockdep_map *lock, struct pin_cookie);
+ #define lockdep_repin_lock(l,c)	lock_repin_lock(&(l)->dep_map, (c))
+ #define lockdep_unpin_lock(l,c)	lock_unpin_lock(&(l)->dep_map, (c))
+ 
++/*
++ * Must use lock_map_aquire_try() with override maps to avoid
++ * lockdep thinking they participate in the block chain.
++ */
++#define DEFINE_WAIT_OVERRIDE_MAP(_name, _wait_type)	\
++	struct lockdep_map _name = {			\
++		.name = #_name "-wait-type-override",	\
++		.wait_type_inner = _wait_type,		\
++		.lock_type = LD_LOCK_WAIT_OVERRIDE, }
++
+ #else /* !CONFIG_LOCKDEP */
+ 
+ static inline void lockdep_init_task(struct task_struct *task)
+@@ -427,6 +437,9 @@ extern int lockdep_is_held(const void *);
+ #define lockdep_repin_lock(l, c)		do { (void)(l); (void)(c); } while (0)
+ #define lockdep_unpin_lock(l, c)		do { (void)(l); (void)(c); } while (0)
+ 
++#define DEFINE_WAIT_OVERRIDE_MAP(_name, _wait_type)	\
++	struct lockdep_map __maybe_unused _name = {}
++
+ #endif /* !LOCKDEP */
+ 
+ enum xhlock_context_t {
+@@ -552,6 +565,7 @@ do {									\
+ #define rwsem_release(l, i)			lock_release(l, i)
+ 
+ #define lock_map_acquire(l)			lock_acquire_exclusive(l, 0, 0, NULL, _THIS_IP_)
++#define lock_map_acquire_try(l)			lock_acquire_exclusive(l, 0, 1, NULL, _THIS_IP_)
+ #define lock_map_acquire_read(l)		lock_acquire_shared_recursive(l, 0, 0, NULL, _THIS_IP_)
+ #define lock_map_acquire_tryread(l)		lock_acquire_shared_recursive(l, 0, 1, NULL, _THIS_IP_)
+ #define lock_map_release(l)			lock_release(l, _THIS_IP_)
+diff --git a/include/linux/lockdep_types.h b/include/linux/lockdep_types.h
+index d22430840b53f9..59f4fb1626ea60 100644
+--- a/include/linux/lockdep_types.h
++++ b/include/linux/lockdep_types.h
+@@ -33,6 +33,7 @@ enum lockdep_wait_type {
+ enum lockdep_lock_type {
+ 	LD_LOCK_NORMAL = 0,	/* normal, catch all */
+ 	LD_LOCK_PERCPU,		/* percpu */
++	LD_LOCK_WAIT_OVERRIDE,	/* annotation */
+ 	LD_LOCK_MAX,
+ };
+ 
+diff --git a/kernel/locking/lockdep.c b/kernel/locking/lockdep.c
+index 5f8ce961cd9a3f..463834778b4b04 100644
+--- a/kernel/locking/lockdep.c
++++ b/kernel/locking/lockdep.c
+@@ -2245,6 +2245,9 @@ static inline bool usage_match(struct lock_list *entry, void *mask)
+ 
+ static inline bool usage_skip(struct lock_list *entry, void *mask)
+ {
++	if (entry->class->lock_type == LD_LOCK_NORMAL)
++		return false;
++
+ 	/*
+ 	 * Skip local_lock() for irq inversion detection.
+ 	 *
+@@ -2271,14 +2274,16 @@ static inline bool usage_skip(struct lock_list *entry, void *mask)
+ 	 * As a result, we will skip local_lock(), when we search for irq
+ 	 * inversion bugs.
+ 	 */
+-	if (entry->class->lock_type == LD_LOCK_PERCPU) {
+-		if (DEBUG_LOCKS_WARN_ON(entry->class->wait_type_inner < LD_WAIT_CONFIG))
+-			return false;
++	if (entry->class->lock_type == LD_LOCK_PERCPU &&
++	    DEBUG_LOCKS_WARN_ON(entry->class->wait_type_inner < LD_WAIT_CONFIG))
++		return false;
+ 
+-		return true;
+-	}
++	/*
++	 * Skip WAIT_OVERRIDE for irq inversion detection -- it's not actually
++	 * a lock and only used to override the wait_type.
++	 */
+ 
+-	return false;
++	return true;
+ }
+ 
+ /*
+@@ -4745,7 +4750,8 @@ static int check_wait_context(struct task_struct *curr, struct held_lock *next)
+ 
+ 	for (; depth < curr->lockdep_depth; depth++) {
+ 		struct held_lock *prev = curr->held_locks + depth;
+-		u8 prev_inner = hlock_class(prev)->wait_type_inner;
++		struct lock_class *class = hlock_class(prev);
++		u8 prev_inner = class->wait_type_inner;
+ 
+ 		if (prev_inner) {
+ 			/*
+@@ -4755,6 +4761,14 @@ static int check_wait_context(struct task_struct *curr, struct held_lock *next)
+ 			 * Also due to trylocks.
+ 			 */
+ 			curr_inner = min(curr_inner, prev_inner);
++
++			/*
++			 * Allow override for annotations -- this is typically
++			 * only valid/needed for code that only exists when
++			 * CONFIG_PREEMPT_RT=n.
++			 */
++			if (unlikely(class->lock_type == LD_LOCK_WAIT_OVERRIDE))
++				curr_inner = prev_inner;
  		}
+ 	}
  
- 		/* sanitize the shift value for any later use */
-@@ -275,6 +275,8 @@ static int tcf_pedit_init(struct net *net, struct nlattr *nla,
+diff --git a/lib/debugobjects.c b/lib/debugobjects.c
+index 1e193a5f6b4a72..46eabbae69ccfc 100644
+--- a/lib/debugobjects.c
++++ b/lib/debugobjects.c
+@@ -601,10 +601,21 @@ static void debug_objects_fill_pool(void)
+ {
+ 	/*
+ 	 * On RT enabled kernels the pool refill must happen in preemptible
+-	 * context:
++	 * context -- for !RT kernels we rely on the fact that spinlock_t and
++	 * raw_spinlock_t are basically the same type and this lock-type
++	 * inversion works just fine.
+ 	 */
+-	if (!IS_ENABLED(CONFIG_PREEMPT_RT) || preemptible())
++	if (!IS_ENABLED(CONFIG_PREEMPT_RT) || preemptible()) {
++		/*
++		 * Annotate away the spinlock_t inside raw_spinlock_t warning
++		 * by temporarily raising the wait-type to WAIT_SLEEP, matching
++		 * the preemptible() condition above.
++		 */
++		static DEFINE_WAIT_OVERRIDE_MAP(fill_pool_map, LD_WAIT_SLEEP);
++		lock_map_acquire_try(&fill_pool_map);
+ 		fill_pool();
++		lock_map_release(&fill_pool_map);
++	}
+ }
  
- 	return ret;
- 
-+out_free_keys:
-+	kfree(nparms->tcfp_keys);
- put_chain:
- 	if (goto_ch)
- 		tcf_chain_put_by_act(goto_ch);
+ static void
 -- 
 2.53.0
 
