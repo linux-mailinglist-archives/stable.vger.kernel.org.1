@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-271361-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-271279-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id boanLa+aRmqdZwsAu9opvQ
-	(envelope-from <stable+bounces-271361-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:06:55 +0200
+	id rm8aIymbRmriZwsAu9opvQ
+	(envelope-from <stable+bounces-271279-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:08:57 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5FCD46FAFFC
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:06:55 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id F0D726FB0B2
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:08:56 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=IMmPjjG1;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-271361-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-271361-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=qus0cxVD;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-271279-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-271279-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id C93BB30B2AA9
-	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:55:43 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 5EF2F316A7C3
+	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:53:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C249E246BBA;
-	Thu,  2 Jul 2026 16:55:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F57F358381;
+	Thu,  2 Jul 2026 16:52:12 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A84A82866;
-	Thu,  2 Jul 2026 16:55:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5144C347BA7;
+	Thu,  2 Jul 2026 16:52:11 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783011342; cv=none; b=NdvFXS3hXNtUZn3+z4TZL53C0CwkHkx2N3U769KD7Vi8xMi3nYnMwatT9XlBFQ/dWkAO7PBkWPo7TaPVrT0flLJ785DuZly00/w2FeD7if89jwXWn+DC/BjxLwrcTuZ7qhjLiQJVf3P/+9pbhESFFTVAvCrkgxSXtKkwnSTEbJI=
+	t=1783011132; cv=none; b=Dfya+FNm85k1nx0OAY+WMKw00N4Ds+2JCDjWIQxT4Kzf6qIJHpY4PR2GoWSSUZ6+ATFqqlm6SWX9YatQfPOPRRqfiog+6P+G/wwRVbT7n985lbLjo0zC9HPT37z7hJ+Z9P0+EW30lSBHJzYB43v8bgqILhfBksdAmiN13sj8n8Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783011342; c=relaxed/simple;
-	bh=OeK8cndjp2h9Rol33o8t43cmZUXekqelyF+83GCoOrw=;
+	s=arc-20240116; t=1783011132; c=relaxed/simple;
+	bh=ShcWgsvmI/aKhpvvdYTsEP19Ny+MSEYr+GE2OXHP+5w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=h2iCGkNWEl/baeQfa/8w1Ge+WTjZv15ei2/HSecb1f4nSkMGwlBHIBVQeGczjFPanPmNEDXxTRLyqU3ll/egIikVO1ak1BwDh7yT++ZolvQ4tJIfoT5L1VpsH2tnecOW0Y4xs7DbOrehLjlGJhijLwSMuHm5agwo0Y9HENnb2s8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IMmPjjG1; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF8521F000E9;
-	Thu,  2 Jul 2026 16:55:40 +0000 (UTC)
+	 MIME-Version; b=mG6+ItL7Adhj3GYGP1L12oCkOu1wpc5G/Zqp53ij998G5GVOy0pY8UlkZeMcUK4JtBuw/NdoFi0krGRqr8xfNdnsDGi3qSpVWdAjdfQY0f7igycPTPyNI7DDK7BUCejAkT29hVNCAop6G8OPYGM4v8feJBffp4jDNAZRO6CGFb8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qus0cxVD; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B77841F000E9;
+	Thu,  2 Jul 2026 16:52:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1783011341;
-	bh=L0vgBJYFXx0CJkeHXdMtmj52Fi0VGJhIw+TY3z972zE=;
+	s=korg; t=1783011131;
+	bh=9FoCySOriQQjD30+6pVTn/mnEQp2s2tssetqh1IN1K8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=IMmPjjG10Zbw3O8Lx2L0s2qtuLWDwGcUlthK8S6FEQbtGRsyqaO4FUMJaeVqVBIFm
-	 ycjCQeGX6VYv9Tn+GsxIm8Yj20BPOaeWvo2ia4eFNr6GQgKHnGhUZ6VXU0B9XPdlCu
-	 1fawtUi+dOIvtSvcST3yU3q8iAVZzAdxihp2UWXE=
+	b=qus0cxVDQcMi99RrNxq5uWpAxHiFDf9RxCANIB3MYZG4NGQICqW1z5P5+NT0+rPBl
+	 pl9XIy220c3QiX/JuxmKb9G/ua3o4ADJNRC7cMoiU/3rU/6JN3AdEmCz90aMt6ToIE
+	 VeeTH+7HkOdEUyo34DkR4O4EEjRV8MIywTbp7094=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sean Christopherson <seanjc@google.com>,
-	Paolo Bonzini <pbonzini@redhat.com>
-Subject: [PATCH 6.18 072/108] KVM: Replace guest-triggerable BUG_ON() in ioeventfd datamatch with get_unaligned()
+	Hem Parekh <hemparekh1596@gmail.com>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.6 168/175] ksmbd: fix out-of-bounds read in smb_check_perm_dacl()
 Date: Thu,  2 Jul 2026 18:21:09 +0200
-Message-ID: <20260702155113.602975301@linuxfoundation.org>
+Message-ID: <20260702155119.326195380@linuxfoundation.org>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260702155112.110058792@linuxfoundation.org>
-References: <20260702155112.110058792@linuxfoundation.org>
+In-Reply-To: <20260702155115.766838875@linuxfoundation.org>
+References: <20260702155115.766838875@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,151 +72,98 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-271361-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-271279-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:hemparekh1596@gmail.com,m:linkinjeon@kernel.org,m:stfrench@microsoft.com,s:lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:seanjc@google.com,m:pbonzini@redhat.com,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org,microsoft.com];
+	FORWARDED(0.00)[lists@lfdr.de];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 5FCD46FAFFC
+X-Rspamd-Queue-Id: F0D726FB0B2
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sean Christopherson <seanjc@google.com>
+From: Hem Parekh <hemparekh1596@gmail.com>
 
-commit f1edbed787ba67988ed34e0132ca128b052b6ce8 upstream.
+commit 1ef06004ed4bd6d3ed8c840d9d1a376b66d4935b upstream.
 
-Drop a BUG_ON() that has been reachable since it was first added, way back
-in 2009, and instead use get_unaligned() to perform potentially-unaligned
-accesses.
+The permission-check ACE walk in smb_check_perm_dacl() validates the ACE
+header size and caps sid.num_subauth at SID_MAX_SUB_AUTHORITIES, but it
+never checks that ace->size is actually large enough to contain
+num_subauth sub-authorities before compare_sids() dereferences them.
 
-For a given store, KVM x86's emulator tracks the entire value in the
-destination operand, x86_emulate_ctxt.dst.  If the destination is memory,
-and the target splits multiple pages and/or is emulated MMIO, then KVM
-handles each fragment independently.  E.g. on a page split starting at page
-offset 0xffc, KVM writes 4 bytes to the first page, then the remaining
-bytes to the second page, using ctxt->dst as the source for both (with
-appropriate offsets).
+CIFS_SID_BASE_SIZE covers the SID header up to but excluding the
+sub_auth[] array, and offsetof(struct smb_ace, sid) is the ACE header,
+so the existing guards only guarantee the 8-byte SID base, i.e. zero
+sub-authorities. compare_sids() then reads ace->sid.sub_auth[i] for
+i < min(local_sid->num_subauth, ace->sid.num_subauth). The local
+comparison SIDs (sid_everyone, sid_unix_NFS_mode, and the id_to_sid()
+result) always have at least one sub-authority, and an attacker controls
+the ACE revision and authority bytes (which lie within the in-bounds SID
+base), so they can match one of those SIDs and force the sub_auth read.
 
-If the destination splits a page *and* hits emulated MMIO on the second
-page, then KVM will complete the write to the first page, then emulate the
-MMIO access to the second page.  If there is a datamatch-enabled ioeventfd
-at offset 0 of the second page, then KVM will process the remainder of the
-store as a potential ioeventfd signal.
+A crafted ACE with size == 16 and num_subauth >= 1 placed at the tail of
+the security descriptor therefore causes a heap out-of-bounds read of up
+to SID_MAX_SUB_AUTHORITIES * sizeof(__le32) bytes past the pntsd
+allocation. The security descriptor is loaded by ksmbd_vfs_get_sd_xattr()
+into a buffer sized exactly to the on-disk data (kzalloc(sd_size) in
+ndr_decode_v4_ntacl()), so the read lands past the allocation. The
+malformed descriptor can be stored verbatim via SMB2_SET_INFO (the DACL
+is not normalised before being written to the security.NTACL xattr) and
+the read fires on a subsequent SMB2_CREATE access check, making this
+reachable by an authenticated client on a share that uses ACL xattrs.
 
-Putting it all together, if the guest emits a store that splits a page
-starting at page offset N, and the second page has a datamatch-enabled
-ioeventfd at offset 0, then KVM will check for datamatch using
-&dst.valptr[N] as the source.  Due to dst (and thus dst.valptr) being
-32-byte aligned, if N is not aligned to @len, the BUG_ON() fires.
+Add the missing num_subauth-versus-ace_size check, mirroring the
+identical guards already present in the sibling parsers parse_dacl() and
+smb_inherit_dacl().
 
-E.g. with a 16-byte store at page offset 0xffc, to an ioeventfd of len 8,
-all initial checks in ioeventfd_in_range() will succeed, and the BUG_ON()
-fires due to @val being 4-byte aligned, but not 8-byte aligned.
-
-  ------------[ cut here ]------------
-  kernel BUG at arch/x86/kvm/../../../virt/kvm/eventfd.c:783!
-  Oops: invalid opcode: 0000 [#1] SMP
-  CPU: 0 UID: 1000 PID: 615 Comm: repro Not tainted 7.1.0-rc2-ff238429d1ea #365 PREEMPT
-  Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 0.0.0 02/06/2015
-  RIP: 0010:ioeventfd_write+0x6c/0x70 [kvm]
-  Call Trace:
-   <TASK>
-   __kvm_io_bus_write+0x85/0xb0 [kvm]
-   kvm_io_bus_write+0x53/0x80 [kvm]
-   vcpu_mmio_write+0x66/0xf0 [kvm]
-   emulator_read_write_onepage+0x12a/0x540 [kvm]
-   emulator_read_write+0x109/0x2b0 [kvm]
-   x86_emulate_insn+0x4f8/0xfb0 [kvm]
-   x86_emulate_instruction+0x181/0x790 [kvm]
-   kvm_mmu_page_fault+0x313/0x630 [kvm]
-   vmx_handle_exit+0x18a/0x590 [kvm_intel]
-   kvm_arch_vcpu_ioctl_run+0xc81/0x1c90 [kvm]
-   kvm_vcpu_ioctl+0x2d5/0x970 [kvm]
-   __x64_sys_ioctl+0x8a/0xd0
-   do_syscall_64+0xb7/0x890
-   entry_SYSCALL_64_after_hwframe+0x4b/0x53
-  RIP: 0033:0x7f19c931a9bf
-   </TASK>
-  Modules linked in: kvm_intel kvm irqbypass
-  ---[ end trace 0000000000000000 ]---
-
-In a perfect world, the fix would be to simply delete the BUG_ON(), as KVM
-x86 doesn't perform alignment checks on "normal" memory accesses at CPL0.
-Sadly, C99 ruins all the fun; while the x86 architecture plays nice,
-dereferencing an unaligned pointer directly is undefined behavior in C,
-e.g. triggers splats when running with CONFIG_UBSAN_ALIGNMENT=y.
-
-Fixes: d34e6b175e61 ("KVM: add ioeventfd support")
+Fixes: d07b26f39246 ("ksmbd: require minimum ACE size in smb_check_perm_dacl()")
 Cc: stable@vger.kernel.org
-Signed-off-by: Sean Christopherson <seanjc@google.com>
-Message-ID: <20260612225241.678509-1-seanjc@google.com>
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+Signed-off-by: Hem Parekh <hemparekh1596@gmail.com>
+Acked-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- virt/kvm/eventfd.c |   12 +++++-------
- 1 file changed, 5 insertions(+), 7 deletions(-)
+ fs/smb/server/smbacl.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/virt/kvm/eventfd.c
-+++ b/virt/kvm/eventfd.c
-@@ -24,6 +24,7 @@
- #include <linux/slab.h>
- #include <linux/seqlock.h>
- #include <linux/irqbypass.h>
-+#include <linux/unaligned.h>
- #include <trace/events/kvm.h>
+--- a/fs/smb/server/smbacl.c
++++ b/fs/smb/server/smbacl.c
+@@ -1419,7 +1419,9 @@ int smb_check_perm_dacl(struct ksmbd_con
+ 			break;
+ 		aces_size -= ace_size;
  
- #include <kvm/iodev.h>
-@@ -780,21 +781,18 @@ ioeventfd_in_range(struct _ioeventfd *p,
- 		return true;
+-		if (ace->sid.num_subauth > SID_MAX_SUB_AUTHORITIES)
++		if (ace->sid.num_subauth > SID_MAX_SUB_AUTHORITIES ||
++		    ace_size < offsetof(struct smb_ace, sid) + CIFS_SID_BASE_SIZE +
++			      sizeof(__le32) * ace->sid.num_subauth)
+ 			break;
  
- 	/* otherwise, we have to actually compare the data */
--
--	BUG_ON(!IS_ALIGNED((unsigned long)val, len));
--
- 	switch (len) {
- 	case 1:
--		_val = *(u8 *)val;
-+		_val = get_unaligned((u8 *)val);
- 		break;
- 	case 2:
--		_val = *(u16 *)val;
-+		_val = get_unaligned((u16 *)val);
- 		break;
- 	case 4:
--		_val = *(u32 *)val;
-+		_val = get_unaligned((u32 *)val);
- 		break;
- 	case 8:
--		_val = *(u64 *)val;
-+		_val = get_unaligned((u64 *)val);
- 		break;
- 	default:
- 		return false;
+ 		if (!compare_sids(&sid, &ace->sid) ||
 
 
 
