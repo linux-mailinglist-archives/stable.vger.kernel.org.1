@@ -1,62 +1,62 @@
-Return-Path: <stable+bounces-271349-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-271459-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id D7vbOXClRmq3awsAu9opvQ
-	(envelope-from <stable+bounces-271349-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:52:48 +0200
+	id 86q3HianRmo2bAsAu9opvQ
+	(envelope-from <stable+bounces-271459-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 20:00:06 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 472B16FBAE6
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:52:48 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 80C1C6FBC52
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 20:00:05 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=ukNCkL2Z;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-271349-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-271349-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="PrurD/VX";
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-271459-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-271459-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 7065A333CA61
-	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:55:11 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 8B2F130A7BCC
+	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 17:00:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 243C023EAAD;
-	Thu,  2 Jul 2026 16:55:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 33CAD33A6F2;
+	Thu,  2 Jul 2026 17:00:00 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0AF882866;
-	Thu,  2 Jul 2026 16:55:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8759331EB6;
+	Thu,  2 Jul 2026 16:59:58 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783011310; cv=none; b=PAxBzAtf2kQff2FuGJ+0fhR6HRRhtfQbVdrOFOWeR2hlvVL24hrL1oNtanKwmDbNYFyD6laOMWN0d0Zojr4q9bRSwQn8hi3BWId03Krx4ZjRdmChXPy++Ecxr3ckRYw+AvpZM6927qiTny5vG+vIuEkg/CiikgEcX798hFZX3fs=
+	t=1783011600; cv=none; b=QrqR1J6FRmyYBZ9oqNkZfYRrYvFfdWBLNONpwj/n7qH7u70Ep8ipRXUwoBayvl8PPnKJPfdoAUxZdyHV8f3sKjqp/WUVx5qb9hTAss6VkNtPIHiHmmnnlW8hOD25rDgcEnV39W39Mqwm/Fr4UryYhVwhBJEmnZwg5mTEJr964Bc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783011310; c=relaxed/simple;
-	bh=w3aPxo3erlM9LnQmxm4SqK5iImWpPzsxo+jE94z0SsM=;
+	s=arc-20240116; t=1783011600; c=relaxed/simple;
+	bh=Je7QclP/s82F4lr2djPqNVqhfEwmlfdex9qDUgFfs9I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WDF0mbP4+J3EgDS+9rUT+iyF392mLs74jd2oRPp8GnxHd3//4+SurC4g6pFiI4+lDveD8Qa9PmbhZOrtvckMxG3UvHMGAFHb7JyGY5vVpb7qS4UEqzjaMhRc/XkDj9OxDqP6i+GTZkgaKNrWihKzgXpjkmaF9iA4ZEBMbFs6bHg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ukNCkL2Z; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51AE31F000E9;
-	Thu,  2 Jul 2026 16:55:09 +0000 (UTC)
+	 MIME-Version; b=nC/TjIiqR+V/uyPO4nmv1rF+dd9l1o0P92uThkVSmxhbbOuXe09h0rq3L8XlX++d0IfNjqp+JULDTNZYdhXi0ejnyi8B8A2USrnW8tlVM+5RVUbQZREKWsm4uamvHlWRCJtT3uGRJUx/Tpkl1p+hLhJLX5tpHh7ZDvXAHB6wzcU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PrurD/VX; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A5EC1F00A3A;
+	Thu,  2 Jul 2026 16:59:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1783011309;
-	bh=TP6tojfS6zZhWMrv8vAnW3jLIT7CkJY1LjSIjFQw6Ck=;
+	s=korg; t=1783011598;
+	bh=PPgykJtNdWzhIaryr4nSp3OasW0kX1TOsoQtFUMsw9U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=ukNCkL2Zkk8dgMmM13F1dEpzdV9/ToC8mzdT++X9EXttoWvSDoX0j93v6HH11Xug4
-	 oJ5qSsoe5lCDFdQGr8EdBrcodqRZFV5Vx4IuYj8w126h9mq3afFEjiPXDh/7KCOhA0
-	 z5R4FFonh9KELaEMX2wd7jtkg2KV+9L8N+Jj5L/U=
+	b=PrurD/VXhaaWHbFdkCoMtr02+AjLkOqqztdC90ziy1peS7ZKWGfwfm2r2Jh4UgzZR
+	 ouQFDw0u7Sg6OeSJV9SneR8xHLg+LwhRKn17r5sg5s3RX+p4NLvDtxIxgbwQllwfSC
+	 AEL9mZ/NYSLEWmIkLv5/R1gAiA/oKiR8vHZXRw2w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	stable@kernel.org,
-	Wenjie Qi <qiwenjie@xiaomi.com>,
+	syzbot+2488d8d751b27f7ce268@syzkaller.appspotmail.com,
 	Chao Yu <chao@kernel.org>,
 	Jaegeuk Kim <jaegeuk@kernel.org>
-Subject: [PATCH 6.18 061/108] f2fs: validate orphan inode entry count
+Subject: [PATCH 7.1 062/120] f2fs: fix to do sanity check on f2fs_get_node_folio_ra()
 Date: Thu,  2 Jul 2026 18:20:58 +0200
-Message-ID: <20260702155113.372642326@linuxfoundation.org>
+Message-ID: <20260702155114.244501800@linuxfoundation.org>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260702155112.110058792@linuxfoundation.org>
-References: <20260702155112.110058792@linuxfoundation.org>
+In-Reply-To: <20260702155112.964534952@linuxfoundation.org>
+References: <20260702155112.964534952@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,26 +68,27 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-271349-lists,stable=lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-271459-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:stable@kernel.org,m:qiwenjie@xiaomi.com,m:chao@kernel.org,m:jaegeuk@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:stable@kernel.org,m:syzbot+2488d8d751b27f7ce268@syzkaller.appspotmail.com,m:chao@kernel.org,m:jaegeuk@kernel.org,m:syzbot@syzkaller.appspotmail.com,s:lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
@@ -96,87 +97,124 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,xiaomi.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+	RCPT_COUNT_SEVEN(0.00)[7];
+	RWL_MAILSPIKE_POSSIBLE(0.00)[104.64.211.4:from];
+	TAGGED_RCPT(0.00)[stable,2488d8d751b27f7ce268];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,appspotmail.com:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 472B16FBAE6
+X-Rspamd-Queue-Id: 80C1C6FBC52
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wenjie Qi <qwjhust@gmail.com>
+From: Chao Yu <chao@kernel.org>
 
-commit 846c499a65816d13f1186e3090e825e8bb8bcb8b upstream.
+commit 8712353ed80f87271d732297567dcdbe4b84e8c7 upstream.
 
-f2fs_recover_orphan_inodes() trusts the orphan block entry_count when
-replaying orphan inodes from the checkpoint pack. A corrupted entry_count
-larger than F2FS_ORPHANS_PER_BLOCK makes the recovery loop read past the
-ino[] array and interpret footer or following data as inode numbers.
+kernel BUG at fs/f2fs/file.c:845!
+Oops: invalid opcode: 0000 [#1] SMP KASAN NOPTI
+CPU: 0 UID: 0 PID: 5336 Comm: syz.0.0 Not tainted syzkaller #0 PREEMPT(full)
+Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
+RIP: 0010:f2fs_do_truncate_blocks+0x1115/0x1140 fs/f2fs/file.c:845
+Code: fc fc 90 0f 0b e8 8b 9d 9a fd 90 0f 0b e8 83 9d 9a fd 48 89 df 48 c7 c6 60 d1 1a 8c e8 54 f1 fc fc 90 0f 0b e8 6c 9d 9a fd 90 <0f> 0b e8 64 9d 9a fd 90 0f 0b 90 e9 93 fd ff ff e8 56 9d 9a fd 90
+RSP: 0018:ffffc9000e4474c0 EFLAGS: 00010283
+RAX: ffffffff842b1d34 RBX: 0000000000000003 RCX: 0000000000100000
+RDX: ffffc9000f03a000 RSI: 0000000000035503 RDI: 0000000000035504
+RBP: ffffc9000e447608 R08: ffff8880123b0000 R09: 0000000000000002
+R10: 00000000fffffffe R11: 0000000000000002 R12: 0000000000000001
+R13: 0000000000000000 R14: 1ffff92001c88ea0 R15: 00000000ffff039c
+FS:  00007f7e02ee36c0(0000) GS:ffff88808c887000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00007ff0305c4000 CR3: 0000000012d4c000 CR4: 0000000000352ef0
+Call Trace:
+ <TASK>
+ f2fs_truncate_blocks+0x10a/0x300 fs/f2fs/file.c:882
+ f2fs_truncate+0x471/0x7c0 fs/f2fs/file.c:940
+ f2fs_evict_inode+0xa3f/0x1ac0 fs/f2fs/inode.c:907
+ evict+0x61e/0xb10 fs/inode.c:841
+ f2fs_fill_super+0x5f43/0x78f0 fs/f2fs/super.c:5224
+ get_tree_bdev_flags+0x431/0x4f0 fs/super.c:1694
+ vfs_get_tree+0x92/0x2a0 fs/super.c:1754
+ fc_mount fs/namespace.c:1193 [inline]
+ do_new_mount_fc fs/namespace.c:3758 [inline]
+ do_new_mount+0x341/0xd30 fs/namespace.c:3834
+ do_mount fs/namespace.c:4167 [inline]
+ __do_sys_mount fs/namespace.c:4383 [inline]
+ __se_sys_mount+0x31d/0x420 fs/namespace.c:4360
+ do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+ do_syscall_64+0x15f/0xf80 arch/x86/entry/syscall_64.c:94
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
 
-On a crafted image, mounting an unpatched kernel can drive orphan recovery
-into f2fs_bug_on() and panic the kernel. Validate entry_count before
-consuming entries so corrupted checkpoint data fails the mount with
--EFSCORRUPTED and requests fsck instead.
+	count = ADDRS_PER_PAGE(dn.node_folio, inode);
 
-Set ERROR_INCONSISTENT_ORPHAN as well, so the corruption reason can be
-recorded in the superblock s_errors[] field. This gives fsck a persistent
-hint even though mount-time orphan recovery failure may leave no chance to
-persist SBI_NEED_FSCK through a checkpoint.
+	count -= dn.ofs_in_node;
+	f2fs_bug_on(sbi, count < 0);
+
+The fuzz test will trigger above bug_on in f2fs.
+
+The root cause should be: in the corrupted inode, there is a direct node
+which has the same ino and nid in its footer, so in f2fs_do_truncate_blocks(),
+after f2fs_get_dnode_of_data() finds such dnode:
+1) ADDRS_PER_PAGE(dn.node_folio, inode) will return 923
+2) once dn.ofs_in_node points to addr[923, 1017]
+Then it will trigger the system panic.
+
+Let's introduce NODE_TYPE_NON_IXNODE to indicate current node should
+not be an inode or xattr node, and then use it in below path to detect
+inconsistent node chain in inode mapping table:
+
+- f2fs_do_truncate_blocks
+ - f2fs_get_dnode_of_data
+  - f2fs_get_node_folio_ra
+   -  __get_node_folio
+    - f2fs_sanity_check_node_footer
+     - case NODE_TYPE_NON_IXNODE -> check whether it is inode|xnode
 
 Cc: stable@kernel.org
-Fixes: 127e670abfa7 ("f2fs: add checkpoint operations")
-Signed-off-by: Wenjie Qi <qiwenjie@xiaomi.com>
-Reviewed-by: Chao Yu <chao@kernel.org>
+Reported-by: syzbot+2488d8d751b27f7ce268@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/all/69fa3697.170a0220.59368.0018.GAE@google.com
+Signed-off-by: Chao Yu <chao@kernel.org>
 Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/f2fs/checkpoint.c    |   14 +++++++++++++-
- include/linux/f2fs_fs.h |    1 +
- 2 files changed, 14 insertions(+), 1 deletion(-)
+ fs/f2fs/f2fs.h |    1 +
+ fs/f2fs/node.c |    6 +++++-
+ 2 files changed, 6 insertions(+), 1 deletion(-)
 
---- a/fs/f2fs/checkpoint.c
-+++ b/fs/f2fs/checkpoint.c
-@@ -745,6 +745,7 @@ int f2fs_recover_orphan_inodes(struct f2
- 	for (i = 0; i < orphan_blocks; i++) {
- 		struct folio *folio;
- 		struct f2fs_orphan_block *orphan_blk;
-+		unsigned int entry_count;
- 
- 		folio = f2fs_get_meta_folio(sbi, start_blk + i);
- 		if (IS_ERR(folio)) {
-@@ -753,7 +754,18 @@ int f2fs_recover_orphan_inodes(struct f2
- 		}
- 
- 		orphan_blk = folio_address(folio);
--		for (j = 0; j < le32_to_cpu(orphan_blk->entry_count); j++) {
-+		entry_count = le32_to_cpu(orphan_blk->entry_count);
-+		if (entry_count > F2FS_ORPHANS_PER_BLOCK) {
-+			f2fs_err(sbi, "invalid orphan inode entry count %u",
-+				 entry_count);
-+			set_sbi_flag(sbi, SBI_NEED_FSCK);
-+			f2fs_handle_error(sbi, ERROR_INCONSISTENT_ORPHAN);
-+			err = -EFSCORRUPTED;
-+			f2fs_folio_put(folio, true);
-+			goto out;
-+		}
-+
-+		for (j = 0; j < entry_count; j++) {
- 			nid_t ino = le32_to_cpu(orphan_blk->ino[j]);
- 
- 			err = recover_orphan_inode(sbi, ino);
---- a/include/linux/f2fs_fs.h
-+++ b/include/linux/f2fs_fs.h
-@@ -104,6 +104,7 @@ enum f2fs_error {
- 	ERROR_CORRUPTED_XATTR,
- 	ERROR_INVALID_NODE_REFERENCE,
- 	ERROR_INCONSISTENT_NAT,
-+	ERROR_INCONSISTENT_ORPHAN,
- 	ERROR_MAX,
+--- a/fs/f2fs/f2fs.h
++++ b/fs/f2fs/f2fs.h
+@@ -1583,6 +1583,7 @@ enum node_type {
+ 	NODE_TYPE_INODE,
+ 	NODE_TYPE_XATTR,
+ 	NODE_TYPE_NON_INODE,
++	NODE_TYPE_NON_IXNODE,	/* non inode and xnode */
  };
  
+ /* a threshold of maximum elapsed time in critical region to print tracepoint */
+--- a/fs/f2fs/node.c
++++ b/fs/f2fs/node.c
+@@ -1541,6 +1541,10 @@ int f2fs_sanity_check_node_footer(struct
+ 		if (is_inode)
+ 			goto out_err;
+ 		break;
++	case NODE_TYPE_NON_IXNODE:
++		if (is_inode || is_xnode)
++			goto out_err;
++		break;
+ 	default:
+ 		break;
+ 	}
+@@ -1634,7 +1638,7 @@ static struct folio *f2fs_get_node_folio
+ 	struct f2fs_sb_info *sbi = F2FS_F_SB(parent);
+ 	nid_t nid = get_nid(parent, start, false);
+ 
+-	return __get_node_folio(sbi, nid, parent, start, NODE_TYPE_REGULAR);
++	return __get_node_folio(sbi, nid, parent, start, NODE_TYPE_NON_IXNODE);
+ }
+ 
+ static void flush_inline_data(struct f2fs_sb_info *sbi, nid_t ino)
 
 
 
