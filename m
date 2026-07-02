@@ -1,61 +1,59 @@
-Return-Path: <stable+bounces-270889-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-271440-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id yylpA8uXRmoIZgsAu9opvQ
-	(envelope-from <stable+bounces-270889-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:54:35 +0200
+	id 32NjN+ibRmpAaAsAu9opvQ
+	(envelope-from <stable+bounces-271440-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:12:08 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 23A656FABAE
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:54:34 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4AA736FB1D5
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:12:08 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=koKmvtlK;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-270889-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-270889-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=rEZ8tjma;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-271440-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-271440-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 7F3A63166EDE
-	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:37:26 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 647E330D8012
+	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:59:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B7C6D347FC8;
-	Thu,  2 Jul 2026 16:35:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D8E430C141;
+	Thu,  2 Jul 2026 16:59:12 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DA0533D4EC;
-	Thu,  2 Jul 2026 16:35:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E907318EC5;
+	Thu,  2 Jul 2026 16:59:09 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783010115; cv=none; b=ZCgR7gKZmIfG2LA7qCiY8e/YsgCdYAPhuwV5jFPSJtI6pzDf4GmAixihl2lch1l8qiOPg9LqmWJKc+6i6d3S33jjIIVLyHkudIbYDtG2g56WgDB+P6r4zaxUohnKqoZo6AVlpDWWAr9NnGux2umxw6g6BQIpQ3GJV0WkjbVXSBI=
+	t=1783011551; cv=none; b=K6vDdcsGLRzfJy5bEkDytuyi0lVOdxg0Z+PxBynxJuFfrrON15svVmLh2x82tYvIHbai5zOM7eHCZrvtZPTUnjHg8TIvhcz8lRQrcoFhZYbpzx58l1RK9Nt+kmGhqYFrK/nArK1mJQGXCqTKQoQBGIdY3jZCklfd9Wxqab7cFdw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783010115; c=relaxed/simple;
-	bh=9zJeoHUy22A+T+/5GYa55Cvn10eqfXJNH4Pz8ukFsf0=;
+	s=arc-20240116; t=1783011551; c=relaxed/simple;
+	bh=XUVpFg/MK8eoHou1DW7Sh4BgmeZL33T+25/kG3hzQMQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cxjIb6vXQgQXpb3tkR9XhS2wqJJhcdNgE1DiwQ16YoaGsDcmtKnoKpB0j9Ln+S1NyMdc+AtLqs5M+mzs+JUjLpbfuVFXONVvtyWqK+kL7Keb6nwSI/RfJpSHfN0Xc4wobeW1tfromS/sHcM4TVT4QwFHKOfr6OL50DMrXeMsyng=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=koKmvtlK; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4C3E1F000E9;
-	Thu,  2 Jul 2026 16:35:13 +0000 (UTC)
+	 MIME-Version; b=oFqYI3HdCRFeSDPJrSHQbyBgIF/8F+eul7qstXKM7M3THNNmEJMpT9toKua57m5ajX4OQmjuFaULTCW8Sv4prDTz1abrNsoap9bN2VlqNRDo5ldaXEuG9RpP/RDGbmaE3QUT18NWcGDW4M19KmpHdTPrX6dtZkDx8vKh/hBe818=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rEZ8tjma; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A78371F00A3A;
+	Thu,  2 Jul 2026 16:59:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1783010114;
-	bh=nle0EN/1KKeG2E1ukbgjaZMZyUf1jnUwUDeYehw8xYE=;
+	s=korg; t=1783011549;
+	bh=SszoNjcSpz6HPrv0t6VDBtSMMguXk7K6OCKTeI64t+o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=koKmvtlKJ7kzxNpqt6ryWKyZwHvQxFWGs9h6XWGAGoV6Owjqll2U2mfaCpiXwfSwS
-	 xOTBzJ/tGZw0m0o9D0Ooos0aeFvq7xIgw7L81Mfghab2oNcIdTG5pmE0imvPg30otb
-	 4ZGQS2BaXp9V3sq4deQQ1pup/x2GDEa+vczPZqgg=
+	b=rEZ8tjmaJn0GLtvRDutD1JASun+u+5KzCSWe0hVuVXLXoKpaBifxBIder7QhlqPVo
+	 9nd5nDxk1ByVORoQ3+DZ/LRwnNJJ+k1Yis+M4jb6rWqAcs51EPyCHsi/EosHC0IHPj
+	 tl3/SSNqzom8D3lUi4mB4Zr0/fYLE0ezjUr9oZrA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jian Zhou <eilaimemedsnaimel@gmail.com>,
-	Thomas Gleixner <tglx@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 117/129] futex/requeue: Prevent NULL pointer dereference in remove_waiter() on self-deadlock
+	Eric Biggers <ebiggers@kernel.org>
+Subject: [PATCH 7.1 040/120] fscrypt: Fix key setup in edge case with multiple data unit sizes
 Date: Thu,  2 Jul 2026 18:20:36 +0200
-Message-ID: <20260702155114.565787504@linuxfoundation.org>
+Message-ID: <20260702155113.790525929@linuxfoundation.org>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260702155112.163984240@linuxfoundation.org>
-References: <20260702155112.163984240@linuxfoundation.org>
+In-Reply-To: <20260702155112.964534952@linuxfoundation.org>
+References: <20260702155112.964534952@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,81 +70,455 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-270889-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:eilaimemedsnaimel@gmail.com,m:tglx@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
 	FORWARDED(0.00)[lists@lfdr.de];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-271440-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:ebiggers@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	RCPT_COUNT_THREE(0.00)[4];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,vger.kernel.org:from_smtp]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 23A656FABAE
+X-Rspamd-Queue-Id: 4AA736FB1D5
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+7.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ji'an Zhou <eilaimemedsnaimel@gmail.com>
+From: Eric Biggers <ebiggers@kernel.org>
 
-[ Upstream commit 74e144274af39935b0f410c0ee4d2b91c3730414 ]
+commit dd015b566d505d698386103e9c80b739c7336eb8 upstream.
 
-When FUTEX_CMP_REQUEUE_PI requeues a non-top waiter that already owns the
-target PI futex, task_blocks_on_rt_mutex() returns -EDEADLK before setting
-waiter->task.
+The addition of support for customizable data unit sizes introduced an
+edge case where a file's contents can be en/decrypted with the wrong
+data unit size.  It occurs when there are multiple v2 policies that:
 
-The subsequent remove_waiter() in rt_mutex_start_proxy_lock() dereferences
-the NULL waiter->task, causing a kernel crash.
+- Have *different* data unit sizes, via the log2_data_unit_size field
 
-Add a self-deadlock check for non-top waiters before calling
-rt_mutex_start_proxy_lock(), analogous to the top-waiter check in
-futex_lock_pi_atomic().
+- Share the same master_key_identifier, contents_encryption_mode, and
+  either FSCRYPT_POLICY_FLAG_DIRECT_KEY,
+  FSCRYPT_POLICY_FLAG_IV_INO_LBLK_32, or
+  FSCRYPT_POLICY_FLAG_IV_INO_LBLK_64
 
-Fixes: 3bfdc63936dd4773109b7b8c280c0f3b5ae7d349 ("rtmutex: Use waiter::task instead of current in remove_waiter()")
-Signed-off-by: Ji'an Zhou <eilaimemedsnaimel@gmail.com>
-Signed-off-by: Thomas Gleixner <tglx@kernel.org>
+- Are being used on the same filesystem, which also must be mounted with
+  the "inlinecrypt" mount option.
+
+Fortunately this edge case doesn't actually occur in practice.  I just
+found it via code review.  But it needs to be fixed regardless.
+
+The bug is caused by the data unit size not being fully considered when
+blk_crypto_keys are cached in mk_direct_keys, mk_iv_ino_lblk_32_keys,
+and mk_iv_ino_lblk_64_keys.  They're differentiated only by master key,
+encryption mode, and flag.  However, each one actually has a data unit
+size too.  Only the first data unit size that is cached is used.
+
+To fix this, start using the data unit size to differentiate the cached
+keys.  For several reasons, including avoiding increasing the size of
+struct fscrypt_master_key, just replace all three arrays with a single
+linked list instead of changing them into two-dimensional arrays.  This
+works well when considering that in practice at most 2 entries are used
+across all three arrays, so it was already mostly wasted space.
+
+For simplicity, make the list also take over the publish/subscribe of
+the prepared key itself.  That is, create separate list nodes for
+blk_crypto_keys vs crypto_skciphers, and add nodes to the list only when
+their key is actually prepared.  (Note that the legacy
+fscrypt_direct_keys table in fs/crypto/keysetup_v1.c already works this
+way.)  This eliminates the need for the additional memory barriers when
+reading and writing the fields of struct fscrypt_prepared_key.
+
+Note that I technically should have included the data unit size in the
+HKDF info string as well.  But it's too late to change that.
+
+Fixes: 5b1188847180 ("fscrypt: support crypto data unit size less than filesystem block size")
 Cc: stable@vger.kernel.org
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://patch.msgid.link/20260618180652.52742-1-ebiggers@kernel.org
+Signed-off-by: Eric Biggers <ebiggers@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/futex/requeue.c |    6 ++++++
- 1 file changed, 6 insertions(+)
+ fs/crypto/fscrypt_private.h |   52 +++++++++++-------
+ fs/crypto/inline_crypt.c    |    8 --
+ fs/crypto/keyring.c         |   23 +++++---
+ fs/crypto/keysetup.c        |  122 +++++++++++++++++++++++++++-----------------
+ 4 files changed, 122 insertions(+), 83 deletions(-)
 
---- a/kernel/futex/requeue.c
-+++ b/kernel/futex/requeue.c
-@@ -629,6 +629,12 @@ retry_private:
- 			continue;
- 		}
+--- a/fs/crypto/fscrypt_private.h
++++ b/fs/crypto/fscrypt_private.h
+@@ -236,7 +236,7 @@ struct fscrypt_symlink_data {
+  * @tfm: crypto API transform object
+  * @blk_key: key for blk-crypto
+  *
+- * Normally only one of the fields will be non-NULL.
++ * Only one of the fields is non-NULL.
+  */
+ struct fscrypt_prepared_key {
+ 	struct crypto_sync_skcipher *tfm;
+@@ -245,6 +245,15 @@ struct fscrypt_prepared_key {
+ #endif
+ };
  
-+		/* Self-deadlock: non-top waiter already owns the PI futex. */
-+		if (rt_mutex_owner(&pi_state->pi_mutex) == this->task) {
-+			ret = -EDEADLK;
-+			break;
-+		}
++/* An entry in the linked list ->mk_mode_keys */
++struct fscrypt_mode_key {
++	struct fscrypt_prepared_key key;
++	struct list_head link;
++	u8 hkdf_context;
++	u8 mode_num;
++	u8 data_unit_bits;
++};
 +
- 		ret = rt_mutex_start_proxy_lock(&pi_state->pi_mutex,
- 						this->rt_waiter,
- 						this->task);
+ /*
+  * fscrypt_inode_info - the "encryption key" for an inode
+  *
+@@ -430,20 +439,12 @@ int fscrypt_derive_sw_secret(struct supe
+  * @prep_key, depending on which encryption implementation the file will use.
+  */
+ static inline bool
+-fscrypt_is_key_prepared(struct fscrypt_prepared_key *prep_key,
++fscrypt_is_key_prepared(const struct fscrypt_prepared_key *prep_key,
+ 			const struct fscrypt_inode_info *ci)
+ {
+-	/*
+-	 * The two smp_load_acquire()'s here pair with the smp_store_release()'s
+-	 * in fscrypt_prepare_inline_crypt_key() and fscrypt_prepare_key().
+-	 * I.e., in some cases (namely, if this prep_key is a per-mode
+-	 * encryption key) another task can publish blk_key or tfm concurrently,
+-	 * executing a RELEASE barrier.  We need to use smp_load_acquire() here
+-	 * to safely ACQUIRE the memory the other task published.
+-	 */
+ 	if (fscrypt_using_inline_encryption(ci))
+-		return smp_load_acquire(&prep_key->blk_key) != NULL;
+-	return smp_load_acquire(&prep_key->tfm) != NULL;
++		return prep_key->blk_key != NULL;
++	return prep_key->tfm != NULL;
+ }
+ 
+ #else /* CONFIG_FS_ENCRYPTION_INLINE_CRYPT */
+@@ -486,10 +487,10 @@ fscrypt_derive_sw_secret(struct super_bl
+ }
+ 
+ static inline bool
+-fscrypt_is_key_prepared(struct fscrypt_prepared_key *prep_key,
++fscrypt_is_key_prepared(const struct fscrypt_prepared_key *prep_key,
+ 			const struct fscrypt_inode_info *ci)
+ {
+-	return smp_load_acquire(&prep_key->tfm) != NULL;
++	return prep_key->tfm != NULL;
+ }
+ #endif /* !CONFIG_FS_ENCRYPTION_INLINE_CRYPT */
+ 
+@@ -577,8 +578,8 @@ struct fscrypt_master_key {
+ 	/*
+ 	 * Active and structural reference counts.  An active ref guarantees
+ 	 * that the struct continues to exist, continues to be in the keyring
+-	 * ->s_master_keys, and that any embedded subkeys (e.g.
+-	 * ->mk_direct_keys) that have been prepared continue to exist.
++	 * ->s_master_keys, and that any non-file-scoped subkeys (e.g.
++	 * ->mk_mode_keys) that have been prepared continue to exist.
+ 	 * A structural ref only guarantees that the struct continues to exist.
+ 	 *
+ 	 * There is one active ref associated with ->mk_present being true, and
+@@ -632,12 +633,21 @@ struct fscrypt_master_key {
+ 	spinlock_t		mk_decrypted_inodes_lock;
+ 
+ 	/*
+-	 * Per-mode encryption keys for the various types of encryption policies
+-	 * that use them.  Allocated and derived on-demand.
++	 * A list of 'struct fscrypt_mode_key' for the (hkdf_context, mode_num,
++	 * data_unit_bits, inlinecrypt) combinations that are in use for this
++	 * master key, for hkdf_context in [HKDF_CONTEXT_DIRECT_KEY,
++	 * HKDF_CONTEXT_IV_INO_LBLK_32_KEY, HKDF_CONTEXT_IV_INO_LBLK_64_KEY].
++	 *
++	 * This is a linked list and not a hash table because in practice
++	 * there's just a single encryption policy per master key, using
++	 * _at most_ 2 nodes in this list.  Per-file keys don't use this at all.
++	 *
++	 * This list is append-only until the master key is fully removed, at
++	 * which time the list is cleared.  Before then,
++	 * fscrypt_mode_key_setup_mutex synchronizes appends, and searches use
++	 * the RCU read lock together with ->mk_sem held for read.
+ 	 */
+-	struct fscrypt_prepared_key mk_direct_keys[FSCRYPT_MODE_MAX + 1];
+-	struct fscrypt_prepared_key mk_iv_ino_lblk_64_keys[FSCRYPT_MODE_MAX + 1];
+-	struct fscrypt_prepared_key mk_iv_ino_lblk_32_keys[FSCRYPT_MODE_MAX + 1];
++	struct list_head	mk_mode_keys;
+ 
+ 	/* Hash key for inode numbers.  Initialized only when needed. */
+ 	siphash_key_t		mk_ino_hash_key;
+--- a/fs/crypto/inline_crypt.c
++++ b/fs/crypto/inline_crypt.c
+@@ -198,13 +198,7 @@ int fscrypt_prepare_inline_crypt_key(str
+ 		goto fail;
+ 	}
+ 
+-	/*
+-	 * Pairs with the smp_load_acquire() in fscrypt_is_key_prepared().
+-	 * I.e., here we publish ->blk_key with a RELEASE barrier so that
+-	 * concurrent tasks can ACQUIRE it.  Note that this concurrency is only
+-	 * possible for per-mode keys, not for per-file keys.
+-	 */
+-	smp_store_release(&prep_key->blk_key, blk_key);
++	prep_key->blk_key = blk_key;
+ 	return 0;
+ 
+ fail:
+--- a/fs/crypto/keyring.c
++++ b/fs/crypto/keyring.c
+@@ -87,14 +87,14 @@ void fscrypt_put_master_key(struct fscry
+ void fscrypt_put_master_key_activeref(struct super_block *sb,
+ 				      struct fscrypt_master_key *mk)
+ {
+-	size_t i;
++	struct fscrypt_mode_key *node, *tmp;
+ 
+ 	if (!refcount_dec_and_test(&mk->mk_active_refs))
+ 		return;
+ 	/*
+ 	 * No active references left, so complete the full removal of this
+ 	 * fscrypt_master_key struct by removing it from the keyring and
+-	 * destroying any subkeys embedded in it.
++	 * destroying any non-file-scoped subkeys.
+ 	 */
+ 
+ 	if (WARN_ON_ONCE(!sb->s_master_keys))
+@@ -110,13 +110,16 @@ void fscrypt_put_master_key_activeref(st
+ 	WARN_ON_ONCE(mk->mk_present);
+ 	WARN_ON_ONCE(!list_empty(&mk->mk_decrypted_inodes));
+ 
+-	for (i = 0; i <= FSCRYPT_MODE_MAX; i++) {
+-		fscrypt_destroy_prepared_key(
+-				sb, &mk->mk_direct_keys[i]);
+-		fscrypt_destroy_prepared_key(
+-				sb, &mk->mk_iv_ino_lblk_64_keys[i]);
+-		fscrypt_destroy_prepared_key(
+-				sb, &mk->mk_iv_ino_lblk_32_keys[i]);
++	/*
++	 * Destroy any non-file-scoped subkeys.  Since ->mk_active_refs == 0,
++	 * they're no longer referenced by any inodes.  Nor can key setup run
++	 * and use them again.  So they're no longer needed.  (This implies no
++	 * concurrent readers, so we don't need list_del_rcu() for example.)
++	 */
++	list_for_each_entry_safe(node, tmp, &mk->mk_mode_keys, link) {
++		fscrypt_destroy_prepared_key(sb, &node->key);
++		list_del(&node->link);
++		kfree(node);
+ 	}
+ 	memzero_explicit(&mk->mk_ino_hash_key,
+ 			 sizeof(mk->mk_ino_hash_key));
+@@ -445,6 +448,8 @@ static int add_new_master_key(struct sup
+ 	INIT_LIST_HEAD(&mk->mk_decrypted_inodes);
+ 	spin_lock_init(&mk->mk_decrypted_inodes_lock);
+ 
++	INIT_LIST_HEAD(&mk->mk_mode_keys);
++
+ 	if (mk_spec->type == FSCRYPT_KEY_SPEC_TYPE_IDENTIFIER) {
+ 		err = allocate_master_key_users_keyring(mk);
+ 		if (err)
+--- a/fs/crypto/keysetup.c
++++ b/fs/crypto/keysetup.c
+@@ -163,13 +163,7 @@ int fscrypt_prepare_key(struct fscrypt_p
+ 	tfm = fscrypt_allocate_skcipher(ci->ci_mode, raw_key, ci->ci_inode);
+ 	if (IS_ERR(tfm))
+ 		return PTR_ERR(tfm);
+-	/*
+-	 * Pairs with the smp_load_acquire() in fscrypt_is_key_prepared().
+-	 * I.e., here we publish ->tfm with a RELEASE barrier so that
+-	 * concurrent tasks can ACQUIRE it.  Note that this concurrency is only
+-	 * possible for per-mode keys, not for per-file keys.
+-	 */
+-	smp_store_release(&prep_key->tfm, tfm);
++	prep_key->tfm = tfm;
+ 	return 0;
+ }
+ 
+@@ -190,9 +184,37 @@ int fscrypt_set_per_file_enc_key(struct
+ 	return fscrypt_prepare_key(&ci->ci_enc_key, raw_key, ci);
+ }
+ 
++/*
++ * Find the fscrypt_prepared_key (if any) for a particular (mk, hkdf_context,
++ * mode_num, data_unit_bits, inlinecrypt) combination.
++ *
++ * The caller must hold ->mk_sem for reading and ->mk_present must be true,
++ * ensuring that ->mk_mode_keys is still append-only.
++ */
++static struct fscrypt_prepared_key *
++fscrypt_find_mode_key(struct fscrypt_master_key *mk, u8 hkdf_context,
++		      u8 mode_num, const struct fscrypt_inode_info *ci)
++{
++	struct fscrypt_mode_key *node;
++
++	/*
++	 * The RCU read lock here is used only to synchronize with concurrent
++	 * list_add_tail_rcu().  Concurrent deletions are impossible here, so
++	 * returning a pointer to a node without taking any refcount is safe.
++	 */
++	guard(rcu)();
++	list_for_each_entry_rcu(node, &mk->mk_mode_keys, link) {
++		if (node->hkdf_context == hkdf_context &&
++		    node->mode_num == mode_num &&
++		    node->data_unit_bits == ci->ci_data_unit_bits &&
++		    fscrypt_is_key_prepared(&node->key, ci))
++			return &node->key;
++	}
++	return NULL;
++}
++
+ static int setup_per_mode_enc_key(struct fscrypt_inode_info *ci,
+ 				  struct fscrypt_master_key *mk,
+-				  struct fscrypt_prepared_key *keys,
+ 				  u8 hkdf_context, bool include_fs_uuid)
+ {
+ 	const struct inode *inode = ci->ci_inode;
+@@ -200,7 +222,8 @@ static int setup_per_mode_enc_key(struct
+ 	struct fscrypt_mode *mode = ci->ci_mode;
+ 	const u8 mode_num = mode - fscrypt_modes;
+ 	struct fscrypt_prepared_key *prep_key;
+-	u8 mode_key[FSCRYPT_MAX_RAW_KEY_SIZE];
++	struct fscrypt_mode_key *new_node;
++	u8 raw_mode_key[FSCRYPT_MAX_RAW_KEY_SIZE];
+ 	u8 hkdf_info[sizeof(mode_num) + sizeof(sb->s_uuid)];
+ 	unsigned int hkdf_infolen = 0;
+ 	bool use_hw_wrapped_key = false;
+@@ -223,48 +246,56 @@ static int setup_per_mode_enc_key(struct
+ 		use_hw_wrapped_key = true;
+ 	}
+ 
+-	prep_key = &keys[mode_num];
+-	if (fscrypt_is_key_prepared(prep_key, ci)) {
++	prep_key = fscrypt_find_mode_key(mk, hkdf_context, mode_num, ci);
++	if (prep_key) {
+ 		ci->ci_enc_key = *prep_key;
+ 		return 0;
+ 	}
+ 
+-	mutex_lock(&fscrypt_mode_key_setup_mutex);
++	guard(mutex)(&fscrypt_mode_key_setup_mutex);
++
++	prep_key = fscrypt_find_mode_key(mk, hkdf_context, mode_num, ci);
++	if (prep_key) {
++		ci->ci_enc_key = *prep_key;
++		return 0;
++	}
+ 
+-	if (fscrypt_is_key_prepared(prep_key, ci))
+-		goto done_unlock;
++	new_node = kzalloc_obj(*new_node);
++	if (!new_node)
++		return -ENOMEM;
++	new_node->hkdf_context = hkdf_context;
++	new_node->mode_num = mode_num;
++	new_node->data_unit_bits = ci->ci_data_unit_bits;
++	prep_key = &new_node->key;
+ 
+ 	if (use_hw_wrapped_key) {
+ 		err = fscrypt_prepare_inline_crypt_key(prep_key,
+ 						       mk->mk_secret.bytes,
+ 						       mk->mk_secret.size, true,
+ 						       ci);
+-		if (err)
+-			goto out_unlock;
+-		goto done_unlock;
+-	}
+-
+-	BUILD_BUG_ON(sizeof(mode_num) != 1);
+-	BUILD_BUG_ON(sizeof(sb->s_uuid) != 16);
+-	BUILD_BUG_ON(sizeof(hkdf_info) != 17);
+-	hkdf_info[hkdf_infolen++] = mode_num;
+-	if (include_fs_uuid) {
+-		memcpy(&hkdf_info[hkdf_infolen], &sb->s_uuid,
+-		       sizeof(sb->s_uuid));
+-		hkdf_infolen += sizeof(sb->s_uuid);
+-	}
+-	fscrypt_hkdf_expand(&mk->mk_secret.hkdf, hkdf_context, hkdf_info,
+-			    hkdf_infolen, mode_key, mode->keysize);
+-	err = fscrypt_prepare_key(prep_key, mode_key, ci);
+-	memzero_explicit(mode_key, mode->keysize);
+-	if (err)
+-		goto out_unlock;
+-done_unlock:
++	} else {
++		static_assert(sizeof(mode_num) == 1);
++		static_assert(sizeof(sb->s_uuid) == 16);
++		static_assert(sizeof(hkdf_info) == 17);
++		hkdf_info[hkdf_infolen++] = mode_num;
++		if (include_fs_uuid) {
++			memcpy(&hkdf_info[hkdf_infolen], &sb->s_uuid,
++			       sizeof(sb->s_uuid));
++			hkdf_infolen += sizeof(sb->s_uuid);
++		}
++		fscrypt_hkdf_expand(&mk->mk_secret.hkdf, hkdf_context,
++				    hkdf_info, hkdf_infolen, raw_mode_key,
++				    mode->keysize);
++		err = fscrypt_prepare_key(prep_key, raw_mode_key, ci);
++		memzero_explicit(raw_mode_key, mode->keysize);
++	}
++	if (err) {
++		kfree(new_node);
++		return err;
++	}
++	list_add_tail_rcu(&new_node->link, &mk->mk_mode_keys);
+ 	ci->ci_enc_key = *prep_key;
+-	err = 0;
+-out_unlock:
+-	mutex_unlock(&fscrypt_mode_key_setup_mutex);
+-	return err;
++	return 0;
+ }
+ 
+ /*
+@@ -311,8 +342,8 @@ static int fscrypt_setup_iv_ino_lblk_32_
+ {
+ 	int err;
+ 
+-	err = setup_per_mode_enc_key(ci, mk, mk->mk_iv_ino_lblk_32_keys,
+-				     HKDF_CONTEXT_IV_INO_LBLK_32_KEY, true);
++	err = setup_per_mode_enc_key(ci, mk, HKDF_CONTEXT_IV_INO_LBLK_32_KEY,
++				     true);
+ 	if (err)
+ 		return err;
+ 
+@@ -364,8 +395,8 @@ static int fscrypt_setup_v2_file_key(str
+ 		 * encryption key.  This ensures that the master key is
+ 		 * consistently used only for HKDF, avoiding key reuse issues.
+ 		 */
+-		err = setup_per_mode_enc_key(ci, mk, mk->mk_direct_keys,
+-					     HKDF_CONTEXT_DIRECT_KEY, false);
++		err = setup_per_mode_enc_key(ci, mk, HKDF_CONTEXT_DIRECT_KEY,
++					     false);
+ 	} else if (ci->ci_policy.v2.flags &
+ 		   FSCRYPT_POLICY_FLAG_IV_INO_LBLK_64) {
+ 		/*
+@@ -374,9 +405,8 @@ static int fscrypt_setup_v2_file_key(str
+ 		 * the IVs.  This format is optimized for use with inline
+ 		 * encryption hardware compliant with the UFS standard.
+ 		 */
+-		err = setup_per_mode_enc_key(ci, mk, mk->mk_iv_ino_lblk_64_keys,
+-					     HKDF_CONTEXT_IV_INO_LBLK_64_KEY,
+-					     true);
++		err = setup_per_mode_enc_key(
++			ci, mk, HKDF_CONTEXT_IV_INO_LBLK_64_KEY, true);
+ 	} else if (ci->ci_policy.v2.flags &
+ 		   FSCRYPT_POLICY_FLAG_IV_INO_LBLK_32) {
+ 		err = fscrypt_setup_iv_ino_lblk_32_key(ci, mk);
 
 
 
