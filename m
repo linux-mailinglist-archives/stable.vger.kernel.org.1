@@ -1,62 +1,60 @@
-Return-Path: <stable+bounces-271404-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-271502-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id ZltLEhebRmrQZwsAu9opvQ
-	(envelope-from <stable+bounces-271404-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:08:39 +0200
+	id i+q7A4mnRmpgbAsAu9opvQ
+	(envelope-from <stable+bounces-271502-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 20:01:45 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D00A86FB08D
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:08:38 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 99E5B6FBCC5
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 20:01:44 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=sJWlo26p;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-271404-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-271404-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="KwQ/cf4J";
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-271502-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-271502-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id EE303310720C
-	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:57:35 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 72480335E15F
+	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 17:01:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94BD226F46F;
-	Thu,  2 Jul 2026 16:57:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8AB053438B1;
+	Thu,  2 Jul 2026 17:01:51 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51B491C695;
-	Thu,  2 Jul 2026 16:57:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35FFD331EB7;
+	Thu,  2 Jul 2026 17:01:49 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783011455; cv=none; b=sqw3KKhjV5GMVXtRwxIif+hV2ZmzbyNg1tK3JFB0u363vWH6J8lJg+yoRcCnnrVwg8P/TcczUPyUyCboAPtey1q4uzNjTxJbhYuyv0mJve75/rVpjIRZZKfOiNTaIfc6CBBQ4WvhmztrDwYtUgaR5JEuCr2Fd00iBIogq2BXR48=
+	t=1783011711; cv=none; b=d3OSFBv/SmiaaC1vNtsvt/XAbrwZrD/D1aEOUP+gcSdSP3fTNCWjoT7zh+fHQ6WcjY/B5nhcXO7bsTcnFELZmIrQZhz49p2VTmklzIQVfnMILNkzmxAjachapl8ltYmmy0rQZfMdDQwjp1P51sKDMs6Y3kFWxr4pddtymbcsk3E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783011455; c=relaxed/simple;
-	bh=JvikCdp4C5QRUA+rKVE+FifRv3P3dyHYTH6zCVuGljw=;
+	s=arc-20240116; t=1783011711; c=relaxed/simple;
+	bh=B1vBlWUsi3ZIEI55qn7bc/LUJNL/rqKC6EsOcDzFyqg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=om+kikly2+Zs/uakrfmsabyGTW+N0GaF/+dVoZPE2MGjjbzDyX/Qgw2peYGN3Ji+RBLyMAfkrTC76qNYRQQ7ZyTJQpB4fj7zpW3qppmRGLkK8nD6e9I7NDTxg1L0apSm0QysK72VNo7A8C73Ladl3pwwxx16PJ9HO/Wi0clqub8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sJWlo26p; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B92C11F000E9;
-	Thu,  2 Jul 2026 16:57:33 +0000 (UTC)
+	 MIME-Version; b=hmUrxuj1nyx5QKIBv+pyxZHoOVOyphW0CX+TWmu7hvnqPqz5Q0LU4E1a/OapzVWzrf5sRUvCaDOF2e6FGU3yjTO2y8yx/gQRDfYfShvIM3huuO5vJ936m+uhWc1q0Xc4GdmeqcfzGarHDRZ02AAnHeAUBIWBJTLxQpZ8XyWFoTI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KwQ/cf4J; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99BC41F00A3A;
+	Thu,  2 Jul 2026 17:01:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1783011454;
-	bh=d9u92AWLBRdsSICT47XaNjZCOVHedGwVRnJar9JywHs=;
+	s=korg; t=1783011709;
+	bh=0nN8a9Ikw4pgA3o2Lo9+YrHN5mkC0CYlwzxH/FNSSEc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=sJWlo26pM3IiA/cmJgS1fkq7FtTB9r7qrRC8gVa6PHaJf77Q3MlmFicFKJePYeXy4
-	 E79xQFiAzXytxgd56J0jZuB+HrZ0iwnhljgqndOueCjUU/4UkxuiqwHpGi8yF+bkvt
-	 h5y/JVwI3xkN5kONo6tCofhecf6YTZwP4cNOSu4I=
+	b=KwQ/cf4JhBg8Nnv8jiB3TOGHD9dhHkomKHZIV478lwo0D1djkIFGYCzHRTIMK5/sI
+	 eQ1C50PJSZPnH0f55T46bZ0xBC7vZyIEBDJeMsXqGRvRWOIfsxmcFSzYc36pg8uJ+Y
+	 3G9PhtF9qasEp7f8B8E/syq1m5i60xIKcA2LD8VM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	NeilBrown <neil@brown.name>,
-	Igor Raits <igor.raits@gmail.com>,
-	Anna Schumaker <anna.schumaker@hammerspace.com>,
-	=?UTF-8?q?Jan=20=C4=8C=C3=ADpa?= <jan.cipa@gooddata.com>
-Subject: [PATCH 6.18 103/108] NFSv4: clear exception state on successful mkdir retry
+	Johan Hovold <johan@kernel.org>,
+	Wolfram Sang <wsa+renesas@sang-engineering.com>
+Subject: [PATCH 7.1 104/120] i2c: core: fix adapter registration race
 Date: Thu,  2 Jul 2026 18:21:40 +0200
-Message-ID: <20260702155114.245472477@linuxfoundation.org>
+Message-ID: <20260702155115.112326119@linuxfoundation.org>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260702155112.110058792@linuxfoundation.org>
-References: <20260702155112.110058792@linuxfoundation.org>
+In-Reply-To: <20260702155112.964534952@linuxfoundation.org>
+References: <20260702155112.964534952@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,123 +64,104 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-271404-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-271502-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,brown.name,gmail.com,hammerspace.com,gooddata.com];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:neil@brown.name,m:igor.raits@gmail.com,m:anna.schumaker@hammerspace.com,m:jan.cipa@gooddata.com,m:igorraits@gmail.com,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:johan@kernel.org,m:wsa+renesas@sang-engineering.com,m:wsa@sang-engineering.com,s:lists@lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
 	MID_RHS_MATCH_FROM(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,brown.name:email,vger.kernel.org:from_smtp,hammerspace.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
+	TAGGED_RCPT(0.00)[stable,renesas];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: D00A86FB08D
+X-Rspamd-Queue-Id: 99E5B6FBCC5
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Igor Raits <igor.raits@gmail.com>
+From: Johan Hovold <johan@kernel.org>
 
-commit 238e9b51aa29f48b6243212a3b75c8e48d6b96fd upstream.
+commit ba14d7cf2fe7284610a29854bdff22b2537d3ce6 upstream.
 
-After a server returns NFS4ERR_DELAY for an NFSv4 CREATE issued by
-mkdir(2), the client correctly waits and retries.  When the retry
-succeeds, however, mkdir(2) can still surface -EEXIST to userspace
-even though the directory was just created on the server.
+Adapters can be looked up based on their id using i2c_get_adapter()
+which takes a reference to the embedded struct device.
 
-Reproducer (random 16-hex names so collisions are not the cause)
-against an in-kernel Linux nfsd; reproduces under both NFSv4.0 and
-NFSv4.2:
+Make sure that the adapter (including its struct device) has been
+initialised before adding it to the IDR to avoid accessing uninitialised
+data which could, for example, lead to NULL-pointer dereferences or
+use-after-free.
 
-  N=2000000; base=/var/gdc/export
-  for ((i=1; i<=N; i++)); do
-      d=$base/$(openssl rand -hex 8)
-      mkdir "$d" 2>/dev/null || echo "$(date +%T) failed loop=$i $d"
-      rmdir "$d" 2>/dev/null
-  done
+Note that the i2c-dev chardev, which is registered from a bus notifier,
+currently uses i2c_get_adapter() so the adapter needs to be added to the
+IDR before registration.
 
-Failures cluster at the cadence at which the server-side auth/export
-cache refresh path causes nfsd to return NFS4ERR_DELAY for CREATE.
-
-A wire trace of one failure (the three CREATE RPCs all come from a
-single mkdir(2), generated by the do-while in nfs4_proc_mkdir()):
-
-  client -> server  CREATE name=...  -> NFS4ERR_DELAY
-  ~100 ms later
-  client -> server  CREATE name=...  -> NFS4_OK         (dir created)
-  ~80 us later
-  client -> server  CREATE name=...  -> NFS4ERR_EXIST   (correct)
-
-Since commit dd862da61e91 ("nfs: fix incorrect handling of large-number
-NFS errors in nfs4_do_mkdir()"), nfs4_handle_exception() is called only
-when _nfs4_proc_mkdir() returned an error.  That gate breaks retry-state
-hygiene: nfs4_do_handle_exception() resets exception.{delay,recovering,
-retry} to 0 on entry, so calling it on success is what previously
-cleared the retry flag set by the preceding NFS4ERR_DELAY iteration.
-With the gate in place, exception.retry stays at 1 after the successful
-retry, the loop runs once more, and the resulting CREATE for an
-already-created name yields NFS4ERR_EXIST -> -EEXIST to userspace.
-
-Drop the conditional and call nfs4_handle_exception() unconditionally,
-matching every other do-while in fs/nfs/nfs4proc.c (nfs4_proc_symlink(),
-nfs4_proc_link(), etc.).  The dentry/status separation introduced by
-that commit is preserved.
-
-Fixes: dd862da61e91 ("nfs: fix incorrect handling of large-number NFS errors in nfs4_do_mkdir()")
-Reported-and-tested-by: Jan Čípa <jan.cipa@gooddata.com>
-Closes: https://lore.kernel.org/linux-nfs/CA+9S74hSp_tJu2Ffe2BPNC2T25gfkhgjjDkdgSsF5c2rnJq_wA@mail.gmail.com/
-Reviewed-by: NeilBrown <neil@brown.name>
-Cc: stable@vger.kernel.org
-Signed-off-by: Igor Raits <igor.raits@gmail.com>
-Signed-off-by: Anna Schumaker <anna.schumaker@hammerspace.com>
+Fixes: 6e13e6418418 ("i2c: Add i2c_add_numbered_adapter()")
+Cc: stable@vger.kernel.org	# 2.6.22
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nfs/nfs4proc.c |    5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ drivers/i2c/i2c-core-base.c |    8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
---- a/fs/nfs/nfs4proc.c
-+++ b/fs/nfs/nfs4proc.c
-@@ -5303,10 +5303,9 @@ static struct dentry *nfs4_proc_mkdir(st
- 	do {
- 		alias = _nfs4_proc_mkdir(dir, dentry, sattr, label, &err);
- 		trace_nfs4_mkdir(dir, &dentry->d_name, err);
-+		err = nfs4_handle_exception(NFS_SERVER(dir), err, &exception);
- 		if (err)
--			alias = ERR_PTR(nfs4_handle_exception(NFS_SERVER(dir),
--							      err,
--							      &exception));
-+			alias = ERR_PTR(err);
- 	} while (exception.retry);
- 	nfs4_label_release_security(label);
+--- a/drivers/i2c/i2c-core-base.c
++++ b/drivers/i2c/i2c-core-base.c
+@@ -1569,6 +1569,10 @@ static int i2c_register_adapter(struct i
+ 	pm_suspend_ignore_children(&adap->dev, true);
+ 	pm_runtime_enable(&adap->dev);
  
++	mutex_lock(&core_lock);
++	idr_replace(&i2c_adapter_idr, adap, adap->nr);
++	mutex_unlock(&core_lock);
++
+ 	res = device_add(&adap->dev);
+ 	if (res) {
+ 		pr_err("adapter '%s': can't register device (%d)\n", adap->name, res);
+@@ -1627,7 +1631,7 @@ static int __i2c_add_numbered_adapter(st
+ 	int id;
+ 
+ 	mutex_lock(&core_lock);
+-	id = idr_alloc(&i2c_adapter_idr, adap, adap->nr, adap->nr + 1, GFP_KERNEL);
++	id = idr_alloc(&i2c_adapter_idr, NULL, adap->nr, adap->nr + 1, GFP_KERNEL);
+ 	mutex_unlock(&core_lock);
+ 	if (WARN(id < 0, "couldn't get idr"))
+ 		return id == -ENOSPC ? -EBUSY : id;
+@@ -1661,7 +1665,7 @@ int i2c_add_adapter(struct i2c_adapter *
+ 	}
+ 
+ 	mutex_lock(&core_lock);
+-	id = idr_alloc(&i2c_adapter_idr, adapter,
++	id = idr_alloc(&i2c_adapter_idr, NULL,
+ 		       __i2c_first_dynamic_bus_num, 0, GFP_KERNEL);
+ 	mutex_unlock(&core_lock);
+ 	if (WARN(id < 0, "couldn't get idr"))
 
 
 
