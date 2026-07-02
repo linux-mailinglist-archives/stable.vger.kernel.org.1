@@ -1,202 +1,222 @@
-Return-Path: <stable+bounces-270390-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-270391-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id ZM1iEtk6RmqMMQsAu9opvQ
-	(envelope-from <stable+bounces-270390-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 12:18:01 +0200
+	id l0WMObY7RmrWMQsAu9opvQ
+	(envelope-from <stable+bounces-270391-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 12:21:42 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF8306F5C44
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 12:18:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A63556F5D09
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 12:21:42 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=P5ms3SYD;
-	dkim=pass header.d=redhat.com header.s=google header.b=oastiVx2;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-270390-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-270390-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=HxDuEocg;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-270391-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-270391-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 74FB33004F2F
-	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 10:11:00 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id F0F393078864
+	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 10:11:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9874A480DE6;
-	Thu,  2 Jul 2026 10:02:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A39E47DD64;
+	Thu,  2 Jul 2026 10:04:49 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A698480949
-	for <stable@vger.kernel.org>; Thu,  2 Jul 2026 10:02:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E519747DD62;
+	Thu,  2 Jul 2026 10:04:47 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782986540; cv=none; b=rFpeamMKLEfLTnPWaPoaRhlbDMGK6F8MtiEC/OqYGotPB5njobf1JQ0mqgxhQMI309ooYC1e695ddBaqeS7kxH3d70tHatxKlj96mgrBKCBt6S3NlVvmLc+hoirz/VR2J0unPBebO/G3LlLJAfGBj7i4Na0fTSR9qV0S+XgW1jM=
+	t=1782986689; cv=none; b=KS9bSOZ+zTOOckSpy+ilEMporMX4kWV83jtNPnJlRQU1T8ttbT0aoxJANIpBOn3a3GifYsvYI1ZapLwHAcmVSa+ZBrD+NMaiqlPrldMpzlSr8kuNk8vLogrpGcrNrPMVi2aui6uQDvClfr31TtBAoHs7+nRqzZ7f5qC4kxu20Ns=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782986540; c=relaxed/simple;
-	bh=l/4zG+3D9ejOnVWvPH58fKkY+gswQsvE7oQpLDlZzVg=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ll2b2pLNu6EOGbYQHkGAsEtgjif7nwMqZW8daaqamy/dgP5AyHEpxtJLX9rzwDG4yBevrPSRp3a6EcpRUSK+lNzjtfbHYBqpQyxwNxsj24q2Am/vBikxvsrzQP+75FjdgrRSNFiXnStskh9vINfExzQJMSGHvszcrAt7OG5gq+g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=P5ms3SYD; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=oastiVx2; arc=none smtp.client-ip=170.10.133.124
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1782986538;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=LfUu6pC7EJB8qiPkqY3N8+Svxs7+7n13Ik8Ta0Guoyw=;
-	b=P5ms3SYDYuxgXZ5OShfS9Iehx4CCpELFuI/MNI2jdAPWDWuSOmcH/VtTl2Khni/rCAhIBU
-	iymC6c0tpC8Wj64FkLNvm5d8qO/AA/05+5NsA7OxQA9kHVB+VRJjyah/0RHLLUEQlKEFMj
-	rbxByKwF5AHCzXobguEj9j+a7V5QKp4=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-408-gohKeCYTO_eLcedJJJrAsA-1; Thu, 02 Jul 2026 06:02:15 -0400
-X-MC-Unique: gohKeCYTO_eLcedJJJrAsA-1
-X-Mimecast-MFC-AGG-ID: gohKeCYTO_eLcedJJJrAsA_1782986534
-Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-4926d371224so12757615e9.1
-        for <stable@vger.kernel.org>; Thu, 02 Jul 2026 03:02:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1782986534; x=1783591334; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:content-language:from
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=LfUu6pC7EJB8qiPkqY3N8+Svxs7+7n13Ik8Ta0Guoyw=;
-        b=oastiVx2aWNgeMvEzBzlDXTp2ULJOG/l7LYkAbG+jAOtHz8SUtTId7wAaMBI1ggp5J
-         OWjur+qphQ8MZjdkYQDqQpqnY7zXxkwPETVtoS2/1d8a39uFAJpLG5vmbuqYPWj0HjTc
-         j7NU0NzCdGzMYlP7oI40QD9vMonxi++xemoogK+nqJ/S1CIwFwaOzj71aWwXqpa8EmrR
-         bNwSK7xwGq4mTXih5i0KMlYoz1WiBL91SGTyqFHafq5ba5a9/LKViSZwW8XuR5FEZe9U
-         +Ht45Jc1IBRrbbiTz85wwz/3NMaod8ViFir2t3OtX3C5unzc8GPvLaRwBBEUfGXip8k0
-         XTtg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782986534; x=1783591334;
-        h=content-transfer-encoding:in-reply-to:content-language:from
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=LfUu6pC7EJB8qiPkqY3N8+Svxs7+7n13Ik8Ta0Guoyw=;
-        b=C0VNhcm9ksVg7Y/R5gy4DuwIviYntt/7UGp2OLr5ENxZ92LUmmRlPswodkVaiqPsAs
-         Ebkgda9PL85fWhsmGFLZeY2Bj+KTIUVO/i3oQcV1D3ifaKZqBBmkLhlPWDYQae2zH9ME
-         fv6G7q7TP8AkOjZ8ke37MzQVmlZO3OAkLjsDNTJ7dyMzUca7sxj1rfbF7kQG/0qK2llH
-         GdzC/BW1WL+wpIPfpI7AX19P5fK1ylWlpRBniYbny873On6aI9bDimC6zDDfjVmejSc+
-         aGkdJJ9L0oEk2E1tEw7diIBSS4/Am5sBDFpdYqmkQOe/sCCj+MtjSJtfqM2/B4IsyPbC
-         Y7nA==
-X-Gm-Message-State: AOJu0YyACp5RpKra6waiX/3CzUT+6zDUEoTvaC6uagyPqOtUWwHwFs3F
-	ccrnpZCWW1ER4X+wPtg9Xf16pM7ezuAXu0rgWqVNWXX/8tKkwEyPo5CuYveuEoBzSLTFv1Wiwa0
-	5i8NXEFIYNCVTJCNTikGoeGS7DXWeUGeijAizl3sZxFnkoIdFD7Hr3yOqBA==
-X-Gm-Gg: AfdE7clEil17mvLWGqHKuexJdvlXLJBDkegTVqjnBB4F35M/QNWI8A5gtpxcFiGAcWM
-	GL2FRs+vTst9x8Zzd8LCPnaAd8MsUi09H2KrjMkVavkt3y2EKEO31Njt88kgAKp/bsiYYkoqGtO
-	N9dnijCO34Hj+xV6GqbAgmDShiZFokft+hKMwdlDjMtgCG/tVUslrQBKltNyNgssY94rFQuR4wA
-	R/ZSp7Sael/TbvF+ge5swxniDujnBcAw0JcF2FpBIuv9dhhXcBiDq65qONt6eqGxl1VKNAVWgIz
-	2xoYvaqtPYVnrbH7kWw4o2mmnmmoiuAgSfu7tgyEo29UYBDUEo6jxJ2gAL49f5+qlrqhg3lAxSX
-	Z/v5LftEs40Gh2UdGENPMJW2yocWlkPHeZoTH20EAJUJciH7Wj/aSnH28OnKjStVNIUYngNcehK
-	ZC0pf52PV1Og==
-X-Received: by 2002:a05:600c:1547:b0:493:b729:3a9 with SMTP id 5b1f17b1804b1-493c3cfb04fmr58962335e9.27.1782986533607;
-        Thu, 02 Jul 2026 03:02:13 -0700 (PDT)
-X-Received: by 2002:a05:600c:1547:b0:493:b729:3a9 with SMTP id 5b1f17b1804b1-493c3cfb04fmr58961865e9.27.1782986533117;
-        Thu, 02 Jul 2026 03:02:13 -0700 (PDT)
-Received: from ?IPV6:2a0d:3344:5521:6b10:2eb7:f61a:75:4534? ([2a0d:3344:5521:6b10:2eb7:f61a:75:4534])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-493bef17c82sm80193455e9.1.2026.07.02.03.02.10
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 02 Jul 2026 03:02:11 -0700 (PDT)
-Message-ID: <3f540a8a-4167-4727-9516-6fb91335333f@redhat.com>
-Date: Thu, 2 Jul 2026 12:02:09 +0200
+	s=arc-20240116; t=1782986689; c=relaxed/simple;
+	bh=L6oSNd7GV2jSHo+ihp6kJpgSCebZhaMLZbUN60878YM=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=nranW1GWdzQuV5jWqR9+RacVh2ZghOJhXlX2trVd3UYQipN9VNQlhtjExUlye3MorQnekAoUvZwZxT0rpoX3x9AJPe+3dPxGzHTV7WqPfSFnj2Uc7RpVfX2Z75Nf+AJqzktolLWahFdlr4oH3nsWH0pSFAgJuHFEV/vVB1kblCM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HxDuEocg; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2DC1E1F000E9;
+	Thu,  2 Jul 2026 10:04:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1782986687;
+	bh=7MolXIuFQCcEw6yux0O93RhUgjvcHpLOfWblU4nHW8I=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=HxDuEocgJ3cV0esalapJsMfCJ/kiZWX9cVhDXlDGWQ0SR0vF6ws8LmpClIDUtyMh3
+	 Ex9APq6eEKQSCPIqd2NyNB/TvV6tD1GUve4U9Rf5o4b/GM3DOWEr2SiAXahg55jANW
+	 NnYgsm2zHWsZMkrWeL6Rn+Hr7ZEIuYywI3z7CXD/hwx79FuMvKHcHoRqkjMYDlVeyf
+	 hyxQQw4yCbDsfhW2uUkfMgQr5ui8NvP9/JGddpaWPvTdfxPhNRdycMIdvG3I7BK+m9
+	 CrL9QwCqJZwkZfesnncX1BIR5O9ctRNafvKK64cxS7PM2WFjzeXdWZZ+J4e1NpOi3z
+	 7Qzo7iXrcAxDQ==
+From: Niklas Cassel <cassel@kernel.org>
+To: Damien Le Moal <dlemoal@kernel.org>,
+	Niklas Cassel <cassel@kernel.org>,
+	Shaun Tancheff <shaun@tancheff.com>,
+	Tejun Heo <tj@kernel.org>
+Cc: Hannes Reinecke <hare@kernel.org>,
+	stable@vger.kernel.org,
+	linux-ide@vger.kernel.org
+Subject: [PATCH v2 1/2] ata: libata-scsi: fix DSM TRIM for sector sizes larger than 2048 bytes
+Date: Thu,  2 Jul 2026 12:04:12 +0200
+Message-ID: <20260702100410.2039383-5-cassel@kernel.org>
+X-Mailer: git-send-email 2.55.0
+In-Reply-To: <20260702100410.2039383-4-cassel@kernel.org>
+References: <20260702100410.2039383-4-cassel@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3] Subject: [PATCH] net: gro: fix double aggregation of
- flush-marked skbs
-To: Shiming Cheng <shiming.cheng@mediatek.com>, davem@davemloft.net,
- edumazet@google.com, kuba@kernel.org, horms@kernel.org,
- matthias.bgg@gmail.com, angelogioacchino.delregno@collabora.com,
- willemb@google.com, daniel.zahka@gmail.com, alice@isovalent.com,
- sd@queasysnail.net, eilaimemedsnaimel@gmail.com, imv4bel@gmail.com,
- nbd@nbd.name, dsahern@kernel.org, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- linux-mediatek@lists.infradead.org
-Cc: stable@vger.kernel.org, lena.wang@mediatek.com
-References: <20260630023512.26927-1-shiming.cheng@mediatek.com>
-From: Paolo Abeni <pabeni@redhat.com>
-Content-Language: en-US
-In-Reply-To: <20260630023512.26927-1-shiming.cheng@mediatek.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+X-Developer-Signature: v=1; a=openpgp-sha256; l=4442; i=cassel@kernel.org; h=from:subject; bh=L6oSNd7GV2jSHo+ihp6kJpgSCebZhaMLZbUN60878YM=; b=owGbwMvMwCV2MsVw8cxjvkWMp9WSGLLczOf/ZVd4avNSMGLeiZCDpVtWs0Xur3DOydJ+vuZE8 EnmAy/iO0pZGMS4GGTFFFl8f7jsL+52n3Jc8Y4NzBxWJpAhDFycAjARPWuG/4FZ0a762o15b/7q rXiYurlwwi+ro4pPSjWLCuZM22aw+jDDX6nLTX7+CpPO3zGcbqP1+fnqVrdb4gfcdqT+nfal739 kPRcA
+X-Developer-Key: i=cassel@kernel.org; a=openpgp; fpr=5ADE635C0E631CBBD5BE065A352FE6582ED9B5DA
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-3.66 / 15.00];
+	WHITELIST_SPF_DKIM(-3.00)[kernel.org:d:+,kernel.org:s:+];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[redhat.com,quarantine];
-	R_DKIM_ALLOW(-0.20)[redhat.com:s=mimecast20190719,redhat.com:s=google];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
 	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-270390-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-270391-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:dlemoal@kernel.org,m:cassel@kernel.org,m:shaun@tancheff.com,m:tj@kernel.org,m:hare@kernel.org,m:stable@vger.kernel.org,m:linux-ide@vger.kernel.org,s:lists@lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[21];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FREEMAIL_TO(0.00)[mediatek.com,davemloft.net,google.com,kernel.org,gmail.com,collabora.com,isovalent.com,queasysnail.net,nbd.name,vger.kernel.org,lists.infradead.org];
-	FORGED_RECIPIENTS(0.00)[m:shiming.cheng@mediatek.com,m:davem@davemloft.net,m:edumazet@google.com,m:kuba@kernel.org,m:horms@kernel.org,m:matthias.bgg@gmail.com,m:angelogioacchino.delregno@collabora.com,m:willemb@google.com,m:daniel.zahka@gmail.com,m:alice@isovalent.com,m:sd@queasysnail.net,m:eilaimemedsnaimel@gmail.com,m:imv4bel@gmail.com,m:nbd@nbd.name,m:dsahern@kernel.org,m:netdev@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:linux-arm-kernel@lists.infradead.org,m:linux-mediatek@lists.infradead.org,m:stable@vger.kernel.org,m:lena.wang@mediatek.com,m:matthiasbgg@gmail.com,m:danielzahka@gmail.com,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[pabeni@redhat.com,stable@vger.kernel.org];
+	FORGED_SENDER(0.00)[cassel@kernel.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	FORWARDED(0.00)[lists@lfdr.de];
 	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[pabeni@redhat.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[redhat.com:+];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[cassel@kernel.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	TO_DN_SOME(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,vger.kernel.org:from_smtp]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: DF8306F5C44
+X-Rspamd-Queue-Id: A63556F5D09
 
-Note: the patch subject is quite uncorrected
+ata_scsi_write_same_xlat() translates a SCSI WRITE SAME command with the
+UNMAP bit set into an ATA DATA SET MANAGEMENT TRIM command.  The TRIM
+descriptor is built by ata_format_dsm_trim_descr() into the 2048-byte
+ata_scsi_rbuf staging buffer, and the number of bytes copied is compared
+against the logical sector size by the caller:
 
-On 6/30/26 4:35 AM, Shiming Cheng wrote:
-> The new skb_gro_receive_list() function is missing a critical safety check
-> present in the legacy skb_gro_receive() path. Specifically, it does not
-> validate NAPI_GRO_CB(skb)->flush before allowing packet aggregation.
+	size = ata_format_dsm_trim_descr(scmd, trmax, block, n_block);
+	if (size != len)		/* len == sdp->sector_size */
+		goto invalid_param_len;
 
-skb_gro_receive_list() is not very "new" and definitely
-skb_gro_receive() is not legacy.
+ata_format_dsm_trim_descr() clamps the copy length to ATA_SCSI_RBUF_SIZE
+(2048).  On a device whose logical sector size exceeds that (e.g. a 4Kn
+device, where sector_size == 4096) the function can never return more than
+2048, while the caller expects it to return sector_size.  The comparison
+therefore always fails, so every TRIM is rejected with "Parameter list
+length error" and WARN_ON() splats on each attempt.  TRIM / discard is
+thus completely broken on such devices.
 
-> This allows already-GRO'd packets with existing frag_list to be
-> re-aggregated into a new GRO session, corrupting the frag_list chain
-> structure. When skb_segment() attempts to unpack these malformed packets,
-> it encounters invalid state and triggers a kernel panic.
-> 
-> Scenario (Tethering/Device forwarding):
->   1. Driver: Generated aggregated packet P1 via LRO with frag_list
->   2. Dev A: Receives aggregated fraglist packet and flush flag set
->   3. Dev A: Re-enters GRO, skb_gro_receive_list() is called
->   4. Missing flush check allows re-aggregation despite flush flag
->   5. Frag_list chain becomes corrupted (loops or dangling refs)
->   6. Dev B: TX path calls skb_segment(), crashes on corrupted frag_list
+The descriptor was incorrectly sized from the logical sector size.  A DSM
+TRIM payload is a list of 512-byte pages, each holding up to
+ATA_MAX_TRIM_RNUM (64) LBA Range Entries, and is independent of the logical
+sector size.  The Block Limits VPD page already advertises a single such
+page as the maximum WRITE SAME length (65535 * ATA_MAX_TRIM_RNUM logical
+blocks), so the block layer never sends a request that needs more than one
+page.
 
-I can't parse the above. Is this something that can happen with in-tree
-drivers or do you need OoT module to trigger it? In any case please
-clarify the actual order and the involved driver. Possibly a stack
-strace leading to the critical aggregation could help.
+Emit exactly one 512-byte page, independent of the logical sector size,
+and transfer only that page (COUNT == 1).  For a 512-byte-sector device
+this is unchanged; devices with larger logical sectors now work instead of
+failing every TRIM.
 
-> Fix: Add NAPI_GRO_CB(skb)->flush validation to the early-return check in
-> skb_gro_receive_list(), matching the defensive programming pattern of
-> skb_gro_receive().
-> 
-> Fixes: 8928756d53d5 ("net: add fraglist GRO/GSO support")
+Reviewed-by: Hannes Reinecke <hare@kernel.org>
+Fixes: ef2d7392c4ec ("libata: SCT Write Same / DSM Trim")
+Cc: stable@vger.kernel.org
+Signed-off-by: Niklas Cassel <cassel@kernel.org>
+---
+ drivers/ata/libata-scsi.c | 28 ++++++++++++++--------------
+ 1 file changed, 14 insertions(+), 14 deletions(-)
 
-The fix tag is wrong, should be:
-
-Fixes: 3a1296a38d0c ('net: Support GRO/GSO fraglist chaining.')
-
-/P
+diff --git a/drivers/ata/libata-scsi.c b/drivers/ata/libata-scsi.c
+index d54ec1631e9a..429b03a08071 100644
+--- a/drivers/ata/libata-scsi.c
++++ b/drivers/ata/libata-scsi.c
+@@ -3447,17 +3447,13 @@ static unsigned int ata_scsi_pass_thru(struct ata_queued_cmd *qc)
+ static size_t ata_format_dsm_trim_descr(struct scsi_cmnd *cmd, u32 trmax,
+ 					u64 sector, u32 count)
+ {
+-	struct scsi_device *sdp = cmd->device;
+-	size_t len = sdp->sector_size;
++	size_t len = ATA_SECT_SIZE;
+ 	size_t r;
+ 	__le64 *buf;
+ 	u32 i = 0;
+ 	unsigned long flags;
+ 
+-	WARN_ON(len > ATA_SCSI_RBUF_SIZE);
+-
+-	if (len > ATA_SCSI_RBUF_SIZE)
+-		len = ATA_SCSI_RBUF_SIZE;
++	BUILD_BUG_ON(ATA_SECT_SIZE > ATA_SCSI_RBUF_SIZE);
+ 
+ 	spin_lock_irqsave(&ata_scsi_rbuf_lock, flags);
+ 	buf = ((void *)ata_scsi_rbuf);
+@@ -3492,13 +3488,11 @@ static unsigned int ata_scsi_write_same_xlat(struct ata_queued_cmd *qc)
+ {
+ 	struct ata_taskfile *tf = &qc->tf;
+ 	struct scsi_cmnd *scmd = qc->scsicmd;
+-	struct scsi_device *sdp = scmd->device;
+-	size_t len = sdp->sector_size;
+ 	struct ata_device *dev = qc->dev;
+ 	const u8 *cdb = scmd->cmnd;
+ 	u64 block;
+ 	u32 n_block;
+-	const u32 trmax = len >> 3;
++	const u32 trmax = ATA_MAX_TRIM_RNUM;
+ 	u32 size;
+ 	u16 fp;
+ 	u8 bp = 0xff;
+@@ -3542,13 +3536,13 @@ static unsigned int ata_scsi_write_same_xlat(struct ata_queued_cmd *qc)
+ 		goto invalid_param_len;
+ 
+ 	/*
+-	 * size must match sector size in bytes
+-	 * For DATA SET MANAGEMENT TRIM in ACS-2 nsect (aka count)
+-	 * is defined as number of 512 byte blocks to be transferred.
++	 * The TRIM descriptor is a single 512-byte page, which is the maximum
++	 * WRITE SAME length advertised in the Block Limits VPD page. For DATA
++	 * SET MANAGEMENT TRIM the COUNT field (aka nsect) is the number of
++	 * 512-byte blocks to be transferred.
+ 	 */
+-
+ 	size = ata_format_dsm_trim_descr(scmd, trmax, block, n_block);
+-	if (size != len)
++	if (size != ATA_SECT_SIZE)
+ 		goto invalid_param_len;
+ 
+ 	if (ata_ncq_enabled(dev) && ata_fpdma_dsm_supported(dev)) {
+@@ -3574,6 +3568,12 @@ static unsigned int ata_scsi_write_same_xlat(struct ata_queued_cmd *qc)
+ 		     ATA_TFLAG_WRITE;
+ 
+ 	ata_qc_set_pc_nbytes(qc);
++	/*
++	 * The DSM TRIM payload is a single 512-byte page, which may be smaller
++	 * than the WRITE SAME data-out buffer (one logical block); only
++	 * transfer that page so the length matches the COUNT field.
++	 */
++	qc->nbytes = size;
+ 
+ 	return 0;
+ 
+-- 
+2.55.0
 
 
