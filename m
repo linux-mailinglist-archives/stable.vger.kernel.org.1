@@ -1,74 +1,70 @@
-Return-Path: <stable+bounces-271006-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-270783-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id lIe9MGSXRmrEZQsAu9opvQ
-	(envelope-from <stable+bounces-271006-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:52:52 +0200
+	id dT3jI3SVRmqZZAsAu9opvQ
+	(envelope-from <stable+bounces-270783-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:44:36 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 39D476FAAF7
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:52:52 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 144686FA797
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:44:36 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=Qh01nPGC;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-271006-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-271006-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=jlJsBZXL;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-270783-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-270783-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 035C031B285A
-	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:41:42 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 405F3329857A
+	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:34:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5DAFF348C63;
-	Thu,  2 Jul 2026 16:40:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 652E335674C;
+	Thu,  2 Jul 2026 16:30:40 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCE63346FB0;
-	Thu,  2 Jul 2026 16:40:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8CB5352037;
+	Thu,  2 Jul 2026 16:30:38 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783010423; cv=none; b=UkfMC2lZfPRz8HDtuArveIwuWOJv73RjVQvizGSv/ZCZxH5KsGVAyTATfxD6rbG4CXiMB3kkOK1oJXPOlJNSDR8iK0P6kvqPP5thtw13hu8eC+2k3TvLxQmWLfX+yVwqNGWeX3Hjcem0r3PX4oEdtHyi4m2aEs6WrDZozut9Zn0=
+	t=1783009840; cv=none; b=lJyfuEtiSduSesy2XCHiPGzD1d71xM9Kg8YozHul9zqFqR/ljS9etiSXTKkIb4yi+ZwduzC1E2oP8lmnosmDQuyZ72HIXJL1frpP8jMetjPgOQYSfpbfMIKBh0xSJHSWL/jIsu/lemzr5nXjQ0X3MtoK/rGpPGJIZJlMPdyMKFs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783010423; c=relaxed/simple;
-	bh=Jkt3RZj7l+YOTr2S1r4d33EV9/LLyf1/v7sO5sruenk=;
+	s=arc-20240116; t=1783009840; c=relaxed/simple;
+	bh=6VebBG4zlnO+X83qkPiXgkRclYFz7kS77rQvM+mjQXM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=h3Ik+vzEjtb62NJstXMs7nCC+f62rOacuDAfHOTQ5mTiE5gsBgzzU4LeT67ePGZZ/zpfTtm8k1QijKhK5/5P6JLrmYXFORAR9XIURCOaj37vqU78qqlFbJ8S47f9JwVR9uLmaBsI6J4R7Jd2CSI99DQ9eJGM2oF1FruydCG7XxU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Qh01nPGC; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 057671F000E9;
-	Thu,  2 Jul 2026 16:40:21 +0000 (UTC)
+	 MIME-Version:Content-Type; b=f0CjWDnMDCx7MOfR2Fd2Kyn8FeaFbvct2pEdkdg9JfbP6kuxJ1xAKXyh7Oe+EpjLKaGqSKObYsxe7LIOjjpW3JBqkngioi935lpEUnpJ3qbqUCyHt4j6A4z3s1kMzkjf2giZpxJDEylaW8Vwwf7w/o5TDenxMvh7Qz+zNBxxqCM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jlJsBZXL; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F33D1F000E9;
+	Thu,  2 Jul 2026 16:30:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1783010421;
-	bh=dr51g1tmut50fa7VAgz6AUDzqcdDGLDv33ySpzniSYs=;
+	s=korg; t=1783009838;
+	bh=98kJcmzyDTE1SH+U76eAoAvTTx8gWobLSRZPlioafyw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Qh01nPGCElVUURYeaX6vm3mOLUa+Dup8BEuFce6o0ltxFQQseqvMzek+8jZkm7Ehk
-	 gb3QL3d9rhsEJy6HzdsxbxSD2yNFy4ABElbxpIm3Bbo7yNNku708kx7GSep/52afNB
-	 ODXr1kl+hwRKOi6uOIGiUL4lM7ophqlDUVEa8yxc=
+	b=jlJsBZXL01WdXOHnHybrcULgOFSjbczWqBhqddSbNHZw0qNWU30Jie2vFFx+y0duI
+	 MLPteTIvfWGVmgRGGSUELxNxwD3KCwSJ195ldhgga4KsMH+X3y2C0lREycn+rEPwT9
+	 Q4aWs/9Vlm51x4xoAlMZ7ubxUAS6O+vOeNIXVpMw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	bpf <bpf@vger.kernel.org>,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	Masahiro Yamada <masahiroy@kernel.org>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Nicolas Schier <nicolas@fjasle.eu>,
-	Zheng Yejian <zhengyejian1@huawei.com>,
-	Martin Kelly <martin.kelly@crowdstrike.com>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Josh Poimboeuf <jpoimboe@redhat.com>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
-	Andrey Grodzovsky <andrey.grodzovsky@crowdstrike.com>
-Subject: [PATCH 6.12 066/204] scripts/sorttable: Add helper functions for Elf_Shdr
+	Yiming Qian <yimingqian591@gmail.com>,
+	Keenan Dong <keenanat2000@gmail.com>,
+	Han Guidong <2045gemini@gmail.com>,
+	Zhang Cen <rollkingzzc@gmail.com>,
+	Davide Caratti <dcaratti@redhat.com>,
+	=?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>,
+	Victor Nogueira <victor@mojatatu.com>,
+	Jamal Hadi Salim <jhs@mojatatu.com>,
+	Rajat Gupta <rajat.gupta@oss.qualcomm.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Wentao Guan <guanwentao@uniontech.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 004/129] net/sched: fix pedit partial COW leading to page cache corruption
 Date: Thu,  2 Jul 2026 18:18:43 +0200
-Message-ID: <20260702155120.046932949@linuxfoundation.org>
+Message-ID: <20260702155112.255009277@linuxfoundation.org>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260702155118.667618796@linuxfoundation.org>
-References: <20260702155118.667618796@linuxfoundation.org>
+In-Reply-To: <20260702155112.163984240@linuxfoundation.org>
+References: <20260702155112.163984240@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -78,288 +74,272 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-271006-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-270783-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[19];
-	FORWARDED(0.00)[lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:bpf@vger.kernel.org,m:mhiramat@kernel.org,m:mark.rutland@arm.com,m:mathieu.desnoyers@efficios.com,m:akpm@linux-foundation.org,m:peterz@infradead.org,m:torvalds@linux-foundation.org,m:masahiroy@kernel.org,m:nathan@kernel.org,m:nicolas@fjasle.eu,m:zhengyejian1@huawei.com,m:martin.kelly@crowdstrike.com,m:christophe.leroy@csgroup.eu,m:jpoimboe@redhat.com,m:rostedt@goodmis.org,m:andrey.grodzovsky@crowdstrike.com,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:yimingqian591@gmail.com,m:keenanat2000@gmail.com,m:2045gemini@gmail.com,m:rollkingzzc@gmail.com,m:dcaratti@redhat.com,m:toke@redhat.com,m:victor@mojatatu.com,m:jhs@mojatatu.com,m:rajat.gupta@oss.qualcomm.com,m:kuba@kernel.org,m:guanwentao@uniontech.com,m:sashal@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,redhat.com,mojatatu.com,oss.qualcomm.com,kernel.org,uniontech.com];
+	RCPT_COUNT_TWELVE(0.00)[15];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORWARDED(0.00)[lists@lfdr.de];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,uniontech.com:email,vger.kernel.org:from_smtp,mojatatu.com:email,msgid.link:url,qualcomm.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 39D476FAAF7
+X-Rspamd-Queue-Id: 144686FA797
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Steven Rostedt <rostedt@goodmis.org>
+From: Rajat Gupta <rajat.gupta@oss.qualcomm.com>
 
-[ Upstream commit 67afb7f504400e5b4e5ff895459fbb3eb63d4450 ]
+[ Upstream commit 899ee91156e57784090c5565e4f31bd7dbffbc5a ]
 
-In order to remove the double #include of sorttable.h for 64 and 32 bit
-to create duplicate functions, add helper functions for Elf_Shdr.  This
-will create a function pointer for each helper that will get assigned to
-the appropriate function to handle either the 64bit or 32bit version.
+tcf_pedit_act() computes the COW range for skb_ensure_writable()
+once before the key loop using tcfp_off_max_hint, but the hint does
+not account for the runtime header offset added by typed keys. This
+can leave part of the write region un-COW'd.
 
-This also moves the _r()/r() wrappers for the Elf_Shdr references that
-handle endian and size differences between the different architectures,
-into the helper function and out of the open code which is more error
-prone.
+Fix by moving skb_ensure_writable() inside the per-key loop where
+the actual write offset is known, and add overflow checking on the
+offset arithmetic. For negative offsets (e.g. Ethernet header edits
+at ingress), use skb_cow() to COW the headroom instead. Guard
+offset_valid() against INT_MIN, where negation is undefined.
 
-Cc: bpf <bpf@vger.kernel.org>
-Cc: Masami Hiramatsu <mhiramat@kernel.org>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: Masahiro Yamada <masahiroy@kernel.org>
-Cc: Nathan Chancellor <nathan@kernel.org>
-Cc: Nicolas Schier <nicolas@fjasle.eu>
-Cc: Zheng Yejian <zhengyejian1@huawei.com>
-Cc: Martin  Kelly <martin.kelly@crowdstrike.com>
-Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
-Cc: Josh Poimboeuf <jpoimboe@redhat.com>
-Link: https://lore.kernel.org/20250105162345.940924221@goodmis.org
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-Signed-off-by: Andrey Grodzovsky <andrey.grodzovsky@crowdstrike.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 8b796475fd78 ("net/sched: act_pedit: really ensure the skb is writable")
+Reported-by: Yiming Qian <yimingqian591@gmail.com>
+Reported-by: Keenan Dong <keenanat2000@gmail.com>
+Reported-by: Han Guidong <2045gemini@gmail.com>
+Reported-by: Zhang Cen <rollkingzzc@gmail.com>
+Reviewed-by: Han Guidong <2045gemini@gmail.com>
+Tested-by: Han Guidong <2045gemini@gmail.com>
+Reviewed-by: Davide Caratti <dcaratti@redhat.com>
+Tested-by: Davide Caratti <dcaratti@redhat.com>
+Reviewed-by: Toke Høiland-Jørgensen <toke@redhat.com>
+Tested-by: Toke Høiland-Jørgensen <toke@redhat.com>
+Reviewed-by: Victor Nogueira <victor@mojatatu.com>
+Tested-by: Victor Nogueira <victor@mojatatu.com>
+Acked-by: Jamal Hadi Salim <jhs@mojatatu.com>
+Signed-off-by: Rajat Gupta <rajat.gupta@oss.qualcomm.com>
+Link: https://patch.msgid.link/20260531123221.48732-1-jhs@mojatatu.com
+[rename include file from linux/unaligned.h to asm/unaligned.h]
+Conflicts:
+	include/net/tc_act/tc_pedit.h
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Wentao Guan <guanwentao@uniontech.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- scripts/sorttable.c |   42 +++++++++++++++++++++++++++++++++
- scripts/sorttable.h |   66 +++++++++++++++++++++++++++++++++-------------------
- 2 files changed, 85 insertions(+), 23 deletions(-)
+ include/net/tc_act/tc_pedit.h |  1 -
+ net/sched/act_pedit.c         | 77 +++++++++++++++++++----------------
+ 2 files changed, 41 insertions(+), 37 deletions(-)
 
---- a/scripts/sorttable.c
-+++ b/scripts/sorttable.c
-@@ -110,6 +110,48 @@ EHDR_HALF(shentsize)
- EHDR_HALF(shstrndx)
- EHDR_HALF(shnum)
+diff --git a/include/net/tc_act/tc_pedit.h b/include/net/tc_act/tc_pedit.h
+index 83fe3993178180..a26d4cd3b8d6f3 100644
+--- a/include/net/tc_act/tc_pedit.h
++++ b/include/net/tc_act/tc_pedit.h
+@@ -14,7 +14,6 @@ struct tcf_pedit_key_ex {
+ struct tcf_pedit_parms {
+ 	struct tc_pedit_key	*tcfp_keys;
+ 	struct tcf_pedit_key_ex	*tcfp_keys_ex;
+-	u32 tcfp_off_max_hint;
+ 	unsigned char tcfp_nkeys;
+ 	unsigned char tcfp_flags;
+ 	struct rcu_head rcu;
+diff --git a/net/sched/act_pedit.c b/net/sched/act_pedit.c
+index 7ba460fda1f4e9..1b076c4f2d1af5 100644
+--- a/net/sched/act_pedit.c
++++ b/net/sched/act_pedit.c
+@@ -16,6 +16,8 @@
+ #include <linux/ip.h>
+ #include <linux/ipv6.h>
+ #include <linux/slab.h>
++#include <linux/overflow.h>
++#include <asm/unaligned.h>
+ #include <net/ipv6.h>
+ #include <net/netlink.h>
+ #include <net/pkt_sched.h>
+@@ -237,7 +239,6 @@ static int tcf_pedit_init(struct net *net, struct nlattr *nla,
+ 		goto out_free_ex;
+ 	}
  
-+#define SHDR_WORD(fn_name)				\
-+static uint32_t shdr64_##fn_name(Elf_Shdr *shdr)	\
-+{							\
-+	return r(&shdr->e64.sh_##fn_name);		\
-+}							\
-+							\
-+static uint32_t shdr32_##fn_name(Elf_Shdr *shdr)	\
-+{							\
-+	return r(&shdr->e32.sh_##fn_name);		\
-+}
-+
-+#define SHDR_ADDR(fn_name)				\
-+static uint64_t shdr64_##fn_name(Elf_Shdr *shdr)	\
-+{							\
-+	return r8(&shdr->e64.sh_##fn_name);		\
-+}							\
-+							\
-+static uint64_t shdr32_##fn_name(Elf_Shdr *shdr)	\
-+{							\
-+	return r(&shdr->e32.sh_##fn_name);		\
-+}
-+
-+#define SHDR_WORD(fn_name)				\
-+static uint32_t shdr64_##fn_name(Elf_Shdr *shdr)	\
-+{							\
-+	return r(&shdr->e64.sh_##fn_name);		\
-+}							\
-+							\
-+static uint32_t shdr32_##fn_name(Elf_Shdr *shdr)	\
-+{							\
-+	return r(&shdr->e32.sh_##fn_name);		\
-+}
-+
-+SHDR_ADDR(addr)
-+SHDR_ADDR(offset)
-+SHDR_ADDR(size)
-+SHDR_ADDR(entsize)
-+
-+SHDR_WORD(link)
-+SHDR_WORD(name)
-+SHDR_WORD(type)
-+
- /*
-  * Get the whole file as a programming convenience in order to avoid
-  * malloc+lseek+read+free of many pieces.  If successful, then mmap
---- a/scripts/sorttable.h
-+++ b/scripts/sorttable.h
-@@ -31,6 +31,13 @@
- #undef ehdr_shentsize
- #undef ehdr_shstrndx
- #undef ehdr_shnum
-+#undef shdr_addr
-+#undef shdr_offset
-+#undef shdr_link
-+#undef shdr_size
-+#undef shdr_name
-+#undef shdr_type
-+#undef shdr_entsize
+-	nparms->tcfp_off_max_hint = 0;
+ 	nparms->tcfp_flags = parm->flags;
+ 	nparms->tcfp_nkeys = parm->nkeys;
  
- #ifdef SORTTABLE_64
- # define extable_ent_size	16
-@@ -47,6 +54,13 @@
- # define ehdr_shentsize		ehdr64_shentsize
- # define ehdr_shstrndx		ehdr64_shstrndx
- # define ehdr_shnum		ehdr64_shnum
-+# define shdr_addr		shdr64_addr
-+# define shdr_offset		shdr64_offset
-+# define shdr_link		shdr64_link
-+# define shdr_size		shdr64_size
-+# define shdr_name		shdr64_name
-+# define shdr_type		shdr64_type
-+# define shdr_entsize		shdr64_entsize
- #else
- # define extable_ent_size	8
- # define compare_extable	compare_extable_32
-@@ -62,6 +76,13 @@
- # define ehdr_shentsize		ehdr32_shentsize
- # define ehdr_shstrndx		ehdr32_shstrndx
- # define ehdr_shnum		ehdr32_shnum
-+# define shdr_addr		shdr32_addr
-+# define shdr_offset		shdr32_offset
-+# define shdr_link		shdr32_link
-+# define shdr_size		shdr32_size
-+# define shdr_name		shdr32_name
-+# define shdr_type		shdr32_type
-+# define shdr_entsize		shdr32_entsize
- #endif
+@@ -265,14 +266,6 @@ static int tcf_pedit_init(struct net *net, struct nlattr *nla,
+ 						   BITS_PER_TYPE(int) - 1,
+ 						   nparms->tcfp_keys[i].shift);
  
- #if defined(SORTTABLE_64) && defined(UNWINDER_ORC_ENABLED)
-@@ -177,8 +198,8 @@ struct elf_mcount_loc {
- static void *sort_mcount_loc(void *arg)
+-		/* The AT option can read a single byte, we can bound the actual
+-		 * value with uchar max.
+-		 */
+-		cur += (0xff & offmask) >> nparms->tcfp_keys[i].shift;
+-
+-		/* Each key touches 4 bytes starting from the computed offset */
+-		nparms->tcfp_off_max_hint =
+-			max(nparms->tcfp_off_max_hint, cur + 4);
+ 	}
+ 
+ 	p = to_pedit(*a);
+@@ -313,15 +306,12 @@ static void tcf_pedit_cleanup(struct tc_action *a)
+ 		call_rcu(&parms->rcu, tcf_pedit_cleanup_rcu);
+ }
+ 
+-static bool offset_valid(struct sk_buff *skb, int offset)
++static bool offset_valid(struct sk_buff *skb, int offset, int len)
  {
- 	struct elf_mcount_loc *emloc = (struct elf_mcount_loc *)arg;
--	uint_t offset = emloc->start_mcount_loc - _r(&(emloc->init_data_sec)->etype.sh_addr)
--					+ _r(&(emloc->init_data_sec)->etype.sh_offset);
-+	uint_t offset = emloc->start_mcount_loc - shdr_addr(emloc->init_data_sec)
-+					+ shdr_offset(emloc->init_data_sec);
- 	uint_t count = emloc->stop_mcount_loc - emloc->start_mcount_loc;
- 	unsigned char *start_loc = (void *)emloc->ehdr + offset;
+-	if (offset > 0 && offset > skb->len)
+-		return false;
+-
+-	if  (offset < 0 && -offset > skb_headroom(skb))
++	if (offset < -(int)skb_headroom(skb))
+ 		return false;
  
-@@ -267,18 +288,18 @@ static int do_sort(Elf_Ehdr *ehdr,
+-	return true;
++	return offset <= (int)skb->len - len;
+ }
  
- 	shstrndx = ehdr_shstrndx(ehdr);
- 	if (shstrndx == SHN_XINDEX)
--		shstrndx = r(&shdr_start->etype.sh_link);
-+		shstrndx = shdr_link(shdr_start);
- 	string_sec = get_index(shdr_start, shentsize, shstrndx);
--	secstrings = (const char *)ehdr + _r(&string_sec->etype.sh_offset);
-+	secstrings = (const char *)ehdr + shdr_offset(string_sec);
+ static int pedit_l4_skb_offset(struct sk_buff *skb, int *hoffset, const int header_type)
+@@ -387,18 +377,10 @@ static int tcf_pedit_act(struct sk_buff *skb, const struct tc_action *a,
+ 	struct tcf_pedit_key_ex *tkey_ex;
+ 	struct tcf_pedit_parms *parms;
+ 	struct tc_pedit_key *tkey;
+-	u32 max_offset;
+ 	int i;
  
- 	shnum = ehdr_shnum(ehdr);
- 	if (shnum == SHN_UNDEF)
--		shnum = _r(&shdr_start->etype.sh_size);
-+		shnum = shdr_size(shdr_start);
+ 	parms = rcu_dereference_bh(p->parms);
  
- 	for (i = 0; i < shnum; i++) {
- 		Elf_Shdr *shdr = get_index(shdr_start, shentsize, i);
+-	max_offset = (skb_transport_header_was_set(skb) ?
+-		      skb_transport_offset(skb) :
+-		      skb_network_offset(skb)) +
+-		     parms->tcfp_off_max_hint;
+-	if (skb_ensure_writable(skb, min(skb->len, max_offset)))
+-		goto done;
+-
+ 	tcf_lastuse_update(&p->tcf_tm);
+ 	tcf_action_update_bstats(&p->common, skb);
  
--		idx = r(&shdr->etype.sh_name);
-+		idx = shdr_name(shdr);
- 		if (!strcmp(secstrings + idx, "__ex_table"))
- 			extab_sec = shdr;
- 		if (!strcmp(secstrings + idx, ".symtab"))
-@@ -286,9 +307,9 @@ static int do_sort(Elf_Ehdr *ehdr,
- 		if (!strcmp(secstrings + idx, ".strtab"))
- 			strtab_sec = shdr;
+@@ -406,10 +388,11 @@ static int tcf_pedit_act(struct sk_buff *skb, const struct tc_action *a,
+ 	tkey_ex = parms->tcfp_keys_ex;
  
--		if (r(&shdr->etype.sh_type) == SHT_SYMTAB_SHNDX)
-+		if (shdr_type(shdr) == SHT_SYMTAB_SHNDX)
- 			symtab_shndx = (Elf32_Word *)((const char *)ehdr +
--						      _r(&shdr->etype.sh_offset));
-+						      shdr_offset(shdr));
+ 	for (i = parms->tcfp_nkeys; i > 0; i--, tkey++) {
++		int write_offset, write_len;
+ 		int offset = tkey->off;
+ 		int hoffset = 0;
+-		u32 *ptr, hdata;
+-		u32 val;
++		u32 cur_val, val;
++		u32 *ptr;
+ 		int rc;
  
- #ifdef MCOUNT_SORT_ENABLED
- 		/* locate the .init.data section in vmlinux */
-@@ -304,14 +325,14 @@ static int do_sort(Elf_Ehdr *ehdr,
- #if defined(SORTTABLE_64) && defined(UNWINDER_ORC_ENABLED)
- 		/* locate the ORC unwind tables */
- 		if (!strcmp(secstrings + idx, ".orc_unwind_ip")) {
--			orc_ip_size = _r(&shdr->etype.sh_size);
-+			orc_ip_size = shdr_size(shdr);
- 			g_orc_ip_table = (int *)((void *)ehdr +
--						   _r(&shdr->etype.sh_offset));
-+						   shdr_offset(shdr));
+ 		if (tkey_ex) {
+@@ -427,13 +410,15 @@ static int tcf_pedit_act(struct sk_buff *skb, const struct tc_action *a,
+ 
+ 		if (tkey->offmask) {
+ 			u8 *d, _d;
++			int at_offset;
+ 
+-			if (!offset_valid(skb, hoffset + tkey->at)) {
++			if (check_add_overflow(hoffset, (int)tkey->at, &at_offset) ||
++			    !offset_valid(skb, at_offset, sizeof(_d))) {
+ 				pr_info_ratelimited("tc action pedit 'at' offset %d out of bounds\n",
+ 						    hoffset + tkey->at);
+ 				goto bad;
+ 			}
+-			d = skb_header_pointer(skb, hoffset + tkey->at,
++			d = skb_header_pointer(skb, at_offset,
+ 					       sizeof(_d), &_d);
+ 			if (!d)
+ 				goto bad;
+@@ -445,31 +430,51 @@ static int tcf_pedit_act(struct sk_buff *skb, const struct tc_action *a,
+ 			}
  		}
- 		if (!strcmp(secstrings + idx, ".orc_unwind")) {
--			orc_size = _r(&shdr->etype.sh_size);
-+			orc_size = shdr_size(shdr);
- 			g_orc_table = (struct orc_entry *)((void *)ehdr +
--							     _r(&shdr->etype.sh_offset));
-+							     shdr_offset(shdr));
+ 
+-		if (!offset_valid(skb, hoffset + offset)) {
+-			pr_info_ratelimited("tc action pedit offset %d out of bounds\n", hoffset + offset);
++		if (check_add_overflow(hoffset, offset, &write_offset)) {
++			pr_info_ratelimited("tc action pedit offset overflow\n");
+ 			goto bad;
  		}
- #endif
- 	} /* for loop */
-@@ -374,23 +395,22 @@ static int do_sort(Elf_Ehdr *ehdr,
- 		goto out;
+ 
+-		ptr = skb_header_pointer(skb, hoffset + offset,
+-					 sizeof(hdata), &hdata);
+-		if (!ptr)
++		if (!offset_valid(skb, write_offset, sizeof(*ptr))) {
++			pr_info_ratelimited("tc action pedit offset %d out of bounds\n",
++					    write_offset);
+ 			goto bad;
++		}
++
++		if (write_offset < 0) {
++			if (skb_cow(skb, -write_offset))
++				goto bad;
++			if (write_offset + (int)sizeof(*ptr) > 0) {
++				if (skb_ensure_writable(skb,
++							min_t(int, skb->len,
++							      write_offset + (int)sizeof(*ptr))))
++					goto bad;
++			}
++		} else {
++			if (check_add_overflow(write_offset, (int)sizeof(*ptr),
++					       &write_len))
++				goto bad;
++			if (skb_ensure_writable(skb, min_t(int, skb->len,
++							   write_len)))
++				goto bad;
++		}
++
++		ptr = (u32 *)(skb->data + write_offset);
++		cur_val = get_unaligned(ptr);
+ 		/* just do it, baby */
+ 		switch (cmd) {
+ 		case TCA_PEDIT_KEY_EX_CMD_SET:
+ 			val = tkey->val;
+ 			break;
+ 		case TCA_PEDIT_KEY_EX_CMD_ADD:
+-			val = (*ptr + tkey->val) & ~tkey->mask;
++			val = (cur_val + tkey->val) & ~tkey->mask;
+ 			break;
+ 		default:
+ 			pr_info_ratelimited("tc action pedit bad command (%d)\n", cmd);
+ 			goto bad;
+ 		}
+ 
+-		*ptr = ((*ptr & tkey->mask) ^ val);
+-		if (ptr == &hdata)
+-			skb_store_bits(skb, hoffset + offset, ptr, 4);
++		put_unaligned((cur_val & tkey->mask) ^ val, ptr);
  	}
  
--	extab_image = (void *)ehdr + _r(&extab_sec->etype.sh_offset);
--	strtab = (const char *)ehdr + _r(&strtab_sec->etype.sh_offset);
--	symtab = (const Elf_Sym *)((const char *)ehdr +
--						  _r(&symtab_sec->etype.sh_offset));
-+	extab_image = (void *)ehdr + shdr_offset(extab_sec);
-+	strtab = (const char *)ehdr + shdr_offset(strtab_sec);
-+	symtab = (const Elf_Sym *)((const char *)ehdr + shdr_offset(symtab_sec));
- 
- 	if (custom_sort) {
--		custom_sort(extab_image, _r(&extab_sec->etype.sh_size));
-+		custom_sort(extab_image, shdr_size(extab_sec));
- 	} else {
--		int num_entries = _r(&extab_sec->etype.sh_size) / extable_ent_size;
-+		int num_entries = shdr_size(extab_sec) / extable_ent_size;
- 		qsort(extab_image, num_entries,
- 		      extable_ent_size, compare_extable);
- 	}
- 
- 	/* find the flag main_extable_sort_needed */
--	sym_start = (void *)ehdr + _r(&symtab_sec->etype.sh_offset);
--	sym_end = sym_start + _r(&symtab_sec->etype.sh_size);
--	symentsize = _r(&symtab_sec->etype.sh_entsize);
-+	sym_start = (void *)ehdr + shdr_offset(symtab_sec);
-+	sym_end = sym_start + shdr_size(symtab_sec);
-+	symentsize = shdr_entsize(symtab_sec);
- 
- 	for (sym = sym_start; (void *)sym + symentsize < sym_end;
- 	     sym = (void *)sym + symentsize) {
-@@ -415,9 +435,9 @@ static int do_sort(Elf_Ehdr *ehdr,
- 				       symtab_shndx);
- 	sort_needed_sec = get_index(shdr_start, shentsize, sort_need_index);
- 	sort_needed_loc = (void *)ehdr +
--		_r(&sort_needed_sec->etype.sh_offset) +
-+		shdr_offset(sort_needed_sec) +
- 		_r(&sort_needed_sym->etype.st_value) -
--		_r(&sort_needed_sec->etype.sh_addr);
-+		shdr_addr(sort_needed_sec);
- 
- 	/* extable has been sorted, clear the flag */
- 	w(0, sort_needed_loc);
+ 	goto done;
+-- 
+2.53.0
+
 
 
 
