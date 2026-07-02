@@ -1,70 +1,68 @@
-Return-Path: <stable+bounces-270630-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-270986-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id XIsONz2eRmoGaQsAu9opvQ
-	(envelope-from <stable+bounces-270630-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:22:05 +0200
+	id OxnBJVSVRmqDZAsAu9opvQ
+	(envelope-from <stable+bounces-270986-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:44:04 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0C6FA6FB3D7
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:22:05 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 336786FA75C
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:44:04 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="ZRz4I0k/";
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-270630-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-270630-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=0kmKrRS8;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-270986-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-270986-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A554E3224464
-	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:29:33 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 03BE1309E4CE
+	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:40:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2EF54949FF;
-	Thu,  2 Jul 2026 16:24:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3FD5635F180;
+	Thu,  2 Jul 2026 16:39:30 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9324B480350;
-	Thu,  2 Jul 2026 16:23:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F24E431AAAF;
+	Thu,  2 Jul 2026 16:39:28 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783009441; cv=none; b=jx1XQ1tyVs8ruwQDrD3Qcn14sr9a6dYq32lx3BIllAE6f9fTkIogQw9esOwbhpRXLggXMZNag5U3RCRN28+1oRHksWgjRJdN8puK8uRYlu2cW+2tsKJhtdvn3OH0hM+MKUf76WdF6XJc5vB5GBieMfc9Dq24pe5snk541vN6X9U=
+	t=1783010370; cv=none; b=I0HwMAstgmI9/7xhVy/C6sikZFgtc5kjvL6A6pGafxZtOsxicoFBXst/viVHR6q7D3TfGqiH0L9e2WtLfkcEMEn2QTXI1CGyaHlJHahhXKItD3uUilu+08RUGeXLl2MrSuZrppgICa6cTJ++OzKB1dQLRMGCj3MWkal9FJUSnfo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783009441; c=relaxed/simple;
-	bh=KDIeP+ncdwc7kfujTjPv+hstwp9k+U4iY6sWJgN+YXk=;
+	s=arc-20240116; t=1783010370; c=relaxed/simple;
+	bh=Q/xJ1PGYkGQC0R4pMiaWO3nlSwOd/t+bI8ddXyvCddM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=r/1UrFZ0HszugV+seWK+tSvatqsAT6L9kCvN2xbxSKl4/3HWt5NHaBY0NViMdlkWCsPR+1uO2BzVDNuULh4oeiKzU2hqNzYds+odDQJtWcRUDQsMbrftYNpGalJPNaIA+w6C8v563wHW4c7/W3zhB/KuTs0YNCiZGLjJxhah+lY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZRz4I0k/; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F5051F00A3E;
-	Thu,  2 Jul 2026 16:23:56 +0000 (UTC)
+	 MIME-Version; b=DSNAN6mPCE684qwinLdqXBUxlb7H6IE/ICNyvKHgcVIHYKtJpZ9em+G01IAozphD1Qh7by6YCM2nnB+ze+pwSoOW7CoJ8AjtENwOMAgLLerbOHc/3o03Bm8r2XYW+NuqLbECQqySdCWx2SouJibYu2pLuh5mvmo4uOyiePRkrs4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0kmKrRS8; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B0B21F000E9;
+	Thu,  2 Jul 2026 16:39:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1783009436;
-	bh=/9bl2cbX1HW8z1ppLh9AZBUMfpj7g4oA6MgdRA1aJUY=;
+	s=korg; t=1783010368;
+	bh=JvwRHV8jbvDRfNEqm387K6nTHhOD8B/ypYnyGLkHrYI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=ZRz4I0k/6KakAVhUJoc5b0jHSRq79gOic/ktgiSPQ3hDfrW9jlUKZLamo/pWb50R4
-	 E4gttym72ohyP/5e6nM/mjVqTmiVsskH+0KtvTxbA8r0Vsam+5rwW1skbx0H/CjTx/
-	 EN2Rzi/hyYIy4dsO2Lk2zFH+o76asQP+KkTGQXlM=
+	b=0kmKrRS8CU2iOLCGEAZ3jtZ6I8nsTntuUwOCRF4Rfre9Ot5NU0FecjMmzYRDWvR+/
+	 tAxU1gCXDwpM8evojw/z5oSZFPzSYEWY6jbvUR7CvC0tqvVWUT9DU55Dd6C82fNVNn
+	 tVW+BR9lclX+W/b6PIOm4GXK8qBUUgeF8/fLQkXU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yiming Qian <yimingqian591@gmail.com>,
-	Keenan Dong <keenanat2000@gmail.com>,
-	Han Guidong <2045gemini@gmail.com>,
-	Zhang Cen <rollkingzzc@gmail.com>,
-	Davide Caratti <dcaratti@redhat.com>,
-	=?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>,
-	Victor Nogueira <victor@mojatatu.com>,
-	Jamal Hadi Salim <jhs@mojatatu.com>,
-	Rajat Gupta <rajat.gupta@oss.qualcomm.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Wentao Guan <guanwentao@uniontech.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 08/96] net/sched: fix pedit partial COW leading to page cache corruption
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Ilya Leoshkevich <iii@linux.ibm.com>,
+	Ihor Solodrai <ihor.solodrai@linux.dev>,
+	Vasily Gorbik <gor@linux.ibm.com>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
+	Andrey Grodzovsky <andrey.grodzovsky@crowdstrike.com>
+Subject: [PATCH 6.12 083/204] scripts/sorttable: Fix endianness handling in build-time mcount sort
 Date: Thu,  2 Jul 2026 18:19:00 +0200
-Message-ID: <20260702155109.147355092@linuxfoundation.org>
+Message-ID: <20260702155120.404616730@linuxfoundation.org>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260702155108.949633242@linuxfoundation.org>
-References: <20260702155108.949633242@linuxfoundation.org>
+In-Reply-To: <20260702155118.667618796@linuxfoundation.org>
+References: <20260702155118.667618796@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -74,273 +72,90 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-270630-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:yimingqian591@gmail.com,m:keenanat2000@gmail.com,m:2045gemini@gmail.com,m:rollkingzzc@gmail.com,m:dcaratti@redhat.com,m:toke@redhat.com,m:victor@mojatatu.com,m:jhs@mojatatu.com,m:rajat.gupta@oss.qualcomm.com,m:kuba@kernel.org,m:guanwentao@uniontech.com,m:sashal@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,redhat.com,mojatatu.com,oss.qualcomm.com,kernel.org,uniontech.com];
-	RCPT_COUNT_TWELVE(0.00)[15];
-	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-270986-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[13];
 	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:mhiramat@kernel.org,m:catalin.marinas@arm.com,m:nathan@kernel.org,m:hca@linux.ibm.com,m:agordeev@linux.ibm.com,m:iii@linux.ibm.com,m:ihor.solodrai@linux.dev,m:gor@linux.ibm.com,m:rostedt@goodmis.org,m:andrey.grodzovsky@crowdstrike.com,s:lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,mojatatu.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,qualcomm.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,msgid.link:url,uniontech.com:email]
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.dev:email,goodmis.org:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,arm.com:email,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 0C6FA6FB3D7
+X-Rspamd-Queue-Id: 336786FA75C
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rajat Gupta <rajat.gupta@oss.qualcomm.com>
+From: Vasily Gorbik <gor@linux.ibm.com>
 
-[ Upstream commit 899ee91156e57784090c5565e4f31bd7dbffbc5a ]
+[ Upstream commit 023f124a64174c47e18340ded7e2a39b96eb9523 ]
 
-tcf_pedit_act() computes the COW range for skb_ensure_writable()
-once before the key loop using tcfp_off_max_hint, but the hint does
-not account for the runtime header offset added by typed keys. This
-can leave part of the write region un-COW'd.
+Kernel cross-compilation with BUILDTIME_MCOUNT_SORT produces zeroed
+mcount values if the build-host endianness does not match the ELF
+file endianness.
 
-Fix by moving skb_ensure_writable() inside the per-key loop where
-the actual write offset is known, and add overflow checking on the
-offset arithmetic. For negative offsets (e.g. Ethernet header edits
-at ingress), use skb_cow() to COW the headroom instead. Guard
-offset_valid() against INT_MIN, where negation is undefined.
+The mcount values array is converted from ELF file
+endianness to build-host endianness during initialization in
+fill_relocs()/fill_addrs(). Avoid extra conversion of these values during
+weak-function zeroing; otherwise, they do not match nm-parsed addresses
+and all mcount values are zeroed out.
 
-Fixes: 8b796475fd78 ("net/sched: act_pedit: really ensure the skb is writable")
-Reported-by: Yiming Qian <yimingqian591@gmail.com>
-Reported-by: Keenan Dong <keenanat2000@gmail.com>
-Reported-by: Han Guidong <2045gemini@gmail.com>
-Reported-by: Zhang Cen <rollkingzzc@gmail.com>
-Reviewed-by: Han Guidong <2045gemini@gmail.com>
-Tested-by: Han Guidong <2045gemini@gmail.com>
-Reviewed-by: Davide Caratti <dcaratti@redhat.com>
-Tested-by: Davide Caratti <dcaratti@redhat.com>
-Reviewed-by: Toke Høiland-Jørgensen <toke@redhat.com>
-Tested-by: Toke Høiland-Jørgensen <toke@redhat.com>
-Reviewed-by: Victor Nogueira <victor@mojatatu.com>
-Tested-by: Victor Nogueira <victor@mojatatu.com>
-Acked-by: Jamal Hadi Salim <jhs@mojatatu.com>
-Signed-off-by: Rajat Gupta <rajat.gupta@oss.qualcomm.com>
-Link: https://patch.msgid.link/20260531123221.48732-1-jhs@mojatatu.com
-[rename include file from linux/unaligned.h to asm/unaligned.h]
-Conflicts:
-	include/net/tc_act/tc_pedit.h
-	net/sched/act_pedit.c
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Wentao Guan <guanwentao@uniontech.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: Masami Hiramatsu <mhiramat@kernel.org>
+Cc: Catalin Marinas <catalin.marinas@arm.com>
+Cc: Nathan Chancellor <nathan@kernel.org>
+Cc: Heiko Carstens <hca@linux.ibm.com>
+Cc: Alexander Gordeev <agordeev@linux.ibm.com>
+Link: https://lore.kernel.org/patch.git-dca31444b0f1.your-ad-here.call-01743554658-ext-8692@work.hours
+Fixes: ef378c3b8233 ("scripts/sorttable: Zero out weak functions in mcount_loc table")
+Reported-by: Ilya Leoshkevich <iii@linux.ibm.com>
+Reported-by: Ihor Solodrai <ihor.solodrai@linux.dev>
+Closes: https://lore.kernel.org/all/your-ad-here.call-01743522822-ext-4975@work.hours/
+Signed-off-by: Vasily Gorbik <gor@linux.ibm.com>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: Andrey Grodzovsky <andrey.grodzovsky@crowdstrike.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/net/tc_act/tc_pedit.h |  1 -
- net/sched/act_pedit.c         | 77 +++++++++++++++++++----------------
- 2 files changed, 41 insertions(+), 37 deletions(-)
+ scripts/sorttable.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/include/net/tc_act/tc_pedit.h b/include/net/tc_act/tc_pedit.h
-index 83fe3993178180..a26d4cd3b8d6f3 100644
---- a/include/net/tc_act/tc_pedit.h
-+++ b/include/net/tc_act/tc_pedit.h
-@@ -14,7 +14,6 @@ struct tcf_pedit_key_ex {
- struct tcf_pedit_parms {
- 	struct tc_pedit_key	*tcfp_keys;
- 	struct tcf_pedit_key_ex	*tcfp_keys_ex;
--	u32 tcfp_off_max_hint;
- 	unsigned char tcfp_nkeys;
- 	unsigned char tcfp_flags;
- 	struct rcu_head rcu;
-diff --git a/net/sched/act_pedit.c b/net/sched/act_pedit.c
-index df31b2b7b42253..35fa94ba0edf8f 100644
---- a/net/sched/act_pedit.c
-+++ b/net/sched/act_pedit.c
-@@ -17,6 +17,8 @@
- #include <linux/ipv6.h>
- #include <linux/slab.h>
- #include <net/ipv6.h>
-+#include <linux/overflow.h>
-+#include <asm/unaligned.h>
- #include <net/netlink.h>
- #include <net/pkt_sched.h>
- #include <linux/tc_act/tc_pedit.h>
-@@ -229,7 +231,6 @@ static int tcf_pedit_init(struct net *net, struct nlattr *nla,
- 		goto out_release;
- 	}
+--- a/scripts/sorttable.c
++++ b/scripts/sorttable.c
+@@ -857,7 +857,7 @@ static void *sort_mcount_loc(void *arg)
+ 		for (void *ptr = vals; ptr < vals + size; ptr += long_size) {
+ 			uint64_t key;
  
--	nparms->tcfp_off_max_hint = 0;
- 	nparms->tcfp_flags = parm->flags;
- 	nparms->tcfp_nkeys = parm->nkeys;
- 
-@@ -257,14 +258,6 @@ static int tcf_pedit_init(struct net *net, struct nlattr *nla,
- 						   BITS_PER_TYPE(int) - 1,
- 						   nparms->tcfp_keys[i].shift);
- 
--		/* The AT option can read a single byte, we can bound the actual
--		 * value with uchar max.
--		 */
--		cur += (0xff & offmask) >> nparms->tcfp_keys[i].shift;
--
--		/* Each key touches 4 bytes starting from the computed offset */
--		nparms->tcfp_off_max_hint =
--			max(nparms->tcfp_off_max_hint, cur + 4);
- 	}
- 
- 	p = to_pedit(*a);
-@@ -305,15 +298,12 @@ static void tcf_pedit_cleanup(struct tc_action *a)
- 		call_rcu(&parms->rcu, tcf_pedit_cleanup_rcu);
- }
- 
--static bool offset_valid(struct sk_buff *skb, int offset)
-+static bool offset_valid(struct sk_buff *skb, int offset, int len)
- {
--	if (offset > 0 && offset > skb->len)
--		return false;
--
--	if  (offset < 0 && -offset > skb_headroom(skb))
-+	if (offset < -(int)skb_headroom(skb))
- 		return false;
- 
--	return true;
-+	return offset <= (int)skb->len - len;
- }
- 
- static int pedit_l4_skb_offset(struct sk_buff *skb, int *hoffset, const int header_type)
-@@ -379,18 +369,10 @@ static int tcf_pedit_act(struct sk_buff *skb, const struct tc_action *a,
- 	struct tcf_pedit_key_ex *tkey_ex;
- 	struct tcf_pedit_parms *parms;
- 	struct tc_pedit_key *tkey;
--	u32 max_offset;
- 	int i;
- 
- 	parms = rcu_dereference_bh(p->parms);
- 
--	max_offset = (skb_transport_header_was_set(skb) ?
--		      skb_transport_offset(skb) :
--		      skb_network_offset(skb)) +
--		     parms->tcfp_off_max_hint;
--	if (skb_ensure_writable(skb, min(skb->len, max_offset)))
--		goto done;
--
- 	tcf_lastuse_update(&p->tcf_tm);
- 	tcf_action_update_bstats(&p->common, skb);
- 
-@@ -398,10 +380,11 @@ static int tcf_pedit_act(struct sk_buff *skb, const struct tc_action *a,
- 	tkey_ex = parms->tcfp_keys_ex;
- 
- 	for (i = parms->tcfp_nkeys; i > 0; i--, tkey++) {
-+		int write_offset, write_len;
- 		int offset = tkey->off;
- 		int hoffset = 0;
--		u32 *ptr, hdata;
--		u32 val;
-+		u32 cur_val, val;
-+		u32 *ptr;
- 		int rc;
- 
- 		if (tkey_ex) {
-@@ -419,13 +402,15 @@ static int tcf_pedit_act(struct sk_buff *skb, const struct tc_action *a,
- 
- 		if (tkey->offmask) {
- 			u8 *d, _d;
-+			int at_offset;
- 
--			if (!offset_valid(skb, hoffset + tkey->at)) {
-+			if (check_add_overflow(hoffset, (int)tkey->at, &at_offset) ||
-+			    !offset_valid(skb, at_offset, sizeof(_d))) {
- 				pr_info_ratelimited("tc action pedit 'at' offset %d out of bounds\n",
- 						    hoffset + tkey->at);
- 				goto bad;
- 			}
--			d = skb_header_pointer(skb, hoffset + tkey->at,
-+			d = skb_header_pointer(skb, at_offset,
- 					       sizeof(_d), &_d);
- 			if (!d)
- 				goto bad;
-@@ -437,31 +422,51 @@ static int tcf_pedit_act(struct sk_buff *skb, const struct tc_action *a,
- 			}
- 		}
- 
--		if (!offset_valid(skb, hoffset + offset)) {
--			pr_info_ratelimited("tc action pedit offset %d out of bounds\n", hoffset + offset);
-+		if (check_add_overflow(hoffset, offset, &write_offset)) {
-+			pr_info_ratelimited("tc action pedit offset overflow\n");
- 			goto bad;
- 		}
- 
--		ptr = skb_header_pointer(skb, hoffset + offset,
--					 sizeof(hdata), &hdata);
--		if (!ptr)
-+		if (!offset_valid(skb, write_offset, sizeof(*ptr))) {
-+			pr_info_ratelimited("tc action pedit offset %d out of bounds\n",
-+					    write_offset);
- 			goto bad;
-+		}
-+
-+		if (write_offset < 0) {
-+			if (skb_cow(skb, -write_offset))
-+				goto bad;
-+			if (write_offset + (int)sizeof(*ptr) > 0) {
-+				if (skb_ensure_writable(skb,
-+							min_t(int, skb->len,
-+							      write_offset + (int)sizeof(*ptr))))
-+					goto bad;
-+			}
-+		} else {
-+			if (check_add_overflow(write_offset, (int)sizeof(*ptr),
-+					       &write_len))
-+				goto bad;
-+			if (skb_ensure_writable(skb, min_t(int, skb->len,
-+							   write_len)))
-+				goto bad;
-+		}
-+
-+		ptr = (u32 *)(skb->data + write_offset);
-+		cur_val = get_unaligned(ptr);
- 		/* just do it, baby */
- 		switch (cmd) {
- 		case TCA_PEDIT_KEY_EX_CMD_SET:
- 			val = tkey->val;
- 			break;
- 		case TCA_PEDIT_KEY_EX_CMD_ADD:
--			val = (*ptr + tkey->val) & ~tkey->mask;
-+			val = (cur_val + tkey->val) & ~tkey->mask;
- 			break;
- 		default:
- 			pr_info_ratelimited("tc action pedit bad command (%d)\n", cmd);
- 			goto bad;
- 		}
- 
--		*ptr = ((*ptr & tkey->mask) ^ val);
--		if (ptr == &hdata)
--			skb_store_bits(skb, hoffset + offset, ptr, 4);
-+		put_unaligned((cur_val & tkey->mask) ^ val, ptr);
- 	}
- 
- 	goto done;
--- 
-2.53.0
-
+-			key = long_size == 4 ? r((uint32_t *)ptr) : r8((uint64_t *)ptr);
++			key = long_size == 4 ? *(uint32_t *)ptr : *(uint64_t *)ptr;
+ 			if (!find_func(key)) {
+ 				if (long_size == 4)
+ 					*(uint32_t *)ptr = 0;
 
 
 
