@@ -1,63 +1,64 @@
-Return-Path: <stable+bounces-271002-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-270687-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id DpLpAa2VRmqtZAsAu9opvQ
-	(envelope-from <stable+bounces-271002-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:45:33 +0200
+	id meprGKyURmoWZAsAu9opvQ
+	(envelope-from <stable+bounces-270687-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:41:16 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6C8D06FA7E3
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:45:32 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id A756C6FA5DD
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:41:15 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=hGslMXv3;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-271002-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-271002-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=GIvJprRS;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-270687-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-270687-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id DAD5030BF225
-	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:41:36 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A9BC231AE6A2
+	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:31:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6441732ED40;
-	Thu,  2 Jul 2026 16:40:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 58B6F348C76;
+	Thu,  2 Jul 2026 16:26:28 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33C1BDDA9;
-	Thu,  2 Jul 2026 16:40:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26ECA33F583;
+	Thu,  2 Jul 2026 16:26:26 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783010412; cv=none; b=l3FnhwfMtxvlwfNHAZWBX224/FCBuM/1p6IelB1Dv++3ii+dXYOHNsnTO71ll6r4zU/+/d0VNRxnVc/xAJv+8DX4bEIivisFxhcgIBf6s9xKKSjDEargh/VXvQaVy3IoWNR16WBn1NKv8RjERhcNeoKiTbtJdMWpU70XjFMSfCk=
+	t=1783009588; cv=none; b=B29Dl3fHIcKl7qeHR4tcFWOOZo3ve9z2mwRdta7tKZ8iS4xpZbRiPQix4AS59t5sfqefmvTdY5RkKUyvoa2oflcHuIPfib18KbyCJD4eH70QuC93Ztz6ZNObQg+5/6uldgJjIZ8Fwg8tcO7W9/udpK3+LlvXaumEzDtxjbVdfVs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783010412; c=relaxed/simple;
-	bh=nsyRwzOh2Coci871jFG0uNsZyXiEoR8WXQdPzX9+d5k=;
+	s=arc-20240116; t=1783009588; c=relaxed/simple;
+	bh=n6zQEogycyk/IxqIANvq14BSpnicqj0IMQexe7poRRE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=p/JMyBzQwR+vN83iJGoTYtahfiyJXMBIPWyCeLcuvGgbLsJ6A0Qcd3CCYKDCK0nLtfz+zD6H+zE9gZsJqmtKbzOjSDMMy6Cdvcwu7CI1J5B6g2vR3fjrxPY+Cm0xRO0FqFZG5737d8HcEEUXSRTQg9S4YSYMyOW0TP21lJ+FIqY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hGslMXv3; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 985EE1F000E9;
-	Thu,  2 Jul 2026 16:40:10 +0000 (UTC)
+	 MIME-Version; b=oZVRePfDpi00zbnO9BDAL3vkxCBAp9xtS9OYiXkc/f2B5Fn8zfBLKO5c3CehJ7aLaKZyFQ+1yxGQ8rpjKPY6HTt/Axv4R7+ruBm12joy5P4YKMdOqkNaDxhKYUA5iKFZMoBe/Rixz6kjo+gAsjdZHWUAlKjk9DgUkwvniUy9Lk0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GIvJprRS; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4FA911F000E9;
+	Thu,  2 Jul 2026 16:26:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1783010411;
-	bh=TVZzLsBKCDisreJPxC66lddcVWPqZP/hfx/Iu44QlCc=;
+	s=korg; t=1783009586;
+	bh=RWdoM3vgQY8qzs3k+5y1N9nw02/J+YhZxpfZT45RyVw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=hGslMXv345n2Shc65KEMWEzbA/iNxUr/eV8R7o8eyJkeWAFPQUHZj+MhxWeu0VLSD
-	 Flz5+DBtY+UCH1Sdv23G8pJ0g5mISTeRuR70HugZ16t4fDA6u5WN0+MCb3Z6Nn+Vj9
-	 DDZxwAtEoGjkKbp6jgqLooaLtII0C/Lf6VCDsb3A=
+	b=GIvJprRS85sZwOOc6o/7NylX0Ztu1kM5Ron6l2QDDcbQ/k52xeneVg4UkpK4nccAc
+	 nZEDEfdBCCn1A/OKD98DF42i4nVzDjmOROUajZolAQwIObKs2+w+xrLFrdfqD8rgEA
+	 LJYWiioC7u2ScGOaV0V2tkmCXaRy8jGBKwHjFhi8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tom Lendacky <thomas.lendacky@amd.com>,
-	Sean Christopherson <seanjc@google.com>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Jack Wang <jinpu.wang@ionos.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 098/204] KVM: SEV: Ignore Port I/O requests of length 0
+	Antoniu Miclaus <antoniu.miclaus@analog.com>,
+	Linus Walleij <linusw@kernel.org>,
+	Stable@vger.kernel.org,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Sasha Levin <sashal@kernel.org>,
+	Elizaveta Tereshkina <etereshkina@astralinux.ru>
+Subject: [PATCH 5.15 12/95] iio: light: bh1780: fix PM runtime leak on error path
 Date: Thu,  2 Jul 2026 18:19:15 +0200
-Message-ID: <20260702155120.720202160@linuxfoundation.org>
+Message-ID: <20260702155109.464736317@linuxfoundation.org>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260702155118.667618796@linuxfoundation.org>
-References: <20260702155118.667618796@linuxfoundation.org>
+In-Reply-To: <20260702155109.196223802@linuxfoundation.org>
+References: <20260702155109.196223802@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -73,22 +74,22 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-271002-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-270687-lists,stable=lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:thomas.lendacky@amd.com,m:seanjc@google.com,m:pbonzini@redhat.com,m:jinpu.wang@ionos.com,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:antoniu.miclaus@analog.com,m:linusw@kernel.org,m:Stable@vger.kernel.org,m:Jonathan.Cameron@huawei.com,m:sashal@kernel.org,m:etereshkina@astralinux.ru,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
@@ -97,64 +98,57 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,amd.com:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp,huawei.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,analog.com:email,astralinux.ru:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 6C8D06FA7E3
+X-Rspamd-Queue-Id: A756C6FA5DD
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sean Christopherson <seanjc@google.com>
+From: Antoniu Miclaus <antoniu.miclaus@analog.com>
 
-commit 3988bd2723de407ae90fa7a6f6029b4e60238c58 upstream.
+commit dd72e6c3cdea05cad24e99710939086f7a113fb5 upstream.
 
-Explicitly ignore Port I/O requests of length '0' (or count '0'), so that
-setting up the software scratch area (and other code) doesn't have to
-worry about underflowing the length, and to allow for WARNing on trying
-to configure the scratch area with len==0.
+Move pm_runtime_put_autosuspend() before the error check to ensure
+the PM runtime reference count is always decremented after
+pm_runtime_get_sync(), regardless of whether the read operation
+succeeds or fails.
 
-Fixes: 291bd20d5d88 ("KVM: SVM: Add initial support for a VMGEXIT VMEXIT")
-Cc: stable@vger.kernel.org
-Reviewed-by: Tom Lendacky <thomas.lendacky@amd.com>
-Signed-off-by: Sean Christopherson <seanjc@google.com>
-Message-ID: <20260501202250.2115252-5-seanjc@google.com>
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-Signed-off-by: Jack Wang <jinpu.wang@ionos.com>
+Fixes: 1f0477f18306 ("iio: light: new driver for the ROHM BH1780")
+Signed-off-by: Antoniu Miclaus <antoniu.miclaus@analog.com>
+Reviewed-by: Linus Walleij <linusw@kernel.org>
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+[ moved both pm_runtime_mark_last_busy() and pm_runtime_put_autosuspend() before the error check instead of just pm_runtime_put_autosuspend() ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Elizaveta Tereshkina <etereshkina@astralinux.ru>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kvm/svm/sev.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ drivers/iio/light/bh1780.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/x86/kvm/svm/sev.c b/arch/x86/kvm/svm/sev.c
-index 497a6e70513570..73e49317735173 100644
---- a/arch/x86/kvm/svm/sev.c
-+++ b/arch/x86/kvm/svm/sev.c
-@@ -4459,6 +4459,11 @@ int sev_handle_vmgexit(struct kvm_vcpu *vcpu)
- 			    control->exit_info_1, control->exit_info_2);
- 		ret = -EINVAL;
- 		break;
-+	case SVM_EXIT_IOIO:
-+		if (!((control->exit_info_1 & SVM_IOIO_SIZE_MASK) >> SVM_IOIO_SIZE_SHIFT))
-+			return 1;
-+
-+		fallthrough;
- 	default:
- 		ret = svm_invoke_exit_handler(vcpu, exit_code);
- 	}
-@@ -4479,6 +4484,9 @@ int sev_es_string_io(struct vcpu_svm *svm, int size, unsigned int port, int in)
- 	if (unlikely(check_mul_overflow(count, size, &bytes)))
- 		return -EINVAL;
+diff --git a/drivers/iio/light/bh1780.c b/drivers/iio/light/bh1780.c
+index abbf2e662e7dbc..e0a72ff2ebf8b1 100644
+--- a/drivers/iio/light/bh1780.c
++++ b/drivers/iio/light/bh1780.c
+@@ -109,10 +109,10 @@ static int bh1780_read_raw(struct iio_dev *indio_dev,
+ 		case IIO_LIGHT:
+ 			pm_runtime_get_sync(&bh1780->client->dev);
+ 			value = bh1780_read_word(bh1780, BH1780_REG_DLOW);
+-			if (value < 0)
+-				return value;
+ 			pm_runtime_mark_last_busy(&bh1780->client->dev);
+ 			pm_runtime_put_autosuspend(&bh1780->client->dev);
++			if (value < 0)
++				return value;
+ 			*val = value;
  
-+	if (!bytes)
-+		return 1;
-+
- 	r = setup_vmgexit_scratch(svm, in, bytes);
- 	if (r)
- 		return r;
+ 			return IIO_VAL_INT;
 -- 
 2.53.0
 
