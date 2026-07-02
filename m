@@ -1,61 +1,79 @@
-Return-Path: <stable+bounces-271139-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-270976-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id sMRPLiCjRmoAawsAu9opvQ
-	(envelope-from <stable+bounces-271139-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:42:56 +0200
+	id 0veyHxKXRmqXZQsAu9opvQ
+	(envelope-from <stable+bounces-270976-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:51:30 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0CCB96FB916
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:42:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D770E6FAA77
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:51:29 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=pw+zDJrl;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-271139-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-271139-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=P4BwFpta;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-270976-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-270976-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C02D933079AC
-	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:48:03 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D7F8233D7D36
+	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:40:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C34C034751D;
-	Thu,  2 Jul 2026 16:46:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19ECA359A89;
+	Thu,  2 Jul 2026 16:39:05 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 997D0318EC1;
-	Thu,  2 Jul 2026 16:46:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C056346E7A;
+	Thu,  2 Jul 2026 16:39:03 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783010772; cv=none; b=RrUpY4CbR1qIoY6QnoiwLxPBY/xE45JrTGgVCdgiQj8Cju0KRn0iZFhg38nqv5axDq/YTm83ZlAAtpudqvuKBfyjVz/fT1JPLgA7byoPTkWNLj7p0Dhw4X/zzC0vW24X7JRwqw7OjLQHGZT+/ulERo/FIUgFBRcLw5HihCjxmNc=
+	t=1783010344; cv=none; b=XoU74S6hd23CARLcYcCUt9n6MENIJKq9uQhxlCFowL8Rp9WyXgfOU4jQ/dAuEyRzRYpyh/7sx3AzH2ojJNK5XNd8FO5Y6jdeoK9zn/qM3WnSJnFWfhxeuGDZ4A0gDQ2nRwrN+30J1itm5PhxL6w+3VR62sfKIBXkAedNZCij7Fs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783010772; c=relaxed/simple;
-	bh=1ZSysurYyrLC2HSp2i3Zl6849nyeg5DBm6W8z5IG9cc=;
+	s=arc-20240116; t=1783010344; c=relaxed/simple;
+	bh=bMpp6VKtkf1tyZrhF/UxATawe+kt7fWVR8t/KFa4O1c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aPfUQu0ubOmyg8otYWAtk11tSwrEGEw7+1rX+rKqc5+5oH3tBHuB+hzR7gFy3ESyWb/ifyWHeDumNm/RGxZov5eqZLB535u4aDdU8pzH2zgZaXs6aZ98tGk/0/Tr+rrzLtyrxWyd5NCOGSUmkC7Clrc3F6w/1XBd8zvoK8n1kO8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pw+zDJrl; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BA761F000E9;
-	Thu,  2 Jul 2026 16:46:10 +0000 (UTC)
+	 MIME-Version; b=MisiL46czorFCxvTVl6KuZXMv+8GOiI4jeFs27vp6KKubQIA1u61Aj8zwtI1/NRCTJCqkGWo1x6061EXMm06duBvkI52G2cDAhw6CN1knQeZ8A8k4a66Yz/7w+IRxfzvS32HzlF9fjhGPt0Ac6blb07BEzdFRcPwtQgeRKLMJl8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P4BwFpta; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8E271F000E9;
+	Thu,  2 Jul 2026 16:39:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1783010771;
-	bh=bVyuUQF7MH5Sd8OuRn9Myi9r2e6vxsYrziDyJAhCRpg=;
+	s=korg; t=1783010343;
+	bh=tylzBM1UUSqcWYR6TLP9/nQxpPf4ywh4LJaFDx0u9z0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=pw+zDJrl9ctaNDBU7591UkwNmjdulLJ/dcGSVVDuI8OReZGvFwtUDeqX61ukc7FnI
-	 50oi3PMuIGYpi0Tik+OVeivXWICukXYfNFrF/Qg3jy3NWtOjww0HZZwLxOdLGAZxwE
-	 E4GmVJbx7rogf9a89q/kjrDShC4fx0JsSCu9/gjk=
+	b=P4BwFptaHP4Ug9McZovlyWWUurg0CgeVdeNGq0wPZPMTRAjcg3Gll/dw2n3qQCJEI
+	 lm46JLd0VL5ubf/BhzfwUyq58CE7YrHe60MPy7EK4UXRjEQStt1PwF9tRoKKVsYHXy
+	 7qjbKyvQ9VnrK3yLihP6f4mTC9Xgp4CxKeGRdst8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thadeu Lima de Souza Cascardo <cascardo@igalia.com>,
-	David Teigland <teigland@redhat.com>,
-	Nazar Kalashnikov <nazarkalashnikov0@gmail.com>
-Subject: [PATCH 6.6 030/175] dlm: prevent NPD when writing a positive value to event_done
+	bpf <bpf@vger.kernel.org>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	Masahiro Yamada <masahiroy@kernel.org>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Nicolas Schier <nicolas@fjasle.eu>,
+	Zheng Yejian <zhengyejian1@huawei.com>,
+	Martin Kelly <martin.kelly@crowdstrike.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Josh Poimboeuf <jpoimboe@redhat.com>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>,
+	Vasily Gorbik <gor@linux.ibm.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
+	Andrey Grodzovsky <andrey.grodzovsky@crowdstrike.com>
+Subject: [PATCH 6.12 074/204] scripts/sorttable: Always use an array for the mcount_loc sorting
 Date: Thu,  2 Jul 2026 18:18:51 +0200
-Message-ID: <20260702155116.433332769@linuxfoundation.org>
+Message-ID: <20260702155120.221182368@linuxfoundation.org>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260702155115.766838875@linuxfoundation.org>
-References: <20260702155115.766838875@linuxfoundation.org>
+In-Reply-To: <20260702155118.667618796@linuxfoundation.org>
+References: <20260702155118.667618796@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -76,74 +94,263 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-271139-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:cascardo@igalia.com,m:teigland@redhat.com,m:nazarkalashnikov0@gmail.com,s:lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,igalia.com,redhat.com,gmail.com];
+	TAGGED_FROM(0.00)[bounces-270976-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[24];
 	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:bpf@vger.kernel.org,m:mhiramat@kernel.org,m:mark.rutland@arm.com,m:mathieu.desnoyers@efficios.com,m:akpm@linux-foundation.org,m:peterz@infradead.org,m:torvalds@linux-foundation.org,m:masahiroy@kernel.org,m:nathan@kernel.org,m:nicolas@fjasle.eu,m:zhengyejian1@huawei.com,m:martin.kelly@crowdstrike.com,m:christophe.leroy@csgroup.eu,m:jpoimboe@redhat.com,m:hca@linux.ibm.com,m:catalin.marinas@arm.com,m:will@kernel.org,m:gor@linux.ibm.com,m:agordeev@linux.ibm.com,m:rostedt@goodmis.org,m:andrey.grodzovsky@crowdstrike.com,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,igalia.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 0CCB96FB916
+X-Rspamd-Queue-Id: D770E6FAA77
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
+From: Steven Rostedt <rostedt@goodmis.org>
 
-commit 8e2bad543eca5c25cd02cbc63d72557934d45f13 upstream.
+[ Upstream commit 5fb964f5ba53afda0e2b6dbc00b8205461ffe04a ]
 
-do_uevent returns the value written to event_done. In case it is a
-positive value, new_lockspace would undo all the work, and lockspace
-would not be set. __dlm_new_lockspace, however, would treat that
-positive value as a success due to commit 8511a2728ab8 ("dlm: fix use
-count with multiple joins").
+The sorting of the mcount_loc section is done directly to the section for
+x86 and arm32 but it uses a separate array for arm64 as arm64 has the
+values for the mcount_loc stored in the rela sections of the vmlinux ELF
+file.
 
-Down the line, device_create_lockspace would pass that NULL lockspace to
-dlm_find_lockspace_local, leading to a NULL pointer dereference.
+In order to use the same code to remove weak functions, always use a
+separate array to do the sorting. This requires splitting up the filling
+of the array into one function and the placing the contents of the array
+back into the rela sections or into the mcount_loc section into a separate
+file.
 
-Treating such positive values as successes prevents the problem. Given
-this has been broken for so long, this is unlikely to break userspace
-expectations.
-
-Fixes: 8511a2728ab8 ("dlm: fix use count with multiple joins")
-Signed-off-by: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
-Signed-off-by: David Teigland <teigland@redhat.com>
-Signed-off-by: Nazar Kalashnikov <nazarkalashnikov0@gmail.com>
+Cc: bpf <bpf@vger.kernel.org>
+Cc: Masami Hiramatsu <mhiramat@kernel.org>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Masahiro Yamada <masahiroy@kernel.org>
+Cc: Nathan Chancellor <nathan@kernel.org>
+Cc: Nicolas Schier <nicolas@fjasle.eu>
+Cc: Zheng Yejian <zhengyejian1@huawei.com>
+Cc: Martin  Kelly <martin.kelly@crowdstrike.com>
+Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
+Cc: Josh Poimboeuf <jpoimboe@redhat.com>
+Cc: Heiko Carstens <hca@linux.ibm.com>
+Cc: Catalin Marinas <catalin.marinas@arm.com>
+Cc: Will Deacon <will@kernel.org>
+Cc: Vasily Gorbik <gor@linux.ibm.com>
+Cc: Alexander Gordeev <agordeev@linux.ibm.com>
+Link: https://lore.kernel.org/20250218200022.710676551@goodmis.org
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: Andrey Grodzovsky <andrey.grodzovsky@crowdstrike.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/dlm/lockspace.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ scripts/sorttable.c |  122 ++++++++++++++++++++++++++++++++++++++--------------
+ 1 file changed, 90 insertions(+), 32 deletions(-)
 
---- a/fs/dlm/lockspace.c
-+++ b/fs/dlm/lockspace.c
-@@ -631,7 +631,7 @@ static int new_lockspace(const char *nam
- 	   lockspace to start running (via sysfs) in dlm_ls_start(). */
+--- a/scripts/sorttable.c
++++ b/scripts/sorttable.c
+@@ -594,31 +594,19 @@ struct elf_mcount_loc {
+ 	uint64_t stop_mcount_loc;
+ };
  
- 	error = do_uevent(ls, 1);
--	if (error)
-+	if (error < 0)
- 		goto out_recoverd;
+-/* Sort the relocations not the address itself */
+-static void *sort_relocs(Elf_Ehdr *ehdr, uint64_t start_loc, uint64_t size)
++/* Fill the array with the content of the relocs */
++static int fill_relocs(void *ptr, uint64_t size, Elf_Ehdr *ehdr, uint64_t start_loc)
+ {
+ 	Elf_Shdr *shdr_start;
+ 	Elf_Rela *rel;
+ 	unsigned int shnum;
+-	unsigned int count;
++	unsigned int count = 0;
+ 	int shentsize;
+-	void *vals;
+-	void *ptr;
+-
+-	compare_values = long_size == 4 ? compare_values_32 : compare_values_64;
++	void *array_end = ptr + size;
  
- 	/* wait until recovery is successful or failed */
+ 	shdr_start = (Elf_Shdr *)((char *)ehdr + ehdr_shoff(ehdr));
+ 	shentsize = ehdr_shentsize(ehdr);
+ 
+-	vals = malloc(long_size * size);
+-	if (!vals) {
+-		snprintf(m_err, ERRSTR_MAXSZ, "Failed to allocate sort array");
+-		pthread_exit(m_err);
+-		return NULL;
+-	}
+-
+-	ptr = vals;
+-
+ 	shnum = ehdr_shnum(ehdr);
+ 	if (shnum == SHN_UNDEF)
+ 		shnum = shdr_size(shdr_start);
+@@ -637,22 +625,18 @@ static void *sort_relocs(Elf_Ehdr *ehdr,
+ 			uint64_t offset = rela_offset(rel);
+ 
+ 			if (offset >= start_loc && offset < start_loc + size) {
+-				if (ptr + long_size > vals + size) {
+-					free(vals);
++				if (ptr + long_size > array_end) {
+ 					snprintf(m_err, ERRSTR_MAXSZ,
+ 						 "Too many relocations");
+-					pthread_exit(m_err);
+-					return NULL;
++					return -1;
+ 				}
+ 
+ 				/* Make sure this has the correct type */
+ 				if (rela_info(rel) != rela_type) {
+-					free(vals);
+ 					snprintf(m_err, ERRSTR_MAXSZ,
+ 						"rela has type %lx but expected %lx\n",
+ 						(long)rela_info(rel), rela_type);
+-					pthread_exit(m_err);
+-					return NULL;
++					return -1;
+ 				}
+ 
+ 				if (long_size == 4)
+@@ -660,13 +644,28 @@ static void *sort_relocs(Elf_Ehdr *ehdr,
+ 				else
+ 					*(uint64_t *)ptr = rela_addend(rel);
+ 				ptr += long_size;
++				count++;
+ 			}
+ 		}
+ 	}
+-	count = ptr - vals;
+-	qsort(vals, count / long_size, long_size, compare_values);
++	return count;
++}
++
++/* Put the sorted vals back into the relocation elements */
++static void replace_relocs(void *ptr, uint64_t size, Elf_Ehdr *ehdr, uint64_t start_loc)
++{
++	Elf_Shdr *shdr_start;
++	Elf_Rela *rel;
++	unsigned int shnum;
++	int shentsize;
++
++	shdr_start = (Elf_Shdr *)((char *)ehdr + ehdr_shoff(ehdr));
++	shentsize = ehdr_shentsize(ehdr);
++
++	shnum = ehdr_shnum(ehdr);
++	if (shnum == SHN_UNDEF)
++		shnum = shdr_size(shdr_start);
+ 
+-	ptr = vals;
+ 	for (int i = 0; i < shnum; i++) {
+ 		Elf_Shdr *shdr = get_index(shdr_start, shentsize, i);
+ 		void *end;
+@@ -689,8 +688,32 @@ static void *sort_relocs(Elf_Ehdr *ehdr,
+ 			}
+ 		}
+ 	}
+-	free(vals);
+-	return NULL;
++}
++
++static int fill_addrs(void *ptr, uint64_t size, void *addrs)
++{
++	void *end = ptr + size;
++	int count = 0;
++
++	for (; ptr < end; ptr += long_size, addrs += long_size, count++) {
++		if (long_size == 4)
++			*(uint32_t *)ptr = r(addrs);
++		else
++			*(uint64_t *)ptr = r8(addrs);
++	}
++	return count;
++}
++
++static void replace_addrs(void *ptr, uint64_t size, void *addrs)
++{
++	void *end = ptr + size;
++
++	for (; ptr < end; ptr += long_size, addrs += long_size) {
++		if (long_size == 4)
++			w(*(uint32_t *)ptr, addrs);
++		else
++			w8(*(uint64_t *)ptr, addrs);
++	}
+ }
+ 
+ /* Sort the addresses stored between __start_mcount_loc to __stop_mcount_loc in vmlinux */
+@@ -699,14 +722,49 @@ static void *sort_mcount_loc(void *arg)
+ 	struct elf_mcount_loc *emloc = (struct elf_mcount_loc *)arg;
+ 	uint64_t offset = emloc->start_mcount_loc - shdr_addr(emloc->init_data_sec)
+ 					+ shdr_offset(emloc->init_data_sec);
+-	uint64_t count = emloc->stop_mcount_loc - emloc->start_mcount_loc;
++	uint64_t size = emloc->stop_mcount_loc - emloc->start_mcount_loc;
+ 	unsigned char *start_loc = (void *)emloc->ehdr + offset;
++	Elf_Ehdr *ehdr = emloc->ehdr;
++	void *e_msg = NULL;
++	void *vals;
++	int count;
++
++	vals = malloc(long_size * size);
++	if (!vals) {
++		snprintf(m_err, ERRSTR_MAXSZ, "Failed to allocate sort array");
++		pthread_exit(m_err);
++	}
+ 
+ 	if (sort_reloc)
+-		return sort_relocs(emloc->ehdr, emloc->start_mcount_loc, count);
++		count = fill_relocs(vals, size, ehdr, emloc->start_mcount_loc);
++	else
++		count = fill_addrs(vals, size, start_loc);
++
++	if (count < 0) {
++		e_msg = m_err;
++		goto out;
++	}
++
++	if (count != size / long_size) {
++		snprintf(m_err, ERRSTR_MAXSZ, "Expected %u mcount elements but found %u\n",
++			(int)(size / long_size), count);
++		e_msg = m_err;
++		goto out;
++	}
++
++	compare_values = long_size == 4 ? compare_values_32 : compare_values_64;
++
++	qsort(vals, count, long_size, compare_values);
++
++	if (sort_reloc)
++		replace_relocs(vals, size, ehdr, emloc->start_mcount_loc);
++	else
++		replace_addrs(vals, size, start_loc);
++
++out:
++	free(vals);
+ 
+-	qsort(start_loc, count/long_size, long_size, compare_extable);
+-	return NULL;
++	pthread_exit(e_msg);
+ }
+ 
+ /* Get the address of __start_mcount_loc and __stop_mcount_loc in System.map */
 
 
 
