@@ -1,61 +1,63 @@
-Return-Path: <stable+bounces-270994-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-270801-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 8B6fE2iWRmoyZQsAu9opvQ
-	(envelope-from <stable+bounces-270994-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:48:40 +0200
+	id Qtc2HaaVRmqnZAsAu9opvQ
+	(envelope-from <stable+bounces-270801-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:45:26 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id EC65B6FA958
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:48:39 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id BDE216FA7D8
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:45:25 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=RME3SsJv;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-270994-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-270994-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="k/GYpgCv";
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-270801-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-270801-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 457C03026723
-	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:41:09 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C927E31E7B78
+	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:34:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57DE334CFDD;
-	Thu,  2 Jul 2026 16:39:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 167C93491D0;
+	Thu,  2 Jul 2026 16:31:25 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EA6930C37A;
-	Thu,  2 Jul 2026 16:39:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE58B33E355;
+	Thu,  2 Jul 2026 16:31:23 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783010391; cv=none; b=gDKAz4a1NcMnvD2Ip8aCYtx/xExbW5pXiVxb4KOf13QpbJ8RimiEveCk5ukJjllp0f2/yXY6/uQXpS/Vdblh07KHK64D5G9RVKioBHEZL4mi5vLKnGYXRHpbZJ1iqbxzdaeeYHlAv03OwvmpMKLVFawAxx9exx7b5RQ/oeFUVDg=
+	t=1783009884; cv=none; b=LmKNpB04AGWxC4dNUXpme1oK4mFazciVSEWI0FIVHXDNYZznTSxLbVsHWX9CXHkQCfRsM1/KZCLeN9hWvlqkx4yaUj3+yHf0w+cQfUwYRdGjImxEnaVaLmg/reul2AS2kQyHs4pnbRzRTwRSZ2WnrY9imCeYVCK5W1NMqf08w+Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783010391; c=relaxed/simple;
-	bh=Tf6NIeuys6GH17YQMuzlTek03N1+94LeXef9vphyun8=;
+	s=arc-20240116; t=1783009884; c=relaxed/simple;
+	bh=m7XiYb4m8+y7gP0i7/DCKQgzCSwh5DXXRwkS7xrZ3/8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JQU9i64hjDutsTAFzqAM5URmOo+USmy5S61nkTJSdHlxXDGmB8MqQe/BQa1G4HII7c5m2eXi68FeSenoT2uxJkWKYTmOpSyOOSKXg36FBfDjExDcV1VDztVxn1oDmythXTnyGgHqdC964wY3bWYF1k4G2THrTWX92ittjdlPjVo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RME3SsJv; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 740661F000E9;
-	Thu,  2 Jul 2026 16:39:49 +0000 (UTC)
+	 MIME-Version; b=IPfuvNJ+SoVd2LqqMbKE6CdVcah36a2LSJ22rjs9DK5/0h817G6JWHDr0qdGq5r02m8kkrxlO3/eP//M3pBKUENpAUX+76jB7WEfkqUVV6i1AkL257OjFMhircz0lUBRrs9+RwsyttF0Ed3bU/uTtVbRH3eNjvrBdqX/eHPjHv0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k/GYpgCv; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2010B1F000E9;
+	Thu,  2 Jul 2026 16:31:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1783010390;
-	bh=cvbAmzHmchAlEOdIojBhq+ClztA0HiwffolkEXGPkiM=;
+	s=korg; t=1783009883;
+	bh=nED5XRzgUMfjW5k9rr3iDtHoR2km0TGVoYzcpxxd1RQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=RME3SsJvax86fEnlKVt2OUX0n2u8OZruQFaawwbLhkRRWXmW9oQvXmRDNN2Njw40H
-	 XM7kRImN1R/Q/dOIxIpb5DoJkC0FDf9OuK2vD3upoZrXcNUczZUUcOZnr2kjy7X66I
-	 DeQlHMcFtLVXCL2fjTQS3hHoHGoRiplQrBlR8VtA=
+	b=k/GYpgCvrDkI2cjiKHk5yjS766ijNMETmE563M/q7co5FH97XIuesMf+Vd8fMFIu8
+	 oM4w1pcSesigzPItuQ0UbCbxmsRsz6knC/Gx20fqp/+gtBnlKUgvqNTw+Ib2+0Z1L0
+	 hjHk/xbeZSYrpYsuSQIAQ1T0x4n3GwArp4KPpYGU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+814c351d094f4f1a1b86@syzkaller.appspotmail.com,
-	Ruslan Valiyev <linuxoid@gmail.com>,
-	Hans Verkuil <hverkuil+cisco@kernel.org>
-Subject: [PATCH 6.12 091/204] media: vidtv: fix NULL pointer dereference in vidtv_mux_push_si
+	Zizhi Wo <wozizhi@huaweicloud.com>,
+	Xie Yuanbin <xieyuanbin1@huawei.com>,
+	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 029/129] ARM: fix hash_name() fault
 Date: Thu,  2 Jul 2026 18:19:08 +0200
-Message-ID: <20260702155120.572543882@linuxfoundation.org>
+Message-ID: <20260702155112.761365077@linuxfoundation.org>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260702155118.667618796@linuxfoundation.org>
-References: <20260702155118.667618796@linuxfoundation.org>
+In-Reply-To: <20260702155112.163984240@linuxfoundation.org>
+References: <20260702155112.163984240@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -73,117 +75,144 @@ X-Spamd-Result: default: False [-0.16 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-270994-lists,stable=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:syzbot+814c351d094f4f1a1b86@syzkaller.appspotmail.com,m:linuxoid@gmail.com,m:hverkuil+cisco@kernel.org,m:syzbot@syzkaller.appspotmail.com,m:hverkuil@kernel.org,s:lists@lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,syzkaller.appspotmail.com,gmail.com,kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-270801-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:wozizhi@huaweicloud.com,m:xieyuanbin1@huawei.com,m:rmk+kernel@armlinux.org.uk,m:bigeasy@linutronix.de,m:sashal@kernel.org,m:rmk@armlinux.org.uk,s:lists@lfdr.de];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,814c351d094f4f1a1b86,cisco];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,appspotmail.com:email]
+	TAGGED_RCPT(0.00)[stable,kernel];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,huawei.com:email,linutronix.de:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,huaweicloud.com:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: EC65B6FA958
+X-Rspamd-Queue-Id: BDE216FA7D8
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ruslan Valiyev <linuxoid@gmail.com>
+From: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
 
-commit 7d8bf3d8f91073f4db347ed3aa6302b56107499c upstream.
+commit 7733bc7d299d682f2723dc38fc7f370b9bf973e9 upstream.
 
-syzbot reported a general protection fault in
-vidtv_psi_ts_psi_write_into [1].
+Zizhi Wo reports:
 
-vidtv_mux_get_pid_ctx() can return NULL, but vidtv_mux_push_si() does
-not check for this before dereferencing the returned pointer to access
-the continuity counter. This leads to a general protection fault when
-accessing a near-NULL address.
+"During the execution of hash_name()->load_unaligned_zeropad(), a
+ potential memory access beyond the PAGE boundary may occur. For
+ example, when the filename length is near the PAGE_SIZE boundary.
+ This triggers a page fault, which leads to a call to
+ do_page_fault()->mmap_read_trylock(). If we can't acquire the lock,
+ we have to fall back to the mmap_read_lock() path, which calls
+ might_sleep(). This breaks RCU semantics because path lookup occurs
+ under an RCU read-side critical section."
 
-The root cause is that vidtv_mux_pid_ctx_init() does not check the
-return value of vidtv_mux_create_pid_ctx_once() for PMT section PIDs.
-If the allocation fails, the PID context is never created, but init
-returns success. The subsequent vidtv_mux_push_si() call then gets
-NULL from vidtv_mux_get_pid_ctx() and crashes.
+This is seen with CONFIG_DEBUG_ATOMIC_SLEEP=y and CONFIG_KFENCE=y.
 
-Fix both the root cause (add error check in vidtv_mux_pid_ctx_init
-for PMT PIDs) and add defensive NULL checks in vidtv_mux_push_si for
-all vidtv_mux_get_pid_ctx() calls.
+Kernel addresses (with the exception of the vectors/kuser helper
+page) do not have VMAs associated with them. If the vectors/kuser
+helper page faults, then there are two possibilities:
 
-[1]
-Oops: general protection fault, probably for non-canonical address 0xdffffc0000000000: 0000 [#1] SMP KASAN PTI
-KASAN: null-ptr-deref in range [0x0000000000000000-0x0000000000000007]
-Workqueue: events vidtv_mux_tick
-RIP: 0010:vidtv_psi_ts_psi_write_into+0x54a/0xbc0 drivers/media/test-drivers/vidtv/vidtv_psi.c:197
-Call Trace:
- <TASK>
- vidtv_psi_table_header_write_into drivers/media/test-drivers/vidtv/vidtv_psi.c:799 [inline]
- vidtv_psi_pmt_write_into+0x3b2/0xa70 drivers/media/test-drivers/vidtv/vidtv_psi.c:1231
- vidtv_mux_push_si+0x932/0xe80 drivers/media/test-drivers/vidtv/vidtv_mux.c:196
- vidtv_mux_tick+0xe9b/0x1480 drivers/media/test-drivers/vidtv/vidtv_mux.c:408
+1. if the fault happened while in kernel mode, then we're basically
+   dead, because the CPU won't be able to vector through this page
+   to handle the fault.
+2. if the fault happened while in user mode, that means the page was
+   protected from user access, and we want to fault anyway.
 
-Fixes: f90cf6079bf67 ("media: vidtv: add a bridge driver")
-Cc: stable@vger.kernel.org
-Reported-by: syzbot+814c351d094f4f1a1b86@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=814c351d094f4f1a1b86
-Signed-off-by: Ruslan Valiyev <linuxoid@gmail.com>
-Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Thus, we can handle kernel addresses from any context entirely
+separately without going anywhere near the mmap lock. This gives us
+an entirely non-sleeping path for all kernel mode kernel address
+faults.
+
+As we handle the kernel address faults before interrupts are enabled,
+this change has the side effect of improving the branch predictor
+hardening, but does not completely solve the issue.
+
+Reported-by: Zizhi Wo <wozizhi@huaweicloud.com>
+Reported-by: Xie Yuanbin <xieyuanbin1@huawei.com>
+Link: https://lore.kernel.org/r/20251126090505.3057219-1-wozizhi@huaweicloud.com
+Reviewed-by: Xie Yuanbin <xieyuanbin1@huawei.com>
+Tested-by: Xie Yuanbin <xieyuanbin1@huawei.com>
+Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/test-drivers/vidtv/vidtv_mux.c |    8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ arch/arm/mm/fault.c | 35 +++++++++++++++++++++++++++++++++++
+ 1 file changed, 35 insertions(+)
 
---- a/drivers/media/test-drivers/vidtv/vidtv_mux.c
-+++ b/drivers/media/test-drivers/vidtv/vidtv_mux.c
-@@ -101,7 +101,8 @@ static int vidtv_mux_pid_ctx_init(struct
- 	/* add a ctx for all PMT sections */
- 	while (p) {
- 		pid = vidtv_psi_get_pat_program_pid(p);
--		vidtv_mux_create_pid_ctx_once(m, pid);
-+		if (!vidtv_mux_create_pid_ctx_once(m, pid))
-+			goto free;
- 		p = p->next;
- 	}
+diff --git a/arch/arm/mm/fault.c b/arch/arm/mm/fault.c
+index c94633eb64a1bb..907705992ab65f 100644
+--- a/arch/arm/mm/fault.c
++++ b/arch/arm/mm/fault.c
+@@ -240,6 +240,35 @@ void do_bad_area(unsigned long addr, unsigned int fsr, struct pt_regs *regs)
+ #define VM_FAULT_BADMAP		((__force vm_fault_t)0x010000)
+ #define VM_FAULT_BADACCESS	((__force vm_fault_t)0x020000)
  
-@@ -170,6 +171,9 @@ static u32 vidtv_mux_push_si(struct vidt
- 	nit_ctx = vidtv_mux_get_pid_ctx(m, VIDTV_NIT_PID);
- 	eit_ctx = vidtv_mux_get_pid_ctx(m, VIDTV_EIT_PID);
- 
-+	if (!pat_ctx || !sdt_ctx || !nit_ctx || !eit_ctx)
-+		return 0;
++static int __kprobes
++do_kernel_address_page_fault(struct mm_struct *mm, unsigned long addr,
++			     unsigned int fsr, struct pt_regs *regs)
++{
++	if (user_mode(regs)) {
++		/*
++		 * Fault from user mode for a kernel space address. User mode
++		 * should not be faulting in kernel space, which includes the
++		 * vector/khelper page. Send a SIGSEGV.
++		 */
++		__do_user_fault(addr, fsr, SIGSEGV, SEGV_MAPERR, regs);
++	} else {
++		/*
++		 * Fault from kernel mode. Enable interrupts if they were
++		 * enabled in the parent context. Section (upper page table)
++		 * translation faults are handled via do_translation_fault(),
++		 * so we will only get here for a non-present kernel space
++		 * PTE or PTE permission fault. This may happen in exceptional
++		 * circumstances and need the fixup tables to be walked.
++		 */
++		if (interrupts_enabled(regs))
++			local_irq_enable();
 +
- 	pat_args.offset             = m->mux_buf_offset;
- 	pat_args.continuity_counter = &pat_ctx->cc;
++		__do_kernel_fault(mm, addr, fsr, regs);
++	}
++
++	return 0;
++}
++
+ static int __kprobes
+ do_page_fault(unsigned long addr, unsigned int fsr, struct pt_regs *regs)
+ {
+@@ -253,6 +282,12 @@ do_page_fault(unsigned long addr, unsigned int fsr, struct pt_regs *regs)
+ 	if (kprobe_page_fault(regs, fsr))
+ 		return 0;
  
-@@ -186,6 +190,8 @@ static u32 vidtv_mux_push_si(struct vidt
- 		}
++	/*
++	 * Handle kernel addresses faults separately, which avoids touching
++	 * the mmap lock from contexts that are not able to sleep.
++	 */
++	if (addr >= TASK_SIZE)
++		return do_kernel_address_page_fault(mm, addr, fsr, regs);
  
- 		pmt_ctx = vidtv_mux_get_pid_ctx(m, pmt_pid);
-+		if (!pmt_ctx)
-+			continue;
- 
- 		pmt_args.offset             = m->mux_buf_offset;
- 		pmt_args.pmt                = m->si.pmt_secs[i];
+ 	/* Enable interrupts if they were enabled in the parent context. */
+ 	if (interrupts_enabled(regs))
+-- 
+2.53.0
+
 
 
 
