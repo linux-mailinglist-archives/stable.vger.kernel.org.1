@@ -1,60 +1,62 @@
-Return-Path: <stable+bounces-271291-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-271486-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id WN+bDt2kRmqNawsAu9opvQ
-	(envelope-from <stable+bounces-271291-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:50:21 +0200
+	id FeyRMQKcRmpQaAsAu9opvQ
+	(envelope-from <stable+bounces-271486-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:12:34 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 530F86FBA9C
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:50:19 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1E77A6FB1FB
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:12:34 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=jaD7xbfE;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-271291-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-271291-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=wdVCzaI5;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-271486-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-271486-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id BD37532670C2
-	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:53:26 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id DCE71347A40E
+	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 17:01:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD8C733B975;
-	Thu,  2 Jul 2026 16:52:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 248D2317146;
+	Thu,  2 Jul 2026 17:01:11 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFBEE30C37A;
-	Thu,  2 Jul 2026 16:52:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECD1226F46F;
+	Thu,  2 Jul 2026 17:01:09 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783011164; cv=none; b=hhvyO7Zpw3jDlceuLXz2QE6gIhC5LHh+WcROYH795yt/mhWjPPDcIvFhmtzQBWoD7VDZa2zQdXCWHB8sh6X2i8Gt0d0Pe8DfaJOP04gVDS9JGH1jSvldf/1VCO8tRYd8L9nnie6IQpjdzV1p25KtEcazLC4NUjgu6MUNK/AQGuE=
+	t=1783011670; cv=none; b=rGmWR0PHifjpN6lHmsMGBY8xzJUNHriV0l/BZO0jloJ2GygkG/Y867hDOo3vXKi8KWpn1PyORZXKzYCYBH7YAWO6im/05Zv0eof7DP+XNdQM/Sz8IAjE8iSfh8JlUzG5whm5m/OS8qbt6jJEeGySaC53aRbscPKoIM5AxmXbpbM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783011164; c=relaxed/simple;
-	bh=ENa7VouvXNpByyQ+L4hJSI0Mh7jky13HM456+2ZXqFY=;
+	s=arc-20240116; t=1783011670; c=relaxed/simple;
+	bh=mR1dcmPx4VY4ImHi9p1P3OFwv/IjFwyFvQr4tNk33xg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iJG6h6umTIxz8k4e8m71kAfoHf4nKC1BvfLZvhe6As+xebCCIgUjpCPq6wT3YpI91dpB/mmg7VIz9VjGNzTz9bd9vJabijq/MxEuwcX/D4P+G8YNfKS5tsF2y1aTQLoW2cgEzYgLaYZaZEr6voK9ebchiQLaTg8J1S3G9eHnGhQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jaD7xbfE; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52D3B1F000E9;
-	Thu,  2 Jul 2026 16:52:42 +0000 (UTC)
+	 MIME-Version; b=qSPSAkH9IIZvtawWzWdD1NDgGJJ6EjqUxORGsluA8vconF0+HwBlTLEKFRc3ecyIUpreJGlCCXuUyuX7J89fzoCKTVtDlt79a/n5OB1RSekjXDncg55sWyYxZN8M6Tfnyjlk7sO7qiRHqXpLOCVxrRMQ8PEx+3ZOuiMsvU7p+LM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wdVCzaI5; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5FD781F000E9;
+	Thu,  2 Jul 2026 17:01:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1783011162;
-	bh=kH/njiNASe3KYmgRpjR5gW0s/+0enUZBF4Q5JoK0/7o=;
+	s=korg; t=1783011669;
+	bh=oVk6t8d9kZ2MpnAHTZoFyIjr5IB6KTUmUgJ099GWTLg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=jaD7xbfEGHlVY7tR96NzMP/lZdE0apGblC4oN0WcBtC/1+K9e64kCJtexcio1+Zbo
-	 yYQbG61l3Wuzu2NgKd/bjT8lyePsqMy/PwYYrEIiUvTo1+xnenf0unpHPGPrKYFimK
-	 9cZiBGoMELExzViVmYC8d4jZwoydh9BNQDcmQ5vs=
+	b=wdVCzaI5P581sOfwnFmZmLcBPLhDhr4m7ht4CzsIXh3cnHBzLOVVaQVHT0Wfc5u1V
+	 ndQpr5Bi4Pr+Mp2VlC4Q3BiNg9KygqTyQ7TRvtjrCP6eXGzbMwTTEf0o8x67Q/c2zK
+	 hRavGvMwmZcemf9xsPSFN7DzZuh0ZUtdkfp1EfaU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Fan Wu <fanwu01@zju.edu.cn>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.6 146/175] hdlc_ppp: sync per-proto timers before freeing hdlc state
+	Jose Ignacio Tornos Martinez <jtornosm@redhat.com>,
+	Baochen Qiang <baochen.qiang@oss.qualcomm.com>,
+	Rameshkumar Sundaram <rameshkumar.sundaram@oss.qualcomm.com>,
+	Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+Subject: [PATCH 7.1 051/120] wifi: ath11k: fix warning when unbinding
 Date: Thu,  2 Jul 2026 18:20:47 +0200
-Message-ID: <20260702155118.881522668@linuxfoundation.org>
+Message-ID: <20260702155114.021662289@linuxfoundation.org>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260702155115.766838875@linuxfoundation.org>
-References: <20260702155115.766838875@linuxfoundation.org>
+In-Reply-To: <20260702155112.964534952@linuxfoundation.org>
+References: <20260702155112.964534952@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,147 +70,87 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-271291-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:fanwu01@zju.edu.cn,m:kuba@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-271486-lists,stable=lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:jtornosm@redhat.com,m:baochen.qiang@oss.qualcomm.com,m:rameshkumar.sundaram@oss.qualcomm.com,m:jeff.johnson@oss.qualcomm.com,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[qualcomm.com:email,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,msgid.link:url]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 530F86FBA9C
+X-Rspamd-Queue-Id: 1E77A6FB1FB
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+7.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fan Wu <fanwu01@zju.edu.cn>
+From: Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
 
-commit c78a4e41ab5ead6193ad8a2dd92e8906bae659fa upstream.
+commit 8b7a26b6681922a38cd5a7829ace61f8e54df9b7 upstream.
 
-Each PPP control protocol (LCP/IPCP/IPV6CP) embedded in struct ppp
-registers a timer via timer_setup(). That struct ppp is the
-hdlc->state allocation, which detach_hdlc_protocol() frees with kfree()
-in both teardown paths: unregister_hdlc_device() and the re-attach inside
-attach_hdlc_protocol().
+If there is an error during some initialization related to firmware,
+the buffers dp->tx_ring[i].tx_status are released.
+However this is released again when the device is unbinded (ath11k_pci),
+and we get:
+WARNING: CPU: 0 PID: 6231 at mm/slub.c:4368 free_large_kmalloc+0x57/0x90
+Call Trace:
+free_large_kmalloc
+ath11k_dp_free
+ath11k_core_deinit
+ath11k_pci_remove
+...
 
-The ppp proto never registered a .detach callback, so
-detach_hdlc_protocol() performs no timer synchronization before the
-kfree(). The only cancel, timer_delete(&proto->timer) in ppp_cp_event(),
-is partial (it does not wait for a running callback) and only runs on the
-->CLOSED transition; ppp_stop()/ppp_close() do not sync either. A
-ppp_timer callback already executing (blocked on ppp->lock) survives the
-kfree and then dereferences proto->state / ppp->lock in freed memory,
-leading to a use-after-free.
+The issue is always reproducible from a VM because the MSI addressing
+initialization is failing.
 
-Fix this by adding a .detach helper that calls timer_shutdown_sync() on
-every per-proto timer. detach_hdlc_protocol() invokes proto->detach(dev)
-before kfree(hdlc->state), so timer_shutdown_sync()
-now runs on both free paths.
-timer_shutdown_sync() is used instead of timer_delete_sync() because the
-keepalive path re-arms the timer through add_timer()/mod_timer() and
-shutdown blocks any re-activation during teardown.
+In order to fix the issue, just set the buffers to NULL after releasing in
+order to avoid the double free.
 
-Initialize the per-protocol timers in ppp_ioctl() when the protocol is
-attached, and remove the now-redundant timer_setup() from ppp_start(), so
-that the timers are initialized exactly once at attach time and
-ppp_timer_release() never operates on uninitialized timer_list
-structures. attach_hdlc_protocol() uses kmalloc() (not kzalloc), so
-struct ppp's protos[i].timer is uninitialized garbage until the first
-timer_setup(); without this init-at-attach, attaching the PPP protocol
-without ever bringing the device up would leave timer_shutdown_sync()
-operating on uninitialized memory in .detach. Moving the init out of
-ppp_start() (which only runs on NETDEV_UP) into the attach path makes the
-initialization unconditional and avoids initializing the same timer_list
-twice.
-
-This bug was found by static analysis.
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Fixes: d5c65159f289 ("ath11k: driver for Qualcomm IEEE 802.11ax devices")
 Cc: stable@vger.kernel.org
-Signed-off-by: Fan Wu <fanwu01@zju.edu.cn>
-Link: https://patch.msgid.link/20260617020518.116319-1-fanwu01@zju.edu.cn
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
+Reviewed-by: Baochen Qiang <baochen.qiang@oss.qualcomm.com>
+Reviewed-by: Rameshkumar Sundaram <rameshkumar.sundaram@oss.qualcomm.com>
+Link: https://patch.msgid.link/20260420110130.509670-1-jtornosm@redhat.com
+Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wan/hdlc_ppp.c |   15 +++++++++++++--
- 1 file changed, 13 insertions(+), 2 deletions(-)
+ drivers/net/wireless/ath/ath11k/dp.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/net/wan/hdlc_ppp.c
-+++ b/drivers/net/wan/hdlc_ppp.c
-@@ -621,7 +621,6 @@ static void ppp_start(struct net_device
- 		struct proto *proto = &ppp->protos[i];
- 
- 		proto->dev = dev;
--		timer_setup(&proto->timer, ppp_timer, 0);
- 		proto->state = CLOSED;
+--- a/drivers/net/wireless/ath/ath11k/dp.c
++++ b/drivers/net/wireless/ath/ath11k/dp.c
+@@ -1040,6 +1040,7 @@ void ath11k_dp_free(struct ath11k_base *
+ 		idr_destroy(&dp->tx_ring[i].txbuf_idr);
+ 		spin_unlock_bh(&dp->tx_ring[i].tx_idr_lock);
+ 		kfree(dp->tx_ring[i].tx_status);
++		dp->tx_ring[i].tx_status = NULL;
  	}
- 	ppp->protos[IDX_LCP].pid = PID_LCP;
-@@ -641,6 +640,15 @@ static void ppp_close(struct net_device
- 	ppp_tx_flush();
- }
  
-+static void ppp_timer_release(struct net_device *dev)
-+{
-+	struct ppp *ppp = get_ppp(dev);
-+	int i;
-+
-+	for (i = 0; i < IDX_COUNT; i++)
-+		timer_shutdown_sync(&ppp->protos[i].timer);
-+}
-+
- static struct hdlc_proto proto = {
- 	.start		= ppp_start,
- 	.stop		= ppp_stop,
-@@ -649,6 +657,7 @@ static struct hdlc_proto proto = {
- 	.ioctl		= ppp_ioctl,
- 	.netif_rx	= ppp_rx,
- 	.module		= THIS_MODULE,
-+	.detach		= ppp_timer_release,
- };
- 
- static const struct header_ops ppp_header_ops = {
-@@ -659,7 +668,7 @@ static int ppp_ioctl(struct net_device *
- {
- 	hdlc_device *hdlc = dev_to_hdlc(dev);
- 	struct ppp *ppp;
--	int result;
-+	int i, result;
- 
- 	switch (ifs->type) {
- 	case IF_GET_PROTO:
-@@ -687,6 +696,8 @@ static int ppp_ioctl(struct net_device *
- 			return result;
- 
- 		ppp = get_ppp(dev);
-+		for (i = 0; i < IDX_COUNT; i++)
-+			timer_setup(&ppp->protos[i].timer, ppp_timer, 0);
- 		spin_lock_init(&ppp->lock);
- 		ppp->req_timeout = 2;
- 		ppp->cr_retries = 10;
+ 	/* Deinit any SOC level resource */
 
 
 
