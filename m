@@ -1,61 +1,62 @@
-Return-Path: <stable+bounces-270795-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-270989-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id OR7nLN6gRmoaagsAu9opvQ
-	(envelope-from <stable+bounces-270795-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:33:18 +0200
+	id X34JOxCZRmq4ZgsAu9opvQ
+	(envelope-from <stable+bounces-270989-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:00:00 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id A84FE6FB6F8
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:33:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 39CDF6FAD6E
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:00:00 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=UEF+a+kZ;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-270795-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-270795-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=V13Hrxc6;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-270989-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-270989-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 989D0312C5D6
-	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:34:46 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id CF1B630B49F0
+	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:40:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C79E33612F3;
-	Thu,  2 Jul 2026 16:31:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B66435E1DA;
+	Thu,  2 Jul 2026 16:39:38 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CE3B360EFA;
-	Thu,  2 Jul 2026 16:31:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDC2135F602;
+	Thu,  2 Jul 2026 16:39:36 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783009871; cv=none; b=BAhP23pKYBxojg6AIYNMx95Jde2JFZ3Jc6eKoxTRNkK6Xw58sjoLIghnCc4ruwPyoteIjhziFi4efr1Y1pzeejEpEpTMDd5uQj4XbAF+yRqiFWkYvrafSnS3yKU0vkSVxVm7MR4ydQGCV8u3jDimaTJtduul/qoQMtrAEPMTpxc=
+	t=1783010378; cv=none; b=FG0fhhP3MKTTq/tU2jKI0A8m9+GTO6au6hFy1YmfxkzhSDsiaT0WInYtUk9AKqy32pwWT7eWOznvY/TOerQ232BoS5cloj2KFoWLY2fRQLXI7utM4vQm1kevgu9/c6tsy/xUjVN56HZmP9C4arjEOUwCkypsZwvtVAcUyoSXF+8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783009871; c=relaxed/simple;
-	bh=GeQ3iUHhjcEy9EVtXbpz5vVYR/Jpbl5EYDWenaxMO3I=;
+	s=arc-20240116; t=1783010378; c=relaxed/simple;
+	bh=T+px+FU+ynCZ37HevFZrA4swf8zU8tkcRxdRNnIZcQ4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fSB/3Gy64/iRCtRj61D/qoo1ldwtxUI378Wt3o4UeRVzQFd8nWIiLhvKX5OF2uBY4Rr+rm8d7L+0yRmNqZClMB6zfX67rDqYJ/5EWPU8Ei2EGPrHdIlxk5pyk2DR5o2TzZRGje9QwcqMJRszSErY7aLN4wgdFBOCDYOxASMbp2k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UEF+a+kZ; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F221F1F00A3D;
-	Thu,  2 Jul 2026 16:31:09 +0000 (UTC)
+	 MIME-Version; b=vA9S5a4GiE0sFykPchglrbs2tprrfNLk+x8PWMtUX6gWVQayEuElR5HSbwFRrRm3/dR7zmuUwh+ONJvUvpIDydjUk3MQ42Zotq4MvYL77ciIW10Rfu+bNS8Qs0Lr8pXuLdvLEdRHdD4o6iPLutieHLLI5ZSVZqa9wtPMzxyyw84=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V13Hrxc6; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F3271F000E9;
+	Thu,  2 Jul 2026 16:39:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1783009870;
-	bh=xkxh+2/ZyrnaEGZ1Kl9q2Z2aPyNxI2hObBe90u8IXs4=;
+	s=korg; t=1783010376;
+	bh=M3MVU3TnEhJ7O5YMAq817MxgNt0eu/G7szvLi2dqxMo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=UEF+a+kZyA/bsnc4U/0Z96E8lFtGtHvta1dA3oJBF5/5ZsgxSUmVgz8ghDuGL41uH
-	 f4p8rQIPRhca69aO+8CC1p3U9bw4bE50912ReZL6icCtVdtaY7h2RkWGE+nICEOfok
-	 pjkg6dGVTgVIBhc3GIYO+Uxye8k7O3V77NGKKtAk=
+	b=V13Hrxc6eGR8pH0x1UTo7YvWUtAJMrbfOO3SzZOrwYwu9aaCUeMnAu82BTFAqhGBE
+	 ic3050zBms9HF3agpjZ5Je2KoOo4C0qDUtjCeWjtQ/i3Sa7yeJCW8igRrVzZu6sF0H
+	 G4ZE/lDMYgtyX8ruWzBR1qWnbFN1kSOpY5i9xK8M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 024/129] debugobjects: Use LD_WAIT_CONFIG instead of LD_WAIT_SLEEP
+	stable <stable@kernel.org>,
+	Sam Daly <sam@samdaly.ie>,
+	Javier Carrasco <javier.carrasco.cruz@gmail.com>,
+	Jonathan Cameron <jic23@kernel.org>
+Subject: [PATCH 6.12 086/204] iio: light: veml6075: add bounds check to veml6075_it_ms index
 Date: Thu,  2 Jul 2026 18:19:03 +0200
-Message-ID: <20260702155112.661909669@linuxfoundation.org>
+Message-ID: <20260702155120.468920490@linuxfoundation.org>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260702155112.163984240@linuxfoundation.org>
-References: <20260702155112.163984240@linuxfoundation.org>
+In-Reply-To: <20260702155118.667618796@linuxfoundation.org>
+References: <20260702155118.667618796@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,88 +68,95 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:bigeasy@linutronix.de,m:tglx@linutronix.de,m:sashal@kernel.org,s:lists@lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,samdaly.ie,gmail.com];
+	TAGGED_FROM(0.00)[bounces-270989-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-270795-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:stable@kernel.org,m:sam@samdaly.ie,m:javier.carrasco.cruz@gmail.com,m:jic23@kernel.org,m:javiercarrascocruz@gmail.com,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORWARDED(0.00)[lists@lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	RWL_MAILSPIKE_POSSIBLE(0.00)[104.64.211.4:from];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linutronix.de:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,msgid.link:url]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,samdaly.ie:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: A84FE6FB6F8
+X-Rspamd-Queue-Id: 39CDF6FAD6E
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+From: Sam Daly <sam@samdaly.ie>
 
-commit 37de2dbc318ee10577c1c2704de5a803e75e55a2 upstream.
+commit 307dc4240bd41852d9e0912921e298160db1c109 upstream.
 
-fill_pool_map is used to suppress nesting violations caused by acquiring
-a spinlock_t (from within the memory allocator) while holding a
-raw_spinlock_t. The used annotation is wrong.
+veml6075_it_ms has 5 elements but VEML6075_CONF_IT can yield values 0-7.
+If it returns a value >= 5, this causes an out-of-bounds array access.
+Add a bounds check and return -EINVAL if the index is out of range.
 
-LD_WAIT_SLEEP is for always sleeping lock types such as mutex_t.
-LD_WAIT_CONFIG is for lock type which are sleeping while spinning on
-PREEMPT_RT such as spinlock_t.
+The problem values are reserved so should never be read from the
+register. Hence this is hardening against fault device, missprogramming
+or bus corruption.
 
-Use LD_WAIT_CONFIG as override.
-
-Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Link: https://patch.msgid.link/20251127153652.291697-3-bigeasy@linutronix.de
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Assisted-by: gkh_clanker_2000
+Cc: stable <stable@kernel.org>
+Signed-off-by: Sam Daly <sam@samdaly.ie>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reviewed-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+Signed-off-by: Jonathan Cameron <jic23@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- lib/debugobjects.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/iio/light/veml6075.c |    8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/lib/debugobjects.c b/lib/debugobjects.c
-index bb5c909458535b..a7f3c6f15125a9 100644
---- a/lib/debugobjects.c
-+++ b/lib/debugobjects.c
-@@ -608,10 +608,10 @@ static void debug_objects_fill_pool(void)
- 	if (!IS_ENABLED(CONFIG_PREEMPT_RT) || preemptible() || system_state < SYSTEM_SCHEDULING) {
- 		/*
- 		 * Annotate away the spinlock_t inside raw_spinlock_t warning
--		 * by temporarily raising the wait-type to WAIT_SLEEP, matching
-+		 * by temporarily raising the wait-type to LD_WAIT_CONFIG, matching
- 		 * the preemptible() condition above.
- 		 */
--		static DEFINE_WAIT_OVERRIDE_MAP(fill_pool_map, LD_WAIT_SLEEP);
-+		static DEFINE_WAIT_OVERRIDE_MAP(fill_pool_map, LD_WAIT_CONFIG);
- 		lock_map_acquire_try(&fill_pool_map);
- 		fill_pool();
- 		lock_map_release(&fill_pool_map);
--- 
-2.53.0
-
+--- a/drivers/iio/light/veml6075.c
++++ b/drivers/iio/light/veml6075.c
+@@ -100,7 +100,7 @@ static const struct iio_chan_spec veml60
+ 
+ static int veml6075_request_measurement(struct veml6075_data *data)
+ {
+-	int ret, conf, int_time;
++	int ret, conf, int_time, int_index;
+ 
+ 	ret = regmap_read(data->regmap, VEML6075_CMD_CONF, &conf);
+ 	if (ret < 0)
+@@ -117,7 +117,11 @@ static int veml6075_request_measurement(
+ 	 * time for all possible configurations. Using a 1.50 factor simplifies
+ 	 * operations and ensures reliability under all circumstances.
+ 	 */
+-	int_time = veml6075_it_ms[FIELD_GET(VEML6075_CONF_IT, conf)];
++	int_index = FIELD_GET(VEML6075_CONF_IT, conf);
++	if (int_index >= ARRAY_SIZE(veml6075_it_ms))
++		return -EINVAL;
++
++	int_time = veml6075_it_ms[int_index];
+ 	msleep(int_time + (int_time / 2));
+ 
+ 	/* shutdown again, data registers are still accessible */
 
 
 
