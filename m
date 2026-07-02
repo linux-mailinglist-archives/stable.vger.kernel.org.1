@@ -1,67 +1,60 @@
-Return-Path: <stable+bounces-271076-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-271324-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id pEYcHcSXRmoEZgsAu9opvQ
-	(envelope-from <stable+bounces-271076-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:54:28 +0200
+	id DJ0AGz2aRmpmZwsAu9opvQ
+	(envelope-from <stable+bounces-271324-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:05:01 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E56A36FABA6
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:54:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CD6F26FAF45
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:05:00 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="JW/PdQZg";
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-271076-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-271076-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=ss8YYIug;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-271324-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-271324-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 0CDA530C9302
-	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:46:33 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 9E5A231805C2
+	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:54:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D89C35677B;
-	Thu,  2 Jul 2026 16:43:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C4702D0602;
+	Thu,  2 Jul 2026 16:54:08 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33D9A345752;
-	Thu,  2 Jul 2026 16:43:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61E4A24E4C3;
+	Thu,  2 Jul 2026 16:54:07 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783010607; cv=none; b=Z2InfZzJOAaaQ1f7skqkqcorWP5x7Ck4VkaJMpnOFOKDZd3zk+KuVt1k589uD3nNqpAHup9nFwpwK2HLo/nkQ8K3laVfTAP+o8KRJV/YnOKd68iunJoOLz3qZKhQRdUl/MHbktPoauluiVn5NGk19jMbLxDH+PYhLIf5ucfyzPg=
+	t=1783011248; cv=none; b=gFL2N2QiR0U+aESt9QbuMiMcN4GuPamyNRd+z/2jcdNXT8EZM2kLvjxNIE4eP9w9Vedh6p0C+Jq8u5eZqsR4UYRSrDZ768Q2/mBYuGJOcsLUndceb4owIwWxuToLVTm8OdySZYHiogADa+XTPropWZwg2Wu/xr3hTWTcCNXkW4M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783010607; c=relaxed/simple;
-	bh=JsCjN4JJTZo7XiWgFqHmBvz4s8zayLGGNMuv0TZaDVo=;
+	s=arc-20240116; t=1783011248; c=relaxed/simple;
+	bh=Len9UJGcsrW9LUIyN+d1YJPUyL0baduf42KmhsI2mFg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=r+9jI7/qhadn+jZyPY7Punx5ESM6S2B37fcie5bcqjz9G/57HgAm3Ypl8fizSceaj9nS1ntyB3wh04W5oEKsqMjABMaNzFYHYC9zvyPvFzi8t1z6eIPvoK4gSqb7HVXxxApHbrByDcT3TIivLO/bI6Bo94P77MCcTyjrX6J8de8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JW/PdQZg; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 654381F000E9;
-	Thu,  2 Jul 2026 16:43:25 +0000 (UTC)
+	 MIME-Version; b=JSJEFeJ50WrStDEfE/Icp3JrAZ/TbkTJAoRXWdXa4plutuWg+UP1QBlYHcZz04nfrwrySHAa3SX0Hza053+QA4Z6pb6pC8b8t60eGVda8L2c6eLxMAllYI2GhcnIWEZH1BtdUnFuLwopETqF+8tPbPG/Ir/saP6/5DWCPs2WJhw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ss8YYIug; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 777421F000E9;
+	Thu,  2 Jul 2026 16:54:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1783010605;
-	bh=//bijOm/sIS1ACFBp7H5oQ0JrdAN/e9Prm0/18VoI80=;
+	s=korg; t=1783011247;
+	bh=aWdoQSqTZxq1mAxTQnk/WJvDrPW7Fcja8Il4D4jkHYM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=JW/PdQZgI+5YjBmI1F5kqDBKUCNSO0/Pv/VuaLedTiEVIPVMM0j4TXw2U7ckSIs4+
-	 auGk69r99J3BeEZl2Nt04+CaRaqOhqhz+ENVU9NH0SX18RR85zy/pzDAKjFQVOVCn7
-	 wz5+WGvplNw2mRTTtAORHQhSLk+liO7EeZfGe2HE=
+	b=ss8YYIugcdNk/qwGKhv0JAccL3NapzoyMrBoYsQXWyVIlejC19Eq0D9XC8weIJ0+k
+	 4qYpsS6miYxqvNchZ4mW/PdZ6dt7HlSM9/rwl8jYCHraYztd87Fe+XOiy0QTGhTwvS
+	 KNcmBfxSnmtF8uMg4MxdnogB9AovN2AkhVWLfWuc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhang Cen <rollkingzzc@gmail.com>,
-	Joseph Qi <joseph.qi@linux.alibaba.com>,
-	Mark Fasheh <mark@fasheh.com>,
-	Joel Becker <jlbec@evilplan.org>,
-	Junxiao Bi <junxiao.bi@oracle.com>,
-	Changwei Ge <gechangwei@live.cn>,
-	Jun Piao <piaojun@huawei.com>,
-	Heming Zhao <heming.zhao@suse.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.12 174/204] ocfs2: reject oversized group bitmap descriptors
-Date: Thu,  2 Jul 2026 18:20:31 +0200
-Message-ID: <20260702155122.300921590@linuxfoundation.org>
+	Jiajia Liu <liujiajia@kylinos.cn>,
+	Felix Fietkau <nbd@nbd.name>
+Subject: [PATCH 6.18 035/108] wifi: mt76: add wcid publish check in mt76_sta_add
+Date: Thu,  2 Jul 2026 18:20:32 +0200
+Message-ID: <20260702155112.835474091@linuxfoundation.org>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260702155118.667618796@linuxfoundation.org>
-References: <20260702155118.667618796@linuxfoundation.org>
+In-Reply-To: <20260702155112.110058792@linuxfoundation.org>
+References: <20260702155112.110058792@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -82,160 +75,99 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[12];
-	TAGGED_FROM(0.00)[bounces-271076-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:rollkingzzc@gmail.com,m:joseph.qi@linux.alibaba.com,m:mark@fasheh.com,m:jlbec@evilplan.org,m:junxiao.bi@oracle.com,m:gechangwei@live.cn,m:piaojun@huawei.com,m:heming.zhao@suse.com,m:akpm@linux-foundation.org,s:lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,linux.alibaba.com,fasheh.com,evilplan.org,oracle.com,live.cn,huawei.com,suse.com,linux-foundation.org];
+	TAGGED_FROM(0.00)[bounces-271324-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:liujiajia@kylinos.cn,m:nbd@nbd.name,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	TO_DN_SOME(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,oracle.com:email,vger.kernel.org:from_smtp,live.cn:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,suse.com:email,alibaba.com:email,huawei.com:email,evilplan.org:email,fasheh.com:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,kylinos.cn:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,nbd.name:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: E56A36FABA6
+X-Rspamd-Queue-Id: CD6F26FAF45
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhang Cen <rollkingzzc@gmail.com>
+From: Jiajia Liu <liujiajia@kylinos.cn>
 
-commit 9bd541e09dffff27e5bec0f9f45b0228173a5375 upstream.
+commit 20b126920a259df4d7dcae19fcfe2c57a74d6b2e upstream.
 
-ocfs2_validate_gd_parent() only bounds bg_bits against the parent
-allocator's chain geometry.  A malicious descriptor can still claim a
-bg_size/bg_bits pair that exceeds the bitmap bytes that physically fit in
-the group descriptor block, so later bitmap scans and bit updates can run
-past bg_bitmap.
+Since mt7925_mac_sta_add publishes wcid, add publish check in mt76_sta_add
+to avoid reinitializing the wcid->poll_list.
 
-Add a physical-cap check based on ocfs2_group_bitmap_size() for the parent
-allocator type and reject descriptors whose bg_size or bg_bits exceed that
-capacity.  Keep the existing chain geometry check so both the on-disk
-bitmap layout and the allocator metadata must agree before the descriptor
-is used.
+Found dev->sta_poll_list corruption when using mt7925 and 7.1-rc4.
+According to the corruption information, prev->next was changed to itself.
 
-Validation reproduced this kernel report:
-KASAN use-after-free in _find_next_bit+0x7f/0xc0
-Read of size 8
-Call trace:
-  dump_stack_lvl+0x66/0xa0 (?:?)
-  print_report+0xd0/0x630 (?:?)
-  _find_next_bit+0x7f/0xc0 (?:?)
-  srso_alias_return_thunk+0x5/0xfbef5 (?:?)
-  __virt_addr_valid+0x188/0x2f0 (?:?)
-  kasan_report+0xe4/0x120 (?:?)
-  ocfs2_find_max_contig_free_bits+0x35/0x70 (fs/ocfs2/suballoc.c:1375)
-  ocfs2_block_group_set_bits+0x472/0x4b0 (fs/ocfs2/suballoc.c:1457)
-  ocfs2_cluster_group_search+0x16b/0x440 (fs/ocfs2/suballoc.c:86)
-  ocfs2_bg_discontig_fix_result+0x1ef/0x230 (fs/ocfs2/suballoc.c:1786)
-  ocfs2_search_chain+0x8f8/0x10a0 (fs/ocfs2/suballoc.c:1886)
-  get_page_from_freelist+0x70e/0x2370 (?:?)
-  lock_release+0xc6/0x290 (?:?)
-  do_raw_spin_unlock+0x9a/0x100 (?:?)
-  kasan_unpoison+0x27/0x60 (?:?)
-  __bfs+0x147/0x240 (?:?)
-  get_page_from_freelist+0x83d/0x2370 (?:?)
-  ocfs2_claim_suballoc_bits+0x38c/0xe70 (fs/ocfs2/suballoc.c:96)
-  sched_domains_numa_masks_clear+0x70/0xd0 (?:?)
-  check_irq_usage+0xe8/0xb70 (?:?)
-  __ocfs2_claim_clusters+0x18d/0x4c0 (fs/ocfs2/suballoc.c:2497)
-  check_path+0x24/0x50 (?:?)
-  rcu_is_watching+0x20/0x50 (?:?)
-  check_prev_add+0xfd/0xd00 (?:?)
-  ocfs2_add_clusters_in_btree+0x17d/0x810 (fs/ocfs2/suballoc.c:?)
-  __folio_batch_add_and_move+0x1f5/0x3d0 (?:?)
-  ocfs2_add_inode_data+0xd9/0x120 (fs/ocfs2/suballoc.c:?)
-  filemap_add_folio+0x105/0x1f0 (?:?)
-  ocfs2_write_begin_nolock+0x29f7/0x2f80 (fs/ocfs2/suballoc.c:3043)
-  ocfs2_read_inode_block+0xb5/0x110 (fs/ocfs2/suballoc.c:?)
-  down_write+0xf5/0x180 (?:?)
-  ocfs2_write_begin+0x180/0x240 (fs/ocfs2/suballoc.c:?)
-  __mark_inode_dirty+0x758/0x9a0 (?:?)
-  inode_to_bdi+0x41/0x90 (?:?)
-  balance_dirty_pages_ratelimited_flags+0xf8/0x1d0 (?:?)
-  generic_perform_write+0x252/0x440 (?:?)
-  mnt_put_write_access_file+0x16/0x70 (?:?)
-  file_update_time_flags+0xe4/0x200 (?:?)
-  ocfs2_file_write_iter+0x80a/0x1320 (fs/ocfs2/suballoc.c:?)
-  lock_acquire+0x184/0x2f0 (?:?)
-  ksys_write+0xd2/0x170 (?:?)
-  apparmor_file_permission+0xf5/0x310 (?:?)
-  read_zero+0x8d/0x140 (?:?)
-  lock_is_held_type+0x8f/0x100 (?:?)
+wlan0: disconnect from AP 90:fb:5d:94:8b:e3 for new auth to 90:fb:5d:94:8b:e2
+wlan0: authenticate with 90:fb:5d:94:8b:e2 (local address=84:9e:56:9c:7e:6b)
+wlan0: send auth to 90:fb:5d:94:8b:e2 (try 1/3)
+ slab kmalloc-8k start ffff8c80958a6000 pointer offset 4160 size 8192
+list_add corruption. prev->next should be next (ffff8c808a7488f8), but was ffff8c80958a7040. (prev=ffff8c80958a7040).
 
-Link: https://lore.kernel.org/20260524111248.1429884-1-rollkingzzc@gmail.com
-Fixes: ccd979bdbce9 ("[PATCH] OCFS2: The Second Oracle Cluster Filesystem")
-Assisted-by: Codex:gpt-5.5
-Signed-off-by: Zhang Cen <rollkingzzc@gmail.com>
-Reviewed-by: Joseph Qi <joseph.qi@linux.alibaba.com>
-Cc: Mark Fasheh <mark@fasheh.com>
-Cc: Joel Becker <jlbec@evilplan.org>
-Cc: Junxiao Bi <junxiao.bi@oracle.com>
-Cc: Changwei Ge <gechangwei@live.cn>
-Cc: Jun Piao <piaojun@huawei.com>
-Cc: Heming Zhao <heming.zhao@suse.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+ mt76_wcid_add_poll+0x95/0xd0 [mt76]
+ mt7925_mac_add_txs.part.0+0xa5/0xe0 [mt7925_common]
+ mt7925_rx_check+0xa7/0xc0 [mt7925_common]
+ mt76_dma_rx_poll+0x50d/0x790 [mt76]
+ mt792x_poll_rx+0x52/0xe0 [mt792x_lib]
+
+Signed-off-by: Jiajia Liu <liujiajia@kylinos.cn>
+Link: https://patch.msgid.link/20260528033814.46418-1-liujiajia@kylinos.cn
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ocfs2/suballoc.c |   22 ++++++++++++++++++++++
- 1 file changed, 22 insertions(+)
+ drivers/net/wireless/mediatek/mt76/mac80211.c |   15 ++++++++++++---
+ 1 file changed, 12 insertions(+), 3 deletions(-)
 
---- a/fs/ocfs2/suballoc.c
-+++ b/fs/ocfs2/suballoc.c
-@@ -205,8 +205,16 @@ static int ocfs2_validate_gd_parent(stru
- 				    int resize)
+--- a/drivers/net/wireless/mediatek/mt76/mac80211.c
++++ b/drivers/net/wireless/mediatek/mt76/mac80211.c
+@@ -1568,6 +1568,7 @@ mt76_sta_add(struct mt76_phy *phy, struc
  {
- 	unsigned int max_bits;
-+	unsigned int max_bitmap_bits;
-+	unsigned int max_bitmap_size;
-+	int suballocator;
- 	struct ocfs2_group_desc *gd = (struct ocfs2_group_desc *)bh->b_data;
+ 	struct mt76_wcid *wcid = (struct mt76_wcid *)sta->drv_priv;
+ 	struct mt76_dev *dev = phy->dev;
++	struct mt76_wcid *published;
+ 	int ret;
+ 	int i;
  
-+	suballocator = le64_to_cpu(di->i_blkno) != OCFS2_SB(sb)->bitmap_blkno;
-+	max_bitmap_size = ocfs2_group_bitmap_size(sb, suballocator,
-+						  OCFS2_SB(sb)->s_feature_incompat);
-+	max_bitmap_bits = max_bitmap_size * 8;
-+
- 	if (di->i_blkno != gd->bg_parent_dinode) {
- 		do_error("Group descriptor #%llu has bad parent pointer (%llu, expected %llu)\n",
- 			 (unsigned long long)bh->b_blocknr,
-@@ -214,6 +222,20 @@ static int ocfs2_validate_gd_parent(stru
- 			 (unsigned long long)le64_to_cpu(di->i_blkno));
+@@ -1587,11 +1588,19 @@ mt76_sta_add(struct mt76_phy *phy, struc
+ 		mtxq->wcid = wcid->idx;
  	}
  
-+	if (le16_to_cpu(gd->bg_size) > max_bitmap_size) {
-+		do_error("Group descriptor #%llu has bitmap size %u but physical max of %u\n",
-+			 (unsigned long long)bh->b_blocknr,
-+			 le16_to_cpu(gd->bg_size),
-+			 max_bitmap_size);
+-	ewma_signal_init(&wcid->rssi);
+-	rcu_assign_pointer(dev->wcid[wcid->idx], wcid);
++	published = rcu_dereference_protected(dev->wcid[wcid->idx],
++					      lockdep_is_held(&dev->mutex));
++	if (published != wcid) {
++		WARN_ON_ONCE(published);
++		ewma_signal_init(&wcid->rssi);
++		rcu_assign_pointer(dev->wcid[wcid->idx], wcid);
++		mt76_wcid_init(wcid, phy->band_idx);
++	} else {
++		wcid->phy_idx = phy->band_idx;
 +	}
 +
-+	if (le16_to_cpu(gd->bg_bits) > max_bitmap_bits) {
-+		do_error("Group descriptor #%llu has bit count %u but physical max of %u\n",
-+			 (unsigned long long)bh->b_blocknr,
-+			 le16_to_cpu(gd->bg_bits),
-+			 max_bitmap_bits);
-+	}
-+
- 	max_bits = le16_to_cpu(di->id2.i_chain.cl_cpg) * le16_to_cpu(di->id2.i_chain.cl_bpc);
- 	if (le16_to_cpu(gd->bg_bits) > max_bits) {
- 		do_error("Group descriptor #%llu has bit count of %u\n",
+ 	phy->num_sta++;
+ 
+-	mt76_wcid_init(wcid, phy->band_idx);
+ out:
+ 	mutex_unlock(&dev->mutex);
+ 
 
 
 
