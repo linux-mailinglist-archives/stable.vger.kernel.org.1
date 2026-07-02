@@ -1,61 +1,67 @@
-Return-Path: <stable+bounces-271267-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-271115-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id x5iWN2ClRmqqawsAu9opvQ
-	(envelope-from <stable+bounces-271267-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:52:32 +0200
+	id 7IhYMzyYRmpIZgsAu9opvQ
+	(envelope-from <stable+bounces-271115-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:56:28 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id D787D6FBADB
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:52:31 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5FEDF6FAC5D
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:56:28 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="TVmmwY/v";
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-271267-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-271267-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=NqqmodX1;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-271115-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-271115-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id B33AF314991D
-	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:52:51 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id E566E30DC45A
+	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:47:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 039BB33B951;
-	Thu,  2 Jul 2026 16:51:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8FF363290C9;
+	Thu,  2 Jul 2026 16:45:10 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A684B30C146;
-	Thu,  2 Jul 2026 16:51:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 155503AF64D;
+	Thu,  2 Jul 2026 16:45:08 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783011100; cv=none; b=WXtkm8HaAMk18i9RqEDc9tKGaNbTCRIghB8+duhQ1Qgu0z5Hd4wb5xuU3PCxUK6hc1nhkAk6Jwh7Eh5gudja4Mz9rWEY5eiyIoC+cPzZVo6LnrYRVGNXlemKcG4ZGEgTz7ilJHtG1q1vUCtajQca/OCCHaDnj0mCQyac6IBNwYI=
+	t=1783010710; cv=none; b=QgJnldocpfQzPDLanGR+ggO56zd9ZLrpy0VxCnjKNOhbhvjkch+xo0Y/fk4YmVtvY+N+gFgdtDBsTYFX89CGAsmuzZ0y8XM0UKLmTk1E9hEFxJo0hqKWqj6XV34wkI/hA63LGZC+I55xV59poNMgSVYXqbxxvb4O05bqqAto0B4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783011100; c=relaxed/simple;
-	bh=EN0nhWWIt6KYMJsdk1d9yU+wjI8VWrIPC8Bh/W1+egI=;
+	s=arc-20240116; t=1783010710; c=relaxed/simple;
+	bh=S7Jk7ky1p4uVrbkQbDfdggfvu2yaazvbxj9h5cdhCq0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=G2laE+uoVzkSMEvnbcoWjiEZY5Cm7HMS3UxpeeOQ+0h4fB+CgDz6883oz5x9u/N1yBAyyFmd6HRd4Q6uQWCPu1XdcrdGSzOzyWMnIGg1N6NEkzan7LGf2YpcVzUR86jsvOwcPa/v11a3L+GPhHwt4/T4HRx0qASjLXENqctzZLE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TVmmwY/v; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1931D1F000E9;
-	Thu,  2 Jul 2026 16:51:38 +0000 (UTC)
+	 MIME-Version; b=OCKRgF1PDVXTi772vdukynu5nuIs/DYUSi6eK66dj3ymJn28ykx84F58adEa0Z4+vRRRJcvc6xTeA30I/g6H7v0vgeLm3I9tFqV+02u3z+QDrDJl6qDFg/Vi2zRWcgaPZhHD6dScg/7MjkaxHt6SOQssi7pVvN6vK2HU+14QXeI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NqqmodX1; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3BC881F000E9;
+	Thu,  2 Jul 2026 16:45:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1783011099;
-	bh=SNfaOLSct+g1LaUTZW2FzHru2u/oeN97RyuNxOXIO3w=;
+	s=korg; t=1783010708;
+	bh=qcng3kCTruOsyoKOsYWsW9a81s0OnAasgh/X6KagxU8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=TVmmwY/vOx7UVkzBCINK+5vOB1Bi4+2FHJqCN3qkZrG738uFGNrVqksY78goeKZev
-	 W6hU9sWDrpJB8AR1jk78vBBA0/VX1y8hU7Mb5h07DyOTTA2oSIBwZhg7nR9SMXvewB
-	 LKwS43DVNDYhyuYi1vNo11Dc5J0Vdy9Pzim5LJAo=
+	b=NqqmodX1njzyGym4U0VpSSyCegawP/lQ52hAIfhtIopzgRNb/S2hTBfrU+QONSjFk
+	 SglyM7kL++JGcBIUETscg1wNKqYq61KUu0F+qPim2A4nsdaS5xxA2P5i9pm6qVbgRv
+	 MX8pidsC874YcqudQJsqbNw6BQ0AQhbBsz9zlDnc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hyunwoo Kim <imv4bel@gmail.com>,
-	Vitaly Kuznetsov <vkuznets@redhat.com>,
-	Sean Christopherson <seanjc@google.com>
-Subject: [PATCH 6.6 157/175] KVM: x86: hyper-v: Bound the bank index when querying sparse banks
-Date: Thu,  2 Jul 2026 18:20:58 +0200
-Message-ID: <20260702155119.102559855@linuxfoundation.org>
+	Simon Horman <horms@kernel.org>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	Jiri Slaby <jirislaby@kernel.org>,
+	Tonghao Zhang <tonghao@bamaicloud.com>,
+	Hangbin Liu <liuhangbin@gmail.com>,
+	Nikolay Aleksandrov <razor@blackwall.org>,
+	Jay Vosburgh <jv@jvosburgh.net>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.12 202/204] net: bonding: update the slave array for broadcast mode
+Date: Thu,  2 Jul 2026 18:20:59 +0200
+Message-ID: <20260702155122.896823808@linuxfoundation.org>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260702155115.766838875@linuxfoundation.org>
-References: <20260702155115.766838875@linuxfoundation.org>
+In-Reply-To: <20260702155118.667618796@linuxfoundation.org>
+References: <20260702155118.667618796@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,133 +73,98 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-271267-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,redhat.com,google.com];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	TO_DN_SOME(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:imv4bel@gmail.com,m:vkuznets@redhat.com,m:seanjc@google.com,s:lists@lfdr.de];
+	RCPT_COUNT_TWELVE(0.00)[12];
 	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-271115-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:horms@kernel.org,m:corbet@lwn.net,m:andrew+netdev@lunn.ch,m:jirislaby@kernel.org,m:tonghao@bamaicloud.com,m:liuhangbin@gmail.com,m:razor@blackwall.org,m:jv@jvosburgh.net,m:kuba@kernel.org,m:andrew@lunn.ch,s:lists@lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,lwn.net,lunn.ch,bamaicloud.com,gmail.com,blackwall.org,jvosburgh.net];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RWL_MAILSPIKE_POSSIBLE(0.00)[104.64.211.4:from];
-	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,msgid.link:url]
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable,netdev];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,blackwall.org:email,lunn.ch:email,lwn.net:email,bamaicloud.com:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: D787D6FBADB
+X-Rspamd-Queue-Id: 5FEDF6FAC5D
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hyunwoo Kim <imv4bel@gmail.com>
+From: Tonghao Zhang <tonghao@bamaicloud.com>
 
-commit 4721f8160f17554b003e8928bb61e6c9b2fe92a3 upstream.
+commit e0caeb24f538c3c9c94f471882ceeb43d9dc2739 upstream.
 
-When checking if a VP ID is included in a sparse bank set, explicitly check
-that the ID can actually be contained in a sparse bank (the TLFS allows for
-a maximum of 64 banks of 64 vCPUs each).  When handling a paravirtual TLB
-flush for L2, the VP ID is copied verbatim from the enlightened VMCS,
-without any bounds check, i.e. isn't guaranteed to be under the limit of
-4096.
+This patch fixes ce7a381697cb ("net: bonding: add broadcast_neighbor option for 802.3ad").
+Before this commit, on the broadcast mode, all devices were traversed using the
+bond_for_each_slave_rcu. This patch supports traversing devices by using all_slaves.
+Therefore, we need to update the slave array when enslave or release slave.
 
-Failure to check the bounds of the VP ID leads to an out-of-bounds read
-when testing the sparse bank, and super strictly speaking could lead to KVM
-performing an unnecessary TLB flush for an L2 vCPU.
-
-  ==================================================================
-  BUG: KASAN: use-after-free in hv_is_vp_in_sparse_set+0x85/0x100 [kvm]
-  Read of size 8 at addr ffff88811ba5f598 by task hyperv_evmcs/2802
-
-  CPU: 12 UID: 1000 PID: 2802 Comm: hyperv_evmcs Not tainted 7.1.0-rc2 #7 PREEMPT
-  Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 0.0.0 02/06/2015
-  Call Trace:
-   <TASK>
-   dump_stack_lvl+0x51/0x60
-   print_report+0xcb/0x5d0
-   kasan_report+0xb4/0xe0
-   kasan_check_range+0x35/0x1b0
-   hv_is_vp_in_sparse_set+0x85/0x100 [kvm]
-   kvm_hv_flush_tlb+0xe9e/0x16c0 [kvm]
-   kvm_hv_hypercall+0xe6b/0x1e60 [kvm]
-   vmx_handle_exit+0x485/0x1b60 [kvm_intel]
-   kvm_arch_vcpu_ioctl_run+0x22e3/0x5070 [kvm]
-   kvm_vcpu_ioctl+0x5d0/0x10c0 [kvm]
-   __x64_sys_ioctl+0x129/0x1a0
-   do_syscall_64+0xb9/0xcf0
-   entry_SYSCALL_64_after_hwframe+0x4b/0x53
-  RIP: 0033:0x7f0e62d1a9bf
-   </TASK>
-
-  The buggy address belongs to the physical page:
-  page: refcount:0 mapcount:0 mapping:0000000000000000 index:0xffffffffffffffff pfn:0x11ba5f
-  flags: 0x4000000000000000(zone=1)
-  raw: 4000000000000000 0000000000000000 00000000ffffffff 0000000000000000
-  raw: ffffffffffffffff 0000000000000000 00000000ffffffff 0000000000000000
-  page dumped because: kasan: bad access detected
-
-  Memory state around the buggy address:
-   ffff88811ba5f480: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
-   ffff88811ba5f500: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
-  >ffff88811ba5f580: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
-                              ^
-   ffff88811ba5f600: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
-   ffff88811ba5f680: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
-  ==================================================================
-  Disabling lock debugging due to kernel taint
-
-Opportunistically add a compile time assertion to ensure the maximum number
-of sparse banks exactly matches the number of possible bits in the passed
-in mask.
-
-Cc: stable@vger.kernel.org
-Fixes: c58a318f6090 ("KVM: x86: hyper-v: L2 TLB flush")
-Signed-off-by: Hyunwoo Kim <imv4bel@gmail.com>
-Reviewed-by: Vitaly Kuznetsov <vkuznets@redhat.com>
-Link: https://patch.msgid.link/aiQyZIJtO-2Aj_xN@v4bel
-[sean: add KASAN splat, drop comment, add assert, massage changelog]
-Signed-off-by: Sean Christopherson <seanjc@google.com>
+Fixes: ce7a381697cb ("net: bonding: add broadcast_neighbor option for 802.3ad")
+Cc: Simon Horman <horms@kernel.org>
+Cc: Jonathan Corbet <corbet@lwn.net>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>
+Cc: <stable@vger.kernel.org>
+Reported-by: Jiri Slaby <jirislaby@kernel.org>
+Tested-by: Jiri Slaby <jirislaby@kernel.org>
+Link: https://lore.kernel.org/all/a97e6e1e-81bc-4a79-8352-9e4794b0d2ca@kernel.org/
+Signed-off-by: Tonghao Zhang <tonghao@bamaicloud.com>
+Reviewed-by: Hangbin Liu <liuhangbin@gmail.com>
+Reviewed-by: Nikolay Aleksandrov <razor@blackwall.org>
+Acked-by: Jay Vosburgh <jv@jvosburgh.net>
+Link: https://patch.msgid.link/20251016125136.16568-1-tonghao@bamaicloud.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kvm/hyperv.c |    5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/net/bonding/bond_main.c |    7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
---- a/arch/x86/kvm/hyperv.c
-+++ b/arch/x86/kvm/hyperv.c
-@@ -1787,6 +1787,11 @@ static bool hv_is_vp_in_sparse_set(u32 v
- 	int valid_bit_nr = vp_id / HV_VCPUS_PER_SPARSE_BANK;
- 	unsigned long sbank;
+--- a/drivers/net/bonding/bond_main.c
++++ b/drivers/net/bonding/bond_main.c
+@@ -2390,7 +2390,9 @@ skip_mac_set:
+ 			bpf_prog_inc(bond->xdp_prog);
+ 	}
  
-+	BUILD_BUG_ON(BITS_PER_TYPE(valid_bank_mask) != HV_MAX_SPARSE_VCPU_BANKS);
-+
-+	if (valid_bit_nr >= HV_MAX_SPARSE_VCPU_BANKS)
-+		return false;
-+
- 	if (!test_bit(valid_bit_nr, (unsigned long *)&valid_bank_mask))
- 		return false;
+-	if (bond_mode_can_use_xmit_hash(bond))
++	/* broadcast mode uses the all_slaves to loop through slaves. */
++	if (bond_mode_can_use_xmit_hash(bond) ||
++	    BOND_MODE(bond) == BOND_MODE_BROADCAST)
+ 		bond_update_slave_arr(bond, NULL);
  
+ 	bond_xdp_set_features(bond_dev);
+@@ -2533,7 +2535,8 @@ static int __bond_release_one(struct net
+ 
+ 	bond_upper_dev_unlink(bond, slave);
+ 
+-	if (bond_mode_can_use_xmit_hash(bond))
++	if (bond_mode_can_use_xmit_hash(bond) ||
++	    BOND_MODE(bond) == BOND_MODE_BROADCAST)
+ 		bond_update_slave_arr(bond, slave);
+ 
+ 	slave_info(bond_dev, slave_dev, "Releasing %s interface\n",
 
 
 
