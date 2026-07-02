@@ -1,62 +1,60 @@
-Return-Path: <stable+bounces-270863-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-270657-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id UwFzK5+TRmqeYwsAu9opvQ
-	(envelope-from <stable+bounces-270863-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:36:47 +0200
+	id cUdmH5qeRmozaQsAu9opvQ
+	(envelope-from <stable+bounces-270657-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:23:38 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 24CDB6FA4A0
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:36:47 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id A60976FB45B
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:23:37 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=U+kFDKqH;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-270863-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-270863-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=u+2qkqgq;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-270657-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-270657-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 302663020FE6
-	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:36:46 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 21B803242387
+	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:30:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5847A319851;
-	Thu,  2 Jul 2026 16:34:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE8A73B6C0C;
+	Thu,  2 Jul 2026 16:25:16 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D725345CA3;
-	Thu,  2 Jul 2026 16:34:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6589399375;
+	Thu,  2 Jul 2026 16:25:08 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783010047; cv=none; b=tn/Fz3Ny+AaqfEESEMTI1DZmDvDym+Je4Ftbhy0whgS64JOHxlbACOGraKhd2SDyzVezwHWy3GIi2FVBjag4q/bZ/zoq6TDLKQJziPnyhcQifS8mKl2OwQF3tcUP5/jMtfxLTe2SWVm/bIdmmLg8Gcu7/EkZ/oblMjCmDRTJlqo=
+	t=1783009515; cv=none; b=mFE8p14rFANgGFlI23JXoTJ1wzj/zTSCNTzUtTzAoObbFz6l7W0Zi9hkL7VP0XEycuee0uOaNKlZnQyU04ipAyv9LdBe7Aj9nGAzJZ19plN0B/hnpJqHMVJQCNFQqdsUFB76H9GfPCRbUm9vYq2b1al3G2Ej3zqgikRDfdm53BE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783010047; c=relaxed/simple;
-	bh=Khg5+LRV2re3PTYsnnZLi19a0/SFpJBNysINzSNFJr0=;
+	s=arc-20240116; t=1783009515; c=relaxed/simple;
+	bh=aVZldMx04Ne8WEBk1bYtt779d2/hjVXwCAmTdix/kXY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=T4m2Opafiv8/dhuHD7kAGzyP0p4dhwcqSbhC2yEVF0i3yE/hXOBBHZc4EQqthQnMNiTYXhShupiKUjjkhnAFlHj+dgAh/qr7d7qAnjAsoD1yuwKbXXYkkc21MPq45uW/4qM1xaM2McbEO/jIwznkfswPQy9xJsUVKGYeWcuscgo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U+kFDKqH; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 741021F000E9;
-	Thu,  2 Jul 2026 16:34:05 +0000 (UTC)
+	 MIME-Version; b=lUCG0hhtcKlOMwzVRQ2rLNhn0IJRfdiMbPGUPOA04NlKZExTkXe+9Fqa82W/zP9bMTx90m8pepPG+au0shnFoY/UT97rnUbEgyDake0j7KkkuK4JaucgWEA6q8JDwQqDm/v8CODnqK/wSuSdcFCgJEOuhd9WEMEd/T3JyIKZc+M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u+2qkqgq; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58C501F00A3D;
+	Thu,  2 Jul 2026 16:25:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1783010045;
-	bh=bXbs4DlIgBlZNNCVitamIFdCmqw4rQmZZRHupBlPVoc=;
+	s=korg; t=1783009507;
+	bh=0OOAl+H0bjAkaa1+tTvdYdVvAJkK6YwYBTwAuh9qeyU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=U+kFDKqH1+OhBUFuS+OjoGJlyP8GiPmQKhkQBUNKPAcybqN8adfnB6fJVTwdkTTBA
-	 MEaGU1UiGyTUgiTj0cwNIRZm4vqLQrLhfO7aVq3ZMjil61K/+/vYQ3NK118l8NAPE7
-	 U/msYooWOtDq37mzT+zr9yckm2MjSf1nxvlTE8KU=
+	b=u+2qkqgqRucD9sZJYGJOMFebHRmwW1NCzcLIbdee/tu3vhwBskIRgReP4HlJJiP8p
+	 djM+P+A10H54A2Ww6iJHBjH/adZOB7l6NQeD2KP//v8NBbZiq25VC+eOAsgRsa/vuP
+	 0Pk4Zib8e4CZkqR9cu9vOQ7IcJcwbt/aVBq75hI0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Zhang Cen <rollkingzzc@gmail.com>,
-	Chao Yu <chao@kernel.org>,
-	Jaegeuk Kim <jaegeuk@kernel.org>
-Subject: [PATCH 6.1 089/129] f2fs: validate ACL entry sizes in f2fs_acl_from_disk()
-Date: Thu,  2 Jul 2026 18:20:08 +0200
-Message-ID: <20260702155113.985415539@linuxfoundation.org>
+	Ian Bridges <icb@fastmail.org>,
+	Helge Deller <deller@gmx.de>
+Subject: [PATCH 5.10 77/96] fbdev: Fix fb_new_modelist to prevent null-ptr-deref in fb_videomode_to_var
+Date: Thu,  2 Jul 2026 18:20:09 +0200
+Message-ID: <20260702155110.601919662@linuxfoundation.org>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260702155112.163984240@linuxfoundation.org>
-References: <20260702155112.163984240@linuxfoundation.org>
+In-Reply-To: <20260702155108.949633242@linuxfoundation.org>
+References: <20260702155108.949633242@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -73,154 +71,95 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,gmail.com];
-	TAGGED_FROM(0.00)[bounces-270863-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:stable@kernel.org,m:rollkingzzc@gmail.com,m:chao@kernel.org,m:jaegeuk@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-270657-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:icb@fastmail.org,m:deller@gmx.de,s:lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,fastmail.org,gmx.de];
+	FORWARDED(0.00)[lists@lfdr.de];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,gmx.de:email,fastmail.org:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 24CDB6FA4A0
+X-Rspamd-Queue-Id: A60976FB45B
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhang Cen <rollkingzzc@gmail.com>
+From: Ian Bridges <icb@fastmail.org>
 
-commit c4810ada31e80cbe4011467c4f3b1e93f94134f3 upstream.
+commit 7f08fc10fa3d3366dc3af723970bd03d7d6d10e3 upstream.
 
-f2fs_acl_count() only validates the aggregate ACL xattr length. A
-malformed ACL can still place ACL_USER or ACL_GROUP in a slot that only
-contains struct f2fs_acl_entry_short bytes, and f2fs_acl_from_disk()
-then reads entry->e_id before verifying that a full entry fits.
+info->var, a framebuffer's current mode, is expected to have a matching
+entry in info->modelist. var_to_display() relies on this and treats a
+failed fb_match_mode() as "This should not happen". fb_set_var() keeps it
+true by adding the mode to the list on every change, and
+do_register_framebuffer() does the same at registration.
 
-Require a short entry before reading e_tag and e_perm, and require a
-full entry before reading e_id for ACL_USER and ACL_GROUP. Return
--EFSCORRUPTED from these new truncated-entry checks, while keeping the
-pre-existing -EINVAL paths unchanged.
+store_modes() replaces the modelist from userspace. fb_new_modelist()
+validates the new modes but does not check that info->var still has a
+match. It relies on fbcon_new_modelist() to re-point consoles, but that
+only handles consoles mapped to the framebuffer. With fbcon unbound there
+are none, so info->var is left describing a mode that is no longer in the
+list.
 
-Validation reproduced this kernel report:
-KASAN slab-out-of-bounds in __f2fs_get_acl+0x6fb/0x7e0
-RIP: 0033:0x7f4b835ea7aa
-The buggy address belongs to the object at ffff888114589960 which belongs
-to the cache kmalloc-8 of size 8
-The buggy address is located 0 bytes to the right of allocated 8-byte
-region [ffff888114589960, ffff888114589968)
-Read of size 4
-Call trace:
-  dump_stack_lvl+0x66/0xa0 (?:?)
-  print_report+0xce/0x630 (?:?)
-  __f2fs_get_acl+0x6fb/0x7e0 (fs/f2fs/acl.c:169)
-  srso_alias_return_thunk+0x5/0xfbef5 (?:?)
-  __virt_addr_valid+0x224/0x430 (?:?)
-  kasan_report+0xe0/0x110 (?:?)
-  __f2fs_get_acl+0x5/0x7e0 (fs/f2fs/acl.c:169)
-  __get_acl+0x281/0x380 (?:?)
-  vfs_get_acl+0x10b/0x190 (?:?)
-  do_get_acl+0x2a/0x410 (?:?)
-  do_get_acl+0x9/0x410 (?:?)
-  do_getxattr+0xe8/0x260 (?:?)
-  filename_getxattr+0xd1/0x140 (?:?)
-  do_getname+0x2d/0x2d0 (?:?)
-  path_getxattrat+0x16c/0x200 (?:?)
-  lock_release+0xc8/0x290 (?:?)
-  cgroup_update_frozen+0x9d/0x320 (?:?)
-  lockdep_hardirqs_on_prepare+0xea/0x1a0 (?:?)
-  trace_hardirqs_on+0x1a/0x170 (?:?)
-  _raw_spin_unlock_irq+0x28/0x50 (?:?)
-  do_syscall_64+0x115/0x6a0 (arch/x86/entry/syscall_64.c:87)
-  entry_SYSCALL_64_after_hwframe+0x77/0x7f (?:?)
+A later console takeover runs var_to_display(), where fb_match_mode()
+returns NULL and leaves fb_display[i].mode NULL. fbcon_switch() passes it
+to display_to_var(), and fb_videomode_to_var() dereferences the NULL mode.
 
-Cc: stable@kernel.org
-Fixes: af48b85b8cd3 ("f2fs: add xattr and acl functionalities")
-Assisted-by: Codex:gpt-5.5
-Signed-off-by: Zhang Cen <rollkingzzc@gmail.com>
-Reviewed-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+Keep the current mode in the list in fb_new_modelist(), the same way
+fb_set_var() does.
+
+Cc: stable@vger.kernel.org
+Assisted-by: Claude:claude-opus-4-8
+Signed-off-by: Ian Bridges <icb@fastmail.org>
+Signed-off-by: Helge Deller <deller@gmx.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/f2fs/acl.c |   18 ++++++++++++++++--
- 1 file changed, 16 insertions(+), 2 deletions(-)
+ drivers/video/fbdev/core/fbmem.c |   12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
---- a/fs/f2fs/acl.c
-+++ b/fs/f2fs/acl.c
-@@ -46,6 +46,7 @@ static inline int f2fs_acl_count(size_t
- static struct posix_acl *f2fs_acl_from_disk(const char *value, size_t size)
- {
- 	int i, count;
-+	int err = -EINVAL;
- 	struct posix_acl *acl;
- 	struct f2fs_acl_header *hdr = (struct f2fs_acl_header *)value;
- 	struct f2fs_acl_entry *entry = (struct f2fs_acl_entry *)(hdr + 1);
-@@ -69,8 +70,11 @@ static struct posix_acl *f2fs_acl_from_d
+--- a/drivers/video/fbdev/core/fbmem.c
++++ b/drivers/video/fbdev/core/fbmem.c
+@@ -1989,6 +1989,18 @@ int fb_new_modelist(struct fb_info *info
+ 	if (list_empty(&info->modelist))
+ 		return 1;
  
- 	for (i = 0; i < count; i++) {
++	/*
++	 * The new modelist may not contain the current mode (info->var), and
++	 * fbcon_new_modelist() below only re-points consoles mapped to this
++	 * framebuffer. Add the current mode here so info->var keeps a match
++	 * even when fbcon is unbound.
++	 */
++	if (!fb_match_mode(&info->var, &info->modelist)) {
++		fb_var_to_videomode(&mode, &info->var);
++		if (fb_add_videomode(&mode, &info->modelist))
++			return 1;
++	}
++
+ 	fbcon_new_modelist(info);
  
--		if ((char *)entry > end)
-+		if (unlikely((char *)entry +
-+				sizeof(struct f2fs_acl_entry_short) > end)) {
-+			err = -EFSCORRUPTED;
- 			goto fail;
-+		}
- 
- 		acl->a_entries[i].e_tag  = le16_to_cpu(entry->e_tag);
- 		acl->a_entries[i].e_perm = le16_to_cpu(entry->e_perm);
-@@ -85,6 +89,11 @@ static struct posix_acl *f2fs_acl_from_d
- 			break;
- 
- 		case ACL_USER:
-+			if (unlikely((char *)entry +
-+					sizeof(struct f2fs_acl_entry) > end)) {
-+				err = -EFSCORRUPTED;
-+				goto fail;
-+			}
- 			acl->a_entries[i].e_uid =
- 				make_kuid(&init_user_ns,
- 						le32_to_cpu(entry->e_id));
-@@ -92,6 +101,11 @@ static struct posix_acl *f2fs_acl_from_d
- 					sizeof(struct f2fs_acl_entry));
- 			break;
- 		case ACL_GROUP:
-+			if (unlikely((char *)entry +
-+					sizeof(struct f2fs_acl_entry) > end)) {
-+				err = -EFSCORRUPTED;
-+				goto fail;
-+			}
- 			acl->a_entries[i].e_gid =
- 				make_kgid(&init_user_ns,
- 						le32_to_cpu(entry->e_id));
-@@ -107,7 +121,7 @@ static struct posix_acl *f2fs_acl_from_d
- 	return acl;
- fail:
- 	posix_acl_release(acl);
--	return ERR_PTR(-EINVAL);
-+	return ERR_PTR(err);
- }
- 
- static void *f2fs_acl_to_disk(struct f2fs_sb_info *sbi,
+ 	return 0;
 
 
 
