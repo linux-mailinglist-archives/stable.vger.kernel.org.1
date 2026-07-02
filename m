@@ -1,236 +1,164 @@
-Return-Path: <stable+bounces-270359-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-270362-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id DNjHF+cdRmr6KAsAu9opvQ
-	(envelope-from <stable+bounces-270359-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 10:14:31 +0200
+	id okl2IOslRmrfKgsAu9opvQ
+	(envelope-from <stable+bounces-270362-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 10:48:43 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id EEC966F4A77
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 10:14:30 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 63E2C6F4F61
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 10:48:42 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=mwj5zC6V;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-270359-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-270359-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=none) header.from=gmail.com;
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=Lc+pG1Xn;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-270362-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-270362-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 7CA1D301E011
-	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 08:10:50 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 65C6D306AAE6
+	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 08:27:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1BEC3412290;
-	Thu,  2 Jul 2026 08:10:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF8B142A794;
+	Thu,  2 Jul 2026 08:26:44 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 796CF3D4128
-	for <stable@vger.kernel.org>; Thu,  2 Jul 2026 08:10:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02B9642A790
+	for <stable@vger.kernel.org>; Thu,  2 Jul 2026 08:26:40 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782979845; cv=none; b=hucKQYkP6mKqEq6zG7QP60+UQ9PJ01Ztpa78kFwPhkBD4+x5tPzn/vnAVQ+9sbW3ckW7Z4YNVbHqiC9I0s78naEZdA1izxQZJEetvbaUuwkWD5/TnJUGrd6uiRUk4zoL+rk7ayd6BJ/pzsEYueENhZMEizBQJ0krE21BMxrw7gU=
+	t=1782980804; cv=none; b=T+RCZRnD9H2agpaK2ILUgAMRIwGd/8X/wnJHrbansVAEUxWr+2nbx0fC2/+3rIZE2N69QvC9Q9vv+x9fX/B++kFoTTtBguy0OZA8aS2i743DKwdUX1vuDklQ7jmIg0ls6dqN6k+/PTYVXPlhVHqp7C0Ye/C6ivqv8vd10CrWFXM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782979845; c=relaxed/simple;
-	bh=ap1syISulsKRSaIRGnWZqvqO+c8TnmiIW0rxGDJ3Zus=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=UzP1mW6ZKvdHuEZEdvJKgB48tP1TnD52Mg9ca5qtonGQ8Rg9xluYGR6aoew+i+Mf5NoyZh1wW41Apm4bsuEJrxmhG/gX7stD0GCqelrl09hMXnwlmrFR6kbmZbeQw+SokYM9wCgHsntErSCsguRg4SVIG3FVOpPa30IwQGSxFo0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=mwj5zC6V; arc=none smtp.client-ip=209.85.128.42
-Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-493c486f012so3240475e9.3
-        for <stable@vger.kernel.org>; Thu, 02 Jul 2026 01:10:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1782979843; x=1783584643; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=BIcE6G+6TDMoCdkb5TNOONacJV25dJbtV9kWeZ6u/To=;
-        b=mwj5zC6V/wMYMsIx68xHW5X++kHFiON9682T+Pq7c9ZCSi8VPN10GQCpWJ+aftzzwh
-         XswWKVBUEVKKR2866rzfMTKb+rrGiemjfwTieM5f2Ycv9wkBvgLt1CS4vXGE7oSqtq91
-         iGO6rE09n6zKp/2aIyQecCqmW3cfmI4vswq2rKpFg4QW1cN6Yjdwy4338M/nE29k51C9
-         rQ13PJIWnjS7I6w0bTRK8JLqzl1lusv52kRyvcUFT0QgonxZm0appuKDnZzksdFWbQ3O
-         5BnHXR9MGywQ8BJGr6YGuYGozQry3gpWox0ynx1/cxazUWyjNoylpqZSpfktzRLGFTcc
-         qgFg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782979843; x=1783584643;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=BIcE6G+6TDMoCdkb5TNOONacJV25dJbtV9kWeZ6u/To=;
-        b=ZJr9vsIjIGSTDzBWrFrID83tTKNIwcQ7MFnP8mX1qBNA957iyneKo6QT8OWxrkuObA
-         UdnSyBMR1J8dLCGFkOtDb+5tEYeqKNuWp8+i1yyodDLpEi59sCGPX9kncmtKei/SOo53
-         yr91m+1ynKv9LIEFWFemzDj9PIHh/SWz1v/MZTDEN/jcXxzd5T+ZQXF0wMLPKCYvXDvq
-         TpjSKZjtgcD8dUab3Y8ao1d8BvZeziyCpvU6G64rreh4INQTCBhuPdfT0plsuy8kBAi9
-         7ntteqMWylVg2DuvhG2nBuuPW9y0My5jBq3jtai3uk+MWc6o6T3n3WZRGVwXg99gN9Rj
-         kjFA==
-X-Forwarded-Encrypted: i=1; AFNElJ93gPQBM9ggdf1Del162KwWvgAuSddVQOvTxy9FgJPUsRBInl6fdGGTyNjFD27/zUT5E0YgMOU=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzJlITu2LpqEtRWgc/layXIKiI/wNjhXFmR5JiOKt0Nc5lLTtp9
-	XDh3BXtyHOlx31RcIE2FdZEOjYwBAkhptN5Mt1QAsTA6iXU7iAixai7O
-X-Gm-Gg: AfdE7cmpHATlXseCBSWkHYC/6RIR62UPhcQnz8NUZ4u6OZ1lvwRM4pzOuUP6g7NxYQ5
-	G7+332ZQRDU3zQO4kwwm7k5281sLTqwuEUR3FJkk0HQbgQySG7HH7I0CtJpRJGQZFE9rU02h/UV
-	kJIAUOdndNnOxueWZZgXRfSFUq8yj0dshWkkbmjgxRMr+twX3H95vXnFr93y69Th6s/iufUiyn8
-	id86gcdQd3J96BH/Dou/IVuxatJmcz1/U4xAls9TaF6ph8T9ATHuGo0+J9WvkRd7LDzzoHX0QfZ
-	iJ5cl/nvcSiPMcVpVu5PtFYVnJvkglgwtxwtsmnLmWBbKrvhYDTZZsyusNvzzSNZjQIjWEfwe/U
-	AvdFSzmpiGwqEJ/X4BMy4XICNrNxzHC9DJyA9SKcFUDtpyKh6XNCMnZXcMXmdFitaGmlivAjqdV
-	0PW2y2/aU7QSF2Lwn9l3RfLBDOhdD2wSEuJRNpY/QH/8cQWdIfSyGQPqVP
-X-Received: by 2002:a05:600c:6c95:b0:493:bc4a:fb56 with SMTP id 5b1f17b1804b1-493c2bbcb21mr53757575e9.39.1782979842538;
-        Thu, 02 Jul 2026 01:10:42 -0700 (PDT)
-Received: from pumpkin (host-92-21-50-228.as13285.net. [92.21.50.228])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-477db3db964sm6530093f8f.8.2026.07.02.01.10.41
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 02 Jul 2026 01:10:42 -0700 (PDT)
-Date: Thu, 2 Jul 2026 09:10:40 +0100
-From: David Laight <david.laight.linux@gmail.com>
-To: David Hu <xuehaohu@google.com>
-Cc: Jason Gunthorpe <jgg@ziepe.ca>, Pranjal Shrivastava <praan@google.com>,
- Sumit Semwal <sumit.semwal@linaro.org>, Christian =?UTF-8?B?S8O2bmln?=
- <christian.koenig@amd.com>, Nicolin Chen <nicolinc@nvidia.com>, Leon
- Romanovsky <leon@kernel.org>, Kevin Tian <kevin.tian@intel.com>, Ankit
- Agrawal <ankita@nvidia.com>, Alex Williamson <alex@shazbot.org>,
- linux-media@vger.kernel.org, dri-devel@lists.freedesktop.org,
- linaro-mm-sig@lists.linaro.org, linux-kernel@vger.kernel.org,
- iommu@lists.linux.dev, jmoroni@google.com, kpberry@google.com,
- chriscli@google.com, sashiko-bot@kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH v2] dma-buf: Split sgl into page-aligned 2G chunks
-Message-ID: <20260702091040.35eff00c@pumpkin>
-In-Reply-To: <CAPd9Lg9uY1RZvYUtcbKUg=VdWM61M2f3aqmS5veUg_8M_Ce80g@mail.gmail.com>
-References: <20260621222130.1667453-1-xuehaohu@google.com>
-	<20260623015459.1153884-1-xuehaohu@google.com>
-	<20260623094446.4a8fc2ed@pumpkin>
-	<ajryxMaT5evDUxaq@google.com>
-	<20260623235350.6540eaa2@pumpkin>
-	<20260630124252.GD7525@ziepe.ca>
-	<CAPd9Lg9uY1RZvYUtcbKUg=VdWM61M2f3aqmS5veUg_8M_Ce80g@mail.gmail.com>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; arm-unknown-linux-gnueabihf)
+	s=arc-20240116; t=1782980804; c=relaxed/simple;
+	bh=JIESVOQajvJmhekJ1n6lO3RCTjrnmuJA8CW6GM80i8Y=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=sDXC0iP/9aTtZf5Srv+wjml3e/dFYLhrJwY6uYK+/jyzS3KnBQxGzhS9WUGi83nhEWIoMrDtczD2wmZ2lub6BF9Mik4niI1d91C1VB6pOdxvqxN12I+f2VHfYAsvu9eh9XnTYOwB4toL7JmSSIoev7I7tGYj4WTuNw+2sM0vT6w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Lc+pG1Xn; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D2571F000E9;
+	Thu,  2 Jul 2026 08:26:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
+	s=korg; t=1782980800;
+	bh=w+8Bbh3OlWYyVGGfX7KvtKYaqQCbuQy4pJzmuqsMqQ4=;
+	h=Subject:To:Cc:From:Date;
+	b=Lc+pG1Xnqmi1GgMd/PQTQ9Fb7rbWBvYYpSzt7ZqND9HB4FvDOPNfQA5BoXwRLyOUX
+	 UI0dBdJunY9RurdDPSyH/b1WP4csKN5PhXhVXZiNLLqkcvMNlATrl1ElPi1E9PdWuN
+	 FajJOHjwGdNBaXOYZsEu34dQuC8SOKhEEsUpOHM8=
+Subject: FAILED: patch "[PATCH] device property: initialize the remaining fields of" failed to apply to 6.12-stable tree
+To: bartosz.golaszewski@oss.qualcomm.com,andriy.shevchenko@linux.intel.com,dakr@kernel.org,rafael@kernel.org,sakari.ailus@linux.intel.com
+Cc: <stable@vger.kernel.org>
+From: <gregkh@linuxfoundation.org>
+Date: Thu, 02 Jul 2026 10:26:19 +0200
+Message-ID: <2026070219-marrow-guiding-4009@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [2.34 / 15.00];
+	MID_END_EQ_FROM_USER_PART(4.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_RHS_NOT_FQDN(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-270362-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[20];
-	FREEMAIL_FROM(0.00)[gmail.com];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS(0.00)[m:bartosz.golaszewski@oss.qualcomm.com,m:andriy.shevchenko@linux.intel.com,m:dakr@kernel.org,m:rafael@kernel.org,m:sakari.ailus@linux.intel.com,m:stable@vger.kernel.org,s:lists@lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_SENDER(0.00)[davidlaightlinux@gmail.com,stable@vger.kernel.org];
-	FORGED_RECIPIENTS(0.00)[m:xuehaohu@google.com,m:jgg@ziepe.ca,m:praan@google.com,m:sumit.semwal@linaro.org,m:christian.koenig@amd.com,m:nicolinc@nvidia.com,m:leon@kernel.org,m:kevin.tian@intel.com,m:ankita@nvidia.com,m:alex@shazbot.org,m:linux-media@vger.kernel.org,m:dri-devel@lists.freedesktop.org,m:linaro-mm-sig@lists.linaro.org,m:linux-kernel@vger.kernel.org,m:iommu@lists.linux.dev,m:jmoroni@google.com,m:kpberry@google.com,m:chriscli@google.com,m:sashiko-bot@kernel.org,m:stable@vger.kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-270359-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[davidlaightlinux@gmail.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[gmail.com:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FROM_NO_DN(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	TO_DN_NONE(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,ziepe.ca:email,vger.kernel.org:from_smtp,pumpkin:mid]
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[6];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,intel.com:email,gregkh:mid,qualcomm.com:email,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,msgid.link:url]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: EEC966F4A77
+X-Rspamd-Queue-Id: 63E2C6F4F61
 
-On Thu, 2 Jul 2026 00:56:40 -0400
-David Hu <xuehaohu@google.com> wrote:
 
-> On Tue, Jun 30, 2026 at 8:42=E2=80=AFAM Jason Gunthorpe <jgg@ziepe.ca> wr=
-ote:
-> >
-> > On Tue, Jun 23, 2026 at 11:53:50PM +0100, David Laight wrote:
-> > =20
-> > > > If we restrict incoming dmabuf transfers to fit within VFS-centric
-> > > > limits (2GB), we impose unnecessary overhead on the RDMA stack, for=
-cing
-> > > > it to manage a significantly higher number of memory registrations.=
- By
-> > > > cleanly splitting these massive contiguous device buffers into
-> > > > page-aligned SGL entries, we directly improve the efficiency of P2P
-> > > > transfers and memory registration. =20
-> > >
-> > > But a divide by '4G - PAGE_SIZE' is also non-trivial and (I think aff=
-ects
-> > > a lot of io) when the quotient is always 1.
-> > > Splitting into 2G chunks is a lot cheaper. =20
-> >
-> > Doesn't matter this isn't fast path stuff. It is better to use fewer
-> > SGL entries, IHMO.
-> > =20
-> > > > Since this change doesn't seem to have a negative impact on standar=
-d file
-> > > > I/O or break existing VFS constraints, I'm curious why we shouldn't
-> > > > support splitting these >4GB P2P transfers? Am I missing something?=
- =20
-> > >
-> > > I was only wondering whether it was needed...
-> > > It does bring up the question of why the >4GB transfers even need spl=
-itting.
-> > > But that is another question. =20
-> >
-> > SGL can only store an unsigned int size, so any large physical range
-> > has to be split down.
-> >
-> > rdma now a days has code to process the sgl and restore back the > 4G
-> > sizes since mode RDMA HW can accept that.
-> >
-> > commit 486055f5e09df959ad4e3aa4ee75b5c91ddeec2e
-> > Author: Michael Margolin <mrgolin@amazon.com>
-> > Date:   Mon Feb 17 14:16:23 2025 +0000
-> >
-> >     RDMA/core: Fix best page size finding when it can cross SG entries
-> >
-> > So whatever this produces needs to be compatible with that to undo it. =
-=20
->=20
-> Thank you everyone. It looks like most open issues are sorted out.
-> I'll wait for maintainers to weigh in before sending out v3 (which
-> will remove the type cast for min() per David L.'s feedback, and
-> revert to ALIGN_DOWN(UINT_MAX, PAGE_SIZE) per Jason's feedback).
+The patch below does not apply to the 6.12-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
 
-Does this code get used a lot for 'normal' transfers?
-I'm away from my normal systems and can't check.
-But if pretty much all of the fragments are small (< 4G) then
-it is probably worth adding a check for 'size < limit' before
-anything else and optimising that case.
+To reproduce the conflict and resubmit, you may use the following commands:
 
-	David
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.12.y
+git checkout FETCH_HEAD
+git cherry-pick -x 7eba000621fff223dd7bab484d48918c7c77a307
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026070219-marrow-guiding-4009@gregkh' --subject-prefix 'PATCH 6.12.y' 'HEAD^..'
 
->=20
-> Hi Jason,
->=20
-> Thank you for your feedback. I took a closer look at the commit to
-> ensure compatibility. This patch is perfectly complementary, and
-> actually prevents a failure in an edge case for the latest
-> `ib_umem_find_best_pgsz` [1].
->=20
-> Regards,
-> David
->=20
-> [1] For dma-buf split with `0xFFFFFFFF`, in case of a discontinguity
-> in later buffers, we will hit this code path in
-> `ib_umem_find_best_pgsz`
->=20
-> ```
-> if (i !=3D 0)
->     mask |=3D va;
-> ```
-> (*After `va` had been incremented by `0xFFFFFFFF`, due to `va +=3D
-> sg_dma_len(sg) - pgoff`)
-> (*Which will set the lowest bit of `mask` to 1)
->=20
-> Because `count_trailing_zeros(mask) returns 0`,
-> `ib_umem_find_best_pgsz()` will always return 0 in such cases.
+Possible dependencies:
+
+
+
+thanks,
+
+greg k-h
+
+------------------ original commit in Linus's tree ------------------
+
+From 7eba000621fff223dd7bab484d48918c7c77a307 Mon Sep 17 00:00:00 2001
+From: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
+Date: Mon, 11 May 2026 09:49:26 +0200
+Subject: [PATCH] device property: initialize the remaining fields of
+ fwnode_handle in fwnode_init()
+
+If a firmware node is allocated on the stack (for instance: temporary
+software node whose life-time we control) or on the heap - but using a
+non-zeroing allocation function - and initialized using fwnode_init(),
+its secondary pointer will contain uninitialized memory which likely
+will be neither NULL nor IS_ERR() and so may end up being dereferenced
+(for example: in dev_to_swnode()). Set fwnode->secondary to NULL on
+initialization. While at it: initialize the remaining fields of struct
+fwnode_handle too just to be sure.
+
+Cc: stable@vger.kernel.org
+Fixes: 01bb86b380a3 ("driver core: Add fwnode_init()")
+Reviewed-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Reviewed-by: Rafael J. Wysocki (Intel) <rafael@kernel.org>
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
+Link: https://patch.msgid.link/20260511074927.9473-1-bartosz.golaszewski@oss.qualcomm.com
+[ Fix typo in commit message. - Danilo ]
+Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+
+diff --git a/include/linux/fwnode.h b/include/linux/fwnode.h
+index 80b38fbf2121..c30a9baafc0d 100644
+--- a/include/linux/fwnode.h
++++ b/include/linux/fwnode.h
+@@ -208,9 +208,12 @@ struct fwnode_operations {
+ static inline void fwnode_init(struct fwnode_handle *fwnode,
+ 			       const struct fwnode_operations *ops)
+ {
++	fwnode->secondary = NULL;
+ 	fwnode->ops = ops;
++	fwnode->dev = NULL;
+ 	INIT_LIST_HEAD(&fwnode->consumers);
+ 	INIT_LIST_HEAD(&fwnode->suppliers);
++	fwnode->flags = 0;
+ }
+ 
+ static inline void fwnode_set_flag(struct fwnode_handle *fwnode,
 
 
