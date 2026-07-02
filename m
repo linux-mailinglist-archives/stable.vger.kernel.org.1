@@ -1,63 +1,60 @@
-Return-Path: <stable+bounces-270894-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-271335-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id hqhnCjaVRmpyZAsAu9opvQ
-	(envelope-from <stable+bounces-270894-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:43:34 +0200
+	id H7i9NF6aRmpyZwsAu9opvQ
+	(envelope-from <stable+bounces-271335-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:05:34 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C0E1A6FA722
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:43:33 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 67F8C6FAF77
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:05:34 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=u4dOecMS;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-270894-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-270894-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="y/AAJ4rH";
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-271335-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-271335-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 6217B30816F5
-	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:37:31 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 8DEE0306290D
+	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:54:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C88163451A7;
-	Thu,  2 Jul 2026 16:35:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B695882866;
+	Thu,  2 Jul 2026 16:54:34 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F893314A90;
-	Thu,  2 Jul 2026 16:35:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C45426F46F;
+	Thu,  2 Jul 2026 16:54:33 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783010128; cv=none; b=lHl3I6XNYPEHftfS5EnZEECAZUeUDQ/P2aEH8yUQbGVDW05c+rnu+lrYjpcXuRtjKlqAD4lSlgSfJbDfXx27hNCivvPQEc5VMmbg1aOG/6sMIYD0jKmlPbCV0dRS6lQtbsg3f0jLjyJKKkEGCEyzTqPehhEq5FEaUjlnguMhv8I=
+	t=1783011274; cv=none; b=pehxzyQu8+A5lcu7S0CBDIeN+zCchlI34wxMYFnrfuEA4Cb9bnwaRFy3BW1FOBHpZof3EGes/sCz67zYGBTMAdz4DCYcLnvn6CTpMNEQxCBpToPK89aD/KtQu8Nxitxlhg2vwUxkNpMq2u0qAbLvzJa24AeE41joCrReVvgj17A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783010128; c=relaxed/simple;
-	bh=wfeVBR07P6agI+IVkKR9LINq32ockAwHSYpJY9rrP40=;
+	s=arc-20240116; t=1783011274; c=relaxed/simple;
+	bh=FRmGR4n9P3fS5PreEidEQOYwY2LBk8bE2qjBtpl9zaU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=bgVmFq5l3wgfZh+r6kM4Oq86z1FTt+qMbny7XfyaQZUI8TxlSGIbj+YB50MVAprzqNOSAKd/oW58xQ5dhwDknw9Rx9MGn9B3Cap/EnbJN08+kKlqvJft7/B4pAnv0HU6HNsVbLxUa68hSQr0K/9JKNyT3wGQFLSpt2O0tMvQeq0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u4dOecMS; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 015C71F000E9;
-	Thu,  2 Jul 2026 16:35:26 +0000 (UTC)
+	 MIME-Version; b=N+coFDL3NudawaIqgOensUbRvP+9SXnPa0BF9NfxigKwU/hduMohCN8iNuLBtrt38B0hXRt1sDkWgW3gb5K0COtFWvWQM0YitP7eiXmQL0Bk48hENBx4S89QPwW19xZzjLHKlAjbJ1gl9SEbvaFJlmI8fp410KxbIAT6Of+rUEA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y/AAJ4rH; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3EF11F000E9;
+	Thu,  2 Jul 2026 16:54:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1783010127;
-	bh=Zbgpa6sOJEGvEABzRSAUNjHCfwmONOOFO7iNkVK4Fc4=;
+	s=korg; t=1783011273;
+	bh=dy0Oy2B7c4a+kZgvnGjl02WRveXN1DB54O052D7r8Ho=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=u4dOecMSFV9BfN8UetvFyMyfXrDRUJ4fM/5WsPnKuXMFM7vZvcsFCjy3GYaw0oRQm
-	 TDkR0e3EzK7usu3RAUkqNFdxj5WYHNRyOpefY6wZ5DRVYK/vdaEl7zvpGawXMlZJh3
-	 MuQ3KKTOISJYdcJTHCNTTdB9d+ugq+bs9aepk0BQ=
+	b=y/AAJ4rHyvnsN/6CDdt+sAFWcqq8FogGSd8Wy5iUjPf7E2sO+mxdCtzQnkoeTE+z1
+	 kUd7PJ61JhH0hZDeqP87sKpLt71/B3Fc1RuEOqLSWQ40h/ek2S9jgNFM1IbhcWNFCD
+	 Tk1fXEstEFnakp1tFHmKuTS6lSrrtoFA7rFcNvws=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Santosh Kalluri <santosh.kalluri129@gmail.com>,
-	=?UTF-8?q?R=C3=A9mi=20Denis-Courmont?= <remi@remlab.net>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 122/129] net: phonet: free phonet_device after RCU grace period
+	Usama Arif <usama.arif@linux.dev>,
+	Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 6.18 044/108] block: invalidate cached plug timestamp after task switch
 Date: Thu,  2 Jul 2026 18:20:41 +0200
-Message-ID: <20260702155114.673182064@linuxfoundation.org>
+Message-ID: <20260702155113.020016705@linuxfoundation.org>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260702155112.163984240@linuxfoundation.org>
-References: <20260702155112.163984240@linuxfoundation.org>
+In-Reply-To: <20260702155112.110058792@linuxfoundation.org>
+References: <20260702155112.110058792@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,84 +64,151 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-270894-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,remlab.net,kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:santosh.kalluri129@gmail.com,m:remi@remlab.net,m:horms@kernel.org,m:kuba@kernel.org,m:sashal@kernel.org,m:santoshkalluri129@gmail.com,s:lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-271335-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:usama.arif@linux.dev,m:axboe@kernel.dk,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,remlab.net:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,msgid.link:url,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,linux.dev:email,kernel.dk:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: C0E1A6FA722
+X-Rspamd-Queue-Id: 67F8C6FAF77
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Santosh Kalluri <santosh.kalluri129@gmail.com>
+From: Usama Arif <usama.arif@linux.dev>
 
-[ Upstream commit 71de0177b28da751f407581a4515cf4d762f6296 ]
+commit fad156c2af227f42ca796cbb20ddc354a6dd9932 upstream.
 
-phonet_device_destroy() removes a phonet_device from the per-net device
-list with list_del_rcu(), but frees it immediately. RCU readers walking
-the same list can still hold a pointer to the object after it has been
-removed, leading to a slab-use-after-free.
+blk_time_get_ns() caches ktime_get_ns() in current->plug->cur_ktime
+and marks the task with PF_BLOCK_TS. That cache is only valid while the
+task keeps running; if the task is switched out, wall-clock time
+advances and the cached value must not be reused when the task runs again.
 
-Use kfree_rcu(), matching the lifetime rule already used by
-phonet_address_del() for the same object type.
+The existing invalidation covers explicit plug flushes through
+__blk_flush_plug(), and the schedule() / rtmutex paths through
+sched_update_worker(). It does not cover in-kernel preemption paths such
+as preempt_schedule(), preempt_schedule_notrace(), and
+preempt_schedule_irq(), which enter __schedule(SM_PREEMPT) directly and
+return without calling sched_update_worker().
 
-Fixes: eeb74a9d45f7 ("Phonet: convert devices list to RCU")
+As a result, a task preempted while holding a plug with PF_BLOCK_TS set
+can reuse a stale plug->cur_ktime after it is scheduled back in. blk-iocost
+then consumes that stale timestamp through ioc_now(), producing stale vnow
+values for throttle decisions, and through ioc_rqos_done(), inflating
+on-queue time and feeding false missed-QoS samples into vrate
+adjustment.
+
+Move the schedule-side invalidation to finish_task_switch(), which runs
+for the scheduled-in task after every actual context switch regardless
+of which schedule entry point was used. Keep __blk_flush_plug() as the
+explicit flush/finish-plug invalidation path, and remove only the
+PF_BLOCK_TS handling from sched_update_worker().
+
+Fixes: 06b23f92af87 ("block: update cached timestamp post schedule/preemption")
 Cc: stable@vger.kernel.org
-Signed-off-by: Santosh Kalluri <santosh.kalluri129@gmail.com>
-Acked-by: Rémi Denis-Courmont <remi@remlab.net>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Usama Arif <usama.arif@linux.dev>
+Link: https://patch.msgid.link/20260616141604.328820-3-usama.arif@linux.dev
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/phonet/pn_dev.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ include/linux/blkdev.h |   18 +++++++-----------
+ kernel/sched/core.c    |   12 ++++++++----
+ 2 files changed, 15 insertions(+), 15 deletions(-)
 
---- a/net/phonet/pn_dev.c
-+++ b/net/phonet/pn_dev.c
-@@ -105,7 +105,7 @@ static void phonet_device_destroy(struct
- 		for_each_set_bit(addr, pnd->addrs, 64)
- 			phonet_address_notify(net, RTM_DELADDR, ifindex, addr);
- 
--		kfree(pnd);
-+		kfree_rcu(pnd, rcu);
- 	}
+--- a/include/linux/blkdev.h
++++ b/include/linux/blkdev.h
+@@ -1187,16 +1187,12 @@ static inline void blk_flush_plug(struct
+ 		__blk_flush_plug(plug, async);
  }
  
+-/*
+- * tsk == current here
+- */
+-static inline void blk_plug_invalidate_ts(struct task_struct *tsk)
+-{
+-	struct blk_plug *plug = tsk->plug;
+-
+-	if (plug)
+-		plug->cur_ktime = 0;
+-	current->flags &= ~PF_BLOCK_TS;
++static __always_inline void blk_plug_invalidate_ts(void)
++{
++	if (unlikely(current->flags & PF_BLOCK_TS)) {
++		current->plug->cur_ktime = 0;
++		current->flags &= ~PF_BLOCK_TS;
++	}
+ }
+ 
+ int blkdev_issue_flush(struct block_device *bdev);
+@@ -1222,7 +1218,7 @@ static inline void blk_flush_plug(struct
+ {
+ }
+ 
+-static inline void blk_plug_invalidate_ts(struct task_struct *tsk)
++static inline void blk_plug_invalidate_ts(void)
+ {
+ }
+ 
+--- a/kernel/sched/core.c
++++ b/kernel/sched/core.c
+@@ -5206,6 +5206,12 @@ static struct rq *finish_task_switch(str
+ 	 */
+ 	kmap_local_sched_in();
+ 
++	/*
++	 * Any cached block-layer timestamp (plug->cur_ktime) is stale now,
++	 * invalidate it.
++	 */
++	blk_plug_invalidate_ts();
++
+ 	fire_sched_in_preempt_notifiers(current);
+ 	/*
+ 	 * When switching through a kernel thread, the loop in
+@@ -7000,12 +7006,10 @@ static inline void sched_submit_work(str
+ 
+ static void sched_update_worker(struct task_struct *tsk)
+ {
+-	if (tsk->flags & (PF_WQ_WORKER | PF_IO_WORKER | PF_BLOCK_TS)) {
+-		if (tsk->flags & PF_BLOCK_TS)
+-			blk_plug_invalidate_ts(tsk);
++	if (tsk->flags & (PF_WQ_WORKER | PF_IO_WORKER)) {
+ 		if (tsk->flags & PF_WQ_WORKER)
+ 			wq_worker_running(tsk);
+-		else if (tsk->flags & PF_IO_WORKER)
++		else
+ 			io_wq_worker_running(tsk);
+ 	}
+ }
 
 
 
