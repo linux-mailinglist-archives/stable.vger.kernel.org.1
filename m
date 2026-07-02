@@ -1,74 +1,62 @@
-Return-Path: <stable+bounces-271016-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-271134-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id ymQKFO2VRmrjZAsAu9opvQ
-	(envelope-from <stable+bounces-271016-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:46:37 +0200
+	id VAJmFhejRmr8agsAu9opvQ
+	(envelope-from <stable+bounces-271134-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:42:47 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id EF7CD6FA86D
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:46:36 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id BA9886FB90A
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:42:46 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=uXvrwPNV;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-271016-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-271016-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=JzOvNU6c;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-271134-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-271134-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id DCD86304CF4F
-	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:42:00 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 6453733C0B61
+	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:47:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4C1C35A39F;
-	Thu,  2 Jul 2026 16:40:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0130E343D86;
+	Thu,  2 Jul 2026 16:46:00 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 683B2349B02;
-	Thu,  2 Jul 2026 16:40:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DABA336897;
+	Thu,  2 Jul 2026 16:45:58 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783010450; cv=none; b=agS99N22m9KHdyh/mtB95LCJKI9JHJ7v7HAzn5QSqU81cgv4QXxt3yeDz5ROb6AWqsBl1hzH9aA62h12gzk+ka9uZ7eNSt/uJDJJ5hnZ8INTcKBIh9+fJLy74c1mZLhixf5wPHkPOonONPQBOQi1NpWyPVYhvk7NHxwKv7ZUyo0=
+	t=1783010759; cv=none; b=AMFXlE6Zs86LRgukK3r/iuk2oaSY5yiUJEmJj1Dx8MNzxOvVEcY8kTs8jYahAe5uJvf9Os3Y8OagC67KSkv31dCOsoOZomB5MGc9z39KPWyvVMGtl26ysjWbHEoH4fAwgo7AWUky8/0NEI77JTDiWtc66J5K5BfdhUD5CKka/74=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783010450; c=relaxed/simple;
-	bh=0X5ggzlf9ULRPa5SWe8O/c5Y4ABtPozGuHuvap/Aano=;
+	s=arc-20240116; t=1783010759; c=relaxed/simple;
+	bh=6PAPdGmtPV2sucS21WBJj8EYTJCEu8Crxv2747e1kqI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JnV2UW/AcwWJYONrWOuJHCHkZxUUw72Id6EKR35sQooN8O4OJXcCe+6vokebPLrOy4FTDCob4EyvqzFMbs/RrZEyVe1dCRZwkTBTmvbeuX0EyDnvBMK8/+PzhwF+IYvwPkKx4kUIGOnHVaOZIyy504fCW8ZS2E2LVnmlUv7evGo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uXvrwPNV; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C5631F00A3A;
-	Thu,  2 Jul 2026 16:40:47 +0000 (UTC)
+	 MIME-Version; b=ecFnrDv4GbMg1T61vAmpKO8zNWSxlu8IlUILCFzahfkBBy5+wBu+5bTB2w+Obd11GnKppatCGm3F5wBpc6i4I9Ml0lL66hFTnYwES8TQNC8OO7Xdu8Mwg7fJtGOwpcjnxJrGimnh/rGAI5GMHrwT8rFWm4eQLBO4+YHdEQpDQ7o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JzOvNU6c; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E20C71F000E9;
+	Thu,  2 Jul 2026 16:45:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1783010448;
-	bh=jaCZZrzvBor40dv2WTYCIZ54WDHfmW9lS4Xck1g43xc=;
+	s=korg; t=1783010758;
+	bh=gVLVN1WV2MKQo8g4CSxaTE1IJ55PuuLstoDa1Al10Ko=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=uXvrwPNVB/vZrlLDklfu4Bitrqoyux1y1jd1aNASdmaIyn2RThrhYNB3dqg3bQ7s5
-	 +yvxocdR5Hywytp36/EhMUvM8io3MuTdJwdxX9nPBEjKQD79ALuZEmFDDB2VlcRsYz
-	 71WpFC2zKDnkqnBQ3R3EF5UTOkcGj4qvG+V9wEUQ=
+	b=JzOvNU6cSZbwzulDhlYhnp9E577+mjeb/A/TFRCy0kSIoYqgnqMQ1Tfub3sOHgA9a
+	 lZeQdH/dPq7p3J8OQgfB38Ovhkuz5FWRWV4fUxMc02FIOit3X1kN/v28gfvkJob9Cg
+	 Ki/Z0xvWr78WUy1NArgbTVOsoB/ysqHoFLidXNds=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	bpf <bpf@vger.kernel.org>,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	Masahiro Yamada <masahiroy@kernel.org>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Nicolas Schier <nicolas@fjasle.eu>,
-	Zheng Yejian <zhengyejian1@huawei.com>,
-	Martin Kelly <martin.kelly@crowdstrike.com>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Josh Poimboeuf <jpoimboe@redhat.com>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
-	Andrey Grodzovsky <andrey.grodzovsky@crowdstrike.com>
-Subject: [PATCH 6.12 070/204] scripts/sorttable: Get start/stop_mcount_loc from ELF file directly
+	Eduard Zingerman <eddyz87@gmail.com>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	Zhenzhong Wu <jt26wzz@gmail.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 026/175] selftests/bpf: Tests for per-insn sync_linked_regs() precision tracking
 Date: Thu,  2 Jul 2026 18:18:47 +0200
-Message-ID: <20260702155120.136857184@linuxfoundation.org>
+Message-ID: <20260702155116.344812040@linuxfoundation.org>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260702155118.667618796@linuxfoundation.org>
-References: <20260702155118.667618796@linuxfoundation.org>
+In-Reply-To: <20260702155115.766838875@linuxfoundation.org>
+References: <20260702155115.766838875@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -85,224 +73,256 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-271016-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[19];
 	FORWARDED(0.00)[lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:bpf@vger.kernel.org,m:mhiramat@kernel.org,m:mark.rutland@arm.com,m:mathieu.desnoyers@efficios.com,m:akpm@linux-foundation.org,m:peterz@infradead.org,m:torvalds@linux-foundation.org,m:masahiroy@kernel.org,m:nathan@kernel.org,m:nicolas@fjasle.eu,m:zhengyejian1@huawei.com,m:martin.kelly@crowdstrike.com,m:christophe.leroy@csgroup.eu,m:jpoimboe@redhat.com,m:rostedt@goodmis.org,m:andrey.grodzovsky@crowdstrike.com,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-271134-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:eddyz87@gmail.com,m:andrii@kernel.org,m:jt26wzz@gmail.com,m:sashal@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	TO_DN_SOME(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,r0.id:url,r7.id:url,r2.id:url]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: EF7CD6FA86D
+X-Rspamd-Queue-Id: BA9886FB90A
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Steven Rostedt <rostedt@goodmis.org>
+From: Eduard Zingerman <eddyz87@gmail.com>
 
-[ Upstream commit 4acda8edefa1ce66d3de845f1c12745721cd14c3 ]
+[ Upstream commit bebc17b1c03b224a0b4aec6a171815e39f8ba9bc ]
 
-The get_mcount_loc() does a cheesy trick to find the start_mcount_loc and
-stop_mcount_loc values. That trick is:
+Add a few test cases to verify precision tracking for scalars gaining
+range because of sync_linked_regs():
+- check what happens when more than 6 registers might gain range in
+  sync_linked_regs();
+- check if precision is propagated correctly when operand of
+  conditional jump gained range in sync_linked_regs() and one of
+  linked registers is marked precise;
+- check if precision is propagated correctly when operand of
+  conditional jump gained range in sync_linked_regs() and a
+  other-linked operand of the conditional jump is marked precise;
+- add a minimized reproducer for precision tracking bug reported in [0];
+- Check that mark_chain_precision() for one of the conditional jump
+  operands does not trigger equal scalars precision propagation.
 
- file_start = popen(" grep start_mcount System.map | awk '{print $1}' ", "r");
+[0] https://lore.kernel.org/bpf/CAEf4BzZ0xidVCqB47XnkXcNhkPWF6_nTV7yt+_Lf0kcFEut2Mg@mail.gmail.com/
 
-and
-
- file_stop = popen(" grep stop_mcount System.map | awk '{print $1}' ", "r");
-
-Those values are stored in the Elf symbol table. Use that to capture those
-values. Using the symbol table is more efficient and more robust. The
-above could fail if another variable had "start_mcount" or "stop_mcount"
-as part of its name.
-
-Cc: bpf <bpf@vger.kernel.org>
-Cc: Masami Hiramatsu <mhiramat@kernel.org>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: Masahiro Yamada <masahiroy@kernel.org>
-Cc: Nathan Chancellor <nathan@kernel.org>
-Cc: Nicolas Schier <nicolas@fjasle.eu>
-Cc: Zheng Yejian <zhengyejian1@huawei.com>
-Cc: Martin  Kelly <martin.kelly@crowdstrike.com>
-Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
-Cc: Josh Poimboeuf <jpoimboe@redhat.com>
-Link: https://lore.kernel.org/20250105162346.817157047@goodmis.org
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-Signed-off-by: Andrey Grodzovsky <andrey.grodzovsky@crowdstrike.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Eduard Zingerman <eddyz87@gmail.com>
+Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+Link: https://lore.kernel.org/bpf/20240718202357.1746514-4-eddyz87@gmail.com
+[ zhenzhong: keep the linked_regs_broken_link_2 reject check, but
+  drop the mark_precise log expectations because 6.6.y does not derive
+  the scalar-vs-scalar range for that non-constant JMP_X comparison. ]
+Signed-off-by: Zhenzhong Wu <jt26wzz@gmail.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- scripts/sorttable.c |   95 ++++++++++++++++++++++++----------------------------
- 1 file changed, 45 insertions(+), 50 deletions(-)
+ .../selftests/bpf/progs/verifier_scalar_ids.c | 162 ++++++++++++++++++
+ 1 file changed, 162 insertions(+)
 
---- a/scripts/sorttable.c
-+++ b/scripts/sorttable.c
-@@ -472,42 +472,41 @@ static void *sort_mcount_loc(void *arg)
+diff --git a/tools/testing/selftests/bpf/progs/verifier_scalar_ids.c b/tools/testing/selftests/bpf/progs/verifier_scalar_ids.c
+index f70392bf696c62..2eb85eb3a06ccb 100644
+--- a/tools/testing/selftests/bpf/progs/verifier_scalar_ids.c
++++ b/tools/testing/selftests/bpf/progs/verifier_scalar_ids.c
+@@ -47,6 +47,72 @@ __naked void linked_regs_bpf_k(void)
+ 	: __clobber_all);
  }
  
- /* Get the address of __start_mcount_loc and __stop_mcount_loc in System.map */
--static void get_mcount_loc(uint64_t *_start, uint64_t *_stop)
-+static void get_mcount_loc(struct elf_mcount_loc *emloc, Elf_Shdr *symtab_sec,
-+			   const char *strtab)
- {
--	FILE *file_start, *file_stop;
--	char start_buff[20];
--	char stop_buff[20];
--	int len = 0;
-+	Elf_Sym *sym, *end_sym;
-+	int symentsize = shdr_entsize(symtab_sec);
-+	int found = 0;
++/* Registers r{0,1,2} share same ID when 'if r1 > ...' insn is processed,
++ * check that verifier marks r{1,2} as precise while backtracking
++ * 'if r1 > ...' with r0 already marked.
++ */
++SEC("socket")
++__success __log_level(2)
++__flag(BPF_F_TEST_STATE_FREQ)
++__msg("frame0: regs=r0 stack= before 5: (2d) if r1 > r3 goto pc+0")
++__msg("frame0: parent state regs=r0,r1,r2,r3 stack=:")
++__msg("frame0: regs=r0,r1,r2,r3 stack= before 4: (b7) r3 = 7")
++__naked void linked_regs_bpf_x_src(void)
++{
++	asm volatile (
++	/* r0 = random number up to 0xff */
++	"call %[bpf_ktime_get_ns];"
++	"r0 &= 0xff;"
++	/* tie r0.id == r1.id == r2.id */
++	"r1 = r0;"
++	"r2 = r0;"
++	"r3 = 7;"
++	"if r1 > r3 goto +0;"
++	/* force r0 to be precise, this eventually marks r1 and r2 as
++	 * precise as well because of shared IDs
++	 */
++	"r4 = r10;"
++	"r4 += r0;"
++	"r0 = 0;"
++	"exit;"
++	:
++	: __imm(bpf_ktime_get_ns)
++	: __clobber_all);
++}
 +
-+	sym = (void *)emloc->ehdr + shdr_offset(symtab_sec);
-+	end_sym = (void *)sym + shdr_size(symtab_sec);
++/* Registers r{0,1,2} share same ID when 'if r1 > r3' insn is processed,
++ * check that verifier marks r{0,1,2} as precise while backtracking
++ * 'if r1 > r3' with r3 already marked.
++ */
++SEC("socket")
++__success __log_level(2)
++__flag(BPF_F_TEST_STATE_FREQ)
++__msg("frame0: regs=r3 stack= before 5: (2d) if r1 > r3 goto pc+0")
++__msg("frame0: parent state regs=r0,r1,r2,r3 stack=:")
++__msg("frame0: regs=r0,r1,r2,r3 stack= before 4: (b7) r3 = 7")
++__naked void linked_regs_bpf_x_dst(void)
++{
++	asm volatile (
++	/* r0 = random number up to 0xff */
++	"call %[bpf_ktime_get_ns];"
++	"r0 &= 0xff;"
++	/* tie r0.id == r1.id == r2.id */
++	"r1 = r0;"
++	"r2 = r0;"
++	"r3 = 7;"
++	"if r1 > r3 goto +0;"
++	/* force r0 to be precise, this eventually marks r1 and r2 as
++	 * precise as well because of shared IDs
++	 */
++	"r4 = r10;"
++	"r4 += r3;"
++	"r0 = 0;"
++	"exit;"
++	:
++	: __imm(bpf_ktime_get_ns)
++	: __clobber_all);
++}
 +
-+	while (sym < end_sym) {
-+		if (!strcmp(strtab + sym_name(sym), "__start_mcount_loc")) {
-+			emloc->start_mcount_loc = sym_value(sym);
-+			if (++found == 2)
-+				break;
-+		} else if (!strcmp(strtab + sym_name(sym), "__stop_mcount_loc")) {
-+			emloc->stop_mcount_loc = sym_value(sym);
-+			if (++found == 2)
-+				break;
-+		}
-+		sym = (void *)sym + symentsize;
-+	}
- 
--	file_start = popen(" grep start_mcount System.map | awk '{print $1}' ", "r");
--	if (!file_start) {
-+	if (!emloc->start_mcount_loc) {
- 		fprintf(stderr, "get start_mcount_loc error!");
- 		return;
- 	}
- 
--	file_stop = popen(" grep stop_mcount System.map | awk '{print $1}' ", "r");
--	if (!file_stop) {
-+	if (!emloc->stop_mcount_loc) {
- 		fprintf(stderr, "get stop_mcount_loc error!");
--		pclose(file_start);
- 		return;
- 	}
--
--	while (fgets(start_buff, sizeof(start_buff), file_start) != NULL) {
--		len = strlen(start_buff);
--		start_buff[len - 1] = '\0';
--	}
--	*_start = strtoul(start_buff, NULL, 16);
--
--	while (fgets(stop_buff, sizeof(stop_buff), file_stop) != NULL) {
--		len = strlen(stop_buff);
--		stop_buff[len - 1] = '\0';
--	}
--	*_stop = strtoul(stop_buff, NULL, 16);
--
--	pclose(file_start);
--	pclose(file_stop);
+ /* Same as linked_regs_bpf_k, but break one of the
+  * links, note that r1 is absent from regs=... in __msg below.
+  */
+@@ -280,6 +346,102 @@ __naked void precision_two_ids(void)
+ 	: __clobber_all);
  }
- #endif
-+
- static int do_sort(Elf_Ehdr *ehdr,
- 		   char const *const fname,
- 		   table_sort_t custom_sort)
-@@ -538,8 +537,6 @@ static int do_sort(Elf_Ehdr *ehdr,
- 	unsigned int shstrndx;
- #ifdef MCOUNT_SORT_ENABLED
- 	struct elf_mcount_loc mstruct = {0};
--	uint64_t _start_mcount_loc = 0;
--	uint64_t _stop_mcount_loc = 0;
- #endif
- #ifdef UNWINDER_ORC_ENABLED
- 	unsigned int orc_ip_size = 0;
-@@ -577,13 +574,8 @@ static int do_sort(Elf_Ehdr *ehdr,
  
- #ifdef MCOUNT_SORT_ENABLED
- 		/* locate the .init.data section in vmlinux */
--		if (!strcmp(secstrings + idx, ".init.data")) {
--			get_mcount_loc(&_start_mcount_loc, &_stop_mcount_loc);
--			mstruct.ehdr = ehdr;
-+		if (!strcmp(secstrings + idx, ".init.data"))
- 			mstruct.init_data_sec = shdr;
--			mstruct.start_mcount_loc = _start_mcount_loc;
--			mstruct.stop_mcount_loc = _stop_mcount_loc;
--		}
- #endif
- 
- #ifdef UNWINDER_ORC_ENABLED
-@@ -627,23 +619,6 @@ static int do_sort(Elf_Ehdr *ehdr,
- 		goto out;
- 	}
- #endif
--
--#ifdef MCOUNT_SORT_ENABLED
--	if (!mstruct.init_data_sec || !_start_mcount_loc || !_stop_mcount_loc) {
--		fprintf(stderr,
--			"incomplete mcount's sort in file: %s\n",
--			fname);
--		goto out;
--	}
--
--	/* create thread to sort mcount_loc concurrently */
--	if (pthread_create(&mcount_sort_thread, NULL, &sort_mcount_loc, &mstruct)) {
--		fprintf(stderr,
--			"pthread_create mcount_sort_thread failed '%s': %s\n",
--			strerror(errno), fname);
--		goto out;
--	}
--#endif
- 	if (!extab_sec) {
- 		fprintf(stderr,	"no __ex_table in file: %s\n", fname);
- 		goto out;
-@@ -663,6 +638,26 @@ static int do_sort(Elf_Ehdr *ehdr,
- 	strtab = (const char *)ehdr + shdr_offset(strtab_sec);
- 	symtab = (const Elf_Sym *)((const char *)ehdr + shdr_offset(symtab_sec));
- 
-+#ifdef MCOUNT_SORT_ENABLED
-+	mstruct.ehdr = ehdr;
-+	get_mcount_loc(&mstruct, symtab_sec, strtab);
++SEC("socket")
++__success __log_level(2)
++__flag(BPF_F_TEST_STATE_FREQ)
++/* check thar r0 and r6 have different IDs after 'if',
++ * collect_linked_regs() can't tie more than 6 registers for a single insn.
++ */
++__msg("8: (25) if r0 > 0x7 goto pc+0         ; R0=scalar(id=1")
++__msg("9: (bf) r6 = r6                       ; R6_w=scalar(id=2")
++/* check that r{0-5} are marked precise after 'if' */
++__msg("frame0: regs=r0 stack= before 8: (25) if r0 > 0x7 goto pc+0")
++__msg("frame0: parent state regs=r0,r1,r2,r3,r4,r5 stack=:")
++__naked void linked_regs_too_many_regs(void)
++{
++	asm volatile (
++	/* r0 = random number up to 0xff */
++	"call %[bpf_ktime_get_ns];"
++	"r0 &= 0xff;"
++	/* tie r{0-6} IDs */
++	"r1 = r0;"
++	"r2 = r0;"
++	"r3 = r0;"
++	"r4 = r0;"
++	"r5 = r0;"
++	"r6 = r0;"
++	/* propagate range for r{0-6} */
++	"if r0 > 7 goto +0;"
++	/* make r6 appear in the log */
++	"r6 = r6;"
++	/* force r0 to be precise,
++	 * this would cause r{0-4} to be precise because of shared IDs
++	 */
++	"r7 = r10;"
++	"r7 += r0;"
++	"r0 = 0;"
++	"exit;"
++	:
++	: __imm(bpf_ktime_get_ns)
++	: __clobber_all);
++}
 +
-+	if (!mstruct.init_data_sec || !mstruct.start_mcount_loc || !mstruct.stop_mcount_loc) {
-+		fprintf(stderr,
-+			"incomplete mcount's sort in file: %s\n",
-+			fname);
-+		goto out;
-+	}
++SEC("socket")
++__failure __log_level(2)
++__flag(BPF_F_TEST_STATE_FREQ)
++__msg("div by zero")
++__naked void linked_regs_broken_link_2(void)
++{
++	asm volatile (
++	"call %[bpf_get_prandom_u32];"
++	"r7 = r0;"
++	"r8 = r0;"
++	"call %[bpf_get_prandom_u32];"
++	"if r0 > 1 goto +0;"
++	/* r7.id == r8.id,
++	 * thus r7 precision implies r8 precision,
++	 * which implies r0 precision because of the conditional below.
++	 */
++	"if r8 >= r0 goto 1f;"
++	/* break id relation between r7 and r8 */
++	"r8 += r8;"
++	/* make r7 precise */
++	"if r7 == 0 goto 1f;"
++	"r0 /= 0;"
++"1:"
++	"r0 = 42;"
++	"exit;"
++	:
++	: __imm(bpf_get_prandom_u32)
++	: __clobber_all);
++}
 +
-+	/* create thread to sort mcount_loc concurrently */
-+	if (pthread_create(&mcount_sort_thread, NULL, &sort_mcount_loc, &mstruct)) {
-+		fprintf(stderr,
-+			"pthread_create mcount_sort_thread failed '%s': %s\n",
-+			strerror(errno), fname);
-+		goto out;
-+	}
-+#endif
++/* Check that mark_chain_precision() for one of the conditional jump
++ * operands does not trigger equal scalars precision propagation.
++ */
++SEC("socket")
++__success __log_level(2)
++__msg("3: (25) if r1 > 0x100 goto pc+0")
++__msg("frame0: regs=r1 stack= before 2: (bf) r1 = r0")
++__naked void cjmp_no_linked_regs_trigger(void)
++{
++	asm volatile (
++	/* r0 = random number up to 0xff */
++	"call %[bpf_ktime_get_ns];"
++	"r0 &= 0xff;"
++	/* tie r0.id == r1.id */
++	"r1 = r0;"
++	/* the jump below would be predicted, thus r1 would be marked precise,
++	 * this should not imply precision mark for r0
++	 */
++	"if r1 > 256 goto +0;"
++	"r0 = 0;"
++	"exit;"
++	:
++	: __imm(bpf_ktime_get_ns)
++	: __clobber_all);
++}
 +
- 	if (custom_sort) {
- 		custom_sort(extab_image, shdr_size(extab_sec));
- 	} else {
+ /* Verify that check_ids() is used by regsafe() for scalars.
+  *
+  * r9 = ... some pointer with range X ...
+-- 
+2.53.0
+
 
 
 
