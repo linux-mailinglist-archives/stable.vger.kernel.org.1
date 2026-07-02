@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-270775-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-271081-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id QFDlBFWTRmqAYwsAu9opvQ
-	(envelope-from <stable+bounces-270775-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:35:33 +0200
+	id DQN/FcCiRmrZagsAu9opvQ
+	(envelope-from <stable+bounces-271081-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:41:20 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 91BE86FA458
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:35:32 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F0CB6FB8B2
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:41:19 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=tbXoa4DO;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-270775-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-270775-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=JuaIDcZ0;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-271081-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-271081-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id C724D303A9A8
-	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:33:55 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 908D232CB072
+	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:46:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 70DEC3546D2;
-	Thu,  2 Jul 2026 16:30:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80427381EAC;
+	Thu,  2 Jul 2026 16:43:40 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68C81331EB6;
-	Thu,  2 Jul 2026 16:30:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17AA919049B;
+	Thu,  2 Jul 2026 16:43:39 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783009820; cv=none; b=qqWr1TFODoDAct42kdSv0RmqLq7UUlTnRA+5SOqnC6fCAjws4YifwotS35B18eeIr4DVAdF8t4w+pcscZDo7PK1LO8Nn5Nj+XsUWtfzdxkPgS/k5mFpqnppQCpKZ7bSvkPMQ++ImAlcAitXKgRF80GNb4wKEUC+pKWc4ZaiuOlk=
+	t=1783010620; cv=none; b=FBPBkO+r3y+xIkv0Zwr5K/8mJaguDb97jD4jeEvNm3GygPcmtphs/cBhm1PNm3EhPpWhHIK9qCoZ7RQ0qRtduT19fzcSv5v+yw5Muv6dqdY3OP5Ta6zdCci7fwlbFFL9pu1nee7YDtHC7qqBIzElo9zcw0LjEyw+LuIGJwDwIkM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783009820; c=relaxed/simple;
-	bh=SE0gYs9eO9pw2H2tuUq8g/neVbtEoRdODJ0du2sfcPE=;
+	s=arc-20240116; t=1783010620; c=relaxed/simple;
+	bh=JG9HdkEXZ1DUgMHXd4fmR9HOkiAAxTwmxfsb30gcumI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sya6hEi/m/06OiylD/5gVTqcsxGsgnme3NKLqELBo8ZfrAA9cmKo1tv5tRiomGaiOHTO1hOxRg6QX4z8Waz10AOtLGHYlvUq4EgjJ7FbjSJfGdYr1WksuSR7r+kg9S1bvRGdkm7FYoy0O6l/ySzfd4r2rMP2vfmoZl+MIiwFXOM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tbXoa4DO; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 693CD1F00A3A;
-	Thu,  2 Jul 2026 16:30:17 +0000 (UTC)
+	 MIME-Version; b=bgNCVFIJlTjMPzr2cNe2RUt3To42lY2P82tFPYJ5rsxUWDTXD8G2nYsvysgAr9R5DCDlnY4/XykcBaiqcfCAlXM4UH2lQ7stFc+MwT9o6mxIRCB/c+Nf60Lk8E2rOsl3l16lKQSQ0+aeDaojMdPLW5eZPj8mA5mA2tvyghUPb4g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JuaIDcZ0; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7CC9B1F000E9;
+	Thu,  2 Jul 2026 16:43:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1783009817;
-	bh=IpmTZbJ62SvifJ9ZGFUbJ2UQUyDdmqtL36nHvaeKrSc=;
+	s=korg; t=1783010619;
+	bh=8O/9tSbKZK+1USmvCixArAZZuQl/Gc4RUC1KZ7N34As=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=tbXoa4DO+6gbGPIuqcH2+oLYo+6Q2eSxvdsY1p7X5D2jbYrjcMYQEzpJ8uJpTrveC
-	 Gd2HNXN3oF1HFUeub5jSYevksGbYgi2hJXJeP0uKEhXRM9hBGNz5/EuN8LSNSAWCCq
-	 He0d98OhuoB5rNwNl/26ubayRWaC2Tizd/lIE2j0=
+	b=JuaIDcZ0IUYwBaZL0TWkIjnbWIwzu27s2sVhifiWR0UdEpQnkMtS2u2V+Onz/ty77
+	 OrXpBVlpavzQ1xpSubfzo/phGju0lYRJNdobmkl7lLl6CABtgB/Q3c6RLb7vQhnMzr
+	 f9OsNCzaZGyFatQhVrs5sxW4KXHdod+MIgLz35RU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thorsten Blum <thorsten.blum@linux.dev>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 92/95] crypto: qat - Replace kzalloc() + copy_from_user() with memdup_user()
+	Ashutosh Desai <ashutoshdesai993@gmail.com>,
+	Sean Christopherson <seanjc@google.com>
+Subject: [PATCH 6.12 178/204] KVM: SVM: Fix page overflow in sev_dbg_crypt() for ENCRYPT path
 Date: Thu,  2 Jul 2026 18:20:35 +0200
-Message-ID: <20260702155111.145414410@linuxfoundation.org>
+Message-ID: <20260702155122.384519342@linuxfoundation.org>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260702155109.196223802@linuxfoundation.org>
-References: <20260702155109.196223802@linuxfoundation.org>
+In-Reply-To: <20260702155118.667618796@linuxfoundation.org>
+References: <20260702155118.667618796@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,86 +71,129 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-270775-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-271081-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:ashutoshdesai993@gmail.com,m:seanjc@google.com,s:lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:thorsten.blum@linux.dev,m:herbert@gondor.apana.org.au,m:sashal@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,google.com];
+	FORWARDED(0.00)[lists@lfdr.de];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,vger.kernel.org:from_smtp,linux.dev:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,apana.org.au:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 91BE86FA458
+X-Rspamd-Queue-Id: 9F0CB6FB8B2
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thorsten Blum <thorsten.blum@linux.dev>
+From: Ashutosh Desai <ashutoshdesai993@gmail.com>
 
-[ Upstream commit 1e26339703e2afd397037defa798682b2b93dcc0 ]
+commit 78ee2d50185a037b3d2452a97f3dad69c3f7f389 upstream.
 
-Replace kzalloc() followed by copy_from_user() with memdup_user() to
-improve and simplify adf_ctl_alloc_resources(). memdup_user() returns
-either -ENOMEM or -EFAULT (instead of -EIO) if an error occurs.
+In sev_dbg_crypt(), the per-iteration transfer length is bounded by
+the source page offset (PAGE_SIZE - s_off) but not by the destination
+page offset (PAGE_SIZE - d_off).  When d_off > s_off, the encrypt
+path (__sev_dbg_encrypt_user) performs a read-modify-write using a
+single-page intermediate buffer (dst_tpage):
 
-Remove the unnecessary device id initialization, since memdup_user()
-(like copy_from_user()) immediately overwrites it.
+  1. __sev_dbg_decrypt() expands the size to round_up(len + (d_off & 15), 16)
+     before issuing the PSP command.  If len + (d_off & 15) > PAGE_SIZE,
+     the PSP writes beyond the end of the 4096-byte dst_tpage allocation.
 
-No functional changes intended other than returning the more idiomatic
-error code -EFAULT.
+  2. The subsequent memcpy()/copy_from_user() into
+     page_address(dst_tpage) + (d_off & 15) of 'len' bytes overflows
+     by up to 15 bytes under the same condition.
 
-Signed-off-by: Thorsten Blum <thorsten.blum@linux.dev>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
-Stable-dep-of: d237230728c5 ("crypto: qat - remove unused character device and IOCTLs")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Trigger example: s_off = 0, d_off = 1, debug.len = PAGE_SIZE -
+the PSP is instructed to write round_up(4097, 16) = 4112 bytes to
+a 4096-byte buffer.
+
+Fix by also bounding len by (PAGE_SIZE - d_off), the same check that
+sev_send_update_data() already performs for its single-page guest
+region.
+
+ ==================================================================
+ BUG: KASAN: slab-use-after-free in sev_dbg_crypt+0x993/0xd10 [kvm_amd]
+ Write of size 4095 at addr ff110062293bb009 by task sev_dbg_test/228214
+
+ CPU: 96 UID: 0 PID: 228214 Comm: sev_dbg_test Tainted: G     U  W           7.0.0-smp--5ce9b0c48211-dbg #156 PREEMPTLAZY
+ Tainted: [U]=USER, [W]=WARN
+ Hardware name: Google Astoria/astoria, BIOS 0.20250817.1-0 08/25/2025
+ Call Trace:
+  <TASK>
+  dump_stack_lvl+0x54/0x70
+  print_report+0xbc/0x260
+  kasan_report+0xa2/0xd0
+  kasan_check_range+0x25f/0x2c0
+  __asan_memcpy+0x40/0x70
+  sev_dbg_crypt+0x993/0xd10 [kvm_amd]
+  sev_mem_enc_ioctl+0x33c/0x450 [kvm_amd]
+  kvm_vm_ioctl+0x65d/0x6d0 [kvm]
+  __se_sys_ioctl+0xb2/0x100
+  do_syscall_64+0xe8/0x870
+  entry_SYSCALL_64_after_hwframe+0x4b/0x53
+  </TASK>
+
+ The buggy address belongs to the physical page:
+ page: refcount:1 mapcount:0 mapping:0000000000000000 index:0x7fe72b6a0 pfn:0x62293bb
+ memcg:ff11000112827d82
+ flags: 0x1400000000000000(node=1|zone=1)
+ raw: 1400000000000000 0000000000000000 dead000000000122 0000000000000000
+ raw: 00000007fe72b6a0 0000000000000000 00000001ffffffff ff11000112827d82
+ page dumped because: kasan: bad access detected
+
+ Memory state around the buggy address:
+  ff110062293bbf00: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+  ff110062293bbf80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+ >ff110062293bc000: fa fb fb fb fb fb fb fb fc fc fc fc fc fc fc fc
+                    ^
+  ff110062293bc080: fa fb fb fb fb fb fb fb fc fc fc fc fc fc fc fc
+  ff110062293bc100: fa fb fb fb fb fb fb fb fc fc fc fc fc fc fc fc
+ ==================================================================
+ Disabling lock debugging due to kernel taint
+
+Fixes: 24f41fb23a39 ("KVM: SVM: Add support for SEV DEBUG_DECRYPT command")
+Fixes: 7d1594f5d94b ("KVM: SVM: Add support for SEV DEBUG_ENCRYPT command")
+Cc: stable@vger.kernel.org
+Signed-off-by: Ashutosh Desai <ashutoshdesai993@gmail.com>
+[sean: add sample KASAN splat, Fixes, and stable@]
+Link: https://patch.msgid.link/20260501203537.2120074-2-seanjc@google.com
+Signed-off-by: Sean Christopherson <seanjc@google.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/crypto/qat/qat_common/adf_ctl_drv.c |   13 +++----------
- 1 file changed, 3 insertions(+), 10 deletions(-)
+ arch/x86/kvm/svm/sev.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/crypto/qat/qat_common/adf_ctl_drv.c
-+++ b/drivers/crypto/qat/qat_common/adf_ctl_drv.c
-@@ -87,17 +87,10 @@ static int adf_ctl_alloc_resources(struc
- {
- 	struct adf_user_cfg_ctl_data *cfg_data;
+--- a/arch/x86/kvm/svm/sev.c
++++ b/arch/x86/kvm/svm/sev.c
+@@ -1280,6 +1280,7 @@ static int sev_dbg_crypt(struct kvm *kvm
+ 		s_off = vaddr & ~PAGE_MASK;
+ 		d_off = dst_vaddr & ~PAGE_MASK;
+ 		len = min_t(size_t, (PAGE_SIZE - s_off), size);
++		len = min_t(size_t, len, PAGE_SIZE - d_off);
  
--	cfg_data = kzalloc(sizeof(*cfg_data), GFP_KERNEL);
--	if (!cfg_data)
--		return -ENOMEM;
--
--	/* Initialize device id to NO DEVICE as 0 is a valid device id */
--	cfg_data->device_id = ADF_CFG_NO_DEVICE;
--
--	if (copy_from_user(cfg_data, (void __user *)arg, sizeof(*cfg_data))) {
-+	cfg_data = memdup_user((void __user *)arg, sizeof(*cfg_data));
-+	if (IS_ERR(cfg_data)) {
- 		pr_err("QAT: failed to copy from user cfg_data.\n");
--		kfree(cfg_data);
--		return -EIO;
-+		return PTR_ERR(cfg_data);
- 	}
- 
- 	*ctl_data = cfg_data;
+ 		if (dec)
+ 			ret = __sev_dbg_decrypt_user(kvm,
 
 
 
