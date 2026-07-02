@@ -1,61 +1,62 @@
-Return-Path: <stable+bounces-271295-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-271045-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 2l2VOQ+aRmpMZwsAu9opvQ
-	(envelope-from <stable+bounces-271295-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:04:15 +0200
+	id ezJxMluXRmq+ZQsAu9opvQ
+	(envelope-from <stable+bounces-271045-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:52:43 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id CA3C76FAEF4
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:04:15 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 312756FAAE4
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:52:43 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="BSJPgc/1";
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-271295-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-271295-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=A8CrLdZi;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-271045-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-271045-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 9971630A51D2
-	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:53:30 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id A5153303AF19
+	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:45:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA27830C15A;
-	Thu,  2 Jul 2026 16:52:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31D88349CF2;
+	Thu,  2 Jul 2026 16:42:06 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D942317146;
-	Thu,  2 Jul 2026 16:52:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECFE6336897;
+	Thu,  2 Jul 2026 16:42:04 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783011174; cv=none; b=lXUHaJ3wNen3pmKqsF8FqEcD0M21HVZ+z1MGmn8kCIX1olm72krWyVcVuTjZn0Y9elujGeGZmVzoO3Ai5++LDajiJQsIPwr4oo/5yUA02to+wYBXcfP7v2qs8ccNLdaz7UHF8x/pCvd/l8xSizwQ7mIX6i02Vn9ZLpqzytKvSK0=
+	t=1783010526; cv=none; b=Alz7T9QJRx0cY4np9tBB7B/+tLwUewlfGOFcwCGpaPwAYuc7bBlrDly5f/FWQUc8QhCKGRrZWw0OLqQ7SCI22e5e9pPJmiyadjsznpF9SDNFKOBXO6O7KxeSbylKZc6HaeptXDjfejH4HUlFMLluHsVYt1O36leP6xepcwteU4E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783011174; c=relaxed/simple;
-	bh=JbPq4tKrvcotipJp/yQ0ammTYy9C8GbTZrZTP1lqbrA=;
+	s=arc-20240116; t=1783010526; c=relaxed/simple;
+	bh=L/RodYz4ohc29vFngDP/vZHSh+3a9Dny40x416RkmLU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ec8vZDlmqywM5GSJR7/QbJFu+aE0BDySumuCh4mVHRK3WA4aZ3Px3ViYN6Z3hFo1Cxk+SPVupidiyQYX0xixN6bVs/pDxYQ10Jon+DGsWNsoI5SU+ww2usIydHM7b0pLX7rdWHb9AQReyNOl3/303aoTsQMk1rJONsa5ozKCwrk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BSJPgc/1; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D268A1F000E9;
-	Thu,  2 Jul 2026 16:52:52 +0000 (UTC)
+	 MIME-Version; b=qq3MwojBwlwFY8vtK2gDQJIG82rGmILGvxbtLECo4KEBWl22ZxhQJCD58Slvqos7QjowtwVsZIIrdN83tQTD8X6EjTnEfX5bnN9ZJFcbTaiXaxjRuxBdRYCwA1r2Hzk5oPsN/UPPE0urBVWzjgK+NHeGQoWmGuN8UOuNAk7bWHE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A8CrLdZi; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D96A1F000E9;
+	Thu,  2 Jul 2026 16:42:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1783011173;
-	bh=Nr2QgfFy3cBsQnCcfI7SUtApxH6Q8VpCk1+BRIayKiQ=;
+	s=korg; t=1783010524;
+	bh=1dmVi3NsvBQ4ujlnMQVzB0XW781wDG/un7gefO63IJ8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=BSJPgc/1NAIjI7ONGt0E5SskayTgLxgZ8d3dNGp7Vg925+VGbNT3wa5Wx1cK9BoWY
-	 QGNvHomQdesK1rsjYtl0HTbzdCJcvSKTpBnIWpnZgcCrh7HVbJJDopgUifbPtaxoZQ
-	 51+IOM7VU1PNvcvw+80cRzIKTpUTrsg8GVc7tRsU=
+	b=A8CrLdZiF+7QBRep3e7rJOoEBjjeIKa+SEG+GZg4pO9YubTSo5IQ0sz9LOGo70Hgm
+	 KHwU0kVgTWQHunZeSq8zIstMGyskk2Vm8a/G/CqF+jQhBJH29d5jAEi+IRPOMHsMAQ
+	 /11V1/1KxracMGUuZlQkJuzqL0eH8z1iI06Sltjs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hyunwoo Kim <imv4bel@gmail.com>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 001/108] KVM: x86: Fix shadow paging use-after-free due to unexpected role
+	Frank Li <Frank.Li@nxp.com>,
+	Koichiro Den <den@valinux.co.jp>,
+	Dave Jiang <dave.jiang@intel.com>,
+	Jon Mason <jdmason@kudzu.us>
+Subject: [PATCH 6.12 141/204] NTB: epf: Avoid pci_iounmap() with offset when PEER_SPAD and CONFIG share BAR
 Date: Thu,  2 Jul 2026 18:19:58 +0200
-Message-ID: <20260702155112.143957930@linuxfoundation.org>
+Message-ID: <20260702155121.613427875@linuxfoundation.org>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260702155112.110058792@linuxfoundation.org>
-References: <20260702155112.110058792@linuxfoundation.org>
+In-Reply-To: <20260702155118.667618796@linuxfoundation.org>
+References: <20260702155118.667618796@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,110 +70,94 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-271295-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:imv4bel@gmail.com,m:pbonzini@redhat.com,m:sashal@kernel.org,s:lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,redhat.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-271045-lists,stable=lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:Frank.Li@nxp.com,m:den@valinux.co.jp,m:dave.jiang@intel.com,m:jdmason@kudzu.us,s:lists@lfdr.de];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
+	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,vger.kernel.org:from_smtp]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,kudzu.us:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,valinux.co.jp:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: CA3C76FAEF4
+X-Rspamd-Queue-Id: 312756FAAE4
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paolo Bonzini <pbonzini@redhat.com>
+From: Koichiro Den <den@valinux.co.jp>
 
-commit 81ccda30b4e83d8f5cc4fd50503c44e3a33abfeb upstream.
+commit d876153680e3d721d385e554def919bce3d18c74 upstream.
 
-Commit 0cb2af2ea66ad ("KVM: x86: Fix shadow paging use-after-free due
-to unexpected GFN") fixed a shadow paging mismatch between stored and
-computed GFNs; the bug could be triggered by changing a PDE mapping from
-outside the guest, and then deleting a memslot.  The rmap_remove()
-call would miss entries created after the PDE change because the GFN
-of the leaf SPTE does not match the GFN of the struct kvm_mmu_page.
+When BAR_PEER_SPAD and BAR_CONFIG share one PCI BAR, the module teardown
+path ends up calling pci_iounmap() on the same iomem with some offset,
+which is unnecessary and triggers a kernel warning like the following:
 
-A similar hole however remains if the modified PDE points to a non-leaf
-page.  In this case the gfn can be made to match, but the role does not
-match: the original large 2MB page creates a kvm_mmu_page with direct=1,
-while the new 4KB needs a kvm_mmu_page with direct=0.  However,
-kvm_mmu_get_child_sp() does not compare the role, and therefore reuses
-the page.
+  Trying to vunmap() nonexistent vm area (0000000069a5ffe8)
+  WARNING: mm/vmalloc.c:3470 at vunmap+0x58/0x68, CPU#5: modprobe/2937
+  [...]
+  Call trace:
+   vunmap+0x58/0x68 (P)
+   iounmap+0x34/0x48
+   pci_iounmap+0x2c/0x40
+   ntb_epf_pci_remove+0x44/0x80 [ntb_hw_epf]
+   pci_device_remove+0x48/0xf8
+   device_remove+0x50/0x88
+   device_release_driver_internal+0x1c8/0x228
+   driver_detach+0x50/0xb0
+   bus_remove_driver+0x74/0x100
+   driver_unregister+0x34/0x68
+   pci_unregister_driver+0x34/0xa0
+   ntb_epf_pci_driver_exit+0x14/0xfe0 [ntb_hw_epf]
+  [...]
 
-The next step is installing a leaf (4KB) SPTE on the new path which
-records an rmap entry under the gfn resolved by the walk.  But when
-that child is zapped its parent kvm_mmu_page has direct=1 and
-kvm_mmu_page_get_gfn() computes the gfn for the 4KB page as
-sp->gfn + index instead of using sp->shadowed_translation[] (or sp->gfns[]
-in older kernels).  It therefore fails to remove the recorded entry.
+Fix it by unmapping only when PEER_SPAD and CONFIG use difference bars.
 
-When the memslot is dropped the shadow page is freed but the rmap
-entry survives, as in the scenario that was already fixed.  Code that
-later walks that gfn (dirty logging, MMU notifier invalidation, and
-so on) dereferences an sptep that lies in the freed page, causing the
-use-after-free.
-
-Fixes: 2032a93d66fa ("KVM: MMU: Don't allocate gfns page for direct mmu pages")
-Reported-by: Hyunwoo Kim <imv4bel@gmail.com>
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: e75d5ae8ab88 ("NTB: epf: Allow more flexibility in the memory BAR map method")
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
+Signed-off-by: Koichiro Den <den@valinux.co.jp>
+Reviewed-by: Dave Jiang <dave.jiang@intel.com>
+Signed-off-by: Jon Mason <jdmason@kudzu.us>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kvm/mmu/mmu.c | 10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
+ drivers/ntb/hw/epf/ntb_hw_epf.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/arch/x86/kvm/mmu/mmu.c b/arch/x86/kvm/mmu/mmu.c
-index 0bd0cb8992c9fd..541e199feb9981 100644
---- a/arch/x86/kvm/mmu/mmu.c
-+++ b/arch/x86/kvm/mmu/mmu.c
-@@ -2453,13 +2453,15 @@ static struct kvm_mmu_page *kvm_mmu_get_child_sp(struct kvm_vcpu *vcpu,
- 						 u64 *sptep, gfn_t gfn,
- 						 bool direct, unsigned int access)
- {
--	union kvm_mmu_page_role role;
-+	union kvm_mmu_page_role role = kvm_mmu_child_role(sptep, direct, access);
+--- a/drivers/ntb/hw/epf/ntb_hw_epf.c
++++ b/drivers/ntb/hw/epf/ntb_hw_epf.c
+@@ -646,7 +646,8 @@ static void ntb_epf_deinit_pci(struct nt
+ 	struct pci_dev *pdev = ndev->ntb.pdev;
  
--	if (is_shadow_present_pte(*sptep) && !is_large_pte(*sptep) &&
--	    spte_to_child_sp(*sptep) && spte_to_child_sp(*sptep)->gfn == gfn)
-+	if (is_shadow_present_pte(*sptep) &&
-+	    !is_large_pte(*sptep) &&
-+	    spte_to_child_sp(*sptep) &&
-+	    spte_to_child_sp(*sptep)->gfn == gfn &&
-+	    spte_to_child_sp(*sptep)->role.word == role.word)
- 		return ERR_PTR(-EEXIST);
+ 	pci_iounmap(pdev, ndev->ctrl_reg);
+-	pci_iounmap(pdev, ndev->peer_spad_reg);
++	if (ndev->barno_map[BAR_PEER_SPAD] != ndev->barno_map[BAR_CONFIG])
++		pci_iounmap(pdev, ndev->peer_spad_reg);
+ 	pci_iounmap(pdev, ndev->db_reg);
  
--	role = kvm_mmu_child_role(sptep, direct, access);
- 	return kvm_mmu_get_shadow_page(vcpu, gfn, role);
- }
- 
--- 
-2.53.0
-
+ 	pci_release_regions(pdev);
 
 
 
