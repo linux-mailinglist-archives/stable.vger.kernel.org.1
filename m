@@ -1,61 +1,61 @@
-Return-Path: <stable+bounces-270691-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-270815-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 2KI2AryURmolZAsAu9opvQ
-	(envelope-from <stable+bounces-270691-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:41:32 +0200
+	id F0OMJM2VRmrLZAsAu9opvQ
+	(envelope-from <stable+bounces-270815-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:46:05 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4D9806FA60F
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:41:31 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A1746FA828
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:46:05 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=joZW6Sy7;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-270691-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-270691-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=Xx1wuK4h;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-270815-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-270815-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 248E6325F0BD
-	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:31:46 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 6971632BD21E
+	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:35:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 04F063AC0C7;
-	Thu,  2 Jul 2026 16:26:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71C38348C4C;
+	Thu,  2 Jul 2026 16:32:01 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 677E1390C81;
-	Thu,  2 Jul 2026 16:26:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DAA33976B8;
+	Thu,  2 Jul 2026 16:32:00 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783009599; cv=none; b=QS7OYjgKEuanIcSQfk6nV3xsuNMl0upRDTlEXysfVSvdZZAC26TJB3qGDbtMv6CBxPe7TZMkvJeQ1iinFXDq4UpK8GbxeW2aE+2ELtG1rJG3hqk40FMx0WFzf/qHaCn94EG9a/Wj0HIHCkDg+O+Oychc1wYRXaYTDs1ji5ZnMH0=
+	t=1783009921; cv=none; b=DNYR0O1BajMmdfUrs/27+2MK2AguXnGhHryaYMM5nYXk2EhWvKBolrwAWL/8BrHXoX0k3smegMflS7TwSynpuPC8Fvos66pGq5L1qMZBq6trAI/BcU7M6hgfmDiipSP/kM+IgxBQybVfFSQ5P2OCzyWqSe46VPKMt1RtjMS7F8k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783009599; c=relaxed/simple;
-	bh=hiBcPYG8Od6Jz3FJos+0pLFfC3dzgh28HZimkzqA28w=;
+	s=arc-20240116; t=1783009921; c=relaxed/simple;
+	bh=1HifSDsMuJyKVqGRumkPXrFl4EYlXPhZlWFvypeqXkU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cKlfCLY1lm2qQUSnq8pldTGGuFFtcSe6Vi5gCjuwPWo7RwsbbXzf5FGHPtPE/119pCPMT/HB9jcztqKwjsjZqT0JzhIDALTFMZg1hTnwdVAOWY1eP3tC+w5lteKbZgA8GrAKpIqfTP0vrjb3CXoS4GeSweKlAYYsrZZPBvm1Nx0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=joZW6Sy7; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C944D1F000E9;
-	Thu,  2 Jul 2026 16:26:36 +0000 (UTC)
+	 MIME-Version; b=UTsfw7c1pXB0rNoVaNWaJ5mzQB0bQK9O9MprFzMVlTXjvBouTA1W99y22vDGf3/Nd5GXHZ3qLCf4Wf4dXB3ePFwXHhR9BdV6knS55xdyHX7vU6Yk91kngIgloPyzx+i3HohJBJJNgI8k5jk3tYNJEU6J0jEKrQDnkHyABY7NSB0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Xx1wuK4h; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A44D41F000E9;
+	Thu,  2 Jul 2026 16:31:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1783009597;
-	bh=PKKv7cK70AwmLGol4xiIvfDD2XU2uqMmgoRzZQdEw2c=;
+	s=korg; t=1783009920;
+	bh=O7JoNKVexgj6AtRfR7AeoXMq3vwxonRUmVppHLJl838=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=joZW6Sy7UIHGRuN0B8M7UbWEBNUDKX7CbeQdZsMPY/5wb68KcEvZeSAkvC71Pq45e
-	 qSD2Sf5Md1D26lmqvw8d894BTv9Um7TAGgDOx3ZEX8n0QniAa//UQvjMiAZXo9ZIgN
-	 y4WqkDwWzP8SryGMAOmmruKq1Z96hCm6bZN5UM5o=
+	b=Xx1wuK4hyMwcdVwqMcQfIVyNm/gCblEb4LEB4sybRcQVKoQepMwnzTKFaZroZ45VM
+	 xEuh1mMwkoVVpKLop/sVn0R7yYFuRdeS5tbjIT/Xpl9FO49FGEUM0dKSZmRlYzDD+w
+	 XV6teDQEF3TeVdqn69WwR414nRwsLcZw5WHA7bL8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xiang Mei <xmei5@asu.edu>,
-	Weiming Shi <bestswngs@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 5.15 16/95] net: qualcomm: rmnet: fix endpoint use-after-free in rmnet_dellink()
-Date: Thu,  2 Jul 2026 18:19:19 +0200
-Message-ID: <20260702155109.547624775@linuxfoundation.org>
+	Gil Portnoy <dddhkts1@gmail.com>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.1 041/129] ksmbd: reject non-VALID session in compound request branch
+Date: Thu,  2 Jul 2026 18:19:20 +0200
+Message-ID: <20260702155113.002013150@linuxfoundation.org>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260702155109.196223802@linuxfoundation.org>
-References: <20260702155109.196223802@linuxfoundation.org>
+In-Reply-To: <20260702155112.163984240@linuxfoundation.org>
+References: <20260702155112.163984240@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,21 +72,21 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-270691-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-270815-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:dddhkts1@gmail.com,m:linkinjeon@kernel.org,m:stfrench@microsoft.com,s:lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:xmei5@asu.edu,m:bestswngs@gmail.com,m:kuba@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,asu.edu,gmail.com,kernel.org];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org,microsoft.com];
 	FORWARDED(0.00)[lists@lfdr.de];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
@@ -99,96 +99,67 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[asu.edu:email,msgid.link:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 4D9806FA60F
+X-Rspamd-Queue-Id: 1A1746FA828
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Weiming Shi <bestswngs@gmail.com>
+From: Gil Portnoy <dddhkts1@gmail.com>
 
-commit d00c953a8f69921f484b629801766da68f27f658 upstream.
+commit 609ca17d869d04ba249e32cdcbf13c0b1c66f43c upstream.
 
-rmnet_dellink() removes the endpoint from the hash table with
-hlist_del_init_rcu() and then immediately frees it with kfree(). However,
-RCU readers on the receive path (rmnet_rx_handler ->
-__rmnet_map_ingress_handler) may still hold a reference to the endpoint and
-dereference ep->egress_dev after the memory has been freed. The endpoint is
-a kmalloc-32 object, and the stale read at offset 8 corresponds to the
-egress_dev pointer.
+smb2_check_user_session() takes a shortcut for any operation that is not
+the first in a COMPOUND request: it reuses work->sess (the session bound by
+the first operation) and validates only the SessionId, then returns
+"valid". It never re-checks work->sess->state == SMB2_SESSION_VALID, and a
+SessionId of 0xFFFFFFFFFFFFFFFF (ULLONG_MAX, the MS-SMB2 related-operation
+value) skips even the id comparison. The standalone path
+(ksmbd_session_lookup_all() plus the SESSION_SETUP state machine) does
+enforce the VALID state; the compound branch bypasses all of it.
 
-  BUG: unable to handle page fault for address: ffffffffde942eef
-  Oops: 0002 [#1] SMP NOPTI
-  CPU: 1 UID: 0 PID: 137 Comm: poc_write Not tainted 7.0.0+ #4 PREEMPTLAZY
-  RIP: 0010:rmnet_vnd_rx_fixup (rmnet_vnd.c:27)
-  Call Trace:
-   <TASK>
-   __rmnet_map_ingress_handler (rmnet_handlers.c:48 rmnet_handlers.c:101)
-   rmnet_rx_handler (rmnet_handlers.c:129 rmnet_handlers.c:235)
-   __netif_receive_skb_core.constprop.0 (net/core/dev.c:6096)
-   __netif_receive_skb_one_core (net/core/dev.c:6208)
-   netif_receive_skb (net/core/dev.c:6467)
-   tun_get_user (drivers/net/tun.c:1955)
-   tun_chr_write_iter (drivers/net/tun.c:2003)
-   vfs_write (fs/read_write.c:688)
-   ksys_write (fs/read_write.c:740)
-   </TASK>
+A SESSION_SETUP carrying only an NTLM Type-1 (NtLmNegotiate) blob publishes
+a fresh SMB2_SESSION_IN_PROGRESS session whose sess->user is still NULL
+(->user is assigned later, by ntlm_authenticate()). Used as operation 1 of
+a COMPOUND with operation 2 = TREE_CONNECT (related, SessionId=ULLONG_MAX,
+\\host\IPC$), the tree-connect then runs on that IN_PROGRESS session and
+reaches ksmbd_ipc_tree_connect_request(), which dereferences
+user_name(sess->user) with sess->user == NULL (transport_ipc.c:687/701/704)
+-> remote NULL-pointer dereference and a kernel Oops that wedges the ksmbd
+worker for all clients.
 
-Add an rcu_head field to struct rmnet_endpoint and replace kfree() with
-kfree_rcu() so the endpoint memory remains valid through the RCU grace
-period. Also remove the rmnet_vnd_dellink() call and inline only the
-nr_rmnet_devs decrement, since rmnet_vnd_dellink() would set
-ep->egress_dev to NULL during the grace period, creating a data race
-with lockless readers.
+Reject any non-first compound operation that lands on a session which is
+not SMB2_SESSION_VALID, mirroring the validity the standalone lookup path
+enforces. SESSION_SETUP itself legitimately runs on an IN_PROGRESS session,
+but it is never carried as a non-first compound operation, so multi-leg
+authentication is unaffected by this check.
 
-Fixes: ceed73a2cf4a ("drivers: net: ethernet: qualcomm: rmnet: Initial implementation")
-Reported-by: Xiang Mei <xmei5@asu.edu>
-Signed-off-by: Weiming Shi <bestswngs@gmail.com>
-Link: https://patch.msgid.link/20260514122511.3083479-2-bestswngs@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 5005bcb42191 ("ksmbd: validate session id and tree id in the compound request")
+Cc: stable@vger.kernel.org
+Signed-off-by: Gil Portnoy <dddhkts1@gmail.com>
+Acked-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/qualcomm/rmnet/rmnet_config.c |    8 ++++----
- drivers/net/ethernet/qualcomm/rmnet/rmnet_config.h |    1 +
- 2 files changed, 5 insertions(+), 4 deletions(-)
+ fs/smb/server/smb2pdu.c |    5 +++++
+ 1 file changed, 5 insertions(+)
 
---- a/drivers/net/ethernet/qualcomm/rmnet/rmnet_config.c
-+++ b/drivers/net/ethernet/qualcomm/rmnet/rmnet_config.c
-@@ -205,8 +205,8 @@ static void rmnet_dellink(struct net_dev
- 	ep = rmnet_get_endpoint(real_port, mux_id);
- 	if (ep) {
- 		hlist_del_init_rcu(&ep->hlnode);
--		rmnet_vnd_dellink(mux_id, real_port, ep);
--		kfree(ep);
-+		real_port->nr_rmnet_devs--;
-+		kfree_rcu(ep, rcu);
+--- a/fs/smb/server/smb2pdu.c
++++ b/fs/smb/server/smb2pdu.c
+@@ -605,6 +605,11 @@ int smb2_check_user_session(struct ksmbd
+ 					sess_id, work->sess->id);
+ 			return -EINVAL;
+ 		}
++		if (work->sess->state != SMB2_SESSION_VALID) {
++			pr_err("compound request on a non-valid session (state %d)\n",
++					work->sess->state);
++			return -EINVAL;
++		}
+ 		return 1;
  	}
  
- 	netdev_upper_dev_unlink(real_dev, dev);
-@@ -230,9 +230,9 @@ static void rmnet_force_unassociate_devi
- 		hash_for_each_safe(port->muxed_ep, bkt_ep, tmp_ep, ep, hlnode) {
- 			unregister_netdevice_queue(ep->egress_dev, &list);
- 			netdev_upper_dev_unlink(real_dev, ep->egress_dev);
--			rmnet_vnd_dellink(ep->mux_id, port, ep);
- 			hlist_del_init_rcu(&ep->hlnode);
--			kfree(ep);
-+			port->nr_rmnet_devs--;
-+			kfree_rcu(ep, rcu);
- 		}
- 		rmnet_unregister_real_device(real_dev);
- 		unregister_netdevice_many(&list);
---- a/drivers/net/ethernet/qualcomm/rmnet/rmnet_config.h
-+++ b/drivers/net/ethernet/qualcomm/rmnet/rmnet_config.h
-@@ -17,6 +17,7 @@ struct rmnet_endpoint {
- 	u8 mux_id;
- 	struct net_device *egress_dev;
- 	struct hlist_node hlnode;
-+	struct rcu_head rcu;
- };
- 
- /* One instance of this structure is instantiated for each real_dev associated
 
 
 
