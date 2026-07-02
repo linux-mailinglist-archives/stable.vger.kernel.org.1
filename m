@@ -1,62 +1,61 @@
-Return-Path: <stable+bounces-270803-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-270997-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id j/MvF6iVRmqoZAsAu9opvQ
-	(envelope-from <stable+bounces-270803-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:45:28 +0200
+	id K+61EWWWRmotZQsAu9opvQ
+	(envelope-from <stable+bounces-270997-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:48:37 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id F1CDA6FA7DB
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:45:27 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id D1AD56FA945
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:48:36 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=oITZlx+9;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-270803-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-270803-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=AKqStXoI;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-270997-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-270997-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 05E7332AEE91
-	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:34:59 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 0C61330B85FD
+	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:41:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 752643403E1;
-	Thu,  2 Jul 2026 16:31:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 718FB23EAAD;
+	Thu,  2 Jul 2026 16:39:59 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D37333F5BE;
-	Thu,  2 Jul 2026 16:31:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F554323417;
+	Thu,  2 Jul 2026 16:39:57 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783009890; cv=none; b=RjciLWcHyToa2ZosYX+GE8ZWOFWpaxNr70Pihn6GNuWq/iaOddPsHl77k9Xo47BFLiTe4uLoRA2wGcODl2wIVnJkZ3PY2e63Ysir2LNagiHTVhF1K8OnySXDOL/Dt93EuZAW+wEQ21ccI32KL5HbDi9YB7o+sO9By56bqvdut7k=
+	t=1783010399; cv=none; b=iWl2w9FMUZEZ3BMSJ5Fs4yrVgs0MSBDpw8wwadtOmdi4IHdw9iMRaev74S3qp09pmmewmYqgJ1Vq3ImEDhFSKvfSoxJNh+gcZDaBdAAWUddjuFJGFOUenPnpF0zsQxuIfjMxiGiAfEFAY81zKq6waQibMtY0NtEWgMJqPE3XdMo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783009890; c=relaxed/simple;
-	bh=zQoE9vAQc2nc7/5Q0Db4hF3FB1hqmjzkA/scqmeJpTY=;
+	s=arc-20240116; t=1783010399; c=relaxed/simple;
+	bh=DMOiPr12pOJ/3SE//zHjfT8YpoDyq77Vk7LBdBt3jSA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qoahM8KaCS4aEOL2yyTKfnbFsmTys0ElWvMbLwBSgyn6lO8NwtSbbyNqUTjAmUyUe6n5agC/oPGXxfk/ymgAAxT9YKqYcFIQMxFYn5c0kwpkXfT1J9Hvkr/PhS8pnriBLhE3R/sjMANFXlDeaiyx9pDaHRpxjtkrxgOzUQelJo4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oITZlx+9; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B4081F000E9;
-	Thu,  2 Jul 2026 16:31:28 +0000 (UTC)
+	 MIME-Version; b=Ou8jkUJ+X/aW5X6FQ+00FVxLd/MzIkz9RZum9AX5kLwjMTUTHcfcbwXgYSFMI0lP0Qi0RyVAPaMskLumd5vR200tEFESLdTHxhelaM2d6QwqinLqT6B1Ol8JmGDaKIK/iqgSD3+oDOmtwgA6oSj1Hhj9e0eGPI7y1NI8uBaPcvQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AKqStXoI; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63FB81F00A3D;
+	Thu,  2 Jul 2026 16:39:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1783009888;
-	bh=e6WWzszf7pW/WQgrs01jwBa08MnWIc86Pf4p3LjePAg=;
+	s=korg; t=1783010397;
+	bh=v96KIqQ+iBxp4JcGXb6CIc4INXR3Z3KixZFOM62cuV8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=oITZlx+9tRBOJbOoxJYzgXa7IQddNj9KvWpYAlcWSAdFbpb3CeryqmhfN0FUN1feF
-	 GpyncnkE7VBx+vQQy4qp/LXL36W21W7xuSN+sgvvkKwMAAeby31U1I5h1Y5PbKOWGA
-	 D7/I9J9q2TDaTZiFItImUyBFFnLHtk+U3/VkZZTU=
+	b=AKqStXoIwWoGDDLeoF3Zu86MoUz9vqsOoRxNA6irBeftk0Ep9xFXEPkZ4EQZo/2xl
+	 zeWracuKkt6En3Ae4cIatkgENDWDV+xhUUqw/QwEgyQFgJ5hV+ImVavUwR796wyjzr
+	 /w7ZjJDb4gubrbYwxpyYfWo4GsqKHuZHQXpUNbMA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xie Yuanbin <xieyuanbin1@huawei.com>,
-	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	Hyunwoo Kim <imv4bel@gmail.com>,
+	Paolo Bonzini <pbonzini@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 030/129] ARM: fix branch predictor hardening
-Date: Thu,  2 Jul 2026 18:19:09 +0200
-Message-ID: <20260702155112.781162924@linuxfoundation.org>
+Subject: [PATCH 6.12 093/204] KVM: x86: Fix shadow paging use-after-free due to unexpected role
+Date: Thu,  2 Jul 2026 18:19:10 +0200
+Message-ID: <20260702155120.616098558@linuxfoundation.org>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260702155112.163984240@linuxfoundation.org>
-References: <20260702155112.163984240@linuxfoundation.org>
+In-Reply-To: <20260702155118.667618796@linuxfoundation.org>
+References: <20260702155118.667618796@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,192 +67,109 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-270803-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-270997-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:imv4bel@gmail.com,m:pbonzini@redhat.com,m:sashal@kernel.org,s:lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:xieyuanbin1@huawei.com,m:rmk+kernel@armlinux.org.uk,m:bigeasy@linutronix.de,m:sashal@kernel.org,m:rmk@armlinux.org.uk,s:lists@lfdr.de];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,redhat.com,kernel.org];
+	FORWARDED(0.00)[lists@lfdr.de];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,kernel];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,huawei.com:email,vger.kernel.org:from_smtp,linutronix.de:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: F1CDA6FA7DB
+X-Rspamd-Queue-Id: D1AD56FA945
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+From: Paolo Bonzini <pbonzini@redhat.com>
 
-commit fd2dee1c6e2256f726ba33fd3083a7be0efc80d3 upstream.
+commit 81ccda30b4e83d8f5cc4fd50503c44e3a33abfeb upstream.
 
-__do_user_fault() may be called with indeterminent interrupt enable
-state, which means we may be preemptive at this point. This causes
-problems when calling harden_branch_predictor(). For example, when
-called from a data abort, do_alignment_fault()->do_bad_area().
+Commit 0cb2af2ea66ad ("KVM: x86: Fix shadow paging use-after-free due
+to unexpected GFN") fixed a shadow paging mismatch between stored and
+computed GFNs; the bug could be triggered by changing a PDE mapping from
+outside the guest, and then deleting a memslot.  The rmap_remove()
+call would miss entries created after the PDE change because the GFN
+of the leaf SPTE does not match the GFN of the struct kvm_mmu_page.
 
-Move harden_branch_predictor() out of __do_user_fault() and into the
-calling contexts.
+A similar hole however remains if the modified PDE points to a non-leaf
+page.  In this case the gfn can be made to match, but the role does not
+match: the original large 2MB page creates a kvm_mmu_page with direct=1,
+while the new 4KB needs a kvm_mmu_page with direct=0.  However,
+kvm_mmu_get_child_sp() does not compare the role, and therefore reuses
+the page.
 
-Moving it into do_kernel_address_page_fault(), we can be sure that
-interrupts will be disabled here.
+The next step is installing a leaf (4KB) SPTE on the new path which
+records an rmap entry under the gfn resolved by the walk.  But when
+that child is zapped its parent kvm_mmu_page has direct=1 and
+kvm_mmu_page_get_gfn() computes the gfn for the 4KB page as
+sp->gfn + index instead of using sp->shadowed_translation[] (or sp->gfns[]
+in older kernels).  It therefore fails to remove the recorded entry.
 
-Converting do_translation_fault() to use do_kernel_address_page_fault()
-rather than do_bad_area() means that we keep branch predictor handling
-for translation faults. Interrupts will also be disabled at this call
-site.
+When the memslot is dropped the shadow page is freed but the rmap
+entry survives, as in the scenario that was already fixed.  Code that
+later walks that gfn (dirty logging, MMU notifier invalidation, and
+so on) dereferences an sptep that lies in the freed page, causing the
+use-after-free.
 
-do_sect_fault() needs special handling, so detect user mode accesses
-to kernel-addresses, and add an explicit call to branch predictor
-hardening.
-
-Finally, add branch predictor hardening to do_alignment() for the
-faulting case (user mode accessing kernel addresses) before interrupts
-are enabled.
-
-This should cover all cases where harden_branch_predictor() is called,
-ensuring that it is always has interrupts disabled, also ensuring that
-it is called early in each call path.
-
-Reviewed-by: Xie Yuanbin <xieyuanbin1@huawei.com>
-Tested-by: Xie Yuanbin <xieyuanbin1@huawei.com>
-Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
-Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Fixes: 2032a93d66fa ("KVM: MMU: Don't allocate gfns page for direct mmu pages")
+Reported-by: Hyunwoo Kim <imv4bel@gmail.com>
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/mm/alignment.c |  4 ++++
- arch/arm/mm/fault.c     | 39 ++++++++++++++++++++++++++-------------
- 2 files changed, 30 insertions(+), 13 deletions(-)
+ arch/x86/kvm/mmu/mmu.c | 10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
 
-diff --git a/arch/arm/mm/alignment.c b/arch/arm/mm/alignment.c
-index f8dd0b3cc8e040..ee264737be6d26 100644
---- a/arch/arm/mm/alignment.c
-+++ b/arch/arm/mm/alignment.c
-@@ -22,6 +22,7 @@
- 
- #include <asm/cp15.h>
- #include <asm/system_info.h>
-+#include <asm/system_misc.h>
- #include <asm/unaligned.h>
- #include <asm/opcodes.h>
- 
-@@ -809,6 +810,9 @@ do_alignment(unsigned long addr, unsigned int fsr, struct pt_regs *regs)
- 	int thumb2_32b = 0;
- 	int fault;
- 
-+	if (addr >= TASK_SIZE && user_mode(regs))
-+		harden_branch_predictor();
-+
- 	if (interrupts_enabled(regs))
- 		local_irq_enable();
- 
-diff --git a/arch/arm/mm/fault.c b/arch/arm/mm/fault.c
-index 907705992ab65f..d0681285dbda3e 100644
---- a/arch/arm/mm/fault.c
-+++ b/arch/arm/mm/fault.c
-@@ -195,9 +195,6 @@ __do_user_fault(unsigned long addr, unsigned int fsr, unsigned int sig,
+diff --git a/arch/x86/kvm/mmu/mmu.c b/arch/x86/kvm/mmu/mmu.c
+index d288c60ae200ba..a67d013fff4d91 100644
+--- a/arch/x86/kvm/mmu/mmu.c
++++ b/arch/x86/kvm/mmu/mmu.c
+@@ -2329,13 +2329,15 @@ static struct kvm_mmu_page *kvm_mmu_get_child_sp(struct kvm_vcpu *vcpu,
+ 						 u64 *sptep, gfn_t gfn,
+ 						 bool direct, unsigned int access)
  {
- 	struct task_struct *tsk = current;
+-	union kvm_mmu_page_role role;
++	union kvm_mmu_page_role role = kvm_mmu_child_role(sptep, direct, access);
  
--	if (addr > TASK_SIZE)
--		harden_branch_predictor();
--
- #ifdef CONFIG_DEBUG_USER
- 	if (((user_debug & UDBG_SEGV) && (sig == SIGSEGV)) ||
- 	    ((user_debug & UDBG_BUS)  && (sig == SIGBUS))) {
-@@ -248,8 +245,10 @@ do_kernel_address_page_fault(struct mm_struct *mm, unsigned long addr,
- 		/*
- 		 * Fault from user mode for a kernel space address. User mode
- 		 * should not be faulting in kernel space, which includes the
--		 * vector/khelper page. Send a SIGSEGV.
-+		 * vector/khelper page. Handle the branch predictor hardening
-+		 * while interrupts are still disabled, then send a SIGSEGV.
- 		 */
-+		harden_branch_predictor();
- 		__do_user_fault(addr, fsr, SIGSEGV, SEGV_MAPERR, regs);
- 	} else {
- 		/*
-@@ -419,16 +418,20 @@ do_page_fault(unsigned long addr, unsigned int fsr, struct pt_regs *regs)
-  * We enter here because the first level page table doesn't contain
-  * a valid entry for the address.
-  *
-- * If the address is in kernel space (>= TASK_SIZE), then we are
-- * probably faulting in the vmalloc() area.
-+ * If this is a user address (addr < TASK_SIZE), we handle this as a
-+ * normal page fault. This leaves the remainder of the function to handle
-+ * kernel address translation faults.
-  *
-- * If the init_task's first level page tables contains the relevant
-- * entry, we copy the it to this task.  If not, we send the process
-- * a signal, fixup the exception, or oops the kernel.
-+ * Since user mode is not permitted to access kernel addresses, pass these
-+ * directly to do_kernel_address_page_fault() to handle.
-  *
-- * NOTE! We MUST NOT take any locks for this case. We may be in an
-- * interrupt or a critical region, and should only copy the information
-- * from the master page table, nothing more.
-+ * Otherwise, we're probably faulting in the vmalloc() area, so try to fix
-+ * that up. Note that we must not take any locks or enable interrupts in
-+ * this case.
-+ *
-+ * If vmalloc() fixup fails, that means the non-leaf page tables did not
-+ * contain an entry for this address, so handle this via
-+ * do_kernel_address_page_fault().
-  */
- #ifdef CONFIG_MMU
- static int __kprobes
-@@ -494,7 +497,8 @@ do_translation_fault(unsigned long addr, unsigned int fsr,
- 	return 0;
+-	if (is_shadow_present_pte(*sptep) && !is_large_pte(*sptep) &&
+-	    spte_to_child_sp(*sptep) && spte_to_child_sp(*sptep)->gfn == gfn)
++	if (is_shadow_present_pte(*sptep) &&
++	    !is_large_pte(*sptep) &&
++	    spte_to_child_sp(*sptep) &&
++	    spte_to_child_sp(*sptep)->gfn == gfn &&
++	    spte_to_child_sp(*sptep)->role.word == role.word)
+ 		return ERR_PTR(-EEXIST);
  
- bad_area:
--	do_bad_area(addr, fsr, regs);
-+	do_kernel_address_page_fault(current->mm, addr, fsr, regs);
-+
- 	return 0;
+-	role = kvm_mmu_child_role(sptep, direct, access);
+ 	return kvm_mmu_get_shadow_page(vcpu, gfn, role);
  }
- #else					/* CONFIG_MMU */
-@@ -514,7 +518,16 @@ do_translation_fault(unsigned long addr, unsigned int fsr,
- static int
- do_sect_fault(unsigned long addr, unsigned int fsr, struct pt_regs *regs)
- {
-+	/*
-+	 * If this is a kernel address, but from user mode, then userspace
-+	 * is trying bad stuff. Invoke the branch predictor handling.
-+	 * Interrupts are disabled here.
-+	 */
-+	if (addr >= TASK_SIZE && user_mode(regs))
-+		harden_branch_predictor();
-+
- 	do_bad_area(addr, fsr, regs);
-+
- 	return 0;
- }
- #endif /* CONFIG_ARM_LPAE */
+ 
 -- 
 2.53.0
 
