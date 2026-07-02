@@ -1,62 +1,62 @@
-Return-Path: <stable+bounces-271157-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-270955-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id valTOh+YRmpBZgsAu9opvQ
-	(envelope-from <stable+bounces-271157-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:55:59 +0200
+	id +vd1EmaURmr9YwsAu9opvQ
+	(envelope-from <stable+bounces-270955-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:40:06 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8F56D6FAC3F
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:55:59 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id B2F686FA580
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:40:05 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=rD7lBp6m;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-271157-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-271157-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=DZnGMJe7;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-270955-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-270955-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 94FF8303176B
-	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:48:31 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 93409305506B
+	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:39:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A233360ECE;
-	Thu,  2 Jul 2026 16:47:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7BD043659F9;
+	Thu,  2 Jul 2026 16:38:09 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF23D360ED5;
-	Thu,  2 Jul 2026 16:46:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C3A8363083;
+	Thu,  2 Jul 2026 16:38:08 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783010819; cv=none; b=g9g2DwifDK2kCq/tJWatXlC05af1kvIOu6b4U8xdOlzYcYCdPwCOSyPDXnacXNrzHEt4MQDZ9LbhSHgWkEWfWRMONluihv78d3dPochnT4YDrXra/9WFizu0ZsIhhXuZJt1vwWpn7WA/l64Iiy0L/aTCSQsLWSlDapFI5NwD4GA=
+	t=1783010289; cv=none; b=jsIgQ/ZTIkxzdaj+q3LWpcZPQP3XrmnQ651z29bD3jTKBkfHbocU7ZC67PXxo/gwz6JXq823c2LQ5+PpPVqFrWjaLY5b5Kg8oadpLJQMjftlSOOfkhPzEpjZMxJMKycNyf9YNhdncMor/ii4RVLNnw0MpQ3AYQX5Le34c0VjIYI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783010819; c=relaxed/simple;
-	bh=aaaoDtLJVpweGr/QRjYIzRXZhIaZvDlM5XtDIIZF23A=;
+	s=arc-20240116; t=1783010289; c=relaxed/simple;
+	bh=PLQjmZ9TSGPkLJZDA0DEx3YYO+PGJepCUezXLttg/DI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=AwMUklj1+T7Q5t3w94tvDm21yLhvuwpfZ1pkh14/UogZjhelDB/TXsJYS/yFH7FyMWH8KQeG/4LlhAuWl+nOGQu7uc8MMqsaLqBZvByO020i0RKpWAc9reTuwvyJPCeZbK7ByraGI0stgfDGlsF1bWTCEy0AnRodCwsZcR2BJs0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rD7lBp6m; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4FB761F000E9;
-	Thu,  2 Jul 2026 16:46:58 +0000 (UTC)
+	 MIME-Version; b=Jq4QCMDjKddD/CzzeZnhF9WXeM+yvGmxJu7waROzCckWy4W/o4N/WH07MhejbTEzxw2IuLwl++rDoui6yMpuppp8ST4mLyII51z3uaBkCj75Rs9lsxR3mv5AMY/BlqKCsgTfIlgR4HoABKoYGG8+oW4eFD8I2qpQmsxKE8q/peU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DZnGMJe7; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A368C1F000E9;
+	Thu,  2 Jul 2026 16:38:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1783010818;
-	bh=uisxN6VQlOPjP640POqTibgkkJFdXDtatlJsydo3EMo=;
+	s=korg; t=1783010288;
+	bh=IFY/qZKpS2LNWTFRM319/tAsNXS7WOXfU0VB8gY3SWU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=rD7lBp6mLY+jhpJgUY2OjHIOCVFSRjlqfl06iHmmDZfnO+ehUr3R83DNeRFaJImZY
-	 KoQzQqyADsgm1UG0pKA58CXcnAr40fDCFV6SoIUAZ0rL+UOeMsrJdsPA/GKG7LPydG
-	 pnkg0oQ2om8nUp3kYNm2DVJioCD9IDScjItKrly0=
+	b=DZnGMJe7PAhaQ6U464durai19ao54u6P/uC8VPZBJu7kWJbkGW/gujb85RyghIFUK
+	 ixryDYTotbcq2vQvaAPs8oKhwqQUzFLrF9qvF4NCHwjXfclRDuTOeBXLOoySWNyCVT
+	 ik6Cp8X9Tw/f712ApXkqQoyJizp23b3eJiD13YD8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jose Maria Casanova Crespo <jmcasanova@igalia.com>,
-	Iago Toral Quiroga <itoral@igalia.com>,
-	=?UTF-8?q?Ma=C3=ADra=20Canal?= <mcanal@igalia.com>,
+	syzbot+78147abe6c524f183ee9@syzkaller.appspotmail.com,
+	Davidlohr Bueso <dave@stgolabs.net>,
+	Thomas Gleixner <tglx@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 006/175] drm/v3d: Skip CSD when it has zeroed workgroups
-Date: Thu,  2 Jul 2026 18:18:27 +0200
-Message-ID: <20260702155115.903199561@linuxfoundation.org>
+Subject: [PATCH 6.12 051/204] locking/rtmutex: Skip remove_waiter() when waiter is not enqueued
+Date: Thu,  2 Jul 2026 18:18:28 +0200
+Message-ID: <20260702155119.728866486@linuxfoundation.org>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260702155115.766838875@linuxfoundation.org>
-References: <20260702155115.766838875@linuxfoundation.org>
+In-Reply-To: <20260702155118.667618796@linuxfoundation.org>
+References: <20260702155118.667618796@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,102 +66,109 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-271157-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:jmcasanova@igalia.com,m:itoral@igalia.com,m:mcanal@igalia.com,m:sashal@kernel.org,s:lists@lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-270955-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:syzbot+78147abe6c524f183ee9@syzkaller.appspotmail.com,m:dave@stgolabs.net,m:tglx@kernel.org,m:sashal@kernel.org,m:syzbot@syzkaller.appspotmail.com,s:lists@lfdr.de];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	TAGGED_RCPT(0.00)[stable];
+	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,msgid.link:url,igalia.com:email]
+	TAGGED_RCPT(0.00)[stable,78147abe6c524f183ee9];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,vger.kernel.org:from_smtp,msgid.link:url,appspotmail.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 8F56D6FAC3F
+X-Rspamd-Queue-Id: B2F686FA580
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maíra Canal <mcanal@igalia.com>
+From: Davidlohr Bueso <dave@stgolabs.net>
 
-[ Upstream commit 7f93fad5ea0affc9e1505dd0f7596c0fdb496213 ]
+[ Upstream commit 40a25d59e85b3c8709ac2424d44f65610467871e ]
 
-A compute shader dispatch encodes its workgroup counts in the CFG0..CFG2
-registers. Kicking off a dispatch with a zero count in any of the three
-dimensions is invalid. First, the hardware will process 0 as 65536,
-while the user-space driver exposes a maximum of 65535. Over that, a
-submission with a zeroed workgroup dimension should be a no-op.
+syzbot triggered the following splat in remove_waiter() via
+FUTEX_CMP_REQUEUE_PI:
 
-These zeroed counts can reach the dispatch path through an indirect CSD
-job, whose workgroup counts are only known once the indirect buffer is
-read and may legitimately be zero, but such scenario should only result in
-a no-op.
+  KASAN: null-ptr-deref in range [0x0000000000000a88-0x0000000000000a8f]
+   class_raw_spinlock_constructor
+   remove_waiter+0x159/0x1200 kernel/locking/rtmutex.c:1561
+   rt_mutex_start_proxy_lock+0x103/0x120
+   futex_requeue+0x10e4/0x20d0
+   __x64_sys_futex+0x34f/0x4d0
 
-Overwrite the indirect CSD job workgroup counts with the indirect BO
-ones, even if they are zeroed, and don't submit the job to the hardware
-when any of the workgroup counts is zero, so the job completes immediately
-instead of running the shader.
+task_blocks_on_rt_mutex() does not arm the waiter upon deadlock detection,
+leaving waiter->task nil, where 3bfdc63936dd ("rtmutex: Use waiter::task instead
+of current in remove_waiter()") made this fatal.
 
+Furthermore, rt_mutex_start_proxy_lock() should not be calling into remove_waiter()
+upon a successfully grabbing the rtmutex. 1a1fb985f2e2 ("futex: Handle early deadlock
+return correctly"), moved the remove_waiter() out of __rt_mutex_start_proxy_lock()
+(where 'ret' was only ever 0 or < 0) into the wrapper. Tighten this check to
+account for try_to_take_rt_mutex().
+
+Fixes: 3bfdc63936dd ("rtmutex: Use waiter::task instead of current in remove_waiter()")
+Reported-by: syzbot+78147abe6c524f183ee9@syzkaller.appspotmail.com
+Signed-off-by: Davidlohr Bueso <dave@stgolabs.net>
+Signed-off-by: Thomas Gleixner <tglx@kernel.org>
 Cc: stable@vger.kernel.org
-Fixes: d223f98f0209 ("drm/v3d: Add support for compute shader dispatch.")
-Suggested-by: Jose Maria Casanova Crespo <jmcasanova@igalia.com>
-Reviewed-by: Iago Toral Quiroga <itoral@igalia.com>
-Link: https://patch.msgid.link/20260602-v3d-fix-indirect-csd-v4-2-654309e32bc0@igalia.com
-Signed-off-by: Maíra Canal <mcanal@igalia.com>
+Closes: https://lore.kernel.org/all/69f114ac.050a0220.ac8b.0003.GAE@google.com/
+Link: https://patch.msgid.link/20260507112913.1019537-1-dave@stgolabs.net
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/v3d/v3d_sched.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+ kernel/locking/rtmutex.c     |    3 +++
+ kernel/locking/rtmutex_api.c |    2 +-
+ 2 files changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/v3d/v3d_sched.c b/drivers/gpu/drm/v3d/v3d_sched.c
-index ff91cdb75bb912..ab872bc818004a 100644
---- a/drivers/gpu/drm/v3d/v3d_sched.c
-+++ b/drivers/gpu/drm/v3d/v3d_sched.c
-@@ -234,6 +234,16 @@ v3d_csd_job_run(struct drm_sched_job *sched_job)
- 		return NULL;
- 	}
+--- a/kernel/locking/rtmutex.c
++++ b/kernel/locking/rtmutex.c
+@@ -1550,6 +1550,9 @@ static void __sched remove_waiter(struct
  
-+	/* The HW interprets a workgroup size of 0 as 65536; however, the
-+	 * user-space driver exposes a maximum of 65535. Therefore, a 0 in
-+	 * any dimension means that we have no workgroups and the compute
-+	 * shader should not be dispatched.
-+	 */
-+	if (!V3D_GET_FIELD(job->args.cfg[0], V3D_CSD_QUEUED_CFG0_NUM_WGS_X) ||
-+	    !V3D_GET_FIELD(job->args.cfg[1], V3D_CSD_QUEUED_CFG1_NUM_WGS_Y) ||
-+	    !V3D_GET_FIELD(job->args.cfg[2], V3D_CSD_QUEUED_CFG2_NUM_WGS_Z))
-+		return NULL;
+ 	lockdep_assert_held(&lock->wait_lock);
+ 
++	if (!waiter_task) /* never enqueued */
++		return;
 +
- 	v3d->queue[V3D_CSD].active_job = &job->base;
+ 	scoped_guard(raw_spinlock, &waiter_task->pi_lock) {
+ 		rt_mutex_dequeue(lock, waiter);
+ 		waiter_task->pi_blocked_on = NULL;
+--- a/kernel/locking/rtmutex_api.c
++++ b/kernel/locking/rtmutex_api.c
+@@ -347,7 +347,7 @@ int __sched rt_mutex_start_proxy_lock(st
  
- 	v3d_invalidate_caches(v3d);
--- 
-2.53.0
-
+ 	raw_spin_lock_irq(&lock->wait_lock);
+ 	ret = __rt_mutex_start_proxy_lock(lock, waiter, task, &wake_q);
+-	if (unlikely(ret))
++	if (unlikely(ret < 0))
+ 		remove_waiter(lock, waiter);
+ 	preempt_disable();
+ 	raw_spin_unlock_irq(&lock->wait_lock);
 
 
 
