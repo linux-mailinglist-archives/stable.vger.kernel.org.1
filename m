@@ -1,63 +1,60 @@
-Return-Path: <stable+bounces-270779-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-271323-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id iYMEI3CTRmqKYwsAu9opvQ
-	(envelope-from <stable+bounces-270779-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:36:00 +0200
+	id LYTDNT6aRmpoZwsAu9opvQ
+	(envelope-from <stable+bounces-271323-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:05:02 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3B2C86FA468
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:36:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9C41E6FAF4C
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:05:02 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=j2z2r8FG;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-270779-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-270779-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=DuDIrZwD;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-271323-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-271323-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 814CD3013B8E
-	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:34:09 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 1A03530F151E
+	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:54:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E033D24E4C3;
-	Thu,  2 Jul 2026 16:30:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E960032ED40;
+	Thu,  2 Jul 2026 16:54:05 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B423F33EB0E;
-	Thu,  2 Jul 2026 16:30:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4CCF33B951;
+	Thu,  2 Jul 2026 16:54:04 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783009831; cv=none; b=pe3XjUu3+9XmFFGely8tMWbMxxLYmmEjMN1uury/zbzCo6Un9rpuJILjIkrU7qtH64yChd6X52Xiq/EKIs5zXrALP6qKF541TW5YdjmW3GLx+osT3Mc3pumtztAH3rC9s73pVzNGjJtHk6sHeiCFNopurfW0iqvCbiaKBUNYRBU=
+	t=1783011245; cv=none; b=qQnI7zco0MC6kNzY7c6MboIV9aduEYkkc0vhh4iqfC9WmlGbQablcBrMkVZgiOdx6CTBnKY4RLGVXkjoj0oMkdke7cv5EofpacNJRN8h+v6bPuPgLWAriL5RYCYWB/31AzIVbzvlSf9jhK+R5COQWu9kDOTAZ0RbaSV6ZK1ak1w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783009831; c=relaxed/simple;
-	bh=rxScBloIw9j7IHBLMOBjk5iuR6WISStaW1Iyi3U/jDI=;
+	s=arc-20240116; t=1783011245; c=relaxed/simple;
+	bh=y8+88TC+56h5Khg8hhn35vL69UmUl97WU7ptz8joX+0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ojAEo34wB+kURX2x4LvCr17V7Iq7QgS5kpi4PAJh+hf/hB8PYX++z9vvP/WTBpCbuxALVUmZysNbvqDeJp6TmcTuv9SsBFwidaOT6At10a7LBGeANFLA9UBqrLheq1WETBfAOTcdnS+oR7c9bvFkDM6RnuwYnuvKfi/8GZksRP0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j2z2r8FG; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0FFA1F000E9;
-	Thu,  2 Jul 2026 16:30:27 +0000 (UTC)
+	 MIME-Version; b=HOt2Me9em0YDch7u5x/aNzXMIqrm/2+BbYS9ev+Qsulhes9O6u5Ir+WrXFLV6WMUjj53zCnj6Ip0BP4UB5sQo7lHoa7u5oGfPdeqUGkou9KV8dll5euBawoyZegM1iHSUo3frFxD28a+eHbxZlNO+0GVyRYvE17msyWezaTvHnE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DuDIrZwD; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D40FF1F000E9;
+	Thu,  2 Jul 2026 16:54:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1783009828;
-	bh=FmZXYZVKV98HteICnRScARD8jcn2NGlcJ/SgDHreU+Y=;
+	s=korg; t=1783011244;
+	bh=3eMs2+SlL9axELr7YIbAOaVhofwul20b1ykfQ/sm7iQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=j2z2r8FG1YroPfXGLPqWOn+I/voBUWFlYWkd7w6f78Fq0eeJSCJmhDeZIQ050gX/R
-	 1idR3teHfYVrbWehNUM/QqAVLp+BtN0ixA6VjR5Y1VnCrqBL2Xj1KxXE1JwRHb0EIN
-	 RWEwZp+aDJvY5axgWk1hbfBVD8KAj9SoLoyY1Wfs=
+	b=DuDIrZwD+pbAeAEZH9LboctYhQfk7bzRXm6mtl7OCPpHOl1X0UllWwfTZMfGAMKu8
+	 +eZPnJCGI8if/VrdKQeqDY+vq/reXtQzlq/fEiEcelWPXTUVXsUPd4nlmQNoiFlTG5
+	 9Ii7VntY2/s3jsLhPkSbVIIWDMd6MotLMiRZF3Cc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Santosh Kalluri <santosh.kalluri129@gmail.com>,
-	=?UTF-8?q?R=C3=A9mi=20Denis-Courmont?= <remi@remlab.net>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 88/95] net: phonet: free phonet_device after RCU grace period
+	Zhen Yan <sdjasjbuaa@gmail.com>,
+	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
+Subject: [PATCH 6.18 034/108] ntfs3: reject direct userspace writes to reserved $LX* xattrs
 Date: Thu,  2 Jul 2026 18:20:31 +0200
-Message-ID: <20260702155111.060275285@linuxfoundation.org>
+Message-ID: <20260702155112.814674380@linuxfoundation.org>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260702155109.196223802@linuxfoundation.org>
-References: <20260702155109.196223802@linuxfoundation.org>
+In-Reply-To: <20260702155112.110058792@linuxfoundation.org>
+References: <20260702155112.110058792@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,84 +64,102 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+	SUBJECT_HAS_CURRENCY(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-270779-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,remlab.net,kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:santosh.kalluri129@gmail.com,m:remi@remlab.net,m:horms@kernel.org,m:kuba@kernel.org,m:sashal@kernel.org,m:santoshkalluri129@gmail.com,s:lists@lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:sdjasjbuaa@gmail.com,m:almaz.alexandrovich@paragon-software.com,s:lists@lfdr.de];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	TAGGED_RCPT(0.00)[stable];
+	FORWARDED(0.00)[lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-271323-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,paragon-software.com];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	PRECEDENCE_BULK(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	ALIAS_RESOLVED(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,remlab.net:email]
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 3B2C86FA468
+X-Rspamd-Queue-Id: 9C41E6FAF4C
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Santosh Kalluri <santosh.kalluri129@gmail.com>
+From: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
 
-[ Upstream commit 71de0177b28da751f407581a4515cf4d762f6296 ]
+commit 5b08dccecf825cbf905f348bc6ccb497507e28e2 upstream.
 
-phonet_device_destroy() removes a phonet_device from the per-net device
-list with list_del_rcu(), but frees it immediately. RCU readers walking
-the same list can still hold a pointer to the object after it has been
-removed, leading to a slab-use-after-free.
+NTFS3 uses $LXUID, $LXGID, $LXMOD and $LXDEV as internal WSL
+permission metadata and reloads them into i_uid, i_gid and i_mode
+from ntfs_get_wsl_perm().
 
-Use kfree_rcu(), matching the lifetime rule already used by
-phonet_address_del() for the same object type.
+Because the empty-prefix xattr handler also lets file owners call
+setxattr() on these names directly, an unprivileged writer on a
+writable ntfs3 mount can plant root ownership and S_ISUID on their own
+file and gain euid 0 after inode reload.
 
-Fixes: eeb74a9d45f7 ("Phonet: convert devices list to RCU")
-Cc: stable@vger.kernel.org
-Signed-off-by: Santosh Kalluri <santosh.kalluri129@gmail.com>
-Acked-by: Rémi Denis-Courmont <remi@remlab.net>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reject direct userspace writes to the reserved $LX* names. Internal
+ntfs3 metadata updates are unchanged because ntfs_save_wsl_perm()
+writes them via ntfs_set_ea() directly.
+
+Signed-off-by: Zhen Yan <sdjasjbuaa@gmail.com>
+[almaz.alexandrovich@paragon-software.com: added an additional check for non privileged users]
+Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/phonet/pn_dev.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/ntfs3/xattr.c |   12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
---- a/net/phonet/pn_dev.c
-+++ b/net/phonet/pn_dev.c
-@@ -105,7 +105,7 @@ static void phonet_device_destroy(struct
- 		for_each_set_bit(addr, pnd->addrs, 64)
- 			phonet_address_notify(net, RTM_DELADDR, ifindex, addr);
- 
--		kfree(pnd);
-+		kfree_rcu(pnd, rcu);
- 	}
+--- a/fs/ntfs3/xattr.c
++++ b/fs/ntfs3/xattr.c
+@@ -845,6 +845,12 @@ out:
+ 	return err;
  }
  
++static bool ntfs_is_reserved_lxattr(const char *name)
++{
++	return !strcmp(name, "$LXUID") || !strcmp(name, "$LXGID") ||
++	       !strcmp(name, "$LXMOD") || !strcmp(name, "$LXDEV");
++}
++
+ /*
+  * ntfs_setxattr - inode_operations::setxattr
+  */
+@@ -949,6 +955,12 @@ set_new_fa:
+ 		goto out;
+ 	}
+ 
++	/* Do not allow non privileged users to change $LXUID/$LXGID... */
++	if (ntfs_is_reserved_lxattr(name) && !capable(CAP_SYS_ADMIN)) {
++		err = -EPERM;
++		goto out;
++	}
++
+ 	/* Deal with NTFS extended attribute. */
+ 	err = ntfs_set_ea(inode, name, strlen(name), value, size, flags, 0,
+ 			  NULL);
 
 
 
