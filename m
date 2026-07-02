@@ -1,64 +1,61 @@
-Return-Path: <stable+bounces-270594-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-270994-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 499NN+icRmqnaAsAu9opvQ
-	(envelope-from <stable+bounces-270594-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:16:24 +0200
+	id 8B6fE2iWRmoyZQsAu9opvQ
+	(envelope-from <stable+bounces-270994-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:48:40 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 39ABA6FB2D8
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:16:24 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id EC65B6FA958
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:48:39 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=t61tWErh;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-270594-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-270594-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=RME3SsJv;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-270994-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-270994-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 2E50A31B6750
-	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:24:18 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 457C03026723
+	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:41:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E626333C192;
-	Thu,  2 Jul 2026 16:22:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57DE334CFDD;
+	Thu,  2 Jul 2026 16:39:51 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2686331A66;
-	Thu,  2 Jul 2026 16:22:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EA6930C37A;
+	Thu,  2 Jul 2026 16:39:50 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783009343; cv=none; b=lWxjiX79lkaXiAxLDpdvUcxnSco02mJY8QRxrGCeNBxmcit3Rl6o2p27GtvH+PRZEGC/vVEpDWBzQAVSVgz8PVxq3BnabaoWCiikfaXKyaDU02Y+Ii7EctYoBa3xJKcxeSAqEoBHrW8103N1/SsHyOUXvm/BZi8bVxiqXadJ1no=
+	t=1783010391; cv=none; b=gDKAz4a1NcMnvD2Ip8aCYtx/xExbW5pXiVxb4KOf13QpbJ8RimiEveCk5ukJjllp0f2/yXY6/uQXpS/Vdblh07KHK64D5G9RVKioBHEZL4mi5vLKnGYXRHpbZJ1iqbxzdaeeYHlAv03OwvmpMKLVFawAxx9exx7b5RQ/oeFUVDg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783009343; c=relaxed/simple;
-	bh=5pM5ZBuc20cjvL3aNT+U2Gp5JmGp3xJT+dJJeTZluTQ=;
+	s=arc-20240116; t=1783010391; c=relaxed/simple;
+	bh=Tf6NIeuys6GH17YQMuzlTek03N1+94LeXef9vphyun8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YZBdnACReoIup+Xqz/nEVwU9Mtse05pKpHwMuw95vrZTEEKzsaAVjRPM5UVpM1w2+zyF4KfBlsEDsePaGuOmoWQlVuwO+5vrj7XLL4VMjAWzVhaOdxAvvdRYPp0lV4VBEcclLVDvKtJwENK4OGCC/qVIPon//CcMzSszMyDwqsk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t61tWErh; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8EC51F000E9;
-	Thu,  2 Jul 2026 16:22:21 +0000 (UTC)
+	 MIME-Version; b=JQU9i64hjDutsTAFzqAM5URmOo+USmy5S61nkTJSdHlxXDGmB8MqQe/BQa1G4HII7c5m2eXi68FeSenoT2uxJkWKYTmOpSyOOSKXg36FBfDjExDcV1VDztVxn1oDmythXTnyGgHqdC964wY3bWYF1k4G2THrTWX92ittjdlPjVo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RME3SsJv; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 740661F000E9;
+	Thu,  2 Jul 2026 16:39:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1783009342;
-	bh=YVyL2IySaUP9nPRXOObLnt7+vD+c0aIscn3TQ5gZ/XE=;
+	s=korg; t=1783010390;
+	bh=cvbAmzHmchAlEOdIojBhq+ClztA0HiwffolkEXGPkiM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=t61tWErh2peTZibmeTQjugHNmvkQH6mTIu+GSNr5gCieFUfHMFaVABH+JI/YsJBUM
-	 7/SMNdqgxGTfpN7tLhW1WBr9wcUyLfT1PVe4mDWXJ/MxU9EL8+VRBhA4HQ8kKuztLH
-	 x+Yj1DDpTVDWi43v0Ry+Ncd/q4/+3mHsxjx+g/iE=
+	b=RME3SsJvax86fEnlKVt2OUX0n2u8OZruQFaawwbLhkRRWXmW9oQvXmRDNN2Njw40H
+	 XM7kRImN1R/Q/dOIxIpb5DoJkC0FDf9OuK2vD3upoZrXcNUczZUUcOZnr2kjy7X66I
+	 DeQlHMcFtLVXCL2fjTQS3hHoHGoRiplQrBlR8VtA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alex Hung <alex.hung@amd.com>,
-	Harry Wentland <harry.wentland@amd.com>,
-	Ray Wu <ray.wu@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 16/96] drm/amd/display: Use krealloc_array() in dal_vector_reserve()
+	syzbot+814c351d094f4f1a1b86@syzkaller.appspotmail.com,
+	Ruslan Valiyev <linuxoid@gmail.com>,
+	Hans Verkuil <hverkuil+cisco@kernel.org>
+Subject: [PATCH 6.12 091/204] media: vidtv: fix NULL pointer dereference in vidtv_mux_push_si
 Date: Thu,  2 Jul 2026 18:19:08 +0200
-Message-ID: <20260702155109.328267089@linuxfoundation.org>
+Message-ID: <20260702155120.572543882@linuxfoundation.org>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260702155108.949633242@linuxfoundation.org>
-References: <20260702155108.949633242@linuxfoundation.org>
+In-Reply-To: <20260702155118.667618796@linuxfoundation.org>
+References: <20260702155118.667618796@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,90 +67,123 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-270594-lists,stable=lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:alex.hung@amd.com,m:harry.wentland@amd.com,m:ray.wu@amd.com,m:daniel.wheeler@amd.com,m:alexander.deucher@amd.com,m:sashal@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-270994-lists,stable=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:syzbot+814c351d094f4f1a1b86@syzkaller.appspotmail.com,m:linuxoid@gmail.com,m:hverkuil+cisco@kernel.org,m:syzbot@syzkaller.appspotmail.com,m:hverkuil@kernel.org,s:lists@lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,syzkaller.appspotmail.com,gmail.com,kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[amd.com:email,vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
+	TAGGED_RCPT(0.00)[stable,814c351d094f4f1a1b86,cisco];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,appspotmail.com:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 39ABA6FB2D8
+X-Rspamd-Queue-Id: EC65B6FA958
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Harry Wentland <harry.wentland@amd.com>
+From: Ruslan Valiyev <linuxoid@gmail.com>
 
-[ Upstream commit da48bc4461b8a5ebfb9264c9b191a701d8e99009 ]
+commit 7d8bf3d8f91073f4db347ed3aa6302b56107499c upstream.
 
-[Why & How]
-dal_vector_reserve() computes the allocation size as
-"capacity * vector->struct_size" using uint32_t arithmetic, which can
-silently wrap to a small value on overflow. This would cause krealloc to
-return a smaller buffer than expected, leading to heap overflows on
-subsequent vector appends.
+syzbot reported a general protection fault in
+vidtv_psi_ts_psi_write_into [1].
 
-Replace krealloc() with krealloc_array() which performs an internal
-overflow check and returns NULL on wrap, preventing the issue.
+vidtv_mux_get_pid_ctx() can return NULL, but vidtv_mux_push_si() does
+not check for this before dereferencing the returned pointer to access
+the continuity counter. This leads to a general protection fault when
+accessing a near-NULL address.
 
-Fixes: 2004f45ef83f ("drm/amd/display: Use kernel alloc/free")
-Assisted-by: Copilot:claude-opus-4.6
-Reviewed-by: Alex Hung <alex.hung@amd.com>
-Signed-off-by: Harry Wentland <harry.wentland@amd.com>
-Signed-off-by: Ray Wu <ray.wu@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 37668568641ccc4cc1dbca4923d0a16609dd5707)
+The root cause is that vidtv_mux_pid_ctx_init() does not check the
+return value of vidtv_mux_create_pid_ctx_once() for PMT section PIDs.
+If the allocation fails, the PID context is never created, but init
+returns success. The subsequent vidtv_mux_push_si() call then gets
+NULL from vidtv_mux_get_pid_ctx() and crashes.
+
+Fix both the root cause (add error check in vidtv_mux_pid_ctx_init
+for PMT PIDs) and add defensive NULL checks in vidtv_mux_push_si for
+all vidtv_mux_get_pid_ctx() calls.
+
+[1]
+Oops: general protection fault, probably for non-canonical address 0xdffffc0000000000: 0000 [#1] SMP KASAN PTI
+KASAN: null-ptr-deref in range [0x0000000000000000-0x0000000000000007]
+Workqueue: events vidtv_mux_tick
+RIP: 0010:vidtv_psi_ts_psi_write_into+0x54a/0xbc0 drivers/media/test-drivers/vidtv/vidtv_psi.c:197
+Call Trace:
+ <TASK>
+ vidtv_psi_table_header_write_into drivers/media/test-drivers/vidtv/vidtv_psi.c:799 [inline]
+ vidtv_psi_pmt_write_into+0x3b2/0xa70 drivers/media/test-drivers/vidtv/vidtv_psi.c:1231
+ vidtv_mux_push_si+0x932/0xe80 drivers/media/test-drivers/vidtv/vidtv_mux.c:196
+ vidtv_mux_tick+0xe9b/0x1480 drivers/media/test-drivers/vidtv/vidtv_mux.c:408
+
+Fixes: f90cf6079bf67 ("media: vidtv: add a bridge driver")
 Cc: stable@vger.kernel.org
-[ changed `krealloc_array(p, capacity, struct_size)` to `krealloc(p, array_size(capacity, struct_size))` since krealloc_array() is absent in 5.10 ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reported-by: syzbot+814c351d094f4f1a1b86@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=814c351d094f4f1a1b86
+Signed-off-by: Ruslan Valiyev <linuxoid@gmail.com>
+Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/display/dc/basics/vector.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/media/test-drivers/vidtv/vidtv_mux.c |    8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/basics/vector.c b/drivers/gpu/drm/amd/display/dc/basics/vector.c
-index 8f93d25f91ee2b..68c34a4e253ac1 100644
---- a/drivers/gpu/drm/amd/display/dc/basics/vector.c
-+++ b/drivers/gpu/drm/amd/display/dc/basics/vector.c
-@@ -292,7 +292,7 @@ bool dal_vector_reserve(struct vector *vector, uint32_t capacity)
- 		return true;
+--- a/drivers/media/test-drivers/vidtv/vidtv_mux.c
++++ b/drivers/media/test-drivers/vidtv/vidtv_mux.c
+@@ -101,7 +101,8 @@ static int vidtv_mux_pid_ctx_init(struct
+ 	/* add a ctx for all PMT sections */
+ 	while (p) {
+ 		pid = vidtv_psi_get_pat_program_pid(p);
+-		vidtv_mux_create_pid_ctx_once(m, pid);
++		if (!vidtv_mux_create_pid_ctx_once(m, pid))
++			goto free;
+ 		p = p->next;
+ 	}
  
- 	new_container = krealloc(vector->container,
--				 capacity * vector->struct_size, GFP_KERNEL);
-+				 array_size(capacity, vector->struct_size), GFP_KERNEL);
+@@ -170,6 +171,9 @@ static u32 vidtv_mux_push_si(struct vidt
+ 	nit_ctx = vidtv_mux_get_pid_ctx(m, VIDTV_NIT_PID);
+ 	eit_ctx = vidtv_mux_get_pid_ctx(m, VIDTV_EIT_PID);
  
- 	if (new_container) {
- 		vector->container = new_container;
--- 
-2.53.0
-
++	if (!pat_ctx || !sdt_ctx || !nit_ctx || !eit_ctx)
++		return 0;
++
+ 	pat_args.offset             = m->mux_buf_offset;
+ 	pat_args.continuity_counter = &pat_ctx->cc;
+ 
+@@ -186,6 +190,8 @@ static u32 vidtv_mux_push_si(struct vidt
+ 		}
+ 
+ 		pmt_ctx = vidtv_mux_get_pid_ctx(m, pmt_pid);
++		if (!pmt_ctx)
++			continue;
+ 
+ 		pmt_args.offset             = m->mux_buf_offset;
+ 		pmt_args.pmt                = m->si.pmt_secs[i];
 
 
 
