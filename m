@@ -1,60 +1,65 @@
-Return-Path: <stable+bounces-271495-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-271292-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id v2/VFVWbRmr8ZwsAu9opvQ
-	(envelope-from <stable+bounces-271495-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:09:41 +0200
+	id Qp9dANqkRmqMawsAu9opvQ
+	(envelope-from <stable+bounces-271292-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:50:18 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 19E566FB0FE
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:09:41 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 341E56FBA94
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:50:17 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=dN+6Zzlx;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-271495-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-271495-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="TOOKKp/q";
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-271292-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-271292-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 9BB1F3094CA6
-	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 17:01:32 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C535332BF4B4
+	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:53:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 434FB2FC893;
-	Thu,  2 Jul 2026 17:01:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C62D833A6F2;
+	Thu,  2 Jul 2026 16:52:46 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8D67433E87;
-	Thu,  2 Jul 2026 17:01:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DACA33689F;
+	Thu,  2 Jul 2026 16:52:45 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783011692; cv=none; b=Ic2wL827U8nvLjO+QR2NHUI+clSvQFpHwramgaYjYvaKaSAs1K9jAsWU8d0TWltFQ3v41ddcHihiHBSuVuSFYpdXkmbxRZkV6z9O4gwzFycJIgGhddGikZu45goYRnU/EjmLAPkssfG+0RjFAoLntMuP1065/G8MUcmK+/bbtVw=
+	t=1783011166; cv=none; b=gBsnHUbVxZZmm4xRTiU//nyF1uU9CAjbGoCHQbap81envM8Yq6zBwu+AzPAFmTFwhOGNP3nRy3I5n0BJvGGeECKpq4FDVi76te36tRiLahcJd27m71gCmtHuE0po8TlMm1Fl0RQIAtLp1gkC/IJiO7F5GXDkVv97Mew5iNKd8x8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783011692; c=relaxed/simple;
-	bh=ckCA5DQTJRAcpoWJs1yOHnrx87EPGm9b0FhtiQAG5DY=;
+	s=arc-20240116; t=1783011166; c=relaxed/simple;
+	bh=6NQEhYhKR+jcYWTptUKxA4HyvQUxHlzXcS0ino7WPYE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=li/ut9nvZ4QlYyqEuOco4BggbAHJusn2nmwn8wORujHSwVwTZIg7GMH27V/XrUw1p1c6QbD/pK3FCCSDeK5EOP4VXB97RDrV7v9JRQNbA3aYEDv/zqnkPYLfjhqbAKbundpnm8vAP48WXqQO4TWla9C0b2IxKLeNSfbhpdRrBro=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dN+6Zzlx; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 631681F000E9;
-	Thu,  2 Jul 2026 17:01:30 +0000 (UTC)
+	 MIME-Version:Content-Type; b=bfiT3q6Ifuh4z0dvl0iM1SWGM2rsDVz86Brvq/YZ90MnH03iYIoDinTlf0Ytbe2hVDAA+esocZLb7fy3+D4IPGC+sM/nk15o/Orzph4OVUQoROrEQw9Z96yz4d/nbo2QBiTz8p3rY57TELv/MYcaQAFLD+YtV8du66/zcfbiNfQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TOOKKp/q; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB1301F000E9;
+	Thu,  2 Jul 2026 16:52:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1783011690;
-	bh=zS1qq9NiY/Zdq7CPTorOE0ikpjinfZWKxE9jMhvflhc=;
+	s=korg; t=1783011165;
+	bh=q7nWwbFyQoitSWRmMt6kYeRBbDvXtMVGUF/Lw2qV9lY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=dN+6ZzlxsTauy/U5xAQRuZ3sEfkQTHaQ+FdACKIAipneNuwzSMLXKPhLB5hutTy+U
-	 HNRzCBZkPhDGxAT++sYAjs2pjOAoZD94HOZP9mbailJGenLHRw04s3BXRZYO2h047W
-	 x/B2Ga7C2I1y2hqDZOV/1cWnpUVuYdy5hrmUsmIc=
+	b=TOOKKp/qtdNWLUw1pZ4J6BQps4qcpJ5zPCVX4TyfORywilorytS4Ljk994HGfW6WW
+	 hM/JBrZb7L85mbm3TB39zdRQhOMyF+BEYs0Y7iCvK/qSpPT8V1GICx0Bc7ySxMu6aD
+	 jzPBFXl7u6PPPl+Sd1d5OMT7MBewvnr8jl0d56/U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bitterblue Smith <rtl8821cerfe2@gmail.com>,
-	Ping-Ke Shih <pkshih@realtek.com>
-Subject: [PATCH 7.1 052/120] wifi: rtl8xxxu: Detect the maximum supported channel width
+	Jay Shin <jaeshin@redhat.com>,
+	Tejun Heo <tj@kernel.org>,
+	Waiman Long <longman@redhat.com>,
+	coregee2000@gmail.com,
+	Ming Lei <ming.lei@redhat.com>,
+	"Jose Fernandez (Anthropic)" <jose.fernandez@linux.dev>,
+	Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 6.6 147/175] blk-cgroup: fix UAF in __blkcg_rstat_flush()
 Date: Thu,  2 Jul 2026 18:20:48 +0200
-Message-ID: <20260702155114.041727989@linuxfoundation.org>
+Message-ID: <20260702155118.901771463@linuxfoundation.org>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260702155112.964534952@linuxfoundation.org>
-References: <20260702155112.964534952@linuxfoundation.org>
+In-Reply-To: <20260702155115.766838875@linuxfoundation.org>
+References: <20260702155115.766838875@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,309 +69,119 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-271495-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:rtl8821cerfe2@gmail.com,m:pkshih@realtek.com,s:lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,realtek.com];
-	FORWARDED(0.00)[lists@lfdr.de];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,redhat.com,kernel.org,gmail.com,linux.dev,kernel.dk];
+	TAGGED_FROM(0.00)[bounces-271292-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:jaeshin@redhat.com,m:tj@kernel.org,m:longman@redhat.com,m:coregee2000@gmail.com,m:ming.lei@redhat.com,m:jose.fernandez@linux.dev,m:axboe@kernel.dk,s:lists@lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[10];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[realtek.com:email,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,msgid.link:url]
+	MID_RHS_MATCH_FROM(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,kernel.dk:email,msgid.link:url,linux.dev:email,suse.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 19E566FB0FE
+X-Rspamd-Queue-Id: 341E56FBA94
 
-7.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+From: Michal Koutný <mkoutny@suse.com>
 
-commit ef771eabc79d5f21b63689cca0e0fa5493fa0a8a upstream.
+commit 0ab5ee5a1badb58cbb2242617cb01a4972b1f2a2 upstream.
 
-Some devices malfunction when connected to a network with 40 MHz channel
-width, because they don't support that.
+When multiple blkgs in the same blkcg are released concurrently,
+a use-after-free can occur. The race happens when one blkg's
+__blkcg_rstat_flush() removes another blkg's iostat entries via
+llist_del_all(). The second blkg sees an empty list and proceeds
+to free itself while the first is still iterating over its entries.
 
-RTL8188FU, RTL8192FU, and RTL8710BU (RTL8188GU) have a way to signal
-this (and some other capabilities) to the driver. Get this information
-from the hardware and advertise 40 MHz support only when the hardware
-can handle it. We assume the other chips can always handle it.
+Move the flush from __blkg_release() (RCU callback) to blkg_release()
+(before call_rcu). This ensures the RCU grace period waits for any
+concurrent flush's rcu_read_lock() section to complete before freeing.
 
-RTL8710BU needs a different way to retrieve this information, which will
-be implemented some other time.
-
-Fixes: dbf9b7bb0edf ("wifi: rtl8xxxu: Enable 40 MHz width by default")
 Cc: stable@vger.kernel.org
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=221394
-Signed-off-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
-Reviewed-by: Ping-Ke Shih <pkshih@realtek.com>
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
-Link: https://patch.msgid.link/c57de68e-5d57-4c26-898f-8a284bb25381@gmail.com
+Cc: Jay Shin <jaeshin@redhat.com>
+Cc: Tejun Heo <tj@kernel.org>
+Cc: Waiman Long <longman@redhat.com>
+Fixes: 20cb1c2fb756 ("blk-cgroup: Flush stats before releasing blkcg_gq")
+Reported-by: coregee2000@gmail.com
+Closes: https://lore.kernel.org/linux-block/CAHPqNmwT9oRpem3J3erS_W0uSQND47LGGSBsNxP8E6uSUish1w@mail.gmail.com/
+Signed-off-by: Ming Lei <ming.lei@redhat.com>
+Tested-by: Jose Fernandez (Anthropic) <jose.fernandez@linux.dev>
+Link: https://patch.msgid.link/20260205155425.342084-1-ming.lei@redhat.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/realtek/rtl8xxxu/8188e.c    |    1 
- drivers/net/wireless/realtek/rtl8xxxu/8188f.c    |    1 
- drivers/net/wireless/realtek/rtl8xxxu/8192c.c    |    1 
- drivers/net/wireless/realtek/rtl8xxxu/8192e.c    |    1 
- drivers/net/wireless/realtek/rtl8xxxu/8192f.c    |    1 
- drivers/net/wireless/realtek/rtl8xxxu/8710b.c    |    1 
- drivers/net/wireless/realtek/rtl8xxxu/8723a.c    |    1 
- drivers/net/wireless/realtek/rtl8xxxu/8723b.c    |    1 
- drivers/net/wireless/realtek/rtl8xxxu/core.c     |   64 +++++++++++++++++++++--
- drivers/net/wireless/realtek/rtl8xxxu/regs.h     |    2 
- drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu.h |    7 ++
- 11 files changed, 76 insertions(+), 5 deletions(-)
+ block/blk-cgroup.c |   21 +++++++++++----------
+ 1 file changed, 11 insertions(+), 10 deletions(-)
 
---- a/drivers/net/wireless/realtek/rtl8xxxu/8188e.c
-+++ b/drivers/net/wireless/realtek/rtl8xxxu/8188e.c
-@@ -1866,6 +1866,7 @@ struct rtl8xxxu_fileops rtl8188eu_fops =
- 	.has_tx_report = 1,
- 	.init_reg_pkt_life_time = 1,
- 	.gen2_thermal_meter = 1,
-+	.hw_feature_report = 0,
- 	.max_sec_cam_num = 32,
- 	.adda_1t_init = 0x0b1b25a0,
- 	.adda_1t_path_on = 0x0bdb25a0,
---- a/drivers/net/wireless/realtek/rtl8xxxu/8188f.c
-+++ b/drivers/net/wireless/realtek/rtl8xxxu/8188f.c
-@@ -1745,6 +1745,7 @@ struct rtl8xxxu_fileops rtl8188fu_fops =
- 	.init_reg_rxfltmap = 1,
- 	.init_reg_pkt_life_time = 1,
- 	.init_reg_hmtfr = 1,
-+	.hw_feature_report = 1,
- 	.ampdu_max_time = 0x70,
- 	.ustime_tsf_edca = 0x28,
- 	.max_aggr_num = 0x0c14,
---- a/drivers/net/wireless/realtek/rtl8xxxu/8192c.c
-+++ b/drivers/net/wireless/realtek/rtl8xxxu/8192c.c
-@@ -723,6 +723,7 @@ struct rtl8xxxu_fileops rtl8192cu_fops =
- 	.tx_desc_size = sizeof(struct rtl8xxxu_txdesc32),
- 	.rx_desc_size = sizeof(struct rtl8xxxu_rxdesc16),
- 	.supports_ap = 1,
-+	.hw_feature_report = 0,
- 	.max_macid_num = 32,
- 	.max_sec_cam_num = 32,
- 	.adda_1t_init = 0x0b1b25a0,
---- a/drivers/net/wireless/realtek/rtl8xxxu/8192e.c
-+++ b/drivers/net/wireless/realtek/rtl8xxxu/8192e.c
-@@ -1751,6 +1751,7 @@ struct rtl8xxxu_fileops rtl8192eu_fops =
- 	.has_s0s1 = 0,
- 	.gen2_thermal_meter = 1,
- 	.needs_full_init = 1,
-+	.hw_feature_report = 0,
- 	.supports_ap = 1,
- 	.max_macid_num = 128,
- 	.max_sec_cam_num = 64,
---- a/drivers/net/wireless/realtek/rtl8xxxu/8192f.c
-+++ b/drivers/net/wireless/realtek/rtl8xxxu/8192f.c
-@@ -2074,6 +2074,7 @@ struct rtl8xxxu_fileops rtl8192fu_fops =
- 	.init_reg_rxfltmap = 1,
- 	.init_reg_pkt_life_time = 1,
- 	.init_reg_hmtfr = 1,
-+	.hw_feature_report = 1,
- 	.ampdu_max_time = 0x5e,
- 	.ustime_tsf_edca = 0x50,
- 	.max_aggr_num = 0x1f1f,
---- a/drivers/net/wireless/realtek/rtl8xxxu/8710b.c
-+++ b/drivers/net/wireless/realtek/rtl8xxxu/8710b.c
-@@ -1852,6 +1852,7 @@ struct rtl8xxxu_fileops rtl8710bu_fops =
- 	.init_reg_rxfltmap = 1,
- 	.init_reg_pkt_life_time = 1,
- 	.init_reg_hmtfr = 1,
-+	.hw_feature_report = 0, /* TODO, it's different */
- 	.ampdu_max_time = 0x5e,
- 	/*
- 	 * The RTL8710BU vendor driver uses 0x50 here and it works fine,
---- a/drivers/net/wireless/realtek/rtl8xxxu/8723a.c
-+++ b/drivers/net/wireless/realtek/rtl8xxxu/8723a.c
-@@ -632,6 +632,7 @@ struct rtl8xxxu_fileops rtl8723au_fops =
- 	.rx_agg_buf_size = 16000,
- 	.tx_desc_size = sizeof(struct rtl8xxxu_txdesc32),
- 	.rx_desc_size = sizeof(struct rtl8xxxu_rxdesc16),
-+	.hw_feature_report = 0,
- 	.max_sec_cam_num = 32,
- 	.adda_1t_init = 0x0b1b25a0,
- 	.adda_1t_path_on = 0x0bdb25a0,
---- a/drivers/net/wireless/realtek/rtl8xxxu/8723b.c
-+++ b/drivers/net/wireless/realtek/rtl8xxxu/8723b.c
-@@ -1746,6 +1746,7 @@ struct rtl8xxxu_fileops rtl8723bu_fops =
- 	.gen2_thermal_meter = 1,
- 	.needs_full_init = 1,
- 	.init_reg_hmtfr = 1,
-+	.hw_feature_report = 0,
- 	.ampdu_max_time = 0x5e,
- 	.ustime_tsf_edca = 0x50,
- 	.max_aggr_num = 0x0c14,
---- a/drivers/net/wireless/realtek/rtl8xxxu/core.c
-+++ b/drivers/net/wireless/realtek/rtl8xxxu/core.c
-@@ -14,6 +14,7 @@
-  */
- 
- #include <linux/firmware.h>
-+#include <linux/iopoll.h>
- #include "regs.h"
- #include "rtl8xxxu.h"
- 
-@@ -3915,6 +3916,46 @@ static inline u8 rtl8xxxu_get_macid(stru
- 	return sta_info->macid;
- }
- 
-+static void rtl8xxxu_request_hw_feature(struct rtl8xxxu_priv *priv)
-+{
-+	if (!priv->fops->hw_feature_report)
-+		return;
-+
-+	rtl8xxxu_write8(priv, REG_C2HEVT_MSG_NORMAL, C2H_HW_FEATURE_DUMP);
-+}
-+
-+static int rtl8xxxu_dump_hw_feature(struct rtl8xxxu_priv *priv)
-+{
-+	static const u8 bw_map[8] = { 0, 0, 160, 5, 10, 20, 40, 80 };
-+	struct rtl8xxxu_hw_feature *hw_feature = &priv->hw_feature;
-+	u8 feature[13];
-+	int i, ret;
-+	u8 id, bw;
-+
-+	if (!priv->fops->hw_feature_report) {
-+		hw_feature->max_bw = 40;
-+		return 0;
-+	}
-+
-+	ret = read_poll_timeout(rtl8xxxu_read8, id,
-+				id == C2H_HW_FEATURE_REPORT,
-+				10000, 800000, false,
-+				priv, REG_C2HEVT_MSG_NORMAL);
-+	if (ret)
-+		return ret;
-+
-+	for (i = 0; i < ARRAY_SIZE(feature); i++)
-+		feature[i] = rtl8xxxu_read8(priv, REG_C2HEVT_MSG_NORMAL + 2 + i);
-+
-+	rtl8xxxu_write8(priv, REG_C2HEVT_MSG_NORMAL, 0);
-+
-+	bw = u8_get_bits(feature[6], GENMASK(2, 0));
-+
-+	hw_feature->max_bw = bw_map[bw];
-+
-+	return 0;
-+}
-+
- static int rtl8xxxu_init_device(struct ieee80211_hw *hw)
+--- a/block/blk-cgroup.c
++++ b/block/blk-cgroup.c
+@@ -170,20 +170,10 @@ static void blkg_free(struct blkcg_gq *b
+ static void __blkg_release(struct rcu_head *rcu)
  {
- 	struct rtl8xxxu_priv *priv = hw->priv;
-@@ -3961,6 +4002,8 @@ static int rtl8xxxu_init_device(struct i
- 	 */
- 	rtl8xxxu_write16(priv, REG_TRXFF_BNDY + 2, fops->trxff_boundary);
+ 	struct blkcg_gq *blkg = container_of(rcu, struct blkcg_gq, rcu_head);
+-	struct blkcg *blkcg = blkg->blkcg;
+-	int cpu;
  
-+	rtl8xxxu_request_hw_feature(priv);
-+
- 	for (int retry = 5; retry >= 0 ; retry--) {
- 		ret = rtl8xxxu_download_firmware(priv);
- 		dev_dbg(dev, "%s: download_firmware %i\n", __func__, ret);
-@@ -3976,6 +4019,12 @@ static int rtl8xxxu_init_device(struct i
- 	if (ret)
- 		goto exit;
+ #ifdef CONFIG_BLK_CGROUP_PUNT_BIO
+ 	WARN_ON(!bio_list_empty(&blkg->async_bios));
+ #endif
+-	/*
+-	 * Flush all the non-empty percpu lockless lists before releasing
+-	 * us, given these stat belongs to us.
+-	 *
+-	 * blkg_stat_lock is for serializing blkg stat update
+-	 */
+-	for_each_possible_cpu(cpu)
+-		__blkcg_rstat_flush(blkcg, cpu);
  
-+	ret = rtl8xxxu_dump_hw_feature(priv);
-+	if (ret) {
-+		dev_err(dev, "failed to dump hw feature\n");
-+		goto exit;
-+	}
+ 	/* release the blkcg and parent blkg refs this blkg has been holding */
+ 	css_put(&blkg->blkcg->css);
+@@ -201,6 +191,17 @@ static void __blkg_release(struct rcu_he
+ static void blkg_release(struct percpu_ref *ref)
+ {
+ 	struct blkcg_gq *blkg = container_of(ref, struct blkcg_gq, refcnt);
++	struct blkcg *blkcg = blkg->blkcg;
++	int cpu;
 +
- 	if (fops->phy_init_antenna_selection)
- 		fops->phy_init_antenna_selection(priv);
++	/*
++	 * Flush all the non-empty percpu lockless lists before releasing
++	 * us, given these stat belongs to us.
++	 *
++	 * blkg_stat_lock is for serializing blkg stat update
++	 */
++	for_each_possible_cpu(cpu)
++		__blkcg_rstat_flush(blkcg, cpu);
  
-@@ -7835,15 +7884,20 @@ static int rtl8xxxu_probe(struct usb_int
- 	sband->ht_cap.ht_supported = true;
- 	sband->ht_cap.ampdu_factor = IEEE80211_HT_MAX_AMPDU_64K;
- 	sband->ht_cap.ampdu_density = IEEE80211_HT_MPDU_DENSITY_16;
--	sband->ht_cap.cap = IEEE80211_HT_CAP_SGI_20 | IEEE80211_HT_CAP_SGI_40 |
--			    IEEE80211_HT_CAP_SUP_WIDTH_20_40;
-+	sband->ht_cap.cap = IEEE80211_HT_CAP_SGI_20;
-+
-+	if (priv->hw_feature.max_bw >= 40) {
-+		sband->ht_cap.cap |= IEEE80211_HT_CAP_SGI_40;
-+		sband->ht_cap.cap |= IEEE80211_HT_CAP_SUP_WIDTH_20_40;
-+	} else {
-+		dev_info(&udev->dev, "hardware doesn't support HT40\n");
-+	}
-+
- 	memset(&sband->ht_cap.mcs, 0, sizeof(sband->ht_cap.mcs));
- 	sband->ht_cap.mcs.rx_mask[0] = 0xff;
- 	sband->ht_cap.mcs.rx_mask[4] = 0x01;
--	if (priv->rf_paths > 1) {
-+	if (priv->rf_paths > 1)
- 		sband->ht_cap.mcs.rx_mask[1] = 0xff;
--		sband->ht_cap.cap |= IEEE80211_HT_CAP_SGI_40;
--	}
- 	sband->ht_cap.mcs.tx_params = IEEE80211_HT_MCS_TX_DEFINED;
- 
- 	hw->wiphy->bands[NL80211_BAND_2GHZ] = sband;
---- a/drivers/net/wireless/realtek/rtl8xxxu/regs.h
-+++ b/drivers/net/wireless/realtek/rtl8xxxu/regs.h
-@@ -447,6 +447,8 @@
- /* 8188EU */
- #define REG_32K_CTRL			0x0194
- #define REG_C2HEVT_MSG_NORMAL		0x01a0
-+#define C2H_HW_FEATURE_REPORT		0x19
-+#define C2H_HW_FEATURE_DUMP		0xfd
- /* 8192EU/8723BU/8812 */
- #define REG_C2HEVT_CMD_ID_8723B		0x01ae
- #define REG_C2HEVT_CLEAR		0x01af
---- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu.h
-+++ b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu.h
-@@ -1789,11 +1789,17 @@ struct rtl8xxxu_cfo_tracking {
- #define RTL8XXXU_BC_MC_MACID1	1
- #define RTL8XXXU_MAX_SEC_CAM_NUM	64
- 
-+struct rtl8xxxu_hw_feature {
-+	u8 max_bw;
-+};
-+
- struct rtl8xxxu_priv {
- 	struct ieee80211_hw *hw;
- 	struct usb_device *udev;
- 	struct rtl8xxxu_fileops *fops;
- 
-+	struct rtl8xxxu_hw_feature hw_feature;
-+
- 	spinlock_t tx_urb_lock;
- 	struct list_head tx_urb_free_list;
- 	int tx_urb_free_count;
-@@ -2009,6 +2015,7 @@ struct rtl8xxxu_fileops {
- 	u8 init_reg_pkt_life_time:1;
- 	u8 init_reg_hmtfr:1;
- 	u8 supports_concurrent:1;
-+	u8 hw_feature_report:1;
- 	u8 ampdu_max_time;
- 	u8 ustime_tsf_edca;
- 	u16 max_aggr_num;
+ 	call_rcu(&blkg->rcu_head, __blkg_release);
+ }
 
 
 
