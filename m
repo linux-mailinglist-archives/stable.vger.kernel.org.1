@@ -1,60 +1,75 @@
-Return-Path: <stable+bounces-270814-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-271166-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id LDX/OcefRmq4aQsAu9opvQ
-	(envelope-from <stable+bounces-270814-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:28:39 +0200
+	id MmFDEEWYRmpRZgsAu9opvQ
+	(envelope-from <stable+bounces-271166-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:56:37 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 487286FB5DC
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:28:39 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id CAA426FAC68
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:56:36 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=qfuZne0Z;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-270814-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-270814-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=zpoRRWNG;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-271166-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-271166-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 586C930FAE5E
-	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:35:32 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 0C127304791D
+	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:49:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C991B396D1A;
-	Thu,  2 Jul 2026 16:31:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3E27399D02;
+	Thu,  2 Jul 2026 16:47:21 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A336340410;
-	Thu,  2 Jul 2026 16:31:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D98733BBCD;
+	Thu,  2 Jul 2026 16:47:20 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783009918; cv=none; b=g7m294X3m0iyJ9WaFN5BYNVfX22PY+dHMDzyK1XO09cMldvNLMt1MTwHYoGKbOvWPLPGmUL6qWOlLkMI4QJ/2+y6m7KIxVV4N91/Kpbwuu5m/QZL2RiXthAAkmu4858YmiXn69FFSntO7NcO++EpWBvx3gElDwoJYT3gTUUDjek=
+	t=1783010841; cv=none; b=XzBO3TwxDZOa9khy88gwPrSEO3GPWkO+WmYOwGs5nzAcnO9NK9Z9fmjRawbD4yuw3H0HObdwbs2sM9roNVIK5S9S6uYhbWfP2fJfzya3WBsiD0h4sJEUgGGQPO4HpAR6CH46Tfu52ixhyrHwl0RnWu0+aEgqADvX2wVdVfAuz4A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783009918; c=relaxed/simple;
-	bh=mmYZYvldZB/ODuhQuKvqsLLa/ArLUiJPS/H2EjoXijI=;
+	s=arc-20240116; t=1783010841; c=relaxed/simple;
+	bh=tkGpfoeiIFtJUEeWTHaqu4xczV45ZKFkXydJQC2p3Jo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sdQ5MaWNGJ/gLFIKtk9au9KJAEPX0RbIKohEUkp64c9Q+HGT2OwNvSLRFIBM1faV90sMkYRgCK0N4mlhQaSAU4YcXYV+8a94yL4fJY4gonNud8NIM/I9YvygwEjzSwDG6RPNWGmZAark0OoDzPdyasbNIhjBKnnzjrlCURkogPM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qfuZne0Z; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D7FE1F000E9;
-	Thu,  2 Jul 2026 16:31:56 +0000 (UTC)
+	 MIME-Version; b=aAdkG3pa6YuGVab5HwqL3i+PssCTbWuB/4EvOIQOCQol17mn7uBrEjvSiPCFUbdecbvApfmUfVnxxfY3ii8dSuZ4nFy9pbkQysWo3tBodSwoGSNMa7P0iMVjVmIl2uilU/TDV39VPpakeepZlv7BwGN0nMMOTR0pAl9i7LI9qJY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zpoRRWNG; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A7B91F000E9;
+	Thu,  2 Jul 2026 16:47:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1783009917;
-	bh=yI6TZvLp5Vd1mzlNQCSOXqM8FnDXh+Cfy4WP0otcASU=;
+	s=korg; t=1783010840;
+	bh=7DUzqk36+grn2mkRGFkUpV4voUGt2c/c4ta5tsiOXys=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=qfuZne0ZVGzHHrr67GPrygPYv7SoWAjJLF+IWVtFZ3TAZojCLA1u6VRZJq1rI1v3p
-	 R71SKXtgAv1LkjcAoYOjzkRIegcqk83kSNrrhZMaR7Ciu7weMmGdvCe30alBB5TAlb
-	 9b6fBZcBt7HsjiJsKQV+WPTitXA5zom98V1JJEAc=
+	b=zpoRRWNGIzSh1MAg9rUi1OFMgoNraBYpbXu6AfZ0fmpNnp6BXZgl0kr+IehHzeySO
+	 1UN3YbWqFauv0oJ/UnPWURWSsqNyoWQ7WTypo7R7mjEE5NHyytajLxnKDBQUxt/yxv
+	 tUF7DpC0Zi8lr3zoMnXgijSRtf1VoJBDc78Saec8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yi Yang <yiyang13@huawei.com>,
-	Jiri Slaby <jirislaby@kernel.org>
-Subject: [PATCH 6.1 040/129] vc_screen: fix null-ptr-deref in vcs_notifier() during concurrent vcs_write
+	bpf <bpf@vger.kernel.org>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Masahiro Yamada <masahiroy@kernel.org>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Nicolas Schier <nicolas@fjasle.eu>,
+	Zheng Yejian <zhengyejian1@huawei.com>,
+	Martin Kelly <martin.kelly@crowdstrike.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Josh Poimboeuf <jpoimboe@redhat.com>,
+	Stephen Rothwell <sfr@canb.auug.org.au>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
+	Andrey Grodzovsky <andrey.grodzovsky@crowdstrike.com>
+Subject: [PATCH 6.6 058/175] scripts/sorttable: Use a structure of function pointers for elf helpers
 Date: Thu,  2 Jul 2026 18:19:19 +0200
-Message-ID: <20260702155112.983166420@linuxfoundation.org>
+Message-ID: <20260702155117.015755210@linuxfoundation.org>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260702155112.163984240@linuxfoundation.org>
-References: <20260702155112.163984240@linuxfoundation.org>
+In-Reply-To: <20260702155115.766838875@linuxfoundation.org>
+References: <20260702155115.766838875@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,22 +86,22 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-270814-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-271166-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[20];
 	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:yiyang13@huawei.com,m:jirislaby@kernel.org,s:lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:bpf@vger.kernel.org,m:mhiramat@kernel.org,m:mark.rutland@arm.com,m:mathieu.desnoyers@efficios.com,m:akpm@linux-foundation.org,m:peterz@infradead.org,m:masahiroy@kernel.org,m:nathan@kernel.org,m:nicolas@fjasle.eu,m:zhengyejian1@huawei.com,m:martin.kelly@crowdstrike.com,m:christophe.leroy@csgroup.eu,m:jpoimboe@redhat.com,m:sfr@canb.auug.org.au,m:torvalds@linux-foundation.org,m:rostedt@goodmis.org,m:andrey.grodzovsky@crowdstrike.com,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
@@ -97,55 +112,329 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,huawei.com:email,msgid.link:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 487286FB5DC
+X-Rspamd-Queue-Id: CAA426FAC68
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yi Yang <yiyang13@huawei.com>
+From: Steven Rostedt <rostedt@goodmis.org>
 
-commit a287620312dc6dcb9a093417a0e589bf30fcf38a upstream.
+[ Upstream commit 1e5f6771c247b28135307058d2cfe3b0153733dc ]
 
-A KASAN null-ptr-deref was observed in vcs_notifier():
+Instead of having a series of function pointers that gets assigned to the
+Elf64 or Elf32 versions, put them all into a single structure and use
+that. Add the helper function that chooses the structure into the macros
+that build the different versions of the elf functions.
 
-BUG: KASAN: null-ptr-deref in vcs_notifier+0x98/0x130
-Read of size 2 at addr qmp_cmd_name: qmp_capabilities, arguments: {}
+Link: https://lore.kernel.org/all/CAHk-=wiafEyX7UgOeZgvd6fvuByE5WXUPh9599kwOc_d-pdeug@mail.gmail.com/
 
-The issue is a race condition in vcs_write(). When the console_lock is
-temporarily dropped (to copy data from userspace), the vc_data pointer
-obtained from vcs_vc() may become stale. After re-acquiring the lock,
-vcs_vc() is called again to re-validate the pointer. If the vc has been
-deallocated in the meantime, vcs_vc() returns NULL, and the while loop
-breaks (with written > 0). However, after the loop, vcs_scr_updated(vc)
-is still called with the now-NULL vc pointer, leading to a null pointer
-dereference in the notifier chain (vcs_notifier dereferences param->vc).
-
-Fix this by adding a NULL check for vc before calling vcs_scr_updated().
-
-Fixes: 8fb9ea65c9d1 ("vc_screen: reload load of struct vc_data pointer in vcs_write() to avoid UAF")
-Cc: stable@vger.kernel.org
-Signed-off-by: Yi Yang <yiyang13@huawei.com>
-Reviewed-by: Jiri Slaby <jirislaby@kernel.org>
-Link: https://patch.msgid.link/20260604060734.2914976-1-yiyang13@huawei.com
+Cc: bpf <bpf@vger.kernel.org>
+Cc: Masami Hiramatsu <mhiramat@kernel.org>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Masahiro Yamada <masahiroy@kernel.org>
+Cc: Nathan Chancellor <nathan@kernel.org>
+Cc: Nicolas Schier <nicolas@fjasle.eu>
+Cc: Zheng Yejian <zhengyejian1@huawei.com>
+Cc: Martin Kelly <martin.kelly@crowdstrike.com>
+Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
+Cc: Josh Poimboeuf <jpoimboe@redhat.com>
+Cc: Stephen Rothwell <sfr@canb.auug.org.au>
+Link: https://lore.kernel.org/20250110075459.13d4b94c@gandalf.local.home
+Suggested-by: Linus Torvalds <torvalds@linux-foundation.org>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: Andrey Grodzovsky <andrey.grodzovsky@crowdstrike.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/tty/vt/vc_screen.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ scripts/sorttable.c |  175 +++++++++++++++++++++++++++++++++++-----------------
+ 1 file changed, 118 insertions(+), 57 deletions(-)
 
---- a/drivers/tty/vt/vc_screen.c
-+++ b/drivers/tty/vt/vc_screen.c
-@@ -699,7 +699,7 @@ vcs_write(struct file *file, const char
- 	}
- 	*ppos += written;
- 	ret = written;
--	if (written)
-+	if (written && vc)
- 		vcs_scr_updated(vc);
+--- a/scripts/sorttable.c
++++ b/scripts/sorttable.c
+@@ -85,6 +85,25 @@ static uint64_t (*r8)(const uint64_t *);
+ static void (*w)(uint32_t, uint32_t *);
+ typedef void (*table_sort_t)(char *, int);
  
- unlock_out:
++static struct elf_funcs {
++	int (*compare_extable)(const void *a, const void *b);
++	uint64_t (*ehdr_shoff)(Elf_Ehdr *ehdr);
++	uint16_t (*ehdr_shstrndx)(Elf_Ehdr *ehdr);
++	uint16_t (*ehdr_shentsize)(Elf_Ehdr *ehdr);
++	uint16_t (*ehdr_shnum)(Elf_Ehdr *ehdr);
++	uint64_t (*shdr_addr)(Elf_Shdr *shdr);
++	uint64_t (*shdr_offset)(Elf_Shdr *shdr);
++	uint64_t (*shdr_size)(Elf_Shdr *shdr);
++	uint64_t (*shdr_entsize)(Elf_Shdr *shdr);
++	uint32_t (*shdr_link)(Elf_Shdr *shdr);
++	uint32_t (*shdr_name)(Elf_Shdr *shdr);
++	uint32_t (*shdr_type)(Elf_Shdr *shdr);
++	uint8_t (*sym_type)(Elf_Sym *sym);
++	uint32_t (*sym_name)(Elf_Sym *sym);
++	uint64_t (*sym_value)(Elf_Sym *sym);
++	uint16_t (*sym_shndx)(Elf_Sym *sym);
++} e;
++
+ static uint64_t ehdr64_shoff(Elf_Ehdr *ehdr)
+ {
+ 	return r8(&ehdr->e64.e_shoff);
+@@ -95,6 +114,11 @@ static uint64_t ehdr32_shoff(Elf_Ehdr *e
+ 	return r(&ehdr->e32.e_shoff);
+ }
+ 
++static uint64_t ehdr_shoff(Elf_Ehdr *ehdr)
++{
++	return e.ehdr_shoff(ehdr);
++}
++
+ #define EHDR_HALF(fn_name)				\
+ static uint16_t ehdr64_##fn_name(Elf_Ehdr *ehdr)	\
+ {							\
+@@ -104,6 +128,11 @@ static uint16_t ehdr64_##fn_name(Elf_Ehd
+ static uint16_t ehdr32_##fn_name(Elf_Ehdr *ehdr)	\
+ {							\
+ 	return r2(&ehdr->e32.e_##fn_name);		\
++}							\
++							\
++static uint16_t ehdr_##fn_name(Elf_Ehdr *ehdr)		\
++{							\
++	return e.ehdr_##fn_name(ehdr);			\
+ }
+ 
+ EHDR_HALF(shentsize)
+@@ -119,6 +148,11 @@ static uint32_t shdr64_##fn_name(Elf_Shd
+ static uint32_t shdr32_##fn_name(Elf_Shdr *shdr)	\
+ {							\
+ 	return r(&shdr->e32.sh_##fn_name);		\
++}							\
++							\
++static uint32_t shdr_##fn_name(Elf_Shdr *shdr)		\
++{							\
++	return e.shdr_##fn_name(shdr);			\
+ }
+ 
+ #define SHDR_ADDR(fn_name)				\
+@@ -130,6 +164,11 @@ static uint64_t shdr64_##fn_name(Elf_Shd
+ static uint64_t shdr32_##fn_name(Elf_Shdr *shdr)	\
+ {							\
+ 	return r(&shdr->e32.sh_##fn_name);		\
++}							\
++							\
++static uint64_t shdr_##fn_name(Elf_Shdr *shdr)		\
++{							\
++	return e.shdr_##fn_name(shdr);			\
+ }
+ 
+ #define SHDR_WORD(fn_name)				\
+@@ -141,6 +180,10 @@ static uint32_t shdr64_##fn_name(Elf_Shd
+ static uint32_t shdr32_##fn_name(Elf_Shdr *shdr)	\
+ {							\
+ 	return r(&shdr->e32.sh_##fn_name);		\
++}							\
++static uint32_t shdr_##fn_name(Elf_Shdr *shdr)		\
++{							\
++	return e.shdr_##fn_name(shdr);			\
+ }
+ 
+ SHDR_ADDR(addr)
+@@ -161,6 +204,11 @@ static uint64_t sym64_##fn_name(Elf_Sym
+ static uint64_t sym32_##fn_name(Elf_Sym *sym)	\
+ {						\
+ 	return r(&sym->e32.st_##fn_name);	\
++}						\
++						\
++static uint64_t sym_##fn_name(Elf_Sym *sym)	\
++{						\
++	return e.sym_##fn_name(sym);		\
+ }
+ 
+ #define SYM_WORD(fn_name)			\
+@@ -172,6 +220,11 @@ static uint32_t sym64_##fn_name(Elf_Sym
+ static uint32_t sym32_##fn_name(Elf_Sym *sym)	\
+ {						\
+ 	return r(&sym->e32.st_##fn_name);	\
++}						\
++						\
++static uint32_t sym_##fn_name(Elf_Sym *sym)	\
++{						\
++	return e.sym_##fn_name(sym);		\
+ }
+ 
+ #define SYM_HALF(fn_name)			\
+@@ -183,6 +236,11 @@ static uint16_t sym64_##fn_name(Elf_Sym
+ static uint16_t sym32_##fn_name(Elf_Sym *sym)	\
+ {						\
+ 	return r2(&sym->e32.st_##fn_name);	\
++}						\
++						\
++static uint16_t sym_##fn_name(Elf_Sym *sym)	\
++{						\
++	return e.sym_##fn_name(sym);		\
+ }
+ 
+ static uint8_t sym64_type(Elf_Sym *sym)
+@@ -195,6 +253,11 @@ static uint8_t sym32_type(Elf_Sym *sym)
+ 	return ELF32_ST_TYPE(sym->e32.st_info);
+ }
+ 
++static uint8_t sym_type(Elf_Sym *sym)
++{
++	return e.sym_type(sym);
++}
++
+ SYM_ADDR(value)
+ SYM_WORD(name)
+ SYM_HALF(shndx)
+@@ -322,29 +385,16 @@ static int compare_extable_64(const void
+ 	return av > bv;
+ }
+ 
++static int compare_extable(const void *a, const void *b)
++{
++	return e.compare_extable(a, b);
++}
++
+ static inline void *get_index(void *start, int entsize, int index)
+ {
+ 	return start + (entsize * index);
+ }
+ 
+-
+-static int (*compare_extable)(const void *a, const void *b);
+-static uint64_t (*ehdr_shoff)(Elf_Ehdr *ehdr);
+-static uint16_t (*ehdr_shstrndx)(Elf_Ehdr *ehdr);
+-static uint16_t (*ehdr_shentsize)(Elf_Ehdr *ehdr);
+-static uint16_t (*ehdr_shnum)(Elf_Ehdr *ehdr);
+-static uint64_t (*shdr_addr)(Elf_Shdr *shdr);
+-static uint64_t (*shdr_offset)(Elf_Shdr *shdr);
+-static uint64_t (*shdr_size)(Elf_Shdr *shdr);
+-static uint64_t (*shdr_entsize)(Elf_Shdr *shdr);
+-static uint32_t (*shdr_link)(Elf_Shdr *shdr);
+-static uint32_t (*shdr_name)(Elf_Shdr *shdr);
+-static uint32_t (*shdr_type)(Elf_Shdr *shdr);
+-static uint8_t (*sym_type)(Elf_Sym *sym);
+-static uint32_t (*sym_name)(Elf_Sym *sym);
+-static uint64_t (*sym_value)(Elf_Sym *sym);
+-static uint16_t (*sym_shndx)(Elf_Sym *sym);
+-
+ static int extable_ent_size;
+ static int long_size;
+ 
+@@ -864,7 +914,30 @@ static int do_file(char const *const fna
+ 	}
+ 
+ 	switch (ehdr->e32.e_ident[EI_CLASS]) {
+-	case ELFCLASS32:
++	case ELFCLASS32: {
++		struct elf_funcs efuncs = {
++			.compare_extable	= compare_extable_32,
++			.ehdr_shoff		= ehdr32_shoff,
++			.ehdr_shentsize		= ehdr32_shentsize,
++			.ehdr_shstrndx		= ehdr32_shstrndx,
++			.ehdr_shnum		= ehdr32_shnum,
++			.shdr_addr		= shdr32_addr,
++			.shdr_offset		= shdr32_offset,
++			.shdr_link		= shdr32_link,
++			.shdr_size		= shdr32_size,
++			.shdr_name		= shdr32_name,
++			.shdr_type		= shdr32_type,
++			.shdr_entsize		= shdr32_entsize,
++			.sym_type		= sym32_type,
++			.sym_name		= sym32_name,
++			.sym_value		= sym32_value,
++			.sym_shndx		= sym32_shndx,
++		};
++
++		e = efuncs;
++		long_size		= 4;
++		extable_ent_size	= 8;
++
+ 		if (r2(&ehdr->e32.e_ehsize) != sizeof(Elf32_Ehdr) ||
+ 		    r2(&ehdr->e32.e_shentsize) != sizeof(Elf32_Shdr)) {
+ 			fprintf(stderr,
+@@ -872,26 +945,32 @@ static int do_file(char const *const fna
+ 			return -1;
+ 		}
+ 
+-		compare_extable		= compare_extable_32;
+-		ehdr_shoff		= ehdr32_shoff;
+-		ehdr_shentsize		= ehdr32_shentsize;
+-		ehdr_shstrndx		= ehdr32_shstrndx;
+-		ehdr_shnum		= ehdr32_shnum;
+-		shdr_addr		= shdr32_addr;
+-		shdr_offset		= shdr32_offset;
+-		shdr_link		= shdr32_link;
+-		shdr_size		= shdr32_size;
+-		shdr_name		= shdr32_name;
+-		shdr_type		= shdr32_type;
+-		shdr_entsize		= shdr32_entsize;
+-		sym_type		= sym32_type;
+-		sym_name		= sym32_name;
+-		sym_value		= sym32_value;
+-		sym_shndx		= sym32_shndx;
+-		long_size		= 4;
+-		extable_ent_size	= 8;
++		}
+ 		break;
+-	case ELFCLASS64:
++	case ELFCLASS64: {
++		struct elf_funcs efuncs = {
++			.compare_extable	= compare_extable_64,
++			.ehdr_shoff		= ehdr64_shoff,
++			.ehdr_shentsize		= ehdr64_shentsize,
++			.ehdr_shstrndx		= ehdr64_shstrndx,
++			.ehdr_shnum		= ehdr64_shnum,
++			.shdr_addr		= shdr64_addr,
++			.shdr_offset		= shdr64_offset,
++			.shdr_link		= shdr64_link,
++			.shdr_size		= shdr64_size,
++			.shdr_name		= shdr64_name,
++			.shdr_type		= shdr64_type,
++			.shdr_entsize		= shdr64_entsize,
++			.sym_type		= sym64_type,
++			.sym_name		= sym64_name,
++			.sym_value		= sym64_value,
++			.sym_shndx		= sym64_shndx,
++		};
++
++		e = efuncs;
++		long_size		= 8;
++		extable_ent_size	= 16;
++
+ 		if (r2(&ehdr->e64.e_ehsize) != sizeof(Elf64_Ehdr) ||
+ 		    r2(&ehdr->e64.e_shentsize) != sizeof(Elf64_Shdr)) {
+ 			fprintf(stderr,
+@@ -900,25 +979,7 @@ static int do_file(char const *const fna
+ 			return -1;
+ 		}
+ 
+-		compare_extable		= compare_extable_64;
+-		ehdr_shoff		= ehdr64_shoff;
+-		ehdr_shentsize		= ehdr64_shentsize;
+-		ehdr_shstrndx		= ehdr64_shstrndx;
+-		ehdr_shnum		= ehdr64_shnum;
+-		shdr_addr		= shdr64_addr;
+-		shdr_offset		= shdr64_offset;
+-		shdr_link		= shdr64_link;
+-		shdr_size		= shdr64_size;
+-		shdr_name		= shdr64_name;
+-		shdr_type		= shdr64_type;
+-		shdr_entsize		= shdr64_entsize;
+-		sym_type		= sym64_type;
+-		sym_name		= sym64_name;
+-		sym_value		= sym64_value;
+-		sym_shndx		= sym64_shndx;
+-		long_size		= 8;
+-		extable_ent_size	= 16;
+-
++		}
+ 		break;
+ 	default:
+ 		fprintf(stderr, "unrecognized ELF class %d %s\n",
 
 
 
