@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-271257-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-270846-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id E3gxI2CZRmrfZgsAu9opvQ
-	(envelope-from <stable+bounces-271257-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:01:20 +0200
+	id cTi1JA2WRmrxZAsAu9opvQ
+	(envelope-from <stable+bounces-270846-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:47:09 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 429FB6FADD6
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:01:20 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E7C96FA89B
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:47:09 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=SMSqBFGE;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-271257-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-271257-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=qfjreE+r;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-270846-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-270846-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 1E96430905B9
-	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:52:18 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 7A54831395D6
+	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:36:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 90649352038;
-	Thu,  2 Jul 2026 16:51:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6CDA3AA50A;
+	Thu,  2 Jul 2026 16:33:22 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6738926F46F;
-	Thu,  2 Jul 2026 16:51:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47A9A346769;
+	Thu,  2 Jul 2026 16:33:21 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783011074; cv=none; b=Sg+CEKzJhjcg6ZvcqleExLKtfBIZIYHNToXyEkcAeXClse95Ry/lkbeCAGhU6G9OGsqJDAEEdI9Et2SltJnbXrMOgZhwGjotnDoWezOoKu2998ZGraJ2KmP7MSGCu7hSiDfK5H0yrq+MfDUJ9pWijeFBSfuEo0dV9vWfoPkJDJc=
+	t=1783010002; cv=none; b=N0c9m8gwCqBFbmMPdQ6CqHEWsQopH0dhXB+ygbggqZA3hXdPqVEFlON2IuBLQon/GpKW1K5f5Ytfo5iq/n06eki9NViN7hviMxbd1cEv+6+xvbe+HwK/ON00XAIEJXIrv8qroS4yOJEirJbSbC7AzWczjha1eM3x9HqPvWtJUDE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783011074; c=relaxed/simple;
-	bh=3a38ljGYbbtnkeg90Je20OFt8lTdrr04fGaNEQ352wg=;
+	s=arc-20240116; t=1783010002; c=relaxed/simple;
+	bh=S0NW8flfyXdetVLri7guVGt4utWGIa+dSVROFQ3G2Ng=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=izNF4sSccaWBbAR/Gm8frCqwkuHzn2gf/uMnYm2Fa/5HSuq8NnQY3fspaI7adNKpwnkmre7MxR7nZ9IJTL+oPZ5UCyaoeBvSsHUWJ4dgT4QmlSgrRdhfcQnuyRwcB46FZ+tfVQWtHeC4IVWcCa0B0+P9JjD1sxlkNFLQSOfrnhM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SMSqBFGE; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC31A1F000E9;
-	Thu,  2 Jul 2026 16:51:12 +0000 (UTC)
+	 MIME-Version; b=E2WwhfBEn0FQlv8fsgTyQyKkVMNPvoPGWykERtJn+OtN/CgCRJB61f9wvQzln31bpEAOvOCZPu3C11U/XrEXhq+zV9mAmwc+qtDqZx5A/vtHrXrXVOZb8NqTl/+Dxf9AQLl8gdoqt1D3t07Sr93Cnte+aGaEmCwwZs4C09It7gQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qfjreE+r; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD19C1F000E9;
+	Thu,  2 Jul 2026 16:33:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1783011073;
-	bh=J/6v53wRgFAj7/pzJJeE3xHQKqtX2PDjEgVZ7Uy4Sto=;
+	s=korg; t=1783010001;
+	bh=ixO8w3FWzcuP4lB7Uk5C4K8Nn4GGm3wml/bu7rZQnLM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=SMSqBFGEb+BXTLCipMbO1JotQ9ftgmOO+CuEflXliarQuZIg6IVN0Pz4WD9piBkp1
-	 sbwRQs01iKbviRGhjACi+WMUrx8grLAcGrmYVo5XajcEuA8C7csDRJtMzSF/uyuVqE
-	 GTHemm4ijqmG4ItTU6BPXl2fLopIwjnbyWcCb5NI=
+	b=qfjreE+rf+3mhyaNNQNTnGz5LM2VT7T504sl2hQKAD/4W5P+JzxT+PdnSgYfmC2mP
+	 ZhJWoF2l/X+9RvdOYANUqEdrnPvgsaQcJRwyyZJWA2AbETn8YCmicfaXlTrXCobXHU
+	 pnlAvU7C3LpKzqIkGZsv5xqLogh//N+S7fTIO/bM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -50,12 +50,12 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	stable@kernel.org,
 	Sven Eckelmann <sven@narfation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 092/175] batman-adv: tp_meter: initialize dup_acks explicitly
+Subject: [PATCH 6.1 074/129] batman-adv: tvlv: avoid race of cifsnotfound handler state
 Date: Thu,  2 Jul 2026 18:19:53 +0200
-Message-ID: <20260702155117.716714341@linuxfoundation.org>
+Message-ID: <20260702155113.674419536@linuxfoundation.org>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260702155115.766838875@linuxfoundation.org>
-References: <20260702155115.766838875@linuxfoundation.org>
+In-Reply-To: <20260702155112.163984240@linuxfoundation.org>
+References: <20260702155112.163984240@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,12 +72,12 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-271257-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-270846-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
@@ -86,7 +86,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
@@ -98,48 +98,161 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[narfation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[narfation.org:email,vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 429FB6FADD6
+X-Rspamd-Queue-Id: 2E7C96FA89B
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
 From: Sven Eckelmann <sven@narfation.org>
 
-commit b2b68b32a715e0328662801576974aa37b942b00 upstream.
+commit edb557b2ba38fea2c5eb710cf366c797e187218c upstream.
 
-When an ack with a sequence number equal to the last_acked is received, the
-dup_acks counter is increased to decide whether fast retransmit should be
-performed. Only when the sequence numbers are not equal, the dup_acks is
-set to the initial value (0).
+TVLV handlers can have the flag BATADV_TVLV_HANDLER_OGM_CIFNOTFND set to
+signal that the OGM handler should be called (with NULL for data) when the
+specific TVLV container was not found in the OGM. This is used by:
 
-But if the initial packet would have the sequence number
-BATADV_TP_FIRST_SEQ, dup_acks would not be initialized and atomic_inc would
-operate on an undefined starting value. It is therefore required to have it
-explicitly initialized during the start of the sender session.
+* DAT
+* GW
+* Multicast (OGM + Tracker)
+
+The state whether the handler was executed was stored in the struct
+batadv_tvlv_handler. But the TVLV processing is started without any lock.
+Multiple parallel contexts processing TVLVs would therefore overwrite each
+others BATADV_TVLV_HANDLER_OGM_CALLED flag in the shared
+batadv_tvlv_handler.
+
+Drop the shared BATADV_TVLV_HANDLER_OGM_CALLED flag and instead determine,
+per TVLV buffer, whether a matching container was present by scanning the
+packet's buffer.
 
 Cc: stable@kernel.org
-Fixes: 33a3bb4a3345 ("batman-adv: throughput meter implementation")
+Fixes: ef26157747d4 ("batman-adv: tvlv - basic infrastructure")
+[ Context ]
 Signed-off-by: Sven Eckelmann <sven@narfation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/batman-adv/tp_meter.c | 1 +
- 1 file changed, 1 insertion(+)
+ net/batman-adv/tvlv.c  | 63 ++++++++++++++++++++++++++++++++++++++----
+ net/batman-adv/types.h |  7 -----
+ 2 files changed, 57 insertions(+), 13 deletions(-)
 
-diff --git a/net/batman-adv/tp_meter.c b/net/batman-adv/tp_meter.c
-index f350a60e6c76b9..750e5e9d3dc9d6 100644
---- a/net/batman-adv/tp_meter.c
-+++ b/net/batman-adv/tp_meter.c
-@@ -1045,6 +1045,7 @@ void batadv_tp_start(struct batadv_priv *bat_priv, const u8 *dst,
- 	tp_vars->icmp_uid = icmp_uid;
+diff --git a/net/batman-adv/tvlv.c b/net/batman-adv/tvlv.c
+index e25430da5afb1b..61a1e5e5f0d913 100644
+--- a/net/batman-adv/tvlv.c
++++ b/net/batman-adv/tvlv.c
+@@ -394,7 +394,6 @@ static int batadv_tvlv_call_handler(struct batadv_priv *bat_priv,
+ 		tvlv_handler->ogm_handler(bat_priv, orig_node,
+ 					  BATADV_NO_FLAGS,
+ 					  tvlv_value, tvlv_value_len);
+-		tvlv_handler->flags |= BATADV_TVLV_HANDLER_OGM_CALLED;
+ 	} else {
+ 		if (!src)
+ 			return NET_RX_SUCCESS;
+@@ -413,6 +412,48 @@ static int batadv_tvlv_call_handler(struct batadv_priv *bat_priv,
+ 	return NET_RX_SUCCESS;
+ }
  
- 	tp_vars->last_sent = BATADV_TP_FIRST_SEQ;
-+	atomic_set(&tp_vars->dup_acks, 0);
- 	atomic_set(&tp_vars->last_acked, BATADV_TP_FIRST_SEQ);
- 	tp_vars->fast_recovery = false;
- 	tp_vars->recover = BATADV_TP_FIRST_SEQ;
++/**
++ * batadv_tvlv_containers_contain() - check if a tvlv buffer holds a container
++ * @tvlv_value: tvlv content
++ * @tvlv_value_len: tvlv content length
++ * @type: tvlv container type to look for
++ * @version: tvlv container version to look for
++ *
++ * Return: true if a container of the given type and version is present in the
++ * tvlv buffer, false otherwise.
++ */
++static bool batadv_tvlv_containers_contain(void *tvlv_value,
++					   u16 tvlv_value_len, u8 type,
++					   u8 version)
++{
++	struct batadv_tvlv_hdr *tvlv_hdr;
++	u16 tvlv_value_cont_len;
++
++	while (tvlv_value_len >= sizeof(*tvlv_hdr)) {
++		tvlv_hdr = tvlv_value;
++		tvlv_value_cont_len = ntohs(tvlv_hdr->len);
++		tvlv_value = tvlv_hdr + 1;
++		tvlv_value_len -= sizeof(*tvlv_hdr);
++
++		if (tvlv_value_cont_len > tvlv_value_len)
++			break;
++
++		/* the next tvlv header is accessed assuming (at least) 2-byte
++		 * alignment, so it must start at an even offset.
++		 */
++		if (tvlv_value_cont_len & 1)
++			break;
++
++		if (tvlv_hdr->type == type && tvlv_hdr->version == version)
++			return true;
++
++		tvlv_value = (u8 *)tvlv_value + tvlv_value_cont_len;
++		tvlv_value_len -= tvlv_value_cont_len;
++	}
++
++	return false;
++}
++
+ /**
+  * batadv_tvlv_containers_process() - parse the given tvlv buffer to call the
+  *  appropriate handlers
+@@ -433,7 +474,9 @@ int batadv_tvlv_containers_process(struct batadv_priv *bat_priv,
+ 				   u8 *src, u8 *dst,
+ 				   void *tvlv_value, u16 tvlv_value_len)
+ {
++	u16 tvlv_value_start_len = tvlv_value_len;
+ 	struct batadv_tvlv_handler *tvlv_handler;
++	void *tvlv_value_start = tvlv_value;
+ 	struct batadv_tvlv_hdr *tvlv_hdr;
+ 	u16 tvlv_value_cont_len;
+ 	u8 cifnotfound = BATADV_TVLV_HANDLER_OGM_CIFNOTFND;
+@@ -473,12 +516,20 @@ int batadv_tvlv_containers_process(struct batadv_priv *bat_priv,
+ 	rcu_read_lock();
+ 	hlist_for_each_entry_rcu(tvlv_handler,
+ 				 &bat_priv->tvlv.handler_list, list) {
+-		if ((tvlv_handler->flags & BATADV_TVLV_HANDLER_OGM_CIFNOTFND) &&
+-		    !(tvlv_handler->flags & BATADV_TVLV_HANDLER_OGM_CALLED))
+-			tvlv_handler->ogm_handler(bat_priv, orig_node,
+-						  cifnotfound, NULL, 0);
++		if (!(tvlv_handler->flags & BATADV_TVLV_HANDLER_OGM_CIFNOTFND))
++			continue;
+ 
+-		tvlv_handler->flags &= ~BATADV_TVLV_HANDLER_OGM_CALLED;
++		/* if the corresponding container was present then the handler
++		 * was already called from the loop above
++		 */
++		if (batadv_tvlv_containers_contain(tvlv_value_start,
++						   tvlv_value_start_len,
++						   tvlv_handler->type,
++						   tvlv_handler->version))
++			continue;
++
++		tvlv_handler->ogm_handler(bat_priv, orig_node,
++					  cifnotfound, NULL, 0);
+ 	}
+ 	rcu_read_unlock();
+ 
+diff --git a/net/batman-adv/types.h b/net/batman-adv/types.h
+index 673b04dd71b043..f009b2a381a468 100644
+--- a/net/batman-adv/types.h
++++ b/net/batman-adv/types.h
+@@ -2408,13 +2408,6 @@ enum batadv_tvlv_handler_flags {
+ 	 *  will call this handler even if its type was not found (with no data)
+ 	 */
+ 	BATADV_TVLV_HANDLER_OGM_CIFNOTFND = BIT(1),
+-
+-	/**
+-	 * @BATADV_TVLV_HANDLER_OGM_CALLED: interval tvlv handling flag - the
+-	 *  API marks a handler as being called, so it won't be called if the
+-	 *  BATADV_TVLV_HANDLER_OGM_CIFNOTFND flag was set
+-	 */
+-	BATADV_TVLV_HANDLER_OGM_CALLED = BIT(2),
+ };
+ 
+ #endif /* _NET_BATMAN_ADV_TYPES_H_ */
 -- 
 2.53.0
 
