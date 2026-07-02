@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-270914-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-270915-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id hvAoDL2hRmp1agsAu9opvQ
-	(envelope-from <stable+bounces-270914-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:37:01 +0200
+	id Ixf6AwKYRmosZgsAu9opvQ
+	(envelope-from <stable+bounces-270915-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:55:30 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1DF0A6FB7D7
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:37:00 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2907D6FAC17
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:55:29 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=drOklXJd;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-270914-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-270914-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=uJGQnFab;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-270915-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-270915-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 38639306209B
-	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:37:58 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 717F430625D2
+	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:37:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91186363083;
-	Thu,  2 Jul 2026 16:36:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CFA2935F8D2;
+	Thu,  2 Jul 2026 16:36:24 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60F2E343896;
-	Thu,  2 Jul 2026 16:36:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 485E833A71B;
+	Thu,  2 Jul 2026 16:36:23 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783010181; cv=none; b=Y4Vp8Bng8/f3wO3CKtZ9hAUFEwCXvGrCquSm/aC2ADxY19LHbcFF4LBpiPWE6SCvGhg4Od/LUMx86oU9x7T2bC5+7Kv/FoLq6oT/dz93Qn5spHnHEXa96sNrBzWrYfb6U2CW0ZlQk8g5Gn9jDUObVUGOb3J/waLNDr79CethvyU=
+	t=1783010184; cv=none; b=G9Jw8DapqBSwnW1QEHeTZZTcoFJpIg3h4yrgHEbFzxAlej1YDKsS7L7SDfzTdRhG1qVFmsD0NwUsV5fn4IMmzATFCJmtO6C4fHstqiSzB4zM3xIfpmk8KA62tAX/N8vz8BuR70plDyV2nIRF2Oi9toxz3UKvh2JSCU2e8XsYuWg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783010181; c=relaxed/simple;
-	bh=b8JQmBTQNspjDvhf2UgFmLDt9ky4NNa+eZ/K3c1Rk48=;
+	s=arc-20240116; t=1783010184; c=relaxed/simple;
+	bh=xJZkS6XvHSFVDFEQvHqYpAqjcGQYFKMtq/oHMCh66pA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IwTb4Gy8cqZ8TYsYyr5DVeBywS1osO1qEXbzcsAO7KhcWxokR7pqDXtucNsabJn1hx5XIQ3FUqbiQSPOCfYWWWtnBiaIH3HIpQf1G9svA8zElppQrD73lNisXIlAmJijA8nQ1/ohz6HYihklZHjHKjRMpA9Xk8pE6lmEt7/gciI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=drOklXJd; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD8661F000E9;
-	Thu,  2 Jul 2026 16:36:19 +0000 (UTC)
+	 MIME-Version; b=TzWO/jKgJhQp3KBARzG5SsmMSMv7CIkJwu+tjRKMDYbll9oRmRpqgeZCV377wm/IeIHUvS9HCbFkEhIdPVzsi7lp2jKw+8RBACeGb3IMVgfLDX3vqu0FsZRQF7SSmOIfdAqpB2G7EkK2Ks0tY1G+aL/coljFh1JZJb6b7m7w6rQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uJGQnFab; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67F101F000E9;
+	Thu,  2 Jul 2026 16:36:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1783010180;
-	bh=FfyCBBgPo2uQKDI3GD9KZGDXPMMFTyllPGoQTaC8VOs=;
+	s=korg; t=1783010182;
+	bh=+lxHR5FNE+xfppGNp+8shAdFA/2p3gKoYXz2NPRKAWw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=drOklXJdkmdHrjntuCEbDP6VpggyRjDihNC/Skb3V2Iv+LlfO/JM9qvb0kYDlLAmu
-	 DzQlx48b2hzDScsFKG411FdbDjRZJsZMsXseJEgDVU4zz/5dTJQxWEEDv/ZUdz3zzP
-	 gmIp3VFh7RDXVVCWonj1o8GM1EP6c51Op0FUWS2Y=
+	b=uJGQnFabtNwMMbv1aVyk9JjBHw35Y4K62wPONtJfEHPTn8uLg04C06pqcrSmWj2O1
+	 ymhniTByhP3L+YxFPic1dORl+fKB/v5HX/EQsQrP4vnpOOEzkpwwBr2sGbbPmlFMya
+	 UeUj7BFsM5Rl17i+mAfPWY2czy8dxwIH7IR5IWbc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
+	Linus Torvalds <torvalds@linux-foundation.org>,
 	"Christian Brauner (Amutable)" <brauner@kernel.org>,
 	Quentin Schulz <quentin.schulz@cherry.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 012/204] eventpoll: use hlist_is_singular_node() in __ep_remove()
-Date: Thu,  2 Jul 2026 18:17:49 +0200
-Message-ID: <20260702155118.927645307@linuxfoundation.org>
+Subject: [PATCH 6.12 013/204] eventpoll: split __ep_remove()
+Date: Thu,  2 Jul 2026 18:17:50 +0200
+Message-ID: <20260702155118.948184868@linuxfoundation.org>
 X-Mailer: git-send-email 2.55.0
 In-Reply-To: <20260702155118.667618796@linuxfoundation.org>
 References: <20260702155118.667618796@linuxfoundation.org>
@@ -69,38 +70,39 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-270914-lists,stable=lfdr.de];
+	PRECEDENCE_BULK(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:brauner@kernel.org,m:quentin.schulz@cherry.de,m:sashal@kernel.org,s:lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-270915-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:torvalds@linux-foundation.org,m:brauner@kernel.org,m:quentin.schulz@cherry.de,m:sashal@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORWARDED(0.00)[lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,cherry.de:email]
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	RWL_MAILSPIKE_POSSIBLE(0.00)[104.64.211.4:from];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[cherry.de:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,msgid.link:url,linux-foundation.org:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 1DF0A6FB7D7
+X-Rspamd-Queue-Id: 2907D6FAC17
 
 6.12-stable review patch.  If anyone has any objections, please let me know.
 
@@ -108,34 +110,79 @@ X-Rspamd-Queue-Id: 1DF0A6FB7D7
 
 From: Christian Brauner <brauner@kernel.org>
 
-[ Upstream commit 3d9fd0abc94d8cd430cc7cd7d37ce5e5aae2cd2b ]
+[ Upstream commit 0f7bdfd413000985de09fc39eb9efa1e091a3ce0 ]
 
-Replace the open-coded "epi is the only entry in file->f_ep" check
-with hlist_is_singular_node(). Same semantics, and the helper avoids
-the head-cacheline access in the common false case.
+Split __ep_remove() to delineate file removal from epoll item removal.
 
-Link: https://patch.msgid.link/20260423-work-epoll-uaf-v1-1-2470f9eec0f5@kernel.org
+Suggested-by: Linus Torvalds <torvalds@linux-foundation.org>
+Link: https://patch.msgid.link/20260423-work-epoll-uaf-v1-2-2470f9eec0f5@kernel.org
 Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
 Stable-dep-of: a6dc643c6931 ("eventpoll: fix ep_remove struct eventpoll / struct file UAF")
 Signed-off-by: Quentin Schulz <quentin.schulz@cherry.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/eventpoll.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/eventpoll.c | 27 +++++++++++++++++++++++----
+ 1 file changed, 23 insertions(+), 4 deletions(-)
 
 diff --git a/fs/eventpoll.c b/fs/eventpoll.c
-index a860cb54658a3b..8f9dc2f4891ff5 100644
+index 8f9dc2f4891ff5..1cba4ae4a076bc 100644
 --- a/fs/eventpoll.c
 +++ b/fs/eventpoll.c
-@@ -827,7 +827,7 @@ static bool __ep_remove(struct eventpoll *ep, struct epitem *epi, bool force)
+@@ -797,6 +797,9 @@ static void ep_free(struct eventpoll *ep)
+ 	kfree_rcu(ep, rcu);
+ }
  
- 	to_free = NULL;
- 	head = file->f_ep;
--	if (head->first == &epi->fllink && !epi->fllink.next) {
-+	if (hlist_is_singular_node(&epi->fllink, head)) {
++static void __ep_remove_file(struct eventpoll *ep, struct epitem *epi, struct file *file);
++static bool __ep_remove_epi(struct eventpoll *ep, struct epitem *epi);
++
+ /*
+  * Removes a "struct epitem" from the eventpoll RB tree and deallocates
+  * all the associated resources. Must be called with "mtx" held.
+@@ -808,8 +811,6 @@ static void ep_free(struct eventpoll *ep)
+ static bool __ep_remove(struct eventpoll *ep, struct epitem *epi, bool force)
+ {
+ 	struct file *file = epi->ffd.file;
+-	struct epitems_head *to_free;
+-	struct hlist_head *head;
+ 
+ 	lockdep_assert_irqs_enabled();
+ 
+@@ -825,8 +826,21 @@ static bool __ep_remove(struct eventpoll *ep, struct epitem *epi, bool force)
+ 		return false;
+ 	}
+ 
+-	to_free = NULL;
+-	head = file->f_ep;
++	__ep_remove_file(ep, epi, file);
++	return __ep_remove_epi(ep, epi);
++}
++
++/*
++ * Called with &file->f_lock held,
++ * returns with it released
++ */
++static void __ep_remove_file(struct eventpoll *ep, struct epitem *epi, struct file *file)
++{
++	struct epitems_head *to_free = NULL;
++	struct hlist_head *head = file->f_ep;
++
++	lockdep_assert_held(&ep->mtx);
++
+ 	if (hlist_is_singular_node(&epi->fllink, head)) {
  		/* See eventpoll_release() for details. */
  		WRITE_ONCE(file->f_ep, NULL);
- 		if (!is_file_epoll(file)) {
+@@ -840,6 +854,11 @@ static bool __ep_remove(struct eventpoll *ep, struct epitem *epi, bool force)
+ 	hlist_del_rcu(&epi->fllink);
+ 	spin_unlock(&file->f_lock);
+ 	free_ephead(to_free);
++}
++
++static bool __ep_remove_epi(struct eventpoll *ep, struct epitem *epi)
++{
++	lockdep_assert_held(&ep->mtx);
+ 
+ 	rb_erase_cached(&epi->rbn, &ep->rbr);
+ 
 -- 
 2.53.0
 
