@@ -1,62 +1,65 @@
-Return-Path: <stable+bounces-271426-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-271069-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id sgmZLtqbRmo4aAsAu9opvQ
-	(envelope-from <stable+bounces-271426-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:11:54 +0200
+	id x3inKZKaRmqSZwsAu9opvQ
+	(envelope-from <stable+bounces-271069-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:06:26 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5898B6FB1B8
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:11:54 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id AE40E6FAFCD
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:06:25 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=0eQuqvNA;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-271426-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-271426-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=hFcnB47i;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-271069-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-271069-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id F06DB3046439
-	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:58:33 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 510833020B91
+	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:46:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 95C0722D7B9;
-	Thu,  2 Jul 2026 16:58:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 393FC364E93;
+	Thu,  2 Jul 2026 16:43:09 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54DDA30C141;
-	Thu,  2 Jul 2026 16:58:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5208360ED5;
+	Thu,  2 Jul 2026 16:43:07 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783011513; cv=none; b=FxJruXxO9IqVHHED/nOJRd+pGIyr4R398lY/WTS17YIsAfYGj2xI99b3UCvixX88a2wymf4o5etVTaFE2FKdTx4nRra1Ro9HwXAJ1gSPVNPGqXGq3z3UElv1Evzoc2U+FMH6sEaUpYcwhKu37lMngIr4rW6vAmXdPeVMaS5O8iY=
+	t=1783010589; cv=none; b=evhfm4bm80Rs7NxsSsPSZ28l3/C211MAVcFI9C4Xx2qE8rDdHZmFvuoGJxIZpzIavPPMMdJpwdsI6D37mmcgcy/4VaDadMwAVBhIt3wT+bHoHeNfIg+OB0o20udHUZUzKABeENVrNN1V9DWZqzluoNV1+n9LKsKy/xPj+P9+7+g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783011513; c=relaxed/simple;
-	bh=9sQjgqVgaMwyli+9fAKwUE1v+nwY/+MI4kzwQGTiMlE=;
+	s=arc-20240116; t=1783010589; c=relaxed/simple;
+	bh=mfdWltmw1BTa4QSK3VX6Spyx3sLO9L0XVHdzvVUXCQg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MV7pPng4DeVQv/eUMocWt7uwc4tTJXfLLc7v/v1NEz9QEaodSO9H6cmtagVOEuXdX+ufs4xD/D99yqqBsytY48Bt9aHU6M2ySJK2fgvbB8sZHaBjOegk9UdzU1JcPoMV4P/Wtd36VHhC/xUKX8xx3Xc6iYn8Ph6BxAl7dUA63U4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0eQuqvNA; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B11371F00A3A;
-	Thu,  2 Jul 2026 16:58:31 +0000 (UTC)
+	 MIME-Version:Content-Type; b=ZMCA2PjxCyiSmZT91qylO6GfGau/eV5ubo5dlW0K5G6h39oeA73zIxKy7OH1lpHWSAwMEQgrWVFVogxMNmhqtJfkbQbPAqx7HZIlN+hl8v5jTK+Xe7Qa6iJ+6PLdgYlvjs7n7J70xRg5T1ukELnXcZaVpGKHJd31BcFS+JIILDw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hFcnB47i; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0AA151F000E9;
+	Thu,  2 Jul 2026 16:43:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1783011512;
-	bh=QC8JKleU/pUa7LK73IxfRMc9F2TLwWqrWcOq9a4CBBo=;
+	s=korg; t=1783010587;
+	bh=pYrTjja3nCGmoGwoIENoaefYfYOpaPAV9jUCTQNnC2c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=0eQuqvNAmwXizwvq2ZI3ekR+GJNgE0iY39Th4SBDMW1M28ezqgBwwUZkDD1JCHd8m
-	 dfZ2ZFU+gFAgwTX9uHI1pNUcqqp+muZuVb9jOl52iJgVk4GPMksvTGNLIvQFEw3yN0
-	 u9PXhf8ijAsg6mqh3SjI2DkH+o4ZJD2MEjBxf2/8=
+	b=hFcnB47iYM+e3P3AEN0Dh73KTJKao2xQpjjeVQyoD/DdYVkbX6Bu+JBUiGjtbtfoV
+	 M2dAlSqkolHIam/qfO0rLgMQqH9CVkiQTX9OWylOc980zAUfBokoQe6wiyr97EefwO
+	 mnmnG2jRwRI6IxRvyGFr6TZBJBGtR0oP+gUAEIjY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jungwoo Lee <jwlee2217@gmail.com>,
-	Wongi Lee <qw3rtyp0@gmail.com>,
-	Ido Schimmel <idosch@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 7.1 028/120] ipv6: account for fraggap on the paged allocation path
+	Jay Shin <jaeshin@redhat.com>,
+	Tejun Heo <tj@kernel.org>,
+	Waiman Long <longman@redhat.com>,
+	coregee2000@gmail.com,
+	Ming Lei <ming.lei@redhat.com>,
+	"Jose Fernandez (Anthropic)" <jose.fernandez@linux.dev>,
+	Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 6.12 167/204] blk-cgroup: fix UAF in __blkcg_rstat_flush()
 Date: Thu,  2 Jul 2026 18:20:24 +0200
-Message-ID: <20260702155113.544743381@linuxfoundation.org>
+Message-ID: <20260702155122.157819369@linuxfoundation.org>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260702155112.964534952@linuxfoundation.org>
-References: <20260702155112.964534952@linuxfoundation.org>
+In-Reply-To: <20260702155118.667618796@linuxfoundation.org>
+References: <20260702155118.667618796@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,122 +69,119 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,nvidia.com,kernel.org];
-	TAGGED_FROM(0.00)[bounces-271426-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:jwlee2217@gmail.com,m:qw3rtyp0@gmail.com,m:idosch@nvidia.com,m:kuba@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,redhat.com,kernel.org,gmail.com,linux.dev,kernel.dk];
+	TAGGED_FROM(0.00)[bounces-271069-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:jaeshin@redhat.com,m:tj@kernel.org,m:longman@redhat.com,m:coregee2000@gmail.com,m:ming.lei@redhat.com,m:jose.fernandez@linux.dev,m:axboe@kernel.dk,s:lists@lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
 	TO_DN_SOME(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[10];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,nvidia.com:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
+	MID_RHS_MATCH_FROM(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.dev:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,vger.kernel.org:from_smtp,kernel.dk:email,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,suse.com:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 5898B6FB1B8
+X-Rspamd-Queue-Id: AE40E6FAFCD
 
-7.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wongi Lee <qw3rtyp0@gmail.com>
+From: Michal Koutný <mkoutny@suse.com>
 
-commit 736b380e28d0480c7bc3e022f1950f31fe53a7c5 upstream.
+commit 0ab5ee5a1badb58cbb2242617cb01a4972b1f2a2 upstream.
 
-In __ip6_append_data(), when the paged-allocation branch is taken
-(MSG_MORE / NETIF_F_SG / large fraglen), alloclen and pagedlen are
-computed as
+When multiple blkgs in the same blkcg are released concurrently,
+a use-after-free can occur. The race happens when one blkg's
+__blkcg_rstat_flush() removes another blkg's iostat entries via
+llist_del_all(). The second blkg sees an empty list and proceeds
+to free itself while the first is still iterating over its entries.
 
-	alloclen = fragheaderlen + transhdrlen;
-	pagedlen = datalen - transhdrlen;
+Move the flush from __blkg_release() (RCU callback) to blkg_release()
+(before call_rcu). This ensures the RCU grace period waits for any
+concurrent flush's rcu_read_lock() section to complete before freeing.
 
-datalen already includes fraggap (datalen = length + fraggap). When
-fraggap is non-zero, this is not the first skb and transhdrlen is zero.
-The fraggap bytes carried over from the previous skb are copied just past
-the fragment headers in the new skb's linear area. The linear area is
-therefore undersized by fraggap bytes while pagedlen is overstated by the
-same amount, and the copy writes past skb->end into the trailing
-skb_shared_info.
-
-An unprivileged user can trigger this via a UDPv6 socket using
-MSG_MORE together with MSG_SPLICE_PAGES.
-
-The bad accounting was introduced by commit 773ba4fe9104 ("ipv6:
-avoid partial copy for zc"). Before commit ce650a166335 ("udp6: Fix
-__ip6_append_data()'s handling of MSG_SPLICE_PAGES"), the negative
-copy value caused -EINVAL to be returned. That later commit allowed
-MSG_SPLICE_PAGES to proceed in this case, making the corruption
-triggerable.
-
-The non-paged branch sets alloclen to fraglen, which already accounts
-for fraggap because datalen does. Bring the paged branch in line by
-adding fraggap to alloclen and subtracting it from pagedlen.
-
-After this adjustment, copy no longer collapses to -fraggap on the
-paged path, so remove the stale comment describing that old arithmetic.
-Since a negative copy is no longer expected for a valid MSG_SPLICE_PAGES
-case, remove the MSG_SPLICE_PAGES exception from the negative copy check.
-
-Fixes: 773ba4fe9104 ("ipv6: avoid partial copy for zc")
-Signed-off-by: Jungwoo Lee <jwlee2217@gmail.com>
-Signed-off-by: Wongi Lee <qw3rtyp0@gmail.com>
-Reviewed-by: Ido Schimmel <idosch@nvidia.com>
-Link: https://patch.msgid.link/ajFTqRljatR17fFy@DESKTOP-19IMU7U.localdomain
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Cc: stable@vger.kernel.org
+Cc: Jay Shin <jaeshin@redhat.com>
+Cc: Tejun Heo <tj@kernel.org>
+Cc: Waiman Long <longman@redhat.com>
+Fixes: 20cb1c2fb756 ("blk-cgroup: Flush stats before releasing blkcg_gq")
+Reported-by: coregee2000@gmail.com
+Closes: https://lore.kernel.org/linux-block/CAHPqNmwT9oRpem3J3erS_W0uSQND47LGGSBsNxP8E6uSUish1w@mail.gmail.com/
+Signed-off-by: Ming Lei <ming.lei@redhat.com>
+Tested-by: Jose Fernandez (Anthropic) <jose.fernandez@linux.dev>
+Link: https://patch.msgid.link/20260205155425.342084-1-ming.lei@redhat.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv6/ip6_output.c |    9 +++------
- 1 file changed, 3 insertions(+), 6 deletions(-)
+ block/blk-cgroup.c |   21 +++++++++++----------
+ 1 file changed, 11 insertions(+), 10 deletions(-)
 
---- a/net/ipv6/ip6_output.c
-+++ b/net/ipv6/ip6_output.c
-@@ -1668,8 +1668,8 @@ alloc_new_skb:
- 				  !(rt->dst.dev->features & NETIF_F_SG)))
- 				alloclen = fraglen;
- 			else {
--				alloclen = fragheaderlen + transhdrlen;
--				pagedlen = datalen - transhdrlen;
-+				alloclen = fragheaderlen + transhdrlen + fraggap;
-+				pagedlen = datalen - transhdrlen - fraggap;
- 			}
- 			alloclen += alloc_extra;
+--- a/block/blk-cgroup.c
++++ b/block/blk-cgroup.c
+@@ -164,20 +164,10 @@ static void blkg_free(struct blkcg_gq *b
+ static void __blkg_release(struct rcu_head *rcu)
+ {
+ 	struct blkcg_gq *blkg = container_of(rcu, struct blkcg_gq, rcu_head);
+-	struct blkcg *blkcg = blkg->blkcg;
+-	int cpu;
  
-@@ -1684,10 +1684,7 @@ alloc_new_skb:
- 			fraglen = datalen + fragheaderlen;
+ #ifdef CONFIG_BLK_CGROUP_PUNT_BIO
+ 	WARN_ON(!bio_list_empty(&blkg->async_bios));
+ #endif
+-	/*
+-	 * Flush all the non-empty percpu lockless lists before releasing
+-	 * us, given these stat belongs to us.
+-	 *
+-	 * blkg_stat_lock is for serializing blkg stat update
+-	 */
+-	for_each_possible_cpu(cpu)
+-		__blkcg_rstat_flush(blkcg, cpu);
  
- 			copy = datalen - transhdrlen - fraggap - pagedlen;
--			/* [!] NOTE: copy may be negative if pagedlen>0
--			 * because then the equation may reduces to -fraggap.
--			 */
--			if (copy < 0 && !(flags & MSG_SPLICE_PAGES)) {
-+			if (copy < 0) {
- 				err = -EINVAL;
- 				goto error;
- 			}
+ 	/* release the blkcg and parent blkg refs this blkg has been holding */
+ 	css_put(&blkg->blkcg->css);
+@@ -195,6 +185,17 @@ static void __blkg_release(struct rcu_he
+ static void blkg_release(struct percpu_ref *ref)
+ {
+ 	struct blkcg_gq *blkg = container_of(ref, struct blkcg_gq, refcnt);
++	struct blkcg *blkcg = blkg->blkcg;
++	int cpu;
++
++	/*
++	 * Flush all the non-empty percpu lockless lists before releasing
++	 * us, given these stat belongs to us.
++	 *
++	 * blkg_stat_lock is for serializing blkg stat update
++	 */
++	for_each_possible_cpu(cpu)
++		__blkcg_rstat_flush(blkcg, cpu);
+ 
+ 	call_rcu(&blkg->rcu_head, __blkg_release);
+ }
 
 
 
