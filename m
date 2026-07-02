@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-270872-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-271099-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id T9PLC0ygRmrhaQsAu9opvQ
-	(envelope-from <stable+bounces-270872-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:30:52 +0200
+	id bvfqGSmYRmpEZgsAu9opvQ
+	(envelope-from <stable+bounces-271099-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:56:09 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB3906FB65C
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:30:51 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D4EF26FAC4C
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:56:08 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=tJr5e0dX;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-270872-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-270872-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=aiRCnvfL;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-271099-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-271099-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id EBA403214274
-	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:37:07 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 1D7263053D05
+	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:47:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1352233E348;
-	Thu,  2 Jul 2026 16:34:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CEE653A9619;
+	Thu,  2 Jul 2026 16:44:27 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC16130C146;
-	Thu,  2 Jul 2026 16:34:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B6D43AD530;
+	Thu,  2 Jul 2026 16:44:26 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783010070; cv=none; b=UafG7bbNVXVvWvN29huGWFrVp9pdOcPXKvsqiTNgjAFGBlDhf2bH2ISutD+DsG9fDoN3Xa0Dv9pSJzpED/awlm4Qgtm1/EZZp5mbgdOBS4NVfO/aEmtqrDgeHwSAAvx4m8uSSZllYHQAP/BCeDT51YxEmxAok0eqjCT0t1gRczU=
+	t=1783010667; cv=none; b=WD9wIKqm7K6HtcOecW59vHzCb6Oh+YtK525Ut4+CzHvjgao+AdOoPzFK3fvu5VO/NDp+OesmMQcqDP115iFCkZT+IeqGaACUN3/oZkeVOfPHkVDvQeSmcu/64yeZdoMYLiNmbQed+Hqwoczf9FCV0U+9rsjinZtufcY1FsWTFjY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783010070; c=relaxed/simple;
-	bh=gtpJKb+5Tt9S26PPrKuPBa//Ck3hhOc9mQUkd5n+3jM=;
+	s=arc-20240116; t=1783010667; c=relaxed/simple;
+	bh=u15qi7IDurJjC63LXdsXXWiiOfH7apCEUKfCA3Zhqhw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rJjLctEGGirjj5FrzUsnrbHWYJtGtMlYrsANgTmhT89jXEFc9gbOJBAL/IEN/ZZOkktO8o6UrlsH3XP9wb/s0GzQUVdm67x3yzr4Uic0cBHbhdVtqGdA2IjqHtxTQHJbvwSNLnhFm44hI9ujDxYYWxcLnS6bwlVeAmfVF9lkc+4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tJr5e0dX; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 377231F000E9;
-	Thu,  2 Jul 2026 16:34:29 +0000 (UTC)
+	 MIME-Version; b=Yo450hGQuF37QP8ReLswuDFXTOD7sr6lLAG5TXOVu8lFRRRo54wxhcdBU+gK/hx6AWBgzottec/DrDIQnoeSdVihI+IQZ/exL5dl49Ak0oim+wQ6vhahNvG0/ESmVce6jAxYc6J5SslF4bQXx4P9H/hloVwr7E443HG+2yNV8/I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aiRCnvfL; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C09FF1F000E9;
+	Thu,  2 Jul 2026 16:44:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1783010069;
-	bh=LPoXDF9d9HC6RMGG2VM3aA1GEmOcz4spkhQ/N59rXuk=;
+	s=korg; t=1783010666;
+	bh=dj8RXv3nU9Eh0vCPfnEzTCs5vqbE2xm1VFgXpggvmXk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=tJr5e0dXWLBSTGoWIeid2z/KQmniGC4TEvMCQvz4UUsBY7+Nht2hXSjW266+gXgh8
-	 QRbQYuPofx3KpCOsw5NMiMt2xW3qGBMbXvKY/ab0rxtZPyREJc1+Vi3r6DzPLGD7j0
-	 QRym+1DI5EaMOR66xeqnfAOHi/9Zr7nv/x9HnEbs=
+	b=aiRCnvfLgW1Ic6YEMYZqK2ZuH2/QdqCdzLxFaSBhBXn3AcOWe3NmdcUb0YjrIwhi0
+	 tr6mXy/2oBuwiVXeXkt8xYvIopSD1BPmHXS4oBT8540HjOnSO7KT6qB/Bo16L78gn3
+	 opmm/O1i33aHVypz3Nf7aye2nsi9B5ELUjHxks+Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Qingshuang Fu <fuqingshuang@kylinos.cn>,
-	Thomas Gleixner <tglx@kernel.org>
-Subject: [PATCH 6.1 097/129] irqchip/imgpdc: Fix resource leak, add missing chained handler cleanup on remove
+	Denis Arefev <arefev@swemel.ru>,
+	Christoph Hellwig <hch@lst.de>,
+	Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 6.12 159/204] block: Avoid mounting the bdev pseudo-filesystem in userspace
 Date: Thu,  2 Jul 2026 18:20:16 +0200
-Message-ID: <20260702155114.149694808@linuxfoundation.org>
+Message-ID: <20260702155121.989951145@linuxfoundation.org>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260702155112.163984240@linuxfoundation.org>
-References: <20260702155112.163984240@linuxfoundation.org>
+In-Reply-To: <20260702155118.667618796@linuxfoundation.org>
+References: <20260702155118.667618796@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,22 +72,22 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-270872-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-271099-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:arefev@swemel.ru,m:hch@lst.de,m:axboe@kernel.dk,s:lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:fuqingshuang@kylinos.cn,m:tglx@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
@@ -97,73 +98,85 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[lst.de:email,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,kernel.dk:email,linuxtesting.org:url,swemel.ru:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: AB3906FB65C
+X-Rspamd-Queue-Id: D4EF26FAC4C
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Qingshuang Fu <fuqingshuang@kylinos.cn>
+From: Denis Arefev <arefev@swemel.ru>
 
-commit 37738fdf2ab1e504d1c63ce5bc0aeb6452d8f057 upstream.
+commit f73aa66dffcb8e61e78f01b56163ec16a15d06d2 upstream.
 
-The driver allocates domain generic chips using
-irq_alloc_domain_generic_chips() during probe and sets up chained
-handlers using irq_set_chained_handler_and_data(). However, on driver
-removal, the generic chips are not freed and the chained handlers are
-not removed.
+The bdev pseudo-filesystem is an internal kernel filesystem with which
+userspace should not interfere. Unregister it so that userspace cannot
+even attempt to mount it.
 
-The generic chips remain on the global gc_list and may later be accessed by
-generic interrupt chip suspend, resume, or shutdown callbacks after the
-driver has been removed, potentially resulting in a use-after-free and
-kernel crash.
+This fixes a bug [1] that occurs when attempting to access files,
+because the system call move_mount() uses pointers declared in the
+inode_operations structure, which for the bdev pseudo-filesystem
+are always equal to 0. `inode->i_op = &empty_iops;`
 
-The chained handlers that were installed in probe for peripheral and
-syswake interrupts are also left dangling, which can lead to spurious
-interrupts accessing freed memory.
+[1]
 
-Fix these issues by:
+ BUG: kernel NULL pointer dereference, address: 0000000000000000
+ #PF: supervisor instruction fetch in kernel mode
+ #PF: error_code(0x0010) - not-present page
+ PGD 23380067 P4D 23380067 PUD 23381067 PMD 0
+ Oops: 0010 [#1] PREEMPT SMP KASAN NOPTI
+ CPU: 2 PID: 17125 Comm: syz-executor.0 Not tainted 6.1.155-syzkaller-00350-g84221fde2681 #0
+ Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.12.0-1 04/01/2014
+ RIP: 0010:0x0
 
-  - Setting IRQ_DOMAIN_FLAG_DESTROY_GC flag in domain->flags, so the
-    core code automatically removes generic chips when irq_domain_remove()
-    is called
+ Call Trace:
+ <TASK>
+ lookup_open.isra.0+0x700/0x1180 fs/namei.c:3460
+ open_last_lookups fs/namei.c:3550 [inline]
+ path_openat+0x953/0x2700 fs/namei.c:3780
+ do_filp_open+0x1c5/0x410 fs/namei.c:3810
+ do_sys_openat2+0x171/0x4d0 fs/open.c:1318
+ do_sys_open fs/open.c:1334 [inline]
+ __do_sys_openat fs/open.c:1350 [inline]
+ __se_sys_openat fs/open.c:1345 [inline]
+ __x64_sys_openat+0x13c/0x1f0 fs/open.c:1345
+ do_syscall_x64 arch/x86/entry/common.c:51 [inline]
+ do_syscall_64+0x35/0x80 arch/x86/entry/common.c:81
+ entry_SYSCALL_64_after_hwframe+0x6e/0xd8
 
-  - Clearing all chained handlers with NULL in pdc_intc_remove()
+Found by Linux Verification Center (linuxtesting.org) with Syzkaller.
 
-Fixes: b6ef9161e43a ("irq-imgpdc: add ImgTec PDC irqchip driver")
-Signed-off-by: Qingshuang Fu <fuqingshuang@kylinos.cn>
-Signed-off-by: Thomas Gleixner <tglx@kernel.org>
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Link: https://lore.kernel.org/all/20131010004732.GJ13318@ZenIV.linux.org.uk/T/#
 Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/20260618021352.661773-1-fffsqian@163.com
+Signed-off-by: Denis Arefev <arefev@swemel.ru>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Link: https://patch.msgid.link/20260521072857.5078-1-arefev@swemel.ru
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/irqchip/irq-imgpdc.c |    6 ++++++
- 1 file changed, 6 insertions(+)
+ block/bdev.c |    5 -----
+ 1 file changed, 5 deletions(-)
 
---- a/drivers/irqchip/irq-imgpdc.c
-+++ b/drivers/irqchip/irq-imgpdc.c
-@@ -378,6 +378,7 @@ static int pdc_intc_probe(struct platfor
- 		dev_err(&pdev->dev, "cannot add IRQ domain\n");
- 		return -ENOMEM;
- 	}
-+	priv->domain->flags |= IRQ_DOMAIN_FLAG_DESTROY_GC;
+--- a/block/bdev.c
++++ b/block/bdev.c
+@@ -414,15 +414,10 @@ EXPORT_SYMBOL_GPL(blockdev_superblock);
  
- 	/*
- 	 * Set up 2 generic irq chips with 2 chip types.
-@@ -465,6 +466,11 @@ static int pdc_intc_remove(struct platfo
+ void __init bdev_cache_init(void)
  {
- 	struct pdc_intc_priv *priv = platform_get_drvdata(pdev);
- 
-+	for (unsigned int i = 0; i < priv->nr_perips; ++i)
-+		irq_set_chained_handler_and_data(priv->perip_irqs[i], NULL, NULL);
-+
-+	irq_set_chained_handler_and_data(priv->syswake_irq, NULL, NULL);
-+
- 	irq_domain_remove(priv->domain);
- 	return 0;
- }
+-	int err;
+-
+ 	bdev_cachep = kmem_cache_create("bdev_cache", sizeof(struct bdev_inode),
+ 			0, (SLAB_HWCACHE_ALIGN|SLAB_RECLAIM_ACCOUNT|
+ 				SLAB_ACCOUNT|SLAB_PANIC),
+ 			init_once);
+-	err = register_filesystem(&bd_type);
+-	if (err)
+-		panic("Cannot register bdev pseudo-fs");
+ 	blockdev_mnt = kern_mount(&bd_type);
+ 	if (IS_ERR(blockdev_mnt))
+ 		panic("Cannot create bdev pseudo-fs");
 
 
 
