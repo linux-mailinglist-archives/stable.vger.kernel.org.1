@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-270707-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-270829-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id HL9UGJSSRmo5YwsAu9opvQ
-	(envelope-from <stable+bounces-270707-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:32:20 +0200
+	id AS08CU2XRmq2ZQsAu9opvQ
+	(envelope-from <stable+bounces-270829-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:52:29 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id E851B6FA39D
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:32:19 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 245376FAACF
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:52:28 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=YstgVPhF;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-270707-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-270707-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=Et1m1csO;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-270829-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-270829-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 09BB13015C20
-	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:32:10 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id A0770305813E
+	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:36:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC1FE4DD6FD;
-	Thu,  2 Jul 2026 16:27:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE02D39BFFA;
+	Thu,  2 Jul 2026 16:32:37 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F5FC39B979;
-	Thu,  2 Jul 2026 16:27:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7EDF4353A7D;
+	Thu,  2 Jul 2026 16:32:36 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783009641; cv=none; b=iT9o+dtQeKXZnB+yEj8WnQEG4pUiVCBTNeoK96as8FlGxval5+uoPhgDRfcPpzF69StTKDoWbr0MYXR4MnkGO/CT+xIauAfRMNmL4dXqwO8uocgWF4wVQsXfim49wlsCXSvJ8ttYSDEgAq2ACQnceQgYTS5QsdzjPF9QHIpje1s=
+	t=1783009957; cv=none; b=i2Oypn5ULgsu/JnV2yI8EZdVfEXgF0VaUfy385DZo1Jd6JG7sm1my009t0muWpomVkkoA9U9I78Q+Ez9YXh6lkWIA98w99nsfs7wrWcP8EzL7iRPCrAHkYfWuVz4X7gEs9ZUDI+t22ZI42fW9jyijxvDxAg5ocDg+TNrVumXAgs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783009641; c=relaxed/simple;
-	bh=gXFd/3ac2OOUc8UWMKW/XAMAKIMWzgV/WapfFYhBml8=;
+	s=arc-20240116; t=1783009957; c=relaxed/simple;
+	bh=0v2c9PBbKqMyN/lbLbbkVcoOs6pb1+9UFlx6swZVsFc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nznGykeiZiZLmN/huvbhOGhwIXdxR4RESd2uJ/lmFzdr6SBTtFWxQfSjsyeFIKo3LDcrsN6lFCUAWqoZMtr//YPEBXOdlGC1CZ4NtFYBVjA6yTjwAEyGGsBQuoxKDOCs48fm/20SUVn5Le0edX03JTFm7YY7+rs3D2EYq7y42CU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YstgVPhF; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 682C31F00A3A;
-	Thu,  2 Jul 2026 16:27:18 +0000 (UTC)
+	 MIME-Version; b=hIFneHnmnnVz9Q6Oti23ER0m5yoez6CIyMMd0remfwG5OBicMc2krWv1BjcOXRAfFljoLAiTmkPUuiWUnrnFrIjqeRrhlI3Oys698DOeqv1PXQ7/bzYZE3qs6wnGv0xo/CwO+5lCMNRo/kG+TBnArkib4mAx7K9yKHeHIK9ErHc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Et1m1csO; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E56981F00A3A;
+	Thu,  2 Jul 2026 16:32:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1783009638;
-	bh=HdwpBGIV7oocolMPOCvwpTxbuOXE/EVet3+ZRJgngms=;
+	s=korg; t=1783009956;
+	bh=Qjg9azYJYhRYTb7AO9vOiULLfwaxvjRi/8NnFJqPKbo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=YstgVPhFtgbOQCHvNoelefkLr7Shrcy2AAEYRS/ULI0SIrjEkpVks3Z2hX1LIejgg
-	 wV77wFs1+vuQqTn0xB2HkEUybwP4KlWvMnJilJF0DsX/Rh5vSBZKpx3OKRT2cSMM11
-	 iPxOhxRGEssQGwBpMtmtWesv1utYsmsX2V9AwpeY=
+	b=Et1m1csO9hxvl7iX2+kkhD/dEATSR7fMG+P2SfSlikV+vRNcuZ1mHmcYLUQRY2iv+
+	 UTiGQd/V6clLwXKRYqBJ3EfOIUZ7iQbnKk2mwEJPtIKJsPZKCVgHoog6c1iQnYKzCo
+	 JTn9C6Rq04psfoY8mlI3tQL1QZ8sdsvGrU2NJC0Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -50,12 +50,12 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	stable@kernel.org,
 	Sven Eckelmann <sven@narfation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 30/95] batman-adv: tp_meter: initialize dec_cwnd explicitly
+Subject: [PATCH 6.1 054/129] batman-adv: tp_meter: avoid divide-by-zero for dec_cwnd
 Date: Thu,  2 Jul 2026 18:19:33 +0200
-Message-ID: <20260702155109.842254079@linuxfoundation.org>
+Message-ID: <20260702155113.266419534@linuxfoundation.org>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260702155109.196223802@linuxfoundation.org>
-References: <20260702155109.196223802@linuxfoundation.org>
+In-Reply-To: <20260702155112.163984240@linuxfoundation.org>
+References: <20260702155112.163984240@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,21 +72,21 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-270707-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-270829-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:stable@kernel.org,m:sven@narfation.org,m:sashal@kernel.org,s:lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:stable@kernel.org,m:sven@narfation.org,m:sashal@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
@@ -98,46 +98,70 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,narfation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,narfation.org:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: E851B6FA39D
+X-Rspamd-Queue-Id: 245376FAACF
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
 From: Sven Eckelmann <sven@narfation.org>
 
-commit febfb1b86224489535312296ecfa3d4bf467f339 upstream.
+commit 33ccd52f3cc9ed46ce395199f89aa3234dc83314 upstream.
 
-When batadv_tp_update_cwnd() is called, dec_cwnd is increased. But dec_cwnd
-is only initialixed (to 0) when a duplicate Ack was received or when cwnd
-is below the ss_threshold.
+The cwnd is always MSS <= cwnd <= 0x20000000. But the calculation in
+batadv_tp_update_cwnd() assumes unsigned 32 bit arithmetics.
 
-Just initialize the cwnd during the initialization to avoid any potential
-access of uninitialized data.
+    ((mss * 8) ** 2) / (cwnd * 8)
+
+In case cwnd is actually 0x20000000, it will be shifted by 3 bit to the
+left end up at 0x100000000 or U32_MAX + 1. It will therefore wrap around
+and be 0 - resulting in:
+
+    ((mss * 8) ** 2) / 0
+
+This is of course invalid and cannot be calculated. The calculation should
+must be simplified to avoid this overflow:
+
+   (mss ** 2) * 8 / cwnd
+
+It will keep the precision enhancement from the scaling (by 8) but avoid
+the overflow in the divisor.
+
+In theory, there could still be an overflow in the dividend. It is at the
+moment fixed to BATADV_TP_PLEN in batadv_tp_recv_ack() - so it is not an
+imminent problem. But allowing it to use the whole u32 bit range, would
+mean that it can still use up to 67 bits. To keep this calculation safe for
+32 bit arithmetic, mss must never use more than floor((32 - 3) / 2) bits -
+or in other words: must never be larger than 16383.
 
 Cc: stable@kernel.org
 Fixes: 33a3bb4a3345 ("batman-adv: throughput meter implementation")
 Signed-off-by: Sven Eckelmann <sven@narfation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/batman-adv/tp_meter.c | 2 ++
- 1 file changed, 2 insertions(+)
+ net/batman-adv/tp_meter.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
 diff --git a/net/batman-adv/tp_meter.c b/net/batman-adv/tp_meter.c
-index 2b68eacd7bf51d..f7b0ce3f8e2aef 100644
+index 0fdcafca3aa02b..4ff80e4214ff0a 100644
 --- a/net/batman-adv/tp_meter.c
 +++ b/net/batman-adv/tp_meter.c
-@@ -1055,6 +1055,8 @@ void batadv_tp_start(struct batadv_priv *bat_priv, const u8 *dst,
- 	 * soft_interface, hence its MTU
- 	 */
- 	tp_vars->cwnd = BATADV_TP_PLEN * 3;
-+	tp_vars->dec_cwnd = 0;
+@@ -154,9 +154,12 @@ static void batadv_tp_update_cwnd(struct batadv_tp_vars *tp_vars, u32 mss)
+ 		return;
+ 	}
+ 
++	/* prevent overflow in (mss * mss) << 3 */
++	mss = min_t(u32, mss, (1U << 14) - 1);
 +
- 	/* at the beginning initialise the SS threshold to the biggest possible
- 	 * window size, hence the AWND size
- 	 */
+ 	/* increment CWND at least of 1 (section 3.1 of RFC5681) */
+ 	tp_vars->dec_cwnd += max_t(u32, 1U << 3,
+-				   ((mss * mss) << 6) / (tp_vars->cwnd << 3));
++				   ((mss * mss) << 3) / tp_vars->cwnd);
+ 	if (tp_vars->dec_cwnd < (mss << 3)) {
+ 		spin_unlock_bh(&tp_vars->cwnd_lock);
+ 		return;
 -- 
 2.53.0
 
