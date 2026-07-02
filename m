@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-271383-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-271494-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id WPhYJemaRmq5ZwsAu9opvQ
-	(envelope-from <stable+bounces-271383-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:07:53 +0200
+	id 2lBbGFabRmr9ZwsAu9opvQ
+	(envelope-from <stable+bounces-271494-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:09:42 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2A1126FB043
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:07:53 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 271DA6FB101
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:09:42 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=SzLn46FC;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-271383-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-271383-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=sbk13POG;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-271494-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-271494-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 49B1B33C0F78
-	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:56:52 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 3E2C33093F14
+	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 17:01:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 65CEA2FFF9D;
-	Thu,  2 Jul 2026 16:56:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC5422D0602;
+	Thu,  2 Jul 2026 17:01:29 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 381161C695;
-	Thu,  2 Jul 2026 16:56:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BF7C30499A;
+	Thu,  2 Jul 2026 17:01:28 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783011400; cv=none; b=foaX5f/xavEejE21l2OLoaOKgeX44WRGTVk54UdHCy7YkfezUBAAb67xvEp/vehsAnTuTxzEs3UQHl021PZZ/52n48HRF3lzU3mgdwwGIJk2EXC9/tfIWfIvm+6bPs/xsDNhkIKvpPIDi94JuiVU2lRIOJfU1iSJ4f255zhLccY=
+	t=1783011689; cv=none; b=Bk28fr0LDHxcnnOJdNnh3RLt94U19g5tHXPK5Ia33cE6MdKBkq4KpfoNeXmKUIAiH+oEr5rtrWhHwfrE9TQdjmO0q3V5/Lt2waJaSL1AUvtBTPw1zUJbSQ/JDbYo0GBJjI4LHpZ9DyfN+R97AhtA2odKL75rxNDBWAKFRSM3EK4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783011400; c=relaxed/simple;
-	bh=VUT3FeGom1hfMRPPcvGfH9EgtBfblNaO5JVAW9E0Rr4=;
+	s=arc-20240116; t=1783011689; c=relaxed/simple;
+	bh=kfGcO3p2gLGBQsKZT8LI7FTtGajVVhnLWOnBPZxVANQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qiPgzmFmCL1Yo3jW+LXgkzNuZk6jstuSEYnQ5j7HR1e3X383l8Eypt5RH5Z/uexWeIG6cnE72dlkg49i5TT+4pJGEvEosnrwimixtjmEKiRDhn9HAc+qO0CmpmifDP9AaAeRBNuAUuD5NLXld78yDoaXf0xYtPirHWd5AwoGjjg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SzLn46FC; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9FDFB1F000E9;
-	Thu,  2 Jul 2026 16:56:38 +0000 (UTC)
+	 MIME-Version; b=QJBspxeLpJ2zimcHwkEsdefwEX0ti4eBwJms71Mg+RdKtdEom3zWpwcCxin3AopRev7Q3KubrOu8qItQrvNTGMRng8SYERbwW8murp0NMxsm/IO967eADaH3e4dcMeHqbOh19Jfw90ow6189AfSoNzZyq24gW8Ko4svjnaxol84=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sbk13POG; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF3511F000E9;
+	Thu,  2 Jul 2026 17:01:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1783011399;
-	bh=RM25/WussVk1zgL2ffWj3jC2LXxni2281Bzyoct8YG0=;
+	s=korg; t=1783011688;
+	bh=RHaig3KPQvGV7LRGJAyaBhP7m/t9y85QRj0mY4hUQsc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=SzLn46FC+cGniFHJvL9wfZL40TyqbDxGQJgM5KtkH5vhtVSv4k342+7PAFK4xfVib
-	 mzQTy+r8f2hKlnbMcGG9xY6f9Fgs+pOXNxqpuOcQ8JCdczwKEE0a29GTYTCgNt9zWD
-	 P2aBJTsOanjMV7YssqpirWpU2VhDfHYMyENZB0rQ=
+	b=sbk13POGWUo9+Y/1CDHAuQAFkoXu6RendWiCmo6PKCQ9nbDpJa9PC33TrfWg89HuP
+	 1ZG3/JstmWcQOEmoYhSPPZcTcNqFpNYE0sSXEN25jxCAKqSP1jHzKPhF/FomUlX7Vk
+	 srJMkJFhInHQuvLEwljjJe6DF+dhM6MpQ6a9/b8M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tuo Li <islituo@gmail.com>,
-	Helge Deller <deller@gmx.de>
-Subject: [PATCH 6.18 092/108] fbdev: modedb: fix a possible UAF in fb_find_mode()
+	Jonas Jelonek <jelonek.jonas@gmail.com>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Subject: [PATCH 7.1 093/120] MIPS: smp: report dying CPU to RCU in stop_this_cpu()
 Date: Thu,  2 Jul 2026 18:21:29 +0200
-Message-ID: <20260702155114.015356197@linuxfoundation.org>
+Message-ID: <20260702155114.884020767@linuxfoundation.org>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260702155112.110058792@linuxfoundation.org>
-References: <20260702155112.110058792@linuxfoundation.org>
+In-Reply-To: <20260702155112.964534952@linuxfoundation.org>
+References: <20260702155112.964534952@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,27 +66,28 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-271383-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:islituo@gmail.com,m:deller@gmx.de,s:lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,gmx.de];
+	TAGGED_FROM(0.00)[bounces-271494-lists,stable=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:jelonek.jonas@gmail.com,m:tsbogend@alpha.franken.de,m:jelonekjonas@gmail.com,s:lists@lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,alpha.franken.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
@@ -94,74 +95,84 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp,gmx.de:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[franken.de:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 2A1126FB043
+X-Rspamd-Queue-Id: 271DA6FB101
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tuo Li <islituo@gmail.com>
+From: Jonas Jelonek <jelonek.jonas@gmail.com>
 
-commit 85b6256469cebdac395e7447147e06b2e151014f upstream.
+commit 9f3f3bdc6d9dac1a5a8262ee7ad0f2ff1527a7e7 upstream.
 
-If mode_option is NULL, it is assigned from mode_option_buf:
+smp_send_stop() parks all secondary CPUs in stop_this_cpu(). The function
+marks the CPU offline for the scheduler via set_cpu_online(false) but
+never informs RCU, so RCU keeps expecting a quiescent state from CPUs
+that are now spinning forever with interrupts disabled.
 
-  if (!mode_option) {
-    fb_get_options(NULL, &mode_option_buf);
-    mode_option = mode_option_buf;
-  }
+As long as nothing waits for an RCU grace period after smp_send_stop()
+this is harmless, which is why it went unnoticed. Since commit
+91840be8f710 ("irq_work: Fix use-after-free in irq_work_single() on PREEMPT_RT")
+however, irq_work_sync() calls synchronize_rcu() on architectures without
+an irq_work self-IPI, i.e. where arch_irq_work_has_interrupt() returns
+false. That is the asm-generic default used by MIPS. Any irq_work_sync()
+issued in the reboot/shutdown path after smp_send_stop() then blocks on
+a grace period that can never complete, hanging the reboot:
 
-Later, name is assigned from mode_option:
+  WARNING: CPU: 0 PID: 15 at kernel/irq_work.c:144 irq_work_queue_on
+  ...
+  rcu: INFO: rcu_sched detected stalls on CPUs/tasks:
+  rcu: Offline CPU 1 blocking current GP.
+  rcu: Offline CPU 2 blocking current GP.
+  rcu: Offline CPU 3 blocking current GP.
 
-  const char *name = mode_option;
+This issue was noticed on several Realtek MIPS switch SoCs (MIPS
+interAptiv) and came up during kernel bump downstream in OpenWrt from
+6.18.33 to 6.18.34, after the backport of the patch to the 6.18 stable
+branch. The patch also has been backported all the way back to 6.1.
 
-However, mode_option_buf is freed before name is no longer used:
+Call rcutree_report_cpu_dead() once interrupts are disabled, mirroring the
+generic CPU-hotplug offline path, so RCU stops waiting on the parked CPUs
+and grace periods can still complete. MIPS shuts down all CPUs here
+without going through the CPU-hotplug mechanism, so this report is not
+otherwise issued. Reporting a dying CPU to RCU outside the regular hotplug
+offline path is not unprecedented: arm64 does the same in cpu_die_early().
+There it is an exception for a CPU that was coming online and is aborting
+bringup, rather than the default shutdown action as on MIPS.
 
-  kfree(mode_option_buf);
-
-while name is still accessed by:
-
-  if ((name_matches(db[i], name, namelen) ||
-
-Since name aliases mode_option_buf, this may result in a
-use-after-free.
-
-Fix this by extending the lifetime of mode_option_buf until the end of the
-function by using scope-based resource management for cleanup.
-
-Signed-off-by: Tuo Li <islituo@gmail.com>
-Cc: stable@vger.kernel.org # v6.5+
-Signed-off-by: Helge Deller <deller@gmx.de>
+Fixes: 91840be8f710 ("irq_work: Fix use-after-free in irq_work_single() on PREEMPT_RT")
+CC: stable@vger.kernel.org
+Signed-off-by: Jonas Jelonek <jelonek.jonas@gmail.com>
+Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/video/fbdev/core/modedb.c |    3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ arch/mips/kernel/smp.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/video/fbdev/core/modedb.c
-+++ b/drivers/video/fbdev/core/modedb.c
-@@ -626,7 +626,7 @@ int fb_find_mode(struct fb_var_screeninf
- 		 const struct fb_videomode *default_mode,
- 		 unsigned int default_bpp)
- {
--	char *mode_option_buf = NULL;
-+	char *mode_option_buf __free(kfree) = NULL;
- 	int i;
+--- a/arch/mips/kernel/smp.c
++++ b/arch/mips/kernel/smp.c
+@@ -20,6 +20,7 @@
+ #include <linux/sched/mm.h>
+ #include <linux/cpumask.h>
+ #include <linux/cpu.h>
++#include <linux/rcupdate.h>
+ #include <linux/err.h>
+ #include <linux/ftrace.h>
+ #include <linux/irqdomain.h>
+@@ -422,6 +423,7 @@ static void stop_this_cpu(void *dummy)
+ 	set_cpu_online(smp_processor_id(), false);
+ 	calculate_cpu_foreign_map();
+ 	local_irq_disable();
++	rcutree_report_cpu_dead();
+ 	while (1);
+ }
  
- 	/* Set up defaults */
-@@ -724,7 +724,6 @@ int fb_find_mode(struct fb_var_screeninf
- 			res_specified = 1;
- 		}
- done:
--		kfree(mode_option_buf);
- 		if (cvt) {
- 			struct fb_videomode cvt_mode;
- 			int ret;
 
 
 
