@@ -1,61 +1,65 @@
-Return-Path: <stable+bounces-271285-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-271367-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id tP96GIeZRmr0ZgsAu9opvQ
-	(envelope-from <stable+bounces-271285-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:01:59 +0200
+	id XW/BI6qlRmrIawsAu9opvQ
+	(envelope-from <stable+bounces-271367-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:53:46 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B46B56FAE09
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:01:58 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B6C006FBB1D
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:53:45 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=lwHozzjo;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-271285-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-271285-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=mroWlKUa;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-271367-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-271367-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 3D36730A3A22
-	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:53:21 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B40CB3298201
+	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:55:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5BECC318EC1;
-	Thu,  2 Jul 2026 16:52:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6AD1526F46F;
+	Thu,  2 Jul 2026 16:55:58 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BA2030C141;
-	Thu,  2 Jul 2026 16:52:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FB251C695;
+	Thu,  2 Jul 2026 16:55:57 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783011148; cv=none; b=G52LchjNQkTlzWuGj0b5xmPa5JrWt8O4aMu1ru/S0KHGGWz8VNBnb1NAjhHaFOcOh0wPcHJY0eK7Miu20mqXF7AuLPVb7/+zknU67HjyuGqKD4f0QCiKPof00IX8gm3g3AinIBC1Su8UcTUgHDG8S+mot6SXlxuYjK4qtc6EncU=
+	t=1783011358; cv=none; b=GIMIxrJSbYL9mqGDNeFYV9hR4uJFV/INuPDaxCTmQhgtEVxxf9G/x2y1L/CYeEoccjTtLsAeYkpvQcY1CKZyTXqtJDwVzwcTiJGuPfBoGy5ucZHH6vBkzS8sPzRxhc77OhbzfQdD+qonCnZ9Fr+o5yU+2p0EKTv5WM5KlYwKSb8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783011148; c=relaxed/simple;
-	bh=3yOqxkb9GmmWgxkVPNIKhufMZ7tw1qGFclI6Ue4600Y=;
+	s=arc-20240116; t=1783011358; c=relaxed/simple;
+	bh=PX21BupwuebTTbRrNoLrjHK7CJccT56U8H7BzJTV8DU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JL0wvQJnxNfjMel4hilZ1mCh/5NHJcQgIJcdBw9QIgeMwgAB0S2ioTR6MaVaFuPvge4tf4yWvq2Un8s4KcfdXnuPp0MOpiUQJdqSaXTwbfwMbLAjsp9O9x9nKPjP2W9tFjfH6w3BlB0jCOgmP+gJuVYE3BYcQQKJBNWzIiQcPPs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lwHozzjo; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8BE031F00A3A;
-	Thu,  2 Jul 2026 16:52:26 +0000 (UTC)
+	 MIME-Version:Content-Type; b=a3WURtV8mLGCLpnaT62lTcCaF6MUYA7KlE9zN3BO4oDCkQdsPf8wh9oGgUxbrWfAU4xQAMSvJfga4XLRPb7z9KHePVAlzcHwjsWIPPWdMmG2+SW+UElv/Ek5H+Mk6YXOaOTxpth5jxl2SITbMLWrEpbXaf+7RQgj2REQpq/297U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mroWlKUa; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D0741F000E9;
+	Thu,  2 Jul 2026 16:55:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1783011147;
-	bh=wrN6XOzJv5HVZKSEs0ZYe+DYoBGcwutoPblbCH5gLtQ=;
+	s=korg; t=1783011357;
+	bh=PDei/COzb45h5sClDzU5gZsPWtKGDWhbCqO4H6mKSF0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=lwHozzjok+IhF+ilYcwG4WPCcdON23v7Dkmw8+OC7SZRTCScKyjAsH30VOSRLbUgR
-	 Iiq+Ea0W5Ulhkse4Bq1ElDw9OwRJoA8oXfXo4OggxMoKulTBrouWlPvuvPtuqMuLqR
-	 EMgfodq25Qs0qK2fo+ITtLaRG+FMQC//EPeDm6tQ=
+	b=mroWlKUac19Jjyuf/foeoqhi2RGWXK9KPi4sartPL+dCzuJF3SRX4UKVR/KHvlRMs
+	 maPYxA+4sLSS/rN7pzkFRPFCuQRek+kKLYyttXnUaqy6TWlsUQlCBJ+0tjTXd9Ab/g
+	 00dz5JjnuDs+eB0iGj/b9IchEJSo2jM+zZR/jKvw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thorsten Blum <thorsten.blum@linux.dev>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 173/175] crypto: qat - Replace kzalloc() + copy_from_user() with memdup_user()
+	Jay Shin <jaeshin@redhat.com>,
+	Tejun Heo <tj@kernel.org>,
+	Waiman Long <longman@redhat.com>,
+	coregee2000@gmail.com,
+	Ming Lei <ming.lei@redhat.com>,
+	"Jose Fernandez (Anthropic)" <jose.fernandez@linux.dev>,
+	Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 6.18 077/108] blk-cgroup: fix UAF in __blkcg_rstat_flush()
 Date: Thu,  2 Jul 2026 18:21:14 +0200
-Message-ID: <20260702155119.427120162@linuxfoundation.org>
+Message-ID: <20260702155113.708347927@linuxfoundation.org>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260702155115.766838875@linuxfoundation.org>
-References: <20260702155115.766838875@linuxfoundation.org>
+In-Reply-To: <20260702155112.110058792@linuxfoundation.org>
+References: <20260702155112.110058792@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,93 +69,119 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-271285-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:thorsten.blum@linux.dev,m:herbert@gondor.apana.org.au,m:sashal@kernel.org,s:lists@lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,redhat.com,kernel.org,gmail.com,linux.dev,kernel.dk];
+	TAGGED_FROM(0.00)[bounces-271367-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:jaeshin@redhat.com,m:tj@kernel.org,m:longman@redhat.com,m:coregee2000@gmail.com,m:ming.lei@redhat.com,m:jose.fernandez@linux.dev,m:axboe@kernel.dk,s:lists@lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[10];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,linux.dev:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,apana.org.au:email]
+	MID_RHS_MATCH_FROM(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,linux.dev:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,kernel.dk:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: B46B56FAE09
+X-Rspamd-Queue-Id: B6C006FBB1D
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thorsten Blum <thorsten.blum@linux.dev>
+From: Michal Koutný <mkoutny@suse.com>
 
-[ Upstream commit 1e26339703e2afd397037defa798682b2b93dcc0 ]
+commit 0ab5ee5a1badb58cbb2242617cb01a4972b1f2a2 upstream.
 
-Replace kzalloc() followed by copy_from_user() with memdup_user() to
-improve and simplify adf_ctl_alloc_resources(). memdup_user() returns
-either -ENOMEM or -EFAULT (instead of -EIO) if an error occurs.
+When multiple blkgs in the same blkcg are released concurrently,
+a use-after-free can occur. The race happens when one blkg's
+__blkcg_rstat_flush() removes another blkg's iostat entries via
+llist_del_all(). The second blkg sees an empty list and proceeds
+to free itself while the first is still iterating over its entries.
 
-Remove the unnecessary device id initialization, since memdup_user()
-(like copy_from_user()) immediately overwrites it.
+Move the flush from __blkg_release() (RCU callback) to blkg_release()
+(before call_rcu). This ensures the RCU grace period waits for any
+concurrent flush's rcu_read_lock() section to complete before freeing.
 
-No functional changes intended other than returning the more idiomatic
-error code -EFAULT.
-
-Signed-off-by: Thorsten Blum <thorsten.blum@linux.dev>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
-Stable-dep-of: d237230728c5 ("crypto: qat - remove unused character device and IOCTLs")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Cc: Jay Shin <jaeshin@redhat.com>
+Cc: Tejun Heo <tj@kernel.org>
+Cc: Waiman Long <longman@redhat.com>
+Fixes: 20cb1c2fb756 ("blk-cgroup: Flush stats before releasing blkcg_gq")
+Reported-by: coregee2000@gmail.com
+Closes: https://lore.kernel.org/linux-block/CAHPqNmwT9oRpem3J3erS_W0uSQND47LGGSBsNxP8E6uSUish1w@mail.gmail.com/
+Signed-off-by: Ming Lei <ming.lei@redhat.com>
+Tested-by: Jose Fernandez (Anthropic) <jose.fernandez@linux.dev>
+Link: https://patch.msgid.link/20260205155425.342084-1-ming.lei@redhat.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/crypto/intel/qat/qat_common/adf_ctl_drv.c |   13 +++----------
- 1 file changed, 3 insertions(+), 10 deletions(-)
+ block/blk-cgroup.c |   21 +++++++++++----------
+ 1 file changed, 11 insertions(+), 10 deletions(-)
 
---- a/drivers/crypto/intel/qat/qat_common/adf_ctl_drv.c
-+++ b/drivers/crypto/intel/qat/qat_common/adf_ctl_drv.c
-@@ -91,17 +91,10 @@ static int adf_ctl_alloc_resources(struc
+--- a/block/blk-cgroup.c
++++ b/block/blk-cgroup.c
+@@ -164,20 +164,10 @@ static void blkg_free(struct blkcg_gq *b
+ static void __blkg_release(struct rcu_head *rcu)
  {
- 	struct adf_user_cfg_ctl_data *cfg_data;
+ 	struct blkcg_gq *blkg = container_of(rcu, struct blkcg_gq, rcu_head);
+-	struct blkcg *blkcg = blkg->blkcg;
+-	int cpu;
  
--	cfg_data = kzalloc(sizeof(*cfg_data), GFP_KERNEL);
--	if (!cfg_data)
--		return -ENOMEM;
--
--	/* Initialize device id to NO DEVICE as 0 is a valid device id */
--	cfg_data->device_id = ADF_CFG_NO_DEVICE;
--
--	if (copy_from_user(cfg_data, (void __user *)arg, sizeof(*cfg_data))) {
-+	cfg_data = memdup_user((void __user *)arg, sizeof(*cfg_data));
-+	if (IS_ERR(cfg_data)) {
- 		pr_err("QAT: failed to copy from user cfg_data.\n");
--		kfree(cfg_data);
--		return -EIO;
-+		return PTR_ERR(cfg_data);
- 	}
+ #ifdef CONFIG_BLK_CGROUP_PUNT_BIO
+ 	WARN_ON(!bio_list_empty(&blkg->async_bios));
+ #endif
+-	/*
+-	 * Flush all the non-empty percpu lockless lists before releasing
+-	 * us, given these stat belongs to us.
+-	 *
+-	 * blkg_stat_lock is for serializing blkg stat update
+-	 */
+-	for_each_possible_cpu(cpu)
+-		__blkcg_rstat_flush(blkcg, cpu);
  
- 	*ctl_data = cfg_data;
+ 	/* release the blkcg and parent blkg refs this blkg has been holding */
+ 	css_put(&blkg->blkcg->css);
+@@ -195,6 +185,17 @@ static void __blkg_release(struct rcu_he
+ static void blkg_release(struct percpu_ref *ref)
+ {
+ 	struct blkcg_gq *blkg = container_of(ref, struct blkcg_gq, refcnt);
++	struct blkcg *blkcg = blkg->blkcg;
++	int cpu;
++
++	/*
++	 * Flush all the non-empty percpu lockless lists before releasing
++	 * us, given these stat belongs to us.
++	 *
++	 * blkg_stat_lock is for serializing blkg stat update
++	 */
++	for_each_possible_cpu(cpu)
++		__blkcg_rstat_flush(blkcg, cpu);
+ 
+ 	call_rcu(&blkg->rcu_head, __blkg_release);
+ }
 
 
 
