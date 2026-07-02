@@ -1,61 +1,61 @@
-Return-Path: <stable+bounces-270770-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-270638-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id q6J8HXqWRmpAZQsAu9opvQ
-	(envelope-from <stable+bounces-270770-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:48:58 +0200
+	id 8VddMZ6fRmqhaQsAu9opvQ
+	(envelope-from <stable+bounces-270638-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:27:58 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 76AD56FA987
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:48:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BEEF36FB5B4
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:27:57 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=nZb0IygZ;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-270770-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-270770-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=BYGeSdXd;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-270638-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-270638-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 5CCFC3044A0B
-	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:33:51 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 05507309D9F4
+	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:30:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D69733BBD7;
-	Thu,  2 Jul 2026 16:30:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 020EA3955D7;
+	Thu,  2 Jul 2026 16:24:24 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B60723A9628;
-	Thu,  2 Jul 2026 16:30:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F5CE33E344;
+	Thu,  2 Jul 2026 16:24:20 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783009806; cv=none; b=AaS8WVMsMGYJb3v9z9ZPFIPUITRJEDMCPWEChiLhHF37/Zb6YkSKTu+LuPC19HuWX9oycmIKsbvCdR4nWJfy7VDPeJPmMOKuDCbmVVPWGnm4oDRX9O6LoNBfZv1zBn59+Ftgkdn/AAaIqVHe7rA1X78i1rTAmPiFfedf3Xiv9UE=
+	t=1783009463; cv=none; b=O5D6hx1mXilnkcpjPj1VcNPWP82dgZjPz3dZ+UAEFHcoKR5JqLoosnKNeDAiPEmrVjPLhVMLpP1jp9S7IPCe599kPKdGBV6GpHfh5C1uO9XKJqj8pG5uhHZDNVYFmc4o2qp6PkqgFrdBfjTt6bqKJl1Wc2n97CCn7aK6AaCEmJA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783009806; c=relaxed/simple;
-	bh=+PDesukn8JjrRH92Uh+AqTkY2YTv+r5cM5M1vHM7xC8=;
+	s=arc-20240116; t=1783009463; c=relaxed/simple;
+	bh=9iOEFO89MgMnJj7ViYrsG7ZFg1svQePWyX39ZlEQouk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qMwfPw+aQLZGW6dTVGowazMjTxOscRUcVjvbuTIygdg1jd4mrTm3kEShuYaUlB+d3dU3zfvcEmG0MY+j8IEsti8VGzF8NB0z7wXsbNIN8OkoGdADoFmTCGS+FpgrgCu3hNgjSE35/gU6XBd+YlX/KSf1Q9CZ9mEdYuQ6YwSxkxg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nZb0IygZ; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 160E91F000E9;
-	Thu,  2 Jul 2026 16:30:03 +0000 (UTC)
+	 MIME-Version; b=H+eMaJrFHal98uoB2xjhJX7NrYbi+AnZY83e8hG/86ZMEHz6iu6t6i9RQxc0k1vk6v0LHUgBk4u5Vv7MdiVEh7jMvIyWjk3A0ZU1yacEsomd1Ozqp/G8JJxIcSY6yLKnZEt5fW0PLc45vLCFcPdakQE+lwsvYhS5zCRy7v2N/QI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BYGeSdXd; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 013781F00A3A;
+	Thu,  2 Jul 2026 16:24:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1783009804;
-	bh=d0aQ6hXmRxqL0M0eebFYLDYyfDo2X/QjJpoQUcBABPE=;
+	s=korg; t=1783009460;
+	bh=faq3ooaN0nnlYK6T+wtPKOqdrxaMMuE7d2jtZa/Kg5s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=nZb0IygZjh2pxmxhZKpsOeTOe0D9Ip4MquK0bglkGPCcrAspOQYMF8ucu9z8fb2fz
-	 cw43kKGBLn9ytfT2R2R7vk3Kp0U4Q5KHvG58nWOcgRnujMU72GLzpn6msKuwvPRir5
-	 cWUGZPHRunbHEoJQaURJoWRiITYdifC+An4eOfYE=
+	b=BYGeSdXd4GSlB1Ub7l8SSTOb2exGbKPBs3diXqlDfEJrL/FfFkL+nCgPy/RgraBLA
+	 xi3HFN3EmDSXarXxjVX1aqKb/IzbdUdGaGUqTDDZaO5/LSCjCYF5ZjJzbfJLWS3KaX
+	 UyFwzKSSECkys3ZER5KsGz78rpKcIuyCeyq1aiPA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Sven Eckelmann <sven@narfation.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 50/95] batman-adv: dat: prevent false sharing between VLANs
+	Doruk Tan Ozturk <doruk@0sec.ai>,
+	Alexander Lobakin <aleksander.lobakin@intel.com>,
+	Stefan Schmidt <stefan@datenfreihafen.org>
+Subject: [PATCH 5.10 61/96] mac802154: llsec: add skb_cow_data() before in-place crypto
 Date: Thu,  2 Jul 2026 18:19:53 +0200
-Message-ID: <20260702155110.261300527@linuxfoundation.org>
+Message-ID: <20260702155110.264870584@linuxfoundation.org>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260702155109.196223802@linuxfoundation.org>
-References: <20260702155109.196223802@linuxfoundation.org>
+In-Reply-To: <20260702155108.949633242@linuxfoundation.org>
+References: <20260702155108.949633242@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -77,12 +77,12 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-270770-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-270638-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:stable@kernel.org,m:sven@narfation.org,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:doruk@0sec.ai,m:aleksander.lobakin@intel.com,m:stefan@datenfreihafen.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
@@ -98,66 +98,107 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,vger.kernel.org:from_smtp,narfation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,intel.com:email,vger.kernel.org:from_smtp,0sec.ai:url,0sec.ai:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 76AD56FA987
+X-Rspamd-Queue-Id: BEEF36FB5B4
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sven Eckelmann <sven@narfation.org>
+From: Doruk Tan Ozturk <doruk@0sec.ai>
 
-commit 20d7658b74169f86d4ac01b9185b3eadddf71f28 upstream.
+commit 84a04eb5b210643bd67aab81ff805d32f62aa865 upstream.
 
-The local hash of DAT entries is supposed to be VLAN (VID) aware. But
-the adding to the hash and the search in the hash were not checking the VID
-information of the hash entries. The entries would therefore only be
-correctly separated when batadv_hash_dat() didn't select the same buckets
-for different VIDs.
+llsec_do_encrypt_unauth(), llsec_do_encrypt_auth(),
+llsec_do_decrypt_unauth(), and llsec_do_decrypt_auth() all perform
+in-place cryptographic transformations on skb data.  They build a
+scatterlist with sg_init_one() pointing into the skb's linear data area
+and then pass the same scatterlist as both src and dst to the crypto API
+(e.g. crypto_skcipher_encrypt/decrypt, crypto_aead_encrypt/decrypt).
 
-Cc: stable@kernel.org
-Fixes: be1db4f6615b ("batman-adv: make the Distributed ARP Table vlan aware")
-Signed-off-by: Sven Eckelmann <sven@narfation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+On the RX path, __ieee802154_rx_handle_packet() clones the received skb
+before handing it to each subscriber via ieee802154_subif_frame().  The
+cloned skb shares the same underlying data buffer via reference
+counting.  When llsec_do_decrypt() subsequently modifies this shared
+buffer in place, it corrupts data that other clones -- potentially
+belonging to other sockets or subsystems -- still reference.
+
+On the TX path, similar data sharing can occur when an skb's head has
+been cloned (skb_cloned() returns true).
+
+The fix is to call skb_cow_data() before performing any in-place crypto
+operation.  skb_cow_data() ensures that the skb's data area is not
+shared: if the skb head is cloned or the data spans multiple fragments,
+it copies the data into a private buffer that can be safely modified in
+place.  This is the same pattern used by:
+
+  - ESP (net/ipv4/esp4.c, net/ipv6/esp6.c)
+  - MACsec (drivers/net/macsec.c)
+  - WireGuard (drivers/net/wireguard/receive.c)
+  - TIPC (net/tipc/crypto.c)
+
+Without this guard, in-place crypto on shared skb data leads to:
+  - Silent data corruption of other skb clones
+  - Use-after-free when the crypto API scatterwalk writes through a
+    page that has already been freed by another clone's kfree_skb()
+  - Kernel crashes under concurrent 802.15.4 traffic with security
+    enabled (KASAN/KMSAN reports slab-use-after-free)
+
+Found by 0sec (https://0sec.ai) using automated source analysis.
+
+Fixes: 4c14a2fb5d14 ("mac802154: add llsec decryption method")
+Fixes: 03556e4d0dbb ("mac802154: add llsec encryption method")
+Cc: stable@vger.kernel.org
+Reported-by: Doruk Tan Ozturk <doruk@0sec.ai>
+Closes: https://lore.kernel.org/linux-wpan/20260525161806.96158-1-doruk@0sec.ai/
+Reviewed-by: Alexander Lobakin <aleksander.lobakin@intel.com>
+Signed-off-by: Doruk Tan Ozturk <doruk@0sec.ai>
+Closes: <link to your mail on lore>
+Link: https://lore.kernel.org/20260526183726.56100-1-doruk@0sec.ai
+Signed-off-by: Stefan Schmidt <stefan@datenfreihafen.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/batman-adv/distributed-arp-table.c | 12 +++++++++---
- 1 file changed, 9 insertions(+), 3 deletions(-)
+ net/mac802154/llsec.c |   14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
 
-diff --git a/net/batman-adv/distributed-arp-table.c b/net/batman-adv/distributed-arp-table.c
-index 9f561ea95f730d..b8d471dae2888c 100644
---- a/net/batman-adv/distributed-arp-table.c
-+++ b/net/batman-adv/distributed-arp-table.c
-@@ -215,10 +215,13 @@ static void batadv_dat_purge(struct work_struct *work)
-  */
- static bool batadv_compare_dat(const struct hlist_node *node, const void *data2)
+--- a/net/mac802154/llsec.c
++++ b/net/mac802154/llsec.c
+@@ -710,6 +710,7 @@ int mac802154_llsec_encrypt(struct mac80
  {
--	const void *data1 = container_of(node, struct batadv_dat_entry,
--					 hash_entry);
-+	const struct batadv_dat_entry *entry1;
-+	const struct batadv_dat_entry *entry2;
+ 	struct ieee802154_hdr hdr;
+ 	int rc, authlen, hlen;
++	struct sk_buff *trailer;
+ 	struct mac802154_llsec_key *key;
+ 	u32 frame_ctr;
  
--	return memcmp(data1, data2, sizeof(__be32)) == 0;
-+	entry1 = container_of(node, struct batadv_dat_entry, hash_entry);
-+	entry2 = data2;
+@@ -766,6 +767,12 @@ int mac802154_llsec_encrypt(struct mac80
+ 	skb->mac_len = ieee802154_hdr_push(skb, &hdr);
+ 	skb_reset_mac_header(skb);
+ 
++	rc = skb_cow_data(skb, 0, &trailer);
++	if (rc < 0) {
++		llsec_key_put(key);
++		return rc;
++	}
 +
-+	return entry1->ip == entry2->ip && entry1->vid == entry2->vid;
- }
+ 	rc = llsec_do_encrypt(skb, sec, &hdr, key);
+ 	llsec_key_put(key);
  
- /**
-@@ -345,6 +348,9 @@ batadv_dat_entry_hash_find(struct batadv_priv *bat_priv, __be32 ip,
- 		if (dat_entry->ip != ip)
- 			continue;
- 
-+		if (dat_entry->vid != vid)
-+			continue;
+@@ -905,6 +912,13 @@ llsec_do_decrypt(struct sk_buff *skb, co
+ 		 const struct ieee802154_hdr *hdr,
+ 		 struct mac802154_llsec_key *key, __le64 dev_addr)
+ {
++	struct sk_buff *trailer;
++	int err;
 +
- 		if (!kref_get_unless_zero(&dat_entry->refcount))
- 			continue;
- 
--- 
-2.53.0
-
++	err = skb_cow_data(skb, 0, &trailer);
++	if (err < 0)
++		return err;
++
+ 	if (hdr->sec.level == IEEE802154_SCF_SECLEVEL_ENC)
+ 		return llsec_do_decrypt_unauth(skb, sec, hdr, key, dev_addr);
+ 	else
 
 
 
