@@ -1,180 +1,169 @@
-Return-Path: <stable+bounces-270399-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-270401-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id e7j/OplLRmr0NwsAu9opvQ
-	(envelope-from <stable+bounces-270399-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 13:29:29 +0200
+	id DXQ6JDpIRmrSNgsAu9opvQ
+	(envelope-from <stable+bounces-270401-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 13:15:06 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF44C6F6B60
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 13:29:28 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id EC2FF6F685A
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 13:15:05 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=pTIkwMRA;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-270399-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-270399-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=none) header.from=gmail.com;
+	dkim=pass header.d=imgtec.com header.s=dk201812 header.b=VM352Nll;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-270401-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-270401-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=none) header.from=imgtec.com;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 398E23135069
-	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 10:35:06 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 1FF7731F77BF
+	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 10:43:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1551A395AE2;
-	Thu,  2 Jul 2026 10:35:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F3AD3A0B1C;
+	Thu,  2 Jul 2026 10:43:38 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx07-00376f01.pphosted.com (mx07-00376f01.pphosted.com [185.132.180.163])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2AECC28F948
-	for <stable@vger.kernel.org>; Thu,  2 Jul 2026 10:34:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A829017C203;
+	Thu,  2 Jul 2026 10:43:36 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782988499; cv=none; b=hVp7GjoQXsxDa2UROdl3gc/Jodd6UrEcY4JIpztBq3vqs1cshHJkYxiVxHbFgqnWoNSe06jHk3h9MbqelQVVAsA84lxeKc1PL9gD0J11J4VsR5729KMCmPm3uW4Xu5gSz8p0r637O69k2ahrY7+uPmaGTdT/Bdh2qtwfh+e36y0=
+	t=1782989018; cv=none; b=rYJMgpc/4LtDEGjlW8RcGQq5So0sUThW8PoTkwxP8CPdTAsybLkR/yh3S0VxxdjKHvN0FQiQAgyQ9e9DZdFGoTduunCK5zCKIB4cr+UsCX7CkAZvT20gCoJXJMrYiOi9G4lIUauI3jGmFDc2ix/kkk+f3BHJ08WdMHQiKY7ScS0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782988499; c=relaxed/simple;
-	bh=TwrDbLi1pC9WUNSqUhhC59vYbXMRR3WpZnF2BmH1AvU=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=vFGRoHjM967qnCjpjJa+ckHH9y5D1zC7JxferxtcdYPaHEdh6H5gX4VoQWvVWg0C2xURjpkVk+ZqG6O5ztM4Kyq8eILmcZ87AZQ+zs4Xm2rOh1UUch/9BZe+hW2wnmNlwoaoLrWu6wRdiIw5M0UgqM6RVOCe44OXAeaRS/CIdlg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=pTIkwMRA; arc=none smtp.client-ip=209.85.128.49
-Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-493c55d5c7aso5893045e9.1
-        for <stable@vger.kernel.org>; Thu, 02 Jul 2026 03:34:56 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1782988495; x=1783593295; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=2+pjaQR7lTb4k2svNO+Lg3ruGFNjqRCr8CkNWwxNNeQ=;
-        b=pTIkwMRAdzIb/f6vG5X4dlyERtkuS1TVl7bcSCBz1/wYtAsfF7i7dw4Bux6VVMZzrc
-         JwUwMxCkqwQhiRiIN0bdBQgCj7PSOKMIHuux8VNi3Pmi7iWvKTgigZiQXzJ5RUOGRV80
-         SZQhV9zZSMc8jNh4skkl8xguGdjX6mwTc5zC2E7cfP/UOnOnbVs3ZDxIbos9+qyJ5t8d
-         JzbpjdH3SoCF/t+H9hr/ERwc9yoLBDw///g+asyBgY1HLHFzH5XkJdNrJNx9bp+/ZKR9
-         JQkDIUD+8ZqkpzbDSwUSz4B7zuYUI2kv6QilXb3O+eJJ7CLZQbTObfILqibgNYoeKcMh
-         A9bw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782988495; x=1783593295;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=2+pjaQR7lTb4k2svNO+Lg3ruGFNjqRCr8CkNWwxNNeQ=;
-        b=lQqWa5siHnBvPloP9msBDBjHLLdweWI3LSZkRlTPReI76RJKnWDyusDxQsgueNlFJv
-         dwmhZZFnJ0UP6xUvhShz/RyxIqKQ9YNQwYDcdXoFwcUZqlAkSbrrGc5jUixLZGqz4Tb5
-         qO3ZZ8c8cbJRxhC4mXpUxr2gUfVRHEfShK3emma8lWbeRCy8nHfjTOoqQ+nudoZSgsz8
-         qfhNWB9yrScnz09bKBcsvxroJLj78GKogzImmrVHEMN+tJ4TYqtH2K2rclSn8Jw+3PKg
-         7YWB3w0N4lHdmzB/WhTyp1RS2rKE9UgWGAL3B2TylCYwDJg6tNrTTwvnHddzmL32ajjo
-         /lMA==
-X-Forwarded-Encrypted: i=1; AFNElJ9EVYZ8y7tcsaMIMGWmp+SFAR5/2R0GmGOsaT4VQC2Kc0rv52L1rMAnigzjaVBpBs7V9n02mdI=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx4Uq/wTUSYCNLBCbxE7Ef5CA0A7sra0SV7S4YqcGkPCmmKl0ob
-	Mv7YlAds4GGSE1m0wfJNeK8w5rc7OsJKzerkglhPz4Uf4AMCyaci7dKa
-X-Gm-Gg: AfdE7ckUXuIUqEyO4qtZ68fgRITk7cxJ0EI6X381VEHJ7xpX+1Owiy1yShLm2wdlbJZ
-	1IY3RhxVhXnf2cP2YfkA8fwWTK6/XW9GfbstFODDB8QE0ohK8qWp4c8ZxikxlE7731e7vkjMa6T
-	j5a0E+rTcoNAupAhMeBhyD9nQIkSup10d2XIySnSav+scUWb1Pv++YOlgH20fwZEOA6/yjWfgIX
-	f5sSzDP1vkFMyfNK/oNt8xD3BIWTjoyuZ+8uqZvbEFj3vy1mfLS/y7F6Uq8cVw3s32Nt4O87eOb
-	ej2cmqZsTfgLi2kU1SgLoU/kiHtRMIcxrgaosrmnk7zvTJ7GFR6PtXH1w+gPoGWtGUJSTaLk4gy
-	vtedEBiMQVGEZ1k+T+feevjMT7ADAae45nqr6F1k1to+KaF6jI4bhyCp6XcuIDWwbk5DBJEBi+e
-	vehhHKwYZiMeyKkAjoVQrYitucIEUUrPAJ9UMbWIZ+tVPLYLURPQE58DdHBRzwLYS7SosMGFgc
-X-Received: by 2002:a05:600c:4f48:b0:492:4e09:9fc1 with SMTP id 5b1f17b1804b1-493c2b5400amr95863795e9.15.1782988495335;
-        Thu, 02 Jul 2026 03:34:55 -0700 (PDT)
-Received: from dohko.chello.ie (188-141-5-72.dynamic.upc.ie. [188.141.5.72])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-493c636c8b9sm39551155e9.10.2026.07.02.03.34.54
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 02 Jul 2026 03:34:54 -0700 (PDT)
-From: David Carlier <devnexen@gmail.com>
-To: dan.scally@ideasonboard.com,
-	jacopo.mondi@ideasonboard.com,
-	mchehab@kernel.org
-Cc: linux-media@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	David Carlier <devnexen@gmail.com>,
-	stable@vger.kernel.org
-Subject: [PATCH] media: mali-c55: Fix unaligned access of AEC histogram zone weights
-Date: Thu,  2 Jul 2026 11:34:53 +0100
-Message-ID: <20260702103453.348056-1-devnexen@gmail.com>
-X-Mailer: git-send-email 2.53.0
+	s=arc-20240116; t=1782989018; c=relaxed/simple;
+	bh=jds2b0zMSdfnT5QI0PRr+QqXGnqfQuGdALNq4BcFp/c=;
+	h=From:To:CC:In-Reply-To:References:Subject:Message-ID:Date:
+	 MIME-Version:Content-Type; b=rJ9k3j6K+mvWX1CfLq1bVQRGt0SHxttFMuRB+Anyk1TrdBrKBzsJELHV2QGjt5Mu1LE9AE4r/O2sba6n25PPumf4ww5qVXugmuWAGrfV0zCNxsFTT5pV5nJwlF9SZHuF5+KDRMqC2TBjE66kya4xkg/kUuJdRPnKAL92UjWwaQA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=imgtec.com; spf=pass smtp.mailfrom=imgtec.com; dkim=pass (2048-bit key) header.d=imgtec.com header.i=@imgtec.com header.b=VM352Nll; arc=none smtp.client-ip=185.132.180.163
+Received: from pps.filterd (m0168889.ppops.net [127.0.0.1])
+	by mx07-00376f01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6626MvDt1931364;
+	Thu, 2 Jul 2026 11:43:20 +0100
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=imgtec.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=dk201812; bh=Y
+	GoGQ2Dd5wvF+n+UbUvDIuLeDHM947pWIHhw5b/yMyw=; b=VM352Nllvlq5bldvi
+	tXWDrvA8h4zpR749Qvb691CytLW/74EOVTWo93DsjHfVPtoZJE4CI/yd1dd9M+qA
+	OwnQgCX167jcnkPGOm+8zcA1BQ0Yszt84CciZK5GLYjQlzQp/gfg7y94HTZLJ26l
+	SrKSiDfH/E1oy1DizQolxQ1j6Bk01sazObAtSIgH3zQcMNEMwXp25UT2wU4XeQBh
+	AiH1QjgFRK2l0dRBNls2h2FTFMIgRzmhDyPI826IBk2hvyEXc+T50biQvRjMUWXo
+	BDhwU8mb3RSZtAa7BDGS+KD2f2Xc7mB6AoVLaxxkRKg8owP+oCRtkJgFH4njNJ1L
+	D4I/w==
+Received: from hhmail01.hh.imgtec.org (83-244-153-141.cust-83.exponential-e.net [83.244.153.141])
+	by mx07-00376f01.pphosted.com (PPS) with ESMTPS id 4f26kunakn-3
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 02 Jul 2026 11:43:20 +0100 (BST)
+Received: from NP-A-BELLE.kl.imgtec.org (172.25.4.9) by HHMAIL01.hh.imgtec.org
+ (10.100.10.19) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.43; Thu, 2 Jul
+ 2026 11:43:19 +0100
+From: Alessio Belle <alessio.belle@imgtec.com>
+To: Frank Binns <frank.binns@imgtec.com>,
+        Matt Coster
+	<matt.coster@imgtec.com>,
+        Shuvam Pandey <shuvampandey1@gmail.com>
+CC: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+        Maxime Ripard
+	<mripard@kernel.org>,
+        Thomas Zimmermann <tzimmermann@suse.de>,
+        David Airlie
+	<airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+        Donald Robson
+	<donald.robson@imgtec.com>,
+        Sarah Walker <sarah.walker@imgtec.com>,
+        <dri-devel@lists.freedesktop.org>, <linux-kernel@vger.kernel.org>,
+        <stable@vger.kernel.org>
+In-Reply-To: <6a456012.eb165e5c.113c2a.b71d@mx.google.com>
+References: <6a456012.eb165e5c.113c2a.b71d@mx.google.com>
+Subject: Re: [PATCH v2] drm/imagination: Fix user array stride in
+ pvr_set_uobj_array()
+Message-ID: <178298899967.102946.10188226714183419327.b4-ty@imgtec.com>
+Date: Thu, 2 Jul 2026 11:43:19 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.14.3
+X-Authority-Analysis: v=2.4 cv=epXvCIpX c=1 sm=1 tr=0 ts=6a4640c8 cx=c_pps
+ a=AKOq//PuzOIrVTIF9yBwbA==:117 a=AKOq//PuzOIrVTIF9yBwbA==:17
+ a=rvaOABGgyOwA:10 a=IkcTkHD0fZMA:10 a=RAioF0-LDSMA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=kQ-hrUj2-E3RCbRHssb7:22 a=7RYWX5rxfSByPNLylY2M:22
+ a=r_1tXGB3AAAA:8 a=P5ZNOoLRPLbA7G_RXJEA:9 a=QEXdDO2ut3YA:10
+ a=t8nPyN_e6usw4ciXM-Pk:22
+X-Proofpoint-ORIG-GUID: u8VTaf-suaT-E9jg4__zGsHHx888B45Y
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzAyMDExMSBTYWx0ZWRfX2mpPP/JBMZwV
+ Qurx54ikPSl1YyHMmMfONTj2JkubDSApNkZKYpApGRnHfqlxB7sWRy1PtlcJC7eYs2UpaaDCvI5
+ rqCJJvM4PnypUI+h32ItEbdGGaqn/mdaHWzsvPioGSbUzf7r+QZR7gj/7n05ef6QTugCN4hKeMS
+ 04MNxdDAIDvc2OwA5vI3B5+re/1CKZTr6E30Yl30qoxDAFRwkbVSP70He+HMW6FNirZloWlq77U
+ 472VgReWBEL2ywrr/ckXp93XUmEkPqTbGI8QiqfbKTlYEOxDCp0hRHE8cGPJfD1/lWY+TGfPwoB
+ P55OAFBbLKRH2qeEvUtgtlkbSq5/T7Ht1qEC41lrBdykBje1HFhSrnP4LWgr4qziDApppkGJn2k
+ 9eoIiBRYuRFspjfl7mEI0i/HGhDdrMr/S5YQDoS9/foObJNj3h4ZUV/SZMYwQOf7axe5Jt8K4si
+ MV5Ql33XMmFEKyRbdwg==
+X-Proofpoint-Spam-Info: AW1haW4tMjYwNzAyMDExMSBTYWx0ZWRfXyqUnR4AxIUj6
+ rMKsSnDqDcYQYYlIQKdOjjLbp235wPhBVJi5aUHMOCVDiH0UNw7do/8wuO/OzAVECCPRyP/iwhj
+ 0GjMpy9S/ieU9lNDQOKn+TuPLPRdWJI=
+X-Proofpoint-GUID: u8VTaf-suaT-E9jg4__zGsHHx888B45Y
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	DMARC_POLICY_ALLOW(-0.50)[imgtec.com,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_DKIM_ALLOW(-0.20)[imgtec.com:s=dk201812];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-270399-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[vger.kernel.org,gmail.com];
-	FORGED_RECIPIENTS(0.00)[m:dan.scally@ideasonboard.com,m:jacopo.mondi@ideasonboard.com,m:mchehab@kernel.org,m:linux-media@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:devnexen@gmail.com,m:stable@vger.kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[devnexen@gmail.com,stable@vger.kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[13];
 	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-270401-lists,stable=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
-	FROM_NEQ_ENVFROM(0.00)[devnexen@gmail.com,stable@vger.kernel.org];
+	FREEMAIL_TO(0.00)[imgtec.com,gmail.com];
+	FORGED_RECIPIENTS(0.00)[m:frank.binns@imgtec.com,m:matt.coster@imgtec.com,m:shuvampandey1@gmail.com,m:maarten.lankhorst@linux.intel.com,m:mripard@kernel.org,m:tzimmermann@suse.de,m:airlied@gmail.com,m:simona@ffwll.ch,m:donald.robson@imgtec.com,m:sarah.walker@imgtec.com,m:dri-devel@lists.freedesktop.org,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[alessio.belle@imgtec.com,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[linux.intel.com,kernel.org,suse.de,gmail.com,ffwll.ch,imgtec.com,lists.freedesktop.org,vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[alessio.belle@imgtec.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[imgtec.com:+];
 	ALIAS_RESOLVED(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	DKIM_TRACE(0.00)[gmail.com:+];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	TAGGED_RCPT(0.00)[stable];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RWL_MAILSPIKE_POSSIBLE(0.00)[104.64.211.4:from];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,imgtec.com:dkim,imgtec.com:email,imgtec.com:mid,imgtec.com:from_mime]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: DF44C6F6B60
+X-Rspamd-Queue-Id: EC2FF6F685A
 
-mali_c55_params_aexp_hist_weights() packs the 225 per-zone u8 weights
-into the ISP registers four at a time by casting the zone_weights array
-to u32 and dereferencing it. The array sits at offset 10 within the
-parameter block, so it is only 2-byte aligned: the u32 access is
-unaligned, which is undefined behaviour and can fault on strict-align
-configurations or once the loop is auto-vectorised.
 
-The cast also reads the four weights in host byte order before they are
-written to the little-endian register, so on big-endian hosts the four
-weights packed into each register end up in the wrong byte lanes.
+On Wed, 01 Jul 2026 11:44:34 -0700, Shuvam Pandey wrote:
+> pvr_set_uobj_array() copies an array of kernel objects to a userspace
+> array whose element size is described by out->stride. When out->stride
+> is different from the kernel object size, the slow path advances the
+> userspace pointer by the kernel object size and the kernel pointer by the
+> userspace stride.
+> 
+> This reverses the intended layout. For larger userspace strides, later
+> copies read from the wrong kernel addresses. For smaller userspace
+> strides, later copies are written at the wrong userspace offsets. The
+> padding clear is also done only for the first element instead of the
+> padding area for each element.
+> 
+> [...]
 
-Read the weights with get_unaligned_le32() instead, which is both
-alignment-safe and fixes the byte order regardless of host endianness.
+Applied, thanks!
 
-Fixes: d5f281f3dd29 ("media: mali-c55: Add Mali-C55 ISP driver")
-Cc: stable@vger.kernel.org
-Signed-off-by: David Carlier <devnexen@gmail.com>
----
- drivers/media/platform/arm/mali-c55/mali-c55-params.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+[1/1] drm/imagination: Fix user array stride in pvr_set_uobj_array()
+      commit: 8dc8f3f4c2382fb7d1b1986ba8f33a2466cd3d7a
 
-diff --git a/drivers/media/platform/arm/mali-c55/mali-c55-params.c b/drivers/media/platform/arm/mali-c55/mali-c55-params.c
-index de0e9d898..1aaf64dde 100644
---- a/drivers/media/platform/arm/mali-c55/mali-c55-params.c
-+++ b/drivers/media/platform/arm/mali-c55/mali-c55-params.c
-@@ -6,6 +6,7 @@
-  */
- #include <linux/media/arm/mali-c55-config.h>
- #include <linux/pm_runtime.h>
-+#include <linux/unaligned.h>
- 
- #include <media/media-entity.h>
- #include <media/v4l2-dev.h>
-@@ -203,7 +204,7 @@ mali_c55_params_aexp_hist_weights(struct mali_c55 *mali_c55,
- 	 * of overwriting other registers.
- 	 */
- 	for (unsigned int i = 0; i < 56; i++) {
--		val = ((u32 *)params->zone_weights)[i]
-+		val = get_unaligned_le32(&params->zone_weights[i * 4])
- 			    & MALI_C55_AEXP_HIST_ZONE_WEIGHT_MASK;
- 		addr = base + MALI_C55_AEXP_HIST_ZONE_WEIGHTS_OFFSET + (4 * i);
- 
+Best regards,
 -- 
-2.53.0
+Alessio Belle <alessio.belle@imgtec.com>
 
 
