@@ -1,63 +1,62 @@
-Return-Path: <stable+bounces-271462-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-271352-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id bdLtORCnRmolbAsAu9opvQ
-	(envelope-from <stable+bounces-271462-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:59:44 +0200
+	id qLEaAIWlRmq8awsAu9opvQ
+	(envelope-from <stable+bounces-271352-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:53:09 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C6146FBC26
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:59:44 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 643F46FBAFB
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:53:08 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=ZDNWuqsO;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-271462-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-271462-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=AOOomYSA;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-271352-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-271352-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D96BD32FDF63
-	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 17:00:13 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 1AA3C32D09C4
+	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:55:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 331A6318EC5;
-	Thu,  2 Jul 2026 17:00:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09B21246BBA;
+	Thu,  2 Jul 2026 16:55:19 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB89B33B951;
-	Thu,  2 Jul 2026 17:00:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF5D119049B;
+	Thu,  2 Jul 2026 16:55:17 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783011608; cv=none; b=YtxgjE8KyWmv2Dnvaluj7vjDVHJBuTypE/W6s5r6llgy9c/8xOXICtNo4mESI6LqNxuPVG5Yg917LBe44toGHOMte37TrEt8SlUFIUoBBV9h4BssosSaG7h2bD0nokXLi8NHl6tS19LN26XgmDkZDfUyySaPyI7qcthlpg/UAIg=
+	t=1783011318; cv=none; b=Jl0WqTmlpOi976aZkvisDO8B9CyV4wppKpHpEZY5Bx7hf3ihiJLhXjfi3lDx7m6V+KTZE7LBSU7WSBfTOTDMCkChQt2H+AcMeunAGBxD58Wcuxhyu1iv2vTJVUNN1gIFRVtBAxwV4mw1e11hVS6Ug21TN9nESghtcPM0jb/Q7RM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783011608; c=relaxed/simple;
-	bh=mkcDbWIUss9K/caYdLVTPe39XBOnGklBioEft7G0nhA=;
+	s=arc-20240116; t=1783011318; c=relaxed/simple;
+	bh=2myylT1ngt3+goEg3ePT8qa1VJFhHJWYR+UEC1e6B84=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eAJeP+hqpbbLvHahj4vim6Gt+6lA3oBt4i4wd0Cf6+8WHEP4LdDmBecoVT1uRWGAAjh70uTfcY1lDAPZAevmCfXLzWACT+Ed78fUObmSiTYw+MGJZ0vFavrS+Jv+5NuWfd980a2H5fSUpGm/iFcEu992IO8ucPZq8CJNcgBAdRQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZDNWuqsO; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4CC421F00A3E;
-	Thu,  2 Jul 2026 17:00:06 +0000 (UTC)
+	 MIME-Version; b=mraf9w3lYXzQ/hzfXlQwkmgTDuXE2p9t0Ffv+vwd5LQvUDGUpV8xA0u95i910N8VntOkq0mS0A4r+Rvaabi4b8DtEMzZieXRUpEwFEUwaEM2sdmuBO3YeE3JGh3IpbC4aHwkFm51SNux32txR9MNZUmJ/UEI7WvORlonyzeoDQg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AOOomYSA; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31C7F1F000E9;
+	Thu,  2 Jul 2026 16:55:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1783011606;
-	bh=QtaPiGDHeCpZ7glIn7ByaGfNEWrI25TpxJ0WN9J/1wk=;
+	s=korg; t=1783011317;
+	bh=QmYoWJAQPLqlgfC5bDAHqVzy2jsGpd2CeBdx630BIi4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=ZDNWuqsO0uiSpHKnhiDkhgD7akU8W8sP0plh7x448ZUhy8iR7zSZSSFuyuX/Hf8J6
-	 sZUl5KEZZ7Xt1LbwNtR7bphiX8+RdHnMKeUWz3qYz09k4ZEWeYDBBE1GAeFo0MuB5z
-	 bRjf03nOBEBSDwd0k8Uon+uDT/aNMzaWOp4hkr5o=
+	b=AOOomYSAf0R+AObJSHe80ca8udY6JHRMDkz7Tw6x2I/DfIz3CqwHxhD5g+//LBpkP
+	 Hg2uORZgZE4t9sBVSjINb2UFtuDJa5or/2baiWHrnBTWhInMBTq4XLYjhH+o5YFaqo
+	 kP+pBnBtVlpi5q+KZ1IRZRL9JUjc3+p+MvQHkNK8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	stable@kernel.org,
-	Daeho Jeong <daehojeong@google.com>,
-	Sunmin Jeong <s_min.jeong@samsung.com>,
+	Zhang Cen <rollkingzzc@gmail.com>,
 	Chao Yu <chao@kernel.org>,
 	Jaegeuk Kim <jaegeuk@kernel.org>
-Subject: [PATCH 7.1 065/120] f2fs: atomic: fix UAF issue on f2fs_inode_info.atomic_inode
+Subject: [PATCH 6.18 064/108] f2fs: validate ACL entry sizes in f2fs_acl_from_disk()
 Date: Thu,  2 Jul 2026 18:21:01 +0200
-Message-ID: <20260702155114.304061913@linuxfoundation.org>
+Message-ID: <20260702155113.436226226@linuxfoundation.org>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260702155112.964534952@linuxfoundation.org>
-References: <20260702155112.964534952@linuxfoundation.org>
+In-Reply-To: <20260702155112.110058792@linuxfoundation.org>
+References: <20260702155112.110058792@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,202 +70,157 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-271462-lists,stable=lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,gmail.com];
+	TAGGED_FROM(0.00)[bounces-271352-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:stable@kernel.org,m:daehojeong@google.com,m:s_min.jeong@samsung.com,m:chao@kernel.org,m:jaegeuk@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:stable@kernel.org,m:rollkingzzc@gmail.com,m:chao@kernel.org,m:jaegeuk@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	TO_DN_SOME(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,samsung.com:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 2C6146FBC26
+X-Rspamd-Queue-Id: 643F46FBAFB
 
-7.1-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chao Yu <chao@kernel.org>
+From: Zhang Cen <rollkingzzc@gmail.com>
 
-commit e0288584baa5dc41df4a829a023c4c1b33fe53d7 upstream.
+commit c4810ada31e80cbe4011467c4f3b1e93f94134f3 upstream.
 
-- ioctl(F2FS_IOC_GARBAGE_COLLECT_RANGE)		- shrink
- - f2fs_gc
-  - gc_data_segment
-   - ra_data_block(cow_inode)
-    - mapping = F2FS_I(inode)->atomic_inode->i_mapping
-    : f2fs_is_cow_file(cow_inode) is true
-						 - f2fs_evict_inode(atomic_inode)
-						  - clear_inode_flag(fi->cow_inode, FI_COW_FILE)
-						  - F2FS_I(fi->cow_inode)->atomic_inode = NULL
-						  ...
-						  - truncate_inode_pages_final(atomic_inode)
-    - f2fs_grab_cache_folio(mapping)
-    : create folio in atomic_inode->mapping
-						  - clear_inode(atomic_inode)
-						   - BUG_ON(atomic_inode->i_data.nrpages)
+f2fs_acl_count() only validates the aggregate ACL xattr length. A
+malformed ACL can still place ACL_USER or ACL_GROUP in a slot that only
+contains struct f2fs_acl_entry_short bytes, and f2fs_acl_from_disk()
+then reads entry->e_id before verifying that a full entry fits.
 
-We need to add a reference on fi->atomic_inode before using its mapping
-field during garbage collection, otherwise, it will cause UAF issue.
+Require a short entry before reading e_tag and e_perm, and require a
+full entry before reading e_id for ACL_USER and ACL_GROUP. Return
+-EFSCORRUPTED from these new truncated-entry checks, while keeping the
+pre-existing -EINVAL paths unchanged.
+
+Validation reproduced this kernel report:
+KASAN slab-out-of-bounds in __f2fs_get_acl+0x6fb/0x7e0
+RIP: 0033:0x7f4b835ea7aa
+The buggy address belongs to the object at ffff888114589960 which belongs
+to the cache kmalloc-8 of size 8
+The buggy address is located 0 bytes to the right of allocated 8-byte
+region [ffff888114589960, ffff888114589968)
+Read of size 4
+Call trace:
+  dump_stack_lvl+0x66/0xa0 (?:?)
+  print_report+0xce/0x630 (?:?)
+  __f2fs_get_acl+0x6fb/0x7e0 (fs/f2fs/acl.c:169)
+  srso_alias_return_thunk+0x5/0xfbef5 (?:?)
+  __virt_addr_valid+0x224/0x430 (?:?)
+  kasan_report+0xe0/0x110 (?:?)
+  __f2fs_get_acl+0x5/0x7e0 (fs/f2fs/acl.c:169)
+  __get_acl+0x281/0x380 (?:?)
+  vfs_get_acl+0x10b/0x190 (?:?)
+  do_get_acl+0x2a/0x410 (?:?)
+  do_get_acl+0x9/0x410 (?:?)
+  do_getxattr+0xe8/0x260 (?:?)
+  filename_getxattr+0xd1/0x140 (?:?)
+  do_getname+0x2d/0x2d0 (?:?)
+  path_getxattrat+0x16c/0x200 (?:?)
+  lock_release+0xc8/0x290 (?:?)
+  cgroup_update_frozen+0x9d/0x320 (?:?)
+  lockdep_hardirqs_on_prepare+0xea/0x1a0 (?:?)
+  trace_hardirqs_on+0x1a/0x170 (?:?)
+  _raw_spin_unlock_irq+0x28/0x50 (?:?)
+  do_syscall_64+0x115/0x6a0 (arch/x86/entry/syscall_64.c:87)
+  entry_SYSCALL_64_after_hwframe+0x77/0x7f (?:?)
 
 Cc: stable@kernel.org
-Cc: Daeho Jeong <daehojeong@google.com>
-Cc: Sunmin Jeong <s_min.jeong@samsung.com>
-Fixes: 3db1de0e582c ("f2fs: change the current atomic write way")
-Fixes: f18d00769336 ("f2fs: use meta inode for GC of COW file")
-Signed-off-by: Chao Yu <chao@kernel.org>
+Fixes: af48b85b8cd3 ("f2fs: add xattr and acl functionalities")
+Assisted-by: Codex:gpt-5.5
+Signed-off-by: Zhang Cen <rollkingzzc@gmail.com>
+Reviewed-by: Chao Yu <chao@kernel.org>
 Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/f2fs/gc.c    |   50 ++++++++++++++++++++++++++++++++++++++++++--------
- fs/f2fs/inode.c |   11 ++++++++---
- 2 files changed, 50 insertions(+), 11 deletions(-)
+ fs/f2fs/acl.c |   18 ++++++++++++++++--
+ 1 file changed, 16 insertions(+), 2 deletions(-)
 
---- a/fs/f2fs/gc.c
-+++ b/fs/f2fs/gc.c
-@@ -1220,8 +1220,8 @@ static bool is_alive(struct f2fs_sb_info
- static int ra_data_block(struct inode *inode, pgoff_t index)
+--- a/fs/f2fs/acl.c
++++ b/fs/f2fs/acl.c
+@@ -46,6 +46,7 @@ static inline int f2fs_acl_count(size_t
+ static struct posix_acl *f2fs_acl_from_disk(const char *value, size_t size)
  {
- 	struct f2fs_sb_info *sbi = F2FS_I_SB(inode);
--	struct address_space *mapping = f2fs_is_cow_file(inode) ?
--				F2FS_I(inode)->atomic_inode->i_mapping : inode->i_mapping;
-+	struct address_space *mapping = inode->i_mapping;
-+	struct inode *atomic_inode = NULL;
- 	struct dnode_of_data dn;
- 	struct folio *folio, *efolio;
- 	struct f2fs_io_info fio = {
-@@ -1236,9 +1236,22 @@ static int ra_data_block(struct inode *i
- 	};
- 	int err = 0;
+ 	int i, count;
++	int err = -EINVAL;
+ 	struct posix_acl *acl;
+ 	struct f2fs_acl_header *hdr = (struct f2fs_acl_header *)value;
+ 	struct f2fs_acl_entry *entry = (struct f2fs_acl_entry *)(hdr + 1);
+@@ -69,8 +70,11 @@ static struct posix_acl *f2fs_acl_from_d
  
-+	f2fs_down_read(&F2FS_I(inode)->i_sem);
-+	if (f2fs_is_cow_file(inode)) {
-+		atomic_inode = igrab(F2FS_I(inode)->atomic_inode);
-+		if (!atomic_inode) {
-+			f2fs_up_read(&F2FS_I(inode)->i_sem);
-+			return -EBUSY;
+ 	for (i = 0; i < count; i++) {
+ 
+-		if ((char *)entry > end)
++		if (unlikely((char *)entry +
++				sizeof(struct f2fs_acl_entry_short) > end)) {
++			err = -EFSCORRUPTED;
+ 			goto fail;
 +		}
-+		mapping = atomic_inode->i_mapping;
-+	}
-+	f2fs_up_read(&F2FS_I(inode)->i_sem);
-+
- 	folio = f2fs_grab_cache_folio(mapping, index, true);
--	if (IS_ERR(folio))
--		return PTR_ERR(folio);
-+	if (IS_ERR(folio)) {
-+		err = PTR_ERR(folio);
-+		goto out_iput;
-+	}
  
- 	if (f2fs_lookup_read_extent_cache_block(inode, index,
- 						&dn.data_blkaddr)) {
-@@ -1299,11 +1312,16 @@ got_it:
- 	f2fs_update_iostat(sbi, inode, FS_DATA_READ_IO, F2FS_BLKSIZE);
- 	f2fs_update_iostat(sbi, NULL, FS_GDATA_READ_IO, F2FS_BLKSIZE);
+ 		acl->a_entries[i].e_tag  = le16_to_cpu(entry->e_tag);
+ 		acl->a_entries[i].e_perm = le16_to_cpu(entry->e_perm);
+@@ -85,6 +89,11 @@ static struct posix_acl *f2fs_acl_from_d
+ 			break;
  
-+	if (atomic_inode)
-+		iput(atomic_inode);
- 	return 0;
- put_encrypted_page:
- 	f2fs_put_page(fio.encrypted_page, true);
- put_folio:
- 	f2fs_folio_put(folio, true);
-+out_iput:
-+	if (atomic_inode)
-+		iput(atomic_inode);
- 	return err;
+ 		case ACL_USER:
++			if (unlikely((char *)entry +
++					sizeof(struct f2fs_acl_entry) > end)) {
++				err = -EFSCORRUPTED;
++				goto fail;
++			}
+ 			acl->a_entries[i].e_uid =
+ 				make_kuid(&init_user_ns,
+ 						le32_to_cpu(entry->e_id));
+@@ -92,6 +101,11 @@ static struct posix_acl *f2fs_acl_from_d
+ 					sizeof(struct f2fs_acl_entry));
+ 			break;
+ 		case ACL_GROUP:
++			if (unlikely((char *)entry +
++					sizeof(struct f2fs_acl_entry) > end)) {
++				err = -EFSCORRUPTED;
++				goto fail;
++			}
+ 			acl->a_entries[i].e_gid =
+ 				make_kgid(&init_user_ns,
+ 						le32_to_cpu(entry->e_id));
+@@ -107,7 +121,7 @@ static struct posix_acl *f2fs_acl_from_d
+ 	return acl;
+ fail:
+ 	posix_acl_release(acl);
+-	return ERR_PTR(-EINVAL);
++	return ERR_PTR(err);
  }
  
-@@ -1314,8 +1332,8 @@ put_folio:
- static int move_data_block(struct inode *inode, block_t bidx,
- 				int gc_type, unsigned int segno, int off)
- {
--	struct address_space *mapping = f2fs_is_cow_file(inode) ?
--				F2FS_I(inode)->atomic_inode->i_mapping : inode->i_mapping;
-+	struct address_space *mapping = inode->i_mapping;
-+	struct inode *atomic_inode = NULL;
- 	struct f2fs_io_info fio = {
- 		.sbi = F2FS_I_SB(inode),
- 		.ino = inode->i_ino,
-@@ -1337,10 +1355,23 @@ static int move_data_block(struct inode
- 				(fio.sbi->gc_mode != GC_URGENT_HIGH) ?
- 				CURSEG_ALL_DATA_ATGC : CURSEG_COLD_DATA;
- 
-+	f2fs_down_read(&F2FS_I(inode)->i_sem);
-+	if (f2fs_is_cow_file(inode)) {
-+		atomic_inode = igrab(F2FS_I(inode)->atomic_inode);
-+		if (!atomic_inode) {
-+			f2fs_up_read(&F2FS_I(inode)->i_sem);
-+			return -EBUSY;
-+		}
-+		mapping = atomic_inode->i_mapping;
-+	}
-+	f2fs_up_read(&F2FS_I(inode)->i_sem);
-+
- 	/* do not read out */
- 	folio = f2fs_grab_cache_folio(mapping, bidx, false);
--	if (IS_ERR(folio))
--		return PTR_ERR(folio);
-+	if (IS_ERR(folio)) {
-+		err = PTR_ERR(folio);
-+		goto out_iput;
-+	}
- 
- 	if (!check_valid_map(F2FS_I_SB(inode), segno, off)) {
- 		err = -ENOENT;
-@@ -1473,6 +1504,9 @@ out:
- 	folio_unlock(folio);
- 	folio_end_dropbehind(folio);
- 	folio_put(folio);
-+out_iput:
-+	if (atomic_inode)
-+		iput(atomic_inode);
- 	return err;
- }
- 
---- a/fs/f2fs/inode.c
-+++ b/fs/f2fs/inode.c
-@@ -863,10 +863,15 @@ void f2fs_evict_inode(struct inode *inod
- 	f2fs_abort_atomic_write(inode, true);
- 
- 	if (fi->cow_inode && f2fs_is_cow_file(fi->cow_inode)) {
--		clear_inode_flag(fi->cow_inode, FI_COW_FILE);
--		F2FS_I(fi->cow_inode)->atomic_inode = NULL;
--		iput(fi->cow_inode);
-+		struct inode *cow_inode = fi->cow_inode;
-+
-+		f2fs_down_write(&F2FS_I(cow_inode)->i_sem);
-+		clear_inode_flag(cow_inode, FI_COW_FILE);
-+		F2FS_I(cow_inode)->atomic_inode = NULL;
- 		fi->cow_inode = NULL;
-+		f2fs_up_write(&F2FS_I(cow_inode)->i_sem);
-+
-+		iput(cow_inode);
- 	}
- 
- 	trace_f2fs_evict_inode(inode);
+ static void *f2fs_acl_to_disk(struct f2fs_sb_info *sbi,
 
 
 
