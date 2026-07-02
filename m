@@ -1,60 +1,64 @@
-Return-Path: <stable+bounces-271331-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-270890-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id sEJbLOecRmqkaAsAu9opvQ
-	(envelope-from <stable+bounces-271331-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:16:23 +0200
+	id R7/XNy2VRmpuZAsAu9opvQ
+	(envelope-from <stable+bounces-270890-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:43:25 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id AE75A6FB2CD
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:16:22 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8D8DD6FA717
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:43:25 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=UPnoORmc;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-271331-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-271331-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=yGWWJzJ+;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-270890-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-270890-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 9C6823079F62
-	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:54:35 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 9131A30809AC
+	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:37:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 592C630C146;
-	Thu,  2 Jul 2026 16:54:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91641346A18;
+	Thu,  2 Jul 2026 16:35:18 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 221522FFF9D;
-	Thu,  2 Jul 2026 16:54:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DB81347FE1;
+	Thu,  2 Jul 2026 16:35:17 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783011264; cv=none; b=UJsoz9i2R8BUrphokXF+b9R9KWCkA+IMX+oMsTljEWZ9OW1FKO5NLT389NONsuN5nZFP8lZ2oMGJ1EwF1CKADWw0C0tQzxhh8d3P2E3HyiPjb+EJqLcM0KjJ4Z6qNdkK791fXcTd3smWHxXWAzLEXPvj1fDieGBCt01ZcBdcXI4=
+	t=1783010118; cv=none; b=g2Fop044OoVxQZ4/dRAs23TbyphxH3JQ6NmRwXdHEbTS3Eox4qskyZyyAjY+qBQEuhH3gD6TVOXoatquKGaTecgriJ3GPxBfYyOdu2c8RTFLyMOaBpwE8oEyJ+jm1JMWfhRZZRPxRrPPnV7879DcPscHJMq9ndQ2eFqw6M22/zo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783011264; c=relaxed/simple;
-	bh=/XjBPcF/0WrB5EgQijIR/3GPkzsoEIpdns7tPRdwMO8=;
+	s=arc-20240116; t=1783010118; c=relaxed/simple;
+	bh=wj+fsS22RGxTViV1VylI6Ij6CZ/XY8B5bEcrTanwmuM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Jm2UhDe/IGi7FJUM5CLrbU3yNj+lipk6DnHeBkRMcRrfEAyGeDUDHY/quC1qQkOlr9UIkd5cjobGlplRlqGNqfvag3Shoak213SwLUDl4GOx8RFNXEUZXzLRPR4zOTY/2S+O4bX6jU1CBxCRzo0e06qrV3W5WwQHuP5PYAM1OeI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UPnoORmc; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3FE671F000E9;
-	Thu,  2 Jul 2026 16:54:22 +0000 (UTC)
+	 MIME-Version; b=irtLMNAkMspcAXKA2Ek//SK6TyJJo7GWNCsZGKt7G9h9I3yrniObf8DA2c0IruERSuJJ8rAkfw1JOfNT8ThXOqxEm3cD2F0qETq03gazyws0nCfof4xN34g8Nrf3ARnQ7HAq+bMTBKuuFh3++ykEytGY8hWOj4gYkBxxvYE5YpI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yGWWJzJ+; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 869561F000E9;
+	Thu,  2 Jul 2026 16:35:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1783011262;
-	bh=/yKtsEALPRTnWQyce0cHuoxVSyvb9J90GevQ5Ss29yI=;
+	s=korg; t=1783010117;
+	bh=cOEDOr5fCyWCiu153Rnn5AmsCbcCjFk+RPCucIQsIrs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=UPnoORmc7fCEliGbKjAa1mD0mRfa1Yei47OHC6kmb3ne6ZwxJRvrYArS+ObEkpLFC
-	 d2ALB488NF99VWcpFWIhkoPVMSXY4gD0sqh/ey2MJlHC34yqsfVkqhHFmOWWsuiObZ
-	 KxXn+a1kv3xvLGSzISo0rVgfr4ciZcID+YrxpKj0=
+	b=yGWWJzJ+7UkdTRR+S/b7HYf4k3uTeTiLwgnIxiXoPQfuvwwKDt9++0Fduge7VBC55
+	 H75ctFOV/b6rfq7CuZCL09L1/8ev8usdyhHfirwkpN8s4o/hASJd7fTxMD2EuTZnnY
+	 VJ12uQeA522qX1TSqvR5W8dzeRrjQgJcwF4wfwGM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bryam Vargas <hexlabsecurity@proton.me>,
-	John Johansen <john.johansen@canonical.com>
-Subject: [PATCH 6.18 040/108] apparmor: mediate the implicit connect of TCP fast open sendmsg
+	Michael Kelley <mhklinux@outlook.com>,
+	Krister Johansen <kjlx@templeofstupid.com>,
+	Matthew Ruffell <matthew.ruffell@canonical.com>,
+	Dexuan Cui <decui@microsoft.com>,
+	Wei Liu <wei.liu@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 118/129] Drivers: hv: vmbus: Improve the logic of reserving fb_mmio on Gen2 VMs
 Date: Thu,  2 Jul 2026 18:20:37 +0200
-Message-ID: <20260702155112.940099045@linuxfoundation.org>
+Message-ID: <20260702155114.586655998@linuxfoundation.org>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260702155112.110058792@linuxfoundation.org>
-References: <20260702155112.110058792@linuxfoundation.org>
+In-Reply-To: <20260702155112.163984240@linuxfoundation.org>
+References: <20260702155112.163984240@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,90 +75,186 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-271331-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:hexlabsecurity@proton.me,m:john.johansen@canonical.com,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,outlook.com,templeofstupid.com,canonical.com,microsoft.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-270890-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:mhklinux@outlook.com,m:kjlx@templeofstupid.com,m:matthew.ruffell@canonical.com,m:decui@microsoft.com,m:wei.liu@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[canonical.com:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,vger.kernel.org:from_smtp,proton.me:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[outlook.com:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,vger.kernel.org:from_smtp,templeofstupid.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,canonical.com:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: AE75A6FB2CD
+X-Rspamd-Queue-Id: 8D8DD6FA717
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bryam Vargas <hexlabsecurity@proton.me>
+From: Dexuan Cui <decui@microsoft.com>
 
-commit 4d587cd8a72155089a627130bbd4716ec0856e21 upstream.
+[ Upstream commit 016a25e4b0df4d77e7c258edee4aaf982e4ee809 ]
 
-sendmsg()/sendto() with MSG_FASTOPEN is a combination of connect(2) and
-write(2): it opens the connection in the SYN. apparmor_socket_sendmsg()
-only checks AA_MAY_SEND, so a profile that grants send but denies connect
-lets a confined task open an outbound TCP/MPTCP connection that connect(2)
-would have refused, bypassing connect mediation.
+If vmbus_reserve_fb() in the kdump/kexec kernel fails to properly reserve
+the framebuffer MMIO range (which is below 4GB) due to a Gen2 VM's
+screen.lfb_base being zero [1], there is an MMIO conflict between the
+drivers hyperv-drm and pci-hyperv: when the driver pci-hyperv's
+hv_allocate_config_window() calls vmbus_allocate_mmio() to get an
+MMIO range, typically it gets a 32-bit MMIO range that overlaps with the
+framebuffer MMIO range, and later hv_pci_enter_d0() fails with an
+error message "PCI Pass-through VSP failed D0 Entry with status" since
+the host thinks that PCI devices must not use MMIO space that the
+host has assigned to the framebuffer.
 
-Mediate the implicit connect when MSG_FASTOPEN is set and a destination
-is supplied. Add it to apparmor_socket_sendmsg() (not the shared
-aa_sock_msg_perm() helper, which recvmsg also uses) and call aa_sk_perm()
-directly, mirroring the selinux and tomoyo fixes. sk_is_tcp() does not
-cover MPTCP fast open, so the SOCK_STREAM/IPPROTO_MPTCP arm is explicit.
+This is especially an issue if pci-hyperv is built-in and hyperv-drm is
+built as a module. Consequently, the kdump/kexec kernel fails to detect
+PCI devices via pci-hyperv, and may fail to mount the root file system,
+which may reside in a NVMe disk. The issue described here has existed
+for SR-IOV VF NICs since day one of the pci-hyperv driver, and has been
+worked around on x64 when possible. With the recent introduction of
+ARM64 VMs that boot from NVMe, there is no workaround, so we need a
+formal fix.
 
-Fixes: cf60af03ca4e ("net-tcp: Fast Open client - sendmsg(MSG_FASTOPEN)")
-Cc: stable@vger.kernel.org
-Signed-off-by: Bryam Vargas <hexlabsecurity@proton.me>
-Signed-off-by: John Johansen <john.johansen@canonical.com>
+On Gen2 VMs, if the screen.lfb_base is 0 in the kdump/kexec kernel [1],
+fall back to the low MMIO base, which should be equal to the framebuffer
+MMIO base [2] (the statement is true according to my testing on x64
+Windows Server 2016, and on x64 and ARM64 Windows Server 2025 and on
+Azure. I checked with the Hyper-V team and they said the statement should
+continue to be true for Gen2 VMs). In the first kernel, screen.lfb_base
+is not 0; if the user specifies a very high resolution, it's not enough
+to only reserve 8MB: let's always reserve half of the space below 4GB,
+but cap the reservation to 128MB, which is the required framebuffer size
+of the highest resolution 7680*4320 supported by Hyper-V.
+
+While at it, fix the comparison "end > VTPM_BASE_ADDRESS" by changing
+the > to >=. Here the 'end' is an inclusive end (typically, it's
+0xFFFF_FFFF for the low MMIO range).
+
+Note: vmbus_reserve_fb() now also reserves an MMIO range at the beginning
+of the low MMIO range on CVMs, which have no framebuffers (the
+'screen.lfb_base' in vmbus_reserve_fb() is 0 for CVMs), just in case the
+host might treat the beginning of the low MMIO range specially [3]. BTW,
+the OpenHCL kernel is not affected by the change, because that kernel
+boots with DeviceTree rather than ACPI (so vmbus_reserve_fb() won't run
+there), and there is no framebuffer device for that kernel.
+
+Note: normally Gen1 VMs don't have the MMIO conflict issue because the
+framebuffer MMIO range (which is hardcoded to base=4GB-128MB and
+size=64MB for Gen1 VMs by the host) is always reported via the legacy PCI
+graphics device's BAR, so the kdump/kexec kernel can reserve the 64MB
+MMIO range; however, if the VM is configured to use a very high resolution
+and the required framebuffer size exceeds 64MB (AFAIK, in practice, this
+isn't a typical configuration by users), the hyperv-drm driver may need to
+allocate an MMIO range above 4GB and change the framebuffer MMIO location
+to the allocated MMIO range -- in this case, there can still be issues [4]
+which can't be easily fixed: any possible affected Gen1 users would have
+to use a resolution whose framebuffer size is <= 64MB, or switch to Gen2
+VMs.
+
+[1] https://lore.kernel.org/all/SA1PR21MB692176C1BC53BFC9EAE5CF8EBF51A@SA1PR21MB6921.namprd21.prod.outlook.com/
+[2] https://lore.kernel.org/all/SA1PR21MB69218F955B62DFF62E3E88D2BF222@SA1PR21MB6921.namprd21.prod.outlook.com/
+[3] https://lore.kernel.org/all/SN6PR02MB415726B17D5A6027CD1717E8D4342@SN6PR02MB4157.namprd02.prod.outlook.com/
+[4] https://lore.kernel.org/all/SA1PR21MB69213486F821CA5A2C793C81BF342@SA1PR21MB6921.namprd21.prod.outlook.com/
+
+Fixes: 4daace0d8ce8 ("PCI: hv: Add paravirtual PCI front-end for Microsoft Hyper-V VMs")
+CC: stable@vger.kernel.org
+Reviewed-by: Michael Kelley <mhklinux@outlook.com>
+Tested-by: Krister Johansen <kjlx@templeofstupid.com>
+Tested-by: Matthew Ruffell <matthew.ruffell@canonical.com>
+Signed-off-by: Dexuan Cui <decui@microsoft.com>
+Signed-off-by: Wei Liu <wei.liu@kernel.org>
+[ changed `sysfb_primary_display.screen.lfb_base/lfb_size` reads to the global `screen_info.lfb_base/lfb_size` and dropped the `if (IS_ENABLED(CONFIG_SYSFB))` wrapper, de-indenting the block. ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- security/apparmor/lsm.c |   16 +++++++++++++++-
- 1 file changed, 15 insertions(+), 1 deletion(-)
+ drivers/hv/vmbus_drv.c |   29 ++++++++++++++++++++++++++---
+ 1 file changed, 26 insertions(+), 3 deletions(-)
 
---- a/security/apparmor/lsm.c
-+++ b/security/apparmor/lsm.c
-@@ -1423,7 +1423,21 @@ static int aa_sock_msg_perm(const char *
- static int apparmor_socket_sendmsg(struct socket *sock,
- 				   struct msghdr *msg, int size)
+--- a/drivers/hv/vmbus_drv.c
++++ b/drivers/hv/vmbus_drv.c
+@@ -2027,8 +2027,8 @@ static acpi_status vmbus_walk_resources(
+ 		return AE_NO_MEMORY;
+ 
+ 	/* If this range overlaps the virtual TPM, truncate it. */
+-	if (end > VTPM_BASE_ADDRESS && start < VTPM_BASE_ADDRESS)
+-		end = VTPM_BASE_ADDRESS;
++	if (end >= VTPM_BASE_ADDRESS && start < VTPM_BASE_ADDRESS)
++		end = VTPM_BASE_ADDRESS - 1;
+ 
+ 	new_res->name = "hyperv mmio";
+ 	new_res->flags = IORESOURCE_MEM;
+@@ -2096,12 +2096,31 @@ static int vmbus_acpi_remove(struct acpi
+ static void vmbus_reserve_fb(void)
  {
--	return aa_sock_msg_perm(OP_SENDMSG, AA_MAY_SEND, sock, msg, size);
-+	int error = aa_sock_msg_perm(OP_SENDMSG, AA_MAY_SEND, sock, msg, size);
+ 	resource_size_t start = 0, size;
++	resource_size_t low_mmio_base;
+ 	struct pci_dev *pdev;
+ 
+ 	if (efi_enabled(EFI_BOOT)) {
+ 		/* Gen2 VM: get FB base from EFI framebuffer */
+ 		start = screen_info.lfb_base;
+ 		size = max_t(__u32, screen_info.lfb_size, 0x800000);
 +
-+	if (error)
-+		return error;
++		low_mmio_base = hyperv_mmio->start;
++		if (!low_mmio_base || upper_32_bits(low_mmio_base) ||
++		    (start && start < low_mmio_base)) {
++			pr_warn("Unexpected low mmio base %pa\n", &low_mmio_base);
++		} else {
++			/*
++			 * If the kdump/kexec or CVM kernel's lfb_base
++			 * is 0, fall back to the low mmio base.
++			 */
++			if (!start)
++				start = low_mmio_base;
++			/*
++			 * Reserve half of the space below 4GB for high
++			 * resolutions, but cap the reservation to 128MB.
++			 */
++			size = min((SZ_4G - start) / 2, SZ_128M);
++		}
+ 	} else {
+ 		/* Gen1 VM: get FB base from PCI */
+ 		pdev = pci_get_device(PCI_VENDOR_ID_MICROSOFT,
+@@ -2121,8 +2140,10 @@ static void vmbus_reserve_fb(void)
+ 		pci_dev_put(pdev);
+ 	}
+ 
+-	if (!start)
++	if (!start) {
++		pr_warn("Unexpected framebuffer mmio base of zero\n");
+ 		return;
++	}
+ 
+ 	/*
+ 	 * Make a claim for the frame buffer in the resource tree under the
+@@ -2132,6 +2153,8 @@ static void vmbus_reserve_fb(void)
+ 	 */
+ 	for (; !fb_mmio && (size >= 0x100000); size >>= 1)
+ 		fb_mmio = __request_region(hyperv_mmio, start, size, fb_mmio_name, 0);
 +
-+	/* TCP fast open carries connect() semantics in sendmsg(); mediate
-+	 * the implicit connect so it cannot bypass the connect permission.
-+	 */
-+	if ((msg->msg_flags & MSG_FASTOPEN) && msg->msg_name &&
-+	    (sk_is_tcp(sock->sk) ||
-+	     (sk_is_inet(sock->sk) && sock->sk->sk_type == SOCK_STREAM &&
-+	      sock->sk->sk_protocol == IPPROTO_MPTCP)))
-+		error = aa_sk_perm(OP_CONNECT, AA_MAY_CONNECT, sock->sk);
-+
-+	return error;
++	pr_info("hv_mmio=%pR,%pR fb=%pR\n", hyperv_mmio, hyperv_mmio->sibling, fb_mmio);
  }
  
- static int apparmor_socket_recvmsg(struct socket *sock,
+ /**
 
 
 
