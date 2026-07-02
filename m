@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-271509-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-271510-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id vH9iAGabRmoDaAsAu9opvQ
-	(envelope-from <stable+bounces-271509-lists+stable=lfdr.de@vger.kernel.org>)
+	id BbiFNGabRmoEaAsAu9opvQ
+	(envelope-from <stable+bounces-271510-lists+stable=lfdr.de@vger.kernel.org>)
 	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:09:58 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9FF206FB119
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:09:57 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9D51B6FB11E
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:09:58 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="1zid8M6/";
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-271509-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-271509-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=UUXu9hWZ;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-271510-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-271510-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 2EAA0311A790
-	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 17:02:14 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 400A6311A7A6
+	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 17:02:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC915335066;
-	Thu,  2 Jul 2026 17:02:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E5823101C8;
+	Thu,  2 Jul 2026 17:02:11 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D9821FA859;
-	Thu,  2 Jul 2026 17:02:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 404742DEA98;
+	Thu,  2 Jul 2026 17:02:10 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783011728; cv=none; b=Z4ZdijsIJs2fm4gmkZCJov7/IfH1RleNT/nP93kzlg5skJ+NM0DuWsLMABfTdWW9CdW7s2n3UzVj2IfOIN6kHFA4TDMKPXuxiXUzxlJRfy4KTxz5ZoNR2fE/oQOAV/vsnjxO9HFRDY2Zj5xRMTfuJ6ESY6bOSHZqHiCCRzYw88w=
+	t=1783011731; cv=none; b=dh3E/h0vetrDzi3Lkqw9jz9QP3uIC0KPqVqpdgwQP1Rrnd+vqPn0DOy5GD+va5xku25L/WrhR0DaWe3QW8lpwTzVvrSlFSXUTXF1enXJpYdEciBy/MeSfntyfxPgSjlu5cAIDvQQu1OzHEU2Z79Iej9X+kJP5fHqeONVAO6a0do=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783011728; c=relaxed/simple;
-	bh=UWuztENTqo0qNEAjWItcYJ7qU2MlyJBpjf4aN6Z3WHA=;
+	s=arc-20240116; t=1783011731; c=relaxed/simple;
+	bh=TpPV37oj7OLRQdZBcOQDNl6AhVxVmBr9jCFmjc5+DHs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MKDUVYVPSJDdul0Dv8edDf+3XGvoKM4VZECJMSnx4gzd+SBlM6iW+EQ/KaFwVoIkdFB/D1QFWUgMNTggDpmV+ffZ94EgxJ7fngekJXiZLL/BBpKM6b3KjajCSu9pJDrBho+QV6vdkJSO1qAY1vF50DaJSBy7ox83BreijEPTjzg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1zid8M6/; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1018B1F000E9;
-	Thu,  2 Jul 2026 17:02:06 +0000 (UTC)
+	 MIME-Version; b=dBqdGFjcefC9nciyzGzDk4yZPa7ZQn518B09hLdHZ8ibIFlPDIbroM6klB1Nip7UM4K2QRIRwEr7iMCbOt/+4pt3hnpojwCN118/a67iHUvFawo/MpQjRyBbZJY5LVXNp+/Bv1leEvtSQy2PqPQIvSZDF8UsK+fxtmk8ocx4GUc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UUXu9hWZ; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6E891F000E9;
+	Thu,  2 Jul 2026 17:02:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1783011727;
-	bh=TdeDthDTBwZhiE9LgAJRfu+8Dk5DO546n0eh3HAyUgU=;
+	s=korg; t=1783011730;
+	bh=A8JXwC3QCHBdBrjI+Ph1dt8gxL3+SE1akLBL1olfAt8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=1zid8M6/VJ+8dBlS9oghP0zj4CKRcUMCycG6oLrzHyswCWIgDSctpBFu6G08YxUad
-	 ag5RDgPImfMofxKq9Ih9y2cZw32UMo8J4en01T1EjSFsfi0x690spSqJThICM0Qbyv
-	 hdesdyHVB2mNEHaENLKOnV38wpka3ppAjOIYNuuA=
+	b=UUXu9hWZQ0GOaTUeSOGqDcZJXETUlHovJgVfb6uTYtK9qAejkBg37tu4s/j+joMqI
+	 4t8qO/SIIn6OhTXjW9zqLJMm3HYxaMggRzYWx+jr2drzPyqK7QQcALvWNtbwWQAoU5
+	 qokXIV96Q0Iz8eEFpxkVN05sup4ucb3tRVQ0LYBE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -50,9 +50,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Chris Mason <clm@meta.com>,
 	Jeff Layton <jlayton@kernel.org>,
 	Chuck Lever <chuck.lever@oracle.com>
-Subject: [PATCH 7.1 111/120] nfsd: fix dead ACL conflict guard in nfsd4_create
-Date: Thu,  2 Jul 2026 18:21:47 +0200
-Message-ID: <20260702155115.256779779@linuxfoundation.org>
+Subject: [PATCH 7.1 112/120] nfsd: avoid leaking pre-allocated openowner on unconfirmed retry race
+Date: Thu,  2 Jul 2026 18:21:48 +0200
+Message-ID: <20260702155115.276991467@linuxfoundation.org>
 X-Mailer: git-send-email 2.55.0
 In-Reply-To: <20260702155112.964534952@linuxfoundation.org>
 References: <20260702155112.964534952@linuxfoundation.org>
@@ -72,12 +72,12 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-271509-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-271510-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
@@ -86,7 +86,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
@@ -100,7 +100,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	DBL_BLOCKED_OPENRESOLVER(0.00)[oracle.com:email,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,meta.com:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 9FF206FB119
+X-Rspamd-Queue-Id: 9D51B6FB11E
 
 7.1-stable review patch.  If anyone has any objections, please let me know.
 
@@ -108,48 +108,45 @@ X-Rspamd-Queue-Id: 9FF206FB119
 
 From: Jeff Layton <jlayton@kernel.org>
 
-commit a60f25a800846ab8e5a13f8a9d05111f2aee55a7 upstream.
+commit 57aee7a35bb12753057c5b65d72d1f46c0e95b07 upstream.
 
-nfsd4_create() steals create->cr_dpacl/cr_pacl into the local
-nfsd_attrs via the designated initializer, then immediately sets the
-source pointers to NULL. The subsequent conflict guard tests the
-already-nilled source fields, making it permanently dead code:
+When find_or_alloc_open_stateowner() encounters an unconfirmed owner, it
+calls release_openowner() and sets oo = NULL. Control then falls through
+past the `if (oo)` guard -- which would have freed any pre-allocated
+`new` -- and unconditionally executes `new = alloc_stateowner(...)`. If
+`new` was already allocated on a prior iteration, the pointer is
+silently overwritten and the previous allocation (slab object + owner
+name buffer) is leaked.
 
-    if (create->cr_acl) {
-        if (create->cr_dpacl || create->cr_pacl)  /* always false */
+This requires a race: two NFSv4.0 OPEN threads with the same owner
+string, where a concurrent thread inserts a new unconfirmed owner into
+the hash between retry iterations. The window is narrow but repeatable
+under adversarial conditions.
 
-When a client encodes both FATTR4_WORD0_ACL and
-FATTR4_WORD2_POSIX_{DEFAULT,ACCESS}_ACL in the same CREATE fattr
-bitmap, nfsd4_acl_to_attr() overwrites attrs.na_pacl/na_dpacl without
-releasing the originals, leaking two posix_acl slab objects per
-request. Repeated requests cause unbounded slab exhaustion.
-
-Fix by checking attrs.na_dpacl/na_pacl (the stolen values) instead of
-the nilled create->cr_dpacl/cr_pacl, matching the correct pattern
-already used in nfsd4_setattr().
+Fix by adding `goto retry` after `oo = NULL` so the already-allocated
+`new` is reused on the next iteration rather than overwritten.
 
 Reported-by: Chris Mason <clm@meta.com>
-Assisted-by: kres:claude-opus-4-6
-Fixes: d2ca50606f5f ("NFSD: Add support for POSIX draft ACLs for file creation")
+Fixes: 23df17788c62 ("nfsd: perform all find_openstateowner_str calls in the one place.")
 Cc: stable@vger.kernel.org
+Assisted-by: kres:claude-opus-4-6
 Signed-off-by: Jeff Layton <jlayton@kernel.org>
 Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nfsd/nfs4proc.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/nfsd/nfs4state.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/fs/nfsd/nfs4proc.c
-+++ b/fs/nfsd/nfs4proc.c
-@@ -840,7 +840,7 @@ nfsd4_create(struct svc_rqst *rqstp, str
- 		goto out_aftermask;
- 
- 	if (create->cr_acl) {
--		if (create->cr_dpacl || create->cr_pacl) {
-+		if (attrs.na_dpacl || attrs.na_pacl) {
- 			status = nfserr_inval;
- 			goto out_aftermask;
- 		}
+--- a/fs/nfsd/nfs4state.c
++++ b/fs/nfsd/nfs4state.c
+@@ -5169,6 +5169,7 @@ retry:
+ 		/* Replace unconfirmed owners without checking for replay. */
+ 		release_openowner(oo);
+ 		oo = NULL;
++		goto retry;
+ 	}
+ 	if (oo) {
+ 		if (new)
 
 
 
