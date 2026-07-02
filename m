@@ -1,62 +1,61 @@
-Return-Path: <stable+bounces-270854-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-271439-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 9WFWHMuURmo2ZAsAu9opvQ
-	(envelope-from <stable+bounces-270854-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:41:47 +0200
+	id urmFGMSmRmoHbAsAu9opvQ
+	(envelope-from <stable+bounces-271439-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:58:28 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id F1B986FA659
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:41:46 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id AFB9A6FBBDF
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:58:27 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=HZI1np9x;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-270854-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-270854-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="aQ/nSSjH";
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-271439-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-271439-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 112563075283
-	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:36:37 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 4BCB53442D8A
+	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:59:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9DC2234107D;
-	Thu,  2 Jul 2026 16:33:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BCE1E318ED2;
+	Thu,  2 Jul 2026 16:59:07 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A6F6353A99;
-	Thu,  2 Jul 2026 16:33:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 985E51C695;
+	Thu,  2 Jul 2026 16:59:06 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783010023; cv=none; b=Mh71HCDB6EkyrRxitk7S34sN2vtC7wS52WV2CQ0EstHojXTV+RT76PbBL7Rl5M1UoHRejE1wNy23ZEjWsMOyW9JrelzM5RXcwdhqOc98xM2quz3+hK4yeZ+avxNOrb/z7kCzYQRNd7DA62ZO64UNDcmfRKrQjCZlRa3ReN99+wk=
+	t=1783011547; cv=none; b=D+H+y73C7U6E1kq3h7oU/UP/xqZU+Gan0PzMrbINFCeqq2RnS9+Holi8XxGW/Noqw24EgABDzdSzcgaAgDV6ZS9N+S7ylaJvy3ra3bw5ILEm7742MdXf3Up4gIayatMmHplBPuwV2Y+mVNwBGyG6sFNjRIOW2K5wIzZ3scdYbag=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783010023; c=relaxed/simple;
-	bh=+qRwFPt1BnnxO+VUGcTNxdPEj1Q4m8jh6fwK1FP89LM=;
+	s=arc-20240116; t=1783011547; c=relaxed/simple;
+	bh=v4mP3EtgH68GXNvoHiPslAv6VN0T0bZ6kw3//VTnvmU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Z7G74MDXb1D2YUV/O66dh0wSOkb6/D+a05W9ciAEbQtUY8/q+/+8JMchc6Sq8YkGnb3w4jtlboazfW+gEITruZ2OVTHcCLQM6G5qUA8wF5K4di8LJC4pieiGy72OZqKQ04CD9aj1vNKPAnUDa8X4rLF7Glg84s5YaYUFkx+74Q4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HZI1np9x; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0C561F00A3A;
-	Thu,  2 Jul 2026 16:33:41 +0000 (UTC)
+	 MIME-Version; b=RErtJXQH3QcnMhCVze5YnV7OhIiAiywHQL1N0xI8IqWdURNUmYlQ7M2QXfzSU62Jb9HokWoHEsDw1a93f8i1J87Ow/cDClVNb8ZAyUkjEEkLFKZ8BSQz8jfVnanbH3yofnGpo5Vq1wnRQ6jEgRHbsa0uHIC1SiRpGQoh5yjH6SU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aQ/nSSjH; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 097791F00A3D;
+	Thu,  2 Jul 2026 16:59:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1783010022;
-	bh=KtCgmYqeEPWpxKqTJUsTMF3fjLf2jpKGShxXsd6NRzM=;
+	s=korg; t=1783011546;
+	bh=3Dmk2R5hyo4tuT5v9gR0IVnaiZ+wbMMiOnBkHTIDMeE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=HZI1np9xeSsRYUlK4wNnz6fYZkwgG0Vj+DVTrHsSRFGvrepEe9lsf4VEj2PXbnfCI
-	 ZXZI3ERt047CuZUMeZxCbtx7QrrBY+1PV7t1V7rqxqPMvfPYwm7utHqvOcvdlfFNWS
-	 KR/2PTPuddWXgOML+5GmduFo8FWTyd6l+ipszgl0=
+	b=aQ/nSSjHCCB/O2I5yPwJJr9ujt2+Cy9Qcxt8eFFUYvm32f27Z54SiaPA+alm/DR7k
+	 +7JkpcZbzdn8BsLeFpy/N4EmLg2SrzicsgokWwbKcp8Wgd7ku1C8FqCaMZb6wHFTh1
+	 s4J1m3hX+GmWrseB0FPz0WlocaXWAZz078GwC+vw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Frank Li <Frank.Li@nxp.com>,
-	Koichiro Den <den@valinux.co.jp>,
-	Dave Jiang <dave.jiang@intel.com>,
-	Jon Mason <jdmason@kudzu.us>
-Subject: [PATCH 6.1 081/129] NTB: epf: Avoid pci_iounmap() with offset when PEER_SPAD and CONFIG share BAR
+	stable@kernel.org,
+	Sven Eckelmann <sven@narfation.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 7.1 004/120] batman-adv: tp_meter: initialize dec_cwnd explicitly
 Date: Thu,  2 Jul 2026 18:20:00 +0200
-Message-ID: <20260702155113.814978120@linuxfoundation.org>
+Message-ID: <20260702155113.057308022@linuxfoundation.org>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260702155112.163984240@linuxfoundation.org>
-References: <20260702155112.163984240@linuxfoundation.org>
+In-Reply-To: <20260702155112.964534952@linuxfoundation.org>
+References: <20260702155112.964534952@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,94 +69,78 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-270854-lists,stable=lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-271439-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:Frank.Li@nxp.com,m:den@valinux.co.jp,m:dave.jiang@intel.com,m:jdmason@kudzu.us,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	TO_DN_SOME(0.00)[];
+	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:stable@kernel.org,m:sven@narfation.org,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,nxp.com:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,intel.com:email,kudzu.us:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp,narfation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: F1B986FA659
+X-Rspamd-Queue-Id: AFB9A6FBBDF
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+7.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Koichiro Den <den@valinux.co.jp>
+From: Sven Eckelmann <sven@narfation.org>
 
-commit d876153680e3d721d385e554def919bce3d18c74 upstream.
+commit febfb1b86224489535312296ecfa3d4bf467f339 upstream.
 
-When BAR_PEER_SPAD and BAR_CONFIG share one PCI BAR, the module teardown
-path ends up calling pci_iounmap() on the same iomem with some offset,
-which is unnecessary and triggers a kernel warning like the following:
+When batadv_tp_update_cwnd() is called, dec_cwnd is increased. But dec_cwnd
+is only initialixed (to 0) when a duplicate Ack was received or when cwnd
+is below the ss_threshold.
 
-  Trying to vunmap() nonexistent vm area (0000000069a5ffe8)
-  WARNING: mm/vmalloc.c:3470 at vunmap+0x58/0x68, CPU#5: modprobe/2937
-  [...]
-  Call trace:
-   vunmap+0x58/0x68 (P)
-   iounmap+0x34/0x48
-   pci_iounmap+0x2c/0x40
-   ntb_epf_pci_remove+0x44/0x80 [ntb_hw_epf]
-   pci_device_remove+0x48/0xf8
-   device_remove+0x50/0x88
-   device_release_driver_internal+0x1c8/0x228
-   driver_detach+0x50/0xb0
-   bus_remove_driver+0x74/0x100
-   driver_unregister+0x34/0x68
-   pci_unregister_driver+0x34/0xa0
-   ntb_epf_pci_driver_exit+0x14/0xfe0 [ntb_hw_epf]
-  [...]
+Just initialize the cwnd during the initialization to avoid any potential
+access of uninitialized data.
 
-Fix it by unmapping only when PEER_SPAD and CONFIG use difference bars.
-
-Cc: stable@vger.kernel.org
-Fixes: e75d5ae8ab88 ("NTB: epf: Allow more flexibility in the memory BAR map method")
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
-Signed-off-by: Koichiro Den <den@valinux.co.jp>
-Reviewed-by: Dave Jiang <dave.jiang@intel.com>
-Signed-off-by: Jon Mason <jdmason@kudzu.us>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@kernel.org
+Fixes: 33a3bb4a3345 ("batman-adv: throughput meter implementation")
+Signed-off-by: Sven Eckelmann <sven@narfation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/ntb/hw/epf/ntb_hw_epf.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ net/batman-adv/tp_meter.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/ntb/hw/epf/ntb_hw_epf.c
-+++ b/drivers/ntb/hw/epf/ntb_hw_epf.c
-@@ -649,7 +649,8 @@ static void ntb_epf_deinit_pci(struct nt
- 	struct pci_dev *pdev = ndev->ntb.pdev;
- 
- 	pci_iounmap(pdev, ndev->ctrl_reg);
--	pci_iounmap(pdev, ndev->peer_spad_reg);
-+	if (ndev->barno_map[BAR_PEER_SPAD] != ndev->barno_map[BAR_CONFIG])
-+		pci_iounmap(pdev, ndev->peer_spad_reg);
- 	pci_iounmap(pdev, ndev->db_reg);
- 
- 	pci_clear_master(pdev);
+diff --git a/net/batman-adv/tp_meter.c b/net/batman-adv/tp_meter.c
+index 0325b951ff8a8e..2ff7aa5ed19fb3 100644
+--- a/net/batman-adv/tp_meter.c
++++ b/net/batman-adv/tp_meter.c
+@@ -1055,6 +1055,8 @@ void batadv_tp_start(struct batadv_priv *bat_priv, const u8 *dst,
+ 	 * mesh_interface, hence its MTU
+ 	 */
+ 	tp_vars->cwnd = BATADV_TP_PLEN * 3;
++	tp_vars->dec_cwnd = 0;
++
+ 	/* at the beginning initialise the SS threshold to the biggest possible
+ 	 * window size, hence the AWND size
+ 	 */
+-- 
+2.53.0
+
 
 
 
