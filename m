@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-271335-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-271258-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id H7i9NF6aRmpyZwsAu9opvQ
-	(envelope-from <stable+bounces-271335-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:05:34 +0200
+	id LmGKH8SZRmobZwsAu9opvQ
+	(envelope-from <stable+bounces-271258-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:03:00 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 67F8C6FAF77
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:05:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 32CA16FAE7D
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:03:00 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="y/AAJ4rH";
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-271335-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-271335-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=ToUCDmfz;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-271258-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-271258-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 8DEE0306290D
-	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:54:39 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 01474309063F
+	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:52:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B695882866;
-	Thu,  2 Jul 2026 16:54:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4DD0F33BBCD;
+	Thu,  2 Jul 2026 16:51:17 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C45426F46F;
-	Thu,  2 Jul 2026 16:54:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A88926F46F;
+	Thu,  2 Jul 2026 16:51:16 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783011274; cv=none; b=pehxzyQu8+A5lcu7S0CBDIeN+zCchlI34wxMYFnrfuEA4Cb9bnwaRFy3BW1FOBHpZof3EGes/sCz67zYGBTMAdz4DCYcLnvn6CTpMNEQxCBpToPK89aD/KtQu8Nxitxlhg2vwUxkNpMq2u0qAbLvzJa24AeE41joCrReVvgj17A=
+	t=1783011077; cv=none; b=Ev1vDYrbgcsd9vTFGGzbn1RuPmDu5vgW54zXXGNOCVxh1umklgx4ljvmhxG46+7ou0dvyUe580MdRsxfkoAPhq3bnL8HXPQ9qStPoP1xCjN8CTM5H4cavRSJdRNqIbkG5n2terButtPZFjWUsdoQY7O02F9IKrbtP37SBfMeIKo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783011274; c=relaxed/simple;
-	bh=FRmGR4n9P3fS5PreEidEQOYwY2LBk8bE2qjBtpl9zaU=;
+	s=arc-20240116; t=1783011077; c=relaxed/simple;
+	bh=HdhbYby+KIT2Tju2Oy26LwHRiIGN8sa9isy8X2w9UOw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=N+coFDL3NudawaIqgOensUbRvP+9SXnPa0BF9NfxigKwU/hduMohCN8iNuLBtrt38B0hXRt1sDkWgW3gb5K0COtFWvWQM0YitP7eiXmQL0Bk48hENBx4S89QPwW19xZzjLHKlAjbJ1gl9SEbvaFJlmI8fp410KxbIAT6Of+rUEA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y/AAJ4rH; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3EF11F000E9;
-	Thu,  2 Jul 2026 16:54:32 +0000 (UTC)
+	 MIME-Version; b=oXsDrApUw1oJqdCdlli42pv1eZlNK1Th/ZXYjuVVUw8bN8fspe9xKlFZeU0I1ijqk6hBlfJM676AOU6T6VPpsoYg5UMGchqe3QTXsY+yjOz8a1XHIMxc12vMmHj7BJsQHvqjAYgimR6al8yyX92j8fEGg2Vj0CvGC5rNX4REJRU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ToUCDmfz; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 706921F00A3A;
+	Thu,  2 Jul 2026 16:51:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1783011273;
-	bh=dy0Oy2B7c4a+kZgvnGjl02WRveXN1DB54O052D7r8Ho=;
+	s=korg; t=1783011075;
+	bh=L5FeyoKA6CXlp82pNnwaDFpkZgOLcxgruTTSgyP7AQY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=y/AAJ4rHyvnsN/6CDdt+sAFWcqq8FogGSd8Wy5iUjPf7E2sO+mxdCtzQnkoeTE+z1
-	 kUd7PJ61JhH0hZDeqP87sKpLt71/B3Fc1RuEOqLSWQ40h/ek2S9jgNFM1IbhcWNFCD
-	 Tk1fXEstEFnakp1tFHmKuTS6lSrrtoFA7rFcNvws=
+	b=ToUCDmfzGkwiQnD+0OK0t2pIGgWiDVS95UwtVrnf6HZQ/YwgO6LnDbp4av2NTsW4j
+	 PATh70UaB11vP5ztf0Iaai7nK7QKt5voksEPJTFRuB6CvYGoSPB5NfPXh2s08IOR3j
+	 jptsdjnVxN20K+j5ghFDADBewVU2GLedTngad53s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Usama Arif <usama.arif@linux.dev>,
-	Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 6.18 044/108] block: invalidate cached plug timestamp after task switch
+	Chao Yu <chao@kernel.org>,
+	Yongpeng Yang <yangyongpeng@xiaomi.com>,
+	Jaegeuk Kim <jaegeuk@kernel.org>
+Subject: [PATCH 6.6 140/175] f2fs: fix incorrect FI_NO_EXTENT handling in __destroy_extent_node()
 Date: Thu,  2 Jul 2026 18:20:41 +0200
-Message-ID: <20260702155113.020016705@linuxfoundation.org>
+Message-ID: <20260702155118.756316471@linuxfoundation.org>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260702155112.110058792@linuxfoundation.org>
-References: <20260702155112.110058792@linuxfoundation.org>
+In-Reply-To: <20260702155115.766838875@linuxfoundation.org>
+References: <20260702155115.766838875@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -76,17 +77,17 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-271335-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-271258-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:usama.arif@linux.dev,m:axboe@kernel.dk,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:chao@kernel.org,m:yangyongpeng@xiaomi.com,m:jaegeuk@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
@@ -97,118 +98,94 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,msgid.link:url,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,linux.dev:email,kernel.dk:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,xiaomi.com:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 67F8C6FAF77
+X-Rspamd-Queue-Id: 32CA16FAE7D
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Usama Arif <usama.arif@linux.dev>
+From: Yongpeng Yang <yangyongpeng@xiaomi.com>
 
-commit fad156c2af227f42ca796cbb20ddc354a6dd9932 upstream.
+commit 1f70ddb28a3c71df124da5fa4040c808116d6bb9 upstream.
 
-blk_time_get_ns() caches ktime_get_ns() in current->plug->cur_ktime
-and marks the task with PF_BLOCK_TS. That cache is only valid while the
-task keeps running; if the task is switched out, wall-clock time
-advances and the cached value must not be reused when the task runs again.
+When __destroy_extent_node() sets the inode flag FI_NO_EXTENT, it does
+not reset the length of the largest extent to 0 and update the inode
+folio. Since modifications to the extent tree are disallowed afterward,
+the cached largest extent may become stale. This can trigger the
+following error in xfstests generic/388:
 
-The existing invalidation covers explicit plug flushes through
-__blk_flush_plug(), and the schedule() / rtmutex paths through
-sched_update_worker(). It does not cover in-kernel preemption paths such
-as preempt_schedule(), preempt_schedule_notrace(), and
-preempt_schedule_irq(), which enter __schedule(SM_PREEMPT) directly and
-return without calling sched_update_worker().
+F2FS-fs (dm-0): sanity_check_extent_cache: inode (ino=1761) extent info [220057, 57, 6] is incorrect, run fsck to fix
 
-As a result, a task preempted while holding a plug with PF_BLOCK_TS set
-can reuse a stale plug->cur_ktime after it is scheduled back in. blk-iocost
-then consumes that stale timestamp through ioc_now(), producing stale vnow
-values for throttle decisions, and through ioc_rqos_done(), inflating
-on-queue time and feeding false missed-QoS samples into vrate
-adjustment.
+In the f2fs_drop_inode path, __destroy_extent_node() does not need to
+guarantee that et->node_cnt is 0, because concurrency with writeback
+is expected in this path, and writeback may update the extent cache.
 
-Move the schedule-side invalidation to finish_task_switch(), which runs
-for the scheduled-in task after every actual context switch regardless
-of which schedule entry point was used. Keep __blk_flush_plug() as the
-explicit flush/finish-plug invalidation path, and remove only the
-PF_BLOCK_TS handling from sched_update_worker().
+This patch reverts commit ed78aeebef05 ("f2fs: fix node_cnt race between
+extent node destroy and writeback"), and remove the unnecessary zero
+check of et->node_cnt.
 
-Fixes: 06b23f92af87 ("block: update cached timestamp post schedule/preemption")
+Fixes: ed78aeebef05 ("f2fs: fix node_cnt race between extent node destroy and writeback")
 Cc: stable@vger.kernel.org
-Signed-off-by: Usama Arif <usama.arif@linux.dev>
-Link: https://patch.msgid.link/20260616141604.328820-3-usama.arif@linux.dev
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Reported-by: Chao Yu <chao@kernel.org>
+Suggested-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Yongpeng Yang <yangyongpeng@xiaomi.com>
+Reviewed-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/blkdev.h |   18 +++++++-----------
- kernel/sched/core.c    |   12 ++++++++----
- 2 files changed, 15 insertions(+), 15 deletions(-)
+ fs/f2fs/extent_cache.c |   19 +++++++------------
+ 1 file changed, 7 insertions(+), 12 deletions(-)
 
---- a/include/linux/blkdev.h
-+++ b/include/linux/blkdev.h
-@@ -1187,16 +1187,12 @@ static inline void blk_flush_plug(struct
- 		__blk_flush_plug(plug, async);
- }
+--- a/fs/f2fs/extent_cache.c
++++ b/fs/f2fs/extent_cache.c
+@@ -87,10 +87,9 @@ static bool __may_extent_tree(struct ino
+ 	if (!__init_may_extent_tree(inode, type))
+ 		return false;
  
--/*
-- * tsk == current here
-- */
--static inline void blk_plug_invalidate_ts(struct task_struct *tsk)
--{
--	struct blk_plug *plug = tsk->plug;
+-	if (is_inode_flag_set(inode, FI_NO_EXTENT))
+-		return false;
 -
--	if (plug)
--		plug->cur_ktime = 0;
--	current->flags &= ~PF_BLOCK_TS;
-+static __always_inline void blk_plug_invalidate_ts(void)
-+{
-+	if (unlikely(current->flags & PF_BLOCK_TS)) {
-+		current->plug->cur_ktime = 0;
-+		current->flags &= ~PF_BLOCK_TS;
-+	}
- }
+ 	if (type == EX_READ) {
++		if (is_inode_flag_set(inode, FI_NO_EXTENT))
++			return false;
+ 		if (is_inode_flag_set(inode, FI_COMPRESSED_FILE) &&
+ 				 !f2fs_sb_has_readonly(F2FS_I_SB(inode)))
+ 			return false;
+@@ -603,14 +602,10 @@ static unsigned int __destroy_extent_nod
  
- int blkdev_issue_flush(struct block_device *bdev);
-@@ -1222,7 +1218,7 @@ static inline void blk_flush_plug(struct
- {
- }
- 
--static inline void blk_plug_invalidate_ts(struct task_struct *tsk)
-+static inline void blk_plug_invalidate_ts(void)
- {
- }
- 
---- a/kernel/sched/core.c
-+++ b/kernel/sched/core.c
-@@ -5206,6 +5206,12 @@ static struct rq *finish_task_switch(str
- 	 */
- 	kmap_local_sched_in();
- 
-+	/*
-+	 * Any cached block-layer timestamp (plug->cur_ktime) is stale now,
-+	 * invalidate it.
-+	 */
-+	blk_plug_invalidate_ts();
-+
- 	fire_sched_in_preempt_notifiers(current);
- 	/*
- 	 * When switching through a kernel thread, the loop in
-@@ -7000,12 +7006,10 @@ static inline void sched_submit_work(str
- 
- static void sched_update_worker(struct task_struct *tsk)
- {
--	if (tsk->flags & (PF_WQ_WORKER | PF_IO_WORKER | PF_BLOCK_TS)) {
--		if (tsk->flags & PF_BLOCK_TS)
--			blk_plug_invalidate_ts(tsk);
-+	if (tsk->flags & (PF_WQ_WORKER | PF_IO_WORKER)) {
- 		if (tsk->flags & PF_WQ_WORKER)
- 			wq_worker_running(tsk);
--		else if (tsk->flags & PF_IO_WORKER)
-+		else
- 			io_wq_worker_running(tsk);
+ 	while (atomic_read(&et->node_cnt)) {
+ 		write_lock(&et->lock);
+-		if (!is_inode_flag_set(inode, FI_NO_EXTENT))
+-			set_inode_flag(inode, FI_NO_EXTENT);
+ 		node_cnt += __free_extent_tree(sbi, et, nr_shrink);
+ 		write_unlock(&et->lock);
  	}
+ 
+-	f2fs_bug_on(sbi, atomic_read(&et->node_cnt));
+-
+ 	return node_cnt;
  }
+ 
+@@ -640,12 +635,12 @@ static void __update_extent_tree_range(s
+ 
+ 	write_lock(&et->lock);
+ 
+-	if (is_inode_flag_set(inode, FI_NO_EXTENT)) {
+-		write_unlock(&et->lock);
+-		return;
+-	}
+-
+ 	if (type == EX_READ) {
++		if (is_inode_flag_set(inode, FI_NO_EXTENT)) {
++			write_unlock(&et->lock);
++			return;
++		}
++
+ 		prev = et->largest;
+ 		dei.len = 0;
+ 
 
 
 
