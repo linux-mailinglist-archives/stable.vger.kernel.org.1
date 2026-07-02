@@ -1,63 +1,67 @@
-Return-Path: <stable+bounces-271148-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-270792-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id rwFrAz+ZRmrIZgsAu9opvQ
-	(envelope-from <stable+bounces-271148-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:00:47 +0200
+	id is4nALmWRmpkZQsAu9opvQ
+	(envelope-from <stable+bounces-270792-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:50:01 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6CC026FADA4
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:00:46 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id EDB946FA9E5
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:49:59 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=yWRCU9eJ;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-271148-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-271148-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=HXPQ4bWB;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-270792-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-270792-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 6464B331BADB
-	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:48:12 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 9A803304F5E2
+	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:34:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E9C034EF05;
-	Thu,  2 Jul 2026 16:46:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A961349AE0;
+	Thu,  2 Jul 2026 16:31:04 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F60832ED40;
-	Thu,  2 Jul 2026 16:46:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2366348C71;
+	Thu,  2 Jul 2026 16:31:02 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783010796; cv=none; b=rLmPZ8x62sgauFg6za5VS8phNBzAkOehH4sElLFYsR+qe9Y8FU2eZkXPGrB4tgADCDMeH99Aj8mIN7KjJUl47irfc0cYj+BBeECT+jrsUNLEczkb2SQGivB/4RXShjGEi0P2gN+zDl3V6/xS+6q52T7DfBmxWmwd8Rf1fKXgqSg=
+	t=1783009864; cv=none; b=reraJdPb5PLGwvsXW+cfTd0auQMF72zjGnu1irxoGTYQFfj0A+3UR3WKV7K+9ylhErgZQ+YJkwHMEIstoFGJWTCyrzQ/OZt9KZcI+mfznH3jclLUfwbLzVKkFcT1QVyB59VZbcMt5dBBeMWiYpqSHih18JfmxiV3CJ8Pv1Jk2l8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783010796; c=relaxed/simple;
-	bh=FyosHntRHMVgDX42pV21T/P9Y5QVsSVQS1Xs8lpICyU=;
+	s=arc-20240116; t=1783009864; c=relaxed/simple;
+	bh=aN0NxbxaYO1qp4NPuDCfXbgbBy7ycooaVwMvGcLvf0M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Nnc6qHNcuQOl1mkKRVjLz85LmWZXMq0SpQM2u+xYxtPl7AmdQxaeQ7BkL0JEB9uMKiRy8Q3omLI7T/c1wLFXeddner6h7XMb8fHWyPcnEbTZ0+bHVeI2jLD0Yt0JvxnxZyn5aB36AFCElX/n3Gm72vGweg5qgZAWKQkb7D9sXxk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yWRCU9eJ; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3DCF1F000E9;
-	Thu,  2 Jul 2026 16:46:34 +0000 (UTC)
+	 MIME-Version; b=bFJcQtZcSGuy/76JmSOEYpZj9FJTAnvjtk04zzC2bXZ9GftE6YjX+/HOITkMFkHiAhQwwZXt96efWP7oJ7LWMHddTVnROT5NELN9mlRWNWD9KyhLSeiaLaSvxw3HWO0lZvOVyJrJsiHqz3h2GLRk2jcL7vp0s7wWPPs0zZs5XAA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HXPQ4bWB; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A4351F000E9;
+	Thu,  2 Jul 2026 16:31:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1783010795;
-	bh=9qCH83KNm0j0Cafv7KsTDpvtv69bDrhJJAvmbg69zfM=;
+	s=korg; t=1783009862;
+	bh=KQlQbAC/r+npsS06K/NgkrIngYDx2FqS4/+R/XviWY0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=yWRCU9eJ94i6cEV33YrLdBjige1k8Kf0jx/DqdC7ykGdYCqLbfOPVXKgXeXXC6A9e
-	 X7QDrx/v0deSXbawJoETQ6CWKWVnPMSWge4BCLo8YE6ilTDC7MTMYmt7kVti4bOwfb
-	 O8n/JHHG1JZdE+kvveFRg2XuSsAM5LRRVevegxVo=
+	b=HXPQ4bWBRJaOP9YOwJywsqndRc3RUEolJlugyxA22KMIgcPY4wPqsTZyCATfN38u1
+	 +s/A/EpLyYCRc1w1yH9R4daLyYo+Y17wKZmqp8no2qdceCXaWA7/ekRvk6YB1qAxLF
+	 2ErpPvLLASIdfc1EHAcKoKF3C/Wa54EvWVHGuBOE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Santosh Kalluri <santosh.kalluri129@gmail.com>,
-	=?UTF-8?q?R=C3=A9mi=20Denis-Courmont?= <remi@remlab.net>,
-	Simon Horman <horms@kernel.org>,
+	syzbot+87f770387a9e5dc6b79b@syzkaller.appspotmail.com,
+	Eric Dumazet <edumazet@google.com>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	John Fastabend <john.fastabend@gmail.com>,
+	Jakub Sitnicki <jakub@cloudflare.com>,
+	Willem de Bruijn <willemdebruijn.kernel@gmail.com>,
+	Kuniyuki Iwashima <kuniyu@google.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 039/175] net: phonet: free phonet_device after RCU grace period
+Subject: [PATCH 6.1 021/129] net: annotate data-races around sk->sk_{data_ready,write_space}
 Date: Thu,  2 Jul 2026 18:19:00 +0200
-Message-ID: <20260702155116.621746953@linuxfoundation.org>
+Message-ID: <20260702155112.599590447@linuxfoundation.org>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260702155115.766838875@linuxfoundation.org>
-References: <20260702155115.766838875@linuxfoundation.org>
+In-Reply-To: <20260702155112.163984240@linuxfoundation.org>
+References: <20260702155112.163984240@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,84 +71,305 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-271148-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,remlab.net,kernel.org];
+	RCPT_COUNT_TWELVE(0.00)[12];
+	TAGGED_FROM(0.00)[bounces-270792-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:santosh.kalluri129@gmail.com,m:remi@remlab.net,m:horms@kernel.org,m:kuba@kernel.org,m:sashal@kernel.org,m:santoshkalluri129@gmail.com,s:lists@lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORWARDED(0.00)[lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,syzkaller.appspotmail.com,google.com,iogearbox.net,gmail.com,cloudflare.com,kernel.org];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:syzbot+87f770387a9e5dc6b79b@syzkaller.appspotmail.com,m:edumazet@google.com,m:daniel@iogearbox.net,m:john.fastabend@gmail.com,m:jakub@cloudflare.com,m:willemdebruijn.kernel@gmail.com,m:kuniyu@google.com,m:kuba@kernel.org,m:sashal@kernel.org,m:syzbot@syzkaller.appspotmail.com,m:johnfastabend@gmail.com,m:willemdebruijnkernel@gmail.com,s:lists@lfdr.de];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	TAGGED_RCPT(0.00)[stable,87f770387a9e5dc6b79b];
+	TO_DN_SOME(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,remlab.net:email]
+	RWL_MAILSPIKE_POSSIBLE(0.00)[104.64.211.4:from];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[appspotmail.com:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,cloudflare.com:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 6CC026FADA4
+X-Rspamd-Queue-Id: EDB946FA9E5
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Santosh Kalluri <santosh.kalluri129@gmail.com>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit 71de0177b28da751f407581a4515cf4d762f6296 ]
+[ Upstream commit 2ef2b20cf4e04ac8a6ba68493f8780776ff84300 ]
 
-phonet_device_destroy() removes a phonet_device from the per-net device
-list with list_del_rcu(), but frees it immediately. RCU readers walking
-the same list can still hold a pointer to the object after it has been
-removed, leading to a slab-use-after-free.
+skmsg (and probably other layers) are changing these pointers
+while other cpus might read them concurrently.
 
-Use kfree_rcu(), matching the lifetime rule already used by
-phonet_address_del() for the same object type.
+Add corresponding READ_ONCE()/WRITE_ONCE() annotations
+for UDP, TCP and AF_UNIX.
 
-Fixes: eeb74a9d45f7 ("Phonet: convert devices list to RCU")
-Cc: stable@vger.kernel.org
-Signed-off-by: Santosh Kalluri <santosh.kalluri129@gmail.com>
-Acked-by: Rémi Denis-Courmont <remi@remlab.net>
-Reviewed-by: Simon Horman <horms@kernel.org>
+Fixes: 604326b41a6f ("bpf, sockmap: convert to generic sk_msg interface")
+Reported-by: syzbot+87f770387a9e5dc6b79b@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/netdev/699ee9fc.050a0220.1cd54b.0009.GAE@google.com/
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Cc: Daniel Borkmann <daniel@iogearbox.net>
+Cc: John Fastabend <john.fastabend@gmail.com>
+Cc: Jakub Sitnicki <jakub@cloudflare.com>
+Cc: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
+Reviewed-by: Kuniyuki Iwashima <kuniyu@google.com>
+Link: https://patch.msgid.link/20260225131547.1085509-1-edumazet@google.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/phonet/pn_dev.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/core/skmsg.c         | 14 +++++++-------
+ net/ipv4/tcp.c           |  4 ++--
+ net/ipv4/tcp_bpf.c       |  2 +-
+ net/ipv4/tcp_input.c     | 14 ++++++++------
+ net/ipv4/tcp_minisocks.c |  2 +-
+ net/ipv4/udp.c           |  2 +-
+ net/ipv4/udp_bpf.c       |  2 +-
+ net/unix/af_unix.c       |  8 ++++----
+ 8 files changed, 25 insertions(+), 23 deletions(-)
 
---- a/net/phonet/pn_dev.c
-+++ b/net/phonet/pn_dev.c
-@@ -105,7 +105,7 @@ static void phonet_device_destroy(struct
- 		for_each_set_bit(addr, pnd->addrs, 64)
- 			phonet_address_notify(net, RTM_DELADDR, ifindex, addr);
+diff --git a/net/core/skmsg.c b/net/core/skmsg.c
+index 444b9b25ade28d..fd1a2464db0aab 100644
+--- a/net/core/skmsg.c
++++ b/net/core/skmsg.c
+@@ -1198,8 +1198,8 @@ void sk_psock_start_strp(struct sock *sk, struct sk_psock *psock)
+ 		return;
  
--		kfree(pnd);
-+		kfree_rcu(pnd, rcu);
- 	}
+ 	psock->saved_data_ready = sk->sk_data_ready;
+-	sk->sk_data_ready = sk_psock_strp_data_ready;
+-	sk->sk_write_space = sk_psock_write_space;
++	WRITE_ONCE(sk->sk_data_ready, sk_psock_strp_data_ready);
++	WRITE_ONCE(sk->sk_write_space, sk_psock_write_space);
  }
  
+ void sk_psock_stop_strp(struct sock *sk, struct sk_psock *psock)
+@@ -1209,8 +1209,8 @@ void sk_psock_stop_strp(struct sock *sk, struct sk_psock *psock)
+ 	if (!psock->saved_data_ready)
+ 		return;
+ 
+-	sk->sk_data_ready = psock->saved_data_ready;
+-	psock->saved_data_ready = NULL;
++	WRITE_ONCE(sk->sk_data_ready, psock->saved_data_ready);
++	WRITE_ONCE(psock->saved_data_ready, NULL);
+ 	strp_stop(&psock->strp);
+ }
+ 
+@@ -1283,8 +1283,8 @@ void sk_psock_start_verdict(struct sock *sk, struct sk_psock *psock)
+ 		return;
+ 
+ 	psock->saved_data_ready = sk->sk_data_ready;
+-	sk->sk_data_ready = sk_psock_verdict_data_ready;
+-	sk->sk_write_space = sk_psock_write_space;
++	WRITE_ONCE(sk->sk_data_ready, sk_psock_verdict_data_ready);
++	WRITE_ONCE(sk->sk_write_space, sk_psock_write_space);
+ }
+ 
+ void sk_psock_stop_verdict(struct sock *sk, struct sk_psock *psock)
+@@ -1295,6 +1295,6 @@ void sk_psock_stop_verdict(struct sock *sk, struct sk_psock *psock)
+ 	if (!psock->saved_data_ready)
+ 		return;
+ 
+-	sk->sk_data_ready = psock->saved_data_ready;
++	WRITE_ONCE(sk->sk_data_ready, psock->saved_data_ready);
+ 	psock->saved_data_ready = NULL;
+ }
+diff --git a/net/ipv4/tcp.c b/net/ipv4/tcp.c
+index 076aa73c99fa81..82d6c01c7885c2 100644
+--- a/net/ipv4/tcp.c
++++ b/net/ipv4/tcp.c
+@@ -1479,7 +1479,7 @@ int tcp_sendmsg_locked(struct sock *sk, struct msghdr *msg, size_t size)
+ 	err = sk_stream_error(sk, flags, err);
+ 	/* make sure we wake any epoll edge trigger waiter */
+ 	if (unlikely(tcp_rtx_and_write_queues_empty(sk) && err == -EAGAIN)) {
+-		sk->sk_write_space(sk);
++		READ_ONCE(sk->sk_write_space)(sk);
+ 		tcp_chrono_stop(sk, TCP_CHRONO_SNDBUF_LIMITED);
+ 	}
+ 	return err;
+@@ -3844,7 +3844,7 @@ int do_tcp_setsockopt(struct sock *sk, int level, int optname,
+ 		break;
+ 	case TCP_NOTSENT_LOWAT:
+ 		WRITE_ONCE(tp->notsent_lowat, val);
+-		sk->sk_write_space(sk);
++		READ_ONCE(sk->sk_write_space)(sk);
+ 		break;
+ 	case TCP_INQ:
+ 		if (val > 1 || val < 0)
+diff --git a/net/ipv4/tcp_bpf.c b/net/ipv4/tcp_bpf.c
+index 8e6c0737bfe128..9af7595bf8c452 100644
+--- a/net/ipv4/tcp_bpf.c
++++ b/net/ipv4/tcp_bpf.c
+@@ -750,7 +750,7 @@ int tcp_bpf_update_proto(struct sock *sk, struct sk_psock *psock, bool restore)
+ 			WRITE_ONCE(sk->sk_prot->unhash, psock->saved_unhash);
+ 			tcp_update_ulp(sk, psock->sk_proto, psock->saved_write_space);
+ 		} else {
+-			sk->sk_write_space = psock->saved_write_space;
++			WRITE_ONCE(sk->sk_write_space, psock->saved_write_space);
+ 			/* Pairs with lockless read in sk_clone_lock() */
+ 			sock_replace_proto(sk, psock->sk_proto);
+ 		}
+diff --git a/net/ipv4/tcp_input.c b/net/ipv4/tcp_input.c
+index 645ff379c42544..91b019df7ddf79 100644
+--- a/net/ipv4/tcp_input.c
++++ b/net/ipv4/tcp_input.c
+@@ -4898,7 +4898,7 @@ static void tcp_data_queue_ofo(struct sock *sk, struct sk_buff *skb)
+ 
+ 	if (unlikely(tcp_try_rmem_schedule(sk, skb, skb->truesize))) {
+ 		NET_INC_STATS(sock_net(sk), LINUX_MIB_TCPOFODROP);
+-		sk->sk_data_ready(sk);
++		READ_ONCE(sk->sk_data_ready)(sk);
+ 		tcp_drop_reason(sk, skb, SKB_DROP_REASON_PROTO_MEM);
+ 		return;
+ 	}
+@@ -5104,7 +5104,7 @@ int tcp_send_rcvq(struct sock *sk, struct msghdr *msg, size_t size)
+ void tcp_data_ready(struct sock *sk)
+ {
+ 	if (tcp_epollin_ready(sk, sk->sk_rcvlowat) || sock_flag(sk, SOCK_DONE))
+-		sk->sk_data_ready(sk);
++		READ_ONCE(sk->sk_data_ready)(sk);
+ }
+ 
+ static void tcp_data_queue(struct sock *sk, struct sk_buff *skb)
+@@ -5150,7 +5150,7 @@ static void tcp_data_queue(struct sock *sk, struct sk_buff *skb)
+ 		else if (tcp_try_rmem_schedule(sk, skb, skb->truesize)) {
+ 			reason = SKB_DROP_REASON_PROTO_MEM;
+ 			NET_INC_STATS(sock_net(sk), LINUX_MIB_TCPRCVQDROP);
+-			sk->sk_data_ready(sk);
++			READ_ONCE(sk->sk_data_ready)(sk);
+ 			goto drop;
+ 		}
+ 
+@@ -5570,7 +5570,9 @@ static void tcp_new_space(struct sock *sk)
+ 		tp->snd_cwnd_stamp = tcp_jiffies32;
+ 	}
+ 
+-	INDIRECT_CALL_1(sk->sk_write_space, sk_stream_write_space, sk);
++	INDIRECT_CALL_1(READ_ONCE(sk->sk_write_space),
++			sk_stream_write_space,
++			sk);
+ }
+ 
+ /* Caller made space either from:
+@@ -5768,7 +5770,7 @@ static void tcp_urg(struct sock *sk, struct sk_buff *skb, const struct tcphdr *t
+ 				BUG();
+ 			WRITE_ONCE(tp->urg_data, TCP_URG_VALID | tmp);
+ 			if (!sock_flag(sk, SOCK_DEAD))
+-				sk->sk_data_ready(sk);
++				READ_ONCE(sk->sk_data_ready)(sk);
+ 		}
+ 	}
+ }
+@@ -7133,7 +7135,7 @@ int tcp_conn_request(struct request_sock_ops *rsk_ops,
+ 			sock_put(fastopen_sk);
+ 			goto drop_and_free;
+ 		}
+-		sk->sk_data_ready(sk);
++		READ_ONCE(sk->sk_data_ready)(sk);
+ 		bh_unlock_sock(fastopen_sk);
+ 		sock_put(fastopen_sk);
+ 	} else {
+diff --git a/net/ipv4/tcp_minisocks.c b/net/ipv4/tcp_minisocks.c
+index 0b934b6ebb55b0..22b5748a6ee2c6 100644
+--- a/net/ipv4/tcp_minisocks.c
++++ b/net/ipv4/tcp_minisocks.c
+@@ -858,7 +858,7 @@ int tcp_child_process(struct sock *parent, struct sock *child,
+ 		ret = tcp_rcv_state_process(child, skb);
+ 		/* Wakeup parent, send SIGIO */
+ 		if (state == TCP_SYN_RECV && child->sk_state != state)
+-			parent->sk_data_ready(parent);
++			READ_ONCE(parent->sk_data_ready)(parent);
+ 	} else {
+ 		/* Alas, it is possible again, because we do lookup
+ 		 * in main socket hash table and lock on listening
+diff --git a/net/ipv4/udp.c b/net/ipv4/udp.c
+index a8bfab80d66a5f..d1714aaedf1768 100644
+--- a/net/ipv4/udp.c
++++ b/net/ipv4/udp.c
+@@ -1580,7 +1580,7 @@ int __udp_enqueue_schedule_skb(struct sock *sk, struct sk_buff *skb)
+ 	spin_unlock(&list->lock);
+ 
+ 	if (!sock_flag(sk, SOCK_DEAD))
+-		sk->sk_data_ready(sk);
++		READ_ONCE(sk->sk_data_ready)(sk);
+ 
+ 	busylock_release(busy);
+ 	return 0;
+diff --git a/net/ipv4/udp_bpf.c b/net/ipv4/udp_bpf.c
+index 0735d820e413f3..44271ba1adec15 100644
+--- a/net/ipv4/udp_bpf.c
++++ b/net/ipv4/udp_bpf.c
+@@ -143,7 +143,7 @@ int udp_bpf_update_proto(struct sock *sk, struct sk_psock *psock, bool restore)
+ 	int family = sk->sk_family == AF_INET ? UDP_BPF_IPV4 : UDP_BPF_IPV6;
+ 
+ 	if (restore) {
+-		sk->sk_write_space = psock->saved_write_space;
++		WRITE_ONCE(sk->sk_write_space, psock->saved_write_space);
+ 		sock_replace_proto(sk, psock->sk_proto);
+ 		return 0;
+ 	}
+diff --git a/net/unix/af_unix.c b/net/unix/af_unix.c
+index a268a483efcd3f..f5b215ca76d249 100644
+--- a/net/unix/af_unix.c
++++ b/net/unix/af_unix.c
+@@ -1610,7 +1610,7 @@ static int unix_stream_connect(struct socket *sock, struct sockaddr *uaddr,
+ 	__skb_queue_tail(&other->sk_receive_queue, skb);
+ 	spin_unlock(&other->sk_receive_queue.lock);
+ 	unix_state_unlock(other);
+-	other->sk_data_ready(other);
++	READ_ONCE(other->sk_data_ready)(other);
+ 	sock_put(other);
+ 	return 0;
+ 
+@@ -2082,7 +2082,7 @@ static int unix_dgram_sendmsg(struct socket *sock, struct msghdr *msg,
+ 	scm_stat_add(other, skb);
+ 	skb_queue_tail(&other->sk_receive_queue, skb);
+ 	unix_state_unlock(other);
+-	other->sk_data_ready(other);
++	READ_ONCE(other->sk_data_ready)(other);
+ 	sock_put(other);
+ 	scm_destroy(&scm);
+ 	return len;
+@@ -2150,7 +2150,7 @@ static int queue_oob(struct socket *sock, struct msghdr *msg, struct sock *other
+ 
+ 	sk_send_sigurg(other);
+ 	unix_state_unlock(other);
+-	other->sk_data_ready(other);
++	READ_ONCE(other->sk_data_ready)(other);
+ 
+ 	return err;
+ }
+@@ -2243,7 +2243,7 @@ static int unix_stream_sendmsg(struct socket *sock, struct msghdr *msg,
+ 		scm_stat_add(other, skb);
+ 		skb_queue_tail(&other->sk_receive_queue, skb);
+ 		unix_state_unlock(other);
+-		other->sk_data_ready(other);
++		READ_ONCE(other->sk_data_ready)(other);
+ 		sent += size;
+ 	}
+ 
+-- 
+2.53.0
+
 
 
 
