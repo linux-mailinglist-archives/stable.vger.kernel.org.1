@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-270676-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-270771-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 0crlM7eeRmpFaQsAu9opvQ
-	(envelope-from <stable+bounces-270676-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:24:07 +0200
+	id rQG8I0yTRmp/YwsAu9opvQ
+	(envelope-from <stable+bounces-270771-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:35:24 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4E6716FB493
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:24:07 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 73DB36FA453
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:35:24 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=EprhclzN;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-270676-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-270676-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=waf8Ve9l;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-270771-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-270771-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 85FAD31AA260
-	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:31:19 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 19287303A41D
+	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:33:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B4BE33F8B7;
-	Thu,  2 Jul 2026 16:26:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E00133B6E8;
+	Thu,  2 Jul 2026 16:30:11 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51AD4347FEE;
-	Thu,  2 Jul 2026 16:25:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF32B33D6C0;
+	Thu,  2 Jul 2026 16:30:07 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783009560; cv=none; b=AppBtEd/mIHpxT+YBcn1QRTzyxim5J4CjyHOu5tv5nqXm0JzaRPd7emu0DoDI1VU7K20/Q7D/3GOJkZozKZyyKt4DCDAKF6GOt/YKDKcKUYALuXEeh97pIdWwXIYpr4sHd66t5mwTMLv1Y8LbUVVv8mLBmsnONCALRjIa9z07Es=
+	t=1783009810; cv=none; b=sWxb7mNUjCXhOfhCk3OvruQtr4p+40NWDsR5yMqgdCHXYLoYhAntszPhzLaFsObKhJKB+AucU/8enS6lGOSpFAXnlGxufSS/iiR6TaI96bNn0DFKXizW3m3nY8w25RBctzw1k26mAwgZ0cmKYalNe8FViN3b5WeiB+1Ff0WeRto=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783009560; c=relaxed/simple;
-	bh=7ELelgBpU/UIOMe4hby3v47VCZ++pB/ESE5W36hz9Ew=;
+	s=arc-20240116; t=1783009810; c=relaxed/simple;
+	bh=tvHId6EFtOwDfg2U28koMou+nFUFM+n509ZsQr6TYaU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BKQ9xkSahDB0EOk3QgWw9s0FPD4vcEwd+/PYBLNPQ9x1BsWlKOiMSkUzRoyDmyPt5VfYWpIrwOD+TmkkhbN4TL5TYS6BmP6h/3XrhXyGGE7zMKvWpJ2wVX+o40UbJP5tpeKjn0tDbv3BFieNmacbNchAoZFCs6gpKvRvWA/pOiI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EprhclzN; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B2F31F00A3A;
-	Thu,  2 Jul 2026 16:25:57 +0000 (UTC)
+	 MIME-Version; b=hJCehfHhjsD8slESBH9wNXOyPh64eWb0H5vps/8zMQjJY0Hu/ZvL37iJ5y60dk1Vo/3EJOWXbZka1IzFbjdvYad7DT6b8ymMTKa+caxGTPL+AuGNrPjOFQNVNjqoyJ75vE0L40YJjrfE8uY9wbduQ23K/qmN/K+EkOZyz+Rkxa4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=waf8Ve9l; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2B711F00A3D;
+	Thu,  2 Jul 2026 16:30:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1783009557;
-	bh=XhHc3NoQVbkJ02fgOTsQS3F4uos3stmyjak+5Wy4L3c=;
+	s=korg; t=1783009807;
+	bh=j8BfIOuG85WYq8KfWeyl+79akmYNQ0MB5FwQoT9A7qg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=EprhclzNli/+3cnKwNBumAtOxRKmFzjFhx6ddhe5LUFRZvB9CmDt30p/rpNqr2lwB
-	 bYDub+0Giy4aFsbZ6aK1sRgWdEDh+/LpKF3tQ8wSrgCKW6dLebOGhwH/w/zBZDHbRR
-	 BB686R3ueEP0GJ/Z1IGdwEsDlX/O8rs+NE2wxSI4=
+	b=waf8Ve9l3/rNfRznTQUPOuCUHihpA4tvoKxfw3k++iOuCAqIrkCGOlUOb1ke/YQiC
+	 /OxP2kFvxijE6eqPoJHJCjqOqVdRY2I6yPNDj4u56J+uJQNtO6whyGZakGEmRjBXMs
+	 DcfPLLspLCNQlMr8DNbrL1wkyO7DGaBCHcY1XJMk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -50,12 +50,12 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	stable@kernel.org,
 	Sven Eckelmann <sven@narfation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 52/96] batman-adv: tt: dont merge change entries with different VIDs
+Subject: [PATCH 5.15 41/95] batman-adv: frag: ensure fragment is writable before modifying TTL
 Date: Thu,  2 Jul 2026 18:19:44 +0200
-Message-ID: <20260702155110.076901639@linuxfoundation.org>
+Message-ID: <20260702155110.070824980@linuxfoundation.org>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260702155108.949633242@linuxfoundation.org>
-References: <20260702155108.949633242@linuxfoundation.org>
+In-Reply-To: <20260702155109.196223802@linuxfoundation.org>
+References: <20260702155109.196223802@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,12 +72,12 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-270676-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-270771-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
@@ -86,7 +86,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
@@ -98,52 +98,113 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[narfation.org:email,vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[narfation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 4E6716FB493
+X-Rspamd-Queue-Id: 73DB36FA453
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
 From: Sven Eckelmann <sven@narfation.org>
 
-commit f08e06c2d5c3e2434e7c773f2213f4a7dce6bc1e upstream.
+commit b7293c6e8c15b2db77809b25cf8389e35331b27a upstream.
 
-batadv_tt_local_event() merges/cancels events for the same client which
-would conflict or be duplicates. The matching of the queued events only
-compares the MAC address - the VLAN ID stored in each event is ignored.
+Before batman-adv is allowed to write to an skb, it either has to have its
+own copy of the skb or use skb_cow() to ensure that the data part is not
+shared. But batadv_frag_skb_fwd() modifies the TTL even when it is shared.
 
-If a MAC would now appear on multiple VID, the two ADD change events (for
-VID 1 and VID 2) would be merged to a single vid event. The remote can
-therefore not calculate the correct TT table and desync. A full translation
-table exchange is required to recover from this state.
-
-A check of VID is therefore necessary to avoid such wrong merges/cancels.
+Adding a skb_cow() right before this operation avoids this and can at the
+same time prepare it for the modifications required to forward the
+fragment.
 
 Cc: stable@kernel.org
-Fixes: c018ad3de61a ("batman-adv: add the VLAN ID attribute to the TT entry")
+Fixes: 610bfc6bc99b ("batman-adv: Receive fragmented packets and merge")
 [ Context ]
 Signed-off-by: Sven Eckelmann <sven@narfation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/batman-adv/translation-table.c | 3 +++
- 1 file changed, 3 insertions(+)
+ net/batman-adv/fragmentation.c | 15 ++++++++++++++-
+ net/batman-adv/fragmentation.h |  3 ++-
+ net/batman-adv/routing.c       |  3 +--
+ 3 files changed, 17 insertions(+), 4 deletions(-)
 
-diff --git a/net/batman-adv/translation-table.c b/net/batman-adv/translation-table.c
-index 79da90b9cf0659..c323660897d43d 100644
---- a/net/batman-adv/translation-table.c
-+++ b/net/batman-adv/translation-table.c
-@@ -486,6 +486,9 @@ static void batadv_tt_local_event(struct batadv_priv *bat_priv,
- 		if (!batadv_compare_eth(entry->change.addr, common->addr))
- 			continue;
- 
-+		if (entry->change.vid != tt_change_node->change.vid)
-+			continue;
+diff --git a/net/batman-adv/fragmentation.c b/net/batman-adv/fragmentation.c
+index 4c193194034155..fbf030c57ac04d 100644
+--- a/net/batman-adv/fragmentation.c
++++ b/net/batman-adv/fragmentation.c
+@@ -385,6 +385,8 @@ bool batadv_frag_skb_buffer(struct sk_buff **skb,
+  * @skb: skb to forward
+  * @recv_if: interface that the skb is received on
+  * @orig_node_src: originator that the skb is received from
++ * @rx_result: set to NET_RX_SUCCESS when the fragment was forwarded and
++ *  NET_RX_DROP when it was dropped; only valid when true is returned
+  *
+  * Look up the next-hop of the fragments payload and check if the merged packet
+  * will exceed the MTU towards the next-hop. If so, the fragment is forwarded
+@@ -394,7 +396,8 @@ bool batadv_frag_skb_buffer(struct sk_buff **skb,
+  */
+ bool batadv_frag_skb_fwd(struct sk_buff *skb,
+ 			 struct batadv_hard_iface *recv_if,
+-			 struct batadv_orig_node *orig_node_src)
++			 struct batadv_orig_node *orig_node_src,
++			 int *rx_result)
+ {
+ 	struct batadv_priv *bat_priv = netdev_priv(recv_if->soft_iface);
+ 	struct batadv_orig_node *orig_node_dst;
+@@ -417,12 +420,22 @@ bool batadv_frag_skb_fwd(struct sk_buff *skb,
+ 	 */
+ 	total_size = ntohs(packet->total_size);
+ 	if (total_size > neigh_node->if_incoming->net_dev->mtu) {
++		if (skb_cow(skb, ETH_HLEN) < 0) {
++			kfree_skb(skb);
++			*rx_result = NET_RX_DROP;
++			ret = true;
++			goto out;
++		}
 +
- 		/* DEL+ADD in the same orig interval have no effect and can be
- 		 * removed to avoid silly behaviour on the receiver side. The
- 		 * other way around (ADD+DEL) can happen in case of roaming of
++		packet = (struct batadv_frag_packet *)skb->data;
++
+ 		batadv_inc_counter(bat_priv, BATADV_CNT_FRAG_FWD);
+ 		batadv_add_counter(bat_priv, BATADV_CNT_FRAG_FWD_BYTES,
+ 				   skb->len + ETH_HLEN);
+ 
+ 		packet->ttl--;
+ 		batadv_send_unicast_skb(skb, neigh_node);
++		*rx_result = NET_RX_SUCCESS;
+ 		ret = true;
+ 	}
+ 
+diff --git a/net/batman-adv/fragmentation.h b/net/batman-adv/fragmentation.h
+index dbf0871f870303..51e281027ab630 100644
+--- a/net/batman-adv/fragmentation.h
++++ b/net/batman-adv/fragmentation.h
+@@ -19,7 +19,8 @@ void batadv_frag_purge_orig(struct batadv_orig_node *orig,
+ 			    bool (*check_cb)(struct batadv_frag_table_entry *));
+ bool batadv_frag_skb_fwd(struct sk_buff *skb,
+ 			 struct batadv_hard_iface *recv_if,
+-			 struct batadv_orig_node *orig_node_src);
++			 struct batadv_orig_node *orig_node_src,
++			 int *rx_result);
+ bool batadv_frag_skb_buffer(struct sk_buff **skb,
+ 			    struct batadv_orig_node *orig_node);
+ int batadv_frag_send_packet(struct sk_buff *skb,
+diff --git a/net/batman-adv/routing.c b/net/batman-adv/routing.c
+index 0fb37993fd4604..596e4cc47046a2 100644
+--- a/net/batman-adv/routing.c
++++ b/net/batman-adv/routing.c
+@@ -1174,10 +1174,9 @@ int batadv_recv_frag_packet(struct sk_buff *skb,
+ 
+ 	/* Route the fragment if it is not for us and too big to be merged. */
+ 	if (!batadv_is_my_mac(bat_priv, frag_packet->dest) &&
+-	    batadv_frag_skb_fwd(skb, recv_if, orig_node_src)) {
++	    batadv_frag_skb_fwd(skb, recv_if, orig_node_src, &ret)) {
+ 		/* skb was consumed */
+ 		skb = NULL;
+-		ret = NET_RX_SUCCESS;
+ 		goto put_orig_node;
+ 	}
+ 
 -- 
 2.53.0
 
