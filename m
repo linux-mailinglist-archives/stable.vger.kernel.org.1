@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-271324-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-271435-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id DJ0AGz2aRmpmZwsAu9opvQ
-	(envelope-from <stable+bounces-271324-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:05:01 +0200
+	id HOw3GHGbRmoKaAsAu9opvQ
+	(envelope-from <stable+bounces-271435-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:10:09 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD6F26FAF45
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:05:00 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 10B416FB129
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:10:08 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=ss8YYIug;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-271324-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-271324-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=qaK9ho5R;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-271435-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-271435-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 9E5A231805C2
-	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:54:18 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 1219034415CB
+	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:59:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C4702D0602;
-	Thu,  2 Jul 2026 16:54:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 49F2D339844;
+	Thu,  2 Jul 2026 16:58:57 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61E4A24E4C3;
-	Thu,  2 Jul 2026 16:54:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14F1D335066;
+	Thu,  2 Jul 2026 16:58:56 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783011248; cv=none; b=gFL2N2QiR0U+aESt9QbuMiMcN4GuPamyNRd+z/2jcdNXT8EZM2kLvjxNIE4eP9w9Vedh6p0C+Jq8u5eZqsR4UYRSrDZ768Q2/mBYuGJOcsLUndceb4owIwWxuToLVTm8OdySZYHiogADa+XTPropWZwg2Wu/xr3hTWTcCNXkW4M=
+	t=1783011537; cv=none; b=lgYP5E5ooqzn8oAOJr4Xb9mbLWROhDj/9qY0qTec6eSzxJZSn3AZalVZAHF12a1H1EgTM1opoCCmPcbr0mTAPSbFL5m16hCHCySHNJzNOvdurD1cilkDLGwW6eyP+zy4/txGHEA5LEa3yBXDzvjMzFo+dq1P6AsZthUuSGGsTCw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783011248; c=relaxed/simple;
-	bh=Len9UJGcsrW9LUIyN+d1YJPUyL0baduf42KmhsI2mFg=;
+	s=arc-20240116; t=1783011537; c=relaxed/simple;
+	bh=2hyBUjuLzYZcbJg++UIrGOm4kVfLfHmUasJCKJvn9sU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JSJEFeJ50WrStDEfE/Icp3JrAZ/TbkTJAoRXWdXa4plutuWg+UP1QBlYHcZz04nfrwrySHAa3SX0Hza053+QA4Z6pb6pC8b8t60eGVda8L2c6eLxMAllYI2GhcnIWEZH1BtdUnFuLwopETqF+8tPbPG/Ir/saP6/5DWCPs2WJhw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ss8YYIug; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 777421F000E9;
-	Thu,  2 Jul 2026 16:54:06 +0000 (UTC)
+	 MIME-Version; b=o8K8C0IdsLIIQCLyYs9tKw4OyYpmRprU4RCGbu9Y+nIRBqZrIKMgeLoN+J+EaoUBTCD+Bt6dOAidb2jENLxj0vPha9JIFLOfqW2AGq0P5ZT3EMxq2b6AMEaOZJJfNX+xRnXur6skkVoB+V6lu12WTn4crKgs8ygWxmc+oOIoPzw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qaK9ho5R; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A6D31F00A3A;
+	Thu,  2 Jul 2026 16:58:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1783011247;
-	bh=aWdoQSqTZxq1mAxTQnk/WJvDrPW7Fcja8Il4D4jkHYM=;
+	s=korg; t=1783011536;
+	bh=GpMeX5QRbz74WXumC1HHFuypGXazY+gidJseum3wxqk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=ss8YYIugcdNk/qwGKhv0JAccL3NapzoyMrBoYsQXWyVIlejC19Eq0D9XC8weIJ0+k
-	 4qYpsS6miYxqvNchZ4mW/PdZ6dt7HlSM9/rwl8jYCHraYztd87Fe+XOiy0QTGhTwvS
-	 KNcmBfxSnmtF8uMg4MxdnogB9AovN2AkhVWLfWuc=
+	b=qaK9ho5Rs/padXHbKt6um1HjSkK1I1Z81po5D3VlLiK8sKDuMyPzyxdDIjip3GHdQ
+	 RQJgrb5Sf3p+j4X9e1p3q33UZkPZFp+jpZnUldC4hLSg8r0P5dB5inyX3X2lEp7LO4
+	 G44A08dxUJhxWkmOPgNQgwflTe8wS73X66YhAueg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jiajia Liu <liujiajia@kylinos.cn>,
-	Felix Fietkau <nbd@nbd.name>
-Subject: [PATCH 6.18 035/108] wifi: mt76: add wcid publish check in mt76_sta_add
+	Bryam Vargas <hexlabsecurity@proton.me>,
+	John Johansen <john.johansen@canonical.com>
+Subject: [PATCH 7.1 036/120] apparmor: mediate the implicit connect of TCP fast open sendmsg
 Date: Thu,  2 Jul 2026 18:20:32 +0200
-Message-ID: <20260702155112.835474091@linuxfoundation.org>
+Message-ID: <20260702155113.708240416@linuxfoundation.org>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260702155112.110058792@linuxfoundation.org>
-References: <20260702155112.110058792@linuxfoundation.org>
+In-Reply-To: <20260702155112.964534952@linuxfoundation.org>
+References: <20260702155112.964534952@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,25 +71,25 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-271324-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-271435-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:hexlabsecurity@proton.me,m:john.johansen@canonical.com,s:lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:liujiajia@kylinos.cn,m:nbd@nbd.name,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	RCPT_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
@@ -97,77 +97,64 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,kylinos.cn:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,nbd.name:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[proton.me:email,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,canonical.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: CD6F26FAF45
+X-Rspamd-Queue-Id: 10B416FB129
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiajia Liu <liujiajia@kylinos.cn>
+From: Bryam Vargas <hexlabsecurity@proton.me>
 
-commit 20b126920a259df4d7dcae19fcfe2c57a74d6b2e upstream.
+commit 4d587cd8a72155089a627130bbd4716ec0856e21 upstream.
 
-Since mt7925_mac_sta_add publishes wcid, add publish check in mt76_sta_add
-to avoid reinitializing the wcid->poll_list.
+sendmsg()/sendto() with MSG_FASTOPEN is a combination of connect(2) and
+write(2): it opens the connection in the SYN. apparmor_socket_sendmsg()
+only checks AA_MAY_SEND, so a profile that grants send but denies connect
+lets a confined task open an outbound TCP/MPTCP connection that connect(2)
+would have refused, bypassing connect mediation.
 
-Found dev->sta_poll_list corruption when using mt7925 and 7.1-rc4.
-According to the corruption information, prev->next was changed to itself.
+Mediate the implicit connect when MSG_FASTOPEN is set and a destination
+is supplied. Add it to apparmor_socket_sendmsg() (not the shared
+aa_sock_msg_perm() helper, which recvmsg also uses) and call aa_sk_perm()
+directly, mirroring the selinux and tomoyo fixes. sk_is_tcp() does not
+cover MPTCP fast open, so the SOCK_STREAM/IPPROTO_MPTCP arm is explicit.
 
-wlan0: disconnect from AP 90:fb:5d:94:8b:e3 for new auth to 90:fb:5d:94:8b:e2
-wlan0: authenticate with 90:fb:5d:94:8b:e2 (local address=84:9e:56:9c:7e:6b)
-wlan0: send auth to 90:fb:5d:94:8b:e2 (try 1/3)
- slab kmalloc-8k start ffff8c80958a6000 pointer offset 4160 size 8192
-list_add corruption. prev->next should be next (ffff8c808a7488f8), but was ffff8c80958a7040. (prev=ffff8c80958a7040).
-
- mt76_wcid_add_poll+0x95/0xd0 [mt76]
- mt7925_mac_add_txs.part.0+0xa5/0xe0 [mt7925_common]
- mt7925_rx_check+0xa7/0xc0 [mt7925_common]
- mt76_dma_rx_poll+0x50d/0x790 [mt76]
- mt792x_poll_rx+0x52/0xe0 [mt792x_lib]
-
-Signed-off-by: Jiajia Liu <liujiajia@kylinos.cn>
-Link: https://patch.msgid.link/20260528033814.46418-1-liujiajia@kylinos.cn
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
+Fixes: cf60af03ca4e ("net-tcp: Fast Open client - sendmsg(MSG_FASTOPEN)")
+Cc: stable@vger.kernel.org
+Signed-off-by: Bryam Vargas <hexlabsecurity@proton.me>
+Signed-off-by: John Johansen <john.johansen@canonical.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/mediatek/mt76/mac80211.c |   15 ++++++++++++---
- 1 file changed, 12 insertions(+), 3 deletions(-)
+ security/apparmor/lsm.c |   16 +++++++++++++++-
+ 1 file changed, 15 insertions(+), 1 deletion(-)
 
---- a/drivers/net/wireless/mediatek/mt76/mac80211.c
-+++ b/drivers/net/wireless/mediatek/mt76/mac80211.c
-@@ -1568,6 +1568,7 @@ mt76_sta_add(struct mt76_phy *phy, struc
+--- a/security/apparmor/lsm.c
++++ b/security/apparmor/lsm.c
+@@ -1422,7 +1422,21 @@ static int aa_sock_msg_perm(const char *
+ static int apparmor_socket_sendmsg(struct socket *sock,
+ 				   struct msghdr *msg, int size)
  {
- 	struct mt76_wcid *wcid = (struct mt76_wcid *)sta->drv_priv;
- 	struct mt76_dev *dev = phy->dev;
-+	struct mt76_wcid *published;
- 	int ret;
- 	int i;
- 
-@@ -1587,11 +1588,19 @@ mt76_sta_add(struct mt76_phy *phy, struc
- 		mtxq->wcid = wcid->idx;
- 	}
- 
--	ewma_signal_init(&wcid->rssi);
--	rcu_assign_pointer(dev->wcid[wcid->idx], wcid);
-+	published = rcu_dereference_protected(dev->wcid[wcid->idx],
-+					      lockdep_is_held(&dev->mutex));
-+	if (published != wcid) {
-+		WARN_ON_ONCE(published);
-+		ewma_signal_init(&wcid->rssi);
-+		rcu_assign_pointer(dev->wcid[wcid->idx], wcid);
-+		mt76_wcid_init(wcid, phy->band_idx);
-+	} else {
-+		wcid->phy_idx = phy->band_idx;
-+	}
+-	return aa_sock_msg_perm(OP_SENDMSG, AA_MAY_SEND, sock, msg, size);
++	int error = aa_sock_msg_perm(OP_SENDMSG, AA_MAY_SEND, sock, msg, size);
 +
- 	phy->num_sta++;
++	if (error)
++		return error;
++
++	/* TCP fast open carries connect() semantics in sendmsg(); mediate
++	 * the implicit connect so it cannot bypass the connect permission.
++	 */
++	if ((msg->msg_flags & MSG_FASTOPEN) && msg->msg_name &&
++	    (sk_is_tcp(sock->sk) ||
++	     (sk_is_inet(sock->sk) && sock->sk->sk_type == SOCK_STREAM &&
++	      sock->sk->sk_protocol == IPPROTO_MPTCP)))
++		error = aa_sk_perm(OP_CONNECT, AA_MAY_CONNECT, sock->sk);
++
++	return error;
+ }
  
--	mt76_wcid_init(wcid, phy->band_idx);
- out:
- 	mutex_unlock(&dev->mutex);
- 
+ static int apparmor_socket_recvmsg(struct socket *sock,
 
 
 
