@@ -1,79 +1,61 @@
-Return-Path: <stable+bounces-270975-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-271137-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id TDFLCw2XRmqSZQsAu9opvQ
-	(envelope-from <stable+bounces-270975-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:51:25 +0200
+	id UqMhIvSXRmolZgsAu9opvQ
+	(envelope-from <stable+bounces-271137-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:55:16 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7D95D6FAA68
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:51:24 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 122466FABF5
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:55:16 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=vzt+By9Q;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-270975-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-270975-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=AUNiaUa4;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-271137-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-271137-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A9C6D33D646B
-	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:40:11 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 233613066CEA
+	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:48:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9501A3446A7;
-	Thu,  2 Jul 2026 16:39:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94632331EB9;
+	Thu,  2 Jul 2026 16:46:07 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5A662D8DC4;
-	Thu,  2 Jul 2026 16:39:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6059034252B;
+	Thu,  2 Jul 2026 16:46:06 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783010342; cv=none; b=ggMN30D9peSiyY1Bh94929eE/6ZIfP4K3bSuWx7Icu61Y8QZgKxAohQMro3UAOtg7PMiB5HnwWtBAGtulHRewCda3TP/bvVvACHpTW4YjI2BUL9O/yw5RC4slGDw8MqVpi076vZchqNpNwpFarp0z3lGywPI6oE92Ll/t7uf9lg=
+	t=1783010767; cv=none; b=duAppY58dbKtngbCNt6Jn4CxAUMTSizCpLlhW0wMHJi+AxLKNXXYJlJY4ETQvg2ncTrepS+fnohIsQAavLbkNfYDOl/YuMspuOWNztXcvok2Pln9q2npZxZ5ug7XVZfJsAgyAQraEKnFcZJifro+mqAKO/8cipaZr6o19cg0cpY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783010342; c=relaxed/simple;
-	bh=q+IBaCaQ5BhrIaxvX8g2mEzHtQE6mPR3ym213QWK6mY=;
+	s=arc-20240116; t=1783010767; c=relaxed/simple;
+	bh=/If1l46am0MiWctZ4Hd728ShKg3VAJBtgqbbjiUVKD4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fOMlCfBSwVDidDaFDYawuvu4I/pw5LZI+TQgt/tRYCgbe3mY7gdmfaYXTWD/4KrefDXya0C8h7gUIBCrKb0v56DgjHVzGFgggBg7Zae/EjxuvWDEVBxH+1VDCQnCUbJHB/ZF1SGqW16Kn3chwM9RzRKnPJcoG6Wg2TjPZzavik4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vzt+By9Q; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF8551F000E9;
-	Thu,  2 Jul 2026 16:38:59 +0000 (UTC)
+	 MIME-Version:Content-Type; b=aKIG7zfA8BzRZNFx8ZfX1lJzOPMKN38mEraWnrbaawasgT02etoO9BPxI/Nmn1tqzYPmifgroKt5PWiFgh6uXv/dcYuYUXznXlKI5N79EDUan5wOWtMgrGPqcVUTChMawfdTLFcCRWa9uMBlc/56Rn6NWq8Iwwd8SISw5rgEHJk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AUNiaUa4; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C61DA1F000E9;
+	Thu,  2 Jul 2026 16:46:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1783010340;
-	bh=zchnOQnBU8dVH8BfMHjtMt5gWG5n6Deyzqn8Jb+X1iM=;
+	s=korg; t=1783010766;
+	bh=JLc29ENr90ShpRYcVYmELzATut6THRyrziSndXc+wZU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=vzt+By9QUw8ZfpaU5Yoznn/UlipFyvkTjdLgc57zmiI0ljR6y3h8wfiGVsheBPaAf
-	 U0zJ/zVy6M2S1UsplmBQxHgv0X/d+sLvyHpTka5p10+Y4H67RMAKIIlx4xs20m/pSN
-	 FSAJDBM3BOltfjbUaNZlP5RK4rjMTU0lAW9CaOKw=
+	b=AUNiaUa4ZDSO/hXYEy2yUIaL2xCreSRWW55mxi4YAb9TqaCgg1NxRWL49XEdGXuTM
+	 17SyAvwofUtWafohg4T0V1pEfFB8sbH/t1xNkmGxyz/2XEiirkUsPAIMT/lysLbGX8
+	 0tPdAdl5gVB54Y452GnlwaC96AeNIP9+xXCEOGhg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	bpf <bpf@vger.kernel.org>,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	Masahiro Yamada <masahiroy@kernel.org>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Nicolas Schier <nicolas@fjasle.eu>,
-	Zheng Yejian <zhengyejian1@huawei.com>,
-	Martin Kelly <martin.kelly@crowdstrike.com>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Josh Poimboeuf <jpoimboe@redhat.com>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>,
-	Vasily Gorbik <gor@linux.ibm.com>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
-	Andrey Grodzovsky <andrey.grodzovsky@crowdstrike.com>
-Subject: [PATCH 6.12 073/204] scripts/sorttable: Have mcount rela sort use direct values
+	=?UTF-8?q?Andr=C3=A9=20Draszik?= <andre.draszik@linaro.org>,
+	Mark Brown <broonie@kernel.org>,
+	Nazar Kalashnikov <nazarkalashnikov0@gmail.com>
+Subject: [PATCH 6.6 029/175] regulator: core: fix locking in regulator_resolve_supply() error path
 Date: Thu,  2 Jul 2026 18:18:50 +0200
-Message-ID: <20260702155120.200282086@linuxfoundation.org>
+Message-ID: <20260702155116.412956664@linuxfoundation.org>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260702155118.667618796@linuxfoundation.org>
-References: <20260702155118.667618796@linuxfoundation.org>
+In-Reply-To: <20260702155115.766838875@linuxfoundation.org>
+References: <20260702155115.766838875@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -83,139 +65,106 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-270975-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-271137-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[24];
-	FORWARDED(0.00)[lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:bpf@vger.kernel.org,m:mhiramat@kernel.org,m:mark.rutland@arm.com,m:mathieu.desnoyers@efficios.com,m:akpm@linux-foundation.org,m:peterz@infradead.org,m:torvalds@linux-foundation.org,m:masahiroy@kernel.org,m:nathan@kernel.org,m:nicolas@fjasle.eu,m:zhengyejian1@huawei.com,m:martin.kelly@crowdstrike.com,m:christophe.leroy@csgroup.eu,m:jpoimboe@redhat.com,m:hca@linux.ibm.com,m:catalin.marinas@arm.com,m:will@kernel.org,m:gor@linux.ibm.com,m:agordeev@linux.ibm.com,m:rostedt@goodmis.org,m:andrey.grodzovsky@crowdstrike.com,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:andre.draszik@linaro.org,m:broonie@kernel.org,m:nazarkalashnikov0@gmail.com,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,linaro.org,kernel.org,gmail.com];
 	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORWARDED(0.00)[lists@lfdr.de];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_SENDER_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,msgid.link:url,linaro.org:email,vger.kernel.org:from_smtp,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 7D95D6FAA68
+X-Rspamd-Queue-Id: 122466FABF5
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Steven Rostedt <rostedt@goodmis.org>
+From: André Draszik <andre.draszik@linaro.org>
 
-[ Upstream commit a0265659322540d656727b9e132edfb6f06b6c1a ]
+commit 497330b203d2c59c5ff3fa4c34d14494d7203bc3 upstream.
 
-The mcount_loc sorting for when the values are stored in the Elf_Rela
-entries uses the compare_extable() function to do the compares in the
-qsort(). That function does handle byte swapping if the machine being
-compiled for is a different endian than the host machine. But the
-sort_relocs() function sorts an array that pulled in the values from the
-Elf_Rela section and has already done the swapping.
+If late enabling of a supply regulator fails in
+regulator_resolve_supply(), the code currently triggers a lockdep
+warning:
 
-Create two new compare functions that will sort the direct values. One
-will sort 32 bit values and the other will sort the 64 bit value. One of
-these will be assigned to a compare_values function pointer and that will
-be used for sorting the Elf_Rela mcount values.
+    WARNING: drivers/regulator/core.c:2649 at _regulator_put+0x80/0xa0, CPU#6: kworker/u32:4/596
+    ...
+    Call trace:
+     _regulator_put+0x80/0xa0 (P)
+     regulator_resolve_supply+0x7cc/0xbe0
+     regulator_register_resolve_supply+0x28/0xb8
 
-Cc: bpf <bpf@vger.kernel.org>
-Cc: Masami Hiramatsu <mhiramat@kernel.org>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: Masahiro Yamada <masahiroy@kernel.org>
-Cc: Nathan Chancellor <nathan@kernel.org>
-Cc: Nicolas Schier <nicolas@fjasle.eu>
-Cc: Zheng Yejian <zhengyejian1@huawei.com>
-Cc: Martin  Kelly <martin.kelly@crowdstrike.com>
-Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
-Cc: Josh Poimboeuf <jpoimboe@redhat.com>
-Cc: Heiko Carstens <hca@linux.ibm.com>
-Cc: Catalin Marinas <catalin.marinas@arm.com>
-Cc: Will Deacon <will@kernel.org>
-Cc: Vasily Gorbik <gor@linux.ibm.com>
-Cc: Alexander Gordeev <agordeev@linux.ibm.com>
-Link: https://lore.kernel.org/20250218200022.538888594@goodmis.org
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-Signed-off-by: Andrey Grodzovsky <andrey.grodzovsky@crowdstrike.com>
+as the regulator_list_mutex must be held when calling _regulator_put().
+
+To solve this, simply switch to using regulator_put().
+
+While at it, we should also make sure that no concurrent access happens
+to our rdev while we clear out the supply pointer. Add appropriate
+locking to ensure that.
+
+While the code in question will be removed altogether in a follow-up
+commit, I believe it is still beneficial to have this corrected before
+removal for future reference.
+
+Fixes: 36a1f1b6ddc6 ("regulator: core: Fix memory leak in regulator_resolve_supply()")
+Fixes: 8e5356a73604 ("regulator: core: Clear the supply pointer if enabling fails")
+Signed-off-by: André Draszik <andre.draszik@linaro.org>
+Link: https://patch.msgid.link/20260109-regulators-defer-v2-2-1a25dc968e60@linaro.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Nazar Kalashnikov <nazarkalashnikov0@gmail.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- scripts/sorttable.c |   26 +++++++++++++++++++++++++-
- 1 file changed, 25 insertions(+), 1 deletion(-)
+ drivers/regulator/core.c |   10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
 
---- a/scripts/sorttable.c
-+++ b/scripts/sorttable.c
-@@ -552,6 +552,28 @@ static void *sort_orctable(void *arg)
- 
- #ifdef MCOUNT_SORT_ENABLED
- 
-+static int compare_values_64(const void *a, const void *b)
-+{
-+	uint64_t av = *(uint64_t *)a;
-+	uint64_t bv = *(uint64_t *)b;
+--- a/drivers/regulator/core.c
++++ b/drivers/regulator/core.c
+@@ -2176,8 +2176,16 @@ static int regulator_resolve_supply(stru
+ 	if (rdev->use_count) {
+ 		ret = regulator_enable(rdev->supply);
+ 		if (ret < 0) {
+-			_regulator_put(rdev->supply);
++			struct regulator *supply;
 +
-+	if (av < bv)
-+		return -1;
-+	return av > bv;
-+}
++			regulator_lock_two(rdev, rdev->supply->rdev, &ww_ctx);
 +
-+static int compare_values_32(const void *a, const void *b)
-+{
-+	uint32_t av = *(uint32_t *)a;
-+	uint32_t bv = *(uint32_t *)b;
++			supply = rdev->supply;
+ 			rdev->supply = NULL;
 +
-+	if (av < bv)
-+		return -1;
-+	return av > bv;
-+}
++			regulator_unlock_two(rdev, supply->rdev, &ww_ctx);
 +
-+static int (*compare_values)(const void *a, const void *b);
-+
- /* Only used for sorting mcount table */
- static void rela_write_addend(Elf_Rela *rela, uint64_t val)
- {
-@@ -583,6 +605,8 @@ static void *sort_relocs(Elf_Ehdr *ehdr,
- 	void *vals;
- 	void *ptr;
- 
-+	compare_values = long_size == 4 ? compare_values_32 : compare_values_64;
-+
- 	shdr_start = (Elf_Shdr *)((char *)ehdr + ehdr_shoff(ehdr));
- 	shentsize = ehdr_shentsize(ehdr);
- 
-@@ -640,7 +664,7 @@ static void *sort_relocs(Elf_Ehdr *ehdr,
++			regulator_put(supply);
+ 			goto out;
  		}
  	}
- 	count = ptr - vals;
--	qsort(vals, count / long_size, long_size, compare_extable);
-+	qsort(vals, count / long_size, long_size, compare_values);
- 
- 	ptr = vals;
- 	for (int i = 0; i < shnum; i++) {
 
 
 
