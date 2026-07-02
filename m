@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-271384-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-271501-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 4oldEA2mRmrjawsAu9opvQ
-	(envelope-from <stable+bounces-271384-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:55:25 +0200
+	id l+9mJSicRmpjaAsAu9opvQ
+	(envelope-from <stable+bounces-271501-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:13:12 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id BB4EF6FBB6B
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:55:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E24E36FB224
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:13:11 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="Ue4sxw1/";
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-271384-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-271384-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=DlOh08GD;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-271501-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-271501-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 5A18B32A762F
-	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:56:53 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 156DB3333373
+	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 17:01:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0AD8930C146;
-	Thu,  2 Jul 2026 16:56:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 289172FC893;
+	Thu,  2 Jul 2026 17:01:48 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFCD130C15A;
-	Thu,  2 Jul 2026 16:56:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D44AE30B53E;
+	Thu,  2 Jul 2026 17:01:46 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783011402; cv=none; b=W4ZyZqkacn9CEkqz5wjd1yyRtgGk94kSLT5V3HUzGUtIJKPm4q70Sb7hvCBvuWw58EpbK0E18oBt1QeYNPejqxbCdDosIqdV945OHdoNMe2NG3LBmhMl3p+C6HyILI6t+okiUYT80IkNX7PrxSJm4AU8SqGLGkG6zx7FwdNdCB0=
+	t=1783011707; cv=none; b=Uc7OBdMRfViBVYHhiLkVgPsjl5PWAe9feK+IlATqWeGSuxEjDdE/PHF0PNtre3ArCcIaz3Uu/DQo+4WPiMfOB19jgiU3Hv2s6w6FOXXhotNp0T8FOCOeQre3tm7OKPyFZwalWI/j5w/ba4OjyiePiOY1cgfLDa+JdDWCxQoVDGg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783011402; c=relaxed/simple;
-	bh=gqumo8JNf6ENbRRAFYXJdq/k9cJPrg8EZ1A2ZLQO1eE=;
+	s=arc-20240116; t=1783011707; c=relaxed/simple;
+	bh=lglEfIUhK8jyGrFP/m8J8txtOE9drUI62NsOMLo8qBU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UdJ/uYUnmNl8R2mnHkXac9BXghgDf9ejkL38heE38BmMv0N6fsowfybWOD4jnfMXLh0cwO/VYkmpyg6b8z3sO572/VTPNTL4dZL87Xv32GAWRAEc4vAvgqJbU1nvJ8PS73gDOynVC7J5wCeaCrOJqPDCFZhljVvFJzFtg2oq6gs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ue4sxw1/; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40AFE1F000E9;
-	Thu,  2 Jul 2026 16:56:41 +0000 (UTC)
+	 MIME-Version; b=e21MLe8inxIO7wP9QTQrwwZd10gs4c4x1jYmwkX2pGyqd00txArPT96N+BINhNE1mjFVL0OEV+zH8yLuNnYgmv/nex6NF7awK9A9oVsy25q9He03RmZoqbpTyKX3DgcnHrhlgV1vcwGOAEGAkuSqQnFdkypx6d7adZ72JkM4K2g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DlOh08GD; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F399E1F000E9;
+	Thu,  2 Jul 2026 17:01:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1783011401;
-	bh=4CccxJ28rrqyZH+oEUxCOg8XrHHrGpaIEPqvyvNQMuQ=;
+	s=korg; t=1783011706;
+	bh=WeSw43ioA1kbg0aPwrXYLCg1k/PNqYhU4xyHB26JDQw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Ue4sxw1/ws7hzQnUc5QZoTEACx4gB0JXG+CrfTCd88jNtv+L2huzv3Mm5xJV11Ld4
-	 ny4kDqEzhbZ3lpJk9GJ9IdKMfvG/ATLF+aa4Qtbt9KaAyVusq/BLERRrds1jqZQSaM
-	 +EPvfderhSr6xQ/z3fgDvhzMV/6OylgTYcH/RJP0=
+	b=DlOh08GDKr3f1CMppIN+86kVtElQe0sMrvUbXS8zfzc3qCBJD9hN9j7LTe23btLQ1
+	 2pvfIABfMO/YHIkqNPM7Ww4pmvtEBx8OTwnv82rOkmL66Twqf8oxGHfb7WjeR0Ytzt
+	 wnrOTbBLpQnOxgeAICp85Ilr8pAI4iZPZL022KbU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Steffen Persvold <spersvold@gmail.com>,
-	Helge Deller <deller@gmx.de>
-Subject: [PATCH 6.18 093/108] fbdev: modedb: Fix misaligned fields in the 1920x1080-60 mode
-Date: Thu,  2 Jul 2026 18:21:30 +0200
-Message-ID: <20260702155114.037501607@linuxfoundation.org>
+	Ashutosh Desai <ashutoshdesai993@gmail.com>,
+	Sean Christopherson <seanjc@google.com>
+Subject: [PATCH 7.1 095/120] KVM: SVM: Fix page overflow in sev_dbg_crypt() for ENCRYPT path
+Date: Thu,  2 Jul 2026 18:21:31 +0200
+Message-ID: <20260702155114.924901340@linuxfoundation.org>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260702155112.110058792@linuxfoundation.org>
-References: <20260702155112.110058792@linuxfoundation.org>
+In-Reply-To: <20260702155112.964534952@linuxfoundation.org>
+References: <20260702155112.964534952@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -77,13 +77,13 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-271384-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-271501-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:ashutoshdesai993@gmail.com,m:seanjc@google.com,s:lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:spersvold@gmail.com,m:deller@gmx.de,s:lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,gmx.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,google.com];
 	FORWARDED(0.00)[lists@lfdr.de];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -98,55 +98,102 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,gmx.de:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: BB4EF6FBB6B
+X-Rspamd-Queue-Id: E24E36FB224
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Steffen Persvold <spersvold@gmail.com>
+From: Ashutosh Desai <ashutoshdesai993@gmail.com>
 
-commit d894c48a57d78206e4df9c90d4acfaf39394806a upstream.
+commit 78ee2d50185a037b3d2452a97f3dad69c3f7f389 upstream.
 
-The 1920x1080@60 modedb entry has one too many initializers before
-its sync field: a stray "0" occupies the sync slot, which shifts the
-remaining values by one field. The entry therefore decodes as
-sync = 0, vmode = FB_SYNC_HOR_HIGH_ACT | FB_SYNC_VERT_HIGH_ACT (0x3,
-i.e. FB_VMODE_INTERLACED | FB_VMODE_DOUBLE), and flag =
-FB_VMODE_NONINTERLACED, instead of the intended sync = positive H/V,
-vmode = non-interlaced.
+In sev_dbg_crypt(), the per-iteration transfer length is bounded by
+the source page offset (PAGE_SIZE - s_off) but not by the destination
+page offset (PAGE_SIZE - d_off).  When d_off > s_off, the encrypt
+path (__sev_dbg_encrypt_user) performs a read-modify-write using a
+single-page intermediate buffer (dst_tpage):
 
-fb_find_mode() then returns a 1920x1080 mode flagged as interlaced +
-doublescan with active-low syncs. Drivers that honour var->vmode and
-var->sync when programming display timing enable doublescan and the
-wrong sync polarity, corrupting the output.
+  1. __sev_dbg_decrypt() expands the size to round_up(len + (d_off & 15), 16)
+     before issuing the PSP command.  If len + (d_off & 15) > PAGE_SIZE,
+     the PSP writes beyond the end of the 4096-byte dst_tpage allocation.
 
-Drop the stray initializer so sync and vmode hold their intended
-values (positive H/V sync, non-interlaced), matching the adjacent
-1920x1200 entry.
+  2. The subsequent memcpy()/copy_from_user() into
+     page_address(dst_tpage) + (d_off & 15) of 'len' bytes overflows
+     by up to 15 bytes under the same condition.
 
-Fixes: c8902258b2b8 ("fbdev: modedb: Add 1920x1080 at 60 Hz video mode")
+Trigger example: s_off = 0, d_off = 1, debug.len = PAGE_SIZE -
+the PSP is instructed to write round_up(4097, 16) = 4112 bytes to
+a 4096-byte buffer.
+
+Fix by also bounding len by (PAGE_SIZE - d_off), the same check that
+sev_send_update_data() already performs for its single-page guest
+region.
+
+ ==================================================================
+ BUG: KASAN: slab-use-after-free in sev_dbg_crypt+0x993/0xd10 [kvm_amd]
+ Write of size 4095 at addr ff110062293bb009 by task sev_dbg_test/228214
+
+ CPU: 96 UID: 0 PID: 228214 Comm: sev_dbg_test Tainted: G     U  W           7.0.0-smp--5ce9b0c48211-dbg #156 PREEMPTLAZY
+ Tainted: [U]=USER, [W]=WARN
+ Hardware name: Google Astoria/astoria, BIOS 0.20250817.1-0 08/25/2025
+ Call Trace:
+  <TASK>
+  dump_stack_lvl+0x54/0x70
+  print_report+0xbc/0x260
+  kasan_report+0xa2/0xd0
+  kasan_check_range+0x25f/0x2c0
+  __asan_memcpy+0x40/0x70
+  sev_dbg_crypt+0x993/0xd10 [kvm_amd]
+  sev_mem_enc_ioctl+0x33c/0x450 [kvm_amd]
+  kvm_vm_ioctl+0x65d/0x6d0 [kvm]
+  __se_sys_ioctl+0xb2/0x100
+  do_syscall_64+0xe8/0x870
+  entry_SYSCALL_64_after_hwframe+0x4b/0x53
+  </TASK>
+
+ The buggy address belongs to the physical page:
+ page: refcount:1 mapcount:0 mapping:0000000000000000 index:0x7fe72b6a0 pfn:0x62293bb
+ memcg:ff11000112827d82
+ flags: 0x1400000000000000(node=1|zone=1)
+ raw: 1400000000000000 0000000000000000 dead000000000122 0000000000000000
+ raw: 00000007fe72b6a0 0000000000000000 00000001ffffffff ff11000112827d82
+ page dumped because: kasan: bad access detected
+
+ Memory state around the buggy address:
+  ff110062293bbf00: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+  ff110062293bbf80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+ >ff110062293bc000: fa fb fb fb fb fb fb fb fc fc fc fc fc fc fc fc
+                    ^
+  ff110062293bc080: fa fb fb fb fb fb fb fb fc fc fc fc fc fc fc fc
+  ff110062293bc100: fa fb fb fb fb fb fb fb fc fc fc fc fc fc fc fc
+ ==================================================================
+ Disabling lock debugging due to kernel taint
+
+Fixes: 24f41fb23a39 ("KVM: SVM: Add support for SEV DEBUG_DECRYPT command")
+Fixes: 7d1594f5d94b ("KVM: SVM: Add support for SEV DEBUG_ENCRYPT command")
 Cc: stable@vger.kernel.org
-Signed-off-by: Steffen Persvold <spersvold@gmail.com>
-Signed-off-by: Helge Deller <deller@gmx.de>
+Signed-off-by: Ashutosh Desai <ashutoshdesai993@gmail.com>
+[sean: add sample KASAN splat, Fixes, and stable@]
+Link: https://patch.msgid.link/20260501203537.2120074-2-seanjc@google.com
+Signed-off-by: Sean Christopherson <seanjc@google.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/video/fbdev/core/modedb.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/x86/kvm/svm/sev.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/video/fbdev/core/modedb.c
-+++ b/drivers/video/fbdev/core/modedb.c
-@@ -259,7 +259,7 @@ static const struct fb_videomode modedb[
- 		FB_VMODE_DOUBLE },
+--- a/arch/x86/kvm/svm/sev.c
++++ b/arch/x86/kvm/svm/sev.c
+@@ -1396,6 +1396,7 @@ static int sev_dbg_crypt(struct kvm *kvm
+ 		s_off = vaddr & ~PAGE_MASK;
+ 		d_off = dst_vaddr & ~PAGE_MASK;
+ 		len = min_t(size_t, (PAGE_SIZE - s_off), size);
++		len = min_t(size_t, len, PAGE_SIZE - d_off);
  
- 	/* 1920x1080 @ 60 Hz, 67.3 kHz hsync */
--	{ NULL, 60, 1920, 1080, 6734, 148, 88, 36, 4, 44, 5, 0,
-+	{ NULL, 60, 1920, 1080, 6734, 148, 88, 36, 4, 44, 5,
- 		FB_SYNC_HOR_HIGH_ACT | FB_SYNC_VERT_HIGH_ACT,
- 		FB_VMODE_NONINTERLACED },
- 
+ 		if (dec)
+ 			ret = __sev_dbg_decrypt_user(kvm,
 
 
 
