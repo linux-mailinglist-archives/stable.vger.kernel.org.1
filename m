@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-270881-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-270666-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id F+/5Fk6WRmoeZQsAu9opvQ
-	(envelope-from <stable+bounces-270881-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:48:14 +0200
+	id GqkjLX6VRmqbZAsAu9opvQ
+	(envelope-from <stable+bounces-270666-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:44:46 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC12F6FA91D
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:48:13 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id DA0146FA7A5
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:44:45 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=SPI8NYAW;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-270881-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-270881-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=PY+tkBNf;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-270666-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-270666-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 88421305195C
-	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:37:16 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id C16373017C88
+	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:31:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DBD1D35F192;
-	Thu,  2 Jul 2026 16:34:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D7C203B7778;
+	Thu,  2 Jul 2026 16:25:37 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A033735E55D;
-	Thu,  2 Jul 2026 16:34:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57C43414DED;
+	Thu,  2 Jul 2026 16:25:31 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783010095; cv=none; b=bos65yd5noPID1q/BP2DbtaOLHsAu6JD6F6RqioD+YOXhYMTde8xkoTXvBDk6HMgTTWA7gUChbkPZ5rvlbmadZaos9v/mLKcGd5W9PHpUYX3YxAyn87Na60D1GPxMDbMoNJQMTFvrPIDVx2YgbyYOAr+Uw1xoZH1CLG1skypgWo=
+	t=1783009537; cv=none; b=iLNjTNOJlreJe+KAAonGwfcQrn5QPhstjk9KiJMEeKxCRVubXczlK9zcjlTpXI2lvp2N6QY7+gXz1p71YNrA+BX0JinCohKvjK4jy9q9ImE77SuFhu/+kxGeWBpoFjs5zm4iY4VSwDx36mEzWqLL69UQxy03w6BUQXGVyAigjGw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783010095; c=relaxed/simple;
-	bh=vn6/PUZ32HBergX29e2FvtI257QgLfUuvUPHoh67PlA=;
+	s=arc-20240116; t=1783009537; c=relaxed/simple;
+	bh=egyWQCcLfekNqUrJ7fe3r/NrVf/EBW85z8JCQvcejHc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rSqpecbq2JLChRTpmMm/Ctfyzgj44Yr5b8/WOBM+fMfvpNw/yMypYgdf4O5LwEi0bKVR4VlOh2jVEt5vMVo1LR1hZ1xmn1yA9t/L55JujkWghK88I8ziGdr38bge7d5ENSOvonL66E5b7DJIG8V9XuoiMQbkPuOfmE+KL9RDvPY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SPI8NYAW; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E10D51F000E9;
-	Thu,  2 Jul 2026 16:34:52 +0000 (UTC)
+	 MIME-Version; b=m+XX4/ORKubQE0lYG8qDW92JMQ1SeI1kLkeAgMb0Cxz/8Jtw+poEcWvQAalaFC+2+5lyIrajqktdvF84/PpkMV09YwNcXf+Iliyc7r5VUCRZbdq4pCWYRZb7/oYBc+YgZuAJAzJ3de+zGCrGPCvZ/HobROAwz4jljrMAtqUB0Fc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PY+tkBNf; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 023E51F000E9;
+	Thu,  2 Jul 2026 16:25:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1783010093;
-	bh=9mjur+MRS/MRIQ/68Cc79XuuoMgaNtObN6w8i0zpJBE=;
+	s=korg; t=1783009531;
+	bh=vdfwFih3jY3ArGy2ZhUe8bAyK+TKzNybHGgAer0dvj8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=SPI8NYAWJ2rR2UNZZApVVltRRu654SHZ4FBBzahpJyBTvU6Pa7oNZ+tXPNJLncLYP
-	 TaguO7e5p5U9/EehvyktptGpYv3Mc7q/Jjn30SF6EeqDKekebkbz2O4htBk+GSzYUL
-	 psWdvE78Mnn3suys/lG0PEfBMCULdMLK2Iij/nws=
+	b=PY+tkBNfXQgVQxBoh3p1iRTqaQSwonJq+5OBU86UFzSqPChg7mDcbf/t5YQe0OIxI
+	 SNHcqYEHztw1eXrbrPw0YZxffMKL4RAyWOEGXw6NHlQi2jv1D7O4qXOY8Qe5OVGoVy
+	 lO48EE5ncYEpQsqHUlr4hmjLGbuZ9BWrD/m7sKpg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -50,12 +50,12 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	stable@kernel.org,
 	Sven Eckelmann <sven@narfation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 063/129] batman-adv: frag: ensure fragment is writable before modifying TTL
+Subject: [PATCH 5.10 50/96] batman-adv: tp_meter: prevent parallel modifications of last_recv
 Date: Thu,  2 Jul 2026 18:19:42 +0200
-Message-ID: <20260702155113.449036168@linuxfoundation.org>
+Message-ID: <20260702155110.035435467@linuxfoundation.org>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260702155112.163984240@linuxfoundation.org>
-References: <20260702155112.163984240@linuxfoundation.org>
+In-Reply-To: <20260702155108.949633242@linuxfoundation.org>
+References: <20260702155108.949633242@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,142 +69,193 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-270881-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:stable@kernel.org,m:sven@narfation.org,m:sashal@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-270666-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	FORWARDED(0.00)[lists@lfdr.de];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[narfation.org:email,vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	RWL_MAILSPIKE_POSSIBLE(0.00)[104.64.211.4:from];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,narfation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: CC12F6FA91D
+X-Rspamd-Queue-Id: DA0146FA7A5
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
 From: Sven Eckelmann <sven@narfation.org>
 
-commit b7293c6e8c15b2db77809b25cf8389e35331b27a upstream.
+commit 6dde0cfcb36e4d5b3de35b75696937478441eed4 upstream.
 
-Before batman-adv is allowed to write to an skb, it either has to have its
-own copy of the skb or use skb_cow() to ensure that the data part is not
-shared. But batadv_frag_skb_fwd() modifies the TTL even when it is shared.
+When last_recv is updated to store the last receive sequence number, it is
+assuming that nothing is modifying in parallel while:
 
-Adding a skb_cow() right before this operation avoids this and can at the
-same time prepare it for the modifications required to forward the
-fragment.
+* check for outdated packets is done
+* out of order check is performed (and packets are stored in out-of-order
+  queue)
+* the out-of-order queue was searched for closed gaps
+* sequence number for next ack is calculated
+
+Nothing of that was actually protected. It could therefore happen that the
+last_recv was updated multiple times in parallel and the final sequence
+number was calculated with deltas which had no connection to the sequence
+number they were added to.
+
+Lock this whole region with the same lock which was already used to protect
+the unacked (out-of-order) list.
 
 Cc: stable@kernel.org
-Fixes: 610bfc6bc99b ("batman-adv: Receive fragmented packets and merge")
-[ Context ]
+Fixes: 33a3bb4a3345 ("batman-adv: throughput meter implementation")
+[ Switch to pre-splitted tp_vars structure names ]
 Signed-off-by: Sven Eckelmann <sven@narfation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/batman-adv/fragmentation.c | 15 ++++++++++++++-
- net/batman-adv/fragmentation.h |  3 ++-
- net/batman-adv/routing.c       |  3 +--
- 3 files changed, 17 insertions(+), 4 deletions(-)
+ net/batman-adv/tp_meter.c | 22 +++++++++++++---------
+ net/batman-adv/types.h    |  2 +-
+ 2 files changed, 14 insertions(+), 10 deletions(-)
 
-diff --git a/net/batman-adv/fragmentation.c b/net/batman-adv/fragmentation.c
-index 4c193194034155..fbf030c57ac04d 100644
---- a/net/batman-adv/fragmentation.c
-+++ b/net/batman-adv/fragmentation.c
-@@ -385,6 +385,8 @@ bool batadv_frag_skb_buffer(struct sk_buff **skb,
-  * @skb: skb to forward
-  * @recv_if: interface that the skb is received on
-  * @orig_node_src: originator that the skb is received from
-+ * @rx_result: set to NET_RX_SUCCESS when the fragment was forwarded and
-+ *  NET_RX_DROP when it was dropped; only valid when true is returned
-  *
-  * Look up the next-hop of the fragments payload and check if the merged packet
-  * will exceed the MTU towards the next-hop. If so, the fragment is forwarded
-@@ -394,7 +396,8 @@ bool batadv_frag_skb_buffer(struct sk_buff **skb,
+diff --git a/net/batman-adv/tp_meter.c b/net/batman-adv/tp_meter.c
+index 91392e48514d64..c01ff6e72b5da5 100644
+--- a/net/batman-adv/tp_meter.c
++++ b/net/batman-adv/tp_meter.c
+@@ -1303,6 +1303,7 @@ static int batadv_tp_send_ack(struct batadv_priv *bat_priv, const u8 *dst,
   */
- bool batadv_frag_skb_fwd(struct sk_buff *skb,
- 			 struct batadv_hard_iface *recv_if,
--			 struct batadv_orig_node *orig_node_src)
-+			 struct batadv_orig_node *orig_node_src,
-+			 int *rx_result)
+ static bool batadv_tp_handle_out_of_order(struct batadv_tp_vars *tp_vars,
+ 					  const struct sk_buff *skb)
++	__must_hold(&tp_vars->unacked_lock)
  {
- 	struct batadv_priv *bat_priv = netdev_priv(recv_if->soft_iface);
- 	struct batadv_orig_node *orig_node_dst;
-@@ -417,12 +420,22 @@ bool batadv_frag_skb_fwd(struct sk_buff *skb,
+ 	const struct batadv_icmp_tp_packet *icmp;
+ 	struct batadv_tp_unacked *un, *new;
+@@ -1319,12 +1320,11 @@ static bool batadv_tp_handle_out_of_order(struct batadv_tp_vars *tp_vars,
+ 	payload_len = skb->len - sizeof(struct batadv_unicast_packet);
+ 	new->len = payload_len;
+ 
+-	spin_lock_bh(&tp_vars->unacked_lock);
+ 	/* if the list is empty immediately attach this new object */
+ 	if (list_empty(&tp_vars->unacked_list)) {
+ 		list_add(&new->list, &tp_vars->unacked_list);
+ 		tp_vars->unacked_count++;
+-		goto out;
++		return true;
+ 	}
+ 
+ 	/* otherwise loop over the list and either drop the packet because this
+@@ -1373,9 +1373,6 @@ static bool batadv_tp_handle_out_of_order(struct batadv_tp_vars *tp_vars,
+ 		tp_vars->unacked_count--;
+ 	}
+ 
+-out:
+-	spin_unlock_bh(&tp_vars->unacked_lock);
+-
+ 	return true;
+ }
+ 
+@@ -1385,6 +1382,7 @@ static bool batadv_tp_handle_out_of_order(struct batadv_tp_vars *tp_vars,
+  * @tp_vars: the private data of the current TP meter session
+  */
+ static void batadv_tp_ack_unordered(struct batadv_tp_vars *tp_vars)
++	__must_hold(&tp_vars->unacked_lock)
+ {
+ 	struct batadv_tp_unacked *un, *safe;
+ 	u32 to_ack;
+@@ -1392,7 +1390,6 @@ static void batadv_tp_ack_unordered(struct batadv_tp_vars *tp_vars)
+ 	/* go through the unacked packet list and possibly ACK them as
+ 	 * well
  	 */
- 	total_size = ntohs(packet->total_size);
- 	if (total_size > neigh_node->if_incoming->net_dev->mtu) {
-+		if (skb_cow(skb, ETH_HLEN) < 0) {
-+			kfree_skb(skb);
-+			*rx_result = NET_RX_DROP;
-+			ret = true;
-+			goto out;
+-	spin_lock_bh(&tp_vars->unacked_lock);
+ 	list_for_each_entry_safe(un, safe, &tp_vars->unacked_list, list) {
+ 		/* the list is ordered, therefore it is possible to stop as soon
+ 		 * there is a gap between the last acked seqno and the seqno of
+@@ -1410,7 +1407,6 @@ static void batadv_tp_ack_unordered(struct batadv_tp_vars *tp_vars)
+ 		kfree(un);
+ 		tp_vars->unacked_count--;
+ 	}
+-	spin_unlock_bh(&tp_vars->unacked_lock);
+ }
+ 
+ /**
+@@ -1489,6 +1485,7 @@ static void batadv_tp_recv_msg(struct batadv_priv *bat_priv,
+ 	const struct batadv_icmp_tp_packet *icmp;
+ 	struct batadv_tp_vars *tp_vars;
+ 	size_t packet_size;
++	u32 to_ack;
+ 	u32 seqno;
+ 
+ 	icmp = (struct batadv_icmp_tp_packet *)skb->data;
+@@ -1517,6 +1514,8 @@ static void batadv_tp_recv_msg(struct batadv_priv *bat_priv,
+ 		WRITE_ONCE(tp_vars->last_recv_time, jiffies);
+ 	}
+ 
++	spin_lock_bh(&tp_vars->unacked_lock);
++
+ 	/* if the packet is a duplicate, it may be the case that an ACK has been
+ 	 * lost. Resend the ACK
+ 	 */
+@@ -1528,8 +1527,10 @@ static void batadv_tp_recv_msg(struct batadv_priv *bat_priv,
+ 		/* exit immediately (and do not send any ACK) if the packet has
+ 		 * not been enqueued correctly
+ 		 */
+-		if (!batadv_tp_handle_out_of_order(tp_vars, skb))
++		if (!batadv_tp_handle_out_of_order(tp_vars, skb)) {
++			spin_unlock_bh(&tp_vars->unacked_lock);
+ 			goto out;
 +		}
+ 
+ 		/* send a duplicate ACK */
+ 		goto send_ack;
+@@ -1543,11 +1544,14 @@ static void batadv_tp_recv_msg(struct batadv_priv *bat_priv,
+ 	batadv_tp_ack_unordered(tp_vars);
+ 
+ send_ack:
++	to_ack = tp_vars->last_recv;
++	spin_unlock_bh(&tp_vars->unacked_lock);
 +
-+		packet = (struct batadv_frag_packet *)skb->data;
-+
- 		batadv_inc_counter(bat_priv, BATADV_CNT_FRAG_FWD);
- 		batadv_add_counter(bat_priv, BATADV_CNT_FRAG_FWD_BYTES,
- 				   skb->len + ETH_HLEN);
+ 	/* send the ACK. If the received packet was out of order, the ACK that
+ 	 * is going to be sent is a duplicate (the sender will count them and
+ 	 * possibly enter Fast Retransmit as soon as it has reached 3)
+ 	 */
+-	batadv_tp_send_ack(bat_priv, icmp->orig, tp_vars->last_recv,
++	batadv_tp_send_ack(bat_priv, icmp->orig, to_ack,
+ 			   icmp->timestamp, icmp->session, icmp->uid);
+ out:
+ 	if (likely(tp_vars))
+diff --git a/net/batman-adv/types.h b/net/batman-adv/types.h
+index b12b0851df6e7e..437d651a1cffe3 100644
+--- a/net/batman-adv/types.h
++++ b/net/batman-adv/types.h
+@@ -1505,7 +1505,7 @@ struct batadv_tp_vars {
+ 	/** @unacked_list: list of unacked packets (meta-info only) */
+ 	struct list_head unacked_list;
  
- 		packet->ttl--;
- 		batadv_send_unicast_skb(skb, neigh_node);
-+		*rx_result = NET_RX_SUCCESS;
- 		ret = true;
- 	}
+-	/** @unacked_lock: protect unacked_list */
++	/** @unacked_lock: protect unacked_list + &batadv_tp_receiver.last_recv */
+ 	spinlock_t unacked_lock;
  
-diff --git a/net/batman-adv/fragmentation.h b/net/batman-adv/fragmentation.h
-index dbf0871f870303..51e281027ab630 100644
---- a/net/batman-adv/fragmentation.h
-+++ b/net/batman-adv/fragmentation.h
-@@ -19,7 +19,8 @@ void batadv_frag_purge_orig(struct batadv_orig_node *orig,
- 			    bool (*check_cb)(struct batadv_frag_table_entry *));
- bool batadv_frag_skb_fwd(struct sk_buff *skb,
- 			 struct batadv_hard_iface *recv_if,
--			 struct batadv_orig_node *orig_node_src);
-+			 struct batadv_orig_node *orig_node_src,
-+			 int *rx_result);
- bool batadv_frag_skb_buffer(struct sk_buff **skb,
- 			    struct batadv_orig_node *orig_node);
- int batadv_frag_send_packet(struct sk_buff *skb,
-diff --git a/net/batman-adv/routing.c b/net/batman-adv/routing.c
-index e9347b25d2087a..49cce0cbdff8b6 100644
---- a/net/batman-adv/routing.c
-+++ b/net/batman-adv/routing.c
-@@ -1175,10 +1175,9 @@ int batadv_recv_frag_packet(struct sk_buff *skb,
- 
- 	/* Route the fragment if it is not for us and too big to be merged. */
- 	if (!batadv_is_my_mac(bat_priv, frag_packet->dest) &&
--	    batadv_frag_skb_fwd(skb, recv_if, orig_node_src)) {
-+	    batadv_frag_skb_fwd(skb, recv_if, orig_node_src, &ret)) {
- 		/* skb was consumed */
- 		skb = NULL;
--		ret = NET_RX_SUCCESS;
- 		goto put_orig_node;
- 	}
- 
+ 	/** @unacked_count: number of unacked entries */
 -- 
 2.53.0
 
