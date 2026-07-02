@@ -1,60 +1,63 @@
-Return-Path: <stable+bounces-271235-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-270683-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id Fnc2IhKaRmpOZwsAu9opvQ
-	(envelope-from <stable+bounces-271235-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:04:18 +0200
+	id FLYbCMeeRmpPaQsAu9opvQ
+	(envelope-from <stable+bounces-270683-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:24:23 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D5E606FAEFE
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:04:17 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 687646FB4BB
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:24:22 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=cgV9df9E;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-271235-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-271235-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=Bfyo2IrI;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-270683-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-270683-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 3946733B0457
-	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:51:39 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 3EE53325A179
+	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:31:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84A7C346A10;
-	Thu,  2 Jul 2026 16:50:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6061381E8A;
+	Thu,  2 Jul 2026 16:26:17 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47AC134107D;
-	Thu,  2 Jul 2026 16:50:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C35033F583;
+	Thu,  2 Jul 2026 16:26:16 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783011019; cv=none; b=GRx8mnRrOxGehBxnLu5nqqHb2Dog5zUmYRM6nDhA/fNcuaEVKo+TVb4RBlfncFoQm9C0Bc7I06c7jH0CTXOiTY/yFYA19FHplwEczX56Cm3rpJExldxi3Jir0h1pyufdsWQFVyiYSiENgXdqDIjeKkLn7cKjSmPrB0PxcPjiOoM=
+	t=1783009577; cv=none; b=EG3XV4u9gvTYHCpKc8ESuMI8myRDGMtnlJWX4GRdR//fkVDKmfwI7r1zsmzRaB+3Liq9kRoECD3E0IwyoqEIzBub3Zb9yx5YGKd125W+bTIkYiIq3yqZYlqinuuKrMeGIRNMJpc8l+YbFTIc5Z+Jx2n2pN4JcHgjSZfZzVlhaMo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783011019; c=relaxed/simple;
-	bh=u+FVNYxV2gQKiRwfkNiGGXX5St5ekknR3/DjgEDfyek=;
+	s=arc-20240116; t=1783009577; c=relaxed/simple;
+	bh=t4X//tdped1PvqOIpb4iN6Mw9zTZ20F3gmgrrXXSq/M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BgiUEzuAxf9PV+ixKzkGSd+Z7AzCzF6URlAKNbdK9ead9u5Q7jXmFkYZnsk08yHQ16DM1mT4R9+iUPAw3UIVRVcKfWHeyeOofe4E3iB1a1Dsx0rCUfs9lzca/SLRkzscgVhIwcEcju6KWqJFDODDE+8K0Y4X4Td+a2Dm8yXHrws=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cgV9df9E; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AEC7C1F00A3A;
-	Thu,  2 Jul 2026 16:50:17 +0000 (UTC)
+	 MIME-Version; b=FbwxGuz7vS0UxQGtf0gc5TaQzW5aHzRxC/MtZd4zLNsYxvz78C0WRyA1fC3hMnME5BcVsxQXTLjB0+uPHKuN805/JBKp/LfSZjLRtloVV+gqPagRSxvfHteu0V+pZ/3IwEYcHthToHOqqKfJiOvmE14nXZ0bvnPlqktVWDtbLf4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Bfyo2IrI; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B86381F000E9;
+	Thu,  2 Jul 2026 16:26:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1783011018;
-	bh=AcaLntLihHD5xCa9G0UoKYbLRLo3TvAVLYeMwdJDYss=;
+	s=korg; t=1783009576;
+	bh=03HMae2NbNlU40ROb52KnrTkA053SDGkUpf71appMko=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=cgV9df9E5JyWPWrbwi/KFjxNevunmIHORkxUB8of6BWgFgSaZCzwKH/wEiBdeEYE7
-	 mrr35YkqnSB8XO9BPiAkr51d9IfuvUXno5nOKrOfxNHzWlQejF5YEYVLIdBz/Vg8Np
-	 15+85b1tioLgG+c7llMI4fULXyYful0JV7hUWCwU=
+	b=Bfyo2IrIuiZowpf+m+zo3x6Z54IdLKk6PTsmADjXaT+mdGf7oGIUrTjjJ4gt8lnK4
+	 4z9BLQmam9MwwotZIUEkD8ba2DXTUaLwqbZNX+iobsPZ/BRDBZdgTMK4w/ekUZdy4X
+	 Vhkl6vCz/OoqbxkAuoOEeZFnUtVRPKaVFzFOzJIo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bryam Vargas <hexlabsecurity@proton.me>,
-	John Johansen <john.johansen@canonical.com>
-Subject: [PATCH 6.6 124/175] apparmor: mediate the implicit connect of TCP fast open sendmsg
-Date: Thu,  2 Jul 2026 18:20:25 +0200
-Message-ID: <20260702155118.364727394@linuxfoundation.org>
+	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
+	Wolfram Sang <wsa+renesas@sang-engineering.com>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Ulf Hansson <ulfh@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 94/96] mmc: renesas_sdhi: Add OF entry for RZ/G2H SoC
+Date: Thu,  2 Jul 2026 18:20:26 +0200
+Message-ID: <20260702155110.958322610@linuxfoundation.org>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260702155115.766838875@linuxfoundation.org>
-References: <20260702155115.766838875@linuxfoundation.org>
+In-Reply-To: <20260702155108.949633242@linuxfoundation.org>
+References: <20260702155108.949633242@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,95 +69,82 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-271235-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-270683-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:hexlabsecurity@proton.me,m:john.johansen@canonical.com,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:prabhakar.mahadev-lad.rj@bp.renesas.com,m:wsa+renesas@sang-engineering.com,m:geert+renesas@glider.be,m:ulfh@kernel.org,m:sashal@kernel.org,m:wsa@sang-engineering.com,m:geert@glider.be,s:lists@lfdr.de];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[canonical.com:email,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,proton.me:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+	TAGGED_RCPT(0.00)[stable,renesas];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,sang-engineering.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,renesas.com:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: D5E606FAEFE
+X-Rspamd-Queue-Id: 687646FB4BB
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bryam Vargas <hexlabsecurity@proton.me>
+From: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
 
-commit 4d587cd8a72155089a627130bbd4716ec0856e21 upstream.
+[ Upstream commit f48ee49726ee4ab545fd2dc644f169c0809b19b3 ]
 
-sendmsg()/sendto() with MSG_FASTOPEN is a combination of connect(2) and
-write(2): it opens the connection in the SYN. apparmor_socket_sendmsg()
-only checks AA_MAY_SEND, so a profile that grants send but denies connect
-lets a confined task open an outbound TCP/MPTCP connection that connect(2)
-would have refused, bypassing connect mediation.
+The RZ/G2H (R8A774E1) SoC was previously handled via the generic
+"renesas,rcar-gen3-sdhi" fallback compatible string. However, because
+the SDHI IP on RZ/G2H is identical with the R-Car H3-N (R8A77951), it
+requires the specific quirks and configuration defined in
+`of_r8a7795_compatible` rather than the generic Gen3 data.
 
-Mediate the implicit connect when MSG_FASTOPEN is set and a destination
-is supplied. Add it to apparmor_socket_sendmsg() (not the shared
-aa_sock_msg_perm() helper, which recvmsg also uses) and call aa_sk_perm()
-directly, mirroring the selinux and tomoyo fixes. sk_is_tcp() does not
-cover MPTCP fast open, so the SOCK_STREAM/IPPROTO_MPTCP arm is explicit.
+Add the explicit "renesas,sdhi-r8a774e1" match entry to map it correctly.
+Note that the DT binding file renesas,sdhi.yaml does not need an update
+as the entry for this SoC is already present.
 
-Fixes: cf60af03ca4e ("net-tcp: Fast Open client - sendmsg(MSG_FASTOPEN)")
+Fixes: 31941342888d ("arm64: dts: renesas: r8a774e1: Add SDHI nodes")
 Cc: stable@vger.kernel.org
-Signed-off-by: Bryam Vargas <hexlabsecurity@proton.me>
-Signed-off-by: John Johansen <john.johansen@canonical.com>
+Signed-off-by: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
+Reviewed-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
+Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Signed-off-by: Ulf Hansson <ulfh@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- security/apparmor/lsm.c |   16 +++++++++++++++-
- 1 file changed, 15 insertions(+), 1 deletion(-)
+ drivers/mmc/host/renesas_sdhi_internal_dmac.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/security/apparmor/lsm.c
-+++ b/security/apparmor/lsm.c
-@@ -1033,7 +1033,21 @@ static int aa_sock_msg_perm(const char *
- static int apparmor_socket_sendmsg(struct socket *sock,
- 				   struct msghdr *msg, int size)
- {
--	return aa_sock_msg_perm(OP_SENDMSG, AA_MAY_SEND, sock, msg, size);
-+	int error = aa_sock_msg_perm(OP_SENDMSG, AA_MAY_SEND, sock, msg, size);
-+
-+	if (error)
-+		return error;
-+
-+	/* TCP fast open carries connect() semantics in sendmsg(); mediate
-+	 * the implicit connect so it cannot bypass the connect permission.
-+	 */
-+	if ((msg->msg_flags & MSG_FASTOPEN) && msg->msg_name &&
-+	    (sk_is_tcp(sock->sk) ||
-+	     (sk_is_inet(sock->sk) && sock->sk->sk_type == SOCK_STREAM &&
-+	      sock->sk->sk_protocol == IPPROTO_MPTCP)))
-+		error = aa_sk_perm(OP_CONNECT, AA_MAY_CONNECT, sock->sk);
-+
-+	return error;
- }
- 
- /**
+--- a/drivers/mmc/host/renesas_sdhi_internal_dmac.c
++++ b/drivers/mmc/host/renesas_sdhi_internal_dmac.c
+@@ -119,6 +119,7 @@ static const struct renesas_sdhi_of_data
+ static const struct of_device_id renesas_sdhi_internal_dmac_of_match[] = {
+ 	{ .compatible = "renesas,sdhi-r7s9210", .data = &of_rza2_compatible, },
+ 	{ .compatible = "renesas,sdhi-mmc-r8a77470", .data = &of_rcar_gen3_compatible, },
++	{ .compatible = "renesas,sdhi-r8a774e1", .data = &of_rcar_gen3_compatible, },
+ 	{ .compatible = "renesas,sdhi-r8a7795", .data = &of_rcar_gen3_compatible, },
+ 	{ .compatible = "renesas,sdhi-r8a7796", .data = &of_rcar_gen3_compatible, },
+ 	{ .compatible = "renesas,rcar-gen3-sdhi", .data = &of_rcar_gen3_compatible, },
 
 
 
