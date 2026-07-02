@@ -1,62 +1,63 @@
-Return-Path: <stable+bounces-270760-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-271427-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id W38rKzCTRmp2YwsAu9opvQ
-	(envelope-from <stable+bounces-270760-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:34:56 +0200
+	id 5fVcLk2bRmr3ZwsAu9opvQ
+	(envelope-from <stable+bounces-271427-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:09:33 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6168C6FA43A
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:34:56 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 103456FB0EB
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:09:33 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=CzH38XZi;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-270760-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-270760-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=F6WP6Ncv;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-271427-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-271427-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id DEE633020E09
-	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:33:35 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 7574732C8AC1
+	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:58:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C7D8D345751;
-	Thu,  2 Jul 2026 16:29:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2CCF826F46F;
+	Thu,  2 Jul 2026 16:58:36 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2AA91381EAC;
-	Thu,  2 Jul 2026 16:29:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0B1022D7B9;
+	Thu,  2 Jul 2026 16:58:34 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783009780; cv=none; b=hze02XqJ9b9z58rVGVNXIK4Yu1Mt7TO1EUcKktDZDrUj2rYJu6uR1BDt36xSiRCTNdUity6OcnjHKoK+R+HiDLTCEVNaGvdgPUyV08JwL0tTD7Adw44zhE+3jXosUVU4KiPeLblyeGO50VA82923nHrr7ySJ3MJcxo5qwFG6zg0=
+	t=1783011516; cv=none; b=B7fGizK2tdxS0HlW8hYs8+XPXWfqfzUV42i8JCdnSqJVkYac8CsFnTxA6ceHL88LXTA4PxpO8UpmyumD81AE+UQNLxk6usnTKvDda+wDs+3qmGeQPSqNPv3bjUL8CGLBKOttgIXW/GJtYRhug3GoLeBSD+Q/tnm74igfrNxOK/M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783009780; c=relaxed/simple;
-	bh=UREJhxuL03I2McC4cFMmOFRZa8T5bQtICjljwX3YFCw=;
+	s=arc-20240116; t=1783011516; c=relaxed/simple;
+	bh=95rGgU6j8Q0rKb8/bZNulRmQN0TQi2wXNp8DM5TLJiI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uNF91NN0wjadUIIvs6HU87mkw18nQhS//t0TbjaWGL6Is3xRapTi7EO2aQ5kTOsoG9EYoxfaka5uPRnoMh1tta86FiUdOMXYUR8qMIiV8Fk5ET5f126yv0X/pH61t1gvufGCnxIdRs2ukjzRjP5WQA60GhIxV+FSmPsqJlWQXig=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CzH38XZi; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8CFF31F000E9;
-	Thu,  2 Jul 2026 16:29:37 +0000 (UTC)
+	 MIME-Version; b=Pa0o0EPl9VECyE03oDRosdiWKpl2tudTlGoBI5NjDdPXRSGBqo70DHrsULouw8cuaV1S3r93ti+B54WzWeLU6LwpYslQh8alXsB1DiD7UBvtLp2qrEJx0YBTTedp7LoW1NErmY5RUaL3e/POXqblvSx861Qf+3FHSNfk/DAbPK4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F6WP6Ncv; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5BE021F00A3A;
+	Thu,  2 Jul 2026 16:58:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1783009778;
-	bh=kuwhjothnZjVK3ouivGqAlxC4GWnWFQH+nK1FxFG5T0=;
+	s=korg; t=1783011514;
+	bh=07gc/V5HsZj7l6HWdqoj7EIRl4KxpBYvsmMV/vIl1DQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=CzH38XZiiZipJWkCyZ4Hbexj/a2l3lFa+QBY0jaKnS943P1MzJO6LQjKcNZIZTgub
-	 uKiYWcSaDBQFBzMVaza3MFxm4nMFxOACVyszJeCmkOOdgaAHyt2Bk+LCOusONvET/G
-	 O8Ku0eEVx5bbD/a6Kc8p1XJXg0s6XEKfwQwXAXvM=
+	b=F6WP6Ncvt2ocDcB+ZPOonHU4pjbvDOe2ZL97qT4FBaAaByoxpMhAuLoMPmrNWBry8
+	 4wxZkE347Xf0a2UKhqKk/f5UhaV0TaoTu22WmbTXHIVVevJ9mX+SJqoq/CIWG08sa9
+	 F9jJCAWreLkrc6+tlTPBOy4BzLjN5ROTkrScsHIQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thorsten Blum <thorsten.blum@linux.dev>,
-	Long Li <longli@microsoft.com>,
-	Wei Liu <wei.liu@kernel.org>,
+	Jungwoo Lee <jwlee2217@gmail.com>,
+	Wongi Lee <qw3rtyp0@gmail.com>,
+	Ido Schimmel <idosch@nvidia.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 82/95] hv: utils: handle and propagate errors in kvp_register
+Subject: [PATCH 7.1 029/120] ipv4: account for fraggap on the paged allocation path
 Date: Thu,  2 Jul 2026 18:20:25 +0200
-Message-ID: <20260702155110.932734144@linuxfoundation.org>
+Message-ID: <20260702155113.566052707@linuxfoundation.org>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260702155109.196223802@linuxfoundation.org>
-References: <20260702155109.196223802@linuxfoundation.org>
+In-Reply-To: <20260702155112.964534952@linuxfoundation.org>
+References: <20260702155112.964534952@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,124 +71,106 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-270760-lists,stable=lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,nvidia.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-271427-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:thorsten.blum@linux.dev,m:longli@microsoft.com,m:wei.liu@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:jwlee2217@gmail.com,m:qw3rtyp0@gmail.com,m:idosch@nvidia.com,m:kuba@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	TO_DN_SOME(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linux.dev:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,nvidia.com:email,msgid.link:url]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 6168C6FA43A
+X-Rspamd-Queue-Id: 103456FB0EB
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+7.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thorsten Blum <thorsten.blum@linux.dev>
+From: Wongi Lee <qw3rtyp0@gmail.com>
 
-[ Upstream commit 3fcf923302a8f5c0dc3af3d2ca2657cb5fae4297 ]
+[ Upstream commit eca856950f7cb1a221e02b99d758409f2c5cec42 ]
 
-Make kvp_register() return an error code instead of silently ignoring
-failures, and propagate the error from kvp_handle_handshake() instead of
-returning success.
+In __ip_append_data(), when the paged-allocation branch is taken,
+alloclen and pagedlen are computed as
 
-This propagates both kzalloc_obj() and hvutil_transport_send() failures
-to kvp_handle_handshake() and thus to kvp_on_msg().
+	alloclen = fragheaderlen + transhdrlen;
+	pagedlen = datalen - transhdrlen;
 
-Fixes: 245ba56a52a3 ("Staging: hv: Implement key/value pair (KVP)")
-Cc: stable@vger.kernel.org
-Signed-off-by: Thorsten Blum <thorsten.blum@linux.dev>
-Reviewed-by: Long Li <longli@microsoft.com>
-Signed-off-by: Wei Liu <wei.liu@kernel.org>
+datalen already includes fraggap, but the fraggap bytes carried over
+from the previous skb are copied into the new skb's linear area at
+offset transhdrlen by the subsequent skb_copy_and_csum_bits(). The
+linear area is therefore undersized by fraggap bytes while pagedlen is
+overstated by the same amount.
+
+The non-paged branch sets alloclen to fraglen, which already accounts
+for fraggap because datalen does. Bring the paged branch in line by
+adding fraggap to alloclen and subtracting it from pagedlen.
+
+After this adjustment, copy no longer collapses to -fraggap on the
+paged path, so remove the stale comment describing that old arithmetic.
+
+Fixes: 8eb77cc73977 ("ipv4: avoid partial copy for zc")
+Signed-off-by: Jungwoo Lee <jwlee2217@gmail.com>
+Signed-off-by: Wongi Lee <qw3rtyp0@gmail.com>
+Reviewed-by: Ido Schimmel <idosch@nvidia.com>
+Link: https://patch.msgid.link/ajFR1eLAIs42TN3g@DESKTOP-19IMU7U.localdomain
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/hv/hv_kvp.c |   27 ++++++++++++++-------------
- 1 file changed, 14 insertions(+), 13 deletions(-)
+ net/ipv4/ip_output.c | 7 ++-----
+ 1 file changed, 2 insertions(+), 5 deletions(-)
 
---- a/drivers/hv/hv_kvp.c
-+++ b/drivers/hv/hv_kvp.c
-@@ -93,7 +93,7 @@ static void kvp_send_key(struct work_str
- static void kvp_respond_to_host(struct hv_kvp_msg *msg, int error);
- static void kvp_timeout_func(struct work_struct *dummy);
- static void kvp_host_handshake_func(struct work_struct *dummy);
--static void kvp_register(int);
-+static int kvp_register(int);
+diff --git a/net/ipv4/ip_output.c b/net/ipv4/ip_output.c
+index 5bcd73cbdb41c0..ec790bad1679a6 100644
+--- a/net/ipv4/ip_output.c
++++ b/net/ipv4/ip_output.c
+@@ -1117,8 +1117,8 @@ static int __ip_append_data(struct sock *sk,
+ 				  !(rt->dst.dev->features & NETIF_F_SG)))
+ 				alloclen = fraglen;
+ 			else {
+-				alloclen = fragheaderlen + transhdrlen;
+-				pagedlen = datalen - transhdrlen;
++				alloclen = fragheaderlen + transhdrlen + fraggap;
++				pagedlen = datalen - transhdrlen - fraggap;
+ 			}
  
- static DECLARE_DELAYED_WORK(kvp_timeout_work, kvp_timeout_func);
- static DECLARE_DELAYED_WORK(kvp_host_handshake_work, kvp_host_handshake_func);
-@@ -127,24 +127,26 @@ static void kvp_register_done(void)
- 	hv_poll_channel(kvp_transaction.recv_channel, kvp_poll_wrapper);
- }
+ 			alloclen += alloc_extra;
+@@ -1165,9 +1165,6 @@ static int __ip_append_data(struct sock *sk,
+ 			}
  
--static void
-+static int
- kvp_register(int reg_value)
- {
- 
- 	struct hv_kvp_msg *kvp_msg;
- 	char *version;
-+	int ret;
- 
- 	kvp_msg = kzalloc(sizeof(*kvp_msg), GFP_KERNEL);
-+	if (!kvp_msg)
-+		return -ENOMEM;
- 
--	if (kvp_msg) {
--		version = kvp_msg->body.kvp_register.version;
--		kvp_msg->kvp_hdr.operation = reg_value;
--		strcpy(version, HV_DRV_VERSION);
--
--		hvutil_transport_send(hvt, kvp_msg, sizeof(*kvp_msg),
--				      kvp_register_done);
--		kfree(kvp_msg);
--	}
-+	version = kvp_msg->body.kvp_register.version;
-+	kvp_msg->kvp_hdr.operation = reg_value;
-+	strcpy(version, HV_DRV_VERSION);
-+
-+	ret = hvutil_transport_send(hvt, kvp_msg, sizeof(*kvp_msg),
-+				    kvp_register_done);
-+	kfree(kvp_msg);
-+	return ret;
- }
- 
- static void kvp_timeout_func(struct work_struct *dummy)
-@@ -186,9 +188,8 @@ static int kvp_handle_handshake(struct h
- 	 */
- 	pr_debug("KVP: userspace daemon ver. %d connected\n",
- 		 msg->kvp_hdr.operation);
--	kvp_register(dm_reg_value);
- 
--	return 0;
-+	return kvp_register(dm_reg_value);
- }
- 
- 
+ 			copy = datalen - transhdrlen - fraggap - pagedlen;
+-			/* [!] NOTE: copy will be negative if pagedlen>0
+-			 * because then the equation reduces to -fraggap.
+-			 */
+ 			if (copy > 0 &&
+ 			    INDIRECT_CALL_1(getfrag, ip_generic_getfrag,
+ 					    from, data + transhdrlen, offset,
+-- 
+2.53.0
+
 
 
 
