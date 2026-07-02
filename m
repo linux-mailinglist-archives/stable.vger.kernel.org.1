@@ -1,61 +1,62 @@
-Return-Path: <stable+bounces-270993-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-270800-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id /mzEMFihRmpBagsAu9opvQ
-	(envelope-from <stable+bounces-270993-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:35:20 +0200
+	id MYNsOaSVRmqmZAsAu9opvQ
+	(envelope-from <stable+bounces-270800-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:45:24 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C49F6FB759
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:35:20 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 49AC36FA7D3
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:45:24 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=lzjjDBSA;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-270993-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-270993-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=k2VsLwdf;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-270800-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-270800-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id DB49731AE680
-	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:41:06 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 7057232ACE9E
+	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:34:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4790346A10;
-	Thu,  2 Jul 2026 16:39:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 49F3D349B1C;
+	Thu,  2 Jul 2026 16:31:22 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 663FE30C37A;
-	Thu,  2 Jul 2026 16:39:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1404C348C68;
+	Thu,  2 Jul 2026 16:31:21 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783010388; cv=none; b=eCio3fyljg+8M+2eFg5DCFsVTdv8queQmUoLr6teSV1NMpx0IcpvH+vOYjaZL1o+cVVfqlkzY24IbZDndwjFk2DZnRIzFL0XLg7IDDxozBoBbGpcst+DGsUToTt/OCX20ioAzfBeIJ3LKNrVE1iKJEZx7yBy8tmAAds3KwfrVdI=
+	t=1783009882; cv=none; b=rKi3dltegOvxvlcHRPZ5Vwsww0spSrMfyoTNwcOnGd6lcBRpcYoDgt6+wHbpggGeKLWbhM7GdUglQd4Fqd+2D1DvP5hoy95EN7O738pBQ2+QUOlRBJNIF+5GUMkKCrOrQaxa/6Y3+IVLDx+nX0e6tWU8dKSeTUB/joevjW6LBrY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783010388; c=relaxed/simple;
-	bh=IKDYQxkhYVztq2LU/S+GUXckprI4H7fCQH/0NxVsb2Q=;
+	s=arc-20240116; t=1783009882; c=relaxed/simple;
+	bh=+MqYkGZ79g3iRAynyUgevGvGCBsAlAbx6D2MwqGys6U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hWhUcZw/d7glnOJ/2KDe9qSMghjk5Y2OgXFA7XZUplfoS3Q5ryAZPvxOK/zR7K2IurTscGKmwgDcY0qaVgixBrOJX4KGIIUJJU70NAgxdCVCR2E8LncVare3bICq3U8CGSWJDh4yiiG3UPEzTKeKlEui5OmqiMle2cVeKUeSTqs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lzjjDBSA; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC7661F000E9;
-	Thu,  2 Jul 2026 16:39:46 +0000 (UTC)
+	 MIME-Version; b=auAceOXpLXSjv9Z9G5MzFIdr5LJJK4o4588c412mM3/M/MdzGHvYwrMu1fItkZ82Bl/2v/kO0sZ7PLsISiz8JMxd/fOjjeoyRz80tGDJ3/pgLT0EfgOEDD2dP+i5vX9iIk3YCwIMColIN84PZD3anWurl5N0lKozy+Gm6VzTJwc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k2VsLwdf; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B4F11F000E9;
+	Thu,  2 Jul 2026 16:31:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1783010387;
-	bh=J09XiJ9TVgBKx6690R/cIfBaqzLvIDka2kNvYUISqR0=;
+	s=korg; t=1783009881;
+	bh=tNn5KlHmcY/H2rCpmVqIwiEZPdqXh+XSk03gpi09POc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=lzjjDBSA3ifGKuCVAzQ5opZZB+YpLm4Z7LFZ3kkGRc5WqbwSvNqkYX9B4FRY5GygT
-	 80ihoCEOb/BYOdXk6KHit5iQ5Ogo7+i17j2zln9ySLDQhZW48l4Qi4Ctl2Qs0dXd6F
-	 o9BgWXivIBhNuCyQnne9fHJKlf1EwRIQvX5sJhT8=
+	b=k2VsLwdfC9byEAJcfBrrt7nRHoajMZHrNogU5Yh5Ox/27AxG8vWqQzpzsYmBLbdnN
+	 tPnFrw8zJieTCT0qV/V+nZY8kQdqVE+1cTWgxPmXsH/XKGKwo892iXbeW6mCi2Adzb
+	 uP8ePb+FJMuEe9xf1Hx7EMS1gvvYlHQ08KV7101w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gil Portnoy <dddhkts1@gmail.com>,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.12 090/204] ksmbd: reject non-VALID session in compound request branch
+	Xie Yuanbin <xieyuanbin1@huawei.com>,
+	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 028/129] ARM: allow __do_kernel_fault() to report execution of memory faults
 Date: Thu,  2 Jul 2026 18:19:07 +0200
-Message-ID: <20260702155120.551732894@linuxfoundation.org>
+Message-ID: <20260702155112.741239648@linuxfoundation.org>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260702155118.667618796@linuxfoundation.org>
-References: <20260702155118.667618796@linuxfoundation.org>
+In-Reply-To: <20260702155112.163984240@linuxfoundation.org>
+References: <20260702155112.163984240@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,99 +68,80 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-270993-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:dddhkts1@gmail.com,m:linkinjeon@kernel.org,m:stfrench@microsoft.com,s:lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org,microsoft.com];
 	FORWARDED(0.00)[lists@lfdr.de];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-270800-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:xieyuanbin1@huawei.com,m:rmk+kernel@armlinux.org.uk,m:bigeasy@linutronix.de,m:sashal@kernel.org,m:rmk@armlinux.org.uk,s:lists@lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
 	MID_RHS_MATCH_FROM(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
+	TAGGED_RCPT(0.00)[stable,kernel];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linutronix.de:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,huawei.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 4C49F6FB759
+X-Rspamd-Queue-Id: 49AC36FA7D3
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gil Portnoy <dddhkts1@gmail.com>
+From: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
 
-commit 609ca17d869d04ba249e32cdcbf13c0b1c66f43c upstream.
+commit 40b466db1dffb41f0529035c59c5739636d0e5b8 upstream
 
-smb2_check_user_session() takes a shortcut for any operation that is not
-the first in a COMPOUND request: it reuses work->sess (the session bound by
-the first operation) and validates only the SessionId, then returns
-"valid". It never re-checks work->sess->state == SMB2_SESSION_VALID, and a
-SessionId of 0xFFFFFFFFFFFFFFFF (ULLONG_MAX, the MS-SMB2 related-operation
-value) skips even the id comparison. The standalone path
-(ksmbd_session_lookup_all() plus the SESSION_SETUP state machine) does
-enforce the VALID state; the compound branch bypasses all of it.
+Allow __do_kernel_fault() to detect the execution of memory, so we can
+provide the same fault message as do_page_fault() would do. This is
+required when we split the kernel address fault handling from the
+main do_page_fault() code path.
 
-A SESSION_SETUP carrying only an NTLM Type-1 (NtLmNegotiate) blob publishes
-a fresh SMB2_SESSION_IN_PROGRESS session whose sess->user is still NULL
-(->user is assigned later, by ntlm_authenticate()). Used as operation 1 of
-a COMPOUND with operation 2 = TREE_CONNECT (related, SessionId=ULLONG_MAX,
-\\host\IPC$), the tree-connect then runs on that IN_PROGRESS session and
-reaches ksmbd_ipc_tree_connect_request(), which dereferences
-user_name(sess->user) with sess->user == NULL (transport_ipc.c:687/701/704)
--> remote NULL-pointer dereference and a kernel Oops that wedges the ksmbd
-worker for all clients.
-
-Reject any non-first compound operation that lands on a session which is
-not SMB2_SESSION_VALID, mirroring the validity the standalone lookup path
-enforces. SESSION_SETUP itself legitimately runs on an IN_PROGRESS session,
-but it is never carried as a non-first compound operation, so multi-leg
-authentication is unaffected by this check.
-
-Fixes: 5005bcb42191 ("ksmbd: validate session id and tree id in the compound request")
-Cc: stable@vger.kernel.org
-Signed-off-by: Gil Portnoy <dddhkts1@gmail.com>
-Acked-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reviewed-by: Xie Yuanbin <xieyuanbin1@huawei.com>
+Tested-by: Xie Yuanbin <xieyuanbin1@huawei.com>
+Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/server/smb2pdu.c |    5 +++++
- 1 file changed, 5 insertions(+)
+ arch/arm/mm/fault.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/fs/smb/server/smb2pdu.c
-+++ b/fs/smb/server/smb2pdu.c
-@@ -612,6 +612,11 @@ int smb2_check_user_session(struct ksmbd
- 					sess_id, work->sess->id);
- 			return -EINVAL;
- 		}
-+		if (work->sess->state != SMB2_SESSION_VALID) {
-+			pr_err("compound request on a non-valid session (state %d)\n",
-+					work->sess->state);
-+			return -EINVAL;
-+		}
- 		return 1;
- 	}
- 
+diff --git a/arch/arm/mm/fault.c b/arch/arm/mm/fault.c
+index 2315d40760a787..c94633eb64a1bb 100644
+--- a/arch/arm/mm/fault.c
++++ b/arch/arm/mm/fault.c
+@@ -172,6 +172,8 @@ __do_kernel_fault(struct mm_struct *mm, unsigned long addr, unsigned int fsr,
+ 	 */
+ 	if (addr < PAGE_SIZE) {
+ 		msg = "NULL pointer dereference";
++	} else if (is_permission_fault(fsr) && fsr & FSR_LNX_PF) {
++		msg = "execution of memory";
+ 	} else {
+ 		if (is_translation_fault(fsr) &&
+ 		    kfence_handle_page_fault(addr, is_write_fault(fsr), regs))
+-- 
+2.53.0
+
 
 
 
