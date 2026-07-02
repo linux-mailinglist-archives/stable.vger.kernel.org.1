@@ -1,61 +1,61 @@
-Return-Path: <stable+bounces-271424-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-270756-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id BS+LK5SmRmr3awsAu9opvQ
-	(envelope-from <stable+bounces-271424-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:57:40 +0200
+	id cEZmBRyTRmpuYwsAu9opvQ
+	(envelope-from <stable+bounces-270756-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:34:36 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A9BED6FBBB2
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:57:37 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id A77996FA42D
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:34:35 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=rSrEO4fn;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-271424-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-271424-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=pMrayNIz;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-270756-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-270756-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 3F4FC3130627
-	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:58:29 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 989993034807
+	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:33:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C35926F46F;
-	Thu,  2 Jul 2026 16:58:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B458833BBB9;
+	Thu,  2 Jul 2026 16:29:32 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0AE2F24E4C3;
-	Thu,  2 Jul 2026 16:58:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7F82414DD6;
+	Thu,  2 Jul 2026 16:29:27 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783011508; cv=none; b=phTbpCo0lBorAeUswPC5bUXHMMlisJMkasD20U5qHIGPb1mCpHPvGQpSlq8SX/HkirYfYoOdUZfQmaBqL0MZRmzUMAx4i47FQipmGWzwlf10Gv5W7ZiW1/tvc0Z0AYLiUQ2HGAZNxKPXd/8FfGDyHGdSEcGjnqLskUNQGWmw84g=
+	t=1783009771; cv=none; b=pYU5GN0P+NAYVa8F1dcxpKehZznGR0cEQUeUUtpfNvDy/ImmsL32ciE40IHY05ObEWX27yy5f0ERsIAbeljW7YndjsfooMnyZspeBHJHtjL7F5sZOeY3aRjmD7rqxo4GUhdNjCC9ZQyqa27+3acQpL576Tt1neCADPqfXrnU51A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783011508; c=relaxed/simple;
-	bh=ZRnU1Ggy/o6NA/yrCGyXQJbRskCMLxwuH5QgI7p/6Cg=;
+	s=arc-20240116; t=1783009771; c=relaxed/simple;
+	bh=fxt97unmnLsVl5lO9Dx37Q97hwSb3PVn+XAvn0K2L6o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PoW9cn6HeFKfKrzl+l8OIa/fhkjaPL8Lj4bQWHCKS1l+uGxdk3/A0Kr34Z23HPCbfUpRZyK/jYqsZhraam3NSRXP15SlLZpSpX4OALuj7HsTkoeFanWgyG4WRpZ3yuCbD4+OmF1ukgJH+UlkgVPpX53uQxM/kMasy8P6Pt1to3g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rSrEO4fn; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F37B1F00A3D;
-	Thu,  2 Jul 2026 16:58:26 +0000 (UTC)
+	 MIME-Version:Content-Type; b=SjYOryV8BuKSnRB5y9f4hnremait0kQcn5F0FHeeCz3IaimkW+SjlsxwvkBP5z10GYOoxizpx7AZQUJNVDwPzYuu6RhoZxTEHzd6TkLAOxFZCgbKVO9p70NT5sq5ZS2xn5bYsJ4anL5p2h4w/3zj7uWPntE1WgU5fh0kd+/w7Xo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pMrayNIz; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B8451F000E9;
+	Thu,  2 Jul 2026 16:29:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1783011506;
-	bh=obTC9mdEO/RRpNpNDb1WHV+Rv/Y+HHuMi4caper8Ueg=;
+	s=korg; t=1783009767;
+	bh=3Lrxs04azAhkR29GXQvER7T8gVHW67dez6+8hkF9S7E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=rSrEO4fnXwJLY0dp/SIiiAQSWlZj6bueO24Lf6PduCPreyVZcFEAtxoiFUeLyfSjd
-	 FfTySDtA2vT4leWuakECV7fDpEura4y9EtIlsAORwvuKp5kZuU2h+OKaGMvlNGM3ox
-	 J1L9auUCxk3yPNGsHl95xUFvcntHbBE7xNIAcvuE=
+	b=pMrayNIzAwOcwRxFYJGGEb5QHpRiciY0XreBkIEaiWWgQ5YB3HpLMyPs7F9WOwz+9
+	 JYpwpJ7sG6WlmcPf0NqtEcVVxV3HBOprGcYcj/sENVWkfz4roisrnwM3O77+H96vlc
+	 vS/Q/VqGLq4EeNMdAKwFj5bcaxMauXnJmR8XmlVo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Sven Eckelmann <sven@narfation.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.1 026/120] batman-adv: tvlv: enforce 2-byte alignment
+	=?UTF-8?q?Dominik=20Wo=C5=BAniak?= <stalion@gmail.com>,
+	Jeff Layton <jlayton@kernel.org>,
+	Chuck Lever <chuck.lever@oracle.com>
+Subject: [PATCH 5.15 79/95] nfsd: check get_user() return when reading princhashlen
 Date: Thu,  2 Jul 2026 18:20:22 +0200
-Message-ID: <20260702155113.502525111@linuxfoundation.org>
+Message-ID: <20260702155110.872422924@linuxfoundation.org>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260702155112.964534952@linuxfoundation.org>
-References: <20260702155112.964534952@linuxfoundation.org>
+In-Reply-To: <20260702155109.196223802@linuxfoundation.org>
+References: <20260702155109.196223802@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,165 +65,87 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-271424-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-270756-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:stable@kernel.org,m:sven@narfation.org,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:stalion@gmail.com,m:jlayton@kernel.org,m:chuck.lever@oracle.com,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org,oracle.com];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORWARDED(0.00)[lists@lfdr.de];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_SENDER_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,narfation.org:email,vger.kernel.org:from_smtp]
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[oracle.com:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,princhash.data:url]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: A9BED6FBBB2
+X-Rspamd-Queue-Id: A77996FA42D
 
-7.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sven Eckelmann <sven@narfation.org>
+From: Dominik Woźniak <stalion@gmail.com>
 
-commit 32a6799255525d6ea4da0f7e9e0e521ad9560a46 upstream.
+commit e186fa1c057f5eccb22afb1e83e34c0627085868 upstream.
 
-The fields of an aggregated OGM(v2) are accessed assuming (at least) 2-byte
-alignment, so a following OGM must start at an even offset. As the header
-length is even, an odd tvlv_len would misalign it and trigger unaligned
-accesses on strict-alignment architectures.
+In __cld_pipe_inprogress_downcall(), the get_user() that reads
+princhashlen from the userspace cld_msg_v2 buffer does not check its
+return value. A failing copy leaves princhashlen with uninitialised
+stack contents, which are then used to drive memdup_user() and stored
+as princhash.len on the resulting reclaim record. The other get_user()
+calls in this function all check the return; only this one is missed,
+which is most likely a copy-paste oversight from when v2 upcalls were
+introduced.
 
-Such a misaligned TVLV/OGM/OGMv2 is not created by a normal participant in
-the mesh. Therefore, reject such malformed packets.
+Mirror the existing pattern used a few lines above for namelen.
+namecopy is declared with __free(kfree) so the early return cleans up
+the already-allocated buffer automatically.
 
-Cc: stable@kernel.org
-Fixes: ef26157747d4 ("batman-adv: tvlv - basic infrastructure")
-Signed-off-by: Sven Eckelmann <sven@narfation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 6ee95d1c8991 ("nfsd: add support for upcall version 2")
+Cc: stable@vger.kernel.org
+Signed-off-by: Dominik Woźniak <stalion@gmail.com>
+Reviewed-by: Jeff Layton <jlayton@kernel.org>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/batman-adv/bat_iv_ogm.c | 11 ++++++++++-
- net/batman-adv/bat_v_ogm.c  | 11 ++++++++++-
- net/batman-adv/routing.c    |  6 ++++++
- net/batman-adv/tvlv.c       |  6 ++++++
- 4 files changed, 32 insertions(+), 2 deletions(-)
+ fs/nfsd/nfs4recover.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/net/batman-adv/bat_iv_ogm.c b/net/batman-adv/bat_iv_ogm.c
-index b8b1b997960a96..6e79f69c2fedec 100644
---- a/net/batman-adv/bat_iv_ogm.c
-+++ b/net/batman-adv/bat_iv_ogm.c
-@@ -311,14 +311,23 @@ batadv_iv_ogm_aggr_packet(int buff_pos, int packet_len,
- 			  const struct batadv_ogm_packet *ogm_packet)
- {
- 	int next_buff_pos = 0;
-+	u16 tvlv_len;
- 
- 	/* check if there is enough space for the header */
- 	next_buff_pos += buff_pos + sizeof(*ogm_packet);
- 	if (next_buff_pos > packet_len)
- 		return false;
- 
-+	tvlv_len = ntohs(ogm_packet->tvlv_len);
-+
-+	/* the fields of an aggregated OGM are accessed assuming (at least)
-+	 * 2-byte alignment, so a following OGM must start at an even offset.
-+	 */
-+	if (tvlv_len & 1)
-+		return false;
-+
- 	/* check if there is enough space for the optional TVLV */
--	next_buff_pos += ntohs(ogm_packet->tvlv_len);
-+	next_buff_pos += tvlv_len;
- 
- 	return next_buff_pos <= packet_len;
- }
-diff --git a/net/batman-adv/bat_v_ogm.c b/net/batman-adv/bat_v_ogm.c
-index 6852bf5da8c558..1f9b2d2b4831ce 100644
---- a/net/batman-adv/bat_v_ogm.c
-+++ b/net/batman-adv/bat_v_ogm.c
-@@ -849,14 +849,23 @@ batadv_v_ogm_aggr_packet(int buff_pos, int packet_len,
- 			 const struct batadv_ogm2_packet *ogm2_packet)
- {
- 	int next_buff_pos = 0;
-+	u16 tvlv_len;
- 
- 	/* check if there is enough space for the header */
- 	next_buff_pos += buff_pos + sizeof(*ogm2_packet);
- 	if (next_buff_pos > packet_len)
- 		return false;
- 
-+	tvlv_len = ntohs(ogm2_packet->tvlv_len);
-+
-+	/* the fields of an aggregated OGMv2 are accessed assuming (at least)
-+	 * 2-byte alignment, so a following OGMv2 must start at an even offset.
-+	 */
-+	if (tvlv_len & 1)
-+		return false;
-+
- 	/* check if there is enough space for the optional TVLV */
--	next_buff_pos += ntohs(ogm2_packet->tvlv_len);
-+	next_buff_pos += tvlv_len;
- 
- 	return next_buff_pos <= packet_len;
- }
-diff --git a/net/batman-adv/routing.c b/net/batman-adv/routing.c
-index 4483f8d9c75831..41951c7a1c50b2 100644
---- a/net/batman-adv/routing.c
-+++ b/net/batman-adv/routing.c
-@@ -1366,6 +1366,12 @@ int batadv_recv_mcast_packet(struct sk_buff *skb,
- 	if (tvlv_buff_len > skb->len - hdr_size)
- 		goto free_skb;
- 
-+	/* the fields of an multicast payload are accessed assuming (at least)
-+	 * 2-byte alignment, so a following packet must start at an even offset.
-+	 */
-+	if (tvlv_buff_len & 1)
-+		goto free_skb;
-+
- 	ret = batadv_tvlv_containers_process(bat_priv, BATADV_MCAST, NULL, skb,
- 					     tvlv_buff, tvlv_buff_len);
- 	if (ret >= 0) {
-diff --git a/net/batman-adv/tvlv.c b/net/batman-adv/tvlv.c
-index cc6ac580c62085..baadf97f98e5f0 100644
---- a/net/batman-adv/tvlv.c
-+++ b/net/batman-adv/tvlv.c
-@@ -464,6 +464,12 @@ int batadv_tvlv_containers_process(struct batadv_priv *bat_priv,
- 		if (tvlv_value_cont_len > tvlv_value_len)
- 			break;
- 
-+		/* the next tvlv header is accessed assuming (at least) 2-byte
-+		 * alignment, so it must start at an even offset.
-+		 */
-+		if (tvlv_value_cont_len & 1)
-+			break;
-+
- 		tvlv_handler = batadv_tvlv_handler_get(bat_priv,
- 						       tvlv_hdr->type,
- 						       tvlv_hdr->version);
--- 
-2.53.0
-
+--- a/fs/nfsd/nfs4recover.c
++++ b/fs/nfsd/nfs4recover.c
+@@ -815,7 +815,8 @@ __cld_pipe_inprogress_downcall(const str
+ 			if (IS_ERR(name.data))
+ 				return PTR_ERR(name.data);
+ 			name.len = namelen;
+-			get_user(princhashlen, &ci->cc_princhash.cp_len);
++			if (get_user(princhashlen, &ci->cc_princhash.cp_len))
++				return -EFAULT;
+ 			if (princhashlen > 0) {
+ 				princhash.data = memdup_user(
+ 						&ci->cc_princhash.cp_data,
 
 
 
