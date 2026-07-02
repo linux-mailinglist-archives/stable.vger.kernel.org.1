@@ -1,256 +1,243 @@
-Return-Path: <stable+bounces-270403-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-270405-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 2oNmDctDRmqiNAsAu9opvQ
-	(envelope-from <stable+bounces-270403-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 12:56:11 +0200
+	id 5H6bOHhFRmrxNQsAu9opvQ
+	(envelope-from <stable+bounces-270405-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 13:03:20 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 749226F6476
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 12:56:10 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 541646F65DA
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 13:03:20 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=intel.com header.s=Intel header.b=BrVp59r+;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-270403-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-270403-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=none) header.from=intel.com;
+	dkim=pass header.d=realtek.com header.s=dkim header.b=pyVxAYXY;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-270405-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-270405-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=none) header.from=realtek.com;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 29DA031F2A41
-	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 10:48:25 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id AC9EA32C925F
+	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 10:54:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D8A2D37997A;
-	Thu,  2 Jul 2026 10:48:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 96CD03EA967;
+	Thu,  2 Jul 2026 10:53:26 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1414F3C09F2
-	for <stable@vger.kernel.org>; Thu,  2 Jul 2026 10:48:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 566B43CAE75;
+	Thu,  2 Jul 2026 10:53:23 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782989300; cv=none; b=a8YCBbQJcCYenHtNVDBXVmaDDyvybXvU5DSavWj3UtNA60hOJrSp9j5Z2nQoquFGAsNYKRgM32HNTN+mdihfVZ+yJysbnljaqaIJtNcpSqbH6S0OClsXBewzciqTH7J/+emZm9Fz2bKp39F14SBEUkSHAKgviSMbNsKSubl3um0=
+	t=1782989606; cv=none; b=MjWwqxO88bPxrArvfvPeol1y+dFXBEi3tKWfh7XhrJFCVmlMO+VWn2vzzse+DpXdLpivNJZXDrxZMmlK39GFsArhgg7PrSSZPn4NAMZn3gMDWRCjSQKCJ2kv+OFSRc8A3kGRAL9P2BG3ZSQNnuzWyrsYUmM73Kd0go8UrIYif1g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782989300; c=relaxed/simple;
-	bh=k+6/Z2gs9cVAAhPHygjW4k5IBm479qlyxmM2Tyng3a0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=N78cp56AXPXU22h4IyApJUjAechFYQ1E9tF1nI45bn3Xj8sSK2fAQzuJbS6AehE+hA3OsiQ2YYsfTXtYEgouetDCCYogRhLGqBUV7If3teIo1Ro7oih9Nv7/76sROoLJcDOT+a6jQQY6sa0lQMEX/x12PpOReLC6Ti/cFXGxOxg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=BrVp59r+; arc=none smtp.client-ip=192.198.163.11
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1782989299; x=1814525299;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=k+6/Z2gs9cVAAhPHygjW4k5IBm479qlyxmM2Tyng3a0=;
-  b=BrVp59r+FTTu494SrsP6YnzNcXlOprMtp8Q3MF/2VMkvFdtBlXWggoez
-   OHPdZEGfcr7EbgTbAnz8C65WZDgCkaJKBVENdbStzKbwtaI4KF522IEio
-   IbLojHF8jw2lo9t79Rk4wZnDkv8u784j0GSEHYBSTTvKIMDiqkNp2R2Cd
-   J5bK8+LbHbPUh+IrDuKlflDHAFYQLpBPurcuIkfFSHjR8CW5Zn9Fs5SCe
-   ZHUc3UVstOeOjPJJdNV3iMub7/QMzWe9vDlLzyZWwiTD4ltO/y/qOtm+q
-   y38ge2m2uTKem2rF1dTN7bIydY6UVS9jY3K8ajMGCwK49EYz5e7dJqk5h
-   Q==;
-X-CSE-ConnectionGUID: F5qLyqS2RSybZPWlgvpveA==
-X-CSE-MsgGUID: 48H5jW6dRIKvEVVBLJWXbQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11834"; a="94340596"
-X-IronPort-AV: E=Sophos;i="6.25,143,1779174000"; 
-   d="scan'208";a="94340596"
-Received: from fmviesa008.fm.intel.com ([10.60.135.148])
-  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Jul 2026 03:48:19 -0700
-X-CSE-ConnectionGUID: OSSGdLzfTSae19ANyeWZrg==
-X-CSE-MsgGUID: urzn876CTMaIgaRj9LGwYg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,143,1779174000"; 
-   d="scan'208";a="250174105"
-Received: from hrotuna-mobl2.ger.corp.intel.com (HELO [10.245.244.242]) ([10.245.244.242])
-  by fmviesa008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Jul 2026 03:48:16 -0700
-Message-ID: <a4657daa-c58e-4441-ad81-c3e770bc5a94@intel.com>
-Date: Thu, 2 Jul 2026 11:48:14 +0100
+	s=arc-20240116; t=1782989606; c=relaxed/simple;
+	bh=l6NIVmclJOukYwpYuRypKxwUsOtZfK45Vb/F2yIhi6k=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=uxjgYYNacoOuJ08QgwxGnEn7gg/t4iZEhEC3aKVLjB69uhYvxcg2vh2ESpahIYNhLmEnA/D3C/T0PbstSkZSKG2A6uVUsSt8IG3Bcgt1tiFSuIkDJAvwYD7r0SanKQGKl98ABxROGD64cqwo0XERHaynhXdZdV/WZBh5/D0X/hE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b=pyVxAYXY; arc=none smtp.client-ip=211.75.126.72
+X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 662AqsbJ71875067, This message is accepted by code: ctloc85258
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=realtek.com; s=dkim;
+	t=1782989574; bh=6oidG+GErJm8FvmpYYel3i5fYgxw3UFmmr9RQwtIHOM=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:Content-Transfer-Encoding:MIME-Version;
+	b=pyVxAYXYh/rteNKSpsBnZjZpqCt2sGG9ZTNwFSHozdjmqa5k620AtKSgaczaFhAly
+	 jZ1Ot/h71DNc6MnAYCWMFUgw+KMyQz6Joyh7XjHEzZ0hPfVgcNKGQOwKxb2x67lZXq
+	 Xz3c3qmHUG0mkuGqr/tPYeqiJlpvCtGxAJxMt9OPGxvHzRV1RyrNaS2GbVYzrCVNTV
+	 /SPsxztPU+aeQ8dtYToCZpgE4TxdMWPg6aV15ObSCHSUQugtBDImOYEXzO46vy28H+
+	 DKeNcmKprLgUiWck3UEoa+vFkeOWFxUaXAAYQ5k+qqvi05c4wSQTPdqHHGvKXFtB0H
+	 KaEb4pZfhsi+Q==
+Received: from mail.realtek.com (rtkexhmbs04.realtek.com.tw[10.21.1.54])
+	by rtits2.realtek.com.tw (8.15.2/3.29/5.94) with ESMTPS id 662AqsbJ71875067
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+	Thu, 2 Jul 2026 18:52:54 +0800
+Received: from RTKEXHMBS04.realtek.com.tw (10.21.1.54) by
+ RTKEXHMBS04.realtek.com.tw (10.21.1.54) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.17; Thu, 2 Jul 2026 18:52:54 +0800
+Received: from RTKEXHMBS04.realtek.com.tw ([::1]) by
+ RTKEXHMBS04.realtek.com.tw ([fe80::552f:8b32:656c:c395%6]) with mapi id
+ 15.02.2562.017; Thu, 2 Jul 2026 18:52:54 +0800
+From: Justin Lai <justinlai0215@realtek.com>
+To: Jakub Kicinski <kuba@kernel.org>
+CC: "davem@davemloft.net" <davem@davemloft.net>, "edumazet@google.com"
+	<edumazet@google.com>, "pabeni@redhat.com" <pabeni@redhat.com>,
+	"andrew+netdev@lunn.ch" <andrew+netdev@lunn.ch>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"netdev@vger.kernel.org" <netdev@vger.kernel.org>, "stable@vger.kernel.org"
+	<stable@vger.kernel.org>, "horms@kernel.org" <horms@kernel.org>,
+	"richardcochran@gmail.com" <richardcochran@gmail.com>,
+	"david.laight.linux@gmail.com" <david.laight.linux@gmail.com>,
+	"aleksander.lobakin@intel.com" <aleksander.lobakin@intel.com>, Ping-Ke Shih
+	<pkshih@realtek.com>, Larry Chiu <larry.chiu@realtek.com>
+Subject: RE: [PATCH net v4] rtase: Workaround for TX hang caused by short UDP
+ packets entering hardware PTP parsing
+Thread-Topic: [PATCH net v4] rtase: Workaround for TX hang caused by short UDP
+ packets entering hardware PTP parsing
+Thread-Index: AQHdBSawlGaS5q8//kGEPfCefRjucrZV2E0AgAQ5B3A=
+Date: Thu, 2 Jul 2026 10:52:53 +0000
+Message-ID: <20c431f98e00464fa8a4ba1f431e89fd@realtek.com>
+References: <20260626044539.37753-1-justinlai0215@realtek.com>
+ <20260630020126.2366786-1-kuba@kernel.org>
+In-Reply-To: <20260630020126.2366786-1-kuba@kernel.org>
+Accept-Language: zh-TW, en-US
+Content-Language: zh-TW
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] gpu/buddy: bail out of try_harder when alignment
- cannot be honoured
-To: Arunpravin Paneer Selvam <Arunpravin.PaneerSelvam@amd.com>,
- christian.koenig@amd.com, dri-devel@lists.freedesktop.org,
- intel-gfx@lists.freedesktop.org, intel-xe@lists.freedesktop.org,
- amd-gfx@lists.freedesktop.org
-Cc: alexander.deucher@amd.com, =?UTF-8?Q?Timur_Krist=C3=B3f?=
- <timur.kristof@gmail.com>, John Olender <john.olender@gmail.com>,
- stable@vger.kernel.org
-References: <20260629074311.68836-1-Arunpravin.PaneerSelvam@amd.com>
-Content-Language: en-GB
-From: Matthew Auld <matthew.auld@intel.com>
-In-Reply-To: <20260629074311.68836-1-Arunpravin.PaneerSelvam@amd.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-5.16 / 15.00];
-	WHITELIST_SPF_DKIM(-3.00)[intel.com:d:+,kernel.org:s:+];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
-	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	DMARC_POLICY_ALLOW(-0.50)[realtek.com,none];
+	R_DKIM_ALLOW(-0.20)[realtek.com:s=dkim];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	FREEMAIL_CC(0.00)[davemloft.net,google.com,redhat.com,lunn.ch,vger.kernel.org,kernel.org,gmail.com,intel.com,realtek.com];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-270403-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[amd.com,gmail.com,vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER(0.00)[matthew.auld@intel.com,stable@vger.kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS(0.00)[m:Arunpravin.PaneerSelvam@amd.com,m:christian.koenig@amd.com,m:dri-devel@lists.freedesktop.org,m:intel-gfx@lists.freedesktop.org,m:intel-xe@lists.freedesktop.org,m:amd-gfx@lists.freedesktop.org,m:alexander.deucher@amd.com,m:timur.kristof@gmail.com,m:john.olender@gmail.com,m:stable@vger.kernel.org,m:timurkristof@gmail.com,m:johnolender@gmail.com,s:lists@lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-270405-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[intel.com:+];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FORGED_SENDER(0.00)[justinlai0215@realtek.com,stable@vger.kernel.org];
+	RCPT_COUNT_TWELVE(0.00)[14];
+	FORGED_RECIPIENTS(0.00)[m:kuba@kernel.org,m:davem@davemloft.net,m:edumazet@google.com,m:pabeni@redhat.com,m:andrew+netdev@lunn.ch,m:linux-kernel@vger.kernel.org,m:netdev@vger.kernel.org,m:stable@vger.kernel.org,m:horms@kernel.org,m:richardcochran@gmail.com,m:david.laight.linux@gmail.com,m:aleksander.lobakin@intel.com,m:pkshih@realtek.com,m:larry.chiu@realtek.com,m:andrew@lunn.ch,m:davidlaightlinux@gmail.com,s:lists@lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	TO_DN_EQ_ADDR_SOME(0.00)[];
+	FORWARDED(0.00)[lists@lfdr.de];
+	DKIM_TRACE(0.00)[realtek.com:+];
+	MISSING_XM_UA(0.00)[];
 	TO_DN_SOME(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[matthew.auld@intel.com,stable@vger.kernel.org];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[justinlai0215@realtek.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[6];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[10];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[amd.com:email,vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,intel.com:dkim,intel.com:email,intel.com:mid,intel.com:from_mime]
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	ALIAS_RESOLVED(0.00)[];
+	TAGGED_RCPT(0.00)[stable,netdev];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 749226F6476
+X-Rspamd-Queue-Id: 541646F65DA
 
-On 29/06/2026 08:43, Arunpravin Paneer Selvam wrote:
-> The try_harder contiguous fallback could return a range whose start
-> offset did not match the caller's min_block_size. When a candidate's
-> start is misaligned, realign it: free the misaligned run and reallocate
-> exactly @size at the next lower min_block_size boundary. This keeps the
-> returned size unchanged with no surplus to trim, and rejects the request
-> only when no aligned candidate fits.
-> 
-> v2: align misaligned candidates down to min_block_size instead of
->      bailing out, for both the RHS and LHS paths (Matthew).
-> 
-> Suggested-by: Christian König <christian.koenig@amd.com>
-> Fixes: 0a1844bf0b53 ("drm/buddy: Improve contiguous memory allocation")
-> Cc: Matthew Auld <matthew.auld@intel.com>
-> Cc: Christian König <christian.koenig@amd.com>
-> Cc: Timur Kristóf <timur.kristof@gmail.com>
-> Cc: John Olender <john.olender@gmail.com>
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Arunpravin Paneer Selvam <Arunpravin.PaneerSelvam@amd.com>
-
-Reviewed-by: Matthew Auld <matthew.auld@intel.com>
-
+Jakub Kicinski <kuba@kernel.org> wrote:
+>=20
+> This is an AI-generated review of your patch. The human sending this
+> email has considered the AI review valid, or at least plausible.
 > ---
->   drivers/gpu/buddy.c | 63 +++++++++++++++++++++++++++++++--------------
->   1 file changed, 44 insertions(+), 19 deletions(-)
-> 
-> diff --git a/drivers/gpu/buddy.c b/drivers/gpu/buddy.c
-> index dc81fe0301ce..3c73ae87f3c5 100644
-> --- a/drivers/gpu/buddy.c
-> +++ b/drivers/gpu/buddy.c
-> @@ -1118,22 +1118,30 @@ static int __gpu_buddy_alloc_range(struct gpu_buddy *mm,
->   			     blocks, total_allocated_on_err);
->   }
->   
-> +static int __alloc_contig_aligned_retry(struct gpu_buddy *mm,
-> +					u64 unaligned_offset,
-> +					u64 size,
-> +					u64 min_block_size,
-> +					struct list_head *blocks)
-> +{
-> +	u64 aligned_offset = round_down(unaligned_offset, min_block_size);
-> +
-> +	return __gpu_buddy_alloc_range(mm, aligned_offset, size, NULL, blocks);
-> +}
-> +
->   static int __alloc_contig_try_harder(struct gpu_buddy *mm,
->   				     u64 size,
->   				     u64 min_block_size,
->   				     struct list_head *blocks)
->   {
-> -	u64 rhs_offset, lhs_offset, lhs_size, filled;
-> +	u64 rhs_offset, lhs_offset, filled;
->   	struct gpu_buddy_block *block;
->   	unsigned int tree, order;
-> -	LIST_HEAD(blocks_lhs);
-> -	unsigned long pages;
->   	u64 modify_size;
->   	int err;
->   
->   	modify_size = rounddown_pow_of_two(size);
-> -	pages = modify_size >> ilog2(mm->chunk_size);
-> -	order = fls(pages) - 1;
-> +	order = ilog2(modify_size) - ilog2(mm->chunk_size);
->   	if (order == 0)
->   		return -ENOSPC;
->   
-> @@ -1149,31 +1157,48 @@ static int __alloc_contig_try_harder(struct gpu_buddy *mm,
->   		while (iter) {
->   			block = rbtree_get_free_block(iter);
->   
-> -			/* Allocate blocks traversing RHS */
->   			rhs_offset = gpu_buddy_block_offset(block);
-> +
-> +			/* Allocate blocks traversing RHS */
->   			err =  __gpu_buddy_alloc_range(mm, rhs_offset, size,
->   						       &filled, blocks);
-> -			if (!err || err != -ENOSPC)
-> +			if (err && err != -ENOSPC)
->   				return err;
-> +			if (!err && IS_ALIGNED(rhs_offset, min_block_size))
-> +				return 0;
-> +			if (!err) {
-> +				/* Allocate the unaligned RHS offset using round_down */
-> +				gpu_buddy_free_list_internal(mm, blocks);
-> +				err = __alloc_contig_aligned_retry(mm, rhs_offset,
-> +								   size,
-> +								   min_block_size,
-> +								   blocks);
-> +				if (!err)
-> +					return 0;
-> +				if (err != -ENOSPC) {
-> +					gpu_buddy_free_list_internal(mm, blocks);
-> +					return err;
-> +				}
-> +				goto next;
-> +			}
->   
-> -			lhs_size = max((size - filled), min_block_size);
-> -			if (!IS_ALIGNED(lhs_size, min_block_size))
-> -				lhs_size = round_up(lhs_size, min_block_size);
-> +			if (size - filled > rhs_offset)
-> +				goto next;
->   
-> -			/* Allocate blocks traversing LHS */
-> -			lhs_offset = gpu_buddy_block_offset(block) - lhs_size;
-> -			err =  __gpu_buddy_alloc_range(mm, lhs_offset, lhs_size,
-> -						       NULL, &blocks_lhs);
-> -			if (!err) {
-> -				list_splice(&blocks_lhs, blocks);
-> +			lhs_offset = rhs_offset - (size - filled);
-> +
-> +			/* Allocate the unaligned LHS offset using round_down */
-> +			gpu_buddy_free_list_internal(mm, blocks);
-> +			err = __alloc_contig_aligned_retry(mm, lhs_offset, size,
-> +							   min_block_size, blocks);
-> +			if (!err)
->   				return 0;
-> -			} else if (err != -ENOSPC) {
-> +			if (err != -ENOSPC) {
->   				gpu_buddy_free_list_internal(mm, blocks);
->   				return err;
->   			}
-> -			/* Free blocks for the next iteration */
-> +next:
->   			gpu_buddy_free_list_internal(mm, blocks);
-> -
->   			iter = rb_prev(iter);
->   		}
->   	}
-> 
-> base-commit: 6648301c5bb2ef23f0fb15bcb01d21ff66f36799
+>     rtase: Workaround for TX hang caused by short UDP packets entering
+> hardware PTP parsing
+>=20
+> This commit attempts to work around a hardware TX hang caused by
+> out-of-bounds
+> reads during PTP parsing. It introduces logic to pad short UDP packets to=
+ a
+> minimum transport data length before transmission.
+>=20
+> > diff --git a/drivers/net/ethernet/realtek/rtase/rtase_main.c
+> b/drivers/net/ethernet/realtek/rtase/rtase_main.c
+> > index 255667775f0e8..944ffe71b2d07 100644
+> > --- a/drivers/net/ethernet/realtek/rtase/rtase_main.c
+> > +++ b/drivers/net/ethernet/realtek/rtase/rtase_main.c
+> [ ... ]
+> > +static bool rtase_get_udp_offset(struct sk_buff *skb, u32 *udp_offset)
+> > +{
+> > +     struct ipv6hdr *i6h, _i6h;
+> > +     struct iphdr *ih, _ih;
+> > +     __be16 proto;
+> > +     u32 no;
+> > +
+> > +     if (!rtase_get_l3_proto(skb, &proto, &no))
+> > +             return false;
+> > +
+> > +     switch (proto) {
+> > +     case htons(ETH_P_IP):
+> > +             ih =3D skb_header_pointer(skb, no, sizeof(_ih), &_ih);
+> > +             if (!ih)
+> > +                     return false;
+>=20
+> [Severity: High]
+> Does this skip the padding workaround if the IP header itself is truncate=
+d?
+>=20
+> If the packet is shorter than the IP header (e.g., less than 34 bytes),
+> skb_header_pointer() will return false. This causes rtase_skb_pad() to
+> return true, allowing the packet to skip padding. Could this small unpadd=
+ed
+> packet still trigger the hardware parser and cause the TX hang?
+>=20
 
+Thanks for pointing this out.
+
+A truncated IPv4 header can also trigger the same hardware TX hang
+issue.
+
+We'll update the workaround to handle this case as well.
+We'll also update the commit message to document this hardware
+limitation.
+
+> [ ... ]
+> > +static bool rtase_skb_pad(struct sk_buff *skb)
+> > +{
+> > +     __be16 *dest, _dest;
+> > +     u32 trans_data_len;
+> > +     u32 udp_offset;
+> > +     u16 dest_port;
+> > +     u32 pad_len;
+> > +
+> > +     if (!rtase_get_udp_offset(skb, &udp_offset))
+> > +             return true;
+> > +
+> > +     if (udp_offset > skb->len)
+> > +             return false;
+> > +
+> > +     trans_data_len =3D skb->len - udp_offset;
+> > +     if (trans_data_len < offsetof(struct udphdr, len) ||
+> > +         trans_data_len >=3D RTASE_MIN_PAD_LEN)
+> > +             return true;
+>=20
+> [Severity: High]
+> Can an attacker bypass the workaround if the transport payload is very sm=
+all?
+>=20
+> By returning true when trans_data_len is less than
+> offsetof(struct udphdr, len) (which is 4 bytes), the packet is passed to
+> the hardware unpadded.
+>=20
+> If an attacker sends an IPv4 non-initial fragment with a very small paylo=
+ad,
+> the hardware parser might identify the fragment as UDP and attempt to rea=
+d
+> the
+> destination port at offset 2 from the payload. If this out-of-bounds read
+> hits residual uninitialized memory in the TX FIFO containing PTP port val=
+ues
+> (319 or 320), the hardware could incorrectly classify it as a PTP packet,
+> continue parsing out of bounds, and trigger the TX hang.
+>=20
+
+Thanks for the review.
+
+The hardware fetches packet data according to the packet length
+specified in the TX descriptor, so it does not fetch residual data
+beyond the end of the packet during DMA.
+
+The affected out-of-bounds access occurs after the packet has already
+matched the PTP classification criteria (UDP destination port 319/320)
+and entered the hardware PTP parsing path.
+
+If the transport data is shorter than the destination port field
+itself, the packet cannot match the affected PTP classification path,
+so padding is not required for this case.
+
+> > +
+> > +     dest =3D skb_header_pointer(skb,
+> --
+> pw-bot: cr
 
