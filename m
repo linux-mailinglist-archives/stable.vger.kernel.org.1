@@ -1,60 +1,68 @@
-Return-Path: <stable+bounces-271364-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-271476-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 9R20M6ilRmrHawsAu9opvQ
-	(envelope-from <stable+bounces-271364-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:53:44 +0200
+	id JpgdIjGnRmpCbAsAu9opvQ
+	(envelope-from <stable+bounces-271476-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 20:00:17 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1FC5F6FBB18
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:53:44 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id DD1E46FBC64
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 20:00:16 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=Ub0lVaMZ;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-271364-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-271364-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=nAMJ2QHb;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-271476-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-271476-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A214233BF760
-	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:55:51 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 21586346DD04
+	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 17:00:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 90F4925B09B;
-	Thu,  2 Jul 2026 16:55:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4461F30B53E;
+	Thu,  2 Jul 2026 17:00:45 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59B781C695;
-	Thu,  2 Jul 2026 16:55:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E043A2FC893;
+	Thu,  2 Jul 2026 17:00:43 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783011350; cv=none; b=gUnFFNdv4YOvbHJitgnGfMBxovcnAeL3pv18kN2rqIN6nGONnZNs5Qenqmw/f4V0ifOjJNFF7JuRfUQljXLdTY1XeXEey3g7o05qs9FW/u7D1EM9nvQTX7mfWSD4D9goRYYzrYHMaknQos2QFBNbbIfne+Dh7boo4XRj5kMErVE=
+	t=1783011645; cv=none; b=s7xJzJuQEL3C3hBNoRouoLpVSoJAM09/ms1QV+xPRnFC47vwSz8Nk+qlP3zpPWHNSIg18SPUTtiPJJhvXnS88zMKNpeCs/MLDTsI7vUmhZ9vMucCGa9IpXEJmY1XGRDk6cyN7YjAG3k5QhESUGYwZpb1DWyl3RhUVcv8bdces3c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783011350; c=relaxed/simple;
-	bh=ZS3HI1UVxGZjXG527yG0YZRNQNEKHJXIKZY/4YJly5k=;
+	s=arc-20240116; t=1783011645; c=relaxed/simple;
+	bh=NFd1on4GLiuJzvg5hYtb0uHkJlVQNDLQlfMSQ3wA1tY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mH2ZXoswpZ3CMb1MfSYX/JUGDrKpTLuCRTOQJY1+Uu7wfIfeh8DY0CAEENso+tBr1ytoksB4oVfGXBfJxlU5e5pMM90j6lw1igeGdZJXeuS+nrSg3h1iQ9+ACUVtEGsqlCxXQcKpvyV5CWHhX7wwKnzqZVlVWn95ZD6NdDfc/6U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ub0lVaMZ; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BFF4D1F000E9;
-	Thu,  2 Jul 2026 16:55:48 +0000 (UTC)
+	 MIME-Version; b=Q0bzrpEUMDX1CJiQ9qBKLp7dvzFzCZBmYYAdAeUo6jjcrDElzCUPDPy0Qucs3vn6Xw2KJZ9XjYN6Q7UJ5vcWx8kyKyNgozMt6Nplc7M2Zy3y1R46qYGL79saNt89eWgb2hdCAtiPmfgM8W6ovFrNcXg42Rfq7JufEHI8w46Y6iU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nAMJ2QHb; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B8A21F000E9;
+	Thu,  2 Jul 2026 17:00:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1783011349;
-	bh=V3BDvUgy2rB/BcnftWBlV2r8bWpPOqSeYcEzUUm3p2g=;
+	s=korg; t=1783011643;
+	bh=6BrBnjxYNdBQGaRAYyUrNEYh7LD4Ease+lJJj8hSuSQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Ub0lVaMZEcpc3Ir2JIL45n1dTvIoVHNTMOhJTCNmxY/c3wiImC3YwMVYfhi6LdRK2
-	 LmqGJctaE2V2SYCE2CxsIJzdwO6r4OfhRA1WEdh20H4ix9aNBlrmBADsAl0Ca+kZgZ
-	 nSalfxIEs8Z/dJB57ub4vGL5ReBoKwlBfHuEpZIA=
+	b=nAMJ2QHb8MtAsZZi+eDBXuYeykvtuMwEijRixHB7YgypuY67gtSypZ5PirbmOsETw
+	 /a/qNtEZI+UmnfAw8PEZgDZFlh5s0CDorRM6eNBsZ9I+4TuaHWabwIQ8cR3QbCTydQ
+	 9Um4m7C58YUHENYbjF1luQyjLuqg8GK+3mlUDgJY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wentao Liang <vulab@iscas.ac.cn>,
-	Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
-Subject: [PATCH 6.18 075/108] pwrseq: core: fix use-after-free in pwrseq_debugfs_seq_next()
-Date: Thu,  2 Jul 2026 18:21:12 +0200
-Message-ID: <20260702155113.667549547@linuxfoundation.org>
+	David Matlack <dmatlack@google.com>,
+	James Houghton <jthoughton@google.com>,
+	Alexander Bulekov <bkov@amazon.com>,
+	Fred Griffoul <fgriffo@amazon.co.uk>,
+	Alexander Graf <graf@amazon.de>,
+	David Woodhouse <dwmw@amazon.co.uk>,
+	Filippo Sironi <sironi@amazon.de>,
+	Ivan Orlov <iorlov@amazon.co.uk>,
+	Sean Christopherson <seanjc@google.com>,
+	Paolo Bonzini <pbonzini@redhat.com>
+Subject: [PATCH 7.1 077/120] KVM: x86/mmu: Ensure hugepage is in by slot before checking max mapping level
+Date: Thu,  2 Jul 2026 18:21:13 +0200
+Message-ID: <20260702155114.551704101@linuxfoundation.org>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260702155112.110058792@linuxfoundation.org>
-References: <20260702155112.110058792@linuxfoundation.org>
+In-Reply-To: <20260702155112.964534952@linuxfoundation.org>
+References: <20260702155112.964534952@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,22 +79,22 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-271364-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-271476-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[13];
 	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:vulab@iscas.ac.cn,m:bartosz.golaszewski@oss.qualcomm.com,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:dmatlack@google.com,m:jthoughton@google.com,m:bkov@amazon.com,m:fgriffo@amazon.co.uk,m:graf@amazon.de,m:dwmw@amazon.co.uk,m:sironi@amazon.de,m:iorlov@amazon.co.uk,m:seanjc@google.com,m:pbonzini@redhat.com,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
@@ -97,94 +105,137 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,iscas.ac.cn:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,qualcomm.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,msgid.link:url]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[amazon.de:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,amazon.co.uk:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 1FC5F6FBB18
+X-Rspamd-Queue-Id: DD1E46FBC64
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wentao Liang <vulab@iscas.ac.cn>
+From: Sean Christopherson <seanjc@google.com>
 
-commit 257595adf9dac15ae1edd9d07753fbc576a7583d upstream.
+commit ef057cbf825e03b63f6edf5980f96abf3c53089d upstream.
 
-pwrseq_debugfs_seq_next() declares 'next' with __free(put_device),
-which causes put_device() to be called on the returned pointer when
-the variable goes out of scope.  This results in a use-after-free
-since the seq_file framework receives a pointer whose reference has
-already been dropped.
+When recovering hugepages in the shadow MMU, verify that the base gfn of
+the shadow page is actually contained within the target memslot, *before*
+querying the max mapping level given the shadow page's gfn.  Failure to
+pre-check the validity of the gfn can lead to an out-of-bounds access to
+the slot's lpage_info (which typically manifests as a host #PF because the
+lpage_info is vmalloc'd) if the guest creates a hugepage mapping (in its
+PTEs) that extends "below" the bounds of a memslot.
 
-Simply removing __free(put_device) would fix the UAF but would leak
-the reference acquired by bus_find_next_device(), as stop() only
-calls up_read(&pwrseq_sem) and never releases the device reference.
+When faulting in memory for a guest, and the size of the guest mapping is
+greater than KVM's (current) max mapping, then KVM will create a "direct"
+shadow page (direct in that there are no gPTEs to shadow, and so the target
+gfn is a direct calculation given the base gfn of the shadow page).  The
+hugepage recovery flow looks for such direct shadow pages, as forcing 4KiB
+mappings when dirty logging generates the guest > host mapping size case.
+When the 4KiB restriction is lifted, then KVM can replace the shadow page
+with a hugepage.
 
-Fix this by making the reference counting consistent across all
-seq_file callbacks, matching the standard pattern used by PCI and
-SCSI:
+But if KVM originally used a smaller mapping than the guest because the
+range of memory covered by the guest hugepage exceeds the bounds of a
+memslot, then KVM will link a direct shadow page with a gfn that is outside
+the bounds of the memslot being used to fault in memory.  The rmap entry
+added for the leaf mapping is correct and within bounds, but the gfn of the
+leaf SPTE's parent shadow page will be out of bounds.
 
-- start(): use get_device() so it returns a referenced pointer.
-- next(): explicitly put_device(curr) to release the previous
-  device's reference (no NULL check needed - the seq_file framework
-  only calls next() while the previous return was non-NULL).
-- stop(): put_device(data) to release the last iterated device's
-  reference, with a NULL guard since stop() may be called with NULL
-  when start() returned NULL or next() reached end-of-sequence.
+  BUG: unable to handle page fault for address: ffffc90000806ffc
+  #PF: supervisor read access in kernel mode
+  #PF: error_code(0x0000) - not-present page
+  PGD 100000067 P4D 100000067 PUD 1002a7067 PMD 10612f067 PTE 0
+  Oops: Oops: 0000 [#1] SMP
+  CPU: 13 UID: 1000 PID: 757 Comm: mmu_stress_test Not tainted 7.1.0-rc1-48ce1e26eace-x86_pir_to_irr_comments-vm #341 PREEMPT
+  Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 0.0.0 02/06/2015
+  RIP: 0010:kvm_mmu_max_mapping_level+0x79/0x2b0 [kvm]
+  Call Trace:
+   <TASK>
+   kvm_mmu_recover_huge_pages+0x21b/0x320 [kvm]
+   kvm_set_memslot+0x1ee/0x590 [kvm]
+   kvm_set_memory_region.part.0+0x3a1/0x4d0 [kvm]
+   kvm_vm_ioctl+0x9bf/0x15d0 [kvm]
+   __x64_sys_ioctl+0x8a/0xd0
+   do_syscall_64+0xb7/0xbb0
+   entry_SYSCALL_64_after_hwframe+0x4b/0x53
+  RIP: 0033:0x7f21c0f1a9bf
+   </TASK>
 
+Don't bother pre-checking the bounds of the potential hugepage, i.e. don't
+check that e.g. sp->gfn + KVM_PAGES_PER_HPAGE(sp->role.level + 1) is also
+within the memslot, as the checks performed by kvm_mmu_max_mapping_level()
+are a superset of the basic bounds checks.  I.e. pre-checking the full
+range would be a dubious micro-optimization.
+
+Fixes: 9eba50f8d7fc ("KVM: x86/mmu: Consult max mapping level when zapping collapsible SPTEs")
 Cc: stable@vger.kernel.org
-Fixes: 249ebf3f65f8 ("power: sequencing: implement the pwrseq core")
-Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
-Link: https://patch.msgid.link/20260616151049.1705503-1-vulab@iscas.ac.cn
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
+Cc: David Matlack <dmatlack@google.com>
+Cc: James Houghton <jthoughton@google.com>
+Cc: Alexander Bulekov <bkov@amazon.com>
+Cc: Fred Griffoul <fgriffo@amazon.co.uk>
+Cc: Alexander Graf <graf@amazon.de>
+Cc: David Woodhouse <dwmw@amazon.co.uk>
+Cc: Filippo Sironi <sironi@amazon.de>
+Cc: Ivan Orlov <iorlov@amazon.co.uk>
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/power/sequencing/core.c |   14 +++++++++-----
- 1 file changed, 9 insertions(+), 5 deletions(-)
+ arch/x86/kvm/mmu/mmu.c   |   18 ++++++++++++------
+ include/linux/kvm_host.h |    7 ++++++-
+ 2 files changed, 18 insertions(+), 7 deletions(-)
 
---- a/drivers/power/sequencing/core.c
-+++ b/drivers/power/sequencing/core.c
-@@ -990,8 +990,9 @@ static void *pwrseq_debugfs_seq_start(st
- 	ctx.index = *pos;
+--- a/arch/x86/kvm/mmu/mmu.c
++++ b/arch/x86/kvm/mmu/mmu.c
+@@ -7288,13 +7288,19 @@ restart:
+ 		sp = sptep_to_sp(sptep);
  
- 	/*
--	 * We're holding the lock for the entire printout so no need to fiddle
--	 * with device reference count.
-+	 * Hold the lock for the entire printout to prevent device removal.
-+	 * Reference counts are managed by start()/next()/stop() as required
-+	 * by the seq_file contract.
- 	 */
- 	down_read(&pwrseq_sem);
+ 		/*
+-		 * We cannot do huge page mapping for indirect shadow pages,
+-		 * which are found on the last rmap (level = 1) when not using
+-		 * tdp; such shadow pages are synced with the page table in
+-		 * the guest, and the guest page table is using 4K page size
+-		 * mapping if the indirect sp has level = 1.
++		 * Direct shadow page can be replaced by a hugepage if the host
++		 * mapping level allows it and the memslot maps all of the host
++		 * hugepage.  Note!  If the memslot maps only part of the
++		 * hugepage, sp->gfn may be below slot->base_gfn, and querying
++		 * the max mapping level would cause an out-of-bounds lpage_info
++		 * access.  So the gfn bounds check *must* be done first.
++		 *
++		 * Indirect shadow pages are created when the guest page tables
++		 * are using 4K pages.  Since the host mapping is always
++		 * constrained by the page size in the guest, indirect shadow
++		 * pages are never collapsible.
+ 		 */
+-		if (sp->role.direct &&
++		if (sp->role.direct && is_gfn_in_memslot(slot, sp->gfn) &&
+ 		    sp->role.level < kvm_mmu_max_mapping_level(kvm, NULL, slot, sp->gfn)) {
+ 			kvm_zap_one_rmap_spte(kvm, rmap_head, sptep);
  
-@@ -999,7 +1000,7 @@ static void *pwrseq_debugfs_seq_start(st
- 	if (!ctx.index)
+--- a/include/linux/kvm_host.h
++++ b/include/linux/kvm_host.h
+@@ -1815,6 +1815,11 @@ void kvm_unregister_irq_ack_notifier(str
+ 				   struct kvm_irq_ack_notifier *kian);
+ bool kvm_arch_irqfd_allowed(struct kvm *kvm, struct kvm_irqfd *args);
+ 
++static inline bool is_gfn_in_memslot(const struct kvm_memory_slot *slot, gfn_t gfn)
++{
++	return gfn >= slot->base_gfn && gfn < slot->base_gfn + slot->npages;
++}
++
+ /*
+  * Returns a pointer to the memslot if it contains gfn.
+  * Otherwise returns NULL.
+@@ -1825,7 +1830,7 @@ try_get_memslot(struct kvm_memory_slot *
+ 	if (!slot)
  		return NULL;
  
--	return ctx.dev;
-+	return get_device(ctx.dev);
- }
- 
- static void *pwrseq_debugfs_seq_next(struct seq_file *seq, void *data,
-@@ -1009,8 +1010,9 @@ static void *pwrseq_debugfs_seq_next(str
- 
- 	++*pos;
- 
--	struct device *next __free(put_device) =
--			bus_find_next_device(&pwrseq_bus, curr);
-+	struct device *next = bus_find_next_device(&pwrseq_bus, curr);
-+
-+	put_device(curr);
- 	return next;
- }
- 
-@@ -1059,6 +1061,8 @@ static int pwrseq_debugfs_seq_show(struc
- 
- static void pwrseq_debugfs_seq_stop(struct seq_file *seq, void *data)
- {
-+	if (data)
-+		put_device(data);
- 	up_read(&pwrseq_sem);
- }
- 
+-	if (gfn >= slot->base_gfn && gfn < slot->base_gfn + slot->npages)
++	if (is_gfn_in_memslot(slot, gfn))
+ 		return slot;
+ 	else
+ 		return NULL;
 
 
 
