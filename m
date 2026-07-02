@@ -1,61 +1,62 @@
-Return-Path: <stable+bounces-270778-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-270892-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id I+qgHmeTRmqJYwsAu9opvQ
-	(envelope-from <stable+bounces-270778-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:35:51 +0200
+	id 3peUMZihRmphagsAu9opvQ
+	(envelope-from <stable+bounces-270892-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:36:24 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 101396FA465
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:35:51 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A4946FB7AB
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:36:24 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=jdG9DWZz;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-270778-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-270778-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=RC+GwyPQ;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-270892-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-270892-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 03CD8303C575
-	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:34:04 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 9FDDC30786C1
+	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:37:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64EC9351C3D;
-	Thu,  2 Jul 2026 16:30:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B47635E1A5;
+	Thu,  2 Jul 2026 16:35:23 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CDFE344052;
-	Thu,  2 Jul 2026 16:30:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54F9233D4EC;
+	Thu,  2 Jul 2026 16:35:22 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783009828; cv=none; b=n1GzyXiPcaVdzdFy1S8EsTa7MLIpEZj+P5GcMFkJZyRg+cndrA8yzi63L0BJlX9FSizq4kG2IWtzy0xneZGRJEksJSZKqfEeLIq2LsT6LAT5yBpz8VnoHvEwQbEPDx6JxOcYuMo31jMF0Ghi+/DKvqz+jrzQhEUBVuwWKgzm858=
+	t=1783010123; cv=none; b=fVkSOYpZ7F8jWtD8vct4qsUf6YvBuPXznumY2eqbbDc/kgaQFRZ6JXmQuCcQ2ua2KQpsjDthz2G+jR/HU+7E73GwyyeXu66wXMLyLXcj31caQO5PnKujr5H0X+srNe5vrKxr+4O8wZEEk02MWfNECAQuO3VeOn2RyvTXtUbfg/c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783009828; c=relaxed/simple;
-	bh=hTfoW3l4Gv5uuHS4B10pWZwlSAXt4AU8Oe/XCqGO5tY=;
+	s=arc-20240116; t=1783010123; c=relaxed/simple;
+	bh=aanocCokJKGqZPqYO5w790PGJECMfqed13lJowvRyoI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TGHf4kmpQEciY3zHxut3lHLjHzLTVldUqFgD1VDj7cVZCUJ6GkP+xwjiYaJvCbd++OdrhffR2wKteMhoWCwBKo2HMKQkeJxfWqTdL/DkjGAyDcA5IUZGjsEh9HDqVP576EM1UbmxLj2JH7qEkdArELItSKCDzrTyqryQqKHXCFk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jdG9DWZz; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 565681F00A3D;
-	Thu,  2 Jul 2026 16:30:25 +0000 (UTC)
+	 MIME-Version; b=Qg9zNT+13wskjKFa5ru0yYC4MAMyzDgIp3xKAQ22gglHxDoPgMN22BwI3n8LC/k31tMaXZPWdIrQBgGUQZGYJ0v1GCXJg+5DAZfz68/LWNu2B4GUSRtNVa/JR42dCi0JsJ+t5zU4p+IoRglggxHt6fXeisX5JPopbWe4ty2c858=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RC+GwyPQ; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BBA221F000E9;
+	Thu,  2 Jul 2026 16:35:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1783009825;
-	bh=f+GEzMg0YDSOPrKHJMbRu04pxAvx/AYoe5emBcVaMIw=;
+	s=korg; t=1783010122;
+	bh=NXti1a96B6nvhNCfMNRy2IO1dpcX+vZwfb8rUykGg5c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=jdG9DWZzykoujS9iZIBaKYyV4rgecNvnsyXKbf3ncdzvOCw2p2r9vqd2rsUGB0B+C
-	 kKB7L63cQ7TMeExngz8IbwccCrOuJS03bCMUpihMSwYUgWdOn1YAe0RnG+aF7FYjcr
-	 Kf65ZEQEvi/ok30F8S3+NWIwziMj8hJC73qMBFsw=
+	b=RC+GwyPQIfOb0VYfSrNJ/jxu+bRf2te5XyxKYQvcEFYTB/VFDiOH+2OuUPuk6x4Nn
+	 JfRsDNoJicdqiXsXt4Y+btb1EXDvcl2fdJF6XRKLeTkkafkmXmnQsd1pnQFFeaDXll
+	 Rs+09mEzQ2vM1acNFhxFjt9k0hew8cRJydWMIXXU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thadeu Lima de Souza Cascardo <cascardo@igalia.com>,
-	David Teigland <teigland@redhat.com>,
-	Nazar Kalashnikov <nazarkalashnikov0@gmail.com>
-Subject: [PATCH 5.15 95/95] dlm: prevent NPD when writing a positive value to event_done
-Date: Thu,  2 Jul 2026 18:20:38 +0200
-Message-ID: <20260702155111.208384560@linuxfoundation.org>
+	Kuniyuki Iwashima <kuniyu@amazon.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 120/129] phonet: Pass ifindex to fill_addr().
+Date: Thu,  2 Jul 2026 18:20:39 +0200
+Message-ID: <20260702155114.629624654@linuxfoundation.org>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260702155109.196223802@linuxfoundation.org>
-References: <20260702155109.196223802@linuxfoundation.org>
+In-Reply-To: <20260702155112.163984240@linuxfoundation.org>
+References: <20260702155112.163984240@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,81 +70,115 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-270778-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:cascardo@igalia.com,m:teigland@redhat.com,m:nazarkalashnikov0@gmail.com,s:lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,igalia.com,redhat.com,gmail.com];
+	TAGGED_FROM(0.00)[bounces-270892-lists,stable=lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:kuniyu@amazon.com,m:edumazet@google.com,m:pabeni@redhat.com,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
+	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,vger.kernel.org:from_smtp,igalia.com:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 101396FA465
+X-Rspamd-Queue-Id: 0A4946FB7AB
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
+From: Kuniyuki Iwashima <kuniyu@amazon.com>
 
-commit 8e2bad543eca5c25cd02cbc63d72557934d45f13 upstream.
+[ Upstream commit 08a9572be36819b5d9011604edfa5db6c5062a7a ]
 
-do_uevent returns the value written to event_done. In case it is a
-positive value, new_lockspace would undo all the work, and lockspace
-would not be set. __dlm_new_lockspace, however, would treat that
-positive value as a success due to commit 8511a2728ab8 ("dlm: fix use
-count with multiple joins").
+We will convert addr_doit() and getaddr_dumpit() to RCU, both
+of which call fill_addr().
 
-Down the line, device_create_lockspace would pass that NULL lockspace to
-dlm_find_lockspace_local, leading to a NULL pointer dereference.
+The former will call phonet_address_notify() outside of RCU
+due to GFP_KERNEL, so dev will not be available in fill_addr().
 
-Treating such positive values as successes prevents the problem. Given
-this has been broken for so long, this is unlikely to break userspace
-expectations.
+Let's pass ifindex directly to fill_addr().
 
-Fixes: 8511a2728ab8 ("dlm: fix use count with multiple joins")
-Signed-off-by: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
-Signed-off-by: David Teigland <teigland@redhat.com>
-Signed-off-by: Nazar Kalashnikov <nazarkalashnikov0@gmail.com>
+Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Stable-dep-of: 71de0177b28d ("net: phonet: free phonet_device after RCU grace period")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/dlm/lockspace.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/phonet/pn_netlink.c |   13 +++++++------
+ 1 file changed, 7 insertions(+), 6 deletions(-)
 
---- a/fs/dlm/lockspace.c
-+++ b/fs/dlm/lockspace.c
-@@ -638,7 +638,7 @@ static int new_lockspace(const char *nam
- 	   lockspace to start running (via sysfs) in dlm_ls_start(). */
+--- a/net/phonet/pn_netlink.c
++++ b/net/phonet/pn_netlink.c
+@@ -19,7 +19,7 @@
  
- 	error = do_uevent(ls, 1);
--	if (error)
-+	if (error < 0)
- 		goto out_recoverd;
+ /* Device address handling */
  
- 	wait_for_completion(&ls->ls_members_done);
+-static int fill_addr(struct sk_buff *skb, struct net_device *dev, u8 addr,
++static int fill_addr(struct sk_buff *skb, u32 ifindex, u8 addr,
+ 		     u32 portid, u32 seq, int event);
+ 
+ void phonet_address_notify(int event, struct net_device *dev, u8 addr)
+@@ -31,7 +31,8 @@ void phonet_address_notify(int event, st
+ 			nla_total_size(1), GFP_KERNEL);
+ 	if (skb == NULL)
+ 		goto errout;
+-	err = fill_addr(skb, dev, addr, 0, 0, event);
++
++	err = fill_addr(skb, dev->ifindex, addr, 0, 0, event);
+ 	if (err < 0) {
+ 		WARN_ON(err == -EMSGSIZE);
+ 		kfree_skb(skb);
+@@ -92,8 +93,8 @@ static int addr_doit(struct sk_buff *skb
+ 	return err;
+ }
+ 
+-static int fill_addr(struct sk_buff *skb, struct net_device *dev, u8 addr,
+-			u32 portid, u32 seq, int event)
++static int fill_addr(struct sk_buff *skb, u32 ifindex, u8 addr,
++		     u32 portid, u32 seq, int event)
+ {
+ 	struct ifaddrmsg *ifm;
+ 	struct nlmsghdr *nlh;
+@@ -107,7 +108,7 @@ static int fill_addr(struct sk_buff *skb
+ 	ifm->ifa_prefixlen = 0;
+ 	ifm->ifa_flags = IFA_F_PERMANENT;
+ 	ifm->ifa_scope = RT_SCOPE_LINK;
+-	ifm->ifa_index = dev->ifindex;
++	ifm->ifa_index = ifindex;
+ 	if (nla_put_u8(skb, IFA_LOCAL, addr))
+ 		goto nla_put_failure;
+ 	nlmsg_end(skb, nlh);
+@@ -140,7 +141,7 @@ static int getaddr_dumpit(struct sk_buff
+ 			if (addr_idx++ < addr_start_idx)
+ 				continue;
+ 
+-			if (fill_addr(skb, pnd->netdev, addr << 2,
++			if (fill_addr(skb, pnd->netdev->ifindex, addr << 2,
+ 					 NETLINK_CB(cb->skb).portid,
+ 					cb->nlh->nlmsg_seq, RTM_NEWADDR) < 0)
+ 				goto out;
 
 
 
