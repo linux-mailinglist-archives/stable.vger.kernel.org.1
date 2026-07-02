@@ -1,62 +1,60 @@
-Return-Path: <stable+bounces-271269-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-271089-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id Bm8jMOeZRmozZwsAu9opvQ
-	(envelope-from <stable+bounces-271269-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:03:35 +0200
+	id w/oiD7ujRmowawsAu9opvQ
+	(envelope-from <stable+bounces-271089-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:45:31 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 883EE6FAEB3
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:03:35 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2F03C6FB992
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:45:30 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=dSg018Vs;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-271269-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-271269-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=YbRaQo55;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-271089-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-271089-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 7198F309CC9F
-	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:52:53 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 363CA3302A54
+	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:46:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3179230C146;
-	Thu,  2 Jul 2026 16:51:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B01683A6EE6;
+	Thu,  2 Jul 2026 16:44:01 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA9EE1C695;
-	Thu,  2 Jul 2026 16:51:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F26C3A6B85;
+	Thu,  2 Jul 2026 16:44:00 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783011106; cv=none; b=Xod7h6s514iGsnEKcDB/9ZQmpFgS+CyxeGa2namFlwKTzxp3+qXYuW1tRDxXB5qN/L4SAiZVW4SVjeF9BE53ydzGLdJTlwrjdc6g5FsHumP/bXClARKdEaKaw/wKXMYyNL/TJ16+CLCNsinCIS2sfO3frGxN4xxG95HnBT2vmD8=
+	t=1783010641; cv=none; b=fAydH23XEKC2PGW/mIvGBjkMkSP8rK88tEGchnQ8raTlIvRyp3hXeBRhr7tWvMCLQKLkwSvJBVNla79GUeyMiKSOZmHJS9LvTdKpx5mcIaWcfplKqIslxZX+Lqp75FnqY+rTT1E+74Wa8qsO2qfHDKnreBKxmEXm7qznF8sf5to=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783011106; c=relaxed/simple;
-	bh=p3sCfzLSvmP4mBLeZkfeQdZ+LS9YW/VK6lZln4cljT4=;
+	s=arc-20240116; t=1783010641; c=relaxed/simple;
+	bh=wiA2/s+EX6eCsXqOA3kQZrjxY7BNIaBRne7dV/6iweI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=W8NKj/D2KIi3SQlnKlFEnnPxLjE14HTgfF959nw03tLipd+WtKe1mdDLxKNDg0EzUt3+9L8h0vA5pdttz24k3YjH4/FQOpBGpMpp0kmITmqqvJZPNA2X6IAA+3YMwOj2/kp6/cgsQxQMDUQQ0wnzPn5wCSO913uXMjYTtOMHY4o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dSg018Vs; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D0051F000E9;
-	Thu,  2 Jul 2026 16:51:44 +0000 (UTC)
+	 MIME-Version; b=iuipy+ypcym37X3AUkfQ8gpbZhoRMGAz4YHTc0P6M9iYhPmOZMbvFUqAfP0ucazbldR2hPlvW7CIJcYAm8sN50CLUII1en5ijISmG7aXOk8MCNxnPBadACZhCBdVtnMyFRTlgniTGKjajJ27DHYZREO3QOtP0ryQvjaooWJKYWY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YbRaQo55; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92DAF1F000E9;
+	Thu,  2 Jul 2026 16:43:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1783011104;
-	bh=JYTiJneXsHzHTthGRr60/uPiwPiI9AIqSRdYucV5EuM=;
+	s=korg; t=1783010640;
+	bh=sNuu58st/2SvFKLaKLf00fEKfGkgtQkXRRcTnnUFRFY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=dSg018VsQqGWpQc2WFhCBIYmsh80v/Tc9+4A0FB5SnQHmiCVDqWXVjD4g/bNZfjHl
-	 IY6Cg1/o1im2sr92B6lF/1wQ5v18QQFPbw3HiIDDdN2URRNsajsvdALLDRQtHVu/Fa
-	 3hpenJWTSIvBXS+V9MV+iFCSnDdN6Tcy8FqfUC1I=
+	b=YbRaQo55KZVaxHpp9RGnJb9G6iWdpYtqbfadbodnZ1mgB/87N7769h7bLJeKyKgkQ
+	 hsV0CLP4+ZjbtApUhmsxbt6jdmYBHyw1J9E8UI41L8EhdxJ/dwU/Ia4WKCyJBot+Re
+	 mTO3Cn5uQOiJekKvoOwySqHjpb0xoxDB7KV3eoJ8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Wenjie Qi <qiwenjie@xiaomi.com>,
-	Chao Yu <chao@kernel.org>,
-	Jaegeuk Kim <jaegeuk@kernel.org>
-Subject: [PATCH 6.6 141/175] f2fs: keep atomic write retry from zeroing original data
+	Guannan Wang <wgnbuaa@gmail.com>,
+	Chuck Lever <chuck.lever@oracle.com>
+Subject: [PATCH 6.12 185/204] NFSD: Fix SECINFO_NO_NAME decode error cleanup
 Date: Thu,  2 Jul 2026 18:20:42 +0200
-Message-ID: <20260702155118.776379316@linuxfoundation.org>
+Message-ID: <20260702155122.537698314@linuxfoundation.org>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260702155115.766838875@linuxfoundation.org>
-References: <20260702155115.766838875@linuxfoundation.org>
+In-Reply-To: <20260702155118.667618796@linuxfoundation.org>
+References: <20260702155118.667618796@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,114 +68,87 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	RCVD_TLS_LAST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-271089-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:wgnbuaa@gmail.com,m:chuck.lever@oracle.com,s:lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-271269-lists,stable=lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:stable@kernel.org,m:qiwenjie@xiaomi.com,m:chao@kernel.org,m:jaegeuk@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,oracle.com];
+	FORWARDED(0.00)[lists@lfdr.de];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,xiaomi.com:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 883EE6FAEB3
+X-Rspamd-Queue-Id: 2F03C6FB992
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wenjie Qi <qwjhust@gmail.com>
+From: Guannan Wang <wgnbuaa@gmail.com>
 
-commit 6d874b65aadce56ac78f76129dbcfc2599b638f8 upstream.
+commit 9e18e83b8846a5c3fe13fc8a464b4865d33996c6 upstream.
 
-A partial atomic write reserves a block in the COW inode before reading the
-original data page for the untouched bytes in that page.
+nfsd4_decode_secinfo_no_name() currently initializes sin_exp after
+decoding sin_style. If the XDR stream is truncated, the decoder returns
+nfserr_bad_xdr before sin_exp is initialized.
 
-If that read fails, write_begin returns an error but leaves the COW inode
-entry as NEW_ADDR. A retry of the same partial write then finds the COW
-entry, treats it as existing COW data, and f2fs_write_begin() zeroes the
-whole folio because blkaddr is NEW_ADDR.
+Since commit 3fdc54646234 ("NFSD: Reduce amount of struct
+nfsd4_compoundargs that needs clearing"), the inline iops array is not
+cleared between RPC calls. A failed SECINFO_NO_NAME decode can therefore
+leave sin_exp holding stale union contents from a previous operation.
 
-If the retry is committed, the bytes outside the retried write range are
-committed as zeroes instead of preserving the original file contents.
+The error response path still invokes nfsd4_secinfo_no_name_release(),
+which calls exp_put() on a non-NULL sin_exp.
 
-Only use the COW inode as the read source when it already has a real data
-block. If the COW entry is still NEW_ADDR, treat it as a reservation to
-reuse: keep reading the old data from the original inode and avoid
-reserving or accounting the same atomic block again.
+Initialize sin_exp before the first failable decode step, matching
+nfsd4_decode_secinfo().
 
-Cc: stable@kernel.org
-Fixes: 3db1de0e582c ("f2fs: change the current atomic write way")
-Signed-off-by: Wenjie Qi <qiwenjie@xiaomi.com>
-Reviewed-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+Fixes: 3fdc54646234 ("NFSD: Reduce amount of struct nfsd4_compoundargs that needs clearing")
+Cc: stable@vger.kernel.org
+Signed-off-by: Guannan Wang <wgnbuaa@gmail.com>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/f2fs/data.c |   16 +++++++++++-----
- 1 file changed, 11 insertions(+), 5 deletions(-)
+ fs/nfsd/nfs4xdr.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/fs/f2fs/data.c
-+++ b/fs/f2fs/data.c
-@@ -3527,6 +3527,7 @@ static int prepare_atomic_write_begin(st
- 	pgoff_t index = page->index;
- 	int err = 0;
- 	block_t ori_blk_addr = NULL_ADDR;
-+	bool cow_has_reserved_block = false;
+--- a/fs/nfsd/nfs4xdr.c
++++ b/fs/nfsd/nfs4xdr.c
+@@ -1849,10 +1849,11 @@ static __be32 nfsd4_decode_secinfo_no_na
+ 					   union nfsd4_op_u *u)
+ {
+ 	struct nfsd4_secinfo_no_name *sin = &u->secinfo_no_name;
++
++	sin->sin_exp = NULL;
+ 	if (xdr_stream_decode_u32(argp->xdr, &sin->sin_style) < 0)
+ 		return nfserr_bad_xdr;
  
- 	/* If pos is beyond the end of file, reserve a new block in COW inode */
- 	if ((pos & PAGE_MASK) >= i_size_read(inode))
-@@ -3536,9 +3537,11 @@ static int prepare_atomic_write_begin(st
- 	err = __find_data_block(cow_inode, index, blk_addr);
- 	if (err) {
- 		return err;
--	} else if (*blk_addr != NULL_ADDR) {
-+	} else if (__is_valid_data_blkaddr(*blk_addr)) {
- 		*use_cow = true;
- 		return 0;
-+	} else if (*blk_addr == NEW_ADDR) {
-+		cow_has_reserved_block = true;
- 	}
+-	sin->sin_exp = NULL;
+ 	return nfs_ok;
+ }
  
- 	if (is_inode_flag_set(inode, FI_ATOMIC_REPLACE))
-@@ -3551,10 +3554,13 @@ static int prepare_atomic_write_begin(st
- 
- reserve_block:
- 	/* Finally, we should reserve a new block in COW inode for the update */
--	err = __reserve_data_block(cow_inode, index, blk_addr, node_changed);
--	if (err)
--		return err;
--	inc_atomic_write_cnt(inode);
-+	if (!cow_has_reserved_block) {
-+		err = __reserve_data_block(cow_inode, index, blk_addr,
-+					   node_changed);
-+		if (err)
-+			return err;
-+		inc_atomic_write_cnt(inode);
-+	}
- 
- 	if (ori_blk_addr != NULL_ADDR)
- 		*blk_addr = ori_blk_addr;
 
 
 
