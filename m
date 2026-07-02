@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-270445-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-270447-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id y5j4E8lgRmrFSAsAu9opvQ
-	(envelope-from <stable+bounces-270445-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 14:59:53 +0200
+	id RzOROohjRmraSQsAu9opvQ
+	(envelope-from <stable+bounces-270447-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 15:11:36 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD5A16F809B
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 14:59:52 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 61EF76F82AC
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 15:11:36 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="ColBFN5/";
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-270445-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-270445-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=2jjgKHmK;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-270447-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-270447-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 668713050A54
-	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 12:52:43 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 0D5A130379B3
+	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 13:08:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3EA6E48124C;
-	Thu,  2 Jul 2026 12:52:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4158248C3FF;
+	Thu,  2 Jul 2026 13:08:57 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1BDF481FC6
-	for <stable@vger.kernel.org>; Thu,  2 Jul 2026 12:52:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4AD43431E55
+	for <stable@vger.kernel.org>; Thu,  2 Jul 2026 13:08:51 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782996763; cv=none; b=NXTukqYBgWEpJ+sU/tEXoNUjKzUYeGLZ+vw6cx9/mSy6PHa9foLqolv6/TyJh9flmRfIvN72jL5/oyj+WsIv6wvfh6SRQqfPhU/IZ/bFjjk5VzNcAZ/xq04xa4T1Ge38aAYURuk7v7ViTckeq5wYZdccQ0LKyQYuzAuhOTJh2uA=
+	t=1782997736; cv=none; b=Mscc0QwjsdbJO829PM01UnPmQ23RhfN+u8gcpnJzFSyGx/d7Qb9/nhTHfYqu37K5KcSbFOYchIv1N7ah8JLAwaHKn/iCeokh5q2aTfF3NBCrO2Qb1Z1+5DW18eCft6eYXn5QYoazyA++sfEEidj5blReh93MUiYYvZh37gBqLQA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782996763; c=relaxed/simple;
-	bh=wh5VBMMt8336JRuo/PudiTHZ7PcpfDY6Uq2/URiUJLY=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=NLajVPI9fXnRT9xD95In2yt8UVUux0nWYSQNA/YqyjjADo4x2nPUbVeLAUKxgkGQNKoIUrqhbPkW3XE98OG+0jR7uP1ztUhkX1xByzpGff9CvmmuIeBE+ahqnrLf3SrpGmVcB22NVqw6QzLWT1J8/c0Ce71L/xYVx11cc1zejn4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ColBFN5/; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64DFB1F000E9;
-	Thu,  2 Jul 2026 12:52:39 +0000 (UTC)
+	s=arc-20240116; t=1782997736; c=relaxed/simple;
+	bh=I6qkEgcJN8Mf7025D0q/oYXlv7gHcy1Oz9T7Mei5lEs=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=HFQhYYDQ+2Mit/6wrVYk5+ZiPQ26KvedpHpXRSFepQGm86wz2h0woMgG/CPc4TrGkJslDr0JMYY3bzHj2Tc4C83cRcyLOK34iVhWUEhTH8TO87gplICSxhMGBtP4UuX7VH+/H961BQZ9DBuK7NyFpjoRiKd8BmnL3w4B5tZEY5w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2jjgKHmK; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB3731F00A3A;
+	Thu,  2 Jul 2026 13:08:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1782996759;
-	bh=sh1dr+L+xdSSYRMOe+22dnOnc5WNkNqcMNSD7y5MUXQ=;
+	s=korg; t=1782997731;
+	bh=B0v4XhMuJZdSVqE43x5DUbQC1LaZHrRvTrSRsWZ+RYk=;
 	h=Subject:To:Cc:From:Date;
-	b=ColBFN5/W10TnZhKkXiSf8qM9qGuD3UIjv4IfEzAkLbWGTXorL3DxJpgZcAJBhXpT
-	 uGOEapUVX6Z/lcoRYHdAP5CJafn5hWtxO16SGmnBvGmoqBrXf0FsU+2QsPsFkfQ3Om
-	 33dMnX2/YrKTq68A546ZGAqGPxLLcYzalutVCJEM=
-Subject: FAILED: patch "[PATCH] userfaultfd: gate must_wait writability check on" failed to apply to 5.10-stable tree
-To: kas@kernel.org,akpm@linux-foundation.org,balbirs@nvidia.com,david@kernel.org,ljs@kernel.org,mhocko@suse.com,peterx@redhat.com,rppt@kernel.org,sashiko-bot@kernel.org,stable@vger.kernel.org,surenb@google.com,vbabka@kernel.org
+	b=2jjgKHmKrxCz2l+ZlIYWiSlHjI+fmPQ6+3dxsTndqyV9tam/3c0snxc/H3sAGztUr
+	 qcOxn1Lyry04Kt3j8YxZvvHeMGsoRhRkWG1mjVBZPcvHfC27FMENU33n2nXXVSvmai
+	 YTzjpxklsH/YACMPrStJ0QeoqMCZNKFIxJdyG5YA=
+Subject: FAILED: patch "[PATCH] f2fs: validate orphan inode entry count" failed to apply to 6.12-stable tree
+To: qwjhust@gmail.com,chao@kernel.org,jaegeuk@kernel.org,qiwenjie@xiaomi.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Thu, 02 Jul 2026 14:52:40 +0200
-Message-ID: <2026070240-sultry-bankbook-e1b3@gregkh>
+Date: Thu, 02 Jul 2026 15:09:01 +0200
+Message-ID: <2026070201-empower-operation-19d2@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -62,51 +62,52 @@ X-Spamd-Result: default: False [2.34 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_RHS_NOT_FQDN(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-270445-lists,stable=lfdr.de];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS(0.00)[m:qwjhust@gmail.com,m:chao@kernel.org,m:jaegeuk@kernel.org,m:qiwenjie@xiaomi.com,m:stable@vger.kernel.org,s:lists@lfdr.de];
+	FREEMAIL_TO(0.00)[gmail.com,kernel.org,xiaomi.com];
+	TAGGED_FROM(0.00)[bounces-270447-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS(0.00)[m:kas@kernel.org,m:akpm@linux-foundation.org,m:balbirs@nvidia.com,m:david@kernel.org,m:ljs@kernel.org,m:mhocko@suse.com,m:peterx@redhat.com,m:rppt@kernel.org,m:sashiko-bot@kernel.org,m:stable@vger.kernel.org,m:surenb@google.com,m:vbabka@kernel.org,s:lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FROM_NO_DN(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MISSING_XM_UA(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TO_DN_NONE(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_TWELVE(0.00)[13];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:from_mime,gregkh:mid,vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linux-foundation.org:email,nvidia.com:email,suse.com:email]
+	FROM_NO_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp,gregkh:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,xiaomi.com:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: AD5A16F809B
+X-Rspamd-Queue-Id: 61EF76F82AC
 
 
-The patch below does not apply to the 5.10-stable tree.
+The patch below does not apply to the 6.12-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.12.y
 git checkout FETCH_HEAD
-git cherry-pick -x 8e80af52db652fbc41320eee45a4f73bc029faf2
+git cherry-pick -x 846c499a65816d13f1186e3090e825e8bb8bcb8b
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026070240-sultry-bankbook-e1b3@gregkh' --subject-prefix 'PATCH 5.10.y' 'HEAD^..'
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026070201-empower-operation-19d2@gregkh' --subject-prefix 'PATCH 6.12.y' 'HEAD^..'
 
 Possible dependencies:
 
@@ -118,84 +119,75 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 8e80af52db652fbc41320eee45a4f73bc029faf2 Mon Sep 17 00:00:00 2001
-From: "Kiryl Shutsemau (Meta)" <kas@kernel.org>
-Date: Fri, 29 May 2026 18:23:29 +0100
-Subject: [PATCH] userfaultfd: gate must_wait writability check on
- pte_present()
+From 846c499a65816d13f1186e3090e825e8bb8bcb8b Mon Sep 17 00:00:00 2001
+From: Wenjie Qi <qwjhust@gmail.com>
+Date: Tue, 26 May 2026 13:35:57 +0800
+Subject: [PATCH] f2fs: validate orphan inode entry count
 
-userfaultfd_must_wait() and userfaultfd_huge_must_wait() read the PTE
-without taking the page table lock and then apply pte_write() /
-huge_pte_write() to it.  Those accessors decode bits from the present
-encoding only; on a swap or migration entry they read the offset bits that
-happen to share the same position and return an undefined result.
+f2fs_recover_orphan_inodes() trusts the orphan block entry_count when
+replaying orphan inodes from the checkpoint pack. A corrupted entry_count
+larger than F2FS_ORPHANS_PER_BLOCK makes the recovery loop read past the
+ino[] array and interpret footer or following data as inode numbers.
 
-The intent of the check is "is this fault still WP-blocked?".  A
-non-marker swap entry means the page is in transit -- the userfault
-context the original fault delivered against is no longer the same, and
-the swap-in or migration completion path will re-deliver a fresh fault if
-userspace still needs to handle it.  Worst case under the current code the
-garbage write bit says "wait", and the thread stays asleep until a
-UFFDIO_WAKE that may never arrive.
+On a crafted image, mounting an unpatched kernel can drive orphan recovery
+into f2fs_bug_on() and panic the kernel. Validate entry_count before
+consuming entries so corrupted checkpoint data fails the mount with
+-EFSCORRUPTED and requests fsck instead.
 
-Gate the writability check on pte_present() so the lockless re-check only
-inspects present-PTE bits when the entry is actually present.  The
-non-present, non-marker case returns "don't wait" and lets the fault path
-retry.
+Set ERROR_INCONSISTENT_ORPHAN as well, so the corruption reason can be
+recorded in the superblock s_errors[] field. This gives fsck a persistent
+hint even though mount-time orphan recovery failure may leave no chance to
+persist SBI_NEED_FSCK through a checkpoint.
 
-Link: https://lore.kernel.org/20260529172331.356655-6-kas@kernel.org
-Fixes: 369cd2121be4 ("userfaultfd: hugetlbfs: userfaultfd_huge_must_wait for hugepmd ranges")
-Fixes: 63b2d4174c4a ("userfaultfd: wp: add the writeprotect API to userfaultfd ioctl")
-Signed-off-by: Kiryl Shutsemau <kas@kernel.org>
-Reported-by: Sashiko AI review <sashiko-bot@kernel.org>
-Reviewed-by: Lorenzo Stoakes <ljs@kernel.org>
-Cc: David Hildenbrand <david@kernel.org>
-Cc: Michal Hocko <mhocko@suse.com>
-Cc: Mike Rapoport <rppt@kernel.org>
-Cc: Peter Xu <peterx@redhat.com>
-Cc: Suren Baghdasaryan <surenb@google.com>
-Cc: Vlastimil Babka <vbabka@kernel.org>
-Cc: Balbir Singh <balbirs@nvidia.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Cc: stable@kernel.org
+Fixes: 127e670abfa7 ("f2fs: add checkpoint operations")
+Signed-off-by: Wenjie Qi <qiwenjie@xiaomi.com>
+Reviewed-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
 
-diff --git a/mm/userfaultfd.c b/mm/userfaultfd.c
-index c86daf38d154..246af12bf801 100644
---- a/mm/userfaultfd.c
-+++ b/mm/userfaultfd.c
-@@ -2542,6 +2542,15 @@ static inline bool userfaultfd_huge_must_wait(struct userfaultfd_ctx *ctx,
- 	/* UFFD PTE markers require userspace to resolve the fault. */
- 	if (pte_is_uffd_marker(pte))
- 		return true;
-+	/*
-+	 * Concurrent migration may have replaced the present PTE with a
-+	 * non-marker swap entry between fault delivery and this lockless
-+	 * re-check. huge_pte_write() on a swap entry decodes random offset
-+	 * bits, so gate it on pte_present(). The migration completion path
-+	 * will re-deliver the fault if it still needs userspace.
-+	 */
-+	if (!pte_present(pte))
-+		return false;
- 	/*
- 	 * If VMA has UFFD WP faults enabled and WP fault, wait for userspace to
- 	 * resolve the fault.
-@@ -2628,6 +2637,17 @@ static inline bool userfaultfd_must_wait(struct userfaultfd_ctx *ctx,
- 	/* UFFD PTE markers require userspace to resolve the fault. */
- 	if (pte_is_uffd_marker(ptent))
- 		goto out;
-+	/*
-+	 * Concurrent swap-out / migration may have replaced the present PTE
-+	 * with a non-marker swap entry between fault delivery and this
-+	 * lockless re-check. pte_write() on a swap entry decodes random
-+	 * offset bits, so gate it on pte_present(). The page-in path will
-+	 * re-deliver the fault if it still needs userspace.
-+	 */
-+	if (!pte_present(ptent)) {
-+		ret = false;
-+		goto out;
-+	}
- 	/*
- 	 * If VMA has UFFD WP faults enabled and WP fault, wait for userspace to
- 	 * resolve the fault.
+diff --git a/fs/f2fs/checkpoint.c b/fs/f2fs/checkpoint.c
+index c00a6b6ebcbd..064f5b537423 100644
+--- a/fs/f2fs/checkpoint.c
++++ b/fs/f2fs/checkpoint.c
+@@ -943,6 +943,7 @@ int f2fs_recover_orphan_inodes(struct f2fs_sb_info *sbi)
+ 	for (i = 0; i < orphan_blocks; i++) {
+ 		struct folio *folio;
+ 		struct f2fs_orphan_block *orphan_blk;
++		unsigned int entry_count;
+ 
+ 		folio = f2fs_get_meta_folio(sbi, start_blk + i);
+ 		if (IS_ERR(folio)) {
+@@ -951,7 +952,18 @@ int f2fs_recover_orphan_inodes(struct f2fs_sb_info *sbi)
+ 		}
+ 
+ 		orphan_blk = folio_address(folio);
+-		for (j = 0; j < le32_to_cpu(orphan_blk->entry_count); j++) {
++		entry_count = le32_to_cpu(orphan_blk->entry_count);
++		if (entry_count > F2FS_ORPHANS_PER_BLOCK) {
++			f2fs_err(sbi, "invalid orphan inode entry count %u",
++				 entry_count);
++			set_sbi_flag(sbi, SBI_NEED_FSCK);
++			f2fs_handle_error(sbi, ERROR_INCONSISTENT_ORPHAN);
++			err = -EFSCORRUPTED;
++			f2fs_folio_put(folio, true);
++			goto out;
++		}
++
++		for (j = 0; j < entry_count; j++) {
+ 			nid_t ino = le32_to_cpu(orphan_blk->ino[j]);
+ 
+ 			err = recover_orphan_inode(sbi, ino);
+diff --git a/include/linux/f2fs_fs.h b/include/linux/f2fs_fs.h
+index 829a59399dac..bb2b6cd5d507 100644
+--- a/include/linux/f2fs_fs.h
++++ b/include/linux/f2fs_fs.h
+@@ -107,6 +107,7 @@ enum f2fs_error {
+ 	ERROR_CORRUPTED_XATTR,
+ 	ERROR_INVALID_NODE_REFERENCE,
+ 	ERROR_INCONSISTENT_NAT,
++	ERROR_INCONSISTENT_ORPHAN,
+ 	ERROR_MAX,
+ };
+ 
 
 
