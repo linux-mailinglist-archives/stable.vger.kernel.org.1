@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-271458-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-271348-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 9xZ/NB2nRmoubAsAu9opvQ
-	(envelope-from <stable+bounces-271458-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:59:57 +0200
+	id MWPwLV2aRmpxZwsAu9opvQ
+	(envelope-from <stable+bounces-271348-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:05:33 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id C07616FBC40
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:59:56 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 357496FAF72
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:05:33 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=Yk69B7Xu;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-271458-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-271458-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="lPj/vuuF";
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-271348-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-271348-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 5406431A0B7B
-	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:59:59 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 27BB530E6E05
+	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:55:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80279318EC1;
-	Thu,  2 Jul 2026 16:59:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC044433E87;
+	Thu,  2 Jul 2026 16:55:08 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 405B930C146;
-	Thu,  2 Jul 2026 16:59:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A04E31C695;
+	Thu,  2 Jul 2026 16:55:07 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783011597; cv=none; b=Xp2v8Bk7dEcSafgi3lr12VOW1H9AbdBBBArbUBd/KKAYSBT0gP3OTW+n8Hx+SGpY8QPIme4L95mwxXCZC97cRnJwJ2tehzq5a3A5aT6VYqm8VosxYLJzioEOnm2MuL7X+NNgHNbRB1UrRN8j3JDiCIByxVpeQg35zEdVR77fm24=
+	t=1783011308; cv=none; b=SYqIBhpQz6ThdKRgTMZwbf7R2Xw17WoAuxfjTDu0Mwm9zKEc943xv6WS06l6g7RL6uOiM1y8CUY8R6W3wSAtT7sEG11glMdbo7Ow/3UXWgsiRF8I5iTHpKqvFXDAD2/37mtRjS8uzbJnL1J7JvrNFzJGGz+sI0OulXNsqmknIOQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783011597; c=relaxed/simple;
-	bh=QHXm/NRkuf1XHRnlLuzJfiWOixtLvtt5urczIj9J3xU=;
+	s=arc-20240116; t=1783011308; c=relaxed/simple;
+	bh=gLMWIIpu0bq6XZffRdAyjSGUQduMYRhkjsbLVyzkFrQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AX8RTnUphPiNstS+ZmwwiwQ0o4bhaKWii4h2AWHV3Y3zPDyKqt+K/NMLQpIxK+2MI8bewfQM6FHNC2i/isv3hys59RLPDMhuOXa2MzLHJgu3TvyS6VrJVSJXJKkIiT0ONe7JHjjlwY1XxQikeFqcUg4wBdNrwUpj+bbivzBoWq4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Yk69B7Xu; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5FF01F00A3D;
-	Thu,  2 Jul 2026 16:59:55 +0000 (UTC)
+	 MIME-Version; b=RZVdbZPNgtqJJ0qLOxsdL4xGWSt/bh7+vyEJw8egH6oKYCPiCAmkEc+H0GMDLYMswXwlouEYMV8vOEzzVjWPIJtqjNKDWJBEuTAw3F6J+T7fuvJTLQuu4Q3ykJWBCRuIoCdscSl561uwGxEusvht49CUzrw5RE8Y9kS0639iMhk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lPj/vuuF; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7B3D1F000E9;
+	Thu,  2 Jul 2026 16:55:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1783011596;
-	bh=2ZVOOouQciJmLzq7QNauuoEVmlMcroBbx3N7hmJ6fUM=;
+	s=korg; t=1783011307;
+	bh=P0xbvNB580ggDpwxjS/ajbpJKqdbJF09w/VJF/Kd5K8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Yk69B7XuGjnuTCcfMjkUovldKtAwiJgHnWrSV2UHbnZr19Bg7PhNhZqNDQno5XIL5
-	 4WyIkL49Z2HOT9qhPFZkg44Ep09CiS5bs9p9VJ+bnmtjM3ENd5X7p6Q6e4U1AUiZ56
-	 aefXaA8CE77C/wg8b43t7dwshq5kkuFJvsLzP02Q=
+	b=lPj/vuuFrqc3tv3CM3bZQcKfqkHUtjlU0+EQiMF9wd1bt9D1gnPkA6pmoTvJR3NP1
+	 Fae9uXfMHWDhbhqS+TYnxamfEArtZmjt2ignUgeiRlrMzMHVfXKFH9G9HLzmZTkiEt
+	 3rKlwXQuaP7Gfi4fvWtLbikY8B4UzeLclOXlaTzc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -51,12 +51,12 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Wenjie Qi <qiwenjie@xiaomi.com>,
 	Chao Yu <chao@kernel.org>,
 	Jaegeuk Kim <jaegeuk@kernel.org>
-Subject: [PATCH 7.1 061/120] f2fs: reject setattr size changes on large folio files
+Subject: [PATCH 6.18 060/108] f2fs: pass correct iostat type for single node writes
 Date: Thu,  2 Jul 2026 18:20:57 +0200
-Message-ID: <20260702155114.224430332@linuxfoundation.org>
+Message-ID: <20260702155113.351025228@linuxfoundation.org>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260702155112.964534952@linuxfoundation.org>
-References: <20260702155112.964534952@linuxfoundation.org>
+In-Reply-To: <20260702155112.110058792@linuxfoundation.org>
+References: <20260702155112.110058792@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,80 +72,79 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-271348-lists,stable=lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-271458-lists,stable=lfdr.de];
 	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:stable@kernel.org,m:qiwenjie@xiaomi.com,m:chao@kernel.org,m:jaegeuk@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	MIME_TRACE(0.00)[0:+];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	MID_RHS_MATCH_FROM(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RWL_MAILSPIKE_POSSIBLE(0.00)[104.64.211.4:from];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,xiaomi.com:email,vger.kernel.org:from_smtp]
+	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,xiaomi.com:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: C07616FBC40
+X-Rspamd-Queue-Id: 357496FAF72
 
-7.1-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
 From: Wenjie Qi <qwjhust@gmail.com>
 
-commit 242d30bfc0a84b8b5de0a88821b53c9ad7fd31c4 upstream.
+commit fcb05c26c2a67953b420739b85f49386efc9b6c0 upstream.
 
-F2FS large folios are only enabled for immutable non-compressed files.
-Writable open and writable mmap reject such mappings, but truncate(2)
-through f2fs_setattr() misses the same guard.
+f2fs_write_single_node_folio() takes an io_type argument, but still
+passes FS_GC_NODE_IO to __write_node_folio() unconditionally.
 
-If FS_IMMUTABLE_FL is cleared while the inode is still cached, the mapping
-can keep large-folio support and ATTR_SIZE can change i_size. Reject size
-changes in that state.
+This was harmless while the helper was only used by
+f2fs_move_node_folio(), whose caller passes FS_GC_NODE_IO. However,
+commit fe9b8b30b971 ("f2fs: fix inline data not being written to disk
+in writeback path") made f2fs_inline_data_fiemap() call the helper with
+FS_NODE_IO for FIEMAP_FLAG_SYNC.
+
+Honor the caller supplied io_type so inline-data FIEMAP sync writeback is
+accounted as normal node IO instead of GC node IO, while the GC path
+continues to pass FS_GC_NODE_IO explicitly.
 
 Cc: stable@kernel.org
-Fixes: 05e65c14ea59 ("f2fs: support large folio for immutable non-compressed case")
+Fixes: fe9b8b30b971 ("f2fs: fix inline data not being written to disk in writeback path")
 Signed-off-by: Wenjie Qi <qiwenjie@xiaomi.com>
 Reviewed-by: Chao Yu <chao@kernel.org>
 Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/f2fs/file.c | 2 ++
- 1 file changed, 2 insertions(+)
+ fs/f2fs/node.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/f2fs/file.c b/fs/f2fs/file.c
-index 69aad1060c48..d240ca78a31f 100644
---- a/fs/f2fs/file.c
-+++ b/fs/f2fs/file.c
-@@ -1098,6 +1098,8 @@ int f2fs_setattr(struct mnt_idmap *idmap, struct dentry *dentry,
- 		return -EPERM;
+--- a/fs/f2fs/node.c
++++ b/fs/f2fs/node.c
+@@ -1853,7 +1853,7 @@ int f2fs_write_single_node_folio(struct
+ 	}
  
- 	if ((attr->ia_valid & ATTR_SIZE)) {
-+		if (mapping_large_folio_support(inode->i_mapping))
-+			return -EOPNOTSUPP;
- 		if (!f2fs_is_compress_backend_ready(inode) ||
- 				IS_DEVICE_ALIASING(inode))
- 			return -EOPNOTSUPP;
--- 
-2.55.0
-
+ 	if (!__write_node_folio(node_folio, false, false, NULL,
+-				&wbc, false, FS_GC_NODE_IO, NULL))
++				&wbc, false, io_type, NULL))
+ 		err = -EAGAIN;
+ 	goto release_folio;
+ out_folio:
 
 
 
