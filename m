@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-270677-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-270725-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id etMgEoyURmoMZAsAu9opvQ
-	(envelope-from <stable+bounces-270677-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:40:44 +0200
+	id UA7yN7ySRmpMYwsAu9opvQ
+	(envelope-from <stable+bounces-270725-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:33:00 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D65586FA5C2
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:40:43 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 71ECD6FA3D3
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:33:00 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=hsjE4u8b;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-270677-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-270677-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=1QTCLdbO;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-270725-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-270725-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 2113831A93D4
-	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:31:21 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 582EC3023AEA
+	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:32:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08F633451A7;
-	Thu,  2 Jul 2026 16:26:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA26E348C5E;
+	Thu,  2 Jul 2026 16:28:08 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F804349CE7;
-	Thu,  2 Jul 2026 16:26:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 738EE346769;
+	Thu,  2 Jul 2026 16:28:06 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783009561; cv=none; b=WPaTi3JxtcCm3kmSObGty2euH44ZvwNsi+uPC6YaJ3wQa897XJaaFLm3R7l44yHEEojkroFmAEqtuZbn31AJM4fr710Zf1HR6QxzrgK3x+wNShO0nljJq6hIbGu9uc/gQnjJRYl3HFWA+W1c280FuxO3ubcR08a9kyEhP9vbkI8=
+	t=1783009688; cv=none; b=VMMQ5ixaMLpUgiS8rFZUSzffZt6DYpeitmz7VUfiPARLcMEO0w8VKrlMPwDemcPIpczbvX1xgMwS2SC8NRlLWCsC8HVa2UBNZhBO7ZQgcH5BHZwmHlVxZU/qvOXDTIEUTXNKzcZumTUd6dtaM3KWSjXIfjFAvLOx9KEibMHIpNI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783009561; c=relaxed/simple;
-	bh=H5tExV51F4mUHO+lxRTanuReQnTPim/8aYEFB2RLm2o=;
+	s=arc-20240116; t=1783009688; c=relaxed/simple;
+	bh=MEZ0bv3UK3u6q0YqC0Sj7RXEsb31Ya30ojimth/9Y94=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Estx8nUPmXqWeSKIdzlB1CaP4Qru/gW2oeUlkhQkdKiHE16n4YbY2jrmnFqDJrjm+e697PAXFpCAk+NP5yuo8EqU8fg7ZeP9hI4jytgmvPNyif+bEatCRxguOpknqF6uYlyjLhsYLGDXHOod0UEkGs6e+A07ylVrjeu6NQOUD5k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hsjE4u8b; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2AFF1F000E9;
-	Thu,  2 Jul 2026 16:25:59 +0000 (UTC)
+	 MIME-Version; b=HXIxZZE/S9E7UNLRgeusTesWc/G3m+xwYEHcuyFysbEmm/+RGU66Xr+uKNjrii69EACp+Datdf6D4G8HeDURqVaE7dvJcOKsGos2ORn1rHmF2HqFIU85xcNnQT+9k0hUYKVOXd6TvgtITssfaH8iLNbQh40ic1WdJ5D9jHXfiUo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1QTCLdbO; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D9EF1F00A3A;
+	Thu,  2 Jul 2026 16:28:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1783009560;
-	bh=vxAOxx5cu09kulje1MiXCJ1/lnj8ThJ+18irvUE/Atw=;
+	s=korg; t=1783009686;
+	bh=Fv5nlmaETBhULDtwvbD6vnsLCwUdTk6gpC4azq5j6K8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=hsjE4u8b5WlYSFcHqv762mYTrdRhlfCQRNeMTJMiKp+RWnrHs3d1SI49gZzBxdlII
-	 o1IiSiHt7VllDPXdn1vkUOxiVOKxQppbqz8XfVOUQLjciZlT055hP0Utjay0zr0GAu
-	 pnd3mcG9iEWfa45Q3XHfCpzcFgb7EBY9WIqguUDA=
+	b=1QTCLdbOAigPF2OA0MUS6Mf5QUyWtziDtSCWw/8FzC8o8kAVcTEegSaNTVIUrdjPf
+	 f15pxjY8h0UlirEFBR1e90m2ZmaNI8MMeLmCAWbyjdgcQEZH59MO0hT4yBMgvcHmGm
+	 OlkXiB25MJ5j9lUwgl9xuRBAeCoeU4AR0SYMpfPg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -50,12 +50,12 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	stable@kernel.org,
 	Sven Eckelmann <sven@narfation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 53/96] batman-adv: tt: track roam count per VID
+Subject: [PATCH 5.15 42/95] batman-adv: frag: avoid underflow of TTL
 Date: Thu,  2 Jul 2026 18:19:45 +0200
-Message-ID: <20260702155110.098775782@linuxfoundation.org>
+Message-ID: <20260702155110.091718111@linuxfoundation.org>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260702155108.949633242@linuxfoundation.org>
-References: <20260702155108.949633242@linuxfoundation.org>
+In-Reply-To: <20260702155109.196223802@linuxfoundation.org>
+References: <20260702155109.196223802@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,12 +72,12 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-270677-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-270725-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
@@ -86,7 +86,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
@@ -98,95 +98,51 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp,narfation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,narfation.org:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: D65586FA5C2
+X-Rspamd-Queue-Id: 71ECD6FA3D3
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
 From: Sven Eckelmann <sven@narfation.org>
 
-commit 12407d5f61c2653a64f2ff4b22f3c267f8420ef1 upstream.
+commit 493d9d2528e1a09b090e4b37f0f553def7bd5ce9 upstream.
 
-batadv_tt_check_roam_count() is supposed to track roaming of a TT entry.
-But TT entries are for a MAC + VID. The VID was completely missed and thus
-leads to incorrect detection of ROAM counts when a client MAC exists in
-multiple VLANs.
+Packets with a TTL are using it to limit the amount of time this packet can
+be forwarded. But for batadv_frag_packet, the TTL was always only reduced
+but it was never evaluated. It could even underflow without any effect.
+
+Check the TTL in batadv_frag_skb_fwd() before attempting to prepare it for
+forwarding. This keeps it in sync with the not fragmented unicast packet.
 
 Cc: stable@kernel.org
-Fixes: c018ad3de61a ("batman-adv: add the VLAN ID attribute to the TT entry")
-[ Context ]
+Fixes: 610bfc6bc99b ("batman-adv: Receive fragmented packets and merge")
 Signed-off-by: Sven Eckelmann <sven@narfation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/batman-adv/translation-table.c | 9 +++++++--
- net/batman-adv/types.h             | 3 +++
- 2 files changed, 10 insertions(+), 2 deletions(-)
+ net/batman-adv/fragmentation.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/net/batman-adv/translation-table.c b/net/batman-adv/translation-table.c
-index c323660897d43d..4b3f39d6ddaf5b 100644
---- a/net/batman-adv/translation-table.c
-+++ b/net/batman-adv/translation-table.c
-@@ -3753,6 +3753,7 @@ static void batadv_tt_roam_purge(struct batadv_priv *bat_priv)
-  * batadv_tt_check_roam_count() - check if a client has roamed too frequently
-  * @bat_priv: the bat priv with all the soft interface information
-  * @client: mac address of the roaming client
-+ * @vid: VLAN identifier
-  *
-  * This function checks whether the client already reached the
-  * maximum number of possible roaming phases. In this case the ROAMING_ADV
-@@ -3760,7 +3761,7 @@ static void batadv_tt_roam_purge(struct batadv_priv *bat_priv)
-  *
-  * Return: true if the ROAMING_ADV can be sent, false otherwise
-  */
--static bool batadv_tt_check_roam_count(struct batadv_priv *bat_priv, u8 *client)
-+static bool batadv_tt_check_roam_count(struct batadv_priv *bat_priv, u8 *client, u16 vid)
- {
- 	struct batadv_tt_roam_node *tt_roam_node;
- 	bool ret = false;
-@@ -3773,6 +3774,9 @@ static bool batadv_tt_check_roam_count(struct batadv_priv *bat_priv, u8 *client)
- 		if (!batadv_compare_eth(tt_roam_node->addr, client))
- 			continue;
- 
-+		if (tt_roam_node->vid != vid)
-+			continue;
-+
- 		if (batadv_has_timed_out(tt_roam_node->first_time,
- 					 BATADV_ROAMING_MAX_TIME))
- 			continue;
-@@ -3794,6 +3798,7 @@ static bool batadv_tt_check_roam_count(struct batadv_priv *bat_priv, u8 *client)
- 		atomic_set(&tt_roam_node->counter,
- 			   BATADV_ROAMING_MAX_COUNT - 1);
- 		ether_addr_copy(tt_roam_node->addr, client);
-+		tt_roam_node->vid = vid;
- 
- 		list_add(&tt_roam_node->list, &bat_priv->tt.roam_list);
- 		ret = true;
-@@ -3830,7 +3835,7 @@ static void batadv_send_roam_adv(struct batadv_priv *bat_priv, u8 *client,
- 	/* before going on we have to check whether the client has
- 	 * already roamed to us too many times
+diff --git a/net/batman-adv/fragmentation.c b/net/batman-adv/fragmentation.c
+index fbf030c57ac04d..0138b0953e10b5 100644
+--- a/net/batman-adv/fragmentation.c
++++ b/net/batman-adv/fragmentation.c
+@@ -420,6 +420,13 @@ bool batadv_frag_skb_fwd(struct sk_buff *skb,
  	 */
--	if (!batadv_tt_check_roam_count(bat_priv, client))
-+	if (!batadv_tt_check_roam_count(bat_priv, client, vid))
- 		goto out;
- 
- 	batadv_dbg(BATADV_DBG_TT, bat_priv,
-diff --git a/net/batman-adv/types.h b/net/batman-adv/types.h
-index 437d651a1cffe3..88831374e81747 100644
---- a/net/batman-adv/types.h
-+++ b/net/batman-adv/types.h
-@@ -2059,6 +2059,9 @@ struct batadv_tt_roam_node {
- 	/** @addr: mac address of the client in the roaming phase */
- 	u8 addr[ETH_ALEN];
- 
-+	/** @vid: VLAN identifier */
-+	u16 vid;
+ 	total_size = ntohs(packet->total_size);
+ 	if (total_size > neigh_node->if_incoming->net_dev->mtu) {
++		if (packet->ttl < 2) {
++			kfree_skb(skb);
++			*rx_result = NET_RX_DROP;
++			ret = true;
++			goto out;
++		}
 +
- 	/**
- 	 * @counter: number of allowed roaming events per client within a single
- 	 * OGM interval (changes are committed with each OGM)
+ 		if (skb_cow(skb, ETH_HLEN) < 0) {
+ 			kfree_skb(skb);
+ 			*rx_result = NET_RX_DROP;
 -- 
 2.53.0
 
