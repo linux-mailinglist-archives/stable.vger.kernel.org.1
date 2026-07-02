@@ -1,70 +1,61 @@
-Return-Path: <stable+bounces-271175-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-271030-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id zmVCKv2YRmqsZgsAu9opvQ
-	(envelope-from <stable+bounces-271175-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:59:41 +0200
+	id tA7VLXOWRmo7ZQsAu9opvQ
+	(envelope-from <stable+bounces-271030-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:48:51 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 455F06FAD50
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:59:41 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 527656FA970
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:48:51 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=sqV4Bs3z;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-271175-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-271175-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=WMjVdpAw;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-271030-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-271030-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id A12383147F19
-	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:49:37 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 1D5A130ECE9A
+	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:42:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 297F53AA1BA;
-	Thu,  2 Jul 2026 16:47:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B53493A8759;
+	Thu,  2 Jul 2026 16:41:32 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC20B3AB29C;
-	Thu,  2 Jul 2026 16:47:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30A0C360EFC;
+	Thu,  2 Jul 2026 16:41:25 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783010864; cv=none; b=lez0i4Zz8bsY58Tgbz8qRJZ2oOghyRxaCDfivwKK6/hMbwm/SV/6/JNUltzGZBdV5SBhIMIRkoiGddZuIGxddJyv0vE1KR9diuDGURtrYGWqam/3GPjpifQMoRIdc2OFS+pgGHxTcPCbdZWTyyusQxkCVOQlKNgsqAt0wMEbdvY=
+	t=1783010490; cv=none; b=P5FsGpnCupDvGfwkvW15y6/w+PLX2aCSDsjCSEtihR67Tx2pK1OMhNSy//63ZoopNXX0IYwU7gMhOK4mlxc7Pel3fSvNFfCXF/Vw48n0st3XX9iTVOS7g3La5oM2lT7qD/cILT2bTZ1POinOfF0wJZlBtxoFCzNAnR9aSM/2vGA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783010864; c=relaxed/simple;
-	bh=58EUM/OZJfwSMslqkPPragvYVB08FCT0DCqyoayx3D8=;
+	s=arc-20240116; t=1783010490; c=relaxed/simple;
+	bh=w3eeAwbhoFnypXG1HbCwNHslNz4zF+yCuGyhZf+bhn8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kltNRC3L2LrEvt6PPUkyieTkqTgnyVMFSUXkblSmvTGD/RXYHlFWxGluMVL5gnVSR8heEI7Y+cUypjyEwFDuvVjcneZM3CCuswKj8CED1BEbg1AP37c75ZehO0cCbiy8G80tGbyZepReyrzaJQvv/FxipvedcV3pzdcO4sE+m64=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sqV4Bs3z; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4520F1F000E9;
-	Thu,  2 Jul 2026 16:47:43 +0000 (UTC)
+	 MIME-Version; b=IX1W79XlbvU6GAUYbYobZn8KaD99afCFKRTkzYWTrx8NQfQesi9EgNnG3JEY1BcdcYleMiaFwzOdZVT3j6K1gVUK+SzpBkvN6LI+/7lAjZu3ARKYDZ+0Z5ZVo0Uonx161bVzNeaZ/8rRLBrUxeGTHAAxceLWvvg88S03UYeKHFg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WMjVdpAw; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A56DB1F00A3E;
+	Thu,  2 Jul 2026 16:41:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1783010863;
-	bh=OcBnCiaIaQoyzm3p0UpDOqjJlVCPdYobHYQhnTufip4=;
+	s=korg; t=1783010485;
+	bh=1u5AuLXjov0rV1YBHOV23PAyGDTMUZnnu2LSXNhqSVg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=sqV4Bs3z8xC0SmYeHEriT+BQEHDiGUfovHHU2BLrEPJvd8OaHQKA8UN3xtZKZ2NEF
-	 VgyHJt1u2wCkEKlUrASD1yfrmU3Jz1jKdGJY2A9rbwhDkrWZ3D9tDDoHNTStIAA47M
-	 RKKs0G/JtkZaqm8LjwXmAiIGSYolbckicB6SMs9E=
+	b=WMjVdpAwMLFQdQv5A02zh/1K3RhVY3Oy/LmPsqf2/LbPhNQF8a+NjwZ/ioQmiRWvJ
+	 84q1eL8Dj+Wzr5I5Po6JZ80xmSgY8KMrropi90XbOweyy4xpMKzji2xI10Pe7/68pO
+	 LzBwJv6TzqjQNu8QUSFqVJffsKgldaX1SGChZ/cM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Masahiro Yamada <masahiroy@kernel.org>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>,
-	Mark Brown <broonie@kernel.org>,
-	Nathan Chancellor <nathan@kernel.org>,
-	"Arnd Bergmann" <arnd@arndb.de>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
-	Andrey Grodzovsky <andrey.grodzovsky@crowdstrike.com>
-Subject: [PATCH 6.6 066/175] ftrace: Test mcount_loc addr before calling ftrace_call_addr()
+	stable@kernel.org,
+	Sven Eckelmann <sven@narfation.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 110/204] batman-adv: ensure bcast is writable before modifying TTL
 Date: Thu,  2 Jul 2026 18:19:27 +0200
-Message-ID: <20260702155117.184067911@linuxfoundation.org>
+Message-ID: <20260702155120.965236995@linuxfoundation.org>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260702155115.766838875@linuxfoundation.org>
-References: <20260702155115.766838875@linuxfoundation.org>
+In-Reply-To: <20260702155118.667618796@linuxfoundation.org>
+References: <20260702155118.667618796@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -81,22 +72,22 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-271175-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-271030-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[15];
+	TO_DN_SOME(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:mhiramat@kernel.org,m:mark.rutland@arm.com,m:mathieu.desnoyers@efficios.com,m:akpm@linux-foundation.org,m:masahiroy@kernel.org,m:catalin.marinas@arm.com,m:will@kernel.org,m:broonie@kernel.org,m:nathan@kernel.org,m:arnd@arndb.de,m:rostedt@goodmis.org,m:andrey.grodzovsky@crowdstrike.com,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:stable@kernel.org,m:sven@narfation.org,m:sashal@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	TO_DN_SOME(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
@@ -107,68 +98,59 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[goodmis.org:email,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,efficios.com:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,arm.com:email,arndb.de:email,crowdstrike.com:email,linux-foundation.org:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[narfation.org:email,vger.kernel.org:from_smtp,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 455F06FAD50
+X-Rspamd-Queue-Id: 527656FA970
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Steven Rostedt <rostedt@goodmis.org>
+From: Sven Eckelmann <sven@narfation.org>
 
-[ Upstream commit 6eeca746fa5f1dd03c6ee05cb03f5eb1ddda1c81 ]
+commit 4cd6d3a4b96a8576f1fed8f9f9f17c2dc2978e0c upstream.
 
-The addresses in the mcount_loc can be zeroed and then moved by KASLR
-making them invalid addresses. ftrace_call_addr() for ARM 64 expects a
-valid address to kernel text. If the addr read from the mcount_loc section
-is invalid, it must not call ftrace_call_addr(). Move the addr check
-before calling ftrace_call_addr() in ftrace_process_locs().
+Before batman-adv is allowed to write to an skb, it either has to have its
+own copy of the skb or used skb_cow() to ensure that the data part is not
+shared.
 
-Cc: Masami Hiramatsu <mhiramat@kernel.org>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Cc: Masahiro Yamada <masahiroy@kernel.org>
-Cc: Catalin Marinas <catalin.marinas@arm.com>
-Cc: Will Deacon <will@kernel.org>
-Cc: Mark Brown <broonie@kernel.org>
-Link: https://lore.kernel.org/20250225182054.290128736@goodmis.org
-Fixes: ef378c3b8233 ("scripts/sorttable: Zero out weak functions in mcount_loc table")
-Reported-by: Nathan Chancellor <nathan@kernel.org>
-Reported-by: "Arnd Bergmann" <arnd@arndb.de>
-Tested-by: Nathan Chancellor <nathan@kernel.org>
-Closes: https://lore.kernel.org/all/20250225025631.GA271248@ax162/
-Closes: https://lore.kernel.org/all/91523154-072b-437b-bbdc-0b70e9783fd0@app.fastmail.com/
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-Signed-off-by: Andrey Grodzovsky <andrey.grodzovsky@crowdstrike.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+The old implementation used a shared queue and created copies before
+attempting to write to it. But with the new implementation, the broadcast
+packet is already modified when it gets received. Potentially writing to
+shared buffers in this process.
+
+Adding a skb_cow() right before this operation avoids this and can at the
+same time prepare it for the modifications required to rebroadcast the
+packet.
+
+Cc: stable@kernel.org
+Fixes: 3f69339068f9 ("batman-adv: bcast: queue per interface, if needed")
+Signed-off-by: Sven Eckelmann <sven@narfation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/trace/ftrace.c |    6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ net/batman-adv/routing.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
---- a/kernel/trace/ftrace.c
-+++ b/kernel/trace/ftrace.c
-@@ -6585,7 +6585,9 @@ static int ftrace_process_locs(struct mo
- 	pg = start_pg;
- 	while (p < end) {
- 		unsigned long end_offset;
--		addr = ftrace_call_adjust(*p++);
-+
-+		addr = *p++;
-+
- 		/*
- 		 * Some architecture linkers will pad between
- 		 * the different mcount_loc sections of different
-@@ -6597,6 +6599,8 @@ static int ftrace_process_locs(struct mo
- 			continue;
- 		}
+diff --git a/net/batman-adv/routing.c b/net/batman-adv/routing.c
+index f1061985149fc5..32a40c1c115c6a 100644
+--- a/net/batman-adv/routing.c
++++ b/net/batman-adv/routing.c
+@@ -1198,6 +1198,12 @@ int batadv_recv_bcast_packet(struct sk_buff *skb,
+ 	if (batadv_is_my_mac(bat_priv, bcast_packet->orig))
+ 		goto free_skb;
  
-+		addr = ftrace_call_adjust(addr);
++	/* create a copy of the skb, if needed, to modify it. */
++	if (skb_cow(skb, ETH_HLEN) < 0)
++		goto free_skb;
 +
- 		end_offset = (pg->index+1) * sizeof(pg->records[0]);
- 		if (end_offset > PAGE_SIZE << pg->order) {
- 			/* We should have allocated enough */
++	bcast_packet = (struct batadv_bcast_packet *)skb->data;
++
+ 	if (bcast_packet->ttl-- < 2)
+ 		goto free_skb;
+ 
+-- 
+2.53.0
+
 
 
 
