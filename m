@@ -1,62 +1,62 @@
-Return-Path: <stable+bounces-270772-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-270908-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id iiC1FPKSRmpfYwsAu9opvQ
-	(envelope-from <stable+bounces-270772-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:33:54 +0200
+	id Fu1DMYKgRmr4aQsAu9opvQ
+	(envelope-from <stable+bounces-270908-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:31:46 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 09B8D6FA409
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:33:54 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 55C876FB695
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:31:46 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=sss6B2dt;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-270772-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-270772-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=ljv+NLzx;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-270908-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-270908-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 156DE30205D5
-	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:33:53 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 26FC9318E909
+	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:37:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C72AA350D7D;
-	Thu,  2 Jul 2026 16:30:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CAF9536167B;
+	Thu,  2 Jul 2026 16:36:05 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 396B133A9C4;
-	Thu,  2 Jul 2026 16:30:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CC9B318EDC;
+	Thu,  2 Jul 2026 16:36:04 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783009812; cv=none; b=KLcM5+cwb7uo/sB11N8uxRp7dWsl1/0bUU8G2O02Rf+1ZGObDKCYY55R+w1NzJJWjZc+zXSzf+ispVEf4/Dg05aKnu9xf7d4g+Avp2jjc3/yojWmVI+jdngWenrq8czOeorLEqhdSvs26DxbMlLYqwCwyRJvaHU3uQ+0jZmg6HM=
+	t=1783010165; cv=none; b=ZKeQAagDaqxDOSgEmpJIXGhQK61DfgQV774Ws/TdIeY8qpKJyJKplFW/zYH23oS58nKEZ2mb4FZEyWWwinsEVoCNfEWMqY1+ZmHNm7MzPToZVODsQSTEcZtCKFK3/bv1SxRt2MTBWdtTanY04/SXT4f2KDQIq+e6iA4ZXwWFQ0k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783009812; c=relaxed/simple;
-	bh=WwyeiGQpj3kJhKkpKCK/JlCQbYpQUtY7vg4H38b1hk4=;
+	s=arc-20240116; t=1783010165; c=relaxed/simple;
+	bh=k9qYn0Q5Se1uxOQPdcypimRJtDCSgyaczSIYMzgCYPM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OowQy2h46gV7aojMFuHIAJJQ2BsoIa67c92uqYHNcoxiNdd2GWTuQFpMrIxNnam3XlxXIU5jL5fOny6W4qLjy8OmKxFBMIp6YCqp4mCPVlWT9DRcFDxNiHxKBNHWIIDYGlAvsktZ5s4SXGHiNwkLMB4bCySAfEyTCkoKZb+plcE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sss6B2dt; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 566E51F000E9;
-	Thu,  2 Jul 2026 16:30:09 +0000 (UTC)
+	 MIME-Version; b=Ok1vqf6RnjsSM5MNjNjSDFcccuBQaALqX6wsib65EFDkkX3GTzCphTRYNw1QA/BmKK38/HdL2VT+sk/pHp1I7Vcy/RhZxbk9dFYUbziCNY+EpuT+5y1OjEg+iDtXt9fxncCG1uxCHJUGZ6+McoKW4qyoAa2lVbajq/6UkdcR//I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ljv+NLzx; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0027C1F000E9;
+	Thu,  2 Jul 2026 16:36:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1783009809;
-	bh=Huy1tm3PimOyma3u1AHcFWePkV2TVNLN4ZYfuIPqA3Y=;
+	s=korg; t=1783010164;
+	bh=qhBhIUjaiiVvEO2I5vIf1XS7bGtXJdQzP1j7otFGU3I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=sss6B2dtmwbnTVgUVc5aEAjtr6XuZrgvjsYtmp8/eIoX3A9qhBI9uhlvmlF5whzwp
-	 vo5CcHiBC83zCqhC/AjYhrCwJVlUeDRdnwE+WdNIugcdLvWvTpAwozLzh4/5+uncLT
-	 1krVY8DgjvRhxYVjO7Llpdms93XHukNW+JQ/Ddb0=
+	b=ljv+NLzxB5X5TmAXOwWzRT/5GSOq2E5gDxePtkchiDKHmJfWVZlCVsjB2qhoqkDfx
+	 49F8HLm4UEOxhzSaBR568b5YgXoYgST4hq64DBTDVIW+AE62aAwVriYJCCLvJkOlhU
+	 NSEU73rodxAfkehzuOZFYZj7grhzmR7QyvNsHbQA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lei Lu <llfamsec@gmail.com>,
-	Joanne Koong <joannelkoong@gmail.com>,
-	Miklos Szeredi <mszeredi@redhat.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 89/95] fuse: re-lock request before replacing page cache folio
+Subject: [PATCH 6.1 113/129] mptcp: fix missing wakeups in edge scenarios
 Date: Thu,  2 Jul 2026 18:20:32 +0200
-Message-ID: <20260702155111.081753153@linuxfoundation.org>
+Message-ID: <20260702155114.482609742@linuxfoundation.org>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260702155109.196223802@linuxfoundation.org>
-References: <20260702155109.196223802@linuxfoundation.org>
+In-Reply-To: <20260702155112.163984240@linuxfoundation.org>
+References: <20260702155112.163984240@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,107 +70,81 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,redhat.com,kernel.org];
-	TAGGED_FROM(0.00)[bounces-270772-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:llfamsec@gmail.com,m:joannelkoong@gmail.com,m:mszeredi@redhat.com,m:sashal@kernel.org,s:lists@lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-270908-lists,stable=lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:pabeni@redhat.com,m:matttbe@kernel.org,m:kuba@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TO_DN_SOME(0.00)[];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,msgid.link:url]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 09B8D6FA409
+X-Rspamd-Queue-Id: 55C876FB695
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Joanne Koong <joannelkoong@gmail.com>
+From: Paolo Abeni <pabeni@redhat.com>
 
-[ Upstream commit a078484921052d0badd827fcc2770b5cfc1d4120 ]
+[ Upstream commit 9d8d28738f24b75616d6ca7a27cb4aed88520343 ]
 
-fuse_try_move_folio() unlocks the request on entry but does not
-re-lock it on the success path. This means fuse_chan_abort() can end the
-request and free the fuse_io_args (eg fuse_readpages_end()) while the
-subsequent copy chain logic after fuse_try_move_folio() accesses the
-fuse_io_args, leading to use-after-free issues.
+The mptcp_recvmsg() can fill MPTCP socket receive queue via
+mptcp_move_skbs(), but currently does not try to wakeup any listener,
+because the same process is going to check the receive queue soon.
 
-Fix this by calling lock_request() before replace_page_cache_folio().
-This ensures the request is locked on the success path which will
-prevent the fuse_io_args from being freed while the later copying logic
-runs, and also ensures that the ap->folios[i]->mapping is never null
-since ap->folios[i] will always point to the newfolio after
-replace_page_cache_folio().
+When multiple threads are reading from the same fd, the above can
+cause stall. Add the missing wakeup.
 
-Fixes: ce534fb05292 ("fuse: allow splice to move pages")
+Fixes: 6771bfd9ee24 ("mptcp: update mptcp ack sequence from work queue")
 Cc: stable@vger.kernel.org
-Reported-by: Lei Lu <llfamsec@gmail.com>
-Signed-off-by: Joanne Koong <joannelkoong@gmail.com>
-Signed-off-by: Miklos Szeredi <mszeredi@redhat.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Link: https://patch.msgid.link/20260602-net-mptcp-misc-fixes-7-1-rc7-v2-1-856831229976@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/fuse/dev.c |   19 +++++--------------
- 1 file changed, 5 insertions(+), 14 deletions(-)
+ net/mptcp/protocol.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/fs/fuse/dev.c
-+++ b/fs/fuse/dev.c
-@@ -845,6 +845,10 @@ static int fuse_try_move_page(struct fus
- 	if (WARN_ON(PageMlocked(oldpage)))
- 		goto out_fallback_unlock;
+--- a/net/mptcp/protocol.c
++++ b/net/mptcp/protocol.c
+@@ -2197,8 +2197,10 @@ static bool __mptcp_move_skbs(struct mpt
+ 		__mptcp_splice_receive_queue(sk);
+ 		mptcp_data_unlock(sk);
+ 	}
+-	if (ret)
++	if (ret) {
+ 		mptcp_check_data_fin((struct sock *)msk);
++		sk->sk_data_ready(sk);
++	}
+ 	return !skb_queue_empty(&msk->receive_queue);
+ }
  
-+	err = lock_request(cs->req);
-+	if (err)
-+		goto out_fallback_unlock;
-+
- 	replace_page_cache_page(oldpage, newpage);
- 
- 	get_page(newpage);
-@@ -858,20 +862,7 @@ static int fuse_try_move_page(struct fus
- 	 */
- 	pipe_buf_release(cs->pipe, buf);
- 
--	err = 0;
--	spin_lock(&cs->req->waitq.lock);
--	if (test_bit(FR_ABORTED, &cs->req->flags))
--		err = -ENOENT;
--	else
--		*pagep = newpage;
--	spin_unlock(&cs->req->waitq.lock);
--
--	if (err) {
--		unlock_page(newpage);
--		put_page(newpage);
--		goto out_put_old;
--	}
--
-+	*pagep = newpage;
- 	unlock_page(oldpage);
- 	/* Drop ref for ap->pages[] array */
- 	put_page(oldpage);
 
 
 
