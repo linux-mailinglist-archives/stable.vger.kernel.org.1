@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-271441-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-271083-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id XsEJMPmbRmpMaAsAu9opvQ
-	(envelope-from <stable+bounces-271441-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:12:25 +0200
+	id vA0RENGYRmqQZgsAu9opvQ
+	(envelope-from <stable+bounces-271083-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:58:57 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E7DC6FB1EB
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:12:25 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 97F386FAD18
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:58:56 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=cGshz5ut;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-271441-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-271441-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=Hj9azS9z;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-271083-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-271083-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 5C2C930D8002
-	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:59:14 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 8ADD532DB136
+	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:46:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3200122D7B9;
-	Thu,  2 Jul 2026 16:59:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1840B34753C;
+	Thu,  2 Jul 2026 16:43:46 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF8351C695;
-	Thu,  2 Jul 2026 16:59:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2A163A59B1;
+	Thu,  2 Jul 2026 16:43:44 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783011553; cv=none; b=FPKWoZMZxQUZOHmHDypoFQ6ZZxLaL7CdM6Oulb3KaXERIYLcYiI+JvYzJVQgmQNflDPIxvlT1bPI5kwfeP45cPhWyY0G49+xqMfiDBC7Tv9sF/qoGJv/38f1rR3RV9W3zx1HHPFaO3Nl/3Z+AlZY7B3jFHuTu2nJSW3r7CsfAvA=
+	t=1783010625; cv=none; b=fpnEGUgZ6XdjrBTJraRaWI8ubd9gAJTCZatq8QdtSiZryEB9/siheZ6mkgEc/Ix1BAqQngreMf527PxryA+o4g2NehFW4gLVEJfwO38BvQlXwHTmFP0Ki32k0sgt/gZBUADXaY5/C8hF4ue5eodsyeRWg7Hx1DE9F6GxviE289Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783011553; c=relaxed/simple;
-	bh=1QxFBqwqM9oTPrC+0c+R4Kj4brC15eFzttEKGS7Y77Y=;
+	s=arc-20240116; t=1783010625; c=relaxed/simple;
+	bh=HlW7JilBt+C8C9Vs0hLLyuY4qgA8z9jvHRMPxu5s2bk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SOnRBRPo6rPha4PRHFoFOqPrIW9ohX2g9wey4Qa6LNDVzEAowPdgvczCX1pnW6ugze3lNxH2M4SLsHVUtxUGPYHkVaEx1blGu8yVUCJt15vY8X8lie3YxTuQPmh6EIIi55CEyyJxXUhzIz2oPry/VkSoMjWIOMHpG3BR2Dg4dgI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cGshz5ut; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 512A31F00A3D;
-	Thu,  2 Jul 2026 16:59:11 +0000 (UTC)
+	 MIME-Version; b=HN9g2vIYD5axTHq4umEYCpQ2/H9b5VnyrIzXMkv102g9o4+8hLT+krg9CDoPfNXsSGUI4EdCz/UWymL8mEUwAdIbeoGHtmzkXFzj2xQAWULeAJgGtGI14yk2XNa2zj8sMAekRYnMv1BqOxEyHhTluEH9vM40P0PuLuk1vcpGykU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Hj9azS9z; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF65E1F000E9;
+	Thu,  2 Jul 2026 16:43:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1783011551;
-	bh=F1BKvFye3UOOxb3F4bbHY9OZk3Lm0NNbuLWbLy/yP6Y=;
+	s=korg; t=1783010624;
+	bh=Tc1GGdSuCp4FKXPVzuwIzrC6EYhRsOBf7JamLk0NXXo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=cGshz5utmJ3K1ouoaDPkbn8xZK0HfKB1LE2wmETyR/yWzgJLQjsYs8H4UREe8fWJt
-	 0LNE5YRFJGXGEXHTpxRiar5T5iHr9lRznbTOaanXrqfmTy6NDyxRiZH0ea9bPugpog
-	 oXQB7PACF7v/eYBl2yn3qRTBSVY+VMMGjq8W8lvA=
+	b=Hj9azS9z8tWygUfrq3cT+chAbY6N95B9fLv80pNBbR/wlQAf8zQrxzQP7AmpT6QY2
+	 Fe1d9DrkZWhALliYIjayngiGyrzbUvMBxZsxDhrLBQAFluSy+mwAur2nUKFQq2RRBq
+	 MGjdw3TFRuu3BLDq4cI4TwUzyuZna/OejVC1jXr8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Usama Arif <usama.arif@linux.dev>,
-	Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 7.1 041/120] block: invalidate cached plug timestamp after task switch
+	Yanko Kaneti <yaneti@declera.com>,
+	Vivian Wang <wangruikang@iscas.ac.cn>,
+	Paul Walmsley <pjw@kernel.org>
+Subject: [PATCH 6.12 180/204] riscv: kfence: Call mark_new_valid_map() for kfence_unprotect()
 Date: Thu,  2 Jul 2026 18:20:37 +0200
-Message-ID: <20260702155113.811489696@linuxfoundation.org>
+Message-ID: <20260702155122.427793718@linuxfoundation.org>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260702155112.964534952@linuxfoundation.org>
-References: <20260702155112.964534952@linuxfoundation.org>
+In-Reply-To: <20260702155118.667618796@linuxfoundation.org>
+References: <20260702155118.667618796@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,22 +72,22 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-271441-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-271083-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:usama.arif@linux.dev,m:axboe@kernel.dk,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:yaneti@declera.com,m:wangruikang@iscas.ac.cn,m:pjw@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
@@ -97,118 +98,86 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linux.dev:email,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,kernel.dk:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,iscas.ac.cn:email,vger.kernel.org:from_smtp,msgid.link:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 2E7DC6FB1EB
+X-Rspamd-Queue-Id: 97F386FAD18
 
-7.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Usama Arif <usama.arif@linux.dev>
+From: Vivian Wang <wangruikang@iscas.ac.cn>
 
-commit fad156c2af227f42ca796cbb20ddc354a6dd9932 upstream.
+commit 8d6c8c40e733b3fcaf92fed0a078bba2f6941a3b upstream.
 
-blk_time_get_ns() caches ktime_get_ns() in current->plug->cur_ktime
-and marks the task with PF_BLOCK_TS. That cache is only valid while the
-task keeps running; if the task is switched out, wall-clock time
-advances and the cached value must not be reused when the task runs again.
+In kfence_protect_page(), which kfence_unprotect() calls, we cannot send
+IPIs to other CPUs to ask them to flush TLB. This may lead to those CPUs
+spuriously faulting on a recently allocated kfence object despite it
+being valid, leading to false positive use-after-free reports.
 
-The existing invalidation covers explicit plug flushes through
-__blk_flush_plug(), and the schedule() / rtmutex paths through
-sched_update_worker(). It does not cover in-kernel preemption paths such
-as preempt_schedule(), preempt_schedule_notrace(), and
-preempt_schedule_irq(), which enter __schedule(SM_PREEMPT) directly and
-return without calling sched_update_worker().
+Fix this by calling mark_new_valid_map() so that the page fault handling
+code path notices the spurious fault and flushes TLB then retries the
+access.
 
-As a result, a task preempted while holding a plug with PF_BLOCK_TS set
-can reuse a stale plug->cur_ktime after it is scheduled back in. blk-iocost
-then consumes that stale timestamp through ioc_now(), producing stale vnow
-values for throttle decisions, and through ioc_rqos_done(), inflating
-on-queue time and feeding false missed-QoS samples into vrate
-adjustment.
+Update the comment in handle_exception to indicate that
+new_valid_map_cpus_check also handles kfence_unprotect() spurious
+faults.
 
-Move the schedule-side invalidation to finish_task_switch(), which runs
-for the scheduled-in task after every actual context switch regardless
-of which schedule entry point was used. Keep __blk_flush_plug() as the
-explicit flush/finish-plug invalidation path, and remove only the
-PF_BLOCK_TS handling from sched_update_worker().
+Note that kfence_protect() has the same stale TLB entries problem, but
+that leads to false negatives, which is fine with kfence.
 
-Fixes: 06b23f92af87 ("block: update cached timestamp post schedule/preemption")
 Cc: stable@vger.kernel.org
-Signed-off-by: Usama Arif <usama.arif@linux.dev>
-Link: https://patch.msgid.link/20260616141604.328820-3-usama.arif@linux.dev
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Reported-by: Yanko Kaneti <yaneti@declera.com>
+Fixes: b3431a8bb336 ("riscv: Fix IPIs usage in kfence_protect_page()")
+Signed-off-by: Vivian Wang <wangruikang@iscas.ac.cn>
+Link: https://patch.msgid.link/20260303-handle-kfence-protect-spurious-fault-v2-2-f80d8354d79d@iscas.ac.cn
+Signed-off-by: Paul Walmsley <pjw@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/blkdev.h |   18 +++++++-----------
- kernel/sched/core.c    |   12 ++++++++----
- 2 files changed, 15 insertions(+), 15 deletions(-)
+ arch/riscv/include/asm/kfence.h |    7 +++++--
+ arch/riscv/kernel/entry.S       |    6 ++++--
+ 2 files changed, 9 insertions(+), 4 deletions(-)
 
---- a/include/linux/blkdev.h
-+++ b/include/linux/blkdev.h
-@@ -1214,16 +1214,12 @@ static inline void blk_flush_plug(struct
- 		__blk_flush_plug(plug, async);
- }
+--- a/arch/riscv/include/asm/kfence.h
++++ b/arch/riscv/include/asm/kfence.h
+@@ -6,6 +6,7 @@
+ #include <linux/kfence.h>
+ #include <linux/pfn.h>
+ #include <asm-generic/pgalloc.h>
++#include <asm/cacheflush.h>
+ #include <asm/pgtable.h>
  
--/*
-- * tsk == current here
-- */
--static inline void blk_plug_invalidate_ts(struct task_struct *tsk)
--{
--	struct blk_plug *plug = tsk->plug;
--
--	if (plug)
--		plug->cur_ktime = 0;
--	current->flags &= ~PF_BLOCK_TS;
-+static __always_inline void blk_plug_invalidate_ts(void)
-+{
-+	if (unlikely(current->flags & PF_BLOCK_TS)) {
-+		current->plug->cur_ktime = 0;
-+		current->flags &= ~PF_BLOCK_TS;
+ static inline bool arch_kfence_init_pool(void)
+@@ -17,10 +18,12 @@ static inline bool kfence_protect_page(u
+ {
+ 	pte_t *pte = virt_to_kpte(addr);
+ 
+-	if (protect)
++	if (protect) {
+ 		set_pte(pte, __pte(pte_val(ptep_get(pte)) & ~_PAGE_PRESENT));
+-	else
++	} else {
+ 		set_pte(pte, __pte(pte_val(ptep_get(pte)) | _PAGE_PRESENT));
++		mark_new_valid_map();
 +	}
- }
  
- int blkdev_issue_flush(struct block_device *bdev);
-@@ -1249,7 +1245,7 @@ static inline void blk_flush_plug(struct
- {
- }
+ 	preempt_disable();
+ 	local_flush_tlb_kernel_range(addr, addr + PAGE_SIZE);
+--- a/arch/riscv/kernel/entry.S
++++ b/arch/riscv/kernel/entry.S
+@@ -106,8 +106,10 @@ SYM_CODE_START(handle_exception)
  
--static inline void blk_plug_invalidate_ts(struct task_struct *tsk)
-+static inline void blk_plug_invalidate_ts(void)
- {
- }
- 
---- a/kernel/sched/core.c
-+++ b/kernel/sched/core.c
-@@ -5252,6 +5252,12 @@ static struct rq *finish_task_switch(str
- 	 */
- 	kmap_local_sched_in();
- 
-+	/*
-+	 * Any cached block-layer timestamp (plug->cur_ktime) is stale now,
-+	 * invalidate it.
-+	 */
-+	blk_plug_invalidate_ts();
-+
- 	fire_sched_in_preempt_notifiers(current);
+ #ifdef CONFIG_64BIT
  	/*
- 	 * When switching through a kernel thread, the loop in
-@@ -7251,12 +7257,10 @@ static inline void sched_submit_work(str
- 
- static void sched_update_worker(struct task_struct *tsk)
- {
--	if (tsk->flags & (PF_WQ_WORKER | PF_IO_WORKER | PF_BLOCK_TS)) {
--		if (tsk->flags & PF_BLOCK_TS)
--			blk_plug_invalidate_ts(tsk);
-+	if (tsk->flags & (PF_WQ_WORKER | PF_IO_WORKER)) {
- 		if (tsk->flags & PF_WQ_WORKER)
- 			wq_worker_running(tsk);
--		else if (tsk->flags & PF_IO_WORKER)
-+		else
- 			io_wq_worker_running(tsk);
- 	}
- }
+-	 * The RISC-V kernel does not eagerly emit a sfence.vma after each
+-	 * new vmalloc mapping, which may result in exceptions:
++	 * The RISC-V kernel does not flush TLBs on all CPUS after each new
++	 * vmalloc mapping or kfence_unprotect(), which may result in
++	 * exceptions:
++	 *
+ 	 * - if the uarch caches invalid entries, the new mapping would not be
+ 	 *   observed by the page table walker and an invalidation is needed.
+ 	 * - if the uarch does not cache invalid entries, a reordered access
 
 
 
