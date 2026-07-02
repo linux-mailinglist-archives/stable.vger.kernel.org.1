@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-270852-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-270730-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id LtwUK8eURmo0ZAsAu9opvQ
-	(envelope-from <stable+bounces-270852-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:41:43 +0200
+	id JgOxHAmfRmpmaQsAu9opvQ
+	(envelope-from <stable+bounces-270730-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:25:29 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 719FD6FA64D
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:41:43 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8847D6FB4FB
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:25:28 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=yOgU2Uqd;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-270852-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-270852-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=vV0JT4rT;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-270730-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-270730-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 39CC33074216
-	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:36:35 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id EE18D32736A6
+	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:32:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F30A3A48E4;
-	Thu,  2 Jul 2026 16:33:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 36FF5339844;
+	Thu,  2 Jul 2026 16:28:22 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 194F233B6D1;
-	Thu,  2 Jul 2026 16:33:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4870C341077;
+	Thu,  2 Jul 2026 16:28:19 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783010018; cv=none; b=EzcMARKdJGcFuPNTJGUWyvyvCztJPSWLHxronzBkIF3LBhPaD4TWaJIV3TbNc+ZlnlfkeSuMjmrC1MkynyfUHOfaOQlVDFFDJOwEd7KWMPylLSntWevdqywKyGVpep7QSnYpUoYgqJOEMUdneDhiVsx/fVdaOZJgmrdOUE7JZ2o=
+	t=1783009701; cv=none; b=e76wtVtzXYzIpP5MZ3jZb2R/VDWygwO94qsXdJw30B6rF9zf/GQcKPCve4ZlnYFVt0skg/mUjR0jbXGaaH60NNl1ilk0D2Pr0peg5+mHK8OhymnOAGxFOuCzN1yCPDBdTLWVTTXZ9NQghbE3rfr+u7jKLkZd1hncN0MGoGut56Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783010018; c=relaxed/simple;
-	bh=oqv6PeugggcUIO7Pw1iu9O1lvuWX6w7b8CgAWMDoF9M=;
+	s=arc-20240116; t=1783009701; c=relaxed/simple;
+	bh=nZZJlTNU6Js+AA+dDJT7GPmsRaGXyJC6YYh+SqayZHo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bEwD13v12U+NhUUcxJKJ0VacWn2XhM3VKC7B7guR2mbn/HPT7Q21d7skI7BbtBrnR7pmfrCeQvAwmUGlwFacazBg0JLCplPAlp6LQYnDNYGlGYWYU98INmv1gxMPvstdn4hXQ05OU+OakEFWAP5oWF0hHEqr4dcgHkVMXDsB/ug=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yOgU2Uqd; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F46F1F000E9;
-	Thu,  2 Jul 2026 16:33:36 +0000 (UTC)
+	 MIME-Version; b=PrlhzfA4nkYyORSHd08n+/zZPFc8OgIXtAKKpVm7fxjcL4q9ZxArYE0BrVJ/1ZVCPzVO2mOt8McP0HVpEjtY5hL3ZXBUSikMPUUrFEJ18uE29dMWV7Wb+wpIoN/TslgY6IOGym9FQSn7p7v9E/NJrEtw80iK7WmNtCrg6HF8DkM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vV0JT4rT; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A7CD1F000E9;
+	Thu,  2 Jul 2026 16:28:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1783010017;
-	bh=tRUc08sBEAWRQf9tQxEGJJeAcPUTqZrPlXvDQsric+g=;
+	s=korg; t=1783009699;
+	bh=wLe+JtGZjnmRR0XMwUwUcWlISBdXm6dMUiTaNTkcfjw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=yOgU2Uqdst5tJiSFKVvx3TLCFj0lyKFz39I1WAaHHLgPSO+SOxu8At/YZEn6Rx/Ji
-	 ICRYJTGROq6KDcYsnAFD864BVFsHilidw6hns+Vj18xCmP50ROa/fqcIkJ22Ba43ss
-	 WH6Matfa/G8LQp9TCEW+nmtGdeR11uYtqU4XZkxo=
+	b=vV0JT4rTlyy5elPYRzStMAUmBczT7lImt9ItL4weuBAMg03xA7rgxXd6mDQ4UtIK9
+	 3ocjcBm7bpA1+AkZ9J+tYnFUYMmfFqCPkfDff+m6XRNaSOnlqpjVdjj62l1gG4PhrE
+	 XWh7a1V6uH8fV9uXe1mMywedpZcKgVo39PkoUkL4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bryam Vargas <hexlabsecurity@proton.me>,
-	John Johansen <john.johansen@canonical.com>
-Subject: [PATCH 6.1 079/129] apparmor: mediate the implicit connect of TCP fast open sendmsg
+	Yuto Ohnuki <ytohnuki@amazon.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 55/95] ext4: add bounds check for inline data length in ext4_read_inline_page
 Date: Thu,  2 Jul 2026 18:19:58 +0200
-Message-ID: <20260702155113.773868504@linuxfoundation.org>
+Message-ID: <20260702155110.365025501@linuxfoundation.org>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260702155112.163984240@linuxfoundation.org>
-References: <20260702155112.163984240@linuxfoundation.org>
+In-Reply-To: <20260702155109.196223802@linuxfoundation.org>
+References: <20260702155109.196223802@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,21 +71,21 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-270852-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-270730-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:hexlabsecurity@proton.me,m:john.johansen@canonical.com,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:ytohnuki@amazon.com,m:sashal@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
@@ -97,64 +97,60 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[proton.me:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,iloc.bh:url]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 719FD6FA64D
+X-Rspamd-Queue-Id: 8847D6FB4FB
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bryam Vargas <hexlabsecurity@proton.me>
+From: Yuto Ohnuki <ytohnuki@amazon.com>
 
-commit 4d587cd8a72155089a627130bbd4716ec0856e21 upstream.
+[ Upstream commit 356227096eb66e41b23caf7045e6304877322edf ]
 
-sendmsg()/sendto() with MSG_FASTOPEN is a combination of connect(2) and
-write(2): it opens the connection in the SYN. apparmor_socket_sendmsg()
-only checks AA_MAY_SEND, so a profile that grants send but denies connect
-lets a confined task open an outbound TCP/MPTCP connection that connect(2)
-would have refused, bypassing connect mediation.
+ext4_read_inline_page() does not validate that the inline data length
+fits within a page before copying data. If the inline size exceeds
+PAGE_SIZE due to filesystem corruption, this could lead to a kernel
+memory write beyond the page boundary.
 
-Mediate the implicit connect when MSG_FASTOPEN is set and a destination
-is supplied. Add it to apparmor_socket_sendmsg() (not the shared
-aa_sock_msg_perm() helper, which recvmsg also uses) and call aa_sk_perm()
-directly, mirroring the selinux and tomoyo fixes. sk_is_tcp() does not
-cover MPTCP fast open, so the SOCK_STREAM/IPPROTO_MPTCP arm is explicit.
+Add a bounds check after computing len, returning -EFSCORRUPTED if the
+value exceeds PAGE_SIZE.
 
-Fixes: cf60af03ca4e ("net-tcp: Fast Open client - sendmsg(MSG_FASTOPEN)")
-Cc: stable@vger.kernel.org
-Signed-off-by: Bryam Vargas <hexlabsecurity@proton.me>
-Signed-off-by: John Johansen <john.johansen@canonical.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+The upstream commit replaced a BUG_ON(len > PAGE_SIZE) in
+ext4_read_inline_folio(). In 6.1 and earlier, the function is still named
+ext4_read_inline_page() and the BUG_ON was never present, so this patch
+adds the bounds check directly.
+
+Fixes: 46c7f254543d ("ext4: add read support for inline data")
+Signed-off-by: Yuto Ohnuki <ytohnuki@amazon.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- security/apparmor/lsm.c |   16 +++++++++++++++-
- 1 file changed, 15 insertions(+), 1 deletion(-)
+ fs/ext4/inline.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
---- a/security/apparmor/lsm.c
-+++ b/security/apparmor/lsm.c
-@@ -984,7 +984,21 @@ static int aa_sock_msg_perm(const char *
- static int apparmor_socket_sendmsg(struct socket *sock,
- 				   struct msghdr *msg, int size)
- {
--	return aa_sock_msg_perm(OP_SENDMSG, AA_MAY_SEND, sock, msg, size);
-+	int error = aa_sock_msg_perm(OP_SENDMSG, AA_MAY_SEND, sock, msg, size);
-+
-+	if (error)
-+		return error;
-+
-+	/* TCP fast open carries connect() semantics in sendmsg(); mediate
-+	 * the implicit connect so it cannot bypass the connect permission.
-+	 */
-+	if ((msg->msg_flags & MSG_FASTOPEN) && msg->msg_name &&
-+	    (sk_is_tcp(sock->sk) ||
-+	     (sk_is_inet(sock->sk) && sock->sk->sk_type == SOCK_STREAM &&
-+	      sock->sk->sk_protocol == IPPROTO_MPTCP)))
-+		error = aa_sk_perm(OP_CONNECT, AA_MAY_CONNECT, sock->sk);
-+
-+	return error;
- }
+diff --git a/fs/ext4/inline.c b/fs/ext4/inline.c
+index c5b1f9af230952..5d5f99ed974687 100644
+--- a/fs/ext4/inline.c
++++ b/fs/ext4/inline.c
+@@ -517,6 +517,14 @@ static int ext4_read_inline_page(struct inode *inode, struct page *page)
+ 		goto out;
  
- /**
+ 	len = min_t(size_t, ext4_get_inline_size(inode), i_size_read(inode));
++	if (len > PAGE_SIZE) {
++		ext4_error_inode(inode, __func__, __LINE__, 0,
++				 "inline size %zu exceeds PAGE_SIZE", len);
++		ret = -EFSCORRUPTED;
++		brelse(iloc.bh);
++		goto out;
++	}
++
+ 	kaddr = kmap_atomic(page);
+ 	ret = ext4_read_inline_data(inode, kaddr, len, &iloc);
+ 	flush_dcache_page(page);
+-- 
+2.53.0
+
 
 
 
