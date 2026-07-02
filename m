@@ -1,60 +1,63 @@
-Return-Path: <stable+bounces-271072-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-270681-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id GM0wHrWXRmoBZgsAu9opvQ
-	(envelope-from <stable+bounces-271072-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:54:13 +0200
+	id DglKKp+URmoTZAsAu9opvQ
+	(envelope-from <stable+bounces-270681-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:41:03 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E4FB96FAB9A
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:54:12 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id EE23B6FA5D2
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:41:02 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=CkGzFiDo;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-271072-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-271072-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=VVGeefwA;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-270681-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-270681-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 28BCD30C6359
-	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:46:17 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 10B8931AD625
+	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:31:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E4443381EA6;
-	Thu,  2 Jul 2026 16:43:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A00B37A852;
+	Thu,  2 Jul 2026 16:26:12 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B54C130C15A;
-	Thu,  2 Jul 2026 16:43:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5452B381E96;
+	Thu,  2 Jul 2026 16:26:11 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783010596; cv=none; b=UUuuB4RCIkpGkYf3T5y9nCcny/0NZYscrf2V8cIVM7xJ6Q77XqaaH8r0pQgN76yTg+Rw6+jEUuOhQt+51du69lcVWLs9A2xm3tGDEkd6tlhdhsjYyMe7SiUw6S3wEF9JUtklwP7L+jcUzT9W2SEE2AZmmzKwQghaOla06NoCk0U=
+	t=1783009572; cv=none; b=uPDYLHF4vx0mGg/+27Z24gF8SRMbTmmTuO0VuG9FyJSrWlgConRFX8iBwPf9vku96uBuW36V1907owmPIoJW1NoKJoXIkpl3aOzL/0uPCek/mlbGLT8OUgJQ3BsRHK6VPII0fkLAw2DzoN6/Y8d/BnBf2tjNuILYyY5u60F3qXM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783010596; c=relaxed/simple;
-	bh=QlO0pbe2Q5GsKGQu+QMdLGhyn76FoGaA4aXnpxLeU9M=;
+	s=arc-20240116; t=1783009572; c=relaxed/simple;
+	bh=W5Rf9/9pKdb9E9UWWDCFUoSEozFit4YjodMiwNs8IRU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RRxXOMlmuRq4FyfjT/qNO3sCTKRWV4ab4t1FDdxlmcAsXhHFuF4rv1sZ5wsvBJkVudv5331FjPcE8IGbVTGIiVa7GxzP03DwLTzv+QmNme20wPVuAG9NXazSOLC2rTOwN0Q33tWzItX5ATV68SRT/CCjEkKVh8tgNnKXHg64tZo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CkGzFiDo; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB8A21F00A3A;
-	Thu,  2 Jul 2026 16:43:14 +0000 (UTC)
+	 MIME-Version; b=jY9pzLWg7nB2bEfDylROYOcF3A6q9aDRTHhyhv1qVK92JawAkJBrCYA41iJB/ow0dP+WJC/+p4c5dD0Ve3xVdyy61/s1hkQd5WcBKxiqjESD53ptHTr7u8UcZEgClO9iRfap2bDmpiD9s4w27q57fDQLNCzQaxNU9w+oT83u6L4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VVGeefwA; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7236B1F00A3A;
+	Thu,  2 Jul 2026 16:26:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1783010595;
-	bh=AgfB83ZwnqolcE97dV7vVnSZs24caZaugPwkpHcyD4w=;
+	s=korg; t=1783009570;
+	bh=uzfo1sddjAw2kZMnx3oi8AHjI0qF7ySqg/jlkkHBRFQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=CkGzFiDoGqqr8u21F6YIaCt9x3m2JbzxKYfZzWK9bS6Zv5LT2aANAMzOD5pdJW/Kj
-	 a70moN9ibrgcTVWA3WujlmMPaWHLuwThLJ6Q+oESrnKvKYGehJ5MolseFNx5y3LT3l
-	 DDWHiqYJ+7l8uaZmfsciPjUptbqC+oyBgkZSSspY=
+	b=VVGeefwAOLekmVQOGFKVAMYwNNvUN+siuRpu11RXa9VDyQz0IIIYf+Mau3vCQC7sl
+	 AyMouDX/dMbyj2gk9VR+ba4LyFNL3goC0gquBcB4sJWuYwA7U6k6sUiPAi22dcEGME
+	 BDW1ttkt0yDZv3frypW1bXGZy4JtbCdjLGINqyas=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wentao Liang <vulab@iscas.ac.cn>,
-	Anna Schumaker <anna.schumaker@hammerspace.com>
-Subject: [PATCH 6.12 170/204] pNFS: Fix use-after-free in pnfs_update_layout()
+	Yuhao Jiang <danisjiang@gmail.com>,
+	Junrui Luo <moonafterrain@outlook.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+	Srinivas Kandagatla <srini@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 95/96] misc: fastrpc: fix DMA address corruption due to find_vma misuse
 Date: Thu,  2 Jul 2026 18:20:27 +0200
-Message-ID: <20260702155122.218529047@linuxfoundation.org>
+Message-ID: <20260702155110.979005426@linuxfoundation.org>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260702155118.667618796@linuxfoundation.org>
-References: <20260702155118.667618796@linuxfoundation.org>
+In-Reply-To: <20260702155108.949633242@linuxfoundation.org>
+References: <20260702155108.949633242@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,76 +74,79 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-271072-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:vulab@iscas.ac.cn,m:anna.schumaker@hammerspace.com,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,outlook.com,oss.qualcomm.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-270681-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:danisjiang@gmail.com,m:moonafterrain@outlook.com,m:dmitry.baryshkov@oss.qualcomm.com,m:srini@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[iscas.ac.cn:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,hammerspace.com:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,vger.kernel.org:from_smtp]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,outlook.com:email,vger.kernel.org:from_smtp,msgid.link:url,qualcomm.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: E4FB96FAB9A
+X-Rspamd-Queue-Id: EE23B6FA5D2
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wentao Liang <vulab@iscas.ac.cn>
+From: Junrui Luo <moonafterrain@outlook.com>
 
-commit 13e198a90ca4050f4bee8a3f23680389a6563ccc upstream.
+[ Upstream commit 464c6ad2aa16e1e1df9d559289199356493d1e00 ]
 
-When hitting the NFS_LAYOUT_RETURN branch in pnfs_update_layout(),
-the code calls pnfs_prepare_to_retry_layoutget(lo). If it succeeds,
-pnfs_put_layout_hdr(lo) is called before trace_pnfs_update_layout(),
-which still references 'lo'. This results in a use-after-free when the
-tracepoint accesses lo's fields.
+fastrpc_get_args() uses find_vma() to look up the VMA for a user-provided
+pointer and compute a DMA address offset. When the address falls in a gap
+before the returned VMA, (ptr & PAGE_MASK) - vma->vm_start underflows,
+corrupting the DMA address sent to the DSP.
 
-Fix this by moving the tracepoint call before pnfs_put_layout_hdr(lo).
+Replace find_vma() with vma_lookup(), which returns NULL when the address
+is not contained within any VMA.
 
-Fixes: 2c8d5fc37fe2 ("pNFS: Stricter ordering of layoutget and layoutreturn")
 Cc: stable@vger.kernel.org
-Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
-Signed-off-by: Anna Schumaker <anna.schumaker@hammerspace.com>
+Fixes: 80f3afd72bd4 ("misc: fastrpc: consider address offset before sending to DSP")
+Reported-by: Yuhao Jiang <danisjiang@gmail.com>
+Signed-off-by: Junrui Luo <moonafterrain@outlook.com>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Signed-off-by: Srinivas Kandagatla <srini@kernel.org>
+Link: https://patch.msgid.link/20260530204528.116920-3-srini@kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+[ adapted `vma_lookup(mm, ptr)` to `find_vma(mm, ptr)` plus a `ptr >= vma->vm_start` guard since `vma_lookup()` does not exist in 5.10 ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nfs/pnfs.c |    2 +-
+ drivers/misc/fastrpc.c |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/fs/nfs/pnfs.c
-+++ b/fs/nfs/pnfs.c
-@@ -2217,11 +2217,11 @@ lookup_again:
- 		dprintk("%s wait for layoutreturn\n", __func__);
- 		lseg = ERR_PTR(pnfs_prepare_to_retry_layoutget(lo));
- 		if (!IS_ERR(lseg)) {
--			pnfs_put_layout_hdr(lo);
- 			dprintk("%s retrying\n", __func__);
- 			trace_pnfs_update_layout(ino, pos, count, iomode, lo,
- 						 lseg,
- 						 PNFS_UPDATE_LAYOUT_RETRY);
-+			pnfs_put_layout_hdr(lo);
- 			goto lookup_again;
- 		}
- 		trace_pnfs_update_layout(ino, pos, count, iomode, lo, lseg,
+--- a/drivers/misc/fastrpc.c
++++ b/drivers/misc/fastrpc.c
+@@ -875,7 +875,7 @@ static int fastrpc_get_args(u32 kernel,
+ 
+ 			mmap_read_lock(current->mm);
+ 			vma = find_vma(current->mm, ctx->args[i].ptr);
+-			if (vma)
++			if (vma && ctx->args[i].ptr >= vma->vm_start)
+ 				pages[i].addr += (ctx->args[i].ptr & PAGE_MASK) -
+ 						 vma->vm_start;
+ 			mmap_read_unlock(current->mm);
 
 
 
