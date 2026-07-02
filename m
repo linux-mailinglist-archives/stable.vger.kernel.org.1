@@ -1,64 +1,64 @@
-Return-Path: <stable+bounces-270990-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-270590-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id D5f6LneiRmq/agsAu9opvQ
-	(envelope-from <stable+bounces-270990-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:40:07 +0200
+	id fyQXHdmcRmqiaAsAu9opvQ
+	(envelope-from <stable+bounces-270590-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:16:09 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id BFB606FB87C
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:40:06 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id C20146FB2C3
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:16:08 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=Ah53z44l;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-270990-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-270990-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=1xeTWhE7;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-270590-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-270590-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 6806A31C21A4
-	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:41:00 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 7538531B0B22
+	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:24:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC5993603E0;
-	Thu,  2 Jul 2026 16:39:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4BE233B6D1;
+	Thu,  2 Jul 2026 16:22:13 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82D1335F19A;
-	Thu,  2 Jul 2026 16:39:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C78A34167B;
+	Thu,  2 Jul 2026 16:22:12 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783010380; cv=none; b=Y99f0uswHiTAE7zEqB+umMBSYRAasLYOqgrrfOkIBi2sm0pYtxgeJKfdigaCNiN2qBnwyNMTz0AGOwBvIBYlR9KrOVf2Q1RdMjzeeUSWsnI7I+C7DcZZ01RtFMfbZJiPBS3v9L02yp6qKlcGCgPQCtoQWpVvriPnVQ4+sS0IRjM=
+	t=1783009333; cv=none; b=ZBLv7aBygRbOYqTVdKgJvf9RxjsW2b+JEnJtwF+fGOiH9ezDoURmeGe2Gye0VlyWcxbLHURnX3bS/ZYgdRw2W40aLv1Z4E1Or1c/mynHvCoRKvWUfWzx6GQTRBwgVZLxBEvC6ELEuFUt2s4cmNkMGZcCuyCG0LTq0sZLMYlcslc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783010380; c=relaxed/simple;
-	bh=Bkg3CTNCQ53SflcFZhAT/qAZbmFa2DlcWPyi+1zhLpQ=;
+	s=arc-20240116; t=1783009333; c=relaxed/simple;
+	bh=ULAqKweFdMevKo0CJ0P0KrPl5OzSvD/hR8Pf6qYNOtM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=d4BkPss5Nsf9AfpcP3s/XkwPcpeYwtknVRoelWic7IdMGK3b2KS4v61GALLPCru0X0xD4SHhkuRbZeWMDK9JfpVG/InxGLiTIMNHbm9DBlZ6GGiEgUmAaj4bqA3Le/pubgqQ+3pWrjFy8fNW27buge8KOR2KsYMZ8fLaWiUzzXo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ah53z44l; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EDAA01F000E9;
-	Thu,  2 Jul 2026 16:39:38 +0000 (UTC)
+	 MIME-Version; b=gN/0pCVK5y7vn0xPwlACQLAQhZ+DehGGXDdAzFlAOHjj3oySZ1baVMRezBL235/WcGM2CghG/YB+/kQIpmmAhPugPDkx8Lgq6/pivzc8MmB1Sb0Rz5MvPc81kIikDENgVcpsjw9ESp3OzseBz95fKaVSL9NyBYd0UBQidGVE+dM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1xeTWhE7; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 783361F000E9;
+	Thu,  2 Jul 2026 16:22:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1783010379;
-	bh=WIHqj+5VYWd6gCmYmxT1aDHx1AFSpn+obx28Zx3NxDs=;
+	s=korg; t=1783009331;
+	bh=iHLWGV0XF8BSuz0uLzhd7yFY4ifEIrLqIgDZBc+E2VY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Ah53z44l2LZGguzzz5nEgv1bD0AkeHEM0Uatam9DXTPP2KgcorvoXnhAgkC6//Umd
-	 sRldyK2WwVPTAK35Dk5XrTBcF8KhNBQul/r642uP3S6Ownc1yCha6LhQeO2qtifidO
-	 oJke0MDtz66yUUBA2o9CXGTQs7AzyNPJi+mrcaNc=
+	b=1xeTWhE7dAG1vh5me8Uqr1tzt1SYQji/YpDy2UhbURuledi9WBX3g1VXi47t1Tczi
+	 rc54yqgKEWMLcR8ArRMbvhmVuYEgRZBVRNhmdYBKgplow+5FzwdocsMw3JD4hMGQiI
+	 P3aBGJ4Weq3FreXPBmIDmOqclEONu21aYPKZYbzQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Jonathan Cameron <jic23@kernel.org>,
-	David Lechner <dlechner@baylibre.com>,
-	=?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>,
-	Andy Shevchenko <andy@kernel.org>,
-	Sam Daly <sam@samdaly.ie>
-Subject: [PATCH 6.12 087/204] iio: adc: ti-ads1298: add bounds check to pga_settings index
+	Alex Hung <alex.hung@amd.com>,
+	Harry Wentland <harry.wentland@amd.com>,
+	Ray Wu <ray.wu@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 12/96] drm/amd/display: Bound VBIOS record-chain walk loops
 Date: Thu,  2 Jul 2026 18:19:04 +0200
-Message-ID: <20260702155120.490586150@linuxfoundation.org>
+Message-ID: <20260702155109.239901372@linuxfoundation.org>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260702155118.667618796@linuxfoundation.org>
-References: <20260702155118.667618796@linuxfoundation.org>
+In-Reply-To: <20260702155108.949633242@linuxfoundation.org>
+References: <20260702155108.949633242@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,97 +68,257 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-270990-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:stable@kernel.org,m:jic23@kernel.org,m:dlechner@baylibre.com,m:nuno.sa@analog.com,m:andy@kernel.org,m:sam@samdaly.ie,s:lists@lfdr.de];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	MIME_TRACE(0.00)[0:+];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-270590-lists,stable=lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:alex.hung@amd.com,m:harry.wentland@amd.com,m:ray.wu@amd.com,m:daniel.wheeler@amd.com,m:alexander.deucher@amd.com,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	TO_DN_SOME(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	TAGGED_RCPT(0.00)[stable];
+	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RWL_MAILSPIKE_POSSIBLE(0.00)[104.64.211.4:from];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[baylibre.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,analog.com:email,samdaly.ie:email]
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[amd.com:email,vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: BFB606FB87C
+X-Rspamd-Queue-Id: C20146FB2C3
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sam Daly <sam@samdaly.ie>
+From: Harry Wentland <harry.wentland@amd.com>
 
-commit 95e8a48d7a85d4226934020e57815a3316d3a14b upstream.
+[ Upstream commit ff287df16a1a58aca78b08d1f3ee09fc44da0351 ]
 
-ads1298_pga_settings has 7 elements but ADS1298_MASK_CH_PGA can yield
-values 0-7. If it yields a value >= 7, this causes an out-of-bounds
-array access. Add a bounds check and return -EINVAL if the index
-is out of range.
+[Why & How]
+All record-chain walk loops in bios_parser.c and bios_parser2.c use
+for(;;) and only terminate on a 0xFF record_type sentinel or zero
+record_size. A malformed VBIOS image missing the terminator record
+causes unbounded iteration at probe time, potentially hundreds of
+thousands of iterations with record_size=1. In the final iterations
+near the BIOS image boundary, struct casts beyond the 2-byte header
+validated by GET_IMAGE can also read out of bounds.
 
-Note that the remaining value b111 is reserved so should not be seen
-in a correctly functioning system.
+Cap all 14 record-chain walk loops to BIOS_MAX_NUM_RECORD (256)
+iterations. The atombios.h defines up to 22 distinct record types
+and atomfirmware.h has 13. Assuming an average of less than 10
+records per type (which is reasonable since most are connector-
+based) 256 is a generous upper bound.
 
-Assisted-by: gkh_clanker_2000
-Cc: stable <stable@kernel.org>
-Cc: Jonathan Cameron <jic23@kernel.org>
-Cc: David Lechner <dlechner@baylibre.com>
-Cc: "Nuno Sá" <nuno.sa@analog.com>
-Cc: Andy Shevchenko <andy@kernel.org>
-Signed-off-by: Sam Daly <sam@samdaly.ie>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Jonathan Cameron <jic23@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 4562236b3bc0 ("drm/amd/dc: Add dc display driver (v2)")
+Assisted-by: Copilot:claude-opus-4.6 Mythos
+Reviewed-by: Alex Hung <alex.hung@amd.com>
+Signed-off-by: Harry Wentland <harry.wentland@amd.com>
+Signed-off-by: Ray Wu <ray.wu@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 95700a3d660287ed657d6892f7be9ffc0e294a93)
+Cc: stable@vger.kernel.org
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iio/adc/ti-ads1298.c |    7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/amd/display/dc/bios/bios_parser.c | 15 ++++++++++-----
+ .../gpu/drm/amd/display/dc/bios/bios_parser2.c    | 12 ++++++++----
+ .../drm/amd/display/dc/bios/bios_parser_helper.h  |  5 +++++
+ 3 files changed, 23 insertions(+), 9 deletions(-)
 
---- a/drivers/iio/adc/ti-ads1298.c
-+++ b/drivers/iio/adc/ti-ads1298.c
-@@ -279,6 +279,7 @@ static const u8 ads1298_pga_settings[] =
- static int ads1298_get_scale(struct ads1298_private *priv,
- 			     int channel, int *val, int *val2)
+diff --git a/drivers/gpu/drm/amd/display/dc/bios/bios_parser.c b/drivers/gpu/drm/amd/display/dc/bios/bios_parser.c
+index d37ee8277480dc..b7b9e4c99537b7 100644
+--- a/drivers/gpu/drm/amd/display/dc/bios/bios_parser.c
++++ b/drivers/gpu/drm/amd/display/dc/bios/bios_parser.c
+@@ -223,6 +223,7 @@ static enum bp_result bios_parser_get_i2c_info(struct dc_bios *dcb,
+ 	ATOM_COMMON_RECORD_HEADER *header;
+ 	ATOM_I2C_RECORD *record;
+ 	struct bios_parser *bp = BP_FROM_DCB(dcb);
++	int i;
+ 
+ 	if (!info)
+ 		return BP_RESULT_BADINPUT;
+@@ -235,7 +236,7 @@ static enum bp_result bios_parser_get_i2c_info(struct dc_bios *dcb,
+ 	offset = le16_to_cpu(object->usRecordOffset)
+ 			+ bp->object_info_tbl_offset;
+ 
+-	for (;;) {
++	for (i = 0; i < BIOS_MAX_NUM_RECORD; i++) {
+ 		header = GET_IMAGE(ATOM_COMMON_RECORD_HEADER, offset);
+ 
+ 		if (!header)
+@@ -294,11 +295,12 @@ static enum bp_result bios_parser_get_device_tag_record(
  {
-+	unsigned int pga_idx;
- 	int ret;
- 	unsigned int regval;
- 	u8 gain;
-@@ -302,7 +303,11 @@ static int ads1298_get_scale(struct ads1
- 	if (ret)
- 		return ret;
+ 	ATOM_COMMON_RECORD_HEADER *header;
+ 	uint32_t offset;
++	int i;
  
--	gain = ads1298_pga_settings[FIELD_GET(ADS1298_MASK_CH_PGA, regval)];
-+	pga_idx = FIELD_GET(ADS1298_MASK_CH_PGA, regval);
-+	if (pga_idx >= ARRAY_SIZE(ads1298_pga_settings))
-+		return -EINVAL;
+ 	offset = le16_to_cpu(object->usRecordOffset)
+ 			+ bp->object_info_tbl_offset;
+ 
+-	for (;;) {
++	for (i = 0; i < BIOS_MAX_NUM_RECORD; i++) {
+ 		header = GET_IMAGE(ATOM_COMMON_RECORD_HEADER, offset);
+ 
+ 		if (!header)
+@@ -870,6 +872,7 @@ static ATOM_HPD_INT_RECORD *get_hpd_record(struct bios_parser *bp,
+ {
+ 	ATOM_COMMON_RECORD_HEADER *header;
+ 	uint32_t offset;
++	int i;
+ 
+ 	if (!object) {
+ 		BREAK_TO_DEBUGGER(); /* Invalid object */
+@@ -879,7 +882,7 @@ static ATOM_HPD_INT_RECORD *get_hpd_record(struct bios_parser *bp,
+ 	offset = le16_to_cpu(object->usRecordOffset)
+ 			+ bp->object_info_tbl_offset;
+ 
+-	for (;;) {
++	for (i = 0; i < BIOS_MAX_NUM_RECORD; i++) {
+ 		header = GET_IMAGE(ATOM_COMMON_RECORD_HEADER, offset);
+ 
+ 		if (!header)
+@@ -1576,6 +1579,7 @@ static ATOM_ENCODER_CAP_RECORD_V2 *get_encoder_cap_record(
+ {
+ 	ATOM_COMMON_RECORD_HEADER *header;
+ 	uint32_t offset;
++	int i;
+ 
+ 	if (!object) {
+ 		BREAK_TO_DEBUGGER(); /* Invalid object */
+@@ -1585,7 +1589,7 @@ static ATOM_ENCODER_CAP_RECORD_V2 *get_encoder_cap_record(
+ 	offset = le16_to_cpu(object->usRecordOffset)
+ 					+ bp->object_info_tbl_offset;
+ 
+-	for (;;) {
++	for (i = 0; i < BIOS_MAX_NUM_RECORD; i++) {
+ 		header = GET_IMAGE(ATOM_COMMON_RECORD_HEADER, offset);
+ 
+ 		if (!header)
+@@ -2667,6 +2671,7 @@ enum bp_result update_slot_layout_info(
+ 	unsigned int record_offset)
+ {
+ 	unsigned int j;
++	unsigned int n;
+ 	struct bios_parser *bp;
+ 	ATOM_BRACKET_LAYOUT_RECORD *record;
+ 	ATOM_COMMON_RECORD_HEADER *record_header;
+@@ -2676,7 +2681,7 @@ enum bp_result update_slot_layout_info(
+ 	record = NULL;
+ 	record_header = NULL;
+ 
+-	for (;;) {
++	for (n = 0; n < BIOS_MAX_NUM_RECORD; n++) {
+ 
+ 		record_header = (ATOM_COMMON_RECORD_HEADER *)
+ 			GET_IMAGE(ATOM_COMMON_RECORD_HEADER, record_offset);
+diff --git a/drivers/gpu/drm/amd/display/dc/bios/bios_parser2.c b/drivers/gpu/drm/amd/display/dc/bios/bios_parser2.c
+index 2ad36721212404..9e9476f87f6190 100644
+--- a/drivers/gpu/drm/amd/display/dc/bios/bios_parser2.c
++++ b/drivers/gpu/drm/amd/display/dc/bios/bios_parser2.c
+@@ -296,6 +296,7 @@ static enum bp_result bios_parser_get_i2c_info(struct dc_bios *dcb,
+ 	struct atom_i2c_record *record;
+ 	struct atom_i2c_record dummy_record = {0};
+ 	struct bios_parser *bp = BP_FROM_DCB(dcb);
++	int i;
+ 
+ 	if (!info)
+ 		return BP_RESULT_BADINPUT;
+@@ -316,7 +317,7 @@ static enum bp_result bios_parser_get_i2c_info(struct dc_bios *dcb,
+ 
+ 	offset = object->disp_recordoffset + bp->object_info_tbl_offset;
+ 
+-	for (;;) {
++	for (i = 0; i < BIOS_MAX_NUM_RECORD; i++) {
+ 		header = GET_IMAGE(struct atom_common_record_header, offset);
+ 
+ 		if (!header)
+@@ -446,6 +447,7 @@ static struct atom_hpd_int_record *get_hpd_record(
+ {
+ 	struct atom_common_record_header *header;
+ 	uint32_t offset;
++	int i;
+ 
+ 	if (!object) {
+ 		BREAK_TO_DEBUGGER(); /* Invalid object */
+@@ -455,7 +457,7 @@ static struct atom_hpd_int_record *get_hpd_record(
+ 	offset = le16_to_cpu(object->disp_recordoffset)
+ 			+ bp->object_info_tbl_offset;
+ 
+-	for (;;) {
++	for (i = 0; i < BIOS_MAX_NUM_RECORD; i++) {
+ 		header = GET_IMAGE(struct atom_common_record_header, offset);
+ 
+ 		if (!header)
+@@ -1423,6 +1425,7 @@ static struct atom_encoder_caps_record *get_encoder_cap_record(
+ {
+ 	struct atom_common_record_header *header;
+ 	uint32_t offset;
++	int i;
+ 
+ 	if (!object) {
+ 		BREAK_TO_DEBUGGER(); /* Invalid object */
+@@ -1431,7 +1434,7 @@ static struct atom_encoder_caps_record *get_encoder_cap_record(
+ 
+ 	offset = object->encoder_recordoffset + bp->object_info_tbl_offset;
+ 
+-	for (;;) {
++	for (i = 0; i < BIOS_MAX_NUM_RECORD; i++) {
+ 		header = GET_IMAGE(struct atom_common_record_header, offset);
+ 
+ 		if (!header)
+@@ -1870,6 +1873,7 @@ static enum bp_result update_slot_layout_info(
+ {
+ 	unsigned int record_offset;
+ 	unsigned int j;
++	unsigned int n;
+ 	struct atom_display_object_path_v2 *object;
+ 	struct atom_bracket_layout_record *record;
+ 	struct atom_common_record_header *record_header;
+@@ -1891,7 +1895,7 @@ static enum bp_result update_slot_layout_info(
+ 		(object->disp_recordoffset) +
+ 		(unsigned int)(bp->object_info_tbl_offset);
+ 
+-	for (;;) {
++	for (n = 0; n < BIOS_MAX_NUM_RECORD; n++) {
+ 
+ 		record_header = (struct atom_common_record_header *)
+ 			GET_IMAGE(struct atom_common_record_header,
+diff --git a/drivers/gpu/drm/amd/display/dc/bios/bios_parser_helper.h b/drivers/gpu/drm/amd/display/dc/bios/bios_parser_helper.h
+index 75a29e68fb2782..991bbca950978e 100644
+--- a/drivers/gpu/drm/amd/display/dc/bios/bios_parser_helper.h
++++ b/drivers/gpu/drm/amd/display/dc/bios/bios_parser_helper.h
+@@ -38,4 +38,9 @@ uint32_t bios_get_vga_enabled_displays(struct dc_bios *bios);
+ 
+ #define GET_IMAGE(type, offset) ((type *) bios_get_image(&bp->base, offset, sizeof(type)))
+ 
++/* Upper bound on the number of records in a VBIOS record chain. Prevents
++ * unbounded looping if the VBIOS image is malformed and lacks a terminator.
++ */
++#define BIOS_MAX_NUM_RECORD 256
 +
-+	gain = ads1298_pga_settings[pga_idx];
- 	*val /= gain; /* Full scale is VREF / gain */
- 
- 	*val2 = ADS1298_BITS_PER_SAMPLE - 1; /* Signed, hence the -1 */
+ #endif
+-- 
+2.53.0
+
 
 
 
