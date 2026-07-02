@@ -1,61 +1,63 @@
-Return-Path: <stable+bounces-271021-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-271185-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 7eo0BouXRmriZQsAu9opvQ
-	(envelope-from <stable+bounces-271021-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:53:31 +0200
+	id X1vfKBmZRmq6ZgsAu9opvQ
+	(envelope-from <stable+bounces-271185-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:00:09 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7DC696FAB3B
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:53:30 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0CFA06FAD77
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:00:09 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=0NS3mP6f;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-271021-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-271021-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=ofAu72BQ;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-271185-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-271185-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 29E713268148
-	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:42:09 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 751C33013876
+	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:49:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C78D4335066;
-	Thu,  2 Jul 2026 16:41:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 18CC133689F;
+	Thu,  2 Jul 2026 16:48:08 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F9EC317146;
-	Thu,  2 Jul 2026 16:41:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E363D246BBA;
+	Thu,  2 Jul 2026 16:48:06 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783010462; cv=none; b=JNzEnMDxH7+KCoY8V89wk42GxA9y/mN6w2zQtqzvOL1e0UmR2jwgcxswmslFEYr5Rr7FRR7Wc8uoW+JYHuO4TicF2Aqj5X9Gbk3k+dtAYpbDOa6BWDhTQde5Wxn7Zn82tmGvpJ46oEgp8WdxdLjVGBDh0gII5djRE7k/JsG78BM=
+	t=1783010887; cv=none; b=FPmhsVnb2QSLk6ZGIBVnUeMdB/FGPL2AN/bVndo/3Kj2GKCfBjUxc6O5mWuYf7S6lgvY9S5pWs+zvV3hr2RSmzq+xnpc1i2KeZzvwMN8XqzBrxwM1Bp5L4DfC9AYQ+FTZqovb9UuLKhR1uUsgnQP6/cmH60EjG+B4L1I4MqWmcE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783010462; c=relaxed/simple;
-	bh=Y02875ymtVrQyvs/3HtHHhOoQe6hdHBlmhTLeMgL7kY=;
+	s=arc-20240116; t=1783010887; c=relaxed/simple;
+	bh=+EUXEWX5oApghztd/FcDbn6ijeEsPJ1usPYGwv9MhSA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XkOgW0HN6gysRuJcIkjDBjt9+uh/81DdgGe1vvMeGAGn/9uOy1PBkGE2rqa57rXmvd7canpxqSnAFfj54RgXV0G8KP0TCV0IqNbw0aEPRPTnJUF+fAngnNuAkdOaMWoHO0r+GJTb1TnBWqjSKxivn82DIZoYiIaRgAOrxZQAoCM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0NS3mP6f; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5EDE1F000E9;
-	Thu,  2 Jul 2026 16:41:00 +0000 (UTC)
+	 MIME-Version; b=dduYEpu5JOvbBEb7b7viu7uI/XGoVr9+iqSTyrSF/ed0cjICzL5WU1KhZ4PLhoIxqhSgM2Yn6LQqm4rovICHJGBn7BhBtIu1KlHyQDZglA431K9YDsXdgymg0Fb2PxFx4QfPu+iJTpFIAEKLZHeEQ0WLFHGewZoVcQox359RNsM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ofAu72BQ; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 556651F000E9;
+	Thu,  2 Jul 2026 16:48:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1783010461;
-	bh=gz9eyRMK72H6iHrI7zeEnT9cGTsEPxpCNBAKFo4l49s=;
+	s=korg; t=1783010886;
+	bh=v6a4DL3hhYeqqGdoSuyXk55V62253ulSZ13x9PiUB0Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=0NS3mP6fJ3rDrdKMG7VLz8dqnNIIzfp8XoTsh8NhUnOGUKkm3kkDSytatPrq9yr1w
-	 oSlcY6cRM92zg2id0d2vNm8bya5nOC0Fbm7afAzWcO1nPHElso0DhTyElElHCJ0yPa
-	 ka95ftf49zk64e8Bnm77zBRJR/BwmthUjG5DpCCI=
+	b=ofAu72BQuFJaUKHhKUQpHaJyEOUsEWzXR3lEVuFVxem+xCwAGeCjpmHhnAgGldcJt
+	 FQQSZTF/lUya3bMbzhL1WqrhjyFpc7hKeab2T12hQPpyud4A7RzHq7b2XUCcmAsAk3
+	 lvhmZGLX1/GT3NATnRLIZAVmPSkpYyJPlPnTrOrU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Sven Eckelmann <sven@narfation.org>,
+	Josef Bacik <josef@toxicpanda.com>,
+	Jeff Layton <jlayton@kernel.org>,
+	Christian Brauner <brauner@kernel.org>,
+	Wentao Guan <guanwentao@uniontech.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 119/204] batman-adv: tt: dont merge change entries with different VIDs
+Subject: [PATCH 6.6 075/175] file: add fput() cleanup helper
 Date: Thu,  2 Jul 2026 18:19:36 +0200
-Message-ID: <20260702155121.152926412@linuxfoundation.org>
+Message-ID: <20260702155117.369800031@linuxfoundation.org>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260702155118.667618796@linuxfoundation.org>
-References: <20260702155118.667618796@linuxfoundation.org>
+In-Reply-To: <20260702155115.766838875@linuxfoundation.org>
+References: <20260702155115.766838875@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,81 +71,80 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-271021-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:stable@kernel.org,m:sven@narfation.org,m:sashal@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-271185-lists,stable=lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:josef@toxicpanda.com,m:jlayton@kernel.org,m:brauner@kernel.org,m:guanwentao@uniontech.com,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,narfation.org:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,uniontech.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 7DC696FAB3B
+X-Rspamd-Queue-Id: 0CFA06FAD77
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sven Eckelmann <sven@narfation.org>
+From: Christian Brauner <brauner@kernel.org>
 
-commit f08e06c2d5c3e2434e7c773f2213f4a7dce6bc1e upstream.
+[ Upstream commit 257b1c2c78c25643526609dee0c15f1544eb3252 ]
 
-batadv_tt_local_event() merges/cancels events for the same client which
-would conflict or be duplicates. The matching of the queued events only
-compares the MAC address - the VLAN ID stored in each event is ignored.
+Add a simple helper to put a file reference.
 
-If a MAC would now appear on multiple VID, the two ADD change events (for
-VID 1 and VID 2) would be merged to a single vid event. The remote can
-therefore not calculate the correct TT table and desync. A full translation
-table exchange is required to recover from this state.
-
-A check of VID is therefore necessary to avoid such wrong merges/cancels.
-
-Cc: stable@kernel.org
-Fixes: c018ad3de61a ("batman-adv: add the VLAN ID attribute to the TT entry")
-[ Context ]
-Signed-off-by: Sven Eckelmann <sven@narfation.org>
+Link: https://lore.kernel.org/r/20240719-work-mount-namespace-v1-4-834113cab0d2@kernel.org
+Reviewed-by: Josef Bacik <josef@toxicpanda.com>
+Reviewed-by: Jeff Layton <jlayton@kernel.org>
+Signed-off-by: Christian Brauner <brauner@kernel.org>
+(cherry picked from commit 257b1c2c78c25643526609dee0c15f1544eb3252)
+Signed-off-by: Wentao Guan <guanwentao@uniontech.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/batman-adv/translation-table.c | 3 +++
- 1 file changed, 3 insertions(+)
+ include/linux/file.h | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/net/batman-adv/translation-table.c b/net/batman-adv/translation-table.c
-index 7041cd69e20070..69a42bc3fa02e6 100644
---- a/net/batman-adv/translation-table.c
-+++ b/net/batman-adv/translation-table.c
-@@ -485,6 +485,9 @@ static void batadv_tt_local_event(struct batadv_priv *bat_priv,
- 		if (!batadv_compare_eth(entry->change.addr, common->addr))
- 			continue;
+diff --git a/include/linux/file.h b/include/linux/file.h
+index 6e9099d2934368..221ba0888107a0 100644
+--- a/include/linux/file.h
++++ b/include/linux/file.h
+@@ -11,6 +11,7 @@
+ #include <linux/posix_types.h>
+ #include <linux/errno.h>
+ #include <linux/cleanup.h>
++#include <linux/err.h>
  
-+		if (entry->change.vid != tt_change_node->change.vid)
-+			continue;
-+
- 		/* DEL+ADD in the same orig interval have no effect and can be
- 		 * removed to avoid silly behaviour on the receiver side. The
- 		 * other way around (ADD+DEL) can happen in case of roaming of
+ struct file;
+ 
+@@ -93,6 +94,7 @@ extern void put_unused_fd(unsigned int fd);
+ 
+ DEFINE_CLASS(get_unused_fd, int, if (_T >= 0) put_unused_fd(_T),
+ 	     get_unused_fd_flags(flags), unsigned flags)
++DEFINE_FREE(fput, struct file *, if (!IS_ERR_OR_NULL(_T)) fput(_T))
+ 
+ extern void fd_install(unsigned int fd, struct file *file);
+ 
 -- 
 2.53.0
 
