@@ -1,62 +1,74 @@
-Return-Path: <stable+bounces-271125-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-271018-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 39GpCg6jRmr2agsAu9opvQ
-	(envelope-from <stable+bounces-271125-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:42:38 +0200
+	id i/hMCJihRmpdagsAu9opvQ
+	(envelope-from <stable+bounces-271018-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:36:24 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 023576FB8F4
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:42:34 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7270A6FB7A9
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:36:23 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=ADbWzyvQ;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-271125-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-271125-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="w1/BGa2J";
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-271018-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-271018-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D327533467BF
-	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:47:50 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 9459B32BF489
+	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:42:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B5F4E335066;
-	Thu,  2 Jul 2026 16:45:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C8B18318EC1;
+	Thu,  2 Jul 2026 16:40:55 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7626D347BBD;
-	Thu,  2 Jul 2026 16:45:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D415381EA6;
+	Thu,  2 Jul 2026 16:40:53 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783010736; cv=none; b=SYMl4cQ95QGCOqjH44ZeEyf3RHUO8QyeiY0a+YLwiQ4ADsfTInTb7wS4RQAF/wQxTudMAyDioCmI6pAHr2RbBAx60GlrPSVKyrTts7RsC8wsHataqiEL4UOJw7xbd0orHK2cdf3zljO6E49i26dZ+UUAR8qcASAdsOkN5AKnqI8=
+	t=1783010455; cv=none; b=scRKJZoMhi24999X3jFzORT89TBlcYQWhLgqN174x7JoWKK8LrKFZ0ad9gEwF7ZuYWeqPM83JgXk9RiY7gfcm3aS21INdfHChqMHlpA/v4UilCGqgIy0X4rEXbBVzM/cRLBroTy2JdQMggMwIFJWE6NGOB37mNOPR085tICVyMM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783010736; c=relaxed/simple;
-	bh=PKPWU0zcyKVjBHXUZwTXOWiS9MNIFohOIRnPzOo/ndo=;
+	s=arc-20240116; t=1783010455; c=relaxed/simple;
+	bh=ECocjumNju2IkcWIkoZboX7cBOroIeVvzG/mof3htSA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nUS1agyghSY0TD+Ydj8WD2VWylJCyioMaLKS1A8SQ2DLxP9zdPq//ZSYOFewE1Gf1+CXIKOSVnv8JHUdtAALUoPKfinv89urfjnEVNljwFKeKy7lQGyK/ObIVfD/FJpk00PtnMYVRM5jcBKogb3975r582zg6Vv4iGulkjcIGEM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ADbWzyvQ; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9334D1F000E9;
-	Thu,  2 Jul 2026 16:45:34 +0000 (UTC)
+	 MIME-Version; b=HN6TkBjjEDMKXHwsj6P7TKcy1JvxcaP+BqGuLlF23JJFhmYEvty41RFyBnmHccx3/PSkxpMsG7+IqM6TTmEGdTB5jxWTaW0+fWtSnpqdGkcnzqeZyHahg8yyK/ITjTlr4Nr4h7JhFL9R3UJtIrcY/1cA7Ys6YgGESRdCaPOpINo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w1/BGa2J; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D81901F00A3A;
+	Thu,  2 Jul 2026 16:40:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1783010735;
-	bh=HWF4lRJ16dVXQ/hHR+auGafim36FCzxqBgtxixhDL9g=;
+	s=korg; t=1783010453;
+	bh=4dsGiog7dH61K541uaOkF8n2vN11f8ErNt4jfCcFSfA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=ADbWzyvQPAG7BK1YBaEq0tRIoI/b997LRsA7SLUXC4NadfV8Y+SWVBm0GyFxWBmwo
-	 FlDcJM7RT4XznSRAWxNWyGt6JGtd0W1sgClUP7AmqOj3cAtGi4TETDNZZBuJ1wXkSj
-	 DyHbdUMiDi4p3l7rHdljFVds+bF0twv3vl/Nb/po=
+	b=w1/BGa2Jw4ns0OJ1oO1lFYESgzbU9sP0IuFmYB+dXJXB32uZYaVf0xyinEDcAIcVo
+	 wsvK6doQpN0CfTPb4pGtMOZq9f63im2ayqaQreVMOS8QRg9EXF507PYXjdD1NETGHh
+	 0uf4tqN8yaaHjRH+ZslEYHAvYpJqukvhb3kRmp64=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xiang Mei <xmei5@asu.edu>,
-	Weiming Shi <bestswngs@gmail.com>,
-	Jean Delvare <jdelvare@suse.de>,
-	Wolfram Sang <wsa+renesas@sang-engineering.com>
-Subject: [PATCH 6.6 018/175] i2c: stub: Reject I2C block transfers with invalid length
+	bpf <bpf@vger.kernel.org>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	Masahiro Yamada <masahiroy@kernel.org>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Nicolas Schier <nicolas@fjasle.eu>,
+	Zheng Yejian <zhengyejian1@huawei.com>,
+	Martin Kelly <martin.kelly@crowdstrike.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Josh Poimboeuf <jpoimboe@redhat.com>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
+	Andrey Grodzovsky <andrey.grodzovsky@crowdstrike.com>
+Subject: [PATCH 6.12 062/204] scripts/sorttable: Convert Elf_Ehdr to union
 Date: Thu,  2 Jul 2026 18:18:39 +0200
-Message-ID: <20260702155116.164055787@linuxfoundation.org>
+Message-ID: <20260702155119.962171711@linuxfoundation.org>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260702155115.766838875@linuxfoundation.org>
-References: <20260702155115.766838875@linuxfoundation.org>
+In-Reply-To: <20260702155118.667618796@linuxfoundation.org>
+References: <20260702155118.667618796@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,27 +80,26 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,asu.edu,gmail.com,suse.de,sang-engineering.com];
-	TAGGED_FROM(0.00)[bounces-271125-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:xmei5@asu.edu,m:bestswngs@gmail.com,m:jdelvare@suse.de,m:wsa+renesas@sang-engineering.com,m:wsa@sang-engineering.com,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-271018-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[19];
 	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:bpf@vger.kernel.org,m:mhiramat@kernel.org,m:mark.rutland@arm.com,m:mathieu.desnoyers@efficios.com,m:akpm@linux-foundation.org,m:peterz@infradead.org,m:torvalds@linux-foundation.org,m:masahiroy@kernel.org,m:nathan@kernel.org,m:nicolas@fjasle.eu,m:zhengyejian1@huawei.com,m:martin.kelly@crowdstrike.com,m:christophe.leroy@csgroup.eu,m:jpoimboe@redhat.com,m:rostedt@goodmis.org,m:andrey.grodzovsky@crowdstrike.com,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
@@ -96,85 +107,218 @@ X-Spamd-Result: default: False [-0.16 / 15.00];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,renesas];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sang-engineering.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,asu.edu:email,suse.de:email,vger.kernel.org:from_smtp]
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 023576FB8F4
+X-Rspamd-Queue-Id: 7270A6FB7A9
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Weiming Shi <bestswngs@gmail.com>
+From: Steven Rostedt <rostedt@goodmis.org>
 
-commit 6036b5067a8199ba7a2dc7b377d4b9dd276d5f9e upstream.
+[ Upstream commit 157fb5b3cfd2cb5950314f926a76e567fc1921c5 ]
 
-The I2C_SMBUS_I2C_BLOCK_DATA case in stub_xfer() uses data->block[0]
-as the transfer length. The existing check only clamps it to avoid
-overrunning the chip->words[256] register array, but does not validate
-it against I2C_SMBUS_BLOCK_MAX (32), which is the limit of the union
-i2c_smbus_data.block buffer (34 bytes total). The driver is a
-development/test tool (CONFIG_I2C_STUB=m, not built by default)
-that must be loaded with a chip_addr= parameter.
+In order to remove the double #include of sorttable.h for 64 and 32 bit
+to create duplicate functions for both, replace the Elf_Ehdr macro with a
+union that defines both Elf64_Ehdr and Elf32_Ehdr, with field e64 for the
+64bit version, and e32 for the 32bit version.
 
-A local user with access to /dev/i2c-* can issue an I2C_SMBUS ioctl
-with I2C_SMBUS_I2C_BLOCK_DATA and data->block[0] > 32, causing
-stub_xfer() to read or write past the end of the union
-i2c_smbus_data.block buffer:
+Then a macro etype can be used instead to get to the proper value.
 
- BUG: KASAN: stack-out-of-bounds in stub_xfer (drivers/i2c/i2c-stub.c:223)
- Read of size 1 at addr ffff88800abcfd92 by task exploit/81
- Call Trace:
-  <TASK>
-  stub_xfer (drivers/i2c/i2c-stub.c:223)
-  __i2c_smbus_xfer (drivers/i2c/i2c-core-smbus.c:593)
-  i2c_smbus_xfer (drivers/i2c/i2c-core-smbus.c:536)
-  i2cdev_ioctl_smbus (drivers/i2c/i2c-dev.c:391)
-  i2cdev_ioctl (drivers/i2c/i2c-dev.c:478)
-  __x64_sys_ioctl (fs/ioctl.c:583)
-  do_syscall_64 (arch/x86/entry/syscall_64.c:94)
-  entry_SYSCALL_64_after_hwframe (arch/x86/entry/entry_64.S:130)
-  </TASK>
+This will eventually be replaced with just single functions that can
+handle both 32bit and 64bit ELF parsing.
 
-The bug exists because i2c-stub implements .smbus_xfer directly,
-bypassing the I2C_SMBUS_BLOCK_MAX validation in
-i2c_smbus_xfer_emulated(). The I2C_SMBUS_BLOCK_DATA case in the same
-function correctly validates against I2C_SMBUS_BLOCK_MAX, but the
-I2C_SMBUS_I2C_BLOCK_DATA case does not.
-
-Fix by rejecting transfers with data->block[0] == 0 or
-data->block[0] > I2C_SMBUS_BLOCK_MAX with -EINVAL, consistent with
-both the I2C_SMBUS_BLOCK_DATA case in the same function and the
-I2C_SMBUS_I2C_BLOCK_DATA validation in i2c_smbus_xfer_emulated().
-
-Fixes: 4710317891e4 ("i2c-stub: Implement I2C block support")
-Reported-by: Xiang Mei <xmei5@asu.edu>
-Signed-off-by: Weiming Shi <bestswngs@gmail.com>
-Reviewed-by: Jean Delvare <jdelvare@suse.de>
-Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
+Cc: bpf <bpf@vger.kernel.org>
+Cc: Masami Hiramatsu <mhiramat@kernel.org>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Masahiro Yamada <masahiroy@kernel.org>
+Cc: Nathan Chancellor <nathan@kernel.org>
+Cc: Nicolas Schier <nicolas@fjasle.eu>
+Cc: Zheng Yejian <zhengyejian1@huawei.com>
+Cc: Martin  Kelly <martin.kelly@crowdstrike.com>
+Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
+Cc: Josh Poimboeuf <jpoimboe@redhat.com>
+Link: https://lore.kernel.org/20250105162345.148224465@goodmis.org
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: Andrey Grodzovsky <andrey.grodzovsky@crowdstrike.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/i2c/i2c-stub.c |    5 +++++
- 1 file changed, 5 insertions(+)
+ scripts/sorttable.c |   36 ++++++++++++++++++++----------------
+ scripts/sorttable.h |   12 ++++++------
+ 2 files changed, 26 insertions(+), 22 deletions(-)
 
---- a/drivers/i2c/i2c-stub.c
-+++ b/drivers/i2c/i2c-stub.c
-@@ -214,6 +214,11 @@ static s32 stub_xfer(struct i2c_adapter
- 		 * We ignore banks here, because banked chips don't use I2C
- 		 * block transfers
- 		 */
-+		if (data->block[0] == 0 ||
-+		    data->block[0] > I2C_SMBUS_BLOCK_MAX) {
-+			ret = -EINVAL;
-+			break;
-+		}
- 		if (data->block[0] > 256 - command)	/* Avoid overrun */
- 			data->block[0] = 256 - command;
- 		len = data->block[0];
+--- a/scripts/sorttable.c
++++ b/scripts/sorttable.c
+@@ -64,6 +64,11 @@
+ #define EM_LOONGARCH	258
+ #endif
+ 
++typedef union {
++	Elf32_Ehdr	e32;
++	Elf64_Ehdr	e64;
++} Elf_Ehdr;
++
+ static uint32_t (*r)(const uint32_t *);
+ static uint16_t (*r2)(const uint16_t *);
+ static uint64_t (*r8)(const uint64_t *);
+@@ -266,10 +271,10 @@ static void sort_relative_table_with_dat
+ static int do_file(char const *const fname, void *addr)
+ {
+ 	int rc = -1;
+-	Elf32_Ehdr *ehdr = addr;
++	Elf_Ehdr *ehdr = addr;
+ 	table_sort_t custom_sort = NULL;
+ 
+-	switch (ehdr->e_ident[EI_DATA]) {
++	switch (ehdr->e32.e_ident[EI_DATA]) {
+ 	case ELFDATA2LSB:
+ 		r	= rle;
+ 		r2	= r2le;
+@@ -284,18 +289,18 @@ static int do_file(char const *const fna
+ 		break;
+ 	default:
+ 		fprintf(stderr, "unrecognized ELF data encoding %d: %s\n",
+-			ehdr->e_ident[EI_DATA], fname);
++			ehdr->e32.e_ident[EI_DATA], fname);
+ 		return -1;
+ 	}
+ 
+-	if (memcmp(ELFMAG, ehdr->e_ident, SELFMAG) != 0 ||
+-	    (r2(&ehdr->e_type) != ET_EXEC && r2(&ehdr->e_type) != ET_DYN) ||
+-	    ehdr->e_ident[EI_VERSION] != EV_CURRENT) {
++	if (memcmp(ELFMAG, ehdr->e32.e_ident, SELFMAG) != 0 ||
++	    (r2(&ehdr->e32.e_type) != ET_EXEC && r2(&ehdr->e32.e_type) != ET_DYN) ||
++	    ehdr->e32.e_ident[EI_VERSION] != EV_CURRENT) {
+ 		fprintf(stderr, "unrecognized ET_EXEC/ET_DYN file %s\n", fname);
+ 		return -1;
+ 	}
+ 
+-	switch (r2(&ehdr->e_machine)) {
++	switch (r2(&ehdr->e32.e_machine)) {
+ 	case EM_386:
+ 	case EM_AARCH64:
+ 	case EM_LOONGARCH:
+@@ -318,14 +323,14 @@ static int do_file(char const *const fna
+ 		break;
+ 	default:
+ 		fprintf(stderr, "unrecognized e_machine %d %s\n",
+-			r2(&ehdr->e_machine), fname);
++			r2(&ehdr->e32.e_machine), fname);
+ 		return -1;
+ 	}
+ 
+-	switch (ehdr->e_ident[EI_CLASS]) {
++	switch (ehdr->e32.e_ident[EI_CLASS]) {
+ 	case ELFCLASS32:
+-		if (r2(&ehdr->e_ehsize) != sizeof(Elf32_Ehdr) ||
+-		    r2(&ehdr->e_shentsize) != sizeof(Elf32_Shdr)) {
++		if (r2(&ehdr->e32.e_ehsize) != sizeof(Elf32_Ehdr) ||
++		    r2(&ehdr->e32.e_shentsize) != sizeof(Elf32_Shdr)) {
+ 			fprintf(stderr,
+ 				"unrecognized ET_EXEC/ET_DYN file: %s\n", fname);
+ 			break;
+@@ -334,20 +339,19 @@ static int do_file(char const *const fna
+ 		break;
+ 	case ELFCLASS64:
+ 		{
+-		Elf64_Ehdr *const ghdr = (Elf64_Ehdr *)ehdr;
+-		if (r2(&ghdr->e_ehsize) != sizeof(Elf64_Ehdr) ||
+-		    r2(&ghdr->e_shentsize) != sizeof(Elf64_Shdr)) {
++		if (r2(&ehdr->e64.e_ehsize) != sizeof(Elf64_Ehdr) ||
++		    r2(&ehdr->e64.e_shentsize) != sizeof(Elf64_Shdr)) {
+ 			fprintf(stderr,
+ 				"unrecognized ET_EXEC/ET_DYN file: %s\n",
+ 				fname);
+ 			break;
+ 		}
+-		rc = do_sort_64(ghdr, fname, custom_sort);
++		rc = do_sort_64(ehdr, fname, custom_sort);
+ 		}
+ 		break;
+ 	default:
+ 		fprintf(stderr, "unrecognized ELF class %d %s\n",
+-			ehdr->e_ident[EI_CLASS], fname);
++			ehdr->e32.e_ident[EI_CLASS], fname);
+ 		break;
+ 	}
+ 
+--- a/scripts/sorttable.h
++++ b/scripts/sorttable.h
+@@ -23,12 +23,12 @@
+ #undef sort_mcount_loc
+ #undef elf_mcount_loc
+ #undef do_sort
+-#undef Elf_Ehdr
+ #undef Elf_Shdr
+ #undef Elf_Sym
+ #undef ELF_ST_TYPE
+ #undef uint_t
+ #undef _r
++#undef etype
+ 
+ #ifdef SORTTABLE_64
+ # define extable_ent_size	16
+@@ -37,12 +37,12 @@
+ # define sort_mcount_loc	sort_mcount_loc_64
+ # define elf_mcount_loc		elf_mcount_loc_64
+ # define do_sort		do_sort_64
+-# define Elf_Ehdr		Elf64_Ehdr
+ # define Elf_Shdr		Elf64_Shdr
+ # define Elf_Sym		Elf64_Sym
+ # define ELF_ST_TYPE		ELF64_ST_TYPE
+ # define uint_t			uint64_t
+ # define _r			r8
++# define etype			e64
+ #else
+ # define extable_ent_size	8
+ # define compare_extable	compare_extable_32
+@@ -50,12 +50,12 @@
+ # define sort_mcount_loc	sort_mcount_loc_32
+ # define elf_mcount_loc		elf_mcount_loc_32
+ # define do_sort		do_sort_32
+-# define Elf_Ehdr		Elf32_Ehdr
+ # define Elf_Shdr		Elf32_Shdr
+ # define Elf_Sym		Elf32_Sym
+ # define ELF_ST_TYPE		ELF32_ST_TYPE
+ # define uint_t			uint32_t
+ # define _r			r
++# define etype			e32
+ #endif
+ 
+ #if defined(SORTTABLE_64) && defined(UNWINDER_ORC_ENABLED)
+@@ -222,7 +222,7 @@ static int do_sort(Elf_Ehdr *ehdr,
+ 		   table_sort_t custom_sort)
+ {
+ 	int rc = -1;
+-	Elf_Shdr *s, *shdr = (Elf_Shdr *)((char *)ehdr + _r(&ehdr->e_shoff));
++	Elf_Shdr *s, *shdr = (Elf_Shdr *)((char *)ehdr + _r(&ehdr->etype.e_shoff));
+ 	Elf_Shdr *strtab_sec = NULL;
+ 	Elf_Shdr *symtab_sec = NULL;
+ 	Elf_Shdr *extab_sec = NULL;
+@@ -249,12 +249,12 @@ static int do_sort(Elf_Ehdr *ehdr,
+ 	unsigned int orc_num_entries = 0;
+ #endif
+ 
+-	shstrndx = r2(&ehdr->e_shstrndx);
++	shstrndx = r2(&ehdr->etype.e_shstrndx);
+ 	if (shstrndx == SHN_XINDEX)
+ 		shstrndx = r(&shdr[0].sh_link);
+ 	secstrings = (const char *)ehdr + _r(&shdr[shstrndx].sh_offset);
+ 
+-	shnum = r2(&ehdr->e_shnum);
++	shnum = r2(&ehdr->etype.e_shnum);
+ 	if (shnum == SHN_UNDEF)
+ 		shnum = _r(&shdr[0].sh_size);
+ 
 
 
 
