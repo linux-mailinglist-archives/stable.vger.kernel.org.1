@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-271512-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-271520-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 2zV7JTecRmpoaAsAu9opvQ
-	(envelope-from <stable+bounces-271512-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:13:27 +0200
+	id EYj7EsenRmppbAsAu9opvQ
+	(envelope-from <stable+bounces-271520-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 20:02:47 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3D4C86FB23A
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:13:27 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5544E6FBCE8
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 20:02:46 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=jWdFbR2r;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-271512-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-271512-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=H8fOhURs;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-271520-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-271520-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id D973B30A70A5
-	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 17:02:17 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id BA4E730D5A94
+	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 17:02:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F24E92FC893;
-	Thu,  2 Jul 2026 17:02:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0BDC2FC893;
+	Thu,  2 Jul 2026 17:02:37 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4C9F1FA859;
-	Thu,  2 Jul 2026 17:02:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9DCB2D0602;
+	Thu,  2 Jul 2026 17:02:36 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783011736; cv=none; b=aOJCerKTfXHrWvvVbTrVdhoj5T2PQcJjeJYh6Rr3ifmbA3VZYjqZiOGxsTYBujcuL24awodE/4/T6NtLDexgwLSXtlhykQZ/3LjCkWAcEsW3LQ/bEqd5qswo/U6mrWT+v4QkFzEJ9jA8iAadWrf5WSLhvIcQGDHQuzxAGHREw4g=
+	t=1783011757; cv=none; b=H+WPpffGSz2+vQ5nLuoIcSxh7oHqma9HwGUfwdZeEsBvd4IjF2rV6IVG+9hBV63OfmltYOvmC5tnnNI5RWq7204A46fcQiuVX8/dbvU7A///k2OosanntYISmTPS0WQGMGuLWwm3fotJvVj/db1FuFBROJn5S7l+kq1k3iwik+c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783011736; c=relaxed/simple;
-	bh=/DJS2PeKux1TzP/Mv3hcvCuDnpbKnnP8IoavdUUBq6k=;
+	s=arc-20240116; t=1783011757; c=relaxed/simple;
+	bh=1I7wjJ94gc8sf7MUisMSjo/SPTrKsklT8gqbaClIW4c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sOBatPsryQeGfqaRpz5RDbLc1OrZ7W6fmo8BuyFshDS+TA4TYC6KbGPDmnpke4q67KbEj0ZxOjMTGusMpjXq1afzv+PO6JKicWIygsQfyrj2EM7g9m0ohfFsfhFTTxnD6XkwNP+KnvYmb5AZAk1UU2hXkAB0jEMRmCUtXJ4eams=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jWdFbR2r; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E82521F000E9;
-	Thu,  2 Jul 2026 17:02:14 +0000 (UTC)
+	 MIME-Version; b=OF2kpE7iRrtxwGJCfkXCetYzQP8TTzFCZVtDiphTn0k0o5wdnanoYpQVLNcHWbYjn3gYCzx1l2b+daTrDGXFPr4TAkDNkihYKEUgBv9oZJTfQTIGftVe8x+yBexeD5Y0Uv05FytMsNRCOuq2gWTrGDXl7hD5uC+p40JbdNxJj+w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H8fOhURs; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1308B1F000E9;
+	Thu,  2 Jul 2026 17:02:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1783011735;
-	bh=DjinC9YyAIYUB1+hxxcIuIgmzy3afT9yAXCHgiSyyyA=;
+	s=korg; t=1783011756;
+	bh=N4sv75a5UB1tFAfd0J0mlj1Bg4DyPh24L6rl6DPTwrE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=jWdFbR2rwrKyOeLYkSjLmlZ96svTivU2tkZYWYlzahP2+K0dHo2R67IkwS9vpett0
-	 /KVaIivhuYLUojDaSVpk2x+3nxSi0adNMDh7K7ey6iG6CLzehlaf1mRhuO1b9zkQ41
-	 hG1ob4WtqXviWNi8LCYBRDg3jczygu/SDiwBjdn0=
+	b=H8fOhURsyyqDog6OpXMqG9ybQF7p9/7pWxCQmpNgeTXIHlEKwS/YaAVTNPc3uAG+i
+	 npXdm2YbudpXOJsiuCHppNPZ32ORy+P62m8gWmgJLqindjhxcbXNmvtEr+vc3m83IC
+	 tDjsF0MRstru14GWfkYf2tYZb7Cb+TSThXfuCfK0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wentao Liang <vulab@iscas.ac.cn>,
-	Sebastian Reichel <sebastian.reichel@collabora.com>
-Subject: [PATCH 7.1 096/120] power: reset: linkstation-poweroff: fix use-after-free in the linkstation_poweroff_init()
-Date: Thu,  2 Jul 2026 18:21:32 +0200
-Message-ID: <20260702155114.945011006@linuxfoundation.org>
+	Yanko Kaneti <yaneti@declera.com>,
+	Vivian Wang <wangruikang@iscas.ac.cn>,
+	Paul Walmsley <pjw@kernel.org>
+Subject: [PATCH 7.1 097/120] riscv: kfence: Call mark_new_valid_map() for kfence_unprotect()
+Date: Thu,  2 Jul 2026 18:21:33 +0200
+Message-ID: <20260702155114.965608834@linuxfoundation.org>
 X-Mailer: git-send-email 2.55.0
 In-Reply-To: <20260702155112.964534952@linuxfoundation.org>
 References: <20260702155112.964534952@linuxfoundation.org>
@@ -71,22 +72,22 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-271512-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-271520-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:vulab@iscas.ac.cn,m:sebastian.reichel@collabora.com,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:yaneti@declera.com,m:wangruikang@iscas.ac.cn,m:pjw@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
@@ -97,45 +98,86 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[iscas.ac.cn:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,msgid.link:url,collabora.com:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,iscas.ac.cn:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,msgid.link:url,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 3D4C86FB23A
+X-Rspamd-Queue-Id: 5544E6FBCE8
 
 7.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wentao Liang <vulab@iscas.ac.cn>
+From: Vivian Wang <wangruikang@iscas.ac.cn>
 
-commit 8eec545cde69e46e9a1d2b7d915ce4f5df85b3bd upstream.
+commit 8d6c8c40e733b3fcaf92fed0a078bba2f6941a3b upstream.
 
-Move of_node_put(dn) after the of_match_node() call, which still needs
-the node pointer. The node reference is correctly released after use.
+In kfence_protect_page(), which kfence_unprotect() calls, we cannot send
+IPIs to other CPUs to ask them to flush TLB. This may lead to those CPUs
+spuriously faulting on a recently allocated kfence object despite it
+being valid, leading to false positive use-after-free reports.
 
-Fixes: e2f471efe1d6 ("power: reset: linkstation-poweroff: prepare for new devices")
+Fix this by calling mark_new_valid_map() so that the page fault handling
+code path notices the spurious fault and flushes TLB then retries the
+access.
+
+Update the comment in handle_exception to indicate that
+new_valid_map_cpus_check also handles kfence_unprotect() spurious
+faults.
+
+Note that kfence_protect() has the same stale TLB entries problem, but
+that leads to false negatives, which is fine with kfence.
+
 Cc: stable@vger.kernel.org
-Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
-Link: https://patch.msgid.link/20260407073025.271865-1-vulab@iscas.ac.cn
-Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
+Reported-by: Yanko Kaneti <yaneti@declera.com>
+Fixes: b3431a8bb336 ("riscv: Fix IPIs usage in kfence_protect_page()")
+Signed-off-by: Vivian Wang <wangruikang@iscas.ac.cn>
+Link: https://patch.msgid.link/20260303-handle-kfence-protect-spurious-fault-v2-2-f80d8354d79d@iscas.ac.cn
+Signed-off-by: Paul Walmsley <pjw@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/power/reset/linkstation-poweroff.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/riscv/include/asm/kfence.h |    7 +++++--
+ arch/riscv/kernel/entry.S       |    6 ++++--
+ 2 files changed, 9 insertions(+), 4 deletions(-)
 
---- a/drivers/power/reset/linkstation-poweroff.c
-+++ b/drivers/power/reset/linkstation-poweroff.c
-@@ -163,10 +163,10 @@ static int __init linkstation_poweroff_i
- 	dn = of_find_matching_node(NULL, ls_poweroff_of_match);
- 	if (!dn)
- 		return -ENODEV;
--	of_node_put(dn);
+--- a/arch/riscv/include/asm/kfence.h
++++ b/arch/riscv/include/asm/kfence.h
+@@ -6,6 +6,7 @@
+ #include <linux/kfence.h>
+ #include <linux/pfn.h>
+ #include <asm-generic/pgalloc.h>
++#include <asm/cacheflush.h>
+ #include <asm/pgtable.h>
  
- 	match = of_match_node(ls_poweroff_of_match, dn);
- 	cfg = match->data;
-+	of_node_put(dn);
+ static inline bool arch_kfence_init_pool(void)
+@@ -17,10 +18,12 @@ static inline bool kfence_protect_page(u
+ {
+ 	pte_t *pte = virt_to_kpte(addr);
  
- 	dn = of_find_node_by_name(NULL, cfg->mdio_node_name);
- 	if (!dn)
+-	if (protect)
++	if (protect) {
+ 		set_pte(pte, __pte(pte_val(ptep_get(pte)) & ~_PAGE_PRESENT));
+-	else
++	} else {
+ 		set_pte(pte, __pte(pte_val(ptep_get(pte)) | _PAGE_PRESENT));
++		mark_new_valid_map();
++	}
+ 
+ 	preempt_disable();
+ 	local_flush_tlb_kernel_range(addr, addr + PAGE_SIZE);
+--- a/arch/riscv/kernel/entry.S
++++ b/arch/riscv/kernel/entry.S
+@@ -136,8 +136,10 @@ SYM_CODE_START(handle_exception)
+ 
+ #ifdef CONFIG_64BIT
+ 	/*
+-	 * The RISC-V kernel does not eagerly emit a sfence.vma after each
+-	 * new vmalloc mapping, which may result in exceptions:
++	 * The RISC-V kernel does not flush TLBs on all CPUS after each new
++	 * vmalloc mapping or kfence_unprotect(), which may result in
++	 * exceptions:
++	 *
+ 	 * - if the uarch caches invalid entries, the new mapping would not be
+ 	 *   observed by the page table walker and an invalidation is needed.
+ 	 * - if the uarch does not cache invalid entries, a reordered access
 
 
 
