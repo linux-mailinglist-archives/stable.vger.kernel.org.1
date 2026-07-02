@@ -1,61 +1,61 @@
-Return-Path: <stable+bounces-270736-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-271196-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id lk5WDBafRmpqaQsAu9opvQ
-	(envelope-from <stable+bounces-270736-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:25:42 +0200
+	id +MK+Hk6ZRmrQZgsAu9opvQ
+	(envelope-from <stable+bounces-271196-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:01:02 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 631BF6FB50B
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:25:41 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 927536FADB1
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:01:01 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=W2vwq4rf;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-270736-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-270736-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=dBRjmCFO;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-271196-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-271196-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D42D431C25CF
-	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:32:58 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 049093108237
+	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:50:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9AE2E3AA4E7;
-	Thu,  2 Jul 2026 16:28:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E8B3734FF78;
+	Thu,  2 Jul 2026 16:48:36 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 019574E3768;
-	Thu,  2 Jul 2026 16:28:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A91AB3469E7;
+	Thu,  2 Jul 2026 16:48:35 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783009717; cv=none; b=M05IAUazCAlm4U0Xor6/9YbGOPrGNQXvbNg0rqWX7B6b40fWB2jtrY1YTsdRWRo9oeBrIcRxFkDk34Lr4TvTBAhrUGzf6va5CeL9WFnMKfkexuZ8QlIwvLDpUjWhALf/g2IVxOmu986ilM3VF7knK/hqavvVNhuez5ThT/j6AH4=
+	t=1783010916; cv=none; b=Tmduym7Y4uiDhKShwpay3PW7DLdeDI4p/4U+VH5EMZlxpjBUXuy5QQ+LZq7b/CVAaSACQ00AZLMMhm74GQqh9IyfFso47dR3zqcIVyfqG5QPm+qgkgYaQ3KPcZtZho9hT3ho8ZU+7pBtBmTkkgN8hfiaJOv0LPT5JfmrnnqUy9o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783009717; c=relaxed/simple;
-	bh=JPIDLVE1iOU7HSj6R9jzlbxpU/2fvJ1ABslH1vcNfok=;
+	s=arc-20240116; t=1783010916; c=relaxed/simple;
+	bh=z6BfcMhZ3wfXjXaRyCZcmfgsPpgc8UHaEn8T3jqY60M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WRtqULAt2kPSATm8keRE/TGZKIMDyMvELQPmKfI+gmq0JYDDHkBev4UaivxA7x+hI0op+krsm5enT7XyIRwklzeL7etUzW8a1oV8YmbjzV7FgKXyxQ4r48KfoLaE2TyzQX0fWf+UvvjgYv5UVHqfOdPZ5a3u/Npm+6GFsrN3q8k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W2vwq4rf; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 680931F000E9;
-	Thu,  2 Jul 2026 16:28:34 +0000 (UTC)
+	 MIME-Version; b=FIKVXGN8pRYHMidoN4CkHwzKkGwl/Qfi9Dp9jGw9mt1ZoUjk3gpMkrj7i30Ruu/sbzMQHhwo/zczavMnjrRuDTTHW285y1vM/S80v+boUcaoS+5zg8WND4AByPQyqNABFxo8XSUW56Vw3udNaNXT6hQbXALB4CQUrLCAIK58D+8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dBRjmCFO; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B8301F000E9;
+	Thu,  2 Jul 2026 16:48:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1783009714;
-	bh=bnr6rD+mxi1fwaTigYc4J3l4oMOwQF104wHMqNpc4Hg=;
+	s=korg; t=1783010915;
+	bh=TCU1GV1B7RhBYUlek+mYPb5o+opsVEiBoInXSmfiJxs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=W2vwq4rfiXD/3wXDH/jpPPCQOMrUEqNHRjn5DAwCU8fiEKQ9WQShvT/bO8bavnJEI
-	 UDL62L+TvzgX+kuJEJEqMrQyq/haJnmDpZ0GqtLICuoLlA0Lb8tZNQ2kCpUiyFZB98
-	 vaVXF1mdx2/K5dWre93UGkisN5/nq1iiZBvGv/Eg=
+	b=dBRjmCFO8lDxwzYjrGNiuScUyEqVjNXxYfQaHwy5wbokDNmC1iYVzrMBlrEYJCLm5
+	 FkfpunflkHtLZElkcjhyXIDJscGbG2tjWFAVxoaSm2zY3EsVQQjrB5BaPMVD2OT7Jt
+	 L7sYFbIFaJlLJccxuBnXtWKGXVK2lEQw6mVPXyS8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Sven Eckelmann <sven@narfation.org>,
+	Yong Wang <yongwang@nvidia.com>,
+	Petr Machata <petrm@nvidia.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 43/95] batman-adv: v: prevent OGM aggregation on disabled hardif
+Subject: [PATCH 6.6 085/175] Revert "ptp: add testptp mask test"
 Date: Thu,  2 Jul 2026 18:19:46 +0200
-Message-ID: <20260702155110.114401319@linuxfoundation.org>
+Message-ID: <20260702155117.572064337@linuxfoundation.org>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260702155109.196223802@linuxfoundation.org>
-References: <20260702155109.196223802@linuxfoundation.org>
+In-Reply-To: <20260702155115.766838875@linuxfoundation.org>
+References: <20260702155115.766838875@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,21 +72,21 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-270736-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-271196-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:stable@kernel.org,m:sven@narfation.org,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:yongwang@nvidia.com,m:petrm@nvidia.com,m:sashal@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
@@ -98,112 +98,99 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[narfation.org:email,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,vger.kernel.org:from_smtp,nvidia.com:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 631BF6FB50B
+X-Rspamd-Queue-Id: 927536FADB1
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sven Eckelmann <sven@narfation.org>
+From: Petr Machata <petrm@nvidia.com>
 
-commit d11c00b95b2a3b3934007fc003dccc6fdcc061ad upstream.
+This reverts commit 59ac47a0275fcd5a7637c3d5da20b0905563c7f5, which is
+commit 26285e689c6cd2cf3849568c83b2ebe53f467143 upstream.
 
-When an interface gets disabled, the worker is correctly disabled by
-batadv_hardif_disable_interface() -> ... -> batadv_v_ogm_iface_disable().
-In this process, the skb aggr_list is also freed.
+The reverted commit extends the selftest to test timestamp event queue mask
+manipulation in testptp. It exercises masks PTP_MASK_CLEAR_ALL and
+PTP_MASK_EN_SINGLE, introduced in commit c5a445b1e934 ("ptp: support event
+queue reader channel masks"), which is not on this stable branch. The test
+case thus cannot be built against this tree's own UAPI headers.
 
-But batadv_v_ogm_send_meshif() can still queue new skbs (via
-batadv_v_ogm_queue_on_if()) to the aggr_list. This will only stop after all
-cores can no longer find the RCU protected list of hard interfaces. These
-queued skbs will never be freed or consumed by batadv_v_ogm_aggr_work.
+The reverted commit was introduced to resolve a missing dependency of
+commit 8d9f22c570ba ("testptp: Add option to open PHC in readonly mode"),
+which is 76868642e427 upstream. The only conflict between the two is the
+getopt string, and there is otherwise no direct dependency between the two.
 
-The batadv_v_ogm_iface_disable() function must block
-batadv_v_ogm_queue_on_if() to avoid leak of skbs.
+This patch therefore reverts the cited commit, with hand-resolving the
+getopt string to include 'r' (as introduced by c6dc458227a3), but not
+'F' (introduced by c1c50689799d).
 
-Cc: stable@kernel.org
-Fixes: f89255a02f1d ("batman-adv: BATMAN_V: introduce per hard-iface OGMv2 queues")
-[ Context ]
-Signed-off-by: Sven Eckelmann <sven@narfation.org>
+Reported-by: Yong Wang <yongwang@nvidia.com>
+Signed-off-by: Petr Machata <petrm@nvidia.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/batman-adv/bat_v.c     |  1 +
- net/batman-adv/bat_v_ogm.c | 12 ++++++++++++
- net/batman-adv/types.h     |  6 ++++++
- 3 files changed, 19 insertions(+)
+ tools/testing/selftests/ptp/testptp.c | 19 +------------------
+ 1 file changed, 1 insertion(+), 18 deletions(-)
 
-diff --git a/net/batman-adv/bat_v.c b/net/batman-adv/bat_v.c
-index 651e01b86141e3..34874942ae8d03 100644
---- a/net/batman-adv/bat_v.c
-+++ b/net/batman-adv/bat_v.c
-@@ -838,6 +838,7 @@ void batadv_v_hardif_init(struct batadv_hard_iface *hard_iface)
+diff --git a/tools/testing/selftests/ptp/testptp.c b/tools/testing/selftests/ptp/testptp.c
+index e0aed424fe42d5..8f05212f82329a 100644
+--- a/tools/testing/selftests/ptp/testptp.c
++++ b/tools/testing/selftests/ptp/testptp.c
+@@ -121,7 +121,6 @@ static void usage(char *progname)
+ 		" -d name    device to open\n"
+ 		" -e val     read 'val' external time stamp events\n"
+ 		" -f val     adjust the ptp clock frequency by 'val' ppb\n"
+-		" -F chan    Enable single channel mask and keep device open for debugfs verification.\n"
+ 		" -g         get the ptp clock time\n"
+ 		" -h         prints this message\n"
+ 		" -i val     index for event/trigger\n"
+@@ -190,7 +189,6 @@ int main(int argc, char *argv[])
+ 	int seconds = 0;
+ 	int readonly = 0;
+ 	int settime = 0;
+-	int channel = -1;
  
- 	hard_iface->bat_v.aggr_len = 0;
- 	skb_queue_head_init(&hard_iface->bat_v.aggr_list);
-+	hard_iface->bat_v.aggr_list_enabled = false;
- 	INIT_DELAYED_WORK(&hard_iface->bat_v.aggr_wq,
- 			  batadv_v_ogm_aggr_work);
- }
-diff --git a/net/batman-adv/bat_v_ogm.c b/net/batman-adv/bat_v_ogm.c
-index 63337e02cf2f11..c7d15887c47c8e 100644
---- a/net/batman-adv/bat_v_ogm.c
-+++ b/net/batman-adv/bat_v_ogm.c
-@@ -255,11 +255,18 @@ static void batadv_v_ogm_queue_on_if(struct batadv_priv *bat_priv,
+ 	int64_t t1, t2, tp;
+ 	int64_t interval, offset;
+@@ -200,7 +198,7 @@ int main(int argc, char *argv[])
+ 
+ 	progname = strrchr(argv[0], '/');
+ 	progname = progname ? 1+progname : argv[0];
+-	while (EOF != (c = getopt(argc, argv, "cd:e:f:F:ghH:i:k:lL:n:o:p:P:rsSt:T:w:x:Xz"))) {
++	while (EOF != (c = getopt(argc, argv, "cd:e:f:ghH:i:k:lL:n:o:p:P:rsSt:T:w:x:Xz"))) {
+ 		switch (c) {
+ 		case 'c':
+ 			capabilities = 1;
+@@ -214,9 +212,6 @@ int main(int argc, char *argv[])
+ 		case 'f':
+ 			adjfreq = atoi(optarg);
+ 			break;
+-		case 'F':
+-			channel = atoi(optarg);
+-			break;
+ 		case 'g':
+ 			gettime = 1;
+ 			break;
+@@ -618,18 +613,6 @@ int main(int argc, char *argv[])
+ 		free(xts);
  	}
  
- 	spin_lock_bh(&hard_iface->bat_v.aggr_list.lock);
-+	if (!hard_iface->bat_v.aggr_list_enabled) {
-+		kfree_skb(skb);
-+		goto unlock;
-+	}
-+
- 	if (!batadv_v_ogm_queue_left(skb, hard_iface))
- 		batadv_v_ogm_aggr_send(bat_priv, hard_iface);
- 
- 	hard_iface->bat_v.aggr_len += batadv_v_ogm_len(skb);
- 	__skb_queue_tail(&hard_iface->bat_v.aggr_list, skb);
-+
-+unlock:
- 	spin_unlock_bh(&hard_iface->bat_v.aggr_list.lock);
+-	if (channel >= 0) {
+-		if (ioctl(fd, PTP_MASK_CLEAR_ALL)) {
+-			perror("PTP_MASK_CLEAR_ALL");
+-		} else if (ioctl(fd, PTP_MASK_EN_SINGLE, (unsigned int *)&channel)) {
+-			perror("PTP_MASK_EN_SINGLE");
+-		} else {
+-			printf("Channel %d exclusively enabled. Check on debugfs.\n", channel);
+-			printf("Press any key to continue\n.");
+-			getchar();
+-		}
+-	}
+-
+ 	close(fd);
+ 	return 0;
  }
- 
-@@ -422,6 +429,10 @@ int batadv_v_ogm_iface_enable(struct batadv_hard_iface *hard_iface)
- {
- 	struct batadv_priv *bat_priv = netdev_priv(hard_iface->soft_iface);
- 
-+	spin_lock_bh(&hard_iface->bat_v.aggr_list.lock);
-+	hard_iface->bat_v.aggr_list_enabled = true;
-+	spin_unlock_bh(&hard_iface->bat_v.aggr_list.lock);
-+
- 	batadv_v_ogm_start_queue_timer(hard_iface);
- 	batadv_v_ogm_start_timer(bat_priv);
- 
-@@ -437,6 +448,7 @@ void batadv_v_ogm_iface_disable(struct batadv_hard_iface *hard_iface)
- 	cancel_delayed_work_sync(&hard_iface->bat_v.aggr_wq);
- 
- 	spin_lock_bh(&hard_iface->bat_v.aggr_list.lock);
-+	hard_iface->bat_v.aggr_list_enabled = false;
- 	batadv_v_ogm_aggr_list_free(hard_iface);
- 	spin_unlock_bh(&hard_iface->bat_v.aggr_list.lock);
- }
-diff --git a/net/batman-adv/types.h b/net/batman-adv/types.h
-index f1a835edd115c7..d298a3983fab97 100644
---- a/net/batman-adv/types.h
-+++ b/net/batman-adv/types.h
-@@ -130,6 +130,12 @@ struct batadv_hard_iface_bat_v {
- 	/** @aggr_list: queue for to be aggregated OGM packets */
- 	struct sk_buff_head aggr_list;
- 
-+	/**
-+	 * @aggr_list_enabled: aggr_list is active and new skbs can be
-+	 * enqueued. Protected by aggr_list.lock after initialization
-+	 */
-+	bool aggr_list_enabled:1;
-+
- 	/** @aggr_len: size of the OGM aggregate (excluding ethernet header) */
- 	unsigned int aggr_len;
- 
 -- 
 2.53.0
 
