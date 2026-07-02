@@ -1,62 +1,62 @@
-Return-Path: <stable+bounces-270665-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-271226-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id Q/AgM4CVRmqcZAsAu9opvQ
-	(envelope-from <stable+bounces-270665-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:44:48 +0200
+	id 69quMZKaRmqTZwsAu9opvQ
+	(envelope-from <stable+bounces-271226-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:06:26 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 11A806FA7AA
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:44:48 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3BA856FAFCF
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:06:26 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="YOmcM6/6";
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-270665-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-270665-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="M/eE9u2z";
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-271226-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-271226-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id B62CD30E808A
-	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:31:06 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 4E06C309889B
+	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:51:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34F9B4BCABE;
-	Thu,  2 Jul 2026 16:25:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3D7F34389B;
+	Thu,  2 Jul 2026 16:49:55 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10606345CA3;
-	Thu,  2 Jul 2026 16:25:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADEB0340408;
+	Thu,  2 Jul 2026 16:49:54 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783009532; cv=none; b=ltvjDTmzAlbu8JqjhL5I2aRvsK1FpyAz2lfxYG2cSMaYApLQChaCX2kxTkgjTpNYKrPXpatgpfmMtHsgmW0lctrCxUUU80drSDTIubow2HGuSeFSRrCn0Csuyb2RsbDXl9lBl9502mHSeLmmIoYSxS1UMdLnAPuRKO2R/zO8QC0=
+	t=1783010995; cv=none; b=G8YYFtRXvDh8+SD2av0RygCXqWbYck19Cjn4SAkQhf2SPffhYyOnGBE1/ntcDNYow5FNtMSS2tYUnbpuhTle6H3H+fKU6uGJjMiGtu4r9pzFLWiVzyTP8QJ0Wb8O3+WgVEnpBaKaknrycg7BMGMkO7aGe2BgzMmW1/SII/3KtnI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783009532; c=relaxed/simple;
-	bh=J1aTt68AO9Orl1LPST8LZ29rOv4GLZHu0Jt4rKR4KgE=;
+	s=arc-20240116; t=1783010995; c=relaxed/simple;
+	bh=HnVpnKO47X6x8JwLrXIfrbtdKPCyWwgS5nwTp13edgg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qri2cJYJPctQ3rzTBkZzqjGWQXLv0VdLOC0L4+j7edab/9muAUB0q7cVFbwoYysSl8aRjZ14D1+J0tXDUZrNBs0pi+E4+9QQgwkaaU4CB2n9alD02NxJB18ghTmE3QgQ8kwp7WJjen6GAtZyS9lcyj5VSjOH53gImMB80xeB4Oo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YOmcM6/6; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5DD691F00A3A;
-	Thu,  2 Jul 2026 16:25:28 +0000 (UTC)
+	 MIME-Version; b=L0fiuFuY9jx4tGzqMiWZjkk1b8kToXq/x3v7BT3LI9b3RBNUjiYhx179ie5KImzCG7KhqSMIhk2Up5xtlX+gg4Abu6rW/SrdT0rnahXp62kKjW0U5wYdkiKHWTi7MVR5xyv69Ks05JGjogtkEBV86lrHcHNmsz+cj1TdfTTnWsA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M/eE9u2z; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20D331F000E9;
+	Thu,  2 Jul 2026 16:49:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1783009528;
-	bh=99b2O+yMtQZA/7QblZJ32ibPj9brfVs25rey2zWlZVs=;
+	s=korg; t=1783010994;
+	bh=371ycpx2EplN4HmslgZXqoHXX1s+FzFFgoudGXH311g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=YOmcM6/6fH0mpGb31MicD3m73XQa/66O9TCqETuvEi2q0AWhreE3XiyRcpaDY8ooN
-	 VYmQJcdd7DoAp86QC1+h2zFscXSXj8Yc2cRKMNRnmCyNY4ZlGNc7t/UgrvHZvKJWqy
-	 iUHwzSeXrdqckipeEepY9qDdU/0X3EaGmfhyFZl4=
+	b=M/eE9u2zoWU9VRiUfRtcFotMglfnMmqhhp617brtyyvH7a046Y/whu3lTJOOGL6nz
+	 T0BKsp9Qk922MIc2+ref+HCzNMLT20hatsb6F6tsxmrhJZ/tPMs5D6aNeAaM2Oj47t
+	 GNGqroVZCFNZiqShSX6p3anNIE14f3imBayeVifw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kyle Meyer <kyle.meyer@hpe.com>,
-	Pavan Chebbi <pavan.chebbi@broadcom.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 85/96] bnxt_en: Fix NULL pointer dereference
+	Jungwoo Lee <jwlee2217@gmail.com>,
+	Wongi Lee <qw3rtyp0@gmail.com>,
+	Ido Schimmel <idosch@nvidia.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.6 116/175] ipv6: account for fraggap on the paged allocation path
 Date: Thu,  2 Jul 2026 18:20:17 +0200
-Message-ID: <20260702155110.766199130@linuxfoundation.org>
+Message-ID: <20260702155118.200459332@linuxfoundation.org>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260702155108.949633242@linuxfoundation.org>
-References: <20260702155108.949633242@linuxfoundation.org>
+In-Reply-To: <20260702155115.766838875@linuxfoundation.org>
+References: <20260702155115.766838875@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,85 +70,118 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	PRECEDENCE_BULK(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-270665-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:kyle.meyer@hpe.com,m:pavan.chebbi@broadcom.com,m:kuba@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	RCVD_COUNT_THREE(0.00)[4];
 	FORWARDED(0.00)[lists@lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,nvidia.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-271226-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:jwlee2217@gmail.com,m:qw3rtyp0@gmail.com,m:idosch@nvidia.com,m:kuba@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	MID_RHS_MATCH_FROM(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RWL_MAILSPIKE_POSSIBLE(0.00)[104.64.211.4:from];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	ALIAS_RESOLVED(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[broadcom.com:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,msgid.link:url,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
+	RCPT_COUNT_SEVEN(0.00)[7];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,nvidia.com:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 11A806FA7AA
+X-Rspamd-Queue-Id: 3BA856FAFCF
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kyle Meyer <kyle.meyer@hpe.com>
+From: Wongi Lee <qw3rtyp0@gmail.com>
 
-[ Upstream commit d930276f2cddd0b7294cac7a8fe7b877f6d9e08d ]
+commit 736b380e28d0480c7bc3e022f1950f31fe53a7c5 upstream.
 
-PCIe errors detected by a Root Port or Downstream Port cause error
-recovery services to run on all subordinate devices regardless of
-administrative state.
+In __ip6_append_data(), when the paged-allocation branch is taken
+(MSG_MORE / NETIF_F_SG / large fraglen), alloclen and pagedlen are
+computed as
 
-The .error_detected() callback, bnxt_io_error_detected(), disables
-and synchronizes IRQs via bnxt_disable_int_sync(), which calls
-bnxt_cp_num_to_irq_num() to map completion rings to IRQs using
-bp->bnapi.
+	alloclen = fragheaderlen + transhdrlen;
+	pagedlen = datalen - transhdrlen;
 
-Since bp->bnapi is allocated on NIC open and freed on NIC close, PCIe
-error recovery on a closed NIC can dereference a NULL pointer.
+datalen already includes fraggap (datalen = length + fraggap). When
+fraggap is non-zero, this is not the first skb and transhdrlen is zero.
+The fraggap bytes carried over from the previous skb are copied just past
+the fragment headers in the new skb's linear area. The linear area is
+therefore undersized by fraggap bytes while pagedlen is overstated by the
+same amount, and the copy writes past skb->end into the trailing
+skb_shared_info.
 
-Check if bp->bnapi is NULL before disabling and synchronizing IRQs.
+An unprivileged user can trigger this via a UDPv6 socket using
+MSG_MORE together with MSG_SPLICE_PAGES.
 
-Fixes: e5811b8c09df ("bnxt_en: Add IRQ remapping logic.")
-Cc: stable@vger.kernel.org
-Signed-off-by: Kyle Meyer <kyle.meyer@hpe.com>
-Reviewed-by: Pavan Chebbi <pavan.chebbi@broadcom.com>
-Link: https://patch.msgid.link/aiNM1CY2-StPilxW@hpe.com
+The bad accounting was introduced by commit 773ba4fe9104 ("ipv6:
+avoid partial copy for zc"). Before commit ce650a166335 ("udp6: Fix
+__ip6_append_data()'s handling of MSG_SPLICE_PAGES"), the negative
+copy value caused -EINVAL to be returned. That later commit allowed
+MSG_SPLICE_PAGES to proceed in this case, making the corruption
+triggerable.
+
+The non-paged branch sets alloclen to fraglen, which already accounts
+for fraggap because datalen does. Bring the paged branch in line by
+adding fraggap to alloclen and subtracting it from pagedlen.
+
+After this adjustment, copy no longer collapses to -fraggap on the
+paged path, so remove the stale comment describing that old arithmetic.
+Since a negative copy is no longer expected for a valid MSG_SPLICE_PAGES
+case, remove the MSG_SPLICE_PAGES exception from the negative copy check.
+
+Fixes: 773ba4fe9104 ("ipv6: avoid partial copy for zc")
+Signed-off-by: Jungwoo Lee <jwlee2217@gmail.com>
+Signed-off-by: Wongi Lee <qw3rtyp0@gmail.com>
+Reviewed-by: Ido Schimmel <idosch@nvidia.com>
+Link: https://patch.msgid.link/ajFTqRljatR17fFy@DESKTOP-19IMU7U.localdomain
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/broadcom/bnxt/bnxt.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/ipv6/ip6_output.c |    9 +++------
+ 1 file changed, 3 insertions(+), 6 deletions(-)
 
---- a/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-+++ b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-@@ -4382,7 +4382,7 @@ static void bnxt_disable_int_sync(struct
- {
- 	int i;
+--- a/net/ipv6/ip6_output.c
++++ b/net/ipv6/ip6_output.c
+@@ -1633,8 +1633,8 @@ alloc_new_skb:
+ 				  !(rt->dst.dev->features & NETIF_F_SG)))
+ 				alloclen = fraglen;
+ 			else {
+-				alloclen = fragheaderlen + transhdrlen;
+-				pagedlen = datalen - transhdrlen;
++				alloclen = fragheaderlen + transhdrlen + fraggap;
++				pagedlen = datalen - transhdrlen - fraggap;
+ 			}
+ 			alloclen += alloc_extra;
  
--	if (!bp->irq_tbl)
-+	if (!bp->irq_tbl || !bp->bnapi)
- 		return;
+@@ -1649,10 +1649,7 @@ alloc_new_skb:
+ 			fraglen = datalen + fragheaderlen;
  
- 	atomic_inc(&bp->intr_sem);
+ 			copy = datalen - transhdrlen - fraggap - pagedlen;
+-			/* [!] NOTE: copy may be negative if pagedlen>0
+-			 * because then the equation may reduces to -fraggap.
+-			 */
+-			if (copy < 0 && !(flags & MSG_SPLICE_PAGES)) {
++			if (copy < 0) {
+ 				err = -EINVAL;
+ 				goto error;
+ 			}
 
 
 
