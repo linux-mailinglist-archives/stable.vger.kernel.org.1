@@ -1,60 +1,63 @@
-Return-Path: <stable+bounces-270804-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-270596-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id PiGYH6mVRmqpZAsAu9opvQ
-	(envelope-from <stable+bounces-270804-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:45:29 +0200
+	id NmHQG42SRmo0YwsAu9opvQ
+	(envelope-from <stable+bounces-270596-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:32:13 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id D17C46FA7E0
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:45:28 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 09DDA6FA388
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 18:32:13 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=HxqErbLM;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-270804-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-270804-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=WUAxAM5h;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-270596-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-270596-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id EC61531EA668
-	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:34:59 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 3D0E730E8ACC
+	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:24:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B1CBF346A0D;
-	Thu,  2 Jul 2026 16:31:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9632933D6CA;
+	Thu,  2 Jul 2026 16:22:32 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F023330B01;
-	Thu,  2 Jul 2026 16:31:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18FF134404B;
+	Thu,  2 Jul 2026 16:22:28 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783009892; cv=none; b=TWG8cuGanKCq2fU4LBeAIo2naPppHPF23Lbh3QZzQtFO8rVX9vGY/IdnS9ANShbLQVoVS+mtQpzBXRPsPWRDrXDNdqEc3AAmgoy3nj3V2yD2A+3Hh9fAz0N2pxkgmdpUabzM1uZWj/hi82vOktS5PpYDnLGN54PtKu05o25UrSU=
+	t=1783009351; cv=none; b=OImrqB8UmEvm1FSAOCdZQBdO7LLkHZAOBxR0sO9d7B+8AoHsUwIRf3BXJou7o551ET84Y2GxydIIgYyRtAoMXXwaTkLabnGPJDpK3Nr9dxddhvxe3QcnNHvHv8sBd1ZVsaW9jFAQexdwXyEtyjoTB/3HtAKUBHw+/BXQQpZyGkU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783009892; c=relaxed/simple;
-	bh=lMSWWe4soLu1VynmrmJ6fERuTTVYTo+UnNTdLK5TCo4=;
+	s=arc-20240116; t=1783009351; c=relaxed/simple;
+	bh=JSVtLMCPFbqc1wEwtCJJ6xVK2qjJhVJsb/V34sv33ok=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DUAj0HSctnud4DskGDIzfqB6UkXj5z4pW6HmyzUUNwTw9RyV9r9mqpnXdQjFQ5nCs08B9+WfLQJBcreu6h7OrZqu4ZBt7lLmTSJ3SaoQIj8H1QVE3XYcIK6VSc9my5Y9O5kiEfQdR6VhpFzU+yGUHAnKDa9QXD94HMiaJKJk30E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HxqErbLM; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3EC81F000E9;
-	Thu,  2 Jul 2026 16:31:30 +0000 (UTC)
+	 MIME-Version; b=hJ/CQkMY534ff6fxraTaeJkpJVV/e8dRrfV7kIB3Cj2ajIDv44VcTAYZMBpkS77GiU4qjKfSt44sULNItaFz1Bc3VgWbWnySiktd8UXlZRVF0dOwfnSIfG62wjzkPcDwjxxfIZJyEe07DPFfRXOL58PX6uaX5rMu1zOwrCI2XP4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WUAxAM5h; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B5B81F00A3A;
+	Thu,  2 Jul 2026 16:22:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1783009891;
-	bh=yc61fK6OcFcOYQHTmUzSfemp7M4kJ7BjnDUkYQ57KFo=;
+	s=korg; t=1783009347;
+	bh=uG7WO82MfOjqQDL8i3j7pdWMtIq9EDrGu0H1UlPR/84=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=HxqErbLM+sgr4HFvoEyaJfNSGV9EzVPXf9WpKdLKO4ueh55m6vgvcsTIOmVEevwVh
-	 h6c77MnUFNI5ynet0gsh4tfAxC4OylTqYDUfI6poOQrSXUV5CCX8LYeEK+C8IySK1q
-	 pecBrZYVCpazY4rCoAuz71D6eFulr7qzo32mOjjw=
+	b=WUAxAM5hD3Pp6ZNWdOfhE81itcakGsTkEzVeYwbDf/DDcuNSrl1h7zOuE7Z5aRVmJ
+	 XMwELtdQvBfMVHJO8NYIh0HsRvNukKArf6/T095kcLwuplX2LJwIkiJzxCqVvy80cb
+	 DIu2xXGhMpaFMFcNCB1ox09x26GvfyY1s8nltNWM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lord Ulf Henrik Holmberg <henrik.holmberg@defensify.se>,
-	Leon Romanovsky <leon@kernel.org>
-Subject: [PATCH 6.1 031/129] RDMA/bnxt_re: zero shared page before exposing to userspace
+	Wang Yufen <wangyufen@huawei.com>,
+	Jiri Pirko <jiri@mellanox.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Mikhail Dmitrichenko <mdmitrichenko@astralinux.ru>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 18/96] netdevsim: Fix memory leak of nsim_dev->fa_cookie
 Date: Thu,  2 Jul 2026 18:19:10 +0200
-Message-ID: <20260702155112.800808283@linuxfoundation.org>
+Message-ID: <20260702155109.369712720@linuxfoundation.org>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260702155112.163984240@linuxfoundation.org>
-References: <20260702155112.163984240@linuxfoundation.org>
+In-Reply-To: <20260702155108.949633242@linuxfoundation.org>
+References: <20260702155108.949633242@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,92 +71,102 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-270804-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:henrik.holmberg@defensify.se,m:leon@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-270596-lists,stable=lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:wangyufen@huawei.com,m:jiri@mellanox.com,m:kuba@kernel.org,m:mdmitrichenko@astralinux.ru,m:sashal@kernel.org,s:lists@lfdr.de];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,defensify.se:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,huawei.com:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: D17C46FA7E0
+X-Rspamd-Queue-Id: 09DDA6FA388
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lord Ulf Henrik Holmberg <henrik.holmberg@defensify.se>
+From: Wang Yufen <wangyufen@huawei.com>
 
-commit f6b079629becfa977f9c51fe53ad2e6dcc55ef44 upstream.
+commit 064bc7312bd09a48798418663090be0c776183db upstream.
 
-bnxt_re_alloc_ucontext() allocates uctx->shpg via
-__get_free_page(GFP_KERNEL). The buddy allocator does not zero pages
-without __GFP_ZERO, so the page contains stale kernel data from
-whatever object most recently freed it.
+kmemleak reports this issue:
 
-The page is then mapped into userspace via vm_insert_page() under
-BNXT_RE_MMAP_SH_PAGE in bnxt_re_mmap(). The driver only ever writes
-4 bytes (a u32 AVID) at offset BNXT_RE_AVID_OFFT (0x10) inside
-bnxt_re_create_ah(); the remaining 4092 bytes of the page are exposed
-to userspace unsanitised, leaking kernel memory contents.
+unreferenced object 0xffff8881bac872d0 (size 8):
+  comm "sh", pid 58603, jiffies 4481524462 (age 68.065s)
+  hex dump (first 8 bytes):
+    04 00 00 00 de ad be ef                          ........
+  backtrace:
+    [<00000000c80b8577>] __kmalloc+0x49/0x150
+    [<000000005292b8c6>] nsim_dev_trap_fa_cookie_write+0xc1/0x210 [netdevsim]
+    [<0000000093d78e77>] full_proxy_write+0xf3/0x180
+    [<000000005a662c16>] vfs_write+0x1c5/0xaf0
+    [<000000007aabf84a>] ksys_write+0xed/0x1c0
+    [<000000005f1d2e47>] do_syscall_64+0x3b/0x90
+    [<000000006001c6ec>] entry_SYSCALL_64_after_hwframe+0x63/0xcd
 
-Any user with access to /dev/infiniband/uverbsX on a host with a
-bnxt_re device (typically rdma group membership) can read this data
-via a single mmap() at pgoff 0 after IB_USER_VERBS_CMD_GET_CONTEXT.
+The issue occurs in the following scenarios:
 
-Other shared pages in the same file already use get_zeroed_page()
-correctly:
+nsim_dev_trap_fa_cookie_write()
+  kmalloc() fa_cookie
+  nsim_dev->fa_cookie = fa_cookie
+..
+nsim_drv_remove()
 
-  drivers/infiniband/hw/bnxt_re/ib_verbs.c
-      srq->uctx_srq_page = (void *)get_zeroed_page(GFP_KERNEL);
-      cq->uctx_cq_page  = (void *)get_zeroed_page(GFP_KERNEL);
+The fa_cookie allocked in nsim_dev_trap_fa_cookie_write() is not freed. To
+fix, add kfree(nsim_dev->fa_cookie) to nsim_drv_remove().
 
-uctx->shpg is the only outlier. Bring it in line with the existing
-convention by switching to get_zeroed_page().
-
-Fixes: 1ac5a4047975 ("RDMA/bnxt_re: Add bnxt_re RoCE driver")
-Signed-off-by: Lord Ulf Henrik Holmberg <henrik.holmberg@defensify.se>
-Link: https://patch.msgid.link/20260509084011.11971-1-pomzm67@gmail.com
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: d3cbb907ae57 ("netdevsim: add ACL trap reporting cookie as a metadata")
+Signed-off-by: Wang Yufen <wangyufen@huawei.com>
+Cc: Jiri Pirko <jiri@mellanox.com>
+Link: https://lore.kernel.org/r/1668504625-14698-1-git-send-email-wangyufen@huawei.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+[ The context change is due to the commit 5e388f3dc38c
+("netdevsim: move vfconfig to nsim_dev") in v5.16
+which is irrelevant to the logic of this patch. ]
+Signed-off-by: Mikhail Dmitrichenko <mdmitrichenko@astralinux.ru>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/hw/bnxt_re/ib_verbs.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/netdevsim/dev.c | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/infiniband/hw/bnxt_re/ib_verbs.c
-+++ b/drivers/infiniband/hw/bnxt_re/ib_verbs.c
-@@ -3870,7 +3870,7 @@ int bnxt_re_alloc_ucontext(struct ib_uco
+diff --git a/drivers/net/netdevsim/dev.c b/drivers/net/netdevsim/dev.c
+index c8834ea84732bd..a106365ce485e3 100644
+--- a/drivers/net/netdevsim/dev.c
++++ b/drivers/net/netdevsim/dev.c
+@@ -1173,6 +1173,7 @@ void nsim_dev_remove(struct nsim_bus_dev *nsim_bus_dev)
+ 				  ARRAY_SIZE(nsim_devlink_params));
+ 	devlink_unregister(devlink);
+ 	devlink_resources_unregister(devlink, NULL);
++	kfree(nsim_dev->fa_cookie);
+ 	devlink_free(devlink);
+ }
  
- 	uctx->rdev = rdev;
- 
--	uctx->shpg = (void *)__get_free_page(GFP_KERNEL);
-+	uctx->shpg = (void *)get_zeroed_page(GFP_KERNEL);
- 	if (!uctx->shpg) {
- 		rc = -ENOMEM;
- 		goto fail;
+-- 
+2.53.0
+
 
 
 
