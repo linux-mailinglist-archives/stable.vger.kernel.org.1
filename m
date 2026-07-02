@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-270652-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-271053-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id /TbGHpKeRmowaQsAu9opvQ
-	(envelope-from <stable+bounces-270652-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:23:30 +0200
+	id FjEwDnyiRmrCagsAu9opvQ
+	(envelope-from <stable+bounces-271053-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:40:12 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id EECCC6FB451
-	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:23:29 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 83B5D6FB883
+	for <lists+stable@lfdr.de>; Thu, 02 Jul 2026 19:40:11 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=2U1xvVcB;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-270652-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-270652-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="ftC5+/Oo";
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-271053-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-271053-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A753F323ED6A
-	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:30:45 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 5946B32B7DD7
+	for <lists+stable@lfdr.de>; Thu,  2 Jul 2026 16:45:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 199894DBD98;
-	Thu,  2 Jul 2026 16:25:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01C41353A8D;
+	Thu,  2 Jul 2026 16:42:27 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5530C4BC025;
-	Thu,  2 Jul 2026 16:24:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B507A346A10;
+	Thu,  2 Jul 2026 16:42:25 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783009502; cv=none; b=R1z2iwpnTeud3fzXXtU2ccwzmk5Rai1Du5cpEd1mVVvXM9CSBRLLpbb31QGyWNkunke4niRG27UTfXIpGhCvJJppn6KrGJqQ0yf/KVA/gYmVqM1PwCBYIQvELCzdx2+H+fH4hXSwZs3fVMSBMGLRUBWpwCz3zzOqMfD9cjQr5j4=
+	t=1783010546; cv=none; b=L/LeokkZAZiABmXQBm13JLNEQvL3LE34zYj38kBB0kpyd+4e30PyfzHapQmtMr4d3GY022GaLRvtdx8s6/WfKnU+8ecdrvuO39/ImG9TiXeTyI6BY/BtBB1cOd9vEVYUZ2eec28LP1saAqUGi1JP9uoEdQ+nVpLxxatHSRkJa+4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783009502; c=relaxed/simple;
-	bh=b1E2lnowTeg7MSuOM1mdJlGmaQaBy2UCZ0MRKsgjnP0=;
+	s=arc-20240116; t=1783010546; c=relaxed/simple;
+	bh=zvfUTT2jEEpmahln9sQJjdWAg4wfAM6+sGr94oC88go=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=t576oCD9/RgyM6grl8MNmDh0MYHJGtcpsU5e1wjtOiNQ12eWYRo1aICDoHGw+G6ehmmOpIkzbSiYsCNfwCDIJnNkpADJLpE21RVbrD5VDi0CHzQXnlJEuhS0XiNItYyNiivyGktZNXjaZ/tOTDGZmZs+KLD2vaTkpeEhHwWxs6A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2U1xvVcB; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B3C71F00A3D;
-	Thu,  2 Jul 2026 16:24:54 +0000 (UTC)
+	 MIME-Version; b=kcD7IUiCJGc8z2HX1OtjtZeDcP1er+motvx5dlbbGVLpN4GigbWEFloVfBH8SuzzzjwlgM2dAEQ4b0X8dFeETLFeVskYfJui4y0YMR0DCFa1ASyzLGGCQm3yfz9/GqZoSEiDUiEjAcmSFwJIWCYT4SPKbwJZPbHMegN11FuD3yI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ftC5+/Oo; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E25B01F000E9;
+	Thu,  2 Jul 2026 16:42:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1783009494;
-	bh=plZECvTBlH4NrW3echAaWjcKeWCrCAygwBuKpbpqOVI=;
+	s=korg; t=1783010545;
+	bh=CW3W7crF83XcMbH8WPAVYazbKiUDMJX/ZqhBe9Rw1uE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=2U1xvVcBXRnlYGzyC8wF9i6O8WLwBdZI7/YNv/5vFJ1SUEEfewYh8BZVGjTiwTqFB
-	 AWeiSHxkNCJdgm8iUhKjf3F2xyqvCaVRrfZF4XG6lIW7tE+gWJIOq4BXVyhu0mTuja
-	 u4Sis0jlNDbO7QVXhAvrG/6mThuhYT3wL6V4jIzY=
+	b=ftC5+/Oo4nMDr6LJxiV5kVn/FBKby18MP3ZbeMr/qlQzhoYk+bq9gORxQOwZ9VtTJ
+	 vqW+Eucom66pfoTyiwXNyL58psPT/MBLr/c0SXkQp4l4OEJX8hVQURlu/kOE4GVIyU
+	 1xzFwmQTgv6xH6FJnSIitpBOpXVT8sR5VgavA1Gg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Qingshuang Fu <fuqingshuang@kylinos.cn>,
-	Thomas Gleixner <tglx@kernel.org>
-Subject: [PATCH 5.10 73/96] irqchip/imgpdc: Fix resource leak, add missing chained handler cleanup on remove
+	ElXreno <elxreno@gmail.com>,
+	Felix Fietkau <nbd@nbd.name>
+Subject: [PATCH 6.12 148/204] wifi: mt76: mt7925: dont disable AP BSS when removing TDLS peer
 Date: Thu,  2 Jul 2026 18:20:05 +0200
-Message-ID: <20260702155110.517513316@linuxfoundation.org>
+Message-ID: <20260702155121.761380665@linuxfoundation.org>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260702155108.949633242@linuxfoundation.org>
-References: <20260702155108.949633242@linuxfoundation.org>
+In-Reply-To: <20260702155118.667618796@linuxfoundation.org>
+References: <20260702155118.667618796@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,99 +71,105 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-270652-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-271053-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:fuqingshuang@kylinos.cn,m:tglx@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:elxreno@gmail.com,m:nbd@nbd.name,s:lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,nbd.name];
+	FORWARDED(0.00)[lists@lfdr.de];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,msgid.link:url,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,kylinos.cn:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: EECCC6FB451
+X-Rspamd-Queue-Id: 83B5D6FB883
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Qingshuang Fu <fuqingshuang@kylinos.cn>
+From: ElXreno <elxreno@gmail.com>
 
-commit 37738fdf2ab1e504d1c63ce5bc0aeb6452d8f057 upstream.
+commit 37d65384aa6f9cbe45f4052b13b378af1aab3e95 upstream.
 
-The driver allocates domain generic chips using
-irq_alloc_domain_generic_chips() during probe and sets up chained
-handlers using irq_set_chained_handler_and_data(). However, on driver
-removal, the generic chips are not freed and the chained handlers are
-not removed.
+On a STATION vif, removing a TDLS peer takes the mt7925_mac_sta_remove
+-> mt7925_mac_sta_remove_links path. The first loop in that function
+calls mt7925_mcu_add_bss_info(..., enable=false) for every link of the
+station being removed. For a non-MLO STATION vif there is exactly one
+link, link 0, whose bss_conf is the AP's. TDLS peers do not have their
+own bss_conf - they share the AP's BSS.
 
-The generic chips remain on the global gc_list and may later be accessed by
-generic interrupt chip suspend, resume, or shutdown callbacks after the
-driver has been removed, potentially resulting in a use-after-free and
-kernel crash.
+The result is that every TDLS peer teardown sends a BSS_INFO_UPDATE
+with enable=0 for the AP's BSS to the firmware, which wipes the AP-side
+rate-control context. The connection stays associated and TX from the
+host still works at the negotiated rate, but the AP's downlink to us
+collapses to the lowest mandatory OFDM rate (HE-MCS 0 / 6 Mbit/s OFDM)
+and only slowly recovers as rate adaptation re-learns under sustained
+traffic. With brief or bursty traffic the link can stay at 6-72 Mbit/s
+indefinitely, requiring a manual reconnect.
 
-The chained handlers that were installed in probe for peripheral and
-syswake interrupts are also left dangling, which can lead to spurious
-interrupts accessing freed memory.
+mt7925_mac_link_sta_remove() already guards its own
+mt7925_mcu_add_bss_info(..., false) call with
+"vif->type == NL80211_IFTYPE_STATION && !link_sta->sta->tdls".
+Add the equivalent guard at the top of the cleanup loop in
+mt7925_mac_sta_remove_links(), above the link_sta / link_conf /
+mlink / mconf lookups, so TDLS peer teardown skips the loop body
+entirely without doing the per-link work that would just be thrown
+away.
 
-Fix these issues by:
+Verified on mt7925e by triggering Samsung-S938B auto-TDLS via iperf3
+and watching iw rx bitrate after teardown:
 
-  - Setting IRQ_DOMAIN_FLAG_DESTROY_GC flag in domain->flags, so the
-    core code automatically removes generic chips when irq_domain_remove()
-    is called
+  Before: rx bitrate collapses to 6.0-72.0 Mbit/s, oscillates 17/72/
+          137/288/432 Mbit/s for 30+ seconds, no full recovery without
+          a manual reassoc.
+  After:  rx bitrate stays at 1200.9 Mbit/s HE-MCS 11 NSS 2 80 MHz
+          across the entire TDLS lifecycle.
 
-  - Clearing all chained handlers with NULL in pdc_intc_remove()
+bpftrace confirms a single mt7925_mcu_add_bss_info(enable=0) call per
+teardown before the fix; zero such calls after.
 
-Fixes: b6ef9161e43a ("irq-imgpdc: add ImgTec PDC irqchip driver")
-Signed-off-by: Qingshuang Fu <fuqingshuang@kylinos.cn>
-Signed-off-by: Thomas Gleixner <tglx@kernel.org>
+Fixes: 3878b4333602 ("wifi: mt76: mt7925: update mt7925_mac_link_sta_[add, assoc, remove] for MLO")
 Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/20260618021352.661773-1-fffsqian@163.com
+Signed-off-by: ElXreno <elxreno@gmail.com>
+Assisted-by: Claude:claude-opus-4-7 bpftrace
+Link: https://patch.msgid.link/20260506-mt7925-tdls-fixes-v2-2-46aa826ba8bb@gmail.com
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/irqchip/irq-imgpdc.c |    6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/net/wireless/mediatek/mt76/mt7925/main.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/drivers/irqchip/irq-imgpdc.c
-+++ b/drivers/irqchip/irq-imgpdc.c
-@@ -385,6 +385,7 @@ static int pdc_intc_probe(struct platfor
- 		dev_err(&pdev->dev, "cannot add IRQ domain\n");
- 		return -ENOMEM;
- 	}
-+	priv->domain->flags |= IRQ_DOMAIN_FLAG_DESTROY_GC;
+--- a/drivers/net/wireless/mediatek/mt76/mt7925/main.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7925/main.c
+@@ -1190,6 +1190,9 @@ mt7925_mac_sta_remove_links(struct mt792
+ 		if (vif->type == NL80211_IFTYPE_AP)
+ 			break;
  
- 	/*
- 	 * Set up 2 generic irq chips with 2 chip types.
-@@ -472,6 +473,11 @@ static int pdc_intc_remove(struct platfo
- {
- 	struct pdc_intc_priv *priv = platform_get_drvdata(pdev);
- 
-+	for (unsigned int i = 0; i < priv->nr_perips; ++i)
-+		irq_set_chained_handler_and_data(priv->perip_irqs[i], NULL, NULL);
++		if (vif->type == NL80211_IFTYPE_STATION && sta->tdls)
++			continue;
 +
-+	irq_set_chained_handler_and_data(priv->syswake_irq, NULL, NULL);
-+
- 	irq_domain_remove(priv->domain);
- 	return 0;
- }
+ 		link_sta = mt792x_sta_to_link_sta(vif, sta, link_id);
+ 		if (!link_sta)
+ 			continue;
 
 
 
