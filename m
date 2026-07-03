@@ -1,137 +1,173 @@
-Return-Path: <stable+bounces-271678-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-271679-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id RpbAHRFtR2ptYAAAu9opvQ
-	(envelope-from <stable+bounces-271678-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 03 Jul 2026 10:04:33 +0200
+	id /+5IACxwR2oLYQAAu9opvQ
+	(envelope-from <stable+bounces-271679-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 03 Jul 2026 10:17:48 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id D19696FFDBA
-	for <lists+stable@lfdr.de>; Fri, 03 Jul 2026 10:04:32 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1ADA56FFF90
+	for <lists+stable@lfdr.de>; Fri, 03 Jul 2026 10:17:47 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b="PBJM57/N";
-	dmarc=pass (policy=none) header.from=linux.alibaba.com;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-271678-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-271678-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=uniontech.com header.s=onoh2408 header.b=fs3CKy0c;
+	dmarc=pass (policy=none) header.from=uniontech.com;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-271679-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-271679-lists+stable=lfdr.de@vger.kernel.org";
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 90EB830F6DF5
-	for <lists+stable@lfdr.de>; Fri,  3 Jul 2026 07:57:24 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 5ECC3310B197
+	for <lists+stable@lfdr.de>; Fri,  3 Jul 2026 08:07:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 031A236EAA8;
-	Fri,  3 Jul 2026 07:57:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CCAA237267B;
+	Fri,  3 Jul 2026 08:02:59 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from out30-99.freemail.mail.aliyun.com (out30-99.freemail.mail.aliyun.com [115.124.30.99])
+Received: from smtpbgau2.qq.com (smtpbgau2.qq.com [54.206.34.216])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23BF536E460;
-	Fri,  3 Jul 2026 07:57:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0FA7371D15;
+	Fri,  3 Jul 2026 08:02:56 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783065442; cv=none; b=QAf/e3TEDuVOuGWsgwNB4AqYhVGCLo4+poyGwEXrbIF5vfqGzKYamqqVPJwrDgXVXTsbnM8pfoh48pHfdwKM3D6BKl8QCIHUPaw003ZYbj8CGWN3Xi6HyYj168He8+UjFtyQBc3gPgKxfcGB+orxAv7BxO0r0DfvxowZ4CmKw7w=
+	t=1783065779; cv=none; b=pnlCSPEdAOLN9BnuAZabNmWik6tAImf1Rd1nTbzymocGna73sCxUmSe5bOVqSRkVuWgrvjTekvWFtPF39LpcLD3nR/raZNAuAM9FfkiivtIravrtTtVfsTTNu567be7/sI3vYyfW9KcHZ++TnzefO5Y8vfp3xHt1bIsrPABjRpI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783065442; c=relaxed/simple;
-	bh=Vta1+vp2i+4VI6pEZZ43d5zvxBshInKjYhg+Kpo4600=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=GNkYd1Hv9kpGIFoUVhoWb/stx9rPqxCGEgV6jiTYqomVEk26+auOGRJugKfvfoqPkG2ynFb0bUWDy508X6kBIPvJpQm2GRTKaEwqdik2zA1CHk+0AKVo9eU8lnICE+PuTCXK1eCRvGfNbyC/VljR/wo7qevRmGYnstKhEOyhDUw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=PBJM57/N; arc=none smtp.client-ip=115.124.30.99
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1783065432; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
-	bh=gzZn24puWspThT2YANHj6Y56yEZL3byW0T0qvsKl+OA=;
-	b=PBJM57/NATGucMxvYSSXdsx+qgj+OYiYzYWVzuvJIJcpZXDZXySv0dCH4A4BNfb/URw9e7Zlm7i5hfvYb0yAj52rUtcawLO5LZhMxYVTsBY2FXg7/POoWpKEQksXYJdqQuyWf69NPU/YGivY3tvdQlxef/wx/+xJ54vL7fQfAZM=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R121e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033037033178;MF=libaokun@linux.alibaba.com;NM=1;PH=DS;RN=12;SR=0;TI=SMTPD_---0X6IcxhT_1783065430;
-Received: from 30.221.129.235(mailfrom:libaokun@linux.alibaba.com fp:SMTPD_---0X6IcxhT_1783065430 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Fri, 03 Jul 2026 15:57:10 +0800
-Message-ID: <b93095c6-0717-4616-9702-570b2927429b@linux.alibaba.com>
-Date: Fri, 3 Jul 2026 15:57:09 +0800
+	s=arc-20240116; t=1783065779; c=relaxed/simple;
+	bh=oufx/YT3B18z7DkgI3xZd+Q1Vx9EAplrMEvY5I4LI74=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=GMKY2UyqYzr0jbdo1ygBw8mBThA7VMamnCGmRIin1DR0beSNzKx2Wh+WNxcB+1q25J6TWwpianRH43t96F5SN9/aWitJWW+hXmsWzVT0r23WBV8GiFLO709n3Em0gB9SWoT4tK6W8KeQa/O91iLtifhhpxAV49KJWgGOVHVXi/U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniontech.com; spf=pass smtp.mailfrom=uniontech.com; dkim=pass (1024-bit key) header.d=uniontech.com header.i=@uniontech.com header.b=fs3CKy0c; arc=none smtp.client-ip=54.206.34.216
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=uniontech.com;
+	s=onoh2408; t=1783065705;
+	bh=NNXufMQul2FJzTPQw9me9giHqSXX/0i609aKfwT0fHk=;
+	h=From:To:Subject:Date:Message-Id:MIME-Version;
+	b=fs3CKy0c6ZZM4ugJCQqTgzJclkgvndbWh9+PYbpqIZHMbtcyS65LHeGXCGX+vjC80
+	 H10NnEunk0e/qRSG05vEpF0Lf3zbWMyONyGcUyzWvgNH+O0cr85KARgWPzF7nFnIRt
+	 mx0MVJfatn/JCiH/4U0FNIXbVvSL/OFm82VrLurg=
+X-QQ-mid: esmtpgz16t1783065698tef29bb39
+X-QQ-Originating-IP: eYEIxAm8QAvKc69W9TO873BXENXnRHEHfnT77zTschI=
+Received: from localhost.localdomain ( [113.57.152.160])
+	by bizesmtp.qq.com (ESMTP) with 
+	id ; Fri, 03 Jul 2026 16:01:35 +0800 (CST)
+X-QQ-SSF: 0000000000000000000000000000000
+X-QQ-GoodBg: 1
+X-BIZMAIL-ID: 15110257462297389488
+EX-QQ-RecipientCnt: 21
+From: Wentao Guan <guanwentao@uniontech.com>
+To: gregkh@linuxfoundation.org
+Cc: achill@achill.org,
+	akpm@linux-foundation.org,
+	broonie@kernel.org,
+	conor@kernel.org,
+	f.fainelli@gmail.com,
+	hargar@microsoft.com,
+	jonathanh@nvidia.com,
+	linux-kernel@vger.kernel.org,
+	linux@roeck-us.net,
+	lkft-triage@lists.linaro.org,
+	patches@kernelci.org,
+	patches@lists.linux.dev,
+	pavel@nabladev.com,
+	rwarsow@gmx.de,
+	shuah@kernel.org,
+	sr@sladewatkins.com,
+	stable@vger.kernel.org,
+	sudipm.mukherjee@gmail.com,
+	torvalds@linux-foundation.org,
+	Wentao Guan <guanwentao@uniontech.com>
+Subject: Re: [PATCH 6.6 000/175] 6.6.144-rc1 review
+Date: Fri,  3 Jul 2026 16:01:27 +0800
+Message-Id: <20260703080126.567705-1-guanwentao@uniontech.com>
+X-Mailer: git-send-email 2.30.2
+In-Reply-To: <20260702155115.766838875@linuxfoundation.org>
+References: <20260702155115.766838875@linuxfoundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] ext4: get rid of ppath in get_ext_path()
-To: Greg KH <gregkh@linuxfoundation.org>
-Cc: Jiayuan Chen <jiayuan.chen@linux.dev>, Wang Jun <1742789905@qq.com>,
- tytso@mit.edu, adilger.kernel@dilger.ca, linux-ext4@vger.kernel.org,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org, libaokun1@huawei.com,
- 25125332@bjtu.edu.cn, Jan Kara <jack@suse.cz>,
- Ojaswin Mujoo <ojaswin@linux.ibm.com>
-References: <tencent_C982B0201FE8F041BD5B4FC1ED7D646A740A@qq.com>
- <2026062643-tamer-limes-a320@gregkh>
- <rrsgndgpxyrmu6okb43u6wkdaibbidlbyqgugeeijd2b44sf4y@6lzmm4v4xvdp>
- <2026070210-catty-grape-2568@gregkh>
-From: Baokun Li <libaokun@linux.alibaba.com>
-In-Reply-To: <2026070210-catty-grape-2568@gregkh>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-QQ-SENDSIZE: 520
+Feedback-ID: esmtpgz:uniontech.com:qybglogicsvrgz:qybglogicsvrgz3a-0
+X-QQ-XMAILINFO: Mj9e7MGzKUWXaTTbyIGcHbeh0LIQR/u76P2qgjsL8vv+3lfdkwtl5coV
+	8DOYPWIsZrvxk1LZBXIAwlufHkoNLf4Unjp3rOsa9OF+0pGHXv8smuwKbdjydIfMo1abIE9
+	0TD1EBYckpFvgPHzqbJ1+3FOoLs+pbZW+wqKnpN4tnniYX8VRX1WvV4qC374GC7zCfMT+7+
+	mes+cvqnVUC1Gpyw/51awHNSK1ab7T+myXMiiLhdWqrHP3gsEwjfb4Zix1mCEARiJliDBWC
+	oxFr03eMoburwSLi2y/PT6BJ7XaRx4P4rpHsLUJalhvm6bw8tCKFE6jWHStAR32ZO38cc9E
+	Ffr9M1BUl7tFnnx1Zg5wGcxvDxgWJCn7cunX2UeDMubNidzsmG0iT48KPdBBnJvzPc+vAc4
+	t6n5lscP1sBZ+V2sOpCyyZWbMB9xNAyz5bPZyuoXHjw3kIVg9iv+9rWWWQidcHm/q91rQrf
+	yHgYi2OK7Tz6i9eYtBvAXYI4HnJn+i0SJk3WkdLbKSkzrdQFlf3FhTndlVXoqaPE92BVG4c
+	hAMngz8zUkJNc2zMeIfmLqgUBqoXEspu0lYl4mZdP+9Fx8+ThxewTp9+8w8ds6PZ8jReeG9
+	imrIN1E4DgGds2nrvP/lTc5HnN5WT/AJURSggbDKP5ah/Nnmp+C3MvNZuzusEvsAF3wQNJe
+	ghm5V95HcocnH1T8DzfpmGEKXCEbtbfxOV3BRxETn10WLYBg2bnBRnMFMnNRm3eqpivCb4s
+	rX/I+TpLsaMDQ2BuLBoVjOX+NGoqQauT3rH+deA1Kf9Z5YVOozoO4UVrLlHh+4vjagoXtdd
+	1lVbFVyvbisxYr1f/ekfYSajAjFjemOQ9EpRoqtbc9u5W3I0QSjZXVQUjqczGqCbIqUzqkA
+	srke5h5F6zR4jQX6QHaJVg5TBNHSxFNb0OtsZg4/3hZ+ec3xab/ehiOjZD/ItIrn8osv9ks
+	x1enyeECjxkOs/Fol0sRYYbWGThlHRQoPVuJwyPJrEyYjyDoyNabN76jsM8OJ2h2u6q/qaq
+	HvE7cuBMrkQDIicRYt0jeI88gIkGUKnddtmuTOkxksB9u9VTIeeSpIYxjQv5LH7FYb4Hpg2
+	5WZ7f5jCFmsOIOyF9eKmoqIo5+7Cf7XwA==
+X-QQ-XMRINFO: NyFYKkN4Ny6FuXrnB5Ye7Aabb3ujjtK+gg==
+X-QQ-RECHKSPAM: 0
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-12.16 / 15.00];
-	WHITELIST_DMARC(-7.00)[alibaba.com:D:+];
-	WHITELIST_SPF_DKIM(-3.00)[alibaba.com:d:+,kernel.org:s:+];
+X-Spamd-Result: default: False [0.34 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linux.alibaba.com,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
-	R_DKIM_ALLOW(-0.20)[linux.alibaba.com:s=default];
+	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[uniontech.com,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[uniontech.com:s=onoh2408];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_RECIPIENTS(0.00)[m:gregkh@linuxfoundation.org,m:jiayuan.chen@linux.dev,m:1742789905@qq.com,m:tytso@mit.edu,m:adilger.kernel@dilger.ca,m:linux-ext4@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,m:libaokun1@huawei.com,m:25125332@bjtu.edu.cn,m:jack@suse.cz,m:ojaswin@linux.ibm.com,s:lists@lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER(0.00)[libaokun@linux.alibaba.com,stable@vger.kernel.org];
-	RCPT_COUNT_TWELVE(0.00)[12];
 	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-271679-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[21];
+	FORGED_RECIPIENTS(0.00)[m:gregkh@linuxfoundation.org,m:achill@achill.org,m:akpm@linux-foundation.org,m:broonie@kernel.org,m:conor@kernel.org,m:f.fainelli@gmail.com,m:hargar@microsoft.com,m:jonathanh@nvidia.com,m:linux-kernel@vger.kernel.org,m:linux@roeck-us.net,m:lkft-triage@lists.linaro.org,m:patches@kernelci.org,m:patches@lists.linux.dev,m:pavel@nabladev.com,m:rwarsow@gmx.de,m:shuah@kernel.org,m:sr@sladewatkins.com,m:stable@vger.kernel.org,m:sudipm.mukherjee@gmail.com,m:torvalds@linux-foundation.org,m:guanwentao@uniontech.com,m:ffainelli@gmail.com,m:sudipmmukherjee@gmail.com,s:lists@lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
-	TAGGED_FROM(0.00)[bounces-271678-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linux.alibaba.com:+];
+	FORGED_SENDER(0.00)[guanwentao@uniontech.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[libaokun@linux.alibaba.com,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[linux.dev,qq.com,mit.edu,dilger.ca,vger.kernel.org,huawei.com,bjtu.edu.cn,suse.cz,linux.ibm.com];
-	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_NEQ_ENVFROM(0.00)[guanwentao@uniontech.com,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[achill.org,linux-foundation.org,kernel.org,gmail.com,microsoft.com,nvidia.com,vger.kernel.org,roeck-us.net,lists.linaro.org,kernelci.org,lists.linux.dev,nabladev.com,gmx.de,sladewatkins.com,uniontech.com];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	TO_DN_SOME(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linux.alibaba.com:from_mime,linux.alibaba.com:dkim,linux.alibaba.com:mid,vger.kernel.org:from_smtp]
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	TAGGED_RCPT(0.00)[stable];
+	DKIM_TRACE(0.00)[uniontech.com:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,uniontech.com:from_mime,uniontech.com:email,uniontech.com:mid,uniontech.com:dkim]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: D19696FFDBA
+X-Rspamd-Queue-Id: 1ADA56FFF90
 
-On 2026/7/2 13:47, Greg KH wrote:
-> On Thu, Jul 02, 2026 at 09:48:33AM +0800, Jiayuan Chen wrote:
->> Hi Greg,
->>
->> Any update here ?
-> What is "here"?  There is no context in this email :(
->
->> We rebased the 6.6 stable one week ago and also found the same regression.
-> What regression?  Again, no context :(
->
-> confused,
->
-> greg k-h
+Hi,
 
-For some reason, LTS only merged a subset of my patchset, causing
-some commits to lack their prerequisite patches. This leads to error
-numbers being interpreted as valid pointers.
+Build failed in loongarch arch, which resolve in link:
+https://lore.kernel.org/stable/20260703032401.857553-1-chenhuacai@loongson.cn/
+https://lore.kernel.org/stable/2026070318-monotone-mug-74d6@gregkh/
 
-For details, see the fix patchset that Erkun submitted to 6.6.y
-(it fell through the cracks for some reason):
+arch/loongarch/kernel/smp.c: In function ‘stop_this_cpu’:
+arch/loongarch/kernel/smp.c:616:9: error: implicit declaration of function ‘rcutree_report_cpu_dead’; did you mean ‘rcutree_prepare_cpu’? [-Werror=implicit-function-declaration]
+  616 |         rcutree_report_cpu_dead();
+      |         ^~~~~~~~~~~~~~~~~~~~~~~
+      |         rcutree_prepare_cpu
 
-https://lore.kernel.org/all/20260421113416.4040274-1-yangerkun@huawei.com/
+Build tested in our x86,arm64,riscv config successfully without error.
 
-Either applying this fix patchset or reverting the incorrectly merged
-commit should resolve the issue.
+Tested-by: Wentao Guan <guanwentao@uniontech.com>
 
+BRs
+Wentao Guan
 
-Thanks,
-Baokun
+Log:
+Linux version 6.6.144-rc1-arm64-desktop-hwe-g383d9611bec7 (guanwentao@uos-PC) (aarch64-linux-gnu-gcc-12 (Deepin 12.3.0-17deepin8) 12.3.0, GNU ld (GNU Binutils for Deepin) 2.41) # SMP PREEMPT
+Linux version 6.6.144-rc1-arm64-desktop-hwe-g383d9611bec7 (guanwentao@uos-PC) (aarch64-linux-gnu-gcc-12 (Deepin 12.3.0-17deepin8) 12.3.0, GNU ld (GNU Binutils for Deepin) 2.41) #2 SMP PREEMPT Fri Jul  3 12:05:13 CST 2026
+Linux version 6.6.144-rc1-riscv64-desktop-hwe+ (guanwentao@uos-PC) (riscv64-linux-gnu-gcc-12 (Deepin 12.3.0-17deepin8) 12.3.0, GNU ld (GNU Binutils for Deepin) 2.41) # SMP
+Linux version 6.6.144-rc1-riscv64-desktop-hwe+ (guanwentao@uos-PC) (riscv64-linux-gnu-gcc-12 (Deepin 12.3.0-17deepin8) 12.3.0, GNU ld (GNU Binutils for Deepin) 2.41) #4 SMP Fri Jul  3 15:53:55 CST 2026
+Linux version 6.6.144-rc1-amd64-desktop-hwe-g383d9611bec7 (guanwentao@uos-PC) (gcc (Deepin 12.3.0-17deepin15) 12.3.0, GNU ld (GNU Binutils for Deepin) 2.41) # SMP PREEMPT_DYNAMIC
+Linux version 6.6.144-rc1-amd64-desktop-hwe-g383d9611bec7 (guanwentao@uos-PC) (gcc (Deepin 12.3.0-17deepin15) 12.3.0, GNU ld (GNU Binutils for Deepin) 2.41) #1 SMP PREEMPT_DYNAMIC Fri Jul  3 11:47:09 CST 2026
 
 
