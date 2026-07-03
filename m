@@ -1,208 +1,143 @@
-Return-Path: <stable+bounces-271687-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-271689-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id ZQh4DPt0R2oGYgAAu9opvQ
-	(envelope-from <stable+bounces-271687-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 03 Jul 2026 10:38:19 +0200
+	id YqBTFhN4R2rpYgAAu9opvQ
+	(envelope-from <stable+bounces-271689-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 03 Jul 2026 10:51:31 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id BE647700279
-	for <lists+stable@lfdr.de>; Fri, 03 Jul 2026 10:38:18 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id AD9FE70047F
+	for <lists+stable@lfdr.de>; Fri, 03 Jul 2026 10:51:30 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=google.com header.s=20251104 header.b=SjMBQ5Fd;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-271687-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-271687-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=XH1OtT0m;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-271689-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-271689-lists+stable=lfdr.de@vger.kernel.org";
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 2E5FE3024EA9
-	for <lists+stable@lfdr.de>; Fri,  3 Jul 2026 08:38:01 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 4637C30C3A22
+	for <lists+stable@lfdr.de>; Fri,  3 Jul 2026 08:44:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0944432572F;
-	Fri,  3 Jul 2026 08:37:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BEF2F37755C;
+	Fri,  3 Jul 2026 08:44:39 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pg1-f201.google.com (mail-pg1-f201.google.com [209.85.215.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from out30-110.freemail.mail.aliyun.com (out30-110.freemail.mail.aliyun.com [115.124.30.110])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82F48348C67
-	for <stable@vger.kernel.org>; Fri,  3 Jul 2026 08:37:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D636377EB8;
+	Fri,  3 Jul 2026 08:44:36 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783067873; cv=none; b=UAHbj1SgAFJS8sHMIrpyR+GKOU9m93CdrpSDqxORKdQMO7JBhqqeEfhsaUopjole2P3VRjr7028l0n+9sVwvPYBKIyYJlsCoxITn71gxc0KrmZdZLwK+n1sX26bPffzAU7SRQYhZ7uEmw3Y4CuTVkuTBfXCFWeFOEyzP1r35rCw=
+	t=1783068279; cv=none; b=h+nqQ5d0ZpUPnXAnHMj4zCRXcUQwBpxixRf8LlubXmV4GFQuop+1WzfysrNxNMp2k4m19/pAErahPnC45v2yl+q3npoA/wUlzXIjC/qUEcfs1/zEqNNmvZaCK11r/flHuXaQwUtyF403dEwUOcq5u4B4biBiep5XvxvtTYc/mBo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783067873; c=relaxed/simple;
-	bh=WY+/I3PCWDW0D7KQP7ETeSQTyPJIDlAn3sHacC1niIM=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=fSfFLc1f82YWtO7kPXl172yeARHQjGKp5DUpXCoNj/pg+sQqD8parierW43RxgKsNWZGhuqWaFeyPvRtNGEcYJLZrmcD6WbRfz9OePXNL62O6juXLk6TheIUTGd58zgBUYvEErlZt7tTaB7vKk75KlbvVElswY+tbaJGHZ5k3rw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--sonalipradhan.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=SjMBQ5Fd; arc=none smtp.client-ip=209.85.215.201
-Received: by mail-pg1-f201.google.com with SMTP id 41be03b00d2f7-c889d1eedcdso651261a12.1
-        for <stable@vger.kernel.org>; Fri, 03 Jul 2026 01:37:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1783067872; x=1783672672; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=bMJVyVv7LxWaCV6bTjHr7ZvWMrD8Vg6RvcBWgEOqFjo=;
-        b=SjMBQ5Fd92TVJbzyPnZmseuTNNV50oaXO7iObJsr/ov7AZOeoCgUo2lm2UGsc0axZw
-         dpyoArVsvZl72oYrZoytk7OxlbvvgFrqmNsMbXn/3k8Sqfo6+KNfj1HO/ZJMgwMtESVw
-         KvG8ELkDW/8zWK7xtXXTedMOBH15ZIAmRy+n99690vnpePvJ3wQ1KRRZXD8IXeLVeMqL
-         ghEorbgC7BgFkerfLIA/Pap/qgrxl10fP4XJn4lWIUZmoUooNKk3dckdcLh+bFYD1ejW
-         m7ZlGvPHc97fp4TEwCOMDq0dEK8+UiU1lJF3cK1o1Aw/Z27pZL1QGd1QZOHEfQygRoTc
-         +Bvg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783067872; x=1783672672;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=bMJVyVv7LxWaCV6bTjHr7ZvWMrD8Vg6RvcBWgEOqFjo=;
-        b=eVVsNsVZuG80YVPhRyd8jYdTNApqpJpxpYr4lFtbfT1JGWLjrVeFBuLs0FDNuQCLxt
-         dDtFFhp8WUD9bnM9W0b5Ky2TdGzHwAf0Gg0HBow0V0GZlQi7Z7J0XR+r12PZer5GWqwe
-         TrryLbGRtWBmQFOBIWqrJHhBGhuD4uups/nCLnAAzyzVnI82rA/xzqTRhqRgZqwBx/VI
-         2/CEBHNG3Qg4Z1s+ig77c0hxKiRP7surjI7IGXDERq+dXy/U36ifqbxZf3L8xJg2Y4gq
-         QsG5ohT6hmBrOfBkdmD3xOfpjQuNdM21scYeUTp7ht9+KoTIJD/0cGC41DtD0VJ49Tyl
-         dVJg==
-X-Forwarded-Encrypted: i=1; AHgh+RqJRygErk2aIDIzNHIjnOSGwN3TNpoRr4x0FEYrk5qnZCDZaddh7HZbO405guvXd3S9cZ6Q4zs=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxytgJJFnHEkXHX8oOnIfgcqmPhFrr0RyW00ynGsOmlVI4TscDN
-	SnVZVbiug23al1NehSZnDsT6Ubas+yAEt/7z4JNvQ6s2tqVlHwRaRRHDha7zQJxxxzRVEEQSDbf
-	wmbBXUsxI6wJRGJFscqfZta7ejaqdwLMG0g==
-X-Received: from pjxu11.prod.google.com ([2002:a17:90a:db4b:b0:381:ef4:4373])
- (user=sonalipradhan job=prod-delivery.src-stubby-dispatcher) by
- 2002:a17:90a:d44f:b0:37f:133a:3e07 with SMTP id 98e67ed59e1d1-380aa0fc88cmr10298423a91.2.1783067871532;
- Fri, 03 Jul 2026 01:37:51 -0700 (PDT)
-Date: Fri,  3 Jul 2026 08:37:24 +0000
+	s=arc-20240116; t=1783068279; c=relaxed/simple;
+	bh=5f5VORH3zawg/gO3b17vYMgZ7k1ax6oaoAxOZ6GP99g=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=CQV/1vGPeot0qAiC4WtIRVEYBwTJRVgqi+wU3Ys9KeqACcOfXYIkLJm4kN6SMwIbxTFQt8nmsc0ahxcjSb+9Fn00+7NwUHG8iJ/WQ2O9xXrawB4tSacvwZet8OiyVkrJhCXZE29MyIZmR8+HoNqz7EAk698Ts48mCCAZYY2EhGQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=XH1OtT0m; arc=none smtp.client-ip=115.124.30.110
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1783068273; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
+	bh=heLiIQaQ67iQ8EJ+Osbvfe//KC72f/O5+l/x4rW5RyQ=;
+	b=XH1OtT0mQh7l17sKw2Jg9NkVC8PS3Ae95e072pvjRn6ZOSiKoDflw/eDFc3TO9IkQHWDT+w1/xTxTd7QygYFPFofc5Fi7Jdm7WeWbATmRiyENMO+qT2yoFpN+fJCCJKzx57iTSnkbB5Ke+A5kuFf5E7ojQ1R6Ljee4Kex2Pi+EM=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R761e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033032089153;MF=libaokun@linux.alibaba.com;NM=1;PH=DS;RN=11;SR=0;TI=SMTPD_---0X6IjTR5_1783068272;
+Received: from 30.221.129.235(mailfrom:libaokun@linux.alibaba.com fp:SMTPD_---0X6IjTR5_1783068272 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Fri, 03 Jul 2026 16:44:33 +0800
+Message-ID: <2904d1db-11fa-450a-89ea-20fe133fa268@linux.alibaba.com>
+Date: Fri, 3 Jul 2026 16:44:32 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-X-Mailer: git-send-email 2.55.0.rc0.799.gd6f94ed593-goog
-Message-ID: <20260703083725.1903850-1-sonalipradhan@google.com>
-Subject: [PATCH] usb: gadget: f_ncm: validate datagram bounds in ncm_unwrap_ntb()
-From: Sonali Pradhan <sonalipradhan@google.com>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Kuen-Han Tsai <khtsai@google.com>, 
-	"=?UTF-8?q?Maciej=20=C5=BBenczykowski?=" <maze@google.com>, raub camaioni <raubcameo@gmail.com>, Kees Cook <kees@kernel.org>, 
-	Krishna Kurapati <quic_kriskura@quicinc.com>, Brooke Basile <brookebasile@gmail.com>, 
-	Felipe Balbi <balbi@kernel.org>, stable@vger.kernel.org, 
-	Sonali Pradhan <sonalipradhan@google.com>
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] ext4: get rid of ppath in get_ext_path()
+To: Greg KH <gregkh@linuxfoundation.org>
+Cc: Jiayuan Chen <jiayuan.chen@linux.dev>, Wang Jun <1742789905@qq.com>,
+ tytso@mit.edu, adilger.kernel@dilger.ca, linux-ext4@vger.kernel.org,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org, 25125332@bjtu.edu.cn,
+ Jan Kara <jack@suse.cz>, Ojaswin Mujoo <ojaswin@linux.ibm.com>
+References: <tencent_C982B0201FE8F041BD5B4FC1ED7D646A740A@qq.com>
+ <2026062643-tamer-limes-a320@gregkh>
+ <rrsgndgpxyrmu6okb43u6wkdaibbidlbyqgugeeijd2b44sf4y@6lzmm4v4xvdp>
+ <2026070210-catty-grape-2568@gregkh>
+ <b93095c6-0717-4616-9702-570b2927429b@linux.alibaba.com>
+ <2026070315-crescent-factoid-616d@gregkh>
+From: Baokun Li <libaokun@linux.alibaba.com>
+In-Reply-To: <2026070315-crescent-factoid-616d@gregkh>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.66 / 15.00];
+X-Spamd-Result: default: False [-12.16 / 15.00];
+	WHITELIST_DMARC(-7.00)[alibaba.com:D:+];
+	WHITELIST_SPF_DKIM(-3.00)[alibaba.com:d:+,kernel.org:s:+];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[google.com,reject];
-	MV_CASE(0.50)[];
-	R_DKIM_ALLOW(-0.20)[google.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	DMARC_POLICY_ALLOW(-0.50)[linux.alibaba.com,none];
+	R_DKIM_ALLOW(-0.20)[linux.alibaba.com:s=default];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_RECIPIENTS(0.00)[m:gregkh@linuxfoundation.org,m:linux-usb@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:khtsai@google.com,m:maze@google.com,m:raubcameo@gmail.com,m:kees@kernel.org,m:quic_kriskura@quicinc.com,m:brookebasile@gmail.com,m:balbi@kernel.org,m:stable@vger.kernel.org,m:sonalipradhan@google.com,s:lists@lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER(0.00)[sonalipradhan@google.com,stable@vger.kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[12];
+	TAGGED_FROM(0.00)[bounces-271689-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
+	FREEMAIL_CC(0.00)[linux.dev,qq.com,mit.edu,dilger.ca,vger.kernel.org,bjtu.edu.cn,suse.cz,linux.ibm.com];
 	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS(0.00)[m:gregkh@linuxfoundation.org,m:jiayuan.chen@linux.dev,m:1742789905@qq.com,m:tytso@mit.edu,m:adilger.kernel@dilger.ca,m:linux-ext4@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,m:25125332@bjtu.edu.cn,m:jack@suse.cz,m:ojaswin@linux.ibm.com,s:lists@lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
-	TAGGED_FROM(0.00)[bounces-271687-lists,stable=lfdr.de];
-	DKIM_TRACE(0.00)[google.com:+];
-	TO_DN_SOME(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sonalipradhan@google.com,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[vger.kernel.org,google.com,gmail.com,kernel.org,quicinc.com];
-	ALIAS_RESOLVED(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	FORGED_SENDER(0.00)[libaokun@linux.alibaba.com,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,vger.kernel.org:from_smtp]
+	FORGED_SENDER_FORWARDING(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[libaokun@linux.alibaba.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linux.alibaba.com:+];
+	RCPT_COUNT_SEVEN(0.00)[11];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TO_DN_SOME(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linux.alibaba.com:from_mime,linux.alibaba.com:dkim,linux.alibaba.com:mid]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: BE647700279
+X-Rspamd-Queue-Id: AD9FE70047F
 
-When unpacking host-supplied NTBs, ncm_unwrap_ntb() checks datagram length
-against frame_max but does not verify that the datagram fits within the
-declared block length. Additionally, when decoding multiple NTBs from a
-single socket buffer, subsequent block lengths are not checked against the
-actual remaining buffer data.
+On 2026/7/3 16:20, Greg KH wrote:
+> On Fri, Jul 03, 2026 at 03:57:09PM +0800, Baokun Li wrote:
+>> On 2026/7/2 13:47, Greg KH wrote:
+>>> On Thu, Jul 02, 2026 at 09:48:33AM +0800, Jiayuan Chen wrote:
+>>>> Hi Greg,
+>>>>
+>>>> Any update here ?
+>>> What is "here"?  There is no context in this email :(
+>>>
+>>>> We rebased the 6.6 stable one week ago and also found the same regression.
+>>> What regression?  Again, no context :(
+>>>
+>>> confused,
+>>>
+>>> greg k-h
+>> For some reason, LTS only merged a subset of my patchset, causing
+>> some commits to lack their prerequisite patches. This leads to error
+>> numbers being interpreted as valid pointers.
+>>
+>> For details, see the fix patchset that Erkun submitted to 6.6.y
+>> (it fell through the cracks for some reason):
+>>
+>> https://lore.kernel.org/all/20260421113416.4040274-1-yangerkun@huawei.com/
+>>
+>> Either applying this fix patchset or reverting the incorrectly merged
+>> commit should resolve the issue.
+> How about submitting a revert so that we can start fresh and work from
+> there?
 
-With these checks missing, a malicious USB host can specify datagram
-offsets and lengths that point beyond the block, or supply secondary NTB
-headers declaring lengths larger than the buffer. skb_put_data() then
-copies adjacent kernel memory from skb_shared_info into the network skb.
+Alright, I can help review the patches.
 
-Fix this by verifying that sufficient buffer space remains for the NTB
-header before parsing, handling zero-length block declarations, ensuring
-that block lengths never exceed the remaining buffer space, and verifying
-that each datagram payload stays strictly within the block boundary.
 
-Fixes: 427694cfaafa ("usb: gadget: ncm: Handle decoding of multiple NTB's in unwrap call")
-Fixes: 2b74b0a04d3e ("USB: gadget: f_ncm: add bounds checks to ncm_unwrap_ntb()")
-Cc: stable@vger.kernel.org
-Assisted-by: Jetski:Gemini-2.5-Pro
-Signed-off-by: Sonali Pradhan <sonalipradhan@google.com>
----
- drivers/usb/gadget/function/f_ncm.c | 17 +++++++++++++----
- 1 file changed, 13 insertions(+), 4 deletions(-)
-
-diff --git a/drivers/usb/gadget/function/f_ncm.c b/drivers/usb/gadget/function/f_ncm.c
-index c5bf8a448d64..64eabda2f546 100644
---- a/drivers/usb/gadget/function/f_ncm.c
-+++ b/drivers/usb/gadget/function/f_ncm.c
-@@ -1189,6 +1189,10 @@ static int ncm_unwrap_ntb(struct gether *port,
- 	frame_max = ncm_opts->max_segment_size;
- 
- parse_ntb:
-+	if (to_process < (int)opts->nth_size) {
-+		INFO(port->func.config->cdev, "Packet too small for headers\n");
-+		goto err;
-+	}
- 	tmp = (__le16 *)ntb_ptr;
- 
- 	/* dwSignature */
-@@ -1209,8 +1213,12 @@ static int ncm_unwrap_ntb(struct gether *port,
- 	tmp++; /* skip wSequence */
- 
- 	block_len = get_ncm(&tmp, opts->block_length);
-+	if (block_len == 0)
-+		block_len = to_process;
-+
- 	/* (d)wBlockLength */
--	if ((block_len < opts->nth_size + opts->ndp_size) || (block_len > ntb_max)) {
-+	if ((block_len < opts->nth_size + opts->ndp_size) || (block_len > ntb_max) ||
-+			(block_len > to_process)) {
- 		INFO(port->func.config->cdev, "Bad block length: %#X\n", block_len);
- 		goto err;
- 	}
-@@ -1273,7 +1281,7 @@ static int ncm_unwrap_ntb(struct gether *port,
- 			index = index2;
- 			/* wDatagramIndex[0] */
- 			if ((index < opts->nth_size) ||
--					(index > block_len - opts->dpe_size)) {
-+					(index > block_len)) {
- 				INFO(port->func.config->cdev,
- 				     "Bad index: %#X\n", index);
- 				goto err;
-@@ -1285,7 +1293,8 @@ static int ncm_unwrap_ntb(struct gether *port,
- 			 * ethernet hdr + crc or larger than max frame size
- 			 */
- 			if ((dg_len < 14 + crc_len) ||
--					(dg_len > frame_max)) {
-+					(dg_len > frame_max) ||
-+					(dg_len > block_len - index)) {
- 				INFO(port->func.config->cdev,
- 				     "Bad dgram length: %#X\n", dg_len);
- 				goto err;
-@@ -1310,7 +1319,7 @@ static int ncm_unwrap_ntb(struct gether *port,
- 			dg_len2 = get_ncm(&tmp, opts->dgram_item_len);
- 
- 			/* wDatagramIndex[1] */
--			if (index2 > block_len - opts->dpe_size) {
-+			if (index2 > block_len) {
- 				INFO(port->func.config->cdev,
- 				     "Bad index: %#X\n", index2);
- 				goto err;
--- 
-2.55.0.rc0.799.gd6f94ed593-goog
+Thanks,
+Baokun
 
 
