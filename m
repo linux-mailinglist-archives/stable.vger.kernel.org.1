@@ -1,173 +1,201 @@
-Return-Path: <stable+bounces-271627-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-271628-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id A7XgE8pER2pNVAAAu9opvQ
-	(envelope-from <stable+bounces-271627-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 03 Jul 2026 07:12:42 +0200
+	id +Ui1IKtKR2o1VgAAu9opvQ
+	(envelope-from <stable+bounces-271628-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 03 Jul 2026 07:37:47 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id BE39E6FE9BC
-	for <lists+stable@lfdr.de>; Fri, 03 Jul 2026 07:12:41 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7AE7F6FEC5B
+	for <lists+stable@lfdr.de>; Fri, 03 Jul 2026 07:37:46 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=mt3Z6RcJ;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-271627-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-271627-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=google.com header.s=20251104 header.b=j2P30bPR;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-271628-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-271628-lists+stable=lfdr.de@vger.kernel.org";
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 13870302A4FA
-	for <lists+stable@lfdr.de>; Fri,  3 Jul 2026 05:12:22 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id BF4DC3059063
+	for <lists+stable@lfdr.de>; Fri,  3 Jul 2026 05:20:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA1DA33F8C5;
-	Fri,  3 Jul 2026 05:12:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57B0C33BBBD;
+	Fri,  3 Jul 2026 05:19:59 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from out-182.mta1.migadu.com (out-182.mta1.migadu.com [95.215.58.182])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f73.google.com (mail-pj1-f73.google.com [209.85.216.73])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24D9E343D75;
-	Fri,  3 Jul 2026 05:12:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFBB733D4E5
+	for <stable@vger.kernel.org>; Fri,  3 Jul 2026 05:19:51 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783055530; cv=none; b=HNwE13ZjxYoSMN/+1SlOJKCN+ykQFENgNxHRk6KLpT35EFDLehuPlw+xdNz+CKk3EdC7gRO0skOBI9VTe8zGh7e6icBhmc6uN9mQheWavs3IQSBighUOXkBzLjEXb1CZDisYyOsoe9AfHrbUgvurxTBXIftXjEWrPmk9afQ2CCw=
+	t=1783055997; cv=none; b=GFIbamAHg4cdWmER0KTNm5pDEJ4EJopF5eF9f0gLHdSlQqSQ+ppi7LNtlS22jTwRKQzejkcYVpHnd+ByyxvW3nd6r45y1iA66RuBfN3AU+p85xmMursWJ/Gxy1bNeaIAefVx69B78NNJulWReMx5aBBnjHsj9rzZXNbeg3VCIHI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783055530; c=relaxed/simple;
-	bh=QodELRbfsPAagFSQb+Am3TLMBlWvPzqHiUnCbRYCO9Q=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=OUdoX38Uvz79qBCSJ5npaMtZ5yf98jhhd+3u6L9emOqBWX4vYXthax5itxy84nwZxGF6CMFTVeuvvJRmRJOS8BIOIU4TT4/JfYxgf9Do2xbygAN2yZxpjmouUeu9Aycf+wke4AOPR7mLVTWb/fJOYXy/zT1ozR35lH6nFFV5NFs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=mt3Z6RcJ; arc=none smtp.client-ip=95.215.58.182
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1783055506;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=TclDFaPZdaXfZinZztmQXDY2osmC9ohL82aKjMqnljA=;
-	b=mt3Z6RcJAbFH5qjmNSVJr9og3cANnog5yCm8KOSikIlNWnWUdlzBYYJRAxJJYQPrB9K2v2
-	t/yidQofXCp8zmiyWOyphesT3hGz9lnz5aI/EeO8GKygjhDt0FxJZTf68vKAwDGvFvHdqj
-	xkCSEJlXdSaVC7mi91P395B1Vyr2Als=
-From: Lance Yang <lance.yang@linux.dev>
-To: pfalcato@suse.de
-Cc: akpm@linux-foundation.org,
-	david@kernel.org,
-	ljs@kernel.org,
-	baolin.wang@linux.alibaba.com,
-	liam@infradead.org,
-	npache@redhat.com,
-	ryan.roberts@arm.com,
-	dev.jain@arm.com,
-	baohua@kernel.org,
-	lance.yang@linux.dev,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org,
-	stable@vger.kernel.org,
-	viro@zeniv.linux.org.uk,
-	brauner@kernel.org,
-	jack@suse.cz,
-	willy@infradead.org,
-	song@kernel.org,
-	ehagberg@janestreet.com,
-	ziy@nvidia.com,
-	gleventhal@janestreet.com
-Subject: Re: [PATCH stable] mm/khugepaged: write all dirty file folios when collapsing
-Date: Fri,  3 Jul 2026 13:11:29 +0800
-Message-Id: <20260703051129.88453-1-lance.yang@linux.dev>
-In-Reply-To: <20260702165409.164568-1-pfalcato@suse.de>
-References: <20260702165409.164568-1-pfalcato@suse.de>
+	s=arc-20240116; t=1783055997; c=relaxed/simple;
+	bh=WY+/I3PCWDW0D7KQP7ETeSQTyPJIDlAn3sHacC1niIM=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=RGS5IeMc7QgvPuhhVEKUyf7S4GXNpuJRaSd95l/E1HaouxjY3eNuhls3oZtBpefFgFPKN6/+MIyykWA9EmvzklTrn6oDbjXe5aBiZ8DlEGRVLZ8GFDXfs4UvBpZvXue3uvAJEGQmc6vk3L5+VzAHSMOIelrup4AaQUFsx459Pak=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--sonalipradhan.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=j2P30bPR; arc=none smtp.client-ip=209.85.216.73
+Received: by mail-pj1-f73.google.com with SMTP id 98e67ed59e1d1-37ca4367860so1629420a91.1
+        for <stable@vger.kernel.org>; Thu, 02 Jul 2026 22:19:51 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1783055989; x=1783660789; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=bMJVyVv7LxWaCV6bTjHr7ZvWMrD8Vg6RvcBWgEOqFjo=;
+        b=j2P30bPRsIZHjBYzUs52FdkYmoSu2Io7rHZxAL/pHGajDR86MXokkUlsIHdFUKOA5W
+         OCMdRUF9FA0ZqdmBSmOB7BS2mgPX+3T2VlD//Dc0qG1qYaEmAwS+G0qhJzGF01vgB7SL
+         LkLRWhBhz05eSsUc0skmsLA4ExhynIUX7kTe3Vu+/FbSPHxR17ZS8mZoDZVD1S4fLWKi
+         Z3cHiCJaGW9TF55AxzUV8GM/Lo9gDqYlcQeUtZLfh+arkWpg/Rss/eczQRtrd/7RUFL7
+         j/F5f2Ig6IvS15hCUatOWpydnvimCQBqEEgme/c8VzMh/LYidHH/rLAsyCqHK51gzfAM
+         gNFw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1783055989; x=1783660789;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=bMJVyVv7LxWaCV6bTjHr7ZvWMrD8Vg6RvcBWgEOqFjo=;
+        b=Jo03Jv17PC6CyS37ogcAv4uVhJfRQ1+jOnQiF2+nil0OJvW2Z4ikpRnuH5p4Awf5CK
+         8qmhnX551FyhE3j1zhYYicE8G+UxkQiMX7XCGTqi5YyliTBYFK72UMNBrVrhqQMmbFfh
+         IUJtL3VpSrdxrA7iBDKavbBonEgpvV3MlL3g+DgMu0ZueVwomCoFFqMYljwvTu1tpuOn
+         5taSEwy59s3tIzD6TeE7tjo89hTk8te/5GalIQ0XVbmpL61nM8DZtMWDNUqW+2ODH92Z
+         gEfI2hqxIxF+MUTF8OkZ9qE72H1KcTk4DCXyfoAXm1R0ZwZyKCNeT1mPbp9q2fg55J13
+         2HxQ==
+X-Gm-Message-State: AOJu0Yyn+xN9RFgGKcuDqam/beRDM4tihWsImNdiluxrQtze91QNPFFs
+	ouMgL2xFNpq0gb9qWvWLKkmbnM9EWqilBpQFD7vvFwYkKW2eBoaVbn13Xz25/7gAvlOGK2vqZCh
+	A75lUQh7d5s/W2cQKxVHtcUsnQMjGDt08Ug==
+X-Received: from pjbay5.prod.google.com ([2002:a17:90b:305:b0:37d:87a0:e7d1])
+ (user=sonalipradhan job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a17:90b:2888:b0:36a:8254:8eb1 with SMTP id 98e67ed59e1d1-3811209e3c2mr2502367a91.6.1783055989416;
+ Thu, 02 Jul 2026 22:19:49 -0700 (PDT)
+Date: Fri,  3 Jul 2026 05:19:45 +0000
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.55.0.rc0.799.gd6f94ed593-goog
+Message-ID: <20260703051945.1691028-1-sonalipradhan@google.com>
+Subject: [PATCH] usb: gadget: f_ncm: validate datagram bounds in ncm_unwrap_ntb()
+From: Sonali Pradhan <sonalipradhan@google.com>
+To: sonalipradhan@google.com
+Cc: stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.16 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linux.dev,none];
-	R_DKIM_ALLOW(-0.20)[linux.dev:s=key1];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[google.com,reject];
+	MV_CASE(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_DKIM_ALLOW(-0.20)[google.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-271627-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[3];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-271628-lists,stable=lfdr.de];
+	RCPT_COUNT_TWO(0.00)[2];
+	FORGED_RECIPIENTS(0.00)[m:sonalipradhan@google.com,m:stable@vger.kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:pfalcato@suse.de,m:akpm@linux-foundation.org,m:david@kernel.org,m:ljs@kernel.org,m:baolin.wang@linux.alibaba.com,m:liam@infradead.org,m:npache@redhat.com,m:ryan.roberts@arm.com,m:dev.jain@arm.com,m:baohua@kernel.org,m:lance.yang@linux.dev,m:linux-mm@kvack.org,m:linux-kernel@vger.kernel.org,m:linux-fsdevel@vger.kernel.org,m:stable@vger.kernel.org,m:viro@zeniv.linux.org.uk,m:brauner@kernel.org,m:jack@suse.cz,m:willy@infradead.org,m:song@kernel.org,m:ehagberg@janestreet.com,m:ziy@nvidia.com,m:gleventhal@janestreet.com,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[lance.yang@linux.dev,stable@vger.kernel.org];
+	FORGED_SENDER(0.00)[sonalipradhan@google.com,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
 	FROM_HAS_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
-	TO_DN_NONE(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[lance.yang@linux.dev,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linux.dev:+];
-	ALIAS_RESOLVED(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_NEQ_ENVFROM(0.00)[sonalipradhan@google.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[google.com:+];
+	TO_DN_NONE(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[23];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+	ALIAS_RESOLVED(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: BE39E6FE9BC
+X-Rspamd-Queue-Id: 7AE7F6FEC5B
 
+When unpacking host-supplied NTBs, ncm_unwrap_ntb() checks datagram length
+against frame_max but does not verify that the datagram fits within the
+declared block length. Additionally, when decoding multiple NTBs from a
+single socket buffer, subsequent block lengths are not checked against the
+actual remaining buffer data.
 
-On Thu, Jul 02, 2026 at 05:54:09PM +0100, Pedro Falcato wrote:
->As-is, khugepaged and writable-file opening exclude each other. A file
->cannot be open writeable and have THPs (because the filesystem is not aware
->of them). khugepaged will never collapse file pages for files that are
->opened writeable. On an open(O_RDWR/O_WRONLY), the page cache for that
->particular file is dropped. This is fine because nothing could've been
->dirtied.
->
->However, there is an edge-case: collapse_file() might not be able to
->coexist with concurrent writers, but it can coexist with dirty folios
->(from previous writers). Therefore, the following can happen:
->
->open(file, O_RDWR)
->write(file)
->close(file)
->madvise(file_mapping, MADV_COLLAPSE, some non-dirty range)
->open(file, O_RDWR)
-> nr_thps > 0
->  truncate_inode_pages()
->    /* THPs are cleared out, but so are the dirty folios */
->
->When this edge-case happens, there is data loss, as the dirty folios are
->fully discarded.
+With these checks missing, a malicious USB host can specify datagram
+offsets and lengths that point beyond the block, or supply secondary NTB
+headers declaring lengths larger than the buffer. skb_put_data() then
+copies adjacent kernel memory from skb_shared_info into the network skb.
 
-Well spotted, thanks!
+Fix this by verifying that sufficient buffer space remains for the NTB
+header before parsing, handling zero-length block declarations, ensuring
+that block lengths never exceed the remaining buffer space, and verifying
+that each datagram payload stays strictly within the block boundary.
 
->
->Fix it by fully writing back the page cache (and waiting) when collapsing
->file THPs. Doing so provides the guarantee that no dirty folio will be
->observed while there are active THPs. To fully ensure this is safe, the
->invalidate_lock needs to be held while doing the writeout, so that
->do_dentry_open()'s page cache truncation excludes this write-and-wait.
->
->Cc: stable@vger.kernel.org
->Cc: Alexander Viro <viro@zeniv.linux.org.uk>
->Cc: Christian Brauner <brauner@kernel.org>
->Cc: Jan Kara <jack@suse.cz>
->Cc: Matthew Wilcox <willy@infradead.org>
->Cc: Song Liu <song@kernel.org>
->Cc: Eric Hagberg <ehagberg@janestreet.com>
->Cc: Zi Yan <ziy@nvidia.com>
->Fixes: 99cb0dbd47a1 ("mm,thp: add read-only THP support for (non-shmem) FS")
->Reported-by: Gregg Leventhal <gleventhal@janestreet.com>
->Closes: https://lore.kernel.org/linux-mm/CAFN_u7H_0ECF3jixP=T=U7AH5=Q3wQNvJMo8an3VqUDMerQfUw@mail.gmail.com/
->Tested-by: Zi Yan <ziy@nvidia.com>
->Signed-off-by: Pedro Falcato <pfalcato@suse.de>
->---
+Fixes: 427694cfaafa ("usb: gadget: ncm: Handle decoding of multiple NTB's in unwrap call")
+Fixes: 2b74b0a04d3e ("USB: gadget: f_ncm: add bounds checks to ncm_unwrap_ntb()")
+Cc: stable@vger.kernel.org
+Assisted-by: Jetski:Gemini-2.5-Pro
+Signed-off-by: Sonali Pradhan <sonalipradhan@google.com>
+---
+ drivers/usb/gadget/function/f_ncm.c | 17 +++++++++++++----
+ 1 file changed, 13 insertions(+), 4 deletions(-)
 
-Tested on v7.1.2. I no longer see the data loss with this patch applied.
+diff --git a/drivers/usb/gadget/function/f_ncm.c b/drivers/usb/gadget/function/f_ncm.c
+index c5bf8a448d64..64eabda2f546 100644
+--- a/drivers/usb/gadget/function/f_ncm.c
++++ b/drivers/usb/gadget/function/f_ncm.c
+@@ -1189,6 +1189,10 @@ static int ncm_unwrap_ntb(struct gether *port,
+ 	frame_max = ncm_opts->max_segment_size;
+ 
+ parse_ntb:
++	if (to_process < (int)opts->nth_size) {
++		INFO(port->func.config->cdev, "Packet too small for headers\n");
++		goto err;
++	}
+ 	tmp = (__le16 *)ntb_ptr;
+ 
+ 	/* dwSignature */
+@@ -1209,8 +1213,12 @@ static int ncm_unwrap_ntb(struct gether *port,
+ 	tmp++; /* skip wSequence */
+ 
+ 	block_len = get_ncm(&tmp, opts->block_length);
++	if (block_len == 0)
++		block_len = to_process;
++
+ 	/* (d)wBlockLength */
+-	if ((block_len < opts->nth_size + opts->ndp_size) || (block_len > ntb_max)) {
++	if ((block_len < opts->nth_size + opts->ndp_size) || (block_len > ntb_max) ||
++			(block_len > to_process)) {
+ 		INFO(port->func.config->cdev, "Bad block length: %#X\n", block_len);
+ 		goto err;
+ 	}
+@@ -1273,7 +1281,7 @@ static int ncm_unwrap_ntb(struct gether *port,
+ 			index = index2;
+ 			/* wDatagramIndex[0] */
+ 			if ((index < opts->nth_size) ||
+-					(index > block_len - opts->dpe_size)) {
++					(index > block_len)) {
+ 				INFO(port->func.config->cdev,
+ 				     "Bad index: %#X\n", index);
+ 				goto err;
+@@ -1285,7 +1293,8 @@ static int ncm_unwrap_ntb(struct gether *port,
+ 			 * ethernet hdr + crc or larger than max frame size
+ 			 */
+ 			if ((dg_len < 14 + crc_len) ||
+-					(dg_len > frame_max)) {
++					(dg_len > frame_max) ||
++					(dg_len > block_len - index)) {
+ 				INFO(port->func.config->cdev,
+ 				     "Bad dgram length: %#X\n", dg_len);
+ 				goto err;
+@@ -1310,7 +1319,7 @@ static int ncm_unwrap_ntb(struct gether *port,
+ 			dg_len2 = get_ncm(&tmp, opts->dgram_item_len);
+ 
+ 			/* wDatagramIndex[1] */
+-			if (index2 > block_len - opts->dpe_size) {
++			if (index2 > block_len) {
+ 				INFO(port->func.config->cdev,
+ 				     "Bad index: %#X\n", index2);
+ 				goto err;
+-- 
+2.55.0.rc0.799.gd6f94ed593-goog
 
-Tested-by: Lance Yang <lance.yang@linux.dev>
 
