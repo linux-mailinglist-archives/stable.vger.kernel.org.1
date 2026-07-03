@@ -1,201 +1,193 @@
-Return-Path: <stable+bounces-271809-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-271811-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id Qyu/Ik3MR2rufQAAu9opvQ
-	(envelope-from <stable+bounces-271809-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 03 Jul 2026 16:50:53 +0200
+	id G7OoAmDQR2qyfgAAu9opvQ
+	(envelope-from <stable+bounces-271811-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 03 Jul 2026 17:08:16 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 098B47039A6
-	for <lists+stable@lfdr.de>; Fri, 03 Jul 2026 16:50:53 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6F80B703B84
+	for <lists+stable@lfdr.de>; Fri, 03 Jul 2026 17:08:15 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=intel.com header.s=Intel header.b=FRwmyLb4;
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-271809-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-271809-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=RuAt6L0F;
+	dkim=pass header.d=redhat.com header.s=google header.b="B/hPGg30";
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-271811-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-271811-lists+stable=lfdr.de@vger.kernel.org";
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 31D6E30DBB4C
-	for <lists+stable@lfdr.de>; Fri,  3 Jul 2026 14:40:55 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 6BDE33017069
+	for <lists+stable@lfdr.de>; Fri,  3 Jul 2026 15:07:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 535D33F1674;
-	Fri,  3 Jul 2026 14:40:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD8AC3E44FD;
+	Fri,  3 Jul 2026 15:07:42 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 058B62D1907;
-	Fri,  3 Jul 2026 14:40:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B77D279DC2
+	for <stable@vger.kernel.org>; Fri,  3 Jul 2026 15:07:39 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783089652; cv=none; b=V0eMfZbI2XXfutI/zAFQE9AQVUQMgyLRZQHl0hDevAixjUI7X48HN/dEGwy7M7YXk9Mwmw1bPoaqWpiXCJeWcLBqVPgbx/s5cZuoy1L1k7VKCez/5e1eetfgl7ea4XDqsxB0XVu3djSkQxJeetPk1VpaXOpCF4sm9gBfJnZnV04=
+	t=1783091261; cv=none; b=OQLpJNBkYU/a21x37T3k0EBNlYJw2TGZPora/BUUn2bXw12rI2J/dr7ZwzIjidF492U0JZ82VlkgxzwzCDjO+ZcbMadcncp3bFjMI+doNf2rNW7LRTDLjOJ51mP6l/avLDDtZo07xe8vE2mPs+W4n/5Ov151iAHOZ+P2XBass6c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783089652; c=relaxed/simple;
-	bh=Xt7iwaN9giBkTYqozXTifVqHbcD9rYw/AGaOQHCnANw=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=PdZYer1Lsgc0pvDzMHZVMfCUd0D46HlOIKN5KBKkavP26RPl1W5PA1mNbvlJNjhGgKlJ4vNUrRVhcUs8y2WBgmsGsuEOg4XZdRleEzVLtvAfCxxrnIq1jIakUfnG1g5mBVJXszVVeN7+rqaFCrEe3QmeSd7ayDXTuHiHHYbh/2I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=FRwmyLb4; arc=none smtp.client-ip=192.198.163.8
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1783089649; x=1814625649;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=Xt7iwaN9giBkTYqozXTifVqHbcD9rYw/AGaOQHCnANw=;
-  b=FRwmyLb4rGuyot435o5bG6XCcCgmNElJR1O3ZcSiuvfDMpQ0+QqcxAQ7
-   Et9c118HSHhk1aOki0JgKmhW//fxRQsYzz70wjZq7s2YqASGpXgK6nNMN
-   yFFW66tED2/DNeAjslAjBtQ3v3oocAYqA786Ko3fV+qQYtJau7u6abY6m
-   9b0V0NHpaaBoeqVT1WeRAVrIlcji1dDrncrj5J9oZKYD6u+U226zvK0da
-   CiOxNPlBfik38MesnJB65MUDEZagYA9IvzNOiqpwyXQoqQB0TALZWZUYL
-   Ql+cNMi0sZTZxPiLcOLUjuHVxbGBxzjn9gFNCMKj5RCJxGxtPLeWuqvwb
-   g==;
-X-CSE-ConnectionGUID: k6X51gXbRj+5N8U5QryaDQ==
-X-CSE-MsgGUID: XCM52f43QjK93VPL9STsDg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11835"; a="101388363"
-X-IronPort-AV: E=Sophos;i="6.25,145,1779174000"; 
-   d="scan'208";a="101388363"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
-  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Jul 2026 07:40:48 -0700
-X-CSE-ConnectionGUID: ewbP/Hv5QVeqbVxRWbcP9g==
-X-CSE-MsgGUID: YomxnCEcRbSCC/0I+QL1oQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,145,1779174000"; 
-   d="scan'208";a="252662617"
-Received: from ijarvine-desk1.ger.corp.intel.com (HELO mnyman-desk.intel.com) ([10.245.245.154])
-  by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Jul 2026 07:40:47 -0700
-From: Mathias Nyman <mathias.nyman@linux.intel.com>
-To: <gregkh@linuxfoundation.org>
-Cc: <linux-usb@vger.kernel.org>,
-	=?UTF-8?q?=E8=83=A1=E8=BF=9E=E5=8B=A4?= <hulianqin@vivo.com>,
-	stable@vger.kernel.org,
-	Mathias Nyman <mathias.nyman@linux.intel.com>
-Subject: [PATCH 2/2] usb: xhci: Fix sleep in atomic context in xhci_free_streams()
-Date: Fri,  3 Jul 2026 17:40:33 +0300
-Message-ID: <20260703144033.483286-3-mathias.nyman@linux.intel.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260703144033.483286-1-mathias.nyman@linux.intel.com>
-References: <20260703144033.483286-1-mathias.nyman@linux.intel.com>
+	s=arc-20240116; t=1783091261; c=relaxed/simple;
+	bh=mgjyxZoiOvFijt/d+PC0DtD/Alk5U8ztsi8AqhLZuZo=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Xr+s/dtVDNTrf/OlIj92pkb0AbjFJiItX3qZQynpadTW1UqFII4si5bXw7+MuqnDXstC4KnOQlkfalPMpu1bO6LROe00BBzk19PLaMDGzgp3WRUrqlUz81ODchLUWQ8q5/bIL1QacwwuSveKWuW37EadgHWixhLwIe6HoNHB0qU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=RuAt6L0F; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=B/hPGg30; arc=none smtp.client-ip=170.10.133.124
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1783091258;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=ufmoYIO+8FVkXj7I+/+r0HlaIjqkZ37cLPCzcjFGBsk=;
+	b=RuAt6L0FVMkBLNgDU7IVySAqPi0x3uUjHTY1YhcDL8/rItXH1JwoeX/dY6VX8KZKBjotkB
+	JIR/xw/JgSYfm5J/WFjf3OYcyzGM3MSkoj5AhpXsTfTPkoWDJWnCLLBPtx3Cgvf9wORx0z
+	kbcqwG0l3KBdlQhUEGEwvGRxShysxmM=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-262-lvhhsZv_P5CS5zpTLmrEFw-1; Fri, 03 Jul 2026 11:07:35 -0400
+X-MC-Unique: lvhhsZv_P5CS5zpTLmrEFw-1
+X-Mimecast-MFC-AGG-ID: lvhhsZv_P5CS5zpTLmrEFw_1783091254
+Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-493c588b6f2so5037145e9.0
+        for <stable@vger.kernel.org>; Fri, 03 Jul 2026 08:07:35 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1783091254; x=1783696054; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=ufmoYIO+8FVkXj7I+/+r0HlaIjqkZ37cLPCzcjFGBsk=;
+        b=B/hPGg30VI1IBI3VDfScRK027txAkZD2w3apaKDixLY3A3RoVpQttupKu9mzFiJh9n
+         onxMm20p5xYD7pEQwnXwLXTF0Thrmq2q7t4GKy7bK+VhBrgCKA5n5mUdBuwYuai/477Y
+         WJFj/pKuxSJDdMninWWJT9YwoLXUlCaXsT09I2pGAzxncesaLNBED0xUQXPw6dASOCl2
+         HZ3br5aqpnJV4LcYPBaHguWrHPsedTzWL+cStLUefc46k6V0iYNJgO1u77241GnsrwUn
+         aXlxp0DwpsSHoeTmsfRkEsMgz/dyNiIWFUE9WYl2XeABYwNSVHMvPvZDsvMQoQqbQhUk
+         jbgA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1783091254; x=1783696054;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=ufmoYIO+8FVkXj7I+/+r0HlaIjqkZ37cLPCzcjFGBsk=;
+        b=qtNXXRs2UsKpsoHmjf7ak5Rik0OGP9fgdT5yhlxZ5ggVVoHoDgeaxdI0+uuF3SlwXI
+         RgSneeHXASmSOpGpdeMQOQMKQliY+jHEoJNBvMlebS+V4uCixs4rZfSKYgR+uAYsqjzC
+         7OcRRwMIWHNTJg8m3ELLHFECNAptKv0rhNhfMq93u3sibiPdReZ38kKvrwADPn+SNjsN
+         Q7v/MtN0N4fcvnYu5gHItwBnAZ90SdT51YcF4OM7vxDBdDiCess2vxDvE0J+9IKxcs+Q
+         9kVra+Xj6QAYrVNaGT51HLZd6ilJOs5/gYo5pL6IYCBhAKW2R9izf5AriAyCDDy/+waK
+         gp8A==
+X-Forwarded-Encrypted: i=1; AFNElJ/GZtKBXrn2udzQKdIVMvQZz9cig/kNowcCbM/rsPT3zwPsPZk7XTbcbHv7OyF2fSU2A8PrE/w=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz2A1g0PTaQDBlKAZhwuFvqet9TTuP7Bao1NB4iAq3VydxSsfzV
+	/eHzQdAWh+pOpiCo9QQXKKhRUSUajy5KD8vJiokyt7+3H+Af15FPDcxGDfghG+jtC8zBbINonPQ
+	Or9P9pzSDhgXJBpERuCOa2KaDL2mY2x4xSBeYsqe8f87lvlX4ddWCcN97Lw==
+X-Gm-Gg: AfdE7cm5qwg1P5uLu3Wg4Ac7NViYKw/a7vxDEGQxwfOgAaYLMpqVbyUjzEKSEDllP6t
+	DZkWNDHEwIfTnzbuCyYiNgXpAbwhjccRgXqBxl6s7Ypz+0MXAie9Lft08Y4trcf/pT6ToRajj3G
+	/+slW6MfapQTn97PPoHodeVhR1/Yx6rVV5iufLc99I2cmGzcpItkN00WHHKkfIPW3kt6a8945c5
+	A8AgeDdi/gIOLWqSKrSa+lBqVEoDAUoMSLcnkzEeRxf36EGuckzRr9WS5+kjwIJ9RlpClkCXXnM
+	6U1Krh16n+/U2QKUxnqZAywfU5j6dcyoGYyXjrWVtBAXxV29xkz+gGQy0l/JzQ4CKmaxZwN2G9P
+	QLQt5FDiqJ3MkGIplb66SWvaHsuTemMAlJkRqB8WBfBDnHj7TC38wUd5GyQRsPWfM7MnCjovPxa
+	xJ3Jc=
+X-Received: by 2002:a05:600c:22da:b0:493:b55f:bca2 with SMTP id 5b1f17b1804b1-493d0f418famr2033625e9.34.1783091253954;
+        Fri, 03 Jul 2026 08:07:33 -0700 (PDT)
+X-Received: by 2002:a05:600c:22da:b0:493:b55f:bca2 with SMTP id 5b1f17b1804b1-493d0f418famr2033285e9.34.1783091253473;
+        Fri, 03 Jul 2026 08:07:33 -0700 (PDT)
+Received: from ?IPV6:2a01:e34:ecaf:77c0:40ac:89a3:9858:a68e? ([2a01:e34:ecaf:77c0:40ac:89a3:9858:a68e])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-493cfb6f199sm30527515e9.3.2026.07.03.08.07.32
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 03 Jul 2026 08:07:32 -0700 (PDT)
+Message-ID: <eb829084-0b8b-4317-a382-4a9d0a0b4bac@redhat.com>
+Date: Fri, 3 Jul 2026 17:07:31 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] 9p: fix privport option setting wrong RDMA field
+To: Stefano Garzarella <sgarzare@redhat.com>, v9fs@lists.linux.dev
+Cc: Latchesar Ionkov <lucho@ionkov.net>,
+ Dominique Martinet <asmadeus@codewreck.org>,
+ Christian Schoenebeck <linux_oss@crudebyte.com>,
+ linux-kernel@vger.kernel.org, Eric Van Hensbergen <ericvh@kernel.org>,
+ stable@vger.kernel.org
+References: <20260703102254.114446-1-sgarzare@redhat.com>
+Content-Language: en-US
+From: Eric Sandeen <sandeen@redhat.com>
+In-Reply-To: <20260703102254.114446-1-sgarzare@redhat.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-4.16 / 15.00];
-	WHITELIST_SPF_DKIM(-3.00)[intel.com:d:+,kernel.org:s:+];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
-	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	DMARC_POLICY_ALLOW(-0.50)[redhat.com,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114];
+	R_DKIM_ALLOW(-0.20)[redhat.com:s=mimecast20190719,redhat.com:s=google];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-271809-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FORGED_SENDER(0.00)[mathias.nyman@linux.intel.com,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS(0.00)[m:gregkh@linuxfoundation.org,m:linux-usb@vger.kernel.org,m:hulianqin@vivo.com,m:stable@vger.kernel.org,m:mathias.nyman@linux.intel.com,s:lists@lfdr.de];
+	DKIM_TRACE(0.00)[redhat.com:+];
 	FORWARDED(0.00)[lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-271811-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	FORGED_SENDER(0.00)[sandeen@redhat.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS(0.00)[m:sgarzare@redhat.com,m:v9fs@lists.linux.dev,m:lucho@ionkov.net,m:asmadeus@codewreck.org,m:linux_oss@crudebyte.com,m:linux-kernel@vger.kernel.org,m:ericvh@kernel.org,m:stable@vger.kernel.org,s:lists@lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[mathias.nyman@linux.intel.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[intel.com:+];
-	RCVD_COUNT_FIVE(0.00)[5];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[sandeen@redhat.com,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	ALIAS_RESOLVED(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,vger.kernel.org:from_smtp,linux.intel.com:mid,linux.intel.com:from_mime,vivo.com:email,intel.com:email,intel.com:dkim]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 098B47039A6
+X-Rspamd-Queue-Id: 6F80B703B84
 
-From: 胡连勤 <hulianqin@vivo.com>
+On 7/3/26 12:22 PM, Stefano Garzarella wrote:
+> From: Stefano Garzarella <sgarzare@redhat.com>
+> 
+> While reviewing a patch adding vsock transport to 9p, I noticed that
+> since commit 1f3e4142c0eb ("9p: convert to the new mount API"), the
+> Opt_privport case incorrectly sets rdma_opts->port instead of
+> rdma_opts->privport, so mounting with the privport option overwrites
+> the RDMA port number instead of enabling privileged port usage.
+> 
+> Fixes: 1f3e4142c0eb ("9p: convert to the new mount API")
+> Cc: stable@vger.kernel.org
+> Cc: sandeen@redhat.com
+> Signed-off-by: Stefano Garzarella <sgarzare@redhat.com>
 
-When a USB device with active stream endpoints is disconnected,
-xhci_free_streams() is called from the hub_event workqueue to
-free the stream resources.  It calls xhci_free_stream_info()
-while holding xhci->lock with irqs disabled.
+Ugh, sorry about that.
 
-xhci_free_stream_info() invokes xhci_free_stream_ctx(), which
-calls dma_free_coherent() for large stream context arrays.
+Acked-by: Eric Sandeen <sandeen@redhat.com>
 
-dma_free_coherent() can sleep (e.g. via vunmap), triggering
-a BUG when called from atomic context.
-
-Call trace:
- dma_free_attrs+0x174/0x220
- xhci_free_stream_info+0xd0/0x11c
- xhci_free_streams+0x278/0x37c
- usb_free_streams+0x98/0xc0
- usb_unbind_interface+0x1b8/0x2f8
- device_release_driver_internal+0x1d4/0x2cc
- device_release_driver+0x18/0x28
- bus_remove_device+0x160/0x1a4
- device_del+0x1ec/0x350
- usb_disable_device+0x98/0x214
- usb_disconnect+0xf0/0x35c
- hub_event+0xab4/0x19ec
- process_one_work+0x278/0x63c
-
-Fix this by saving the stream_info pointers and clearing the
-ep references under the lock, then calling xhci_free_stream_info()
-outside the lock where sleeping is allowed.
-
-Fixes: 8df75f42f8e6 ("USB: xhci: Add memory allocation for USB3 bulk streams.")
-Cc: stable@vger.kernel.org
-Signed-off-by: Lianqin Hu <hulianqin@vivo.com>
-Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
----
- drivers/usb/host/xhci.c | 11 ++++++++++-
- 1 file changed, 10 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/usb/host/xhci.c b/drivers/usb/host/xhci.c
-index 6922cc5496c1..f44ccee5fa07 100644
---- a/drivers/usb/host/xhci.c
-+++ b/drivers/usb/host/xhci.c
-@@ -3785,6 +3785,7 @@ static int xhci_free_streams(struct usb_hcd *hcd, struct usb_device *udev,
- 	struct xhci_virt_device *vdev;
- 	struct xhci_command *command;
- 	struct xhci_input_control_ctx *ctrl_ctx;
-+	struct xhci_stream_info *stream_info[EP_CTX_PER_DEV];
- 	unsigned int ep_index;
- 	unsigned long flags;
- 	u32 changed_ep_bitmask;
-@@ -3845,10 +3846,15 @@ static int xhci_free_streams(struct usb_hcd *hcd, struct usb_device *udev,
- 	if (ret < 0)
- 		return ret;
- 
-+	/*
-+	 * dma_free_coherent() called by xhci_free_stream_info() may sleep,
-+	 * so save stream_info pointers and clear references under lock,
-+	 * then free the memory outside lock.
-+	 */
- 	spin_lock_irqsave(&xhci->lock, flags);
- 	for (i = 0; i < num_eps; i++) {
- 		ep_index = xhci_get_endpoint_index(&eps[i]->desc);
--		xhci_free_stream_info(xhci, vdev->eps[ep_index].stream_info);
-+		stream_info[i] = vdev->eps[ep_index].stream_info;
- 		vdev->eps[ep_index].stream_info = NULL;
- 		/* FIXME Unset maxPstreams in endpoint context and
- 		 * update deq ptr to point to normal string ring.
-@@ -3858,6 +3864,9 @@ static int xhci_free_streams(struct usb_hcd *hcd, struct usb_device *udev,
- 	}
- 	spin_unlock_irqrestore(&xhci->lock, flags);
- 
-+	for (i = 0; i < num_eps; i++)
-+		xhci_free_stream_info(xhci, stream_info[i]);
-+
- 	return 0;
- }
- 
--- 
-2.43.0
+> ---
+>  fs/9p/v9fs.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/fs/9p/v9fs.c b/fs/9p/v9fs.c
+> index 274c5157135d..f426cee37414 100644
+> --- a/fs/9p/v9fs.c
+> +++ b/fs/9p/v9fs.c
+> @@ -406,7 +406,7 @@ int v9fs_parse_param(struct fs_context *fc, struct fs_parameter *param)
+>  		break;
+>  	case Opt_privport:
+>  		fd_opts->privport = true;
+> -		rdma_opts->port = true;
+> +		rdma_opts->privport = true;
+>  		break;
+>  	}
+>  
 
 
