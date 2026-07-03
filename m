@@ -1,147 +1,173 @@
-Return-Path: <stable+bounces-271626-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-271627-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id J1VaH+dIR2qQVQAAu9opvQ
-	(envelope-from <stable+bounces-271626-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 03 Jul 2026 07:30:15 +0200
+	id A7XgE8pER2pNVAAAu9opvQ
+	(envelope-from <stable+bounces-271627-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 03 Jul 2026 07:12:42 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 648636FEB96
-	for <lists+stable@lfdr.de>; Fri, 03 Jul 2026 07:30:14 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id BE39E6FE9BC
+	for <lists+stable@lfdr.de>; Fri, 03 Jul 2026 07:12:41 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=none;
-	dmarc=none;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-271626-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-271626-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linux.dev header.s=key1 header.b=mt3Z6RcJ;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-271627-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-271627-lists+stable=lfdr.de@vger.kernel.org";
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 6AF8C30CBC59
-	for <lists+stable@lfdr.de>; Fri,  3 Jul 2026 05:11:42 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 13870302A4FA
+	for <lists+stable@lfdr.de>; Fri,  3 Jul 2026 05:12:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B569C351C06;
-	Fri,  3 Jul 2026 05:05:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA1DA33F8C5;
+	Fri,  3 Jul 2026 05:12:12 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from cstnet.cn (smtp81.cstnet.cn [159.226.251.81])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+Received: from out-182.mta1.migadu.com (out-182.mta1.migadu.com [95.215.58.182])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1960833FE36
-	for <stable@vger.kernel.org>; Fri,  3 Jul 2026 05:05:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24D9E343D75;
+	Fri,  3 Jul 2026 05:12:00 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783055151; cv=none; b=ZcTin8PE4uPLfZEEGKbX41FYMgqNnGG46jaSZo0ZFfNhwmeJjD1R/plf/SeI1oX+KKy1GdoE4AqmumFmWoWK6BvS0k9Q/TJPNBZCn2FkIi8OoHXhW0Cw3s31e/PBBsyto6WoAqG+altQxiI3oiLQhEHboCXEXd+aEExUR23i1tc=
+	t=1783055530; cv=none; b=HNwE13ZjxYoSMN/+1SlOJKCN+ykQFENgNxHRk6KLpT35EFDLehuPlw+xdNz+CKk3EdC7gRO0skOBI9VTe8zGh7e6icBhmc6uN9mQheWavs3IQSBighUOXkBzLjEXb1CZDisYyOsoe9AfHrbUgvurxTBXIftXjEWrPmk9afQ2CCw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783055151; c=relaxed/simple;
-	bh=3Au1U27iZcl4pVADshRVmDztN7WWYD7I9Gdi0ioXFro=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Xm12Z81ub/vausNNQtJubnf0ubJKUxRzxj468BeYQhU4rFWvLoIn9UT00l/W662JdIQpPusyiMUxsjM1dvd0CVrHVng6KC8BnrzBD02lkCINSmWwDFyd5b8diQUiYat4oRVmri7wQv3ddmEM3C2RCxT4JsQ1SRmi/PItKz6hr5g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.81
-Received: from [192.168.0.103] (unknown [123.118.218.239])
-	by APP-03 (Coremail) with SMTP id rQCowADn47oaQ0dqkGi+Fg--.1069S2;
-	Fri, 03 Jul 2026 13:05:31 +0800 (CST)
-Message-ID: <6c5c0723-66c6-4f9f-8021-2562efc95c6e@iscas.ac.cn>
-Date: Fri, 3 Jul 2026 13:05:30 +0800
+	s=arc-20240116; t=1783055530; c=relaxed/simple;
+	bh=QodELRbfsPAagFSQb+Am3TLMBlWvPzqHiUnCbRYCO9Q=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=OUdoX38Uvz79qBCSJ5npaMtZ5yf98jhhd+3u6L9emOqBWX4vYXthax5itxy84nwZxGF6CMFTVeuvvJRmRJOS8BIOIU4TT4/JfYxgf9Do2xbygAN2yZxpjmouUeu9Aycf+wke4AOPR7mLVTWb/fJOYXy/zT1ozR35lH6nFFV5NFs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=mt3Z6RcJ; arc=none smtp.client-ip=95.215.58.182
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1783055506;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=TclDFaPZdaXfZinZztmQXDY2osmC9ohL82aKjMqnljA=;
+	b=mt3Z6RcJAbFH5qjmNSVJr9og3cANnog5yCm8KOSikIlNWnWUdlzBYYJRAxJJYQPrB9K2v2
+	t/yidQofXCp8zmiyWOyphesT3hGz9lnz5aI/EeO8GKygjhDt0FxJZTf68vKAwDGvFvHdqj
+	xkCSEJlXdSaVC7mi91P395B1Vyr2Als=
+From: Lance Yang <lance.yang@linux.dev>
+To: pfalcato@suse.de
+Cc: akpm@linux-foundation.org,
+	david@kernel.org,
+	ljs@kernel.org,
+	baolin.wang@linux.alibaba.com,
+	liam@infradead.org,
+	npache@redhat.com,
+	ryan.roberts@arm.com,
+	dev.jain@arm.com,
+	baohua@kernel.org,
+	lance.yang@linux.dev,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org,
+	stable@vger.kernel.org,
+	viro@zeniv.linux.org.uk,
+	brauner@kernel.org,
+	jack@suse.cz,
+	willy@infradead.org,
+	song@kernel.org,
+	ehagberg@janestreet.com,
+	ziy@nvidia.com,
+	gleventhal@janestreet.com
+Subject: Re: [PATCH stable] mm/khugepaged: write all dirty file folios when collapsing
+Date: Fri,  3 Jul 2026 13:11:29 +0800
+Message-Id: <20260703051129.88453-1-lance.yang@linux.dev>
+In-Reply-To: <20260702165409.164568-1-pfalcato@suse.de>
+References: <20260702165409.164568-1-pfalcato@suse.de>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 7.1 097/120] riscv: kfence: Call mark_new_valid_map() for
- kfence_unprotect()
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, Yanko Kaneti <yaneti@declera.com>,
- Paul Walmsley <pjw@kernel.org>
-References: <20260702155112.964534952@linuxfoundation.org>
- <20260702155114.965608834@linuxfoundation.org>
-Content-Language: en-US
-From: Vivian Wang <wangruikang@iscas.ac.cn>
-In-Reply-To: <20260702155114.965608834@linuxfoundation.org>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-CM-TRANSID:rQCowADn47oaQ0dqkGi+Fg--.1069S2
-X-Coremail-Antispam: 1UD129KBjvdXoW7Xr18AFWUGFWDAF43ZFWxtFb_yoWfWFcEga
-	40van5WryxWa1v9F1ayFsa9r48Kr9YqrW5X3s3tr4UGr43WrZ8uF1v9FsxZ3W2grZxKrs2
-	ywn2qayxXr12gjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
-	9fnUUIcSsGvfJTRUUUb7AYjsxI4VW3JwAYFVCjjxCrM7AC8VAFwI0_Jr0_Gr1l1xkIjI8I
-	6I8E6xAIw20EY4v20xvaj40_Wr0E3s1l1IIY67AEw4v_Jr0_Jr4l8cAvFVAK0II2c7xJM2
-	8CjxkF64kEwVA0rcxSw2x7M28EF7xvwVC0I7IYx2IY67AKxVW8JVW5JwA2z4x0Y4vE2Ix0
-	cI8IcVCY1x0267AKxVW8JVWxJwA2z4x0Y4vEx4A2jsIE14v26F4UJVW0owA2z4x0Y4vEx4
-	A2jsIEc7CjxVAFwI0_GcCE3s1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xvF2IE
-	w4CE5I8CrVC2j2WlYx0E2Ix0cI8IcVAFwI0_Jr0_Jr4lYx0Ex4A2jsIE14v26r1j6r4UMc
-	vjeVCFs4IE7xkEbVWUJVW8JwACjcxG0xvEwIxGrwCY1x0262kKe7AKxVWUAVWUtwCF04k2
-	0xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02F40E14v26r1j6r18MI
-	8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_JF0_Jw1lIxkGc2Ij64vIr41l
-	IxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7CjxVAFwI0_Jr0_Gr1lIx
-	AIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r1j6r4UMIIF0xvEx4A2
-	jsIEc7CjxVAFwI0_Jr0_GrUvcSsGvfC2KfnxnUUI43ZEXa7IU8KLvtUUUUU==
-X-CM-SenderInfo: pzdqw2pxlnt03j6l2u1dvotugofq/
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.46 / 15.00];
+X-Spamd-Result: default: False [-1.16 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linux.dev,none];
+	R_DKIM_ALLOW(-0.20)[linux.dev:s=key1];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_RECIPIENTS(0.00)[m:gregkh@linuxfoundation.org,m:stable@vger.kernel.org,m:patches@lists.linux.dev,m:yaneti@declera.com,m:pjw@kernel.org,s:lists@lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	DMARC_NA(0.00)[iscas.ac.cn];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER(0.00)[wangruikang@iscas.ac.cn,stable@vger.kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-271627-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
-	TAGGED_FROM(0.00)[bounces-271626-lists,stable=lfdr.de];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[wangruikang@iscas.ac.cn,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[3];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:pfalcato@suse.de,m:akpm@linux-foundation.org,m:david@kernel.org,m:ljs@kernel.org,m:baolin.wang@linux.alibaba.com,m:liam@infradead.org,m:npache@redhat.com,m:ryan.roberts@arm.com,m:dev.jain@arm.com,m:baohua@kernel.org,m:lance.yang@linux.dev,m:linux-mm@kvack.org,m:linux-kernel@vger.kernel.org,m:linux-fsdevel@vger.kernel.org,m:stable@vger.kernel.org,m:viro@zeniv.linux.org.uk,m:brauner@kernel.org,m:jack@suse.cz,m:willy@infradead.org,m:song@kernel.org,m:ehagberg@janestreet.com,m:ziy@nvidia.com,m:gleventhal@janestreet.com,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[lance.yang@linux.dev,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	MISSING_XM_UA(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	TO_DN_NONE(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[lance.yang@linux.dev,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linux.dev:+];
 	ALIAS_RESOLVED(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	R_DKIM_NA(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,iscas.ac.cn:from_mime,iscas.ac.cn:email,iscas.ac.cn:mid]
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[23];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 648636FEB96
+X-Rspamd-Queue-Id: BE39E6FE9BC
 
-On 7/3/26 00:21, Greg Kroah-Hartman wrote:
 
-> 7.1-stable review patch.  If anyone has any objections, please let me know.
+On Thu, Jul 02, 2026 at 05:54:09PM +0100, Pedro Falcato wrote:
+>As-is, khugepaged and writable-file opening exclude each other. A file
+>cannot be open writeable and have THPs (because the filesystem is not aware
+>of them). khugepaged will never collapse file pages for files that are
+>opened writeable. On an open(O_RDWR/O_WRONLY), the page cache for that
+>particular file is dropped. This is fine because nothing could've been
+>dirtied.
 >
-> ------------------
+>However, there is an edge-case: collapse_file() might not be able to
+>coexist with concurrent writers, but it can coexist with dirty folios
+>(from previous writers). Therefore, the following can happen:
 >
-> From: Vivian Wang <wangruikang@iscas.ac.cn>
+>open(file, O_RDWR)
+>write(file)
+>close(file)
+>madvise(file_mapping, MADV_COLLAPSE, some non-dirty range)
+>open(file, O_RDWR)
+> nr_thps > 0
+>  truncate_inode_pages()
+>    /* THPs are cleared out, but so are the dirty folios */
 >
-> commit 8d6c8c40e733b3fcaf92fed0a078bba2f6941a3b upstream.
-> [...]
+>When this edge-case happens, there is data loss, as the dirty folios are
+>fully discarded.
+
+Well spotted, thanks!
+
 >
-> --- a/arch/riscv/include/asm/kfence.h
-> +++ b/arch/riscv/include/asm/kfence.h
+>Fix it by fully writing back the page cache (and waiting) when collapsing
+>file THPs. Doing so provides the guarantee that no dirty folio will be
+>observed while there are active THPs. To fully ensure this is safe, the
+>invalidate_lock needs to be held while doing the writeout, so that
+>do_dentry_open()'s page cache truncation excludes this write-and-wait.
 >
-> [...]
->
-> -	if (protect)
-> +	if (protect) {
->  		set_pte(pte, __pte(pte_val(ptep_get(pte)) & ~_PAGE_PRESENT));
-> -	else
-> +	} else {
->  		set_pte(pte, __pte(pte_val(ptep_get(pte)) | _PAGE_PRESENT));
-> +		mark_new_valid_map();
+>Cc: stable@vger.kernel.org
+>Cc: Alexander Viro <viro@zeniv.linux.org.uk>
+>Cc: Christian Brauner <brauner@kernel.org>
+>Cc: Jan Kara <jack@suse.cz>
+>Cc: Matthew Wilcox <willy@infradead.org>
+>Cc: Song Liu <song@kernel.org>
+>Cc: Eric Hagberg <ehagberg@janestreet.com>
+>Cc: Zi Yan <ziy@nvidia.com>
+>Fixes: 99cb0dbd47a1 ("mm,thp: add read-only THP support for (non-shmem) FS")
+>Reported-by: Gregg Leventhal <gleventhal@janestreet.com>
+>Closes: https://lore.kernel.org/linux-mm/CAFN_u7H_0ECF3jixP=T=U7AH5=Q3wQNvJMo8an3VqUDMerQfUw@mail.gmail.com/
+>Tested-by: Zi Yan <ziy@nvidia.com>
+>Signed-off-by: Pedro Falcato <pfalcato@suse.de>
+>---
 
-Please also backport this commit's parent, the introduction of
-mark_new_valid_map():
+Tested on v7.1.2. I no longer see the data loss with this patch applied.
 
-    9ee25d0a70ff4494b4e1d266b962d0a574ef318a ("riscv: mm: Extract helper mark_new_valid_map()")
-
-before this patch.
-
-IIUC this is needed on 6.12.y, 6.18.y, 7.1.y.
-
-Thanks,
-Vivian "dramforever" Wang
-
+Tested-by: Lance Yang <lance.yang@linux.dev>
 
