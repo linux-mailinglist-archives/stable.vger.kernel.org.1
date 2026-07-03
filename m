@@ -1,51 +1,51 @@
-Return-Path: <stable+bounces-271618-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-271619-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id tFhLMoU1R2oZUQAAu9opvQ
-	(envelope-from <stable+bounces-271618-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 03 Jul 2026 06:07:33 +0200
+	id RfyyH341R2oYUQAAu9opvQ
+	(envelope-from <stable+bounces-271619-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 03 Jul 2026 06:07:26 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 67A596FE4C8
-	for <lists+stable@lfdr.de>; Fri, 03 Jul 2026 06:07:33 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id E16A56FE4C3
+	for <lists+stable@lfdr.de>; Fri, 03 Jul 2026 06:07:25 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=opAsTt5V;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=NN8S6rnH;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-271618-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-271618-lists+stable=lfdr.de@vger.kernel.org";
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-271619-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-271619-lists+stable=lfdr.de@vger.kernel.org";
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 4D1B73063415
-	for <lists+stable@lfdr.de>; Fri,  3 Jul 2026 04:07:21 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 75DB43047E57
+	for <lists+stable@lfdr.de>; Fri,  3 Jul 2026 04:07:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3BC3131714B;
-	Fri,  3 Jul 2026 04:07:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 26AB63195FA;
+	Fri,  3 Jul 2026 04:07:20 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36913188596;
-	Fri,  3 Jul 2026 04:07:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACFE430DECC;
+	Fri,  3 Jul 2026 04:07:11 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783051637; cv=none; b=mrBFcFo7iCf5DKfMP24HGWKZ9OGFu4mPUtnLRjaniwTQrHQCm7WjyIFXI4rPkgfRBlinCG7rRgR+TQtE7fJHFJV/3RKJJfuhpZo+/oLMpVC/7lbbNimaxUggWdhAzQ2NWcHicEMXLCN55+rza5tC+Ap6TYwxNoxZgdylhBozPeM=
+	t=1783051638; cv=none; b=N9S4Eusq5YgODhu11kq4MMN0rKbHxFARylfZ92ie/cl0DaauLwqxTQ1nMXTrbIsTb2GiOjqGNbNgKwdw77iDC7v6PUbB+xs5mtpm1shIoMU3n8bVKkVvCHTg714bb+h1XAQOQ9R2Ib0KEADCycacW/mP+le2wVxK2X+HRYwHWU4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783051637; c=relaxed/simple;
-	bh=TVPx9+UZMgOp/nS3EIE3M7GR8OHPCQCO6F1iKYV1IsM=;
+	s=arc-20240116; t=1783051638; c=relaxed/simple;
+	bh=Kxik0PGP15X1QTMvuQHMbi9WbmUSQt+JurQoH3ADVS8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uK0HwR1joLx51OCUltsxZpxiA6IQteRcXxFQaEdmLXQKBoqJ4weXat7KBrrt+E6L9Px73KPMzBmao9xfxVCaepQ8uwvp1oFnY2x99HEOgIynaAAIdZH0pqBaVEdomPZiohtLg8YI9w/pnn6ATawHmHdWwbQU0JwyOv+Bt7rWDqY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=opAsTt5V; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D29401F00A3E;
-	Fri,  3 Jul 2026 04:07:06 +0000 (UTC)
+	 MIME-Version; b=Bs5ot9d/pFqtkApA2vwyIRC+q/9KaBz1kywVI4xgk6z6WrPjUnYjuKIGSxb+m5Nli2kwVf44XABL1nbVDWylX25hRWoJv2EUHVqh4zfvoZF4uKdqlDBOegwNY1J5thnfumHTUywsS7qRw+AlkCAO922NFBGoeKBf7ez/rP+oJ40=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NN8S6rnH; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 953CF1F00A3F;
+	Fri,  3 Jul 2026 04:07:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783051628;
-	bh=qUkFcOWdT85XkofjLzr8FixEVGk0Bvd0W1X8es58PKI=;
+	s=k20260515; t=1783051630;
+	bh=V/IDuOkOULpxERfKYNtIRcT8Y6B+PBtsCGeyRszDJiY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=opAsTt5Vh7itpJrkn9yMwAMyyh2OU1wu1WdrWfN6Jbr0t6uXVDmOC9K+ltRl7pCTE
-	 s/6uDnEtQz+ExmJo3rNrHJxy6iu4/xoa6qGcUXmi54e2zB5OXKtaRIbmi93GmObJJF
-	 NbHiTZnefkCi/1Qu7Mj+4q7NYNk/GvvKGWEwZ7H206mqdJAD36kg5D8F63SzZB3ULI
-	 RUlKe1MxGgfQEVQcSo1Z0PequlsV0hCKvnXMwR07HBRblZJOd2oJlMPt1C5MtITEYD
-	 u5ygcrGorJC9Rd2poI1RZZ3oalPXikxTfg2AoA2cWur8vKtcv44McqAgYg1GI44oul
-	 NoPLsROumzZSA==
+	b=NN8S6rnHQfskr2AlUKu//359uBhPBK/70zx27rEM2JidQPnd5G4Nq1SOgiF1bOUcZ
+	 F9RJobWoJzgFj/wHAhPOYgWINrkWmSSq2RBMPL28LXx9fb0M3bRP+snQHcUlnAO//s
+	 E3vkSs3UYyDfGm70XyBtMRa7n2FvmP6DvzIoaK9nW8QOexe7KcLBS2SrNwMqdtTVzT
+	 /M+hUxr9ElP+OxbLLg9jIQ9FwI18/FS5a1yV7ZKGZWO12ZYgQiQTjJYjKAbyEv5iDi
+	 hU5nYJSWLeoh4Q2RnMt8wZtoBmoOINJ0Qg1uP1Y/kI/GcOf/h1G5XuRqYl5TX6gihT
+	 MqKb//Ui78YTA==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
 Cc: Sasha Levin <sashal@kernel.org>,
@@ -60,12 +60,12 @@ Cc: Sasha Levin <sashal@kernel.org>,
 	linux-nvme@lists.infradead.org,
 	linux-kernel@vger.kernel.org,
 	Philo Lu <lulie@linux.alibaba.com>
-Subject: Re: [PATCH 6.1.y] nvmet-tcp: fix race between ICReq handling and queue teardown
-Date: Fri,  3 Jul 2026 00:06:57 -0400
-Message-ID: <stable-reply-nvmet-tcp-61y-20260702192533@kernel.org>
+Subject: Re: [PATCH 5.15.y] nvmet-tcp: fix race between ICReq handling and queue teardown
+Date: Fri,  3 Jul 2026 00:06:58 -0400
+Message-ID: <stable-reply-nvmet-tcp-515y-20260702192533@kernel.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260702123644.98527-1-lulie@linux.alibaba.com>
-References: <20260702123644.98527-1-lulie@linux.alibaba.com>
+In-Reply-To: <20260702123757.99897-1-lulie@linux.alibaba.com>
+References: <20260702123757.99897-1-lulie@linux.alibaba.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -81,12 +81,12 @@ X-Spamd-Result: default: False [-3.16 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-271618-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-271619-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:sashal@kernel.org,m:hch@lst.de,m:sagi@grimberg.me,m:kch@nvidia.com,m:gregkh@linuxfoundation.org,m:skumar47@syr.edu,m:kumar.shivam43666@gmail.com,m:kbusch@kernel.org,m:dust.li@linux.alibaba.com,m:linux-nvme@lists.infradead.org,m:linux-kernel@vger.kernel.org,m:lulie@linux.alibaba.com,m:kumarshivam43666@gmail.com,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[sashal@kernel.org,stable@vger.kernel.org];
@@ -105,13 +105,13 @@ X-Spamd-Result: default: False [-3.16 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	FROM_HAS_DN(0.00)[]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 67A596FE4C8
+X-Rspamd-Queue-Id: E16A56FE4C3
 
-On Thu, Jul 02, 2026 at 08:36:44PM +0800, Philo Lu wrote:
+On Thu, Jul 02, 2026 at 08:37:57PM +0800, Philo Lu wrote:
 > From: Chaitanya Kulkarni <kch@nvidia.com>
 >
 > commit 5293a8882c549fab4a878bc76b0b6c951f980a61 upstream.
@@ -120,7 +120,7 @@ On Thu, Jul 02, 2026 at 08:36:44PM +0800, Philo Lu wrote:
 > Initialization Connection Response (ICResp), but it does so without
 > serializing against target-side queue teardown.
 
-Queued up for 6.1.y, thanks!
+Queued up for 5.15.y, thanks!
 
 -- 
 Thanks,
