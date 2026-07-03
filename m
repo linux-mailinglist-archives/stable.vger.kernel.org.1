@@ -1,268 +1,146 @@
-Return-Path: <stable+bounces-271681-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-271682-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id Z8svHmdxR2o9YQAAu9opvQ
-	(envelope-from <stable+bounces-271681-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 03 Jul 2026 10:23:03 +0200
+	id ksfKEiRvR2rhYAAAu9opvQ
+	(envelope-from <stable+bounces-271682-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 03 Jul 2026 10:13:24 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 23462700029
-	for <lists+stable@lfdr.de>; Fri, 03 Jul 2026 10:23:03 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id CA3666FFF14
+	for <lists+stable@lfdr.de>; Fri, 03 Jul 2026 10:13:23 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=gz7bKLxt;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-271681-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-271681-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=nabladev.com header.s=dkim header.b=Dmg3b8Q5;
+	dmarc=pass (policy=reject) header.from=nabladev.com;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-271682-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-271682-lists+stable=lfdr.de@vger.kernel.org";
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 401D731A70A7
-	for <lists+stable@lfdr.de>; Fri,  3 Jul 2026 08:09:53 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 7A1283013BBC
+	for <lists+stable@lfdr.de>; Fri,  3 Jul 2026 08:12:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EBC5B37268F;
-	Fri,  3 Jul 2026 08:09:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9329E367285;
+	Fri,  3 Jul 2026 08:12:17 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pj1-f46.google.com (mail-pj1-f46.google.com [209.85.216.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx.nabladev.com (mx.nabladev.com [178.251.229.89])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6AA735B137
-	for <stable@vger.kernel.org>; Fri,  3 Jul 2026 08:09:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6DC036EAA8;
+	Fri,  3 Jul 2026 08:12:15 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783066174; cv=none; b=dDw/riiWcD2eZaHkMeTeMrDFPzklMjOsBx2b2vZJXYmWVIivmmoA+q+osNFQOhqIa6tSgjMYNamsniSsMG8rryfBExuB1tVnF70hPClpDApyXgYmnAK9t3xtQIwvHQaSAUTKZs/zITd9A0fKM+lmL/JxVJgKVEajXABUYsOvZhs=
+	t=1783066337; cv=none; b=aT21XyNArPZr9lWEXmmQK3q0RtVU4KU9HIiQoueMd/Nem7Qvxwh4E5IdA7qa7S4Q4Irf52WnaA0UT+yEfe+2PvizL+08fsNyaH+2szQH4lQhddw626FoD7RMvO+1ovEBxM4zicu9ZsMhrsscQSWrZ4CYu0LrpVVK8CBIer/SVn4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783066174; c=relaxed/simple;
-	bh=CSYuelwBEgbOsTqPxA/RNruqEGmC7llHkPEnmOQMDNs=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=t5Cd4SneNmpdhLilywLvDsQzp7QputaLzm3uvCsNJFZudMMctiHPqPY+GplcnuDORO1wgV8igDhcKJv/MC52P+C4Yznl+I7GwRmu51oJGkYSxfWVyFuFShpGKwrPU8GBIMxhwI3bDJgx96G42WPjQrPi8N3LEq4c7f1Fxm8ZGq8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=gz7bKLxt; arc=none smtp.client-ip=209.85.216.46
-Received: by mail-pj1-f46.google.com with SMTP id 98e67ed59e1d1-3804e42ad5fso332911a91.2
-        for <stable@vger.kernel.org>; Fri, 03 Jul 2026 01:09:32 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1783066172; x=1783670972; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=w87AnrTB3+K5h4mEbRFEu3fZorqFSIFJ3pSg+bs+2hw=;
-        b=gz7bKLxtjD6wzsMtzaXuvzZEpzJzvQhH+mrf6cEjNTF1S3tox+ChiQmN8MptMVLssm
-         lS9y0LIQX3oqziBHlwK0AeiVe8FU1M++x6TQaWLnUnQDEOdeXP3dpcTWeAQef6A675VM
-         zIV5Gg18ANh7+t+delRsgFypGHyITARitdrvUOCHDJJov4DgfgoHkAAyg5qotdZ9id8Q
-         A15uU26KWyQ4rbD7ygcHCTi2F0BlSmwBiNVYFbB+M7AFKw/6B/j3NxanAySX6xhtEmrm
-         ay3zVfnTceOrwiQJ8mGXgUnISEq4cDKNBxOTusLoo4ZojHszJTEldH3Eb3RnzBgz96D8
-         Z16Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783066172; x=1783670972;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=w87AnrTB3+K5h4mEbRFEu3fZorqFSIFJ3pSg+bs+2hw=;
-        b=HW5I84eAe3VzvK3fRikA+dkLrf52TfM7y3lY+4BBM/Md3ImWCF7yHHxQTYwiQ/n8Dj
-         sxcgeW87IRA8qbJJ5Z1hcUJLAXdXTVR3ZniXqjN57yDRolkHQDivSf4njP5qF2L9UPpK
-         wnj2wiiYX2R39PH1t0esr9KmUcXzT3d1h0SdXXR8DnyAHGwymGDNIFF8UmsNR80hF7mv
-         FAPX1DbzTyu4k5WdSfTjEsKYXhmJowvWhF81njdudHJa2mTjXWtTQqPz7x4GnIW0qM4Q
-         FU/mw/4G9E0XKXAPcC2rWPDu2gqUIQRVFI8B5Sknv8MeMHArGT5EbzicjLGYv2R4+Yvm
-         ZOeg==
-X-Forwarded-Encrypted: i=1; AHgh+Ror9loSxBjHJWhKriAEr2OpaPAKq/u91FJW83A/NQEfK8MRh0RHoKyx1P6JN6FBLGPXEP25SX0=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz4vr171TvMI58qP6xoPsn11R/KFdgvlE/9UKCl0gUO4PueuIzi
-	UitNoZhHcwLtNN9X8z8mYx13+mS6gFTPBPJou9XdUtRVWGAJah927C5t
-X-Gm-Gg: AfdE7cnTbK+X+8D/ltWCLsw6eMQ6hR9J/W0um85/xeJfcC29360oZK+dLXkdaFPHRM+
-	E82SzXU0hAcLLcP3LSyRA96CZkMZEGxJQOuP2FV0qH4Q+oxPSMb/CSedcQk3fPODTdTS+j+1bG7
-	Ulcaza4M1aEBqLl2bvfPHKDb0+e+TrovZBm+dZc/Dic87o4C6njvIVBcUUJXXw6QgzRfIRDsBBg
-	HOWdrKa/fw9rCAyGGkp+BnqcqJ/m3A8Mt+VqCaoNLmtN7IIcope8o1hvabNCj1SxcunWIqDCM94
-	sq78Y/tXaQQ4qFCn/q4CxRf4UU0w1gfmAw5+H2z0A4fGCHuZPUWDIQ4ZSaZ3Cj7Vcw0QWu7nITu
-	90uBC6suLuvMyKB+F3PCjMQLMDJB1oRnx0wwO/2y6ri+l4Uem0lane1NBlTQgTkTaPPwqPWnuyu
-	/86SvSd4ClR369a4hp4YU8l5o5RBDxbRrerCcqqhwRCvpzw2viHmrgIA==
-X-Received: by 2002:a17:90b:1d8d:b0:381:20b:a9ee with SMTP id 98e67ed59e1d1-381020baa35mr4976082a91.14.1783066171845;
-        Fri, 03 Jul 2026 01:09:31 -0700 (PDT)
-Received: from localhost.localdomain ([45.67.201.99])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-38127ae18f7sm614923a91.3.2026.07.03.01.09.27
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 03 Jul 2026 01:09:31 -0700 (PDT)
-From: Baineng Shou <shoubaineng@gmail.com>
-To: Sumit Semwal <sumit.semwal@linaro.org>,
-	Benjamin Gaignard <benjamin.gaignard@collabora.com>,
-	Brian Starkey <Brian.Starkey@arm.com>,
-	John Stultz <jstultz@google.com>,
-	"T.J. Mercier" <tjmercier@google.com>,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	Sandeep Patil <sspatil@android.com>,
-	"Andrew F. Davis" <afd@ti.com>
-Cc: Baineng Shou <shoubaineng@gmail.com>,
-	stable@vger.kernel.org,
-	linux-media@vger.kernel.org (open list:DMA-BUF HEAPS FRAMEWORK),
-	dri-devel@lists.freedesktop.org (open list:DMA-BUF HEAPS FRAMEWORK),
-	linaro-mm-sig@lists.linaro.org (moderated list:DMA-BUF HEAPS FRAMEWORK),
-	linux-kernel@vger.kernel.org (open list)
-Subject: [PATCH] dma-buf: dma-heap: close installed fd when copy_to_user() fails
-Date: Fri,  3 Jul 2026 16:09:22 +0800
-Message-Id: <20260703080922.1838362-1-shoubaineng@gmail.com>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1783066337; c=relaxed/simple;
+	bh=DGy4flH25VXMiKCsIgEegcwD6RqmMUEhC319grkQUv8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=JLLzlt3ft2YJfkgqSAknJGOf2Vv1oUz2DYzZ03oFgD6vjc/HFen6rJoer1Pgs/WzdYFm8H1lEG42+CR7cIPVOfHQIMH4XrfsRuQEdM87uYzBjgEyUKAV1V85EIPoRR/duZ74gC8RM7pg1quENfPlztaC7u+8J+3VkV7P0ApLbBU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nabladev.com; spf=pass smtp.mailfrom=nabladev.com; dkim=pass (2048-bit key) header.d=nabladev.com header.i=@nabladev.com header.b=Dmg3b8Q5; arc=none smtp.client-ip=178.251.229.89
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id D3E03118B69;
+	Fri,  3 Jul 2026 10:12:02 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nabladev.com;
+	s=dkim; t=1783066327;
+	h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 in-reply-to:references; bh=+30KoiDN0n4qlGlim7ciE6Rnij5Frat/7Wyk1wvTAE8=;
+	b=Dmg3b8Q5fSjt+RUsgA2CtUqlvEZaYW7fZs4W8pspf2YILgZ4d2c5QDmEDC39q4RZ3JxXmf
+	2Zt4I8U6T6BZLvrfRoaIs6ytLQrlZGV52wKoAAzocYa98KDxDvPtKD7WyU3kiRZzR7BM8x
+	EEbai8nr5xRjKl4IOR78Nyl/Jz3TCMpu+yGfjHic2pvrHU8olZb2eWemC237iB/88JIuRQ
+	EzGyODsbsPlbEri8ZnWwY4AFlas58PuhWR888CYIFzWu1bdVSdhgB5Q3oefPpKIG+X1D9v
+	gZpn++QLJXYPcKkRmdMiXGyGr2d5fvnYMoUMAaknTxhBAvfE32xpEkl1W9D4RQ==
+Date: Fri, 3 Jul 2026 10:12:00 +0200
+From: Pavel Machek <pavel@nabladev.com>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+	patches@kernelci.org, lkft-triage@lists.linaro.org,
+	pavel@nabladev.com, jonathanh@nvidia.com, f.fainelli@gmail.com,
+	sudipm.mukherjee@gmail.com, rwarsow@gmx.de, conor@kernel.org,
+	hargar@microsoft.com, broonie@kernel.org, achill@achill.org,
+	sr@sladewatkins.com
+Subject: Re: [PATCH 6.12 000/204] 6.12.95-rc1 review
+Message-ID: <akdu0Cxu84Yr0qXQ@duo.ucw.cz>
+References: <20260702155118.667618796@linuxfoundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="I4cJqBhJU+Cw9SW5"
+Content-Disposition: inline
+In-Reply-To: <20260702155118.667618796@linuxfoundation.org>
+X-Last-TLS-Session-Version: TLSv1.3
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [-2.76 / 15.00];
+	SIGNED_PGP(-2.00)[];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	DMARC_POLICY_ALLOW(-0.50)[nabladev.com,reject];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	MIME_GOOD(-0.20)[multipart/signed,text/plain];
+	R_DKIM_ALLOW(-0.20)[nabladev.com:s=dkim];
 	MAILLIST(-0.15)[generic];
-	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-271682-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[gmail.com,vger.kernel.org,lists.freedesktop.org,lists.linaro.org];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	TAGGED_FROM(0.00)[bounces-271681-lists,stable=lfdr.de];
+	RECEIVED_HELO_LOCALHOST(0.00)[];
+	FORGED_SENDER(0.00)[pavel@nabladev.com,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:sumit.semwal@linaro.org,m:benjamin.gaignard@collabora.com,m:Brian.Starkey@arm.com,m:jstultz@google.com,m:tjmercier@google.com,m:christian.koenig@amd.com,m:sspatil@android.com,m:afd@ti.com,m:shoubaineng@gmail.com,m:stable@vger.kernel.org,m:linux-media@vger.kernel.org,m:dri-devel@lists.freedesktop.org,m:linaro-mm-sig@lists.linaro.org,m:linux-kernel@vger.kernel.org,s:lists@lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER(0.00)[shoubaineng@gmail.com,stable@vger.kernel.org];
-	RCPT_COUNT_TWELVE(0.00)[14];
+	RCPT_COUNT_TWELVE(0.00)[20];
+	FORGED_RECIPIENTS(0.00)[m:gregkh@linuxfoundation.org,m:stable@vger.kernel.org,m:patches@lists.linux.dev,m:linux-kernel@vger.kernel.org,m:torvalds@linux-foundation.org,m:akpm@linux-foundation.org,m:linux@roeck-us.net,m:shuah@kernel.org,m:patches@kernelci.org,m:lkft-triage@lists.linaro.org,m:pavel@nabladev.com,m:jonathanh@nvidia.com,m:f.fainelli@gmail.com,m:sudipm.mukherjee@gmail.com,m:rwarsow@gmx.de,m:conor@kernel.org,m:hargar@microsoft.com,m:broonie@kernel.org,m:achill@achill.org,m:sr@sladewatkins.com,m:ffainelli@gmail.com,m:sudipmmukherjee@gmail.com,s:lists@lfdr.de];
+	MIME_TRACE(0.00)[0:+,1:+,2:~];
 	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[shoubaineng@gmail.com,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	RCVD_COUNT_FIVE(0.00)[5];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[nabladev.com:+];
+	FORGED_SENDER_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[pavel@nabladev.com,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[vger.kernel.org,lists.linux.dev,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,nabladev.com,nvidia.com,gmail.com,gmx.de,microsoft.com,achill.org,sladewatkins.com];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,vger.kernel.org:from_smtp]
+	MISSING_XM_UA(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,vger.kernel.org:from_smtp,gitlab.com:url,nabladev.com:from_mime,nabladev.com:email,nabladev.com:dkim]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 23462700029
+X-Rspamd-Queue-Id: CA3666FFF14
 
-DMA_HEAP_IOCTL_ALLOC allocates a dma-buf and installs an fd into the
-caller's fd table via fd_install() before dma_heap_ioctl() copies the
-result back to userspace. If the trailing copy_to_user() fails, the
-ioctl returns -EFAULT and userspace never learns the fd number, but
-the fd (and the underlying dma-buf reference) remain in the caller's
-fd table and are leaked for the lifetime of the process.
 
-The failure is easily reachable from userspace: pass a struct
-dma_heap_allocation_data that lives in a page whose protection is
-flipped to PROT_READ between copy_from_user() and copy_to_user()
-(e.g. via mprotect()). Each such ioctl leaks one dmabuf fd; repeating
-the call quickly fills /proc/<pid>/fd with anonymous "/dmabuf:"
-entries that only go away when the process exits.
+--I4cJqBhJU+Cw9SW5
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-Fix it by closing the installed fd (and clearing the fd field of the
-kernel-side copy) when copy_to_user() fails after a successful
-allocation, so the error path matches what userspace observes: no fd
-was returned, therefore no fd is left behind.
+Hi!
 
-Fixes: c02a81fba74f ("dma-buf: Add dma-buf heaps framework")
-Cc: stable@vger.kernel.org
-Signed-off-by: Baineng Shou <shoubaineng@gmail.com>
----
+> This is the start of the stable review cycle for the 6.12.95 release.
+> There are 204 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 
-Reproducer (full source, gcc -o poc poc.c; run as root):
+CIP testing did not find any problems here:
 
-    // poc.c -- leak one dma-buf fd per DMA_HEAP_IOCTL_ALLOC
-    //          when copy_to_user() fails
-    #include <fcntl.h>
-    #include <stdio.h>
-    #include <stdlib.h>
-    #include <string.h>
-    #include <unistd.h>
-    #include <sys/ioctl.h>
-    #include <sys/mman.h>
-    #include <linux/dma-heap.h>
+https://gitlab.com/cip-project/cip-testing/linux-stable-rc-ci/-/tree/linux-6.1.y
 
-    int main(int argc, char **argv)
-    {
-        int n = argc > 1 ? atoi(argv[1]) : 100;
-        long ps = sysconf(_SC_PAGESIZE);
+Tested-by: Pavel Machek (CIP) <pavel@nabladev.com>
 
-        int heap = open("/dev/dma_heap/system", O_RDWR | O_CLOEXEC);
-        if (heap < 0)
-            return perror("open"), 1;
+I see -rc2 is out, but I don't have results for that ATM.
 
-        for (int i = 0; i < n; i++) {
-            /* Put a valid request in a page, then make the page
-             * read-only: copy_from_user() still succeeds and the
-             * dma-buf is allocated and fd_install()'d, but the
-             * trailing copy_to_user() fails and the fd, never
-             * returned to us, is leaked.
-             */
-            struct dma_heap_allocation_data *req =
-                mmap(NULL, ps, PROT_READ | PROT_WRITE,
-                     MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
+Best regards,
+                                                                Pavel
 
-            memset(req, 0, sizeof(*req));
-            req->len = ps;
-            req->fd_flags = O_RDWR | O_CLOEXEC;
+--I4cJqBhJU+Cw9SW5
+Content-Type: application/pgp-signature; name="signature.asc"
 
-            mprotect(req, ps, PROT_READ);
-            ioctl(heap, DMA_HEAP_IOCTL_ALLOC, req);  /* -EFAULT */
-            munmap(req, ps);
-        }
+-----BEGIN PGP SIGNATURE-----
 
-        printf("done: check ls -l /proc/%d/fd for %d leaked fds\n",
-               getpid(), n);
-        pause();
-        return 0;
-    }
+iFwEABECAB0WIQRPfPO7r0eAhk010v0w5/Bqldv68gUCakdu0AAKCRAw5/Bqldv6
+8k8pAJYlm0qlnkTuifTgyCy1VbvZCvvsAJ96UE8/TVhSRbUunv1jtl2ESQi9qA==
+=Al5U
+-----END PGP SIGNATURE-----
 
-Before the fix, ./poc 10 leaves 10 anonymous dmabuf fds in the
-caller's fd table:
-
-    # ls -l /proc/$(pgrep poc)/fd
-    lrwx------ 1 root root 64 Jan  1 00:03 3 -> /dev/dma_heap/system
-    lrwx------ 1 root root 64 Jan  1 00:03 4 -> /dmabuf:
-    lrwx------ 1 root root 64 Jan  1 00:03 5 -> /dmabuf:
-    lrwx------ 1 root root 64 Jan  1 00:03 6 -> /dmabuf:
-    lrwx------ 1 root root 64 Jan  1 00:03 7 -> /dmabuf:
-    lrwx------ 1 root root 64 Jan  1 00:03 8 -> /dmabuf:
-    lrwx------ 1 root root 64 Jan  1 00:03 9 -> /dmabuf:
-    lrwx------ 1 root root 64 Jan  1 00:03 10 -> /dmabuf:
-    lrwx------ 1 root root 64 Jan  1 00:03 11 -> /dmabuf:
-    lrwx------ 1 root root 64 Jan  1 00:03 12 -> /dmabuf:
-    lrwx------ 1 root root 64 Jan  1 00:03 13 -> /dmabuf:
-
-After the fix, only /dev/dma_heap/system remains open; the
-anonymous "/dmabuf:" entries are gone.
-
- drivers/dma-buf/dma-heap.c | 11 ++++++++++-
- 1 file changed, 10 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/dma-buf/dma-heap.c b/drivers/dma-buf/dma-heap.c
-index a76bf3f8b071..0dd7a84b06bf 100644
---- a/drivers/dma-buf/dma-heap.c
-+++ b/drivers/dma-buf/dma-heap.c
-@@ -18,6 +18,7 @@
- #include <linux/uaccess.h>
- #include <linux/xarray.h>
- #include <uapi/linux/dma-heap.h>
-+#include <linux/fdtable.h>
- 
- #define DEVNAME "dma_heap"
- 
-@@ -181,8 +182,16 @@ static long dma_heap_ioctl(struct file *file, unsigned int ucmd,
- 		goto err;
- 	}
- 
--	if (copy_to_user((void __user *)arg, kdata, out_size) != 0)
-+	if (copy_to_user((void __user *)arg, kdata, out_size) != 0) {
-+		if (kcmd == DMA_HEAP_IOCTL_ALLOC && ret == 0) {
-+			struct dma_heap_allocation_data *h = (void *)kdata;
-+
-+			close_fd(h->fd);
-+			h->fd = -1;
-+		}
- 		ret = -EFAULT;
-+	}
-+
- err:
- 	if (kdata != stack_kdata)
- 		kfree(kdata);
--- 
-2.34.1
-
+--I4cJqBhJU+Cw9SW5--
 
