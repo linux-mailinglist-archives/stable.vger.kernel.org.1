@@ -1,54 +1,94 @@
-Return-Path: <stable+bounces-271675-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-271676-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id v3BuC3dqR2roXwAAu9opvQ
-	(envelope-from <stable+bounces-271675-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 03 Jul 2026 09:53:27 +0200
+	id 1pnsKzltR2p5YAAAu9opvQ
+	(envelope-from <stable+bounces-271676-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 03 Jul 2026 10:05:13 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 790766FFC57
-	for <lists+stable@lfdr.de>; Fri, 03 Jul 2026 09:53:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C94D6FFDDE
+	for <lists+stable@lfdr.de>; Fri, 03 Jul 2026 10:05:13 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=none;
-	dmarc=none;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-271675-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-271675-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=cFb1tIMs;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-271676-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-271676-lists+stable=lfdr.de@vger.kernel.org";
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 8FDAA3077ACE
-	for <lists+stable@lfdr.de>; Fri,  3 Jul 2026 07:44:01 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 358073178F6E
+	for <lists+stable@lfdr.de>; Fri,  3 Jul 2026 07:55:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6012936BCE8;
-	Fri,  3 Jul 2026 07:44:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6B95370AE9;
+	Fri,  3 Jul 2026 07:54:35 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from cstnet.cn (smtp81.cstnet.cn [159.226.251.81])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+Received: from mail-lf1-f50.google.com (mail-lf1-f50.google.com [209.85.167.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53E2E35E1A9;
-	Fri,  3 Jul 2026 07:43:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D262357CE9
+	for <stable@vger.kernel.org>; Fri,  3 Jul 2026 07:54:33 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783064640; cv=none; b=UxH0Vot0LCDqSUYYkcUzbUDl77xr5Z5IglmlISCsKi0tWvM3KRnD2zU75Tbfn8bkP7kHsurwq0sckvZmMBTAbjYdoVDYijjDMwFi0axWrXQJb5HTNuVk+5zp8pr3SlHDh7lFIKX4WbwJNN5X+uj9CNhGtbXzaTU+MJRAhK/7Slw=
+	t=1783065275; cv=none; b=M6h9g1RNlUhqxkx6XnLo0TtiRbdNT4K1SU04TOf+K7P3EOfA+G0UPCV9zAKuKD1kG2ErOmugX2EaLnHI5jSA9Mu9OWx20xD6tS8x7ONqejIpfKDFt83jGNez8U3cP/obTQrPInAbLmspD0JMJlYNViLFgeVMK7Nsgf1iN1H1jB0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783064640; c=relaxed/simple;
-	bh=Bp9ahgxQCuQUQzdFds297F8um/C7zdupw4IozJ2Lsrg=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Rk4cf7alHn1Z3jxlmkHk31umSZdW5ZjwZO5rmgPPhFlJ6suMOhK7rL4Bsi77dWNlhEjSaK81b+EeOiexcIBDYG3ZXJYJSh97KJRY6/xHk5hCJ3TpGRpQUDZMc+4RrutHv1g/9wemRQRK0UIHEjCOVjIxrnpgDr6FpCINLqjZ2mM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.81
-Received: from localhost.localdomain (unknown [111.196.245.140])
-	by APP-03 (Coremail) with SMTP id rQCowAC3vcQ3aEdq8E7AFg--.1761S2;
-	Fri, 03 Jul 2026 15:43:51 +0800 (CST)
-From: Pengpeng Hou <pengpeng@iscas.ac.cn>
-To: Miquel Raynal <miquel.raynal@bootlin.com>,
-	Kyungmin Park <kyungmin.park@samsung.com>
-Cc: Richard Weinberger <richard@nod.at>,
-	Vignesh Raghavendra <vigneshr@ti.com>,
-	linux-mtd@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
+	s=arc-20240116; t=1783065275; c=relaxed/simple;
+	bh=uUEaGr257SVcEghz/VrSWTnDL6TlG6Mg+al6N5GpqDM=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=ndEA6BCWGvdclasyVJQBXVLku0N0y/A3fZmJkM2v0+hfVnUrN2MTncksZx2h/m1UigyYyW+Zmu2c/wbdyMldOrdybMx5640DZpAaLTncNq7l4iHavIImTalNaXNJY8A31Bu+G9iPlrv25yV3AWUNVXlC8B+9qNmY9j20Ga2Juwg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=cFb1tIMs; arc=none smtp.client-ip=209.85.167.50
+Received: by mail-lf1-f50.google.com with SMTP id 2adb3069b0e04-5aeb91c003eso356164e87.3
+        for <stable@vger.kernel.org>; Fri, 03 Jul 2026 00:54:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1783065272; x=1783670072; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=N0uc9u/smgtycisGY64visu/9W154DzGDHnBARqQPUc=;
+        b=cFb1tIMsIhpgVHLSScCl6MNZtqfZPl9bpUvqT1HafhXU7CNHe4/mHl6KmmT/47WpJ/
+         rx9wO02iIfFd+imkKIs2jT4Xvxk1hmo+pZT2H7CAyIrt/n8ZwAf8UtFnbnksnMdROoAu
+         gPRw8ddATUbZK5z87sivuizKhEoY9v3RlHF+/NsoUcFh/beVh9UvPVS/F3fgB6cEWAS6
+         y0Cd4PO1dw8jn0SVy+QmdTY+kMWEtGmCkaii1h6P9XEOqo8XmbOQuIXNcLpU7jif12gP
+         fBvntK/BF/CtFO5qdybest2i/INeJvrdiqoOmda6SzhNO06pyzwPqgdx3Y0/W0frQnjf
+         gMgA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1783065272; x=1783670072;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=N0uc9u/smgtycisGY64visu/9W154DzGDHnBARqQPUc=;
+        b=akjpoCQiawg2e7hNMHwY/3fHzK3hjcR3Aog+wu/412ljtGOigq9YKd2bQa6DgFvHZf
+         VIGJ6JVC7G8qOJoifsI6td0H0pr5jcHbRj1DcWDhNnNo3yZz6hs7TCY85g6OGvuGD84q
+         nReK/C5of6DpGzPAA0FlEQyw3Sa0AJhJBm42bc0qKI+nb6LYm8k9rl7H6A+Fp683rsJN
+         6P76CvrOZegCkCjcoSeP/hk5Bo1QRciZzdrTHpjU4lRgRClR6DuhQT1J2Gch1lwg8GW6
+         9GbhW2BwYSkuMWkJ0gFS4Xyi2uT1Wial9qJsQtVXqkv7UpA39vXjRe8S8RGFfhFQIkSh
+         YbJw==
+X-Forwarded-Encrypted: i=1; AHgh+Rrj0+PHL6FvSSpYJGFt0Z775CM+ntpWrlBarctPzg64aPGYielSdns4RVmiIayokuaqlRPerug=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx2hMwfcInplpBM2v+9Icadyqjx04hQ3Eg2WJ5nzRV3dfLhBIhh
+	WA/zZu4/tVnSgQxoOx+yh9dkEFoxpI3fl9m7iU5dINLR242FfK16KhRv
+X-Gm-Gg: AfdE7cltg1liZWiw3OuB/vIMdOl00AXmDmJRTcVSO8Z/2bHYKDvxp6D1KakFuJWuVe+
+	cjfoqT+lSXQ+hmyEI2ORXysaMM+huR0JuxxXNrnxo1+S/ozh+X3s5zhfnSCY0cP+VWvwNVc0amV
+	GoHphp5WI47mwsgAzKKi+3l61y7Abxyhh60LZ9rzjwbESFQ+MCwlnaaRY+uo0TWFwq9w8e42WtO
+	6Nl43C3cbApljjjENiWhQa4gt58FBC4RvM6bY8vg/Zys5/YPgbOde54VzXqNxZtjYSv3STYaOe5
+	md/HGlJwocdlDd8XqUrZ8b7sPvWxVR3SFi2aApbxoTE3f0wbWjoh4gXWpB2oK5GBXCjKKOIC2C0
+	RbGZEniAFoFuuimzak+0fUqmbde8fyR5ZOICcAbkjcuNx90vy/CTSz5l4oo0OcpS0OpRk0oaQkz
+	1OnWdxPMI5f1UEUC0e+sXkZ1trUBuMxb4=
+X-Received: by 2002:a05:6512:a354:b0:5aa:6c66:e343 with SMTP id 2adb3069b0e04-5aec68b72f8mr1670652e87.38.1783065272010;
+        Fri, 03 Jul 2026 00:54:32 -0700 (PDT)
+Received: from localhost.localdomain ([2a01:4f9:2a:1c13::2])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5aed13bb768sm285986e87.52.2026.07.03.00.54.29
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 03 Jul 2026 00:54:30 -0700 (PDT)
+From: Melbin K Mathew <mlbnkm1@gmail.com>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	linux-usb@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org,
+	Peter Chen <peter.chen@kernel.org>,
 	stable@vger.kernel.org,
-	Pengpeng Hou <pengpeng@iscas.ac.cn>
-Subject: [PATCH v2] mtd: onenand: samsung: report DMA completion timeouts
-Date: Fri,  3 Jul 2026 15:43:50 +0800
-Message-ID: <20260703074350.65127-1-pengpeng@iscas.ac.cn>
-X-Mailer: git-send-email 2.50.1
+	Melbin K Mathew <mlbnkm1@gmail.com>
+Subject: [PATCH v2] usb: gadget: printer: fix infinite loop in printer_read()
+Date: Fri,  3 Jul 2026 09:54:29 +0200
+Message-Id: <20260703075429.302687-1-mlbnkm1@gmail.com>
+X-Mailer: git-send-email 2.39.5
+In-Reply-To: <20260701205320.227791-1-mlbnkm1@gmail.com>
+References: <20260701205320.227791-1-mlbnkm1@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -56,102 +96,120 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:rQCowAC3vcQ3aEdq8E7AFg--.1761S2
-X-Coremail-Antispam: 1UD129KBjvJXoW7Ar47Xr47Cw4UZw15KF17Jrb_yoW8Cr47pr
-	42g3yDKr4Utr1jyw1rA3ZYqr1rZa1fJrZ7GF9Yq3yrZrykX3Zrur4rKry2qFZ0y3ZIgw4x
-	XFW8XFsxAw1q9rUanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUkC14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
-	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
-	1l84ACjcxK6xIIjxv20xvE14v26r4j6ryUM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26F4j
-	6r4UJwA2z4x0Y4vEx4A2jsIE14v26F4UJVW0owA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_Gc
-	CE3s1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xvF2IEw4CE5I8CrVC2j2WlYx0E
-	2Ix0cI8IcVAFwI0_JF0_Jw1lYx0Ex4A2jsIE14v26r1j6r4UMcvjeVCFs4IE7xkEbVWUJV
-	W8JwACjcxG0xvY0x0EwIxGrwACjI8F5VA0II8E6IAqYI8I648v4I1lc7CjxVAaw2AFwI0_
-	JF0_Jw1l42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67
-	AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r1q6r43MIIY
-	rxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14
-	v26r4j6F4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWUJVW8
-	JwCI42IY6I8E87Iv6xkF7I0E14v26r4j6r4UJbIYCTnIWIevJa73UjIFyTuYvjfUO73vUU
-	UUU
-X-CM-SenderInfo: pshqw1xhqjqxpvfd2hldfou0/
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [0.04 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-271675-lists,stable=lfdr.de];
-	DMARC_NA(0.00)[iscas.ac.cn];
-	FORGED_RECIPIENTS(0.00)[m:miquel.raynal@bootlin.com,m:kyungmin.park@samsung.com,m:richard@nod.at,m:vigneshr@ti.com,m:linux-mtd@lists.infradead.org,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,m:pengpeng@iscas.ac.cn,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[pengpeng@iscas.ac.cn,stable@vger.kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORWARDED(0.00)[lists@lfdr.de];
+	FREEMAIL_CC(0.00)[vger.kernel.org,kernel.org,gmail.com];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	TAGGED_FROM(0.00)[bounces-271676-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FORGED_RECIPIENTS(0.00)[m:gregkh@linuxfoundation.org,m:linux-usb@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:peter.chen@kernel.org,m:stable@vger.kernel.org,m:mlbnkm1@gmail.com,s:lists@lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER(0.00)[mlbnkm1@gmail.com,stable@vger.kernel.org];
 	TO_DN_SOME(0.00)[];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[pengpeng@iscas.ac.cn,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
-	R_DKIM_NA(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[mlbnkm1@gmail.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	RCVD_COUNT_FIVE(0.00)[5];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	ALIAS_RESOLVED(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[iscas.ac.cn:from_mime,iscas.ac.cn:email,iscas.ac.cn:mid,vger.kernel.org:from_smtp,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 790766FFC57
+X-Rspamd-Queue-Id: 0C94D6FFDDE
 
-The S5PC110 OneNAND DMA helpers have bounded waits for transfer
-completion. The polling helper falls out of its timeout loop and returns
-success, and the IRQ helper ignores wait_for_completion_timeout().
+printer_read() uses the same variable for the requested copy size and
+the number of bytes actually copied to user space. copy_to_user()
+returns the number of bytes not copied, so when it fails to copy
+anything, the computed copied length becomes zero.
 
-Return -ETIMEDOUT when the DMA transfer-done bit or completion does not
-arrive before the timeout so callers can treat the buffer transfer as
-failed.
+In that case len, buf, current_rx_bytes and current_rx_buf are left
+unchanged. If RX data is available and the user buffer remains
+unwritable, the read loop can repeat indefinitely.
 
-Fixes: e23abf4b7743 ("mtd: OneNAND: S5PC110: Implement DMA interrupt method")
+Track the copied length separately and return -EFAULT, or the number of
+bytes already copied, if an iteration makes no progress.
+
+Fixes: b185f01a9ab7 ("usb: gadget: printer: factor out f_printer")
 Cc: stable@vger.kernel.org
-Signed-off-by: Pengpeng Hou <pengpeng@iscas.ac.cn>
+Reviewed-by: Peter Chen <peter.chen@kernel.org>
+Signed-off-by: Melbin K Mathew <mlbnkm1@gmail.com>
 ---
-Changes since v1: https://lore.kernel.org/all/20260623061233.40188-1-pengpeng@iscas.ac.cn/
-- add Fixes and Cc stable tags as requested by Miquel
+Changes in v2:
+- Drop unrelated comment wording change.
+- Add Reviewed-by tag from Peter Chen.
 
- drivers/mtd/nand/onenand/onenand_samsung.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ drivers/usb/gadget/function/f_printer.c | 25 +++++++++++++++++++------
+ 1 file changed, 19 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/mtd/nand/onenand/onenand_samsung.c b/drivers/mtd/nand/onenand/onenand_samsung.c
-index 6d6aa709a21f..b7b7758ce4d8 100644
---- a/drivers/mtd/nand/onenand/onenand_samsung.c
-+++ b/drivers/mtd/nand/onenand/onenand_samsung.c
-@@ -554,6 +554,9 @@ static int s5pc110_dma_poll(dma_addr_t dst, dma_addr_t src, size_t count, int di
- 	} while (!(status & S5PC110_DMA_TRANS_STATUS_TD) &&
- 		time_before(jiffies, timeout));
+diff --git a/drivers/usb/gadget/function/f_printer.c b/drivers/usb/gadget/function/f_printer.c
+index e4f7828ae7..e346e4c26e 100644
+--- a/drivers/usb/gadget/function/f_printer.c
++++ b/drivers/usb/gadget/function/f_printer.c
+@@ -432,7 +432,7 @@ printer_read(struct file *fd, char __user *buf, size_t len, loff_t *ptr)
+ {
+ 	struct printer_dev		*dev = fd->private_data;
+ 	unsigned long			flags;
+-	size_t				size;
++	size_t				size, not_copied, copied;
+ 	size_t				bytes_copied;
+ 	struct usb_request		*req;
+ 	/* This is a pointer to the current USB rx request. */
+@@ -525,14 +525,16 @@ printer_read(struct file *fd, char __user *buf, size_t len, loff_t *ptr)
+ 		else
+ 			size = len;
  
-+	if (!(status & S5PC110_DMA_TRANS_STATUS_TD))
-+		return -ETIMEDOUT;
+-		size -= copy_to_user(buf, current_rx_buf, size);
+-		bytes_copied += size;
+-		len -= size;
+-		buf += size;
++		not_copied = copy_to_user(buf, current_rx_buf, size);
++		copied = size - not_copied;
 +
- 	writel(S5PC110_DMA_TRANS_CMD_TDC, base + S5PC110_DMA_TRANS_CMD);
++		bytes_copied += copied;
++		len -= copied;
++		buf += copied;
  
- 	return 0;
-@@ -608,7 +611,9 @@ static int s5pc110_dma_irq(dma_addr_t dst, dma_addr_t src, size_t count, int dir
+ 		spin_lock_irqsave(&dev->lock, flags);
  
- 	writel(S5PC110_DMA_TRANS_CMD_TR, base + S5PC110_DMA_TRANS_CMD);
+ 		if (dev->reset_printer) {
+ 			list_add(&current_rx_req->list, &dev->rx_reqs);
+ 			spin_unlock_irqrestore(&dev->lock, flags);
+@@ -543,6 +545,17 @@ printer_read(struct file *fd, char __user *buf, size_t len, loff_t *ptr)
+ 		if (dev->interface < 0)
+ 			goto out_disabled;
  
--	wait_for_completion_timeout(&onenand->complete, msecs_to_jiffies(20));
-+	if (!wait_for_completion_timeout(&onenand->complete,
-+					 msecs_to_jiffies(20)))
-+		return -ETIMEDOUT;
- 
- 	return 0;
- }
++		if (!copied) {
++			dev->current_rx_req = current_rx_req;
++			dev->current_rx_bytes = current_rx_bytes;
++			dev->current_rx_buf = current_rx_buf;
++			spin_unlock_irqrestore(&dev->lock, flags);
++			mutex_unlock(&dev->lock_printer_io);
++			return bytes_copied ? bytes_copied : -EFAULT;
++		}
++
++		size = copied;
++
+ 		/* If we not returning all the data left in this RX request
+ 		 * buffer then adjust the amount of data left in the buffer.
+ 		 * Othewise if we are done with this RX request buffer then
 -- 
-2.53.0
+2.39.5
 
 
