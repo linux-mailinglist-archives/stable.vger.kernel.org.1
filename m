@@ -1,207 +1,155 @@
-Return-Path: <stable+bounces-271868-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-271869-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id InC0Kj4XSGoVmQAAu9opvQ
-	(envelope-from <stable+bounces-271868-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 03 Jul 2026 22:10:38 +0200
+	id t6nTLaUgSGp2mgAAu9opvQ
+	(envelope-from <stable+bounces-271869-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 03 Jul 2026 22:50:45 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E8478705756
-	for <lists+stable@lfdr.de>; Fri, 03 Jul 2026 22:10:37 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 05B607059AA
+	for <lists+stable@lfdr.de>; Fri, 03 Jul 2026 22:50:45 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=YXiXe231;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-271868-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-271868-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=none;
+	dmarc=none;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-271869-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-271869-lists+stable=lfdr.de@vger.kernel.org";
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A2F2F301185A
-	for <lists+stable@lfdr.de>; Fri,  3 Jul 2026 20:10:33 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id EB7433018AF7
+	for <lists+stable@lfdr.de>; Fri,  3 Jul 2026 20:49:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D85B33F36D;
-	Fri,  3 Jul 2026 20:10:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73AA73264EA;
+	Fri,  3 Jul 2026 20:49:03 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qt1-f177.google.com (mail-qt1-f177.google.com [209.85.160.177])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from maynard.decadent.org.uk (maynard.decadent.org.uk [65.21.191.19])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB92632C92A
-	for <stable@vger.kernel.org>; Fri,  3 Jul 2026 20:10:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E87E73090D7;
+	Fri,  3 Jul 2026 20:49:00 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783109433; cv=none; b=RgKHTNd7F61c+k9s39vIGrsnDRy86TdW9pLLyq449sW0QmmsnUB9ELuElm5yV9Tlah0cy3w5MmaFbwRVbHy6Tjxai0KXZnUdxMgoOP2SljKWEDa/15OCZz9trdK4jYvv0c6B0KmOz2NyQbTZ/zlojNboPUVtkT27mRoq/LUe3a4=
+	t=1783111743; cv=none; b=DK6601zycbqhfDR7j9Smk90H7SRJ1jRmL+I5VOUwlqtsxjVUTVDtCjcSr9mGzDXGGoJ9mlQjYESwGyeird5PGBBN+WzMYuT4SyH3Wi+WqrMy9EvZTSGU/7PjMyw+MtMRkjnlxrtyTIhC1be0a1bHiP+vjkHCJCjeJ8i4CmDJnYM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783109433; c=relaxed/simple;
-	bh=He9wd9IbrQP2KSQwF5K2+zJwvvEyQHC5+Yuz+010GQk=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hCqI2yb8ipS/Amf+27aWnCSZJbxlTz/9B1hJGNVBA2Gn9t/UjpBkbZS3Iw3vs7aQhFIjrsm5ORGv9fR0CLrW6DkdTlyRuewzFNJxCN6z+FG9b566dYa4vW4h7DY/AeebZ/ZmpY5Qni64J1izMgJn+CgJ6l9MahfdyUN3c861lkw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=YXiXe231; arc=none smtp.client-ip=209.85.160.177
-Received: by mail-qt1-f177.google.com with SMTP id d75a77b69052e-51bfad59921so6257301cf.0
-        for <stable@vger.kernel.org>; Fri, 03 Jul 2026 13:10:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1783109431; x=1783714231; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=VqnVxuePfzGralo5ejKJTMgkZosmeyctDuCT0QENgCw=;
-        b=YXiXe2318KrU/NSWoyLfZvFitIe/ZWYd7E1zkHni8xxK44fOYVg8KGhysyb04D6Dbd
-         WsOYugRunDHb5YWgSbxkWqnrh5sapynSUB3p2UiyaY8Mvb+Lu02JcflYIk2BYumEpP9a
-         uzUgW0acVwRKLi7pSJEiq08nH0D6T6tI1t+dYkkEcfGmIQGKemTxFBq5rk0qu5ec0nH+
-         5aN5ScSVnNe5JrMlLqSDSOFpk78Wvl0t8j0zg+mVr12aNe3BroS0Z+CAywv6amoPqtvL
-         TSWr9jzqQ1kJfKCsMAdi1qzFQb8dp/qjQ3zmpkMcv6ipbyLwcKIEsmSZ0uYlafng9MWP
-         5qdQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783109431; x=1783714231;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=VqnVxuePfzGralo5ejKJTMgkZosmeyctDuCT0QENgCw=;
-        b=eGFk+nJNl4DBO1gzLU7Qa6VnFRRfgLhY6nuqTG9eLEV++6yKMSkQwqzs6HTsW+WqJm
-         kpZQGcJWIZUBInJcmiDvlyecHHoiijwKbx3UjitKtgxUX4AIb1OOxIbrrXpcdjyolnBp
-         W1Bn/lkwI6yh1VX0oftcTVM89YcfDNMjRdFJH/HCBFyYYcDLRmnvQXIztKcCpIMZul6c
-         pr0XkORsoJpfZdKNUXnld3cMIBKnKFtOW9Xj9UCm/lgUOxBHR64vVqrOll303zUm0yax
-         F3gMXryP30Osnmb5zcTKJZZl9uIz0K4aTqDRHZzrb0Wof3tMWp/WzhY7QmSMM5Tf7F7w
-         XS7A==
-X-Forwarded-Encrypted: i=1; AFNElJ8R41b7+9SWI8lcD1zqfkrKOFI9Bd7933vPQnGBqf2nsFxpcxp2c2uOh/unSMPy8XswJAXYKnM=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxXg/Ad1R43eT3zCCvMXp8VwbHpRyUeGkixR6V3retVuxhRA8eZ
-	en+2i+7/+qJ0eH0UxXcWXXfDhdY+izoyOuqLISVTfuKW8CqGB/lx/i8k
-X-Gm-Gg: AfdE7cm8TXuC/kpdhLQhWCa/fd6EAPYHisDdUK6BUapTwx2rMyUvdh6HsdLFL5k7onO
-	eBercJDKya+r23fGpXEPv9kBONA1qsAUlw0wUUragabY+9sZMFt+jfFmpeQtTcJzqwvCUgkeR9Q
-	vHUXmJN/4PQeEkIKHbghcQ/1+yoH5ZiVz7DQdPkT4Jm+KSq3EnC3QDCopeId1DePIxCV2FehjQj
-	r+lKculY2WY2IPnJsDPAOHz+LEAAsRcOnc0gvVOrQ/YJytnM1K9HVJcIs2tDHO98091bcc6O14/
-	O9OUSsxFA1P8kDDv6uOgCdSSYxyK9DuM5clAY8Ys/x7DZNG+/AW7w41Ve5qMnYP4qY8/4BKF9EN
-	fv7Otf8VnLFfq0+UHimuGLjqLgd+jaBRRDAHS0FBSr1jQXYiX14d9iMVwHtlM76HiQrt0RaRCWU
-	613tYFgZPOt2MoLEU1vHlldUk5g5L0uFZ1omYvSg609MnkUTPWnLZxhhKP+GX+aFSctFSePc0KU
-	Q==
-X-Received: by 2002:a05:622a:85:b0:51b:ecca:f2e0 with SMTP id d75a77b69052e-51c4c1e6500mr15034181cf.5.1783109430605;
-        Fri, 03 Jul 2026 13:10:30 -0700 (PDT)
-Received: from oklopfer.hsd1.ma.comcast.net (c-73-167-46-184.hsd1.ma.comcast.net. [73.167.46.184])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-51c41df52a6sm22259141cf.27.2026.07.03.13.10.28
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 03 Jul 2026 13:10:29 -0700 (PDT)
-From: Oren Klopfer <oklopfer37@gmail.com>
-To: oklopfer37@gmail.com
-Cc: linux-arm-kernel@lists.infradead.org,
-	linux-rockchip@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	Heiko Stuebner <heiko@sntech.de>,
-	Peter Robinson <pbrobinson@gmail.com>,
-	Thorsten Leemhuis <regressions@leemhuis.info>,
-	stable@vger.kernel.org
-Subject: [PATCH v2] Revert "arm64: dts: rockchip: Further describe the WiFi for the Pinephone Pro"
-Date: Fri,  3 Jul 2026 16:10:10 -0400
-Message-ID: <20260703201010.67311-1-oklopfer37@gmail.com>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260615225014.219115-1-oklopfer37@gmail.com>
-References: <20260615225014.219115-1-oklopfer37@gmail.com>
+	s=arc-20240116; t=1783111743; c=relaxed/simple;
+	bh=7vF+1YpyfDgEivlNTmzmQvMRIpkNvmGnSqvstV+ydLQ=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=d2HG4EQhWEKzPg0vtVAMVeMAitGO2fcR4BiyKGha5gMp9qwEGJP7c86Teo8BFH3ptB1C5S5BylZycCO7GObOMA9EDCejPvvRntwChWQBRFS0Sdhk6/SJeUtpJ1t7azTP7zGKDUNScawsTliFsPEZywieMBRgONkRMcloqevwMKI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=decadent.org.uk; spf=pass smtp.mailfrom=decadent.org.uk; arc=none smtp.client-ip=65.21.191.19
+Received: from [2a02:578:851f:1502:391e:c5f5:10e2:b9a3] (helo=deadeye)
+	by maynard with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <ben@decadent.org.uk>)
+	id 1wfkJe-0000g5-1i;
+	Fri, 03 Jul 2026 20:16:49 +0000
+Received: from ben by deadeye with local (Exim 4.99.3)
+	(envelope-from <ben@decadent.org.uk>)
+	id 1wfkJc-0000000BnnG-1cun;
+	Fri, 03 Jul 2026 22:16:48 +0200
+Message-ID: <418ca29bbbb1190853136331c572470dca803800.camel@decadent.org.uk>
+Subject: Re: [PATCH 5.10 01/96] net/sched: act_pedit: use NLA_POLICY for
+ parsing ex keys
+From: Ben Hutchings <ben@decadent.org.uk>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, Pedro Tammela <pctammela@mojatatu.com>, Simon
+ Horman <simon.horman@corigine.com>, "David S. Miller"
+ <davem@davemloft.net>, Wentao Guan	 <guanwentao@uniontech.com>, Sasha Levin
+ <sashal@kernel.org>
+Date: Fri, 03 Jul 2026 22:16:43 +0200
+In-Reply-To: <20260702155108.985307603@linuxfoundation.org>
+References: <20260702155108.949633242@linuxfoundation.org>
+	 <20260702155108.985307603@linuxfoundation.org>
+Content-Type: multipart/signed; micalg="pgp-sha512";
+	protocol="application/pgp-signature"; boundary="=-XfvXdxQgiIl/EicnFLg0"
+User-Agent: Evolution 3.56.2-9 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-SA-Exim-Connect-IP: 2a02:578:851f:1502:391e:c5f5:10e2:b9a3
+X-SA-Exim-Mail-From: ben@decadent.org.uk
+X-SA-Exim-Scanned: No (on maynard); SAEximRunCond expanded to false
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [-3.56 / 15.00];
+	SIGNED_PGP(-2.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64];
+	MIME_GOOD(-0.20)[multipart/signed,text/plain];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
-	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER(0.00)[oklopfer37@gmail.com,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[lists.infradead.org,vger.kernel.org,sntech.de,gmail.com,leemhuis.info];
-	TAGGED_FROM(0.00)[bounces-271868-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:oklopfer37@gmail.com,m:linux-arm-kernel@lists.infradead.org,m:linux-rockchip@lists.infradead.org,m:linux-kernel@vger.kernel.org,m:heiko@sntech.de,m:pbrobinson@gmail.com,m:regressions@leemhuis.info,m:stable@vger.kernel.org,s:lists@lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FREEMAIL_TO(0.00)[gmail.com];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[oklopfer37@gmail.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	ALIAS_RESOLVED(0.00)[];
+	TAGGED_FROM(0.00)[bounces-271869-lists,stable=lfdr.de];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:gregkh@linuxfoundation.org,m:stable@vger.kernel.org,m:patches@lists.linux.dev,m:pctammela@mojatatu.com,m:simon.horman@corigine.com,m:davem@davemloft.net,m:guanwentao@uniontech.com,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[ben@decadent.org.uk,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+,1:+,2:~];
+	DMARC_NA(0.00)[decadent.org.uk];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FROM_HAS_DN(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[ben@decadent.org.uk,stable@vger.kernel.org];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	R_DKIM_NA(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: E8478705756
+X-Rspamd-Queue-Id: 05B607059AA
 
-This reverts commit 096bd8c679185f898cae9933c6a68650fa26ea4f.
 
-Just as with the Pinebook Pro, there are multiple chipset variants for
-the Pinephone Pro, and multiple firmware binaries for different
-distributions. The change causes issues with some of these combinations,
-and reverting it resolves the issues. See the Closes below for the full
-report.
+--=-XfvXdxQgiIl/EicnFLg0
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Similarly with the Pinebook Pro adjustment, the original commit only
-indicates "further description" and not indicative of fixing any
-existing issues, so reverting should not kick any back up.
+On Thu, 2026-07-02 at 18:18 +0200, Greg Kroah-Hartman wrote:
+> 5.10-stable review patch.  If anyone has any objections, please let me kn=
+ow.
+>=20
+> ------------------
+>=20
+> From: Pedro Tammela <pctammela@mojatatu.com>
+>=20
+> [ Upstream commit 5036034572b79daa6d6600338e8e8229e2a44b09 ]
+>=20
+> Transform two checks in the 'ex' key parsing into netlink policies
+> removing extra if checks.
+[...]
 
-Fixes: 096bd8c67918 ("arm64: dts: rockchip: Further describe the WiFi for the Pinephone Pro")
-Cc: Heiko Stuebner <heiko@sntech.de>
-Cc: Peter Robinson <pbrobinson@gmail.com>
-Cc: Thorsten Leemhuis <regressions@leemhuis.info>
-Cc: stable@vger.kernel.org
-Closes: https://lore.kernel.org/r/20260607225901.64019-1-oklopfer37@gmail.com/
-Signed-off-by: Oren Klopfer <oklopfer37@gmail.com>
----
+No objection, but this should also be applied to 5.15 and 6.1.
 
-v2:
-- Repair malformed whitespace
+Ben.
 
- .../boot/dts/rockchip/rk3399-pinephone-pro.dts | 18 ------------------
- 1 file changed, 18 deletions(-)
+--=20
+Ben Hutchings
+You can't have everything.  Where would you put it?
 
-diff --git a/arch/arm64/boot/dts/rockchip/rk3399-pinephone-pro.dts b/arch/arm64/boot/dts/rockchip/rk3399-pinephone-pro.dts
-index 8d26bd9b7500..d46cdfe3f784 100644
---- a/arch/arm64/boot/dts/rockchip/rk3399-pinephone-pro.dts
-+++ b/arch/arm64/boot/dts/rockchip/rk3399-pinephone-pro.dts
-@@ -734,12 +734,6 @@ light_int_l: light-int-l {
- 		};
- 	};
- 
--	wifi {
--		wifi_host_wake_l: wifi-host-wake-l {
--			rockchip,pins = <4 RK_PD0 RK_FUNC_GPIO &pcfg_pull_none>;
--		};
--	};
--
- 	wireless-bluetooth {
- 		bt_wake_pin: bt-wake-pin {
- 			rockchip,pins = <2 RK_PD2 RK_FUNC_GPIO &pcfg_pull_none>;
-@@ -766,19 +760,7 @@ &sdio0 {
- 	pinctrl-names = "default";
- 	pinctrl-0 = <&sdio0_bus4 &sdio0_cmd &sdio0_clk>;
- 	sd-uhs-sdr104;
--	#address-cells = <1>;
--	#size-cells = <0>;
- 	status = "okay";
--
--	brcmf: wifi@1 {
--		compatible = "brcm,bcm4329-fmac";
--		reg = <1>;
--		interrupt-parent = <&gpio4>;
--		interrupts = <RK_PD0 IRQ_TYPE_LEVEL_HIGH>;
--		interrupt-names = "host-wake";
--		pinctrl-names = "default";
--		pinctrl-0 = <&wifi_host_wake_l>;
--	};
- };
- 
- &pwm0 {
--- 
-2.53.0
+--=-XfvXdxQgiIl/EicnFLg0
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: This is a digitally signed message part
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCgAdFiEErCspvTSmr92z9o8157/I7JWGEQkFAmpIGKsACgkQ57/I7JWG
+EQnUwg/+O8Yr+URKd9ewwlqMKZzuFb4C0DCY0OBrYwR4bV8XYbTqoY+cuk8O4NiH
+KP5N7H7DzvnEYgRHW/4OecxPkDvCWVLcWN7Qz1zLG9I3151+JYEMRWdQGOArUxJw
+veD2YdfA3O+xubIv2dqvUS+Fg/S7lHQnyShdN9LDKdE9m6E5KBwtdyELxA6gauAZ
+/vFL+bkL9mYXbjITrd9UBAsoTZ7tSdwVTyDxWoac89IswBkgZO/x+rxFhdanECHb
+XTdeZlEKTS4Cbu0RCxlrV3PPtVE5YIDZ9dmt5Aj8cWdwuLQDeirdYjvuMtdMHYpS
+hNQDkL9xGNo40H8JUKt44pd1HbxFEiojgIVdcaD3rjhUYORyW6BC5Tl0igBECrU0
+Gh8o1mU/54oVTAO4Q8h4nURcWjEX/TNPqM6ydeX8YCE9iQ0gsNXoOyzu2hAo4EJM
+NLHMvEVYyBz/9/gPb2XrMVLONoSpbYNuDF6iAbFxP50nQDmCtJ8bfZq0UBzNI1b6
+ArbUqssbWOdUYxrETar/GsctCCoZMlmAGcuETu4zmTZeN8RG5JtPoWe8IqqQxD08
+f3ZXyX7FxUgyo7T7RaBmev5zr/cqfZ3qRzb7eBonnXpWwjATK7CqFhuNJOzA+1i3
+KEw3nfqWW7mCnAsrl2X3a6M89LcgcvN8sHW+g1EqPXAdF6P9PUk=
+=UAVZ
+-----END PGP SIGNATURE-----
+
+--=-XfvXdxQgiIl/EicnFLg0--
 
