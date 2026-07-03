@@ -1,173 +1,139 @@
-Return-Path: <stable+bounces-271648-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-271649-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id Ey9dBGRZR2peWgAAu9opvQ
-	(envelope-from <stable+bounces-271648-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 03 Jul 2026 08:40:36 +0200
+	id wxtUJl5ZR2pdWgAAu9opvQ
+	(envelope-from <stable+bounces-271649-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 03 Jul 2026 08:40:30 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 009576FF23F
-	for <lists+stable@lfdr.de>; Fri, 03 Jul 2026 08:40:34 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id D52636FF236
+	for <lists+stable@lfdr.de>; Fri, 03 Jul 2026 08:40:29 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=fail ("headers rsa verify failed") header.d=w6rz.net header.s=default header.b=Ozu+XgVX;
-	dmarc=none;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-271648-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-271648-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="er1z/1kG";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-271649-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-271649-lists+stable=lfdr.de@vger.kernel.org";
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 1DC473015636
-	for <lists+stable@lfdr.de>; Fri,  3 Jul 2026 06:39:36 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 75FB43020A45
+	for <lists+stable@lfdr.de>; Fri,  3 Jul 2026 06:40:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9A4C380FD1;
-	Fri,  3 Jul 2026 06:39:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ABD503806C4;
+	Fri,  3 Jul 2026 06:40:24 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from omta040.useast.a.cloudfilter.net (omta040.useast.a.cloudfilter.net [44.202.169.39])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 353C537DEA4
-	for <stable@vger.kernel.org>; Fri,  3 Jul 2026 06:39:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8821624A078;
+	Fri,  3 Jul 2026 06:40:23 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783060772; cv=none; b=f+WoShRmHS9otCITUJWUbeGIW0bV+Gqtn6cb2qgwfoXXrM+xmbzZ2gj2CAsegFbZ9Ez2P5bDpDK/hEkIUMvpyUADv8F4KVWwcS+aWunipNffmBi4MvjYCTcoefxkxJ6QvuEYI/T0jnV/HsFkhQzgsZYqVZAQJJJWlzdhElr8quA=
+	t=1783060824; cv=none; b=JgNT9qP8/opgF6JQZDMOI5fdruVHzHP+wND3Il+ztNHIh1CigA6bmEpYMD9JEWLCqVTZBpn4mc/FYL90Z8+8664ou+7sRqPpHuYnImXBejyk0pRzW/G0QFIboK9dbHJATNT6IHhTfkTCERVS0GJMYfcfFKUrzomhqJJQdekPaSI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783060772; c=relaxed/simple;
-	bh=rZttTXantzVbA7dDTgj9IHAkqPvYdee7H46RodZ69Vw=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=fv6OJZiIzn/73qypzvKwW7fPsGHA9YLhVBaboRzd+AMkAagJBH/rIwaqo6A3KB2kvOzv8fHDnz39URLiI4ToNrUMjaWY7wUA3yUUFTRObcvhFjEcF3Mli+npmhzw3LhKhnqEgFjbCsiX49gvilERbRL8i9i3g78nIj6c4SfxxTM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=w6rz.net; spf=pass smtp.mailfrom=w6rz.net; dkim=pass (2048-bit key) header.d=w6rz.net header.i=@w6rz.net header.b=Ozu+XgVX; arc=none smtp.client-ip=44.202.169.39
-Received: from eig-obgw-6007b.ext.cloudfilter.net ([10.0.30.166])
-	by cmsmtp with ESMTPS
-	id fJpbw4Lc2VGUKfXYgwolgo; Fri, 03 Jul 2026 06:39:30 +0000
-Received: from box5620.bluehost.com ([162.241.219.59])
-	by cmsmtp with ESMTPS
-	id fXYfwgy7IXiyOfXYfwllgG; Fri, 03 Jul 2026 06:39:29 +0000
-X-Authority-Analysis: v=2.4 cv=P7w6hjAu c=1 sm=1 tr=0 ts=6a475921
- a=30941lsx5skRcbJ0JMGu9A==:117 a=30941lsx5skRcbJ0JMGu9A==:17
- a=IkcTkHD0fZMA:10 a=RAioF0-LDSMA:10 a=7vwVE5O1G3EA:10 a=VwQbUJbxAAAA:8
- a=HaFmDPmJAAAA:8 a=QUYbzp3p0A3I4yDEf8UA:9 a=QEXdDO2ut3YA:10
- a=nmWuMzfKamIsx3l42hEX:22 a=L5EjiQpGQaFGZdqT14z7:22
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=w6rz.net;
-	s=default; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
-	References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
-	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=Qm3jAqhFTU5awF42jojmA+0HBa7FiyO8dCPytBgqYW4=; b=Ozu+XgVXHRm/PavTAu1melAZlB
-	Ue5rTq0I3Wxznima4fKQdHO0RTz+dRYNnxSNw6mn0Uv8G3mFh26CrjHZwCCz+CvILUEey3b2hltZg
-	XeIUvTyXrGNXIWQSjGzHBVPgq/gKgamxR/SItbjLVZbIHdZsa46C3Dw9SZ7H8XWtwjThY6Puq3YiI
-	g2zGKyobRJ9kF64rXDmZkI4RvknS9WZeUZ79jpri9ktIbqTh0EmT7FFyNfgBCrpIiKY5hWa1UuN4y
-	wAP0X5IzLbI7Z19taPOOadq+ZbhHNPu5m53LyaXtI5Xtwx8O8HU+iTsd0R2VKFAlkET21z4lIMqJo
-	c7dBl7AQ==;
-Received: from c-73-162-206-103.hsd1.ca.comcast.net ([73.162.206.103]:37594 helo=[10.0.1.180])
-	by box5620.bluehost.com with esmtpsa  (TLS1.3) tls TLS_AES_128_GCM_SHA256
-	(Exim 4.99.2)
-	(envelope-from <re@w6rz.net>)
-	id 1wfXYe-0000000195A-3hZn;
-	Fri, 03 Jul 2026 00:39:28 -0600
-Message-ID: <c68d412d-3abd-4b83-995e-ce3641646da0@w6rz.net>
-Date: Thu, 2 Jul 2026 23:39:27 -0700
+	s=arc-20240116; t=1783060824; c=relaxed/simple;
+	bh=nOSmHGPL19da4Ba4E+HjmMvi/1OuD8/OfFLMu6Ebr/4=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=hhJeeKwM+5/kzsuVxwTPGNvEh6w6Bocy2BctldXH/izQC2aERuHEEjF1w3sP9MER5sKWlG9B9u+CuR6MDTgqpT1Ab1+o1Qazwt+mQ/5mNYiNY8vVfjSJAM4he8TS/WwoGIQD1wJ6BsJ2ZqEi9kFRe6jtuySotBsMqCSOfb5c7Z8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=er1z/1kG; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21D561F000E9;
+	Fri,  3 Jul 2026 06:40:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1783060823;
+	bh=eZEoZHnNr4XcyAWt/zRqViytkHIio5GOCNw6NACpGx0=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc;
+	b=er1z/1kG9ktQnTbuPG15zElmYdGirJFDBA60+1dL3Nzkub3RaCoEylJ5Ly2Y4Mk6O
+	 smfFn/uI3P1Vhb16vCEDYc2KTSCvjbHhLl5Jo/buMLWx4gtUOKrDKbo5XJoXm1XGId
+	 U1EIkODWbxgBR27aOwM4FAsJH3LtipkQB4mXqjJ227UASDwYz7ZFIlMTPe/Eq4Rw0J
+	 F0T6LIOYGhxtIM/j7vYyoCLjEkdU+U4v+1RtJ3t2DUtnGPQDmHzGwQ4Fhcw304a+1Z
+	 5nV8JtffCGQ4NobL++73f7EdCcAelJkcK9/ezsWNvZdLI5ILNlaz4MqiNPvMIdZnMO
+	 N7s0/TA9GLL2A==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id D0964393878E;
+	Fri,  3 Jul 2026 06:40:06 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 6.1 000/129] 6.1.177-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
- torvalds@linux-foundation.org, akpm@linux-foundation.org,
- linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
- lkft-triage@lists.linaro.org, pavel@nabladev.com, jonathanh@nvidia.com,
- f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, rwarsow@gmx.de,
- conor@kernel.org, hargar@microsoft.com, broonie@kernel.org,
- achill@achill.org, sr@sladewatkins.com
-References: <20260702155112.163984240@linuxfoundation.org>
-Content-Language: en-US
-From: Ron Economos <re@w6rz.net>
-In-Reply-To: <20260702155112.163984240@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - box5620.bluehost.com
-X-AntiAbuse: Original Domain - vger.kernel.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - w6rz.net
-X-BWhitelist: no
-X-Source-IP: 73.162.206.103
-X-Source-L: No
-X-Exim-ID: 1wfXYe-0000000195A-3hZn
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
-X-Source-Sender: c-73-162-206-103.hsd1.ca.comcast.net ([10.0.1.180]) [73.162.206.103]:37594
-X-Source-Auth: re@w6rz.net
-X-Email-Count: 59
-X-Org: HG=bhshared;ORG=bluehost;
-X-Source-Cap: d3NpeHJ6bmU7d3NpeHJ6bmU7Ym94NTYyMC5ibHVlaG9zdC5jb20=
-X-Local-Domain: yes
-X-CMAE-Envelope: MS4xfJsl8UyRwLxe3s+s8duupMe5uwNcwV9A7bjH64d9GpeA+Nrtm39EE+k6FKn+fMiZcx+5RS8JHn5wmtBsoNJ/n8knNR6bUmafTBddfcjHRDkrqZw+OQRk
- B7v1YfBltECDua42zGrvxLC73qGqxADmOQ2+I5CXdT8TcrdyNho2wLBwUjx3ALaQTA1jiNncZWYiqQ==
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net v2] octeontx2-pf: fix SQB pointer leak on init failure
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <178306080539.2485127.11987414191189060501.git-patchwork-notify@kernel.org>
+Date: Fri, 03 Jul 2026 06:40:05 +0000
+References: <20260630071625.349996-1-dawei.feng@seu.edu.cn>
+In-Reply-To: <20260630071625.349996-1-dawei.feng@seu.edu.cn>
+To: Dawei Feng <dawei.feng@seu.edu.cn>
+Cc: sgoutham@marvell.com, rkannoth@marvell.com, gakula@marvell.com,
+ sbhatta@marvell.com, hkelam@marvell.com, bbhushan2@marvell.com,
+ andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, jbrandeb@kernel.org,
+ richardcochran@gmail.com, amakarov@marvell.com, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org, jianhao.xu@seu.edu.cn,
+ zilin@seu.edu.cn
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [1.04 / 15.00];
+X-Spamd-Result: default: False [-3.66 / 15.00];
+	WHITELIST_SPF_DKIM(-3.00)[kernel.org:d:+,kernel.org:s:+];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_DKIM_REJECT(1.00)[w6rz.net:s=default];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FROM_HAS_DN(0.00)[];
+	FREEMAIL_CC(0.00)[marvell.com,lunn.ch,davemloft.net,google.com,kernel.org,redhat.com,gmail.com,vger.kernel.org,seu.edu.cn];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-271648-lists,stable=lfdr.de];
-	DMARC_NA(0.00)[w6rz.net];
-	FREEMAIL_CC(0.00)[lists.linux.dev,vger.kernel.org,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,nabladev.com,nvidia.com,gmail.com,gmx.de,microsoft.com,achill.org,sladewatkins.com];
-	FORGED_SENDER(0.00)[re@w6rz.net,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-271649-lists,stable=lfdr.de,netdevbpf];
 	RCPT_COUNT_TWELVE(0.00)[20];
-	FORGED_RECIPIENTS(0.00)[m:gregkh@linuxfoundation.org,m:stable@vger.kernel.org,m:patches@lists.linux.dev,m:linux-kernel@vger.kernel.org,m:torvalds@linux-foundation.org,m:akpm@linux-foundation.org,m:linux@roeck-us.net,m:shuah@kernel.org,m:patches@kernelci.org,m:lkft-triage@lists.linaro.org,m:pavel@nabladev.com,m:jonathanh@nvidia.com,m:f.fainelli@gmail.com,m:sudipm.mukherjee@gmail.com,m:rwarsow@gmx.de,m:conor@kernel.org,m:hargar@microsoft.com,m:broonie@kernel.org,m:achill@achill.org,m:sr@sladewatkins.com,m:ffainelli@gmail.com,m:sudipmmukherjee@gmail.com,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[patchwork-bot@kernel.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
-	HAS_X_SOURCE(0.00)[];
-	HAS_X_ANTIABUSE(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[6];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:dawei.feng@seu.edu.cn,m:sgoutham@marvell.com,m:rkannoth@marvell.com,m:gakula@marvell.com,m:sbhatta@marvell.com,m:hkelam@marvell.com,m:bbhushan2@marvell.com,m:andrew+netdev@lunn.ch,m:davem@davemloft.net,m:edumazet@google.com,m:kuba@kernel.org,m:pabeni@redhat.com,m:jbrandeb@kernel.org,m:richardcochran@gmail.com,m:amakarov@marvell.com,m:netdev@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,m:jianhao.xu@seu.edu.cn,m:zilin@seu.edu.cn,m:andrew@lunn.ch,s:lists@lfdr.de];
+	FROM_NEQ_ENVFROM(0.00)[patchwork-bot@kernel.org,stable@vger.kernel.org];
+	MISSING_XM_UA(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[re@w6rz.net,stable@vger.kernel.org];
-	PRECEDENCE_BULK(0.00)[];
-	DKIM_TRACE(0.00)[w6rz.net:-];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RWL_MAILSPIKE_POSSIBLE(0.00)[104.64.211.4:from];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,vger.kernel.org:from_smtp,w6rz.net:from_mime,w6rz.net:email,w6rz.net:mid]
+	TO_DN_SOME(0.00)[];
+	TAGGED_RCPT(0.00)[stable,netdev];
+	FROM_NO_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 009576FF23F
+X-Rspamd-Queue-Id: D52636FF236
 
-On 7/2/26 09:18, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.1.177 release.
-> There are 129 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
->
-> Responses should be made by Sat, 04 Jul 2026 15:50:58 +0000.
-> Anything received after that time might be too late.
->
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.1.177-rc1.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.1.y
-> and the diffstat can be found below.
->
-> thanks,
->
-> greg k-h
+Hello:
 
-Built and booted successfully on RISC-V RV64 (HiFive Unmatched).
+This patch was applied to netdev/net.git (main)
+by Paolo Abeni <pabeni@redhat.com>:
 
-Tested-by: Ron Economos <re@w6rz.net>
+On Tue, 30 Jun 2026 15:16:25 +0800 you wrote:
+> otx2_init_hw_resources() initializes SQ aura and pool resources before
+> several later setup steps. On failure, err_free_sq_ptrs only frees SQB
+> pages, leaving the per-SQ sqb_ptrs arrays behind.
+> 
+> Use otx2_free_sq_res() for the SQ unwind path and let it free sqb_ptrs
+> even when sq->sqe has not been allocated yet.
+> 
+> [...]
+
+Here is the summary with links:
+  - [net,v2] octeontx2-pf: fix SQB pointer leak on init failure
+    https://git.kernel.org/netdev/net/c/62e7df6d042a
+
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
 
 
