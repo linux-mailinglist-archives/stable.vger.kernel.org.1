@@ -1,216 +1,188 @@
-Return-Path: <stable+bounces-271691-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-271690-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 80PqNqh6R2o5ZAAAu9opvQ
-	(envelope-from <stable+bounces-271691-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 03 Jul 2026 11:02:32 +0200
+	id tO9XJnt6R2oaZAAAu9opvQ
+	(envelope-from <stable+bounces-271690-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 03 Jul 2026 11:01:47 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id E60CD700680
-	for <lists+stable@lfdr.de>; Fri, 03 Jul 2026 11:02:31 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 50B5A70065F
+	for <lists+stable@lfdr.de>; Fri, 03 Jul 2026 11:01:46 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=S2BBHDf7;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-271691-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-271691-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=intel.com header.s=Intel header.b=J6oBxIH5;
+	dmarc=pass (policy=none) header.from=intel.com;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-271690-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-271690-lists+stable=lfdr.de@vger.kernel.org";
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 8C6E73050F7C
-	for <lists+stable@lfdr.de>; Fri,  3 Jul 2026 08:46:23 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A5FA4302F58F
+	for <lists+stable@lfdr.de>; Fri,  3 Jul 2026 08:46:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0DCA237EFEE;
-	Fri,  3 Jul 2026 08:46:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C4D637B3E4;
+	Fri,  3 Jul 2026 08:46:01 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from out-178.mta1.migadu.com (out-178.mta1.migadu.com [95.215.58.178])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27B9937CD5A
-	for <stable@vger.kernel.org>; Fri,  3 Jul 2026 08:46:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10F24377553
+	for <stable@vger.kernel.org>; Fri,  3 Jul 2026 08:45:57 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783068376; cv=none; b=JXG2o6LHVCrqH8Rw8bfVQqKTCuOu8MRCU/pR+kS5YlnB9mBxjREC2ta4qpfmF9r6bNbXeZzzBEUtrItOegaH9Kld4fZLW9hXWTKVn9tsboqwAuU/8e0IrG5MpfNlX2xpDpuKepi4HCK3kO1wG5VOz84l+IEKpZreeuq3sbb5Hns=
+	t=1783068361; cv=none; b=jT7Kpxj1DlZXODOKSiNnmvNc3gW3aR39kk7jDtnwDeV1tjdPx2x3hu5k3/bq+1grk1ov2/0IyLmkdwAD6/b7/tIJ+05LDlt/Jgu27hQ87LyHJN2ylJurcHWrIrLZ5icBrABbTh/MwdSws89EKPCuagc8/jcTZY8UXv2e0AEdpdw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783068376; c=relaxed/simple;
-	bh=nLQeJkCbFzI3yfdneh5Aa+HN3kEcEpa3wN+zJbNDcKo=;
+	s=arc-20240116; t=1783068361; c=relaxed/simple;
+	bh=/EwpHi6J5UJVM7ZmMt0AyaCEgH5luC7CEHQjRvGOyYI=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=VEjZGxPHy8fJsi2mVHhXjsKi0gZCsZ0YmaMJBMcw0URFEoDhOQCShdnHuYQ1SSm8VH2unMSne8obN3O2rr2DHMUtmj+Lrs/zXLl9KW/1T8t1xq4MscxPw+RLRDtb2p1gtlWkyy0lY6OBzxvE4Hut6RXsVxnh+rxIauC0N2/jBdI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=S2BBHDf7; arc=none smtp.client-ip=95.215.58.178
-Message-ID: <6a547571-e60e-4b36-9968-011e3d880588@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1783068359;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=60Vpn3H5TSaITeEafUCSZSGw+JUZcFB/W7NF3CJRJro=;
-	b=S2BBHDf73puw0tKBLqjZuAEU/CWtMRJAxDqfOYNqFAeo8YjKSh7dR2sR+MoWh+wM1ysj/x
-	y05f5fq17vzO2zQPppAjq2CCy6FTcDHSUmRMNOfgx/4ysnNpqGIjegsfguN233t1vfPVtx
-	kpopE2aCTEIKLD3MkESUBH8/cJ+luV4=
-Date: Fri, 3 Jul 2026 16:45:34 +0800
+	 In-Reply-To:Content-Type; b=G7L/61e7iif5v5COxDEYhXN9K0MTXAmMEkUczLcC/VCrehRpaJbNdZEB1Eint1l2LnsYdAc/58OTLXhndbTg4lAZ7fwlLj1IHQ9MLgYbOWe/Y/OTunfzdWlZOcM5Js7wy9BdeGaxqGGWImjT+UI0mB/DGE0ImWhrFXLyHjCSVsA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=J6oBxIH5; arc=none smtp.client-ip=198.175.65.10
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1783068358; x=1814604358;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=/EwpHi6J5UJVM7ZmMt0AyaCEgH5luC7CEHQjRvGOyYI=;
+  b=J6oBxIH5WseVEhugI9mPNVJS4pyfAfxx2TeeNP/F+e31O+NxAqEX/CQy
+   STjUnnYU5+XflUM8cszqoyQwjDIXi3CA5l6dAoj7QhBjIcVU+z825bQAg
+   4m143OLQDOU2OHBtN7SKoR0rLJOQGGRuhc62oM7owH63i6zbgP+n/xTcy
+   uCq3772JTMJRoq+Fz80eixnlXdsW9AtWRDDOj7YvU0m/mutSzIH/SNIs3
+   gnRIyCOBP1I0kzBiG1oe6KRI2y1jpa38VLVTtGIU6+vb74MAzCvjnb/2G
+   WV8kBcQVrCPKwxk+CWf26TMdZSAobP0peklXA9F2cnsunMbxwMAeX2YAS
+   Q==;
+X-CSE-ConnectionGUID: 06ZVhpf0Rs2UaD5LSzeQPw==
+X-CSE-MsgGUID: LTgKrXAXSsKyayCcxPm37A==
+X-IronPort-AV: E=McAfee;i="6800,10657,11835"; a="101240455"
+X-IronPort-AV: E=Sophos;i="6.25,145,1779174000"; 
+   d="scan'208";a="101240455"
+Received: from fmviesa004.fm.intel.com ([10.60.135.144])
+  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Jul 2026 01:45:57 -0700
+X-CSE-ConnectionGUID: 8hHC5PI0TWGDRU9ej3SrmA==
+X-CSE-MsgGUID: 4tpIW1sFQMuC4Nxexcsf0g==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,145,1779174000"; 
+   d="scan'208";a="254980022"
+Received: from ettammin-mobl3.ger.corp.intel.com (HELO [10.245.245.138]) ([10.245.245.138])
+  by fmviesa004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Jul 2026 01:45:56 -0700
+Message-ID: <d5c3258a-04d1-42d6-9d74-cdd9a1172d97@intel.com>
+Date: Fri, 3 Jul 2026 09:45:54 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Subject: Re: [PATCH stable] mm/khugepaged: write all dirty file folios when
- collapsing
-Content-Language: en-US
-To: Baolin Wang <baolin.wang@linux.alibaba.com>,
- Pedro Falcato <pfalcato@suse.de>
-Cc: "Liam R. Howlett" <liam@infradead.org>, Nico Pache <npache@redhat.com>,
- Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
- Barry Song <baohua@kernel.org>, linux-mm@kvack.org,
- Andrew Morton <akpm@linux-foundation.org>, linux-kernel@vger.kernel.org,
- linux-fsdevel@vger.kernel.org, stable@vger.kernel.org,
- Alexander Viro <viro@zeniv.linux.org.uk>, Lorenzo Stoakes <ljs@kernel.org>,
- Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
- Matthew Wilcox <willy@infradead.org>, Song Liu <song@kernel.org>,
- Eric Hagberg <ehagberg@janestreet.com>, Zi Yan <ziy@nvidia.com>,
- Gregg Leventhal <gleventhal@janestreet.com>,
- David Hildenbrand <david@kernel.org>
-References: <20260702165409.164568-1-pfalcato@suse.de>
- <110e92b2-f7a6-487a-94a2-25ef1242afb7@linux.alibaba.com>
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Lance Yang <lance.yang@linux.dev>
-In-Reply-To: <110e92b2-f7a6-487a-94a2-25ef1242afb7@linux.alibaba.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] drm/xe: Wait on external BO kernel fences in exec IOCTL
+To: Matthew Brost <matthew.brost@intel.com>, intel-xe@lists.freedesktop.org
+Cc: stable@vger.kernel.org
+References: <20260702215805.4011228-1-matthew.brost@intel.com>
+Content-Language: en-GB
+From: Matthew Auld <matthew.auld@intel.com>
+In-Reply-To: <20260702215805.4011228-1-matthew.brost@intel.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
+Content-Transfer-Encoding: 7bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-5.16 / 15.00];
+	WHITELIST_SPF_DKIM(-3.00)[intel.com:d:+,kernel.org:s:+];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linux.dev,none];
-	R_DKIM_ALLOW(-0.20)[linux.dev:s=key1];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
+	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FROM_HAS_DN(0.00)[];
-	TAGGED_FROM(0.00)[bounces-271691-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:baolin.wang@linux.alibaba.com,m:pfalcato@suse.de,m:liam@infradead.org,m:npache@redhat.com,m:ryan.roberts@arm.com,m:dev.jain@arm.com,m:baohua@kernel.org,m:linux-mm@kvack.org,m:akpm@linux-foundation.org,m:linux-kernel@vger.kernel.org,m:linux-fsdevel@vger.kernel.org,m:stable@vger.kernel.org,m:viro@zeniv.linux.org.uk,m:ljs@kernel.org,m:brauner@kernel.org,m:jack@suse.cz,m:willy@infradead.org,m:song@kernel.org,m:ehagberg@janestreet.com,m:ziy@nvidia.com,m:gleventhal@janestreet.com,m:david@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[lance.yang@linux.dev,stable@vger.kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[22];
-	RCVD_COUNT_THREE(0.00)[3];
-	MIME_TRACE(0.00)[0:+];
 	FORWARDED(0.00)[lists@lfdr.de];
-	DKIM_TRACE(0.00)[linux.dev:+];
-	MISSING_XM_UA(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[lance.yang@linux.dev,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-271690-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:matthew.brost@intel.com,m:intel-xe@lists.freedesktop.org,m:stable@vger.kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_SENDER(0.00)[matthew.auld@intel.com,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCPT_COUNT_THREE(0.00)[3];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[matthew.auld@intel.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[intel.com:+];
+	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	RWL_MAILSPIKE_POSSIBLE(0.00)[104.64.211.4:from];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+	MID_RHS_MATCH_FROM(0.00)[];
+	TO_DN_SOME(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,vger.kernel.org:from_smtp,intel.com:from_mime,intel.com:email,intel.com:mid,intel.com:dkim]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: E60CD700680
+X-Rspamd-Queue-Id: 50B5A70065F
 
+On 02/07/2026 22:58, Matthew Brost wrote:
+> Before arming a user job, xe_exec_ioctl() only added the VM's
+> dma-resv KERNEL slot as a dependency. That slot covers rebinds and
+> the kernel operations of the VM's private BOs, but not external BOs
+> (bo->vm == NULL), which carry their kernel operations (evictions,
+> moves, ...) in their own dma-resv KERNEL slot.
+> 
+> The DMA_RESV_USAGE_KERNEL slot is the cross-driver contract for
+> memory management operations that must complete before the BO or its
+> backing store may be used: any accessor is required to wait on the
+> KERNEL fences before touching the resv. By skipping the external BOs'
+> KERNEL slots, the exec path violated that contract and could schedule
+> a user job while a kernel operation on an external BO mapped by the VM
+> was still in flight, racing against it and potentially reading or
+> writing memory that was being moved.
+> 
+> Replace the VM-only dependency with an iteration over every object
+> locked by the exec, adding each object's KERNEL slot as a job
+> dependency. This covers the VM resv (rebinds and private BOs) as well
+> as every external BO, mirroring the drm_gpuvm_resv_add_fence() call
+> that later publishes the job fence to the same set of objects.
+> Long-running mode continues to skip this, as before.
+> 
+> Fixes: dd08ebf6c352 ("drm/xe: Introduce a new DRM driver for Intel GPUs")
+> Cc: stable@vger.kernel.org
+> Assisted-by: GitHub_Copilot:claude-opus-4.8
+> Signed-off-by: Matthew Brost <matthew.brost@intel.com>
 
+Wow, kind of surprised we missed this.
 
-On 2026/7/3 11:49, Baolin Wang wrote:
-> 
-> 
-> On 7/3/26 12:54 AM, Pedro Falcato wrote:
->> As-is, khugepaged and writable-file opening exclude each other. A file
->> cannot be open writeable and have THPs (because the filesystem is not 
->> aware
->> of them). khugepaged will never collapse file pages for files that are
->> opened writeable. On an open(O_RDWR/O_WRONLY), the page cache for that
->> particular file is dropped. This is fine because nothing could've been
->> dirtied.
->>
->> However, there is an edge-case: collapse_file() might not be able to
->> coexist with concurrent writers, but it can coexist with dirty folios
->> (from previous writers). Therefore, the following can happen:
->>
->> open(file, O_RDWR)
->> write(file)
->> close(file)
->> madvise(file_mapping, MADV_COLLAPSE, some non-dirty range)
->> open(file, O_RDWR)
->>   nr_thps > 0
->>    truncate_inode_pages()
->>      /* THPs are cleared out, but so are the dirty folios */
->>
->> When this edge-case happens, there is data loss, as the dirty folios are
->> fully discarded.
->>
->> Fix it by fully writing back the page cache (and waiting) when collapsing
->> file THPs. Doing so provides the guarantee that no dirty folio will be
->> observed while there are active THPs. To fully ensure this is safe, the
->> invalidate_lock needs to be held while doing the writeout, so that
->> do_dentry_open()'s page cache truncation excludes this write-and-wait.
-> 
-> Thanks for explaining the race, and it looks reasonable to me. One nit 
-> below.
-> 
->> Cc: stable@vger.kernel.org
->> Cc: Alexander Viro <viro@zeniv.linux.org.uk>
->> Cc: Christian Brauner <brauner@kernel.org>
->> Cc: Jan Kara <jack@suse.cz>
->> Cc: Matthew Wilcox <willy@infradead.org>
->> Cc: Song Liu <song@kernel.org>
->> Cc: Eric Hagberg <ehagberg@janestreet.com>
->> Cc: Zi Yan <ziy@nvidia.com>
->> Fixes: 99cb0dbd47a1 ("mm,thp: add read-only THP support for (non- 
->> shmem) FS")
->> Reported-by: Gregg Leventhal <gleventhal@janestreet.com>
->> Closes: https://lore.kernel.org/linux-mm/ 
->> CAFN_u7H_0ECF3jixP=T=U7AH5=Q3wQNvJMo8an3VqUDMerQfUw@mail.gmail.com/
->> Tested-by: Zi Yan <ziy@nvidia.com>
->> Signed-off-by: Pedro Falcato <pfalcato@suse.de>
->> ---
->> This patch is written against 7.1.0 (because the code no longer exists 
->> in mainline).
->>
->> Zi, I kept your Tested-by, but I had to move some things around and
->> use the invalidate lock. Please re-test if you can.
->>
->>   mm/khugepaged.c | 39 +++++++++++++++++++++++++--------------
->>   1 file changed, 25 insertions(+), 14 deletions(-)
->>
->> diff --git a/mm/khugepaged.c b/mm/khugepaged.c
->> index b8452dbdb043..0707d719a270 100644
->> --- a/mm/khugepaged.c
->> +++ b/mm/khugepaged.c
->> @@ -2094,32 +2094,43 @@ static enum scan_result collapse_file(struct 
->> mm_struct *mm, unsigned long addr,
->>           goto xa_unlocked;
->>       }
->> -    if (!is_shmem) {
->> +xa_locked:
->> +    xas_unlock_irq(&xas);
->> +xa_unlocked:
->> +
->> +    /*
->> +     * If collapse is successful, flush must be done now before copying.
->> +     * If collapse is unsuccessful, does flush actually need to be done?
->> +     * Do it anyway, to clear the state.
->> +     */
->> +    try_to_unmap_flush();
->> +
->> +    if (result == SCAN_SUCCEED && !is_shmem) {
-> 
-> Actually, the operations below only for those mappings that do not 
-> support large folios. For mappings with large folio support, 
-> filemap_nr_thps() always returns 0, so the race described in the commit 
-> message won't happen. We can add mapping_large_folio_support() here to 
-> filter them out.
-> 
-> if (result == SCAN_SUCCEED && !is_shmem && ! 
-> mapping_large_folio_support(mapping)) {
->
+Reviewed-by: Matthew Auld <matthew.auld@intel.com>
 
-Right! nr_thps only gets updated when !mapping_large_folio_support(mapping).
-
-For mappings that do support large folios, writable open won't see
-nr_thps > 0, so no truncate_inode_pages() for that case :)
+> ---
+>   drivers/gpu/drm/xe/xe_exec.c | 22 ++++++++++++++++------
+>   1 file changed, 16 insertions(+), 6 deletions(-)
+> 
+> diff --git a/drivers/gpu/drm/xe/xe_exec.c b/drivers/gpu/drm/xe/xe_exec.c
+> index e05dabfcd43c..d5293bc33a67 100644
+> --- a/drivers/gpu/drm/xe/xe_exec.c
+> +++ b/drivers/gpu/drm/xe/xe_exec.c
+> @@ -292,13 +292,23 @@ int xe_exec_ioctl(struct drm_device *dev, void *data, struct drm_file *file)
+>   		goto err_exec;
+>   	}
+>   
+> -	/* Wait behind rebinds */
+> +	/*
+> +	 * Wait behind rebinds and any kernel operations (evictions, defrag
+> +	 * moves, ...) on the VM and all external BOs. The VM's private BOs
+> +	 * carry their kernel ops in the VM dma-resv KERNEL slot, while each
+> +	 * external BO carries them in its own dma-resv KERNEL slot; both are
+> +	 * covered by iterating every object locked by the exec, mirroring the
+> +	 * drm_gpuvm_resv_add_fence() below.
+> +	 */
+>   	if (!xe_vm_in_lr_mode(vm)) {
+> -		err = xe_sched_job_add_deps(job,
+> -					    xe_vm_resv(vm),
+> -					    DMA_RESV_USAGE_KERNEL);
+> -		if (err)
+> -			goto err_put_job;
+> +		struct drm_gem_object *obj;
+> +
+> +		drm_exec_for_each_locked_object(exec, obj) {
+> +			err = xe_sched_job_add_deps(job, obj->resv,
+> +						    DMA_RESV_USAGE_KERNEL);
+> +			if (err)
+> +				goto err_put_job;
+> +		}
+>   	}
+>   
+>   	for (i = 0; i < num_syncs && !err; i++)
 
 
