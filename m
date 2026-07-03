@@ -1,67 +1,65 @@
-Return-Path: <stable+bounces-271774-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-271773-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 6VWRMmm4R2p+eAAAu9opvQ
-	(envelope-from <stable+bounces-271774-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 03 Jul 2026 15:26:01 +0200
+	id JKBLLiq6R2oNeQAAu9opvQ
+	(envelope-from <stable+bounces-271773-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 03 Jul 2026 15:33:30 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3CB9E702D4F
-	for <lists+stable@lfdr.de>; Fri, 03 Jul 2026 15:26:01 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 15ECB702E8C
+	for <lists+stable@lfdr.de>; Fri, 03 Jul 2026 15:33:30 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="fkOg6zQ/";
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=EEKFQ5F0;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-271774-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-271774-lists+stable=lfdr.de@vger.kernel.org";
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-271773-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-271773-lists+stable=lfdr.de@vger.kernel.org";
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id DCFEE3036E98
+	by sea.lore.kernel.org (Postfix) with ESMTP id 7C0B8302DA3F
 	for <lists+stable@lfdr.de>; Fri,  3 Jul 2026 13:23:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C8243D6484;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 232CE3D332B;
 	Fri,  3 Jul 2026 13:23:42 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2BAC3D6488
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C676C3D2FE6
 	for <stable@vger.kernel.org>; Fri,  3 Jul 2026 13:23:40 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783085022; cv=none; b=AHahaAsthNd6sdMxEiYQbOjenDAPy2aVywSTogoqc3TUWVpQ+xXwBUWvvwYbzFDGwiHeJZLVMVp8FpKr3eidn0Ve8J1ylpEObJm7FccntchD5QjEI/VJR1ISVCu6rqAPX4J2D1jwgUg9NPyj6wZLocyw6M8zJmy2nWrPPwebCEo=
+	t=1783085021; cv=none; b=JlnXmkJB6pYma8ejavupl4QKDElyQgYsKSLb6aXHQOxtmyoVGqLhAErxRFkxMJ43+asxbRBgGtj1hOsdBJZbswyrzbtQ3YWBcPzOHt85waVMM8dm/3iGAlRLWkWkho4i53KvQ7vPiY0RQ79v8qNw3dphfOjRGUo2DqviEv0D/8Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783085022; c=relaxed/simple;
-	bh=NJDSUfVrYEpex+e549WvmMEHs3G12Spna2GVhRIK9Io=;
+	s=arc-20240116; t=1783085021; c=relaxed/simple;
+	bh=bHhLBk/omfy3rPjRZVHG360enJGhW4JDSP3Lrw71934=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Bq4W8ofcXuQYANmO5G77FLWktAK0Sp8trowXY0XHpk0m2pzDlqPGdBVaRSvYpq1DAF8xJjFYY3cvieoK0VYKGAugoDhlT5uRNOXz/3jNYEiRLCaegvLgtVY37OamLV05xHA8THkjwsYb7riDQ0CrWRGqNbfuYgc1MZ7LjadRtLU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fkOg6zQ/; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B0311F00A3A;
-	Fri,  3 Jul 2026 13:23:37 +0000 (UTC)
+	 MIME-Version; b=J0iMHI3dTEjpXVRjmsotdjT2TRWZpQUseM1XLZFUshZF/Hi9hOaBoM5UGR2JKemM/ZCtvqse2yKbxdyf0uawOUYS0ndQLsKazm77cBHaro5dZW6HQW2nqXLL4jg1ElfucCqvWRd7eKpLQ/ObA+CCBqLFuzpHbi09Op/xRkuiCZs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EEKFQ5F0; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7EC31F00A3D;
+	Fri,  3 Jul 2026 13:23:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
 	s=k20260515; t=1783085020;
-	bh=7jPBbgit3jIHQLRh11TwU1p1v1IdI+1+fVlqB5oyykQ=;
+	bh=KvKyyLnYxykF/sm5KlYT6J4CbxHGige1OE0Yu9jiHHA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=fkOg6zQ/aSF2CtwRXVeXmsnaAdPE+noKLvtn1aLWDtNs9TWBUcaVkhB/HUzz6L1kX
-	 plIF1C5Dk2dbwgC4FrfGjE+8+17Oh35iPHIlhTq5LwWcH0UX8EmRWnPfc4XFUl/8FZ
-	 JVhWOWkA11BnEZmKsNnlazr3fgltrd70gqnUilgmeMVTo1yNqy+yUbExT9QcxQMZf6
-	 4JwT7RiRAFkklC9fzT0By6zRw03aUjSLMM81nGtnqd/5hu0gLZJufCHjyBUby1WPHH
-	 KjJk1fwrKvUMAOccWJR9gbLDjeLkYVY/ymDNOvNcntTqObMCu1h2NwqUwQABptoTnO
-	 tIx6aln+/rwSg==
+	b=EEKFQ5F0A2QvM599MOGsn9QHuom7m8uczDfVIuSNrA4piZyaKhvPk3L04InghSuzd
+	 SINxmGX/Epox4Csw5RxwKXzq6+CwzX8yzHuA4EaWu4qLSzaDTjcQFO1b5YCMehf5fx
+	 KqNC6Ra2UCVzHEydbQlitgSZNG4L00uDkCJyvJVJA5sLWFIbY0DplLeeNWvuwGx+ME
+	 miI0Bs2kMLWbAps05RCr9/zERJ/Nf4h4HYNtrjzqhIXitbrwbFae6rbKISrqeWJM9T
+	 rHQ7IxahkTdGh1kEFOxDKbI95HscGx5KqmnJ1tPCD/RKOvmuB2SuLCq+LxxD1FQHLZ
+	 w2jqYEsLdesUw==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Sunmin Jeong <s_min.jeong@samsung.com>,
-	Yunji Kang <yunji0.kang@samsung.com>,
-	Yeongjin Gil <youngjin.gil@samsung.com>,
-	Sungjong Seo <sj1557.seo@samsung.com>,
+Cc: Wenjie Qi <qwjhust@gmail.com>,
+	stable@kernel.org,
+	Wenjie Qi <qiwenjie@xiaomi.com>,
 	Chao Yu <chao@kernel.org>,
 	Jaegeuk Kim <jaegeuk@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15.y 2/2] f2fs: fix to round down start offset of fallocate for pin file
-Date: Fri,  3 Jul 2026 09:23:34 -0400
-Message-ID: <20260703132334.4098206-2-sashal@kernel.org>
+Subject: [PATCH 6.6.y] f2fs: validate orphan inode entry count
+Date: Fri,  3 Jul 2026 09:23:37 -0400
+Message-ID: <20260703132337.4099385-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260703132334.4098206-1-sashal@kernel.org>
-References: <2026070255-livable-cheese-d39c@gregkh>
- <20260703132334.4098206-1-sashal@kernel.org>
+In-Reply-To: <2026070201-evasion-negate-eca9@gregkh>
+References: <2026070201-evasion-negate-eca9@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -77,20 +75,21 @@ X-Spamd-Result: default: False [-3.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:s_min.jeong@samsung.com,m:yunji0.kang@samsung.com,m:youngjin.gil@samsung.com,m:sj1557.seo@samsung.com,m:chao@kernel.org,m:jaegeuk@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:qwjhust@gmail.com,m:stable@kernel.org,m:qiwenjie@xiaomi.com,m:chao@kernel.org,m:jaegeuk@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-271773-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[gmail.com,kernel.org,xiaomi.com];
+	FORWARDED(0.00)[lists@lfdr.de];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-271774-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_SENDER(0.00)[sashal@kernel.org,stable@vger.kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
@@ -98,82 +97,88 @@ X-Spamd-Result: default: False [-3.66 / 15.00];
 	DKIM_TRACE(0.00)[kernel.org:+];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,samsung.com:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 3CB9E702D4F
+X-Rspamd-Queue-Id: 15ECB702E8C
 
-From: Sunmin Jeong <s_min.jeong@samsung.com>
+From: Wenjie Qi <qwjhust@gmail.com>
 
-[ Upstream commit 4275b59673eb60b02eec3997816c83f1f4b909c4 ]
+[ Upstream commit 846c499a65816d13f1186e3090e825e8bb8bcb8b ]
 
-Currently, the length of fallocate for pin file is section-aligned to
-keep allocated sections from being selected as victims of GC. However,
-for the case that the start offset of fallocate is not aligned in
-section, the allocated sections can't be fully utilized. It's because a
-new section is allocated by f2fs_allocate_pinning_section() after using
-blks_per_sec blocks regardless of the start offset. As a result, several
-unexpected dirty segments may be created, including blocks assigned to
-the pinned file.
+f2fs_recover_orphan_inodes() trusts the orphan block entry_count when
+replaying orphan inodes from the checkpoint pack. A corrupted entry_count
+larger than F2FS_ORPHANS_PER_BLOCK makes the recovery loop read past the
+ino[] array and interpret footer or following data as inode numbers.
 
-To address this issue, let's round down the start offset of fallocate
-to the length of section.
+On a crafted image, mounting an unpatched kernel can drive orphan recovery
+into f2fs_bug_on() and panic the kernel. Validate entry_count before
+consuming entries so corrupted checkpoint data fails the mount with
+-EFSCORRUPTED and requests fsck instead.
 
-The reproducing scenario is as below
+Set ERROR_INCONSISTENT_ORPHAN as well, so the corruption reason can be
+recorded in the superblock s_errors[] field. This gives fsck a persistent
+hint even though mount-time orphan recovery failure may leave no chance to
+persist SBI_NEED_FSCK through a checkpoint.
 
-chunk=$(((2<<20)+4096)) # 2MB + 4KB
-touch test
-f2fs_io pinfile set test
-f2fs_io fallocate 0 0 $chunk test
-f2fs_io fallocate 0 $chunk $chunk test
-f2fs_io fallocate 0 $((chunk*2)) $chunk test
-f2fs_io fiemap 0 $((chunk*3)) test
-
-Fiemap: offset = 0 len = 12288
-    logical addr.    physical addr.   length           flags
-0   0000000000000000 000000068c600000 0000000000400000 00001088
-1   0000000000400000 000000003d400000 0000000000001000 00001088
-2   0000000000401000 00000003eb200000 0000000000200000 00001088
-3   0000000000601000 00000005e4200000 0000000000001000 00001088
-4   0000000000602000 0000000605400000 0000000000200000 00001089
-
-Cc: stable@vger.kernel.org
-Fixes: f5a53edcf01e ("f2fs: support aligned pinned file")
-Reviewed-by: Yunji Kang <yunji0.kang@samsung.com>
-Reviewed-by: Yeongjin Gil <youngjin.gil@samsung.com>
-Reviewed-by: Sungjong Seo <sj1557.seo@samsung.com>
-Signed-off-by: Sunmin Jeong <s_min.jeong@samsung.com>
+Cc: stable@kernel.org
+Fixes: 127e670abfa7 ("f2fs: add checkpoint operations")
+Signed-off-by: Wenjie Qi <qiwenjie@xiaomi.com>
 Reviewed-by: Chao Yu <chao@kernel.org>
 Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/f2fs/file.c | 9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+ fs/f2fs/checkpoint.c    | 14 +++++++++++++-
+ include/linux/f2fs_fs.h |  1 +
+ 2 files changed, 14 insertions(+), 1 deletion(-)
 
-diff --git a/fs/f2fs/file.c b/fs/f2fs/file.c
-index d4d485032e6ea6..3894c5889df8fe 100644
---- a/fs/f2fs/file.c
-+++ b/fs/f2fs/file.c
-@@ -1695,8 +1695,15 @@ static int expand_inode_data(struct inode *inode, loff_t offset,
+diff --git a/fs/f2fs/checkpoint.c b/fs/f2fs/checkpoint.c
+index 3ec815e615e731..c629b5580b724c 100644
+--- a/fs/f2fs/checkpoint.c
++++ b/fs/f2fs/checkpoint.c
+@@ -742,6 +742,7 @@ int f2fs_recover_orphan_inodes(struct f2fs_sb_info *sbi)
+ 	for (i = 0; i < orphan_blocks; i++) {
+ 		struct page *page;
+ 		struct f2fs_orphan_block *orphan_blk;
++		unsigned int entry_count;
  
- 	if (f2fs_is_pinned_file(inode)) {
- 		block_t sec_blks = CAP_BLKS_PER_SEC(sbi);
--		block_t sec_len = roundup(map.m_len, sec_blks);
-+		block_t sec_len;
+ 		page = f2fs_get_meta_page(sbi, start_blk + i);
+ 		if (IS_ERR(page)) {
+@@ -750,7 +751,18 @@ int f2fs_recover_orphan_inodes(struct f2fs_sb_info *sbi)
+ 		}
  
-+		if (map.m_lblk % sec_blks) {
-+			map.m_lblk = rounddown(map.m_lblk, sec_blks);
-+			map.m_len = pg_end - map.m_lblk;
-+			if (off_end)
-+				map.m_len++;
+ 		orphan_blk = (struct f2fs_orphan_block *)page_address(page);
+-		for (j = 0; j < le32_to_cpu(orphan_blk->entry_count); j++) {
++		entry_count = le32_to_cpu(orphan_blk->entry_count);
++		if (entry_count > F2FS_ORPHANS_PER_BLOCK) {
++			f2fs_err(sbi, "invalid orphan inode entry count %u",
++				 entry_count);
++			set_sbi_flag(sbi, SBI_NEED_FSCK);
++			f2fs_handle_error(sbi, ERROR_INCONSISTENT_ORPHAN);
++			err = -EFSCORRUPTED;
++			f2fs_put_page(page, 1);
++			goto out;
 +		}
-+		sec_len = roundup(map.m_len, sec_blks);
- 		map.m_len = sec_blks;
- next_alloc:
- 		if (has_not_enough_free_secs(sbi, 0,
++
++		for (j = 0; j < entry_count; j++) {
+ 			nid_t ino = le32_to_cpu(orphan_blk->ino[j]);
+ 
+ 			err = recover_orphan_inode(sbi, ino);
+diff --git a/include/linux/f2fs_fs.h b/include/linux/f2fs_fs.h
+index fed8bec024db72..8414b7ff254326 100644
+--- a/include/linux/f2fs_fs.h
++++ b/include/linux/f2fs_fs.h
+@@ -102,6 +102,7 @@ enum f2fs_error {
+ 	ERROR_CORRUPTED_XATTR,
+ 	ERROR_INVALID_NODE_REFERENCE,
+ 	ERROR_INCONSISTENT_NAT,
++	ERROR_INCONSISTENT_ORPHAN,
+ 	ERROR_MAX,
+ };
+ 
 -- 
 2.53.0
 
