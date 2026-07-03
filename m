@@ -1,212 +1,174 @@
-Return-Path: <stable+bounces-271826-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-271828-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id fr2hCL3hR2oihAAAu9opvQ
-	(envelope-from <stable+bounces-271826-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 03 Jul 2026 18:22:21 +0200
+	id +aU2LG3hR2oVhAAAu9opvQ
+	(envelope-from <stable+bounces-271828-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 03 Jul 2026 18:21:01 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5DC40704360
-	for <lists+stable@lfdr.de>; Fri, 03 Jul 2026 18:22:20 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id A1A2070434C
+	for <lists+stable@lfdr.de>; Fri, 03 Jul 2026 18:21:00 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=shutemov.name header.s=fm3 header.b="Jf/ZvnV+";
-	dkim=pass header.d=messagingengine.com header.s=fm2 header.b=igCegrbz;
-	dmarc=none;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-271826-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-271826-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=smile.fr header.s=google header.b=oWidXmLO;
+	dmarc=pass (policy=reject) header.from=smile.fr;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-271828-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-271828-lists+stable=lfdr.de@vger.kernel.org";
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 0C7C1300E731
-	for <lists+stable@lfdr.de>; Fri,  3 Jul 2026 16:18:39 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id D1F3730135F7
+	for <lists+stable@lfdr.de>; Fri,  3 Jul 2026 16:20:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F3902C326F;
-	Fri,  3 Jul 2026 16:18:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 276F02F7F07;
+	Fri,  3 Jul 2026 16:20:34 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from fhigh-b8-smtp.messagingengine.com (fhigh-b8-smtp.messagingengine.com [202.12.124.159])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D81F28CF77;
-	Fri,  3 Jul 2026 16:18:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74A2E2C11FE
+	for <stable@vger.kernel.org>; Fri,  3 Jul 2026 16:20:30 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783095517; cv=none; b=ncxrL/mbbK8suB9+jRjDjtC3wvrZjJI0EgRaNH0QRQ11ciAK2z10KcwU5WyuXJLbQBJGm2P+jU22DGB/zGE+BL7/mz3j3n3G/bGfIpTM6O7QUxksEOFvcSPsRt+U6pIKRl8VYjlVHzF65/e90otNpVORRbq/toaMct2HTzHoLEI=
+	t=1783095633; cv=none; b=gUTQ+i0wHJNeME97p/cdCBviQRQvpoo7OUmociED5dyUXHOSmqyJH4clrWRdyeF4+tGH74K+Tgn7S7/PNd7ZqQYydJVsQuo3n08cZoMqSjdAkWKIHVATiRpNIYn7Dfpl/iwqD+UFjXvTprxCmdzHv9R9sZJf4FgaAH4QopV21Ik=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783095517; c=relaxed/simple;
-	bh=j/f/It8MuV1QCNInKTZPkW/5dyCCOZlsz+CJ6HqhMGg=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Pc5/fIbvxLmBx30EpahBIhv398Mg+uMpdK2tH1O4vdxGfSsHLnvabx+cpOIJ/qPbYk3TpXVpNfG1Xzyz0O55oK9F6k0JquWI7yZYii61wq30toXTrNp8pUCsxw8Qlyb66/28av+s7cUfGVkoadNUvwi+NQxEqPlow+OWLSGkDWA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=shutemov.name; spf=pass smtp.mailfrom=shutemov.name; dkim=pass (2048-bit key) header.d=shutemov.name header.i=@shutemov.name header.b=Jf/ZvnV+; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=igCegrbz; arc=none smtp.client-ip=202.12.124.159
-Received: from phl-compute-11.internal (phl-compute-11.internal [10.202.2.51])
-	by mailfhigh.stl.internal (Postfix) with ESMTP id 610717A00BE;
-	Fri,  3 Jul 2026 12:18:35 -0400 (EDT)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-11.internal (MEProxy); Fri, 03 Jul 2026 12:18:35 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shutemov.name;
-	 h=cc:cc:content-transfer-encoding:content-type:date:date:from
-	:from:in-reply-to:message-id:mime-version:reply-to:subject
-	:subject:to:to; s=fm3; t=1783095515; x=1783181915; bh=clDPqx1ziC
-	3wm+v9Reh6feCWpBIrASQPY1r+hqGZOcE=; b=Jf/ZvnV+nDA3Srl7AyF1SzZNMs
-	4S/urVtNATffjSPYpXuDPqEgq0lg6hmqrhuz0LjY1NWhPCf//eNIPWid2OUdrj60
-	1usfIL+oPcAIMdGpN9fhOeEpXtbx2BGxX8UXccshfqQ+EIVoAwKFwIsB18NVfT9U
-	Hp4vmiA84za/RBtkh/z8fXt6+cKTxCHdqS6nbRrUgn5ragQQGczkcUSPVbnU/gMw
-	+7rxNyP1ZzaVAWvQdHInNv1TWNT+7rujr8DIrsDG4P8iO+e50JWwf20Ay8nbKMNF
-	Vc7vsGwgpnMuiYVHjzJad5gen/KtH8zOl1neNRQI9TTgUUlWlc7P+IlFQ7Zg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:date:date:feedback-id:feedback-id:from:from
-	:in-reply-to:message-id:mime-version:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=
-	1783095515; x=1783181915; bh=clDPqx1ziC3wm+v9Reh6feCWpBIrASQPY1r
-	+hqGZOcE=; b=igCegrbz/DgX372KAGDXNRJjlJ2kcBQSlRKTrsB8lspD0Xu2B2w
-	+ilfvLJdSw5Ke+h+YONoXQijn9jYSIkC+HqfKOBNj1xTcuMmHpyGccrMj+Q3l3bO
-	dIlZZf1OZGAK0KSveZ077jBvxiJ6MTcVXGTpIK5VBtohgqw7HoTPvSDRWjZPtWz8
-	lquF588jhUG6hJQzmoo1w+7ECT4OLxqdmTY/HwRLMOwgDNwiOuAYGHxr8DIln7Ht
-	UP+54NFhGLOlPIiqVMidZ4tASHPQZTvFsJ3v55yHGKRx7mi/C/jo301A9dyMUDmX
-	cSTq2vqFNodqeK1FCYb6V4wB8HOsDvZBHbA==
-X-ME-Sender: <xms:2uBHakaC9LCPmok1hi76C1pQ55oENwgw4_xnpcIDtJXL65VioDH4cg>
-    <xme:2uBHaiddIwLPL7c9lcnHVtKg-jNTw45ehGT6cM3fgn47yQCQkGe6vDxUBw9zGpUc6
-    GoLfVSUaXBfg1ZpzWizyxruZCtQUSiOivuzELdBBlhgFt2lx5uPVfA>
-X-ME-Received: <xmr:2uBHapmL0bzeXio6Y7gMFJa8KhSvqG1DoWwG4rQ-YMS54XUaYbQ7oJovn07yyw>
-X-ME-Proxy-Cause: dmFkZTFL9LKWT3Pov42M5rreNfDWiU0qs2150JDK0uhZc10GatYqJPGQglxOG7FLomA4Me
-    6k34nS4NY7D+pvE4GthDq7JjRqsePaV2htcCoMUoEXhih9wWhvcJcXxjk+sh9C4jNhmoGL
-    kXREkrbh4aTuyzXWpNnrcBWKNL5yiszUS1i4cLtlKtaFWD8+1nPdnFrrgjm0J9I1mXTU8x
-    56QRwz7Rl/xI+MEhU+IJctiKOMbCFnOYXOKr5baYmfhwllP2hQxGVcknrBb7vyK54C8Kz1
-    csAwift0xNOIeJU7THcR50bGKKeunjxUuJXYmWTtxuCDEqB4edMDoZ9YvN/S4c1c07olFj
-    f31RNS/f40UIpUGzioKVFs4/cwWUfR3quZEZVMJ/fV0Cor5w/ygW00m9s1xmRmEvmLtn1i
-    jUMEgNjNdz+kq7qTGHSFU7OtDKIZU44fC7/7qP4JLjMlRHBRQjdIZc5TT+W26wFA9XJBkQ
-    aJ91jEu1cl7WvQTXpKlkqBiXcgUp6rmJm41uWJCD23qKLfKfkYWs/05GJL5QaSH1bAWOmA
-    jnpGMGQLvmH0jJw/ltsGB7RKcGHgwfj1qc9xGnyM6+h2nUonJsgjy8cKfnk5gXMxXt7PpX
-    4v/yjZb7xg/Xn8hGeth8LDAUSMB0ul/WnACcEHes8ztTGtz1KrT6c4g6/sHw
-X-ME-Proxy: <xmx:2uBHaq1dsuAnQsE-el1HKw3JTC_Pw7Pd7DOiRRAGE2f8yztXTlnC7g>
-    <xmx:2uBHaqe5V-EKInJ9HU-HqlgGP_gGmpxC6JTrFB3REDPlgKxcNms7cg>
-    <xmx:2uBHasYmjH2wVv5ZgCvXiJyNAf8qP418FdYwASDqu8dWzJLivRep4w>
-    <xmx:2uBHanEohVulFmLAas5dh05y1TSTuY7yd9w61URDJGX8fvm3udNkUA>
-    <xmx:2-BHav1z9scnlxI8iFy7VDkV3dAvMj0GuYxWKPvW0m6XpDn7YHw215vQ>
-Feedback-ID: ie3994620:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
- 3 Jul 2026 12:18:33 -0400 (EDT)
-From: Kiryl Shutsemau <kirill@shutemov.name>
-To: akpm@linux-foundation.org
-Cc: muchun.song@linux.dev,
-	osalvador@suse.de,
-	david@kernel.org,
-	peterx@redhat.com,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org,
-	kernel-team@meta.com,
-	kas@kernel.org
-Subject: [PATCH] mm/hugetlb: fix swap entry corruption when clearing uffd-wp at fork()
-Date: Fri,  3 Jul 2026 17:18:33 +0100
-Message-ID: <20260703161833.57416-1-kirill@shutemov.name>
-X-Mailer: git-send-email 2.54.0
+	s=arc-20240116; t=1783095633; c=relaxed/simple;
+	bh=sIKLbGGOwpaMAgJY+13YJB+xbBvJbDLH3pHeLnHQX3Q=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Subject:From:Cc:To:
+	 References:In-Reply-To; b=bo8W/nj1sU676LnnhU04Den4EjMA1cHBE9b8GRoKVfFM00nfKm7KGWZGd0lmsVSN3qtH5jHksrokO4dBhx2nPYGpzg6ag7nxwpdFIayxcdbUTlD4oAnDe7IJqgrgn9F0+CZ47Yg3vdGM5VUs+Eosbp5qtzPYFe4EVhG1Zfwb5JY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=smile.fr; spf=pass smtp.mailfrom=smile.fr; dkim=pass (1024-bit key) header.d=smile.fr header.i=@smile.fr header.b=oWidXmLO; arc=none smtp.client-ip=209.85.128.54
+Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-493b61b52b6so4758765e9.1
+        for <stable@vger.kernel.org>; Fri, 03 Jul 2026 09:20:30 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=smile.fr; s=google; t=1783095629; x=1783700429; darn=vger.kernel.org;
+        h=in-reply-to:references:to:cc:from:subject:message-id:date
+         :content-type:content-transfer-encoding:mime-version:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=sIKLbGGOwpaMAgJY+13YJB+xbBvJbDLH3pHeLnHQX3Q=;
+        b=oWidXmLOCCGmafw7NC1MQsDbbYO9eJXJtRjT0PK6uDK3G9/JPM46FZf188F9DKhvnG
+         H3vmq5+xV7fm2m8xhPRcMkoAv+mSkMdLZIpaZPjOx0BgDRpFH0I8+1iy6WB6zs7U145p
+         ZwQETQCeUmL6IdpDQnTWSTI3vGJ3Q+X42zsyA=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1783095629; x=1783700429;
+        h=in-reply-to:references:to:cc:from:subject:message-id:date
+         :content-type:content-transfer-encoding:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=sIKLbGGOwpaMAgJY+13YJB+xbBvJbDLH3pHeLnHQX3Q=;
+        b=SYAoZ2pyf63jcQWwM+nIR80XERXty4c1BXVJK7WZAfnCMUpZlBmlqFd6NTbfAeixJk
+         fCAUATLfkLrSKWnrv+SowKI8QgLt/rAPbl+1I+DRFp1o99KFlyQcqZ0cFqOhbBj76bSj
+         aWUI793eXFjZOx6l4w4+bjKwqVuRe9+T3gV7/8pciAse0iKA2rTOidY5ZUsfD/vX/ZKt
+         PBPmr5iCFYiuQ3XATGZwMgfzh64ckHGCRG7AQ18IXz61U0kFX+JldLuBq6032Jb80Er9
+         Kxns3r9Bn48hCooUIVrskFru5jxzA0DW4nR3gSIV7vwV8PeoeptEVjt3Pn/t1aY6QIgN
+         MiOA==
+X-Forwarded-Encrypted: i=1; AFNElJ+6OhxQb3354ZdcazIhuLbTpU+Nq/wnHadAdWKCrk1vRR7dfQsaCIe2xJafIdPC28CeUy8bwPs=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxyVfYTV6a1Syflts3mUzfY3FGDAdbvrxxQAQWuoKMqNa83VE6R
+	f9At1htctQMaLHlw7xHaD9PTu55tgzBa+7esxahypjrOewsby8hOMR+VcGaQK3q7LQ4=
+X-Gm-Gg: AfdE7cncymUKGfQanguRqu3mQ7sjHoCmBZSM9Hn0OQf8GcW3M91cNxb4ALIqBI2o+Kw
+	L0DWmVScnr3M+Z3uumudToGWUbQGCztWZ4DReLglECfxf4jZB6mgd3VIlJlJkudGT27n9xjdjrG
+	kHsTNCeQEAlw3pSsUlGA2854xJSz2QDqDzrkFq9faBX1eFudUEedqspboxJwjMzXkrk+yqSahMb
+	ka1gUiqwTDUDXdV+Yfe8wzh2T0WWD/cw74TfvH+YFBJVjkkaUCHtkEo3bomrOuNziUwxyyVgyKa
+	iF7PK5jwtLMbET2ajNraXgV3eFT4yy9Ecird5YwfJKHyneKiB8qL951mW/dErUaEwyp/FxHphFQ
+	w6+wisXHa7O8qlgU5s6QzKksrfoDWT4EfTM8EH8m1dtE6GN7vtxOqbTKZSu9vZhSzs0JeatgA+t
+	mXjAPLiXnO8vkbuSW0TZPP1YxwTQjWx7ZTp2Xum/AJrR3nQ4q71qZHywa1Wzlx4zUNag0Rr+1De
+	u2nFA==
+X-Received: by 2002:a7b:c357:0:b0:493:a570:df7d with SMTP id 5b1f17b1804b1-493d0f335b3mr4211505e9.20.1783095628723;
+        Fri, 03 Jul 2026 09:20:28 -0700 (PDT)
+Received: from localhost (2a01cb001331aa0075403fb2c9c4e210.ipv6.abo.wanadoo.fr. [2a01:cb00:1331:aa00:7540:3fb2:c9c4:e210])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-493cce0a7cfsm60003245e9.9.2026.07.03.09.20.27
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 03 Jul 2026 09:20:27 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Fri, 03 Jul 2026 18:20:27 +0200
+Message-Id: <DJP2NAVND6C3.34I2E0R3EDJPD@smile.fr>
+Subject: Re: [PATCH 6.6.y] ext4: get rid of ppath in get_ext_path()
+From: "Yoann Congal" <yoann.congal@smile.fr>
+Cc: <linux-ext4@vger.kernel.org>, "Andreas Dilger"
+ <adilger.kernel@dilger.ca>, "Theodore Ts'o" <tytso@mit.edu>, "Baokun Li"
+ <libaokun1@huawei.com>, "Jan Kara" <jack@suse.cz>, "Ojaswin Mujoo"
+ <ojaswin@linux.ibm.com>
+To: "Yoann Congal" <yoann.congal@smile.fr>, <stable@vger.kernel.org>
+X-Mailer: aerc 0.20.0
+References: <20260702154810.3435236-1-yoann.congal@smile.fr>
+In-Reply-To: <20260702154810.3435236-1-yoann.congal@smile.fr>
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[shutemov.name:s=fm3,messagingengine.com:s=fm2];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[smile.fr,reject];
+	MV_CASE(0.50)[];
+	R_DKIM_ALLOW(-0.20)[smile.fr:s=google];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	DKIM_TRACE(0.00)[shutemov.name:+,messagingengine.com:+];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:akpm@linux-foundation.org,m:muchun.song@linux.dev,m:osalvador@suse.de,m:david@kernel.org,m:peterx@redhat.com,m:linux-mm@kvack.org,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,m:kernel-team@meta.com,m:kas@kernel.org,s:lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-271828-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_SENDER(0.00)[kirill@shutemov.name,stable@vger.kernel.org];
-	TAGGED_FROM(0.00)[bounces-271826-lists,stable=lfdr.de];
-	DMARC_NA(0.00)[shutemov.name];
+	MIME_TRACE(0.00)[0:+];
 	RCVD_TLS_LAST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FORGED_RECIPIENTS(0.00)[m:linux-ext4@vger.kernel.org,m:adilger.kernel@dilger.ca,m:tytso@mit.edu,m:libaokun1@huawei.com,m:jack@suse.cz,m:ojaswin@linux.ibm.com,m:yoann.congal@smile.fr,m:stable@vger.kernel.org,s:lists@lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
+	RECEIVED_HELO_LOCALHOST(0.00)[];
+	FORGED_SENDER(0.00)[yoann.congal@smile.fr,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[smile.fr:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[yoann.congal@smile.fr,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[kirill@shutemov.name,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	RCVD_COUNT_FIVE(0.00)[6];
-	ALIAS_RESOLVED(0.00)[];
-	TO_DN_NONE(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[10];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,messagingengine.com:dkim,shutemov.name:from_mime,shutemov.name:dkim,shutemov.name:mid]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,suse.cz:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,huawei.com:email,msgid.link:url,smile.fr:from_mime,smile.fr:email,smile.fr:mid,smile.fr:dkim]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 5DC40704360
+X-Rspamd-Queue-Id: A1A2070434C
 
-From: "Kiryl Shutsemau (Meta)" <kas@kernel.org>
+On Thu Jul 2, 2026 at 5:48 PM CEST, Yoann Congal wrote:
+> From: Baokun Li <libaokun1@huawei.com>
+>
+> [ Upstream commit 6b854d552711aa33f59eda334e6d94a00d8825bb ]
+>
+> The use of path and ppath is now very confusing, so to make the code more
+> readable, pass path between functions uniformly, and get rid of ppath.
+>
+> After getting rid of ppath in get_ext_path(), its caller may pass an erro=
+r
+> pointer to ext4_free_ext_path(), so it needs to teach ext4_free_ext_path(=
+)
+> and ext4_ext_drop_refs() to skip the error pointer. No functional changes=
+.
+>
+> Signed-off-by: Baokun Li <libaokun1@huawei.com>
+> Reviewed-by: Jan Kara <jack@suse.cz>
+> Reviewed-by: Ojaswin Mujoo <ojaswin@linux.ibm.com>
+> Tested-by: Ojaswin Mujoo <ojaswin@linux.ibm.com>
+> Link: https://patch.msgid.link/20240822023545.1994557-13-libaokun@huaweic=
+loud.com
+> Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+>
+> Signed-off-by: Yoann Congal <yoann.congal@smile.fr>
+> ---
 
-copy_hugetlb_page_range() clears the uffd-wp bit of hwpoison and
-migration entries with huge_pte_clear_uffd_wp(), which operates on the
-present-PTE bit position. Swap entries keep the uffd-wp state elsewhere
--- the same branches read and set it with pte_swp_uffd_wp() and
-pte_swp_mkuffd_wp() -- and the present-PTE position falls into the swap
-payload. On x86-64 it lands in the inverted swap offset, where a
-naturally-aligned hugetlb PFN always has the affected bit set, so the
-clear advances the encoded PFN by two pages.
+Hello,
 
-No userfaultfd needs to be involved: the clear is guarded only by the
-child VMA not being uffd-wp registered, so a plain fork() with an
-in-flight hugetlb migration entry (or a poisoned hugetlb page) corrupts
-the entry copied into the child. Instrumenting the hwpoison branch and
-forking after MADV_HWPOISON on a 2MB anon hugetlb page shows:
+I missed it at first but a discussion about the same issue is happening
+here:
+https://lore.kernel.org/all/tencent_C982B0201FE8F041BD5B4FC1ED7D646A740A@qq=
+.com/
+But the above is a partial backport whereas mine is the full backport.
 
-  offset before=120e00
-  offset after =120e02
-
-The fallout is mostly latent: rmap walks match migration entries by
-folio range and remove_migration_pte() rebuilds the PTE from the folio,
-so a within-folio PFN skew heals once migration completes. But any path
-that re-encodes the corrupted offset -- e.g. hugetlb_change_protection()
-rewriting a writable migration entry via
-make_readable_migration_entry(swp_offset(entry)) -- propagates it, and
-an hwpoison entry misidentifies which page is poisoned.
-
-Use pte_swp_clear_uffd_wp(), matching copy_nonpresent_pte() and
-move_huge_pte().
-
-Reported-by: Sashiko AI review <sashiko-bot@kernel.org>
-Closes: https://lore.kernel.org/all/20260703140011.99E601F000E9@smtp.kernel.org/
-Fixes: bc70fbf269fd ("mm/hugetlb: handle uffd-wp during fork()")
-Cc: stable@vger.kernel.org
-Signed-off-by: Kiryl Shutsemau <kas@kernel.org>
-Assisted-by: Claude:claude-fable-5
----
- mm/hugetlb.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/mm/hugetlb.c b/mm/hugetlb.c
-index 571212b80835..a4e6dd3a82f4 100644
---- a/mm/hugetlb.c
-+++ b/mm/hugetlb.c
-@@ -4918,7 +4918,7 @@ int copy_hugetlb_page_range(struct mm_struct *dst, struct mm_struct *src,
- 		softleaf = softleaf_from_pte(entry);
- 		if (unlikely(softleaf_is_hwpoison(softleaf))) {
- 			if (!userfaultfd_wp(dst_vma))
--				entry = huge_pte_clear_uffd_wp(entry);
-+				entry = pte_swp_clear_uffd_wp(entry);
- 			set_huge_pte_at(dst, addr, dst_pte, entry, sz);
- 		} else if (unlikely(softleaf_is_migration(softleaf))) {
- 			bool uffd_wp = pte_swp_uffd_wp(entry);
-@@ -4936,7 +4936,7 @@ int copy_hugetlb_page_range(struct mm_struct *dst, struct mm_struct *src,
- 				set_huge_pte_at(src, addr, src_pte, entry, sz);
- 			}
- 			if (!userfaultfd_wp(dst_vma))
--				entry = huge_pte_clear_uffd_wp(entry);
-+				entry = pte_swp_clear_uffd_wp(entry);
- 			set_huge_pte_at(dst, addr, dst_pte, entry, sz);
- 		} else if (unlikely(pte_is_marker(entry))) {
- 			const pte_marker marker = copy_pte_marker(softleaf, dst_vma);
-
-base-commit: dc59e4fea9d83f03bad6bddf3fa2e52491777482
--- 
-2.54.0
+Regards,
+--=20
+Yoann Congal
+Smile ECS
 
 
