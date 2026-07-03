@@ -1,51 +1,51 @@
-Return-Path: <stable+bounces-271707-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-271708-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id mtCoB/GER2r9ZwAAu9opvQ
-	(envelope-from <stable+bounces-271707-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 03 Jul 2026 11:46:25 +0200
+	id 3sOoJHOER2rfZwAAu9opvQ
+	(envelope-from <stable+bounces-271708-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 03 Jul 2026 11:44:19 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 08260700C87
-	for <lists+stable@lfdr.de>; Fri, 03 Jul 2026 11:46:24 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id EB09D700C42
+	for <lists+stable@lfdr.de>; Fri, 03 Jul 2026 11:44:18 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=nabladev.com header.s=dkim header.b=ddYq7SAG;
+	dkim=pass header.d=nabladev.com header.s=dkim header.b=EVrGDvoh;
 	dmarc=pass (policy=reject) header.from=nabladev.com;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-271707-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-271707-lists+stable=lfdr.de@vger.kernel.org";
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-271708-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-271708-lists+stable=lfdr.de@vger.kernel.org";
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 68F4D30353A1
-	for <lists+stable@lfdr.de>; Fri,  3 Jul 2026 09:40:42 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id BE9BC3042333
+	for <lists+stable@lfdr.de>; Fri,  3 Jul 2026 09:42:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80BD53B38B6;
-	Fri,  3 Jul 2026 09:40:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6ECA3ADB98;
+	Fri,  3 Jul 2026 09:42:45 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from mx.nabladev.com (mx.nabladev.com [178.251.229.89])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F9BF3B2FC0;
-	Fri,  3 Jul 2026 09:40:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CA8137E2EB;
+	Fri,  3 Jul 2026 09:42:44 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783071637; cv=none; b=Tb6/4WLIX1vuhJq/vurJ7Fp1lp50cIBZpS4Is8Tr+Bx+YBe/vxRoMTgZkG3xEWJrsPgWSEhdTnh+E7zqjPkHfzKSNemQqBk6bE1uJGcWuwm4oLVHPQwncoZI9pHOslHUG5uvj/cg29LzATzz8xkNcjasKQxzP3lHmmUDefxLly4=
+	t=1783071765; cv=none; b=GV4uQ9Ri27gFJRS1LmZpyVRNyysharkYwhhM6juxLEDeof+3Ng3zjiswo7vXMQAEWgtfcpyS0VAEgChImHxdU7fKdwIuSG22MToQZaGJVhmy9OFpu4GhNJvSShVYtDG2FV/4IiljLCcXLBUU4CQQNAYQ0KZCwW33MjIoCQY5BIc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783071637; c=relaxed/simple;
-	bh=WMs/Z2BcyOzs4IM33pH/dVrSZTX638SGx8tiY+3dOKk=;
+	s=arc-20240116; t=1783071765; c=relaxed/simple;
+	bh=WYG3QkKuDJe7oULK5s+xV48hi0UwhANCZaAN42EFhew=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=M0D/c6xb+uexPoHEyMN+JnXDMzFfH/XyAAlSTyxQKLyjOX62s7eEmj187plic4FM1p/zySPKbweakuWmZ+i2hGKI/iCUfZUgYEc/ypYI2ou8t/ZMnjRnL5phCU0KEe0h35GSnCLY4WAW5I7ugzv1Cgyba3zSu4igNJhhRBejwcM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nabladev.com; spf=pass smtp.mailfrom=nabladev.com; dkim=pass (2048-bit key) header.d=nabladev.com header.i=@nabladev.com header.b=ddYq7SAG; arc=none smtp.client-ip=178.251.229.89
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 635C5118B53;
-	Fri,  3 Jul 2026 11:40:31 +0200 (CEST)
+	 Content-Type:Content-Disposition:In-Reply-To; b=HtOhaupvQX9YhSuq7azz4aoBEHWhJadhoIZ6TqpQIbyHnWxAru8bIwwigSrKUDAW2FTtNC4SXZsIbI9/geXvwWIHwgBkwWd05XIuwAHbPxOyrfDr6zjGd8lrQRxD6QwHKvsXst72aceoRvHBmgIfID6wS07IDrVC//uNEM/Rw0g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nabladev.com; spf=pass smtp.mailfrom=nabladev.com; dkim=pass (2048-bit key) header.d=nabladev.com header.i=@nabladev.com header.b=EVrGDvoh; arc=none smtp.client-ip=178.251.229.89
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id C01441129B7;
+	Fri,  3 Jul 2026 11:42:40 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nabladev.com;
-	s=dkim; t=1783071632;
+	s=dkim; t=1783071761;
 	h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 in-reply-to:references; bh=baQKgIuEfMQXRWG+d3XndYNvgGlsNbDb5nlTlZXE9bY=;
-	b=ddYq7SAG2BPYjTFjOWpoD7s6RPgp6uD2k1rtzy6f84Scyelrg9T3Dj8Ohw3stkfKPdauUG
-	FJlbqMcj4/oClMf+0WDZwgauMpIS8IMrRmVeCvlv9LhAAIPJeAElZdwbTp8TRpYj3eREtE
-	DzlldhC1L+HYf2MncengP/Hjgzqmh7cIhilN2PU9Ej0zOisRUqfg/44jNziQwancfR4cCb
-	K3QbCQ1pZar3pIGgO8JmzkVozVGIUn3qlt+hzoYuKMQP6hNG6ezBt0jcBYyHbgCop/tPJN
-	572N7CiIjs+QkXsfWu/yLclSQpCXhDgPZk72kvL2P+zS9MImiVN0yPqAep3iHQ==
-Date: Fri, 3 Jul 2026 11:40:30 +0200
+	 in-reply-to:references; bh=HchLe0MxhTfYAtstdRTMefB2zyFRbQAeTHRW0gJIEdI=;
+	b=EVrGDvohU6gNRb07l1bVkuveWxYhEvXiEmOlwupIuy56q2LZOK0K8FSqmTB2S3lF57goNh
+	vn29D7t9wtKThuwcCueybJwxfWZPgTHSoS0fY13YvVTdonEnhRb5kktIxShkx2B1WTobLT
+	wpqQPNUROugxrSfrMZGtBEY8GEOkBVEinjQm+9At0Ds/9o3bgXWuVz7DL59WQ5SehCSNju
+	OBex1T7LbuQjcS7Bj64aWibloDowpGAWT9gEx3pj3PRDVTUdWJaaEgP8R8rF5hLuh0YUGc
+	y0VqT/4T7qy6yxHa/iGKTgj3xriCDe4l17XYu1RmOSlIcXesN8PXKam+Ginbdg==
+Date: Fri, 3 Jul 2026 11:42:39 +0200
 From: Pavel Machek <pavel@nabladev.com>
 To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Cc: stable@vger.kernel.org, patches@lists.linux.dev,
@@ -56,9 +56,9 @@ Cc: stable@vger.kernel.org, patches@lists.linux.dev,
 	sudipm.mukherjee@gmail.com, rwarsow@gmx.de, conor@kernel.org,
 	hargar@microsoft.com, broonie@kernel.org, achill@achill.org,
 	sr@sladewatkins.com
-Subject: Re: [PATCH 6.12 000/204] 6.12.95-rc2 review
-Message-ID: <akeDjkTN7AA20Yq8@duo.ucw.cz>
-References: <20260703072825.068705122@linuxfoundation.org>
+Subject: Re: [PATCH 6.6 000/175] 6.6.144-rc1 review
+Message-ID: <akeED2eVLfXHlR3N@duo.ucw.cz>
+References: <20260702155115.766838875@linuxfoundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -66,9 +66,9 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="ld6WXU7ZgRhej5hW"
+	protocol="application/pgp-signature"; boundary="iaSDq0czJr3T16Nc"
 Content-Disposition: inline
-In-Reply-To: <20260703072825.068705122@linuxfoundation.org>
+In-Reply-To: <20260702155115.766838875@linuxfoundation.org>
 X-Last-TLS-Session-Version: TLSv1.3
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-2.76 / 15.00];
@@ -76,12 +76,12 @@ X-Spamd-Result: default: False [-2.76 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[nabladev.com,reject];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MIME_GOOD(-0.20)[multipart/signed,text/plain];
 	R_DKIM_ALLOW(-0.20)[nabladev.com:s=dkim];
 	MAILLIST(-0.15)[generic];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-271707-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-271708-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	RECEIVED_HELO_LOCALHOST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
@@ -104,41 +104,39 @@ X-Spamd-Result: default: False [-2.76 / 15.00];
 	TO_DN_SOME(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	MISSING_XM_UA(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,duo.ucw.cz:mid,nabladev.com:from_mime,nabladev.com:email,nabladev.com:dkim,vger.kernel.org:from_smtp,gitlab.com:url]
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[nabladev.com:from_mime,nabladev.com:email,nabladev.com:dkim,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,vger.kernel.org:from_smtp,gitlab.com:url,duo.ucw.cz:mid]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 08260700C87
+X-Rspamd-Queue-Id: EB09D700C42
 
 
---ld6WXU7ZgRhej5hW
+--iaSDq0czJr3T16Nc
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 
 Hi!
 
-> This is the start of the stable review cycle for the 6.12.95 release.
-> There are 204 patches in this series, all will be posted as a response
+> This is the start of the stable review cycle for the 6.6.144 release.
+> There are 175 patches in this series, all will be posted as a response
 > to this one.  If anyone has any issues with these being applied, please
 > let me know.
 
-CIP testing did not find any problems here:
-
-https://gitlab.com/cip-project/cip-testing/linux-stable-rc-ci/-/tree/linux-6.12.y
+https://gitlab.com/cip-project/cip-testing/linux-stable-rc-ci/-/tree/linux-6.6.y
 
 Tested-by: Pavel Machek (CIP) <pavel@nabladev.com>
 
 Best regards,
                                                                 Pavel
 
---ld6WXU7ZgRhej5hW
+--iaSDq0czJr3T16Nc
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iF0EABECAB0WIQRPfPO7r0eAhk010v0w5/Bqldv68gUCakeDjgAKCRAw5/Bqldv6
-8lc6AKCxPn6oLG4ktvd5cfRg7WRuRsyqtQCgntzMOWQDyeN9bWlUuchW6N6+Psc=
-=uGpa
+iF0EABECAB0WIQRPfPO7r0eAhk010v0w5/Bqldv68gUCakeEDwAKCRAw5/Bqldv6
+8hG0AKCENkauXcNrvGQhNqw0F2XMMMLx5wCfYof1S2IAUZV90A4biS5gfUDzu7k=
+=gFMd
 -----END PGP SIGNATURE-----
 
---ld6WXU7ZgRhej5hW--
+--iaSDq0czJr3T16Nc--
 
