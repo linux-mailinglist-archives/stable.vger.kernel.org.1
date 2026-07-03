@@ -1,279 +1,141 @@
-Return-Path: <stable+bounces-271763-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-271764-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id dssUOs+yR2rLdgAAu9opvQ
-	(envelope-from <stable+bounces-271763-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 03 Jul 2026 15:02:07 +0200
+	id Ry4ZO+q2R2rUdwAAu9opvQ
+	(envelope-from <stable+bounces-271764-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 03 Jul 2026 15:19:38 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7EDD0702A11
-	for <lists+stable@lfdr.de>; Fri, 03 Jul 2026 15:02:02 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7678D702C78
+	for <lists+stable@lfdr.de>; Fri, 03 Jul 2026 15:19:38 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=suse.com header.s=google header.b=UcShzKe0;
-	dmarc=pass (policy=quarantine) header.from=suse.com;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-271763-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-271763-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=X4x+MK1P;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-271764-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-271764-lists+stable=lfdr.de@vger.kernel.org";
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C2543300FEEE
-	for <lists+stable@lfdr.de>; Fri,  3 Jul 2026 12:46:18 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 25B903078FBE
+	for <lists+stable@lfdr.de>; Fri,  3 Jul 2026 13:01:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D1D73B2FD8;
-	Fri,  3 Jul 2026 12:46:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42A4C3D47DE;
+	Fri,  3 Jul 2026 13:01:42 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wr1-f41.google.com (mail-wr1-f41.google.com [209.85.221.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 465182D1907
-	for <stable@vger.kernel.org>; Fri,  3 Jul 2026 12:46:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A0553D34B9;
+	Fri,  3 Jul 2026 13:01:41 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783082778; cv=none; b=NegqkmX7Y5mxDAVJauVsMAGEGt2/YD+n4izjRiRHSp6WJBlIjLEp49rbf5d36tpOcMIrhJpr7GaA7fL/qX1FRy0q4z7mwLfH6SgxzWKq9S8QwcanUVz1ZZAQjj4q04j14cS210KC5y6rZ1L3zzoOUbowA4/mMvgOaJxUx0bKhmA=
+	t=1783083702; cv=none; b=iC1xbYUHHwnhWO+p6+8oO/H30QTY2IIQI+1B4skP/CUNxKCOxMp/J4Ca95lMQfKp90RCSBNeXf3Jt27rPfB0aLbE0672POBGd1wVLflNQiht+SvlLqNpztf5IviW6EGdQuC/aa24CxG8FnjWgL5OJ+jX596hwtMy7E4/QE9oMkI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783082778; c=relaxed/simple;
-	bh=9MIfOtxcNTg7a3h9kPi2UFAZtg/Kb7FVaxR4XCit7IM=;
+	s=arc-20240116; t=1783083702; c=relaxed/simple;
+	bh=AbzBDH3T+wh4F+diDHMBqWKM8WckEbhLYcjXYqcEh6E=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=WadBvrVtSkow8NXxq+P0Q9TfRGm50tcgCcZnT6MGdYIykoHYcvdeKdjNU2is4vyDvs9ZhOlkrFEXR6sCPssq+uAAb90WitnQ40cIp4s94cE2SVXqD8WH1QEiDqZrJaldOxYjyQQk8wvUPETBJUML0jnUAuvhBtusA7Vp566gHJs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=UcShzKe0; arc=none smtp.client-ip=209.85.221.41
-Received: by mail-wr1-f41.google.com with SMTP id ffacd0b85a97d-47640541585so351300f8f.1
-        for <stable@vger.kernel.org>; Fri, 03 Jul 2026 05:46:16 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1783082775; x=1783687575; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=EsBLm+/j8lRVOopPYicPuZIR3XyWb+EmA3UL37jV8mE=;
-        b=UcShzKe0cBag30bkm/m9c6G5rGwi8jHiQMWtrGddgeJx6rzeuuhS1IOLPFna1oa3w6
-         APUo9ouyOJibENGU/mV8TpEkQjWs95Vl2DF81kge0Yis2lNdpNYlH7wy58TBRcqClqzC
-         GeK0wu8DY9iKzIgNj08YLA2x5jzyoYnhKj9w/BhNdfdW7H3cuM36R+pkMc4LTYtUCAxj
-         HvoKI/cgxXmJa/Cx2DUrFs53Gon34hs5gwTp/YMOuB+DpvejrNQc76v+WQ7M9iJZqber
-         Fy8MtJGoDX8JmGEneQBsWlsnvSZrZp9FMPeevGZqLPIf7QUB/Q5qYvLYkZbCN3E5535h
-         ZvDQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783082775; x=1783687575;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=EsBLm+/j8lRVOopPYicPuZIR3XyWb+EmA3UL37jV8mE=;
-        b=NKj1furfPi6ZRBH1aXN+GMABcaCRfRWZlEU2XsjSPTIE+VoDniZXQ7KKj7xJ0LHt9H
-         l35MlBNl1PJkqFoz7uFfe5IXRgCg/CvKx0rH6Bs3foekzZolyiLMa0R3aSL6jiM6+5m5
-         9OBATW+OODc569iRL/3phPvpjuF2Ecq7ri2GaEoONSr4xswWUrmiX2pHo7AEecKp0GQr
-         F6oR9AVC/SbZ4qtuOhtd7LXDDppuLDmXSxKnPSV0ioGs2d25sRDOZbNbdXvrebr25iCG
-         MfmbH2Usjvfq5wyFb2mFqpjMC/QihccIEmwJOM2vCPDtRLDiDpBVVdsRHfMXQYD+wijo
-         1HBQ==
-X-Forwarded-Encrypted: i=1; AFNElJ+5mnWEDhtIoppyiW83fj+Vay/1ahM3Cy8wsq402yvtmCeueLZg7fVQNH7+VD2RaF9VHXvcqQI=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzPe8P+zgIXl5gL20V03XvkVY3ZXecF0h/vDgRJY3UCNQnJ2pdJ
-	5cVyDdGlFQho5jY8uHzj7GVHAcjXuX2yWF7b2wkbD2zXel2cMyaOvamMQf8QMF9VFDk=
-X-Gm-Gg: AfdE7cnPUBoLNk9dRFYJvZrWVLw9BCZOOMStR+pUep7f6f3G8bnurSq9J0pNJMnPvr+
-	/B25nwD+fMjTymjzEIU04dFgp5KsCRJKqK0vhEN/u1UE4iqFdtUj9FwZzr55e/jvkiA0jCqk+uh
-	M3yr5AHvemvhuzlK/l0yNIlzQOQmD/SLlKlY1OmyfyVenXcxobsGEehPKUJvZtp9jgy4x3Pyn7E
-	suXO5E7bLpIPVSArA5WypitmkK6S64YZVgtxccREIateY1M19nAkDiOrBuhOP5/VvSC0udEXSLH
-	tFMn302esHu5zNy6Th4GlnTXnyiwUTpMAP/0S1fX+vu7lwk6iAZnT9IqcOjJqkthhlTnFTG/iKi
-	lK95oOHq+hB7Ho212jGbGAzlgYMPhrWAfVvyzwAVF8eut4rd+15fG/qnq+YHL2SNVAh+CjLyAcP
-	TYwc+VgBZz02/9Srs=
-X-Received: by 2002:a05:600c:5805:b0:493:b163:42e8 with SMTP id 5b1f17b1804b1-493c2b7f204mr94148515e9.21.1783082774690;
-        Fri, 03 Jul 2026 05:46:14 -0700 (PDT)
-Received: from pathway.suse.cz ([176.114.240.130])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-493ccdb62d3sm54494835e9.8.2026.07.03.05.46.13
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 03 Jul 2026 05:46:14 -0700 (PDT)
-Date: Fri, 3 Jul 2026 14:46:12 +0200
-From: Petr Mladek <pmladek@suse.com>
-To: Bradley Morgan <include@grrlz.net>
-Cc: Feng Tang <feng.tang@linux.alibaba.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Christophe Leroy <chleroy@kernel.org>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Douglas Anderson <dianders@chromium.org>,
-	linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH v3 4/4] panic: use sys_info_with_filter() to avoid
- duplicate backtraces
-Message-ID: <akevFNCaXnt0kRVC@pathway.suse.cz>
-References: <20260625152558.7450-1-include@grrlz.net>
- <20260625152558.7450-5-include@grrlz.net>
- <aj5TNB8cRtMNTtIT@pathway.suse.cz>
- <aj5tFiwhRqPkAkqU@pathway.suse.cz>
- <akJZxCTlLcwubqi2@U-2FWC9VHC-2323.local>
- <E482A23D-4E1C-42C0-9D07-83C6CDFD1546@grrlz.net>
- <akYq1YaCpZ0b4SBS@pathway.suse.cz>
- <EC1E5A79-524A-45C2-9FE8-964EB0E18D76@grrlz.net>
+	 Content-Type:Content-Disposition:In-Reply-To; b=H482JGDEjTFDRLrt4m7rjM0S94zUyeXOvUxp9UFWADeoMyo7g57tfQvd05SObYVoG79bXZJbFuW+gNwkEGmUM5yMre51/AvjhQjdm7K1aOLiQT7gbc6Kxtd2S3JeJkmdgaOBfG9CRtPT/ZHO7Q+qPyYW1OEZHR+9q5n5gGpnTdc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=X4x+MK1P; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4DB631F000E9;
+	Fri,  3 Jul 2026 13:01:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1783083700;
+	bh=8BWh3P/p1AtnXbYiaKGUXteMwmA14h7nnMyUaFNgjds=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=X4x+MK1P9orpK0tchxOID7y/aHuivL3CiPn6/RvGs2bsyBty6EXVwKK6L7mzTea1V
+	 XQO9TCs1Vog1B17n+JMiFa5YLH8HAm1Frjyvqjiz4f0cCZBqTtpRBtkOSgkRK5CHAK
+	 NPugPbKPzHmTCzyuIhVPuXLnD/ecyMRlT4Fd+IupeTrHH6RioOYeebf6ruAezM9G0S
+	 z2c5Ep88R0JenhY2jRzT4O28ZSSp26Qtd0xT6rLjvMAxQgbkqkYxgebNl9YcwxaiHp
+	 +/qHKMct6pACjRBNANezru4MOy0S4j0xIRy6MszHKYQMXHcQ2idlrfh1uGouw8y3za
+	 Xyxq74I0Kwu4g==
+Date: Fri, 3 Jul 2026 14:01:34 +0100
+From: Mark Brown <broonie@kernel.org>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+	patches@kernelci.org, lkft-triage@lists.linaro.org,
+	pavel@nabladev.com, jonathanh@nvidia.com, f.fainelli@gmail.com,
+	sudipm.mukherjee@gmail.com, rwarsow@gmx.de, conor@kernel.org,
+	hargar@microsoft.com, achill@achill.org, sr@sladewatkins.com
+Subject: Re: [PATCH 7.1 000/121] 7.1.3-rc2 review
+Message-ID: <55a271b7-e62a-4aac-b58d-78607eef3ed8@sirena.org.uk>
+References: <20260703072822.817328079@linuxfoundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="k5x9XtRP3mHTq+OL"
+Content-Disposition: inline
+In-Reply-To: <20260703072822.817328079@linuxfoundation.org>
+X-Cookie: Another megabytes the dust.
+X-Rspamd-Action: no action
+X-Spamd-Result: default: False [-5.76 / 15.00];
+	WHITELIST_SPF_DKIM(-3.00)[kernel.org:d:+,kernel.org:s:+];
+	SIGNED_PGP(-2.00)[];
+	SUSPICIOUS_RECIPS(1.50)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	MIME_GOOD(-0.20)[multipart/signed,text/plain];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
+	MAILLIST(-0.15)[generic];
+	HAS_LIST_UNSUB(-0.01)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-271764-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_SENDER(0.00)[broonie@kernel.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[19];
+	FORGED_RECIPIENTS(0.00)[m:gregkh@linuxfoundation.org,m:stable@vger.kernel.org,m:patches@lists.linux.dev,m:linux-kernel@vger.kernel.org,m:torvalds@linux-foundation.org,m:akpm@linux-foundation.org,m:linux@roeck-us.net,m:shuah@kernel.org,m:patches@kernelci.org,m:lkft-triage@lists.linaro.org,m:pavel@nabladev.com,m:jonathanh@nvidia.com,m:f.fainelli@gmail.com,m:sudipm.mukherjee@gmail.com,m:rwarsow@gmx.de,m:conor@kernel.org,m:hargar@microsoft.com,m:achill@achill.org,m:sr@sladewatkins.com,m:ffainelli@gmail.com,m:sudipmmukherjee@gmail.com,s:lists@lfdr.de];
+	MIME_TRACE(0.00)[0:+,1:+,2:~];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[broonie@kernel.org,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[vger.kernel.org,lists.linux.dev,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,nabladev.com,nvidia.com,gmail.com,gmx.de,microsoft.com,achill.org,sladewatkins.com];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	MISSING_XM_UA(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,sirena.org.uk:mid]
+X-Rspamd-Server: lfdr
+X-Rspamd-Queue-Id: 7678D702C78
+
+
+--k5x9XtRP3mHTq+OL
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <EC1E5A79-524A-45C2-9FE8-964EB0E18D76@grrlz.net>
-X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-2.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[suse.com,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[suse.com:s=google];
-	MAILLIST(-0.15)[generic];
-	MIME_GOOD(-0.10)[text/plain];
-	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-271763-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linux.alibaba.com,linux-foundation.org,ellerman.id.au,gmail.com,kernel.org,linux.ibm.com,chromium.org,vger.kernel.org,lists.ozlabs.org];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:include@grrlz.net,m:feng.tang@linux.alibaba.com,m:akpm@linux-foundation.org,m:mpe@ellerman.id.au,m:npiggin@gmail.com,m:chleroy@kernel.org,m:maddy@linux.ibm.com,m:dianders@chromium.org,m:linux-kernel@vger.kernel.org,m:linuxppc-dev@lists.ozlabs.org,m:stable@vger.kernel.org,s:lists@lfdr.de];
-	RSPAMD_URIBL_FAIL(0.00)[pathway.suse.cz:query timed out,grrlz.net:query timed out,alibaba.com:query timed out];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[suse.com:+];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_SENDER(0.00)[pmladek@suse.com,stable@vger.kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[pmladek@suse.com,stable@vger.kernel.org];
-	RSPAMD_EMAILBL_FAIL(0.00)[stable@vger.kernel.org:query timed out,pmladek@suse.com:query timed out,feng.tang.linux.alibaba.com:query timed out,include.grrlz.net:query timed out,pmladek.suse.com:query timed out];
-	ALIAS_RESOLVED(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCPT_COUNT_SEVEN(0.00)[11];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,vger.kernel.org:from_smtp,alibaba.com:email,grrlz.net:email]
-X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 7EDD0702A11
 
-On Thu 2026-07-02 19:13:26, Bradley Morgan wrote:
-> On July 2, 2026 10:09:41 AM GMT+01:00, Petr Mladek <pmladek@suse.com>
-> wrote:
-> >On Mon 2026-06-29 13:54:18, Bradley Morgan wrote:
-> >> On 29 June 2026 12:40:52 BST, Feng Tang <feng.tang@linux.alibaba.com>
-> >> wrote:
-> >> >On Fri, Jun 26, 2026 at 02:14:14PM +0200, Petr Mladek wrote:
-> >> >> On Fri 2026-06-26 12:23:50, Petr Mladek wrote:
-> >> >> > On Thu 2026-06-25 15:25:58, Bradley Morgan wrote:
-> >> >> In watchdog, panic, and hung task detection scenarios, sys_info() can
-> >> >> be called multiple times or alongside direct backtrace triggers like
-> >> >> trigger_allbutcpu_cpu_backtrace(). This results in identical
-> >backtraces
-> >> >> being dumped repeatedly from all CPUs, cluttering the kernel log and
-> >> >> delaying or obscuring critical debug details.
-> >> 
-> >> im feeling a new file to do all the force panic jazz, but putting tape
-> >> on sys_info.c isn't bd either.
-> >
-> >I wonder how to move forward with this.
-> >
-> >Honestly, I am not sure what exactly you mean by creating another
-> >API for tracking the reports so I could not judge it. Feel free
-> >to sent some POC.
-> 
-> sup petr, here's my poc
-> 
-> This should make my entire thing make sense
-> 
-> >From eb587ed749ff5993c517f29799b369185c5ee7d8 Mon Sep 17 00:00:00 2001
-> From: Bradley Morgan <include@grrlz.net>
-> Date: Thu, 2 Jul 2026 18:09:23 +0000
-> Subject: [POC] sys_info: Introduce incident state-tracking to prevent
->  duplicate diagnostics
-> 
-> In watchdog, panic, and hung task detection scenarios, sys_info()
-> can be called multiple times or alongside direct debug output
-> functions (like trigger_allbutcpu_cpu_backtrace(), print_modules(),
-> print_irqtrace_events(), and dump_stack()). This leads to identical
-> diagnostics and stack traces being dumped repeatedly, cluttering the
-> kernel log and delaying critical panics.
-> 
-> Introduce a state tracking bitmask and helpers in a new file,
-> lib/sys_info_filter.c:
+On Fri, Jul 03, 2026 at 09:35:59AM +0200, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 7.1.3 release.
+> There are 121 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 
-New file suggests that it would implement an API using
-sys_info_filter() prefix.
+Tested-by: Mark Brown <broonie@kernel.org>
 
-> - sys_info_filter_and_set(mask): Atomically tests which bits in a mask
->   have not yet been printed during the current incident, marks them as
->   printed, and returns that subset.
+--k5x9XtRP3mHTq+OL
+Content-Type: application/pgp-signature; name="signature.asc"
 
-The name of the funtion is a kind of puzzle. I think that we
-could do a better job.
+-----BEGIN PGP SIGNATURE-----
 
-> - sys_info_reset(): Clears the printed mask state.
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmpHsq0ACgkQJNaLcl1U
+h9DZLAf9ElVRlI9ve+3ub8K2BLnTm7HRUNLcAL42Bw8rMpqk1o0pg7ZJjZLioq1Y
+1RYxiTgdXDG59wjBJuGfmGoYmZDklwyDqjm4DH9GIt+yUfRnfPkhvIsrGt5bbTvU
+7ihI0RsOAg+zLNqkZIZmkxbxeOS/btJITX3Q7jsUU9T/eDun2B8O+U+r/TVqAHOm
+uWNDRwf9ZGXX4ZCt9W4onOs9y3eIg5VQAUwxLPEGXF7Fw9SjZF+k+INKztaG44GS
+HjMfWZuQI6Y2I7MqqmJJOFV2DrrPytG4DIiQLmMdHHdzqNs9vkFAFc5oEWm0RHUu
+L9cN8OcNqXgAbHzhVKKLJalDu2CW6A==
+=c+6j
+-----END PGP SIGNATURE-----
 
-This function has sys_info* prefix. It would expect it in sys_info.c
-
-> Add SYS_INFO_MODULES, SYS_INFO_IRQTRACE, and SYS_INFO_STACK flags to
-> include/linux/sys_info.h, and handle them inside sys_info's diagnostic
-> dispatch.
-
-I though about adding an information that we printed backtrace for this
-CPU as well. But it not trivial. Different API shows different extra
-info, like modules, IRQ backtrace, registers, code. I would leave
-this complexity aside for now.
-
-> Update the watchdogs, hung task detector, and panic core to call
-> sys_info_filter_and_set() to deduplicate their diagnostic printouts, and
-> sys_info_reset() when a warning incident concludes (e.g., when a stuck
-> CPU recovers, or a new hung task check round begins).
-> 
-> This ensures each piece of system diagnostic is printed at most once per
-> lockup/panic event, preventing console log spam.
-> 
-> Assisted-by: Gemini:gemini-3.5-flash
-> Signed-off-by: Bradley Morgan <include@grrlz.net>
-
-> --- /dev/null
-> +++ b/lib/sys_info_filter.c
-> @@ -0,0 +1,120 @@
-> +static unsigned long sys_info_printed;
-> +
-> +unsigned long sys_info_filter_and_set(unsigned long si_mask)
-> +{
-> +	unsigned long old, new;
-> +
-> +	if (!si_mask)
-> +		return 0;
-> +
-> +	do {
-> +		old = READ_ONCE(sys_info_printed);
-> +		if (!(si_mask & ~old))
-> +			return 0;
-> +		new = old | si_mask;
-> +	} while (cmpxchg(&sys_info_printed, old, new) != old);
-
-It is a good question whether to update the info using atomic
-operations. One problem is that the mask is "unsigned long".
-I am not sure if it natively atomic on all architectures.
-32-bit architecures use extra locking when implementing
-atomic operations with 64-bit values. And we should rather
-avoid any locking in this code.
-
-Well, long seems to be 32-bit on 32-bit x86 so it might be
-safe after all.
-
-> +void sys_info_reset(void)
-> +static void __sys_info(unsigned long si_mask)
-> +void sys_info(unsigned long si_mask)
-
-I wonder why this sys_info*() API implementation has been moved
-from sys_info.c to sys_info_filter.c.
-
-I am sorry but I do not see any advantage in adding the new file
-sys_info_filter.c
-
-> NOTE!!: This is AI generated!! This **MAY** not be the finished product,
-> this is ONLY the model!
-
-IMHO, Gemini did pretty bad job in this case. Please, try to review
-the AI generated before you send it. And send it only when you think
-that it is reasonable enough. :-)
-
-It is even fine to send "crap" but you should start the mail
-with a warning that you send it just give us an idea what you
-had it mind. And you should explain why you actually do not like.
-
-Best Regards,
-Petr
+--k5x9XtRP3mHTq+OL--
 
