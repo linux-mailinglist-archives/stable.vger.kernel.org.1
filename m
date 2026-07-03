@@ -1,155 +1,154 @@
-Return-Path: <stable+bounces-271858-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-271859-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id jj86FhQGSGoKjwAAu9opvQ
-	(envelope-from <stable+bounces-271858-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 03 Jul 2026 20:57:24 +0200
+	id 3c/BHtQGSGqrjwAAu9opvQ
+	(envelope-from <stable+bounces-271859-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 03 Jul 2026 21:00:36 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 420D1705042
-	for <lists+stable@lfdr.de>; Fri, 03 Jul 2026 20:57:23 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id BF1DC705054
+	for <lists+stable@lfdr.de>; Fri, 03 Jul 2026 21:00:35 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=arm.com header.s=foss header.b=ApfJI2W6;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-271858-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-271858-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=XWoQYGU0;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-271859-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-271859-lists+stable=lfdr.de@vger.kernel.org";
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 71AE83006011
-	for <lists+stable@lfdr.de>; Fri,  3 Jul 2026 18:57:20 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id A422230154A2
+	for <lists+stable@lfdr.de>; Fri,  3 Jul 2026 19:00:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5E06313E15;
-	Fri,  3 Jul 2026 18:57:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B145E2848BE;
+	Fri,  3 Jul 2026 19:00:33 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 441A6314D06
-	for <stable@vger.kernel.org>; Fri,  3 Jul 2026 18:57:16 +0000 (UTC)
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A92173290D2
+	for <stable@vger.kernel.org>; Fri,  3 Jul 2026 19:00:29 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783105038; cv=none; b=rcjFdH98zza5lORaqUqWPSF2fCgPomN5GoiFAEtvGifQNExx1m6OFjVzFrawqxkRovLstMMXP5DPqSrlB3i3HB+B54Cn8v/kx712gBjHgaYAd0kllQHPe50ULgaZ2/ZfJKC6waECGi7e7XET3kCiAZCTJkn+qq1VsyuCjzVd+cU=
+	t=1783105233; cv=none; b=axU5OMLg0BUfIYt8NjgIKvZhjmWbiDaFLGmfz+fksqRINxUKCxe5v3UO6Bdh4bm+PiMMQu9NeRHY+qQlEmZ+sMuDKAAnjb+gWFbnMYr+jVPwvSH+MPQ2KrawH7SjBnzDOM6I+4ZCKAQEV2/ZxjDsoV8VKxD8UNHb841DIM88ZcE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783105038; c=relaxed/simple;
-	bh=EVj/nJjoDMSSbQCOLNFtXva5XAladq3bBJePirYqfas=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=uJOzqN4fok/emBkgqNnUoEJcnrI2Tbp8dJdSwtQgKhd2uzzQDCqjmCiD6PZNGk9hdNLdXJIw7OcYYaw5IKndaZZ88Hw/fw4Ohb5h6nh0o4kx+kAnLcrA19zLXj5dNMiuoIMIbYPPud5OpkCbaXWk46XTRv+ZygSrBlVcrePOQXw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=ApfJI2W6; arc=none smtp.client-ip=217.140.110.172
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 1C8ED22D7;
-	Fri,  3 Jul 2026 11:57:11 -0700 (PDT)
-Received: from [10.2.212.23] (e121345-lin.cambridge.arm.com [10.2.212.23])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id D6E7C3F905;
-	Fri,  3 Jul 2026 11:57:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1783105035; bh=EVj/nJjoDMSSbQCOLNFtXva5XAladq3bBJePirYqfas=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=ApfJI2W6Dx1v89BrkpaA+IivzEXpoA/C6HWy29MyKt+dwodqdvzesqJh0FhCHxrkZ
-	 HzjY99MkITrRuWRSNz1vn6CdJhMDyAFV/9nnSr0JjElv9gqUAuElmPfXoVW1wbGZXK
-	 lcQbhN305LF4d8wOzD+lptwW/xscZD3DX0+3bzUo=
-Message-ID: <6465c885-3a9d-4c0b-ab74-7665e274ae72@arm.com>
-Date: Fri, 3 Jul 2026 19:57:04 +0100
+	s=arc-20240116; t=1783105233; c=relaxed/simple;
+	bh=ENYh4MYHW9UO8chzJg8KT6gp9xfPNbPhLnx2IYZdp9c=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=NEB5FLt9OcxrhtsngbDmZk2+NcagaZNSei6RAhcvF7erVBOBkRLQUxxsAgAIutRY0w1GLhpWOr9n8Y15mXk2CxQDkmpHWXxZP5kxoyT/obJLb77u9N5jvqMzRz2T65Od/uZQT+vlbixlaLfDJ+cl7GG7+CjYJjUHRKUPw0uuklE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XWoQYGU0; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86E571F000E9;
+	Fri,  3 Jul 2026 19:00:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1783105229;
+	bh=thY0kK27/IEereo4EemXcFgQtM0yzA3y5I37SVnVg94=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=XWoQYGU0g0R4dST1eyyv55pILf/DSO0lqdjBClcxkfbT9zB5hVfK1HFZ6cDnJ4NFN
+	 D7pZQZbx8b+p+SzExnB1VLMItVww11x775YgtsfVne+ztM1XA958IfWaQUI0aBsQn0
+	 QwuO7E8RUYIEosVDs6J9vjoQOOKlP2OavwjCVOujMA8fTEXoI+d+vkOcp3XANygMN8
+	 jOFjjbmc9pOI3fySjTupTBQGL5DjHkhwiJn15IRCcUsLM0HhEVJxoLTXt/cQtTxtB9
+	 clsOYwpS9r+uGwI/K/KrJoLE/D6xV3vzpojETYVsESDlweCHkDW4RAnW3F6P17JN+6
+	 LjLi/1btDL4Dg==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: Keshav Verma <iganschel@gmail.com>,
+	stable@kernel.org,
+	Chao Yu <chao@kernel.org>,
+	Jaegeuk Kim <jaegeuk@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6.y] f2fs: fix listxattr handling of corrupted xattr entries
+Date: Fri,  3 Jul 2026 15:00:26 -0400
+Message-ID: <20260703190026.290198-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <2026070201-sixties-drearily-6c6d@gregkh>
+References: <2026070201-sixties-drearily-6c6d@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] iommu/arm-smmu-v3: Add HAFT support for SVA
-To: Jason Gunthorpe <jgg@ziepe.ca>
-Cc: will@kernel.org, joro@8bytes.org, jpb@kernel.org,
- catalin.marinas@arm.com, yangyicong@hisilicon.com,
- linux-arm-kernel@lists.infradead.org, iommu@lists.linux.dev,
- stable@vger.kernel.org
-References: <878cd6bcbbe2d5677d2f63da13294c148268552c.1782927917.git.robin.murphy@arm.com>
- <20260703164914.GY7525@ziepe.ca>
-From: Robin Murphy <robin.murphy@arm.com>
-Content-Language: en-GB
-In-Reply-To: <20260703164914.GY7525@ziepe.ca>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-3.66 / 15.00];
+	WHITELIST_SPF_DKIM(-3.00)[kernel.org:d:+,kernel.org:s:+];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[arm.com,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
-	R_DKIM_ALLOW(-0.20)[arm.com:s=foss];
+	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[arm.com:+];
-	FORWARDED(0.00)[lists@lfdr.de];
-	TAGGED_FROM(0.00)[bounces-271858-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_SENDER(0.00)[robin.murphy@arm.com,stable@vger.kernel.org];
-	FORGED_RECIPIENTS(0.00)[m:jgg@ziepe.ca,m:will@kernel.org,m:joro@8bytes.org,m:jpb@kernel.org,m:catalin.marinas@arm.com,m:yangyicong@hisilicon.com,m:linux-arm-kernel@lists.infradead.org,m:iommu@lists.linux.dev,m:stable@vger.kernel.org,s:lists@lfdr.de];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-271859-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:iganschel@gmail.com,m:stable@kernel.org,m:chao@kernel.org,m:jaegeuk@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_SENDER(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FREEMAIL_CC(0.00)[gmail.com,kernel.org];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[robin.murphy@arm.com,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	ALIAS_RESOLVED(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 420D1705042
+X-Rspamd-Queue-Id: BF1DC705054
 
-On 03/07/2026 5:49 pm, Jason Gunthorpe wrote:
-> On Wed, Jul 01, 2026 at 06:45:17PM +0100, Robin Murphy wrote:
-> 
->> @@ -211,6 +213,9 @@ bool arm_smmu_sva_supported(struct arm_smmu_device *smmu)
->>   	if (system_supports_bbml2_noabort())
->>   		feat_mask |= ARM_SMMU_FEAT_BBML2;
->>   
->> +	if (system_supports_haft())
->> +		feat_mask |= ARM_SMMU_FEAT_HAFT;
-> 
-> I fear this is going to make SVA stop working on systems it currently
-> does work on, so it might be a major regression.
-> 
-> SMMU HTTU is not a commonly implemented feature.. I think of all the
-> NVIDIA ARM chips only one supports it. Given that a quick internal
-> check is raising concerns this will be breaking for us. We need to
-> check in more detail which cores have HAFT.
-> 
-> Breaking already deployed SVA would be a major functional regression.
-> 
-> I think this should start by just enabling SMMU HAFT when CPU HAFT is
-> on, when possible. Maybe print a warning on the mismatch instead of
-> failing.
-> 
-> Since we can't break already deployed SVA a full solution would either
-> have to somehow turn off CPU HAFT or we ignore the gap in the AF
-> updates..
+From: Keshav Verma <iganschel@gmail.com>
 
-TBH I do not know how bad the implications of 
-pmd_young()/pmdp_test_and_clear_young() returning a false-negative are, 
-but if we aren't considering mismatched CPUs harmless then surely the 
-same must apply for SVA. In the POE/GCS cases all that can really be 
-broken is users' expectations, if they've opted in to additional 
-security features, but also opted in to SVA wherein those features can't 
-protect against DMA. Here, though, it's the kernel mm layer itself 
-that's impacted, and I'm not confident to say that that isn't more serious.
+[ Upstream commit 5ef5bc304f23c3fe255d4936472378dcb74d0e94 ]
 
-This came about as a sudden "oh crap" moment when answering an internal 
-query about SMMU features, and it seemed prudent to do _something_ for 
-the sake of correctness ASAP. Making HAFT depend on !SVA could only 
-easily be done at the config level, which seems arguably even more 
-over-reaching, and given that CPUs supporting HAFT aren't common yet - 
-at least from Arm it seems to be only the big cores of the latest C1 
-generation so far - in a pinch this felt like the least-worst option for 
-the short term. If someone has time to look into whether it's possible 
-to dynamically switch arch_has_hw_nonleaf_pmd_young (and whatever else) 
-post-init, then that's an obvious follow-up, but I can say for sure that 
-that someone is not me...
+Validate the xattr entry before reading its fields in f2fs_listxattr().
+Return -EFSCORRUPTED when the entry is outside the valid xattr storage
+area instead of returning a successful partial result.
 
-Thanks,
-Robin.
+Fixes: 688078e7f36c ("f2fs: fix to avoid memory leakage in f2fs_listxattr")
+Cc: stable@kernel.org
+Reviewed-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Keshav Verma <iganschel@gmail.com>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ fs/f2fs/xattr.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/fs/f2fs/xattr.c b/fs/f2fs/xattr.c
+index c2cb24be4e79be..cb9f58db525375 100644
+--- a/fs/f2fs/xattr.c
++++ b/fs/f2fs/xattr.c
+@@ -581,8 +581,6 @@ ssize_t f2fs_listxattr(struct dentry *dentry, char *buffer, size_t buffer_size)
+ 		size_t prefix_len;
+ 		size_t size;
+ 
+-		prefix = f2fs_xattr_prefix(entry->e_name_index, dentry);
+-
+ 		if ((void *)(entry) + sizeof(__u32) > last_base_addr ||
+ 			(void *)XATTR_NEXT_ENTRY(entry) > last_base_addr) {
+ 			f2fs_err(F2FS_I_SB(inode), "list inode (%lu) has corrupted xattr",
+@@ -590,9 +588,11 @@ ssize_t f2fs_listxattr(struct dentry *dentry, char *buffer, size_t buffer_size)
+ 			set_sbi_flag(F2FS_I_SB(inode), SBI_NEED_FSCK);
+ 			f2fs_handle_error(F2FS_I_SB(inode),
+ 						ERROR_CORRUPTED_XATTR);
+-			break;
++			error = -EFSCORRUPTED;
++			goto cleanup;
+ 		}
+ 
++		prefix = f2fs_xattr_prefix(entry->e_name_index, dentry);
+ 		if (!prefix)
+ 			continue;
+ 
+-- 
+2.53.0
+
 
