@@ -1,196 +1,182 @@
-Return-Path: <stable+bounces-271633-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-271634-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id AwfBCstOR2qaVwAAu9opvQ
-	(envelope-from <stable+bounces-271633-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 03 Jul 2026 07:55:23 +0200
+	id AchXMblOR2qUVwAAu9opvQ
+	(envelope-from <stable+bounces-271634-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 03 Jul 2026 07:55:05 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8BEAA6FEDE9
-	for <lists+stable@lfdr.de>; Fri, 03 Jul 2026 07:55:22 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id B7AB86FEDE0
+	for <lists+stable@lfdr.de>; Fri, 03 Jul 2026 07:55:04 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="advU/LRG";
-	dmarc=pass (policy=none) header.from=linuxfoundation.org;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-271633-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-271633-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=fail ("headers rsa verify failed") header.d=w6rz.net header.s=default header.b=hemeTBVs;
+	dmarc=none;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-271634-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-271634-lists+stable=lfdr.de@vger.kernel.org";
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 2A10E3027DBC
-	for <lists+stable@lfdr.de>; Fri,  3 Jul 2026 05:51:17 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 9C1E63010D1F
+	for <lists+stable@lfdr.de>; Fri,  3 Jul 2026 05:54:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 12081388E46;
-	Fri,  3 Jul 2026 05:49:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6CC80285CB3;
+	Fri,  3 Jul 2026 05:54:33 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from omta036.useast.a.cloudfilter.net (omta036.useast.a.cloudfilter.net [44.202.169.35])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 023563845D5
-	for <stable@vger.kernel.org>; Fri,  3 Jul 2026 05:49:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3BA13290D9
+	for <stable@vger.kernel.org>; Fri,  3 Jul 2026 05:54:31 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783057751; cv=none; b=uQqwt3otU2RggUdf5ofQwylkOWHYzGsaCZbniRN68rqhs8VPEHlilB0z15M5bPMIjD1yEUMcJORjlwua/HojS0ivy8vMGWZuIDVshUiuSZUIuwTMeUEOkb3jzjucacMor48TO8126OyLK9Gw65MhOG1W0mnOTLFR9GQW7YfDR1k=
+	t=1783058073; cv=none; b=Om0yJ3vnGPVIgtIXgWAjZD80YvzwPoPVVtyZz0wOXIuxu5L48xMBhu1QLB2xmR81rgZllljody1GZ0ZbqFwLk9XDVvid+e7+9C3rIdGIA1rKxDUUlnYjnYRfpRqVWJWcsmCC5SFRRU7dXGV/qNwSABz6u3gIV1dbAhuESjKUtEY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783057751; c=relaxed/simple;
-	bh=KHMiOO8pe2aqxs7efuP2gne6h5icOVRvsvGu0tgqYMw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=VqF8OEITbq2pHDYexnb6cJ+ybl+Q21J70zVesKYjLsvoqPDfM0V3tuHSfDi1PDdj+lylncYDxx5xVWfhWpFnvTWlNmIQ1jvfZUHE2w28oKPwpulyC0gXM53YQbTcVtpVZYeuCfWictpHz8d+NA+3mfSuxCNZdjdcxHUJV2MzhTU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=advU/LRG; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3B461F000E9;
-	Fri,  3 Jul 2026 05:48:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1783057739;
-	bh=DEGjoqjPcIPmYqvgZrYrIG+p7VdrLCFjG3UQIW8DMoY=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=advU/LRGaeIdUspm9HdpEyXD7p1PD6ot2CN5OXkqCO2RT8jkxusBRCbZkhbqugqfr
-	 z4WKiOuAPZ3GEUSLSzACZk6VUpTJnXrcqF5zCx+r70usRv7csanoOAWfRCkyzs6Iwk
-	 xA3jKkWgFmJtfMMThBfv8aBgnh7AG58sAPJFXHh4=
-Date: Fri, 3 Jul 2026 07:49:09 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Sonali Pradhan <sonalipradhan@google.com>
-Cc: stable@vger.kernel.org
-Subject: Re: [PATCH] usb: gadget: f_ncm: validate datagram bounds in
- ncm_unwrap_ntb()
-Message-ID: <2026070359-uselessly-staging-f506@gregkh>
-References: <20260703051945.1691028-1-sonalipradhan@google.com>
+	s=arc-20240116; t=1783058073; c=relaxed/simple;
+	bh=Z2VEkFlgYMrqA5RzIlY1A4wDmsIB8Z5DNlzS3XqevtU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=EJvMu1fwsjarhtcxrQ/bDSnAW+QHaofYb0J7NVRD/fvUsRBzOdnZz1QhL/cDuM0LV42rNXjTdqsq1Gvqwfd5RPxnWttEqoUHNfA9AVptRcWLKdSdVlgKRiG+DZNfTANH1sOK5SalBKIQMJKUMmhLaox3g/79eEkJkH4PsYkauSg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=w6rz.net; spf=pass smtp.mailfrom=w6rz.net; dkim=pass (2048-bit key) header.d=w6rz.net header.i=@w6rz.net header.b=hemeTBVs; arc=none smtp.client-ip=44.202.169.35
+Received: from eig-obgw-6006b.ext.cloudfilter.net ([10.0.30.211])
+	by cmsmtp with ESMTPS
+	id fHwUwUe6OgwLnfWr3wcpwz; Fri, 03 Jul 2026 05:54:25 +0000
+Received: from box5620.bluehost.com ([162.241.219.59])
+	by cmsmtp with ESMTPS
+	id fWr2wWbBaxg8YfWr3w4ngI; Fri, 03 Jul 2026 05:54:25 +0000
+X-Authority-Analysis: v=2.4 cv=R44DGcRX c=1 sm=1 tr=0 ts=6a474e91
+ a=30941lsx5skRcbJ0JMGu9A==:117 a=30941lsx5skRcbJ0JMGu9A==:17
+ a=IkcTkHD0fZMA:10 a=RAioF0-LDSMA:10 a=7vwVE5O1G3EA:10 a=VwQbUJbxAAAA:8
+ a=Fowlm8kEtbx0O9ktuRkA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
+ a=L5EjiQpGQaFGZdqT14z7:22
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=w6rz.net;
+	s=default; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
+	References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+	List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=35hBBtkq3T2Pp3DSaSRbdRe3FPOi3WynMPb7oDO45lU=; b=hemeTBVsR1ni8TidBOef8fE8sU
+	iMsyMOctStTBVS52Cl2o9FOcrEcP455pWxz3In7lsa1QfISiDZLq5iq6DIAk+iAroJnlyoDZ0HXQv
+	mdWgJHWOPoXx1H3cBsl0v+bQEQRYgN2foTHHxKC3IXMXwOLBAWUaodCcsuKFKmzuYuhG+SuRVYShx
+	vjWKKHocLYR4hvAHEJHA7Fk83rGOhaYmk9kuO8sHRZ3mUnkZUKvFlJrHX5007oBAgV5jCyjOubd3G
+	sfZuCaE2bWRMqB0xKuME3q0rG0ZtFPKRubYLaXyuYdO4OmOQ+e+OTuQHkU9Om72CNoKZirmO8La6B
+	pROB5n3A==;
+Received: from c-73-162-206-103.hsd1.ca.comcast.net ([73.162.206.103]:59202 helo=[10.0.1.180])
+	by box5620.bluehost.com with esmtpsa  (TLS1.3) tls TLS_AES_128_GCM_SHA256
+	(Exim 4.99.2)
+	(envelope-from <re@w6rz.net>)
+	id 1wfWr2-00000000hDK-1RJk;
+	Thu, 02 Jul 2026 23:54:24 -0600
+Message-ID: <4561a281-d46b-415e-8272-32c88b0f0ab1@w6rz.net>
+Date: Thu, 2 Jul 2026 22:54:22 -0700
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260703051945.1691028-1-sonalipradhan@google.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 6.18 000/108] 6.18.38-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@nabladev.com, jonathanh@nvidia.com,
+ f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, rwarsow@gmx.de,
+ conor@kernel.org, hargar@microsoft.com, broonie@kernel.org,
+ achill@achill.org, sr@sladewatkins.com
+References: <20260702155112.110058792@linuxfoundation.org>
+Content-Language: en-US
+From: Ron Economos <re@w6rz.net>
+In-Reply-To: <20260702155112.110058792@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - box5620.bluehost.com
+X-AntiAbuse: Original Domain - vger.kernel.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - w6rz.net
+X-BWhitelist: no
+X-Source-IP: 73.162.206.103
+X-Source-L: No
+X-Exim-ID: 1wfWr2-00000000hDK-1RJk
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
+X-Source-Sender: c-73-162-206-103.hsd1.ca.comcast.net ([10.0.1.180]) [73.162.206.103]:59202
+X-Source-Auth: re@w6rz.net
+X-Email-Count: 39
+X-Org: HG=bhshared;ORG=bluehost;
+X-Source-Cap: d3NpeHJ6bmU7d3NpeHJ6bmU7Ym94NTYyMC5ibHVlaG9zdC5jb20=
+X-Local-Domain: yes
+X-CMAE-Envelope: MS4xfJO6/sX6YZO7PxKOQViWTRCb0TjrJqcb0Moun7z87ULGmBNvU/sPjcVVtpFVywmKd2xcC8uNdmXyJGAN4gOwgtEk61POLJlQiFuvYq3tnhGu5NkmJdDA
+ AcmiiYbLbYGnLWPZt439Ky4YkgTfRxEa1LO2XeV7q3HUdrldPLKhY+og9RMFKcGu7a4r+hMREc8Bag==
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [2.34 / 15.00];
-	MID_END_EQ_FROM_USER_PART(4.00)[];
+X-Spamd-Result: default: False [1.04 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_DKIM_REJECT(1.00)[w6rz.net:s=default];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCPT_COUNT_TWO(0.00)[2];
-	TAGGED_FROM(0.00)[bounces-271633-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS(0.00)[m:sonalipradhan@google.com,m:stable@vger.kernel.org,s:lists@lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-271634-lists,stable=lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DMARC_NA(0.00)[w6rz.net];
+	FREEMAIL_CC(0.00)[lists.linux.dev,vger.kernel.org,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,nabladev.com,nvidia.com,gmail.com,gmx.de,microsoft.com,achill.org,sladewatkins.com];
+	FORGED_SENDER(0.00)[re@w6rz.net,stable@vger.kernel.org];
+	RCPT_COUNT_TWELVE(0.00)[20];
+	FORGED_RECIPIENTS(0.00)[m:gregkh@linuxfoundation.org,m:stable@vger.kernel.org,m:patches@lists.linux.dev,m:linux-kernel@vger.kernel.org,m:torvalds@linux-foundation.org,m:akpm@linux-foundation.org,m:linux@roeck-us.net,m:shuah@kernel.org,m:patches@kernelci.org,m:lkft-triage@lists.linaro.org,m:pavel@nabladev.com,m:jonathanh@nvidia.com,m:f.fainelli@gmail.com,m:sudipm.mukherjee@gmail.com,m:rwarsow@gmx.de,m:conor@kernel.org,m:hargar@microsoft.com,m:broonie@kernel.org,m:achill@achill.org,m:sr@sladewatkins.com,m:ffainelli@gmail.com,m:sudipmmukherjee@gmail.com,s:lists@lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORWARDED(0.00)[lists@lfdr.de];
+	HAS_X_SOURCE(0.00)[];
+	HAS_X_ANTIABUSE(0.00)[];
+	TO_DN_SOME(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FROM_NEQ_ENVFROM(0.00)[re@w6rz.net,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[w6rz.net:-];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:from_mime,linuxfoundation.org:dkim,gregkh:mid]
+	RWL_MAILSPIKE_POSSIBLE(0.00)[104.64.211.4:from];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,vger.kernel.org:from_smtp,w6rz.net:mid,w6rz.net:from_mime]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 8BEAA6FEDE9
+X-Rspamd-Queue-Id: B7AB86FEDE0
 
-On Fri, Jul 03, 2026 at 05:19:45AM +0000, Sonali Pradhan wrote:
-> When unpacking host-supplied NTBs, ncm_unwrap_ntb() checks datagram length
-> against frame_max but does not verify that the datagram fits within the
-> declared block length. Additionally, when decoding multiple NTBs from a
-> single socket buffer, subsequent block lengths are not checked against the
-> actual remaining buffer data.
-> 
-> With these checks missing, a malicious USB host can specify datagram
-> offsets and lengths that point beyond the block, or supply secondary NTB
-> headers declaring lengths larger than the buffer. skb_put_data() then
-> copies adjacent kernel memory from skb_shared_info into the network skb.
-> 
-> Fix this by verifying that sufficient buffer space remains for the NTB
-> header before parsing, handling zero-length block declarations, ensuring
-> that block lengths never exceed the remaining buffer space, and verifying
-> that each datagram payload stays strictly within the block boundary.
-> 
-> Fixes: 427694cfaafa ("usb: gadget: ncm: Handle decoding of multiple NTB's in unwrap call")
-> Fixes: 2b74b0a04d3e ("USB: gadget: f_ncm: add bounds checks to ncm_unwrap_ntb()")
-> Cc: stable@vger.kernel.org
-> Assisted-by: Jetski:Gemini-2.5-Pro
-> Signed-off-by: Sonali Pradhan <sonalipradhan@google.com>
-> ---
->  drivers/usb/gadget/function/f_ncm.c | 17 +++++++++++++----
->  1 file changed, 13 insertions(+), 4 deletions(-)
-> 
-> diff --git a/drivers/usb/gadget/function/f_ncm.c b/drivers/usb/gadget/function/f_ncm.c
-> index c5bf8a448d64..64eabda2f546 100644
-> --- a/drivers/usb/gadget/function/f_ncm.c
-> +++ b/drivers/usb/gadget/function/f_ncm.c
-> @@ -1189,6 +1189,10 @@ static int ncm_unwrap_ntb(struct gether *port,
->  	frame_max = ncm_opts->max_segment_size;
->  
->  parse_ntb:
-> +	if (to_process < (int)opts->nth_size) {
-> +		INFO(port->func.config->cdev, "Packet too small for headers\n");
-> +		goto err;
-> +	}
->  	tmp = (__le16 *)ntb_ptr;
->  
->  	/* dwSignature */
-> @@ -1209,8 +1213,12 @@ static int ncm_unwrap_ntb(struct gether *port,
->  	tmp++; /* skip wSequence */
->  
->  	block_len = get_ncm(&tmp, opts->block_length);
-> +	if (block_len == 0)
-> +		block_len = to_process;
-> +
->  	/* (d)wBlockLength */
-> -	if ((block_len < opts->nth_size + opts->ndp_size) || (block_len > ntb_max)) {
-> +	if ((block_len < opts->nth_size + opts->ndp_size) || (block_len > ntb_max) ||
-> +			(block_len > to_process)) {
->  		INFO(port->func.config->cdev, "Bad block length: %#X\n", block_len);
->  		goto err;
->  	}
-> @@ -1273,7 +1281,7 @@ static int ncm_unwrap_ntb(struct gether *port,
->  			index = index2;
->  			/* wDatagramIndex[0] */
->  			if ((index < opts->nth_size) ||
-> -					(index > block_len - opts->dpe_size)) {
-> +					(index > block_len)) {
->  				INFO(port->func.config->cdev,
->  				     "Bad index: %#X\n", index);
->  				goto err;
-> @@ -1285,7 +1293,8 @@ static int ncm_unwrap_ntb(struct gether *port,
->  			 * ethernet hdr + crc or larger than max frame size
->  			 */
->  			if ((dg_len < 14 + crc_len) ||
-> -					(dg_len > frame_max)) {
-> +					(dg_len > frame_max) ||
-> +					(dg_len > block_len - index)) {
->  				INFO(port->func.config->cdev,
->  				     "Bad dgram length: %#X\n", dg_len);
->  				goto err;
-> @@ -1310,7 +1319,7 @@ static int ncm_unwrap_ntb(struct gether *port,
->  			dg_len2 = get_ncm(&tmp, opts->dgram_item_len);
->  
->  			/* wDatagramIndex[1] */
-> -			if (index2 > block_len - opts->dpe_size) {
-> +			if (index2 > block_len) {
->  				INFO(port->func.config->cdev,
->  				     "Bad index: %#X\n", index2);
->  				goto err;
-> -- 
-> 2.55.0.rc0.799.gd6f94ed593-goog
-> 
-> 
+On 7/2/26 09:19, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.18.38 release.
+> There are 108 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>
+> Responses should be made by Sat, 04 Jul 2026 15:50:58 +0000.
+> Anything received after that time might be too late.
+>
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.18.38-rc1.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.18.y
+> and the diffstat can be found below.
+>
+> thanks,
+>
+> greg k-h
 
-<formletter>
+The build is broken on RISC-V with:
 
-This is not the correct way to submit patches for inclusion in the
-stable kernel tree.  Please read:
-    https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html
-for how to do this properly.
+In file included from mm/kfence/core.c:36:
+./arch/riscv/include/asm/kfence.h: In function 'kfence_protect_page':
+./arch/riscv/include/asm/kfence.h:25:17: error: implicit declaration of function 'mark_new_valid_map' [-Wimplicit-function-declaration]
+    25 |                 mark_new_valid_map();
+       |                 ^~~~~~~~~~~~~~~~~~
 
-</formletter>
+This is caused by commit "riscv: kfence: Call mark_new_valid_map() for kfence_unprotect()" a8818008680a00a86c080a55e8842c714e9a62ba
+
+As already reported by https://lore.kernel.org/stable/6c5c0723-66c6-4f9f-8021-2562efc95c6e@iscas.ac.cn/, upstream commit "riscv: mm: 
+Extract helper mark_new_valid_map()" 9ee25d0a70ff4494b4e1d266b962d0a574ef318a solves the issue. This commit cherry picks successfully.
+
 
