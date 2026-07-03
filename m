@@ -1,55 +1,59 @@
-Return-Path: <stable+bounces-271608-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-271609-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id ZacqOporR2q+TwAAu9opvQ
-	(envelope-from <stable+bounces-271608-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 03 Jul 2026 05:25:14 +0200
+	id TyxHIUsuR2ojUAAAu9opvQ
+	(envelope-from <stable+bounces-271609-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 03 Jul 2026 05:36:43 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 56C356FE303
-	for <lists+stable@lfdr.de>; Fri, 03 Jul 2026 05:25:14 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D8F686FE3B0
+	for <lists+stable@lfdr.de>; Fri, 03 Jul 2026 05:36:42 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=none;
-	dmarc=none;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-271608-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-271608-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=g+m8Uw8N;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-271609-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-271609-lists+stable=lfdr.de@vger.kernel.org";
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 435FC30C3FE0
-	for <lists+stable@lfdr.de>; Fri,  3 Jul 2026 03:24:28 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 7001830E5877
+	for <lists+stable@lfdr.de>; Fri,  3 Jul 2026 03:33:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7ACEC3043DB;
-	Fri,  3 Jul 2026 03:24:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2922B30567B;
+	Fri,  3 Jul 2026 03:33:05 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A28553054E4;
-	Fri,  3 Jul 2026 03:24:15 +0000 (UTC)
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29DDB30C164;
+	Fri,  3 Jul 2026 03:32:50 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783049064; cv=none; b=fcrgtzJ9Zw6LlYvlSKzogoeWSYLDRpxMMQ7j0fyJdDq96ocZJo8xKUruk2Mwg0hB666aWEm7wKDXBDP3E5BG60+Fj42rPGHvdshUayhyvtQmko/POxLJvndhGGQobtiIGZxk0lTGWWaTx4LC24QVJmI22Spmp38SuLsdNp7EvvE=
+	t=1783049580; cv=none; b=Ym4ROgYoRQw+0mDQJHxtJSxFK1sI1xqd9bm0Fj4DxW8jzj1ZO1y0j/F1HvnUkTHLe3LgdscVl+QdqjArVvi2Wy4nSRqJF6OBp5jjq4WTQA8VlUqPaoSVtqbCih3rqaEEkhWxxqWRxDRRWZrmCGOqZLFc2FnWuRD0Gy8W/fSoIzM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783049064; c=relaxed/simple;
-	bh=WLhtM4LR+BPW9RgUYblWUaBUz6QY5+Fp3CFlYzKVqKY=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=U6lb1PSRcqhfoAu1M2gvCRg2i6f0X+wX/dQedK0pwERIsaPnkAu2pFgCFTRoPolSWunwXuiYUpW5RFdorJcEjRBkeMYP765tykHyRGjFUwNCLsJrKWhP79NdAa4bOWNDZGSKv1sOxaYfFIRxr6Ch8MS05RBN30oDjIJrPnUdVYk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn; spf=pass smtp.mailfrom=loongson.cn; arc=none smtp.client-ip=114.242.206.163
-Received: from loongson.cn (unknown [223.64.68.155])
-	by gateway (Coremail) with SMTP id _____8Axz+tbK0dqmjABAA--.1107S3;
-	Fri, 03 Jul 2026 11:24:11 +0800 (CST)
-Received: from kernelserver (unknown [223.64.68.155])
-	by front1 (Coremail) with SMTP id qMiowJBxDOFYK0dqamS9AA--.8247S2;
-	Fri, 03 Jul 2026 11:24:10 +0800 (CST)
-From: Huacai Chen <chenhuacai@loongson.cn>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Sasha Levin <sashal@kernel.org>,
-	Huacai Chen <chenhuacai@kernel.org>
-Cc: Xuerui Wang <kernel@xen0n.name>,
-	stable@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	loongarch@lists.linux.dev,
-	Huacai Chen <chenhuacai@loongson.cn>
-Subject: [PATCH 6.1 & 6.6] LoongArch: Report dying CPU to RCU in stop_this_cpu()
-Date: Fri,  3 Jul 2026 11:24:00 +0800
-Message-ID: <20260703032401.857553-1-chenhuacai@loongson.cn>
-X-Mailer: git-send-email 2.52.0
+	s=arc-20240116; t=1783049580; c=relaxed/simple;
+	bh=voviGqTGQPSemFptJDez/r58pUKhSxCLlp81nQEyLWo=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=JCxCouTj+0/8nBE6dnB9fUwdAiNgWeclWjJS5zAfHb3RxTZmO/+inX1yq6j5l9omXQgHuVm0M1bfg04jNsMPisdP7XQSKwlQXcO1mox5FXLvq0jtvQghJybz18PnGoYMqHNIAdp0+1eAwJHdo3UDATUv8MOW76pI6R4GNz0zs7o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=g+m8Uw8N; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 117251F000E9;
+	Fri,  3 Jul 2026 03:32:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1783049566;
+	bh=eHRs2IQ1+jjS6boktaY1cIFCKznQL4Ms2em86RPj6n4=;
+	h=From:To:Cc:Subject:Date;
+	b=g+m8Uw8NPSeiQftrspEoO8Y9jEyB1dEWuJVg4//AFqnUFkZyKmWwaVXm87g8MCJzN
+	 +J2s0PfhuK9Qz6aFqgD0Eis5liZvotqia/N/OFMq/iSYPEqUnOBqCxT3kydSNWGw+Y
+	 Zeoyp5/+Pcvkl02DSh1YPpUJLm570YgemvbrltRQqCUm+Qond/NBcLJRVc6a2T6JI0
+	 Elv2igGFhds1FF6la7Wy5igfEGyy1Kopzrf+cePBCLknUWuRifTI6tymB/p8PoX3ud
+	 BV09THdzVz2nEK/JepVqcHNwSA93/+gXQMl1ck+P8G/GX/teVUdib3VBSIORueF8p5
+	 +VMYr1ar2ivKQ==
+From: Chuck Lever <cel@kernel.org>
+To: <stable@vger.kernel.org>
+Cc: <linux-nfs@vger.kernel.org>,
+	Chris Mason <clm@meta.com>,
+	Jeff Layton <jlayton@kernel.org>
+Subject: [PATCH 6.1.y 1/2] nfsd: release layout stid on setlease failure
+Date: Thu,  2 Jul 2026 23:32:42 -0400
+Message-ID: <20260703033243.1539871-1-cel@kernel.org>
+X-Mailer: git-send-email 2.54.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -57,112 +61,109 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:qMiowJBxDOFYK0dqamS9AA--.8247S2
-X-CM-SenderInfo: hfkh0x5xdftxo6or00hjvr0hdfq/
-X-Coremail-Antispam: 1Uk129KBj93XoW7ZFW3Xw47JrW7WFy3Jr17XFc_yoW5Jr43pr
-	WFkrn5Zw4kWr1vv3s8J34xWryqyrs3Kw12q3Z3GrZ3Aay5tF1UZw1SqFyjvFyFgws3u34I
-	vFnYv3yvv3WUAagCm3ZEXasCq-sJn29KB7ZKAUJUUUU5529EdanIXcx71UUUUU7KY7ZEXa
-	sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
-	0xBIdaVrnRJUUUkjb4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
-	IYs7xG6rWj6s0DM7CIcVAFz4kK6r1Y6r17M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
-	e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Gr0_Xr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
-	0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVW8JVWxJwA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_
-	Gr0_Gr1UM2AIxVAIcxkEcVAq07x20xvEncxIr21l57IF6xkI12xvs2x26I8E6xACxx1l5I
-	8CrVACY4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r126r1DMcIj6I8E87Iv67AK
-	xVWUJVW8JwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IYc2Ij64vIr41l42xK82IYc2Ij64
-	vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8G
-	jcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r1q6r43MIIYrxkI7VAKI48JMIIF0xvE2I
-	x0cI8IcVAFwI0_JFI_Gr1lIxAIcVC0I7IYx2IY6xkF7I0E14v26r1j6r4UMIIF0xvE42xK
-	8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E87Iv6xkF7I
-	0E14v26r1j6r4UYxBIdaVFxhVjvjDU0xZFpf9x07j83kZUUUUU=
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [0.04 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+X-Spamd-Result: default: False [-3.66 / 15.00];
+	WHITELIST_SPF_DKIM(-3.00)[kernel.org:d:+,kernel.org:s:+];
 	MID_CONTAINS_FROM(1.00)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-271609-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	DMARC_NA(0.00)[loongson.cn];
-	TAGGED_FROM(0.00)[bounces-271608-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:gregkh@linuxfoundation.org,m:sashal@kernel.org,m:chenhuacai@kernel.org,m:kernel@xen0n.name,m:stable@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:loongarch@lists.linux.dev,m:chenhuacai@loongson.cn,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[chenhuacai@loongson.cn,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER(0.00)[cel@kernel.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:linux-nfs@vger.kernel.org,m:clm@meta.com,m:jlayton@kernel.org,s:lists@lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[chenhuacai@loongson.cn,stable@vger.kernel.org];
-	ALIAS_RESOLVED(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	RCPT_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_FORWARDING(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	R_DKIM_NA(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[cel@kernel.org,stable@vger.kernel.org];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[loongson.cn:from_mime,loongson.cn:email,loongson.cn:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,vger.kernel.org:from_smtp]
+	ALIAS_RESOLVED(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FROM_HAS_DN(0.00)[]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 56C356FE303
+X-Rspamd-Queue-Id: D8F686FE3B0
 
-commit f2539c56c74691e7a88af6372ba2b48c06ed2fe4 upstream.
+From: Chris Mason <clm@meta.com>
 
-This is a port of MIPS commit 9f3f3bdc6d9dac1 ("MIPS: smp: report dying
-CPU to RCU in stop_this_cpu()"). smp_send_stop() parks all secondary
-CPUs in stop_this_cpu(). And the function marks the CPU offline for the
-scheduler via set_cpu_online(false) but never informs RCU, so RCU keeps
-expecting a quiescent state from CPUs that are now spinning forever with
-interrupts disabled.
+commit 30d55c8aabb261bc3f427d6b9aae7ef6206063f9 upstream.
 
-As long as nothing waits for an RCU grace period after smp_send_stop()
-this is harmless, which is why it went unnoticed. However, since commit
-91840be8f710370 ("irq_work: Fix use-after-free in irq_work_single() on
-PREEMPT_RT"), irq_work_sync() calls synchronize_rcu() on architectures
-without an irq_work self-IPI, i.e. where arch_irq_work_has_interrupt()
-returns false. Any irq_work_sync() issued in the reboot/shutdown/halt
-path after smp_send_stop() then blocks on a grace period that can never
-complete, hanging the reboot:
+nfs4_alloc_stid() publishes the new stid into cl->cl_stateids via
+idr_alloc_cyclic() under cl_lock before returning to
+nfsd4_alloc_layout_stateid(). When nfsd4_layout_setlease() then
+fails, the error path frees the layout stateid directly with
+kmem_cache_free() without ever calling idr_remove(), leaving the
+IDR slot pointing at freed slab memory. Any subsequent IDR walker
+(states_show, client teardown) dereferences the dangling pointer.
 
-  WARNING: CPU: 0 PID: 15 at kernel/irq_work.c:144 irq_work_queue_on
-  ...
-  rcu: INFO: rcu_sched detected stalls on CPUs/tasks:
-  rcu: Offline CPU 1 blocking current GP.
-  rcu: Offline CPU 2 blocking current GP.
-  rcu: Offline CPU 3 blocking current GP.
+The correct teardown for an IDR-published stid is nfs4_put_stid(),
+which removes the IDR slot under cl_lock, dispatches sc_free
+(nfsd4_free_layout_stateid) to release ls->ls_file via
+nfsd4_close_layout(), and drops the nfs4_file reference in its
+tail.
 
-This issue needs some hacks to reproduce, and it was not noticed on
-LoongArch because arch_irq_work_has_interrupt() usually returns true.
+A second issue blocks that switch: nfsd4_free_layout_stateid()
+unconditionally inspects ls->ls_fence_work via
+delayed_work_pending() under ls_lock, but
+INIT_DELAYED_WORK(&ls->ls_fence_work, ...) currently runs only
+after the setlease call. On the setlease-failure path the
+destructor would touch an uninitialized delayed_work.
 
-Call rcutree_report_cpu_dead() once interrupts are disabled, mirroring
-the generic CPU-hotplug offline path, so RCU stops waiting on the parked
-CPUs and grace periods can still complete. LoongArch shuts down all CPUs
-here without going through the CPU-hotplug mechanism, so this report is
-not otherwise issued.
+    nfsd4_alloc_layout_stateid()
+      nfs4_alloc_stid()           /* idr_alloc_cyclic under cl_lock */
+      nfsd4_layout_setlease()     /* fails */
+        nfs4_put_stid()
+          nfsd4_free_layout_stateid()
+            delayed_work_pending(&ls->ls_fence_work)  /* needs INIT */
+            nfsd4_close_layout()  /* nfsd_file_put(ls->ls_file) */
+          put_nfs4_file()
 
-Cc: <stable@vger.kernel.org>
-Fixes: 91840be8f710 ("irq_work: Fix use-after-free in irq_work_single() on PREEMPT_RT")
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+Fix by hoisting the ls_fenced / ls_fence_delay / INIT_DELAYED_WORK
+initialization above the nfsd4_layout_setlease() call, and replace
+the manual nfsd_file_put + put_nfs4_file + kmem_cache_free cleanup
+with a single nfs4_put_stid(stp).
+
+Fixes: c5c707f96fc9 ("nfsd: implement pNFS layout recalls")
+Cc: stable@vger.kernel.org
+Assisted-by: kres (claude-opus-4-7)
+Signed-off-by: Chris Mason <clm@meta.com>
+Reviewed-by: Jeff Layton <jlayton@kernel.org>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+[ cel: no ls_fence_work in 6.1.y; dropped INIT_DELAYED_WORK hunk ]
+Signed-off-by: Chuck Lever <cel@kernel.org>
 ---
- arch/loongarch/kernel/smp.c | 1 +
- 1 file changed, 1 insertion(+)
+ fs/nfsd/nfs4layouts.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/arch/loongarch/kernel/smp.c b/arch/loongarch/kernel/smp.c
-index d66007fbfdda..0ab9dedd7a69 100644
---- a/arch/loongarch/kernel/smp.c
-+++ b/arch/loongarch/kernel/smp.c
-@@ -691,6 +691,7 @@ static void stop_this_cpu(void *dummy)
- 	set_cpu_online(smp_processor_id(), false);
- 	calculate_cpu_foreign_map();
- 	local_irq_disable();
-+	rcu_report_dead(smp_processor_id());
- 	while (true);
- }
+diff --git a/fs/nfsd/nfs4layouts.c b/fs/nfsd/nfs4layouts.c
+index 308214378fd3..84bb200e24ad 100644
+--- a/fs/nfsd/nfs4layouts.c
++++ b/fs/nfsd/nfs4layouts.c
+@@ -242,9 +242,7 @@ nfsd4_alloc_layout_stateid(struct nfsd4_compound_state *cstate,
+ 	BUG_ON(!ls->ls_file);
+ 
+ 	if (nfsd4_layout_setlease(ls)) {
+-		nfsd_file_put(ls->ls_file);
+-		put_nfs4_file(fp);
+-		kmem_cache_free(nfs4_layout_stateid_cache, ls);
++		nfs4_put_stid(stp);
+ 		return NULL;
+ 	}
  
 -- 
-2.52.0
+2.54.0
 
 
