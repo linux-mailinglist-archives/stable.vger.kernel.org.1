@@ -1,141 +1,208 @@
-Return-Path: <stable+bounces-271764-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-271765-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id Ry4ZO+q2R2rUdwAAu9opvQ
-	(envelope-from <stable+bounces-271764-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 03 Jul 2026 15:19:38 +0200
+	id Ksh5KzS3R2rmdwAAu9opvQ
+	(envelope-from <stable+bounces-271765-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 03 Jul 2026 15:20:52 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7678D702C78
-	for <lists+stable@lfdr.de>; Fri, 03 Jul 2026 15:19:38 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2CC3C702CA7
+	for <lists+stable@lfdr.de>; Fri, 03 Jul 2026 15:20:52 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=X4x+MK1P;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-271764-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-271764-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=intel.com header.s=Intel header.b=SpHzrrgR;
+	dmarc=pass (policy=none) header.from=intel.com;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-271765-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-271765-lists+stable=lfdr.de@vger.kernel.org";
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 25B903078FBE
-	for <lists+stable@lfdr.de>; Fri,  3 Jul 2026 13:01:46 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B1F3930BCE59
+	for <lists+stable@lfdr.de>; Fri,  3 Jul 2026 13:06:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42A4C3D47DE;
-	Fri,  3 Jul 2026 13:01:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC0483D522F;
+	Fri,  3 Jul 2026 13:06:36 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A0553D34B9;
-	Fri,  3 Jul 2026 13:01:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2C373D47B4;
+	Fri,  3 Jul 2026 13:06:34 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783083702; cv=none; b=iC1xbYUHHwnhWO+p6+8oO/H30QTY2IIQI+1B4skP/CUNxKCOxMp/J4Ca95lMQfKp90RCSBNeXf3Jt27rPfB0aLbE0672POBGd1wVLflNQiht+SvlLqNpztf5IviW6EGdQuC/aa24CxG8FnjWgL5OJ+jX596hwtMy7E4/QE9oMkI=
+	t=1783083996; cv=none; b=Vm3F6b3cHhJFZhvNzoGGxCpVZFYCDIwHIyZ+y3sAoBfHSBQgb4brfR8lkUkdy9+v4Ir/ZoLONkqjN3SwYfA2zHM96PX8HYF29oC8554I4c5ZP0tFG7cjXOWNeRUzmKxiQ3VVa1Io5kjiLZeq7ReQMVyyzO7GYZsOH9aB7DGPXbs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783083702; c=relaxed/simple;
-	bh=AbzBDH3T+wh4F+diDHMBqWKM8WckEbhLYcjXYqcEh6E=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=H482JGDEjTFDRLrt4m7rjM0S94zUyeXOvUxp9UFWADeoMyo7g57tfQvd05SObYVoG79bXZJbFuW+gNwkEGmUM5yMre51/AvjhQjdm7K1aOLiQT7gbc6Kxtd2S3JeJkmdgaOBfG9CRtPT/ZHO7Q+qPyYW1OEZHR+9q5n5gGpnTdc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=X4x+MK1P; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4DB631F000E9;
-	Fri,  3 Jul 2026 13:01:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783083700;
-	bh=8BWh3P/p1AtnXbYiaKGUXteMwmA14h7nnMyUaFNgjds=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=X4x+MK1P9orpK0tchxOID7y/aHuivL3CiPn6/RvGs2bsyBty6EXVwKK6L7mzTea1V
-	 XQO9TCs1Vog1B17n+JMiFa5YLH8HAm1Frjyvqjiz4f0cCZBqTtpRBtkOSgkRK5CHAK
-	 NPugPbKPzHmTCzyuIhVPuXLnD/ecyMRlT4Fd+IupeTrHH6RioOYeebf6ruAezM9G0S
-	 z2c5Ep88R0JenhY2jRzT4O28ZSSp26Qtd0xT6rLjvMAxQgbkqkYxgebNl9YcwxaiHp
-	 +/qHKMct6pACjRBNANezru4MOy0S4j0xIRy6MszHKYQMXHcQ2idlrfh1uGouw8y3za
-	 Xyxq74I0Kwu4g==
-Date: Fri, 3 Jul 2026 14:01:34 +0100
-From: Mark Brown <broonie@kernel.org>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev,
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
-	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
-	patches@kernelci.org, lkft-triage@lists.linaro.org,
-	pavel@nabladev.com, jonathanh@nvidia.com, f.fainelli@gmail.com,
-	sudipm.mukherjee@gmail.com, rwarsow@gmx.de, conor@kernel.org,
-	hargar@microsoft.com, achill@achill.org, sr@sladewatkins.com
-Subject: Re: [PATCH 7.1 000/121] 7.1.3-rc2 review
-Message-ID: <55a271b7-e62a-4aac-b58d-78607eef3ed8@sirena.org.uk>
-References: <20260703072822.817328079@linuxfoundation.org>
+	s=arc-20240116; t=1783083996; c=relaxed/simple;
+	bh=Z5tnKsqQw7EiBeSDr2ywtUGax4C0M+Mxkthf6nfbtWw=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=FvdKVWTKKbUUyidd9iK7uGDOJQ385NgLhRhgtgBlLzxerPsIr1XtQcvmy5GCEc6Hd1AJ9MFUqaYE7h1eFyGIZiuTowZPaWfcVIFC0IV8qAcB3ecNgWq6c/rslnqadI0bv20gpHOECmnWIlA9ZjaE9fu9caq9e6WDM6GT2/Uq3ds=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=SpHzrrgR; arc=none smtp.client-ip=198.175.65.21
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1783083995; x=1814619995;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=Z5tnKsqQw7EiBeSDr2ywtUGax4C0M+Mxkthf6nfbtWw=;
+  b=SpHzrrgRJTVAK+hkAgF/RMmsnyNfaVo9uHCFzJIKxnpHR6wnUq0q1U6o
+   E+fdVGzy4PTi8EXMp4LMgksakJQYD55EuCs9uqNfS7jFBkeWn2MiYY+Wn
+   nbMofcrINeGKNb9E1E0RG1c+8d8hFJZhoJs16A8qjcs4Pd5/O8e+Q/qlx
+   zAeTpXgPt67rbkEV07lPtDzsz/v04vj4OQmHk/fdqFgJlVMthXyOhZB1X
+   4qDFxB5HLD7X2ZWBuws1kIyFE9K3c6dZEDChds5fDT8TioGpTXBSGJNQ3
+   ZDhfs5QEdICd4+G0M+ms2AomO3VhrNguP3iRIue1Nyi3RPj0KyUfjGhZM
+   Q==;
+X-CSE-ConnectionGUID: uRZlqgiaQXqN5fBKEsuogA==
+X-CSE-MsgGUID: WaLvKMuDQWOwfxsVONTr/Q==
+X-IronPort-AV: E=McAfee;i="6800,10657,11835"; a="83702293"
+X-IronPort-AV: E=Sophos;i="6.25,145,1779174000"; 
+   d="scan'208";a="83702293"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Jul 2026 06:06:34 -0700
+X-CSE-ConnectionGUID: esJF2EzcTeS96Gs8rAVUBA==
+X-CSE-MsgGUID: XYobnmFuSPeSDzUN+afpjg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,145,1779174000"; 
+   d="scan'208";a="283199574"
+Received: from smoticic-mobl1.ger.corp.intel.com (HELO fedora) ([10.245.245.146])
+  by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Jul 2026 06:06:29 -0700
+From: =?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>
+To: intel-xe@lists.freedesktop.org
+Cc: =?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
+	Sashiko-bot <sashiko-bot@kernel.org>,
+	Friedrich Vock <friedrich.vock@gmx.de>,
+	Maarten Lankhorst <dev@lankhorst.se>,
+	Tejun Heo <tj@kernel.org>,
+	Maxime Ripard <mripard@kernel.org>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	amd-gfx@lists.freedesktop.org,
+	dri-devel@lists.freedesktop.org,
+	stable@vger.kernel.org,
+	Natalie Vock <natalie.vock@gmx.de>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	=?UTF-8?q?Michal=20Koutn=C3=BD?= <mkoutny@suse.com>,
+	cgroups@vger.kernel.org,
+	Huang Rui <ray.huang@amd.com>,
+	Matthew Brost <matthew.brost@intel.com>,
+	Matthew Auld <matthew.auld@intel.com>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	Simona Vetter <simona@ffwll.ch>,
+	David Airlie <airlied@gmail.com>,
+	Thadeu Lima de Souza Cascardo <cascardo@igalia.com>,
+	Rodrigo Vivi <rodrigo.vivi@intel.com>,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v7 1/6] drm/amdgpu: Fix init ordering in amdgpu_vram_mgr_init()
+Date: Fri,  3 Jul 2026 15:05:36 +0200
+Message-ID: <20260703130541.2686-2-thomas.hellstrom@linux.intel.com>
+X-Mailer: git-send-email 2.54.0
+In-Reply-To: <20260703130541.2686-1-thomas.hellstrom@linux.intel.com>
+References: <20260703130541.2686-1-thomas.hellstrom@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="k5x9XtRP3mHTq+OL"
-Content-Disposition: inline
-In-Reply-To: <20260703072822.817328079@linuxfoundation.org>
-X-Cookie: Another megabytes the dust.
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-5.76 / 15.00];
-	WHITELIST_SPF_DKIM(-3.00)[kernel.org:d:+,kernel.org:s:+];
-	SIGNED_PGP(-2.00)[];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-4.16 / 15.00];
+	WHITELIST_SPF_DKIM(-3.00)[intel.com:d:+,kernel.org:s:+];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	MIME_GOOD(-0.20)[multipart/signed,text/plain];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
+	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
+	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
+	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-271764-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-271765-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER(0.00)[broonie@kernel.org,stable@vger.kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[19];
-	FORGED_RECIPIENTS(0.00)[m:gregkh@linuxfoundation.org,m:stable@vger.kernel.org,m:patches@lists.linux.dev,m:linux-kernel@vger.kernel.org,m:torvalds@linux-foundation.org,m:akpm@linux-foundation.org,m:linux@roeck-us.net,m:shuah@kernel.org,m:patches@kernelci.org,m:lkft-triage@lists.linaro.org,m:pavel@nabladev.com,m:jonathanh@nvidia.com,m:f.fainelli@gmail.com,m:sudipm.mukherjee@gmail.com,m:rwarsow@gmx.de,m:conor@kernel.org,m:hargar@microsoft.com,m:achill@achill.org,m:sr@sladewatkins.com,m:ffainelli@gmail.com,m:sudipmmukherjee@gmail.com,s:lists@lfdr.de];
-	MIME_TRACE(0.00)[0:+,1:+,2:~];
-	FORWARDED(0.00)[lists@lfdr.de];
 	FROM_HAS_DN(0.00)[];
+	FORGED_SENDER(0.00)[thomas.hellstrom@linux.intel.com,stable@vger.kernel.org];
+	RCPT_COUNT_TWELVE(0.00)[26];
+	FORGED_RECIPIENTS(0.00)[m:intel-xe@lists.freedesktop.org,m:thomas.hellstrom@linux.intel.com,m:sashiko-bot@kernel.org,m:friedrich.vock@gmx.de,m:dev@lankhorst.se,m:tj@kernel.org,m:mripard@kernel.org,m:christian.koenig@amd.com,m:alexander.deucher@amd.com,m:amd-gfx@lists.freedesktop.org,m:dri-devel@lists.freedesktop.org,m:stable@vger.kernel.org,m:natalie.vock@gmx.de,m:hannes@cmpxchg.org,m:mkoutny@suse.com,m:cgroups@vger.kernel.org,m:ray.huang@amd.com,m:matthew.brost@intel.com,m:matthew.auld@intel.com,m:maarten.lankhorst@linux.intel.com,m:tzimmermann@suse.de,m:simona@ffwll.ch,m:airlied@gmail.com,m:cascardo@igalia.com,m:rodrigo.vivi@intel.com,m:linux-kernel@vger.kernel.org,s:lists@lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FREEMAIL_CC(0.00)[linux.intel.com,kernel.org,gmx.de,lankhorst.se,amd.com,lists.freedesktop.org,vger.kernel.org,cmpxchg.org,suse.com,intel.com,suse.de,ffwll.ch,gmail.com,igalia.com];
+	DKIM_TRACE(0.00)[intel.com:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
 	FORGED_SENDER_FORWARDING(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[broonie@kernel.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[vger.kernel.org,lists.linux.dev,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,nabladev.com,nvidia.com,gmail.com,gmx.de,microsoft.com,achill.org,sladewatkins.com];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[thomas.hellstrom@linux.intel.com,stable@vger.kernel.org];
 	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	TAGGED_RCPT(0.00)[stable];
-	MISSING_XM_UA(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,sirena.org.uk:mid]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 7678D702C78
+X-Rspamd-Queue-Id: 2CC3C702CA7
 
+drmm_cgroup_register_region() is called before INIT_LIST_HEAD() and
+gpu_buddy_init() in amdgpu_vram_mgr_init(). If it fails, the function
+returns early and bypasses those initializations.
 
---k5x9XtRP3mHTq+OL
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Since adev->mman.initialized is set to true before amdgpu_vram_mgr_init()
+is called, a failure triggers amdgpu_ttm_fini(), which calls
+amdgpu_vram_mgr_fini(), which then:
 
-On Fri, Jul 03, 2026 at 09:35:59AM +0200, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 7.1.3 release.
-> There are 121 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
+ - Calls list_for_each_entry_safe() on reservations_pending and
+   reserved_pages, whose list_head::next pointers are zero-initialized
+   (NULL). The loop does not recognize them as empty and dereferences NULL.
 
-Tested-by: Mark Brown <broonie@kernel.org>
+ - Calls gpu_buddy_fini(), which iterates free_trees[] unconditionally
+   via for_each_free_tree(). Since mm->free_trees is NULL
+   (never allocated), this dereferences NULL.
 
---k5x9XtRP3mHTq+OL
-Content-Type: application/pgp-signature; name="signature.asc"
+Both result in a kernel panic on the module load error path.
 
------BEGIN PGP SIGNATURE-----
+Fix by moving drmm_cgroup_register_region() to after the list and buddy
+allocator are fully initialized, so the teardown path is safe to run.
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmpHsq0ACgkQJNaLcl1U
-h9DZLAf9ElVRlI9ve+3ub8K2BLnTm7HRUNLcAL42Bw8rMpqk1o0pg7ZJjZLioq1Y
-1RYxiTgdXDG59wjBJuGfmGoYmZDklwyDqjm4DH9GIt+yUfRnfPkhvIsrGt5bbTvU
-7ihI0RsOAg+zLNqkZIZmkxbxeOS/btJITX3Q7jsUU9T/eDun2B8O+U+r/TVqAHOm
-uWNDRwf9ZGXX4ZCt9W4onOs9y3eIg5VQAUwxLPEGXF7Fw9SjZF+k+INKztaG44GS
-HjMfWZuQI6Y2I7MqqmJJOFV2DrrPytG4DIiQLmMdHHdzqNs9vkFAFc5oEWm0RHUu
-L9cN8OcNqXgAbHzhVKKLJalDu2CW6A==
-=c+6j
------END PGP SIGNATURE-----
+Reported-by: Sashiko-bot <sashiko-bot@kernel.org>
+Closes: https://sashiko.dev/#/patchset/20260428073116.15687-1-thomas.hellstrom@linux.intel.com?part=4
+Fixes: 2b624a2c1865 ("drm/ttm: Handle cgroup based eviction in TTM")
+Cc: Friedrich Vock <friedrich.vock@gmx.de>
+Cc: Maarten Lankhorst <dev@lankhorst.se>
+Cc: Tejun Heo <tj@kernel.org>
+Cc: Maxime Ripard <mripard@kernel.org>
+Cc: Christian König <christian.koenig@amd.com>
+Cc: Alex Deucher <alexander.deucher@amd.com>
+Cc: amd-gfx@lists.freedesktop.org
+Cc: dri-devel@lists.freedesktop.org
+Cc: <stable@vger.kernel.org> # v6.14+
+Assisted-by: GitHub_Copilot:claude-sonnet-4.6
+Signed-off-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
+---
+ drivers/gpu/drm/amd/amdgpu/amdgpu_vram_mgr.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
---k5x9XtRP3mHTq+OL--
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_vram_mgr.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_vram_mgr.c
+index 2a241a5b12c4..ac3f71d77140 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_vram_mgr.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_vram_mgr.c
+@@ -918,9 +918,6 @@ int amdgpu_vram_mgr_init(struct amdgpu_device *adev)
+ 	struct ttm_resource_manager *man = &mgr->manager;
+ 	int err;
+ 
+-	man->cg = drmm_cgroup_register_region(adev_to_drm(adev), "vram", adev->gmc.real_vram_size);
+-	if (IS_ERR(man->cg))
+-		return PTR_ERR(man->cg);
+ 	ttm_resource_manager_init(man, &adev->mman.bdev,
+ 				  adev->gmc.real_vram_size);
+ 
+@@ -935,6 +932,10 @@ int amdgpu_vram_mgr_init(struct amdgpu_device *adev)
+ 	if (err)
+ 		return err;
+ 
++	man->cg = drmm_cgroup_register_region(adev_to_drm(adev), "vram", adev->gmc.real_vram_size);
++	if (IS_ERR(man->cg))
++		return PTR_ERR(man->cg);
++
+ 	ttm_set_driver_manager(&adev->mman.bdev, TTM_PL_VRAM, &mgr->manager);
+ 	ttm_resource_manager_set_used(man, true);
+ 	return 0;
+-- 
+2.54.0
+
 
