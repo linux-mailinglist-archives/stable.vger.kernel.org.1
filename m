@@ -1,144 +1,223 @@
-Return-Path: <stable+bounces-271642-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-271643-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 9jcMKcFUR2pqWQAAu9opvQ
-	(envelope-from <stable+bounces-271642-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 03 Jul 2026 08:20:49 +0200
+	id +xQFFjhVR2qkWQAAu9opvQ
+	(envelope-from <stable+bounces-271643-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 03 Jul 2026 08:22:48 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id D5EFC6FF08F
-	for <lists+stable@lfdr.de>; Fri, 03 Jul 2026 08:20:48 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id EFF416FF0D2
+	for <lists+stable@lfdr.de>; Fri, 03 Jul 2026 08:22:47 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=gondor.apana.org.au header.s=h01 header.b="dIzzF/nf";
-	dmarc=pass (policy=quarantine) header.from=apana.org.au;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-271642-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-271642-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=163.com header.s=s110527 header.b=DfKyCIWW;
+	dmarc=pass (policy=none) header.from=163.com;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-271643-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-271643-lists+stable=lfdr.de@vger.kernel.org";
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 32CED3055AA5
-	for <lists+stable@lfdr.de>; Fri,  3 Jul 2026 06:19:41 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id ADD9B3025706
+	for <lists+stable@lfdr.de>; Fri,  3 Jul 2026 06:22:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C2BA381EB8;
-	Fri,  3 Jul 2026 06:19:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E89C0370D45;
+	Fri,  3 Jul 2026 06:22:02 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from abb.hmeau.com (abb.hmeau.com [180.181.231.80])
+Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.2])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9650F380FF7;
-	Fri,  3 Jul 2026 06:19:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B26C1369D6D;
+	Fri,  3 Jul 2026 06:21:59 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783059569; cv=none; b=LBDmdTsfBoV0dGBVXvnualqDSD2fz77bqYz4Rf+GMUBGsWN5XRq4jKY+RWb+Z7Erjj0z+RdTw+0INx0NU6Y2gc2CVQpMaJytojot6t6n2ArhWBduRtoMVcQ7JngSXM86AuRmfxKfgRj1Vn8z7PG3Q4q71TJHbwoTl8UKs/NGKnE=
+	t=1783059722; cv=none; b=Ts694MU3G3a1fNDW6g4M3m1x8ZwAo05UNXQ9wfy6aarENtLzOpEmFHLevj/96HTOLLXoVu73d9V3aPbfgjJz2PC8Jbv0n/cUWtSTdiAaNtWIqxk8xdKM2MCbJuFKUP7oxYzsdmP4QFQM3MZGRfsWcjQUwMRMIGGRRYh25w4kupc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783059569; c=relaxed/simple;
-	bh=6KylznHOqiWd22SnFBQraUpSbQmxUJRMz+dU7yx/cUY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Fe7rSbN++35ExlBlk4BLFDDo++2SVmNKo1eWx3+WLtC0KKid8uKq1DQ9nYg2vkHkgsk8JFaG9j21rMLSVMZs8YEz4XEra5rigszOd3UEyvNpbavy+Ic14alIpuqPwuZ/OCG+okIrTqrFLwD1kLIcOwfljQYPfIZikPA6nCUpZnw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gondor.apana.org.au; spf=pass smtp.mailfrom=gondor.apana.org.au; dkim=pass (2048-bit key) header.d=gondor.apana.org.au header.i=@gondor.apana.org.au header.b=dIzzF/nf; arc=none smtp.client-ip=180.181.231.80
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=gondor.apana.org.au; s=h01; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:cc:to:subject:message-id:date:
-	from:content-type:reply-to; bh=DXEQ90sJPpbTVqwRJFktHc90n2QX5ZI2D1JPxidYX3I=; 
-	b=dIzzF/nfDsKxfew7reyEO7o32o0SsY7FOPtycwv9Lep7ZC9LAXWfjATwXD+ny2sudVmjP5ca0pw
-	W08CeNki5VyXkTC/weZbRveC4g7x6dE38svlNqFLGlY27BcDXYA0JgFXXS11uEseTKWCplA0ybUL+
-	bWxN/tjPQSJCRLwCPWGYNGsuzybHuYkfDZa5gunevLUbK1xdD/DVnvHzJQW/xbulpUbZZvbjGhei5
-	TFCIGh3UUAd4LdfWJOEJ3Yy9Ca7tkpKL3qaF8B2fvnftC4aTMhYDMjlFtHybSGLUc13db5g2dSeEx
-	cXOwTYOvYF5QkIryQpwVrBYOqYflPmAkXYRA==;
-Received: from loth.rohan.me.apana.org.au ([192.168.167.2])
-	by formenos.hmeau.com with smtp (Exim 4.98.2 #2 (Debian))
-	id 1wfXF5-0000000AGiE-3BxF;
-	Fri, 03 Jul 2026 14:19:16 +0800
-Received: by loth.rohan.me.apana.org.au (sSMTP sendmail emulation); Fri, 03 Jul 2026 14:19:15 +0800
-Date: Fri, 3 Jul 2026 14:19:15 +0800
-From: Herbert Xu <herbert@gondor.apana.org.au>
-To: Atish Patra <atish.patra@linux.dev>
-Cc: Sean Christopherson <seanjc@google.com>,
-	Paolo Bonzini <pbonzini@redhat.com>, Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	Tom Lendacky <thomas.lendacky@amd.com>,
-	Peter Gonda <pgonda@google.com>,
-	Brijesh Singh <brijesh.singh@amd.com>,
-	Youngjae Lee <youngjaelee@meta.com>,
-	Ashish Kalra <ashish.kalra@amd.com>,
-	Michael Roth <michael.roth@amd.com>,
-	John Allen <john.allen@amd.com>, clm@meta.com, kvm@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-crypto@vger.kernel.org,
-	stable@vger.kernel.org, Atish Patra <atishp@meta.com>,
-	Sashiko <sashiko-bot@kernel.org>
-Subject: Re: [PATCH v3 4/4] crypto: ccp: Fix memory leak in SEV INIT_EX path
-Message-ID: <akdUY_qEi2DaQKcR@gondor.apana.org.au>
-References: <20260602-sev_snp_fixes-v3-0-24bfd3ae047c@meta.com>
- <20260602-sev_snp_fixes-v3-4-24bfd3ae047c@meta.com>
+	s=arc-20240116; t=1783059722; c=relaxed/simple;
+	bh=NJhGiAFsDN15in5OETBvEzBUccCQZDM83X07uR3IuwQ=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=nYhUyDZxe7bWTpU06lEU3IZrQGcSYsOyyWegRooav8HFQC3O4QrCfgwKpwhWhZgGl1v8VrlePNKPEOuwQeEBVeH3bWD2UnQzVReziJj+e7/6XXqG965vGhmIopvzPMWcInYUtOMnGBq2Uzm1WBU+N1NuHBFuxDxZckNVbySCuJw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=DfKyCIWW; arc=none smtp.client-ip=220.197.31.2
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=Ce
+	5xDFXpby+V5V73K8roz6+RbThLVkSsONzOsCEDrhU=; b=DfKyCIWWay1NPfCwCr
+	SSLWQlYzMGqHp2YD2vy+XejkjwViXE2JiUefRFSDIxXuQxVir8q7ploNkIqtCJCH
+	6J8wYHRw7UC26L0O75miFAFp3T7dMZJhVxYRgWs4c1y8VCmOJIHqBCCa7+HZt9gX
+	0GIjMZr59OfUmb/5oj/xB6QS8=
+Received: from localhost.localdomain (unknown [])
+	by gzsmtp3 (Coremail) with SMTP id PigvCgDXvwnDVEdqd70GFw--.62912S2;
+	Fri, 03 Jul 2026 14:20:53 +0800 (CST)
+From: Haoxiang Li <haoxiang_li2024@163.com>
+To: sven@kernel.org,
+	j@jannau.net,
+	neal@gompa.dev,
+	rafael@kernel.org,
+	viresh.kumar@linaro.org,
+	marcan@marcan.st,
+	maz@kernel.org
+Cc: asahi@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-pm@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Haoxiang Li <haoxiang_li2024@163.com>,
+	stable@vger.kernel.org
+Subject: [PATCH v3] cpufreq: apple-soc: Fix OPP table cleanup
+Date: Fri,  3 Jul 2026 14:20:49 +0800
+Message-Id: <20260703062049.1459175-1-haoxiang_li2024@163.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260602-sev_snp_fixes-v3-4-24bfd3ae047c@meta.com>
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:PigvCgDXvwnDVEdqd70GFw--.62912S2
+X-Coremail-Antispam: 1Uf129KBjvJXoWxXw47trykWrWDKw4UJF48tFb_yoWrJr45pF
+	W5WFW5Kr95GFn7tw45JF4j93W7tw4DJ3yUK3y7Gw1Svw17ZF1vg3W8GFyUuF95CF95JFy3
+	AryUtay7uay8JaUanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0JUUhL8UUUUU=
+X-CM-SenderInfo: xkdr5xpdqjszblsqjki6rwjhhfrp/xtbCxgayIWpHVMZSzgAA3w
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[apana.org.au,quarantine];
-	R_DKIM_ALLOW(-0.20)[gondor.apana.org.au:s=h01];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	DMARC_POLICY_ALLOW(-0.50)[163.com,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[163.com:s=s110527];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	FORGED_RECIPIENTS(0.00)[m:sven@kernel.org,m:j@jannau.net,m:neal@gompa.dev,m:rafael@kernel.org,m:viresh.kumar@linaro.org,m:marcan@marcan.st,m:maz@kernel.org,m:asahi@lists.linux.dev,m:linux-arm-kernel@lists.infradead.org,m:linux-pm@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:haoxiang_li2024@163.com,m:stable@vger.kernel.org,s:lists@lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-271642-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:atish.patra@linux.dev,m:seanjc@google.com,m:pbonzini@redhat.com,m:bp@alien8.de,m:dave.hansen@linux.intel.com,m:x86@kernel.org,m:hpa@zytor.com,m:thomas.lendacky@amd.com,m:pgonda@google.com,m:brijesh.singh@amd.com,m:youngjaelee@meta.com,m:ashish.kalra@amd.com,m:michael.roth@amd.com,m:john.allen@amd.com,m:clm@meta.com,m:kvm@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:linux-crypto@vger.kernel.org,m:stable@vger.kernel.org,m:atishp@meta.com,m:sashiko-bot@kernel.org,s:lists@lfdr.de];
-	FROM_HAS_DN(0.00)[];
+	FORGED_SENDER(0.00)[haoxiang_li2024@163.com,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[21];
-	FORGED_SENDER(0.00)[herbert@gondor.apana.org.au,stable@vger.kernel.org];
-	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_FROM(0.00)[163.com];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCPT_COUNT_TWELVE(0.00)[13];
 	FORWARDED(0.00)[lists@lfdr.de];
-	DKIM_TRACE(0.00)[gondor.apana.org.au:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	MISSING_XM_UA(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[herbert@gondor.apana.org.au,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-271643-lists,stable=lfdr.de];
+	DKIM_TRACE(0.00)[163.com:+];
 	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[haoxiang_li2024@163.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FREEMAIL_CC(0.00)[lists.linux.dev,lists.infradead.org,vger.kernel.org,163.com];
+	ALIAS_RESOLVED(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[amd.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,vger.kernel.org:from_smtp,meta.com:email,apana.org.au:url,apana.org.au:email,gondor.apana.org.au:from_mime,gondor.apana.org.au:dkim,gondor.apana.org.au:mid]
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: D5EFC6FF08F
+X-Rspamd-Queue-Id: EFF416FF0D2
 
-On Tue, Jun 02, 2026 at 03:36:35PM -0700, Atish Patra wrote:
-> From: Atish Patra <atishp@meta.com>
-> 
-> allocated pages in _init_ext_path are never freed and sev_init_ex_buffer
-> is left pointing at the leaked memory in case of any failures during the
-> function..
-> 
-> Fix by adding an error path that frees the pages and clears
-> sev_init_ex_buffer. Make sure we only free the memory if the failure
-> happens before the conversion. Otherwise, we may end up trying to free
-> up converted pages in case of reclaim failure. rmp_mark_pages_firmware
-> failures should be rare enough to avoid more code complexity to track
-> down which pages were reclaimed/leaked vs which are not.
-> 
-> Fixes: 7364a6fbca45 ("crypto: ccp: Handle non-volatile INIT_EX data when SNP is enabled")
-> 
-> Reported-by: Sashiko <sashiko-bot@kernel.org>
-> Reviewed-by: Tom Lendacky <thomas.lendacky@amd.com>
-> Signed-off-by: Atish Patra <atishp@meta.com>
-> ---
->  drivers/crypto/ccp/sev-dev.c | 17 ++++++++++++++---
->  1 file changed, 14 insertions(+), 3 deletions(-)
+apple_soc_cpufreq_init() adds OPP tables from firmware, but
+some failure paths do not remove them. The driver also uses
+dev_pm_opp_remove_all_dynamic(), which is not the right cleanup
+helper for OPP tables loaded from firmware.
 
-Acked-by: Herbert Xu <herbert@gondor.apana.org.au>
+Use the cpumask OPP helper after the policy CPU mask has been
+populated. Pair it with the matching cpumask remove helper on
+failure paths and in apple_soc_cpufreq_exit(). This also removes
+the separate dev_pm_opp_set_sharing_cpus() call, as the cpumask
+helper loads the DT OPP tables for all CPUs in the policy.
+
+Fixes: 6286bbb40576 ("cpufreq: apple-soc: Add new driver to control Apple SoC CPU P-states")
+Cc: stable@vger.kernel.org
+Signed-off-by: Haoxiang Li <haoxiang_li2024@163.com>
+---
+Changes in v2:
+ - Remove unnecessary cleanup calls.
+ - Remove OPP table from apple_soc_cpufreq_exit(). Thanks, Viresh!
+Changes in v3:
+ - Add Fixes and Cc stable tags.
+ - Use cpumask OPP helpers.
+ - Reorder init and failure cleanup. Thanks, Viresh!
+---
+ drivers/cpufreq/apple-soc-cpufreq.c | 36 +++++++++++------------------
+ 1 file changed, 14 insertions(+), 22 deletions(-)
+
+diff --git a/drivers/cpufreq/apple-soc-cpufreq.c b/drivers/cpufreq/apple-soc-cpufreq.c
+index 638e5bf72185..3f64f266e695 100644
+--- a/drivers/cpufreq/apple-soc-cpufreq.c
++++ b/drivers/cpufreq/apple-soc-cpufreq.c
+@@ -249,21 +249,19 @@ static int apple_soc_cpufreq_init(struct cpufreq_policy *policy)
+ 		return -ENODEV;
+ 	}
+ 
+-	ret = dev_pm_opp_of_add_table(cpu_dev);
+-	if (ret < 0) {
+-		dev_err(cpu_dev, "%s: failed to add OPP table: %d\n", __func__, ret);
+-		return ret;
+-	}
++	priv = kzalloc_obj(*priv);
++	if (!priv)
++		return -ENOMEM;
+ 
+ 	ret = apple_soc_cpufreq_find_cluster(policy, &reg_base, &info);
+ 	if (ret) {
+ 		dev_err(cpu_dev, "%s: failed to get cluster info: %d\n", __func__, ret);
+-		return ret;
++		goto out_free_priv;
+ 	}
+ 
+-	ret = dev_pm_opp_set_sharing_cpus(cpu_dev, policy->cpus);
+-	if (ret) {
+-		dev_err(cpu_dev, "%s: failed to mark OPPs as shared: %d\n", __func__, ret);
++	ret = dev_pm_opp_of_cpumask_add_table(policy->cpus);
++	if (ret < 0) {
++		dev_err(cpu_dev, "%s: failed to add OPP table: %d\n", __func__, ret);
+ 		goto out_iounmap;
+ 	}
+ 
+@@ -271,19 +269,13 @@ static int apple_soc_cpufreq_init(struct cpufreq_policy *policy)
+ 	if (ret <= 0) {
+ 		dev_dbg(cpu_dev, "OPP table is not ready, deferring probe\n");
+ 		ret = -EPROBE_DEFER;
+-		goto out_free_opp;
+-	}
+-
+-	priv = kzalloc_obj(*priv);
+-	if (!priv) {
+-		ret = -ENOMEM;
+-		goto out_free_opp;
++		goto out_free_table;
+ 	}
+ 
+ 	ret = dev_pm_opp_init_cpufreq_table(cpu_dev, &freq_table);
+ 	if (ret) {
+ 		dev_err(cpu_dev, "failed to init cpufreq table: %d\n", ret);
+-		goto out_free_priv;
++		goto out_free_table;
+ 	}
+ 
+ 	/* Get OPP levels (p-state indexes) and stash them in driver_data */
+@@ -318,12 +310,12 @@ static int apple_soc_cpufreq_init(struct cpufreq_policy *policy)
+ 
+ out_free_cpufreq_table:
+ 	dev_pm_opp_free_cpufreq_table(cpu_dev, &freq_table);
+-out_free_priv:
+-	kfree(priv);
+-out_free_opp:
+-	dev_pm_opp_remove_all_dynamic(cpu_dev);
++out_free_table:
++	dev_pm_opp_of_cpumask_remove_table(policy->cpus);
+ out_iounmap:
+ 	iounmap(reg_base);
++out_free_priv:
++	kfree(priv);
+ 	return ret;
+ }
+ 
+@@ -332,7 +324,7 @@ static void apple_soc_cpufreq_exit(struct cpufreq_policy *policy)
+ 	struct apple_cpu_priv *priv = policy->driver_data;
+ 
+ 	dev_pm_opp_free_cpufreq_table(priv->cpu_dev, &policy->freq_table);
+-	dev_pm_opp_remove_all_dynamic(priv->cpu_dev);
++	dev_pm_opp_of_cpumask_remove_table(policy->cpus);
+ 	iounmap(priv->reg_base);
+ 	kfree(priv);
+ }
 -- 
-Email: Herbert Xu <herbert@gondor.apana.org.au>
-Home Page: http://gondor.apana.org.au/~herbert/
-PGP Key: http://gondor.apana.org.au/~herbert/pubkey.txt
+2.25.1
+
 
