@@ -1,163 +1,288 @@
-Return-Path: <stable+bounces-271874-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-271875-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id L00nOw9GSGqmoQAAu9opvQ
-	(envelope-from <stable+bounces-271874-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 04 Jul 2026 01:30:23 +0200
+	id wevSNHZKSGp3ogAAu9opvQ
+	(envelope-from <stable+bounces-271875-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 04 Jul 2026 01:49:10 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 75EBC7061AF
-	for <lists+stable@lfdr.de>; Sat, 04 Jul 2026 01:30:23 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B7EF870627D
+	for <lists+stable@lfdr.de>; Sat, 04 Jul 2026 01:49:09 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=sms-medipool.de header.s=mail header.b=KMS73Smv;
-	dmarc=pass (policy=reject) header.from=sms-medipool.de;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-271874-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-271874-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="E0YQy/m2";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-271875-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-271875-lists+stable=lfdr.de@vger.kernel.org";
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id BA8733028E6E
-	for <lists+stable@lfdr.de>; Fri,  3 Jul 2026 23:30:22 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 9FB80301EC1A
+	for <lists+stable@lfdr.de>; Fri,  3 Jul 2026 23:49:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E06D3438A0;
-	Fri,  3 Jul 2026 23:30:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3AA731E855;
+	Fri,  3 Jul 2026 23:49:04 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail.sms-medipool.de (mail.sms-medipool.de [178.63.14.108])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54B712EEE97;
-	Fri,  3 Jul 2026 23:30:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A4F72D2394;
+	Fri,  3 Jul 2026 23:49:03 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783121419; cv=none; b=Yja5dryXgRKJuMNX+1cXWw99e8HDinqIhSdCB20NkopsL7QsFjAmq+J8oA79S6yv/kRuv+88gJQ+ao9v8nFl5X306dHwyGVGhYJeYFrEOVVQBcxRe84OdVvvesGSIokF6/soUcyYi2L6W+MnShiJDFH0kmZPJLwDDSCzdrhdsMs=
+	t=1783122544; cv=none; b=OvGOhhTFO+V5QphWzA9ojKA/ljrqN+JlH/LUl7LjAA1kQW8aZouks6yf653L/gdeGDSEzueDw64+3ySwM0qjFiDmsNxpF/w3EXLLztMJ5DUnhb5CZL7UO+QI+wMt91DsvcvFhiIxFOAET3tA9MKHfPG97/QmUNliiCA7aJqOvC8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783121419; c=relaxed/simple;
-	bh=SzB9tZyiwbNsckTsGonX6QEORzbCNDmomg4Mtmkw7Kk=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=s9eAhYXNby1Dq43ofBW9gBkIhr2ldrO0oinLf5hqS9rsfONXcW0R5CqBvXRAYPiIH1iXD62ipCUhM5YRH0w6bG4lzdeFRWsh8gQ7AS8i3O+yyN010/E/YcvVWNllNIMYtoOgrd7wiPavSG815H5/yeJI+RfAan5GBWQQVZerKMU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=sms-medipool.de; spf=pass smtp.mailfrom=sms-medipool.de; dkim=pass (2048-bit key) header.d=sms-medipool.de header.i=@sms-medipool.de header.b=KMS73Smv; arc=none smtp.client-ip=178.63.14.108
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=sms-medipool.de;
-	s=mail; t=1783121094;
-	bh=SzB9tZyiwbNsckTsGonX6QEORzbCNDmomg4Mtmkw7Kk=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KMS73SmvuZ8fc/oEl+SSPz44MR4d/gM0pOSe3hvQ9X//VbMDgNZSc0x0+Ce2RKVpo
-	 IL2jtZCetHc0D2QlJ25TikwgQ4vysW3ZYeFv8URUc/GKfURldhWTKwv1Lc8YZkXCpv
-	 1UkXhacLC2BxusvWfdU7sP4nn2yx++cEj4hH+Ubc6KeYGk9OnbRuFcu5fNigGQjkxD
-	 CfqRp0ZA3M1HWgs2orJ7TYTS/DS9bi1jVvbc5AUynufZ9Ou/jx2TEh62Ckj0PyQ1J4
-	 OSuRoaeTk5wJ4MtZx5Jwtiy+4MgEmsn99nvckV5vVKyrQvSZO3EzT/d9BrnGqsKSwj
-	 3T1LZv8ld38HQ==
-Received: from mail.stoss-medica.de (mail.stoss-medica.de [213.147.17.40])
-	by mail.sms-medipool.de (Postfix) with ESMTPS id 437EF18787;
-	Sat,  4 Jul 2026 01:24:54 +0200 (CEST)
-Received: from NUC16-Linux.sb.golima.de ([95.88.98.111])
-	by mail.stoss-medica.de (Kerio Connect 10.0.8 patch 2) with ESMTP;
-	Sat, 4 Jul 2026 01:24:52 +0200
-From: Alexander Kaplan <alexander.kaplan@sms-medipool.de>
-To: Kai Vehmanen <kai.vehmanen@linux.intel.com>
-Cc: =?UTF-8?q?P=C3=A9ter=20Ujfalusi?= <peter.ujfalusi@intel.com>,
-	=?UTF-8?q?P=C3=A9ter=20Ujfalusi?= <peter.ujfalusi@linux.intel.com>,
-	Takashi Iwai <tiwai@suse.com>,
-	linux-sound@vger.kernel.org,
-	Jaroslav Kysela <perex@perex.cz>,
-	Pierre-Louis Bossart <pierre-louis.bossart@linux.dev>,
-	stable@vger.kernel.org,
-	Uma Shankar <uma.shankar@intel.com>,
-	alexander.kaplan@sms-medipool.de
-Subject: Re: [PATCH] ALSA: hda/hdmi: disable KAE for Intel Panther Lake
-Date: Sat,  4 Jul 2026 01:24:51 +0200
-Message-ID: <20260703232451.4315-1-alexander.kaplan@sms-medipool.de>
-X-Mailer: git-send-email 2.54.0
-In-Reply-To: <765b713e-d2a0-6859-2923-53f8e60cb00e@linux.intel.com>
-References: <765b713e-d2a0-6859-2923-53f8e60cb00e@linux.intel.com>
+	s=arc-20240116; t=1783122544; c=relaxed/simple;
+	bh=FNhmNMonWtD+W8/Jzn9Y18D9hUVR6pzPJ8SmKjHoVHU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=rDUU+hdfpXO61UkbuGMX5+s3vayh5veMfAMiDNHMoxRG2i93x7fEjCWczWp3yVbEv6yyuTxgIBot0nsxHSzbz9gHy7GsfuzCdwkpHNEak6uWiSm7B5mcYMUwroVPpzBXsJxGcb2gTtxmoktTXbCDq7q1Hnj5TFoqAboz+hIXcKc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=E0YQy/m2; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 988191F000E9;
+	Fri,  3 Jul 2026 23:49:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1783122543;
+	bh=bQPClUfw0fqGZZ6pcSXIeD1or1L5L5SDB1AG907rF4I=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=E0YQy/m2twJlYvjAO4IZVvJKzHZIqeDeFIk6Pvj7fKVWexeHn/jEDOfzHN5ieCFc/
+	 ZHxb+UTld2p5dGRJFNUlR2w/AOrRL91xPCcXXWeWrSK8n4qUBAZwzd9Bz5N7ii+Uu0
+	 BX44g5wFdLD0+8sMJoAJ6eXpBeOh/NagO6KdrCKhYxTYu4q0wK8pfk/ujSd2GcCBxQ
+	 tJlZVWfZEf7nGLf8Zj3RbHQYA2126s8Esc4IiP4LzkaqBXbqGIrLG2zii633DKpEMP
+	 7bxxnJPKHqhsCVrXE9j1Zy4OErDYxrlnWcqMycqxC4wjF5H90thQgKLYp84oaFRJU2
+	 pK+1pVy+AyBlA==
+Date: Fri, 3 Jul 2026 16:49:00 -0700
+From: Namhyung Kim <namhyung@kernel.org>
+To: Viktor Malik <vmalik@redhat.com>
+Cc: linux-perf-users@vger.kernel.org, Peter Zijlstra <peterz@infradead.org>,
+	Ingo Molnar <mingo@redhat.com>,
+	Arnaldo Carvalho de Melo <acme@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+	Jiri Olsa <jolsa@kernel.org>, Ian Rogers <irogers@google.com>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	James Clark <james.clark@linaro.org>,
+	Howard Chu <howardchu95@gmail.com>, linux-kernel@vger.kernel.org,
+	bpf@vger.kernel.org, Michael Petlan <mpetlan@redhat.com>,
+	stable@vger.kernel.org
+Subject: Re: [PATCH v2 1/2] perf trace: Factor out BPF loop body
+Message-ID: <akhKbOtiracJKkBU@google.com>
+References: <cover.1783070132.git.vmalik@redhat.com>
+ <20fc67aa2550ca5aff52b3a9a207f2e07f8e0b1d.1783070132.git.vmalik@redhat.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20fc67aa2550ca5aff52b3a9a207f2e07f8e0b1d.1783070132.git.vmalik@redhat.com>
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.66 / 15.00];
+X-Spamd-Result: default: False [-5.16 / 15.00];
+	WHITELIST_SPF_DKIM(-3.00)[kernel.org:d:+,kernel.org:s:+];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[sms-medipool.de,reject];
-	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[sms-medipool.de:s=mail];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-271875-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-271874-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:kai.vehmanen@linux.intel.com,m:peter.ujfalusi@intel.com,m:peter.ujfalusi@linux.intel.com,m:tiwai@suse.com,m:linux-sound@vger.kernel.org,m:perex@perex.cz,m:pierre-louis.bossart@linux.dev,m:stable@vger.kernel.org,m:uma.shankar@intel.com,m:alexander.kaplan@sms-medipool.de,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[alexander.kaplan@sms-medipool.de,stable@vger.kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:vmalik@redhat.com,m:linux-perf-users@vger.kernel.org,m:peterz@infradead.org,m:mingo@redhat.com,m:acme@kernel.org,m:mark.rutland@arm.com,m:alexander.shishkin@linux.intel.com,m:jolsa@kernel.org,m:irogers@google.com,m:adrian.hunter@intel.com,m:james.clark@linaro.org,m:howardchu95@gmail.com,m:linux-kernel@vger.kernel.org,m:bpf@vger.kernel.org,m:mpetlan@redhat.com,m:stable@vger.kernel.org,s:lists@lfdr.de];
 	FROM_HAS_DN(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[16];
+	FORGED_SENDER(0.00)[namhyung@kernel.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
 	FORWARDED(0.00)[lists@lfdr.de];
-	FROM_NEQ_ENVFROM(0.00)[alexander.kaplan@sms-medipool.de,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[vger.kernel.org,infradead.org,redhat.com,kernel.org,arm.com,linux.intel.com,google.com,intel.com,linaro.org,gmail.com];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[10];
-	ALIAS_RESOLVED(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	DKIM_TRACE(0.00)[sms-medipool.de:+];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	TO_DN_SOME(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[namhyung@kernel.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,gitlab.freedesktop.org:url]
+	MISSING_XM_UA(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 75EBC7061AF
+X-Rspamd-Queue-Id: B7EF870627D
 
-On 01/07/2026 01:45, Kai Vehmanen wrote:
-> some progress with this. I attached a work-in-progress patch that fixes
-> the issue with at least one setup using Club3D CAC-2505 DP-alt HDMI
-> converter to the bug at:
-> https://gitlab.freedesktop.org/drm/xe/kernel/-/work_items/8412#note_3543741
->
-> Needs more work still, but if this approach works, I'll send a proper
-> patch later to the list.
+Hello,
 
-Hi Kai,
+On Fri, Jul 03, 2026 at 12:32:14PM +0200, Viktor Malik wrote:
+> The BPF program in augmented_raw_syscalls uses a for loop to iterate all
+> syscall arguments. The loop body is quite complex and often poses
+> problems for the BPF verifier. As a preparation step for addressing this
+> issue, factor out the loop body into a separate function.
+> 
+> Signed-off-by: Viktor Malik <vmalik@redhat.com>
+> Cc: stable@vger.kernel.org
+> ---
+>  .../bpf_skel/augmented_raw_syscalls.bpf.c     | 127 ++++++++++--------
+>  1 file changed, 72 insertions(+), 55 deletions(-)
+> 
+> diff --git a/tools/perf/util/bpf_skel/augmented_raw_syscalls.bpf.c b/tools/perf/util/bpf_skel/augmented_raw_syscalls.bpf.c
+> index 2a6e61864ee0..cbdd5ce19a2f 100644
+> --- a/tools/perf/util/bpf_skel/augmented_raw_syscalls.bpf.c
+> +++ b/tools/perf/util/bpf_skel/augmented_raw_syscalls.bpf.c
+> @@ -429,15 +429,79 @@ static bool pid_filter__has(struct pids_filtered *pids, pid_t pid)
+>  	return bpf_map_lookup_elem(pids, &pid) != NULL;
+>  }
+>  
+> +/*
+> + * Determine what type of argument and how many bytes to read from user space, using the
+> + * value in the beauty_map. This is the relation of parameter type and its corresponding
+> + * value in the beauty map, and how many bytes we read eventually:
+> + *
+> + * string: 1			      -> size of string
+> + * struct: size of struct	      -> size of struct
+> + * buffer: -1 * (index of paired len) -> value of paired len (maximum: TRACE_AUG_MAX_BUF)
+> + */
+> +static inline int augment_arg(struct syscall_enter_args *args, int i,
+> +			      unsigned int *beauty_map, void *payload_offset)
 
-sorry for the late reply, a busy stretch at work kept me away from
-this.
-
-I tested the second, more generic patch from the work item (disable
-keep-alive before audio format change) on the Panther Lake NUC.
-Base was 7.1.2 with my KAE disable patch removed, so the KAE path is
-active again (PTL on MODEL_ADLP), and your patch on top.
-
-Results with two Synaptics VMM7100 based converters:
-
-- Club3D CAC-2505 (SYNAq 7.1 firmware)
-- Cable Matters USB-C to HDMI (7.02.123 firmware)
-
-Test sequence on each, from a fresh boot:
-
-- 2ch baseline, 6ch speaker-test, back to 2ch
-- 5 rapid 6ch/2ch cycles
-- PipeWire card profile switching between stereo, 5.1 and 7.1
-
-Audio stayed audible through every step on both converters.
-The register fingerprint I used during the original debugging
-(AUD_DP_2DOT0_CTRL low bits sticking at 0x4a1 after the first
-multichannel stream) now stays at the healthy 0x482 value
-throughout.
-
-So the reordering fixes the issue on my setups as well, and with that
-my KAE disable patch can be dropped in favor of your fix.
-Feel free to add, once you post the proper patch:
-
-Tested-by: Alexander Kaplan <alexander.kaplan@sms-medipool.de>
-
-One note, unrelated to your patch: the roughly 200 ms display
-blanking on an audio channel count down transition (6ch to 2ch) is
-still there.
-That one sits downstream of the host (converter firmware or TV
-resync) and behaves the same before and after the patch.
+Can we make it 'struct augmented_arg *payload_offset' instead?
 
 Thanks,
-Alex
+Namhyung
 
+
+> +{
+> +	int index, value_size = sizeof(struct augmented_arg) - offsetof(struct augmented_arg, value);
+> +	s64 aug_size, size;
+> +	bool augmented;
+> +	void *arg;
+> +
+> +	arg = (void *)args->args[i];
+> +	augmented = false;
+> +	size = beauty_map[i];
+> +	aug_size = size; /* size of the augmented data read from user space */
+> +
+> +	if (size == 0 || arg == NULL)
+> +		return 0;
+> +
+> +	if (size == 1) { /* string */
+> +		aug_size = bpf_probe_read_user_str(((struct augmented_arg *)payload_offset)->value, value_size, arg);
+> +		/* minimum of 0 to pass the verifier */
+> +		if (aug_size < 0)
+> +			aug_size = 0;
+> +
+> +		augmented = true;
+> +	} else if (size > 0 && size <= value_size) { /* struct */
+> +		if (!bpf_probe_read_user(((struct augmented_arg *)payload_offset)->value, size, arg))
+> +			augmented = true;
+> +	} else if ((int)size < 0 && size >= -6) { /* buffer */
+> +		index = -(size + 1);
+> +		barrier_var(index); // Prevent clang (noticed with v18) from removing the &= 7 trick.
+> +		index &= 7;	    // Satisfy the bounds checking with the verifier in some kernels.
+> +		aug_size = args->args[index] > TRACE_AUG_MAX_BUF ? TRACE_AUG_MAX_BUF : args->args[index];
+> +
+> +		if (aug_size > 0) {
+> +			if (!bpf_probe_read_user(((struct augmented_arg *)payload_offset)->value, aug_size, arg))
+> +				augmented = true;
+> +		}
+> +	}
+> +
+> +	/* Augmented data size is limited to sizeof(augmented_arg->unnamed union with value field) */
+> +	if (aug_size > value_size)
+> +		aug_size = value_size;
+> +
+> +	/* write data to payload */
+> +	if (augmented) {
+> +		int written = offsetof(struct augmented_arg, value) + aug_size;
+> +
+> +		if (written < 0 || written > sizeof(struct augmented_arg))
+> +			return -1;
+> +
+> +		((struct augmented_arg *)payload_offset)->size = aug_size;
+> +		return written;
+> +	}
+> +
+> +	return 0;
+> +}
+> +
+>  static int augment_sys_enter(void *ctx, struct syscall_enter_args *args)
+>  {
+> -	bool augmented, do_output = false;
+> -	int zero = 0, index, value_size = sizeof(struct augmented_arg) - offsetof(struct augmented_arg, value);
+> +	bool do_output = false;
+> +	int zero = 0, written;
+>  	u64 output = 0; /* has to be u64, otherwise it won't pass the verifier */
+> -	s64 aug_size, size;
+>  	unsigned int nr, *beauty_map;
+>  	struct beauty_payload_enter *payload;
+> -	void *arg, *payload_offset;
+> +	void *payload_offset;
+>  
+>  	/* fall back to do predefined tail call */
+>  	if (args == NULL)
+> @@ -457,58 +521,11 @@ static int augment_sys_enter(void *ctx, struct syscall_enter_args *args)
+>  	/* copy the sys_enter header, which has the syscall_nr */
+>  	__builtin_memcpy(&payload->args, args, sizeof(struct syscall_enter_args));
+>  
+> -	/*
+> -	 * Determine what type of argument and how many bytes to read from user space, using the
+> -	 * value in the beauty_map. This is the relation of parameter type and its corresponding
+> -	 * value in the beauty map, and how many bytes we read eventually:
+> -	 *
+> -	 * string: 1			      -> size of string
+> -	 * struct: size of struct	      -> size of struct
+> -	 * buffer: -1 * (index of paired len) -> value of paired len (maximum: TRACE_AUG_MAX_BUF)
+> -	 */
+>  	for (int i = 0; i < 6; i++) {
+> -		arg = (void *)args->args[i];
+> -		augmented = false;
+> -		size = beauty_map[i];
+> -		aug_size = size; /* size of the augmented data read from user space */
+> -
+> -		if (size == 0 || arg == NULL)
+> -			continue;
+> -
+> -		if (size == 1) { /* string */
+> -			aug_size = bpf_probe_read_user_str(((struct augmented_arg *)payload_offset)->value, value_size, arg);
+> -			/* minimum of 0 to pass the verifier */
+> -			if (aug_size < 0)
+> -				aug_size = 0;
+> -
+> -			augmented = true;
+> -		} else if (size > 0 && size <= value_size) { /* struct */
+> -			if (!bpf_probe_read_user(((struct augmented_arg *)payload_offset)->value, size, arg))
+> -				augmented = true;
+> -		} else if ((int)size < 0 && size >= -6) { /* buffer */
+> -			index = -(size + 1);
+> -			barrier_var(index); // Prevent clang (noticed with v18) from removing the &= 7 trick.
+> -			index &= 7;	    // Satisfy the bounds checking with the verifier in some kernels.
+> -			aug_size = args->args[index] > TRACE_AUG_MAX_BUF ? TRACE_AUG_MAX_BUF : args->args[index];
+> -
+> -			if (aug_size > 0) {
+> -				if (!bpf_probe_read_user(((struct augmented_arg *)payload_offset)->value, aug_size, arg))
+> -					augmented = true;
+> -			}
+> -		}
+> -
+> -		/* Augmented data size is limited to sizeof(augmented_arg->unnamed union with value field) */
+> -		if (aug_size > value_size)
+> -			aug_size = value_size;
+> -
+> -		/* write data to payload */
+> -		if (augmented) {
+> -			int written = offsetof(struct augmented_arg, value) + aug_size;
+> -
+> -			if (written < 0 || written > sizeof(struct augmented_arg))
+> -				return 1;
+> -
+> -			((struct augmented_arg *)payload_offset)->size = aug_size;
+> +		written = augment_arg(args, i, beauty_map, payload_offset);
+> +		if (written < 0)
+> +			return 1;
+> +		if (written > 0) {
+>  			output += written;
+>  			payload_offset += written;
+>  			do_output = true;
+> -- 
+> 2.54.0
+> 
 
