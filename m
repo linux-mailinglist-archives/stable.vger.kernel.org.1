@@ -1,146 +1,141 @@
-Return-Path: <stable+bounces-271682-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-271683-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id ksfKEiRvR2rhYAAAu9opvQ
-	(envelope-from <stable+bounces-271682-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 03 Jul 2026 10:13:24 +0200
+	id dG+hHAd0R2rIYQAAu9opvQ
+	(envelope-from <stable+bounces-271683-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 03 Jul 2026 10:34:15 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id CA3666FFF14
-	for <lists+stable@lfdr.de>; Fri, 03 Jul 2026 10:13:23 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id CF4897001CA
+	for <lists+stable@lfdr.de>; Fri, 03 Jul 2026 10:34:14 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=nabladev.com header.s=dkim header.b=Dmg3b8Q5;
-	dmarc=pass (policy=reject) header.from=nabladev.com;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-271682-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-271682-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=CfCOuV93;
+	dmarc=pass (policy=none) header.from=linuxfoundation.org;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-271683-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-271683-lists+stable=lfdr.de@vger.kernel.org";
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 7A1283013BBC
-	for <lists+stable@lfdr.de>; Fri,  3 Jul 2026 08:12:19 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 156323090136
+	for <lists+stable@lfdr.de>; Fri,  3 Jul 2026 08:20:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9329E367285;
-	Fri,  3 Jul 2026 08:12:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EAC5F33A9DA;
+	Fri,  3 Jul 2026 08:20:26 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mx.nabladev.com (mx.nabladev.com [178.251.229.89])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6DC036EAA8;
-	Fri,  3 Jul 2026 08:12:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CACF9314B76;
+	Fri,  3 Jul 2026 08:20:25 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783066337; cv=none; b=aT21XyNArPZr9lWEXmmQK3q0RtVU4KU9HIiQoueMd/Nem7Qvxwh4E5IdA7qa7S4Q4Irf52WnaA0UT+yEfe+2PvizL+08fsNyaH+2szQH4lQhddw626FoD7RMvO+1ovEBxM4zicu9ZsMhrsscQSWrZ4CYu0LrpVVK8CBIer/SVn4=
+	t=1783066826; cv=none; b=rFsLwACQsPEA5TifLsWjkYASprKnP4RwlW/0Wlw4po+u6eND+/MKXSi0P9UV2gSF9NRApWcczHU8Q9v01vd/lxcHHlHjKmqH9oT9ItBJpV2K6XXTDXel4z9J2zp+8v2nKOZR5WpI64WS1t2RTtEBmvyEXXCngIq+Q2i8GSjrJeQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783066337; c=relaxed/simple;
-	bh=DGy4flH25VXMiKCsIgEegcwD6RqmMUEhC319grkQUv8=;
+	s=arc-20240116; t=1783066826; c=relaxed/simple;
+	bh=mH+0U5CZG2uR3UNPft08fjj6UpzpUG2Lm/YTnpNEi0Y=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=JLLzlt3ft2YJfkgqSAknJGOf2Vv1oUz2DYzZ03oFgD6vjc/HFen6rJoer1Pgs/WzdYFm8H1lEG42+CR7cIPVOfHQIMH4XrfsRuQEdM87uYzBjgEyUKAV1V85EIPoRR/duZ74gC8RM7pg1quENfPlztaC7u+8J+3VkV7P0ApLbBU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nabladev.com; spf=pass smtp.mailfrom=nabladev.com; dkim=pass (2048-bit key) header.d=nabladev.com header.i=@nabladev.com header.b=Dmg3b8Q5; arc=none smtp.client-ip=178.251.229.89
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id D3E03118B69;
-	Fri,  3 Jul 2026 10:12:02 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nabladev.com;
-	s=dkim; t=1783066327;
-	h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 in-reply-to:references; bh=+30KoiDN0n4qlGlim7ciE6Rnij5Frat/7Wyk1wvTAE8=;
-	b=Dmg3b8Q5fSjt+RUsgA2CtUqlvEZaYW7fZs4W8pspf2YILgZ4d2c5QDmEDC39q4RZ3JxXmf
-	2Zt4I8U6T6BZLvrfRoaIs6ytLQrlZGV52wKoAAzocYa98KDxDvPtKD7WyU3kiRZzR7BM8x
-	EEbai8nr5xRjKl4IOR78Nyl/Jz3TCMpu+yGfjHic2pvrHU8olZb2eWemC237iB/88JIuRQ
-	EzGyODsbsPlbEri8ZnWwY4AFlas58PuhWR888CYIFzWu1bdVSdhgB5Q3oefPpKIG+X1D9v
-	gZpn++QLJXYPcKkRmdMiXGyGr2d5fvnYMoUMAaknTxhBAvfE32xpEkl1W9D4RQ==
-Date: Fri, 3 Jul 2026 10:12:00 +0200
-From: Pavel Machek <pavel@nabladev.com>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev,
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
-	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
-	patches@kernelci.org, lkft-triage@lists.linaro.org,
-	pavel@nabladev.com, jonathanh@nvidia.com, f.fainelli@gmail.com,
-	sudipm.mukherjee@gmail.com, rwarsow@gmx.de, conor@kernel.org,
-	hargar@microsoft.com, broonie@kernel.org, achill@achill.org,
-	sr@sladewatkins.com
-Subject: Re: [PATCH 6.12 000/204] 6.12.95-rc1 review
-Message-ID: <akdu0Cxu84Yr0qXQ@duo.ucw.cz>
-References: <20260702155118.667618796@linuxfoundation.org>
+	 Content-Type:Content-Disposition:In-Reply-To; b=faY95+3ZNRmJvyaZqeznYoWlpAfNPS3HYLAZi+NaeJWmRM9WvAzLJCr9+7mkn97ajyAQWFlhYUlVcmtkbWIRmwj1+RtBUjv4lNzDgiZX2ll/uPNPaK+EbGMM8wcJ4jPh9JBAoKAno41J30t7AHiJt59Y24ddxXbOzxTikVi6svE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CfCOuV93; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 304851F000E9;
+	Fri,  3 Jul 2026 08:20:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
+	s=korg; t=1783066825;
+	bh=u0+KdUCekwh9hkMd/0K08RoqTPEWE9HPi7sqIARest4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=CfCOuV93GwDsJuzVHGfNRZ+QLCxrEAartV0qPMCVhfPzJJ3WbaiBb4edi4XjpVE3B
+	 Gev+/tzc0WuLchG5/Kd2sIAVVMv8s1ooJdHeOvBxd6HkGV7U5qOi30mf21R7pFXhPS
+	 b9V8wlNrjZhcp20AbPwOV7ZqxiwTzA7xeMgxvN7Y=
+Date: Fri, 3 Jul 2026 10:20:35 +0200
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Baokun Li <libaokun@linux.alibaba.com>
+Cc: Jiayuan Chen <jiayuan.chen@linux.dev>, Wang Jun <1742789905@qq.com>,
+	tytso@mit.edu, adilger.kernel@dilger.ca, linux-ext4@vger.kernel.org,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+	libaokun1@huawei.com, 25125332@bjtu.edu.cn, Jan Kara <jack@suse.cz>,
+	Ojaswin Mujoo <ojaswin@linux.ibm.com>
+Subject: Re: [PATCH] ext4: get rid of ppath in get_ext_path()
+Message-ID: <2026070315-crescent-factoid-616d@gregkh>
+References: <tencent_C982B0201FE8F041BD5B4FC1ED7D646A740A@qq.com>
+ <2026062643-tamer-limes-a320@gregkh>
+ <rrsgndgpxyrmu6okb43u6wkdaibbidlbyqgugeeijd2b44sf4y@6lzmm4v4xvdp>
+ <2026070210-catty-grape-2568@gregkh>
+ <b93095c6-0717-4616-9702-570b2927429b@linux.alibaba.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="I4cJqBhJU+Cw9SW5"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260702155118.667618796@linuxfoundation.org>
-X-Last-TLS-Session-Version: TLSv1.3
+In-Reply-To: <b93095c6-0717-4616-9702-570b2927429b@linux.alibaba.com>
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-2.76 / 15.00];
-	SIGNED_PGP(-2.00)[];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [2.34 / 15.00];
+	MID_END_EQ_FROM_USER_PART(4.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[nabladev.com,reject];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
-	MIME_GOOD(-0.20)[multipart/signed,text/plain];
-	R_DKIM_ALLOW(-0.20)[nabladev.com:s=dkim];
+	MID_RHS_NOT_FQDN(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
+	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-271682-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	RECEIVED_HELO_LOCALHOST(0.00)[];
-	FORGED_SENDER(0.00)[pavel@nabladev.com,stable@vger.kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[20];
-	FORGED_RECIPIENTS(0.00)[m:gregkh@linuxfoundation.org,m:stable@vger.kernel.org,m:patches@lists.linux.dev,m:linux-kernel@vger.kernel.org,m:torvalds@linux-foundation.org,m:akpm@linux-foundation.org,m:linux@roeck-us.net,m:shuah@kernel.org,m:patches@kernelci.org,m:lkft-triage@lists.linaro.org,m:pavel@nabladev.com,m:jonathanh@nvidia.com,m:f.fainelli@gmail.com,m:sudipm.mukherjee@gmail.com,m:rwarsow@gmx.de,m:conor@kernel.org,m:hargar@microsoft.com,m:broonie@kernel.org,m:achill@achill.org,m:sr@sladewatkins.com,m:ffainelli@gmail.com,m:sudipmmukherjee@gmail.com,s:lists@lfdr.de];
-	MIME_TRACE(0.00)[0:+,1:+,2:~];
-	FORWARDED(0.00)[lists@lfdr.de];
 	FROM_HAS_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-271683-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:libaokun@linux.alibaba.com,m:jiayuan.chen@linux.dev,m:1742789905@qq.com,m:tytso@mit.edu,m:adilger.kernel@dilger.ca,m:linux-ext4@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,m:libaokun1@huawei.com,m:25125332@bjtu.edu.cn,m:jack@suse.cz,m:ojaswin@linux.ibm.com,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[12];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FREEMAIL_CC(0.00)[linux.dev,qq.com,mit.edu,dilger.ca,vger.kernel.org,huawei.com,bjtu.edu.cn,suse.cz,linux.ibm.com];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[nabladev.com:+];
+	TO_DN_SOME(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[pavel@nabladev.com,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[vger.kernel.org,lists.linux.dev,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,nabladev.com,nvidia.com,gmail.com,gmx.de,microsoft.com,achill.org,sladewatkins.com];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	MISSING_XM_UA(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,vger.kernel.org:from_smtp,gitlab.com:url,nabladev.com:from_mime,nabladev.com:email,nabladev.com:dkim]
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,gregkh:mid]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: CA3666FFF14
+X-Rspamd-Queue-Id: CF4897001CA
 
+On Fri, Jul 03, 2026 at 03:57:09PM +0800, Baokun Li wrote:
+> On 2026/7/2 13:47, Greg KH wrote:
+> > On Thu, Jul 02, 2026 at 09:48:33AM +0800, Jiayuan Chen wrote:
+> >> Hi Greg,
+> >>
+> >> Any update here ?
+> > What is "here"?  There is no context in this email :(
+> >
+> >> We rebased the 6.6 stable one week ago and also found the same regression.
+> > What regression?  Again, no context :(
+> >
+> > confused,
+> >
+> > greg k-h
+> 
+> For some reason, LTS only merged a subset of my patchset, causing
+> some commits to lack their prerequisite patches. This leads to error
+> numbers being interpreted as valid pointers.
+> 
+> For details, see the fix patchset that Erkun submitted to 6.6.y
+> (it fell through the cracks for some reason):
+> 
+> https://lore.kernel.org/all/20260421113416.4040274-1-yangerkun@huawei.com/
+> 
+> Either applying this fix patchset or reverting the incorrectly merged
+> commit should resolve the issue.
 
---I4cJqBhJU+Cw9SW5
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+How about submitting a revert so that we can start fresh and work from
+there?
 
-Hi!
+thanks,
 
-> This is the start of the stable review cycle for the 6.12.95 release.
-> There are 204 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
-
-CIP testing did not find any problems here:
-
-https://gitlab.com/cip-project/cip-testing/linux-stable-rc-ci/-/tree/linux-6.1.y
-
-Tested-by: Pavel Machek (CIP) <pavel@nabladev.com>
-
-I see -rc2 is out, but I don't have results for that ATM.
-
-Best regards,
-                                                                Pavel
-
---I4cJqBhJU+Cw9SW5
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iFwEABECAB0WIQRPfPO7r0eAhk010v0w5/Bqldv68gUCakdu0AAKCRAw5/Bqldv6
-8k8pAJYlm0qlnkTuifTgyCy1VbvZCvvsAJ96UE8/TVhSRbUunv1jtl2ESQi9qA==
-=Al5U
------END PGP SIGNATURE-----
-
---I4cJqBhJU+Cw9SW5--
+greg k-h
 
