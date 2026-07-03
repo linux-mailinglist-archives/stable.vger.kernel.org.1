@@ -1,192 +1,277 @@
-Return-Path: <stable+bounces-271741-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-271743-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id wfbnCBmjR2rZcgAAu9opvQ
-	(envelope-from <stable+bounces-271741-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 03 Jul 2026 13:55:05 +0200
+	id 2MkZC3CiR2qucgAAu9opvQ
+	(envelope-from <stable+bounces-271743-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 03 Jul 2026 13:52:16 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 72A47702129
-	for <lists+stable@lfdr.de>; Fri, 03 Jul 2026 13:55:04 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 80C027020D7
+	for <lists+stable@lfdr.de>; Fri, 03 Jul 2026 13:52:15 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=astralinux.ru header.s=mail header.b=JiT1ywmg;
-	dmarc=pass (policy=quarantine) header.from=astralinux.ru;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-271741-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-271741-lists+stable=lfdr.de@vger.kernel.org";
-	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
+	dkim=pass header.d=wdc.com header.s=dkim.wdc.com header.b=RopXxNNG;
+	dkim=pass header.d=sharedspace.onmicrosoft.com header.s=selector2-sharedspace-onmicrosoft-com header.b=raI4TDfG;
+	dmarc=pass (policy=quarantine) header.from=wdc.com;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-271743-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-271743-lists+stable=lfdr.de@vger.kernel.org";
+	arc=reject ("cv is fail on i=2")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 3C912301D041
-	for <lists+stable@lfdr.de>; Fri,  3 Jul 2026 11:48:43 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id B6CE5300B9A8
+	for <lists+stable@lfdr.de>; Fri,  3 Jul 2026 11:50:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 571A03C9ED5;
-	Fri,  3 Jul 2026 11:48:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D8993CB2D2;
+	Fri,  3 Jul 2026 11:50:34 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-gw01.astralinux.ru (mail-gw01.astralinux.ru [37.230.196.243])
+Received: from esa4.hgst.iphmx.com (esa4.hgst.iphmx.com [216.71.154.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 574653C3C00;
-	Fri,  3 Jul 2026 11:48:36 +0000 (UTC)
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783079322; cv=none; b=F/fX21m+dbC4zeXkgXs3JMILC7gplx5hQF0LjFFMirAmGHQIXP9IKfMw/W2C2bUJC8xoNlSAtnVf+H7DrxS0GWUV1dYTTsqpoBB436LAxn+nlWawPN6ZNRvPAZwGt+s4Wsj3/01OlRTLPYCluwEYFuSpScj8aREdBEpOwaVsNRU=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783079322; c=relaxed/simple;
-	bh=2qmujaOaVVRwvameAxp1+bgrW1ZkyLD3rS3mOuVolrk=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=ckQXWWFCmNzFz/mPwPDo0PtFDO0Cfx1f0Xlh2GJeVywQmJAgxlP7YMBOs/tXTWXNhQfctpzED4sIfu/qUq8A1PeTaJpC96ssZsCFHOVR8n0i27BkRZ5HCNPABwrumQqDux+83UqBj8EFtkQFDqsY9SMUFsVJCR+/arfYshtw3CI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=astralinux.ru; spf=pass smtp.mailfrom=astralinux.ru; dkim=pass (2048-bit key) header.d=astralinux.ru header.i=@astralinux.ru header.b=JiT1ywmg; arc=none smtp.client-ip=37.230.196.243
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=astralinux.ru;
-	s=mail; t=1783079309;
-	bh=2qmujaOaVVRwvameAxp1+bgrW1ZkyLD3rS3mOuVolrk=;
-	h=From:To:Cc:Subject:Date:From;
-	b=JiT1ywmg4xkCZ/qEqDH7jsOSe38F8V6HakA4KDCgZOF8KpT52TvHoY2G8gKqN0luL
-	 5NS83mzzLyaEcDjrLiCXE+ZbXhW9C26QzbZh3T29iwdSyklFHYIbj/CAft9bTh0lL7
-	 dQJGcjYfV08lgGkg7zv9Untuo7UZa2o2obFadG6T77auQF1HDYJkhBO54yuUH5p/+t
-	 WrQkYc8NtpwT/6lNLj0A5+T4p4FMLQh87f7gBTQx8VpZ3vZAXIeG9FqBCofRPHXjOa
-	 K1pHGzlU/kQOTEm0BNAOTV0GHZSLQJddem/S4UBcZ4a+vcNdygMsRS1gWpvJm5QxJU
-	 SnLsZKG4Cs7Hg==
-Received: from gca-sc-a-srv-ksmg01.astralinux.ru (localhost [127.0.0.1])
-	by mail-gw01.astralinux.ru (Postfix) with ESMTP id 4B47B26546;
-	Fri,  3 Jul 2026 14:48:29 +0300 (MSK)
-Received: from new-mail.astralinux.ru (unknown [10.205.207.10])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mail-gw01.astralinux.ru (Postfix) with ESMTPS;
-	Fri,  3 Jul 2026 14:48:28 +0300 (MSK)
-Received: from rbta-msk-lt-169874.astralinux.ru (unknown [10.198.57.102])
-	by new-mail.astralinux.ru (Postfix) with ESMTPA id 4gsBph0FnjzhvC;
-	Fri, 03 Jul 2026 14:48:28 +0300 (MSK)
-From: Mikhail Dmitrichenko <mdmitrichenko@astralinux.ru>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	stable@vger.kernel.org
-Cc: Mikhail Dmitrichenko <mdmitrichenko@astralinux.ru>,
-	Kent Overstreet <kent.overstreet@linux.dev>,
-	linux-bcachefs@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	lvc-project@linuxtesting.org
-Subject: [PATCH 6.12] bcachefs: avoid truncating fiemap extent length
-Date: Fri,  3 Jul 2026 14:48:13 +0300
-Message-Id: <20260703114813.113406-1-mdmitrichenko@astralinux.ru>
-X-Mailer: git-send-email 2.39.2
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53BD83CAE95;
+	Fri,  3 Jul 2026 11:50:32 +0000 (UTC)
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1783079433; cv=fail; b=bBw2k3fiMoTi1vBpeAEbizPYU6fb2TPbAdApBbsOofkBmeWJmNRWuUAWWI1iRopPM8hMN7jhd9iFG+PRzuO6c+yqiQ3uuavGcEfO4PGkgptZqoBvJEkKCVEMmZiMcut+piA6sd3SIHGMK9WPMWAqXUy3CYlzLjzWlTFvCFGIT/0=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1783079433; c=relaxed/simple;
+	bh=pDa/t3M87fnx030Z1BMz6zw1E6NFP0zGbPCNSIcurh4=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=ZY2/PNHjiqzOHc/gVR+rO37fMq975wkf0tKXlKcq6SW+xFRPMWrnjD+kQjOEa+nVGIf3IstpCzwu8KNHQ4a6u++XVMA+ORWmSd99ZE80+CRGPoXpTBQfhgMyIcXAVfEJHYZ4YjfwSc8BRVG+Vo7WZsSRX/CwGdl6rOqYf+g8lEE=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wdc.com; spf=pass smtp.mailfrom=wdc.com; dkim=pass (2048-bit key) header.d=wdc.com header.i=@wdc.com header.b=RopXxNNG; dkim=pass (1024-bit key) header.d=sharedspace.onmicrosoft.com header.i=@sharedspace.onmicrosoft.com header.b=raI4TDfG; arc=fail smtp.client-ip=216.71.154.42
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
+  d=wdc.com; i=@wdc.com; q=dns/txt; s=dkim.wdc.com;
+  t=1783079434; x=1814615434;
+  h=message-id:date:subject:to:cc:references:from:
+   in-reply-to:content-transfer-encoding:mime-version;
+  bh=pDa/t3M87fnx030Z1BMz6zw1E6NFP0zGbPCNSIcurh4=;
+  b=RopXxNNG8XcWOoCWdwnrxFYdYRCC0ODxbHfoFAjBYIDDfSNv3TRy9TZj
+   tUwoEUajAkDEvAlIxsTa00FiHvzKm1YSSjAIaSlrPGYD9nZYiJPjvcQ/o
+   MaHf/EY5njFwhRdvbli3hsqUsamVr+/Y+r1IAHJAVTgX++0wK5on0+Qva
+   jra81FrDVaJkOmqGpAuFd1MQ2K5rpedWsO1FjiIBW7tGxDsD3g+8KvNw6
+   W11qI/ZWQr0zCrcXirv6e2tV6Hb+OweUpxJG8fKQoNQHiWr2fix+rjWUX
+   7fIYTkgcjCEyngH6/sNtWLo62gd5Apbd7Ob2DNiHBLCD86eV/n4dphWUK
+   Q==;
+X-CSE-ConnectionGUID: EWn7xD0dSqmBxhRyffOeFw==
+X-CSE-MsgGUID: 1bpLA6VrTh2/yZjREb/gYw==
+X-IronPort-AV: E=Sophos;i="6.25,145,1779120000"; 
+   d="scan'208";a="146164501"
+Received: from mail-centralusazon11011024.outbound.protection.outlook.com (HELO DM5PR21CU001.outbound.protection.outlook.com) ([52.101.62.24])
+  by ob1.hgst.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 03 Jul 2026 19:50:33 +0800
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=wUrOpenK7d+K7ZiKMsAMybf6Pw0Xw77mDuFYdr5TXoKRFt3RTZhzIS41sCKeKS3fyZAqrMhXmt1QffPvvCvQMvac8p0MWAtP+8ct6rmE+5A2w+UmsFsJQ86LA20V1pwzud7Or7tO+aevsV9sBzvImjDW2unUfVZQDkghR3Yz2SmiNTnxiLauZD4NsvYjvHj9ucZq0pEwRXm0jAF7ciQAeumejGpRfhZaKMd2pfJY344B9cswuKseIPyaxPMb0ccckT21UjTsdFCfQv+/Enmwfbsss4d/vx5ofok1f0jduBQXKoYCV6XEprTzAUddTBfA8aWuDOChqCl0kvUwOC+MNQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=IcfJKy2eN167zRLSjJJEPhnVn2/bsIpszxSmCZh7n5w=;
+ b=UYJ0joAKQZ9Ttz2dqLQn5MxT3jdHnNHIRmPzxMSr7HaKGmElYJkKu3XonRRwh0YrGEwdN0hhrcf+hIRbsNv6+j34bKPyZyUcsJk10qlGG2T3RYgq/hNQpBqYjFiZ3Q0s8eRgtodqlU6TfzPAFH5kpu6XwXo9m4LbS5/sy4NJV2fhuMYq7vVq3GYQholVRFHyB4MkTYIQr+Av6yWtkPB8lBW/e3xswXxySP4JzxJLKN99xhYk2mB+Mv+IrYPc2TGaWUlVPP7ZvMElLhuSi4oai+d58s6AWShmguvRR66oRrRswjME/PU1uYqnEoyWi54qiBPjdikvi6Dv9B/tXyKhBg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=wdc.com; dmarc=pass action=none header.from=wdc.com; dkim=pass
+ header.d=wdc.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=sharedspace.onmicrosoft.com; s=selector2-sharedspace-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=IcfJKy2eN167zRLSjJJEPhnVn2/bsIpszxSmCZh7n5w=;
+ b=raI4TDfGVglv2Vvi1hcKneoTeksSSEMyuqfgm8lVxiI0BVo3BQSDG+BUvCBLTUg6mgM6aU0OcMq+0GyXsb+vKfYbdFYTYPbNjmmULoJ6pvWvJXlCIU/KrBmylYvQWA+81tIV+fmTi8yJEtAAYmsddn6leD7en17EyWA68bmWyuo=
+Received: from SA6PR04MB9447.namprd04.prod.outlook.com (2603:10b6:806:436::21)
+ by CH7PR04MB9545.namprd04.prod.outlook.com (2603:10b6:610:24d::5) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.181.10; Fri, 3 Jul
+ 2026 11:50:29 +0000
+Received: from SA6PR04MB9447.namprd04.prod.outlook.com
+ ([fe80::14c6:1c14:485f:1825]) by SA6PR04MB9447.namprd04.prod.outlook.com
+ ([fe80::14c6:1c14:485f:1825%6]) with mapi id 15.21.0181.008; Fri, 3 Jul 2026
+ 11:50:28 +0000
+Message-ID: <626b7b48-f49c-470a-84cb-459c7c7f124d@wdc.com>
+Date: Fri, 3 Jul 2026 13:50:24 +0200
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] btrfs: zoned: reset active_meta_bg on zone finish
+To: =?UTF-8?Q?Miquel_Sabat=C3=A9_Sol=C3=A0?= <mssola@mssola.com>
+Cc: linux-btrfs@vger.kernel.org, stable@vger.kernel.org
+References: <20260703084559.136605-1-johannes.thumshirn@wdc.com>
+ <9c8421f2-7f17-430a-9f87-26fab7b1d73d@wdc.com> <87jyrc70tt.fsf@>
+Content-Language: en-US
+From: Johannes Thumshirn <johannes.thumshirn@wdc.com>
+In-Reply-To: <87jyrc70tt.fsf@>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: FR4P281CA0156.DEUP281.PROD.OUTLOOK.COM
+ (2603:10a6:d10:ba::18) To SA6PR04MB9447.namprd04.prod.outlook.com
+ (2603:10b6:806:436::21)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-KSMG-AntiPhishing: NotDetected, bases: 2026/07/03 07:33:00
-X-KSMG-AntiSpam-Auth: dkim=none
-X-KSMG-AntiSpam-Envelope-From: mdmitrichenko@astralinux.ru
-X-KSMG-AntiSpam-Info: LuaCore: 112 0.3.112 7c8d497b0e572fbfa504a2ee62037c045a8cb4ec, {date_rfc_vio_soft_silent}, {Tracking_uf_ne_domains}, {Tracking_internal2}, {Tracking_from_domain_doesnt_match_to}, d41d8cd98f00b204e9800998ecf8427e.com:7.1.1;127.0.0.199:7.1.2;astralinux.ru:7.1.1;evilpiepirate.org:7.1.1;new-mail.astralinux.ru:7.1.1;lore.kernel.org:7.1.1, FromAlignment: s
-X-KSMG-AntiSpam-Interceptor-Info: scan successful
-X-KSMG-AntiSpam-Lua-Profiles: 204225 [Jul 03 2026]
-X-KSMG-AntiSpam-Method: none
-X-KSMG-AntiSpam-Rate: 0
-X-KSMG-AntiSpam-Status: not_detected
-X-KSMG-AntiSpam-Version: 6.1.1.22
-X-KSMG-AntiVirus: Kaspersky Secure Mail Gateway, version 2.1.0.7854, bases: 2026/07/03 10:45:00 #28371015
-X-KSMG-AntiVirus-Status: NotDetected, skipped
-X-KSMG-LinksScanning: NotDetected, bases: 2026/07/03 07:33:00
-X-KSMG-Message-Action: skipped
-X-KSMG-Rule-ID: 1
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SA6PR04MB9447:EE_|CH7PR04MB9545:EE_
+X-MS-Office365-Filtering-Correlation-Id: 6d0bb5ed-51fd-4c8a-89ff-08ded8f94748
+WDCIPOUTBOUND: EOP-TRUE
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|1800799024|23010399003|19092799006|376014|56012099006|4143699003|11063799006|22082099003|18002099003|3023799007;
+X-Microsoft-Antispam-Message-Info:
+	yN12N3Fe99DwPzgP8eBJtRxgEANUiYtMpiKmV1wMnN+fNohNEDAzHz7vXHN8j7ioB2p8zJ9okBNg7T207Qn5ZKbiH3ay1W57GA/+V4u5ds6BcKLZCg1pWbOw3De/RobCoELFRHsZHnQNGyecT3YA1ivgksExOGTWt9phb0Uucc0fxUnUiFiLUBRGkUQUD1Yd5zEfc4xmtHG9RxRMQH7QLFlL+RmlCu1Zkpp3IGWKRVvuRBhP9/+vd1iaS/9ls8aRiujnvZJ+iWKZ/I8mC5q8uQKof3qpNKSlxfg7QYvsjUbhCfrosZ5NIJPLkChoxsaOcXFqfmOpBx1apspq+H0BIl1eE1OL8CPe/KiK+7hNR8+tBdX/ihZwFl/2FFf80kTKDgume1WTjtt6UQ5jCnu0RXrNvZjjeENVWvbeO3qU4d+LVeKwrS08Y5I26wCEPL8uAyPVMI7ikn8hzAkHpLXC1R/KhjZD7c7vIiCkDKCEkKIF4gx4pm6Kzuc0VGzkctsL8eJFlvUrGk5gTt3WyvKKSNH0ntN+nvpmfN8KA6MmwWUvqs1wK8gi+dm0LXdhT4ggAy60ImuDDumOeEnogXceqKdwprNDl+YYvT9/W1HYPaY=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SA6PR04MB9447.namprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(23010399003)(19092799006)(376014)(56012099006)(4143699003)(11063799006)(22082099003)(18002099003)(3023799007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?UnRzeFhEWFBPekVFREZMU0hzcDA3VWZ0R1FQWkFyRHFvSkNpKzExNkxmZzZ6?=
+ =?utf-8?B?VXhxOXhucDVQcXZaNU5UVlRTTWlJYjAxdU9xSmc4cmw0akE5VjZMeXRnZGZP?=
+ =?utf-8?B?Wk1ORmFCRXZVSnQvcmxRTExpdlJSMDlsSWFEQ0xSOHZ2THNnbkJISzMxYmhV?=
+ =?utf-8?B?c0tuLzJQYlRxTFBYWVk5eVcwazNFWFpuWERWejV0dVUvN3NKMk1kTEFsd0JX?=
+ =?utf-8?B?a2lNalpSZ1VjTHh1Qm5VZWdKYzhYaUVCTWo4OWxoVmhSRXZjY0c5UHBEc1F1?=
+ =?utf-8?B?TmVzaUxWTXJUMEtTWEs0TlQ3bUJ5TndDL29ER0pMOHNnZ0JoVVlFQlBPQ2xZ?=
+ =?utf-8?B?Y3kzb21nZ1JQTXhYcFQ5VitZd0c5YTFhVEtTV2YwWUYrVHR5UkJYWVhPYXVS?=
+ =?utf-8?B?aGNTUmFla2RZOXQ0UFkyUzQyOVpxTFllcnkwN1l4U2tlTHo4Vk4vL0cxVjE4?=
+ =?utf-8?B?b2VuWG1hMUdibTFHK0txQXBEOU5hWnB3aVYzT1ZCMVJsK0ljL0xWNENFQ2Rw?=
+ =?utf-8?B?ZHk2OW1uVXJiZzF5YzN3YklxNW9BOURudUtxeXVRRUliSXI3Q1lnbTRFRG1N?=
+ =?utf-8?B?cVFFYnNmeHpwRzdOSlN3RjFnaitqdExoSlJEaDRhQjFTVXU0Z21qZ0I5bmxY?=
+ =?utf-8?B?ZURNUzJFSmtDblpPZ1FBc3BpZGFKNkpET2d0dGZXVGZaVnI0SU41SVFyQ3dJ?=
+ =?utf-8?B?Nkp3M21scEFlR1RiVW1vWGFpNDBnQUh5bTdEVFZObGVsVVplcWlLTWQzQnhr?=
+ =?utf-8?B?Q0R2eG5HT2dHOFFaZm9raVhCVkFQdHBTSEpRcVRUNngvSGNqa0RpWUlqeGhl?=
+ =?utf-8?B?OHd2dGtGV3gyaFFXT0x0eEJRVEJVYW1kNFJISENOcVBrdDMzOGRsbmpGNS96?=
+ =?utf-8?B?ZFd0dDhoM05PTUdsZDNjV3JXaWorTDdaN3BHcmdXcS9GRkkwRjZQUzZlaGJP?=
+ =?utf-8?B?L1Noc3AvUkIveDJua3ZJVzhvU2ZKNFRpRHZ0aUpPaEwzM2NhTk9zYVlSWmJq?=
+ =?utf-8?B?ajRFaExEVXBrcFk2TDhmTk14N05vY1F1NEY5NXVRSkJaeURTN2pncVpLenVk?=
+ =?utf-8?B?Y0ZLbzFlV1Y0WDlabmFBVSszNCtEeHZPalQ3SHlsdFA0Z090MEhMR0p3c2RY?=
+ =?utf-8?B?d043L3g1L1RPKzNLbVlrMnlWdXhPSmROaFBpZWVsNDZNeTk3dXIxTjhDWEd6?=
+ =?utf-8?B?VERRNlIremJjY1hUV3daOUduT2lkMTdQanUxMVV3elFrbUNPZVdBdHowaTAx?=
+ =?utf-8?B?QzdqZzRhdnIvcFB0WG15REI0aCtZVjNZcTNjZmM3ZUVaMXNGQjZ4cGJ2OUxX?=
+ =?utf-8?B?dUwwLzAxaThNMWhSMUM3OGx5bmZaR1lVNERkeGJ3eDJTV2ovUjlXVmpENmNl?=
+ =?utf-8?B?TWI3SlBoNW9oQzRsTUNDN2NnYklTQ1ZpUFU5cGpid3M1UXpTd1BIQ2dnTWJH?=
+ =?utf-8?B?MjFTTjJqallCK0h4YUN4WkwzV2N3RFBvTEdQbm90eUlyaUdNZkFPUnhvcmpr?=
+ =?utf-8?B?UXVQLzRBNndsQ05FSTJYbUpxbWFJYzNNMmw3VDIrNVpBMTlBOGRTODArMlJl?=
+ =?utf-8?B?R0RSeExydDRubFd6MVBvWHZNS0VoR0FaODU0RXArMy9XVnJqYjM4T0VEd1pO?=
+ =?utf-8?B?Sk5raCt1N0VKYzRlQU1haVVPWjlKK0xiYnZBNUlrNVgxUEVXbHp1WHVxY3pu?=
+ =?utf-8?B?ZjVQSlJUVzdqd3E0TStOak5kKyszUWg1RjlYSmQzZ00yRGVIdlJ4eEd4RW1n?=
+ =?utf-8?B?QnhuVXV4VEMvNHd4SUsybkhUeTdZUFJTdUQ2RFoyNnpwK3ZVU0xuR0FqTzhI?=
+ =?utf-8?B?MlR4UFU0UXpOSVdrN1U4VWIwZHdubUZRTWh4QlN3QWZVeDdLdE9VYk1aNWpU?=
+ =?utf-8?B?S2ZDRXR3REMyZHY5R25BVEQxZzl5NjREQkNCMVIvRXZyUk9CekJMZTRvamNl?=
+ =?utf-8?B?Ulc2aHhFbkhocUV6TTV2MEZlMmJkVXpjbDdXbndmbnFNMngwTFBLb1BTcGJi?=
+ =?utf-8?B?OWxUZGpjN0MyclFDVXlZa2pwMzU0TmlhYm9HcnNSWTdZRWtGMXRYVy8zR3pN?=
+ =?utf-8?B?VW9OTDdxeXBUdXdSdG5WSWN4cVBucEtvZzd1WENMODRFeXlmay9PNWUzMjYx?=
+ =?utf-8?B?Umw3QUVNYTZiRjEwU3FlYUM3dkJBN0xYNFJKQTlNbVBrQzhBRXpYVXRXRk0y?=
+ =?utf-8?B?K1E4eG01NTUvRHhoZkNkZWx2R2NQSjBXRmg3NWF3YTJqWVhkVjU1TTJOTXdp?=
+ =?utf-8?B?TVBKUCt6U0hTWW1sekJHSkdnTU04NjNSaTVEL09EVmErTzNBMUZQenNMQ1ow?=
+ =?utf-8?B?SFhFbHR0clJyYTRxREQyU0hwRTVVSjdUc2E3dFVNS21COFpxKzNycDRLZjJO?=
+ =?utf-8?Q?eQRmVxSfDRJLEkOQ=3D?=
+X-Exchange-RoutingPolicyChecked:
+	M2PX56ACNBeVmnOyrTP4fABj++FHwRVvyzfMMVDA3y4KjDlCBBsdYQkX35j3bua8yDmwwyGMrg/uBCUSVrLcq9TEA564U21rKLvRtfvXLEL1E4KHDUuDnUdoTqakFy2pB/HBb/2SlASHZJqaA8WvCQB2QU8Njel9+QP1UAVnnbJPpz7WWIPF2pZxwmFr48OK2HrA6bhd9OFDtJkp4Qa/PH0cZ1B0OeEJqZg2E399nBScawSz+IGKXaZC+bDG5DkQwD5eQUC9RDOeyBZ0IP8wFnxspQ/wh8e0H0Ur6u9ZQX+M+641WAQDeSPK0aNWecNnJjViF468G9KE8mCURp2mnQ==
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
+	iE2i0Y9LVGmhHc+nuVa+c1PVqoSnhphzrZiBd+CV5MdD0TIM1ZfKkGwUVX4u5SLrhV02guveynszpEiwU4EKCtNejSnhgLynrcf3R71yI/DPY8cQ5dV5iPgDhT74KJG/t1LChcpZ/pMnIqrHAh5FdO3wSqU7lfE6dqVcjP8IR1SEiC02O8FO61xtQm++helLJUMO5JrYZbwwlNg5HpDUBpowvhJjyUUgpYN6/OdH/PgVep6n38v9YUDY3wM+5h+bIPeafXAyEeo0kCVjrPsgrE/hlvJ1Ma/t7peGWLEc8UgYsiHJUBCgptfHgtrYCtbrwVwruUAEUcNZ3weDXhJQ2kpT3ss2lOE7JmsOWidWFdDBodvJRsw3aZieOl/IaZtQyhlHNq+i2uHEA+pO/Q65Wd+Rvsyvb/VlupFXAkVmu4vh78tjv01Su66IpD86AZB/R0JIdBCXlQWAZ/qu8eVOjLZCnxQL4VNFLOElCq7LR0dRgNaoIz+RGdp/mozFBjEt9DFVSCzljfrFqyH0Ze9mMtTkcV6Y9M/9QzhNathyKWcTCsjqzx38s1dgXKnLlTZViThpp9HeTVbHlR2Q4vc3QVX0hde0gzCyIuK4xo5azNTs0vFheG4gwOzWZUr9wRFU
+X-OriginatorOrg: wdc.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 6d0bb5ed-51fd-4c8a-89ff-08ded8f94748
+X-MS-Exchange-CrossTenant-AuthSource: SA6PR04MB9447.namprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Jul 2026 11:50:28.8681
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: b61c8803-16f3-4c35-9b17-6f65f441df86
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 0QVL7g2d2oZt8kGeSryxWSlsTd6vnM0TMDErdKszFgZPMcmhQQLr8krcdWSsZLK/R2tl5kKYAtZ28kQj+pP2TSqnf+iF6agXof1c0bOwxx0=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH7PR04MB9545
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[astralinux.ru,quarantine];
-	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[astralinux.ru:s=mail];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	ARC_REJECT(1.00)[cv is fail on i=2];
+	DMARC_POLICY_ALLOW(-0.50)[wdc.com,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_DKIM_ALLOW(-0.20)[wdc.com:s=dkim.wdc.com,sharedspace.onmicrosoft.com:s=selector2-sharedspace-onmicrosoft-com];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
+	TAGGED_FROM(0.00)[bounces-271743-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-271741-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:gregkh@linuxfoundation.org,m:stable@vger.kernel.org,m:mdmitrichenko@astralinux.ru,m:kent.overstreet@linux.dev,m:linux-bcachefs@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:lvc-project@linuxtesting.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[mdmitrichenko@astralinux.ru,stable@vger.kernel.org];
+	FORGED_RECIPIENTS(0.00)[m:mssola@mssola.com,m:linux-btrfs@vger.kernel.org,m:stable@vger.kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[johannes.thumshirn@wdc.com,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORWARDED(0.00)[lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FROM_NEQ_ENVFROM(0.00)[mdmitrichenko@astralinux.ru,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	ALIAS_RESOLVED(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[6];
-	DKIM_TRACE(0.00)[astralinux.ru:+];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCPT_COUNT_THREE(0.00)[3];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[astralinux.ru:from_mime,astralinux.ru:email,astralinux.ru:mid,astralinux.ru:dkim,linuxtesting.org:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,evilpiepirate.org:url]
+	FORGED_SENDER_FORWARDING(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[johannes.thumshirn@wdc.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[wdc.com:+,sharedspace.onmicrosoft.com:+];
+	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sashiko.dev:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,vger.kernel.org:from_smtp,wdc.com:from_mime,wdc.com:email,wdc.com:mid,wdc.com:dkim]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 72A47702129
+X-Rspamd-Queue-Id: 80C027020D7
 
-No upstream commit exists for this patch.
+On 7/3/26 1:46 PM, Miquel Sabaté Solà wrote:
+> Johannes Thumshirn @ 2026-07-03 12:01 +02:
+>
+>> On 7/3/26 10:45 AM, Johannes Thumshirn wrote:
+>>> do_zone_finish() clears BLOCK_GROUP_FLAG_ZONE_IS_ACTIVE and removes the
+>>> block group from zone_active_bgs, but only the path in
+>>> check_bg_is_active() resets fs_info->active_meta_bg / active_system_bg.
+>>> Any other finish path leaves active_meta_bg / active_system_bg pointing
+>>> at an inactive, fully written block group.
+>>>
+>>> Reset the corresponding active_{meta,system}_bg pointer in do_zone_finish()
+>>> so it can never go stale.
+>>>
+>>> Fixes: 13bb483d32ab ("btrfs: zoned: activate metadata block group on write time")
+>>> Cc: stable@vger.kernel.org
+>>> Signed-off-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
+>>> ---
+>>>    fs/btrfs/zoned.c | 15 +++++++++++++++
+>>>    1 file changed, 15 insertions(+)
+>>>
+>>> diff --git a/fs/btrfs/zoned.c b/fs/btrfs/zoned.c
+>>> index 44a13ed6b8b2..c8c850de1702 100644
+>>> --- a/fs/btrfs/zoned.c
+>>> +++ b/fs/btrfs/zoned.c
+>>> @@ -2539,6 +2539,7 @@ static int do_zone_finish(struct btrfs_block_group *block_group, bool fully_writ
+>>>    	const bool is_metadata = (block_group->flags &
+>>>    			(BTRFS_BLOCK_GROUP_METADATA | BTRFS_BLOCK_GROUP_SYSTEM));
+>>>    	struct btrfs_dev_replace *dev_replace = &fs_info->dev_replace;
+>>> +	struct btrfs_block_group **active_bg = NULL;
+>>>    	int ret = 0;
+>>>    	int i;
+>>>    @@ -2636,6 +2637,20 @@ static int do_zone_finish(struct btrfs_block_group
+>>> *block_group, bool fully_writ
+>>>    	/* For active_bg_list */
+>>>    	btrfs_put_block_group(block_group);
+>>>    +	if (block_group->flags & BTRFS_BLOCK_GROUP_SYSTEM)
+>>> +		active_bg = &fs_info->active_system_bg;
+>>> +	else if (block_group->flags & BTRFS_BLOCK_GROUP_METADATA)
+>>> +		active_bg = &fs_info->active_meta_bg;
+>>> +
+>>> +	if (active_bg) {
+>>> +		btrfs_zoned_meta_io_lock(fs_info);
+>>> +		if (*active_bg == block_group) {
+>>> +			btrfs_put_block_group(block_group);
+>>> +			*active_bg = NULL;
+>>> +		}
+>>> +		btrfs_zoned_meta_io_unlock(fs_info);
+>>> +	}
+>>> +
+>>>    	clear_and_wake_up_bit(BTRFS_FS_NEED_ZONE_FINISH, &fs_info->flags);
+>>>      	return 0;
+>> I think Sashiko has a point here:
+>>
+>> https://sashiko.dev/#/patchset/20260703084559.136605-1-johannes.thumshirn%40wdc.com
+>>
+>> check_bg_is_active() should take a reference before calling into
+>> do_zone_finish() or actually clearing fs_info->active_{meta,system}_bg can even
+>> be done in check_bg_is_active() after calling do_zone_finish().
+>>
+>> That'll then also eliminate Miquel's concerns.
+> I'd maybe take the latter to avoid adding more complexity to an already
+> complex do_zone_finish(). Besides, I see that do_zone_finish() is
+> already called in many other places throughout btrfs/zoned.c, so I
+> wonder if having the changes in do_zone_finish() would also "spill" over
+> there.
 
-bkey sizes are stored in sectors as u32, while fiemap reports byte
-lengths as u64. Shifting k.k->size before widening performs the
-conversion in 32 bits, so an extent of 4 GiB or larger can wrap before
-it is passed to fiemap_fill_next_extent().
+Yep that's what I did for v2. But I didn't want to send it out too 
+quickly, to give other possible reviewers a chance to eventually spot 
+another bug before.
 
-Compute the byte length after casting the sector count to u64 and reuse
-it for all bch2_fill_extent() cases.
-
-The same issue was fixed in bcachefs-tools, but there is no Linux
-upstream commit to backport to 6.12. The affected 6.12 implementation lives
-in fs/bcachefs/fs.c, while the bcachefs-tools fix touches
-fs/bcachefs/vfs/fiemap.c.
-
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
-
-Link: https://lore.kernel.org/linux-bcachefs/20260610105547.129545-1-mdmitrichenko@astralinux.ru/
-Link: https://evilpiepirate.org/git/bcachefs-tools.git/commit/?id=6d9a895ed00d4b3868312df93253d2a817b0c6a3
-Signed-off-by: Mikhail Dmitrichenko <mdmitrichenko@astralinux.ru>
----
- fs/bcachefs/fs.c | 8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
-
-diff --git a/fs/bcachefs/fs.c b/fs/bcachefs/fs.c
-index a41d0d8a2f7b..0dc2466de3f9 100644
---- a/fs/bcachefs/fs.c
-+++ b/fs/bcachefs/fs.c
-@@ -1184,6 +1184,8 @@ static int bch2_fill_extent(struct bch_fs *c,
- 			    struct fiemap_extent_info *info,
- 			    struct bkey_s_c k, unsigned flags)
- {
-+	u64 len = (u64)k.k->size << 9;
-+
- 	if (bkey_extent_is_direct_data(k.k)) {
- 		struct bkey_ptrs_c ptrs = bch2_bkey_ptrs_c(k);
- 		const union bch_extent_entry *entry;
-@@ -1212,7 +1214,7 @@ static int bch2_fill_extent(struct bch_fs *c,
- 			ret = fiemap_fill_next_extent(info,
- 						bkey_start_offset(k.k) << 9,
- 						offset << 9,
--						k.k->size << 9, flags|flags2);
-+						len, flags | flags2);
- 			if (ret)
- 				return ret;
- 		}
-@@ -1221,13 +1223,13 @@ static int bch2_fill_extent(struct bch_fs *c,
- 	} else if (bkey_extent_is_inline_data(k.k)) {
- 		return fiemap_fill_next_extent(info,
- 					       bkey_start_offset(k.k) << 9,
--					       0, k.k->size << 9,
-+					       0, len,
- 					       flags|
- 					       FIEMAP_EXTENT_DATA_INLINE);
- 	} else if (k.k->type == KEY_TYPE_reservation) {
- 		return fiemap_fill_next_extent(info,
- 					       bkey_start_offset(k.k) << 9,
--					       0, k.k->size << 9,
-+					       0, len,
- 					       flags|
- 					       FIEMAP_EXTENT_DELALLOC|
- 					       FIEMAP_EXTENT_UNWRITTEN);
--- 
-2.43.0
 
