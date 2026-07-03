@@ -1,177 +1,172 @@
-Return-Path: <stable+bounces-271795-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-271796-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id iIJGEqnCR2p7ewAAu9opvQ
-	(envelope-from <stable+bounces-271795-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 03 Jul 2026 16:09:45 +0200
+	id wiinIsHDR2rEewAAu9opvQ
+	(envelope-from <stable+bounces-271796-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 03 Jul 2026 16:14:25 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id AAC0F703445
-	for <lists+stable@lfdr.de>; Fri, 03 Jul 2026 16:09:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0702170350E
+	for <lists+stable@lfdr.de>; Fri, 03 Jul 2026 16:14:25 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=IZy76w8X;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-271795-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-271795-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=fail ("headers rsa verify failed") header.d=w6rz.net header.s=default header.b=DrdifLyN;
+	dmarc=none;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-271796-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-271796-lists+stable=lfdr.de@vger.kernel.org";
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 53693301725A
-	for <lists+stable@lfdr.de>; Fri,  3 Jul 2026 14:09:42 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id A4ACB3085736
+	for <lists+stable@lfdr.de>; Fri,  3 Jul 2026 14:11:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2BD323D647C;
-	Fri,  3 Jul 2026 14:09:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 75F223DB302;
+	Fri,  3 Jul 2026 14:11:32 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from omta040.useast.a.cloudfilter.net (omta040.useast.a.cloudfilter.net [44.202.169.39])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E05ED34F270
-	for <stable@vger.kernel.org>; Fri,  3 Jul 2026 14:09:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93F463DA7DD
+	for <stable@vger.kernel.org>; Fri,  3 Jul 2026 14:11:29 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783087779; cv=none; b=KLTp1Tus5km+RQNZqMQJqTQVYUi51k+dg//+XWWtfyaYzPwaJL8PjRRd9IB5hwZ9m6uetyYv2Sqzn2ctoz0S2+MG+8/9uJzbmly6kZjNq884iRwLQNrVCsleq6Qy+Dx7UMw2t0d0zMdctICnFbyuXePBAIbpasyg1pQ+ut4XBik=
+	t=1783087892; cv=none; b=kyxLIfSm7NzpFgB5z/t7mpv1kNaHEmaiW3oNnFBdw8lJJS+XZKaNh7N8cdNVP2Do0PpQlO5tDtE5edIiv33AwpdeqWdTu/jyFRa3hR7d3o7gVs3KWLa/v9JiQYytovKiSUwBrEfrSb8mvSGEbq9sMFTIS6IR3SzBLvaT1YwoK6M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783087779; c=relaxed/simple;
-	bh=JIjw4BcPDDEBdk7dnObLb6u3MuShdNJLj1HvXx9GqJc=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qSmCG4ayZjnxlBxxUlJ0ZGFU6Z8EGV1HpVEQl8EzuKK6Dy9OYN9yHs3Qnxv+No1BuIPT3DLJ328+KUqNEYEE2yxyF0xW4pluaMzvPfL1AGv+j5Q7+KW/UITojqIpb3rkZhUfjGUu/1E9k2zXvv/BzJnhWS3NHO0Jpgjei39/si0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IZy76w8X; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F25B81F000E9;
-	Fri,  3 Jul 2026 14:09:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783087777;
-	bh=V6S2cQ8cQs03vQyemoqkIaF+YbM1OZ904N49hXuGajQ=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=IZy76w8XHj+4Rza+9MRcF26Di3akDa8yRpCniAjAPlEbz4Yow+V8YfkC5QCK/fWNe
-	 vYRkHgNQiY4qfNEKbqbVQdo3QB3RJqCLkPO+BpW4f5264cNWs6kiC/TsIYpRfqHqbW
-	 pDXotIzqdSs6ncFsUqIT8ExSNr2B2htIbJploCbiAxJxNSnaK3J5KpnGaUpjkwjc3q
-	 3jAcjFFYc01w+eGfoQL+PY54a6SpCjDevVTyaDS915budC4gbg+FaYR9u9lHoue1HY
-	 kr0yuZ+jK9qyHMdnvA2vVGJvhak/e+pAjkzbXWnAAewrnF0EPaJvPZYenEf1Zm/JUl
-	 Q0wbFoxaBpqAA==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: Bryam Vargas <hexlabsecurity@proton.me>,
-	Chao Yu <chao@kernel.org>,
-	Jaegeuk Kim <jaegeuk@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18.y] f2fs: bound i_inline_xattr_size for non-inline-xattr inodes
-Date: Fri,  3 Jul 2026 10:09:34 -0400
-Message-ID: <20260703140934.18093-1-sashal@kernel.org>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <2026070205-tattoo-circling-7d61@gregkh>
-References: <2026070205-tattoo-circling-7d61@gregkh>
+	s=arc-20240116; t=1783087892; c=relaxed/simple;
+	bh=QfaEvWCK0TFbz8Dby4LzGWfJeT8MGmbNwMElNdKfG00=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=T5P/sMYzL2y23rFd/Sj6M48IEJjbm4aMxpyz8SnqSlIb98lnnPm+V1Egaiy7TOoAysjnYUxgKQ8hsByLLj0NPDmSqNcvXh++yLTNN8358hW1LyYIVwvysIaFyb9NFUWGYCIinzC1krJRnQpmQNhxAp4RzbOC70GN06bmCFP3aBc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=w6rz.net; spf=pass smtp.mailfrom=w6rz.net; dkim=pass (2048-bit key) header.d=w6rz.net header.i=@w6rz.net header.b=DrdifLyN; arc=none smtp.client-ip=44.202.169.39
+Received: from eig-obgw-5001b.ext.cloudfilter.net ([10.0.29.181])
+	by cmsmtp with ESMTPS
+	id fcv1w8oLmVGUKfec4wrZM6; Fri, 03 Jul 2026 14:11:28 +0000
+Received: from box5620.bluehost.com ([162.241.219.59])
+	by cmsmtp with ESMTPS
+	id fec4wN5NutyQ7fec4wVhdy; Fri, 03 Jul 2026 14:11:28 +0000
+X-Authority-Analysis: v=2.4 cv=E5LNpbdl c=1 sm=1 tr=0 ts=6a47c310
+ a=30941lsx5skRcbJ0JMGu9A==:117 a=30941lsx5skRcbJ0JMGu9A==:17
+ a=IkcTkHD0fZMA:10 a=RAioF0-LDSMA:10 a=7vwVE5O1G3EA:10 a=VwQbUJbxAAAA:8
+ a=HaFmDPmJAAAA:8 a=49j0FZ7RFL9ueZfULrUA:9 a=QEXdDO2ut3YA:10
+ a=nmWuMzfKamIsx3l42hEX:22 a=L5EjiQpGQaFGZdqT14z7:22
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=w6rz.net;
+	s=default; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
+	References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+	List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=LXmauMmFM5o8XZvtMJYnhw7usPvzHCs5ijL5IT5TRNk=; b=DrdifLyN0EQn9L/qPsfvH15gU7
+	qNj9irH8ACZNBa2z91raM58g9wBsu520X73A4BF0kqh4p9yljmthpRqc5LbQJJPXMmP0V9fF7Fpst
+	vokw4OhV0OoPhRZY75jZRZCPt/qH3aJQzH5X35LuikVnShojhHWW+Ag5jBYuoKZ7FoOR21oM60CW+
+	Ia3xv2c7h+eJTVA8WfuLcSfxXQGyH3z4L1OZpIVgxZpzeTHmY6G594ULYxSDUXZEQtdm1XGBUaIoX
+	TfjrBtSvFYMcNlGXtjI0+LdyJ01YH2DU7whrYLtT5e1a//6YDcWGNfmahgGM1eUIomwUR5LYpZyr/
+	a4vOL8gw==;
+Received: from c-73-162-206-103.hsd1.ca.comcast.net ([73.162.206.103]:34116 helo=[10.0.1.180])
+	by box5620.bluehost.com with esmtpsa  (TLS1.3) tls TLS_AES_128_GCM_SHA256
+	(Exim 4.99.2)
+	(envelope-from <re@w6rz.net>)
+	id 1wfec3-00000001CjJ-2EnL;
+	Fri, 03 Jul 2026 08:11:27 -0600
+Message-ID: <3a841fc1-2820-4256-8fca-590436b8ace1@w6rz.net>
+Date: Fri, 3 Jul 2026 07:11:25 -0700
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 7.1 000/121] 7.1.3-rc2 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@nabladev.com, jonathanh@nvidia.com,
+ f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, rwarsow@gmx.de,
+ conor@kernel.org, hargar@microsoft.com, broonie@kernel.org,
+ achill@achill.org, sr@sladewatkins.com
+References: <20260703072822.817328079@linuxfoundation.org>
+Content-Language: en-US
+From: Ron Economos <re@w6rz.net>
+In-Reply-To: <20260703072822.817328079@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - box5620.bluehost.com
+X-AntiAbuse: Original Domain - vger.kernel.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - w6rz.net
+X-BWhitelist: no
+X-Source-IP: 73.162.206.103
+X-Source-L: No
+X-Exim-ID: 1wfec3-00000001CjJ-2EnL
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
+X-Source-Sender: c-73-162-206-103.hsd1.ca.comcast.net ([10.0.1.180]) [73.162.206.103]:34116
+X-Source-Auth: re@w6rz.net
+X-Email-Count: 19
+X-Org: HG=bhshared;ORG=bluehost;
+X-Source-Cap: d3NpeHJ6bmU7d3NpeHJ6bmU7Ym94NTYyMC5ibHVlaG9zdC5jb20=
+X-Local-Domain: yes
+X-CMAE-Envelope: MS4xfDzbu7vQBa8AwSrz26F8YOuMNZ8hDbefJqclhjkZi1d4jgWfSp0g1uB4mi3eYdffQVr9+5RCcBY3/YlJ016KjmD7Ce0UWuhzrpq3EEa7k2vQqFmCiWUk
+ uTqbpGtA5BsHHPZVezgyM17PH8xxcYeBO/2K+t8sjGWMKq5BJn649Ao1yUVnaefYoBgEM3N/3dVl6A==
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-3.66 / 15.00];
-	WHITELIST_SPF_DKIM(-3.00)[kernel.org:d:+,kernel.org:s:+];
+X-Spamd-Result: default: False [1.04 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
+	R_DKIM_REJECT(1.00)[w6rz.net:s=default];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-271795-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:hexlabsecurity@proton.me,m:chao@kernel.org,m:jaegeuk@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_SENDER(0.00)[sashal@kernel.org,stable@vger.kernel.org];
-	FORWARDED(0.00)[lists@lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-271796-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	DMARC_NA(0.00)[w6rz.net];
+	FREEMAIL_CC(0.00)[lists.linux.dev,vger.kernel.org,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,nabladev.com,nvidia.com,gmail.com,gmx.de,microsoft.com,achill.org,sladewatkins.com];
+	FORGED_SENDER(0.00)[re@w6rz.net,stable@vger.kernel.org];
+	RCPT_COUNT_TWELVE(0.00)[20];
+	FORGED_RECIPIENTS(0.00)[m:gregkh@linuxfoundation.org,m:stable@vger.kernel.org,m:patches@lists.linux.dev,m:linux-kernel@vger.kernel.org,m:torvalds@linux-foundation.org,m:akpm@linux-foundation.org,m:linux@roeck-us.net,m:shuah@kernel.org,m:patches@kernelci.org,m:lkft-triage@lists.linaro.org,m:pavel@nabladev.com,m:jonathanh@nvidia.com,m:f.fainelli@gmail.com,m:sudipm.mukherjee@gmail.com,m:rwarsow@gmx.de,m:conor@kernel.org,m:hargar@microsoft.com,m:broonie@kernel.org,m:achill@achill.org,m:sr@sladewatkins.com,m:ffainelli@gmail.com,m:sudipmmukherjee@gmail.com,s:lists@lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORWARDED(0.00)[lists@lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
+	HAS_X_ANTIABUSE(0.00)[];
+	DKIM_TRACE(0.00)[w6rz.net:-];
+	FORGED_SENDER_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[re@w6rz.net,stable@vger.kernel.org];
+	HAS_X_SOURCE(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,vger.kernel.org:from_smtp,proton.me:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[w6rz.net:from_mime,w6rz.net:email,w6rz.net:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: AAC0F703445
+X-Rspamd-Queue-Id: 0702170350E
 
-From: Bryam Vargas <hexlabsecurity@proton.me>
+On 7/3/26 00:35, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 7.1.3 release.
+> There are 121 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>
+> Responses should be made by Sun, 05 Jul 2026 07:28:08 +0000.
+> Anything received after that time might be too late.
+>
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v7.x/stable-review/patch-7.1.3-rc2.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-7.1.y
+> and the diffstat can be found below.
+>
+> thanks,
+>
+> greg k-h
 
-[ Upstream commit 378acf3cf19b6af6cba55e8dd1154c4e1504bae8 ]
+Built and booted successfully on RISC-V RV64 (HiFive Unmatched).
 
-When the flexible_inline_xattr feature is enabled, do_read_inode() loads
-the on-disk i_inline_xattr_size unconditionally:
-
-	if (f2fs_sb_has_flexible_inline_xattr(sbi))
-		fi->i_inline_xattr_size = le16_to_cpu(ri->i_inline_xattr_size);
-
-but sanity_check_inode() only range-checks it when the inode also has the
-FI_INLINE_XATTR flag set.  An inode that carries an inline dentry or inline
-data but not FI_INLINE_XATTR -- the normal layout for an inline
-directory -- therefore keeps a fully attacker-controlled
-i_inline_xattr_size from a crafted image.
-
-get_inline_xattr_addrs() returns that value with no flag gating, so it
-feeds the inode geometry:
-
-	MAX_INLINE_DATA()  = 4 * (CUR_ADDRS_PER_INODE - i_inline_xattr_size - 1)
-	NR_INLINE_DENTRY() = MAX_INLINE_DATA() * BITS_PER_BYTE / (...)
-	addrs_per_page()   = CUR_ADDRS_PER_INODE - i_inline_xattr_size
-
-A large i_inline_xattr_size drives MAX_INLINE_DATA() and NR_INLINE_DENTRY()
-negative, so make_dentry_ptr_inline() sets d->max (int) to a negative
-value.  The inline directory walk then compares an unsigned long bit_pos
-against that negative d->max, which is promoted to a huge unsigned bound,
-and reads far past the inline area:
-
-	while (bit_pos < d->max)		/* fs/f2fs/dir.c */
-		... test_bit_le(bit_pos, d->bitmap) / d->dentry[bit_pos] ...
-
-Mounting a crafted image and reading such a directory triggers an
-out-of-bounds read in f2fs_fill_dentries(); the same underflow also
-corrupts ADDRS_PER_INODE for regular files.
-
-Validate i_inline_xattr_size against MAX_INLINE_XATTR_SIZE whenever the
-flexible_inline_xattr feature is enabled -- i.e. whenever the value is
-loaded from disk and consumed -- and keep the lower MIN_INLINE_XATTR_SIZE
-bound gated on inodes that actually carry an inline xattr, so legitimate
-inodes with i_inline_xattr_size == 0 are still accepted.
-
-Cc: stable@vger.kernel.org
-Fixes: 6afc662e68b5 ("f2fs: support flexible inline xattr size")
-Signed-off-by: Bryam Vargas <hexlabsecurity@proton.me>
-Reviewed-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- fs/f2fs/inode.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
-
-diff --git a/fs/f2fs/inode.c b/fs/f2fs/inode.c
-index 49470f4c9362a0..1caa84c15c9969 100644
---- a/fs/f2fs/inode.c
-+++ b/fs/f2fs/inode.c
-@@ -318,9 +318,9 @@ static bool sanity_check_inode(struct inode *inode, struct folio *node_folio)
- 	}
- 
- 	if (f2fs_sb_has_flexible_inline_xattr(sbi) &&
--		f2fs_has_inline_xattr(inode) &&
--		(fi->i_inline_xattr_size < MIN_INLINE_XATTR_SIZE ||
--		fi->i_inline_xattr_size > MAX_INLINE_XATTR_SIZE)) {
-+		(fi->i_inline_xattr_size > MAX_INLINE_XATTR_SIZE ||
-+		(f2fs_has_inline_xattr(inode) &&
-+		fi->i_inline_xattr_size < MIN_INLINE_XATTR_SIZE))) {
- 		f2fs_warn(sbi, "%s: inode (ino=%lx) has corrupted i_inline_xattr_size: %d, min: %zu, max: %lu",
- 			  __func__, inode->i_ino, fi->i_inline_xattr_size,
- 			  MIN_INLINE_XATTR_SIZE, MAX_INLINE_XATTR_SIZE);
--- 
-2.53.0
+Tested-by: Ron Economos <re@w6rz.net>
 
 
