@@ -1,182 +1,201 @@
-Return-Path: <stable+bounces-271634-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-271635-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id AchXMblOR2qUVwAAu9opvQ
-	(envelope-from <stable+bounces-271634-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 03 Jul 2026 07:55:05 +0200
+	id iGe+LOBPR2rlVwAAu9opvQ
+	(envelope-from <stable+bounces-271635-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 03 Jul 2026 08:00:00 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id B7AB86FEDE0
-	for <lists+stable@lfdr.de>; Fri, 03 Jul 2026 07:55:04 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 229D46FEE6A
+	for <lists+stable@lfdr.de>; Fri, 03 Jul 2026 08:00:00 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=fail ("headers rsa verify failed") header.d=w6rz.net header.s=default header.b=hemeTBVs;
-	dmarc=none;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-271634-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-271634-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=wdc.com header.s=dkim.wdc.com header.b="K9O/8Tum";
+	dmarc=pass (policy=quarantine) header.from=wdc.com;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-271635-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-271635-lists+stable=lfdr.de@vger.kernel.org";
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 9C1E63010D1F
-	for <lists+stable@lfdr.de>; Fri,  3 Jul 2026 05:54:38 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id A68DD30C7489
+	for <lists+stable@lfdr.de>; Fri,  3 Jul 2026 05:55:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6CC80285CB3;
-	Fri,  3 Jul 2026 05:54:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B3A035E94E;
+	Fri,  3 Jul 2026 05:55:09 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from omta036.useast.a.cloudfilter.net (omta036.useast.a.cloudfilter.net [44.202.169.35])
+Received: from esa2.hgst.iphmx.com (esa2.hgst.iphmx.com [68.232.143.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3BA13290D9
-	for <stable@vger.kernel.org>; Fri,  3 Jul 2026 05:54:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9805A35DA47;
+	Fri,  3 Jul 2026 05:55:07 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783058073; cv=none; b=Om0yJ3vnGPVIgtIXgWAjZD80YvzwPoPVVtyZz0wOXIuxu5L48xMBhu1QLB2xmR81rgZllljody1GZ0ZbqFwLk9XDVvid+e7+9C3rIdGIA1rKxDUUlnYjnYRfpRqVWJWcsmCC5SFRRU7dXGV/qNwSABz6u3gIV1dbAhuESjKUtEY=
+	t=1783058109; cv=none; b=avoOPq6/f7fx/4Tfr7DDySi5zfROWS6YQq+8lQVtn2jy9mSCBEFcY6x5tRMoR8RrJW3Hp+ytH4/AlRTUfPOjAax6ge9fKn0KCEbiREqHSO0dwhwbkB2dpyrQkCHNlVMX6ljaRScZIqI4rFaijRNrxcoCgjv+QGWHXJM9qxQiIdI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783058073; c=relaxed/simple;
-	bh=Z2VEkFlgYMrqA5RzIlY1A4wDmsIB8Z5DNlzS3XqevtU=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=EJvMu1fwsjarhtcxrQ/bDSnAW+QHaofYb0J7NVRD/fvUsRBzOdnZz1QhL/cDuM0LV42rNXjTdqsq1Gvqwfd5RPxnWttEqoUHNfA9AVptRcWLKdSdVlgKRiG+DZNfTANH1sOK5SalBKIQMJKUMmhLaox3g/79eEkJkH4PsYkauSg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=w6rz.net; spf=pass smtp.mailfrom=w6rz.net; dkim=pass (2048-bit key) header.d=w6rz.net header.i=@w6rz.net header.b=hemeTBVs; arc=none smtp.client-ip=44.202.169.35
-Received: from eig-obgw-6006b.ext.cloudfilter.net ([10.0.30.211])
-	by cmsmtp with ESMTPS
-	id fHwUwUe6OgwLnfWr3wcpwz; Fri, 03 Jul 2026 05:54:25 +0000
-Received: from box5620.bluehost.com ([162.241.219.59])
-	by cmsmtp with ESMTPS
-	id fWr2wWbBaxg8YfWr3w4ngI; Fri, 03 Jul 2026 05:54:25 +0000
-X-Authority-Analysis: v=2.4 cv=R44DGcRX c=1 sm=1 tr=0 ts=6a474e91
- a=30941lsx5skRcbJ0JMGu9A==:117 a=30941lsx5skRcbJ0JMGu9A==:17
- a=IkcTkHD0fZMA:10 a=RAioF0-LDSMA:10 a=7vwVE5O1G3EA:10 a=VwQbUJbxAAAA:8
- a=Fowlm8kEtbx0O9ktuRkA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
- a=L5EjiQpGQaFGZdqT14z7:22
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=w6rz.net;
-	s=default; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
-	References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
-	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=35hBBtkq3T2Pp3DSaSRbdRe3FPOi3WynMPb7oDO45lU=; b=hemeTBVsR1ni8TidBOef8fE8sU
-	iMsyMOctStTBVS52Cl2o9FOcrEcP455pWxz3In7lsa1QfISiDZLq5iq6DIAk+iAroJnlyoDZ0HXQv
-	mdWgJHWOPoXx1H3cBsl0v+bQEQRYgN2foTHHxKC3IXMXwOLBAWUaodCcsuKFKmzuYuhG+SuRVYShx
-	vjWKKHocLYR4hvAHEJHA7Fk83rGOhaYmk9kuO8sHRZ3mUnkZUKvFlJrHX5007oBAgV5jCyjOubd3G
-	sfZuCaE2bWRMqB0xKuME3q0rG0ZtFPKRubYLaXyuYdO4OmOQ+e+OTuQHkU9Om72CNoKZirmO8La6B
-	pROB5n3A==;
-Received: from c-73-162-206-103.hsd1.ca.comcast.net ([73.162.206.103]:59202 helo=[10.0.1.180])
-	by box5620.bluehost.com with esmtpsa  (TLS1.3) tls TLS_AES_128_GCM_SHA256
-	(Exim 4.99.2)
-	(envelope-from <re@w6rz.net>)
-	id 1wfWr2-00000000hDK-1RJk;
-	Thu, 02 Jul 2026 23:54:24 -0600
-Message-ID: <4561a281-d46b-415e-8272-32c88b0f0ab1@w6rz.net>
-Date: Thu, 2 Jul 2026 22:54:22 -0700
+	s=arc-20240116; t=1783058109; c=relaxed/simple;
+	bh=IfqVpGyPaL/hIOC4xZ3LLuQMyCpwwmV4T/tArhLCz5I=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=kCKu8PaezX2FICnoMMwji9NrswF9UzUgR+i4M9UkTVrH8Pu343ph1hueFaA/i4LB/Qk9D5AaKaJmy9F/PCSUy4nlXODg65WtRcKsI5+zyyshL/wXIO8J9Qr/JuR4zfJQH5C7tyqs5Rba/qO8WUKJuiRPDgGc3gDKJl5LnHUOi0U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wdc.com; spf=pass smtp.mailfrom=wdc.com; dkim=pass (2048-bit key) header.d=wdc.com header.i=@wdc.com header.b=K9O/8Tum; arc=none smtp.client-ip=68.232.143.124
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
+  d=wdc.com; i=@wdc.com; q=dns/txt; s=dkim.wdc.com;
+  t=1783058107; x=1814594107;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=IfqVpGyPaL/hIOC4xZ3LLuQMyCpwwmV4T/tArhLCz5I=;
+  b=K9O/8TumLr6Gg53N40jTcvt/BuMtOMfXaT04g+OhKWka9G1FwRyUHl37
+   hdK7oShu3OWIySutTmGgPJOPdVAz14//IUx+7CQiaLv4SOaIuDcLgKPU9
+   m91wzpdtvc58Ofx918h2E0X+dnAFwaheyUkahsgigbmlqj9x2kbYzNmOe
+   7I3ZUdBNyBJlPUd8u2yVrFkfsBlFaC2RKs4DtmkTudIPPWL/e2jXJTYdv
+   j8u09jNzXMDP741eN/c3al82b5Q7l8ApDXJiFQrHlPkxcmrLg8luupYg4
+   0XFlUtpWucM5uU9IPp3KCDqPZTXgr96tuqMjloYEBtcyLG2RzppPzv7Rp
+   Q==;
+X-CSE-ConnectionGUID: VBRT9IrwRj68FSdxtvKvPA==
+X-CSE-MsgGUID: XZlCdEzbS9mluFniIqNiYA==
+X-IronPort-AV: E=Sophos;i="6.25,145,1779120000"; 
+   d="scan'208";a="151204826"
+Received: from unknown (HELO uls-op-esad2-o.wdc.com) ([199.255.45.15])
+  by ob1.hgst.iphmx.com with ESMTP; 03 Jul 2026 13:55:00 +0800
+X-CSE-ConnectionGUID: fvSo9rs/R7GLYznw0O3KCA==
+X-CSE-MsgGUID: VK3c4DKRQQ+qSkG6HCzuRA==
+IronPort-SDR: 6a474e9f_g4Uxf2QoAYQnA+dLk6L/G4rxlFu8t4E9JOKCJd5grMJ2v7s
+ q2vHMics9Hz0EglI9DOnYeQuNmqcYYMyKdaCouQ==
+Received: from uls-op-esai1-o.wdc.com ([10.248.3.45])
+  by uls-op-esad2-o.wdc.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 02 Jul 2026 22:54:38 -0700
+X-CSE-ConnectionGUID: bq3cUPlASg+YILR45vb9UQ==
+X-CSE-MsgGUID: wgRBIiq8SPu77AF5fjIbhw==
+WDCIronportException: Internal
+Received: from c02g32sfmd6m.ad.shared (HELO neo.wdc.com) ([10.224.28.132])
+  by uls-op-esai1-o.wdc.com with ESMTP; 02 Jul 2026 22:54:38 -0700
+From: Johannes Thumshirn <johannes.thumshirn@wdc.com>
+To: linux-btrfs@vger.kernel.org
+Cc: Naohiro Aota <naohiro.aota@wdc.com>,
+	Johannes Thumshirn <johannes.thumshirn@wdc.com>,
+	Shin'ichiro Kawasaki <shinichiro.kawasaki@wdc.com>,
+	stable@vger.kernel.org
+Subject: [PATCH] btrfs: zoned: don't submit orphaned extent buffers
+Date: Fri,  3 Jul 2026 07:54:31 +0200
+Message-ID: <20260703055431.117181-1-johannes.thumshirn@wdc.com>
+X-Mailer: git-send-email 2.54.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 6.18 000/108] 6.18.38-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
- torvalds@linux-foundation.org, akpm@linux-foundation.org,
- linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
- lkft-triage@lists.linaro.org, pavel@nabladev.com, jonathanh@nvidia.com,
- f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, rwarsow@gmx.de,
- conor@kernel.org, hargar@microsoft.com, broonie@kernel.org,
- achill@achill.org, sr@sladewatkins.com
-References: <20260702155112.110058792@linuxfoundation.org>
-Content-Language: en-US
-From: Ron Economos <re@w6rz.net>
-In-Reply-To: <20260702155112.110058792@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - box5620.bluehost.com
-X-AntiAbuse: Original Domain - vger.kernel.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - w6rz.net
-X-BWhitelist: no
-X-Source-IP: 73.162.206.103
-X-Source-L: No
-X-Exim-ID: 1wfWr2-00000000hDK-1RJk
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
-X-Source-Sender: c-73-162-206-103.hsd1.ca.comcast.net ([10.0.1.180]) [73.162.206.103]:59202
-X-Source-Auth: re@w6rz.net
-X-Email-Count: 39
-X-Org: HG=bhshared;ORG=bluehost;
-X-Source-Cap: d3NpeHJ6bmU7d3NpeHJ6bmU7Ym94NTYyMC5ibHVlaG9zdC5jb20=
-X-Local-Domain: yes
-X-CMAE-Envelope: MS4xfJO6/sX6YZO7PxKOQViWTRCb0TjrJqcb0Moun7z87ULGmBNvU/sPjcVVtpFVywmKd2xcC8uNdmXyJGAN4gOwgtEk61POLJlQiFuvYq3tnhGu5NkmJdDA
- AcmiiYbLbYGnLWPZt439Ky4YkgTfRxEa1LO2XeV7q3HUdrldPLKhY+og9RMFKcGu7a4r+hMREc8Bag==
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [1.04 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_DKIM_REJECT(1.00)[w6rz.net:s=default];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[wdc.com,quarantine];
+	R_DKIM_ALLOW(-0.20)[wdc.com:s=dkim.wdc.com];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FROM_HAS_DN(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-271634-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	DMARC_NA(0.00)[w6rz.net];
-	FREEMAIL_CC(0.00)[lists.linux.dev,vger.kernel.org,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,nabladev.com,nvidia.com,gmail.com,gmx.de,microsoft.com,achill.org,sladewatkins.com];
-	FORGED_SENDER(0.00)[re@w6rz.net,stable@vger.kernel.org];
-	RCPT_COUNT_TWELVE(0.00)[20];
-	FORGED_RECIPIENTS(0.00)[m:gregkh@linuxfoundation.org,m:stable@vger.kernel.org,m:patches@lists.linux.dev,m:linux-kernel@vger.kernel.org,m:torvalds@linux-foundation.org,m:akpm@linux-foundation.org,m:linux@roeck-us.net,m:shuah@kernel.org,m:patches@kernelci.org,m:lkft-triage@lists.linaro.org,m:pavel@nabladev.com,m:jonathanh@nvidia.com,m:f.fainelli@gmail.com,m:sudipm.mukherjee@gmail.com,m:rwarsow@gmx.de,m:conor@kernel.org,m:hargar@microsoft.com,m:broonie@kernel.org,m:achill@achill.org,m:sr@sladewatkins.com,m:ffainelli@gmail.com,m:sudipmmukherjee@gmail.com,s:lists@lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	HAS_X_SOURCE(0.00)[];
-	HAS_X_ANTIABUSE(0.00)[];
 	TO_DN_SOME(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[6];
+	TAGGED_FROM(0.00)[bounces-271635-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_SENDER(0.00)[johannes.thumshirn@wdc.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS(0.00)[m:linux-btrfs@vger.kernel.org,m:naohiro.aota@wdc.com,m:johannes.thumshirn@wdc.com,m:shinichiro.kawasaki@wdc.com,m:stable@vger.kernel.org,s:lists@lfdr.de];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[re@w6rz.net,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[w6rz.net:-];
-	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[johannes.thumshirn@wdc.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[wdc.com:+];
+	RCVD_COUNT_FIVE(0.00)[6];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RWL_MAILSPIKE_POSSIBLE(0.00)[104.64.211.4:from];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,vger.kernel.org:from_smtp,w6rz.net:mid,w6rz.net:from_mime]
+	ALIAS_RESOLVED(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[wdc.com:from_mime,wdc.com:email,wdc.com:mid,wdc.com:dkim,vger.kernel.org:from_smtp,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: B7AB86FEDE0
+X-Rspamd-Queue-Id: 229D46FEE6A
 
-On 7/2/26 09:19, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.18.38 release.
-> There are 108 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
->
-> Responses should be made by Sat, 04 Jul 2026 15:50:58 +0000.
-> Anything received after that time might be too late.
->
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.18.38-rc1.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.18.y
-> and the diffstat can be found below.
->
-> thanks,
->
-> greg k-h
+On a zoned filesystem btree_writepages() can encounter a dirty metadata
+extent buffer whose block group no longer exists. Submitting a write for
+such a buffer maps it to a stale/removed block-group and leaves the folio
+under writeback forever, hanging later in filemap_fdatawait_range(), for
+example the iput(btree_inode) in close_ctree(), which then hangs unmount.
 
-The build is broken on RISC-V with:
+This is caused by btrfs_clear_buffer_dirty() not clearing the dirty bit of
+a freed tree block but it sets EXTENT_BUFFER_ZONED_ZEROOUT and keeps the
+buffer dirty so that it is still written out to keep the zone's
+meta_write_pointer advancing sequentially. So a freed metadata block
+legitimately stays dirty until that zero-write completes.
 
-In file included from mm/kfence/core.c:36:
-./arch/riscv/include/asm/kfence.h: In function 'kfence_protect_page':
-./arch/riscv/include/asm/kfence.h:25:17: error: implicit declaration of function 'mark_new_valid_map' [-Wimplicit-function-declaration]
-    25 |                 mark_new_valid_map();
-       |                 ^~~~~~~~~~~~~~~~~~
+Dropping these buffers is safe: the block group is empty, so they are
+stale, unreferenced, already-freed blocks. Once the zone is reset their
+zero-write is unneeded. Instead of submitting a such a write, finish the
+writeback immediately.
 
-This is caused by commit "riscv: kfence: Call mark_new_valid_map() for kfence_unprotect()" a8818008680a00a86c080a55e8842c714e9a62ba
+Reported-by: Shin'ichiro Kawasaki <shinichiro.kawasaki@wdc.com>
+Fixes: 7db94301a980 ("btrfs: zoned: introduce block group context to btrfs_eb_write_context")
+Cc: stable@vger.kernel.org
+Signed-off-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
+---
+ fs/btrfs/extent_io.c | 16 ++++++++++++++--
+ 1 file changed, 14 insertions(+), 2 deletions(-)
 
-As already reported by https://lore.kernel.org/stable/6c5c0723-66c6-4f9f-8021-2562efc95c6e@iscas.ac.cn/, upstream commit "riscv: mm: 
-Extract helper mark_new_valid_map()" 9ee25d0a70ff4494b4e1d266b962d0a574ef318a solves the issue. This commit cherry picks successfully.
+diff --git a/fs/btrfs/extent_io.c b/fs/btrfs/extent_io.c
+index 0edd532174fa..4a029ae719e9 100644
+--- a/fs/btrfs/extent_io.c
++++ b/fs/btrfs/extent_io.c
+@@ -2280,7 +2280,8 @@ static void prepare_eb_write(struct extent_buffer *eb)
+ }
+ 
+ static noinline_for_stack void write_one_eb(struct extent_buffer *eb,
+-					    struct writeback_control *wbc)
++					    struct writeback_control *wbc,
++					    bool submit)
+ {
+ 	struct btrfs_fs_info *fs_info = eb->fs_info;
+ 	struct btrfs_bio *bbio;
+@@ -2310,6 +2311,12 @@ static noinline_for_stack void write_one_eb(struct extent_buffer *eb,
+ 		wbc_account_cgroup_owner(wbc, folio, range_len);
+ 		folio_unlock(folio);
+ 	}
++
++	if (!submit) {
++		btrfs_bio_end_io(bbio, BLK_STS_OK);
++		return;
++	}
++
+ 	/*
+ 	 * If the fs is already in error status, do not submit any writeback
+ 	 * but immediately finish it.
+@@ -2397,6 +2404,8 @@ int btree_writepages(struct address_space *mapping, struct writeback_control *wb
+ 		struct extent_buffer *eb;
+ 
+ 		while ((eb = eb_batch_next(&batch)) != NULL) {
++			bool submit = true;
++
+ 			ctx.eb = eb;
+ 
+ 			ret = btrfs_check_meta_write_pointer(eb->fs_info, &ctx);
+@@ -2411,6 +2420,9 @@ int btree_writepages(struct address_space *mapping, struct writeback_control *wb
+ 				continue;
+ 			}
+ 
++			if (btrfs_is_zoned(fs_info) && !ctx.zoned_bg)
++				submit = false;
++
+ 			if (!lock_extent_buffer_for_io(eb, wbc))
+ 				continue;
+ 
+@@ -2420,7 +2432,7 @@ int btree_writepages(struct address_space *mapping, struct writeback_control *wb
+ 				btrfs_schedule_zone_finish_bg(ctx.zoned_bg, eb);
+ 				ctx.zoned_bg->meta_write_pointer += eb->len;
+ 			}
+-			write_one_eb(eb, wbc);
++			write_one_eb(eb, wbc, submit);
+ 		}
+ 		nr_to_write_done = (wbc->nr_to_write <= 0);
+ 		eb_batch_release(&batch);
+-- 
+2.54.0
 
 
