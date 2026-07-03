@@ -1,155 +1,194 @@
-Return-Path: <stable+bounces-271864-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-271866-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id eWVZBykJSGqCkQAAu9opvQ
-	(envelope-from <stable+bounces-271864-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 03 Jul 2026 21:10:33 +0200
+	id RkviFJUMSGohkwAAu9opvQ
+	(envelope-from <stable+bounces-271866-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 03 Jul 2026 21:25:09 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id AE1207050E9
-	for <lists+stable@lfdr.de>; Fri, 03 Jul 2026 21:10:32 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 73BF170517D
+	for <lists+stable@lfdr.de>; Fri, 03 Jul 2026 21:25:08 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Vqd0EeCL;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-271864-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-271864-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=ziepe.ca header.s=google header.b=AP51E0y6;
+	dmarc=none;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-271866-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-271866-lists+stable=lfdr.de@vger.kernel.org";
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 4EA233022622
-	for <lists+stable@lfdr.de>; Fri,  3 Jul 2026 19:10:18 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C7BA1301991F
+	for <lists+stable@lfdr.de>; Fri,  3 Jul 2026 19:25:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D03323254AE;
-	Fri,  3 Jul 2026 19:10:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 304B03246EF;
+	Fri,  3 Jul 2026 19:25:04 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qk1-f182.google.com (mail-qk1-f182.google.com [209.85.222.182])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F5E22C0F8C;
-	Fri,  3 Jul 2026 19:10:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAE2E30C366
+	for <stable@vger.kernel.org>; Fri,  3 Jul 2026 19:25:01 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783105816; cv=none; b=n4+2LbbOZhzxuLdrEFNIu87SJLHCbDYSqaqoFcoI/2vCrC+ROeA0o7eBqeFqGNlo3Htk2tQtnouwzWZEiVGshwF4Wynqr6984djGwcZ0Cyq3NZC/0k1LnVOYHmcQwvkf5Cp5W/hRjpU8SAC+B8te5ykeCiocrGlIP/k+pTNG3EE=
+	t=1783106704; cv=none; b=kUcP5fPGO5TJy5VYyN2vMyizt1a7kuj+J4VUnZS6+Qfx/cQjPhPAxe6UmBFkpNrN/sTGkXbMANBWlRozsDgjKjLv819QmUq6tti8ED/4AcUpiij66nY8Jt8L2A9Q+AQXzp3+jgsiz3XtWTW5FAy6fepjDAXfQjHZvS6m9hq8pFE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783105816; c=relaxed/simple;
-	bh=DF6xSAfyotD0N4Tz08NYeXqgEusoeoCZsDHG/oMcw4k=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Bn5e2EkjZTOjfn+qgKnzyMG/em5+2+aazQKP9drb0hBWgA/XhNc3ZwesgEGZiajx0XG09h92ohisyTOeGEB+9K0GJK8CystwXlMHFp7svB8pleuNureCyflBgsY10jujxuQzgGCrTDlFAu38OUIV0U/aqu0NCKYKaiqAL2Xy8qs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Vqd0EeCL; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A40DD1F000E9;
-	Fri,  3 Jul 2026 19:10:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783105815;
-	bh=q47bqK917XVa4fbWBKvXnG7aNu6rcDrNfatTcJkAkZM=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=Vqd0EeCLVDvEv3gZU9oQgu2Jc71QFkR9Kkf7XvkYEqbpzi7Wdf3TxlRq6irwhv87c
-	 sz+f68OhWOu8zC5MBdBuGy2xxUzx3dk1TkBPlPWDKRSGCrC0p788/j6clQdNmlYK9o
-	 tm/7WGwQaoOFNswKtgWhEFupuU0FxwqspfxYVXF+36/N8OiHYCMtAL4QZcx9XIkqut
-	 PiGa5GGe0cE1Gsl/ipHIHd+Rau2Ca9NZzRB68LiIoQWxnxU8vaaXuGg1VymKcXiS8q
-	 XVNp+f2IugXhFFUR3giWNvGX07gbwQZWs7pwcLzSaC+/ZqzsNGAZowUXrApEtY8mo3
-	 QUvRMIs9YTNdA==
-Date: Fri, 3 Jul 2026 20:10:11 +0100
-From: Jonathan Cameron <jic23@kernel.org>
-To: Andy Shevchenko <andriy.shevchenko@intel.com>
-Cc: Stepan Ionichev <sozdayvek@gmail.com>, dlechner@baylibre.com,
- nuno.sa@analog.com, andy@kernel.org, hcazarim@yahoo.com,
- joshua.crofts1@gmail.com, gregkh@linuxfoundation.org,
- linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org
-Subject: Re: [PATCH v2] iio: light: tsl2591: return actual error from probe
- IRQ failure
-Message-ID: <20260703201011.31bfbd84@jic23-huawei>
-In-Reply-To: <aiEoilRNQuHR_dqb@ashevche-desk.local>
-References: <20260517181042.668-1-sozdayvek@gmail.com>
-	<20260518094311.2000-1-sozdayvek@gmail.com>
-	<20260518163647.3b4966fb@jic23-huawei>
-	<20260518164309.04ed238f@jic23-huawei>
-	<20260603182345.5fdb66b5@jic23-huawei>
-	<aiEoULtZmGpDd3cy@ashevche-desk.local>
-	<aiEoilRNQuHR_dqb@ashevche-desk.local>
-X-Mailer: Claws Mail 4.4.0 (GTK 3.24.52; x86_64-pc-linux-gnu)
+	s=arc-20240116; t=1783106704; c=relaxed/simple;
+	bh=yayEeyU4e7p8xCn+5eQp5ki7+IbDFzlKh1940AmQVPs=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=VR3i3iCPSmaQZ0HFDa8ZFdlNyOAFDV01IqXA2wFdVC4c4reQmHRM8hg5ghQmrjzuNsoC0GW/2l9nIk+c3ANzAlRNE9v7uQPiShfVLaO4BUMUOSpm2r+pZJzasQDKkjmFnQ21oI3IYr5GbxaA7Ai46/XlV4ejH40uL0JGc6C6S/8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca; spf=pass smtp.mailfrom=ziepe.ca; dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b=AP51E0y6; arc=none smtp.client-ip=209.85.222.182
+Received: by mail-qk1-f182.google.com with SMTP id af79cd13be357-92e5c9211d2so64763185a.1
+        for <stable@vger.kernel.org>; Fri, 03 Jul 2026 12:25:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ziepe.ca; s=google; t=1783106701; x=1783711501; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=3NXmfnDT9ccdJDht6GSlGH0hP5z1VNfXLI97+RVOH2w=;
+        b=AP51E0y6pVvnWmadE3CZA7kSGkhItf7OfAOqmMzC5bSkd3k8X7pgixMHC2NILDfaHK
+         xdjddvtA60KldSsaJEpqmywxR2/ywn2yhlMrL3x+PYr6xaJYwQbef2jrSQ5KvZuCHB63
+         bP4heJX1gKiGN2khy5GATLUdOzpiXHsWx+sH0ZTiSp9sp6+D1Ya27X3XTkq/QT0Vq+yu
+         ioO8Y8Xu5NYcF9cV5oXJKyhwEeKSSE3hGiqTHBQk0UCZrdYipXpuz7pYiPA5xpTHGj9t
+         ezZdLSx6g6zYDG8W2o383MIHkh25mfgtDpKOVli0UTz5ch8Vx3eYOorDW4kG/j/Zo6/9
+         rAuQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1783106701; x=1783711501;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=3NXmfnDT9ccdJDht6GSlGH0hP5z1VNfXLI97+RVOH2w=;
+        b=JSjT9IPOB4MIpqXvoYaUDSjavbsyz+NfmoxxFMIrpmrobYW4P1VgMJTYCA0cJtD6BM
+         7ETjFJKuaRp3T5yDZhRgERfpB7ablo3y8bdOf63LgPm3TRBfiq3b2uLrfoKeINPFjnt9
+         oGw7gho4g6rwbZJwqUhp3vFFAjDNFuwwqaVVA2LFp2ZkPILEzqktDEsJCPNLe9Rkw7SC
+         VvWyKKuiIxg22PrhbdUao3BBMaQzFlbchmWT//0ql8Od7kpr0AXGEROxuGHT5rITIzzd
+         xSBGxo0ojumiT2nBZe9Tt6TD1xrhLhVpyRu2/skVznM9EyNND8Swdsz1Jqsw8jK050dO
+         wLQw==
+X-Forwarded-Encrypted: i=1; AFNElJ9B4nW0SKI0Wv6Utcp4ozJRkXAQWE9S6E4KgV2zfRgdykJLbLYMmOPyy6bvIkusnbuMB2i/Qwc=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yws28eYQzYfcogg66UwscdX42a7nTYH1yw0PGULmyuK1QrtbknH
+	NWKCPLUuRyNMh12OiIhb/jJ72e1XzbiZWAjeMlMc6M0KqKlKx0j9Q2LVw1hpqL3CZ+w=
+X-Gm-Gg: AfdE7ckeGQHucMfOMiX/McaHUA8GA9IR2aPMxSDFqp2YQKIYfYgZTPZjiOnWIdNux7f
+	nfCRkmJWc4Ehl56WVsoVKB52TNus3qxqoHbprvqUb1rE/tVOMIOd4iZbAmMJA4DIYZQO/7NIZmz
+	2fEXcjBmuJSbCPCT+EYY9X9TeDfQ2WJxbJS84mTkAYk8prVG5GrHKNo90/+j0UdtjxVQAoulIOV
+	Rv1gRnNCi98qoHkW3ib+sjuxKi2JlW5xOZBs31TfcwgD9yS1MK+gdFHR3zSY2/UIipIU+hEe0ec
+	nYZnfTzvC0Y88vtVR/GpQoKe8oqJ3Z1tt7hA3vZ7iZGjFP7yRujs6rpZzrQPb3tPwxdZJPCAivV
+	KkDY0VpNc8Zn2M3hjWZFO49IueoDPjyXh7H6tqcUEG943bMrwWJILOWZWdPP6QEEptM9qXFYRVt
+	krPilzNeoE7gaik8fbFXC8OJ2KVTFkpqYKqets2AUm+ElpXDREJpfOc9g+Ewtr5QE3rkg=
+X-Received: by 2002:a05:620a:414e:b0:92e:57ec:a4d7 with SMTP id af79cd13be357-92e9a4ed968mr109865685a.73.1783106700898;
+        Fri, 03 Jul 2026 12:25:00 -0700 (PDT)
+Received: from ziepe.ca (crbknf0213w-47-54-130-67.pppoe-dynamic.high-speed.nl.bellaliant.net. [47.54.130.67])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-92e90ccdf8dsm225956185a.37.2026.07.03.12.24.59
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 03 Jul 2026 12:25:00 -0700 (PDT)
+Received: from jgg by wakko with local (Exim 4.97)
+	(envelope-from <jgg@ziepe.ca>)
+	id 1wfjVT-00000008UHZ-0qcN;
+	Fri, 03 Jul 2026 16:24:59 -0300
+Date: Fri, 3 Jul 2026 16:24:59 -0300
+From: Jason Gunthorpe <jgg@ziepe.ca>
+To: Robin Murphy <robin.murphy@arm.com>
+Cc: will@kernel.org, joro@8bytes.org, jpb@kernel.org,
+	catalin.marinas@arm.com, yangyicong@hisilicon.com,
+	linux-arm-kernel@lists.infradead.org, iommu@lists.linux.dev,
+	stable@vger.kernel.org
+Subject: Re: [PATCH] iommu/arm-smmu-v3: Add HAFT support for SVA
+Message-ID: <20260703192459.GB1978949@ziepe.ca>
+References: <878cd6bcbbe2d5677d2f63da13294c148268552c.1782927917.git.robin.murphy@arm.com>
+ <20260703164914.GY7525@ziepe.ca>
+ <6465c885-3a9d-4c0b-ab74-7665e274ae72@arm.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <6465c885-3a9d-4c0b-ab74-7665e274ae72@arm.com>
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-3.16 / 15.00];
-	WHITELIST_SPF_DKIM(-3.00)[kernel.org:d:+,kernel.org:s:+];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	MID_RHS_NOT_FQDN(0.50)[];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[ziepe.ca:s=google];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-271864-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER(0.00)[jic23@kernel.org,stable@vger.kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS(0.00)[m:andriy.shevchenko@intel.com,m:sozdayvek@gmail.com,m:dlechner@baylibre.com,m:nuno.sa@analog.com,m:andy@kernel.org,m:hcazarim@yahoo.com,m:joshua.crofts1@gmail.com,m:gregkh@linuxfoundation.org,m:linux-iio@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,m:joshuacrofts1@gmail.com,s:lists@lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[ziepe.ca:+];
+	TAGGED_FROM(0.00)[bounces-271866-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:robin.murphy@arm.com,m:will@kernel.org,m:joro@8bytes.org,m:jpb@kernel.org,m:catalin.marinas@arm.com,m:yangyicong@hisilicon.com,m:linux-arm-kernel@lists.infradead.org,m:iommu@lists.linux.dev,m:stable@vger.kernel.org,s:lists@lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
+	DMARC_NA(0.00)[ziepe.ca];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_SENDER(0.00)[jgg@ziepe.ca,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	TO_DN_SOME(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[jic23@kernel.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[gmail.com,baylibre.com,analog.com,kernel.org,yahoo.com,linuxfoundation.org,vger.kernel.org];
-	RCPT_COUNT_SEVEN(0.00)[11];
-	TAGGED_RCPT(0.00)[stable];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[jgg@ziepe.ca,stable@vger.kernel.org];
+	MISSING_XM_UA(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sashiko.dev:url,jic23-huawei:mid,intel.com:email,vger.kernel.org:from_smtp,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,vger.kernel.org:from_smtp,ziepe.ca:from_mime,ziepe.ca:dkim,ziepe.ca:mid]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: AE1207050E9
+X-Rspamd-Queue-Id: 73BF170517D
 
-On Thu, 4 Jun 2026 10:26:02 +0300
-Andy Shevchenko <andriy.shevchenko@intel.com> wrote:
-
-> On Thu, Jun 04, 2026 at 10:25:09AM +0300, Andy Shevchenko wrote:
-> > On Wed, Jun 03, 2026 at 06:23:45PM +0100, Jonathan Cameron wrote:  
-> > > On Mon, 18 May 2026 16:43:09 +0100
-> > > Jonathan Cameron <jic23@kernel.org> wrote:  
-> > > > On Mon, 18 May 2026 16:40:48 +0100
-> > > > Jonathan Cameron <jic23@kernel.org> wrote:  
-> 
-> ...
-> 
-> > > > https://sashiko.dev/#/patchset/20260518094311.2000-1-sozdayvek%40gmail.com
-> > > > 
-> > > > Does completely removing dev_err_probe() here drop the deferred probe reason
-> > > > tracking?
-> > > > While this patch successfully fixes the return code, dev_err_probe() also
-> > > > records the deferral reason in debugfs via device_set_deferred_probe_reason()
-> > > > when ret is -EPROBE_DEFER.
-> > > > Could we keep the diagnostic tracking by returning the result of
-> > > > dev_err_probe() directly instead?
-> > > >         if (ret)
-> > > >                 return dev_err_probe(&client->dev, ret, "IRQ request error\n");
-> > > > 
-> > > > Andy, what do you think?  
-> > > Andy?
-> > > 
-> > > This is a change you might have asked for, but sashiko is correctly noting
-> > > that we might loose a deferred reason even if the print is otherwise useless.  
+On Fri, Jul 03, 2026 at 07:57:04PM +0100, Robin Murphy wrote:
+> On 03/07/2026 5:49 pm, Jason Gunthorpe wrote:
+> > On Wed, Jul 01, 2026 at 06:45:17PM +0100, Robin Murphy wrote:
 > > 
-> > Incorrectly. IRQ core prints an error via dev_err_probe(). Did I miss something?  
+> > > @@ -211,6 +213,9 @@ bool arm_smmu_sva_supported(struct arm_smmu_device *smmu)
+> > >   	if (system_supports_bbml2_noabort())
+> > >   		feat_mask |= ARM_SMMU_FEAT_BBML2;
+> > > +	if (system_supports_haft())
+> > > +		feat_mask |= ARM_SMMU_FEAT_HAFT;
+> > 
+> > I fear this is going to make SVA stop working on systems it currently
+> > does work on, so it might be a major regression.
+> > 
+> > SMMU HTTU is not a commonly implemented feature.. I think of all the
+> > NVIDIA ARM chips only one supports it. Given that a quick internal
+> > check is raising concerns this will be breaking for us. We need to
+> > check in more detail which cores have HAFT.
+> > 
+> > Breaking already deployed SVA would be a major functional regression.
+> > 
+> > I think this should start by just enabling SMMU HAFT when CPU HAFT is
+> > on, when possible. Maybe print a warning on the mismatch instead of
+> > failing.
+> > 
+> > Since we can't break already deployed SVA a full solution would either
+> > have to somehow turn off CPU HAFT or we ignore the gap in the AF
+> > updates..
 > 
-> I'm referring to implementation of devm_request_result() in kernel/irq/devres.c.
-> 
-Oops. I almost lost this one. Patchwork had my back though.
+> TBH I do not know how bad the implications of
+> pmd_young()/pmdp_test_and_clear_young() returning a false-negative are, but
+> if we aren't considering mismatched CPUs harmless then surely the same must
+> apply for SVA. In the POE/GCS cases all that can really be broken is users'
+> expectations, if they've opted in to additional security features, but also
+> opted in to SVA wherein those features can't protect against DMA. Here,
+> though, it's the kernel mm layer itself that's impacted, and I'm not
+> confident to say that that isn't more serious.
 
-Applied.
+This has come up a few times now where the SMMU and CPU
+incompatibilities in ARM's IP are causing real headaches.
 
-Jonathan
+Let's give it some time and I can say for certain if we have impacted
+chips or not. I was able to confirm the server chips are OK, but there
+is still some concern about the embedded chips..
 
+I also don't know how harmless it is to ignore the aging. I thought
+the PTE was designed to be backwards compatible, but I never looked at
+how AF works..
+
+> Making HAFT depend on !SVA could only easily be done at the config
+> level, which seems arguably even more over-reaching
+
+Yeah, but if you could build a custom embedded kernel with HAFT
+disabled in kconfig maybe that is enough for some people.
+
+Jason
 
