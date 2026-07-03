@@ -1,145 +1,177 @@
-Return-Path: <stable+bounces-271686-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-271688-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id oJ/5MVNzR2qdYQAAu9opvQ
-	(envelope-from <stable+bounces-271686-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 03 Jul 2026 10:31:15 +0200
+	id MiY+K0Z2R2p4YgAAu9opvQ
+	(envelope-from <stable+bounces-271688-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 03 Jul 2026 10:43:50 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B3BF700142
-	for <lists+stable@lfdr.de>; Fri, 03 Jul 2026 10:31:15 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4033270039C
+	for <lists+stable@lfdr.de>; Fri, 03 Jul 2026 10:43:50 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=nabladev.com header.s=dkim header.b=TQ5Q8Q4x;
-	dmarc=pass (policy=reject) header.from=nabladev.com;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-271686-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-271686-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=Di6ZMyIH;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-271688-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-271688-lists+stable=lfdr.de@vger.kernel.org";
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 60B08301F482
-	for <lists+stable@lfdr.de>; Fri,  3 Jul 2026 08:30:59 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 95AED30B1DFE
+	for <lists+stable@lfdr.de>; Fri,  3 Jul 2026 08:39:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB510339719;
-	Fri,  3 Jul 2026 08:30:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CFA66347BC6;
+	Fri,  3 Jul 2026 08:39:00 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mx.nabladev.com (mx.nabladev.com [178.251.229.89])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E24983264C1;
-	Fri,  3 Jul 2026 08:30:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C900F33F5A8
+	for <stable@vger.kernel.org>; Fri,  3 Jul 2026 08:38:58 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783067454; cv=none; b=s1FFoFNSXtSAZB2efYoZvZ3vDTJOEFX0eqkVuYXkNWJGXRwsipe2ZVbsmO3NDngUhnzuHVch/2KICLmRWFWD/lwZya6puEkoOnmVyXP3cIyLdfi4REOSdurgf2/zaYqsrhOaWNdyOx7sflw/H2rNDLwh6SQDg/Ci0WVo+/UipNU=
+	t=1783067940; cv=none; b=U/PDKizicxG3wm8n8nMWKAvkY25U0IjWKHq1x9YrYDpYpHRLnodb+M82eW65KyQOMyzBTi+ct0x8XzSG33l9IrExfKD/i4BDkUMA7Jq9rfxvMsfew9AnmZ9YxdmuAf3ANLHbOentS5w0ehZkwGKqP3xePuq+XKhPZbmcuqRl3xU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783067454; c=relaxed/simple;
-	bh=hwsyZm1/G34HNtLQtbkaqg7zowOEukBeLR58BGiVuHM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=YbyBpJdtr8DF8mu9t9cBtcU8KwufIbBdy3mFAmwbYVMpt+Qspv2C4kRm8Xz/515Rb42m4YaJihbFYf3HTrP7qL0/XQ9kuE6svE9EJ8OF4IWsjgee2EcwcecPHWkfYWcZApSTWPv2vajr1rVT7/GXgElZqllokFoVV3vXeWKgp3Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nabladev.com; spf=pass smtp.mailfrom=nabladev.com; dkim=pass (2048-bit key) header.d=nabladev.com header.i=@nabladev.com header.b=TQ5Q8Q4x; arc=none smtp.client-ip=178.251.229.89
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id DF78E118BA9;
-	Fri,  3 Jul 2026 10:30:47 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nabladev.com;
-	s=dkim; t=1783067450;
-	h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 in-reply-to:references; bh=f0itF6EjDNn0IXyI8Zrp57euAIEQlqO+V6SAHn2ccBU=;
-	b=TQ5Q8Q4xjVPLGFZRXCg23KDvD2iFXRi01h2sNf7gP81/DF+keqn7W1S1VAbjHpMoISNh9/
-	maxUmU6qA6fuy1TXqPaH46fr3rhNW4WIp+W1XYhBKkkvrHOM6LsEu6ZCHBD3C6rNlmpx7I
-	+SvuBRKLVwy/TSjqDP1hTo70coCO+XfC1t7xU1W+fyHiZJ/zWCTADZlhpcO+Ke0MDfa6C2
-	94kBDvS10PVL3neifJtyf5bnbMG208Hm6wMseLby4sx0e3/GVoOea1GoxwLuD9EE0sDVMI
-	+tHnUScraACMxeB/z/RDd752I3CtPCqu6Vso6Puus0l/UdW633wtJ43gvWdLqQ==
-Date: Fri, 3 Jul 2026 10:30:45 +0200
-From: Pavel Machek <pavel@nabladev.com>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev,
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
-	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
-	patches@kernelci.org, lkft-triage@lists.linaro.org,
-	pavel@nabladev.com, jonathanh@nvidia.com, f.fainelli@gmail.com,
-	sudipm.mukherjee@gmail.com, rwarsow@gmx.de, conor@kernel.org,
-	hargar@microsoft.com, broonie@kernel.org, achill@achill.org,
-	sr@sladewatkins.com
-Subject: Re: [PATCH 5.10 00/96] 5.10.260-rc1 review
-Message-ID: <akdzNauW-cGJumrh@duo.ucw.cz>
-References: <20260702155108.949633242@linuxfoundation.org>
+	s=arc-20240116; t=1783067940; c=relaxed/simple;
+	bh=2Mw4C8cP0ikdSYP87ULxE42c8XBOd2yv7kzUvLAoAOs=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=KjUL3sCMgJ64gNNKmdeg+1xuDni0KUtDP5Gz4fkewKZxywl1ZdNVrE5W2ZcaVC5tupx1RCGRGdZLAUEcasHlfvZOmubj9DVj1kFUjgadEQFz2Lq63hpfFhVmsX+t1S08e9rVtbVfGUkZOt+5/fz6VbPkDVXGKPNoBJPN8SgY3d8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Di6ZMyIH; arc=none smtp.client-ip=209.85.214.173
+Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-2ca64989e64so2985485ad.2
+        for <stable@vger.kernel.org>; Fri, 03 Jul 2026 01:38:58 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1783067938; x=1783672738; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=S9S390maFuLWYl6z3JcBWyDaB6H00jCR0tOf9HccGvs=;
+        b=Di6ZMyIH8ltZYvdBkB8JanOcWS5t64BqqK1pGO7MhaI30a7OkWCZbuwU9H0EM8wUXq
+         zX7Hsg3p1l+RYBkuOf91Q13Z3I7q2Z6hbyov7Yw66YELd05K6gFH2KJLr2e9cjZYPa0/
+         AkNTpGRSbpRftEa2ixMQCaagKvcXTmvj35M/iW9YZyjxHsMXeRNLjI5LoqwAuNyGbQmC
+         gkpPGbiRYDlKZMx0TEHRBdwsudeGzXp3JFAiVQw2BBCVrf+SWFdc7w/u9QVBlRgKehrA
+         16b56Ec/PX1ty+VM3NFT34HSGBPoBQrhd6c9gqGcpXv6GlV3nIdvtkxwKda6nc/AYdOm
+         WS8g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1783067938; x=1783672738;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=S9S390maFuLWYl6z3JcBWyDaB6H00jCR0tOf9HccGvs=;
+        b=VonpBWuqtxsS9j9V5QRNFDek4S9dbMQ1hmr9pVrF7LbY+RWdDgqzZwNzqsfSB9iWVj
+         FxKlopDYLFepNwYwQrnmUVHU0xl/p2Ro5ayJTbuA03xciUxfubxCjX93PgcQTx7UGM7A
+         TDQ2Vcars0wy3XjEMaJB4NZbquFfaslkh4kA8XxyQJCfe2qO8ODXD/5YYUrxxHC7M+1/
+         z8X+8a/qsDRHs+iBSMo29RCUXGC4gEuf2QoQ0TCocmfshISylAElkfhKHF+epFy3yDdh
+         wZH2DFRT2zG7Uk6fJlydttPOdc38NDVCQljp7p2PTnT3WlJioduCdPr9GcxL17v/dRUD
+         vr2g==
+X-Forwarded-Encrypted: i=1; AHgh+RqO6g4ITdn22r3EHmJwYEZgd44j9icu2jVYklh3Haa/CL+hFzheehzq9DUUT3xQnZ55UZfxaJw=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyrDaLSrxNjobW10bkCJjn8s3c8sCn6jInUWMLPChrmfJJzjMzi
+	cCn4xJPJqtNWzbKlPq3CDjHHzbvdcIfClNxQ14flBvawnUX7CBWEWI2A
+X-Gm-Gg: AfdE7ckElKCGKW9dhaHC9TB1zhLDdIDtqqwJ7H1iqQtI3IsgHnozInYU/nK1OK6ISEk
+	VuTUkmZFdmCt6s0TvGDMSJx4m523Wv8mcMfJ03zQTJw5N3jNDI8wQ47nOgakZFiM/T5n6EgB8QU
+	vm3VKE+o5PbhBlhAs2Ck4H5etnInRNsQ1HjFZYyUpftyF1WblFvL9eMZUx5vE1PWT12KLTJMYjd
+	OqATp7lInuHv5EH3RE6wR85LgK/QI9zD+VTBDFGSyPwtGQ8FtzZ5T9YVa77+5xm0DrZWm8RZeAq
+	pyDcj+yqtCwGK/6Texd3NrZpzprEQTMYhOTycR7Aop/LwCmiF3j26kGoF2K40HzEAt0EJNu9Go/
+	EyRaewC9r+Q3Ow3xsq4WuMXWNH373aO/ZFd6ICwH+cOsMy0ln9pFA9lmb1Bs6hJSde7woTINP4Y
+	KKhfHN2dt/LLvDECd40UwgHqAQ
+X-Received: by 2002:a17:902:ef07:b0:2c9:b1ed:eb5d with SMTP id d9443c01a7336-2ca7e8ebde3mr113691185ad.47.1783067937746;
+        Fri, 03 Jul 2026 01:38:57 -0700 (PDT)
+Received: from ancienth-X870E-Nova-WiFi ([125.186.72.2])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2cad6f23061sm5954145ad.5.2026.07.03.01.38.54
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 03 Jul 2026 01:38:57 -0700 (PDT)
+From: Daehyeon Ko <4ncienth@gmail.com>
+To: netdev@vger.kernel.org
+Cc: Sabrina Dubroca <sd@queasysnail.net>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	linux-kernel@vger.kernel.org,
+	Daehyeon Ko <4ncienth@gmail.com>,
+	stable@vger.kernel.org
+Subject: [PATCH net] macsec: don't read an unset MAC header in macsec_encrypt()
+Date: Fri,  3 Jul 2026 17:36:33 +0900
+Message-ID: <20260703083634.2035145-1-4ncienth@gmail.com>
+X-Mailer: git-send-email 2.54.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="dmPIqyQ6TWCKY6T9"
-Content-Disposition: inline
-In-Reply-To: <20260702155108.949633242@linuxfoundation.org>
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-2.76 / 15.00];
-	SIGNED_PGP(-2.00)[];
+X-Spamd-Result: default: False [0.84 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[nabladev.com,reject];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
-	MIME_GOOD(-0.20)[multipart/signed,text/plain];
-	R_DKIM_ALLOW(-0.20)[nabladev.com:s=dkim];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	MAILLIST(-0.15)[generic];
+	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-271686-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	RECEIVED_HELO_LOCALHOST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER(0.00)[pavel@nabladev.com,stable@vger.kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[20];
-	FORGED_RECIPIENTS(0.00)[m:gregkh@linuxfoundation.org,m:stable@vger.kernel.org,m:patches@lists.linux.dev,m:linux-kernel@vger.kernel.org,m:torvalds@linux-foundation.org,m:akpm@linux-foundation.org,m:linux@roeck-us.net,m:shuah@kernel.org,m:patches@kernelci.org,m:lkft-triage@lists.linaro.org,m:pavel@nabladev.com,m:jonathanh@nvidia.com,m:f.fainelli@gmail.com,m:sudipm.mukherjee@gmail.com,m:rwarsow@gmx.de,m:conor@kernel.org,m:hargar@microsoft.com,m:broonie@kernel.org,m:achill@achill.org,m:sr@sladewatkins.com,m:ffainelli@gmail.com,m:sudipmmukherjee@gmail.com,s:lists@lfdr.de];
-	MIME_TRACE(0.00)[0:+,1:+,2:~];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[nabladev.com:+];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[pavel@nabladev.com,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[vger.kernel.org,lists.linux.dev,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,nabladev.com,nvidia.com,gmail.com,gmx.de,microsoft.com,achill.org,sladewatkins.com];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	TO_DN_SOME(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	MISSING_XM_UA(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[nabladev.com:from_mime,nabladev.com:email,nabladev.com:dkim,vger.kernel.org:from_smtp,gitlab.com:url,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+	FREEMAIL_CC(0.00)[queasysnail.net,lunn.ch,davemloft.net,google.com,kernel.org,redhat.com,vger.kernel.org,gmail.com];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-271688-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:netdev@vger.kernel.org,m:sd@queasysnail.net,m:andrew+netdev@lunn.ch,m:davem@davemloft.net,m:edumazet@google.com,m:kuba@kernel.org,m:pabeni@redhat.com,m:linux-kernel@vger.kernel.org,m:4ncienth@gmail.com,m:stable@vger.kernel.org,m:andrew@lunn.ch,s:lists@lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_SENDER(0.00)[4ncienth@gmail.com,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[4ncienth@gmail.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	RCPT_COUNT_SEVEN(0.00)[10];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable,netdev];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 5B3BF700142
+X-Rspamd-Queue-Id: 4033270039C
 
+macsec_encrypt() reads the Ethernet header via eth_hdr(skb)
+(skb->head + skb->mac_header) to memmove() the 12 source/destination MAC
+bytes forward and make room for the SecTAG.
 
---dmPIqyQ6TWCKY6T9
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+On the AF_PACKET SOCK_RAW + PACKET_QDISC_BYPASS transmit path the skb
+reaches the macsec ndo_start_xmit() with the MAC header unset, so
+eth_hdr(skb) resolves to skb->head + (u16)~0 and the read is out of
+bounds: a 12-byte heap over-read that is also emitted on the wire as the
+frame's outer source/destination MAC. KASAN reports a slab-out-of-bounds
+read in macsec_start_xmit() on 6.0; on current mainline a CONFIG_DEBUG_NET
+build flags it as an unset mac header in skb_mac_header().
 
-Hi!
+On the TX path the L2 header is at skb->data, so use skb_eth_hdr(), added
+by commit 96cc4b69581d ("macvlan: do not assume mac_header is set in
+macvlan_broadcast()") for exactly this purpose.
 
-> This is the start of the stable review cycle for the 5.10.260 release.
-> There are 96 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
+Fixes: c09440f7dcb3 ("macsec: introduce IEEE 802.1AE driver")
+Cc: stable@vger.kernel.org
+Signed-off-by: Daehyeon Ko <4ncienth@gmail.com>
+---
+ drivers/net/macsec.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-CIP testing did not find any problems here:
+diff --git a/drivers/net/macsec.c b/drivers/net/macsec.c
+index fb009120a924..dd89282f0179 100644
+--- a/drivers/net/macsec.c
++++ b/drivers/net/macsec.c
+@@ -646,7 +646,7 @@ static struct sk_buff *macsec_encrypt(struct sk_buff *skb,
+ 	}
+ 
+ 	unprotected_len = skb->len;
+-	eth = eth_hdr(skb);
++	eth = skb_eth_hdr(skb);
+ 	sci_present = macsec_send_sci(secy);
+ 	hh = skb_push(skb, macsec_extra_len(sci_present));
+ 	memmove(hh, eth, 2 * ETH_ALEN);
+-- 
+2.54.0
 
-https://gitlab.com/cip-project/cip-testing/linux-stable-rc-ci/-/tree/linux-5.10.y
-
-Tested-by: Pavel Machek (CIP) <pavel@nabladev.com>
-
-Best regards,
-                                                                Pavel
-
-
---dmPIqyQ6TWCKY6T9
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iF0EABECAB0WIQRPfPO7r0eAhk010v0w5/Bqldv68gUCakdzNQAKCRAw5/Bqldv6
-8rBeAKDD6y3hV/wnGHqwvlVpOhY/x+mN5gCfbo0cK1NYE0xaXZf6KG3oDEONF20=
-=pqdD
------END PGP SIGNATURE-----
-
---dmPIqyQ6TWCKY6T9--
 
