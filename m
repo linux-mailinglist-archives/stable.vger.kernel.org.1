@@ -1,192 +1,137 @@
-Return-Path: <stable+bounces-271677-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-271678-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id fQdSBCVtR2pyYAAAu9opvQ
-	(envelope-from <stable+bounces-271677-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 03 Jul 2026 10:04:53 +0200
+	id RpbAHRFtR2ptYAAAu9opvQ
+	(envelope-from <stable+bounces-271678-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 03 Jul 2026 10:04:33 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6E4696FFDCF
-	for <lists+stable@lfdr.de>; Fri, 03 Jul 2026 10:04:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D19696FFDBA
+	for <lists+stable@lfdr.de>; Fri, 03 Jul 2026 10:04:32 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=nhM+maWT;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-271677-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-271677-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b="PBJM57/N";
+	dmarc=pass (policy=none) header.from=linux.alibaba.com;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-271678-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-271678-lists+stable=lfdr.de@vger.kernel.org";
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id E2F7F305BCB6
-	for <lists+stable@lfdr.de>; Fri,  3 Jul 2026 07:56:31 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 90EB830F6DF5
+	for <lists+stable@lfdr.de>; Fri,  3 Jul 2026 07:57:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B501A36E498;
-	Fri,  3 Jul 2026 07:56:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 031A236EAA8;
+	Fri,  3 Jul 2026 07:57:23 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from out30-99.freemail.mail.aliyun.com (out30-99.freemail.mail.aliyun.com [115.124.30.99])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76602352010;
-	Fri,  3 Jul 2026 07:56:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23BF536E460;
+	Fri,  3 Jul 2026 07:57:19 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783065390; cv=none; b=bKS0IFNCXR4w79Zoh4eYQngdaCUQxconAH2vCk2zP173r6a9gCQZD4YPk6ED4hRhXRXHMcdOkfwVEbeqjdjWXn5f3EFXKJqvLhVhOIgn4qcXufffbymiQgSWamWcncTD+gc7lWIqqFHYL5qTk2EpdKUGFKO0XKDlDrQa8XgnMwM=
+	t=1783065442; cv=none; b=QAf/e3TEDuVOuGWsgwNB4AqYhVGCLo4+poyGwEXrbIF5vfqGzKYamqqVPJwrDgXVXTsbnM8pfoh48pHfdwKM3D6BKl8QCIHUPaw003ZYbj8CGWN3Xi6HyYj168He8+UjFtyQBc3gPgKxfcGB+orxAv7BxO0r0DfvxowZ4CmKw7w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783065390; c=relaxed/simple;
-	bh=LKcOlov2N3SHTXapa/nmcCUUNrIagP3wwg5tJkgrfWY=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=NMfqEWkiFT4tcX26bcORWYV9MWuk9AqFev+7jQsWcVb2uNmCqGoLLHopzUnXgckkJKONmpt1DrXCs95jIuaG/scan9M2LbazuznJWIFCa+xNvzigXGHUGKl7LPyQJpyrLLospUDlUvAkObyyTR8T2tBKwrXH5dtwm8OP551zADE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nhM+maWT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPS id F17ECC2BCB8;
-	Fri,  3 Jul 2026 07:56:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1783065390;
-	bh=LKcOlov2N3SHTXapa/nmcCUUNrIagP3wwg5tJkgrfWY=;
-	h=From:Date:Subject:To:Cc:Reply-To:From;
-	b=nhM+maWTKUaMKAWfzOHz4ItAd5ZLx8PQFJ/IJgwso1JF5okfC0hOAQ6QDCo8Nbo/Y
-	 uTwsEvv36QvCmd86xoXIk4YM/yrM6l8AZu+JfCcJ7WfuimHvHaJMzSW/LjyX01EUs4
-	 vS69Aehc0ZETxfl3R++215UPbmHs5N9FPQomfyqD90ATh13TsmG6nedvIT17WrgWLX
-	 d/hwTySzVlkn3W0U3YYjaRmPX/rYG3vUMx/yc24QOXu1YORWAwr61BLWBVLoSm97P8
-	 AKSWEYGxu9z9ZOL6aFtTNB1zYn1ezM9UY6C0AVzzD3F9QtGbnu1tOJpRB6N+7TEhqe
-	 YL2eTkP3eDylA==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id CF348C43458;
-	Fri,  3 Jul 2026 07:56:29 +0000 (UTC)
-From: Christian Taedcke via B4 Relay <devnull+christian.taedcke.weidmueller.com@kernel.org>
-Date: Fri, 03 Jul 2026 09:56:12 +0200
-Subject: [PATCH v3] dmaengine: nbpfaxi: Fix setting channel irqs in probe()
+	s=arc-20240116; t=1783065442; c=relaxed/simple;
+	bh=Vta1+vp2i+4VI6pEZZ43d5zvxBshInKjYhg+Kpo4600=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=GNkYd1Hv9kpGIFoUVhoWb/stx9rPqxCGEgV6jiTYqomVEk26+auOGRJugKfvfoqPkG2ynFb0bUWDy508X6kBIPvJpQm2GRTKaEwqdik2zA1CHk+0AKVo9eU8lnICE+PuTCXK1eCRvGfNbyC/VljR/wo7qevRmGYnstKhEOyhDUw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=PBJM57/N; arc=none smtp.client-ip=115.124.30.99
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1783065432; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
+	bh=gzZn24puWspThT2YANHj6Y56yEZL3byW0T0qvsKl+OA=;
+	b=PBJM57/NATGucMxvYSSXdsx+qgj+OYiYzYWVzuvJIJcpZXDZXySv0dCH4A4BNfb/URw9e7Zlm7i5hfvYb0yAj52rUtcawLO5LZhMxYVTsBY2FXg7/POoWpKEQksXYJdqQuyWf69NPU/YGivY3tvdQlxef/wx/+xJ54vL7fQfAZM=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R121e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033037033178;MF=libaokun@linux.alibaba.com;NM=1;PH=DS;RN=12;SR=0;TI=SMTPD_---0X6IcxhT_1783065430;
+Received: from 30.221.129.235(mailfrom:libaokun@linux.alibaba.com fp:SMTPD_---0X6IcxhT_1783065430 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Fri, 03 Jul 2026 15:57:10 +0800
+Message-ID: <b93095c6-0717-4616-9702-570b2927429b@linux.alibaba.com>
+Date: Fri, 3 Jul 2026 15:57:09 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] ext4: get rid of ppath in get_ext_path()
+To: Greg KH <gregkh@linuxfoundation.org>
+Cc: Jiayuan Chen <jiayuan.chen@linux.dev>, Wang Jun <1742789905@qq.com>,
+ tytso@mit.edu, adilger.kernel@dilger.ca, linux-ext4@vger.kernel.org,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org, libaokun1@huawei.com,
+ 25125332@bjtu.edu.cn, Jan Kara <jack@suse.cz>,
+ Ojaswin Mujoo <ojaswin@linux.ibm.com>
+References: <tencent_C982B0201FE8F041BD5B4FC1ED7D646A740A@qq.com>
+ <2026062643-tamer-limes-a320@gregkh>
+ <rrsgndgpxyrmu6okb43u6wkdaibbidlbyqgugeeijd2b44sf4y@6lzmm4v4xvdp>
+ <2026070210-catty-grape-2568@gregkh>
+From: Baokun Li <libaokun@linux.alibaba.com>
+In-Reply-To: <2026070210-catty-grape-2568@gregkh>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260703-upstreaming-nbpfaxi-v1-v3-1-24f7f9aa102f@weidmueller.com>
-X-B4-Tracking: v=1; b=H4sIABtrR2oC/42NzQ7CIBAGX8VwFgPUUuLJ9zAeKCztmv4F2lrT9
- N2FevSgyV4m+XZmJQE8QiCXw0o8zBiw7yJkxwMxte4qoGgjE8GEZAUTdBrC6EG32FW0KwenF6Q
- zpyyTZ8jyXDuVk/g8eHC47OLb/cNhKh9gxmRLixrD2PvXXp552v2MxOPUWQVaqYwZ0NcnoG0na
- BrwJ9O3JKVm8Z9MRBlIK0teKC0K9S3btu0NT+qR4iEBAAA=
-X-Change-ID: 20260702-upstreaming-nbpfaxi-v1-0364e355af85
-To: Vinod Koul <vkoul@kernel.org>, Frank Li <Frank.Li@kernel.org>, 
- Dan Carpenter <error27@gmail.com>, christian.taedcke-oss@weidmueller.com
-Cc: dmaengine@vger.kernel.org, linux-kernel@vger.kernel.org, 
- stable@vger.kernel.org, 
- Christian Taedcke <christian.taedcke@weidmueller.com>
-X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1783065388; l=2324;
- i=christian.taedcke@weidmueller.com; s=20260702;
- h=from:subject:message-id;
- bh=AyxnLI/6ejAzATGLnoVUg8vFQg+Ck0fOd3H2NJ7M7M8=;
- b=hllzCXN0NijWy0Y1HV7Qfpucv5LSEaUdngpJMKNEDHtwPxaYQoFbfjggxY2WJDRoddmGxiwNK
- WXZO34LAmLsBLEGCGICTZR4ym3hh4s7bCYmM4CZL0Y5aZExoH7I7tMR
-X-Developer-Key: i=christian.taedcke@weidmueller.com; a=ed25519;
- pk=fVCoBhFV3uMogA2nxIOU/rynNY+O2TDJgWvWjR06TrQ=
-X-Endpoint-Received: by B4 Relay for
- christian.taedcke@weidmueller.com/20260702 with auth_id=847
-X-Original-From: Christian Taedcke <christian.taedcke@weidmueller.com>
-Reply-To: christian.taedcke@weidmueller.com
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-5.16 / 15.00];
-	WHITELIST_SPF_DKIM(-3.00)[kernel.org:d:+,kernel.org:s:+];
+X-Spamd-Result: default: False [-12.16 / 15.00];
+	WHITELIST_DMARC(-7.00)[alibaba.com:D:+];
+	WHITELIST_SPF_DKIM(-3.00)[alibaba.com:d:+,kernel.org:s:+];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	DMARC_POLICY_ALLOW(-0.50)[linux.alibaba.com,none];
 	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_DKIM_ALLOW(-0.20)[linux.alibaba.com:s=default];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-271677-lists,stable=lfdr.de,christian.taedcke.weidmueller.com];
+	FORGED_RECIPIENTS(0.00)[m:gregkh@linuxfoundation.org,m:jiayuan.chen@linux.dev,m:1742789905@qq.com,m:tytso@mit.edu,m:adilger.kernel@dilger.ca,m:linux-ext4@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,m:libaokun1@huawei.com,m:25125332@bjtu.edu.cn,m:jack@suse.cz,m:ojaswin@linux.ibm.com,s:lists@lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:vkoul@kernel.org,m:Frank.Li@kernel.org,m:error27@gmail.com,m:christian.taedcke-oss@weidmueller.com,m:dmaengine@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,m:christian.taedcke@weidmueller.com,s:lists@lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER(0.00)[devnull@kernel.org,stable@vger.kernel.org];
-	TO_DN_SOME(0.00)[];
-	FREEMAIL_TO(0.00)[kernel.org,gmail.com,weidmueller.com];
+	FORGED_SENDER(0.00)[libaokun@linux.alibaba.com,stable@vger.kernel.org];
+	RCPT_COUNT_TWELVE(0.00)[12];
+	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
-	REPLYTO_DOM_NEQ_FROM_DOM(0.00)[];
-	REPLYTO_DOM_NEQ_TO_DOM(0.00)[];
-	HAS_REPLYTO(0.00)[christian.taedcke@weidmueller.com];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[devnull@kernel.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	ALIAS_RESOLVED(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	TAGGED_FROM(0.00)[bounces-271678-lists,stable=lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DKIM_TRACE(0.00)[linux.alibaba.com:+];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[libaokun@linux.alibaba.com,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[linux.dev,qq.com,mit.edu,dilger.ca,vger.kernel.org,huawei.com,bjtu.edu.cn,suse.cz,linux.ibm.com];
+	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,weidmueller.com:replyto,weidmueller.com:mid,weidmueller.com:email,msgid.link:url,vger.kernel.org:from_smtp]
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	TO_DN_SOME(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linux.alibaba.com:from_mime,linux.alibaba.com:dkim,linux.alibaba.com:mid,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 6E4696FFDCF
+X-Rspamd-Queue-Id: D19696FFDBA
 
-From: Christian Taedcke <christian.taedcke@weidmueller.com>
+On 2026/7/2 13:47, Greg KH wrote:
+> On Thu, Jul 02, 2026 at 09:48:33AM +0800, Jiayuan Chen wrote:
+>> Hi Greg,
+>>
+>> Any update here ?
+> What is "here"?  There is no context in this email :(
+>
+>> We rebased the 6.6 stable one week ago and also found the same regression.
+> What regression?  Again, no context :(
+>
+> confused,
+>
+> greg k-h
 
-When one irq is used for errors and each channel gets a dedicated irq,
-the total number of irqs is num_channels + 1. If the error irq is not
-the last entry in irqbuf[] but an earlier one, the loop assigning
-per-channel irqs terminates one iteration too early and the last
-channel is left without an irq.
+For some reason, LTS only merged a subset of my patchset, causing
+some commits to lack their prerequisite patches. This leads to error
+numbers being interpreted as valid pointers.
 
-Iterate over all collected irqs instead of num_channels so the
-error-irq skip does not shorten the effective channel count.
+For details, see the fix patchset that Erkun submitted to 6.6.y
+(it fell through the cracks for some reason):
 
-Fixes: 188c6ba1dd92 ("dmaengine: nbpfaxi: Fix memory corruption in probe()")
-Cc: stable@vger.kernel.org
-Signed-off-by: Christian Taedcke <christian.taedcke@weidmueller.com>
----
-Changes in v3:
-- Guard against out-of-bound writes to chan in case of an invalid eirq.
-- Link to v2: https://patch.msgid.link/20260702-upstreaming-nbpfaxi-v1-v2-1-e6d6b178a278@weidmueller.com
+https://lore.kernel.org/all/20260421113416.4040274-1-yangerkun@huawei.com/
 
-Changes in v2:
-- Advance chan only when assigning a real irq to fix out-of-bounds
-  memory access.
-- Remove now redundant ARRAY_SIZE(irqbuf) check.
-- Link to v1: https://patch.msgid.link/20260702-upstreaming-nbpfaxi-v1-v1-1-fd8ea8830cea@weidmueller.com
+Either applying this fix patchset or reverting the incorrectly merged
+commit should resolve the issue.
 
-To: christian.taedcke-oss@weidmueller.com
-To: Vinod Koul <vkoul@kernel.org>
-To: Frank Li <Frank.Li@kernel.org>
-To: Dan Carpenter <error27@gmail.com>
-Cc: dmaengine@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org
----
- drivers/dma/nbpfaxi.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/dma/nbpfaxi.c b/drivers/dma/nbpfaxi.c
-index 05d7321629cc..b1f06f0bd0d5 100644
---- a/drivers/dma/nbpfaxi.c
-+++ b/drivers/dma/nbpfaxi.c
-@@ -1374,14 +1374,14 @@ static int nbpf_probe(struct platform_device *pdev)
- 		if (irqs == num_channels + 1) {
- 			struct nbpf_channel *chan;
- 
--			for (i = 0, chan = nbpf->chan; i < num_channels;
--			     i++, chan++) {
-+			for (i = 0, chan = nbpf->chan; i < irqs; i++) {
- 				/* Skip the error IRQ */
- 				if (irqbuf[i] == eirq)
--					i++;
--				if (i >= ARRAY_SIZE(irqbuf))
-+					continue;
-+				if (chan >= nbpf->chan + num_channels)
- 					return -EINVAL;
- 				chan->irq = irqbuf[i];
-+				chan++;
- 			}
- 		} else {
- 			/* 2 IRQs and more than one channel */
-
----
-base-commit: dc59e4fea9d83f03bad6bddf3fa2e52491777482
-change-id: 20260702-upstreaming-nbpfaxi-v1-0364e355af85
-
-Best regards,
---  
-Christian Taedcke <christian.taedcke@weidmueller.com>
-
+Thanks,
+Baokun
 
 
