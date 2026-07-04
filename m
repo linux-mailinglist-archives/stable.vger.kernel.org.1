@@ -1,132 +1,183 @@
-Return-Path: <stable+bounces-271938-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-271939-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id naXUFeDtSGrovQAAu9opvQ
-	(envelope-from <stable+bounces-271938-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 04 Jul 2026 13:26:24 +0200
+	id dG32GCzwSGpgvgAAu9opvQ
+	(envelope-from <stable+bounces-271939-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 04 Jul 2026 13:36:12 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E06E7076AD
-	for <lists+stable@lfdr.de>; Sat, 04 Jul 2026 13:26:23 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id A0C7C7076DC
+	for <lists+stable@lfdr.de>; Sat, 04 Jul 2026 13:36:11 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=XVoiGzNh;
-	dmarc=pass (policy=none) header.from=linuxfoundation.org;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-271938-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-271938-lists+stable=lfdr.de@vger.kernel.org";
-	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=pGFIUxfl;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-271939-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-271939-lists+stable=lfdr.de@vger.kernel.org";
+	arc=pass ("subspace.kernel.org:s=arc-20240116:i=2")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 491053010D91
-	for <lists+stable@lfdr.de>; Sat,  4 Jul 2026 11:26:22 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B609A30115A5
+	for <lists+stable@lfdr.de>; Sat,  4 Jul 2026 11:36:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B46BC3A3E88;
-	Sat,  4 Jul 2026 11:26:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF73039A079;
+	Sat,  4 Jul 2026 11:36:07 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f50.google.com (mail-pj1-f50.google.com [209.85.216.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9149320DD51;
-	Sat,  4 Jul 2026 11:26:20 +0000 (UTC)
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783164381; cv=none; b=RU8CH4sIA9IMrnd9xf9NOL3VPUssjY62PU0rWaIHok8dNT5u+0VjLQhm4brgoGicBfej/mRCiLeGEwjf26NsNOvLjkdsw+hXyK29Df50WFy5Ns5Z0JMU0xcPZGnZ4tJ6ijEJGopka3F8buFQIzHmqg+yiBpPWMZpUorxU3THRCs=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783164381; c=relaxed/simple;
-	bh=R8i4sagldOv4yQLdQaEhlmYUmwrGWssCooWX4BYUI6E=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=rOgyH+FQdKW351mOwRWb9OICnGX/Rp+vzItST43YNar1WEYkwUCX5I4vFR8XFaP0RjD+kZgyjoDrWaQgeyzjWZfT5osp5WWKWJ42rsZTNA4ut/8htssPdcCQcb8hktriMz+sA1+R53y1Qm016bpdtrrhZyvyiIu1Xosy+J2MHxc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XVoiGzNh; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A12601F000E9;
-	Sat,  4 Jul 2026 11:26:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1783164380;
-	bh=3GSvMJxVPm/Nr5IQG5GtIzxy8+wc68YErvrALkKZxes=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=XVoiGzNhg/qhNfqxVELuAW3ghhxdMZBe++Lem+8qGNwMssJIC9hhnG9QGHhid8bmk
-	 PHz4CL0suVAvCqU9AsJWLBwHBpDbODmPMZ4VzXhBlhGUj33GkTiu1IvRZQttISbRlW
-	 kQfo5M9GZBZw3BLrx8FHyuRpuFHL3X4HvQLawKF8=
-Date: Sat, 4 Jul 2026 13:26:29 +0200
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: maher azz <maherazz04@gmail.com>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev,
-	Stefano Garzarella <sgarzare@redhat.com>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
-	Arseniy Krasnov <avkrasnov@salutedevices.com>,
-	Jakub Kicinski <kuba@kernel.org>, Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 7.0 345/461] vsock/virtio: fix zerocopy completion for
- multi-skb sends
-Message-ID: <2026070421-overflow-voyage-73b8@gregkh>
-References: <20260528194646.819809818@linuxfoundation.org>
- <20260528194657.359703301@linuxfoundation.org>
- <CAFQ-Uc-wu8fbTDXhtyODCz36_1DBue5ay7V2LpzjrUgHs+0WvQ@mail.gmail.com>
- <2026062933-storeroom-amusement-0b66@gregkh>
- <CAFQ-Uc9p7PhXp-FC4N3iYAtyeKgN6z4A_+L8YwKDAkXxZAvksg@mail.gmail.com>
- <2026070446-blank-duckbill-13ec@gregkh>
- <CAFQ-Uc8AAEGw90BPximQm3cLzB+KiH_PXr-UZEPK9nvueMGtSg@mail.gmail.com>
- <2026070406-squander-geography-213a@gregkh>
- <CAFQ-Uc8CDnGUH3xhjaVBd+Dr=+b7Lfu1SUrGGh2gQ17WW+gqxQ@mail.gmail.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FC9F33F5A8
+	for <stable@vger.kernel.org>; Sat,  4 Jul 2026 11:36:06 +0000 (UTC)
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1783164967; cv=pass; b=LKmfcI/OYad/m16ZK7bSn/Zr9CV16qaCYS7mbb6xMUDWJ1LTt8YEdt9gA+9zsYJv3bG8rCaboFbuVRiJNHkeqNPzQzLFUMUhYXTYiFLD8qAZA9aFfhRHM0eyrBaHMt27DevGoe+8Kdpoh0lzZQELQw20e8gUbWYp+bejwJhLeoo=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1783164967; c=relaxed/simple;
+	bh=rY591y6LN3cQ4h4L2/+rf8c/HRQBY1pWbtbQ++fadR8=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=E+6aZKUg1XYhgEjfurCTIhWSp36algGf8lGFDb7j+M/JiZ3O5bYnDcVNomCvGGwy4CEsIQ39GQ+3mqhOrEdqYaLbVuAgBd5ODEO69BLX7Ar5eSfid+vbbFvbV02m93RQsRW8P6drSu46pthen+ydypV4OVoChCKaN3lIg/7URH4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=pGFIUxfl; arc=pass smtp.client-ip=209.85.216.50
+Received: by mail-pj1-f50.google.com with SMTP id 98e67ed59e1d1-383cb94f742so360475a91.3
+        for <stable@vger.kernel.org>; Sat, 04 Jul 2026 04:36:06 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1783164966; cv=none;
+        d=google.com; s=arc-20260327;
+        b=Lq6O+pgHKAJn5eIFPzA3hBnxeTHzrVWl4JsyK6HiltwucaunA5FRGkjrivF3QAEypU
+         jc0uKoUru4zNfZyeoGfx5MUBAeB9yos0c2bNHvZe5NJ1joKt1zehFQgj8sXRLdbs10Sd
+         pVtqwxOqnBYBfKlpxXfAts6liOwh4gft8TXq/scu3fIBfHnKPJMVShuRa7UYSEXILv2M
+         /Ogg/BEJ/C7h5zS9mA74VtzOs52IArqCTgjtKbikgx+i7/BTu1YZRnq1l9mJ7Xsx7FJt
+         ahh9O85PGoifu3FpWfkuwqOxDrKzkscXJd5hBd/SjDspNiW3rdq98ZyLBIT31zOUvEfp
+         yd0Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=MoO9TmSNA1KXO5Z6hnx0FT1akZ4fwPRdrddAT7qIL+w=;
+        fh=dljNS2ooK6fYvh9vxurHKUMg+Tx+AOHz+/1AkKhkEKc=;
+        b=saY/MYBAxrijUAw54xoe7uHOYuoaL1wK1iA9KIaa9cypt4xSjUvuBI3myrBsBAbaIX
+         TVA6YzexEren0LPsI+6o9uA7kIkUTwPJ2eyLhSVppnyZYwEQ8ye0SAG/FvPs6Jb6QxAo
+         KGzyWsc3TIGzIU8KF7GQT/IhGPSO/tZkWqt/um4+QMSbIzDHBxy4FoDdpS4q76VMIoDa
+         8EXWOr3qlJl/c3CHTo6cyAn6ONZipvIYlU72Mnteg8BWiMu27I6yiPxF6B/eBB9mKcs7
+         9Ii6NveOiqF4z6llMPe8iAStPUO4k6FgWOE7dT+umDLDQgQIAbn/7l3aelebb52MlxFc
+         MfyQ==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1783164966; x=1783769766; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=MoO9TmSNA1KXO5Z6hnx0FT1akZ4fwPRdrddAT7qIL+w=;
+        b=pGFIUxflqFAOEKnsbevDDyQN81L0b4pMZJJEFm7qjMwQAVQDMH2soXBSgvEFrHKrAE
+         yJqhpdmJ4E6p74GXYB9XO0hallFVMewZnRa5vfw5XSJMM8XuPMDgaeiAUUuNn89zfdyx
+         pbXwI/UvdSMNvPUNDoNe+gpWkdwwLum5DM7bQ9dR47Vo2nUWiuEgHbtCRIRugyq/QHWL
+         F+/j701+ru944ACu1L5+6zjCfcRZPR/IOs84nn0KE6MnGBPMB4U4mSN5YDUFHa3j/877
+         NQwKWbHg5FYMoQsRYD6LuWn+y9ndKAp9IquoZG5AxpcXGGQrZeb2Psh/GHHQoLSPf/yJ
+         mnFA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1783164966; x=1783769766;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=MoO9TmSNA1KXO5Z6hnx0FT1akZ4fwPRdrddAT7qIL+w=;
+        b=PVor6j4pE5mp9Gjr0VKwH1qybsrOFY4cJhfS9F0sVApMDnNVht1TN/zB0C1c+dza5g
+         hAsFAzC7r7feqZ42Zoy1v9sfX8Fk1zrvtu+jHJZm9LQlqhb3mZ//XpFkAybMF+/auGrF
+         BLzgQ2Q4qkdtzNue5C7O9hLzRbAO6HZ0wGirqcPcCfbNkpPgKOZMu6HL70qJ6tiBLUm9
+         WKw9TtNQHiLsbj/i1Qqi25OUdQ9nr28kqf27VuLaJUXYqmDGj/ctYZtXYjRfDXslPLO5
+         GWz+LqXoK26V/WIWUHxUlFL6YKvw1GBujVIZWP/GjkvSmgwxE8ry0w5O7tebrS5aNrdd
+         uO8Q==
+X-Gm-Message-State: AOJu0Yxu31bQeBK+kDd+qhKvk92XzlkVaE5592tqYk86VmHkv/49FsFR
+	okO6NtTkOWXHTW/6F9Q8P5dYtEz4eWeqf4Lpw7YqL7OzqJhDv32yYFUwR98rriF1jmEMg+/6YWS
+	hTj1DPaUDcARqNXTHh4FMiobO+e5bRjU=
+X-Gm-Gg: AfdE7cmH31olgyGmgbxdMrOkCkZR9E+s78jkVBGMJZysW4Ibogh4lPSCnoXXRyU/uk+
+	GPlpviPSFPsAoQjAROi8qvCc6nya40qzHFs14+iHzLtV9C+Fq8UxNwJLC6/WQC5+wiYx5Yc3dxH
+	3dxy/Y08r2D69tvBMjTRfaBT0dfZk5rZgMhKPZFo3+2couq18Gs98EyfLLnv6afWLKprvU3Y7Oh
+	x1y63QL3Wa4uoP8JPUiDd5wA+6Yle+CXPpp8vFpyxahKLcYbRiR9C7AupW+o1AtX7PISQrpaQ==
+X-Received: by 2002:a17:90b:4d88:b0:37f:d9dc:557 with SMTP id
+ 98e67ed59e1d1-3829d70cc3bmr2960626a91.16.1783164965524; Sat, 04 Jul 2026
+ 04:36:05 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAFQ-Uc8CDnGUH3xhjaVBd+Dr=+b7Lfu1SUrGGh2gQ17WW+gqxQ@mail.gmail.com>
+References: <20260528194646.819809818@linuxfoundation.org> <20260528194657.359703301@linuxfoundation.org>
+ <CAFQ-Uc-wu8fbTDXhtyODCz36_1DBue5ay7V2LpzjrUgHs+0WvQ@mail.gmail.com>
+ <2026062933-storeroom-amusement-0b66@gregkh> <CAFQ-Uc9p7PhXp-FC4N3iYAtyeKgN6z4A_+L8YwKDAkXxZAvksg@mail.gmail.com>
+ <2026070446-blank-duckbill-13ec@gregkh> <CAFQ-Uc8AAEGw90BPximQm3cLzB+KiH_PXr-UZEPK9nvueMGtSg@mail.gmail.com>
+ <2026070406-squander-geography-213a@gregkh> <CAFQ-Uc8CDnGUH3xhjaVBd+Dr=+b7Lfu1SUrGGh2gQ17WW+gqxQ@mail.gmail.com>
+ <2026070421-overflow-voyage-73b8@gregkh>
+In-Reply-To: <2026070421-overflow-voyage-73b8@gregkh>
+From: maher azz <maherazz04@gmail.com>
+Date: Sat, 4 Jul 2026 12:35:53 +0100
+X-Gm-Features: AVVi8CecrYlLo7QVlDLZCm7Fw8LHog-pVbamjikeEXELRSjLIlFzv8YtHUdmvRM
+Message-ID: <CAFQ-Uc9zmukVV3GcpneMJ5hrK4mB17FBSPyBh1_yjff5JC-r1g@mail.gmail.com>
+Subject: Re: [PATCH 7.0 345/461] vsock/virtio: fix zerocopy completion for
+ multi-skb sends
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
+	Stefano Garzarella <sgarzare@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>, 
+	Arseniy Krasnov <avkrasnov@salutedevices.com>, Jakub Kicinski <kuba@kernel.org>, 
+	Sasha Levin <sashal@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [2.34 / 15.00];
-	MID_END_EQ_FROM_USER_PART(4.00)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+X-Spamd-Result: default: False [-2.16 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:maherazz04@gmail.com,m:stable@vger.kernel.org,m:patches@lists.linux.dev,m:sgarzare@redhat.com,m:mst@redhat.com,m:avkrasnov@salutedevices.com,m:kuba@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
-	FREEMAIL_TO(0.00)[gmail.com];
-	TAGGED_FROM(0.00)[bounces-271938-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-271939-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:gregkh@linuxfoundation.org,m:stable@vger.kernel.org,m:patches@lists.linux.dev,m:sgarzare@redhat.com,m:mst@redhat.com,m:avkrasnov@salutedevices.com,m:kuba@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	FORGED_SENDER(0.00)[maherazz04@gmail.com,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	FORWARDED(0.00)[lists@lfdr.de];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FREEMAIL_FROM(0.00)[gmail.com];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	FROM_NEQ_ENVFROM(0.00)[maherazz04@gmail.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MID_RHS_MATCH_FROMTLD(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,vger.kernel.org:from_smtp,linuxfoundation.org:from_mime,linuxfoundation.org:dkim,gregkh:mid]
+	RCPT_COUNT_SEVEN(0.00)[8];
+	MISSING_XM_UA(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[mail.gmail.com:mid,linuxfoundation.org:email,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 8E06E7076AD
+X-Rspamd-Queue-Id: A0C7C7076DC
 
-On Sat, Jul 04, 2026 at 12:20:27PM +0100, maher azz wrote:
-> I sent it like half an hour ago the same way I'm sending you this
-> email, I sent it in plain text mode with the subject "CVE request for
-> a patched Linux kernel LPE vulnerability.",I really don't know what is
-> the issue..
+I=E2=80=99m using gmail directly. I=E2=80=99m requesting a CVE to refer to =
+it directly
+as i'm going to disclose the poc on my accounts so people know about
+it and patch
 
-Please look in your email server logs for what is going wrong, as I
-don't see it here at all.
-
-> Anyway, can you please take a look, since a CVE should've been issued
-> a long time ago, Ubuntu 24.04 latest kernel with latest patch is still
-> vulnerable and many morea
-
-That's up to that vendor, not us, to fix it there.  Why not talk to
-them and what does a CVE have to do with that?
-
-thanks,
-
-greg k-h
+On Sat, Jul 4, 2026 at 12:26=E2=80=AFPM Greg Kroah-Hartman
+<gregkh@linuxfoundation.org> wrote:
+>
+> On Sat, Jul 04, 2026 at 12:20:27PM +0100, maher azz wrote:
+> > I sent it like half an hour ago the same way I'm sending you this
+> > email, I sent it in plain text mode with the subject "CVE request for
+> > a patched Linux kernel LPE vulnerability.",I really don't know what is
+> > the issue..
+>
+> Please look in your email server logs for what is going wrong, as I
+> don't see it here at all.
+>
+> > Anyway, can you please take a look, since a CVE should've been issued
+> > a long time ago, Ubuntu 24.04 latest kernel with latest patch is still
+> > vulnerable and many morea
+>
+> That's up to that vendor, not us, to fix it there.  Why not talk to
+> them and what does a CVE have to do with that?
+>
+> thanks,
+>
+> greg k-h
 
