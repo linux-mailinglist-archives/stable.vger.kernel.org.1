@@ -1,91 +1,85 @@
-Return-Path: <stable+bounces-271924-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-271925-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id emu2Bs+iSGqxsAAAu9opvQ
-	(envelope-from <stable+bounces-271924-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 04 Jul 2026 08:06:07 +0200
+	id ShNoKlmpSGp1sQAAu9opvQ
+	(envelope-from <stable+bounces-271925-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 04 Jul 2026 08:34:01 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 70346706CE6
-	for <lists+stable@lfdr.de>; Sat, 04 Jul 2026 08:06:06 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id E247C706DE9
+	for <lists+stable@lfdr.de>; Sat, 04 Jul 2026 08:34:00 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=dBoBvSia;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=ZNNgzQT5;
 	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-271924-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-271924-lists+stable=lfdr.de@vger.kernel.org";
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-271925-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-271925-lists+stable=lfdr.de@vger.kernel.org";
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B5CB9301DE30
-	for <lists+stable@lfdr.de>; Sat,  4 Jul 2026 06:01:23 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id ABFCA3015453
+	for <lists+stable@lfdr.de>; Sat,  4 Jul 2026 06:33:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27A3238D414;
-	Sat,  4 Jul 2026 06:01:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 221F02E2DD2;
+	Sat,  4 Jul 2026 06:33:59 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pj1-f41.google.com (mail-pj1-f41.google.com [209.85.216.41])
+Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A847F38D3F7
-	for <stable@vger.kernel.org>; Sat,  4 Jul 2026 06:01:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8229E433E7A
+	for <stable@vger.kernel.org>; Sat,  4 Jul 2026 06:33:57 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783144882; cv=none; b=fvBoGv2fmDeX+E9Z8AivRD4/YGojjyb5jJ+ewxp+RhbuEphpnocv6nl5GJ3/jF/ovmJpPhZnr675uoqgIdpm5ChBK2vehd/2Wld/EDLjn+ibLatu8a4DzPvoF425mIghjExGHxG5/cSoR/frvtH4tQJjVglTKdSAdXEhPJomjKI=
+	t=1783146838; cv=none; b=Wix7SbH4LFgPvaIlV39ovTu3Aa+KcXEhzOlGqSAzL4P/H7hk/itXLVSHvgSyGu62ND/8LszRk3pLVM5uiZFsYXml61BUmBguFL07xGnPukE1lWMKxAd+WqQO7kC275L7KI06aK3vMUFVh9QQnj2vycYs7oh9YGlpHXXezCILH7E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783144882; c=relaxed/simple;
-	bh=U7meGQ/yqO5nue3fmIDavhUgJX4jlw+ACCtfxt6efyU=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=UVJBx7IQvK/jBxCoBmp07eEAltFsSy2/geLS3PiXhkQVfkuWLbyol//kVUZ8ZzzEv5NsdSxzpROe4BTN5vy00lM3+nry7RISp9ZvK+tdLpaLONyuy6J1W2NJDFlxuPnYFtblYgl9gdKU5mdJtiM7rAmOiBy/q3L3Tnu8xgPMd5Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=dBoBvSia; arc=none smtp.client-ip=209.85.216.41
-Received: by mail-pj1-f41.google.com with SMTP id 98e67ed59e1d1-37d55e8d3e3so855548a91.0
-        for <stable@vger.kernel.org>; Fri, 03 Jul 2026 23:01:21 -0700 (PDT)
+	s=arc-20240116; t=1783146838; c=relaxed/simple;
+	bh=0WY4lujUoW+8t9RPZRyrWC9DAATMKinYMCIbcmBY9IY=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=fR5LyziX1crkyZ6J+3XZ1kG4XpOhUNx/vjOUrmgIFe1s55pbFtdJCJ371QLAdtL0qOttfc8ghqkeHdJ6urRMpAe/qWlKmjp9bJ8GG4chp6t0czkDwrclAwbopWXC45YUR0ChbrFc5QKPEmnK3ibqyI83kQqFkO1CIFlLUNXhd1s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ZNNgzQT5; arc=none smtp.client-ip=209.85.128.46
+Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-49241dbf9c1so10427375e9.2
+        for <stable@vger.kernel.org>; Fri, 03 Jul 2026 23:33:57 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1783144881; x=1783749681; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1783146836; x=1783751636; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=qgeg1hy/5eCNX45AyPB+pHlq+bl3Mkeu4yKxcFxgJUE=;
-        b=dBoBvSiazvtcI9BjWQD2C4QFZOyw4pnWYoCX4Ba28rN/pBcIospsB7FZCGKb6SjppR
-         Hr2tWvF7L1JVElFYmWIfEkIx+V4l5Wm0IrYAsTO70wRa0GrK3Spdd1l1FT5udno2pv2p
-         H9fNPtkEitDnFedAAUnVXzS3hR5mxImmMR7AITNW+fnZdfscVWkPha7OWz8wSLFBXzfG
-         x81uhEvEm8K2k3VLltddq4s/2n2tKmIJVukrsSRl7BGzUaOAbT6baUkJziwwU9K9PsFT
-         LIZAVtq8TBD4hL5LhqHPM80c52eHeEdvirtCd692moqsQkUwLLQLQL1Vb6SjIEQ4K9GK
-         ChTg==
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=M+wFC810afrczCAEG00O7cfnbSsokPgX0e3PuC6Ayj8=;
+        b=ZNNgzQT57KXHd2R4QHca8vvMEZjlXpAh1LOtDN8bIt+tVYWO600YsYbqLI7XBI6BcE
+         0ER1dTUCD5be4jOwUHJhFgzq1lo/V3uG/geHGbIFMbrMS62lXfGCjUQy/HO4at0dGAj6
+         rMswwTqKBsiXLuL32byl6L9mWxMJbfgWHHQd0Nf0yn2maFyew2e47Izirz/3vyIe1RBd
+         Myr2bOiXAl2yLLwb5i3Qr3GOacKz3FGN4jO6dL9fX02BzwywmwzCqN0FXQ+1/l3eTJGo
+         cwaRilu3pe8+knFXqLeKbviVE74Qu01aO23coggw7xEdznM3ej4Ssa1KNkNIDJAUgkzA
+         sEGQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783144881; x=1783749681;
+        d=1e100.net; s=20251104; t=1783146836; x=1783751636;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=qgeg1hy/5eCNX45AyPB+pHlq+bl3Mkeu4yKxcFxgJUE=;
-        b=UUx/qowDIJ/cvWUvrEmO3W0osoD8ahsxzR7UHanj95zoW3PkSBq14iRPmrLkM12EtG
-         Sp6RIMuHm7W3HZdzK7J6ZmPQSjWJgdkuuZmikRxVEgIs1tq09AThy9JN24LhHI6ORup/
-         ZzUts6sA9AyM2jU87C9ArOSHwc2LQxpjrxpDBRkcMj/fznFS4/SFH94alnEpCf4CJx4c
-         QC7GMqHQvvedTMHktNb52TaNFu0lwxyLsAZxA5fx5bLL016dPD4EJvcfPqf0e+6LbMB6
-         fiIPQ9HZCmlpEJQOvjk4mJvWUBl8XrFk+MAQmX1F8tmKiXXQoTatBwAauhgG2VDsUC20
-         /aIw==
-X-Forwarded-Encrypted: i=1; AHgh+RrPH8aPcGiWMHoYo+MWXNfWoNZUYRCkKuAhHipjyYeWK83xYhnKEof8IKMBYLry+IxwpB8x/YM=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyBN4g9cwq9o93eTd25k8HNAdYVU6wSzWxYPCKDF2Rxk0RGLlpr
-	2FmMkCF+fxx7kpQqbZAftp/DI8WteZpj7VVq7SvxnUaKesMDGdV1MdM3
-X-Gm-Gg: AfdE7cnVLPklXWFJDmEMQIkRqAglU+ENW7aO4Btbb4roiFV78RR/O25pW9sRIYtYk23
-	LSLWniCHSZiN+9RMV/CvsNOw5PCN8PBxxjVgsYGSG4Xwlh3bdaZ038sRj40nQZiPo5MYAru8qsp
-	qwdaQcqmBDGNe+gf4bDtRN3cb00xDC6XmF/6jf8E1YI4XlbmxvDtrGGtwpkRYvKb9M2LxRyt5V/
-	0iSfzSYg7dRa3+cwmuwWDec3EaErqx4lV/tmyX5XzvcP09Q6uo8GKlTV6YZNtj3LE0TS4mp8/N/
-	2bJAsCxnlmv35yhUsooTeXugb75YuAMQc1b2U1mqeD43ijJ+ieiJCwk6JbT520DMzb5NtZPLEt3
-	RlD7lem7YxU4/ocULJJQ7b4LL9NC+6BF1r7rnCVcoCMHuvActaHUACvU5jcDq5sjASLZvguD85r
-	L18tx6+WbLng1Vz2r7gAOuXXcRHk2wBS2DS1TAfUU/Av6BZqDi+nX93MqR3vuCV/TrW+2jUUW3T
-	t8=
-X-Received: by 2002:a17:90b:5251:b0:380:8bb9:aba9 with SMTP id 98e67ed59e1d1-38112063c22mr7862238a91.3.1783144880763;
-        Fri, 03 Jul 2026 23:01:20 -0700 (PDT)
-Received: from dtor-ws.sjc.corp.google.com ([2a00:79e0:2ebe:8:880:86f9:3b00:6746])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-30f116065c5sm25081378eec.11.2026.07.03.23.01.18
+         :message-id:reply-to:content-type;
+        bh=M+wFC810afrczCAEG00O7cfnbSsokPgX0e3PuC6Ayj8=;
+        b=I7dz8MffYHg38CRIpqsLR7R/nkfi9DV2J3fM26XMWf0d9Sj0onJvmQxtjH3iIpls28
+         ldqIS+QUnPm3CJXvZeRMfuBRmPTSkHDOycdBR3mm+wMdANFUopXh/iJohfIespM7ozRe
+         DDA9BkJ63pqWzFYRICLdrSUfA9T0VePyLi9yzUddX7nReQ7eIZa3GVrRYEIKEV403CRa
+         UOnA4Yzmb7SdpAqfWMHo7Nw5n4QWTqttfa1SrzdgVy8PzosKnG9hwUQJrN/j3w5ZFxHP
+         vmUd3S3d36q9A2j8WtHO6jMkETKIt0SOtdDZor+aG0HNNKxQtGg2fHA4N1Bvm82utGVb
+         MSlw==
+X-Gm-Message-State: AOJu0Yxqgyv2HlGaPanpOEzEBm6264ahYcpVocdG4Fofk2XZgQZl5yzA
+	5pVF2B7qaYtASDSzhFdgHB6BK9fDOsMOzoj9Q75157MEJ5d9PmFT8nYBF6QJSHxs
+X-Gm-Gg: AfdE7clIigqAtIuAVLAXH7ywAl/H9Yux9rm+TNiAtEs7PH8OQHrLzNeDlWIqX+Vzcg1
+	u3GMBqfp0Fn7WqFwaxiGp2oSvQtxPff/UKLgJybvuRbB05iJ4moEitKumS9opa2JQay/OCqdOuC
+	hEHZ2YHJT80PzoK7+6+8DYxreQAIlgjqyia5zMLGdEWCoAcyWojuUmLAqpTuvB5QygJjqWIpmbv
+	xTeLnSHLBqrdckBnl3zqCPy+8ekPZGQidZRH90ijOm5IXuuruxv9k9nRBRCCBHbvmugfpy5dAJH
+	sEHybtvBQBq6zaos9Y6hoqVHRjnkdK7QgnmK6SAkiTOs9ikn1Bb27WM+yBo/p2aj3VRcLqNMc61
+	dICj4p4bRy2WC8krXJXw3Gw+skZovOQVQ0eoIU1dUqPsQJIizgmX1UA/fIBrLOlk3BK3mu/S2r6
+	lV65pwi5MfFCmn8Ru3txHhOmN5fhOHrRC/5sA=
+X-Received: by 2002:a05:600c:3e18:b0:493:ad8a:e7fd with SMTP id 5b1f17b1804b1-493d11d7fd6mr21700165e9.14.1783146835652;
+        Fri, 03 Jul 2026 23:33:55 -0700 (PDT)
+Received: from localhost ([109.110.46.40])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-47aa0f213e8sm5031735f8f.34.2026.07.03.23.33.53
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 03 Jul 2026 23:01:19 -0700 (PDT)
-From: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-To: linux-input@vger.kernel.org
-Cc: Bryam Vargas <hexlabsecurity@proton.me>,
-	Linus Walleij <linusw@kernel.org>,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org,
-	sashiko-bot@kernel.org
-Subject: [PATCH 1/3] Input: mms114 - fix multi-touch slot corruption
-Date: Fri,  3 Jul 2026 23:01:12 -0700
-Message-ID: <20260704060115.353049-1-dmitry.torokhov@gmail.com>
-X-Mailer: git-send-email 2.55.0.rc0.799.gd6f94ed593-goog
+        Fri, 03 Jul 2026 23:33:55 -0700 (PDT)
+From: Valeriy Yashnikov <yashnikov.valeriy@gmail.com>
+To: yashnikov.valeriy@gmail.com
+Cc: stable@vger.kernel.org
+Subject: [PATCH] ntfs: avoid calling post_write_mst_fixup() for invalid index_block
+Date: Sat,  4 Jul 2026 16:35:46 +1000
+Message-ID: <20260704063546.419578-1-yashnikov.valeriy@gmail.com>
+X-Mailer: git-send-email 2.54.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -99,70 +93,132 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
 	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_RECIPIENTS(0.00)[m:linux-input@vger.kernel.org,m:hexlabsecurity@proton.me,m:linusw@kernel.org,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,m:sashiko-bot@kernel.org,s:lists@lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
+	RECEIVED_HELO_LOCALHOST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:yashnikov.valeriy@gmail.com,m:stable@vger.kernel.org,m:yashnikovvaleriy@gmail.com,s:lists@lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER(0.00)[dmitrytorokhov@gmail.com,stable@vger.kernel.org];
-	FORWARDED(0.00)[lists@lfdr.de];
-	TAGGED_FROM(0.00)[bounces-271924-lists,stable=lfdr.de];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_TWO(0.00)[2];
+	FREEMAIL_TO(0.00)[gmail.com];
+	FORGED_SENDER(0.00)[yashnikovvaleriy@gmail.com,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-271925-lists,stable=lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[dmitrytorokhov@gmail.com,stable@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[yashnikovvaleriy@gmail.com,stable@vger.kernel.org];
+	TO_DN_NONE(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_COUNT_FIVE(0.00)[5];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	DKIM_TRACE(0.00)[gmail.com:+];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,vger.kernel.org:from_smtp]
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 70346706CE6
+X-Rspamd-Queue-Id: E247C706DE9
 
-If the touchscreen controller reports a touch ID of 0, the driver
-calculates the slot ID as touch->id - 1, which underflows to UINT_MAX.
-This is passed to input_mt_slot() as -1.
+ntfs_icx_ib_sync_write() calls post_write_mst_fixup() when ntfs_ib_write()
+returns an error, intending to restore the buffer after a failed write.
 
-Since the input core ignores negative slot values, the active slot remains
-unchanged. The driver then reports the touch coordinates for the previously
-active slot, corrupting its state.
+However, ntfs_ib_write() returns an error immediately if
+pre_write_mst_fixup() validation fails. The caller,
+ntfs_icx_ib_sync_write(), interprets any error as a write failure
+requiring rollback. It does not differentiate between I/O errors and
+validation failures, and calls post_write_mst_fixup() anyway.
 
-Fix this by rejecting touch reports with ID 0.
+Since post_write_mst_fixup() assumes that the index_block contents is
+correct, it doesn't perform the boundary checks, which results in
+out-of-bounds memory access.
 
-Fixes: 07b8481d4aff ("Input: add MELFAS mms114 touchscreen driver")
+An attacker can craft a malicious NTFS image with:
+  - large index_block.usa_ofs offset, pointing outside the ntfs_record
+  - index_block.usa_count = 0, causing integer underflow
+  - or index_block.usa_count larger than actual number of sectors in the
+    ntfs_record, causing out-of-bounds access
+
+KASAN reports describing the memory corruption:
+  ==================================================================
+  BUG: KASAN: slab-out-of-bounds in post_write_mst_fixup+0x19c/0x1d0
+  Read of size 2 at addr ffff8881586c9018 by task p/9428
+  Call Trace:
+   <TASK>
+   dump_stack_lvl+0x100/0x190
+   print_report+0x139/0x4ad
+   ? post_write_mst_fixup+0x19c/0x1d0
+   ? __virt_addr_valid+0x262/0x500
+   ? post_write_mst_fixup+0x19c/0x1d0
+   kasan_report+0xe4/0x1d0
+   ? post_write_mst_fixup+0x19c/0x1d0
+   post_write_mst_fixup+0x19c/0x1d0
+   ntfs_icx_ib_sync_write+0x179/0x220
+   ntfs_inode_sync_filename+0x83d/0x1080
+   __ntfs_write_inode+0x1049/0x1480
+   ntfs_file_fsync+0x131/0x9b0
+  ==================================================================
+  BUG: KASAN: slab-out-of-bounds in post_write_mst_fixup+0x1aa/0x1d0
+  Write of size 2 at addr ffff8881586c91fe by task p/9428
+  Call Trace:
+   <TASK>
+   dump_stack_lvl+0x100/0x190
+   print_report+0x139/0x4ad
+   ? post_write_mst_fixup+0x1aa/0x1d0
+   ? __virt_addr_valid+0x262/0x500
+   ? post_write_mst_fixup+0x1aa/0x1d0
+   kasan_report+0xe4/0x1d0
+   ? post_write_mst_fixup+0x1aa/0x1d0
+   post_write_mst_fixup+0x1aa/0x1d0
+   ntfs_icx_ib_sync_write+0x179/0x220
+   ntfs_inode_sync_filename+0x83d/0x1080
+   __ntfs_write_inode+0x1049/0x1480
+   ntfs_file_fsync+0x131/0x9b0
+  ==================================================================
+
+Let's move the post_write_mst_fixup() call to ntfs_ib_write().
+The ntfs_ib_write() function calls pre_write_mst_fixup() at the beginning.
+If the index_block contents is invalid, pre_write_mst_fixup() fails and
+ntfs_ib_write() returns early without calling post_write_mst_fixup() on
+bad index_block.
+
+Fixes: 0a8ac0c1fa0b ("ntfs: update directory operations")
 Cc: stable@vger.kernel.org
-Reported-by: sashiko-bot@kernel.org
-Assisted-by: Antigravity:gemini-3.5-flash
-Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Signed-off-by: Valeriy Yashnikov <yashnikov.valeriy@gmail.com>
 ---
- drivers/input/touchscreen/mms114.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/ntfs/index.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/input/touchscreen/mms114.c b/drivers/input/touchscreen/mms114.c
-index 006dded17eb8..23e0283bc6b8 100644
---- a/drivers/input/touchscreen/mms114.c
-+++ b/drivers/input/touchscreen/mms114.c
-@@ -248,7 +248,7 @@ static void mms114_process_mt(struct mms114_data *data, struct mms114_touch *tou
- 	unsigned int x;
- 	unsigned int y;
- 
--	if (touch->id > MMS114_MAX_TOUCH) {
-+	if (touch->id == 0 || touch->id > MMS114_MAX_TOUCH) {
- 		dev_err(&client->dev, "Wrong touch id (%d)\n", touch->id);
- 		return;
+diff --git a/fs/ntfs/index.c b/fs/ntfs/index.c
+index c5f2cf75b750..faa7ee920a3a 100644
+--- a/fs/ntfs/index.c
++++ b/fs/ntfs/index.c
+@@ -110,6 +110,10 @@ static int ntfs_ib_write(struct ntfs_index_context *icx, struct index_block *ib)
+ 	ret = ntfs_inode_attr_pwrite(VFS_I(icx->ia_ni),
+ 			ntfs_ib_vcn_to_pos(icx, vcn), icx->block_size,
+ 			(u8 *)ib, icx->sync_write);
++
++	/* Perform data restoration before returning */
++	post_write_mst_fixup((struct ntfs_record *)ib);
++
+ 	if (ret != icx->block_size) {
+ 		ntfs_debug("Failed to write index block %lld, inode %llu",
+ 				vcn, (unsigned long long)icx->idx_ni->mft_no);
+@@ -147,7 +151,6 @@ int ntfs_icx_ib_sync_write(struct ntfs_index_context *icx)
+ 		icx->ib = NULL;
+ 		icx->ib_dirty = false;
+ 	} else {
+-		post_write_mst_fixup((struct ntfs_record *)icx->ib);
+ 		icx->sync_write = false;
  	}
+ 
 -- 
-2.55.0.rc0.799.gd6f94ed593-goog
+2.54.0
 
 
