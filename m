@@ -1,63 +1,62 @@
-Return-Path: <stable+bounces-271970-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-271972-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 5+arKB0ESWqJxgAAu9opvQ
-	(envelope-from <stable+bounces-271970-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 04 Jul 2026 15:01:17 +0200
+	id fsZaFVINSWoDyAAAu9opvQ
+	(envelope-from <stable+bounces-271972-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 04 Jul 2026 15:40:34 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8D61F707AD8
-	for <lists+stable@lfdr.de>; Sat, 04 Jul 2026 15:01:16 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F39E707B62
+	for <lists+stable@lfdr.de>; Sat, 04 Jul 2026 15:40:33 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=YzfpZVxe;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ma5uFNhb;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-271970-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-271970-lists+stable=lfdr.de@vger.kernel.org";
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-271972-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-271972-lists+stable=lfdr.de@vger.kernel.org";
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 46EEC30072A2
-	for <lists+stable@lfdr.de>; Sat,  4 Jul 2026 13:01:13 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 23A9030134BB
+	for <lists+stable@lfdr.de>; Sat,  4 Jul 2026 13:40:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE6243BFE5C;
-	Sat,  4 Jul 2026 13:01:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D4243A6EF1;
+	Sat,  4 Jul 2026 13:40:30 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8726E3C1090
-	for <stable@vger.kernel.org>; Sat,  4 Jul 2026 13:01:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BD5EB672
+	for <stable@vger.kernel.org>; Sat,  4 Jul 2026 13:40:29 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783170072; cv=none; b=cHk39frMtJnw6w7fYQ8aNWfg6p1sfO2GIhiOpwA4RIwWaax4p9M8HA3zPFRnK6Yej1AwoqXmF1owU1tpZUtqSqk5+aQsIZyeikepJTLjc62Gq6R7Ubye2/ry5uOYLdKbzpADi7guEqxIkSyekvd3Fqi+p3rGgE9tvH4P6kxIXWE=
+	t=1783172430; cv=none; b=clVt6fmgbPqY5IGLapbnUQ0qTKGK3bBEl/Jd6Q5OgCz1qdpVpBUKE5GeIuOSiYpWCQloXcq73r9BBemebV3ymDVdc+IpbqQ+qsTzIb0QUskOOp/IgBszzYeUS7xrC7sq8m4dfo6ql7ZmZLJAM7w9RxPP7wibaJ0CiIuIMwZmslo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783170072; c=relaxed/simple;
-	bh=a9V/JPcvBqvePkdaMvSsBuYQjRAbIFXJgwrFmfF3aso=;
+	s=arc-20240116; t=1783172430; c=relaxed/simple;
+	bh=P02l9AAAEEiCXKWVi5Lu/l2RJdL0EBprJN0MRhDwhts=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=poZvLNOwstq/qP0qAbjkLi49S4M9OddwMCfI8DnX9aP51hQQD+6iXLI4mONGyjEgnqXfQVhhBA/Fp6uZzoLWqgcbVfM4CDipkpUjIFHVorc7NapTje2Yp+jyaBWrSZerWtzzI0AXu4NQjGQDi2seljkrgoWauqoWAIEF7P6b5vU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YzfpZVxe; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3F501F00A3A;
-	Sat,  4 Jul 2026 13:01:10 +0000 (UTC)
+	 MIME-Version; b=b7niY1wiBX97JRWkkDYgVR3MFo05W1POTUVb9yxW5mx5Uazp/I/EJBkUJoU/p54FsFxNsltNAc1JdXWopBB7XcTzwUi49n44UsYZ5aoblkB7v+N3xdKHtzZdIkChfw9SFDHnLw/IUsmUke07lS+3Cb4XbwcIlWaZY/3FLheRlxY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ma5uFNhb; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59F151F000E9;
+	Sat,  4 Jul 2026 13:40:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783170071;
-	bh=k5b8x32VmGjMOkLod0KV6qaPrD91tGyRAF8OyNJOapg=;
+	s=k20260515; t=1783172428;
+	bh=cUmZd+n4y5pa15wGBG4MHjUP0l56vLGTkj4GCqvPyKA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=YzfpZVxe8uxg0Glzhie+rCoC+tCRDhlBPZLUafrBBGs5VNokFu7S/kIZ2YTXOiEMw
-	 VpUdoN0tpW0kouY8IDNnGtaIjBlTvWiaja61vBo0t7Cdzq26ByY+NIEL94Z5/3FMEb
-	 3ZAwuA64kTKdfSRTT6UITM+BpLcvzNiOZD0dE+BdSPjH2LbO7gO+H+X7tAislcuJ7F
-	 InVd+6sl6IQQ9PqnJitwWIQmpvbwPvmX+qEq2Jfw9Hy1UMMJFKWMJMfj0RI+pkKwlh
-	 ML6fzn8ABjVhrPw5aTicP0e60M0rwqwGBp+PtPvpll7EBWkyNS6wTOWNUe3KFXAovk
-	 WMkW3BuYFPIsw==
+	b=ma5uFNhb4FXejNBUp+VYQDjSNx9JvtUNodjXTGZXE+Vwr7D/Y0BPVICfTFEhWbBXn
+	 Onwz3FYHY2+7gWRihbXKv2eujNhw+3sgVXmUM64bqtPceGOzvpI33c/GhS01781glQ
+	 v+YAt1+rjRN6CsUk7SMt18VnOVvuZFVzP+vHg7WlUQYILSknzXzlab36pSzxPPdsQC
+	 uU1wbUu7q+8T1qMQf8wPVvlgKb8nPmmUCgjCksK9iNJOETgpI6RNRdDkx0NYBp9SYq
+	 YM7C0xTl2/wYa/BERUOyxsqLAPg5nzDSauPnn5rZTE5snKUy8nkHlWKHpvdonwXMOM
+	 8KqIwjaG3+7PQ==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Denis Arefev <arefev@swemel.ru>,
-	Christoph Hellwig <hch@lst.de>,
-	Jens Axboe <axboe@kernel.dk>,
+Cc: Yuho Choi <dbgh9129@gmail.com>,
+	Mathieu Poirier <mathieu.poirier@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15.y] block: Avoid mounting the bdev pseudo-filesystem in userspace
-Date: Sat,  4 Jul 2026 09:01:09 -0400
-Message-ID: <20260704130109.829039-1-sashal@kernel.org>
+Subject: [PATCH 6.1.y] rpmsg: char: Fix use-after-free on probe error path
+Date: Sat,  4 Jul 2026 09:40:26 -0400
+Message-ID: <20260704134026.903689-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <2026070222-ducking-flanked-b10f@gregkh>
-References: <2026070222-ducking-flanked-b10f@gregkh>
+In-Reply-To: <2026070228-dwelled-nurture-5733@gregkh>
+References: <2026070228-dwelled-nurture-5733@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -68,114 +67,109 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-3.66 / 15.00];
 	WHITELIST_SPF_DKIM(-3.00)[kernel.org:d:+,kernel.org:s:+];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-271970-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:arefev@swemel.ru,m:hch@lst.de,m:axboe@kernel.dk,m:sashal@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_SENDER(0.00)[sashal@kernel.org,stable@vger.kernel.org];
-	FORWARDED(0.00)[lists@lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
+	TAGGED_FROM(0.00)[bounces-271972-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:dbgh9129@gmail.com,m:mathieu.poirier@linaro.org,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[gmail.com,linaro.org,kernel.org];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	RCPT_COUNT_THREE(0.00)[4];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
+	TO_DN_SOME(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,kernel.dk:email,linuxtesting.org:url,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,msgid.link:url,lst.de:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,vger.kernel.org:from_smtp,linaro.org:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 8D61F707AD8
+X-Rspamd-Queue-Id: 7F39E707B62
 
-From: Denis Arefev <arefev@swemel.ru>
+From: Yuho Choi <dbgh9129@gmail.com>
 
-[ Upstream commit f73aa66dffcb8e61e78f01b56163ec16a15d06d2 ]
+[ Upstream commit 1ff3f528e67d20e2b1483dcaba899dc7832b2e6b ]
 
-The bdev pseudo-filesystem is an internal kernel filesystem with which
-userspace should not interfere. Unregister it so that userspace cannot
-even attempt to mount it.
+rpmsg_chrdev_probe() stores the newly allocated eptdev in the default
+endpoint's priv pointer before calling rpmsg_chrdev_eptdev_add(). If
+rpmsg_chrdev_eptdev_add() then fails, its error path frees eptdev while
+the default endpoint may still dispatch callbacks with the stale priv
+pointer.
 
-This fixes a bug [1] that occurs when attempting to access files,
-because the system call move_mount() uses pointers declared in the
-inode_operations structure, which for the bdev pseudo-filesystem
-are always equal to 0. `inode->i_op = &empty_iops;`
+Avoid publishing eptdev through the default endpoint until
+rpmsg_chrdev_eptdev_add() succeeds. Messages received before the priv
+pointer is published should be ignored by rpmsg_ept_cb(). Flow-control
+updates can hit rpmsg_ept_flow_cb() in the same window, so make both
+callbacks return success when priv is NULL.
 
-[1]
-
- BUG: kernel NULL pointer dereference, address: 0000000000000000
- #PF: supervisor instruction fetch in kernel mode
- #PF: error_code(0x0010) - not-present page
- PGD 23380067 P4D 23380067 PUD 23381067 PMD 0
- Oops: 0010 [#1] PREEMPT SMP KASAN NOPTI
- CPU: 2 PID: 17125 Comm: syz-executor.0 Not tainted 6.1.155-syzkaller-00350-g84221fde2681 #0
- Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.12.0-1 04/01/2014
- RIP: 0010:0x0
-
- Call Trace:
- <TASK>
- lookup_open.isra.0+0x700/0x1180 fs/namei.c:3460
- open_last_lookups fs/namei.c:3550 [inline]
- path_openat+0x953/0x2700 fs/namei.c:3780
- do_filp_open+0x1c5/0x410 fs/namei.c:3810
- do_sys_openat2+0x171/0x4d0 fs/open.c:1318
- do_sys_open fs/open.c:1334 [inline]
- __do_sys_openat fs/open.c:1350 [inline]
- __se_sys_openat fs/open.c:1345 [inline]
- __x64_sys_openat+0x13c/0x1f0 fs/open.c:1345
- do_syscall_x64 arch/x86/entry/common.c:51 [inline]
- do_syscall_64+0x35/0x80 arch/x86/entry/common.c:81
- entry_SYSCALL_64_after_hwframe+0x6e/0xd8
-
-Found by Linux Verification Center (linuxtesting.org) with Syzkaller.
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Link: https://lore.kernel.org/all/20131010004732.GJ13318@ZenIV.linux.org.uk/T/#
+Fixes: bc69d1066569 ("rpmsg: char: Introduce the "rpmsg-raw" channel")
+Signed-off-by: Yuho Choi <dbgh9129@gmail.com>
 Cc: stable@vger.kernel.org
-Signed-off-by: Denis Arefev <arefev@swemel.ru>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Link: https://patch.msgid.link/20260521072857.5078-1-arefev@swemel.ru
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Link: https://lore.kernel.org/r/20260601183247.1962010-1-dbgh9129@gmail.com
+Signed-off-by: Mathieu Poirier <mathieu.poirier@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- block/bdev.c | 4 ----
- 1 file changed, 4 deletions(-)
+ drivers/rpmsg/rpmsg_char.c | 12 ++++++++++--
+ 1 file changed, 10 insertions(+), 2 deletions(-)
 
-diff --git a/block/bdev.c b/block/bdev.c
-index ce7c20c2661793..e015fea1521e2b 100644
---- a/block/bdev.c
-+++ b/block/bdev.c
-@@ -459,16 +459,12 @@ EXPORT_SYMBOL_GPL(blockdev_superblock);
+diff --git a/drivers/rpmsg/rpmsg_char.c b/drivers/rpmsg/rpmsg_char.c
+index a271fceb16f421..c02949adf563d5 100644
+--- a/drivers/rpmsg/rpmsg_char.c
++++ b/drivers/rpmsg/rpmsg_char.c
+@@ -100,6 +100,9 @@ static int rpmsg_ept_cb(struct rpmsg_device *rpdev, void *buf, int len,
+ 	struct rpmsg_eptdev *eptdev = priv;
+ 	struct sk_buff *skb;
  
- void __init bdev_cache_init(void)
- {
--	int err;
- 	static struct vfsmount *bd_mnt;
++	if (!eptdev)
++		return 0;
++
+ 	skb = alloc_skb(len, GFP_ATOMIC);
+ 	if (!skb)
+ 		return -ENOMEM;
+@@ -448,6 +451,7 @@ static int rpmsg_chrdev_probe(struct rpmsg_device *rpdev)
+ 	struct rpmsg_channel_info chinfo;
+ 	struct rpmsg_eptdev *eptdev;
+ 	struct device *dev = &rpdev->dev;
++	int ret;
  
- 	bdev_cachep = kmem_cache_create("bdev_cache", sizeof(struct bdev_inode),
- 			0, (SLAB_HWCACHE_ALIGN|SLAB_RECLAIM_ACCOUNT|
- 				SLAB_MEM_SPREAD|SLAB_ACCOUNT|SLAB_PANIC),
- 			init_once);
--	err = register_filesystem(&bd_type);
--	if (err)
--		panic("Cannot register bdev pseudo-fs");
- 	bd_mnt = kern_mount(&bd_type);
- 	if (IS_ERR(bd_mnt))
- 		panic("Cannot create bdev pseudo-fs");
+ 	memcpy(chinfo.name, rpdev->id.name, RPMSG_NAME_SIZE);
+ 	chinfo.src = rpdev->src;
+@@ -460,13 +464,17 @@ static int rpmsg_chrdev_probe(struct rpmsg_device *rpdev)
+ 	/* Set the default_ept to the rpmsg device endpoint */
+ 	eptdev->default_ept = rpdev->ept;
+ 
++	ret = rpmsg_chrdev_eptdev_add(eptdev, chinfo);
++
++	if (ret)
++		return ret;
+ 	/*
+ 	 * The rpmsg_ept_cb uses *priv parameter to get its rpmsg_eptdev context.
+-	 * Storedit in default_ept *priv field.
++	 * Stored it in default_ept *priv field.
+ 	 */
+ 	eptdev->default_ept->priv = eptdev;
+ 
+-	return rpmsg_chrdev_eptdev_add(eptdev, chinfo);
++	return 0;
+ }
+ 
+ static void rpmsg_chrdev_remove(struct rpmsg_device *rpdev)
 -- 
 2.53.0
 
