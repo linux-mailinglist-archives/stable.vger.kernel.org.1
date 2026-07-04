@@ -1,175 +1,194 @@
-Return-Path: <stable+bounces-271983-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-271984-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id TcASMR1fSWph0wAAu9opvQ
-	(envelope-from <stable+bounces-271983-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 04 Jul 2026 21:29:33 +0200
+	id 58+IOoFlSWo91QAAu9opvQ
+	(envelope-from <stable+bounces-271984-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 04 Jul 2026 21:56:49 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id C60E97083EB
-	for <lists+stable@lfdr.de>; Sat, 04 Jul 2026 21:29:32 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5CCDC708602
+	for <lists+stable@lfdr.de>; Sat, 04 Jul 2026 21:56:49 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=none;
-	dmarc=none;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-271983-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-271983-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=aFBvTPCr;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-271984-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-271984-lists+stable=lfdr.de@vger.kernel.org";
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id E0694300682D
-	for <lists+stable@lfdr.de>; Sat,  4 Jul 2026 19:29:29 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E001B302AD10
+	for <lists+stable@lfdr.de>; Sat,  4 Jul 2026 19:56:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B157376490;
-	Sat,  4 Jul 2026 19:29:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0731B32B9B6;
+	Sat,  4 Jul 2026 19:56:36 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from h8.fbrelay.privateemail.com (h8.fbrelay.privateemail.com [162.0.218.231])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f41.google.com (mail-wr1-f41.google.com [209.85.221.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C8D8374E48;
-	Sat,  4 Jul 2026 19:29:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 265BE3264E2
+	for <stable@vger.kernel.org>; Sat,  4 Jul 2026 19:56:33 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783193366; cv=none; b=c6MAsR93ybLiX0aWD0SfS/kaGv5siptpla4FZaddqA0pZOl+WvsL/WqCXX5sup0PbU2H0fL4FCMhc39vPTs348fXfn5c5Z4Drf3lz2pGMgU5qsjxxkKoeF4wxVb2FLyoyoYhQgQz9JVzn0mm/Oitl3e+1QApXnh3LD94Bo/8EpY=
+	t=1783194995; cv=none; b=afJkjk71v92HohETeI9nEBsHEogfSvnZ1KG5MXMR2niwENNXnejOgiLnpuCORn1FQ+Ev299fm658Wo5M2qZ7UuRunTxQBKlv8kcXPZHxYsismdl1ynsElu77xaTmlg2IpgtDOTF6y5fAaGxjT5DuZfxFYGe4XLh8RnWPlDbaWBU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783193366; c=relaxed/simple;
-	bh=8uG09NracTJuE4Jo/AqYI1RPizfOvPcxiYYG2z/CJi4=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=hyTQRy58bbUnvbrrVG/EXMkKCcbul/v0mYg3kUwKf5WT+iY+HisaFsFQUhM73N76RYwtU6vW/FH2uo+XiEn3+SKOYnRz0OvPX3rwckee+ZNMS+8B5iD3EHWo0uQlDbfy7oMoWlIJALqmTLzfOrrxp7Sg0U8HhPaiXzBm2sRRFs4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=catcrafts.net; spf=pass smtp.mailfrom=catcrafts.net; arc=none smtp.client-ip=162.0.218.231
-Received: from MTA-15-3.privateemail.com (MTA-15.privateemail.com [198.54.118.207])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
-	(No client certificate requested)
-	by h7.fbrelay.privateemail.com (Postfix) with ESMTPSA id 4gt1030XQKz2xCl;
-	Sat,  4 Jul 2026 15:29:23 -0400 (EDT)
-Received: from mail.privateemail.com (K8S-PROD-WORKER-10 [87.215.145.39])
-	by mta-15.privateemail.com (Postfix) with ESMTPA id 4gt0zf4rbxz3hhTD;
-	Sat,  4 Jul 2026 15:29:02 -0400 (EDT)
-From: Jorijn van der Graaf <jorijnvdgraaf@catcrafts.net>
-To: Mark Brown <broonie@kernel.org>
-Cc: Liam Girdwood <lgirdwood@gmail.com>,
-	Jaroslav Kysela <perex@perex.cz>,
-	Takashi Iwai <tiwai@suse.com>,
-	Weidong Wang <wangweidong.a@awinic.com>,
-	Val Packett <val@packett.cool>,
-	Luca Weiss <luca.weiss@fairphone.com>,
-	stable@vger.kernel.org,
-	linux-sound@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Jorijn van der Graaf <jorijnvdgraaf@catcrafts.net>
-Subject: [PATCH] ASoC: codecs: aw88261: only check PLL and clock state at power-up
-Date: Sat,  4 Jul 2026 21:28:57 +0200
-Message-ID: <20260704192857.88366-1-jorijnvdgraaf@catcrafts.net>
-X-Mailer: git-send-email 2.55.0
+	s=arc-20240116; t=1783194995; c=relaxed/simple;
+	bh=8QanJYHVUT34kn3QE9sGltuZP8jObTRJVRAYEc7n4so=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=oy/fqESsGQwbDHH/qwjrr9N9pOKYYk2elm53FRWFxSTV8fPkt6bacQHAY5F+jTLWzK9GWH4MW32Ikt5+eTF6+qz+/EIHPlo0iElDHxiBd2DMSROHDkznlwv4ruSBI8vgpQSuUZRJ6hIUHOll7n5SiGDFwKFsC8xoQs8kIAhVTgo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=aFBvTPCr; arc=none smtp.client-ip=209.85.221.41
+Received: by mail-wr1-f41.google.com with SMTP id ffacd0b85a97d-4758b2a9e2aso976781f8f.2
+        for <stable@vger.kernel.org>; Sat, 04 Jul 2026 12:56:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1783194992; x=1783799792; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=81Ke9cmmCoYK/kTyeCdB3HD1YEG5nCK1a1GlO9Nm9w0=;
+        b=aFBvTPCrWp2EXCo+TLnjJVBfB5HILsEIoK7VKP/pzpEUZAsIqYewpDPGy4Pz0esYSz
+         BSrjWwNmqbOV0ClNB2ilqK6Yk3AFFB1YzonNi36StMs4d9IZzkUeLc0Z65i0z5j7LEFR
+         tq+OGiKtxlyugVnptRQ7gdrH0MwI5FyTXFgPLHzazIcrr/0MH+VdKnuVQUc5TEX0XcO0
+         IYehbnV6WAfnB3k3hi/2H0jV0tWSU19qbVDBxkPy5+4H7VV+DA689bjj23OQfTnW8h9s
+         ZwRibA16bSBiKgDgAz9DPL6FsduM2JIw1gZehvDtqpQN6QZ8LFRG8DbKNiBNvcwzAywi
+         6TvQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1783194992; x=1783799792;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=81Ke9cmmCoYK/kTyeCdB3HD1YEG5nCK1a1GlO9Nm9w0=;
+        b=sCIi5A0steoMj8Y2QnrhaU7Y2vQvvnBCPNT7tanh8JY7fPoh+gSLgi8yYc8kNc2iCb
+         Z4vsjMkQEhmTkFbtE+qogpN2I+xFopzjIBrmS0Lp5JnqK4K3B/JSVdlW6ume26YNHsQ+
+         GkrAKbbMJSeU7WmD6xJPuDXWl1gpFV9wqN7zOGgL+uHk6wju1VaXqvUUoEjMkUrz7Mdm
+         dmODB7OYEP7CJ6gPJGjKEhjBDtO8PVpzLhbMigHbIjOevOL9Wp0MYCy6GRSSTmQWL2+v
+         mXastWFAZjlrcwvxuEHlxGL/Quuz+IPfP6dbAXmqzBIUX0sDYrHSuz6WBkzyC6523Uj4
+         lA7A==
+X-Forwarded-Encrypted: i=1; AHgh+RpbG8ndaVtWbuOVMA96xQoVm9KFAhWXjKoTV0is1vvGbgiBlbMQ57e7ZkbcLT2TqhgROfBR64Q=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyVW9qX2jt2eN9JWDtzuqWU5sI6mimi3TSgu5ZDvZRIIoBX5Bzu
+	A0oDJBF29I2CYk4LRsZ86QX5L6ow7rH8Nl5ZY/8DWiQDnwOAnShEDNtRnVqI2A==
+X-Gm-Gg: AfdE7cly8EfB2cgdWyM+RD0erZNM+DI/vIqMzkTkZwadDjvUf2AzL4fzazunDpgnfrJ
+	lXZ/ydCRq9crW1LZsd2L3UkwM6PPdn+IW9gONLcuRZWHNiXzmnir/SKkgQc75EpdI1GhLtp7Vp9
+	O6+dTP3wl+CR0s6p5Y6yy/M5FbUwb0s51QH0SCpqDZypIWqiL3aLe3qsj1aAIYcWdE9Ah+nsO+6
+	ntm/59zG86CSnJkHCqrXs/SnbwOxVm401o41USlHO34+a2W86jcOVmb2H/oJocj4IvJmqtj4BnC
+	PUUfEhZrTzbg+JvEmJi+56XIG1mA2PlLLUr86M27ZtsglhlxBLyr/NKvKDkriNFnzGK8ymFv6xK
+	oWcGBgZAKoA/Ndur9VZn6fxga3z65Vqi4N8H3xgMUyPOXJ3d2EGsQXsX+LS9qnBP+4Hf729bCoK
+	In6NKhsuygEbrQP90rnEIi0ElpXgLwrx/iw82DKV+d3/7BFI4MOYqlGHFzDnTQSodWYFMC38vbw
+	FGJweHBEIY=
+X-Received: by 2002:a5d:5189:0:b0:472:55a:ef96 with SMTP id ffacd0b85a97d-47aacbacb97mr3807785f8f.39.1783194992448;
+        Sat, 04 Jul 2026 12:56:32 -0700 (PDT)
+Received: from shift (p200300d5ff229f0050f496fffe46beef.dip0.t-ipconnect.de. [2003:d5:ff22:9f00:50f4:96ff:fe46:beef])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-47aa0f214d2sm10342826f8f.33.2026.07.04.12.56.31
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 04 Jul 2026 12:56:32 -0700 (PDT)
+Received: from localhost ([127.0.0.1])
+	by shift with esmtp (Exim 4.99.4)
+	(envelope-from <chunkeey@gmail.com>)
+	id 1wg6TX-00000000K1L-0Vrs;
+	Sat, 04 Jul 2026 21:56:31 +0200
+Message-ID: <741085b4-3892-487d-a39e-75c62a7b6d0f@gmail.com>
+Date: Sat, 4 Jul 2026 21:56:30 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] wifi: carl9170: reject mismatched command response
+ lengths
+To: Yousef Alhouseen <alhouseenyousef@gmail.com>,
+ Christian Lamparter <chunkeey@googlemail.com>
+Cc: linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org, syzbot+5c1ca6ccaa1215781cac@syzkaller.appspotmail.com
+References: <20260628092814.40583-1-alhouseenyousef@gmail.com>
+Content-Language: de-DE
+From: Christian Lamparter <chunkeey@gmail.com>
+In-Reply-To: <20260628092814.40583-1-alhouseenyousef@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [0.04 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[gmail.com,perex.cz,suse.com,awinic.com,packett.cool,fairphone.com,vger.kernel.org,catcrafts.net];
-	TAGGED_FROM(0.00)[bounces-271983-lists,stable=lfdr.de];
+	RECEIVED_HELO_LOCALHOST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:alhouseenyousef@gmail.com,m:chunkeey@googlemail.com,m:linux-wireless@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,m:syzbot+5c1ca6ccaa1215781cac@syzkaller.appspotmail.com,m:chunkeey@gmail.com,m:syzbot@syzkaller.appspotmail.com,s:lists@lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	DMARC_NA(0.00)[catcrafts.net];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:broonie@kernel.org,m:lgirdwood@gmail.com,m:perex@perex.cz,m:tiwai@suse.com,m:wangweidong.a@awinic.com,m:val@packett.cool,m:luca.weiss@fairphone.com,m:stable@vger.kernel.org,m:linux-sound@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:jorijnvdgraaf@catcrafts.net,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[jorijnvdgraaf@catcrafts.net,stable@vger.kernel.org];
+	FREEMAIL_TO(0.00)[gmail.com,googlemail.com];
+	FORGED_SENDER(0.00)[chunkeey@gmail.com,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	TAGGED_FROM(0.00)[bounces-271984-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FORWARDED(0.00)[lists@lfdr.de];
 	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[jorijnvdgraaf@catcrafts.net,stable@vger.kernel.org];
-	ALIAS_RESOLVED(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
+	RCPT_COUNT_FIVE(0.00)[6];
 	FORGED_SENDER_FORWARDING(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[chunkeey@gmail.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	R_DKIM_NA(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[11];
-	TO_DN_SOME(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,catcrafts.net:from_mime,catcrafts.net:email,catcrafts.net:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+	TAGGED_RCPT(0.00)[stable,5c1ca6ccaa1215781cac];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[syzkaller.appspot.com:url,vger.kernel.org:from_smtp,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,appspotmail.com:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: C60E97083EB
+X-Rspamd-Queue-Id: 5CCDC708602
 
-The SYSST check performed during device start requires SWS (amplifier
-switching, bit 8) and BSTS (boost finished, bit 9) on top of PLL lock
-and clock stability. Those bits cannot be asserted at this point in the
-sequence: the check runs after amppd release but before the
-hmute/ULS-hmute release, and the amplifier neither switches nor
-finishes ramping its boost converter while it is still muted. With the
-Fairphone (Gen. 6) firmware profile, aw88261_dev_start() therefore
-always fails with
+Hi,
 
-  check sysst fail, reg_val=0x0011, check:0x311
+On 6/28/26 11:28 AM, Yousef Alhouseen wrote:
+> The firmware response length is controlled by the USB device. Although
+> carl9170_cmd_callback() detects when it differs from the output buffer
+> length, the function falls through and copies the entire response into
+> that buffer. Callers commonly provide stack objects, so a malformed
+> response can overwrite the kernel stack.
+> 
+> Return after scheduling device recovery. This also preserves the stated
+> behavior of leaving the command incomplete so that its waiter times out
+> and clears the pending output buffer.
+> 
+> Fixes: a84fab3cbfdc ("carl9170: 802.11 rx/tx processing and usb backend")
+> Reported-by: syzbot+5c1ca6ccaa1215781cac@syzkaller.appspotmail.com
+> Closes: https://syzkaller.appspot.com/bug?extid=5c1ca6ccaa1215781cac
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Yousef Alhouseen <alhouseenyousef@gmail.com>
 
-and playback aborts, even though the amplifier is fine and PLL lock
-and stable clocks are present.
 
-Check only PLL lock and clock stability, for which a definition
-already exists; this still re-validates the clocks after amppd release
-(aw88261_dev_check_syspll() checked them before it). This matches the
-vendor aw882xx driver, which only validates PLL lock and clock
-stability at this stage, and the in-tree aw88399 driver, which skips
-the SWS check whenever the amplifier may legitimately not be switching
-(AW88399_BIT_SYSST_NOSWS_CHECK).
+This was posted earlier too:
+https://lore.kernel.org/linux-wireless/20260421134929.325662-1-tristmd@gmail.com/
 
-Fixes: 028a2ae25691 ("ASoC: codecs: Add aw88261 amplifier driver")
-Cc: stable@vger.kernel.org
-Assisted-by: Claude:claude-fable-5
-Signed-off-by: Jorijn van der Graaf <jorijnvdgraaf@catcrafts.net>
----
- sound/soc/codecs/aw88261.c | 6 +++---
- sound/soc/codecs/aw88261.h | 6 ------
- 2 files changed, 3 insertions(+), 9 deletions(-)
+In fact, there was even a mail before that that was sent to security@vger.kernel.org.
+I told Tristan that I would much rather not return and instead fix the memcpy.
+carl9170_restart can completely unbind the device, so it's unlikely that one would
+see a timeout.
 
-diff --git a/sound/soc/codecs/aw88261.c b/sound/soc/codecs/aw88261.c
-index 549783d3e75e..dbdf51188cf5 100644
---- a/sound/soc/codecs/aw88261.c
-+++ b/sound/soc/codecs/aw88261.c
-@@ -206,10 +206,10 @@ static int aw88261_dev_check_sysst(struct aw_device *aw_dev)
- 			return ret;
- 
- 		check_val = reg_val & (~AW88261_BIT_SYSST_CHECK_MASK)
--							& AW88261_BIT_SYSST_CHECK;
--		if (check_val != AW88261_BIT_SYSST_CHECK) {
-+							& AW88261_BIT_PLL_CHECK;
-+		if (check_val != AW88261_BIT_PLL_CHECK) {
- 			dev_dbg(aw_dev->dev, "check sysst fail, reg_val=0x%04x, check:0x%x",
--				reg_val, AW88261_BIT_SYSST_CHECK);
-+				reg_val, AW88261_BIT_PLL_CHECK);
- 			usleep_range(AW88261_2000_US, AW88261_2000_US + 10);
- 		} else {
- 			return 0;
-diff --git a/sound/soc/codecs/aw88261.h b/sound/soc/codecs/aw88261.h
-index 270ccf375f36..f16f9f8c40a2 100644
---- a/sound/soc/codecs/aw88261.h
-+++ b/sound/soc/codecs/aw88261.h
-@@ -194,12 +194,6 @@
- 		AW88261_OTHS_OT_VALUE | \
- 		AW88261_PLLS_LOCKED_VALUE))
- 
--#define AW88261_BIT_SYSST_CHECK \
--		(AW88261_BSTS_FINISHED_VALUE | \
--		AW88261_SWS_SWITCHING_VALUE | \
--		AW88261_CLKS_STABLE_VALUE | \
--		AW88261_PLLS_LOCKED_VALUE)
--
- #define AW88261_ULS_HMUTE_START_BIT	(14)
- #define AW88261_ULS_HMUTE_BITS_LEN	(1)
- #define AW88261_ULS_HMUTE_MASK		\
+Cheers,
+Christian
 
-base-commit: be44d21728b6646189779923b841ad3a46d694e5
--- 
-2.55.0
+
+> ---
+>   drivers/net/wireless/ath/carl9170/rx.c | 1 +
+>   1 file changed, 1 insertion(+)
+> 
+> diff --git a/drivers/net/wireless/ath/carl9170/rx.c b/drivers/net/wireless/ath/carl9170/rx.c
+> index 6833430130f4..ea3f435fb64c 100644
+> --- a/drivers/net/wireless/ath/carl9170/rx.c
+> +++ b/drivers/net/wireless/ath/carl9170/rx.c
+> @@ -145,6 +145,7 @@ static void carl9170_cmd_callback(struct ar9170 *ar, u32 len, void *buffer)
+>   		 * and we get a stack trace from there.
+>   		 */
+>   		carl9170_restart(ar, CARL9170_RR_INVALID_RSP);
+> +		return;
+>   	}
+>   
+>   	spin_lock(&ar->cmd_lock);
 
 
