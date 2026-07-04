@@ -1,51 +1,51 @@
-Return-Path: <stable+bounces-271914-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-271915-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id cMtQLVdrSGp9qAAAu9opvQ
-	(envelope-from <stable+bounces-271914-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 04 Jul 2026 04:09:27 +0200
+	id zfe6EchrSGqDqAAAu9opvQ
+	(envelope-from <stable+bounces-271915-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 04 Jul 2026 04:11:20 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A0FB706775
-	for <lists+stable@lfdr.de>; Sat, 04 Jul 2026 04:09:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A137770677F
+	for <lists+stable@lfdr.de>; Sat, 04 Jul 2026 04:11:19 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=CBGaJSwp;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=FqaCyY6a;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-271914-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-271914-lists+stable=lfdr.de@vger.kernel.org";
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-271915-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-271915-lists+stable=lfdr.de@vger.kernel.org";
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 345AF301600B
-	for <lists+stable@lfdr.de>; Sat,  4 Jul 2026 02:08:24 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 9511030146B3
+	for <lists+stable@lfdr.de>; Sat,  4 Jul 2026 02:11:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 993773431EF;
-	Sat,  4 Jul 2026 02:08:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A35BC2D0620;
+	Sat,  4 Jul 2026 02:11:17 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FD4121638D;
-	Sat,  4 Jul 2026 02:08:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76C572E65D;
+	Sat,  4 Jul 2026 02:11:16 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783130901; cv=none; b=iT54T2c2253MSjokOufawgWh6fqKC3kxYfKf1wxu3gjwiptyCEGyJWUqD5wOPK7Std0kBf7RsD8ia9CbqcVwgm9WWuzD/45vdQC+Ob1fIO/gGitZUWc0YzrL3L0Q+5g0yB1jNKUQaLPAPKCZnceZtbWxmHDBv7SYEPBYtxJdlYM=
+	t=1783131077; cv=none; b=AWEqqjoI6kIbUBv2p8rlOPCY/l6LxrBx1+LTdu1tXDrvSQ71DebyG7hYsNOPIm6eLZNc7RYVWTkHb8WDmlfKEi5aM9CrbmBrgSoKjzwGN4Pj26QrZXlBkuf/2uEQzahxlTLvFutq+tC3cWNkHPcyYpwjQOdkNHRnucrgkxx0yMs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783130901; c=relaxed/simple;
-	bh=J7kQv2XKt3m7Tc7qN3WrlHks4sp8ylo8/RXgXzsuWPk=;
+	s=arc-20240116; t=1783131077; c=relaxed/simple;
+	bh=OWLVyy5iVXF+/BCarDTNY5fL3X3/Nu8KuBdwOwZ+Jj0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dDCy0sUJdUH9iDbU+CHQNV0v5Y3aCg5rG9cPVfnz3UaOzBekQ1uRDbaCJUXJdrGgFXvtWkOPKReoHf4EjtEujJgSEC+wK4hc+DsSsGDi8bCWsEtf2XEx1+dKmE26dJf3lm/udn1x3a0//yn7txAKM4QnLmKF7xjyhPPjtl1LFa0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CBGaJSwp; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 892D61F000E9;
-	Sat,  4 Jul 2026 02:08:15 +0000 (UTC)
+	 MIME-Version; b=rOho1HW1T8t72KwkxxH1IKu7cDHdkDwib3GSV/tiXJi/jf9h+IoK0iDNkh73MZ1oM/fNgiPOUZpftQSLRPg1hF2ofOdvWS0XFOTP6LNVU+/6bePVvrvwUXuF6Rty4CJhwR7wr9+ZfiPfdba5pn0JCnveHig2QTfgH/EODHQtHjs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FqaCyY6a; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BBB021F000E9;
+	Sat,  4 Jul 2026 02:11:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783130900;
-	bh=Ooz6dUYEZMP0ls+nKrzttFMXPiKVG7Z90npuvlnccPg=;
+	s=k20260515; t=1783131076;
+	bh=xhQY18Ntme9FlKB+cK+S+3z1nmjM9W9PAf7ZIqw/HH8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=CBGaJSwprpsJgWamn9gRuAV8jDqTt1HIoS6zDRjZqUQwJV7n4mnCITYDzR6Omgg5p
-	 5mhd2tl8JC86WE9Kf1Q/Cq7WgWFSYJdK4Ir2xWrEqwV9L//LMz4iGMkR+jWpBCZVti
-	 oCsMTTvlsfaZixRzbN99VWHmfDahnMbyyM4+7zN0k2Klwu787qwjB4NwARWOCQ0j5c
-	 euabw3Zt/uxau9tne1DjraXLDF/NCkvsT0AE91BL0EY25m1Qmy2kuvKjRN8Qg9/qhk
-	 9W/LnpNxdZTpn0YvnryLZ3gNLRzDc/WZhjmlczpUi5Gv38SlmWIP2OCv/x2LhUDpvf
-	 rWfprLRWLE9sA==
+	b=FqaCyY6aczkOTUO+7XwLYq8IYMP0z+bBj6J7Dj2myZmZOiM04WrOrMqpq+exdFp0i
+	 kKBd6sEFfJuCw9hKRF/aOj79XWbUJ7RZ9oggXuminPuK2HQ+xK46sTcFgDL7lN2PIl
+	 o9++rMi/MTum5yibTfirmVrRluY2vONjDxCRnLpeW9yK9W5iNY47EAKlQVzLRuAi7Y
+	 xqnc7cXOhK6eI7yREUWSBoLaCMY9smw//MWxjC6CxrrKIFnx9lvxObkbgOCKN5s2to
+	 6XC2ICyav2MJFmECytIHj06Hfv8+9rmYcy+7OKNTFCN3c4YfFH6wT7KMtY4bl1sMFW
+	 gbkltOrkZwYRA==
 From: Miguel Ojeda <ojeda@kernel.org>
 To: gregkh@linuxfoundation.org
 Cc: achill@achill.org,
@@ -68,11 +68,11 @@ Cc: achill@achill.org,
 	sudipm.mukherjee@gmail.com,
 	torvalds@linux-foundation.org,
 	Miguel Ojeda <ojeda@kernel.org>
-Subject: Re: [PATCH 6.12 000/204] 6.12.95-rc2 review
-Date: Sat,  4 Jul 2026 04:08:08 +0200
-Message-ID: <20260704020808.55860-1-ojeda@kernel.org>
-In-Reply-To: <20260703072825.068705122@linuxfoundation.org>
-References: <20260703072825.068705122@linuxfoundation.org>
+Subject: Re: [PATCH 6.18 000/109] 6.18.38-rc2 review
+Date: Sat,  4 Jul 2026 04:10:29 +0200
+Message-ID: <20260704021029.56070-1-ojeda@kernel.org>
+In-Reply-To: <20260703072816.644513463@linuxfoundation.org>
+References: <20260703072816.644513463@linuxfoundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -93,7 +93,7 @@ X-Spamd-Result: default: False [-2.16 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-271914-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-271915-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS(0.00)[m:gregkh@linuxfoundation.org,m:achill@achill.org,m:akpm@linux-foundation.org,m:broonie@kernel.org,m:conor@kernel.org,m:f.fainelli@gmail.com,m:hargar@microsoft.com,m:jonathanh@nvidia.com,m:linux-kernel@vger.kernel.org,m:linux@roeck-us.net,m:lkft-triage@lists.linaro.org,m:patches@kernelci.org,m:patches@lists.linux.dev,m:pavel@nabladev.com,m:rwarsow@gmx.de,m:shuah@kernel.org,m:sr@sladewatkins.com,m:stable@vger.kernel.org,m:sudipm.mukherjee@gmail.com,m:torvalds@linux-foundation.org,m:ojeda@kernel.org,m:ffainelli@gmail.com,m:sudipmmukherjee@gmail.com,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[ojeda@kernel.org,stable@vger.kernel.org];
@@ -116,22 +116,22 @@ X-Spamd-Result: default: False [-2.16 / 15.00];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,vger.kernel.org:from_smtp,linuxfoundation.org:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 1A0FB706775
+X-Rspamd-Queue-Id: A137770677F
 
-On Fri, 03 Jul 2026 09:35:48 +0200 Greg Kroah-Hartman <gregkh@linuxfoundation.org> wrote:
+On Fri, 03 Jul 2026 09:36:06 +0200 Greg Kroah-Hartman <gregkh@linuxfoundation.org> wrote:
 >
-> This is the start of the stable review cycle for the 6.12.95 release.
-> There are 204 patches in this series, all will be posted as a response
+> This is the start of the stable review cycle for the 6.18.38 release.
+> There are 109 patches in this series, all will be posted as a response
 > to this one.  If anyone has any issues with these being applied, please
 > let me know.
 > 
-> Responses should be made by Sun, 05 Jul 2026 07:28:05 +0000.
+> Responses should be made by Sun, 05 Jul 2026 07:28:03 +0000.
 > Anything received after that time might be too late.
 
 Boot-tested under QEMU for Rust x86_64, arm64 and riscv64; built-tested
-for loongarch64:
+for loongarch64 and arm32:
 
 Tested-by: Miguel Ojeda <ojeda@kernel.org>
 
