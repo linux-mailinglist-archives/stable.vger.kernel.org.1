@@ -1,63 +1,93 @@
-Return-Path: <stable+bounces-271975-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-271976-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id fSK+OpwkSWraygAAu9opvQ
-	(envelope-from <stable+bounces-271975-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 04 Jul 2026 17:19:56 +0200
+	id WRcyNAQwSWpKzAAAu9opvQ
+	(envelope-from <stable+bounces-271976-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 04 Jul 2026 18:08:36 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 877EF707D24
-	for <lists+stable@lfdr.de>; Sat, 04 Jul 2026 17:19:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D01B707E9C
+	for <lists+stable@lfdr.de>; Sat, 04 Jul 2026 18:08:36 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=HAVLc89u;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-271975-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-271975-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=WGG3+Nm5;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-271976-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-271976-lists+stable=lfdr.de@vger.kernel.org";
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 04CD53004D10
-	for <lists+stable@lfdr.de>; Sat,  4 Jul 2026 15:19:56 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id AC66530087C6
+	for <lists+stable@lfdr.de>; Sat,  4 Jul 2026 16:08:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2FFBB376BC2;
-	Sat,  4 Jul 2026 15:19:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24E5A3546EE;
+	Sat,  4 Jul 2026 16:08:33 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f50.google.com (mail-ed1-f50.google.com [209.85.208.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C69438AC8C
-	for <stable@vger.kernel.org>; Sat,  4 Jul 2026 15:19:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73F8832B9B5
+	for <stable@vger.kernel.org>; Sat,  4 Jul 2026 16:08:31 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783178393; cv=none; b=gi6k79TdeBj+ceH86I9o3SMDoKPkyoSw/0mv0/bR4jqj3ogqgeeZXES86eFb6WBxs9Ay3OAE+m8TIwdLDKi9c6c7P3CgvskcE3BjZllAya3EdUE2S0W/VjduN8EkHEr1XfgIGZXU0Pauj+CjNa+gDzuo0G6hjqaawXwNiws/mEw=
+	t=1783181312; cv=none; b=mzE5/c71buI6CM/oUvGnG0szYD/Zwo8SGqUUmwsgYFBbArbX4iVU63c7+SA2J4CSfdxTiv7W+YboGEJB1B9RvFDIbuHn6Ne9MyFAAdkzJtsyg50V9ZavIPl+ngOyR/pxMS4ryEnZBefKRRyBbNqCeGMfi8Wt/8mKVOxNvBZj5uc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783178393; c=relaxed/simple;
-	bh=HgbWa1J+k6obfUhdJk2IKfMuwc//5O/JhSjj4yJUHA8=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KX5RMTBtBJ/R7jRB+5P9rZbCBP3u2Mqn/3EBK+tomoT7uNkzz/nIzuDB1uXb9F3ofFlssfT572Q9FRZTBsczufhDfSDFGfsq2fWt9jcfYg13rWO6E3si8VR50sOhrAgWBI6DyNMps30nupkx4+N0GLN7ZxaVEwznXqIfIo+t4v0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HAVLc89u; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D3C11F000E9;
-	Sat,  4 Jul 2026 15:19:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783178386;
-	bh=VqwbGFKC5wTG5EmsYqo2iB8WDnP3YJ6uJFFPe+hJeLU=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=HAVLc89uwOGl9o5OEpMmJ4GB17sK2bWLdrnwmML5WiVaWrGigKhTkq2bk1sEyMGIA
-	 doHQOWMRiK5Q9ZhH7fjSfFmN/c7OigB//y1a4ihOkOs5CoW1t+ugaZdeNEaCs/iuBL
-	 rf4Paf1PIDx12J96rYlPNuZq8lkc9myuAbgsrQM97FBAiwBx8K8SixoJoCCrIDmiZf
-	 DznHAPaBi/aOQ8mDhznA21meu7oYpN0k0RgUO62kMxESCApMWdH7UqKElCHW6ALhjF
-	 s6v2TVZ6FzfLAsHhU+0biXq2kiXcI8svQGIKE5sfjs/EYhpXaGB5usLQrz2mS5ATr6
-	 tkSaa2YHfKxgw==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: Mingyu Wang <25181214217@stu.xidian.edu.cn>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	Helge Deller <deller@gmx.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18.y] fbdev: fbcon: fix out-of-bounds read in err_out of fbcon_do_set_font()
-Date: Sat,  4 Jul 2026 11:19:43 -0400
-Message-ID: <20260704151943.1019054-1-sashal@kernel.org>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <2026070229-deflate-unmindful-6a01@gregkh>
-References: <2026070229-deflate-unmindful-6a01@gregkh>
+	s=arc-20240116; t=1783181312; c=relaxed/simple;
+	bh=XufG0eQZ8fmWPRjC8fo6ZVGZ05g2/hQ5aQ3eg6xYeK4=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=QYMbnVVw0yxwmCmuaDtCFuKX1ECWwrXHkV//SVn6vv2bZxgLH7pWD6ah6xk1UJqaXkj58bSg5pqbpc1hhebdpThA1htn6GDqU6+YBgTv6ZqYqXLxB7GZzkA3ZH5C4kzskfJUmpFwhg864RDAOffXo23aGdnRC7vcLMxqqdyK2QY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=WGG3+Nm5; arc=none smtp.client-ip=209.85.208.50
+Received: by mail-ed1-f50.google.com with SMTP id 4fb4d7f45d1cf-6983d3dae7aso4004981a12.0
+        for <stable@vger.kernel.org>; Sat, 04 Jul 2026 09:08:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1783181310; x=1783786110; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=5Qrg4okzbbX4Q+s6vcJ64+r7iRqbYqBLV4VypMj2S+k=;
+        b=WGG3+Nm5FqLYAlHuC/azIEw2ULaf2Ao7nnSHTcCdwhsJ5gDw1QETjA0P3oHbkVevwe
+         LIvBx4oxPxaghPMYVC5IXtsJ7t+s5338YZ2LDeiKU3g+snEl1xE/E0ZbsQy0zlaaPjVN
+         mLeW6i8z9dDYSPbEcWr/uuB4DxhjaIFutqzV8KDcyBtnOM9syTwfNZMWuXbTGFIgTSHx
+         xfb7/LJ+Nn4HFxw3mVyPCSNMr7tvso8IQcgeCfLxGb0uBiEawDO5qdVsdGDcA9YiC/l/
+         9U7V3y2g98ki+VqqOfZvBJaT77RsklnJbjmo7iBhh81LaA2rOQCzaQy3GouUFSLaDF5q
+         y//g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1783181310; x=1783786110;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=5Qrg4okzbbX4Q+s6vcJ64+r7iRqbYqBLV4VypMj2S+k=;
+        b=HyLaV+2qQR8dxE68xA9n5fycK+zaSMvMhTJO/hD66P1iJao00zgB/m3z99h8yeGf+W
+         iJdaT8jHEXVsh38uOqimhtHUUamb5srXFqj73Jg43ri59uiTT+Omdka0XUEYLeJHB/q8
+         +QgffkiYyC2oHtDm4QsrXnhdo/roaQWBLJXopXNkwmWvt0YH/Qz9CDLu0H7c2SpZ5SKZ
+         RKCUxk/oVKNZg1f43TXMItCuDETtr2FFN12l4UDkOWR8A9RbmwHUjTXLdOsVR+v2+zCG
+         oe90OPtLKzhYydcbJWrn+B0gfs0eH4ilaiRa2A6R2AxF81Pj6xcHGxbRQfFaxmMtUIZz
+         L/1A==
+X-Gm-Message-State: AOJu0Yych1UUfFdnq5JaOCEXRUXSk8OmESYipbwk53/VL9kCl2CLzQ9a
+	jliCdILccMqdvL0ZxGoNBxKfiVYsZrJa0LiDQrESWti82pEf7XDaOgKw
+X-Gm-Gg: AfdE7ckXrCwmuOqAh/sWUqqSkdMzHGDYv0koshBnOt8O5F+LF833Np49d02P+wH+7rh
+	o0Ox1ndVjt598EOKUZuvKVHhDSW1eI+5KTJygkz47uCvgcb7y6n3qAxKoOQ1OcSKfTpW56jNysU
+	rYAZYOBh1vvE0cyk49DqPH7zMGhe9+ChywPQtEHgRvziyHlJ67Awd4SknRKSIPPTPuzlTwzGZU+
+	owqe7/curDpkk2pERTXQOhDkwzIqkPfUMO4rQNQJicZ7LUjC0OqI176wu4XDdnn1qB48z2vXpr2
+	sXgJd0h/6dM97U6uYnQhj5gXkMfvPCOwJaINPhZGWIedV0TnEKkpUmjr+V7rbR2tbdHK7tYJ6TK
+	fsqNnlp9S4q9XTe5/PuwzTHkbwViNjqPiNlG2SWT+tgepsvnuoU6kcQeANJtVsFnkf9PmDhKn2u
+	QEdTIhiSm2CVK3/rOU2eWbmjB00lK3R7heYgz3NfxLummAw7dIfO110uOj0/MMI+o=
+X-Received: by 2002:a17:907:c518:b0:c12:b0b7:def with SMTP id a640c23a62f3a-c12c9d6bae4mr379868066b.14.1783181309628;
+        Sat, 04 Jul 2026 09:08:29 -0700 (PDT)
+Received: from node ([202.47.63.86])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c12b60575c4sm438586266b.9.2026.07.04.09.08.26
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 04 Jul 2026 09:08:29 -0700 (PDT)
+From: Muhammad Bilal <meatuni001@gmail.com>
+To: hdegoede@redhat.com,
+	ilpo.jarvinen@linux.intel.com,
+	jorge.lopez2@hp.com,
+	Thomas.Weissschuh@linutronix.de,
+	platform-driver-x86@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: stable@vger.kernel.org,
+	Mario Limonciello <superm1@kernel.org>,
+	Armin Wolf <W_Armin@gmx.de>,
+	Muhammad Bilal <meatuni001@gmail.com>
+Subject: [PATCH v2 0/3] hp-bioscfg: fix attribute enumeration on older HP BIOS
+Date: Sat,  4 Jul 2026 21:07:56 +0500
+Message-ID: <20260704160759.236249-1-meatuni001@gmail.com>
+X-Mailer: git-send-email 2.55.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -66,107 +96,133 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-3.66 / 15.00];
-	WHITELIST_SPF_DKIM(-3.00)[kernel.org:d:+,kernel.org:s:+];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-271975-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-271976-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[vger.kernel.org,kernel.org,gmx.de,gmail.com];
 	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:25181214217@stu.xidian.edu.cn,m:tzimmermann@suse.de,m:deller@gmx.de,m:sashal@kernel.org,s:lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_SENDER(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	FORGED_SENDER(0.00)[meatuni001@gmail.com,stable@vger.kernel.org];
 	FORWARDED(0.00)[lists@lfdr.de];
-	FREEMAIL_CC(0.00)[stu.xidian.edu.cn,suse.de,gmx.de,kernel.org];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
-	ALIAS_RESOLVED(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS(0.00)[m:hdegoede@redhat.com,m:ilpo.jarvinen@linux.intel.com,m:jorge.lopez2@hp.com,m:Thomas.Weissschuh@linutronix.de,m:platform-driver-x86@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,m:superm1@kernel.org,m:W_Armin@gmx.de,m:meatuni001@gmail.com,s:lists@lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[meatuni001@gmail.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	RCPT_COUNT_SEVEN(0.00)[10];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,gmx.de:email,suse.de:email,xidian.edu.cn:email]
+	TAGGED_RCPT(0.00)[stable];
+	FROM_HAS_DN(0.00)[]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 877EF707D24
+X-Rspamd-Queue-Id: 5D01B707E9C
 
-From: Mingyu Wang <25181214217@stu.xidian.edu.cn>
+The hp_bioscfg driver fails to enumerate BIOS attributes on
+HP EliteBook 840 G2 (and potentially other older HP models) because:
 
-[ Upstream commit 8fdc8c2057eea08d40ce2c8eed41ff9e451c65c2 ]
+  1. hp_init_bios_package_attribute() hard-fails when a WMI ACPI package
+     contains fewer elements than the per-type expected count (11 < 13),
+     even though only the first 10 common elements are required to
+     register an attribute.
 
-When fbcon_do_set_font() fails (e.g., due to a memory allocation failure
-inside vc_resize() under heavy memory pressure), it jumps to the `err_out`
-label to roll back the console state. However, the current rollback logic
-forgets to restore the `hi_font` state, leading to a severe state machine
-corruption.
+  2. hp_populate_enumeration_elements_from_package() returns -EIO and
+     discards the entire attribute when any single element has an
+     unexpected ACPI object type - typically after a BIOS AML error
+     returns malformed data.
 
-Earlier in the function, `set_vc_hi_font()` might be called to change
-`vc->vc_hi_font_mask` and mutate the screen buffer. If `vc_resize()`
-subsequently fails, the `err_out` path restores `vc_font.charcount`
-but entirely skips rolling back the `vc_hi_font_mask` and the screen
-buffer.
+Hardware affected:
+  HP EliteBook 840 G2 (DMI: Hewlett-Packard HP EliteBook 840 G2/2216)
+  BIOS: M71 Ver. 01.31 (02/24/2020)
 
-This mismatch leaves the terminal in a desynchronized state. Because
-`vc_hi_font_mask` remains set, the VT subsystem will still accept
-character indices greater than 255 from userspace and write them to the
-screen buffer. Subsequent rendering calls (e.g., `fbcon_putcs()`) will
-then use these inflated indices to access the reverted, 256-character
-font array, leading to a deterministic out-of-bounds read and potential
-kernel memory disclosure.
+How to reproduce:
+  1. Boot a kernel with CONFIG_HP_BIOSCFG=m on an HP EliteBook 840 G2
+  2. modprobe hp_bioscfg
+  3. Observe dmesg:
+       hp_bioscfg: ACPI-package does not have enough elements: 11 < 13
+       Error expected type 2 for elem 13, but got type 1 instead
 
-Fix this by adding the missing rollback logic for the `hi_font` mask
-and screen buffer in the error path.
+Changes since v1:
+  Patch 1/3 is new. Relaxing the element-count gate in patch 2/3 (v1's
+  patch 1/2) lets packages shorter than the per-type ELEM_CNT constant
+  reach hp_populate_*_elements_from_package(). Those loops don't bound
+  themselves against the real package size - each one re-derives a
+  "count" by reading ->package.count off elements[0], which is always
+  a string (NAME) object, so it's actually reading ->string.length
+  through the union. That was harmless while the old hard min_elements
+  gate guaranteed a full ELEM_CNT-sized package on every call, but once
+  patch 2/3 allows a shorter package through, the fixed ELEM_CNT loop
+  bound walks past the end of the real elements[] array - a heap
+  out-of-bounds read, on the exact EliteBook 840 G2 hardware this
+  series targets.
 
-Fixes: a5a923038d70 ("fbdev: fbcon: Properly revert changes when vc_resize() failed")
-Cc: stable@vger.kernel.org
-Signed-off-by: Mingyu Wang <25181214217@stu.xidian.edu.cn>
-Reviewed-by: Thomas Zimmermann <tzimmermann@suse.de>
-Signed-off-by: Helge Deller <deller@gmx.de>
-[ Adjust context ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- drivers/video/fbdev/core/fbcon.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+  Patch 1/3 fixes this by threading the real, already-validated
+  obj->package.count down into every hp_populate_*_package_data()
+  wrapper instead of letting each one guess at it, and bounds
+  hp_populate_ordered_list_elements_from_package()'s main loop (which
+  previously ignored the count entirely) the same way. It's a no-op
+  for any package that already meets today's ELEM_CNT minimums, and
+  patch 2/3 is only safe to apply on top of it.
 
-diff --git a/drivers/video/fbdev/core/fbcon.c b/drivers/video/fbdev/core/fbcon.c
-index 8baad7ec1b8566..926905ad46a306 100644
---- a/drivers/video/fbdev/core/fbcon.c
-+++ b/drivers/video/fbdev/core/fbcon.c
-@@ -2422,6 +2422,7 @@ static int fbcon_do_set_font(struct vc_data *vc, int w, int h, int charcount,
- 	struct fbcon_display *p = &fb_display[vc->vc_num];
- 	int resize, ret, old_userfont, old_width, old_height, old_charcount;
- 	u8 *old_data = vc->vc_font.data;
-+	unsigned short old_hi_font_mask = vc->vc_hi_font_mask;
- 
- 	resize = (w != vc->vc_font.width) || (h != vc->vc_font.height);
- 	vc->vc_font.data = (void *)(p->fontdata = data);
-@@ -2475,6 +2476,12 @@ static int fbcon_do_set_font(struct vc_data *vc, int w, int h, int charcount,
- 	vc->vc_font.height = old_height;
- 	vc->vc_font.charcount = old_charcount;
- 
-+	/* Restore the hi_font state and screen buffer */
-+	if (old_hi_font_mask && !vc->vc_hi_font_mask)
-+		set_vc_hi_font(vc, true);
-+	else if (!old_hi_font_mask && vc->vc_hi_font_mask)
-+		set_vc_hi_font(vc, false);
-+
- 	return ret;
- }
- 
+  Patches 2/3 and 3/3 are otherwise unchanged from v1.
+
+  Thanks to Mario for the v1 Reviewed-by, carried forward on 2/3 and
+  3/3 since those are unmodified. Armin's point about migrating to the
+  buffer-based WMI API for correct marshaling is well taken as the
+  longer-term fix; this series is meant as a minimal, backportable fix
+  for the immediate enumeration failure and the OOB read it would
+  otherwise reintroduce, not a replacement for that migration.
+
+Testing notes:
+  Tested on HP EliteBook 840 G2 running Arch Linux kernel 7.0.13-arch1-1.
+  After patches, hp_bioscfg loads successfully and enumerates available
+  BIOS attributes. Attributes with shortened packages are partially
+  populated and accessible via sysfs. No regressions on systems that
+  return full ELEM_CNT-element packages (patch 1/3 only changes
+  behavior once patch 2/3's relaxed gate can hand it a shorter one).
+
+Relevant dmesg (before fix):
+  [   11.xxx] hp_bioscfg: ACPI-package does not have enough elements:
+              11 < 13
+  [   11.xxx] ACPI BIOS Error (bug): AE_AML_BUFFER_LIMIT,
+              Index (0x000000032) is beyond end of object (length 0x32)
+  [   11.xxx] ACPI Error: Aborting method \_SB.WMID.WQBE
+  [   11.xxx] Error expected type 2 for elem 13, got type 1
+  [   11.xxx] hp_bioscfg: Returned error 0x3
+
+
+Muhammad Bilal (3):
+  platform/x86: hp-bioscfg: pass validated element count to package
+    parsers
+  platform/x86: hp-bioscfg: accept reduced ACPI packages from older HP
+    BIOS
+  platform/x86: hp-bioscfg: warn on element type mismatch instead of
+    failing
+
+ drivers/platform/x86/hp/hp-bioscfg/bioscfg.c     | 16 +++++++++++++---
+ drivers/platform/x86/hp/hp-bioscfg/bioscfg.h     |  8 ++++++++
+ .../platform/x86/hp/hp-bioscfg/enum-attributes.c | 10 ++++++----
+ .../platform/x86/hp/hp-bioscfg/int-attributes.c  |  3 ++-
+ .../x86/hp/hp-bioscfg/order-list-attributes.c    |  7 ++++---
+ .../x86/hp/hp-bioscfg/passwdobj-attributes.c     |  5 +++--
+ .../x86/hp/hp-bioscfg/string-attributes.c        |  3 ++-
+ 7 files changed, 38 insertions(+), 14 deletions(-)
+
 -- 
-2.53.0
+2.55.0
 
 
