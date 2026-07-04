@@ -1,142 +1,176 @@
-Return-Path: <stable+bounces-271915-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-271916-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id zfe6EchrSGqDqAAAu9opvQ
-	(envelope-from <stable+bounces-271915-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 04 Jul 2026 04:11:20 +0200
+	id 08hVMhFsSGqTqAAAu9opvQ
+	(envelope-from <stable+bounces-271916-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 04 Jul 2026 04:12:33 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id A137770677F
-	for <lists+stable@lfdr.de>; Sat, 04 Jul 2026 04:11:19 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B548C70678B
+	for <lists+stable@lfdr.de>; Sat, 04 Jul 2026 04:12:32 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=FqaCyY6a;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-271915-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-271915-lists+stable=lfdr.de@vger.kernel.org";
-	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=ElX9bTPi;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-271916-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-271916-lists+stable=lfdr.de@vger.kernel.org";
+	arc=pass ("subspace.kernel.org:s=arc-20240116:i=2")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 9511030146B3
-	for <lists+stable@lfdr.de>; Sat,  4 Jul 2026 02:11:18 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 91A8C3009388
+	for <lists+stable@lfdr.de>; Sat,  4 Jul 2026 02:12:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A35BC2D0620;
-	Sat,  4 Jul 2026 02:11:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 860862E65D;
+	Sat,  4 Jul 2026 02:12:26 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f174.google.com (mail-pg1-f174.google.com [209.85.215.174])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76C572E65D;
-	Sat,  4 Jul 2026 02:11:16 +0000 (UTC)
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783131077; cv=none; b=AWEqqjoI6kIbUBv2p8rlOPCY/l6LxrBx1+LTdu1tXDrvSQ71DebyG7hYsNOPIm6eLZNc7RYVWTkHb8WDmlfKEi5aM9CrbmBrgSoKjzwGN4Pj26QrZXlBkuf/2uEQzahxlTLvFutq+tC3cWNkHPcyYpwjQOdkNHRnucrgkxx0yMs=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783131077; c=relaxed/simple;
-	bh=OWLVyy5iVXF+/BCarDTNY5fL3X3/Nu8KuBdwOwZ+Jj0=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rOho1HW1T8t72KwkxxH1IKu7cDHdkDwib3GSV/tiXJi/jf9h+IoK0iDNkh73MZ1oM/fNgiPOUZpftQSLRPg1hF2ofOdvWS0XFOTP6LNVU+/6bePVvrvwUXuF6Rty4CJhwR7wr9+ZfiPfdba5pn0JCnveHig2QTfgH/EODHQtHjs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FqaCyY6a; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BBB021F000E9;
-	Sat,  4 Jul 2026 02:11:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783131076;
-	bh=xhQY18Ntme9FlKB+cK+S+3z1nmjM9W9PAf7ZIqw/HH8=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=FqaCyY6aczkOTUO+7XwLYq8IYMP0z+bBj6J7Dj2myZmZOiM04WrOrMqpq+exdFp0i
-	 kKBd6sEFfJuCw9hKRF/aOj79XWbUJ7RZ9oggXuminPuK2HQ+xK46sTcFgDL7lN2PIl
-	 o9++rMi/MTum5yibTfirmVrRluY2vONjDxCRnLpeW9yK9W5iNY47EAKlQVzLRuAi7Y
-	 xqnc7cXOhK6eI7yREUWSBoLaCMY9smw//MWxjC6CxrrKIFnx9lvxObkbgOCKN5s2to
-	 6XC2ICyav2MJFmECytIHj06Hfv8+9rmYcy+7OKNTFCN3c4YfFH6wT7KMtY4bl1sMFW
-	 gbkltOrkZwYRA==
-From: Miguel Ojeda <ojeda@kernel.org>
-To: gregkh@linuxfoundation.org
-Cc: achill@achill.org,
-	akpm@linux-foundation.org,
-	broonie@kernel.org,
-	conor@kernel.org,
-	f.fainelli@gmail.com,
-	hargar@microsoft.com,
-	jonathanh@nvidia.com,
-	linux-kernel@vger.kernel.org,
-	linux@roeck-us.net,
-	lkft-triage@lists.linaro.org,
-	patches@kernelci.org,
-	patches@lists.linux.dev,
-	pavel@nabladev.com,
-	rwarsow@gmx.de,
-	shuah@kernel.org,
-	sr@sladewatkins.com,
-	stable@vger.kernel.org,
-	sudipm.mukherjee@gmail.com,
-	torvalds@linux-foundation.org,
-	Miguel Ojeda <ojeda@kernel.org>
-Subject: Re: [PATCH 6.18 000/109] 6.18.38-rc2 review
-Date: Sat,  4 Jul 2026 04:10:29 +0200
-Message-ID: <20260704021029.56070-1-ojeda@kernel.org>
-In-Reply-To: <20260703072816.644513463@linuxfoundation.org>
-References: <20260703072816.644513463@linuxfoundation.org>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25BAB175A86
+	for <stable@vger.kernel.org>; Sat,  4 Jul 2026 02:12:24 +0000 (UTC)
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1783131146; cv=pass; b=vF9UahSbtUGgJPq36v9Fkc3/+8mRV+ae7/++MsnIjFr+CX60UFI7v94pJfITW6RF8eiAJxDLE9kQTgcyX3AM2x8VRJQGz/Y8MEx1pjBWHNrwy1McAmOut5qXi22BZPAr4l/sB2FK13sQHp+XYZ/3hIbtowUrEBphSGrovLFbHD4=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1783131146; c=relaxed/simple;
+	bh=WtFu/7isZ4dlFs1BNOl7NircysrhnIaG8lu25+BYPoc=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=aEtsPSEEcP+xQFrC1f75ihYPT8RaOgxB7kBZO13Hl6dYysf2m8SjtIA/hLHM5ACp5bZcnyszpPtnAnjudHTl/VKMiia/tF51JYX6smdknyvnwPnMTN8WziACu5NmeAc0CSM4Cg0m5GRFbfI2tKkAAbydv5S7ABQM4KfpZLZrEiM=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ElX9bTPi; arc=pass smtp.client-ip=209.85.215.174
+Received: by mail-pg1-f174.google.com with SMTP id 41be03b00d2f7-c96cb024ee0so760456a12.1
+        for <stable@vger.kernel.org>; Fri, 03 Jul 2026 19:12:24 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1783131144; cv=none;
+        d=google.com; s=arc-20260327;
+        b=e8Jz9rreX3QtvCjar1QFuJQnVAs8rj47ZGx+PK1gQAGcqoltHjpiylLUKMF9qwbYte
+         hGMWjYtNht5GTGx8Quic/mq4vzaWDpCIDyvTDnPUtEecpUoxLXvWtEOyGqVMjL+zQrTO
+         tjfa8R9TDhYjduVhxDZcl6+bAZaAlN9VAnlW4TSFHzrxhFVcEu+0PpiMPraEvygm5C8f
+         WqMEbUp2D6SR6053luAERCRH99r0ccw5ey/fiH1/9jAMYeEbHKvUruihxz7BGZook/4Y
+         WmoMIj2/F0o2ggwBjJwbFTOZXEr2j5E1x2xMpxyODr5nFL19tXFUZo3vvUFm13DVSe6x
+         VcTA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=qTEF+jxKV5MhhsYoWwK9gY1uoGZyNE3Vd1jsBxP2q4U=;
+        fh=dljNS2ooK6fYvh9vxurHKUMg+Tx+AOHz+/1AkKhkEKc=;
+        b=RnSujWHksdQh8PCarmckVhCFduk4dH97zqu4FWzjfM4kGDPRda6KfX+sILlhBQrych
+         K3NHO9g0u+zKL7ZjR0E+/C4TZX2UE95HR/4yGpJ3kgQWdD7XBnK6BhGguzXvko57JBIa
+         yAs4betIIO6jHkhOZG71+SBYRq+oVlbgWPmT3MeuKwDid4WybN0xAdTDtd0D4VKyVPS6
+         i4NV6qNj6PIU6y28Yvt6oH7BOqHGYJx6oOAGrWFLMZAcSDOzGd/OcS0aMBCUW/NWGYua
+         SQofUkM9FVHh5NRsE6pQjt6lpUGRQhELD8NPfrCHi4kACOli/S7SRvchiKxqBybiOn12
+         UkXw==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1783131144; x=1783735944; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=qTEF+jxKV5MhhsYoWwK9gY1uoGZyNE3Vd1jsBxP2q4U=;
+        b=ElX9bTPijXL8HUUu++LxXryjCo1r5ag7V6fvI9Wmgmz74wsEqYNM7Xg2xGkveZI/BD
+         fsjOmZ0h7UlNjZ1lLLaoTdXJzpfpLKLpCHJN0BmEDLmtF5b1YCEm0X+zBtjOFRxoZxtI
+         ckVZ1Cagzyv4h1ah9GoxSeljI32yKcIqqxCgNvRWw+iLZ8NmeYOx8tMLoaSVTQnlqia/
+         BqMuVVpiLE7pDKvr0K4DwiRijAYvrrfJUuQzESibBcMNZGvsw4YxGR5MtV4Av2apSYPe
+         yXgOCyhhF/QYirgzB3ebtruJT/UJeEjN8+GXvnj8Q6laCBRoQbV8C+YiP7lCA3E88x9I
+         aVDQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1783131144; x=1783735944;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=qTEF+jxKV5MhhsYoWwK9gY1uoGZyNE3Vd1jsBxP2q4U=;
+        b=GPqWqMUOfHsBC5tCJ1vnlSh+h6yxdr8uozFqsjD4h+/Y7X1ENGJzyvAWYaFHzOzX9Q
+         IY4fwqsFKeB2NNGIuKuwmdwPgyUMLkGrPVdfOtCjASn48ouglzesfwygeHZO9R4ozMpo
+         MavFI6bV4tdXchF5o3ZYz650bzYX7xLyZcmu3sphxoIv47ydvrJ2RtCLqm4SwOGYly46
+         GqDFFy8NJUrU2A2ysIJ3m6x+At2ODpm3wWli5YGc0BmdqG5qGGCqi7OYb5X2ghH/gmP+
+         p2o3KkkS8Gp4hLvHLMima5UJlJY2VjmfmeYStvqe/1wvq5grghOIZX0s9cZql0p0F0MN
+         w3Cg==
+X-Gm-Message-State: AOJu0YzCR0kTj+031/V7m4xCQaC/A0hjAS1++Us2QtzipQz0EgDGM7Jd
+	26f//dmxgGyqedKxB8j60HbL3m3IYRe6U5ixFxpm1otGJdGot+MB08P5S8ol6dLigG7aVGXNdxe
+	5mYdWRUAzX+s9o+9cypjm9p0goIL3b2trv1M4+3hpmQ==
+X-Gm-Gg: AfdE7cm8snvb30Bb/yFCB9M8MZkn33VHmTv0I0PhLpESgjRdvDG6Q1UeRbQjl/ab38b
+	q2vFS0ColpgAfHoLq8ayyr9Gebf3YO9P+3MqpF9lKcbqp0S8qLbmJOkPQ4EAP/jTQ0t5Vpgg+iP
+	SD1Ogw4pbQRa++vo5OSGsJRCzJ/IJAhPa0N1+EksvnlqvJRQZiXJ1lSAr7XYpx4YndRd5nP911c
+	RjX8sPLJAn2zwjofCcA6jZ4tg5IBsSUZ5KV2K0f6BEucS++qhlahvbqWuA7t53We8exiWtIlA==
+X-Received: by 2002:a05:6a21:6a0d:b0:3b7:d9d6:9fc9 with SMTP id
+ adf61e73a8af0-3c03e18bb27mr1523827637.2.1783131144242; Fri, 03 Jul 2026
+ 19:12:24 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20260528194646.819809818@linuxfoundation.org> <20260528194657.359703301@linuxfoundation.org>
+ <CAFQ-Uc-wu8fbTDXhtyODCz36_1DBue5ay7V2LpzjrUgHs+0WvQ@mail.gmail.com> <2026062933-storeroom-amusement-0b66@gregkh>
+In-Reply-To: <2026062933-storeroom-amusement-0b66@gregkh>
+From: maher azz <maherazz04@gmail.com>
+Date: Sat, 4 Jul 2026 03:12:12 +0100
+X-Gm-Features: AVVi8CcEcw0s9HAXZ2couWs6WgaDEK3NnV2KxkcK-KT-2qNjLaUUzpSlL-MEyBw
+Message-ID: <CAFQ-Uc9p7PhXp-FC4N3iYAtyeKgN6z4A_+L8YwKDAkXxZAvksg@mail.gmail.com>
+Subject: Re: [PATCH 7.0 345/461] vsock/virtio: fix zerocopy completion for
+ multi-skb sends
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
+	Stefano Garzarella <sgarzare@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>, 
+	Arseniy Krasnov <avkrasnov@salutedevices.com>, Jakub Kicinski <kuba@kernel.org>, 
+	Sasha Levin <sashal@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-2.16 / 15.00];
-	WHITELIST_SPF_DKIM(-3.00)[kernel.org:d:+,kernel.org:s:+];
-	SUSPICIOUS_RECIPS(1.50)[];
-	MID_CONTAINS_FROM(1.00)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-271915-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:gregkh@linuxfoundation.org,m:achill@achill.org,m:akpm@linux-foundation.org,m:broonie@kernel.org,m:conor@kernel.org,m:f.fainelli@gmail.com,m:hargar@microsoft.com,m:jonathanh@nvidia.com,m:linux-kernel@vger.kernel.org,m:linux@roeck-us.net,m:lkft-triage@lists.linaro.org,m:patches@kernelci.org,m:patches@lists.linux.dev,m:pavel@nabladev.com,m:rwarsow@gmx.de,m:shuah@kernel.org,m:sr@sladewatkins.com,m:stable@vger.kernel.org,m:sudipm.mukherjee@gmail.com,m:torvalds@linux-foundation.org,m:ojeda@kernel.org,m:ffainelli@gmail.com,m:sudipmmukherjee@gmail.com,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[ojeda@kernel.org,stable@vger.kernel.org];
-	RCPT_COUNT_TWELVE(0.00)[21];
-	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FREEMAIL_CC(0.00)[achill.org,linux-foundation.org,kernel.org,gmail.com,microsoft.com,nvidia.com,vger.kernel.org,roeck-us.net,lists.linaro.org,kernelci.org,lists.linux.dev,nabladev.com,gmx.de,sladewatkins.com];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[ojeda@kernel.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-271916-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER(0.00)[maherazz04@gmail.com,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	MISSING_XM_UA(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:gregkh@linuxfoundation.org,m:stable@vger.kernel.org,m:patches@lists.linux.dev,m:sgarzare@redhat.com,m:mst@redhat.com,m:avkrasnov@salutedevices.com,m:kuba@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	FORWARDED(0.00)[lists@lfdr.de];
+	DKIM_TRACE(0.00)[gmail.com:+];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,vger.kernel.org:from_smtp]
+	FREEMAIL_FROM(0.00)[gmail.com];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[maherazz04@gmail.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROMTLD(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:email,mail.gmail.com:mid,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: A137770677F
+X-Rspamd-Queue-Id: B548C70678B
 
-On Fri, 03 Jul 2026 09:36:06 +0200 Greg Kroah-Hartman <gregkh@linuxfoundation.org> wrote:
+Hello,
+
+Thank you Greg, I already sent an email requesting a CVE for this
+specific LPE vulnerability one week ago.
+
+Best,
+Maher
+
+On Mon, Jun 29, 2026 at 5:40=E2=80=AFAM Greg Kroah-Hartman
+<gregkh@linuxfoundation.org> wrote:
 >
-> This is the start of the stable review cycle for the 6.18.38 release.
-> There are 109 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
-> 
-> Responses should be made by Sun, 05 Jul 2026 07:28:03 +0000.
-> Anything received after that time might be too late.
-
-Boot-tested under QEMU for Rust x86_64, arm64 and riscv64; built-tested
-for loongarch64 and arm32:
-
-Tested-by: Miguel Ojeda <ojeda@kernel.org>
-
-Thanks!
-
-Cheers,
-Miguel
+> On Sun, Jun 28, 2026 at 08:31:35PM +0100, maher azz wrote:
+> > Hello,
+> >
+> > Is there a CVE assigned to this issue already? Thank you for patching i=
+t.
+>
+> <formletter>
+>
+> Please see:
+>         https://www.kernel.org/doc/html/latest/process/cve.html
+> for how kernel CVEs are assigned.
+>
+> </formletter>
 
