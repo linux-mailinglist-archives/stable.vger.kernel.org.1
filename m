@@ -1,173 +1,178 @@
-Return-Path: <stable+bounces-272103-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-272104-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id eNHkKEnOSmpkHwEAu9opvQ
-	(envelope-from <stable+bounces-272103-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 05 Jul 2026 23:36:09 +0200
+	id vj6NKTbUSmo/IQEAu9opvQ
+	(envelope-from <stable+bounces-272104-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 06 Jul 2026 00:01:26 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0E71870B7B8
-	for <lists+stable@lfdr.de>; Sun, 05 Jul 2026 23:36:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F65970B8B3
+	for <lists+stable@lfdr.de>; Mon, 06 Jul 2026 00:01:26 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=ideasonboard.com header.s=mail header.b=KSUfAx9L;
-	dmarc=pass (policy=none) header.from=ideasonboard.com;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-272103-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-272103-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=n4HhoaXX;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-272104-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-272104-lists+stable=lfdr.de@vger.kernel.org";
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 42D883008747
-	for <lists+stable@lfdr.de>; Sun,  5 Jul 2026 21:36:00 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D47BD300950A
+	for <lists+stable@lfdr.de>; Sun,  5 Jul 2026 22:01:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E52C7359A90;
-	Sun,  5 Jul 2026 21:35:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F1AE4363089;
+	Sun,  5 Jul 2026 22:01:19 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DE7A20E023;
-	Sun,  5 Jul 2026 21:35:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FD5E30D405
+	for <stable@vger.kernel.org>; Sun,  5 Jul 2026 22:01:18 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783287358; cv=none; b=bhD95ZuwlmE9t8p/sgmDXWJGPqmssLMO0/Z7myGt6lGqdJWU6DdW5zpIUzQJLDWHbe6wI74gEXfcDuGlrqqIFV4R9IZZ5Cey5RB4v88xnfC/Sei8R9ffvYVPfoCPNEr+VOuqxRkVT3EQmKn0zA1aZRXz5cSTxIc7iDgoRUaJPB8=
+	t=1783288879; cv=none; b=n8kiCSdmQ0MNXVX0v7dk1t5358txflb/GO/FI3hkxaWwz76cv+iFfj9UtHKIOTCSPXcX5yQXZm1fPmNRnf4VAn2kmO1ORTqJmfi1ba2Doz/5eCandGo+IUrep0HPJjsmvu2YvOE9AyXQRNa8YotKo2PEuYvoxr3vOqpRRF1S9yE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783287358; c=relaxed/simple;
-	bh=gdRkLQABCso7Pq+hx4ptN7VAvIimLCYikztKh8bbSfI=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=a8A5afyxB+wg86SV0aPCBgNmxL6HXB/OFjFlVvBuSAZ7MS99bFPi+2yONEkF0vBZnUE86SUVx25kYMXbDyKDs9WUpTzg2/CmfN8UQRrocuOL4PbtMO8CMzE3Omx7YxBOo91/1PO3s1Tjuwlv+24DjBSNLlVPxQaQ4R773HqO8eo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=KSUfAx9L; arc=none smtp.client-ip=213.167.242.64
-Received: from killaraus.ideasonboard.com (2001-14ba-70f3-e800--a06.rev.dnainternet.fi [IPv6:2001:14ba:70f3:e800::a06])
-	by perceval.ideasonboard.com (Postfix) with ESMTPSA id 29DB2B8B;
-	Sun,  5 Jul 2026 23:34:59 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
-	s=mail; t=1783287299;
-	bh=gdRkLQABCso7Pq+hx4ptN7VAvIimLCYikztKh8bbSfI=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KSUfAx9LwSMa2l5hnQUZLe8H4Td880SoqHfCZ427jjdLCtz5/oKodZ34b8oNIAvF+
-	 pp8NrqvP+VELSxxQNu1bM2p+tgsRQKIm2tWBn+QIuuYqkyroFos2HoEf3Vh7Mp2uWN
-	 pBPWDi6oDCE25/arzodjJ2PvlFMKgALJk6SSeR4w=
-From: Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>
-To: dri-devel@lists.freedesktop.org,
-	devicetree@vger.kernel.org
-Cc: Thuan Nguyen <thuan.nguyen-hong@banvien.com.vn>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Magnus Damm <magnus.damm@gmail.com>,
-	Andrzej Hajda <andrzej.hajda@intel.com>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Robert Foss <rfoss@kernel.org>,
-	Jonas Karlman <jonas@kwiboo.se>,
-	Jernej Skrabec <jernej.skrabec@gmail.com>,
-	Luca Ceresoli <luca.ceresoli@bootlin.com>,
-	linux-renesas-soc@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: [PATCH 2/4] drm/bridge: display-connector: Fix I2C adapter resource leak
-Date: Mon,  6 Jul 2026 00:35:40 +0300
-Message-ID: <20260705213542.28987-3-laurent.pinchart+renesas@ideasonboard.com>
-X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260705213542.28987-1-laurent.pinchart+renesas@ideasonboard.com>
-References: <20260705213542.28987-1-laurent.pinchart+renesas@ideasonboard.com>
+	s=arc-20240116; t=1783288879; c=relaxed/simple;
+	bh=J0rC12oZFiLiXQenR8dBOqjpyonB6YKw/xD+6HjT53M=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=c8IM1PLkB56e4CFJkELVRLmZJa4JZE69BzVg98jWJIDlUyIj0Esd4cQfiV+UNp9frEtMcQAx7gleeIuumW0Cqgu0Cem9X+uOtHqDTeE+kT28fK0EdlKE3S7yMKl3FLSMYKvEfYO3vZ1Uc8kESnZbg8WUv3uJYOCUv6uiOhUIZE0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=n4HhoaXX; arc=none smtp.client-ip=209.85.128.52
+Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-493b7612475so21032635e9.3
+        for <stable@vger.kernel.org>; Sun, 05 Jul 2026 15:01:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1783288877; x=1783893677; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=XxSMfy/QlW2tXBP9+Fkc2egYH8UObSYwUBv+zGIFQn8=;
+        b=n4HhoaXXeAsn4sxG5XgkRxtXFqIKEYlVLZdcUEf81KOOhkQ7mhyU046yXFwvRKNqWv
+         Jql5Q3TnZyE18mEmbyub49GKIA4ioNKPv0BAORNnPTIQ44Ux0tKsfEZ2ViPVQ66XTDFh
+         lGgPC4cDMVD+GORFXwQyff5j3yQ/LJ/3WUJFBr330DPjX10Gp3FoK1Og2i6+M8Y7St33
+         MvqFgzP5fejKbD9QOjMQGSstb3JDfsu22YdUDwweuzyCqEWkaYap5iy99lfHr1kygzOj
+         ZPiqpRiouz5jAnbziztiNr9ZtICf8a0wTuduRQmwBJpDGeP4oICJmBzg+ah2z3tkMzHG
+         QA4A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1783288877; x=1783893677;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=XxSMfy/QlW2tXBP9+Fkc2egYH8UObSYwUBv+zGIFQn8=;
+        b=Jn3AqJTfBSeXQM5+Rd6I1HC6VolZKEHop2OAOiB0yB+G6OclKeH92+ekLOPpl1jxMp
+         qjVCacMaFxUm+eV+mPq+ZvtXmKH6caf7ukBIp+yXei3pFLTGnFzEJf2uEnaXnWgU27RW
+         1gxSUKx6kFk0OHE1PvZ15RtZ0VxomRcueN1TmgZbS/EpArjpt+cWaeZlwUrTPj+9z8i1
+         qmFZeFmkATgG4MA0pN2QybGg666QnQxULRrZXSE6zF/M9FaKTqO19RTG/K7HzpSh9ize
+         NS11puzVxgeN03FMDR0lFEBDRmbWoX6XjeG1ktDeDb5qe4pTEPwN99aVZf1ndsJDTIuL
+         uQFQ==
+X-Forwarded-Encrypted: i=1; AHgh+Rp2i1vuVh80RgZEicsJWNDkR7qJxefYSyM2q58V76pWlAR/R4tXz/HPzXZR0TQpZTJs8m31R/c=@vger.kernel.org
+X-Gm-Message-State: AOJu0YySzZmS4eTthtfGXFwjd9mGvX+BHul1PVYYethgMPYp0Y2eW1Wv
+	w63MvR0bDMlIuv5NhWWM4JFK/MmcAjpBRQT3dY+tjrklYkW3FqAacNHuwfwYr6ZxyH8=
+X-Gm-Gg: AfdE7cmqAUT/LG8kqQJhIeLjUohni+pDPZFPHS834R7WMYABmclD8gdR7MdTcw+k+qz
+	E4jRIE9tit/WuMw+B1wxiZueks/cw+gjvc3B6Jv5koRV6Y+KOZWAYg/J+xxDNA85b2fKszheonq
+	bMc5JqAKdwHU6XgifFAL4jM8v0YCcNhtlpOHbGrYrz+/BSVaqBhoUeAe/L/cUA5ERa3c9xXSYuv
+	1wtSC9L6cpRWbySM8UFExPd9Dj1hdiYxn+ozM1utdHQWnhTJmnT5HHVoLyBLueQfJLnr/pCQRDr
+	CAuwcXP5NxtPopqhKBkhX3bkbXmLfkKyV18wRdZvEX5YrquJ006S0h0oZy4OkwzQmwRIcHXx82s
+	9MsTEGPtl14rcTJYyGLPZjfpdg1dGeZUCbuAEErfJ+qGx2AHmCQ6KyJethRPJsM1HM1kjL/8nnk
+	SJnPQ1va/L16+QO4Fwq6E9KZQZfQ==
+X-Received: by 2002:a05:600c:215:b0:493:c389:d43c with SMTP id 5b1f17b1804b1-493d11fd6a1mr57996415e9.34.1783288876656;
+        Sun, 05 Jul 2026 15:01:16 -0700 (PDT)
+Received: from tt.. ([31.223.44.89])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-493c63172fesm544853265e9.0.2026.07.05.15.01.15
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 05 Jul 2026 15:01:16 -0700 (PDT)
+From: =?UTF-8?q?Muhammet=20Kaan=20KILIN=C3=87?= <muhammetkaankilinc@gmail.com>
+To: herbert@gondor.apana.org.au,
+	ebiggers@kernel.org
+Cc: linux-crypto@vger.kernel.org,
+	stable@vger.kernel.org,
+	sashal@kernel.org,
+	=?UTF-8?q?Muhammet=20Kaan=20KILIN=C3=87?= <muhammetkaankilinc@gmail.com>
+Subject: [PATCH 0/2] crypto: algif_skcipher - fix AIO IV race in stable trees
+Date: Sun,  5 Jul 2026 22:01:09 +0000
+Message-ID: <20260705220112.2522-1-muhammetkaankilinc@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.16 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[ideasonboard.com,none];
-	R_DKIM_ALLOW(-0.20)[ideasonboard.com:s=mail];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	FREEMAIL_CC(0.00)[vger.kernel.org,kernel.org,gmail.com];
 	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[19];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-272103-lists,stable=lfdr.de,renesas];
+	TAGGED_FROM(0.00)[bounces-272104-lists,stable=lfdr.de];
+	FORGED_SENDER(0.00)[muhammetkaankilinc@gmail.com,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:dri-devel@lists.freedesktop.org,m:devicetree@vger.kernel.org,m:thuan.nguyen-hong@banvien.com.vn,m:maarten.lankhorst@linux.intel.com,m:mripard@kernel.org,m:tzimmermann@suse.de,m:robh@kernel.org,m:krzk+dt@kernel.org,m:conor+dt@kernel.org,m:geert+renesas@glider.be,m:magnus.damm@gmail.com,m:andrzej.hajda@intel.com,m:neil.armstrong@linaro.org,m:rfoss@kernel.org,m:jonas@kwiboo.se,m:jernej.skrabec@gmail.com,m:luca.ceresoli@bootlin.com,m:linux-renesas-soc@vger.kernel.org,m:stable@vger.kernel.org,m:krzk@kernel.org,m:conor@kernel.org,m:geert@glider.be,m:magnusdamm@gmail.com,m:jernejskrabec@gmail.com,s:lists@lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_SENDER(0.00)[laurent.pinchart@ideasonboard.com,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[banvien.com.vn,linux.intel.com,kernel.org,suse.de,glider.be,gmail.com,intel.com,linaro.org,kwiboo.se,bootlin.com,vger.kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	FORGED_RECIPIENTS(0.00)[m:herbert@gondor.apana.org.au,m:ebiggers@kernel.org,m:linux-crypto@vger.kernel.org,m:stable@vger.kernel.org,m:sashal@kernel.org,m:muhammetkaankilinc@gmail.com,s:lists@lfdr.de];
 	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[laurent.pinchart@ideasonboard.com,stable@vger.kernel.org];
+	FORWARDED(0.00)[lists@lfdr.de];
+	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[ideasonboard.com:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[muhammetkaankilinc@gmail.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[gmail.com:+];
 	ALIAS_RESOLVED(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,dt,renesas];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[ideasonboard.com:from_mime,ideasonboard.com:email,ideasonboard.com:mid,ideasonboard.com:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,vger.kernel.org:from_smtp]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 0E71870B7B8
+X-Rspamd-Queue-Id: 4F65970B8B3
 
-If the probe function returns an error after getting the I2C adapter for
-DDC, the reference to the adapter is never released. Fix it by releasing
-it in the bridge .destroy() handler.
+The AF_ALG skcipher AIO path passes the socket-wide ctx->iv as a raw
+pointer into the async request. After io_submit() the socket lock is
+dropped and the request is processed by a worker, which dereferences
+ctx->iv only later. A concurrent sendmsg(ALG_SET_IV) on the same socket
+can overwrite ctx->iv inside this window, so the in-flight request runs
+under an attacker-controlled IV. For CTR and other stream modes this is
+IV/keystream reuse and lets an unprivileged user recover the
+plaintext of a concurrent operation.
 
-There is no need to test the ddc pointer with !IS_ERR(), as
-of_get_i2c_adapter_by_node() returns NULL on error.
+Mainline removed the AIO socket path entirely in commit fcc77d33a34c
+("net: Remove support for AIO on sockets"), a broad net/ cleanup that is
+not appropriate for a stable backport. The minimal stable fix mirrors the
+algif_aead change 5aa58c3a572b ("crypto: algif_aead - snapshot IV for
+async AEAD requests"). The supported stable trees split into two cases:
 
-Fixes: 6de79dd3a920 ("drm/bridge: display-connector: add ddc-en gpio support")
-Cc: stable@vger.kernel.org
-Signed-off-by: Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>
----
- drivers/gpu/drm/bridge/display-connector.c | 11 ++++++++---
- 1 file changed, 8 insertions(+), 3 deletions(-)
+  - 6.12.y and 6.19.y carry ctx->state, so a per-request IV snapshot is
+    sufficient (patch 1).
+  - 6.1.y and 6.6.y lack ctx->state and chain the IV in-place; there a
+    snapshot alone would break MSG_MORE chaining and a completion-path
+    writeback would reintroduce a race on ctx->iv outside the socket
+    lock, so the AIO path is made synchronous, matching the upstream
+    removal (patch 2). Patch 2 applies to both 6.1.y and 6.6.y.
 
-diff --git a/drivers/gpu/drm/bridge/display-connector.c b/drivers/gpu/drm/bridge/display-connector.c
-index d1e74dd2e051..eb3412ec30a0 100644
---- a/drivers/gpu/drm/bridge/display-connector.c
-+++ b/drivers/gpu/drm/bridge/display-connector.c
-@@ -43,6 +43,13 @@ static int display_connector_attach(struct drm_bridge *bridge,
- 	return flags & DRM_BRIDGE_ATTACH_NO_CONNECTOR ? 0 : -EINVAL;
- }
- 
-+static void display_connector_destroy(struct drm_bridge *bridge)
-+{
-+	struct display_connector *conn = to_display_connector(bridge);
-+
-+	i2c_put_adapter(conn->bridge.ddc);
-+}
-+
- static enum drm_connector_status display_connector_detect(struct drm_bridge *bridge)
- {
- 	struct display_connector *conn = to_display_connector(bridge);
-@@ -208,6 +215,7 @@ static u32 *display_connector_get_input_bus_fmts(struct drm_bridge *bridge,
- 
- static const struct drm_bridge_funcs display_connector_bridge_funcs = {
- 	.attach = display_connector_attach,
-+	.destroy = display_connector_destroy,
- 	.detect = display_connector_bridge_detect,
- 	.hpd_enable = display_connector_hpd_enable,
- 	.hpd_disable = display_connector_hpd_disable,
-@@ -439,9 +447,6 @@ static void display_connector_remove(struct platform_device *pdev)
- 		regulator_disable(conn->supply);
- 
- 	drm_bridge_remove(&conn->bridge);
--
--	if (!IS_ERR(conn->bridge.ddc))
--		i2c_put_adapter(conn->bridge.ddc);
- }
- 
- static const struct of_device_id display_connector_match[] = {
--- 
-Regards,
+This is distinct from CVE-2026-31677 (a skcipher receive-accounting
+fix); it is an IV-handling race, not a receive-space guardrail.
 
-Laurent Pinchart
+Reported to security@kernel.org on 2026-06-07 (follow-up 2026-06-19, no
+response). As the mainline removal is independent of that report and is
+not backportable, I am sending the stable fix here.
 
+Verified:
+  - 6.19.14 (patch 1): unpatched recovers plaintext on 2857/200000 AIO
+    ops (100% of injected cases); patched 0/0; MSG_MORE chunked output
+    bit-identical to single-shot.
+  - 6.6.143 (patch 2): unpatched injects the attacker IV on 2296/200000
+    ops; patched 0/200000; MSG_MORE chunked output bit-identical to
+    single-shot.
+
+A working PoC is available to maintainers on request; it will be
+published after the fix is picked up by the stable trees.
+
+Muhammet Kaan KILINÇ (2):
+  crypto: algif_skcipher - snapshot IV for async skcipher requests
+  crypto: algif_skcipher - force synchronous processing on trees without
+    ctx->state
 
