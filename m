@@ -1,57 +1,65 @@
-Return-Path: <stable+bounces-272037-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-272038-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id Yto+DLcuSmqW/AAAu9opvQ
-	(envelope-from <stable+bounces-272037-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 05 Jul 2026 12:15:19 +0200
+	id kyFaFM88Smok/wAAu9opvQ
+	(envelope-from <stable+bounces-272038-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 05 Jul 2026 13:15:27 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 67E2B709B85
-	for <lists+stable@lfdr.de>; Sun, 05 Jul 2026 12:15:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9DF86709CC5
+	for <lists+stable@lfdr.de>; Sun, 05 Jul 2026 13:15:25 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=f0EDdWfL;
-	dmarc=pass (policy=none) header.from=linuxfoundation.org;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-272037-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-272037-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=smail.nju.edu.cn header.s=iohv2404 header.b=C7DZ9JEw;
+	dmarc=pass (policy=reject) header.from=smail.nju.edu.cn;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-272038-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-272038-lists+stable=lfdr.de@vger.kernel.org";
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 709A33006B03
-	for <lists+stable@lfdr.de>; Sun,  5 Jul 2026 10:15:17 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id A33BC300B74D
+	for <lists+stable@lfdr.de>; Sun,  5 Jul 2026 11:15:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C929E392C39;
-	Sun,  5 Jul 2026 10:15:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68968378D64;
+	Sun,  5 Jul 2026 11:15:16 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from smtpbgeu2.qq.com (smtpbgeu2.qq.com [18.194.254.142])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73D5F3905FD;
-	Sun,  5 Jul 2026 10:15:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 202B7378803;
+	Sun,  5 Jul 2026 11:15:04 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783246516; cv=none; b=iOQMFDk7Mr/837C331V1Ns8EVKpK8o9i8i8AxVmwXAp+HMSijd/HH19p6Dkzi3fHuKOYF2ALbtCHRdDTpLLC3Lj6y0u2mZBaw9yHDEewQR6+lfMaTiPvh62Jni63mamesGJ4BJbyfd272JHhNht5IzL3j+VmL3rut06Ejcbkvcg=
+	t=1783250115; cv=none; b=ofvJuXeJDAxmkHq7Me6uqNhxJo4oTkUBhzDxBhVWqwLIh/bdTiuOhRZzh65HdSkDJMbHRtk9JMFGQLkZCj8QySRe/ajNpkOA9kUkiJRIPuDSmbqgau+aleI/wgEcB7qL/ob2WU0FJ0FNqjPSmq2bOuu7jTAH97wM6Mm/Kzkwi0U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783246516; c=relaxed/simple;
-	bh=uwbCRyKNHOwTQ8pO8Ag7cp6ZgrPzd124YiFDRC6jWM4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=GU/u8jz4qyFQ0DPKmvnS+Jm620Xm0LqdMeZmTP7BFTKY7wGAXPDu0Vi60MBCQpjZLdQymqcbGTop1DCKVl0KiwXoMP5X/XlYrWvzmITwcedRXQfHCpBGqpgDaQVx6BksLfQzHc3YfETuimSEaesJTc+rDraYMqz1F0KuXSScga4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f0EDdWfL; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F0E31F000E9;
-	Sun,  5 Jul 2026 10:15:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1783246515;
-	bh=BDpndPJPpVslAjSF1jnldqZFfjHHIw5RjpONxZo0aQ0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=f0EDdWfLcPjptybPh1gc5KyPrKdBEMWeQ2NIaSnJu+kCmThUfhmTs01ngyvv5VPzT
-	 kmwHEfkva0JCndMDfoNtG8JQk2aHsQw4CZs4lgXvfBpeLV8TNyLx79JK0M6ADEP3e8
-	 HaL4Qj6xgcLy3dB2y9ua8PKqpjo2Esi1Sy4O0/bc=
-Date: Sun, 5 Jul 2026 12:13:58 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Peiyang He <peiyang_he@smail.nju.edu.cn>
-Cc: Namjae Jeon <linkinjeon@kernel.org>, Hyunchul Lee <hyc.lee@gmail.com>,
-	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
+	s=arc-20240116; t=1783250115; c=relaxed/simple;
+	bh=aD9ZBo2SLLrF1nIIS9T1G0CIeqJSuPLpxOtou60uVB0=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=AlU0vlHg8X+fe6U37KpBxpoc4grdEHDxyxy6i/DhxY3ZK+kAleU2Pm4Lggs5SeE5e6au71wRiy2OraeKQSAyOfY+MJ38n3qTx0YtOuraM80PWFs5Y/reMurLDt3HuyzVTPo9Y76o7gGFL3YVO60Lyb84oufTQzczD8vBlLQQGck=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=smail.nju.edu.cn; spf=pass smtp.mailfrom=smail.nju.edu.cn; dkim=pass (1024-bit key) header.d=smail.nju.edu.cn header.i=@smail.nju.edu.cn header.b=C7DZ9JEw; arc=none smtp.client-ip=18.194.254.142
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=smail.nju.edu.cn;
+	s=iohv2404; t=1783250079;
+	bh=YpUMti/yb9vDI9mdWfs5f+qVc9ziBhPA+Fp8+HXcxDw=;
+	h=From:To:Subject:Date:Message-ID:MIME-Version;
+	b=C7DZ9JEwDdGFqzhAWzqePcDXjS745Dqb47QiYnKgXBEUhmwA1LS349M2jjEWI7LKa
+	 0eFJUmMnuJPqx3xvlfoNkmrnaZXVvLJ0kGmkv9gWRQw6Ob8D+PDfbqGrh9RS5QxKMa
+	 1FYkZuzFF409C6IiKMvTmbIZq9XcfGWMsuGAnXDk=
+X-QQ-mid: zesmtpgz7t1783250074t30e9ce5d
+X-QQ-Originating-IP: F6p+GAxTpf2D1tz3899axNjZyJxjKqWAWfVIYFIeDIc=
+Received: from hepeiyang-vm.wu.lxd ( [218.94.142.195])
+	by bizesmtp.qq.com (ESMTP) with 
+	id ; Sun, 05 Jul 2026 19:14:33 +0800 (CST)
+X-QQ-SSF: 0000000000000000000000000000000
+X-QQ-GoodBg: 1
+X-BIZMAIL-ID: 9482115873622163101
+From: Peiyang He <peiyang_he@smail.nju.edu.cn>
+To: Namjae Jeon <linkinjeon@kernel.org>,
+	Hyunchul Lee <hyc.lee@gmail.com>
+Cc: linux-fsdevel@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Subject: Re: [PATCH] ntfs: fix hole runlist memory leak in insert range error
- path
-Message-ID: <2026070550-certainly-ladle-dc6f@gregkh>
+Subject: [PATCH v2] ntfs: fix hole runlist memory leak in insert range error path
+Date: Sun,  5 Jul 2026 19:14:09 +0800
+Message-ID: <01B02B3C02CE4CD1+20260705111409.3834024-1-peiyang_he@smail.nju.edu.cn>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <5A2D944D5FE68879+20260705100554.3797781-1-peiyang_he@smail.nju.edu.cn>
 References: <5A2D944D5FE68879+20260705100554.3797781-1-peiyang_he@smail.nju.edu.cn>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -59,88 +67,97 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <5A2D944D5FE68879+20260705100554.3797781-1-peiyang_he@smail.nju.edu.cn>
+Content-Transfer-Encoding: 8bit
+X-QQ-SENDSIZE: 520
+Feedback-ID: zesmtpgz:smail.nju.edu.cn:qybglogicsvrsz:qybglogicsvrsz4b-0
+X-QQ-XMAILINFO: NMMSTmykDl9bQFHl+clUd3LVTh3Vz4mcK3OJ4HPtcf/LAnTFoL0HuiF6
+	Bcjx3jlGEZvYpgx8ubUH09NQKKmLmJkn8zQeWU3oLI9qfkxfwO5ssOSbIYBrKnRRFBwr1CC
+	bJv4kuk8DV9p5Q9RzzTJzlr3DQzkxvTqYUwJonYk7H5NpO8Rh8rk9/bpc7kFuQirA+ZyRUZ
+	v5dAEhL9vCqExCk6IW9U0QFahnHbicqBFZIVvWoj8M0IK674sgroCI98yN1IYMqFcrlh2wx
+	pmuyDEMb9edeR3D5XKJZ7qEQ4RGnkm6c86dgANhqJiFqL65jELay4qEr0XTRUGn4+CaAw8c
+	CuEPBcuVmtpsKGN1+E2lUYmBMOLqKaTRmC9acrQjhsoTofUvTnBhaev/sh3u0IMoDsfAKZu
+	z5cD4kj8dQKcvQggCjTSSZI6tpukop56nqFGdcol05megEHb5miRsLYBgqyc95+6L2mdd1G
+	JS+6IqM9RqXFciTBw8ghDLljaPj/i+HJWDXQaaMq4Nwk+NOoNbmRB1tJEb2Y9YUVeTBWGgr
+	wRZmoRU6MX/TnIn0Z40x74I/Fc3n4AlRLmPWUF7sW6fTd8q01l1HBUvJ7HjioAHs0hXoTTu
+	QFPNB/TFh4eZaotn6WitHu/UUQGGbMMT+4/9onFF5tWDvx5ZPJJswSQH5wycM9vi+d/KL6S
+	Xgk5GKvmU0FbLoOqaiv115muminkn5kpvxJUnPdBTFtmXCDcJBxd+27UEx4ghcxZvXEPRx8
+	xZtLXOVBMlAZPqok5oJ6AOjvFog3Ma6OnCQDQEqisPzgjQN4q/cEG19HsnFT9KxMx0biOxM
+	opxAJyxcG46PuXyaKAJv69YcvRV8lH4OHRmTZEBQz/mLHMQ5BU4zxqhGCIwp3wbT4HYgCk6
+	P7ZLz/DdsqckqJPqWlSrzvulkebA5e9Y4t28qgOUlRxgVPR7/4aAOodTyfS9yqlAO3I0fqs
+	zAtMTWvjR2TzSYT6XL2Kt//XeMiij/8lmMzWkkvguDrcLIas4+rn8UU/mUxUIsZJ5IizjSo
+	6aIdsyiJN1IVixjmDRwbHxCFSu3lqo9mti++FDesMQkI3ThqB3IgdqIdOYuTw=
+X-QQ-XMRINFO: Mp0Kj//9VHAxzExpfF+O8yhSrljjwrznVg==
+X-QQ-RECHKSPAM: 0
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [3.84 / 15.00];
-	MID_END_EQ_FROM_USER_PART(4.00)[];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	DMARC_POLICY_ALLOW(-0.50)[smail.nju.edu.cn,reject];
+	R_MISSING_CHARSET(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_DKIM_ALLOW(-0.20)[smail.nju.edu.cn:s=iohv2404];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-272037-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_TO(0.00)[kernel.org,gmail.com];
+	FORGED_SENDER(0.00)[peiyang_he@smail.nju.edu.cn,stable@vger.kernel.org];
 	TO_DN_SOME(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:peiyang_he@smail.nju.edu.cn,m:linkinjeon@kernel.org,m:hyc.lee@gmail.com,m:linux-fsdevel@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,m:hyclee@gmail.com,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:linkinjeon@kernel.org,m:hyc.lee@gmail.com,m:linux-fsdevel@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,m:hyclee@gmail.com,s:lists@lfdr.de];
 	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
-	FROM_HAS_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-272038-lists,stable=lfdr.de];
+	DKIM_TRACE(0.00)[smail.nju.edu.cn:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[kernel.org,gmail.com,vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[peiyang_he@smail.nju.edu.cn,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
+	FORGED_SENDER_FORWARDING(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
-	TAGGED_RCPT(0.00)[stable];
-	MISSING_XM_UA(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[nju.edu.cn:email,vger.kernel.org:from_smtp,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,gregkh:mid]
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[checkpatch.pl:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 67E2B709B85
+X-Rspamd-Queue-Id: 9DF86709CC5
 
-On Sun, Jul 05, 2026 at 06:05:54PM +0800, Peiyang He wrote:
-> ntfs_non_resident_attr_insert_range() allocates hole_rl before mapping the
-> whole runlist. If ntfs_attr_map_whole_runlist() fails, the error path drops
-> ni->runlist.lock and returns without freeing hole_rl. This causes memory leak
-> of sizeof(*hole_rl) * 2 bytes.
-> 
-> Fix this memory leak by freeing hole_rl before returning from that error path,
-> matching the later error paths in the same function.
-> 
-> Fixes: 495e90fa3348 ("ntfs: update attrib operations")
-> Signed-off-by: Peiyang He <peiyang_he@smail.nju.edu.cn>
-> ---
->  fs/ntfs/attrib.c | 1 +
->  1 file changed, 1 insertion(+)
-> 
-> diff --git a/fs/ntfs/attrib.c b/fs/ntfs/attrib.c
-> index dd8828098511..55603df0a2ed 100644
-> --- a/fs/ntfs/attrib.c
-> +++ b/fs/ntfs/attrib.c
-> @@ -5325,6 +5325,7 @@ int ntfs_non_resident_attr_insert_range(struct ntfs_inode *ni, s64 start_vcn, s6
->  	ret = ntfs_attr_map_whole_runlist(ni);
->  	if (ret) {
->  		up_write(&ni->runlist.lock);
-> +		kfree(hole_rl);
->  		return ret;
->  	}
->  
-> 
-> base-commit: 1a3746ccbb0a97bed3c06ccde6b880013b1dddc1
-> -- 
-> 2.43.0
-> 
-> 
+ntfs_non_resident_attr_insert_range() allocates hole_rl before mapping the
+whole runlist. If ntfs_attr_map_whole_runlist() fails, the error path drops
+ni->runlist.lock and returns without freeing hole_rl. This leaks memory
+of sizeof(*hole_rl) * 2 bytes.
 
-<formletter>
+Fix this memory leak by freeing hole_rl before returning from
+that error path, matching the later error paths in the same function.
 
-This is not the correct way to submit patches for inclusion in the
-stable kernel tree.  Please read:
-    https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html
-for how to do this properly.
+Fixes: 495e90fa3348 ("ntfs: update attrib operations")
+Cc: stable@vger.kernel.org
+Signed-off-by: Peiyang He <peiyang_he@smail.nju.edu.cn>
+---
+Changes in v2:
+  - modify commit message to resolve checkpatch.pl warning
+  - add Cc: stable@vger.kernel.org tag to the commit message
 
-</formletter>
+ fs/ntfs/attrib.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/fs/ntfs/attrib.c b/fs/ntfs/attrib.c
+index dd8828098511..55603df0a2ed 100644
+--- a/fs/ntfs/attrib.c
++++ b/fs/ntfs/attrib.c
+@@ -5325,6 +5325,7 @@ int ntfs_non_resident_attr_insert_range(struct ntfs_inode *ni, s64 start_vcn, s6
+ 	ret = ntfs_attr_map_whole_runlist(ni);
+ 	if (ret) {
+ 		up_write(&ni->runlist.lock);
++		kfree(hole_rl);
+ 		return ret;
+ 	}
+ 
+
+base-commit: 1a3746ccbb0a97bed3c06ccde6b880013b1dddc1
+-- 
+2.43.0
+
 
