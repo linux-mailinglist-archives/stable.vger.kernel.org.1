@@ -1,186 +1,193 @@
-Return-Path: <stable+bounces-272097-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-272098-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id Z96tJqSvSmpdGAEAu9opvQ
-	(envelope-from <stable+bounces-272097-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 05 Jul 2026 21:25:24 +0200
+	id k1fKAV67SmqVGwEAu9opvQ
+	(envelope-from <stable+bounces-272098-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 05 Jul 2026 22:15:26 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id F22AC70AFB1
-	for <lists+stable@lfdr.de>; Sun, 05 Jul 2026 21:25:23 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id A43D970B4BD
+	for <lists+stable@lfdr.de>; Sun, 05 Jul 2026 22:15:24 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=st0G3iY1;
+	dkim=none;
 	dmarc=none;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-272097-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-272097-lists+stable=lfdr.de@vger.kernel.org";
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-272098-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-272098-lists+stable=lfdr.de@vger.kernel.org";
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id BCAFD3009B10
-	for <lists+stable@lfdr.de>; Sun,  5 Jul 2026 19:25:22 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id A69EE3007208
+	for <lists+stable@lfdr.de>; Sun,  5 Jul 2026 20:15:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB8A239FCAE;
-	Sun,  5 Jul 2026 19:25:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F8C435B653;
+	Sun,  5 Jul 2026 20:15:19 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from maynard.decadent.org.uk (maynard.decadent.org.uk [65.21.191.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C71C3033EC;
-	Sun,  5 Jul 2026 19:25:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C05F8233721;
+	Sun,  5 Jul 2026 20:15:15 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783279521; cv=none; b=FfgdK0Ns0vgN56NJ67t7NvQrBwmsx1rbs9jwT4lcTq8JDNf8SCQcikax22p6ttuPA75mI/dUt52fs4ciAKOCj+KDqyTifUmGstsrRpFWY/FPEmhTD6qpW0uPJsBSZJsi51UibbdDFe9T8Dpo5sU8kJhpp2ZPHQiYfSVp3CePryU=
+	t=1783282518; cv=none; b=L10BG4+7aITbEaipsrXasNsLsdaMt/36myhO+Eb+fW89eiGU9We5FRwpK3DJ23IW82xVlByIOPMhGXIeMstRC77i4T4p3vmK30cqY6c8b5+ljsd/IQdQG+6rH1cmxfCZY2o5/LBmE7U8RUUd9OPdCLs/PCkiu2RbEmwpr9ELuyg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783279521; c=relaxed/simple;
-	bh=ijyspr+c44CCaxqeaoj/aG6tYae95Fwhj/blnfm0pPI=;
-	h=Date:To:From:Subject:Message-Id; b=gijBo8Dgmdn07DF8ImSiOmg200wHvUI6NNCHJ+V/NQL16sXtyUwYhapoa4KRq5sC+SEX+RK9QildVbtsH+C5KV4ghOvfA0WLYv6QhV/zo9qAElEHF2yrkR2OsuYRRNVqlUQ6gdyT8/1YXuXFxa0j8nEqlzB16LCZZmUBclIH+hw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=st0G3iY1; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 327D81F000E9;
-	Sun,  5 Jul 2026 19:25:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1783279520;
-	bh=B6ncig4cfVSaa9pb4BHynlJDPjpQTJ1uWxcz7mLkD7E=;
-	h=Date:To:From:Subject;
-	b=st0G3iY1bg5mmnLNSPgdHtztJqihUlWwgPDss9y5RbwG8PgUqYzy+QSI2eagqd7wd
-	 wuTtWP8aI7PbmlSmFuz2dJEXrPClzgD86kSOyrxQNtulq+RJtdU/FBRxS1k8WFZgdZ
-	 DlexKiUSeRtzZoNrQiMUyVSFVH+Jb2NzASA0Fa2g=
-Date: Sun, 05 Jul 2026 12:25:19 -0700
-To: mm-commits@vger.kernel.org,ziy@nvidia.com,stable@vger.kernel.org,shakeel.butt@linux.dev,sashiko-bot@kernel.org,ryan.roberts@arm.com,riel@surriel.com,npache@redhat.com,ljs@kernel.org,liam@infradead.org,lance.yang@linux.dev,hannes@cmpxchg.org,dev.jain@arm.com,david@kernel.org,baolin.wang@linux.alibaba.com,baohua@kernel.org,aarcange@redhat.com,usama.arif@linux.dev,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: + userfaultfd-wait-on-source-pmd-during-uffdio_move.patch added to mm-hotfixes-unstable branch
-Message-Id: <20260705192520.327D81F000E9@smtp.kernel.org>
+	s=arc-20240116; t=1783282518; c=relaxed/simple;
+	bh=7K3ufwKFVD4323zTFUVFgZ2GEeI1mMEXqrKhI2bpY/M=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=Z53Di0cLmwCpC/Tpn1Gup6NM4fvi2PzfTglraXpeNAxB2jURVoBAilmdLYGWvwUQ4CMpYFT6M3/H85yTkbc34X+9q+GtEomAOHLJd4afzRvy4izZJFa7L49xU8EaMs8UGHcmbjIlhpe7W+YwTsNp0B7CuxXxRL/g7tYShsYouEg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=decadent.org.uk; spf=pass smtp.mailfrom=decadent.org.uk; arc=none smtp.client-ip=65.21.191.19
+Received: from [2a02:578:851f:1502:391e:c5f5:10e2:b9a3] (helo=deadeye)
+	by maynard with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <ben@decadent.org.uk>)
+	id 1wgTF4-000Dx7-2h;
+	Sun, 05 Jul 2026 20:15:06 +0000
+Received: from ben by deadeye with local (Exim 4.99.3)
+	(envelope-from <ben@decadent.org.uk>)
+	id 1wgTF3-0000000CSIH-4AJd;
+	Sun, 05 Jul 2026 22:15:05 +0200
+Message-ID: <8601edcd7c9bcc70e75f85a758f8818c57945d07.camel@decadent.org.uk>
+Subject: Re: [PATCH 5.10 81/96] nfsd: check get_user() return when reading
+ princhashlen
+From: Ben Hutchings <ben@decadent.org.uk>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, Dominik =?UTF-8?Q?Wo=C5=BAniak?=
+	 <stalion@gmail.com>, Jeff Layton <jlayton@kernel.org>, Chuck Lever
+	 <chuck.lever@oracle.com>
+Date: Sun, 05 Jul 2026 22:15:00 +0200
+In-Reply-To: <20260702155110.683851454@linuxfoundation.org>
+References: <20260702155108.949633242@linuxfoundation.org>
+	 <20260702155110.683851454@linuxfoundation.org>
+Content-Type: multipart/signed; micalg="pgp-sha512";
+	protocol="application/pgp-signature"; boundary="=-SbwbxIMGqu+NRlRe6o3a"
+User-Agent: Evolution 3.56.2-9 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+X-SA-Exim-Connect-IP: 2a02:578:851f:1502:391e:c5f5:10e2:b9a3
+X-SA-Exim-Mail-From: ben@decadent.org.uk
+X-SA-Exim-Scanned: No (on maynard); SAEximRunCond expanded to false
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.16 / 15.00];
+X-Spamd-Result: default: False [-3.56 / 15.00];
+	SIGNED_PGP(-2.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[linux-foundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	MIME_GOOD(-0.20)[multipart/signed,text/plain];
 	MAILLIST(-0.15)[generic];
-	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-272097-lists,stable=lfdr.de];
+	DMARC_NA(0.00)[decadent.org.uk];
+	TAGGED_FROM(0.00)[bounces-272098-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:mm-commits@vger.kernel.org,m:ziy@nvidia.com,m:stable@vger.kernel.org,m:shakeel.butt@linux.dev,m:sashiko-bot@kernel.org,m:ryan.roberts@arm.com,m:riel@surriel.com,m:npache@redhat.com,m:ljs@kernel.org,m:liam@infradead.org,m:lance.yang@linux.dev,m:hannes@cmpxchg.org,m:dev.jain@arm.com,m:david@kernel.org,m:baolin.wang@linux.alibaba.com,m:baohua@kernel.org,m:aarcange@redhat.com,m:usama.arif@linux.dev,m:akpm@linux-foundation.org,s:lists@lfdr.de];
-	DMARC_NA(0.00)[linux-foundation.org];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linux-foundation.org:+];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_SENDER(0.00)[akpm@linux-foundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS(0.00)[m:gregkh@linuxfoundation.org,m:stable@vger.kernel.org,m:patches@lists.linux.dev,m:stalion@gmail.com,m:jlayton@kernel.org,m:chuck.lever@oracle.com,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[ben@decadent.org.uk,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	FREEMAIL_CC(0.00)[lists.linux.dev,gmail.com,kernel.org,oracle.com];
+	MIME_TRACE(0.00)[0:+,1:+,2:~];
+	FORWARDED(0.00)[lists@lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCPT_COUNT_TWELVE(0.00)[19];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[akpm@linux-foundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	TO_DN_NONE(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[ben@decadent.org.uk,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	R_DKIM_NA(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,decadent.org.uk:mid,decadent.org.uk:from_mime]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: F22AC70AFB1
+X-Rspamd-Queue-Id: A43D970B4BD
 
 
-The patch titled
-     Subject: userfaultfd: wait on source PMD during UFFDIO_MOVE
-has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
-     userfaultfd-wait-on-source-pmd-during-uffdio_move.patch
+--=-SbwbxIMGqu+NRlRe6o3a
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/userfaultfd-wait-on-source-pmd-during-uffdio_move.patch
+On Thu, 2026-07-02 at 18:20 +0200, Greg Kroah-Hartman wrote:
+> 5.10-stable review patch.  If anyone has any objections, please let me kn=
+ow.
+>=20
+> ------------------
+>=20
+> From: Dominik Wo=C5=BAniak <stalion@gmail.com>
+>=20
+> commit e186fa1c057f5eccb22afb1e83e34c0627085868 upstream.
+>=20
+> In __cld_pipe_inprogress_downcall(), the get_user() that reads
+> princhashlen from the userspace cld_msg_v2 buffer does not check its
+> return value. A failing copy leaves princhashlen with uninitialised
+> stack contents, which are then used to drive memdup_user() and stored
+> as princhash.len on the resulting reclaim record. The other get_user()
+> calls in this function all check the return; only this one is missed,
+> which is most likely a copy-paste oversight from when v2 upcalls were
+> introduced.
+>=20
+> Mirror the existing pattern used a few lines above for namelen.
+> namecopy is declared with __free(kfree) so the early return cleans up
+> the already-allocated buffer automatically.
+>=20
+> Fixes: 6ee95d1c8991 ("nfsd: add support for upcall version 2")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Dominik Wo=C5=BAniak <stalion@gmail.com>
+> Reviewed-by: Jeff Layton <jlayton@kernel.org>
+> Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+> Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> ---
+>  fs/nfsd/nfs4recover.c |    3 ++-
+>  1 file changed, 2 insertions(+), 1 deletion(-)
+>=20
+> --- a/fs/nfsd/nfs4recover.c
+> +++ b/fs/nfsd/nfs4recover.c
+> @@ -815,7 +815,8 @@ __cld_pipe_inprogress_downcall(const str
+>  			if (IS_ERR(name.data))
+>  				return PTR_ERR(name.data);
+>  			name.len =3D namelen;
+> -			get_user(princhashlen, &ci->cc_princhash.cp_len);
+> +			if (get_user(princhashlen, &ci->cc_princhash.cp_len))
+> +				return -EFAULT;
 
-This patch will later appear in the mm-hotfixes-unstable branch at
-    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+I think this depends on commit 4552f4e3f2c9 "nfsd: change
+nfs4_client_to_reclaim() to allocate data" which went into 6.19.  In
+older stable branches this failure path appears to leak name.data.
 
-Before you just go and hit "reply", please:
-   a) Consider who else should be cc'ed
-   b) Prefer to cc a suitable mailing list as well
-   c) Ideally: find the original patch on the mailing list and do a
-      reply-to-all to that, adding suitable additional cc's
+Ben.
 
-*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
+>  			if (princhashlen > 0) {
+>  				princhash.data =3D memdup_user(
+>  						&ci->cc_princhash.cp_data,
+>=20
+>=20
 
-The -mm tree is included into linux-next via various
-branches at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-and is updated there most days
+--=20
+Ben Hutchings
+Experience is directly proportional to the value of equipment destroyed
+                                                    - Carolyn Scheppner
 
-------------------------------------------------------
-From: Usama Arif <usama.arif@linux.dev>
-Subject: userfaultfd: wait on source PMD during UFFDIO_MOVE
-Date: Sun, 5 Jul 2026 06:12:31 -0700
+--=-SbwbxIMGqu+NRlRe6o3a
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: This is a digitally signed message part
 
-move_pages_huge_pmd() snapshots src_pmdval under src_ptl, drops the lock,
-and, for migration entries, waits with pmd_migration_entry_wait().
+-----BEGIN PGP SIGNATURE-----
 
-Passing &src_pmdval is wrong.  pmd_migration_entry_wait() must lock and
-re-read the real page-table PMD; on split-PMD-lock kernels, a stack
-address also resolves to the wrong lock.  softleaf_entry_wait_on_locked()
-then waits without a folio reference, which is safe only while serialized
-against migration-entry removal by the real PT lock.
+iQIzBAABCgAdFiEErCspvTSmr92z9o8157/I7JWGEQkFAmpKu0QACgkQ57/I7JWG
+EQlVqBAAiZHWV9L660yL37qIUzWKGORHj8g8xtLhm+MWdv4MTKZSpjOFt03DN/AZ
+bcH/O1oSGXWuVp81ryLbviX4vDbUGwQv4CdPOvc6rbgIq7yvHZwZNPOP5/MAxMjm
+t2UFf0ynOPs2quoHc9CRFktSqKGmrfjRLT+U8iJBNQgolRL1gdQJLoniTkhhUIyO
+bPyVPfScTG7rpqlYbQWwTzKoo7DgJqN4OQa+jKdVRDjRKQXuBwbjY4f2DpED1reD
+rqpgmsoszCNNcYQp0oTqw4IUAoz0+btCVTsQTf942Ag7xLKGdazmEX0Wc/BHY/8y
+q2HnG4WUGkognB3ddXgJ210VO2hjiw2jRpfOWtZnXWqmpFciiqQ8mwsBzqld58WQ
+rV7Sa7ufIWqG2cQwCxPpSW6y6cBZF9lTswrb7mePop40ASJaxsxz8AQ02L0tWfRp
+XXbgysLlPW5ujTN2hhssbL3r3fpjdkPCuMvbYk0GKIqO4wXlsV3NlgsPWiF1W6Jv
+jeaKP3FeGZlKAy+Npaic2iYBwepT4mM0MTaEGpmMxb8JniJ4yOv0/iE1EobaloLW
+6b3IveWS7WPaUgkeJlfcEM/9T9sZHol4R7SGx5Eo5Z0cO3aaihO0zhUgZ58befWk
+Qn+355EgDf/bB/yXWhwV/mrHkdmO+zW7IqKP6FLbHxMfuds42dw=
+=xPxv
+-----END PGP SIGNATURE-----
 
-Pass src_pmd, matching __handle_mm_fault() and hmm_vma_walk_pmd().
-
-Link: https://lore.kernel.org/20260705131231.1499198-1-usama.arif@linux.dev
-Fixes: adef440691ba ("userfaultfd: UFFDIO_MOVE uABI")
-Reported-by: sashiko-bot <sashiko-bot@kernel.org>
-Link: https://sashiko.dev/#/patchset/20260703173903.3789516-1-usama.arif%40linux.dev?part=8
-Signed-off-by: Usama Arif <usama.arif@linux.dev>
-Reviewed-by: Rik van Riel <riel@surriel.com>
-Cc: Andrea Arcangeli <aarcange@redhat.com>
-Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
-Cc: Barry Song <baohua@kernel.org>
-Cc: David Hildenbrand <david@kernel.org>
-Cc: Dev Jain <dev.jain@arm.com>
-Cc: Johannes Weiner <hannes@cmpxchg.org>
-Cc: Lance Yang <lance.yang@linux.dev>
-Cc: Liam R. Howlett <liam@infradead.org>
-Cc: Lorenzo Stoakes <ljs@kernel.org>
-Cc: Nico Pache <npache@redhat.com>
-Cc: Ryan Roberts <ryan.roberts@arm.com>
-Cc: Shakeel Butt <shakeel.butt@linux.dev>
-Cc: Zi Yan <ziy@nvidia.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
----
-
- mm/huge_memory.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
---- a/mm/huge_memory.c~userfaultfd-wait-on-source-pmd-during-uffdio_move
-+++ a/mm/huge_memory.c
-@@ -2774,7 +2774,7 @@ int move_pages_huge_pmd(struct mm_struct
- 	if (!pmd_trans_huge(src_pmdval)) {
- 		spin_unlock(src_ptl);
- 		if (pmd_is_migration_entry(src_pmdval)) {
--			pmd_migration_entry_wait(mm, &src_pmdval);
-+			pmd_migration_entry_wait(mm, src_pmd);
- 			return -EAGAIN;
- 		}
- 		return -ENOENT;
-_
-
-Patches currently in -mm which might be from usama.arif@linux.dev are
-
-userfaultfd-wait-on-source-pmd-during-uffdio_move.patch
-mm-swap_state-remove-unnecessary-lru_add_drain-from-readahead.patch
-mm-add-softleaf_to_pmd-and-convert-existing-callers.patch
-mm-extract-mm_prepare_for_swap_entries-helper.patch
-fs-proc-use-softleaf_has_pfn-in-pagemap-pmd-walker.patch
-mm-huge_memory-move-softleaf_to_folio-inside-migration-branch.patch
-mm-migrate_device-move-softleaf_to_folio-inside-device-private-branch.patch
-mm-rename-arch_enable_thp_migration-to-arch_supports_pmd_softleaf.patch
-mm-vmpressure-skip-tree=true-accounting-on-cgroup-v2.patch
-mm-vmpressure-skip-tree=true-accounting-on-cgroup-v2-fix.patch
-mm-vmpressure-move-v1-userspace-eventfd-code-into-memcontrol-v1c.patch
-mm-migrate_device-pin-large-folios-before-splitting.patch
-mm-migrate_device-pin-large-folios-before-splitting-fix.patch
-
+--=-SbwbxIMGqu+NRlRe6o3a--
 
