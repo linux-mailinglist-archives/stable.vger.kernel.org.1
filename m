@@ -1,259 +1,181 @@
-Return-Path: <stable+bounces-272031-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-272033-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 8SvvJL0lSmob+wAAu9opvQ
-	(envelope-from <stable+bounces-272031-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 05 Jul 2026 11:37:01 +0200
+	id tTp9IlcnSmpc+wAAu9opvQ
+	(envelope-from <stable+bounces-272033-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 05 Jul 2026 11:43:51 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id F4017709992
-	for <lists+stable@lfdr.de>; Sun, 05 Jul 2026 11:37:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EA52E709A0D
+	for <lists+stable@lfdr.de>; Sun, 05 Jul 2026 11:43:50 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=csmantle.top header.s=self-ed25519 header.b=bHC7lTc6;
-	dkim=pass header.d=csmantle.top header.s=self-rsa3072 header.b=Z6A4CxMk;
-	dmarc=pass (policy=quarantine) header.from=csmantle.top;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-272031-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-272031-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=none;
+	dmarc=none;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-272033-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-272033-lists+stable=lfdr.de@vger.kernel.org";
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 0B9613009984
-	for <lists+stable@lfdr.de>; Sun,  5 Jul 2026 09:37:00 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id B4900300D6BD
+	for <lists+stable@lfdr.de>; Sun,  5 Jul 2026 09:43:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F3F9363084;
-	Sun,  5 Jul 2026 09:36:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3DFE38C40B;
+	Sun,  5 Jul 2026 09:43:44 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail.srv.csmantle.top (mail.srv.csmantle.top [77.93.157.103])
+Received: from mx3.molgen.mpg.de (mx3.molgen.mpg.de [141.14.17.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66C7231E824;
-	Sun,  5 Jul 2026 09:36:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4CB824A05D;
+	Sun,  5 Jul 2026 09:43:41 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783244216; cv=none; b=C9i7mDD0yauIB6Y1ro0cCUV/49rqNn5lF37vTlKDUM9JJimDpS44r9BNUTN36nWVkOiITZHmgKqPtD/KsDzEC0tPrb3LS0virkfknEPmTTqolH568sbHnvQfiC/S6pvMT1PwOglrUVckaigf2NnGYoRsuYxJtc4RLgGcSHv1xXg=
+	t=1783244624; cv=none; b=qjahpkdUyRlQp+HTqOLht0aqEhffo19b0pvHmhjaMYOfVMHSetQmN1eqpg6Nsypt2EKFlIpf+zCdk1nQifqpS5Qp9sO1Yo2igEE8bYy3tcD/7/7tfoYgvtbB92PUnsiFYUu4oEX2bRtQyGmZbuwXLeqNHNlip6LfnfUg1fUxVcs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783244216; c=relaxed/simple;
-	bh=DYP/fAuTfWaqhSK56kenBZaNNFwDCi7MO9GMC1TyvwM=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=p834Rz3N+16o4vpUahvVc7YXdF1tt0vpvX0a3fy73LVw6qPuJ5nena6Knhz98PIyYPiueFguj4b2dKhalolADZDdiE9JUddRI/D+c7l8wwUj7BsTlwnUtfppKdaDhe65vXQ1vdBhdO26LHr/k40Lw21jbd31lZ3giWhLwrZO0QU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=csmantle.top; spf=pass smtp.mailfrom=csmantle.top; dkim=permerror (0-bit key) header.d=csmantle.top header.i=@csmantle.top header.b=bHC7lTc6; dkim=pass (3072-bit key) header.d=csmantle.top header.i=@csmantle.top header.b=Z6A4CxMk; arc=none smtp.client-ip=77.93.157.103
-DKIM-Signature: v=1; a=ed25519-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=csmantle.top; s=self-ed25519; h=BIMI-Selector:Content-Transfer-Encoding:
-	MIME-Version:Message-ID:Date:Subject:Cc:To:From:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:In-Reply-To:References:BIMI-Selector;
-	bh=SceegF9V2UMZyJU5wVXKWyTzveddd4TbiOOhUTBe0qI=; t=1783244215; x=1783849015; 
-	b=bHC7lTc616rU//1j/gP5adwKdzZ6gAcAIBdyd40lU46KRbRosWhBVV52szCX53KGUZRizQtGT0e
-	thZnuSafmBg==;
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=csmantle.top; s=self-rsa3072; h=BIMI-Selector:Content-Transfer-Encoding:
-	MIME-Version:Message-ID:Date:Subject:Cc:To:From:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:In-Reply-To:References:BIMI-Selector;
-	bh=SceegF9V2UMZyJU5wVXKWyTzveddd4TbiOOhUTBe0qI=; t=1783244215; x=1783849015; 
-	b=Z6A4CxMkmIh/FsEnT6Br2cnfWRe0grcbNmr3rb/unNVyK/D8CyTfC03K7iNlAIpIOhotmkJaoyE
-	Y4vyKupa0IZVqgADk3Fk2DRgv0meV0JR0sAedY923vcrs0c14PXXTapBjeS5D+RVYQWUJbLyJvL6q
-	tjoZqqouiu245boKfPQ9KnKEhtG+fU53QA+udgBrLaPDcYvDFI1Uh/gJbw2Gp/kFCn1IcziKVQKM8
-	ft7LpYwuM0n3NIh9yu2SItQyDDdm+WfLhMIlrvFu3mIi6UuBgP13A3+BZeU+oUE81MGfFCrya+P7c
-	AEApvdx0BnIClpZb1KrVvYc6sh7/FSpgKTD9wtfhJ3sSoD9RxspIaPYS2RPV16cmPxckfuhpRhDiE
-	Zr4Lz7yFZRKRsku8iK03s45WGBIW0DNzQRoyE5jEd87VPqNPtwnyHiIEjO6mkCkSZRVmhpsEnikUf
-	fgl+hzx2m7i0LLghuP0TxoZDcscRQVbytWcXoRiqjiT7A1U+J0y6;
-Received: from [103.167.64.98] (helo=loongcatbox)
-	by mail.srv.csmantle.top with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.98.2)
-	(envelope-from <rong.bao@csmantle.top>)
-	id 1wgJHG-00000000O6x-2we4;
-	Sun, 05 Jul 2026 17:36:42 +0800
-From: Rong Bao <rong.bao@csmantle.top>
-To: Huacai Chen <chenhuacai@kernel.org>,
-	WANG Xuerui <kernel@xen0n.name>,
-	Chengwen Feng <fengchengwen@huawei.com>,
-	Jonathan Cameron <jic23@kernel.org>,
-	Xi Ruoyao <xry111@xry111.site>,
-	Rong Bao <rong.bao@csmantle.top>,
-	Guo Ren <guoren@kernel.org>,
-	Thierry Reding <treding@nvidia.com>,
-	Thomas Gleixner <tglx@kernel.org>,
-	"Rafael J. Wysocki (Intel)" <rafael@kernel.org>,
-	Tiezhu Yang <yangtiezhu@loongson.cn>
-Cc: Kexy Biscuit <kexybiscuit@aosc.io>,
-	Mingcong Bai <jeffbai@aosc.io>,
-	stable@vger.kernel.org,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	loongarch@lists.linux.dev,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH v2 RESEND] loongarch: retrieve CPU package ID from PPTT when available
-Date: Sun,  5 Jul 2026 17:36:14 +0800
-Message-ID: <20260705093624.1079988-1-rong.bao@csmantle.top>
-X-Mailer: git-send-email 2.54.0
+	s=arc-20240116; t=1783244624; c=relaxed/simple;
+	bh=gvDob2Ln9IDFA97c/8LfF0YOV3KJzTk2b8e9bdBoeAE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=ZBjCshdOYUbobiyoxs20JswrbxaLdc1DSPqGYmblq7bcxX2nlYZkfmjUw9CJZsmWj/3VUFLqihWFLHTLjW8cWspcLWvhLE5S5bNJjrTYb0QhCz64uTnb8m3IJUK43HRHERB6NahpGLf4rYdctiqdwpB3oXzHByT5ctGl94Y98gA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=molgen.mpg.de; spf=pass smtp.mailfrom=molgen.mpg.de; arc=none smtp.client-ip=141.14.17.11
+Received: from [192.168.2.222] (p5dc55dc6.dip0.t-ipconnect.de [93.197.93.198])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: pmenzel)
+	by mx.molgen.mpg.de (Postfix) with ESMTPSA id 9E4D84C2C37D72;
+	Sun, 05 Jul 2026 11:43:32 +0200 (CEST)
+Message-ID: <a3a6b0cc-3eee-4f45-82a9-af9a04345c4b@molgen.mpg.de>
+Date: Sun, 5 Jul 2026 11:43:30 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rcpt-Check: Accepted by authentication
-X-42: Don't panic! 
-BIMI-Selector: v=BIMI1; s=me
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 1/2] Bluetooth: btusb: Add ASUS USB-BT540 for Realtek
+ 8761CU
+To: cito@online.de
+Cc: linux-bluetooth@vger.kernel.org, marcel@holtmann.org,
+ luiz.dentz@gmail.com, linux-kernel@vger.kernel.org, stable@vger.kernel.org
+References: <20260704231312.340274-1-cito@online.de>
+ <20260705092857.27050-2-cito@online.de>
+Content-Language: en-US
+From: Paul Menzel <pmenzel@molgen.mpg.de>
+In-Reply-To: <20260705092857.27050-2-cito@online.de>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [0.04 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[csmantle.top,quarantine];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
-	R_DKIM_ALLOW(-0.20)[csmantle.top:s=self-ed25519,csmantle.top:s=self-rsa3072];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCPT_COUNT_TWELVE(0.00)[17];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-272031-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:chenhuacai@kernel.org,m:kernel@xen0n.name,m:fengchengwen@huawei.com,m:jic23@kernel.org,m:xry111@xry111.site,m:rong.bao@csmantle.top,m:guoren@kernel.org,m:treding@nvidia.com,m:tglx@kernel.org,m:rafael@kernel.org,m:yangtiezhu@loongson.cn,m:kexybiscuit@aosc.io,m:jeffbai@aosc.io,m:stable@vger.kernel.org,m:rafael.j.wysocki@intel.com,m:loongarch@lists.linux.dev,m:linux-kernel@vger.kernel.org,s:lists@lfdr.de];
+	FROM_HAS_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-272033-lists,stable=lfdr.de];
+	DMARC_NA(0.00)[mpg.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_SENDER(0.00)[rong.bao@csmantle.top,stable@vger.kernel.org];
+	FORGED_RECIPIENTS(0.00)[m:cito@online.de,m:linux-bluetooth@vger.kernel.org,m:marcel@holtmann.org,m:luiz.dentz@gmail.com,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,m:luizdentz@gmail.com,s:lists@lfdr.de];
 	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_CC(0.00)[vger.kernel.org,holtmann.org,gmail.com];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_SENDER(0.00)[pmenzel@molgen.mpg.de,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[rong.bao@csmantle.top,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[csmantle.top:+];
-	ALIAS_RESOLVED(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	TO_DN_NONE(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[pmenzel@molgen.mpg.de,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	R_DKIM_NA(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,vger.kernel.org:from_smtp,csmantle.top:from_mime,csmantle.top:email,csmantle.top:mid,csmantle.top:dkim]
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[online.de:email,mpg.de:email,vger.kernel.org:from_smtp,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: F4017709992
+X-Rspamd-Queue-Id: EA52E709A0D
 
-Currently, the LoongArch CPU topology initialization code calculates
-each core's package ID by dividing its physical ID by
-loongson_sysconf.cores_per_package. This relies on the assumption that
-cores_per_package counts in the same domain as physical IDs.
+Dear Christoph,
 
-On Loongson 3B6000 (XB612B0V_1.2), cores_per_package matches the visible
-core count -- 24 in this case. However, the physical IDs range from 0 to
-31 in a noncontinuous fashion:
 
-        $ cat /proc/cpuinfo | grep -i -F 'global_id'
-        global_id               : 0
-        global_id               : 1
-        global_id               : 4
-        global_id               : 5
-        global_id               : 6
-        global_id               : 7
-        global_id               : 8
-        global_id               : 9
-        global_id               : 10
-        global_id               : 11
-        global_id               : 14
-        global_id               : 15
-        global_id               : 16
-        global_id               : 17
-        global_id               : 20
-        global_id               : 21
-        global_id               : 22
-        global_id               : 23
-        global_id               : 26
-        global_id               : 27
-        global_id               : 28
-        global_id               : 29
-        global_id               : 30
-        global_id               : 31
+Thank you for sending v2.
 
-Retrieve the exact package ID from ACPI PPTT when available, in the same
-style as retrieving the core ID and thread ID in parse_acpi_topology().
-Use this information in loongson_init_secondary() when PPTT readout is
-successful. The original division logic is kept as a fallback.
+Am 05.07.26 um 11:28 schrieb cito@online.de:
+> From: Christoph Zwerschke <cito@online.de>
+> 
+> Add the vendor/product ID (0x0b05, 0x1bef) to the usb_device_id table for
+> the Realtek RTL8761CU-based ASUS USB-BT540 adapter. It binds via the
+> generic Bluetooth class today, so BTUSB_REALTEK is never set and the
+> rtl8761cu firmware is not loaded, leaving the controller non-functional.
+> With the entry the driver loads rtl_bt/rtl8761cu_fw.bin (already shipped by
+> linux-firmware) and the adapter works (tested: A2DP and ASHA).
+> 
+> Similar to commit bc597f0cc44f
+> ("Bluetooth: btusb: Add TP-Link UB600 for Realtek 8761BUV").
+> 
+> Device info from /sys/kernel/debug/usb/devices:
+> 
+> T:  Bus=01 Lev=01 Prnt=01 Port=01 Cnt=01 Dev#= 22 Spd=12   MxCh= 0
+> D:  Ver= 1.10 Cls=e0(wlcon) Sub=01 Prot=01 MxPS=64 #Cfgs=  1
+> P:  Vendor=0b05 ProdID=1bef Rev= 2.00
+> S:  Manufacturer=Realtek
+> S:  Product=Bluetooth Controller
+> C:* #Ifs= 2 Cfg#= 1 Atr=e0 MxPwr=100mA
+> I:* If#= 0 Alt= 0 #EPs= 3 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
+> E:  Ad=81(I) Atr=03(Int.) MxPS=  64 Ivl=1ms
+> E:  Ad=02(O) Atr=02(Bulk) MxPS=  64 Ivl=0ms
+> E:  Ad=82(I) Atr=02(Bulk) MxPS=  64 Ivl=0ms
+> I:* If#= 1 Alt= 0 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
+> E:  Ad=83(I) Atr=01(Isoc) MxPS=   0 Ivl=1ms
+> E:  Ad=03(O) Atr=01(Isoc) MxPS=   0 Ivl=1ms
+> I:  If#= 1 Alt= 1 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
+> E:  Ad=83(I) Atr=01(Isoc) MxPS=   9 Ivl=1ms
+> E:  Ad=03(O) Atr=01(Isoc) MxPS=   9 Ivl=1ms
+> I:  If#= 1 Alt= 2 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
+> E:  Ad=83(I) Atr=01(Isoc) MxPS=  17 Ivl=1ms
+> E:  Ad=03(O) Atr=01(Isoc) MxPS=  17 Ivl=1ms
+> I:  If#= 1 Alt= 3 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
+> E:  Ad=83(I) Atr=01(Isoc) MxPS=  25 Ivl=1ms
+> E:  Ad=03(O) Atr=01(Isoc) MxPS=  25 Ivl=1ms
+> I:  If#= 1 Alt= 4 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
+> E:  Ad=83(I) Atr=01(Isoc) MxPS=  33 Ivl=1ms
+> E:  Ad=03(O) Atr=01(Isoc) MxPS=  33 Ivl=1ms
+> I:  If#= 1 Alt= 5 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
+> E:  Ad=83(I) Atr=01(Isoc) MxPS=  49 Ivl=1ms
+> E:  Ad=03(O) Atr=01(Isoc) MxPS=  49 Ivl=1ms
+> I:  If#= 1 Alt= 6 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
+> E:  Ad=83(I) Atr=01(Isoc) MxPS=  63 Ivl=1ms
+> E:  Ad=03(O) Atr=01(Isoc) MxPS=  63 Ivl=1ms
+> 
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Christoph Zwerschke <cito@online.de>
+> ---
+>   drivers/bluetooth/btusb.c | 4 ++++
+>   1 file changed, 4 insertions(+)
+> 
+> diff --git a/drivers/bluetooth/btusb.c b/drivers/bluetooth/btusb.c
+> index e9b0b1dcc1d1..c15c7ab5bd2e 100644
+> --- a/drivers/bluetooth/btusb.c
+> +++ b/drivers/bluetooth/btusb.c
+> @@ -856,6 +856,10 @@ static const struct usb_device_id quirks_table[] = {
+>   	{ USB_DEVICE(0x37ad, 0x0600), .driver_info = BTUSB_REALTEK |
+>   						     BTUSB_WIDEBAND_SPEECH },
+>   
+> +	/* Additional Realtek 8761CU Bluetooth devices */
+> +	{ USB_DEVICE(0x0b05, 0x1bef), .driver_info = BTUSB_REALTEK |
+> +						     BTUSB_WIDEBAND_SPEECH },
+> +
+>   	/* Additional Realtek 8821AE Bluetooth devices */
+>   	{ USB_DEVICE(0x0b05, 0x17dc), .driver_info = BTUSB_REALTEK },
+>   	{ USB_DEVICE(0x13d3, 0x3414), .driver_info = BTUSB_REALTEK },
 
-Meanwhile, since some code paths like loongson3_cpufreq expect a
-continuous integer sequence of package IDs in [0, MAX_PACKAGES) when
-retrieving from cpu_data[], we also canonicalize the package ID to be
-filled in parse_acpi_topology() to meet such an expectation.
+Reviewed-by: Paul Menzel <pmenzel@molgen.mpg.de>
 
-Cc: stable@vger.kernel.org
-Co-developed-by: Xi Ruoyao <xry111@xry111.site>
-Signed-off-by: Xi Ruoyao <xry111@xry111.site>
-Signed-off-by: Rong Bao <rong.bao@csmantle.top>
----
 
-v1 -> v2:
-- Addressed and incorporated package ID canonicalization code suggested
-  by Ruoyao
-- Rebased onto present master
+Kind regards,
 
-v1: https://lore.kernel.org/loongarch/e18efdbb.AXMAAIuqLC8AAAAAAAAAA-ma1qEAAYKJPtkAAAAAADNVAQBpc5ot@mailjet.com/
-
----
- arch/loongarch/kernel/acpi.c | 28 +++++++++++++++++++++++++++-
- arch/loongarch/kernel/smp.c  |  2 +-
- 2 files changed, 28 insertions(+), 2 deletions(-)
-
-diff --git a/arch/loongarch/kernel/acpi.c b/arch/loongarch/kernel/acpi.c
-index 8f650c9ffecdecdac6bcb324123e222bd04dbcf2..9ad25c642dbc50485ad54a02ed818a34e639f219 100644
---- a/arch/loongarch/kernel/acpi.c
-+++ b/arch/loongarch/kernel/acpi.c
-@@ -202,9 +202,12 @@ static void __init acpi_process_madt(void)
- 
- int pptt_enabled;
- 
-+static int acpi_package_ids[MAX_PACKAGES];
-+static int acpi_nr_packages;
-+
- int __init parse_acpi_topology(void)
- {
--	int cpu, topology_id;
-+	int cpu, topology_id, i;
- 
- 	for_each_possible_cpu(cpu) {
- 		topology_id = find_acpi_cpu_topology(cpu, 0);
-@@ -222,6 +225,29 @@ int __init parse_acpi_topology(void)
- 
- 			cpu_data[cpu].core = topology_id;
- 		}
-+
-+		topology_id = find_acpi_cpu_topology_package(cpu);
-+		if (topology_id < 0) {
-+			pr_warn("Invalid BIOS PPTT\n");
-+			return -ENOENT;
-+		}
-+
-+		for (i = 0; i < acpi_nr_packages; i++)
-+			if (acpi_package_ids[i] == topology_id)
-+				break;
-+
-+		if (i == acpi_nr_packages)
-+			acpi_package_ids[acpi_nr_packages++] = topology_id;
-+
-+		cpu_data[cpu].package = topology_id;
-+	}
-+
-+	for_each_possible_cpu(cpu) {
-+		for (int i = 0; i < acpi_nr_packages; i++)
-+			if (cpu_data[cpu].package == acpi_package_ids[i]) {
-+				cpu_data[cpu].package = i;
-+				break;
-+			}
- 	}
- 
- 	pptt_enabled = 1;
-diff --git a/arch/loongarch/kernel/smp.c b/arch/loongarch/kernel/smp.c
-index 5d792256bbb99a41d0032add6b5ffacffb20b684..9d148b6e41b488daca71a970e1b75cc18638d564 100644
---- a/arch/loongarch/kernel/smp.c
-+++ b/arch/loongarch/kernel/smp.c
-@@ -426,7 +426,7 @@ void loongson_init_secondary(void)
- 	numa_add_cpu(cpu);
- #endif
- 	per_cpu(cpu_state, cpu) = CPU_ONLINE;
--	cpu_data[cpu].package =
-+	cpu_data[cpu].package = pptt_enabled ? cpu_data[cpu].package :
- 		     cpu_logical_map(cpu) / loongson_sysconf.cores_per_package;
- 	cpu_data[cpu].core = pptt_enabled ? cpu_data[cpu].core :
- 		     cpu_logical_map(cpu) % loongson_sysconf.cores_per_package;
-
-base-commit: 87320be9f0d24fce67631b7eef919f0b79c3e45c
--- 
-2.54.0
-
+Paul
 
