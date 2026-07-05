@@ -1,63 +1,67 @@
-Return-Path: <stable+bounces-272052-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-272054-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id Y+dKJa5gSmofCAEAu9opvQ
-	(envelope-from <stable+bounces-272052-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 05 Jul 2026 15:48:30 +0200
+	id MeI5HZFhSmpiCAEAu9opvQ
+	(envelope-from <stable+bounces-272054-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 05 Jul 2026 15:52:17 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id EFA2670A268
-	for <lists+stable@lfdr.de>; Sun, 05 Jul 2026 15:48:29 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 27F4770A2A8
+	for <lists+stable@lfdr.de>; Sun, 05 Jul 2026 15:52:17 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=lCzox0P8;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=EY7McWhE;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-272052-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-272052-lists+stable=lfdr.de@vger.kernel.org";
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-272054-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-272054-lists+stable=lfdr.de@vger.kernel.org";
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E66C63012C43
-	for <lists+stable@lfdr.de>; Sun,  5 Jul 2026 13:48:06 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 98E8D300F538
+	for <lists+stable@lfdr.de>; Sun,  5 Jul 2026 13:52:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C377A346E43;
-	Sun,  5 Jul 2026 13:48:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE39D37FF49;
+	Sun,  5 Jul 2026 13:52:04 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F08C33793AA
-	for <stable@vger.kernel.org>; Sun,  5 Jul 2026 13:48:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62550380FD7;
+	Sun,  5 Jul 2026 13:52:01 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783259286; cv=none; b=jPDWrJlyZf+LnMs8tDqbrwnNGlNdjmZDGSfzRSLpX8SyhyATxeRGGdea6w+cRVtFHTSWFepQ4bRakez+Nw6uS2dAL/LQ15wLTFZoXXN0wZRgc7qlH6BZRCQ2LQRpC4BFvIj0j1se7R/r9AaqeFOiON89Hn+oiChSXVC5ErKC80s=
+	t=1783259524; cv=none; b=Sm1hBhFLW35hryPuzwGD+hyYeguYiqYjVPbPN7JjsDMtaXkMmm5yUHCsN15WpQ3S0uOc4dFHSG+fJfcUEgSUL/lh5GUg5yVTXiZYHbb6UZbQNT6cIhej3fb7KK0Fe65NHV/iCjIRkIsCoURFJDZztOUlQ7anFP0SaPB95m8LMYI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783259286; c=relaxed/simple;
-	bh=Kd34TJg+x6ai0CKYv+574DED0njug/7Roe3azyTiav4=;
+	s=arc-20240116; t=1783259524; c=relaxed/simple;
+	bh=e7qsdR6RLX28wY6F8j6XHLck42eNjftjSVndAG1rxmM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Bo+a4ZJ5lYfSvoQFtUg7HVS0fBb9H1APzgFDmqXDPVfYtzoWcTT9d1giuPMgI1QOkO/xNR+Cj8Zifb6gJfpdEst5uU/OFo96ksyY4UD4W0ClgLFvUr3AMXgxxa+1DP54Uww3NdXbEqAzT4V2nWOprap+YdpcFPxSLO90E/zjEw4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lCzox0P8; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 385EF1F00A3A;
-	Sun,  5 Jul 2026 13:48:04 +0000 (UTC)
+	 MIME-Version; b=NYP4QzO27yw6Ib5cHV0ebnVUTe0OGQMj6xvf1te8a7k4JtAdO7csw96S82SC/wMHZhrOHKXfr4QX4xUo1ukwbBHKZ8UCZIDKDyY6S+HDZBPFYryENzMhk2oFEXBi+1mtkk+HVuforTVX+cQhez8JeznojizB/LWS/Q+HVhKqtVg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EY7McWhE; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8A5E1F000E9;
+	Sun,  5 Jul 2026 13:52:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783259284;
-	bh=cs8HLkI+yCJ5Id9PhD8I3qGcRWnqSVYn1WKA2Ps1Db4=;
+	s=k20260515; t=1783259521;
+	bh=ccbtHIIbFEYwquLQXpwo/HS5VUnsG2JeIqciVKxFvSg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=lCzox0P8+Hmx+Zq9hI1j3iImdSU4JYNLnvFBjSeZ08LrW7mmtEzf7cAktvXXQDww2
-	 76nDvhiGRjHU6X8FQVCeGInLE0nwyHkjbN9tGQC1fESPB569uOfRtqVI9x2DBSzYpp
-	 GNvtsi0Mnbyc7y+9GpDH5QJo+93TrnlnMgPD4ZP1VT4GSCcvJuTrx54772l2th1rqE
-	 tlS8WklXYxZf4pxsROr0yMU5FtE/TnyoYelY79907rdobWPMHOEK1p57i8AGJQtfAw
-	 E9Vd2aMnkT/ZpdHz5A1QkY2wBgmQ+jIP2s05ZdHxnf1Vm/chW+hwft9Tgp/tlWWzo6
-	 8gu1PcL+4WwPQ==
+	b=EY7McWhEoKR2PLVQjueptAkt5YPKfVPWBO7dVIo46tbwxRXXfJuDPjDRGjUjZtrrj
+	 659DJ5YydIgdwIxqSdMwdcx30qLSKnytAweO4ERQJAE65FC1mgZK3y3vRy7xQOYKIT
+	 oGakJQaDXRbhYwAlqME5K+yJJXj2ohwES3r3v/+xuvPEzs4Jm/JOfEJzq6aHjfWlDF
+	 bj81JDpX8JuDXxnuPP0ZN4J+wG8JGqkeK2w51nIaCpaTW4bMDt5pa+l5DGvPBXN9Wf
+	 51yiqnZPv6+HoL9LSL/EuYhWhPk6FiHBT0JsSxmZ3NfgrOEkrhBvn3PC+lCBM4z8BH
+	 gzdGp3bk1nWxQ==
 From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: Mingyu Wang <25181214217@stu.xidian.edu.cn>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	Helge Deller <deller@gmx.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6.y] fbdev: fbcon: fix out-of-bounds read in err_out of fbcon_do_set_font()
-Date: Sun,  5 Jul 2026 09:48:02 -0400
-Message-ID: <20260705134802.1722907-1-sashal@kernel.org>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	stable@vger.kernel.org
+Cc: Sasha Levin <sashal@kernel.org>,
+	patches@lists.linux.dev,
+	Pedro Tammela <pctammela@mojatatu.com>,
+	Simon Horman <simon.horman@corigine.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Wentao Guan <guanwentao@uniontech.com>,
+	Ben Hutchings <ben@decadent.org.uk>
+Subject: Re: [PATCH 5.10 01/96] net/sched: act_pedit: use NLA_POLICY for parsing ex keys
+Date: Sun,  5 Jul 2026 09:51:56 -0400
+Message-ID: <2026070416-stable-reply-0001@kernel.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <2026070230-citrus-unboxed-57bc@gregkh>
-References: <2026070230-citrus-unboxed-57bc@gregkh>
+In-Reply-To: <418ca29bbbb1190853136331c572470dca803800.camel@decadent.org.uk>
+References: <418ca29bbbb1190853136331c572470dca803800.camel@decadent.org.uk>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -66,107 +70,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-3.66 / 15.00];
+X-Spamd-Result: default: False [-4.66 / 15.00];
 	WHITELIST_SPF_DKIM(-3.00)[kernel.org:d:+,kernel.org:s:+];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-272052-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-272054-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:25181214217@stu.xidian.edu.cn,m:tzimmermann@suse.de,m:deller@gmx.de,m:sashal@kernel.org,s:lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:gregkh@linuxfoundation.org,m:stable@vger.kernel.org,m:sashal@kernel.org,m:patches@lists.linux.dev,m:pctammela@mojatatu.com,m:simon.horman@corigine.com,m:davem@davemloft.net,m:guanwentao@uniontech.com,m:ben@decadent.org.uk,s:lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FORGED_SENDER(0.00)[sashal@kernel.org,stable@vger.kernel.org];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FREEMAIL_CC(0.00)[stu.xidian.edu.cn,suse.de,gmx.de,kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
 	DKIM_TRACE(0.00)[kernel.org:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,gmx.de:email,xidian.edu.cn:email,suse.de:email]
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: EFA2670A268
+X-Rspamd-Queue-Id: 27F4770A2A8
 
-From: Mingyu Wang <25181214217@stu.xidian.edu.cn>
+On Thu, 2026-07-03 at 22:16 +0200, Ben Hutchings wrote:
+> No objection, but this should also be applied to 5.15 and 6.1.
 
-[ Upstream commit 8fdc8c2057eea08d40ce2c8eed41ff9e451c65c2 ]
+Queued for 5.15 and 6.1, thanks.
 
-When fbcon_do_set_font() fails (e.g., due to a memory allocation failure
-inside vc_resize() under heavy memory pressure), it jumps to the `err_out`
-label to roll back the console state. However, the current rollback logic
-forgets to restore the `hi_font` state, leading to a severe state machine
-corruption.
-
-Earlier in the function, `set_vc_hi_font()` might be called to change
-`vc->vc_hi_font_mask` and mutate the screen buffer. If `vc_resize()`
-subsequently fails, the `err_out` path restores `vc_font.charcount`
-but entirely skips rolling back the `vc_hi_font_mask` and the screen
-buffer.
-
-This mismatch leaves the terminal in a desynchronized state. Because
-`vc_hi_font_mask` remains set, the VT subsystem will still accept
-character indices greater than 255 from userspace and write them to the
-screen buffer. Subsequent rendering calls (e.g., `fbcon_putcs()`) will
-then use these inflated indices to access the reverted, 256-character
-font array, leading to a deterministic out-of-bounds read and potential
-kernel memory disclosure.
-
-Fix this by adding the missing rollback logic for the `hi_font` mask
-and screen buffer in the error path.
-
-Fixes: a5a923038d70 ("fbdev: fbcon: Properly revert changes when vc_resize() failed")
-Cc: stable@vger.kernel.org
-Signed-off-by: Mingyu Wang <25181214217@stu.xidian.edu.cn>
-Reviewed-by: Thomas Zimmermann <tzimmermann@suse.de>
-Signed-off-by: Helge Deller <deller@gmx.de>
-[ Adjust context ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- drivers/video/fbdev/core/fbcon.c | 7 +++++++
- 1 file changed, 7 insertions(+)
-
-diff --git a/drivers/video/fbdev/core/fbcon.c b/drivers/video/fbdev/core/fbcon.c
-index d1ac4e45eea68e..a12d699dcb83b2 100644
---- a/drivers/video/fbdev/core/fbcon.c
-+++ b/drivers/video/fbdev/core/fbcon.c
-@@ -2418,6 +2418,7 @@ static int fbcon_do_set_font(struct vc_data *vc, int w, int h, int charcount,
- 	struct fbcon_display *p = &fb_display[vc->vc_num];
- 	int resize, ret, old_userfont, old_width, old_height, old_charcount;
- 	u8 *old_data = vc->vc_font.data;
-+	unsigned short old_hi_font_mask = vc->vc_hi_font_mask;
- 
- 	resize = (w != vc->vc_font.width) || (h != vc->vc_font.height);
- 	vc->vc_font.data = (void *)(p->fontdata = data);
-@@ -2471,6 +2472,12 @@ static int fbcon_do_set_font(struct vc_data *vc, int w, int h, int charcount,
- 	vc->vc_font.height = old_height;
- 	vc->vc_font.charcount = old_charcount;
- 
-+	/* Restore the hi_font state and screen buffer */
-+	if (old_hi_font_mask && !vc->vc_hi_font_mask)
-+		set_vc_hi_font(vc, true);
-+	else if (!old_hi_font_mask && vc->vc_hi_font_mask)
-+		set_vc_hi_font(vc, false);
-+
- 	return ret;
- }
- 
 -- 
-2.53.0
-
+Thanks,
+Sasha
 
