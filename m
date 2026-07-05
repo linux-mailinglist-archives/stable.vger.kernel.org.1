@@ -1,63 +1,63 @@
-Return-Path: <stable+bounces-272061-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-272063-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id tG6eNf1jSmo0CQEAu9opvQ
-	(envelope-from <stable+bounces-272061-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 05 Jul 2026 16:02:37 +0200
+	id yTmyMytkSmpHCQEAu9opvQ
+	(envelope-from <stable+bounces-272063-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 05 Jul 2026 16:03:23 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2CA5170A362
-	for <lists+stable@lfdr.de>; Sun, 05 Jul 2026 16:02:37 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 311C470A377
+	for <lists+stable@lfdr.de>; Sun, 05 Jul 2026 16:03:23 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=U1kNjJBa;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=agw46hWo;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-272061-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-272061-lists+stable=lfdr.de@vger.kernel.org";
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-272063-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-272063-lists+stable=lfdr.de@vger.kernel.org";
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 24E403013246
-	for <lists+stable@lfdr.de>; Sun,  5 Jul 2026 14:01:00 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E80C1303370E
+	for <lists+stable@lfdr.de>; Sun,  5 Jul 2026 14:01:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F2A97380FD7;
-	Sun,  5 Jul 2026 14:00:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BCCD23815C6;
+	Sun,  5 Jul 2026 14:01:02 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28A9137FF71
-	for <stable@vger.kernel.org>; Sun,  5 Jul 2026 14:00:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61E5F380FDB
+	for <stable@vger.kernel.org>; Sun,  5 Jul 2026 14:01:01 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783260059; cv=none; b=hZ8w8mAtpob5QWLPhe0p3xu7hFijlgmQ/jmKjFclYsB7HfYl3ZbK644dBuPpYIewnRxE7MetZYggrpM/DZL02T1qLoCn0BD1IbifwBDbf1B/06aHjl3k5gv6eNuqllZAxGfaFsA/LEmATWy+PzhvLhnFudsUc4/b84EVhtXiADY=
+	t=1783260062; cv=none; b=Hhci8TN6sqW9M0eY2o/LaOgSNsxQi6kstSO3yD2mHbyjTLoHW8mqY6ONQs90omDrINrilrwzuZN2JNnSpQuVT5m8lj6maLALF+QBv6AgchG5XTU5sNZMjrTno0Sr6/jyBRCyQhtvRFW/wBWRgzg1bMREKK4GM/v6Y2gNjDUudTs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783260059; c=relaxed/simple;
-	bh=A/zMK3GIRqtmjqhN1YBDJKFNTO1FCWMfWMMiwSE0pH4=;
+	s=arc-20240116; t=1783260062; c=relaxed/simple;
+	bh=S+rrsUzf6P0YHXXWy04c5yHty/dZKXCPKQHc/j247zQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=e3YojrUo5jkmyfpCFXpBUrEwGT2DC17nCHBR9EnogcYGRd9KXgWMmSfIbFh912bo5xtvDx5AHc6DAeN6jPX0iLx8ZuYZ1sWdFQf2vNgQ0iZTpYv34Cllh1NMkaWWWjw48opB+0iSRl2Z2sPJBx+BafcpwQjO+OXBiQ8/59iQQEY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=U1kNjJBa; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5DB371F00A3D;
-	Sun,  5 Jul 2026 14:00:57 +0000 (UTC)
+	 MIME-Version; b=dg9UdBcUk82VQRnq6HKHGTW4Jmc/5zh/IHDGJBqRZaHTVxEVkhnTbBS3Zjm898Txptwpq7ghXlyZwWHdGgt9exYWnxlck2zQUgd6B7jfZWDHnsLhNf5P+NlivWaP0hE4EPlejbs3dbq3SqzsrsMU3vUzyCvCQUmnwq0MgMQR8vE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=agw46hWo; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C5531F000E9;
+	Sun,  5 Jul 2026 14:01:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783260057;
-	bh=AF71D8Quu048x3csOv74CmMGr4qcAK5RE/A/gtxqOJs=;
+	s=k20260515; t=1783260061;
+	bh=D/y6/A8zI7c8WvI2qHn8E97UgjcJoBwmvIBVLslIFiw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=U1kNjJBaYeM9aNVnLPYSy457MQG2uW3w6tZq19iNDVOB2SRHn/poAsMbCJzg5rNP7
-	 Dx1TqV6fzeO2hPJA1TYJ3ZPwQJOoaaZwqmrMRHzwUQ4tuXK3FkE2BxH40nkH9avQBA
-	 v6FwzqR577yNQ4H/QJWaQ2g07qkxPbaBHb6zOMJU49nD6KJKeGAiTgKRCrmIDYmbI6
-	 UmiCFeZpr8lPdE3WMSzWaj9+afqq62ChqvIc2HqDgYnabJRYsDL2gI9CFaG5p5NHi1
-	 1zGPvKwpbvfNX29aUyQ7OWtpZXU5ngzIeYoUyfjlFtG4/li8e+0J4qiS8hE65wPyGs
-	 ZZHCXLjD/GZqw==
+	b=agw46hWo0HeIvUHUmMyScd42Egt91UFfgeHrSWBS1xALF47+UfmG50Rnuowx+fX+f
+	 SzQpXHENxdpNsEguiok07Q2oEq3hAI17qjYfsk7rL+PSpCTuYs7IF5Vq2jvGajcVA2
+	 XSXyqoTF1MEOD4PHlUWSrZcoRiIjD/uQNyVFEaBBrEFWEI9fz0WsJON8SPEmbyOren
+	 7Jcl3lNLchMmJiqMJ0dAvwOfqUusIp3lWlE3qNLnzGvx+XbCKXkjGarNZMH8s/2XV9
+	 eRPXAQCVwbQJziLNJVDeqik1IG317+W/R7NKk+2XT0Bu/aZ554nLqpu1DsiE5wC20U
+	 p7Ooh4d3IYVLA==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Mingyu Wang <25181214217@stu.xidian.edu.cn>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	Helge Deller <deller@gmx.de>,
+Cc: Chris Mason <clm@meta.com>,
+	Jeff Layton <jlayton@kernel.org>,
+	Chuck Lever <chuck.lever@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1.y] fbdev: fbcon: fix out-of-bounds read in err_out of fbcon_do_set_font()
-Date: Sun,  5 Jul 2026 10:00:55 -0400
-Message-ID: <20260705140055.1744629-1-sashal@kernel.org>
+Subject: [PATCH 6.6.y] nfsd: release layout stid on setlease failure
+Date: Sun,  5 Jul 2026 10:00:58 -0400
+Message-ID: <20260705140058.1744684-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <2026070230-shaping-renewably-c158@gregkh>
-References: <2026070230-shaping-renewably-c158@gregkh>
+In-Reply-To: <2026070227-driveway-flail-0014@gregkh>
+References: <2026070227-driveway-flail-0014@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -70,101 +70,103 @@ X-Spamd-Result: default: False [-3.66 / 15.00];
 	WHITELIST_SPF_DKIM(-3.00)[kernel.org:d:+,kernel.org:s:+];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-272061-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-272063-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:25181214217@stu.xidian.edu.cn,m:tzimmermann@suse.de,m:deller@gmx.de,m:sashal@kernel.org,s:lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:clm@meta.com,m:jlayton@kernel.org,m:chuck.lever@oracle.com,m:sashal@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FORGED_SENDER(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FORWARDED(0.00)[lists@lfdr.de];
-	FREEMAIL_CC(0.00)[stu.xidian.edu.cn,suse.de,gmx.de,kernel.org];
-	DKIM_TRACE(0.00)[kernel.org:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	ALIAS_RESOLVED(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,vger.kernel.org:from_smtp,suse.de:email,xidian.edu.cn:email,gmx.de:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,vger.kernel.org:from_smtp,meta.com:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 2CA5170A362
+X-Rspamd-Queue-Id: 311C470A377
 
-From: Mingyu Wang <25181214217@stu.xidian.edu.cn>
+From: Chris Mason <clm@meta.com>
 
-[ Upstream commit 8fdc8c2057eea08d40ce2c8eed41ff9e451c65c2 ]
+[ Upstream commit 30d55c8aabb261bc3f427d6b9aae7ef6206063f9 ]
 
-When fbcon_do_set_font() fails (e.g., due to a memory allocation failure
-inside vc_resize() under heavy memory pressure), it jumps to the `err_out`
-label to roll back the console state. However, the current rollback logic
-forgets to restore the `hi_font` state, leading to a severe state machine
-corruption.
+nfs4_alloc_stid() publishes the new stid into cl->cl_stateids via
+idr_alloc_cyclic() under cl_lock before returning to
+nfsd4_alloc_layout_stateid(). When nfsd4_layout_setlease() then
+fails, the error path frees the layout stateid directly with
+kmem_cache_free() without ever calling idr_remove(), leaving the
+IDR slot pointing at freed slab memory. Any subsequent IDR walker
+(states_show, client teardown) dereferences the dangling pointer.
 
-Earlier in the function, `set_vc_hi_font()` might be called to change
-`vc->vc_hi_font_mask` and mutate the screen buffer. If `vc_resize()`
-subsequently fails, the `err_out` path restores `vc_font.charcount`
-but entirely skips rolling back the `vc_hi_font_mask` and the screen
-buffer.
+The correct teardown for an IDR-published stid is nfs4_put_stid(),
+which removes the IDR slot under cl_lock, dispatches sc_free
+(nfsd4_free_layout_stateid) to release ls->ls_file via
+nfsd4_close_layout(), and drops the nfs4_file reference in its
+tail.
 
-This mismatch leaves the terminal in a desynchronized state. Because
-`vc_hi_font_mask` remains set, the VT subsystem will still accept
-character indices greater than 255 from userspace and write them to the
-screen buffer. Subsequent rendering calls (e.g., `fbcon_putcs()`) will
-then use these inflated indices to access the reverted, 256-character
-font array, leading to a deterministic out-of-bounds read and potential
-kernel memory disclosure.
+A second issue blocks that switch: nfsd4_free_layout_stateid()
+unconditionally inspects ls->ls_fence_work via
+delayed_work_pending() under ls_lock, but
+INIT_DELAYED_WORK(&ls->ls_fence_work, ...) currently runs only
+after the setlease call. On the setlease-failure path the
+destructor would touch an uninitialized delayed_work.
 
-Fix this by adding the missing rollback logic for the `hi_font` mask
-and screen buffer in the error path.
+    nfsd4_alloc_layout_stateid()
+      nfs4_alloc_stid()           /* idr_alloc_cyclic under cl_lock */
+      nfsd4_layout_setlease()     /* fails */
+        nfs4_put_stid()
+          nfsd4_free_layout_stateid()
+            delayed_work_pending(&ls->ls_fence_work)  /* needs INIT */
+            nfsd4_close_layout()  /* nfsd_file_put(ls->ls_file) */
+          put_nfs4_file()
 
-Fixes: a5a923038d70 ("fbdev: fbcon: Properly revert changes when vc_resize() failed")
+Fix by hoisting the ls_fenced / ls_fence_delay / INIT_DELAYED_WORK
+initialization above the nfsd4_layout_setlease() call, and replace
+the manual nfsd_file_put + put_nfs4_file + kmem_cache_free cleanup
+with a single nfs4_put_stid(stp).
+
+Fixes: c5c707f96fc9 ("nfsd: implement pNFS layout recalls")
 Cc: stable@vger.kernel.org
-Signed-off-by: Mingyu Wang <25181214217@stu.xidian.edu.cn>
-Reviewed-by: Thomas Zimmermann <tzimmermann@suse.de>
-Signed-off-by: Helge Deller <deller@gmx.de>
-[ Adjust context ]
+Assisted-by: kres (claude-opus-4-7)
+Signed-off-by: Chris Mason <clm@meta.com>
+Reviewed-by: Jeff Layton <jlayton@kernel.org>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+[ Context ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/video/fbdev/core/fbcon.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ fs/nfsd/nfs4layouts.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/drivers/video/fbdev/core/fbcon.c b/drivers/video/fbdev/core/fbcon.c
-index 015baff0192908..00c2841c23068f 100644
---- a/drivers/video/fbdev/core/fbcon.c
-+++ b/drivers/video/fbdev/core/fbcon.c
-@@ -2415,6 +2415,7 @@ static int fbcon_do_set_font(struct vc_data *vc, int w, int h, int charcount,
- 	struct fbcon_display *p = &fb_display[vc->vc_num];
- 	int resize, ret, old_userfont, old_width, old_height, old_charcount;
- 	u8 *old_data = vc->vc_font.data;
-+	unsigned short old_hi_font_mask = vc->vc_hi_font_mask;
+diff --git a/fs/nfsd/nfs4layouts.c b/fs/nfsd/nfs4layouts.c
+index 308214378fd352..84bb200e24adea 100644
+--- a/fs/nfsd/nfs4layouts.c
++++ b/fs/nfsd/nfs4layouts.c
+@@ -242,9 +242,7 @@ nfsd4_alloc_layout_stateid(struct nfsd4_compound_state *cstate,
+ 	BUG_ON(!ls->ls_file);
  
- 	resize = (w != vc->vc_font.width) || (h != vc->vc_font.height);
- 	vc->vc_font.data = (void *)(p->fontdata = data);
-@@ -2468,6 +2469,12 @@ static int fbcon_do_set_font(struct vc_data *vc, int w, int h, int charcount,
- 	vc->vc_font.height = old_height;
- 	vc->vc_font.charcount = old_charcount;
- 
-+	/* Restore the hi_font state and screen buffer */
-+	if (old_hi_font_mask && !vc->vc_hi_font_mask)
-+		set_vc_hi_font(vc, true);
-+	else if (!old_hi_font_mask && vc->vc_hi_font_mask)
-+		set_vc_hi_font(vc, false);
-+
- 	return ret;
- }
+ 	if (nfsd4_layout_setlease(ls)) {
+-		nfsd_file_put(ls->ls_file);
+-		put_nfs4_file(fp);
+-		kmem_cache_free(nfs4_layout_stateid_cache, ls);
++		nfs4_put_stid(stp);
+ 		return NULL;
+ 	}
  
 -- 
 2.53.0
