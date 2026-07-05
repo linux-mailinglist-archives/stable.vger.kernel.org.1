@@ -1,166 +1,149 @@
-Return-Path: <stable+bounces-271987-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-271989-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id iUVZBgiUSWqj3QAAu9opvQ
-	(envelope-from <stable+bounces-271987-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 05 Jul 2026 01:15:20 +0200
+	id 3GSXHtWfSWpe4wAAu9opvQ
+	(envelope-from <stable+bounces-271989-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 05 Jul 2026 02:05:41 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 807F970898F
-	for <lists+stable@lfdr.de>; Sun, 05 Jul 2026 01:15:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D1690708ADF
+	for <lists+stable@lfdr.de>; Sun, 05 Jul 2026 02:05:40 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=Ay6V5xgf;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-271987-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-271987-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=h9Raqix+;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-271989-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-271989-lists+stable=lfdr.de@vger.kernel.org";
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 1B8883016BAE
-	for <lists+stable@lfdr.de>; Sat,  4 Jul 2026 23:15:17 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 553C73016D27
+	for <lists+stable@lfdr.de>; Sun,  5 Jul 2026 00:05:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1111B3BBFBE;
-	Sat,  4 Jul 2026 23:15:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A21979CD;
+	Sun,  5 Jul 2026 00:05:34 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qk1-f180.google.com (mail-qk1-f180.google.com [209.85.222.180])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4AA27383C86
-	for <stable@vger.kernel.org>; Sat,  4 Jul 2026 23:15:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4818AEEA8;
+	Sun,  5 Jul 2026 00:05:33 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783206912; cv=none; b=QHOSfu5aKvPRj+0IEmsBTmpK9J790xAHtOBRvEuwJE6haOBv6y/RQn3VaDjWGS1rpPrRM09sWEySz0IWQ8bePOQienI3T/ZhouJKIH9gZZQpJlfRHCNqYQ5k+IZvxcDznbivCUGZeBO7k1tWHh7YSoNde2F0oU835DoCBqGqb3w=
+	t=1783209934; cv=none; b=cWPMEYs63e7mk6XWH2ES1QYTmIJHpD3JUexVe2zg8O1WsZqwxnB2tw64wuTVz30UALztbYrabv93hKaOms6rgo2cgvvSUspuoKAGq+isUherQEjmQJwDKWBw2R/Z2t6V7ULpQYaTA2jwXjcwuoWN2PW90HCIc/Ovuv6o/67nMyM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783206912; c=relaxed/simple;
-	bh=e2BPamJm7+oCvVkOZXZ7WWzDD6bJtBXALaaIxF5F7ig=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Ws4s2PnshTStScGTN+xtnM/UI636QWHyJLkf4s6Ofu1lf/SMwEu7n7fqR/Fixn0t5ZSsMjy0B+xapvyEf5suKZL+wJehPqu+49H0WUSIPpIwskfruAqR7rZC8ptjXRwMbjguPx1CioOsAzyCrKCp9uDxD4nKsV9MPc6QE+g2tnY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Ay6V5xgf; arc=none smtp.client-ip=209.85.222.180
-Received: by mail-qk1-f180.google.com with SMTP id af79cd13be357-92e5b048375so74891785a.1
-        for <stable@vger.kernel.org>; Sat, 04 Jul 2026 16:15:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1783206908; x=1783811708; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=KMpBVokVvC5Invbvqmg58wmiCwFqIiE4NTIeLL0hDKo=;
-        b=Ay6V5xgfXffFyf/x7ugdMzpTXbbQ79FB0b4qPW73ULS64HTgYJCgZV4oop0Q6QS89z
-         356zNjp6qgYHD9YTFmgnHygODEXtFw0SJlzQ6aPmAMOjBdyadN8nLuY8niF52rGEdFgn
-         EmW02I+6llNC8DXh/RqpLYPQn+vp0/gO+Tfkx/2FjUTW6v6QXIsME03EcDPOrGjRaXaA
-         KmcB3/FiBIIavxie6Yz1K54U1ogiK41p8592oIdP+LOocXrQIDldt+JjAUCmoqU/J8L6
-         taQnc50kgbwY8Xx4fMz34Lr1tE8nTiyuCfSUxIV+PHrtkMyjlP+N5m11bScMKa9RpIKS
-         xQiw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783206908; x=1783811708;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=KMpBVokVvC5Invbvqmg58wmiCwFqIiE4NTIeLL0hDKo=;
-        b=JAQxlIGfR9M6KkuATNJTMddJrhcDTTkL2tJ/xkml86Th2qjQpMoUgkq9FzU6Xxjqx0
-         0t4wzkmCdjuQ7E148UTMa1emdp1ipnB8NWx83gZAt8I9qEzMTOo/Nmh9Xt+JKqaX48Yn
-         Dn/EeGdBmo6E7ElZTu9FwEvVg7MFHXy6R0y8CeKqJVZDCZ4bQXAoN2YzFBw2GivVL6sc
-         EOqpj6WCi56pI05igQEoy2qFkBV1qOCYAo8C0tD7NVzM/TzaZKN7rXKG0PTYG7ovXxwa
-         jWYMKyTc3J3esyVM2TIQCKFmNB3+qUOkdHY6S6AGL+flh6JFyEC09p8ZeMv4VLztKJTV
-         L0uQ==
-X-Forwarded-Encrypted: i=1; AFNElJ+Pe+Ylbd32uh/4Rtvtz9MGS1C0p0xpdOAAS2qrp6y5tMOubsTwD+sQ+KOSop2B7kIWolJa81U=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwwrzPXbcAFiMcn3MD76Gd5RBRzcu+GnVDuw8NDxwRm7ntjkZ3m
-	i6rx3nzLmGKVO8pT591z+VXEDaX2ePuvqz6ZwgAuSozNxRZ9hwkRUIZg
-X-Gm-Gg: AfdE7cko5It93ZXvzmWGo9gigOiPnQYFEhZhrl25Ov0q8xfr92i6cc9A2Gef3LZFF2U
-	0FXxCSuBgvSIKTOmXQK1nlmyHTarxcxRTUoY/K6y40AnjqxlnzqbmMmJ0TvL0m4e4xuD3E7gLND
-	oSg2cDP6fPeleFRy5EF22xjSiOUAMJOlnd9w06EKREJmQzuKm7dL9khq+mIUMGr5oUb9q1jl03a
-	zbc6G1lEU6FOTJ82xaWJ4BQ57mewIUcnE9smU7wMuVJ42Pd0EG2JcKmKCvvnKj0PYxuftmQmWnQ
-	LFMCkWPnTwku7HcPK0h2f3oXwloOkhTJil2I7wPNvTq+e8c87YmVhQoTw7BqCqo7th7DYg52cpE
-	VaYFjDH3jnT7c2Jzy7/iszaSyE0SOrVjtd8v8LtdsrRAdK8DaOkekXWsba+OZD6ebfsGwOSA6j6
-	mHcC5IpNkuuSMsTntIwP1yG5g1Zwk6q/TRAu5DQXHbSMOtCvTVZqXB
-X-Received: by 2002:a05:620a:1708:b0:92e:6858:2ed1 with SMTP id af79cd13be357-92e9a4cb049mr704080685a.53.1783206908591;
-        Sat, 04 Jul 2026 16:15:08 -0700 (PDT)
-Received: from i4-l-hqh5357-03.ad.psu.edu ([130.203.139.71])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-92e90c92662sm500407385a.30.2026.07.04.16.15.08
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 04 Jul 2026 16:15:08 -0700 (PDT)
-From: Shuangpeng Bai <shuangpeng.kernel@gmail.com>
-To: heikki.krogerus@linux.intel.com
-Cc: gregkh@linuxfoundation.org,
-	linux-usb@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org,
-	Shuangpeng Bai <shuangpeng.kernel@gmail.com>
-Subject: [PATCH v2] usb: typec: class: drop PD lookup reference
-Date: Sat,  4 Jul 2026 19:14:36 -0400
-Message-ID: <20260704231436.4060902-1-shuangpeng.kernel@gmail.com>
-X-Mailer: git-send-email 2.43.0
+	s=arc-20240116; t=1783209934; c=relaxed/simple;
+	bh=+m/sdhZfHlDzmQnbOHsef8P2LMpWwf4c4pmcDkd/Mng=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=g76rKAMT7yRFKSO5HVVjVSVmFG1y+qtVbQ8n295FMe9qLYwI+E2QxRogh+bjE71v9kCWGKahyKEAohO0bqP/+saadK64lJjjrKWiT/F0OULqJgmKs2vikf1i87ijMtnIiSHEtRv/lFlvWeal5aUveljKhQMiK90Fb9TWM8uNu0w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=h9Raqix+; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4683C1F000E9;
+	Sun,  5 Jul 2026 00:05:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1783209933;
+	bh=3hqE/DKL9gQuMz7nhcQ+bGghBLPWZUMdJpGNilRT2Gc=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=h9Raqix+npgUvNwCiAscQw42ogENlitwbL9ZuFWwT61WZ9zLt9UJBdOcXXu2Y4hsd
+	 yTkBWYfiOx/RjR+4PLS6m9riCvUgw+if+zVo8RfHf6d4h6wcpePr8QKdctf13gPtHy
+	 1SweNJkZfXvbKFqLOX0jdaPzS6sdrkhA5MPdTo0+VEqUBILyKjYVuANjI5oGXSszgo
+	 xuSnCW2qLh6NVhpYnln7zs45a+VpS2tPf45YLfpvvNwwGKW6QmOmqx75XZp/ernhuP
+	 xZb7DGoGk1zuYHUSmkY05RJRapMNiPrbOXdVDSxZzZk97x67gHR4DsslZGPydLtETw
+	 DM5hfHykE9QTA==
+Date: Sun, 5 Jul 2026 01:05:28 +0100
+From: Jonathan Cameron <jic23@kernel.org>
+To: Biren Pandya <birenpandya@gmail.com>
+Cc: David Lechner <dlechner@baylibre.com>, Nuno =?UTF-8?B?U8Oh?=
+ <nuno.sa@analog.com>, Andy Shevchenko <andy@kernel.org>, Linus Walleij
+ <linusw@kernel.org>, linux-iio@vger.kernel.org,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH 0/2] iio: accel: kxsd9: fix use-after-free and PM leaks
+Message-ID: <20260705010528.6429c1eb@jic23-huawei>
+In-Reply-To: <20260703-kxsd9-v3-proper-v1-0-e9f08af25d7e@gmail.com>
+References: <20260703-kxsd9-v3-proper-v1-0-e9f08af25d7e@gmail.com>
+X-Mailer: Claws Mail 4.4.0 (GTK 3.24.52; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-4.66 / 15.00];
+	WHITELIST_SPF_DKIM(-3.00)[kernel.org:d:+,kernel.org:s:+];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	MID_RHS_NOT_FQDN(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	TAGGED_FROM(0.00)[bounces-271987-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:heikki.krogerus@linux.intel.com,m:gregkh@linuxfoundation.org,m:linux-usb@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,m:shuangpeng.kernel@gmail.com,m:shuangpengkernel@gmail.com,s:lists@lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER(0.00)[shuangpengkernel@gmail.com,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,vger.kernel.org,gmail.com];
-	FORWARDED(0.00)[lists@lfdr.de];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[shuangpengkernel@gmail.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[gmail.com:+];
+	FREEMAIL_TO(0.00)[gmail.com];
+	FORGED_SENDER(0.00)[jic23@kernel.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS(0.00)[m:birenpandya@gmail.com,m:dlechner@baylibre.com,m:nuno.sa@analog.com,m:andy@kernel.org,m:linusw@kernel.org,m:linux-iio@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,s:lists@lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-271989-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[jic23@kernel.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,vger.kernel.org:from_smtp]
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,vger.kernel.org:from_smtp,jic23-huawei:mid]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 807F970898F
+X-Rspamd-Queue-Id: D1690708ADF
 
-usb_power_delivery_find() wraps class_find_device_by_name(). That helper
-returns a device reference that must be released by the caller.
+On Fri, 03 Jul 2026 22:53:21 +0530
+Biren Pandya <birenpandya@gmail.com> wrote:
 
-select_usb_power_delivery_store() only needs this reference while calling
-the pd_set callback. Drop it once the callback returns. Otherwise the sysfs
-write can pin the selected USB Power Delivery object and prevent it from
-being released on unregister.
+> This series fixes a use-after-free during device removal and resolves 
+> multiple runtime PM reference leaks.
+> 
+> Changes in v3:
+> - Split the fixes into two patches (UAF fix and PM leaks fix) as 
+>   requested by Jonathan Cameron.
+> - remove(): Dropped the early return on PM resume failure. The driver now 
+>   makes a best-effort attempt to power down the device unconditionally, 
+>   addressing feedback from Andy Shevchenko and Jonathan Cameron.
+> - read_raw(): Mirrored the -EINVAL reset fix from write_raw() to ensure 
+>   symmetric error handling on invalid masks.
+> - Dropped redundant pm_runtime_mark_last_busy() calls, relying instead
+>   on pm_runtime_put_autosuspend().
+> 
+> Link to v2: https://lore.kernel.org/linux-iio/20260621193036.78549-2-birenpandya@gmail.com/
 
-Fixes: a7cff92f0635 ("usb: typec: USB Power Delivery helpers for ports and partners")
-Cc: stable@vger.kernel.org
-Signed-off-by: Shuangpeng Bai <shuangpeng.kernel@gmail.com>
----
-v2:
-- Cc stable@vger.kernel.org as requested.
+[PATCH v3 0/2] etc
 
- drivers/usb/typec/class.c | 1 +
- 1 file changed, 1 insertion(+)
+Don't resend for this but please check future series for missing versions
+before sending out.
 
-diff --git a/drivers/usb/typec/class.c b/drivers/usb/typec/class.c
-index 0977581ad1b6..0595e8cb83aa 100644
---- a/drivers/usb/typec/class.c
-+++ b/drivers/usb/typec/class.c
-@@ -1619,6 +1619,7 @@ static ssize_t select_usb_power_delivery_store(struct device *dev,
- 		return -EINVAL;
- 
- 	ret = port->ops->pd_set(port, pd);
-+	put_device(&pd->dev);
- 	if (ret)
- 		return ret;
- 
--- 
-2.43.0
+Jonathan
+
+> 
+> ---
+> Biren Pandya (2):
+>       iio: accel: kxsd9: fix use-after-free on remove
+>       iio: accel: kxsd9: fix runtime PM leaks and unchecked returns
+> 
+>  drivers/iio/accel/kxsd9.c | 44 +++++++++++++++++++++++---------------------
+>  1 file changed, 23 insertions(+), 21 deletions(-)
+> ---
+> base-commit: 7de6ae9e12207ec146f2f3f1e58d1a99317e88bc
+> change-id: 20260703-kxsd9-v3-proper-51a1f05c4951
+> 
+> Best regards,
+> --  
+> Biren Pandya <birenpandya@gmail.com>
+> 
+
 
