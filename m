@@ -1,63 +1,63 @@
-Return-Path: <stable+bounces-272005-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-272006-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id RcFmI4rLSWrP7AAAu9opvQ
-	(envelope-from <stable+bounces-272005-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 05 Jul 2026 05:12:10 +0200
+	id 1vW1LZrLSWrW7AAAu9opvQ
+	(envelope-from <stable+bounces-272006-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 05 Jul 2026 05:12:26 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7CBEF708D74
-	for <lists+stable@lfdr.de>; Sun, 05 Jul 2026 05:12:09 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 875FC708D88
+	for <lists+stable@lfdr.de>; Sun, 05 Jul 2026 05:12:25 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=k8F6Z7h5;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=GKT0zAGc;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-272005-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-272005-lists+stable=lfdr.de@vger.kernel.org";
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-272006-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-272006-lists+stable=lfdr.de@vger.kernel.org";
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 48650300601F
-	for <lists+stable@lfdr.de>; Sun,  5 Jul 2026 03:12:04 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id EFB3F30028DE
+	for <lists+stable@lfdr.de>; Sun,  5 Jul 2026 03:12:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CFE24225413;
-	Sun,  5 Jul 2026 03:12:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 11C3D23BF9F;
+	Sun,  5 Jul 2026 03:12:21 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EE4526B08F
-	for <stable@vger.kernel.org>; Sun,  5 Jul 2026 03:12:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA07D2253EE
+	for <stable@vger.kernel.org>; Sun,  5 Jul 2026 03:12:19 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783221123; cv=none; b=ug1ZSeWkuQEH7K91VYeXM2NMe5CUuoefiu2M3ODhhF1MKs5yHbhZEG/cJmtIW6E8Ag8prv7qeFryDFDe6oBGJar2UH21eZ9qC7T8EU7l7mwcryg9ADRc9dpIlwflF/uj66/cmhTwQRO+fhdF8r1ygbNgTs3GHMWhMF2/i+XSGGc=
+	t=1783221140; cv=none; b=Pyyv7Ld9V+9O7vW3HD2dyZknPyYlnp7TAlTqsrPfc71lUTLrACUmmlBL9agemNrNwmPz9douu8B1ix1iw2JSeXfX+kHkjGesnXIZ+e153L6iAzrWQBhZH7Lr23gxj87q853Xfiww1M9AqC2yjmWN49zEnNbaI1VQBJ1FGOsMwR4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783221123; c=relaxed/simple;
-	bh=6swZ3nHdXnHjaWmKCXCqA2jFFDjAuymthj9DtkQl90k=;
+	s=arc-20240116; t=1783221140; c=relaxed/simple;
+	bh=5Ny+TgUx2FKK+awaK3ARZzCU4kU0+3mi7OPclkk2VBk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Mvytfism4g6Jl8oXAQEEffwV8wpCfo1IruZ/Vf56fLyvoMrawn43xbOV0UN25PHwZ6DdQla/FCR0quBsyXqPymD8ZsCTo2itn23vRkbu0uFq3KOuiv0N5vHXLLsDsKR6KbwgltFs3FQWFTkLN9JTELrc/SGyL1yXh0LPJlKZ+78=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=k8F6Z7h5; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BCA411F00A3F;
-	Sun,  5 Jul 2026 03:12:01 +0000 (UTC)
+	 MIME-Version; b=YaQ8ZXvgu5pz/YCaCFORjB92VsUyUI9hfj0opbnuaPMHa9I+EiJd512w6yz3WvSmYwA9ClHpSfzF17zh7swJr5GOC3SSPCJvPfAWH/YoZzqYC1FIaIhPFE//AVfidT5OVYijNTV7Qt12zJZv6wJv586G0lvxOdhzsJDbh9EETgI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GKT0zAGc; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CEA7A1F000E9;
+	Sun,  5 Jul 2026 03:12:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783221122;
-	bh=bJpmbuWHAmYr36IyDgSThWk9cZ0st8mcvrZAtq40IG8=;
+	s=k20260515; t=1783221139;
+	bh=QTSX5H6BbeWQYDL84sGSBTq4+wc8SmW0GAEQYcaQKnI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=k8F6Z7h5O6yD40KvRfM6bg5EKzV095aopzygybNG+0RBjFoRoUeLbbH0AjMzqWDVB
-	 o0vh6G8zPpwJir65gcBBhKgrJNbTMJ1QAyl0iVgPB2Xkqf6D3uYBXnfYH3BlZhtwGN
-	 PFMIMV3EtOHC+ZYWwODNUcivTjxfnGSiDNev4KPacR4RfnxJhqZ7yPgkdFs9C7i4Qo
-	 rIGwhINQCo743+VggqffIKVvRqGntsaiF+0RO1Holfut0ie1ktovEQLzUojmsn2aQ7
-	 bLtXDhsuNv8CtksgsCXhtpH35GO71u3xGOSmWEYG2K8cxprXQe8bGewU0MxsOOVY6+
-	 WPp1btI6b/dwQ==
+	b=GKT0zAGcLHWMYBryP0fJrjDsWlP01x2Zsoe7IH9uqY/YYe9SpBd/2WMigmGyEQonF
+	 L+FgeZTGNDHcBEIP6XyxPxJ4XwaFHd2Q+/1lcL3/PyDZk2EeaYDLjp7TTEFjkeyP8a
+	 4NYJ6k4fdtBQ+asYWp4OFTabrCZU90GZM0c6CQLRAlGL6p91/+w7hfpjkt7tuaaRJ2
+	 W+i0uViSyOnSQkN5g9t6+nTSXpD6Kq6R/lpQzhHjTjT1vZZ3qb9EE5SQx20z5O9Bl6
+	 oBkFacjupXVIICWIZ8Zwuco22OkUIV+aRT3/CdiVD7CvMr2amVcXWP91gzitnaL7t4
+	 MOiOwSXRpWNyg==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Johan Hovold <johan@kernel.org>,
-	Wolfram Sang <wsa+renesas@sang-engineering.com>,
+Cc: Chris Mason <clm@meta.com>,
+	Jeff Layton <jlayton@kernel.org>,
+	Chuck Lever <chuck.lever@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6.y 5/5] i2c: core: fix adapter registration race
-Date: Sat,  4 Jul 2026 23:11:56 -0400
-Message-ID: <20260705031156.1601242-5-sashal@kernel.org>
+Subject: [PATCH 6.18.y] nfsd: release layout stid on setlease failure
+Date: Sat,  4 Jul 2026 23:12:17 -0400
+Message-ID: <20260705031217.1602142-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260705031156.1601242-1-sashal@kernel.org>
-References: <2026070232-straddle-keenness-fbbc@gregkh>
- <20260705031156.1601242-1-sashal@kernel.org>
+In-Reply-To: <2026070225-wipe-antler-1b0c@gregkh>
+References: <2026070225-wipe-antler-1b0c@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -70,96 +70,104 @@ X-Spamd-Result: default: False [-3.66 / 15.00];
 	WHITELIST_SPF_DKIM(-3.00)[kernel.org:d:+,kernel.org:s:+];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:johan@kernel.org,m:wsa+renesas@sang-engineering.com,m:sashal@kernel.org,m:wsa@sang-engineering.com,s:lists@lfdr.de];
-	TAGGED_FROM(0.00)[bounces-272005-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER(0.00)[sashal@kernel.org,stable@vger.kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCPT_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-272006-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:clm@meta.com,m:jlayton@kernel.org,m:chuck.lever@oracle.com,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_SENDER(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[kernel.org:+];
 	ALIAS_RESOLVED(0.00)[];
-	TAGGED_RCPT(0.00)[stable,renesas];
+	TAGGED_RCPT(0.00)[stable];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,vger.kernel.org:from_smtp]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[oracle.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 7CBEF708D74
+X-Rspamd-Queue-Id: 875FC708D88
 
-From: Johan Hovold <johan@kernel.org>
+From: Chris Mason <clm@meta.com>
 
-[ Upstream commit ba14d7cf2fe7284610a29854bdff22b2537d3ce6 ]
+[ Upstream commit 30d55c8aabb261bc3f427d6b9aae7ef6206063f9 ]
 
-Adapters can be looked up based on their id using i2c_get_adapter()
-which takes a reference to the embedded struct device.
+nfs4_alloc_stid() publishes the new stid into cl->cl_stateids via
+idr_alloc_cyclic() under cl_lock before returning to
+nfsd4_alloc_layout_stateid(). When nfsd4_layout_setlease() then
+fails, the error path frees the layout stateid directly with
+kmem_cache_free() without ever calling idr_remove(), leaving the
+IDR slot pointing at freed slab memory. Any subsequent IDR walker
+(states_show, client teardown) dereferences the dangling pointer.
 
-Make sure that the adapter (including its struct device) has been
-initialised before adding it to the IDR to avoid accessing uninitialised
-data which could, for example, lead to NULL-pointer dereferences or
-use-after-free.
+The correct teardown for an IDR-published stid is nfs4_put_stid(),
+which removes the IDR slot under cl_lock, dispatches sc_free
+(nfsd4_free_layout_stateid) to release ls->ls_file via
+nfsd4_close_layout(), and drops the nfs4_file reference in its
+tail.
 
-Note that the i2c-dev chardev, which is registered from a bus notifier,
-currently uses i2c_get_adapter() so the adapter needs to be added to the
-IDR before registration.
+A second issue blocks that switch: nfsd4_free_layout_stateid()
+unconditionally inspects ls->ls_fence_work via
+delayed_work_pending() under ls_lock, but
+INIT_DELAYED_WORK(&ls->ls_fence_work, ...) currently runs only
+after the setlease call. On the setlease-failure path the
+destructor would touch an uninitialized delayed_work.
 
-Fixes: 6e13e6418418 ("i2c: Add i2c_add_numbered_adapter()")
-Cc: stable@vger.kernel.org	# 2.6.22
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
+    nfsd4_alloc_layout_stateid()
+      nfs4_alloc_stid()           /* idr_alloc_cyclic under cl_lock */
+      nfsd4_layout_setlease()     /* fails */
+        nfs4_put_stid()
+          nfsd4_free_layout_stateid()
+            delayed_work_pending(&ls->ls_fence_work)  /* needs INIT */
+            nfsd4_close_layout()  /* nfsd_file_put(ls->ls_file) */
+          put_nfs4_file()
+
+Fix by hoisting the ls_fenced / ls_fence_delay / INIT_DELAYED_WORK
+initialization above the nfsd4_layout_setlease() call, and replace
+the manual nfsd_file_put + put_nfs4_file + kmem_cache_free cleanup
+with a single nfs4_put_stid(stp).
+
+Fixes: c5c707f96fc9 ("nfsd: implement pNFS layout recalls")
+Cc: stable@vger.kernel.org
+Assisted-by: kres (claude-opus-4-7)
+Signed-off-by: Chris Mason <clm@meta.com>
+Reviewed-by: Jeff Layton <jlayton@kernel.org>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+[ Context ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/i2c/i2c-core-base.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ fs/nfsd/nfs4layouts.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/drivers/i2c/i2c-core-base.c b/drivers/i2c/i2c-core-base.c
-index f5338a8441a66a..1c8fe902d43dab 100644
---- a/drivers/i2c/i2c-core-base.c
-+++ b/drivers/i2c/i2c-core-base.c
-@@ -1556,6 +1556,10 @@ static int i2c_register_adapter(struct i2c_adapter *adap)
+diff --git a/fs/nfsd/nfs4layouts.c b/fs/nfsd/nfs4layouts.c
+index 683bd1130afe29..62762e43f810b3 100644
+--- a/fs/nfsd/nfs4layouts.c
++++ b/fs/nfsd/nfs4layouts.c
+@@ -256,9 +256,7 @@ nfsd4_alloc_layout_stateid(struct nfsd4_compound_state *cstate,
+ 	BUG_ON(!ls->ls_file);
  
- 	adap->debugfs = debugfs_create_dir(dev_name(&adap->dev), i2c_debugfs_root);
- 
-+	mutex_lock(&core_lock);
-+	idr_replace(&i2c_adapter_idr, adap, adap->nr);
-+	mutex_unlock(&core_lock);
-+
- 	res = device_add(&adap->dev);
- 	if (res) {
- 		pr_err("adapter '%s': can't register device (%d)\n", adap->name, res);
-@@ -1629,7 +1633,7 @@ static int __i2c_add_numbered_adapter(struct i2c_adapter *adap)
- 	int id;
- 
- 	mutex_lock(&core_lock);
--	id = idr_alloc(&i2c_adapter_idr, adap, adap->nr, adap->nr + 1, GFP_KERNEL);
-+	id = idr_alloc(&i2c_adapter_idr, NULL, adap->nr, adap->nr + 1, GFP_KERNEL);
- 	mutex_unlock(&core_lock);
- 	if (WARN(id < 0, "couldn't get idr"))
- 		return id == -ENOSPC ? -EBUSY : id;
-@@ -1665,7 +1669,7 @@ int i2c_add_adapter(struct i2c_adapter *adapter)
+ 	if (nfsd4_layout_setlease(ls)) {
+-		nfsd_file_put(ls->ls_file);
+-		put_nfs4_file(fp);
+-		kmem_cache_free(nfs4_layout_stateid_cache, ls);
++		nfs4_put_stid(stp);
+ 		return NULL;
  	}
  
- 	mutex_lock(&core_lock);
--	id = idr_alloc(&i2c_adapter_idr, adapter,
-+	id = idr_alloc(&i2c_adapter_idr, NULL,
- 		       __i2c_first_dynamic_bus_num, 0, GFP_KERNEL);
- 	mutex_unlock(&core_lock);
- 	if (WARN(id < 0, "couldn't get idr"))
 -- 
 2.53.0
 
