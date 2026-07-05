@@ -1,151 +1,148 @@
-Return-Path: <stable+bounces-272021-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-272022-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id r67OOIwOSmqd9wAAu9opvQ
-	(envelope-from <stable+bounces-272021-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 05 Jul 2026 09:58:04 +0200
+	id zqHqJR8RSmoW+AAAu9opvQ
+	(envelope-from <stable+bounces-272022-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 05 Jul 2026 10:09:03 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 353D770946D
-	for <lists+stable@lfdr.de>; Sun, 05 Jul 2026 09:58:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E33F97095B8
+	for <lists+stable@lfdr.de>; Sun, 05 Jul 2026 10:09:02 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=none;
-	dmarc=none;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-272021-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-272021-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=arm.com header.s=foss header.b=FqQCx48U;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-272022-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-272022-lists+stable=lfdr.de@vger.kernel.org";
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 34D3C30057A2
-	for <lists+stable@lfdr.de>; Sun,  5 Jul 2026 07:57:58 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B16DD3005761
+	for <lists+stable@lfdr.de>; Sun,  5 Jul 2026 08:08:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E5C20364EAA;
-	Sun,  5 Jul 2026 07:57:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 13AC836492C;
+	Sun,  5 Jul 2026 08:08:59 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38A7E35E1A5;
-	Sun,  5 Jul 2026 07:57:53 +0000 (UTC)
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A34A433E89;
+	Sun,  5 Jul 2026 08:08:56 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783238276; cv=none; b=OLeENynl9QIytSfBGX9Cr1hjhGT1axuGiNj8HxVamSqBfPgDILGI6a/trLH47oQuvH0Ee6sTEuKh9JQUMv6Am5aO8PMbBUCLGVECc7kc2md7y7Lcgppw6E52CjK3JTvwvFhmFY4IAwE3toXge+oFr21hSIEzBQK5Xqo5mTX5ynE=
+	t=1783238938; cv=none; b=Ob4oqKrPiXmaL+bO5PTvpDFwQkXIjOAAQkzGv7MHoDvJjfYqvfQ0lEQMuc+r4Cqi/nOj4FV9bfjakOfVBy1sR5yYkWjARiBY5+BFXld52K0ozSyzmcgFx6hvw8WOmR20iPerYC+/9hqmDSO8mlI1zxnIMS21KzSOIXMR7mijcvg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783238276; c=relaxed/simple;
-	bh=tFeesKG8XuVOwny1VBR+fnpr3ScvxX6H341Mpa6xfws=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=n6FycsAE+bulippgwUyIPiZ8Aq8CnqAosLjxcQ0DuSnE3frm0cb1JDqq32JcV3YpirCc8Rsohw9xlqqjeZkUrX1xiJUmRZAJP+O44iRfDMP0INz2jTDBGqf6ZRiEeOq+GArcpTIZFfND6QxsafnY7TM29CrLLHwfE0KuY4vFBfw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn; spf=pass smtp.mailfrom=kylinos.cn; arc=none smtp.client-ip=124.126.103.232
-X-UUID: 3353b854784711f1aa26b74ffac11d73-20260705
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.3.12,REQID:a6fc6c02-e40b-4e53-b58f-7af923fdfb6f,IP:0,U
-	RL:0,TC:0,Content:-5,EDM:-25,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTI
-	ON:release,TS:-30
-X-CID-META: VersionHash:e7bac3a,CLOUDID:c97a6a94ed67e26f58b4136fe0846417,BulkI
-	D:nil,BulkQuantity:0,Recheck:0,SF:102|850|865|898,TC:nil,Content:0|15|50,E
-	DM:2,IP:nil,URL:0,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:
-	0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
-X-CID-BVR: 2,SSN|SDN
-X-CID-BAS: 2,SSN|SDN,0,_
-X-CID-FACTOR: TF_CID_SPAM_SNR
-X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
-X-UUID: 3353b854784711f1aa26b74ffac11d73-20260705
-X-User: zenghongling@kylinos.cn
-Received: from localhost.localdomain [(10.44.16.150)] by mailgw.kylinos.cn
-	(envelope-from <zenghongling@kylinos.cn>)
-	(Generic MTA with TLSv1.3 TLS_AES_256_GCM_SHA384 256/256)
-	with ESMTP id 1267926036; Sun, 05 Jul 2026 15:57:42 +0800
-From: Hongling Zeng <zenghongling@kylinos.cn>
-To: vkoul@kernel.org,
-	Frank.Li@kernel.org,
-	wens@kernel.org,
-	jernej.skrabec@gmail.com,
-	samuel@sholland.org
-Cc: dmaengine@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-sunxi@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	zhongling0719@126.com,
-	Hongling Zeng <zenghongling@kylinos.cn>,
-	stable@vger.kernel.org
-Subject: [PATCH] dmaengine: sun6i: Fix potential deadlock in sun6i_dma_terminate_all()
-Date: Sun,  5 Jul 2026 15:57:38 +0800
-Message-Id: <20260705075738.10639-1-zenghongling@kylinos.cn>
-X-Mailer: git-send-email 2.25.1
+	s=arc-20240116; t=1783238938; c=relaxed/simple;
+	bh=cIrRmXjneRyxZCYVtjOisOC7Q6AqKSJ27U6Pgn9w7QE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=MiKitv8sqLbLZ+GFa1L11vvkqBETmI7uBFNq9I8yZG3WHzFLzpG12iKBJITcGRNBeirYolfgaRhlhbaaa0DaYMNpap+utRDWdx5xpnpm2LCjDQoAKNqoW8AC1gzunSak5PTl73qbWBO0g+u4l0EsXYrjDeM0nzJ9LJaG/WSka1U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=FqQCx48U; arc=none smtp.client-ip=217.140.110.172
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id DA63B1D70;
+	Sun,  5 Jul 2026 01:08:50 -0700 (PDT)
+Received: from [10.57.73.18] (unknown [10.57.73.18])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id BC3F53F905;
+	Sun,  5 Jul 2026 01:08:44 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1783238935; bh=cIrRmXjneRyxZCYVtjOisOC7Q6AqKSJ27U6Pgn9w7QE=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=FqQCx48UJNUfeHogU9/y9HwEqlbbhAQ6HAGisLpAoZ06/5JM87N/K8zIXSOkQS9Lo
+	 tzFVemZDjh6FMqDs/3oBIzs/gxTzjo2BY91OzyLW22GOwYSGCjWr8ywmF0OCMoI9D1
+	 02im7RrlbLfHvqkoRtrjjP2YXspf26q5PHLafXU8=
+Message-ID: <8fdbe0d6-87fd-441c-b6d2-baac380f6fb3@arm.com>
+Date: Sun, 5 Jul 2026 13:38:41 +0530
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 1/6] arm64: make huge_ptep_get handled unaligned
+ addresses
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: muchun.song@linux.dev, osalvador@suse.de, ljs@kernel.org,
+ david@kernel.org, liam@infradead.org, riel@surriel.com, vbabka@kernel.org,
+ harry@kernel.org, jannh@google.com, lance.yang@linux.dev, kas@kernel.org,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org, apopple@nvidia.com,
+ rcampbell@nvidia.com, ziy@nvidia.com, matthew.brost@intel.com,
+ joshua.hahnjy@gmail.com, rakie.kim@sk.com, byungchul@sk.com,
+ gourry@gourry.net, ying.huang@linux.alibaba.com, ak@linux.intel.com,
+ nao.horiguchi@gmail.com, mel@csn.ul.ie, j-nomura@ce.jp.nec.com,
+ pfalcato@suse.de, tglx@kernel.org, dave.hansen@intel.com,
+ jpoimboe@kernel.org, catalin.marinas@arm.com, will@kernel.org,
+ linux-arm-kernel@lists.infradead.org, ryan.roberts@arm.com,
+ anshuman.khandual@arm.com, stable@vger.kernel.org
+References: <20260703114202.365553-1-dev.jain@arm.com>
+ <20260703114202.365553-2-dev.jain@arm.com>
+ <20260705003559.8b124d2b94b685cc2e4e77ae@linux-foundation.org>
+Content-Language: en-US
+From: Dev Jain <dev.jain@arm.com>
+In-Reply-To: <20260705003559.8b124d2b94b685cc2e4e77ae@linux-foundation.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [1.54 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
-	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[arm.com,none];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[arm.com:s=foss];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_RECIPIENTS(0.00)[m:vkoul@kernel.org,m:Frank.Li@kernel.org,m:wens@kernel.org,m:jernej.skrabec@gmail.com,m:samuel@sholland.org,m:dmaengine@vger.kernel.org,m:linux-arm-kernel@lists.infradead.org,m:linux-sunxi@lists.linux.dev,m:linux-kernel@vger.kernel.org,m:zhongling0719@126.com,m:zenghongling@kylinos.cn,m:stable@vger.kernel.org,m:jernejskrabec@gmail.com,s:lists@lfdr.de];
-	RCPT_COUNT_TWELVE(0.00)[12];
-	DMARC_NA(0.00)[kylinos.cn];
-	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER(0.00)[zenghongling@kylinos.cn,stable@vger.kernel.org];
 	FORWARDED(0.00)[lists@lfdr.de];
-	FREEMAIL_TO(0.00)[kernel.org,gmail.com,sholland.org];
-	TAGGED_FROM(0.00)[bounces-272021-lists,stable=lfdr.de];
+	RCPT_COUNT_TWELVE(0.00)[37];
+	TAGGED_FROM(0.00)[bounces-272022-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:akpm@linux-foundation.org,m:muchun.song@linux.dev,m:osalvador@suse.de,m:ljs@kernel.org,m:david@kernel.org,m:liam@infradead.org,m:riel@surriel.com,m:vbabka@kernel.org,m:harry@kernel.org,m:jannh@google.com,m:lance.yang@linux.dev,m:kas@kernel.org,m:linux-mm@kvack.org,m:linux-kernel@vger.kernel.org,m:apopple@nvidia.com,m:rcampbell@nvidia.com,m:ziy@nvidia.com,m:matthew.brost@intel.com,m:joshua.hahnjy@gmail.com,m:rakie.kim@sk.com,m:byungchul@sk.com,m:gourry@gourry.net,m:ying.huang@linux.alibaba.com,m:ak@linux.intel.com,m:nao.horiguchi@gmail.com,m:mel@csn.ul.ie,m:j-nomura@ce.jp.nec.com,m:pfalcato@suse.de,m:tglx@kernel.org,m:dave.hansen@intel.com,m:jpoimboe@kernel.org,m:catalin.marinas@arm.com,m:will@kernel.org,m:linux-arm-kernel@lists.infradead.org,m:ryan.roberts@arm.com,m:anshuman.khandual@arm.com,m:stable@vger.kernel.org,m:joshuahahnjy@gmail.com,m:naohoriguchi@gmail.com,s:lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[zenghongling@kylinos.cn,stable@vger.kernel.org];
+	FORGED_SENDER(0.00)[dev.jain@arm.com,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[linux.dev,suse.de,kernel.org,infradead.org,surriel.com,google.com,kvack.org,vger.kernel.org,nvidia.com,intel.com,gmail.com,sk.com,gourry.net,linux.alibaba.com,linux.intel.com,csn.ul.ie,ce.jp.nec.com,arm.com,lists.infradead.org];
 	FROM_HAS_DN(0.00)[];
-	FREEMAIL_CC(0.00)[vger.kernel.org,lists.infradead.org,lists.linux.dev,126.com,kylinos.cn];
-	ALIAS_RESOLVED(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	R_DKIM_NA(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,vger.kernel.org:from_smtp,kylinos.cn:from_mime,kylinos.cn:email,kylinos.cn:mid]
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[dev.jain@arm.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[arm.com:+];
+	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	TO_DN_SOME(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,vger.kernel.org:from_smtp,arm.com:from_mime,arm.com:email,arm.com:mid,arm.com:dkim]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 353D770946D
+X-Rspamd-Queue-Id: E33F97095B8
 
-sun6i_dma_terminate_all() acquires sdev->lock with plain spin_lock()
-from process context. Since interrupts remain enabled, a DMA interrupt
-can fire on the same CPU while the lock is held. The interrupt handler
-schedules sun6i_dma_tasklet(), which attempts to acquire the same lock
-with spin_lock_irq(), causing a deadlock.
 
-Fix by using spin_lock_irq() to disable interrupts while holding
-sdev->lock, consistent with other call sites.
 
-Fixes: ba489fd46ab6 ("dmaengine: sun6i: Add support for Allwinner A31 DMA controller")
-Cc: stable@vger.kernel.org
-Signed-off-by: Hongling Zeng <zenghongling@kylinos.cn>
----
- drivers/dma/sun6i-dma.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+On 05/07/26 1:05 pm, Andrew Morton wrote:
+> On Fri,  3 Jul 2026 11:41:54 +0000 Dev Jain <dev.jain@arm.com> wrote:
+> 
+>> huge_ptep_get() can be handed a virtual address pointing to the middle of
+>> a contpmd/contpte mapped hugetlb folio (examples of callers are
+>> pagemap_hugetlb_range, page_mapped_in_vma).
+>>
+>> The arm64 helper rewalks the pgtables in find_num_contig to answer whether
+>> the huge pte we have maps a contpmd or a contpte hugetlb folio, and
+>> returns CONT_PMDS or CONT_PTES, so that it can collect a/d bits over the
+>> contiguous ptes. We can falsely return CONT_PTES instead of CONT_PMDS
+>> if the addr is not aligned.
+>>
+>> Fix this by aligning the pmdp pointer down to a contpmd base before
+>> checking equality with the passed huge pte pointer, to correctly answer
+>> whether the huge pte is the base of a contpmd block.
+>>
+>> Fixes: 29cb80519689 ("arm64: hugetlb: Cleanup huge_pte size discovery mechanisms")
+>> Cc: stable@vger.kernel.org
+> 
+> Please describe the userspace-visible effects of bugs when fixing them.
+> Particularly when cc:stable is proposed.  Thanks.
 
-diff --git a/drivers/dma/sun6i-dma.c b/drivers/dma/sun6i-dma.c
-index a9a254dbf8cb..840f7276ad5d 100644
---- a/drivers/dma/sun6i-dma.c
-+++ b/drivers/dma/sun6i-dma.c
-@@ -939,9 +939,9 @@ static int sun6i_dma_terminate_all(struct dma_chan *chan)
- 	unsigned long flags;
- 	LIST_HEAD(head);
- 
--	spin_lock(&sdev->lock);
-+	spin_lock_irq(&sdev->lock);
- 	list_del_init(&vchan->node);
--	spin_unlock(&sdev->lock);
-+	spin_unlock_irq(&sdev->lock);
- 
- 	spin_lock_irqsave(&vchan->vc.lock, flags);
- 
--- 
-2.25.1
+Forgot for this one. It should be, on systems where CONT_PTES != CONT_PMDS
+(meaning page size is 16K) we could collect excess a/d bit state, meaning
+extra work for the kernel.
+
+
+> 
 
 
