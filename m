@@ -1,206 +1,165 @@
-Return-Path: <stable+bounces-272092-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-272093-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id Y8ckJjqrSmo4FwEAu9opvQ
-	(envelope-from <stable+bounces-272092-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 05 Jul 2026 21:06:34 +0200
+	id nr4jF0qrSmo8FwEAu9opvQ
+	(envelope-from <stable+bounces-272093-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 05 Jul 2026 21:06:50 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7778B70AD8C
-	for <lists+stable@lfdr.de>; Sun, 05 Jul 2026 21:06:33 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B3A0670AD94
+	for <lists+stable@lfdr.de>; Sun, 05 Jul 2026 21:06:49 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=YBbn8xqt;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=msJfIHx5;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-272092-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-272092-lists+stable=lfdr.de@vger.kernel.org";
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-272093-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-272093-lists+stable=lfdr.de@vger.kernel.org";
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 8F546300693B
+	by sea.lore.kernel.org (Postfix) with ESMTP id 51C09300D957
 	for <lists+stable@lfdr.de>; Sun,  5 Jul 2026 19:06:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68A1A2F8EB7;
-	Sun,  5 Jul 2026 19:06:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19DAC2FE074;
+	Sun,  5 Jul 2026 19:06:30 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1554E288BA
-	for <stable@vger.kernel.org>; Sun,  5 Jul 2026 19:06:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C91B726B973
+	for <stable@vger.kernel.org>; Sun,  5 Jul 2026 19:06:28 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783278389; cv=none; b=o85oWBnJfUgoZ3Bs2b00lxBf9nA2wTUb/jfp3rN/7h6gie5s2mNbt3f0x7dgX7EOa8HL4HmZ72UVk8I97z5UKangx/+f82Km+rl/uEXYR0MHSSduJtj1x5RmPDaLulKJm6k+emb60RmAys0Fhitt7PqzCHQi9tTXSRlkTBtmfGQ=
+	t=1783278389; cv=none; b=p0/bvChV2+4YLyqDw+S/vVRhgPGcOvCe/DCtGI5LpeYDMTWea0TE5wM6i73ei5VVeo5NqXjJZ1h76PFtU2VYTqFS/msgylj4OkJOhW0XF9l63dEIC1Q+FBmoXabndqOljgrkRTZLeIb9A9Jcqaf2YZ9nnmmKU8TqYJJKae0O2c0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1783278389; c=relaxed/simple;
-	bh=Is3gHQ8wB5Fdwd+whRG/wNH/Y15itD6QfGWxpfAK678=;
+	bh=q1eWrAKlLgXnt5gcUHFZV5Q3jI9PPPPpL+kNVn7q6BU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ovtflbsfcw2/JrTLTY+WFQfUPSkezPtyJISiMDR4WozTJWOIr2lLtu/+vyzImKffwiohzJIjNcUkoUB6TjxXDZiUnZ1tlPdh+PgKEEA/+9FxwC1zItc0fXv4W0D04oWaQiJQ3I8Zr5ZHDwt/JAuo82xfNClQfS0lnVHv4UBrolU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YBbn8xqt; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 288811F000E9;
+	 MIME-Version:Content-Type; b=nyCvdZNcjIGtVKcYcPIZj9E031zITpkdpSrIgJtjXM/ZGzbbZ0SF1OWoHzujY40VOuXglGYzyHQK7P+FHlxpeyX+ggC85Vom92r3qAu8YPCN+uLp3XPe6Kkfsx6/goaiKBQT11lu2dvwOPHV8e2wPED3sU9T/1sW8l6y+0LS5+s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=msJfIHx5; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 102671F00A3D;
 	Sun,  5 Jul 2026 19:06:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783278387;
-	bh=iuzbndYfj9+WAXq8Bvp5oDtG8J9dzN8LQYzvs4i+xOU=;
+	s=k20260515; t=1783278388;
+	bh=K+eFNahH1jA5MchRUt2RShHN9MY5DdxlIMvXe1LhqHg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=YBbn8xqtjgmTScO8DNjDJNTJdRTaU3a2yK19CzhfmpowNzO0RYZZ6TIcTGhwtRwR1
-	 q5XAN1D0/FkWoEjDL4CVBYv1VcdfNDcw95T9Prpt1MpI0WtEFowlLPfJHYFK5gfSpW
-	 t9zv65EdKsSW7vHzqdG9lGRtR/vNmjzxLh5eOeCYBOVUir+fuDy2pn09Zwigs82JJQ
-	 Zq0S5YCkCprvAZ6vnd6eF10fa3M0Jv+6Dl85mjN8/vpB4c+bd2mYPbbgQc0e/hXglw
-	 0JA8sVPd/xIR5zkqk+z0kveH0+Baf6AuKHJhU9/AXp2vUrr2eG0pPUq6Ws7YhuuEsq
-	 3bBttSOGvjxZw==
+	b=msJfIHx5cyCW2k/gvI28rGRN9P7M3gD6qoLHrIdpa9zL6VcyKDRrHKqX7Ovh2T5qp
+	 SU0dy9t6v0lBhaAzMxQHC4AXP0wbTWFhDYyP8jPZ9tOPEeHG3LCA48dJkiTrmhtAGw
+	 AEI4j9Yz7rWuobNnNDgQyMu3tTLb92Qs7QspqYIjt9c93nCro3wC6AusHjoTC1srnF
+	 OJZ646bhI2fzHe4x5yj5qeEUefMXHQaHbSiUR8ut9JTsqn/s5hDCMZ/KGwgT5/qKcF
+	 5cSSNWLi+9jyGyqTVAY8ziann7lNnH566OKCfW2PAdRivba8+d6U3FyK2WKpDQWmwo
+	 2WUUZXceHT1Hw==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Trond Myklebust <trond.myklebust@hammerspace.com>,
-	Jeff Layton <jlayton@kernel.org>,
+Cc: Jeff Layton <jlayton@kernel.org>,
+	Chris Mason <clm@meta.com>,
 	Chuck Lever <chuck.lever@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1.y 1/2] nfsd: Don't reset the write verifier on a commit EAGAIN
-Date: Sun,  5 Jul 2026 15:06:24 -0400
-Message-ID: <20260705190625.1988013-1-sashal@kernel.org>
+Subject: [PATCH 6.1.y 2/2] nfsd: reset write verifier on deferred writeback errors
+Date: Sun,  5 Jul 2026 15:06:25 -0400
+Message-ID: <20260705190625.1988013-2-sashal@kernel.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <2026070204-congress-elope-c3c1@gregkh>
+In-Reply-To: <20260705190625.1988013-1-sashal@kernel.org>
 References: <2026070204-congress-elope-c3c1@gregkh>
+ <20260705190625.1988013-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-3.66 / 15.00];
+X-Spamd-Result: default: False [-4.16 / 15.00];
 	WHITELIST_SPF_DKIM(-3.00)[kernel.org:d:+,kernel.org:s:+];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:jlayton@kernel.org,m:clm@meta.com,m:chuck.lever@oracle.com,m:sashal@kernel.org,s:lists@lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-272092-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:trond.myklebust@hammerspace.com,m:jlayton@kernel.org,m:chuck.lever@oracle.com,m:sashal@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_SENDER(0.00)[sashal@kernel.org,stable@vger.kernel.org];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	FORGED_SENDER(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	FORWARDED(0.00)[lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-272093-lists,stable=lfdr.de];
 	DKIM_TRACE(0.00)[kernel.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	RCPT_COUNT_FIVE(0.00)[5];
 	ALIAS_RESOLVED(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,hammerspace.com:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 7778B70AD8C
+X-Rspamd-Queue-Id: B3A0670AD94
 
-From: Trond Myklebust <trond.myklebust@hammerspace.com>
+From: Jeff Layton <jlayton@kernel.org>
 
-[ Upstream commit 1b2021bdeeca12364ad0fa7aac9ddba5cae964f3 ]
+[ Upstream commit 2090b05803faab8a9fa62fbff871007862cac1b7 ]
 
-If fsync() is returning EAGAIN, then we can assume that the filesystem
-being exported is something like NFS with the 'softerr' mount option
-enabled, and that it is just asking us to replay the fsync() operation
-at a later date.
+nfsd_vfs_write() and nfsd_commit() both call filemap_check_wb_err() to
+detect deferred writeback errors, but neither rotates the server's write
+verifier (nn->writeverf) when this check fails. Every other
+durable-storage-failure path in these functions calls
+commit_reset_write_verifier() before returning an error.
 
-If we see an ESTALE, then ditto: the file is gone, so there is no danger
-of losing the error.
+The missing rotation means clients holding UNSTABLE write data under the
+current verifier will COMMIT, receive the unchanged verifier back, and
+conclude their data is durable — silently dropping data that failed
+writeback. This violates the UNSTABLE+COMMIT durability contract
+(RFC 1813 §3.3.7, RFC 8881 §18.32).
 
-For those cases, do not reset the write verifier. A write verifier
-change has a global effect, causing retransmission by all clients of
-all uncommitted unstable writes for all files, so it is worth
-mitigating where possible.
+Add commit_reset_write_verifier() calls at both filemap_check_wb_err()
+error sites, matching the pattern used by adjacent error paths in the
+same functions. The helper already filters -EAGAIN and -ESTALE
+internally, so the calls are unconditionally safe.
 
-Link: https://lore.kernel.org/linux-nfs/20230911184357.11739-1-trond.myklebust@hammerspace.com/
-Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
+Reported-by: Chris Mason <clm@meta.com>
+Fixes: 555dbf1a9aac ("nfsd: Replace use of rwsem with errseq_t")
+Cc: stable@vger.kernel.org
+Assisted-by: kres:claude-opus-4-6
+Signed-off-by: Jeff Layton <jlayton@kernel.org>
 Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
-Stable-dep-of: 2090b05803fa ("nfsd: reset write verifier on deferred writeback errors")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfsd/vfs.c | 33 +++++++++++++++++++++++----------
- 1 file changed, 23 insertions(+), 10 deletions(-)
+ fs/nfsd/vfs.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
 diff --git a/fs/nfsd/vfs.c b/fs/nfsd/vfs.c
-index 87a596fc6654dd..11eebaf49c24a4 100644
+index 11eebaf49c24a4..ed5c9d075cca4f 100644
 --- a/fs/nfsd/vfs.c
 +++ b/fs/nfsd/vfs.c
-@@ -334,6 +334,24 @@ nfsd_lookup(struct svc_rqst *rqstp, struct svc_fh *fhp, const char *name,
- 	return err;
- }
- 
-+static void
-+commit_reset_write_verifier(struct nfsd_net *nn, struct svc_rqst *rqstp,
-+			    int err)
-+{
-+	switch (err) {
-+	case -EAGAIN:
-+	case -ESTALE:
-+		/*
-+		 * Neither of these are the result of a problem with
-+		 * durable storage, so avoid a write verifier reset.
-+		 */
-+		break;
-+	default:
-+		nfsd_reset_write_verifier(nn);
-+		trace_nfsd_writeverf_reset(nn, rqstp, err);
-+	}
-+}
-+
- /*
-  * Commit metadata changes to stable storage.
-  */
-@@ -646,8 +664,7 @@ __be32 nfsd4_clone_file_range(struct svc_rqst *rqstp,
- 					&nfsd4_get_cstate(rqstp)->current_fh,
- 					dst_pos,
- 					count, status);
--			nfsd_reset_write_verifier(nn);
--			trace_nfsd_writeverf_reset(nn, rqstp, status);
-+			commit_reset_write_verifier(nn, rqstp, status);
- 			ret = nfserrno(status);
- 		}
- 	}
-@@ -1126,8 +1143,7 @@ nfsd_vfs_write(struct svc_rqst *rqstp, struct svc_fh *fhp, struct nfsd_file *nf,
- 	host_err = vfs_iter_write(file, &iter, &pos, flags);
- 	file_end_write(file);
- 	if (host_err < 0) {
--		nfsd_reset_write_verifier(nn);
--		trace_nfsd_writeverf_reset(nn, rqstp, host_err);
+@@ -1150,8 +1150,10 @@ nfsd_vfs_write(struct svc_rqst *rqstp, struct svc_fh *fhp, struct nfsd_file *nf,
+ 	nfsd_stats_io_write_add(nn, exp, *cnt);
+ 	fsnotify_modify(file);
+ 	host_err = filemap_check_wb_err(file->f_mapping, since);
+-	if (host_err < 0)
++	if (host_err < 0) {
 +		commit_reset_write_verifier(nn, rqstp, host_err);
  		goto out_nfserr;
- 	}
- 	*cnt = host_err;
-@@ -1139,10 +1155,8 @@ nfsd_vfs_write(struct svc_rqst *rqstp, struct svc_fh *fhp, struct nfsd_file *nf,
++	}
  
  	if (stable && use_wgather) {
  		host_err = wait_for_concurrent_writes(file);
--		if (host_err < 0) {
--			nfsd_reset_write_verifier(nn);
--			trace_nfsd_writeverf_reset(nn, rqstp, host_err);
--		}
-+		if (host_err < 0)
-+			commit_reset_write_verifier(nn, rqstp, host_err);
- 	}
- 
- out_nfserr:
-@@ -1277,8 +1291,7 @@ nfsd_commit(struct svc_rqst *rqstp, struct svc_fh *fhp, struct nfsd_file *nf,
- 			err = nfserr_notsupp;
- 			break;
- 		default:
--			nfsd_reset_write_verifier(nn);
--			trace_nfsd_writeverf_reset(nn, rqstp, err2);
-+			commit_reset_write_verifier(nn, rqstp, err2);
+@@ -1285,6 +1287,8 @@ nfsd_commit(struct svc_rqst *rqstp, struct svc_fh *fhp, struct nfsd_file *nf,
+ 			nfsd_copy_write_verifier(verf, nn);
+ 			err2 = filemap_check_wb_err(nf->nf_file->f_mapping,
+ 						    since);
++			if (err2 < 0)
++				commit_reset_write_verifier(nn, rqstp, err2);
  			err = nfserrno(err2);
- 		}
- 	} else
+ 			break;
+ 		case -EINVAL:
 -- 
 2.53.0
 
