@@ -1,150 +1,138 @@
-Return-Path: <stable+bounces-272013-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-272014-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 9CQxJZb/SWqd9QAAu9opvQ
-	(envelope-from <stable+bounces-272013-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 05 Jul 2026 08:54:14 +0200
+	id yisoI20DSmo69gAAu9opvQ
+	(envelope-from <stable+bounces-272014-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 05 Jul 2026 09:10:37 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id E2FD27092E5
-	for <lists+stable@lfdr.de>; Sun, 05 Jul 2026 08:54:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AADDB709321
+	for <lists+stable@lfdr.de>; Sun, 05 Jul 2026 09:10:36 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=intel.com header.s=Intel header.b=aawh5O+3;
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-272013-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-272013-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=SzW+ry2e;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-272014-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-272014-lists+stable=lfdr.de@vger.kernel.org";
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 28539300F101
-	for <lists+stable@lfdr.de>; Sun,  5 Jul 2026 06:54:08 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E3493300D45A
+	for <lists+stable@lfdr.de>; Sun,  5 Jul 2026 07:10:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60866303C97;
-	Sun,  5 Jul 2026 06:54:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 827D635676B;
+	Sun,  5 Jul 2026 07:10:28 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84C6379CD;
-	Sun,  5 Jul 2026 06:54:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 528FD18BBAE;
+	Sun,  5 Jul 2026 07:10:27 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783234445; cv=none; b=peTz6HhLBMyfZmGUst2jWZsapKgFcd70Od6NDaGiwntIzWY/2Lhvvxp0Q+BvA454iKhBZLRJ2XKYTFt8U8gnK1/ftaPYxMiBLj7njY5yrQzn4z5UDPMeMzvsWv/DNKpmHzAz7QtcWAajKQmd2Ips3obfCpNBPgQoozZJNBYIh+k=
+	t=1783235428; cv=none; b=tNG4TDkN2ax7nuR5j97e4YUV9pzeb7fi0/GJNKWIsqYIfgi0ATTvTswPm3KoCA3+YTC8k2Q70HQ5tSHdbeV0Rg8bs1ySaTIMbgpUB+8m6Lz6vaMMvu+Swiqc5+XU2w+oET1KJhiBsJvi5NvY0YAB0D9Ji5uMS+3pvS0vHeRndek=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783234445; c=relaxed/simple;
-	bh=1K/oCZuBo1hej93gsuY/Nv6rhP03Rw0nTmUgc/UD1P0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=GoEGqEWQnFA7xJ1Ony7MtVCp2aYQ7TjZB1K9/haQNEC9eDMPGuPyLDBqdnB16OpdIzoJi1DLHKFGvBUbPexIXKpOf6a5A5jeh3FjvYxOonzTWBdy+E9wPzTUvrWjEDZdXkHdUL5MpQCwUv6DPpM1nxU2Vo4HVICL3o+lTatW5co=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=aawh5O+3; arc=none smtp.client-ip=192.198.163.14
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1783234444; x=1814770444;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=1K/oCZuBo1hej93gsuY/Nv6rhP03Rw0nTmUgc/UD1P0=;
-  b=aawh5O+3BwvEB0scPfZOT3MqMrDQdeD8mhjEWvgu4rKVCOnfFKzmjDsA
-   ZRZMZNbJCZxiFyRLVBm2bf5ORWmZWQUdpkTrN2t74STJXp1DbqEzwhze3
-   ujE8s2X8w2Cl/GPPRPCxvtEJqOr8zYl28FcdSOXtsYLZ053lS03iSxAp3
-   tzvRZlM5iDGqY49Az/yXmG+gKwI2P/kRJhY2v3uI0DL1Objrl4ZsLN//M
-   9TJjkpci5G0c4/eEPgcJ+7astMhq5V+wWUnjDJszn+fJg38IWBSwdHF48
-   QazE3Hr+MQaT6Wh/21gumUSWyHHmbtg9o7/n90WCTW7W5hE3BT1It/tJ0
-   A==;
-X-CSE-ConnectionGUID: /N+LxnvBSQSdPRw8vgZKEQ==
-X-CSE-MsgGUID: kWJkL1a4QPCJzhoTx3YJsg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11837"; a="83950814"
-X-IronPort-AV: E=Sophos;i="6.25,149,1779174000"; 
-   d="scan'208";a="83950814"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
-  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Jul 2026 23:54:03 -0700
-X-CSE-ConnectionGUID: q3kzJ0KDQSunDCzK/dXPRQ==
-X-CSE-MsgGUID: aml1RhBoTS+Wqpj+3KZf0g==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,148,1779174000"; 
-   d="scan'208";a="252959887"
-Received: from klitkey1-mobl1.ger.corp.intel.com (HELO localhost) ([10.245.244.6])
-  by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Jul 2026 23:54:00 -0700
-Date: Sun, 5 Jul 2026 09:53:58 +0300
-From: Andy Shevchenko <andriy.shevchenko@intel.com>
-To: Melbin K Mathew <mlbnkm1@gmail.com>
-Cc: Jonathan Cameron <jic23@kernel.org>, linux-iio@vger.kernel.org,
-	linux-kernel@vger.kernel.org, David Lechner <dlechner@baylibre.com>,
-	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
-	Andy Shevchenko <andy@kernel.org>, stable@vger.kernel.org
-Subject: Re: [PATCH] iio: accel: bmc150: free irq before teardown
-Message-ID: <akn_hlxkSDRG389t@ashevche-desk.local>
-References: <20260705042731.388592-1-mlbnkm1@gmail.com>
+	s=arc-20240116; t=1783235428; c=relaxed/simple;
+	bh=lUzCzUI4dD1yXFU4jZ83WN0tPnOkGUz2pjoRIq8EFrk=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=dHiFNOE+1IemZOthUvy/IU/tX9XeXZW8V4Ouj4lm/SyDBjTLhYFSUcHLxgDXb0IZ9RJvlE1JduxaB7F91efkpoZG4NfvsKfMHG72VPbRDYkC21K8BBjwYt3fsnxI2mjpWjeI/0ufmyza0gWojqf3Z2MnRI+l1T13Zxu6cKI02Ww=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SzW+ry2e; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CCFB01F000E9;
+	Sun,  5 Jul 2026 07:10:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1783235426;
+	bh=yLqt6XvlOd9pDIhAXizheEtnZmuRGlHag0r5a930MTM=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc;
+	b=SzW+ry2ePCYbOP2bavxU6ErlOYWH6qqf4Yr5oizEVjoE1xayupy4EU5rOQRh+vFa9
+	 cVt+dHgzOn4H5nJi/4FM3NmlXqqzfD0cg5n/IPidvM9i2XH2szNGIdHExLNHFz8FtN
+	 N4CzE2BEIVGZmrJFcDkPP92+2OiPXsDdQYiPCS1t3g+IWHZITMWAS1w478kaGxceKp
+	 sNOWGF24AmOHER0HXLjQdaF04Si69zPfo+ebsDA5LHBLNBFK/uvU38DDZoNktuMiZj
+	 e4pEQxC2pUhfgEY5HgMFGVc7b7dsPK4he8rr0pIl39X+VnOK4xacYVLvMGIW7e82ze
+	 q6iiOWi54iQGQ==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 56894393A94F;
+	Sun,  5 Jul 2026 07:10:09 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260705042731.388592-1-mlbnkm1@gmail.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
- krs, Bertel Jungin Aukio 5, 02600 Espoo
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net] llc: fix SAP refcount leak in llc_ui_autobind()
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <178323540814.3748336.3025291993654697174.git-patchwork-notify@kernel.org>
+Date: Sun, 05 Jul 2026 07:10:08 +0000
+References: <20260630194856.1036497-1-shuangpeng.kernel@gmail.com>
+In-Reply-To: <20260630194856.1036497-1-shuangpeng.kernel@gmail.com>
+To: Shuangpeng Bai <shuangpeng.kernel@gmail.com>
+Cc: netdev@vger.kernel.org, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-5.16 / 15.00];
-	WHITELIST_SPF_DKIM(-3.00)[intel.com:d:+,kernel.org:s:+];
+X-Spamd-Result: default: False [-3.66 / 15.00];
+	WHITELIST_SPF_DKIM(-3.00)[kernel.org:d:+,kernel.org:s:+];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
-	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
 	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:mlbnkm1@gmail.com,m:jic23@kernel.org,m:linux-iio@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:dlechner@baylibre.com,m:nuno.sa@analog.com,m:andy@kernel.org,m:stable@vger.kernel.org,s:lists@lfdr.de];
-	HAS_ORG_HEADER(0.00)[];
+	TAGGED_FROM(0.00)[bounces-272014-lists,stable=lfdr.de,netdevbpf];
+	FROM_NEQ_ENVFROM(0.00)[patchwork-bot@kernel.org,stable@vger.kernel.org];
 	FREEMAIL_TO(0.00)[gmail.com];
-	FORGED_SENDER(0.00)[andriy.shevchenko@intel.com,stable@vger.kernel.org];
-	TAGGED_FROM(0.00)[bounces-272013-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
+	FORGED_SENDER(0.00)[patchwork-bot@kernel.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS(0.00)[m:shuangpeng.kernel@gmail.com,m:netdev@vger.kernel.org,m:davem@davemloft.net,m:edumazet@google.com,m:kuba@kernel.org,m:pabeni@redhat.com,m:horms@kernel.org,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,m:shuangpengkernel@gmail.com,s:lists@lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	MISSING_XM_UA(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[andriy.shevchenko@intel.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[intel.com:+];
-	ALIAS_RESOLVED(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[ashevche-desk.local:mid,intel.com:from_mime,intel.com:email,intel.com:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,vger.kernel.org:from_smtp]
+	FROM_NO_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: E2FD27092E5
+X-Rspamd-Queue-Id: AADDB709321
 
-On Sun, Jul 05, 2026 at 06:27:31AM +0200, Melbin K Mathew wrote:
-> bmc150_accel_core_probe() requests the interrupt with
-> devm_request_threaded_irq().  The managed IRQ is released only after the
-> driver remove callback has returned unless it is freed explicitly.
+Hello:
+
+This patch was applied to netdev/net.git (main)
+by Paolo Abeni <pabeni@redhat.com>:
+
+On Tue, 30 Jun 2026 15:48:56 -0400 you wrote:
+> llc_ui_autobind() opens a SAP after choosing a dynamic LSAP.
+> llc_sap_open() returns a reference owned by the caller, and
+> llc_sap_add_socket() takes a second reference for the socket's
+> membership in the SAP hash tables.
 > 
-> bmc150_accel_core_remove() currently unregisters the IIO device and
-> triggers, cleans up the triggered buffer, suspends the chip and disables
-> the regulators while the IRQ action is still registered.  A late
-> interrupt can therefore run the hard or threaded handler while the IIO
-> trigger state is being torn down or after the device has been put into
-> deep suspend.
+> llc_ui_bind() drops the caller's reference after adding the socket,
+> but llc_ui_autobind() keeps it. When the socket is closed,
+> llc_sap_remove_socket() releases only the socket reference, leaving
+> the SAP on llc_sap_list with sk_count == 0.
 > 
-> Free the IRQ at the start of remove so that no handler is running while
-> the rest of the driver state and hardware resources are dismantled.
+> [...]
 
-In general this is correct fix, but have you checked the rest of remove if it
-has any communication with HW and if that communication relies on IRQ to be on?
+Here is the summary with links:
+  - [net] llc: fix SAP refcount leak in llc_ui_autobind()
+    https://git.kernel.org/netdev/net/c/660667cd4066
 
-(*yes, this is very unlikely, but please double check as rarely we have some HW
- that might need that, and in such a case the fix might be different)
-
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@intel.com>
-
+You are awesome, thank you!
 -- 
-With Best Regards,
-Andy Shevchenko
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 
 
 
