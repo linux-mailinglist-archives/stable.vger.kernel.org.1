@@ -1,72 +1,63 @@
-Return-Path: <stable+bounces-272045-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-272047-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id sHpwFNxUSmrdBQEAu9opvQ
-	(envelope-from <stable+bounces-272045-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 05 Jul 2026 14:58:04 +0200
+	id TuHQJ5lgSmoYCAEAu9opvQ
+	(envelope-from <stable+bounces-272047-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 05 Jul 2026 15:48:09 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id EFFA970A022
-	for <lists+stable@lfdr.de>; Sun, 05 Jul 2026 14:58:03 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 84E9170A254
+	for <lists+stable@lfdr.de>; Sun, 05 Jul 2026 15:48:08 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=mails.tsinghua.edu.cn header.s=dkim header.b=GnA8Mpap;
-	dmarc=pass (policy=quarantine) header.from=mails.tsinghua.edu.cn;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-272045-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-272045-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=M5Mf+uHl;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-272047-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-272047-lists+stable=lfdr.de@vger.kernel.org";
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 4B7B8300B3C2
-	for <lists+stable@lfdr.de>; Sun,  5 Jul 2026 12:57:59 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id A79FC300B2B4
+	for <lists+stable@lfdr.de>; Sun,  5 Jul 2026 13:48:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 02C1237F8A0;
-	Sun,  5 Jul 2026 12:57:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE05334A79D;
+	Sun,  5 Jul 2026 13:48:03 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from zg8tmtyylji0my4xnjqumte4.icoremail.net (zg8tmtyylji0my4xnjqumte4.icoremail.net [162.243.164.118])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4BE5C33F8D9;
-	Sun,  5 Jul 2026 12:57:50 +0000 (UTC)
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1AD69275AEB
+	for <stable@vger.kernel.org>; Sun,  5 Jul 2026 13:48:01 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783256274; cv=none; b=rxQoz1qaruwIwGfUTqFcTQo7Os3W+Q1dWk7mQrDSpY3ziTL3KIFd6jkHaVnYYGEhVbCNZ95Zr91Ko8B9DDuzJG/GQHSsyigAl6ryg6zuE/PA3xWs7Q66jYBEEx07T5LYOAY8HkKJe61JuW5GK8IsUaP7VAcdmIGCYOAaH53Vo7s=
+	t=1783259283; cv=none; b=HIDYruOkY0CqE9ASAqQhPBcvQQ8UQc04dbfXEa6AgWjxX3AxkyWs8qcjeZSwD7OSkDNlVBYUvr2P4lQpqZQZ7OCZQwpQGsknIhqey4pjYLn7V/2beUuZC6vkF/GGsXDmglr9y22Ct6qlbuRHWKb552lQxmzU7pVqzne7yB0eF6g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783256274; c=relaxed/simple;
-	bh=JfeaWhTgfk1VVJFOa8gpsqn7yxCKwJiVtG1OOViNics=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=GTfnvfY6vj48mYni5FVhX44cS4Dv9MZvmxDOlWcT/K0OVq3Ofs8Ck6nuJDkqLYJr4ZlPGFiyfVX9JPLEbc5rYMGSIZ70HAtt3Ycux2rRgHq0A5EPzdQWtCxie+kgtTUwKAIXuvtfHCWwbsU7+QvHfUxpS14wUHHCgSCkMZdvnCY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mails.tsinghua.edu.cn; spf=pass smtp.mailfrom=mails.tsinghua.edu.cn; dkim=pass (1024-bit key) header.d=mails.tsinghua.edu.cn header.i=@mails.tsinghua.edu.cn header.b=GnA8Mpap; arc=none smtp.client-ip=162.243.164.118
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=mails.tsinghua.edu.cn; s=dkim; h=Received:From:To:Cc:Subject:
-	Date:Message-ID:MIME-Version:Content-Transfer-Encoding; bh=g26Y8
-	qEXSEdFe8XAykfZFO9hTc4mjOTVDG3P2EL4Q/U=; b=GnA8MpapEihW+GNu3TKo+
-	vv9RiYOQAfRw7e/EFYGUoEoOhNpSYrGZS8EBzPxg2dvI66t68tPrYZAoKwQzkK/L
-	TK/QP0uNoCRAyOU+CvmB0257gELyfRz/dV3vO/Y32+NOzJJEvjrY3lBsgNHAMf7b
-	Lxrk2kB8LNdRoPPvoTY2Yg=
-Received: from localhost.localdomain (unknown [101.5.13.242])
-	by web4 (Coremail) with SMTP id ywQGZQBXa6CrVEpq2NvBAg--.23888S2;
-	Sun, 05 Jul 2026 20:57:15 +0800 (CST)
-From: Yizhou Zhao <zhaoyz24@mails.tsinghua.edu.cn>
-To: netdev@vger.kernel.org
-Cc: Yizhou Zhao <zhaoyz24@mails.tsinghua.edu.cn>,
-	Simon Horman <horms@verge.net.au>,
-	Julian Anastasov <ja@ssi.bg>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
-	Florian Westphal <fw@strlen.de>,
-	Phil Sutter <phil@nwl.cc>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	lvs-devel@vger.kernel.org,
-	netfilter-devel@vger.kernel.org,
-	coreteam@netfilter.org,
-	linux-kernel@vger.kernel.org,
-	Yuxiang Yang <yangyx22@mails.tsinghua.edu.cn>,
-	Ao Wang <wangao@seu.edu.cn>,
-	Xuewei Feng <fengxw06@126.com>,
-	Qi Li <qli01@tsinghua.edu.cn>,
-	Ke Xu <xuke@tsinghua.edu.cn>,
-	stable@vger.kernel.org
-Subject: [PATCH nf] ipvs: skip IPv6 extension headers in TCP state lookup
-Date: Sun,  5 Jul 2026 20:56:57 +0800
-Message-ID: <20260705125659.37744-1-zhaoyz24@mails.tsinghua.edu.cn>
-X-Mailer: git-send-email 2.46.2
+	s=arc-20240116; t=1783259283; c=relaxed/simple;
+	bh=J4gaM/jFmfhUvbDwYUj4j8MMbr61QcfEyoo9fungOL8=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=r1SPImpkVSOJnYgoc1SjWXY5RTYBv9QseJY5dtPWdSv0zpf1R/nXEGlXcdV/tXWQrQExe7rSld1PL7h3Ift9h1qXFqMyuvx2NNolgHypaFtrtgNMiwWRkMw1q1tMv4vVPG0wLj+e1kws257B85iPbk5GMBvxoP3ys5GJx/FHRo8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=M5Mf+uHl; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E3571F000E9;
+	Sun,  5 Jul 2026 13:48:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1783259281;
+	bh=pMTN4Dr75E4vr0VUwXfxoE0FHtUde5XyC3Ur3ytrtJg=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=M5Mf+uHlK2iGHS9uQcoY/1+Gt7gQ22clC85TgX0FoCOmpPSie6Mo6afcwDwx/SgVw
+	 GxvooLxW27mQgpyfYYhkHo0Tz9v3xwGWasSg8QNBv3qSa0EQKQbYaSiC7xvrDohCK7
+	 uzgHGZL1M3psewGu0glfBeQFTzcbuqmttAoqQRH16qdApeuc5qs8n2DBtKI3NPPqIs
+	 KtJxXP6l2mqzt5Inpq68ydvGMkOZZE4FOgq51q+nuad5VjWz46yBLa1Kqilwr/D90m
+	 VtMIV6WPvOUQq0Ds1AOPG5bbW/XrLNBGub+k3wV+EBLzxw8kVSZLz/SoOeUzNKaetg
+	 S7g9UFdTmE1kA==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: Johan Hovold <johan@kernel.org>,
+	Benjamin Tissoires <bentiss@kernel.org>,
+	Wolfram Sang <wsa+renesas@sang-engineering.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1.y 1/5] i2c: core: fix irq domain leak on adapter registration failure
+Date: Sun,  5 Jul 2026 09:47:55 -0400
+Message-ID: <20260705134759.1722831-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <2026070232-jet-sheep-e8a6@gregkh>
+References: <2026070232-jet-sheep-e8a6@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -74,121 +65,87 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:ywQGZQBXa6CrVEpq2NvBAg--.23888S2
-X-Coremail-Antispam: 1UD129KBjvJXoWxJw4xJFW3Xr4kXr1rZw18Xwb_yoW5Xw17pa
-	sak3yagryDJr90yws7Jr1xC3y5Grs3CayxWryDta45X3Z8Wrn5tF95K39F9FsYkrWvgw17
-	Xr90q345Zr4kA37anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUU9m1xkIjI8I6I8E6xAIw20EY4v20xvaj40_Wr0E3s1l8cAvFVAK
-	0II2c7xJM28CjxkF64kEwVA0rcxSw2x7M28EF7xvwVC0I7IYx2IY67AKxVW5JVW7JwA2z4
-	x0Y4vE2Ix0cI8IcVCY1x0267AKxVW8Jr0_Cr1UM28EF7xvwVC2z280aVAFwI0_GcCE3s1l
-	84ACjcxK6I8E87Iv6xkF7I0E14v26rxl6s0DM2vYz4IE04k24VAvwVAKI4IrM2AIxVAIcx
-	kEcVAq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6x8ErcxFaVAv8VW8
-	Ww4UJr1UMcvjeVCFs4IE7xkEbVWUJVW8JwACjcxG0xvY0x0EwIxGrwACjI8F5VA0II8E6I
-	AqYI8I648v4I1lFIxGxcIEc7CjxVA2Y2ka0xkIwI1lc7CjxVAaw2AFwI0_GFv_Wrylc2xS
-	Y4AK67AK6ryUMxAIw28IcxkI7VAKI48JMxAIw28IcVCjz48v1sIEY20_GrWkJr1UJwCFx2
-	IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02F40E14v26r1j6r18MI8I3I0E7480Y4vE14v2
-	6r106r1rMI8E67AF67kF1VAFwI0_GFv_WrylIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67
-	AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7CjxVAFwI0_Gr0_Cr1lIxAIcVCF04k26cxKx2IY
-	s7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r1j6r4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Gr
-	0_Gr1UYxBIdaVFxhVjvjDU0xZFpf9x0JUG_M-UUUUU=
-X-CM-SenderInfo: 52kd05r2suqzpdlo2hxwvl0wxkxdhvlgxou0/1tbiAgETAWpKHF5PtgAAsK
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.66 / 15.00];
+X-Spamd-Result: default: False [-3.66 / 15.00];
+	WHITELIST_SPF_DKIM(-3.00)[kernel.org:d:+,kernel.org:s:+];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
 	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[mails.tsinghua.edu.cn,quarantine];
-	R_DKIM_ALLOW(-0.20)[mails.tsinghua.edu.cn:s=dkim];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-272045-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER(0.00)[zhaoyz24@mails.tsinghua.edu.cn,stable@vger.kernel.org];
-	RCPT_COUNT_TWELVE(0.00)[21];
-	FORGED_RECIPIENTS(0.00)[m:netdev@vger.kernel.org,m:zhaoyz24@mails.tsinghua.edu.cn,m:horms@verge.net.au,m:ja@ssi.bg,m:pablo@netfilter.org,m:fw@strlen.de,m:phil@nwl.cc,m:davem@davemloft.net,m:edumazet@google.com,m:kuba@kernel.org,m:pabeni@redhat.com,m:lvs-devel@vger.kernel.org,m:netfilter-devel@vger.kernel.org,m:coreteam@netfilter.org,m:linux-kernel@vger.kernel.org,m:yangyx22@mails.tsinghua.edu.cn,m:wangao@seu.edu.cn,m:fengxw06@126.com,m:qli01@tsinghua.edu.cn,m:xuke@tsinghua.edu.cn,m:stable@vger.kernel.org,s:lists@lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FREEMAIL_CC(0.00)[mails.tsinghua.edu.cn,verge.net.au,ssi.bg,netfilter.org,strlen.de,nwl.cc,davemloft.net,google.com,kernel.org,redhat.com,vger.kernel.org,seu.edu.cn,126.com,tsinghua.edu.cn];
-	DKIM_TRACE(0.00)[mails.tsinghua.edu.cn:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[zhaoyz24@mails.tsinghua.edu.cn,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-272047-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:johan@kernel.org,m:bentiss@kernel.org,m:wsa+renesas@sang-engineering.com,m:sashal@kernel.org,m:wsa@sang-engineering.com,s:lists@lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_SENDER(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	ALIAS_RESOLVED(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[mails.tsinghua.edu.cn:from_mime,mails.tsinghua.edu.cn:dkim,mails.tsinghua.edu.cn:mid,tsinghua.edu.cn:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,vger.kernel.org:from_smtp]
+	TAGGED_RCPT(0.00)[stable,renesas];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,sang-engineering.com:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: EFFA970A022
+X-Rspamd-Queue-Id: 84E9170A254
 
-tcp_state_transition() reads the TCP header again in order to drive the
-IPVS TCP state table.  For IPv6 it computes the offset with
-sizeof(struct ipv6hdr), while the surrounding IPVS code uses iph->len from
-ip_vs_fill_iph_skb(), where ipv6_find_hdr() has already skipped extension
-headers and found the real transport header.
+From: Johan Hovold <johan@kernel.org>
 
-This makes the state machine read from the wrong offset for IPv6 TCP
-packets that carry extension headers.  For example, a SYN packet with an
-8-byte destination options header can be scheduled correctly by
-tcp_conn_schedule(), but tcp_state_transition() reads a byte from the real
-TCP sequence number as the TCP flags.  An attacker can therefore make an
-uncompleted SYN move from NONE to ESTABLISHED or CLOSE, changing the
-connection timeout and active/inactive destination counters.  In the
-ESTABLISHED case, the half-open connection gets the 15 minute established
-timeout instead of the shorter SYN_RECV timeout, which can be used for a
-remote denial of service against an IPv6 IPVS TCP service.
+[ Upstream commit 8ce19524e4cc2462685f596a6402fbd8fb984ab2 ]
 
-Use ip_vs_fill_iph_skb() in tcp_state_transition() and read the TCP header
-from iph.len, matching tcp_conn_schedule() and the TCP NAT handlers.  For
-IPv4 and IPv6 packets without extension headers this preserves the existing
-offset.
+Make sure to tear down the host notify irq domain on adapter
+registration failure to avoid leaking it.
 
-Fixes: 0bbdd42b7efa ("IPVS: Extend protocol DNAT/SNAT and state handlers")
-Cc: stable@vger.kernel.org
-Reported-by: Yizhou Zhao <zhaoyz24@mails.tsinghua.edu.cn>
-Reported-by: Yuxiang Yang <yangyx22@mails.tsinghua.edu.cn>
-Reported-by: Ao Wang <wangao@seu.edu.cn>
-Reported-by: Xuewei Feng <fengxw06@126.com>
-Reported-by: Qi Li <qli01@tsinghua.edu.cn>
-Reported-by: Ke Xu <xuke@tsinghua.edu.cn>
-Assisted-by: Claude-Code:GLM-5.2
-Signed-off-by: Yizhou Zhao <zhaoyz24@mails.tsinghua.edu.cn>
+This issue was flagged by Sashiko when reviewing another adapter
+registration fix.
+
+Fixes: 4d5538f5882a ("i2c: use an IRQ to report Host Notify events, not alert")
+Cc: stable@vger.kernel.org	# 4.10
+Cc: Benjamin Tissoires <bentiss@kernel.org>
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
+Stable-dep-of: ba14d7cf2fe7 ("i2c: core: fix adapter registration race")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/ipvs/ip_vs_proto_tcp.c | 10 ++++------
- 1 file changed, 4 insertions(+), 6 deletions(-)
+ drivers/i2c/i2c-core-base.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/net/netfilter/ipvs/ip_vs_proto_tcp.c b/net/netfilter/ipvs/ip_vs_proto_tcp.c
-index 8cc0a8ce6241..6fde2165a8d6 100644
---- a/net/netfilter/ipvs/ip_vs_proto_tcp.c
-+++ b/net/netfilter/ipvs/ip_vs_proto_tcp.c
-@@ -581,15 +581,13 @@ tcp_state_transition(struct ip_vs_conn *cp, int direction,
- 		     const struct sk_buff *skb,
- 		     struct ip_vs_proto_data *pd)
- {
- 	struct tcphdr _tcph, *th;
-+	struct ip_vs_iphdr iph;
+diff --git a/drivers/i2c/i2c-core-base.c b/drivers/i2c/i2c-core-base.c
+index f7e3fc0b3a1daa..e639c679d2737e 100644
+--- a/drivers/i2c/i2c-core-base.c
++++ b/drivers/i2c/i2c-core-base.c
+@@ -1556,7 +1556,7 @@ static int i2c_register_adapter(struct i2c_adapter *adap)
+ 	res = device_register(&adap->dev);
+ 	if (res) {
+ 		pr_err("adapter '%s': can't register device (%d)\n", adap->name, res);
+-		goto out_list;
++		goto err_remove_irq_domain;
+ 	}
  
--#ifdef CONFIG_IP_VS_IPV6
--	int ihl = cp->af == AF_INET ? ip_hdrlen(skb) : sizeof(struct ipv6hdr);
--#else
--	int ihl = ip_hdrlen(skb);
--#endif
-+	if (!ip_vs_fill_iph_skb(cp->af, skb, false, &iph))
-+		return;
- 
--	th = skb_header_pointer(skb, ihl, sizeof(_tcph), &_tcph);
-+	th = skb_header_pointer(skb, iph.len, sizeof(_tcph), &_tcph);
- 	if (th == NULL)
- 		return;
- 
+ 	adap->debugfs = debugfs_create_dir(dev_name(&adap->dev), i2c_debugfs_root);
+@@ -1604,6 +1604,8 @@ static int i2c_register_adapter(struct i2c_adapter *adap)
+ 	init_completion(&adap->dev_released);
+ 	device_unregister(&adap->dev);
+ 	wait_for_completion(&adap->dev_released);
++err_remove_irq_domain:
++	i2c_host_notify_irq_teardown(adap);
+ out_list:
+ 	mutex_lock(&core_lock);
+ 	idr_remove(&i2c_adapter_idr, adap->nr);
 -- 
-2.47.3
+2.53.0
 
 
