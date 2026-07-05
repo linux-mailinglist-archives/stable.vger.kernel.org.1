@@ -1,62 +1,66 @@
-Return-Path: <stable+bounces-272069-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-272071-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id fsl9AaxmSmrnCQEAu9opvQ
-	(envelope-from <stable+bounces-272069-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 05 Jul 2026 16:14:04 +0200
+	id arAtObNnSmoiCgEAu9opvQ
+	(envelope-from <stable+bounces-272071-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 05 Jul 2026 16:18:27 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B12C370A43B
-	for <lists+stable@lfdr.de>; Sun, 05 Jul 2026 16:14:02 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4D18F70A46F
+	for <lists+stable@lfdr.de>; Sun, 05 Jul 2026 16:18:27 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=QigWzLbX;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-272069-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-272069-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=callumwong.com header.s=tm32yydslvviquw2x2q4ycbntmmm3paz header.b=g4dR6evD;
+	dkim=pass header.d=amazonses.com header.s=ulrbq2zjesb42hdt6rpnifgor3epinsy header.b="Mn/g5K/i";
+	dmarc=pass (policy=none) header.from=callumwong.com;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-272071-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-272071-lists+stable=lfdr.de@vger.kernel.org";
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id D616A3010237
-	for <lists+stable@lfdr.de>; Sun,  5 Jul 2026 14:13:59 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id F0821300F9DC
+	for <lists+stable@lfdr.de>; Sun,  5 Jul 2026 14:17:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD5983815ED;
-	Sun,  5 Jul 2026 14:13:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68F2B3815F1;
+	Sun,  5 Jul 2026 14:17:05 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from b232-12.smtp-out.ap-southeast-2.amazonses.com (b232-12.smtp-out.ap-southeast-2.amazonses.com [69.169.232.12])
+	(using TLSv1.2 with cipher AES128-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69C263815CC
-	for <stable@vger.kernel.org>; Sun,  5 Jul 2026 14:13:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A816C37FF41
+	for <stable@vger.kernel.org>; Sun,  5 Jul 2026 14:17:02 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783260838; cv=none; b=a88Rk+735cTIJdyZn4HnF6moSu5j6b+yCPRD11WuWsMBaO7jSqhYewhKfptYB+o0d9utbiRmNf3rG23WvP0KiZZycXlLUIsttxry/VmkggcMqk/ZM8F0xx8dQtrn8olNlWqmCHRgtMqrVl7nJG32urenfNSByLvp8gYngYSms5Q=
+	t=1783261025; cv=none; b=k8I9iS80hegICc41eb1HK8ND19jZmA4+NWVg1xdrI53VeHDbZXxl4UBES22pdcDCXTUm2X6AtqQpLW7iBEAiDd5LJCWuHJlmINXCw8IjvOYVuIbEU+fdrs+3ulKrr6AdkDiYsTvPcl9jkymidQi57L7GrhK9cUDwWYv7gy8LGKg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783260838; c=relaxed/simple;
-	bh=WGKpf2cy+VUICVIGNqCr2JHMS7JYyM0p3lZUY/UUtNM=;
+	s=arc-20240116; t=1783261025; c=relaxed/simple;
+	bh=/WqMBAa7Ytdpy/iYnElYCAeZTp9y9w7UfskxqkelEgE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PW55AxzJt/AcmLTgZvg58KlyYpbxkFhIStLUZegG1COCW4YsJZK0hNgT1/MneNvJHR8JW22fsfsJ/Yybv+khPKQL4TsUtnPqc18o+XoAhnLgOOllEEQ/mms+BzjNaHlcThZQwBF5odeCHcK+YmkQJQ6g4MpkcfVFNiqnzR6oSzc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QigWzLbX; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A9981F000E9;
-	Sun,  5 Jul 2026 14:13:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783260837;
-	bh=5I5lei73yaGFMazl+M0cpvM+xK2GWYXQu1ze92QM1U0=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=QigWzLbXa4JFlyWYoWMBMZKRISjQ2NZvyfyHfxnzj5t8QrZUJPmHClH1iNCM+yHOP
-	 Sax+7PCIrgGVbR6UWsZeSDt7qYSuEmT+maoUe5/kADAuj6cLU5uzgNnwxCs/u5ICvB
-	 ORDlLjP/6a7WaYfs5YUsobGPNIKivDbdLdzjDKckF4JqWIqFEF/Jh65c00RsZacyxC
-	 6s+gwhN/cv+/onoLizwjWryVhBx7TNE9RqbPO1uCvjYy3SWXrOegQg+gUnRvY03lEj
-	 TLzlyCg5kPReX4706XoNG+Y4e5nUiSTDSL62tE3cvFSNI8LiD0zqWgkBMsRPQymKPG
-	 c6aRjfBbuR2TA==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: Michael Bommarito <michael.bommarito@gmail.com>,
-	Anna Schumaker <anna.schumaker@hammerspace.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15.y] NFSv4/flexfiles: reject zero filehandle version count
-Date: Sun,  5 Jul 2026 10:13:55 -0400
-Message-ID: <20260705141355.1783874-1-sashal@kernel.org>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <2026070244-vehicular-daintily-d589@gregkh>
-References: <2026070244-vehicular-daintily-d589@gregkh>
+	 MIME-Version; b=Ua8uGCMbBmpHIxNZUJ5sYPINcDXygdByNytRD6OuM6RgiwWuJQCYEq81aJfvFowYh4cHEjo2np14AbKr1nMhOfI6FE7gqSDtrOcSZf8OoNDoH2iwlZOfY9n0coqPTEP0TQN5D99GbMqDnwPSPrSGFvwiZeBlu6UXXu0CRtnRszE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=callumwong.com; spf=pass smtp.mailfrom=bounce.callumwong.com; dkim=pass (2048-bit key) header.d=callumwong.com header.i=@callumwong.com header.b=g4dR6evD; dkim=pass (1024-bit key) header.d=amazonses.com header.i=@amazonses.com header.b=Mn/g5K/i; arc=none smtp.client-ip=69.169.232.12
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple;
+	s=tm32yydslvviquw2x2q4ycbntmmm3paz; d=callumwong.com; t=1783261021;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:MIME-Version:Content-Transfer-Encoding;
+	bh=/WqMBAa7Ytdpy/iYnElYCAeZTp9y9w7UfskxqkelEgE=;
+	b=g4dR6evDhsAnQApF9dSYnizd/ybLLgZX7DLMA3IUSb+LLNcVlq9Q2nBqULOMljgp
+	0GUjQ3zYgv4NNyvmspt53zzqelpuaWloLDgeq+HbLxXosUApGfiaYb8I6kSzz/1KrXt
+	ejHCfPDS+WLuAgN/JtYGd+kudgW0ErwI+E5XhHz9Qo8O6gbtfXgrY8YnNhdj1qKGvKL
+	5XQqgL4iy+bxHrGTQipWqM9ySsqLr0w/RxZ4imtllLZAxoaDLX2MYNyy4Y15H5E8dCP
+	QoCkt5dfMdZdt2YPPHjv8dpzWVKFFVKpT3CP24cpxAJAev1ZTYE3w+NcgzGeKG6eRDw
+	fj4CrPUquw==
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple;
+	s=ulrbq2zjesb42hdt6rpnifgor3epinsy; d=amazonses.com; t=1783261021;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:MIME-Version:Content-Transfer-Encoding:Feedback-ID;
+	bh=/WqMBAa7Ytdpy/iYnElYCAeZTp9y9w7UfskxqkelEgE=;
+	b=Mn/g5K/i5WCT1qjDNuPr2EtRmbaCaW/GKSz2ToI52AdDccWUNMaC/jw8blrt3ATI
+	zjFgyKrBwyANcz9p2v/Uk67/c6OhlKD8MGlvjrjZaV7H0OZXZUPamKPd175x4pOY/nx
+	Prq0msvzKBgxebq61qs9asKCkEi/PsHmnELb3KIU=
+From: Callum Wong <mail@callumwong.com>
+To: mail@callumwong.com
+Cc: stable@vger.kernel.org
+Subject: [PATCH 1/2] ALSA: hda: cs35l41: Support HP OmniBook 7 Laptop 14-fr0xxx
+Date: Sun, 5 Jul 2026 14:17:00 +0000
+Message-ID: <0108019f32a3c2c3-6c45997f-be66-4ea6-86a3-e6d8bc5493c0-000000@ap-southeast-2.amazonses.com>
+X-Mailer: git-send-email 2.54.0
+In-Reply-To: <20260705141657.180320-1-mail@callumwong.com>
+References: <20260705141657.180320-1-mail@callumwong.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -64,97 +68,83 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+Feedback-ID: ::1.ap-southeast-2.Bo07if0thBjjxfhnG0PllidpkDb4AFgWjQ4XZlpgJDk=:AmazonSES
+X-SES-Outgoing: 2026.07.05-69.169.232.12
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-2.16 / 15.00];
-	WHITELIST_SPF_DKIM(-3.00)[kernel.org:d:+,kernel.org:s:+];
-	SUSPICIOUS_RECIPS(1.50)[];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[callumwong.com,none];
+	R_DKIM_ALLOW(-0.20)[callumwong.com:s=tm32yydslvviquw2x2q4ycbntmmm3paz,amazonses.com:s=ulrbq2zjesb42hdt6rpnifgor3epinsy];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-272069-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-272071-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[3];
+	RCPT_COUNT_TWO(0.00)[2];
 	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:mail@callumwong.com,m:stable@vger.kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_SENDER(0.00)[sashal@kernel.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:michael.bommarito@gmail.com,m:anna.schumaker@hammerspace.com,m:sashal@kernel.org,m:michaelbommarito@gmail.com,s:lists@lfdr.de];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	TO_DN_SOME(0.00)[];
+	FORGED_SENDER(0.00)[mail@callumwong.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[callumwong.com:+,amazonses.com:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	MIME_TRACE(0.00)[0:+];
 	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[mail@callumwong.com,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FREEMAIL_CC(0.00)[gmail.com,hammerspace.com,kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
+	TO_DN_NONE(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_THREE(0.00)[4];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,hammerspace.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[callumwong.com:from_mime,callumwong.com:email,callumwong.com:dkim,vger.kernel.org:from_smtp,amazonses.com:dkim,ap-southeast-2.amazonses.com:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: B12C370A43B
+X-Rspamd-Queue-Id: 4D18F70A46F
 
-From: Michael Bommarito <michael.bommarito@gmail.com>
+The HP OmniBook 7 Laptop 14-fr0xxx (SSID 103C8E3B) has two CS35L41
+amplifiers connected over I2C. The firmware provides a _DSD, but as with
+the other HP laptops already handled by this driver the properties are
+not exposed to the generic ACPI path, so the amplifiers fail to probe
+with "Platform not supported" and the speakers only play at a much lower
+volume. Provide the configuration through cs35l41_hda_property.c
+instead, so the amplifiers probe and drive the speakers at full volume.
 
-[ Upstream commit 2c6bb3c40bc24f6aa8dfbe6fe98c3ad6389203f2 ]
+The values are taken from the machine's _DSD. There are two amplifiers
+using internal boost (1000 nH, 4500 mA, 24 uF) with the speakers wired
+right/left, the reset line at _CRS GPIO index 0 and the speaker-id line
+at index 1.
 
-ff_layout_alloc_lseg() decodes the filehandle-version array count
-from the flexfiles layout body. The value is used as the count for
-kzalloc_objs(), and the current code only rejects NULL.
-
-A zero count yields ZERO_SIZE_PTR, which can be stored in
-dss_info->fh_versions even though later flexfiles paths assume that at
-least one filehandle version exists.
-
-Reject fh_count == 0 before the allocation, matching the existing zero
-version_count validation in the flexfiles GETDEVICEINFO parser.
-
-A QEMU/KASAN run with a malformed flexfiles layout hit:
-
-  KASAN: null-ptr-deref in range [0x0000000000000010-0x0000000000000017]
-  RIP: 0010:ff_layout_encode_ff_layoutupdate.isra.0+0x15f/0x750
-  ff_layout_encode_layoutreturn+0x683/0x970
-  nfs4_xdr_enc_layoutreturn+0x278/0x3a0
-  Kernel panic - not syncing: Fatal exception
-
-The patched kernel rejects the malformed layout without KASAN/oops/panic,
-and a valid fh_count=1 regression still opens, reads, and unmounts cleanly.
-
+Fixes: 7150d57c370f ("ALSA: hda/realtek: Add support for HP Agusta using CS35L41 HDA")
 Cc: stable@vger.kernel.org
-Fixes: d67ae825a59d ("pnfs/flexfiles: Add the FlexFile Layout Driver")
-Assisted-by: Claude:claude-opus-4-7
-Signed-off-by: Michael Bommarito <michael.bommarito@gmail.com>
-Signed-off-by: Anna Schumaker <anna.schumaker@hammerspace.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Callum Wong <mail@callumwong.com>
 ---
- fs/nfs/flexfilelayout/flexfilelayout.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ sound/hda/codecs/side-codecs/cs35l41_hda_property.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/fs/nfs/flexfilelayout/flexfilelayout.c b/fs/nfs/flexfilelayout/flexfilelayout.c
-index 24d97d7ba12d56..8fb5e05c4b266c 100644
---- a/fs/nfs/flexfilelayout/flexfilelayout.c
-+++ b/fs/nfs/flexfilelayout/flexfilelayout.c
-@@ -454,6 +454,10 @@ ff_layout_alloc_lseg(struct pnfs_layout_hdr *lh,
- 		if (!p)
- 			goto out_err_free;
- 		fh_count = be32_to_cpup(p);
-+		if (fh_count == 0) {
-+			rc = -EINVAL;
-+			goto out_err_free;
-+		}
- 
- 		fls->mirror_array[i]->fh_versions =
- 			kcalloc(fh_count, sizeof(struct nfs_fh),
+diff --git a/sound/hda/codecs/side-codecs/cs35l41_hda_property.c b/sound/hda/codecs/side-codecs/cs35l41_hda_property.c
+index 416d7bf3e289..1d2a83b47cde 100644
+--- a/sound/hda/codecs/side-codecs/cs35l41_hda_property.c
++++ b/sound/hda/codecs/side-codecs/cs35l41_hda_property.c
+@@ -85,6 +85,7 @@ static const struct cs35l41_config cs35l41_config_table[] = {
+ 	{ "103C8C51", 2, INTERNAL, { CS35L41_LEFT, CS35L41_RIGHT, 0, 0 }, 0, 1, -1, 1000, 4100, 24 },
+ 	{ "103C8CDD", 2, INTERNAL, { CS35L41_LEFT, CS35L41_RIGHT, 0, 0 }, 0, 1, -1, 1000, 4100, 24 },
+ 	{ "103C8CDE", 2, INTERNAL, { CS35L41_LEFT, CS35L41_RIGHT, 0, 0 }, 0, 1, -1, 1000, 3900, 24 },
++	{ "103C8E3B", 2, INTERNAL, { CS35L41_RIGHT, CS35L41_LEFT, 0, 0 }, 0, 1, -1, 1000, 4500, 24 },
+ 	{ "104312AF", 2, INTERNAL, { CS35L41_LEFT, CS35L41_RIGHT, 0, 0 }, 1, 2, 0, 1000, 4500, 24 },
+ 	{ "10431433", 2, INTERNAL, { CS35L41_LEFT, CS35L41_RIGHT, 0, 0 }, 0, 1, -1, 1000, 4500, 24 },
+ 	{ "10431463", 2, INTERNAL, { CS35L41_LEFT, CS35L41_RIGHT, 0, 0 }, 0, 1, -1, 1000, 4500, 24 },
+@@ -511,6 +512,7 @@ static const struct cs35l41_prop_model cs35l41_prop_model_table[] = {
+ 	{ "CSC3551", "103C8C6A", hp_i2c_int_2amp_dual_spkid },
+ 	{ "CSC3551", "103C8CDD", generic_dsd_config },
+ 	{ "CSC3551", "103C8CDE", generic_dsd_config },
++	{ "CSC3551", "103C8E3B", generic_dsd_config },
+ 	{ "CSC3551", "104312AF", generic_dsd_config },
+ 	{ "CSC3551", "10431433", generic_dsd_config },
+ 	{ "CSC3551", "10431463", generic_dsd_config },
 -- 
-2.53.0
+2.54.0
 
 
