@@ -1,63 +1,63 @@
-Return-Path: <stable+bounces-272000-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-272001-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 45G5A47LSWrQ7AAAu9opvQ
-	(envelope-from <stable+bounces-272000-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 05 Jul 2026 05:12:14 +0200
+	id YHJ6IpPLSWrU7AAAu9opvQ
+	(envelope-from <stable+bounces-272001-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 05 Jul 2026 05:12:19 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4FB3C708D7D
-	for <lists+stable@lfdr.de>; Sun, 05 Jul 2026 05:12:13 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 03AEC708D80
+	for <lists+stable@lfdr.de>; Sun, 05 Jul 2026 05:12:19 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=CpTRN+uU;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=iATAQvNH;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-272000-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-272000-lists+stable=lfdr.de@vger.kernel.org";
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-272001-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-272001-lists+stable=lfdr.de@vger.kernel.org";
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 36B653020A4F
-	for <lists+stable@lfdr.de>; Sun,  5 Jul 2026 03:11:58 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 9F2153014973
+	for <lists+stable@lfdr.de>; Sun,  5 Jul 2026 03:12:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B7329239E6C;
-	Sun,  5 Jul 2026 03:11:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C62F4239E6C;
+	Sun,  5 Jul 2026 03:12:00 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67BFD23BF9F
-	for <stable@vger.kernel.org>; Sun,  5 Jul 2026 03:11:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34E552C9D
+	for <stable@vger.kernel.org>; Sun,  5 Jul 2026 03:11:59 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783221117; cv=none; b=fWMcjSBfl6P+/KXeT/HGK9596+jnqoeDgCgo/BcHFS2l19VskA3dDliNXQFeNlrfPaDkkJtt4hVtCidfjhmxmSTmWs+4MmUyqTQHdOWqHuyJrQ6RCMqP7n7OqRNCLEbay3XE0vV20/N/cv2TXqwALHyeN0hs5V+umMdqB+ahnQw=
+	t=1783221120; cv=none; b=QUjEd9mJj+CH5QpslLiiuD39BO59yFHMMXnTLl6Gigdc7eKgMXrS5zh4fwyRsc3llNFRW95TUWVx0qy6NztKMK1TcRe5BFvq+ax32uze1qMM7sjL4sCRBG9VogLwUgnTGoSFave9Pi6x4yYgo6XZWhhVoH1Pnb+L1QSql2CK4bc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783221117; c=relaxed/simple;
-	bh=YeelmSk3cumN+KTkcyriivXDUtlQbzOHOnXHV1FLjPQ=;
+	s=arc-20240116; t=1783221120; c=relaxed/simple;
+	bh=2HDWkNr3QX3oVx8wtUkLnlLDK6H3B/TP0s7hz6S3MZo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HMTuiwHQaf96cDHe/HDmzJupg49AiPZqO+TnlnrWaikkgywFhQXoJy+vUCIe4beYpp3w5qFDCuXyt2p2+McoJbQdCvjnJXc3vyQV/SE09R0cjIHNR39OGpBEimgmtIGSbketKzyy3pmGP0Uol1QY9gTx1o+ttNkThs8DE28iFA8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CpTRN+uU; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D21F61F00A3A;
-	Sun,  5 Jul 2026 03:11:55 +0000 (UTC)
+	 MIME-Version; b=BI3A7aV2+XuTody9Ew8PkgJiT/xv7nDNsluF9Fn/uoBet7AyJiQYrB9Ena7aFF4Grusdqzrfx0jkRCqXioOzbFwVBpbI+OvPD/eBzX0GMOdqM0xhfD0Mhxcb+27HRMkv8kbcdAZt60616C9QlHUy67btVukEtUGsztmFyTK+fE0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iATAQvNH; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D1A91F00A3A;
+	Sun,  5 Jul 2026 03:11:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783221116;
-	bh=nvIAH+RO5orIMmzXxrRsqa3DaB0LspF9ac/RiiMhay0=;
+	s=k20260515; t=1783221118;
+	bh=eSDgsBCN0HUQJshrXsRJH/RX+zCNSVAEXc64hzOa8mU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=CpTRN+uUCAbPVm91qpxBYb6qv9Blz5ctZwpMbdebHQss50oRtxWA4Qwy3zV+8KMGB
-	 hCl58UUp4kMLulEodcYZTK9hddUoWy4d+L8yLrFFqh57kLn3bIb2MXHPhu2rnLnNmC
-	 xHxup8d2vUO2Wz8MtPZSQFOsizlooyYVYHaFSoHq6ksA7/j2pxV0VnyiuBI8AYR59i
-	 4t7eaDnpohN8xs0SSfGs8gn+kxsvX4WHe84eGmsJM5mGjesjI6OQ2cIPuoHSwUcDh9
-	 9pC2YKsojP2cTvpa/qysXtz2J909y76FFXkjv5RitximHdZ6PVrnSMH6EiWvY1+upA
-	 RFFoGs7rtL4XQ==
+	b=iATAQvNHCYZyQ3ifWDB4wgeHD1s5xJ0bnEyycawmCB4Cjn2/0DN94D/yRfj5s/Y32
+	 FH8XVnRvkFg5Eg2Ek1dgF8qbF+5ADKSKOIkODIn1RwuZP56VyTVuzVUmn9jLO8mX2w
+	 44aMej45O9g8HtW/SaR21Zv8KEXFw626L/fnhh/NAtO8xl3o2hv21RQnpt7DiFeAAe
+	 oyiGCron3Y3efe0SeSr9dOgM1pM6tSiEH5ZjW8A+5Bpb9u6rBhBvvn2pFGF59W2Rq8
+	 qGd2/cVPX7O4eqRfumMtj8iM1dor5w4dD8+wgIDU8JQdVMJRuMwF0s3GLfsKI6LzKA
+	 i4gQk1QntsDFQ==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Michael Bommarito <michael.bommarito@gmail.com>,
-	Anna Schumaker <anna.schumaker@hammerspace.com>,
+Cc: Johan Hovold <johan@kernel.org>,
+	Benjamin Tissoires <bentiss@kernel.org>,
+	Wolfram Sang <wsa+renesas@sang-engineering.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12.y 5/5] NFSv4/flexfiles: reject zero filehandle version count
-Date: Sat,  4 Jul 2026 23:11:50 -0400
-Message-ID: <20260705031150.1600970-5-sashal@kernel.org>
+Subject: [PATCH 6.6.y 1/5] i2c: core: fix irq domain leak on adapter registration failure
+Date: Sat,  4 Jul 2026 23:11:52 -0400
+Message-ID: <20260705031156.1601242-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260705031150.1600970-1-sashal@kernel.org>
-References: <2026070242-poker-barricade-3a69@gregkh>
- <20260705031150.1600970-1-sashal@kernel.org>
+In-Reply-To: <2026070232-straddle-keenness-fbbc@gregkh>
+References: <2026070232-straddle-keenness-fbbc@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -66,95 +66,85 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-3.66 / 15.00];
 	WHITELIST_SPF_DKIM(-3.00)[kernel.org:d:+,kernel.org:s:+];
-	SUSPICIOUS_RECIPS(1.50)[];
-	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	MID_CONTAINS_FROM(1.00)[];
 	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-272000-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-272001-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:johan@kernel.org,m:bentiss@kernel.org,m:wsa+renesas@sang-engineering.com,m:sashal@kernel.org,m:wsa@sang-engineering.com,s:lists@lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FORGED_SENDER(0.00)[sashal@kernel.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:michael.bommarito@gmail.com,m:anna.schumaker@hammerspace.com,m:sashal@kernel.org,m:michaelbommarito@gmail.com,s:lists@lfdr.de];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	TO_DN_SOME(0.00)[];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FREEMAIL_CC(0.00)[gmail.com,hammerspace.com,kernel.org];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	ALIAS_RESOLVED(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_THREE(0.00)[4];
+	TAGGED_RCPT(0.00)[stable,renesas];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,vger.kernel.org:from_smtp,hammerspace.com:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,sang-engineering.com:email,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 4FB3C708D7D
+X-Rspamd-Queue-Id: 03AEC708D80
 
-From: Michael Bommarito <michael.bommarito@gmail.com>
+From: Johan Hovold <johan@kernel.org>
 
-[ Upstream commit 2c6bb3c40bc24f6aa8dfbe6fe98c3ad6389203f2 ]
+[ Upstream commit 8ce19524e4cc2462685f596a6402fbd8fb984ab2 ]
 
-ff_layout_alloc_lseg() decodes the filehandle-version array count
-from the flexfiles layout body. The value is used as the count for
-kzalloc_objs(), and the current code only rejects NULL.
+Make sure to tear down the host notify irq domain on adapter
+registration failure to avoid leaking it.
 
-A zero count yields ZERO_SIZE_PTR, which can be stored in
-dss_info->fh_versions even though later flexfiles paths assume that at
-least one filehandle version exists.
+This issue was flagged by Sashiko when reviewing another adapter
+registration fix.
 
-Reject fh_count == 0 before the allocation, matching the existing zero
-version_count validation in the flexfiles GETDEVICEINFO parser.
-
-A QEMU/KASAN run with a malformed flexfiles layout hit:
-
-  KASAN: null-ptr-deref in range [0x0000000000000010-0x0000000000000017]
-  RIP: 0010:ff_layout_encode_ff_layoutupdate.isra.0+0x15f/0x750
-  ff_layout_encode_layoutreturn+0x683/0x970
-  nfs4_xdr_enc_layoutreturn+0x278/0x3a0
-  Kernel panic - not syncing: Fatal exception
-
-The patched kernel rejects the malformed layout without KASAN/oops/panic,
-and a valid fh_count=1 regression still opens, reads, and unmounts cleanly.
-
-Cc: stable@vger.kernel.org
-Fixes: d67ae825a59d ("pnfs/flexfiles: Add the FlexFile Layout Driver")
-Assisted-by: Claude:claude-opus-4-7
-Signed-off-by: Michael Bommarito <michael.bommarito@gmail.com>
-Signed-off-by: Anna Schumaker <anna.schumaker@hammerspace.com>
+Fixes: 4d5538f5882a ("i2c: use an IRQ to report Host Notify events, not alert")
+Cc: stable@vger.kernel.org	# 4.10
+Cc: Benjamin Tissoires <bentiss@kernel.org>
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
+Stable-dep-of: ba14d7cf2fe7 ("i2c: core: fix adapter registration race")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfs/flexfilelayout/flexfilelayout.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/i2c/i2c-core-base.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/fs/nfs/flexfilelayout/flexfilelayout.c b/fs/nfs/flexfilelayout/flexfilelayout.c
-index 36270f6a759ec7..7e1494cc116b29 100644
---- a/fs/nfs/flexfilelayout/flexfilelayout.c
-+++ b/fs/nfs/flexfilelayout/flexfilelayout.c
-@@ -493,6 +493,10 @@ ff_layout_alloc_lseg(struct pnfs_layout_hdr *lh,
- 		if (!p)
- 			goto out_err_free;
- 		fh_count = be32_to_cpup(p);
-+		if (fh_count == 0) {
-+			rc = -EINVAL;
-+			goto out_err_free;
-+		}
+diff --git a/drivers/i2c/i2c-core-base.c b/drivers/i2c/i2c-core-base.c
+index 943f0021d6a2c1..4b3bc72ef53ddf 100644
+--- a/drivers/i2c/i2c-core-base.c
++++ b/drivers/i2c/i2c-core-base.c
+@@ -1551,7 +1551,7 @@ static int i2c_register_adapter(struct i2c_adapter *adap)
+ 	res = device_register(&adap->dev);
+ 	if (res) {
+ 		pr_err("adapter '%s': can't register device (%d)\n", adap->name, res);
+-		goto out_list;
++		goto err_remove_irq_domain;
+ 	}
  
- 		fls->mirror_array[i]->dss[dss_id].fh_versions =
- 		    kcalloc(fh_count, sizeof(struct nfs_fh),
+ 	adap->debugfs = debugfs_create_dir(dev_name(&adap->dev), i2c_debugfs_root);
+@@ -1599,6 +1599,8 @@ static int i2c_register_adapter(struct i2c_adapter *adap)
+ 	init_completion(&adap->dev_released);
+ 	device_unregister(&adap->dev);
+ 	wait_for_completion(&adap->dev_released);
++err_remove_irq_domain:
++	i2c_host_notify_irq_teardown(adap);
+ out_list:
+ 	mutex_lock(&core_lock);
+ 	idr_remove(&i2c_adapter_idr, adap->nr);
 -- 
 2.53.0
 
