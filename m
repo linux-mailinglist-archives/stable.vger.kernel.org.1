@@ -1,171 +1,241 @@
-Return-Path: <stable+bounces-272080-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-272082-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id FF6KN/t1SmodDgEAu9opvQ
-	(envelope-from <stable+bounces-272080-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 05 Jul 2026 17:19:23 +0200
+	id 8PEmL1uQSmreEgEAu9opvQ
+	(envelope-from <stable+bounces-272082-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 05 Jul 2026 19:11:55 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2BC8770A726
-	for <lists+stable@lfdr.de>; Sun, 05 Jul 2026 17:19:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 20BE470AA60
+	for <lists+stable@lfdr.de>; Sun, 05 Jul 2026 19:11:55 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=E9ZXbjV3;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-272080-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-272080-lists+stable=lfdr.de@vger.kernel.org";
-	arc=pass ("subspace.kernel.org:s=arc-20240116:i=2")
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=KFPFwn2P;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-272082-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-272082-lists+stable=lfdr.de@vger.kernel.org";
+	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 1821E30080AB
-	for <lists+stable@lfdr.de>; Sun,  5 Jul 2026 15:19:22 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 8EBCF3019104
+	for <lists+stable@lfdr.de>; Sun,  5 Jul 2026 17:11:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10D16433E7A;
-	Sun,  5 Jul 2026 15:19:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC0B12FB97B;
+	Sun,  5 Jul 2026 17:11:48 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pj1-f48.google.com (mail-pj1-f48.google.com [209.85.216.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4B0F374A04
-	for <stable@vger.kernel.org>; Sun,  5 Jul 2026 15:19:19 +0000 (UTC)
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783264760; cv=pass; b=G35dPTb033JCcrRMGuiE30bNN8hHckjo4qNIiVBdhluPNHVHORxNRw7k0nUyQXCZfV1VBRdMNN3YO7B6cZ63qzk1ahur1Gf2C3SGRY6XyYW/EjUMSC1HrgU6Y6IDxdixYNOI7euO/Uwz6dAN1qV8GSI7XOuvQZEhLr4dyWZ+L8E=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783264760; c=relaxed/simple;
-	bh=oP7nSsm92j9AKFJ5eaVUz/K2L8mjciRFihFP24h4pN0=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=lJqqUUiQOs0LO6bguvvOvnYo0oO55ob7ZL/KvidbbbeSVOSuR5R2Goj7DpkykHZTqSHJFtcmcgSzOkMN0kX7wxvXrn3rk0Nh1eFh82TfgXmzl2xZKSU/i+R9cJOBBnRD9CmlmItazFBkRx+u5C1wkt/SokGf70tUTyv6nQ3pWNk=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=E9ZXbjV3; arc=pass smtp.client-ip=209.85.216.48
-Received: by mail-pj1-f48.google.com with SMTP id 98e67ed59e1d1-381065a7a03so1525249a91.0
-        for <stable@vger.kernel.org>; Sun, 05 Jul 2026 08:19:19 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1783264759; cv=none;
-        d=google.com; s=arc-20260327;
-        b=DY07A0cD6SC4kaKPPZQu5YvRP9L5kASJkzXGI1gnhhxmpzKv0cTxKxfRpSpJAUcj2/
-         XEIZgjIQgaCSn/M+3CeuGDK6N5OY+3Dwh5hECRlYDOs935NpNKes9rqQIzac6mg/U53c
-         VGUwPEW4OsNbKFsBtp0FqUoBbS6ZfD2NeuQ8kbUCpX8WHOo/lmEn4cDaSU4rsPXv6DVa
-         QI6PprEZmBOZib0YJflFOWTeKIxTXQIHcFO0+srb02UaVbVFhwxmGW3FShQIb5WRmkG8
-         J6qxxNYPHv7kdyfVdyd6ZFZejcveXz50ZApTLYmDqRqBWukFnYsb/h1SMfazo/cK6v+M
-         F5kg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=oP7nSsm92j9AKFJ5eaVUz/K2L8mjciRFihFP24h4pN0=;
-        fh=dljNS2ooK6fYvh9vxurHKUMg+Tx+AOHz+/1AkKhkEKc=;
-        b=n+Ep/eO6KL4aBzHqgwXwNWLY/yQDE5TZroWi62FCRV1odnMRMNQ31P3qMxiqONkyB4
-         kRbfR4gi1I2JcLRDuZvmcC5i6Wd0IGdotlmGaeT1uUQGMKuCuv44BZr3pACoOroYf/t0
-         1ST8sHyEpOPz0qomnIQGI0bxCEUMVkYMmwAl8PBusZq4xXRQEb3ycePEBddjuiaxSv8n
-         dEatVR29T/62Nx1QjA93QJ4GQvt6r8Na62No6o5m5iTTMhOdyk5S0iSDUSU3aR6x/Cot
-         fo68lKwB754OqiU+QpcRnoXpcGKzsp3wPbyPumr1cum0pHEg7CrqrKmWisxbwDVNQXI9
-         RVFg==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1783264759; x=1783869559; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=oP7nSsm92j9AKFJ5eaVUz/K2L8mjciRFihFP24h4pN0=;
-        b=E9ZXbjV3XrOfKJhFLJAuZIVSzyrt7nGbNIZYU/Y61of8lbJf5fT3w0YLzmtK6VB8xM
-         Kojy/T1tAZuo0zNSQX2i+D3gsiOaEPzZmqSLOw5SNCO6ONUpRyAVh8n3GEZa7euqjZe3
-         YM+Q1x3AJFqAyY8fu+NY6+uEG55bzVLx/LTmVZc+7wQNWCSIKSzSxh5jAcRvwHZCiPBM
-         MbHFdp7kudRLMlZo9+hgkg84aHb/LX23MQKN/oINmFEnjHm309Qipn3lnR9je2oqRGXE
-         08uAXNQmgIAhtMs8IEKWu4lycJbkb3CltLudpB2WAgC+D6cVSkOt990g10gFjC3FnyT1
-         NH8g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783264759; x=1783869559;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=oP7nSsm92j9AKFJ5eaVUz/K2L8mjciRFihFP24h4pN0=;
-        b=ESTiiZV03uWaXTy724PcwXd5ZF4bsWnm0sk1mFKAaSR1PAF1W6wsJsrP1+wcGC2ek+
-         rGziUItqscm509Acdlym0XU5d6GKHEiBvJJHCvbqhVeMlxRZ1Yd3peVpxehl2p7q99aN
-         HM2EIZ7rO5owBdlQL4KkDzkq631bCviyFQ8FsL5Gf+OabdZ2OhultpRYU/truB+FYmer
-         Z6X1yGo+uR9Qm03ooNFS3lVCGSnr6nGRb/QKOV+YphFRaW/GGMDg89mojl9vqjzxzif1
-         n0Q/R1sJMP4WaTGRhtWZZ9XQvSjnol05Fjkrj4XqgQonqifLUPWT0x7BwfAYf4DN24Im
-         xfCA==
-X-Gm-Message-State: AOJu0YyzyIXGkrcY1d27goR52fi2OxkCW4H3bP6HiTPZYq8ZK7V1LfCb
-	BbDVMqSkqUnbTJJg0yWRGekY76pS5geE/IO1byTjewVi/tU8SW9NeFjHLfBK8om6C6yrSZMobQa
-	JzDoCjR4lifdXHyHalXqDEqQdxixBxG0=
-X-Gm-Gg: AfdE7clq1z+dgKmhR6rdsB5KomlONFd8RWvs173JruHHt9SBaHPH76DpGQzS62uKx5I
-	iXiJOFs15hBoBQ4zOySzG9DBOhvD7J9QPIXvbYDZSLKO5vkqB7HE5fWjFfMmJPX438WTDI3FqKp
-	xPEINAF/NzKzWPhFLKDc3ny09VECk+TwsOGiJWsMJ/ENfib4z2s79FcRVVcSXooT/ZQhJ8gPrOP
-	tfdK01c9pqM/PFU98f/EJ0wD7RgVFN0n+RBJxQRvWEJHWn6on0Ylg7YKLAisOuk9hje1fETUPI=
-X-Received: by 2002:a17:902:ce10:b0:2cb:ea0b:9164 with SMTP id
- d9443c01a7336-2cbea0b92f3mr66876105ad.6.1783264758990; Sun, 05 Jul 2026
- 08:19:18 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C0ED1F4C96;
+	Sun,  5 Jul 2026 17:11:48 +0000 (UTC)
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1783271508; cv=none; b=cno2NhfSW7FZGqi0UORqPnM1ATFAxpmXPaLnztggCWu+1H4DWvzCcRpYip6uRl2e/ghQPGn8BkRt+UD0VN1B4a3+NkPhtgKp8ShicVpI4yCU+BSmpjkKEk5ekKWkh+Gi/XKNZdgxdZu8v+tATopLLVgH0g20cYZ76eAU3lIGwIc=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1783271508; c=relaxed/simple;
+	bh=T2lhnNdkV4SpN9Uczb+KgNsko4p+UMaKpgAbeG7OU8g=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=L7KkuUu+u66x0YWlVuMoq1DsHnkEfgk9itaWxZbKAgO9DnGv6K6Co8lBOi2ZEhf68Y9LJ+azXoUhkVtravRS762dJiQtToMY5L2PdT4trLWqz2w06YinmIxoilWbvR7r0K68nRkoe0aEHVDU9iAwbswvr/7rFpF8z8Pr/0vPIx4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KFPFwn2P; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 1DE66C2BCB8;
+	Sun,  5 Jul 2026 17:11:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1783271508;
+	bh=T2lhnNdkV4SpN9Uczb+KgNsko4p+UMaKpgAbeG7OU8g=;
+	h=From:Date:Subject:To:Cc:Reply-To:From;
+	b=KFPFwn2PXRi/EBw7e8pZ15X03rIbemVRROt0qP4aSCEGuwJh8AQS4xn5gGpAFMpnU
+	 z5VUWbOyu9273e2pO4SpAedbDVKMeGCxBWlFiCbcIQALy8JS1Gixj/U9CC9uXhJyOh
+	 vDzUFU5gQDB2cG/LwlhwXkHn51KpRW+7t/oYHJww3Hu5QJEyb7M4DUeR4NV9X0huaV
+	 9BR3xhWUmgUNYsB83dyWALAxa9XppsyfariMnFi3HeRnNJMWXobCECFXlovJpX7dvQ
+	 iXV7OuDWvo67iTq82y+BLSS6dflZzOl5Ib16YpVdCt/4bvLuPGney6bbz9JKoI24Vd
+	 vqbpelPK0tivA==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 09B65C43458;
+	Sun,  5 Jul 2026 17:11:48 +0000 (UTC)
+From: Liz Fong-Jones via B4 Relay <devnull+lizf.honeycomb.io@kernel.org>
+Date: Sun, 05 Jul 2026 10:11:43 -0700
+Subject: [PATCH] PCI: Fix BAR resize for devices on a root bus
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260528194657.359703301@linuxfoundation.org> <CAFQ-Uc-wu8fbTDXhtyODCz36_1DBue5ay7V2LpzjrUgHs+0WvQ@mail.gmail.com>
- <2026062933-storeroom-amusement-0b66@gregkh> <CAFQ-Uc9p7PhXp-FC4N3iYAtyeKgN6z4A_+L8YwKDAkXxZAvksg@mail.gmail.com>
- <2026070446-blank-duckbill-13ec@gregkh> <CAFQ-Uc8AAEGw90BPximQm3cLzB+KiH_PXr-UZEPK9nvueMGtSg@mail.gmail.com>
- <2026070406-squander-geography-213a@gregkh> <CAFQ-Uc8CDnGUH3xhjaVBd+Dr=+b7Lfu1SUrGGh2gQ17WW+gqxQ@mail.gmail.com>
- <2026070421-overflow-voyage-73b8@gregkh> <CAFQ-Uc9JvsHVCgj6ydVrg++hA4CCxw+FuQYfKzBC65HyuJNMoQ@mail.gmail.com>
- <2026070400-broadways-designer-ea0b@gregkh>
-In-Reply-To: <2026070400-broadways-designer-ea0b@gregkh>
-From: maher azz <maherazz04@gmail.com>
-Date: Sun, 5 Jul 2026 16:19:07 +0100
-X-Gm-Features: AVVi8Cflt3WU4EW9KvEe6pUrgWLhymOYj-fuuxb_awP3laKJg2ZT0yxF-A-6ylY
-Message-ID: <CAFQ-Uc_+TQutABrGb5+JvrBLUyq30KcfLURQHoJdCw_Uu9-MPg@mail.gmail.com>
-Subject: Re: [PATCH 7.0 345/461] vsock/virtio: fix zerocopy completion for
- multi-skb sends
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
-	Stefano Garzarella <sgarzare@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>, 
-	Arseniy Krasnov <avkrasnov@salutedevices.com>, Jakub Kicinski <kuba@kernel.org>, 
-	Sasha Levin <sashal@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260705-pci-rebar-root-bus-v1-1-55df70cbdd88@honeycomb.io>
+X-B4-Tracking: v=1; b=H4sIAE6QSmoC/yXMQQqEMAxA0atI1gbaOih4FXFha6pxYSXRYUC8u
+ 3VcvsX/JygJk0JbnCD0ZeW0ZtiygDAP60TIYzY442rTmA9ugVHID4KS0o7+UIyVdVUka2JoIIe
+ bUOTff9r1r/XwC4X9OcF13R/1e3F2AAAA
+X-Change-ID: 20260704-pci-rebar-root-bus-f3123fe10fc7
+To: Bjorn Helgaas <bhelgaas@google.com>
+Cc: =?utf-8?q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>, 
+ linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ regressions@lists.linux.dev, amd-gfx@lists.freedesktop.org, 
+ Jon Nettleton <jon@solid-run.com>, Jon Nettleton <jon.nettleton@gmail.com>, 
+ stable@vger.kernel.org, Liz Fong-Jones <lizf@honeycomb.io>
+X-Mailer: b4 0.15.2
+X-Developer-Signature: v=1; a=openpgp-sha256; l=4287; i=lizf@honeycomb.io;
+ s=gpg; h=from:subject:message-id;
+ bh=WjhPR946S5kQ2MM+7TqB/nQbZuHdNxuSaUo3YEdJ1dU=;
+ b=owEBbQGS/pANAwAKAaXO1OOXra/CAcsmYgBqSpBT2VQkT7xS0DBT4bFs/PNduIzCpXSUdbhlx
+ +BUdSUWfm+JATMEAAEKAB0WIQSfW1LPQ0gyJmoTHwelztTjl62vwgUCakqQUwAKCRClztTjl62v
+ wuU9B/43wnUMX1r7OFzOUOLhs7jAFwO76sMfFglIIx4+jiZsAeECwbTO6vJ/B7uxJqWNBjoDBU5
+ +qBnydr+Zy8aNRAgrClef7W2QitCPB9JyGuOSMQn6nlhA/9LSJvt2shilGGo28Ekw8JbeRehZE3
+ YfEAbYPDNj6y66wpKdNAANSXa+Saj4YnmX5piKeTE2qv+qJwpMy7HZ69ov+iOg2lzmwHkjhTj9l
+ TRcjq86rbWran3ghttXJsjZ77jyY2Iw22zBQfFrlX6QV/4purUnKtLqcQ0Wih9PW7OZ5veO0vYG
+ QM53tH07CgWLmOwRFMHiVToYw4a/ZvH3h0+/9gm3H3ssJXYV
+X-Developer-Key: i=lizf@honeycomb.io; a=openpgp;
+ fpr=1F7714D7EC3441D2CECC24606A3F8B00FBDDD2A4
+X-Endpoint-Received: by B4 Relay for lizf@honeycomb.io/gpg with auth_id=854
+X-Original-From: Liz Fong-Jones <lizf@honeycomb.io>
+Reply-To: lizf@honeycomb.io
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-2.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+X-Spamd-Result: default: False [-3.66 / 15.00];
+	WHITELIST_SPF_DKIM(-3.00)[kernel.org:d:+,kernel.org:s:+];
+	SUSPICIOUS_RECIPS(1.50)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FROM_HAS_DN(0.00)[];
-	TAGGED_FROM(0.00)[bounces-272080-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-272082-lists,stable=lfdr.de,lizf.honeycomb.io];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:gregkh@linuxfoundation.org,m:stable@vger.kernel.org,m:patches@lists.linux.dev,m:sgarzare@redhat.com,m:mst@redhat.com,m:avkrasnov@salutedevices.com,m:kuba@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[maherazz04@gmail.com,stable@vger.kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_SENDER(0.00)[devnull@kernel.org,stable@vger.kernel.org];
 	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:bhelgaas@google.com,m:ilpo.jarvinen@linux.intel.com,m:linux-pci@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:regressions@lists.linux.dev,m:amd-gfx@lists.freedesktop.org,m:jon@solid-run.com,m:jon.nettleton@gmail.com,m:stable@vger.kernel.org,m:lizf@honeycomb.io,m:jonnettleton@gmail.com,s:lists@lfdr.de];
 	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	FORGED_SENDER_FORWARDING(0.00)[];
+	FREEMAIL_CC(0.00)[linux.intel.com,vger.kernel.org,lists.linux.dev,lists.freedesktop.org,solid-run.com,gmail.com,honeycomb.io];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	REPLYTO_DOM_NEQ_TO_DOM(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
 	ALIAS_RESOLVED(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[devnull@kernel.org,stable@vger.kernel.org];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[maherazz04@gmail.com,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	REPLYTO_DOM_NEQ_FROM_DOM(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[10];
 	TAGGED_RCPT(0.00)[stable];
-	MID_RHS_MATCH_FROMTLD(0.00)[];
-	MISSING_XM_UA(0.00)[];
+	HAS_REPLYTO(0.00)[lizf@honeycomb.io];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[mail.gmail.com:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,vger.kernel.org:from_smtp]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 2BC8770A726
+X-Rspamd-Queue-Id: 20BE470AA60
 
-Yes i am sending to cve@kernel.org, i sent using another email just a
-few seconds ago, please re-check?
+From: Liz Fong-Jones <lizf@honeycomb.io>
 
-On Sat, Jul 4, 2026 at 12:40=E2=80=AFPM Greg Kroah-Hartman
-<gregkh@linuxfoundation.org> wrote:
->
-> On Sat, Jul 04, 2026 at 12:34:20PM +0100, maher azz wrote:
-> > I=E2=80=99m using gmail directly. I=E2=80=99m requesting a CVE to refer=
- to it directly as
-> > im going to disclose the poc on my accounts so people know about it
-> > and patch
->
-> You keep sending html email :(
->
-> And are you sure you are sending it to the correct email address?
+pci_do_resource_release_and_resize() releases the device BARs that
+share a bridge window with the BAR being resized, but when the device
+sits directly on a root bus (pdev->bus->self == NULL) it then skips
+resource assignment entirely and returns success, leaving the BARs it
+just released unassigned (IORESOURCE_UNSET).
+
+Skipping pbus_reassign_bridge_resources() is correct in that case --
+there is no bridge window to adjust -- but the device BARs still have
+to be reassigned. Before the BAR release was consolidated into the PCI
+core, this case worked for amdgpu because the driver released the BARs
+itself and then called pci_assign_unassigned_bus_resources()
+unconditionally after the resize, which assigns unassigned device BARs
+also on a root bus. Commit db92e3fef53e ("drm/amdgpu: Remove driver
+side BAR release before resize") removed that call, so nothing assigns
+the released BARs anymore.
+
+This breaks amdgpu completely on the SolidRun HoneyComb LX2 (NXP
+LX2160A, arm64, ACPI), where the GPU endpoint is enumerated directly
+on the root bus of its segment (there is no root port device, so
+pdev->bus->self is NULL):
+
+  amdgpu 0004:01:00.0: BAR 0 [mem 0xa400000000-0xa40fffffff 64bit pref]: releasing
+  amdgpu 0004:01:00.0: BAR 2 [mem 0xa410000000-0xa4101fffff 64bit pref]: releasing
+  amdgpu 0004:01:00.0: sw_init of IP block <gmc_v8_0> failed -19
+  amdgpu 0004:01:00.0: amdgpu_device_ip_init failed
+  amdgpu 0004:01:00.0: Fatal error during GPU init
+
+No error is logged because the resize path reports success; amdgpu
+then finds BAR0 IORESOURCE_UNSET and bails out with -ENODEV.
+
+Assign the released BARs directly from the root bus windows when there
+is no upstream bridge. On failure, roll back through the existing
+restore path exactly as in the bridged case.
+
+The root bus path also had a locking bug that any fix here necessarily
+touches: the old "goto out" jumped to up_read(&pci_bus_sem) without a
+matching down_read() (as does the "goto restore" taken when
+pci_dev_res_add_to_list() fails in the release loop). Take pci_bus_sem
+before the BAR release loop so every path through the function holds
+it exactly once.
+
+Fixes: 337b1b566db0 ("PCI: Fix restoring BARs on BAR resize rollback path")
+Cc: stable@vger.kernel.org # v6.19+
+Signed-off-by: Liz Fong-Jones <lizf@honeycomb.io>
+---
+#regzbot introduced: 337b1b566db0
+
+Observed at runtime on Ubuntu's linux-hwe-7.0 (7.0.0-14, broken) vs
+linux-hwe-6.17 (working), but nothing here is distro-specific: Ubuntu
+carries this code unmodified, and the affected function is identical
+to current mainline. By source inspection the regression window is
+v6.18 (old code paths) to v6.19 (consolidation). Workaround for
+affected users: amdgpu.rebar=0.
+---
+ drivers/pci/setup-bus.c | 25 +++++++++++++++++++------
+ 1 file changed, 19 insertions(+), 6 deletions(-)
+
+diff --git a/drivers/pci/setup-bus.c b/drivers/pci/setup-bus.c
+index c0a949f2c995..9db1951f6e5c 100644
+--- a/drivers/pci/setup-bus.c
++++ b/drivers/pci/setup-bus.c
+@@ -2397,6 +2397,8 @@ int pci_do_resource_release_and_resize(struct pci_dev *pdev, int resno, int size
+ 	if (ret)
+ 		return ret;
+ 
++	down_read(&pci_bus_sem);
++
+ 	pci_dev_for_each_resource(pdev, r, i) {
+ 		if (i >= PCI_BRIDGE_RESOURCES)
+ 			break;
+@@ -2415,13 +2417,24 @@ int pci_do_resource_release_and_resize(struct pci_dev *pdev, int resno, int size
+ 
+ 	pci_resize_resource_set_size(pdev, resno, size);
+ 
+-	if (!bus->self)
+-		goto out;
++	if (bus->self) {
++		ret = pbus_reassign_bridge_resources(bus, res, &saved);
++		if (ret)
++			goto restore;
++	} else {
++		/*
++		 * A device on a root bus has no bridge windows to adjust.
++		 * Assign the BARs released above directly from the root bus
++		 * windows.
++		 */
++		list_for_each_entry(dev_res, &saved, list) {
++			i = pci_resource_num(pdev, dev_res->res);
+ 
+-	down_read(&pci_bus_sem);
+-	ret = pbus_reassign_bridge_resources(bus, res, &saved);
+-	if (ret)
+-		goto restore;
++			ret = pci_assign_resource(pdev, i);
++			if (ret)
++				goto restore;
++		}
++	}
+ 
+ out:
+ 	up_read(&pci_bus_sem);
+
+---
+base-commit: 7404ce51637231382873d0b55edabc2f3b841a9d
+change-id: 20260704-pci-rebar-root-bus-f3123fe10fc7
+
+Best regards,
+--  
+Liz Fong-Jones <lizf@honeycomb.io>
+
+
 
