@@ -1,134 +1,160 @@
-Return-Path: <stable+bounces-272072-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-272073-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id JrgKMfhnSmoxCgEAu9opvQ
-	(envelope-from <stable+bounces-272072-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 05 Jul 2026 16:19:36 +0200
+	id ci7VIj9oSmpHCgEAu9opvQ
+	(envelope-from <stable+bounces-272073-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 05 Jul 2026 16:20:47 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1515B70A478
-	for <lists+stable@lfdr.de>; Sun, 05 Jul 2026 16:19:36 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id E954E70A484
+	for <lists+stable@lfdr.de>; Sun, 05 Jul 2026 16:20:46 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=cptocLBo;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="Wwa8/t/w";
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-272072-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-272072-lists+stable=lfdr.de@vger.kernel.org";
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-272073-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-272073-lists+stable=lfdr.de@vger.kernel.org";
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 39C43300DE08
-	for <lists+stable@lfdr.de>; Sun,  5 Jul 2026 14:19:30 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 420BA3003361
+	for <lists+stable@lfdr.de>; Sun,  5 Jul 2026 14:20:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 12141384235;
-	Sun,  5 Jul 2026 14:19:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 319E13839B4;
+	Sun,  5 Jul 2026 14:20:43 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD261382370;
-	Sun,  5 Jul 2026 14:19:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F00E2381B16
+	for <stable@vger.kernel.org>; Sun,  5 Jul 2026 14:20:41 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783261168; cv=none; b=cUbgdI2DtKgIGZIJIyay/BPD7l6NBUInDchuoRNVnMowlN3Exk/EK1tAUAnmCAJzeLlMaOT64/PHgLpa5x1OyzKn+O2nLDghajoMsEnfLuNbH+nZzeoAU3lYgbBoeExSBwstKMAcuG8fmAqy/9TogJLBKzFRnM8f5dYknX48kcc=
+	t=1783261243; cv=none; b=GvLRAiCMuWK5kYCvLFqg5kXdpg24F3ElaPdzymkauT2WajhUcLjnV1wufY7/iDfWBdn+rX24iHCIXcMjfjahP05Ud1ATmLn2atYv5QOsxH4ZKY47+bhuKvRb+ETO7z6h/SU0Z0vx4S3udFf2+FqpaFi50fAjcbfowraPpOhPOHo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783261168; c=relaxed/simple;
-	bh=jcPJen87JmcP/j7nnSpXSY1c7GTdyigGtyopvSguuN4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=m9qoDtCQ/0N6W8zwkB0xfY+zTSf6XXvnlS+TUnTyXCxbHs7K3H3dJ5IA84Vwaemre6dxZR4bhJatugOVZhXahAbvGGo43697yLg7KxZNzWhJ4T8mp++Q1qZxr8MeCLUhcfO4qfsrsEgCGIyoH+328exeIecq4jSDdXs3lpdgDJw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cptocLBo; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 857331F000E9;
-	Sun,  5 Jul 2026 14:19:25 +0000 (UTC)
+	s=arc-20240116; t=1783261243; c=relaxed/simple;
+	bh=fgXuGaYQAbGa3WhHVyJJdw4JXQq/HYrMOeQxksWnujE=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=nfX5uRtbnHzXLuGxiQ6WC5Mr1X7FKqcxyIIFafS5pWGDy2VvEOxhgBAinu6JkyMttD9qqvWNXPnexUVf7dkFwZGo2iQaE+rwFo+yT8lhMd35ftl+thMrlg7Cy9CDZWHIZavcSXhk7LtOJ6ymAuiva8NuJN9eUwZ1Sya3uyyN7CI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Wwa8/t/w; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0721F1F000E9;
+	Sun,  5 Jul 2026 14:20:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783261167;
-	bh=9DrplwkjJBjGxh1cD2R/mrFbb4Rpl+IeLJikyWbz1n0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=cptocLBoWZfJf1xHYKJoahvZWPj09dm3x9FLqDXE3okKXJfVcomzfi4Mb8GMT+0rZ
-	 eC8ShOS3TECSZQc2yeSvxIEUCQ5/Zg5n/l7A0PMRmE8g1Vo7VoAP9XD6iAtKVJytPB
-	 Komnun2kImCh88/6eIfp0I75KS/xzkxKHxwBdPpmUdVJrlLjLFA69N581eiP4QaghD
-	 Xy/9b8exL1sLmFALl9CqOmja/fTBqR/qPJGUxscaZ+pLoFyNa+IwwlovyQij64QD/W
-	 4ldZcyf90JsGEkKU6wSciZH4/WrDFUzGNRr7unp3oVr5ByekNOa5NGCtv4djSbgYx+
-	 r7rUEhGxftVZQ==
-Date: Sun, 5 Jul 2026 17:19:20 +0300
-From: Leon Romanovsky <leon@kernel.org>
-To: Zhiping Zhang <zhipingz@meta.com>
-Cc: saeedm@nvidia.com, tariqt@nvidia.com, mbloch@nvidia.com,
-	andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
-	kuba@kernel.org, pabeni@redhat.com, netdev@vger.kernel.org,
-	linux-rdma@vger.kernel.org, linux-kernel@vger.kernel.org,
-	michaelgur@nvidia.com, stable@vger.kernel.org
-Subject: Re: [PATCH net v2] net/mlx5: free mlx5_st_idx_data on final dealloc
-Message-ID: <20260705141920.GI15188@unreal>
-References: <20260630165324.2859353-1-zhipingz@meta.com>
+	s=k20260515; t=1783261241;
+	bh=TUrFqaRATt5lartRZrrpZfh/0+roeK0Ai86lBFndB+M=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=Wwa8/t/wdTFOEvYlNXUddry7pEwgKfXzUNy3RPmR+jhk544X4IpwgqOzyvWE0GG3O
+	 Rwug+dKbkZ0E0CMWt0Jo6Kh5COZY/PNHruUpUlf9zZAlXkvABSMa8WV1uYhz7BmvC7
+	 JWNXP9ETHdNO4CANKm3/kr91LogSj0Ibhiaz7a0BAr2PGvC9mCg+jb/IqRPktztrDM
+	 oH668Fyl1zWg0mrV4U6PD073oXfq0909DtvQAhz+Jc6rWothtuUeKzbiYj3PVVAane
+	 JH8p7CswNwZp/RBorSyR2nHJridbCDfDsG9ZZwJxel6AtSCaJdvw9i7wOn851z4cAS
+	 2Fja90hQBhfzQ==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: Michael Bommarito <michael.bommarito@gmail.com>,
+	Anna Schumaker <anna.schumaker@hammerspace.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10.y] NFSv4/flexfiles: reject zero filehandle version count
+Date: Sun,  5 Jul 2026 10:20:39 -0400
+Message-ID: <20260705142039.1791851-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <2026070244-oversweet-untaxed-e3da@gregkh>
+References: <2026070244-oversweet-untaxed-e3da@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260630165324.2859353-1-zhipingz@meta.com>
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-3.16 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	WHITELIST_SPF_DKIM(-3.00)[kernel.org:d:+,kernel.org:s:+];
 	SUSPICIOUS_RECIPS(1.50)[];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-272073-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER(0.00)[leon@kernel.org,stable@vger.kernel.org];
-	RCPT_COUNT_TWELVE(0.00)[14];
-	FORGED_RECIPIENTS(0.00)[m:zhipingz@meta.com,m:saeedm@nvidia.com,m:tariqt@nvidia.com,m:mbloch@nvidia.com,m:andrew+netdev@lunn.ch,m:davem@davemloft.net,m:edumazet@google.com,m:kuba@kernel.org,m:pabeni@redhat.com,m:netdev@vger.kernel.org,m:linux-rdma@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:michaelgur@nvidia.com,m:stable@vger.kernel.org,m:andrew@lunn.ch,s:lists@lfdr.de];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	TAGGED_FROM(0.00)[bounces-272072-lists,stable=lfdr.de];
-	DKIM_TRACE(0.00)[kernel.org:+];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[leon@kernel.org,stable@vger.kernel.org];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_SENDER(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:michael.bommarito@gmail.com,m:anna.schumaker@hammerspace.com,m:sashal@kernel.org,m:michaelbommarito@gmail.com,s:lists@lfdr.de];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FREEMAIL_CC(0.00)[gmail.com,hammerspace.com,kernel.org];
+	ALIAS_RESOLVED(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_THREE(0.00)[4];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,netdev];
-	MISSING_XM_UA(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[meta.com:email,vger.kernel.org:from_smtp,nvidia.com:email,unreal:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,hammerspace.com:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 1515B70A478
+X-Rspamd-Queue-Id: E954E70A484
 
-On Tue, Jun 30, 2026 at 09:53:20AM -0700, Zhiping Zhang wrote:
-> Workloads that repeatedly allocate and release mkeys carrying TPH
-> steering-tag hints (e.g. churning RDMA MRs) leak one
-> struct mlx5_st_idx_data per cycle; kmemleak flags it as unreferenced
-> and the kmalloc slab grows over time.
-> 
-> When the last reference to an ST table entry is dropped,
-> mlx5_st_dealloc_index() removed the entry from idx_xa but the backing
-> mlx5_st_idx_data allocation was never freed.
-> 
-> Free idx_data after the xa_erase() so the lifetime of the bookkeeping
-> struct matches the lifetime of the ST entry it tracks.
-> 
-> Cc: stable@vger.kernel.org
-> Fixes: 888a7776f4fb ("net/mlx5: Add support for device steering tag")
-> Reviewed-by: Michael Gur <michaelgur@nvidia.com>
-> Signed-off-by: Zhiping Zhang <zhipingz@meta.com>
-> ---
-> v2: respin per maintainer-netdev.rst; no code change.
-> v1: https://lore.kernel.org/linux-rdma/20260612170406.3339093-1-zhipingz@meta.com/
-> 
->  drivers/net/ethernet/mellanox/mlx5/core/lib/st.c | 1 +
->  1 file changed, 1 insertion(+)
-> 
+From: Michael Bommarito <michael.bommarito@gmail.com>
 
-Thanks,
-Reviewed-by: Leon Romanovsky <leonro@nvidia.com>
+[ Upstream commit 2c6bb3c40bc24f6aa8dfbe6fe98c3ad6389203f2 ]
+
+ff_layout_alloc_lseg() decodes the filehandle-version array count
+from the flexfiles layout body. The value is used as the count for
+kzalloc_objs(), and the current code only rejects NULL.
+
+A zero count yields ZERO_SIZE_PTR, which can be stored in
+dss_info->fh_versions even though later flexfiles paths assume that at
+least one filehandle version exists.
+
+Reject fh_count == 0 before the allocation, matching the existing zero
+version_count validation in the flexfiles GETDEVICEINFO parser.
+
+A QEMU/KASAN run with a malformed flexfiles layout hit:
+
+  KASAN: null-ptr-deref in range [0x0000000000000010-0x0000000000000017]
+  RIP: 0010:ff_layout_encode_ff_layoutupdate.isra.0+0x15f/0x750
+  ff_layout_encode_layoutreturn+0x683/0x970
+  nfs4_xdr_enc_layoutreturn+0x278/0x3a0
+  Kernel panic - not syncing: Fatal exception
+
+The patched kernel rejects the malformed layout without KASAN/oops/panic,
+and a valid fh_count=1 regression still opens, reads, and unmounts cleanly.
+
+Cc: stable@vger.kernel.org
+Fixes: d67ae825a59d ("pnfs/flexfiles: Add the FlexFile Layout Driver")
+Assisted-by: Claude:claude-opus-4-7
+Signed-off-by: Michael Bommarito <michael.bommarito@gmail.com>
+Signed-off-by: Anna Schumaker <anna.schumaker@hammerspace.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ fs/nfs/flexfilelayout/flexfilelayout.c | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/fs/nfs/flexfilelayout/flexfilelayout.c b/fs/nfs/flexfilelayout/flexfilelayout.c
+index ee103cde19cdf2..01d9922ee71297 100644
+--- a/fs/nfs/flexfilelayout/flexfilelayout.c
++++ b/fs/nfs/flexfilelayout/flexfilelayout.c
+@@ -454,6 +454,10 @@ ff_layout_alloc_lseg(struct pnfs_layout_hdr *lh,
+ 		if (!p)
+ 			goto out_err_free;
+ 		fh_count = be32_to_cpup(p);
++		if (fh_count == 0) {
++			rc = -EINVAL;
++			goto out_err_free;
++		}
+ 
+ 		fls->mirror_array[i]->fh_versions =
+ 			kcalloc(fh_count, sizeof(struct nfs_fh),
+-- 
+2.53.0
+
 
